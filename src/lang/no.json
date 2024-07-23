@@ -396,7 +396,6 @@
         "Swap": "Bytte",
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
-        "About": "Om",
         "Stats": "Statistikk",
         "Wallet": "Lommebok",
         "AddLiquidity": "Legg til likviditet",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Fra",
         "to": "Til"
-    },
-    "about": {
-        "title": "DEX for den interoperable fremtiden.",
-        "description": "Utveksling på tvers av kjeder av aktiva, enkel opprettelse og notering av nye aktiva, og de enkleste byttene noensinne. {Polkadot} interoperable fremtid er her, og vi er i forkant!",
-        "trading": {
-            "title": "Raskere handel",
-            "first": "{AppName} er en ikke-depot-, krysskjedet AMM DEX-protokoll for å bytte tokens basert på {Polkadot}- og {Kusama}-relékjeder, {Polkadot} og {Kusama} parachains, og blokkjeder direkte forbundet via broer.",
-            "second": "{AppName} fjerner pålitelige mellomledd og gir mulighet for raskere handel",
-            "third": "{AppName} er et samfunnsprosjekt og utviklere samarbeider om åpen kildekode ved hjelp av"
-        },
-        "liquidity": {
-            "title": "Grenseløs likviditet",
-            "first": "{AppName} kombinerer flere likviditetskilder under en felles likviditetsaggregeringsalgoritme, som opererer helt på kjeden, på en tillitsløs og desentralisert måte.",
-            "second": "Når tradere kaller byttefunksjonen, vil aggregasjonsalgoritmen for likviditet fylle bestillinger ved hjelp av de beste tilbudene på tvers av alle likviditetskilder. Likviditetskilder kan være andre DEX-er, ordrebøker eller andre API-drevne kilder.",
-            "third": "Fordi {AppName} er et åpen kildekode-prosjekt, kan hvem som helst legge til flere likviditetskilder ved å gi bidrag til {AppName}-kodebasen."
-        },
-        "swap": {
-            "title": "Bytt hvilket som helst token",
-            "first": "Gå utover grensene for nåværende DEX-er ved å legge til tokens fra {Polkadot}-økosystemet så vel som andre blokkjeder.",
-            "second": "Lag, liste og bytt dine egne tokens på {Sora} -nettverket.",
-            "third": "Vår kjerneinfrastruktur bruker Parity Substrate, som er mer skalerbar enn {Ethereum}, og benytter ikke dyr gruvedrift for konsensus."
-        },
-        "pswap": {
-            "title": "PSWAP Tokens",
-            "first": "PSWAP ble opprettet av fellesskapsstyring ved å stemme på utgivelsen. Det er et verktøy og styringstoken som brukes til å belønne likviditetsleverandører på {AppName}. I motsetning til de fleste andre belønningstokener, blir PSWAP brent med transaksjoner og reduksjon i forsyning over tid.",
-            "second": "Gebyret {percent}% for hvert bytte på {AppName} DEX brukes til å kjøpe tilbake PSWAP-tokener, som deretter brennes. I begynnelsen blir 90% av brente PSWAP-tokens reminted for å tildele likviditetsleverandører, men med tiden vil denne prosentandelen reduseres til 35% etter 4 år."
-        },
-        "links": {
-            "first": {
-                "title": "Bli en {Sora} Validator",
-                "desc": "Sikre fremtiden til {Sora} -nettverket og desentraliserte apper som {AppName}, og tjen belønninger underveis ved å bli en {Sora} validator."
-            },
-            "second": {
-                "title": "Koble en kjede til {Sora}",
-                "desc": "Utvid den desentraliserte verdensøkonomien ved å koble flere kjeder til {Sora} og {AppName} ved hjelp av {Hashi}-broprotokollen."
-            }
-        },
-        "network": "{AppName} er bygget på {Sora} -nettverket, med fokus på interoperabilitet for å koble resten av kryptoøkosystemet til {Polkadot} ."
     },
     "exchange": {
         "Swap": "Bytte",

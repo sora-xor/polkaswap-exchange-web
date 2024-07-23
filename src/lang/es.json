@@ -396,7 +396,6 @@
         "Swap": "Intercambio",
         "Pool": "Fondo común",
         "Bridge": "@:bridgeText",
-        "About": "Acerca de",
         "Stats": "Estadísticas",
         "Wallet": "Cartera",
         "AddLiquidity": "Añadir Liquidez",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Desde",
         "to": "A"
-    },
-    "about": {
-        "title": "El DEX para el futuro interoperable.",
-        "description": "Intercambio de Activos a través de Cadena cruzada, creación y listado sencillo de nuevos Activos y los intercambios más fáciles de la historia. ¡El futuro interoperable de {Polkadot} está aquí y nosotros estamos a la vanguardia!",
-        "trading": {
-            "title": "Comercio más rápido",
-            "first": "{AppName} es un protocolo AMM DEX no custodiado para el intercambio de tokens basado en las cadenas principales de {Polkadot} y {Kusama}, parachains de {Polkadot} y {Kusama}, y blockchains conectadas directamente a través de puentes.",
-            "second": "{AppName} elimina los intermediarios de confianza y ofrece la oportunidad de negociar más rápidamente",
-            "third": "{AppName} es un proyecto comunitario y los desarrolladores colaboran en el código de fuente abierta utilizando el"
-        },
-        "liquidity": {
-            "title": "Liquidez ilimitada",
-            "first": "{AppName} combina múltiples fuentes de liquidez bajo un algoritmo común de agregación de liquidez, operando completamente en cadena, de manera descentralizada y sin intermediarios.",
-            "second": "Cuando los traders llaman la función de intercambio, el algoritmo de agregación de liquidez completará las órdenes utilizando las mejores ofertas en todas las fuentes de liquidez. Las fuentes de liquidez pueden ser otros DEX, libros de ordenes u otras fuentes añadidas por API.",
-            "third": "Dado que {AppName} es un proyecto de código abierto, cualquiera puede añadir más fuentes de liquidez haciendo contribuciones al código base de {AppName}."
-        },
-        "swap": {
-            "title": "Intercambia cualquier token",
-            "first": "Vaya más allá de los límites de los DEX actuales agregando tokens del ecosistema {Polkadot}, así como de otras cadenas de bloques.",
-            "second": "Cree, enumere y opere con sus propios tokens en la red {Sora}.",
-            "third": "Nuestra infraestructura principal utiliza Parity Substrate, que es más escalable que {Ethereum}, y no utiliza la costosa minería para el consenso."
-        },
-        "pswap": {
-            "title": "Tokens PSWAP",
-            "first": "PSWAP fue creado por el gobierno de la comunidad mediante la votación de su lanzamiento. Es un token de utilidad y gobernanza utilizado para recompensar a los proveedores de liquidez en {AppName}. A diferencia de la mayoría de otros tokens de recompensa, PSWAP se quema con las transacciones y disminuye su oferta con el tiempo.",
-            "second": "El {percent}% de la comisión por cada intercambio en el DEX de {AppName} se utiliza para recomprar tokens PSWAP, que luego se queman. Al principio, el 90% de los tokens PSWAP quemados se reacuñan para asignarlos a los proveedores de liquidez, pero con el tiempo este porcentaje se reducirá al 35% después de 4 años."
-        },
-        "links": {
-            "first": {
-                "title": "Conviértase en Validador {Sora}",
-                "desc": "Asegura el futuro de la Red {Sora} y de las aplicaciones descentralizadas como {AppName}, y gana recompensas en el camino convirtiéndote en un validador de {Sora}."
-            },
-            "second": {
-                "title": "Conectar una cadena a {Sora}",
-                "desc": "Haga crecer la economía mundial descentralizada conectando más cadenas a {Sora} y {AppName} utilizando el protocolo del puente {Hashi}."
-            }
-        },
-        "network": "{AppName} está construido sobre la Red {Sora}, centrándose en la interoperabilidad para conectar el resto del ecosistema criptográfico a {Polkadot}."
     },
     "exchange": {
         "Swap": "Intercambio",
