@@ -1043,11 +1043,6 @@
         "notificationBlocked": "For å motta varslene om {AppName} må du tillate varslene i nettleserens opprinnelige innstillinger",
         "pointer": "Trykk på \"Tillat\" for å slå på varsler"
     },
-    "browserNotificationLocalStorageOverride": {
-        "title": "Tøm lokal {AppName} lagring",
-        "info": "Din lokale lagring er overbelastet, for å fortsette å bruke {AppName} må du rense den",
-        "agree": "Ja jeg forstår"
-    },
     "assetDeposit": "Eiendelsbalanse er satt inn",
     "noDataText": "Ingen data",
     "ofText": "{first} av {second}",
@@ -1652,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Valuta",
         "searchPlaceholder": "Søk etter valutanavn eller symbol"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Tøm lokal {AppName} lagring",
+        "info": "Din lokale lagring er overbelastet, for å fortsette å bruke {AppName} må du rense den",
+        "agree": "Ja jeg forstår"
     }
 }

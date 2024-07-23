@@ -1043,11 +1043,6 @@
         "notificationBlocked": "Ahhoz, hogy értesítést kapjon az {AppName} alkalmazásról, kérjük, engedélyezze az értesítéseket a böngésző natív beállításaiban.",
         "pointer": "Nyomja meg az „Engedélyezés” gombot az értesítések bekapcsolásához"
     },
-    "browserNotificationLocalStorageOverride": {
-        "title": "Törölje a helyi {AppName} tárolót",
-        "info": "A helyi tároló túlterhelt, a {AppName} használatához törölnie kell",
-        "agree": "Igen, értem"
-    },
     "assetDeposit": "Az eszközök egyenlege letétbe helyezve",
     "noDataText": "Nincs adat",
     "ofText": "{first} a {second}",
@@ -1652,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Valuta",
         "searchPlaceholder": "Keresés pénznem neve vagy szimbóluma alapján"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Törölje a helyi {AppName} tárolót",
+        "info": "A helyi tároló túlterhelt, a {AppName} használatához törölnie kell",
+        "agree": "Igen, értem"
     }
 }

@@ -1043,11 +1043,6 @@
         "notificationBlocked": "Để nhận thông báo về {AppName}, vui lòng cho phép thông báo trong cài đặt gốc của trình duyệt của bạn",
         "pointer": "Nhấn “Cho phép” để bật thông báo"
     },
-    "browserNotificationLocalStorageOverride": {
-        "title": "Xóa bộ nhớ cục bộ {AppName}",
-        "info": "Bộ nhớ cục bộ của bạn đã quá tải, để tiếp tục làm việc với {AppName}, cần xóa nó",
-        "agree": "Vâng, tôi hiểu"
-    },
     "assetDeposit": "Số dư tài sản đã được gửi",
     "noDataText": "Không có dữ liệu",
     "ofText": "{first} của {second}",
@@ -1652,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Tiền tệ",
         "searchPlaceholder": "Tìm kiếm theo tên hoặc ký hiệu tiền tệ"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Xóa bộ nhớ cục bộ {AppName}",
+        "info": "Bộ nhớ cục bộ của bạn đã quá tải, để tiếp tục làm việc với {AppName}, cần xóa nó",
+        "agree": "Vâng, tôi hiểu"
     }
 }

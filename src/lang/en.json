@@ -1043,11 +1043,6 @@
         "notificationBlocked": "To receive the notifications about {AppName}, please, allow the notifications in your browser's native settings",
         "pointer": "Press “Allow” to turn notifications on"
     },
-    "browserNotificationLocalStorageOverride": {
-        "title": "Clear local {AppName} storage",
-        "info": "Your local storage is overloaded, to continue work with {AppName} need to clean it",
-        "agree": "Yes, I understand"
-    },
     "assetDeposit": "Asset balance has been deposited",
     "noDataText": "No data",
     "ofText": "{first} of {second}",
@@ -1652,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Currency",
         "searchPlaceholder": "Search by currency name or symbol"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Clear local {AppName} storage",
+        "info": "Your local storage is overloaded, to continue work with {AppName} need to clean it",
+        "agree": "Yes, I understand"
     }
 }

@@ -1043,11 +1043,6 @@
         "notificationBlocked": "Untuk menerima notifikasi tentang {AppName}, izinkan notifikasi di setelan asli browser Anda",
         "pointer": "Tekan \"Izinkan\" untuk mengaktifkan notifikasi"
     },
-    "browserNotificationLocalStorageOverride": {
-        "title": "Bersihkan penyimpanan lokal {AppName}",
-        "info": "Penyimpanan lokal Anda kelebihan beban, untuk melanjutkan pekerjaan dengan {AppName} perlu membersihkannya",
-        "agree": "Ya saya mengerti"
-    },
     "assetDeposit": "Saldo aset telah disetorkan",
     "noDataText": "Tidak ada data",
     "ofText": "{first} dari {second}",
@@ -1652,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Mata uang",
         "searchPlaceholder": "Cari berdasarkan nama atau simbol mata uang"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Bersihkan penyimpanan lokal {AppName}",
+        "info": "Penyimpanan lokal Anda kelebihan beban, untuk melanjutkan pekerjaan dengan {AppName} perlu membersihkannya",
+        "agree": "Ya saya mengerti"
     }
 }

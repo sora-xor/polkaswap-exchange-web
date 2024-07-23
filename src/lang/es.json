@@ -1043,11 +1043,6 @@
         "notificationBlocked": "Para recibir notificaciones sobre {AppName}, permita las notificaciones en la configuración nativa de su navegador",
         "pointer": "Presione \"Permitir\" para activar las notificaciones"
     },
-    "browserNotificationLocalStorageOverride": {
-        "title": "Limpiar el almacenamiento local de {AppName}",
-        "info": "Su almacenamiento local está sobrecargado, para continuar trabajando con {AppName} necesita limpiarlo",
-        "agree": "Si, entiendo"
-    },
     "assetDeposit": "El saldo de los activos ha sido depositado",
     "noDataText": "Sin datos",
     "ofText": "{first} de {second}",
@@ -1652,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Divisa",
         "searchPlaceholder": "Buscar por nombre o símbolo de moneda"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Limpiar el almacenamiento local de {AppName}",
+        "info": "Su almacenamiento local está sobrecargado, para continuar trabajando con {AppName} necesita limpiarlo",
+        "agree": "Si, entiendo"
     }
 }

@@ -1043,11 +1043,6 @@
         "notificationBlocked": "Да бисте примали обавештења о {AppName}, дозволите обавештења у основним подешавањима прегледача",
         "pointer": "Притисните „Дозволи“ да бисте укључили обавештења"
     },
-    "browserNotificationLocalStorageOverride": {
-        "title": "Očistite lokalnu {AppName} memoriju",
-        "info": "Vaša lokalna memorija je preopterećena, za nastavak rada sa {AppName} potrebno je očistiti je",
-        "agree": "Да, разумем"
-    },
     "assetDeposit": "Стање средстава је депоновано",
     "noDataText": "Нема података",
     "ofText": "{first} од {second}",
@@ -1652,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Валута",
         "searchPlaceholder": "Претражујте по називу валуте или симболу"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Očistite lokalnu {AppName} memoriju",
+        "info": "Vaša lokalna memorija je preopterećena, za nastavak rada sa {AppName} potrebno je očistiti je",
+        "agree": "Да, разумем"
     }
 }
