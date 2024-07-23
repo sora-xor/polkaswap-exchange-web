@@ -233,7 +233,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
 
-  private clearLocalStorage(): void {
+  public clearLocalStorage(): void {
     clearLocalStorage();
   }
 
