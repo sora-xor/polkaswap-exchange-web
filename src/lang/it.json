@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Valuta",
         "searchPlaceholder": "Cerca per nome o simbolo della valuta"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Cancella l'archiviazione locale {AppName}",
+        "info": "Il tuo spazio di archiviazione locale è sovraccarico, per continuare a lavorare con {AppName} è necessario pulirlo",
+        "agree": "Si, capisco"
     }
 }

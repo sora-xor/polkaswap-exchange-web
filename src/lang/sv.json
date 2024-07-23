@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Valuta",
         "searchPlaceholder": "Sök efter valutanamn eller symbol"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Rensa lokal {AppName} lagring",
+        "info": "Din lokala lagring är överbelastad, för att fortsätta arbeta med {AppName} måste du rensa den",
+        "agree": "Ja, jag förstår"
     }
 }

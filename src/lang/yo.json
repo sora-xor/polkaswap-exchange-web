@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Owo owo",
         "searchPlaceholder": "Ṣewadii nipasẹ orukọ owo tabi aami"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Nu ibi ipamọ agbegbe {AppName} mọ",
+        "info": "Ibi ipamọ agbegbe rẹ ti kun ju, lati tẹsiwaju iṣẹ pẹlu {AppName} o nilo lati nu rẹ",
+        "agree": "Bẹẹni, Mo loye"
     }
 }

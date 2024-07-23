@@ -36,6 +36,11 @@
       :set-visibility="setSignTxDialogVisibility"
     />
     <select-sora-account-dialog />
+    <app-browser-notifs-local-storage-override
+      :visible.sync="showErrorLocalStorageExceed"
+      @delete-data-local-storage="clearLocalStorage"
+    >
+    </app-browser-notifs-local-storage-override>
   </s-design-system-provider>
 </template>
 
@@ -62,12 +67,20 @@ import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { PageNames, Components, Language, BreakpointClass, WalletPermissions } from '@/consts';
+import {
+  PageNames,
+  Components,
+  Language,
+  BreakpointClass,
+  WalletPermissions,
+  LOCAL_STORAGE_LIMIT_PERCENTAGE,
+} from '@/consts';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
+import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { TmaSdk } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
@@ -90,6 +103,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     AppDisclaimer: lazyComponent(Components.AppDisclaimer),
     AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),
     AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
+    AppBrowserNotifsLocalStorageOverride: lazyComponent(Components.AppBrowserNotifsLocalStorageOverride),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
     SelectSoraAccountDialog: lazyComponent(Components.SelectSoraAccountDialog),
@@ -103,6 +117,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   menuVisibility = false;
   showConfirmInviteUser = false;
   showNotifsDarkPage = false;
+  showErrorLocalStorageExceed = false;
 
   @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
   @state.settings.appConnection private appConnection!: NodesConnection;
@@ -218,8 +233,19 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
 
+  public clearLocalStorage(): void {
+    clearLocalStorage();
+  }
+
+  private handleLocalStorageChange() {
+    const usagePercentage = calculateStorageUsagePercentage();
+    if (usagePercentage >= LOCAL_STORAGE_LIMIT_PERCENTAGE) {
+      this.showErrorLocalStorageExceed = true;
+    }
+  }
+
   async created() {
-    // element-icons is not common used, but should be visible after network connection lost
+    window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
     preloadFontFace('element-icons');
     this.setResponsiveClass();
     updateBaseUrl(router);
@@ -360,6 +386,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
+    window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
