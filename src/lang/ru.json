@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Валюта",
         "searchPlaceholder": "Поиск по названию или символу валюты"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Очистить локальное хранилище {AppName}",
+        "info": "Ваше локальное хранилище перегружено, чтобы продолжить работу с {AppName}, необходимо его очистить",
+        "agree": "Да, я понимаю"
     }
 }

@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "货币",
         "searchPlaceholder": "按货币名称或符号搜索"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "清除本地 {AppName} 存储",
+        "info": "您的本地存储已超载，要继续使用 {AppName}，需要清理它",
+        "agree": "是的我明白"
     }
 }

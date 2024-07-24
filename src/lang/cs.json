@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Měna",
         "searchPlaceholder": "Hledejte podle názvu měny nebo symbolu"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Vymazat místní úložiště {AppName}",
+        "info": "Vaše místní úložiště je přetížené, pro pokračování práce s {AppName} je potřeba ho vyčistit",
+        "agree": "Ano, rozumím"
     }
 }

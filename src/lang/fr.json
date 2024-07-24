@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Devise",
         "searchPlaceholder": "Rechercher par nom ou symbole de devise"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Effacer le stockage local {AppName}",
+        "info": "Votre stockage local est surchargé, pour continuer à travailler avec {AppName} il faut le nettoyer",
+        "agree": "Oui je comprends"
     }
 }

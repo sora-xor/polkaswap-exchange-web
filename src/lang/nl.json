@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Munteenheid",
         "searchPlaceholder": "Zoek op valutanaam of symbool"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Lokaal {AppName} opslag wissen",
+        "info": "Uw lokale opslag is overbelast, om door te gaan met {AppName} moet u het opschonen",
+        "agree": "Ja ik begrijp het"
     }
 }

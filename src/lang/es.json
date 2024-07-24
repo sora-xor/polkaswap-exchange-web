@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Divisa",
         "searchPlaceholder": "Buscar por nombre o símbolo de moneda"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Limpiar el almacenamiento local de {AppName}",
+        "info": "Su almacenamiento local está sobrecargado, para continuar trabajando con {AppName} necesita limpiarlo",
+        "agree": "Si, entiendo"
     }
 }
