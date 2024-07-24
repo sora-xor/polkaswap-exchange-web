@@ -95,6 +95,18 @@ export const HundredNumber = 100;
 
 export const DefaultSlippageTolerance = '0.5';
 
+export const LOCAL_STORAGE_MAX_SIZE = 4 * 1024 * 1024;
+
+export const LOCAL_STORAGE_LIMIT_PERCENTAGE = 95;
+
+export const listOfRemoveForLocalStorage = [
+  '.assetsAddresses',
+  '.history',
+  '.ethBridgeHistory',
+  '.evmHistory',
+  '.subHistory',
+];
+
 export enum MarketAlgorithms {
   SMART = 'SMART',
   TBC = 'TBC',
@@ -161,6 +173,7 @@ export enum Components {
   AppMobilePopup = 'App/MobilePopup',
   AppBrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
   AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
+  AppBrowserNotifsLocalStorageOverride = 'App/BrowserNotification/BrowserNotificationLocalStorageOverride',
   Alerts = 'App/Alerts/Alerts',
   AlertList = 'App/Alerts/AlertList',
   CreateAlert = 'App/Alerts/CreateAlert',

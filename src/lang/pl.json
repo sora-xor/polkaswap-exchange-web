@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Waluta",
         "searchPlaceholder": "Szukaj według nazwy waluty lub symbolu"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Wyczyść lokalne {AppName} dane",
+        "info": "Twoje lokalne dane są przeciążone, aby kontynuować pracę z {AppName}, musisz je wyczyścić",
+        "agree": "Tak, rozumiem"
     }
 }
