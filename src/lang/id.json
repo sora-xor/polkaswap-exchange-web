@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Mata uang",
         "searchPlaceholder": "Cari berdasarkan nama atau simbol mata uang"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Bersihkan penyimpanan lokal {AppName}",
+        "info": "Penyimpanan lokal Anda kelebihan beban, untuk melanjutkan pekerjaan dengan {AppName} perlu membersihkannya",
+        "agree": "Ya saya mengerti"
     }
 }

@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Tiền tệ",
         "searchPlaceholder": "Tìm kiếm theo tên hoặc ký hiệu tiền tệ"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Xóa bộ nhớ cục bộ {AppName}",
+        "info": "Bộ nhớ cục bộ của bạn đã quá tải, để tiếp tục làm việc với {AppName}, cần xóa nó",
+        "agree": "Vâng, tôi hiểu"
     }
 }
