@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Currency",
         "searchPlaceholder": "Search by currency name or symbol"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Clear local {AppName} storage",
+        "info": "Your local storage is overloaded, to continue work with {AppName} need to clean it",
+        "agree": "Yes, I understand"
     }
 }

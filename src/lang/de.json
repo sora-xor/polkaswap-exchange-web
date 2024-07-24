@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Währung",
         "searchPlaceholder": "Suche nach Währungsnamen oder -symbol"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Löschen Sie den lokalen {AppName} Speicher",
+        "info": "Ihr lokaler Speicher ist überlastet, um mit {AppName} weiterzuarbeiten, müssen Sie ihn bereinigen",
+        "agree": "Ja ich verstehe"
     }
 }
