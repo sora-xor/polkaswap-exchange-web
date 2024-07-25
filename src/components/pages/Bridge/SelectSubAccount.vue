@@ -7,6 +7,7 @@
       :logout-account="logout"
       :rename-account="rename"
       :close-view="closeView"
+      :check-connected-account-source="checkConnectedAccountSource"
       :show-close="!subAccount.address"
       shadow="never"
     />
@@ -49,6 +50,12 @@ export default class BridgeSelectSubAccount extends Mixins(TranslationMixin) {
 
   get chainApi() {
     return this.subBridgeConnector.accountApi;
+  }
+
+  checkConnectedAccountSource(source: string) {
+    if (source && this.subAccount && this.subAccount.source === source) {
+      this.logout();
+    }
   }
 
   async login(account: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
