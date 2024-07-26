@@ -29,6 +29,70 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.KusamaAssetHub]: {
+    id: SubNetworkId.KusamaAssetHub,
+    name: 'Kusama Asset Hub',
+    nativeCurrency: {
+      name: 'KSM',
+      symbol: 'KSM',
+      decimals: 12,
+    },
+    blockExplorerUrls: ['https://assethub-kusama.subscan.io'],
+    shortName: 'KSM Asset Hub',
+    nodes: [
+      {
+        chain: 'Kusama Asset Hub',
+        name: 'Parity',
+        address: 'wss://kusama-asset-hub-rpc.polkadot.io',
+      },
+      {
+        chain: 'Kusama Asset Hub',
+        name: 'Dwellir',
+        address: 'wss://asset-hub-kusama-rpc.dwellir.com',
+      },
+    ],
+  },
+  [SubNetworkId.KusamaShiden]: {
+    id: SubNetworkId.KusamaShiden,
+    name: 'Shiden',
+    nativeCurrency: {
+      name: 'SDN',
+      symbol: 'SDN',
+      decimals: 18,
+    },
+    blockExplorerUrls: ['https://shiden.subscan.io'],
+    shortName: 'Shiden',
+    nodes: [
+      {
+        chain: 'Shiden',
+        name: 'Astar',
+        address: 'wss://rpc.shiden.astar.network',
+      },
+      {
+        chain: 'Shiden',
+        name: 'Dwellir',
+        address: 'wss://shiden-rpc.dwellir.com',
+      },
+    ],
+  },
+  [SubNetworkId.KusamaSora]: {
+    id: SubNetworkId.KusamaSora,
+    name: 'SORA Kusama Parachain',
+    nativeCurrency: {
+      name: 'XOR',
+      symbol: 'XOR',
+      decimals: 18,
+    },
+    blockExplorerUrls: [],
+    shortName: 'SORA KSM',
+    nodes: [
+      {
+        chain: 'SORA Kusama Parachain',
+        name: 'Soramitsu',
+        address: 'wss://ws.parachain-collator-2.c2.sora2.soramitsu.co.jp',
+      },
+    ],
+  },
   [SubNetworkId.Polkadot]: {
     id: SubNetworkId.Polkadot,
     name: 'Polkadot',
@@ -98,6 +162,29 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.PolkadotAssetHub]: {
+    id: SubNetworkId.PolkadotAssetHub,
+    name: 'Polkadot Asset Hub',
+    nativeCurrency: {
+      name: 'DOT',
+      symbol: 'DOT',
+      decimals: 10,
+    },
+    blockExplorerUrls: ['https://assethub-polkadot.subscan.io'],
+    shortName: 'DOT Asset Hub',
+    nodes: [
+      {
+        chain: 'Polkadot Asset Hub',
+        name: 'Parity',
+        address: 'wss://polkadot-asset-hub-rpc.polkadot.io',
+      },
+      {
+        chain: 'Polkadot Asset Hub',
+        name: 'Dwellir',
+        address: 'wss://asset-hub-polkadot-rpc.dwellir.com',
+      },
+    ],
+  },
   [SubNetworkId.PolkadotMoonbeam]: {
     id: SubNetworkId.PolkadotMoonbeam,
     name: 'Moonbeam',
@@ -123,6 +210,24 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     ],
     evmId: 1284,
   },
+  [SubNetworkId.PolkadotSora]: {
+    id: SubNetworkId.PolkadotSora,
+    name: 'SORA Polkadot Parachain',
+    nativeCurrency: {
+      name: 'XOR',
+      symbol: 'XOR',
+      decimals: 18,
+    },
+    blockExplorerUrls: [],
+    shortName: 'SORA DOT',
+    nodes: [
+      {
+        chain: 'SORA Polkadot Parachain',
+        name: 'Soramitsu',
+        address: 'wss://ws.parachain-collator-3.pc3.sora2.soramitsu.co.jp',
+      },
+    ],
+  },
   [SubNetworkId.Rococo]: {
     id: SubNetworkId.Rococo,
     name: 'Rococo',
@@ -138,6 +243,24 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
         chain: 'Rococo',
         name: 'Parity',
         address: 'wss://rococo-rpc.polkadot.io',
+      },
+    ],
+  },
+  [SubNetworkId.RococoSora]: {
+    id: SubNetworkId.RococoSora,
+    name: 'SORA Rococo Parachain',
+    nativeCurrency: {
+      name: 'XOR',
+      symbol: 'XOR',
+      decimals: 18,
+    },
+    blockExplorerUrls: [],
+    shortName: 'SORA ROC',
+    nodes: [
+      {
+        chain: 'SORA Rococo Parachain Testnet',
+        name: 'Soramitsu',
+        address: 'wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp',
       },
     ],
   },
@@ -178,84 +301,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
     evmId: 1287,
-  },
-  // SORA Parachains
-  [SubNetworkId.RococoSora]: {
-    id: SubNetworkId.RococoSora,
-    name: 'SORA Rococo Parachain',
-    nativeCurrency: {
-      name: 'XOR',
-      symbol: 'XOR',
-      decimals: 18,
-    },
-    blockExplorerUrls: [],
-    shortName: 'SORA ROC',
-    nodes: [
-      {
-        chain: 'SORA Rococo Parachain Testnet',
-        name: 'Soramitsu',
-        address: 'wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp',
-      },
-    ],
-  },
-  [SubNetworkId.KusamaShiden]: {
-    id: SubNetworkId.KusamaShiden,
-    name: 'Shiden',
-    nativeCurrency: {
-      name: 'SDN',
-      symbol: 'SDN',
-      decimals: 18,
-    },
-    blockExplorerUrls: ['https://shiden.subscan.io'],
-    shortName: 'Shiden',
-    nodes: [
-      {
-        chain: 'Shiden',
-        name: 'Astar',
-        address: 'wss://rpc.shiden.astar.network',
-      },
-      {
-        chain: 'Shiden',
-        name: 'Dwellir',
-        address: 'wss://shiden-rpc.dwellir.com',
-      },
-    ],
-  },
-  [SubNetworkId.KusamaSora]: {
-    id: SubNetworkId.KusamaSora,
-    name: 'SORA Kusama Parachain',
-    nativeCurrency: {
-      name: 'XOR',
-      symbol: 'XOR',
-      decimals: 18,
-    },
-    blockExplorerUrls: [],
-    shortName: 'SORA KSM',
-    nodes: [
-      {
-        chain: 'SORA Kusama Parachain',
-        name: 'Soramitsu',
-        address: 'wss://ws.parachain-collator-2.c2.sora2.soramitsu.co.jp',
-      },
-    ],
-  },
-  [SubNetworkId.PolkadotSora]: {
-    id: SubNetworkId.PolkadotSora,
-    name: 'SORA Polkadot Parachain',
-    nativeCurrency: {
-      name: 'XOR',
-      symbol: 'XOR',
-      decimals: 18,
-    },
-    blockExplorerUrls: [],
-    shortName: 'SORA DOT',
-    nodes: [
-      {
-        chain: 'SORA Polkadot Parachain',
-        name: 'Soramitsu',
-        address: 'wss://ws.parachain-collator-3.pc3.sora2.soramitsu.co.jp',
-      },
-    ],
   },
   [SubNetworkId.AlphanetSora]: {
     id: SubNetworkId.AlphanetSora,
