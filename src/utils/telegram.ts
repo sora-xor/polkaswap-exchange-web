@@ -77,7 +77,7 @@ class TmaSdk {
         store.commit.settings.setTelegramBotUrl(botUrl);
       }
       // Init haptic feedback
-      this.initHapticFeedback();
+      this.initHapticService();
       // Init utils
       this.utils = initUtils();
       console.info('[TMA]: Utils were initialized');
@@ -133,6 +133,25 @@ class TmaSdk {
     }
   }
 
+  private onTouchEnd(event: TouchEvent): void {
+    const clickableSelectors = 'button, a, [data-clickable], .el-button, .clickable, [role="button"]'; // Define your clickable selectors
+    const clickedElement = event.target as Nullable<HTMLElement>;
+
+    // Check if the clicked element matches any of the clickable selectors
+    if (clickedElement?.matches(clickableSelectors)) {
+      // Trigger Telegram WebApp HapticFeedback
+      this.useHaptic('soft');
+    }
+  }
+
+  private addHapticListener(): void {
+    document.addEventListener('touchend', this.onTouchEnd);
+  }
+
+  private removeHapticListener(): void {
+    document.removeEventListener('touchend', this.onTouchEnd);
+  }
+
   private async initViewport(): Promise<void> {
     try {
       const [viewport] = initViewport();
@@ -153,13 +172,14 @@ class TmaSdk {
     }
   }
 
-  private initHapticFeedback(): void {
+  private initHapticService(): void {
     try {
       const hapticFeedback = initHapticFeedback();
       this.hapticFeedback = hapticFeedback;
+      this.addHapticListener();
       console.info('[TMA]: Haptic feedback was initialized');
     } catch (error) {
-      console.warn('[TMA]: initHapticFeedback', error);
+      console.warn('[TMA]: initHapticService', error);
     }
   }
 
@@ -168,6 +188,10 @@ class TmaSdk {
       store.commit.referrals.setStorageReferrer(referrerAddress);
       console.info('[TMA]: Referrer was set', referrerAddress);
     }
+  }
+
+  public destroy(): void {
+    this.removeHapticListener();
   }
 }
 

@@ -352,6 +352,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   async beforeDestroy(): Promise<void> {
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
+    tmaSdkService.destroy();
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
     this.resetBlockNumberSubscription();
