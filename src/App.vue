@@ -256,7 +256,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       }
 
       // To start running as Telegram Web App (desktop capabilities)
-      await tmaSdkService.init(data?.TG_BOT_URL, data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev);
+      tmaSdkService.init(data?.TG_BOT_URL);
 
       await this.setApiKeys(data?.API_KEYS);
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
