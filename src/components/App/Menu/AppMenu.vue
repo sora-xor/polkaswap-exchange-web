@@ -1,10 +1,5 @@
 <template>
-  <div
-    :class="[
-      'app-menu',
-      { visible, collapsed, 'app-menu__about': isAboutPageOpened, 'app-menu__loading': pageLoading },
-    ]"
-  >
+  <div :class="['app-menu', { visible, collapsed, 'app-menu__loading': pageLoading }]">
     <s-button
       class="collapse-button"
       id="collapse-button"
@@ -48,6 +43,18 @@
                   @click.native="preventAnchorNavigation"
                 />
               </s-menu-item>
+            </s-menu-item-group>
+            <s-menu-item-group>
+              <app-sidebar-item-content
+                v-button
+                class="menu-item menu-item--bottom el-menu-item s-flex"
+                icon="finance-PSWAP-24"
+                href="https://about.polkaswap.io"
+                tag="a"
+                target="_blank"
+                rel="nofollow noopener"
+                :title="t('mainMenu.About')"
+              />
             </s-menu-item-group>
           </s-menu>
 
@@ -131,7 +138,6 @@ import AppSidebarItemContent from './SidebarItemContent.vue';
 })
 export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isAboutPageOpened!: boolean;
   @Prop({ default: () => {}, type: Function }) readonly onSelect!: (item: any) => void;
 
   @state.settings.faucetUrl faucetUrl!: string;
@@ -196,7 +202,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   get currentPath(): string {
-    const currentName = this.$route.name as any;
+    const currentName = this.$route.name as PageNames;
     if (PoolChildPages.includes(currentName)) {
       return PageNames.Pool;
     }
@@ -218,7 +224,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     if (isVaultPage(currentName)) {
       return VaultPageNames.Vaults;
     }
-    return currentName as string;
+    return currentName;
   }
 
   openProductDialog(product: string): void {
@@ -405,6 +411,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     @include large-mobile(true) {
       position: fixed;
       right: 0;
+      z-index: $app-above-loader-layer;
 
       &.visible {
         visibility: visible;

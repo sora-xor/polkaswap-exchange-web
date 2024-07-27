@@ -396,7 +396,6 @@
         "Swap": "Swap",
         "Pool": "pool",
         "Bridge": "@:bridgeText",
-        "About": "Over ons",
         "Stats": "Stats",
         "Wallet": "Wallet",
         "AddLiquidity": "Liquiditeit toevoegen",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Van",
         "to": "Naar"
-    },
-    "about": {
-        "title": "De DEX voor de interoperabele toekomst.",
-        "description": "Cross-chain uitwisseling van assets, eenvoudige creatie en notering van nieuwe assets en de gemakkelijkste swaps beschikbaar. De interoperabele toekomst van {Polkadot} is hier en wij lopen voorop!",
-        "trading": {
-            "title": "Sneller traden",
-            "first": "{AppName} is een non-custodial, cross-chain AMM DEX-protocol voor het swappen van tokens op basis van {Polkadot}- en {Kusama} relay chains, {Polkadot}- en {Kusama} parachains en blockchains die rechtstreeks zijn verbonden via Bridges.",
-            "second": "{AppName} verwijdert vertrouwde tussenpersonen en biedt de mogelijkheid tot sneller traden",
-            "third": "{AppName} is een community project en ontwikkelaars werken samen aan de open source code met behulp van de"
-        },
-        "liquidity": {
-            "title": "Grenzeloze liquiditeit",
-            "first": "{AppName} combineert meerdere liquiditeitsbronnen onder een gemeenschappelijk algoritme voor liquiditeitsaggregatie, dat volledig on-chain, op een betrouwbare en gedecentraliseerde manier werkt.",
-            "second": "Wanneer traders de swap-functie oproepen, zal het liquiditeitsaggregatie-algoritme orders vullen met behulp van de beste aanbiedingen uit alle liquiditeitsbronnen. Liquiditeitsbronnen kunnen andere DEX'en, orderboeken, of andere API-gestuurde bronnen zijn.",
-            "third": "Omdat {AppName} een open-source project is, kan iedereen meer liquiditeitsbronnen toevoegen door bijdragen te leveren aan de {AppName} codebase."
-        },
-        "swap": {
-            "title": "Swap elk token",
-            "first": "Ga verder dan de limieten van de huidige DEX's door tokens uit het {Polkadot} -ecosysteem en andere blockchains toe te voegen.",
-            "second": "Creëer, noteer en verhandel uw eigen tokens op het {Sora} netwerk.",
-            "third": "Onze kerninfrastructuur maakt gebruik van Parity Substrate, dat schaalbaarder is dan {Ethereum}, en maakt geen gebruik van dure mining voor consensus."
-        },
-        "pswap": {
-            "title": "PSWAP-tokens",
-            "first": "PSWAP is gemaakt door community governance door te stemmen over de release. Het is een utility- en governance-token dat wordt gebruikt om liquiditeitsverschaffers op {AppName} te belonen. In tegenstelling tot de meeste andere beloningstokens, wordt PSWAP verbrand met transacties en neemt het aanbod in de loop van de tijd af.",
-            "second": "De {percent}% vergoeding voor elke swap op de {AppName} DEX wordt gebruikt om PSWAP-tokens terug te kopen, die vervolgens worden verbrand. In eerste instantie wordt 90% van de verbrande PSWAP-tokens opnieuw gemunt om toe te wijzen aan liquiditeitsverschaffers, maar na verloop van tijd zal dit percentage na 4 jaar dalen tot 35%."
-        },
-        "links": {
-            "first": {
-                "title": "Word een {Sora}-validator",
-                "desc": "Beveilig de toekomst van het {Sora}-netwerk en gedecentraliseerde apps zoals {AppName}, en verdien terwijl beloningen door een {Sora}-validator te worden."
-            },
-            "second": {
-                "title": "Verbind een chain met {Sora}",
-                "desc": "Laat de gedecentraliseerde wereldeconomie groeien door meer chains te verbinden met {Sora} en {AppName} met behulp van het {Hashi} bridge protocol."
-            }
-        },
-        "network": "{AppName} is gebouwd op het {Sora} -netwerk, gericht op interoperabiliteit om de rest van het crypto-ecosysteem te verbinden met {Polkadot} ."
     },
     "exchange": {
         "Swap": "Swap",
@@ -938,7 +899,8 @@
             "bondMore": "Bond Meer",
             "bond": "Bond",
             "unbond": "Ontkoppelen",
-            "copyLink": "Kopieer link"
+            "copyLink": "Kopieer link",
+            "shareLink": "Delen"
         },
         "transactionDetails": "Transactiegegevens",
         "receivedRewards": "Beloningen ontvangen",
@@ -970,7 +932,9 @@
             "info": "Wanneer u transactiekosten betaalt,<br\/>gaat 10% naar uw verwijzer",
             "referredLablel": "Doorverwezen adres"
         },
-        "insufficientBondedAmount": "Om meer verwijzingen uit te nodigen, bindt u ten minste {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Om meer verwijzingen uit te nodigen, bindt u ten minste {inviteUserFee} XOR",
+        "inviteViaTelegram": "Uitnodigen via {Telegram}",
+        "welcomeMessage": "\nDoe met mij mee op {Polkaswap}!\n\nOntdek de stijlvolle {DEX} waarmee je tientallen tokens kunt wisselen met cross-chain swaps, orderboek en veel beloningen!\n\n🎁 Nodig vrienden uit en verdien 10% van hun handelskosten\n\nZie je daar!"
     },
     "transactionDetailsText": "Transactie Details",
     "code": {
@@ -1683,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Munteenheid",
         "searchPlaceholder": "Zoek op valutanaam of symbool"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Lokaal {AppName} opslag wissen",
+        "info": "Uw lokale opslag is overbelast, om door te gaan met {AppName} moet u het opschonen",
+        "agree": "Ja ik begrijp het"
     }
 }

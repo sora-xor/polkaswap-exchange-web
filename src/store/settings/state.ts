@@ -42,6 +42,8 @@ function initialState(): SettingsState {
     windowWidth: window?.innerWidth ?? 0,
     nftStorage: null,
     adsArray: [],
+    isTMA: false,
+    telegramBotUrl: undefined,
   };
 }
 

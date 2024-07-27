@@ -61,11 +61,6 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Swap),
   },
   {
-    path: '/about',
-    name: PageNames.About,
-    component: lazyView(PageNames.About),
-  },
-  {
     path: '/wallet',
     name: PageNames.Wallet,
     component: lazyView(PageNames.Wallet),
@@ -357,11 +352,11 @@ router.beforeEach((to, from, next) => {
   if (isInvitationRoute) {
     const referrerAddress = to.params.referrerAddress;
 
-    if (api.validateAddress(referrerAddress)) {
+    if (referrerAddress && api.validateAddress(referrerAddress)) {
       store.commit.referrals.setStorageReferrer(referrerAddress);
     }
     if (isLoggedIn) {
-      setRoute(PageNames.ReferralProgram);
+      setRoute(PageNames.ReferralProgram, false); // `false` is set to avoid infinite loop
       return;
     }
   }

@@ -396,7 +396,6 @@
         "Swap": "Hoán đổi",
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
-        "About": "Giới thiệu",
         "Stats": "Thống kê",
         "Wallet": "Ví",
         "AddLiquidity": "Thêm Thanh Khoản",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Từ",
         "to": "Đến"
-    },
-    "about": {
-        "title": "Sàn DEX của Tương lai thích ứng linh hoạt.",
-        "description": "Giao dịch tài sản xuyên chuỗi, dễ dàng tạo và niêm yết tài sản mới, và hoán đổi dễ dàng hơn bao giờ hết. Tương lai thích ứng linh hoạt của {Polkadot} là đây và chúng tôi đang mở lối tiên phong!",
-        "trading": {
-            "title": "Giao dịch nhanh hơn",
-            "first": "{AppName} là một giao thức AMM DEX xuyên chuỗi, không giám sát để hóa đổi token dựa trên các replay chain {Polkadot} và {Kusama}, parachain {Polkadot} và {Kusama} và các blockchain khác được kết nối trực tiếp qua các cầu nối.",
-            "second": "{AppName} loại bỏ các bên xác tín trung gian để tiến trình giao dịch nhanh hơn",
-            "third": "{AppName} là một dự án cộng đồng và các nhà phát triển cộng tác trên mã nguồn mở bằng cách sử dụng"
-        },
-        "liquidity": {
-            "title": "Thanh khoản không giới hạn",
-            "first": "{AppName} kết hợp nhiều nguồn thanh khoản theo thuật toán tổng hợp thanh khoản chung, hoạt động hoàn toàn on-chain, phi tập trung và đáng tin cậy.",
-            "second": "Khi các nhà giao dịch tiến hành hoán đổi, thuật toán tổng hợp thanh khoản sẽ tìm ra các ưu đãi tốt nhất trong những nguồn thanh khoản. Nguồn ở đây có thể là các DEX khác, sổ cái, hoặc các nguồn dựa trên API khác.",
-            "third": "Bởi vì {AppName} là một dự án nguồn mở, bất cứ ai cũng có thể mở rộng các nguồn thanh khoản thông qua {AppName} codebase."
-        },
-        "swap": {
-            "title": "Hoán đổi Bất kỳ Token nào",
-            "first": "Vượt lên khỏi giới hạn của các DEX hiện tại bằng cách thêm các token từ hệ sinh thái {Polkadot} cũng như các blockchain khác.",
-            "second": "Tạo, niêm yết và giao dịch token của riêng bạn trên Mạng {Sora}.",
-            "third": "Cơ sở hạ tầng cốt lõi của chúng tôi sử dụng Parity Substrate, có khả năng mở rộng hơn {Ethereum} và không sử dụng cơ chế đồng thuận đắt đỏ."
-        },
-        "pswap": {
-            "title": "Token PSWAP",
-            "first": "PSWAP được tạo ra bởi quản trị cộng đồng bằng cách bỏ phiếu về việc phát hành. Nó là một token tiện ích và quản trị, được sử dụng để thưởng cho các nhà cung cấp thanh khoản trên {AppName}. Không giống như hầu hết các token thưởng khác, PSWAP bị đốt cháy cùng với giao dịch và giảm nguồn cung theo thời gian.",
-            "second": "{percent}% phí giao dịch hoán đổi trên {AppName} DEX được sử dụng để mua lại PSWAP token, sau đó sẽ được đốt. Thời gian đầu, 90% số lượng được đốt này sẽ được mint trở lại để phân bổ cho những người cung cấp thanh khoản, nhưng theo thời gian tỷ lệ này sẽ giảm xuống còn 35% sau 4 năm."
-        },
-        "links": {
-            "first": {
-                "title": "Trở thành {Sora} validator",
-                "desc": "Đảm bảo tương lai của Mạng {Sora} và các ứng dụng phi tập trung như {AppName} đồng thời kiếm tiền thưởng khi trở thành một {Sora} validator."
-            },
-            "second": {
-                "title": "Kết nối Chain với {Sora}",
-                "desc": "Phát triển nền kinh tế thế giới phi tập trung bằng cách kết nối nhiều chuỗi hơn vào {Sora} và {AppName} thông qua giao thức cầu {Hashi}."
-            }
-        },
-        "network": "{AppName} được xây dựng trên Mạng {Sora}, tập trung vào khả năng tương tác để kết nối với cả hệ sinh thái {Polkadot}."
     },
     "exchange": {
         "Swap": "Hoán đổi",
@@ -938,7 +899,8 @@
             "bondMore": "Bond Thêm",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Sao chép đường dẫn"
+            "copyLink": "Sao chép đường dẫn",
+            "shareLink": "Chia sẻ"
         },
         "transactionDetails": "Chi tiết giao dịch",
         "receivedRewards": "Phần thưởng đã nhận",
@@ -970,7 +932,9 @@
             "info": "Khi bạn trả phí giao dịch, <br\/> 10% sẽ được chuyển đến người giới thiệu của bạn",
             "referredLablel": "Địa chỉ giới thiệu"
         },
-        "insufficientBondedAmount": "Để mời thêm giới thiệu, hãy bond ít nhất {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Để mời thêm giới thiệu, hãy bond ít nhất {inviteUserFee} XOR",
+        "inviteViaTelegram": "Mời qua {Telegram}",
+        "welcomeMessage": "\nTham gia cùng tôi trên {Polkaswap}!\n\nKhám phá {DEX} phong cách cho phép bạn hoán đổi hàng chục mã thông báo với các giao dịch xuyên chuỗi, sổ lệnh và rất nhiều phần thưởng!\n\n🎁 Mời bạn bè và kiếm 10% phí giao dịch của họ\n\nHẹn gặp lại!"
     },
     "transactionDetailsText": "Chi tiết giao dịch",
     "code": {
@@ -1683,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Tiền tệ",
         "searchPlaceholder": "Tìm kiếm theo tên hoặc ký hiệu tiền tệ"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Xóa bộ nhớ cục bộ {AppName}",
+        "info": "Bộ nhớ cục bộ của bạn đã quá tải, để tiếp tục làm việc với {AppName}, cần xóa nó",
+        "agree": "Vâng, tôi hiểu"
     }
 }

@@ -396,7 +396,6 @@
         "Swap": "Tauschen",
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
-        "About": "Über",
         "Stats": "Statistiken",
         "Wallet": "Wallet",
         "AddLiquidity": "Liquidität hinzufügen",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Von",
         "to": "An"
-    },
-    "about": {
-        "title": "Der DEX für die Interoperable Zukunft.",
-        "description": "Cross-Chain-Austausch von Assets, einfache Erstellung und Listung neuer Assets und die einfachsten Swaps aller Zeiten. Die interoperable Zukunft von {Polkadot} ist da und wir stehen an vorderster Front!",
-        "trading": {
-            "title": "Schnellerer Handel",
-            "first": "{AppName} ist ein nicht-custodial, cross-chain AMM DEX-Protokoll zum Austauschen von Token basierend auf {Polkadot} und {Kusama}-Relaychains, {Polkadot} und {Kusama}-Parachains und Blockchains, die direkt über Bridges verbunden sind.",
-            "second": "{AppName} entfernt die vertrauenswürdigen Vermittler und bietet die Möglichkeit für ein schnelleres Trading",
-            "third": "{AppName} ist ein Community-Projekt und Entwickler arbeiten am Open-Source-Code unter Verwendung der BSD 4-Klausel-Lizenz zusammen"
-        },
-        "liquidity": {
-            "title": "Unbegrenzte Liquidität",
-            "first": "{AppName} kombiniert mehrere Liquiditätsquellen unter einem gemeinsamen Liquiditätsaggregationsalgorithmus, der vollständig on-chain, trustless und dezentral arbeitet.",
-            "second": "Wenn Trader die Swap-Funktion aufrufen, wird der Liquiditätsaggregationsalgorithmus Aufträge mit den besten Angeboten aus allen Liquiditätsquellen ausführen. Liquiditätsquellen können andere DEXs, Orderbücher oder andere API-gesteuerte Quellen sein.",
-            "third": "Da {AppName} ein Open-Source-Projekt ist, kann jeder weitere Liquiditätsquellen hinzufügen, indem Beiträge zur {AppName}-Codebasis geleistet werden."
-        },
-        "swap": {
-            "title": "Beliebige Token tauschen",
-            "first": "Gehe über die Grenzen aktueller DEXs hinaus, indem du Token aus dem {Polkadot}-Ökosystem sowie anderen Blockchains hinzufügst.",
-            "second": "Erstelle, liste und handle deine eigenen Token im {Sora}-Netzwerk.",
-            "third": "Unsere Kerninfrastruktur verwendet Parity Substrate, das skalierbarer als {Ethereum} ist und kein teures Mining für den Konsens verwendet."
-        },
-        "pswap": {
-            "title": "PSWAP Token",
-            "first": "PSWAP wurde von der Community Governance erstellt, indem über seine Veröffentlichung abgestimmt wurde. Es ist ein Utility- und Governance-Token, der verwendet wird, um Liquiditätsanbieter auf {AppName} zu belohnen. Im Gegensatz zu den meisten anderen Belohnungstoken wird PSWAP mit Transaktionen verbrannt und das Angebot nimmt im Laufe der Zeit ab.",
-            "second": "Die {percent}% Gebühr für jeden Tausch auf der {AppName} DEX wird genutzt, um PSWAP-Token zurückzukaufen, die dann verbrannt werden. Zu Beginn werden 90% der verbrannten PSWAP-Token neu gemintet, um sie an die Liquiditätsanbieter zu verteilen, aber mit der Zeit verringert sich der Prozentsatz auf letztlich 35% nach 4 Jahren."
-        },
-        "links": {
-            "first": {
-                "title": "Werde ein {Sora} Validator",
-                "desc": "Sichere die Zukunft des {Sora} Netzwerks und dezentralisierter Apps wie {AppName} und verdiene dabei Belohnungen, indem du ein {Sora}-Validator wirst."
-            },
-            "second": {
-                "title": "Verbinde eine Chain mit {Sora}",
-                "desc": "Erweitere die dezentralisierte Weltwirtschaft, indem du mithilfe des {Hashi}-Bridge Protokolls weitere Chains mit {Sora} und {AppName} verbindest."
-            }
-        },
-        "network": "{AppName} baut auf dem {Sora}-Netzwerk auf und konzentriert sich auf Interoperabilität, um den Rest des Krypto-Ökosystems mit {Polkadot} zu verbinden."
     },
     "exchange": {
         "Swap": "Swap",
@@ -938,7 +899,8 @@
             "bondMore": "Mehr bonden",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Link kopieren"
+            "copyLink": "Link kopieren",
+            "shareLink": "Teilen"
         },
         "transactionDetails": "Transaktionsdetails",
         "receivedRewards": "Erhaltene Belohnungen",
@@ -970,7 +932,9 @@
             "info": "Wenn du eine Transaktionsgebühr zahlst,<br\/>gehen 10% an deinen Referrer",
             "referredLablel": "Empfohlene Adresse"
         },
-        "insufficientBondedAmount": "Um weitere Empfehlungen zu veschicken, bonde mindestens {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Um weitere Empfehlungen zu veschicken, bonde mindestens {inviteUserFee} XOR",
+        "inviteViaTelegram": "Einladen über {Telegram}",
+        "welcomeMessage": "\nKomm zu mir auf {Polkaswap}!\n\nEntdecke den stylischen {DEX}, mit dem du Dutzende Token mit Cross-Chain-Swaps, Orderbuch und vielen Belohnungen tauschen kannst!\n\n🎁 Lade Freunde ein und verdiene 10% ihrer Handelsgebühren\n\nBis dann!"
     },
     "transactionDetailsText": "Transaktionsdetails",
     "code": {
@@ -1683,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Währung",
         "searchPlaceholder": "Suche nach Währungsnamen oder -symbol"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Löschen Sie den lokalen {AppName} Speicher",
+        "info": "Ihr lokaler Speicher ist überlastet, um mit {AppName} weiterzuarbeiten, müssen Sie ihn bereinigen",
+        "agree": "Ja ich verstehe"
     }
 }

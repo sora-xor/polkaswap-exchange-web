@@ -396,7 +396,6 @@
         "Swap": "Swap",
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
-        "About": "O projektu",
         "Stats": "Statistiky",
         "Wallet": "Peněženka",
         "AddLiquidity": "Přidat likviditu",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Z",
         "to": "Na"
-    },
-    "about": {
-        "title": "DEX pro interoperabilní budoucnost.",
-        "description": "Cross-chain obchodování aktiv, jednoduchá tvorba a zalistování nových aktiv a ty nejjednodušší swapy vůbec. Interoperabilní budoucnost {Polkadot} je tady a my jsme v jejím čele!",
-        "trading": {
-            "title": "Rychlejší obchodování",
-            "first": "{AppName} je non-custodial, cross-chain AMM DEX protokol pro swap tokenů založený na {Polkadot} a {Kusama} relay chainech, {Polkadot} a {Kusama} parachainech a blockchainech přímo připojených přes bridge.",
-            "second": "{AppName} odstraňuje zprostředkovatele a poskytuje možnost rychlejšího obchodování",
-            "third": "{AppName} je komunitní projekt a vývojáři spolupracují na otevřeném kódu s využitím"
-        },
-        "liquidity": {
-            "title": "Neomezená likvidita",
-            "first": "{AppName} kombinuje více zdrojů likvidity pod společným algoritmem agregace likvidity, který funguje zcela on-chain, trustless a decentralizovaně.",
-            "second": "Když tradeři zavolají swap funkci, algoritmus agregace likvidity vyplní příkazy pomocí nejlepších nabídek ze všech zdrojů likvidity. Zdroji likvidity mohou být jiné DEXy, order booky nebo jiné zdroje řízené API.",
-            "third": "Protože je {AppName} projekt s otevřeným zdrojovým kódem, kdokoli může přidat další zdroje likvidity tím, že přispěje do kódové základny {AppName}."
-        },
-        "swap": {
-            "title": "Swapujte jakýkoliv token",
-            "first": "Překročte hranice současných DEXů přidáním tokenů z ekosystému {Polkadot} i jiných blockchainů.",
-            "second": "Vytvářejte, zalistujte a obchodujte své vlastní tokeny v síti {Sora}.",
-            "third": "Naše základní infrastruktura využívá Parity Substrate, který je škálovatelnější než {Ethereum} a ke konsensu nepoužívá nákladnou těžbu."
-        },
-        "pswap": {
-            "title": "PSWAP tokeny",
-            "first": "PSWAP byl vytvořen skrze komunitní governance prostřednictvím hlasování o jeho vydání. Jedná se o utility a governance token, který slouží k odměňování poskytovatelů likvidity na {AppName}. Na rozdíl od většiny ostatních odměnových tokenů je PSWAP pálen při transakcích a jeho nabídka v průběhu času klesá.",
-            "second": "{percent}% poplatek za každý swap na {AppName} DEX se použije na zpětný odkup PSWAP tokenů, které se následně spálí. Zpočátku se 90 % spálených PSWAP tokenů znovu vytiskne a přiděluje poskytovatelům likvidity, ale postupem času se toto procento snižuje až na 35 % po 4 letech."
-        },
-        "links": {
-            "first": {
-                "title": "Staňte se {Sora} validátorem",
-                "desc": "Pomozte zabezpečit budoucnost sítě {Sora} a decentralizovaných aplikací, jako je {AppName}, a získejte odměny za to, že se stanete {Sora} validátorem."
-            },
-            "second": {
-                "title": "Připojte chain k síti {Sora}",
-                "desc": "Rozšiřte decentralizovanou světovou ekonomiku připojením dalších chainů k síti {Sora} a {AppName} pomocí protokolu {Hashi} bridge."
-            }
-        },
-        "network": "{AppName} je postaven na síti {Sora} a zaměřuje se na interoperabilitu pro připojení zbytku krypto ekosystému k {Polkadot}."
     },
     "exchange": {
         "Swap": "Swap",
@@ -938,7 +899,8 @@
             "bondMore": "Vázat více",
             "bond": "Vázat",
             "unbond": "Zrušit vazbu",
-            "copyLink": "Kopírovat odkaz"
+            "copyLink": "Kopírovat odkaz",
+            "shareLink": "Sdílet"
         },
         "transactionDetails": "Detaily transakce",
         "receivedRewards": "Přijaté odměny",
@@ -970,7 +932,9 @@
             "info": "Když zaplatíte poplatek za transakci,<br\/>10% dostane váš referrer",
             "referredLablel": "Doporučená adresa"
         },
-        "insufficientBondedAmount": "Chcete-li pozvat více doporučení, spojte alespoň {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Chcete-li pozvat více doporučení, spojte alespoň {inviteUserFee} XOR",
+        "inviteViaTelegram": "Pozvat přes {Telegram}",
+        "welcomeMessage": "\nPřipojte se ke mně na {Polkaswap}!\n\nObjevte stylový {DEX}, který vám umožní vyměňovat desítky tokenů s křížovými řetězovými swapmi, knihou objednávek a spoustou odměn!\n\n🎁 Pozvěte přátele a získejte 10% z jejich obchodních poplatků\n\nUvidíme se tam!"
     },
     "transactionDetailsText": "Detaily transakce",
     "code": {
@@ -1683,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Měna",
         "searchPlaceholder": "Hledejte podle názvu měny nebo symbolu"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Vymazat místní úložiště {AppName}",
+        "info": "Vaše místní úložiště je přetížené, pro pokračování práce s {AppName} je potřeba ho vyčistit",
+        "agree": "Ano, rozumím"
     }
 }

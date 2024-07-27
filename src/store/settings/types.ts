@@ -51,4 +51,6 @@ export type SettingsState = {
   windowWidth: number;
   nftStorage: Nullable<NFTStorage>;
   adsArray: Array<Ad>;
+  isTMA: boolean;
+  telegramBotUrl: Nullable<string>;
 };

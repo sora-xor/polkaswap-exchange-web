@@ -138,6 +138,12 @@ const mutations = defineMutations<SettingsState>()({
 
     state.nftStorage = nftStorage;
   },
+  enableTMA(state): void {
+    state.isTMA = true;
+  },
+  setTelegramBotUrl(state, url: Nullable<string>): void {
+    state.telegramBotUrl = url;
+  },
 });
 
 export default mutations;

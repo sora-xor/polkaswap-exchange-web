@@ -5,13 +5,12 @@
       <app-menu
         :visible="menuVisibility"
         :on-select="goTo"
-        :is-about-page-opened="isAboutPage"
         @open-product-dialog="openProductDialog"
         @click.native="handleAppMenuClick"
       >
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap" />
       </app-menu>
-      <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
+      <div class="app-body">
         <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
@@ -31,12 +30,17 @@
     </notification-enabling-page>
     <alerts />
     <confirm-dialog
-      :get-api="getApi"
+      :chain-api="chainApi"
       :account="account"
       :visibility="isSignTxDialogVisible"
       :set-visibility="setSignTxDialogVisibility"
     />
     <select-sora-account-dialog />
+    <app-browser-notifs-local-storage-override
+      :visible.sync="showErrorLocalStorageExceed"
+      @delete-data-local-storage="clearLocalStorage"
+    >
+    </app-browser-notifs-local-storage-override>
   </s-design-system-provider>
 </template>
 
@@ -53,7 +57,7 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
-import { isTMA, setDebug } from '@tma.js/sdk';
+import { isTMA } from '@tma.js/sdk';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -63,12 +67,21 @@ import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { PageNames, Components, Language, BreakpointClass, WalletPermissions } from '@/consts';
+import {
+  PageNames,
+  Components,
+  Language,
+  BreakpointClass,
+  WalletPermissions,
+  LOCAL_STORAGE_LIMIT_PERCENTAGE,
+} from '@/consts';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
+import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
+import { TmaSdk } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
@@ -90,6 +103,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     AppDisclaimer: lazyComponent(Components.AppDisclaimer),
     AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),
     AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
+    AppBrowserNotifsLocalStorageOverride: lazyComponent(Components.AppBrowserNotifsLocalStorageOverride),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
     SelectSoraAccountDialog: lazyComponent(Components.SelectSoraAccountDialog),
@@ -103,13 +117,15 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   menuVisibility = false;
   showConfirmInviteUser = false;
   showNotifsDarkPage = false;
+  showErrorLocalStorageExceed = false;
 
   @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
   @state.settings.appConnection private appConnection!: NodesConnection;
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
-  @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
+  @state.referrals.referrer private referrer!: string;
   @state.referrals.storageReferrer storageReferrer!: string;
+  @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.router.loading pageLoading!: boolean;
 
@@ -154,9 +170,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @state.wallet.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
   @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
-
   // [DESKTOP] To Enable Desktop
   @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
+  // [TMA] To Enable TMA
+  @mutation.settings.enableTMA private enableTMA!: FnWithoutArgs;
 
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
@@ -197,16 +214,17 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private async confirmInvititation(): Promise<void> {
-    await this.getReferrer();
-    if (this.storageReferrer) {
+    await this.withApi(async () => {
+      await this.getReferrer();
+      if (!this.storageReferrer) {
+        return;
+      }
       if (this.storageReferrer === this.account.address) {
         this.resetStorageReferrer();
-      } else {
-        this.withApi(() => {
-          this.showConfirmInviteUser = true;
-        });
+      } else if (!this.referrer) {
+        this.showConfirmInviteUser = true;
       }
-    }
+    });
   }
 
   private setResponsiveClass(): void {
@@ -215,11 +233,19 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
 
-  async created() {
-    // [DESKTOP] To Enable Desktop
-    // this.setIsDesktop(true);
+  public clearLocalStorage(): void {
+    clearLocalStorage();
+  }
 
-    // element-icons is not common used, but should be visible after network connection lost
+  private handleLocalStorageChange() {
+    const usagePercentage = calculateStorageUsagePercentage();
+    if (usagePercentage >= LOCAL_STORAGE_LIMIT_PERCENTAGE) {
+      this.showErrorLocalStorageExceed = true;
+    }
+  }
+
+  async created() {
+    window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
     preloadFontFace('element-icons');
     this.setResponsiveClass();
     updateBaseUrl(router);
@@ -236,9 +262,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // To start running as Telegram Web App (desktop capabilities)
       if (await isTMA()) {
+        this.enableTMA();
         this.setIsDesktop(true);
-        // sets debug mode in twa
-        if (data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev) setDebug(true);
+        await TmaSdk.init(data?.TG_BOT_URL, data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev);
       }
 
       await this.setApiKeys(data?.API_KEYS);
@@ -280,10 +306,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     return getMobileCssClasses();
   }
 
-  get isAboutPage(): boolean {
-    return this.$route.name === PageNames.About;
-  }
-
   get dsProviderClasses(): string[] | BreakpointClass {
     return this.mobileCssClasses?.length ? [...this.mobileCssClasses, this.responsiveClass] : this.responsiveClass;
   }
@@ -313,7 +335,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     this.setBrowserNotifsPopupBlocked(value);
   }
 
-  getApi() {
+  get chainApi() {
     return api;
   }
 
@@ -364,6 +386,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
+    window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
@@ -623,9 +646,6 @@ i.icon-divider {
     flex: 1;
     flex-flow: column nowrap;
     max-width: 100%;
-    &__about {
-      overflow: hidden;
-    }
   }
 
   &-content {

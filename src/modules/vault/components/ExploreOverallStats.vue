@@ -25,7 +25,7 @@
             :asset-symbol="value.suffix"
             symbol-as-decimal
           >
-            <template #prefix>$</template>
+            <template #prefix>{{ currencySymbol }}</template>
           </formatted-amount>
         </div>
       </s-card>
@@ -54,7 +54,9 @@ export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins
   @state.vault.collaterals private collateralsObj!: Record<string, Collateral>;
   @state.vault.stablecoinInfos private stablecoinInfos!: Record<string, StablecoinInfo>;
 
-  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.wallet.settings.exchangeRate private exchangeRate!: number;
+  @getter.wallet.settings.currencySymbol currencySymbol!: string;
 
   private get collaterals() {
     return Object.values(this.collateralsObj);
@@ -68,7 +70,7 @@ export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins
       const value = this.getFPNumberFiatAmountByFPNumber(info.badDebt, debtAsset);
       if (!value) return acc;
 
-      return acc.add(value);
+      return acc.add(value.mul(this.exchangeRate));
     }, FPNumber.ZERO);
   }
 
@@ -77,21 +79,21 @@ export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins
       (acc, { totalLocked, lockedAssetId, debtSupply, debtAssetId, riskParams: { hardCap } }) => {
         const lockedAsset = this.getAsset(lockedAssetId);
         if (lockedAsset) {
-          const usdLocked = this.getFPNumberFiatAmountByFPNumber(totalLocked, lockedAsset);
-          if (usdLocked) {
-            acc.collateral = acc.collateral.add(usdLocked);
+          const fiatLocked = this.getFPNumberFiatAmountByFPNumber(totalLocked, lockedAsset);
+          if (fiatLocked) {
+            acc.collateral = acc.collateral.add(fiatLocked.mul(this.exchangeRate));
           }
         }
 
         const debtAsset = this.getAsset(debtAssetId);
         if (debtAsset) {
-          const usdDebt = this.getFPNumberFiatAmountByFPNumber(debtSupply, debtAsset);
-          if (usdDebt) {
-            acc.debt = acc.debt.add(usdDebt);
+          const fiatDebt = this.getFPNumberFiatAmountByFPNumber(debtSupply, debtAsset);
+          if (fiatDebt) {
+            acc.debt = acc.debt.add(fiatDebt.mul(this.exchangeRate));
           }
-          const available = this.getFPNumberFiatAmountByFPNumber(hardCap.sub(debtSupply), debtAsset);
-          if (available) {
-            acc.available = acc.available.add(available);
+          const fiatAvailable = this.getFPNumberFiatAmountByFPNumber(hardCap.sub(debtSupply), debtAsset);
+          if (fiatAvailable) {
+            acc.available = acc.available.add(fiatAvailable.mul(this.exchangeRate));
           }
         }
 
