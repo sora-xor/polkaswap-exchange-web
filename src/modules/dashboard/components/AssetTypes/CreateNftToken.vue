@@ -118,15 +118,19 @@
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR, MaxTotalSupply } from '@sora-substrate/util/build/assets/consts';
 import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
+import { File as ImageNFT } from 'nft.storage';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import { ZeroStringValue } from '@/consts';
-import { getter, state } from '@/store/decorators';
+import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
+import router, { lazyComponent } from '@/router';
+import { getter, state, action } from '@/store/decorators';
 import { IMAGE_MIME_TYPES } from '@/types/image';
 import { IpfsStorage } from '@/utils/ipfsStorage';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { NFTStorage } from 'nft.storage';
 
 export enum Step {
   FillMetaInfo = 'FillMetaInfo',
@@ -152,6 +156,7 @@ export default class CreateNftToken extends Mixins(
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   readonly maxTotalSupply = MaxTotalSupply;
   readonly TokenTabs = WALLET_CONSTS.TokenTabs;
+  readonly FILE_SIZE_LIMIT = 100; // in megabytes
   readonly Step = Step;
 
   @Ref('fileInput') readonly fileInput!: HTMLInputElement;
@@ -170,7 +175,9 @@ export default class CreateNftToken extends Mixins(
   tokenContentLink = '';
   file: Nullable<File> = null;
 
+  @state.settings.nftStorage private nftStorage!: NFTStorage;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
+  @action.settings.createNftStorageInstance private createNftStorageInstance!: AsyncFnWithoutArgs;
 
   get titleCreate(): string {
     return this.step === Step.FillMetaInfo ? 'Next' : 'Create NFT';
@@ -301,6 +308,26 @@ export default class CreateNftToken extends Mixins(
     this.fileExceedsLimit = false;
   }
 
+  async storeNftImage(file: File): Promise<void> {
+    const content = (await IpfsStorage.fileToBuffer(file)) as ArrayBuffer;
+
+    if (!this.nftStorage) {
+      await this.createNftStorageInstance();
+    }
+
+    try {
+      const metadata = await this.nftStorage.store({
+        name: file.name,
+        description: this.tokenDescription,
+        image: new ImageNFT([content], file.name, { type: file.type }),
+      });
+
+      this.tokenContentIpfsParsed = IpfsStorage.getIpfsPath(metadata.embed().image.href);
+    } catch (error) {
+      console.error('Error while storing NFT content:', error);
+    }
+  }
+
   async registerNftAsset(): Promise<void> {
     if (!this.tokenContentIpfsParsed.trim()) {
       throw new Error('IPFS Token issue');
@@ -332,9 +359,11 @@ export default class CreateNftToken extends Mixins(
       if (!this.hasEnoughXor) {
         throw new Error('walletSend.badAmount');
       }
+      if (this.file) {
+        await this.storeNftImage(this.file);
+      }
       await this.registerNftAsset();
-      // TODO: choose where to follow
-      // this.navigate({ name: RouteNames.Wallet });
+      router.push({ name: DashboardPageNames.AssetOwner });
     });
   }
 

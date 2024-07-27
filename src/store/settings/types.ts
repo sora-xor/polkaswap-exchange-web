@@ -1,6 +1,7 @@
 import type { BreakpointClass, MarketAlgorithms } from '@/consts';
 import type { NodesConnection } from '@/utils/connection';
 
+import type { NFTStorage } from 'nft.storage';
 import type { Subscription } from 'rxjs';
 
 export type Ad = {
@@ -48,5 +49,6 @@ export type SettingsState = {
   internetConnectionSpeed: Nullable<number>;
   screenBreakpointClass: BreakpointClass;
   windowWidth: number;
+  nftStorage: Nullable<NFTStorage>;
   adsArray: Array<Ad>;
 };

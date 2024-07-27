@@ -211,6 +211,7 @@ export default class CreateSbtToken extends Mixins(
 
   readonly tokenSymbolMask = 'AAAAAAA';
   readonly tokenNameMask = { mask: 'Z*', tokens: { Z: { pattern: /[0-9a-zA-Z ]/ } } };
+  readonly FILE_SIZE_LIMIT = 100; // in megabytes
   readonly Step = Step;
 
   // meta info

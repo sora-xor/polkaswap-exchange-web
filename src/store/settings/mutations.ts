@@ -1,4 +1,5 @@
 import { defineMutations } from 'direct-vuex';
+import { NFTStorage } from 'nft.storage';
 
 import { Breakpoint, MarketAlgorithms, BreakpointClass, Language } from '@/consts';
 import storage, { settingsStorage } from '@/utils/storage';
@@ -117,6 +118,25 @@ const mutations = defineMutations<SettingsState>()({
   },
   setAdsArray(state, arr: Array<Ad>): void {
     state.adsArray = arr;
+  },
+  setNftStorage(
+    state,
+    { marketplaceDid, ucan, token = '' }: { marketplaceDid?: string; ucan?: string; token?: string }
+  ): void {
+    let nftStorage: NFTStorage;
+
+    if (marketplaceDid && ucan) {
+      // on prod environment
+      nftStorage = new NFTStorage({
+        token: ucan,
+        did: marketplaceDid,
+      });
+    } else {
+      // on dev, test environments
+      nftStorage = new NFTStorage({ token });
+    }
+
+    state.nftStorage = nftStorage;
   },
 });
 

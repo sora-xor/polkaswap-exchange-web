@@ -61,6 +61,8 @@ import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-walle
 import { Component, Mixins } from 'vue-property-decorator';
 
 import { ZeroStringValue } from '@/consts';
+import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
+import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
@@ -169,8 +171,7 @@ export default class CreateRegularToken extends Mixins(
         throw new Error('walletSend.badAmount');
       }
       await this.registerAsset();
-      // TODO: choose where to follow
-      // this.navigate({ name: RouteNames.Wallet });
+      router.push({ name: DashboardPageNames.AssetOwner });
     });
   }
 

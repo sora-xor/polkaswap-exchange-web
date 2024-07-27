@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="asset-owner-create">
     <create-token-start v-if="showIntroPage" @select-type="selectType" />
     <div v-else>
       <create-regular-token v-if="type === AssetType.CreateRegularToken" @go-back="showStart" />
@@ -68,6 +68,12 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
 </style>
 
 <style lang="scss">
+.asset-owner-create {
+  .el-card {
+    margin: auto;
+  }
+}
+
 .dashboard-create {
   &-token {
     &_desc {
