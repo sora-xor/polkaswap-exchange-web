@@ -79,8 +79,8 @@ import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
-import { tmaSdkService } from '@/utils/telegram';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
+import { tmaSdkService } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
