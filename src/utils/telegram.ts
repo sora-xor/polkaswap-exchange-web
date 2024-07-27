@@ -18,6 +18,22 @@ function isNotification(value: HapticFeedbackBinding): value is HapticFeedbackSt
   return HapticNotificationTypes.includes(value);
 }
 
+function useHaptic(type: HapticFeedbackBinding): void {
+  const HapticFeedback = Telegram?.WebApp?.HapticFeedback;
+  if (!HapticFeedback) {
+    return;
+  }
+  try {
+    if (isNotification(type)) {
+      HapticFeedback?.notificationOccurred(type);
+      return;
+    }
+    HapticFeedback?.impactOccurred(type);
+  } catch (error) {
+    console.warn('[TMA]: useHapticFeedback', error);
+  }
+}
+
 class TmaSdk {
   public init(botUrl?: string): void {
     try {
@@ -77,19 +93,7 @@ class TmaSdk {
   }
 
   public useHaptic(type: HapticFeedbackBinding): void {
-    const HapticFeedback = Telegram?.WebApp?.HapticFeedback;
-    if (!HapticFeedback) {
-      return;
-    }
-    try {
-      if (isNotification(type)) {
-        HapticFeedback?.notificationOccurred(type);
-        return;
-      }
-      HapticFeedback?.impactOccurred(type);
-    } catch (error) {
-      console.warn('[TMA]: useHapticFeedback', error);
-    }
+    useHaptic(type);
   }
 
   private onTouchEnd(event: TouchEvent): void {
@@ -99,7 +103,7 @@ class TmaSdk {
     // Check if the clicked element matches any of the clickable selectors
     if (clickedElement?.matches(clickableSelectors)) {
       // Trigger Telegram WebApp HapticFeedback
-      this.useHaptic('soft');
+      useHaptic('soft');
     }
   }
 
