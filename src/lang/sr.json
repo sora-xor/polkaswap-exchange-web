@@ -1647,5 +1647,10 @@
     "currencyDialog": {
         "currency": "Валута",
         "searchPlaceholder": "Претражујте по називу валуте или симболу"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Očistite lokalnu {AppName} memoriju",
+        "info": "Vaša lokalna memorija je preopterećena, za nastavak rada sa {AppName} potrebno je očistiti je",
+        "agree": "Да, разумем"
     }
 }
