@@ -2,7 +2,11 @@
   <div class="asset-owner-create">
     <create-token-start v-if="showIntroPage" @select-type="selectType" />
     <div v-else>
-      <create-regular-token v-if="type === AssetType.CreateRegularToken" @go-back="showStart" />
+      <create-regular-token
+        v-if="type === AssetType.CreateRegularToken"
+        :is-regulated="isRegulated"
+        @go-back="showStart"
+      />
       <create-nft-token v-else-if="type === AssetType.CreateNftToken" @go-back="showStart" />
       <create-sbt-token
         v-else-if="type === AssetType.CreateSbtToken"
@@ -41,6 +45,7 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
 
   type = AssetType.CreateRegularToken;
   showIntroPage = true;
+  isRegulated = false;
 
   showStart(): void {
     this.showIntroPage = true;
@@ -52,6 +57,7 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
   }
 
   openRegulatedCreation(): void {
+    this.isRegulated = true;
     this.type = AssetType.CreateRegularToken;
   }
 }

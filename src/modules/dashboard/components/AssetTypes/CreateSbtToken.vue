@@ -20,21 +20,25 @@
           />
           <span class="create">{{ 'Create new regulated asset' }}</span>
         </div>
-        <div v-if="ownerRegulatedAssets?.length" class="dashboard-regulated-assets">
+        <div v-if="ownerAssetsList?.length" class="dashboard-regulated-assets">
           <div class="delimiter">{{ 'OR SELECT EXISTING' }}</div>
-          <div v-if="ownerRegulatedAssets?.length">
-            <div v-for="(asset, index) in ownerRegulatedAssets" :key="index" class="assets-list">
-              <el-checkbox-group v-model="checkList">
-                <el-checkbox :label="asset.address">
-                  <asset-list-item :asset="asset">
-                    <template #default>
-                      <span class="label">Regulated</span>
-                    </template>
-                  </asset-list-item>
-                  <s-divider v-if="index < ownerRegulatedAssets.length - 1" />
-                </el-checkbox>
-              </el-checkbox-group>
-            </div>
+          <div v-if="ownerAssetsList?.length">
+            <s-scrollbar class="dashboard-regulated-assets__scrollbar">
+              <div class="assets-list">
+                <div v-for="(asset, index) in ownerAssetsList" :key="index" class="assets-list__item">
+                  <el-checkbox-group v-model="checkList">
+                    <el-checkbox :label="asset.address">
+                      <asset-list-item :asset="asset">
+                        <template #default>
+                          <span class="label">Regulated</span>
+                        </template>
+                      </asset-list-item>
+                      <s-divider v-if="index < ownerAssetsList.length - 1" />
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </div>
+              </div>
+            </s-scrollbar>
           </div>
         </div>
       </div>
@@ -171,6 +175,7 @@
 <script lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
+import intersection from 'lodash/fp/intersection';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
@@ -231,22 +236,15 @@ export default class CreateSbtToken extends Mixins(
 
   step: Step = Step.AssetsChoice;
   query = '';
-  selectedAssetsList = [];
-
-  get ownerRegulatedAssets(): any {
-    return [this.selectedAssetsList[0], this.xor];
-  }
-
-  get disabledBtn(): boolean {
-    return false;
-  }
+  ownerAssetsList: any = [];
+  selectedAssetsIds = [];
 
   get checkList(): any {
-    return this.selectedAssetsList;
+    return this.selectedAssetsIds;
   }
 
   set checkList(list) {
-    this.selectedAssetsList = list;
+    this.selectedAssetsIds = list;
   }
 
   get fee(): FPNumber {
@@ -259,6 +257,26 @@ export default class CreateSbtToken extends Mixins(
       this.badSource ||
       !(this.file || this.tokenContentLink)
     );
+  }
+
+  get disabledBtn(): boolean {
+    if (this.step === Step.AssetsChoice) {
+      if (!this.selectedAssetsIds.length) return true;
+    }
+
+    if (this.step === Step.SbtMetaDescription) {
+      if (!(this.tokenSymbol.length && this.tokenDescription && this.tokenName.length)) return true;
+    }
+
+    if (this.step === Step.SbtMetaImage) {
+      //
+    }
+
+    if (this.step === Step.SbtTxSign) {
+      //
+    }
+
+    return false;
   }
 
   isValidType(type: string): boolean {
@@ -342,20 +360,18 @@ export default class CreateSbtToken extends Mixins(
   }
 
   handleCreate(): void {
-    // TODO: add condition on assets choice
     if (this.step === Step.AssetsChoice) {
-      this.step = Step.SbtMetaDescription;
-      return;
+      if (this.selectedAssetsIds.length) {
+        this.step = Step.SbtMetaDescription;
+        return;
+      }
     }
 
-    if (
-      this.tokenSymbol.length &&
-      this.tokenDescription &&
-      this.tokenName.length &&
-      this.step === Step.SbtMetaDescription
-    ) {
-      this.step = Step.SbtMetaImage;
-      return;
+    if (this.step === Step.SbtMetaDescription) {
+      if (this.tokenSymbol.length && this.tokenDescription && this.tokenName.length) {
+        this.step = Step.SbtMetaImage;
+        return;
+      }
     }
 
     // TODO: improve condition
@@ -392,9 +408,24 @@ export default class CreateSbtToken extends Mixins(
     this.$emit('go-to-create');
   }
 
-  created(): void {
+  async created(): Promise<void> {
+    const ownRegulatedAssetsIds = [] as any;
     this.requestOwnedAssetIds();
-    this.selectedAssetsList = this.ownedAssetIds.map((address) => this.getAsset(address));
+
+    // TODO: move to lib, migrate to assetInfosV2
+    const assetInfos = this.ownedAssetIds.map(async (address) => {
+      const result: any = await api.api.query.assets.assetInfosV2(address);
+      return [address, result];
+    });
+
+    for await (const [address, assetInfo] of assetInfos) {
+      const { assetType } = (assetInfo as any).toHuman();
+      if (assetType === 'Regulated') {
+        ownRegulatedAssetsIds.push(address);
+      }
+    }
+
+    this.ownerAssetsList = ownRegulatedAssetsIds.map((address) => this.getAsset(address)) as any;
   }
 }
 </script>
@@ -425,28 +456,45 @@ export default class CreateSbtToken extends Mixins(
     }
 
     .assets-list {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      width: 100%;
+      height: 320px;
 
-      .el-checkbox {
+      &__item {
         display: flex;
+        flex-direction: row;
         align-items: center;
         width: 100%;
 
-        &-group {
+        .el-checkbox {
+          display: flex;
+          align-items: center;
           width: 100%;
-        }
 
-        &__label {
-          width: 100%;
-        }
+          &-group {
+            width: 100%;
+          }
 
-        &__inner {
-          border-radius: 50%;
+          &__label {
+            width: 100%;
+          }
+
+          &__inner {
+            border-radius: 50%;
+          }
         }
       }
+    }
+
+    &__scrollbar {
+      @include scrollbar(-8px);
+
+      .el-scrollbar__view {
+        padding-right: 16px;
+      }
+    }
+
+    &__scrollbar.el-scrollbar {
+      margin-left: -8px;
+      margin-right: -24px;
     }
   }
 

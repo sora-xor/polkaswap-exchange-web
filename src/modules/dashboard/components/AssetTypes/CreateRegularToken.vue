@@ -58,7 +58,7 @@
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR, MaxTotalSupply } from '@sora-substrate/util/build/assets/consts';
 import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import { ZeroStringValue } from '@/consts';
 import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
@@ -86,6 +86,8 @@ export default class CreateRegularToken extends Mixins(
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   readonly maxTotalSupply = MaxTotalSupply;
   readonly TokenTabs = WALLET_CONSTS.TokenTabs;
+
+  @Prop({ type: Boolean, default: false }) readonly isRegulated!: boolean;
 
   tokenSymbol = '';
   tokenName = '';
@@ -150,6 +152,14 @@ export default class CreateRegularToken extends Mixins(
   }
 
   async registerAsset(): Promise<void> {
+    if (this.isRegulated) {
+      return api.extendedAssets.registerRegulatedAsset(
+        this.tokenSymbol,
+        this.tokenName.trim(),
+        this.tokenSupply,
+        this.extensibleSupply
+      );
+    }
     return api.assets.register(this.tokenSymbol, this.tokenName.trim(), this.tokenSupply, this.extensibleSupply);
   }
 
