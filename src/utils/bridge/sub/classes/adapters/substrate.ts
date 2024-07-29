@@ -157,4 +157,17 @@ export class SubAdapter extends BaseSubAdapter {
       return data.balance.toString();
     }, ZeroStringValue);
   }
+
+  protected async assetMinBalanceRequest(assetId: number | string): Promise<CodecString> {
+    return await this.withConnection(async () => {
+      const result = await (this.api.query.assets as any).asset(assetId);
+
+      if (result.isEmpty) return ZeroStringValue;
+
+      const data = result.unwrap();
+      const minBalance = data.minBalance.toString();
+
+      return minBalance > '1' ? minBalance : ZeroStringValue;
+    }, ZeroStringValue);
+  }
 }

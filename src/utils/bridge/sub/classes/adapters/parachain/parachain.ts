@@ -11,7 +11,7 @@ export type IParachainAssetMetadata<AssetId = any> = {
   id: AssetId;
   symbol: string;
   decimals: number;
-  minimalBalance: string;
+  minimalBalance?: string;
 };
 
 export class ParachainAdapter<AssetId> extends SubAdapter {
@@ -27,9 +27,8 @@ export class ParachainAdapter<AssetId> extends SubAdapter {
       const id = key.args[0].toString();
       const symbol = new TextDecoder().decode(value.symbol); // bytes to string
       const decimals = value.decimals.toNumber();
-      const minimalBalance = value.deposit.toString();
 
-      assets.push({ id, symbol, decimals, minimalBalance });
+      assets.push({ id, symbol, decimals });
     }
 
     this.assets = Object.freeze(assets);
@@ -61,9 +60,11 @@ export class ParachainAdapter<AssetId> extends SubAdapter {
 
     if (!assetMeta) return ZeroStringValue;
 
-    const minBalance = assetMeta.minimalBalance;
+    const { minimalBalance, id } = assetMeta;
 
-    return minBalance > '1' ? minBalance : ZeroStringValue;
+    if (minimalBalance) return minimalBalance;
+
+    return await this.assetMinBalanceRequest(id as string);
   }
 
   public override async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
