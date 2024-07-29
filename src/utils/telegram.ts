@@ -1,100 +1,133 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
-import {
-  setDebug,
-  initViewport,
-  initMiniApp,
-  initWeb,
-  isIframe,
-  retrieveLaunchParams,
-  initUtils,
-  type MiniApp,
-  type LaunchParams,
-  type Utils,
-  type Viewport,
-} from '@tma.js/sdk';
 
 import store from '@/store';
 
-export class TmaSdk {
-  public static miniApp: MiniApp;
-  public static launchParams: LaunchParams;
-  public static viewport: Nullable<Viewport>;
-  private static utils: Utils;
+enum HapticStatusValue {
+  success = 'success',
+  warning = 'warning',
+  error = 'error',
+}
 
-  public static async init(botUrl?: string, isDebug = false): Promise<void> {
+type HapticFeedbackStatus = keyof typeof HapticStatusValue;
+
+export type HapticFeedbackBinding = 'light' | 'medium' | 'heavy' | 'rigid' | 'soft' | HapticFeedbackStatus;
+
+const HapticNotificationTypes: string[] = Object.values(HapticStatusValue);
+
+function isNotification(value: HapticFeedbackBinding): value is HapticFeedbackStatus {
+  return HapticNotificationTypes.includes(value);
+}
+
+function useHaptic(type: HapticFeedbackBinding): void {
+  const HapticFeedback = Telegram?.WebApp?.HapticFeedback;
+  if (!HapticFeedback) {
+    return;
+  }
+  try {
+    if (isNotification(type)) {
+      HapticFeedback?.notificationOccurred(type);
+      return;
+    }
+    HapticFeedback?.impactOccurred(type);
+  } catch (error) {
+    console.warn('[TMA]: useHapticFeedback', error);
+  }
+}
+
+class TmaSdk {
+  public init(botUrl?: string): void {
     try {
-      // Initialize the app in the web version of Telegram
-      if (isIframe()) {
-        initWeb();
-        console.info('[TMA]: initTMA: Web version of Telegram');
+      // Check if the current platform is Telegram Mini App
+      const WebApp = Telegram?.WebApp;
+      if (!WebApp?.initData) {
+        console.info('[TMA]: Not a Telegram Mini App, skipping initialization');
+        return;
       }
-      // Init viewport
-      await this.initViewport();
-      // Init mini app
-      const [miniApp] = initMiniApp();
-      this.miniApp = miniApp;
+      // Expand viewport to the full screen
+      WebApp?.expand?.();
+      // Disable vertical swipe if possible
+      WebApp?.disableVerticalSwipes?.();
+      store.commit.settings.enableTMA();
+      store.commit.wallet.account.setIsDesktop(true);
       console.info('[TMA]: Mini app was initialized');
       // Set theme
       this.updateTheme();
-      // Enable debugging
-      setDebug(isDebug);
-      // Retrieve launch params
-      this.launchParams = retrieveLaunchParams();
-      console.info('[TMA]: Launch params were retrieved');
       // Check the referrer
-      this.setReferrer(this.launchParams.startParam);
+      this.setReferrer(WebApp?.initDataUnsafe?.start_param);
       // Set the Telegram bot URL
       if (botUrl) {
         store.commit.settings.setTelegramBotUrl(botUrl);
       }
-      // Init utils
-      this.utils = initUtils();
-      console.info('[TMA]: Utils were initialized');
+      // Init haptic feedback
+      this.addHapticListener();
     } catch (error) {
-      console.warn('[TMA]: init', error);
+      console.warn('[TMA]: disabling TMA mode because of the error:', error);
+      store.commit.settings.disableTMA();
+      store.commit.wallet.account.setIsDesktop(false);
     }
   }
 
   /**
-   * **Should be used after `miniApp` init!**
-   *
    * Update the theme of the Telegram Mini App using `var(--s-color-utility-body)`
    */
-  public static updateTheme(): void {
+  public updateTheme(): void {
     try {
       const colorUtilityBody =
         (getComputedStyle(document.documentElement).getPropertyValue('--s-color-utility-body') as `#${string}`) ||
         '#f7f3f4'; // Default color
-
-      this.miniApp.setHeaderColor(colorUtilityBody);
-      this.miniApp.setBgColor(colorUtilityBody);
+      const WebApp = Telegram?.WebApp;
+      WebApp?.setHeaderColor(colorUtilityBody);
+      WebApp?.setBackgroundColor(colorUtilityBody);
     } catch (error) {
       console.warn('[TMA]: updateTheme', error);
     }
   }
 
-  public static shareLink(url: string, text?: string): void {
+  public shareLink(url: string, text?: string): void {
     try {
-      this.utils.shareURL(url, text ? encodeURIComponent(text) : text);
+      const desc = text ? encodeURIComponent(text) : text;
+      Telegram?.WebApp?.openLink(`https://t.me/share/url?url=${url}&text=${desc}`);
     } catch (error) {
       console.warn('[TMA]: shareLink', error);
     }
   }
 
-  private static async initViewport(): Promise<void> {
-    try {
-      const [viewport] = initViewport();
-      this.viewport = await viewport;
-      console.info('[TMA]: Viewport was initialized');
-    } catch (error) {
-      console.warn('[TMA]: initViewport', error);
+  public useHaptic(type: HapticFeedbackBinding): void {
+    useHaptic(type);
+  }
+
+  private onTouchEnd(event: TouchEvent): void {
+    const clickableSelectors = 'button, a, [data-clickable], .el-button, .clickable, [role="button"]';
+    const clickedElement = event.target as Nullable<HTMLElement>;
+
+    // Check if the clicked element matches any of the clickable selectors
+    if (clickedElement?.matches(clickableSelectors)) {
+      // Trigger Telegram WebApp HapticFeedback
+      useHaptic('soft');
     }
   }
 
-  private static setReferrer(referrerAddress?: string): void {
+  private addHapticListener(): void {
+    console.info('[TMA]: Haptic listener was added');
+    document.addEventListener('touchend', this.onTouchEnd);
+  }
+
+  private removeHapticListener(): void {
+    document.removeEventListener('touchend', this.onTouchEnd);
+  }
+
+  private setReferrer(referrerAddress?: string): void {
     if (referrerAddress && api.validateAddress(referrerAddress)) {
       store.commit.referrals.setStorageReferrer(referrerAddress);
       console.info('[TMA]: Referrer was set', referrerAddress);
     }
   }
+
+  public destroy(): void {
+    this.removeHapticListener();
+  }
 }
+
+const tmaSdkService = new TmaSdk();
+
+export { tmaSdkService };
