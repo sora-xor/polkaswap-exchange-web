@@ -121,6 +121,9 @@ const mutations = defineMutations<SettingsState>()({
   enableTMA(state): void {
     state.isTMA = true;
   },
+  disableTMA(state): void {
+    state.isTMA = false;
+  },
   setTelegramBotUrl(state, url: Nullable<string>): void {
     state.telegramBotUrl = url;
   },

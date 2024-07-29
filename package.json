@@ -58,6 +58,7 @@
     "@types/jsdom": "^21.1.7",
     "@types/lodash": "^4.17.6",
     "@types/node": "^20.14.10",
+    "@types/telegram-web-app": "^7.3.1",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vue/cli-plugin-babel": "5.0.8",
