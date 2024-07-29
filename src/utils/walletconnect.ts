@@ -1,5 +1,6 @@
 import { WC } from '@soramitsu/soraneo-wallet-web';
 import { EthereumProvider } from '@walletconnect/ethereum-provider';
+import { UniversalProvider } from '@walletconnect/universal-provider';
 
 import type {
   ChainsProps,
@@ -8,7 +9,28 @@ import type {
 } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
 import type { SessionTypes } from '@walletconnect/types';
 
+function getAccountsFromNamespaces(namespaces: SessionTypes.Namespaces, keys: string[] = []): string[] {
+  const accounts: string[] = [];
+  Object.keys(namespaces).forEach((key) => {
+    if (keys.length && !keys.includes(key)) return;
+    const ns = namespaces[key];
+    accounts.push(...ns.accounts);
+  });
+  return accounts;
+}
+
+function getEthereumChainId(chains: string[]): number {
+  return Number(chains[0].split(':')[1]);
+}
+
+function toHexChainId(chainId: number): string {
+  return `0x${chainId.toString(16)}`;
+}
+
 export class WcEthereumProvider extends EthereumProvider {
+  /**
+   * "Init" is overrided to return the instance of this child class
+   */
   static override async init(opts: EthereumProviderOptions): Promise<WcEthereumProvider> {
     const provider = new WcEthereumProvider();
     await provider.initialize(opts);
@@ -26,6 +48,50 @@ export class WcEthereumProvider extends EthereumProvider {
     this._session = session;
   }
 
+  protected async restoreAppSession(): Promise<void> {
+    if (this.session) return;
+
+    const chainId = this.formatChainId(this.chainId);
+    const sessions = this.signer.client.session.values;
+
+    for (const session of sessions) {
+      const sessionData = session.namespaces[this.namespace];
+
+      if (!sessionData) continue;
+
+      const sessionChains = sessionData.chains;
+
+      if (!(Array.isArray(sessionChains) && sessionChains.includes(chainId))) continue;
+
+      const pairingTopic = session.pairingTopic;
+      try {
+        console.info(`[${this.constructor.name}]: active pairing found: "${pairingTopic}"`);
+        await this.signer.client.core.pairing.activate({ topic: pairingTopic });
+        console.info(`[${this.constructor.name}]: pairing activated: "${pairingTopic}"`);
+        this.setAppSession(session);
+
+        const accounts = getAccountsFromNamespaces(session.namespaces, [this.namespace]);
+        // if no required chains are set, use the approved accounts to fetch chainIds
+        this.setChainIds(this.rpc.chains.length ? this.rpc.chains : accounts);
+        this.setAccounts(accounts);
+        this.events.emit('connect', { chainId: toHexChainId(this.chainId) });
+
+        return;
+      } catch {
+        console.info(
+          `[${this.constructor.name}]: pairing not active: "${pairingTopic}". Session "${session.topic}" deleted.`
+        );
+        this.signer.client.disconnect({
+          topic: session.topic,
+          reason: {
+            code: 6000, // https://specs.walletconnect.com/2.0/specs/clients/sign/error-codes#reason
+            message: 'Disconnected by dApp',
+          },
+        });
+      }
+    }
+  }
+
   public override async connect(opts?: ConnectOps): Promise<void> {
     // eslint-disable-next-line
     await new Promise<void>(async(resolve, reject) => {
@@ -41,42 +107,54 @@ export class WcEthereumProvider extends EthereumProvider {
         }
       });
 
-      await super.connect(opts);
+      try {
+        await this.restoreAppSession();
 
-      this.setAppSession(this.signer.session);
+        if (!this.session) {
+          await super.connect(opts);
 
-      resolve();
+          this.setAppSession(this.signer.session);
+        }
+
+        resolve();
+      } catch (error) {
+        await this.signer.disconnect();
+        reject(error);
+      }
     });
   }
 }
 
 export const checkWalletConnectAvailability = async (chainProps: ChainsProps): Promise<void> => {
-  try {
-    const chainIdCheck = chainProps.chains?.[0] ?? 1;
-    const url = `https://rpc.walletconnect.com/v1/?chainId=eip155:${chainIdCheck}&projectId=${WC.WcProvider.projectId}`;
+  const chainIdCheck = chainProps.chains?.[0] ?? 1;
+  const url = `https://rpc.walletconnect.com/v1/?chainId=eip155:${chainIdCheck}&projectId=${WC.WcProvider.projectId}`;
 
-    await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify({ id: 1, jsonrpc: '2.0', method: 'test', params: [] }),
-    });
-  } catch {
-    throw new Error('provider.messages.notAvailable');
-  }
+  await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify({ id: 1, jsonrpc: '2.0', method: 'test', params: [] }),
+  });
 };
 
-export const getWcEthereumProvider = async (chainProps: ChainsProps): Promise<WcEthereumProvider> => {
-  await checkWalletConnectAvailability(chainProps);
+export const getWcEthereumProvider = async (
+  chainProps: ChainsProps
+): Promise<InstanceType<typeof EthereumProvider>> => {
+  try {
+    await checkWalletConnectAvailability(chainProps);
 
-  const ethereumProvider = await WcEthereumProvider.init({
-    projectId: WC.WcProvider.projectId,
-    showQrModal: true,
-    qrModalOptions: {
-      themeVariables: {
-        '--wcm-z-index': '9999',
+    const ethereumProvider = await WcEthereumProvider.init({
+      projectId: WC.WcProvider.projectId,
+      showQrModal: true,
+      qrModalOptions: {
+        themeVariables: {
+          '--wcm-z-index': '9999',
+        },
       },
-    },
-    ...chainProps,
-  });
+      ...chainProps,
+    });
 
-  return ethereumProvider;
+    return ethereumProvider;
+  } catch (error) {
+    console.error(error);
+    throw new Error('provider.messages.notAvailable');
+  }
 };
