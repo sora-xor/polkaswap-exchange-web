@@ -1,6 +1,5 @@
 import { WC } from '@soramitsu/soraneo-wallet-web';
 import { EthereumProvider } from '@walletconnect/ethereum-provider';
-import { UniversalProvider } from '@walletconnect/universal-provider';
 
 import type {
   ChainsProps,
@@ -8,24 +7,6 @@ import type {
   EthereumProviderOptions,
 } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
 import type { SessionTypes } from '@walletconnect/types';
-
-function getAccountsFromNamespaces(namespaces: SessionTypes.Namespaces, keys: string[] = []): string[] {
-  const accounts: string[] = [];
-  Object.keys(namespaces).forEach((key) => {
-    if (keys.length && !keys.includes(key)) return;
-    const ns = namespaces[key];
-    accounts.push(...ns.accounts);
-  });
-  return accounts;
-}
-
-function getEthereumChainId(chains: string[]): number {
-  return Number(chains[0].split(':')[1]);
-}
-
-function toHexChainId(chainId: number): string {
-  return `0x${chainId.toString(16)}`;
-}
 
 export class WcEthereumProvider extends EthereumProvider {
   /**
@@ -64,18 +45,14 @@ export class WcEthereumProvider extends EthereumProvider {
       if (!(Array.isArray(sessionChains) && sessionChains.includes(chainId))) continue;
 
       const pairingTopic = session.pairingTopic;
+      const expiry = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7;
       try {
         console.info(`[${this.constructor.name}]: active pairing found: "${pairingTopic}"`);
         await this.signer.client.core.pairing.activate({ topic: pairingTopic });
         console.info(`[${this.constructor.name}]: pairing activated: "${pairingTopic}"`);
+        await this.signer.client.core.pairing.updateExpiry({ topic: pairingTopic, expiry });
+        console.info(`[${this.constructor.name}]: pairing expiry updated: "${pairingTopic}"`);
         this.setAppSession(session);
-
-        const accounts = getAccountsFromNamespaces(session.namespaces, [this.namespace]);
-        // if no required chains are set, use the approved accounts to fetch chainIds
-        this.setChainIds(this.rpc.chains.length ? this.rpc.chains : accounts);
-        this.setAccounts(accounts);
-        this.events.emit('connect', { chainId: toHexChainId(this.chainId) });
-
         return;
       } catch {
         console.info(
