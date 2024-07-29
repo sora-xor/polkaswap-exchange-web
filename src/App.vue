@@ -436,6 +436,7 @@ ul ul {
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
   height: 100vh;
+  height: 100dvh;
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
   transition: background-color 500ms linear;
@@ -629,6 +630,7 @@ i.icon-divider {
     display: flex;
     align-items: stretch;
     height: calc(100vh - #{$header-height} - #{$footer-height});
+    height: calc(100dvh - #{$header-height} - #{$footer-height});
     position: relative;
   }
 
