@@ -5,12 +5,12 @@
         <search-input
           ref="search"
           v-model="query"
-          class="select-currency__search"
+          class="regulated-assets__search"
           autofocus
           :placeholder="t('addAsset.searchInputText')"
           @clear="handleClearSearch"
         />
-        <div class="dashboard-create-regulated-asset">
+        <div class="dashboard-create-button">
           <s-button
             class="el-dialog__close"
             type="action"
@@ -138,17 +138,23 @@
             <span class="name">SBTname</span>
           </div>
         </div>
-        <div class="dashboard-create-regulated-assets-list">
-          <div class="assets-list-subtitle">ATTACHED REGULATED ASSETS <span class="number">2</span></div>
-          <div v-for="(asset, index) in ownerRegulatedAssets" :key="index" class="assets-list">
-            <asset-list-item :asset="asset">
-              <template #default>
-                <s-icon class="delete-icon" name="basic-trash-24" @click.native="removeAsset(asset)" />
-              </template>
-            </asset-list-item>
-            <s-divider v-if="index < ownerRegulatedAssets.length - 1" />
+        <div class="dashboard-regulated-assets-attached">
+          <div class="assets-list-subtitle">
+            ATTACHED REGULATED ASSETS <span class="number">{{ selectedAssetsIds.length }}</span>
           </div>
-          <div class="dashboard-create-regulated-asset">
+          <s-scrollbar class="dashboard-regulated-assets__scrollbar" :key="scrollbarComponentKey">
+            <div class="selected-assets">
+              <div v-for="(asset, index) in selectedRegulatedAssets" :key="index" class="assets-list">
+                <asset-list-item :asset="asset">
+                  <template #default>
+                    <s-icon class="delete-icon" name="basic-trash-24" @click.native="removeAsset(asset)" />
+                  </template>
+                </asset-list-item>
+                <s-divider v-if="index < selectedRegulatedAssets.length - 1" />
+              </div>
+            </div>
+          </s-scrollbar>
+          <div class="dashboard-create-button">
             <s-button
               class="el-dialog__close"
               type="action"
@@ -239,6 +245,7 @@ export default class CreateSbtToken extends Mixins(
   query = '';
   ownerAssetsList: any = [];
   selectedAssetsIds = [];
+  scrollbarComponentKey = 0;
 
   get checkList(): any {
     return this.selectedAssetsIds;
@@ -263,6 +270,11 @@ export default class CreateSbtToken extends Mixins(
     }
 
     return ownerAssetsList;
+  }
+
+  get selectedRegulatedAssets() {
+    // @ts-expect-error err
+    return this.ownerAssetsList.filter((asset) => this.selectedAssetsIds.includes(asset.address));
   }
 
   get fee(): FPNumber {
@@ -403,7 +415,8 @@ export default class CreateSbtToken extends Mixins(
   }
 
   removeAsset(asset: AccountAsset): void {
-    console.log('asset', asset);
+    this.selectedAssetsIds = this.selectedAssetsIds.filter((id) => id !== asset.address);
+    this.scrollbarComponentKey += 1;
   }
 
   handleBack(): void {
@@ -454,18 +467,6 @@ export default class CreateSbtToken extends Mixins(
 
 <style lang="scss">
 .dashboard-create {
-  &-regulated-asset {
-    margin-top: 24px;
-
-    .create {
-      margin-left: calc(var(--s-basic-spacing) * 1.5);
-      font-size: var(--s-font-size-medium);
-      font-weight: 500;
-      letter-spacing: var(--s-letter-spacing-small);
-      line-height: var(--s-line-height-medium);
-    }
-  }
-
   .dashboard-regulated-assets {
     .label {
       text-transform: uppercase;
@@ -525,6 +526,18 @@ export default class CreateSbtToken extends Mixins(
     }
   }
 
+  &-button {
+    margin-top: 24px;
+
+    .create {
+      margin-left: calc(var(--s-basic-spacing) * 1.5);
+      font-size: var(--s-font-size-medium);
+      font-weight: 500;
+      letter-spacing: var(--s-letter-spacing-small);
+      line-height: var(--s-line-height-medium);
+    }
+  }
+
   &-sbt-preview {
     display: flex;
     background-color: var(--s-color-base-background-hover);
@@ -559,7 +572,11 @@ export default class CreateSbtToken extends Mixins(
     }
   }
 
-  &-regulated-assets-list {
+  .dashboard-regulated-assets-attached {
+    .selected-assets {
+      height: 250px;
+    }
+
     .assets-list-subtitle {
       margin-top: 24px;
       text-transform: uppercase;
@@ -574,6 +591,7 @@ export default class CreateSbtToken extends Mixins(
     }
 
     .delete-icon {
+      margin-right: 8px;
       color: var(--s-color-theme-accent);
 
       &:hover {
