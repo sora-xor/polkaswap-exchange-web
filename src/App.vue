@@ -57,7 +57,6 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
-import { isTMA } from '@tma.js/sdk';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -75,7 +74,7 @@ import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
-import { TmaSdk } from '@/utils/telegram';
+import { tmaSdkService } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
@@ -164,10 +163,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @state.wallet.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
   @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
-  // [DESKTOP] To Enable Desktop
-  @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
-  // [TMA] To Enable TMA
-  @mutation.settings.enableTMA private enableTMA!: FnWithoutArgs;
 
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
@@ -255,11 +250,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       }
 
       // To start running as Telegram Web App (desktop capabilities)
-      if (await isTMA()) {
-        this.enableTMA();
-        this.setIsDesktop(true);
-        await TmaSdk.init(data?.TG_BOT_URL, data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev);
-      }
+      tmaSdkService.init(data?.TG_BOT_URL);
 
       await this.setApiKeys(data?.API_KEYS);
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
@@ -382,6 +373,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async beforeDestroy(): Promise<void> {
     window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
+    tmaSdkService.destroy();
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
     this.resetBlockNumberSubscription();
