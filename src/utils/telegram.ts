@@ -96,8 +96,8 @@ class TmaSdk {
     useHaptic(type);
   }
 
-  // private onTouchEnd(event: TouchEvent): void {
-  private onTouchEnd(event: Event): void {
+  // private onTouchEnd(event: ): void {
+  private onTouchEnd(event: TouchEvent): void {
     console.info('Touch end event detected');
     const clickableSelectors = 'button, a, [data-clickable], .el-button, .clickable, [role="button"]';
     let clickedElement = event.target as Nullable<HTMLElement>;
@@ -117,11 +117,11 @@ class TmaSdk {
 
   private addHapticListener(): void {
     console.info('[TMA]: Haptic listener was added');
-    document.addEventListener('click', this.onTouchEnd);
+    document.addEventListener('touchend', this.onTouchEnd);
   }
 
   private removeHapticListener(): void {
-    document.removeEventListener('click', this.onTouchEnd);
+    document.removeEventListener('touchend', this.onTouchEnd);
   }
 
   private setReferrer(referrerAddress?: string): void {
