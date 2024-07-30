@@ -36,12 +36,19 @@ async function updateEthAssetsData(context: ActionContext<any, any>): Promise<vo
   commit.setRegisteredAssets(assets);
 }
 
-async function getEthRegisteredAssets(): Promise<Record<string, BridgeRegisteredAsset>[]> {
+async function getEthRegisteredAssets(
+  context: ActionContext<any, any>
+): Promise<Record<string, BridgeRegisteredAsset>[]> {
+  const { rootGetters } = assetsActionContext(context);
+
   const networkAssets = await ethBridgeApi.getRegisteredAssets();
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
+    const soraAsset = rootGetters.wallet.account.assetsDataTable[soraAddress];
+
     return {
       [soraAddress]: {
         address: assetData.address,
+        symbol: soraAsset.symbol,
         decimals: assetData.decimals ?? 18,
         kind: assetData.assetKind,
       },
@@ -54,14 +61,17 @@ async function getEthRegisteredAssets(): Promise<Record<string, BridgeRegistered
 async function getEvmRegisteredAssets(
   context: ActionContext<any, any>
 ): Promise<Record<string, BridgeRegisteredAsset>[]> {
-  const { rootState } = assetsActionContext(context);
+  const { rootState, rootGetters } = assetsActionContext(context);
 
   const evmNetwork = rootState.web3.networkSelected;
   const networkAssets = await evmBridgeApi.getRegisteredAssets(evmNetwork as EvmNetwork);
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
+    const soraAsset = rootGetters.wallet.account.assetsDataTable[soraAddress];
+
     return {
       [soraAddress]: {
         address: assetData.address,
+        symbol: soraAsset.symbol,
         decimals: assetData.decimals,
         kind: assetData.appKind,
       },
@@ -84,7 +94,7 @@ const getSubAssetIdAddress = (address: SubAssetId, network: SubNetwork): string 
 async function getSubRegisteredAssets(
   context: ActionContext<any, any>
 ): Promise<Record<string, BridgeRegisteredAsset>[]> {
-  const { rootState } = assetsActionContext(context);
+  const { rootState, rootGetters } = assetsActionContext(context);
 
   const subNetwork = rootState.web3.networkSelected;
 
@@ -93,9 +103,12 @@ async function getSubRegisteredAssets(
   const subNetworkId = subNetwork as SubNetwork;
   const networkAssets = await subBridgeApi.getRegisteredAssets(subNetworkId);
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
+    const soraAsset = rootGetters.wallet.account.assetsDataTable[soraAddress];
+
     return {
       [soraAddress]: {
         address: getSubAssetIdAddress(assetData.address, subNetworkId),
+        symbol: soraAsset.symbol,
         decimals: assetData.decimals,
         kind: assetData.assetKind,
       },
@@ -121,11 +134,11 @@ async function updateSubAssetsData(context: ActionContext<any, any>): Promise<vo
     Object.entries(registeredAssets).map(async ([soraAddress, assetData]) => {
       const asset = { ...assetData };
       const soraAsset = rootGetters.wallet.account.assetsDataTable[soraAddress];
+
       if (!asset.address && soraAsset) {
-        const multilocation = await subBridgeApi.soraParachainApi.getAssetMulilocation(soraAddress, soraParachain.api);
-        const id = await parachain.getAssetIdByMultilocation(soraAsset, multilocation);
-        asset.address = id;
+        asset.address = await parachain.getAssetId(soraAsset);
       }
+
       return [soraAddress, asset];
     })
   );
@@ -140,7 +153,7 @@ async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Re
 
   switch (rootState.web3.networkType) {
     case BridgeNetworkType.Eth: {
-      return await getEthRegisteredAssets();
+      return await getEthRegisteredAssets(context);
     }
     case BridgeNetworkType.Evm: {
       return await getEvmRegisteredAssets(context);
@@ -166,7 +179,7 @@ const actions = defineActions({
       const registeredAssets = list.reduce((buffer, asset) => ({ ...buffer, ...asset }), {});
 
       commit.setRegisteredAssets(registeredAssets);
-      // update assets data (for Eth bridge)
+
       await dispatch.updateRegisteredAssets();
     } catch (error) {
       console.error(error);

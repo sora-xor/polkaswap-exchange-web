@@ -103,34 +103,34 @@ export class SubNetworksConnector {
   protected getAdapter(network: SubNetwork) {
     if (subBridgeApi.isRelayChain(network)) {
       if (network === SubNetworkId.Alphanet) {
-        return new AlphanetRelaychainAdapter(network);
+        return new AlphanetRelaychainAdapter(network, this);
       }
-      return new RelaychainAdapter(network);
+      return new RelaychainAdapter(network, this);
     }
     if (subBridgeApi.isParachain(network)) {
       if (network === SubNetworkId.AlphanetMoonbase) {
-        return new MoonbaseParachainAdapter(network);
+        return new MoonbaseParachainAdapter(network, this);
       }
       if (network === SubNetworkId.PolkadotAcala) {
-        return new AcalaParachainAdapter(network);
+        return new AcalaParachainAdapter(network, this);
       }
       if ([SubNetworkId.PolkadotAstar, SubNetworkId.KusamaShiden].includes(network)) {
-        return new AstarParachainAdapter(network);
+        return new AstarParachainAdapter(network, this);
       }
       if (subBridgeApi.isSoraParachain(network)) {
-        return new SoraParachainAdapter(network);
+        return new SoraParachainAdapter(network, this);
       }
-      return new ParachainAdapter(network);
+      return new ParachainAdapter(network, this);
     }
     if (subBridgeApi.isStandalone(network)) {
       if (network === SubNetworkId.Liberland) {
-        return new LiberlandAdapter(network);
+        return new LiberlandAdapter(network, this);
       }
     }
 
     console.info(`[${this.constructor.name}] Adapter for "${network}" network not implemented, "SubAdapter" is used`);
 
-    return new SubAdapter(network);
+    return new SubAdapter(network, this);
   }
 
   public getAdapterForNetwork(network: SubNetwork) {
@@ -232,7 +232,7 @@ export class SubNetworksConnector {
         to: this.accountApi.address,
       };
 
-      const extrinsic = this.network.getTransferExtrinsic(asset, recipient, amount);
+      const extrinsic = await this.network.getTransferExtrinsic(asset, recipient, amount);
       // submit extrinsic using SORA api, because current implementation using "subHistory" from SORA api scope
       await subBridgeApi.submitApiExtrinsic(api, extrinsic as any, accountPair, signer, historyItem);
     }

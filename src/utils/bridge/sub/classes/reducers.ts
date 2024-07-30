@@ -28,7 +28,7 @@ import {
 
 import type { ApiRx } from '@polkadot/api';
 import type { IBridgeTransaction } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
 
@@ -37,7 +37,7 @@ type SubBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeReducerOptio
 };
 
 export class SubBridgeReducer extends BridgeReducer<SubHistory> {
-  protected asset!: RegisteredAccountAsset;
+  protected asset!: RegisteredAsset;
   protected getSubBridgeConnector!: () => SubNetworksConnector;
   protected connector!: SubNetworksConnector;
   protected transferType!: SubTransferType;
@@ -152,7 +152,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
   private async checkTxId(id: string): Promise<void> {
     const tx = this.getTransaction(id);
-    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
+    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAsset;
 
     this.asset = { ...asset };
 
@@ -464,7 +464,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
   private async checkTxId(id: string): Promise<void> {
     const tx = this.getTransaction(id);
-    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
+    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAsset;
 
     this.asset = { ...asset };
 

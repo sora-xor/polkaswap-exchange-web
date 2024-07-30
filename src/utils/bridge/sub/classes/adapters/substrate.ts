@@ -5,6 +5,7 @@ import { ApiPromise, WsProvider } from 'polkadotApi';
 
 import { ZeroStringValue } from '@/consts';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import { NodesConnection } from '@/utils/connection';
 
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
@@ -16,8 +17,9 @@ import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/type
 class BaseSubAdapter extends WithConnectionApi {
   public readonly subNetwork!: SubNetwork;
   public readonly subNetworkConnection!: NodesConnection;
+  public readonly connector!: SubNetworksConnector;
 
-  constructor(subNetwork: SubNetwork) {
+  constructor(subNetwork: SubNetwork, connector: SubNetworksConnector) {
     super();
 
     this.subNetwork = subNetwork;
@@ -26,6 +28,7 @@ class BaseSubAdapter extends WithConnectionApi {
       new Connection(ApiPromise as any, WsProvider as any, {}),
       this.subNetwork
     );
+    this.connector = connector;
 
     this.setConnection(this.subNetworkConnection.connection);
   }
@@ -112,7 +115,7 @@ class BaseSubAdapter extends WithConnectionApi {
   /* [Substrate 5] Runtime call transactionPaymentApi */
   public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
     return await this.withConnection(async () => {
-      const tx = this.getTransferExtrinsic(asset, recipient, ZeroStringValue);
+      const tx = await this.getTransferExtrinsic(asset, recipient, ZeroStringValue);
       const res = await (tx as any).paymentInfo(sender);
       return new FPNumber(res.partialFee, this.chainDecimals).toCodecString();
     }, ZeroStringValue);
@@ -132,7 +135,7 @@ class BaseSubAdapter extends WithConnectionApi {
     throw new Error(`[${this.constructor.name}] "getAssetDeposit" method is not implemented`);
   }
 
-  public getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: string | number) {
+  public async getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: string | number): Promise<any> {
     throw new Error(`[${this.constructor.name}] "getTransferExtrinsic" method is not implemented`);
   }
 

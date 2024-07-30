@@ -4,7 +4,7 @@ import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 
 import type { CodecString, WithConnectionApi } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 export const isOutgoingTx = (tx: SubHistory): boolean => {
@@ -180,7 +180,7 @@ export const isMessageDispatchedNonces = (sendedBatchNonce: number, sendedMessag
 
 export const isAssetAddedToChannel = (
   e: any,
-  asset: RegisteredAccountAsset,
+  asset: RegisteredAsset,
   to: string,
   sended: CodecString,
   chainApi: WithConnectionApi
@@ -202,7 +202,7 @@ export const isAssetAddedToChannel = (
 // Liberland
 export const isSoraBridgeAppBurned = (
   e: any,
-  asset: RegisteredAccountAsset,
+  asset: RegisteredAsset,
   from: string,
   to: string,
   sended: CodecString,

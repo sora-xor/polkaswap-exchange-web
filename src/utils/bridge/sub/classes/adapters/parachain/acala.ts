@@ -83,10 +83,11 @@ export class AcalaParachainAdapter extends ParachainAdapter<IAcalaCurrencyId> {
   }
 
   // overrides "ParachainAdapter"
-  public override async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
-    const v3Multilocation = multilocation;
+  public override async getAssetId(asset: Asset): Promise<string> {
+    if (!this.connector.soraParachain) return '';
 
-    const result = await (this.api.query.assetRegistry as any).locationToCurrencyIds(v3Multilocation);
+    const multilocation = await this.connector.soraParachain.getAssetMulilocation(asset.address);
+    const result = await (this.api.query.assetRegistry as any).locationToCurrencyIds(multilocation);
 
     let id!: Nullable<IAcalaCurrencyId>;
 
@@ -116,7 +117,7 @@ export class AcalaParachainAdapter extends ParachainAdapter<IAcalaCurrencyId> {
   }
 
   // overrides "SubAdapter"
-  public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+  public override async getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const assetMeta = this.getAssetMeta(asset);
 
     if (!assetMeta) throw new Error(`[${this.constructor.name}] asset metadata is empty`);

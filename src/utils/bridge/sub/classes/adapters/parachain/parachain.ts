@@ -41,10 +41,10 @@ export class ParachainAdapter<AssetId> extends SubAdapter {
   }
 
   /**
-   * Get asset external address by multilocation (for "registeredAsset.externalAddress" struct))
+   * Get asset external address (for "registeredAsset.externalAddress" struct))
    */
-  public async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
-    throw new Error(`[${this.constructor.name}] "getAssetIdByMultilocation" method is not implemented`);
+  public async getAssetId(asset: Asset): Promise<string> {
+    throw new Error(`[${this.constructor.name}] "getAssetId" method is not implemented`);
   }
 
   /**

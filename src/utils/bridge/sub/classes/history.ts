@@ -23,7 +23,7 @@ import {
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise } from '@polkadot/api';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { BridgeTransactionData } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { ActionContext } from 'vuex';
@@ -99,7 +99,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     address: string,
     assets: string[],
     inProgressIds: Record<string, boolean>,
-    assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>,
+    assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAsset>,
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     try {
@@ -142,7 +142,7 @@ class SubBridgeHistory extends SubNetworksConnector {
 
   private async txDataToHistory(
     tx: BridgeTransactionData,
-    assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>
+    assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAsset>
   ): Promise<Nullable<SubHistory>> {
     const id = tx.soraHash;
     try {
@@ -236,7 +236,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     events,
   }: {
     history: SubHistory;
-    asset: RegisteredAccountAsset;
+    asset: RegisteredAsset;
     events: any[];
   }): Promise<Nullable<SubHistory>> {
     // update SORA network fee
@@ -318,11 +318,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     return history;
   }
 
-  private async processOutgoingToSoraParachain(
-    history: SubHistory,
-    asset: RegisteredAccountAsset,
-    extrinsicEvents: any[]
-  ) {
+  private async processOutgoingToSoraParachain(history: SubHistory, asset: RegisteredAsset, extrinsicEvents: any[]) {
     const { soraParachain, soraParachainApi } = this;
 
     if (!(soraParachain && soraParachainApi)) throw new Error('SORA Parachain Api is not exists');
@@ -590,7 +586,7 @@ class SubBridgeHistory extends SubNetworksConnector {
 
   private async processOutgoingTxOnDestination(
     history: SubHistory,
-    asset: RegisteredAccountAsset,
+    asset: RegisteredAsset,
     messageHash: string,
     startSearch: number,
     endSearch: number

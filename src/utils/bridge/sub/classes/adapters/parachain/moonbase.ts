@@ -54,7 +54,10 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<string> {
   }
 
   // overrides "ParachainAdapter"
-  public override async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
+  public override async getAssetId(asset: Asset): Promise<string> {
+    if (!this.connector.soraParachain) return '';
+
+    const multilocation = await this.connector.soraParachain.getAssetMulilocation(asset.address);
     const assetType = {
       XCM: multilocation,
     };

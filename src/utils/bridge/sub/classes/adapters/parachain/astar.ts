@@ -15,7 +15,10 @@ export class AstarParachainAdapter extends ParachainAdapter<string> {
   }
 
   // overrides "ParachainAdapter"
-  public override async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
+  public override async getAssetId(asset: Asset): Promise<string> {
+    if (!this.connector.soraParachain) return '';
+
+    const multilocation = await this.connector.soraParachain.getAssetMulilocation(asset.address);
     const versionedMultilocation = {
       V3: multilocation,
     };
@@ -40,7 +43,7 @@ export class AstarParachainAdapter extends ParachainAdapter<string> {
     return await this.assetsAccountRequest(accountAddress, assetMeta.id);
   }
 
-  public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+  public override async getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     return asset.symbol === this.chainSymbol
       ? this.getNativeTransferExtrinsic(asset, recipient, amount)
       : this.getAssetTransferExtrinsic(asset, recipient, amount);

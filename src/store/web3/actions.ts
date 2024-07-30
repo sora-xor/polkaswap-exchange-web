@@ -167,8 +167,8 @@ const actions = defineActions({
     commit.setNetworkType(type);
     commit.setSelectedNetwork(id);
 
-    await Promise.allSettled([rootDispatch.assets.getRegisteredAssets(), connectNetworkType(context)]);
-
+    await connectNetworkType(context);
+    await rootDispatch.assets.getRegisteredAssets();
     await autoselectBridgeAsset(context);
   },
 
