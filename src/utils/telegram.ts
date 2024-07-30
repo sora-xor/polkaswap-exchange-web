@@ -39,7 +39,7 @@ class TmaSdk {
     try {
       // Check if the current platform is Telegram Mini App
       const WebApp = Telegram?.WebApp;
-      if (!WebApp?.initData) {
+      if (WebApp?.initData) {
         console.info('[TMA]: Not a Telegram Mini App, skipping initialization');
         return;
       }
@@ -96,24 +96,32 @@ class TmaSdk {
     useHaptic(type);
   }
 
-  private onTouchEnd(event: TouchEvent): void {
+  // private onTouchEnd(event: TouchEvent): void {
+  private onTouchEnd(event: Event): void {
+    console.info('Touch end event detected');
     const clickableSelectors = 'button, a, [data-clickable], .el-button, .clickable, [role="button"]';
-    const clickedElement = event.target as Nullable<HTMLElement>;
+    let clickedElement = event.target as Nullable<HTMLElement>;
+    console.info('Touch end event on element:', clickedElement);
 
-    // Check if the clicked element matches any of the clickable selectors
-    if (clickedElement?.matches(clickableSelectors)) {
-      // Trigger Telegram WebApp HapticFeedback
-      useHaptic('soft');
+    while (clickedElement) {
+      if (clickedElement.matches(clickableSelectors)) {
+        console.info('Element matches clickable selectors:', clickedElement);
+        useHaptic('soft');
+        return;
+      }
+      clickedElement = clickedElement.parentElement as Nullable<HTMLElement>;
     }
+
+    console.info('Element does not match any clickable selector.');
   }
 
   private addHapticListener(): void {
     console.info('[TMA]: Haptic listener was added');
-    document.addEventListener('touchend', this.onTouchEnd);
+    document.addEventListener('click', this.onTouchEnd);
   }
 
   private removeHapticListener(): void {
-    document.removeEventListener('touchend', this.onTouchEnd);
+    document.removeEventListener('click', this.onTouchEnd);
   }
 
   private setReferrer(referrerAddress?: string): void {
