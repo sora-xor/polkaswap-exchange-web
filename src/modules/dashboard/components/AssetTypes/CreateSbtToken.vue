@@ -8,7 +8,7 @@
           class="select-currency__search"
           autofocus
           :placeholder="t('addAsset.searchInputText')"
-          @clear="query = ''"
+          @clear="handleClearSearch"
         />
         <div class="dashboard-create-regulated-asset">
           <s-button
@@ -22,10 +22,10 @@
         </div>
         <div v-if="ownerAssetsList?.length" class="dashboard-regulated-assets">
           <div class="delimiter">{{ 'OR SELECT EXISTING' }}</div>
-          <div v-if="ownerAssetsList?.length">
+          <div v-if="filteredRegulatedAssets?.length">
             <s-scrollbar class="dashboard-regulated-assets__scrollbar">
               <div class="assets-list">
-                <div v-for="(asset, index) in ownerAssetsList" :key="index" class="assets-list__item">
+                <div v-for="(asset, index) in filteredRegulatedAssets" :key="index" class="assets-list__item">
                   <el-checkbox-group v-model="checkList">
                     <el-checkbox :label="asset.address">
                       <asset-list-item :asset="asset">
@@ -33,13 +33,14 @@
                           <span class="label">Regulated</span>
                         </template>
                       </asset-list-item>
-                      <s-divider v-if="index < ownerAssetsList.length - 1" />
+                      <s-divider v-if="index < filteredRegulatedAssets.length - 1" />
                     </el-checkbox>
                   </el-checkbox-group>
                 </div>
               </div>
             </s-scrollbar>
           </div>
+          <div v-else class="dashboard-regulated-assets--not-found">{{ t('addAsset.empty') }}</div>
         </div>
       </div>
       <div v-else-if="step === Step.SbtMetaDescription">
@@ -247,6 +248,23 @@ export default class CreateSbtToken extends Mixins(
     this.selectedAssetsIds = list;
   }
 
+  get filteredRegulatedAssets() {
+    const ownerAssetsList = this.ownerAssetsList;
+
+    if (this.query) {
+      const query = this.query.toLowerCase().trim();
+
+      return ownerAssetsList.filter(
+        (item) =>
+          item.name.toLowerCase().includes(query) ||
+          item.symbol.toLowerCase().includes(query) ||
+          item.address.toLowerCase().includes(query)
+      );
+    }
+
+    return ownerAssetsList;
+  }
+
   get fee(): FPNumber {
     return this.getFPNumberFromCodec(this.networkFees.RegisterAsset);
   }
@@ -277,6 +295,10 @@ export default class CreateSbtToken extends Mixins(
     }
 
     return false;
+  }
+
+  handleClearSearch(): void {
+    this.query = '';
   }
 
   isValidType(type: string): boolean {
@@ -482,6 +504,11 @@ export default class CreateSbtToken extends Mixins(
           }
         }
       }
+    }
+
+    &--not-found {
+      text-align: center;
+      color: var(--s-color-base-content-secondary);
     }
 
     &__scrollbar {
