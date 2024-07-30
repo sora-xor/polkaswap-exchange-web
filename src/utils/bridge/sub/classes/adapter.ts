@@ -8,6 +8,7 @@ import { SubTransferType } from '@/utils/bridge/sub/types';
 import { determineTransferType } from '@/utils/bridge/sub/utils';
 
 import { AcalaParachainAdapter } from './adapters/parachain/acala';
+import { AssethubParachainAdapter } from './adapters/parachain/assethub';
 import { AstarParachainAdapter } from './adapters/parachain/astar';
 import { MoonbaseParachainAdapter } from './adapters/parachain/moonbase';
 import { ParachainAdapter } from './adapters/parachain/parachain';
@@ -116,6 +117,9 @@ export class SubNetworksConnector {
       }
       if ([SubNetworkId.PolkadotAstar, SubNetworkId.KusamaShiden].includes(network)) {
         return new AstarParachainAdapter(network, this);
+      }
+      if ([SubNetworkId.PolkadotAssetHub, SubNetworkId.KusamaAssetHub].includes(network)) {
+        return new AssethubParachainAdapter(network, this);
       }
       if (subBridgeApi.isSoraParachain(network)) {
         return new SoraParachainAdapter(network, this);
