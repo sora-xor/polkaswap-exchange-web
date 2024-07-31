@@ -217,6 +217,7 @@ export default class CreateSbtToken extends Mixins(
   @state.dashboard.ownedAssetIds ownedAssetIds!: any;
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
+
   @action.dashboard.requestOwnedAssetIds private requestOwnedAssetIds!: AsyncFnWithoutArgs;
   @action.dashboard.subscribeOnOwnedAssets private subscribeOnOwnedAssets!: AsyncFnWithoutArgs;
 
@@ -248,6 +249,7 @@ export default class CreateSbtToken extends Mixins(
   ownerAssetsList: any = [];
   selectedAssetsIds = [];
   scrollbarComponentKey = 0;
+  requlatedAssetsInterval: Nullable<ReturnType<typeof setInterval>> = null;
 
   get checkList(): any {
     return this.selectedAssetsIds;
@@ -479,9 +481,14 @@ export default class CreateSbtToken extends Mixins(
     this.$emit('go-to-create');
   }
 
-  async created(): Promise<void> {
+  resetInterval(): void {
+    // @ts-expect-error error interval
+    clearInterval(this.requlatedAssetsInterval);
+  }
+
+  async requestRegulatedAssets(): Promise<void> {
     const ownRegulatedAssetsIds = [] as any;
-    this.requestOwnedAssetIds();
+    await this.requestOwnedAssetIds();
 
     // TODO: move to lib, migrate to assetInfosV2
     const assetInfos = this.ownedAssetIds.map(async (address) => {
@@ -490,13 +497,32 @@ export default class CreateSbtToken extends Mixins(
     });
 
     for await (const [address, assetInfo] of assetInfos) {
-      const { assetType } = (assetInfo as any).toHuman();
+      const { assetType, symbol, name } = (assetInfo as any).toHuman();
+
       if (assetType === 'Regulated') {
-        ownRegulatedAssetsIds.push(address);
+        ownRegulatedAssetsIds.push({ symbol, address, name });
       }
     }
 
-    this.ownerAssetsList = ownRegulatedAssetsIds.map((address) => this.getAsset(address)) as any;
+    this.ownerAssetsList = ownRegulatedAssetsIds;
+  }
+
+  async created(): Promise<void> {
+    this.requestRegulatedAssets();
+
+    const requlatedAssetsInterval = setInterval(() => {
+      this.requestRegulatedAssets();
+    }, 6_000); // block creation
+  }
+
+  updated(): void {
+    if (this.step !== Step.AssetsChoice) {
+      this.resetInterval();
+    }
+  }
+
+  beforeDestroy(): void {
+    this.resetInterval();
   }
 }
 </script>
