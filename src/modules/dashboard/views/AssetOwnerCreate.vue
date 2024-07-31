@@ -6,6 +6,7 @@
         v-if="type === AssetType.CreateRegularToken"
         :is-regulated="isRegulated"
         @go-back="showStart"
+        @go-to-create="openSbtCreation"
       />
       <create-nft-token v-else-if="type === AssetType.CreateNftToken" @go-back="showStart" />
       <create-sbt-token
@@ -59,6 +60,10 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
   openRegulatedCreation(): void {
     this.isRegulated = true;
     this.type = AssetType.CreateRegularToken;
+  }
+
+  openSbtCreation(): void {
+    this.type = AssetType.CreateSbtToken;
   }
 }
 </script>

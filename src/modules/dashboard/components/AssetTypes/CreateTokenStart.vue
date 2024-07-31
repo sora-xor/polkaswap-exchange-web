@@ -2,7 +2,13 @@
   <wallet-base :title="t('createToken.titleCommon')" @back="handleBack" show-back>
     <div class="create-token">
       <s-tabs class="token__tab" type="rounded" :value="type" @input="handleChangeTab">
-        <s-tab v-for="tab in AssetType" :key="tab" :label="getTabName(tab)" :name="tab" />
+        <s-tab
+          v-for="tab in AssetType"
+          :key="tab"
+          :name="tab"
+          :label="getTabName(tab)"
+          :disabled="isTabDisabled(tab)"
+        />
       </s-tabs>
       <guide-regular v-if="type === AssetType.CreateRegularToken" />
       <guide-nft v-else-if="type === AssetType.CreateNftToken" />
@@ -47,6 +53,10 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
   readonly AssetType = AssetType;
   type = AssetType.CreateRegularToken;
 
+  isTabDisabled(tab): boolean {
+    return tab === AssetType.CreateNftToken;
+  }
+
   handleBack(): void {
     router.push({ name: DashboardPageNames.AssetOwner });
   }
@@ -84,6 +94,16 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
   &__btn-start {
     width: 100%;
     font-size: 18px;
+  }
+
+  // TODO: remove
+  // disable NFT tab while it's not working
+  .el-tabs__item.is-top.is-disabled {
+    color: var(--s-color-base-content-tertiary) !important;
+
+    &:hover {
+      cursor: not-allowed;
+    }
   }
 }
 </style>

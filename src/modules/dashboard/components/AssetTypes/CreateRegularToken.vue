@@ -63,7 +63,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { ZeroStringValue } from '@/consts';
 import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
 import router, { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import { getter, state, action } from '@/store/decorators';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -97,6 +97,7 @@ export default class CreateRegularToken extends Mixins(
 
   // @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
+  @action.dashboard.subscribeOnOwnedAssets private subscribeOnOwnedAssets!: AsyncFnWithoutArgs;
 
   currentTab = WALLET_CONSTS.TokenTabs.Token;
 
@@ -153,14 +154,18 @@ export default class CreateRegularToken extends Mixins(
 
   async registerAsset(): Promise<void> {
     if (this.isRegulated) {
-      return api.extendedAssets.registerRegulatedAsset(
+      await api.extendedAssets.registerRegulatedAsset(
         this.tokenSymbol,
         this.tokenName.trim(),
         this.tokenSupply,
         this.extensibleSupply
       );
+
+      this.$emit('go-to-create');
+      return;
     }
-    return api.assets.register(this.tokenSymbol, this.tokenName.trim(), this.tokenSupply, this.extensibleSupply);
+    await api.assets.register(this.tokenSymbol, this.tokenName.trim(), this.tokenSupply, this.extensibleSupply);
+    router.push({ name: DashboardPageNames.AssetOwner });
   }
 
   async onCreate(): Promise<void> {
@@ -181,7 +186,6 @@ export default class CreateRegularToken extends Mixins(
         throw new Error('walletSend.badAmount');
       }
       await this.registerAsset();
-      router.push({ name: DashboardPageNames.AssetOwner });
     });
   }
 

@@ -78,7 +78,7 @@
           :placeholder="t('createToken.nft.link.placeholder')"
           :minlength="1"
           :maxlength="200"
-          :disabled="loading"
+          :disabled="true"
           v-model="tokenContentLink"
           @input="handleInputLinkChange"
         >
@@ -129,13 +129,11 @@
       <div v-else-if="step === Step.SbtTxSign">
         <div class="dashboard-create-sbt-preview">
           <div class="preview-image">
-            <img
-              :src="'https://ipfs.io/ipfs/bafybeie5zkz3dvhajdipbj6ldq4az4qn5jkgqrn5otsvkprtx6qufcn7oe/OFFICIAL%20DEO%20ARENA%20BOOST%20NFT%20final%20version%20.png'"
-            />
+            <img :src="''" alt="SBT" />
           </div>
           <div class="meta">
-            <span class="symbol">SBT</span>
-            <span class="name">SBTname</span>
+            <span class="symbol">{{ tokenSymbol }}</span>
+            <span class="name">{{ tokenName }}</span>
           </div>
         </div>
         <div class="dashboard-regulated-assets-attached">
@@ -172,7 +170,7 @@
         :disabled="disabledBtn"
         @click="handleCreate"
       >
-        Continue
+        {{ step === Step.SbtTxSign ? 'Create SBT' : 'Continue' }}
       </s-button>
       <wallet-fee v-if="step === Step.SbtTxSign" :value="fee" />
     </div>
@@ -181,11 +179,14 @@
 
 <script lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
 import intersection from 'lodash/fp/intersection';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
+import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
+import router from '@/router';
 import { action, getter, state } from '@/store/decorators';
 import { IMAGE_MIME_TYPES } from '@/types/image';
 import { IpfsStorage } from '@/utils/ipfsStorage';
@@ -217,6 +218,7 @@ export default class CreateSbtToken extends Mixins(
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
   @action.dashboard.requestOwnedAssetIds private requestOwnedAssetIds!: AsyncFnWithoutArgs;
+  @action.dashboard.subscribeOnOwnedAssets private subscribeOnOwnedAssets!: AsyncFnWithoutArgs;
 
   @Ref('fileInput') readonly fileInput!: HTMLInputElement;
   @Ref('uploader') readonly uploader!: HTMLFormElement;
@@ -299,7 +301,7 @@ export default class CreateSbtToken extends Mixins(
     }
 
     if (this.step === Step.SbtMetaImage) {
-      //
+      if (!this.ownerExternalUrl) return true;
     }
 
     if (this.step === Step.SbtTxSign) {
@@ -307,6 +309,15 @@ export default class CreateSbtToken extends Mixins(
     }
 
     return false;
+  }
+
+  get hasEnoughXor(): boolean {
+    const accountXor = api.assets.accountAssets.find((asset) => asset.address === XOR.address);
+    if (!accountXor || !accountXor.balance || !+accountXor.balance.transferable) {
+      return false;
+    }
+    const fpAccountXor = this.getFPNumberFromCodec(accountXor.balance.transferable, accountXor.decimals);
+    return FPNumber.gte(fpAccountXor, this.fee);
   }
 
   handleClearSearch(): void {
@@ -393,7 +404,7 @@ export default class CreateSbtToken extends Mixins(
     this.fileExceedsLimit = false;
   }
 
-  handleCreate(): void {
+  async handleCreate(): Promise<void> {
     if (this.step === Step.AssetsChoice) {
       if (this.selectedAssetsIds.length) {
         this.step = Step.SbtMetaDescription;
@@ -409,9 +420,34 @@ export default class CreateSbtToken extends Mixins(
     }
 
     // TODO: improve condition
-    if (this.tokenContentLink && this.step === Step.SbtMetaImage) {
-      this.step = Step.SbtTxSign;
+    if (this.step === Step.SbtMetaImage) {
+      if (this.ownerExternalUrl) {
+        this.step = Step.SbtTxSign;
+        return;
+      }
     }
+
+    if (this.step === Step.SbtTxSign) {
+      if (this.selectedRegulatedAssets.length) {
+        await this.withNotifications(async () => {
+          if (!this.hasEnoughXor) {
+            throw new Error('walletSend.badAmount');
+          }
+          await this.createSbt();
+          router.push({ name: DashboardPageNames.AssetOwner });
+        });
+      }
+    }
+  }
+
+  async createSbt(): Promise<void> {
+    return api.extendedAssets.issueSbt(
+      this.tokenSymbol,
+      this.tokenName.trim(),
+      this.tokenDescription,
+      '', // missing image
+      this.ownerExternalUrl
+    );
   }
 
   removeAsset(asset: AccountAsset): void {
@@ -625,6 +661,13 @@ export default class CreateSbtToken extends Mixins(
 
   .el-divider {
     margin: 0;
+  }
+
+  // TODO: remove when IPFS uploads allowed
+  .drop-zone.preview-image-create-nft {
+    &:hover {
+      cursor: no-drop;
+    }
   }
 }
 </style>
