@@ -125,10 +125,6 @@ export default class CreateRegularToken extends Mixins(
     return this.getFPNumberFromCodec(this.networkFee);
   }
 
-  get networkFeeFormatted(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
-
   get isInsufficientXorForFee(): boolean {
     return this.xorBalance.sub(this.fpNetworkFee).isLtZero();
   }

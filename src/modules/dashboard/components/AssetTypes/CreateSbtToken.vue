@@ -282,7 +282,7 @@ export default class CreateSbtToken extends Mixins(
   }
 
   get fee(): FPNumber {
-    return this.getFPNumberFromCodec(this.networkFees.RegisterAsset);
+    return this.getFPNumberFromCodec(this.networkFees.IssueSoulBoundToken);
   }
 
   get showFee(): boolean {
