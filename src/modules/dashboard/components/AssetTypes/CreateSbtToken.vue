@@ -129,7 +129,7 @@
       <div v-else-if="step === Step.SbtTxSign">
         <div class="dashboard-create-sbt-preview">
           <div class="preview-image">
-            <img :src="''" alt="SBT" />
+            <img :src="''" :alt="'SBT'" />
           </div>
           <div class="meta">
             <span class="symbol">{{ tokenSymbol }}</span>
@@ -607,6 +607,7 @@ export default class CreateSbtToken extends Mixins(
     border-radius: 16px;
 
     .preview-image {
+      position: relative;
       width: 64px;
       height: 64px;
       border-radius: 8px;
@@ -618,6 +619,21 @@ export default class CreateSbtToken extends Mixins(
 
       img {
         width: 64px;
+      }
+
+      &::before {
+        content: 'SBT';
+        border-radius: 8px;
+        font-size: 18px;
+        padding-top: 20px;
+        color: white;
+        background-color: var(--s-color-base-content-tertiary);
+        bottom: 0;
+        text-align: center;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
       }
     }
 
