@@ -37,7 +37,8 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { BreakpointClass, Components, PageNames } from '@/consts';
+import { Components, PageNames } from '@/consts';
+import { BreakpointClass } from '@/consts/layout';
 import { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 

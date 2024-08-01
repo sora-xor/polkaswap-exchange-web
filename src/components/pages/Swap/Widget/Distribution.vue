@@ -1,5 +1,5 @@
 <template>
-  <base-widget :title="t('swap.route')">
+  <base-widget v-bind="$attrs" :title="t('swap.route')">
     <s-skeleton :loading="!swapPaths.length">
       <template #template>
         <div class="distribution">
