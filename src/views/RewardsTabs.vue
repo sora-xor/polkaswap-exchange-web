@@ -1,6 +1,6 @@
 <template>
   <div class="container rewards-tabs">
-    <s-tabs v-button :key="windowWidth" :value="currentTab" type="card" @input="handleChangeTab">
+    <s-tabs :key="windowWidth" :value="currentTab" type="card" @input="handleChangeTab">
       <s-tab
         v-for="rewardsTab in RewardsTabsItems"
         :key="rewardsTab"
