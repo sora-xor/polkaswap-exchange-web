@@ -14,6 +14,9 @@ export type HapticFeedbackBinding = 'light' | 'medium' | 'heavy' | 'rigid' | 'so
 
 const HapticNotificationTypes: string[] = Object.values(HapticStatusValue);
 
+const HapticButtonSelector =
+  'button, a, [role="button"], [role="tab"], [role="radio"], [role="switch"], .el-button, .el-dropdown-menu__item, .clickable';
+
 function isNotification(value: HapticFeedbackBinding): value is HapticFeedbackStatus {
   return HapticNotificationTypes.includes(value);
 }
@@ -97,11 +100,10 @@ class TmaSdk {
   }
 
   private onTouchEnd(event: TouchEvent): void {
-    const clickableSelectors = 'button, a, [data-clickable], .el-button, .clickable, [role="button"]';
     let clickedElement = event.target as Nullable<HTMLElement>;
 
     while (clickedElement) {
-      if (clickedElement.matches(clickableSelectors)) {
+      if (clickedElement.matches(HapticButtonSelector)) {
         useHaptic('soft');
         return;
       }
