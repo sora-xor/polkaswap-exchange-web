@@ -11,9 +11,10 @@
     <s-scrollbar class="select-country__scrollbar">
       <div class="select-country__list">
         <div
-          class="p1 select-country__item s-flex"
+          v-button
           v-for="item in filteredCountries"
           :key="item.key"
+          class="p1 select-country__item s-flex"
           @click="selectCountry(item)"
         >
           <span class="flags flag-emodji">{{ item.flag }}</span>

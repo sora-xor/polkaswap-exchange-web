@@ -58,7 +58,7 @@
           {{ t('confirmText') }}
         </template>
       </s-button>
-      <div v-if="pendingRewards" class="check-pending-rewards" @click="checkPendingRewards">
+      <div v-if="pendingRewards" v-button class="check-pending-rewards" @click="checkPendingRewards">
         {{ t('soraStaking.claimRewardsDialog.checkRewards') }} ({{ pendingRewards.length ?? 0 }})
       </div>
     </div>

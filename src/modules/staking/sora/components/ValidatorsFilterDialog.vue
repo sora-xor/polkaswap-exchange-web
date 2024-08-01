@@ -20,7 +20,7 @@
       <s-button class="save-button" type="primary" @click="save">
         {{ t('soraStaking.validatorsFilterDialog.save') }}
       </s-button>
-      <div class="reset-all" @click="resetAll">
+      <div v-button class="reset-all" @click="resetAll">
         {{ t('soraStaking.validatorsFilterDialog.reset') }}
       </div>
     </div>
