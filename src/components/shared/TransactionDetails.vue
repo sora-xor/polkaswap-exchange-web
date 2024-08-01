@@ -2,16 +2,22 @@
   <div v-if="infoOnly">
     <slot />
   </div>
-  <div v-else class="transaction-details-wrapper">
-    <s-collapse>
-      <s-collapse-item>
-        <template #title>
-          <span>{{ t('transactionDetailsText') }}</span>
-        </template>
-        <slot></slot>
-      </s-collapse-item>
-    </s-collapse>
-  </div>
+  <el-popover
+    v-else
+    v-model="visible"
+    :visible-arrow="false"
+    placement="bottom"
+    popper-class="transaction-details-popper"
+    trigger="click"
+  >
+    <template #reference>
+      <div :class="['transaction-details', { visible }]" v-button>
+        <span>{{ t('transactionDetailsText') }}</span>
+        <s-icon :name="icon" size="16px" class="transaction-details-icon" />
+      </div>
+    </template>
+    <slot />
+  </el-popover>
 </template>
 
 <script lang="ts">
@@ -22,62 +28,49 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 @Component
 export default class TransactionDetails extends Mixins(TranslationMixin) {
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
+
+  visible = false;
+
+  get icon(): string {
+    return this.visible ? 'arrows-chevron-top-24' : 'arrows-chevron-bottom-24';
+  }
 }
 </script>
 
 <style lang="scss">
-.transaction-details-wrapper {
-  .el-collapse-item__header {
-    display: flex;
-    text-transform: uppercase;
-    font-weight: 400;
+.transaction-details-popper.el-popover.el-popper {
+  @include popper-content;
+  min-width: 420px;
+}
+</style>
+
+<style lang="scss" scoped>
+.transaction-details {
+  cursor: pointer;
+  display: flex;
+  gap: $inner-spacing-tiny;
+  margin-top: $inner-spacing-medium;
+
+  font-size: var(--s-font-size-extra-small);
+  font-weight: 400;
+  text-transform: uppercase;
+
+  &.visible {
+    color: var(--s-color-theme-accent);
   }
 
-  .el-collapse-item__content {
-    padding-bottom: 0;
-  }
+  &:hover,
+  &:focus {
+    outline: none;
+    color: var(--s-color-theme-accent-hover);
 
-  .el-collapse-item__wrap {
-    margin-top: $inner-spacing-medium;
-  }
-
-  .el-collapse.neumorphic .el-icon-arrow-right {
-    all: initial;
-    * {
-      all: unset;
-    }
-
-    transition: transform 0.3s;
-    color: var(--s-color-base-content-tertiary);
-    margin-left: 7px;
-    height: 16px;
-    line-height: 1;
-    width: 13px;
-    position: relative;
-  }
-
-  .el-collapse-item__header {
-    display: inline-flex;
-    line-height: 13px;
-    height: 14px;
-    font-size: var(--s-font-size-extra-small);
-
-    .el-icon-arrow-right {
-      position: relative;
-
-      &:hover {
-        cursor: pointer;
-      }
+    .transaction-details-icon {
+      color: var(--s-color-base-content-secondary);
     }
   }
 
-  .el-collapse-item > div:first-child {
-    display: flex;
-    justify-content: center;
-  }
-
-  .info-line .el-tooltip {
-    margin-bottom: 4px !important;
+  &-icon {
+    @include icon-styles;
   }
 }
 </style>
