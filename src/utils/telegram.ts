@@ -100,23 +100,12 @@ class TmaSdk {
     const clickableSelectors = 'button, a, [data-clickable], .el-button, .clickable, [role="button"]';
     let clickedElement = event.target as Nullable<HTMLElement>;
 
-    // Need this flat to prevent multiple haptic trigger
-    let hapticTriggered = false;
-
     while (clickedElement) {
       if (clickedElement.matches(clickableSelectors)) {
-        if (!hapticTriggered) {
-          console.info('Element matches clickable selectors:', clickedElement);
-          useHaptic('soft');
-          hapticTriggered = true;
-        }
+        useHaptic('soft');
         return;
       }
       clickedElement = clickedElement.parentElement as Nullable<HTMLElement>;
-    }
-
-    if (!hapticTriggered) {
-      console.info('Element does not match any clickable selector.', clickedElement);
     }
   }
 
