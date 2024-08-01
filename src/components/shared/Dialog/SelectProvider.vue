@@ -27,7 +27,7 @@ import type { WalletInfo } from '@sora-test/wallet-connect/types';
   },
 })
 export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
-  @state.wallet.account.isDesktop isDesktop!: boolean;
+  @state.wallet.account.isDesktop private isDesktop!: boolean;
   @state.web3.selectProviderDialogVisibility private selectProviderDialogVisibility!: boolean;
 
   get visibility(): boolean {
