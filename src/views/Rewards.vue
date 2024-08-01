@@ -62,11 +62,7 @@
                         {{ t('changeAccountText') }}
                       </span>
                       <span v-else>{{ t('connectedText') }}</span>
-                      <span
-                        v-if="changeWalletEvm"
-                        class="rewards-account-btn disconnect"
-                        @click="resetEvmProviderConnection"
-                      >
+                      <span v-if="changeWalletEvm" class="rewards-account-btn disconnect" @click="disconnectEvmWallet">
                         {{ t('disconnectWalletText') }}
                       </span>
                     </div>
