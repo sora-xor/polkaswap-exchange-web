@@ -2,13 +2,13 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { EthereumProvider as WalletConnectEthereumProvider } from '@walletconnect/ethereum-provider';
 import { ethers } from 'ethers';
 
 import { ZeroStringValue } from '@/consts';
 import { SmartContracts, SmartContractType } from '@/consts/evm';
 import type { NetworkData } from '@/types/bridge';
 import { settingsStorage } from '@/utils/storage';
+import { getWcEthereumProvider } from '@/utils/walletconnect';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
@@ -26,8 +26,6 @@ export enum Provider {
   TrustWallet = 'TrustWallet',
   WalletConnect = 'WalletConnect',
 }
-
-const WALLET_CONNECT_PROJECT_ID = 'feeab08b50e0d407f4eb875d69e162e8';
 
 export enum PROVIDER_ERROR {
   // 1013: Disconnected from chain. Attempting to connect
@@ -79,22 +77,8 @@ async function connectEvmProvider(provider: Provider, chains: ChainsProps): Prom
   }
 }
 
-function clearWalletConnectSession(): void {
-  // clear walletconnect localstorage
-  for (const key in localStorage) {
-    if (key.startsWith('wc@2')) {
-      localStorage.removeItem(key);
-    }
-  }
-  localStorage.removeItem('WCM_VERSION');
-}
-
 function disconnectEvmProvider(provider?: Nullable<Provider>): void {
   ethereumProvider?.disconnect?.();
-
-  if (provider === Provider.WalletConnect) {
-    clearWalletConnectSession();
-  }
 }
 
 function createWeb3Instance(provider: any) {
@@ -134,31 +118,11 @@ async function useExtensionProvider(provider: Provider): Promise<string> {
   return await getAccount();
 }
 
-const checkWalletConnectAvailability = async (chainProps: ChainsProps): Promise<void> => {
-  try {
-    const chainIdCheck = chainProps.chains?.[0] ?? 1;
-    const url = `https://rpc.walletconnect.com/v1/?chainId=eip155:${chainIdCheck}&projectId=${WALLET_CONNECT_PROJECT_ID}`;
-
-    await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify({ id: 1, jsonrpc: '2.0', method: 'test', params: [] }),
-    });
-  } catch {
-    throw new Error('provider.messages.notAvailable');
-  }
-};
-
 async function useWalletConnectProvider(chainProps: ChainsProps): Promise<string> {
   try {
-    await checkWalletConnectAvailability(chainProps);
+    const ethereumProvider = await getWcEthereumProvider(chainProps);
 
-    const ethereumProvider = await WalletConnectEthereumProvider.init({
-      projectId: WALLET_CONNECT_PROJECT_ID,
-      showQrModal: true,
-      ...chainProps,
-    });
-    // show qr modal
-    await ethereumProvider.enable();
+    await ethereumProvider.connect();
 
     createWeb3Instance(ethereumProvider);
 

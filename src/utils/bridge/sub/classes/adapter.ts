@@ -39,12 +39,7 @@ export class SubNetworksConnector {
   public static nodes: Partial<Record<SubNetwork, Node[]>> = {};
 
   constructor() {
-    // It is necessary to remove Vue reactivity from instance of "WithKeyring" class.
-    // In this case, Vue does not mark all instance properties with getters and setters
-    Object.defineProperty(this, 'accountApi', {
-      configurable: false,
-      value: new WithKeyring(),
-    });
+    this.accountApi = new WithKeyring();
   }
 
   get uniqueAdapters(): SubAdapter[] {
