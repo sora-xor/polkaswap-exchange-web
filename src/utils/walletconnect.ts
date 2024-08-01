@@ -71,7 +71,7 @@ export class WcEthereumProvider extends EthereumProvider {
 
   public override async connect(opts?: ConnectOps): Promise<void> {
     // eslint-disable-next-line
-    await new Promise<void>(async(resolve, reject) => {
+    await new Promise<void>(async (resolve, reject) => {
       const unsub = this.modal?.subscribeModal((state: { open: boolean }) => {
         // This is the fix of modal close handler to check only ethereum session
         if (

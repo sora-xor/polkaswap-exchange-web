@@ -49,6 +49,8 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @state.bridge.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
   @mutation.bridge.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
 
+  trackLogin = false; // overrides SubscriptionsMixin property
+
   get chainApi() {
     return this.subBridgeConnector.accountApi;
   }
@@ -67,7 +69,6 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   }
 
   async created(): Promise<void> {
-    this.trackLogin = false;
     this.setStartSubscriptions([this.subscribeOnBlockUpdates, this.updateOutgoingMaxLimit, this.updateBridgeApps]);
     this.setResetSubscriptions([this.resetBlockUpdatesSubscription, this.resetOutgoingMaxLimitSubscription]);
   }
