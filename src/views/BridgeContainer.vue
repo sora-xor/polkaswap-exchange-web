@@ -49,6 +49,8 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @state.bridge.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
   @mutation.bridge.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
 
+  trackLogin = false; // overrides SubscriptionsMixin property
+
   get chainApi() {
     return this.subBridgeConnector.accountApi;
   }
@@ -60,6 +62,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     }
   }
 
+  @Watch('soraAddress')
   @Watch('externalAccount')
   private onExternalAccountChange(): void {
     this.updateExternalBalance();

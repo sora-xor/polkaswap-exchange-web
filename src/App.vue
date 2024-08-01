@@ -66,14 +66,8 @@ import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import {
-  PageNames,
-  Components,
-  Language,
-  BreakpointClass,
-  WalletPermissions,
-  LOCAL_STORAGE_LIMIT_PERCENTAGE,
-} from '@/consts';
+import { PageNames, Components, Language, WalletPermissions, LOCAL_STORAGE_LIMIT_PERCENTAGE } from '@/consts';
+import { BreakpointClass } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -122,9 +116,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.appConnection private appConnection!: NodesConnection;
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
+  @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
+  @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
-  @state.referrals.storageReferrer storageReferrer!: string;
-  @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.router.loading pageLoading!: boolean;
 
