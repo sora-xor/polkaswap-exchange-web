@@ -2,6 +2,7 @@
   <grid-layout
     ref="grid"
     class="widgets-grid"
+    responsive
     :layout="layout"
     :responsive-layouts="layouts"
     :cols="cols"
@@ -10,7 +11,6 @@
     :is-draggable="draggable"
     :is-resizable="resizable"
     :margin="[margin, margin]"
-    :responsive="true"
     :prevent-collision="false"
     :vertical-compact="compact"
     :use-css-transforms="false"
@@ -147,7 +147,7 @@ export default class WidgetsGrid extends Vue {
     return this.layouts[this.breakpoint];
   }
 
-  get gridLinesStyle(): Partial<CSSStyleDeclaration> {
+  get gridLinesStyle() {
     const r = this.rowHeight;
     const m = this.margin / 2;
     const c = this.cols[this.breakpoint];
