@@ -179,8 +179,8 @@
             v-if="isLowerThanMinAmount || isGreaterThanMaxAmount"
             class="bridge-limit-card"
             :max="isGreaterThanMaxAmount"
-            :amount="(isGreaterThanMaxAmount ? transferMaxAmount : transferMinAmount).toLocaleString()"
-            :symbol="asset.symbol"
+            :amount="limitCardAmount"
+            :symbol="assetSymbol"
           />
 
           <bridge-transaction-details
@@ -349,6 +349,10 @@ export default class Bridge extends Mixins(
 
   get isExternalNetworkLoading(): boolean {
     return this.isSubBridge ? !this.subConnection?.nodeIsConnected : !!this.evmProviderLoading;
+  }
+
+  get limitCardAmount(): string {
+    return (this.isGreaterThanMaxAmount ? this.transferMaxAmount : this.transferMinAmount)?.toLocaleString() ?? '';
   }
 
   confirmExternalNetworkFeeWarningDialog(): void {

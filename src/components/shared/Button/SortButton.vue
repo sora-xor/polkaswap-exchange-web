@@ -1,5 +1,5 @@
 <template>
-  <div @click="onClick" class="sort-button">
+  <div v-button class="sort-button" @click="onClick">
     <slot />
     <s-icon name="arrows-chevron-top-rounded-24" :class="computedClasses" />
   </div>

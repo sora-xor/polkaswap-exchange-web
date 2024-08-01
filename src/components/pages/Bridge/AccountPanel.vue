@@ -14,10 +14,10 @@
     </div>
 
     <div class="account-group">
-      <span class="account-group-btn" @click="handleConnect">
+      <span v-button class="account-group-btn" @click="handleConnect">
         {{ t('changeAccountText') }}
       </span>
-      <span class="account-group-btn disconnect" @click="handleDisconnect">
+      <span v-button class="account-group-btn disconnect" @click="handleDisconnect">
         {{ t('disconnectWalletText') }}
       </span>
     </div>

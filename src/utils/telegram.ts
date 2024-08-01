@@ -14,6 +14,9 @@ export type HapticFeedbackBinding = 'light' | 'medium' | 'heavy' | 'rigid' | 'so
 
 const HapticNotificationTypes: string[] = Object.values(HapticStatusValue);
 
+const HapticButtonSelector =
+  'button, a, [role="button"], [role="tab"], [role="radio"], [role="switch"], .el-button, .el-dropdown-menu__item, .s-clickable, .clickable';
+
 function isNotification(value: HapticFeedbackBinding): value is HapticFeedbackStatus {
   return HapticNotificationTypes.includes(value);
 }
@@ -97,13 +100,14 @@ class TmaSdk {
   }
 
   private onTouchEnd(event: TouchEvent): void {
-    const clickableSelectors = 'button, a, [data-clickable], .el-button, .clickable, [role="button"]';
-    const clickedElement = event.target as Nullable<HTMLElement>;
+    let clickedElement = event.target as Nullable<HTMLElement>;
 
-    // Check if the clicked element matches any of the clickable selectors
-    if (clickedElement?.matches(clickableSelectors)) {
-      // Trigger Telegram WebApp HapticFeedback
-      useHaptic('soft');
+    while (clickedElement) {
+      if (clickedElement.matches(HapticButtonSelector)) {
+        useHaptic('soft');
+        return;
+      }
+      clickedElement = clickedElement.parentElement as Nullable<HTMLElement>;
     }
   }
 

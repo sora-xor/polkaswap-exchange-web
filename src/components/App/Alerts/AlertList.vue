@@ -19,11 +19,11 @@
             trigger="click"
             :visible-arrow="false"
           >
-            <div class="settings-alert-option" @click="handleEditAlert(alert, index)">
+            <div v-button class="settings-alert-option" @click="handleEditAlert(alert, index)">
               <s-icon name="el-icon-edit" />
               <span>{{ t('alerts.edit') }}</span>
             </div>
-            <div class="settings-alert-option" @click="handleDeleteAlert(index)">
+            <div v-button class="settings-alert-option" @click="handleDeleteAlert(index)">
               <s-icon name="el-icon-delete" />
               <span>{{ t('alerts.delete') }}</span>
             </div>
