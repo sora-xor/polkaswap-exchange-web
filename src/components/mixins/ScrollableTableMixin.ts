@@ -12,6 +12,8 @@ export default class ScrollableTableMixin extends Mixins(
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
+  private scrollbarWatcher: Nullable<FnWithoutArgs> = null;
+
   @Ref('table') readonly tableComponent!: any;
 
   get loadingState(): boolean {
@@ -37,6 +39,10 @@ export default class ScrollableTableMixin extends Mixins(
       await this.$nextTick();
       this.initScrollbar();
     });
+  }
+
+  beforeDestroy(): void {
+    this.resetScrollbarWatcher();
   }
 
   public handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
@@ -76,7 +82,7 @@ export default class ScrollableTableMixin extends Mixins(
     elTableBodyWrapper.appendChild(scrollbar.$el);
     scrollbarView.appendChild(elTableNativeTable);
 
-    this.$watch(
+    this.scrollbarWatcher = this.$watch(
       () => (scrollbar.$children[0] as any).moveX,
       () => {
         const scrollLeft = scrollbarWrap.scrollLeft;
@@ -87,5 +93,10 @@ export default class ScrollableTableMixin extends Mixins(
         elTable.scrollPosition = scrollLeft === 0 ? 'left' : 'right';
       }
     );
+  }
+
+  private resetScrollbarWatcher(): void {
+    this.scrollbarWatcher?.();
+    this.scrollbarWatcher = null;
   }
 }

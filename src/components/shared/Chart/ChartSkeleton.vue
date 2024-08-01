@@ -75,7 +75,7 @@ $skeleton-label-width: 34px;
 
   .chart {
     flex: 1;
-    min-height: 327px;
+    min-height: 260px;
 
     &-price {
       display: flex;
