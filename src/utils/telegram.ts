@@ -99,15 +99,25 @@ class TmaSdk {
   private onTouchEnd(event: TouchEvent): void {
     const clickableSelectors = 'button, a, [data-clickable], .el-button, .clickable, [role="button"]';
     let clickedElement = event.target as Nullable<HTMLElement>;
+
+    // Need this flat to prevent multiple haptic trigger
+    let hapticTriggered = false;
+
     while (clickedElement) {
       if (clickedElement.matches(clickableSelectors)) {
-        console.info('Element matches clickable selectors:', clickedElement);
-        useHaptic('soft');
+        if (!hapticTriggered) {
+          console.info('Element matches clickable selectors:', clickedElement);
+          useHaptic('soft');
+          hapticTriggered = true;
+        }
         return;
       }
       clickedElement = clickedElement.parentElement as Nullable<HTMLElement>;
     }
-    console.info('Element does not match any clickable selector.', clickedElement);
+
+    if (!hapticTriggered) {
+      console.info('Element does not match any clickable selector.', clickedElement);
+    }
   }
 
   private addHapticListener(): void {
