@@ -1,15 +1,54 @@
 <template>
-  <div class="swap-container">
-    <div class="column column--small">
-      <swap-form-widget :parent-loading="loadingState" class="swap-form-widget" />
-      <customise-widget v-model="customise" :widgets-model.sync="widgetsSync" :labels="labels" />
-      <swap-distribution-widget v-if="widgets[SwapWidgets.Distribution]" />
-    </div>
-    <div class="column">
-      <swap-chart-widget v-if="widgets[SwapWidgets.Chart]" :parent-loading="loadingState" class="swap-chart-widget" />
-      <swap-transactions-widget v-if="widgets[SwapWidgets.Transactions]" :parent-loading="loadingState" />
-    </div>
-  </div>
+  <widgets-grid
+    grid-id="swapGrid"
+    class="swap-container"
+    :draggable="options.edit"
+    :resizable="options.edit"
+    :lines="options.edit"
+    :loading="parentLoading"
+    :default-layouts="DefaultLayouts"
+    v-model="widgets"
+  >
+    <template v-slot:[SwapWidgets.Form]="props">
+      <swap-form-widget v-bind="props" primary-title full />
+    </template>
+    <template v-slot:[SwapWidgets.Chart]="props">
+      <price-chart-widget
+        v-bind="props"
+        :base-asset="tokenFrom"
+        :quote-asset="tokenTo"
+        :is-available="isAvailable"
+        full
+      />
+    </template>
+    <template v-slot:[SwapWidgets.Distribution]="props">
+      <swap-distribution-widget v-bind="props" full />
+    </template>
+    <template v-slot:[SwapWidgets.Transactions]="props">
+      <swap-transactions-widget v-bind="props" full extensive />
+    </template>
+    <template v-slot:[SwapWidgets.Customise]="{ reset, ...props }">
+      <customise-widget
+        v-bind="props"
+        v-model="customizePopper"
+        :widgets-model.sync="widgets"
+        :options-model.sync="options"
+        :labels="labels"
+        full
+      >
+        <s-button @click="reset">{{ t('resetText') }}</s-button>
+      </customise-widget>
+    </template>
+    <template v-slot:[SwapWidgets.PriceChartA]="props">
+      <price-chart-widget v-bind="props" :base-asset="tokenFrom" full />
+    </template>
+    <template v-slot:[SwapWidgets.PriceChartB]="props">
+      <price-chart-widget v-bind="props" :base-asset="tokenTo" full />
+    </template>
+    <template v-slot:[SwapWidgets.SupplyChart]="props">
+      <supply-chart-widget v-bind="props" full />
+    </template>
+  </widgets-grid>
 </template>
 
 <script lang="ts">
@@ -22,26 +61,32 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
-import type { WidgetsVisibilityModel } from '@/types/layout';
-import { layoutsStorage } from '@/utils/storage';
+import type { ResponsiveLayouts, WidgetsVisibilityModel } from '@/types/layout';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 enum SwapWidgets {
+  Customise = 'customise',
+  // main
+  Form = 'swapForm',
   Chart = 'swapChart',
-  Transactions = 'swapTransactions',
   Distribution = 'swapDistribution',
+  // additional
+  Transactions = 'swapTransactions',
+  PriceChartA = 'swapTokenAPriceChart',
+  PriceChartB = 'swapTokenBPriceChart',
+  SupplyChart = 'swapSupplyChart',
 }
-
-const storageTemporaryKey = 'swapWidgets';
 
 @Component({
   components: {
     SwapFormWidget: lazyComponent(Components.SwapFormWidget),
-    SwapChartWidget: lazyComponent(Components.SwapChartWidget),
     SwapTransactionsWidget: lazyComponent(Components.SwapTransactionsWidget),
     SwapDistributionWidget: lazyComponent(Components.SwapDistributionWidget),
     CustomiseWidget: lazyComponent(Components.CustomiseWidget),
+    PriceChartWidget: lazyComponent(Components.PriceChartWidget),
+    SupplyChartWidget: lazyComponent(Components.SupplyChartWidget),
+    WidgetsGrid: lazyComponent(Components.WidgetsGrid),
   },
 })
 export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, SelectedTokenRouteMixin) {
@@ -56,28 +101,88 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   readonly SwapWidgets = SwapWidgets;
 
-  customise = false;
+  readonly DefaultLayouts: ResponsiveLayouts = {
+    lg: [
+      { x: 5, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 5, y: 20, w: 6, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
+      { x: 5, y: 24, w: 6, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
+      { x: 5, y: 24, w: 6, h: 16, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
+      { x: 11, y: 0, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
+      { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+      { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
+      { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
+    ],
+    md: [
+      { x: 3, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 3, y: 20, w: 4, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
+      { x: 3, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
+      { x: 3, y: 24, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.SupplyChart },
+      { x: 7, y: 0, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
+      { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+      { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
+      { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
+    ],
+    sm: [
+      { x: 1, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 1, y: 20, w: 4, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
+      { x: 1, y: 24, w: 4, h: 9, minW: 4, minH: 9, i: SwapWidgets.Distribution },
+      { x: 1, y: 24, w: 4, h: 20, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
+      { x: 5, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 5, y: 20, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+      { x: 5, y: 40, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
+      { x: 5, y: 40, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
+    ],
+    xs: [
+      { x: 0, y: 0, w: 4, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
+      { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
+      { x: 4, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 0, y: 32, w: 4, h: 16, minW: 4, minH: 16, i: SwapWidgets.Transactions },
+      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
+      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
+      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
+    ],
+    xss: [
+      { x: 0, y: 0, w: 4, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
+      { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
+      { x: 0, y: 36, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
+      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
+      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
+    ],
+  };
+
+  customizePopper = false;
+
+  options = {
+    edit: false,
+  };
 
   widgets: WidgetsVisibilityModel = {
     [SwapWidgets.Chart]: true,
     [SwapWidgets.Distribution]: true,
     [SwapWidgets.Transactions]: false,
+    [SwapWidgets.PriceChartA]: false,
+    [SwapWidgets.PriceChartB]: false,
+    [SwapWidgets.SupplyChart]: false,
   };
 
-  get widgetsSync(): WidgetsVisibilityModel {
-    return this.widgets;
-  }
-
-  set widgetsSync(widgetsModel: WidgetsVisibilityModel) {
-    this.widgets = widgetsModel;
-    layoutsStorage.set(storageTemporaryKey, JSON.stringify(widgetsModel));
-  }
-
   get labels(): Record<string, string> {
+    const priceText = this.t('priceChartText');
+
     return {
-      [SwapWidgets.Chart]: this.t('priceChartText'),
+      // widgets
+      [SwapWidgets.Form]: this.t('swapText'),
       [SwapWidgets.Distribution]: this.t('swap.route'),
       [SwapWidgets.Transactions]: this.tc('transactionText', 2),
+      [SwapWidgets.Chart]: priceText,
+      [SwapWidgets.PriceChartA]: `${priceText} ${this.tokenFrom?.symbol ?? ''}`,
+      [SwapWidgets.PriceChartB]: `${priceText} ${this.tokenTo?.symbol ?? ''}`,
+      [SwapWidgets.SupplyChart]: 'Supply',
+      // options
+      edit: this.t('editText'),
     };
   }
 
@@ -87,17 +192,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
     this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
   }
 
-  get loadingState(): boolean {
-    return this.parentLoading || this.loading;
-  }
-
   created(): void {
-    const widgetsModel = layoutsStorage.get(storageTemporaryKey);
-
-    if (widgetsModel) {
-      this.widgets = JSON.parse(widgetsModel);
-    }
-
     this.withApi(async () => {
       this.parseCurrentRoute();
       // Need to wait the previous page beforeDestroy somehow to set the route params
@@ -127,35 +222,10 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 </script>
 
 <style lang="scss" scoped>
-.swap-container {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: $inner-spacing-medium;
-
-  .swap-chart-widget,
-  .swap-form-widget {
-    @include desktop {
-      min-height: 492px;
-    }
-  }
-}
-.column {
-  display: flex;
-  gap: $inner-spacing-medium;
-  flex-flow: column nowrap;
-
-  &--small {
+@include tablet(true) {
+  .swap-container {
     max-width: $inner-window-width;
-  }
-
-  @include tablet(true) {
-    max-width: $inner-window-width;
-  }
-
-  @include mobile(true) {
-    max-width: 360px;
+    margin: auto;
   }
 }
 </style>
