@@ -5,7 +5,6 @@
     :draggable="options.edit"
     :resizable="options.edit"
     :lines="options.edit"
-    :flat="options.flat"
     :loading="parentLoading"
     :default-layouts="DefaultLayouts"
     v-model="widgets"
@@ -159,11 +158,9 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   options = {
     edit: false,
-    // flat: false,
   };
 
   widgets: WidgetsVisibilityModel = {
-    // [SwapWidgets.Form]: true,
     [SwapWidgets.Chart]: true,
     [SwapWidgets.Distribution]: true,
     [SwapWidgets.Transactions]: false,
