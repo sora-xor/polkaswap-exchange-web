@@ -160,9 +160,15 @@ async function getAccount(): Promise<string> {
   return signer.getAddress();
 }
 
-async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> {
+async function getContract(contractAddress: string, contractAbi: ethers.InterfaceAbi): Promise<ethers.Contract> {
   const signer = await getSigner();
-  const contract = new ethers.Contract(tokenAddress, SmartContracts[SmartContractType.ERC20].abi, signer);
+  const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+
+  return contract;
+}
+
+async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> {
+  const contract = await getContract(tokenAddress, SmartContracts[SmartContractType.ERC20]);
 
   return contract;
 }
@@ -296,7 +302,7 @@ async function addToken(address: string, symbol: string, decimals: number, image
  * @param chainName translated chain name
  */
 async function switchOrAddChain(network: NetworkData, chainName?: string): Promise<void> {
-  const chainId = ethers.toQuantity(network.id);
+  const chainId = ethers.toQuantity(network.evmId ?? network.id);
 
   try {
     await ethereumProvider.request({
@@ -448,6 +454,7 @@ export default {
   getAccount,
   getAccountBalance,
   getAccountAssetBalance,
+  getContract,
   getTokenContract,
   getTokenDecimals,
   getAllowance,

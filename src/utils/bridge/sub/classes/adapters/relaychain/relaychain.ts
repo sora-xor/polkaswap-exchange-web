@@ -1,7 +1,7 @@
 import { FPNumber } from '@sora-substrate/util';
 import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
-import { SubAdapter } from './substrate';
+import { SubAdapter } from '../substrate';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
@@ -71,11 +71,11 @@ export class RelaychainAdapter extends SubAdapter {
       case SubNetworkId.Rococo:
         return toCodec(0.000125);
       case SubNetworkId.Alphanet:
-        return toCodec(0.019);
+        return toCodec(0.019 + 0.037);
       case SubNetworkId.Kusama:
         return toCodec(0.002);
       case SubNetworkId.Polkadot:
-        return toCodec(0.059);
+        return toCodec(0.019 + 0.037);
       default:
         return '0';
     }
