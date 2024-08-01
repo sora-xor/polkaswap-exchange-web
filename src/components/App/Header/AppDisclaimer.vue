@@ -3,7 +3,7 @@
     <div class="disclaimer__header">
       <div class="disclaimer__header-title">{{ t('disclaimerTitle') }}</div>
       <s-icon
-        data-clickable
+        v-button
         v-if="userDisclaimerApprove"
         class="disclaimer__header-close-btn"
         size="28px"
@@ -167,6 +167,7 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
     }
 
     &-close-btn {
+      margin-right: $inner-spacing-small;
       color: var(--s-color-base-content-tertiary);
       transition: var(--s-transition-default);
       &:hover {
