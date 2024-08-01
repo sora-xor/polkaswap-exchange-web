@@ -39,7 +39,7 @@ class TmaSdk {
     try {
       // Check if the current platform is Telegram Mini App
       const WebApp = Telegram?.WebApp;
-      if (!WebApp?.initData) {
+      if (WebApp?.initData) {
         console.info('[TMA]: Not a Telegram Mini App, skipping initialization');
         return;
       }
@@ -97,12 +97,9 @@ class TmaSdk {
   }
 
   // private onTouchEnd(event: ): void {
-  private onTouchEnd(event: TouchEvent): void {
-    console.info('Touch end event detected');
+  private onTouchEnd(event: Event): void {
     const clickableSelectors = 'button, a, [data-clickable], .el-button, .clickable, [role="button"]';
     let clickedElement = event.target as Nullable<HTMLElement>;
-    console.info('Touch end event on element:', clickedElement);
-
     while (clickedElement) {
       if (clickedElement.matches(clickableSelectors)) {
         console.info('Element matches clickable selectors:', clickedElement);
@@ -111,17 +108,16 @@ class TmaSdk {
       }
       clickedElement = clickedElement.parentElement as Nullable<HTMLElement>;
     }
-
-    console.info('Element does not match any clickable selector.');
+    console.info('Element does not match any clickable selector.', clickedElement);
   }
 
   private addHapticListener(): void {
     console.info('[TMA]: Haptic listener was added');
-    document.addEventListener('touchend', this.onTouchEnd);
+    document.addEventListener('click', this.onTouchEnd);
   }
 
   private removeHapticListener(): void {
-    document.removeEventListener('touchend', this.onTouchEnd);
+    document.removeEventListener('click', this.onTouchEnd);
   }
 
   private setReferrer(referrerAddress?: string): void {

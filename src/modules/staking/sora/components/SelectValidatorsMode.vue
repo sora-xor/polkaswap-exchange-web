@@ -14,7 +14,7 @@
           t('soraStaking.selectValidatorsMode.confirm.suggested')
         }}</s-button>
       </div>
-      <div class="manual-select" @click="stakeWithSelected">
+      <div class="manual-select" @click="stakeWithSelected" v-button>
         {{ t('soraStaking.selectValidatorsMode.confirm.manual') }}
       </div>
     </div>

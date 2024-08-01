@@ -3,6 +3,7 @@
     <div class="disclaimer__header">
       <div class="disclaimer__header-title">{{ t('disclaimerTitle') }}</div>
       <s-icon
+        data-clickable
         v-if="userDisclaimerApprove"
         class="disclaimer__header-close-btn"
         size="28px"
