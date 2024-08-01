@@ -37,8 +37,8 @@
       </div>
     </el-popover>
 
-    <s-tabs v-button class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick">
-      <s-tab name="limit">
+    <s-tabs class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick">
+      <s-tab label="limit" name="limit">
         <span slot="label">
           <span>{{ t('orderBook.limit') }}</span>
           <s-tooltip
