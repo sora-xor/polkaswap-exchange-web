@@ -10,11 +10,21 @@
         class="token-search"
       />
 
-      <s-tab :label="t('selectToken.assets.title')" name="assets">
+      <s-tab name="assets">
+        <template #label>
+          <div data-clickable>
+            <span>{{ t('selectToken.assets.title') }}</span>
+          </div>
+        </template>
         <synthetic-switcher v-model="isSynthsOnly" class="token-synthetic-switcher" />
       </s-tab>
 
       <s-tab :disabled="disabledCustom" :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
+        <template #label>
+          <div data-clickable>
+            <span>{{ t('selectToken.custom.title') }}</span>
+          </div>
+        </template>
         <template v-if="customAsset">
           <span v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</span>
 
