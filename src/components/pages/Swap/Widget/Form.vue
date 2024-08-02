@@ -398,7 +398,7 @@ export default class SwapFormWidget extends Mixins(
     this.recountSwapValues();
   }
 
-  private runRecountSwapValues(): void {
+  private async runRecountSwapValues(): Promise<void> {
     const value = this.isExchangeB ? this.toValue : this.fromValue;
 
     if (!this.areTokensSelected || asZeroValue(value) || !this.swapQuote) {
@@ -426,6 +426,20 @@ export default class SwapFormWidget extends Mixins(
         this.isExchangeB,
         [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>
       );
+
+      const rpcResult = await api.swap.getResultRpc(
+        (this.tokenFrom as Asset).address,
+        (this.tokenTo as Asset).address,
+        value,
+        this.isExchangeB,
+        this.liquiditySource ?? undefined
+      );
+      // eslint-disable-next-line
+      console.table({
+        frontend: amount,
+        backend: rpcResult.amount,
+        difference: +amount - +rpcResult.amount,
+      });
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact as string);

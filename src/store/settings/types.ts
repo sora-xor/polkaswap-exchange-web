@@ -19,6 +19,7 @@ export type FeatureFlags = {
   orderBook?: boolean;
   kensetsu?: boolean;
   assetOwner?: boolean;
+  alt?: boolean;
 };
 
 export type SettingsState = {

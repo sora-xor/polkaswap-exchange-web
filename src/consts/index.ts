@@ -112,7 +112,7 @@ export enum MarketAlgorithms {
   TBC = 'TBC',
   XYK = 'XYK',
   XST = 'XST',
-  ORB = 'Order Book',
+  ORB = 'Trade',
 }
 
 export const DefaultMarketAlgorithm = MarketAlgorithms.SMART;
@@ -121,6 +121,7 @@ export const LiquiditySourceForMarketAlgorithm = {
   [MarketAlgorithms.SMART]: LiquiditySourceTypes.Default,
   [MarketAlgorithms.TBC]: LiquiditySourceTypes.MulticollateralBondingCurvePool,
   [MarketAlgorithms.XYK]: LiquiditySourceTypes.XYKPool,
+  [MarketAlgorithms.ORB]: LiquiditySourceTypes.OrderBook,
 };
 
 export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm);
