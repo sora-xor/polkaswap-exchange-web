@@ -227,7 +227,6 @@ export enum Components {
   MoonpayHistory = 'pages/Moonpay/MoonpayHistory',
   // Swap Page
   SwapFormWidget = 'pages/Swap/Widget/Form',
-  SwapChartWidget = 'pages/Swap/Widget/Chart',
   SwapTransactionsWidget = 'pages/Swap/Widget/Transactions',
   SwapDistributionWidget = 'pages/Swap/Widget/Distribution',
   SwapConfirm = 'pages/Swap/Confirm',
@@ -272,9 +271,12 @@ export enum Components {
   ResponsiveTabs = 'shared/ResponsiveTabs',
   // Shared Widgets
   BaseWidget = 'shared/Widget/Base',
+  WidgetsGrid = 'shared/Widget/Grid',
+  // Shared Widgets Components
+  CustomiseWidget = 'shared/Widget/Customise',
   IFrameWidget = 'shared/Widget/IFrame',
   PriceChartWidget = 'shared/Widget/PriceChart',
-  CustomiseWidget = 'shared/Widget/Customise',
+  SupplyChartWidget = 'shared/Widget/SupplyChart',
   // Shared Buttons
   SortButton = 'shared/Button/SortButton',
   SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',
@@ -507,31 +509,6 @@ export const AboutTopics = [
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
-
-export enum DsBreakpoints {
-  sm = 640,
-  md = 1024,
-  lg = 1200,
-  xl = 1920,
-}
-
-export enum Breakpoint {
-  Mobile = 464,
-  LargeMobile = 528,
-  Tablet = 900,
-  Desktop = 1024,
-  LargeDesktop = 1440,
-  HugeDesktop = 2092,
-}
-
-export enum BreakpointClass {
-  Mobile = 'min-mobile',
-  LargeMobile = 'min-large-mobile',
-  Tablet = 'min-tablet',
-  Desktop = 'min-desktop',
-  LargeDesktop = 'min-large-desktop',
-  HugeDesktop = 'min-huge-desktop',
-}
 
 export const TranslationConsts = {
   // extending consts

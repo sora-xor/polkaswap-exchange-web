@@ -33,8 +33,8 @@ export default class EtherscanHistoryProvider extends EtherscanProvider {
 }
 
 const BRIDGE_INTERFACE = new ethers.Interface([
-  ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.XOR].abi, // XOR or VAL
-  ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi, // Other
+  ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.XOR], // XOR or VAL
+  ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other], // Other
 ]);
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;

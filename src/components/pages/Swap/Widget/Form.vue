@@ -1,5 +1,5 @@
 <template>
-  <base-widget v-loading="parentLoading" class="swap-widget" :title="t('exchange.Swap')" primary-title>
+  <base-widget class="swap-widget" :title="t('exchange.Swap')" v-bind="$attrs">
     <template #filters>
       <swap-status-action-badge>
         <template #label>{{ t('marketText') }}:</template>
@@ -107,11 +107,7 @@
         </template>
       </s-button>
 
-      <swap-transaction-details
-        v-if="areTokensSelected && !hasZeroAmount"
-        class="info-line-container"
-        :info-only="false"
-      />
+      <swap-transaction-details v-if="areTokensSelected && !hasZeroAmount" :info-only="false" />
       <select-token
         :visible.sync="showSelectTokenDialog"
         :connected="isLoggedIn"

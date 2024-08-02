@@ -3,18 +3,21 @@
     <template #title>
       <div class="order-history-buttons order-history-buttons--filter-buttons">
         <span
+          v-button
           :class="['order-history-button', { active: currentFilter === Filter.open }]"
           @click="switchFilter(Filter.open)"
         >
           {{ openOrdersText }}
         </span>
         <span
+          v-button
           :class="['order-history-button', { active: currentFilter === Filter.all }]"
           @click="switchFilter(Filter.all)"
         >
           {{ t('orderBook.history.orderHistory') }}
         </span>
         <span
+          v-button
           :class="['order-history-button', { active: currentFilter === Filter.executed }]"
           @click="switchFilter(Filter.executed)"
         >
@@ -23,12 +26,14 @@
       </div>
       <div v-if="isLoggedIn" class="order-history-buttons order-history-buttons--cancel-buttons">
         <span
+          v-button
           :class="['order-history-button', 'order-history-button--cancel', { inactive: isCancelMultipleInactive }]"
           @click="cancelOrders(Cancel.multiple)"
         >
           {{ cancelText }}
         </span>
         <span
+          v-button
           :class="['order-history-button', 'order-history-button--cancel', { inactive: isCancelAllInactive }]"
           @click="openConfirmCancelDialog"
         >

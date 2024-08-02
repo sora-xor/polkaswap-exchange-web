@@ -12,7 +12,11 @@
       <s-table-column width="250" label="#">
         <template #header>
           <div class="explore-table-item-index">
-            <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
+            <span
+              v-button
+              :class="['explore-table-item-index--head', { active: isDefaultSort }]"
+              @click="handleResetSort"
+            >
               #
             </span>
           </div>

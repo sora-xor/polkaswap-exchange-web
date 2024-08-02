@@ -1,7 +1,6 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
-import isEmpty from 'lodash/fp/isEmpty';
 
 import {
   LiquiditySourceForMarketAlgorithm,
