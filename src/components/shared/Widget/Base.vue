@@ -41,8 +41,6 @@ import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
 import type { Size } from '@/types/layout';
 import { debouncedInputHandler, capitalize } from '@/utils';
 
-declare const documentPictureInPicture: any;
-
 @Component
 export default class BaseWidget extends Vue {
   /**
@@ -119,7 +117,7 @@ export default class BaseWidget extends Vue {
     if (!this.isPipAvailable) return;
 
     try {
-      const pipWindow = await documentPictureInPicture.requestWindow({
+      const pipWindow = await (window as any).documentPictureInPicture.requestWindow({
         width: this.$el.clientWidth,
         height: this.$el.clientHeight,
       });
