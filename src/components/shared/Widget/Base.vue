@@ -26,8 +26,8 @@
           <slot name="types" />
         </div>
       </div>
+      <s-button type="tertiary" size="small" v-if="isPipAvailable" @click="openPip">PIP</s-button>
     </template>
-
     <div v-if="hasContent" :class="['base-widget-content', { extensive }]" ref="content">
       <slot />
     </div>
@@ -40,6 +40,8 @@ import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
 
 import type { Size } from '@/types/layout';
 import { debouncedInputHandler, capitalize } from '@/utils';
+
+declare const documentPictureInPicture: any;
 
 @Component
 export default class BaseWidget extends Vue {
@@ -105,6 +107,70 @@ export default class BaseWidget extends Vue {
 
   get shadow(): string | undefined {
     return this.flat ? 'never' : 'always';
+  }
+
+  get isPipAvailable() {
+    return 'documentPictureInPicture' in window;
+  }
+
+  async openPip() {
+    if (!this.isPipAvailable) return;
+
+    try {
+      const pipWindow = await documentPictureInPicture.requestWindow({
+        width: this.$el.clientWidth,
+        height: this.$el.clientHeight,
+      });
+
+      // Access the root element of the Vue component
+      const widgetElement = this.$el as HTMLElement;
+      const originalParent = widgetElement.parentNode as HTMLElement;
+
+      console.log('Original parent:', originalParent);
+      console.log('Widget element:', widgetElement);
+
+      // STYLES
+      // Extract all document styles
+      const allStyles = Array.from(document.styleSheets)
+        .map((styleSheet) =>
+          Array.from(styleSheet.cssRules)
+            .map((rule) => rule.cssText)
+            .join('\n')
+        )
+        .join('\n');
+      // Create a new style element in the Picture-in-Picture window
+      const style = pipWindow.document.createElement('style');
+      style.innerHTML = allStyles;
+      // Append style element to the Picture-in-Picture window's head
+      pipWindow.document.head.appendChild(style);
+
+      // THEME
+      // Get the <html> element from the Picture-in-Picture window's document
+      const htmlElement = pipWindow.document.documentElement;
+      // Get the <html> element from the original document
+      const originalHtmlElement = document.documentElement;
+      // Copy attributes from the original <html> element to the <html> element in the Picture-in-Picture window's document
+      for (let i = 0; i < originalHtmlElement.attributes.length; i++) {
+        const attribute = originalHtmlElement.attributes[i];
+        htmlElement.setAttribute(attribute.nodeName, attribute.nodeValue);
+      }
+
+      // Move the Vue component to the Picture-in-Picture window
+      pipWindow.document.body.appendChild(widgetElement);
+      console.log('Moved widget element to PiP window.');
+
+      // Add event listener for when the PiP window is closed
+      pipWindow.addEventListener('pagehide', () => {
+        console.log('PiP window closed. Moving widget element back to original parent.');
+        // Move the element back to the original document when PiP window is closed
+        this.$nextTick(() => {
+          originalParent.appendChild(widgetElement);
+          console.log('Widget element moved back to original parent.');
+        });
+      });
+    } catch (error) {
+      console.error('Error during PiP handling:', error);
+    }
   }
 
   mounted(): void {
