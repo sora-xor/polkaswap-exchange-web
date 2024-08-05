@@ -126,9 +126,6 @@ export default class BaseWidget extends Vue {
       const widgetElement = this.$el as HTMLElement;
       const originalParent = widgetElement.parentNode as HTMLElement;
 
-      console.log('Original parent:', originalParent);
-      console.log('Widget element:', widgetElement);
-
       // STYLES
       // Extract all document styles
       const allStyles = Array.from(document.styleSheets)
@@ -150,22 +147,19 @@ export default class BaseWidget extends Vue {
       // Get the <html> element from the original document
       const originalHtmlElement = document.documentElement;
       // Copy attributes from the original <html> element to the <html> element in the Picture-in-Picture window's document
-      for (let i = 0; i < originalHtmlElement.attributes.length; i++) {
-        const attribute = originalHtmlElement.attributes[i];
+
+      for (const attribute of originalHtmlElement.attributes) {
         htmlElement.setAttribute(attribute.nodeName, attribute.nodeValue);
       }
 
       // Move the Vue component to the Picture-in-Picture window
       pipWindow.document.body.appendChild(widgetElement);
-      console.log('Moved widget element to PiP window.');
 
-      // Add event listener for when the PiP window is closed
+      // Event listener when the PiP window is closed
       pipWindow.addEventListener('pagehide', () => {
-        console.log('PiP window closed. Moving widget element back to original parent.');
-        // Move the element back to the original document when PiP window is closed
+        // Move the element back to the original document when PiP is closed
         this.$nextTick(() => {
           originalParent.appendChild(widgetElement);
-          console.log('Widget element moved back to original parent.');
         });
       });
     } catch (error) {
