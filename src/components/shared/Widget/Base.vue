@@ -95,6 +95,8 @@ export default class BaseWidget extends Vue {
     height: 0,
   };
 
+  private pipOpen = false;
+
   public capitalize = capitalize;
 
   get hasHeader(): boolean {
@@ -110,7 +112,7 @@ export default class BaseWidget extends Vue {
   }
 
   get isPipAvailable() {
-    return 'documentPictureInPicture' in window;
+    return 'documentPictureInPicture' in window && !this.pipOpen;
   }
 
   async openPip() {
@@ -121,6 +123,8 @@ export default class BaseWidget extends Vue {
         width: this.$el.clientWidth,
         height: this.$el.clientHeight,
       });
+
+      this.pipOpen = true;
 
       // Access the root element of the Vue component
       const widgetElement = this.$el as HTMLElement;
@@ -159,6 +163,7 @@ export default class BaseWidget extends Vue {
       pipWindow.addEventListener('pagehide', () => {
         // Move the element back to the original document when PiP is closed
         this.$nextTick(() => {
+          this.pipOpen = false;
           originalParent.appendChild(widgetElement);
         });
       });
