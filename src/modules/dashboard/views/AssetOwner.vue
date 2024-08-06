@@ -120,7 +120,6 @@
         </s-col>
       </s-row>
     </template>
-    <create-token-dialog :visible.sync="showCreateTokenDialog" />
   </div>
 </template>
 
@@ -141,7 +140,6 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
-    CreateTokenDialog: dashboardLazyComponent(DashboardComponents.CreateTokenDialog),
   },
 })
 export default class AssetOwner extends Mixins(InternalConnectMixin, mixins.FormattedAmountMixin) {
@@ -155,7 +153,7 @@ export default class AssetOwner extends Mixins(InternalConnectMixin, mixins.Form
   }
 
   handleCreateAsset(): void {
-    this.showCreateTokenDialog = true;
+    router.push({ name: DashboardPageNames.AssetOwnerCreate });
   }
 
   handleOpenAssetDetails(asset: OwnedAsset): void {

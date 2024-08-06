@@ -41,6 +41,7 @@ function initialState(): SettingsState {
     internetConnectionSpeed: undefined,
     screenBreakpointClass: BreakpointClass.LargeDesktop,
     windowWidth: window?.innerWidth ?? 0,
+    nftStorage: null,
     adsArray: [],
     isTMA: false,
     telegramBotUrl: undefined,

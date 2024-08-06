@@ -294,6 +294,14 @@ const routes: Array<RouteConfig> = [
           requiresAuth: true,
         },
       },
+      {
+        path: '/dashboard/owner/create',
+        name: DashboardPageNames.AssetOwnerCreate,
+        component: dashboardLazyView(DashboardPageNames.AssetOwnerCreate),
+        meta: {
+          requiresAuth: true,
+        },
+      },
     ],
   },
   {
