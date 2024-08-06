@@ -92,8 +92,8 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
   }
 
   &__btn-start {
+    font-size: var(--s-font-size-big);
     width: 100%;
-    font-size: 18px;
   }
 
   // TODO: remove

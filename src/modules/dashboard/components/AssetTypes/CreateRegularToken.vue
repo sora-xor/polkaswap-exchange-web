@@ -60,13 +60,10 @@ import { XOR, MaxTotalSupply } from '@sora-substrate/util/build/assets/consts';
 import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import { ZeroStringValue } from '@/consts';
-import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
-import router, { lazyComponent } from '@/router';
-import { getter, state, action } from '@/store/decorators';
+import { DashboardPageNames } from '@/modules/dashboard/consts';
+import router from '@/router';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { CodecString } from '@sora-substrate/util';
 
 @Component({
   components: {
@@ -95,15 +92,7 @@ export default class CreateRegularToken extends Mixins(
   extensibleSupply = false;
   showFee = true;
 
-  // @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
-  @action.dashboard.subscribeOnOwnedAssets private subscribeOnOwnedAssets!: AsyncFnWithoutArgs;
-
   currentTab = WALLET_CONSTS.TokenTabs.Token;
-
-  // private get xorBalance() {
-  //   return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
-  // }
 
   get title(): string {
     return 'Create asset';
@@ -191,25 +180,15 @@ export default class CreateRegularToken extends Mixins(
 }
 </script>
 
-<style lang="scss">
-.dashboard-create {
-  @include custom-tabs;
-
-  &__tab {
-    margin: 8px 0 #{$basic-spacing-mini} 0;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .dashboard-create {
   &-token {
     &_desc {
+      padding: var(--s-basic-spacing) #{$basic-spacing-small} #{$basic-spacing-medium};
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-extra-small);
-      font-weight: 300;
       line-height: var(--s-line-height-base);
-      padding: var(--s-basic-spacing) #{$basic-spacing-small} #{$basic-spacing-medium};
+      font-weight: 300;
     }
     &_supply-block {
       @include switch-block;
@@ -219,20 +198,14 @@ export default class CreateRegularToken extends Mixins(
       margin-top: #{$basic-spacing-medium};
       width: 100%;
     }
-    &_type {
-      margin-left: 8px;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--s-color-base-content-secondary);
-    }
     &_divider {
       margin: 0 0 20px 0;
     }
   }
 
   &__button {
+    margin-bottom: $basic-spacing;
     width: 100%;
-    margin-bottom: 16px;
   }
 }
 </style>

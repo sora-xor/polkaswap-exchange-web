@@ -178,14 +178,13 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
-import intersection from 'lodash/fp/intersection';
+import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
+import { DashboardPageNames } from '@/modules/dashboard/consts';
 import router from '@/router';
 import { action, getter, state } from '@/store/decorators';
 import { IMAGE_MIME_TYPES } from '@/types/image';
@@ -535,10 +534,10 @@ export default class CreateSbtToken extends Mixins(
       text-transform: uppercase;
       background-color: var(--s-color-base-on-accent);
       color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-mini);
+      border-radius: $basic-spacing;
       font-weight: 650;
-      font-size: 12px;
-      border-radius: 16px;
-      padding: 4px 8px;
+      padding: 4px $inner-spacing-mini;
     }
 
     .assets-list {
@@ -579,7 +578,7 @@ export default class CreateSbtToken extends Mixins(
       @include scrollbar(-8px);
 
       .el-scrollbar__view {
-        padding-right: 16px;
+        padding-right: $basic-spacing;
       }
     }
 
@@ -590,22 +589,22 @@ export default class CreateSbtToken extends Mixins(
   }
 
   &-button {
-    margin-top: 24px;
+    margin-top: $inner-spacing-big;
 
     .create {
       margin-left: calc(var(--s-basic-spacing) * 1.5);
-      font-size: var(--s-font-size-medium);
-      font-weight: 500;
       letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
+      font-size: var(--s-font-size-medium);
+      font-weight: 500;
     }
   }
 
   &-sbt-preview {
     display: flex;
     background-color: var(--s-color-base-background-hover);
-    padding: 16px;
-    border-radius: 16px;
+    padding: $basic-spacing;
+    border-radius: $basic-spacing;
 
     .preview-image {
       position: relative;
@@ -616,7 +615,7 @@ export default class CreateSbtToken extends Mixins(
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-right: 16px;
+      margin-right: $basic-spacing;
 
       img {
         width: 64px;
@@ -624,29 +623,29 @@ export default class CreateSbtToken extends Mixins(
 
       &::before {
         content: 'SBT';
+        position: absolute;
+        font-size: var(--s-font-size-big);
         border-radius: 8px;
-        font-size: 18px;
         padding-top: 20px;
         color: white;
         background-color: var(--s-color-base-content-tertiary);
         bottom: 0;
         text-align: center;
         left: 0;
-        position: absolute;
         right: 0;
         top: 0;
       }
     }
 
     .symbol {
-      font-size: 18px;
+      font-size: var(--s-font-size-big);
       font-weight: 700;
       display: block;
     }
 
     .name {
       color: var(--s-color-base-content-secondary);
-      font-size: 16px;
+      font-size: var(--s-font-size-medium);
       display: block;
     }
   }
@@ -657,20 +656,20 @@ export default class CreateSbtToken extends Mixins(
     }
 
     .assets-list-subtitle {
-      margin-top: 24px;
+      margin-top: $inner-spacing-big;
       text-transform: uppercase;
       align-self: flex-start;
       font-weight: 650;
       color: var(--s-color-base-content-secondary);
 
       .number {
-        margin-left: 8px;
+        margin-left: $inner-spacing-mini;
         color: var(--s-color-base-content-tertiary);
       }
     }
 
     .delete-icon {
-      margin-right: 8px;
+      margin-right: $inner-spacing-mini;
       color: var(--s-color-theme-accent);
 
       &:hover {
@@ -680,7 +679,7 @@ export default class CreateSbtToken extends Mixins(
   }
 
   &__button {
-    margin-top: 16px;
+    margin-top: $basic-spacing;
     width: 100%;
   }
 

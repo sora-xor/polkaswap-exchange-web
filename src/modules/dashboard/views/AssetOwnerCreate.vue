@@ -22,9 +22,8 @@
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
-import { dashboardLazyComponent, dashboardLazyView } from '@/modules/dashboard/router';
-import router from '@/router';
+import { DashboardComponents } from '@/modules/dashboard/consts';
+import { dashboardLazyComponent } from '@/modules/dashboard/router';
 
 export enum AssetType {
   CreateRegularToken = 'CreateRegularToken',
@@ -69,16 +68,6 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
 </script>
 
 <style lang="scss">
-.create-token {
-  @include custom-tabs;
-
-  &__tab {
-    margin-bottom: #{$basic-spacing-medium};
-  }
-}
-</style>
-
-<style lang="scss">
 .asset-owner-create {
   .el-card {
     margin: auto;
@@ -90,9 +79,9 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
     &_desc {
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-extra-small);
-      font-weight: 300;
       line-height: var(--s-line-height-base);
       padding: var(--s-basic-spacing) #{$basic-spacing-small} #{$basic-spacing-medium};
+      font-weight: 300;
     }
     &_supply-block {
       @include switch-block;
@@ -114,7 +103,7 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
   }
 
   .input-textarea {
-    margin-bottom: 16px;
+    margin-bottom: $basic-spacing;
   }
 
   .el-textarea {
@@ -145,7 +134,7 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
 
   &__button {
     width: 100%;
-    margin-bottom: 16px;
+    margin-bottom: $basic-spacing;
   }
 
   .preview-image-create-nft {
@@ -204,8 +193,8 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
     display: block;
     width: var(--s-size-mini);
     height: var(--s-size-mini);
+    font-size: var(--s-font-size-large);
     font-weight: 600;
-    font-size: 24px;
     color: #a19a9d;
     margin-right: $basic-spacing;
     margin-top: 4px;
@@ -243,8 +232,8 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
 }
 
 .sbt-title {
-  margin-top: 16px;
-  font-weight: 700;
+  margin-top: $basic-spacing;
   font-size: 22px;
+  font-weight: 700;
 }
 </style>

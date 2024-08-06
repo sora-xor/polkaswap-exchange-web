@@ -121,15 +121,13 @@ import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-walle
 import { File as ImageNFT } from 'nft.storage';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 
-import { ZeroStringValue } from '@/consts';
-import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
-import router, { lazyComponent } from '@/router';
-import { getter, state, action } from '@/store/decorators';
+import { DashboardPageNames } from '@/modules/dashboard/consts';
+import router from '@/router';
+import { state, action } from '@/store/decorators';
 import { IMAGE_MIME_TYPES } from '@/types/image';
 import { IpfsStorage } from '@/utils/ipfsStorage';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { CodecString } from '@sora-substrate/util';
 import type { NFTStorage } from 'nft.storage';
 
 export enum Step {
@@ -176,7 +174,6 @@ export default class CreateNftToken extends Mixins(
   file: Nullable<File> = null;
 
   @state.settings.nftStorage private nftStorage!: NFTStorage;
-  @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
   @action.settings.createNftStorageInstance private createNftStorageInstance!: AsyncFnWithoutArgs;
 
   get titleCreate(): string {
@@ -380,12 +377,6 @@ export default class CreateNftToken extends Mixins(
 
 <style lang="scss">
 .dashboard-create {
-  @include custom-tabs;
-
-  &__tab {
-    margin: 8px 0 #{$basic-spacing-mini} 0;
-  }
-
   .el-textarea {
     height: 78px;
 
