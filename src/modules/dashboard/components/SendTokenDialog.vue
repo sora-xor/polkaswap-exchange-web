@@ -254,7 +254,7 @@ export default class SendTokenDialog extends Mixins(
   &__address,
   &__button,
   &__token-input {
-    margin-bottom: 16px;
+    margin-bottom: $basic-spacing;
   }
 }
 </style>
