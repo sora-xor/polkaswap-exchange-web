@@ -98,6 +98,7 @@
     "vue-template-compiler": "2.7.14"
   },
   "resolutions": {
+    "@sora-substrate/util": "1.39.10",
     "@polkadot/extension-dapp": "^0.44.7",
     "@polkadot/extension-inject": "^0.44.7",
     "@polkadot/util": "^12.6.2",

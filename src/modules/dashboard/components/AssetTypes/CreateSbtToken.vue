@@ -443,12 +443,13 @@ export default class CreateSbtToken extends Mixins(
   }
 
   async createSbt(): Promise<void> {
-    return api.extendedAssets.issueSbt(
+    return await api.extendedAssets.issueSbt(
       this.tokenSymbol,
       this.tokenName.trim(),
       this.tokenDescription,
       '', // missing image
-      this.ownerExternalUrl
+      this.ownerExternalUrl,
+      this.selectedAssetsIds
     );
   }
 
