@@ -58,14 +58,15 @@
                       <formatted-address :value="evmAddress" :symbols="8" />
                     </div>
                     <div class="rewards-account-group">
-                      <span v-if="changeWalletEvm" class="rewards-account-btn" @click="connectEvmWallet">
+                      <span v-if="changeWalletEvm" v-button class="rewards-account-btn" @click="connectEvmWallet">
                         {{ t('changeAccountText') }}
                       </span>
                       <span v-else>{{ t('connectedText') }}</span>
                       <span
                         v-if="changeWalletEvm"
+                        v-button
                         class="rewards-account-btn disconnect"
-                        @click="resetEvmProviderConnection"
+                        @click="disconnectEvmWallet"
                       >
                         {{ t('disconnectWalletText') }}
                       </span>

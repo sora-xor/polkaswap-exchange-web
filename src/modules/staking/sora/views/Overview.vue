@@ -115,7 +115,7 @@
               <span> {{ t('soraStaking.withdraw.nextWithdrawal') }}: </span>
               <era-countdown class="countdown" :target-era="nextWithdrawalEra" />
             </div>
-            <div class="withdraw-see-all" @click="showAllWithdraws">
+            <div v-button class="withdraw-see-all" @click="showAllWithdraws">
               {{ t('soraStaking.withdraw.seeAll') }}
             </div>
           </div>

@@ -57,7 +57,6 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
-import { isTMA } from '@tma.js/sdk';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -67,21 +66,15 @@ import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import {
-  PageNames,
-  Components,
-  Language,
-  BreakpointClass,
-  WalletPermissions,
-  LOCAL_STORAGE_LIMIT_PERCENTAGE,
-} from '@/consts';
+import { PageNames, Components, Language, WalletPermissions, LOCAL_STORAGE_LIMIT_PERCENTAGE } from '@/consts';
+import { BreakpointClass } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
-import { TmaSdk } from '@/utils/telegram';
+import { tmaSdkService } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
@@ -123,9 +116,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.appConnection private appConnection!: NodesConnection;
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
+  @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
+  @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
-  @state.referrals.storageReferrer storageReferrer!: string;
-  @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.router.loading pageLoading!: boolean;
 
@@ -170,10 +163,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @state.wallet.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
   @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
-  // [DESKTOP] To Enable Desktop
-  @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
-  // [TMA] To Enable TMA
-  @mutation.settings.enableTMA private enableTMA!: FnWithoutArgs;
 
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
@@ -261,11 +250,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       }
 
       // To start running as Telegram Web App (desktop capabilities)
-      if (await isTMA()) {
-        this.enableTMA();
-        this.setIsDesktop(true);
-        await TmaSdk.init(data?.TG_BOT_URL, data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev);
-      }
+      tmaSdkService.init(data?.TG_BOT_URL);
 
       await this.setApiKeys(data?.API_KEYS);
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
@@ -388,6 +373,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async beforeDestroy(): Promise<void> {
     window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
+    tmaSdkService.destroy();
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
     this.resetBlockNumberSubscription();

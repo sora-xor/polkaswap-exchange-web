@@ -1,7 +1,9 @@
 import { defineMutations } from 'direct-vuex';
 import { NFTStorage } from 'nft.storage';
 
-import { Breakpoint, MarketAlgorithms, BreakpointClass, Language } from '@/consts';
+import { MarketAlgorithms } from '@/consts';
+import type { Language } from '@/consts';
+import { Breakpoint, BreakpointClass } from '@/consts/layout';
 import storage, { settingsStorage } from '@/utils/storage';
 
 import type { Ad, FeatureFlags, SettingsState } from './types';
@@ -140,6 +142,9 @@ const mutations = defineMutations<SettingsState>()({
   },
   enableTMA(state): void {
     state.isTMA = true;
+  },
+  disableTMA(state): void {
+    state.isTMA = false;
   },
   setTelegramBotUrl(state, url: Nullable<string>): void {
     state.telegramBotUrl = url;

@@ -47,7 +47,7 @@
           {{ t('confirmText') }}
         </template>
       </s-button>
-      <div class="check-all-withdraws" @click="showAllWithdraws">
+      <div v-button class="check-all-withdraws" @click="showAllWithdraws">
         {{ t('soraStaking.withdrawDialog.showAllWithdraws') }}
       </div>
     </div>
