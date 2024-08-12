@@ -786,7 +786,8 @@
             "crowdloan": "Nagrody Crowdloan"
         },
         "Rewards": "Wynagrodzenie",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Polecenia",
+        "PointSystem": "Punkty"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Wyczyść lokalne {AppName} dane",
         "info": "Twoje lokalne dane są przeciążone, aby kontynuować pracę z {AppName}, musisz je wyczyścić",
         "agree": "Tak, rozumiem"
+    },
+    "points": {
+        "title": "Twój postęp punktów",
+        "loginText": "Połącz swoje konto, aby zobaczyć swoje punkty",
+        "bridgeVolume": "Wolumen mostu",
+        "feesSpent": "Wydane opłaty",
+        "xorBurned": "{XOR} spalony",
+        "yourReferrals": "Twoje polecenia",
+        "accountsText": "{amount} kont",
+        "yourRewards": "Twoje nagrody",
+        "openTelegram": "Otwórz {Telegram}",
+        "toEarnPoints": "Aby zdobyć punkty"
     }
 }

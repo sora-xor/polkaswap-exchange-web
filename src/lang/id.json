@@ -786,7 +786,8 @@
             "crowdloan": "Hadiah Crowdloan"
         },
         "Rewards": "Hadiah",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Rujukan",
+        "PointSystem": "Poin"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Bersihkan penyimpanan lokal {AppName}",
         "info": "Penyimpanan lokal Anda kelebihan beban, untuk melanjutkan pekerjaan dengan {AppName} perlu membersihkannya",
         "agree": "Ya saya mengerti"
+    },
+    "points": {
+        "title": "Kemajuan Poin Anda",
+        "loginText": "Hubungkan akun Anda untuk melihat poin Anda",
+        "bridgeVolume": "Volume jembatan",
+        "feesSpent": "Biaya yang dikeluarkan",
+        "xorBurned": "{XOR} dibakar",
+        "yourReferrals": "Rujukan Anda",
+        "accountsText": "{amount} akun",
+        "yourRewards": "Hadiah Anda",
+        "openTelegram": "Buka {Telegram}",
+        "toEarnPoints": "Untuk mendapatkan poin"
     }
 }

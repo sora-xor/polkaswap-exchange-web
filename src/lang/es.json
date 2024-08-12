@@ -786,7 +786,8 @@
             "crowdloan": "Recompensas de préstamo colectivo"
         },
         "Rewards": "Recompensas",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Referencias",
+        "PointSystem": "Puntos"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Limpiar el almacenamiento local de {AppName}",
         "info": "Su almacenamiento local está sobrecargado, para continuar trabajando con {AppName} necesita limpiarlo",
         "agree": "Si, entiendo"
+    },
+    "points": {
+        "title": "Tu Progreso de Puntos",
+        "loginText": "Conecta tu cuenta para ver tus puntos",
+        "bridgeVolume": "Volumen de puente",
+        "feesSpent": "Tarifas gastadas",
+        "xorBurned": "{XOR} quemado",
+        "yourReferrals": "Tus referencias",
+        "accountsText": "{amount} cuentas",
+        "yourRewards": "Tus recompensas",
+        "openTelegram": "Abrir {Telegram}",
+        "toEarnPoints": "Para ganar puntos"
     }
 }

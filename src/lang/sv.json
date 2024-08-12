@@ -786,7 +786,8 @@
             "crowdloan": "Crowdloan rewards"
         },
         "Rewards": "Belöningar",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Referenser",
+        "PointSystem": "Poäng"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Rensa lokal {AppName} lagring",
         "info": "Din lokala lagring är överbelastad, för att fortsätta arbeta med {AppName} måste du rensa den",
         "agree": "Ja, jag förstår"
+    },
+    "points": {
+        "title": "Din poängframsteg",
+        "loginText": "Anslut ditt konto för att se dina poäng",
+        "bridgeVolume": "Brovolym",
+        "feesSpent": "Avgifter spenderade",
+        "xorBurned": "{XOR} bränt",
+        "yourReferrals": "Dina referenser",
+        "accountsText": "{amount} konton",
+        "yourRewards": "Dina belöningar",
+        "openTelegram": "Öppna {Telegram}",
+        "toEarnPoints": "För att tjäna poäng"
     }
 }

@@ -154,6 +154,7 @@ $max-ad-width: 330px;
     font-weight: 700;
     letter-spacing: -0.36px;
     text-transform: uppercase;
+    white-space: pre-line;
   }
   &-suffix {
     color: var(--s-color-base-on-accent);

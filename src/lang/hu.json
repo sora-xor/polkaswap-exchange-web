@@ -786,7 +786,8 @@
             "crowdloan": "Crowdloan jutalmak"
         },
         "Rewards": "Jutalmak",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Ajánlások",
+        "PointSystem": "Pontok"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Törölje a helyi {AppName} tárolót",
         "info": "A helyi tároló túlterhelt, a {AppName} használatához törölnie kell",
         "agree": "Igen, értem"
+    },
+    "points": {
+        "title": "Pontjaid haladása",
+        "loginText": "Csatlakoztasd a fiókodat, hogy lásd a pontjaidat",
+        "bridgeVolume": "Híd térfogata",
+        "feesSpent": "Elköltött díjak",
+        "xorBurned": "{XOR} elégetve",
+        "yourReferrals": "Ajánlásaid",
+        "accountsText": "{amount} fiókok",
+        "yourRewards": "Jutalmaitok",
+        "openTelegram": "Megnyitni {Telegram}",
+        "toEarnPoints": "Pontok megszerzéséhez"
     }
 }
