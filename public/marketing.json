@@ -1,5 +1,15 @@
 [
   {
+    "title": "WHAT IS\nPOLKASWAP",
+    "img": "/marketing/polkaswap.png",
+    "link": "https://about.polkaswap.io"
+  },
+  {
+    "title": "NOW IN TELEGRAM",
+    "img": "/marketing/now_in_telegram.png",
+    "link": "https://t.me/polkaswap_io_bot/app"
+  },
+  {
     "title": "SORA",
     "img": "/marketing/soraV3.png",
     "link": "https://medium.com/sora-xor/sora-v3-669d0619b141"

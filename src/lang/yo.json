@@ -396,7 +396,6 @@
         "Swap": "Iŕopo",
         "Pool": "Pulu",
         "Bridge": "@:bridgeText",
-        "About": "Nipa",
         "Stats": "Iṣiro",
         "Wallet": "Apamọwọ",
         "AddLiquidity": "Fi liquidity si",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Lati",
         "to": "Si"
-    },
-    "about": {
-        "title": "Awọn DEX fun Iwaju Ti a ko le ṣoro.",
-        "description": "Piparọ-pasipaaro awọn ohun-ini, ẹda ti o rọrun ati atokọ ti awọn ohun-ini tuntun, ati awọn iyipada ti o rọrun julọ lailai. Ọjọ iwaju ibaraenisepo ti {Polkadot} wa nibi ati pe a wa ni iwaju!",
-        "trading": {
-            "title": "Iyara Tita",
-            "first": "{AppName} jẹ ti kii ṣe olutọju, ilana AMM DEX ti o ni ilaja fun swapping awọn token ti o da lori awọn ẹwọn atokọ {Polkadot} ati {Kusama}, {Polkadot} ati awọn parachains {Kusama}, ati awọn ẹwọn ti a sopọ taara nipasẹ awọn afara.",
-            "second": "{AppName} yọ awọn alagbata igbẹkẹle kuro ati pese aye fun iṣowo yiyara",
-            "third": "{AppName} jẹ iṣẹ akanṣe agbegbe kan ati awọn devs ṣe ifowosowopo lori koodu orisun ṣiṣi nipa lilo"
-        },
-        "liquidity": {
-            "title": "Liquidity Ailara",
-            "first": "{AppName} daapọ awọn orisun liquidity pupọ labẹ algorithm alaropo idapọ oloomi wọpọ, n ṣiṣẹ patapata lori pq, ni ọna igbẹkẹle ati aila-kaakiri.",
-            "second": "Nigbati awọn oniṣowo ba pe iṣẹ swap, algorithm aggregation liquidity yoo fọwọsi awọn ibere ni lilo awọn ipese ti o dara julọ kọja gbogbo awọn orisun oloomi. Awọn orisun liquidity le jẹ awọn DEX miiran, awọn iwe aṣẹ, tabi awọn orisun ti a ṣakoso API.",
-            "third": "Nitori {AppName} jẹ iṣẹ akanṣe ṣiṣii, ẹnikẹni le ṣafikun awọn orisun liquidity diẹ sii nipasẹ ṣiṣe awọn ifunni si ipilẹ koodu {AppName}."
-        },
-        "swap": {
-            "title": "Serapada Eyikeyi Tokini",
-            "first": "Lọ kọja awọn aropin ti awọn DEX lọwọlọwọ nipa fifi awọn ami sii lati ilolupo eda eniyan {Polkadot} ati awọn iwe-aṣẹ miiran.",
-            "second": "Ṣẹda, ṣe atokọ ati ṣowo awọn ami tirẹ lori nẹtiwọọki {Sora}.",
-            "third": "Awọn amayederun pataki wa lo Substrate Parity, eyiti o jẹ iwọn diẹ sii ju {Ethereum}, ati pe ko lo iwakusa ti o gbowolori fun ifọkanbalẹ."
-        },
-        "pswap": {
-            "title": "Awọn Tokini PSWAP",
-            "first": "PSWAP ni a ṣẹda nipasẹ iṣakoso ijọba agbegbe nipasẹ didibo lori itusilẹ rẹ. O jẹ iwulo ati ami ijọba ti a lo lati san awọn olupese olupese oloomi lori lori {AppName}. Ko dabi awọn ami ẹbun miiran miiran, PSWAP ti jo pẹlu awọn iṣowo ati dinku ni ipese pelu akoko.",
-            "second": "{percent}% fun gbogbo swap lori {AppName} DEX ni a lo lati ra awọn Tokini PSWAP pada, eyiti wọn dana sun. Ni akọkọ, 90% ti awọn ami PSWAP ti a sun ni a ṣe iranti lati pin si awọn olupese oloomi, ṣugbọn pẹlu akoko yii ipin ogorun yii yoo dinku si 35% lẹhin ọdun mẹrin."
-        },
-        "links": {
-            "first": {
-                "title": "Di Olutọju {Sora}",
-                "desc": "Ṣe aabo ọjọ iwaju ti nẹtiwọọki {Sora} ati awọn ohun elo ti a sọ di mimọ bi {AppName}, ki o si jere awọn ere ni ọna nipasẹ didasilẹ afọwọsi {Sora}."
-            },
-            "second": {
-                "title": "So Chain pa pọ mọ {Sora}",
-                "desc": "Dagba eto-ọrọ agbaye tigbọn nipa didopọ awọn ẹwọn diẹ si {Sora} ati {AppName} nipa lilo ilana Afara {Hashi}."
-            }
-        },
-        "network": "{AppName} ti wa ni ori Nẹtiwọọki {Sora}, ni idojukọ lori ibaraenisepo lati sopọ iyoku eto ilolupo ẹda crypto si {Polkadot}."
     },
     "exchange": {
         "Swap": "Iŕopo",
@@ -825,7 +786,8 @@
             "crowdloan": "Crowdloan ere"
         },
         "Rewards": "Ere",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Awọn itọkasi",
+        "PointSystem": "Awọn Dimegilio"
     },
     "provider": {
         "messages": {
@@ -1686,5 +1648,22 @@
     "currencyDialog": {
         "currency": "Owo owo",
         "searchPlaceholder": "Ṣewadii nipasẹ orukọ owo tabi aami"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Nu ibi ipamọ agbegbe {AppName} mọ",
+        "info": "Ibi ipamọ agbegbe rẹ ti kun ju, lati tẹsiwaju iṣẹ pẹlu {AppName} o nilo lati nu rẹ",
+        "agree": "Bẹẹni, Mo loye"
+    },
+    "points": {
+        "title": "Ilọsiwaju Dimegilio Rẹ",
+        "loginText": "Sopọ akọọlẹ rẹ lati wo awọn dimegilio rẹ",
+        "bridgeVolume": "Iwọn Afara",
+        "feesSpent": "Awọn owo ti a lo",
+        "xorBurned": "{XOR} ti sun",
+        "yourReferrals": "Awọn itọkasi rẹ",
+        "accountsText": "{amount} awọn akọọlẹ",
+        "yourRewards": "Awọn ere rẹ",
+        "openTelegram": "Ṣii {Telegram}",
+        "toEarnPoints": "Lati gba awọn dimegilio"
     }
 }

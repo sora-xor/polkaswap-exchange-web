@@ -255,11 +255,11 @@ export default class BuySellWidget extends Mixins(
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.amountSliderValue sliderValue!: number;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
+  @state.orderBook.dexId dexId!: DexId;
 
   @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;
-  @state.swap.selectedDexId private selectedDexId!: number;
 
   @getter.assets.xor xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
@@ -769,7 +769,7 @@ export default class BuySellWidget extends Mixins(
       this.slippageTolerance,
       this.isBuySide,
       LiquiditySourceTypes.OrderBook,
-      this.selectedDexId
+      this.dexId
     );
   }
 
@@ -870,12 +870,7 @@ export default class BuySellWidget extends Mixins(
     const outputAsset = (this.tokenTo as AccountAsset).address;
     const sources = [LiquiditySourceTypes.OrderBook];
 
-    const observableQuote = api.swap.getSwapQuoteObservable(
-      inputAsset,
-      outputAsset,
-      sources,
-      DexId.XOR // subscription only for XOR dex in optimization purposes
-    );
+    const observableQuote = api.swap.getSwapQuoteObservable(inputAsset, outputAsset, sources, this.dexId);
 
     if (!observableQuote) return;
 
@@ -911,7 +906,7 @@ export default class BuySellWidget extends Mixins(
     this.setToValue(toValue);
     this.setQuoteValue(this.marketQuotePrice);
     this.setLiquiditySource(LiquiditySourceTypes.OrderBook);
-    this.selectDexId(DexId.XOR); // make it changeable if other dexes are allowed
+    this.selectDexId(this.dexId);
     this.checkInputValidation();
   }
 

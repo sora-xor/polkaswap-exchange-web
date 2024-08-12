@@ -1,8 +1,8 @@
 <template>
-  <base-widget extensive :title="tc('transactionText', 2)" class="swap-transactions-widget">
+  <base-widget v-bind="$attrs" :title="tc('transactionText', 2)" class="swap-transactions-widget">
     <s-table
       ref="table"
-      v-loading="loadingState"
+      v-loading="loading"
       :data="tableItems"
       :highlight-current-row="false"
       size="small"
@@ -19,7 +19,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="106" header-align="right" align="right">
+      <s-table-column header-align="right" align="right">
         <template #header>
           <span>{{ t('removeLiquidity.input') }}</span>
         </template>
@@ -31,7 +31,7 @@
           />
         </template>
       </s-table-column>
-      <s-table-column width="106" header-align="left" align="left">
+      <s-table-column header-align="left" align="left">
         <template #header>
           <span>{{ t('removeLiquidity.output') }}</span>
         </template>
@@ -43,7 +43,7 @@
           />
         </template>
       </s-table-column>
-      <s-table-column width="112" header-align="left" align="left">
+      <s-table-column header-align="left" align="left">
         <template #header>
           <span>{{ t('transfers.from') }}</span>
         </template>
@@ -58,7 +58,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="112" header-align="left" align="left">
+      <s-table-column header-align="left" align="left">
         <template #header>
           <span>{{ t('transfers.to') }}</span>
         </template>
@@ -96,7 +96,7 @@
       :current-page="currentPage"
       :page-amount="pageAmount"
       :total="total"
-      :loading="loadingState"
+      :loading="loading"
       :last-page="lastPage"
       @pagination-click="onPaginationClick"
     />
@@ -157,7 +157,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin,
     this.checkTriggerUpdate(curr, prev);
   }
 
-  pageAmount = 8; // override PaginationSearchMixin
+  pageAmount = 5; // override PaginationSearchMixin
 
   private readonly operations = [Operation.Swap];
   private readonly fromTimestamp = dayjs().subtract(1, 'month').startOf('day').unix(); // month ago, start of the day

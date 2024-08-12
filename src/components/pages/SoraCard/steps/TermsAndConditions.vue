@@ -13,17 +13,17 @@
       </div>
     </div>
     <div class="tos__section">
-      <div class="tos__section-block" @click="openDialog('t&c')">
+      <div v-button class="tos__section-block" @click="openDialog('t&c')">
         <span class="tos__section-point">{{ t(termsAndConditionsTitle) }}</span>
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>
       <div class="line" />
-      <div class="tos__section-block" @click="openDialog('privacyPolicy')">
+      <div v-button class="tos__section-block" @click="openDialog('privacyPolicy')">
         <span class="tos__section-point">{{ t(privacyPolicyTitle) }}</span>
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>
       <div class="line" />
-      <div class="tos__section-block" @click="openDialog('unsupported')">
+      <div v-button class="tos__section-block" @click="openDialog('unsupported')">
         <span class="tos__section-point">{{ t(unsupportedCountriesTitle) }}</span>
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>

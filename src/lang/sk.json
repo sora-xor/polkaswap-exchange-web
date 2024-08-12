@@ -396,7 +396,6 @@
         "Swap": "Zameniť",
         "Pool": "Fond",
         "Bridge": "@:bridgeText",
-        "About": "O aplikácii",
         "Stats": "Štatistiky",
         "Wallet": "Peňaženka",
         "AddLiquidity": "Pridať likviditu",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Od",
         "to": "Komu"
-    },
-    "about": {
-        "title": "DEX pre interoperabilnú budúcnosť.",
-        "description": "Cross-chain obchodovanie aktív, jednoduché vytváranie a zavádzanie nových aktív a tie najjednoduchšie swapy vôbec. Interoperabilná budúcnosť {Polkadot} je tu a my sme na jej čele!",
-        "trading": {
-            "title": "Rýchlejšie obchodovanie",
-            "first": "{AppName} je neväzobný, cross-chain AMM DEX protokol umožňujúci výmenu tokenov. Založený je na {Polkadot} a {Kusama} protokoloch, ďalej {Polkadot} a {Kusama} parachainoch a blockchainoch priamo prepojených prostredníctvom premostení.",
-            "second": "{AppName} eliminuje sprostredkovateľov a umožňuje rýchlejšie obchodovanie",
-            "third": "{AppName} je komunitný projekt a vývojári spolupracujú na otvorenom zdrojovom kóde za použitia"
-        },
-        "liquidity": {
-            "title": "Neobmedzená likvidita",
-            "first": "{AppName}, ktorý pod spoločným algoritmom agregácie likvidity kombinuje viacero zdrojov likvidity, funguje úplne on-chain, decentralizovane a bez akejkoľvek centrálnej autority.",
-            "second": "Keď obchodníci zavolajú funkciu výmeny, algoritmus agregácie likvidity vyplní objednávky pomocou najlepších ponúk zo všetkých dostupných zdrojov likvidity. Zdrojmi likvidity môžu byť iné DEX, burzy alebo iné zdroje dostupné prostredníctvom API.",
-            "third": "Pretože {AppName} je open-source projekt, ktokoľvek môže pridať ďalšie zdroje likvidity prispením do zdrojového kódu {AppName}."
-        },
-        "swap": {
-            "title": "Vymeňte akýkoľvek token",
-            "first": "Prekročte hranice súčasných DEXov pridaním tokenov z ekosystému {Polkadot}, ako aj iných blockchainov.",
-            "second": "Vytvárajte, zaraďujte a obchodujte so svojimi vlastnými tokenmi v sieti {Sora}.",
-            "third": "Naša základná infraštruktúra používa Parity Substrate, ktorý je škálovateľnejší než {Ethereum}, a pre dosiahnutie konsenzu nepoužíva nákladnú ťažbu."
-        },
-        "pswap": {
-            "title": "PSWAP tokeny",
-            "first": "PSWAP bol vytvorený ako výsledok hlasovania komunity. Je to nástroj správy protokolu používaný na odmeňovanie poskytovateľov likvidity v {AppName}. Na rozdiel od väčšiny ostatných tokenov slúžiacich na odmeňovanie, je PSWAP spaľovaný pri transakciách a jeho zásoba sa tak časom znižuje.",
-            "second": "{percent}%-ný poplatok za každú transakciu pri použití {AppName} DEX sa použije na spätný odkup a následné spálenie tokenov PSWAP. Zo začiatku sa 90% spálených tokenov PSWAP znova vytvorí a distribuuje medzi poskytovateľov likvidity. Postupne sa ale toto percento do 4 rokov zníži na 35%."
-        },
-        "links": {
-            "first": {
-                "title": "Staňte sa {Sora} validátorom",
-                "desc": "Pomôžte zabezpečiť budúcnosť siete {Sora} a decentralizovaných aplikácií, ako je {AppName}, a získajte odmeny za to, že sa stanete {Sora} validátorom."
-            },
-            "second": {
-                "title": "Pripojte chain k sieti {Sora}",
-                "desc": "Rozšírte decentralizovanú svetovú ekonomiku pripojením ďalších chainov k {Sora} a {AppName} pomocou preklenovacieho protokolu {Hashi}."
-            }
-        },
-        "network": "{AppName} je postavená na sieti {Sora} a zameriava sa na interoperabilitu s cieľom pripojiť zvyšok kryptoekosystému k {Polkadot}."
     },
     "exchange": {
         "Swap": "Výmena",
@@ -825,7 +786,8 @@
             "crowdloan": "Crowdloan odmeny"
         },
         "Rewards": "Odmeny",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Odporúčania",
+        "PointSystem": "Body"
     },
     "provider": {
         "messages": {
@@ -1686,5 +1648,22 @@
     "currencyDialog": {
         "currency": "mena",
         "searchPlaceholder": "Hľadajte podľa názvu meny alebo symbolu"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Vymazať lokálne úložisko {AppName}",
+        "info": "Vaše lokálne úložisko je preťažené, na pokračovanie práce s {AppName} je potrebné ho vyčistiť",
+        "agree": "Áno rozumiem"
+    },
+    "points": {
+        "title": "Váš pokrok v bodoch",
+        "loginText": "Pripojte svoj účet, aby ste videli svoje body",
+        "bridgeVolume": "Objem na moste",
+        "feesSpent": "Vynaložené poplatky",
+        "xorBurned": "{XOR} spálené",
+        "yourReferrals": "Vaše odporúčania",
+        "accountsText": "{amount} účtov",
+        "yourRewards": "Vaše odmeny",
+        "openTelegram": "Otvoriť {Telegram}",
+        "toEarnPoints": "Na získanie bodov"
     }
 }
