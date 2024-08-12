@@ -785,8 +785,21 @@
             "external": "Phần thưởng cho tài khoản {Ethereum} được kết nối",
             "crowdloan": "Phần thưởng Crowdloan"
         },
+        "PointSystem": "Điểm",
         "Rewards": "Thưởng",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Giới thiệu"
+    },
+    "points": {
+        "title": "Tiến trình điểm của bạn",
+        "loginText": "Kết nối tài khoản của bạn để xem điểm",
+        "bridgeVolume": "Khối lượng cầu",
+        "feesSpent": "Phí đã chi",
+        "xorBurned": "{XOR} đã đốt",
+        "yourReferrals": "Giới thiệu của bạn",
+        "accountsText": "{amount} tài khoản",
+        "yourRewards": "Phần thưởng của bạn",
+        "openTelegram": "Mở {Telegram}",
+        "toEarnPoints": "Để kiếm điểm"
     },
     "provider": {
         "messages": {

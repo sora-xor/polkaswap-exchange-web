@@ -785,8 +785,21 @@
             "external": "Պարգևատրումներ կապված {Ethereum} հաշվի համար",
             "crowdloan": "Crowdloan պարգևներ"
         },
+        "PointSystem": "Միավորներ",
         "Rewards": "Պարգեւներ",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Հղումներ"
+    },
+    "points": {
+        "title": "Ձեր միավորների առաջընթացը",
+        "loginText": "Միացրեք ձեր հաշիվը, որպեսզի տեսնեք ձեր միավորները",
+        "bridgeVolume": "Կամուրջի ծավալը",
+        "feesSpent": "Ծախսված վճարները",
+        "xorBurned": "{XOR} այրված է",
+        "yourReferrals": "Ձեր հղումները",
+        "accountsText": "{amount} հաշիվներ",
+        "yourRewards": "Ձեր մրցանակները",
+        "openTelegram": "Բացել {Telegram}",
+        "toEarnPoints": "Միավորներ ստանալու համար"
     },
     "provider": {
         "messages": {

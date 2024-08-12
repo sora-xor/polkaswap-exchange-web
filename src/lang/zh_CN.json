@@ -785,8 +785,21 @@
             "external": "连接的{Ethereum}帐户的奖励",
             "crowdloan": "众贷奖励"
         },
+        "PointSystem": "积分",
         "Rewards": "奖励",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "推荐"
+    },
+    "points": {
+        "title": "您的积分进度",
+        "loginText": "连接您的账户以查看积分",
+        "bridgeVolume": "桥接量",
+        "feesSpent": "已花费费用",
+        "xorBurned": "{XOR} 已销毁",
+        "yourReferrals": "您的推荐",
+        "accountsText": "{amount} 个账户",
+        "yourRewards": "您的奖励",
+        "openTelegram": "打开 {Telegram}",
+        "toEarnPoints": "获得积分"
     },
     "provider": {
         "messages": {

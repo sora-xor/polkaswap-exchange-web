@@ -785,8 +785,21 @@
             "external": "Awọn ere fun iroyin {Ethereum} ti a sopọ",
             "crowdloan": "Crowdloan ere"
         },
+        "PointSystem": "Awọn Dimegilio",
         "Rewards": "Ere",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Awọn itọkasi"
+    },
+    "points": {
+        "title": "Ilọsiwaju Dimegilio Rẹ",
+        "loginText": "Sopọ akọọlẹ rẹ lati wo awọn dimegilio rẹ",
+        "bridgeVolume": "Iwọn Afara",
+        "feesSpent": "Awọn owo ti a lo",
+        "xorBurned": "{XOR} ti sun",
+        "yourReferrals": "Awọn itọkasi rẹ",
+        "accountsText": "{amount} awọn akọọlẹ",
+        "yourRewards": "Awọn ere rẹ",
+        "openTelegram": "Ṣii {Telegram}",
+        "toEarnPoints": "Lati gba awọn dimegilio"
     },
     "provider": {
         "messages": {

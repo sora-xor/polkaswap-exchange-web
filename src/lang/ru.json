@@ -785,8 +785,21 @@
             "external": "Вознаграждения за подключенный аккаунт {Ethereum}",
             "crowdloan": "Crowdloan вознаграждения"
         },
+        "PointSystem": "Очки",
         "Rewards": "Награды",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Рефералы"
+    },
+    "points": {
+        "title": "Ваш прогресс в очках",
+        "loginText": "Подключите свой аккаунт, чтобы увидеть свои очки",
+        "bridgeVolume": "Объем моста",
+        "feesSpent": "Потраченные комиссии",
+        "xorBurned": "{XOR} сожжено",
+        "yourReferrals": "Ваши рефералы",
+        "accountsText": "{amount} аккаунтов",
+        "yourRewards": "Ваши награды",
+        "openTelegram": "Открыть {Telegram}",
+        "toEarnPoints": "Чтобы заработать очки"
     },
     "provider": {
         "messages": {

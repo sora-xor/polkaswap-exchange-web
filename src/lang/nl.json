@@ -785,8 +785,21 @@
             "external": "Beloningen voor het verbonden {Ethereum}-account",
             "crowdloan": "Crowdloan beloningen"
         },
+        "PointSystem": "Punten",
         "Rewards": "Beloningen",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Verwijzingen"
+    },
+    "points": {
+        "title": "Uw puntenvoortgang",
+        "loginText": "Verbind uw account om uw punten te zien",
+        "bridgeVolume": "Brugvolume",
+        "feesSpent": "Uitgegeven vergoedingen",
+        "xorBurned": "{XOR} verbrand",
+        "yourReferrals": "Uw verwijzingen",
+        "accountsText": "{amount} accounts",
+        "yourRewards": "Uw beloningen",
+        "openTelegram": "Openen {Telegram}",
+        "toEarnPoints": "Om punten te verdienen"
     },
     "provider": {
         "messages": {

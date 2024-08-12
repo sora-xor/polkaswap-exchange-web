@@ -785,8 +785,21 @@
             "external": "Odmeny za pripojený {Ethereum} účet",
             "crowdloan": "Crowdloan odmeny"
         },
+        "PointSystem": "Body",
         "Rewards": "Odmeny",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Odporúčania"
+    },
+    "points": {
+        "title": "Váš pokrok v bodoch",
+        "loginText": "Pripojte svoj účet, aby ste videli svoje body",
+        "bridgeVolume": "Objem na moste",
+        "feesSpent": "Vynaložené poplatky",
+        "xorBurned": "{XOR} spálené",
+        "yourReferrals": "Vaše odporúčania",
+        "accountsText": "{amount} účtov",
+        "yourRewards": "Vaše odmeny",
+        "openTelegram": "Otvoriť {Telegram}",
+        "toEarnPoints": "Na získanie bodov"
     },
     "provider": {
         "messages": {

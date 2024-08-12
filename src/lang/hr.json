@@ -785,8 +785,21 @@
             "external": "Nagrade za povezani {Ethereum} račun",
             "crowdloan": "Crowdloan nagrade"
         },
+        "PointSystem": "Bodovi",
         "Rewards": "Nagrade",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Preporuke"
+    },
+    "points": {
+        "title": "Vaš napredak s bodovima",
+        "loginText": "Povežite svoj račun da vidite svoje bodove",
+        "bridgeVolume": "Volumen mosta",
+        "feesSpent": "Potrošene naknade",
+        "xorBurned": "{XOR} spaljeno",
+        "yourReferrals": "Vaše preporuke",
+        "accountsText": "{amount} računa",
+        "yourRewards": "Vaše nagrade",
+        "openTelegram": "Otvorite {Telegram}",
+        "toEarnPoints": "Za zarađivanje bodova"
     },
     "provider": {
         "messages": {

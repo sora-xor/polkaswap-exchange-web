@@ -785,8 +785,21 @@
             "external": "Recompensas para la cuenta de {Ethereum} conectada",
             "crowdloan": "Recompensas de préstamo colectivo"
         },
+        "PointSystem": "Puntos",
         "Rewards": "Recompensas",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Referencias"
+    },
+    "points": {
+        "title": "Tu Progreso de Puntos",
+        "loginText": "Conecta tu cuenta para ver tus puntos",
+        "bridgeVolume": "Volumen de puente",
+        "feesSpent": "Tarifas gastadas",
+        "xorBurned": "{XOR} quemado",
+        "yourReferrals": "Tus referencias",
+        "accountsText": "{amount} cuentas",
+        "yourRewards": "Tus recompensas",
+        "openTelegram": "Abrir {Telegram}",
+        "toEarnPoints": "Para ganar puntos"
     },
     "provider": {
         "messages": {

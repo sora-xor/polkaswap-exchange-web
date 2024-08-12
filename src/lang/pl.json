@@ -785,8 +785,21 @@
             "external": "Wynagrodzenie dla podłączonego konta sieci {Ethereum}",
             "crowdloan": "Nagrody Crowdloan"
         },
+        "PointSystem": "Punkty",
         "Rewards": "Wynagrodzenie",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Polecenia"
+    },
+    "points": {
+        "title": "Twój postęp punktów",
+        "loginText": "Połącz swoje konto, aby zobaczyć swoje punkty",
+        "bridgeVolume": "Wolumen mostu",
+        "feesSpent": "Wydane opłaty",
+        "xorBurned": "{XOR} spalony",
+        "yourReferrals": "Twoje polecenia",
+        "accountsText": "{amount} kont",
+        "yourRewards": "Twoje nagrody",
+        "openTelegram": "Otwórz {Telegram}",
+        "toEarnPoints": "Aby zdobyć punkty"
     },
     "provider": {
         "messages": {

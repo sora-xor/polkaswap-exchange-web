@@ -785,8 +785,21 @@
             "external": "Belöningar för det anslutna {Ethereum}-kontot",
             "crowdloan": "Crowdloan rewards"
         },
+        "PointSystem": "Poäng",
         "Rewards": "Belöningar",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Referenser"
+    },
+    "points": {
+        "title": "Din poängframsteg",
+        "loginText": "Anslut ditt konto för att se dina poäng",
+        "bridgeVolume": "Brovolym",
+        "feesSpent": "Avgifter spenderade",
+        "xorBurned": "{XOR} bränt",
+        "yourReferrals": "Dina referenser",
+        "accountsText": "{amount} konton",
+        "yourRewards": "Dina belöningar",
+        "openTelegram": "Öppna {Telegram}",
+        "toEarnPoints": "För att tjäna poäng"
     },
     "provider": {
         "messages": {

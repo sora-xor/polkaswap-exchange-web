@@ -785,8 +785,21 @@
             "external": "Награде за повезани {Ethereum} рачун",
             "crowdloan": "Kraudloun nagrade"
         },
+        "PointSystem": "Poeni",
         "Rewards": "Награде",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Preporuke"
+    },
+    "points": {
+        "title": "Vaš napredak poena",
+        "loginText": "Povežite svoj nalog da vidite svoje poene",
+        "bridgeVolume": "Obim mosta",
+        "feesSpent": "Potrošene naknade",
+        "xorBurned": "{XOR} spaljeno",
+        "yourReferrals": "Vaše preporuke",
+        "accountsText": "{amount} naloga",
+        "yourRewards": "Vaše nagrade",
+        "openTelegram": "Otvorite {Telegram}",
+        "toEarnPoints": "Za zarađivanje poena"
     },
     "provider": {
         "messages": {
