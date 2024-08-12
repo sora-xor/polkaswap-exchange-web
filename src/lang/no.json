@@ -785,21 +785,9 @@
             "external": "Belønninger for tilkoblet {Ethereum} konto",
             "crowdloan": "Crowdloan belønninger"
         },
-        "PointSystem": "Poeng",
         "Rewards": "Belønninger",
-        "ReferralProgram": "Henvisninger"
-    },
-    "points": {
-        "title": "Dine poengfremgang",
-        "loginText": "Koble til kontoen din for å se poengene dine",
-        "bridgeVolume": "Brovolum",
-        "feesSpent": "Brukte avgifter",
-        "xorBurned": "{XOR} brent",
-        "yourReferrals": "Dine henvisninger",
-        "accountsText": "{amount} kontoer",
-        "yourRewards": "Dine belønninger",
-        "openTelegram": "Åpne {Telegram}",
-        "toEarnPoints": "For å tjene poeng"
+        "ReferralProgram": "Henvisninger",
+        "PointSystem": "Poeng"
     },
     "provider": {
         "messages": {
@@ -1665,5 +1653,17 @@
         "title": "Tøm lokal {AppName} lagring",
         "info": "Din lokale lagring er overbelastet, for å fortsette å bruke {AppName} må du rense den",
         "agree": "Ja jeg forstår"
+    },
+    "points": {
+        "title": "Dine poengfremgang",
+        "loginText": "Koble til kontoen din for å se poengene dine",
+        "bridgeVolume": "Brovolum",
+        "feesSpent": "Brukte avgifter",
+        "xorBurned": "{XOR} brent",
+        "yourReferrals": "Dine henvisninger",
+        "accountsText": "{amount} kontoer",
+        "yourRewards": "Dine belønninger",
+        "openTelegram": "Åpne {Telegram}",
+        "toEarnPoints": "For å tjene poeng"
     }
 }

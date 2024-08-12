@@ -785,21 +785,9 @@
             "external": "Rewards for the connected {Ethereum} account",
             "crowdloan": "Crowdloan rewards"
         },
-        "PointSystem": "Points",
         "Rewards": "Rewards",
-        "ReferralProgram": "Referrals"
-    },
-    "points": {
-        "title": "Your Points Progress",
-        "loginText": "Connect your account to see your points",
-        "bridgeVolume": "Bridge volume",
-        "feesSpent": "Fees spent",
-        "xorBurned": "{XOR} burned",
-        "yourReferrals": "Your referrals",
-        "accountsText": "{amount} accounts",
-        "yourRewards": "Your rewards",
-        "openTelegram": "Open {Telegram}",
-        "toEarnPoints": "To earn points"
+        "ReferralProgram": "Referrals",
+        "PointSystem": "Points"
     },
     "provider": {
         "messages": {
@@ -1665,5 +1653,17 @@
         "title": "Clear local {AppName} storage",
         "info": "Your local storage is overloaded, to continue work with {AppName} need to clean it",
         "agree": "Yes, I understand"
+    },
+    "points": {
+        "title": "Your Points Progress",
+        "loginText": "Connect your account to see your points",
+        "bridgeVolume": "Bridge volume",
+        "feesSpent": "Fees spent",
+        "xorBurned": "{XOR} burned",
+        "yourReferrals": "Your referrals",
+        "accountsText": "{amount} accounts",
+        "yourRewards": "Your rewards",
+        "openTelegram": "Open {Telegram}",
+        "toEarnPoints": "To earn points"
     }
 }

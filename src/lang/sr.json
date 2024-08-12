@@ -785,21 +785,9 @@
             "external": "Награде за повезани {Ethereum} рачун",
             "crowdloan": "Kraudloun nagrade"
         },
-        "PointSystem": "Poeni",
         "Rewards": "Награде",
-        "ReferralProgram": "Preporuke"
-    },
-    "points": {
-        "title": "Vaš napredak poena",
-        "loginText": "Povežite svoj nalog da vidite svoje poene",
-        "bridgeVolume": "Obim mosta",
-        "feesSpent": "Potrošene naknade",
-        "xorBurned": "{XOR} spaljeno",
-        "yourReferrals": "Vaše preporuke",
-        "accountsText": "{amount} naloga",
-        "yourRewards": "Vaše nagrade",
-        "openTelegram": "Otvorite {Telegram}",
-        "toEarnPoints": "Za zarađivanje poena"
+        "ReferralProgram": "Preporuke",
+        "PointSystem": "Poeni"
     },
     "provider": {
         "messages": {
@@ -1665,5 +1653,17 @@
         "title": "Očistite lokalnu {AppName} memoriju",
         "info": "Vaša lokalna memorija je preopterećena, za nastavak rada sa {AppName} potrebno je očistiti je",
         "agree": "Да, разумем"
+    },
+    "points": {
+        "title": "Vaš napredak poena",
+        "loginText": "Povežite svoj nalog da vidite svoje poene",
+        "bridgeVolume": "Obim mosta",
+        "feesSpent": "Potrošene naknade",
+        "xorBurned": "{XOR} spaljeno",
+        "yourReferrals": "Vaše preporuke",
+        "accountsText": "{amount} naloga",
+        "yourRewards": "Vaše nagrade",
+        "openTelegram": "Otvorite {Telegram}",
+        "toEarnPoints": "Za zarađivanje poena"
     }
 }
