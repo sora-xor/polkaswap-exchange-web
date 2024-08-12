@@ -15,7 +15,7 @@ export type HapticFeedbackBinding = 'light' | 'medium' | 'heavy' | 'rigid' | 'so
 const HapticNotificationTypes: string[] = Object.values(HapticStatusValue);
 
 const HapticButtonSelector =
-  'button, a, [role="button"], [role="tab"], [role="radio"], [role="switch"], .el-button, .el-dropdown-menu__item, .s-clickable, .clickable';
+  'button, a, [role="button"], [role="tab"], [role="radio"], [role="switch"], .el-button, .el-dropdown-menu__item, .s-clickable, .clickable, .s-input';
 
 function isNotification(value: HapticFeedbackBinding): value is HapticFeedbackStatus {
   return HapticNotificationTypes.includes(value);
