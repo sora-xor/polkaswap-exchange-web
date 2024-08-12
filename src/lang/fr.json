@@ -786,7 +786,8 @@
             "crowdloan": "Récompenses Crowdloan"
         },
         "Rewards": "Récompenses",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Parrainages",
+        "PointSystem": "Points"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Effacer le stockage local {AppName}",
         "info": "Votre stockage local est surchargé, pour continuer à travailler avec {AppName} il faut le nettoyer",
         "agree": "Oui je comprends"
+    },
+    "points": {
+        "title": "Votre progression en points",
+        "loginText": "Connectez votre compte pour voir vos points",
+        "bridgeVolume": "Volume du pont",
+        "feesSpent": "Frais dépensés",
+        "xorBurned": "{XOR} brûlé",
+        "yourReferrals": "Vos parrainages",
+        "accountsText": "{amount} comptes",
+        "yourRewards": "Vos récompenses",
+        "openTelegram": "Ouvrir {Telegram}",
+        "toEarnPoints": "Pour gagner des points"
     }
 }

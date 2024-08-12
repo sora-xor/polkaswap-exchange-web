@@ -786,7 +786,8 @@
             "crowdloan": "Crowdloan odmeny"
         },
         "Rewards": "Odmeny",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Odporúčania",
+        "PointSystem": "Body"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Vymazať lokálne úložisko {AppName}",
         "info": "Vaše lokálne úložisko je preťažené, na pokračovanie práce s {AppName} je potrebné ho vyčistiť",
         "agree": "Áno rozumiem"
+    },
+    "points": {
+        "title": "Váš pokrok v bodoch",
+        "loginText": "Pripojte svoj účet, aby ste videli svoje body",
+        "bridgeVolume": "Objem na moste",
+        "feesSpent": "Vynaložené poplatky",
+        "xorBurned": "{XOR} spálené",
+        "yourReferrals": "Vaše odporúčania",
+        "accountsText": "{amount} účtov",
+        "yourRewards": "Vaše odmeny",
+        "openTelegram": "Otvoriť {Telegram}",
+        "toEarnPoints": "Na získanie bodov"
     }
 }

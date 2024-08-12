@@ -786,7 +786,8 @@
             "crowdloan": "众贷奖励"
         },
         "Rewards": "奖励",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "推荐",
+        "PointSystem": "积分"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "清除本地 {AppName} 存储",
         "info": "您的本地存储已超载，要继续使用 {AppName}，需要清理它",
         "agree": "是的我明白"
+    },
+    "points": {
+        "title": "您的积分进度",
+        "loginText": "连接您的账户以查看积分",
+        "bridgeVolume": "桥接量",
+        "feesSpent": "已花费费用",
+        "xorBurned": "{XOR} 已销毁",
+        "yourReferrals": "您的推荐",
+        "accountsText": "{amount} 个账户",
+        "yourRewards": "您的奖励",
+        "openTelegram": "打开 {Telegram}",
+        "toEarnPoints": "获得积分"
     }
 }

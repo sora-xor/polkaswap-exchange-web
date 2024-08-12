@@ -786,7 +786,8 @@
             "crowdloan": "Phần thưởng Crowdloan"
         },
         "Rewards": "Thưởng",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Giới thiệu",
+        "PointSystem": "Điểm"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Xóa bộ nhớ cục bộ {AppName}",
         "info": "Bộ nhớ cục bộ của bạn đã quá tải, để tiếp tục làm việc với {AppName}, cần xóa nó",
         "agree": "Vâng, tôi hiểu"
+    },
+    "points": {
+        "title": "Tiến trình điểm của bạn",
+        "loginText": "Kết nối tài khoản của bạn để xem điểm",
+        "bridgeVolume": "Khối lượng cầu",
+        "feesSpent": "Phí đã chi",
+        "xorBurned": "{XOR} đã đốt",
+        "yourReferrals": "Giới thiệu của bạn",
+        "accountsText": "{amount} tài khoản",
+        "yourRewards": "Phần thưởng của bạn",
+        "openTelegram": "Mở {Telegram}",
+        "toEarnPoints": "Để kiếm điểm"
     }
 }

@@ -50,6 +50,8 @@ export default class TransactionDetails extends Mixins(TranslationMixin) {
   display: flex;
   gap: $inner-spacing-tiny;
   margin-top: $inner-spacing-medium;
+  align-items: center;
+  justify-content: center;
 
   font-size: var(--s-font-size-extra-small);
   font-weight: 400;
