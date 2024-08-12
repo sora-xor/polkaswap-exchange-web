@@ -10,10 +10,14 @@
       class="explore-table"
     >
       <!-- Index -->
-      <s-table-column min-width="280" label="#">
+      <s-table-column min-width="290" label="#">
         <template #header>
           <div class="explore-table-item-index">
-            <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
+            <span
+              v-button
+              :class="['explore-table-item-index--head', { active: isDefaultSort }]"
+              @click="handleResetSort"
+            >
               #
             </span>
           </div>

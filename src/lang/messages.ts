@@ -75,7 +75,6 @@ export default {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',
-    [PageNames.About]: 'About',
     [PageNames.Stats]: 'Statistics',
     [PageNames.Wallet]: 'Wallet',
     [PageNames.AddLiquidity]: 'Add Liquidity',
@@ -100,7 +99,7 @@ export default {
     [PageNames.Farming]: 'Farming',
     [PageNames.Wallet]: 'Account',
     [PageNames.Rewards]: 'Rewards',
-    [PageNames.About]: 'About',
+    About: 'About',
     [PageNames.Stats]: 'Statistics',
     [PageNames.OrderBook]: 'Trade',
     [PageNames.ExploreContainer]: 'Explore',
@@ -368,54 +367,6 @@ export default {
       [Operation.BorrowVaultDebt]: 'Failed to borrow {amount} {symbol}',
     },
   },
-  about: {
-    title: 'The DEX for the Interoperable Future.',
-    description:
-      'Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of {Polkadot} is here and we are at the forefront!',
-    trading: {
-      title: 'Faster Trading',
-      first:
-        '{AppName} is a non-custodial, cross-chain AMM DEX protocol for swapping tokens based on {Polkadot} and {Kusama} relay chains, {Polkadot} and {Kusama} parachains, and blockchains directly connected via bridges.',
-      second: '{AppName} removes trusted intermediaries and provides the opportunity for faster trading',
-      third: '{AppName} is a community project and devs collaborate on the open source code using the',
-    },
-    liquidity: {
-      title: 'Boundless Liquidity',
-      first:
-        '{AppName} combines multiple liquidity sources under a common liquidity aggregation algorithm, operating completely on-chain, in a trustless and decentralized way.',
-      second:
-        'When traders call the swap function, the liquidity aggregation algorithm will fill orders using the best offers across all liquidity sources. Liquidity sources can be other DEXs, order books, or other API-driven sources.',
-      third:
-        'Because {AppName} is an open-source project, anyone can add more liquidity sources by making contributions to the {AppName} codebase.',
-    },
-    swap: {
-      title: 'Swap Any Token',
-      first:
-        'Go beyond the limits of current DEXs by adding tokens from the {Polkadot} ecosystem as well as other blockchains.',
-      second: 'Create, list and trade your own tokens on the {Sora} network.',
-      third:
-        'Our core infrastructure uses Parity Substrate, which is more scalable than {Ethereum}, and does not use expensive mining for consensus.',
-    },
-    pswap: {
-      title: 'PSWAP Tokens',
-      first:
-        'PSWAP was created by community governance by voting on its release. It is a utility and governance token used to reward liquidity providers on {AppName}. Unlike most other reward tokens, PSWAP is burned with transactions and decreases in supply over time.',
-      second:
-        'The {percent}% fee for every swap on the {AppName} DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years.',
-    },
-    links: {
-      first: {
-        title: 'Become a {Sora} Validator',
-        desc: 'Secure the future of the {Sora} network and decentralized apps like {AppName}, and earn rewards along the way by becoming a {Sora} validator.',
-      },
-      second: {
-        title: 'Connect a Chain to {Sora}',
-        desc: 'Grow the decentralized world economy by connecting more chains to {Sora} and {AppName} using the {Hashi} bridge protocol.',
-      },
-    },
-    network:
-      '{AppName} is built on the {Sora} Network, focusing on interoperability to connect the rest of the crypto ecosystem to {Polkadot}.',
-  },
   exchange: {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
@@ -667,8 +618,9 @@ export default {
     ok: 'OK',
   },
   rewards: {
+    [RewardsTabsItems.PointSystem]: 'Points',
     [RewardsTabsItems.Rewards]: 'Rewards',
-    [RewardsTabsItems.ReferralProgram]: '@:referralProgram.title',
+    [RewardsTabsItems.ReferralProgram]: 'Referrals',
     andText: 'and',
     forText: 'for',
     totalVested: 'Total rewards',
@@ -778,6 +730,18 @@ export default {
     payoff:
       'You would have to use the Bridge to get XOR from other networks, get sent XOR from another {Sora} account, or swap any other token already in your account into XOR.',
     button: 'Yes, I understand the risk',
+  },
+  points: {
+    title: 'Your Points Progress',
+    loginText: 'Connect your account to see your points',
+    bridgeVolume: 'Bridge volume',
+    feesSpent: 'Fees spent',
+    xorBurned: '{XOR} burned',
+    yourReferrals: 'Your referrals',
+    accountsText: '{amount} accounts',
+    yourRewards: 'Your rewards',
+    openTelegram: 'Open {Telegram}',
+    toEarnPoints: 'To earn points',
   },
   provider: {
     messages: {

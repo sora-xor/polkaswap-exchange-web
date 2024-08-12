@@ -61,11 +61,6 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Swap),
   },
   {
-    path: '/about',
-    name: PageNames.About,
-    component: lazyView(PageNames.About),
-  },
-  {
     path: '/wallet',
     name: PageNames.Wallet,
     component: lazyView(PageNames.Wallet),
@@ -214,6 +209,11 @@ const routes: Array<RouteConfig> = [
     path: '',
     component: lazyView(PageNames.RewardsTabs),
     children: [
+      {
+        path: '/points',
+        name: PageNames.PointSystem,
+        component: lazyView(PageNames.PointSystem),
+      },
       {
         path: '/rewards',
         name: PageNames.Rewards,

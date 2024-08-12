@@ -396,7 +396,6 @@
         "Swap": "Váltás",
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
-        "About": "Leírás",
         "Stats": "Statisztikák",
         "Wallet": "Tárca",
         "AddLiquidity": "Poolhoz hozzáadás",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "-tól",
         "to": "Számára"
-    },
-    "about": {
-        "title": "A DEX az átjárható jövőért.",
-        "description": "Blokkláncok közötti eszközcsere, új eszközök egyszerű létrehozása és listázása, valamint a valaha volt legegyszerűbb token váltás. {Polkadot} átjárható jövője itt van, és mi az élvonalban vagyunk!",
-        "trading": {
-            "title": "Gyorsabb kereskedés",
-            "first": "A {AppName} egy nem letétkezelő, blokkláncok közti AMM DEX protokoll a {Polkadot} és {Kusama} relayláncokon, {Polkadot} és {Kusama} paraláncokon, valamint a hidakon keresztül közvetlenül összekapcsolt blokkláncokon alapuló tokenek cseréjére.",
-            "second": "A {AppName} helyettesíti a megbízott közvetítőket és lehetőséget biztosít a gyorsabb kereskedésre",
-            "third": "A {AppName} egy közösségi projekt, és a fejlesztők együttműködnek a nyílt forráskódú kódon, a"
-        },
-        "liquidity": {
-            "title": "Határtalan likviditás",
-            "first": "A {AppName} több likviditási forrást egyesít egy közös likviditás-összevonási algoritmus alatt, amely teljesen a blokkláncon működik, megbízható és decentralizált módon.",
-            "second": "Amikor a kereskedők váltás funkciót használják, a likviditás-összevonó algoritmus az összes likviditási forrás legjobb ajánlatának felhasználásával tölti ki a megbízásokat. A likviditási források lehetnek más DEX-ek, ajánlati könyvek vagy más API-alapú források.",
-            "third": "Mivel a {AppName} egy nyílt forráskódú projekt, bárki további likviditási forrásokat adhat hozzá a {AppName} kódbázisához való hozzájárulással."
-        },
-        "swap": {
-            "title": "Bármilyen token váltása",
-            "first": "Lépj túl a jelenlegi DEX-ek határain a {Polkadot} ökoszisztéma és más blokkláncok tokeneinek hozzáadásával.",
-            "second": "Létrehozhatod, listázhatod és kereskedhetsz saját tokenjeiddel a {Sora} hálózaton.",
-            "third": "Alapinfrastruktúránk a Parity Substrate -t használja, amely skálázhatóbb, mint az {Ethereum}, és nem használ drága bányászatot a konszenzus érdekében."
-        },
-        "pswap": {
-            "title": "PSWAP Tokenek",
-            "first": "A PSWAP-ot a közösségi kormányzás hozta létre a kiadásáról szóló szavazással. Ez egy segéd- és kormányzó token, amelyet a likviditási szolgáltatók jutalmazására használnak a {AppName}. A legtöbb más jutalom tokentől eltérően a PSWAP tranzakciókkal elégetésre kerül, és idővel csökken a kínálat.",
-            "second": "A {AppName} DEX-en történő minden egyes váltás után fizetett {percent}%-os díjat a PSWAP tokenek visszavásárlására fordítják, amelyeket aztán elégetnek. Kezdetben az elégetett PSWAP tokenek 90%-át újragenerálják, hogy likviditásszolgáltatóknak osszák ki, de idővel ez az arány 4 év múlva 35%-ra csökken."
-        },
-        "links": {
-            "first": {
-                "title": "Legyél {Sora} Validátor",
-                "desc": "Biztosítsd a {Sora}-hálózatot és az olyan decentralizált alkalmazások jövőjét, mint a {AppName}, és szerezz jutalmakat azzal, ha {Sora} validátorrá válsz."
-            },
-            "second": {
-                "title": "Lánc csatlakoztatása a {Sora}-hoz",
-                "desc": "Gyarapítsd a decentralizált világgazdaságot azáltal, hogy több blokkláncot csatlakoztatsz a {Sora} és a {AppName} rendszerhez a {Hashi} hídprotokoll segítségével."
-            }
-        },
-        "network": "A {AppName} a {Sora} hálózatra épül, amely a kölcsönös átjárhatóságra összpontosít, hogy összekapcsolja a kripto ökoszisztéma többi részét a {Polkadot}."
     },
     "exchange": {
         "Swap": "Váltás",
@@ -825,7 +786,8 @@
             "crowdloan": "Crowdloan jutalmak"
         },
         "Rewards": "Jutalmak",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Ajánlások",
+        "PointSystem": "Pontok"
     },
     "provider": {
         "messages": {
@@ -1686,5 +1648,22 @@
     "currencyDialog": {
         "currency": "Valuta",
         "searchPlaceholder": "Keresés pénznem neve vagy szimbóluma alapján"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Törölje a helyi {AppName} tárolót",
+        "info": "A helyi tároló túlterhelt, a {AppName} használatához törölnie kell",
+        "agree": "Igen, értem"
+    },
+    "points": {
+        "title": "Pontjaid haladása",
+        "loginText": "Csatlakoztasd a fiókodat, hogy lásd a pontjaidat",
+        "bridgeVolume": "Híd térfogata",
+        "feesSpent": "Elköltött díjak",
+        "xorBurned": "{XOR} elégetve",
+        "yourReferrals": "Ajánlásaid",
+        "accountsText": "{amount} fiókok",
+        "yourRewards": "Jutalmaitok",
+        "openTelegram": "Megnyitni {Telegram}",
+        "toEarnPoints": "Pontok megszerzéséhez"
     }
 }

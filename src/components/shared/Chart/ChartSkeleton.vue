@@ -51,8 +51,8 @@ export default class ChartSkeleton extends Mixins(mixins.TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly isError!: boolean;
   @Prop({ default: true, type: Boolean }) readonly yLabel!: boolean;
   @Prop({ default: true, type: Boolean }) readonly xLabel!: boolean;
-  @Prop({ default: 9, type: Number }) readonly yTick!: boolean;
-  @Prop({ default: 11, type: Number }) readonly xTick!: boolean;
+  @Prop({ default: 9, type: Number }) readonly yTick!: number;
+  @Prop({ default: 11, type: Number }) readonly xTick!: number;
 
   get hasIssue(): boolean {
     return !this.loading && (this.isError || this.isEmpty);
@@ -75,7 +75,7 @@ $skeleton-label-width: 34px;
 
   .chart {
     flex: 1;
-    min-height: 327px;
+    min-height: 260px;
 
     &-price {
       display: flex;

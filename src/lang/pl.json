@@ -396,7 +396,6 @@
         "Swap": "Wymiana",
         "Pool": "Pula",
         "Bridge": "@:bridgeText",
-        "About": "O giełdzie",
         "Stats": "Statystyki",
         "Wallet": "Portfel",
         "AddLiquidity": "Dodawanie płynności",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Z",
         "to": "Na"
-    },
-    "about": {
-        "title": "DEX dla Interoperacyjnej Przyszłości",
-        "description": "Międzyłańcuchowa wymiana walut, proste tworzenie i wprowadzanie nowych walut oraz łatwa ich wymiana, jakiej jeszcze nie było. Interoperacyjna przyszłość sieci {Polkadot} już się rozpoczęła, a my znajdujemy się w czołówce!",
-        "trading": {
-            "title": "Szybki handel",
-            "first": "{AppName} jest nie-kustodialnym, cross-chainowym protokołem AMM DEX do wymiany tokenów opartym na łańcuchach przekaźnikowych {Polkadot} i {Kusama}, parachainach {Polkadot} i {Kusama} oraz blockchainach połączonych bezpośrednio poprzez mosty.",
-            "second": "{AppName} usuwa pośredników i zapewnia możliwość szybszego handlu.",
-            "third": "{AppName} jest projektem społecznościowym, a programiści pracują nad otwartym kodem źródłowym, używając"
-        },
-        "liquidity": {
-            "title": "Nieograniczona płynność",
-            "first": "{AppName} łączy wiele źródeł płynności w ramach wspólnego algorytmu agregacji płynności, działając całkowicie on-chain, w sposób bezpowierniczy i zdecentralizowany.",
-            "second": "Podczas gdy traderzy korzystają z funkcji wymiany, algorytm agregacji płynności wypełnia zlecenia, wykorzystując najlepsze oferty ze wszystkich dostępnych źródeł płynności. Źródłami płynności mogą być inne DEX-y [zdecentralizowane giełdy], księgi zamówień lub inne źródła oparte na API [interfejs programistyczny aplikacji].",
-            "third": "Ponieważ {AppName} jest projektem typu open source, każdy może dodać więcej źródeł płynności, wnosząc wkład do bazy kodu {AppName}."
-        },
-        "swap": {
-            "title": "Zamień dowolny token",
-            "first": "Wyjdź poza ograniczenia obecnych DEX-ów, dodając tokeny ekosystemu {Polkadot}, a także innych blockchainów.",
-            "second": "Twórz, wprowadzaj i handluj własnymi tokenami w sieci {Sora}.",
-            "third": "Nasza podstawowa infrastruktura wykorzystuje Parity Substrate, który jest bardziej skalowalny niż {Ethereum} i nie wykorzystuje kosztownego górnictwa dla osiągnięcia konsensusu."
-        },
-        "pswap": {
-            "title": "Tokeny PSWAP",
-            "first": "PSWAP powstał w wyniku głosowania społeczności nad jego wydaniem. Jest to token użytkowy i zarządzający, służący do wynagradzania dostarczycieli płynności na giełdzie {AppName}. W przeciwieństwie do większości innych tokenów wynagrodzeniowych, PSWAP jest spalany w transakcjach, co zmniejsza jego podaż.",
-            "second": "Opłata w wysokości {percent}% od każdej wymiany na giełdzie {AppName} DEX jest przeznaczana na odkupienie tokenów PSWAP, które są następnie spalane. Początkowo 90% spalonych tokenów PSWAP będzie wybijane ponownie w celu alokacji dla dostarczycieli płynności, ale z czasem ten odsetek będzie się zmniejszał do 35% w ciągu 4 lat."
-        },
-        "links": {
-            "first": {
-                "title": "Zostań walidatorem {Sora}",
-                "desc": "Zabezpiecz przyszłość sieci {Sora} i zdecentralizowanych aplikacji, takich jak {AppName}, stając się walidatorem {Sora}, który uzyskuje wynagrodzenie."
-            },
-            "second": {
-                "title": "Połącz łańcuch z {Sora}",
-                "desc": "Rozwijaj zdecentralizowaną gospodarkę światową, łącząc kolejne łańcuchy z {Sora} i {AppName} za pomocą protokołu mostu {Hashi}."
-            }
-        },
-        "network": "{AppName} jest zbudowany w sieci {Sora}, skupiając się na interoperacyjności, aby połączyć resztę ekosystemu krypto z {Polkadot}."
     },
     "exchange": {
         "Swap": "Zamień",
@@ -825,7 +786,8 @@
             "crowdloan": "Nagrody Crowdloan"
         },
         "Rewards": "Wynagrodzenie",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Polecenia",
+        "PointSystem": "Punkty"
     },
     "provider": {
         "messages": {
@@ -1686,5 +1648,22 @@
     "currencyDialog": {
         "currency": "Waluta",
         "searchPlaceholder": "Szukaj według nazwy waluty lub symbolu"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Wyczyść lokalne {AppName} dane",
+        "info": "Twoje lokalne dane są przeciążone, aby kontynuować pracę z {AppName}, musisz je wyczyścić",
+        "agree": "Tak, rozumiem"
+    },
+    "points": {
+        "title": "Twój postęp punktów",
+        "loginText": "Połącz swoje konto, aby zobaczyć swoje punkty",
+        "bridgeVolume": "Wolumen mostu",
+        "feesSpent": "Wydane opłaty",
+        "xorBurned": "{XOR} spalony",
+        "yourReferrals": "Twoje polecenia",
+        "accountsText": "{amount} kont",
+        "yourRewards": "Twoje nagrody",
+        "openTelegram": "Otwórz {Telegram}",
+        "toEarnPoints": "Aby zdobyć punkty"
     }
 }

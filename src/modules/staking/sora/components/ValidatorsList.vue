@@ -23,14 +23,14 @@
       </div>
       <div class="table-header-name table-header-item">{{ t('soraStaking.validatorsList.name') }}</div>
       <div class="table-header-info table-header-item">
-        <div :class="commissionHeaderClass" @click="setCommissionSort">
+        <div v-button :class="commissionHeaderClass" @click="setCommissionSort">
           <span>{{ t('soraStaking.validatorsList.commission') }}</span>
           <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
             <s-icon name="info-16" size="14px" />
           </s-tooltip>
           <s-icon class="chevron" name="arrows-chevron-top-rounded-24" size="18" />
         </div>
-        <div :class="returnHeaderClass" @click="setReturnSort">
+        <div v-button :class="returnHeaderClass" @click="setReturnSort">
           <span>{{ t('soraStaking.validatorsList.return') }}</span>
           <s-tooltip border-radius="mini" :content="t('comingSoonText')">
             <s-icon name="info-16" size="14px" />
@@ -64,6 +64,7 @@
             </div>
             <div
               v-if="mode === ValidatorsListMode.SELECT"
+              v-button
               class="select-area"
               @click="toggleSelectValidator(validator)"
             />

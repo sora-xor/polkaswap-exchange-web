@@ -1,5 +1,15 @@
 <template>
   <div class="collaterals-container container" :class="{ 'menu-collapsed': collapsed }">
+    <div class="collaterals-search">
+      <search-input
+        class="search"
+        autofocus
+        :value="exploreQuery"
+        :placeholder="t('searchText')"
+        @input="updateSearch"
+        @clear="resetSearch"
+      />
+    </div>
     <s-table
       ref="table"
       :data="tableItems"
@@ -12,7 +22,11 @@
       <s-table-column width="250" label="#">
         <template #header>
           <div class="explore-table-item-index">
-            <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
+            <span
+              v-button
+              :class="['explore-table-item-index--head', { active: isDefaultSort }]"
+              @click="handleResetSort"
+            >
               #
             </span>
           </div>
@@ -208,6 +222,7 @@ type TableItem = {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
+    SearchInput: components.SearchInput,
   },
 })
 export default class ExplorePools extends Mixins(ExplorePageMixin) {
@@ -289,6 +304,14 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
     if (!(this.isLoggedIn && row.isAvailable)) return;
     this.$emit('open', row.lockedAsset, row.debtAsset);
   }
+
+  updateSearch(value: string): void {
+    this.$emit('update-search', value);
+  }
+
+  resetSearch(): void {
+    this.$emit('update-search', '');
+  }
 }
 </script>
 
@@ -314,7 +337,7 @@ $min_breakpoint_large-mobile: $breakpoint_large-mobile - 1px;
     display: flex;
     flex-flow: column nowrap;
     gap: $inner-spacing-medium;
-    padding: $inner-spacing-big $inner-spacing-tiny;
+    padding: $inner-spacing-medium $inner-spacing-tiny;
     box-shadow: var(--s-shadow-element-pressed);
 
     @media (min-width: $min_breakpoint_large-mobile) and (max-width: 577px) {
@@ -328,10 +351,19 @@ $min_breakpoint_large-mobile: $breakpoint_large-mobile - 1px;
         max-width: $container-max-width--collapsed;
       }
     }
+
+    .explore-table-pagination {
+      margin: 0 $inner-spacing-medium;
+    }
   }
-}
-.explore-table-pagination {
-  margin-left: $inner-spacing-big;
-  margin-right: $inner-spacing-big;
+
+  &-search {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 $inner-spacing-small;
+    > .search {
+      max-width: $explore-search-input-max-width;
+    }
+  }
 }
 </style>

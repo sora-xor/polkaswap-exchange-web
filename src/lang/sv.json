@@ -396,7 +396,6 @@
         "Swap": "Byt",
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
-        "About": "Om",
         "Stats": "Statistik",
         "Wallet": "Plånbok",
         "AddLiquidity": "Lägg Till Likviditet",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Från",
         "to": "Till"
-    },
-    "about": {
-        "title": "DEX:en för den Interoperabla Framtiden",
-        "description": "Cross-chain byte av tillgångar, enkelt skapande samt listning av nya tillgångar och de enklaste bytena någonsin. {Polkadot} interoperabla framtid är här och vi ligger i dess framkant!",
-        "trading": {
-            "title": "Snabbare Handel",
-            "first": "{AppName} är en icke-frihetsberövande, cross-chain AMM DEX for att byta tokens baserat på {Polkadot} och {Kusama} relay chains, {Polkadot} och {Kusama} parachains, och blockkedjor direkt anslutna via bryggor.",
-            "second": "{AppName} tar bort betrodda mellanhänder och ger möjlighet till snabbare handel.",
-            "third": "{AppName} är ett community-projekt och devs samarbetar på den öppna källkoden med hjälp av"
-        },
-        "liquidity": {
-            "title": "Gränslös Likviditet",
-            "first": "{AppName} kombinerar flera likviditetskällor genom att använda en gemensam likviditetsaggregations-algoritm som fungerar helt on-chain på ett tillitsfritt och decentraliserat sätt.",
-            "second": "När handlare anropar swap-funktionen så fyller algoritmen för likviditetsaggregation ordrar med de bästa erbjudandena från alla likviditetskällor. Likviditetskällor kan vara andra DEX:ar, orderböcker, eller andra API-drivna källor.",
-            "third": "Eftersom {AppName} är ett open-source projekt så kan vem som helst lägga till fler likviditetskällor genom att bidra till {AppName}-kodbasen."
-        },
-        "swap": {
-            "title": "Byt Valfri Token",
-            "first": "Gå bortom gränserna för nuvarande DEX:ar genom att lägga till tokens från {Polkadot}-ekosystemet samt andra blockkedjor.",
-            "second": "Skapa, lista och handla med dina egna tokens på {Sora}-nätverket.",
-            "third": "Vår kärninfrastruktur använder Parity Substrate, som är mer skalbar än {Ethereum} och som ej använder dyr mining för konsensus."
-        },
-        "pswap": {
-            "title": "PSWAP Tokens",
-            "first": "PSWAP skapades genom community-styre som röstade om dess lansering. Det är en utility- och governance-token som används för att belöna likviditets-tillhandahållare på {AppName}. Till skillnad från de flesta andra belönings-tokens så bränns PSWAP när transaktioner sker vilket minskar tillgången med tiden.",
-            "second": "{percent}% avgiften för varje byte på {AppName} DEX används för att köpa tillbaka PSWAP-tokens som sedan bränns. Till en början så ompräglas 90% av brända PSWAP-tokens för att tilldelas till likviditets-tillhandahållare, men med tiden så kommer denna procentsats att minska till 35% efter 4 år."
-        },
-        "links": {
-            "first": {
-                "title": "Bli en {Sora}-validerare",
-                "desc": "Säkra framtiden för {Sora}-nätverket och decentraliserade appar som {AppName}, och få belöningar på vägen genom att bli en {Sora}-validerare."
-            },
-            "second": {
-                "title": "Anslut en Kedja till {Sora}",
-                "desc": "Få den decentraliserade världsekonomin att växa genom att koppla fler kedjor till {Sora} och {AppName} med hjälp av {Hashi}:s bryggprotokoll."
-            }
-        },
-        "network": "{AppName} är byggd på {Sora} -nätverket, med fokus på interoperabilitet för att ansluta resten av kryptoekosystemet till {Polkadot}."
     },
     "exchange": {
         "Swap": "Byt",
@@ -825,7 +786,8 @@
             "crowdloan": "Crowdloan rewards"
         },
         "Rewards": "Belöningar",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Referenser",
+        "PointSystem": "Poäng"
     },
     "provider": {
         "messages": {
@@ -1686,5 +1648,22 @@
     "currencyDialog": {
         "currency": "Valuta",
         "searchPlaceholder": "Sök efter valutanamn eller symbol"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Rensa lokal {AppName} lagring",
+        "info": "Din lokala lagring är överbelastad, för att fortsätta arbeta med {AppName} måste du rensa den",
+        "agree": "Ja, jag förstår"
+    },
+    "points": {
+        "title": "Din poängframsteg",
+        "loginText": "Anslut ditt konto för att se dina poäng",
+        "bridgeVolume": "Brovolym",
+        "feesSpent": "Avgifter spenderade",
+        "xorBurned": "{XOR} bränt",
+        "yourReferrals": "Dina referenser",
+        "accountsText": "{amount} konton",
+        "yourRewards": "Dina belöningar",
+        "openTelegram": "Öppna {Telegram}",
+        "toEarnPoints": "För att tjäna poäng"
     }
 }

@@ -14,7 +14,7 @@ import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/typ
 
 const getters = defineGetters<Web3State>()({
   availableNetworks(...args): Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>> {
-    const { state, rootState } = web3GetterContext(args);
+    const { state } = web3GetterContext(args);
 
     const hashi = [state.ethBridgeEvmNetwork].reduce((buffer, id) => {
       const data = EVM_NETWORKS[id];
@@ -79,11 +79,21 @@ const getters = defineGetters<Web3State>()({
   },
 
   isValidNetwork(...args): boolean {
-    const { state } = web3GetterContext(args);
+    const { state, getters } = web3GetterContext(args);
+    const { evmProviderNetwork } = state;
+    const { selectedNetwork } = getters;
 
-    if (state.networkType === BridgeNetworkType.Sub) return true;
+    if (!selectedNetwork) return false;
 
-    return state.evmProviderNetwork === state.networkSelected;
+    if (state.networkType === BridgeNetworkType.Sub) {
+      if (selectedNetwork.evmId) {
+        return evmProviderNetwork === selectedNetwork.evmId;
+      } else {
+        return true;
+      }
+    }
+
+    return evmProviderNetwork === selectedNetwork.id;
   },
 
   contractAddress(...args): (asset: KnownEthBridgeAsset) => Nullable<string> {
