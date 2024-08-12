@@ -483,7 +483,7 @@
         "title": "Pemilihan node network",
         "addNode": "Tambahkan node kustom",
         "customNode": "Kostum Node",
-        "howToSetupOwnNode": "Cara mengatur node {Sora} Anda sendiri",
+        "howToSetupOwnNode": "Siapkan node Anda",
         "select": "Pilih",
         "connected": "Terhubung",
         "nodeTitle": "{chain} dihosting oleh {name}",

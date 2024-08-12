@@ -40,7 +40,7 @@
     </s-form-item>
     <s-button
       native-type="submit"
-      class="node-info-button s-typography-button--large"
+      class="node-info-button s-typography-button--big"
       :type="buttonType"
       :disabled="buttonDisabled"
       :loading="loading"
@@ -55,12 +55,7 @@
       target="_blank"
       rel="noreferrer noopener"
     >
-      <s-button
-        type="tertiary"
-        class="node-info-tutorial-button s-typography-button--big"
-        icon="question-circle-16"
-        icon-position="right"
-      >
+      <s-button type="tertiary" class="node-info-tutorial-button s-typography-button--medium">
         {{ t('selectNodeDialog.howToSetupOwnNode') }}
       </s-button>
     </a>
@@ -219,12 +214,6 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .node-info {
-  &-tutorial-button {
-    .s-icon-question-circle-16:before {
-      font-size: 18px;
-    }
-  }
-
   .el-form-item.is-error > .el-form-item__content {
     & > [class^='s-input']:not(.s-disabled) {
       &,
