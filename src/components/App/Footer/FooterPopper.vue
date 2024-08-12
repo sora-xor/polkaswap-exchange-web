@@ -8,6 +8,7 @@
     @show="handleShow"
   >
     <div
+      v-button
       slot="reference"
       class="app-status__item s-flex"
       :class="computedClass"
