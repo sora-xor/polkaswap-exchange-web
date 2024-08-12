@@ -33,7 +33,7 @@
           <s-icon v-if="product.icon" :name="product.icon" size="20" />
           <span>{{ product.title }}</span>
         </a>
-        <div v-else :key="product.title" class="app-info-link app-info-link--product" @click="product.action">
+        <div v-else v-button :key="product.title" class="app-info-link app-info-link--product" @click="product.action">
           <s-icon v-if="product.icon" :name="product.icon" size="20" />
           <span>{{ product.title }}</span>
         </div>

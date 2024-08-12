@@ -63,7 +63,9 @@ export default class ExplorePageMixin extends Mixins(ScrollableTableMixin, Trans
         filterAsset(item.poolAsset) ||
         filterAsset(item.rewardAsset) ||
         filterAsset(item.baseAsset) ||
-        filterAsset(item.targetAsset)
+        filterAsset(item.targetAsset) ||
+        filterAsset(item.lockedAsset) ||
+        filterAsset(item.debtAsset)
     );
   }
 

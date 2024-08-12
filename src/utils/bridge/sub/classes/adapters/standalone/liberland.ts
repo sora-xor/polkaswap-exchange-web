@@ -9,7 +9,9 @@ import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 export class LiberlandAdapter extends SubAdapter {
   protected override async getAssetDeposit(asset: RegisteredAsset): Promise<CodecString> {
-    return await this.assetsAssetMinBalanceRequest(Number(asset.externalAddress));
+    const assetId = Number(asset.externalAddress);
+
+    return await this.assetMinBalanceRequest(assetId);
   }
 
   protected override async getAccountAssetBalance(

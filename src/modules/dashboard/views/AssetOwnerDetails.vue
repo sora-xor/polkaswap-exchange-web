@@ -180,8 +180,9 @@ import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import StatsSupplyChart from '@/components/pages/Stats/SupplyChart.vue';
-import { PageNames, Components, ZeroStringValue, BreakpointClass } from '@/consts';
+import StatsSupplyChart from '@/components/shared/Widget/SupplyChart.vue';
+import { PageNames, Components, ZeroStringValue } from '@/consts';
+import { BreakpointClass } from '@/consts/layout';
 import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
@@ -322,7 +323,7 @@ export default class AssetOwnerDetails extends Mixins(
     gap: 16px;
 
     &.empty {
-      height: calc(100vh - #{$header-height} - #{$footer-height});
+      height: calc(100dvh - #{$header-height} - #{$footer-height});
     }
 
     .details-card {

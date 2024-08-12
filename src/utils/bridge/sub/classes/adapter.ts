@@ -10,8 +10,10 @@ import { determineTransferType } from '@/utils/bridge/sub/utils';
 import { AcalaParachainAdapter } from './adapters/parachain/acala';
 import { AstarParachainAdapter } from './adapters/parachain/astar';
 import { MoonbaseParachainAdapter } from './adapters/parachain/moonbase';
+import { ParachainAdapter } from './adapters/parachain/parachain';
 import { SoraParachainAdapter } from './adapters/parachain/sora';
-import { RelaychainAdapter } from './adapters/relaychain';
+import { AlphanetRelaychainAdapter } from './adapters/relaychain/alphanet';
+import { RelaychainAdapter } from './adapters/relaychain/relaychain';
 import { LiberlandAdapter } from './adapters/standalone/liberland';
 import { SubAdapter } from './adapters/substrate';
 
@@ -27,8 +29,8 @@ type PathNetworks = {
 
 export class SubNetworksConnector {
   public soraParachain?: SoraParachainAdapter;
-  public relaychain?: SubAdapter;
-  public parachain?: SubAdapter;
+  public relaychain?: RelaychainAdapter;
+  public parachain?: ParachainAdapter<any>;
   public standalone?: SubAdapter;
 
   public destinationNetwork!: SubNetwork;
@@ -37,12 +39,7 @@ export class SubNetworksConnector {
   public static nodes: Partial<Record<SubNetwork, Node[]>> = {};
 
   constructor() {
-    // It is necessary to remove Vue reactivity from instance of "WithKeyring" class.
-    // In this case, Vue does not mark all instance properties with getters and setters
-    Object.defineProperty(this, 'accountApi', {
-      configurable: false,
-      value: new WithKeyring(),
-    });
+    this.accountApi = new WithKeyring();
   }
 
   get uniqueAdapters(): SubAdapter[] {
@@ -100,6 +97,9 @@ export class SubNetworksConnector {
 
   protected getAdapter(network: SubNetwork) {
     if (subBridgeApi.isRelayChain(network)) {
+      if (network === SubNetworkId.Alphanet) {
+        return new AlphanetRelaychainAdapter(network);
+      }
       return new RelaychainAdapter(network);
     }
     if (subBridgeApi.isParachain(network)) {
@@ -115,6 +115,7 @@ export class SubNetworksConnector {
       if (subBridgeApi.isSoraParachain(network)) {
         return new SoraParachainAdapter(network);
       }
+      return new ParachainAdapter(network);
     }
     if (subBridgeApi.isStandalone(network)) {
       if (network === SubNetworkId.Liberland) {
@@ -198,26 +199,37 @@ export class SubNetworksConnector {
   }
 
   /**
+   * Transfer funds from SORA to destination network
+   */
+  public async outgoingTransfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId: string) {
+    await subBridgeApi.transfer(asset, recipient, amount, this.destinationNetwork, historyId);
+  }
+
+  /**
    * Transfer funds from destination network to SORA
    */
-  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
-    const { api, accountPair, signer } = this.accountApi;
+  public async incomingTransfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId: string) {
+    if (subBridgeApi.isEvmAccount(this.destinationNetwork)) {
+      await this.network.transfer(asset, recipient, amount, historyId);
+    } else {
+      const { api, accountPair, signer } = this.accountApi;
 
-    if (!accountPair) throw new Error(`[${this.constructor.name}] Account pair is not set.`);
+      if (!accountPair) throw new Error(`[${this.constructor.name}] Account pair is not set.`);
 
-    const historyItem = subBridgeApi.getHistory(historyId as string) ?? {
-      type: Operation.SubstrateIncoming,
-      symbol: asset.symbol,
-      assetAddress: asset.address,
-      amount: `${amount}`,
-      externalNetwork: this.destinationNetwork,
-      externalNetworkType: BridgeNetworkType.Sub,
-      from: subBridgeApi.address, // "from" is always SORA account address
-      to: this.accountApi.address,
-    };
+      const historyItem = subBridgeApi.getHistory(historyId as string) ?? {
+        type: Operation.SubstrateIncoming,
+        symbol: asset.symbol,
+        assetAddress: asset.address,
+        amount: `${amount}`,
+        externalNetwork: this.destinationNetwork,
+        externalNetworkType: BridgeNetworkType.Sub,
+        from: subBridgeApi.address, // "from" is always SORA account address
+        to: this.accountApi.address,
+      };
 
-    const extrinsic = this.network.getTransferExtrinsic(asset, recipient, amount);
-    // submit extrinsic using SORA api, because current implementation using "subHistory" from SORA api scope
-    await subBridgeApi.submitApiExtrinsic(api, extrinsic as any, accountPair, signer, historyItem);
+      const extrinsic = this.network.getTransferExtrinsic(asset, recipient, amount);
+      // submit extrinsic using SORA api, because current implementation using "subHistory" from SORA api scope
+      await subBridgeApi.submitApiExtrinsic(api, extrinsic as any, accountPair, signer, historyItem);
+    }
   }
 }

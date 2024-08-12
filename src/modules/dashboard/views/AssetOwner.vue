@@ -163,7 +163,7 @@ export default class AssetOwner extends Mixins(InternalConnectMixin, mixins.Form
   }
 
   get noAssetsImg(): string {
-    return `/about/${this.libraryTheme}/hero.png`;
+    return `/asset-owner/${this.libraryTheme}-hero.png`;
   }
 
   get noAssetsImgDemo(): string {

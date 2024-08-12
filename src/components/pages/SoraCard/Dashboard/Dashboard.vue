@@ -39,13 +39,13 @@
       <h4 class="sora-card-hub-info-title">{{ t('card.cardhub.accountInfo') }}</h4>
       <div v-if="userInfo.iban" class="sora-card-hub-info-iban">
         <s-input :placeholder="t('card.cardHub.ibanLabel')" :value="iban" readonly />
-        <s-icon name="basic-copy-24" @click.native="handleCopyIban" />
+        <s-icon v-button name="basic-copy-24" @click.native="handleCopyIban" />
       </div>
       <div v-else class="sora-card-hub-info-iban-missing">
         <p class="label">{{ t('card.cardHub.ibanLabel') }}</p>
         <p v-html="t('card.ibanPendingDesc', { email: emailLink })" />
       </div>
-      <div class="sora-card-hub-logout" @click="logoutFromSoraCard">
+      <div v-button class="sora-card-hub-logout" @click="logoutFromSoraCard">
         <span>{{ t('card.cardHub.logout') }}</span>
         <s-icon name="arrows-chevron-right-rounded-24" size="18" />
       </div>

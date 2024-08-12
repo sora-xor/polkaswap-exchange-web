@@ -1,6 +1,6 @@
 <template>
   <div v-if="adsArray.length" class="marketing s-flex">
-    <span class="marketing-prev" @click="prev">
+    <span v-button class="marketing-prev" @click="prev">
       <s-icon name="arrows-chevron-left-rounded-24" />
     </span>
     <transition-group tag="div" class="marketing-slider" :name="transitionName">
@@ -22,7 +22,7 @@
         </div>
       </template>
     </transition-group>
-    <span class="marketing-next" @click="next">
+    <span v-button class="marketing-next" @click="next">
       <s-icon name="arrows-chevron-right-rounded-24" />
     </span>
   </div>
@@ -154,6 +154,7 @@ $max-ad-width: 330px;
     font-weight: 700;
     letter-spacing: -0.36px;
     text-transform: uppercase;
+    white-space: pre-line;
   }
   &-suffix {
     color: var(--s-color-base-on-accent);

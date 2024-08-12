@@ -49,9 +49,7 @@ $rewards-tabs-height: 72px;
 
 .rewards-tabs {
   &.container {
-    padding-top: 0;
-    padding-right: 0;
-    padding-left: 0;
+    padding: 0 0 $inner-spacing-big;
     .s-tabs {
       background-color: inherit;
       &,
@@ -66,6 +64,9 @@ $rewards-tabs-height: 72px;
     .el-tabs__nav {
       width: 100%;
     }
+    .el-tabs__header {
+      margin: 0;
+    }
     .el-tabs__header .el-tabs {
       &__nav,
       &__nav-wrap,
@@ -75,11 +76,13 @@ $rewards-tabs-height: 72px;
       }
       &__nav {
         .el-tabs__item {
-          width: 50%;
+          width: 33.3%;
         }
       }
       &__nav-wrap {
         .el-tabs__item {
+          text-overflow: ellipsis;
+          overflow-x: hidden;
           &,
           &.is-active {
             @include page-header-title(true);

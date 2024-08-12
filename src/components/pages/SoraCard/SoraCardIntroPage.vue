@@ -57,7 +57,7 @@
       </div>
       <div class="sora-card__unsupported-countries-disclaimer">
         {{ t('card.unsupportedCountriesDisclaimer') }}
-        <span class="sora-card__unsupported-countries-disclaimer--link" @click="openList">{{
+        <span v-button class="sora-card__unsupported-countries-disclaimer--link" @click="openList">{{
           t('card.unsupportedCountriesLink')
         }}</span>
       </div>

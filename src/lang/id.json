@@ -396,7 +396,6 @@
         "Swap": "Swap",
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
-        "About": "Tentang",
         "Stats": "Statistik",
         "Wallet": "Dompet",
         "AddLiquidity": "Tambah Likuiditas",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Dari",
         "to": "Untuk"
-    },
-    "about": {
-        "title": "DEX untuk Masa Depan Interoperabilitas.",
-        "description": "Pertukaran aset lintas rantai, pembuatan sederhana dan pencatatan aset baru, dan swap termudah yang pernah ada. Masa depan {Polkadot} yang dapat dioperasikan ada di sini dan kami berada di garis depan!",
-        "trading": {
-            "title": "Perdagangan Lebih Cepat",
-            "first": "{AppName} merupakan non-custodial, DEX AMM cross-chain untuk swap token berbasis relai chain jaringan {Polkadot} dan {Kusama}, parachain {Polkadot} dan {Kusama}, dan blockchain yang terhubung langsung melalui bridge",
-            "second": "{AppName} meniadakan perantara tepercaya dan memberikan kesempatan untuk perdagangan yang lebih cepat",
-            "third": "{AppName} merupakan proyek kolaborasi antara komunitas dan developer pada kode open source menggunakan"
-        },
-        "liquidity": {
-            "title": "Likuiditas Tanpa Batas",
-            "first": "{AppName} menggabungkan beberapa sumber likuiditas di bawah algoritma agregasi likuiditas umum, beroperasi sepenuhnya on-chain, trustless dan terdesentralisasi.",
-            "second": "Ketika trader memanggil fungsi swap, algoritma agregasi likuiditas akan mengisi pesanan menggunakan penawaran terbaik di semua sumber likuiditas. Sumber likuiditas dapat menjadi DEX lain, daftar pesanan, atau sumber berbasis API lainnya.",
-            "third": "Karena {AppName} adalah proyek open-source, siapa pun dapat menambahkan lebih banyak sumber likuiditas dengan memberikan kontribusi pada basis kode {AppName}."
-        },
-        "swap": {
-            "title": "Swap Token Apapun",
-            "first": "Melampaui batas DEX saat ini dengan menambahkan token dari ekosistem {Polkadot} serta blockchain lainnya.",
-            "second": "Buat, daftar, dan perdagangkan token Anda sendiri di jaringan {Sora}.",
-            "third": "Infrastruktur inti kami menggunakan Parity Substrate, yang lebih dapat diskalakan daripada {Ethereum}, dan tidak menggunakan penambangan mahal untuk konsensus."
-        },
-        "pswap": {
-            "title": "Token PSWAP",
-            "first": "PSWAP diciptakan oleh komunitas governance dengan cara vote pada saat rilis. Merupakan token utilitas dan governance yang digunakan untuk memberi hadiah kepada penyedia likuiditas di {AppName}. Tidak seperti kebanyakan token hadiah lainnya, PSWAP akan diburn setiap kali terjadi transaksi dan penyusutan suplai dari waktu ke waktu.",
-            "second": "Biaya {percent}% untuk setiap swap pada {AppName} DEX digunakan untuk membeli kembali token PSWAP, yang kemudian dibakar. Pada awalnya, 90% token PSWAP yang terbakar diolah untuk mengalokasikan ke penyedia likuiditas, tetapi seiring waktu persentase ini akan menurun menjadi 35% setelah 4 tahun."
-        },
-        "links": {
-            "first": {
-                "title": "Menjadi Validator {Sora}",
-                "desc": "Amankan masa depan jaringan {Sora} dan aplikasi terdesentralisasi seperti {AppName}, dan dapatkan hadiah disepanjang perjalanan dengan menjadi validator {Sora}."
-            },
-            "second": {
-                "title": "Hubungkan Chain ke {Sora}",
-                "desc": "Tumbuhkan ekonomi dunia yang terdesentralisasi dengan menghubungkan lebih banyak Chain ke {Sora} dan {AppName} menggunakan protokol jembatan {Hashi}."
-            }
-        },
-        "network": "{AppName} dibangun di Jaringan {Sora} , dengan fokus pada interoperabilitas untuk menghubungkan ekosistem kripto lainnya ke {Polkadot} ."
     },
     "exchange": {
         "Swap": "Swap",
@@ -825,7 +786,8 @@
             "crowdloan": "Hadiah Crowdloan"
         },
         "Rewards": "Hadiah",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Rujukan",
+        "PointSystem": "Poin"
     },
     "provider": {
         "messages": {
@@ -1686,5 +1648,22 @@
     "currencyDialog": {
         "currency": "Mata uang",
         "searchPlaceholder": "Cari berdasarkan nama atau simbol mata uang"
+    },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Bersihkan penyimpanan lokal {AppName}",
+        "info": "Penyimpanan lokal Anda kelebihan beban, untuk melanjutkan pekerjaan dengan {AppName} perlu membersihkannya",
+        "agree": "Ya saya mengerti"
+    },
+    "points": {
+        "title": "Kemajuan Poin Anda",
+        "loginText": "Hubungkan akun Anda untuk melihat poin Anda",
+        "bridgeVolume": "Volume jembatan",
+        "feesSpent": "Biaya yang dikeluarkan",
+        "xorBurned": "{XOR} dibakar",
+        "yourReferrals": "Rujukan Anda",
+        "accountsText": "{amount} akun",
+        "yourRewards": "Hadiah Anda",
+        "openTelegram": "Buka {Telegram}",
+        "toEarnPoints": "Untuk mendapatkan poin"
     }
 }
