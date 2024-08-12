@@ -332,8 +332,6 @@ $container-max-width--collapsed: calc($container-max - $container-paddings - $si
 
 $min_breakpoint_large-mobile: $breakpoint_large-mobile - 1px;
 
-$search-input-width: 290px;
-
 .collaterals {
   &-container {
     display: flex;
@@ -364,7 +362,7 @@ $search-input-width: 290px;
     justify-content: flex-end;
     padding: 0 $inner-spacing-small;
     > .search {
-      max-width: $search-input-width;
+      max-width: $explore-search-input-max-width;
     }
   }
 }
