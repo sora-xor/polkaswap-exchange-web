@@ -596,7 +596,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   gap: $inner-spacing-medium;
 
   &.empty {
-    height: calc(100vh - #{$header-height} - #{$footer-height});
+    height: calc(100dvh - #{$header-height} - #{$footer-height});
   }
 
   .details-card {
