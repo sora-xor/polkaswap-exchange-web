@@ -483,7 +483,7 @@
         "title": "Hálózati csomópont kiválasztása",
         "addNode": "Egyéni csomópont hozzáadása",
         "customNode": "Egyéni csomópont",
-        "howToSetupOwnNode": "Hogyan állítsd be a saját {Sora} csomópontodat?",
+        "howToSetupOwnNode": "Állítsd be a csomópontod",
         "select": "Kiválaszt",
         "connected": "Csatlakozva",
         "nodeTitle": "{chain} házigazda: {name}",

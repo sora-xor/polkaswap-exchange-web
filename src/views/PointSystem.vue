@@ -7,7 +7,11 @@
       <div class="points__main s-flex-column">
         <div v-if="!isLoggedIn" class="points__connect s-flex-column">
           <span class="points__connect-title d2">{{ t('points.loginText') }}</span>
-          <s-button class="points__connect-action s-typography-button--large" type="primary" @click="connectSoraWallet">
+          <s-button
+            class="points__connect-action s-typography-button--medium"
+            type="primary"
+            @click="connectSoraWallet"
+          >
             {{ t('connectWalletText') }}
           </s-button>
         </div>
@@ -385,6 +389,7 @@ export default class PointSystem extends Mixins(
   &__txs {
     justify-content: space-between;
     margin-bottom: $inner-spacing-mini;
+    gap: $inner-spacing-mini;
   }
   &__block {
     background-color: var(--s-color-utility-surface);
@@ -402,19 +407,20 @@ export default class PointSystem extends Mixins(
     }
   }
   &__soratopia {
-    height: 102px;
-    width: 384px;
+    min-height: 102px;
+    box-shadow: var(--s-shadow-element-pressed);
     background-image: url('~@/assets/img/points/soratopia.png');
     background-repeat: no-repeat;
     background-size: cover;
     text-decoration: none;
     color: var(--s-color-base-on-accent);
+    border-radius: var(--s-border-radius-mini);
     align-items: flex-end;
     @include focus-outline;
     &-container {
       align-items: center;
-      margin-bottom: $inner-spacing-medium;
-      margin-left: $inner-spacing-medium;
+      gap: $inner-spacing-medium;
+      margin: $inner-spacing-medium;
     }
     &-action {
       background-color: #52a1e3;
@@ -422,17 +428,27 @@ export default class PointSystem extends Mixins(
       color: var(--s-color-base-on-accent);
       font-size: var(--s-font-size-small);
       font-weight: 500;
+      white-space: nowrap;
       padding: $inner-spacing-mini $inner-spacing-medium;
-      margin-right: $inner-spacing-medium;
       cursor: pointer;
       @include focus-outline;
     }
     &-text {
+      flex: 1;
       text-transform: uppercase;
       opacity: 0.8;
       color: white;
       font-size: var(--s-font-size-mini);
       font-weight: 700;
+    }
+    @include large-mobile(true) {
+      background-repeat: round;
+      &-container {
+        margin: $inner-spacing-small;
+      }
+      &-action {
+        font-size: var(--s-font-size-mini);
+      }
     }
   }
 }
