@@ -483,7 +483,7 @@
         "title": "Netwerk node selectie",
         "addNode": "Aangepaste node toevoegen",
         "customNode": "Aangepaste node",
-        "howToSetupOwnNode": "Hoe je eigen {Sora} node opzetten",
+        "howToSetupOwnNode": "Stel uw node in",
         "select": "Selecteer",
         "connected": "Verbonden",
         "nodeTitle": "{chain} gehost door {name}",

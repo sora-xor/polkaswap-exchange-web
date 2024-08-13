@@ -483,7 +483,7 @@
         "title": "Wybór węzła sieci",
         "addNode": "Dodaj niestandardowy węzeł",
         "customNode": "Węzeł niestandardowy",
-        "howToSetupOwnNode": "Jak ustawić własny węzeł sieci {Sora}",
+        "howToSetupOwnNode": "Skonfiguruj swój węzeł",
         "select": "Wybierz",
         "connected": "Połączono",
         "nodeTitle": "{chain} hostowany przez {name}",

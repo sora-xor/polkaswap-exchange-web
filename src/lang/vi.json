@@ -483,7 +483,7 @@
         "title": "Chọn node trong Mạng",
         "addNode": "Thêm node tùy chỉnh",
         "customNode": "Node tùy chỉnh",
-        "howToSetupOwnNode": "Cách thiết lập node {Sora} cho riêng bạn",
+        "howToSetupOwnNode": "Cài đặt nút của bạn",
         "select": "Lựa chọn",
         "connected": "Đã kết nối",
         "nodeTitle": "{chain} được quản lý bởi {name}",
