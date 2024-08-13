@@ -483,7 +483,7 @@
         "title": "Избор мрежног нода",
         "addNode": "Додајте прилагођени нод",
         "customNode": "Прилагођени нод",
-        "howToSetupOwnNode": "Како да подесите свој {Sora} нод",
+        "howToSetupOwnNode": "Podesite svoj čvor",
         "select": "Изаберите",
         "connected": "Повезанo",
         "nodeTitle": "{chain} хостује {name}",

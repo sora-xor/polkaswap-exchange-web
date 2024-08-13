@@ -483,7 +483,7 @@
         "title": "Nettverk nodevalg",
         "addNode": "Legg til egendefinert node",
         "customNode": "Egendefinert node",
-        "howToSetupOwnNode": "Hvordan sette opp din egen {Sora} node",
+        "howToSetupOwnNode": "Sett opp din node",
         "select": "Velg",
         "connected": "Tilkoblet",
         "nodeTitle": "{chain} driftet av {name}",
