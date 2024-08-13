@@ -483,7 +483,7 @@
         "title": "Выбор сетевого узла",
         "addNode": "Добавить узел",
         "customNode": "Пользовательский узел",
-        "howToSetupOwnNode": "Как настроить собственный узел {Sora}",
+        "howToSetupOwnNode": "Настройте свой узел",
         "select": "Выберите",
         "connected": "Подключено",
         "nodeTitle": "{chain} на базе {name}",

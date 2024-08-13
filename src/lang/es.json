@@ -483,7 +483,7 @@
         "title": "Selección de nodos de la Red",
         "addNode": "Añadir nodo personalizado",
         "customNode": "Nodo personalizado",
-        "howToSetupOwnNode": "Cómo configurar su propio nodo {Sora}",
+        "howToSetupOwnNode": "Configura tu nodo",
         "select": "Seleccione",
         "connected": "Conectado",
         "nodeTitle": "{chain} alojada por {name}",

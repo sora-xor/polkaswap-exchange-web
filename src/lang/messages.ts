@@ -209,7 +209,7 @@ export default {
     addNode: 'Add custom node',
     updateNode: 'Update node',
     customNode: 'Custom node',
-    howToSetupOwnNode: 'How to setup your own {Sora} node',
+    howToSetupOwnNode: 'Setup your node',
     select: 'Select',
     connected: 'Connected',
     selectNodeForEnvironment: 'Select a node for {environment} environment:',

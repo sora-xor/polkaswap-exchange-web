@@ -43,7 +43,7 @@
         </s-radio>
       </s-radio-group>
     </s-scrollbar>
-    <s-button class="select-node-button s-typography-button--large" @click.stop="viewNode()">
+    <s-button class="select-node-button s-typography-button--big" @click.stop="viewNode()">
       {{ t('selectNodeDialog.addNode') }}
     </s-button>
   </div>
