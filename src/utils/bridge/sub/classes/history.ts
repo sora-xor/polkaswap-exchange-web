@@ -12,14 +12,10 @@ import {
   getDepositedBalance,
   getMessageAcceptedNonces,
   getMessageDispatchedNonces,
-  getParachainSystemMessageHash,
   isMessageDispatchedNonces,
   getReceivedAmount,
-  isParaInclusion,
+  isEvent,
   isTransactionFeePaid,
-  isBridgeProxyHash,
-  isMessageAccepted,
-  isQueueMessage,
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise } from '@polkadot/api';
@@ -49,7 +45,9 @@ const getTxEvents = (blockEvents: any[], txIndex: number) => {
 const findTxInBlock = async (blockHash: string, soraHash: string) => {
   const blockEvents = await api.system.getBlockEvents(blockHash);
 
-  const event = blockEvents.find((e) => isBridgeProxyHash(e, soraHash));
+  const event = blockEvents.find(
+    (e) => isEvent(e, 'bridgeProxy', 'RequestStatusUpdate') && e.event.data?.[0]?.toString() === soraHash
+  );
 
   if (!event) throw new Error('Unable to find "bridgeProxy.RequestStatusUpdate" event');
 
@@ -243,7 +241,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     const soraFeeEvent = events.find((e) => isTransactionFeePaid(e));
     history.soraNetworkFee = soraFeeEvent.event.data[1].toString();
     // sended from SORA nonces
-    const [soraBatchNonce, soraMessageNonce] = getMessageAcceptedNonces(events);
+    const [soraBatchNonce, soraMessageNonce] = getMessageAcceptedNonces(events, this.soraApi);
     // api for Standalone network or SORA parachain
     const networkApi = this.getIntermediateApi(history);
     const networkBlockId = history.externalBlockId as string;
@@ -252,7 +250,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     const networkEventsReversed = [...networkEvents].reverse();
     // Network received nonces
     const messageDispatchedIndex = networkEventsReversed.findIndex((e) =>
-      isMessageDispatchedNonces(soraBatchNonce, soraMessageNonce, e)
+      isMessageDispatchedNonces(soraBatchNonce, soraMessageNonce, e, networkApi)
     );
 
     if (messageDispatchedIndex === -1) {
@@ -271,15 +269,19 @@ class SubBridgeHistory extends SubNetworksConnector {
 
     // SORA Parachain extrinsic events for next search
     const parachainExtrinsicEvents = networkEventsReversed.slice(messageDispatchedIndex);
-    // sended from SORA Parachain message hash (1)
-    const messageHash = getParachainSystemMessageHash(parachainExtrinsicEvents);
+    // sended from SORA Parachain to Relaychain message hash (1)
+    const messageToRelaychain = parachainExtrinsicEvents.find((e) =>
+      isEvent(e, 'parachainSystem', 'UpwardMessageSent')
+    );
+    // sended from SORA Parachain to Parachain message hash (2)
+    const messageToParachain = parachainExtrinsicEvents.find((e) => isEvent(e, 'xcmpQueue', 'XcmpMessageSent'));
 
-    if (!messageHash) {
+    if (!messageToRelaychain && !messageToParachain) {
       return await this.processOutgoingToSoraParachain(history, asset, parachainExtrinsicEvents);
     }
 
-    const isRelaychain = subBridgeApi.isRelayChain(externalNetwork);
-    const isParachain = subBridgeApi.isParachain(externalNetwork);
+    const isRelaychain = subBridgeApi.isRelayChain(externalNetwork) && messageToRelaychain;
+    const isParachain = subBridgeApi.isParachain(externalNetwork) && messageToParachain;
 
     if (!isRelaychain && !isParachain) {
       console.info(`[${history.id}] not "${externalNetwork}" transaction, skip;`);
@@ -288,6 +290,7 @@ class SubBridgeHistory extends SubNetworksConnector {
 
     this.updateSoraParachainBlockData(history);
 
+    const messageHash = (messageToRelaychain ?? messageToParachain).event.data.messageHash.toString();
     const relayChainBlockNumber = await subBridgeApi.soraParachainApi.getRelayChainBlockNumber(
       history.parachainBlockId as string,
       soraParachainApi
@@ -331,7 +334,7 @@ class SubBridgeHistory extends SubNetworksConnector {
       const [receivedAmount, externalEventIndex] = getDepositedBalance(
         extrinsicEvents,
         history.to as string,
-        soraParachain
+        soraParachainApi
       );
       // balances.Deposit event index
       history.externalEventIndex = externalEventIndex;
@@ -364,15 +367,23 @@ class SubBridgeHistory extends SubNetworksConnector {
     txEvents: any[];
     blockEvents: any[];
   }): Promise<Nullable<SubHistory>> {
+    const { soraApi } = this;
     // Token is minted to account event
-    const [_, eventIndex] = getDepositedBalance(blockEvents, history.from as string, subBridgeApi);
+    const [_, eventIndex] = getDepositedBalance(blockEvents, history.from as string, this.soraApi);
     history.payload.eventIndex = eventIndex;
 
     // find SORA hash event index
-    const requestStatusUpdateEventIndex = txEvents.findIndex((e) => isBridgeProxyHash(e, history.id as string));
+    const requestStatusUpdateEventIndex = txEvents.findIndex((e) => {
+      if (!isEvent(e, 'bridgeProxy', 'RequestStatusUpdate')) return false;
+
+      const hash = e.event.data[0].toString();
+
+      return hash === history.id;
+    });
     // Received on SORA nonces
     const [soraBatchNonce, soraMessageNonce] = getMessageDispatchedNonces(
-      txEvents.slice(requestStatusUpdateEventIndex)
+      txEvents.slice(requestStatusUpdateEventIndex),
+      soraApi
     );
     // api for Standalone network or SORA parachain
     const networkApi = this.getIntermediateApi(history);
@@ -381,9 +392,9 @@ class SubBridgeHistory extends SubNetworksConnector {
     const networkEvents = await api.system.getBlockEvents(networkBlockId, networkApi);
     // Network message sended to SORA
     const messageToSoraEvent = networkEvents.find((e) => {
-      if (!isMessageAccepted(e)) return false;
+      if (!isEvent(e, 'substrateBridgeOutboundChannel', 'MessageAccepted')) return false;
 
-      const [networkBatchNonce, networkMessageNonce] = getMessageAcceptedNonces([e]);
+      const [networkBatchNonce, networkMessageNonce] = getMessageAcceptedNonces([e], networkApi);
 
       return networkBatchNonce === soraBatchNonce && networkMessageNonce === soraMessageNonce;
     });
@@ -417,7 +428,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     if (!soraParachainApi) throw new Error('SORA Parachain Api is not exists');
 
     // If transfer received from Parachain, extrinsic events should have xcmpQueue.Success event
-    const messageEvent = networkExtrinsicEvents.find((e) => isQueueMessage(e));
+    const messageEvent = networkExtrinsicEvents.find((e) => isEvent(e, 'xcmpQueue', 'Success'));
     const externalNetwork = history.externalNetwork as SubNetwork;
     const isRelayChain = subBridgeApi.isRelayChain(externalNetwork) && !messageEvent;
     const isParachain =
@@ -436,7 +447,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     );
 
     if (isParachain) {
-      const messageHash = messageEvent.event.data[0].toString();
+      const messageHash = messageEvent.event.data.messageHash.toString();
       // Parachain block, found through relaychain validation data
       const parachainBlockId = await this.findParachainBlockIdOnRelaychain(history, relayChainBlockNumber, false);
 
@@ -455,7 +466,7 @@ class SubBridgeHistory extends SubNetworksConnector {
 
     // relay chain should have send message in this blocks range
     const startSearch = relayChainBlockNumber;
-    const endSearch = startSearch - 10;
+    const endSearch = startSearch - 6;
 
     for (let relaychainBlockHeight = startSearch; relaychainBlockHeight >= endSearch; relaychainBlockHeight--) {
       const blockId = await api.system.getBlockHash(relaychainBlockHeight, this.externalApi);
@@ -517,7 +528,7 @@ class SubBridgeHistory extends SubNetworksConnector {
 
     // relay chain should have send validation data in this blocks range
     const startSearch = relayChainBlockNumber;
-    const blocksRange = 10;
+    const blocksRange = 3;
     const endSearch = isOutgoing ? startSearch + blocksRange : startSearch - blocksRange;
 
     for (let relaychainBlockHeight = startSearch; relaychainBlockHeight !== endSearch; ) {
@@ -525,14 +536,11 @@ class SubBridgeHistory extends SubNetworksConnector {
       const events = await api.system.getBlockEvents(blockId, relaychainApi);
 
       for (const e of events) {
-        if (!isParaInclusion(e)) continue;
+        if (!isEvent(e, 'paraInclusion', 'CandidateIncluded')) continue;
 
         const { descriptor } = e.event.data[0];
 
-        const descriptorParaId = descriptor.paraId.toNumber();
-        const paraId = network.getParachainId();
-
-        if (descriptorParaId !== paraId) continue;
+        if (descriptor.paraId.toNumber() !== network.getParachainId()) continue;
 
         history.relaychainBlockHeight = relaychainBlockHeight;
         history.relaychainBlockId = blockId;
@@ -564,10 +572,10 @@ class SubBridgeHistory extends SubNetworksConnector {
         const extrinsicEvents = parachainBlockEvents.filter(
           ({ phase }) => phase.isApplyExtrinsic && phase.asApplyExtrinsic.toNumber() === extrinsicIndex
         );
+        const messageSentEvent = extrinsicEvents.find((e) => isEvent(e, 'xcmpQueue', 'XcmpMessageSent'));
 
-        const messageSentHash = getParachainSystemMessageHash(extrinsicEvents);
-
-        if (messageSentHash !== messageHash) continue;
+        if (!messageSentEvent) continue;
+        if (messageSentEvent.event.data[0].toString() !== messageHash) continue;
 
         const parachainBlockHeight = await api.system.getBlockNumber(parachainBlockId, externalApi);
         const signer = extrinsic.signer.toString();
@@ -596,17 +604,15 @@ class SubBridgeHistory extends SubNetworksConnector {
     endSearch: number
   ) {
     for (let blockHeight = startSearch; blockHeight <= endSearch; blockHeight++) {
-      let isReliableMessage = false;
-
       try {
         const blockId = await api.system.getBlockHash(blockHeight, this.externalApi);
         const blockEvents = await api.system.getBlockEvents(blockId, this.externalApi);
 
         const messageEventIndex = blockEvents.findIndex((e) => {
-          if (isQueueMessage(e)) {
-            isReliableMessage = e.event.data[0].toString() === messageHash;
+          if (isEvent(e, 'messageQueue', 'Processed') || isEvent(e, 'xcmpQueue', 'Success')) {
+            const messageHashMatches = e.event.data[0].toString() === messageHash;
 
-            return true;
+            return messageHashMatches;
           }
           return false;
         });
@@ -620,7 +626,7 @@ class SubBridgeHistory extends SubNetworksConnector {
         const [receivedAmount, externalEventIndex] = getDepositedBalance(
           blockEvents.slice(0, messageEventIndex),
           history.to,
-          this.network
+          this.externalApi
         );
 
         // Deposit event index
@@ -637,11 +643,7 @@ class SubBridgeHistory extends SubNetworksConnector {
 
         return history;
       } catch {
-        if (isReliableMessage) {
-          break;
-        } else {
-          continue;
-        }
+        continue;
       }
     }
 
