@@ -110,22 +110,11 @@ const getters = defineGetters<BridgeState>()({
     return assetIds[0];
   },
 
-  isSubAccountType(...args): boolean {
-    const { rootState } = bridgeGetterContext(args);
-    const { networkSelected, networkType } = rootState.web3;
-
-    if (networkType === BridgeNetworkType.Sub) {
-      return !subBridgeApi.isEvmAccount(networkSelected as SubNetwork);
-    }
-
-    return false;
-  },
-
   externalAccount(...args): string {
     const { getters, rootState } = bridgeGetterContext(args);
     const { evmAddress, subAddress } = rootState.web3;
 
-    if (getters.isSubAccountType) {
+    if (getters.isSubBridge) {
       return subAddress;
     } else {
       return evmAddress;
@@ -139,7 +128,7 @@ const getters = defineGetters<BridgeState>()({
 
     if (state.isSoraToEvm) return soraAddress;
 
-    return getters.isSubAccountType ? chainAddress(subAddress, state.subBridgeConnector) : evmAddress;
+    return getters.isSubBridge ? chainAddress(subAddress, state.subBridgeConnector) : evmAddress;
   },
 
   senderName(...args): string {
@@ -149,7 +138,7 @@ const getters = defineGetters<BridgeState>()({
 
     if (state.isSoraToEvm) return soraName;
 
-    return getters.isSubAccountType ? subAddressName : '';
+    return getters.isSubBridge ? subAddressName : '';
   },
 
   recipient(...args): string {
@@ -159,7 +148,7 @@ const getters = defineGetters<BridgeState>()({
 
     if (!state.isSoraToEvm) return soraAddress;
 
-    return getters.isSubAccountType ? chainAddress(subAddress, state.subBridgeConnector) : evmAddress;
+    return getters.isSubBridge ? chainAddress(subAddress, state.subBridgeConnector) : evmAddress;
   },
 
   recipientName(...args): string {
@@ -169,7 +158,7 @@ const getters = defineGetters<BridgeState>()({
 
     if (!state.isSoraToEvm) return soraName;
 
-    return getters.isSubAccountType ? subAddressName : '';
+    return getters.isSubBridge ? subAddressName : '';
   },
 
   isEthBridge(...args): boolean {
