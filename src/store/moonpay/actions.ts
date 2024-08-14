@@ -84,7 +84,7 @@ const actions = defineActions({
         };
       } else {
         // Parse ERC-20 transfer
-        const abi = SmartContracts[SmartContractType.ERC20];
+        const abi = SmartContracts[SmartContractType.ERC20].abi;
         const inter = new ethers.Interface(abi);
         const decodedInput = inter.parseTransaction({ data: tx.data });
 

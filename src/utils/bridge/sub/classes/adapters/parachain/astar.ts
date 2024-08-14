@@ -1,32 +1,60 @@
 import { FPNumber } from '@sora-substrate/util';
+import { formatBalance } from '@sora-substrate/util/build/assets';
 
 import { ZeroStringValue } from '@/consts';
 
-import { ParachainAdapter } from './parachain';
+import { SubAdapter } from '../substrate';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { Asset, RegisteredAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
-export class AstarParachainAdapter extends ParachainAdapter<string> {
-  // overrides "SubAdapter"
+type IAstarAssetMetadata = {
+  id: string;
+  symbol: string;
+  decimals: number;
+  minimalBalance: string;
+};
+
+export class AstarParachainAdapter extends SubAdapter {
+  protected assets: Record<string, IAstarAssetMetadata> | null = null;
+
+  protected async getAssetsMetadata(): Promise<void> {
+    if (this.assets) return;
+
+    const assets = {};
+    const entries = await (this.api.query.assets as any).metadata.entries();
+
+    for (const [key, value] of entries) {
+      const id = key.args[0].toString();
+      const symbol = new TextDecoder().decode(value.symbol); // bytes to string
+      const decimals = value.decimals.toNumber();
+      const minimalBalance = value.deposit.toString();
+
+      assets[symbol] = { id, symbol, decimals, minimalBalance };
+    }
+
+    this.assets = Object.freeze(assets);
+  }
+
+  private getAssetMeta(asset: RegisteredAsset): Nullable<IAstarAssetMetadata> {
+    if (!(asset.symbol && this.assets)) return null;
+
+    return this.assets[asset.symbol];
+  }
+
   public override async connect(): Promise<void> {
     await super.connect();
     await this.getAssetsMetadata();
   }
 
-  // overrides "ParachainAdapter"
-  public override async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
-    const versionedMultilocation = {
-      V3: multilocation,
-    };
+  protected override async getAssetDeposit(asset: RegisteredAsset): Promise<CodecString> {
+    const assetMeta = this.getAssetMeta(asset);
 
-    const result = await (this.api.query.xcAssetConfig as any).assetLocationToId(versionedMultilocation);
+    if (!assetMeta) return ZeroStringValue;
 
-    if (result.isEmpty) return '';
+    const minBalance = assetMeta.minimalBalance;
 
-    const id = result.unwrap().toString();
-
-    return id;
+    return minBalance > '1' ? minBalance : ZeroStringValue;
   }
 
   protected override async getAccountAssetBalance(
@@ -38,12 +66,6 @@ export class AstarParachainAdapter extends ParachainAdapter<string> {
     if (!assetMeta) return ZeroStringValue;
 
     return await this.assetsAccountRequest(accountAddress, assetMeta.id);
-  }
-
-  public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
-    return asset.symbol === this.chainSymbol
-      ? this.getNativeTransferExtrinsic(asset, recipient, amount)
-      : this.getAssetTransferExtrinsic(asset, recipient, amount);
   }
 
   /**
@@ -134,5 +156,18 @@ export class AstarParachainAdapter extends ParachainAdapter<string> {
       // destWeightLimit: XcmV3WeightLimit
       'Unlimited'
     );
+  }
+
+  public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+    return asset.symbol === this.chainSymbol
+      ? this.getNativeTransferExtrinsic(asset, recipient, amount)
+      : this.getAssetTransferExtrinsic(asset, recipient, amount);
+  }
+
+  public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
+    /* Throws error until Substrate 5 migration */
+    // return await super.getNetworkFee(asset, sender, recipient);
+    // Hardcoded value for Astar - 0.057 ASTR
+    return '57000000000000000';
   }
 }

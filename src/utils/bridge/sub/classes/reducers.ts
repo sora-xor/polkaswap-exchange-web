@@ -21,9 +21,8 @@ import {
   determineTransferType,
   getReceivedAmount,
   getParachainSystemMessageHash,
-  isXcmPalletAttempted,
+  isEvent,
   isTransactionFeePaid,
-  isQueueMessage,
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiRx } from '@polkadot/api';
@@ -106,11 +105,6 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     // update history data
     this.updateTransactionPayload(id, { startBlock });
   }
-
-  async waitForTxBlockAndStatus(id: string): Promise<void> {
-    await this.waitForTransactionStatus(id);
-    await this.waitForTransactionBlockId(id);
-  }
 }
 
 export class SubBridgeIncomingReducer extends SubBridgeReducer {
@@ -162,7 +156,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     // open connections
     await this.connector.start();
     // sign transaction (from is sora account)
-    await this.connector.incomingTransfer(asset, tx.from as string, tx.amount as string, id);
+    await this.connector.transfer(asset, tx.from as string, tx.amount as string, id);
     // save start block when tx was signed
     await this.saveStartBlock(id);
   }
@@ -189,7 +183,6 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
   private async updateTxExternalData(id: string): Promise<void> {
     const tx = this.getTransaction(id);
-
     const adapter = this.connector.network;
 
     await adapter.connect();
@@ -207,7 +200,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     }
 
     if (this.transferType === SubTransferType.Relaychain) {
-      const xcmEvent = transactionEvents.find((e) => isXcmPalletAttempted(e));
+      const xcmEvent = transactionEvents.find((e) => isEvent(e, 'xcmPallet', 'Attempted'));
 
       if (!xcmEvent?.event?.data?.[0]?.isComplete) {
         throw new Error(`[${this.constructor.name}]: Transaction is not completed`);
@@ -216,10 +209,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
   }
 
   private async updateTxIncomingData(id: string): Promise<void> {
-    await this.waitForTxBlockAndStatus(id);
-
-    if (subBridgeApi.isEvmAccount(this.getTransaction(id).externalNetwork as SubNetwork)) return;
-
+    await this.waitForTransactionStatus(id);
+    await this.waitForTransactionBlockId(id);
     await this.updateTxSigningData(id);
     await this.updateTxExternalData(id);
   }
@@ -240,8 +231,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     const isFirstStep = [SubTransferType.SoraParachain, SubTransferType.Standalone].includes(this.transferType);
     const sended = new FPNumber(tx.amount as string, this.asset.externalDecimals).toCodecString();
-    const sender = tx.to as string;
-    const recipient = tx.from as string;
+    const from = tx.from as string;
+    const to = tx.to as string;
 
     let subscription!: Subscription;
     let messageNonce!: number;
@@ -271,7 +262,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
               if (!isStandalone) {
                 assetSendEventIndex = events.findIndex((e) =>
-                  isAssetAddedToChannel(e, this.asset, recipient, sended, adapter)
+                  isAssetAddedToChannel(e, this.asset, to, sended, adapter.api)
                 );
 
                 if (assetSendEventIndex !== -1) {
@@ -282,7 +273,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
                 }
               } else {
                 assetSendEventIndex = events.findIndex((e) =>
-                  isSoraBridgeAppBurned(e, this.asset, sender, recipient, sended, adapter)
+                  isSoraBridgeAppBurned(e, this.asset, from, to, sended, adapter.api)
                 );
 
                 if (assetSendEventIndex !== -1) {
@@ -293,7 +284,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
               if (assetSendEventIndex === -1) return;
 
               blockNumber = blockHeight;
-              [batchNonce, messageNonce] = getMessageAcceptedNonces(events.slice(assetSendEventIndex));
+              [batchNonce, messageNonce] = getMessageAcceptedNonces(events.slice(assetSendEventIndex), adapter.api);
 
               resolve();
             } catch (error) {
@@ -350,16 +341,16 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
           try {
             const events = [...eventsVec.toArray()].reverse();
             const substrateDispatchEventIndex = events.findIndex((e) =>
-              isMessageDispatchedNonces(tx.payload.batchNonce, tx.payload.messageNonce, e)
+              isMessageDispatchedNonces(tx.payload.batchNonce, tx.payload.messageNonce, e, subBridgeApi.api)
             );
 
             if (substrateDispatchEventIndex === -1) return;
 
             const foundedEvents = events.slice(substrateDispatchEventIndex);
 
-            soraHash = getBridgeProxyHash(foundedEvents);
+            soraHash = getBridgeProxyHash(foundedEvents, subBridgeApi.api);
 
-            [amount, eventIndex] = getDepositedBalance(foundedEvents, tx.from as string, subBridgeApi);
+            [amount, eventIndex] = getDepositedBalance(foundedEvents, tx.to as string, subBridgeApi.api);
 
             resolve();
           } catch (error) {
@@ -378,9 +369,9 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
   }
 
   private async waitSoraBlockByHash(id: string): Promise<void> {
-    const { hash, from, externalNetwork } = this.getTransaction(id);
+    const { hash, to, externalNetwork } = this.getTransaction(id);
 
-    if (!(hash && from && externalNetwork)) {
+    if (!(hash && to && externalNetwork)) {
       throw new Error(`[${this.constructor.name}] Lost transaction params`);
     }
 
@@ -389,7 +380,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     try {
       await new Promise<void>((resolve) => {
-        subscription = subBridgeApi.subscribeOnTransactionDetails(from, externalNetwork, hash).subscribe((data) => {
+        subscription = subBridgeApi.subscribeOnTransactionDetails(to, externalNetwork, hash).subscribe((data) => {
           if (data?.endBlock) {
             soraBlockNumber = data.endBlock;
             resolve();
@@ -426,7 +417,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
               this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
 
               await this.checkTxId(id);
-              await this.waitForTxBlockAndStatus(id);
+              await this.waitForTransactionStatus(id);
+              await this.waitForTransactionBlockId(id);
 
               await this.waitForSendingExecution(id);
               await this.waitForIntermediateExecution(id);
@@ -474,7 +466,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     // open connections
     await this.connector.start();
     // sign transaction
-    await this.connector.outgoingTransfer(asset, tx.to as string, tx.amount as string, id);
+    await subBridgeApi.transfer(asset, tx.to as string, tx.amount as string, tx.externalNetwork as SubNetwork, id);
     // save start block when tx was signed
     await this.saveStartBlock(id);
   }
@@ -488,10 +480,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const transactionHash = tx.txId as string;
     const transactionEvents = await getTransactionEvents(blockHash, transactionHash, subBridgeApi.api);
 
-    const hash = getBridgeProxyHash(transactionEvents);
+    const hash = getBridgeProxyHash(transactionEvents, subBridgeApi.api);
     this.updateTransactionParams(id, { hash });
 
-    const [batchNonce, messageNonce] = getMessageAcceptedNonces(transactionEvents);
+    const [batchNonce, messageNonce] = getMessageAcceptedNonces(transactionEvents, subBridgeApi.api);
     this.updateTransactionPayload(id, { batchNonce, messageNonce });
   }
 
@@ -529,7 +521,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             try {
               const events = [...eventsVec.toArray()].reverse();
               const substrateDispatchEventIndex = events.findIndex((e) =>
-                isMessageDispatchedNonces(tx.payload.batchNonce, tx.payload.messageNonce, e)
+                isMessageDispatchedNonces(tx.payload.batchNonce, tx.payload.messageNonce, e, adapter.api)
               );
 
               if (substrateDispatchEventIndex === -1) return;
@@ -542,11 +534,11 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
                   [amountReceived] = getDepositedBalance(
                     events.slice(substrateDispatchEventIndex),
                     tx.to as string,
-                    adapter
+                    adapter.api
                   );
                 }
               } else {
-                messageHash = getParachainSystemMessageHash(events.slice(substrateDispatchEventIndex));
+                messageHash = getParachainSystemMessageHash(events.slice(substrateDispatchEventIndex), adapter.api);
               }
 
               resolve();
@@ -609,16 +601,11 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
           ([eventsVec, blockHeight]) => {
-            // when received message is equal to sended
-            let isReliableMessage = false;
-
             try {
               const events = eventsVec.toArray();
               const messageQueueProcessedEventIndex = events.findIndex((e) => {
-                if (isQueueMessage(e)) {
-                  isReliableMessage = e.event.data[0].toString() === messageHash;
-
-                  return true;
+                if (isEvent(e, 'messageQueue', 'Processed') || isEvent(e, 'xcmpQueue', 'Success')) {
+                  return e.event.data[0].toString() === messageHash;
                 }
                 return false;
               });
@@ -626,19 +613,16 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
               if (messageQueueProcessedEventIndex === -1) return;
 
               blockNumber = blockHeight;
-              // throws error, is deposit not found
+
               [amount, externalEventIndex] = getDepositedBalance(
                 events.slice(0, messageQueueProcessedEventIndex),
                 tx.to as string,
-                adapter
+                adapter.api
               );
 
               resolve();
             } catch (error) {
-              // The message is reliable, but the deposit was not found
-              if (isReliableMessage) {
-                reject(error);
-              }
+              reject(error);
             }
           }
         );

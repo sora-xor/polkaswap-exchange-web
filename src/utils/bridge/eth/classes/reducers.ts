@@ -3,10 +3,16 @@ import first from 'lodash/fp/first';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { IBridgeReducerOptions, GetBridgeHistoryInstance, SignExternal } from '@/utils/bridge/common/types';
-import { getTransactionEvents, getEvmTransactionFee, onEvmTransactionPending } from '@/utils/bridge/common/utils';
+import { getTransactionEvents, waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
-import { getTransaction, waitForApprovedRequest, waitForIncomingRequest } from '@/utils/bridge/eth/utils';
+import {
+  getTransaction,
+  getTransactionFee,
+  waitForApprovedRequest,
+  waitForIncomingRequest,
+} from '@/utils/bridge/eth/utils';
+import ethersUtil from '@/utils/ethers-util';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -34,7 +40,36 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
   }
 
   async onEvmPending(id: string): Promise<void> {
-    await onEvmTransactionPending(id, this.getTransaction, this.updateTransactionParams);
+    const tx = this.getTransaction(id);
+    const hash = tx.externalHash;
+
+    if (!hash) throw new Error(`[${this.constructor.name}]: Ethereum transaction hash is empty`);
+
+    const txResponse = await ethersUtil.getEvmTransaction(hash);
+    const txReceipt = await waitForEvmTransactionMined(txResponse, (replacedTx) => {
+      if (replacedTx) {
+        this.updateTransactionParams(id, {
+          externalHash: replacedTx.hash,
+          externalNetworkFee: getTransactionFee(replacedTx),
+        });
+      }
+    });
+
+    const { fee, blockNumber, blockHash } = txReceipt || {};
+
+    if (!(fee && blockNumber && blockHash)) {
+      this.updateTransactionParams(id, { externalHash: undefined, externalNetworkFee: undefined });
+      throw new Error(
+        `[${this.constructor.name}]: Ethereum transaction not found, hash: ${tx.externalHash}. 'externalHash' is reset`
+      );
+    }
+
+    // In EthHistory 'blockHeight' will store evm block number
+    this.updateTransactionParams(id, {
+      externalNetworkFee: fee.toString(),
+      externalBlockHeight: blockNumber,
+      externalBlockId: blockHash,
+    });
   }
 
   async onEvmSubmitted(id: string, signExternal: SignExternal): Promise<void> {
@@ -48,7 +83,7 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
         // update after sign
         this.updateTransactionParams(id, {
           externalHash: signedTx.hash,
-          externalNetworkFee: getEvmTransactionFee(signedTx),
+          externalNetworkFee: getTransactionFee(signedTx),
         });
       } catch (error: any) {
         // maybe transaction already completed, try to restore ethereum transaction hash
