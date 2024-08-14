@@ -68,15 +68,31 @@
             />
           </template>
 
-          <bridge-account-panel
+          <div v-if="sender" class="connect-wallet-panel">
+            <s-divider type="tertiary" />
+            <bridge-account-panel :address="sender" :name="senderName" :tooltip="getCopyTooltip(isSoraToEvm)">
+              <template #icon v-if="evmProvider && !isSoraToEvm">
+                <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
+              </template>
+            </bridge-account-panel>
+            <div class="connect-wallet-group">
+              <span class="connect-wallet-btn" @click="connectWallet(isSoraToEvm)">
+                {{ t('changeAccountText') }}
+              </span>
+              <span v-if="evmProvider" class="connect-wallet-btn disconnect" @click="resetEvmProviderConnection">
+                {{ t('disconnectWalletText') }}
+              </span>
+            </div>
+          </div>
+          <s-button
+            v-else
+            class="el-button--connect s-typography-button--large"
             data-test-name="connectPolkadot"
-            :address="sender"
-            :name="senderName"
-            :tooltip="getCopyTooltip(isSoraToEvm)"
-            :icon="getProviderIcon(isSoraToEvm)"
-            @connect="connectWallet(isSoraToEvm)"
-            @disconnect="disconnectWallet(isSoraToEvm)"
-          />
+            type="primary"
+            @click="connectWallet(isSoraToEvm)"
+          >
+            {{ t('connectWalletText') }}
+          </s-button>
         </token-input>
 
         <s-button
@@ -114,15 +130,31 @@
             />
           </template>
 
-          <bridge-account-panel
+          <div v-if="recipient" class="connect-wallet-panel">
+            <s-divider type="tertiary" />
+            <bridge-account-panel :address="recipient" :name="recipientName" :tooltip="getCopyTooltip(!isSoraToEvm)">
+              <template #icon v-if="evmProvider && isSoraToEvm">
+                <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
+              </template>
+            </bridge-account-panel>
+            <div class="connect-wallet-group">
+              <span class="connect-wallet-btn" @click="connectWallet(!isSoraToEvm)">
+                {{ t('changeAccountText') }}
+              </span>
+              <span v-if="evmProvider" class="connect-wallet-btn disconnect" @click="resetEvmProviderConnection">
+                {{ t('disconnectWalletText') }}
+              </span>
+            </div>
+          </div>
+          <s-button
+            v-else
+            class="el-button--connect s-typography-button--large"
             data-test-name="useMetamaskProvider"
-            :address="recipient"
-            :name="recipientName"
-            :tooltip="getCopyTooltip(!isSoraToEvm)"
-            :icon="getProviderIcon(!isSoraToEvm)"
-            @connect="connectWallet(!isSoraToEvm)"
-            @disconnect="disconnectWallet(!isSoraToEvm)"
-          />
+            type="primary"
+            @click="connectWallet(!isSoraToEvm)"
+          >
+            {{ t('connectWalletText') }}
+          </s-button>
         </token-input>
 
         <s-button
@@ -412,9 +444,8 @@ export default class Bridge extends Mixins(
       isExternalBalance: !this.isSoraToEvm,
       isExternalNative: this.isNativeTokenSelected,
     });
-    const result = maxBalance.sub(minBalance).max(FPNumber.ZERO);
 
-    return result;
+    return maxBalance.sub(minBalance).max(FPNumber.ZERO);
   }
 
   get maxValue(): string {
@@ -566,12 +597,6 @@ export default class Bridge extends Mixins(
     return `${networkName} ${this.t('addressText')}`;
   }
 
-  getProviderIcon(isSoraNetwork = false): string {
-    if (!this.evmProvider || isSoraNetwork) return '';
-
-    return this.getEvmProviderIcon(this.evmProvider);
-  }
-
   handleMaxValue(): void {
     this.setSendedAmount(this.maxValue);
   }
@@ -646,27 +671,11 @@ export default class Bridge extends Mixins(
     }
   }
 
-  disconnectWallet(isSoraToEvm: boolean): void {
-    if (isSoraToEvm) {
-      this.disconnectSoraWallet();
-    } else {
-      this.disconnectExternalWallet();
-    }
-  }
-
   private connectExternalWallet(): void {
-    if (this.isSubAccountType) {
+    if (this.isSubBridge) {
       this.connectSubWallet();
     } else {
       this.connectEvmWallet();
-    }
-  }
-
-  private disconnectExternalWallet(): void {
-    if (this.isSubAccountType) {
-      this.disconnectSubWallet();
-    } else {
-      this.disconnectEvmWallet();
     }
   }
 }
@@ -687,9 +696,34 @@ export default class Bridge extends Mixins(
 </style>
 
 <style lang="scss" scoped>
-.connect-wallet-logo {
-  width: 18px;
-  height: 18px;
+.connect-wallet {
+  &-panel {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-medium);
+    color: var(--s-color-base-content-primary);
+  }
+
+  &-logo {
+    width: 18px;
+    height: 18px;
+  }
+
+  &-group {
+    display: flex;
+    align-items: center;
+    gap: $inner-spacing-mini;
+  }
+
+  &-btn {
+    @include copy-address;
+
+    &.disconnect {
+      color: var(--s-color-status-error);
+    }
+  }
 }
 
 .bridge {
@@ -701,6 +735,7 @@ export default class Bridge extends Mixins(
     @include vertical-divider('s-button--switch', $inner-spacing-medium);
     @include vertical-divider('s-divider-tertiary');
     @include buttons;
+    @include full-width-button('el-button--connect', $inner-spacing-mini);
     @include full-width-button('el-button--next');
     .input-title {
       &--network {

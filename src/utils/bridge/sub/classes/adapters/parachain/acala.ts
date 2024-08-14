@@ -3,10 +3,10 @@ import { formatBalance } from '@sora-substrate/util/build/assets';
 
 import { ZeroStringValue } from '@/consts';
 
-import { ParachainAdapter, type IParachainAssetMetadata } from './parachain';
+import { SubAdapter } from '../substrate';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { Asset, RegisteredAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 enum AcalaPrimitivesCurrencyCurrencyId {
   Token = 'Token',
@@ -29,6 +29,13 @@ type IAcalaCurrencyId =
       [AcalaPrimitivesCurrencyCurrencyId.Erc20]: string;
     };
 
+type IAcalaAssetMetadata = {
+  id: IAcalaCurrencyId;
+  symbol: string;
+  decimals: number;
+  minimalBalance: string;
+};
+
 function getAcalaCurrencyId(nature: any): Nullable<IAcalaCurrencyId> {
   if (nature.isNativeAssetId) {
     const value = nature.asNativeAssetId;
@@ -43,18 +50,13 @@ function getAcalaCurrencyId(nature: any): Nullable<IAcalaCurrencyId> {
   return null;
 }
 
-export class AcalaParachainAdapter extends ParachainAdapter<IAcalaCurrencyId> {
-  // overrides "SubAdapter"
-  public override async connect(): Promise<void> {
-    await super.connect();
-    await this.getAssetsMetadata();
-  }
+export class AcalaParachainAdapter extends SubAdapter {
+  protected assets: Record<string, IAcalaAssetMetadata> | null = null;
 
-  // overrides "ParachainAdapter"
-  protected override async getAssetsMetadata(): Promise<void> {
-    if (Array.isArray(this.assets)) return;
+  protected async getAssetsMetadata(): Promise<void> {
+    if (this.assets) return;
 
-    const assets: IParachainAssetMetadata<IAcalaCurrencyId>[] = [];
+    const assets = {};
     const entries = await (this.api.query.assetRegistry as any).assetMetadatas.entries();
 
     for (const [key, option] of entries) {
@@ -67,36 +69,32 @@ export class AcalaParachainAdapter extends ParachainAdapter<IAcalaCurrencyId> {
       const decimals = option.value.decimals.toNumber();
       const minimalBalance = option.value.minimalBalance.toString();
 
-      assets.push({ id, symbol, decimals, minimalBalance });
+      assets[symbol] = { id, symbol, decimals, minimalBalance };
     }
 
     this.assets = Object.freeze(assets);
   }
 
-  // overrides "ParachainAdapter"
-  public override getAssetMeta(asset: RegisteredAsset): Nullable<IParachainAssetMetadata<IAcalaCurrencyId>> {
-    if (!Array.isArray(this.assets)) return null;
+  private getAssetMeta(asset: RegisteredAsset): Nullable<IAcalaAssetMetadata> {
+    if (!(asset.symbol && this.assets)) return null;
 
-    return this.assets.find(
-      (item) => JSON.stringify(item.id) === asset.externalAddress || item.symbol === asset.symbol
-    );
+    return this.assets[asset.symbol];
   }
 
-  // overrides "ParachainAdapter"
-  public override async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
-    const v3Multilocation = multilocation;
+  // overrides SubAdapter
+  public override async connect(): Promise<void> {
+    await super.connect();
+    await this.getAssetsMetadata();
+  }
 
-    const result = await (this.api.query.assetRegistry as any).locationToCurrencyIds(v3Multilocation);
+  protected override async getAssetDeposit(asset: RegisteredAsset): Promise<CodecString> {
+    const assetMeta = this.getAssetMeta(asset);
 
-    let id!: Nullable<IAcalaCurrencyId>;
+    if (!assetMeta) return ZeroStringValue;
 
-    if (result.isEmpty) {
-      id = { [AcalaPrimitivesCurrencyCurrencyId.Token]: asset.symbol };
-    } else {
-      id = getAcalaCurrencyId(result.unwrap());
-    }
+    const minBalance = assetMeta.minimalBalance;
 
-    return id ? JSON.stringify(id) : '';
+    return minBalance > '1' ? minBalance : ZeroStringValue;
   }
 
   protected override async getAccountAssetBalance(
@@ -115,7 +113,7 @@ export class AcalaParachainAdapter extends ParachainAdapter<IAcalaCurrencyId> {
     }, ZeroStringValue);
   }
 
-  // overrides "SubAdapter"
+  // overrides SubAdapter
   public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const assetMeta = this.getAssetMeta(asset);
 
@@ -149,5 +147,12 @@ export class AcalaParachainAdapter extends ParachainAdapter<IAcalaCurrencyId> {
       // destWeightLimit: XcmV3WeightLimit
       'Unlimited'
     );
+  }
+
+  public override async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
+    /* Throws error until Substrate 5 migration */
+    // return await super.getNetworkFee(asset, sender, recipient);
+    // Hardcoded value for Acala - 0.003 ACA
+    return '3000000000';
   }
 }

@@ -84,26 +84,6 @@ function getBridgeApi(context: ActionContext<any, any>) {
   return ethBridgeApi;
 }
 
-async function switchAmounts(context: ActionContext<any, any>): Promise<void> {
-  const { state, dispatch } = bridgeActionContext(context);
-
-  if (state.focusedField === FocusedField.Received) {
-    await dispatch.setSendedAmount(state.amountReceived);
-  } else {
-    await dispatch.setReceivedAmount(state.amountSend);
-  }
-}
-
-async function updateAmounts(context: ActionContext<any, any>): Promise<void> {
-  const { state, dispatch } = bridgeActionContext(context);
-
-  if (state.focusedField === FocusedField.Received) {
-    await dispatch.setReceivedAmount(state.amountReceived);
-  } else {
-    await dispatch.setSendedAmount(state.amountSend);
-  }
-}
-
 function checkEvmNetwork(context: ActionContext<any, any>): void {
   const { rootGetters } = bridgeActionContext(context);
   if (!rootGetters.web3.isValidNetwork) {
@@ -414,7 +394,7 @@ async function updateSoraNetworkFee(context: ActionContext<any, any>): Promise<v
   commit.setSoraNetworkFee(fee);
 }
 
-async function updateBalancesFeesAndAmounts(context: ActionContext<any, any>): Promise<void> {
+async function updateBalancesAndFees(context: ActionContext<any, any>): Promise<void> {
   const { dispatch } = bridgeActionContext(context);
 
   await Promise.allSettled([
@@ -468,14 +448,19 @@ const actions = defineActions({
   },
 
   async switchDirection(context): Promise<void> {
-    const { commit, state } = bridgeActionContext(context);
+    const { commit, dispatch, state } = bridgeActionContext(context);
 
     commit.setSoraToEvm(!state.isSoraToEvm);
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await updateBalancesFeesAndAmounts(context);
-    await switchAmounts(context);
+    await updateBalancesAndFees(context);
+
+    if (state.focusedField === FocusedField.Received) {
+      await dispatch.setSendedAmount(state.amountReceived);
+    } else {
+      await dispatch.setReceivedAmount(state.amountSend);
+    }
   },
 
   async setAssetAddress(context, address?: string): Promise<void> {
@@ -489,9 +474,8 @@ const actions = defineActions({
       dispatch.updateOutgoingMinLimit(),
       dispatch.updateOutgoingMaxLimit(),
       dispatch.updateIncomingMinLimit(),
-      updateBalancesFeesAndAmounts(context),
+      updateBalancesAndFees(context),
     ]);
-    await updateAmounts(context);
   },
 
   async updateExternalBalance(context): Promise<void> {
@@ -583,7 +567,7 @@ const actions = defineActions({
 
     const subscription = api.system.updated.subscribe(() => {
       updateExternalBlockNumber(context);
-      updateBalancesFeesAndAmounts(context);
+      updateBalancesAndFees(context);
     });
 
     commit.setBlockUpdatesSubscription(subscription);

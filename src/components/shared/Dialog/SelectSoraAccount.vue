@@ -33,7 +33,7 @@ export default class SelectSoraAccountDialog extends Mixins(TranslationMixin) {
   @getter.wallet.account.account public soraAccount!: Nullable<WALLET_TYPES.PolkadotJsAccount>;
 
   @action.wallet.account.loginAccount public loginAccount!: (account: WALLET_TYPES.PolkadotJsAccount) => Promise<void>;
-  @action.wallet.account.logout public logout!: () => Promise<void>;
+  @action.wallet.account.logout public logout!: (forgetAddress?: string) => Promise<void>;
   @action.wallet.account.renameAccount public rename!: (data: { address: string; name: string }) => Promise<void>;
 
   get chainApi() {

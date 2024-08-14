@@ -22,7 +22,7 @@ $country-emoji-font: 'Twemoji Country Flags';
   }
 }
 
-$networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polygon', 'binance-smart-chain', 'rococo', 'polkadot', 'kusama', 'acala', 'astar', 'shiden', 'liberland', 'alphanet', 'moonbase', 'moonbeam', 'sora-polkadot', 'sora-kusama';
+$networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polygon', 'binance-smart-chain', 'rococo', 'polkadot', 'kusama', 'acala', 'astar', 'shiden', 'liberland', 'moonbase', 'sora-polkadot', 'sora-kusama';
 /* Networks Icons */
 .network-icon {
   display: inline-block;
@@ -41,17 +41,15 @@ $networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polyg
     }
   }
 
-  @each $network in 'rococo', 'alphanet' {
-    &--sora-#{$network} {
-      background-image: url('~@/assets/img/networks/#{$network}.svg');
-      &::after {
-        content: '';
-        display: block;
-        width: 50%;
-        height: 50%;
-        filter: drop-shadow(2px 4px 6px black);
-        background-image: url('~@/assets/img/networks/sora.svg');
-      }
+  &--sora-rococo {
+    background-image: url('~@/assets/img/networks/rococo.svg');
+    &::after {
+      content: '';
+      display: block;
+      width: 50%;
+      height: 50%;
+      filter: drop-shadow(2px 4px 6px black);
+      background-image: url('~@/assets/img/networks/sora.svg');
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Operation, FPNumber } from '@sora-substrate/util';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EthCurrencyType, EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
+import { ethers } from 'ethers';
 
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
 import { asZeroValue } from '@/utils';
@@ -19,15 +20,13 @@ type EthTxParams = {
   request?: EthApprovedRequest;
 };
 
-export const isOutgoingTx = (tx: EthHistory): boolean => {
-  return tx.type === Operation.EthBridgeOutgoing;
-};
-
 export const isUnsignedFromPart = (tx: EthHistory): boolean => {
-  if (isOutgoingTx(tx)) {
+  if (tx.type === Operation.EthBridgeOutgoing) {
     return !tx.blockId && !tx.txId;
-  } else {
+  } else if (tx.type === Operation.EthBridgeIncoming) {
     return !tx.externalHash;
+  } else {
+    return true;
   }
 };
 
@@ -125,12 +124,14 @@ export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: st
 
 export async function getIncomingEvmTransactionData({ asset, value, recipient, getContractAddress }: EthTxParams) {
   const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
+  const signer = await ethersUtil.getSigner();
   const accountId = ethersUtil.accountAddressToHex(recipient);
+
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
 
   const contractAddress = getContractAddress(KnownEthBridgeAsset.Other) as string;
-  const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other];
-  const contract = await ethersUtil.getContract(contractAddress, contractAbi);
+  const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi;
+  const contract = new ethers.Contract(contractAddress, contractAbi, signer);
 
   const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain';
   const methodArgs = isNativeEvmToken
@@ -161,14 +162,14 @@ export async function getOutgoingEvmTransactionData({
 }: EthTxParams) {
   if (!request) throw new Error('request is required!');
 
+  const signer = await ethersUtil.getSigner();
   const symbol = asset.symbol as KnownEthBridgeAsset;
   const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
   const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
-
   const contractAddress = getContractAddress(bridgeAsset) as string;
-  const contractAbi = SmartContracts[SmartContractType.EthBridge][bridgeAsset];
-  const contract = await ethersUtil.getContract(contractAddress, contractAbi);
+  const contractAbi = SmartContracts[SmartContractType.EthBridge][bridgeAsset].abi;
 
+  const contract = new ethers.Contract(contractAddress, contractAbi, signer);
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
 
   const isEthereumCurrency = request.currencyType === EthCurrencyType.TokenAddress;
@@ -291,3 +292,10 @@ export async function getEthNetworkFee(
 
   return ethersUtil.calcEvmFee(gasPrice, gasLimitTotal);
 }
+
+export const getTransactionFee = (tx: ethers.TransactionResponse | ethers.TransactionReceipt) => {
+  const gasPrice = tx.gasPrice;
+  const gasAmount = 'gasUsed' in tx ? tx.gasUsed : tx.gasLimit;
+
+  return ethersUtil.calcEvmFee(gasPrice, gasAmount);
+};
