@@ -19,8 +19,6 @@ export interface NetworkData {
   endpointUrls?: string[];
   /** Nodes for Substrate network */
   nodes?: Node[];
-  /** Evm chain id for substrate network */
-  evmId?: number;
 }
 
 export type SubNetworksFees = Partial<Record<SubNetwork, Record<string, Record<BridgeTxDirection, CodecString>>>>;
