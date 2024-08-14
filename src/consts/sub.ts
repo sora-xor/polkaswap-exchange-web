@@ -98,31 +98,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
-  [SubNetworkId.PolkadotMoonbeam]: {
-    id: SubNetworkId.PolkadotMoonbeam,
-    name: 'Moonbeam',
-    nativeCurrency: {
-      name: 'GLMR',
-      symbol: 'GLMR',
-      decimals: 18,
-    },
-    endpointUrls: ['https://rpc.api.moonbeam.network', 'https://moonbeam-rpc.dwellir.com'],
-    blockExplorerUrls: ['https://moonbeam.subscan.io'],
-    shortName: 'Moonbeam',
-    nodes: [
-      {
-        chain: 'Moonbeam',
-        name: 'Moonbeam Foundation',
-        address: 'wss://wss.api.moonbeam.network',
-      },
-      {
-        chain: 'Moonbeam',
-        name: 'Dwellir',
-        address: 'wss://moonbeam-rpc.dwellir.com',
-      },
-    ],
-    evmId: 1284,
-  },
   [SubNetworkId.Rococo]: {
     id: SubNetworkId.Rococo,
     name: 'Rococo',
@@ -155,7 +130,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       {
         chain: 'Moonbase Relay Testnet',
         name: 'Parity',
-        address: 'wss://fro-moon-rpc-1-moonbase-relay-rpc-1.moonbase.ol-infra.network',
+        address: 'wss://frag-moonbase-relay-rpc-ws.g.moonbase.moonbeam.network',
       },
     ],
   },
@@ -167,9 +142,8 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'GLMR', // "DEV"
       decimals: 18,
     },
-    endpointUrls: ['https://rpc.api.moonbase.moonbeam.network', 'https://moonbase-rpc.dwellir.com'],
-    blockExplorerUrls: ['https://moonbase.subscan.io'],
-    shortName: 'Moonbase',
+    blockExplorerUrls: [],
+    shortName: 'Alpha',
     nodes: [
       {
         chain: 'Moonbase Alpha',
@@ -177,7 +151,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
         address: 'wss://wss.api.moonbase.moonbeam.network',
       },
     ],
-    evmId: 1287,
   },
   // SORA Parachains
   [SubNetworkId.RococoSora]: {
@@ -327,23 +300,9 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
       [BridgeTxDirection.Incoming]: '0',
     },
   },
-  [SubNetworkId.Alphanet]: {
-    ALPHA: {
-      [BridgeTxDirection.Outgoing]: '2700000000',
-      [BridgeTxDirection.Incoming]: '0',
-    },
-  },
   [SubNetworkId.AlphanetMoonbase]: {
-    GLMR: {
+    ACA: {
       [BridgeTxDirection.Outgoing]: '34313700000000',
-      [BridgeTxDirection.Incoming]: '0',
-    },
-    ALPHA: {
-      [BridgeTxDirection.Outgoing]: '44415350668',
-      [BridgeTxDirection.Incoming]: '46453162841',
-    },
-    XOR: {
-      [BridgeTxDirection.Outgoing]: '8140448382622083802',
       [BridgeTxDirection.Incoming]: '0',
     },
   },
