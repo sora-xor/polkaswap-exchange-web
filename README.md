@@ -79,3 +79,5 @@ yarn electron:build --linux --mac zip dmg --win portable --x64 --ia32
 ```
 
 Executable files (`.exe`, `.dmg` or `.snap`) will be located in `dist_electron` folder.
+
+### test
