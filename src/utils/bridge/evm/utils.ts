@@ -4,15 +4,13 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 
 import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
-export const isOutgoingTx = (tx: EvmHistory): boolean => {
-  return tx.type === Operation.EvmOutgoing;
-};
-
 export const isUnsignedTx = (tx: EvmHistory): boolean => {
-  if (isOutgoingTx(tx)) {
+  if (tx.type === Operation.EvmOutgoing) {
     return !tx.blockId && !tx.txId;
+  } else if (tx.type === Operation.EvmIncoming) {
+    return true;
   } else {
-    return !tx.externalHash;
+    return true;
   }
 };
 

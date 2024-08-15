@@ -137,6 +137,7 @@ export enum PageNames {
   Farming = 'Farming',
   Rewards = 'Rewards',
   ReferralProgram = 'ReferralProgram',
+  PointSystem = 'PointSystem',
   RewardsTabs = 'RewardsTabs',
   ReferralBonding = 'ReferralBonding',
   ReferralUnbonding = 'ReferralUnbonding',
@@ -308,6 +309,7 @@ export enum LimitOrderType {
 }
 
 export enum RewardsTabsItems {
+  PointSystem = PageNames.PointSystem,
   Rewards = PageNames.Rewards,
   ReferralProgram = PageNames.ReferralProgram,
 }
@@ -350,15 +352,14 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     href: '/#/trade',
   },
   {
+    icon: 'basic-circle-star-24',
+    title: PageNames.Rewards,
+    href: '/#/points',
+  },
+  {
     icon: 'basic-drop-24',
     title: PageNames.Pool,
     href: '/#/pool',
-  },
-  {
-    icon: 'call-phone-16',
-    title: PageNames.VaultsContainer,
-    href: '/#/kensetsu',
-    index: VaultPageNames.Vaults,
   },
   {
     icon: 'basic-layers-24',
@@ -371,18 +372,16 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     title: PageNames.Bridge,
     href: '/#/bridge',
   },
-];
-
-const AccountMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'finance-wallet-24',
     title: PageNames.Wallet,
     href: '/#/wallet',
   },
   {
-    icon: 'basic-circle-star-24',
-    title: PageNames.Rewards,
-    href: '/#/rewards',
+    icon: 'call-phone-16',
+    title: PageNames.VaultsContainer,
+    href: '/#/kensetsu',
+    index: VaultPageNames.Vaults,
   },
 ];
 
@@ -398,11 +397,11 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     title: PageNames.Stats,
     href: '/#/stats',
   },
-  {
-    icon: 'basic-flame-24',
-    title: PageNames.Burn,
-    href: '/#/burn',
-  },
+  // {
+  //   icon: 'basic-flame-24',
+  //   title: PageNames.Burn,
+  //   href: '/#/burn',
+  // },
   // {
   //   icon: 'music-eject-24',
   //   title: PageNames.SoraCard,
@@ -475,11 +474,12 @@ export const FaucetLink: SidebarMenuItemLink = {
   title: 'faucet',
 };
 
-export const SidebarMenuGroups = [...MainMenu, ...AccountMenu, ...OtherPagesMenu];
+export const SidebarMenuGroups = [...MainMenu, ...OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
 export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
 export const RewardsChildPages = [
+  PageNames.PointSystem,
   PageNames.Rewards,
   PageNames.ReferralProgram,
   PageNames.ReferralBonding,

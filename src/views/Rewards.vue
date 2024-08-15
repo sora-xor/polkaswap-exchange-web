@@ -64,9 +64,8 @@
                       <span v-else>{{ t('connectedText') }}</span>
                       <span
                         v-if="changeWalletEvm"
-                        v-button
                         class="rewards-account-btn disconnect"
-                        @click="disconnectEvmWallet"
+                        @click="resetEvmProviderConnection"
                       >
                         {{ t('disconnectWalletText') }}
                       </span>

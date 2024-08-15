@@ -483,7 +483,7 @@
         "title": "Odabir mrežnog noda",
         "addNode": "Dodajte prilagođenog noda",
         "customNode": "Prilagođeni nod",
-        "howToSetupOwnNode": "Kako postaviti vlastiti nod {Sora}",
+        "howToSetupOwnNode": "Postavite svoj čvor",
         "select": "Izaberite",
         "connected": "Povezano",
         "nodeTitle": "{chain} hostiran od strane {name}",
@@ -786,7 +786,8 @@
             "crowdloan": "Crowdloan nagrade"
         },
         "Rewards": "Nagrade",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Preporuke",
+        "PointSystem": "Bodovi"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Očisti lokalnu pohranu {AppName}",
         "info": "Vaša lokalna pohrana je preopterećena, za nastavak rada s {AppName} trebate je očistiti",
         "agree": "Da, razumijem"
+    },
+    "points": {
+        "title": "Vaš napredak s bodovima",
+        "loginText": "Povežite svoj račun da vidite svoje bodove",
+        "bridgeVolume": "Volumen mosta",
+        "feesSpent": "Potrošene naknade",
+        "xorBurned": "{XOR} spaljeno",
+        "yourReferrals": "Vaše preporuke",
+        "accountsText": "{amount} računa",
+        "yourRewards": "Vaše nagrade",
+        "openTelegram": "Otvorite {Telegram}",
+        "toEarnPoints": "Za zarađivanje bodova"
     }
 }

@@ -323,7 +323,7 @@ export default class AssetOwnerDetails extends Mixins(
     gap: 16px;
 
     &.empty {
-      height: calc(100vh - #{$header-height} - #{$footer-height});
+      height: calc(100dvh - #{$header-height} - #{$footer-height});
     }
 
     .details-card {

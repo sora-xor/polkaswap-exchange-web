@@ -80,7 +80,6 @@ export default class SupplyChartWidget extends Mixins(mixins.LoadingMixin, Chart
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
   readonly filters = ASSET_SUPPLY_LINE_FILTERS;
-  readonly tokens = [XOR, VAL, PSWAP, XSTUSD, XST, TBCD];
 
   @Prop({ type: Object }) predefinedToken!: Nullable<Asset>;
 
