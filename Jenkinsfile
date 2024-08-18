@@ -6,8 +6,6 @@ if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = [:]
 }
 
-cat "/var/jenkins_home/workspace/polkaswap_exchange-web_PR-1497/requestBody"
-echo processing
 def jsonPayload = readFile file: "/var/jenkins_home/workspace/polkaswap_exchange-web_PR-1497/requestBody"
 echo "Payload: ${jsonPayload}"
 
