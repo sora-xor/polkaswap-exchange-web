@@ -6,7 +6,10 @@ if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = [:]
 }
 
-echo env.GITHUB_EVENT_PAYLOAD
+cat "${WORKSPACE}/requestBody"
+echo processing
+def jsonPayload = readFile file: "${WORKSPACE}/requestBody"
+echo "Payload: ${jsonPayload}"
 
 if (env.GITHUB_EVENT_NAME == 'pull_request') {
   echo "this is pr"
