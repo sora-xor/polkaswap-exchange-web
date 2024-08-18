@@ -6,16 +6,6 @@ if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = [:]
 }
 
-def jsonPayload = readFile file: "/var/jenkins_home/workspace/polkaswap_exchange-web_PR-1497/requestBody"
-echo "Payload: ${jsonPayload}"
-
-if (env.GITHUB_EVENT_NAME == 'pull_request') {
-  echo "this is pr"
-} else {
-  // Skip the pipeline
-  echo "this is not pr"
-}
-
 def pipeline = new org.js.AppPipeline(steps: this,
     dockerImageName: 'polkaswap/exchange-web',
     buildDockerImage: 'build-tools/node:20-alpine',
