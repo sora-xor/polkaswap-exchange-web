@@ -6,9 +6,10 @@ if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = [:]
 }
 
+echo env.GITHUB_EVENT_PAYLOAD
+
 if (env.GITHUB_EVENT_NAME == 'pull_request') {
   echo "this is pr"
-  echo env.GITHUB_EVENT_PAYLOAD
 } else {
   // Skip the pipeline
   echo "this is not pr"
