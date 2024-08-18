@@ -6,6 +6,7 @@ if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = [:]
 }
 
+// test
 def pipeline = new org.js.AppPipeline(steps: this,
     dockerImageName: 'polkaswap/exchange-web',
     buildDockerImage: 'build-tools/node:20-alpine',
