@@ -1,9 +1,17 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@feature/DOPS-2516') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
 } else {
     buildEnvironment = [:]
+}
+
+if (env.GITHUB_EVENT_NAME == 'pull_request') {
+  echo "this is pr"
+  echo env.GITHUB_EVENT_PAYLOAD
+} else {
+  // Skip the pipeline
+  echo "this is not pr"
 }
 
 def pipeline = new org.js.AppPipeline(steps: this,
