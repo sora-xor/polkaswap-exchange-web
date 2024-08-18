@@ -34,7 +34,7 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
   }
 
   async onEvmPending(id: string): Promise<void> {
-    await onEvmTransactionPending(id, this.getTransaction, this.updateTransactionParams);
+    await onEvmTransactionPending(id, this.getTransaction.bind(this), this.updateTransactionParams.bind(this));
   }
 
   async onEvmSubmitted(id: string, signExternal: SignExternal): Promise<void> {
