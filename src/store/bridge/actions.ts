@@ -324,11 +324,19 @@ function calculateMaxLimit(
   if (outgoingLimitUSD.isZero() || limitAsset === referenceAsset) return outgoingLimitUSD;
 
   try {
+    // We should calculate the asset price in reference asset
+    // For this purpose is used the reduced asset amount (amount should be greater than any order book tick size)
+    const assetAmount = FPNumber.ONE;
+    const multiplier = new FPNumber(1000);
+    const quoteAmount = assetAmount.div(multiplier);
+
     const {
       result: { amount },
-    } = quote(limitAsset, referenceAsset, 1, false, [], false);
+    } = quote(limitAsset, referenceAsset, quoteAmount.toString(), false, [], false);
+    // result amount multiplied by a multiplier to get asset price
+    const assetPriceUSD = FPNumber.fromCodecValue(amount).mul(multiplier);
 
-    const assetPriceUSD = FPNumber.fromCodecValue(amount);
+    console.log(assetPriceUSD.toString());
 
     if (!assetPriceUSD.isFinity() || assetPriceUSD.isZero()) return FPNumber.ZERO;
 
@@ -551,6 +559,7 @@ const actions = defineActions({
 
     await new Promise<void>((resolve) => {
       subscription = combineLatest([limitObservable, quoteObservable]).subscribe(([usdLimit, { quote }]) => {
+        console.log(usdLimit);
         const outgoingMaxLimit = calculateMaxLimit(limitAsset, referenceAsset, usdLimit, quote);
         commit.setOutgoingMaxLimit(outgoingMaxLimit);
         resolve();
