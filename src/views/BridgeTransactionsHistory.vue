@@ -19,7 +19,7 @@
           @clear="handleResetSearch"
           class="history--search"
         />
-        <div v-loading="loading" class="history-items">
+        <div v-loading="networkHistoryLoading" class="history-items">
           <template v-if="hasHistory">
             <div
               v-button
@@ -62,7 +62,6 @@
             v-if="hasHistory"
             :current-page="currentPage"
             :page-amount="pageAmount"
-            :loading="loading"
             :total="total"
             :last-page="lastPage"
             @pagination-click="handlePaginationClick"
@@ -121,7 +120,6 @@ export default class BridgeTransactionsHistory extends Mixins(
   @state.bridge.historyPage historyPage!: number;
 
   pageAmount = 8; // override PaginationSearchMixin
-  loading = true;
 
   get historyList(): Array<IBridgeTransaction> {
     return Object.values(this.history);
@@ -162,8 +160,6 @@ export default class BridgeTransactionsHistory extends Mixins(
           this.isLtrDirection = false;
         }
       }
-    }).finally(() => {
-      this.loading = false;
     });
   }
 
@@ -284,6 +280,11 @@ export default class BridgeTransactionsHistory extends Mixins(
       top: 50%;
       transform: translate(0, -50%);
     }
+
+    .el-loading-mask {
+      background-color: transparent;
+      z-index: $app-background-layer;
+    }
   }
   &-item-title {
     display: flex;
@@ -326,6 +327,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     display: flex;
     flex-direction: column;
     min-height: calc(#{$history-item-height * $page-amount} + 50px);
+    z-index: $app-content-layer;
   }
   &-empty {
     text-align: center;
