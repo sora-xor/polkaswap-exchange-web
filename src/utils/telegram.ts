@@ -151,6 +151,8 @@ class TmaSdk {
           console.info('phone rotated to 180 degrees');
           if (navigator.vibrate) {
             navigator.vibrate(200); // Vibrate for 200ms
+          } else {
+            console.info('no navigator.vibrate');
           }
           isRotated = true; // Update the state to indicate the phone is rotated
         }
@@ -160,6 +162,8 @@ class TmaSdk {
           console.info('phone returned to normal position');
           if (navigator.vibrate) {
             navigator.vibrate(200); // Vibrate for 200ms
+          } else {
+            console.info('no navigator.vibrate');
           }
           isRotated = false; // Reset the state
         }
