@@ -139,25 +139,31 @@ class TmaSdk {
   }
 
   private listenForDeviceRotation(): void {
-    let isRotated = false; // This will track if the phone is currently rotated to 180 degrees.
+    let hideBalance = false;
+    let wasRotatedTo180 = false;
 
     window.addEventListener('deviceorientation', (event) => {
       const { beta } = event;
 
-      // Make sure beta is not null
       if (beta !== null) {
-        // If the phone is rotated to 180 degrees and wasn't previously rotated
-        if (!isRotated && Math.abs(beta) > 170) {
-          console.info('phone rotated to 180 degrees');
-          useHaptic('soft');
-          isRotated = true; // Update the state to indicate the phone is rotated
+        if (Math.abs(beta) > 170 && !wasRotatedTo180) {
+          console.info('Phone rotated to 180 degrees');
+          wasRotatedTo180 = true;
         }
-        // If the phone was rotated but has now returned to the normal position
-        if (isRotated && Math.abs(beta) < 30) {
-          // 10 degrees as a buffer for normal position
-          console.info('phone returned to normal position');
+
+        if (wasRotatedTo180 && Math.abs(beta) < 30) {
+          console.info('Phone returned to normal position');
           useHaptic('soft');
-          isRotated = false; // Reset the state
+
+          hideBalance = !hideBalance;
+          console.info(`hideBalance is now: ${hideBalance}`);
+
+          if (hideBalance) {
+            console.info('Balance is hidden');
+          } else {
+            console.info('Balance is visible');
+          }
+          wasRotatedTo180 = false;
         }
       }
     });
