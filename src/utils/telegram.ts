@@ -63,7 +63,7 @@ class TmaSdk {
       }
       // Init haptic feedback
       this.addHapticListener();
-
+      console.info(store);
       if (this.checkAccelerometerSupport()) {
         console.info('check accelerometr support succeed');
         this.listenForDeviceRotation();
@@ -155,13 +155,9 @@ class TmaSdk {
           useHaptic('soft');
 
           store.commit.wallet.settings.toggleHideBalance();
+          store.commit.wallet.account.syncWithStorage();
           console.info(`hideBalance is now: ${store.state.wallet.settings.shouldBalanceBeHidden}`);
 
-          // if (hideBalance) {
-          //   console.info('Balance is hidden');
-          // } else {
-          //   console.info('Balance is visible');
-          // }
           wasRotatedTo180 = false;
         }
       }
