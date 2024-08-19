@@ -149,22 +149,14 @@ class TmaSdk {
         // If the phone is rotated to 180 degrees and wasn't previously rotated
         if (!isRotated && Math.abs(beta) > 170) {
           console.info('phone rotated to 180 degrees');
-          if (navigator.vibrate) {
-            navigator.vibrate(200); // Vibrate for 200ms
-          } else {
-            console.info('no navigator.vibrate');
-          }
+          useHaptic('soft');
           isRotated = true; // Update the state to indicate the phone is rotated
         }
         // If the phone was rotated but has now returned to the normal position
         if (isRotated && Math.abs(beta) < 30) {
           // 10 degrees as a buffer for normal position
           console.info('phone returned to normal position');
-          if (navigator.vibrate) {
-            navigator.vibrate(200); // Vibrate for 200ms
-          } else {
-            console.info('no navigator.vibrate');
-          }
+          useHaptic('soft');
           isRotated = false; // Reset the state
         }
       }
