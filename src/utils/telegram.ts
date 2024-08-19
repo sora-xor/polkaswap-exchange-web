@@ -139,13 +139,24 @@ class TmaSdk {
   }
 
   private listenForDeviceRotation(): void {
+    let isRotated = false; // This will track if the phone is currently rotated to 180 degrees.
+
     window.addEventListener('deviceorientation', (event) => {
       const { beta } = event;
-      // console.info('event rotation');
-      // console.info(event);
-      if (beta !== null && Math.abs(beta) > 170) {
-        console.info(event);
-        console.info('phone rotated');
+
+      // Make sure beta is not null
+      if (beta !== null) {
+        // If the phone is rotated to 180 degrees and wasn't previously rotated
+        if (!isRotated && Math.abs(beta) > 170) {
+          console.info('phone rotated to 180 degrees');
+          isRotated = true; // Update the state to indicate the phone is rotated
+        }
+        // If the phone was rotated but has now returned to the normal position
+        if (isRotated && Math.abs(beta) < 10) {
+          // 10 degrees as a buffer for normal position
+          console.info('phone returned to normal position');
+          isRotated = false; // Reset the state
+        }
       }
     });
   }
