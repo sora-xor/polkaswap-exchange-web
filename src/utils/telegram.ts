@@ -63,6 +63,13 @@ class TmaSdk {
       }
       // Init haptic feedback
       this.addHapticListener();
+
+      if (this.checkAccelerometerSupport()) {
+        console.info('check accelerometr support succeed');
+        this.listenForDeviceRotation();
+      } else {
+        console.warn('[TMA]: Accelerometer not supported');
+      }
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
       store.commit.settings.disableTMA();
@@ -125,6 +132,22 @@ class TmaSdk {
       store.commit.referrals.setStorageReferrer(referrerAddress);
       console.info('[TMA]: Referrer was set', referrerAddress);
     }
+  }
+
+  private checkAccelerometerSupport(): boolean {
+    return 'DeviceMotionEvent' in window || 'DeviceOrientationEvent' in window;
+  }
+
+  private listenForDeviceRotation(): void {
+    window.addEventListener('deviceorientation', (event) => {
+      console.info('event rotation');
+      console.info(event);
+      const { beta } = event;
+
+      if (beta !== null && Math.abs(beta) > 170) {
+        console.info('phone rotated');
+      }
+    });
   }
 
   public destroy(): void {
