@@ -152,7 +152,7 @@ class TmaSdk {
           isRotated = true; // Update the state to indicate the phone is rotated
         }
         // If the phone was rotated but has now returned to the normal position
-        if (isRotated && Math.abs(beta) < 10) {
+        if (isRotated && Math.abs(beta) < 30) {
           // 10 degrees as a buffer for normal position
           console.info('phone returned to normal position');
           isRotated = false; // Reset the state
