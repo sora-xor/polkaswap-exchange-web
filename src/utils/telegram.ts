@@ -64,9 +64,6 @@ class TmaSdk {
       // Init haptic feedback
       this.addHapticListener();
       if (this.checkAccelerometerSupport()) {
-        console.info('check accelerometr support succeed');
-        console.info('here is the store');
-        console.info(store);
         this.listenForDeviceRotation();
       } else {
         console.warn('[TMA]: Accelerometer not supported');
@@ -147,18 +144,13 @@ class TmaSdk {
 
       if (beta !== null) {
         if (Math.abs(beta) > 170 && !wasRotatedTo180) {
-          console.info('Phone rotated to 180 degrees');
           wasRotatedTo180 = true;
         }
 
         if (wasRotatedTo180 && Math.abs(beta) < 30) {
-          console.info('Phone returned to normal position');
           useHaptic('soft');
-
           store.commit.wallet.settings.toggleHideBalance();
           store.commit.wallet.account.syncWithStorage();
-          console.info(`hideBalance is now: ${store.state.wallet.settings.shouldBalanceBeHidden}`);
-
           wasRotatedTo180 = false;
         }
       }
