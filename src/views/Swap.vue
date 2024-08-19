@@ -220,12 +220,3 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@include tablet(true) {
-  .swap-container {
-    max-width: $inner-window-width;
-    margin: auto;
-  }
-}
-</style>
