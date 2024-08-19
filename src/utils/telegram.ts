@@ -139,7 +139,6 @@ class TmaSdk {
   }
 
   private listenForDeviceRotation(): void {
-    let hideBalance = false;
     let wasRotatedTo180 = false;
 
     window.addEventListener('deviceorientation', (event) => {
@@ -155,14 +154,14 @@ class TmaSdk {
           console.info('Phone returned to normal position');
           useHaptic('soft');
 
-          hideBalance = !hideBalance;
-          console.info(`hideBalance is now: ${hideBalance}`);
+          store.commit.wallet.settings.toggleHideBalance();
+          console.info(`hideBalance is now: ${store.state.wallet.settings.shouldBalanceBeHidden}`);
 
-          if (hideBalance) {
-            console.info('Balance is hidden');
-          } else {
-            console.info('Balance is visible');
-          }
+          // if (hideBalance) {
+          //   console.info('Balance is hidden');
+          // } else {
+          //   console.info('Balance is visible');
+          // }
           wasRotatedTo180 = false;
         }
       }
