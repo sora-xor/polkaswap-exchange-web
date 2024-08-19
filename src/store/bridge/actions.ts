@@ -336,8 +336,6 @@ function calculateMaxLimit(
     // result amount multiplied by a multiplier to get asset price
     const assetPriceUSD = FPNumber.fromCodecValue(amount).mul(multiplier);
 
-    console.log(assetPriceUSD.toString());
-
     if (!assetPriceUSD.isFinity() || assetPriceUSD.isZero()) return FPNumber.ZERO;
 
     return outgoingLimitUSD.div(assetPriceUSD);
@@ -559,7 +557,6 @@ const actions = defineActions({
 
     await new Promise<void>((resolve) => {
       subscription = combineLatest([limitObservable, quoteObservable]).subscribe(([usdLimit, { quote }]) => {
-        console.log(usdLimit);
         const outgoingMaxLimit = calculateMaxLimit(limitAsset, referenceAsset, usdLimit, quote);
         commit.setOutgoingMaxLimit(outgoingMaxLimit);
         resolve();
