@@ -140,11 +140,11 @@ class TmaSdk {
 
   private listenForDeviceRotation(): void {
     window.addEventListener('deviceorientation', (event) => {
-      console.info('event rotation');
-      console.info(event);
       const { beta } = event;
-
+      // console.info('event rotation');
+      // console.info(event);
       if (beta !== null && Math.abs(beta) > 170) {
+        console.info(event);
         console.info('phone rotated');
       }
     });
