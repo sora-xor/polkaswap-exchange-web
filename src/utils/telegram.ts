@@ -63,9 +63,10 @@ class TmaSdk {
       }
       // Init haptic feedback
       this.addHapticListener();
-      console.info(store);
       if (this.checkAccelerometerSupport()) {
         console.info('check accelerometr support succeed');
+        console.info('here is the store');
+        console.info(store);
         this.listenForDeviceRotation();
       } else {
         console.warn('[TMA]: Accelerometer not supported');
