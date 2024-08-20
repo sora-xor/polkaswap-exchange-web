@@ -6,7 +6,7 @@
           <info-line
             :label="t('dexSettings.slippageTolerance')"
             :label-tooltip="t('dexSettings.slippageToleranceHint')"
-            :value="customSlippageTolerance"
+            :value="localeFormattedSlippageTolerance"
           />
         </template>
         <div :class="slippageToleranceClasses">
@@ -72,6 +72,10 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
 
   @mutation.settings.setSlippageTolerance private setSlippageTolerance!: (value: string) => void;
   @mutation.settings.setTransactionDeadline private setTransactionDeadline!: (value: number) => void;
+
+  get localeFormattedSlippageTolerance() {
+    return `${this.formatStringValue(this.slippageTolerance)}%`;
+  }
 
   get customSlippageTolerance(): string {
     const suffix = this.slippageToleranceFocused ? '' : '%';
