@@ -140,6 +140,9 @@ class TmaSdk {
       typeof DeviceMotionEvent !== 'undefined' &&
       typeof (DeviceMotionEvent as any).requestPermission === 'function'
     ) {
+      console.info('Device supports motion events with permission.');
+      console.info('here is DeviceMotionEvent');
+      console.info(DeviceMotionEvent);
       try {
         const response = await (DeviceMotionEvent as any).requestPermission();
         if (response === 'granted') {
@@ -155,6 +158,8 @@ class TmaSdk {
       }
     } else if ('DeviceMotionEvent' in window || 'DeviceOrientationEvent' in window) {
       console.info('Device supports motion events without permission.');
+      console.info('here is DeviceMotionEvent');
+      console.info(DeviceMotionEvent);
       return true;
     } else {
       console.warn('Device does not support motion events.');
