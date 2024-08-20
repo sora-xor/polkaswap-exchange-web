@@ -1,9 +1,8 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-import { accountUtils, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api as soraApi, accountUtils, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
-import { ethers } from 'ethers';
 
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
@@ -173,21 +172,18 @@ const actions = defineActions({
   },
 
   async changeEvmNetworkProvided(context): Promise<void> {
-    const { getters, state } = web3ActionContext(context);
+    const { getters } = web3ActionContext(context);
     const { selectedNetwork } = getters;
-    const { networkType } = state;
 
-    if (selectedNetwork && networkType !== BridgeNetworkType.Sub) {
-      await ethersUtil.switchOrAddChain(selectedNetwork);
-    }
+    if (!selectedNetwork) return;
+
+    await ethersUtil.switchOrAddChain(selectedNetwork);
   },
 
   async getSupportedApps(context): Promise<void> {
     const { commit, getters } = web3ActionContext(context);
-    // [TODO] uncomment
-    // const supportedApps = await api.bridgeProxy.getListApps();
-    // [TODO] remove this production mock after nodes update
-    const supportedApps = {
+    // production mock
+    let supportedApps = {
       [BridgeNetworkType.Eth]: {},
       [BridgeNetworkType.Evm]: {},
       [BridgeNetworkType.Sub]: [
@@ -200,6 +196,12 @@ const actions = defineActions({
         SubNetworkId.Liberland,
       ],
     };
+
+    try {
+      supportedApps = await soraApi.bridgeProxy.getListApps();
+    } catch (error) {
+      console.error(error);
+    }
 
     commit.setSupportedApps(supportedApps as any);
 
@@ -247,13 +249,12 @@ const actions = defineActions({
       if (!soraAssetId) {
         return '';
       }
-      const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi;
+      const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other];
       const contractAddress = getters.contractAddress(KnownEthBridgeAsset.Other);
       if (!contractAddress || !contractAbi) {
         throw new Error('Contract address/abi is not found');
       }
-      const signer = await ethersUtil.getSigner();
-      const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
+      const contractInstance = await ethersUtil.getContract(contractAddress, contractAbi);
       const methodArgs = [soraAssetId];
       const externalAddress = await contractInstance._sidechainTokens(...methodArgs);
       // Not (wrong) registered Sora asset on bridge contract return '0' address (like native token)
