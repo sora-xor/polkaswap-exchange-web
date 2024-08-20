@@ -18,6 +18,7 @@ import type {
   IBridgeConstructorOptions,
   TransactionHandlerPayload,
 } from '@/utils/bridge/common/types';
+import { isUnsignedTx } from '@/utils/bridge/common/utils';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
 
@@ -180,25 +181,27 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
   }
 
   private async checkTransactionBlockId(id: string): Promise<void> {
-    const { blockId } = this.getTransaction(id);
+    const { blockId, externalBlockId } = this.getTransaction(id);
 
-    if (blockId) return;
+    if (blockId || externalBlockId) return;
 
     await delay(1_000);
     await this.checkTransactionBlockId(id);
   }
 
   async waitForTransactionBlockId(id: string): Promise<void> {
-    const { txId } = this.getTransaction(id);
+    const tx = this.getTransaction(id);
 
-    if (!txId) {
-      throw new Error(`[${this.constructor.name}]: Transaction "id" is empty, first sign the transaction`);
+    if (isUnsignedTx(tx)) {
+      throw new Error(
+        `[${this.constructor.name}]: Transaction "id" or "externalHash" is empty, first sign the transaction`
+      );
     }
 
     try {
       await Promise.race([
         this.checkTransactionBlockId(id),
-        delay(BLOCK_PRODUCE_TIME * 6, false), // 36s
+        delay(BLOCK_PRODUCE_TIME * 10, false), // 60s
       ]);
     } catch (error) {
       console.info(`[${this.constructor.name}]: Implement "blockId" restoration by "txId"`);
