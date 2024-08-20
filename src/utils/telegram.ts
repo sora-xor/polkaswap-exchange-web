@@ -38,7 +38,7 @@ function useHaptic(type: HapticFeedbackBinding): void {
 }
 
 class TmaSdk {
-  public async init(botUrl?: string): Promise<void> {
+  public init(botUrl?: string): void {
     try {
       // Check if the current platform is Telegram Mini App
       const WebApp = Telegram?.WebApp;
@@ -63,7 +63,7 @@ class TmaSdk {
       }
       // Init haptic feedback
       this.addHapticListener();
-      if (await this.checkAccelerometerSupport()) {
+      if (this.checkAccelerometerSupport()) {
         this.listenForDeviceRotation();
       } else {
         console.warn('[TMA]: Accelerometer not supported');
@@ -132,37 +132,8 @@ class TmaSdk {
     }
   }
 
-  // private checkAccelerometerSupport(): boolean {
-  //   return 'DeviceMotionEvent' in window || 'DeviceOrientationEvent' in window;
-  // }
-
-  private async checkAccelerometerSupport(): Promise<boolean> {
-    // Check if the device has DeviceMotionEvent or DeviceOrientationEvent support
-    if (
-      typeof DeviceMotionEvent !== 'undefined' &&
-      typeof (DeviceMotionEvent as any).requestPermission === 'function'
-    ) {
-      // Request permission for iOS 13+
-      try {
-        const response = await (DeviceMotionEvent as any).requestPermission();
-        if (response === 'granted') {
-          console.info('Device motion permission granted.');
-          return true;
-        } else {
-          console.warn('Device motion permission denied.');
-          return false;
-        }
-      } catch (error) {
-        console.error('Error requesting device motion permission:', error);
-        return false;
-      }
-    } else if ('DeviceMotionEvent' in window || 'DeviceOrientationEvent' in window) {
-      // For non-iOS devices, simply check for the presence of these events
-      return true;
-    } else {
-      console.warn('Device motion events are not supported on this device.');
-      return false;
-    }
+  private checkAccelerometerSupport(): boolean {
+    return 'DeviceMotionEvent' in window || 'DeviceOrientationEvent' in window;
   }
 
   private listenForDeviceRotation(): void {
