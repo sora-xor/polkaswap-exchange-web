@@ -40,6 +40,7 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
   checkTriggerUpdate(current: any, prev: any) {
     if (!isEqual(current)(prev)) {
       this.resetPage();
+      this.resetItems();
       this.updateItems();
     }
   }
@@ -86,6 +87,11 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
       this.updateIntervalTimestamp();
       this.subscribeOnData();
     }
+  }
+
+  private resetItems(): void {
+    this.items = [];
+    this.totalCount = 0;
   }
 
   private async fetchData(): Promise<void> {

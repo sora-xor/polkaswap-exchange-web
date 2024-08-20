@@ -192,6 +192,7 @@ $left: $inner-spacing-medium;
   flex-flow: column nowrap;
   align-items: normal;
   overflow: hidden;
+  border: 1px solid transparent;
 
   &.full {
     width: 100%;

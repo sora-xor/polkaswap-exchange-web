@@ -5,7 +5,7 @@
     :draggable="options.edit"
     :resizable="options.edit"
     :lines="options.edit"
-    :loading="parentLoading"
+    :loading="pageLoading"
     :default-layouts="DefaultLayouts"
     v-model="widgets"
   >
@@ -184,6 +184,10 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       // options
       edit: this.t('editText'),
     };
+  }
+
+  get pageLoading(): boolean {
+    return this.parentLoading || this.loading;
   }
 
   @Watch('tokenFrom')
