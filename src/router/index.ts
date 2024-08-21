@@ -210,6 +210,11 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.RewardsTabs),
     children: [
       {
+        path: '/points',
+        name: PageNames.PointSystem,
+        component: lazyView(PageNames.PointSystem),
+      },
+      {
         path: '/rewards',
         name: PageNames.Rewards,
         component: lazyView(PageNames.Rewards),

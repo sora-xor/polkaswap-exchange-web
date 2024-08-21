@@ -483,7 +483,7 @@
         "title": "Netzwerks-Node-Auswahl",
         "addNode": "Benutzerdefinierten Node hinzufügen",
         "customNode": "Benutzerdefinierter Node",
-        "howToSetupOwnNode": "So richtest du deinen eigenen {Sora} Node ein",
+        "howToSetupOwnNode": "Richten Sie Ihren Knoten ein",
         "select": "Auswählen",
         "connected": "Verbunden",
         "nodeTitle": "{chain} gehostet von {name}",
@@ -786,7 +786,8 @@
             "crowdloan": "Crowdloan Belohnungen"
         },
         "Rewards": "Belohnungen",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Empfehlungen",
+        "PointSystem": "Punkte"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Löschen Sie den lokalen {AppName} Speicher",
         "info": "Ihr lokaler Speicher ist überlastet, um mit {AppName} weiterzuarbeiten, müssen Sie ihn bereinigen",
         "agree": "Ja ich verstehe"
+    },
+    "points": {
+        "title": "Ihr Punktestand",
+        "loginText": "Verbinden Sie Ihr Konto, um Ihre Punkte zu sehen",
+        "bridgeVolume": "Bridge-Volumen",
+        "feesSpent": "Ausgegebene Gebühren",
+        "xorBurned": "{XOR} verbrannt",
+        "yourReferrals": "Ihre Empfehlungen",
+        "accountsText": "{amount} Konten",
+        "yourRewards": "Ihre Belohnungen",
+        "openTelegram": "Öffnen {Telegram}",
+        "toEarnPoints": "Um Punkte zu verdienen"
     }
 }

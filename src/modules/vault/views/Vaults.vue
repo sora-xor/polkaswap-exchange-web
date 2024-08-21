@@ -227,7 +227,12 @@
       <s-divider class="vaults-divider" />
     </template>
     <explore-overall-stats />
-    <explore-collaterals class="vaults-stats" @open="handleCreateSelectedVault" />
+    <explore-collaterals
+      class="vaults-stats"
+      :explore-query="exploreQuery"
+      @update-search="updateSearch"
+      @open="handleCreateSelectedVault"
+    />
     <div class="vaults-disclaimer s-flex">
       <div class="disclaimer s-flex-column">
         <div class="disclaimer__title s-flex">
@@ -319,6 +324,8 @@ export default class Vaults extends Mixins(
 
   pageAmount = 6; // override PaginationSearchMixin, getter cannot be used, that's why @Watch is used
 
+  exploreQuery = ''; // for the ExploreCollaterals, cannot be used inside because of the ExplorePageMixin
+
   @Watch('windowWidth')
   onWindowWidthChange(): void {
     let pageAmount: number;
@@ -377,6 +384,10 @@ export default class Vaults extends Mixins(
   handleTabChange(tab: VaultStatus): void {
     this.selectedTab = tab;
     this.resetPage();
+  }
+
+  updateSearch(search: string): void {
+    this.exploreQuery = search;
   }
 
   handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {

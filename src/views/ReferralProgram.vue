@@ -229,7 +229,7 @@ export default class ReferralProgram extends Mixins(
   @action.referrals.subscribeOnReferrer private subscribeOnReferrer!: AsyncFnWithoutArgs;
 
   @Watch('isLoggedIn')
-  private async updateSubscriptions(value: boolean): Promise<void> {
+  private updateSubscriptions(value: boolean): void {
     if (value) {
       this.initData();
     } else {

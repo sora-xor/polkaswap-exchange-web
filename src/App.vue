@@ -325,7 +325,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   goTo(name: PageNames): void {
-    goTo(name);
+    if (name === PageNames.Rewards) {
+      // Rewards is a menu route but we need to show PointSystem by default
+      goTo(PageNames.PointSystem);
+    } else {
+      goTo(name);
+    }
     this.closeMenu();
   }
 
@@ -429,7 +434,7 @@ ul ul {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
-  height: 100vh;
+  height: 100dvh;
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
   transition: background-color 500ms linear;
@@ -622,7 +627,7 @@ i.icon-divider {
   &-main {
     display: flex;
     align-items: stretch;
-    height: calc(100vh - #{$header-height} - #{$footer-height});
+    height: calc(100dvh - #{$header-height} - #{$footer-height});
     position: relative;
   }
 

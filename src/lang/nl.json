@@ -483,7 +483,7 @@
         "title": "Netwerk node selectie",
         "addNode": "Aangepaste node toevoegen",
         "customNode": "Aangepaste node",
-        "howToSetupOwnNode": "Hoe je eigen {Sora} node opzetten",
+        "howToSetupOwnNode": "Stel uw node in",
         "select": "Selecteer",
         "connected": "Verbonden",
         "nodeTitle": "{chain} gehost door {name}",
@@ -786,7 +786,8 @@
             "crowdloan": "Crowdloan beloningen"
         },
         "Rewards": "Beloningen",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Verwijzingen",
+        "PointSystem": "Punten"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Lokaal {AppName} opslag wissen",
         "info": "Uw lokale opslag is overbelast, om door te gaan met {AppName} moet u het opschonen",
         "agree": "Ja ik begrijp het"
+    },
+    "points": {
+        "title": "Uw puntenvoortgang",
+        "loginText": "Verbind uw account om uw punten te zien",
+        "bridgeVolume": "Brugvolume",
+        "feesSpent": "Uitgegeven vergoedingen",
+        "xorBurned": "{XOR} verbrand",
+        "yourReferrals": "Uw verwijzingen",
+        "accountsText": "{amount} accounts",
+        "yourRewards": "Uw beloningen",
+        "openTelegram": "Openen {Telegram}",
+        "toEarnPoints": "Om punten te verdienen"
     }
 }

@@ -483,7 +483,7 @@
         "title": "Nettverk nodevalg",
         "addNode": "Legg til egendefinert node",
         "customNode": "Egendefinert node",
-        "howToSetupOwnNode": "Hvordan sette opp din egen {Sora} node",
+        "howToSetupOwnNode": "Sett opp din node",
         "select": "Velg",
         "connected": "Tilkoblet",
         "nodeTitle": "{chain} driftet av {name}",
@@ -786,7 +786,8 @@
             "crowdloan": "Crowdloan belønninger"
         },
         "Rewards": "Belønninger",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Henvisninger",
+        "PointSystem": "Poeng"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Tøm lokal {AppName} lagring",
         "info": "Din lokale lagring er overbelastet, for å fortsette å bruke {AppName} må du rense den",
         "agree": "Ja jeg forstår"
+    },
+    "points": {
+        "title": "Dine poengfremgang",
+        "loginText": "Koble til kontoen din for å se poengene dine",
+        "bridgeVolume": "Brovolum",
+        "feesSpent": "Brukte avgifter",
+        "xorBurned": "{XOR} brent",
+        "yourReferrals": "Dine henvisninger",
+        "accountsText": "{amount} kontoer",
+        "yourRewards": "Dine belønninger",
+        "openTelegram": "Åpne {Telegram}",
+        "toEarnPoints": "For å tjene poeng"
     }
 }

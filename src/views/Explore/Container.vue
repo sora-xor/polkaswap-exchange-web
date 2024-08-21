@@ -134,7 +134,6 @@ $shadow-width: 30px;
 $container-shadow-paddings: 2 * $shadow-width;
 $container-max-width: calc($container-max - $container-shadow-paddings - 2 * var(--sidebar-width));
 $container-max-width--collapsed: calc($container-max - $container-shadow-paddings - 2 * $sidebar-collapsed-width);
-$search-input-width: 290px;
 
 .container--explore {
   display: flex;
@@ -169,7 +168,7 @@ $search-input-width: 290px;
   }
 
   &-search {
-    max-width: $search-input-width;
+    max-width: $explore-search-input-max-width;
     margin-left: $inner-spacing-medium;
 
     .s-button--clear:focus {

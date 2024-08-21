@@ -209,7 +209,7 @@ export default {
     addNode: 'Add custom node',
     updateNode: 'Update node',
     customNode: 'Custom node',
-    howToSetupOwnNode: 'How to setup your own {Sora} node',
+    howToSetupOwnNode: 'Setup your node',
     select: 'Select',
     connected: 'Connected',
     selectNodeForEnvironment: 'Select a node for {environment} environment:',
@@ -618,8 +618,9 @@ export default {
     ok: 'OK',
   },
   rewards: {
+    [RewardsTabsItems.PointSystem]: 'Points',
     [RewardsTabsItems.Rewards]: 'Rewards',
-    [RewardsTabsItems.ReferralProgram]: '@:referralProgram.title',
+    [RewardsTabsItems.ReferralProgram]: 'Referrals',
     andText: 'and',
     forText: 'for',
     totalVested: 'Total rewards',
@@ -729,6 +730,18 @@ export default {
     payoff:
       'You would have to use the Bridge to get XOR from other networks, get sent XOR from another {Sora} account, or swap any other token already in your account into XOR.',
     button: 'Yes, I understand the risk',
+  },
+  points: {
+    title: 'Your Points Progress',
+    loginText: 'Connect your account to see your points',
+    bridgeVolume: 'Bridge volume',
+    feesSpent: 'Fees spent',
+    xorBurned: '{XOR} burned',
+    yourReferrals: 'Your referrals',
+    accountsText: '{amount} accounts',
+    yourRewards: 'Your rewards',
+    openTelegram: 'Open {Telegram}',
+    toEarnPoints: 'To earn points',
   },
   provider: {
     messages: {
