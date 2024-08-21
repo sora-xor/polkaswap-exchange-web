@@ -198,6 +198,24 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.KusamaCurio]: {
+    id: SubNetworkId.KusamaCurio,
+    name: 'Curio',
+    nativeCurrency: {
+      name: 'CGT',
+      symbol: 'CGT',
+      decimals: 18,
+    },
+    blockExplorerUrls: [],
+    shortName: 'Curio',
+    nodes: [
+      {
+        chain: 'Curio',
+        name: 'Curio',
+        address: 'wss://parachain.curioinvest.com',
+      },
+    ],
+  },
   [SubNetworkId.KusamaShiden]: {
     id: SubNetworkId.KusamaShiden,
     name: 'Shiden',
