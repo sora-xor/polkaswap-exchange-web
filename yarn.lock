@@ -2940,7 +2940,7 @@
     "@polkadot/types" "9.14.2"
     "@sora-substrate/type-definitions" "1.39.10"
 
-"@sora-substrate/util@1.39.10":
+"@sora-substrate/util@1.39.10", "@sora-substrate/util@1.39.12":
   version "1.39.10"
   resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.39.10.tgz#2173e88ff4cd1ec1f94a299fd4fa311547afe361"
   integrity sha512-f913coXOR0QYkHYeDZ/uofFcqJeKSCHmxgmXm29htez1/JaUy1NfXn5dDBk7XCG8Jx9ZxnLgqTazn5Yd4D2ixQ==
@@ -2983,13 +2983,13 @@
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
 
-"@soramitsu/soraneo-wallet-web@1.39.10-beta-1":
-  version "1.39.10-beta-1"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.39.10-beta-1.tgz#584775fa3bdb46039dbd67b831296ac7a59fc925"
-  integrity sha512-N7unYOpbP5/e8kcEALz02nPThfSfCGIykbBgezSvy39kFE0OfpHN570SY7mU/tZT8wz8ZXiH778FBZRth7WhhQ==
+"@soramitsu/soraneo-wallet-web@1.39.10-beta-3":
+  version "1.39.10-beta-3"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.39.10-beta-3.tgz#43bccb87c591efa394eb4d7e59ee757abab73ffe"
+  integrity sha512-G2z+KOWPYFgSMBBGnZqdGxmCLVk+r10zyq8cLdA5g6mL9ARn9YDbcvQ4UgF+8+W518SlhKuT2+b/uixSKZYHgQ==
   dependencies:
     "@polkadot/vue-identicon" "2.12.1"
-    "@sora-substrate/util" "1.39.10"
+    "@sora-substrate/util" "1.39.12"
     "@sora-test/wallet-connect" "^0.0.9"
     "@soramitsu-ui/ui-vue2" "^1.1.1"
     "@urql/core" "^5.0.4"

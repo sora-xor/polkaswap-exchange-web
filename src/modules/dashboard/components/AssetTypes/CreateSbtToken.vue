@@ -1,5 +1,5 @@
 <template>
-  <wallet-base :title="t('createToken.titleCommon')" @back="handleBack" show-back>
+  <wallet-base :title="titleText" @back="handleBack" show-back>
     <div class="dashboard-create">
       <div v-if="step === Step.AssetsChoice">
         <search-input
@@ -319,6 +319,21 @@ export default class CreateSbtToken extends Mixins(
     }
     const fpAccountXor = this.getFPNumberFromCodec(accountXor.balance.transferable, accountXor.decimals);
     return FPNumber.gte(fpAccountXor, this.fee);
+  }
+
+  get titleText(): string {
+    switch (this.step) {
+      case Step.AssetsChoice:
+        return 'Add Assets to SBT';
+      case Step.SbtMetaDescription:
+        return 'Enter SBT Details';
+      case Step.SbtMetaImage:
+        return 'Enter SBT Details';
+      case Step.SbtTxSign:
+        return 'SBT Preview';
+      default:
+        return this.t('createToken.titleCommon');
+    }
   }
 
   handleClearSearch(): void {
