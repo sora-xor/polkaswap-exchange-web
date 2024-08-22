@@ -3,6 +3,7 @@
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
         <s-button
+          :class="['history-restore-btn', { loading: networkHistoryLoading }]"
           type="action"
           icon="arrows-swap-90-24"
           :disabled="networkHistoryLoading"
@@ -19,7 +20,7 @@
           @clear="handleResetSearch"
           class="history--search"
         />
-        <div v-loading="networkHistoryLoading" class="history-items">
+        <div class="history-items">
           <template v-if="hasHistory">
             <div
               v-button
@@ -280,11 +281,6 @@ export default class BridgeTransactionsHistory extends Mixins(
       top: 50%;
       transform: translate(0, -50%);
     }
-
-    .el-loading-mask {
-      background-color: transparent;
-      z-index: $app-background-layer;
-    }
   }
   &-item-title {
     display: flex;
@@ -298,6 +294,14 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
   &-items .history-pagination.el-pagination {
     margin-top: auto;
+  }
+
+  &-restore-btn {
+    &.loading {
+      & > span > i {
+        @include loading;
+      }
+    }
   }
 }
 </style>
@@ -428,9 +432,5 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
       margin-left: $inner-spacing-tiny;
     }
   }
-}
-.s-button--restore {
-  margin-top: $inner-spacing-medium;
-  width: 100%;
 }
 </style>
