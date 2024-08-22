@@ -365,4 +365,10 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
       [BridgeTxDirection.Incoming]: '0',
     },
   },
+  [SubNetworkId.KusamaCurio]: {
+    XOR: {
+      [BridgeTxDirection.Outgoing]: '500000000000000000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+  },
 };
