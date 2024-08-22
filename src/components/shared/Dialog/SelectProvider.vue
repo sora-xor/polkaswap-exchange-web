@@ -4,7 +4,6 @@
       :wallets="wallets"
       :connected-wallet="evmProvider"
       :selected-wallet="selectedProvider"
-      :selected-wallet-loading="!!evmProviderLoading"
       @select="handleSelectProvider"
     />
   </dialog-base>
