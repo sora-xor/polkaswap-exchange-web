@@ -1,6 +1,7 @@
 export enum DashboardPageNames {
   AssetOwner = 'AssetOwner',
   AssetOwnerDetails = 'AssetOwnerDetails',
+  AssetOwnerDetailsSBT = 'AssetOwnerDetailsSBT',
   AssetOwnerCreate = 'AssetOwnerCreate',
 }
 

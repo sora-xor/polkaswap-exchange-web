@@ -157,7 +157,14 @@ export default class AssetOwner extends Mixins(InternalConnectMixin, mixins.Form
   }
 
   handleOpenAssetDetails(asset: OwnedAsset): void {
-    router.push({ name: DashboardPageNames.AssetOwnerDetails, params: { asset: asset.address } });
+    // TODO: [Rustem] migrate to AsssetInfosV2 and rely on AssetType
+    const isSBT = false;
+
+    if (isSBT) {
+      router.push({ name: DashboardPageNames.AssetOwnerDetailsSBT, params: { asset: asset.address } });
+    } else {
+      router.push({ name: DashboardPageNames.AssetOwnerDetails, params: { asset: asset.address } });
+    }
   }
 
   get noAssetsImg(): string {
