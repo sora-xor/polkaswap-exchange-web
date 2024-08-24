@@ -320,7 +320,7 @@ export default class AssetOwnerDetails extends Mixins(
 .asset-owner-details {
   &-container {
     display: flex;
-    gap: 16px;
+    gap: $basic-spacing;
 
     &.empty {
       height: calc(100dvh - #{$header-height} - #{$footer-height});

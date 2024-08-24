@@ -158,7 +158,7 @@ export default class AssetOwner extends Mixins(InternalConnectMixin, mixins.Form
 
   handleOpenAssetDetails(asset: OwnedAsset): void {
     // TODO: [Rustem] migrate to AsssetInfosV2 and rely on AssetType
-    const isSBT = false;
+    const isSBT = true;
 
     if (isSBT) {
       router.push({ name: DashboardPageNames.AssetOwnerDetailsSBT, params: { asset: asset.address } });

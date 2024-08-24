@@ -10,7 +10,7 @@
     >
       <s-icon name="arrows-chevron-left-rounded-24" size="24" />
     </s-button>
-    <s-row class="asset-owner-details-main" :gutter="20">
+    <s-row class="asset-owner-details-main" :gutter="26">
       <s-col :xs="12" :sm="12" :md="5" :lg="5">
         <s-card class="asset details-card" border-radius="small" shadow="always" size="big" primary>
           <p class="p3">Your SBT</p>
@@ -22,155 +22,85 @@
             <token-logo class="asset-title__icon" size="big" :token="asset" />
           </div>
           <s-divider />
-          <div class="asset-balance s-flex">
-            <div class="asset-balance__info">
-              <p class="p3">Your balance</p>
-              <formatted-amount
-                class="asset__value"
-                value-can-be-hidden
-                :value="formattedBalance"
-                :font-size-rate="FontSizeRate.MEDIUM"
-                :font-weight-rate="FontWeightRate.MEDIUM"
-              />
-              <formatted-amount v-if="fiatBalance" is-fiat-value value-can-be-hidden :value="fiatBalance" />
+          <div class="sbt-info">
+            <div>
+              <span class="sbt-info-property">Accounts with permission</span>
+              <span class="sbt-info-value">30</span>
             </div>
-            <s-button class="s-typography-button--small" size="small" @click="openSendDialog">
-              <s-icon name="finance-send-24" size="16" />
-              Send
+            <s-divider />
+            <div>
+              <span class="sbt-info-property">Regulated assets connected</span>
+              <span class="sbt-info-value">0</span>
+            </div>
+            <s-divider />
+            <div>
+              <span class="sbt-info-property">Regulated pools</span>
+              <span class="sbt-info-value">0</span>
+            </div>
+          </div>
+        </s-card>
+        <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
+          <div class="asset-managers s-flex">
+            <p class="p3">SBT Managers <span class="asset-managers-number">(1)</span></p>
+          </div>
+          <account-card class="details-card-issuer">
+            <template #avatar>
+              <wallet-avatar slot="avatar" class="account-gravatar" :address="asset.address" :size="28" />
+            </template>
+            <template #description>
+              <div class="asset-details-instition-mark">{{ t('sbtDetails.regulatedInsitution') }}</div>
+              <formatted-address :value="accountAddress" :symbols="24" :tooltip-text="t('account.walletAddress')" />
+            </template>
+            <span class="details-card-issuer-self">(You)</span>
+          </account-card>
+        </s-card>
+      </s-col>
+      <s-col :xs="12" :sm="12" :md="7" :lg="7">
+        <s-card
+          class="details-card asset-managers-issue-container"
+          border-radius="small"
+          shadow="always"
+          size="big"
+          primary
+        >
+          <div class="asset-managers-issue s-flex">
+            <p class="p3">Account with SBT access <span class="asset-managers-number">(0)</span></p>
+            <s-button class="asset-managers-issue-access-btn s-typography-button--small" size="mini" type="primary">
+              Issue SBT access
+            </s-button>
+          </div>
+          <div class="asset-managers-issue--empty-list">
+            <h4 class="asset-managers-start-title">Start issuing access for the SBT to accounts</h4>
+            <s-button class="asset-managers-issue-access-btn s-typography-button--small" size="mini" type="primary">
+              Issue SBT access
             </s-button>
           </div>
         </s-card>
         <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-          <div class="asset-supply s-flex">
-            <div class="asset-supply__info">
-              <h4>{{ asset.symbol }} asset supply</h4>
-              <formatted-amount
-                class="asset__value"
-                :value="formattedSupply"
-                :font-size-rate="FontSizeRate.MEDIUM"
-                :font-weight-rate="FontWeightRate.MEDIUM"
-              />
-              <formatted-amount v-if="fiatSupply" is-fiat-value :value="fiatSupply" />
+          <div class="asset-managers-issue s-flex">
+            <p class="p3">Permissioned assets</p>
+            <s-button class="asset-managers-issue-access-btn s-typography-button--small" size="mini" type="primary">
+              Add permissioned assets
+            </s-button>
+          </div>
+          <div class="asset-managers-options">
+            <div class="asset-managers-options-add-new">
+              <s-button type="action" icon="plus-16" :disabled="loading" @click="createRegulatedAsset" />
+              <h4>Create a new asset</h4>
+              <p>Set up a new permissioned asset for the SBT</p>
             </div>
-            <s-button
-              class="s-typography-button--small"
-              type="primary"
-              size="small"
-              :disabled="isAddLiquidityDisabled"
-              @click="goToAddLiquidity"
-            >
-              <s-icon name="basic-drop-24" size="16" />
-              Add liquidity
-            </s-button>
+            <div class="asset-managers-options-add-new">
+              <s-button type="action" icon="search-16" :disabled="loading" @click="createRegulatedAsset" />
+              <h4>Add an existing asset</h4>
+              <p>Add an already created asset for the SBT</p>
+            </div>
           </div>
-          <s-divider />
-          <div class="asset-supply-actions">
-            <s-button
-              class="s-typography-button--small"
-              size="small"
-              :disabled="hasFixedSupply"
-              @click="openMintDialog"
-            >
-              <s-icon name="printer-16" size="16" />
-              Mint more
-            </s-button>
-            <s-button class="s-typography-button--small" size="small" @click="openBurnDialog">
-              <s-icon name="basic-flame-24" size="16" />
-              Burn
-            </s-button>
-          </div>
-          <p v-if="isAddLiquidityDisabled" class="p3">
-            Adding liquidity is not available because the asset is non-divisible.
-          </p>
-          <p v-if="hasFixedSupply" class="p3">Minting the asset is unavailable because it is not extensible.</p>
         </s-card>
-        <stats-supply-chart
-          :key="getForceRerenderKey('dashboard-supply-chart')"
-          class="details-card"
-          :predefined-token="asset"
-        />
-      </s-col>
-      <s-col :xs="12" :sm="12" :md="7" :lg="7">
-        <price-chart-widget
-          :key="getForceRerenderKey('dashboard-price-chart')"
-          class="details-card"
-          :base-asset="asset"
-          :is-available="hasFiat"
-        />
-        <s-row :gutter="20">
-          <s-col :xs="6" :sm="6" :md="6" :lg="4">
-            <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-              <p class="p3 asset-stats-card__title">
-                HOLDERS
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
-                </s-tooltip>
-              </p>
-              <div class="asset-stats-card__value">N/A</div>
-            </s-card>
-          </s-col>
-          <s-col :xs="6" :sm="6" :md="6" :lg="4">
-            <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-              <p class="p3 asset-stats-card__title">
-                TOTAL TXNS
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
-                </s-tooltip>
-              </p>
-              <div class="asset-stats-card__value">N/A</div>
-            </s-card>
-          </s-col>
-          <s-col :xs="6" :sm="6" :md="6" :lg="4">
-            <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-              <p class="p3 asset-stats-card__title">
-                MINTED
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
-                </s-tooltip>
-              </p>
-              <div class="asset-stats-card__value">N/A</div>
-            </s-card>
-          </s-col>
-          <s-col :xs="6" :sm="6" :md="6" :lg="4">
-            <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-              <p class="p3 asset-stats-card__title">
-                MINT TXNS
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
-                </s-tooltip>
-              </p>
-              <div class="asset-stats-card__value">N/A</div>
-            </s-card>
-          </s-col>
-          <s-col :xs="6" :sm="6" :md="6" :lg="4">
-            <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-              <p class="p3 asset-stats-card__title">
-                BURNED
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
-                </s-tooltip>
-              </p>
-              <div class="asset-stats-card__value">N/A</div>
-            </s-card>
-          </s-col>
-          <s-col :xs="6" :sm="6" :md="6" :lg="4">
-            <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-              <p class="p3 asset-stats-card__title">
-                BURN TXNS
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
-                </s-tooltip>
-              </p>
-              <div class="asset-stats-card__value">N/A</div>
-            </s-card>
-          </s-col>
-        </s-row>
       </s-col>
     </s-row>
-    <mint-dialog :visible.sync="showMintDialog" :asset="asset" :editable-fiat="hasFiat" />
-    <burn-dialog :visible.sync="showBurnDialog" :asset="asset" :balance="balance" :editable-fiat="hasFiat" />
-    <send-dialog :visible.sync="showSendDialog" :asset="asset" :balance="balance" :editable-fiat="hasFiat" />
+    <!-- <grant-privilege :visible.sync="showGrantPrivilegeDialog" /> -->
   </div>
+
   <div v-else class="asset-owner-details-container empty" />
 </template>
 
@@ -180,8 +110,6 @@ import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import StatsSupplyChart from '@/components/shared/Widget/SupplyChart.vue';
-import { PageNames, Components, ZeroStringValue } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
@@ -190,19 +118,15 @@ import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { waitUntil } from '@/utils';
 
-import type { CodecString } from '@sora-substrate/util';
-import type { Subscription } from 'rxjs';
-
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     TokenAddress: components.TokenAddress,
-    StatsSupplyChart,
-    PriceChartWidget: lazyComponent(Components.PriceChartWidget),
-    MintDialog: dashboardLazyComponent(DashboardComponents.MintDialog),
-    BurnDialog: dashboardLazyComponent(DashboardComponents.BurnDialog),
-    SendDialog: dashboardLazyComponent(DashboardComponents.SendTokenDialog),
+    AccountCard: components.AccountCard,
+    WalletAvatar: components.WalletAvatar,
+    FormattedAddress: components.FormattedAddress,
+    // GrantPrivilege: lazyComponent(DashboardComponents.GrantPrivilegeDialog)
   },
 })
 export default class AssetOwnerDetailsSBT extends Mixins(
@@ -211,59 +135,20 @@ export default class AssetOwnerDetailsSBT extends Mixins(
   mixins.FormattedAmountMixin
 ) {
   @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
+  @state.wallet.account.address accountAddress!: string;
   @getter.dashboard.ownedAssets private assets!: OwnedAsset[];
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
-  private supply: CodecString = ZeroStringValue;
-  private supplySubscription: Nullable<Subscription> = null;
-  private balanceSubscription: Nullable<Subscription> = null;
+  showGrantPrivilegeDialog = false;
 
-  balance: CodecString = ZeroStringValue;
-  showSendDialog = false;
-  showBurnDialog = false;
-  showMintDialog = false;
-
-  /** To force re-render component(s). Currently, it should be applied to charts */
-  getForceRerenderKey(name: string): string {
-    return `${name}-${this.responsiveClass}`;
-  }
-
-  get asset(): Nullable<OwnedAsset> {
+  get asset(): Nullable<any> {
     const assetId = this.$route.params.asset;
     if (!assetId) return null;
-    return this.assets.find(({ address }) => address === assetId);
-  }
-
-  get formattedBalance(): string {
-    if (!this.balance) return '0';
-    return this.formatCodecNumber(this.balance, this.asset?.decimals);
-  }
-
-  get fiatBalance(): Nullable<string> {
-    if (!(this.asset && this.balance)) return ZeroStringValue;
-    return this.getFiatAmountByCodecString(this.balance, this.asset);
-  }
-
-  get hasFiat(): boolean {
-    return !!this.fiatBalance;
-  }
-
-  get formattedSupply(): string {
-    if (!this.supply) return ZeroStringValue;
-    return this.formatCodecNumber(this.supply, this.asset?.decimals);
-  }
-
-  get fiatSupply(): Nullable<string> {
-    if (!(this.asset && this.supply)) return ZeroStringValue;
-    return this.getFiatAmountByCodecString(this.supply, this.asset);
-  }
-
-  get isAddLiquidityDisabled(): boolean {
-    return !this.asset?.decimals;
-  }
-
-  get hasFixedSupply(): boolean {
-    return !this.asset?.isMintable;
+    const asset = this.assets.find(({ address }) => address === assetId);
+    return {
+      isSBT: true,
+      ...asset,
+    };
   }
 
   mounted(): void {
@@ -274,17 +159,10 @@ export default class AssetOwnerDetailsSBT extends Mixins(
       }
 
       await waitUntil(() => !this.parentLoading);
+
       if (!this.asset) {
         router.push({ name: DashboardPageNames.AssetOwner });
-        return;
       }
-
-      this.balanceSubscription = api.assets.getAssetBalanceObservable(this.asset).subscribe((balance) => {
-        this.balance = balance.transferable;
-      });
-      this.supplySubscription = api.apiRx.query.tokens.totalIssuance(this.asset.address).subscribe((supply) => {
-        this.supply = supply.toString();
-      });
     });
   }
 
@@ -292,26 +170,8 @@ export default class AssetOwnerDetailsSBT extends Mixins(
     router.back();
   }
 
-  openSendDialog(): void {
-    this.showSendDialog = true;
-  }
-
-  openMintDialog(): void {
-    this.showMintDialog = true;
-  }
-
-  openBurnDialog(): void {
-    this.showBurnDialog = true;
-  }
-
-  goToAddLiquidity(): void {
-    if (!this.asset) return;
-    router.push({ name: PageNames.AddLiquidity, params: { first: XOR.symbol, second: this.asset.address } });
-  }
-
-  beforeDestroy(): void {
-    this.balanceSubscription?.unsubscribe?.();
-    this.supplySubscription?.unsubscribe?.();
+  openGrantPrivilegeDialog(): void {
+    this.showGrantPrivilegeDialog = true;
   }
 }
 </script>
@@ -321,6 +181,7 @@ export default class AssetOwnerDetailsSBT extends Mixins(
   &-container {
     display: flex;
     gap: 16px;
+    justify-content: center;
 
     &.empty {
       height: calc(100dvh - #{$header-height} - #{$footer-height});
@@ -346,5 +207,99 @@ export default class AssetOwnerDetailsSBT extends Mixins(
 }
 .asset-supply-actions {
   margin-bottom: 8px;
+}
+
+.sbt-info {
+  &-property {
+    color: var(--s-color-base-content-secondary);
+  }
+
+  div {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.details-card {
+  &-issuer {
+    margin-top: $basic-spacing;
+  }
+}
+</style>
+
+<style lang="scss">
+.asset-managers {
+  &-options {
+    display: flex;
+
+    &-add-new {
+      background-color: var(--s-color-utility-body);
+      margin: $basic-spacing;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: var(--s-shadow-dialog);
+      text-align: center;
+
+      p {
+        color: var(--s-color-base-content-secondary);
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      .el-button {
+        margin-bottom: $basic-spacing;
+
+        .s-icon-plus-16 {
+          color: var(--s-color-theme-accent);
+        }
+
+        .s-icon-search-16 {
+          color: var(--s-color-status-info);
+        }
+      }
+    }
+  }
+
+  &-number {
+    color: var(--s-color-base-content-secondary);
+  }
+
+  &-issue {
+    display: flex;
+    justify-content: space-between;
+
+    &-container {
+      min-height: 300px;
+    }
+
+    &--empty-list {
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 225px;
+      width: 210px;
+
+      .asset-managers-issue-access-btn {
+        margin-top: $basic-spacing;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+
+  &-issue-access-btn.el-button--primary {
+    span {
+      font-size: 12px;
+      text-transform: none;
+      font-variation-settings: 'wght' 550 !important;
+    }
+  }
+
+  &-start-title {
+    text-align: center;
+  }
 }
 </style>
