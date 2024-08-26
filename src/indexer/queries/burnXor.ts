@@ -92,7 +92,7 @@ const dataBeforeSubqueryIndexing: XorBurn[] = [
   },
 ];
 
-const SubqueryXorBurnQuery = gql<ConnectionQueryResponse<HistoryElement>>`
+const getSubqueryXorBurnQuery = (address?: string) => gql<ConnectionQueryResponse<HistoryElement>>`
   query XorBurnQuery($start: Int = 0, $end: Int = 0, $after: Cursor = "", $first: Int = 100) {
     data: historyElements(
       first: $first
@@ -104,6 +104,7 @@ const SubqueryXorBurnQuery = gql<ConnectionQueryResponse<HistoryElement>>`
           { module: { equalTo: "assets" } }
           { method: { equalTo: "burn" } }
           { data: { contains: { assetId: "0x0200000000000000000000000000000000000000000000000000000000000000" } } }
+          ${address ? `{ address: { equalTo: "${address}" } }` : ''}
         ]
       }
     ) {
@@ -122,7 +123,7 @@ const SubqueryXorBurnQuery = gql<ConnectionQueryResponse<HistoryElement>>`
   }
 `;
 
-const SubsquidXorBurnQuery = gql<ConnectionQueryResponse<HistoryElement>>`
+const getSubsquidXorBurnQuery = (address?: string) => gql<ConnectionQueryResponse<HistoryElement>>`
   query XorBurnQuery($start: Int = 0, $end: Int = 0, $after: String = null, $first: Int = 100) {
     data: historyElementsConnection(
       orderBy: id_ASC
@@ -135,6 +136,7 @@ const SubsquidXorBurnQuery = gql<ConnectionQueryResponse<HistoryElement>>`
           { module_eq: "assets" }
           { method_eq: "burn" }
           { data_jsonContains: { assetId: "0x0200000000000000000000000000000000000000000000000000000000000000" } }
+          ${address ? `{ address_eq: "${address}" }` : ''}
         ]
       }
     ) {
@@ -163,21 +165,27 @@ const parse = (item: HistoryElement): XorBurn => {
   };
 };
 
-export async function fetchData(start: number, end: number): Promise<XorBurn[]> {
+export async function fetchData(start: number, end: number, accountId?: string): Promise<XorBurn[]> {
   const indexer = getCurrentIndexer();
+  const variables = { start, end };
 
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
-      const variables = { start, end };
       const subqueryIndexer = indexer as SubqueryIndexer;
-      const items = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryXorBurnQuery, variables, parse);
-      return [...(items ?? []), ...dataBeforeSubqueryIndexing];
+      const items = await subqueryIndexer.services.explorer.fetchAllEntities(
+        getSubqueryXorBurnQuery(accountId),
+        variables,
+        parse
+      );
+      const initData = accountId
+        ? dataBeforeSubqueryIndexing.filter((item) => item.address === accountId)
+        : dataBeforeSubqueryIndexing;
+      return [...(items ?? []), ...initData];
     }
     case IndexerType.SUBSQUID: {
-      const variables = { start, end };
       const subsquidIndexer = indexer as SubsquidIndexer;
       const items = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
-        SubsquidXorBurnQuery,
+        getSubsquidXorBurnQuery(accountId),
         variables,
         parse
       );

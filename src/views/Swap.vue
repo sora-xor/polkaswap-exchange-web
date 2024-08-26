@@ -5,7 +5,7 @@
     :draggable="options.edit"
     :resizable="options.edit"
     :lines="options.edit"
-    :loading="parentLoading"
+    :loading="pageLoading"
     :default-layouts="DefaultLayouts"
     v-model="widgets"
   >
@@ -186,6 +186,10 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
     };
   }
 
+  get pageLoading(): boolean {
+    return this.parentLoading || this.loading;
+  }
+
   @Watch('tokenFrom')
   @Watch('tokenTo')
   private updateRouteTokensParams() {
@@ -220,12 +224,3 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@include tablet(true) {
-  .swap-container {
-    max-width: $inner-window-width;
-    margin: auto;
-  }
-}
-</style>

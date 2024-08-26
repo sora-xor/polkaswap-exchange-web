@@ -56,13 +56,11 @@ const actions = defineActions({
   },
   async getTransactionTranserData(_, hash: string): Promise<Nullable<MoonpayEVMTransferAssetData>> {
     try {
-      const ethersInstance = ethersUtil.getEthersInstance();
-
       console.info(`Moonpay: found latest moonpay transaction.\nChecking ethereum transaction by hash:\n${hash}`);
 
       // wait until transaction complete
       // ISSUE: moonpay sending eth in ropsten, erc20 in rinkeby
-      await ethersInstance.waitForTransaction(hash);
+      await ethersUtil.waitForEvmTransaction(hash);
 
       const tx = await ethersUtil.getEvmTransaction(hash);
 

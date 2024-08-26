@@ -483,7 +483,7 @@
         "title": "Выбор сетевого узла",
         "addNode": "Добавить узел",
         "customNode": "Пользовательский узел",
-        "howToSetupOwnNode": "Как настроить собственный узел {Sora}",
+        "howToSetupOwnNode": "Настройте свой узел",
         "select": "Выберите",
         "connected": "Подключено",
         "nodeTitle": "{chain} на базе {name}",
@@ -786,7 +786,8 @@
             "crowdloan": "Crowdloan вознаграждения"
         },
         "Rewards": "Награды",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Рефералы",
+        "PointSystem": "Очки"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Очистить локальное хранилище {AppName}",
         "info": "Ваше локальное хранилище перегружено, чтобы продолжить работу с {AppName}, необходимо его очистить",
         "agree": "Да, я понимаю"
+    },
+    "points": {
+        "title": "Ваш прогресс в очках",
+        "loginText": "Подключите свой аккаунт, чтобы увидеть свои очки",
+        "bridgeVolume": "Объем моста",
+        "feesSpent": "Потраченные комиссии",
+        "xorBurned": "{XOR} сожжено",
+        "yourReferrals": "Ваши рефералы",
+        "accountsText": "{amount} аккаунтов",
+        "yourRewards": "Ваши награды",
+        "openTelegram": "Открыть {Telegram}",
+        "toEarnPoints": "Чтобы заработать очки"
     }
 }

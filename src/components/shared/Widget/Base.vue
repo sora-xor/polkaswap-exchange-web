@@ -255,7 +255,6 @@ $left: $inner-spacing-medium;
   flex-flow: column nowrap;
   align-items: normal;
   overflow: hidden;
-  border: 1px solid transparent;
 
   &.full {
     width: 100%;
@@ -265,7 +264,7 @@ $left: $inner-spacing-medium;
   }
 
   &.flat {
-    border-color: var(--s-color-base-border-secondary);
+    border: 1px solid var(--s-color-base-border-secondary);
 
     &.s-border-radius-small {
       border-radius: unset;
@@ -323,7 +322,8 @@ $left: $inner-spacing-medium;
     padding: $between $left $top;
 
     &.extensive {
-      padding: 0;
+      // 1px for visible container inner shadow
+      padding: 0 1px;
     }
   }
 }

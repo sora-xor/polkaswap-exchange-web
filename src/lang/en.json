@@ -483,7 +483,7 @@
         "title": "Network node selection",
         "addNode": "Add custom node",
         "customNode": "Custom node",
-        "howToSetupOwnNode": "How to setup your own {Sora} node",
+        "howToSetupOwnNode": "Setup your node",
         "select": "Select",
         "connected": "Connected",
         "nodeTitle": "{chain} hosted by {name}",
@@ -786,7 +786,8 @@
             "crowdloan": "Crowdloan rewards"
         },
         "Rewards": "Rewards",
-        "ReferralProgram": "@:referralProgram.title"
+        "ReferralProgram": "Referrals",
+        "PointSystem": "Points"
     },
     "provider": {
         "messages": {
@@ -1652,5 +1653,17 @@
         "title": "Clear local {AppName} storage",
         "info": "Your local storage is overloaded, to continue work with {AppName} need to clean it",
         "agree": "Yes, I understand"
+    },
+    "points": {
+        "title": "Your Points Progress",
+        "loginText": "Connect your account to see your points",
+        "bridgeVolume": "Bridge volume",
+        "feesSpent": "Fees spent",
+        "xorBurned": "{XOR} burned",
+        "yourReferrals": "Your referrals",
+        "accountsText": "{amount} accounts",
+        "yourRewards": "Your rewards",
+        "openTelegram": "Open {Telegram}",
+        "toEarnPoints": "To earn points"
     }
 }
