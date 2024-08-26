@@ -101,7 +101,7 @@ export default class BridgeAccountPanel extends Mixins(mixins.CopyAddressMixin, 
   }
 
   &-name {
-    max-width: 80px;
+    max-width: 64px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
