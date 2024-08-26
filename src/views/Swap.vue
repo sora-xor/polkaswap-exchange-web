@@ -10,7 +10,7 @@
     v-model="widgets"
   >
     <template v-slot:[SwapWidgets.Form]="props">
-      <swap-form-widget v-bind="props" primary-title full />
+      <swap-form-widget v-bind="props" primary-title full :pip="false" />
     </template>
     <template v-slot:[SwapWidgets.Chart]="props">
       <price-chart-widget
@@ -34,6 +34,7 @@
         :widgets-model.sync="widgets"
         :options-model.sync="options"
         :labels="labels"
+        :pip="false"
         full
       >
         <s-button @click="reset">{{ t('resetText') }}</s-button>

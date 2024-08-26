@@ -25,8 +25,13 @@
         <div v-if="$slots.types" class="base-widget-block base-widget-types">
           <slot name="types" />
         </div>
+
+        <div v-if="isPipAvailable" class="base-widget-block base-widget-pip">
+          <s-button type="action" size="small" alternative @click="openPip" tooltip="Open in top window">
+            <s-icon name="finance-receive-24" size="24" />
+          </s-button>
+        </div>
       </div>
-      <s-button type="tertiary" size="small" v-if="isPipAvailable" @click="openPip">PIP</s-button>
     </template>
     <div v-if="hasContent" :class="['base-widget-content', { extensive }]" ref="content">
       <slot />
@@ -79,6 +84,10 @@ export default class BaseWidget extends Vue {
    * Widget has a loading state
    */
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
+  /**
+   * Widget has a "Picture in picture" mode
+   */
+  @Prop({ default: true, type: Boolean }) readonly pip!: boolean;
 
   @Prop({ default: () => {}, type: Function }) readonly onResize!: (id: string, size: Size) => void;
 
@@ -110,6 +119,8 @@ export default class BaseWidget extends Vue {
   }
 
   get isPipAvailable() {
+    if (!this.pip) return false;
+
     return 'documentPictureInPicture' in window && !this.pipOpen;
   }
 
@@ -312,6 +323,10 @@ $left: $inner-spacing-medium;
       width: auto;
       order: initial;
     }
+  }
+
+  &-pip {
+    order: 2;
   }
 
   &-content {
