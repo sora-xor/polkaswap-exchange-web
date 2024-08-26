@@ -85,9 +85,9 @@ export default class BaseWidget extends Vue {
    */
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
   /**
-   * Widget has a "Picture in picture" mode
+   * Widget "Picture in picture" mode is disabled
    */
-  @Prop({ default: true, type: Boolean }) readonly pip!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly pipDisabled!: boolean;
 
   @Prop({ default: () => {}, type: Function }) readonly onResize!: (id: string, size: Size) => void;
 
@@ -119,7 +119,7 @@ export default class BaseWidget extends Vue {
   }
 
   get isPipAvailable() {
-    if (!this.pip) return false;
+    if (this.pipDisabled) return false;
 
     return 'documentPictureInPicture' in window && !this.pipOpen;
   }
