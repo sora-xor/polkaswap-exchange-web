@@ -83,7 +83,12 @@
             <slot name="fiat-amount-append" />
           </div>
 
-          <token-address v-if="withAddress && address" v-bind="token" :external="external" class="input-value" />
+          <token-address
+            v-if="withAddress && hasFormattedAddress"
+            v-bind="addressData"
+            :external="external"
+            class="input-value"
+          />
         </div>
 
         <div v-if="withSlider" class="input-line--footer-with-slider">
@@ -117,6 +122,8 @@ import { getter, mutation } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+
+const stringifyAddress = (addr?: string) => (typeof addr === 'string' ? addr : '');
 
 @Component({
   components: {
@@ -209,9 +216,22 @@ export default class TokenInput extends Mixins(
     return !!this.balance && !!this.token;
   }
 
-  get address(): string {
-    const address = this.external ? this.token?.externalAddress : this.token?.address;
-    return address ?? '';
+  get addressData(): Nullable<RegisteredAccountAsset> {
+    if (!this.token) return null;
+
+    return {
+      ...this.token,
+      address: stringifyAddress(this.token.address),
+      externalAddress: stringifyAddress(this.token.externalAddress),
+    };
+  }
+
+  get hasFormattedAddress(): boolean {
+    if (!this.addressData) return false;
+
+    const address = this.external ? this.addressData.externalAddress : this.addressData.address;
+
+    return !!address;
   }
 
   get decimals(): number {

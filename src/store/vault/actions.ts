@@ -4,7 +4,7 @@ import { defineActions } from 'direct-vuex';
 
 import { fetchClosedVaults } from '@/indexer/queries/kensetsu';
 import { vaultActionContext } from '@/store/vault';
-import { delay } from '@/utils';
+import { delay, areEqual } from '@/utils';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
@@ -16,8 +16,6 @@ const DEBT_INTERVAL = 6_000;
 const INDEXER_DELAY = 4 * DEBT_INTERVAL; // 4 blocks delay
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
-
-const areEqual = <T>(prev: T, curr: T): boolean => JSON.stringify(prev) === JSON.stringify(curr);
 
 function updateTokenSubscription(context: ActionContext<any, any>, field: 'collateral' | 'debt'): void {
   const { getters, commit, rootGetters } = vaultActionContext(context);

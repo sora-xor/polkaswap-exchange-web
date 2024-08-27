@@ -83,20 +83,11 @@ export class AssetRegistryParachain extends ParachainAdapter<ICurrencyId> {
   }
 
   // overrides "ParachainAdapter"
-  public override getAssetMeta(asset: RegisteredAsset): Nullable<IParachainAssetMetadata<ICurrencyId>> {
-    if (!Array.isArray(this.assets)) return null;
-
-    return this.assets.find(
-      (item) => JSON.stringify(item.id) === asset.externalAddress || item.symbol === asset.symbol
-    );
-  }
-
-  // overrides "ParachainAdapter"
-  public override async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
+  public override async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<ICurrencyId | null> {
     const result = await this.requestCurrencyIdByMultilocation(multilocation);
     const id = result.isEmpty ? this.getNativeCurrencyId(asset.symbol) : this.getCurrencyId(result.unwrap());
 
-    return id ? JSON.stringify(id) : '';
+    return id ?? null;
   }
 
   protected override async getAccountAssetBalance(
