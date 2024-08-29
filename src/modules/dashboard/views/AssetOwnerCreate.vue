@@ -4,6 +4,7 @@
     <div v-else>
       <create-regular-token
         v-if="type === AssetType.CreateRegularToken"
+        :sbt-address="sbtAddress"
         :is-regulated="isRegulated"
         @go-back="showStart"
         @go-to-create="openSbtCreation"
@@ -11,6 +12,8 @@
       <create-nft-token v-else-if="type === AssetType.CreateNftToken" @go-back="showStart" />
       <create-sbt-token
         v-else-if="type === AssetType.CreateSbtToken"
+        :sbt-address="sbtAddress"
+        :is-only-attach="isOnlyAttach"
         @go-back="showStart"
         @go-to-create="openRegulatedCreation"
       />
@@ -46,6 +49,8 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
   type = AssetType.CreateRegularToken;
   showIntroPage = true;
   isRegulated = false;
+  isOnlyAttach = false;
+  sbtAddress = ''; // if already exists
 
   showStart(): void {
     this.showIntroPage = true;
@@ -57,12 +62,27 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
   }
 
   openRegulatedCreation(): void {
+    this.showIntroPage = false;
     this.isRegulated = true;
     this.type = AssetType.CreateRegularToken;
   }
 
-  openSbtCreation(): void {
+  openSbtCreation(onlyAttach = false): void {
+    this.showIntroPage = false;
+    this.isOnlyAttach = onlyAttach;
     this.type = AssetType.CreateSbtToken;
+  }
+
+  mounted(): void {
+    if (this.$route.params.sbtAddress) {
+      this.sbtAddress = this.$route.params.sbtAddress;
+
+      if (this.$route.params.type === 'new') {
+        this.openRegulatedCreation();
+      } else if (this.$route.params.type === 'existing') {
+        this.openSbtCreation(true);
+      }
+    }
   }
 }
 </script>

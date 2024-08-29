@@ -25,7 +25,6 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
-import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import router from '@/router';
 
 import GuideNft from '../guides/Nft.vue';
@@ -41,9 +40,6 @@ export enum AssetType {
 @Component({
   components: {
     WalletBase: components.WalletBase,
-    CreateRegularToken: dashboardLazyComponent(DashboardComponents.CreateRegularToken),
-    CreateNftToken: dashboardLazyComponent(DashboardComponents.CreateNftToken),
-    CreateSbtToken: dashboardLazyComponent(DashboardComponents.CreateSbtToken),
     GuideRegular,
     GuideNft,
     GuideSbt,

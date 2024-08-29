@@ -10,7 +10,7 @@
           :placeholder="t('addAsset.searchInputText')"
           @clear="handleClearSearch"
         />
-        <div class="dashboard-create-button">
+        <div v-if="!isOnlyAttach" class="dashboard-create-button">
           <s-button
             class="el-dialog__close"
             type="action"
@@ -21,7 +21,7 @@
           <span class="create">{{ 'Create new regulated asset' }}</span>
         </div>
         <div v-if="ownerAssetsList?.length" class="dashboard-regulated-assets">
-          <div class="delimiter">{{ 'OR SELECT EXISTING' }}</div>
+          <div class="delimiter">{{ !isOnlyAttach ? 'OR SELECT EXISTING' : 'SELECT EXISTING' }}</div>
           <div v-if="filteredRegulatedAssets?.length">
             <s-scrollbar class="dashboard-regulated-assets__scrollbar">
               <div class="assets-list">
@@ -42,6 +42,7 @@
           </div>
           <div v-else class="dashboard-regulated-assets--not-found">{{ t('addAsset.empty') }}</div>
         </div>
+        <div v-else-if="isOnlyAttach" class="dashboard-regulated-assets--not-found">{{ t('addAsset.empty') }}</div>
       </div>
       <div v-else-if="step === Step.SbtMetaDescription">
         <s-input
@@ -181,7 +182,8 @@
 import { FPNumber } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Ref } from 'vue-property-decorator';
+import difference from 'lodash/fp/difference';
+import { Component, Mixins, Ref, Prop } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
@@ -220,6 +222,8 @@ export default class CreateSbtToken extends Mixins(
   @action.dashboard.requestOwnedAssetIds private requestOwnedAssetIds!: AsyncFnWithoutArgs;
   @action.dashboard.subscribeOnOwnedAssets private subscribeOnOwnedAssets!: AsyncFnWithoutArgs;
 
+  @Prop({ type: Boolean, default: false }) readonly isOnlyAttach!: boolean;
+  @Prop({ type: String, default: '' }) readonly sbtAddress!: string;
   @Ref('fileInput') readonly fileInput!: HTMLInputElement;
   @Ref('uploader') readonly uploader!: HTMLFormElement;
 
@@ -423,6 +427,17 @@ export default class CreateSbtToken extends Mixins(
   async handleCreate(): Promise<void> {
     if (this.step === Step.AssetsChoice) {
       if (this.selectedAssetsIds.length) {
+        if (this.isOnlyAttach) {
+          await this.withNotifications(async () => {
+            if (!this.hasEnoughXor) {
+              throw new Error('walletSend.badAmount');
+            }
+            await this.attachRegulatedAssetsToSbt(this.sbtAddress, this.selectedAssetsIds);
+            router.push({ name: DashboardPageNames.AssetOwnerDetailsSBT, params: { asset: this.sbtAddress } });
+          });
+          return;
+        }
+
         this.step = Step.SbtMetaDescription;
         return;
       }
@@ -456,6 +471,10 @@ export default class CreateSbtToken extends Mixins(
     }
   }
 
+  async attachRegulatedAssetsToSbt(sbtAddress, selectedAssetsIds) {
+    return await api.extendedAssets.bindRegulatedAssetToSBT(sbtAddress, selectedAssetsIds);
+  }
+
   async createSbt(): Promise<void> {
     return await api.extendedAssets.issueSbt(
       this.tokenSymbol,
@@ -473,6 +492,11 @@ export default class CreateSbtToken extends Mixins(
   }
 
   handleBack(): void {
+    if (this.sbtAddress) {
+      router.push({ name: DashboardPageNames.AssetOwnerDetailsSBT, params: { asset: this.sbtAddress } });
+      return;
+    }
+
     switch (this.step) {
       case Step.AssetsChoice:
         this.$emit('go-back');
@@ -501,12 +525,19 @@ export default class CreateSbtToken extends Mixins(
     clearInterval(this.requlatedAssetsInterval);
   }
 
-  async requestRegulatedAssets(): Promise<void> {
+  async requestRegulatedAssets(exclude = false): Promise<void> {
     const ownRegulatedAssetsIds = [] as any;
+    let regulatedAssetsAttached = [] as any;
     await this.requestOwnedAssetIds();
 
+    if (exclude) {
+      regulatedAssetsAttached = (await api.extendedAssets.getSbtMetaInfo(this.sbtAddress)).regulatedAssets;
+    }
+
+    const filtered = difference(this.ownedAssetIds, regulatedAssetsAttached) as any;
+
     // TODO: move to lib, migrate to assetInfosV2
-    const assetInfos = this.ownedAssetIds.map(async (address) => {
+    const assetInfos = filtered.map(async (address) => {
       const result: any = await api.api.query.assets.assetInfosV2(address);
       return [address, result];
     });
@@ -523,10 +554,10 @@ export default class CreateSbtToken extends Mixins(
   }
 
   async created(): Promise<void> {
-    this.requestRegulatedAssets();
+    this.requestRegulatedAssets(this.isOnlyAttach);
 
     const requlatedAssetsInterval = setInterval(() => {
-      this.requestRegulatedAssets();
+      this.requestRegulatedAssets(this.isOnlyAttach);
     }, 6_000); // block creation
   }
 
@@ -587,6 +618,7 @@ export default class CreateSbtToken extends Mixins(
     &--not-found {
       text-align: center;
       color: var(--s-color-base-content-secondary);
+      margin-top: $basic-spacing;
     }
 
     &__scrollbar {

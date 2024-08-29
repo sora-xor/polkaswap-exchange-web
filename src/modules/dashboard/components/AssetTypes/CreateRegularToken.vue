@@ -85,6 +85,7 @@ export default class CreateRegularToken extends Mixins(
   readonly TokenTabs = WALLET_CONSTS.TokenTabs;
 
   @Prop({ type: Boolean, default: false }) readonly isRegulated!: boolean;
+  @Prop({ type: String, default: '' }) readonly sbtAddress!: string;
 
   tokenSymbol = '';
   tokenName = '';
@@ -145,6 +146,12 @@ export default class CreateRegularToken extends Mixins(
         this.tokenSupply,
         this.extensibleSupply
       );
+
+      if (this.sbtAddress) {
+        // TODO: return to sbt dashboard
+        router.push({ name: DashboardPageNames.AssetOwner });
+        return;
+      }
 
       this.$emit('go-to-create');
       return;
