@@ -196,6 +196,7 @@ export default class SwapFormWidget extends Mixins(
   @getter.assets.xor private xor!: AccountAsset;
   @getter.swap.swapLiquiditySource liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
+  @getter.settings.debugEnabled private debugEnabled!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
@@ -427,19 +428,22 @@ export default class SwapFormWidget extends Mixins(
         [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>
       );
 
-      const rpcResult = await api.swap.getResultRpc(
-        (this.tokenFrom as Asset).address,
-        (this.tokenTo as Asset).address,
-        value,
-        this.isExchangeB,
-        this.liquiditySource ?? undefined
-      );
-      // eslint-disable-next-line
-      console.table({
-        frontend: amount,
-        backend: rpcResult.amount,
-        difference: +amount - +rpcResult.amount,
-      });
+      // [DEBUG]
+      if (this.debugEnabled) {
+        const rpcResult = await api.swap.getResultRpc(
+          (this.tokenFrom as Asset).address,
+          (this.tokenTo as Asset).address,
+          value,
+          this.isExchangeB,
+          this.liquiditySource ?? undefined
+        );
+        // eslint-disable-next-line
+        console.table({
+          frontend: amount,
+          backend: rpcResult.amount,
+          difference: +amount - +rpcResult.amount,
+        });
+      }
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact as string);

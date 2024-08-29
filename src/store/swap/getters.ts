@@ -34,8 +34,13 @@ const getters = defineGetters<SwapState>()({
     return token;
   },
   marketAlgorithms(...args): Array<MarketAlgorithms> {
-    const { state } = swapGetterContext(args);
-    const allSources = state.liquiditySources;
+    const { state, rootState } = swapGetterContext(args);
+
+    const allSources = rootState.settings.featureFlags.debug
+      ? state.liquiditySources
+      : // implementation of backend hack, to show only primary market sources
+        state.liquiditySources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
+
     const items = Object.keys(LiquiditySourceForMarketAlgorithm) as Array<MarketAlgorithms>;
 
     return items.filter((marketAlgorithm) => {

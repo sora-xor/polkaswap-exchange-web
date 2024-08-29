@@ -14,12 +14,12 @@ export type Ad = {
 
 export type FeatureFlags = {
   moonpay?: boolean;
-  charts?: boolean;
   soraCard?: boolean;
   orderBook?: boolean;
   kensetsu?: boolean;
   assetOwner?: boolean;
   alt?: boolean;
+  debug?: boolean;
 };
 
 export type SettingsState = {
