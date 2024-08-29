@@ -3,6 +3,7 @@
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
         <s-button
+          :class="['history-restore-btn', { loading: networkHistoryLoading }]"
           type="action"
           icon="arrows-swap-90-24"
           :disabled="networkHistoryLoading"
@@ -19,7 +20,7 @@
           @clear="handleResetSearch"
           class="history--search"
         />
-        <div v-loading="loading" class="history-items">
+        <div class="history-items">
           <template v-if="hasHistory">
             <div
               v-button
@@ -62,7 +63,6 @@
             v-if="hasHistory"
             :current-page="currentPage"
             :page-amount="pageAmount"
-            :loading="loading"
             :total="total"
             :last-page="lastPage"
             @pagination-click="handlePaginationClick"
@@ -121,7 +121,6 @@ export default class BridgeTransactionsHistory extends Mixins(
   @state.bridge.historyPage historyPage!: number;
 
   pageAmount = 8; // override PaginationSearchMixin
-  loading = true;
 
   get historyList(): Array<IBridgeTransaction> {
     return Object.values(this.history);
@@ -162,8 +161,6 @@ export default class BridgeTransactionsHistory extends Mixins(
           this.isLtrDirection = false;
         }
       }
-    }).finally(() => {
-      this.loading = false;
     });
   }
 
@@ -298,6 +295,14 @@ export default class BridgeTransactionsHistory extends Mixins(
   &-items .history-pagination.el-pagination {
     margin-top: auto;
   }
+
+  &-restore-btn {
+    &.loading {
+      & > span > i {
+        @include loading;
+      }
+    }
+  }
 }
 </style>
 
@@ -326,6 +331,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     display: flex;
     flex-direction: column;
     min-height: calc(#{$history-item-height * $page-amount} + 50px);
+    z-index: $app-content-layer;
   }
   &-empty {
     text-align: center;
@@ -426,9 +432,5 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
       margin-left: $inner-spacing-tiny;
     }
   }
-}
-.s-button--restore {
-  margin-top: $inner-spacing-medium;
-  width: 100%;
 }
 </style>
