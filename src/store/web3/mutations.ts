@@ -10,13 +10,10 @@ import type { SupportedApps, BridgeNetworkId } from '@sora-substrate/util/build/
 
 const mutations = defineMutations<Web3State>()({
   setEvmAddress(state, address: string): void {
-    const formatted = address.toLowerCase();
-    state.evmAddress = formatted;
-    ethersUtil.storeEvmUserAddress(formatted);
+    state.evmAddress = address.toLowerCase();
   },
   resetEvmAddress(state): void {
     state.evmAddress = '';
-    ethersUtil.removeEvmUserAddress();
   },
 
   setSubAccount(state, data?: { address: string; name: string; source?: string }): void {
