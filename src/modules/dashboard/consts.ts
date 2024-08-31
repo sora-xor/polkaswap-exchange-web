@@ -9,6 +9,7 @@ export enum DashboardComponents {
   MintDialog = 'MintDialog',
   BurnDialog = 'BurnDialog',
   SendTokenDialog = 'SendTokenDialog',
+  AttachRegulatedDialog = 'AttachRegulatedDialog',
   GrantPrivilegeDialog = 'GrantPrivilegeDialog',
   // creation
   CreateTokenStart = 'AssetTypes/CreateTokenStart',

@@ -182,6 +182,11 @@ export default class CreateRegularToken extends Mixins(
   }
 
   handleBack(): void {
+    if (this.sbtAddress) {
+      router.push({ name: DashboardPageNames.AssetOwnerDetailsSBT, params: { asset: this.sbtAddress } });
+      return;
+    }
+
     this.$emit('go-back');
   }
 }

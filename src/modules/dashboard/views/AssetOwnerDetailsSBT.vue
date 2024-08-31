@@ -57,7 +57,7 @@
       </s-col>
       <s-col :xs="12" :sm="12" :md="7" :lg="7">
         <s-card
-          class="details-card asset-managers-issue-container"
+          class="details-card asset-manager-account-list"
           border-radius="small"
           shadow="always"
           size="big"
@@ -86,7 +86,7 @@
             </s-button>
           </div>
         </s-card>
-        <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
+        <s-card class="details-card asset-manager-token-list" border-radius="small" shadow="always" size="big" primary>
           <div class="asset-managers-issue s-flex">
             <p class="p3">Permissioned assets</p>
             <s-button
@@ -95,7 +95,7 @@
               type="primary"
               @click="openAssetCreateDialog"
             >
-              Add permissioned assets
+              Add regulated assets
             </s-button>
           </div>
           <div v-if="!sbtMetaInfo.regulatedAssets?.length" class="asset-managers-options">
@@ -122,7 +122,7 @@
             <s-table
               ref="table"
               v-loading="loadingState"
-              :data="filteredRegulatedAssets"
+              :data="tableItems"
               :highlight-current-row="false"
               size="small"
               class="explore-table"
@@ -199,7 +199,7 @@
               class="explore-table-pagination"
               :current-page="currentPage"
               :page-amount="pageAmount"
-              :total="total"
+              :total="filteredRegulatedAssets?.length"
               :last-page="lastPage"
               :loading="loadingState"
               @pagination-click="handlePaginationClick"
@@ -209,6 +209,7 @@
       </s-col>
     </s-row>
     <grant-privilege :visible.sync="showGrantPrivilegeDialog" />
+    <attach-regulated :visible.sync="showCreateAssetDialog" />
   </div>
 
   <div v-else class="asset-owner-details-container empty" />
@@ -225,7 +226,7 @@ import { fetchTokensData } from '@/indexer/queries/assets';
 import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset, AssetCreationType } from '@/modules/dashboard/types';
-import router, { lazyComponent } from '@/router';
+import router from '@/router';
 import { getter, state } from '@/store/decorators';
 import { waitUntil, formatAmountWithSuffix } from '@/utils';
 
@@ -240,6 +241,7 @@ import { waitUntil, formatAmountWithSuffix } from '@/utils';
     SearchInput: components.SearchInput,
     HistoryPagination: components.HistoryPagination,
     GrantPrivilege: dashboardLazyComponent(DashboardComponents.GrantPrivilegeDialog),
+    AttachRegulated: dashboardLazyComponent(DashboardComponents.AttachRegulatedDialog),
   },
 })
 export default class AssetOwnerDetailsSBT extends Mixins(
@@ -259,13 +261,26 @@ export default class AssetOwnerDetailsSBT extends Mixins(
   queryAccounts = '';
   regulatedAssetsAttached = [] as any;
 
+  currentPage = 1;
+  pageAmount = 4;
+
   private tokensData: Record<string, any> = {};
+
+  get tableItems() {
+    return this.getPageItems(this.filteredRegulatedAssets);
+  }
+
+  get lastPage(): number {
+    const total = this.filteredRegulatedAssets?.length;
+    return total ? Math.ceil(total / this.pageAmount) : 1;
+  }
 
   get hasTokensData(): boolean {
     return Object.keys(this.tokensData).length !== 0;
   }
 
   get filteredRegulatedAssets() {
+    this.currentPage = 1;
     const ownerAssetsList = this.items;
 
     if (this.queryTokens) {
@@ -381,7 +396,7 @@ export default class AssetOwnerDetailsSBT extends Mixins(
 .asset-owner-details {
   &-container {
     display: flex;
-    gap: 16px;
+    gap: $basic-spacing;
     justify-content: center;
 
     &.empty {
@@ -430,6 +445,22 @@ export default class AssetOwnerDetailsSBT extends Mixins(
       color: var(--s-color-base-content-secondary);
     }
   }
+}
+
+.asset-manager {
+  &-account-list {
+    width: 600px;
+  }
+  &-token-list {
+    width: 600px;
+    min-height: 540px;
+  }
+}
+
+.explore-table-pagination {
+  position: absolute;
+  bottom: 35px;
+  width: 96%;
 }
 </style>
 
@@ -481,6 +512,7 @@ export default class AssetOwnerDetailsSBT extends Mixins(
   &-issue {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: $basic-spacing;
 
     &-container {
@@ -504,8 +536,10 @@ export default class AssetOwnerDetailsSBT extends Mixins(
   }
 
   &-issue-access-btn.el-button--primary {
+    height: 32px !important;
     span {
-      font-size: 12px;
+      font-size: 13px;
+      padding: 0 4px;
       text-transform: none;
       font-variation-settings: 'wght' 550 !important;
     }
