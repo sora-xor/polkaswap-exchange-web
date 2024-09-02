@@ -83,6 +83,8 @@ async function connectEvmProvider(provider: Provider, chains: ChainsProps): Prom
 
 function disconnectEvmProvider(provider?: Nullable<Provider>): void {
   ethereumProvider?.disconnect?.();
+  // don't wait promise execution, that's for wallets lifecycle
+  revokeWalletAccounts();
 }
 
 function createWeb3Instance(provider: any) {
@@ -117,7 +119,9 @@ async function useExtensionProvider(provider: Provider): Promise<string> {
 
   createWeb3Instance(ethereumProvider);
 
-  return await getAccount();
+  const accounts = await requestWalletAccounts();
+
+  return accounts[0];
 }
 
 async function useWalletConnectProvider(chainProps: ChainsProps): Promise<string> {
@@ -157,7 +161,9 @@ async function getSigner(): Promise<ethers.JsonRpcSigner> {
 
 async function getAccount(): Promise<string> {
   const signer = await getSigner();
-  return signer.getAddress();
+  const address = signer.getAddress();
+
+  return address;
 }
 
 async function getContract(contractAddress: string, contractAbi: ethers.InterfaceAbi): Promise<ethers.Contract> {
@@ -275,6 +281,32 @@ async function watchEthereum(cb: {
       provider.off('disconnect', cb.onDisconnect);
     }
   };
+}
+
+async function requestWalletAccounts(): Promise<string[]> {
+  const result = await ethereumProvider.request({
+    method: 'wallet_requestPermissions',
+    params: [
+      {
+        eth_accounts: {},
+      },
+    ],
+  });
+
+  const accounts = result[0].caveats[0].value;
+
+  return accounts as string[];
+}
+
+async function revokeWalletAccounts(): Promise<void> {
+  await ethereumProvider.request({
+    method: 'wallet_revokePermissions',
+    params: [
+      {
+        eth_accounts: {},
+      },
+    ],
+  });
 }
 
 async function addToken(address: string, symbol: string, decimals: number, image?: string): Promise<void> {
