@@ -41,7 +41,7 @@
 import { Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import type TokenInput from '@/components/shared/Input/TokenInput.vue';
 import { Components, ZeroStringValue } from '@/consts';
@@ -60,6 +60,8 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 export default class GrantPrivilegeDialog extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
+
+  @Prop({ type: String, default: '' }) readonly sbtAddress!: string;
 
   readonly xorSymbol = XOR.symbol;
 
@@ -103,9 +105,16 @@ export default class GrantPrivilegeDialog extends Mixins(mixins.TransactionMixin
     this.emptyValue ? (this.datePlaceholder = 'Pick a day') : (this.datePlaceholder = '');
   }
 
-  handleGiveAccess(): void {
-    console.log('this.value', this.value);
-    console.log('this.address', this.address);
+  async handleGiveAccess(): Promise<void> {
+    try {
+      await this.withNotifications(async () => {
+        const sbtAsset = await api.assets.getAssetInfo(this.sbtAddress);
+        await api.extendedAssets.givePrivilege(this.address, sbtAsset, Number(this.value));
+        this.isVisible = false;
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 </script>

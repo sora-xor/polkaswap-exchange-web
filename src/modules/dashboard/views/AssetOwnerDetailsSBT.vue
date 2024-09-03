@@ -208,7 +208,7 @@
         </s-card>
       </s-col>
     </s-row>
-    <grant-privilege :visible.sync="showGrantPrivilegeDialog" />
+    <grant-privilege :visible.sync="showGrantPrivilegeDialog" :sbt-address="asset.address" />
     <attach-regulated :visible.sync="showCreateAssetDialog" />
   </div>
 
