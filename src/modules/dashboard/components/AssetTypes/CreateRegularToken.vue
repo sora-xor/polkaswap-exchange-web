@@ -144,7 +144,11 @@ export default class CreateRegularToken extends Mixins(
         this.tokenSymbol,
         this.tokenName.trim(),
         this.tokenSupply,
-        this.extensibleSupply
+        this.extensibleSupply,
+        false,
+        null,
+        null,
+        this.sbtAddress
       );
 
       if (this.sbtAddress) {

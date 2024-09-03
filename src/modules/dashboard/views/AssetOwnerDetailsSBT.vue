@@ -25,7 +25,7 @@
           <div class="sbt-info">
             <div>
               <span class="sbt-info-property">Accounts with permission</span>
-              <span class="sbt-info-value">30</span>
+              <span class="sbt-info-value">n/a</span>
             </div>
             <s-divider />
             <div>
