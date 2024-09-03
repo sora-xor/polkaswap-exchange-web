@@ -11,13 +11,7 @@
           @clear="handleClearSearch"
         />
         <div v-if="!isOnlyAttach" class="dashboard-create-button">
-          <s-button
-            class="el-dialog__close"
-            type="action"
-            icon="plus-16"
-            :disabled="loading"
-            @click="createRegulatedAsset"
-          />
+          <s-button type="action" icon="plus-16" :disabled="loading" @click="createRegulatedAsset" />
           <span class="create">{{ 'Create new regulated asset' }}</span>
         </div>
         <div v-if="ownerAssetsList?.length" class="dashboard-regulated-assets">
@@ -644,6 +638,12 @@ export default class CreateSbtToken extends Mixins(
       line-height: var(--s-line-height-medium);
       font-size: var(--s-font-size-medium);
       font-weight: 500;
+    }
+
+    .el-button {
+      .s-icon-plus-16 {
+        color: var(--s-color-theme-accent);
+      }
     }
   }
 
