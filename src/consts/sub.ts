@@ -289,7 +289,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       {
         chain: 'SORA Alphanet Parachain',
         name: 'Soramitsu',
-        address: 'wss://ws.parachain-collator-2.c1.stg1.sora2.soramitsu.co.jp',
+        address: 'wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp',
       },
     ],
   },
