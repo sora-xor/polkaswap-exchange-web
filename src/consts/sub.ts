@@ -378,5 +378,9 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
       [BridgeTxDirection.Outgoing]: '348000000000000000',
       [BridgeTxDirection.Incoming]: '0',
     },
+    KSM: {
+      [BridgeTxDirection.Outgoing]: '1900000000',
+      [BridgeTxDirection.Incoming]: '50407940264',
+    },
   },
 };
