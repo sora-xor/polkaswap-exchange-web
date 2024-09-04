@@ -1,5 +1,5 @@
 <template>
-  <transaction-details :info-only="infoOnly">
+  <transaction-details class="s-flex-column" :info-only="infoOnly">
     <info-line
       :label="t('orderBook.txDetails.orderType')"
       :label-tooltip="t('orderBook.tooltip.txDetails.orderType')"
