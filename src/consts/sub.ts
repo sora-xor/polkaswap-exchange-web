@@ -370,12 +370,16 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
       [BridgeTxDirection.Outgoing]: '500000000000000000000',
       [BridgeTxDirection.Incoming]: '0',
     },
-    CGT: {
-      [BridgeTxDirection.Outgoing]: '112000000000000000',
-      [BridgeTxDirection.Incoming]: '0',
-    },
     VAL: {
       [BridgeTxDirection.Outgoing]: '348000000000000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+    PSWAP: {
+      [BridgeTxDirection.Outgoing]: '16000000000000000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+    CGT: {
+      [BridgeTxDirection.Outgoing]: '112000000000000000',
       [BridgeTxDirection.Incoming]: '0',
     },
     KSM: {
