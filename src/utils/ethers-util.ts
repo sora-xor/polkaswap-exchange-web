@@ -333,38 +333,59 @@ async function addToken(address: string, symbol: string, decimals: number, image
  * @param network network data
  * @param chainName translated chain name
  */
+async function addChain(network: NetworkData, chainName?: string): Promise<void> {
+  const chainId = ethers.toQuantity(network.evmId ?? network.id);
+
+  await ethereumProvider.request({
+    // https://eips.ethereum.org/EIPS/eip-3085
+    method: 'wallet_addEthereumChain',
+    params: [
+      {
+        chainId,
+        chainName: chainName || network.name,
+        endpointUrls: network.endpointUrls,
+        nativeCurrency: network.nativeCurrency,
+        blockExplorerUrls: network.blockExplorerUrls,
+      },
+    ],
+  });
+}
+
+/**
+ * Switch chain in Metamask
+ * @param network network data
+ */
+async function switchChain(network: NetworkData): Promise<void> {
+  const chainId = ethers.toQuantity(network.evmId ?? network.id);
+
+  await ethereumProvider.request({
+    // https://eips.ethereum.org/EIPS/eip-3326
+    method: 'wallet_switchEthereumChain',
+    params: [
+      {
+        chainId,
+      },
+    ],
+  });
+}
+
+/**
+ * Switch or add chain to Metamask
+ * @param network network data
+ * @param chainName translated chain name
+ */
 async function switchOrAddChain(network: NetworkData, chainName?: string): Promise<void> {
   const chainId = ethers.toQuantity(network.evmId ?? network.id);
 
   try {
-    await ethereumProvider.request({
-      // https://eips.ethereum.org/EIPS/eip-3326
-      method: 'wallet_switchEthereumChain',
-      params: [
-        {
-          chainId,
-        },
-      ],
-    });
+    await switchChain(network);
   } catch (switchError: any) {
     console.error(switchError);
     // Chain is not added to wallet
     // "Unrecognized chain ID. Try adding the chain using wallet_addEthereumChain first."
     if (switchError.code === 4902) {
       try {
-        await ethereumProvider.request({
-          // https://eips.ethereum.org/EIPS/eip-3085
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId,
-              chainName: chainName || network.name,
-              endpointUrls: network.endpointUrls,
-              nativeCurrency: network.nativeCurrency,
-              blockExplorerUrls: network.blockExplorerUrls,
-            },
-          ],
-        });
+        await addChain(network, chainName);
       } catch (addError) {
         console.error(addError);
       }

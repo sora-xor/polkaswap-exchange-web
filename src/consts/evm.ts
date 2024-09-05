@@ -37,13 +37,13 @@ export const SmartContracts = {
 export const EVM_NETWORKS: Record<EvmNetwork, NetworkData> = {
   [EvmNetworkId.EthereumMainnet]: {
     id: EvmNetworkId.EthereumMainnet,
-    name: 'Ethereum Mainnet',
+    name: 'Ethereum Mainnet Public Node',
     nativeCurrency: {
       name: 'ETH',
       symbol: 'ETH',
       decimals: 18,
     },
-    endpointUrls: ['https://mainnet.infura.io/v3/'],
+    endpointUrls: ['https://ethereum-rpc.publicnode.com'],
     blockExplorerUrls: ['https://etherscan.io'],
     shortName: 'Ethereum',
   },
