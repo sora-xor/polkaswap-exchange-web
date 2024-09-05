@@ -95,6 +95,7 @@
           @clear="clear"
           @show-limit="showLimit"
           @hide-limit="hideLimit"
+          @click.native="openFileUpload"
         >
           <div v-if="imageLoading" v-loading="imageLoading" />
           <div v-else-if="fileExceedsLimit" class="placeholder">
@@ -332,6 +333,11 @@ export default class CreateSbtToken extends Mixins(
       default:
         return this.t('createToken.titleCommon');
     }
+  }
+
+  openFileUpload(e): void {
+    // Prevent opening while storage solution is missing
+    e.preventDefault();
   }
 
   handleClearSearch(): void {
