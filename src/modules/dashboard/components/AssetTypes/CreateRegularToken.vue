@@ -152,14 +152,14 @@ export default class CreateRegularToken extends Mixins(
       );
 
       if (this.sbtAddress) {
-        // TODO: return to sbt dashboard
-        router.push({ name: DashboardPageNames.AssetOwner });
+        router.push({ name: DashboardPageNames.AssetOwnerDetailsSBT, params: { asset: this.sbtAddress } });
         return;
       }
 
       this.$emit('go-to-create');
       return;
     }
+
     await api.assets.register(this.tokenSymbol, this.tokenName.trim(), this.tokenSupply, this.extensibleSupply);
     router.push({ name: DashboardPageNames.AssetOwner });
   }

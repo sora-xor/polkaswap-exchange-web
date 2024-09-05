@@ -70,7 +70,12 @@
       "CloseVault": "{symbol}/{symbol2} Position closed",
       "DepositCollateral": "Deposited {amount} {symbol}",
       "RepayVaultDebt": "Repaid {amount} {symbol}",
-      "BorrowVaultDebt": "Borrowed {amount} {symbol}"
+      "BorrowVaultDebt": "Borrowed {amount} {symbol}",
+      "SetAccessExpiration": "SB token {symbol} Updated expiration to {endTime}",
+      "RegulateAsset": "Regulate Asset {symbol}",
+      "RegisterAndRegulateAsset": "Register And Regulate {symbol} asset",
+      "BindRegulatedAsset": "Bind Asset {symbol2} to SBT",
+      "IssueSoulBoundToken": "Issue Soulbound Token {symbol}"
     },
     "error": {
       "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -112,7 +117,12 @@
       "CloseVault": "Failed to close {symbol}/{symbol2} position",
       "DepositCollateral": "Failed to deposit {amount} {symbol}",
       "RepayVaultDebt": "Failed to repaid {amount} {symbol}",
-      "BorrowVaultDebt": "Failed to borrow {amount} {symbol}"
+      "BorrowVaultDebt": "Failed to borrow {amount} {symbol}",
+      "SetAccessExpiration": "Failed to update expiration to {to} for {symbol}",
+      "RegulateAsset": "Failed To Regulate Asset {symbol}",
+      "RegisterAndRegulateAsset": "Failed To Register And Regulate {symbol}",
+      "BindRegulatedAsset": "Failed To Bind Asset {symbol} to SBT {symbol2}",
+      "IssueSoulBoundToken": "Failed to issue Soulbound token {symbol}"
     },
     "ReferralReserveXor": "Bond XOR",
     "ReferralUnreserveXor": "Unbond XOR",
@@ -146,7 +156,12 @@
     "CloseVault": "Close Position",
     "DepositCollateral": "Deposit Position",
     "RepayVaultDebt": "Repay Debt",
-    "BorrowVaultDebt": "Borrow Debt"
+    "BorrowVaultDebt": "Borrow Debt",
+    "SetAccessExpiration": "Set SBT Expiration",
+    "RegulateAsset": "Regulate Asset",
+    "RegisterAndRegulateAsset": "Register Asset",
+    "BindRegulatedAsset": "Bind Regulated Asset",
+    "IssueSoulBoundToken": "Issue SBT"
   },
   "polkadotjs": {
     "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps://polkadot.js.org/extension/",
