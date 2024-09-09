@@ -139,6 +139,9 @@ export default class BaseWidget extends Vue {
       const widgetElement = this.$el as HTMLElement;
       const originalParent = widgetElement.parentNode as HTMLElement;
 
+      // Adding class for radius
+      widgetElement.classList.add('pip-mode-radius');
+
       // STYLES
       // Extract all document styles
       const allStyles = Array.from(document.styleSheets)
@@ -173,6 +176,7 @@ export default class BaseWidget extends Vue {
         // Move the element back to the original document when PiP is closed
         this.$nextTick(() => {
           this.pipOpen = false;
+          widgetElement.classList.remove('pip-mode-radius');
           originalParent.appendChild(widgetElement);
         });
       });
@@ -188,6 +192,7 @@ export default class BaseWidget extends Vue {
 
   beforeDestroy(): void {
     this.destroyContentObserver();
+    this.pipOpen = false;
   }
 
   private createContentObserver(): void {
@@ -280,6 +285,10 @@ $left: $inner-spacing-medium;
     &.s-border-radius-small {
       border-radius: unset;
     }
+  }
+
+  &.pip-mode-radius {
+    border-radius: 0 !important;
   }
 
   &-block {
