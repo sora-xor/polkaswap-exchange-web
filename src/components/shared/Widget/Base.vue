@@ -102,7 +102,7 @@ export default class BaseWidget extends Vue {
     height: 0,
   };
 
-  private pipOpen = false;
+  private pipOpened = false;
 
   public capitalize = capitalize;
 
@@ -121,7 +121,7 @@ export default class BaseWidget extends Vue {
   get isPipAvailable() {
     if (this.pipDisabled) return false;
 
-    return 'documentPictureInPicture' in window && !this.pipOpen;
+    return 'documentPictureInPicture' in window && !this.pipOpened;
   }
 
   async openPip() {
@@ -133,7 +133,7 @@ export default class BaseWidget extends Vue {
         height: this.$el.clientHeight,
       });
 
-      this.pipOpen = true;
+      this.pipOpened = true;
 
       // Access the root element of the Vue component
       const widgetElement = this.$el as HTMLElement;
@@ -143,7 +143,6 @@ export default class BaseWidget extends Vue {
       widgetElement.classList.add('pip-mode-radius');
 
       // STYLES
-      // Extract all document styles
       const allStyles = Array.from(document.styleSheets)
         .map((styleSheet) =>
           Array.from(styleSheet.cssRules)
@@ -175,7 +174,7 @@ export default class BaseWidget extends Vue {
       pipWindow.addEventListener('pagehide', () => {
         // Move the element back to the original document when PiP is closed
         this.$nextTick(() => {
-          this.pipOpen = false;
+          this.pipOpened = false;
           widgetElement.classList.remove('pip-mode-radius');
           originalParent.appendChild(widgetElement);
         });
@@ -192,7 +191,7 @@ export default class BaseWidget extends Vue {
 
   beforeDestroy(): void {
     this.destroyContentObserver();
-    this.pipOpen = false;
+    this.pipOpened = false;
   }
 
   private createContentObserver(): void {
