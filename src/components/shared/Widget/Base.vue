@@ -102,6 +102,7 @@ export default class BaseWidget extends Vue {
     height: 0,
   };
 
+  private pipWindow: Window | null = null;
   private pipOpened = false;
 
   public capitalize = capitalize;
@@ -134,6 +135,7 @@ export default class BaseWidget extends Vue {
       });
 
       this.pipOpened = true;
+      this.pipWindow = pipWindow;
 
       // Access the root element of the Vue component
       const widgetElement = this.$el as HTMLElement;
@@ -191,7 +193,13 @@ export default class BaseWidget extends Vue {
 
   beforeDestroy(): void {
     this.destroyContentObserver();
-    this.pipOpened = false;
+    if (this.pipOpened && this.pipWindow) {
+      this.pipWindow.close();
+      this.pipOpened = false;
+      this.pipWindow = null;
+    } else {
+      console.info('PiP was never opened or already closed.');
+    }
   }
 
   private createContentObserver(): void {
