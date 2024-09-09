@@ -318,30 +318,29 @@ function calculateMaxLimit(
   referenceAsset: string,
   usdLimit: CodecString,
   quote: SwapQuote
-): FPNumber {
+): FPNumber | null {
   const outgoingLimitUSD = FPNumber.fromCodecValue(usdLimit);
 
   if (outgoingLimitUSD.isZero() || limitAsset === referenceAsset) return outgoingLimitUSD;
 
   try {
-    // We should calculate the asset price in reference asset
-    // For this purpose is used the reduced asset amount (amount should be greater than any order book tick size)
-    const assetAmount = FPNumber.ONE;
-    const multiplier = new FPNumber(1000);
-    const quoteAmount = assetAmount.div(multiplier);
+    const quoteAmount = FPNumber.ONE;
 
     const {
       result: { amount },
     } = quote(limitAsset, referenceAsset, quoteAmount.toString(), false, [], false);
     // result amount multiplied by a multiplier to get asset price
-    const assetPriceUSD = FPNumber.fromCodecValue(amount).mul(multiplier);
 
-    if (!assetPriceUSD.isFinity() || assetPriceUSD.isZero()) return FPNumber.ZERO;
+    const assetPriceUSD = FPNumber.fromCodecValue(amount);
+
+    // zero price means liquidity problem - disable limit
+    if (!assetPriceUSD.isFinity() || assetPriceUSD.isZero()) return null;
 
     return outgoingLimitUSD.div(assetPriceUSD);
   } catch (error) {
     console.error(error);
-    return FPNumber.ZERO;
+    // disable limit on calculation error
+    return null;
   }
 }
 
@@ -547,7 +546,7 @@ const actions = defineActions({
     if (!hasOutgoingLimit) return;
 
     const referenceAsset = DAI.address;
-    const sources = [LiquiditySourceTypes.XYKPool, LiquiditySourceTypes.XSTPool];
+    const sources = [LiquiditySourceTypes.XYKPool, LiquiditySourceTypes.XSTPool, LiquiditySourceTypes.OrderBook];
     const limitObservable = api.bridgeProxy.getCurrentTransferLimitObservable();
     const quoteObservable = api.swap.getSwapQuoteObservable(referenceAsset, limitAsset, sources, DexId.XOR);
 
