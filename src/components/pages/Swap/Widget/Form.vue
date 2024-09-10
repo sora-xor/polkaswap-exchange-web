@@ -429,7 +429,7 @@ export default class SwapFormWidget extends Mixins(
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact as string);
-      this.setLiquidityProviderFee(fee);
+      this.setLiquidityProviderFee(fee as CodecString);
       this.setRewards(rewards);
       this.setRoute(route as string[]);
       this.setDistribution(distribution as Distribution[][]);
