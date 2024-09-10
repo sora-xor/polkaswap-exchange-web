@@ -4,7 +4,7 @@
     size="big"
     primary
     :shadow="shadow"
-    :class="['base-widget', { delimeter, full, flat }]"
+    :class="['base-widget', { delimeter, full, flat, pip: pipOpened }]"
     v-loading="loading"
   >
     <template #header v-if="hasHeader">
@@ -141,9 +141,6 @@ export default class BaseWidget extends Vue {
       const widgetElement = this.$el as HTMLElement;
       const originalParent = widgetElement.parentNode as HTMLElement;
 
-      // Adding class for radius
-      widgetElement.classList.add('pip-mode-radius');
-
       // STYLES
       const allStyles = Array.from(document.styleSheets)
         .map((styleSheet) =>
@@ -164,11 +161,9 @@ export default class BaseWidget extends Vue {
       // Get the <html> element from the original document
       const originalHtmlElement = document.documentElement;
       // Copy attributes from the original <html> element to the <html> element in the Picture-in-Picture window's document
-
       for (const attribute of originalHtmlElement.attributes) {
         htmlElement.setAttribute(attribute.nodeName, attribute.nodeValue);
       }
-
       // Move the Vue component to the Picture-in-Picture window
       pipWindow.document.body.appendChild(widgetElement);
 
@@ -177,7 +172,6 @@ export default class BaseWidget extends Vue {
         // Move the element back to the original document when PiP is closed
         this.$nextTick(() => {
           this.pipOpened = false;
-          widgetElement.classList.remove('pip-mode-radius');
           originalParent.appendChild(widgetElement);
         });
       });
@@ -294,8 +288,10 @@ $left: $inner-spacing-medium;
     }
   }
 
-  &.pip-mode-radius {
-    border-radius: 0 !important;
+  &.pip {
+    &.s-border-radius-small {
+      border-radius: unset;
+    }
   }
 
   &-block {
