@@ -9,7 +9,7 @@ import { OrderBookState } from './types';
 
 import { orderBookGetterContext } from '.';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 const getters = defineGetters<OrderBookState>()({
   baseAsset(...args): Nullable<RegisteredAccountAsset> {

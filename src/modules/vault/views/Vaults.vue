@@ -265,8 +265,8 @@ import { state, getter, action } from '@/store/decorators';
 import type { ResponsiveTab } from '@/types/tabs';
 
 import type { FPNumber, CodecString } from '@sora-substrate/math';
-import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
+import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Collateral, Vault } from '@sora-substrate/sdk/build/kensetsu/types';
 
 type OpenedVaultData = Vault & {
   lockedAsset: Nullable<RegisteredAccountAsset>;

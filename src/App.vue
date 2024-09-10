@@ -78,9 +78,9 @@ import { tmaSdkService } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
-import type { History, HistoryItem } from '@sora-substrate/util';
-import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { History, HistoryItem } from '@sora-substrate/sdk';
+import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
+import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 

@@ -1,8 +1,8 @@
 import { INDEXER_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import type { OrderBookId, PriceVariant } from '@sora-substrate/liquidity-proxy';
-import type { FPNumber, CodecString } from '@sora-substrate/util';
-import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
+import type { FPNumber, CodecString } from '@sora-substrate/sdk';
+import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 
 export enum Filter {
   open = 'open',

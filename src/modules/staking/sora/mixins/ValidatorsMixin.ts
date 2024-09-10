@@ -3,7 +3,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import { state } from '@/store/decorators';
 
-import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types';
+import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
 
 @Component
 export default class ValidatorsMixin extends Vue {

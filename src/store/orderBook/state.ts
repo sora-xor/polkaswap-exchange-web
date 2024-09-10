@@ -1,5 +1,5 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { DexId } from '@sora-substrate/util/build/dex/consts';
+import { DexId } from '@sora-substrate/sdk/build/dex/consts';
 
 import { LimitOrderType } from '@/consts';
 

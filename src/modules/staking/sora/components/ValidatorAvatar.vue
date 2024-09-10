@@ -14,7 +14,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import StakingMixin from '../mixins/StakingMixin';
 
-import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types';
+import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
 
 @Component({
   components: {

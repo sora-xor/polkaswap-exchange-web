@@ -1,11 +1,11 @@
-import { XSTUSD, XOR } from '@sora-substrate/util/build/assets/consts';
+import { XSTUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { WALLET_TYPES, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Vue } from 'vue-property-decorator';
 
 import { PageNames } from '@/consts';
 import { getter } from '@/store/decorators';
 
-import type { AccountAsset, Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, Asset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 import type { NavigationGuardNext, Route } from 'vue-router';
 
 const MAX_SYMBOL_LENGTH = 7;

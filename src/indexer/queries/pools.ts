@@ -1,10 +1,10 @@
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
 
-import type { CodecString } from '@sora-substrate/util';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import type {
   SubqueryPoolXYKEntity,
   SubquerySubscriptionPayload,

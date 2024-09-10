@@ -78,7 +78,7 @@ import { getter, mutation, state } from '@/store/decorators';
 import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
 import { calcPriceChange, showMostFittingValue } from '@/utils';
 
-import type { AccountAsset, WhitelistIdsBySymbol } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, WhitelistIdsBySymbol } from '@sora-substrate/sdk/build/assets/types';
 import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 @Component({

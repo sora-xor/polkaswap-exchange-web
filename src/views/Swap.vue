@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -63,7 +63,7 @@ import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
 import type { ResponsiveLayouts, WidgetsVisibilityModel } from '@/types/layout';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 enum SwapWidgets {
   Customise = 'customise',

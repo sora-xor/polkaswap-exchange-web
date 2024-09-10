@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, CodecString } from '@sora-substrate/util';
+import { FPNumber, CodecString } from '@sora-substrate/sdk';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
@@ -54,7 +54,7 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
 
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
 @Component({
   components: {

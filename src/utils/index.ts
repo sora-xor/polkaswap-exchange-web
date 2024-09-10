@@ -1,6 +1,6 @@
-import { FPNumber, CodecString } from '@sora-substrate/util';
-import { isNativeAsset } from '@sora-substrate/util/build/assets';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber, CodecString } from '@sora-substrate/sdk';
+import { isNativeAsset } from '@sora-substrate/sdk/build/assets';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
@@ -11,8 +11,8 @@ import router from '@/router';
 import store from '@/store';
 
 import type { AmountWithSuffix } from '../types/formats';
-import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type { Currency, CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 import type { Route } from 'vue-router';
 

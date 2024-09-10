@@ -1,4 +1,4 @@
-import { XOR, KUSD } from '@sora-substrate/util/build/assets/consts';
+import { XOR, KUSD } from '@sora-substrate/sdk/build/assets/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
@@ -7,7 +7,7 @@ import { vaultActionContext } from '@/store/vault';
 import { delay } from '@/utils';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 

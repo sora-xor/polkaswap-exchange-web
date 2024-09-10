@@ -12,7 +12,7 @@ import type {
   AccountStakingLedger,
   NominatorReward,
   ActiveEra,
-} from '@sora-substrate/util/build/staking/types';
+} from '@sora-substrate/sdk/build/staking/types';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<StakingState>()({

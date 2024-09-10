@@ -1,6 +1,6 @@
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
-import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import { api as soraApi, accountUtils, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
@@ -9,7 +9,7 @@ import { web3ActionContext } from '@/store/web3';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil, { Provider, PROVIDER_ERROR } from '@/utils/ethers-util';
 
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { ActionContext } from 'vuex';
 
 async function connectNetworkType(context: ActionContext<any, any>): Promise<void> {

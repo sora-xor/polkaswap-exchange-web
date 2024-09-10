@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/math';
-import { XOR, DAI, KUSD } from '@sora-substrate/util/build/assets/consts';
+import { XOR, DAI, KUSD } from '@sora-substrate/sdk/build/assets/consts';
 
 import type { VaultState } from './types';
 

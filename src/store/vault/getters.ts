@@ -5,7 +5,7 @@ import { vaultGetterContext } from '@/store/vault';
 
 import type { VaultState } from './types';
 import type { FPNumber } from '@sora-substrate/math';
-import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 const getters = defineGetters<VaultState>()({
   /** Selected debt token during the position creation */

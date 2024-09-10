@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { XOR, ETH } from '@sora-substrate/util/build/assets/consts';
+import { XOR, ETH } from '@sora-substrate/sdk/build/assets/consts';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 

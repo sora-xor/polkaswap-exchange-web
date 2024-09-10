@@ -8,8 +8,8 @@ import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { orderBookActionContext } from '.';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
+import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
+import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
