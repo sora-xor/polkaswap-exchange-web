@@ -2985,8 +2985,8 @@
 
 "@soramitsu/soraneo-wallet-web@1.39.12":
   version "1.39.12"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.39.12.tgz#fbb42e6430f55481bae352ef24175345670cd971"
-  integrity sha512-mb2FeQhdliPv3/1pF0bXqLoTLYR/4FkJ+iBctZ1OBIwqLdTAirgNjlf0U+SJR2uv8Ri2EDrHO7lWvYUkqsfwMw==
+  resolved "https://registry.yarnpkg.com/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.39.12.tgz#2aa17d77fbb6eb227ad4db112d72fa64404ccec8"
+  integrity sha512-2fV/gcgv26kdyKhhGtmwgeUjKVE/ttwaY4u70j5nQcOuLNMsZWyGEt0srBUge4dU57q78S8i51k9oMOhCTgmWA==
   dependencies:
     "@polkadot/vue-identicon" "2.12.1"
     "@sora-substrate/util" "1.39.12"
