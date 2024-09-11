@@ -20,7 +20,7 @@ let ethereumProvider!: any;
 let ethersInstance: ethersProvider | null = null;
 
 export enum Provider {
-  Fearless = 'Fearless',
+  // Fearless = 'Fearless',
   Metamask = 'Metamask',
   SubWallet = 'SubWallet',
   TrustWallet = 'TrustWallet',
