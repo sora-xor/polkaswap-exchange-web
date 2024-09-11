@@ -47,8 +47,8 @@
 </template>
 
 <script lang="ts">
-import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
-import { XOR, KnownAssets } from '@sora-substrate/util/build/assets/consts';
+import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/sdk';
+import { XOR, KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
@@ -58,7 +58,7 @@ import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
 import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 type PriceValue = {
   id: 'from' | 'to';

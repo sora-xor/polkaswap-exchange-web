@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
@@ -84,7 +84,7 @@ import { lazyComponent } from '@/router';
 import { StakeDialogMode } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
 
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/sdk';
 
 @Component({
   components: {

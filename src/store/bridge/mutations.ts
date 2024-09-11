@@ -4,8 +4,8 @@ import omit from 'lodash/fp/omit';
 import { ZeroStringValue } from '@/consts';
 
 import type { BridgeState, FocusedField } from './types';
-import type { FPNumber, IBridgeTransaction, CodecString } from '@sora-substrate/util';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { FPNumber, IBridgeTransaction, CodecString } from '@sora-substrate/sdk';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<BridgeState>()({

@@ -31,7 +31,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

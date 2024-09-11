@@ -1,5 +1,5 @@
-import { FPNumber, TransactionStatus } from '@sora-substrate/util';
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { FPNumber, TransactionStatus } from '@sora-substrate/sdk';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import BN from 'bignumber.js';
 
 import xTokensAbi from '@/abi/ethereum/other/moonbeam/xTokens.json';
@@ -12,8 +12,8 @@ import ethersUtil from '@/utils/ethers-util';
 
 import { ParachainAdapter } from './parachain';
 
-import type { CodecString } from '@sora-substrate/util';
-import type { Asset, RegisteredAsset } from '@sora-substrate/util/build/assets/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { Asset, RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { ethers } from 'ethers';
 
 const MOONBASE_DATA = SUB_NETWORKS[SubNetworkId.AlphanetMoonbase];

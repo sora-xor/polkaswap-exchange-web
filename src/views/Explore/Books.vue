@@ -128,7 +128,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -140,7 +140,7 @@ import type { AmountWithSuffix } from '@/types/formats';
 import type { OrderBookWithStats } from '@/types/orderBook';
 import { formatAmountWithSuffix, sortPools, showMostFittingValue } from '@/utils';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 type TableItem = {
   name: string;

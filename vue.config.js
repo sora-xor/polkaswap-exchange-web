@@ -9,6 +9,11 @@ module.exports = defineConfig({
     // bundle all dependencies from node_modules to vendors
     config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
     config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
+    // rebuild project after changes in "node_modules/@sora-substrate"
+    config.snapshot = {
+      ...(config.snapshot || {}),
+      managedPaths: [/^(.+?[\\/]node_modules[\\/](?!(@sora-substrate))(@.+?[\\/])?.+?)[\\/]/],
+    };
 
     // prepare icons content to unicode
     config.module.rules

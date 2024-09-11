@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { XOR, VAL, PSWAP, XSTUSD, XST, TBCD } from '@sora-substrate/util/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
@@ -52,7 +52,7 @@ import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 type ChartData = {
   timestamp: number;

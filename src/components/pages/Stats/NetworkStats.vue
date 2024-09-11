@@ -1,5 +1,5 @@
 <template>
-  <base-widget :title="t('networkStatisticsText')">
+  <base-widget v-bind="$attrs" :title="t('networkStatisticsText')">
     <template #filters>
       <stats-filter :disabled="loading" :filters="filters" :value="filter" @input="changeFilter" />
     </template>

@@ -195,9 +195,9 @@
 <script lang="ts">
 import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber, Operation } from '@sora-substrate/util';
-import { DexId } from '@sora-substrate/util/build/dex/consts';
-import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { DexId } from '@sora-substrate/sdk/build/dex/consts';
+import { MAX_TIMESTAMP } from '@sora-substrate/sdk/build/orderBook/consts';
 import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -220,9 +220,9 @@ import {
 import { getBookDecimals, MAX_ORDERS_PER_SIDE, MAX_ORDERS_PER_USER } from '@/utils/orderBook';
 
 import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
 @Component({

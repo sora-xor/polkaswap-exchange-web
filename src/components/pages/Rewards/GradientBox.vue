@@ -7,7 +7,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
-import type { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
 
 @Component
 export default class RewardsGradientBox extends Vue {

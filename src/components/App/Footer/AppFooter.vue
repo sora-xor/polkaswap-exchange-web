@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Status } from '@soramitsu-ui/ui-vue2/lib/types';
 import { Component, Mixins } from 'vue-property-decorator';

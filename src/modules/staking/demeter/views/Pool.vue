@@ -79,7 +79,7 @@ import { demeterStakingLazyComponent } from '../../router';
 import { DemeterStakingComponents } from '../consts';
 import PageMixin from '../mixins/PageMixin';
 
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
 @Component({
   inheritAttrs: false,

@@ -123,8 +123,8 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, CodecString, Operation } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber, CodecString, Operation } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -138,8 +138,8 @@ import type { LiquidityParams } from '@/store/pool/types';
 import { FocusedField } from '@/store/removeLiquidity/types';
 import { hasInsufficientXorForFee, formatDecimalPlaces } from '@/utils';
 
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
 @Component({
   components: {

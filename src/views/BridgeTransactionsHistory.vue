@@ -85,7 +85,7 @@ import { lazyComponent } from '@/router';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state } from '@/store/decorators';
 
-import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { IBridgeTransaction } from '@sora-substrate/sdk';
 
 const SearchAttrs = [
   'assetAddress',

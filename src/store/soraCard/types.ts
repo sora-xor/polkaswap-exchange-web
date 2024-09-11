@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 
 import { KycStatus, VerificationStatus, UserInfo, AttemptCounter, Fees } from '@/types/card';
 

@@ -1,4 +1,4 @@
-import { KnownAssets } from '@sora-substrate/util/build/assets/consts';
+import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
 import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
@@ -7,7 +7,7 @@ import { getter } from '@/store/decorators';
 import ScrollableTableMixin from './ScrollableTableMixin';
 import TranslationMixin from './TranslationMixin';
 
-import type { Asset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component
 export default class ExplorePageMixin extends Mixins(ScrollableTableMixin, TranslationMixin) {

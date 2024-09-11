@@ -1,6 +1,6 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
 
-import type { AccountBalance, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountBalance, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Subscription } from 'rxjs';
 
 type UpdateBalance = (balance: Nullable<AccountBalance>) => void;

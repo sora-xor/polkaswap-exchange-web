@@ -164,8 +164,8 @@
 </template>
 
 <script lang="ts">
-import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
+import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -179,9 +179,9 @@ import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientNative
 import { isUnsignedTx } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
-import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
-import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { CodecString, IBridgeTransaction } from '@sora-substrate/sdk';
+import type { SubNetwork, SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 const FORMATTED_HASH_LENGTH = 24;
 

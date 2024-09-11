@@ -1,7 +1,7 @@
-import { Operation } from '@sora-substrate/util';
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
-import { SubAssetKind } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { Operation } from '@sora-substrate/sdk';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
+import { SubAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { defineGetters } from 'direct-vuex';
 
 import { ZeroStringValue } from '@/consts';
@@ -10,10 +10,10 @@ import { subBridgeApi } from '@/utils/bridge/sub/api';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 
 import type { BridgeState } from './types';
-import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { IBridgeTransaction, CodecString } from '@sora-substrate/sdk';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 const chainAddress = (address: string, connector: SubNetworksConnector) => {
   return connector.network?.subNetworkConnection.nodeIsConnected ? connector.network.formatAddress(address) : address;

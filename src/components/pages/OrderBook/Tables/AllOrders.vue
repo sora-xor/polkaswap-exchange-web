@@ -15,7 +15,7 @@ import type { OrderData } from '@/types/orderBook';
 import OrderTable from './OrderTable.vue';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

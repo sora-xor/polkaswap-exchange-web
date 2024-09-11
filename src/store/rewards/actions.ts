@@ -10,7 +10,7 @@ import ethersUtil from '@/utils/ethers-util';
 import state from './state';
 
 import type { ClaimRewardsParams } from './types';
-import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type { RewardInfo, RewardsInfo } from '@sora-substrate/sdk/build/rewards/types';
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 

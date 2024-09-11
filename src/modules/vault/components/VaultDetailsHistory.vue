@@ -39,7 +39,7 @@ import type { VaultEvent, VaultEventType } from '@/modules/vault/types';
 import { state } from '@/store/decorators';
 import { type FetchVariables } from '@/types/indexers';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

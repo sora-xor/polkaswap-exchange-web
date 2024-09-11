@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import pick from 'lodash/fp/pick';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
