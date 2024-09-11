@@ -1,5 +1,5 @@
 <template>
-  <base-widget class="order-history-widget s-flex-column" extensive delimeter>
+  <base-widget v-bind="$attrs" extensive delimeter class="order-history-widget s-flex-column">
     <template #title>
       <div class="order-history-buttons order-history-buttons--filter-buttons">
         <span

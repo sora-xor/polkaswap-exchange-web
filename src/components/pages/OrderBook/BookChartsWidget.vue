@@ -1,5 +1,6 @@
 <template>
   <price-chart-widget
+    v-bind="$attrs"
     :dex-id="dexId"
     :base-asset="baseAsset"
     :quote-asset="quoteAsset"
