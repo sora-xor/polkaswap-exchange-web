@@ -1,3 +1,4 @@
+import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineMutations } from 'direct-vuex';
 
 import { MarketAlgorithms } from '@/consts';
@@ -72,6 +73,10 @@ const mutations = defineMutations<SettingsState>()({
   },
   setFeatureFlags(state, featureFlags: FeatureFlags = {}): void {
     state.featureFlags = { ...state.featureFlags, ...featureFlags };
+    // Enable ALT mechanism for swaps
+    if (state.featureFlags.alt) {
+      api.swap.isALT = true;
+    }
   },
   setBlockNumber(state, value: number): void {
     state.blockNumber = value || 0;
