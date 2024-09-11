@@ -149,6 +149,8 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
         return 'moonbeam';
       case SubNetworkId.Kusama:
         return 'kusama';
+      case SubNetworkId.KusamaCurio:
+        return 'curio';
       case SubNetworkId.KusamaShiden:
         return 'shiden';
       case SubNetworkId.Rococo:

@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { XOR, VAL, PSWAP, XSTUSD, XST, TBCD } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';

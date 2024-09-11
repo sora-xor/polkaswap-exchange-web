@@ -198,6 +198,24 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.KusamaCurio]: {
+    id: SubNetworkId.KusamaCurio,
+    name: 'Curio',
+    nativeCurrency: {
+      name: 'CGT',
+      symbol: 'CGT',
+      decimals: 18,
+    },
+    blockExplorerUrls: [],
+    shortName: 'Curio',
+    nodes: [
+      {
+        chain: 'Curio',
+        name: 'Curio',
+        address: 'wss://parachain.curioinvest.com',
+      },
+    ],
+  },
   [SubNetworkId.KusamaShiden]: {
     id: SubNetworkId.KusamaShiden,
     name: 'Shiden',
@@ -345,6 +363,28 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
     XOR: {
       [BridgeTxDirection.Outgoing]: '8140448382622083802',
       [BridgeTxDirection.Incoming]: '0',
+    },
+  },
+  [SubNetworkId.KusamaCurio]: {
+    XOR: {
+      [BridgeTxDirection.Outgoing]: '500000000000000000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+    VAL: {
+      [BridgeTxDirection.Outgoing]: '348000000000000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+    PSWAP: {
+      [BridgeTxDirection.Outgoing]: '16000000000000000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+    CGT: {
+      [BridgeTxDirection.Outgoing]: '112000000000000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+    KSM: {
+      [BridgeTxDirection.Outgoing]: '1900000000',
+      [BridgeTxDirection.Incoming]: '50407940264',
     },
   },
 };

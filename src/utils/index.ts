@@ -54,6 +54,8 @@ export const formatAddress = (address: string, length = address.length / 2): str
   return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`;
 };
 
+export const areEqual = <T>(prev: T, curr: T): boolean => JSON.stringify(prev) === JSON.stringify(curr);
+
 export const isXorAccountAsset = (asset: Asset | AssetWithBalance): boolean => {
   return asset ? asset.address === XOR.address : false;
 };

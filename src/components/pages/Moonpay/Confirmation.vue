@@ -32,7 +32,6 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({

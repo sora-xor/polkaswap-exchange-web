@@ -188,6 +188,7 @@ const actions = defineActions({
       [BridgeNetworkType.Evm]: {},
       [BridgeNetworkType.Sub]: [
         SubNetworkId.Kusama,
+        SubNetworkId.KusamaCurio,
         SubNetworkId.KusamaSora,
         SubNetworkId.Polkadot,
         SubNetworkId.PolkadotAstar,

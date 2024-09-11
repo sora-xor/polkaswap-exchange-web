@@ -58,11 +58,10 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
 
   get outgoingMinAmount(): FPNumber | null {
     if (!this.outgoingMinLimit) return null;
-    // this fee is spend from transfer amount, so we add it to outgoing min limit
     // [TODO: Bridge] remove when limit will be defined on backend
-    const transferFee = this.isNativeTokenSelected ? this.externalTransferFeeFP : FPNumber.ZERO;
+    // this fee is spend from transfer amount, so we add it to outgoing min limit
     // minimum amount = existential deposit + xcm fee
-    return this.outgoingMinLimit.add(transferFee);
+    return this.outgoingMinLimit.add(this.externalTransferFeeFP);
   }
 
   get incomingMaxAmount(): FPNumber | null {

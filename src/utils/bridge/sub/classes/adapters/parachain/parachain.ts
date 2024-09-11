@@ -1,6 +1,7 @@
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 
 import { ZeroStringValue } from '@/consts';
+import { areEqual } from '@/utils';
 
 import { SubAdapter } from '../substrate';
 
@@ -37,13 +38,13 @@ export class ParachainAdapter<AssetId> extends SubAdapter {
   public getAssetMeta(asset: RegisteredAsset): Nullable<IParachainAssetMetadata<AssetId>> {
     if (!Array.isArray(this.assets)) return null;
 
-    return this.assets.find((item) => item.id === asset.externalAddress || item.symbol === asset.symbol);
+    return this.assets.find((item) => areEqual(item.id, asset.externalAddress) || item.symbol === asset.symbol);
   }
 
   /**
    * Get asset external address by multilocation (for "registeredAsset.externalAddress" struct))
    */
-  public async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
+  public async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<any> {
     throw new Error(`[${this.constructor.name}] "getAssetIdByMultilocation" method is not implemented`);
   }
 
@@ -78,6 +79,8 @@ export class ParachainAdapter<AssetId> extends SubAdapter {
         return '57000000000000000';
       case SubNetworkId.AlphanetMoonbase:
         return '40000000000000';
+      case SubNetworkId.KusamaCurio:
+        return '70000000000000000';
       default:
         return '0';
     }
