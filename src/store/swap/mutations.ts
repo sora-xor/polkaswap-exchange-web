@@ -1,4 +1,4 @@
-import { DexId } from '@sora-substrate/util/build/dex/consts';
+import { DexId } from '@sora-substrate/sdk/build/dex/consts';
 import { defineMutations } from 'direct-vuex';
 import omit from 'lodash/fp/omit';
 
@@ -9,9 +9,9 @@ import { initialState } from './state';
 
 import type { SwapState } from './types';
 import type { LPRewardsInfo, Distribution } from '@sora-substrate/liquidity-proxy/build/types';
-import type { CodecString } from '@sora-substrate/util';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { SwapQuoteData } from '@sora-substrate/util/build/swap/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
+import type { SwapQuoteData } from '@sora-substrate/sdk/build/swap/types';
 
 const mutations = defineMutations<SwapState>()({
   reset(state): void {

@@ -20,7 +20,7 @@ import type {
 } from '@/utils/bridge/common/types';
 import { isUnsignedTx } from '@/utils/bridge/common/utils';
 
-import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { IBridgeTransaction } from '@sora-substrate/sdk';
 
 const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS;
 

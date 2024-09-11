@@ -111,7 +111,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
 
@@ -120,8 +120,8 @@ import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, mutation } from '@/store/decorators';
 
-import type { CodecString } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 const stringifyAddress = (addr?: string) => (typeof addr === 'string' ? addr : '');
 

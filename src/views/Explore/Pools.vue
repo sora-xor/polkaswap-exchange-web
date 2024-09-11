@@ -143,7 +143,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -156,8 +156,8 @@ import { state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
 type PoolToken = {
   asset: Asset;

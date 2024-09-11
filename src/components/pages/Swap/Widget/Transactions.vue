@@ -104,7 +104,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { getCurrentIndexer, components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
@@ -117,8 +117,8 @@ import { getter, state } from '@/store/decorators';
 import { type FetchVariables } from '@/types/indexers';
 import { soraExplorerLinks, showMostFittingValue } from '@/utils';
 
-import type { HistoryItem } from '@sora-substrate/util';
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { HistoryItem } from '@sora-substrate/sdk';
+import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 type TableItem = {
   address: string;

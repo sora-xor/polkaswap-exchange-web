@@ -17,8 +17,8 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { DexId } from '@sora-substrate/util/build/dex/consts';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { DexId } from '@sora-substrate/sdk/build/dex/consts';
 
 @Component({
   components: {

@@ -1,6 +1,6 @@
-import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -15,8 +15,8 @@ import { isUnsignedToPart } from '@/utils/bridge/eth/utils';
 
 import TranslationMixin from './TranslationMixin';
 
-import type { IBridgeTransaction } from '@sora-substrate/util';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { IBridgeTransaction } from '@sora-substrate/sdk';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 

@@ -3,7 +3,7 @@ import { defineActions } from 'direct-vuex';
 
 import { stakingActionContext } from '@/store/staking';
 
-import type { Payouts } from '@sora-substrate/util/build/staking/types';
+import type { Payouts } from '@sora-substrate/sdk/build/staking/types';
 import type { Subscription } from 'rxjs';
 
 const actions = defineActions({

@@ -1,6 +1,6 @@
-import { WithKeyring, Operation } from '@sora-substrate/util';
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { WithKeyring, Operation } from '@sora-substrate/sdk';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 
 import type { Node } from '@/types/nodes';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
@@ -18,8 +18,8 @@ import { RelaychainAdapter } from './adapters/relaychain/relaychain';
 import { LiberlandAdapter } from './adapters/standalone/liberland';
 import { SubAdapter } from './adapters/substrate';
 
-import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 
 type PathNetworks = {
   soraParachain?: SubNetwork;

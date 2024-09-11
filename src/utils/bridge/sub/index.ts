@@ -1,5 +1,5 @@
-import { Operation } from '@sora-substrate/util';
-import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { Operation } from '@sora-substrate/sdk';
+import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { beforeTransactionSign } from '@soramitsu/soraneo-wallet-web';
 
 import store from '@/store';
@@ -10,7 +10,7 @@ import { SubBridgeOutgoingReducer, SubBridgeIncomingReducer } from '@/utils/brid
 import type { SubBridgeReducer } from '@/utils/bridge/sub/classes/reducers';
 import { getTransaction, updateTransaction } from '@/utils/bridge/sub/utils';
 
-import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 
 interface SubBridgeConstructorOptions extends IBridgeConstructorOptions<SubHistory, SubBridgeReducer> {
   getSubBridgeConnector: () => SubNetworksConnector;

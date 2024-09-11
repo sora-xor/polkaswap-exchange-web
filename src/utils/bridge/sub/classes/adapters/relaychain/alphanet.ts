@@ -1,4 +1,4 @@
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 
 import { SUB_NETWORKS } from '@/consts/sub';
 

@@ -1,9 +1,9 @@
-import { BridgeTxDirection } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { BridgeTxDirection } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 
 import type { NetworkData, SubNetworksFees } from '@/types/bridge';
 
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 
 export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
   [SubNetworkId.Kusama]: {

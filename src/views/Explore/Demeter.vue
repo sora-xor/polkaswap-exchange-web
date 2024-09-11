@@ -161,7 +161,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
@@ -176,9 +176,9 @@ import { lazyComponent } from '@/router';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { DemeterPool } from '@sora-substrate/util/build/demeterFarming/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { DemeterPool } from '@sora-substrate/sdk/build/demeterFarming/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
 type PoolData = {
   priceCoefficient: FPNumber;

@@ -5,8 +5,8 @@ import router from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { Provider, installExtensionKey, handleRpcProviderError } from '@/utils/ethers-util';
 
-import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 @Component
 export default class WalletConnectMixin extends Mixins(InternalConnectMixin) {

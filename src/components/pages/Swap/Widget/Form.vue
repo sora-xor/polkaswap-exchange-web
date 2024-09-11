@@ -130,8 +130,8 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/util';
-import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { KnownSymbols, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -154,10 +154,10 @@ import { DifferenceStatus, getDifferenceStatus, calcFiatDifference } from '@/uti
 
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { LPRewardsInfo, SwapQuote, Distribution } from '@sora-substrate/liquidity-proxy/build/types';
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import type { DexId } from '@sora-substrate/util/build/dex/consts';
-import type { SwapQuoteData } from '@sora-substrate/util/build/swap/types';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
+import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { DexId } from '@sora-substrate/sdk/build/dex/consts';
+import type { SwapQuoteData } from '@sora-substrate/sdk/build/swap/types';
 import type { Subscription } from 'rxjs';
 
 @Component({
@@ -429,7 +429,7 @@ export default class SwapFormWidget extends Mixins(
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact as string);
-      this.setLiquidityProviderFee(fee);
+      this.setLiquidityProviderFee(fee as CodecString);
       this.setRewards(rewards);
       this.setRoute(route as string[]);
       this.setDistribution(distribution as Distribution[][]);

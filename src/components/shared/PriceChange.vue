@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 

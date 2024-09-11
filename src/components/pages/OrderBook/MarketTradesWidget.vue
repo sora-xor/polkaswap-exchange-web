@@ -45,7 +45,7 @@ import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import type { OrderBookDealData } from '@/types/orderBook';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

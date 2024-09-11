@@ -48,7 +48,7 @@ import { Components, PageNames } from '../consts';
 import { goTo, lazyComponent } from '../router';
 import { mutation, state, getter } from '../store/decorators';
 
-import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
+import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({

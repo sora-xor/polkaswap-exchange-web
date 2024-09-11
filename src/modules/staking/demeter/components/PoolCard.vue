@@ -108,7 +108,7 @@ import { demeterStakingLazyComponent } from '../../router';
 import { DemeterStakingComponents } from '../consts';
 import PoolCardMixin from '../mixins/PoolCardMixin';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

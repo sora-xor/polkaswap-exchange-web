@@ -139,7 +139,7 @@
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -152,8 +152,8 @@ import { action, getter, state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix } from '@/utils';
 
-import type { NetworkFeesObject, FPNumber } from '@sora-substrate/util';
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import type { NetworkFeesObject, FPNumber } from '@sora-substrate/sdk';
+import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({

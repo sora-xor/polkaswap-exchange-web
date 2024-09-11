@@ -1,6 +1,6 @@
 import type { VaultStatuses, VaultEventTypes } from './consts';
 import type { FPNumber } from '@sora-substrate/math';
-import type { Vault } from '@sora-substrate/util/build/kensetsu/types';
+import type { Vault } from '@sora-substrate/sdk/build/kensetsu/types';
 
 export type VaultStatus = keyof typeof VaultStatuses;
 export type VaultEventType = keyof typeof VaultEventTypes;
