@@ -191,8 +191,6 @@ export default class BaseWidget extends Vue {
       this.pipWindow.close();
       this.pipOpened = false;
       this.pipWindow = null;
-    } else {
-      console.info('PiP was never opened or already closed.');
     }
   }
 
