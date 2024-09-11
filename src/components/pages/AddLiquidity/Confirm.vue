@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 

@@ -85,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -98,7 +98,7 @@ import { ERA_HOURS, SoraStakingComponents } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
 import ValidatorsMixin from '../mixins/ValidatorsMixin';
 
-import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types';
+import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
 
 type Reward = {
   id: string;

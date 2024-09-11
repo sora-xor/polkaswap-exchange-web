@@ -1,4 +1,4 @@
-import { isEthOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/util';
+import { isEthOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/sdk';
 import { api as soraApi } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
@@ -9,10 +9,10 @@ import { isUnsignedTx as isUnsignedSubTx, isOutgoingTx as isOutgoingSubTx } from
 import ethersUtil from '@/utils/ethers-util';
 
 import type { ApiPromise } from '@polkadot/api';
-import type { IBridgeTransaction } from '@sora-substrate/util';
-import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
-import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
-import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { IBridgeTransaction } from '@sora-substrate/sdk';
+import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { EvmHistory } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
+import type { SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 
 export const getEvmTransactionFee = (tx: ethers.TransactionResponse | ethers.TransactionReceipt) => {
   const gasPrice = tx.gasPrice;

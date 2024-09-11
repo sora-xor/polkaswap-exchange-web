@@ -43,7 +43,7 @@ import { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

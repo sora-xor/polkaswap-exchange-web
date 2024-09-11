@@ -55,7 +55,7 @@ import { ZeroStringValue } from '@/consts';
 import { getter, mutation, state } from '@/store/decorators';
 import { calcPriceChange, showMostFittingValue, toPrecision } from '@/utils';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Alert, WhitelistIdsBySymbol } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 @Component({

@@ -1,5 +1,5 @@
-import type { IBridgeTransaction } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { IBridgeTransaction } from '@sora-substrate/sdk';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { TransactionResponse } from 'ethers';
 
 export type AddAsset = (address: string) => Promise<void>;

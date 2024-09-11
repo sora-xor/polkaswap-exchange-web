@@ -36,7 +36,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { formatAssetBalance } from '@/utils';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

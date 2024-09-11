@@ -1,5 +1,5 @@
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { defineActions } from 'direct-vuex';
 
 import { assetsActionContext } from '@/store/assets';
@@ -9,8 +9,8 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
-import type { SubNetwork, SubAssetId } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
+import type { SubNetwork, SubAssetId } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { ActionContext } from 'vuex';
 
 async function updateEthAssetsData(context: ActionContext<any, any>): Promise<void> {

@@ -6,7 +6,7 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 import BasePageMixin from './BasePageMixin';
 
-import type { DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
+import type { DemeterAccountPool } from '@sora-substrate/sdk/build/demeterFarming/types';
 
 @Component
 export default class PageMixin extends Mixins(BasePageMixin, mixins.TransactionMixin) {

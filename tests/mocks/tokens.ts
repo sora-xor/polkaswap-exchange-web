@@ -1,7 +1,7 @@
-import { FPNumber } from '@sora-substrate/util';
-import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber } from '@sora-substrate/sdk';
+import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 export const tokens = [
   {

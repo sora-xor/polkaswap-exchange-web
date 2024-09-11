@@ -10,7 +10,7 @@
     v-model="widgets"
   >
     <template v-slot:[SwapWidgets.Form]="props">
-      <swap-form-widget v-bind="props" primary-title full />
+      <swap-form-widget v-bind="props" primary-title full pip-disabled />
     </template>
     <template v-slot:[SwapWidgets.Chart]="props">
       <price-chart-widget
@@ -34,6 +34,7 @@
         :widgets-model.sync="widgets"
         :options-model.sync="options"
         :labels="labels"
+        pip-disabled
         full
       >
         <s-button @click="reset">{{ t('resetText') }}</s-button>
@@ -52,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -63,7 +64,7 @@ import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
 import type { ResponsiveLayouts, WidgetsVisibilityModel } from '@/types/layout';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 enum SwapWidgets {
   Customise = 'customise',

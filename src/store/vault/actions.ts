@@ -1,13 +1,13 @@
-import { XOR, KUSD } from '@sora-substrate/util/build/assets/consts';
+import { XOR, KUSD } from '@sora-substrate/sdk/build/assets/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
 import { fetchClosedVaults } from '@/indexer/queries/kensetsu';
 import { vaultActionContext } from '@/store/vault';
-import { delay } from '@/utils';
+import { delay, areEqual } from '@/utils';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 
@@ -16,8 +16,6 @@ const DEBT_INTERVAL = 6_000;
 const INDEXER_DELAY = 4 * DEBT_INTERVAL; // 4 blocks delay
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
-
-const areEqual = <T>(prev: T, curr: T): boolean => JSON.stringify(prev) === JSON.stringify(curr);
 
 function updateTokenSubscription(context: ActionContext<any, any>, field: 'collateral' | 'debt'): void {
   const { getters, commit, rootGetters } = vaultActionContext(context);

@@ -1,11 +1,11 @@
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 
 import type { Node, ConnectToNodeOptions } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
 import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
 
 import type { Connection } from '@sora-substrate/connection';
-import type { Storage } from '@sora-substrate/util';
+import type { Storage } from '@sora-substrate/sdk';
 
 const NODE_TIMEOUT = 30_000;
 const LOCK_TIMEOUT = 6_000;

@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
@@ -68,7 +68,7 @@ import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
 import { syntheticAssetRegexp } from '@/utils/regexp';
 
-import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 enum Tabs {

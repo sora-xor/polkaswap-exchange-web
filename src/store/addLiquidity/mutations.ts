@@ -1,8 +1,8 @@
 import { defineMutations } from 'direct-vuex';
 
 import type { AddLiquidityState, FocusedField } from './types';
-import type { CodecString } from '@sora-substrate/util';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<AddLiquidityState>()({

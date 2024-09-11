@@ -12,7 +12,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { ObjectInit } from '@/consts';
 
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {
