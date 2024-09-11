@@ -42,7 +42,6 @@ $gap: $inner-spacing-medium;
   margin: auto;
   display: flex;
   flex-flow: row wrap;
-  align-items: flex-start;
   justify-content: space-between;
   gap: $gap;
 
