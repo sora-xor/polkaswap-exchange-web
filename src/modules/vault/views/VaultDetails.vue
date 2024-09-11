@@ -282,8 +282,8 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { XOR, KUSD } from '@sora-substrate/util/build/assets/consts';
-import { VaultTypes } from '@sora-substrate/util/build/kensetsu/consts';
+import { XOR, KUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
 import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -297,8 +297,8 @@ import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { asZeroValue, getAssetBalance, waitUntil } from '@/utils';
 
-import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
+import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Collateral, Vault } from '@sora-substrate/sdk/build/kensetsu/types';
 
 type AnyVault = Vault | ClosedVault;
 

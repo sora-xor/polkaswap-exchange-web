@@ -1,7 +1,7 @@
 import type { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import type { MoonpayApi, MoonpayCurrency, MoonpayTransaction } from '@/utils/moonpay';
 
-import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
+import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 
 export type MoonpayState = {
   api: MoonpayApi;

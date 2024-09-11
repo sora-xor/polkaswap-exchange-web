@@ -63,8 +63,8 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
-import { DexId } from '@sora-substrate/util/build/dex/consts';
+import { FPNumber } from '@sora-substrate/sdk';
+import { DexId } from '@sora-substrate/sdk/build/dex/consts';
 import { components, mixins, WALLET_CONSTS, SUBQUERY_TYPES, getCurrentIndexer } from '@soramitsu/soraneo-wallet-web';
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
@@ -93,7 +93,7 @@ import {
   getCurrency,
 } from '@/utils';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { PageInfo } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 import type { Currency, CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 

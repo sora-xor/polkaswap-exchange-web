@@ -1,11 +1,11 @@
-import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
+import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
 
 import INTERNAL_ABI from '@/abi/ethereum/internal/MASTER.json';
 import BRIDGE_ABI from '@/abi/ethereum/other/BRIDGE.json';
 import ERC20_ABI from '@/abi/ethereum/other/ERC20.json';
 import type { NetworkData } from '@/types/bridge';
 
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 
 export enum EvmLinkType {
   Account = 'Account',

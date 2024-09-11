@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 

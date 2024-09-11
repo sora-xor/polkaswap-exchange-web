@@ -1,12 +1,12 @@
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { soraExplorerLinks } from '@/utils';
 
-import type { IBridgeTransaction } from '@sora-substrate/util';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { IBridgeTransaction } from '@sora-substrate/sdk';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 @Component
 export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin) {

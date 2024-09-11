@@ -8,7 +8,7 @@ import type {
   AccountStakingLedger,
   MyStakingInfo,
   NominatorReward,
-} from '@sora-substrate/util/build/staking/types';
+} from '@sora-substrate/sdk/build/staking/types';
 import type { Subscription } from 'rxjs';
 
 export declare type StakingRewardToken = {

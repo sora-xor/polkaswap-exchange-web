@@ -112,8 +112,8 @@
 </template>
 
 <script lang="ts">
-import { Operation } from '@sora-substrate/util';
-import { XOR, XSTUSD } from '@sora-substrate/util/build/assets/consts';
+import { Operation } from '@sora-substrate/sdk';
+import { XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -129,9 +129,9 @@ import { getter, action, mutation, state } from '@/store/decorators';
 import type { LiquidityParams } from '@/store/pool/types';
 import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBalance } from '@/utils';
 
-import type { CodecString } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
 type SetValue = (v: string) => Promise<void>;
 

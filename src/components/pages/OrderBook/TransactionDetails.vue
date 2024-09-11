@@ -47,8 +47,8 @@
 
 <script lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { Operation } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { Operation } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
@@ -57,8 +57,8 @@ import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
-import type { CodecString, FPNumber, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { CodecString, FPNumber, NetworkFeesObject } from '@sora-substrate/sdk';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

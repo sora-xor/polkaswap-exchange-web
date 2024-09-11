@@ -1,4 +1,4 @@
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
 
@@ -9,8 +9,8 @@ import { web3GetterContext } from '@/store/web3';
 import type { NetworkData } from '@/types/bridge';
 
 import type { Web3State, AvailableNetwork } from './types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 const getters = defineGetters<Web3State>()({
   availableNetworks(...args): Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>> {

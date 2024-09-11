@@ -17,7 +17,7 @@
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

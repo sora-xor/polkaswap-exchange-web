@@ -1,5 +1,5 @@
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
 
 import type { Web3State } from './types';
 

@@ -1,4 +1,4 @@
-import { DexId } from '@sora-substrate/util/build/dex/consts';
+import { DexId } from '@sora-substrate/sdk/build/dex/consts';
 
 import { settingsStorage } from '@/utils/storage';
 

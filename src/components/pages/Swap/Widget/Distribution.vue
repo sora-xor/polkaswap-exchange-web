@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { SSkeleton, SSkeletonItem } from '@soramitsu-ui/ui-vue2/lib/components/Skeleton';
 import { Component, Mixins } from 'vue-property-decorator';
@@ -87,7 +87,7 @@ import { getter, state } from '@/store/decorators';
 import { calcFiatDifference } from '@/utils/swap';
 
 import type { Distribution } from '@sora-substrate/liquidity-proxy/build/types';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 type SwapSource = {
   income: string;

@@ -1,12 +1,12 @@
-import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
 import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { EvmHistory, EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type { Subscription } from 'rxjs';
 
 type EvmBridgeReducerOptions<T extends EvmHistory> = IBridgeReducerOptions<T> & {

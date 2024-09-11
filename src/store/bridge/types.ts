@@ -1,7 +1,7 @@
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 
-import type { FPNumber, CodecString, IBridgeTransaction } from '@sora-substrate/util';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { FPNumber, CodecString, IBridgeTransaction } from '@sora-substrate/sdk';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
 
 export enum FocusedField {

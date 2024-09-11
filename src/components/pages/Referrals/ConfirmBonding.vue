@@ -32,8 +32,8 @@
 </template>
 
 <script lang="ts">
-import { Operation, CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { Operation, CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 

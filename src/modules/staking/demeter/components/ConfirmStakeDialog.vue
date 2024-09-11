@@ -112,7 +112,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
@@ -126,8 +126,8 @@ import { demeterStakingLazyComponent } from '../../router';
 import { DemeterStakingComponents } from '../consts';
 import PoolCardMixin from '../mixins/PoolCardMixin';
 
-import type { CodecString } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

@@ -6,7 +6,7 @@ import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
 import { getter } from '@/store/decorators';
 import { sortAssets } from '@/utils';
 
-import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 const isEmpty = (a): boolean => isNil(a.balance) || !+a.balance.transferable;
 
