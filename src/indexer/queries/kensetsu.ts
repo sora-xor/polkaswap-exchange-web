@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/util';
-import { VaultTypes } from '@sora-substrate/util/build/kensetsu/consts';
+import { FPNumber } from '@sora-substrate/sdk';
+import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { SubsquidQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';

@@ -5,7 +5,7 @@ import { demeterFarmingActionContext } from '@/store/demeterFarming';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 import { waitForAccountPair } from '@/utils';
 
-import type { DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
+import type { DemeterAccountPool } from '@sora-substrate/sdk/build/demeterFarming/types';
 import type { Subscription } from 'rxjs';
 
 const actions = defineActions({

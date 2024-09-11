@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { XOR, XSTUSD } from '@sora-substrate/util/build/assets/consts';
+import { XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -22,7 +22,7 @@ import { PageNames, Components } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, getter } from '@/store/decorators';
 
-import type { AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

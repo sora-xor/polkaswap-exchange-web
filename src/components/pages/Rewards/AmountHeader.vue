@@ -21,7 +21,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { RewardsAmountHeaderItem } from '@/types/rewards';
 
 import type { FPNumber } from '@sora-substrate/math';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

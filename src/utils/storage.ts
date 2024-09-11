@@ -1,4 +1,4 @@
-import { Storage } from '@sora-substrate/util';
+import { Storage } from '@sora-substrate/sdk';
 import { storage as soraStorage } from '@soramitsu/soraneo-wallet-web';
 
 import { LOCAL_STORAGE_MAX_SIZE, listOfRemoveForLocalStorage } from '@/consts/index';

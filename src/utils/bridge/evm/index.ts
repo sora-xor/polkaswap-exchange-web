@@ -1,5 +1,5 @@
-import { Operation } from '@sora-substrate/util';
-import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { Operation } from '@sora-substrate/sdk';
+import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { beforeTransactionSign } from '@soramitsu/soraneo-wallet-web';
 
 import store from '@/store';
@@ -10,7 +10,7 @@ import { EvmBridgeOutgoingReducer, EvmBridgeIncomingReducer } from '@/utils/brid
 import type { EvmBridgeReducer } from '@/utils/bridge/evm/classes/reducers';
 import { updateTransaction } from '@/utils/bridge/evm/utils';
 
-import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { EvmHistory } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 
 interface EvmBridgeConstructorOptions extends IBridgeConstructorOptions<EvmHistory, EvmBridgeReducer> {
   removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;

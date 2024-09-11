@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 

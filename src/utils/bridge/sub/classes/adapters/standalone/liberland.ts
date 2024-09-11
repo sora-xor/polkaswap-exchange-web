@@ -1,11 +1,11 @@
-import { FPNumber } from '@sora-substrate/util';
-import { BridgeAccountType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetworkId, LiberlandAssetType } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { FPNumber } from '@sora-substrate/sdk';
+import { BridgeAccountType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { SubNetworkId, LiberlandAssetType } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 
 import { SubAdapter } from '../substrate';
 
-import type { CodecString } from '@sora-substrate/util';
-import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
 
 export class LiberlandAdapter extends SubAdapter {
   protected override async getAssetDeposit(asset: RegisteredAsset): Promise<CodecString> {

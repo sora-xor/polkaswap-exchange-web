@@ -113,7 +113,7 @@
 
 <script lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
 import debounce from 'lodash/debounce';
@@ -125,7 +125,7 @@ import { getter, state } from '@/store/decorators';
 import { OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
-import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
+import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type { OrderStatus as OrderStatusType } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 

@@ -44,7 +44,7 @@ import { soraStakingLazyComponent } from '../../router';
 import { SoraStakingComponents, ValidatorsListMode } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
 
-import type { MyStakingInfo } from '@sora-substrate/util/build/staking/types';
+import type { MyStakingInfo } from '@sora-substrate/sdk/build/staking/types';
 
 @Component({
   components: {

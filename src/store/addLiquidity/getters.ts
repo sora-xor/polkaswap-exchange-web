@@ -1,4 +1,4 @@
-import { CodecString, FPNumber } from '@sora-substrate/util';
+import { CodecString, FPNumber } from '@sora-substrate/sdk';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
 
@@ -6,8 +6,8 @@ import { ZeroStringValue } from '@/consts';
 import { addLiquidityGetterContext } from '@/store/addLiquidity';
 
 import type { AddLiquidityState } from './types';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
 const getters = defineGetters<AddLiquidityState>()({
   firstToken(...args): Nullable<RegisteredAccountAsset> {

@@ -1,11 +1,11 @@
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 
-import type { CodecString, WithConnectionApi } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { CodecString, WithConnectionApi } from '@sora-substrate/sdk';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { SubNetwork, SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 
 export const isOutgoingTx = (tx: SubHistory): boolean => {
   return tx.type === Operation.SubstrateOutgoing;

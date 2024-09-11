@@ -1,4 +1,4 @@
-import { Operation } from '@sora-substrate/util';
+import { Operation } from '@sora-substrate/sdk';
 import { beforeTransactionSign, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import store from '@/store';
@@ -10,7 +10,7 @@ import { EthBridgeOutgoingReducer, EthBridgeIncomingReducer } from '@/utils/brid
 import type { EthBridgeReducer } from '@/utils/bridge/eth/classes/reducers';
 import { getTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
 
-import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
+import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 
 interface EthBridgeConstructorOptions extends IBridgeConstructorOptions<EthHistory, EthBridgeReducer> {
   getBridgeHistoryInstance: GetBridgeHistoryInstance<EthBridgeHistory>;
