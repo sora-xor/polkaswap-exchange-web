@@ -7,7 +7,7 @@
     :lines="options.edit"
     :loading="pageLoading"
     :default-layouts="DefaultLayouts"
-    v-model="widgets"
+    v-model="widgetsModel"
   >
     <template v-slot:[SwapWidgets.Form]="props">
       <swap-form-widget v-bind="props" primary-title full pip-disabled />
@@ -31,7 +31,7 @@
       <customise-widget
         v-bind="props"
         v-model="customizePopper"
-        :widgets-model.sync="widgets"
+        :widgets-model.sync="widgetsModel"
         :options-model.sync="options"
         :labels="labels"
         pip-disabled
@@ -169,6 +169,20 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
     [SwapWidgets.PriceChartB]: false,
     [SwapWidgets.SupplyChart]: false,
   };
+
+  get widgetsModel(): WidgetsVisibilityModel {
+    const model = { ...this.widgets };
+
+    if (!this.tokenTo) {
+      delete model[SwapWidgets.PriceChartB];
+    }
+
+    return model;
+  }
+
+  set widgetsModel(model: WidgetsVisibilityModel) {
+    this.widgets = { ...this.widgets, ...model };
+  }
 
   get labels(): Record<string, string> {
     const priceText = this.t('priceChartText');

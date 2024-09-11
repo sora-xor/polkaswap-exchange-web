@@ -1,5 +1,5 @@
 <template>
-  <base-widget :title="title" :tooltip="tooltip">
+  <base-widget v-bind="$attrs" :title="title" :tooltip="tooltip">
     <template #filters>
       <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
     </template>

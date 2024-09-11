@@ -6,25 +6,25 @@
         <customise-page-widget :visible.sync="settingsVisibility" class="setting-widget" />
       </div>
       <div class="column-2">
-        <book-charts-widget class="chart-widget" />
-        <history-order-widget class="history-widget" />
+        <book-charts-widget class="chart-widget" pip-disabled />
+        <history-order-widget class="history-widget" pip-disabled />
       </div>
       <div class="column-3">
-        <book-widget class="book-widget" />
-        <market-trades-widget class="trades-widget" />
+        <book-widget class="book-widget" pip-disabled />
+        <market-trades-widget class="trades-widget" pip-disabled />
       </div>
     </div>
     <div v-else class="order-book-widgets">
       <div class="column-2">
         <set-limit-order-widget class="set-widget" />
-        <book-widget class="book-widget" />
+        <book-widget class="book-widget" pip-disabled />
       </div>
       <div class="column-3">
-        <history-order-widget class="history-widget" />
-        <market-trades-widget class="trades-widget" />
+        <history-order-widget class="history-widget" pip-disabled />
+        <market-trades-widget class="trades-widget" pip-disabled />
       </div>
       <div class="column-1">
-        <book-charts-widget class="chart-widget" />
+        <book-charts-widget class="chart-widget" pip-disabled />
       </div>
     </div>
   </div>

@@ -1,5 +1,6 @@
 <template>
   <base-widget
+    v-bind="$attrs"
     extensive
     class="market-trades"
     :title="t('orderBook.marketTrades')"
