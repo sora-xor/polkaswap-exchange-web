@@ -1,5 +1,6 @@
 <template>
   <base-widget
+    v-bind="$attrs"
     extensive
     v-loading="loading"
     class="stock-book book"

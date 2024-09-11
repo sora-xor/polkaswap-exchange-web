@@ -1,14 +1,14 @@
 <template>
   <div class="stats-container">
-    <stats-network-stats class="grid-item" :parent-loading="parentLoading" />
+    <stats-network-stats class="grid-item" :parent-loading="parentLoading" pip-disabled />
 
-    <stats-tvl-chart class="grid-item grid-item--50" :parent-loading="parentLoading" />
+    <stats-tvl-chart class="grid-item grid-item--50" :parent-loading="parentLoading" pip-disabled />
 
-    <stats-bar-chart class="grid-item grid-item--50" :parent-loading="parentLoading" />
+    <stats-bar-chart class="grid-item grid-item--50" :parent-loading="parentLoading" pip-disabled />
 
-    <stats-bar-chart class="grid-item grid-item--50" fees :parent-loading="parentLoading" />
+    <stats-bar-chart class="grid-item grid-item--50" fees :parent-loading="parentLoading" pip-disabled />
 
-    <stats-supply-chart class="grid-item grid-item--50" :parent-loading="parentLoading" />
+    <supply-chart-widget class="grid-item grid-item--50" :parent-loading="parentLoading" pip-disabled />
   </div>
 </template>
 
@@ -19,14 +19,14 @@ import { Component, Mixins } from 'vue-property-decorator';
 import StatsBarChart from '@/components/pages/Stats/BarChart.vue';
 import StatsNetworkStats from '@/components/pages/Stats/NetworkStats.vue';
 import StatsTvlChart from '@/components/pages/Stats/TvlChart.vue';
-import StatsSupplyChart from '@/components/shared/Widget/SupplyChart.vue';
+import SupplyChartWidget from '@/components/shared/Widget/SupplyChart.vue';
 
 @Component({
   components: {
     StatsNetworkStats,
     StatsTvlChart,
     StatsBarChart,
-    StatsSupplyChart,
+    SupplyChartWidget,
   },
 })
 export default class Stats extends Mixins(mixins.LoadingMixin) {}
