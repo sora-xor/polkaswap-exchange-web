@@ -22,7 +22,9 @@ html {
 
 body {
   margin: 0;
-  padding-right: unset !important;
+  &.el-popup-parent--hidden {
+    padding-right: unset !important;
+  }
 }
 
 /**
