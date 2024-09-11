@@ -1,4 +1,4 @@
-import { Operation, NetworkFeesObject } from '@sora-substrate/sdk';
+import { NetworkFeesObject } from '@sora-substrate/sdk';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
