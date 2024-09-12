@@ -1,7 +1,7 @@
 <template>
   <base-widget v-bind="$attrs" title="Supply" :tooltip="t('tooltips.supply')">
     <template #filters>
-      <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
+      <stats-filter is-mobile :filters="filters" :value="filter" @input="changeFilter" />
     </template>
 
     <template v-if="!predefinedToken" #types>
