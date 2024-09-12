@@ -7,7 +7,7 @@
         <span v-if="tokenB">/{{ tokenB.symbol }}</span>
       </div>
       <s-button
-        v-if="isTokensPair && !isOrderBook"
+        v-if="reversible"
         :class="{ 's-pressed': isReversedChart }"
         :disabled="chartIsLoading"
         size="small"
@@ -64,7 +64,6 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { DexId } from '@sora-substrate/sdk/build/dex/consts';
 import { components, mixins, WALLET_CONSTS, SUBQUERY_TYPES, getCurrentIndexer } from '@soramitsu/soraneo-wallet-web';
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
@@ -76,12 +75,10 @@ import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
-import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook';
 import { fetchAssetData } from '@/indexer/queries/price/asset';
-import { fetchOrderBookData } from '@/indexer/queries/price/orderBook';
 import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
-import type { OCLH, SnapshotItem } from '@/types/chart';
+import type { OCLH, SnapshotItem, RequestMethod, RequestSubscription } from '@/types/chart';
 import { Timeframes } from '@/types/filters';
 import type { SnapshotFilter } from '@/types/filters';
 import {
@@ -188,6 +185,13 @@ const SYNC_INTERVAL = 6 * 1000;
 
 const ZOOM_ID = 'chartZoom';
 
+const requestSubscription = (callback: VoidFunction): VoidFunction => {
+  const sub = setInterval(callback, SYNC_INTERVAL * 5);
+  const unsub = () => clearInterval(sub);
+
+  return unsub;
+};
+
 const signific =
   (value: FPNumber) =>
   (positive: string, negative: string, zero: string): string => {
@@ -290,11 +294,12 @@ export default class PriceChartWidget extends Mixins(
   @getter.wallet.settings.exchangeRate private exchangeRate!: number;
   @getter.wallet.settings.currencySymbol private currencySymbol!: string;
 
-  @Prop({ default: DexId.XOR, type: Number }) readonly dexId!: DexId;
   @Prop({ default: () => null, type: Object }) readonly baseAsset!: Nullable<AccountAsset>;
   @Prop({ default: () => null, type: Object }) readonly quoteAsset!: Nullable<AccountAsset>;
+  @Prop({ default: () => null, type: String }) readonly requestEntityId!: Nullable<string>;
+  @Prop({ default: fetchAssetData, type: Function }) readonly requestMethod!: RequestMethod;
+  @Prop({ default: requestSubscription, type: Function }) readonly requestSubscription!: RequestSubscription;
   @Prop({ default: false, type: Boolean }) readonly isAvailable!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isOrderBook!: boolean;
 
   @Watch('inputTokensAddresses')
   private handleTokensChange(current: string[], prev: string[]): void {
@@ -389,15 +394,13 @@ export default class PriceChartWidget extends Mixins(
     return this.tokensAddresses.length === 2;
   }
 
-  get orderBookId(): Nullable<string> {
-    if (!(this.baseAsset && this.quoteAsset)) return null;
-    return [this.dexId, this.baseAsset.address, this.quoteAsset.address].join('-');
+  get reversible(): boolean {
+    return this.isTokensPair && !this.requestEntityId;
   }
 
   get entities(): string[] {
-    if (this.isOrderBook) {
-      return this.orderBookId ? [this.orderBookId] : [];
-    }
+    if (this.requestEntityId) return [this.requestEntityId];
+
     return this.tokensAddresses;
   }
 
@@ -722,7 +725,6 @@ export default class PriceChartWidget extends Mixins(
     hasNextPage = true,
     endCursor?: string
   ): Promise<Snapshot> {
-    const handler = this.isOrderBook ? fetchOrderBookData : fetchAssetData;
     const nodes: SnapshotItem[] = [];
 
     do {
@@ -730,7 +732,7 @@ export default class PriceChartWidget extends Mixins(
       const maxCount = getCurrentIndexer().type === WALLET_CONSTS.IndexerType.SUBSQUID ? 1000 : 100;
       const first = Math.min(count, maxCount); // how many items should be fetched by request
 
-      const response = await handler(entityId, type, first, endCursor);
+      const response = await this.requestMethod(entityId, type, first, endCursor);
 
       if (!response) throw new Error('Chart data fetch error');
 
@@ -877,21 +879,10 @@ export default class PriceChartWidget extends Mixins(
   }
 
   private async getPriceUpdatesSubscription(entities: string[]): Promise<Nullable<FnWithoutArgs>> {
-    if (this.isOrderBook) {
-      return await subscribeOnOrderBookUpdates(
-        this.dexId,
-        (this.baseAsset as AccountAsset).address,
-        (this.quoteAsset as AccountAsset).address,
-        () => this.fetchAndHandleUpdate(entities),
-        console.error
-      );
-    } else {
-      const interval = setInterval(() => {
-        this.fetchAndHandleUpdate(entities);
-      }, SYNC_INTERVAL * 5);
+    const callback = () => this.fetchAndHandleUpdate(entities);
+    const subscription = await this.requestSubscription(callback);
 
-      return () => clearInterval(interval);
-    }
+    return subscription;
   }
 
   private getCurrentSnapshotTimestamp(): number {
@@ -909,6 +900,8 @@ export default class PriceChartWidget extends Mixins(
   private handlePriceTimestampSync(entities: string[]): void {
     if (!isEqual(entities)(this.entities)) return;
 
+    if (!this.isAvailable) return;
+
     const timestamp = this.getCurrentSnapshotTimestamp();
     const lastItem = this.dataset[0];
 
@@ -924,6 +917,8 @@ export default class PriceChartWidget extends Mixins(
 
   private async fetchAndHandleUpdate(entities: string[]): Promise<void> {
     if (!isEqual(entities)(this.entities)) return;
+
+    if (!this.isAvailable) return;
 
     const lastUpdates = await this.fetchDataLastUpdates(entities);
 

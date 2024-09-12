@@ -419,13 +419,12 @@ const parseOrderBookUpdate =
   };
 
 export async function subscribeOnOrderBookUpdates(
-  dexId: number,
-  baseAssetId: string,
-  quoteAssetId: string,
+  orderBookId: string,
   handler: (entity: OrderBookUpdateData) => void | Promise<void>,
   errorHandler: () => void
 ): Promise<Nullable<FnWithoutArgs>> {
-  const orderBookId = [dexId, baseAssetId, quoteAssetId].join('-');
+  const [dex, baseAssetId, quoteAssetId] = orderBookId.split('-');
+  const dexId = Number(dex);
   const variables = { id: orderBookId };
   const indexer = getCurrentIndexer();
 
