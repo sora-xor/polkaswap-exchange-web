@@ -125,10 +125,10 @@ const actions = defineActions({
 
     if (!(baseAsset && quoteAsset)) return;
 
+    const orderBookId = [dexId, baseAsset.address, quoteAsset.address].join('-');
+
     const subscription = await subscribeOnOrderBookUpdates(
-      dexId,
-      baseAsset.address,
-      quoteAsset.address,
+      orderBookId,
       (data) => {
         const {
           id: { base, quote },
