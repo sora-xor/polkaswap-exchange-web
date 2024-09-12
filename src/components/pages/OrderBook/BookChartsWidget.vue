@@ -45,9 +45,13 @@ export default class BookChartsWidget extends Mixins(TranslationMixin) {
     return fetchOrderBookData;
   }
 
-  get requestSubscription(): RequestSubscription {
+  get requestSubscription(): Nullable<RequestSubscription> {
+    const id = this.orderBookId;
+
+    if (!id) return null;
+
     return async (callback: RequestSubscriptionCallback) =>
-      await subscribeOnOrderBookUpdates(this.orderBookId, callback, console.error);
+      await subscribeOnOrderBookUpdates(id, callback, console.error);
   }
 }
 </script>

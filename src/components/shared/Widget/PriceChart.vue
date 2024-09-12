@@ -399,9 +399,7 @@ export default class PriceChartWidget extends Mixins(
   }
 
   get entities(): string[] {
-    if (this.requestEntityId) return [this.requestEntityId];
-
-    return this.tokensAddresses;
+    return this.requestEntityId ? [this.requestEntityId] : this.tokensAddresses;
   }
 
   get chartTypeButtons(): { type: CHART_TYPES; icon: any; active: boolean }[] {
@@ -799,9 +797,6 @@ export default class PriceChartWidget extends Mixins(
       return;
     }
 
-    // prevent fetching if tokens pair not available
-    if (this.isTokensPair && !this.isAvailable) return;
-
     const addresses = [...this.entities];
     const requestId = Date.now();
 
@@ -810,7 +805,7 @@ export default class PriceChartWidget extends Mixins(
       try {
         const snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
 
-        if (!(isEqual(addresses)(this.entities) && isEqual(requestId)(this.priceUpdateRequestId))) return;
+        if (!(this.requestIsAllowed(addresses) && isEqual(requestId)(this.priceUpdateRequestId))) return;
 
         const dataset: SnapshotItem[] = [];
         const size = Math.min(
@@ -898,9 +893,7 @@ export default class PriceChartWidget extends Mixins(
    * Creates new price item snapshot
    */
   private handlePriceTimestampSync(entities: string[]): void {
-    if (!isEqual(entities)(this.entities)) return;
-
-    if (!this.isAvailable) return;
+    if (!this.requestIsAllowed(entities)) return;
 
     const timestamp = this.getCurrentSnapshotTimestamp();
     const lastItem = this.dataset[0];
@@ -916,9 +909,7 @@ export default class PriceChartWidget extends Mixins(
   }
 
   private async fetchAndHandleUpdate(entities: string[]): Promise<void> {
-    if (!isEqual(entities)(this.entities)) return;
-
-    if (!this.isAvailable) return;
+    if (!this.requestIsAllowed(entities)) return;
 
     const lastUpdates = await this.fetchDataLastUpdates(entities);
 
@@ -945,6 +936,12 @@ export default class PriceChartWidget extends Mixins(
     this.precision = this.getUpdatedPrecision(min, max);
     this.limits = { min, max };
     this.updateDataset(dataset);
+  }
+
+  private requestIsAllowed(entities: string[]): boolean {
+    if (!this.isAvailable) return false;
+
+    return isEqual(entities)(this.entities);
   }
 
   private clearData(saveReversedState = false, clearBuffer = false): void {
