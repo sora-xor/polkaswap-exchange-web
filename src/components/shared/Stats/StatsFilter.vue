@@ -1,6 +1,6 @@
 <template>
   <responsive-tabs
-    :is-mobile="isMobile"
+    :is-mobile="isDropdown"
     :tabs="filters"
     v-model="model"
     :disabled="disabled"
@@ -24,7 +24,7 @@ import type { SnapshotFilter } from '@/types/filters';
 export default class StatsFilter extends Mixins() {
   @Prop({ default: () => null, type: Object }) readonly value!: SnapshotFilter;
   @Prop({ default: () => [], type: Array }) readonly filters!: SnapshotFilter[];
-  @Prop({ default: false, type: Boolean }) readonly isMobile!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isDropdown!: boolean;
   @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
 
   get model(): string {

@@ -20,7 +20,7 @@
 
     <template #filters>
       <stats-filter
-        is-mobile
+        is-dropdown
         :filters="filters"
         :value="selectedFilter"
         :disabled="chartIsLoading"
@@ -150,13 +150,13 @@ const LINE_CHART_FILTERS: SnapshotFilter[] = [
   },
   {
     name: Timeframes.HOUR,
-    label: '1h',
+    label: '1H',
     type: SUBQUERY_TYPES.SnapshotTypes.HOUR,
     count: 48, // hours in 2 days,
   },
   {
     name: Timeframes.FOUR_HOURS,
-    label: '4h',
+    label: '4H',
     type: SUBQUERY_TYPES.SnapshotTypes.HOUR,
     count: 48 * 4, // hours in 4 days,
     group: 4, // 1 hour in 4 hours

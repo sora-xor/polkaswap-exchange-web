@@ -5,8 +5,9 @@
       popper-class="responsive-tabs__dropdown-menu"
       type="button"
       placement="bottom-start"
-      trigger="click"
-      :button-type="buttonType"
+      trigger="hover"
+      :append-to-body="false"
+      button-type="link"
       :size="size"
       @select="handleTabChange"
     >
@@ -145,7 +146,6 @@ $icon-size: 22px;
       letter-spacing: var(--s-letter-spacing-mini);
     }
     &-item {
-      min-width: 150px;
       line-height: 3;
       font-weight: 300;
       font-size: var(--s-font-size-small);
