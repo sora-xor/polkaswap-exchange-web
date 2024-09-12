@@ -19,7 +19,13 @@
     </template>
 
     <template #filters>
-      <stats-filter :filters="filters" :value="selectedFilter" :disabled="chartIsLoading" @change="changeFilter" />
+      <stats-filter
+        is-mobile
+        :filters="filters"
+        :value="selectedFilter"
+        :disabled="chartIsLoading"
+        @input="changeFilter"
+      />
     </template>
 
     <template #types>
