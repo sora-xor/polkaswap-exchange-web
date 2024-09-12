@@ -325,20 +325,6 @@ $left: $inner-spacing-medium;
     }
   }
 
-  &-filters {
-    order: 1;
-
-    @include large-desktop {
-      margin-left: auto;
-      width: auto;
-      order: initial;
-    }
-  }
-
-  &-pip {
-    order: 2;
-  }
-
   &-content {
     display: flex;
     flex-flow: column nowrap;

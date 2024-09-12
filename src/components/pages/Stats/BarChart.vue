@@ -1,7 +1,7 @@
 <template>
   <base-widget v-bind="$attrs" :title="title" :tooltip="tooltip">
     <template #filters>
-      <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
+      <stats-filter is-dropdown :filters="filters" :value="filter" @input="changeFilter" />
     </template>
 
     <chart-skeleton
