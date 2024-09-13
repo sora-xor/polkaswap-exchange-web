@@ -126,7 +126,7 @@ export default class GrantPrivilegeDialog extends Mixins(mixins.TransactionMixin
   &__address,
   &__button,
   &__text {
-    margin-bottom: 16px;
+    margin-bottom: $basic-spacing;
   }
 
   &__text {
