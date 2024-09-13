@@ -1,6 +1,6 @@
 import { Connection } from '@sora-substrate/connection';
-import { WithConnectionApi, FPNumber, Storage } from '@sora-substrate/util';
-import { formatBalance } from '@sora-substrate/util/build/assets';
+import { WithConnectionApi, FPNumber, Storage } from '@sora-substrate/sdk';
+import { formatBalance } from '@sora-substrate/sdk/build/assets';
 import { ApiPromise, WsProvider } from 'polkadotApi';
 
 import { ZeroStringValue } from '@/consts';
@@ -9,9 +9,9 @@ import { NodesConnection } from '@/utils/connection';
 
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 import type { ISubmittableResult } from '@polkadot/types/types';
-import type { CodecString } from '@sora-substrate/util';
-import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 
 class BaseSubAdapter extends WithConnectionApi {
   public readonly subNetwork!: SubNetwork;

@@ -47,8 +47,8 @@
 </template>
 
 <script lang="ts">
-import { Operation } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { Operation } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch, Ref, Prop } from 'vue-property-decorator';
 
@@ -59,8 +59,8 @@ import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { isMaxButtonAvailable } from '@/utils';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

@@ -241,8 +241,8 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/util';
-import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -267,8 +267,8 @@ import {
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { NodesConnection } from '@/utils/connection';
 
-import type { IBridgeTransaction } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { IBridgeTransaction } from '@sora-substrate/sdk';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

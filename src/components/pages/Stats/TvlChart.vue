@@ -1,7 +1,7 @@
 <template>
-  <base-widget :title="TranslationConsts.TVL" :tooltip="t('tooltips.tvl')">
+  <base-widget v-bind="$attrs" :title="TranslationConsts.TVL" :tooltip="t('tooltips.tvl')">
     <template #filters>
-      <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
+      <stats-filter is-dropdown :filters="filters" :value="filter" @input="changeFilter" />
     </template>
 
     <chart-skeleton

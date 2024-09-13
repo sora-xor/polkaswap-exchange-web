@@ -27,7 +27,7 @@ import { Components, NumberedAlert } from '@/consts';
 import { lazyComponent } from '@/router';
 import { mutation, state } from '@/store/decorators';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 enum AlertPages {
   AlertList,

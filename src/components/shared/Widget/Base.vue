@@ -4,7 +4,7 @@
     size="big"
     primary
     :shadow="shadow"
-    :class="['base-widget', { delimeter, full, flat }]"
+    :class="['base-widget', { delimeter, full, flat, pip: pipOpened }]"
     v-loading="loading"
   >
     <template #header v-if="hasHeader">
@@ -25,9 +25,14 @@
         <div v-if="$slots.types" class="base-widget-block base-widget-types">
           <slot name="types" />
         </div>
+
+        <div v-if="isPipAvailable" class="base-widget-block base-widget-pip">
+          <s-button type="action" size="small" alternative @click="openPip" tooltip="Open in top window">
+            <s-icon name="finance-receive-24" size="24" />
+          </s-button>
+        </div>
       </div>
     </template>
-
     <div v-if="hasContent" :class="['base-widget-content', { extensive }]" ref="content">
       <slot />
     </div>
@@ -79,6 +84,10 @@ export default class BaseWidget extends Vue {
    * Widget has a loading state
    */
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
+  /**
+   * Widget "Picture in picture" mode is disabled
+   */
+  @Prop({ default: false, type: Boolean }) readonly pipDisabled!: boolean;
 
   @Prop({ default: () => {}, type: Function }) readonly onResize!: (id: string, size: Size) => void;
 
@@ -92,6 +101,9 @@ export default class BaseWidget extends Vue {
     width: 0,
     height: 0,
   };
+
+  private pipWindow: Window | null = null;
+  private pipOpened = false;
 
   public capitalize = capitalize;
 
@@ -107,6 +119,67 @@ export default class BaseWidget extends Vue {
     return this.flat ? 'never' : 'always';
   }
 
+  get isPipAvailable() {
+    if (this.pipDisabled) return false;
+
+    return 'documentPictureInPicture' in window && !this.pipOpened;
+  }
+
+  async openPip() {
+    if (!this.isPipAvailable) return;
+
+    try {
+      const pipWindow = await (window as any).documentPictureInPicture.requestWindow({
+        width: this.$el.clientWidth,
+        height: this.$el.clientHeight,
+      });
+
+      this.pipOpened = true;
+      this.pipWindow = pipWindow;
+
+      // Access the root element of the Vue component
+      const widgetElement = this.$el as HTMLElement;
+      const originalParent = widgetElement.parentNode as HTMLElement;
+
+      // STYLES
+      const allStyles = Array.from(document.styleSheets)
+        .map((styleSheet) =>
+          Array.from(styleSheet.cssRules)
+            .map((rule) => rule.cssText)
+            .join('\n')
+        )
+        .join('\n');
+      // Create a new style element in the Picture-in-Picture window
+      const style = pipWindow.document.createElement('style');
+      style.innerHTML = allStyles;
+      // Append style element to the Picture-in-Picture window's head
+      pipWindow.document.head.appendChild(style);
+
+      // THEME
+      // Get the <html> element from the Picture-in-Picture window's document
+      const htmlElement = pipWindow.document.documentElement;
+      // Get the <html> element from the original document
+      const originalHtmlElement = document.documentElement;
+      // Copy attributes from the original <html> element to the <html> element in the Picture-in-Picture window's document
+      for (const attribute of originalHtmlElement.attributes) {
+        htmlElement.setAttribute(attribute.nodeName, attribute.nodeValue);
+      }
+      // Move the Vue component to the Picture-in-Picture window
+      pipWindow.document.body.appendChild(widgetElement);
+
+      // Event listener when the PiP window is closed
+      pipWindow.addEventListener('pagehide', () => {
+        // Move the element back to the original document when PiP is closed
+        this.$nextTick(() => {
+          this.pipOpened = false;
+          originalParent.appendChild(widgetElement);
+        });
+      });
+    } catch (error) {
+      console.error('Error during PiP handling:', error);
+    }
+  }
+
   mounted(): void {
     this.createContentObserver();
     this.updateSize(this.getWidgetSize()); // initial
@@ -114,6 +187,11 @@ export default class BaseWidget extends Vue {
 
   beforeDestroy(): void {
     this.destroyContentObserver();
+    if (this.pipOpened && this.pipWindow) {
+      this.pipWindow.close();
+      this.pipOpened = false;
+      this.pipWindow = null;
+    }
   }
 
   private createContentObserver(): void {
@@ -208,6 +286,12 @@ $left: $inner-spacing-medium;
     }
   }
 
+  &.pip {
+    &.s-border-radius-small {
+      border-radius: unset;
+    }
+  }
+
   &-block {
     display: flex;
     align-items: center;
@@ -238,16 +322,6 @@ $left: $inner-spacing-medium;
       font-size: var(--s-font-size-large);
       font-weight: 300;
       line-height: var(--s-line-height-reset);
-    }
-  }
-
-  &-filters {
-    order: 1;
-
-    @include large-desktop {
-      margin-left: auto;
-      width: auto;
-      order: initial;
     }
   }
 

@@ -110,8 +110,8 @@ import PageMixin from '../demeter/mixins/PageMixin';
 import { demeterStakingLazyComponent, soraStakingLazyComponent } from '../router';
 import { soraStaking, SoraStakingComponents, SoraStakingPageNames } from '../sora/consts';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
 
 type DemeterStakingItem = {
   asset: Asset;

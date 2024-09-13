@@ -112,9 +112,9 @@
 </template>
 
 <script lang="ts">
-import { CodecString, FPNumber } from '@sora-substrate/util';
-import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import { RewardType } from '@sora-substrate/util/build/rewards/consts';
+import { CodecString, FPNumber } from '@sora-substrate/sdk';
+import { KnownAssets, KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
+import { RewardType } from '@sora-substrate/sdk/build/rewards/consts';
 import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -128,8 +128,8 @@ import type { RewardsAmountHeaderItem, RewardInfoGroup, SelectedRewards } from '
 import { hasInsufficientXorForFee } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { RewardInfo, RewardsInfo } from '@sora-substrate/sdk/build/rewards/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({

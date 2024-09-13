@@ -1,6 +1,6 @@
 import { ValidatorsFilter } from './types';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 export const ERA_HOURS = 6;
 export const DAY_HOURS = 24;

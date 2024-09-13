@@ -34,15 +34,22 @@ export default class SwapMarketAlgorithm extends Mixins(TranslationMixin) {
   @mutation.settings.setMarketAlgorithm private setMarketAlgorithm!: (name: MarketAlgorithms) => void;
 
   get marketAlgorithmTabs(): Array<TabItem> {
-    return this.marketAlgorithms.map((name) => ({
-      name,
-      label: name,
-      content: this.t(`dexSettings.marketAlgorithms.${name}`, {
-        smartAlgorithm: this.generateAlgorithmItem(MarketAlgorithms.SMART),
-        tbcAlgorithm: this.generateAlgorithmItem(MarketAlgorithms.TBC),
-        xycAlgorithm: this.generateAlgorithmItem(MarketAlgorithms.XYK),
-      }),
-    }));
+    return this.marketAlgorithms.map((name) => {
+      const contentKey = `dexSettings.marketAlgorithms.${name}`;
+      const content = this.te(contentKey)
+        ? this.t(`dexSettings.marketAlgorithms.${name}`, {
+            smartAlgorithm: this.generateAlgorithmItem(MarketAlgorithms.SMART),
+            tbcAlgorithm: this.generateAlgorithmItem(MarketAlgorithms.TBC),
+            xycAlgorithm: this.generateAlgorithmItem(MarketAlgorithms.XYK),
+          })
+        : '';
+
+      return {
+        name,
+        label: name,
+        content,
+      };
+    });
   }
 
   get currentMarketAlgorithm(): MarketAlgorithms {

@@ -1,7 +1,7 @@
 <template>
   <base-widget v-bind="$attrs" title="Supply" :tooltip="t('tooltips.supply')">
     <template #filters>
-      <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
+      <stats-filter is-dropdown :filters="filters" :value="filter" @input="changeFilter" />
     </template>
 
     <template v-if="!predefinedToken" #types>
@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { XOR, VAL, PSWAP, XSTUSD, XST, TBCD } from '@sora-substrate/util/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
@@ -45,14 +45,14 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 import { Components } from '@/consts';
-import { SECONDS_IN_TYPE, ASSET_SUPPLY_LINE_FILTERS } from '@/consts/snapshots';
+import { SECONDS_IN_TYPE, ASSET_SUPPLY_FILTERS } from '@/consts/snapshots';
 import { fetchData } from '@/indexer/queries/assetSupply';
 import { lazyComponent } from '@/router';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 type ChartData = {
   timestamp: number;
@@ -79,12 +79,12 @@ const getExtremum = (data: readonly ChartData[], prop: string, min = false) => {
 export default class SupplyChartWidget extends Mixins(mixins.LoadingMixin, ChartSpecMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
-  readonly filters = ASSET_SUPPLY_LINE_FILTERS;
+  readonly filters = ASSET_SUPPLY_FILTERS;
 
   @Prop({ type: Object }) predefinedToken!: Nullable<Asset>;
 
   private token = XOR;
-  filter: SnapshotFilter = ASSET_SUPPLY_LINE_FILTERS[0];
+  filter: SnapshotFilter = ASSET_SUPPLY_FILTERS[0];
   showSelectTokenDialog = false;
   isFetchingError = false;
   data: readonly ChartData[] = [];

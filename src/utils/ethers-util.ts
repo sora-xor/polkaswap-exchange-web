@@ -1,7 +1,7 @@
 import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
-import { FPNumber } from '@sora-substrate/util';
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { FPNumber } from '@sora-substrate/sdk';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { ethers } from 'ethers';
 
 import { ZeroStringValue } from '@/consts';
@@ -10,8 +10,8 @@ import type { NetworkData } from '@/types/bridge';
 import { settingsStorage } from '@/utils/storage';
 import { getWcEthereumProvider } from '@/utils/walletconnect';
 
-import type { CodecString } from '@sora-substrate/util';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import type { ChainsProps } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
 
 type ethersProvider = ethers.BrowserProvider;
@@ -20,7 +20,7 @@ let ethereumProvider!: any;
 let ethersInstance: ethersProvider | null = null;
 
 export enum Provider {
-  Fearless = 'Fearless',
+  // Fearless = 'Fearless',
   Metamask = 'Metamask',
   SubWallet = 'SubWallet',
   TrustWallet = 'TrustWallet',
@@ -108,9 +108,9 @@ async function useExtensionProvider(provider: Provider): Promise<string> {
     case Provider.TrustWallet:
       ethereumProvider = injectedWindow.trustwallet;
       break;
-    case Provider.Fearless:
-      ethereumProvider = injectedWindow.fearlessWallet;
-      break;
+    // case Provider.Fearless:
+    //   ethereumProvider = injectedWindow.fearlessWallet;
+    //   break;
     default:
       throw new Error('Unknown provider');
   }

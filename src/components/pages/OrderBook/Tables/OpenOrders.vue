@@ -25,7 +25,7 @@ import { delay, waitUntil } from '@/utils';
 import OrderTable from './OrderTable.vue';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
+import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 
 @Component({
   components: {

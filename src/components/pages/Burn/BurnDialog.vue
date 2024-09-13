@@ -61,8 +61,8 @@
 </template>
 
 <script lang="ts">
-import { Operation } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { Operation } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
@@ -71,8 +71,8 @@ import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
 import { asZeroValue } from '@/utils';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
+import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

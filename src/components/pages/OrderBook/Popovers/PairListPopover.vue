@@ -77,7 +77,7 @@
 
 <script lang="ts">
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -89,7 +89,7 @@ import type { OrderBookStats } from '@/types/orderBook';
 import { getBookDecimals } from '@/utils/orderBook';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 interface BookFields {
   pair: string;

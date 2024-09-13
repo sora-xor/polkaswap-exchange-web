@@ -3,7 +3,7 @@ import { defineActions } from 'direct-vuex';
 import { swapActionContext } from '@/store/swap';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
 import type { ActionContext } from 'vuex';
 
 enum Direction {

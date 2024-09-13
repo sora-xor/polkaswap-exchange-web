@@ -78,9 +78,9 @@ import { tmaSdkService } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
-import type { History, HistoryItem } from '@sora-substrate/util';
-import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { History, HistoryItem } from '@sora-substrate/sdk';
+import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
+import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
@@ -441,21 +441,6 @@ ul ul {
 }
 
 .app {
-  .el-loading-mask {
-    background-color: var(--s-color-utility-body);
-    z-index: $app-loader-layer;
-
-    .el-loading-spinner {
-      background-image: url('~@/assets/img/pswap-loader.svg');
-      height: var(--s-size-medium);
-      width: var(--s-size-medium);
-      margin-left: calc(50% - (var(--s-size-medium) / 2));
-      > svg {
-        display: none;
-      }
-    }
-  }
-
   &-main.app-main {
     &--rewards,
     &--referral {

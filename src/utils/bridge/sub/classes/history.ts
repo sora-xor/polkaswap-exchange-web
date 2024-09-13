@@ -1,6 +1,6 @@
-import { FPNumber, Operation } from '@sora-substrate/util';
-import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 
 import { ZeroStringValue } from '@/consts';
@@ -23,9 +23,9 @@ import {
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise } from '@polkadot/api';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-import type { BridgeTransactionData } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { SubNetwork, SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { BridgeTransactionData } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import type { ActionContext } from 'vuex';
 
 const hasFinishedState = (item: Nullable<SubHistory>) => {

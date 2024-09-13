@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/util';
-import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { FPNumber } from '@sora-substrate/sdk';
+import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { combineLatest } from 'rxjs';
 
@@ -27,9 +27,9 @@ import {
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiRx } from '@polkadot/api';
-import type { IBridgeTransaction } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { IBridgeTransaction } from '@sora-substrate/sdk';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { SubNetwork, SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
 
 type SubBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeReducerOptions<T> & {

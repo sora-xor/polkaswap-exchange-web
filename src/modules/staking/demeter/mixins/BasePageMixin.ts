@@ -7,13 +7,13 @@ import { formatDecimalPlaces } from '@/utils';
 
 import AprMixin from './AprMixin';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type {
   DemeterPool,
   DemeterAccountPool,
   DemeterRewardToken,
-} from '@sora-substrate/util/build/demeterFarming/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+} from '@sora-substrate/sdk/build/demeterFarming/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
 type Pool = DemeterPool | DemeterAccountPool;
 

@@ -1,5 +1,5 @@
 <template>
-  <base-widget class="order-history-widget s-flex-column" extensive delimeter>
+  <base-widget v-bind="$attrs" extensive delimeter class="order-history-widget s-flex-column">
     <template #title>
       <div class="order-history-buttons order-history-buttons--filter-buttons">
         <span
@@ -72,7 +72,7 @@ import { Filter, Cancel } from '@/types/orderBook';
 import { delay } from '@/utils';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
+import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 
 @Component({
   components: {

@@ -42,8 +42,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state, getter } from '@/store/decorators';
 import { formatAmountWithSuffix } from '@/utils';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { Collateral, StablecoinInfo } from '@sora-substrate/util/build/kensetsu/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Collateral, StablecoinInfo } from '@sora-substrate/sdk/build/kensetsu/types';
 
 @Component({
   components: {

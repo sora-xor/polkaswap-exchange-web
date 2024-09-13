@@ -1,5 +1,6 @@
 <template>
   <base-widget
+    v-bind="$attrs"
     extensive
     v-loading="loading"
     class="stock-book book"
@@ -64,7 +65,7 @@
 
 <script lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -75,7 +76,7 @@ import { action, getter, mutation, state } from '@/store/decorators';
 import type { OrderBookDealData } from '@/types/orderBook';
 
 import type { OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 interface LimitOrderForm {
   price: string;

@@ -1,4 +1,4 @@
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -11,15 +11,15 @@ import { StakingPageNames } from '../../consts';
 import { DAY_HOURS, SoraStakingPageNames, ValidatorsListMode, rewardAsset } from '../consts';
 import { ValidatorsFilter } from '../types';
 
-import type { NetworkFeesObject, CodecString } from '@sora-substrate/util';
-import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { NetworkFeesObject, CodecString } from '@sora-substrate/sdk';
+import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type {
   ValidatorInfoFull,
   AccountStakingLedger,
   MyStakingInfo,
   NominatorReward,
   Payouts,
-} from '@sora-substrate/util/build/staking/types';
+} from '@sora-substrate/sdk/build/staking/types';
 
 @Component
 export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {

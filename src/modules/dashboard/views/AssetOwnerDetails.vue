@@ -175,7 +175,7 @@
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -190,7 +190,7 @@ import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { waitUntil } from '@/utils';
 
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/sdk';
 import type { Subscription } from 'rxjs';
 
 @Component({

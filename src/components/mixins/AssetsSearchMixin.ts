@@ -2,7 +2,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import SearchInputMixin from '@/components/mixins/SearchInputMixin';
 
-import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component
 export default class AssetsSearchMixin extends Mixins(SearchInputMixin) {

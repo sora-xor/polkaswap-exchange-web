@@ -1,8 +1,8 @@
 import type { ClosedVault } from '@/modules/vault/types';
 
 import type { FPNumber } from '@sora-substrate/math';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { Collateral, Vault, StablecoinInfo } from '@sora-substrate/util/build/kensetsu/types';
+import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
+import type { Collateral, Vault, StablecoinInfo } from '@sora-substrate/sdk/build/kensetsu/types';
 import type { Subscription } from 'rxjs';
 
 export type VaultState = {
