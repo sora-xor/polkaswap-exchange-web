@@ -164,6 +164,7 @@ export default class BaseWidget extends Vue {
       for (const attribute of originalHtmlElement.attributes) {
         htmlElement.setAttribute(attribute.nodeName, attribute.nodeValue);
       }
+
       // Move the Vue component to the Picture-in-Picture window
       pipWindow.document.body.appendChild(widgetElement);
 
