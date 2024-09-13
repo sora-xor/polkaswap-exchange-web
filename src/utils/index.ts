@@ -455,3 +455,12 @@ export const soraExplorerLinks = (
 
   return getSubstrateExplorerLinks(getExplorerLinks(soraNetwork), isAccount, txValue, blockId, eventIndex);
 };
+
+export const updatePipTheme = (): void => {
+  if ((window as any).documentPictureInPicture?.window) {
+    const pipWindow = (window as any).documentPictureInPicture.window;
+    const htmlElement = pipWindow.document.documentElement;
+    const theme = document.documentElement.getAttribute('design-system-theme');
+    htmlElement.setAttribute('design-system-theme', theme);
+  }
+};

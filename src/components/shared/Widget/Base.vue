@@ -165,20 +165,6 @@ export default class BaseWidget extends Vue {
         htmlElement.setAttribute(attribute.nodeName, attribute.nodeValue);
       }
 
-      const updateTheme = () => {
-        const theme = originalHtmlElement.getAttribute('design-system-theme');
-        htmlElement.setAttribute('design-system-theme', theme);
-      };
-
-      // Create a MutationObserver to watch for attribute changes in the main document's <html> element
-      const observer = new MutationObserver(updateTheme);
-
-      // Start observing changes to the 'design-system-theme' attribute
-      observer.observe(originalHtmlElement, {
-        attributes: true, // Watch for attribute changes
-        attributeFilter: ['design-system-theme'], // Only watch this attribute
-      });
-
       // Move the Vue component to the Picture-in-Picture window
       pipWindow.document.body.appendChild(widgetElement);
 
