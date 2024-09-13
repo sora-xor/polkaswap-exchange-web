@@ -115,8 +115,8 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/util';
-import { XOR, MaxTotalSupply } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { XOR, MaxTotalSupply } from '@sora-substrate/sdk/build/assets/consts';
 import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
 import { File as ImageNFT } from 'nft.storage';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
@@ -127,7 +127,7 @@ import { state, action } from '@/store/decorators';
 import { IMAGE_MIME_TYPES } from '@/types/image';
 import { IpfsStorage } from '@/utils/ipfsStorage';
 
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/sdk';
 import type { NFTStorage } from 'nft.storage';
 
 export enum Step {

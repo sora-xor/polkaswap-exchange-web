@@ -174,8 +174,8 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
 import difference from 'lodash/fp/difference';
 import { Component, Mixins, Ref, Prop } from 'vue-property-decorator';
@@ -187,7 +187,7 @@ import { action, getter, state } from '@/store/decorators';
 import { IMAGE_MIME_TYPES } from '@/types/image';
 import { IpfsStorage } from '@/utils/ipfsStorage';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 enum Step {
   AssetsChoice = 'AssetsChoice',
