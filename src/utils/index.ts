@@ -457,8 +457,8 @@ export const soraExplorerLinks = (
 };
 
 export const updatePipTheme = (): void => {
-  if ((window as any).documentPictureInPicture?.window) {
-    const pipWindow = (window as any).documentPictureInPicture.window;
+  const pipWindow = (window as any).documentPictureInPicture?.window;
+  if (pipWindow) {
     const htmlElement = pipWindow.document.documentElement;
     const theme = document.documentElement.getAttribute('design-system-theme');
     htmlElement.setAttribute('design-system-theme', theme);
