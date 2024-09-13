@@ -43,6 +43,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, mutation, state } from '@/store/decorators';
+import { updatePipTheme } from '@/utils';
 import { tmaSdkService } from '@/utils/telegram';
 
 import type { Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
@@ -186,6 +187,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       case HeaderMenuType.Theme:
         await switchTheme();
         await this.$nextTick();
+        updatePipTheme();
         tmaSdkService.updateTheme();
         break;
       case HeaderMenuType.Language:
