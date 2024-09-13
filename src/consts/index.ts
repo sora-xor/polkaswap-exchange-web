@@ -277,6 +277,7 @@ export enum Components {
   CustomiseWidget = 'shared/Widget/Customise',
   IFrameWidget = 'shared/Widget/IFrame',
   PriceChartWidget = 'shared/Widget/PriceChart',
+  TokenPriceChartWidget = 'shared/Widget/TokenPriceChart',
   SupplyChartWidget = 'shared/Widget/SupplyChart',
   // Shared Buttons
   SortButton = 'shared/Button/SortButton',

@@ -26,9 +26,6 @@
         :disabled="chartIsLoading"
         @input="changeFilter"
       />
-    </template>
-
-    <template #types>
       <svg-icon-button
         v-for="{ type, icon, active } in chartTypeButtons"
         :key="type"
@@ -38,6 +35,10 @@
         size="small"
         @click="selectChartType(type)"
       />
+    </template>
+
+    <template #types>
+      <slot name="types" />
     </template>
 
     <chart-skeleton
