@@ -49,7 +49,7 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
   readonly AssetType = AssetType;
   type = AssetType.CreateRegularToken;
 
-  isTabDisabled(tab): boolean {
+  isTabDisabled(tab: AssetType): boolean {
     return tab === AssetType.CreateNftToken;
   }
 
@@ -63,7 +63,7 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
     }
 
     if (tab === AssetType.CreateSbtToken) {
-      return 'SBT'; // this.TranslationConsts.SBT
+      return 'SBT'; // this.TranslationConsts.SBT;
     }
 
     return 'Token';

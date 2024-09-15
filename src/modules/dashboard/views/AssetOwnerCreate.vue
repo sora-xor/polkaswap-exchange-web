@@ -112,10 +112,10 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
       width: 100%;
     }
     &_type {
-      margin-left: 8px;
-      text-transform: uppercase;
-      font-weight: 700;
       color: var(--s-color-base-content-secondary);
+      text-transform: uppercase;
+      margin-left: 8px;
+      font-weight: 700;
     }
     &_divider {
       margin: 0 0 20px 0;
@@ -198,9 +198,9 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
     }
 
     .line {
-      height: 1px;
-      margin-top: $basic-spacing;
       background-color: var(--s-color-base-border-secondary);
+      margin-top: $basic-spacing;
+      height: 1px;
 
       &--last {
         visibility: hidden;
@@ -214,15 +214,15 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
     width: var(--s-size-mini);
     height: var(--s-size-mini);
     font-size: var(--s-font-size-large);
-    font-weight: 600;
-    color: #a19a9d;
+    color: var(--s-color-base-content-secondary);
     margin-right: $basic-spacing;
+    font-weight: 600;
     margin-top: 4px;
   }
 
   &__point {
-    font-weight: 450;
     font-size: var(--s-font-size-big);
+    font-weight: 450;
   }
 
   &__text-info {
@@ -230,10 +230,10 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
   }
 
   &__point-desc {
-    color: var(--s-color-base-content-secondary);
-    margin-top: 3px;
     display: block;
+    color: var(--s-color-base-content-secondary);
     margin-right: 20px;
+    margin-top: 3px;
   }
 
   &__point-note {
