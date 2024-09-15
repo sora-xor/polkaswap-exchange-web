@@ -16,10 +16,10 @@
 </template>
 
 <script lang="ts">
-import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
+import { DashboardPageNames } from '@/modules/dashboard/consts';
 import type { AssetCreationType } from '@/modules/dashboard/types';
 import router from '@/router';
 
