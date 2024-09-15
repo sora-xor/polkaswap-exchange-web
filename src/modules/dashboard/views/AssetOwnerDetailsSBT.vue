@@ -23,10 +23,10 @@
           </div>
           <s-divider />
           <div class="sbt-info">
-            <!-- <div>
+            <div>
               <span class="sbt-info-property">Accounts with permission</span>
               <span class="sbt-info-value">n/a</span>
-            </div> -->
+            </div>
             <s-divider />
             <div>
               <span class="sbt-info-property">Regulated assets connected</span>

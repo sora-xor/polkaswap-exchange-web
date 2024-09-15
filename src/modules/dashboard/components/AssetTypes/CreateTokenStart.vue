@@ -24,7 +24,7 @@
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import { DashboardPageNames } from '@/modules/dashboard/consts';
+import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
 import router from '@/router';
 
 import GuideNft from '../guides/Nft.vue';

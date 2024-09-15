@@ -43,7 +43,9 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import { ZeroStringValue } from '@/consts';
+import type TokenInput from '@/components/shared/Input/TokenInput.vue';
+import { Components, ZeroStringValue } from '@/consts';
+import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';

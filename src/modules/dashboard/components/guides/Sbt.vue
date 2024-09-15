@@ -76,7 +76,7 @@ export default class SbtGuide extends Mixins(mixins.TranslationMixin) {}
   &-warning.icon {
     position: absolute;
     background-color: #479aef;
-    border: 2px solid #f7f3f4;
+    border: 2.25257px solid #f7f3f4;
     box-shadow: var(--s-shadow-element-pressed);
     color: var(--s-color-base-on-accent);
     top: 20px;
