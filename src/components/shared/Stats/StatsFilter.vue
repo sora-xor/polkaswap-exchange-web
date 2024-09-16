@@ -24,7 +24,7 @@ import { Component, Mixins, Prop, ModelSync, Watch } from 'vue-property-decorato
 
 import type { SnapshotFilter } from '@/types/filters';
 
-function hasParentEl(target: Node, el: Node) {
+function hasParentEl(target: Node, el: Node): boolean {
   if (target === el) return true;
   if (!target.parentNode) return false;
 
@@ -64,10 +64,6 @@ export default class StatsFilter extends Mixins() {
 
   toggleMenu(): void {
     this.visibility = !this.visibility;
-  }
-
-  openMenu(): void {
-    this.visibility = true;
   }
 
   closeMenu(): void {
