@@ -134,6 +134,12 @@ const mutations = defineMutations<SettingsState>()({
   setTelegramBotUrl(state, url: Nullable<string>): void {
     state.telegramBotUrl = url;
   },
+  showOrientationWarning(state): void {
+    state.isOrientationWarningVisible = true;
+  },
+  hideOrientationWarning(state): void {
+    state.isOrientationWarningVisible = false;
+  },
 });
 
 export default mutations;

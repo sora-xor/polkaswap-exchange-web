@@ -63,10 +63,35 @@ class TmaSdk {
       }
       // Init haptic feedback
       this.addHapticListener();
+      this.addOrientationListener();
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
       store.commit.settings.disableTMA();
       store.commit.wallet.account.setIsDesktop(false);
+    }
+  }
+
+  private addOrientationListener(): void {
+    console.info('we are in addOrientationListener');
+    window.addEventListener('resize', this.handleOrientationChange);
+    this.handleOrientationChange();
+  }
+
+  private removeOrientationListener(): void {
+    console.info('we removed removeOrientationListener');
+    window.removeEventListener('resize', this.handleOrientationChange);
+  }
+
+  private handleOrientationChange(): void {
+    const isLandscape = window.innerHeight < window.innerWidth;
+    console.info('the landscape is');
+    console.info(isLandscape);
+    if (isLandscape) {
+      console.info('we will show showOrientationWarning');
+      store.commit.settings.showOrientationWarning();
+    } else {
+      console.info('we will hide hideOrientationWarning');
+      store.commit.settings.hideOrientationWarning();
     }
   }
 
@@ -129,6 +154,7 @@ class TmaSdk {
 
   public destroy(): void {
     this.removeHapticListener();
+    this.removeOrientationListener();
   }
 }
 

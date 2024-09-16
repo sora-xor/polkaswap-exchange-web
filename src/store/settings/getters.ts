@@ -61,6 +61,10 @@ const getters = defineGetters<SettingsState>()({
     // `!getters.internetConnectionSpeedMb` for the case when `navigator.connection` isn't supported
     return getters.internetConnectionSpeedMb >= 1 || !getters.internetConnectionSpeedMb;
   },
+  isOrientationWarningVisible(...args): boolean {
+    const { state } = settingsGetterContext(args);
+    return state.isOrientationWarningVisible;
+  },
 });
 
 export default getters;

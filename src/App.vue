@@ -25,6 +25,9 @@
     <app-mobile-popup :visible.sync="showSoraMobilePopup" />
     <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
     <app-browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
+    <div v-if="isOrientationWarningVisible" class="orientation-warning">
+      <p>We rotated the phone, please rotate it back!</p>
+    </div>
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
@@ -123,6 +126,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.router.loading pageLoading!: boolean;
 
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
+  @getter.settings.isOrientationWarningVisible isOrientationWarningVisible!: boolean;
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
@@ -643,5 +647,27 @@ i.icon-divider {
   @include large-mobile {
     display: none;
   }
+}
+
+.orientation-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  z-index: 9999;
+  text-align: center;
+}
+
+.orientation-warning p {
+  font-size: 1.5rem;
+  padding: 1rem;
+  background-color: #ff5252;
+  border-radius: 5px;
 }
 </style>
