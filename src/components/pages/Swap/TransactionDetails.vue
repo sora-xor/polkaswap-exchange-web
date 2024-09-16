@@ -1,5 +1,16 @@
 <template>
   <transaction-details :info-only="infoOnly">
+    <template #reference>
+      <info-line
+        :label="t('networkFeeText')"
+        :label-tooltip="t('networkFeeTooltipText')"
+        :value="networkFeeFormatted"
+        :asset-symbol="xorSymbol"
+        :fiat-value="getFiatAmountByCodecString(networkFee)"
+        is-formatted
+      />
+    </template>
+
     <div class="swap-info-container">
       <info-line v-for="{ id, label, value } in priceValues" :key="id" :label="label" :value="value" />
       <info-line
@@ -31,15 +42,6 @@
         :label-tooltip="liquidityProviderFeeTooltipText"
         :value="formattedLiquidityProviderFee"
         :asset-symbol="xorSymbol"
-        is-formatted
-      />
-      <info-line
-        v-if="isLoggedIn"
-        :label="t('networkFeeText')"
-        :label-tooltip="t('networkFeeTooltipText')"
-        :value="networkFeeFormatted"
-        :asset-symbol="xorSymbol"
-        :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
       />
     </div>
@@ -90,7 +92,6 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
 
   @getter.swap.price private price!: string;
   @getter.swap.priceReversed private priceReversed!: string;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
   @getter.swap.tokenTo tokenTo!: AccountAsset;
   @getter.swap.minMaxReceived minMaxReceived!: CodecString;

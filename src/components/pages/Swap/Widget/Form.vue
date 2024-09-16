@@ -107,7 +107,8 @@
         </template>
       </s-button>
 
-      <swap-transaction-details v-if="areTokensSelected && !hasZeroAmount" :info-only="false" />
+      <swap-transaction-details v-if="areTokensSelected && !hasZeroAmount" :info-only="false" class="swap-details" />
+
       <select-token
         :visible.sync="showSelectTokenDialog"
         :connected="isLoggedIn"
@@ -599,6 +600,7 @@ export default class SwapFormWidget extends Mixins(
 .swap-widget {
   @include buttons;
   @include full-width-button('action-button');
+  @include full-width-button('swap-details', 0);
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
 }
 

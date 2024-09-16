@@ -10,7 +10,7 @@
     v-model="widgets"
   >
     <template v-slot:[SwapWidgets.Form]="props">
-      <swap-form-widget v-bind="props" primary-title full pip-disabled />
+      <swap-form-widget v-bind="props" primary-title full />
     </template>
     <template v-slot:[SwapWidgets.Chart]="props">
       <price-chart-widget
