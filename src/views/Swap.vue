@@ -7,7 +7,7 @@
     :lines="options.edit"
     :loading="pageLoading"
     :default-layouts="DefaultLayouts"
-    v-model="widgetsModel"
+    v-model="widgets"
   >
     <template v-slot:[SwapWidgets.Form]="props">
       <swap-form-widget v-bind="props" primary-title full pip-disabled />
@@ -31,7 +31,7 @@
       <customise-widget
         v-bind="props"
         v-model="customizePopper"
-        :widgets-model.sync="widgetsModel"
+        :widgets-model.sync="widgets"
         :options-model.sync="options"
         :labels="labels"
         pip-disabled
@@ -40,11 +40,8 @@
         <s-button @click="reset">{{ t('resetText') }}</s-button>
       </customise-widget>
     </template>
-    <template v-slot:[SwapWidgets.PriceChartA]="props">
-      <price-chart-widget v-bind="props" :base-asset="tokenFrom" full />
-    </template>
-    <template v-slot:[SwapWidgets.PriceChartB]="props">
-      <price-chart-widget v-bind="props" :base-asset="tokenTo" full />
+    <template v-slot:[SwapWidgets.TokenPriceChart]="props">
+      <token-price-chart-widget v-bind="props" full />
     </template>
     <template v-slot:[SwapWidgets.SupplyChart]="props">
       <supply-chart-widget v-bind="props" full />
@@ -74,8 +71,7 @@ enum SwapWidgets {
   Distribution = 'swapDistribution',
   // additional
   Transactions = 'swapTransactions',
-  PriceChartA = 'swapTokenAPriceChart',
-  PriceChartB = 'swapTokenBPriceChart',
+  TokenPriceChart = 'swapTokenPriceChart',
   SupplyChart = 'swapSupplyChart',
 }
 
@@ -86,6 +82,7 @@ enum SwapWidgets {
     SwapDistributionWidget: lazyComponent(Components.SwapDistributionWidget),
     CustomiseWidget: lazyComponent(Components.CustomiseWidget),
     PriceChartWidget: lazyComponent(Components.PriceChartWidget),
+    TokenPriceChartWidget: lazyComponent(Components.TokenPriceChartWidget),
     SupplyChartWidget: lazyComponent(Components.SupplyChartWidget),
     WidgetsGrid: lazyComponent(Components.WidgetsGrid),
   },
@@ -110,8 +107,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       { x: 5, y: 24, w: 6, h: 16, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
       { x: 11, y: 0, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
       { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
-      { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
+      { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.TokenPriceChart },
     ],
     md: [
       { x: 3, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
@@ -120,8 +116,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       { x: 3, y: 24, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.SupplyChart },
       { x: 7, y: 0, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
       { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
-      { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
+      { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.TokenPriceChart },
     ],
     sm: [
       { x: 1, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
@@ -130,8 +125,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       { x: 1, y: 24, w: 4, h: 20, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
       { x: 5, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
       { x: 5, y: 20, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      { x: 5, y: 40, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
-      { x: 5, y: 40, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
+      { x: 5, y: 40, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.TokenPriceChart },
     ],
     xs: [
       { x: 0, y: 0, w: 4, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
@@ -139,8 +133,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
       { x: 4, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
       { x: 0, y: 32, w: 4, h: 16, minW: 4, minH: 16, i: SwapWidgets.Transactions },
-      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
-      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
+      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.TokenPriceChart },
       { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
     ],
     xss: [
@@ -148,8 +141,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
       { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
       { x: 0, y: 36, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
-      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
+      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.TokenPriceChart },
       { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
       { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
     ],
@@ -165,36 +157,24 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
     [SwapWidgets.Chart]: true,
     [SwapWidgets.Distribution]: true,
     [SwapWidgets.Transactions]: false,
-    [SwapWidgets.PriceChartA]: false,
-    [SwapWidgets.PriceChartB]: false,
+    [SwapWidgets.TokenPriceChart]: false,
     [SwapWidgets.SupplyChart]: false,
   };
 
-  get widgetsModel(): WidgetsVisibilityModel {
-    const model = { ...this.widgets };
-
-    if (!this.tokenTo) {
-      delete model[SwapWidgets.PriceChartB];
-    }
-
-    return model;
-  }
-
-  set widgetsModel(model: WidgetsVisibilityModel) {
-    this.widgets = { ...this.widgets, ...model };
-  }
-
   get labels(): Record<string, string> {
     const priceText = this.t('priceChartText');
+
+    const aSymbol = this.tokenFrom?.symbol ?? '';
+    const bSymbol = this.tokenTo?.symbol ?? '';
+    const tokensText = [aSymbol, bSymbol].filter(Boolean).join('/');
 
     return {
       // widgets
       [SwapWidgets.Form]: this.t('swapText'),
       [SwapWidgets.Distribution]: this.t('swap.route'),
       [SwapWidgets.Transactions]: this.tc('transactionText', 2),
-      [SwapWidgets.Chart]: priceText,
-      [SwapWidgets.PriceChartA]: `${priceText} ${this.tokenFrom?.symbol ?? ''}`,
-      [SwapWidgets.PriceChartB]: `${priceText} ${this.tokenTo?.symbol ?? ''}`,
+      [SwapWidgets.Chart]: `${priceText} ${tokensText}`,
+      [SwapWidgets.TokenPriceChart]: priceText,
       [SwapWidgets.SupplyChart]: 'Supply',
       // options
       edit: this.t('editText'),
