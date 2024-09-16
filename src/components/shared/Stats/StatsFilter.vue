@@ -1,8 +1,8 @@
 <template>
   <div class="stats-filter">
-    <s-button type="link" size="small" class="stats-filter-button" @click="openMenu" :disabled="disabled">
+    <s-button type="link" size="small" class="stats-filter-button" @click="toggleMenu" :disabled="disabled">
       {{ filter.label }}
-      <s-icon name="el-icon-arrow-down" size="12px" class="stats-filter-button-icon" />
+      <s-icon name="el-icon-arrow-down" size="12px" :class="['stats-filter-button-icon', { opened: visibility }]" />
     </s-button>
     <div v-show="visibility" class="stats-filter-menu stats-filter-list">
       <s-button
@@ -20,9 +20,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
+import { Component, Mixins, Prop, ModelSync, Watch } from 'vue-property-decorator';
 
 import type { SnapshotFilter } from '@/types/filters';
+
+function hasParentEl(target: Node, el: Node) {
+  if (target === el) return true;
+  if (!target.parentNode) return false;
+
+  return hasParentEl(target.parentNode, el);
+}
 
 @Component
 export default class StatsFilter extends Mixins() {
@@ -34,25 +41,44 @@ export default class StatsFilter extends Mixins() {
 
   visibility = false;
 
+  @Watch('visibility')
+  private toggleListener(value: boolean): void {
+    if (value) {
+      this.addListener();
+    } else {
+      this.removeListener();
+    }
+  }
+
+  private addListener(): void {
+    this.$el.ownerDocument.addEventListener('click', this.handleClickOutside);
+  }
+
+  private removeListener(): void {
+    this.$el.ownerDocument.removeEventListener('click', this.handleClickOutside);
+  }
+
   beforeDestroy(): void {
-    this.closeMenu();
+    this.removeListener();
+  }
+
+  toggleMenu(): void {
+    this.visibility = !this.visibility;
   }
 
   openMenu(): void {
     this.visibility = true;
-    this.$el.ownerDocument.addEventListener('click', this.handleClickOutside);
   }
 
   closeMenu(): void {
     this.visibility = false;
-    this.$el.ownerDocument.removeEventListener('click', this.handleClickOutside);
   }
 
   handleClickOutside(e: Event): void {
-    const target = e.target as any;
-    const menu = !!target.closest('.stats-filter');
+    const target = e.target as Node;
+    const isMenu = hasParentEl(target, this.$el);
 
-    if (!menu) {
+    if (!isMenu) {
       this.closeMenu();
     }
   }
@@ -81,6 +107,10 @@ $gap: $inner-spacing-mini;
   &-button {
     &-icon {
       margin-left: $inner-spacing-tiny;
+
+      &.opened {
+        transform: rotate(180deg);
+      }
     }
   }
 
@@ -88,8 +118,8 @@ $gap: $inner-spacing-mini;
     position: absolute;
     z-index: 10;
     top: 100%;
-    left: 50%;
-    transform: translate(-50%, 10px);
+    left: 100%;
+    transform: translate(-100%, 10px);
   }
 
   &-list {
