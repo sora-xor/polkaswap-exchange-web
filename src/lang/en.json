@@ -1696,6 +1696,7 @@
     "expiresInTooltip": "The 'Expires in' shows period or point of time the access is acquired",
     "indefiniteExp": "open-ended",
     "permission": "permission",
-    "permissions": "permissions"
+    "permissions": "permissions",
+    "noReceiverAccess": "You're trying to send regulated token to the user with no SBT access"
   }
 }
