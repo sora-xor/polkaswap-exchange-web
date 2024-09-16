@@ -15,6 +15,10 @@ $country-emoji-font: 'Twemoji Country Flags';
 
 @include generic-input-lines;
 
+table {
+  color: inherit;
+}
+
 .el-loading-mask {
   background-color: var(--s-color-utility-body);
   z-index: $app-loader-layer;

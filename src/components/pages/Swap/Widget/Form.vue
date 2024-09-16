@@ -107,7 +107,15 @@
         </template>
       </s-button>
 
-      <swap-transaction-details v-if="areTokensSelected && !hasZeroAmount" :info-only="false" class="swap-details" />
+      <info-line
+        :label="t('networkFeeText')"
+        :label-tooltip="t('networkFeeTooltipText')"
+        :value="networkFeeFormatted"
+        :asset-symbol="xorSymbol"
+        :fiat-value="getFiatAmountByCodecString(networkFee)"
+        is-formatted
+        class="swap-details"
+      />
 
       <select-token
         :visible.sync="showSelectTokenDialog"
@@ -167,13 +175,13 @@ import type { Subscription } from 'rxjs';
     SwapSettings: lazyComponent(Components.SwapSettings),
     SwapConfirm: lazyComponent(Components.SwapConfirm),
     SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
-    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     SwapLossWarningDialog: lazyComponent(Components.SwapLossWarningDialog),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     SelectToken: lazyComponent(Components.SelectToken),
     TokenInput: lazyComponent(Components.TokenInput),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine,
   },
 })
 export default class SwapFormWidget extends Mixins(
@@ -244,6 +252,14 @@ export default class SwapFormWidget extends Mixins(
   quoteSubscription: Nullable<Subscription> = null;
   quoteLoading = false;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
+
+  get xorSymbol(): string {
+    return ' ' + XOR.symbol;
+  }
+
+  get networkFeeFormatted(): string {
+    return this.formatCodecNumber(this.networkFee);
+  }
 
   get tokenFromSymbol(): string {
     return this.tokenFrom?.symbol ?? '';
@@ -600,7 +616,7 @@ export default class SwapFormWidget extends Mixins(
 .swap-widget {
   @include buttons;
   @include full-width-button('action-button');
-  @include full-width-button('swap-details', 0);
+  @include full-width-button('swap-details');
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
 }
 
