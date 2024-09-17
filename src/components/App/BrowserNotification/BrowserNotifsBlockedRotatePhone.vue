@@ -1,45 +1,55 @@
 <template>
-  <dialog-base class="browser-notification" :title="t('browserNotificationDialog.title')" :visible.sync="isVisible">
+  <div class="browser-notification">
     <div class="browser-notification-dialog">
-      <p class="browser-notification-dialog__info">
-        {{ t('browserNotificationDialog.notificationBlocked') }}
-      </p>
-      <s-button
-        type="primary"
-        class="s-typography-button--large browser-notification-dialog__btn"
-        :loading="loading"
-        @click="agree"
-      >
-        {{ t('browserNotificationDialog.agree') }}
-      </s-button>
+      <img src="@/assets/img/mobile/rotate_phone.svg" alt="mobile-rotate-phone" />
+      <p class="notification-title">{{ t('browserNotificationDialog.rotatetitle') }}</p>
+      <p class="notification-message">{{ t('browserNotificationDialog.rotateMessage') }}</p>
     </div>
-  </dialog-base>
+  </div>
 </template>
 
 <script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-  },
-})
-export default class AppBrowserNotifsBlockedRotatePhone extends Mixins(
-  TranslationMixin,
-  mixins.DialogMixin,
-  mixins.LoadingMixin
-) {
-  agree(): void {
-    this.closeDialog();
-  }
-}
+@Component
+export default class AppBrowserNotifsBlockedRotatePhone extends Mixins(TranslationMixin) {}
 </script>
 
 <style lang="scss" scoped>
+.browser-notification {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--s-color-utility-body);
+  z-index: 9999;
+}
+
 .browser-notification-dialog {
-  @include browser-notification-dialog;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.notification-title {
+  margin-top: 33px;
+  margin-bottom: 14px;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--s-color-base-content-primary);
+}
+
+.notification-message {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--s-color-base-content-secondary);
+  max-width: 200px;
 }
 </style>

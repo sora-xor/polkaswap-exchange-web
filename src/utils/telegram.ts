@@ -42,7 +42,7 @@ class TmaSdk {
     try {
       // Check if the current platform is Telegram Mini App
       const WebApp = Telegram?.WebApp;
-      if (!WebApp?.initData) {
+      if (WebApp?.initData) {
         console.info('[TMA]: Not a Telegram Mini App, skipping initialization');
         return;
       }

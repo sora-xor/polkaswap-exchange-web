@@ -26,7 +26,7 @@
     <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
     <app-browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
     <div v-if="isOrientationWarningVisible">
-      <app-browser-notifs-blocked-rotate-phone :visible.sync="isOrientationWarningVisible" />
+      <app-browser-notifs-blocked-rotate-phone />
     </div>
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
@@ -648,27 +648,5 @@ i.icon-divider {
   @include large-mobile {
     display: none;
   }
-}
-
-.orientation-warning {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  z-index: 9999;
-  text-align: center;
-}
-
-.orientation-warning p {
-  font-size: 1.5rem;
-  padding: 1rem;
-  background-color: #ff5252;
-  border-radius: 5px;
 }
 </style>
