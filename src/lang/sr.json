@@ -1042,7 +1042,9 @@
         "button": "Омогући обавештења",
         "agree": "Да, разумем",
         "notificationBlocked": "Да бисте примали обавештења о {AppName}, дозволите обавештења у основним подешавањима прегледача",
-        "pointer": "Притисните „Дозволи“ да бисте укључили обавештења"
+        "pointer": "Притисните „Дозволи“ да бисте укључили обавештења",
+        "rotatetitle": "Molimo vas da rotirate uređaj",
+        "rotateMessage": "Iskustvo je dostupno samo u portretnom režimu"
     },
     "assetDeposit": "Стање средстава је депоновано",
     "noDataText": "Нема података",

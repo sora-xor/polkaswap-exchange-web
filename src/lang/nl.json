@@ -1042,7 +1042,9 @@
         "button": "Notificaties aanzetten",
         "agree": "Ja ik begrijp het",
         "notificationBlocked": "Als u de meldingen over {AppName} wilt ontvangen, moet u de meldingen toestaan in de systeemeigen instellingen van uw browser",
-        "pointer": "Druk op \"Toestaan\" om meldingen in te schakelen"
+        "pointer": "Druk op \"Toestaan\" om meldingen in te schakelen",
+        "rotatetitle": "Draai alstublieft uw apparaat",
+        "rotateMessage": "De ervaring is alleen beschikbaar in portretmodus"
     },
     "assetDeposit": "Activa-saldo is gestort",
     "noDataText": "Geen informatie",

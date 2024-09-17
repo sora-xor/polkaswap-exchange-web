@@ -1042,7 +1042,9 @@
         "button": "启用通知",
         "agree": "是的我明白",
         "notificationBlocked": "要接收有关{AppName}的通知，请在浏览器的本机设置中允许通知",
-        "pointer": "按“允许”打开通知"
+        "pointer": "按“允许”打开通知",
+        "rotatetitle": "请旋转您的设备",
+        "rotateMessage": "该体验仅在纵向模式下可用"
     },
     "assetDeposit": "资产余额已存入",
     "noDataText": "没有数据",

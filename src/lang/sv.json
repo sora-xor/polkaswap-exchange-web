@@ -1042,7 +1042,9 @@
         "button": "Aktivera aviseringar",
         "agree": "Ja, jag förstår",
         "notificationBlocked": "För att få aviseringar om {AppName}, vänligen tillåt aviseringarna i webbläsarens inställningar",
-        "pointer": "Tryck på \"Tillåt\" för att aktivera aviseringar"
+        "pointer": "Tryck på \"Tillåt\" för att aktivera aviseringar",
+        "rotatetitle": "Vänligen rotera din enhet",
+        "rotateMessage": "Upplevelsen är endast tillgänglig i porträttläge"
     },
     "assetDeposit": "Tillgångssaldo har satts in",
     "noDataText": "Ingen data",

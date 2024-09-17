@@ -1042,7 +1042,9 @@
         "button": "Povolit upozornění",
         "agree": "Ano, rozumím",
         "notificationBlocked": "Chcete-li dostávat oznámení o {AppName}, povolte oznámení v nativním nastavení prohlížeče",
-        "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení"
+        "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení",
+        "rotatetitle": "Prosím, otočte své zařízení",
+        "rotateMessage": "Zážitek je dostupný pouze v režimu na výšku"
     },
     "assetDeposit": "Zůstatek aktiv byl uložen",
     "noDataText": "Žádné údaje",

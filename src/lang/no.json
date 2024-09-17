@@ -1042,7 +1042,9 @@
         "button": "Aktiver varsler",
         "agree": "Ja jeg forstår",
         "notificationBlocked": "For å motta varslene om {AppName} må du tillate varslene i nettleserens opprinnelige innstillinger",
-        "pointer": "Trykk på \"Tillat\" for å slå på varsler"
+        "pointer": "Trykk på \"Tillat\" for å slå på varsler",
+        "rotatetitle": "Vennligst roter enheten din",
+        "rotateMessage": "Opplevelsen er bare tilgjengelig i portrettmodus"
     },
     "assetDeposit": "Eiendelsbalanse er satt inn",
     "noDataText": "Ingen data",

@@ -1042,7 +1042,9 @@
         "button": "Aktifkan notifikasi",
         "agree": "Ya saya mengerti",
         "notificationBlocked": "Untuk menerima notifikasi tentang {AppName}, izinkan notifikasi di setelan asli browser Anda",
-        "pointer": "Tekan \"Izinkan\" untuk mengaktifkan notifikasi"
+        "pointer": "Tekan \"Izinkan\" untuk mengaktifkan notifikasi",
+        "rotatetitle": "Silakan putar perangkat Anda",
+        "rotateMessage": "Pengalaman ini hanya tersedia dalam mode potret"
     },
     "assetDeposit": "Saldo aset telah disetorkan",
     "noDataText": "Tidak ada data",

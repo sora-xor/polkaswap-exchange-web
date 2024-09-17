@@ -1042,7 +1042,9 @@
         "button": "Activer les notifications",
         "agree": "Oui je comprends",
         "notificationBlocked": "Pour recevoir les notifications concernant {AppName} , veuillez autoriser les notifications dans les paramètres natifs de votre navigateur",
-        "pointer": "Appuyez sur \"Autoriser\" pour activer les notifications"
+        "pointer": "Appuyez sur \"Autoriser\" pour activer les notifications",
+        "rotatetitle": "Veuillez faire pivoter votre appareil",
+        "rotateMessage": "L'expérience est uniquement disponible en mode portrait"
     },
     "assetDeposit": "Le solde de l'actif a été déposé",
     "noDataText": "Pas de données",

@@ -1042,7 +1042,9 @@
         "button": "Bật thông báo",
         "agree": "Vâng, tôi hiểu",
         "notificationBlocked": "Để nhận thông báo về {AppName}, vui lòng cho phép thông báo trong cài đặt gốc của trình duyệt của bạn",
-        "pointer": "Nhấn “Cho phép” để bật thông báo"
+        "pointer": "Nhấn “Cho phép” để bật thông báo",
+        "rotatetitle": "Vui lòng xoay thiết bị của bạn",
+        "rotateMessage": "Trải nghiệm chỉ có sẵn ở chế độ dọc"
     },
     "assetDeposit": "Số dư tài sản đã được gửi",
     "noDataText": "Không có dữ liệu",

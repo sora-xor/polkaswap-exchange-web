@@ -1042,7 +1042,9 @@
         "button": "Értesítések engedélyezése",
         "agree": "Igen, értem",
         "notificationBlocked": "Ahhoz, hogy értesítést kapjon az {AppName} alkalmazásról, kérjük, engedélyezze az értesítéseket a böngésző natív beállításaiban.",
-        "pointer": "Nyomja meg az „Engedélyezés” gombot az értesítések bekapcsolásához"
+        "pointer": "Nyomja meg az „Engedélyezés” gombot az értesítések bekapcsolásához",
+        "rotatetitle": "Kérjük, forgassa el a készülékét",
+        "rotateMessage": "Az élmény csak álló módban érhető el"
     },
     "assetDeposit": "Az eszközök egyenlege letétbe helyezve",
     "noDataText": "Nincs adat",

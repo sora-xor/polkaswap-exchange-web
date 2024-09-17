@@ -1042,7 +1042,9 @@
         "button": "Benachrichtigungen aktivieren",
         "agree": "Ja ich verstehe",
         "notificationBlocked": "Um die Benachrichtigungen über {AppName} zu erhalten, erlauben Sie bitte die Benachrichtigungen in den nativen Einstellungen Ihres Browsers",
-        "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten"
+        "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten",
+        "rotatetitle": "Bitte drehen Sie Ihr Gerät",
+        "rotateMessage": "Die Erfahrung ist nur im Hochformat verfügbar"
     },
     "assetDeposit": "Guthaben wurde hinterlegt",
     "noDataText": "Keine Daten",

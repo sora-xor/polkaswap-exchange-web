@@ -1042,7 +1042,9 @@
         "button": "Attivare le notifiche",
         "agree": "Si, capisco",
         "notificationBlocked": "Per ricevere le notifiche su {AppName}, consenti le notifiche nelle impostazioni native del tuo browser",
-        "pointer": "Premi \"Consenti\" per attivare le notifiche"
+        "pointer": "Premi \"Consenti\" per attivare le notifiche",
+        "rotatetitle": "Si prega di ruotare il dispositivo",
+        "rotateMessage": "L'esperienza è disponibile solo in modalità verticale"
     },
     "assetDeposit": "Il saldo patrimoniale è stato depositato",
     "noDataText": "Nessun dato",

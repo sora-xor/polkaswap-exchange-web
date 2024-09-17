@@ -1042,7 +1042,9 @@
         "button": "Permitir notificaciones",
         "agree": "Si, entiendo",
         "notificationBlocked": "Para recibir notificaciones sobre {AppName}, permita las notificaciones en la configuración nativa de su navegador",
-        "pointer": "Presione \"Permitir\" para activar las notificaciones"
+        "pointer": "Presione \"Permitir\" para activar las notificaciones",
+        "rotatetitle": "Por favor, gira tu dispositivo",
+        "rotateMessage": "La experiencia solo está disponible en modo retrato"
     },
     "assetDeposit": "El saldo de los activos ha sido depositado",
     "noDataText": "Sin datos",
