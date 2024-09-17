@@ -26,8 +26,8 @@
             <!-- <div>
               <span class="sbt-info-property">Accounts with permission</span>
               <span class="sbt-info-value">n/a</span>
-            </div> -->
-            <s-divider />
+            </div>
+            <s-divider /> -->
             <div>
               <span class="sbt-info-property">Regulated assets connected</span>
               <span class="sbt-info-value">{{ sbtMetaInfo?.regulatedAssets?.length }}</span>
@@ -86,7 +86,14 @@
             </s-button>
           </div>
         </s-card>
-        <s-card class="details-card asset-manager-token-list" border-radius="small" shadow="always" size="big" primary>
+        <s-card
+          class="details-card asset-manager-token-list"
+          border-radius="small"
+          shadow="always"
+          size="big"
+          primary
+          :style="sbtMetaInfo.regulatedAssets?.length ? { 'min-height': '540px' } : ''"
+        >
           <div class="asset-managers-issue s-flex">
             <p class="p3">Permissioned assets</p>
             <s-button
@@ -337,6 +344,11 @@ export default class AssetOwnerDetailsSBT extends Mixins(
   }
 
   openAssetCreateDialog(): void {
+    if (!this.sbtMetaInfo.regulatedAssets?.length) {
+      this.openAssetCreate('new');
+      return;
+    }
+
     this.showCreateAssetDialog = true;
   }
 
@@ -449,11 +461,10 @@ export default class AssetOwnerDetailsSBT extends Mixins(
 
 .asset-manager {
   &-account-list {
-    width: 600px;
+    min-width: 600px;
   }
   &-token-list {
     width: 600px;
-    min-height: 540px;
   }
 }
 

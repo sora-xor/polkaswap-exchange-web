@@ -128,8 +128,7 @@ import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
-import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
-import { dashboardLazyComponent } from '@/modules/dashboard/router';
+import { DashboardPageNames } from '@/modules/dashboard/consts';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import router from '@/router';
 import { getter } from '@/store/decorators';

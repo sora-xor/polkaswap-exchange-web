@@ -1,7 +1,11 @@
 <template>
   <div class="regular-guideline">
-    <span>Create your token (or its available variations: NFT and SBT)</span>
-    <p>Launch your unique token efficiently and securely using the established infrastructure of the SORA Network.</p>
+    <s-image lazy fit="cover" draggable="false" :src="createImg" />
+    <h3 class="regular-guideline__title">Create your token</h3>
+    <p class="regular-guideline__desc">
+      Easily launch your unique token—available in multiple formats like NFTs and SBTs—using the robust, secure
+      infrastructure of the SORA Network
+    </p>
   </div>
 </template>
 
@@ -9,24 +13,26 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Mixins } from 'vue-property-decorator';
 
-export default class RegularGuide extends Mixins(mixins.TranslationMixin) {}
+export default class RegularGuide extends Mixins(mixins.TranslationMixin) {
+  get createImg(): string {
+    return `/asset-owner/token-creation.png`;
+  }
+}
 </script>
 
 <style lang="scss">
 .regular-guideline {
-  min-height: 372px;
-
-  span {
-    display: flex;
-    font-size: 15px;
-    padding-top: 50px;
+  &__title {
     text-align: center;
+    margin-bottom: $basic-spacing;
+    font-weight: 500;
   }
 
-  p {
-    font-size: var(--s-font-size-medium);
+  &__desc {
     text-align: center;
-    margin-top: 100px;
+    font-size: var(--s-font-size-medium);
+    color: var(--s-color-base-content-secondary);
+    margin-bottom: var(--s-size-small);
   }
 }
 </style>
