@@ -1,5 +1,6 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
 
+import { Breakpoint } from '@/consts/layout';
 import store from '@/store';
 
 enum HapticStatusValue {
@@ -42,7 +43,7 @@ class TmaSdk {
     try {
       // Check if the current platform is Telegram Mini App
       const WebApp = Telegram?.WebApp;
-      if (WebApp?.initData) {
+      if (!WebApp?.initData) {
         console.info('[TMA]: Not a Telegram Mini App, skipping initialization');
         return;
       }
@@ -63,7 +64,9 @@ class TmaSdk {
       }
       // Init haptic feedback
       this.addHapticListener();
-      this.addOrientationListener();
+      if (window.innerWidth <= Breakpoint.LargeMobile) {
+        this.addOrientationListener();
+      }
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
       store.commit.settings.disableTMA();
@@ -72,25 +75,19 @@ class TmaSdk {
   }
 
   private addOrientationListener(): void {
-    console.info('we are in addOrientationListener');
     window.addEventListener('resize', this.handleOrientationChange);
     this.handleOrientationChange();
   }
 
   private removeOrientationListener(): void {
-    console.info('we removed removeOrientationListener');
     window.removeEventListener('resize', this.handleOrientationChange);
   }
 
   private handleOrientationChange(): void {
     const isLandscape = window.innerHeight < window.innerWidth;
-    console.info('the landscape is');
-    console.info(isLandscape);
     if (isLandscape) {
-      console.info('we will show showOrientationWarning');
       store.commit.settings.showOrientationWarning();
     } else {
-      console.info('we will hide hideOrientationWarning');
       store.commit.settings.hideOrientationWarning();
     }
   }
