@@ -1,14 +1,17 @@
 <template>
-  <dialog-base :title="'Issue SBT Access'" :visible.sync="isVisible">
+  <dialog-base
+    :title="t('assetOwner.issueSbtAccess', { type: WALLET_CONSTS.TranslationConsts.SBT })"
+    :visible.sync="isVisible"
+  >
     <div class="dashboard-give-access">
-      <p class="p3 dashboard-give-access__text">ENTER AN ADDRESS FOR ISSUANCE</p>
+      <p class="p3 dashboard-give-access__text">{{ t('assetOwner.dialog.enterAddress') }}</p>
       <address-book-input
         class="dashboard-give-access__address"
         v-model="address"
         :is-valid="validAddress"
         :disabled="loading"
       />
-      <p class="p3 dashboard-give-access__text">SELECT WHEN ACCESS WILL END</p>
+      <p class="p3 dashboard-give-access__text">{{ t('assetOwner.dialog.selectAccessEnd') }}</p>
       <s-date-picker
         v-model="value"
         value-format="timestamp"
@@ -29,9 +32,9 @@
           {{ t('walletSend.enterAddress') }}
         </template>
         <template v-else-if="emptyValue">
-          {{ 'Select date' }}
+          {{ t('assetOwner.dialog.selectDate') }}
         </template>
-        <template v-else>{{ 'Issue access' }}</template>
+        <template v-else>{{ t('assetOwner.dialog.issueAccess') }}</template>
       </s-button>
     </div>
   </dialog-base>
@@ -40,7 +43,7 @@
 <script lang="ts">
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import { ZeroStringValue } from '@/consts';
@@ -62,10 +65,11 @@ export default class GrantPrivilegeDialog extends Mixins(mixins.TransactionMixin
   @Prop({ type: String, default: '' }) readonly sbtAddress!: string;
 
   readonly xorSymbol = XOR.symbol;
+  readonly WALLET_CONSTS = WALLET_CONSTS;
 
   address = '';
   value = '';
-  datePlaceholder = 'Pick a day';
+  datePlaceholder = this.t('assetOwner.dialog.pickDate');
 
   get validAddress(): boolean {
     return !this.emptyAddress && api.validateAddress(this.address);
@@ -100,7 +104,7 @@ export default class GrantPrivilegeDialog extends Mixins(mixins.TransactionMixin
   }
 
   handleDatePickerChange(): void {
-    this.emptyValue ? (this.datePlaceholder = 'Pick a day') : (this.datePlaceholder = '');
+    this.emptyValue ? (this.datePlaceholder = this.t('assetOwner.dialog.pickDate')) : (this.datePlaceholder = '');
   }
 
   async handleGiveAccess(): Promise<void> {
@@ -130,6 +134,7 @@ export default class GrantPrivilegeDialog extends Mixins(mixins.TransactionMixin
   &__text {
     font-weight: 600;
     color: var(--s-color-base-content-secondary);
+    text-transform: uppercase;
   }
 }
 </style>

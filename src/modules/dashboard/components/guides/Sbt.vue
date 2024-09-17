@@ -1,35 +1,29 @@
 <template>
   <div>
-    <h4 class="sbt-title">How to create an SBT:</h4>
+    <h4 class="sbt-title">{{ t('assetOwner.guide.title', { type: WALLET_CONSTS.TranslationConsts.SBT }) }}</h4>
     <div class="sbt-instructions">
       <div class="sbt-instructions__text-info">
         <div class="sbt-instructions__section">
           <span class="sbt-instructions__number">1</span>
           <div class="text">
-            <h4 class="sbt-instructions__point">{{ 'Select or Create Regulated Assets' }}</h4>
-            <span class="sbt-instructions__point-desc">{{
-              'Choose or create assets that you have personally created and regulate. These are assets under your control and management.'
-            }}</span>
+            <h4 class="sbt-instructions__point">{{ t('assetOwner.guide.stepOneTitle') }}</h4>
+            <span class="sbt-instructions__point-desc">{{ t('assetOwner.guide.stepOneDesc') }}</span>
             <div class="line" />
           </div>
         </div>
         <div class="sbt-instructions__section">
           <span class="sbt-instructions__number">2</span>
           <div class="text">
-            <h4 class="sbt-instructions__point">{{ 'Enter SBT Details' }}</h4>
-            <span class="sbt-instructions__point-desc">{{
-              "Provide essential information such as the SBT's name and ticker symbol, as well as the icon"
-            }}</span>
+            <h4 class="sbt-instructions__point">{{ t('assetOwner.guide.stepTwoTitle') }}</h4>
+            <span class="sbt-instructions__point-desc">{{ t('assetOwner.guide.stepTwoDesc') }}</span>
             <div class="line" />
           </div>
         </div>
         <div class="sbt-instructions__section">
           <span class="sbt-instructions__number">3</span>
           <div class="text">
-            <h4 class="sbt-instructions__point">{{ 'Review and sign the transaction' }}</h4>
-            <span class="sbt-instructions__point-desc">{{
-              'Review and sign the final creation transaction to complete the SBT setup.'
-            }}</span>
+            <h4 class="sbt-instructions__point">{{ t('assetOwner.guide.stepThreeTitle') }}</h4>
+            <span class="sbt-instructions__point-desc">{{ t('assetOwner.guide.stepThreeDesc') }}</span>
             <div class="line" />
           </div>
         </div>
@@ -38,9 +32,7 @@
     <div class="sbt__disclaimer">
       <h4 class="sbt__disclaimer-header">{{ t('card.attentionText') }}</h4>
       <p class="sbt__disclaimer-paragraph">
-        {{
-          'Keep this page open during the entire process. Closing or navigating away will require you to restart from the beginning. Complete steps quickly to avoid timeout.'
-        }}
+        {{ t('assetOwner.guide.disclaimerSbt') }}
       </p>
       <div class="sbt__disclaimer-warning icon">
         <s-icon name="notifications-alert-triangle-24" size="28px" />
@@ -50,10 +42,12 @@
 </template>
 
 <script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Mixins } from 'vue-property-decorator';
 
-export default class SbtGuide extends Mixins(mixins.TranslationMixin) {}
+export default class SbtGuide extends Mixins(mixins.TranslationMixin) {
+  readonly WALLET_CONSTS = WALLET_CONSTS;
+}
 </script>
 
 <style lang="scss">

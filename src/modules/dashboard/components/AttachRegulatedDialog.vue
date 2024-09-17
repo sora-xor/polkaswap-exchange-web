@@ -1,22 +1,22 @@
 <template>
-  <dialog-base class="attach-regulated-dialog" :title="'Issue SBT Access'" :visible.sync="isVisible">
+  <dialog-base class="attach-regulated-dialog" :title="t('assetOwner.addRegulatedAssets')" :visible.sync="isVisible">
     <div class="asset-managers-options">
       <div class="asset-managers-options-add-new" @click="openAssetCreate('new')">
         <s-button type="action" icon="plus-16" :disabled="loading" />
-        <h4>Create a new asset</h4>
-        <p>Set up a new permissioned asset for the SBT</p>
+        <h4>{{ t('assetOwner.dialog.createAsset') }}</h4>
+        <p>{{ t('assetOwner.dialog.createAssetDesc', { type: WALLET_CONSTS.TranslationConsts.SBT }) }}</p>
       </div>
       <div class="asset-managers-options-add-new" @click="openAssetCreate('existing')">
         <s-button type="action" icon="search-16" :disabled="loading" />
-        <h4>Add an existing asset</h4>
-        <p>Add an already created asset for the SBT</p>
+        <h4>{{ t('assetOwner.dialog.addExisting') }}</h4>
+        <p>{{ t('assetOwner.dialog.addExistingDesc') }}</p>
       </div>
     </div>
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import { DashboardPageNames } from '@/modules/dashboard/consts';
@@ -30,6 +30,8 @@ import router from '@/router';
   },
 })
 export default class AttachRegulatedDialog extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
+  readonly WALLET_CONSTS = WALLET_CONSTS;
+
   openAssetCreate(type: AssetCreationType): void {
     router.push({ name: DashboardPageNames.AssetOwnerCreate, params: { type, sbtAddress: this.$route.params.asset } });
   }

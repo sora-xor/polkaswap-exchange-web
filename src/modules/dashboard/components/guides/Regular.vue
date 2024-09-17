@@ -1,10 +1,9 @@
 <template>
   <div class="regular-guideline">
     <s-image lazy fit="cover" draggable="false" :src="createImg" />
-    <h3 class="regular-guideline__title">Create your token</h3>
+    <h3 class="regular-guideline__title">{{ t('assetOwner.guide.createToken') }}</h3>
     <p class="regular-guideline__desc">
-      Easily launch your unique token—available in multiple formats like NFTs and SBTs—using the robust, secure
-      infrastructure of the SORA Network
+      {{ t('assetOwner.guide.createTokenDesc') }}
     </p>
   </div>
 </template>

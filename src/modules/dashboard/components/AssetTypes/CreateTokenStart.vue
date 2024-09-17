@@ -14,7 +14,7 @@
       <guide-nft v-else-if="type === AssetType.CreateNftToken" />
       <guide-sbt v-else-if="type === AssetType.CreateSbtToken" />
       <s-button type="primary" class="create-token__btn-start" @click="startCreation(type)">{{
-        `Let's start`
+        t('assetOwner.letsStartBtn')
       }}</s-button>
     </div>
   </wallet-base>

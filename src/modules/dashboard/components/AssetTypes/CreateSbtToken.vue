@@ -12,10 +12,12 @@
         />
         <div v-if="!isOnlyAttach" class="dashboard-create-button">
           <s-button type="action" icon="plus-16" :disabled="loading" @click="createRegulatedAsset" />
-          <span class="create">{{ 'Create new regulated asset' }}</span>
+          <span class="create">{{ t('assetOwner.createRegulatedAsset') }}</span>
         </div>
         <div v-if="ownerAssetsList?.length" class="dashboard-regulated-assets">
-          <div class="delimiter">{{ !isOnlyAttach ? 'OR SELECT EXISTING' : 'SELECT EXISTING' }}</div>
+          <div class="delimiter">
+            {{ !isOnlyAttach ? t('assetOwner.orSelectExisting') : t('assetOwner.selectExisting') }}
+          </div>
           <div v-if="filteredRegulatedAssets?.length">
             <s-scrollbar class="dashboard-regulated-assets__scrollbar">
               <div class="assets-list">
@@ -119,8 +121,8 @@
             <img class="preview-image-create-nft__content" :src="contentSrcLink" />
           </div>
         </file-uploader>
-        <s-input :placeholder="'URL'" :minlength="1" :maxlength="80" :disabled="loading" v-model="ownerExternalUrl" />
-        <p class="dashboard-create-token_desc">{{ 'This URL leads to your financial institution website' }}</p>
+        <!-- <s-input :placeholder="'URL'" :minlength="1" :maxlength="80" :disabled="loading" v-model="ownerExternalUrl" />
+        <p class="dashboard-create-token_desc">{{ 'This URL leads to your financial institution website' }}</p> -->
       </div>
       <div v-else-if="step === Step.SbtTxSign">
         <div class="dashboard-create-sbt-preview">
@@ -134,7 +136,7 @@
         </div>
         <div class="dashboard-regulated-assets-attached">
           <div class="assets-list-subtitle">
-            ATTACHED REGULATED ASSETS <span class="number">{{ selectedAssetsIds.length }}</span>
+            {{ t('assetOwner.attachedRegulatedAssets') }} <span class="number">{{ selectedAssetsIds.length }}</span>
           </div>
           <s-scrollbar class="dashboard-regulated-assets__scrollbar" :key="scrollbarComponentKey">
             <div class="selected-assets">
@@ -156,7 +158,7 @@
               :disabled="loading"
               @click="step = Step.AssetsChoice"
             />
-            <span class="create">{{ 'Add another regulated asset' }}</span>
+            <span class="create">{{ t('assetOwner.addRegulatedAsset') }}</span>
           </div>
         </div>
       </div>
@@ -166,7 +168,11 @@
         :disabled="disabledBtn"
         @click="handleCreate"
       >
-        {{ step === Step.SbtTxSign ? 'Create SBT' : 'Continue' }}
+        {{
+          step === Step.SbtTxSign
+            ? t('assetOwner.createSbt', { type: WALLET_CONSTS.TranslationConsts.SBT })
+            : t('continueText')
+        }}
       </s-button>
       <wallet-fee v-if="step === Step.SbtTxSign" :value="fee" />
     </div>
@@ -176,7 +182,7 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import difference from 'lodash/fp/difference';
 import { Component, Mixins, Ref, Prop } from 'vue-property-decorator';
 
@@ -222,6 +228,7 @@ export default class CreateSbtToken extends Mixins(
   @Ref('fileInput') readonly fileInput!: HTMLInputElement;
   @Ref('uploader') readonly uploader!: HTMLFormElement;
 
+  readonly WALLET_CONSTS = WALLET_CONSTS;
   readonly tokenSymbolMask = 'AAAAAAA';
   readonly tokenNameMask = { mask: 'Z*', tokens: { Z: { pattern: /[0-9a-zA-Z ]/ } } };
   readonly FILE_SIZE_LIMIT = 100; // in megabytes
@@ -301,11 +308,8 @@ export default class CreateSbtToken extends Mixins(
     }
 
     if (this.step === Step.SbtMetaImage) {
-      if (!this.ownerExternalUrl) return true;
-    }
-
-    if (this.step === Step.SbtTxSign) {
-      //
+      // TODO: uncomment when storage available;
+      // if (!this.ownerExternalUrl) return true;
     }
 
     return false;
@@ -450,12 +454,9 @@ export default class CreateSbtToken extends Mixins(
       }
     }
 
-    // TODO: improve condition
     if (this.step === Step.SbtMetaImage) {
-      if (this.ownerExternalUrl) {
-        this.step = Step.SbtTxSign;
-        return;
-      }
+      this.step = Step.SbtTxSign;
+      return;
     }
 
     if (this.step === Step.SbtTxSign) {
