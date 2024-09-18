@@ -92,7 +92,7 @@
             }}</span>
           </div>
           <div v-else class="image">
-            <img class="preview-image-create-nft__content" :src="contentSrcLink" />
+            <img class="preview-image-create-nft__content" :src="contentSrcLink" alt="" />
           </div>
         </file-uploader>
         <s-button

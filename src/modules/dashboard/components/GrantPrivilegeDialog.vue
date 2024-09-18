@@ -104,7 +104,7 @@ export default class GrantPrivilegeDialog extends Mixins(mixins.TransactionMixin
   }
 
   handleDatePickerChange(): void {
-    this.emptyValue ? (this.datePlaceholder = this.t('assetOwner.dialog.pickDate')) : (this.datePlaceholder = '');
+    this.datePlaceholder = this.emptyValue ? this.t('assetOwner.dialog.pickDate') : '';
   }
 
   async handleGiveAccess(): Promise<void> {

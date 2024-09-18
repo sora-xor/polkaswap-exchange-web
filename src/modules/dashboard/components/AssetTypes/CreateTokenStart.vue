@@ -63,10 +63,10 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
     }
 
     if (tab === AssetType.CreateSbtToken) {
-      return 'SBT'; // this.TranslationConsts.SBT;
+      return this.TranslationConsts.SBT;
     }
 
-    return 'Token';
+    return this.t('createToken.CreateSimpleToken');
   }
 
   handleChangeTab(value: AssetType): void {

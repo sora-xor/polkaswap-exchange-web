@@ -118,7 +118,11 @@
             }}</span>
           </div>
           <div v-else class="image">
-            <img class="preview-image-create-nft__content" :src="contentSrcLink" />
+            <img
+              class="preview-image-create-nft__content"
+              :src="contentSrcLink"
+              :alt="WALLET_CONSTS.TranslationConsts.SBT"
+            />
           </div>
         </file-uploader>
         <!-- <s-input :placeholder="'URL'" :minlength="1" :maxlength="80" :disabled="loading" v-model="ownerExternalUrl" />
@@ -127,7 +131,7 @@
       <div v-else-if="step === Step.SbtTxSign">
         <div class="dashboard-create-sbt-preview">
           <div class="preview-image">
-            <img :src="''" :alt="'SBT'" />
+            <img src="" :alt="WALLET_CONSTS.TranslationConsts.SBT" />
           </div>
           <div class="meta">
             <span class="symbol">{{ tokenSymbol }}</span>
@@ -522,8 +526,7 @@ export default class CreateSbtToken extends Mixins(
   }
 
   resetInterval(): void {
-    // @ts-expect-error error interval
-    clearInterval(this.requlatedAssetsInterval);
+    clearInterval(this.requlatedAssetsInterval as NodeJS.Timeout);
   }
 
   async requestRegulatedAssets(exclude = false): Promise<void> {
@@ -557,7 +560,7 @@ export default class CreateSbtToken extends Mixins(
   async created(): Promise<void> {
     this.requestRegulatedAssets(this.isOnlyAttach);
 
-    const requlatedAssetsInterval = setInterval(() => {
+    this.requlatedAssetsInterval = setInterval(() => {
       this.requestRegulatedAssets(this.isOnlyAttach);
     }, 6_000); // block creation
   }
