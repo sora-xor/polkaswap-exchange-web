@@ -1717,6 +1717,12 @@
     "startIssue": "Start issuing access for the SBT to accounts",
     "permissionedAssets": "Permissioned assets",
     "addRegulatedAssets": "Add regulated assets",
+    "sbtCreation": {
+      "addAssets": "Add Assets to SBT",
+      "addDescription": "Enter SBT Details",
+      "addMeta": "Enter SBT Details",
+      "preview": "SBT Preview"
+    },
     "guide": {
       "createToken": "Create your token",
       "createTokenDesc": "Easily launch your unique token—available in multiple formats like NFTs and SBTs—using the robust, secure infrastructure of the SORA Network",

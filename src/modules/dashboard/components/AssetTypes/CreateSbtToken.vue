@@ -331,19 +331,19 @@ export default class CreateSbtToken extends Mixins(
   get titleText(): string {
     switch (this.step) {
       case Step.AssetsChoice:
-        return 'Add Assets to SBT';
+        return this.t('assetOwner.sbtCreation.addAssets');
       case Step.SbtMetaDescription:
-        return 'Enter SBT Details';
+        return this.t('assetOwner.sbtCreation.addDescription');
       case Step.SbtMetaImage:
-        return 'Enter SBT Details';
+        return this.t('assetOwner.sbtCreation.addMeta');
       case Step.SbtTxSign:
-        return 'SBT Preview';
+        return this.t('assetOwner.sbtCreation.preview');
       default:
         return this.t('createToken.titleCommon');
     }
   }
 
-  openFileUpload(e): void {
+  openFileUpload(e: Event): void {
     // Prevent opening while storage solution is missing
     e.preventDefault();
   }
