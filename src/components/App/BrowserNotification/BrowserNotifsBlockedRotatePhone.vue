@@ -43,6 +43,7 @@ export default class AppBrowserNotifsBlockedRotatePhone extends Mixins(
   @include browser-notification-dialog;
   justify-content: center;
   align-items: center;
+  max-height: 230px;
 }
 
 img {
