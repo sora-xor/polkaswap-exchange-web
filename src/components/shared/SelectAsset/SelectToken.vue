@@ -1,5 +1,11 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('selectToken.title')" custom-class="asset-select" append-to-body>
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('selectToken.title')"
+    custom-class="asset-select"
+    :append-to-body="appendToBody"
+    :modal-append-to-body="appendToBody"
+  >
     <s-tabs :value="tabValue" class="s-tabs--exchange" type="rounded" @input="handleTabChange">
       <search-input
         ref="search"
@@ -56,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
@@ -68,7 +74,7 @@ import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
 import { syntheticAssetRegexp } from '@/utils/regexp';
 
-import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 enum Tabs {
@@ -110,6 +116,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Prop({ default: false, type: Boolean }) readonly isFirstTokenSelected!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isAddLiquidity!: boolean;
   @Prop({ default: () => true, type: Function }) readonly filter!: (value: AccountAsset) => boolean;
+  @Prop({ default: true, type: Boolean }) readonly appendToBody!: boolean;
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
   @state.wallet.account.assets private assets!: Asset[];

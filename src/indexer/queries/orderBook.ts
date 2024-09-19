@@ -1,5 +1,5 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
@@ -8,7 +8,7 @@ import { OrderStatus } from '@/types/orderBook';
 import type { OrderBookDealData, OrderBookWithStats, OrderBookUpdateData, OrderData } from '@/types/orderBook';
 
 import type { OrderBookId } from '@sora-substrate/liquidity-proxy';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { SubquerySubscriptionPayload } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
 import type {
   OrderBookEntity,
@@ -419,13 +419,12 @@ const parseOrderBookUpdate =
   };
 
 export async function subscribeOnOrderBookUpdates(
-  dexId: number,
-  baseAssetId: string,
-  quoteAssetId: string,
+  orderBookId: string,
   handler: (entity: OrderBookUpdateData) => void | Promise<void>,
   errorHandler: () => void
 ): Promise<Nullable<FnWithoutArgs>> {
-  const orderBookId = [dexId, baseAssetId, quoteAssetId].join('-');
+  const [dex, baseAssetId, quoteAssetId] = orderBookId.split('-');
+  const dexId = Number(dex);
   const variables = { id: orderBookId };
   const indexer = getCurrentIndexer();
 

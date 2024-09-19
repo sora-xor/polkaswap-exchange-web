@@ -1,6 +1,6 @@
-import { FPNumber, CodecString } from '@sora-substrate/util';
-import { isNativeAsset } from '@sora-substrate/util/build/assets';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber, CodecString } from '@sora-substrate/sdk';
+import { isNativeAsset } from '@sora-substrate/sdk/build/assets';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
@@ -11,8 +11,8 @@ import router from '@/router';
 import store from '@/store';
 
 import type { AmountWithSuffix } from '../types/formats';
-import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type { Currency, CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 import type { Route } from 'vue-router';
 
@@ -53,6 +53,8 @@ export const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.
 export const formatAddress = (address: string, length = address.length / 2): string => {
   return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`;
 };
+
+export const areEqual = <T>(prev: T, curr: T): boolean => JSON.stringify(prev) === JSON.stringify(curr);
 
 export const isXorAccountAsset = (asset: Asset | AssetWithBalance): boolean => {
   return asset ? asset.address === XOR.address : false;
@@ -452,4 +454,13 @@ export const soraExplorerLinks = (
   if (!soraNetwork) return [];
 
   return getSubstrateExplorerLinks(getExplorerLinks(soraNetwork), isAccount, txValue, blockId, eventIndex);
+};
+
+export const updatePipTheme = (): void => {
+  const pipWindow = (window as any).documentPictureInPicture?.window;
+  if (pipWindow) {
+    const htmlElement = pipWindow.document.documentElement;
+    const theme = document.documentElement.getAttribute('design-system-theme');
+    htmlElement.setAttribute('design-system-theme', theme);
+  }
 };

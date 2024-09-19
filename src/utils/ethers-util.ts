@@ -1,7 +1,7 @@
 import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
-import { FPNumber } from '@sora-substrate/util';
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { FPNumber } from '@sora-substrate/sdk';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { ethers } from 'ethers';
 
 import { ZeroStringValue } from '@/consts';
@@ -10,8 +10,8 @@ import type { NetworkData } from '@/types/bridge';
 import { settingsStorage } from '@/utils/storage';
 import { getWcEthereumProvider } from '@/utils/walletconnect';
 
-import type { CodecString } from '@sora-substrate/util';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import type { ChainsProps } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
 
 type ethersProvider = ethers.BrowserProvider;
@@ -68,6 +68,10 @@ export const handleRpcProviderError = (error: any): string => {
   return handleErrorCode(code, message);
 };
 
+function withTimeout<T>(promise: Promise<T>, timeout = 6000) {
+  return Promise.race([promise, new Promise((resolve, reject) => setTimeout(reject, timeout))]);
+}
+
 async function connectEvmProvider(provider: Provider, chains: ChainsProps): Promise<string> {
   switch (provider) {
     case Provider.WalletConnect:
@@ -79,6 +83,8 @@ async function connectEvmProvider(provider: Provider, chains: ChainsProps): Prom
 
 function disconnectEvmProvider(provider?: Nullable<Provider>): void {
   ethereumProvider?.disconnect?.();
+  // don't wait promise execution, that's for wallets lifecycle
+  revokeWalletAccounts();
 }
 
 function createWeb3Instance(provider: any) {
@@ -109,13 +115,13 @@ async function useExtensionProvider(provider: Provider): Promise<string> {
       throw new Error('Unknown provider');
   }
 
-  if (!ethereumProvider) {
-    throw new Error(installExtensionKey);
-  }
+  if (!ethereumProvider) throw new Error(installExtensionKey);
 
   createWeb3Instance(ethereumProvider);
 
-  return await getAccount();
+  const accounts = await requestWalletAccounts();
+
+  return accounts[0];
 }
 
 async function useWalletConnectProvider(chainProps: ChainsProps): Promise<string> {
@@ -154,15 +160,21 @@ async function getSigner(): Promise<ethers.JsonRpcSigner> {
 }
 
 async function getAccount(): Promise<string> {
-  const ethersInstance = getEthersInstance();
-  await ethersInstance.send('eth_requestAccounts', []);
   const signer = await getSigner();
-  return signer.getAddress();
+  const address = signer.getAddress();
+
+  return address;
+}
+
+async function getContract(contractAddress: string, contractAbi: ethers.InterfaceAbi): Promise<ethers.Contract> {
+  const signer = await getSigner();
+  const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+
+  return contract;
 }
 
 async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> {
-  const signer = await getSigner();
-  const contract = new ethers.Contract(tokenAddress, SmartContracts[SmartContractType.ERC20].abi, signer);
+  const contract = await getContract(tokenAddress, SmartContracts[SmartContractType.ERC20]);
 
   return contract;
 }
@@ -271,6 +283,32 @@ async function watchEthereum(cb: {
   };
 }
 
+async function requestWalletAccounts(): Promise<string[]> {
+  const result = await ethereumProvider.request({
+    method: 'wallet_requestPermissions',
+    params: [
+      {
+        eth_accounts: {},
+      },
+    ],
+  });
+
+  const accounts = result[0].caveats[0].value;
+
+  return accounts as string[];
+}
+
+async function revokeWalletAccounts(): Promise<void> {
+  await ethereumProvider.request({
+    method: 'wallet_revokePermissions',
+    params: [
+      {
+        eth_accounts: {},
+      },
+    ],
+  });
+}
+
 async function addToken(address: string, symbol: string, decimals: number, image?: string): Promise<void> {
   try {
     await ethereumProvider.request({
@@ -296,7 +334,7 @@ async function addToken(address: string, symbol: string, decimals: number, image
  * @param chainName translated chain name
  */
 async function switchOrAddChain(network: NetworkData, chainName?: string): Promise<void> {
-  const chainId = ethers.toQuantity(network.id);
+  const chainId = ethers.toQuantity(network.evmId ?? network.id);
 
   try {
     await ethereumProvider.request({
@@ -356,6 +394,13 @@ function calcEvmFee(gasPrice: bigint, gasAmount: bigint) {
   return (gasPrice * gasAmount).toString();
 }
 
+async function waitForEvmTransaction(hash: string): Promise<ethers.TransactionReceipt | null> {
+  const ethersInstance = getEthersInstance();
+  const tx = await ethersInstance.waitForTransaction(hash);
+
+  return tx;
+}
+
 async function getEvmTransaction(hash: string): Promise<ethers.TransactionResponse | null> {
   const ethersInstance = getEthersInstance();
   const tx = await ethersInstance.getTransaction(hash);
@@ -408,18 +453,6 @@ function isNativeEvmTokenAddress(address: string): boolean {
   return hexToNumber(address) === 0;
 }
 
-function getEvmUserAddress(): string {
-  return settingsStorage.get('evmAddress') || '';
-}
-
-function storeEvmUserAddress(address: string): void {
-  settingsStorage.set('evmAddress', address);
-}
-
-function removeEvmUserAddress(): void {
-  settingsStorage.remove('evmAddress');
-}
-
 function getSelectedNetwork(): Nullable<BridgeNetworkId> {
   const network = settingsStorage.get('evmNetwork');
 
@@ -448,6 +481,7 @@ export default {
   getAccount,
   getAccountBalance,
   getAccountAssetBalance,
+  getContract,
   getTokenContract,
   getTokenDecimals,
   getAllowance,
@@ -461,16 +495,13 @@ export default {
   getEvmGasPrice,
   getEvmNetworkId,
   getEvmTransaction,
+  waitForEvmTransaction,
   getEvmTransactionReceipt,
   getBlock,
   getBlockNumber,
   addToken,
   switchOrAddChain,
   isNativeEvmTokenAddress,
-  // evm address storage
-  getEvmUserAddress,
-  storeEvmUserAddress,
-  removeEvmUserAddress,
   // evm network storage
   getSelectedNetwork,
   storeSelectedNetwork,

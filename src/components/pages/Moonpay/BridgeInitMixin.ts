@@ -1,5 +1,5 @@
-import { Operation } from '@sora-substrate/util';
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { Operation } from '@sora-substrate/sdk';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
@@ -15,11 +15,11 @@ import ethersUtil from '@/utils/ethers-util';
 import type { MoonpayTransaction } from '@/utils/moonpay';
 import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
 
-import type { CodecString } from '@sora-substrate/util';
-import type { RegisteredAccountAsset, AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { RegisteredAccountAsset, AccountBalance } from '@sora-substrate/sdk/build/assets/types';
+import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 const createError = (text: string, notification: MoonpayNotifications) => {

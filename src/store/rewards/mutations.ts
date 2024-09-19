@@ -6,7 +6,7 @@ import type { SelectedRewards, AccountRewards, RewardsAmountHeaderItem } from '@
 import { initialState } from './state';
 
 import type { RewardsState } from './types';
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/sdk';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<RewardsState>()({

@@ -192,10 +192,11 @@ import { Components, HundredNumber } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state } from '@/store/decorators';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { Collateral } from '@sora-substrate/util/build/kensetsu/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Collateral } from '@sora-substrate/sdk/build/kensetsu/types';
 
 type TableItem = {
+  name: string;
   lockedAsset: RegisteredAccountAsset;
   debtAsset: RegisteredAccountAsset;
   stabilityFeeValue: number;
@@ -273,7 +274,10 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
         availableToBorrowFiat = availableToBorrowFiatFp.toLocaleString(2);
       }
 
+      const name = `${debtAsset.symbol}/${lockedAsset.symbol}`; // For search
+
       acc.push({
+        name,
         lockedAsset,
         debtAsset,
         stabilityFeeValue,

@@ -37,7 +37,7 @@ import { getter, state } from '@/store/decorators';
 import { Fees } from '@/types/card';
 
 import type { FPNumber } from '@sora-substrate/math';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 enum BuyButtonType {
   Bridge,

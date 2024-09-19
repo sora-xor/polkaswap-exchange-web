@@ -15,6 +15,21 @@ $country-emoji-font: 'Twemoji Country Flags';
 
 @include generic-input-lines;
 
+.el-loading-mask {
+  background-color: var(--s-color-utility-body);
+  z-index: $app-loader-layer;
+
+  .el-loading-spinner {
+    background-image: url('~@/assets/img/pswap-loader.svg');
+    height: var(--s-size-medium);
+    width: var(--s-size-medium);
+    margin-left: calc(50% - (var(--s-size-medium) / 2));
+    > svg {
+      display: none;
+    }
+  }
+}
+
 .flag-emodji {
   &,
   &-input input.el-input__inner {
@@ -22,7 +37,7 @@ $country-emoji-font: 'Twemoji Country Flags';
   }
 }
 
-$networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polygon', 'binance-smart-chain', 'rococo', 'polkadot', 'kusama', 'acala', 'astar', 'shiden', 'liberland', 'moonbase', 'sora-polkadot', 'sora-kusama';
+$networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polygon', 'binance-smart-chain', 'rococo', 'polkadot', 'kusama', 'acala', 'astar', 'curio', 'shiden', 'liberland', 'alphanet', 'moonbase', 'moonbeam', 'sora-polkadot', 'sora-kusama';
 /* Networks Icons */
 .network-icon {
   display: inline-block;
@@ -41,15 +56,17 @@ $networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polyg
     }
   }
 
-  &--sora-rococo {
-    background-image: url('~@/assets/img/networks/rococo.svg');
-    &::after {
-      content: '';
-      display: block;
-      width: 50%;
-      height: 50%;
-      filter: drop-shadow(2px 4px 6px black);
-      background-image: url('~@/assets/img/networks/sora.svg');
+  @each $network in 'rococo', 'alphanet' {
+    &--sora-#{$network} {
+      background-image: url('~@/assets/img/networks/#{$network}.svg');
+      &::after {
+        content: '';
+        display: block;
+        width: 50%;
+        height: 50%;
+        filter: drop-shadow(2px 4px 6px black);
+        background-image: url('~@/assets/img/networks/sora.svg');
+      }
     }
   }
 }

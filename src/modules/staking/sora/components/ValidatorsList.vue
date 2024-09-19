@@ -94,7 +94,7 @@ import StakingMixin from '../mixins/StakingMixin';
 import ValidatorsMixin from '../mixins/ValidatorsMixin';
 import { ValidatorsFilter } from '../types';
 
-import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types';
+import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
 
 enum Sort {
   COMMISSION_ASC = 'commission-asc',

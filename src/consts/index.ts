@@ -112,7 +112,7 @@ export enum MarketAlgorithms {
   TBC = 'TBC',
   XYK = 'XYK',
   XST = 'XST',
-  ORB = 'Order Book',
+  ORB = 'Trade',
 }
 
 export const DefaultMarketAlgorithm = MarketAlgorithms.SMART;
@@ -121,6 +121,7 @@ export const LiquiditySourceForMarketAlgorithm = {
   [MarketAlgorithms.SMART]: LiquiditySourceTypes.Default,
   [MarketAlgorithms.TBC]: LiquiditySourceTypes.MulticollateralBondingCurvePool,
   [MarketAlgorithms.XYK]: LiquiditySourceTypes.XYKPool,
+  [MarketAlgorithms.ORB]: LiquiditySourceTypes.OrderBook,
 };
 
 export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm);
@@ -276,6 +277,7 @@ export enum Components {
   CustomiseWidget = 'shared/Widget/Customise',
   IFrameWidget = 'shared/Widget/IFrame',
   PriceChartWidget = 'shared/Widget/PriceChart',
+  TokenPriceChartWidget = 'shared/Widget/TokenPriceChart',
   SupplyChartWidget = 'shared/Widget/SupplyChart',
   // Shared Buttons
   SortButton = 'shared/Button/SortButton',

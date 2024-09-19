@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
@@ -8,7 +8,7 @@ import { FocusedField } from '@/store/addLiquidity/types';
 import type { LiquidityParams } from '@/store/pool/types';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
 import type { ActionContext } from 'vuex';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();

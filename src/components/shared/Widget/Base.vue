@@ -4,7 +4,7 @@
     size="big"
     primary
     :shadow="shadow"
-    :class="['base-widget', { delimeter, full, flat }]"
+    :class="['base-widget', { delimeter, full, flat, pip: pipOpened }]"
     v-loading="loading"
   >
     <template #header v-if="hasHeader">
@@ -25,9 +25,14 @@
         <div v-if="$slots.types" class="base-widget-block base-widget-types">
           <slot name="types" />
         </div>
+
+        <div v-if="isPipAvailable" class="base-widget-block base-widget-pip">
+          <s-button type="action" size="small" alternative @click="openPip" tooltip="Open in top window">
+            <s-icon name="finance-receive-24" size="24" />
+          </s-button>
+        </div>
       </div>
     </template>
-
     <div v-if="hasContent" :class="['base-widget-content', { extensive }]" ref="content">
       <slot />
     </div>
@@ -79,19 +84,27 @@ export default class BaseWidget extends Vue {
    * Widget has a loading state
    */
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
+  /**
+   * Widget "Picture in picture" mode is disabled
+   */
+  @Prop({ default: false, type: Boolean }) readonly pipDisabled!: boolean;
 
   @Prop({ default: () => {}, type: Function }) readonly onResize!: (id: string, size: Size) => void;
 
   @Ref('container') readonly container!: Vue;
   @Ref('content') readonly content!: HTMLDivElement;
 
-  private observer: ResizeObserver | null = null;
+  private contentObserver: ResizeObserver | null = null;
+  private mutationObserver: MutationObserver | null = null;
   private handleContentResize = debouncedInputHandler(this.onContentResize, 300, { leading: false });
 
   private size: Size = {
     width: 0,
     height: 0,
   };
+
+  private pipWindow: Window | null = null;
+  private pipOpened = false;
 
   public capitalize = capitalize;
 
@@ -107,6 +120,70 @@ export default class BaseWidget extends Vue {
     return this.flat ? 'never' : 'always';
   }
 
+  get isPipAvailable() {
+    if (this.pipDisabled) return false;
+
+    return 'documentPictureInPicture' in window && !this.pipOpened;
+  }
+
+  async openPip() {
+    if (!this.isPipAvailable) return;
+
+    try {
+      const pipWindow = await (window as any).documentPictureInPicture.requestWindow({
+        width: this.$el.clientWidth,
+        height: this.$el.clientHeight,
+      });
+
+      this.pipOpened = true;
+      this.pipWindow = pipWindow;
+
+      // Access the root element of the Vue component
+      const widgetElement = this.$el as HTMLElement;
+      const originalParent = widgetElement.parentNode as HTMLElement;
+
+      // STYLES
+      const allStyles = Array.from(document.styleSheets)
+        .map((styleSheet) =>
+          Array.from(styleSheet.cssRules)
+            .map((rule) => rule.cssText)
+            .join('\n')
+        )
+        .join('\n');
+      // Create a new style element in the Picture-in-Picture window
+      const style = pipWindow.document.createElement('style');
+      style.innerHTML = allStyles;
+      // Append style element to the Picture-in-Picture window's head
+      pipWindow.document.head.appendChild(style);
+
+      // THEME
+      // Get the <html> element from the Picture-in-Picture window's document
+      const htmlElement = pipWindow.document.documentElement;
+      // Get the <html> element from the original document
+      const originalHtmlElement = document.documentElement;
+      // Copy attributes from the original <html> element to the <html> element in the Picture-in-Picture window's document
+      for (const attribute of originalHtmlElement.attributes) {
+        htmlElement.setAttribute(attribute.nodeName, attribute.nodeValue);
+      }
+
+      // Move the Vue component to the Picture-in-Picture window
+      pipWindow.document.body.appendChild(widgetElement);
+      // watch original document style adding
+      this.createMutationObserver();
+
+      // Event listener when the PiP window is closed
+      pipWindow.addEventListener('pagehide', () => {
+        // Move the element back to the original document when PiP is closed
+        this.$nextTick(() => {
+          this.closePip();
+          originalParent.appendChild(widgetElement);
+        });
+      });
+    } catch (error) {
+      console.error('Error during PiP handling:', error);
+    }
+  }
+
   mounted(): void {
     this.createContentObserver();
     this.updateSize(this.getWidgetSize()); // initial
@@ -114,18 +191,52 @@ export default class BaseWidget extends Vue {
 
   beforeDestroy(): void {
     this.destroyContentObserver();
+    this.closePip();
+  }
+
+  private closePip(): void {
+    if (this.pipOpened && this.pipWindow) {
+      this.destroyMutationObserver();
+      this.pipWindow.close();
+      this.pipOpened = false;
+      this.pipWindow = null;
+    }
   }
 
   private createContentObserver(): void {
     if (!this.hasContent) return;
 
-    this.observer = new ResizeObserver(this.handleContentResize);
-    this.observer.observe(this.content);
+    this.contentObserver = new ResizeObserver(this.handleContentResize);
+    this.contentObserver.observe(this.content);
   }
 
   private destroyContentObserver(): void {
-    this.observer?.disconnect();
-    this.observer = null;
+    this.contentObserver?.disconnect();
+    this.contentObserver = null;
+  }
+
+  private createMutationObserver(): void {
+    const config: MutationObserverInit = { childList: true };
+
+    const callback: MutationCallback = (mutationList: MutationRecord[]) => {
+      const pipWindow = this.pipWindow;
+
+      if (!pipWindow) return;
+
+      for (const mutation of mutationList) {
+        Array.from(mutation.addedNodes).forEach((node) => {
+          pipWindow.document.head.appendChild(node.cloneNode(true));
+        });
+      }
+    };
+
+    this.mutationObserver = new MutationObserver(callback);
+    this.mutationObserver.observe(document.head, config);
+  }
+
+  private destroyMutationObserver(): void {
+    this.mutationObserver?.disconnect();
+    this.mutationObserver = null;
   }
 
   private getWidgetSize(): Size {
@@ -192,7 +303,6 @@ $left: $inner-spacing-medium;
   flex-flow: column nowrap;
   align-items: normal;
   overflow: hidden;
-  border: 1px solid transparent;
 
   &.full {
     width: 100%;
@@ -202,8 +312,14 @@ $left: $inner-spacing-medium;
   }
 
   &.flat {
-    border-color: var(--s-color-base-border-secondary);
+    border: 1px solid var(--s-color-base-border-secondary);
 
+    &.s-border-radius-small {
+      border-radius: unset;
+    }
+  }
+
+  &.pip {
     &.s-border-radius-small {
       border-radius: unset;
     }
@@ -242,16 +358,6 @@ $left: $inner-spacing-medium;
     }
   }
 
-  &-filters {
-    order: 1;
-
-    @include large-desktop {
-      margin-left: auto;
-      width: auto;
-      order: initial;
-    }
-  }
-
   &-content {
     display: flex;
     flex-flow: column nowrap;
@@ -260,7 +366,8 @@ $left: $inner-spacing-medium;
     padding: $between $left $top;
 
     &.extensive {
-      padding: 0;
+      // 1px for visible container inner shadow
+      padding: 0 1px;
     }
   }
 }

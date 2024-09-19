@@ -105,8 +105,8 @@ import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { sortPools } from '@/utils';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
 type LiquidityItem = AccountLiquidity & {
   firstAsset: AccountAsset;

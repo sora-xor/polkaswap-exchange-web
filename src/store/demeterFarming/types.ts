@@ -3,7 +3,7 @@ import type {
   DemeterPool,
   DemeterAccountPool,
   DemeterRewardToken,
-} from '@sora-substrate/util/build/demeterFarming/types';
+} from '@sora-substrate/sdk/build/demeterFarming/types';
 import type { Subscription } from 'rxjs';
 
 export type DemeterLiquidityParams = {

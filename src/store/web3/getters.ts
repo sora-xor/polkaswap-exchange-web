@@ -1,4 +1,4 @@
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
 
@@ -9,12 +9,12 @@ import { web3GetterContext } from '@/store/web3';
 import type { NetworkData } from '@/types/bridge';
 
 import type { Web3State, AvailableNetwork } from './types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 const getters = defineGetters<Web3State>()({
   availableNetworks(...args): Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>> {
-    const { state, rootState } = web3GetterContext(args);
+    const { state } = web3GetterContext(args);
 
     const hashi = [state.ethBridgeEvmNetwork].reduce((buffer, id) => {
       const data = EVM_NETWORKS[id];
@@ -79,11 +79,21 @@ const getters = defineGetters<Web3State>()({
   },
 
   isValidNetwork(...args): boolean {
-    const { state } = web3GetterContext(args);
+    const { state, getters } = web3GetterContext(args);
+    const { evmProviderNetwork } = state;
+    const { selectedNetwork } = getters;
 
-    if (state.networkType === BridgeNetworkType.Sub) return true;
+    if (!selectedNetwork) return false;
 
-    return state.evmProviderNetwork === state.networkSelected;
+    if (state.networkType === BridgeNetworkType.Sub) {
+      if (selectedNetwork.evmId) {
+        return evmProviderNetwork === selectedNetwork.evmId;
+      } else {
+        return true;
+      }
+    }
+
+    return evmProviderNetwork === selectedNetwork.id;
   },
 
   contractAddress(...args): (asset: KnownEthBridgeAsset) => Nullable<string> {

@@ -11,8 +11,8 @@ import {
 import { swapGetterContext } from '@/store/swap';
 
 import type { SwapState } from './types';
-import type { CodecString } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 const getters = defineGetters<SwapState>()({
   tokenFrom(...args): Nullable<RegisteredAccountAsset> {
@@ -34,17 +34,19 @@ const getters = defineGetters<SwapState>()({
     return token;
   },
   marketAlgorithms(...args): Array<MarketAlgorithms> {
-    const { state } = swapGetterContext(args);
-    const allSources = state.liquiditySources;
-    // implementation of backend hack, to show only primary market sources
-    const primarySources = allSources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
+    const { state, rootGetters } = swapGetterContext(args);
+
+    const allSources = rootGetters.settings.debugEnabled
+      ? state.liquiditySources
+      : // implementation of backend hack, to show only primary market sources
+        state.liquiditySources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
 
     const items = Object.keys(LiquiditySourceForMarketAlgorithm) as Array<MarketAlgorithms>;
 
     return items.filter((marketAlgorithm) => {
       const liquiditySource = LiquiditySourceForMarketAlgorithm[marketAlgorithm];
 
-      return marketAlgorithm === MarketAlgorithms.SMART || primarySources.includes(liquiditySource);
+      return marketAlgorithm === MarketAlgorithms.SMART || allSources.includes(liquiditySource);
     });
   },
   marketAlgorithmsAvailable(...args): boolean {

@@ -1,6 +1,6 @@
 import { Connection } from '@sora-substrate/connection';
-import { WithConnectionApi, FPNumber, Storage } from '@sora-substrate/util';
-import { formatBalance } from '@sora-substrate/util/build/assets';
+import { WithConnectionApi, FPNumber, Storage } from '@sora-substrate/sdk';
+import { formatBalance } from '@sora-substrate/sdk/build/assets';
 import { ApiPromise, WsProvider } from 'polkadotApi';
 
 import { ZeroStringValue } from '@/consts';
@@ -9,9 +9,9 @@ import { NodesConnection } from '@/utils/connection';
 
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 import type { ISubmittableResult } from '@polkadot/types/types';
-import type { CodecString } from '@sora-substrate/util';
-import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 
 class BaseSubAdapter extends WithConnectionApi {
   public readonly subNetwork!: SubNetwork;
@@ -135,6 +135,10 @@ class BaseSubAdapter extends WithConnectionApi {
   public getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: string | number) {
     throw new Error(`[${this.constructor.name}] "getTransferExtrinsic" method is not implemented`);
   }
+
+  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId: string) {
+    throw new Error(`[${this.constructor.name}] "transfer" method is not implemented`);
+  }
 }
 
 export class SubAdapter extends BaseSubAdapter {
@@ -154,7 +158,7 @@ export class SubAdapter extends BaseSubAdapter {
     }, ZeroStringValue);
   }
 
-  protected async assetsAssetMinBalanceRequest(assetId: number | string): Promise<CodecString> {
+  protected async assetMinBalanceRequest(assetId: number | string): Promise<CodecString> {
     return await this.withConnection(async () => {
       const result = await (this.api.query.assets as any).asset(assetId);
 

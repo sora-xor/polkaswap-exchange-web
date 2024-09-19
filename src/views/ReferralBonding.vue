@@ -50,8 +50,8 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -61,8 +61,8 @@ import router, { lazyComponent } from '@/router';
 import { getter, mutation, state } from '@/store/decorators';
 import { getMaxValue, hasInsufficientBalance, asZeroValue, getAssetBalance } from '@/utils';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset, AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
+import type { AccountAsset, AccountBalance } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {

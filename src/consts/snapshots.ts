@@ -12,13 +12,6 @@ export const SECONDS_IN_TYPE = {
   [SnapshotTypes.MONTH]: 30 * 24 * 60 * 60,
 };
 
-const DAY_IN_MINS_FILTER = {
-  name: Timeframes.DAY,
-  label: '1D',
-  type: SnapshotTypes.DEFAULT,
-  count: 288,
-};
-
 const DAY_IN_HOURS_FILTER = {
   name: Timeframes.DAY,
   label: '1D',
@@ -68,13 +61,6 @@ const YEAR_IN_DAYS_FILTER = {
   count: 365,
 };
 
-const ALL_IN_DAYS_FILTER = {
-  name: Timeframes.ALL,
-  label: 'ALL',
-  type: SnapshotTypes.DAY,
-  count: Infinity,
-};
-
 export const NETWORK_STATS_FILTERS: SnapshotFilter[] = [
   DAY_IN_HOURS_FILTER,
   WEEK_IN_HOURS_FILTER,
@@ -84,7 +70,7 @@ export const NETWORK_STATS_FILTERS: SnapshotFilter[] = [
   YEAR_IN_MONTHS_FILTER,
 ];
 
-export const ASSET_SUPPLY_LINE_FILTERS: SnapshotFilter[] = [
+export const ASSET_SUPPLY_FILTERS: SnapshotFilter[] = [
   DAY_IN_HOURS_FILTER,
   WEEK_IN_HOURS_FILTER,
   MONTH_IN_DAYS_FILTER,

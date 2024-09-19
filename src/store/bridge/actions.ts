@@ -1,9 +1,9 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber } from '@sora-substrate/util';
-import { getAssetBalance } from '@sora-substrate/util/build/assets';
-import { DAI } from '@sora-substrate/util/build/assets/consts';
-import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { DexId } from '@sora-substrate/util/build/dex/consts';
+import { FPNumber } from '@sora-substrate/sdk';
+import { getAssetBalance } from '@sora-substrate/sdk/build/assets';
+import { DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { DexId } from '@sora-substrate/sdk/build/dex/consts';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
@@ -33,11 +33,11 @@ import { updateSubBridgeHistory } from '@/utils/bridge/sub/classes/history';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
-import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { IBridgeTransaction, CodecString } from '@sora-substrate/sdk';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 
@@ -82,6 +82,26 @@ function getBridgeApi(context: ActionContext<any, any>) {
   if (getters.isEvmBridge) return evmBridgeApi;
 
   return ethBridgeApi;
+}
+
+async function switchAmounts(context: ActionContext<any, any>): Promise<void> {
+  const { state, dispatch } = bridgeActionContext(context);
+
+  if (state.focusedField === FocusedField.Received) {
+    await dispatch.setSendedAmount(state.amountReceived);
+  } else {
+    await dispatch.setReceivedAmount(state.amountSend);
+  }
+}
+
+async function updateAmounts(context: ActionContext<any, any>): Promise<void> {
+  const { state, dispatch } = bridgeActionContext(context);
+
+  if (state.focusedField === FocusedField.Received) {
+    await dispatch.setReceivedAmount(state.amountReceived);
+  } else {
+    await dispatch.setSendedAmount(state.amountSend);
+  }
 }
 
 function checkEvmNetwork(context: ActionContext<any, any>): void {
@@ -318,30 +338,29 @@ function calculateMaxLimit(
   referenceAsset: string,
   usdLimit: CodecString,
   quote: SwapQuote
-): FPNumber {
+): FPNumber | null {
   const outgoingLimitUSD = FPNumber.fromCodecValue(usdLimit);
 
   if (outgoingLimitUSD.isZero() || limitAsset === referenceAsset) return outgoingLimitUSD;
 
   try {
-    // We should calculate the asset price in reference asset
-    // For this purpose is used the reduced asset amount (amount should be greater than any order book tick size)
-    const assetAmount = FPNumber.ONE;
-    const multiplier = new FPNumber(1000);
-    const quoteAmount = assetAmount.div(multiplier);
+    const quoteAmount = FPNumber.ONE;
 
     const {
       result: { amount },
     } = quote(limitAsset, referenceAsset, quoteAmount.toString(), false, [], false);
     // result amount multiplied by a multiplier to get asset price
-    const assetPriceUSD = FPNumber.fromCodecValue(amount).mul(multiplier);
 
-    if (!assetPriceUSD.isFinity() || assetPriceUSD.isZero()) return FPNumber.ZERO;
+    const assetPriceUSD = FPNumber.fromCodecValue(amount);
+
+    // zero price means liquidity problem - disable limit
+    if (!assetPriceUSD.isFinity() || assetPriceUSD.isZero()) return null;
 
     return outgoingLimitUSD.div(assetPriceUSD);
   } catch (error) {
     console.error(error);
-    return FPNumber.ZERO;
+    // disable limit on calculation error
+    return null;
   }
 }
 
@@ -400,7 +419,7 @@ async function updateSoraNetworkFee(context: ActionContext<any, any>): Promise<v
   commit.setSoraNetworkFee(fee);
 }
 
-async function updateBalancesAndFees(context: ActionContext<any, any>): Promise<void> {
+async function updateBalancesFeesAndAmounts(context: ActionContext<any, any>): Promise<void> {
   const { dispatch } = bridgeActionContext(context);
 
   await Promise.allSettled([
@@ -454,19 +473,14 @@ const actions = defineActions({
   },
 
   async switchDirection(context): Promise<void> {
-    const { commit, dispatch, state } = bridgeActionContext(context);
+    const { commit, state } = bridgeActionContext(context);
 
     commit.setSoraToEvm(!state.isSoraToEvm);
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await updateBalancesAndFees(context);
-
-    if (state.focusedField === FocusedField.Received) {
-      await dispatch.setSendedAmount(state.amountReceived);
-    } else {
-      await dispatch.setReceivedAmount(state.amountSend);
-    }
+    await updateBalancesFeesAndAmounts(context);
+    await switchAmounts(context);
   },
 
   async setAssetAddress(context, address?: string): Promise<void> {
@@ -480,8 +494,9 @@ const actions = defineActions({
       dispatch.updateOutgoingMinLimit(),
       dispatch.updateOutgoingMaxLimit(),
       dispatch.updateIncomingMinLimit(),
-      updateBalancesAndFees(context),
+      updateBalancesFeesAndAmounts(context),
     ]);
+    await updateAmounts(context);
   },
 
   async updateExternalBalance(context): Promise<void> {
@@ -547,7 +562,7 @@ const actions = defineActions({
     if (!hasOutgoingLimit) return;
 
     const referenceAsset = DAI.address;
-    const sources = [LiquiditySourceTypes.XYKPool, LiquiditySourceTypes.XSTPool];
+    const sources = [LiquiditySourceTypes.XYKPool, LiquiditySourceTypes.XSTPool, LiquiditySourceTypes.OrderBook];
     const limitObservable = api.bridgeProxy.getCurrentTransferLimitObservable();
     const quoteObservable = api.swap.getSwapQuoteObservable(referenceAsset, limitAsset, sources, DexId.XOR);
 
@@ -573,7 +588,7 @@ const actions = defineActions({
 
     const subscription = api.system.updated.subscribe(() => {
       updateExternalBlockNumber(context);
-      updateBalancesAndFees(context);
+      updateBalancesFeesAndAmounts(context);
     });
 
     commit.setBlockUpdatesSubscription(subscription);

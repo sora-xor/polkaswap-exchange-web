@@ -107,8 +107,8 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
-import { XOR, KEN } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber } from '@sora-substrate/sdk';
+import { XOR, KEN } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
 import { Component, Mixins } from 'vue-property-decorator';
@@ -121,7 +121,7 @@ import { lazyComponent } from '@/router';
 import { state } from '@/store/decorators';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 const ZeroStr = '0';
 

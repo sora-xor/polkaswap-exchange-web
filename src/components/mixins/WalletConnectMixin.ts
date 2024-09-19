@@ -5,8 +5,8 @@ import router from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { Provider, installExtensionKey, handleRpcProviderError } from '@/utils/ethers-util';
 
-import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 @Component
 export default class WalletConnectMixin extends Mixins(InternalConnectMixin) {
@@ -17,14 +17,17 @@ export default class WalletConnectMixin extends Mixins(InternalConnectMixin) {
   @state.web3.networkType networkType!: BridgeNetworkType;
 
   @getter.bridge.isSubBridge isSubBridge!: boolean;
+  @getter.bridge.isSubAccountType isSubAccountType!: boolean;
 
   @mutation.web3.setSubAccountDialogVisibility setSubAccountDialogVisibility!: (flag: boolean) => void;
   @mutation.web3.setSelectProviderDialogVisibility setSelectProviderDialogVisibility!: (flag: boolean) => void;
 
   @action.web3.changeEvmNetworkProvided changeEvmNetworkProvided!: AsyncFnWithoutArgs;
   @action.web3.selectEvmProvider selectEvmProvider!: (provider: Provider) => Promise<void>;
-  @action.web3.resetEvmProviderConnection resetEvmProviderConnection!: FnWithoutArgs;
   @action.web3.disconnectExternalNetwork disconnectExternalNetwork!: AsyncFnWithoutArgs;
+
+  @action.web3.resetEvmProviderConnection disconnectEvmWallet!: FnWithoutArgs;
+  @action.web3.resetSubAccount disconnectSubWallet!: FnWithoutArgs;
 
   connectSubWallet(): void {
     this.setSubAccountDialogVisibility(true);

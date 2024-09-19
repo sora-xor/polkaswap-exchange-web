@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { CodecString } from '@sora-substrate/util';
+import { CodecString } from '@sora-substrate/sdk';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
@@ -51,9 +51,9 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { ZeroStringValue, Components } from '@/consts';
 import { lazyComponent } from '@/router';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 @Component({
   components: {

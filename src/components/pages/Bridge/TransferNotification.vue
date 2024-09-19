@@ -19,18 +19,21 @@
 </template>
 
 <script lang="ts">
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import { getter, state, mutation } from '@/store/decorators';
 import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
+import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { IBridgeTransaction } from '@sora-substrate/util';
-import type { Whitelist, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { IBridgeTransaction } from '@sora-substrate/sdk';
+import type { Whitelist, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 @Component({
   components: {
@@ -42,6 +45,7 @@ import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/typ
 })
 export default class BridgeTransferNotification extends Mixins(BridgeTransactionMixin) {
   @state.bridge.notificationData private notificationData!: Nullable<IBridgeTransaction>;
+  @state.bridge.subBridgeConnector private subBridgeConnector!: SubNetworksConnector;
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
@@ -73,13 +77,22 @@ export default class BridgeTransferNotification extends Mixins(BridgeTransaction
     return this.asset?.symbol ?? '';
   }
 
-  get addTokenBtnVisibility(): boolean {
-    if (!this.tx?.externalNetworkType) return false;
-    if (this.tx.externalNetworkType === BridgeNetworkType.Sub) return false;
+  get isSubEvm(): boolean {
+    return subBridgeApi.isEvmAccount(this.tx?.externalNetwork as SubNetwork);
+  }
 
-    return (
-      !!this.asset && !ethersUtil.isNativeEvmTokenAddress(this.asset.externalAddress) && isOutgoingTransaction(this.tx)
-    );
+  get isEvmNetwork(): boolean {
+    if (!this.tx?.externalNetworkType) return false;
+    if (this.tx.externalNetworkType === BridgeNetworkType.Sub && !this.isSubEvm) return false;
+    return true;
+  }
+
+  get addTokenBtnVisibility(): boolean {
+    if (!this.isEvmNetwork) return false;
+
+    const address = this.asset?.externalAddress;
+
+    return !!address && !ethersUtil.isNativeEvmTokenAddress(address) && isOutgoingTransaction(this.tx);
   }
 
   get txLink() {
@@ -118,11 +131,30 @@ export default class BridgeTransferNotification extends Mixins(BridgeTransaction
   async addToken(): Promise<void> {
     if (!this.asset) return;
 
-    const { externalAddress, externalDecimals, symbol, address } = this.asset;
-    const image = this.whitelist[address]?.icon;
-    await ethersUtil.addToken(externalAddress, symbol, +externalDecimals, image);
+    try {
+      const { externalAddress, externalDecimals, symbol, address } = this.asset;
+      const image = this.whitelist[address]?.icon;
 
-    this.visibility = false;
+      let tokenAddress = externalAddress;
+      let tokenSymbol = symbol;
+      let tokenDecimals = +externalDecimals;
+
+      if (this.isSubEvm) {
+        const adapter = this.subBridgeConnector.parachain;
+        if (!adapter) throw new Error('Adapter not found');
+        const assetMeta = adapter.getAssetMeta(this.asset);
+        if (!assetMeta) throw new Error('Asset metadata not found');
+        tokenAddress = adapter.assetIdToEvmContractAddress(externalAddress);
+        tokenSymbol = assetMeta.symbol;
+        tokenDecimals = assetMeta.decimals;
+      }
+
+      await ethersUtil.addToken(tokenAddress, tokenSymbol, tokenDecimals, image);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.visibility = false;
+    }
   }
 }
 </script>

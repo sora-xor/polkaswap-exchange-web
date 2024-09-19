@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/sdk';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
@@ -56,13 +56,11 @@ const actions = defineActions({
   },
   async getTransactionTranserData(_, hash: string): Promise<Nullable<MoonpayEVMTransferAssetData>> {
     try {
-      const ethersInstance = ethersUtil.getEthersInstance();
-
       console.info(`Moonpay: found latest moonpay transaction.\nChecking ethereum transaction by hash:\n${hash}`);
 
       // wait until transaction complete
       // ISSUE: moonpay sending eth in ropsten, erc20 in rinkeby
-      await ethersInstance.waitForTransaction(hash);
+      await ethersUtil.waitForEvmTransaction(hash);
 
       const tx = await ethersUtil.getEvmTransaction(hash);
 
@@ -84,7 +82,7 @@ const actions = defineActions({
         };
       } else {
         // Parse ERC-20 transfer
-        const abi = SmartContracts[SmartContractType.ERC20].abi;
+        const abi = SmartContracts[SmartContractType.ERC20];
         const inter = new ethers.Interface(abi);
         const decodedInput = inter.parseTransaction({ data: tx.data });
 

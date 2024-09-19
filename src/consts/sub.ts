@@ -1,9 +1,9 @@
-import { BridgeTxDirection } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { BridgeTxDirection } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 
 import type { NetworkData, SubNetworksFees } from '@/types/bridge';
 
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 
 export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
   [SubNetworkId.Kusama]: {
@@ -98,6 +98,31 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.PolkadotMoonbeam]: {
+    id: SubNetworkId.PolkadotMoonbeam,
+    name: 'Moonbeam',
+    nativeCurrency: {
+      name: 'GLMR',
+      symbol: 'GLMR',
+      decimals: 18,
+    },
+    endpointUrls: ['https://rpc.api.moonbeam.network', 'https://moonbeam-rpc.dwellir.com'],
+    blockExplorerUrls: ['https://moonbeam.subscan.io'],
+    shortName: 'Moonbeam',
+    nodes: [
+      {
+        chain: 'Moonbeam',
+        name: 'Moonbeam Foundation',
+        address: 'wss://wss.api.moonbeam.network',
+      },
+      {
+        chain: 'Moonbeam',
+        name: 'Dwellir',
+        address: 'wss://moonbeam-rpc.dwellir.com',
+      },
+    ],
+    evmId: 1284,
+  },
   [SubNetworkId.Rococo]: {
     id: SubNetworkId.Rococo,
     name: 'Rococo',
@@ -130,7 +155,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       {
         chain: 'Moonbase Relay Testnet',
         name: 'Parity',
-        address: 'wss://frag-moonbase-relay-rpc-ws.g.moonbase.moonbeam.network',
+        address: 'wss://fro-moon-rpc-1-moonbase-relay-rpc-1.moonbase.ol-infra.network',
       },
     ],
   },
@@ -142,8 +167,9 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'GLMR', // "DEV"
       decimals: 18,
     },
-    blockExplorerUrls: [],
-    shortName: 'Alpha',
+    endpointUrls: ['https://rpc.api.moonbase.moonbeam.network', 'https://moonbase-rpc.dwellir.com'],
+    blockExplorerUrls: ['https://moonbase.subscan.io'],
+    shortName: 'Moonbase',
     nodes: [
       {
         chain: 'Moonbase Alpha',
@@ -151,6 +177,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
         address: 'wss://wss.api.moonbase.moonbeam.network',
       },
     ],
+    evmId: 1287,
   },
   // SORA Parachains
   [SubNetworkId.RococoSora]: {
@@ -168,6 +195,24 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
         chain: 'SORA Rococo Parachain Testnet',
         name: 'Soramitsu',
         address: 'wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp',
+      },
+    ],
+  },
+  [SubNetworkId.KusamaCurio]: {
+    id: SubNetworkId.KusamaCurio,
+    name: 'Curio',
+    nativeCurrency: {
+      name: 'CGT',
+      symbol: 'CGT',
+      decimals: 18,
+    },
+    blockExplorerUrls: [],
+    shortName: 'Curio',
+    nodes: [
+      {
+        chain: 'Curio',
+        name: 'Curio',
+        address: 'wss://parachain.curioinvest.com',
       },
     ],
   },
@@ -244,7 +289,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       {
         chain: 'SORA Alphanet Parachain',
         name: 'Soramitsu',
-        address: 'wss://ws.parachain-collator-2.c1.stg1.sora2.soramitsu.co.jp',
+        address: 'wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp',
       },
     ],
   },
@@ -300,10 +345,46 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
       [BridgeTxDirection.Incoming]: '0',
     },
   },
+  [SubNetworkId.Alphanet]: {
+    ALPHA: {
+      [BridgeTxDirection.Outgoing]: '2700000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+  },
   [SubNetworkId.AlphanetMoonbase]: {
-    ACA: {
+    GLMR: {
       [BridgeTxDirection.Outgoing]: '34313700000000',
       [BridgeTxDirection.Incoming]: '0',
+    },
+    ALPHA: {
+      [BridgeTxDirection.Outgoing]: '44415350668',
+      [BridgeTxDirection.Incoming]: '46453162841',
+    },
+    XOR: {
+      [BridgeTxDirection.Outgoing]: '8140448382622083802',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+  },
+  [SubNetworkId.KusamaCurio]: {
+    XOR: {
+      [BridgeTxDirection.Outgoing]: '500000000000000000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+    VAL: {
+      [BridgeTxDirection.Outgoing]: '348000000000000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+    PSWAP: {
+      [BridgeTxDirection.Outgoing]: '16000000000000000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+    CGT: {
+      [BridgeTxDirection.Outgoing]: '112000000000000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+    KSM: {
+      [BridgeTxDirection.Outgoing]: '1900000000',
+      [BridgeTxDirection.Incoming]: '50407940264',
     },
   },
 };

@@ -82,7 +82,7 @@ import { getCssVariableValue, toQueryString } from '../../../utils';
 import { MoonpayTransactionStatus } from '../../../utils/moonpay';
 
 import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '../../../utils/moonpay';
-import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
+import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 const HistoryView = 'history';

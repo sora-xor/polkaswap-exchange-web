@@ -1,15 +1,21 @@
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 
-import type { ApiPromise } from '@polkadot/api';
-import type { CodecString } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { CodecString, WithConnectionApi } from '@sora-substrate/sdk';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { SubNetwork, SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+
+export const isOutgoingTx = (tx: SubHistory): boolean => {
+  return tx.type === Operation.SubstrateOutgoing;
+};
 
 export const isUnsignedTx = (tx: SubHistory): boolean => {
-  return !tx.blockId && !tx.txId;
+  const signId =
+    subBridgeApi.isEvmAccount(tx.externalNetwork as SubNetwork) && !isOutgoingTx(tx) ? tx.externalHash : tx.txId;
+
+  return !tx.blockId && !signId;
 };
 
 export const getTransaction = (id: string): SubHistory => {
@@ -38,8 +44,26 @@ export const determineTransferType = (network: SubNetwork) => {
   }
 };
 
-export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string => {
-  const bridgeProxyEvent = events.find((e) => api.events.bridgeProxy.RequestStatusUpdate.is(e.event));
+export const isEvent = (e, section: string, method: string) => {
+  return e.event.section === section && e.event.method === method;
+};
+
+export const isQueueMessage = (e) =>
+  isEvent(e, 'messageQueue', 'Processed') ||
+  isEvent(e, 'xcmpQueue', 'Success') ||
+  isEvent(e, 'xcmpQueue', 'Fail') ||
+  isEvent(e, 'dmpQueue', 'ExecutedDownward');
+
+export const isParaInclusion = (e) => isEvent(e, 'paraInclusion', 'CandidateIncluded');
+
+export const isXcmPalletAttempted = (e) => isEvent(e, 'xcmPallet', 'Attempted');
+
+export const isTransactionFeePaid = (e) => isEvent(e, 'transactionPayment', 'TransactionFeePaid');
+
+export const isBridgeProxyUpdate = (e) => isEvent(e, 'bridgeProxy', 'RequestStatusUpdate');
+
+export const getBridgeProxyHash = (events: Array<any>): string => {
+  const bridgeProxyEvent = events.find((e) => isBridgeProxyUpdate(e));
 
   if (!bridgeProxyEvent) {
     throw new Error(`Unable to find "bridgeProxy.RequestStatusUpdate" event`);
@@ -48,14 +72,16 @@ export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string 
   return bridgeProxyEvent.event.data[0].toString();
 };
 
-export const isEvent = (e, section: string, method: string) => {
-  return e.event.section === section && e.event.method === method;
+export const isBridgeProxyHash = (e: any, hash: string): boolean => {
+  if (!isBridgeProxyUpdate(e)) return false;
+
+  const proxyHash = e.event.data[0].toString();
+
+  return hash === proxyHash;
 };
 
-export const isTransactionFeePaid = (e) => isEvent(e, 'transactionPayment', 'TransactionFeePaid');
-
-export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): [string, number] => {
-  const recipient = subBridgeApi.formatAddress(to);
+export const getDepositedBalance = (events: Array<any>, to: string, chainApi: WithConnectionApi): [string, number] => {
+  const recipient = chainApi.formatAddress(to).toLowerCase();
 
   const index = events.findIndex((e) => {
     let eventRecipient = '';
@@ -64,11 +90,15 @@ export const getDepositedBalance = (events: Array<any>, to: string, api: ApiProm
       eventRecipient = e.event.data.who.toString();
     } else if (isEvent(e, 'assets', 'Transfer')) {
       eventRecipient = e.event.data[1].toString();
+    } else if (isEvent(e, 'assets', 'Issued')) {
+      eventRecipient = e.event.data.owner.toString();
     }
 
     if (!eventRecipient) return false;
 
-    return subBridgeApi.formatAddress(eventRecipient) === recipient;
+    const formatted = chainApi.formatAddress(eventRecipient).toLowerCase();
+
+    return formatted === recipient;
   });
 
   if (index === -1) throw new Error(`Unable to find balance deposit like event`);
@@ -88,22 +118,22 @@ export const getReceivedAmount = (sendedAmount: string, receivedAmount: CodecStr
   return { amount: amount2, transferFee };
 };
 
-export const getParachainSystemMessageHash = (events: Array<any>, api: ApiPromise) => {
+export const getParachainSystemMessageHash = (events: Array<any>) => {
   const parachainSystemEvent = events.find(
-    (e) => api.events.parachainSystem.UpwardMessageSent.is(e.event) || api.events.xcmpQueue.XcmpMessageSent.is(e.event)
+    (e) => isEvent(e, 'parachainSystem', 'UpwardMessageSent') || isEvent(e, 'xcmpQueue', 'XcmpMessageSent')
   );
 
   if (!parachainSystemEvent) {
     throw new Error(`Unable to find "parachainSystem.UpwardMessageSent" event`);
   }
 
-  return parachainSystemEvent.event.data.messageHash.toString();
+  return parachainSystemEvent.event.data[0].toString();
 };
 
-export const getMessageAcceptedNonces = (events: Array<any>, api: ApiPromise): [number, number] => {
-  const messageAcceptedEvent = events.find((e) =>
-    api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
-  );
+export const isMessageAccepted = (e) => isEvent(e, 'substrateBridgeOutboundChannel', 'MessageAccepted');
+
+export const getMessageAcceptedNonces = (events: Array<any>): [number, number] => {
+  const messageAcceptedEvent = events.find((e) => isMessageAccepted(e));
 
   if (!messageAcceptedEvent) {
     throw new Error('Unable to find "substrateBridgeOutboundChannel.MessageAccepted" event');
@@ -115,8 +145,10 @@ export const getMessageAcceptedNonces = (events: Array<any>, api: ApiPromise): [
   return [batchNonce, messageNonce];
 };
 
-export const getMessageDispatchedNonces = (events: Array<any>, api: ApiPromise): [number, number] => {
-  const messageDispatchedEvent = events.find((e) => api.events.substrateDispatch.MessageDispatched.is(e.event));
+export const isMessageDispatched = (e) => isEvent(e, 'substrateDispatch', 'MessageDispatched');
+
+export const getMessageDispatchedNonces = (events: Array<any>): [number, number] => {
+  const messageDispatchedEvent = events.find((e) => isMessageDispatched(e));
 
   if (!messageDispatchedEvent) {
     throw new Error('Unable to find "substrateDispatch.MessageDispatched" event');
@@ -129,13 +161,8 @@ export const getMessageDispatchedNonces = (events: Array<any>, api: ApiPromise):
   return [eventBatchNonce, eventMessageNonce];
 };
 
-export const isMessageDispatchedNonces = (
-  sendedBatchNonce: number,
-  sendedMessageNonce: number,
-  e: any,
-  api: ApiPromise
-): boolean => {
-  if (!api.events.substrateDispatch.MessageDispatched.is(e.event)) return false;
+export const isMessageDispatchedNonces = (sendedBatchNonce: number, sendedMessageNonce: number, e: any): boolean => {
+  if (!isMessageDispatched(e)) return false;
 
   const { batchNonce, messageNonce } = e.event.data[0];
 
@@ -156,13 +183,13 @@ export const isAssetAddedToChannel = (
   asset: RegisteredAccountAsset,
   to: string,
   sended: CodecString,
-  api: ApiPromise
+  chainApi: WithConnectionApi
 ): boolean => {
-  if (!api.events.xcmApp.AssetAddedToChannel.is(e.event)) return false;
+  if (!isEvent(e, 'xcmApp', 'AssetAddedToChannel')) return false;
 
   const { amount, assetId, recipient } = e.event.data[0].asTransfer;
   // address check
-  if (subBridgeApi.formatAddress(recipient.toString()) !== subBridgeApi.formatAddress(to)) return false;
+  if (chainApi.formatAddress(recipient.toString()) !== chainApi.formatAddress(to)) return false;
   // asset check
   if (assetId.toString() !== asset.address) return false;
   // amount check
@@ -179,9 +206,9 @@ export const isSoraBridgeAppBurned = (
   from: string,
   to: string,
   sended: CodecString,
-  api: ApiPromise
+  chainApi: WithConnectionApi
 ) => {
-  if (!api.events.soraBridgeApp.Burned.is(e.event)) return false;
+  if (!isEvent(e, 'soraBridgeApp', 'Burned')) return false;
 
   const [networkIdCodec, assetIdCodec, senderCodec, recipientCodec, amountCodec] = e.event.data;
 
@@ -193,8 +220,8 @@ export const isSoraBridgeAppBurned = (
   const amount = amountCodec.toString();
 
   // address check
-  if (subBridgeApi.formatAddress(sender) !== subBridgeApi.formatAddress(from)) return false;
-  if (subBridgeApi.formatAddress(recipient) !== subBridgeApi.formatAddress(to)) return false;
+  if (chainApi.formatAddress(sender) !== chainApi.formatAddress(from)) return false;
+  if (chainApi.formatAddress(recipient) !== chainApi.formatAddress(to)) return false;
   // asset check
   if (assetId !== asset.externalAddress) return false;
   // amount check

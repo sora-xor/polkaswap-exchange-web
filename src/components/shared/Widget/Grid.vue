@@ -26,6 +26,7 @@
             id: widget.i,
             flat,
             loading,
+            parentLoading: loading,
             onResize,
             reset,
           }"

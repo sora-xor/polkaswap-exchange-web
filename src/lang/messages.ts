@@ -1,5 +1,5 @@
-import { Operation, TransactionStatus } from '@sora-substrate/util';
-import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
+import { Operation, TransactionStatus } from '@sora-substrate/sdk';
+import { RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
 import { en as walletEn } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 

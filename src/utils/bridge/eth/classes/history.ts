@@ -1,5 +1,5 @@
-import { Operation } from '@sora-substrate/util';
-import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { Operation } from '@sora-substrate/sdk';
+import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { api, SUBQUERY_TYPES, WALLET_CONSTS, getCurrentIndexer } from '@soramitsu/soraneo-wallet-web';
 import { ethers, EtherscanProvider, BlockTag } from 'ethers';
 import first from 'lodash/fp/first';
@@ -13,9 +13,9 @@ import { getEvmTransactionRecieptByHash, isOutgoingTransaction } from '@/utils/b
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { NetworkFeesObject } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
+import type { NetworkFeesObject } from '@sora-substrate/sdk';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { ActionContext } from 'vuex';
 
 export default class EtherscanHistoryProvider extends EtherscanProvider {
@@ -33,8 +33,8 @@ export default class EtherscanHistoryProvider extends EtherscanProvider {
 }
 
 const BRIDGE_INTERFACE = new ethers.Interface([
-  ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.XOR].abi, // XOR or VAL
-  ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi, // Other
+  ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.XOR], // XOR or VAL
+  ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other], // Other
 ]);
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
@@ -157,8 +157,7 @@ export class EthBridgeHistory {
   }
 
   public async init(contracts: EthBridgeContractsAddresses): Promise<void> {
-    const ethersInstance = ethersUtil.getEthersInstance();
-    const network = await ethersInstance.getNetwork();
+    const network = await ethersUtil.getEvmNetworkId();
 
     this.etherscanInstance = new EtherscanHistoryProvider(network, this.etherscanApiKey);
     this.externalNetwork = await ethersUtil.getEvmNetworkId();
