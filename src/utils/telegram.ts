@@ -64,31 +64,10 @@ class TmaSdk {
       }
       // Init haptic feedback
       this.addHapticListener();
-      // if (window.innerWidth <= Breakpoint.LargeMobile) {
-      //   this.addOrientationListener();
-      // }
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
       store.commit.settings.disableTMA();
       store.commit.wallet.account.setIsDesktop(false);
-    }
-  }
-
-  private addOrientationListener(): void {
-    window.addEventListener('resize', this.handleOrientationChange);
-    this.handleOrientationChange();
-  }
-
-  private removeOrientationListener(): void {
-    window.removeEventListener('resize', this.handleOrientationChange);
-  }
-
-  private handleOrientationChange(): void {
-    const isLandscape = window.innerHeight < window.innerWidth;
-    if (isLandscape) {
-      store.commit.settings.showOrientationWarning();
-    } else {
-      store.commit.settings.hideOrientationWarning();
     }
   }
 
@@ -151,7 +130,6 @@ class TmaSdk {
 
   public destroy(): void {
     this.removeHapticListener();
-    this.removeOrientationListener();
   }
 }
 
