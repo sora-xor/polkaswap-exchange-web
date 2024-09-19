@@ -1,6 +1,5 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
 
-import { Breakpoint } from '@/consts/layout';
 import store from '@/store';
 
 enum HapticStatusValue {
