@@ -241,13 +241,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private handleOrientationChange(): void {
-    console.info('we are in handleOrientationChange');
-    console.info(screen);
     const isLandscape = screen.orientation
       ? screen.orientation.type.startsWith('landscape')
       : window.innerHeight < window.innerWidth;
-    console.info('here is landsacep');
-    console.info(isLandscape);
     if (isLandscape) {
       this.showOrientationWarning();
     } else {
@@ -307,10 +303,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   mounted(): void {
     window.addEventListener('resize', this.setResponsiveClassDebounced);
-    console.info('we are in mounted');
     if (window.innerWidth <= Breakpoint.LargeMobile) {
       if (screen.orientation) {
-        console.info('we are in screen.orientation');
         screen.orientation.addEventListener('change', this.handleOrientationChange);
       } else {
         window.addEventListener('resize', this.handleOrientationChange);
