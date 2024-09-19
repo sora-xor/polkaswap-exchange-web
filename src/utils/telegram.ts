@@ -64,9 +64,9 @@ class TmaSdk {
       }
       // Init haptic feedback
       this.addHapticListener();
-      if (window.innerWidth <= Breakpoint.LargeMobile) {
-        this.addOrientationListener();
-      }
+      // if (window.innerWidth <= Breakpoint.LargeMobile) {
+      //   this.addOrientationListener();
+      // }
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
       store.commit.settings.disableTMA();
