@@ -25,7 +25,7 @@
     <app-mobile-popup :visible.sync="showSoraMobilePopup" />
     <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
     <app-browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
-    <div v-if="isOrientationWarningVisible">
+    <div v-if="orientationWarningVisible">
       <app-browser-notifs-blocked-rotate-phone />
     </div>
     <notification-enabling-page v-if="showNotifsDarkPage">
@@ -120,6 +120,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.appConnection private appConnection!: NodesConnection;
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
+  @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
@@ -127,7 +128,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.router.loading pageLoading!: boolean;
 
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
-  @getter.settings.isOrientationWarningVisible isOrientationWarningVisible!: boolean;
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
