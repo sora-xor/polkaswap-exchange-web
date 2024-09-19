@@ -25,9 +25,7 @@
     <app-mobile-popup :visible.sync="showSoraMobilePopup" />
     <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
     <app-browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
-    <div v-if="orientationWarningVisible">
-      <app-browser-notifs-blocked-rotate-phone />
-    </div>
+    <app-browser-notifs-blocked-rotate-phone :visible.sync="orientationWarningVisible" />
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>

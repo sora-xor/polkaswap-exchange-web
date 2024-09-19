@@ -1,41 +1,53 @@
 <template>
-  <div class="browser-notification">
+  <dialog-base class="browser-notification" :visible.sync="isVisible">
     <div class="browser-notification-dialog">
       <img src="@/assets/img/mobile/rotate_phone.svg" alt="mobile-rotate-phone" />
       <p class="notification-title">{{ t('browserNotificationDialog.rotatetitle') }}</p>
       <p class="notification-message">{{ t('browserNotificationDialog.rotateMessage') }}</p>
+      <s-button
+        type="primary"
+        class="s-typography-button--large browser-notification-dialog__btn"
+        :loading="loading"
+        @click="agree"
+      >
+        {{ t('browserNotificationDialog.agree') }}
+      </s-button>
     </div>
-  </div>
+  </dialog-base>
 </template>
 
 <script lang="ts">
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-@Component
-export default class AppBrowserNotifsBlockedRotatePhone extends Mixins(TranslationMixin) {}
+@Component({
+  components: {
+    DialogBase: components.DialogBase,
+  },
+})
+export default class AppBrowserNotifsBlockedRotatePhone extends Mixins(
+  TranslationMixin,
+  mixins.DialogMixin,
+  mixins.LoadingMixin
+) {
+  agree(): void {
+    this.closeDialog();
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-.browser-notification {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
+.browser-notification-dialog {
+  @include browser-notification-dialog;
   justify-content: center;
   align-items: center;
-  background-color: var(--s-color-utility-body);
-  z-index: 9999;
 }
 
-.browser-notification-dialog {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+img {
+  height: 113px;
+  width: 113px;
 }
 
 .notification-title {
@@ -51,5 +63,7 @@ export default class AppBrowserNotifsBlockedRotatePhone extends Mixins(Translati
   font-weight: 500;
   color: var(--s-color-base-content-secondary);
   max-width: 200px;
+  text-align: center;
+  margin-bottom: 14px;
 }
 </style>
