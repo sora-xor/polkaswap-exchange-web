@@ -72,9 +72,8 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, state, action } from '@/store/decorators';
+import { getter, state, action, mutation } from '@/store/decorators';
 import { syntheticAssetRegexp } from '@/utils/regexp';
-import { settingsStorage } from '@/utils/storage';
 
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
@@ -126,13 +125,14 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
+  @getter.assets.pinnedAssetsAddresses pinnedAssetsAddresses!: string[];
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
   @getter.wallet.account.whitelist public whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
 
   @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
 
-  pinnedAssetsAddresses: string[] = [];
+  @mutation.assets.loadPinnedAssetsAddresses loadPinnedAssetsAddresses!: () => void;
 
   created() {
     this.loadPinnedAssetsAddresses();
@@ -177,31 +177,9 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     return orderedList;
   }
 
-  loadPinnedAssetsAddresses() {
-    const pinnedAssetsAddressesStr = settingsStorage.get('pinnedAssets');
-    console.info('we are in loadPinnedAssetsAddresses');
-    console.info(typeof pinnedAssetsAddressesStr);
-
-    try {
-      const parsed = JSON.parse(pinnedAssetsAddressesStr);
-      if (Array.isArray(parsed)) {
-        this.pinnedAssetsAddresses = parsed;
-      } else {
-        this.pinnedAssetsAddresses = [];
-      }
-    } catch (e) {
-      // Parsing failed, set to empty array
-      this.pinnedAssetsAddresses = [];
-    }
-  }
-
   get filteredWhitelistTokens(): Array<AccountAsset> {
-    console.info('we are in filteredWhitelistTokens');
     const filteredAssets = this.filterAssetsByQuery(this.whitelistAssetsList)(this.searchQuery) as Array<AccountAsset>;
-    console.info('here are filteredAssets');
-    console.info(filteredAssets);
 
-    // Use the reactive pinnedAssetsAddresses
     const pinnedAssetsAddresses = this.pinnedAssetsAddresses;
 
     const filteredAssetsMap = new Map<string, AccountAsset>();
@@ -211,11 +189,9 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     const pinnedAssets: AccountAsset[] = pinnedAssetsAddresses
       .map((address) => filteredAssetsMap.get(address))
       .filter((asset): asset is AccountAsset => !!asset);
-    console.info('here are pinnedAssets');
-    console.info(pinnedAssets);
+
     const nonPinnedAssets = filteredAssets.filter((asset) => !pinnedAssetsAddresses.includes(asset.address));
-    console.info('here are non pinned assets');
-    console.info(nonPinnedAssets);
+
     return [...pinnedAssets, ...nonPinnedAssets];
   }
 
@@ -234,12 +210,6 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   get activeAssetsList(): Array<AccountAsset> {
     const assets = this.isCustomTabActive ? this.sortedNonWhitelistAccountAssets : this.filteredWhitelistTokens;
-    console.info('hera are my assets that filteredWhitelistTokens');
-    console.info(assets);
-    // console.info('here is my filter');
-    // console.info(this.filter);
-    console.info('here is using filter');
-    console.info(assets.filter(this.filter));
     return assets.filter(this.filter);
   }
 

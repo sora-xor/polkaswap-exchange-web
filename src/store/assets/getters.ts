@@ -6,7 +6,7 @@ import { ZeroStringValue } from '@/consts';
 import { assetsGetterContext } from '@/store/assets';
 
 import type { AssetsState } from './types';
-import type { Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, RegisteredAccountAsset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 const getters = defineGetters<AssetsState>()({
   whitelistAssets(...args): Array<Asset> {
@@ -41,6 +41,14 @@ const getters = defineGetters<AssetsState>()({
   xor(...args): Nullable<RegisteredAccountAsset> {
     const { getters } = assetsGetterContext(args);
     return getters.assetDataByAddress(XOR.address);
+  },
+  pinnedAssetsAddresses(state): string[] {
+    return state.pinnedAssetsAddresses;
+  },
+  isAssetPinned(state): (asset: AccountAsset) => boolean {
+    return (asset: AccountAsset): boolean => {
+      return state.pinnedAssetsAddresses.includes(asset.address);
+    };
   },
 });
 

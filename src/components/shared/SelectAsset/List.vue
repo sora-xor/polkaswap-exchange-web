@@ -12,7 +12,7 @@
         <button
           @click.stop="togglePinnedAsset(token)"
           class="pin-button"
-          :title="isAssetPinned(token) ? t('Unpin Asset') : t('Pin Asset')"
+          :title="isAssetPinned(token) ? 'Unpin Asset' : 'Pin Asset'"
         >
           <p>{{ token && isAssetPinned(token) ? 'unpin' : 'pin' }}</p>
         </button>
@@ -41,8 +41,8 @@ import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { getter, mutation } from '@/store/decorators';
 import { formatAssetBalance } from '@/utils';
-import { settingsStorage } from '@/utils/storage';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -58,61 +58,29 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
   @Prop({ default: false, type: Boolean }) readonly shouldBalanceBeHidden!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
 
+  @getter.assets.pinnedAssetsAddresses pinnedAssetsAddresses!: string[];
+  @getter.assets.isAssetPinned isAssetPinned!: (asset: AccountAsset) => boolean;
+
+  @mutation.assets.setPinnedAsset setPinnedAsset!: (assetAddress: string) => void;
+  @mutation.assets.removePinnedAsset removePinnedAsset!: (assetAddress: string) => void;
+  @mutation.assets.loadPinnedAssetsAddresses loadPinnedAssetsAddresses!: () => void;
+
   readonly FormattedZeroSymbol = '-';
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
   readonly HiddenValue = WALLET_CONSTS.HiddenValue;
 
-  pinnedAssetsAddresses: string[] = [];
   created() {
     this.loadPinnedAssetsAddresses();
   }
 
-  // Method to load pinned assets from settingsStorage
-  loadPinnedAssetsAddresses() {
-    const pinnedAssetsAddressesStr = settingsStorage.get('pinnedAssets');
-    console.info('we are in loadPinnedAssetsAddresses');
-    console.info(typeof pinnedAssetsAddressesStr);
-
-    try {
-      const parsed = JSON.parse(pinnedAssetsAddressesStr);
-      if (Array.isArray(parsed)) {
-        this.pinnedAssetsAddresses = parsed;
-      } else {
-        this.pinnedAssetsAddresses = [];
-      }
-    } catch (e) {
-      // Parsing failed, set to empty array
-      this.pinnedAssetsAddresses = [];
-    }
-  }
-
-  // Method to check if an asset is pinned
-  isAssetPinned(asset: AccountAsset): boolean {
-    return this.pinnedAssetsAddresses.includes(asset.address);
-  }
-
-  // Method to toggle the pinned status of an asset
   togglePinnedAsset(asset: AccountAsset): void {
     if (this.isAssetPinned(asset)) {
-      this.removePinnedAsset(asset);
+      this.removePinnedAsset(asset.address);
     } else {
-      this.setPinnedAsset(asset);
+      this.setPinnedAsset(asset.address);
     }
     this.$emit('pinnedAssetsChanged');
-  }
-
-  // Method to pin an asset
-  setPinnedAsset(pinnedAccountAsset: AccountAsset): void {
-    const assetAddress = pinnedAccountAsset.address;
-    this.pinnedAssetsAddresses.push(assetAddress);
-    settingsStorage.set('pinnedAssets', JSON.stringify(this.pinnedAssetsAddresses));
-  }
-
-  // Method to unpin an asset
-  removePinnedAsset(pinnedAccountAsset: AccountAsset): void {
-    this.pinnedAssetsAddresses = this.pinnedAssetsAddresses.filter((address) => address !== pinnedAccountAsset.address);
-    settingsStorage.set('pinnedAssets', JSON.stringify(this.pinnedAssetsAddresses));
   }
 
   formatBalance(token: AccountAsset): string {

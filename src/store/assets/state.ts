@@ -4,6 +4,7 @@ function initialState(): AssetsState {
   return {
     registeredAssets: {},
     registeredAssetsFetching: false,
+    pinnedAssetsAddresses: [],
   };
 }
 
