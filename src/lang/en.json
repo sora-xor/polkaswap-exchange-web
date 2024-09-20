@@ -256,7 +256,7 @@
         "alreadyAttached": "Token was already attached",
         "understand": "I understand",
         "warningTitle": "Trade at your own risk!",
-        "warningMessage": "Anyone can create a token, including creating fake versions of existing tokens that claim to represent projects.\nIf you purchase this token, you may not be able to sell it back.",
+        "warningMessage": "this {assetType} | these {assetTypePlural}",
         "approved": "Asset approved by community",
         "unknown": "Unknown source",
         "scam": "SCAM",
@@ -265,7 +265,13 @@
             "title": "Currencies",
             "switchBtn": "Verified assets only"
         },
-        "searchInputText": "Search by Asset ID, Name or Ticker Symbol"
+        "searchInputText": "Search by Asset ID, Name or Ticker Symbol",
+        "warningMessageText": "Anyone can create a {assetType}, including creating fake versions of existing {assetTypePlural} that claim to represent projects.\nIf you purchase {purchaseAssetType}, you may not be able to sell it back.",
+        "assetType": {
+            "token": "token | tokens",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Add"
     },
     "createToken": {
         "desc": "Create and deploy custom asset on {Sora}",
@@ -1042,7 +1048,9 @@
         "button": "Enable notifications",
         "agree": "Yes, I understand",
         "notificationBlocked": "To receive the notifications about {AppName}, please, allow the notifications in your browser's native settings",
-        "pointer": "Press “Allow” to turn notifications on"
+        "pointer": "Press “Allow” to turn notifications on",
+        "rotatetitle": "Please, rotate your device",
+        "rotateMessage": "The experience is only available in portrait mode"
     },
     "assetDeposit": "Asset balance has been deposited",
     "noDataText": "No data",
@@ -1665,5 +1673,6 @@
         "yourRewards": "Your rewards",
         "openTelegram": "Open {Telegram}",
         "toEarnPoints": "To earn points"
-    }
+    },
+    "addAssetsText": "Add asset | Add assets"
 }

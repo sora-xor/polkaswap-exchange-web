@@ -256,7 +256,7 @@
         "alreadyAttached": "Token đã được thêm vào",
         "understand": "Tôi hiểu",
         "warningTitle": "Giao dịch với khẩu vị rủi ro của riêng bạn!",
-        "warningMessage": "Bất cứ ai cũng có thể tạo mã token, kể cả tạo ra các phiên bản giả mạo của các token hiện có và nhận vơ có liên quan tới các dự án đang chạy.\nNếu bạn mua token này, có thể bạn không thể bán được.",
+        "warningMessage": "{assetType} này | những {assetTypePlural} này",
         "approved": "Tài sản được cộng đồng phê duyệt",
         "unknown": "Nguồn không xác định",
         "scam": "LỪA ĐẢO",
@@ -265,7 +265,13 @@
             "title": "Tiền tệ",
             "switchBtn": "Chỉ nội dung đã xác minh"
         },
-        "searchInputText": "Tìm kiếm theo ID, tên hoặc ký hiệu mã"
+        "searchInputText": "Tìm kiếm theo ID, tên hoặc ký hiệu mã",
+        "warningMessageText": "Bất kỳ ai cũng có thể tạo {assetType}, bao gồm cả việc tạo phiên bản giả mạo của các {assetTypePlural} hiện có tuyên bố đại diện cho các dự án. Nếu bạn mua {purchaseAssetType}, bạn có thể sẽ không bán lại được.",
+        "assetType": {
+            "token": "Mã thông báo | Mã thông báo",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Thêm"
     },
     "createToken": {
         "desc": "Tạo và triển khai tài sản tùy chỉnh trên {Sora}",
@@ -1042,7 +1048,9 @@
         "button": "Bật thông báo",
         "agree": "Vâng, tôi hiểu",
         "notificationBlocked": "Để nhận thông báo về {AppName}, vui lòng cho phép thông báo trong cài đặt gốc của trình duyệt của bạn",
-        "pointer": "Nhấn “Cho phép” để bật thông báo"
+        "pointer": "Nhấn “Cho phép” để bật thông báo",
+        "rotatetitle": "Vui lòng xoay thiết bị của bạn",
+        "rotateMessage": "Trải nghiệm chỉ có sẵn ở chế độ dọc"
     },
     "assetDeposit": "Số dư tài sản đã được gửi",
     "noDataText": "Không có dữ liệu",
@@ -1665,5 +1673,6 @@
         "yourRewards": "Phần thưởng của bạn",
         "openTelegram": "Mở {Telegram}",
         "toEarnPoints": "Để kiếm điểm"
-    }
+    },
+    "addAssetsText": "Thêm tài sản | Thêm các tài sản"
 }

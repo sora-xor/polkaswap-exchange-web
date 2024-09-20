@@ -256,7 +256,7 @@
         "alreadyAttached": "Tokent már csatolták",
         "understand": "Megértettem",
         "warningTitle": "Kereskedj a saját felelősségedre!",
-        "warningMessage": "Bárki létrehozhat tokent, beleértve a meglévő tokenek hamisított verzióinak létrehozását, amelyek azt állítják, hogy valós projekteket képviselnek.\nHa megvásárolod ezt a tokent, nem biztos, hogy el tudod adni.",
+        "warningMessage": "ez a {assetType} | ezek a {assetTypePlural}",
         "approved": "A közösség által jóváhagyott eszköz",
         "unknown": "Ismeretlen forrás",
         "scam": "ÁTVERÉS",
@@ -265,7 +265,13 @@
             "title": "Valuták",
             "switchBtn": "Csak ellenőrzött eszközök"
         },
-        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján"
+        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján",
+        "warningMessageText": "Bárki létrehozhat egy {assetType}-t, beleértve a meglévő {assetTypePlural} hamis változatait is, amelyek azt állítják, hogy projekteket képviselnek. Ha {purchaseAssetType}-t vásárolsz, lehet, hogy nem tudod visszaadni.",
+        "assetType": {
+            "token": "Zseton | Zsetonok",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Hozzáadás"
     },
     "createToken": {
         "desc": "Egyéni eszköz létrehozása és telepítése a {Sora} hálózaton",
@@ -1042,7 +1048,9 @@
         "button": "Értesítések engedélyezése",
         "agree": "Igen, értem",
         "notificationBlocked": "Ahhoz, hogy értesítést kapjon az {AppName} alkalmazásról, kérjük, engedélyezze az értesítéseket a böngésző natív beállításaiban.",
-        "pointer": "Nyomja meg az „Engedélyezés” gombot az értesítések bekapcsolásához"
+        "pointer": "Nyomja meg az „Engedélyezés” gombot az értesítések bekapcsolásához",
+        "rotatetitle": "Kérjük, forgassa el a készülékét",
+        "rotateMessage": "Az élmény csak álló módban érhető el"
     },
     "assetDeposit": "Az eszközök egyenlege letétbe helyezve",
     "noDataText": "Nincs adat",
@@ -1665,5 +1673,6 @@
         "yourRewards": "Jutalmaitok",
         "openTelegram": "Megnyitni {Telegram}",
         "toEarnPoints": "Pontok megszerzéséhez"
-    }
+    },
+    "addAssetsText": "Eszköz hozzáadása | Eszközök hozzáadása"
 }

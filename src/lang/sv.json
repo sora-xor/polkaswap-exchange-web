@@ -256,7 +256,7 @@
         "alreadyAttached": "Token var redan bifogad",
         "understand": "Jag förstår",
         "warningTitle": "Handla på egen risk!",
-        "warningMessage": "Vem som helst kan skapa en token, inklusive skapa falska versioner av befintliga tokens som påstår sig representera olika projekt.\nOm du köper denna token finns det en risk för du efterföljande inte kan sälja den.",
+        "warningMessage": "denna {assetType} | dessa {assetTypePlural}",
         "approved": "Tillgång godkänd av communityn",
         "unknown": "Okänt ursprung",
         "scam": "BLUFF",
@@ -265,7 +265,13 @@
             "title": "Valutor",
             "switchBtn": "Endast verifierade tillgångar"
         },
-        "searchInputText": "Sök efter Tillgångs-ID, Namn eller Ticker-symbol"
+        "searchInputText": "Sök efter Tillgångs-ID, Namn eller Ticker-symbol",
+        "warningMessageText": "Vem som helst kan skapa en {assetType}, inklusive falska versioner av befintliga {assetTypePlural} som påstår sig representera projekt. Om du köper en {purchaseAssetType}, kanske du inte kan sälja tillbaka den.",
+        "assetType": {
+            "token": "Tecken | Tecken",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Addera"
     },
     "createToken": {
         "desc": "Skapa och utplacera anpassad tillgång på {Sora}",
@@ -1042,7 +1048,9 @@
         "button": "Aktivera aviseringar",
         "agree": "Ja, jag förstår",
         "notificationBlocked": "För att få aviseringar om {AppName}, vänligen tillåt aviseringarna i webbläsarens inställningar",
-        "pointer": "Tryck på \"Tillåt\" för att aktivera aviseringar"
+        "pointer": "Tryck på \"Tillåt\" för att aktivera aviseringar",
+        "rotatetitle": "Vänligen rotera din enhet",
+        "rotateMessage": "Upplevelsen är endast tillgänglig i porträttläge"
     },
     "assetDeposit": "Tillgångssaldo har satts in",
     "noDataText": "Ingen data",
@@ -1665,5 +1673,6 @@
         "yourRewards": "Dina belöningar",
         "openTelegram": "Öppna {Telegram}",
         "toEarnPoints": "För att tjäna poäng"
-    }
+    },
+    "addAssetsText": "Lägg till tillgång | Lägg till tillgångar"
 }

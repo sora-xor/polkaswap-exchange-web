@@ -256,7 +256,7 @@
         "alreadyAttached": "Il token era già stato aggiunto",
         "understand": "Capisco",
         "warningTitle": "Fai trading a tuo rischio!",
-        "warningMessage": "Chiunque può creare un token, inclusa la creazione di versioni false di token esistenti che pretendono di rappresentare progetti.\nSe acquisti questo token, potresti non essere in grado di rivenderlo.",
+        "warningMessage": "questo {assetType} | questi {assetTypePlural}",
         "approved": "Asset approvata dalla comunità",
         "unknown": "Fonte sconosciuta",
         "scam": "SCAM",
@@ -265,7 +265,13 @@
             "title": "Valute",
             "switchBtn": "Solo asset verificati"
         },
-        "searchInputText": "Cerca per ID asset, nome o simbolo del ticker"
+        "searchInputText": "Cerca per ID asset, nome o simbolo del ticker",
+        "warningMessageText": "Chiunque può creare un {assetType}, comprese versioni false di {assetTypePlural} esistenti che pretendono di rappresentare progetti. Se acquisti un {purchaseAssetType}, potresti non essere in grado di rivenderlo.",
+        "assetType": {
+            "token": "Gettone | Gettoni",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Inserisci"
     },
     "createToken": {
         "desc": "Crea e distribuisci asset personalizzati su {Sora}",
@@ -1042,7 +1048,9 @@
         "button": "Attivare le notifiche",
         "agree": "Si, capisco",
         "notificationBlocked": "Per ricevere le notifiche su {AppName}, consenti le notifiche nelle impostazioni native del tuo browser",
-        "pointer": "Premi \"Consenti\" per attivare le notifiche"
+        "pointer": "Premi \"Consenti\" per attivare le notifiche",
+        "rotatetitle": "Si prega di ruotare il dispositivo",
+        "rotateMessage": "L'esperienza è disponibile solo in modalità verticale"
     },
     "assetDeposit": "Il saldo patrimoniale è stato depositato",
     "noDataText": "Nessun dato",
@@ -1665,5 +1673,6 @@
         "yourRewards": "Le tue ricompense",
         "openTelegram": "Apri {Telegram}",
         "toEarnPoints": "Per guadagnare punti"
-    }
+    },
+    "addAssetsText": "Aggiungi bene | Aggiungi beni"
 }
