@@ -10,12 +10,14 @@
     <template #default="token">
       <div v-if="connected" class="asset__balance-container">
         <button
+          v-if="formatBalance(token) !== FormattedZeroSymbol"
           @click.stop="togglePinnedAsset(token)"
           class="pin-button"
           :title="isAssetPinned(token) ? 'Unpin Asset' : 'Pin Asset'"
         >
-          <p>{{ token && isAssetPinned(token) ? 'unpin' : 'pin' }}</p>
+          <pin-icon :isPinned="isAssetPinned(token)" />
         </button>
+
         <formatted-amount-with-fiat-value
           v-if="formatBalance(token) !== FormattedZeroSymbol"
           value-class="asset__balance"
@@ -27,8 +29,15 @@
           :fiat-font-size-rate="FontSizeRate.MEDIUM"
           :fiat-font-weight-rate="FontWeightRate.MEDIUM"
         />
+
         <span v-else class="asset__balance">
-          {{ shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol }}
+          <button
+            @click.stop="togglePinnedAsset(token)"
+            class="pin-button"
+            :title="isAssetPinned(token) ? 'Unpin Asset' : 'Pin Asset'"
+          >
+            <pin-icon :isPinned="isAssetPinned(token)" />
+          </button>
         </span>
       </div>
       <slot name="action" v-bind="token" />
@@ -44,12 +53,15 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, mutation } from '@/store/decorators';
 import { formatAssetBalance } from '@/utils';
 
+import PinIcon from '../Logo/PinIcon.vue';
+
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     AssetList: components.AssetList,
+    PinIcon,
   },
 })
 export default class SelectAssetList extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
@@ -160,6 +172,13 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
     height: 70px;
     width: 70px;
     background: url('~@/assets/img/no-results.svg') center no-repeat;
+  }
+}
+.pin-button {
+  background-color: unset;
+  border: unset;
+  &:hover {
+    cursor: pointer;
   }
 }
 </style>
