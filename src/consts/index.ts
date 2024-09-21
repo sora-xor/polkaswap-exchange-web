@@ -171,6 +171,7 @@ export enum PageNames {
 export enum Components {
   // App
   AppLogoButton = 'App/Header/AppLogoButton',
+  AppMarketing = 'App/Header/AppMarketing',
   AppMobilePopup = 'App/MobilePopup',
   AppBrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
   AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
