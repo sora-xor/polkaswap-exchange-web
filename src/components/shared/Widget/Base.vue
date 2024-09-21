@@ -295,7 +295,7 @@ export default class BaseWidget extends Vue {
 
 <style lang="scss" scoped>
 $top: $inner-spacing-medium;
-$between: $top / 2;
+$between: $top * 0.5;
 $left: $inner-spacing-medium;
 
 .base-widget {
