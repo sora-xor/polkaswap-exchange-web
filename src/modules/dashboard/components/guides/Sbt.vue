@@ -79,7 +79,7 @@ export default class SbtGuide extends Mixins(mixins.TranslationMixin) {
     width: 46px;
     height: 46px;
     .s-icon-notifications-alert-triangle-24 {
-      color: var(--s-color-base-on-accent);
+      color: #fff;
       display: block;
       margin-top: 5px;
       margin-left: 7px;
