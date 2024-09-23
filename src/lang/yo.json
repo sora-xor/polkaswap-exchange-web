@@ -1,1669 +1,1735 @@
 {
-    "closeText": "Pade",
-    "backText": "Pada",
-    "createWalletText": "Ṣẹda apamọwọ",
-    "nameText": "Orukọ",
-    "nextText": "Itele",
-    "importText": "Gbe wọle",
-    "settingsText": "Ètò",
-    "addAssetText": "Ṣafikun dukia",
-    "successText": "Aṣeyọri",
-    "warningText": "Ikilọ",
-    "swapText": "Iŕopo",
-    "searchText": "Ṣawari",
-    "cancelText": "Fagilee",
-    "saveText": "Fipamọ",
-    "logoutText": "Jade",
-    "sendText": "Firanṣẹ",
-    "addressText": "Adirẹsi",
-    "amountText": "Iye",
-    "errorText": "Aṣiṣe",
-    "insufficientBalanceText": "Iye {tokenSymbol} Oto",
-    "unknownErrorText": "ASISE Nkankan ti ko to ti sele...",
-    "transactionSubmittedText": "A ti fi isowo sile",
-    "operations": {
-        "Swap": "Iŕopo",
-        "Transfer": "Firanśe",
-        "AddLiquidity": "Fi liquidity si",
-        "RemoveLiquidity": "Yọ liquidity kuro",
-        "CreatePair": "Ṣẹda Pair",
-        "RegisterAsset": "Forukọsilẹ dukia",
-        "ClaimRewards": "Beere Awọn ere",
-        "andText": "ati",
-        "finalized": {
-            "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "Swap": "Ti paarọ {amount} {symbol} fun {amount2} {symbol2}",
-            "AddLiquidity": "Ti pese {amount} {symbol} ati {amount2} {symbol2}",
-            "RemoveLiquidity": "Ti yọ {amount} {symbol} ati {amount2} {symbol2}",
-            "CreatePair": "Ti pese {amount} {symbol} ati {amount2} {symbol2}",
-            "RegisterAsset": "Dukia {symbol} Tati foruko e sile",
-            "ClaimRewards": "A ti gba ere ni aseyori {rewards}",
-            "ReferralReserveXor": "Bonded {amount} XOR",
-            "ReferralUnreserveXor": "Ailokun {amount} XOR",
-            "ReferralSetInvitedUser": "{role} {address} ti ṣeto ni aṣeyọri",
-            "SwapAndSend": "Paarọ {amount} {symbol} fun {amount2} {symbol2} ati {action} {direction} {address}",
-            "DemeterFarmingDepositLiquidity": "Pese {symbol} ati {symbol2} {amount} LP àmi",
-            "DemeterFarmingWithdrawLiquidity": "Yọ kuro {symbol} ati {symbol2} {amount} LP àmi",
-            "DemeterFarmingStakeToken": "Fi kun {amount} {symbol}",
-            "DemeterFarmingUnstakeToken": "Yiyọ kuro {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} beere ni aṣeyọri",
-            "EthBridgeIncoming": "Gbigbe {amount} {symbol} lati {Ethereum} si {Sora}",
-            "EthBridgeOutgoing": "Gbigbe {amount} {symbol} lati {Sora} si {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
-            "StakingBondAndNominate": "Ti di {amount} {symbol}",
-            "StakingBond": "Ti di {amount} {symbol}",
-            "StakingBondExtra": "Idekun afikun {amount} {symbol}",
-            "StakingUnbond": "Ailokun {amount} {symbol}",
-            "StakingRebond": "Atunpo {amount} {symbol}",
-            "StakingNominate": "Awọn olufọwọsi ti a yan",
-            "StakingWithdrawUnbonded": "Ti yọkuro {amount} {symbol}",
-            "StakingPayout": "Payout ere",
-            "StakingChill": "Bami",
-            "StakingSetController": "Ṣeto oludari {address}",
-            "StakingSetPayee": "Ṣeto payee {address}",
-            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ni {price} {symbol2} gbe",
-            "OrderBookCancelLimitOrder": "Ti fagile aṣẹ opin",
-            "OrderBookCancelLimitOrders": "Awọn aṣẹ aropin parẹ",
-            "Burn": "jona {amount} {symbol}",
-            "Mint": "Minted {amount} {symbol} si {address}",
-            "CreateVault": "{symbol}\/{symbol2} Ipo ti dá",
-            "CloseVault": "{symbol}\/{symbol2} Ipo ti pari",
-            "DepositCollateral": "{amount} {symbol} ti jẹ́ títẹ",
-            "RepayVaultDebt": "{amount} {symbol} ti fọwọ́ sí ìwò",
-            "BorrowVaultDebt": "{amount} {symbol} ti kọ láìná"
-        },
-        "error": {
-            "Transfer": "Kuna lati {action} {amount} {symbol} {direction} {address}",
-            "Swap": "Kuna lati separada {amount} {symbol} fun {amount2} {symbol2}",
-            "AddLiquidity": "Kuna lati pese {amount} {symbol} ati {amount2} {symbol2}",
-            "RemoveLiquidity": "Kuna lati yọ {amount} {symbol} ati {amount2} {symbol2}",
-            "CreatePair": "Kuna lati pese {amount} {symbol} ati {amount2} {symbol2}",
-            "RegisterAsset": "Kuna lati forukọsilẹ {symbol} dukia",
-            "ClaimRewards": "Kuna lati beere awọn ere {rewards}",
-            "ReferralReserveXor": "Kuna lati so pọ {amount} XOR",
-            "ReferralUnreserveXor": "Kuna lati isodi {amount} XOR",
-            "ReferralSetInvitedUser": "Kuna lati ṣeto {role} {address}",
-            "SwapAndSend": "O kuna lati paarọ {amount} {symbol} fun {amount2} {symbol2} ati {action} {direction} {address}",
-            "DemeterFarmingDepositLiquidity": "Ti kuna lati pese {amount} {symbol} ati {symbol2} LP àmi",
-            "DemeterFarmingWithdrawLiquidity": "Kuna lati yọkuro {amount} {symbol} ati {symbol2} LP",
-            "DemeterFarmingStakeToken": "O kuna lati fi {amount} {symbol} kun",
-            "DemeterFarmingUnstakeToken": "Kuna lati yọkuro {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Kuna lati beere {symbol}",
-            "EthBridgeIncoming": "Kuna lati gbe {amount} {symbol} lati {Ethereum} si {Sora}",
-            "EthBridgeOutgoing": "Kuna lati gbe {amount} {symbol} lati {Sora} si {Ethereum}",
-            "SwapTransferBatch": "Kuna lati {action} {amount} {symbol}",
-            "StakingBondAndNominate": "Kuna lati so pọ {amount} {symbol}",
-            "StakingBond": "Kuna lati so pọ {amount} {symbol}",
-            "StakingBondExtra": "Kuna lati so afikun {amount} {symbol}",
-            "StakingUnbond": "Kuna lati yọkuro {amount} {symbol}",
-            "StakingRebond": "O kuna lati tun so pọ {amount} {symbol}",
-            "StakingNominate": "Kuna lati yan awọn afọwọsi",
-            "StakingWithdrawUnbonded": "Kuna lati yọkuro {amount} {symbol}",
-            "StakingPayout": "Kuna lati san awọn ere",
-            "StakingChill": "Kuna lati biba",
-            "StakingSetController": "Kuna lati ṣeto oludari {address}",
-            "StakingSetPayee": "Kuna lati ṣeto payee {address}",
-            "OrderBookPlaceLimitOrder": "O kuna lati gbe aṣẹ iye to fun {symbol} {amount} {price} {symbol2}",
-            "OrderBookCancelLimitOrders": "Kuna lati fagilee awọn ibere opin",
-            "OrderBookCancelLimitOrder": "Kuna lati fagilee aṣẹ opin",
-            "Burn": "Kuna lati sun {amount} {symbol}",
-            "Mint": "Kuna lati mint {amount} {symbol} si {address}",
-            "CreateVault": "Ko le ṣe {symbol}\/{symbol2} ipo",
-            "CloseVault": "Ko le pa {symbol}\/{symbol2} ipo",
-            "DepositCollateral": "Ọgbọn ti jẹ́ títẹ káríayé {amount} {symbol}",
-            "RepayVaultDebt": "Ọgbọn ti fọwọ́ sí ìwò káríayé {amount} {symbol}",
-            "BorrowVaultDebt": "Ọgbọn ti kọ oúnjẹ láìná káríayé {amount} {symbol}"
-        },
-        "ReferralReserveXor": "Iwe adehun XOR",
-        "ReferralUnreserveXor": "Yọ XOR kuro",
-        "ReferralSetInvitedUser": "Ṣeto {role}",
-        "SwapAndSend": "Siwopu ati Firanṣẹ",
-        "DemeterFarmingDepositLiquidity": "Atokun Olomi",
-        "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
-        "DemeterFarmingStakeToken": "Atokun igi",
-        "DemeterFarmingUnstakeToken": "Unstake Tokini",
-        "DemeterFarmingGetRewards": "Beere Awọn ere",
-        "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Firanśe",
-        "StakingBondAndNominate": "Bond ati Nominate",
-        "StakingBond": "Dipọ",
-        "StakingBondExtra": "Bond Afikun",
-        "StakingUnbond": "Yọọ",
-        "StakingRebond": "Rebond",
-        "StakingNominate": "Yan",
-        "StakingWithdrawUnbonded": "Yiyọ kuro Unbonded",
-        "StakingPayout": "Payout Awọn ere",
-        "StakingChill": "Bami",
-        "StakingSetController": "Ṣeto Adarí",
-        "StakingSetPayee": "Ṣeto Payee",
-        "OrderBookPlaceLimitOrder": "Ibi Bere fun",
-        "OrderBookCancelLimitOrder": "Fagilee Bere fun",
-        "OrderBookCancelLimitOrders": "Fagilee Awọn aṣẹ",
-        "Burn": "Iná",
-        "Mint": "Mint",
-        "CreateVault": "Ṣẹda ipo",
-        "CloseVault": "Pa ipo",
-        "DepositCollateral": "Jẹ́ Títẹ Káríayé",
-        "RepayVaultDebt": "Fọwọ́ Ní Ìwò Káríayé",
-        "BorrowVaultDebt": "Kọ Oúnjẹ Láìná"
+  "closeText": "Pade",
+  "backText": "Pada",
+  "createWalletText": "Ṣẹda apamọwọ",
+  "nameText": "Orukọ",
+  "nextText": "Itele",
+  "importText": "Gbe wọle",
+  "settingsText": "Ètò",
+  "addAssetText": "Ṣafikun dukia",
+  "successText": "Aṣeyọri",
+  "warningText": "Ikilọ",
+  "swapText": "Iŕopo",
+  "searchText": "Ṣawari",
+  "cancelText": "Fagilee",
+  "saveText": "Fipamọ",
+  "logoutText": "Jade",
+  "sendText": "Firanṣẹ",
+  "addressText": "Adirẹsi",
+  "amountText": "Iye",
+  "errorText": "Aṣiṣe",
+  "insufficientBalanceText": "Iye {tokenSymbol} Oto",
+  "unknownErrorText": "ASISE Nkankan ti ko to ti sele...",
+  "transactionSubmittedText": "A ti fi isowo sile",
+  "operations": {
+    "Swap": "Iŕopo",
+    "Transfer": "Firanśe",
+    "AddLiquidity": "Fi liquidity si",
+    "RemoveLiquidity": "Yọ liquidity kuro",
+    "CreatePair": "Ṣẹda Pair",
+    "RegisterAsset": "Forukọsilẹ dukia",
+    "ClaimRewards": "Beere Awọn ere",
+    "andText": "ati",
+    "finalized": {
+      "Transfer": "{action} {amount} {symbol} {direction} {address}",
+      "Swap": "Ti paarọ {amount} {symbol} fun {amount2} {symbol2}",
+      "AddLiquidity": "Ti pese {amount} {symbol} ati {amount2} {symbol2}",
+      "RemoveLiquidity": "Ti yọ {amount} {symbol} ati {amount2} {symbol2}",
+      "CreatePair": "Ti pese {amount} {symbol} ati {amount2} {symbol2}",
+      "RegisterAsset": "Dukia {symbol} Tati foruko e sile",
+      "ClaimRewards": "A ti gba ere ni aseyori {rewards}",
+      "ReferralReserveXor": "Bonded {amount} XOR",
+      "ReferralUnreserveXor": "Ailokun {amount} XOR",
+      "ReferralSetInvitedUser": "{role} {address} ti ṣeto ni aṣeyọri",
+      "SwapAndSend": "Paarọ {amount} {symbol} fun {amount2} {symbol2} ati {action} {direction} {address}",
+      "DemeterFarmingDepositLiquidity": "Pese {symbol} ati {symbol2} {amount} LP àmi",
+      "DemeterFarmingWithdrawLiquidity": "Yọ kuro {symbol} ati {symbol2} {amount} LP àmi",
+      "DemeterFarmingStakeToken": "Fi kun {amount} {symbol}",
+      "DemeterFarmingUnstakeToken": "Yiyọ kuro {amount} {symbol}",
+      "DemeterFarmingGetRewards": "{amount} {symbol} beere ni aṣeyọri",
+      "EthBridgeIncoming": "Gbigbe {amount} {symbol} lati {Ethereum} si {Sora}",
+      "EthBridgeOutgoing": "Gbigbe {amount} {symbol} lati {Sora} si {Ethereum}",
+      "SwapTransferBatch": "{action} {amount} {symbol}",
+      "StakingBondAndNominate": "Ti di {amount} {symbol}",
+      "StakingBond": "Ti di {amount} {symbol}",
+      "StakingBondExtra": "Idekun afikun {amount} {symbol}",
+      "StakingUnbond": "Ailokun {amount} {symbol}",
+      "StakingRebond": "Atunpo {amount} {symbol}",
+      "StakingNominate": "Awọn olufọwọsi ti a yan",
+      "StakingWithdrawUnbonded": "Ti yọkuro {amount} {symbol}",
+      "StakingPayout": "Payout ere",
+      "StakingChill": "Bami",
+      "StakingSetController": "Ṣeto oludari {address}",
+      "StakingSetPayee": "Ṣeto payee {address}",
+      "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ni {price} {symbol2} gbe",
+      "OrderBookCancelLimitOrder": "Ti fagile aṣẹ opin",
+      "OrderBookCancelLimitOrders": "Awọn aṣẹ aropin parẹ",
+      "Burn": "jona {amount} {symbol}",
+      "Mint": "Minted {amount} {symbol} si {address}",
+      "CreateVault": "{symbol}/{symbol2} Ipo ti dá",
+      "CloseVault": "{symbol}/{symbol2} Ipo ti pari",
+      "DepositCollateral": "{amount} {symbol} ti jẹ́ títẹ",
+      "RepayVaultDebt": "{amount} {symbol} ti fọwọ́ sí ìwò",
+      "BorrowVaultDebt": "{amount} {symbol} ti kọ láìná"
     },
-    "polkadotjs": {
-        "noExtensions": "A ko rii itẹsiwaju {PolkadotJs}. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
-        "noAccount": "{extension} aṣiṣe ifowosi. Jọwọ ṣayẹwo akọọlẹ rẹ ninu itẹsiwaju {extension}",
-        "noExtension": "A ko ri {extension} . Jọwọ fi sii ki o tun gbee si oju-iwe yii",
-        "noSigner": "Ti kọ iraye si. Lọ si awọn eto {extension} ki o si ṣi “Ṣakoso Wiwọle Oju opo wẹẹbu” lati gba laaye.",
-        "connectionError": "Aṣiṣe waye lakoko asopọ apamọwọ. O le gbiyanju lati so apamọwọ pọ nipasẹ {extension} lẹẹkansi"
+    "error": {
+      "Transfer": "Kuna lati {action} {amount} {symbol} {direction} {address}",
+      "Swap": "Kuna lati separada {amount} {symbol} fun {amount2} {symbol2}",
+      "AddLiquidity": "Kuna lati pese {amount} {symbol} ati {amount2} {symbol2}",
+      "RemoveLiquidity": "Kuna lati yọ {amount} {symbol} ati {amount2} {symbol2}",
+      "CreatePair": "Kuna lati pese {amount} {symbol} ati {amount2} {symbol2}",
+      "RegisterAsset": "Kuna lati forukọsilẹ {symbol} dukia",
+      "ClaimRewards": "Kuna lati beere awọn ere {rewards}",
+      "ReferralReserveXor": "Kuna lati so pọ {amount} XOR",
+      "ReferralUnreserveXor": "Kuna lati isodi {amount} XOR",
+      "ReferralSetInvitedUser": "Kuna lati ṣeto {role} {address}",
+      "SwapAndSend": "O kuna lati paarọ {amount} {symbol} fun {amount2} {symbol2} ati {action} {direction} {address}",
+      "DemeterFarmingDepositLiquidity": "Ti kuna lati pese {amount} {symbol} ati {symbol2} LP àmi",
+      "DemeterFarmingWithdrawLiquidity": "Kuna lati yọkuro {amount} {symbol} ati {symbol2} LP",
+      "DemeterFarmingStakeToken": "O kuna lati fi {amount} {symbol} kun",
+      "DemeterFarmingUnstakeToken": "Kuna lati yọkuro {amount} {symbol}",
+      "DemeterFarmingGetRewards": "Kuna lati beere {symbol}",
+      "EthBridgeIncoming": "Kuna lati gbe {amount} {symbol} lati {Ethereum} si {Sora}",
+      "EthBridgeOutgoing": "Kuna lati gbe {amount} {symbol} lati {Sora} si {Ethereum}",
+      "SwapTransferBatch": "Kuna lati {action} {amount} {symbol}",
+      "StakingBondAndNominate": "Kuna lati so pọ {amount} {symbol}",
+      "StakingBond": "Kuna lati so pọ {amount} {symbol}",
+      "StakingBondExtra": "Kuna lati so afikun {amount} {symbol}",
+      "StakingUnbond": "Kuna lati yọkuro {amount} {symbol}",
+      "StakingRebond": "O kuna lati tun so pọ {amount} {symbol}",
+      "StakingNominate": "Kuna lati yan awọn afọwọsi",
+      "StakingWithdrawUnbonded": "Kuna lati yọkuro {amount} {symbol}",
+      "StakingPayout": "Kuna lati san awọn ere",
+      "StakingChill": "Kuna lati biba",
+      "StakingSetController": "Kuna lati ṣeto oludari {address}",
+      "StakingSetPayee": "Kuna lati ṣeto payee {address}",
+      "OrderBookPlaceLimitOrder": "O kuna lati gbe aṣẹ iye to fun {symbol} {amount} {price} {symbol2}",
+      "OrderBookCancelLimitOrders": "Kuna lati fagilee awọn ibere opin",
+      "OrderBookCancelLimitOrder": "Kuna lati fagilee aṣẹ opin",
+      "Burn": "Kuna lati sun {amount} {symbol}",
+      "Mint": "Kuna lati mint {amount} {symbol} si {address}",
+      "CreateVault": "Ko le ṣe {symbol}/{symbol2} ipo",
+      "CloseVault": "Ko le pa {symbol}/{symbol2} ipo",
+      "DepositCollateral": "Ọgbọn ti jẹ́ títẹ káríayé {amount} {symbol}",
+      "RepayVaultDebt": "Ọgbọn ti fọwọ́ sí ìwò káríayé {amount} {symbol}",
+      "BorrowVaultDebt": "Ọgbọn ti kọ oúnjẹ láìná káríayé {amount} {symbol}"
     },
-    "connection": {
-        "text": "Lati le ṣakoso awọn dukia ati fowo si awọn iṣowo lori {Sora} , akọọlẹ kan gbọdọ wa ni asopọ. Awọn akọọlẹ {Sora} le ṣẹda ati so pọ pẹlu lilo awọn apamọwọ ti a ṣepọ tabi awọn amugbooro aṣawakiri wa.",
-        "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
-        "selectAccount": "Yan ifowosi lati ṣiṣẹ pẹlu rẹ",
-        "action": {
-            "install": "Fi sori ẹrọ itẹsiwaju",
-            "learnMore": "Kọ ẹkọ si",
-            "connect": "So ifowisi pọ",
-            "refresh": "Tunwo"
-        },
-        "selectWallet": "Yan apamọwọ kan lati ṣiṣẹ pẹlu",
-        "wallet": {
-            "install": "Fi sori ẹrọ",
-            "connected": "Ti sopọ",
-            "notConnected": "Ko ti sopọ"
-        },
-        "internalTitle": "Sopọ pẹlu {wallet}",
-        "internalText": "O le ṣẹda tabi gbe wọle si akọọlẹ {Sora} to wa tẹlẹ lati sopọ pẹlu akọọlẹ {wallet} rẹ. Gbogbo data ti o wa ni ipamọ nipasẹ {wallet} jẹ fifi ẹnọ kọ nkan nipa lilo fifi ẹnọ kọ nkan ilọsiwaju.",
-        "list": {
-            "integrated": "Ti ṣepọ",
-            "extensions": "Awọn amugbooro"
-        }
+    "ReferralReserveXor": "Iwe adehun XOR",
+    "ReferralUnreserveXor": "Yọ XOR kuro",
+    "ReferralSetInvitedUser": "Ṣeto {role}",
+    "SwapAndSend": "Siwopu ati Firanṣẹ",
+    "DemeterFarmingDepositLiquidity": "Atokun Olomi",
+    "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
+    "DemeterFarmingStakeToken": "Atokun igi",
+    "DemeterFarmingUnstakeToken": "Unstake Tokini",
+    "DemeterFarmingGetRewards": "Beere Awọn ere",
+    "EthBridgeIncoming": "@:hashiBridgeText",
+    "EthBridgeOutgoing": "@:hashiBridgeText",
+    "SwapTransferBatch": "{ADAR} Firanśe",
+    "StakingBondAndNominate": "Bond ati Nominate",
+    "StakingBond": "Dipọ",
+    "StakingBondExtra": "Bond Afikun",
+    "StakingUnbond": "Yọọ",
+    "StakingRebond": "Rebond",
+    "StakingNominate": "Yan",
+    "StakingWithdrawUnbonded": "Yiyọ kuro Unbonded",
+    "StakingPayout": "Payout Awọn ere",
+    "StakingChill": "Bami",
+    "StakingSetController": "Ṣeto Adarí",
+    "StakingSetPayee": "Ṣeto Payee",
+    "OrderBookPlaceLimitOrder": "Ibi Bere fun",
+    "OrderBookCancelLimitOrder": "Fagilee Bere fun",
+    "OrderBookCancelLimitOrders": "Fagilee Awọn aṣẹ",
+    "Burn": "Iná",
+    "Mint": "Mint",
+    "CreateVault": "Ṣẹda ipo",
+    "CloseVault": "Pa ipo",
+    "DepositCollateral": "Jẹ́ Títẹ Káríayé",
+    "RepayVaultDebt": "Fọwọ́ Ní Ìwò Káríayé",
+    "BorrowVaultDebt": "Kọ Oúnjẹ Láìná"
+  },
+  "polkadotjs": {
+    "noExtensions": "A ko rii itẹsiwaju {PolkadotJs}. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https://polkadot.js.org/extension/",
+    "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
+    "noAccount": "{extension} aṣiṣe ifowosi. Jọwọ ṣayẹwo akọọlẹ rẹ ninu itẹsiwaju {extension}",
+    "noExtension": "A ko ri {extension} . Jọwọ fi sii ki o tun gbee si oju-iwe yii",
+    "noSigner": "Ti kọ iraye si. Lọ si awọn eto {extension} ki o si ṣi “Ṣakoso Wiwọle Oju opo wẹẹbu” lati gba laaye.",
+    "connectionError": "Aṣiṣe waye lakoko asopọ apamọwọ. O le gbiyanju lati so apamọwọ pọ nipasẹ {extension} lẹẹkansi"
+  },
+  "connection": {
+    "text": "Lati le ṣakoso awọn dukia ati fowo si awọn iṣowo lori {Sora} , akọọlẹ kan gbọdọ wa ni asopọ. Awọn akọọlẹ {Sora} le ṣẹda ati so pọ pẹlu lilo awọn apamọwọ ti a ṣepọ tabi awọn amugbooro aṣawakiri wa.",
+    "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
+    "selectAccount": "Yan ifowosi lati ṣiṣẹ pẹlu rẹ",
+    "action": {
+      "install": "Fi sori ẹrọ itẹsiwaju",
+      "learnMore": "Kọ ẹkọ si",
+      "connect": "So ifowisi pọ",
+      "refresh": "Tunwo"
     },
+    "selectWallet": "Yan apamọwọ kan lati ṣiṣẹ pẹlu",
     "wallet": {
-        "WalletAssets": "Awọn dukia",
-        "createToken": "@:createTokenText",
-        "WalletHistory": "Iṣẹ iṣe"
+      "install": "Fi sori ẹrọ",
+      "connected": "Ti sopọ",
+      "notConnected": "Ko ti sopọ"
     },
-    "walletSend": {
-        "title": "Firanṣẹ",
-        "address": "@:addressText",
-        "amount": "@:amountText",
-        "balance": "Iśeku",
-        "max": "To poju",
-        "fee": "@:networkFeeText",
-        "enterAddress": "Tẹ adirẹsi sii",
-        "badAddress": "Adirẹsi ti ko tọ",
-        "enterAmount": "Tẹ iye sii",
-        "badAmount": "@:insufficientBalanceText",
-        "confirmTitle": "Jẹrisi idunadura",
-        "errorAddress": "Adirẹsi ti ko wulo. Jọwọ ṣayẹwo rẹ ki o tun gbiyanju.",
-        "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "Fi awọn tokini ranṣẹ laarin awọn iroyin nẹtiwọọki {Sora}",
-        "addressWarning": "Awọn ami-tokini yoo firanṣẹ si adirẹsi {Sora} ni isalẹ. Rii daju pe olugba le wọle si ẹwọn {Sora} lati lo awọn tokini:",
-        "addressError": "O ko le fi awọn tokini ranṣẹ si akọọlẹ kanna ti o sopọ si lọwọlọwọ.",
-        "confirm": "@:confirmText"
+    "internalTitle": "Sopọ pẹlu {wallet}",
+    "internalText": "O le ṣẹda tabi gbe wọle si akọọlẹ {Sora} to wa tẹlẹ lati sopọ pẹlu akọọlẹ {wallet} rẹ. Gbogbo data ti o wa ni ipamọ nipasẹ {wallet} jẹ fifi ẹnọ kọ nkan nipa lilo fifi ẹnọ kọ nkan ilọsiwaju.",
+    "list": {
+      "integrated": "Ti ṣepọ",
+      "extensions": "Awọn amugbooro"
+    }
+  },
+  "wallet": {
+    "WalletAssets": "Awọn dukia",
+    "createToken": "@:createTokenText",
+    "WalletHistory": "Iṣẹ iṣe"
+  },
+  "walletSend": {
+    "title": "Firanṣẹ",
+    "address": "@:addressText",
+    "amount": "@:amountText",
+    "balance": "Iśeku",
+    "max": "To poju",
+    "fee": "@:networkFeeText",
+    "enterAddress": "Tẹ adirẹsi sii",
+    "badAddress": "Adirẹsi ti ko tọ",
+    "enterAmount": "Tẹ iye sii",
+    "badAmount": "@:insufficientBalanceText",
+    "confirmTitle": "Jẹrisi idunadura",
+    "errorAddress": "Adirẹsi ti ko wulo. Jọwọ ṣayẹwo rẹ ki o tun gbiyanju.",
+    "feeTooltip": "@:networkFeeTooltipText",
+    "tooltip": "Fi awọn tokini ranṣẹ laarin awọn iroyin nẹtiwọọki {Sora}",
+    "addressWarning": "Awọn ami-tokini yoo firanṣẹ si adirẹsi {Sora} ni isalẹ. Rii daju pe olugba le wọle si ẹwọn {Sora} lati lo awọn tokini:",
+    "addressError": "O ko le fi awọn tokini ranṣẹ si akọọlẹ kanna ti o sopọ si lọwọlọwọ.",
+    "confirm": "@:confirmText"
+  },
+  "account": {
+    "successCopy": "Ti daakọ adirẹsi apamọwọ si agekuru naa",
+    "copy": "Da Adirẹsi ko",
+    "switch": "Yi Ifowosi pada",
+    "walletAddress": "Adirẹsi apamọwọ",
+    "delete": "Pa akọọlẹ rẹ kuro",
+    "rename": "Fun lorukọ mii iroyin",
+    "export": "okeere .json",
+    "accountTitle": "Iroyin"
+  },
+  "history": {
+    "clearHistory": "Nu itan kuro",
+    "filterPlaceholder": "Àlẹmọ nipasẹ Adirẹsi, Ami, Iru tabi idanimọ Block",
+    "empty": "Awọn iṣowo rẹ yoo han nibi.",
+    "emptySearch": "Ko si awọn iṣowo ti a rii",
+    "firstText": "Akoko",
+    "lastText": "Ikẹhin",
+    "prevText": "Ti tẹlẹ",
+    "nextText": "Itele"
+  },
+  "assets": {
+    "empty": "Ko si dukia kankan",
+    "swap": "@:swapText",
+    "send": "@:sendText",
+    "receive": "@:account.copy",
+    "liquidity": "Fi liquidity si",
+    "bridge": "Afara",
+    "copy": "Daakọ Idanimo dukia",
+    "successCopy": "{symbol} Idanimo dukia ti dakọ si agekuru naa",
+    "copied": "Ati Daako",
+    "balance": {
+      "transferable": "Ó śe fi ran se",
+      "frozen": "Fisi itimole",
+      "locked": "Ti tiipa",
+      "reserved": "Ni ipamọ",
+      "total": "Lapapọ",
+      "bonded": "Ti so pọ"
     },
-    "account": {
-        "successCopy": "Ti daakọ adirẹsi apamọwọ si agekuru naa",
-        "copy": "Da Adirẹsi ko",
-        "switch": "Yi Ifowosi pada",
-        "walletAddress": "Adirẹsi apamọwọ",
-        "delete": "Pa akọọlẹ rẹ kuro",
-        "rename": "Fun lorukọ mii iroyin",
-        "export": "okeere .json",
-        "accountTitle": "Iroyin"
+    "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:",
+    "details": "Awọn alaye",
+    "assetId": "Idanimo dukia"
+  },
+  "asset": {
+    "remove": "Yọ dukia kuro",
+    "select": "Yan dukia",
+    "receive": "Gba {symbol}"
+  },
+  "addAsset": {
+    "success": "A fi dukia {symbol} kun ni aṣeyọri!",
+    "empty": "No tokini found",
+    "alreadyAttached": "Tokini yii ti ni asopọ tẹlẹ",
+    "understand": "O ye mi",
+    "warningTitle": "Iṣowo ni eewu tirẹ!",
+    "warningMessage": "Ẹnikẹni le ṣẹda token, pẹlu ṣiṣẹda awọn ẹya iro ti awọn token ti o wa tẹlẹ ti o sọ pe o ṣe aṣoju awọn iṣẹ akanṣe.\n Ti o ba ra tokini yii, o le ma ni anfani lati ta pada.",
+    "approved": "Dukia ti a fọwọsi nipasẹ agbegbe",
+    "unknown": "Orisun aimọ",
+    "scam": "Itanjẹ",
+    "next": "Itele",
+    "AddAssetToken": {
+      "title": "Awọn owo nina",
+      "switchBtn": "Awọn ohun-ini ti a rii daju nikan"
     },
+    "searchInputText": "Wa nipasẹ ID Dukia, Orukọ tabi Aami Tika"
+  },
+  "createToken": {
+    "desc": "Ṣẹda ki o ran awọn dukia atowunwa lori {Sora}",
+    "enterSymbol": "Tẹ aami token sii",
+    "enterName": "Tẹ orukọ token sii",
+    "enterSupply": "Tẹ ipese token sii",
+    "success": {
+      "title": "Iṣowo ti a fi silẹ",
+      "desc": "Ṣẹda {symbol} tokini"
+    },
+    "tooltipValue": "Lati ṣẹda tokini kan, o ni lati san owo ọya",
+    "fee": "Owo ọya Nẹtiwọọki",
+    "insufficientBalance": "@:insufficientBalanceText",
+    "feeError": "Kuna lati gba owo ọya fun idunadura kan",
+    "error": "Kuna lati ṣẹda {symbol} token",
+    "tokenSymbol": {
+      "placeholder": "Aami Tokini",
+      "desc": "Eyi jẹ idanimọ fun token naa. O le lo lati awọn ohun kikọ eyokan si meje fun yiyan."
+    },
+    "tokenName": {
+      "placeholder": "Orukọ tokini",
+      "desc": "Eyi jẹ orukọ fun token naa. O le lo lati awọn ohun kikọ eyokan si Eta-le logbon fun yiyan."
+    },
+    "tokenSupply": {
+      "placeholder": "Ipese Tokini",
+      "desc": "Iwọ yoo gba awọn token wọnyi lori ẹda."
+    },
+    "extensibleSupply": {
+      "placeholder": "Ipese Extensible",
+      "desc": "Agbara lati mint awọn token diẹ sii."
+    },
+    "provideContent": "Pese akoonu",
+    "selectLocalFile": "Yan faili agbegbe",
+    "CreateSimpleToken": "Àmi",
+    "nft": {
+      "source": {
+        "label": "Orisun",
+        "value": "Awọn faili agbegbe",
+        "limit": "Yan faili miiran"
+      },
+      "link": {
+        "placeholder": "IPFS ọna asopọ",
+        "copyLink": "Daakọ ọna asopọ",
+        "tooltip": "IPFS jẹ eto pinpin fun titoju ati iwọle si awọn faili, ṣiṣe ki o ṣee ṣe lati wọle si awọn faili lati ọpọlọpọ awọn ipo ti ko ni iṣakoso nipasẹ ajọ kan."
+      },
+      "image": {
+        "placeholderNoImage": "Ṣe igbasilẹ faili naa nipa titẹ ọna asopọ kan tabi yiyan lati ibi ipamọ agbegbe",
+        "placeholderBadSource": "Faili naa kuna lati ṣiṣẹ",
+        "placeholderBadSourceAddition": "tabi ko ti gbejade si IPFS sibẹsibẹ",
+        "placeholderFileLimit": "Iwọn faili naa kọja opin ti {value} mb"
+      },
+      "supply": {
+        "placeholder": "Ipese Tokini",
+        "desc": "Iye awọn NFT ti iwọ yoo gba.",
+        "quantity": "Opoiye"
+      },
+      "description": {
+        "placeholder": "Apejuwe"
+      }
+    },
+    "enterTokenDescription": "Tẹ apejuwe sii",
+    "divisible": {
+      "placeholder": "Pinpin",
+      "desc": "Agbara NFT lati pin si awọn apakan ida. Ipese olomi nikan ṣiṣẹ pẹlu awọn ohun-ini pinpin"
+    },
+    "title": "@:createTokenText",
+    "action": "@:createTokenText",
+    "confirm": "@:confirmText",
+    "titleCommon": "Ṣẹda",
+    "confirmTokenTitleCommon": "Ṣẹda Tokini",
+    "confirmTokenTitleNFT": "Ṣẹda NFT",
+    "actionNFT": "@:createTokenTextNFT"
+  },
+  "transaction": {
+    "title": "Awọn alaye iṣowo",
+    "blockId": "Idanimo Àkọsílẹ",
+    "status": "Ipo",
+    "statuses": {
+      "pending": "Ni isunmọtosi",
+      "failed": "Idunadura kuna",
+      "complete": "Pari"
+    },
+    "errorMessage": "Aṣiṣe",
+    "startTime": "Ọjọ",
+    "amount": "@:amountText",
+    "amount2": "@:amountText 2",
+    "fee": "Owo Iṣowo",
+    "total": "Lapapọ",
+    "from": "Lati",
+    "to": "Si",
+    "successCopy": "{value} a ti daako si agekuru naa",
+    "copy": "Daakọ {value}",
     "history": {
-        "clearHistory": "Nu itan kuro",
-        "filterPlaceholder": "Àlẹmọ nipasẹ Adirẹsi, Ami, Iru tabi idanimọ Block",
-        "empty": "Awọn iṣowo rẹ yoo han nibi.",
-        "emptySearch": "Ko si awọn iṣowo ti a rii",
-        "firstText": "Akoko",
-        "lastText": "Ikẹhin",
-        "prevText": "Ti tẹlẹ",
-        "nextText": "Itele"
+      "created": "A ti ṣẹda idunadura fun {amount} {symbol}",
+      "submitted": "Iṣowo ti a fi silẹ pẹlu owo ti {fee} {symbol}",
+      "confirmed": "Iṣowo ti a ti gba"
     },
+    "txId": "Id Idunadura",
+    "viewIn": "Wo ni {explorer}",
+    "referrer": "Atọkasi",
+    "referral": "Ifiranṣẹ",
+    "adarTxDetailsTitle": "Àwọn àwọn èrò akójọ awoṣe",
+    "comment": "Ọrọìwòye",
+    "price": "Iye owo",
+    "side": "Apa"
+  },
+  "appName": "{AppName}",
+  "changeNetworkText": "Yi nẹtiwọki pada ni apamọwọ",
+  "transactionText": "awon isowo | awon isowo",
+  "connectWalletText": "So ifowisi pọ",
+  "changeAccountText": "Yi Ifowosi pada",
+  "connectedText": "Ti sopọ",
+  "connectWalletTextTooltip": "Sopọ si Nẹtiwọọki {Sora} pẹlu {PolkadotJs}",
+  "selectNodeText": "Yan ipade",
+  "bridgeText": "Afara",
+  "disclaimer": "{disclaimerPrefix} Oju opo wẹẹbu yii ni itọju nipasẹ agbegbe {Sora}. Ṣaaju ki o to tẹsiwaju lati lo oju opo wẹẹbu yii, jọwọ ṣe atunyẹwo {polkaswapFaqLink} ati iwe, eyiti o ni alaye alaye lori bi {AppName} ṣe n ṣiṣẹ, ati pẹlu {memorandumLink}, ati {privacyLink}. Awọn iwe aṣẹ wọnyi jẹ pataki si aabo olumulo ati aabo olumulo. Nipa lilo {AppName}, o gba pe o ti ka ati loye awọn iwe wọnyi. O tun gba eleyi: Ikini) ojuṣe rẹ nikan fun ibamu pẹlu gbogbo awọn ofin ti o le kan si lilo rẹ pato ti {AppName} ni aṣẹ ofin rẹ; Ikeji) oye rẹ pe ẹya lọwọlọwọ ti {AppName} jẹ ẹya alpha: ko ti ni idanwo ni kikun, ati pe awọn iṣẹ kan le ma ṣe bi a ti ṣe apẹrẹ; ati Iketa) oye rẹ ati gbigba iyọọda ti awọn eewu ti o wa ninu lilo {AppName}, pẹlu, ṣugbọn kii ṣe opin si, eewu ti awọn ami tokini padanu. Lẹẹkan si, jọwọ maṣe tẹsiwaju laisi kika {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
+  "poweredBy": "Itileyin lati",
+  "confirmTransactionText": "Jẹrisi idunadura",
+  "retryText": "Tun gbiyanju",
+  "networkFeeText": "Owo ọya Nẹtiwọọki",
+  "networkFeeTooltipText": "A lo owo ọya nẹtiwọọki lati rii daju idagbasoke eto {Sora} ati iṣẹ iduroṣinṣin.",
+  "ethNetworkFeeTooltipText": "Jọwọ ṣe akiyesi pe awọn owo netiwọki {network} ti o han lori {AppName} jẹ awọn iṣiro inira nikan, o le rii iye ọya ti o pe ninu apamọwọ {network} ti o sopọ ṣaaju ṣiṣe iṣeduro iṣowo naa.",
+  "marketText": "Oja",
+  "marketAlgorithmText": "Alugoridimu ọja",
+  "firstPerSecond": "{first} lori {second}",
+  "pairIsNotCreated": "A ko ṣẹda pair token",
+  "pageTitle": {
+    "Swap": "Iŕopo",
+    "Pool": "Pulu",
+    "Bridge": "@:bridgeText",
+    "Stats": "Iṣiro",
+    "Wallet": "Apamọwọ",
+    "AddLiquidity": "Fi liquidity si",
+    "RemoveLiquidity": "Yọ liquidity kuro",
+    "Rewards": "Ere",
+    "Explore/Tokens": "Awọn ami-ami",
+    "Explore/Pools": "Pools",
+    "Explore/Staking": "Staking",
+    "Explore/Farming": "Ogbin",
+    "Staking": "Staking",
+    "OrderBook": "Iṣowo",
+    "Explore/Books": "@:pageTitle.OrderBook",
+    "AssetOwner": "Oní dúkìá",
+    "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+    "Vaults": "{Kensetsu}",
+    "VaultDetails": "Awọn alaye ipo",
+    "Burn": "Iná"
+  },
+  "mainMenu": {
+    "Swap": "Iŕopo",
+    "Pool": "Pulu",
+    "Bridge": "@:bridgeText",
+    "Farming": "Farming",
+    "Wallet": "Ifowosi",
+    "Rewards": "Ere",
+    "About": "Nipa",
+    "Stats": "Iṣiro",
+    "StakingContainer": "Staking",
+    "Explore/Container": "Ye",
+    "SoraCard": "Kaadi {Sora}",
+    "OrderBook": "Iṣowo",
+    "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+    "VaultsContainer": "@:pageTitle.Vaults",
+    "Burn": "@:pageTitle.Burn"
+  },
+  "social": {
+    "twitter": "Twitter",
+    "telegram": "Telegram",
+    "medium": "Medium",
+    "reddit": "Reddit",
+    "github": "GitHub",
+    "wiki": "{Sora} Wiki"
+  },
+  "footerMenu": {
+    "faucet": "Faucet",
+    "github": "GitHub",
+    "sorawiki": "{Sora} Wiki",
+    "memorandum": "Memorandum {AppName} ati Awọn ofin lilo",
+    "privacy": "Ofin Asiri",
+    "info": "Alaye & Awujọ"
+  },
+  "helpDialog": {
+    "title": "Iranlowo",
+    "termsOfService": "Awọn ofin lilo",
+    "privacyPolicy": "Ofin Asiri",
+    "appVersion": "eya {AppName}",
+    "contactUs": "Pe wa"
+  },
+  "aboutNetworkDialog": {
+    "title": "Nipa",
+    "network": {
+      "title": "Kini {Sora}?",
+      "description": "{AppName} ti wa ni itumọ lori oke ti Nẹtiwọọki {Sora}, ati pe {Sora} token (XOR) ti lo fun gaasi / owo ati ipese oloomi lori {AppName}. {Sora} Nẹtiwọọki ngbanilaaye fun awọn owo ti o dinku, awọn iṣowo yiyara ati ipari ipari ipohunpo rọrun ati pe o wa ni idojukọ fifiranṣẹ ibaraenisepo kọja awọn ilolupo eda abemi-idena miiran bi {Ethereum}."
+    },
+    "polkadot": {
+      "title": "Kini {PolkadotJs}?",
+      "description": "Itẹsiwaju {PolkadotJs} jẹ itẹsiwaju aṣawakiri ti o wa fun Firefox ati Chrome ti a ṣe igbẹhin si iṣakoso awọn iroyin fun Awọn ẹwọn ti o da lori Substrate, pẹlu {Sora}, {Polkadot} ati {Kusama}. O le ṣafikun, gbe wọle, ati gbejade awọn iroyin ati buwọlu awọn iṣowo tabi awọn nkan elekeji ti o ti bẹrẹ lati awọn oju opo wẹẹbu ti o fun ni aṣẹ."
+    }
+  },
+  "node": {
+    "errors": {
+      "connection": "Aṣiṣe kan waye lakoko sisopọ si oju ipade\n{address}\n",
+      "network": "Iho naa\n{address}\n wa lati nẹtiwọọki miiran\n",
+      "existing": "A ti fi kun oju ipade yii tẹlẹ: {title}\n"
+    },
+    "messages": {
+      "connected": "Asopọ ti a fi idi pẹlu ipade\n{address}\n",
+      "selectNode": "Jọwọ yan oju ipade lati sopọ lati atokọ ipade"
+    },
+    "warnings": {
+      "disconnect": "Asopọ si ipade ti sọnu. A n tun sopọ..."
+    }
+  },
+  "selectNodeDialog": {
+    "title": "aṣayan ipade Nẹtiwọọki",
+    "addNode": "Ṣafikun oju ipade atowunwa",
+    "customNode": "Oju ipade Atowunwa",
+    "howToSetupOwnNode": "Ṣeto nòdì rẹ",
+    "select": "Yan",
+    "connected": "Ti sopọ",
+    "nodeTitle": "{chain} gbalejo nipasẹ {name}",
+    "messages": {
+      "emptyName": "Jọwọ tẹ orukọ ipade naa sii",
+      "emptyAddress": "Jọwọ tẹ adirẹsi ti oju ipade naa sii",
+      "incorrectProtocol": "Adirẹsi yẹ ki o bẹrẹ lati ws:// tabi wss://",
+      "incorrectAddress": "Adirẹsi ti ko tọ"
+    },
+    "updateNode": "Imudojuiwọn oju ipade"
+  },
+  "buttons": {
+    "max": "To poju",
+    "chooseToken": "Yan tokini",
+    "chooseAToken": "Yan tokini kan",
+    "chooseTokens": "Yan awọn tokini",
+    "enterAmount": "Tẹ iye sii"
+  },
+  "transfers": {
+    "from": "Lati",
+    "to": "Si"
+  },
+  "exchange": {
+    "Swap": "Iŕopo",
+    "Pool": "Pulu",
+    "balance": "Iśeku",
+    "price": "Iye",
+    "transactionSubmitted": "Iṣowo ti a fi silẹ",
+    "transactionMessage": "{firstToken} ati {secondToken}",
+    "ok": "O DARA",
+    "confirm": "Jẹrisi",
+    "lossWarning": "Iwọ yoo padanu {value}% lori iṣowo rẹ. A ti rii ọran ipese oloomi kan. Eyi le ja si awọn adanu nla lakoko awọn swaps àmi. Jọwọ rii daju pe oloomi to peye wa fun bata swap ti o fẹ."
+  },
+  "swap": {
+    "estimated": "ifoju wo",
+    "slippageTolerance": "Ifarada Slippage",
+    "minReceived": "O kere ju ta gba",
+    "maxSold": "Apoju Tata",
+    "minReceivedTooltip": "Iṣowo rẹ yoo pada ti o ba wa tobi, iṣipopada idiyele idiyele ṣaaju ki o to fidi rẹ mulẹ.",
+    "priceImpact": "Ipa Iye",
+    "priceImpactTooltip": "Iyato laarin idiyele ọja ati idiyele ti a pinnu nitori iwọn iṣowo.",
+    "liquidityProviderFee": "Ọya Olupese Liquidity",
+    "liquidityProviderFeeTooltip": "Apakan ti iṣowo kọọkan ({liquidityProviderFee}%) lọ si awọn olupese liquidity bi iwuri ilana kan.",
+    "insufficientAmount": "Iye {tokenSymbol} Oto",
+    "insufficientLiquidity": "Liquidity ko to",
+    "confirmSwap": "Jẹrisi afiropo ",
+    "swapOutputMessage": "Ti ṣe iṣiro iṣẹjade. Iwọ yoo gba o kere ju {transactionValue} tabi idunadura naa yoo pada.",
+    "rewardsForSwap": "Awọn ere ilana PSWAP",
+    "swapInputMessage": "Iṣagbewọle ti ni iṣiro. Iwọ yoo ta o pọju {transactionValue} tabi idunadura naa yoo pada.",
+    "route": "Ipa ọna",
+    "errorFetching": "Aṣiṣe gbigba data naa"
+  },
+  "pool": {
+    "connectToWallet": "Sopọ si apamọwọ kan lati ṣafikun ati wo liquidity rẹ.",
+    "liquidityNotFound": "Ko ri liquidity kankan.",
+    "addLiquidity": "Fi liquidity si",
+    "removeLiquidity": "Yọ liquidity kuro",
+    "createPair": "Ṣẹda pair kan",
+    "pooledToken": "{tokenSymbol} Pulu",
+    "pairTokens": "{pair} Awọn tokini pulu",
+    "poolShare": "Ipin pool re",
+    "description": "Nigbati o ba ṣafikun oloomi, a fun ọ ni awọn ami adagun ti o nsoju ipo rẹ. Awọn tokini wọnyi n gba owo-ori laifọwọyi ni ibamu si ipin rẹ ti adagun-odo, ati pe o le rà pada nigbakugba.",
+    "strategicBonusApy": "Ajeseku Ilana APY"
+  },
+  "bridge": {
+    "title": "Afara",
+    "info": "Yi awọn token pada laarin awọn nẹtiwọọki {Sora} ati {Ethereum}.",
+    "balance": "Iśeku",
+    "next": "Itele",
+    "connectWallets": "So awọn woleti pọ lati wo itan iṣowo kọọkan.",
+    "soraNetworkFee": "{Sora} Owo Nẹtiwọọki",
+    "ethereumNetworkFee": "{Ethereum} Owo Nẹtiwọọki",
+    "total": "Lapapọ",
+    "viewHistory": "Wo awọn itan-iṣowo",
+    "transactionSubmitted": "Iṣowo ti a fi silẹ",
+    "transactionMessage": "{assetA} fun {assetB}",
+    "notRegisteredAsset": "Dukia {assetSymbol} ko forukọsilẹ",
+    "selectNetwork": "Yan nẹtiwọọki",
+    "networkInfo": "Safara {Sora} Nẹtiwọọki pẹlu:",
+    "copy": "Daakọ adirẹsi nẹtiwọki",
+    "soraAddress": "{Sora} adirẹsi",
+    "ethereumAddress": "{Ethereum} adirẹsi",
+    "limitMessage": "Lọwọlọwọ, {type} {amount} {symbol} wa fun sisọpọ lati rii daju iduroṣinṣin ati aabo ti Nẹtiwọọki {Sora} . A dupe oye rẹ.",
+    "externalTransferFee": "{network} {XCM} ọya",
+    "externalTransferFeeTooltip": "Nigbati o ba fi iṣowo afara ranṣẹ si netiwọki {network} , owo kekere kan yoo gba lati iye ti o n gbe",
+    "externalMinDeposit": "{network} min. idogo",
+    "externalMinDepositTooltip": "Iwontunwonsi ti o kere ju {symbol} ti o gbọdọ wa lori akọọlẹ {network} rẹ lẹhin gbigbe afara"
+  },
+  "selectRegisteredAsset": {
+    "title": "Yan Tokini kan",
+    "search": {
+      "title": "Awon Tokini",
+      "placeholder": "Àlẹmọ nipasẹ Idanimo dukia, Orukọ tabi Aami Ticker",
+      "networkLabelSora": "{Sora} awon tokini netiwooki",
+      "networkLabelEthereum": "{network} awọn ami digi nẹtiwọki",
+      "emptyListMessage": "Ko si awọn abajade"
+    },
+    "customAsset": {
+      "title": "Atowunwa",
+      "customInfo": "Pataki! Awọn Tokini atowunwa gbọdọ forukọsilẹ ni {Sora}.",
+      "registerToken": "Forukọsilẹ Token",
+      "addressPlaceholder": "Idanimo dukia",
+      "symbolPlaceholder": "Aami Token ",
+      "empty": "A ko ri token",
+      "alreadyAttached": "Token yii ti ni asopọ tẹlẹ"
+    }
+  },
+  "bridgeTransaction": {
+    "details": "{from} fun {to}",
+    "for": " fun ",
+    "steps": {
+      "step": "{step} ti keji",
+      "step1": "Ikini",
+      "step2": "Ikeji"
+    },
+    "status": {
+      "pending": "{step} Idunadura n sunmọtosi ...",
+      "failed": "{step} idunadura kuna. @:(retryText).",
+      "confirm": "Jẹrisi ikeji ninu awọn iṣowo meji...",
+      "complete": "Pari",
+      "convertionComplete": "Iyipada ti pari"
+    },
+    "statuses": {
+      "waiting": "Nduro",
+      "ready": "Ṣetan",
+      "pending": "Ni isunmọtosi",
+      "frozen": "Fisi itimole",
+      "failed": "Idunadura kuna",
+      "done": "Pari",
+      "waitingForConfirmation": "Nduro fun idaniloju..."
+    },
+    "networkTitle": "idunadura {network}",
+    "transactionHash": "Ami Iṣowo",
+    "networkInfo": {
+      "status": "Ipo",
+      "date": "Ọjọ",
+      "amount": "Iye",
+      "transactionFee": "Owo Iṣowo",
+      "total": "Lapapọ"
+    },
+    "successCopy": "Ti daakọ elile iṣowo si agekuru naa",
+    "ethereum": "{Ethereum}",
+    "sora": "{Sora}",
+    "pending": "idunadura ni isunmọtosi ni {network}",
+    "newTransaction": "Ṣẹda idunadura tuntun",
+    "title": "Idunadura Bridge",
+    "allowToken": "Gba {AppName} lati lo {tokenSymbol}",
+    "approveToken": "Jọwọ ṣe akiyesi pe o nilo lati fọwọsi ami (tokini)-ẹri lẹẹkan. Ti itẹsiwaju rẹ ba ni awọn ibeere ifọwọsi ọpọ, rii daju lati jẹrisi ọkan ti o kẹhin lakoko ti o kọ iyoku.",
+    "blocksLeft": "{count} osi..."
+  },
+  "bridgeHistory": {
+    "title": "Itan-akọọlẹ",
+    "showHistory": "Ṣe afihan itan-akọọlẹ",
+    "clearHistory": "Nu itan kuro",
+    "empty": "Awọn iṣowo rẹ yoo han nibi.",
+    "filterPlaceholder": "Àlẹmọ nipasẹ Idanimo dukia tabi Aami Ticker",
+    "restoreHistory": "Mu itan pada",
+    "statusAction": "Ti nilo igbese"
+  },
+  "selectToken": {
+    "title": "Yan Tokini kan",
+    "searchPlaceholder": "Àlẹmọ nipasẹ Idanimo dukia, Orukọ tabi Aami Ticker",
+    "emptyListMessage": "Ko si awọn abajade",
+    "copy": "Daakọ Idanimo dukia",
+    "successCopy": "{symbol} Idanimo dukia ti dakọ si agekuru naa",
     "assets": {
-        "empty": "Ko si dukia kankan",
-        "swap": "@:swapText",
-        "send": "@:sendText",
-        "receive": "@:account.copy",
-        "liquidity": "Fi liquidity si",
-        "bridge": "Afara",
-        "copy": "Daakọ Idanimo dukia",
-        "successCopy": "{symbol} Idanimo dukia ti dakọ si agekuru naa",
-        "copied": "Ati Daako",
-        "balance": {
-            "transferable": "Ó śe fi ran se",
-            "frozen": "Fisi itimole",
-            "locked": "Ti tiipa",
-            "reserved": "Ni ipamọ",
-            "total": "Lapapọ",
-            "bonded": "Ti so pọ"
-        },
-        "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:",
-        "details": "Awọn alaye",
-        "assetId": "Idanimo dukia"
+      "title": "Awọn dukia"
     },
-    "asset": {
-        "remove": "Yọ dukia kuro",
-        "select": "Yan dukia",
-        "receive": "Gba {symbol}"
+    "custom": {
+      "title": "Atowunwa",
+      "search": "Idanimo dukia",
+      "text": "Tokini atowunwa",
+      "alreadyAttached": "Tokini yii ti ni asopọ tẹlẹ",
+      "notFound": "A ko ri tokini"
+    }
+  },
+  "createPair": {
+    "title": "Ṣẹda onimeji kan",
+    "deposit": "Idogo",
+    "balance": "Iśeku",
+    "pricePool": "Awọn iye ati ipin puulu",
+    "shareOfPool": "Pinpin pool",
+    "firstSecondPoolTokens": "{first}-{second} Puulu",
+    "connect": "So apamọwọ pọ",
+    "supply": "Ipese",
+    "yourPosition": "Ipo rẹ",
+    "yourPositionEstimated": "Ipo rẹ (ifoju)",
+    "youWillReceive": "Iwo yoo gba",
+    "remove": "Yọ",
+    "add": "Fikun",
+    "ok": "O DARA",
+    "alreadyCreated": "A ti ṣẹda Token pair tele",
+    "firstLiquidityProvider": "Iwọ ni olupese liquidity akọkọ",
+    "firstLiquidityProviderInfo": "Ipin awọn ami ti o ṣafikun yoo ṣeto idiyele ti adagun-odo yii. <br/> Ni kete ti o ba ni ayọ pẹlu oṣuwọn tẹ ipese lati ṣe atunyẹwo."
+  },
+  "confirmSupply": {
+    "title": "Iwo yoo gba",
+    "outputDescription": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance}% iṣowo rẹ yoo pada.",
+    "poolTokensBurned": "{first}-{second} Awọn Pool Tokens ta ti sun",
+    "price": "Iye"
+  },
+  "addLiquidity": {
+    "title": "Fi liquidity si"
+  },
+  "removeLiquidity": {
+    "title": "Yọ liquidity kuro",
+    "liquidity": "liquidity",
+    "balance": "Iśeku",
+    "amount": "Iye",
+    "input": "Ifisi",
+    "output": "Ijade",
+    "price": "Iye",
+    "remove": "Yọ",
+    "description": "Yiyọ awọn ami adagun yi pada ipo rẹ pada si awọn ami atokọ ni oṣuwọn lọwọlọwọ, ni ibamu si ipin rẹ ti adagun-odo. Awọn owo ti a gba ni o wa ninu awọn oye ti o gba.",
+    "outputMessage": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance} % iṣowo rẹ yoo pada.",
+    "confirmTitle": "Iwo yoo gba",
+    "shareOfPool": "Pinpin pool lẹhin idunadura",
+    "locked": "{percent} ti adagun-omi rẹ wa ni {lock}"
+  },
+  "dexSettings": {
+    "title": "Ètò",
+    "marketAlgorithm": "@.upper:marketAlgorithmText",
+    "marketAlgorithmTooltip": {
+      "main": " - aṣayan lati yan laarin ọja Alakọbẹrẹ (TBC), Ile-iwe Atẹle (XYK) tabi algorithm ọlọgbọn apapọ fun idiyele ti o dara julọ fun iṣeduro eyikeyi ti a fun."
     },
-    "addAsset": {
-        "success": "A fi dukia {symbol} kun ni aṣeyọri!",
-        "empty": "No tokini found",
-        "alreadyAttached": "Tokini yii ti ni asopọ tẹlẹ",
-        "understand": "O ye mi",
-        "warningTitle": "Iṣowo ni eewu tirẹ!",
-        "warningMessage": "Ẹnikẹni le ṣẹda token, pẹlu ṣiṣẹda awọn ẹya iro ti awọn token ti o wa tẹlẹ ti o sọ pe o ṣe aṣoju awọn iṣẹ akanṣe.\n Ti o ba ra tokini yii, o le ma ni anfani lati ta pada.",
-        "approved": "Dukia ti a fọwọsi nipasẹ agbegbe",
-        "unknown": "Orisun aimọ",
-        "scam": "Itanjẹ",
-        "next": "Itele",
-        "AddAssetToken": {
-            "title": "Awọn owo nina",
-            "switchBtn": "Awọn ohun-ini ti a rii daju nikan"
-        },
-        "searchInputText": "Wa nipasẹ ID Dukia, Orukọ tabi Aami Tika"
+    "slippageTolerance": "Ifarada SLIPPAGE",
+    "slippageToleranceHint": "Iṣowo rẹ yoo pada bi owo naa ba yipada lainidena nipasẹ diẹ sii ju ipin yii lọ.",
+    "slippageToleranceValidation": {
+      "warning": "Iṣowo rẹ le kuna",
+      "frontrun": "Iṣowo rẹ le jẹ iwaju",
+      "error": "Tẹ ogorun yiyọ to wulo sii"
     },
-    "createToken": {
-        "desc": "Ṣẹda ki o ran awọn dukia atowunwa lori {Sora}",
-        "enterSymbol": "Tẹ aami token sii",
-        "enterName": "Tẹ orukọ token sii",
-        "enterSupply": "Tẹ ipese token sii",
-        "success": {
-            "title": "Iṣowo ti a fi silẹ",
-            "desc": "Ṣẹda {symbol} tokini"
-        },
-        "tooltipValue": "Lati ṣẹda tokini kan, o ni lati san owo ọya",
-        "fee": "Owo ọya Nẹtiwọọki",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "feeError": "Kuna lati gba owo ọya fun idunadura kan",
-        "error": "Kuna lati ṣẹda {symbol} token",
-        "tokenSymbol": {
-            "placeholder": "Aami Tokini",
-            "desc": "Eyi jẹ idanimọ fun token naa. O le lo lati awọn ohun kikọ eyokan si meje fun yiyan."
-        },
-        "tokenName": {
-            "placeholder": "Orukọ tokini",
-            "desc": "Eyi jẹ orukọ fun token naa. O le lo lati awọn ohun kikọ eyokan si Eta-le logbon fun yiyan."
-        },
-        "tokenSupply": {
-            "placeholder": "Ipese Tokini",
-            "desc": "Iwọ yoo gba awọn token wọnyi lori ẹda."
-        },
-        "extensibleSupply": {
-            "placeholder": "Ipese Extensible",
-            "desc": "Agbara lati mint awọn token diẹ sii."
-        },
-        "provideContent": "Pese akoonu",
-        "selectLocalFile": "Yan faili agbegbe",
-        "CreateSimpleToken": "Àmi",
-        "nft": {
-            "source": {
-                "label": "Orisun",
-                "value": "Awọn faili agbegbe",
-                "limit": "Yan faili miiran"
-            },
-            "link": {
-                "placeholder": "IPFS ọna asopọ",
-                "copyLink": "Daakọ ọna asopọ",
-                "tooltip": "IPFS jẹ eto pinpin fun titoju ati iwọle si awọn faili, ṣiṣe ki o ṣee ṣe lati wọle si awọn faili lati ọpọlọpọ awọn ipo ti ko ni iṣakoso nipasẹ ajọ kan."
-            },
-            "image": {
-                "placeholderNoImage": "Ṣe igbasilẹ faili naa nipa titẹ ọna asopọ kan tabi yiyan lati ibi ipamọ agbegbe",
-                "placeholderBadSource": "Faili naa kuna lati ṣiṣẹ",
-                "placeholderBadSourceAddition": "tabi ko ti gbejade si IPFS sibẹsibẹ",
-                "placeholderFileLimit": "Iwọn faili naa kọja opin ti {value} mb"
-            },
-            "supply": {
-                "placeholder": "Ipese Tokini",
-                "desc": "Iye awọn NFT ti iwọ yoo gba.",
-                "quantity": "Opoiye"
-            },
-            "description": {
-                "placeholder": "Apejuwe"
-            }
-        },
-        "enterTokenDescription": "Tẹ apejuwe sii",
-        "divisible": {
-            "placeholder": "Pinpin",
-            "desc": "Agbara NFT lati pin si awọn apakan ida. Ipese olomi nikan ṣiṣẹ pẹlu awọn ohun-ini pinpin"
-        },
-        "title": "@:createTokenText",
-        "action": "@:createTokenText",
-        "confirm": "@:confirmText",
-        "titleCommon": "Ṣẹda",
-        "confirmTokenTitleCommon": "Ṣẹda Tokini",
-        "confirmTokenTitleNFT": "Ṣẹda NFT",
-        "actionNFT": "@:createTokenTextNFT"
+    "custom": "Atowunwa",
+    "transactionDeadline": "AKOKAN IKILE",
+    "transactionDeadlineHint": "Yoo paarẹ iṣowo ti o ba wa ni isunmọtosi fun diẹ sii ju gigun yii.",
+    "nodeAddress": "ADIRESI NODU",
+    "ip": "IP",
+    "port": "Ibudo",
+    "min": "O kere ju",
+    "marketAlgorithms": {
+      "SMART": "{smartAlgorithm} afisona liquidity ṣe idaniloju owo ti o dara julọ fun eyikeyi idunadura nipasẹ apapọ awọn aṣayan idiyele ti o dara julọ lati gbogbo awọn ọja to wa. Nigbati o ba wa, Tite'mora tokini tabi\nToken Bonding Curve ({tbcAlgorithm}) yoo ṣee lo fun oloomi bi igba ti iye dukia jẹ ifarada diẹ sii ju awọn orisun miiran lọ, lori eyiti {xycAlgorithm} pool lo.",
+      "TBC": "{tbcAlgorithm} - rira nikan lati Tokini Bonding Curve (Ọja Alakọbẹrẹ). O ṣee ṣe pe iye owo le di aibikita ni akawe si adagbe {xycAlgorithm} (Ile-iwe Atẹle), ṣugbọn iye ti o gba lati awọn ẹbun ti o ni ẹtọ le yipada lati jẹ ọpẹ pupọ diẹ sii ju akoko lọ .",
+      "XYK": "{xycAlgorithm} - rira nikan lati Omi ikudu XYK (Ọja Atẹle). Iyipada paṣipaarọ pool XYK ti atile."
     },
-    "transaction": {
-        "title": "Awọn alaye iṣowo",
-        "blockId": "Idanimo Àkọsílẹ",
-        "status": "Ipo",
-        "statuses": {
-            "pending": "Ni isunmọtosi",
-            "failed": "Idunadura kuna",
-            "complete": "Pari"
-        },
-        "errorMessage": "Aṣiṣe",
-        "startTime": "Ọjọ",
-        "amount": "@:amountText",
-        "amount2": "@:amountText 2",
-        "fee": "Owo Iṣowo",
-        "total": "Lapapọ",
-        "from": "Lati",
-        "to": "Si",
-        "successCopy": "{value} a ti daako si agekuru naa",
-        "copy": "Daakọ {value}",
-        "history": {
-            "created": "A ti ṣẹda idunadura fun {amount} {symbol}",
-            "submitted": "Iṣowo ti a fi silẹ pẹlu owo ti {fee} {symbol}",
-            "confirmed": "Iṣowo ti a ti gba"
-        },
-        "txId": "Id Idunadura",
-        "viewIn": "Wo ni {explorer}",
-        "referrer": "Atọkasi",
-        "referral": "Ifiranṣẹ",
-        "adarTxDetailsTitle": "Àwọn àwọn èrò akójọ awoṣe",
-        "comment": "Ọrọìwòye",
-        "price": "Iye owo",
-        "side": "Apa"
+    "charts": "Awọn aworan atọka",
+    "сhartsDescription": "Wo awọn shatti fun awọn idiyele ami"
+  },
+  "resultDialog": {
+    "title": "Iṣowo ti a fi silẹ",
+    "ok": "O DARA"
+  },
+  "rewards": {
+    "title": "Beere Awọn ere",
+    "andText": "ati",
+    "claiming": {
+      "pending": "O n Beere...",
+      "success": "Beere ni aṣeyọri"
     },
-    "appName": "{AppName}",
-    "changeNetworkText": "Yi nẹtiwọki pada ni apamọwọ",
-    "transactionText": "awon isowo | awon isowo",
-    "connectWalletText": "So ifowisi pọ",
-    "changeAccountText": "Yi Ifowosi pada",
-    "connectedText": "Ti sopọ",
-    "connectWalletTextTooltip": "Sopọ si Nẹtiwọọki {Sora} pẹlu {PolkadotJs}",
-    "selectNodeText": "Yan ipade",
-    "bridgeText": "Afara",
-    "disclaimer": "{disclaimerPrefix} Oju opo wẹẹbu yii ni itọju nipasẹ agbegbe {Sora}. Ṣaaju ki o to tẹsiwaju lati lo oju opo wẹẹbu yii, jọwọ ṣe atunyẹwo {polkaswapFaqLink} ati iwe, eyiti o ni alaye alaye lori bi {AppName} ṣe n ṣiṣẹ, ati pẹlu {memorandumLink}, ati {privacyLink}. Awọn iwe aṣẹ wọnyi jẹ pataki si aabo olumulo ati aabo olumulo. Nipa lilo {AppName}, o gba pe o ti ka ati loye awọn iwe wọnyi. O tun gba eleyi: Ikini) ojuṣe rẹ nikan fun ibamu pẹlu gbogbo awọn ofin ti o le kan si lilo rẹ pato ti {AppName} ni aṣẹ ofin rẹ; Ikeji) oye rẹ pe ẹya lọwọlọwọ ti {AppName} jẹ ẹya alpha: ko ti ni idanwo ni kikun, ati pe awọn iṣẹ kan le ma ṣe bi a ti ṣe apẹrẹ; ati Iketa) oye rẹ ati gbigba iyọọda ti awọn eewu ti o wa ninu lilo {AppName}, pẹlu, ṣugbọn kii ṣe opin si, eewu ti awọn ami tokini padanu. Lẹẹkan si, jọwọ maṣe tẹsiwaju laisi kika {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
-    "poweredBy": "Itileyin lati",
-    "confirmTransactionText": "Jẹrisi idunadura",
-    "retryText": "Tun gbiyanju",
-    "networkFeeText": "Owo ọya Nẹtiwọọki",
-    "networkFeeTooltipText": "A lo owo ọya nẹtiwọọki lati rii daju idagbasoke eto {Sora} ati iṣẹ iduroṣinṣin.",
-    "ethNetworkFeeTooltipText": "Jọwọ ṣe akiyesi pe awọn owo netiwọki {network} ti o han lori {AppName} jẹ awọn iṣiro inira nikan, o le rii iye ọya ti o pe ninu apamọwọ {network} ti o sopọ ṣaaju ṣiṣe iṣeduro iṣowo naa.",
-    "marketText": "Oja",
-    "marketAlgorithmText": "Alugoridimu ọja",
-    "firstPerSecond": "{first} lori {second}",
-    "pairIsNotCreated": "A ko ṣẹda pair token",
-    "pageTitle": {
-        "Swap": "Iŕopo",
-        "Pool": "Pulu",
-        "Bridge": "@:bridgeText",
-        "Stats": "Iṣiro",
-        "Wallet": "Apamọwọ",
-        "AddLiquidity": "Fi liquidity si",
-        "RemoveLiquidity": "Yọ liquidity kuro",
-        "Rewards": "Ere",
-        "Explore\/Tokens": "Awọn ami-ami",
-        "Explore\/Pools": "Pools",
-        "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Ogbin",
-        "Staking": "Staking",
-        "OrderBook": "Iṣowo",
-        "Explore\/Books": "@:pageTitle.OrderBook",
-        "AssetOwner": "Oní dúkìá",
-        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "{Kensetsu}",
-        "VaultDetails": "Awọn alaye ipo",
-        "Burn": "Iná"
+    "transactions": {
+      "confimation": "Jẹrisi {order} ti {total} iṣowo...",
+      "success": "Iwọ yoo gba awọn ẹsan rẹ laipẹ",
+      "failed": "{order} ti {total} iṣowo ti kuna. @:retryText"
     },
-    "mainMenu": {
-        "Swap": "Iŕopo",
-        "Pool": "Pulu",
-        "Bridge": "@:bridgeText",
-        "Farming": "Farming",
-        "Wallet": "Ifowosi",
-        "Rewards": "Ere",
-        "About": "Nipa",
-        "Stats": "Iṣiro",
-        "StakingContainer": "Staking",
-        "Explore\/Container": "Ye",
-        "SoraCard": "Kaadi {Sora}",
-        "OrderBook": "Iṣowo",
-        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults",
-        "Burn": "@:pageTitle.Burn"
+    "signing": {
+      "extension": "{PolkadotJs} itẹsiwaju burausa",
+      "accounts": "rẹ {Sora} ati {Ethereum} awọn iroyin lẹsẹsẹ"
     },
-    "social": {
-        "twitter": "Twitter",
-        "telegram": "Telegram",
-        "medium": "Medium",
-        "reddit": "Reddit",
-        "github": "GitHub",
-        "wiki": "{Sora} Wiki"
+    "hint": {
+      "connectExternalAccount": "So iroyin miiran pọ mọ {Ethereum} lati ṣayẹwo fun awọn ere PSWAP ati VAL ti o wa.",
+      "connectAccounts": "Lati beere awọn ẹbun PSWAP rẹ ati VAL o nilo lati sopọ mejeeji rẹ {Sora} ati {Ethereum} awọn iroyin.",
+      "connectAnotherAccount": "So ifowosi miiran pọ mọ {Ethereum} lati ṣayẹwo fun awọn ere PSWAP ati VAL ti o wa.",
+      "howToClaimRewards": "Lati beere fun awọn ere {symbols} o nilo lati buwolu wọle {count} {transactions} ni {destination}. Awọn ere yoo wa ni idogo si akọọlẹ {Sora} rẹ."
     },
-    "footerMenu": {
-        "faucet": "Faucet",
-        "github": "GitHub",
-        "sorawiki": "{Sora} Wiki",
-        "memorandum": "Memorandum {AppName} ati Awọn ofin lilo",
-        "privacy": "Ofin Asiri",
-        "info": "Alaye & Awujọ"
+    "action": {
+      "connectExternalWallet": "Sopọ {Ethereum} apele",
+      "signAndClaim": "Wole ki o beere",
+      "pendingInternal": "{Sora} idunidara isunmotosi",
+      "pendingExternal": "{Ethereum} idunidara isunmotosi",
+      "checkRewards": "Ṣayẹwo"
     },
-    "helpDialog": {
-        "title": "Iranlowo",
-        "termsOfService": "Awọn ofin lilo",
-        "privacyPolicy": "Ofin Asiri",
-        "appVersion": "eya {AppName}",
-        "contactUs": "Pe wa"
+    "notification": {
+      "empty": "Ko si awọn ẹtọ ti o wa fun akọọlẹ yii"
     },
-    "aboutNetworkDialog": {
-        "title": "Nipa",
-        "network": {
-            "title": "Kini {Sora}?",
-            "description": "{AppName} ti wa ni itumọ lori oke ti Nẹtiwọọki {Sora}, ati pe {Sora} token (XOR) ti lo fun gaasi \/ owo ati ipese oloomi lori {AppName}. {Sora} Nẹtiwọọki ngbanilaaye fun awọn owo ti o dinku, awọn iṣowo yiyara ati ipari ipari ipohunpo rọrun ati pe o wa ni idojukọ fifiranṣẹ ibaraenisepo kọja awọn ilolupo eda abemi-idena miiran bi {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Kini {PolkadotJs}?",
-            "description": "Itẹsiwaju {PolkadotJs} jẹ itẹsiwaju aṣawakiri ti o wa fun Firefox ati Chrome ti a ṣe igbẹhin si iṣakoso awọn iroyin fun Awọn ẹwọn ti o da lori Substrate, pẹlu {Sora}, {Polkadot} ati {Kusama}. O le ṣafikun, gbe wọle, ati gbejade awọn iroyin ati buwọlu awọn iṣowo tabi awọn nkan elekeji ti o ti bẹrẹ lati awọn oju opo wẹẹbu ti o fun ni aṣẹ."
-        }
+    "events": {
+      "XorErc20": "XOR ERC-20",
+      "SoraFarmHarvest": "{Sora}.farm harvest",
+      "NtfAirdrop": "Airdropu NFT",
+      "LiquidityProvision": "Awọn owo ti a gba lati ipese liquidity ",
+      "BuyOnBondingCurve": "Rira lati TBC",
+      "MarketMakerVolume": "Adari Oja",
+      "LiquidityProvisionFarming": "Ogbin"
     },
-    "node": {
-        "errors": {
-            "connection": "Aṣiṣe kan waye lakoko sisopọ si oju ipade\n{address}\n",
-            "network": "Iho naa\n{address}\n wa lati nẹtiwọọki miiran\n",
-            "existing": "A ti fi kun oju ipade yii tẹlẹ: {title}\n"
-        },
-        "messages": {
-            "connected": "Asopọ ti a fi idi pẹlu ipade\n{address}\n",
-            "selectNode": "Jọwọ yan oju ipade lati sopọ lati atokọ ipade"
-        },
-        "warnings": {
-            "disconnect": "Asopọ si ipade ti sọnu. A n tun sopọ..."
-        }
+    "vested": "Tà fun",
+    "forText": "fun",
+    "totalVested": "Apapo Ta fun",
+    "claimableAmountDoneVesting": "Iye ti o ni ẹtọ (ti a ṣe)",
+    "groups": {
+      "strategic": "Ere Awọn ilana",
+      "external": "Awọn ere fun iroyin {Ethereum} ti a sopọ",
+      "crowdloan": "Crowdloan ere"
     },
-    "selectNodeDialog": {
-        "title": "aṣayan ipade Nẹtiwọọki",
-        "addNode": "Ṣafikun oju ipade atowunwa",
-        "customNode": "Oju ipade Atowunwa",
-        "howToSetupOwnNode": "Ṣeto nòdì rẹ",
-        "select": "Yan",
-        "connected": "Ti sopọ",
-        "nodeTitle": "{chain} gbalejo nipasẹ {name}",
-        "messages": {
-            "emptyName": "Jọwọ tẹ orukọ ipade naa sii",
-            "emptyAddress": "Jọwọ tẹ adirẹsi ti oju ipade naa sii",
-            "incorrectProtocol": "Adirẹsi yẹ ki o bẹrẹ lati ws:\/\/ tabi wss:\/\/",
-            "incorrectAddress": "Adirẹsi ti ko tọ"
-        },
-        "updateNode": "Imudojuiwọn oju ipade"
+    "Rewards": "Ere",
+    "ReferralProgram": "Awọn itọkasi",
+    "PointSystem": "Awọn Dimegilio"
+  },
+  "provider": {
+    "messages": {
+      "checkExtension": "{name}extension nsise, jọwọ ṣayẹwo",
+      "extensionLogin": "Jọwọ buwolu wọle si itẹsiwaju {name}",
+      "installExtension": "A ko ri itẹsiwaju {name} . Jọwọ fi sii! \n\n Ti fi sori ẹrọ itẹsiwaju tẹlẹ? Jọwọ tun gbee si oju-iwe naa",
+      "reloadPage": "Ṣe atunkọ oju -iwe",
+      "notAvailable": "{name} ko si."
+    }
+  },
+  "selectLanguageDialog": {
+    "title": "Edé"
+  },
+  "tokens": {
+    "symbol": "Ami",
+    "assetId": "Idanimo dukia"
+  },
+  "memorandum": "Memorandum {AppName} ati Awọn ofin lilo",
+  "FAQ": "Ibere ati Idaun lori {AppName}",
+  "connectedAccount": "Ti sopọ iroyin",
+  "selectNodeConnected": "Ti sopọ mọ: {chain}",
+  "moonpayText": "MoonPay",
+  "forText": "fun",
+  "moonpay": {
+    "notifications": {
+      "success": {
+        "title": "Awọn tokini ti o ra",
+        "text": "Rira tokini ti pari. Iṣowo Afara {Hashi} yoo bẹrẹ laifọwọyi ni kete ti a ti gba awọn ami ni akọọlẹ {Ethereum} ti o sopọ. O jẹ ailewu lati pa window yii ki o tẹsiwaju lilo {AppName}. Ifitonileti yoo wa nipa idunadura afara nigbati o ba ṣetan."
+      },
+      "supportError": {
+        "title": "Tokini ko ni atilẹyin",
+        "text": "Laanu tokini ti o ra nipasẹ @:moonpayText ko ni atilẹyin sibẹsibẹ nipasẹ afara {Hashi} ni {AppName}. Ni deede awọn tokini ti o ni atilẹyin nikan yẹ ki o wa fun rira nipasẹ MoonPay ni {AppName}, nitorinaa ohun kan gbọdọ ti jẹ aṣiṣe ni ibikan. Jọwọ ma ṣe ṣiyemeji lati jẹ ki agbegbe mọ nipa ọran yii ni <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> Ẹgbẹ Telegram {AppName} </a> ."
+      },
+      "feeError": {
+        "title": "Ko ti to ETH fun afara tx",
+        "text": "Laanu idunadura Afara {Hashi} ti kuna nitori nibẹ ko to ETH lati sanwo fun awọn idiyele gbigbe nẹtiwọọki {Ethereum}. Jọwọ ṣafikun ETH diẹ sii ki o tun gbiyanju lẹẹkansi."
+      },
+      "transactionError": {
+        "title": "Iṣowo ti kuna",
+        "text": "Laanu o han pe idunadura @:moonpayText ti kuna. Jọwọ gbiyanju lẹẹkansi. Fun @:moonpayText lọ si <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https: // support.moonpay.com </a>"
+      },
+      "amountError": {
+        "title": "Iwontunwonsi ti ko to",
+        "text": "Laanu idunadura Afara {Hashi} ti kuna nitori nibẹ ko ni awọn tokini to fun idunadura. Jọwọ ṣayẹwo iwọntunwọnsi akọọlẹ {Ethereum} rẹ ki o tun gbiyanju lẹẹkansi."
+      },
+      "accountAddressError": {
+        "title": "Iroyin {Ethereum} ti ko tọ",
+        "text": "Laanu, idunadura Afara {Hashi} kuna nitori adirẹsi olugba ti awọn tokini ni @:moonpayText aṣẹ ko baamu adirẹsi akọọlẹ {Ethereum} lọwọlọwọ rẹ. Jọwọ yipada iroyin {Ethereum} ni itẹsiwaju ki o tun gbiyanju lẹẹkansi."
+      }
     },
     "buttons": {
-        "max": "To poju",
-        "chooseToken": "Yan tokini",
-        "chooseAToken": "Yan tokini kan",
-        "chooseTokens": "Yan awọn tokini",
-        "enterAmount": "Tẹ iye sii"
+      "buy": "Ra Tokini",
+      "history": "Itan Tx",
+      "transfer": "Bẹrẹ afara",
+      "view": "Wo idunadura"
     },
-    "transfers": {
-        "from": "Lati",
-        "to": "Si"
+    "history": {
+      "title": "Itan rira",
+      "empty": "@:noDataText"
     },
-    "exchange": {
-        "Swap": "Iŕopo",
-        "Pool": "Pulu",
-        "balance": "Iśeku",
-        "price": "Iye",
-        "transactionSubmitted": "Iṣowo ti a fi silẹ",
-        "transactionMessage": "{firstToken} ati {secondToken}",
-        "ok": "O DARA",
-        "confirm": "Jẹrisi",
-        "lossWarning": "Iwọ yoo padanu {value}% lori iṣowo rẹ. A ti rii ọran ipese oloomi kan. Eyi le ja si awọn adanu nla lakoko awọn swaps àmi. Jọwọ rii daju pe oloomi to peye wa fun bata swap ti o fẹ."
-    },
-    "swap": {
-        "estimated": "ifoju wo",
-        "slippageTolerance": "Ifarada Slippage",
-        "minReceived": "O kere ju ta gba",
-        "maxSold": "Apoju Tata",
-        "minReceivedTooltip": "Iṣowo rẹ yoo pada ti o ba wa tobi, iṣipopada idiyele idiyele ṣaaju ki o to fidi rẹ mulẹ.",
-        "priceImpact": "Ipa Iye",
-        "priceImpactTooltip": "Iyato laarin idiyele ọja ati idiyele ti a pinnu nitori iwọn iṣowo.",
-        "liquidityProviderFee": "Ọya Olupese Liquidity",
-        "liquidityProviderFeeTooltip": "Apakan ti iṣowo kọọkan ({liquidityProviderFee}%) lọ si awọn olupese liquidity bi iwuri ilana kan.",
-        "insufficientAmount": "Iye {tokenSymbol} Oto",
-        "insufficientLiquidity": "Liquidity ko to",
-        "confirmSwap": "Jẹrisi afiropo ",
-        "swapOutputMessage": "Ti ṣe iṣiro iṣẹjade. Iwọ yoo gba o kere ju {transactionValue} tabi idunadura naa yoo pada.",
-        "rewardsForSwap": "Awọn ere ilana PSWAP",
-        "swapInputMessage": "Iṣagbewọle ti ni iṣiro. Iwọ yoo ta o pọju {transactionValue} tabi idunadura naa yoo pada.",
-        "route": "Ipa ọna",
-        "errorFetching": "Aṣiṣe gbigba data naa"
-    },
-    "pool": {
-        "connectToWallet": "Sopọ si apamọwọ kan lati ṣafikun ati wo liquidity rẹ.",
-        "liquidityNotFound": "Ko ri liquidity kankan.",
-        "addLiquidity": "Fi liquidity si",
-        "removeLiquidity": "Yọ liquidity kuro",
-        "createPair": "Ṣẹda pair kan",
-        "pooledToken": "{tokenSymbol} Pulu",
-        "pairTokens": "{pair} Awọn tokini pulu",
-        "poolShare": "Ipin pool re",
-        "description": "Nigbati o ba ṣafikun oloomi, a fun ọ ni awọn ami adagun ti o nsoju ipo rẹ. Awọn tokini wọnyi n gba owo-ori laifọwọyi ni ibamu si ipin rẹ ti adagun-odo, ati pe o le rà pada nigbakugba.",
-        "strategicBonusApy": "Ajeseku Ilana APY"
-    },
-    "bridge": {
-        "title": "Afara",
-        "info": "Yi awọn token pada laarin awọn nẹtiwọọki {Sora} ati {Ethereum}.",
-        "balance": "Iśeku",
-        "next": "Itele",
-        "connectWallets": "So awọn woleti pọ lati wo itan iṣowo kọọkan.",
-        "soraNetworkFee": "{Sora} Owo Nẹtiwọọki",
-        "ethereumNetworkFee": "{Ethereum} Owo Nẹtiwọọki",
-        "total": "Lapapọ",
-        "viewHistory": "Wo awọn itan-iṣowo",
-        "transactionSubmitted": "Iṣowo ti a fi silẹ",
-        "transactionMessage": "{assetA} fun {assetB}",
-        "notRegisteredAsset": "Dukia {assetSymbol} ko forukọsilẹ",
-        "selectNetwork": "Yan nẹtiwọọki",
-        "networkInfo": "Safara {Sora} Nẹtiwọọki pẹlu:",
-        "copy": "Daakọ adirẹsi nẹtiwọki",
-        "soraAddress": "{Sora} adirẹsi",
-        "ethereumAddress": "{Ethereum} adirẹsi",
-        "limitMessage": "Lọwọlọwọ, {type} {amount} {symbol} wa fun sisọpọ lati rii daju iduroṣinṣin ati aabo ti Nẹtiwọọki {Sora} . A dupe oye rẹ.",
-        "externalTransferFee": "{network} {XCM} ọya",
-        "externalTransferFeeTooltip": "Nigbati o ba fi iṣowo afara ranṣẹ si netiwọki {network} , owo kekere kan yoo gba lati iye ti o n gbe",
-        "externalMinDeposit": "{network} min. idogo",
-        "externalMinDepositTooltip": "Iwontunwonsi ti o kere ju {symbol} ti o gbọdọ wa lori akọọlẹ {network} rẹ lẹhin gbigbe afara"
-    },
-    "selectRegisteredAsset": {
-        "title": "Yan Tokini kan",
-        "search": {
-            "title": "Awon Tokini",
-            "placeholder": "Àlẹmọ nipasẹ Idanimo dukia, Orukọ tabi Aami Ticker",
-            "networkLabelSora": "{Sora} awon tokini netiwooki",
-            "networkLabelEthereum": "{network} awọn ami digi nẹtiwọki",
-            "emptyListMessage": "Ko si awọn abajade"
-        },
-        "customAsset": {
-            "title": "Atowunwa",
-            "customInfo": "Pataki! Awọn Tokini atowunwa gbọdọ forukọsilẹ ni {Sora}.",
-            "registerToken": "Forukọsilẹ Token",
-            "addressPlaceholder": "Idanimo dukia",
-            "symbolPlaceholder": "Aami Token ",
-            "empty": "A ko ri token",
-            "alreadyAttached": "Token yii ti ni asopọ tẹlẹ"
-        }
-    },
-    "bridgeTransaction": {
-        "details": "{from} fun {to}",
-        "for": " fun ",
-        "steps": {
-            "step": "{step} ti keji",
-            "step1": "Ikini",
-            "step2": "Ikeji"
-        },
-        "status": {
-            "pending": "{step} Idunadura n sunmọtosi ...",
-            "failed": "{step} idunadura kuna. @:(retryText).",
-            "confirm": "Jẹrisi ikeji ninu awọn iṣowo meji...",
-            "complete": "Pari",
-            "convertionComplete": "Iyipada ti pari"
-        },
-        "statuses": {
-            "waiting": "Nduro",
-            "ready": "Ṣetan",
-            "pending": "Ni isunmọtosi",
-            "frozen": "Fisi itimole",
-            "failed": "Idunadura kuna",
-            "done": "Pari",
-            "waitingForConfirmation": "Nduro fun idaniloju..."
-        },
-        "networkTitle": "idunadura {network}",
-        "transactionHash": "Ami Iṣowo",
-        "networkInfo": {
-            "status": "Ipo",
-            "date": "Ọjọ",
-            "amount": "Iye",
-            "transactionFee": "Owo Iṣowo",
-            "total": "Lapapọ"
-        },
-        "successCopy": "Ti daakọ elile iṣowo si agekuru naa",
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
-        "pending": "idunadura ni isunmọtosi ni {network}",
-        "newTransaction": "Ṣẹda idunadura tuntun",
-        "title": "Idunadura Bridge",
-        "allowToken": "Gba {AppName} lati lo {tokenSymbol}",
-        "approveToken": "Jọwọ ṣe akiyesi pe o nilo lati fọwọsi ami (tokini)-ẹri lẹẹkan. Ti itẹsiwaju rẹ ba ni awọn ibeere ifọwọsi ọpọ, rii daju lati jẹrisi ọkan ti o kẹhin lakoko ti o kọ iyoku.",
-        "blocksLeft": "{count} osi..."
-    },
-    "bridgeHistory": {
-        "title": "Itan-akọọlẹ",
-        "showHistory": "Ṣe afihan itan-akọọlẹ",
-        "clearHistory": "Nu itan kuro",
-        "empty": "Awọn iṣowo rẹ yoo han nibi.",
-        "filterPlaceholder": "Àlẹmọ nipasẹ Idanimo dukia tabi Aami Ticker",
-        "restoreHistory": "Mu itan pada",
-        "statusAction": "Ti nilo igbese"
-    },
-    "selectToken": {
-        "title": "Yan Tokini kan",
-        "searchPlaceholder": "Àlẹmọ nipasẹ Idanimo dukia, Orukọ tabi Aami Ticker",
-        "emptyListMessage": "Ko si awọn abajade",
-        "copy": "Daakọ Idanimo dukia",
-        "successCopy": "{symbol} Idanimo dukia ti dakọ si agekuru naa",
-        "assets": {
-            "title": "Awọn dukia"
-        },
-        "custom": {
-            "title": "Atowunwa",
-            "search": "Idanimo dukia",
-            "text": "Tokini atowunwa",
-            "alreadyAttached": "Tokini yii ti ni asopọ tẹlẹ",
-            "notFound": "A ko ri tokini"
-        }
-    },
-    "createPair": {
-        "title": "Ṣẹda onimeji kan",
-        "deposit": "Idogo",
-        "balance": "Iśeku",
-        "pricePool": "Awọn iye ati ipin puulu",
-        "shareOfPool": "Pinpin pool",
-        "firstSecondPoolTokens": "{first}-{second} Puulu",
-        "connect": "So apamọwọ pọ",
-        "supply": "Ipese",
-        "yourPosition": "Ipo rẹ",
-        "yourPositionEstimated": "Ipo rẹ (ifoju)",
-        "youWillReceive": "Iwo yoo gba",
-        "remove": "Yọ",
-        "add": "Fikun",
-        "ok": "O DARA",
-        "alreadyCreated": "A ti ṣẹda Token pair tele",
-        "firstLiquidityProvider": "Iwọ ni olupese liquidity akọkọ",
-        "firstLiquidityProviderInfo": "Ipin awọn ami ti o ṣafikun yoo ṣeto idiyele ti adagun-odo yii. <br\/> Ni kete ti o ba ni ayọ pẹlu oṣuwọn tẹ ipese lati ṣe atunyẹwo."
-    },
-    "confirmSupply": {
-        "title": "Iwo yoo gba",
-        "outputDescription": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance}% iṣowo rẹ yoo pada.",
-        "poolTokensBurned": "{first}-{second} Awọn Pool Tokens ta ti sun",
-        "price": "Iye"
-    },
-    "addLiquidity": {
-        "title": "Fi liquidity si"
-    },
-    "removeLiquidity": {
-        "title": "Yọ liquidity kuro",
-        "liquidity": "liquidity",
-        "balance": "Iśeku",
-        "amount": "Iye",
-        "input": "Ifisi",
-        "output": "Ijade",
-        "price": "Iye",
-        "remove": "Yọ",
-        "description": "Yiyọ awọn ami adagun yi pada ipo rẹ pada si awọn ami atokọ ni oṣuwọn lọwọlọwọ, ni ibamu si ipin rẹ ti adagun-odo. Awọn owo ti a gba ni o wa ninu awọn oye ti o gba.",
-        "outputMessage": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance} % iṣowo rẹ yoo pada.",
-        "confirmTitle": "Iwo yoo gba",
-        "shareOfPool": "Pinpin pool lẹhin idunadura",
-        "locked": "{percent} ti adagun-omi rẹ wa ni {lock}"
-    },
-    "dexSettings": {
-        "title": "Ètò",
-        "marketAlgorithm": "@.upper:marketAlgorithmText",
-        "marketAlgorithmTooltip": {
-            "main": " - aṣayan lati yan laarin ọja Alakọbẹrẹ (TBC), Ile-iwe Atẹle (XYK) tabi algorithm ọlọgbọn apapọ fun idiyele ti o dara julọ fun iṣeduro eyikeyi ti a fun."
-        },
-        "slippageTolerance": "Ifarada SLIPPAGE",
-        "slippageToleranceHint": "Iṣowo rẹ yoo pada bi owo naa ba yipada lainidena nipasẹ diẹ sii ju ipin yii lọ.",
-        "slippageToleranceValidation": {
-            "warning": "Iṣowo rẹ le kuna",
-            "frontrun": "Iṣowo rẹ le jẹ iwaju",
-            "error": "Tẹ ogorun yiyọ to wulo sii"
-        },
-        "custom": "Atowunwa",
-        "transactionDeadline": "AKOKAN IKILE",
-        "transactionDeadlineHint": "Yoo paarẹ iṣowo ti o ba wa ni isunmọtosi fun diẹ sii ju gigun yii.",
-        "nodeAddress": "ADIRESI NODU",
-        "ip": "IP",
-        "port": "Ibudo",
-        "min": "O kere ju",
-        "marketAlgorithms": {
-            "SMART": "{smartAlgorithm} afisona liquidity ṣe idaniloju owo ti o dara julọ fun eyikeyi idunadura nipasẹ apapọ awọn aṣayan idiyele ti o dara julọ lati gbogbo awọn ọja to wa. Nigbati o ba wa, Tite'mora tokini tabi\nToken Bonding Curve ({tbcAlgorithm}) yoo ṣee lo fun oloomi bi igba ti iye dukia jẹ ifarada diẹ sii ju awọn orisun miiran lọ, lori eyiti {xycAlgorithm} pool lo.",
-            "TBC": "{tbcAlgorithm} - rira nikan lati Tokini Bonding Curve (Ọja Alakọbẹrẹ). O ṣee ṣe pe iye owo le di aibikita ni akawe si adagbe {xycAlgorithm} (Ile-iwe Atẹle), ṣugbọn iye ti o gba lati awọn ẹbun ti o ni ẹtọ le yipada lati jẹ ọpẹ pupọ diẹ sii ju akoko lọ .",
-            "XYK": "{xycAlgorithm} - rira nikan lati Omi ikudu XYK (Ọja Atẹle). Iyipada paṣipaarọ pool XYK ti atile."
-        },
-        "charts": "Awọn aworan atọka",
-        "сhartsDescription": "Wo awọn shatti fun awọn idiyele ami"
-    },
-    "resultDialog": {
-        "title": "Iṣowo ti a fi silẹ",
-        "ok": "O DARA"
-    },
-    "rewards": {
-        "title": "Beere Awọn ere",
-        "andText": "ati",
-        "claiming": {
-            "pending": "O n Beere...",
-            "success": "Beere ni aṣeyọri"
-        },
-        "transactions": {
-            "confimation": "Jẹrisi {order} ti {total} iṣowo...",
-            "success": "Iwọ yoo gba awọn ẹsan rẹ laipẹ",
-            "failed": "{order} ti {total} iṣowo ti kuna. @:retryText"
-        },
-        "signing": {
-            "extension": "{PolkadotJs} itẹsiwaju burausa",
-            "accounts": "rẹ {Sora} ati {Ethereum} awọn iroyin lẹsẹsẹ"
-        },
-        "hint": {
-            "connectExternalAccount": "So iroyin miiran pọ mọ {Ethereum} lati ṣayẹwo fun awọn ere PSWAP ati VAL ti o wa.",
-            "connectAccounts": "Lati beere awọn ẹbun PSWAP rẹ ati VAL o nilo lati sopọ mejeeji rẹ {Sora} ati {Ethereum} awọn iroyin.",
-            "connectAnotherAccount": "So ifowosi miiran pọ mọ {Ethereum} lati ṣayẹwo fun awọn ere PSWAP ati VAL ti o wa.",
-            "howToClaimRewards": "Lati beere fun awọn ere {symbols} o nilo lati buwolu wọle {count} {transactions} ni {destination}. Awọn ere yoo wa ni idogo si akọọlẹ {Sora} rẹ."
-        },
-        "action": {
-            "connectExternalWallet": "Sopọ {Ethereum} apele",
-            "signAndClaim": "Wole ki o beere",
-            "pendingInternal": "{Sora} idunidara isunmotosi",
-            "pendingExternal": "{Ethereum} idunidara isunmotosi",
-            "checkRewards": "Ṣayẹwo"
-        },
-        "notification": {
-            "empty": "Ko si awọn ẹtọ ti o wa fun akọọlẹ yii"
-        },
-        "events": {
-            "XorErc20": "XOR ERC-20",
-            "SoraFarmHarvest": "{Sora}.farm harvest",
-            "NtfAirdrop": "Airdropu NFT",
-            "LiquidityProvision": "Awọn owo ti a gba lati ipese liquidity ",
-            "BuyOnBondingCurve": "Rira lati TBC",
-            "MarketMakerVolume": "Adari Oja",
-            "LiquidityProvisionFarming": "Ogbin"
-        },
-        "vested": "Tà fun",
-        "forText": "fun",
-        "totalVested": "Apapo Ta fun",
-        "claimableAmountDoneVesting": "Iye ti o ni ẹtọ (ti a ṣe)",
-        "groups": {
-            "strategic": "Ere Awọn ilana",
-            "external": "Awọn ere fun iroyin {Ethereum} ti a sopọ",
-            "crowdloan": "Crowdloan ere"
-        },
-        "Rewards": "Ere",
-        "ReferralProgram": "Awọn itọkasi",
-        "PointSystem": "Awọn Dimegilio"
-    },
-    "provider": {
-        "messages": {
-            "checkExtension": "{name}extension nsise, jọwọ ṣayẹwo",
-            "extensionLogin": "Jọwọ buwolu wọle si itẹsiwaju {name}",
-            "installExtension": "A ko ri itẹsiwaju {name} . Jọwọ fi sii! \n\n Ti fi sori ẹrọ itẹsiwaju tẹlẹ? Jọwọ tun gbee si oju-iwe naa",
-            "reloadPage": "Ṣe atunkọ oju -iwe",
-            "notAvailable": "{name} ko si."
-        }
-    },
-    "selectLanguageDialog": {
-        "title": "Edé"
-    },
-    "tokens": {
-        "symbol": "Ami",
-        "assetId": "Idanimo dukia"
-    },
-    "memorandum": "Memorandum {AppName} ati Awọn ofin lilo",
-    "FAQ": "Ibere ati Idaun lori {AppName}",
-    "connectedAccount": "Ti sopọ iroyin",
-    "selectNodeConnected": "Ti sopọ mọ: {chain}",
-    "moonpayText": "MoonPay",
-    "forText": "fun",
-    "moonpay": {
-        "notifications": {
-            "success": {
-                "title": "Awọn tokini ti o ra",
-                "text": "Rira tokini ti pari. Iṣowo Afara {Hashi} yoo bẹrẹ laifọwọyi ni kete ti a ti gba awọn ami ni akọọlẹ {Ethereum} ti o sopọ. O jẹ ailewu lati pa window yii ki o tẹsiwaju lilo {AppName}. Ifitonileti yoo wa nipa idunadura afara nigbati o ba ṣetan."
-            },
-            "supportError": {
-                "title": "Tokini ko ni atilẹyin",
-                "text": "Laanu tokini ti o ra nipasẹ @:moonpayText ko ni atilẹyin sibẹsibẹ nipasẹ afara {Hashi} ni {AppName}. Ni deede awọn tokini ti o ni atilẹyin nikan yẹ ki o wa fun rira nipasẹ MoonPay ni {AppName}, nitorinaa ohun kan gbọdọ ti jẹ aṣiṣe ni ibikan. Jọwọ ma ṣe ṣiyemeji lati jẹ ki agbegbe mọ nipa ọran yii ni <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> Ẹgbẹ Telegram {AppName} <\/a> ."
-            },
-            "feeError": {
-                "title": "Ko ti to ETH fun afara tx",
-                "text": "Laanu idunadura Afara {Hashi} ti kuna nitori nibẹ ko to ETH lati sanwo fun awọn idiyele gbigbe nẹtiwọọki {Ethereum}. Jọwọ ṣafikun ETH diẹ sii ki o tun gbiyanju lẹẹkansi."
-            },
-            "transactionError": {
-                "title": "Iṣowo ti kuna",
-                "text": "Laanu o han pe idunadura @:moonpayText ti kuna. Jọwọ gbiyanju lẹẹkansi. Fun @:moonpayText lọ si <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https: \/\/ support.moonpay.com <\/a>"
-            },
-            "amountError": {
-                "title": "Iwontunwonsi ti ko to",
-                "text": "Laanu idunadura Afara {Hashi} ti kuna nitori nibẹ ko ni awọn tokini to fun idunadura. Jọwọ ṣayẹwo iwọntunwọnsi akọọlẹ {Ethereum} rẹ ki o tun gbiyanju lẹẹkansi."
-            },
-            "accountAddressError": {
-                "title": "Iroyin {Ethereum} ti ko tọ",
-                "text": "Laanu, idunadura Afara {Hashi} kuna nitori adirẹsi olugba ti awọn tokini ni @:moonpayText aṣẹ ko baamu adirẹsi akọọlẹ {Ethereum} lọwọlọwọ rẹ. Jọwọ yipada iroyin {Ethereum} ni itẹsiwaju ki o tun gbiyanju lẹẹkansi."
-            }
-        },
-        "buttons": {
-            "buy": "Ra Tokini",
-            "history": "Itan Tx",
-            "transfer": "Bẹrẹ afara",
-            "view": "Wo idunadura"
-        },
-        "history": {
-            "title": "Itan rira",
-            "empty": "@:noDataText"
-        },
-        "confirmations": {
-            "txReady": "Idunadura Ṣetan Fun Afara"
-        },
-        "tooltips": {
-            "transfer": "Awọn ami ti o ra ni aṣeyọri!\n Tẹ lati bẹrẹ iṣowo afara"
-        }
-    },
-    "light": "Imọlẹ",
-    "dark": "Dudu",
-    "headerMenu": {
-        "showBalances": "Fihan Awọn iwọntunwọnsi",
-        "hideBalances": "Tọju Awọn iwọntunwọnsi",
-        "settings": "Ètò",
-        "switchTheme": "Yipada si {theme} Ipo",
-        "switchLanguage": "Yan Ede",
-        "showDisclaimer": "Ṣafihan AlAIgBA",
-        "hideDisclaimer": "Tọju AlAIgBA",
-        "selectCurrency": "Yan Owo"
-    },
-    "sentText": "Ti firanṣẹ",
-    "learnMoreText": "Kọ ẹkọ si",
-    "marketMakerCountdown": {
-        "title": "Oja Ẹlẹda kika",
-        "blocks": "ohun amorindun",
-        "daysLeft": "ọjọ osi",
-        "txs": "TXs",
-        "volume": "MM TX iwọn didun",
-        "description": "20 million PSWAP \/ osù ni yoo pin si awọn oluṣe ọja pẹlu o kere ju 500 tx \/ osù ti o ni idiyele lori 1 XOR."
-    },
-    "confirmNextTxFailure": {
-        "header": "Ifarabalẹ",
-        "info": "Iwọntunwọnsi {symbol} rẹ yoo kere ju {fee} {symbol} lẹhin iṣowo yii. Iwọ kii yoo ni anfani lati sanwo fun ọya nẹtiwọki fun iṣowo miiran.",
-        "payoff": "Iwọ yoo ni lati lo Afara lati gba XOR lati awọn nẹtiwọọki miiran, firanṣẹ XOR lati akọọlẹ {Sora} miiran, tabi paarọ eyikeyi ami-ami miiran tẹlẹ ninu akọọlẹ rẹ sinu XOR.",
-        "button": "Bẹẹni, Mo loye ewu naa"
-    },
-    "blockNumberText": "Àkọsílẹ nọmba",
-    "referralProgram": {
-        "title": "Eto ifiwepe",
-        "connectAccount": "Lati pe awọn olumulo o nilo lati so akọọlẹ {Sora} rẹ pọ.",
-        "bondedXOR": "XOR ti o ni asopọ",
-        "referralsNumber": "awọn itọkasi {number}",
-        "startInviting": "Bond XOR lati tọka si awọn miiran",
-        "preview": "Pe awọn olumulo titun ati gba 10% lati awọn idiyele idunadura wọn. <br\/> Lati bẹrẹ, di eyikeyi iye ti XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Kọ ẹkọ diẹ sii <\/a>",
-        "deposit": "Idogo",
-        "balance": "Iwontunwonsi",
-        "insufficientBondedBalance": "Aini iwọntunwọnsi ti o darapọ mọ",
-        "action": {
-            "empty": "Tẹ iye {tokenSymbol}",
-            "startInviting": "Dipọ {tokenSymbol} lati bẹrẹ pipe si",
-            "bondMore": "Dipọ Die",
-            "bond": "Dipọ",
-            "unbond": "Yọọ",
-            "copyLink": "Daakọ ọna asopọ",
-            "shareLink": "Pin"
-        },
-        "transactionDetails": "Idunadura Awọn alaye",
-        "receivedRewards": "Awọn ere ti o gba",
-        "invitationLink": "Ọna asopọ ifiwepe",
-        "successCopy": "Ọna asopọ itọkasi jẹ daakọ si agekuru agekuru",
-        "bondTitle": "Dipọ XOR",
-        "unbondTitle": "Yọ XOR kuro",
-        "confirm": {
-            "bond": "Jẹrisi dipọ",
-            "unbond": "Jẹrisi yiyọ kuro",
-            "inviteTitle": "O ti pe ọ si {AppName} nipasẹ itọkasi kan",
-            "inviteDescription": "Fun gbogbo iṣowo, 10% ti owo naa yoo lọ si olutọka rẹ, laisi idiyele eyikeyi fun ọ.",
-            "signInvitation": "Fi ọwọ si",
-            "freeOfCharge": "Iṣe yii jẹ ọfẹ",
-            "hasReferrerTitle": "O ti ṣeto olutọka rẹ tẹlẹ",
-            "hasReferrerDescription": "Laanu, o le ṣeto ọkan nikan",
-            "ok": "O DARA",
-            "text": "Jẹrisi"
-        },
-        "referrer": {
-            "title": "Ṣafikun olutọka rẹ",
-            "titleReferrer": "Olutọka rẹ",
-            "placeholder": "Tẹ ọna asopọ ifiwepe tabi koodu sii",
-            "label": "Asopọmọra ifiwepe tabi koodu",
-            "approve": "Fi ọwọ si",
-            "approved": "Ti fọwọsi",
-            "description": "O le tọka si {AppName},<br\/>tẹ ọna asopọ tabi koodu ti olutọkasi",
-            "referredBy": "{referrer} ti tọka si ọ",
-            "info": "Nigbati o ba san owo fun idunadura,<br\/>10% yoo lọ si olutọkasi rẹ",
-            "referredLablel": "Adirẹsi ti a tọka si"
-        },
-        "insufficientBondedAmount": "Lati pe awọn itọka si diẹ sii, di o kere ju {inviteUserFee} XOR",
-        "inviteViaTelegram": "Pe nipasẹ {Telegram}",
-        "welcomeMessage": "\nDarapọ mọ mi lori {Polkaswap}!\n\nṢawari {DEX} ti ara ẹni ti o fun ọ laaye lati paarọ awọn aami aami mejila pẹlu awọn paṣipaarọ ẹwọn agbelebu, iwe aṣẹ, ati ọpọlọpọ awọn ere!\n\n🎁 Pe awọn ọrẹ ki o si jo'gun 10% ti awọn owo iṣowo wọn\n\nRi ọ nibẹ!"
-    },
-    "transactionDetailsText": "Idunadura Awọn alaye",
-    "code": {
-        "download": "Ṣe igbasilẹ koodu QR",
-        "upload": "Ṣayẹwo QR",
-        "invalid": "Koodu QR ti ko tọ",
-        "import": "Gbe aworan wọle",
-        "scan": "Ṣayẹwo pẹlu kamẹra",
-        "allowanceError": "Ṣayẹwo wiwa kamẹra rẹ ati awọn igbanilaaye aṣawakiri lati lo",
-        "receive": "Gba",
-        "camera": "Kamẹra",
-        "allowanceRequest": "Tẹ \"Gba laaye\" wiwọle si kamẹra"
-    },
-    "bridgeTransferNotification": {
-        "addToken": "Fi {symbol} sinu apamọwọ",
-        "title": "Idunadura Bridge aseyori"
-    },
-    "mobilePopup": {
-        "sideMenu": "Ṣe igbasilẹ apamọwọ {Sora}",
-        "header": "Ṣe igbasilẹ apamọwọ {Sora} pẹlu {polkaswapHighlight} awọn ẹya ara ẹrọ",
-        "info": "Siwopu àmi lati yatọ si nẹtiwọki - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Pese adagun oloomi ati jo'gun% lati awọn idiyele paṣipaarọ."
-    },
-    "releaseNotesText": "Awọn akọsilẹ idasilẹ",
-    "copiedText": "Ti daakọ!",
-    "copyWithValue": "Daakọ {value}",
-    "copiedWithValue": "{value} ti daakọ!",
-    "signAndClaimText": "Wole ki o beere",
-    "balanceText": "Iwontunwonsi",
-    "unknownAssetText": "Ohun-ini aimọ",
-    "demeterFarming": {
-        "staking": {
-            "active": "Staking lọwọ",
-            "inactive": "Owo lati jo'gun afikun awọn ere",
-            "stopped": "Staking duro"
-        },
-        "info": {
-            "earned": "{symbol} ti o gba",
-            "fee": "Ọya",
-            "feeTooltip": "Owo ohun idogo ti wa ni lilo si iye rẹ si igi",
-            "owned": "{symbol} @:balanceText",
-            "poolShare": "Rẹ pool pin staked",
-            "poolShareWillBe": "Pinpin adagun-odo rẹ ti o ni nkan yoo jẹ",
-            "rewardToken": "Aami ere",
-            "stake": "{symbol} rẹ ti ṣe akoto",
-            "stakeWillBe": "Igi {symbol} rẹ yoo jẹ",
-            "totalLiquidityLocked": "Lapapọ oloomi ni titiipa"
-        },
-        "actions": {
-            "add": "Mu diẹ sii",
-            "claim": "Awọn ere ẹtọ",
-            "remove": "Yọ igi kuro",
-            "start": "Bẹrẹ staking"
-        },
-        "amountAdd": "Iye owo",
-        "amountRemove": "Iye lati yọ kuro",
-        "poweredBy": "Agbara nipasẹ Demeter Farming",
-        "calculator": "Ẹrọ iṣiro",
-        "results": "Esi",
-        "rewards": "{symbol} ere"
-    },
-    "historyErrorMessages": {
-        "generalError": "Nnkan o lo daadaa",
-        "balances": {
-            "liquidityrestrictions": "Awọn ihamọ oloomi iroyin ṣe idiwọ yiyọ kuro"
-        },
-        "poolxyk": {
-            "sourcebalanceisnotlargeenough": "Iwontunwonsi orisun ko tobi to",
-            "targetbalanceisnotlargeenough": "Iwontunwonsi nlo ko tobi to",
-            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Awọn iye ti a pese ni o yatọ pupọ",
-            "calculatedvalueisnotmeetsrequiredboundaries": "Awọn iye ko si ni awọn ala ti a beere",
-            "unabletodepositxorlessthanminimum": "XOR kere ju iye to kere ju (0.007)",
-            "zerovalueinamountparameter": "Paramita iye ni iye odo"
-        },
-        "xstpool": {
-            "poolalreadyinitializedforpair": "Pool bata ti wa tẹlẹ",
-            "slippagelimitexceeded": "Ifarada yiyọ kuro ko ti pade awọn opin to dara"
-        },
-        "referrals": {
-            "alreadyhasreferrer": "Akọọlẹ ti ni olutọka tẹlẹ",
-            "referrerinsufficientbalance": "Referrer ko ni to ti wa ni ipamọ iwontunwonsi"
-        },
-        "vestedrewards": {
-            "rewardssupplyshortage": "Eto ere ti pari tẹlẹ",
-            "cantcalculatereward": "Kuna lati ṣe iṣiro ere",
-            "norewardsforasset": "Ko si awọn ere fun dukia yii"
-        },
-        "liquidityproxy": {
-            "forbiddenfilter": "Ti a ti yan orisun oloomi ko gba laaye",
-            "slippagenottolerated": "Àfikún ìlọpọ àkántọ̀ ohun ti ṣe ṣiṣe àpapọ fún ìdíje yii"
-        },
-        "demeterfarmingplatform": {
-            "insufficientfunds": "Awọn owo ti ko to",
-            "insufficientlptokens": "Insufficient oloomi ipese àmi",
-            "pooldoesnothaverewards": "Pool ko ni ni ere"
-        },
-        "multicollateralbondingcurvepool": {
-            "pricecalculationfailed": "Aṣiṣe waye lakoko ti o ṣe iṣiro idiyele naa"
-        }
-    },
-    "receivedText": "Ti gba",
-    "browserNotificationDialog": {
-        "title": "Ṣeto Awọn iwifunni",
-        "info": "A yoo fi awọn imudojuiwọn ti o yẹ nikan ranṣẹ si ọ nipa apamọwọ rẹ, fun apẹẹrẹ: awọn iyipada iwọntunwọnsi dukia",
-        "button": "Mu awọn iwifunni ṣiṣẹ",
-        "agree": "Bẹẹni, Mo loye",
-        "notificationBlocked": "Lati gba awọn ifitonileti nipa {AppName}, jọwọ gba awọn iwifunni ni awọn eto abinibi ti aṣawakiri rẹ",
-        "pointer": "Tẹ \"Gba laaye\" lati tan awọn iwifunni"
-    },
-    "assetDeposit": "Iwontunwonsi dukia ti wa ni idogo",
-    "noDataText": "Ko si data",
-    "ofText": "{first} ti {second}",
-    "filter": {
-        "all": "Gbogbo",
-        "token": "Awọn owo nina",
-        "verifiedOnly": "Ṣafihan awọn ohun-ini ti a rii daju nikan",
-        "zeroBalance": "Tọju awọn ohun-ini iwọntunwọnsi 0",
-        "showAssets": "Ṣe afihan awọn ohun-ini",
-        "show": "Ṣe afihan"
-    },
-    "desktop": {
-        "welcome": {
-            "header": "Kaabo si {AppName}!",
-            "headline": "Jẹ ki a ṣeto akọọlẹ rẹ",
-            "text": "Ṣẹda akọọlẹ Nẹtiwọọki {Sora} rẹ tabi wọle si awọn atijọ ni lilo gbolohun mnemonic tabi gbewọle .json. Eyi n gba ọ laaye lati fowo si awọn iṣowo ni aabo ati ṣakoso awọn ohun-ini ni Nẹtiwọọki {Sora}.",
-            "createAccount": "Ṣẹda akọọlẹ kan",
-            "importAccount": "Wọle Account"
-        },
-        "heading": {
-            "seedPhraseTitle": "Ọrọ igbaniwọle",
-            "confirmSeedTitle": "Jẹrisi ọrọ igbaniwọle",
-            "accountDetailsTitle": "Awọn alaye Account",
-            "importTitle": "akowọle agbewọle"
-        },
-        "button": {
-            "next": "Igbesẹ t’okan",
-            "skip": "Rekọja",
-            "createAccount": "Se akanti fun ra re",
-            "importAccount": "akowọle agbewọle"
-        },
-        "accountName": {
-            "placeholder": "Orukọ akọọlẹ",
-            "desc": "Eyi ni orukọ akọọlẹ rẹ. Yoo han fun ọ nikan ni {Polkaswap}."
-        },
-        "password": {
-            "placeholder": "Ọrọigbaniwọle",
-            "desc": "Rii daju pe o nlo ọrọ igbaniwọle alailẹgbẹ ti o lagbara fun aabo to dara (awọn ohun kikọ 8 o kere ju)"
-        },
-        "confirmPassword": {
-            "placeholder": "So ni pato orukoabawole re"
-        },
-        "accountMnemonic": {
-            "placeholder": "Gbolohun mnemonic"
-        },
-        "seedAdviceText": "Ọrọ aṣina ọrọ mejila jẹ bọtini ikọkọ lati tun wọle si akọọlẹ {Sora} rẹ ti o ba padanu iraye si akọọlẹ {wallet} rẹ. Tọju rẹ lailewu ni aṣẹ gangan ti o han loke.",
-        "confirmSeedText": "Jẹrisi ọrọ igbaniwọle nipa titẹ awọn ọrọ ni ọna ti o tọ",
-        "errorMnemonicText": "Ilana ọrọ igbaniwọle ti ko tọ",
-        "exportOptionText": "Faili {JSON} okeere fun imupadabọ akọọlẹ",
-        "exportJsonText": "Iwọ yoo ni anfani nigbagbogbo lati da akọọlẹ rẹ pada nipa gbigbe faili {JSON} yii wọle. Maṣe pin pẹlu ẹnikẹni! Tọju rẹ lailewu, pelu fifi ẹnọ kọ nkan.",
-        "addAccount": "Fi akọọlẹ kan kun",
-        "dialog": {
-            "confirmTitle": "Jẹrisi pẹlu ọrọigbaniwọle",
-            "confirmButton": "Wole Idunadura",
-            "savePasswordText": "Ranti ọrọ igbaniwọle mi fun awọn iṣẹju 15 to nbọ",
-            "extendPasswordText": "Fa akoko laisi ọrọigbaniwọle nipasẹ iṣẹju 15"
-        },
-        "errorMessages": {
-            "password": "Ọrọigbaniwọle ko baramu",
-            "passwords": "Awọn ọrọ igbaniwọle ko baramu",
-            "mnemonic": "Bip39 mnemonic ti ko tọ ni pato",
-            "mnemonicLength": "Mnemonic yẹ ki o ni awọn ọrọ {number} ninu",
-            "jsonFields": "Faili JSON ko ni awọn aaye ti a beere",
-            "alreadyImported": "akowọle ti ko wọle tẹlẹ {address}"
-        },
-        "assetsAtRiskText": "Awọn dukia ni ewu!",
-        "deleteAccountText": "Akoto ko le gba pada laisi gbolohun ọrọ irugbin, faili .json tabi ti o ba wa ni ipamọ ni diẹ ninu itẹsiwaju. O yoo wa ni ibuwolu jade.",
-        "importSteps": {
-            "selectWallet": "Ṣii apamọwọ pẹlu akọọlẹ (awọn) ti o wa tẹlẹ",
-            "selectAccount": "Yan akọọlẹ ti o fẹ lati okeere",
-            "exportAccount": "Faili {JSON} okeere"
-        },
-        "exportTutorialsText": "okeere Tutorial",
-        "seedAdviceAdditionTitle": "Maṣe pin ọrọ igbaniwọle rẹ pẹlu ẹnikẹni!",
-        "seedAdviceAdditionText": "Ti ẹnikan ba beere lọwọ rẹ fun ọrọ igbaniwọle rẹ o ṣee ṣe julọ gbiyanju lati ṣe itanjẹ rẹ ati ji awọn dukia rẹ!"
-    },
-    "hashiBridgeText": "{Hashi} Afara",
-    "disclaimerTitle": "Akiyesi",
-    "explore": {
-        "showOnly": "Ṣafihan {entities} nikan",
-        "myPositions": "awọn ipo mi",
-        "synthetics": "sintetiki àmi"
+    "confirmations": {
+      "txReady": "Idunadura Ṣetan Fun Afara"
     },
     "tooltips": {
-        "roi": "{ROI} duro fun Pada lori Idoko-owo. O ṣe iṣiro nipasẹ pinpin èrè ti o jo'gun lori idoko-owo nipasẹ idiyele ti idoko-owo yẹn ni deede ogorun kan.",
-        "tvl": "{TVL} duro fun Titiipa Iye Lapapọ. O duro fun awọn ami titiipa ninu awọn adagun-odo ni deede dola.",
-        "volume": "Iwọn didun ntokasi si lapapọ iye ti ohun ìní ti a ti ta tabi paarọ lori awọn nẹtiwọki lori kan pato akoko. Iwọn didun jẹ metiriki pataki fun wiwọn oloomi ati iṣẹ ṣiṣe gbogbogbo ti nẹtiwọọki.",
-        "fees": "Awọn idiyele lori blockchain {Sora} tọka si awọn idiyele ti o jẹ fun ṣiṣe awọn iṣowo lori nẹtiwọọki. Awọn owo wọnyi ni a san ni XOR, cryptocurrency abinibi ti Nẹtiwọọki {Sora} . Iye owo ọya jẹ ipinnu nipasẹ idiju ati iwọn ti idunadura ti n ṣiṣẹ",
-        "supply": "Ipese tokini tọka si nọmba lapapọ ti awọn ami ti a ti ṣẹda ati ti o wa ni sisan lori nẹtiwọọki. Ipese ami le yipada da lori iye awọn ami ti o wa ni ifipamọ, sun, tabi gbigbe lori nẹtiwọọki.",
-        "transactions": "Awọn iṣowo n tọka si ilana ti fifiranṣẹ tabi gbigba awọn ohun-ini oni-nọmba lori nẹtiwọọki, pẹlu awọn iṣẹ oloomi, ati awọn swaps.",
-        "accounts": "Awọn akọọlẹ jẹ awọn adirẹsi oni-nọmba ti o mu awọn ohun-ini olumulo mu lori nẹtiwọọki. Iwe akọọlẹ kọọkan ni nkan ṣe pẹlu adiresi gbogbogbo alailẹgbẹ ati bọtini ikọkọ ti o fun laaye olumulo laaye lati wọle ati ṣakoso awọn ohun-ini wọn.",
-        "bridgeTransactions": "{from} si {to} Afara n tọka si ilana gbigbe ohun-ini laarin {from} ati {to} awọn nẹtiwọọki nipa lilo afara. Afara naa ngbanilaaye fun ibaraenisepo ti awọn nẹtiwọọki meji, ṣiṣe awọn olumulo laaye lati gbe awọn ohun-ini lainidi laarin wọn.",
-        "velocity": "Iyara tokini jẹ nọmba awọn akoko ti ami iyipada awọn akọọlẹ lakoko akoko (oṣu) ni apapọ. O tọkasi ipele ti iṣẹ iṣowo ati oloomi."
-    },
-    "createTokenText": "Ṣẹda token",
-    "comingSoonText": "Nbọ laipẹ",
-    "confirmText": "Jẹrisi",
-    "createTokenTextNFT": "Ṣẹda NFT",
-    "doNotShowText": "Maṣe fi eyi han mi lẹẹkansi",
-    "accountText": "iroyin | awọn iroyin",
-    "networkStatisticsText": "Awọn iṣiro nẹtiwọki",
-    "footer": {
-        "node": {
-            "title": {
-                "connected": "Node ti sopọ",
-                "loading": "Node tun-so pọ",
-                "disconnected": "Node ge asopọ"
-            }
-        },
-        "internet": {
-            "title": {
-                "disabled": "Ayelujara alaabo",
-                "unstable": "Internet riru",
-                "stable": "Iduroṣinṣin Intanẹẹti"
-            },
-            "label": "Iyara intanẹẹti rẹ",
-            "desc": {
-                "disabled": "Ge asopọ",
-                "unstable": "Asopọ lọra",
-                "stable": "Iyara to dara julọ"
-            },
-            "action": "Tuntun {Polkaswap}",
-            "dialogTitle": "Sopọ si orisun intanẹẹti",
-            "dialogDesc": "{Polkaswap} nilo asopọ intanẹẹti fun iriri iduroṣinṣin"
-        },
-        "statistics": {
-            "title": {
-                "unavailable": "Awọn iṣiro ko si",
-                "loading": "Ikojọpọ statistiki",
-                "available": "Awọn iṣiro wa"
-            },
-            "label": "Awọn iṣẹ iṣiro",
-            "desc": {
-                "unavailable": "Gbogbo awọn iṣẹ ti ge asopọ",
-                "loading": "Gbogbo awọn iṣẹ ti wa ni ikojọpọ",
-                "available": "Gbogbo awọn iṣẹ jẹ iduroṣinṣin"
-            },
-            "action": "Yan awọn iṣẹ",
-            "dialog": {
-                "title": "Aṣayan iṣẹ nẹtiwọki {Sora}",
-                "indexer": "Atọka",
-                "useCeres": "Lo {Ceres} fun awọn iye fiat"
-            }
-        }
-    },
-    "locationText": "Ipo",
-    "acceptText": "Gba & Tọju",
-    "newAccountsText": "Awọn iroyin titun",
-    "dragAndDropText": "Fa & ju silẹ tabi yan faili {extension}",
-    "copyPhraseText": "Daakọ Aṣẹ Iwifunni",
-    "stepText": "Igbesẹ",
-    "alerts": {
-        "drop": "Silẹ ni isalẹ",
-        "once": "Lẹẹkan",
-        "always": "Nigbagbogbo",
-        "edit": "Itaniji Ṣatunkọ",
-        "delete": "Pa itaniji rẹ",
-        "onDropDesc": "{token} lọ silẹ ni isalẹ {price}",
-        "alertsTitle": "Awọn itaniji",
-        "alertsCreateTitle": "Ṣeto itaniji idiyele",
-        "alertsTooltip": "Awọn itaniji idiyele jẹ awọn iwifunni ti o le ṣeto nipasẹ rẹ lati gba awọn imudojuiwọn nigbati idiyele ti ami-ami kan pato de aaye kan ti o ṣeto",
-        "createBtn": "Ṣẹda titun owo gbigbọn",
-        "enableSwitch": "Mu awọn iwifunni idogo dukia ṣiṣẹ",
-        "currentPrice": "lọwọlọwọ owo",
-        "alertTypeTitle": "Iru itaniji",
-        "alertFrequencyTitle": "Itaniji igbohunsafẹfẹ",
-        "frequencyTooltip": "Yan laarin 'lẹẹkan' ati 'nigbagbogbo' lati pinnu iye igba ti o gba awọn iwifunni fun iru gbigbọn ti o yan. 'Lẹẹkan' yoo fi ifitonileti kan ranṣẹ nigbati ipo naa ba ti pade, lakoko ti 'nigbagbogbo' yoo tẹsiwaju lati fi to ọ leti ni igbakugba ti ẹnu-ọna idiyele ti kọja",
-        "noSupportMsg": "Awọn iwifunni ko ni atilẹyin nipasẹ ẹrọ aṣawakiri rẹ",
-        "finishBtn": "Lati pari",
-        "raise": "Dide loke",
-        "onRaiseDesc": "{token} ga ju {price}",
-        "typeTooltip": "Yan boya 'ju silẹ ni isalẹ' tabi 'dide loke' aṣayan lati tokasi ipo itaniji fun titọpa awọn agbeka idiyele pataki. Awọn aṣayan wọnyi gba ọ laaye lati gba awọn iwifunni akoko nigbati iye dukia rẹ boya ṣubu ni isalẹ tabi dide loke iloro ti a yàn"
-    },
-    "accountAddressText": "adirẹsi iroyin",
-    "fiatDisclaimer": "Jọwọ ṣe akiyesi pe awọn iye fiat ti o ni nkan ṣe pẹlu awọn owo nẹtiwoki lori oju opo wẹẹbu wa ni a pese nipasẹ awọn iṣẹ ita (Subquery, Subsquid, Ceres API) jẹ isunmọ. Fi fun idiju atorunwa ti awọn iṣiro wọnyi, pipe pipe ni gbogbo igba ko le ṣe iṣeduro.",
-    "fiatPayment": {
-        "historyBtn": "Awọn rira mi",
-        "historyTitle": "Itan iṣowo",
-        "moonpayTitle": "Ra ETH nipasẹ MoonPay",
-        "moonpayDesc": "Ra awọn ami ETH lori {Ethereum} ki o gbe wọn lọ si nẹtiwọki {SORA} nipasẹ afara",
-        "errorMessage": "Aforiji fun ohun airọrun. A n ṣiṣẹ takuntakun lati yanju eyi. Jọwọ, gbiyanju lẹẹkansi nigbamii.",
-        "cedeStoreTitle": "Gbigbe lati {value}",
-        "cedeStoreDesc": "Gbe eyikeyi awọn ami ami lati {value1} si {value2} nipasẹ {value3}",
-        "cedeStoreBtn": "Gbigbe lati {value1} nipasẹ {value2}"
-    },
-    "acceptOnScrollText": "Yi lọ lati gba",
-    "addressBook": {
-        "myAccounts": "Awọn akọọlẹ mi",
-        "myBook": "Iwe Mi",
-        "searchPlaceholder": "Ṣewadii nipasẹ adirẹsi, orukọ tabi idanimọ",
-        "noFoundRecords": "Ko si awọn igbasilẹ ti a rii",
-        "noContacts": "O ko ni awọn olubasọrọ ti a ṣafikun sibẹsibẹ",
-        "addContact": "Fi olubasọrọ kun",
-        "dialogTitle": "Awọn olubasọrọ rẹ",
-        "identity": "On-pq idanimo",
-        "none": "Ko si",
-        "detected": "Adirẹsi titun ti ri",
-        "save": "Fipamọ bi olubasọrọ",
-        "tooltip": "Gba iwe adirẹsi nipa pipese orukọ ati adirẹsi lati jẹ ki awọn olubasọrọ rẹ ṣeto ati imudojuiwọn",
-        "notSoraAddress": "Adirẹsi yii yoo wa ni ipamọ bi adirẹsi {SORA} ni isalẹ. Rii daju pe olugba le wọle si ẹwọn {SORA}:",
-        "options": {
-            "send": "Firanṣẹ awọn ami",
-            "edit": "Ṣatunkọ olubasọrọ",
-            "delete": "Paarẹ"
-        },
-        "btn": {
-            "enterName": "Tẹ orukọ sii",
-            "present": "Ti wa tẹlẹ",
-            "saveChanges": "Fi awọn ayipada pamọ"
-        },
-        "input": "Tẹ adirẹsi sii tabi yan olubasọrọ",
-        "selectContact": "Yan olubasọrọ"
-    },
-    "browserPermission": {
-        "title": "Gba wiwọle kamẹra laaye ni awọn eto ẹrọ aṣawakiri",
-        "desc": "Lati rii daju pe ododo ti awọn iwe aṣẹ ati lati fọwọsi idanimọ olumulo fun ijẹrisi KYC, iraye si kamẹra ẹrọ rẹ nilo.",
-        "disclaimer": "Wiwọle kamẹra nilo fun gbigba iwe akoko gidi lati ṣe idiwọ jibiti.",
-        "btnGoToSettings": "Lọ si awọn eto",
-        "btnAllow": "Gba wiwọle laaye"
-    },
-    "continueText": "Tesiwaju",
-    "minAmountText": "min. iye",
-    "maxAmountText": "o pọju. iye",
-    "exceededAmountText": "{amount} ti kọja",
-    "multipleRecipients": "Awọn olukọni pupọ",
-    "disconnectWalletText": "Ge asopọ",
-    "connectEthereumWalletText": "So {Ethereum} apamọwọ",
-    "soraStaking": {
-        "dropdownMenu": {
-            "pendingRewards": "Awọn ere ni isunmọtosi",
-            "controllerAccount": "Iroyin oludari"
-        },
-        "actions": {
-            "claim": "Awọn ere ẹtọ",
-            "remove": "Yọ igi kuro",
-            "more": "Gbero diẹ sii",
-            "confirm": "Jẹrisi Staking",
-            "withdraw": "Yiyọ kuro"
-        },
-        "overview": {
-            "title": "{Sora} Staking",
-            "description": "Fi àmì {XOR} sí orí Nẹ́tíwọ́ọ̀kì {Sora} gẹ́gẹ́ bí olùyàn láti fọwọ́ sí ìdúnàádúrà àti láti jèrè àwọn èrè àmì {VAL}."
-        },
-        "newStake": {
-            "title": "Bẹrẹ staking",
-            "minStakeWarning": "Idiyele to kere julọ lati gba ẹsan naa jẹ {min} {symbol}"
-        },
-        "validators": {
-            "save": "Fi awọn ayipada pamọ",
-            "selected": "{selected} \/ {total} ti yan",
-            "recommended": "Niyanju afọwọsi",
-            "change": "Yi awọn afọwọsi",
-            "select": "Yan awọn olufọwọsi",
-            "next": "Itele",
-            "alreadyNominated": "Awọn olufọwọsi ti a ti yan tẹlẹ ti yan tẹlẹ",
-            "tooManyValidators": "Awọn afọwọsi pupọ ti yan ( {Max} {max} )"
-        },
-        "validatorsList": {
-            "search": "Wa...",
-            "name": "Oruko",
-            "noNominatedValidators": "O ko ni eyikeyi ti yan afọwọsi",
-            "noValidators": "Ko si awọn olufọwọsi ti o ni itẹlọrun àlẹmọ pàtó kan",
-            "commission": "Igbimọ",
-            "commissionTooltip": "Igbimọ tọka si ọya ti o gba agbara nipasẹ awọn afọwọsi fun awọn iṣẹ wọn ni ilana isamisi. Ọya yii, ti a ṣalaye bi ipin kan, ni a yọkuro lati awọn ere isinmọ ti o jẹ nipasẹ awọn yiyan ṣaaju pinpin. O ṣe pataki lati ṣe akiyesi pe awọn olufọwọsi le ṣatunṣe awọn oṣuwọn igbimọ wọn nigbakugba",
-            "return": "Pada"
-        },
-        "info": {
-            "unstaking": "Unstaking",
-            "stakingBalance": "Staking iwontunwonsi",
-            "rewarded": "Esan",
-            "totalLiquidityStaked": "Lapapọ oloomi staked",
-            "rewardToken": "Aami ere",
-            "unstakingPeriod": "Àkókò tí a kọ sílẹ̀",
-            "minimumStake": "Iwọn to kere julọ",
-            "nominators": "Awọn oludibo",
-            "validators": "Awọn olufọwọsi",
-            "selectedValidators": "Awọn olufọwọsi ti a yan"
-        },
-        "validatorsFilterDialog": {
-            "title": "Ajọ",
-            "save": "Fi àlẹmọ pamọ",
-            "reset": "Tun gbogbo rẹ to",
-            "filters": {
-                "hasIdentity": {
-                    "name": "On-pq idanimo",
-                    "description": "O kere ju olubasọrọ idanimọ kan ti a ti sopọ si akọọlẹ naa"
-                },
-                "notSlashed": {
-                    "name": "Ko dinku",
-                    "description": "Ko ni iriri eyikeyi awọn ijiya tabi awọn idinku ninu awọn owo ti wọn ṣowo nitori aiṣedeede tabi irufin ilana."
-                },
-                "notOversubscribed": {
-                    "name": "Ko ṣe alabapin pupọ",
-                    "description": "Àkọsílẹ̀ láàárín òpin ìpín, yẹra fún ìjìyà àṣejù lórí {Polkadot} dúró."
-                },
-                "twoValidatorsPerIdentity": {
-                    "name": "Ifilelẹ ti 2 validators fun idanimo",
-                    "description": "O pọju awọn olufọwọsi meji fun idanimọ lati ṣe agbega decentralization ati ṣe idiwọ ifọkansi ti agbara."
-                }
-            }
-        },
-        "validatorsDialog": {
-            "title": {
-                "edit": "Ṣatunkọ Mi Validators"
-            },
-            "tabs": {
-                "user": "Awọn olufọwọsi rẹ",
-                "all": "Gbogbo validators"
-            }
-        },
-        "validatorsAttentionDialog": {
-            "title": "Ifarabalẹ",
-            "description": [
-                "Awọn didaba olufọwọsi Algorithmic ko jẹ ijumọsọrọ owo tabi imọran. Staking jẹ iṣẹ ṣiṣe ti o ni eewu giga, ati awọn didaba afọwọsi algorithmic ko ni dandan dinku eewu yii.",
-                "Olufọwọsi ti a daba nipasẹ algoridimu le tun jẹ idinku. Olufọwọsi ti a daba nipasẹ algoridimu tun le yi awọn ayewọn wọn pada (fun apẹẹrẹ, awọn oṣuwọn igbimọ, ati bẹbẹ lọ) nigbakugba lẹhin ti o ti daba ati\/tabi yiyan.",
-                "O le padanu awọn ami tabi awọn ere fun iwọnyi tabi awọn idi miiran. Ṣe awọn ami-ipin nikan ki o lo awọn didaba afọwọsi ni lakaye tirẹ, lẹhin ṣiṣe aisimi to tọ ati farabalẹ ṣe akiyesi awọn ewu ti o kan."
-            ],
-            "confirm": "Bẹẹni, Mo loye ewu naa"
-        },
-        "pendingRewardsDialog": {
-            "noPendingRewards": "Ko si ere ni isunmọtosi",
-            "information": "Validators san awọn ere gbogbo 2-5 ọjọ. Sibẹsibẹ, o le san wọn funrararẹ, paapaa ti awọn ere ba sunmọ ipari, ṣugbọn iwọ yoo san owo naa.",
-            "title": "Awọn ere ni isunmọtosi",
-            "noSelectedRewards": "Yan awọn ere",
-            "payout": "Owó ìsanwó"
-        },
-        "selectValidatorsMode": {
-            "title": "Iṣere pẹlu awọn olufọwọsi daba nipasẹ algoridimu",
-            "description": "{Sora} algorithm nẹtiwọọki ti yan akojọ kan ti awọn validators ti a ṣe iṣeduro ti o da lori awọn ilana:",
-            "criteria": [
-                "Julọ ni ere",
-                "Ko ṣe alabapin pupọ",
-                "Nini onchain idanimo",
-                "Ko dinku",
-                "Ifilelẹ ti 2 validators fun idanimo"
-            ],
-            "confirm": {
-                "suggested": "Iṣere pẹlu daba",
-                "manual": "Emi yoo yan awọn olufọwọsi funrararẹ"
-            }
-        },
-        "claimRewardsDialog": {
-            "title": "Awọn ere ẹtọ",
-            "checkRewards": "Ṣayẹwo awọn ere fun akoko ati afọwọsi",
-            "rewardsDestination": "Èrè àdírẹ́sì ibi tí wọ́n ń lọ"
-        },
-        "selectedValidators": "{count} ( {Max} {max} )",
-        "withdraw": {
-            "withdrawable": "Yiyọ kuro",
-            "beingWithdrawn": "Ti yọkuro",
-            "seeAll": "Wo gbogbo e",
-            "nextWithdrawal": "Iyọkuro ti o tẹle",
-            "countdownLeft": "O ku"
-        },
-        "stakeDialog": {
-            "toStake": "Si igi",
-            "toRemove": "Lati yọ kuro"
-        },
-        "withdrawDialog": {
-            "title": "Yiyọ awọn owo ti a ko pin kuro",
-            "showAllWithdraws": "Ṣe afihan gbogbo awọn yiyọ kuro"
-        },
-        "allWithdrawsDialog": {
-            "title": "Iṣẹ ṣiṣe aiṣedeede",
-            "information": "Ni kete ti o ba yọ awọn ami-ami kuro, akoko aiṣiṣẹ ọjọ meje ti o jẹ dandan wa. Lẹhin asiko yii, awọn ami rẹ kii yoo da pada laifọwọyi si apamọwọ rẹ. O gbọdọ pari ilana naa nipa yiyọ awọn ami rẹ kuro pẹlu ọwọ."
-        }
-    },
-    "collapseText": "Subu",
-    "expandText": "Faagun",
-    "orderBook": {
-        "Buy": "Ra {asset}",
-        "Sell": "Ta {asset}",
-        "orderBook": "Iwe aṣẹ",
-        "marketTrades": "Awọn iṣowo ọja",
-        "market": "Oja",
-        "limit": "Idiwọn",
-        "price": "Iye owo",
-        "total": "Lapapọ",
-        "amount": "iye",
-        "time": "aago",
-        "month": "osu",
-        "change": "yipada",
-        "cantPlaceOrder": "Ko le paṣẹ",
-        "enterAmount": "Tẹ iye sii",
-        "setPrice": "Ṣeto idiyele",
-        "dayVolume": "1D Iwọn didun",
-        "stop": "Iwe duro",
-        "tokenPair": "Àmi bata",
-        "book": {
-            "noAsks": "Ko si awọn ibeere ṣiṣi",
-            "noBids": "Ko si ṣiṣi silẹ idu"
-        },
-        "history": {
-            "tradeHistory": "Itan iṣowo",
-            "orderHistory": "Itan ibere",
-            "openOrders": "Ṣii awọn aṣẹ {value}",
-            "connect": "So akọọlẹ kan pọ lati bẹrẹ iṣowo",
-            "cancel": "Fagilee aṣẹ {value}",
-            "cancelAll": "Fagilee gbogbo"
-        },
-        "orderTable": {
-            "time": "aago",
-            "pair": "bata",
-            "side": "ẹgbẹ",
-            "filled": "kún",
-            "lifetime": "igbesi aye",
-            "noOrders": "Ko si ibere. Ṣẹda akọkọ rẹ!"
-        },
-        "dialog": {
-            "placeMarket": "Gbe oja ibere",
-            "placeLimit": "Ibi ifilelẹ ibere",
-            "askCancel": "Ṣe o da ọ loju pe o fẹ fagilee gbogbo awọn aṣẹ ṣiṣi rẹ bi?",
-            "cancelAll": "Bẹẹni, fagilee gbogbo rẹ",
-            "buy": "Ra {amount} {symbol}",
-            "sell": "Ta {amount} {symbol}",
-            "at": "ni {price} {symbol}"
-        },
-        "tradingPair": {
-            "choosePair": "Yan bata iṣowo",
-            "volume": "Iwọn didun",
-            "dailyChange": "Ojoojumọ iyipada",
-            "status": "Ipo",
-            "total": "{amount} {symbol} ni {amount2} {symbol2}"
-        },
-        "bookStatus": {
-            "active": "Ti nṣiṣe lọwọ",
-            "placeable": "O le gbe",
-            "cancelable": "fagilee",
-            "inactive": "Aiṣiṣẹ"
-        },
-        "tooltip": {
-            "limitOrder": "Aṣẹ 'Iwọn' jẹ ki o pato idiyele gangan ni eyiti o fẹ ra tabi ta dukia kan. Aṣẹ 'Idiwọn Ra' kan yoo ṣiṣẹ nikan ni idiyele ti a sọ tabi isalẹ, lakoko ti aṣẹ 'Idiwọn Titaja' kan yoo ṣiṣẹ ni idiyele pàtó tabi ga julọ. Iṣakoso yii ṣe idaniloju pe o ko sanwo diẹ sii tabi ta fun kere ju ti o ni itunu pẹlu.",
-            "marketOrder": "'Aṣẹ ọja' jẹ aṣẹ lati ra tabi ta lẹsẹkẹsẹ ni idiyele lọwọlọwọ to dara julọ. Ko nilo eto idiyele kan, ni idaniloju ipaniyan iyara ṣugbọn pẹlu iṣowo-pipa ti iṣakoso ti o dinku lori idiyele ti o gba tabi san. Iru aṣẹ yii ni a lo nigbati idaniloju ipaniyan jẹ pataki lori iṣakoso idiyele.",
-            "pairsList": "Atokọ akoko gidi ti n ṣafihan awọn ibere rira ati tita lọwọlọwọ fun cryptocurrency kan. O ṣe iranlọwọ fun ọ lati loye ibeere naa, itọsọna idiyele ti o pọju, ati iwọn iṣowo lori Nẹtiwọọki SORA ati Polkaswap DEX",
-            "bookWidget": "Igbasilẹ laaye, imudojuiwọn nigbagbogbo ti rira (idu) ati ta (beere) awọn ibere fun dukia kan pato, ṣeto nipasẹ ipele idiyele. Iwe aṣẹ naa ṣafihan ijinle ọja naa, pẹlu awọn iwọn ohun-ini ti a nṣe ni awọn idiyele lọpọlọpọ. Awọn oniṣowo lo wiwo alaye yii lati ṣe iwọn itara ọja, ṣe idanimọ resistance agbara ati awọn ipele atilẹyin, ati nireti awọn gbigbe idiyele ti o da lori ibeere ati ipese ti o wa tẹlẹ",
-            "marketWidget": "Ẹrọ ailorukọ yii ṣafihan ṣiṣan akoko gidi ti awọn iṣowo ti a ṣe ni ọja, pese alaye lori awọn iwọn idunadura, iṣẹ ṣiṣe aipẹ, ati awọn aṣa ọja lọwọlọwọ. Nipa wíwo akoko, idiyele, ati iwọn awọn iṣowo gangan, awọn oniṣowo le ni oye si awọn agbara ọja ati itara, ṣe iranlọwọ fun wọn lati ṣe iranran awọn anfani iṣowo ati ṣe awọn ipinnu alaye.",
-            "txDetails": {
-                "orderType": "Ibere 'Ra' yoo ṣiṣẹ nikan ni idiyele ti a sọ tabi isalẹ, lakoko ti aṣẹ 'Ta' kan yoo ṣiṣẹ ni idiyele ti a pato tabi ga julọ. Iṣakoso yii ṣe idaniloju pe o ko sanwo diẹ sii tabi ta fun kere ju ti o ni itunu pẹlu.",
-                "expiryDate": "Awọn 'Ipari Ọjọ' ni awọn ipari fun ibere re lati wa ni ṣiṣẹ. Ti ọja naa ko ba de idiyele pato rẹ ṣaaju ọjọ yii, aṣẹ naa ti paarẹ laifọwọyi. O ko ni owun si idaduro ayeraye ti awọn ipo ọja ko ba ni ibamu pẹlu awọn ayanfẹ iṣowo rẹ.",
-                "amount": "Awọn 'Oye' ntokasi si lapapọ nọmba ti ìní ti o fẹ lati ra tabi ta ni ibere re. O ṣe pataki lati pato, bi o ṣe n pinnu iwọn idunadura rẹ, ni ipa lori idiyele lapapọ fun awọn ibere rira tabi owo-wiwọle fun awọn ibere tita.",
-                "limit": "Awọn 'Iye iye to' ni kongẹ owo ti o ṣeto fun a iye to ibere. Iṣowo naa yoo ṣiṣẹ nikan nigbati idiyele ọja dukia ba pade idiyele opin rẹ, ni idaniloju pe o ko ra loke tabi ta ni isalẹ iye pàtó kan.",
-                "locked": "Awọn 'Titiipa' fihan iye dukia ti yoo waye lakoko ti aṣẹ ti nlọ lọwọ."
-            },
-            "bookStatus": {
-                "active": "Iṣẹ ṣiṣe iṣowo ni kikun ṣiṣẹ. O le gbe awọn ibere tuntun tabi fagile awọn ti o wa tẹlẹ.",
-                "placeable": "Lopin iṣẹ-. O le gbe awọn ibere tuntun ati fagile awọn ti o wa tẹlẹ, ṣugbọn diẹ ninu awọn ẹya le ma si.",
-                "cancelable": "O le fagilee awọn ibere ti o wa tẹlẹ. Gbigbe ibere titun ti wa ni alaabo lọwọlọwọ.",
-                "inactive": "Gbogbo awọn iṣẹ iṣowo ti wa ni idaduro lọwọlọwọ. Ko si awọn aṣẹ ti o le gbe tabi fagile ni akoko yii."
-            }
-        },
-        "txDetails": {
-            "orderType": "ibere iru",
-            "limitPrice": "iye owo iye",
-            "expiryDate": "ipari ọjọ"
-        },
-        "error": {
-            "beyondPrecision": {
-                "reason": "Iye owo ti a wọle jẹ kongẹ ju lati ṣe iṣiro",
-                "reading": "Ipese ti kọja: Iye\/owo ti a tẹ ni ọpọlọpọ awọn aaye eleemewa pupọ. Jọwọ tẹ iye kan sii pẹlu awọn aaye eleemewa diẹ"
-            },
-            "marketNotAvailable": {
-                "reason": "Ko si awọn aṣẹ to wa lati kun aṣẹ yii",
-                "reading": "Idiwọn aṣẹ ọja: Ko si awọn aṣẹ to wa lati mu aṣẹ ọja yii ṣẹ. Jọwọ ṣatunṣe iwọn ibere rẹ tabi duro fun awọn aṣẹ diẹ sii lati gbe"
-            },
-            "exceedsSpread": {
-                "reason": "Iye owo ti kọja itankale",
-                "reading": "Iye owo ti kọja: Idiye ọja tabi idiyele idiyele ti kọja idiyele ibeere\/idiwo rẹ"
-            },
-            "spotLimit": {
-                "reason": "Ẹgbẹ iṣowo ti kun",
-                "reading": "Iwọn iye owo: Ẹgbẹ iwe aṣẹ kọọkan ni opin si awọn aaye idiyele alailẹgbẹ 1024. Jọwọ yan iye owo kan laarin iwọn to wa tabi duro fun aaye lati wa"
-            },
-            "accountLimit": {
-                "reason": "Ọpọlọpọ awọn ibere ti nlọ lọwọ",
-                "reading": "Idiwọn ti de: akọọlẹ kọọkan wa ni ihamọ si awọn aṣẹ opin 1024. Jọwọ duro titi diẹ ninu awọn aṣẹ rẹ yoo mu ṣẹ"
-            },
-            "singlePriceLimit": {
-                "reason": "Ọpọlọpọ awọn ibere ti nlọ lọwọ fun idiyele yii",
-                "reading": "Iwọn opin: Ipo kọọkan wa ni ihamọ si awọn aṣẹ opin 1024. Jọwọ duro titi diẹ ninu awọn aṣẹ yoo mu ṣẹ"
-            },
-            "outOfBounds": {
-                "reading": "Iwọn Blockchain ti kọja: Iye ti o tẹ sii ṣubu ni ita ibiti a gba laaye blockchain. Min: {min} ; O pọju: {max}",
-                "reason": "Iye kuna lati ni ibamu pẹlu iwọn blockchain"
-            },
-            "multipleOf": {
-                "reading": "Lati ṣiṣẹ aṣẹ rẹ, jọwọ ṣagbewọle idiyele kan ti o jẹ ọpọ ti {value}",
-                "reason": "Iye owo ti o wọle jẹ pato pupọ"
-            }
-        },
-        "orderStatus": {
-            "active": "Ti nṣiṣe lọwọ",
-            "canceled": "fagilee",
-            "expired": "Ti pari",
-            "filled": "Ti kun"
-        },
-        "pricePerToken": "Iye fun 1 {token}"
-    },
-    "calculatingText": "Ọnàkọnà",
-    "customisePageText": "Ṣe akanṣe oju-iwe",
-    "priceChartText": "Owo chart",
-    "editText": "Ṣatunkọ",
-    "resetText": "Tunto",
-    "kensetsu": {
-        "addCollateral": "Fẹẹrẹ afẹẹwọ",
-        "addCollateralDescription": "Fi awọn ohun-ini diẹ sii kun ipo rẹ lati pọ si opin igbẹkẹle rẹ tabi lati mu iṣiro iwe-loan rẹ dara. Eyi tun le ṣe iranlọwọ lati ṣe idiwọ piparẹ.",
-        "depositCollateral": "Fẹẹrẹ iranti",
-        "totalCollateral": "Itoju afẹẹwọ",
-        "totalCollateralDescription": "Iye apapọ gbogbo awọn ohun-ini ti o wa ni ipo rẹ lọwọlọwọ. Iye yii ni ipa lori agbara igbẹkẹle rẹ ati ewu piparẹ.",
-        "debtAvailable": "Ọwọọ pẹlu dandan",
-        "debtAvailableDescription": "Iye awọn owo ti o tun le fa jade lati ipo rẹ laisi jijẹ opin igbẹkẹle rẹ, da lori awọn ohun-ini rẹ lọwọlọwọ.",
-        "ltv": "Kudi titun ({LTV})",
-        "ltvDescription": "Iwọn ti iye ti a fa jade si iye awọn ohun-ini ni ipo rẹ, ti a ṣe afihan bi ogorun. {LTV} ti o ga julọ n mu awọn ipadabọ ti o ṣeeṣe pọ ṣugbọn tun ṣe alekun ewu, pẹlu aye piparẹ.",
-        "borrowMore": "Kúrò ní kíkó",
-        "borrowMoreDescription": "Fa awọn owo afikun jade lati ipo rẹ titi di iye to pọ julọ ti o wa. Rii daju pe iye awọn ohun-ini rẹ ṣe atilẹyin gbese ti o pọ si lati yago fun awọn eewu piparẹ.",
-        "available": "Lára",
-        "outstandingDebt": "Ọwọọ tó wá tẹlẹ",
-        "outstandingDebtDescription": "Apapọ iye ti o n jẹ lọwọlọwọ lati awọn owo ti a fa jade lati ipo rẹ, pẹlu iwulo ti o kojọpọ. Eyi nilo lati san pada lati pa ipo rẹ tabi lati ṣetọju awọn iṣiro iwe-owo ti o ni ilera.",
-        "createVault": "Fẹẹ vún tó yan",
-        "createVaultDescription": "Bẹrẹ iṣowo tuntun nipa fifipamọ awọn ohun-ini sinu ipo rẹ ati fa awọn owo jade. Eyi ṣẹda adehun gbese ti o gbọdọ ṣakoso.",
-        "createVaultAction": "Fẹẹ vún",
-        "borrowDebt": "Kúrò ní ọwọọ",
-        "minDepositCollateral": "Bèèrè fẹẹrẹ iranti",
-        "minDepositCollateralDescription": "Iye ohun-ini ti o kere julọ ti o nilo lati ṣii ipo kan. Idogo akọkọ yii da awọn owo ti o fẹ gba.",
-        "maxAvailableToBorrow": "Ọ̀pọ̀lọpọ̀ tó wá tẹlẹ",
-        "maxAvailableToBorrowDescription": "Iye to pọ julọ ti o le fa jade lati ipo rẹ, ti o pinnu nipasẹ iye awọn ohun-ini rẹ. Iwọn yii ṣe atunṣe bi iye awọn ohun-ini ṣe yipada.",
-        "borrowTax": "Kúrò ọwọọ",
-        "borrowTaxDescription": "Ọ̀bá kúrò {value} ti bẹ ọwọọ tó ti kúrò",
-        "repayDebt": "Ya ọwọọ",
-        "repayDebtDescription": "Dahun awọn owo ti o gba lati jẹ alabapin rẹ diẹ ninu iye ti o le mọ bẹẹrẹ, ṣe pese pe iye iṣẹrọ rẹ ti sọ pe iye iṣẹrọ ti o tẹlẹ, ki o si ti tẹwọgba niwọle ti o ba n daju ni.",
-        "closeVault": "Yẹ ìwọle mi",
-        "closeVaultDescription": "Yẹ ìwọle tó yan láti ya gbogbo ọwọọ tó wá tẹlẹ àti ya gbogbo iranti",
-        "yourCollateral": "Iranti rẹ",
-        "yourCollateralDescription": "Awọn ohun-ini ti o ti fi sinu ipo rẹ lati daabobo awọn owo ti a fa jade. Awọn ohun-ini wọnyi le ṣee ṣe idoko nipasẹ olutayo ti o ba kuna lati ṣetọju iṣiro iwe-owo ti a beere.",
-        "yourDebt": "Ọwọọ rẹ",
-        "yourDebtDescription": "Apapọ iye ti o wa lọwọlọwọ ti ko ni isanwo ni ipo rẹ, pẹlu iye ti a fa jade ati iwulo ti o kojọpọ. Iṣiro yii pọ si lori akoko ti iwulo ba kojọpọ.",
-        "yourDebtTokenBalance": "Ọwọọ rẹ {tokenSymbol}",
-        "requiredAmountWithSlippage": "Ọwọọ tó tẹlẹ nígbà tí kòsí òkú",
-        "requiredAmountWithSlippageDescription": "Fun pipade ipo rẹ ni irọrun, ra diẹ diẹ sii {tokenSymbol} ju {amount} ti o nilo nitori isokuso ti o ṣeeṣe. O nilo afikun lati bo deficit. Yi awọn ohun-ini rẹ pada si {tokenSymbol} lati pade aini yii.",
-        "openSwap": "Fẹẹ ìsọwọpọ",
-        "introTitle": "Fẹẹ vị tẹlẹ & Ẹ wò wọlé pẹ̀lú {Kensetsu}",
-        "introDescription": "A daju ati a niwaju ni ibi kan daju fun ọwo ati iye ọwọ. Fidio ibi titi di daju pẹlu ilu {Kensetsu}.",
-        "disclaimerDescription": "Ọmọ ogun tita ti awọn owo diẹ ninu awọn ati{Polkaswap} inu itakun kan wọlé ni lati di ti o ti awọn owo rẹ ni, ati lati bẹrẹ nigba yii. Iye awọn owo diẹ ninu awọn owo kíakíá, ati gbogbo iye kọọkan lati ibi awọn owo ti o ba gba tabi lo lati ṣe asẹ ni n oju awọn owo ni gbogbo àwọn ifọwọṣẹ ti awọn owo ti o ba gba tabi ti o ba n sọ pe o ti lọ lati ibeere aje.",
-        "availableToBorrow": "Fẹẹ tó tẹlẹ",
-        "availableToBorrowDescription": "Iye ti o ku ti o ni ẹtọ lati fa jade labẹ awọn ipo lọwọlọwọ ti ipo rẹ, da lori awọn ohun-ini ti o fi silẹ ati eyikeyi gbese ti o wa tẹlẹ.",
-        "collateralDetails": "Ẹ̀tọ̀ iranti",
-        "debtDetails": "Ẹ̀tọ̀ ọwọọ",
-        "positionInfo": "Àkókò ìdì",
-        "liquidationPenalty": "Ọwọọ fun inújẹ",
-        "liquidationPenaltyDescription": "Ìfíyà wọ́n rẹ tún pẹ̀ ní ilà láti iranti rẹ bẹrẹ níbi tó gbọ́ ni ìkọ̀já, tí ó sì kùn ẹ̀bùn. Ìwàjú yìí tó kúrò àwọn ọwọọ rẹ.",
-        "positionSafe": "Ìdì tẹlẹ",
-        "liquidationClose": "Ìwọle inújẹ",
-        "highLiquidationRisk": "Rísk inújẹ tó dáadọ",
-        "error": {
-            "enterCollateral": "Tẹ iranti",
-            "enterBorrow": "Tẹ àwọn ọwọọ tẹlẹ",
-            "borrowMoreThanAvailable": "Owo ti o le ni lọ lori ti wọn tẹlẹ",
-            "insufficientCollateral": "Kó iranti to wà",
-            "enterRepayDebt": "Tẹ ìdá",
-            "repayMoreThanDebt": "Iye iṣẹrọ ti o tẹlẹ",
-            "incorrectCollateral": "Tokun meji ko ni atilẹyin"
-        },
-        "interest": "Èlòkò",
-        "interestDescription": "Ọwọ ọwọọ jìnnà tẹlẹ láti kúrò láti ilé ìdì rẹ, ti wọ́n sì bẹrẹ ní pẹrẹ. Owó yìí jìnnà tẹlẹ ní ìdápadà ìlọsíwájú àti awọn iṣẹ̀tẹ̀ ni òṣìṣẹ̀lú.",
-        "positionHistory": "Ìtàn ẹ̀kọ́",
-        "liquidated": "Ṣe ibaje",
-        "liquidatedMessage": "Ṣe ibaje {amount} {symbol}",
-        "status": {
-            "Opened": "Ṣiṣẹ́",
-            "Closed": "Dùn",
-            "Liquidated": "Ṣe ibaje"
-        },
-        "readMore": "Kọ́ lọ́wọ́",
-        "reopen": "Ṣiṣẹ́ tóbi",
-        "totalCollateralReturned": "Aabọ owo ibajẹ gbogbo",
-        "totalCollateralReturnedDescription": "Awọn owo owo nikan lórí rẹ nígbà tí ọdẹṣì rẹ bá dùn, nítorí awọn owo ibajẹ gbogbo.",
-        "overallTotalCollateral": "Gbogbo owo ibajẹ",
-        "overallTotalCollateralDescription": "Awọn ẹ̀tò owo ibajẹ ni ìdánwò aláìlá ti awọn wòléwo wà nípa lati ṣè gbogbo ìdánwò wo ilé {Kensetsu}.",
-        "overallTotalDebt": "Gbogbo owo",
-        "overallTotalDebtDescription": "Gbigba nípa àwọn òrò ìwọlé ní gbogbo ìdánwò tó dùró fún gbogbo àwọn ìfàjọ fún ilé {Kensetsu}.",
-        "overallBadDebt": "Owo ìfọwọsọ",
-        "overallBadDebtDescription": "Aabo tí o fẹ́ jẹ́ kikún ló máa rí nítorí ẹsẹ̀ẹsẹ tí ìwòlé ìlúmọ̀ ati tabi àwọn ọjọ́ọdọrù pẹ̀lú ìbẹrẹ.",
-        "ltvMaxTooltip": "Iye ti o pọju ti ipo yiya ti o le pese ni ibatan si iye idiyele ti dukia ti a lo bi alagbera.",
-        "overallAvailable": "Lapapọ wa",
-        "overallAvailableDescription": "Lapapọ iye owo ti o wa fun gbigba lori pẹpẹ {Kensetsu}."
-    },
-    "accountSettings": {
-        "title": "Eto iroyin",
-        "hint": "O le mu eyi pada si awọn eto akọọlẹ",
-        "disable": "Pa lori",
-        "disabled": "Alaabo fun",
-        "confirmation": {
-            "title": "Pa ìmúdájú idunadura",
-            "description": "Iboju agbejade eyiti o ṣafihan awọn alaye nipa awọn iṣowo ṣaaju iforukọsilẹ."
-        },
-        "signature": {
-            "title": "Pa ìmúdájú ọrọigbaniwọle",
-            "description": "Mu ṣiṣẹ tabi mu iwulo lati tẹ ọrọ igbaniwọle rẹ sii lakoko igarun Ibuwọlu ni awọn iṣowo."
-        },
-        "enterPassword": "Tẹ ọrọ igbaniwọle sii",
-        "googleOnly": "Awọn akọọlẹ {Google} nikan"
-    },
-    "currencyDialog": {
-        "currency": "Owo owo",
-        "searchPlaceholder": "Ṣewadii nipasẹ orukọ owo tabi aami"
-    },
-    "browserNotificationLocalStorageOverride": {
-        "title": "Nu ibi ipamọ agbegbe {AppName} mọ",
-        "info": "Ibi ipamọ agbegbe rẹ ti kun ju, lati tẹsiwaju iṣẹ pẹlu {AppName} o nilo lati nu rẹ",
-        "agree": "Bẹẹni, Mo loye"
-    },
-    "points": {
-        "title": "Ilọsiwaju Dimegilio Rẹ",
-        "loginText": "Sopọ akọọlẹ rẹ lati wo awọn dimegilio rẹ",
-        "bridgeVolume": "Iwọn Afara",
-        "feesSpent": "Awọn owo ti a lo",
-        "xorBurned": "{XOR} ti sun",
-        "yourReferrals": "Awọn itọkasi rẹ",
-        "accountsText": "{amount} awọn akọọlẹ",
-        "yourRewards": "Awọn ere rẹ",
-        "openTelegram": "Ṣii {Telegram}",
-        "toEarnPoints": "Lati gba awọn dimegilio"
+      "transfer": "Awọn ami ti o ra ni aṣeyọri!\n Tẹ lati bẹrẹ iṣowo afara"
     }
+  },
+  "light": "Imọlẹ",
+  "dark": "Dudu",
+  "headerMenu": {
+    "showBalances": "Fihan Awọn iwọntunwọnsi",
+    "hideBalances": "Tọju Awọn iwọntunwọnsi",
+    "settings": "Ètò",
+    "switchTheme": "Yipada si {theme} Ipo",
+    "switchLanguage": "Yan Ede",
+    "showDisclaimer": "Ṣafihan AlAIgBA",
+    "hideDisclaimer": "Tọju AlAIgBA",
+    "selectCurrency": "Yan Owo"
+  },
+  "sentText": "Ti firanṣẹ",
+  "learnMoreText": "Kọ ẹkọ si",
+  "marketMakerCountdown": {
+    "title": "Oja Ẹlẹda kika",
+    "blocks": "ohun amorindun",
+    "daysLeft": "ọjọ osi",
+    "txs": "TXs",
+    "volume": "MM TX iwọn didun",
+    "description": "20 million PSWAP / osù ni yoo pin si awọn oluṣe ọja pẹlu o kere ju 500 tx / osù ti o ni idiyele lori 1 XOR."
+  },
+  "confirmNextTxFailure": {
+    "header": "Ifarabalẹ",
+    "info": "Iwọntunwọnsi {symbol} rẹ yoo kere ju {fee} {symbol} lẹhin iṣowo yii. Iwọ kii yoo ni anfani lati sanwo fun ọya nẹtiwọki fun iṣowo miiran.",
+    "payoff": "Iwọ yoo ni lati lo Afara lati gba XOR lati awọn nẹtiwọọki miiran, firanṣẹ XOR lati akọọlẹ {Sora} miiran, tabi paarọ eyikeyi ami-ami miiran tẹlẹ ninu akọọlẹ rẹ sinu XOR.",
+    "button": "Bẹẹni, Mo loye ewu naa"
+  },
+  "blockNumberText": "Àkọsílẹ nọmba",
+  "referralProgram": {
+    "title": "Eto ifiwepe",
+    "connectAccount": "Lati pe awọn olumulo o nilo lati so akọọlẹ {Sora} rẹ pọ.",
+    "bondedXOR": "XOR ti o ni asopọ",
+    "referralsNumber": "awọn itọkasi {number}",
+    "startInviting": "Bond XOR lati tọka si awọn miiran",
+    "preview": "Pe awọn olumulo titun ati gba 10% lati awọn idiyele idunadura wọn. <br/> Lati bẹrẹ, di eyikeyi iye ti XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Kọ ẹkọ diẹ sii </a>",
+    "deposit": "Idogo",
+    "balance": "Iwontunwonsi",
+    "insufficientBondedBalance": "Aini iwọntunwọnsi ti o darapọ mọ",
+    "action": {
+      "empty": "Tẹ iye {tokenSymbol}",
+      "startInviting": "Dipọ {tokenSymbol} lati bẹrẹ pipe si",
+      "bondMore": "Dipọ Die",
+      "bond": "Dipọ",
+      "unbond": "Yọọ",
+      "copyLink": "Daakọ ọna asopọ",
+      "shareLink": "Pin"
+    },
+    "transactionDetails": "Idunadura Awọn alaye",
+    "receivedRewards": "Awọn ere ti o gba",
+    "invitationLink": "Ọna asopọ ifiwepe",
+    "successCopy": "Ọna asopọ itọkasi jẹ daakọ si agekuru agekuru",
+    "bondTitle": "Dipọ XOR",
+    "unbondTitle": "Yọ XOR kuro",
+    "confirm": {
+      "bond": "Jẹrisi dipọ",
+      "unbond": "Jẹrisi yiyọ kuro",
+      "inviteTitle": "O ti pe ọ si {AppName} nipasẹ itọkasi kan",
+      "inviteDescription": "Fun gbogbo iṣowo, 10% ti owo naa yoo lọ si olutọka rẹ, laisi idiyele eyikeyi fun ọ.",
+      "signInvitation": "Fi ọwọ si",
+      "freeOfCharge": "Iṣe yii jẹ ọfẹ",
+      "hasReferrerTitle": "O ti ṣeto olutọka rẹ tẹlẹ",
+      "hasReferrerDescription": "Laanu, o le ṣeto ọkan nikan",
+      "ok": "O DARA",
+      "text": "Jẹrisi"
+    },
+    "referrer": {
+      "title": "Ṣafikun olutọka rẹ",
+      "titleReferrer": "Olutọka rẹ",
+      "placeholder": "Tẹ ọna asopọ ifiwepe tabi koodu sii",
+      "label": "Asopọmọra ifiwepe tabi koodu",
+      "approve": "Fi ọwọ si",
+      "approved": "Ti fọwọsi",
+      "description": "O le tọka si {AppName},<br/>tẹ ọna asopọ tabi koodu ti olutọkasi",
+      "referredBy": "{referrer} ti tọka si ọ",
+      "info": "Nigbati o ba san owo fun idunadura,<br/>10% yoo lọ si olutọkasi rẹ",
+      "referredLablel": "Adirẹsi ti a tọka si"
+    },
+    "insufficientBondedAmount": "Lati pe awọn itọka si diẹ sii, di o kere ju {inviteUserFee} XOR",
+    "inviteViaTelegram": "Pe nipasẹ {Telegram}",
+    "welcomeMessage": "\nDarapọ mọ mi lori {Polkaswap}!\n\nṢawari {DEX} ti ara ẹni ti o fun ọ laaye lati paarọ awọn aami aami mejila pẹlu awọn paṣipaarọ ẹwọn agbelebu, iwe aṣẹ, ati ọpọlọpọ awọn ere!\n\n🎁 Pe awọn ọrẹ ki o si jo'gun 10% ti awọn owo iṣowo wọn\n\nRi ọ nibẹ!"
+  },
+  "transactionDetailsText": "Idunadura Awọn alaye",
+  "code": {
+    "download": "Ṣe igbasilẹ koodu QR",
+    "upload": "Ṣayẹwo QR",
+    "invalid": "Koodu QR ti ko tọ",
+    "import": "Gbe aworan wọle",
+    "scan": "Ṣayẹwo pẹlu kamẹra",
+    "allowanceError": "Ṣayẹwo wiwa kamẹra rẹ ati awọn igbanilaaye aṣawakiri lati lo",
+    "receive": "Gba",
+    "camera": "Kamẹra",
+    "allowanceRequest": "Tẹ \"Gba laaye\" wiwọle si kamẹra"
+  },
+  "bridgeTransferNotification": {
+    "addToken": "Fi {symbol} sinu apamọwọ",
+    "title": "Idunadura Bridge aseyori"
+  },
+  "mobilePopup": {
+    "sideMenu": "Ṣe igbasilẹ apamọwọ {Sora}",
+    "header": "Ṣe igbasilẹ apamọwọ {Sora} pẹlu {polkaswapHighlight} awọn ẹya ara ẹrọ",
+    "info": "Siwopu àmi lati yatọ si nẹtiwọki - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Pese adagun oloomi ati jo'gun% lati awọn idiyele paṣipaarọ."
+  },
+  "releaseNotesText": "Awọn akọsilẹ idasilẹ",
+  "copiedText": "Ti daakọ!",
+  "copyWithValue": "Daakọ {value}",
+  "copiedWithValue": "{value} ti daakọ!",
+  "signAndClaimText": "Wole ki o beere",
+  "balanceText": "Iwontunwonsi",
+  "unknownAssetText": "Ohun-ini aimọ",
+  "demeterFarming": {
+    "staking": {
+      "active": "Staking lọwọ",
+      "inactive": "Owo lati jo'gun afikun awọn ere",
+      "stopped": "Staking duro"
+    },
+    "info": {
+      "earned": "{symbol} ti o gba",
+      "fee": "Ọya",
+      "feeTooltip": "Owo ohun idogo ti wa ni lilo si iye rẹ si igi",
+      "owned": "{symbol} @:balanceText",
+      "poolShare": "Rẹ pool pin staked",
+      "poolShareWillBe": "Pinpin adagun-odo rẹ ti o ni nkan yoo jẹ",
+      "rewardToken": "Aami ere",
+      "stake": "{symbol} rẹ ti ṣe akoto",
+      "stakeWillBe": "Igi {symbol} rẹ yoo jẹ",
+      "totalLiquidityLocked": "Lapapọ oloomi ni titiipa"
+    },
+    "actions": {
+      "add": "Mu diẹ sii",
+      "claim": "Awọn ere ẹtọ",
+      "remove": "Yọ igi kuro",
+      "start": "Bẹrẹ staking"
+    },
+    "amountAdd": "Iye owo",
+    "amountRemove": "Iye lati yọ kuro",
+    "poweredBy": "Agbara nipasẹ Demeter Farming",
+    "calculator": "Ẹrọ iṣiro",
+    "results": "Esi",
+    "rewards": "{symbol} ere"
+  },
+  "historyErrorMessages": {
+    "generalError": "Nnkan o lo daadaa",
+    "balances": {
+      "liquidityrestrictions": "Awọn ihamọ oloomi iroyin ṣe idiwọ yiyọ kuro"
+    },
+    "poolxyk": {
+      "sourcebalanceisnotlargeenough": "Iwontunwonsi orisun ko tobi to",
+      "targetbalanceisnotlargeenough": "Iwontunwonsi nlo ko tobi to",
+      "impossibletodecidevalidpairvaluesfromrangeforthispool": "Awọn iye ti a pese ni o yatọ pupọ",
+      "calculatedvalueisnotmeetsrequiredboundaries": "Awọn iye ko si ni awọn ala ti a beere",
+      "unabletodepositxorlessthanminimum": "XOR kere ju iye to kere ju (0.007)",
+      "zerovalueinamountparameter": "Paramita iye ni iye odo"
+    },
+    "xstpool": {
+      "poolalreadyinitializedforpair": "Pool bata ti wa tẹlẹ",
+      "slippagelimitexceeded": "Ifarada yiyọ kuro ko ti pade awọn opin to dara"
+    },
+    "referrals": {
+      "alreadyhasreferrer": "Akọọlẹ ti ni olutọka tẹlẹ",
+      "referrerinsufficientbalance": "Referrer ko ni to ti wa ni ipamọ iwontunwonsi"
+    },
+    "vestedrewards": {
+      "rewardssupplyshortage": "Eto ere ti pari tẹlẹ",
+      "cantcalculatereward": "Kuna lati ṣe iṣiro ere",
+      "norewardsforasset": "Ko si awọn ere fun dukia yii"
+    },
+    "liquidityproxy": {
+      "forbiddenfilter": "Ti a ti yan orisun oloomi ko gba laaye",
+      "slippagenottolerated": "Àfikún ìlọpọ àkántọ̀ ohun ti ṣe ṣiṣe àpapọ fún ìdíje yii"
+    },
+    "demeterfarmingplatform": {
+      "insufficientfunds": "Awọn owo ti ko to",
+      "insufficientlptokens": "Insufficient oloomi ipese àmi",
+      "pooldoesnothaverewards": "Pool ko ni ni ere"
+    },
+    "multicollateralbondingcurvepool": {
+      "pricecalculationfailed": "Aṣiṣe waye lakoko ti o ṣe iṣiro idiyele naa"
+    }
+  },
+  "receivedText": "Ti gba",
+  "browserNotificationDialog": {
+    "title": "Ṣeto Awọn iwifunni",
+    "info": "A yoo fi awọn imudojuiwọn ti o yẹ nikan ranṣẹ si ọ nipa apamọwọ rẹ, fun apẹẹrẹ: awọn iyipada iwọntunwọnsi dukia",
+    "button": "Mu awọn iwifunni ṣiṣẹ",
+    "agree": "Bẹẹni, Mo loye",
+    "notificationBlocked": "Lati gba awọn ifitonileti nipa {AppName}, jọwọ gba awọn iwifunni ni awọn eto abinibi ti aṣawakiri rẹ",
+    "pointer": "Tẹ \"Gba laaye\" lati tan awọn iwifunni"
+  },
+  "assetDeposit": "Iwontunwonsi dukia ti wa ni idogo",
+  "noDataText": "Ko si data",
+  "ofText": "{first} ti {second}",
+  "filter": {
+    "all": "Gbogbo",
+    "token": "Awọn owo nina",
+    "verifiedOnly": "Ṣafihan awọn ohun-ini ti a rii daju nikan",
+    "zeroBalance": "Tọju awọn ohun-ini iwọntunwọnsi 0",
+    "showAssets": "Ṣe afihan awọn ohun-ini",
+    "show": "Ṣe afihan"
+  },
+  "desktop": {
+    "welcome": {
+      "header": "Kaabo si {AppName}!",
+      "headline": "Jẹ ki a ṣeto akọọlẹ rẹ",
+      "text": "Ṣẹda akọọlẹ Nẹtiwọọki {Sora} rẹ tabi wọle si awọn atijọ ni lilo gbolohun mnemonic tabi gbewọle .json. Eyi n gba ọ laaye lati fowo si awọn iṣowo ni aabo ati ṣakoso awọn ohun-ini ni Nẹtiwọọki {Sora}.",
+      "createAccount": "Ṣẹda akọọlẹ kan",
+      "importAccount": "Wọle Account"
+    },
+    "heading": {
+      "seedPhraseTitle": "Ọrọ igbaniwọle",
+      "confirmSeedTitle": "Jẹrisi ọrọ igbaniwọle",
+      "accountDetailsTitle": "Awọn alaye Account",
+      "importTitle": "akowọle agbewọle"
+    },
+    "button": {
+      "next": "Igbesẹ t’okan",
+      "skip": "Rekọja",
+      "createAccount": "Se akanti fun ra re",
+      "importAccount": "akowọle agbewọle"
+    },
+    "accountName": {
+      "placeholder": "Orukọ akọọlẹ",
+      "desc": "Eyi ni orukọ akọọlẹ rẹ. Yoo han fun ọ nikan ni {Polkaswap}."
+    },
+    "password": {
+      "placeholder": "Ọrọigbaniwọle",
+      "desc": "Rii daju pe o nlo ọrọ igbaniwọle alailẹgbẹ ti o lagbara fun aabo to dara (awọn ohun kikọ 8 o kere ju)"
+    },
+    "confirmPassword": {
+      "placeholder": "So ni pato orukoabawole re"
+    },
+    "accountMnemonic": {
+      "placeholder": "Gbolohun mnemonic"
+    },
+    "seedAdviceText": "Ọrọ aṣina ọrọ mejila jẹ bọtini ikọkọ lati tun wọle si akọọlẹ {Sora} rẹ ti o ba padanu iraye si akọọlẹ {wallet} rẹ. Tọju rẹ lailewu ni aṣẹ gangan ti o han loke.",
+    "confirmSeedText": "Jẹrisi ọrọ igbaniwọle nipa titẹ awọn ọrọ ni ọna ti o tọ",
+    "errorMnemonicText": "Ilana ọrọ igbaniwọle ti ko tọ",
+    "exportOptionText": "Faili {JSON} okeere fun imupadabọ akọọlẹ",
+    "exportJsonText": "Iwọ yoo ni anfani nigbagbogbo lati da akọọlẹ rẹ pada nipa gbigbe faili {JSON} yii wọle. Maṣe pin pẹlu ẹnikẹni! Tọju rẹ lailewu, pelu fifi ẹnọ kọ nkan.",
+    "addAccount": "Fi akọọlẹ kan kun",
+    "dialog": {
+      "confirmTitle": "Jẹrisi pẹlu ọrọigbaniwọle",
+      "confirmButton": "Wole Idunadura",
+      "savePasswordText": "Ranti ọrọ igbaniwọle mi fun awọn iṣẹju 15 to nbọ",
+      "extendPasswordText": "Fa akoko laisi ọrọigbaniwọle nipasẹ iṣẹju 15"
+    },
+    "errorMessages": {
+      "password": "Ọrọigbaniwọle ko baramu",
+      "passwords": "Awọn ọrọ igbaniwọle ko baramu",
+      "mnemonic": "Bip39 mnemonic ti ko tọ ni pato",
+      "mnemonicLength": "Mnemonic yẹ ki o ni awọn ọrọ {number} ninu",
+      "jsonFields": "Faili JSON ko ni awọn aaye ti a beere",
+      "alreadyImported": "akowọle ti ko wọle tẹlẹ {address}"
+    },
+    "assetsAtRiskText": "Awọn dukia ni ewu!",
+    "deleteAccountText": "Akoto ko le gba pada laisi gbolohun ọrọ irugbin, faili .json tabi ti o ba wa ni ipamọ ni diẹ ninu itẹsiwaju. O yoo wa ni ibuwolu jade.",
+    "importSteps": {
+      "selectWallet": "Ṣii apamọwọ pẹlu akọọlẹ (awọn) ti o wa tẹlẹ",
+      "selectAccount": "Yan akọọlẹ ti o fẹ lati okeere",
+      "exportAccount": "Faili {JSON} okeere"
+    },
+    "exportTutorialsText": "okeere Tutorial",
+    "seedAdviceAdditionTitle": "Maṣe pin ọrọ igbaniwọle rẹ pẹlu ẹnikẹni!",
+    "seedAdviceAdditionText": "Ti ẹnikan ba beere lọwọ rẹ fun ọrọ igbaniwọle rẹ o ṣee ṣe julọ gbiyanju lati ṣe itanjẹ rẹ ati ji awọn dukia rẹ!"
+  },
+  "hashiBridgeText": "{Hashi} Afara",
+  "disclaimerTitle": "Akiyesi",
+  "explore": {
+    "showOnly": "Ṣafihan {entities} nikan",
+    "myPositions": "awọn ipo mi",
+    "synthetics": "sintetiki àmi"
+  },
+  "tooltips": {
+    "roi": "{ROI} duro fun Pada lori Idoko-owo. O ṣe iṣiro nipasẹ pinpin èrè ti o jo'gun lori idoko-owo nipasẹ idiyele ti idoko-owo yẹn ni deede ogorun kan.",
+    "tvl": "{TVL} duro fun Titiipa Iye Lapapọ. O duro fun awọn ami titiipa ninu awọn adagun-odo ni deede dola.",
+    "volume": "Iwọn didun ntokasi si lapapọ iye ti ohun ìní ti a ti ta tabi paarọ lori awọn nẹtiwọki lori kan pato akoko. Iwọn didun jẹ metiriki pataki fun wiwọn oloomi ati iṣẹ ṣiṣe gbogbogbo ti nẹtiwọọki.",
+    "fees": "Awọn idiyele lori blockchain {Sora} tọka si awọn idiyele ti o jẹ fun ṣiṣe awọn iṣowo lori nẹtiwọọki. Awọn owo wọnyi ni a san ni XOR, cryptocurrency abinibi ti Nẹtiwọọki {Sora} . Iye owo ọya jẹ ipinnu nipasẹ idiju ati iwọn ti idunadura ti n ṣiṣẹ",
+    "supply": "Ipese tokini tọka si nọmba lapapọ ti awọn ami ti a ti ṣẹda ati ti o wa ni sisan lori nẹtiwọọki. Ipese ami le yipada da lori iye awọn ami ti o wa ni ifipamọ, sun, tabi gbigbe lori nẹtiwọọki.",
+    "transactions": "Awọn iṣowo n tọka si ilana ti fifiranṣẹ tabi gbigba awọn ohun-ini oni-nọmba lori nẹtiwọọki, pẹlu awọn iṣẹ oloomi, ati awọn swaps.",
+    "accounts": "Awọn akọọlẹ jẹ awọn adirẹsi oni-nọmba ti o mu awọn ohun-ini olumulo mu lori nẹtiwọọki. Iwe akọọlẹ kọọkan ni nkan ṣe pẹlu adiresi gbogbogbo alailẹgbẹ ati bọtini ikọkọ ti o fun laaye olumulo laaye lati wọle ati ṣakoso awọn ohun-ini wọn.",
+    "bridgeTransactions": "{from} si {to} Afara n tọka si ilana gbigbe ohun-ini laarin {from} ati {to} awọn nẹtiwọọki nipa lilo afara. Afara naa ngbanilaaye fun ibaraenisepo ti awọn nẹtiwọọki meji, ṣiṣe awọn olumulo laaye lati gbe awọn ohun-ini lainidi laarin wọn.",
+    "velocity": "Iyara tokini jẹ nọmba awọn akoko ti ami iyipada awọn akọọlẹ lakoko akoko (oṣu) ni apapọ. O tọkasi ipele ti iṣẹ iṣowo ati oloomi."
+  },
+  "createTokenText": "Ṣẹda token",
+  "comingSoonText": "Nbọ laipẹ",
+  "confirmText": "Jẹrisi",
+  "createTokenTextNFT": "Ṣẹda NFT",
+  "doNotShowText": "Maṣe fi eyi han mi lẹẹkansi",
+  "accountText": "iroyin | awọn iroyin",
+  "networkStatisticsText": "Awọn iṣiro nẹtiwọki",
+  "footer": {
+    "node": {
+      "title": {
+        "connected": "Node ti sopọ",
+        "loading": "Node tun-so pọ",
+        "disconnected": "Node ge asopọ"
+      }
+    },
+    "internet": {
+      "title": {
+        "disabled": "Ayelujara alaabo",
+        "unstable": "Internet riru",
+        "stable": "Iduroṣinṣin Intanẹẹti"
+      },
+      "label": "Iyara intanẹẹti rẹ",
+      "desc": {
+        "disabled": "Ge asopọ",
+        "unstable": "Asopọ lọra",
+        "stable": "Iyara to dara julọ"
+      },
+      "action": "Tuntun {Polkaswap}",
+      "dialogTitle": "Sopọ si orisun intanẹẹti",
+      "dialogDesc": "{Polkaswap} nilo asopọ intanẹẹti fun iriri iduroṣinṣin"
+    },
+    "statistics": {
+      "title": {
+        "unavailable": "Awọn iṣiro ko si",
+        "loading": "Ikojọpọ statistiki",
+        "available": "Awọn iṣiro wa"
+      },
+      "label": "Awọn iṣẹ iṣiro",
+      "desc": {
+        "unavailable": "Gbogbo awọn iṣẹ ti ge asopọ",
+        "loading": "Gbogbo awọn iṣẹ ti wa ni ikojọpọ",
+        "available": "Gbogbo awọn iṣẹ jẹ iduroṣinṣin"
+      },
+      "action": "Yan awọn iṣẹ",
+      "dialog": {
+        "title": "Aṣayan iṣẹ nẹtiwọki {Sora}",
+        "indexer": "Atọka",
+        "useCeres": "Lo {Ceres} fun awọn iye fiat"
+      }
+    }
+  },
+  "locationText": "Ipo",
+  "acceptText": "Gba & Tọju",
+  "newAccountsText": "Awọn iroyin titun",
+  "dragAndDropText": "Fa & ju silẹ tabi yan faili {extension}",
+  "copyPhraseText": "Daakọ Aṣẹ Iwifunni",
+  "stepText": "Igbesẹ",
+  "alerts": {
+    "drop": "Silẹ ni isalẹ",
+    "once": "Lẹẹkan",
+    "always": "Nigbagbogbo",
+    "edit": "Itaniji Ṣatunkọ",
+    "delete": "Pa itaniji rẹ",
+    "onDropDesc": "{token} lọ silẹ ni isalẹ {price}",
+    "alertsTitle": "Awọn itaniji",
+    "alertsCreateTitle": "Ṣeto itaniji idiyele",
+    "alertsTooltip": "Awọn itaniji idiyele jẹ awọn iwifunni ti o le ṣeto nipasẹ rẹ lati gba awọn imudojuiwọn nigbati idiyele ti ami-ami kan pato de aaye kan ti o ṣeto",
+    "createBtn": "Ṣẹda titun owo gbigbọn",
+    "enableSwitch": "Mu awọn iwifunni idogo dukia ṣiṣẹ",
+    "currentPrice": "lọwọlọwọ owo",
+    "alertTypeTitle": "Iru itaniji",
+    "alertFrequencyTitle": "Itaniji igbohunsafẹfẹ",
+    "frequencyTooltip": "Yan laarin 'lẹẹkan' ati 'nigbagbogbo' lati pinnu iye igba ti o gba awọn iwifunni fun iru gbigbọn ti o yan. 'Lẹẹkan' yoo fi ifitonileti kan ranṣẹ nigbati ipo naa ba ti pade, lakoko ti 'nigbagbogbo' yoo tẹsiwaju lati fi to ọ leti ni igbakugba ti ẹnu-ọna idiyele ti kọja",
+    "noSupportMsg": "Awọn iwifunni ko ni atilẹyin nipasẹ ẹrọ aṣawakiri rẹ",
+    "finishBtn": "Lati pari",
+    "raise": "Dide loke",
+    "onRaiseDesc": "{token} ga ju {price}",
+    "typeTooltip": "Yan boya 'ju silẹ ni isalẹ' tabi 'dide loke' aṣayan lati tokasi ipo itaniji fun titọpa awọn agbeka idiyele pataki. Awọn aṣayan wọnyi gba ọ laaye lati gba awọn iwifunni akoko nigbati iye dukia rẹ boya ṣubu ni isalẹ tabi dide loke iloro ti a yàn"
+  },
+  "accountAddressText": "adirẹsi iroyin",
+  "fiatDisclaimer": "Jọwọ ṣe akiyesi pe awọn iye fiat ti o ni nkan ṣe pẹlu awọn owo nẹtiwoki lori oju opo wẹẹbu wa ni a pese nipasẹ awọn iṣẹ ita (Subquery, Subsquid, Ceres API) jẹ isunmọ. Fi fun idiju atorunwa ti awọn iṣiro wọnyi, pipe pipe ni gbogbo igba ko le ṣe iṣeduro.",
+  "fiatPayment": {
+    "historyBtn": "Awọn rira mi",
+    "historyTitle": "Itan iṣowo",
+    "moonpayTitle": "Ra ETH nipasẹ MoonPay",
+    "moonpayDesc": "Ra awọn ami ETH lori {Ethereum} ki o gbe wọn lọ si nẹtiwọki {SORA} nipasẹ afara",
+    "errorMessage": "Aforiji fun ohun airọrun. A n ṣiṣẹ takuntakun lati yanju eyi. Jọwọ, gbiyanju lẹẹkansi nigbamii.",
+    "cedeStoreTitle": "Gbigbe lati {value}",
+    "cedeStoreDesc": "Gbe eyikeyi awọn ami ami lati {value1} si {value2} nipasẹ {value3}",
+    "cedeStoreBtn": "Gbigbe lati {value1} nipasẹ {value2}"
+  },
+  "acceptOnScrollText": "Yi lọ lati gba",
+  "addressBook": {
+    "myAccounts": "Awọn akọọlẹ mi",
+    "myBook": "Iwe Mi",
+    "searchPlaceholder": "Ṣewadii nipasẹ adirẹsi, orukọ tabi idanimọ",
+    "noFoundRecords": "Ko si awọn igbasilẹ ti a rii",
+    "noContacts": "O ko ni awọn olubasọrọ ti a ṣafikun sibẹsibẹ",
+    "addContact": "Fi olubasọrọ kun",
+    "dialogTitle": "Awọn olubasọrọ rẹ",
+    "identity": "On-pq idanimo",
+    "none": "Ko si",
+    "detected": "Adirẹsi titun ti ri",
+    "save": "Fipamọ bi olubasọrọ",
+    "tooltip": "Gba iwe adirẹsi nipa pipese orukọ ati adirẹsi lati jẹ ki awọn olubasọrọ rẹ ṣeto ati imudojuiwọn",
+    "notSoraAddress": "Adirẹsi yii yoo wa ni ipamọ bi adirẹsi {SORA} ni isalẹ. Rii daju pe olugba le wọle si ẹwọn {SORA}:",
+    "options": {
+      "send": "Firanṣẹ awọn ami",
+      "edit": "Ṣatunkọ olubasọrọ",
+      "delete": "Paarẹ"
+    },
+    "btn": {
+      "enterName": "Tẹ orukọ sii",
+      "present": "Ti wa tẹlẹ",
+      "saveChanges": "Fi awọn ayipada pamọ"
+    },
+    "input": "Tẹ adirẹsi sii tabi yan olubasọrọ",
+    "selectContact": "Yan olubasọrọ"
+  },
+  "browserPermission": {
+    "title": "Gba wiwọle kamẹra laaye ni awọn eto ẹrọ aṣawakiri",
+    "desc": "Lati rii daju pe ododo ti awọn iwe aṣẹ ati lati fọwọsi idanimọ olumulo fun ijẹrisi KYC, iraye si kamẹra ẹrọ rẹ nilo.",
+    "disclaimer": "Wiwọle kamẹra nilo fun gbigba iwe akoko gidi lati ṣe idiwọ jibiti.",
+    "btnGoToSettings": "Lọ si awọn eto",
+    "btnAllow": "Gba wiwọle laaye"
+  },
+  "continueText": "Tesiwaju",
+  "minAmountText": "min. iye",
+  "maxAmountText": "o pọju. iye",
+  "exceededAmountText": "{amount} ti kọja",
+  "multipleRecipients": "Awọn olukọni pupọ",
+  "disconnectWalletText": "Ge asopọ",
+  "connectEthereumWalletText": "So {Ethereum} apamọwọ",
+  "soraStaking": {
+    "dropdownMenu": {
+      "pendingRewards": "Awọn ere ni isunmọtosi",
+      "controllerAccount": "Iroyin oludari"
+    },
+    "actions": {
+      "claim": "Awọn ere ẹtọ",
+      "remove": "Yọ igi kuro",
+      "more": "Gbero diẹ sii",
+      "confirm": "Jẹrisi Staking",
+      "withdraw": "Yiyọ kuro"
+    },
+    "overview": {
+      "title": "{Sora} Staking",
+      "description": "Fi àmì {XOR} sí orí Nẹ́tíwọ́ọ̀kì {Sora} gẹ́gẹ́ bí olùyàn láti fọwọ́ sí ìdúnàádúrà àti láti jèrè àwọn èrè àmì {VAL}."
+    },
+    "newStake": {
+      "title": "Bẹrẹ staking",
+      "minStakeWarning": "Idiyele to kere julọ lati gba ẹsan naa jẹ {min} {symbol}"
+    },
+    "validators": {
+      "save": "Fi awọn ayipada pamọ",
+      "selected": "{selected} / {total} ti yan",
+      "recommended": "Niyanju afọwọsi",
+      "change": "Yi awọn afọwọsi",
+      "select": "Yan awọn olufọwọsi",
+      "next": "Itele",
+      "alreadyNominated": "Awọn olufọwọsi ti a ti yan tẹlẹ ti yan tẹlẹ",
+      "tooManyValidators": "Awọn afọwọsi pupọ ti yan ( {Max} {max} )"
+    },
+    "validatorsList": {
+      "search": "Wa...",
+      "name": "Oruko",
+      "noNominatedValidators": "O ko ni eyikeyi ti yan afọwọsi",
+      "noValidators": "Ko si awọn olufọwọsi ti o ni itẹlọrun àlẹmọ pàtó kan",
+      "commission": "Igbimọ",
+      "commissionTooltip": "Igbimọ tọka si ọya ti o gba agbara nipasẹ awọn afọwọsi fun awọn iṣẹ wọn ni ilana isamisi. Ọya yii, ti a ṣalaye bi ipin kan, ni a yọkuro lati awọn ere isinmọ ti o jẹ nipasẹ awọn yiyan ṣaaju pinpin. O ṣe pataki lati ṣe akiyesi pe awọn olufọwọsi le ṣatunṣe awọn oṣuwọn igbimọ wọn nigbakugba",
+      "return": "Pada"
+    },
+    "info": {
+      "unstaking": "Unstaking",
+      "stakingBalance": "Staking iwontunwonsi",
+      "rewarded": "Esan",
+      "totalLiquidityStaked": "Lapapọ oloomi staked",
+      "rewardToken": "Aami ere",
+      "unstakingPeriod": "Àkókò tí a kọ sílẹ̀",
+      "minimumStake": "Iwọn to kere julọ",
+      "nominators": "Awọn oludibo",
+      "validators": "Awọn olufọwọsi",
+      "selectedValidators": "Awọn olufọwọsi ti a yan"
+    },
+    "validatorsFilterDialog": {
+      "title": "Ajọ",
+      "save": "Fi àlẹmọ pamọ",
+      "reset": "Tun gbogbo rẹ to",
+      "filters": {
+        "hasIdentity": {
+          "name": "On-pq idanimo",
+          "description": "O kere ju olubasọrọ idanimọ kan ti a ti sopọ si akọọlẹ naa"
+        },
+        "notSlashed": {
+          "name": "Ko dinku",
+          "description": "Ko ni iriri eyikeyi awọn ijiya tabi awọn idinku ninu awọn owo ti wọn ṣowo nitori aiṣedeede tabi irufin ilana."
+        },
+        "notOversubscribed": {
+          "name": "Ko ṣe alabapin pupọ",
+          "description": "Àkọsílẹ̀ láàárín òpin ìpín, yẹra fún ìjìyà àṣejù lórí {Polkadot} dúró."
+        },
+        "twoValidatorsPerIdentity": {
+          "name": "Ifilelẹ ti 2 validators fun idanimo",
+          "description": "O pọju awọn olufọwọsi meji fun idanimọ lati ṣe agbega decentralization ati ṣe idiwọ ifọkansi ti agbara."
+        }
+      }
+    },
+    "validatorsDialog": {
+      "title": {
+        "edit": "Ṣatunkọ Mi Validators"
+      },
+      "tabs": {
+        "user": "Awọn olufọwọsi rẹ",
+        "all": "Gbogbo validators"
+      }
+    },
+    "validatorsAttentionDialog": {
+      "title": "Ifarabalẹ",
+      "description": [
+        "Awọn didaba olufọwọsi Algorithmic ko jẹ ijumọsọrọ owo tabi imọran. Staking jẹ iṣẹ ṣiṣe ti o ni eewu giga, ati awọn didaba afọwọsi algorithmic ko ni dandan dinku eewu yii.",
+        "Olufọwọsi ti a daba nipasẹ algoridimu le tun jẹ idinku. Olufọwọsi ti a daba nipasẹ algoridimu tun le yi awọn ayewọn wọn pada (fun apẹẹrẹ, awọn oṣuwọn igbimọ, ati bẹbẹ lọ) nigbakugba lẹhin ti o ti daba ati/tabi yiyan.",
+        "O le padanu awọn ami tabi awọn ere fun iwọnyi tabi awọn idi miiran. Ṣe awọn ami-ipin nikan ki o lo awọn didaba afọwọsi ni lakaye tirẹ, lẹhin ṣiṣe aisimi to tọ ati farabalẹ ṣe akiyesi awọn ewu ti o kan."
+      ],
+      "confirm": "Bẹẹni, Mo loye ewu naa"
+    },
+    "pendingRewardsDialog": {
+      "noPendingRewards": "Ko si ere ni isunmọtosi",
+      "information": "Validators san awọn ere gbogbo 2-5 ọjọ. Sibẹsibẹ, o le san wọn funrararẹ, paapaa ti awọn ere ba sunmọ ipari, ṣugbọn iwọ yoo san owo naa.",
+      "title": "Awọn ere ni isunmọtosi",
+      "noSelectedRewards": "Yan awọn ere",
+      "payout": "Owó ìsanwó"
+    },
+    "selectValidatorsMode": {
+      "title": "Iṣere pẹlu awọn olufọwọsi daba nipasẹ algoridimu",
+      "description": "{Sora} algorithm nẹtiwọọki ti yan akojọ kan ti awọn validators ti a ṣe iṣeduro ti o da lori awọn ilana:",
+      "criteria": [
+        "Julọ ni ere",
+        "Ko ṣe alabapin pupọ",
+        "Nini onchain idanimo",
+        "Ko dinku",
+        "Ifilelẹ ti 2 validators fun idanimo"
+      ],
+      "confirm": {
+        "suggested": "Iṣere pẹlu daba",
+        "manual": "Emi yoo yan awọn olufọwọsi funrararẹ"
+      }
+    },
+    "claimRewardsDialog": {
+      "title": "Awọn ere ẹtọ",
+      "checkRewards": "Ṣayẹwo awọn ere fun akoko ati afọwọsi",
+      "rewardsDestination": "Èrè àdírẹ́sì ibi tí wọ́n ń lọ"
+    },
+    "selectedValidators": "{count} ( {Max} {max} )",
+    "withdraw": {
+      "withdrawable": "Yiyọ kuro",
+      "beingWithdrawn": "Ti yọkuro",
+      "seeAll": "Wo gbogbo e",
+      "nextWithdrawal": "Iyọkuro ti o tẹle",
+      "countdownLeft": "O ku"
+    },
+    "stakeDialog": {
+      "toStake": "Si igi",
+      "toRemove": "Lati yọ kuro"
+    },
+    "withdrawDialog": {
+      "title": "Yiyọ awọn owo ti a ko pin kuro",
+      "showAllWithdraws": "Ṣe afihan gbogbo awọn yiyọ kuro"
+    },
+    "allWithdrawsDialog": {
+      "title": "Iṣẹ ṣiṣe aiṣedeede",
+      "information": "Ni kete ti o ba yọ awọn ami-ami kuro, akoko aiṣiṣẹ ọjọ meje ti o jẹ dandan wa. Lẹhin asiko yii, awọn ami rẹ kii yoo da pada laifọwọyi si apamọwọ rẹ. O gbọdọ pari ilana naa nipa yiyọ awọn ami rẹ kuro pẹlu ọwọ."
+    }
+  },
+  "collapseText": "Subu",
+  "expandText": "Faagun",
+  "orderBook": {
+    "Buy": "Ra {asset}",
+    "Sell": "Ta {asset}",
+    "orderBook": "Iwe aṣẹ",
+    "marketTrades": "Awọn iṣowo ọja",
+    "market": "Oja",
+    "limit": "Idiwọn",
+    "price": "Iye owo",
+    "total": "Lapapọ",
+    "amount": "iye",
+    "time": "aago",
+    "month": "osu",
+    "change": "yipada",
+    "cantPlaceOrder": "Ko le paṣẹ",
+    "enterAmount": "Tẹ iye sii",
+    "setPrice": "Ṣeto idiyele",
+    "dayVolume": "1D Iwọn didun",
+    "stop": "Iwe duro",
+    "tokenPair": "Àmi bata",
+    "book": {
+      "noAsks": "Ko si awọn ibeere ṣiṣi",
+      "noBids": "Ko si ṣiṣi silẹ idu"
+    },
+    "history": {
+      "tradeHistory": "Itan iṣowo",
+      "orderHistory": "Itan ibere",
+      "openOrders": "Ṣii awọn aṣẹ {value}",
+      "connect": "So akọọlẹ kan pọ lati bẹrẹ iṣowo",
+      "cancel": "Fagilee aṣẹ {value}",
+      "cancelAll": "Fagilee gbogbo"
+    },
+    "orderTable": {
+      "time": "aago",
+      "pair": "bata",
+      "side": "ẹgbẹ",
+      "filled": "kún",
+      "lifetime": "igbesi aye",
+      "noOrders": "Ko si ibere. Ṣẹda akọkọ rẹ!"
+    },
+    "dialog": {
+      "placeMarket": "Gbe oja ibere",
+      "placeLimit": "Ibi ifilelẹ ibere",
+      "askCancel": "Ṣe o da ọ loju pe o fẹ fagilee gbogbo awọn aṣẹ ṣiṣi rẹ bi?",
+      "cancelAll": "Bẹẹni, fagilee gbogbo rẹ",
+      "buy": "Ra {amount} {symbol}",
+      "sell": "Ta {amount} {symbol}",
+      "at": "ni {price} {symbol}"
+    },
+    "tradingPair": {
+      "choosePair": "Yan bata iṣowo",
+      "volume": "Iwọn didun",
+      "dailyChange": "Ojoojumọ iyipada",
+      "status": "Ipo",
+      "total": "{amount} {symbol} ni {amount2} {symbol2}"
+    },
+    "bookStatus": {
+      "active": "Ti nṣiṣe lọwọ",
+      "placeable": "O le gbe",
+      "cancelable": "fagilee",
+      "inactive": "Aiṣiṣẹ"
+    },
+    "tooltip": {
+      "limitOrder": "Aṣẹ 'Iwọn' jẹ ki o pato idiyele gangan ni eyiti o fẹ ra tabi ta dukia kan. Aṣẹ 'Idiwọn Ra' kan yoo ṣiṣẹ nikan ni idiyele ti a sọ tabi isalẹ, lakoko ti aṣẹ 'Idiwọn Titaja' kan yoo ṣiṣẹ ni idiyele pàtó tabi ga julọ. Iṣakoso yii ṣe idaniloju pe o ko sanwo diẹ sii tabi ta fun kere ju ti o ni itunu pẹlu.",
+      "marketOrder": "'Aṣẹ ọja' jẹ aṣẹ lati ra tabi ta lẹsẹkẹsẹ ni idiyele lọwọlọwọ to dara julọ. Ko nilo eto idiyele kan, ni idaniloju ipaniyan iyara ṣugbọn pẹlu iṣowo-pipa ti iṣakoso ti o dinku lori idiyele ti o gba tabi san. Iru aṣẹ yii ni a lo nigbati idaniloju ipaniyan jẹ pataki lori iṣakoso idiyele.",
+      "pairsList": "Atokọ akoko gidi ti n ṣafihan awọn ibere rira ati tita lọwọlọwọ fun cryptocurrency kan. O ṣe iranlọwọ fun ọ lati loye ibeere naa, itọsọna idiyele ti o pọju, ati iwọn iṣowo lori Nẹtiwọọki SORA ati Polkaswap DEX",
+      "bookWidget": "Igbasilẹ laaye, imudojuiwọn nigbagbogbo ti rira (idu) ati ta (beere) awọn ibere fun dukia kan pato, ṣeto nipasẹ ipele idiyele. Iwe aṣẹ naa ṣafihan ijinle ọja naa, pẹlu awọn iwọn ohun-ini ti a nṣe ni awọn idiyele lọpọlọpọ. Awọn oniṣowo lo wiwo alaye yii lati ṣe iwọn itara ọja, ṣe idanimọ resistance agbara ati awọn ipele atilẹyin, ati nireti awọn gbigbe idiyele ti o da lori ibeere ati ipese ti o wa tẹlẹ",
+      "marketWidget": "Ẹrọ ailorukọ yii ṣafihan ṣiṣan akoko gidi ti awọn iṣowo ti a ṣe ni ọja, pese alaye lori awọn iwọn idunadura, iṣẹ ṣiṣe aipẹ, ati awọn aṣa ọja lọwọlọwọ. Nipa wíwo akoko, idiyele, ati iwọn awọn iṣowo gangan, awọn oniṣowo le ni oye si awọn agbara ọja ati itara, ṣe iranlọwọ fun wọn lati ṣe iranran awọn anfani iṣowo ati ṣe awọn ipinnu alaye.",
+      "txDetails": {
+        "orderType": "Ibere 'Ra' yoo ṣiṣẹ nikan ni idiyele ti a sọ tabi isalẹ, lakoko ti aṣẹ 'Ta' kan yoo ṣiṣẹ ni idiyele ti a pato tabi ga julọ. Iṣakoso yii ṣe idaniloju pe o ko sanwo diẹ sii tabi ta fun kere ju ti o ni itunu pẹlu.",
+        "expiryDate": "Awọn 'Ipari Ọjọ' ni awọn ipari fun ibere re lati wa ni ṣiṣẹ. Ti ọja naa ko ba de idiyele pato rẹ ṣaaju ọjọ yii, aṣẹ naa ti paarẹ laifọwọyi. O ko ni owun si idaduro ayeraye ti awọn ipo ọja ko ba ni ibamu pẹlu awọn ayanfẹ iṣowo rẹ.",
+        "amount": "Awọn 'Oye' ntokasi si lapapọ nọmba ti ìní ti o fẹ lati ra tabi ta ni ibere re. O ṣe pataki lati pato, bi o ṣe n pinnu iwọn idunadura rẹ, ni ipa lori idiyele lapapọ fun awọn ibere rira tabi owo-wiwọle fun awọn ibere tita.",
+        "limit": "Awọn 'Iye iye to' ni kongẹ owo ti o ṣeto fun a iye to ibere. Iṣowo naa yoo ṣiṣẹ nikan nigbati idiyele ọja dukia ba pade idiyele opin rẹ, ni idaniloju pe o ko ra loke tabi ta ni isalẹ iye pàtó kan.",
+        "locked": "Awọn 'Titiipa' fihan iye dukia ti yoo waye lakoko ti aṣẹ ti nlọ lọwọ."
+      },
+      "bookStatus": {
+        "active": "Iṣẹ ṣiṣe iṣowo ni kikun ṣiṣẹ. O le gbe awọn ibere tuntun tabi fagile awọn ti o wa tẹlẹ.",
+        "placeable": "Lopin iṣẹ-. O le gbe awọn ibere tuntun ati fagile awọn ti o wa tẹlẹ, ṣugbọn diẹ ninu awọn ẹya le ma si.",
+        "cancelable": "O le fagilee awọn ibere ti o wa tẹlẹ. Gbigbe ibere titun ti wa ni alaabo lọwọlọwọ.",
+        "inactive": "Gbogbo awọn iṣẹ iṣowo ti wa ni idaduro lọwọlọwọ. Ko si awọn aṣẹ ti o le gbe tabi fagile ni akoko yii."
+      }
+    },
+    "txDetails": {
+      "orderType": "ibere iru",
+      "limitPrice": "iye owo iye",
+      "expiryDate": "ipari ọjọ"
+    },
+    "error": {
+      "beyondPrecision": {
+        "reason": "Iye owo ti a wọle jẹ kongẹ ju lati ṣe iṣiro",
+        "reading": "Ipese ti kọja: Iye/owo ti a tẹ ni ọpọlọpọ awọn aaye eleemewa pupọ. Jọwọ tẹ iye kan sii pẹlu awọn aaye eleemewa diẹ"
+      },
+      "marketNotAvailable": {
+        "reason": "Ko si awọn aṣẹ to wa lati kun aṣẹ yii",
+        "reading": "Idiwọn aṣẹ ọja: Ko si awọn aṣẹ to wa lati mu aṣẹ ọja yii ṣẹ. Jọwọ ṣatunṣe iwọn ibere rẹ tabi duro fun awọn aṣẹ diẹ sii lati gbe"
+      },
+      "exceedsSpread": {
+        "reason": "Iye owo ti kọja itankale",
+        "reading": "Iye owo ti kọja: Idiye ọja tabi idiyele idiyele ti kọja idiyele ibeere/idiwo rẹ"
+      },
+      "spotLimit": {
+        "reason": "Ẹgbẹ iṣowo ti kun",
+        "reading": "Iwọn iye owo: Ẹgbẹ iwe aṣẹ kọọkan ni opin si awọn aaye idiyele alailẹgbẹ 1024. Jọwọ yan iye owo kan laarin iwọn to wa tabi duro fun aaye lati wa"
+      },
+      "accountLimit": {
+        "reason": "Ọpọlọpọ awọn ibere ti nlọ lọwọ",
+        "reading": "Idiwọn ti de: akọọlẹ kọọkan wa ni ihamọ si awọn aṣẹ opin 1024. Jọwọ duro titi diẹ ninu awọn aṣẹ rẹ yoo mu ṣẹ"
+      },
+      "singlePriceLimit": {
+        "reason": "Ọpọlọpọ awọn ibere ti nlọ lọwọ fun idiyele yii",
+        "reading": "Iwọn opin: Ipo kọọkan wa ni ihamọ si awọn aṣẹ opin 1024. Jọwọ duro titi diẹ ninu awọn aṣẹ yoo mu ṣẹ"
+      },
+      "outOfBounds": {
+        "reading": "Iwọn Blockchain ti kọja: Iye ti o tẹ sii ṣubu ni ita ibiti a gba laaye blockchain. Min: {min} ; O pọju: {max}",
+        "reason": "Iye kuna lati ni ibamu pẹlu iwọn blockchain"
+      },
+      "multipleOf": {
+        "reading": "Lati ṣiṣẹ aṣẹ rẹ, jọwọ ṣagbewọle idiyele kan ti o jẹ ọpọ ti {value}",
+        "reason": "Iye owo ti o wọle jẹ pato pupọ"
+      }
+    },
+    "orderStatus": {
+      "active": "Ti nṣiṣe lọwọ",
+      "canceled": "fagilee",
+      "expired": "Ti pari",
+      "filled": "Ti kun"
+    },
+    "pricePerToken": "Iye fun 1 {token}"
+  },
+  "calculatingText": "Ọnàkọnà",
+  "customisePageText": "Ṣe akanṣe oju-iwe",
+  "priceChartText": "Owo chart",
+  "editText": "Ṣatunkọ",
+  "resetText": "Tunto",
+  "kensetsu": {
+    "addCollateral": "Fẹẹrẹ afẹẹwọ",
+    "addCollateralDescription": "Fi awọn ohun-ini diẹ sii kun ipo rẹ lati pọ si opin igbẹkẹle rẹ tabi lati mu iṣiro iwe-loan rẹ dara. Eyi tun le ṣe iranlọwọ lati ṣe idiwọ piparẹ.",
+    "depositCollateral": "Fẹẹrẹ iranti",
+    "totalCollateral": "Itoju afẹẹwọ",
+    "totalCollateralDescription": "Iye apapọ gbogbo awọn ohun-ini ti o wa ni ipo rẹ lọwọlọwọ. Iye yii ni ipa lori agbara igbẹkẹle rẹ ati ewu piparẹ.",
+    "debtAvailable": "Ọwọọ pẹlu dandan",
+    "debtAvailableDescription": "Iye awọn owo ti o tun le fa jade lati ipo rẹ laisi jijẹ opin igbẹkẹle rẹ, da lori awọn ohun-ini rẹ lọwọlọwọ.",
+    "ltv": "Kudi titun ({LTV})",
+    "ltvDescription": "Iwọn ti iye ti a fa jade si iye awọn ohun-ini ni ipo rẹ, ti a ṣe afihan bi ogorun. {LTV} ti o ga julọ n mu awọn ipadabọ ti o ṣeeṣe pọ ṣugbọn tun ṣe alekun ewu, pẹlu aye piparẹ.",
+    "borrowMore": "Kúrò ní kíkó",
+    "borrowMoreDescription": "Fa awọn owo afikun jade lati ipo rẹ titi di iye to pọ julọ ti o wa. Rii daju pe iye awọn ohun-ini rẹ ṣe atilẹyin gbese ti o pọ si lati yago fun awọn eewu piparẹ.",
+    "available": "Lára",
+    "outstandingDebt": "Ọwọọ tó wá tẹlẹ",
+    "outstandingDebtDescription": "Apapọ iye ti o n jẹ lọwọlọwọ lati awọn owo ti a fa jade lati ipo rẹ, pẹlu iwulo ti o kojọpọ. Eyi nilo lati san pada lati pa ipo rẹ tabi lati ṣetọju awọn iṣiro iwe-owo ti o ni ilera.",
+    "createVault": "Fẹẹ vún tó yan",
+    "createVaultDescription": "Bẹrẹ iṣowo tuntun nipa fifipamọ awọn ohun-ini sinu ipo rẹ ati fa awọn owo jade. Eyi ṣẹda adehun gbese ti o gbọdọ ṣakoso.",
+    "createVaultAction": "Fẹẹ vún",
+    "borrowDebt": "Kúrò ní ọwọọ",
+    "minDepositCollateral": "Bèèrè fẹẹrẹ iranti",
+    "minDepositCollateralDescription": "Iye ohun-ini ti o kere julọ ti o nilo lati ṣii ipo kan. Idogo akọkọ yii da awọn owo ti o fẹ gba.",
+    "maxAvailableToBorrow": "Ọ̀pọ̀lọpọ̀ tó wá tẹlẹ",
+    "maxAvailableToBorrowDescription": "Iye to pọ julọ ti o le fa jade lati ipo rẹ, ti o pinnu nipasẹ iye awọn ohun-ini rẹ. Iwọn yii ṣe atunṣe bi iye awọn ohun-ini ṣe yipada.",
+    "borrowTax": "Kúrò ọwọọ",
+    "borrowTaxDescription": "Ọ̀bá kúrò {value} ti bẹ ọwọọ tó ti kúrò",
+    "repayDebt": "Ya ọwọọ",
+    "repayDebtDescription": "Dahun awọn owo ti o gba lati jẹ alabapin rẹ diẹ ninu iye ti o le mọ bẹẹrẹ, ṣe pese pe iye iṣẹrọ rẹ ti sọ pe iye iṣẹrọ ti o tẹlẹ, ki o si ti tẹwọgba niwọle ti o ba n daju ni.",
+    "closeVault": "Yẹ ìwọle mi",
+    "closeVaultDescription": "Yẹ ìwọle tó yan láti ya gbogbo ọwọọ tó wá tẹlẹ àti ya gbogbo iranti",
+    "yourCollateral": "Iranti rẹ",
+    "yourCollateralDescription": "Awọn ohun-ini ti o ti fi sinu ipo rẹ lati daabobo awọn owo ti a fa jade. Awọn ohun-ini wọnyi le ṣee ṣe idoko nipasẹ olutayo ti o ba kuna lati ṣetọju iṣiro iwe-owo ti a beere.",
+    "yourDebt": "Ọwọọ rẹ",
+    "yourDebtDescription": "Apapọ iye ti o wa lọwọlọwọ ti ko ni isanwo ni ipo rẹ, pẹlu iye ti a fa jade ati iwulo ti o kojọpọ. Iṣiro yii pọ si lori akoko ti iwulo ba kojọpọ.",
+    "yourDebtTokenBalance": "Ọwọọ rẹ {tokenSymbol}",
+    "requiredAmountWithSlippage": "Ọwọọ tó tẹlẹ nígbà tí kòsí òkú",
+    "requiredAmountWithSlippageDescription": "Fun pipade ipo rẹ ni irọrun, ra diẹ diẹ sii {tokenSymbol} ju {amount} ti o nilo nitori isokuso ti o ṣeeṣe. O nilo afikun lati bo deficit. Yi awọn ohun-ini rẹ pada si {tokenSymbol} lati pade aini yii.",
+    "openSwap": "Fẹẹ ìsọwọpọ",
+    "introTitle": "Fẹẹ vị tẹlẹ & Ẹ wò wọlé pẹ̀lú {Kensetsu}",
+    "introDescription": "A daju ati a niwaju ni ibi kan daju fun ọwo ati iye ọwọ. Fidio ibi titi di daju pẹlu ilu {Kensetsu}.",
+    "disclaimerDescription": "Ọmọ ogun tita ti awọn owo diẹ ninu awọn ati{Polkaswap} inu itakun kan wọlé ni lati di ti o ti awọn owo rẹ ni, ati lati bẹrẹ nigba yii. Iye awọn owo diẹ ninu awọn owo kíakíá, ati gbogbo iye kọọkan lati ibi awọn owo ti o ba gba tabi lo lati ṣe asẹ ni n oju awọn owo ni gbogbo àwọn ifọwọṣẹ ti awọn owo ti o ba gba tabi ti o ba n sọ pe o ti lọ lati ibeere aje.",
+    "availableToBorrow": "Fẹẹ tó tẹlẹ",
+    "availableToBorrowDescription": "Iye ti o ku ti o ni ẹtọ lati fa jade labẹ awọn ipo lọwọlọwọ ti ipo rẹ, da lori awọn ohun-ini ti o fi silẹ ati eyikeyi gbese ti o wa tẹlẹ.",
+    "collateralDetails": "Ẹ̀tọ̀ iranti",
+    "debtDetails": "Ẹ̀tọ̀ ọwọọ",
+    "positionInfo": "Àkókò ìdì",
+    "liquidationPenalty": "Ọwọọ fun inújẹ",
+    "liquidationPenaltyDescription": "Ìfíyà wọ́n rẹ tún pẹ̀ ní ilà láti iranti rẹ bẹrẹ níbi tó gbọ́ ni ìkọ̀já, tí ó sì kùn ẹ̀bùn. Ìwàjú yìí tó kúrò àwọn ọwọọ rẹ.",
+    "positionSafe": "Ìdì tẹlẹ",
+    "liquidationClose": "Ìwọle inújẹ",
+    "highLiquidationRisk": "Rísk inújẹ tó dáadọ",
+    "error": {
+      "enterCollateral": "Tẹ iranti",
+      "enterBorrow": "Tẹ àwọn ọwọọ tẹlẹ",
+      "borrowMoreThanAvailable": "Owo ti o le ni lọ lori ti wọn tẹlẹ",
+      "insufficientCollateral": "Kó iranti to wà",
+      "enterRepayDebt": "Tẹ ìdá",
+      "repayMoreThanDebt": "Iye iṣẹrọ ti o tẹlẹ",
+      "incorrectCollateral": "Tokun meji ko ni atilẹyin"
+    },
+    "interest": "Èlòkò",
+    "interestDescription": "Ọwọ ọwọọ jìnnà tẹlẹ láti kúrò láti ilé ìdì rẹ, ti wọ́n sì bẹrẹ ní pẹrẹ. Owó yìí jìnnà tẹlẹ ní ìdápadà ìlọsíwájú àti awọn iṣẹ̀tẹ̀ ni òṣìṣẹ̀lú.",
+    "positionHistory": "Ìtàn ẹ̀kọ́",
+    "liquidated": "Ṣe ibaje",
+    "liquidatedMessage": "Ṣe ibaje {amount} {symbol}",
+    "status": {
+      "Opened": "Ṣiṣẹ́",
+      "Closed": "Dùn",
+      "Liquidated": "Ṣe ibaje"
+    },
+    "readMore": "Kọ́ lọ́wọ́",
+    "reopen": "Ṣiṣẹ́ tóbi",
+    "totalCollateralReturned": "Aabọ owo ibajẹ gbogbo",
+    "totalCollateralReturnedDescription": "Awọn owo owo nikan lórí rẹ nígbà tí ọdẹṣì rẹ bá dùn, nítorí awọn owo ibajẹ gbogbo.",
+    "overallTotalCollateral": "Gbogbo owo ibajẹ",
+    "overallTotalCollateralDescription": "Awọn ẹ̀tò owo ibajẹ ni ìdánwò aláìlá ti awọn wòléwo wà nípa lati ṣè gbogbo ìdánwò wo ilé {Kensetsu}.",
+    "overallTotalDebt": "Gbogbo owo",
+    "overallTotalDebtDescription": "Gbigba nípa àwọn òrò ìwọlé ní gbogbo ìdánwò tó dùró fún gbogbo àwọn ìfàjọ fún ilé {Kensetsu}.",
+    "overallBadDebt": "Owo ìfọwọsọ",
+    "overallBadDebtDescription": "Aabo tí o fẹ́ jẹ́ kikún ló máa rí nítorí ẹsẹ̀ẹsẹ tí ìwòlé ìlúmọ̀ ati tabi àwọn ọjọ́ọdọrù pẹ̀lú ìbẹrẹ.",
+    "ltvMaxTooltip": "Iye ti o pọju ti ipo yiya ti o le pese ni ibatan si iye idiyele ti dukia ti a lo bi alagbera.",
+    "overallAvailable": "Lapapọ wa",
+    "overallAvailableDescription": "Lapapọ iye owo ti o wa fun gbigba lori pẹpẹ {Kensetsu}."
+  },
+  "accountSettings": {
+    "title": "Eto iroyin",
+    "hint": "O le mu eyi pada si awọn eto akọọlẹ",
+    "disable": "Pa lori",
+    "disabled": "Alaabo fun",
+    "confirmation": {
+      "title": "Pa ìmúdájú idunadura",
+      "description": "Iboju agbejade eyiti o ṣafihan awọn alaye nipa awọn iṣowo ṣaaju iforukọsilẹ."
+    },
+    "signature": {
+      "title": "Pa ìmúdájú ọrọigbaniwọle",
+      "description": "Mu ṣiṣẹ tabi mu iwulo lati tẹ ọrọ igbaniwọle rẹ sii lakoko igarun Ibuwọlu ni awọn iṣowo."
+    },
+    "enterPassword": "Tẹ ọrọ igbaniwọle sii",
+    "googleOnly": "Awọn akọọlẹ {Google} nikan"
+  },
+  "currencyDialog": {
+    "currency": "Owo owo",
+    "searchPlaceholder": "Ṣewadii nipasẹ orukọ owo tabi aami"
+  },
+  "browserNotificationLocalStorageOverride": {
+    "title": "Nu ibi ipamọ agbegbe {AppName} mọ",
+    "info": "Ibi ipamọ agbegbe rẹ ti kun ju, lati tẹsiwaju iṣẹ pẹlu {AppName} o nilo lati nu rẹ",
+    "agree": "Bẹẹni, Mo loye"
+  },
+  "points": {
+    "title": "Ilọsiwaju Dimegilio Rẹ",
+    "loginText": "Sopọ akọọlẹ rẹ lati wo awọn dimegilio rẹ",
+    "bridgeVolume": "Iwọn Afara",
+    "feesSpent": "Awọn owo ti a lo",
+    "xorBurned": "{XOR} ti sun",
+    "yourReferrals": "Awọn itọkasi rẹ",
+    "accountsText": "{amount} awọn akọọlẹ",
+    "yourRewards": "Awọn ere rẹ",
+    "openTelegram": "Ṣii {Telegram}",
+    "toEarnPoints": "Lati gba awọn dimegilio"
+  },
+  "sbtDetails": {
+    "description": "SBT yi n pese iraye si ọpọlọpọ awọn token ati awọn ibi, o si so mọ iroyin rẹ",
+    "issuedBy": "{SBT} ti a ṣe nipasẹ",
+    "kycVerification": "{KYC} Ijẹrisi",
+    "kycProvider": "{KYC} Olùpèsè",
+    "accessPermitted": "Iraye si gba laaye",
+    "listOperable": "Awọn ohun-ini ti a ṣakoso le ṣiṣẹ",
+    "noPermissions": "Ko si awọn igbanilaaye afikun",
+    "regulatedInstitution": "Ile-iṣẹ ti a ṣakoso",
+    "expiryDate": "Ọjọ ipari",
+    "expiryDateTooltip": "'Ọjọ ipari' ni opin akoko fun iraye rẹ si awọn ohun-ini ti a ṣakoso ti SBT",
+    "expiresIn": "Ninu",
+    "expiresInTooltip": "'Ninu' n ṣe afihan akoko tabi akoko ti iraye ti gba",
+    "indefiniteExp": "aṣa ṣiṣi",
+    "permission": "igbanilaaye",
+    "permissions": "awọn igbanilaaye",
+    "noReceiverAccess": "O n gbiyanju lati fi token ti a ṣakoso ranṣẹ si olumulo ti ko ni iraye SBT"
+  },
+  "assetOwner": {
+    "letsStartBtn": "JẸ KÁ BẸ̀rẹ̀",
+    "selectExisting": "Yan ti o wa",
+    "createSbt": "Ṣẹda {type}",
+    "orSelectExisting": "Tabi yan ti o wa",
+    "createRegulatedAsset": "Ṣẹda ohun-ini ti a ṣakoso tuntun",
+    "addRegulatedAsset": "Fi ohun-ini ti a ṣakoso miiran kun",
+    "attachedRegulatedAssets": "Awọn ohun-ini ti a ṣakoso ti a so pọ",
+    "ownerSbtTitle": "Tẹ́ ẹ {type}",
+    "regulatedAssetsConnected": "Awọn ohun-ini ti a ṣakoso ti so pọ",
+    "regulatedPools": "Awọn ibi ti a ṣakoso",
+    "sbtManagers": "{type} Alakoso",
+    "you": "Iwọ",
+    "accountWithAccess": "Iroyin pẹlu iraye SBT",
+    "issueSbtAccess": "Gba {type} iraye",
+    "startIssue": "Bẹrẹ gbigba iraye fun SBT si awọn iroyin",
+    "permissionedAssets": "Awọn ohun-ini ti a fun ni igbanilaaye",
+    "addRegulatedAssets": "Fi awọn ohun-ini ti a ṣakoso kun",
+    "sbtCreation": {
+      "addAssets": "Fi awọn ohun-ini kun SBT",
+      "addDescription": "Tẹ awọn alaye SBT",
+      "addMeta": "Tẹ awọn alaye SBT",
+      "preview": "Ayẹwo SBT"
+    },
+    "guide": {
+      "createToken": "Ṣẹda token rẹ",
+      "createTokenDesc": "Rọrun lati bẹrẹ token alailẹgbẹ rẹ—ti o wa ni ọpọlọpọ awọn ọna kika bi NFTs ati SBTs—nlo ipilẹ to lagbara ati aabo ti SORA Network",
+      "title": "Bawo ni a ṣe le ṣẹda {type}:",
+      "stepOneTitle": "Yan tabi ṣẹda awọn ohun-ini ti a ṣakoso",
+      "stepOneDesc": "Yan tabi ṣẹda awọn ohun-ini ti o ti ṣẹda ati ṣakoso. Eyi jẹ awọn ohun-ini labẹ iṣakoso ati iṣakoso rẹ.",
+      "stepTwoTitle": "Tẹ awọn alaye SBT",
+      "stepTwoDesc": "Pese alaye pataki gẹgẹbi orukọ SBT ati aami ticker, ati apẹrẹ.",
+      "stepThreeTitle": "Atunwo ati fowo si iṣowo",
+      "stepThreeDesc": "Atunwo ati fowo si iṣowo ikẹhin lati pari iṣeto SBT.",
+      "disclaimerSbt": "Pa oju-iwe yii ṣi ni gbogbo ilana naa. Ti o ba pa tabi lọ si oju-iwe miiran, iwọ yoo nilo lati bẹrẹ lẹẹkansi. Pari awọn igbesẹ ni iyara lati yago fun akoko idaduro."
+    },
+    "dialog": {
+      "createAsset": "Ṣẹda ohun-ini tuntun",
+      "createAssetDesc": "Seto ohun-ini ti a fun ni igbanilaaye tuntun fun {type}",
+      "addExisting": "Fi ohun-ini ti o wa kun",
+      "addExistingDesc": "Fi ohun-ini ti a ti ṣẹda tẹlẹ kun fun SBT",
+      "enterAddress": "Tẹ adirẹsi fun itusilẹ",
+      "selectAccessEnd": "Yan nigbati iraye yoo pari",
+      "selectDate": "Yan ọjọ",
+      "issueAccess": "Gba iraye",
+      "pickDate": "Yan ọjọ kan"
+    }
+  }
 }

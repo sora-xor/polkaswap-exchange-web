@@ -1,1669 +1,1735 @@
 {
-    "closeText": "Zatvorite",
-    "backText": "Nazad",
-    "createWalletText": "Izradite novčanik",
-    "nameText": "Ime",
-    "nextText": "Sljedeći",
-    "importText": "Uvoz",
-    "settingsText": "Postavke",
-    "addAssetText": "Dodajte sredstvo",
-    "successText": "Uspješno provedeno",
-    "warningText": "Upozorenje",
-    "swapText": "Zamijenite",
-    "searchText": "Pretraživanje",
-    "cancelText": "Otkažite",
-    "saveText": "Spremite",
-    "logoutText": "Odjavite se",
-    "sendText": "Pošaljite",
-    "addressText": "Adresa",
-    "amountText": "Iznos",
-    "errorText": "Pogreška",
-    "insufficientBalanceText": "Nedovoljno stanje {tokenSymbol}",
-    "unknownErrorText": "POGREŠKA Nešto je pošlo po zlu...",
-    "transactionSubmittedText": "Transakcija je poslana",
-    "operations": {
-        "Swap": "Zamijenite",
-        "Transfer": "Prijenos",
-        "AddLiquidity": "Dodajte likvidnost",
-        "RemoveLiquidity": "Uklonite likvidnost",
-        "CreatePair": "Stvorite Par",
-        "RegisterAsset": "Registrirajte sredstvo",
-        "ClaimRewards": "Zatražite nagrade",
-        "andText": "i",
-        "finalized": {
-            "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "Swap": "Zamijenjeno je {amount} {symbol} za {amount2} {symbol2}",
-            "AddLiquidity": "Isporučeno {amount} {symbol} i {amount2} {symbol2}",
-            "RemoveLiquidity": "Uklonjeno {amount} {symbol} i {amount2} {symbol2}",
-            "CreatePair": "Isporučeno {amount} {symbol} i {amount2} {symbol2}",
-            "RegisterAsset": "Registrirano sredstvo {symbol}",
-            "ClaimRewards": "Nagrada je uspješno prijavljena {rewards}",
-            "ReferralReserveXor": "Bonded {amount} XOR",
-            "ReferralUnreserveXor": "Nevezani {amount} XOR",
-            "ReferralSetInvitedUser": "{role} {address} je uspješno postavljena",
-            "SwapAndSend": "Zamijenjeno {amount} {symbol} za {amount2} {symbol2} i {action} {direction} {address}",
-            "DemeterFarmingDepositLiquidity": "Isporučeni LP tokeni {symbol} i {symbol2} {amount}",
-            "DemeterFarmingWithdrawLiquidity": "Uklonjeni su tokeni {symbol} i {symbol2} {amount} LP",
-            "DemeterFarmingStakeToken": "Dodan {amount} {symbol}",
-            "DemeterFarmingUnstakeToken": "Uklonjeno {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} uspješno potraživan",
-            "EthBridgeIncoming": "Preneseno {amount} {symbol} s {Ethereum} na {Sora}",
-            "EthBridgeOutgoing": "Preneseno {amount} {symbol} s {Sora} na {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
-            "StakingBondAndNominate": "Povezano {amount} {symbol}",
-            "StakingBond": "Povezano {amount} {symbol}",
-            "StakingBondExtra": "Povezani dodatni {amount} {symbol}",
-            "StakingUnbond": "Bez obveznice {amount} {symbol}",
-            "StakingRebond": "Vraćeno {amount} {symbol}",
-            "StakingNominate": "Nominirani validatori",
-            "StakingWithdrawUnbonded": "Povučeno {amount} {symbol}",
-            "StakingPayout": "Nagrade za isplatu",
-            "StakingChill": "Ohladite se",
-            "StakingSetController": "Postavi kontroler {address}",
-            "StakingSetPayee": "Postavi primatelja {address}",
-            "OrderBookPlaceLimitOrder": "Postavljeno {side} {amount} {symbol} po {price} {symbol2}",
-            "OrderBookCancelLimitOrder": "Ograničeni nalog je otkazan",
-            "OrderBookCancelLimitOrders": "Ograničene narudžbe su otkazane",
-            "Burn": "Spaljeno {amount} {symbol}",
-            "Mint": "Kovano {amount} {symbol} na {address}",
-            "CreateVault": "{symbol}\/{symbol2} Pozicija stvorena",
-            "CloseVault": "{symbol}\/{symbol2} Pozicija zatvorena",
-            "DepositCollateral": "Uloženo {amount} {symbol}",
-            "RepayVaultDebt": "Dug vraćen {amount} {symbol}",
-            "BorrowVaultDebt": "Dug posuđen {amount} {symbol}"
-        },
-        "error": {
-            "Transfer": "{action} {amount} {symbol} {direction} {address} nije uspio",
-            "Swap": "Zamjena {amount} {symbol} za {amount2} {symbol2} nije uspjela",
-            "AddLiquidity": "Opskrba {amount} {symbol} i {amount2} {symbol2} nije uspjela",
-            "RemoveLiquidity": "Uklanjanje{amount} {symbol} i {amount2} {symbol2} nije uspjelo",
-            "CreatePair": "Opskrba {amount} {symbol} i {amount2} {symbol2} nije uspjela",
-            "RegisterAsset": "Registracija sredstva {symbol} nije uspjela",
-            "ClaimRewards": "Preuzimanje nagrada nije uspjelo {rewards}",
-            "ReferralReserveXor": "Nije uspjelo povezivanje {amount} XOR",
-            "ReferralUnreserveXor": "Neuspjelo odvajanje {amount} XOR",
-            "ReferralSetInvitedUser": "Postavljanje {role} {address} nije uspjelo",
-            "SwapAndSend": "Nije uspjela zamjena {amount} {symbol} za {amount2} {symbol2} i {action} {direction} {address}",
-            "DemeterFarmingDepositLiquidity": "Dostava {amount} {symbol} i {symbol2} LP tokena nije uspjela",
-            "DemeterFarmingWithdrawLiquidity": "Uklanjanje tokena {amount} {symbol} i {symbol2} LP nije uspjelo",
-            "DemeterFarmingStakeToken": "Dodavanje {amount} {symbol} nije uspjelo",
-            "DemeterFarmingUnstakeToken": "Uklanjanje {amount} {symbol} nije uspjelo",
-            "DemeterFarmingGetRewards": "Nije uspjelo potraživanje {symbol}",
-            "EthBridgeIncoming": "Prijenos {amount} {symbol} iz {Ethereum} u {Sora} nije uspio",
-            "EthBridgeOutgoing": "Prijenos {amount} {symbol} iz {Sora} u {Ethereum} nije uspio",
-            "SwapTransferBatch": "{action} {amount} {symbol} nije uspio",
-            "StakingBondAndNominate": "Povezati {amount} {symbol} nije uspjelo",
-            "StakingBond": "Povezati {amount} {symbol} nije uspjelo",
-            "StakingBondExtra": "Nije uspjelo uplatiti dodatnih {amount} {symbol}",
-            "StakingUnbond": "Nije uspjelo razdvojiti {amount} {symbol}",
-            "StakingRebond": "Nije uspjelo vraćanje {amount} {symbol}",
-            "StakingNominate": "Nije uspjelo imenovanje validatora",
-            "StakingWithdrawUnbonded": "Nije uspjelo podizanje {amount} {symbol}",
-            "StakingPayout": "Isplata nagrada nije uspjela",
-            "StakingChill": "Hlađenje nije uspjelo",
-            "StakingSetController": "Nije uspjelo postavljanje kontrolera {address}",
-            "StakingSetPayee": "Nije uspjelo postavljanje primatelja {address}",
-            "OrderBookPlaceLimitOrder": "Nije uspjelo postavljanje ograničene narudžbe od {amount} {symbol} po {price} {symbol2}",
-            "OrderBookCancelLimitOrders": "Otkazivanje ograničenih naloga nije uspjelo",
-            "OrderBookCancelLimitOrder": "Otkazivanje ograničenog naloga nije uspjelo",
-            "Burn": "Nije uspjelo spaljivanje {amount} {symbol}",
-            "Mint": "Nije uspjelo kovati {amount} {symbol} na {address}",
-            "CreateVault": "Neuspjelo stvaranje pozicije {symbol}\/{symbol2}",
-            "CloseVault": "Neuspjelo zatvaranje pozicije {symbol}\/{symbol2}",
-            "DepositCollateral": "Pogreška prilikom ulaganja {amount} {symbol}",
-            "RepayVaultDebt": "Pogreška prilikom vraćanja {amount} {symbol}",
-            "BorrowVaultDebt": "Pogreška prilikom posuđivanja {amount} {symbol}"
-        },
-        "ReferralReserveXor": "Bond XOR",
-        "ReferralUnreserveXor": "Unbond XOR",
-        "ReferralSetInvitedUser": "Postavite {role}",
-        "SwapAndSend": "Zamijenite i pošaljite",
-        "DemeterFarmingDepositLiquidity": "Likvidnost uloga",
-        "DemeterFarmingWithdrawLiquidity": "Unstake Likvidnost",
-        "DemeterFarmingStakeToken": "Token udjela",
-        "DemeterFarmingUnstakeToken": "Unstake Token",
-        "DemeterFarmingGetRewards": "Zatražite nagrade",
-        "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Prijenos",
-        "StakingBondAndNominate": "Poveži i nominiraj",
-        "StakingBond": "Bond",
-        "StakingBondExtra": "Bond Extra",
-        "StakingUnbond": "Unbond",
-        "StakingRebond": "Ponovno povezivanje",
-        "StakingNominate": "nominirati",
-        "StakingWithdrawUnbonded": "Povući bez obveznica",
-        "StakingPayout": "Nagrade za isplatu",
-        "StakingChill": "Ohladite se",
-        "StakingSetController": "Postavite kontroler",
-        "StakingSetPayee": "Postavite primatelja uplate",
-        "OrderBookPlaceLimitOrder": "Naručiti",
-        "OrderBookCancelLimitOrder": "Otkazati narudžbu",
-        "OrderBookCancelLimitOrders": "Otkaži narudžbe",
-        "Burn": "Spaliti",
-        "Mint": "Kovnica",
-        "CreateVault": "Kreiraj poziciju",
-        "CloseVault": "Zatvori poziciju",
-        "DepositCollateral": "Uložiti kolateral",
-        "RepayVaultDebt": "Vratiti dug",
-        "BorrowVaultDebt": "Posuditi dug"
+  "closeText": "Zatvorite",
+  "backText": "Nazad",
+  "createWalletText": "Izradite novčanik",
+  "nameText": "Ime",
+  "nextText": "Sljedeći",
+  "importText": "Uvoz",
+  "settingsText": "Postavke",
+  "addAssetText": "Dodajte sredstvo",
+  "successText": "Uspješno provedeno",
+  "warningText": "Upozorenje",
+  "swapText": "Zamijenite",
+  "searchText": "Pretraživanje",
+  "cancelText": "Otkažite",
+  "saveText": "Spremite",
+  "logoutText": "Odjavite se",
+  "sendText": "Pošaljite",
+  "addressText": "Adresa",
+  "amountText": "Iznos",
+  "errorText": "Pogreška",
+  "insufficientBalanceText": "Nedovoljno stanje {tokenSymbol}",
+  "unknownErrorText": "POGREŠKA Nešto je pošlo po zlu...",
+  "transactionSubmittedText": "Transakcija je poslana",
+  "operations": {
+    "Swap": "Zamijenite",
+    "Transfer": "Prijenos",
+    "AddLiquidity": "Dodajte likvidnost",
+    "RemoveLiquidity": "Uklonite likvidnost",
+    "CreatePair": "Stvorite Par",
+    "RegisterAsset": "Registrirajte sredstvo",
+    "ClaimRewards": "Zatražite nagrade",
+    "andText": "i",
+    "finalized": {
+      "Transfer": "{action} {amount} {symbol} {direction} {address}",
+      "Swap": "Zamijenjeno je {amount} {symbol} za {amount2} {symbol2}",
+      "AddLiquidity": "Isporučeno {amount} {symbol} i {amount2} {symbol2}",
+      "RemoveLiquidity": "Uklonjeno {amount} {symbol} i {amount2} {symbol2}",
+      "CreatePair": "Isporučeno {amount} {symbol} i {amount2} {symbol2}",
+      "RegisterAsset": "Registrirano sredstvo {symbol}",
+      "ClaimRewards": "Nagrada je uspješno prijavljena {rewards}",
+      "ReferralReserveXor": "Bonded {amount} XOR",
+      "ReferralUnreserveXor": "Nevezani {amount} XOR",
+      "ReferralSetInvitedUser": "{role} {address} je uspješno postavljena",
+      "SwapAndSend": "Zamijenjeno {amount} {symbol} za {amount2} {symbol2} i {action} {direction} {address}",
+      "DemeterFarmingDepositLiquidity": "Isporučeni LP tokeni {symbol} i {symbol2} {amount}",
+      "DemeterFarmingWithdrawLiquidity": "Uklonjeni su tokeni {symbol} i {symbol2} {amount} LP",
+      "DemeterFarmingStakeToken": "Dodan {amount} {symbol}",
+      "DemeterFarmingUnstakeToken": "Uklonjeno {amount} {symbol}",
+      "DemeterFarmingGetRewards": "{amount} {symbol} uspješno potraživan",
+      "EthBridgeIncoming": "Preneseno {amount} {symbol} s {Ethereum} na {Sora}",
+      "EthBridgeOutgoing": "Preneseno {amount} {symbol} s {Sora} na {Ethereum}",
+      "SwapTransferBatch": "{action} {amount} {symbol}",
+      "StakingBondAndNominate": "Povezano {amount} {symbol}",
+      "StakingBond": "Povezano {amount} {symbol}",
+      "StakingBondExtra": "Povezani dodatni {amount} {symbol}",
+      "StakingUnbond": "Bez obveznice {amount} {symbol}",
+      "StakingRebond": "Vraćeno {amount} {symbol}",
+      "StakingNominate": "Nominirani validatori",
+      "StakingWithdrawUnbonded": "Povučeno {amount} {symbol}",
+      "StakingPayout": "Nagrade za isplatu",
+      "StakingChill": "Ohladite se",
+      "StakingSetController": "Postavi kontroler {address}",
+      "StakingSetPayee": "Postavi primatelja {address}",
+      "OrderBookPlaceLimitOrder": "Postavljeno {side} {amount} {symbol} po {price} {symbol2}",
+      "OrderBookCancelLimitOrder": "Ograničeni nalog je otkazan",
+      "OrderBookCancelLimitOrders": "Ograničene narudžbe su otkazane",
+      "Burn": "Spaljeno {amount} {symbol}",
+      "Mint": "Kovano {amount} {symbol} na {address}",
+      "CreateVault": "{symbol}/{symbol2} Pozicija stvorena",
+      "CloseVault": "{symbol}/{symbol2} Pozicija zatvorena",
+      "DepositCollateral": "Uloženo {amount} {symbol}",
+      "RepayVaultDebt": "Dug vraćen {amount} {symbol}",
+      "BorrowVaultDebt": "Dug posuđen {amount} {symbol}"
     },
-    "polkadotjs": {
-        "noExtensions": "Nije pronađeno proširenje {PolkadotJs}. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Čini se da u vašem proširenju {extension} nema računa. Dodajte račun i pokušajte ponovo.",
-        "noAccount": "{extension} pogreška računa. Provjerite svoj račun u proširenju {extension}",
-        "noExtension": "Nije pronađeno {extension} . Instalirajte ga i ponovno učitajte ovu stranicu",
-        "noSigner": "Pristup odbijen. Idite na postavke {extension} i otvorite \"Upravljanje pristupom web-mjestu\" da dopustite.",
-        "connectionError": "Došlo je do pogreške prilikom povezivanja novčanika. Možete ponovno pokušati povezati novčanik putem {extension}"
+    "error": {
+      "Transfer": "{action} {amount} {symbol} {direction} {address} nije uspio",
+      "Swap": "Zamjena {amount} {symbol} za {amount2} {symbol2} nije uspjela",
+      "AddLiquidity": "Opskrba {amount} {symbol} i {amount2} {symbol2} nije uspjela",
+      "RemoveLiquidity": "Uklanjanje{amount} {symbol} i {amount2} {symbol2} nije uspjelo",
+      "CreatePair": "Opskrba {amount} {symbol} i {amount2} {symbol2} nije uspjela",
+      "RegisterAsset": "Registracija sredstva {symbol} nije uspjela",
+      "ClaimRewards": "Preuzimanje nagrada nije uspjelo {rewards}",
+      "ReferralReserveXor": "Nije uspjelo povezivanje {amount} XOR",
+      "ReferralUnreserveXor": "Neuspjelo odvajanje {amount} XOR",
+      "ReferralSetInvitedUser": "Postavljanje {role} {address} nije uspjelo",
+      "SwapAndSend": "Nije uspjela zamjena {amount} {symbol} za {amount2} {symbol2} i {action} {direction} {address}",
+      "DemeterFarmingDepositLiquidity": "Dostava {amount} {symbol} i {symbol2} LP tokena nije uspjela",
+      "DemeterFarmingWithdrawLiquidity": "Uklanjanje tokena {amount} {symbol} i {symbol2} LP nije uspjelo",
+      "DemeterFarmingStakeToken": "Dodavanje {amount} {symbol} nije uspjelo",
+      "DemeterFarmingUnstakeToken": "Uklanjanje {amount} {symbol} nije uspjelo",
+      "DemeterFarmingGetRewards": "Nije uspjelo potraživanje {symbol}",
+      "EthBridgeIncoming": "Prijenos {amount} {symbol} iz {Ethereum} u {Sora} nije uspio",
+      "EthBridgeOutgoing": "Prijenos {amount} {symbol} iz {Sora} u {Ethereum} nije uspio",
+      "SwapTransferBatch": "{action} {amount} {symbol} nije uspio",
+      "StakingBondAndNominate": "Povezati {amount} {symbol} nije uspjelo",
+      "StakingBond": "Povezati {amount} {symbol} nije uspjelo",
+      "StakingBondExtra": "Nije uspjelo uplatiti dodatnih {amount} {symbol}",
+      "StakingUnbond": "Nije uspjelo razdvojiti {amount} {symbol}",
+      "StakingRebond": "Nije uspjelo vraćanje {amount} {symbol}",
+      "StakingNominate": "Nije uspjelo imenovanje validatora",
+      "StakingWithdrawUnbonded": "Nije uspjelo podizanje {amount} {symbol}",
+      "StakingPayout": "Isplata nagrada nije uspjela",
+      "StakingChill": "Hlađenje nije uspjelo",
+      "StakingSetController": "Nije uspjelo postavljanje kontrolera {address}",
+      "StakingSetPayee": "Nije uspjelo postavljanje primatelja {address}",
+      "OrderBookPlaceLimitOrder": "Nije uspjelo postavljanje ograničene narudžbe od {amount} {symbol} po {price} {symbol2}",
+      "OrderBookCancelLimitOrders": "Otkazivanje ograničenih naloga nije uspjelo",
+      "OrderBookCancelLimitOrder": "Otkazivanje ograničenog naloga nije uspjelo",
+      "Burn": "Nije uspjelo spaljivanje {amount} {symbol}",
+      "Mint": "Nije uspjelo kovati {amount} {symbol} na {address}",
+      "CreateVault": "Neuspjelo stvaranje pozicije {symbol}/{symbol2}",
+      "CloseVault": "Neuspjelo zatvaranje pozicije {symbol}/{symbol2}",
+      "DepositCollateral": "Pogreška prilikom ulaganja {amount} {symbol}",
+      "RepayVaultDebt": "Pogreška prilikom vraćanja {amount} {symbol}",
+      "BorrowVaultDebt": "Pogreška prilikom posuđivanja {amount} {symbol}"
     },
-    "connection": {
-        "text": "Za upravljanje imovinom i potpisivanje transakcija na {Sora} mora biti povezan račun. {Sora} računi mogu se kreirati i povezati pomoću naših integriranih novčanika ili proširenja preglednika.",
-        "noAccounts": "U proširenju preglednika {extension} nije pronađen račun. Dodajte račun i pokušajte ponovno.",
-        "selectAccount": "Odaberite račun za rad",
-        "action": {
-            "install": "Instalirajte proširenje",
-            "learnMore": "Saznajte više",
-            "connect": "Povežite račun",
-            "refresh": "Osvježite"
-        },
-        "selectWallet": "Odaberite novčanik s kojim ćete raditi",
-        "wallet": {
-            "install": "Instalirati",
-            "connected": "Povezan",
-            "notConnected": "Nije povezano"
-        },
-        "internalTitle": "Povežite se s {wallet}",
-        "internalText": "Možete stvoriti ili uvesti postojeći {Sora} račun za povezivanje sa svojim {wallet} računom. Svi podaci koje pohranjuje {wallet} šifrirani su pomoću ugrađene napredne enkripcije.",
-        "list": {
-            "integrated": "Integriran",
-            "extensions": "Ekstenzije"
-        }
+    "ReferralReserveXor": "Bond XOR",
+    "ReferralUnreserveXor": "Unbond XOR",
+    "ReferralSetInvitedUser": "Postavite {role}",
+    "SwapAndSend": "Zamijenite i pošaljite",
+    "DemeterFarmingDepositLiquidity": "Likvidnost uloga",
+    "DemeterFarmingWithdrawLiquidity": "Unstake Likvidnost",
+    "DemeterFarmingStakeToken": "Token udjela",
+    "DemeterFarmingUnstakeToken": "Unstake Token",
+    "DemeterFarmingGetRewards": "Zatražite nagrade",
+    "EthBridgeIncoming": "@:hashiBridgeText",
+    "EthBridgeOutgoing": "@:hashiBridgeText",
+    "SwapTransferBatch": "{ADAR} Prijenos",
+    "StakingBondAndNominate": "Poveži i nominiraj",
+    "StakingBond": "Bond",
+    "StakingBondExtra": "Bond Extra",
+    "StakingUnbond": "Unbond",
+    "StakingRebond": "Ponovno povezivanje",
+    "StakingNominate": "nominirati",
+    "StakingWithdrawUnbonded": "Povući bez obveznica",
+    "StakingPayout": "Nagrade za isplatu",
+    "StakingChill": "Ohladite se",
+    "StakingSetController": "Postavite kontroler",
+    "StakingSetPayee": "Postavite primatelja uplate",
+    "OrderBookPlaceLimitOrder": "Naručiti",
+    "OrderBookCancelLimitOrder": "Otkazati narudžbu",
+    "OrderBookCancelLimitOrders": "Otkaži narudžbe",
+    "Burn": "Spaliti",
+    "Mint": "Kovnica",
+    "CreateVault": "Kreiraj poziciju",
+    "CloseVault": "Zatvori poziciju",
+    "DepositCollateral": "Uložiti kolateral",
+    "RepayVaultDebt": "Vratiti dug",
+    "BorrowVaultDebt": "Posuditi dug"
+  },
+  "polkadotjs": {
+    "noExtensions": "Nije pronađeno proširenje {PolkadotJs}. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps://polkadot.js.org/extension/",
+    "noAccounts": "Čini se da u vašem proširenju {extension} nema računa. Dodajte račun i pokušajte ponovo.",
+    "noAccount": "{extension} pogreška računa. Provjerite svoj račun u proširenju {extension}",
+    "noExtension": "Nije pronađeno {extension} . Instalirajte ga i ponovno učitajte ovu stranicu",
+    "noSigner": "Pristup odbijen. Idite na postavke {extension} i otvorite \"Upravljanje pristupom web-mjestu\" da dopustite.",
+    "connectionError": "Došlo je do pogreške prilikom povezivanja novčanika. Možete ponovno pokušati povezati novčanik putem {extension}"
+  },
+  "connection": {
+    "text": "Za upravljanje imovinom i potpisivanje transakcija na {Sora} mora biti povezan račun. {Sora} računi mogu se kreirati i povezati pomoću naših integriranih novčanika ili proširenja preglednika.",
+    "noAccounts": "U proširenju preglednika {extension} nije pronađen račun. Dodajte račun i pokušajte ponovno.",
+    "selectAccount": "Odaberite račun za rad",
+    "action": {
+      "install": "Instalirajte proširenje",
+      "learnMore": "Saznajte više",
+      "connect": "Povežite račun",
+      "refresh": "Osvježite"
     },
+    "selectWallet": "Odaberite novčanik s kojim ćete raditi",
     "wallet": {
-        "WalletAssets": "Sredstva",
-        "createToken": "@:createTokenText",
-        "WalletHistory": "Aktivnost"
+      "install": "Instalirati",
+      "connected": "Povezan",
+      "notConnected": "Nije povezano"
     },
-    "walletSend": {
-        "title": "Pošaljite",
-        "address": "@:addressText",
-        "amount": "@:amountText",
-        "balance": "Stanje",
-        "max": "MAX",
-        "fee": "@:networkFeeText",
-        "enterAddress": "Unesite adresu",
-        "badAddress": "Neispravna adresa",
-        "enterAmount": "Unesite iznos",
-        "badAmount": "@:insufficientBalanceText",
-        "confirmTitle": "Potvrdite transakciju",
-        "errorAddress": "Neispravna adresa. Molimo provjerite i pokušajte ponovo.",
-        "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "Šaljite tokene između {Sora} mrežnih računa",
-        "addressWarning": "Tokeni će biti poslani na {Sora} adresu ispod. Provjerite može li primatelj pristupiti lancu {Sora} za korištenje tokena:",
-        "addressError": "Ne možete slati tokene na isti račun s kojim ste trenutno povezani.",
-        "confirm": "@:confirmText"
+    "internalTitle": "Povežite se s {wallet}",
+    "internalText": "Možete stvoriti ili uvesti postojeći {Sora} račun za povezivanje sa svojim {wallet} računom. Svi podaci koje pohranjuje {wallet} šifrirani su pomoću ugrađene napredne enkripcije.",
+    "list": {
+      "integrated": "Integriran",
+      "extensions": "Ekstenzije"
+    }
+  },
+  "wallet": {
+    "WalletAssets": "Sredstva",
+    "createToken": "@:createTokenText",
+    "WalletHistory": "Aktivnost"
+  },
+  "walletSend": {
+    "title": "Pošaljite",
+    "address": "@:addressText",
+    "amount": "@:amountText",
+    "balance": "Stanje",
+    "max": "MAX",
+    "fee": "@:networkFeeText",
+    "enterAddress": "Unesite adresu",
+    "badAddress": "Neispravna adresa",
+    "enterAmount": "Unesite iznos",
+    "badAmount": "@:insufficientBalanceText",
+    "confirmTitle": "Potvrdite transakciju",
+    "errorAddress": "Neispravna adresa. Molimo provjerite i pokušajte ponovo.",
+    "feeTooltip": "@:networkFeeTooltipText",
+    "tooltip": "Šaljite tokene između {Sora} mrežnih računa",
+    "addressWarning": "Tokeni će biti poslani na {Sora} adresu ispod. Provjerite može li primatelj pristupiti lancu {Sora} za korištenje tokena:",
+    "addressError": "Ne možete slati tokene na isti račun s kojim ste trenutno povezani.",
+    "confirm": "@:confirmText"
+  },
+  "account": {
+    "successCopy": "Adresa novčanika kopira se u međuspremnik",
+    "copy": "Kopirajte adresu",
+    "switch": "Promjenite račun",
+    "walletAddress": "Adresa novčanika",
+    "delete": "Izbriši račun",
+    "rename": "Preimenuj račun",
+    "export": "Izvezi .json",
+    "accountTitle": "Račun"
+  },
+  "history": {
+    "clearHistory": "Očistite povijest",
+    "filterPlaceholder": "Filtrirajte prema adresi, simbolu, vrsti ili ID-u bloka",
+    "empty": "Ovdje će se pojaviti vaše transakcije",
+    "emptySearch": "Nisu pronađene transakcije",
+    "firstText": "Prvi",
+    "lastText": "Posljednji",
+    "prevText": "Prethodno",
+    "nextText": "Sljedeći"
+  },
+  "assets": {
+    "empty": "Nema sredstava",
+    "swap": "@:swapText",
+    "send": "@:sendText",
+    "receive": "@:account.copy",
+    "liquidity": "Dodajte likvidnost",
+    "bridge": "Most",
+    "copy": "Kopirajte ID sredstva",
+    "successCopy": "{symbol} ID sredstva kopira se u međuspremnik",
+    "copied": "Kopirano!",
+    "balance": {
+      "transferable": "Prenosivo",
+      "frozen": "Zamrznuto",
+      "locked": "Zaključano",
+      "reserved": "Rezervirano",
+      "total": "Ukupno",
+      "bonded": "Vezano"
     },
-    "account": {
-        "successCopy": "Adresa novčanika kopira se u međuspremnik",
-        "copy": "Kopirajte adresu",
-        "switch": "Promjenite račun",
-        "walletAddress": "Adresa novčanika",
-        "delete": "Izbriši račun",
-        "rename": "Preimenuj račun",
-        "export": "Izvezi .json",
-        "accountTitle": "Račun"
+    "totalAssetsValue": "Ukupna vrijednost vaše sredstvo:",
+    "details": "Pojedinosti",
+    "assetId": "ID sredstva"
+  },
+  "asset": {
+    "remove": "Uklonite sredstvo",
+    "select": "Odabir imovine",
+    "receive": "Primite {symbol}"
+  },
+  "addAsset": {
+    "success": "Sredstvo {symbol} je uspješno dodano!",
+    "empty": "Tokeni nisu pronađeni",
+    "alreadyAttached": "Token je već bio priložen",
+    "understand": "Razumijem",
+    "warningTitle": "Trgujte na vlastitu odgovornost!",
+    "warningMessage": "Svatko može izraditi token, uključujući stvaranje lažnih verzija postojećih tokena koji tvrde da predstavljaju projekte.\nAko kupite ovaj token, možda ga nećete moći prodati natrag.",
+    "approved": "Sredstvo odobreno od zajednice",
+    "unknown": "Nepoznati izvor",
+    "scam": "PREVARA",
+    "next": "Sljedeći",
+    "AddAssetToken": {
+      "title": "Valute",
+      "switchBtn": "Samo provjerena sredstva"
     },
+    "searchInputText": "Pretraživanje po ID-u sredstva, nazivu ili simbolu oznake"
+  },
+  "createToken": {
+    "desc": "Izradite i primijenite prilagođena sredstva na {Sora}",
+    "enterSymbol": "Unesite simbol tokena",
+    "enterName": "Unesite naziv tokena",
+    "enterSupply": "Unesite opskrbu tokenom",
+    "success": {
+      "title": "Transakcija je poslana",
+      "desc": "Napravite {symbol} token"
+    },
+    "tooltipValue": "@:networkFeeTooltipText",
+    "fee": "@:networkFeeText",
+    "insufficientBalance": "@:insufficientBalanceText",
+    "feeError": "Dobivanje naknade za transakciju nije uspjelo",
+    "error": "Stvaranje tokena {symbol} nije uspjelo",
+    "tokenSymbol": {
+      "placeholder": "Simbol tokena",
+      "desc": "Ovo je identifikator tokena. Za odabir možete koristiti od 1 do 7 znakova."
+    },
+    "tokenName": {
+      "placeholder": "Naziv tokena",
+      "desc": "Ovo je naziv za token. Za odabir možete koristiti od 1 do 33 znaka."
+    },
+    "tokenSupply": {
+      "placeholder": "Opskrba tokenom",
+      "desc": "Primit ćete ove tokene nakon stvaranja."
+    },
+    "extensibleSupply": {
+      "placeholder": "Proširiva opskrba",
+      "desc": "Sposobnost izdavanja više tokena."
+    },
+    "provideContent": "Dajte sadržaj",
+    "selectLocalFile": "Odaberite lokalnu datoteku",
+    "CreateSimpleToken": "Token",
+    "nft": {
+      "source": {
+        "label": "Izvor",
+        "value": "Lokalne datoteke",
+        "limit": "Odaberite drugu datoteku"
+      },
+      "link": {
+        "placeholder": "IPFS link",
+        "copyLink": "Kopirajte link",
+        "tooltip": "IPFS je distribuirani sustav za pohranu i pristup datotekama, što omogućuje pristup datotekama s mnogih lokacija kojima ne upravlja jedna organizacija."
+      },
+      "image": {
+        "placeholderNoImage": "Prenesite datoteku unosom veze ili odabirom iz lokalne pohrane",
+        "placeholderBadSource": "Obrada datoteke nije uspjela",
+        "placeholderBadSourceAddition": "ili još nije učitano na IPFS",
+        "placeholderFileLimit": "Veličina datoteke premašuje ograničenje od {value} mb"
+      },
+      "supply": {
+        "placeholder": "Opskrba tokenom",
+        "desc": "Količina NFTa koju ćete dobiti.",
+        "quantity": "Količina"
+      },
+      "description": {
+        "placeholder": "Opis"
+      }
+    },
+    "enterTokenDescription": "Unesite opis",
+    "divisible": {
+      "placeholder": "Djeljivo",
+      "desc": "Sposobnost NFT-a da se podijeli na razlomke. Rezerviranje likvidnosti funkcionira samo s djeljivom sredstvom"
+    },
+    "title": "@:createTokenText",
+    "action": "@:createTokenText",
+    "confirm": "@:confirmText",
+    "titleCommon": "Stvorite",
+    "confirmTokenTitleCommon": "Napravite token",
+    "confirmTokenTitleNFT": "Napravite NFT",
+    "actionNFT": "@:createTokenTextNFT"
+  },
+  "transaction": {
+    "title": "Detalji transakcije",
+    "blockId": "ID bloka",
+    "status": "Status",
+    "statuses": {
+      "pending": "U tijeku...",
+      "failed": "Transakcija nije uspjela",
+      "complete": "Kompletno"
+    },
+    "errorMessage": "Pogreška",
+    "startTime": "Datum",
+    "amount": "@:amountText",
+    "amount2": "@:amountText 2",
+    "fee": "Naknada za transakciju",
+    "total": "Ukupno",
+    "from": "Od",
+    "to": "Do",
+    "successCopy": "{value} se kopira u međuspremnik",
+    "copy": "Kopirajte {value}",
     "history": {
-        "clearHistory": "Očistite povijest",
-        "filterPlaceholder": "Filtrirajte prema adresi, simbolu, vrsti ili ID-u bloka",
-        "empty": "Ovdje će se pojaviti vaše transakcije",
-        "emptySearch": "Nisu pronađene transakcije",
-        "firstText": "Prvi",
-        "lastText": "Posljednji",
-        "prevText": "Prethodno",
-        "nextText": "Sljedeći"
+      "created": "Transakcija za {amount} {symbol} je stvorena.",
+      "submitted": "Transakcija poslana uz naknadu od {fee} {symbol}",
+      "confirmed": "Transakcija potvrđena"
     },
+    "txId": "ID transakcije",
+    "viewIn": "Pogledajte u {explorer}",
+    "referrer": "Preporučitelj",
+    "referral": "Preporuka",
+    "adarTxDetailsTitle": "Detalji transakcije",
+    "comment": "Komentar",
+    "price": "Cijena",
+    "side": "Strana"
+  },
+  "appName": "{AppName}",
+  "changeNetworkText": "Promijenite mrežu u novčaniku",
+  "transactionText": "transakcija | transakcije",
+  "connectWalletText": "Povežite račun",
+  "changeAccountText": "Promjenite račun",
+  "connectedText": "Povezano",
+  "connectWalletTextTooltip": "Povežite se na {Sora} mrežu pomoću {PolkadotJs}",
+  "selectNodeText": "Odaberite nod",
+  "bridgeText": "Most",
+  "disclaimer": "{disclaimerPrefix} Ova web stranica održava zajednica {Sora}. Prije nego što nastavite koristiti ovu web stranicu, pregledajte {polkaswapFaqLink} i dokumentaciju, koja uključuje detaljno objašnjenje o tome kako {AppName} radi, kao i {memorandumLink} i {privacyLink}. Ti su dokumenti ključni za sigurno i pozitivno korisničko iskustvo. Koristeći {AppName}, potvrđujete da ste pročitali i razumjeli ove dokumente. Također potvrđujete sljedeće: 1) svoju isključivu odgovornost za poštivanje svih zakona koji se mogu primjenjivati na vašu posebnu upotrebu {AppName} u vašoj pravnoj nadležnosti; 2) vaše razumijevanje da je trenutna verzija {AppName} alfa verzija: nije u potpunosti testirana, a neke funkcije možda neće funkcionirati kako je dizajnirano; i 3) vaše razumijevanje i dobrovoljno prihvaćanje rizika povezanih s korištenjem {AppName}, uključujući, ali ne ograničavajući se na, rizik od gubitka tokena. Još jednom, nemojte nastaviti bez čitanja {polkaswapFaqLink}, {memorandumLink} i {privacyLink}!",
+  "poweredBy": "Podržano od strane",
+  "confirmTransactionText": "Potvrdite transakciju",
+  "retryText": "Pokušajte ponovo",
+  "networkFeeText": "Mrežna naknada",
+  "networkFeeTooltipText": "Naknada za mrežu koristi se kako bi se osigurao rast i stabilne performanse sustava {Sora}.",
+  "ethNetworkFeeTooltipText": "Imajte na umu da su mrežne naknade {network} prikazane na {AppName} samo grube procjene, točan iznos naknade možete vidjeti u svom povezanom {network} novčaniku prije potvrde transakcije.",
+  "marketText": "Tržište",
+  "marketAlgorithmText": "Algoritam tržišta",
+  "firstPerSecond": "{first} po {second}",
+  "pairIsNotCreated": "Par tokena nije stvoren",
+  "pageTitle": {
+    "Swap": "Zamijenite",
+    "Pool": "Pul",
+    "Bridge": "@:bridgeText",
+    "Stats": "Statistika",
+    "Wallet": "Novčanik",
+    "AddLiquidity": "Dodajte likvidnost",
+    "RemoveLiquidity": "Uklonite likvidnost",
+    "Rewards": "Nagrade",
+    "Explore/Tokens": "Tokeni",
+    "Explore/Pools": "Bazeni",
+    "Explore/Staking": "Ulaganje",
+    "Explore/Farming": "Farmanje",
+    "Staking": "Ulaganje",
+    "OrderBook": "Trgovina",
+    "Explore/Books": "@:pageTitle.OrderBook",
+    "AssetOwner": "Vlasnik imovine",
+    "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+    "Vaults": "{Kensetsu}",
+    "VaultDetails": "Detalji pozicije",
+    "Burn": "Spaliti"
+  },
+  "mainMenu": {
+    "Swap": "Zamijenite",
+    "Pool": "Pul",
+    "Bridge": "@:bridgeText",
+    "Farming": "Farmanje",
+    "Wallet": "Račun",
+    "Rewards": "Nagrade",
+    "About": "O",
+    "Stats": "Statistika",
+    "StakingContainer": "Ulaganje",
+    "Explore/Container": "Istražiti",
+    "SoraCard": "Kartica {Sora}",
+    "OrderBook": "Trgovina",
+    "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+    "VaultsContainer": "@:pageTitle.Vaults",
+    "Burn": "@:pageTitle.Burn"
+  },
+  "social": {
+    "twitter": "Twitter",
+    "telegram": "Telegram",
+    "medium": "Medium",
+    "reddit": "Reddit",
+    "github": "GitHub",
+    "wiki": "{Sora} Wiki"
+  },
+  "footerMenu": {
+    "faucet": "Faucet",
+    "github": "GitHub",
+    "sorawiki": "{Sora} Wiki",
+    "memorandum": "{AppName} Memorandum i Uvjeti pružanja usluga",
+    "privacy": "Pravila o privatnosti",
+    "info": "Informacija i zajednica"
+  },
+  "helpDialog": {
+    "title": "Pomoć",
+    "termsOfService": "Uvjeti pružanja usluge",
+    "privacyPolicy": "Pravila o privatnosti",
+    "appVersion": "{AppName} verzija",
+    "contactUs": "Kontaktirajte nas"
+  },
+  "aboutNetworkDialog": {
+    "title": "O",
+    "network": {
+      "title": "Što je {Sora}?",
+      "description": "{AppName} je izgrađen na {Sora} Network, a token {Sora} (XOR) koristi se za opskrbu gasom/naknadama i likvidnošću na {AppName}. {Sora} Network omogućuje smanjene naknade, brže transakcije i jednostavniju finalizaciju konsenzusa i usmjerena je na isporuku interoperabilnosti u drugim blockchain ekosustavima kao što je {Ethereum}."
+    },
+    "polkadot": {
+      "title": "Što je {PolkadotJs}?",
+      "description": "{PolkadotJs} proširenje je proširenje preglednika dostupno za Firefox i Chrome posvećeno upravljanju računima za lance temeljene na Substrate-u, uključujući {Sora}, {Polkadot} i {Kusama}. Možete dodavati, uvoziti i izvoziti račune te potpisivati transakcije ili ekstrinzike koje ste pokrenuli s web stranice koja ste ovlastili."
+    }
+  },
+  "node": {
+    "errors": {
+      "connection": "Došlo je do pogreške pri povezivanju s nodom\n{address}\n",
+      "network": "Nod\n{address}\n je s druge mreže\n",
+      "existing": "Ovaj nod je već dodan: {title}\n"
+    },
+    "messages": {
+      "connected": "Veza uspostavljena nodom\n{address}\n",
+      "selectNode": "Molimo odaberite nod za povezivanje s popisa nodova"
+    },
+    "warnings": {
+      "disconnect": "Veza s nodom je izgubljena. Ponovno povezivanje..."
+    }
+  },
+  "selectNodeDialog": {
+    "title": "Odabir mrežnog noda",
+    "addNode": "Dodajte prilagođenog noda",
+    "customNode": "Prilagođeni nod",
+    "howToSetupOwnNode": "Postavite svoj čvor",
+    "select": "Izaberite",
+    "connected": "Povezano",
+    "nodeTitle": "{chain} hostiran od strane {name}",
+    "messages": {
+      "emptyName": "Molimo unesite naziv noda",
+      "emptyAddress": "Molimo unesite adresu noda",
+      "incorrectProtocol": "Adresa bi trebala početi od ws:// ili wss://",
+      "incorrectAddress": "Neispravna adresa"
+    },
+    "updateNode": "Ažurirajte nod"
+  },
+  "buttons": {
+    "max": "MAX",
+    "chooseToken": "Odaberite token",
+    "chooseAToken": "Odaberite token",
+    "chooseTokens": "Odaberite tokene",
+    "enterAmount": "Unesite iznos"
+  },
+  "transfers": {
+    "from": "Od",
+    "to": "Do"
+  },
+  "exchange": {
+    "Swap": "Zamijenite",
+    "Pool": "Pul",
+    "balance": "Stanje",
+    "price": "Cijena",
+    "transactionSubmitted": "Transakcija je poslana",
+    "transactionMessage": "{firstToken} i {secondToken}",
+    "ok": "U redu",
+    "confirm": "Potvrdite",
+    "lossWarning": "Izgubit ćete {value}% na svojoj trgovini. Otkrili smo problem s pružanjem likvidnosti. To može dovesti do značajnih gubitaka tijekom zamjene tokena. Provjerite postoji li odgovarajuća likvidnost za vaš željeni swap par."
+  },
+  "swap": {
+    "estimated": "procijenjeno",
+    "slippageTolerance": "Tolerancija klizanja",
+    "minReceived": "Minimalno primljeno",
+    "maxSold": "Maksimalno prodano",
+    "minReceivedTooltip": "Vaša transakcija će se vratiti ako dođe do velikog, nepovoljnog kretanja cijene prije nego što se potvrdi.",
+    "priceImpact": "Utjecaj na cijenu",
+    "priceImpactTooltip": "Razlika između tržišne cijene i procijenjene cijene zbog veličine trgovine.",
+    "liquidityProviderFee": "Naknada za pružatelja likvidnosti",
+    "liquidityProviderFeeTooltip": "Dio svake trgovine ({liquidityProviderFee}%) ide pružateljima likvidnosti kao protokolarni poticaj.",
+    "insufficientAmount": "Nedovoljna količina {tokenSymbol}",
+    "insufficientLiquidity": "Nedovoljna likvidnost",
+    "confirmSwap": "Potvrdite zamjenu",
+    "swapOutputMessage": "Procjenjuje se izlaz. Primit ćete najmanje {transactionValue} ili će se transakcija vratiti.",
+    "rewardsForSwap": "PSWAP strateške nagrade",
+    "swapInputMessage": "Procjenjuje se ulaz. Prodat ćete najviše {transactionValue} ili će se transakcija vratiti.",
+    "route": "Ruta",
+    "errorFetching": "Pogreška pri dohvaćanju podataka"
+  },
+  "pool": {
+    "connectToWallet": "Povežite račun da biste vidjeli svoju likvidnost.",
+    "liquidityNotFound": "Nije pronađena likvidnost.",
+    "addLiquidity": "Dodajte likvidnost",
+    "removeLiquidity": "Uklonite likvidnost",
+    "createPair": "Napravite par",
+    "pooledToken": "{tokenSymbol} udruženi u pool",
+    "pairTokens": "{pair} Pul tokeni",
+    "poolShare": "Vaš udio u pulu",
+    "description": "Kada dodate likvidnost, dobivate tokene pula koji predstavljaju vašu poziciju. Ti tokeni automatski zarađuju naknade proporcionalne vašem udjelu u pulu i mogu se iskoristiti u bilo kojem trenutku.",
+    "strategicBonusApy": "Strateški bonus APY"
+  },
+  "bridge": {
+    "title": "Most",
+    "info": "Pretvorite tokene između mreža {Sora} i {Ethereum}.",
+    "balance": "Stanje",
+    "next": "Sljedeći",
+    "connectWallets": "Povežite novčanike da biste vidjeli odgovarajuću povijest transakcija.",
+    "soraNetworkFee": "{Sora} mrežna naknada",
+    "ethereumNetworkFee": "{Ethereum} mrežna naknada",
+    "total": "Ukupno",
+    "viewHistory": "Prikazite povijesti transakcija",
+    "transactionSubmitted": "Transakcija je poslana",
+    "transactionMessage": "{assetA} za {assetB}",
+    "notRegisteredAsset": "Sredstvo {assetSymbol} nije registrirano",
+    "selectNetwork": "Odaberite mrežu",
+    "networkInfo": "Bridge {Sora} mrežna naknada s:",
+    "copy": "Kopiraj mrežnu adresu",
+    "soraAddress": "{Sora} adresa",
+    "ethereumAddress": "{Ethereum} adresa",
+    "limitMessage": "Trenutno postoji {type} {amount} {symbol} za premošćivanje kako bi se osigurala stabilnost i sigurnost {Sora} mreže. Cijenimo vaše razumijevanje.",
+    "externalTransferFee": "{network} {XCM} naknada",
+    "externalTransferFeeTooltip": "Kada pošaljete premosnu transakciju na mrežu {network} , od iznosa koji prenosite uzima se manja naknada",
+    "externalMinDeposit": "{network} min. depozit",
+    "externalMinDepositTooltip": "Minimalni saldo {symbol} koji mora biti na vašem {network} računu nakon prijelaza"
+  },
+  "selectRegisteredAsset": {
+    "title": "Odaberite token",
+    "search": {
+      "title": "Tokeni",
+      "placeholder": "Filtrirajte prema ID-u sredstva, nazivu ili simbolu oznake",
+      "networkLabelSora": "{Sora} mrežni tokeni",
+      "networkLabelEthereum": "{network} mrežni zrcalni tokeni",
+      "emptyListMessage": "Nema rezultata"
+    },
+    "customAsset": {
+      "title": "Prilagođen",
+      "customInfo": "Važno! Prilagođeni tokeni moraju biti registrirani u {Sora}.",
+      "registerToken": "Registrirajte token",
+      "addressPlaceholder": "ID sredstva",
+      "symbolPlaceholder": "Simbol tokena",
+      "empty": "Tokeni nisu pronađeni",
+      "alreadyAttached": "Token je već bio priložen"
+    }
+  },
+  "bridgeTransaction": {
+    "details": "{from} za {to}",
+    "for": " za ",
+    "steps": {
+      "step": "{step} od 2",
+      "step1": "1.",
+      "step2": "2."
+    },
+    "status": {
+      "pending": "{step} transakcije na čekanju ...",
+      "failed": "{step} transakcije nisu uspjele. @:(retryText).",
+      "confirm": "Potvrdite 2. od 2 transakcije...",
+      "complete": "Potpuno",
+      "convertionComplete": "Konverzija je dovršena"
+    },
+    "statuses": {
+      "waiting": "Čekanje",
+      "ready": "Spremno",
+      "pending": "U tijeku",
+      "frozen": "Zamrznuto",
+      "failed": "Transakcija nije uspjela",
+      "done": "Potpuno",
+      "waitingForConfirmation": "Čeka se potvrda..."
+    },
+    "networkTitle": "{network} transakcija",
+    "transactionHash": "Hash transakcije",
+    "networkInfo": {
+      "status": "Status",
+      "date": "Datum",
+      "amount": "Iznos",
+      "transactionFee": "Naknada za transakciju",
+      "total": "Ukupno"
+    },
+    "successCopy": "Hash transakcije kopira se u međuspremnik",
+    "ethereum": "{Ethereum}",
+    "sora": "{Sora}",
+    "pending": "{network} transakcija na čekanju...",
+    "newTransaction": "Izradite novu transakciju",
+    "title": "Bridge transakcije",
+    "allowToken": "Dopustite {AppName} da koristi vaš {tokenSymbol}",
+    "approveToken": "Napominjemo da je token potrebno odobriti samo jednom. Ako vaše proširenje ima više zahtjeva za odobrenje tokena, svakako potvrdite samo posljednji, odbijajući ostale.",
+    "blocksLeft": "{count} preostalo blokova..."
+  },
+  "bridgeHistory": {
+    "title": "Povijest",
+    "showHistory": "Prikažite povijest",
+    "clearHistory": "Očistite povijest",
+    "empty": "Ovdje će se pojaviti vaše transakcije.",
+    "filterPlaceholder": "Filtrirajte prema ID-u sredsvta ili simbolu oznake",
+    "restoreHistory": "Vratite povijesti",
+    "statusAction": "Potrebna je akcija"
+  },
+  "selectToken": {
+    "title": "Odaberite token",
+    "searchPlaceholder": "Filtrirajte prema ID-u sredstva, nazivu ili simbolu oznake",
+    "emptyListMessage": "Nema rezultata",
+    "copy": "Kopirajte ID sredstva",
+    "successCopy": "{symbol} ID sredstva kopira se u međuspremnik",
     "assets": {
-        "empty": "Nema sredstava",
-        "swap": "@:swapText",
-        "send": "@:sendText",
-        "receive": "@:account.copy",
-        "liquidity": "Dodajte likvidnost",
-        "bridge": "Most",
-        "copy": "Kopirajte ID sredstva",
-        "successCopy": "{symbol} ID sredstva kopira se u međuspremnik",
-        "copied": "Kopirano!",
-        "balance": {
-            "transferable": "Prenosivo",
-            "frozen": "Zamrznuto",
-            "locked": "Zaključano",
-            "reserved": "Rezervirano",
-            "total": "Ukupno",
-            "bonded": "Vezano"
-        },
-        "totalAssetsValue": "Ukupna vrijednost vaše sredstvo:",
-        "details": "Pojedinosti",
-        "assetId": "ID sredstva"
+      "title": "Sredstva"
     },
-    "asset": {
-        "remove": "Uklonite sredstvo",
-        "select": "Odabir imovine",
-        "receive": "Primite {symbol}"
+    "custom": {
+      "title": "Prilagođeno",
+      "search": "Unesite ID sredstva",
+      "text": "PRILAGOĐENI TOKENI",
+      "alreadyAttached": "Ovaj token već bio priložen",
+      "notFound": "Token nije pronađen"
+    }
+  },
+  "createPair": {
+    "title": "Napravite par",
+    "deposit": "Depozit",
+    "balance": "Stanje",
+    "pricePool": "Cijene i naknade",
+    "shareOfPool": "Udio u pulu",
+    "firstSecondPoolTokens": "{first}-{second} Pul",
+    "connect": "Spojite novčanik",
+    "supply": "Opskrba",
+    "yourPosition": "Vaša pozicija",
+    "yourPositionEstimated": "Vaša pozicija (procijenjena)",
+    "youWillReceive": "Dobit ćete",
+    "remove": "uklonite",
+    "add": "DODAJTE",
+    "ok": "U redu",
+    "alreadyCreated": "Par tokena već je stvoren",
+    "firstLiquidityProvider": "Vi ste prvi davatelj likvidnosti",
+    "firstLiquidityProviderInfo": "Omjer tokena koje dodate postavit će cijenu ovog pula.<br/> Nakon što ste zadovoljni s cijenom kliknite opskrbu za pregled."
+  },
+  "confirmSupply": {
+    "title": "Vaš udio u pulu bit će",
+    "outputDescription": "Procjenjuje se izlaz. Ako se cijena promijeni više od {slippageTolerance}%, vaša će se transakcija vratiti.",
+    "poolTokensBurned": "{first}-{second} Spaljeni pul tokeni",
+    "price": "Cijena"
+  },
+  "addLiquidity": {
+    "title": "Dodajte likvidnost"
+  },
+  "removeLiquidity": {
+    "title": "Uklonite likvidnost",
+    "liquidity": "likvidnost",
+    "balance": "Stanje",
+    "amount": "Iznos",
+    "input": "Ulaz",
+    "output": "Izlaz",
+    "price": "Cijena",
+    "remove": "Uklonite",
+    "description": "Uklanjanje tokena pula pretvara vašu poziciju natrag u temeljne tokene po trenutnoj stopi, proporcionalno vašem udjelu u pulu. Obračunate naknade uključene su u iznose koje primite.",
+    "outputMessage": "Procjenjuje se izlazna količina. Ako se cijena promijeni više od {slippageTolerance}%, vaša će se transakcija vratiti.",
+    "confirmTitle": "Dobit ćete",
+    "shareOfPool": "Udio u pulu nakon transakcije",
+    "locked": "{percent} vašeg bazena je u {lock}"
+  },
+  "dexSettings": {
+    "title": "Postavke",
+    "marketAlgorithm": "@.upper:marketAlgorithmText",
+    "marketAlgorithmTooltip": {
+      "main": " - mogućnost izbora između primarnog tržišta (TBC), sekundarnog tržišta (XYK) ili kombiniranog pametnog algoritma za zajamčenu najbolju cijenu za bilo koju transakciju."
     },
-    "addAsset": {
-        "success": "Sredstvo {symbol} je uspješno dodano!",
-        "empty": "Tokeni nisu pronađeni",
-        "alreadyAttached": "Token je već bio priložen",
-        "understand": "Razumijem",
-        "warningTitle": "Trgujte na vlastitu odgovornost!",
-        "warningMessage": "Svatko može izraditi token, uključujući stvaranje lažnih verzija postojećih tokena koji tvrde da predstavljaju projekte.\nAko kupite ovaj token, možda ga nećete moći prodati natrag.",
-        "approved": "Sredstvo odobreno od zajednice",
-        "unknown": "Nepoznati izvor",
-        "scam": "PREVARA",
-        "next": "Sljedeći",
-        "AddAssetToken": {
-            "title": "Valute",
-            "switchBtn": "Samo provjerena sredstva"
-        },
-        "searchInputText": "Pretraživanje po ID-u sredstva, nazivu ili simbolu oznake"
+    "slippageTolerance": "TOLERANCIJA KLIZANJA",
+    "slippageToleranceHint": "Vaša će se transakcija vratiti ako se cijena nepovoljno promijeni za više od ovog procenta.",
+    "slippageToleranceValidation": {
+      "warning": "Vaša transakcija možda neće uspjeti",
+      "frontrun": "Vaša transakcija može biti \"frontrun\"",
+      "error": "Unesite valjani postotak tolerancije"
     },
-    "createToken": {
-        "desc": "Izradite i primijenite prilagođena sredstva na {Sora}",
-        "enterSymbol": "Unesite simbol tokena",
-        "enterName": "Unesite naziv tokena",
-        "enterSupply": "Unesite opskrbu tokenom",
-        "success": {
-            "title": "Transakcija je poslana",
-            "desc": "Napravite {symbol} token"
-        },
-        "tooltipValue": "@:networkFeeTooltipText",
-        "fee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "feeError": "Dobivanje naknade za transakciju nije uspjelo",
-        "error": "Stvaranje tokena {symbol} nije uspjelo",
-        "tokenSymbol": {
-            "placeholder": "Simbol tokena",
-            "desc": "Ovo je identifikator tokena. Za odabir možete koristiti od 1 do 7 znakova."
-        },
-        "tokenName": {
-            "placeholder": "Naziv tokena",
-            "desc": "Ovo je naziv za token. Za odabir možete koristiti od 1 do 33 znaka."
-        },
-        "tokenSupply": {
-            "placeholder": "Opskrba tokenom",
-            "desc": "Primit ćete ove tokene nakon stvaranja."
-        },
-        "extensibleSupply": {
-            "placeholder": "Proširiva opskrba",
-            "desc": "Sposobnost izdavanja više tokena."
-        },
-        "provideContent": "Dajte sadržaj",
-        "selectLocalFile": "Odaberite lokalnu datoteku",
-        "CreateSimpleToken": "Token",
-        "nft": {
-            "source": {
-                "label": "Izvor",
-                "value": "Lokalne datoteke",
-                "limit": "Odaberite drugu datoteku"
-            },
-            "link": {
-                "placeholder": "IPFS link",
-                "copyLink": "Kopirajte link",
-                "tooltip": "IPFS je distribuirani sustav za pohranu i pristup datotekama, što omogućuje pristup datotekama s mnogih lokacija kojima ne upravlja jedna organizacija."
-            },
-            "image": {
-                "placeholderNoImage": "Prenesite datoteku unosom veze ili odabirom iz lokalne pohrane",
-                "placeholderBadSource": "Obrada datoteke nije uspjela",
-                "placeholderBadSourceAddition": "ili još nije učitano na IPFS",
-                "placeholderFileLimit": "Veličina datoteke premašuje ograničenje od {value} mb"
-            },
-            "supply": {
-                "placeholder": "Opskrba tokenom",
-                "desc": "Količina NFTa koju ćete dobiti.",
-                "quantity": "Količina"
-            },
-            "description": {
-                "placeholder": "Opis"
-            }
-        },
-        "enterTokenDescription": "Unesite opis",
-        "divisible": {
-            "placeholder": "Djeljivo",
-            "desc": "Sposobnost NFT-a da se podijeli na razlomke. Rezerviranje likvidnosti funkcionira samo s djeljivom sredstvom"
-        },
-        "title": "@:createTokenText",
-        "action": "@:createTokenText",
-        "confirm": "@:confirmText",
-        "titleCommon": "Stvorite",
-        "confirmTokenTitleCommon": "Napravite token",
-        "confirmTokenTitleNFT": "Napravite NFT",
-        "actionNFT": "@:createTokenTextNFT"
+    "custom": "PRILAGOĐEN",
+    "transactionDeadline": "ROK TRANSAKCIJE",
+    "transactionDeadlineHint": "Transakcija će biti otkazana ako je na čekanju dulje od ovog vremena.",
+    "nodeAddress": "ADRESA NODA",
+    "ip": "IP",
+    "port": "PORT",
+    "min": "MIN",
+    "marketAlgorithms": {
+      "SMART": "{smartAlgorithm} usmjeravanje likvidnosti osigurava najbolju cijenu za bilo koju transakciju kombiniranjem samo najboljih opcija cijena sa svih dostupnih tržišta. Kada je dostupna, Krivulja povezivanja tokena ({tbcAlgorithm}) koristit će se za likvidnost sve dok je cijena sredstva pristupačnija nego iz drugih izvora, na kojima se koristi {xycAlgorithm} pul.",
+      "TBC": "{tbcAlgorithm} — kupnja samo od Krivulje povezivanja tokena (Primarno tržište). Postoji mogućnost da cijena postane nepovoljna u usporedbi s {xycAlgorithm} bazen (Sekundarno tržište), ali vrijednost primljena od dodijeljenih nagrada mogla bi se s vremenom pokazati mnogo povoljnijom.",
+      "XYK": "{xycAlgorithm} — kupnja samo iz XYK pula (sekundarno tržište). Tradicionalna zamjena XYK pula."
     },
-    "transaction": {
-        "title": "Detalji transakcije",
-        "blockId": "ID bloka",
-        "status": "Status",
-        "statuses": {
-            "pending": "U tijeku...",
-            "failed": "Transakcija nije uspjela",
-            "complete": "Kompletno"
-        },
-        "errorMessage": "Pogreška",
-        "startTime": "Datum",
-        "amount": "@:amountText",
-        "amount2": "@:amountText 2",
-        "fee": "Naknada za transakciju",
-        "total": "Ukupno",
-        "from": "Od",
-        "to": "Do",
-        "successCopy": "{value} se kopira u međuspremnik",
-        "copy": "Kopirajte {value}",
-        "history": {
-            "created": "Transakcija za {amount} {symbol} je stvorena.",
-            "submitted": "Transakcija poslana uz naknadu od {fee} {symbol}",
-            "confirmed": "Transakcija potvrđena"
-        },
-        "txId": "ID transakcije",
-        "viewIn": "Pogledajte u {explorer}",
-        "referrer": "Preporučitelj",
-        "referral": "Preporuka",
-        "adarTxDetailsTitle": "Detalji transakcije",
-        "comment": "Komentar",
-        "price": "Cijena",
-        "side": "Strana"
+    "charts": "Karte",
+    "сhartsDescription": "Pogledajte grafikone za cijene tokena"
+  },
+  "resultDialog": {
+    "title": "Transakcija je poslana",
+    "ok": "U redu"
+  },
+  "rewards": {
+    "title": "Zatražite nagrade",
+    "andText": "i",
+    "claiming": {
+      "pending": "Preuzimanje",
+      "success": "Uspješno prisvojio"
     },
-    "appName": "{AppName}",
-    "changeNetworkText": "Promijenite mrežu u novčaniku",
-    "transactionText": "transakcija | transakcije",
-    "connectWalletText": "Povežite račun",
-    "changeAccountText": "Promjenite račun",
-    "connectedText": "Povezano",
-    "connectWalletTextTooltip": "Povežite se na {Sora} mrežu pomoću {PolkadotJs}",
-    "selectNodeText": "Odaberite nod",
-    "bridgeText": "Most",
-    "disclaimer": "{disclaimerPrefix} Ova web stranica održava zajednica {Sora}. Prije nego što nastavite koristiti ovu web stranicu, pregledajte {polkaswapFaqLink} i dokumentaciju, koja uključuje detaljno objašnjenje o tome kako {AppName} radi, kao i {memorandumLink} i {privacyLink}. Ti su dokumenti ključni za sigurno i pozitivno korisničko iskustvo. Koristeći {AppName}, potvrđujete da ste pročitali i razumjeli ove dokumente. Također potvrđujete sljedeće: 1) svoju isključivu odgovornost za poštivanje svih zakona koji se mogu primjenjivati na vašu posebnu upotrebu {AppName} u vašoj pravnoj nadležnosti; 2) vaše razumijevanje da je trenutna verzija {AppName} alfa verzija: nije u potpunosti testirana, a neke funkcije možda neće funkcionirati kako je dizajnirano; i 3) vaše razumijevanje i dobrovoljno prihvaćanje rizika povezanih s korištenjem {AppName}, uključujući, ali ne ograničavajući se na, rizik od gubitka tokena. Još jednom, nemojte nastaviti bez čitanja {polkaswapFaqLink}, {memorandumLink} i {privacyLink}!",
-    "poweredBy": "Podržano od strane",
-    "confirmTransactionText": "Potvrdite transakciju",
-    "retryText": "Pokušajte ponovo",
-    "networkFeeText": "Mrežna naknada",
-    "networkFeeTooltipText": "Naknada za mrežu koristi se kako bi se osigurao rast i stabilne performanse sustava {Sora}.",
-    "ethNetworkFeeTooltipText": "Imajte na umu da su mrežne naknade {network} prikazane na {AppName} samo grube procjene, točan iznos naknade možete vidjeti u svom povezanom {network} novčaniku prije potvrde transakcije.",
-    "marketText": "Tržište",
-    "marketAlgorithmText": "Algoritam tržišta",
-    "firstPerSecond": "{first} po {second}",
-    "pairIsNotCreated": "Par tokena nije stvoren",
-    "pageTitle": {
-        "Swap": "Zamijenite",
-        "Pool": "Pul",
-        "Bridge": "@:bridgeText",
-        "Stats": "Statistika",
-        "Wallet": "Novčanik",
-        "AddLiquidity": "Dodajte likvidnost",
-        "RemoveLiquidity": "Uklonite likvidnost",
-        "Rewards": "Nagrade",
-        "Explore\/Tokens": "Tokeni",
-        "Explore\/Pools": "Bazeni",
-        "Explore\/Staking": "Ulaganje",
-        "Explore\/Farming": "Farmanje",
-        "Staking": "Ulaganje",
-        "OrderBook": "Trgovina",
-        "Explore\/Books": "@:pageTitle.OrderBook",
-        "AssetOwner": "Vlasnik imovine",
-        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "{Kensetsu}",
-        "VaultDetails": "Detalji pozicije",
-        "Burn": "Spaliti"
+    "transactions": {
+      "confimation": "Potvrdite {order} od {total} transakcije...",
+      "success": "Uskoro ćete dobiti svoje nagrade",
+      "failed": "{order} od {total} transakcija nije uspjelo. @:retryText"
     },
-    "mainMenu": {
-        "Swap": "Zamijenite",
-        "Pool": "Pul",
-        "Bridge": "@:bridgeText",
-        "Farming": "Farmanje",
-        "Wallet": "Račun",
-        "Rewards": "Nagrade",
-        "About": "O",
-        "Stats": "Statistika",
-        "StakingContainer": "Ulaganje",
-        "Explore\/Container": "Istražiti",
-        "SoraCard": "Kartica {Sora}",
-        "OrderBook": "Trgovina",
-        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults",
-        "Burn": "@:pageTitle.Burn"
+    "signing": {
+      "extension": "{PolkadotJs} proširenje browsera",
+      "accounts": "vaši računi {Sora} i {Ethereum}"
     },
-    "social": {
-        "twitter": "Twitter",
-        "telegram": "Telegram",
-        "medium": "Medium",
-        "reddit": "Reddit",
-        "github": "GitHub",
-        "wiki": "{Sora} Wiki"
+    "hint": {
+      "connectExternalAccount": "Povežite {Ethereum} račun da provjerite ima li dostupnih PSWAP i VAL nagrada.",
+      "connectAccounts": "Da biste zatražili nagrade za PSWAP i VAL, morate povezati račune {Sora} i {Ethereum}.",
+      "connectAnotherAccount": "Povežite drugi račun {Ethereum} da biste provjerili dostupne nagrade za PSWAP i VAL.",
+      "howToClaimRewards": "Da biste zatražili nagrade za {symbols}, morate potpisati {count} {transactions} u {destination}. Nagrade će biti uplaćene na vaš {Sora} račun."
     },
-    "footerMenu": {
-        "faucet": "Faucet",
-        "github": "GitHub",
-        "sorawiki": "{Sora} Wiki",
-        "memorandum": "{AppName} Memorandum i Uvjeti pružanja usluga",
-        "privacy": "Pravila o privatnosti",
-        "info": "Informacija i zajednica"
+    "action": {
+      "connectExternalWallet": "Povežite {Ethereum} račun",
+      "signAndClaim": "Potpišite i zatražite",
+      "pendingInternal": "{Sora} transakcija na čekanju...",
+      "pendingExternal": "{Ethereum} transakcija na čekanju ...",
+      "checkRewards": "Provjerite"
     },
-    "helpDialog": {
-        "title": "Pomoć",
-        "termsOfService": "Uvjeti pružanja usluge",
-        "privacyPolicy": "Pravila o privatnosti",
-        "appVersion": "{AppName} verzija",
-        "contactUs": "Kontaktirajte nas"
+    "notification": {
+      "empty": "Nema dostupnih potraživanja za ovaj račun"
     },
-    "aboutNetworkDialog": {
-        "title": "O",
-        "network": {
-            "title": "Što je {Sora}?",
-            "description": "{AppName} je izgrađen na {Sora} Network, a token {Sora} (XOR) koristi se za opskrbu gasom\/naknadama i likvidnošću na {AppName}. {Sora} Network omogućuje smanjene naknade, brže transakcije i jednostavniju finalizaciju konsenzusa i usmjerena je na isporuku interoperabilnosti u drugim blockchain ekosustavima kao što je {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Što je {PolkadotJs}?",
-            "description": "{PolkadotJs} proširenje je proširenje preglednika dostupno za Firefox i Chrome posvećeno upravljanju računima za lance temeljene na Substrate-u, uključujući {Sora}, {Polkadot} i {Kusama}. Možete dodavati, uvoziti i izvoziti račune te potpisivati transakcije ili ekstrinzike koje ste pokrenuli s web stranice koja ste ovlastili."
-        }
+    "events": {
+      "XorErc20": "XOR ERC-20",
+      "SoraFarmHarvest": "{Sora}.farm harvest",
+      "NtfAirdrop": "NFT Airdrop",
+      "LiquidityProvision": "Naknade dobivene davanjem likvidnosti",
+      "BuyOnBondingCurve": "kupnja od TBC-a",
+      "MarketMakerVolume": "Stvaranje tržišta",
+      "LiquidityProvisionFarming": "Farmanje"
     },
-    "node": {
-        "errors": {
-            "connection": "Došlo je do pogreške pri povezivanju s nodom\n{address}\n",
-            "network": "Nod\n{address}\n je s druge mreže\n",
-            "existing": "Ovaj nod je već dodan: {title}\n"
-        },
-        "messages": {
-            "connected": "Veza uspostavljena nodom\n{address}\n",
-            "selectNode": "Molimo odaberite nod za povezivanje s popisa nodova"
-        },
-        "warnings": {
-            "disconnect": "Veza s nodom je izgubljena. Ponovno povezivanje..."
-        }
+    "vested": "dodijeljeno",
+    "forText": "za",
+    "totalVested": "Ukupne nagrade",
+    "claimableAmountDoneVesting": "Nagrade koje se mogu tražiti",
+    "groups": {
+      "strategic": "Strateške nagrade",
+      "external": "Nagrade za povezani {Ethereum} račun",
+      "crowdloan": "Crowdloan nagrade"
     },
-    "selectNodeDialog": {
-        "title": "Odabir mrežnog noda",
-        "addNode": "Dodajte prilagođenog noda",
-        "customNode": "Prilagođeni nod",
-        "howToSetupOwnNode": "Postavite svoj čvor",
-        "select": "Izaberite",
-        "connected": "Povezano",
-        "nodeTitle": "{chain} hostiran od strane {name}",
-        "messages": {
-            "emptyName": "Molimo unesite naziv noda",
-            "emptyAddress": "Molimo unesite adresu noda",
-            "incorrectProtocol": "Adresa bi trebala početi od ws:\/\/ ili wss:\/\/",
-            "incorrectAddress": "Neispravna adresa"
-        },
-        "updateNode": "Ažurirajte nod"
+    "Rewards": "Nagrade",
+    "ReferralProgram": "Preporuke",
+    "PointSystem": "Bodovi"
+  },
+  "provider": {
+    "messages": {
+      "checkExtension": "Proširenje {name} je zauzeto, provjerite ga",
+      "extensionLogin": "Prijavite se u proširenju {name}",
+      "installExtension": "Proširenje {name} nije pronađeno. Molim vas, instalirajte ga!\n\nVeć instalirano proširenje? Ponovno učitajte stranicu",
+      "reloadPage": "Ponovno učitajte stranicu",
+      "notAvailable": "{name} nije dostupan."
+    }
+  },
+  "selectLanguageDialog": {
+    "title": "Jezik"
+  },
+  "tokens": {
+    "symbol": "Simbol",
+    "assetId": "ID sredstva"
+  },
+  "memorandum": "{AppName} Memorandum i Uvjeti pružanja usluga",
+  "FAQ": "Najčešća pitanja o {AppName}",
+  "connectedAccount": "Povezani račun",
+  "selectNodeConnected": "Povezano s: {chain}",
+  "moonpayText": "MoonPay",
+  "forText": "za",
+  "moonpay": {
+    "notifications": {
+      "success": {
+        "title": "Kupljeni tokeni",
+        "text": "Kupnja tokena je završena. Transakcija {Hashi} mosta automatski će započeti čim se tokeni zaprime na povezani {Ethereum} račun. Sigurno je zatvoriti ovaj prozor i nastaviti koristiti {AppName}. Bit će obavijest o most transakciji kada bude spremna."
+      },
+      "supportError": {
+        "title": "Token nije podržan",
+        "text": "Nažalost, token kupljen putem @:moonpayText još nije podržan od strane {Hashi} mosta u {AppName}. Obično bi samo podržani tokeni trebali biti dostupni za kupnju putem MoonPaya u {AppName}, stoga je negdje nešto pošlo po zlu. Ne ustručavajte se obavijestiti zajednicu o ovom slučaju u <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> {AppName} Telegram grupa </a> ."
+      },
+      "feeError": {
+        "title": "Nema dovoljno ETHa za most tx",
+        "text": "Nažalost, {Hashi} most transakcija nije uspjela jer nije bilo dovoljno ETHa za plaćanje naknada za transakciju mreže {Ethereum}. Molimo dodajte još ETH i pokušajte ponovno."
+      },
+      "transactionError": {
+        "title": "Transakcija nije uspjela",
+        "text": "Nažalost, čini se da transakcija @:moonpayText nije uspjela. Molim Vas pokušajte ponovno. Za podršku za @:moonpayText idite na <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:// support.moonpay.com </a>"
+      },
+      "amountError": {
+        "title": "Nedovoljno saldo",
+        "text": "Nažalost, {Hashi} most transakcija nije uspjela jer nema dovoljno tokena za transakciju. Provjerite stanje na {Ethereum} računu i pokušajte ponovno."
+      },
+      "accountAddressError": {
+        "title": "Pogrešan {Ethereum} račun",
+        "text": "Nažalost, {Hashi} most transakcija nije uspjela jer adresa primatelja tokena u redoslijedu @:moonpayText ne odgovara vašoj trenutnoj adresi {Ethereum} računa. Promijenite {Ethereum} račun u novčaniku i pokušajte ponovo."
+      }
     },
     "buttons": {
-        "max": "MAX",
-        "chooseToken": "Odaberite token",
-        "chooseAToken": "Odaberite token",
-        "chooseTokens": "Odaberite tokene",
-        "enterAmount": "Unesite iznos"
+      "buy": "Kupite tokene",
+      "history": "Povijest kupnje",
+      "transfer": "Pokrenite most",
+      "view": "Pogledajte most transakcije"
     },
-    "transfers": {
-        "from": "Od",
-        "to": "Do"
+    "history": {
+      "title": "Povijest kupnje",
+      "empty": "Nema podataka"
     },
-    "exchange": {
-        "Swap": "Zamijenite",
-        "Pool": "Pul",
-        "balance": "Stanje",
-        "price": "Cijena",
-        "transactionSubmitted": "Transakcija je poslana",
-        "transactionMessage": "{firstToken} i {secondToken}",
-        "ok": "U redu",
-        "confirm": "Potvrdite",
-        "lossWarning": "Izgubit ćete {value}% na svojoj trgovini. Otkrili smo problem s pružanjem likvidnosti. To može dovesti do značajnih gubitaka tijekom zamjene tokena. Provjerite postoji li odgovarajuća likvidnost za vaš željeni swap par."
-    },
-    "swap": {
-        "estimated": "procijenjeno",
-        "slippageTolerance": "Tolerancija klizanja",
-        "minReceived": "Minimalno primljeno",
-        "maxSold": "Maksimalno prodano",
-        "minReceivedTooltip": "Vaša transakcija će se vratiti ako dođe do velikog, nepovoljnog kretanja cijene prije nego što se potvrdi.",
-        "priceImpact": "Utjecaj na cijenu",
-        "priceImpactTooltip": "Razlika između tržišne cijene i procijenjene cijene zbog veličine trgovine.",
-        "liquidityProviderFee": "Naknada za pružatelja likvidnosti",
-        "liquidityProviderFeeTooltip": "Dio svake trgovine ({liquidityProviderFee}%) ide pružateljima likvidnosti kao protokolarni poticaj.",
-        "insufficientAmount": "Nedovoljna količina {tokenSymbol}",
-        "insufficientLiquidity": "Nedovoljna likvidnost",
-        "confirmSwap": "Potvrdite zamjenu",
-        "swapOutputMessage": "Procjenjuje se izlaz. Primit ćete najmanje {transactionValue} ili će se transakcija vratiti.",
-        "rewardsForSwap": "PSWAP strateške nagrade",
-        "swapInputMessage": "Procjenjuje se ulaz. Prodat ćete najviše {transactionValue} ili će se transakcija vratiti.",
-        "route": "Ruta",
-        "errorFetching": "Pogreška pri dohvaćanju podataka"
-    },
-    "pool": {
-        "connectToWallet": "Povežite račun da biste vidjeli svoju likvidnost.",
-        "liquidityNotFound": "Nije pronađena likvidnost.",
-        "addLiquidity": "Dodajte likvidnost",
-        "removeLiquidity": "Uklonite likvidnost",
-        "createPair": "Napravite par",
-        "pooledToken": "{tokenSymbol} udruženi u pool",
-        "pairTokens": "{pair} Pul tokeni",
-        "poolShare": "Vaš udio u pulu",
-        "description": "Kada dodate likvidnost, dobivate tokene pula koji predstavljaju vašu poziciju. Ti tokeni automatski zarađuju naknade proporcionalne vašem udjelu u pulu i mogu se iskoristiti u bilo kojem trenutku.",
-        "strategicBonusApy": "Strateški bonus APY"
-    },
-    "bridge": {
-        "title": "Most",
-        "info": "Pretvorite tokene između mreža {Sora} i {Ethereum}.",
-        "balance": "Stanje",
-        "next": "Sljedeći",
-        "connectWallets": "Povežite novčanike da biste vidjeli odgovarajuću povijest transakcija.",
-        "soraNetworkFee": "{Sora} mrežna naknada",
-        "ethereumNetworkFee": "{Ethereum} mrežna naknada",
-        "total": "Ukupno",
-        "viewHistory": "Prikazite povijesti transakcija",
-        "transactionSubmitted": "Transakcija je poslana",
-        "transactionMessage": "{assetA} za {assetB}",
-        "notRegisteredAsset": "Sredstvo {assetSymbol} nije registrirano",
-        "selectNetwork": "Odaberite mrežu",
-        "networkInfo": "Bridge {Sora} mrežna naknada s:",
-        "copy": "Kopiraj mrežnu adresu",
-        "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa",
-        "limitMessage": "Trenutno postoji {type} {amount} {symbol} za premošćivanje kako bi se osigurala stabilnost i sigurnost {Sora} mreže. Cijenimo vaše razumijevanje.",
-        "externalTransferFee": "{network} {XCM} naknada",
-        "externalTransferFeeTooltip": "Kada pošaljete premosnu transakciju na mrežu {network} , od iznosa koji prenosite uzima se manja naknada",
-        "externalMinDeposit": "{network} min. depozit",
-        "externalMinDepositTooltip": "Minimalni saldo {symbol} koji mora biti na vašem {network} računu nakon prijelaza"
-    },
-    "selectRegisteredAsset": {
-        "title": "Odaberite token",
-        "search": {
-            "title": "Tokeni",
-            "placeholder": "Filtrirajte prema ID-u sredstva, nazivu ili simbolu oznake",
-            "networkLabelSora": "{Sora} mrežni tokeni",
-            "networkLabelEthereum": "{network} mrežni zrcalni tokeni",
-            "emptyListMessage": "Nema rezultata"
-        },
-        "customAsset": {
-            "title": "Prilagođen",
-            "customInfo": "Važno! Prilagođeni tokeni moraju biti registrirani u {Sora}.",
-            "registerToken": "Registrirajte token",
-            "addressPlaceholder": "ID sredstva",
-            "symbolPlaceholder": "Simbol tokena",
-            "empty": "Tokeni nisu pronađeni",
-            "alreadyAttached": "Token je već bio priložen"
-        }
-    },
-    "bridgeTransaction": {
-        "details": "{from} za {to}",
-        "for": " za ",
-        "steps": {
-            "step": "{step} od 2",
-            "step1": "1.",
-            "step2": "2."
-        },
-        "status": {
-            "pending": "{step} transakcije na čekanju ...",
-            "failed": "{step} transakcije nisu uspjele. @:(retryText).",
-            "confirm": "Potvrdite 2. od 2 transakcije...",
-            "complete": "Potpuno",
-            "convertionComplete": "Konverzija je dovršena"
-        },
-        "statuses": {
-            "waiting": "Čekanje",
-            "ready": "Spremno",
-            "pending": "U tijeku",
-            "frozen": "Zamrznuto",
-            "failed": "Transakcija nije uspjela",
-            "done": "Potpuno",
-            "waitingForConfirmation": "Čeka se potvrda..."
-        },
-        "networkTitle": "{network} transakcija",
-        "transactionHash": "Hash transakcije",
-        "networkInfo": {
-            "status": "Status",
-            "date": "Datum",
-            "amount": "Iznos",
-            "transactionFee": "Naknada za transakciju",
-            "total": "Ukupno"
-        },
-        "successCopy": "Hash transakcije kopira se u međuspremnik",
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
-        "pending": "{network} transakcija na čekanju...",
-        "newTransaction": "Izradite novu transakciju",
-        "title": "Bridge transakcije",
-        "allowToken": "Dopustite {AppName} da koristi vaš {tokenSymbol}",
-        "approveToken": "Napominjemo da je token potrebno odobriti samo jednom. Ako vaše proširenje ima više zahtjeva za odobrenje tokena, svakako potvrdite samo posljednji, odbijajući ostale.",
-        "blocksLeft": "{count} preostalo blokova..."
-    },
-    "bridgeHistory": {
-        "title": "Povijest",
-        "showHistory": "Prikažite povijest",
-        "clearHistory": "Očistite povijest",
-        "empty": "Ovdje će se pojaviti vaše transakcije.",
-        "filterPlaceholder": "Filtrirajte prema ID-u sredsvta ili simbolu oznake",
-        "restoreHistory": "Vratite povijesti",
-        "statusAction": "Potrebna je akcija"
-    },
-    "selectToken": {
-        "title": "Odaberite token",
-        "searchPlaceholder": "Filtrirajte prema ID-u sredstva, nazivu ili simbolu oznake",
-        "emptyListMessage": "Nema rezultata",
-        "copy": "Kopirajte ID sredstva",
-        "successCopy": "{symbol} ID sredstva kopira se u međuspremnik",
-        "assets": {
-            "title": "Sredstva"
-        },
-        "custom": {
-            "title": "Prilagođeno",
-            "search": "Unesite ID sredstva",
-            "text": "PRILAGOĐENI TOKENI",
-            "alreadyAttached": "Ovaj token već bio priložen",
-            "notFound": "Token nije pronađen"
-        }
-    },
-    "createPair": {
-        "title": "Napravite par",
-        "deposit": "Depozit",
-        "balance": "Stanje",
-        "pricePool": "Cijene i naknade",
-        "shareOfPool": "Udio u pulu",
-        "firstSecondPoolTokens": "{first}-{second} Pul",
-        "connect": "Spojite novčanik",
-        "supply": "Opskrba",
-        "yourPosition": "Vaša pozicija",
-        "yourPositionEstimated": "Vaša pozicija (procijenjena)",
-        "youWillReceive": "Dobit ćete",
-        "remove": "uklonite",
-        "add": "DODAJTE",
-        "ok": "U redu",
-        "alreadyCreated": "Par tokena već je stvoren",
-        "firstLiquidityProvider": "Vi ste prvi davatelj likvidnosti",
-        "firstLiquidityProviderInfo": "Omjer tokena koje dodate postavit će cijenu ovog pula.<br\/> Nakon što ste zadovoljni s cijenom kliknite opskrbu za pregled."
-    },
-    "confirmSupply": {
-        "title": "Vaš udio u pulu bit će",
-        "outputDescription": "Procjenjuje se izlaz. Ako se cijena promijeni više od {slippageTolerance}%, vaša će se transakcija vratiti.",
-        "poolTokensBurned": "{first}-{second} Spaljeni pul tokeni",
-        "price": "Cijena"
-    },
-    "addLiquidity": {
-        "title": "Dodajte likvidnost"
-    },
-    "removeLiquidity": {
-        "title": "Uklonite likvidnost",
-        "liquidity": "likvidnost",
-        "balance": "Stanje",
-        "amount": "Iznos",
-        "input": "Ulaz",
-        "output": "Izlaz",
-        "price": "Cijena",
-        "remove": "Uklonite",
-        "description": "Uklanjanje tokena pula pretvara vašu poziciju natrag u temeljne tokene po trenutnoj stopi, proporcionalno vašem udjelu u pulu. Obračunate naknade uključene su u iznose koje primite.",
-        "outputMessage": "Procjenjuje se izlazna količina. Ako se cijena promijeni više od {slippageTolerance}%, vaša će se transakcija vratiti.",
-        "confirmTitle": "Dobit ćete",
-        "shareOfPool": "Udio u pulu nakon transakcije",
-        "locked": "{percent} vašeg bazena je u {lock}"
-    },
-    "dexSettings": {
-        "title": "Postavke",
-        "marketAlgorithm": "@.upper:marketAlgorithmText",
-        "marketAlgorithmTooltip": {
-            "main": " - mogućnost izbora između primarnog tržišta (TBC), sekundarnog tržišta (XYK) ili kombiniranog pametnog algoritma za zajamčenu najbolju cijenu za bilo koju transakciju."
-        },
-        "slippageTolerance": "TOLERANCIJA KLIZANJA",
-        "slippageToleranceHint": "Vaša će se transakcija vratiti ako se cijena nepovoljno promijeni za više od ovog procenta.",
-        "slippageToleranceValidation": {
-            "warning": "Vaša transakcija možda neće uspjeti",
-            "frontrun": "Vaša transakcija može biti \"frontrun\"",
-            "error": "Unesite valjani postotak tolerancije"
-        },
-        "custom": "PRILAGOĐEN",
-        "transactionDeadline": "ROK TRANSAKCIJE",
-        "transactionDeadlineHint": "Transakcija će biti otkazana ako je na čekanju dulje od ovog vremena.",
-        "nodeAddress": "ADRESA NODA",
-        "ip": "IP",
-        "port": "PORT",
-        "min": "MIN",
-        "marketAlgorithms": {
-            "SMART": "{smartAlgorithm} usmjeravanje likvidnosti osigurava najbolju cijenu za bilo koju transakciju kombiniranjem samo najboljih opcija cijena sa svih dostupnih tržišta. Kada je dostupna, Krivulja povezivanja tokena ({tbcAlgorithm}) koristit će se za likvidnost sve dok je cijena sredstva pristupačnija nego iz drugih izvora, na kojima se koristi {xycAlgorithm} pul.",
-            "TBC": "{tbcAlgorithm} — kupnja samo od Krivulje povezivanja tokena (Primarno tržište). Postoji mogućnost da cijena postane nepovoljna u usporedbi s {xycAlgorithm} bazen (Sekundarno tržište), ali vrijednost primljena od dodijeljenih nagrada mogla bi se s vremenom pokazati mnogo povoljnijom.",
-            "XYK": "{xycAlgorithm} — kupnja samo iz XYK pula (sekundarno tržište). Tradicionalna zamjena XYK pula."
-        },
-        "charts": "Karte",
-        "сhartsDescription": "Pogledajte grafikone za cijene tokena"
-    },
-    "resultDialog": {
-        "title": "Transakcija je poslana",
-        "ok": "U redu"
-    },
-    "rewards": {
-        "title": "Zatražite nagrade",
-        "andText": "i",
-        "claiming": {
-            "pending": "Preuzimanje",
-            "success": "Uspješno prisvojio"
-        },
-        "transactions": {
-            "confimation": "Potvrdite {order} od {total} transakcije...",
-            "success": "Uskoro ćete dobiti svoje nagrade",
-            "failed": "{order} od {total} transakcija nije uspjelo. @:retryText"
-        },
-        "signing": {
-            "extension": "{PolkadotJs} proširenje browsera",
-            "accounts": "vaši računi {Sora} i {Ethereum}"
-        },
-        "hint": {
-            "connectExternalAccount": "Povežite {Ethereum} račun da provjerite ima li dostupnih PSWAP i VAL nagrada.",
-            "connectAccounts": "Da biste zatražili nagrade za PSWAP i VAL, morate povezati račune {Sora} i {Ethereum}.",
-            "connectAnotherAccount": "Povežite drugi račun {Ethereum} da biste provjerili dostupne nagrade za PSWAP i VAL.",
-            "howToClaimRewards": "Da biste zatražili nagrade za {symbols}, morate potpisati {count} {transactions} u {destination}. Nagrade će biti uplaćene na vaš {Sora} račun."
-        },
-        "action": {
-            "connectExternalWallet": "Povežite {Ethereum} račun",
-            "signAndClaim": "Potpišite i zatražite",
-            "pendingInternal": "{Sora} transakcija na čekanju...",
-            "pendingExternal": "{Ethereum} transakcija na čekanju ...",
-            "checkRewards": "Provjerite"
-        },
-        "notification": {
-            "empty": "Nema dostupnih potraživanja za ovaj račun"
-        },
-        "events": {
-            "XorErc20": "XOR ERC-20",
-            "SoraFarmHarvest": "{Sora}.farm harvest",
-            "NtfAirdrop": "NFT Airdrop",
-            "LiquidityProvision": "Naknade dobivene davanjem likvidnosti",
-            "BuyOnBondingCurve": "kupnja od TBC-a",
-            "MarketMakerVolume": "Stvaranje tržišta",
-            "LiquidityProvisionFarming": "Farmanje"
-        },
-        "vested": "dodijeljeno",
-        "forText": "za",
-        "totalVested": "Ukupne nagrade",
-        "claimableAmountDoneVesting": "Nagrade koje se mogu tražiti",
-        "groups": {
-            "strategic": "Strateške nagrade",
-            "external": "Nagrade za povezani {Ethereum} račun",
-            "crowdloan": "Crowdloan nagrade"
-        },
-        "Rewards": "Nagrade",
-        "ReferralProgram": "Preporuke",
-        "PointSystem": "Bodovi"
-    },
-    "provider": {
-        "messages": {
-            "checkExtension": "Proširenje {name} je zauzeto, provjerite ga",
-            "extensionLogin": "Prijavite se u proširenju {name}",
-            "installExtension": "Proširenje {name} nije pronađeno. Molim vas, instalirajte ga!\n\nVeć instalirano proširenje? Ponovno učitajte stranicu",
-            "reloadPage": "Ponovno učitajte stranicu",
-            "notAvailable": "{name} nije dostupan."
-        }
-    },
-    "selectLanguageDialog": {
-        "title": "Jezik"
-    },
-    "tokens": {
-        "symbol": "Simbol",
-        "assetId": "ID sredstva"
-    },
-    "memorandum": "{AppName} Memorandum i Uvjeti pružanja usluga",
-    "FAQ": "Najčešća pitanja o {AppName}",
-    "connectedAccount": "Povezani račun",
-    "selectNodeConnected": "Povezano s: {chain}",
-    "moonpayText": "MoonPay",
-    "forText": "za",
-    "moonpay": {
-        "notifications": {
-            "success": {
-                "title": "Kupljeni tokeni",
-                "text": "Kupnja tokena je završena. Transakcija {Hashi} mosta automatski će započeti čim se tokeni zaprime na povezani {Ethereum} račun. Sigurno je zatvoriti ovaj prozor i nastaviti koristiti {AppName}. Bit će obavijest o most transakciji kada bude spremna."
-            },
-            "supportError": {
-                "title": "Token nije podržan",
-                "text": "Nažalost, token kupljen putem @:moonpayText još nije podržan od strane {Hashi} mosta u {AppName}. Obično bi samo podržani tokeni trebali biti dostupni za kupnju putem MoonPaya u {AppName}, stoga je negdje nešto pošlo po zlu. Ne ustručavajte se obavijestiti zajednicu o ovom slučaju u <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> {AppName} Telegram grupa <\/a> ."
-            },
-            "feeError": {
-                "title": "Nema dovoljno ETHa za most tx",
-                "text": "Nažalost, {Hashi} most transakcija nije uspjela jer nije bilo dovoljno ETHa za plaćanje naknada za transakciju mreže {Ethereum}. Molimo dodajte još ETH i pokušajte ponovno."
-            },
-            "transactionError": {
-                "title": "Transakcija nije uspjela",
-                "text": "Nažalost, čini se da transakcija @:moonpayText nije uspjela. Molim Vas pokušajte ponovno. Za podršku za @:moonpayText idite na <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/ support.moonpay.com <\/a>"
-            },
-            "amountError": {
-                "title": "Nedovoljno saldo",
-                "text": "Nažalost, {Hashi} most transakcija nije uspjela jer nema dovoljno tokena za transakciju. Provjerite stanje na {Ethereum} računu i pokušajte ponovno."
-            },
-            "accountAddressError": {
-                "title": "Pogrešan {Ethereum} račun",
-                "text": "Nažalost, {Hashi} most transakcija nije uspjela jer adresa primatelja tokena u redoslijedu @:moonpayText ne odgovara vašoj trenutnoj adresi {Ethereum} računa. Promijenite {Ethereum} račun u novčaniku i pokušajte ponovo."
-            }
-        },
-        "buttons": {
-            "buy": "Kupite tokene",
-            "history": "Povijest kupnje",
-            "transfer": "Pokrenite most",
-            "view": "Pogledajte most transakcije"
-        },
-        "history": {
-            "title": "Povijest kupnje",
-            "empty": "Nema podataka"
-        },
-        "confirmations": {
-            "txReady": "Transakcija spremna za most"
-        },
-        "tooltips": {
-            "transfer": "Tokeni su uspješno kupljeni!\nKliknite za pokretanje most transakcije"
-        }
-    },
-    "light": "Svjetlo",
-    "dark": "Tamno",
-    "headerMenu": {
-        "showBalances": "Prikažite saldove",
-        "hideBalances": "Sakrijte saldove",
-        "settings": "Postavke",
-        "switchTheme": "Prijeđite na {theme} modus",
-        "switchLanguage": "Odaberite jezik",
-        "showDisclaimer": "Prikaži Odricanje od odgovornosti",
-        "hideDisclaimer": "Sakrij izjavu o odricanju odgovornosti",
-        "selectCurrency": "Odaberite Valutu"
-    },
-    "sentText": "Poslano",
-    "learnMoreText": "Saznajte više",
-    "marketMakerCountdown": {
-        "title": "Market Maker odbrojavanje",
-        "blocks": "blokova",
-        "daysLeft": "preostalih dani",
-        "txs": "TX-ovi",
-        "volume": "MM TX promet",
-        "description": "20 milijuna PSWAP-a mjesečno će se distribuirati market makerima s najmanje 500 tx-a mjesečno u vrijednosti od 1 XOR-a."
-    },
-    "confirmNextTxFailure": {
-        "header": "Pažnja",
-        "info": "Vaš saldo {symbol} bit će manji od {fee} {symbol} nakon ove transakcije. Nećete moći platiti mrežnu naknadu za drugu transakciju.",
-        "payoff": "Morali biste koristiti Most za dobivanje XOR-a s drugih mreža, slanje XOR-a s drugog {Sora} računa ili zamjenu bilo kojeg drugog tokena koji je već na vašem računu u XOR.",
-        "button": "Da, razumijem rizik"
-    },
-    "blockNumberText": "Broj bloka",
-    "referralProgram": {
-        "title": "Program preporuka",
-        "connectAccount": "Za pozivanje korisnika potrebno je povezati svoj {Sora} račun.",
-        "bondedXOR": "XOR vezano",
-        "referralsNumber": "Broj preporuka {number}",
-        "startInviting": "Povežite XOR za upućivanje drugih",
-        "preview": "Pozovite nove korisnike i ostvarite 10% od njihovih transakcijskih naknada. <br\/> Za početak povežite bilo koju količinu XORa. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Saznajte više <\/a>",
-        "deposit": "Polog",
-        "balance": "Stanje",
-        "insufficientBondedBalance": "Nedovoljno vezano saldo",
-        "action": {
-            "empty": "Unesite iznos {tokenSymbol}",
-            "startInviting": "Bond {tokenSymbol} da biste počeli pozivati",
-            "bondMore": "Bond više",
-            "bond": "Bond",
-            "unbond": "Unbond",
-            "copyLink": "Kopirajte link",
-            "shareLink": "Podijeli"
-        },
-        "transactionDetails": "Detalji transakcije",
-        "receivedRewards": "Primljene nagrade",
-        "invitationLink": "Link za pozivnicu",
-        "successCopy": "Link za preporuku se kopira u međuspremnik",
-        "bondTitle": "Bond XOR",
-        "unbondTitle": "Unbond XOR",
-        "confirm": {
-            "bond": "Potvrdite bond",
-            "unbond": "Potvrdite unbond",
-            "inviteTitle": "Pozvani ste u {AppName}",
-            "inviteDescription": "Za svaku transakciju, 10% naknade ide vašem preporučitelju, bez ikakvih dodatnih troškova za vas.",
-            "signInvitation": "Odobrite",
-            "freeOfCharge": "Ova akcija je besplatna",
-            "hasReferrerTitle": "Već ste postavili svog preporučitelja",
-            "hasReferrerDescription": "Nažalost, možete postaviti samo jedan",
-            "ok": "U redu",
-            "text": "Potvrdite"
-        },
-        "referrer": {
-            "title": "Dodajte svog referera",
-            "titleReferrer": "Vaš referer",
-            "placeholder": "Unesite link za pozivnicu ili kod",
-            "label": "Link za pozivnicu ili kod",
-            "approve": "Odobrite",
-            "approved": "Odobreno",
-            "description": "Možete dobiti preporuku na {AppName}, <br\/> upišite link ili kod referera",
-            "referredBy": "Preporučio vas je {referrer}",
-            "info": "Kada platite naknadu za transakciju, <br\/> 10% će ići vašem refereru",
-            "referredLablel": "Preporučena adresa"
-        },
-        "insufficientBondedAmount": "Da biste pozvali više preporuka, povežite najmanje {inviteUserFee} XOR",
-        "inviteViaTelegram": "Pozovi putem {Telegram}",
-        "welcomeMessage": "\nPridruži mi se na {Polkaswap}!\n\nOtkrij stilizirani {DEX} koji ti omogućuje zamjenu desetaka tokena s međulančanim zamjenama, knjigom narudžbi i mnoštvom nagrada!\n\n🎁 Pozovi prijatelje i zaradi 10% njihovih trgovačkih naknada\n\nVidimo se tamo!"
-    },
-    "transactionDetailsText": "Detalji transakcije",
-    "code": {
-        "download": "Preuzmite QR kod",
-        "upload": "Skeniraj QR",
-        "invalid": "Nevažeći QR kod",
-        "import": "Uvezi sliku",
-        "scan": "Skeniraj kamerom",
-        "allowanceError": "Provjerite dostupnost svoje kamere i dopuštenja preglednika za njezino korištenje",
-        "receive": "Primite",
-        "camera": "Kamera",
-        "allowanceRequest": "Pritisnite \"Dopusti\" pristup kameri"
-    },
-    "bridgeTransferNotification": {
-        "addToken": "Dodaj {symbol} u novčanik",
-        "title": "Most transakcija uspjela"
-    },
-    "mobilePopup": {
-        "sideMenu": "Preuzmite {Sora} Wallet",
-        "header": "Preuzmite {Sora} Novčanik sa značajkama {polkaswapHighlight}",
-        "info": "Zamijenite tokene s različitih mreža - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Osigurajte fond likvidnosti i zaradite % od naknada za razmjenu."
-    },
-    "releaseNotesText": "Bilješke o izdanju",
-    "copiedText": "Kopiran!",
-    "copyWithValue": "Kopiraj {value}",
-    "copiedWithValue": "{value} je kopirana!",
-    "signAndClaimText": "Potpišite i zatražite",
-    "balanceText": "Stanje",
-    "unknownAssetText": "Nepoznato sredstvo",
-    "demeterFarming": {
-        "staking": {
-            "active": "Ulaganje aktivno",
-            "inactive": "Uložite da biste zaradili dodatne nagrade",
-            "stopped": "Ulaganje je prestalo"
-        },
-        "info": {
-            "earned": "{symbol} zaradio",
-            "fee": "Naknada",
-            "feeTooltip": "Naknada za depozit se primjenjuje na vaš iznos za ulog",
-            "owned": "{symbol} @:balanceText",
-            "poolShare": "Vaš udio u bazenu je uložen",
-            "poolShareWillBe": "Vaš udio u bazenu bit će uložen",
-            "rewardToken": "Nagradni token",
-            "stake": "Vaš {symbol} je uložio",
-            "stakeWillBe": "Vaš ulog {symbol} bit će",
-            "totalLiquidityLocked": "Ukupna likvidnost zaključana"
-        },
-        "actions": {
-            "add": "Uložite više",
-            "claim": "Zatražite nagrade",
-            "remove": "Uklonite kolac",
-            "start": "Započnite ulaganje"
-        },
-        "amountAdd": "Iznos za ulog",
-        "amountRemove": "Iznos za uklanjanje",
-        "poweredBy": "Pokreće Demeter Farming",
-        "calculator": "Kalkulator",
-        "results": "Rezultati",
-        "rewards": "{symbol} nagrada"
-    },
-    "historyErrorMessages": {
-        "generalError": "Nešto je pošlo po zlu",
-        "balances": {
-            "liquidityrestrictions": "Ograničenja likvidnosti računa sprječavaju povlačenje"
-        },
-        "poolxyk": {
-            "sourcebalanceisnotlargeenough": "Bilans izvora nije dovoljno velik",
-            "targetbalanceisnotlargeenough": "Stanje odredišta nije dovoljno veliko",
-            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Pod uvjetom da su iznosi previše raznoliki",
-            "calculatedvalueisnotmeetsrequiredboundaries": "Iznosi su izvan potrebnih granica",
-            "unabletodepositxorlessthanminimum": "XOR manji od minimalne vrijednosti (0,007)",
-            "zerovalueinamountparameter": "Parametar iznosa ima nultu vrijednost"
-        },
-        "xstpool": {
-            "poolalreadyinitializedforpair": "Par bazena već postoji",
-            "slippagelimitexceeded": "Tolerancija klizanja nije dosegla odgovarajuće granice"
-        },
-        "referrals": {
-            "alreadyhasreferrer": "Račun već ima preporuku",
-            "referrerinsufficientbalance": "Preporučatelj nema dovoljno rezerviranog stanja"
-        },
-        "vestedrewards": {
-            "rewardssupplyshortage": "Program nagrađivanja je već završen",
-            "cantcalculatereward": "Izračun nagrade nije uspio",
-            "norewardsforasset": "Za ovu imovinu nema nagrada"
-        },
-        "liquidityproxy": {
-            "forbiddenfilter": "Odabrani izvor likvidnosti nije dopušten",
-            "slippagenottolerated": "Utjecaj cijene premašio je odabranu vrijednost"
-        },
-        "demeterfarmingplatform": {
-            "insufficientfunds": "Nedostatna sredstva",
-            "insufficientlptokens": "Nedovoljni tokeni za osiguranje likvidnosti",
-            "pooldoesnothaverewards": "Pool nema nagrade"
-        },
-        "multicollateralbondingcurvepool": {
-            "pricecalculationfailed": "Došlo je do greške prilikom izračuna cijene"
-        }
-    },
-    "receivedText": "Primljeno",
-    "browserNotificationDialog": {
-        "title": "Postavite obavijesti",
-        "info": "Poslat ćemo vam samo relevantna ažuriranja o vašem novčaniku, na primjer: promjene stanja imovine",
-        "button": "Omogući obavijesti",
-        "agree": "Da, razumijem",
-        "notificationBlocked": "Da biste primali obavijesti o {AppName}, omogućite obavijesti u izvornim postavkama preglednika",
-        "pointer": "Pritisnite \"Dopusti\" za uključivanje obavijesti"
-    },
-    "assetDeposit": "Stanje imovine je deponirano",
-    "noDataText": "Nema podataka",
-    "ofText": "{first} od {second}",
-    "filter": {
-        "all": "Sve",
-        "token": "Valute",
-        "verifiedOnly": "Prikaži samo provjerenu imovinu",
-        "zeroBalance": "Sakrij 0 salda imovine",
-        "showAssets": "Prikaži imovinu",
-        "show": "Pokazati"
-    },
-    "desktop": {
-        "welcome": {
-            "header": "Dobro došli u {AppName}!",
-            "headline": "Postavimo vaš račun",
-            "text": "Napravite svoj račun {Sora} mreže ili se prijavite na stari koristeći mnemoničku frazu ili .json import. To vam omogućuje sigurno potpisivanje transakcija i upravljanje imovinom u {Sora} mreži.",
-            "createAccount": "Stvorite račun",
-            "importAccount": "Uvezi račun"
-        },
-        "heading": {
-            "seedPhraseTitle": "Pristupni izraz",
-            "confirmSeedTitle": "Potvrda pristupnog izraza",
-            "accountDetailsTitle": "Detalji Računa",
-            "importTitle": "Uvezi račun"
-        },
-        "button": {
-            "next": "Sljedeći korak",
-            "skip": "Preskočiti",
-            "createAccount": "Napravi račun",
-            "importAccount": "Uvezi račun"
-        },
-        "accountName": {
-            "placeholder": "Korisničko ime",
-            "desc": "Ovo je naziv vašeg računa. Bit će vidljiv samo vama u {Polkaswap}."
-        },
-        "password": {
-            "placeholder": "Zaporka",
-            "desc": "Provjerite koristite li jaku jedinstvenu lozinku za pravilnu zaštitu (najmanje 8 znakova)"
-        },
-        "confirmPassword": {
-            "placeholder": "Potvrdi lozinku"
-        },
-        "accountMnemonic": {
-            "placeholder": "Mnemotehnička fraza"
-        },
-        "seedAdviceText": "Zaporka od 12 riječi privatni je ključ za ponovni pristup vašem {Sora} računu u slučaju da izgubite pristup svom {wallet} računu. Pohranite ga na sigurno točnim redoslijedom kako je gore prikazan.",
-        "confirmSeedText": "Potvrdite zaporku klikom na riječi u ispravnom redoslijedu",
-        "errorMnemonicText": "Neispravan redoslijed šifre",
-        "exportOptionText": "Izvezite {JSON} datoteku za vraćanje računa",
-        "exportJsonText": "Uvijek ćete moći vratiti svoj račun uvozom ove {JSON} datoteke. Ne dijelite to ni s kim! Pohranite ga na sigurno, po mogućnosti šifriranog.",
-        "addAccount": "Dodajte račun",
-        "dialog": {
-            "confirmTitle": "Potvrda lozinkom",
-            "confirmButton": "Potpišite transakciju",
-            "savePasswordText": "Zapamti moju lozinku sljedećih 15 minuta",
-            "extendPasswordText": "Produžite razdoblje bez lozinke za 15 minuta"
-        },
-        "errorMessages": {
-            "password": "Lozinka se ne podudara",
-            "passwords": "Lozinke se ne podudaraju",
-            "mnemonic": "Naveden je nevažeći mnemonik bip39",
-            "mnemonicLength": "Mnemotehnika treba sadržavati {number} riječi",
-            "jsonFields": "JSON datoteka nema obavezna polja",
-            "alreadyImported": "Račun je već uvezen {address}"
-        },
-        "assetsAtRiskText": "Imovina u opasnosti!",
-        "deleteAccountText": "Račun se ne može oporaviti bez početne fraze, .json datoteke ili ako je pohranjena u nekoj ekstenziji. Bit ćete odjavljeni.",
-        "importSteps": {
-            "selectWallet": "Otvorite novčanik sa svojim postojećim računom(ima)",
-            "selectAccount": "Odaberite račun koji želite izvesti",
-            "exportAccount": "Izvezite datoteku {JSON}"
-        },
-        "exportTutorialsText": "Upute za izvoz",
-        "seedAdviceAdditionTitle": "Nikada ni s kim ne dijelite svoju šifru!",
-        "seedAdviceAdditionText": "Ako vas netko pita za lozinku, najvjerojatnije vas pokušava prevariti i ukrasti vašu imovinu!"
-    },
-    "hashiBridgeText": "{Hashi} most",
-    "disclaimerTitle": "Disclaimer:",
-    "explore": {
-        "showOnly": "Pokaži samo {entities}",
-        "myPositions": "moje pozicije",
-        "synthetics": "sintetički tokeni"
+    "confirmations": {
+      "txReady": "Transakcija spremna za most"
     },
     "tooltips": {
-        "roi": "{ROI} je kratica za povrat ulaganja. Izračunava se dijeljenjem dobiti ostvarene ulaganjem troškom tog ulaganja u postotnom ekvivalentu.",
-        "tvl": "{TVL} je kratica za Total Value Locked. Predstavlja tokene zaključane u bazenima u dolarskoj protuvrijednosti.",
-        "volume": "Volumen se odnosi na ukupnu količinu imovine kojom se trgovalo ili razmjenjivalo na mreži tijekom određenog vremenskog razdoblja. Volumen je važna metrika za mjerenje likvidnosti i ukupne aktivnosti mreže.",
-        "fees": "Naknade na {Sora} blockchainu odnose se na troškove koji nastaju za izvršavanje transakcija na mreži. Te se naknade plaćaju u XOR-u, izvornoj kriptovaluti mreže {Sora} . Visina naknade određena je složenošću i veličinom transakcije koja se izvršava",
-        "supply": "Zaliha tokena odnosi se na ukupan broj tokena koji su stvoreni i koji su u optjecaju na mreži. Zaliha tokena može varirati ovisno o količini tokena koji se ulažu, spaljuju ili prenose na mreži.",
-        "transactions": "Transakcije se odnose na proces slanja ili primanja digitalnih sredstava na mreži, uključujući operacije likvidnosti, kao i zamjene.",
-        "accounts": "Računi su digitalne adrese koje drže korisničku imovinu na mreži. Svaki račun povezan je s jedinstvenom javnom adresom i privatnim ključem koji korisniku omogućuje pristup i upravljanje svojom imovinom.",
-        "bridgeTransactions": "{from} to {to} most odnosi se na proces prijenosa sredstava između {from} i {to} mreža pomoću mosta. Most omogućuje interoperabilnost dviju mreža, omogućujući korisnicima neometano premještanje imovine između njih.",
-        "velocity": "Brzina tokena je broj prosječnih promjena računa tokenom tijekom razdoblja (mjeseca). Označava razinu aktivnosti trgovanja i likvidnosti."
-    },
-    "createTokenText": "Stvorite",
-    "comingSoonText": "Dolazi uskoro",
-    "confirmText": "Potvrdite",
-    "createTokenTextNFT": "Napravite NFT",
-    "doNotShowText": "Ne pokazuj mi ovo više",
-    "accountText": "račun | računi",
-    "networkStatisticsText": "Statistika mreže",
-    "footer": {
-        "node": {
-            "title": {
-                "connected": "Čvor povezan",
-                "loading": "Ponovno povezivanje čvora",
-                "disconnected": "Čvor je prekinut"
-            }
-        },
-        "internet": {
-            "title": {
-                "disabled": "Internet onemogućen",
-                "unstable": "Internet nestabilan",
-                "stable": "Internet stabilan"
-            },
-            "label": "Vaša brzina interneta",
-            "desc": {
-                "disabled": "Isključeno",
-                "unstable": "Spora veza",
-                "stable": "Optimalna brzina"
-            },
-            "action": "Osvježi {Polkaswap}",
-            "dialogTitle": "Spojite se na internetski izvor",
-            "dialogDesc": "{Polkaswap} zahtijeva internetsku vezu za stabilno iskustvo"
-        },
-        "statistics": {
-            "title": {
-                "unavailable": "Statistika nije dostupna",
-                "loading": "Učitavanje statistike",
-                "available": "Dostupna statistika"
-            },
-            "label": "Statističke usluge",
-            "desc": {
-                "unavailable": "Sve usluge su isključene",
-                "loading": "Sve usluge se učitavaju",
-                "available": "Sve usluge su stabilne"
-            },
-            "action": "Odaberite usluge",
-            "dialog": {
-                "title": "{Sora} Odabir mrežne usluge",
-                "indexer": "Indeksator",
-                "useCeres": "Koristite {Ceres} za fiksne vrijednosti"
-            }
-        }
-    },
-    "locationText": "Mjesto",
-    "acceptText": "Prihvati i sakrij",
-    "newAccountsText": "Novi računi",
-    "dragAndDropText": "Povucite i ispustite ili odaberite {extension} datoteku",
-    "copyPhraseText": "Kopirajte lozinku frazu",
-    "stepText": "Korak",
-    "alerts": {
-        "drop": "Kapi ispod",
-        "once": "Jednom",
-        "always": "Stalno",
-        "edit": "Uredi upozorenje",
-        "delete": "Izbriši upozorenje",
-        "onDropDesc": "{token} pada ispod {price}",
-        "alertsTitle": "upozorenja",
-        "alertsCreateTitle": "Postavite upozorenje o cijenama",
-        "alertsTooltip": "Upozorenja o cijenama su obavijesti koje možete postaviti kako biste primali ažuriranja kada cijena određenog tokena dosegne određenu točku koju ste postavili",
-        "createBtn": "Stvorite novo upozorenje o cijeni",
-        "enableSwitch": "Omogući obavijesti o depozitu imovine",
-        "currentPrice": "Trenutna cijena",
-        "alertTypeTitle": "Vrsta upozorenja",
-        "alertFrequencyTitle": "Učestalost upozorenja",
-        "frequencyTooltip": "Odaberite između 'jednom' i 'uvijek' kako biste odredili koliko često primate obavijesti za odabranu vrstu upozorenja. \"Jednom\" će poslati jednu obavijest kada je uvjet ispunjen, dok će \"uvijek\" nastaviti obavještavati vas svaki put kada se prijeđe cjenovni prag",
-        "noSupportMsg": "Vaš preglednik ne podržava obavijesti",
-        "finishBtn": "Dovršiti",
-        "raise": "Uzdiže se iznad",
-        "onRaiseDesc": "{token} raste iznad {price}",
-        "typeTooltip": "Odaberite opciju 'pada ispod' ili 'raste iznad' kako biste odredili uvjet upozorenja za praćenje važnih kretanja cijene. Ove vam opcije omogućuju primanje pravovremenih obavijesti kada vrijednost vaše imovine padne ispod ili poraste iznad vašeg određenog praga"
-    },
-    "accountAddressText": "Adresa računa",
-    "fiatDisclaimer": "Imajte na umu da su fiat vrijednosti povezane s kriptovalutama na našoj web stranici dane od strane vanjskih usluga (Subquery, Subsquid, Ceres API) približne. S obzirom na inherentnu složenost ovih izračuna, ne može se jamčiti apsolutna preciznost u svakom trenutku.",
-    "fiatPayment": {
-        "historyBtn": "Moje kupovine",
-        "historyTitle": "Povijest transakcija",
-        "moonpayTitle": "Kupite ETH putem MoonPaya",
-        "moonpayDesc": "Kupite ETH tokene na {Ethereum} i prenesite ih na {SORA} mrežu putem mosta",
-        "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije.",
-        "cedeStoreTitle": "Prijenos od {value}",
-        "cedeStoreDesc": "Prenesite sve tokene s {value1} na {value2} putem {value3}",
-        "cedeStoreBtn": "Prijenos s {value1} putem {value2}"
-    },
-    "acceptOnScrollText": "Pomaknite se za prihvaćanje",
-    "addressBook": {
-        "myAccounts": "Moji računi",
-        "myBook": "Moja knjiga",
-        "searchPlaceholder": "Pretraživanje po adresi, imenu ili identitetu",
-        "noFoundRecords": "Nema pronađenih zapisa",
-        "noContacts": "Još nemate dodanih kontakata",
-        "addContact": "Dodaj kontakt",
-        "dialogTitle": "Vaši kontakti",
-        "identity": "Identitet na lancu",
-        "none": "Nijedan",
-        "detected": "Nova adresa otkrivena",
-        "save": "Spremi kao kontakt",
-        "tooltip": "Prikupite adresar unosom imena i adrese kako bi vaši kontakti bili organizirani i ažurni",
-        "notSoraAddress": "Ova adresa će biti spremljena kao {SORA} adresa ispod. Provjerite može li primatelj pristupiti {SORA} lancu:",
-        "options": {
-            "send": "Pošaljite tokene",
-            "edit": "Uredi kontakt",
-            "delete": "Izbrisati"
-        },
-        "btn": {
-            "enterName": "Unesite ime",
-            "present": "Već prisutan",
-            "saveChanges": "Spremi promjene"
-        },
-        "input": "Unesite adresu ili odaberite kontakt",
-        "selectContact": "Odaberite kontakt"
-    },
-    "browserPermission": {
-        "title": "Dopustite pristup kameri u postavkama preglednika",
-        "desc": "Kako biste osigurali autentičnost dokumenata i potvrdili korisnički identitet za KYC provjeru, potreban je pristup kameri vašeg uređaja.",
-        "disclaimer": "Potreban je pristup kameri za snimanje dokumenata u stvarnom vremenu kako bi se spriječila prijevara.",
-        "btnGoToSettings": "Idite na postavke",
-        "btnAllow": "Dopusti pristup"
-    },
-    "continueText": "Nastaviti",
-    "minAmountText": "min. iznos",
-    "maxAmountText": "max. iznos",
-    "exceededAmountText": "{amount} premašeno",
-    "multipleRecipients": "Višestruki primatelji",
-    "disconnectWalletText": "Prekini vezu",
-    "connectEthereumWalletText": "Povežite {Ethereum} novčanik",
-    "soraStaking": {
-        "dropdownMenu": {
-            "pendingRewards": "Nagrade na čekanju",
-            "controllerAccount": "Račun kontrolora"
-        },
-        "actions": {
-            "claim": "Zatražite nagrade",
-            "remove": "Uklonite ulog",
-            "more": "Uložite više",
-            "confirm": "Potvrdite iskolčenje",
-            "withdraw": "Povući"
-        },
-        "overview": {
-            "title": "{Sora} Staking",
-            "description": "Ulog {XOR} tokeni na mreži {Sora} kao nominator za provjeru valjanosti transakcija i zarađivanje nagrada za tokene {VAL}."
-        },
-        "newStake": {
-            "title": "Počnite ulagati",
-            "minStakeWarning": "Minimalni ulog za dobivanje nagrade je {min} {symbol}"
-        },
-        "validators": {
-            "save": "Spremi promjene",
-            "selected": "{selected} \/ {total} odabrano",
-            "recommended": "Preporučeni validatori",
-            "change": "Promjena validatora",
-            "select": "Odaberite validatore",
-            "next": "Sljedeći",
-            "alreadyNominated": "Odabrani validatori već su imenovani",
-            "tooManyValidators": "Odabrano je previše validatora ( {Max} {max} )"
-        },
-        "validatorsList": {
-            "search": "Traži...",
-            "name": "Ime",
-            "noNominatedValidators": "Nemate nijednog imenovanog validatora",
-            "noValidators": "Nema validatora koji zadovoljavaju navedeni filter",
-            "commission": "Komisija",
-            "commissionTooltip": "Provizija se odnosi na naknadu koju naplaćuju validatori za svoje usluge u procesu isplate. Ova naknada, izražena kao postotak, oduzima se od nagrada za ulog koje zarade nominatori prije distribucije. Važno je napomenuti da validatori mogu prilagoditi svoje stope provizije u bilo kojem trenutku",
-            "return": "Povratak"
-        },
-        "info": {
-            "unstaking": "Unstaking",
-            "stakingBalance": "Staking bilanca",
-            "rewarded": "Nagrađeni",
-            "totalLiquidityStaked": "Uložena ukupna likvidnost",
-            "rewardToken": "Token nagrade",
-            "unstakingPeriod": "Razdoblje nepolaganja",
-            "minimumStake": "Minimalni ulog",
-            "nominators": "Nominatori",
-            "validators": "Validatori",
-            "selectedValidators": "Odabrani validatori"
-        },
-        "validatorsFilterDialog": {
-            "title": "Filteri",
-            "save": "Spremi filter",
-            "reset": "Resetiraj sve",
-            "filters": {
-                "hasIdentity": {
-                    "name": "Identitet na lancu",
-                    "description": "Najmanje jedan identitetski kontakt povezan s računom"
-                },
-                "notSlashed": {
-                    "name": "Nije zarezano",
-                    "description": "Nisu iskusili nikakve kazne ili smanjenja svojih uloženih sredstava zbog lošeg ponašanja ili kršenja protokola."
-                },
-                "notOversubscribed": {
-                    "name": "Nije pretplaćen",
-                    "description": "Račun unutar ograničenja dodjele, izbjegava kazne za prekomjernu pretplatu na {Polkadot} ulaganje."
-                },
-                "twoValidatorsPerIdentity": {
-                    "name": "Ograničenje od 2 validatora po identitetu",
-                    "description": "Najviše dva validatora po identitetu za promicanje decentralizacije i sprječavanje koncentracije moći."
-                }
-            }
-        },
-        "validatorsDialog": {
-            "title": {
-                "edit": "Uredi moje validatore"
-            },
-            "tabs": {
-                "user": "Vaši validatori",
-                "all": "Svi validatori"
-            }
-        },
-        "validatorsAttentionDialog": {
-            "title": "Pažnja",
-            "description": [
-                "Prijedlozi algoritamskog validatora ne predstavljaju financijsku konzultaciju ili savjet. Staking je visokorizična aktivnost, a prijedlozi algoritamskih validatora ne moraju nužno umanjiti ovaj rizik.",
-                "Validator koji je predložio algoritam i dalje bi se mogao smanjiti. Validator kojeg predlaže algoritam također može promijeniti svoje parametre (npr. stope provizije, itd.) u bilo kojem trenutku nakon što je predložen i\/ili odabran.",
-                "Mogli biste izgubiti žetone ili nagrade iz ovih ili drugih razloga. Uložite samo tokene i koristite prijedloge validatora prema vlastitom nahođenju, nakon provođenja dužne pažnje i pažljivog razmatranja uključenih rizika."
-            ],
-            "confirm": "Da, razumijem rizik"
-        },
-        "pendingRewardsDialog": {
-            "noPendingRewards": "Nema nagrada na čekanju",
-            "information": "Validatori isplaćuju nagrade svakih 2-5 dana. Međutim, možete ih sami isplatiti, posebno ako su nagrade blizu isteka, ali ćete platiti naknadu.",
-            "title": "Nagrade na čekanju",
-            "noSelectedRewards": "Odaberite nagrade",
-            "payout": "Isplata"
-        },
-        "selectValidatorsMode": {
-            "title": "Ulog s validatorima koje predlaže algoritam",
-            "description": "{Sora} mrežni algoritam odabrao je popis preporučenih validatora na temelju kriterija:",
-            "criteria": [
-                "Najisplativije",
-                "Nije pretplaćen",
-                "Imati onchain identitet",
-                "Nije zarezano",
-                "Ograničenje od 2 validatora po identitetu"
-            ],
-            "confirm": {
-                "suggested": "Ulog s predloženim",
-                "manual": "Sam ću odabrati validatore"
-            }
-        },
-        "claimRewardsDialog": {
-            "title": "Zatražite nagrade",
-            "checkRewards": "Provjerite nagrade po razdoblju i validatoru",
-            "rewardsDestination": "Odredišna adresa nagrada"
-        },
-        "selectedValidators": "{count} ( {Max} {max} )",
-        "withdraw": {
-            "withdrawable": "Može se povući",
-            "beingWithdrawn": "Biti povučen",
-            "seeAll": "Vidi sve",
-            "nextWithdrawal": "Sljedeće povlačenje",
-            "countdownLeft": "još"
-        },
-        "stakeDialog": {
-            "toStake": "Uložiti ulog",
-            "toRemove": "Ukloniti"
-        },
-        "withdrawDialog": {
-            "title": "Povucite neuložena sredstva",
-            "showAllWithdraws": "Prikaži sva povlačenja"
-        },
-        "allWithdrawsDialog": {
-            "title": "Neuvjetna aktivnost",
-            "information": "Nakon što poništite ulog tokena, postoji obvezno razdoblje od 7 dana. Nakon tog razdoblja, vaši tokeni neće biti automatski vraćeni u vaš novčanik. Morate dovršiti postupak ručnim povlačenjem tokena."
-        }
-    },
-    "collapseText": "Kolaps",
-    "expandText": "Proširiti",
-    "orderBook": {
-        "Buy": "Kupi {asset}",
-        "Sell": "Prodaj {asset}",
-        "orderBook": "Knjiga narudžbi",
-        "marketTrades": "Trgovine na tržištu",
-        "market": "Tržište",
-        "limit": "Ograničiti",
-        "price": "Cijena",
-        "total": "Ukupno",
-        "amount": "iznos",
-        "time": "vrijeme",
-        "month": "mjesec",
-        "change": "promijeniti",
-        "cantPlaceOrder": "Ne mogu naručiti",
-        "enterAmount": "Unesite iznos",
-        "setPrice": "Postavite cijenu",
-        "dayVolume": "1D volumen",
-        "stop": "Knjiga zaustavljena",
-        "tokenPair": "Par tokena",
-        "book": {
-            "noAsks": "Nema otvorenih upita",
-            "noBids": "Nema otvorenih ponuda"
-        },
-        "history": {
-            "tradeHistory": "Povijest trgovine",
-            "orderHistory": "Povijest Reda",
-            "openOrders": "Otvorene narudžbe {value}",
-            "connect": "Povežite račun za početak trgovanja",
-            "cancel": "Otkaži narudžbu {value}",
-            "cancelAll": "Otkaži sve"
-        },
-        "orderTable": {
-            "time": "vrijeme",
-            "pair": "par",
-            "side": "strana",
-            "filled": "ispunjena",
-            "lifetime": "doživotno",
-            "noOrders": "Nema narudžbi. Kreirajte svoju prvu!"
-        },
-        "dialog": {
-            "placeMarket": "Postavite tržišni nalog",
-            "placeLimit": "Stavite ograničenu narudžbu",
-            "askCancel": "Jeste li sigurni da želite otkazati sve otvorene narudžbe?",
-            "cancelAll": "Da, otkaži sve",
-            "buy": "Kupite {amount} {symbol}",
-            "sell": "Prodaj {amount} {symbol}",
-            "at": "po {price} {symbol}"
-        },
-        "tradingPair": {
-            "choosePair": "Odaberite trgovinski par",
-            "volume": "Volumen",
-            "dailyChange": "Dnevna promjena",
-            "status": "Status",
-            "total": "{amount} {symbol} na {amount2} {symbol2}"
-        },
-        "bookStatus": {
-            "active": "Aktivan",
-            "placeable": "Može se postaviti",
-            "cancelable": "Može se otkazati",
-            "inactive": "Neaktivan"
-        },
-        "tooltip": {
-            "limitOrder": "'Limit' nalog vam omogućuje da odredite točnu cijenu po kojoj želite kupiti ili prodati imovinu. Nalog 'Ograničena kupnja' bit će izvršen samo po navedenoj cijeni ili nižoj, dok će se nalog 'Ograničena prodaja' izvršiti samo po navedenoj cijeni ili višoj. Ova kontrola osigurava da ne plaćate više ili prodajete za manje nego što vam odgovara.",
-            "marketOrder": "'Tržišni nalog' je nalog za trenutnu kupnju ili prodaju po najboljoj dostupnoj trenutnoj cijeni. Ne zahtijeva postavljanje cijene, osigurava brzo izvršenje, ali uz kompromis manje kontrole nad primljenom ili plaćenom cijenom. Ova vrsta naloga koristi se kada je sigurnost izvršenja prioritet nad kontrolom cijene.",
-            "pairsList": "Popis u stvarnom vremenu koji prikazuje trenutne naloge za kupnju i prodaju kriptovalute. Pomaže vam razumjeti potražnju, potencijalni smjer cijene i obujam trgovine na mreži SORA i Polkaswap DEX",
-            "bookWidget": "Živi, stalno ažurirani zapis naloga za kupnju (ponudu) i prodaju (traženje) za određenu imovinu, organiziran prema razini cijene. Knjiga naloga prikazuje dubinu tržišta, uključujući količine imovine koja se nudi po različitim cijenama. Trgovci koriste ovaj detaljan prikaz kako bi procijenili raspoloženje na tržištu, identificirali potencijalne razine otpora i podrške te predvidjeli kretanja cijena na temelju postojeće potražnje i ponude",
-            "marketWidget": "Ovaj widget prikazuje tok izvršenih trgovanja na tržištu u stvarnom vremenu, pružajući informacije o količini transakcija, nedavnoj aktivnosti i trenutnim tržišnim trendovima. Promatrajući vrijeme, cijenu i veličinu stvarnih trgovina, trgovci mogu dobiti uvid u tržišnu dinamiku i raspoloženje, pomažući im da uoče prilike za trgovanje i donesu informirane odluke",
-            "txDetails": {
-                "orderType": "Nalog 'Kupnja' bit će izvršen samo po navedenoj cijeni ili nižoj, dok će nalog 'Prodaja' biti izvršen samo po navedenoj cijeni ili višoj. Ova kontrola osigurava da ne plaćate više ili prodajete za manje nego što vam odgovara.",
-                "expiryDate": "'Datum isteka' je rok za izvršenje vaše narudžbe. Ako tržište ne dosegne vašu navedenu cijenu prije tog datuma, narudžba se automatski poništava. Niste vezani za vječno čekanje ako tržišni uvjeti nisu u skladu s vašim preferencijama trgovanja.",
-                "amount": "'Iznos' se odnosi na ukupan broj sredstava koje želite kupiti ili prodati u svojoj narudžbi. Važno je to navesti jer određuje veličinu vaše transakcije, utječući na ukupne troškove za narudžbe za kupnju ili prihod za narudžbe za prodaju.",
-                "limit": "'Ograničena cijena' je točna cijena koju postavite za ograničenu narudžbu. Trgovina će se izvršiti samo kada tržišna cijena imovine dostigne vašu ograničenu cijenu, čime se osigurava da ne kupujete iznad ili prodajete ispod navedene vrijednosti.",
-                "locked": "'Zaključano' prikazuje količinu imovine koju treba zadržati dok je narudžba u tijeku."
-            },
-            "bookStatus": {
-                "active": "Omogućena potpuna funkcionalnost trgovanja. Možete postaviti nove narudžbe ili otkazati postojeće.",
-                "placeable": "Ograničena funkcionalnost. Možete postaviti nove narudžbe i otkazati postojeće, ali neke značajke možda neće biti dostupne.",
-                "cancelable": "Možete otkazati samo postojeće narudžbe. Nova narudžba trenutno je onemogućena.",
-                "inactive": "Sve trgovinske aktivnosti trenutno su zaustavljene. U ovom trenutku nije moguće postaviti niti otkazati narudžbe."
-            }
-        },
-        "txDetails": {
-            "orderType": "vrsta naloga",
-            "limitPrice": "granična cijena",
-            "expiryDate": "datum isteka"
-        },
-        "error": {
-            "beyondPrecision": {
-                "reason": "Unesena cijena je precizna za izračunavanje",
-                "reading": "Preciznost premašena: Uneseni iznos\/cijena ima previše decimalnih mjesta. Unesite vrijednost s manje decimalnih mjesta"
-            },
-            "marketNotAvailable": {
-                "reason": "Nema dovoljno dostupnih narudžbi za ispunjavanje ove narudžbe",
-                "reading": "Ograničenje tržišnog naloga: nema dovoljno dostupnih naloga za ispunjavanje ovog tržišnog naloga. Prilagodite veličinu svoje narudžbe ili pričekajte da se pošalje više narudžbi"
-            },
-            "exceedsSpread": {
-                "reason": "Cijena premašila raspon",
-                "reading": "Premašena cijena: tržišna ponuda ili tražena cijena premašila je traženu\/ponuđenu cijenu"
-            },
-            "spotLimit": {
-                "reason": "Trgovačka strana je popunjena",
-                "reading": "Ograničenje raspona cijena: Svaka strana knjige narudžbi ograničena je na 1024 jedinstvena cjenovna boda. Odaberite cijenu unutar postojećeg raspona ili pričekajte da se oslobodi prostor"
-            },
-            "accountLimit": {
-                "reason": "U tijeku je previše narudžbi",
-                "reading": "Dosegnuto ograničenje: Svaki račun je ograničen na 1024 ograničene narudžbe. Pričekajte dok se neke od vaših narudžbi ne ispune"
-            },
-            "singlePriceLimit": {
-                "reason": "U tijeku je previše narudžbi za ovu cijenu",
-                "reading": "Dosegnuto ograničenje: Svaka pozicija ograničena je na 1024 ograničena naloga. Pričekajte dok se neke narudžbe ne ispune"
-            },
-            "outOfBounds": {
-                "reading": "Blockchain raspon premašen: Vaš uneseni iznos je izvan dopuštenog blockchaina raspona. Min: {min} ; Maks.: {max}",
-                "reason": "Iznos nije u skladu s rasponom blockchaina"
-            },
-            "multipleOf": {
-                "reading": "Za obradu vaše narudžbe unesite cijenu koja je višekratnik {value}",
-                "reason": "Unesena cijena je previše konkretna"
-            }
-        },
-        "orderStatus": {
-            "active": "Aktivan",
-            "canceled": "Otkazano",
-            "expired": "Istekao",
-            "filled": "Ispunjeno"
-        },
-        "pricePerToken": "Cijena za 1 {token}"
-    },
-    "calculatingText": "Izračunavanje",
-    "customisePageText": "Prilagodite stranicu",
-    "priceChartText": "Grafikon cijena",
-    "editText": "Uredi",
-    "resetText": "Reset",
-    "kensetsu": {
-        "addCollateral": "Dodaj kolateral",
-        "addCollateralDescription": "Depozitirajte više sredstava na svoju poziciju kako biste povećali svoj limit zaduživanja ili poboljšali omjer zajma i vrijednosti. To također može pomoći u sprječavanju likvidacije.",
-        "depositCollateral": "Depozit kolaterala",
-        "totalCollateral": "Ukupan kolateral",
-        "totalCollateralDescription": "Ukupna vrijednost svih sredstava trenutno položenih na vašu poziciju. Ta vrijednost utječe na vašu sposobnost zaduživanja i rizik od likvidacije.",
-        "debtAvailable": "Dug dostupan",
-        "debtAvailableDescription": "Iznos sredstava koje još uvijek možete povući sa svoje pozicije bez prekoračenja vašeg limita zaduživanja, na temelju vašeg trenutnog jamstva.",
-        "ltv": "Zajam na vrijednost ({LTV})",
-        "ltvDescription": "Omjer iznosa povučenog iznosu jamstva u vašoj poziciji, izražen kao postotak. Viši {LTV} povećava potencijalne prinose, ali i rizik, uključujući mogućnost likvidacije.",
-        "borrowMore": "Posudite više",
-        "borrowMoreDescription": "Povucite dodatna sredstva sa svoje pozicije do maksimalno dostupnog iznosa. Osigurajte da vrijednost vašeg jamstva podržava povećanu zaduženost kako biste izbjegli rizike likvidacije.",
-        "available": "Dostupno",
-        "outstandingDebt": "Izvanredan dug",
-        "outstandingDebtDescription": "Ukupni iznos koji trenutno dugujete iz sredstava povučenih sa svoje pozicije, uključujući obračunske kamate. To treba vratiti kako biste zatvorili svoju poziciju ili održavali zdrave omjere zajma i vrijednosti.",
-        "createVault": "Otvorite poziciju zajma",
-        "createVaultDescription": "Pokrenite novu transakciju polaganjem jamstva na svoju poziciju i povlačenjem sredstava. Time se stvara obveza duga koju morate upravljati.",
-        "createVaultAction": "Otvorite poziciju",
-        "borrowDebt": "Posudite dug",
-        "minDepositCollateral": "Minimalni polog kolaterala",
-        "minDepositCollateralDescription": "Minimalni iznos sredstava potreban za otvaranje pozicije. Ovaj početni polog osigurava sredstva koja želite posuditi.",
-        "maxAvailableToBorrow": "Maks. dostupno za posuditi",
-        "maxAvailableToBorrowDescription": "Maksimalni iznos koji možete povući sa svoje pozicije, određen vrijednošću vašeg jamstva. Ova granica se prilagođava kako se mijenja vrijednost jamstva.",
-        "borrowTax": "Porez na posudbu",
-        "borrowTaxDescription": "Porez {value} primijenjen na posuđeni iznos",
-        "repayDebt": "Vratite dug",
-        "repayDebtDescription": "Vratite posuđena sredstva kako biste smanjili svoj trenutni dug. To može smanjiti troškove kamata i smanjiti rizik od likvidacije.",
-        "closeVault": "Zatvorite moju poziciju",
-        "closeVaultDescription": "Zatvorite odabranu poziciju isplatom svih izvanrednih dugova i povlačenjem sveg kolaterala",
-        "yourCollateral": "Vaš kolateral",
-        "yourCollateralDescription": "Sredstva koja ste položili na svoju poziciju kako biste osigurali povučena sredstva. Ta sredstva mogu biti likvidirana od strane zajmodavca ako ne održavate potreban omjer zajma i vrijednosti.",
-        "yourDebt": "Vaš dug",
-        "yourDebtDescription": "Ukupni iznos trenutno neplaćen u vašoj poziciji, uključujući povučeni iznos i sve obračunske kamate. Ovaj saldo raste s vremenom ako se kamate akumuliraju.",
-        "yourDebtTokenBalance": "Vaš {tokenSymbol} saldo",
-        "requiredAmountWithSlippage": "Potrebni iznos s klizanjem",
-        "requiredAmountWithSlippageDescription": "Za glatko zatvaranje pozicije, kupite malo više {tokenSymbol} nego što je {amount} potrebno zbog moguće klizne cijene. Potrebno vam je nešto dodatno za pokriće manjka. Zamijenite svoja sredstva u {tokenSymbol} kako biste zadovoljili ovu potrebu.",
-        "openSwap": "Otvori zamjenu",
-        "introTitle": "Otvorite pozicije zajma i zaradite s {Kensetsu}",
-        "introDescription": "Iskusite sigurno i bezbrižno zaduživanje i posuđivanje. Otvorite pozicije zaduživanja s platformom {Kensetsu}.",
-        "disclaimerDescription": "Posuđivanje digitalnih sredstava putem {Polkaswap} nosi značajne rizike i u potpunosti je na vaš vlastiti rizik. Vrijednost digitalnih sredstava izuzetno je volatilna, a bilo kakve promjene u tržišnim cijenama sredstava koje ste posudili ili koristili kao zalogu mogu rezultirati značajnim financijskim gubicima.",
-        "availableToBorrow": "Dostupno za posudbu",
-        "availableToBorrowDescription": "Preostali iznos koji ste ovlašteni povući prema trenutnim uvjetima vaše pozicije, na temelju deponiranog jamstva i bilo kojeg postojećeg duga.",
-        "collateralDetails": "Detalji kolaterala",
-        "debtDetails": "Detalji duga",
-        "positionInfo": "Informacije o poziciji",
-        "liquidationPenalty": "Kazna za likvidaciju",
-        "liquidationPenaltyDescription": "Naknada koja se primjenjuje ako vrijednost vašeg kolaterala padne ispod određenog praga, potičući prodaju sredstava radi pokrivanja duga. Ova kazna povećava vaš ukupni dug.",
-        "positionSafe": "Pozicija sigurna",
-        "liquidationClose": "Zatvaranje likvidacije",
-        "highLiquidationRisk": "Visok rizik od likvidacije",
-        "error": {
-            "enterCollateral": "Unesite kolateral",
-            "enterBorrow": "Unesite iznos za posudbu",
-            "borrowMoreThanAvailable": "Dostupan dug premašen",
-            "insufficientCollateral": "Nedovoljan kolateral",
-            "enterRepayDebt": "Unesite vraćanje duga",
-            "repayMoreThanDebt": "Dug preplaćen",
-            "incorrectCollateral": "Par tokena nije podržan"
-        },
-        "interest": "Kamata",
-        "interestDescription": "Godišnja naknada naplaćena na iznos povučen iz vašeg sefa, izračunata kao postotak. Ova naknada nadoknađuje rizike i fluktuacije na tržištu.",
-        "positionHistory": "Povijest pozicije",
-        "liquidated": "Likvidirano",
-        "liquidatedMessage": "Likvidirano {amount} {symbol}",
-        "status": {
-            "Opened": "Aktivno",
-            "Closed": "Zatvoreno",
-            "Liquidated": "Likvidirano"
-        },
-        "readMore": "Pročitajte više",
-        "reopen": "Ponovno otvori",
-        "totalCollateralReturned": "Ukupno vraćeni kolateral",
-        "totalCollateralReturnedDescription": "Ukupna vrijednost imovine vraćene nakon zatvaranja vaše pozicije, uključujući ukupni preostali kolateral.",
-        "overallTotalCollateral": "Ukupni kolateral",
-        "overallTotalCollateralDescription": "Ukupna vrijednost imovine koju su založili zajmoprimci kako bi osigurali svoje pozicije zaduživanja na platformi {Kensetsu}.",
-        "overallTotalDebt": "Ukupni dug",
-        "overallTotalDebtDescription": "Ukupan iznos trenutnog duga na svim pozicijama zaduživanja na platformi {Kensetsu}.",
-        "overallBadDebt": "Loš dug",
-        "overallBadDebtDescription": "Dio duga koji se vjerojatno neće naplatiti zbog neispunjenja obveza zajmoprimca ili nedostatnog kolaterala.",
-        "ltvMaxTooltip": "Najveći iznos pozajmljivanja koji se može pružiti u odnosu na procijenjenu vrijednost imovine koja se koristi kao kolateral.",
-        "overallAvailable": "Ukupno dostupno",
-        "overallAvailableDescription": "Ukupan iznos sredstava dostupnih za posudbu na platformi {Kensetsu}."
-    },
-    "accountSettings": {
-        "title": "POSTAVLJANJE RAČUNA",
-        "hint": "To možete ponovno omogućiti u postavkama računa",
-        "disable": "Onemogući uključeno",
-        "disabled": "Onemogućeno za",
-        "confirmation": {
-            "title": "Onemogući potvrdu transakcije",
-            "description": "Skočni zaslon koji prikazuje detalje o transakcijama prije potpisivanja."
-        },
-        "signature": {
-            "title": "Onemogući potvrdu lozinke",
-            "description": "Omogućite ili onemogućite potrebu za unosom lozinke tijekom skočnog prozora za potpis u transakcijama."
-        },
-        "enterPassword": "Upišite lozinku",
-        "googleOnly": "Samo {Google} računi"
-    },
-    "currencyDialog": {
-        "currency": "Valuta",
-        "searchPlaceholder": "Pretražujte prema nazivu valute ili simbolu"
-    },
-    "browserNotificationLocalStorageOverride": {
-        "title": "Očisti lokalnu pohranu {AppName}",
-        "info": "Vaša lokalna pohrana je preopterećena, za nastavak rada s {AppName} trebate je očistiti",
-        "agree": "Da, razumijem"
-    },
-    "points": {
-        "title": "Vaš napredak s bodovima",
-        "loginText": "Povežite svoj račun da vidite svoje bodove",
-        "bridgeVolume": "Volumen mosta",
-        "feesSpent": "Potrošene naknade",
-        "xorBurned": "{XOR} spaljeno",
-        "yourReferrals": "Vaše preporuke",
-        "accountsText": "{amount} računa",
-        "yourRewards": "Vaše nagrade",
-        "openTelegram": "Otvorite {Telegram}",
-        "toEarnPoints": "Za zarađivanje bodova"
+      "transfer": "Tokeni su uspješno kupljeni!\nKliknite za pokretanje most transakcije"
     }
+  },
+  "light": "Svjetlo",
+  "dark": "Tamno",
+  "headerMenu": {
+    "showBalances": "Prikažite saldove",
+    "hideBalances": "Sakrijte saldove",
+    "settings": "Postavke",
+    "switchTheme": "Prijeđite na {theme} modus",
+    "switchLanguage": "Odaberite jezik",
+    "showDisclaimer": "Prikaži Odricanje od odgovornosti",
+    "hideDisclaimer": "Sakrij izjavu o odricanju odgovornosti",
+    "selectCurrency": "Odaberite Valutu"
+  },
+  "sentText": "Poslano",
+  "learnMoreText": "Saznajte više",
+  "marketMakerCountdown": {
+    "title": "Market Maker odbrojavanje",
+    "blocks": "blokova",
+    "daysLeft": "preostalih dani",
+    "txs": "TX-ovi",
+    "volume": "MM TX promet",
+    "description": "20 milijuna PSWAP-a mjesečno će se distribuirati market makerima s najmanje 500 tx-a mjesečno u vrijednosti od 1 XOR-a."
+  },
+  "confirmNextTxFailure": {
+    "header": "Pažnja",
+    "info": "Vaš saldo {symbol} bit će manji od {fee} {symbol} nakon ove transakcije. Nećete moći platiti mrežnu naknadu za drugu transakciju.",
+    "payoff": "Morali biste koristiti Most za dobivanje XOR-a s drugih mreža, slanje XOR-a s drugog {Sora} računa ili zamjenu bilo kojeg drugog tokena koji je već na vašem računu u XOR.",
+    "button": "Da, razumijem rizik"
+  },
+  "blockNumberText": "Broj bloka",
+  "referralProgram": {
+    "title": "Program preporuka",
+    "connectAccount": "Za pozivanje korisnika potrebno je povezati svoj {Sora} račun.",
+    "bondedXOR": "XOR vezano",
+    "referralsNumber": "Broj preporuka {number}",
+    "startInviting": "Povežite XOR za upućivanje drugih",
+    "preview": "Pozovite nove korisnike i ostvarite 10% od njihovih transakcijskih naknada. <br/> Za početak povežite bilo koju količinu XORa. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Saznajte više </a>",
+    "deposit": "Polog",
+    "balance": "Stanje",
+    "insufficientBondedBalance": "Nedovoljno vezano saldo",
+    "action": {
+      "empty": "Unesite iznos {tokenSymbol}",
+      "startInviting": "Bond {tokenSymbol} da biste počeli pozivati",
+      "bondMore": "Bond više",
+      "bond": "Bond",
+      "unbond": "Unbond",
+      "copyLink": "Kopirajte link",
+      "shareLink": "Podijeli"
+    },
+    "transactionDetails": "Detalji transakcije",
+    "receivedRewards": "Primljene nagrade",
+    "invitationLink": "Link za pozivnicu",
+    "successCopy": "Link za preporuku se kopira u međuspremnik",
+    "bondTitle": "Bond XOR",
+    "unbondTitle": "Unbond XOR",
+    "confirm": {
+      "bond": "Potvrdite bond",
+      "unbond": "Potvrdite unbond",
+      "inviteTitle": "Pozvani ste u {AppName}",
+      "inviteDescription": "Za svaku transakciju, 10% naknade ide vašem preporučitelju, bez ikakvih dodatnih troškova za vas.",
+      "signInvitation": "Odobrite",
+      "freeOfCharge": "Ova akcija je besplatna",
+      "hasReferrerTitle": "Već ste postavili svog preporučitelja",
+      "hasReferrerDescription": "Nažalost, možete postaviti samo jedan",
+      "ok": "U redu",
+      "text": "Potvrdite"
+    },
+    "referrer": {
+      "title": "Dodajte svog referera",
+      "titleReferrer": "Vaš referer",
+      "placeholder": "Unesite link za pozivnicu ili kod",
+      "label": "Link za pozivnicu ili kod",
+      "approve": "Odobrite",
+      "approved": "Odobreno",
+      "description": "Možete dobiti preporuku na {AppName}, <br/> upišite link ili kod referera",
+      "referredBy": "Preporučio vas je {referrer}",
+      "info": "Kada platite naknadu za transakciju, <br/> 10% će ići vašem refereru",
+      "referredLablel": "Preporučena adresa"
+    },
+    "insufficientBondedAmount": "Da biste pozvali više preporuka, povežite najmanje {inviteUserFee} XOR",
+    "inviteViaTelegram": "Pozovi putem {Telegram}",
+    "welcomeMessage": "\nPridruži mi se na {Polkaswap}!\n\nOtkrij stilizirani {DEX} koji ti omogućuje zamjenu desetaka tokena s međulančanim zamjenama, knjigom narudžbi i mnoštvom nagrada!\n\n🎁 Pozovi prijatelje i zaradi 10% njihovih trgovačkih naknada\n\nVidimo se tamo!"
+  },
+  "transactionDetailsText": "Detalji transakcije",
+  "code": {
+    "download": "Preuzmite QR kod",
+    "upload": "Skeniraj QR",
+    "invalid": "Nevažeći QR kod",
+    "import": "Uvezi sliku",
+    "scan": "Skeniraj kamerom",
+    "allowanceError": "Provjerite dostupnost svoje kamere i dopuštenja preglednika za njezino korištenje",
+    "receive": "Primite",
+    "camera": "Kamera",
+    "allowanceRequest": "Pritisnite \"Dopusti\" pristup kameri"
+  },
+  "bridgeTransferNotification": {
+    "addToken": "Dodaj {symbol} u novčanik",
+    "title": "Most transakcija uspjela"
+  },
+  "mobilePopup": {
+    "sideMenu": "Preuzmite {Sora} Wallet",
+    "header": "Preuzmite {Sora} Novčanik sa značajkama {polkaswapHighlight}",
+    "info": "Zamijenite tokene s različitih mreža - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Osigurajte fond likvidnosti i zaradite % od naknada za razmjenu."
+  },
+  "releaseNotesText": "Bilješke o izdanju",
+  "copiedText": "Kopiran!",
+  "copyWithValue": "Kopiraj {value}",
+  "copiedWithValue": "{value} je kopirana!",
+  "signAndClaimText": "Potpišite i zatražite",
+  "balanceText": "Stanje",
+  "unknownAssetText": "Nepoznato sredstvo",
+  "demeterFarming": {
+    "staking": {
+      "active": "Ulaganje aktivno",
+      "inactive": "Uložite da biste zaradili dodatne nagrade",
+      "stopped": "Ulaganje je prestalo"
+    },
+    "info": {
+      "earned": "{symbol} zaradio",
+      "fee": "Naknada",
+      "feeTooltip": "Naknada za depozit se primjenjuje na vaš iznos za ulog",
+      "owned": "{symbol} @:balanceText",
+      "poolShare": "Vaš udio u bazenu je uložen",
+      "poolShareWillBe": "Vaš udio u bazenu bit će uložen",
+      "rewardToken": "Nagradni token",
+      "stake": "Vaš {symbol} je uložio",
+      "stakeWillBe": "Vaš ulog {symbol} bit će",
+      "totalLiquidityLocked": "Ukupna likvidnost zaključana"
+    },
+    "actions": {
+      "add": "Uložite više",
+      "claim": "Zatražite nagrade",
+      "remove": "Uklonite kolac",
+      "start": "Započnite ulaganje"
+    },
+    "amountAdd": "Iznos za ulog",
+    "amountRemove": "Iznos za uklanjanje",
+    "poweredBy": "Pokreće Demeter Farming",
+    "calculator": "Kalkulator",
+    "results": "Rezultati",
+    "rewards": "{symbol} nagrada"
+  },
+  "historyErrorMessages": {
+    "generalError": "Nešto je pošlo po zlu",
+    "balances": {
+      "liquidityrestrictions": "Ograničenja likvidnosti računa sprječavaju povlačenje"
+    },
+    "poolxyk": {
+      "sourcebalanceisnotlargeenough": "Bilans izvora nije dovoljno velik",
+      "targetbalanceisnotlargeenough": "Stanje odredišta nije dovoljno veliko",
+      "impossibletodecidevalidpairvaluesfromrangeforthispool": "Pod uvjetom da su iznosi previše raznoliki",
+      "calculatedvalueisnotmeetsrequiredboundaries": "Iznosi su izvan potrebnih granica",
+      "unabletodepositxorlessthanminimum": "XOR manji od minimalne vrijednosti (0,007)",
+      "zerovalueinamountparameter": "Parametar iznosa ima nultu vrijednost"
+    },
+    "xstpool": {
+      "poolalreadyinitializedforpair": "Par bazena već postoji",
+      "slippagelimitexceeded": "Tolerancija klizanja nije dosegla odgovarajuće granice"
+    },
+    "referrals": {
+      "alreadyhasreferrer": "Račun već ima preporuku",
+      "referrerinsufficientbalance": "Preporučatelj nema dovoljno rezerviranog stanja"
+    },
+    "vestedrewards": {
+      "rewardssupplyshortage": "Program nagrađivanja je već završen",
+      "cantcalculatereward": "Izračun nagrade nije uspio",
+      "norewardsforasset": "Za ovu imovinu nema nagrada"
+    },
+    "liquidityproxy": {
+      "forbiddenfilter": "Odabrani izvor likvidnosti nije dopušten",
+      "slippagenottolerated": "Utjecaj cijene premašio je odabranu vrijednost"
+    },
+    "demeterfarmingplatform": {
+      "insufficientfunds": "Nedostatna sredstva",
+      "insufficientlptokens": "Nedovoljni tokeni za osiguranje likvidnosti",
+      "pooldoesnothaverewards": "Pool nema nagrade"
+    },
+    "multicollateralbondingcurvepool": {
+      "pricecalculationfailed": "Došlo je do greške prilikom izračuna cijene"
+    }
+  },
+  "receivedText": "Primljeno",
+  "browserNotificationDialog": {
+    "title": "Postavite obavijesti",
+    "info": "Poslat ćemo vam samo relevantna ažuriranja o vašem novčaniku, na primjer: promjene stanja imovine",
+    "button": "Omogući obavijesti",
+    "agree": "Da, razumijem",
+    "notificationBlocked": "Da biste primali obavijesti o {AppName}, omogućite obavijesti u izvornim postavkama preglednika",
+    "pointer": "Pritisnite \"Dopusti\" za uključivanje obavijesti"
+  },
+  "assetDeposit": "Stanje imovine je deponirano",
+  "noDataText": "Nema podataka",
+  "ofText": "{first} od {second}",
+  "filter": {
+    "all": "Sve",
+    "token": "Valute",
+    "verifiedOnly": "Prikaži samo provjerenu imovinu",
+    "zeroBalance": "Sakrij 0 salda imovine",
+    "showAssets": "Prikaži imovinu",
+    "show": "Pokazati"
+  },
+  "desktop": {
+    "welcome": {
+      "header": "Dobro došli u {AppName}!",
+      "headline": "Postavimo vaš račun",
+      "text": "Napravite svoj račun {Sora} mreže ili se prijavite na stari koristeći mnemoničku frazu ili .json import. To vam omogućuje sigurno potpisivanje transakcija i upravljanje imovinom u {Sora} mreži.",
+      "createAccount": "Stvorite račun",
+      "importAccount": "Uvezi račun"
+    },
+    "heading": {
+      "seedPhraseTitle": "Pristupni izraz",
+      "confirmSeedTitle": "Potvrda pristupnog izraza",
+      "accountDetailsTitle": "Detalji Računa",
+      "importTitle": "Uvezi račun"
+    },
+    "button": {
+      "next": "Sljedeći korak",
+      "skip": "Preskočiti",
+      "createAccount": "Napravi račun",
+      "importAccount": "Uvezi račun"
+    },
+    "accountName": {
+      "placeholder": "Korisničko ime",
+      "desc": "Ovo je naziv vašeg računa. Bit će vidljiv samo vama u {Polkaswap}."
+    },
+    "password": {
+      "placeholder": "Zaporka",
+      "desc": "Provjerite koristite li jaku jedinstvenu lozinku za pravilnu zaštitu (najmanje 8 znakova)"
+    },
+    "confirmPassword": {
+      "placeholder": "Potvrdi lozinku"
+    },
+    "accountMnemonic": {
+      "placeholder": "Mnemotehnička fraza"
+    },
+    "seedAdviceText": "Zaporka od 12 riječi privatni je ključ za ponovni pristup vašem {Sora} računu u slučaju da izgubite pristup svom {wallet} računu. Pohranite ga na sigurno točnim redoslijedom kako je gore prikazan.",
+    "confirmSeedText": "Potvrdite zaporku klikom na riječi u ispravnom redoslijedu",
+    "errorMnemonicText": "Neispravan redoslijed šifre",
+    "exportOptionText": "Izvezite {JSON} datoteku za vraćanje računa",
+    "exportJsonText": "Uvijek ćete moći vratiti svoj račun uvozom ove {JSON} datoteke. Ne dijelite to ni s kim! Pohranite ga na sigurno, po mogućnosti šifriranog.",
+    "addAccount": "Dodajte račun",
+    "dialog": {
+      "confirmTitle": "Potvrda lozinkom",
+      "confirmButton": "Potpišite transakciju",
+      "savePasswordText": "Zapamti moju lozinku sljedećih 15 minuta",
+      "extendPasswordText": "Produžite razdoblje bez lozinke za 15 minuta"
+    },
+    "errorMessages": {
+      "password": "Lozinka se ne podudara",
+      "passwords": "Lozinke se ne podudaraju",
+      "mnemonic": "Naveden je nevažeći mnemonik bip39",
+      "mnemonicLength": "Mnemotehnika treba sadržavati {number} riječi",
+      "jsonFields": "JSON datoteka nema obavezna polja",
+      "alreadyImported": "Račun je već uvezen {address}"
+    },
+    "assetsAtRiskText": "Imovina u opasnosti!",
+    "deleteAccountText": "Račun se ne može oporaviti bez početne fraze, .json datoteke ili ako je pohranjena u nekoj ekstenziji. Bit ćete odjavljeni.",
+    "importSteps": {
+      "selectWallet": "Otvorite novčanik sa svojim postojećim računom(ima)",
+      "selectAccount": "Odaberite račun koji želite izvesti",
+      "exportAccount": "Izvezite datoteku {JSON}"
+    },
+    "exportTutorialsText": "Upute za izvoz",
+    "seedAdviceAdditionTitle": "Nikada ni s kim ne dijelite svoju šifru!",
+    "seedAdviceAdditionText": "Ako vas netko pita za lozinku, najvjerojatnije vas pokušava prevariti i ukrasti vašu imovinu!"
+  },
+  "hashiBridgeText": "{Hashi} most",
+  "disclaimerTitle": "Disclaimer:",
+  "explore": {
+    "showOnly": "Pokaži samo {entities}",
+    "myPositions": "moje pozicije",
+    "synthetics": "sintetički tokeni"
+  },
+  "tooltips": {
+    "roi": "{ROI} je kratica za povrat ulaganja. Izračunava se dijeljenjem dobiti ostvarene ulaganjem troškom tog ulaganja u postotnom ekvivalentu.",
+    "tvl": "{TVL} je kratica za Total Value Locked. Predstavlja tokene zaključane u bazenima u dolarskoj protuvrijednosti.",
+    "volume": "Volumen se odnosi na ukupnu količinu imovine kojom se trgovalo ili razmjenjivalo na mreži tijekom određenog vremenskog razdoblja. Volumen je važna metrika za mjerenje likvidnosti i ukupne aktivnosti mreže.",
+    "fees": "Naknade na {Sora} blockchainu odnose se na troškove koji nastaju za izvršavanje transakcija na mreži. Te se naknade plaćaju u XOR-u, izvornoj kriptovaluti mreže {Sora} . Visina naknade određena je složenošću i veličinom transakcije koja se izvršava",
+    "supply": "Zaliha tokena odnosi se na ukupan broj tokena koji su stvoreni i koji su u optjecaju na mreži. Zaliha tokena može varirati ovisno o količini tokena koji se ulažu, spaljuju ili prenose na mreži.",
+    "transactions": "Transakcije se odnose na proces slanja ili primanja digitalnih sredstava na mreži, uključujući operacije likvidnosti, kao i zamjene.",
+    "accounts": "Računi su digitalne adrese koje drže korisničku imovinu na mreži. Svaki račun povezan je s jedinstvenom javnom adresom i privatnim ključem koji korisniku omogućuje pristup i upravljanje svojom imovinom.",
+    "bridgeTransactions": "{from} to {to} most odnosi se na proces prijenosa sredstava između {from} i {to} mreža pomoću mosta. Most omogućuje interoperabilnost dviju mreža, omogućujući korisnicima neometano premještanje imovine između njih.",
+    "velocity": "Brzina tokena je broj prosječnih promjena računa tokenom tijekom razdoblja (mjeseca). Označava razinu aktivnosti trgovanja i likvidnosti."
+  },
+  "createTokenText": "Stvorite",
+  "comingSoonText": "Dolazi uskoro",
+  "confirmText": "Potvrdite",
+  "createTokenTextNFT": "Napravite NFT",
+  "doNotShowText": "Ne pokazuj mi ovo više",
+  "accountText": "račun | računi",
+  "networkStatisticsText": "Statistika mreže",
+  "footer": {
+    "node": {
+      "title": {
+        "connected": "Čvor povezan",
+        "loading": "Ponovno povezivanje čvora",
+        "disconnected": "Čvor je prekinut"
+      }
+    },
+    "internet": {
+      "title": {
+        "disabled": "Internet onemogućen",
+        "unstable": "Internet nestabilan",
+        "stable": "Internet stabilan"
+      },
+      "label": "Vaša brzina interneta",
+      "desc": {
+        "disabled": "Isključeno",
+        "unstable": "Spora veza",
+        "stable": "Optimalna brzina"
+      },
+      "action": "Osvježi {Polkaswap}",
+      "dialogTitle": "Spojite se na internetski izvor",
+      "dialogDesc": "{Polkaswap} zahtijeva internetsku vezu za stabilno iskustvo"
+    },
+    "statistics": {
+      "title": {
+        "unavailable": "Statistika nije dostupna",
+        "loading": "Učitavanje statistike",
+        "available": "Dostupna statistika"
+      },
+      "label": "Statističke usluge",
+      "desc": {
+        "unavailable": "Sve usluge su isključene",
+        "loading": "Sve usluge se učitavaju",
+        "available": "Sve usluge su stabilne"
+      },
+      "action": "Odaberite usluge",
+      "dialog": {
+        "title": "{Sora} Odabir mrežne usluge",
+        "indexer": "Indeksator",
+        "useCeres": "Koristite {Ceres} za fiksne vrijednosti"
+      }
+    }
+  },
+  "locationText": "Mjesto",
+  "acceptText": "Prihvati i sakrij",
+  "newAccountsText": "Novi računi",
+  "dragAndDropText": "Povucite i ispustite ili odaberite {extension} datoteku",
+  "copyPhraseText": "Kopirajte lozinku frazu",
+  "stepText": "Korak",
+  "alerts": {
+    "drop": "Kapi ispod",
+    "once": "Jednom",
+    "always": "Stalno",
+    "edit": "Uredi upozorenje",
+    "delete": "Izbriši upozorenje",
+    "onDropDesc": "{token} pada ispod {price}",
+    "alertsTitle": "upozorenja",
+    "alertsCreateTitle": "Postavite upozorenje o cijenama",
+    "alertsTooltip": "Upozorenja o cijenama su obavijesti koje možete postaviti kako biste primali ažuriranja kada cijena određenog tokena dosegne određenu točku koju ste postavili",
+    "createBtn": "Stvorite novo upozorenje o cijeni",
+    "enableSwitch": "Omogući obavijesti o depozitu imovine",
+    "currentPrice": "Trenutna cijena",
+    "alertTypeTitle": "Vrsta upozorenja",
+    "alertFrequencyTitle": "Učestalost upozorenja",
+    "frequencyTooltip": "Odaberite između 'jednom' i 'uvijek' kako biste odredili koliko često primate obavijesti za odabranu vrstu upozorenja. \"Jednom\" će poslati jednu obavijest kada je uvjet ispunjen, dok će \"uvijek\" nastaviti obavještavati vas svaki put kada se prijeđe cjenovni prag",
+    "noSupportMsg": "Vaš preglednik ne podržava obavijesti",
+    "finishBtn": "Dovršiti",
+    "raise": "Uzdiže se iznad",
+    "onRaiseDesc": "{token} raste iznad {price}",
+    "typeTooltip": "Odaberite opciju 'pada ispod' ili 'raste iznad' kako biste odredili uvjet upozorenja za praćenje važnih kretanja cijene. Ove vam opcije omogućuju primanje pravovremenih obavijesti kada vrijednost vaše imovine padne ispod ili poraste iznad vašeg određenog praga"
+  },
+  "accountAddressText": "Adresa računa",
+  "fiatDisclaimer": "Imajte na umu da su fiat vrijednosti povezane s kriptovalutama na našoj web stranici dane od strane vanjskih usluga (Subquery, Subsquid, Ceres API) približne. S obzirom na inherentnu složenost ovih izračuna, ne može se jamčiti apsolutna preciznost u svakom trenutku.",
+  "fiatPayment": {
+    "historyBtn": "Moje kupovine",
+    "historyTitle": "Povijest transakcija",
+    "moonpayTitle": "Kupite ETH putem MoonPaya",
+    "moonpayDesc": "Kupite ETH tokene na {Ethereum} i prenesite ih na {SORA} mrežu putem mosta",
+    "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije.",
+    "cedeStoreTitle": "Prijenos od {value}",
+    "cedeStoreDesc": "Prenesite sve tokene s {value1} na {value2} putem {value3}",
+    "cedeStoreBtn": "Prijenos s {value1} putem {value2}"
+  },
+  "acceptOnScrollText": "Pomaknite se za prihvaćanje",
+  "addressBook": {
+    "myAccounts": "Moji računi",
+    "myBook": "Moja knjiga",
+    "searchPlaceholder": "Pretraživanje po adresi, imenu ili identitetu",
+    "noFoundRecords": "Nema pronađenih zapisa",
+    "noContacts": "Još nemate dodanih kontakata",
+    "addContact": "Dodaj kontakt",
+    "dialogTitle": "Vaši kontakti",
+    "identity": "Identitet na lancu",
+    "none": "Nijedan",
+    "detected": "Nova adresa otkrivena",
+    "save": "Spremi kao kontakt",
+    "tooltip": "Prikupite adresar unosom imena i adrese kako bi vaši kontakti bili organizirani i ažurni",
+    "notSoraAddress": "Ova adresa će biti spremljena kao {SORA} adresa ispod. Provjerite može li primatelj pristupiti {SORA} lancu:",
+    "options": {
+      "send": "Pošaljite tokene",
+      "edit": "Uredi kontakt",
+      "delete": "Izbrisati"
+    },
+    "btn": {
+      "enterName": "Unesite ime",
+      "present": "Već prisutan",
+      "saveChanges": "Spremi promjene"
+    },
+    "input": "Unesite adresu ili odaberite kontakt",
+    "selectContact": "Odaberite kontakt"
+  },
+  "browserPermission": {
+    "title": "Dopustite pristup kameri u postavkama preglednika",
+    "desc": "Kako biste osigurali autentičnost dokumenata i potvrdili korisnički identitet za KYC provjeru, potreban je pristup kameri vašeg uređaja.",
+    "disclaimer": "Potreban je pristup kameri za snimanje dokumenata u stvarnom vremenu kako bi se spriječila prijevara.",
+    "btnGoToSettings": "Idite na postavke",
+    "btnAllow": "Dopusti pristup"
+  },
+  "continueText": "Nastaviti",
+  "minAmountText": "min. iznos",
+  "maxAmountText": "max. iznos",
+  "exceededAmountText": "{amount} premašeno",
+  "multipleRecipients": "Višestruki primatelji",
+  "disconnectWalletText": "Prekini vezu",
+  "connectEthereumWalletText": "Povežite {Ethereum} novčanik",
+  "soraStaking": {
+    "dropdownMenu": {
+      "pendingRewards": "Nagrade na čekanju",
+      "controllerAccount": "Račun kontrolora"
+    },
+    "actions": {
+      "claim": "Zatražite nagrade",
+      "remove": "Uklonite ulog",
+      "more": "Uložite više",
+      "confirm": "Potvrdite iskolčenje",
+      "withdraw": "Povući"
+    },
+    "overview": {
+      "title": "{Sora} Staking",
+      "description": "Ulog {XOR} tokeni na mreži {Sora} kao nominator za provjeru valjanosti transakcija i zarađivanje nagrada za tokene {VAL}."
+    },
+    "newStake": {
+      "title": "Počnite ulagati",
+      "minStakeWarning": "Minimalni ulog za dobivanje nagrade je {min} {symbol}"
+    },
+    "validators": {
+      "save": "Spremi promjene",
+      "selected": "{selected} / {total} odabrano",
+      "recommended": "Preporučeni validatori",
+      "change": "Promjena validatora",
+      "select": "Odaberite validatore",
+      "next": "Sljedeći",
+      "alreadyNominated": "Odabrani validatori već su imenovani",
+      "tooManyValidators": "Odabrano je previše validatora ( {Max} {max} )"
+    },
+    "validatorsList": {
+      "search": "Traži...",
+      "name": "Ime",
+      "noNominatedValidators": "Nemate nijednog imenovanog validatora",
+      "noValidators": "Nema validatora koji zadovoljavaju navedeni filter",
+      "commission": "Komisija",
+      "commissionTooltip": "Provizija se odnosi na naknadu koju naplaćuju validatori za svoje usluge u procesu isplate. Ova naknada, izražena kao postotak, oduzima se od nagrada za ulog koje zarade nominatori prije distribucije. Važno je napomenuti da validatori mogu prilagoditi svoje stope provizije u bilo kojem trenutku",
+      "return": "Povratak"
+    },
+    "info": {
+      "unstaking": "Unstaking",
+      "stakingBalance": "Staking bilanca",
+      "rewarded": "Nagrađeni",
+      "totalLiquidityStaked": "Uložena ukupna likvidnost",
+      "rewardToken": "Token nagrade",
+      "unstakingPeriod": "Razdoblje nepolaganja",
+      "minimumStake": "Minimalni ulog",
+      "nominators": "Nominatori",
+      "validators": "Validatori",
+      "selectedValidators": "Odabrani validatori"
+    },
+    "validatorsFilterDialog": {
+      "title": "Filteri",
+      "save": "Spremi filter",
+      "reset": "Resetiraj sve",
+      "filters": {
+        "hasIdentity": {
+          "name": "Identitet na lancu",
+          "description": "Najmanje jedan identitetski kontakt povezan s računom"
+        },
+        "notSlashed": {
+          "name": "Nije zarezano",
+          "description": "Nisu iskusili nikakve kazne ili smanjenja svojih uloženih sredstava zbog lošeg ponašanja ili kršenja protokola."
+        },
+        "notOversubscribed": {
+          "name": "Nije pretplaćen",
+          "description": "Račun unutar ograničenja dodjele, izbjegava kazne za prekomjernu pretplatu na {Polkadot} ulaganje."
+        },
+        "twoValidatorsPerIdentity": {
+          "name": "Ograničenje od 2 validatora po identitetu",
+          "description": "Najviše dva validatora po identitetu za promicanje decentralizacije i sprječavanje koncentracije moći."
+        }
+      }
+    },
+    "validatorsDialog": {
+      "title": {
+        "edit": "Uredi moje validatore"
+      },
+      "tabs": {
+        "user": "Vaši validatori",
+        "all": "Svi validatori"
+      }
+    },
+    "validatorsAttentionDialog": {
+      "title": "Pažnja",
+      "description": [
+        "Prijedlozi algoritamskog validatora ne predstavljaju financijsku konzultaciju ili savjet. Staking je visokorizična aktivnost, a prijedlozi algoritamskih validatora ne moraju nužno umanjiti ovaj rizik.",
+        "Validator koji je predložio algoritam i dalje bi se mogao smanjiti. Validator kojeg predlaže algoritam također može promijeniti svoje parametre (npr. stope provizije, itd.) u bilo kojem trenutku nakon što je predložen i/ili odabran.",
+        "Mogli biste izgubiti žetone ili nagrade iz ovih ili drugih razloga. Uložite samo tokene i koristite prijedloge validatora prema vlastitom nahođenju, nakon provođenja dužne pažnje i pažljivog razmatranja uključenih rizika."
+      ],
+      "confirm": "Da, razumijem rizik"
+    },
+    "pendingRewardsDialog": {
+      "noPendingRewards": "Nema nagrada na čekanju",
+      "information": "Validatori isplaćuju nagrade svakih 2-5 dana. Međutim, možete ih sami isplatiti, posebno ako su nagrade blizu isteka, ali ćete platiti naknadu.",
+      "title": "Nagrade na čekanju",
+      "noSelectedRewards": "Odaberite nagrade",
+      "payout": "Isplata"
+    },
+    "selectValidatorsMode": {
+      "title": "Ulog s validatorima koje predlaže algoritam",
+      "description": "{Sora} mrežni algoritam odabrao je popis preporučenih validatora na temelju kriterija:",
+      "criteria": [
+        "Najisplativije",
+        "Nije pretplaćen",
+        "Imati onchain identitet",
+        "Nije zarezano",
+        "Ograničenje od 2 validatora po identitetu"
+      ],
+      "confirm": {
+        "suggested": "Ulog s predloženim",
+        "manual": "Sam ću odabrati validatore"
+      }
+    },
+    "claimRewardsDialog": {
+      "title": "Zatražite nagrade",
+      "checkRewards": "Provjerite nagrade po razdoblju i validatoru",
+      "rewardsDestination": "Odredišna adresa nagrada"
+    },
+    "selectedValidators": "{count} ( {Max} {max} )",
+    "withdraw": {
+      "withdrawable": "Može se povući",
+      "beingWithdrawn": "Biti povučen",
+      "seeAll": "Vidi sve",
+      "nextWithdrawal": "Sljedeće povlačenje",
+      "countdownLeft": "još"
+    },
+    "stakeDialog": {
+      "toStake": "Uložiti ulog",
+      "toRemove": "Ukloniti"
+    },
+    "withdrawDialog": {
+      "title": "Povucite neuložena sredstva",
+      "showAllWithdraws": "Prikaži sva povlačenja"
+    },
+    "allWithdrawsDialog": {
+      "title": "Neuvjetna aktivnost",
+      "information": "Nakon što poništite ulog tokena, postoji obvezno razdoblje od 7 dana. Nakon tog razdoblja, vaši tokeni neće biti automatski vraćeni u vaš novčanik. Morate dovršiti postupak ručnim povlačenjem tokena."
+    }
+  },
+  "collapseText": "Kolaps",
+  "expandText": "Proširiti",
+  "orderBook": {
+    "Buy": "Kupi {asset}",
+    "Sell": "Prodaj {asset}",
+    "orderBook": "Knjiga narudžbi",
+    "marketTrades": "Trgovine na tržištu",
+    "market": "Tržište",
+    "limit": "Ograničiti",
+    "price": "Cijena",
+    "total": "Ukupno",
+    "amount": "iznos",
+    "time": "vrijeme",
+    "month": "mjesec",
+    "change": "promijeniti",
+    "cantPlaceOrder": "Ne mogu naručiti",
+    "enterAmount": "Unesite iznos",
+    "setPrice": "Postavite cijenu",
+    "dayVolume": "1D volumen",
+    "stop": "Knjiga zaustavljena",
+    "tokenPair": "Par tokena",
+    "book": {
+      "noAsks": "Nema otvorenih upita",
+      "noBids": "Nema otvorenih ponuda"
+    },
+    "history": {
+      "tradeHistory": "Povijest trgovine",
+      "orderHistory": "Povijest Reda",
+      "openOrders": "Otvorene narudžbe {value}",
+      "connect": "Povežite račun za početak trgovanja",
+      "cancel": "Otkaži narudžbu {value}",
+      "cancelAll": "Otkaži sve"
+    },
+    "orderTable": {
+      "time": "vrijeme",
+      "pair": "par",
+      "side": "strana",
+      "filled": "ispunjena",
+      "lifetime": "doživotno",
+      "noOrders": "Nema narudžbi. Kreirajte svoju prvu!"
+    },
+    "dialog": {
+      "placeMarket": "Postavite tržišni nalog",
+      "placeLimit": "Stavite ograničenu narudžbu",
+      "askCancel": "Jeste li sigurni da želite otkazati sve otvorene narudžbe?",
+      "cancelAll": "Da, otkaži sve",
+      "buy": "Kupite {amount} {symbol}",
+      "sell": "Prodaj {amount} {symbol}",
+      "at": "po {price} {symbol}"
+    },
+    "tradingPair": {
+      "choosePair": "Odaberite trgovinski par",
+      "volume": "Volumen",
+      "dailyChange": "Dnevna promjena",
+      "status": "Status",
+      "total": "{amount} {symbol} na {amount2} {symbol2}"
+    },
+    "bookStatus": {
+      "active": "Aktivan",
+      "placeable": "Može se postaviti",
+      "cancelable": "Može se otkazati",
+      "inactive": "Neaktivan"
+    },
+    "tooltip": {
+      "limitOrder": "'Limit' nalog vam omogućuje da odredite točnu cijenu po kojoj želite kupiti ili prodati imovinu. Nalog 'Ograničena kupnja' bit će izvršen samo po navedenoj cijeni ili nižoj, dok će se nalog 'Ograničena prodaja' izvršiti samo po navedenoj cijeni ili višoj. Ova kontrola osigurava da ne plaćate više ili prodajete za manje nego što vam odgovara.",
+      "marketOrder": "'Tržišni nalog' je nalog za trenutnu kupnju ili prodaju po najboljoj dostupnoj trenutnoj cijeni. Ne zahtijeva postavljanje cijene, osigurava brzo izvršenje, ali uz kompromis manje kontrole nad primljenom ili plaćenom cijenom. Ova vrsta naloga koristi se kada je sigurnost izvršenja prioritet nad kontrolom cijene.",
+      "pairsList": "Popis u stvarnom vremenu koji prikazuje trenutne naloge za kupnju i prodaju kriptovalute. Pomaže vam razumjeti potražnju, potencijalni smjer cijene i obujam trgovine na mreži SORA i Polkaswap DEX",
+      "bookWidget": "Živi, stalno ažurirani zapis naloga za kupnju (ponudu) i prodaju (traženje) za određenu imovinu, organiziran prema razini cijene. Knjiga naloga prikazuje dubinu tržišta, uključujući količine imovine koja se nudi po različitim cijenama. Trgovci koriste ovaj detaljan prikaz kako bi procijenili raspoloženje na tržištu, identificirali potencijalne razine otpora i podrške te predvidjeli kretanja cijena na temelju postojeće potražnje i ponude",
+      "marketWidget": "Ovaj widget prikazuje tok izvršenih trgovanja na tržištu u stvarnom vremenu, pružajući informacije o količini transakcija, nedavnoj aktivnosti i trenutnim tržišnim trendovima. Promatrajući vrijeme, cijenu i veličinu stvarnih trgovina, trgovci mogu dobiti uvid u tržišnu dinamiku i raspoloženje, pomažući im da uoče prilike za trgovanje i donesu informirane odluke",
+      "txDetails": {
+        "orderType": "Nalog 'Kupnja' bit će izvršen samo po navedenoj cijeni ili nižoj, dok će nalog 'Prodaja' biti izvršen samo po navedenoj cijeni ili višoj. Ova kontrola osigurava da ne plaćate više ili prodajete za manje nego što vam odgovara.",
+        "expiryDate": "'Datum isteka' je rok za izvršenje vaše narudžbe. Ako tržište ne dosegne vašu navedenu cijenu prije tog datuma, narudžba se automatski poništava. Niste vezani za vječno čekanje ako tržišni uvjeti nisu u skladu s vašim preferencijama trgovanja.",
+        "amount": "'Iznos' se odnosi na ukupan broj sredstava koje želite kupiti ili prodati u svojoj narudžbi. Važno je to navesti jer određuje veličinu vaše transakcije, utječući na ukupne troškove za narudžbe za kupnju ili prihod za narudžbe za prodaju.",
+        "limit": "'Ograničena cijena' je točna cijena koju postavite za ograničenu narudžbu. Trgovina će se izvršiti samo kada tržišna cijena imovine dostigne vašu ograničenu cijenu, čime se osigurava da ne kupujete iznad ili prodajete ispod navedene vrijednosti.",
+        "locked": "'Zaključano' prikazuje količinu imovine koju treba zadržati dok je narudžba u tijeku."
+      },
+      "bookStatus": {
+        "active": "Omogućena potpuna funkcionalnost trgovanja. Možete postaviti nove narudžbe ili otkazati postojeće.",
+        "placeable": "Ograničena funkcionalnost. Možete postaviti nove narudžbe i otkazati postojeće, ali neke značajke možda neće biti dostupne.",
+        "cancelable": "Možete otkazati samo postojeće narudžbe. Nova narudžba trenutno je onemogućena.",
+        "inactive": "Sve trgovinske aktivnosti trenutno su zaustavljene. U ovom trenutku nije moguće postaviti niti otkazati narudžbe."
+      }
+    },
+    "txDetails": {
+      "orderType": "vrsta naloga",
+      "limitPrice": "granična cijena",
+      "expiryDate": "datum isteka"
+    },
+    "error": {
+      "beyondPrecision": {
+        "reason": "Unesena cijena je precizna za izračunavanje",
+        "reading": "Preciznost premašena: Uneseni iznos/cijena ima previše decimalnih mjesta. Unesite vrijednost s manje decimalnih mjesta"
+      },
+      "marketNotAvailable": {
+        "reason": "Nema dovoljno dostupnih narudžbi za ispunjavanje ove narudžbe",
+        "reading": "Ograničenje tržišnog naloga: nema dovoljno dostupnih naloga za ispunjavanje ovog tržišnog naloga. Prilagodite veličinu svoje narudžbe ili pričekajte da se pošalje više narudžbi"
+      },
+      "exceedsSpread": {
+        "reason": "Cijena premašila raspon",
+        "reading": "Premašena cijena: tržišna ponuda ili tražena cijena premašila je traženu/ponuđenu cijenu"
+      },
+      "spotLimit": {
+        "reason": "Trgovačka strana je popunjena",
+        "reading": "Ograničenje raspona cijena: Svaka strana knjige narudžbi ograničena je na 1024 jedinstvena cjenovna boda. Odaberite cijenu unutar postojećeg raspona ili pričekajte da se oslobodi prostor"
+      },
+      "accountLimit": {
+        "reason": "U tijeku je previše narudžbi",
+        "reading": "Dosegnuto ograničenje: Svaki račun je ograničen na 1024 ograničene narudžbe. Pričekajte dok se neke od vaših narudžbi ne ispune"
+      },
+      "singlePriceLimit": {
+        "reason": "U tijeku je previše narudžbi za ovu cijenu",
+        "reading": "Dosegnuto ograničenje: Svaka pozicija ograničena je na 1024 ograničena naloga. Pričekajte dok se neke narudžbe ne ispune"
+      },
+      "outOfBounds": {
+        "reading": "Blockchain raspon premašen: Vaš uneseni iznos je izvan dopuštenog blockchaina raspona. Min: {min} ; Maks.: {max}",
+        "reason": "Iznos nije u skladu s rasponom blockchaina"
+      },
+      "multipleOf": {
+        "reading": "Za obradu vaše narudžbe unesite cijenu koja je višekratnik {value}",
+        "reason": "Unesena cijena je previše konkretna"
+      }
+    },
+    "orderStatus": {
+      "active": "Aktivan",
+      "canceled": "Otkazano",
+      "expired": "Istekao",
+      "filled": "Ispunjeno"
+    },
+    "pricePerToken": "Cijena za 1 {token}"
+  },
+  "calculatingText": "Izračunavanje",
+  "customisePageText": "Prilagodite stranicu",
+  "priceChartText": "Grafikon cijena",
+  "editText": "Uredi",
+  "resetText": "Reset",
+  "kensetsu": {
+    "addCollateral": "Dodaj kolateral",
+    "addCollateralDescription": "Depozitirajte više sredstava na svoju poziciju kako biste povećali svoj limit zaduživanja ili poboljšali omjer zajma i vrijednosti. To također može pomoći u sprječavanju likvidacije.",
+    "depositCollateral": "Depozit kolaterala",
+    "totalCollateral": "Ukupan kolateral",
+    "totalCollateralDescription": "Ukupna vrijednost svih sredstava trenutno položenih na vašu poziciju. Ta vrijednost utječe na vašu sposobnost zaduživanja i rizik od likvidacije.",
+    "debtAvailable": "Dug dostupan",
+    "debtAvailableDescription": "Iznos sredstava koje još uvijek možete povući sa svoje pozicije bez prekoračenja vašeg limita zaduživanja, na temelju vašeg trenutnog jamstva.",
+    "ltv": "Zajam na vrijednost ({LTV})",
+    "ltvDescription": "Omjer iznosa povučenog iznosu jamstva u vašoj poziciji, izražen kao postotak. Viši {LTV} povećava potencijalne prinose, ali i rizik, uključujući mogućnost likvidacije.",
+    "borrowMore": "Posudite više",
+    "borrowMoreDescription": "Povucite dodatna sredstva sa svoje pozicije do maksimalno dostupnog iznosa. Osigurajte da vrijednost vašeg jamstva podržava povećanu zaduženost kako biste izbjegli rizike likvidacije.",
+    "available": "Dostupno",
+    "outstandingDebt": "Izvanredan dug",
+    "outstandingDebtDescription": "Ukupni iznos koji trenutno dugujete iz sredstava povučenih sa svoje pozicije, uključujući obračunske kamate. To treba vratiti kako biste zatvorili svoju poziciju ili održavali zdrave omjere zajma i vrijednosti.",
+    "createVault": "Otvorite poziciju zajma",
+    "createVaultDescription": "Pokrenite novu transakciju polaganjem jamstva na svoju poziciju i povlačenjem sredstava. Time se stvara obveza duga koju morate upravljati.",
+    "createVaultAction": "Otvorite poziciju",
+    "borrowDebt": "Posudite dug",
+    "minDepositCollateral": "Minimalni polog kolaterala",
+    "minDepositCollateralDescription": "Minimalni iznos sredstava potreban za otvaranje pozicije. Ovaj početni polog osigurava sredstva koja želite posuditi.",
+    "maxAvailableToBorrow": "Maks. dostupno za posuditi",
+    "maxAvailableToBorrowDescription": "Maksimalni iznos koji možete povući sa svoje pozicije, određen vrijednošću vašeg jamstva. Ova granica se prilagođava kako se mijenja vrijednost jamstva.",
+    "borrowTax": "Porez na posudbu",
+    "borrowTaxDescription": "Porez {value} primijenjen na posuđeni iznos",
+    "repayDebt": "Vratite dug",
+    "repayDebtDescription": "Vratite posuđena sredstva kako biste smanjili svoj trenutni dug. To može smanjiti troškove kamata i smanjiti rizik od likvidacije.",
+    "closeVault": "Zatvorite moju poziciju",
+    "closeVaultDescription": "Zatvorite odabranu poziciju isplatom svih izvanrednih dugova i povlačenjem sveg kolaterala",
+    "yourCollateral": "Vaš kolateral",
+    "yourCollateralDescription": "Sredstva koja ste položili na svoju poziciju kako biste osigurali povučena sredstva. Ta sredstva mogu biti likvidirana od strane zajmodavca ako ne održavate potreban omjer zajma i vrijednosti.",
+    "yourDebt": "Vaš dug",
+    "yourDebtDescription": "Ukupni iznos trenutno neplaćen u vašoj poziciji, uključujući povučeni iznos i sve obračunske kamate. Ovaj saldo raste s vremenom ako se kamate akumuliraju.",
+    "yourDebtTokenBalance": "Vaš {tokenSymbol} saldo",
+    "requiredAmountWithSlippage": "Potrebni iznos s klizanjem",
+    "requiredAmountWithSlippageDescription": "Za glatko zatvaranje pozicije, kupite malo više {tokenSymbol} nego što je {amount} potrebno zbog moguće klizne cijene. Potrebno vam je nešto dodatno za pokriće manjka. Zamijenite svoja sredstva u {tokenSymbol} kako biste zadovoljili ovu potrebu.",
+    "openSwap": "Otvori zamjenu",
+    "introTitle": "Otvorite pozicije zajma i zaradite s {Kensetsu}",
+    "introDescription": "Iskusite sigurno i bezbrižno zaduživanje i posuđivanje. Otvorite pozicije zaduživanja s platformom {Kensetsu}.",
+    "disclaimerDescription": "Posuđivanje digitalnih sredstava putem {Polkaswap} nosi značajne rizike i u potpunosti je na vaš vlastiti rizik. Vrijednost digitalnih sredstava izuzetno je volatilna, a bilo kakve promjene u tržišnim cijenama sredstava koje ste posudili ili koristili kao zalogu mogu rezultirati značajnim financijskim gubicima.",
+    "availableToBorrow": "Dostupno za posudbu",
+    "availableToBorrowDescription": "Preostali iznos koji ste ovlašteni povući prema trenutnim uvjetima vaše pozicije, na temelju deponiranog jamstva i bilo kojeg postojećeg duga.",
+    "collateralDetails": "Detalji kolaterala",
+    "debtDetails": "Detalji duga",
+    "positionInfo": "Informacije o poziciji",
+    "liquidationPenalty": "Kazna za likvidaciju",
+    "liquidationPenaltyDescription": "Naknada koja se primjenjuje ako vrijednost vašeg kolaterala padne ispod određenog praga, potičući prodaju sredstava radi pokrivanja duga. Ova kazna povećava vaš ukupni dug.",
+    "positionSafe": "Pozicija sigurna",
+    "liquidationClose": "Zatvaranje likvidacije",
+    "highLiquidationRisk": "Visok rizik od likvidacije",
+    "error": {
+      "enterCollateral": "Unesite kolateral",
+      "enterBorrow": "Unesite iznos za posudbu",
+      "borrowMoreThanAvailable": "Dostupan dug premašen",
+      "insufficientCollateral": "Nedovoljan kolateral",
+      "enterRepayDebt": "Unesite vraćanje duga",
+      "repayMoreThanDebt": "Dug preplaćen",
+      "incorrectCollateral": "Par tokena nije podržan"
+    },
+    "interest": "Kamata",
+    "interestDescription": "Godišnja naknada naplaćena na iznos povučen iz vašeg sefa, izračunata kao postotak. Ova naknada nadoknađuje rizike i fluktuacije na tržištu.",
+    "positionHistory": "Povijest pozicije",
+    "liquidated": "Likvidirano",
+    "liquidatedMessage": "Likvidirano {amount} {symbol}",
+    "status": {
+      "Opened": "Aktivno",
+      "Closed": "Zatvoreno",
+      "Liquidated": "Likvidirano"
+    },
+    "readMore": "Pročitajte više",
+    "reopen": "Ponovno otvori",
+    "totalCollateralReturned": "Ukupno vraćeni kolateral",
+    "totalCollateralReturnedDescription": "Ukupna vrijednost imovine vraćene nakon zatvaranja vaše pozicije, uključujući ukupni preostali kolateral.",
+    "overallTotalCollateral": "Ukupni kolateral",
+    "overallTotalCollateralDescription": "Ukupna vrijednost imovine koju su založili zajmoprimci kako bi osigurali svoje pozicije zaduživanja na platformi {Kensetsu}.",
+    "overallTotalDebt": "Ukupni dug",
+    "overallTotalDebtDescription": "Ukupan iznos trenutnog duga na svim pozicijama zaduživanja na platformi {Kensetsu}.",
+    "overallBadDebt": "Loš dug",
+    "overallBadDebtDescription": "Dio duga koji se vjerojatno neće naplatiti zbog neispunjenja obveza zajmoprimca ili nedostatnog kolaterala.",
+    "ltvMaxTooltip": "Najveći iznos pozajmljivanja koji se može pružiti u odnosu na procijenjenu vrijednost imovine koja se koristi kao kolateral.",
+    "overallAvailable": "Ukupno dostupno",
+    "overallAvailableDescription": "Ukupan iznos sredstava dostupnih za posudbu na platformi {Kensetsu}."
+  },
+  "accountSettings": {
+    "title": "POSTAVLJANJE RAČUNA",
+    "hint": "To možete ponovno omogućiti u postavkama računa",
+    "disable": "Onemogući uključeno",
+    "disabled": "Onemogućeno za",
+    "confirmation": {
+      "title": "Onemogući potvrdu transakcije",
+      "description": "Skočni zaslon koji prikazuje detalje o transakcijama prije potpisivanja."
+    },
+    "signature": {
+      "title": "Onemogući potvrdu lozinke",
+      "description": "Omogućite ili onemogućite potrebu za unosom lozinke tijekom skočnog prozora za potpis u transakcijama."
+    },
+    "enterPassword": "Upišite lozinku",
+    "googleOnly": "Samo {Google} računi"
+  },
+  "currencyDialog": {
+    "currency": "Valuta",
+    "searchPlaceholder": "Pretražujte prema nazivu valute ili simbolu"
+  },
+  "browserNotificationLocalStorageOverride": {
+    "title": "Očisti lokalnu pohranu {AppName}",
+    "info": "Vaša lokalna pohrana je preopterećena, za nastavak rada s {AppName} trebate je očistiti",
+    "agree": "Da, razumijem"
+  },
+  "points": {
+    "title": "Vaš napredak s bodovima",
+    "loginText": "Povežite svoj račun da vidite svoje bodove",
+    "bridgeVolume": "Volumen mosta",
+    "feesSpent": "Potrošene naknade",
+    "xorBurned": "{XOR} spaljeno",
+    "yourReferrals": "Vaše preporuke",
+    "accountsText": "{amount} računa",
+    "yourRewards": "Vaše nagrade",
+    "openTelegram": "Otvorite {Telegram}",
+    "toEarnPoints": "Za zarađivanje bodova"
+  },
+  "sbtDetails": {
+    "description": "Ovaj SBT pruža pristup raznim tokenima i poolovima te je povezan s vašim računom.",
+    "issuedBy": "{SBT} izdao",
+    "kycVerification": "{KYC} Verifikacija",
+    "kycProvider": "{KYC} Pružatelj",
+    "accessPermitted": "Pristup odobren",
+    "listOperable": "Operativna regulirana imovina",
+    "noPermissions": "Nema dodatnih dozvola",
+    "regulatedInstitution": "Regulirana institucija",
+    "expiryDate": "Datum isteka",
+    "expiryDateTooltip": "‘Datum isteka’ je krajnji rok za vaš pristup reguliranim imovinama SBT-a.",
+    "expiresIn": "Isteče za",
+    "expiresInTooltip": "‘Isteče za’ prikazuje razdoblje ili trenutak kada se pristup dobiva.",
+    "indefiniteExp": "neograničeno",
+    "permission": "dozvola",
+    "permissions": "dozvole",
+    "noReceiverAccess": "Pokušavate poslati regulirani token korisniku bez pristupa SBT-u."
+  },
+  "assetOwner": {
+    "letsStartBtn": "ZAPOČNIMO",
+    "selectExisting": "Odaberi postojeći",
+    "createSbt": "Kreiraj {type}",
+    "orSelectExisting": "Ili odaberite postojeći",
+    "createRegulatedAsset": "Kreiraj novu reguliranu imovinu",
+    "addRegulatedAsset": "Dodaj drugu reguliranu imovinu",
+    "attachedRegulatedAssets": "Povezane regulirane imovine",
+    "ownerSbtTitle": "Vaš {type}",
+    "regulatedAssetsConnected": "Povezane regulirane imovine",
+    "regulatedPools": "Regulirani poolovi",
+    "sbtManagers": "{type} Menadžeri",
+    "you": "Vi",
+    "accountWithAccess": "Račun s pristupom SBT-u",
+    "issueSbtAccess": "Izdaj {type} pristup",
+    "startIssue": "Započni izdavanje pristupa za SBT račune",
+    "permissionedAssets": "Imovina s dozvolama",
+    "addRegulatedAssets": "Dodaj regulirane imovine",
+    "sbtCreation": {
+      "addAssets": "Dodaj imovine na SBT",
+      "addDescription": "Unesite detalje o SBT-u",
+      "addMeta": "Unesite informacije o SBT-u",
+      "preview": "Pregled SBT-a"
+    },
+    "guide": {
+      "createToken": "Kreirajte svoj token",
+      "createTokenDesc": "Lako pokrenite svoj jedinstveni token, dostupan u više formata kao što su NFTs i SBTs, koristeći robusnu infrastrukturu mreže SORA.",
+      "title": "Kako kreirati {type}:",
+      "stepOneTitle": "Odaberite ili kreirajte regulirane imovine",
+      "stepOneDesc": "Odaberite ili kreirajte imovine koje ste osobno stvorili i regulirali. Ove imovine su pod vašom kontrolom.",
+      "stepTwoTitle": "Unesite detalje o SBT-u",
+      "stepTwoDesc": "Navedite ključne informacije kao što su naziv SBT-a, simbol i ikona.",
+      "stepThreeTitle": "Pregledajte i potpišite transakciju",
+      "stepThreeDesc": "Pregledajte i potpišite konačnu transakciju za završetak postavljanja SBT-a.",
+      "disclaimerSbt": "Zadržite ovu stranicu otvorenom tijekom cijelog procesa. Zatvaranje ili navigacija će zahtijevati ponovni početak. Brzo završite korake kako biste izbjegli vremensko ograničenje."
+    },
+    "dialog": {
+      "createAsset": "Kreirajte novu imovinu",
+      "createAssetDesc": "Postavite novu imovinu s dozvolama za {type}",
+      "addExisting": "Dodaj postojeću imovinu",
+      "addExistingDesc": "Dodajte već stvorenu imovinu za SBT",
+      "enterAddress": "Unesite adresu za izdavanje",
+      "selectAccessEnd": "Odaberite kada će pristup završiti",
+      "selectDate": "Odaberite datum",
+      "issueAccess": "Izdaj pristup",
+      "pickDate": "Odaberite dan"
+    }
+  }
 }

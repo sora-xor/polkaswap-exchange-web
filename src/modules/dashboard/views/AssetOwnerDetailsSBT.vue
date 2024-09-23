@@ -341,13 +341,6 @@ export default class AssetOwnerDetailsSBT extends Mixins(
     return this.parentLoading || this.loading;
   }
 
-  async created(): Promise<void> {
-    this.withApi(async () => {
-      this.sbtMetaInfo = await api.extendedAssets.getSbtMetaInfo(this.$route.params.asset);
-      this.updateExploreData();
-    });
-  }
-
   openAssetCreateDialog(): void {
     if (!this.sbtMetaInfo.regulatedAssets?.length) {
       this.openAssetCreate('new');
@@ -355,21 +348,6 @@ export default class AssetOwnerDetailsSBT extends Mixins(
     }
 
     this.showCreateAssetDialog = true;
-  }
-
-  async mounted(): Promise<void> {
-    this.withApi(async () => {
-      if (!this.isLoggedIn) {
-        router.push({ name: DashboardPageNames.AssetOwner });
-        return;
-      }
-
-      await waitUntil(() => !this.parentLoading);
-
-      if (!this.asset) {
-        router.push({ name: DashboardPageNames.AssetOwner });
-      }
-    });
   }
 
   handleClearSearchAccounts(): void {
@@ -401,9 +379,41 @@ export default class AssetOwnerDetailsSBT extends Mixins(
         const filtered = Object.fromEntries(
           Object.entries(assets).filter(([key, val]) => this.sbtMetaInfo.regulatedAssets.includes(key))
         );
+        console.log('this.sbtMetaInfo.regulatedAssets', this.sbtMetaInfo.regulatedAssets);
+        console.log('tokensData', filtered);
 
-        this.tokensData = Object.freeze(filtered);
+        this.tokensData = filtered;
       });
+    });
+  }
+
+  async created(): Promise<void> {
+    this.withApi(async () => {
+      this.sbtMetaInfo = await api.extendedAssets.getSbtMetaInfo(this.$route.params.asset);
+      this.updateExploreData();
+    });
+  }
+
+  async mounted(): Promise<void> {
+    this.withApi(async () => {
+      if (!this.isLoggedIn) {
+        router.push({ name: DashboardPageNames.AssetOwner });
+        return;
+      }
+
+      await waitUntil(() => !this.parentLoading);
+
+      if (!this.asset) {
+        router.push({ name: DashboardPageNames.AssetOwner });
+      }
+
+      console.log('mount');
+
+      setTimeout(async () => {
+        this.sbtMetaInfo = await api.extendedAssets.getSbtMetaInfo(this.$route.params.asset);
+        console.log('this.sbtMetaInfo', this.sbtMetaInfo);
+        await this.updateExploreData();
+      }, 18_000);
     });
   }
 }
