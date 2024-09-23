@@ -122,10 +122,10 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
   @state.wallet.account.assets private assets!: Asset[];
   @state.wallet.account.accountAssets private accountAssets!: AccountAsset[];
+  @state.assets.pinnedAssetsAddresses pinnedAssetsAddresses!: string[];
 
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
-  @getter.assets.pinnedAssetsAddresses pinnedAssetsAddresses!: string[];
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
   @getter.wallet.account.whitelist public whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;

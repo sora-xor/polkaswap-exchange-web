@@ -42,9 +42,6 @@ const getters = defineGetters<AssetsState>()({
     const { getters } = assetsGetterContext(args);
     return getters.assetDataByAddress(XOR.address);
   },
-  pinnedAssetsAddresses(state): string[] {
-    return state.pinnedAssetsAddresses;
-  },
   isAssetPinned(state): (asset: AccountAsset) => boolean {
     return (asset: AccountAsset): boolean => {
       return state.pinnedAssetsAddresses.includes(asset.address);

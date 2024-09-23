@@ -78,21 +78,15 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
   @Prop({ default: false, type: Boolean }) readonly shouldBalanceBeHidden!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
 
-  @getter.assets.pinnedAssetsAddresses pinnedAssetsAddresses!: string[];
   @getter.assets.isAssetPinned isAssetPinned!: (asset: AccountAsset) => boolean;
 
   @mutation.wallet.account.setPinnedAsset setPinnedAsset!: (asset: AccountAsset) => void;
   @mutation.wallet.account.removePinnedAsset removePinnedAsset!: (asset: AccountAsset) => void;
-  @mutation.assets.loadPinnedAssetsAddresses loadPinnedAssetsAddresses!: () => void;
 
   readonly FormattedZeroSymbol = '-';
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
   readonly HiddenValue = WALLET_CONSTS.HiddenValue;
-
-  created() {
-    this.loadPinnedAssetsAddresses();
-  }
 
   togglePinnedAsset(asset: AccountAsset): void {
     if (this.isAssetPinned(asset)) {
