@@ -379,10 +379,8 @@ export default class AssetOwnerDetailsSBT extends Mixins(
         const filtered = Object.fromEntries(
           Object.entries(assets).filter(([key, val]) => this.sbtMetaInfo.regulatedAssets.includes(key))
         );
-        console.log('this.sbtMetaInfo.regulatedAssets', this.sbtMetaInfo.regulatedAssets);
-        console.log('tokensData', filtered);
 
-        this.tokensData = filtered;
+        this.tokensData = Object.freeze(filtered);
       });
     });
   }
@@ -406,14 +404,6 @@ export default class AssetOwnerDetailsSBT extends Mixins(
       if (!this.asset) {
         router.push({ name: DashboardPageNames.AssetOwner });
       }
-
-      console.log('mount');
-
-      setTimeout(async () => {
-        this.sbtMetaInfo = await api.extendedAssets.getSbtMetaInfo(this.$route.params.asset);
-        console.log('this.sbtMetaInfo', this.sbtMetaInfo);
-        await this.updateExploreData();
-      }, 18_000);
     });
   }
 }
