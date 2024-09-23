@@ -53,11 +53,12 @@
 </template>
 
 <script lang="ts">
-import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { vuex, mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { getter, mutation } from '@/store/decorators';
+import { modules } from '@/store';
+import { getter, mutation, state } from '@/store/decorators';
 import { formatAssetBalance } from '@/utils';
 
 import PinIcon from '../Logo/PinIcon.vue';
@@ -80,8 +81,8 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
   @getter.assets.pinnedAssetsAddresses pinnedAssetsAddresses!: string[];
   @getter.assets.isAssetPinned isAssetPinned!: (asset: AccountAsset) => boolean;
 
-  @mutation.assets.setPinnedAsset setPinnedAsset!: (assetAddress: string) => void;
-  @mutation.assets.removePinnedAsset removePinnedAsset!: (assetAddress: string) => void;
+  @mutation.wallet.account.setPinnedAsset setPinnedAsset!: (asset: AccountAsset) => void;
+  @mutation.wallet.account.removePinnedAsset removePinnedAsset!: (asset: AccountAsset) => void;
   @mutation.assets.loadPinnedAssetsAddresses loadPinnedAssetsAddresses!: () => void;
 
   readonly FormattedZeroSymbol = '-';
@@ -95,9 +96,9 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
 
   togglePinnedAsset(asset: AccountAsset): void {
     if (this.isAssetPinned(asset)) {
-      this.removePinnedAsset(asset.address);
+      this.removePinnedAsset(asset);
     } else {
-      this.setPinnedAsset(asset.address);
+      this.setPinnedAsset(asset);
     }
     this.$emit('pinnedAssetsChanged');
   }

@@ -24,17 +24,6 @@ const mutations = defineMutations<AssetsState>()({
       state.pinnedAssetsAddresses = [];
     }
   },
-  setPinnedAsset(state, assetAddress: string): void {
-    if (!state.pinnedAssetsAddresses.includes(assetAddress)) {
-      state.pinnedAssetsAddresses.push(assetAddress);
-      settingsStorage.set('pinnedAssets', JSON.stringify(state.pinnedAssetsAddresses));
-    }
-  },
-
-  removePinnedAsset(state, assetAddress: string): void {
-    state.pinnedAssetsAddresses = state.pinnedAssetsAddresses.filter((address) => address !== assetAddress);
-    settingsStorage.set('pinnedAssets', JSON.stringify(state.pinnedAssetsAddresses));
-  },
 });
 
 export default mutations;
