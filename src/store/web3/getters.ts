@@ -7,6 +7,8 @@ import type { KnownEthBridgeAsset } from '@/consts/evm';
 import { SUB_NETWORKS } from '@/consts/sub';
 import { web3GetterContext } from '@/store/web3';
 import type { NetworkData } from '@/types/bridge';
+import type { AppEIPProvider } from '@/types/evm/provider';
+import { getPredefinedProviders } from '@/utils/connection/evm/providers';
 
 import type { Web3State, AvailableNetwork } from './types';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
@@ -111,6 +113,25 @@ const getters = defineGetters<Web3State>()({
       name: state.subAddressName,
       source: state.subAddressSource as WALLET_CONSTS.AppWallet,
     };
+  },
+
+  appEvmProviders(...args): AppEIPProvider[] {
+    const { state, rootState } = web3GetterContext(args);
+
+    const isDesktop = rootState.wallet.account.isDesktop;
+    const predefinedProviders = getPredefinedProviders(isDesktop);
+
+    if (isDesktop) return predefinedProviders;
+
+    const providers: AppEIPProvider[] = [...state.evmProviders];
+
+    predefinedProviders.forEach((provider) => {
+      const exists = !!providers.find((added) => added.name === provider.name);
+
+      if (!exists) providers.push(provider);
+    });
+
+    return providers;
   },
 });
 
