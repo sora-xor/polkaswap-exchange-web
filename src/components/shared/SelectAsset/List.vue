@@ -94,7 +94,6 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
     } else {
       this.setPinnedAsset(asset);
     }
-    this.$emit('pinnedAssetsChanged');
   }
 
   formatBalance(token: AccountAsset): string {

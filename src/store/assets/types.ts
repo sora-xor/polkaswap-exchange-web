@@ -8,5 +8,4 @@ export type BridgeRegisteredAsset = {
 export type AssetsState = {
   registeredAssets: Record<string, BridgeRegisteredAsset>;
   registeredAssetsFetching: boolean;
-  pinnedAssetsAddresses: string[];
 };

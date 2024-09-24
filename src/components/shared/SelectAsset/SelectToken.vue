@@ -50,7 +50,6 @@
         :should-balance-be-hidden="shouldBalanceBeHidden"
         has-fiat-value
         @click="selectAsset"
-        @pinnedAssetsChanged="loadPinnedAssetsAddresses"
       >
         <template #action="token">
           <div v-if="isCustomTabActive" class="token-item__remove" @click.stop="handleRemoveCustomAsset(token)">
@@ -122,7 +121,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
   @state.wallet.account.assets private assets!: Asset[];
   @state.wallet.account.accountAssets private accountAssets!: AccountAsset[];
-  @state.assets.pinnedAssetsAddresses pinnedAssetsAddresses!: string[];
+  @state.wallet.account.pinnedAssets pinnedAssetsAddresses!: string[];
 
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
@@ -131,12 +130,6 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
 
   @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
-
-  @mutation.assets.loadPinnedAssetsAddresses loadPinnedAssetsAddresses!: () => void;
-
-  created() {
-    this.loadPinnedAssetsAddresses();
-  }
 
   @Watch('visible')
   async handleTabReset(value: boolean): Promise<void> {
@@ -182,15 +175,11 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
     const pinnedAssetsAddresses = this.pinnedAssetsAddresses;
 
-    const filteredAssetsMap = new Map<string, AccountAsset>();
-    filteredAssets.forEach((asset) => {
-      filteredAssetsMap.set(asset.address, asset);
-    });
-    const pinnedAssets: AccountAsset[] = pinnedAssetsAddresses
-      .map((address) => filteredAssetsMap.get(address))
-      .filter((asset): asset is AccountAsset => !!asset);
+    const pinnedAssetAddressesSet = new Set(pinnedAssetsAddresses);
 
-    const nonPinnedAssets = filteredAssets.filter((asset) => !pinnedAssetsAddresses.includes(asset.address));
+    const pinnedAssets = filteredAssets.filter((asset) => pinnedAssetAddressesSet.has(asset.address));
+
+    const nonPinnedAssets = filteredAssets.filter((asset) => !pinnedAssetAddressesSet.has(asset.address));
 
     return [...pinnedAssets, ...nonPinnedAssets];
   }
