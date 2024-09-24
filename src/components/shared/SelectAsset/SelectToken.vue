@@ -172,15 +172,15 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   get filteredWhitelistTokens(): Array<AccountAsset> {
     const filteredAssets = this.filterAssetsByQuery(this.whitelistAssetsList)(this.searchQuery) as Array<AccountAsset>;
-
-    const pinnedAssetsAddresses = this.pinnedAssetsAddresses;
-
-    const pinnedAssetAddressesSet = new Set(pinnedAssetsAddresses);
-
-    const pinnedAssets = filteredAssets.filter((asset) => pinnedAssetAddressesSet.has(asset.address));
-
+    const filteredAssetsMap = new Map<string, AccountAsset>();
+    filteredAssets.forEach((asset) => {
+      filteredAssetsMap.set(asset.address, asset);
+    });
+    const pinnedAssets: AccountAsset[] = this.pinnedAssetsAddresses
+      .map((address) => filteredAssetsMap.get(address))
+      .filter((asset): asset is AccountAsset => !!asset);
+    const pinnedAssetAddressesSet = new Set(this.pinnedAssetsAddresses);
     const nonPinnedAssets = filteredAssets.filter((asset) => !pinnedAssetAddressesSet.has(asset.address));
-
     return [...pinnedAssets, ...nonPinnedAssets];
   }
 
