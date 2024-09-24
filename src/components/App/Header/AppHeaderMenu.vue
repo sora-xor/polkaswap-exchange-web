@@ -16,20 +16,29 @@
         @select="handleSelectHeaderMenu"
       >
         <template #menu>
-          <s-dropdown-item
-            v-for="{ value, icon, text, disabled } in dropdownHeaderMenuItems"
-            :key="value"
-            class="header-menu__item"
-            :data-test-name="value"
-            :icon="icon"
-            :value="value"
-            :disabled="disabled"
-          >
-            {{ text }}
-            <span v-if="value === HeaderMenuType.Currency" class="current-currency">
-              {{ currency?.toUpperCase() }}
-            </span>
-          </s-dropdown-item>
+          <div class="header-menu__settings">
+            <p>Settings</p>
+            <s-button class="s-pressed" type="action" icon="x-16" @click="handleClickHeaderMenu" />
+          </div>
+          <s-divider />
+          <div v-for="section in dropdownHeaderMenuItems" :key="section.title">
+            <p class="dropdown-section-title">{{ section.title }}</p>
+            <s-dropdown-item
+              v-for="item in section.items"
+              :key="item.value"
+              class="header-menu__item"
+              :data-test-name="item.value"
+              :icon="item.icon"
+              :value="item.value"
+              :disabled="item.disabled"
+            >
+              {{ item.text }}
+              <s-icon :name="item.iconType" size="14px" class="icontype" />
+              <span v-if="item.value === HeaderMenuType.Currency" class="current-currency">
+                {{ currency?.toUpperCase() }}
+              </span>
+            </s-dropdown-item>
+          </div>
         </template>
       </s-dropdown>
     </s-button>
@@ -50,6 +59,7 @@ import type { Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency'
 
 enum HeaderMenuType {
   HideBalances = 'hide-balances',
+  TurnPhoneHide = 'turn-phone-hide',
   Theme = 'theme',
   Language = 'language',
   Currency = 'currency',
@@ -60,8 +70,14 @@ enum HeaderMenuType {
 type MenuItem = {
   value: HeaderMenuType;
   icon: string;
+  iconType: string;
   text: string;
   disabled?: boolean;
+};
+
+type MenuSection = {
+  title: string;
+  items: Array<MenuItem>;
 };
 
 const BREAKPOINT = 1440;
@@ -122,47 +138,79 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     return this.t(`headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`);
   }
 
-  private getHeaderMenuItems(isDropdown = false): Array<MenuItem> {
+  private getHeaderMenuItems(isDropdown = false): Array<{ title: string; items: Array<MenuItem> }> {
     return [
       {
-        value: HeaderMenuType.HideBalances,
-        icon: this.getHideBalancesIcon(isDropdown),
-        text: this.hideBalancesText,
+        title: 'BALANCES',
+        items: [
+          {
+            value: HeaderMenuType.HideBalances,
+            icon: this.getHideBalancesIcon(isDropdown), // Main icon
+            text: this.hideBalancesText,
+            iconType: 'arrows-chevron-right-rounded-24', // Secondary icon (switch)
+          },
+          {
+            value: HeaderMenuType.TurnPhoneHide,
+            icon: this.getHideBalancesIcon(isDropdown), // Main icon
+            text: 'Turn phone & hide',
+            iconType: 'arrows-chevron-right-rounded-24', // Secondary icon (arrow)
+          },
+        ],
       },
       {
-        value: HeaderMenuType.Theme,
-        icon: this.getThemeIcon(isDropdown),
-        text: this.themeText,
+        title: 'COLOR THEME',
+        items: [
+          {
+            value: HeaderMenuType.Theme,
+            icon: this.getThemeIcon(isDropdown), // Main icon
+            text: this.themeText,
+            iconType: 'arrows-chevron-right-rounded-24',
+          },
+          {
+            value: HeaderMenuType.Language,
+            icon: 'basic-globe-24', // Main icon
+            text: this.t('headerMenu.switchLanguage'),
+            iconType: 'arrows-chevron-right-rounded-24',
+          },
+        ],
       },
       {
-        value: HeaderMenuType.Language,
-        icon: 'basic-globe-24',
-        text: this.t('headerMenu.switchLanguage'),
+        title: 'FIAT CURRENCY',
+        items: [
+          {
+            value: HeaderMenuType.Currency,
+            icon: 'various-lightbulb-24', // Main icon
+            text: this.t('headerMenu.selectCurrency'),
+            iconType: 'arrows-chevron-right-rounded-24',
+          },
+        ],
       },
       {
-        value: HeaderMenuType.Currency,
-        icon: 'various-lightbulb-24',
-        text: this.t('headerMenu.selectCurrency'),
-      },
-      {
-        value: HeaderMenuType.Disclaimer,
-        icon: 'info-16',
-        text: this.disclaimerText,
-        disabled: this.disclaimerDisabled,
-      },
-      {
-        value: HeaderMenuType.Notification,
-        icon: 'notifications-bell-24',
-        text: this.t('browserNotificationDialog.title'),
+        title: 'MISC',
+        items: [
+          {
+            value: HeaderMenuType.Notification,
+            icon: 'notifications-bell-24', // Main icon
+            text: this.t('browserNotificationDialog.title'),
+            iconType: 'arrows-chevron-right-rounded-24',
+          },
+          {
+            value: HeaderMenuType.Disclaimer,
+            icon: 'info-16', // Main icon
+            text: this.disclaimerText,
+            iconType: 'arrows-chevron-right-rounded-24',
+            disabled: this.disclaimerDisabled,
+          },
+        ],
       },
     ];
   }
 
-  get headerMenuItems(): Array<MenuItem> {
+  get headerMenuItems(): Array<MenuSection> {
     return this.getHeaderMenuItems();
   }
 
-  get dropdownHeaderMenuItems(): Array<MenuItem> {
+  get dropdownHeaderMenuItems(): Array<MenuSection> {
     return this.getHeaderMenuItems(true);
   }
 
@@ -228,8 +276,26 @@ $icon-size: 28px;
       display: none;
     }
   }
+  &__settings {
+    min-width: 264px;
+  }
   &__button i {
     font-size: $icon-size !important; // cuz font-size is inline style
+  }
+  &__settings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 17px;
+    width: 100%;
+    i {
+      font-size: 24px !important;
+    }
+    p {
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--s-color-base-content-primary);
+    }
   }
   & &__item.el-dropdown-menu__item {
     line-height: $dropdown-item-line-height;
@@ -242,6 +308,9 @@ $icon-size: 28px;
     i {
       color: var(--s-color-base-content-tertiary);
       font-size: $icon-size;
+    }
+    .icontype {
+      margin-left: auto;
     }
     &:not(.is-disabled) {
       &:hover,
@@ -259,6 +328,13 @@ $icon-size: 28px;
       color: var(--s-color-base-content-tertiary);
     }
   }
+  .el-divider--horizontal {
+    margin: unset;
+  }
+}
+
+.dropdown-section-title {
+  padding: 0 17px;
 }
 
 .el-dropdown-menu__item.header-menu__item.is-disabled {
