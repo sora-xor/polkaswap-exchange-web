@@ -139,6 +139,8 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     return this.t(`headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`);
   }
 
+  // s-icon-various-brightness-low-24 for the sun
+  // s-icon-basic-lightning-24 for the sun and moon
   private getHeaderMenuItems(isDropdown = false): Array<{ title: string; items: Array<MenuItem> }> {
     return [
       {
@@ -152,7 +154,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
           },
           {
             value: HeaderMenuType.TurnPhoneHide,
-            icon: 'call-call-phone-24',
+            icon: 'gadgets-iPhone-24',
             text: 'Turn phone & hide',
             iconType: 'arrows-chevron-right-rounded-24',
           },
