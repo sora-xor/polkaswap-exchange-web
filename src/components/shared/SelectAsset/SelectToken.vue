@@ -116,7 +116,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Prop({ default: false, type: Boolean }) readonly isFirstTokenSelected!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isAddLiquidity!: boolean;
   @Prop({ default: () => true, type: Function }) readonly filter!: (value: AccountAsset) => boolean;
-  @Prop({ default: true, type: Boolean }) readonly appendToBody!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly appendToBody!: boolean;
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
   @state.wallet.account.assets private assets!: Asset[];

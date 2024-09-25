@@ -12,7 +12,9 @@
   >
     <template #reference>
       <div :class="['transaction-details', { visible }]" v-button>
-        <span>{{ t('transactionDetailsText') }}</span>
+        <slot name="reference">
+          <span>{{ t('transactionDetailsText') }}</span>
+        </slot>
         <s-icon :name="icon" size="16px" class="transaction-details-icon" />
       </div>
     </template>
