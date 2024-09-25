@@ -256,7 +256,7 @@
         "alreadyAttached": "Token byl již přidán",
         "understand": "Rozumím",
         "warningTitle": "Obchodujte na vlastní nebezpečí!",
-        "warningMessage": "Token může vytvořit kdokoli, včetně vytváření falešných verzí existujících tokenů údajně reprezentujících projekty.\nPokud si tento token zakoupíte, nemusí být možné jej prodat zpět.",
+        "warningMessage": "tento {assetType} | tyto {assetTypePlural}",
         "approved": "Aktivum schváleno komunitou",
         "unknown": "Neznámý zdroj",
         "scam": "SCAM",
@@ -265,7 +265,15 @@
             "title": "Měny",
             "switchBtn": "Pouze ověřená aktiva"
         },
-        "searchInputText": "Vyhledávání podle Asset ID, Name nebo Ticker Symbol"
+        "searchInputText": "Vyhledávání podle Asset ID, Name nebo Ticker Symbol",
+        "warningMessageText": "Kdokoliv může vytvořit {assetType}, včetně falešných verzí existujících {assetTypePlural}, které tvrdí, že představují projekty. Pokud si koupíte {purchaseAssetType}, nemusí být možné ho prodat zpět.",
+        "assetType": {
+            "token": "Token | Tokeny",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Přidat",
+        "pinAsset": "Připnout aktivum",
+        "unpinAsset": "Odepřít aktivum"
     },
     "createToken": {
         "desc": "Vytvořte a zaveďte vlastní aktivum na síti {Sora}",
@@ -1042,7 +1050,9 @@
         "button": "Povolit upozornění",
         "agree": "Ano, rozumím",
         "notificationBlocked": "Chcete-li dostávat oznámení o {AppName}, povolte oznámení v nativním nastavení prohlížeče",
-        "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení"
+        "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení",
+        "rotatetitle": "Prosím, otočte své zařízení",
+        "rotateMessage": "Zážitek je dostupný pouze v režimu na výšku"
     },
     "assetDeposit": "Zůstatek aktiv byl uložen",
     "noDataText": "Žádné údaje",
@@ -1665,5 +1675,6 @@
         "yourRewards": "Vaše odměny",
         "openTelegram": "Otevřít {Telegram}",
         "toEarnPoints": "Pro získání bodů"
-    }
+    },
+    "addAssetsText": "Přidat aktivum | Přidat aktiva"
 }

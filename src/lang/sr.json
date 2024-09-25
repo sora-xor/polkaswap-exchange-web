@@ -256,7 +256,7 @@
         "alreadyAttached": "Токен је већ био прикачен",
         "understand": "Разумем",
         "warningTitle": "Тргујте на сопствени ризик!",
-        "warningMessage": "Свако може да креира токен, укључујући креирање лажних верзија постојећих токена за које се тврди да представљају пројекте.\nАко купите овај токен, можда нећете моћи да га продате назад.",
+        "warningMessage": "овај {assetType} | ови {assetTypePlural}",
         "approved": "Средство је одобрила заједница",
         "unknown": "Непознати извор",
         "scam": "ПРЕВАРА",
@@ -265,7 +265,15 @@
             "title": "Валуте",
             "switchBtn": "Само верификована средства"
         },
-        "searchInputText": "Претрага по ИД средства, имену или симболу ознаке"
+        "searchInputText": "Претрага по ИД средства, имену или симболу ознаке",
+        "warningMessageText": "Свако може да направи {assetType}, укључујући и лажне верзије постојећих {assetTypePlural}, које тврде да представљају пројекте. Ако купите {purchaseAssetType}, можда нећете моћи да га продате назад.",
+        "assetType": {
+            "token": "Токен | Токени",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Додајте",
+        "pinAsset": "Pričvrsti imovinu",
+        "unpinAsset": "Otkliči imovinu"
     },
     "createToken": {
         "desc": "Креирајте и примените прилагођено средство на {Sora}",
@@ -1042,7 +1050,9 @@
         "button": "Омогући обавештења",
         "agree": "Да, разумем",
         "notificationBlocked": "Да бисте примали обавештења о {AppName}, дозволите обавештења у основним подешавањима прегледача",
-        "pointer": "Притисните „Дозволи“ да бисте укључили обавештења"
+        "pointer": "Притисните „Дозволи“ да бисте укључили обавештења",
+        "rotatetitle": "Molimo vas da rotirate uređaj",
+        "rotateMessage": "Iskustvo je dostupno samo u portretnom režimu"
     },
     "assetDeposit": "Стање средстава је депоновано",
     "noDataText": "Нема података",
@@ -1665,5 +1675,6 @@
         "yourRewards": "Vaše nagrade",
         "openTelegram": "Otvorite {Telegram}",
         "toEarnPoints": "Za zarađivanje poena"
-    }
+    },
+    "addAssetsText": "Додај имовину | Додај имовине"
 }
