@@ -87,6 +87,7 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
   async handleSelectProvider(wallet: WalletInfo): Promise<void> {
     const uuid = wallet.extensionName;
     const provider = this.appEvmProviders.find((provider) => provider.uuid === uuid);
+    if (!provider) return;
 
     await this.connectEvmProvider(provider);
     this.visibility = false;
