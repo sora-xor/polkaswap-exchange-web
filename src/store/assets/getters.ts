@@ -42,13 +42,6 @@ const getters = defineGetters<AssetsState>()({
     const { getters } = assetsGetterContext(args);
     return getters.assetDataByAddress(XOR.address);
   },
-  isAssetPinned(...args): (asset: AccountAsset) => boolean {
-    return (asset: AccountAsset): boolean => {
-      const { rootState } = assetsGetterContext(args);
-      const pinnedAssetsAddresses = rootState.wallet.account.pinnedAssets;
-      return pinnedAssetsAddresses.includes(asset.address);
-    };
-  },
 });
 
 export default getters;

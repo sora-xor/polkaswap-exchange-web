@@ -60,15 +60,13 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, mutation } from '@/store/decorators';
 import { formatAssetBalance } from '@/utils';
 
-import PinIcon from '../Logo/PinIcon.vue';
-
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     AssetList: components.AssetList,
-    PinIcon,
+    PinIcon: components.PinIcon,
   },
 })
 export default class SelectAssetList extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
@@ -77,7 +75,7 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
   @Prop({ default: false, type: Boolean }) readonly shouldBalanceBeHidden!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
 
-  @getter.assets.isAssetPinned isAssetPinned!: (asset: AccountAsset) => boolean;
+  @getter.wallet.account.isAssetPinned isAssetPinned!: (asset: AccountAsset) => boolean;
 
   @mutation.wallet.account.setPinnedAsset setPinnedAsset!: (asset: AccountAsset) => void;
   @mutation.wallet.account.removePinnedAsset removePinnedAsset!: (asset: AccountAsset) => void;
@@ -179,6 +177,10 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
   border: unset;
   &:hover {
     cursor: pointer;
+  }
+  svg {
+    width: 16px;
+    height: 16px;
   }
 }
 </style>
