@@ -1,10 +1,9 @@
 import { FPNumber, TransactionStatus } from '@sora-substrate/sdk';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import BN from 'bignumber.js';
 
 import xTokensAbi from '@/abi/ethereum/other/moonbeam/xTokens.json';
 import { ZeroStringValue } from '@/consts';
-import { SUB_NETWORKS } from '@/consts/sub';
+import { AlphanetMoonbase } from '@/consts/sub/networks/alphanet';
 import { delay } from '@/utils';
 import { getEvmTransactionFee, onEvmTransactionPending } from '@/utils/bridge/common/utils';
 import { getTransaction, updateTransaction } from '@/utils/bridge/sub/utils';
@@ -16,15 +15,13 @@ import type { CodecString } from '@sora-substrate/sdk';
 import type { Asset, RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { ethers } from 'ethers';
 
-const MOONBASE_DATA = SUB_NETWORKS[SubNetworkId.AlphanetMoonbase];
-
 export class MoonbaseParachainAdapter extends ParachainAdapter<string> {
   protected nativeAssetContractAddress = '0x0000000000000000000000000000000000000802';
   protected xTokensContractAddress = '0x0000000000000000000000000000000000000804';
 
   // overrides "WithConnectionApi"
   override get chainSymbol(): string | undefined {
-    return MOONBASE_DATA?.nativeCurrency?.symbol;
+    return AlphanetMoonbase?.nativeCurrency?.symbol;
   }
 
   // overrides "WithConnectionApi"
