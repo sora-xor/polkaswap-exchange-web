@@ -58,7 +58,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import SwapAmountsMixin from '@/components/mixins/SwapAmountsMixin';
 import { Components, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
@@ -92,15 +92,9 @@ enum SwapWidgets {
     WidgetsGrid: lazyComponent(Components.WidgetsGrid),
   },
 })
-export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, SelectedTokenRouteMixin) {
+export default class Swap extends Mixins(mixins.LoadingMixin, SwapAmountsMixin, SelectedTokenRouteMixin) {
   @state.swap.isAvailable isAvailable!: boolean;
   @state.router.prev private prevRoute!: Nullable<PageNames>;
-
-  @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
-  @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
-
-  @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
-  @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
 
   readonly SwapWidgets = SwapWidgets;
 
