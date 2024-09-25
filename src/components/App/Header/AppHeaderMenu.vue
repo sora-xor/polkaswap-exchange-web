@@ -23,21 +23,22 @@
           <s-divider />
           <div v-for="section in dropdownHeaderMenuItems" :key="section.title">
             <p class="dropdown-section-title">{{ section.title }}</p>
-            <s-dropdown-item
-              v-for="item in section.items"
-              :key="item.value"
-              class="header-menu__item"
-              :data-test-name="item.value"
-              :icon="item.icon"
-              :value="item.value"
-              :disabled="item.disabled"
-            >
-              {{ item.text }}
-              <s-icon :name="item.iconType" size="14px" class="icontype" />
-              <span v-if="item.value === HeaderMenuType.Currency" class="current-currency">
-                {{ currency?.toUpperCase() }}
-              </span>
-            </s-dropdown-item>
+            <div v-for="(item, index) in section.items" :key="item.value">
+              <s-dropdown-item
+                class="header-menu__item"
+                :data-test-name="item.value"
+                :icon="item.icon"
+                :value="item.value"
+                :disabled="item.disabled"
+              >
+                {{ item.text }}
+                <s-icon :name="item.iconType" size="14px" class="icontype" />
+                <span v-if="item.value === HeaderMenuType.Currency" class="current-currency">
+                  {{ currency?.toUpperCase() }}
+                </span>
+              </s-dropdown-item>
+              <s-divider class="divider-between-items" v-if="index < section.items.length - 1" />
+            </div>
           </div>
         </template>
       </s-dropdown>
@@ -145,15 +146,15 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         items: [
           {
             value: HeaderMenuType.HideBalances,
-            icon: this.getHideBalancesIcon(isDropdown), // Main icon
+            icon: this.getHideBalancesIcon(isDropdown),
             text: this.hideBalancesText,
-            iconType: 'arrows-chevron-right-rounded-24', // Secondary icon (switch)
+            iconType: 'arrows-chevron-right-rounded-24',
           },
           {
             value: HeaderMenuType.TurnPhoneHide,
-            icon: this.getHideBalancesIcon(isDropdown), // Main icon
+            icon: 'call-call-phone-24',
             text: 'Turn phone & hide',
-            iconType: 'arrows-chevron-right-rounded-24', // Secondary icon (arrow)
+            iconType: 'arrows-chevron-right-rounded-24',
           },
         ],
       },
@@ -264,7 +265,7 @@ $icon-size: 28px;
 }
 
 .header-menu {
-  $dropdown-background: var(--s-color-utility-body);
+  $dropdown-background: var(--s-color-utility-surface);
   $dropdown-margin: 24px;
   $dropdown-item-line-height: 42px;
 
@@ -331,10 +332,18 @@ $icon-size: 28px;
   .el-divider--horizontal {
     margin: unset;
   }
+  .divider-between-items {
+    margin-left: 50px;
+  }
 }
 
 .dropdown-section-title {
+  margin-top: 16px;
+  margin-bottom: 19px;
   padding: 0 17px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--s-color-base-content-secondary);
 }
 
 .el-dropdown-menu__item.header-menu__item.is-disabled {
