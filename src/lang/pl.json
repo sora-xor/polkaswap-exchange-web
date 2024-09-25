@@ -256,7 +256,7 @@
         "alreadyAttached": "Ten token został już dodany.",
         "understand": "Rozumiem",
         "warningTitle": "Handluj na własne ryzyko!",
-        "warningMessage": "Każdy może utworzyć token, w tym tworzyć fałszywe wersje istniejących tokenów, podszywając się pod prawdziwe projekty.\nJeśli kupisz taki token, możesz nie być w stanie go odsprzedać.",
+        "warningMessage": "ten {assetType} | te {assetTypePlural}",
         "approved": "Waluta zatwierdzona przez społeczność",
         "unknown": "Nieznane źródło",
         "scam": "SCAM",
@@ -265,7 +265,15 @@
             "title": "Waluty",
             "switchBtn": "Tylko zweryfikowane zasoby"
         },
-        "searchInputText": "Wyszukaj według identyfikatora zasobu, nazwy lub symbolu giełdowego"
+        "searchInputText": "Wyszukaj według identyfikatora zasobu, nazwy lub symbolu giełdowego",
+        "warningMessageText": "Każdy może stworzyć {assetType}, w tym fałszywe wersje istniejących {assetTypePlural}, które twierdzą, że reprezentują projekty. Jeśli kupisz {purchaseAssetType}, możesz nie być w stanie go sprzedać.",
+        "assetType": {
+            "token": "Żeton | Żetony",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Dodaj",
+        "pinAsset": "Przypnij zasób",
+        "unpinAsset": "Odepnij zasób"
     },
     "createToken": {
         "desc": "Twórz i wdrażaj niestandardowe waluty w sieci {Sora}",
@@ -1667,5 +1675,6 @@
         "yourRewards": "Twoje nagrody",
         "openTelegram": "Otwórz {Telegram}",
         "toEarnPoints": "Aby zdobyć punkty"
-    }
+    },
+    "addAssetsText": "Dodaj aktywo | Dodaj aktywa"
 }

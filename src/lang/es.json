@@ -256,7 +256,7 @@
         "alreadyAttached": "El Token ya estaba adjunto",
         "understand": "Comprendo",
         "warningTitle": "¡Comercie bajo su propio riesgo!",
-        "warningMessage": "Cualquiera puede crear un Token, incluso crear versiones falsas de Tokens existentes que dicen representar proyectos.\nSi compras este Token, es posible que no puedas volver a venderlo.",
+        "warningMessage": "este {assetType} | estos {assetTypePlural}",
         "approved": "Activo aprobado por la comunidad",
         "unknown": "Fuente desconocida",
         "scam": "ESTAFA",
@@ -265,7 +265,15 @@
             "title": "Monedas",
             "switchBtn": "Solo activos verificados"
         },
-        "searchInputText": "Buscar por ID de activo, nombre o símbolo de etiqueta"
+        "searchInputText": "Buscar por ID de activo, nombre o símbolo de etiqueta",
+        "warningMessageText": "Cualquiera puede crear un {assetType}, incluidas versiones falsas de {assetTypePlural} existentes que afirman representar proyectos. Si compras un {purchaseAssetType}, es posible que no puedas venderlo de nuevo.",
+        "assetType": {
+            "token": "Ficha | Fichas",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Añadir",
+        "pinAsset": "Anclar activo",
+        "unpinAsset": "Desanclar activo"
     },
     "createToken": {
         "desc": "Crear y desplegar Activos personalizados en {Sora}",
@@ -1667,5 +1675,6 @@
         "yourRewards": "Tus recompensas",
         "openTelegram": "Abrir {Telegram}",
         "toEarnPoints": "Para ganar puntos"
-    }
+    },
+    "addAssetsText": "Añadir activo | Añadir activos"
 }

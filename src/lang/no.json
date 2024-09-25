@@ -256,7 +256,7 @@
         "alreadyAttached": "Token er allerede vedlagt",
         "understand": "Jeg skjønner",
         "warningTitle": "Handle på egen risiko!",
-        "warningMessage": "Alle kan opprette et token, inkludert å opprette falske versjoner av eksisterende tokens som hevder å representere prosjekter.\nHvis du kjøper dette tokenet, kan det hende du ikke kan selge det tilbake.",
+        "warningMessage": "denne {assetType} | disse {assetTypePlural}",
         "approved": "Aktiva godkjent av fellesskapet",
         "unknown": "Ukjent kilde",
         "scam": "SVINDEL",
@@ -265,7 +265,15 @@
             "title": "Valutaer",
             "switchBtn": "Kun bekreftede eiendeler"
         },
-        "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol"
+        "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol",
+        "warningMessageText": "Hvem som helst kan opprette en {assetType}, inkludert å lage falske versjoner av eksisterende {assetTypePlural} som hevder å representere prosjekter. Hvis du kjøper en {purchaseAssetType}, kan det hende du ikke kan selge den tilbake.",
+        "assetType": {
+            "token": "Token | Tokens",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Legg til",
+        "pinAsset": "Fest eiendel",
+        "unpinAsset": "Fjern feste på eiendel"
     },
     "createToken": {
         "desc": "Opprett og distribuer egendefinert token på {Sora}",
@@ -1667,5 +1675,6 @@
         "yourRewards": "Dine belønninger",
         "openTelegram": "Åpne {Telegram}",
         "toEarnPoints": "For å tjene poeng"
-    }
+    },
+    "addAssetsText": "Legg til eiendel | Legg til eiendeler"
 }

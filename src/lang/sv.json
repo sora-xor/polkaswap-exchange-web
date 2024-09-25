@@ -256,7 +256,7 @@
         "alreadyAttached": "Token var redan bifogad",
         "understand": "Jag förstår",
         "warningTitle": "Handla på egen risk!",
-        "warningMessage": "Vem som helst kan skapa en token, inklusive skapa falska versioner av befintliga tokens som påstår sig representera olika projekt.\nOm du köper denna token finns det en risk för du efterföljande inte kan sälja den.",
+        "warningMessage": "denna {assetType} | dessa {assetTypePlural}",
         "approved": "Tillgång godkänd av communityn",
         "unknown": "Okänt ursprung",
         "scam": "BLUFF",
@@ -265,7 +265,15 @@
             "title": "Valutor",
             "switchBtn": "Endast verifierade tillgångar"
         },
-        "searchInputText": "Sök efter Tillgångs-ID, Namn eller Ticker-symbol"
+        "searchInputText": "Sök efter Tillgångs-ID, Namn eller Ticker-symbol",
+        "warningMessageText": "Vem som helst kan skapa en {assetType}, inklusive falska versioner av befintliga {assetTypePlural} som påstår sig representera projekt. Om du köper en {purchaseAssetType}, kanske du inte kan sälja tillbaka den.",
+        "assetType": {
+            "token": "Tecken | Tecken",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Addera",
+        "pinAsset": "Fäst tillgång",
+        "unpinAsset": "Lossa tillgång"
     },
     "createToken": {
         "desc": "Skapa och utplacera anpassad tillgång på {Sora}",
@@ -1667,5 +1675,6 @@
         "yourRewards": "Dina belöningar",
         "openTelegram": "Öppna {Telegram}",
         "toEarnPoints": "För att tjäna poäng"
-    }
+    },
+    "addAssetsText": "Lägg till tillgång | Lägg till tillgångar"
 }
