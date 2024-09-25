@@ -102,8 +102,8 @@ export class WcEthereumProvider extends EthereumProvider {
   }
 }
 
-export const checkWalletConnectAvailability = async (chainProps: ChainsProps): Promise<void> => {
-  const chainIdCheck = chainProps.chains?.[0] ?? 1;
+export const checkWalletConnectAvailability = async (chainProps?: ChainsProps): Promise<void> => {
+  const chainIdCheck = chainProps?.chains?.[0] ?? 1;
   const url = `https://rpc.walletconnect.com/v1/?chainId=eip155:${chainIdCheck}&projectId=${WC.WcProvider.projectId}`;
 
   await fetch(url, {
@@ -113,10 +113,12 @@ export const checkWalletConnectAvailability = async (chainProps: ChainsProps): P
 };
 
 export const getWcEthereumProvider = async (
-  chainProps: ChainsProps
+  chainProps?: ChainsProps
 ): Promise<InstanceType<typeof EthereumProvider>> => {
   try {
-    await checkWalletConnectAvailability(chainProps);
+    const props = chainProps ?? { chains: [1] };
+
+    await checkWalletConnectAvailability(props);
 
     const ethereumProvider = await WcEthereumProvider.init({
       projectId: WC.WcProvider.projectId,
@@ -126,7 +128,7 @@ export const getWcEthereumProvider = async (
           '--wcm-z-index': '9999',
         },
       },
-      ...chainProps,
+      ...props,
     });
 
     return ethereumProvider;
