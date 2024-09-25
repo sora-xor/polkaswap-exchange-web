@@ -238,16 +238,20 @@ async function watchEthereum(cb: {
   const provider = ethereumProvider;
 
   if (provider) {
-    provider.on('accountsChanged', cb.onAccountChange);
-    provider.on('chainChanged', cb.onNetworkChange);
-    provider.on('disconnect', cb.onDisconnect);
+    const enable = ['on', 'addListener'].find((prop) => prop in provider) as string;
+
+    provider[enable]('accountsChanged', cb.onAccountChange);
+    provider[enable]('chainChanged', cb.onNetworkChange);
+    provider[enable]('disconnect', cb.onDisconnect);
   }
 
   return function disconnect() {
     if (provider) {
-      provider.off('accountsChanged', cb.onAccountChange);
-      provider.off('chainChanged', cb.onNetworkChange);
-      provider.off('disconnect', cb.onDisconnect);
+      const disable = ['off', 'removeListener'].find((prop) => prop in provider) as string;
+
+      provider[disable]('accountsChanged', cb.onAccountChange);
+      provider[disable]('chainChanged', cb.onNetworkChange);
+      provider[disable]('disconnect', cb.onDisconnect);
     }
   };
 }
@@ -263,9 +267,12 @@ async function requestWalletAccounts(): Promise<string[]> {
       ],
     });
 
-    const accounts = permissions[0].caveats[0].value;
+    const permission = permissions[0];
+    const caveat = permission?.caveats?.find((caveat) => Array.isArray(caveat.value));
 
-    return accounts as string[];
+    if (!caveat) throw new Error('Accounts not found');
+
+    return caveat.value as string[];
   } catch (error: any) {
     const { code } = getErrorCodeMessage(error);
 
