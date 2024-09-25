@@ -271,7 +271,9 @@
             "token": "token | tokens",
             "nft": "NFT | NFTs"
         },
-        "add": "Add"
+        "add": "Add",
+        "pinAsset": "Pin Asset",
+        "unpinAsset": "Unpin Asset"
     },
     "createToken": {
         "desc": "Create and deploy custom asset on {Sora}",

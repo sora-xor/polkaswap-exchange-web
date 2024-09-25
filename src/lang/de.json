@@ -271,7 +271,9 @@
             "token": "Token | Tokens",
             "nft": "NFT | NFTs"
         },
-        "add": "Hinzufügen"
+        "add": "Hinzufügen",
+        "pinAsset": "Vermögenswert anheften",
+        "unpinAsset": "Vermögenswert lösen"
     },
     "createToken": {
         "desc": "Erstelle und nutze benutzerdefinierte Assets auf {Sora}",

@@ -271,7 +271,9 @@
             "token": "Ami | Awọn ami",
             "nft": "NFT | NFTs"
         },
-        "add": "Fikun"
+        "add": "Fikun",
+        "pinAsset": "Di ajogun",
+        "unpinAsset": "Yọ lodiṣinpo ajogun"
     },
     "createToken": {
         "desc": "Ṣẹda ki o ran awọn dukia atowunwa lori {Sora}",

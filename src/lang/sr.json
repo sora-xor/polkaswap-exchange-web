@@ -271,7 +271,9 @@
             "token": "Токен | Токени",
             "nft": "NFT | NFTs"
         },
-        "add": "Додајте"
+        "add": "Додајте",
+        "pinAsset": "Pričvrsti imovinu",
+        "unpinAsset": "Otkliči imovinu"
     },
     "createToken": {
         "desc": "Креирајте и примените прилагођено средство на {Sora}",

@@ -271,7 +271,9 @@
             "token": "Token | Tokeny",
             "nft": "NFT | NFTs"
         },
-        "add": "Přidat"
+        "add": "Přidat",
+        "pinAsset": "Připnout aktivum",
+        "unpinAsset": "Odepřít aktivum"
     },
     "createToken": {
         "desc": "Vytvořte a zaveďte vlastní aktivum na síti {Sora}",

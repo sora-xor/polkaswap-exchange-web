@@ -271,7 +271,9 @@
             "token": "Jeton | Jetons",
             "nft": "NFT | NFTs"
         },
-        "add": "Ajouter"
+        "add": "Ajouter",
+        "pinAsset": "Épingler l'actif",
+        "unpinAsset": "Détacher l'actif"
     },
     "createToken": {
         "desc": "Créer et déployer des ressources personnalisées sur {Sora}",

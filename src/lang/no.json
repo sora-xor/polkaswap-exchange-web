@@ -271,7 +271,9 @@
             "token": "Token | Tokens",
             "nft": "NFT | NFTs"
         },
-        "add": "Legg til"
+        "add": "Legg til",
+        "pinAsset": "Fest eiendel",
+        "unpinAsset": "Fjern feste på eiendel"
     },
     "createToken": {
         "desc": "Opprett og distribuer egendefinert token på {Sora}",

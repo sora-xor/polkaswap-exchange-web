@@ -41,7 +41,7 @@
           <button
             @click.stop="togglePinnedAsset(token)"
             class="pin-button"
-            :title="isAssetPinned(token) ? 'Unpin Asset' : 'Pin Asset'"
+            :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
           >
             <pin-icon :isPinned="isAssetPinned(token)" />
           </button>
@@ -53,12 +53,11 @@
 </template>
 
 <script lang="ts">
-import { vuex, mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { modules } from '@/store';
-import { getter, mutation, state } from '@/store/decorators';
+import { getter, mutation } from '@/store/decorators';
 import { formatAssetBalance } from '@/utils';
 
 import PinIcon from '../Logo/PinIcon.vue';

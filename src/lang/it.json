@@ -271,7 +271,9 @@
             "token": "Gettone | Gettoni",
             "nft": "NFT | NFTs"
         },
-        "add": "Inserisci"
+        "add": "Inserisci",
+        "pinAsset": "Fissa bene",
+        "unpinAsset": "Sblocca bene"
     },
     "createToken": {
         "desc": "Crea e distribuisci asset personalizzati su {Sora}",

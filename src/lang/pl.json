@@ -271,7 +271,9 @@
             "token": "Żeton | Żetony",
             "nft": "NFT | NFTs"
         },
-        "add": "Dodaj"
+        "add": "Dodaj",
+        "pinAsset": "Przypnij zasób",
+        "unpinAsset": "Odepnij zasób"
     },
     "createToken": {
         "desc": "Twórz i wdrażaj niestandardowe waluty w sieci {Sora}",

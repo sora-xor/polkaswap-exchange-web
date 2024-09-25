@@ -1,7 +1,5 @@
 import { defineMutations } from 'direct-vuex';
 
-import { settingsStorage } from '@/utils/storage';
-
 import type { AssetsState, BridgeRegisteredAsset } from './types';
 
 const mutations = defineMutations<AssetsState>()({

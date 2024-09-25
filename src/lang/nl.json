@@ -271,7 +271,9 @@
             "token": "Teken | Tekens",
             "nft": "NFT | NFTs"
         },
-        "add": "Toevoegen"
+        "add": "Toevoegen",
+        "pinAsset": "Vastmaken activa",
+        "unpinAsset": "Losmaken activa"
     },
     "createToken": {
         "desc": "Creëer en implementeer aangepaste asset op {Sora}",

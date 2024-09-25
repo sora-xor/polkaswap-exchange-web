@@ -271,7 +271,9 @@
             "token": "Tecken | Tecken",
             "nft": "NFT | NFTs"
         },
-        "add": "Addera"
+        "add": "Addera",
+        "pinAsset": "Fäst tillgång",
+        "unpinAsset": "Lossa tillgång"
     },
     "createToken": {
         "desc": "Skapa och utplacera anpassad tillgång på {Sora}",

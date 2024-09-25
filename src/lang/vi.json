@@ -271,7 +271,9 @@
             "token": "Mã thông báo | Mã thông báo",
             "nft": "NFT | NFTs"
         },
-        "add": "Thêm"
+        "add": "Thêm",
+        "pinAsset": "Ghim tài sản",
+        "unpinAsset": "Bỏ ghim tài sản"
     },
     "createToken": {
         "desc": "Tạo và triển khai tài sản tùy chỉnh trên {Sora}",

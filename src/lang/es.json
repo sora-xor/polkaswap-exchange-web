@@ -271,7 +271,9 @@
             "token": "Ficha | Fichas",
             "nft": "NFT | NFTs"
         },
-        "add": "Añadir"
+        "add": "Añadir",
+        "pinAsset": "Anclar activo",
+        "unpinAsset": "Desanclar activo"
     },
     "createToken": {
         "desc": "Crear y desplegar Activos personalizados en {Sora}",

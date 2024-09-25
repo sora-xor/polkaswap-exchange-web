@@ -271,7 +271,9 @@
             "token": "代币 | 代币",
             "nft": "NFT | NFTs"
         },
-        "add": "添加"
+        "add": "添加",
+        "pinAsset": "固定资产",
+        "unpinAsset": "取消固定资产"
     },
     "createToken": {
         "desc": "在 {Sora} 上创建和部署自定义资产",

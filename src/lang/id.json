@@ -271,7 +271,9 @@
             "token": "Token | Token",
             "nft": "NFT | NFTs"
         },
-        "add": "Menambahkan"
+        "add": "Menambahkan",
+        "pinAsset": "Pin aset",
+        "unpinAsset": "Lepas pin aset"
     },
     "createToken": {
         "desc": "Buat dan terapkan kostum aset di {Sora}",

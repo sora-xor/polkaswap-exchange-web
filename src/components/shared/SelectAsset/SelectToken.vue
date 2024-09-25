@@ -172,16 +172,21 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   get filteredWhitelistTokens(): Array<AccountAsset> {
     const filteredAssets = this.filterAssetsByQuery(this.whitelistAssetsList)(this.searchQuery) as Array<AccountAsset>;
-    const filteredAssetsMap = new Map<string, AccountAsset>();
-    filteredAssets.forEach((asset) => {
-      filteredAssetsMap.set(asset.address, asset);
+    const pinnedOrderMap = new Map(this.pinnedAssetsAddresses.map((address, index) => [address, index]));
+    return filteredAssets.sort((a, b) => {
+      const aPinnedIndex = pinnedOrderMap.get(a.address);
+      const bPinnedIndex = pinnedOrderMap.get(b.address);
+      if (aPinnedIndex !== undefined && bPinnedIndex !== undefined) {
+        return aPinnedIndex - bPinnedIndex;
+      }
+      if (aPinnedIndex !== undefined) {
+        return -1;
+      }
+      if (bPinnedIndex !== undefined) {
+        return 1;
+      }
+      return 0;
     });
-    const pinnedAssets: AccountAsset[] = this.pinnedAssetsAddresses
-      .map((address) => filteredAssetsMap.get(address))
-      .filter((asset): asset is AccountAsset => !!asset);
-    const pinnedAssetAddressesSet = new Set(this.pinnedAssetsAddresses);
-    const nonPinnedAssets = filteredAssets.filter((asset) => !pinnedAssetAddressesSet.has(asset.address));
-    return [...pinnedAssets, ...nonPinnedAssets];
   }
 
   get isCustomTabActive(): boolean {

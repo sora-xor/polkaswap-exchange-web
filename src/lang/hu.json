@@ -271,7 +271,9 @@
             "token": "Zseton | Zsetonok",
             "nft": "NFT | NFTs"
         },
-        "add": "Hozzáadás"
+        "add": "Hozzáadás",
+        "pinAsset": "Rögzítés",
+        "unpinAsset": "Rögzítés feloldása"
     },
     "createToken": {
         "desc": "Egyéni eszköz létrehozása és telepítése a {Sora} hálózaton",

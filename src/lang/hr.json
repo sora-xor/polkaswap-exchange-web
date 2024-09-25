@@ -271,7 +271,9 @@
             "token": "Žeton | Žetoni",
             "nft": "NFT | NFTs"
         },
-        "add": "Dodajte"
+        "add": "Dodajte",
+        "pinAsset": "Prikači imovinu",
+        "unpinAsset": "Otkači imovinu"
     },
     "createToken": {
         "desc": "Izradite i primijenite prilagođena sredstva na {Sora}",
