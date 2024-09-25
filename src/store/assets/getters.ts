@@ -6,7 +6,7 @@ import { ZeroStringValue } from '@/consts';
 import { assetsGetterContext } from '@/store/assets';
 
 import type { AssetsState } from './types';
-import type { Asset, RegisteredAccountAsset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 const getters = defineGetters<AssetsState>()({
   whitelistAssets(...args): Array<Asset> {

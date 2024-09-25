@@ -20,7 +20,7 @@
           v-if="formatBalance(token) !== FormattedZeroSymbol"
           @click.stop="togglePinnedAsset(token)"
           class="pin-button"
-          :title="isAssetPinned(token) ? 'Unpin Asset' : 'Pin Asset'"
+          :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
         >
           <pin-icon :isPinned="isAssetPinned(token)" />
         </button>

@@ -71,7 +71,7 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, state, action, mutation } from '@/store/decorators';
+import { getter, state, action } from '@/store/decorators';
 import { syntheticAssetRegexp } from '@/utils/regexp';
 
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
