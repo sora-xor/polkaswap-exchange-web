@@ -230,6 +230,7 @@ export enum Components {
   SwapFormWidget = 'pages/Swap/Widget/Form',
   SwapTransactionsWidget = 'pages/Swap/Widget/Transactions',
   SwapDistributionWidget = 'pages/Swap/Widget/Distribution',
+  SwapTransactionDetailsWidget = 'pages/Swap/Widget/TransactionDetails',
   SwapConfirm = 'pages/Swap/Confirm',
   SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',

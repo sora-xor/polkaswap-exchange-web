@@ -29,7 +29,6 @@
       v-if="!predefinedToken"
       disabled-custom
       :visible.sync="showSelectTokenDialog"
-      :append-to-body="false"
       :asset="selectedToken"
       @select="onTokenChange"
     />
