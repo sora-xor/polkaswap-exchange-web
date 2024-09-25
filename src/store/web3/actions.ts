@@ -6,8 +6,10 @@ import { defineActions } from 'direct-vuex';
 
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
+import { AppEIPProvider } from '@/types/evm/provider';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
-import ethersUtil, { Provider, PROVIDER_ERROR } from '@/utils/ethers-util';
+import { getProvidersList } from '@/utils/connection/evm/providers';
+import ethersUtil, { PROVIDER_ERROR } from '@/utils/ethers-util';
 
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { ActionContext } from 'vuex';
@@ -78,7 +80,26 @@ async function autoselectBridgeAsset(context: ActionContext<any, any>): Promise<
 }
 
 const actions = defineActions({
-  async selectEvmProvider(context, provider: Provider): Promise<void> {
+  async subscribeOnEvmProviders(context): Promise<VoidFunction> {
+    const { commit, state } = web3ActionContext(context);
+
+    const unsub = getProvidersList((event) => {
+      if (state.evmProviders.map((p) => p.uuid).includes(event.detail.info.uuid)) return;
+
+      const { info, provider } = event.detail;
+      const data = {
+        ...info,
+        installed: true,
+        getProvider: async () => provider,
+      };
+
+      commit.addEvmProvider(data);
+    });
+
+    return unsub;
+  },
+
+  async selectEvmProvider(context, provider: AppEIPProvider): Promise<void> {
     const { commit, state } = web3ActionContext(context);
     try {
       commit.setEvmProviderLoading(provider);
