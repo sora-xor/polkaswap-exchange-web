@@ -171,7 +171,8 @@ export default class Swap extends Mixins(mixins.LoadingMixin, SwapAmountsMixin, 
 
     const aSymbol = this.tokenFrom?.symbol ?? '';
     const bSymbol = this.tokenTo?.symbol ?? '';
-    const tokensText = [aSymbol, bSymbol].filter(Boolean).join('/');
+    const tokensText =
+      aSymbol && bSymbol ? [aSymbol, bSymbol].filter(Boolean).join('/') : `(${this.t('orderBook.tokenPair')})`;
 
     return {
       // widgets
@@ -181,7 +182,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, SwapAmountsMixin, 
       [SwapWidgets.Transactions]: this.tc('transactionText', 2),
       [SwapWidgets.Chart]: `${priceText} ${tokensText}`,
       [SwapWidgets.TokenPriceChart]: priceText,
-      [SwapWidgets.SupplyChart]: 'Supply',
+      [SwapWidgets.SupplyChart]: this.t('createToken.tokenSupply.placeholder'),
       // options
       edit: this.t('editText'),
     };

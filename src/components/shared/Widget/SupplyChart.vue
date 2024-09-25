@@ -1,5 +1,5 @@
 <template>
-  <base-widget v-bind="$attrs" title="Supply" :tooltip="t('tooltips.supply')">
+  <base-widget v-bind="$attrs" :title="t('createToken.tokenSupply.placeholder')" :tooltip="t('tooltips.supply')">
     <template #filters>
       <stats-filter is-dropdown :filters="filters" :value="filter" @input="changeFilter" />
     </template>
