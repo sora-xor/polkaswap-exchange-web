@@ -1,15 +1,21 @@
 import type { ChainsProps } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
 import type { Eip1193Provider } from 'ethers';
 
+export type EIP1193Provider = Eip1193Provider & {
+  connect?: (...args: any[]) => Promise<void>;
+};
+
 declare global {
+  interface Window {
+    fearlessWallet?: {
+      provider: EIP1193Provider;
+    };
+  }
+
   interface WindowEventMap {
     'eip6963:announceProvider': CustomEvent;
   }
 }
-
-export type EIP1193Provider = Eip1193Provider & {
-  connect?: (...args: any[]) => Promise<void>;
-};
 
 export type EIP6963ProviderInfo = {
   rdns: string;
@@ -30,5 +36,5 @@ export type EIP6963AnnounceProviderEvent = {
 export type AppEIPProvider = EIP6963ProviderInfo & {
   installed?: boolean;
   installUrl?: string;
-  getProvider: (chainProps?: ChainsProps) => Promise<EIP1193Provider>;
+  getProvider: (chainProps?: ChainsProps) => Promise<Nullable<EIP1193Provider>>;
 };

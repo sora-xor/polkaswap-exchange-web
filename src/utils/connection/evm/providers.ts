@@ -10,7 +10,7 @@ const getInstallUrl = ({ chromeUrl, mozillaUrl }: { chromeUrl: string; mozillaUr
   return navigator.userAgent.match(/firefox|fxios/i) ? mozillaUrl : chromeUrl;
 };
 
-export const WalletConnectProvider = {
+export const WalletConnectProvider: AppEIPProvider = {
   rdns: '',
   uuid: PredefinedProvider.WalletConnect,
   name: PredefinedProvider.WalletConnect,
@@ -19,7 +19,7 @@ export const WalletConnectProvider = {
   getProvider: getWcEthereumProvider,
 };
 
-export const FearlessWalletProvider = {
+export const FearlessWalletProvider: AppEIPProvider = {
   rdns: 'io.fearlesswallet',
   uuid: PredefinedProvider.Fearless,
   name: PredefinedProvider.Fearless,
@@ -29,8 +29,8 @@ export const FearlessWalletProvider = {
     chromeUrl: 'https://chromewebstore.google.com/detail/fearless-wallet/nhlnehondigmgckngjomcpcefcdplmgc',
     mozillaUrl: 'https://chrome.google.com/webstore/detail/fearless-wallet/nhlnehondigmgckngjomcpcefcdplmgc',
   }),
-  getProvider: () => {
-    return (window as any).fearlessWallet;
+  getProvider: async () => {
+    return window.fearlessWallet?.provider;
   },
 };
 

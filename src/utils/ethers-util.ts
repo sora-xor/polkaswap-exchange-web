@@ -87,11 +87,11 @@ async function connectEvmProvider(appEvmProvider: AppEIPProvider, chainsProps: C
       }
     }
   } catch (error: any) {
-    // user rejected request
+    // [WalletConnect] user rejected request
     if (error.code === PROVIDER_ERROR.UserRejectedRequest) {
       return '';
     }
-    // user cancelled qr modal
+    // [WalletConnect] user cancelled qr modal
     if (error.message === 'Connection request reset. Please try again.') {
       return '';
     }
