@@ -33,7 +33,7 @@
       "
     />
     <s-divider />
-    <swap-transaction-details />
+    <swap-transaction-details full expanded />
     <template #footer>
       <account-confirmation-option with-hint class="confirmation-option" />
       <s-button
