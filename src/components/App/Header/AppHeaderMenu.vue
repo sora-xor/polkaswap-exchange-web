@@ -360,15 +360,17 @@ $icon-size: 28px;
     .icontype {
       margin-left: auto;
     }
-    &:not(.is-disabled) {
-      &:hover,
-      &:focus {
-        background-color: transparent;
-        &,
-        i {
-          color: var(--s-color-base-content-secondary);
-        }
+
+    &:hover,
+    &:focus {
+      background-color: transparent;
+      & {
+        color: var(--s-color-base-content-secondary);
       }
+    }
+
+    &:focus {
+      color: var(--s-color-base-content-primary) !important;
     }
 
     .current-currency {
@@ -388,17 +390,23 @@ $icon-size: 28px;
     transition: opacity 150ms, border-color 150ms, background-color 150ms;
     margin-left: auto;
     i {
-      fill: white;
+      margin: unset;
     }
-  }
-  .selected {
-    background: var(--s-color-theme-accent);
-    border: 1px solid transparent;
-    opacity: 1;
   }
 
   .check i {
     opacity: 0;
+  }
+
+  .selected {
+    background: var(--s-color-theme-accent);
+    border: 1px solid transparent;
+    i {
+      &::before {
+        color: white;
+      }
+      opacity: 1;
+    }
   }
 
   .el-divider--horizontal {
