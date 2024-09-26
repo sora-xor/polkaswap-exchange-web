@@ -6,12 +6,13 @@
     v-else
     v-model="visible"
     :visible-arrow="false"
+    :disabled="disabled"
     placement="bottom"
     popper-class="transaction-details-popper"
     trigger="click"
   >
     <template #reference>
-      <div :class="['transaction-details', { visible }]" v-button>
+      <div :class="['transaction-details', { visible, disabled }]" v-button>
         <slot name="reference">
           <span>{{ t('transactionDetailsText') }}</span>
         </slot>
@@ -30,6 +31,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 @Component
 export default class TransactionDetails extends Mixins(TranslationMixin) {
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
 
   visible = false;
 
@@ -48,7 +50,6 @@ export default class TransactionDetails extends Mixins(TranslationMixin) {
 
 <style lang="scss" scoped>
 .transaction-details {
-  cursor: pointer;
   display: flex;
   gap: $inner-spacing-tiny;
   margin-top: $inner-spacing-medium;
@@ -58,6 +59,10 @@ export default class TransactionDetails extends Mixins(TranslationMixin) {
   font-size: var(--s-font-size-extra-small);
   font-weight: 400;
   text-transform: uppercase;
+
+  &:not(.disabled) {
+    cursor: pointer;
+  }
 
   &.visible {
     color: var(--s-color-theme-accent);

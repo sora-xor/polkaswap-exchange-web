@@ -23,11 +23,7 @@
         @focus="handleFocusField(false)"
         @max="handleMaxValue"
         @select="openSelectTokenDialog(true)"
-      >
-        <template #title-append v-if="areTokensSelected && !isZeroToAmount && isExchangeB">
-          <span class="input-title--uppercase input-title--primary"> ({{ t('swap.estimated') }}) </span>
-        </template>
-      </token-input>
+      />
 
       <s-button
         class="el-button--switch-tokens"
@@ -49,9 +45,6 @@
         @focus="handleFocusField(true)"
         @select="openSelectTokenDialog(false)"
       >
-        <template #title-append v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB">
-          <span class="input-title--uppercase input-title--primary"> ({{ t('swap.estimated') }}) </span>
-        </template>
         <template #fiat-amount-append v-if="tokenTo">
           <value-status-wrapper :value="fiatDifference" badge class="price-difference__value">
             <formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>
@@ -107,15 +100,19 @@
         </template>
       </s-button>
 
-      <info-line
-        :label="t('networkFeeText')"
-        :label-tooltip="t('networkFeeTooltipText')"
-        :value="networkFeeFormatted"
-        :asset-symbol="xorSymbol"
-        :fiat-value="getFiatAmountByCodecString(networkFee)"
-        is-formatted
-        class="swap-details"
-      />
+      <swap-transaction-details :disabled="!areTokensSelected || hasZeroAmount" class="swap-details">
+        <template #reference>
+          <info-line
+            :label="t('networkFeeText')"
+            :label-tooltip="t('networkFeeTooltipText')"
+            :value="networkFeeFormatted"
+            :asset-symbol="xorSymbol"
+            :fiat-value="getFiatAmountByCodecString(networkFee)"
+            is-formatted
+            class="swap-details-info-line"
+          />
+        </template>
+      </swap-transaction-details>
 
       <select-token
         :visible.sync="showSelectTokenDialog"
@@ -176,6 +173,7 @@ import type { Subscription } from 'rxjs';
     SwapSettings: lazyComponent(Components.SwapSettings),
     SwapConfirm: lazyComponent(Components.SwapConfirm),
     SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
+    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     SwapLossWarningDialog: lazyComponent(Components.SwapLossWarningDialog),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     SelectToken: lazyComponent(Components.SelectToken),
@@ -590,7 +588,7 @@ export default class SwapFormWidget extends Mixins(
 .swap-widget {
   @include buttons;
   @include full-width-button('action-button');
-  @include full-width-button('swap-details');
+  @include full-width-button('swap-details', 0);
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
 }
 
