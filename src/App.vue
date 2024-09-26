@@ -25,6 +25,7 @@
     <app-mobile-popup :visible.sync="showSoraMobilePopup" />
     <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
     <app-browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
+    <app-browser-notifs-blocked-rotate-phone :visible.sync="orientationWarningVisible" />
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
@@ -67,7 +68,7 @@ import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
 import { PageNames, Components, Language, WalletPermissions, LOCAL_STORAGE_LIMIT_PERCENTAGE } from '@/consts';
-import { BreakpointClass } from '@/consts/layout';
+import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -97,6 +98,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),
     AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
     AppBrowserNotifsLocalStorageOverride: lazyComponent(Components.AppBrowserNotifsLocalStorageOverride),
+    AppBrowserNotifsBlockedRotatePhone: lazyComponent(Components.AppBrowserNotifsBlockedRotatePhone),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
     SelectSoraAccountDialog: lazyComponent(Components.SelectSoraAccountDialog),
@@ -116,6 +118,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.appConnection private appConnection!: NodesConnection;
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
+  @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
@@ -141,6 +144,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
   @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (windowWidth: number) => void;
+  @mutation.settings.showOrientationWarning private showOrientationWarning!: FnWithoutArgs;
+  @mutation.settings.hideOrientationWarning private hideOrientationWarning!: FnWithoutArgs;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
   @mutation.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
@@ -233,6 +238,17 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
+  private handleOrientationChange(): void {
+    const isLandscape = screen.orientation
+      ? screen.orientation.type.startsWith('landscape')
+      : window.innerHeight < window.innerWidth;
+    if (isLandscape) {
+      this.showOrientationWarning();
+    } else {
+      this.hideOrientationWarning();
+    }
+  }
+
   async created() {
     window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
     preloadFontFace('element-icons');
@@ -285,6 +301,13 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   mounted(): void {
     window.addEventListener('resize', this.setResponsiveClassDebounced);
+    if (window.innerWidth <= Breakpoint.LargeMobile) {
+      if (screen.orientation) {
+        screen.orientation.addEventListener('change', this.handleOrientationChange);
+      } else {
+        window.addEventListener('resize', this.handleOrientationChange);
+      }
+    }
   }
 
   private get mobileCssClasses(): string[] | undefined {
@@ -378,6 +401,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async beforeDestroy(): Promise<void> {
     window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
+    if (screen.orientation) {
+      screen.orientation.removeEventListener('change', this.handleOrientationChange);
+    } else {
+      window.removeEventListener('resize', this.handleOrientationChange);
+    }
     tmaSdkService.destroy();
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
