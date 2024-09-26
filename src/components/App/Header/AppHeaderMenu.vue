@@ -61,6 +61,10 @@ import type { Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency'
 enum HeaderMenuType {
   HideBalances = 'hide-balances',
   TurnPhoneHide = 'turn-phone-hide',
+  SystemPreference = 'system-preference',
+  LightMode = 'light-mode',
+  DarkMode = 'dark-mode',
+  NoirMode = 'noir-mode',
   Theme = 'theme',
   Language = 'language',
   Currency = 'currency',
@@ -164,14 +168,32 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         title: 'COLOR THEME',
         items: [
           {
-            value: HeaderMenuType.Theme,
-            icon: this.getThemeIcon(isDropdown), // Main icon
-            text: this.themeText,
+            value: HeaderMenuType.SystemPreference,
+            icon: 'basic-lightning-24',
+            text: 'System preferences',
+            iconType: 'arrows-chevron-right-rounded-24',
+          },
+          {
+            value: HeaderMenuType.LightMode,
+            icon: 'various-brightness-low-24',
+            text: 'Light mode',
+            iconType: 'arrows-chevron-right-rounded-24',
+          },
+          {
+            value: HeaderMenuType.DarkMode,
+            icon: 'various-moon-24',
+            text: 'Dark mode',
+            iconType: 'arrows-chevron-right-rounded-24',
+          },
+          {
+            value: HeaderMenuType.NoirMode,
+            icon: 'finance-PSWAP-24',
+            text: 'Noir mode',
             iconType: 'arrows-chevron-right-rounded-24',
           },
           {
             value: HeaderMenuType.Language,
-            icon: 'basic-globe-24', // Main icon
+            icon: 'basic-globe-24',
             text: this.t('headerMenu.switchLanguage'),
             iconType: 'arrows-chevron-right-rounded-24',
           },
@@ -268,13 +290,17 @@ $icon-size: 28px;
 
 .header-menu {
   $dropdown-background: var(--s-color-utility-surface);
-  $dropdown-margin: 24px;
   $dropdown-item-line-height: 42px;
-
   &.el-dropdown-menu.el-popper {
-    margin-top: $dropdown-margin;
     background-color: $dropdown-background;
-    border-color: var(--s-color-base-border-secondary);
+    box-shadow: var(--s-shadow-element-pressed);
+    position: fixed !important;
+    top: -16px !important;
+    max-width: $menu-setting-max-width;
+    height: calc(100% - #{$footer-height} + 4px);
+    right: 0;
+    left: auto !important;
+    border-radius: var(--s-border-radius-small) 0 0 0;
     .popper__arrow {
       display: none;
     }
@@ -283,7 +309,7 @@ $icon-size: 28px;
     min-width: 264px;
   }
   &__button i {
-    font-size: $icon-size !important; // cuz font-size is inline style
+    font-size: $icon-size !important;
   }
   &__settings {
     display: flex;
@@ -302,10 +328,10 @@ $icon-size: 28px;
   }
   & &__item.el-dropdown-menu__item {
     line-height: $dropdown-item-line-height;
-    font-weight: 300;
+    font-weight: 500;
     font-size: var(--s-font-size-small);
     font-feature-settings: 'case' on;
-    color: var(--s-color-base-content-secondary);
+    color: var(--s-color-base-content-primary);
     display: flex;
     align-items: center;
     i {
