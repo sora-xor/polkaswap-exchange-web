@@ -99,7 +99,6 @@ const BREAKPOINT = 1440;
 export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
-  selectedTheme: HeaderMenuType | null = null;
 
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
@@ -119,12 +118,8 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     return window.matchMedia(`(min-width: ${BREAKPOINT}px)`);
   }
 
-  private getThemeIcon(isDropdown = false): string {
-    if (isDropdown) {
-      return this.libraryTheme === Theme.LIGHT ? 'various-moon-24' : 'various-brightness-low-24';
-    } else {
-      return this.libraryTheme === Theme.LIGHT ? 'various-brightness-low-24' : 'various-moon-24';
-    }
+  get selectedTheme(): HeaderMenuType {
+    return this.libraryTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
   }
 
   get themeTitle(): string {
@@ -152,8 +147,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     return this.t(`headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`);
   }
 
-  // s-icon-various-brightness-low-24 for the sun
-  // s-icon-basic-lightning-24 for the sun and moon
   private getHeaderMenuItems(isDropdown = false): Array<{ title: string; items: Array<MenuItem> }> {
     return [
       {
@@ -213,7 +206,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         items: [
           {
             value: HeaderMenuType.Currency,
-            icon: 'various-lightbulb-24', // Main icon
+            icon: 'various-lightbulb-24',
             text: this.t('headerMenu.selectCurrency'),
             iconType: 'arrows-chevron-right-rounded-24',
           },
@@ -224,13 +217,13 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         items: [
           {
             value: HeaderMenuType.Notification,
-            icon: 'notifications-bell-24', // Main icon
+            icon: 'notifications-bell-24',
             text: this.t('browserNotificationDialog.title'),
             iconType: 'arrows-chevron-right-rounded-24',
           },
           {
             value: HeaderMenuType.Disclaimer,
-            icon: 'info-16', // Main icon
+            icon: 'info-16',
             text: this.disclaimerText,
             iconType: 'arrows-chevron-right-rounded-24',
             disabled: this.disclaimerDisabled,
@@ -257,21 +250,12 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   handleClickHeaderMenu(): void {
-    console.info('handle click header menu was called');
     const dropdown = (this.$refs.headerMenu as any).dropdown;
     dropdown.visible ? dropdown.hide() : dropdown.show();
   }
 
   async handleSelectHeaderMenu(value: HeaderMenuType): Promise<void> {
     console.info('handleSelectHeaderMenu was called');
-    if (
-      value === HeaderMenuType.SystemPreference ||
-      value === HeaderMenuType.LightMode ||
-      value === HeaderMenuType.DarkMode ||
-      value === HeaderMenuType.NoirMode
-    ) {
-      this.selectedTheme = value;
-    }
     switch (value) {
       case HeaderMenuType.HideBalances:
         this.toggleHideBalance();
