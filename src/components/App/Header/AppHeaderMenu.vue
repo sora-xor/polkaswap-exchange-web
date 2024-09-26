@@ -13,7 +13,7 @@
         icon="grid-block-align-left-24"
         type="ellipsis"
         placement="bottom-start"
-        @select="handleSelectHeaderMenu"
+        :hide-on-click="false"
       >
         <template #menu>
           <div class="header-menu__settings">
@@ -23,7 +23,7 @@
           <s-divider />
           <div v-for="section in dropdownHeaderMenuItems" :key="section.title">
             <p class="dropdown-section-title">{{ section.title }}</p>
-            <div v-for="(item, index) in section.items" :key="item.value">
+            <div v-for="(item, index) in section.items" :key="item.value" @click="handleSelectHeaderMenu(item.value)">
               <s-dropdown-item
                 class="header-menu__item"
                 :data-test-name="item.value"
@@ -32,7 +32,14 @@
                 :disabled="item.disabled"
               >
                 {{ item.text }}
-                <s-icon :name="item.iconType" size="14px" class="icontype" />
+                <template v-if="item.isThemeItem">
+                  <div class="check" :class="{ selected: selectedTheme === item.value }">
+                    <s-icon name="basic-check-mark-24" size="12px" />
+                  </div>
+                </template>
+                <template v-else>
+                  <s-icon :name="item.iconType" size="14px" class="icontype" />
+                </template>
                 <span v-if="item.value === HeaderMenuType.Currency" class="current-currency">
                   {{ currency?.toUpperCase() }}
                 </span>
@@ -75,9 +82,10 @@ enum HeaderMenuType {
 type MenuItem = {
   value: HeaderMenuType;
   icon: string;
-  iconType: string;
+  iconType?: string;
   text: string;
   disabled?: boolean;
+  isThemeItem?: boolean;
 };
 
 type MenuSection = {
@@ -91,6 +99,7 @@ const BREAKPOINT = 1440;
 export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
+  selectedTheme: HeaderMenuType | null = null;
 
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
@@ -171,25 +180,25 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
             value: HeaderMenuType.SystemPreference,
             icon: 'basic-lightning-24',
             text: 'System preferences',
-            iconType: 'arrows-chevron-right-rounded-24',
+            isThemeItem: true,
           },
           {
             value: HeaderMenuType.LightMode,
             icon: 'various-brightness-low-24',
             text: 'Light mode',
-            iconType: 'arrows-chevron-right-rounded-24',
+            isThemeItem: true,
           },
           {
             value: HeaderMenuType.DarkMode,
             icon: 'various-moon-24',
             text: 'Dark mode',
-            iconType: 'arrows-chevron-right-rounded-24',
+            isThemeItem: true,
           },
           {
             value: HeaderMenuType.NoirMode,
             icon: 'finance-PSWAP-24',
             text: 'Noir mode',
-            iconType: 'arrows-chevron-right-rounded-24',
+            isThemeItem: true,
           },
           {
             value: HeaderMenuType.Language,
@@ -248,11 +257,21 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   handleClickHeaderMenu(): void {
+    console.info('handle click header menu was called');
     const dropdown = (this.$refs.headerMenu as any).dropdown;
     dropdown.visible ? dropdown.hide() : dropdown.show();
   }
 
   async handleSelectHeaderMenu(value: HeaderMenuType): Promise<void> {
+    console.info('handleSelectHeaderMenu was called');
+    if (
+      value === HeaderMenuType.SystemPreference ||
+      value === HeaderMenuType.LightMode ||
+      value === HeaderMenuType.DarkMode ||
+      value === HeaderMenuType.NoirMode
+    ) {
+      this.selectedTheme = value;
+    }
     switch (value) {
       case HeaderMenuType.HideBalances:
         this.toggleHideBalance();
@@ -357,6 +376,31 @@ $icon-size: 28px;
       color: var(--s-color-base-content-tertiary);
     }
   }
+
+  &__item .check {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--s-color-base-content-secondary);
+    border-radius: 50%;
+    transition: opacity 150ms, border-color 150ms, background-color 150ms;
+    margin-left: auto;
+    i {
+      fill: white;
+    }
+  }
+  .selected {
+    background: var(--s-color-theme-accent);
+    border: 1px solid transparent;
+    opacity: 1;
+  }
+
+  .check i {
+    opacity: 0;
+  }
+
   .el-divider--horizontal {
     margin: unset;
   }
