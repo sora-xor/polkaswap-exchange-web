@@ -463,6 +463,7 @@ ul ul {
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
   height: 100dvh;
+  overflow-x: hidden;
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
   transition: background-color 500ms linear;
