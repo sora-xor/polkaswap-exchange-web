@@ -46,7 +46,7 @@ import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 import WithTokenSelectMixin from '@/components/mixins/Widget/WithTokenSelect';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, ASSET_SUPPLY_FILTERS } from '@/consts/snapshots';
-import { fetchData } from '@/indexer/queries/assetSupply';
+import { fetchAssetSupplyData } from '@/indexer/queries/asset/supply';
 import { lazyComponent } from '@/router';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
@@ -244,7 +244,7 @@ export default class SupplyChartWidget extends Mixins(WithTokenSelectMixin, Char
           const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
           const aTime = now - seconds * count;
 
-          this.data = Object.freeze(await fetchData(id, now, aTime, type));
+          this.data = Object.freeze(await fetchAssetSupplyData(id, now, aTime, type));
           this.isFetchingError = false;
         } catch (error) {
           console.error(error);
