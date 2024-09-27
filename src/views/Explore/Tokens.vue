@@ -172,8 +172,8 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import { Components, ZeroStringValue } from '@/consts';
-import { fetchTokensData } from '@/indexer/queries/assets';
-import type { TokenData } from '@/indexer/queries/assets';
+import { fetchTokensData } from '@/indexer/queries/asset/assets';
+import type { TokenData } from '@/indexer/queries/asset/assets';
 import { lazyComponent } from '@/router';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, sortAssets } from '@/utils';

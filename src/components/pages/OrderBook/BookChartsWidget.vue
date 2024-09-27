@@ -16,7 +16,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
-import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook';
+import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook/orderBook';
 import { fetchOrderBookPriceData } from '@/indexer/queries/orderBook/price';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';

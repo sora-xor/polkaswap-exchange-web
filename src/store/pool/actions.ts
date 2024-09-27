@@ -2,7 +2,7 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { firstValueFrom } from 'rxjs';
 
-import { getPoolsApyObject, createPoolsApySubscription } from '@/indexer/queries/pools';
+import { getPoolsApyObject, createPoolsApySubscription } from '@/indexer/queries/pool/pools';
 import { poolActionContext } from '@/store/pool';
 import { waitForAccountPair } from '@/utils';
 

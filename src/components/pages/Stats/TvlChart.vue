@@ -31,7 +31,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
-import { ChartData, fetchData } from '@/indexer/queries/networkTvl';
+import { ChartData, fetchData } from '@/indexer/queries/network/tvl';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
 import type { SnapshotFilter } from '@/types/filters';
