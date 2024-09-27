@@ -863,7 +863,7 @@
         "hideBalances": "Hide Balances",
         "settings": "Settings",
         "switchTheme": "{theme} Mode",
-        "switchLanguage": "Choose Language",
+        "switchLanguage": "language",
         "showDisclaimer": "Show Disclaimer",
         "hideDisclaimer": "Hide Disclaimer",
         "selectCurrency": "Select Currency",

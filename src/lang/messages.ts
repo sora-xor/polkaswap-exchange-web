@@ -148,7 +148,7 @@ export default {
     settings: 'Settings',
     switchTheme: '{theme} Mode',
     systemPreference: 'System Preferences',
-    switchLanguage: 'Choose Language',
+    switchLanguage: 'language',
     selectCurrency: 'Select Currency',
     showDisclaimer: 'Show Disclaimer',
     hideDisclaimer: 'Hide Disclaimer',

@@ -27,11 +27,15 @@
               <s-dropdown-item
                 class="header-menu__item"
                 :data-test-name="item.value"
-                :icon="item.icon"
+                :icon="item.isTextInsteadIcon ? null : item.icon"
                 :value="item.value"
                 :disabled="item.disabled"
               >
-                {{ item.text }}
+                <span v-if="item.isTextInsteadIcon" class="current-currency">
+                  {{ getCurrenyOrLanguage(item.value).toUpperCase() }}
+                </span>
+
+                <p>{{ item.text }}</p>
                 <template v-if="item.isThemeItem">
                   <div class="check" :class="{ selected: selectedTheme === item.value }">
                     <s-icon name="basic-check-mark-24" size="12px" />
@@ -40,9 +44,6 @@
                 <template v-else>
                   <s-icon :name="item.iconType" size="14px" class="icontype" />
                 </template>
-                <span v-if="item.value === HeaderMenuType.Currency" class="current-currency">
-                  {{ currency?.toUpperCase() }}
-                </span>
               </s-dropdown-item>
               <s-divider class="divider-between-items" v-if="index < section.items.length - 1" />
             </div>
@@ -59,6 +60,7 @@ import { switchTheme } from '@soramitsu-ui/ui-vue2/lib/utils';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Language, Languages } from '@/consts';
 import { getter, mutation, state } from '@/store/decorators';
 import { updatePipTheme } from '@/utils';
 import { tmaSdkService } from '@/utils/telegram';
@@ -86,6 +88,7 @@ type MenuItem = {
   text: string;
   disabled?: boolean;
   isThemeItem?: boolean;
+  isTextInsteadIcon?: boolean;
 };
 
 type MenuSection = {
@@ -103,6 +106,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
+  @state.settings.language currentLanguage!: Language;
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @state.wallet.settings.currency currency!: Currency;
 
@@ -137,6 +141,14 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   get hideBalancesText(): string {
     return this.t(`headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`);
+  }
+
+  private getCurrenyOrLanguage(value: string): string {
+    if (value === HeaderMenuType.Currency) {
+      return this?.currency;
+    } else {
+      return this.currentLanguage;
+    }
   }
 
   private getHeaderMenuItems(isDropdown = false): Array<{ title: string; items: Array<MenuItem> }> {
@@ -185,12 +197,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
             text: this.t('headerMenu.switchTheme', { theme: this.t('noir') }),
             isThemeItem: true,
           },
-          {
-            value: HeaderMenuType.Language,
-            icon: 'basic-globe-24',
-            text: this.t('headerMenu.switchLanguage'),
-            iconType: 'arrows-chevron-right-rounded-24',
-          },
         ],
       },
       {
@@ -201,6 +207,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
             icon: 'various-lightbulb-24',
             text: this.t('headerMenu.selectCurrency'),
             iconType: 'arrows-chevron-right-rounded-24',
+            isTextInsteadIcon: true,
           },
         ],
       },
@@ -219,6 +226,16 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
             text: this.disclaimerText,
             iconType: 'arrows-chevron-right-rounded-24',
             disabled: this.disclaimerDisabled,
+          },
+          {
+            value: HeaderMenuType.Language,
+            icon: 'basic-globe-24',
+            text: `${Languages.find((lang) => lang.key === this.currentLanguage)?.name} ${this.t(
+              'headerMenu.switchLanguage'
+            )}`,
+
+            iconType: 'arrows-chevron-right-rounded-24',
+            isTextInsteadIcon: true,
           },
         ],
       },
@@ -332,6 +349,9 @@ $icon-size: 28px;
     color: var(--s-color-base-content-primary);
     display: flex;
     align-items: center;
+    p {
+      margin-left: $basic-spacing-mini;
+    }
     i {
       color: var(--s-color-base-content-tertiary);
       font-size: $icon-size;
@@ -353,8 +373,9 @@ $icon-size: 28px;
     }
 
     .current-currency {
-      margin-left: 5px;
-      color: var(--s-color-base-content-tertiary);
+      min-width: 31px;
+      text-align: center;
+      color: var(--s-color-base-content-secondary);
     }
   }
 
@@ -391,8 +412,10 @@ $icon-size: 28px;
   .el-divider--horizontal {
     margin: unset;
   }
+
+  // TODO исправить бы
   .divider-between-items {
-    margin-left: 50px;
+    margin-left: 55px;
   }
 }
 
