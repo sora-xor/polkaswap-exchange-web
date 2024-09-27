@@ -69,9 +69,9 @@ enum HeaderMenuType {
   HideBalances = 'hide-balances',
   TurnPhoneHide = 'turn-phone-hide',
   SystemPreference = 'system-preference',
-  LightMode = 'light-mode',
-  DarkMode = 'dark-mode',
-  NoirMode = 'noir-mode',
+  LightMode = 'light',
+  DarkMode = 'dark',
+  NoirMode = 'noir',
   Theme = 'theme',
   Language = 'language',
   Currency = 'currency',
@@ -99,6 +99,7 @@ const BREAKPOINT = 1440;
 export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
+  selectedTheme: HeaderMenuType | null = null;
 
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
@@ -118,17 +119,8 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     return window.matchMedia(`(min-width: ${BREAKPOINT}px)`);
   }
 
-  get selectedTheme(): HeaderMenuType {
-    return this.libraryTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
-  }
-
-  get themeTitle(): string {
-    return this.libraryTheme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
-  }
-
-  get themeText(): string {
-    const theme = this.t(this.themeTitle);
-    return this.t('headerMenu.switchTheme', { theme });
+  mounted() {
+    this.selectedTheme = this.libraryTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
   }
 
   get disclaimerText(): string {
@@ -178,19 +170,19 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
           {
             value: HeaderMenuType.LightMode,
             icon: 'various-brightness-low-24',
-            text: 'Light mode',
+            text: this.t('headerMenu.switchTheme', { theme: this.t('light') }),
             isThemeItem: true,
           },
           {
             value: HeaderMenuType.DarkMode,
             icon: 'various-moon-24',
-            text: 'Dark mode',
+            text: this.t('headerMenu.switchTheme', { theme: this.t('dark') }),
             isThemeItem: true,
           },
           {
             value: HeaderMenuType.NoirMode,
             icon: 'finance-PSWAP-24',
-            text: 'Noir mode',
+            text: this.t('headerMenu.switchTheme', { theme: this.t('noir') }),
             isThemeItem: true,
           },
           {
@@ -256,11 +248,14 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   async handleSelectHeaderMenu(value: HeaderMenuType): Promise<void> {
     console.info('handleSelectHeaderMenu was called');
+    console.info(value);
     switch (value) {
       case HeaderMenuType.HideBalances:
         this.toggleHideBalance();
         break;
-      case HeaderMenuType.Theme:
+      case HeaderMenuType.LightMode:
+      case HeaderMenuType.NoirMode:
+        this.selectedTheme = value;
         await switchTheme();
         await this.$nextTick();
         updatePipTheme();
