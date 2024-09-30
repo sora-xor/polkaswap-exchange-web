@@ -2965,6 +2965,8 @@
     "@polkadot/extension-inject" "0.44.7"
     "@polkadot/types" "9.14.2"
     "@polkadot/util" "10.4.2"
+
+"@soramitsu-ui/ui-vue2@^1.1.4":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@soramitsu-ui/ui-vue2/-/ui-vue2-1.1.4.tgz#a2c9b396818529ce14bc76ea5d5ac086f0da3653"
   integrity sha512-m2VII+epVPt4fB1SlhGWBxwgJJNRw0VBc4ROf9GrEz4tBQBCeqs/jNAxjK1jQyzSaTkDuPp/iyNVtlawMPbVcQ==
@@ -2980,6 +2982,8 @@
     vue-i18n "^8.28.2"
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
+
+"@soramitsu/soraneo-wallet-web@1.40.8":
   version "1.40.8"
   resolved "https://registry.yarnpkg.com/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.40.8.tgz#049bbbdb475a44b76c34e7e6dc99705d9d77dbf9"
   integrity sha512-nyxzNMSa0re/UaPl3s6mZt05hGSpSEkE1rDNJgq86csiNTe1jEp0c0G5qlBHvmueILXyNSzSNrSd67ZzPj2rlg==

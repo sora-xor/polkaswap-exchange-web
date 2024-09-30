@@ -1681,6 +1681,6 @@
     "rotatePhoneNotification": {
         "title": "Turn your device upside down to hide balances",
         "info": "For extra privacy, tilt your device face down to instantly hide your asset balances. This feature uses yourphone’s built-in sensors."
-    }
+    },
     "addAssetsText": "Add asset | Add assets"
 }
