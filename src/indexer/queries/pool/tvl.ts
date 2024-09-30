@@ -1,8 +1,7 @@
+import { FPNumber } from '@sora-substrate/math';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SubqueryIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
-
-import type { OCLH, SnapshotItem } from '@/types/chart';
 
 import type {
   PoolSnapshotEntity,
@@ -13,20 +12,25 @@ import type {
 
 const { IndexerType } = WALLET_CONSTS;
 
-const preparePriceData = (item: PoolSnapshotEntity): OCLH => {
-  const { open, close, low, high } = item.priceUSD;
-
-  return [+open, +close, +low, +high];
+export type PoolTvlData = {
+  timestamp: number;
+  liquidityUSD: FPNumber;
+  baseAssetReserves: FPNumber;
+  targetAssetReserves: FPNumber;
 };
 
-const transformSnapshot = (item: PoolSnapshotEntity): SnapshotItem => {
+const transformSnapshot = (item: PoolSnapshotEntity): PoolTvlData => {
   const timestamp = +item.timestamp * 1000;
-  const price = preparePriceData(item);
-  const volume = +item.volumeUSD;
-  const baseVolume = BigInt(item.baseAssetVolume);
-  const targetVolume = BigInt(item.targetAssetVolume);
+  const liquidityUSD = new FPNumber(item.liquidityUSD);
+  const baseAssetReserves = FPNumber.fromCodecValue(item.baseAssetReserves);
+  const targetAssetReserves = FPNumber.fromCodecValue(item.targetAssetReserves);
 
-  return { timestamp, price, volume, baseVolume, targetVolume };
+  return {
+    timestamp,
+    liquidityUSD,
+    baseAssetReserves,
+    targetAssetReserves,
+  };
 };
 
 const subqueryPoolFilter = (poolId: string, type: SnapshotTypes) => {
@@ -40,7 +44,7 @@ const subqueryPoolFilter = (poolId: string, type: SnapshotTypes) => {
   };
 };
 
-const SubqueryPoolPriceQuery = gql<ConnectionQueryResponse<PoolSnapshotEntity>>`
+const SubqueryPoolTvlQuery = gql<ConnectionQueryResponse<PoolSnapshotEntity>>`
   query SubqueryPoolPriceQuery($after: Cursor = "", $filter: PoolSnapshotFilter, $first: Int = null) {
     data: poolSnapshots(after: $after, first: $first, filter: $filter, orderBy: [TIMESTAMP_DESC]) {
       pageInfo {
@@ -50,22 +54,21 @@ const SubqueryPoolPriceQuery = gql<ConnectionQueryResponse<PoolSnapshotEntity>>`
       edges {
         node {
           timestamp
-          priceUSD
-          volumeUSD
-          baseAssetVolume
-          targetAssetVolume
+          liquidityUSD
+          baseAssetReserves
+          targetAssetReserves
         }
       }
     }
   }
 `;
 
-export async function fetchPoolPriceData(
+export async function fetchPoolTvlData(
   entityId: string,
   type: SnapshotTypes,
   first?: number,
   after?: string | null
-): Promise<Nullable<ConnectionQueryResponseData<SnapshotItem>>> {
+): Promise<Nullable<ConnectionQueryResponseData<PoolTvlData>>> {
   const indexer = getCurrentIndexer();
 
   let data!: Nullable<ConnectionQueryResponseData<PoolSnapshotEntity>>;
@@ -75,7 +78,7 @@ export async function fetchPoolPriceData(
       const subqueryIndexer = indexer as SubqueryIndexer;
       const filter = subqueryPoolFilter(entityId, type);
       const variables = { filter, first, after };
-      data = await subqueryIndexer.services.explorer.fetchEntities(SubqueryPoolPriceQuery, variables);
+      data = await subqueryIndexer.services.explorer.fetchEntities(SubqueryPoolTvlQuery, variables);
       break;
     }
     case IndexerType.SUBSQUID: {

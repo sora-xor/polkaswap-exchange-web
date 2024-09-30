@@ -10,6 +10,8 @@ export type SnapshotItem = {
   timestamp: number;
   price: OCLH;
   volume: number;
+  baseVolume?: bigint;
+  targetVolume?: bigint;
 };
 
 export type RequestMethod = (

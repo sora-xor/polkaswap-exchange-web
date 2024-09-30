@@ -2,7 +2,7 @@ import { XOR, KUSD } from '@sora-substrate/sdk/build/assets/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
-import { fetchClosedVaults } from '@/indexer/queries/kensetsu';
+import { fetchClosedVaults } from '@/indexer/queries/vault/vaults';
 import { vaultActionContext } from '@/store/vault';
 import { delay, areEqual } from '@/utils';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
