@@ -10,15 +10,23 @@
       </div>
     </template>
     <div class="browser-notification-dialog">
+      <p class="browser-notification-dialog__title">{{ t('rotatePhoneNotification.title') }}</p>
       <p class="browser-notification-dialog__info">
-        {{ t('browserNotificationDialog.notificationBlocked') }}
+        {{ t('rotatePhoneNotification.info') }}
       </p>
+      <s-button
+        type="primary"
+        class="s-typography-button--large browser-notification-dialog__btn"
+        @click="visibility = false"
+      >
+        {{ t('browserPermission.btnAllow') }}
+      </s-button>
     </div>
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -52,8 +60,8 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
 
 ::v-deep .el-dialog__close {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: $inner-spacing-small;
+  right: $inner-spacing-small;
   z-index: 2;
   box-shadow: unset !important;
   background-color: rgba(0, 0, 0, 0.4) !important;
@@ -62,23 +70,29 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
   }
 }
 
-.browser-notification-dialog__header {
-  width: 100%;
-  position: relative;
-  padding: 0;
-  height: auto;
-}
-
-.browser-notification-dialog__image {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-top-left-radius: var(--s-border-radius-medium);
-  border-top-right-radius: var(--s-border-radius-medium);
-}
-
 .browser-notification-dialog {
   text-align: center;
-  padding: 16px;
+  &__header {
+    width: 100%;
+  }
+  &__image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-top-left-radius: var(--s-border-radius-medium);
+    border-top-right-radius: var(--s-border-radius-medium);
+  }
+  &__title {
+    font-size: 20px;
+    color: var(--s-color-base-content-primary);
+    margin-top: calc($inner-spacing-big + $inner-spacing-tiny);
+    margin-bottom: $inner-spacing-small;
+    font-weight: 300;
+  }
+  &__info {
+    font-size: 14px;
+    color: var(--s-color-base-content-secondary);
+    margin-bottom: calc($inner-spacing-medium + $inner-spacing-tiny / 2);
+  }
 }
 </style>
