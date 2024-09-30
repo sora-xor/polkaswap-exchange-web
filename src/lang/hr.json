@@ -256,7 +256,7 @@
         "alreadyAttached": "Token je već bio priložen",
         "understand": "Razumijem",
         "warningTitle": "Trgujte na vlastitu odgovornost!",
-        "warningMessage": "Svatko može izraditi token, uključujući stvaranje lažnih verzija postojećih tokena koji tvrde da predstavljaju projekte.\nAko kupite ovaj token, možda ga nećete moći prodati natrag.",
+        "warningMessage": "ovaj {assetType} | ovi {assetTypePlural}",
         "approved": "Sredstvo odobreno od zajednice",
         "unknown": "Nepoznati izvor",
         "scam": "PREVARA",
@@ -265,7 +265,15 @@
             "title": "Valute",
             "switchBtn": "Samo provjerena sredstva"
         },
-        "searchInputText": "Pretraživanje po ID-u sredstva, nazivu ili simbolu oznake"
+        "searchInputText": "Pretraživanje po ID-u sredstva, nazivu ili simbolu oznake",
+        "warningMessageText": "Svatko može stvoriti {assetType}, uključujući lažne verzije postojećih {assetTypePlural} koje tvrde da predstavljaju projekte. Ako kupite {purchaseAssetType}, možda ga nećete moći prodati natrag.",
+        "assetType": {
+            "token": "Žeton | Žetoni",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Dodajte",
+        "pinAsset": "Prikači imovinu",
+        "unpinAsset": "Otkači imovinu"
     },
     "createToken": {
         "desc": "Izradite i primijenite prilagođena sredstva na {Sora}",
@@ -1042,7 +1050,9 @@
         "button": "Omogući obavijesti",
         "agree": "Da, razumijem",
         "notificationBlocked": "Da biste primali obavijesti o {AppName}, omogućite obavijesti u izvornim postavkama preglednika",
-        "pointer": "Pritisnite \"Dopusti\" za uključivanje obavijesti"
+        "pointer": "Pritisnite \"Dopusti\" za uključivanje obavijesti",
+        "rotatetitle": "Molimo, okrenite svoj uređaj",
+        "rotateMessage": "Iskustvo je dostupno samo u portretnom načinu"
     },
     "assetDeposit": "Stanje imovine je deponirano",
     "noDataText": "Nema podataka",
@@ -1053,7 +1063,10 @@
         "verifiedOnly": "Prikaži samo provjerenu imovinu",
         "zeroBalance": "Sakrij 0 salda imovine",
         "showAssets": "Prikaži imovinu",
-        "show": "Pokazati"
+        "show": "Pokazati",
+        "reset": "Resetiraj",
+        "synthetics": "Sintetika",
+        "native": "Zavičajni"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1678,6 @@
         "yourRewards": "Vaše nagrade",
         "openTelegram": "Otvorite {Telegram}",
         "toEarnPoints": "Za zarađivanje bodova"
-    }
+    },
+    "addAssetsText": "Dodaj imovinu | Dodaj imovine"
 }

@@ -256,7 +256,7 @@
         "alreadyAttached": "代币已附加",
         "understand": "我明白",
         "warningTitle": "交易风险自担!",
-        "warningMessage": "任何人都可以创建代币，包括创建声称代表项目的现有代币的假版本。\n如果您购买了这种代币，您可能无法将其卖出。",
+        "warningMessage": "这个 {assetType} | 这些 {assetTypePlural}",
         "approved": "社区批准的资产",
         "unknown": "未知来源",
         "scam": "骗局",
@@ -265,7 +265,15 @@
             "title": "货币",
             "switchBtn": "仅经过验证的资产"
         },
-        "searchInputText": "按资产 ID、名称或股票代码搜索"
+        "searchInputText": "按资产 ID、名称或股票代码搜索",
+        "warningMessageText": "任何人都可以创建{assetType}，包括创建现有{assetTypePlural}的假版本，这些假版本声称代表项目。 如果您购买{purchaseAssetType}，您可能无法将其卖回。",
+        "assetType": {
+            "token": "代币 | 代币",
+            "nft": "NFT | NFTs"
+        },
+        "add": "添加",
+        "pinAsset": "固定资产",
+        "unpinAsset": "取消固定资产"
     },
     "createToken": {
         "desc": "在 {Sora} 上创建和部署自定义资产",
@@ -1042,7 +1050,9 @@
         "button": "启用通知",
         "agree": "是的我明白",
         "notificationBlocked": "要接收有关{AppName}的通知，请在浏览器的本机设置中允许通知",
-        "pointer": "按“允许”打开通知"
+        "pointer": "按“允许”打开通知",
+        "rotatetitle": "请旋转您的设备",
+        "rotateMessage": "该体验仅在纵向模式下可用"
     },
     "assetDeposit": "资产余额已存入",
     "noDataText": "没有数据",
@@ -1053,7 +1063,10 @@
         "verifiedOnly": "只显示经过验证的资产",
         "zeroBalance": "隐藏0余额资产",
         "showAssets": "显示资产",
-        "show": "显示"
+        "show": "显示",
+        "reset": "重置",
+        "synthetics": "合成材料",
+        "native": "本国的"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1678,6 @@
         "yourRewards": "您的奖励",
         "openTelegram": "打开 {Telegram}",
         "toEarnPoints": "获得积分"
-    }
+    },
+    "addAssetsText": "添加资产 | 添加资产"
 }

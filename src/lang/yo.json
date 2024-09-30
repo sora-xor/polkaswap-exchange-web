@@ -256,7 +256,7 @@
         "alreadyAttached": "Tokini yii ti ni asopọ tẹlẹ",
         "understand": "O ye mi",
         "warningTitle": "Iṣowo ni eewu tirẹ!",
-        "warningMessage": "Ẹnikẹni le ṣẹda token, pẹlu ṣiṣẹda awọn ẹya iro ti awọn token ti o wa tẹlẹ ti o sọ pe o ṣe aṣoju awọn iṣẹ akanṣe.\n Ti o ba ra tokini yii, o le ma ni anfani lati ta pada.",
+        "warningMessage": "eyi {assetType} | awọn {assetTypePlural} wọnyi",
         "approved": "Dukia ti a fọwọsi nipasẹ agbegbe",
         "unknown": "Orisun aimọ",
         "scam": "Itanjẹ",
@@ -265,7 +265,15 @@
             "title": "Awọn owo nina",
             "switchBtn": "Awọn ohun-ini ti a rii daju nikan"
         },
-        "searchInputText": "Wa nipasẹ ID Dukia, Orukọ tabi Aami Tika"
+        "searchInputText": "Wa nipasẹ ID Dukia, Orukọ tabi Aami Tika",
+        "warningMessageText": "Ẹnikẹni le ṣẹda {assetType}, pẹlu ṣiṣẹda awọn ẹya iro ti awọn {assetTypePlural} ti o wa tẹlẹ ti o sọ pe wọn ṣe aṣoju awọn iṣẹ akanṣe. Ti o ba ra {purchaseAssetType}, o le ma ni anfani lati ta pada.",
+        "assetType": {
+            "token": "Ami | Awọn ami",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Fikun",
+        "pinAsset": "Di ajogun",
+        "unpinAsset": "Yọ lodiṣinpo ajogun"
     },
     "createToken": {
         "desc": "Ṣẹda ki o ran awọn dukia atowunwa lori {Sora}",
@@ -1042,7 +1050,9 @@
         "button": "Mu awọn iwifunni ṣiṣẹ",
         "agree": "Bẹẹni, Mo loye",
         "notificationBlocked": "Lati gba awọn ifitonileti nipa {AppName}, jọwọ gba awọn iwifunni ni awọn eto abinibi ti aṣawakiri rẹ",
-        "pointer": "Tẹ \"Gba laaye\" lati tan awọn iwifunni"
+        "pointer": "Tẹ \"Gba laaye\" lati tan awọn iwifunni",
+        "rotatetitle": "Jọwọ yi ẹrọ rẹ pada",
+        "rotateMessage": "Iriri naa wa nikan ni ipo àfonífojì"
     },
     "assetDeposit": "Iwontunwonsi dukia ti wa ni idogo",
     "noDataText": "Ko si data",
@@ -1053,7 +1063,10 @@
         "verifiedOnly": "Ṣafihan awọn ohun-ini ti a rii daju nikan",
         "zeroBalance": "Tọju awọn ohun-ini iwọntunwọnsi 0",
         "showAssets": "Ṣe afihan awọn ohun-ini",
-        "show": "Ṣe afihan"
+        "show": "Ṣe afihan",
+        "reset": "Tunto",
+        "synthetics": "Sintetiki",
+        "native": "Ilu abinibi"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1678,6 @@
         "yourRewards": "Awọn ere rẹ",
         "openTelegram": "Ṣii {Telegram}",
         "toEarnPoints": "Lati gba awọn dimegilio"
-    }
+    },
+    "addAssetsText": "Fi dukia kun | Fi awọn dukia kun"
 }

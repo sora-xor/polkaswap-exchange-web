@@ -1,6 +1,6 @@
 <template>
   <div>
-    <synthetic-switcher v-model="isSynthsOnly" />
+    <assets-filter class="token-filter-options" />
     <s-table
       ref="table"
       v-loading="loadingState"
@@ -167,7 +167,8 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { NativeAssets } from '@sora-substrate/sdk/build/assets/consts';
+import { components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
@@ -175,10 +176,10 @@ import { Components, ZeroStringValue } from '@/consts';
 import { fetchTokensData } from '@/indexer/queries/assets';
 import type { TokenData } from '@/indexer/queries/assets';
 import { lazyComponent } from '@/router';
+import { state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, sortAssets } from '@/utils';
-import { syntheticAssetRegexp } from '@/utils/regexp';
-import storage from '@/utils/storage';
+import { syntheticAssetRegexp, kensetsuAssetRegexp } from '@/utils/regexp';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -199,11 +200,9 @@ type TableItem = {
   velocityFormatted?: string;
 } & Asset;
 
-const storageKey = 'exploreSyntheticTokens';
-
 @Component({
   components: {
-    SyntheticSwitcher: components.SyntheticSwitcher,
+    AssetsFilter: components.AssetsFilter,
     PriceChange: lazyComponent(Components.PriceChange),
     SortButton: lazyComponent(Components.SortButton),
     TokenAddress: components.TokenAddress,
@@ -213,16 +212,7 @@ const storageKey = 'exploreSyntheticTokens';
   },
 })
 export default class Tokens extends Mixins(ExplorePageMixin) {
-  private isSynths = storage.get(storageKey) ? JSON.parse(storage.get(storageKey)) : false;
-
-  get isSynthsOnly(): boolean {
-    return this.isSynths;
-  }
-
-  set isSynthsOnly(value: boolean) {
-    storage.set(storageKey, value);
-    this.isSynths = value;
-  }
+  @state.wallet.settings.assetsFilter assetsFilter!: WALLET_TYPES.FilterOptions;
 
   private tokensData: Record<string, TokenData> = {};
 
@@ -273,9 +263,30 @@ export default class Tokens extends Mixins(ExplorePageMixin) {
   }
 
   get prefilteredItems(): TableItem[] {
-    return this.isSynthsOnly
-      ? this.defaultSorted.filter((item) => syntheticAssetRegexp.test(item.address))
-      : this.defaultSorted;
+    const FilterOptions = WALLET_TYPES.FilterOptions;
+
+    // return to first page not to show empty list after option switch
+    this.currentPage = 1;
+
+    switch (this.assetsFilter) {
+      case FilterOptions.Native: {
+        const nativeAssetsAddresses = NativeAssets.map((nativeAsset) => nativeAsset.address);
+        return this.defaultSorted.filter((asset) => nativeAssetsAddresses.includes(asset.address));
+      }
+      case FilterOptions.Kensetsu: {
+        return this.defaultSorted.filter((asset) => kensetsuAssetRegexp.test(asset.address));
+      }
+      case FilterOptions.Synthetics: {
+        return this.defaultSorted.filter((asset) => syntheticAssetRegexp.test(asset.address));
+      }
+      case FilterOptions.Ceres: {
+        const ceresAssetsAddresses = WALLET_CONSTS.CeresAddresses;
+        return this.defaultSorted.filter((asset) => ceresAssetsAddresses.includes(asset.address));
+      }
+      default: {
+        return this.defaultSorted;
+      }
+    }
   }
 
   // ExplorePageMixin method implementation
@@ -299,5 +310,9 @@ export default class Tokens extends Mixins(ExplorePageMixin) {
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.token-filter-options {
+  margin-bottom: $inner-spacing-mini;
 }
 </style>

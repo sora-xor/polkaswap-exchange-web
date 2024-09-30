@@ -256,7 +256,7 @@
         "alreadyAttached": "Token už bol pridaný",
         "understand": "Rozumiem",
         "warningTitle": "Obchodujte na vlastné riziko!",
-        "warningMessage": "Ktokoľvek môže vytvoriť token, vrátane vytvárania falošných verzií už existujúcich tokenov, vydávaných za skutočné tokeny projektu.\nAk si kúpite takýto token, je možné, že ho už nebudete môcť predať späť.",
+        "warningMessage": "tento {assetType} | tieto {assetTypePlural}",
         "approved": "Komunitou schválené aktívum",
         "unknown": "Neznámy zdroj",
         "scam": "PODVOD",
@@ -265,7 +265,15 @@
             "title": "Meny",
             "switchBtn": "Iba overené aktíva"
         },
-        "searchInputText": "Vyhľadávajte podľa Asset ID, Name alebo Ticker Symbol"
+        "searchInputText": "Vyhľadávajte podľa Asset ID, Name alebo Ticker Symbol",
+        "warningMessageText": "Ktokoľvek môže vytvoriť {assetType}, vrátane falošných verzií existujúcich {assetTypePlural}, ktoré tvrdia, že zastupujú projekty. Ak si kúpite {purchaseAssetType}, nemusíte ho vedieť predať späť.",
+        "assetType": {
+            "token": "Token | Tokeny",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Pridať",
+        "pinAsset": "Pripnúť aktívum",
+        "unpinAsset": "Uvoľniť aktívum"
     },
     "createToken": {
         "desc": "Vytvorte a nasaďte vlastné aktívum na {Sora}",
@@ -1042,7 +1050,9 @@
         "button": "Povoliť upozornenia",
         "agree": "Áno rozumiem",
         "notificationBlocked": "Ak chcete dostávať upozornenia o {AppName}, povoľte upozornenia v natívnych nastaveniach prehliadača",
-        "pointer": "Stlačením „Povoliť“ zapnite upozornenia"
+        "pointer": "Stlačením „Povoliť“ zapnite upozornenia",
+        "rotatetitle": "Prosím, otočte svoje zariadenie",
+        "rotateMessage": "Zážitok je k dispozícii iba v režime na výšku"
     },
     "assetDeposit": "Zostatok aktív bol uložený",
     "noDataText": "Žiadne dáta",
@@ -1053,7 +1063,10 @@
         "verifiedOnly": "Zobraziť iba overené aktíva",
         "zeroBalance": "Skryť 0 bilančných aktív",
         "showAssets": "Zobraziť aktíva",
-        "show": "Šou"
+        "show": "Šou",
+        "reset": "Resetovať",
+        "synthetics": "Syntetika",
+        "native": "Natívne"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1678,6 @@
         "yourRewards": "Vaše odmeny",
         "openTelegram": "Otvoriť {Telegram}",
         "toEarnPoints": "Na získanie bodov"
-    }
+    },
+    "addAssetsText": "Pridať aktívum | Pridať aktíva"
 }

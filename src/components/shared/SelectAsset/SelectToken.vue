@@ -17,7 +17,7 @@
       />
 
       <s-tab :label="t('selectToken.assets.title')" name="assets">
-        <synthetic-switcher v-model="isSynthsOnly" class="token-synthetic-switcher" />
+        <assets-filter class="token-filter-options" />
       </s-tab>
 
       <s-tab :disabled="disabledCustom" :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
@@ -62,8 +62,8 @@
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { XOR, NativeAssets } from '@sora-substrate/sdk/build/assets/consts';
+import { api, mixins, components, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
@@ -72,7 +72,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
-import { syntheticAssetRegexp } from '@/utils/regexp';
+import { syntheticAssetRegexp, kensetsuAssetRegexp } from '@/utils/regexp';
 
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
@@ -98,18 +98,13 @@ function getNonWhitelistDivisibleAssets<T extends Asset | AccountAsset>(
   components: {
     DialogBase: components.DialogBase,
     SelectAssetList: lazyComponent(Components.SelectAssetList),
-    SyntheticSwitcher: components.SyntheticSwitcher,
     TokenAddress: components.TokenAddress,
     SearchInput: components.SearchInput,
+    AssetsFilter: components.AssetsFilter,
     AddAssetDetailsCard: components.AddAssetDetailsCard,
   },
 })
 export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
-  readonly tokenTabs = [Tabs.Assets, Tabs.Custom];
-
-  tabValue = first(this.tokenTabs);
-  isSynthsOnly = false;
-
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Nullable<Asset>;
   @Prop({ default: false, type: Boolean }) readonly disabledCustom!: boolean;
@@ -120,6 +115,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
   @state.wallet.account.assets private assets!: Asset[];
+  @state.wallet.settings.assetsFilter assetsFilter!: WALLET_TYPES.FilterOptions;
   @state.wallet.account.accountAssets private accountAssets!: AccountAsset[];
 
   @getter.libraryTheme libraryTheme!: Theme;
@@ -129,6 +125,10 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
 
   @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
+
+  readonly tokenTabs = [Tabs.Assets, Tabs.Custom];
+
+  tabValue = first(this.tokenTabs);
 
   @Watch('visible')
   async handleTabReset(value: boolean): Promise<void> {
@@ -157,8 +157,27 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
       whiteList = this.whitelistAssets;
     }
 
-    if (this.isSynthsOnly) {
-      whiteList = whiteList.filter((asset) => syntheticAssetRegexp.test(asset.address));
+    const FilterOptions = WALLET_TYPES.FilterOptions;
+
+    switch (this.assetsFilter) {
+      case FilterOptions.Native: {
+        const nativeAssetsAddresses = NativeAssets.map((nativeAsset) => nativeAsset.address);
+        whiteList = whiteList.filter((asset) => nativeAssetsAddresses.includes(asset.address));
+        break;
+      }
+      case FilterOptions.Kensetsu: {
+        whiteList = whiteList.filter((asset) => kensetsuAssetRegexp.test(asset.address));
+        break;
+      }
+      case FilterOptions.Synthetics: {
+        whiteList = whiteList.filter((asset) => syntheticAssetRegexp.test(asset.address));
+        break;
+      }
+      case FilterOptions.Ceres: {
+        const ceresAssetsAddresses = WALLET_CONSTS.CeresAddresses;
+        whiteList = whiteList.filter((asset) => ceresAssetsAddresses.includes(asset.address));
+        break;
+      }
     }
 
     const assetsAddresses = whiteList.map((asset) => asset.address);
@@ -262,7 +281,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @include focus-outline($withOffset: true);
 }
 
-.token-synthetic-switcher {
+.token-filter-options {
   margin: 0 $inner-spacing-big $inner-spacing-medium;
 }
 

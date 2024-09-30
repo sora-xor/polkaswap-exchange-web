@@ -256,7 +256,7 @@
         "alreadyAttached": "Token sudah terlampir",
         "understand": "Saya mengerti",
         "warningTitle": "Perdagangkan dengan risiko Anda sendiri!",
-        "warningMessage": "Siapapun dapat membuat token, termasuk membuat versi palsu dari token yang ada yang menyatakan representasi suatu proyek.\nJika Anda membeli token ini, Anda mungkin tidak dapat menjualnya kembali.",
+        "warningMessage": "{assetType} ini | {assetTypePlural} ini",
         "approved": "Aset disetujui oleh komunitas",
         "unknown": "Sumber tidak diketahui",
         "scam": "SCAM",
@@ -265,7 +265,15 @@
             "title": "Mata Uang",
             "switchBtn": "Hanya aset yang diverifikasi"
         },
-        "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker"
+        "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker",
+        "warningMessageText": "Siapapun dapat membuat {assetType}, termasuk membuat versi palsu dari {assetTypePlural} yang ada yang mengklaim mewakili proyek. Jika Anda membeli {purchaseAssetType}, Anda mungkin tidak dapat menjualnya kembali.",
+        "assetType": {
+            "token": "Token | Token",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Menambahkan",
+        "pinAsset": "Pin aset",
+        "unpinAsset": "Lepas pin aset"
     },
     "createToken": {
         "desc": "Buat dan terapkan kostum aset di {Sora}",
@@ -1042,7 +1050,9 @@
         "button": "Aktifkan notifikasi",
         "agree": "Ya saya mengerti",
         "notificationBlocked": "Untuk menerima notifikasi tentang {AppName}, izinkan notifikasi di setelan asli browser Anda",
-        "pointer": "Tekan \"Izinkan\" untuk mengaktifkan notifikasi"
+        "pointer": "Tekan \"Izinkan\" untuk mengaktifkan notifikasi",
+        "rotatetitle": "Silakan putar perangkat Anda",
+        "rotateMessage": "Pengalaman ini hanya tersedia dalam mode potret"
     },
     "assetDeposit": "Saldo aset telah disetorkan",
     "noDataText": "Tidak ada data",
@@ -1053,7 +1063,10 @@
         "verifiedOnly": "Tampilkan aset terverifikasi saja",
         "zeroBalance": "Sembunyikan 0 aset saldo",
         "showAssets": "Tampilkan aset",
-        "show": "Tunjukkan"
+        "show": "Tunjukkan",
+        "reset": "Mengatur ulang",
+        "synthetics": "Sintetis",
+        "native": "Warga asli"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1678,6 @@
         "yourRewards": "Hadiah Anda",
         "openTelegram": "Buka {Telegram}",
         "toEarnPoints": "Untuk mendapatkan poin"
-    }
+    },
+    "addAssetsText": "Tambah aset | Tambah aset-aset"
 }

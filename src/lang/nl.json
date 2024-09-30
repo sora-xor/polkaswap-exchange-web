@@ -256,7 +256,7 @@
         "alreadyAttached": "Token was al gekoppeld",
         "understand": "Ik begrijp het",
         "warningTitle": "Handel op eigen risico!",
-        "warningMessage": "Iedereen kan een token creëren, inclusief het creëren van nepversies van bestaande tokens die beweren projecten te vertegenwoordigen.\nAls u dit token koopt, kunt u het mogelijk niet meer terugverkopen.",
+        "warningMessage": "deze {assetType} | deze {assetTypePlura",
         "approved": "Goedgekeurd door de gemeenschap",
         "unknown": "Onbekende bron",
         "scam": "OPLICHTERIJ",
@@ -265,7 +265,15 @@
             "title": "Valuta",
             "switchBtn": "Alleen geverifieerde activa"
         },
-        "searchInputText": "Zoeken op activa-ID, naam of tickersymbool"
+        "searchInputText": "Zoeken op activa-ID, naam of tickersymbool",
+        "warningMessageText": "Iedereen kan een {assetType} maken, inclusief het maken van valse versies van bestaande {assetTypePlural} die beweren projecten te vertegenwoordigen. Als je een {purchaseAssetType} koopt, kun je het misschien niet terugverkopen.",
+        "assetType": {
+            "token": "Teken | Tekens",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Toevoegen",
+        "pinAsset": "Vastmaken activa",
+        "unpinAsset": "Losmaken activa"
     },
     "createToken": {
         "desc": "Creëer en implementeer aangepaste asset op {Sora}",
@@ -1042,7 +1050,9 @@
         "button": "Notificaties aanzetten",
         "agree": "Ja ik begrijp het",
         "notificationBlocked": "Als u de meldingen over {AppName} wilt ontvangen, moet u de meldingen toestaan in de systeemeigen instellingen van uw browser",
-        "pointer": "Druk op \"Toestaan\" om meldingen in te schakelen"
+        "pointer": "Druk op \"Toestaan\" om meldingen in te schakelen",
+        "rotatetitle": "Draai alstublieft uw apparaat",
+        "rotateMessage": "De ervaring is alleen beschikbaar in portretmodus"
     },
     "assetDeposit": "Activa-saldo is gestort",
     "noDataText": "Geen informatie",
@@ -1053,7 +1063,10 @@
         "verifiedOnly": "Toon alleen geverifieerde activa",
         "zeroBalance": "Verberg 0 tegoeden",
         "showAssets": "Items weergeven",
-        "show": "Show"
+        "show": "Show",
+        "reset": "Opnieuw instellen",
+        "synthetics": "Synthetische stoffen",
+        "native": "Oorspronkelijk"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1678,6 @@
         "yourRewards": "Uw beloningen",
         "openTelegram": "Openen {Telegram}",
         "toEarnPoints": "Om punten te verdienen"
-    }
+    },
+    "addAssetsText": "Activa toevoegen | Activa’s toevoegen"
 }

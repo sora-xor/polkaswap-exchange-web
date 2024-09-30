@@ -256,7 +256,7 @@
         "alreadyAttached": "Le jeton était déjà attaché",
         "understand": "Je comprends",
         "warningTitle": "Tradez à vos risques et périls!",
-        "warningMessage": "Tout le monde peut créer un jeton, y compris en créant de fausses versions de jetons existants qui prétendent représenter des projets.\n Si vous achetez ce jeton, vous ne pourrez peut-être pas le revendre.",
+        "warningMessage": "ce {assetType} | ces {assetTypePlural}",
         "approved": "Actif approuvé par la communauté",
         "unknown": "Source inconnue",
         "scam": "ARNAQUE",
@@ -265,7 +265,15 @@
             "title": "Devises",
             "switchBtn": "Actifs vérifiés uniquement"
         },
-        "searchInputText": "Rechercher par ID d'actif, nom ou symbole boursier"
+        "searchInputText": "Rechercher par ID d'actif, nom ou symbole boursier",
+        "warningMessageText": "N'importe qui peut créer un {assetType}, y compris des versions factices de {assetTypePlural} existants prétendant représenter des projets. Si vous achetez un {purchaseAssetType}, il se peut que vous ne puissiez pas le revendre.",
+        "assetType": {
+            "token": "Jeton | Jetons",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Ajouter",
+        "pinAsset": "Épingler l'actif",
+        "unpinAsset": "Détacher l'actif"
     },
     "createToken": {
         "desc": "Créer et déployer des ressources personnalisées sur {Sora}",
@@ -1042,7 +1050,9 @@
         "button": "Activer les notifications",
         "agree": "Oui je comprends",
         "notificationBlocked": "Pour recevoir les notifications concernant {AppName} , veuillez autoriser les notifications dans les paramètres natifs de votre navigateur",
-        "pointer": "Appuyez sur \"Autoriser\" pour activer les notifications"
+        "pointer": "Appuyez sur \"Autoriser\" pour activer les notifications",
+        "rotatetitle": "Veuillez faire pivoter votre appareil",
+        "rotateMessage": "L'expérience est uniquement disponible en mode portrait"
     },
     "assetDeposit": "Le solde de l'actif a été déposé",
     "noDataText": "Pas de données",
@@ -1053,7 +1063,10 @@
         "verifiedOnly": "Afficher uniquement les actifs vérifiés",
         "zeroBalance": "Cachez 0 solde actif",
         "showAssets": "Afficher les actifs",
-        "show": "Montrer"
+        "show": "Montrer",
+        "reset": "Réinitialiser",
+        "synthetics": "Synthétiques",
+        "native": "Indigène"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1678,6 @@
         "yourRewards": "Vos récompenses",
         "openTelegram": "Ouvrir {Telegram}",
         "toEarnPoints": "Pour gagner des points"
-    }
+    },
+    "addAssetsText": "Ajouter un actif | Ajouter des actifs"
 }
