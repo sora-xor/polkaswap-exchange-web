@@ -54,4 +54,5 @@ export type SettingsState = {
   adsArray: Array<Ad>;
   isTMA: boolean;
   telegramBotUrl: Nullable<string>;
+  isTBankFeatureEnabled: boolean;
 };

@@ -17,7 +17,7 @@
       <s-button
         type="primary"
         class="s-typography-button--large browser-notification-dialog__btn"
-        @click="visibility = false"
+        @click="enableTbankFeature()"
       >
         {{ t('browserPermission.btnAllow') }}
       </s-button>
@@ -31,6 +31,7 @@ import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state, mutation } from '@/store/decorators';
+import { tmaSdkService } from '@/utils/telegram';
 
 @Component({
   components: {
@@ -41,7 +42,9 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
   @Ref('selectedEl') selectedEl!: Nullable<[HTMLDivElement]>;
 
   @state.settings.rotatePhoneDialogVisibility private rotatePhoneDialogVisibility!: boolean;
+
   @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
+  @mutation.settings.setIsTBankFeatureEnabled private setIsTBankFeatureEnabled!: (flag: boolean) => void;
 
   get visibility(): boolean {
     return this.rotatePhoneDialogVisibility;
@@ -49,6 +52,14 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
 
   set visibility(flag: boolean) {
     this.setRotatePhoneDialogVisibility(flag);
+  }
+
+  enableTbankFeature() {
+    this.setIsTBankFeatureEnabled(true);
+    tmaSdkService.handleTBankFeatureEnabled();
+    // 1. включили фичу,слушаем,если работает,всё ок
+    // 2. если нужно разрешение,то вызываем разрешение через telegram.ts
+    this.visibility = false;
   }
 }
 </script>

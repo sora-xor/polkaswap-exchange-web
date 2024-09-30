@@ -45,6 +45,7 @@ function initialState(): SettingsState {
     adsArray: [],
     isTMA: false,
     telegramBotUrl: undefined,
+    isTBankFeatureEnabled: false,
   };
 }
 

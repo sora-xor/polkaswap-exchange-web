@@ -63,11 +63,6 @@ class TmaSdk {
       }
       // Init haptic feedback
       this.addHapticListener();
-      if (await this.checkAccelerometerSupport()) {
-        this.listenForDeviceRotation();
-      } else {
-        console.warn('[TMA]: Accelerometer not supported');
-      }
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
       store.commit.settings.disableTMA();
@@ -104,6 +99,14 @@ class TmaSdk {
     useHaptic(type);
   }
 
+  public async handleTBankFeatureEnabled(): Promise<void> {
+    if (await this.checkAccelerometerSupport()) {
+      this.listenForDeviceRotation();
+    } else {
+      console.warn('[TMA]: Accelerometer not supported');
+    }
+  }
+
   private onTouchEnd(event: TouchEvent): void {
     let clickedElement = event.target as Nullable<HTMLElement>;
 
@@ -132,10 +135,8 @@ class TmaSdk {
     }
   }
 
-  // private checkAccelerometerSupport(): boolean {
-  //   return 'DeviceMotionEvent' in window || 'DeviceOrientationEvent' in window;
-  // }
   private async checkAccelerometerSupport(): Promise<boolean> {
+    console.info('we are in checkAccelerometerSupport');
     if (
       typeof DeviceMotionEvent !== 'undefined' &&
       typeof (DeviceMotionEvent as any).requestPermission === 'function'

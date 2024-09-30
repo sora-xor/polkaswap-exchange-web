@@ -39,8 +39,6 @@ const mutations = defineMutations<SettingsState>()({
     state.selectCurrencyDialogVisibility = value;
   },
   setRotatePhoneDialogVisibility(state, value: boolean): void {
-    console.info('we are in mutation');
-    console.info(value);
     state.rotatePhoneDialogVisibility = value;
   },
   toggleDisclaimerDialogVisibility(state): void {
@@ -138,6 +136,9 @@ const mutations = defineMutations<SettingsState>()({
   },
   setTelegramBotUrl(state, url: Nullable<string>): void {
     state.telegramBotUrl = url;
+  },
+  setIsTBankFeatureEnabled(state): void {
+    state.isTBankFeatureEnabled = true;
   },
 });
 
