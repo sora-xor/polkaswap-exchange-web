@@ -1,7 +1,7 @@
 <template>
   <div v-loading="parentLoading" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
-    <div v-loading="parentLoading" class="pool-wrapper" data-test-name="Pools">
+    <div class="pool-wrapper" data-test-name="Pools">
       <p v-if="!isLoggedIn" key="not-logged" class="pool-info-container pool-info-container--empty">
         {{ t('pool.connectToWallet') }}
       </p>
@@ -91,18 +91,24 @@
     <s-button v-else type="primary" class="s-typography-button--large" @click="connectSoraWallet">
       {{ t('connectWalletText') }}
     </s-button>
+
+    <add-liquidity-dialog :visible.sync="addLiquidityVisibility" />
   </div>
 </template>
 
 <script lang="ts">
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { mixins, components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 import { Components, PageNames } from '@/consts';
+import { PoolComponents } from '@/modules/pool/consts';
+import { poolLazyComponent } from '@/modules/pool/router';
 import router, { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import { action, getter, state } from '@/store/decorators';
+import type { LiquidityParams } from '@/store/pool/types';
 import { sortPools } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -127,6 +133,7 @@ type LiquidityItem = AccountLiquidity & {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PoolInfo: lazyComponent(Components.PoolInfo),
+    AddLiquidityDialog: poolLazyComponent(PoolComponents.AddLiquidityDialog),
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
   },
@@ -145,7 +152,11 @@ export default class Pool extends Mixins(
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
 
+  @action.addLiquidity.setDataFromLiquidity private setDataAddLiquidity!: (args: LiquidityParams) => Promise<void>;
+
   activeCollapseItems: string[] = [];
+
+  addLiquidityVisibility = false;
 
   get accountLiquidityData() {
     const items = this.accountLiquidity.map((liquidity) => {
@@ -194,11 +205,12 @@ export default class Pool extends Mixins(
   }
 
   handleAddLiquidity(item?: LiquidityItem): void {
-    if (!item) {
-      router.push({ name: PageNames.AddLiquidity });
-      return;
-    }
-    router.push({ name: PageNames.AddLiquidity, params: this.getRouteParams(item) });
+    const firstAddress = item?.firstAsset.address ?? XOR.address;
+    const secondAddress = item?.secondAsset.address ?? '';
+
+    this.setDataAddLiquidity({ firstAddress, secondAddress });
+
+    this.addLiquidityVisibility = true;
   }
 
   handleRemoveLiquidity(item: LiquidityItem): void {
