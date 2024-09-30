@@ -1,21 +1,23 @@
 <template>
   <base-widget v-bind="$attrs">
     <template #title>
-      <tokens-row border :assets="tokens" size="medium" />
-      <div v-if="tokenA" class="token-title">
-        <span>{{ tokenA.symbol }}</span>
-        <span v-if="tokenB">/{{ tokenB.symbol }}</span>
-      </div>
-      <s-button
-        v-if="reversible"
-        :class="{ 's-pressed': isReversedChart }"
-        :disabled="chartIsLoading"
-        size="small"
-        type="action"
-        alternative
-        icon="arrows-swap-90-24"
-        @click="revertChart"
-      />
+      <slot name="title">
+        <tokens-row border :assets="tokens" size="medium" />
+        <div v-if="tokenA" class="token-title">
+          <span>{{ tokenA.symbol }}</span>
+          <span v-if="tokenB">/{{ tokenB.symbol }}</span>
+        </div>
+        <s-button
+          v-if="reversible"
+          :class="{ 's-pressed': isReversedChart }"
+          :disabled="chartIsLoading"
+          size="small"
+          type="action"
+          alternative
+          icon="arrows-swap-90-24"
+          @click="revertChart"
+        />
+      </slot>
     </template>
 
     <template #filters>
