@@ -38,6 +38,7 @@ export type SettingsState = {
   selectIndexerDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
   selectCurrencyDialogVisibility: boolean;
+  rotatePhoneDialogVisibility: boolean;
   disclaimerVisibility: boolean;
   alertSettingsVisibility: boolean;
   browserNotifPopupVisibility: boolean;

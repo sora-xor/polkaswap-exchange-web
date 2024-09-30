@@ -38,6 +38,11 @@ const mutations = defineMutations<SettingsState>()({
   setSelectCurrencyDialogVisibility(state, value: boolean): void {
     state.selectCurrencyDialogVisibility = value;
   },
+  setRotatePhoneDialogVisibility(state, value: boolean): void {
+    console.info('we are in mutation');
+    console.info(value);
+    state.rotatePhoneDialogVisibility = value;
+  },
   toggleDisclaimerDialogVisibility(state): void {
     state.disclaimerVisibility = !state.disclaimerVisibility;
   },

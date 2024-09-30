@@ -61,6 +61,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Language, Languages } from '@/consts';
+import { BreakpointClass } from '@/consts/layout';
 import { getter, mutation, state } from '@/store/decorators';
 import { updatePipTheme } from '@/utils';
 import { tmaSdkService } from '@/utils/telegram';
@@ -108,6 +109,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
   @state.settings.language currentLanguage!: Language;
   @state.settings.isTMA isTMA!: boolean;
+  @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @state.wallet.settings.currency currency!: Currency;
 
@@ -118,6 +120,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @mutation.settings.setAlertSettingsPopup private setAlertSettingsPopup!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.setSelectCurrencyDialogVisibility private setCurrencyDialogVisibility!: (flag: boolean) => void;
+  @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
 
   get mediaQueryList(): MediaQueryList {
@@ -126,6 +129,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   mounted() {
     this.selectedTheme = this.libraryTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
+  }
+
+  get isMobile(): boolean {
+    return this.screenBreakpointClass === BreakpointClass.Mobile;
   }
 
   get disclaimerText(): string {
@@ -163,7 +170,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
             text: this.hideBalancesText,
             iconType: 'arrows-chevron-right-rounded-24',
           },
-          ...(this.isTMA
+          ...(this.isTMA && this.isMobile
             ? [
                 {
                   value: HeaderMenuType.TurnPhoneHide,
@@ -282,6 +289,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         await this.$nextTick();
         updatePipTheme();
         tmaSdkService.updateTheme();
+        break;
+      case HeaderMenuType.TurnPhoneHide:
+        console.info('we will call now setRotatePhoneDialogVisibility');
+        this.setRotatePhoneDialogVisibility(true);
         break;
       case HeaderMenuType.Language:
         this.setLanguageDialogVisibility(true);

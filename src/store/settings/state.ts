@@ -31,6 +31,7 @@ function initialState(): SettingsState {
     selectIndexerDialogVisibility: false,
     selectLanguageDialogVisibility: false,
     selectCurrencyDialogVisibility: false,
+    rotatePhoneDialogVisibility: false,
     disclaimerVisibility: false,
     alertSettingsVisibility: false,
     browserNotifPopupVisibility: false,

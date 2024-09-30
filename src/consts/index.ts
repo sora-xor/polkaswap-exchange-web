@@ -181,6 +181,7 @@ export enum Components {
   AlertsSelectAsset = 'pages/Alerts/SelectAsset',
   SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
   SelectCurrencyDialog = 'App/Settings/Currency/SelectCurrencyDialog',
+  RotatePhoneDialog = 'App/Settings/Telegram/RotatePhoneDialog',
   AppFooter = 'App/Footer/AppFooter',
   AppDisclaimer = 'App/Header/AppDisclaimer',
   SelectIndexer = 'App/Footer/Indexer/SelectIndexer',

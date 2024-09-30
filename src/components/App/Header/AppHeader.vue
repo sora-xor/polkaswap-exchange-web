@@ -13,6 +13,7 @@
       <app-account-button :disabled="loading" @click="navigateToWallet" />
       <app-header-menu />
     </div>
+    <rotate-phone-dialog />
     <select-language-dialog />
     <select-currency-dialog />
   </header>
@@ -46,6 +47,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     AppLogoButton,
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     SelectCurrencyDialog: lazyComponent(Components.SelectCurrencyDialog),
+    RotatePhoneDialog: lazyComponent(Components.RotatePhoneDialog),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     WalletAvatar: components.WalletAvatar,
   },
