@@ -2,17 +2,24 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
-import { SubsquidQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
 import { gql } from '@urql/core';
 
-import type { SubqueryVault, SubsquidVault, ClosedVault, VaultEvent, IndexerVaultEvent } from '@/modules/vault/types';
+import type { ClosedVault, VaultEvent } from '@/modules/vault/types';
 import type { FetchVariables } from '@/types/indexers';
 
-import type { ConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { SubqueryVaultEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
+import type {
+  SubsquidVaultEntity,
+  SubsquidQueryResponse,
+} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
+import type {
+  ConnectionQueryResponse,
+  VaultEventBaseEntity,
+} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
 
-const SubqueryClosedVaultsQuery = gql<ConnectionQueryResponse<SubqueryVault>>`
+const SubqueryClosedVaultsQuery = gql<ConnectionQueryResponse<SubqueryVaultEntity>>`
   query ClosedVaultsQuery($account: String, $after: Cursor = "", $first: Int = 100) {
     data: vaults(
       first: $first
@@ -38,7 +45,7 @@ const SubqueryClosedVaultsQuery = gql<ConnectionQueryResponse<SubqueryVault>>`
   }
 `;
 
-const SubsquidClosedVaultsQuery = gql<ConnectionQueryResponse<SubsquidVault>>`
+const SubsquidClosedVaultsQuery = gql<ConnectionQueryResponse<SubsquidVaultEntity>>`
   query ClosedVaultsQuery($account: String, $after: String = null, $first: Int = 100) {
     data: vaultsConnection(
       first: $first
@@ -68,23 +75,23 @@ const SubsquidClosedVaultsQuery = gql<ConnectionQueryResponse<SubsquidVault>>`
   }
 `;
 
-const parseSubqueryVault = (vault: SubqueryVault): ClosedVault => {
+const parseSubqueryVault = (vault: SubqueryVaultEntity): ClosedVault => {
   return {
     id: +vault.id,
     vaultType: vault.type === 'Type1' ? VaultTypes.V1 : VaultTypes.V2,
     status: vault.status,
-    returned: new FPNumber(vault.collateralAmountReturned),
+    returned: new FPNumber(vault.collateralAmountReturned ?? 0),
     lockedAssetId: vault.collateralAssetId,
     debtAssetId: vault.debtAssetId,
   };
 };
 
-const parseSubsquidVault = (vault: SubsquidVault): ClosedVault => {
+const parseSubsquidVault = (vault: SubsquidVaultEntity): ClosedVault => {
   return {
     id: +vault.id,
     vaultType: vault.type === 'Type1' ? VaultTypes.V1 : VaultTypes.V2,
     status: vault.status,
-    returned: new FPNumber(vault.collateralAmountReturned),
+    returned: new FPNumber(vault.collateralAmountReturned ?? 0),
     lockedAssetId: vault.collateralAsset.id,
     debtAssetId: vault.debtAsset.id,
   };
@@ -119,7 +126,7 @@ export async function fetchClosedVaults(account: string): Promise<ClosedVault[]>
   return [];
 }
 
-const SubqueryVaultDetailsQuery = gql<ConnectionQueryResponse<IndexerVaultEvent>>`
+const SubqueryVaultDetailsQuery = gql<ConnectionQueryResponse<VaultEventBaseEntity>>`
   query VaultDetailsQuery($first: Int = null, $offset: Int = null, $filter: VaultEventFilter) {
     data: vaultEvents(first: $first, offset: $offset, filter: $filter, orderBy: [TIMESTAMP_DESC, ID_DESC]) {
       pageInfo {
@@ -139,7 +146,7 @@ const SubqueryVaultDetailsQuery = gql<ConnectionQueryResponse<IndexerVaultEvent>
   }
 `;
 
-const SubsquidVaultDetailsQuery = gql<SubsquidQueryResponse<IndexerVaultEvent>>`
+const SubsquidVaultDetailsQuery = gql<SubsquidQueryResponse<VaultEventBaseEntity>>`
   query VaultDetailsQuery($first: Int = null, $offset: Int = null, $filter: VaultEventWhereInput) {
     info: vaultEventsConnection(first: 0, where: $filter, orderBy: [timestamp_DESC, id_DESC]) {
       totalCount
@@ -161,7 +168,7 @@ const subqueryVaultEventsFilter = (vaultId: string | number, fromTimestamp?: num
   return filter;
 };
 
-const parseVaultEvents = (event: IndexerVaultEvent): VaultEvent => {
+const parseVaultEvents = (event: VaultEventBaseEntity): VaultEvent => {
   return {
     amount: event.amount ? new FPNumber(event.amount) : null,
     timestamp: event.timestamp * 1000,
