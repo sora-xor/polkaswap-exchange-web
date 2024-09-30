@@ -16,8 +16,8 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
-import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook';
-import { fetchOrderBookData } from '@/indexer/queries/price/orderBook';
+import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook/orderBook';
+import { fetchOrderBookPriceData } from '@/indexer/queries/orderBook/price';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import type { RequestMethod, RequestSubscription, RequestSubscriptionCallback } from '@/types/chart';
@@ -42,7 +42,7 @@ export default class BookChartsWidget extends Mixins(TranslationMixin) {
   }
 
   get requestMethod(): RequestMethod {
-    return fetchOrderBookData;
+    return fetchOrderBookPriceData;
   }
 
   get requestSubscription(): Nullable<RequestSubscription> {

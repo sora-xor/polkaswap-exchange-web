@@ -87,7 +87,7 @@ const SubsquidAssetPriceQuery = gql<ConnectionQueryResponse<AssetSnapshotEntity>
   }
 `;
 
-export async function fetchAssetData(
+export async function fetchAssetPriceData(
   entityId: string,
   type: SnapshotTypes,
   first?: number,

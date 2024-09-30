@@ -84,7 +84,7 @@ import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
-import { fetchAssetData } from '@/indexer/queries/price/asset';
+import { fetchAssetPriceData } from '@/indexer/queries/asset/price';
 import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
 import type { OCLH, SnapshotItem, RequestMethod, RequestSubscription } from '@/types/chart';
@@ -306,7 +306,7 @@ export default class PriceChartWidget extends Mixins(
   @Prop({ default: () => null, type: Object }) readonly baseAsset!: Nullable<AccountAsset>;
   @Prop({ default: () => null, type: Object }) readonly quoteAsset!: Nullable<AccountAsset>;
   @Prop({ default: () => null, type: String }) readonly requestEntityId!: Nullable<string>;
-  @Prop({ default: fetchAssetData, type: Function }) readonly requestMethod!: RequestMethod;
+  @Prop({ default: fetchAssetPriceData, type: Function }) readonly requestMethod!: RequestMethod;
   @Prop({ default: requestSubscription, type: Function }) readonly requestSubscription!: RequestSubscription;
   @Prop({ default: false, type: Boolean }) readonly isAvailable!: boolean;
 
@@ -844,7 +844,6 @@ export default class PriceChartWidget extends Mixins(
         this.limits = { min, max };
         this.precision = this.getUpdatedPrecision(min, max);
         this.updateDataset([...this.dataset, ...dataset]);
-
         this.isFetchingError = false;
       } catch (error) {
         this.isFetchingError = true;
@@ -948,7 +947,7 @@ export default class PriceChartWidget extends Mixins(
   }
 
   private requestIsAllowed(entities: string[]): boolean {
-    if (!this.isAvailable) return false;
+    if (this.isTokensPair && !this.isAvailable) return false;
 
     return isEqual(entities)(this.entities);
   }
