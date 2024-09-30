@@ -7,6 +7,8 @@ import type { KnownEthBridgeAsset } from '@/consts/evm';
 import { SUB_NETWORKS } from '@/consts/sub';
 import { web3GetterContext } from '@/store/web3';
 import type { NetworkData } from '@/types/bridge';
+import type { AppEIPProvider } from '@/types/evm/provider';
+import { FearlessWalletProvider, WalletConnectProvider } from '@/utils/connection/evm/providers';
 
 import type { Web3State, AvailableNetwork } from './types';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
@@ -111,6 +113,34 @@ const getters = defineGetters<Web3State>()({
       name: state.subAddressName,
       source: state.subAddressSource as WALLET_CONSTS.AppWallet,
     };
+  },
+
+  appEvmProviders(...args): AppEIPProvider[] {
+    const { state, rootState } = web3GetterContext(args);
+
+    const isDesktop = rootState.wallet.account.isDesktop;
+
+    if (isDesktop) return [WalletConnectProvider];
+
+    const providers: AppEIPProvider[] = [...state.evmProviders];
+
+    [FearlessWalletProvider, WalletConnectProvider].forEach((provider) => {
+      const exists = !!providers.find((added) => added.name === provider.name);
+
+      if (!exists) providers.push(provider);
+    });
+
+    const sortedProviders = [...providers].sort((a, b) => {
+      if (a.name === FearlessWalletProvider.name) {
+        return -1;
+      }
+      if (b.name === FearlessWalletProvider.name) {
+        return 1;
+      }
+      return 0;
+    });
+
+    return sortedProviders;
   },
 });
 

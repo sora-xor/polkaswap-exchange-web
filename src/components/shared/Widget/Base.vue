@@ -347,14 +347,13 @@ $left: $inner-spacing-medium;
 
     font-size: var(--s-font-size-medium);
     font-weight: 500;
-    line-height: var(--s-line-height-medium);
+    line-height: var(--s-line-height-reset);
 
     min-height: var(--s-size-small);
 
     &.primary {
       font-size: var(--s-font-size-large);
       font-weight: 300;
-      line-height: var(--s-line-height-reset);
     }
   }
 

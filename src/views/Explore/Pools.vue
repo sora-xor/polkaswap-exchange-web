@@ -149,8 +149,8 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import { Components } from '@/consts';
-import { fetchPoolsData } from '@/indexer/queries/pools';
-import type { PoolData } from '@/indexer/queries/pools';
+import { fetchPoolsData } from '@/indexer/queries/pool/pools';
+import type { PoolData } from '@/indexer/queries/pool/pools';
 import { lazyComponent } from '@/router';
 import { state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
