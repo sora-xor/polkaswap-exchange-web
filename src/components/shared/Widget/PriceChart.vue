@@ -844,7 +844,6 @@ export default class PriceChartWidget extends Mixins(
         this.limits = { min, max };
         this.precision = this.getUpdatedPrecision(min, max);
         this.updateDataset([...this.dataset, ...dataset]);
-
         this.isFetchingError = false;
       } catch (error) {
         this.isFetchingError = true;
@@ -948,7 +947,7 @@ export default class PriceChartWidget extends Mixins(
   }
 
   private requestIsAllowed(entities: string[]): boolean {
-    if (!this.isAvailable) return false;
+    if (this.isTokensPair && !this.isAvailable) return false;
 
     return isEqual(entities)(this.entities);
   }
