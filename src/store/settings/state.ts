@@ -46,6 +46,7 @@ function initialState(): SettingsState {
     isTMA: false,
     telegramBotUrl: undefined,
     isTBankFeatureEnabled: false,
+    isOrientationWarningVisible: false,
   };
 }
 

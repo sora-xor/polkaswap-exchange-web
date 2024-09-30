@@ -990,6 +990,8 @@ export default {
     notificationBlocked:
       "To receive the notifications about {AppName}, please, allow the notifications in your browser's native settings",
     pointer: 'Press “Allow” to turn notifications on',
+    rotatetitle: 'Please, rotate your device',
+    rotateMessage: 'The experience is only available in portrait mode',
   },
   assetDeposit: 'Asset balance has been deposited',
   ofText: '{first} of {second}',

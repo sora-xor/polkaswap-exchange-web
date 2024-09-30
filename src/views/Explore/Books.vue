@@ -134,7 +134,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import { Components } from '@/consts';
-import { fetchOrderBooks } from '@/indexer/queries/orderBook';
+import { fetchOrderBooks } from '@/indexer/queries/orderBook/orderBooks';
 import { lazyComponent } from '@/router';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { OrderBookWithStats } from '@/types/orderBook';

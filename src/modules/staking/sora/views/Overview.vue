@@ -218,7 +218,7 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
-import { fetchData } from '@/indexer/queries/stakingNominators';
+import { fetchData } from '@/indexer/queries/staking/nominators';
 import router from '@/router';
 import { state, mutation } from '@/store/decorators';
 

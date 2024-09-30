@@ -256,7 +256,7 @@
         "alreadyAttached": "Der Token wurde schon hinzugefügt",
         "understand": "Ich verstehe",
         "warningTitle": "Handeln auf eigene Gefahr!",
-        "warningMessage": "Jeder kann ein Token erstellen, einschließlich gefälschter Versionen vorhandener Token, die behaupten, das entsprechende Projekt darzustellen. Wenn du solch einen Token kaufst, kannst du diesen möglicherweise nicht wieder verkaufen.",
+        "warningMessage": "dieses {assetType} | diese {assetTypePlural}",
         "approved": "Asset von der Community genehmigt",
         "unknown": "Unbekannte Quelle",
         "scam": "BETRUG",
@@ -265,7 +265,15 @@
             "title": "Währungen",
             "switchBtn": "Nur verifizierte Assets"
         },
-        "searchInputText": "Suche nach Asset-ID, Name oder Tickersymbol"
+        "searchInputText": "Suche nach Asset-ID, Name oder Tickersymbol",
+        "warningMessageText": "Jeder kann ein {assetType} erstellen, einschließlich gefälschter Versionen bestehender {assetTypePlural}, die behaupten, Projekte zu repräsentieren. Wenn Sie ein {purchaseAssetType} kaufen, können Sie es möglicherweise nicht zurückverkaufen.",
+        "assetType": {
+            "token": "Token | Tokens",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Hinzufügen",
+        "pinAsset": "Vermögenswert anheften",
+        "unpinAsset": "Vermögenswert lösen"
     },
     "createToken": {
         "desc": "Erstelle und nutze benutzerdefinierte Assets auf {Sora}",
@@ -1042,7 +1050,9 @@
         "button": "Benachrichtigungen aktivieren",
         "agree": "Ja ich verstehe",
         "notificationBlocked": "Um die Benachrichtigungen über {AppName} zu erhalten, erlauben Sie bitte die Benachrichtigungen in den nativen Einstellungen Ihres Browsers",
-        "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten"
+        "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten",
+        "rotatetitle": "Bitte drehen Sie Ihr Gerät",
+        "rotateMessage": "Die Erfahrung ist nur im Hochformat verfügbar"
     },
     "assetDeposit": "Guthaben wurde hinterlegt",
     "noDataText": "Keine Daten",
@@ -1665,5 +1675,6 @@
         "yourRewards": "Ihre Belohnungen",
         "openTelegram": "Öffnen {Telegram}",
         "toEarnPoints": "Um Punkte zu verdienen"
-    }
+    },
+    "addAssetsText": "Asset hinzufügen | Assets hinzufügen"
 }

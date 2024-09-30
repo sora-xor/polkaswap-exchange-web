@@ -139,6 +139,11 @@ const mutations = defineMutations<SettingsState>()({
   },
   setIsTBankFeatureEnabled(state): void {
     state.isTBankFeatureEnabled = true;
+  showOrientationWarning(state): void {
+    state.isOrientationWarningVisible = true;
+  },
+  hideOrientationWarning(state): void {
+    state.isOrientationWarningVisible = false;
   },
 });
 
