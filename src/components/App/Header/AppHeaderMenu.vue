@@ -17,7 +17,7 @@
       >
         <template #menu>
           <div class="header-menu__settings">
-            <p>Settings</p>
+            <p>{{ t('settingsText') }}</p>
             <s-button class="s-pressed" type="action" icon="x-16" @click="handleClickHeaderMenu" />
           </div>
           <s-divider />
@@ -107,6 +107,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
   @state.settings.language currentLanguage!: Language;
+  @state.settings.isTMA isTMA!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @state.wallet.settings.currency currency!: Currency;
 
@@ -162,12 +163,16 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
             text: this.hideBalancesText,
             iconType: 'arrows-chevron-right-rounded-24',
           },
-          {
-            value: HeaderMenuType.TurnPhoneHide,
-            icon: 'gadgets-iPhone-24',
-            text: 'Turn phone & hide',
-            iconType: 'arrows-chevron-right-rounded-24',
-          },
+          ...(this.isTMA
+            ? [
+                {
+                  value: HeaderMenuType.TurnPhoneHide,
+                  icon: 'gadgets-iPhone-24',
+                  text: 'Turn phone & hide',
+                  iconType: 'arrows-chevron-right-rounded-24',
+                },
+              ]
+            : []),
         ],
       },
       {
@@ -298,6 +303,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 $icon-size: 28px;
+$item-padding: 17px;
 
 .app-header-menu {
   display: flex;
@@ -413,16 +419,15 @@ $icon-size: 28px;
     margin: unset;
   }
 
-  // TODO исправить бы
   .divider-between-items {
-    margin-left: 55px;
+    margin-left: calc($item-padding + $icon-size + $basic-spacing-mini * 2);
   }
 }
 
 .dropdown-section-title {
   margin-top: 16px;
   margin-bottom: 19px;
-  padding: 0 17px;
+  padding: 0 $item-padding;
   font-size: 13px;
   font-weight: 700;
   color: var(--s-color-base-content-secondary);
