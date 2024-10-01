@@ -467,7 +467,7 @@ export const updatePipTheme = (): void => {
 };
 
 // TODO: [Rustem] Move to wallet and combine it when adding asset
-export function getAssetsSubset(tokensList, assetsFilter: WALLET_TYPES.FilterOptions) {
+export function getAssetsSubset<T extends Asset>(tokensList: T[], assetsFilter: WALLET_TYPES.FilterOptions): T[] {
   const FilterOptions = WALLET_TYPES.FilterOptions;
 
   switch (assetsFilter) {
