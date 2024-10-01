@@ -193,7 +193,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       menuItems = menuItems.filter(({ title }) => title !== PageNames.OrderBook);
     }
     if (!this.kensetsuEnabled) {
-      menuItems = menuItems.filter(({ title }) => title !== PageNames.VaultsContainer);
+      menuItems = menuItems.filter(({ title }) => title !== VaultPageNames.VaultsContainer);
     }
     if (!this.assetOwnerEnabled) {
       menuItems = menuItems.filter(({ title }) => title !== PageNames.AssetOwnerContainer);

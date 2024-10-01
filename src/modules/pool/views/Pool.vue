@@ -99,9 +99,9 @@ import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web
 import { Component, Mixins } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
-import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 import { Components } from '@/consts';
 import { PoolComponents } from '@/modules/pool/consts';
+import PoolApyMixin from '@/modules/pool/mixins/PoolApy';
 import { poolLazyComponent } from '@/modules/pool/router';
 import { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';

@@ -375,7 +375,7 @@ const MainMenu: Array<SidebarMenuItemLink> = [
   },
   {
     icon: 'call-phone-16',
-    title: PageNames.VaultsContainer,
+    title: VaultPageNames.VaultsContainer,
     href: '/#/kensetsu',
     index: VaultPageNames.Vaults,
   },

@@ -261,7 +261,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/kensetsu',
-    component: lazyView(PageNames.VaultsContainer),
+    component: vaultLazyView(VaultPageNames.VaultsContainer),
     children: [
       {
         path: '',

@@ -112,12 +112,12 @@ import { XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import BaseTokenPairMixin from '@/components/mixins/BaseTokenPairMixin';
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import { Components } from '@/consts';
 import { PoolComponents } from '@/modules/pool/consts';
+import BaseTokenPairMixin from '@/modules/pool/mixins/BaseTokenPair';
 import { poolLazyComponent } from '@/modules/pool/router';
 import { lazyComponent } from '@/router';
 import { FocusedField } from '@/store/addLiquidity/types';

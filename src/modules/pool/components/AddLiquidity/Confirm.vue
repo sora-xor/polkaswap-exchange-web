@@ -66,9 +66,9 @@ import { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import PoolApyMixin from '@/modules/pool/mixins/PoolApy';
 import { lazyComponent } from '@/router';
 
 @Component({

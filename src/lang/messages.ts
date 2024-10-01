@@ -106,7 +106,7 @@ export default {
     [PageNames.StakingContainer]: 'Staking',
     [PageNames.SoraCard]: '{Sora} Card',
     [PageNames.AssetOwnerContainer]: 'Asset owner',
-    [PageNames.VaultsContainer]: '{Kensetsu}',
+    [VaultPageNames.VaultsContainer]: '{Kensetsu}',
   },
   alerts: {
     [AlertTypeTabs.Drop]: 'Drops below',
