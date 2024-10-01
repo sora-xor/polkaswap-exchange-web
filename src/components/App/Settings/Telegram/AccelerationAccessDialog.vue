@@ -5,13 +5,13 @@
       <p class="browser-notification-dialog__info">
         Our technology uses your phone's built-in gyroscope to instantly hide your balance when you tilt your device.
       </p>
-      <s-button
+      <!-- <s-button
         type="secondary"
         class="s-typography-button--large browser-notification-dialog__btn"
         @click="openDeviceSettings"
       >
         Open Settings
-      </s-button>
+      </s-button> -->
     </div>
   </dialog-base>
 </template>
@@ -43,23 +43,23 @@ export default class AccelerationAccessDialog extends Mixins(TranslationMixin) {
     this.setRotatePhoneDialogVisibility(flag);
   }
 
-  openDeviceSettings() {
-    console.info('we are in openDeviceSettings');
-    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-    console.info(userAgent);
-    if (/android/i.test(userAgent)) {
-      console.info('we are in adnroid');
-      // Attempt to open Android device settings
-      window.location.href = 'intent:#Intent;action=android.settings.SETTINGS;end';
-    } else if (/iPad|iPhone|iPod/.test(userAgent)) {
-      console.info('we are in ios');
-      // Attempt to open iOS device settings
-      window.location.href = 'App-Prefs:root';
-    } else {
-      // For other devices or if the above methods fail
-      alert('Unable to open device settings on this device. Please open settings manually.');
-    }
-  }
+  // openDeviceSettings() {
+  //   console.info('we are in openDeviceSettings');
+  //   const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+  //   console.info(userAgent);
+  //   if (/android/i.test(userAgent)) {
+  //     console.info('we are in adnroid');
+  //     // Attempt to open Android device settings
+  //     window.open('intent:#Intent;action=android.settings.SETTINGS;end', '_self');
+  //   } else if (/iPad|iPhone|iPod/.test(userAgent)) {
+  //     console.info('we are in ios');
+  //     // Attempt to open iOS device settings
+  //     window.location.href = 'App-Prefs:root';
+  //   } else {
+  //     // For other devices or if the above methods fail
+  //     alert('Unable to open device settings on this device. Please open settings manually.');
+  //   }
+  // }
 }
 </script>
 

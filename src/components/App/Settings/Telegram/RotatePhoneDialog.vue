@@ -58,30 +58,29 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
     console.info('we are in enableTbankFeature');
     console.info(window);
     if (tmaSdkService.checkAccelerometerSupport()) {
-      this.setIsAccessMotionEventDeclined(true);
-      // if (
-      //   typeof DeviceMotionEvent !== 'undefined' &&
-      //   typeof (DeviceMotionEvent as any).requestPermission === 'function'
-      // ) {
-      //   (DeviceMotionEvent as any)
-      //     .requestPermission()
-      //     .then((permissionState: PermissionState) => {
-      //       if (permissionState === 'granted') {
-      //         this.setIsTBankFeatureEnabled(true);
-      //         tmaSdkService.listenForDeviceRotation();
-      //       } else {
-      //         this.setIsAccessMotionEventDeclined(true);
-      //         console.warn('Device motion permission denied.');
-      //       }
-      //     })
-      //     .catch((error: any) => {
-      //       console.error('Error requesting device motion permission:', error);
-      //     });
-      // } else {
-      //   console.info('no need permission request');
-      //   this.setIsTBankFeatureEnabled(true);
-      //   tmaSdkService.listenForDeviceRotation();
-      // }
+      if (
+        typeof DeviceMotionEvent !== 'undefined' &&
+        typeof (DeviceMotionEvent as any).requestPermission === 'function'
+      ) {
+        (DeviceMotionEvent as any)
+          .requestPermission()
+          .then((permissionState: PermissionState) => {
+            if (permissionState === 'granted') {
+              this.setIsTBankFeatureEnabled(true);
+              tmaSdkService.listenForDeviceRotation();
+            } else {
+              this.setIsAccessMotionEventDeclined(true);
+              console.warn('Device motion permission denied.');
+            }
+          })
+          .catch((error: any) => {
+            console.error('Error requesting device motion permission:', error);
+          });
+      } else {
+        console.info('no need permission request');
+        this.setIsTBankFeatureEnabled(true);
+        tmaSdkService.listenForDeviceRotation();
+      }
     } else {
       console.warn('Device does not support motion events.');
     }
