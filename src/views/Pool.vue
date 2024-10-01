@@ -93,6 +93,7 @@
     </s-button>
 
     <add-liquidity-dialog :visible.sync="addLiquidityVisibility" />
+    <remove-liquidity-dialog :visible.sync="removeLiquidityVisibility" />
   </div>
 </template>
 
@@ -107,7 +108,7 @@ import { Components, PageNames } from '@/consts';
 import { PoolComponents } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
 import router, { lazyComponent } from '@/router';
-import { action, getter, state } from '@/store/decorators';
+import { action, getter, mutation, state } from '@/store/decorators';
 import type { LiquidityParams } from '@/store/pool/types';
 import { sortPools } from '@/utils';
 
@@ -134,6 +135,7 @@ type LiquidityItem = AccountLiquidity & {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PoolInfo: lazyComponent(Components.PoolInfo),
     AddLiquidityDialog: poolLazyComponent(PoolComponents.AddLiquidityDialog),
+    RemoveLiquidityDialog: poolLazyComponent(PoolComponents.RemoveLiquidityDialog),
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
   },
@@ -152,11 +154,14 @@ export default class Pool extends Mixins(
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
 
-  @action.addLiquidity.setDataFromLiquidity private setDataAddLiquidity!: (args: LiquidityParams) => Promise<void>;
+  @action.addLiquidity.setDataFromLiquidity private setAddressesToAdd!: (args: LiquidityParams) => Promise<void>;
+
+  @mutation.removeLiquidity.setAddresses private setAddressesToRemove!: (args: LiquidityParams) => void;
 
   activeCollapseItems: string[] = [];
 
   addLiquidityVisibility = false;
+  removeLiquidityVisibility = false;
 
   get accountLiquidityData() {
     const items = this.accountLiquidity.map((liquidity) => {
@@ -208,13 +213,18 @@ export default class Pool extends Mixins(
     const firstAddress = item?.firstAsset.address ?? XOR.address;
     const secondAddress = item?.secondAsset.address ?? '';
 
-    this.setDataAddLiquidity({ firstAddress, secondAddress });
+    this.setAddressesToAdd({ firstAddress, secondAddress });
 
     this.addLiquidityVisibility = true;
   }
 
   handleRemoveLiquidity(item: LiquidityItem): void {
-    router.push({ name: PageNames.RemoveLiquidity, params: this.getRouteParams(item) });
+    const firstAddress = item.firstAsset.address;
+    const secondAddress = item.secondAsset.address;
+
+    this.setAddressesToRemove({ firstAddress, secondAddress });
+
+    this.removeLiquidityVisibility = true;
   }
 
   private getAssetSymbol(asset: Nullable<AccountAsset>): string {

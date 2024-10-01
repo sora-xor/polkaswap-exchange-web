@@ -6,7 +6,7 @@
       :tooltip="t('pool.description')"
       @back="handleBack"
     />
-    <add-liquidity-form />
+    <add-liquidity-form @back="handleBack" />
   </div>
 </template>
 
@@ -39,7 +39,7 @@ export default class AddLiquidity extends Mixins(SelectedTokenRouteMixin, Transl
   @getter.addLiquidity.secondToken private secondToken!: Nullable<AccountAsset>;
 
   @action.addLiquidity.resetData private resetData!: AsyncFnWithoutArgs;
-  @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>; // Overrides SelectedTokenRouteMixin
+  @action.addLiquidity.setDataFromLiquidity setData!: (args: LiquidityParams) => Promise<void>; // Overrides SelectedTokenRouteMixin
 
   @Watch('isLoggedIn')
   private handleLoggedInStateChange(isLoggedIn: boolean, wasLoggedIn: boolean): void {

@@ -1,6 +1,10 @@
 <template>
-  <dialog-base :title="t('addLiquidity.title')" :visible.sync="isVisible" :tooltip="t('pool.description')">
-    <add-liquidity-form />
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('removeLiquidity.title')"
+    :tooltip="t('removeLiquidity.description')"
+  >
+    <remove-liquidity-form @back="closeDialog" />
   </dialog-base>
 </template>
 
@@ -15,12 +19,12 @@ import { action } from '@/store/decorators';
 
 @Component({
   components: {
-    AddLiquidityForm: poolLazyComponent(PoolComponents.AddLiquidityForm),
+    RemoveLiquidityForm: poolLazyComponent(PoolComponents.RemoveLiquidityForm),
     DialogBase: components.DialogBase,
   },
 })
 export default class AddLiquidityDialog extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  @action.addLiquidity.resetData private resetData!: AsyncFnWithoutArgs;
+  @action.removeLiquidity.resetData private resetData!: AsyncFnWithoutArgs;
 
   @Watch('visible')
   private async handleDialogVisibility(value: boolean): Promise<void> {

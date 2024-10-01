@@ -207,12 +207,6 @@ export enum Components {
   KycView = 'pages/SoraCard/steps/KycView',
   // Paywings
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
-  // Add Liquidity Page
-  AddLiquidityConfirm = 'pages/AddLiquidity/Confirm',
-  AddLiquidityTransactionDetails = 'pages/AddLiquidity/TransactionDetails',
-  // Remove Liquidity Page
-  RemoveLiquidityConfirm = 'pages/RemoveLiquidity/Confirm',
-  RemoveLiquidityTransactionDetails = 'pages/RemoveLiquidity/TransactionDetails',
   // Bridge Page
   BridgeTransactionDetails = 'pages/Bridge/TransactionDetails',
   BridgeTransferNotification = 'pages/Bridge/TransferNotification',

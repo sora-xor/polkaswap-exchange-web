@@ -116,6 +116,8 @@ import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import { Components } from '@/consts';
+import { PoolComponents } from '@/modules/pool/consts';
+import { poolLazyComponent } from '@/modules/pool/router';
 import { lazyComponent } from '@/router';
 import { FocusedField } from '@/store/addLiquidity/types';
 import { getter, action, mutation, state } from '@/store/decorators';
@@ -129,8 +131,8 @@ type SetValue = (v: string) => Promise<void>;
 
 @Component({
   components: {
-    AddLiquidityConfirm: lazyComponent(Components.AddLiquidityConfirm),
-    AddLiquidityTransactionDetails: lazyComponent(Components.AddLiquidityTransactionDetails),
+    AddLiquidityConfirm: poolLazyComponent(PoolComponents.AddLiquidityConfirm),
+    AddLiquidityTransactionDetails: poolLazyComponent(PoolComponents.AddLiquidityTransactionDetails),
     SelectToken: lazyComponent(Components.SelectToken),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),

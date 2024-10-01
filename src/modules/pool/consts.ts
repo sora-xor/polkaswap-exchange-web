@@ -3,6 +3,14 @@ export enum PoolPageNames {
 }
 
 export enum PoolComponents {
-  AddLiquidityDialog = 'Dialog/AddLiquidity',
-  AddLiquidityForm = 'Form/AddLiquidity',
+  // AddLiquidity
+  AddLiquidityConfirm = 'AddLiquidity/Confirm',
+  AddLiquidityDialog = 'AddLiquidity/Dialog',
+  AddLiquidityForm = 'AddLiquidity/Form',
+  AddLiquidityTransactionDetails = 'AddLiquidity/TransactionDetails',
+  // RemoveLiquidity
+  RemoveLiquidityConfirm = 'RemoveLiquidity/Confirm',
+  RemoveLiquidityDialog = 'RemoveLiquidity/Dialog',
+  RemoveLiquidityForm = 'RemoveLiquidity/Form',
+  RemoveLiquidityTransactionDetails = 'RemoveLiquidity/TransactionDetails',
 }
