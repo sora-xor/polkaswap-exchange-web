@@ -104,10 +104,10 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import PoolApyMixin from '@/components/mixins/PoolApyMixin';
-import { Components, PageNames } from '@/consts';
+import { Components } from '@/consts';
 import { PoolComponents } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
-import router, { lazyComponent } from '@/router';
+import { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { LiquidityParams } from '@/store/pool/types';
 import { sortPools } from '@/utils';

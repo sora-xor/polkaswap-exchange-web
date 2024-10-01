@@ -78,7 +78,6 @@ export default {
     [PageNames.Stats]: 'Statistics',
     [PageNames.Wallet]: 'Wallet',
     [PageNames.AddLiquidity]: 'Add Liquidity',
-    [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.Rewards]: 'Rewards',
     [PageNames.ExploreTokens]: 'Tokens',
     [PageNames.ExplorePools]: 'Pools',

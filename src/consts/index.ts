@@ -133,7 +133,6 @@ export enum PageNames {
   Wallet = 'Wallet',
   PoolContainer = 'PoolContainer',
   AddLiquidity = 'AddLiquidity',
-  RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
   Rewards = 'Rewards',
   ReferralProgram = 'ReferralProgram',
@@ -474,7 +473,7 @@ export const FaucetLink: SidebarMenuItemLink = {
 export const SidebarMenuGroups = [...MainMenu, ...OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
-export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
+export const PoolChildPages = [PageNames.AddLiquidity];
 export const RewardsChildPages = [
   PageNames.PointSystem,
   PageNames.Rewards,

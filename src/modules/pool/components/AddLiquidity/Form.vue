@@ -74,6 +74,7 @@
 
     <select-token
       is-add-liquidity
+      append-to-body
       :visible.sync="showSelectTokenDialog"
       :connected="isLoggedIn"
       :asset="isFirstTokenSelected ? secondToken : firstToken"

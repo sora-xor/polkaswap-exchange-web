@@ -113,12 +113,6 @@ const routes: Array<RouteConfig> = [
             component: lazyView(PageNames.AddLiquidity),
             meta: { requiresAuth: true },
           },
-          {
-            path: 'remove/:first/:second',
-            name: PageNames.RemoveLiquidity,
-            component: lazyView(PageNames.RemoveLiquidity),
-            meta: { requiresAuth: true },
-          },
         ],
       },
       {
