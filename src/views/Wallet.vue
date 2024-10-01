@@ -14,7 +14,8 @@
 </template>
 
 <script lang="ts">
-import { XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -37,7 +38,6 @@ export default class Wallet extends Mixins(TranslationMixin) {
   @action.swap.setTokenFromAddress private setSwapFromAsset!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setSwapToAsset!: (address?: string) => Promise<void>;
   @action.addLiquidity.setFirstTokenAddress private setAddliquidityAssetA!: (address: string) => Promise<void>;
-  @action.addLiquidity.setSecondTokenAddress private setAddliquidityAssetB!: (address: string) => Promise<void>;
 
   showAboutNetworkDialog = false;
 
@@ -52,22 +52,19 @@ export default class Wallet extends Mixins(TranslationMixin) {
   }
 
   async handleLiquidity(asset: AccountAsset): Promise<void> {
-    if (asset.address === XOR.address) {
+    if (api.dex.baseAssetsIds.includes(asset.address)) {
+      this.setAddliquidityAssetA(asset.address);
       router.push({ name: PageNames.AddLiquidity });
       return;
     }
-    if (asset.address === XSTUSD.address) {
-      this.setAddliquidityAssetA(XSTUSD.address);
-      this.setAddliquidityAssetB('');
-      router.push({ name: PageNames.AddLiquidity });
-      return;
-    }
+
     const assetAAddress = XOR.address;
     const assetBAddress = asset.address;
 
     const first = this.whitelist[assetAAddress]?.symbol ?? assetAAddress;
     const second = this.whitelist[assetBAddress]?.symbol ?? assetBAddress;
     const params = { first, second };
+
     router.push({ name: PageNames.AddLiquidity, params });
   }
 

@@ -99,7 +99,7 @@
 
 <script lang="ts">
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins, components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
@@ -152,7 +152,6 @@ export default class Pool extends Mixins(
   @state.pool.accountLiquidity accountLiquidity!: Array<AccountLiquidity>;
 
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
-  @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
 
   @action.addLiquidity.setDataFromLiquidity private setAddressesToAdd!: (args: LiquidityParams) => Promise<void>;
 
@@ -198,15 +197,6 @@ export default class Pool extends Mixins(
 
   updateActiveCollapseItems(items: string[]) {
     this.activeCollapseItems = items;
-  }
-
-  private getRouteParams(item: LiquidityItem): { first: string; second: string } {
-    const firstSymbol = item.firstAssetSymbol ?? '';
-    const secondSymbol = item.secondAssetSymbol ?? '';
-    // If symbol is whitelisted -> symbol, else -> address
-    const first = this.whitelistIdsBySymbol[firstSymbol] ? firstSymbol : item.firstAddress;
-    const second = this.whitelistIdsBySymbol[secondSymbol] ? secondSymbol : item.secondAddress;
-    return { first, second };
   }
 
   handleAddLiquidity(item?: LiquidityItem): void {
