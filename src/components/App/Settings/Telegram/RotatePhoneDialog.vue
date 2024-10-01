@@ -39,15 +39,15 @@ import { tmaSdkService } from '@/utils/telegram';
   },
 })
 export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
-  @Ref('selectedEl') selectedEl!: Nullable<[HTMLDivElement]>;
-
   @state.settings.rotatePhoneDialogVisibility private rotatePhoneDialogVisibility!: boolean;
+  @state.settings.isAccessMotionEventDeclined private isAccessMotionEventDeclined!: boolean;
 
   @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.setIsTBankFeatureEnabled private setIsTBankFeatureEnabled!: (flag: boolean) => void;
+  @mutation.settings.setIsAccessMotionEventDeclined private setIsAccessMotionEventDeclined!: (flag: boolean) => void;
 
   get visibility(): boolean {
-    return this.rotatePhoneDialogVisibility;
+    return this.rotatePhoneDialogVisibility && !this.isAccessMotionEventDeclined;
   }
 
   set visibility(flag: boolean) {
@@ -55,10 +55,36 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
   }
 
   enableTbankFeature() {
-    this.setIsTBankFeatureEnabled(true);
-    tmaSdkService.handleTBankFeatureEnabled();
-    // 1. включили фичу,слушаем,если работает,всё ок
-    // 2. если нужно разрешение,то вызываем разрешение через telegram.ts
+    console.info('we are in enableTbankFeature');
+    console.info(window);
+    if (tmaSdkService.checkAccelerometerSupport()) {
+      this.setIsAccessMotionEventDeclined(true);
+      // if (
+      //   typeof DeviceMotionEvent !== 'undefined' &&
+      //   typeof (DeviceMotionEvent as any).requestPermission === 'function'
+      // ) {
+      //   (DeviceMotionEvent as any)
+      //     .requestPermission()
+      //     .then((permissionState: PermissionState) => {
+      //       if (permissionState === 'granted') {
+      //         this.setIsTBankFeatureEnabled(true);
+      //         tmaSdkService.listenForDeviceRotation();
+      //       } else {
+      //         this.setIsAccessMotionEventDeclined(true);
+      //         console.warn('Device motion permission denied.');
+      //       }
+      //     })
+      //     .catch((error: any) => {
+      //       console.error('Error requesting device motion permission:', error);
+      //     });
+      // } else {
+      //   console.info('no need permission request');
+      //   this.setIsTBankFeatureEnabled(true);
+      //   tmaSdkService.listenForDeviceRotation();
+      // }
+    } else {
+      console.warn('Device does not support motion events.');
+    }
     this.visibility = false;
   }
 }
@@ -83,6 +109,7 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
 
 .browser-notification-dialog {
   text-align: center;
+  button,
   &__header {
     width: 100%;
   }

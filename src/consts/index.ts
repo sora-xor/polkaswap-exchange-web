@@ -183,6 +183,7 @@ export enum Components {
   SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
   SelectCurrencyDialog = 'App/Settings/Currency/SelectCurrencyDialog',
   RotatePhoneDialog = 'App/Settings/Telegram/RotatePhoneDialog',
+  AccelerationAccessDialog = 'App/Settings/Telegram/AccelerationAccessDialog',
   AppFooter = 'App/Footer/AppFooter',
   AppDisclaimer = 'App/Header/AppDisclaimer',
   SelectIndexer = 'App/Footer/Indexer/SelectIndexer',

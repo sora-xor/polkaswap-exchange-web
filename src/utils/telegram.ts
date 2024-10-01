@@ -99,12 +99,30 @@ class TmaSdk {
     useHaptic(type);
   }
 
-  public async handleTBankFeatureEnabled(): Promise<void> {
-    if (await this.checkAccelerometerSupport()) {
-      this.listenForDeviceRotation();
-    } else {
-      console.warn('[TMA]: Accelerometer not supported');
-    }
+  public checkAccelerometerSupport(): boolean {
+    return 'DeviceMotionEvent' in window || 'DeviceOrientationEvent' in window;
+  }
+
+  public listenForDeviceRotation(): void {
+    console.info('called listenForDeviceRotation');
+    let wasRotatedTo180 = false;
+
+    window.addEventListener('deviceorientation', (event) => {
+      const { beta } = event;
+
+      if (beta !== null) {
+        if (Math.abs(beta) > 170 && !wasRotatedTo180) {
+          wasRotatedTo180 = true;
+        }
+
+        if (wasRotatedTo180 && Math.abs(beta) < 30) {
+          useHaptic('soft');
+          store.commit.wallet.settings.toggleHideBalance();
+          store.commit.wallet.account.syncWithStorage();
+          wasRotatedTo180 = false;
+        }
+      }
+    });
   }
 
   private onTouchEnd(event: TouchEvent): void {
@@ -133,60 +151,6 @@ class TmaSdk {
       store.commit.referrals.setStorageReferrer(referrerAddress);
       console.info('[TMA]: Referrer was set', referrerAddress);
     }
-  }
-
-  private async checkAccelerometerSupport(): Promise<boolean> {
-    console.info('we are in checkAccelerometerSupport');
-    if (
-      typeof DeviceMotionEvent !== 'undefined' &&
-      typeof (DeviceMotionEvent as any).requestPermission === 'function'
-    ) {
-      console.info('Device supports motion events with permission.');
-      console.info('here is DeviceMotionEvent');
-      console.info(DeviceMotionEvent);
-      try {
-        const response = await (DeviceMotionEvent as any).requestPermission();
-        if (response === 'granted') {
-          console.info('Device motion permission granted.');
-          return true;
-        } else {
-          console.warn('Device motion permission denied.');
-          return false;
-        }
-      } catch (error) {
-        console.error('Error requesting device motion permission:', error);
-        return false;
-      }
-    } else if ('DeviceMotionEvent' in window || 'DeviceOrientationEvent' in window) {
-      console.info('Device supports motion events without permission.');
-      console.info('here is DeviceMotionEvent');
-      console.info(DeviceMotionEvent);
-      return true;
-    } else {
-      console.warn('Device does not support motion events.');
-      return false;
-    }
-  }
-
-  private listenForDeviceRotation(): void {
-    let wasRotatedTo180 = false;
-
-    window.addEventListener('deviceorientation', (event) => {
-      const { beta } = event;
-
-      if (beta !== null) {
-        if (Math.abs(beta) > 170 && !wasRotatedTo180) {
-          wasRotatedTo180 = true;
-        }
-
-        if (wasRotatedTo180 && Math.abs(beta) < 30) {
-          useHaptic('soft');
-          store.commit.wallet.settings.toggleHideBalance();
-          store.commit.wallet.account.syncWithStorage();
-          wasRotatedTo180 = false;
-        }
-      }
-    });
   }
 
   public destroy(): void {

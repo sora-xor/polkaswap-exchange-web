@@ -139,6 +139,10 @@ const mutations = defineMutations<SettingsState>()({
   },
   setIsTBankFeatureEnabled(state): void {
     state.isTBankFeatureEnabled = true;
+    // storage.set('isTbankEnabled', true);
+  },
+  setIsAccessMotionEventDeclined(state): void {
+    state.isAccessMotionEventDeclined = true;
   },
   showOrientationWarning(state): void {
     state.isOrientationWarningVisible = true;

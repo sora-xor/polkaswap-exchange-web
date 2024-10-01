@@ -56,4 +56,5 @@ export type SettingsState = {
   telegramBotUrl: Nullable<string>;
   isTBankFeatureEnabled: boolean;
   isOrientationWarningVisible: boolean;
+  isAccessMotionEventDeclined: boolean;
 };
