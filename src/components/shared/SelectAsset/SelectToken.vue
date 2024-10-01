@@ -111,12 +111,13 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Prop({ default: false, type: Boolean }) readonly isFirstTokenSelected!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isAddLiquidity!: boolean;
   @Prop({ default: () => true, type: Function }) readonly filter!: (value: AccountAsset) => boolean;
-  @Prop({ default: true, type: Boolean }) readonly appendToBody!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly appendToBody!: boolean;
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
   @state.wallet.account.assets private assets!: Asset[];
   @state.wallet.settings.assetsFilter assetsFilter!: WALLET_TYPES.FilterOptions;
   @state.wallet.account.accountAssets private accountAssets!: AccountAsset[];
+  @state.wallet.account.pinnedAssets pinnedAssetsAddresses!: string[];
 
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
@@ -189,7 +190,22 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get filteredWhitelistTokens(): Array<AccountAsset> {
-    return this.filterAssetsByQuery(this.whitelistAssetsList)(this.searchQuery) as Array<AccountAsset>;
+    const filteredAssets = this.filterAssetsByQuery(this.whitelistAssetsList)(this.searchQuery) as Array<AccountAsset>;
+    const pinnedOrderMap = new Map(this.pinnedAssetsAddresses.map((address, index) => [address, index]));
+    return filteredAssets.sort((a, b) => {
+      const aPinnedIndex = pinnedOrderMap.get(a.address);
+      const bPinnedIndex = pinnedOrderMap.get(b.address);
+      if (aPinnedIndex !== undefined && bPinnedIndex !== undefined) {
+        return aPinnedIndex - bPinnedIndex;
+      }
+      if (aPinnedIndex !== undefined) {
+        return -1;
+      }
+      if (bPinnedIndex !== undefined) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   get isCustomTabActive(): boolean {
