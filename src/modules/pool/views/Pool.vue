@@ -5,11 +5,7 @@
       <p v-if="!isLoggedIn" key="not-logged" class="pool-info-container pool-info-container--empty">
         {{ t('pool.connectToWallet') }}
       </p>
-      <p
-        v-else-if="!accountLiquidity.length || parentLoading"
-        key="pools-empty"
-        class="pool-info-container pool-info-container--empty"
-      >
+      <p v-else-if="!hasAccountLiquidities" key="pools-empty" class="pool-info-container pool-info-container--empty">
         {{ t('pool.liquidityNotFound') }}
       </p>
       <s-collapse v-else key="has-pools" class="pool-list" :borders="true" @change="updateActiveCollapseItems">
@@ -149,9 +145,9 @@ export default class Pool extends Mixins(
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
-  @state.pool.accountLiquidity accountLiquidity!: Array<AccountLiquidity>;
+  @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   @action.addLiquidity.setDataFromLiquidity private setAddressesToAdd!: (args: LiquidityParams) => Promise<void>;
 
@@ -161,6 +157,10 @@ export default class Pool extends Mixins(
 
   addLiquidityVisibility = false;
   removeLiquidityVisibility = false;
+
+  get hasAccountLiquidities(): boolean {
+    return this.accountLiquidity.length !== 0;
+  }
 
   get accountLiquidityData() {
     const items = this.accountLiquidity.map((liquidity) => {

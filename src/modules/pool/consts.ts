@@ -1,5 +1,6 @@
 export enum PoolPageNames {
-  PoolDetails = 'PoolDetails',
+  Pool = 'Pool',
+  PoolContainer = 'PoolContainer',
 }
 
 export enum PoolComponents {

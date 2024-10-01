@@ -121,6 +121,7 @@ import {
 } from '@/consts';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { isDashboardPage } from '@/modules/dashboard/router';
+import { PoolPageNames } from '@/modules/pool/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
 import { isStakingPage } from '@/modules/staking/router';
 import { VaultPageNames } from '@/modules/vault/consts';
@@ -204,7 +205,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   get currentPath(): string {
     const currentName = this.$route.name as PageNames;
     if (PoolChildPages.includes(currentName)) {
-      return PageNames.Pool;
+      return PoolPageNames.Pool;
     }
     if (BridgeChildPages.includes(currentName)) {
       return PageNames.Bridge;

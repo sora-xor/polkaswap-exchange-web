@@ -2,7 +2,7 @@ import type { PageNames } from '@/consts';
 
 import { PoolComponents, PoolPageNames } from './consts';
 
-export const poolLazyView = (name: PoolPageNames) => () => import(`@/modules/vault/views/${name}.vue`);
+export const poolLazyView = (name: PoolPageNames) => () => import(`@/modules/pool/views/${name}.vue`);
 
 export const poolLazyComponent = (name: PoolComponents) => () => import(`@/modules/pool/components/${name}.vue`);
 

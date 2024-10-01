@@ -17,8 +17,8 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PageNames, Components } from '@/consts';
-import { PoolComponents } from '@/modules/pool/consts';
+import { Components } from '@/consts';
+import { PoolComponents, PoolPageNames } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
 import router, { lazyComponent } from '@/router';
 import { getter, action } from '@/store/decorators';
@@ -70,7 +70,7 @@ export default class AddLiquidity extends Mixins(SelectedTokenRouteMixin, Transl
   }
 
   handleBack(): void {
-    router.push({ name: PageNames.Pool });
+    router.push({ name: PoolPageNames.Pool });
   }
 }
 </script>

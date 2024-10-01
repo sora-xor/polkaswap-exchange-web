@@ -6,6 +6,8 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import { PageNames, BridgeChildPages } from '@/consts';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { dashboardLazyView } from '@/modules/dashboard/router';
+import { PoolPageNames } from '@/modules/pool/consts';
+import { poolLazyView } from '@/modules/pool/router';
 import { StakingPageNames } from '@/modules/staking/consts';
 import { DemeterStakingPageNames } from '@/modules/staking/demeter/consts';
 import { demeterStakingLazyView, soraStakingLazyView, stakingLazyView } from '@/modules/staking/router';
@@ -99,7 +101,7 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: '/pool',
-        component: lazyView(PageNames.PoolContainer),
+        component: poolLazyView(PoolPageNames.PoolContainer),
         children: [
           {
             path: '',
@@ -183,7 +185,7 @@ const routes: Array<RouteConfig> = [
       },
       {
         path: 'pools',
-        component: lazyView(PageNames.PoolContainer),
+        component: poolLazyView(PoolPageNames.PoolContainer),
         children: [
           {
             path: '',

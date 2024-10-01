@@ -3,6 +3,7 @@ import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import invert from 'lodash/fp/invert';
 
 import { DashboardPageNames } from '@/modules/dashboard/consts';
+import { PoolPageNames } from '@/modules/pool/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
 import { VaultPageNames } from '@/modules/vault/consts';
 
@@ -131,7 +132,6 @@ export enum PageNames {
   Pool = 'Pool',
   Stats = 'Stats',
   Wallet = 'Wallet',
-  PoolContainer = 'PoolContainer',
   AddLiquidity = 'AddLiquidity',
   Farming = 'Farming',
   Rewards = 'Rewards',
@@ -354,7 +354,7 @@ const MainMenu: Array<SidebarMenuItemLink> = [
   },
   {
     icon: 'basic-drop-24',
-    title: PageNames.Pool,
+    title: PoolPageNames.Pool,
     href: '/#/pool',
   },
   {
