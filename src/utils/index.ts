@@ -1,7 +1,7 @@
 import { FPNumber, CodecString } from '@sora-substrate/sdk';
 import { isNativeAsset } from '@sora-substrate/sdk/build/assets';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
+import { XOR, NativeAssets } from '@sora-substrate/sdk/build/assets/consts';
+import { api, WALLET_CONSTS, WALLET_TYPES, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
 
@@ -9,6 +9,7 @@ import { app, TranslationConsts, ZeroStringValue } from '@/consts';
 import i18n from '@/lang';
 import router from '@/router';
 import store from '@/store';
+import { syntheticAssetRegexp, kensetsuAssetRegexp } from '@/utils/regexp';
 
 import type { AmountWithSuffix } from '../types/formats';
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -464,3 +465,28 @@ export const updatePipTheme = (): void => {
     htmlElement.setAttribute('design-system-theme', theme);
   }
 };
+
+// TODO: [Rustem] Move to wallet and combine it when adding asset
+export function getAssetsSubset(tokensList, assetsFilter: WALLET_TYPES.FilterOptions) {
+  const FilterOptions = WALLET_TYPES.FilterOptions;
+
+  switch (assetsFilter) {
+    case FilterOptions.Native: {
+      const nativeAssetsAddresses = NativeAssets.map((nativeAsset) => nativeAsset.address);
+      return tokensList.filter((asset) => nativeAssetsAddresses.includes(asset.address));
+    }
+    case FilterOptions.Kensetsu: {
+      return tokensList.filter((asset) => kensetsuAssetRegexp.test(asset.address));
+    }
+    case FilterOptions.Synthetics: {
+      return tokensList.filter((asset) => syntheticAssetRegexp.test(asset.address));
+    }
+    case FilterOptions.Ceres: {
+      const ceresAssetsAddresses = WALLET_CONSTS.CeresAddresses;
+      return tokensList.filter((asset) => ceresAssetsAddresses.includes(asset.address));
+    }
+    default: {
+      return tokensList;
+    }
+  }
+}

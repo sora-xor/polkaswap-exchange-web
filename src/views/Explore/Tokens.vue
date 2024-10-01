@@ -167,8 +167,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { NativeAssets } from '@sora-substrate/sdk/build/assets/consts';
-import { components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
@@ -178,8 +177,7 @@ import type { TokenData } from '@/indexer/queries/asset/assets';
 import { lazyComponent } from '@/router';
 import { state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
-import { formatAmountWithSuffix, sortAssets } from '@/utils';
-import { syntheticAssetRegexp, kensetsuAssetRegexp } from '@/utils/regexp';
+import { formatAmountWithSuffix, sortAssets, getAssetsSubset } from '@/utils';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -263,30 +261,10 @@ export default class Tokens extends Mixins(ExplorePageMixin) {
   }
 
   get prefilteredItems(): TableItem[] {
-    const FilterOptions = WALLET_TYPES.FilterOptions;
-
     // return to first page not to show empty list after option switch
     this.currentPage = 1;
 
-    switch (this.assetsFilter) {
-      case FilterOptions.Native: {
-        const nativeAssetsAddresses = NativeAssets.map((nativeAsset) => nativeAsset.address);
-        return this.defaultSorted.filter((asset) => nativeAssetsAddresses.includes(asset.address));
-      }
-      case FilterOptions.Kensetsu: {
-        return this.defaultSorted.filter((asset) => kensetsuAssetRegexp.test(asset.address));
-      }
-      case FilterOptions.Synthetics: {
-        return this.defaultSorted.filter((asset) => syntheticAssetRegexp.test(asset.address));
-      }
-      case FilterOptions.Ceres: {
-        const ceresAssetsAddresses = WALLET_CONSTS.CeresAddresses;
-        return this.defaultSorted.filter((asset) => ceresAssetsAddresses.includes(asset.address));
-      }
-      default: {
-        return this.defaultSorted;
-      }
-    }
+    return getAssetsSubset(this.defaultSorted, this.assetsFilter);
   }
 
   // ExplorePageMixin method implementation

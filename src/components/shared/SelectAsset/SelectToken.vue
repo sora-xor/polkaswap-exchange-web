@@ -62,8 +62,8 @@
 </template>
 
 <script lang="ts">
-import { XOR, NativeAssets } from '@sora-substrate/sdk/build/assets/consts';
-import { api, mixins, components, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
@@ -72,7 +72,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
-import { syntheticAssetRegexp, kensetsuAssetRegexp } from '@/utils/regexp';
+import { getAssetsSubset } from '@/utils';
 
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
@@ -158,28 +158,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
       whiteList = this.whitelistAssets;
     }
 
-    const FilterOptions = WALLET_TYPES.FilterOptions;
-
-    switch (this.assetsFilter) {
-      case FilterOptions.Native: {
-        const nativeAssetsAddresses = NativeAssets.map((nativeAsset) => nativeAsset.address);
-        whiteList = whiteList.filter((asset) => nativeAssetsAddresses.includes(asset.address));
-        break;
-      }
-      case FilterOptions.Kensetsu: {
-        whiteList = whiteList.filter((asset) => kensetsuAssetRegexp.test(asset.address));
-        break;
-      }
-      case FilterOptions.Synthetics: {
-        whiteList = whiteList.filter((asset) => syntheticAssetRegexp.test(asset.address));
-        break;
-      }
-      case FilterOptions.Ceres: {
-        const ceresAssetsAddresses = WALLET_CONSTS.CeresAddresses;
-        whiteList = whiteList.filter((asset) => ceresAssetsAddresses.includes(asset.address));
-        break;
-      }
-    }
+    whiteList = getAssetsSubset(whiteList, this.assetsFilter);
 
     const assetsAddresses = whiteList.map((asset) => asset.address);
     const excludeAddress = this.asset?.address;
