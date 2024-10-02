@@ -3,6 +3,7 @@ import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import invert from 'lodash/fp/invert';
 
 import { DashboardPageNames } from '@/modules/dashboard/consts';
+import { PoolPageNames } from '@/modules/pool/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
 import { VaultPageNames } from '@/modules/vault/consts';
 
@@ -131,9 +132,7 @@ export enum PageNames {
   Pool = 'Pool',
   Stats = 'Stats',
   Wallet = 'Wallet',
-  PoolContainer = 'PoolContainer',
   AddLiquidity = 'AddLiquidity',
-  RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
   Rewards = 'Rewards',
   ReferralProgram = 'ReferralProgram',
@@ -207,12 +206,6 @@ export enum Components {
   KycView = 'pages/SoraCard/steps/KycView',
   // Paywings
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
-  // Add Liquidity Page
-  AddLiquidityConfirm = 'pages/AddLiquidity/Confirm',
-  AddLiquidityTransactionDetails = 'pages/AddLiquidity/TransactionDetails',
-  // Remove Liquidity Page
-  RemoveLiquidityConfirm = 'pages/RemoveLiquidity/Confirm',
-  RemoveLiquidityTransactionDetails = 'pages/RemoveLiquidity/TransactionDetails',
   // Bridge Page
   BridgeTransactionDetails = 'pages/Bridge/TransactionDetails',
   BridgeTransferNotification = 'pages/Bridge/TransferNotification',
@@ -361,7 +354,7 @@ const MainMenu: Array<SidebarMenuItemLink> = [
   },
   {
     icon: 'basic-drop-24',
-    title: PageNames.Pool,
+    title: PoolPageNames.Pool,
     href: '/#/pool',
   },
   {
@@ -382,7 +375,7 @@ const MainMenu: Array<SidebarMenuItemLink> = [
   },
   {
     icon: 'call-phone-16',
-    title: PageNames.VaultsContainer,
+    title: VaultPageNames.VaultsContainer,
     href: '/#/kensetsu',
     index: VaultPageNames.Vaults,
   },
@@ -480,7 +473,7 @@ export const FaucetLink: SidebarMenuItemLink = {
 export const SidebarMenuGroups = [...MainMenu, ...OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
-export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
+export const PoolChildPages = [PageNames.AddLiquidity];
 export const RewardsChildPages = [
   PageNames.PointSystem,
   PageNames.Rewards,

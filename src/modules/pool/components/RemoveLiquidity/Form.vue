@@ -1,11 +1,5 @@
 <template>
-  <div v-loading="parentLoading" class="container container--remove-liquidity">
-    <generic-page-header
-      has-button-back
-      :title="t('removeLiquidity.title')"
-      :tooltip="t('removeLiquidity.description')"
-      @back="handleBack"
-    />
+  <div>
     <s-form class="el-form--actions" :show-message="false">
       <s-float-input
         ref="removePart"
@@ -130,11 +124,11 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
-import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
-import { Components, PageNames } from '@/consts';
-import router, { lazyComponent } from '@/router';
+import { Components } from '@/consts';
+import { PoolComponents } from '@/modules/pool/consts';
+import { poolLazyComponent } from '@/modules/pool/router';
+import { lazyComponent } from '@/router';
 import { getter, state, mutation, action } from '@/store/decorators';
-import type { LiquidityParams } from '@/store/pool/types';
 import { FocusedField } from '@/store/removeLiquidity/types';
 import { hasInsufficientXorForFee, formatDecimalPlaces } from '@/utils';
 
@@ -143,22 +137,20 @@ import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
 @Component({
   components: {
-    RemoveLiquidityConfirm: lazyComponent(Components.RemoveLiquidityConfirm),
-    RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    RemoveLiquidityConfirm: poolLazyComponent(PoolComponents.RemoveLiquidityConfirm),
+    RemoveLiquidityTransactionDetails: poolLazyComponent(PoolComponents.RemoveLiquidityTransactionDetails),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenInput: lazyComponent(Components.TokenInput),
     InfoLine: components.InfoLine,
   },
 })
-export default class RemoveLiquidity extends Mixins(
+export default class RemoveLiquidityForm extends Mixins(
   mixins.NetworkFeeWarningMixin,
   mixins.FormattedAmountMixin,
   mixins.TransactionMixin,
   ConfirmDialogMixin,
-  NetworkFeeDialogMixin,
-  SelectedTokenRouteMixin
+  NetworkFeeDialogMixin
 ) {
   readonly XOR_SYMBOL = XOR.symbol;
   readonly MAX_PART = 100;
@@ -184,13 +176,11 @@ export default class RemoveLiquidity extends Mixins(
   @getter.removeLiquidity.price price!: string;
   @getter.removeLiquidity.priceReversed priceReversed!: string;
 
-  @mutation.removeLiquidity.setAddresses private setAddresses!: (params: LiquidityParams) => void;
   @mutation.removeLiquidity.setFocusedField setFocusedField!: (field: FocusedField) => void;
   @mutation.removeLiquidity.resetFocusedField resetFocusedField!: FnWithoutArgs;
 
   @action.removeLiquidity.setRemovePart private setRemovePart!: (removePart: string) => Promise<void>;
   @action.removeLiquidity.removeLiquidity private removeLiquidity!: AsyncFnWithoutArgs;
-  @action.removeLiquidity.resetData private resetData!: AsyncFnWithoutArgs;
   @action.removeLiquidity.setFirstTokenAmount setFirstTokenAmount!: (amount: string) => Promise<void>;
   @action.removeLiquidity.setSecondTokenAmount setSecondTokenAmount!: (amount: string) => Promise<void>;
 
@@ -220,19 +210,12 @@ export default class RemoveLiquidity extends Mixins(
   sliderInput: any;
   sliderDragButton: any;
 
-  async mounted(): Promise<void> {
-    await this.withParentLoading(async () => {
-      this.setData({
-        firstAddress: this.firstRouteAddress,
-        secondAddress: this.secondRouteAddress,
-      });
-      this.addListenerToSliderDragButton();
-    });
+  mounted(): void {
+    this.addListenerToSliderDragButton();
   }
 
   beforeDestroy(): void {
     this.removeListenerFromSliderDragButton();
-    this.resetData();
   }
 
   get sliderValue(): Nullable<number> {
@@ -321,18 +304,6 @@ export default class RemoveLiquidity extends Mixins(
     return !this.liquidityLocked && Number(this.removePart) !== this.MAX_PART;
   }
 
-  /** Overrides SelectedTokenRouteMixin */
-  async setData(params: { firstAddress: string; secondAddress: string }): Promise<void> {
-    this.setAddresses({
-      firstAddress: params.firstAddress,
-      secondAddress: params.secondAddress,
-    });
-    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-    if (!this.liquidity) {
-      return this.handleBack();
-    }
-  }
-
   handleRemovePartChange(value: string | number): void {
     if (Number(value) !== Number(this.removePart)) {
       this.setRemovePart(String(value));
@@ -363,14 +334,9 @@ export default class RemoveLiquidity extends Mixins(
   async withdrawLiquidity(): Promise<void> {
     await this.withNotifications(async () => {
       await this.removeLiquidity();
-      this.handleBack();
-    });
-  }
 
-  handleBack(): void {
-    if (router.currentRoute.name === PageNames.RemoveLiquidity) {
-      router.push({ name: PageNames.Pool });
-    }
+      this.$emit('back');
+    });
   }
 
   async handleRemoveLiquidity(): Promise<void> {

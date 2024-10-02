@@ -309,4 +309,3 @@ export default class StakeDialog extends Mixins(PoolCardMixin, mixins.DialogMixi
   @include input-slider;
 }
 </style>
-../../router../consts
