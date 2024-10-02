@@ -2982,7 +2982,6 @@
     vue-i18n "^8.28.2"
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
-
 "@soramitsu/soraneo-wallet-web@1.40.11":
   version "1.40.11"
   resolved "https://registry.yarnpkg.com/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.40.11.tgz#99fc4792c3d7c697d6ec8a2b46b116d72de9177c"

@@ -1063,7 +1063,10 @@
         "verifiedOnly": "Прикажи само верификована средства",
         "zeroBalance": "Сакриј 0 balans sredstava",
         "showAssets": "Прикажи средства",
-        "show": "Pokaži"
+        "show": "Pokaži",
+        "reset": "Ресетуј",
+        "synthetics": "Синтетика",
+        "native": "Нативе"
     },
     "desktop": {
         "welcome": {

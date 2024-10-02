@@ -6,6 +6,7 @@ import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
 import { DashboardPageNames } from '../modules/dashboard/consts';
+import { PoolPageNames } from '../modules/pool/consts';
 import { StakingPageNames } from '../modules/staking/consts';
 import { ValidatorsFilterType, ValidatorsListMode } from '../modules/staking/sora/consts';
 import { VaultPageNames } from '../modules/vault/consts';
@@ -73,12 +74,11 @@ export default {
   [Theme.DARK]: 'Dark',
   pageTitle: {
     [PageNames.Swap]: 'Swap',
-    [PageNames.Pool]: 'Pool',
+    [PoolPageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',
     [PageNames.Stats]: 'Statistics',
     [PageNames.Wallet]: 'Wallet',
     [PageNames.AddLiquidity]: 'Add Liquidity',
-    [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.Rewards]: 'Rewards',
     [PageNames.ExploreTokens]: 'Tokens',
     [PageNames.ExplorePools]: 'Pools',
@@ -94,7 +94,7 @@ export default {
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',
-    [PageNames.Pool]: 'Pool',
+    [PoolPageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',
     [PageNames.Farming]: 'Farming',
     [PageNames.Wallet]: 'Account',
@@ -106,7 +106,7 @@ export default {
     [PageNames.StakingContainer]: 'Staking',
     [PageNames.SoraCard]: '{Sora} Card',
     [PageNames.AssetOwnerContainer]: 'Asset owner',
-    [PageNames.VaultsContainer]: '{Kensetsu}',
+    [VaultPageNames.VaultsContainer]: '{Kensetsu}',
   },
   alerts: {
     [AlertTypeTabs.Drop]: 'Drops below',
@@ -371,7 +371,7 @@ export default {
   },
   exchange: {
     [PageNames.Swap]: 'Swap',
-    [PageNames.Pool]: 'Pool',
+    [PoolPageNames.Pool]: 'Pool',
     balance: 'Balance',
     price: 'Price',
     transactionSubmitted: 'Transaction submitted',

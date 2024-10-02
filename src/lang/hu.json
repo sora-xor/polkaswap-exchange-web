@@ -1063,7 +1063,10 @@
         "verifiedOnly": "Csak ellenőrzött eszközök megjelenítése",
         "zeroBalance": "0 egyenlegeszköz elrejtése",
         "showAssets": "Eszközök megjelenítése",
-        "show": "Mutat"
+        "show": "Mutat",
+        "reset": "Reset",
+        "synthetics": "Szintetika",
+        "native": "Bennszülött"
     },
     "desktop": {
         "welcome": {
