@@ -37,7 +37,6 @@ export default class AccelerationAccessDialog extends Mixins(TranslationMixin) {
   @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
 
   get visibility(): boolean {
-    console.info('this.isAccessRotationListener');
     return this.rotatePhoneDialogVisibility && !this.isAccessRotationListener && this.isAccessMotionEventDeclined;
   }
 
