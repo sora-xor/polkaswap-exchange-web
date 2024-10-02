@@ -70,9 +70,9 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import { PageNames } from '@/consts';
+import { PoolPageNames } from '@/modules/pool/consts';
+import { poolLazyView } from '@/modules/pool/router';
 import type { DemeterPoolDerivedData } from '@/modules/staking/demeter/types';
-import { lazyView } from '@/router';
 import { state } from '@/store/decorators';
 
 import { demeterStakingLazyComponent } from '../../router';
@@ -84,7 +84,7 @@ import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 @Component({
   inheritAttrs: false,
   components: {
-    PoolBase: lazyView(PageNames.Pool),
+    PoolBase: poolLazyView(PoolPageNames.Pool),
     PoolCard: demeterStakingLazyComponent(DemeterStakingComponents.PoolCard),
     StatusBadge: demeterStakingLazyComponent(DemeterStakingComponents.StatusBadge),
     StakeDialog: demeterStakingLazyComponent(DemeterStakingComponents.StakeDialog),
