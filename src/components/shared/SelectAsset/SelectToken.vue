@@ -17,7 +17,7 @@
       />
 
       <s-tab :label="t('selectToken.assets.title')" name="assets">
-        <synthetic-switcher v-model="isSynthsOnly" class="token-synthetic-switcher" />
+        <assets-filter class="token-filter-options" />
       </s-tab>
 
       <s-tab :disabled="disabledCustom" :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
@@ -72,7 +72,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
-import { syntheticAssetRegexp } from '@/utils/regexp';
+import { getAssetsSubset } from '@/utils';
 
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
@@ -98,18 +98,13 @@ function getNonWhitelistDivisibleAssets<T extends Asset | AccountAsset>(
   components: {
     DialogBase: components.DialogBase,
     SelectAssetList: lazyComponent(Components.SelectAssetList),
-    SyntheticSwitcher: components.SyntheticSwitcher,
     TokenAddress: components.TokenAddress,
     SearchInput: components.SearchInput,
+    AssetsFilter: components.AssetsFilter,
     AddAssetDetailsCard: components.AddAssetDetailsCard,
   },
 })
 export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
-  readonly tokenTabs = [Tabs.Assets, Tabs.Custom];
-
-  tabValue = first(this.tokenTabs);
-  isSynthsOnly = false;
-
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Nullable<Asset>;
   @Prop({ default: false, type: Boolean }) readonly disabledCustom!: boolean;
@@ -120,6 +115,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
   @state.wallet.account.assets private assets!: Asset[];
+  @state.wallet.settings.assetsFilter assetsFilter!: WALLET_TYPES.FilterOptions;
   @state.wallet.account.accountAssets private accountAssets!: AccountAsset[];
   @state.wallet.account.pinnedAssets pinnedAssetsAddresses!: string[];
 
@@ -130,6 +126,10 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
 
   @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
+
+  readonly tokenTabs = [Tabs.Assets, Tabs.Custom];
+
+  tabValue = first(this.tokenTabs);
 
   @Watch('visible')
   async handleTabReset(value: boolean): Promise<void> {
@@ -158,9 +158,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
       whiteList = this.whitelistAssets;
     }
 
-    if (this.isSynthsOnly) {
-      whiteList = whiteList.filter((asset) => syntheticAssetRegexp.test(asset.address));
-    }
+    whiteList = getAssetsSubset(whiteList, this.assetsFilter);
 
     const assetsAddresses = whiteList.map((asset) => asset.address);
     const excludeAddress = this.asset?.address;
@@ -278,7 +276,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @include focus-outline($withOffset: true);
 }
 
-.token-synthetic-switcher {
+.token-filter-options {
   margin: 0 $inner-spacing-big $inner-spacing-medium;
 }
 

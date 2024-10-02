@@ -1063,7 +1063,10 @@
         "verifiedOnly": "只显示经过验证的资产",
         "zeroBalance": "隐藏0余额资产",
         "showAssets": "显示资产",
-        "show": "显示"
+        "show": "显示",
+        "reset": "重置",
+        "synthetics": "合成材料",
+        "native": "本国的"
     },
     "desktop": {
         "welcome": {

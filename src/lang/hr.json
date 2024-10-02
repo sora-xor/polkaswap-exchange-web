@@ -1063,7 +1063,10 @@
         "verifiedOnly": "Prikaži samo provjerenu imovinu",
         "zeroBalance": "Sakrij 0 salda imovine",
         "showAssets": "Prikaži imovinu",
-        "show": "Pokazati"
+        "show": "Pokazati",
+        "reset": "Resetiraj",
+        "synthetics": "Sintetika",
+        "native": "Zavičajni"
     },
     "desktop": {
         "welcome": {

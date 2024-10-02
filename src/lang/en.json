@@ -1063,7 +1063,10 @@
         "verifiedOnly": "Show verified assets only",
         "zeroBalance": "Hide 0 balance assets",
         "showAssets": "Show assets",
-        "show": "Show"
+        "show": "Show",
+        "reset": "Reset",
+        "synthetics": "Synthetics",
+        "native": "Native"
     },
     "desktop": {
         "welcome": {

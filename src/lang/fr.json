@@ -1063,7 +1063,10 @@
         "verifiedOnly": "Afficher uniquement les actifs vérifiés",
         "zeroBalance": "Cachez 0 solde actif",
         "showAssets": "Afficher les actifs",
-        "show": "Montrer"
+        "show": "Montrer",
+        "reset": "Réinitialiser",
+        "synthetics": "Synthétiques",
+        "native": "Indigène"
     },
     "desktop": {
         "welcome": {

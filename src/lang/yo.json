@@ -1063,7 +1063,10 @@
         "verifiedOnly": "Ṣafihan awọn ohun-ini ti a rii daju nikan",
         "zeroBalance": "Tọju awọn ohun-ini iwọntunwọnsi 0",
         "showAssets": "Ṣe afihan awọn ohun-ini",
-        "show": "Ṣe afihan"
+        "show": "Ṣe afihan",
+        "reset": "Tunto",
+        "synthetics": "Sintetiki",
+        "native": "Ilu abinibi"
     },
     "desktop": {
         "welcome": {
