@@ -302,6 +302,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
           tmaSdkService.removeDeviceRotationListener();
           this.setRotatePhoneDialogVisibility(false);
         } else if (!this.isTBankFeatureEnabled && this.isAccessRotationListener) {
+          tmaSdkService.listenForDeviceRotation();
           this.setIsTBankFeatureEnabled(true);
         } else {
           this.setRotatePhoneDialogVisibility(true);
