@@ -66,8 +66,8 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
           .requestPermission()
           .then((permissionState: PermissionState) => {
             if (permissionState === 'granted') {
-              this.setIsTBankFeatureEnabled(true);
               this.setAccessGranted(true);
+              this.setIsTBankFeatureEnabled(true);
               tmaSdkService.listenForDeviceRotation();
             } else {
               this.setAccessGranted(false);

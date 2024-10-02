@@ -121,7 +121,9 @@ class TmaSdk {
         }
 
         if (wasRotatedTo180 && Math.abs(beta) < 30) {
+          console.info('was rotated, we will use haptic');
           useHaptic('soft');
+          console.info('now we will toggle hidebalance');
           store.commit.wallet.settings.toggleHideBalance();
           store.commit.wallet.account.syncWithStorage();
           wasRotatedTo180 = false;
