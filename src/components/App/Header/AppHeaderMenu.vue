@@ -3,7 +3,7 @@
     <s-button
       type="action"
       class="settings-control s-pressed"
-      :tooltip="t('headerMenu.settings')"
+      :tooltip="isSettingsMenuOpen ? '' : t('headerMenu.settings')"
       @click="handleClickHeaderMenu"
     >
       <s-dropdown
@@ -104,9 +104,11 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
   selectedTheme: HeaderMenuType | null = null;
+  isSettingsMenuOpen = false;
 
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
+  @state.settings.isTBankFeatureEnabled private isTBankFeatureEnabled!: boolean;
   @state.settings.language currentLanguage!: Language;
   @state.settings.isTMA isTMA!: boolean;
   @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
@@ -121,6 +123,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.setSelectCurrencyDialogVisibility private setCurrencyDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
+  @mutation.settings.setIsTBankFeatureEnabled private setIsTBankFeatureEnabled!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
 
   get mediaQueryList(): MediaQueryList {
@@ -271,6 +274,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   handleClickHeaderMenu(): void {
+    this.isSettingsMenuOpen = !this.isSettingsMenuOpen;
     const dropdown = (this.$refs.headerMenu as any).dropdown;
     dropdown.visible ? dropdown.hide() : dropdown.show();
   }
@@ -291,8 +295,14 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         tmaSdkService.updateTheme();
         break;
       case HeaderMenuType.TurnPhoneHide:
-        console.info('we will call now setRotatePhoneDialogVisibility');
-        this.setRotatePhoneDialogVisibility(true);
+        console.info(this.isTBankFeatureEnabled);
+        if (this.isTBankFeatureEnabled) {
+          this.setIsTBankFeatureEnabled(false);
+          tmaSdkService.removeDeviceRotationListener();
+          this.setRotatePhoneDialogVisibility(false);
+        } else {
+          this.setRotatePhoneDialogVisibility(true);
+        }
         break;
       case HeaderMenuType.Language:
         this.setLanguageDialogVisibility(true);
@@ -367,7 +377,7 @@ $item-padding: 17px;
     display: flex;
     align-items: center;
     p {
-      margin-left: $basic-spacing-mini;
+      margin-left: $inner-spacing-small;
     }
     i {
       color: var(--s-color-base-content-tertiary);
@@ -431,7 +441,7 @@ $item-padding: 17px;
   }
 
   .divider-between-items {
-    margin-left: calc($item-padding + $icon-size + $basic-spacing-mini * 2);
+    margin-left: calc($basic-spacing * 4);
   }
 }
 

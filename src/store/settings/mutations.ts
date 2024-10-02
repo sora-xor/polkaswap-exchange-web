@@ -137,9 +137,13 @@ const mutations = defineMutations<SettingsState>()({
   setTelegramBotUrl(state, url: Nullable<string>): void {
     state.telegramBotUrl = url;
   },
-  setIsTBankFeatureEnabled(state): void {
-    state.isTBankFeatureEnabled = true;
-    // storage.set('isTbankEnabled', true);
+  setIsTBankFeatureEnabled(state, value: boolean): void {
+    state.isTBankFeatureEnabled = value;
+    settingsStorage.set('isTBankFeatureEnabled', value);
+  },
+  setAccessGranted(state, value: boolean): void {
+    state.isAccessRotationListener = value;
+    settingsStorage.set('isAccessRotationListener', value);
   },
   setIsAccessMotionEventDeclined(state): void {
     state.isAccessMotionEventDeclined = true;

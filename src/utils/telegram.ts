@@ -38,6 +38,8 @@ function useHaptic(type: HapticFeedbackBinding): void {
 }
 
 class TmaSdk {
+  private deviceOrientationHandler: ((event: DeviceOrientationEvent) => void) | null = null;
+
   public async init(botUrl?: string): Promise<void> {
     try {
       // Check if the current platform is Telegram Mini App
@@ -107,7 +109,7 @@ class TmaSdk {
     console.info('called listenForDeviceRotation');
     let wasRotatedTo180 = false;
 
-    window.addEventListener('deviceorientation', (event) => {
+    this.deviceOrientationHandler = (event: DeviceOrientationEvent) => {
       const { beta } = event;
 
       if (beta !== null) {
@@ -122,7 +124,16 @@ class TmaSdk {
           wasRotatedTo180 = false;
         }
       }
-    });
+    };
+
+    window.addEventListener('deviceorientation', this.deviceOrientationHandler);
+  }
+
+  public removeDeviceRotationListener(): void {
+    if (this.deviceOrientationHandler) {
+      window.removeEventListener('deviceorientation', this.deviceOrientationHandler);
+      this.deviceOrientationHandler = null;
+    }
   }
 
   private onTouchEnd(event: TouchEvent): void {
@@ -155,6 +166,7 @@ class TmaSdk {
 
   public destroy(): void {
     this.removeHapticListener();
+    this.removeDeviceRotationListener();
   }
 }
 

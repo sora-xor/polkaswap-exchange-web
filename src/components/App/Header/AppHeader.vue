@@ -13,8 +13,6 @@
       <app-account-button :disabled="loading" @click="navigateToWallet" />
       <app-header-menu />
     </div>
-    <!-- <p>rotatePhoneDialogVisibility {{ this.rotatePhoneDialogVisibility }}</p>
-    <p>isAccessMotionEventDeclined {{ this.isAccessMotionEventDeclined }}</p> -->
     <rotate-phone-dialog />
     <acceleration-access-dialog />
     <select-language-dialog />
@@ -64,8 +62,6 @@ export default class AppHeader extends Mixins(InternalConnectMixin) {
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
 
   @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
-  @state.settings.rotatePhoneDialogVisibility private rotatePhoneDialogVisibility!: boolean;
-  @state.settings.isAccessMotionEventDeclined private isAccessMotionEventDeclined!: boolean;
 
   @getter.libraryTheme libraryTheme!: Theme;
 

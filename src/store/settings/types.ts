@@ -57,4 +57,5 @@ export type SettingsState = {
   isTBankFeatureEnabled: boolean;
   isOrientationWarningVisible: boolean;
   isAccessMotionEventDeclined: boolean;
+  isAccessRotationListener: boolean;
 };

@@ -31,35 +31,19 @@ import { state, mutation } from '@/store/decorators';
 export default class AccelerationAccessDialog extends Mixins(TranslationMixin) {
   @state.settings.rotatePhoneDialogVisibility private rotatePhoneDialogVisibility!: boolean;
   @state.settings.isAccessMotionEventDeclined private isAccessMotionEventDeclined!: boolean;
+  @state.settings.isAccessRotationListener private isAccessRotationListener!: boolean;
 
   @mutation.settings.setIsAccessMotionEventDeclined private setIsAccessMotionEventDeclined!: (flag: boolean) => void;
   @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
 
   get visibility(): boolean {
-    return this.rotatePhoneDialogVisibility && this.isAccessMotionEventDeclined;
+    console.info('this.isAccessRotationListener');
+    return this.rotatePhoneDialogVisibility && !this.isAccessRotationListener && this.isAccessMotionEventDeclined;
   }
 
   set visibility(flag: boolean) {
     this.setRotatePhoneDialogVisibility(flag);
   }
-
-  // openDeviceSettings() {
-  //   console.info('we are in openDeviceSettings');
-  //   const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-  //   console.info(userAgent);
-  //   if (/android/i.test(userAgent)) {
-  //     console.info('we are in adnroid');
-  //     // Attempt to open Android device settings
-  //     window.open('intent:#Intent;action=android.settings.SETTINGS;end', '_self');
-  //   } else if (/iPad|iPhone|iPod/.test(userAgent)) {
-  //     console.info('we are in ios');
-  //     // Attempt to open iOS device settings
-  //     window.location.href = 'App-Prefs:root';
-  //   } else {
-  //     // For other devices or if the above methods fail
-  //     alert('Unable to open device settings on this device. Please open settings manually.');
-  //   }
-  // }
 }
 </script>
 

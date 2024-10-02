@@ -21,6 +21,13 @@
       >
         {{ t('browserPermission.btnAllow') }}
       </s-button>
+      <s-button
+        type="primary"
+        class="s-typography-button--large browser-notification-dialog__btn"
+        @click="checkNoAccess()"
+      >
+        no access
+      </s-button>
     </div>
   </dialog-base>
 </template>
@@ -40,50 +47,83 @@ import { tmaSdkService } from '@/utils/telegram';
 })
 export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
   @state.settings.rotatePhoneDialogVisibility private rotatePhoneDialogVisibility!: boolean;
+  @state.settings.isTBankFeatureEnabled private isTBankFeatureEnabled!: boolean;
   @state.settings.isAccessMotionEventDeclined private isAccessMotionEventDeclined!: boolean;
 
   @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.setIsTBankFeatureEnabled private setIsTBankFeatureEnabled!: (flag: boolean) => void;
   @mutation.settings.setIsAccessMotionEventDeclined private setIsAccessMotionEventDeclined!: (flag: boolean) => void;
+  @mutation.settings.setAccessGranted private setAccessGranted!: (flag: boolean) => void;
 
   get visibility(): boolean {
-    return this.rotatePhoneDialogVisibility && !this.isAccessMotionEventDeclined;
+    return this.rotatePhoneDialogVisibility && !this.isTBankFeatureEnabled && !this.isAccessMotionEventDeclined;
   }
 
   set visibility(flag: boolean) {
     this.setRotatePhoneDialogVisibility(flag);
   }
 
+  // enableTbankFeature() {
+  //   if (tmaSdkService.checkAccelerometerSupport()) {
+  //     if (
+  //       typeof DeviceMotionEvent !== 'undefined' &&
+  //       typeof (DeviceMotionEvent as any).requestPermission === 'function'
+  //     ) {
+  //       (DeviceMotionEvent as any)
+  //         .requestPermission()
+  //         .then((permissionState: PermissionState) => {
+  //           if (permissionState === 'granted') {
+  //             this.setIsTBankFeatureEnabled(true);
+  //             this.setAccessGranted(true);
+  //             tmaSdkService.listenForDeviceRotation();
+  //           } else {
+  //             this.setAccessGranted(false);
+  //             this.setIsAccessMotionEventDeclined(true);
+  //             console.warn('Device motion permission denied.');
+  //           }
+  //         })
+  //         .catch((error: any) => {
+  //           console.error('Error requesting device motion permission:', error);
+  //         });
+  //     } else {
+  //       console.info('no need permission request');
+  //       this.setAccessGranted(true);
+  //       this.setIsTBankFeatureEnabled(true);
+  //       tmaSdkService.listenForDeviceRotation();
+  //     }
+  //   } else {
+  //     console.warn('Device does not support motion events.');
+  //   }
+  //   this.visibility = false;
+  // }
+
   enableTbankFeature() {
-    console.info('we are in enableTbankFeature');
-    console.info(window);
     if (tmaSdkService.checkAccelerometerSupport()) {
-      if (
-        typeof DeviceMotionEvent !== 'undefined' &&
-        typeof (DeviceMotionEvent as any).requestPermission === 'function'
-      ) {
-        (DeviceMotionEvent as any)
-          .requestPermission()
-          .then((permissionState: PermissionState) => {
-            if (permissionState === 'granted') {
-              this.setIsTBankFeatureEnabled(true);
-              tmaSdkService.listenForDeviceRotation();
-            } else {
-              this.setIsAccessMotionEventDeclined(true);
-              console.warn('Device motion permission denied.');
-            }
-          })
-          .catch((error: any) => {
-            console.error('Error requesting device motion permission:', error);
-          });
-      } else {
-        console.info('no need permission request');
-        this.setIsTBankFeatureEnabled(true);
-        tmaSdkService.listenForDeviceRotation();
-      }
+      (DeviceMotionEvent as any)
+        .requestPermission()
+        .then((permissionState: PermissionState) => {
+          if (permissionState === 'granted') {
+            this.setIsTBankFeatureEnabled(true);
+            this.setAccessGranted(true);
+            tmaSdkService.listenForDeviceRotation();
+          } else {
+            this.setAccessGranted(false);
+            this.setIsAccessMotionEventDeclined(true);
+            console.warn('Device motion permission denied.');
+          }
+        })
+        .catch((error: any) => {
+          console.error('Error requesting device motion permission:', error);
+        });
     } else {
       console.warn('Device does not support motion events.');
     }
+    this.visibility = false;
+  }
+
+  checkNoAccess() {
+    this.setAccessGranted(false);
+    this.setIsAccessMotionEventDeclined(true);
     this.visibility = false;
   }
 }
