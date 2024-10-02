@@ -109,6 +109,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
   @state.settings.isTBankFeatureEnabled private isTBankFeatureEnabled!: boolean;
+  @state.settings.isAccessRotationListener private isAccessRotationListener!: boolean;
   @state.settings.language currentLanguage!: Language;
   @state.settings.isTMA isTMA!: boolean;
   @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
@@ -300,9 +301,12 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
           this.setIsTBankFeatureEnabled(false);
           tmaSdkService.removeDeviceRotationListener();
           this.setRotatePhoneDialogVisibility(false);
+        } else if (!this.isTBankFeatureEnabled && this.isAccessRotationListener) {
+          this.setIsTBankFeatureEnabled(true);
         } else {
           this.setRotatePhoneDialogVisibility(true);
         }
+
         break;
       case HeaderMenuType.Language:
         this.setLanguageDialogVisibility(true);

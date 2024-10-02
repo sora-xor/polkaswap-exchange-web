@@ -54,7 +54,7 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
       this.rotatePhoneDialogVisibility &&
       !this.isTBankFeatureEnabled &&
       !this.isAccessMotionEventDeclined &&
-      this.isAccessRotationListener
+      !this.isAccessRotationListener
     );
   }
 
