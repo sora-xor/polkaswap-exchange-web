@@ -358,13 +358,11 @@ $item-padding: 17px;
       display: none;
     }
   }
-  &__settings {
-    min-width: 264px;
-  }
   &__button i {
     font-size: $icon-size !important;
   }
   &__settings {
+    min-width: 264px;
     display: flex;
     justify-content: space-between;
     align-items: center;

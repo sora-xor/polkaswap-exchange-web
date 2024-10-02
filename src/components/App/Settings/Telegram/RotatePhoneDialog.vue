@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Ref } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state, mutation } from '@/store/decorators';
