@@ -12,8 +12,6 @@ function initialState(): SettingsState {
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
   const isTBankFeatureEnabled = settingsStorage.get('isTBankFeatureEnabled') === 'true';
   const isAccessRotationListener = settingsStorage.get('isAccessRotationListener') === 'true';
-  console.info(isTBankFeatureEnabled);
-  console.info(isAccessRotationListener);
   const isBrowserNotificationApiAvailable = 'Notification' in window;
   const appConnection = new NodesConnection(settingsStorage, connection);
 

@@ -42,6 +42,7 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
   @state.settings.rotatePhoneDialogVisibility private rotatePhoneDialogVisibility!: boolean;
   @state.settings.isTBankFeatureEnabled private isTBankFeatureEnabled!: boolean;
   @state.settings.isAccessMotionEventDeclined private isAccessMotionEventDeclined!: boolean;
+  @state.settings.isAccessRotationListener private isAccessRotationListener!: boolean;
 
   @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.setIsTBankFeatureEnabled private setIsTBankFeatureEnabled!: (flag: boolean) => void;
@@ -49,7 +50,12 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
   @mutation.settings.setAccessGranted private setAccessGranted!: (flag: boolean) => void;
 
   get visibility(): boolean {
-    return this.rotatePhoneDialogVisibility && !this.isTBankFeatureEnabled && !this.isAccessMotionEventDeclined;
+    return (
+      this.rotatePhoneDialogVisibility &&
+      !this.isTBankFeatureEnabled &&
+      !this.isAccessMotionEventDeclined &&
+      this.isAccessRotationListener
+    );
   }
 
   set visibility(flag: boolean) {
