@@ -65,6 +65,9 @@ class TmaSdk {
       }
       // Init haptic feedback
       this.addHapticListener();
+      if (store.state.settings.isTBankFeatureEnabled && store.state.settings.isAccessRotationListener) {
+        this.listenForDeviceRotation();
+      }
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
       store.commit.settings.disableTMA();
