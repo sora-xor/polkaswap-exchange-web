@@ -44,7 +44,7 @@ class TmaSdk {
     try {
       // Check if the current platform is Telegram Mini App
       const WebApp = Telegram?.WebApp;
-      if (!WebApp?.initData) {
+      if (WebApp?.initData) {
         console.info('[TMA]: Not a Telegram Mini App, skipping initialization');
         return;
       }
@@ -65,8 +65,26 @@ class TmaSdk {
       }
       // Init haptic feedback
       this.addHapticListener();
-      if (store.state.settings.isTBankFeatureEnabled && store.state.settings.isAccessRotationListener) {
+
+      if (
+        store.state.settings.isRotatePhoneHideBalanceFeatureEnabled &&
+        store.state.settings.isAccessRotationListener
+      ) {
         this.listenForDeviceRotation();
+      } else if (
+        !store.state.settings.isAccessRotationListener &&
+        store.state.settings.isAccessAccelerometrEventDeclined
+      ) {
+        const accessGranted = await this.checkAccelerometerAccess();
+        console.info('here is access to accelerometr');
+        console.info(accessGranted);
+        if (accessGranted) {
+          console.info('we are in accessgratned');
+          this.listenForDeviceRotation();
+          store.commit.settings.setIsRotatePhoneHideBalanceFeatureEnabled(true);
+          store.commit.settings.setAccessGranted(true);
+          store.commit.settings.setIsAccessAccelerometrEventDeclined(false);
+        }
       }
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
@@ -138,6 +156,59 @@ class TmaSdk {
     if (this.deviceOrientationHandler) {
       window.removeEventListener('deviceorientation', this.deviceOrientationHandler);
       this.deviceOrientationHandler = null;
+    }
+  }
+
+  private async checkAccelerometerAccess(): Promise<boolean> {
+    let hasAccess = false;
+
+    try {
+      // Check if permissions API is available and try to query the accelerometer permission
+      if ('permissions' in navigator && navigator.permissions.query) {
+        try {
+          const permissionStatus = await (navigator.permissions.query as any)({ name: 'accelerometer' });
+          console.info(`Accelerometer permission state: ${permissionStatus.state}`);
+          hasAccess = permissionStatus.state === 'granted';
+        } catch (permissionError) {
+          console.warn('Error querying accelerometer permission:', permissionError);
+        }
+      } else {
+        console.warn('Permissions API is not available in this environment.');
+      }
+
+      // If we don't have access through permissions API, attempt direct access
+      if (!hasAccess) {
+        console.info('Attempting direct access to accelerometer...');
+
+        try {
+          const sensor = new (window as any).Accelerometer({ frequency: 60 });
+
+          sensor.onreading = () => {
+            hasAccess = true;
+            console.info('Accelerometer readings received.');
+            sensor.stop(); // Stop the sensor once access is confirmed
+          };
+
+          sensor.onerror = (event: { error: any }) => {
+            console.error('Accelerometer error:', event.error);
+          };
+
+          sensor.start();
+
+          // Wait for a short duration to see if readings are available
+          await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
+          sensor.stop();
+        } catch (sensorError) {
+          console.error('Accelerometer not supported or permission denied:', sensorError);
+        }
+      }
+
+      // Log the result of the access attempt
+      console.info('Has access to accelerometer:', hasAccess);
+      return hasAccess;
+    } catch (error) {
+      console.error('Unexpected error during accelerometer check:', error);
+      return false;
     }
   }
 

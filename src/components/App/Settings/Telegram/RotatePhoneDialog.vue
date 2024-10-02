@@ -17,9 +17,16 @@
       <s-button
         type="primary"
         class="s-typography-button--large browser-notification-dialog__btn"
-        @click="enableTbankFeature()"
+        @click="enableRotatePhoneHideBalanceFeature()"
       >
         {{ t('browserPermission.btnAllow') }}
+      </s-button>
+      <s-button
+        type="primary"
+        class="s-typography-button--large browser-notification-dialog__btn"
+        @click="declinedAccess()"
+      >
+        decline access
       </s-button>
     </div>
   </dialog-base>
@@ -40,20 +47,26 @@ import { tmaSdkService } from '@/utils/telegram';
 })
 export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
   @state.settings.rotatePhoneDialogVisibility private rotatePhoneDialogVisibility!: boolean;
-  @state.settings.isTBankFeatureEnabled private isTBankFeatureEnabled!: boolean;
-  @state.settings.isAccessMotionEventDeclined private isAccessMotionEventDeclined!: boolean;
+  @state.settings.isRotatePhoneHideBalanceFeatureEnabled private isRotatePhoneHideBalanceFeatureEnabled!: boolean;
+  @state.settings.isAccessAccelerometrEventDeclined private isAccessAccelerometrEventDeclined!: boolean;
   @state.settings.isAccessRotationListener private isAccessRotationListener!: boolean;
 
   @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
-  @mutation.settings.setIsTBankFeatureEnabled private setIsTBankFeatureEnabled!: (flag: boolean) => void;
-  @mutation.settings.setIsAccessMotionEventDeclined private setIsAccessMotionEventDeclined!: (flag: boolean) => void;
+  @mutation.settings.setIsRotatePhoneHideBalanceFeatureEnabled private setIsRotatePhoneHideBalanceFeatureEnabled!: (
+    flag: boolean
+  ) => void;
+
+  @mutation.settings.setIsAccessAccelerometrEventDeclined private setIsAccessAccelerometrEventDeclined!: (
+    flag: boolean
+  ) => void;
+
   @mutation.settings.setAccessGranted private setAccessGranted!: (flag: boolean) => void;
 
   get visibility(): boolean {
     return (
       this.rotatePhoneDialogVisibility &&
-      !this.isTBankFeatureEnabled &&
-      !this.isAccessMotionEventDeclined &&
+      !this.isRotatePhoneHideBalanceFeatureEnabled &&
+      !this.isAccessAccelerometrEventDeclined &&
       !this.isAccessRotationListener
     );
   }
@@ -62,7 +75,7 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
     this.setRotatePhoneDialogVisibility(flag);
   }
 
-  enableTbankFeature() {
+  enableRotatePhoneHideBalanceFeature() {
     if (tmaSdkService.checkAccelerometerSupport()) {
       if (
         typeof DeviceMotionEvent !== 'undefined' &&
@@ -73,11 +86,11 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
           .then((permissionState: PermissionState) => {
             if (permissionState === 'granted') {
               this.setAccessGranted(true);
-              this.setIsTBankFeatureEnabled(true);
+              this.setIsRotatePhoneHideBalanceFeatureEnabled(true);
               tmaSdkService.listenForDeviceRotation();
             } else {
               this.setAccessGranted(false);
-              this.setIsAccessMotionEventDeclined(true);
+              this.setIsAccessAccelerometrEventDeclined(true);
               console.warn('Device motion permission denied.');
             }
           })
@@ -87,13 +100,18 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
       } else {
         console.info('no need permission request');
         this.setAccessGranted(true);
-        this.setIsTBankFeatureEnabled(true);
+        this.setIsRotatePhoneHideBalanceFeatureEnabled(true);
         tmaSdkService.listenForDeviceRotation();
       }
     } else {
       console.warn('Device does not support motion events.');
     }
     this.visibility = false;
+  }
+
+  declinedAccess() {
+    this.setAccessGranted(false);
+    this.setIsAccessAccelerometrEventDeclined(true);
   }
 }
 </script>

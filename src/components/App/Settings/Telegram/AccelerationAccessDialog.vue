@@ -5,13 +5,13 @@
       <p class="browser-notification-dialog__info">
         Our technology uses your phone's built-in gyroscope to instantly hide your balance when you tilt your device.
       </p>
-      <!-- <s-button
+      <s-button
         type="secondary"
         class="s-typography-button--large browser-notification-dialog__btn"
-        @click="openDeviceSettings"
+        @click="reloadPage"
       >
-        Open Settings
-      </s-button> -->
+        {{ this.t('provider.messages.reloadPage') }}
+      </s-button>
     </div>
   </dialog-base>
 </template>
@@ -30,18 +30,21 @@ import { state, mutation } from '@/store/decorators';
 })
 export default class AccelerationAccessDialog extends Mixins(TranslationMixin) {
   @state.settings.rotatePhoneDialogVisibility private rotatePhoneDialogVisibility!: boolean;
-  @state.settings.isAccessMotionEventDeclined private isAccessMotionEventDeclined!: boolean;
+  @state.settings.isAccessAccelerometrEventDeclined private isAccessAccelerometrEventDeclined!: boolean;
   @state.settings.isAccessRotationListener private isAccessRotationListener!: boolean;
 
-  @mutation.settings.setIsAccessMotionEventDeclined private setIsAccessMotionEventDeclined!: (flag: boolean) => void;
   @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
 
   get visibility(): boolean {
-    return this.rotatePhoneDialogVisibility && !this.isAccessRotationListener && this.isAccessMotionEventDeclined;
+    return this.rotatePhoneDialogVisibility && !this.isAccessRotationListener && this.isAccessAccelerometrEventDeclined;
   }
 
   set visibility(flag: boolean) {
     this.setRotatePhoneDialogVisibility(flag);
+  }
+
+  reloadPage() {
+    window.location.reload();
   }
 }
 </script>

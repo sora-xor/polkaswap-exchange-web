@@ -10,7 +10,9 @@ import type { SettingsState } from './types';
 
 function initialState(): SettingsState {
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
-  const isTBankFeatureEnabled = settingsStorage.get('isTBankFeatureEnabled') === 'true';
+  const isRotatePhoneHideBalanceFeatureEnabled =
+    settingsStorage.get('isRotatePhoneHideBalanceFeatureEnabled') === 'true';
+  const isAccessAccelerometrEventDeclined = settingsStorage.get('isAccessAccelerometrEventDeclined') === 'true';
   const isAccessRotationListener = settingsStorage.get('isAccessRotationListener') === 'true';
   const isBrowserNotificationApiAvailable = 'Notification' in window;
   const appConnection = new NodesConnection(settingsStorage, connection);
@@ -47,10 +49,10 @@ function initialState(): SettingsState {
     adsArray: [],
     isTMA: false,
     telegramBotUrl: undefined,
-    isTBankFeatureEnabled, // todo change to from settingsStorage
+    isRotatePhoneHideBalanceFeatureEnabled,
     isOrientationWarningVisible: false,
-    isAccessMotionEventDeclined: false,
-    isAccessRotationListener, // todo change to from settingsStorage
+    isAccessAccelerometrEventDeclined,
+    isAccessRotationListener,
   };
 }
 

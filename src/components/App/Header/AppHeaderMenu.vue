@@ -41,6 +41,9 @@
                     <s-icon name="basic-check-mark-24" size="12px" />
                   </div>
                 </template>
+                <template v-else-if="item.value === HeaderMenuType.HideBalances">
+                  <s-switch class="icontype" v-model="shouldBalanceBeHidden" />
+                </template>
                 <template v-else>
                   <s-icon :name="item.iconType" size="14px" class="icontype" />
                 </template>
@@ -108,7 +111,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
-  @state.settings.isTBankFeatureEnabled private isTBankFeatureEnabled!: boolean;
+  @state.settings.isRotatePhoneHideBalanceFeatureEnabled private isRotatePhoneHideBalanceFeatureEnabled!: boolean;
   @state.settings.isAccessRotationListener private isAccessRotationListener!: boolean;
   @state.settings.language currentLanguage!: Language;
   @state.settings.isTMA isTMA!: boolean;
@@ -124,7 +127,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.setSelectCurrencyDialogVisibility private setCurrencyDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
-  @mutation.settings.setIsTBankFeatureEnabled private setIsTBankFeatureEnabled!: (flag: boolean) => void;
+  @mutation.settings.setIsRotatePhoneHideBalanceFeatureEnabled private setIsRotatePhoneHideBalanceFeatureEnabled!: (
+    flag: boolean
+  ) => void;
+
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
 
   get mediaQueryList(): MediaQueryList {
@@ -296,14 +302,14 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         tmaSdkService.updateTheme();
         break;
       case HeaderMenuType.TurnPhoneHide:
-        console.info(this.isTBankFeatureEnabled);
-        if (this.isTBankFeatureEnabled) {
-          this.setIsTBankFeatureEnabled(false);
+        console.info(this.isRotatePhoneHideBalanceFeatureEnabled);
+        if (this.isRotatePhoneHideBalanceFeatureEnabled) {
+          this.setIsRotatePhoneHideBalanceFeatureEnabled(false);
           tmaSdkService.removeDeviceRotationListener();
           this.setRotatePhoneDialogVisibility(false);
-        } else if (!this.isTBankFeatureEnabled && this.isAccessRotationListener) {
+        } else if (!this.isRotatePhoneHideBalanceFeatureEnabled && this.isAccessRotationListener) {
           tmaSdkService.listenForDeviceRotation();
-          this.setIsTBankFeatureEnabled(true);
+          this.setIsRotatePhoneHideBalanceFeatureEnabled(true);
         } else {
           this.setRotatePhoneDialogVisibility(true);
         }

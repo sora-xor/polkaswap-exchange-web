@@ -54,8 +54,8 @@ export type SettingsState = {
   adsArray: Array<Ad>;
   isTMA: boolean;
   telegramBotUrl: Nullable<string>;
-  isTBankFeatureEnabled: boolean;
+  isRotatePhoneHideBalanceFeatureEnabled: boolean;
   isOrientationWarningVisible: boolean;
-  isAccessMotionEventDeclined: boolean;
+  isAccessAccelerometrEventDeclined: boolean;
   isAccessRotationListener: boolean;
 };
