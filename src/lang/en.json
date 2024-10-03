@@ -162,7 +162,7 @@
         "selectAccount": "Select account to work with",
         "action": {
             "install": "Install extension",
-            "learnMore": "Learn more about wallet connection",
+            "learnMore": "Learn more",
             "connect": "Connect account",
             "refresh": "Refresh"
         },
@@ -867,17 +867,19 @@
     },
     "light": "Light",
     "dark": "Dark",
-    "noir": "Noir",
     "headerMenu": {
         "showBalances": "Show Balances",
         "hideBalances": "Hide Balances",
         "settings": "Settings",
         "switchTheme": "{theme} Mode",
-        "switchLanguage": "language",
         "showDisclaimer": "Show Disclaimer",
         "hideDisclaimer": "Hide Disclaimer",
         "selectCurrency": "Select Currency",
-        "turnPhoneHideBalances": "Turn phone & hide"
+        "turnPhoneHideBalances": "Turn phone & hide",
+        "titleBalance": "Balances",
+        "titleTheme": "Color theme",
+        "titleCurrency": "Fiat currency",
+        "titleMisc": "Misc"
     },
     "sentText": "Sent",
     "learnMoreText": "Learn more",
@@ -1683,9 +1685,12 @@
         "openTelegram": "Open {Telegram}",
         "toEarnPoints": "To earn points"
     },
+    "addAssetsText": "Add asset | Add assets",
+    "noir": "Noir",
     "rotatePhoneNotification": {
         "title": "Turn your device upside down to hide balances",
-        "info": "For extra privacy, tilt your device face down to instantly hide your asset balances. This feature uses yourphone’s built-in sensors."
-    },
-    "addAssetsText": "Add asset | Add assets"
+        "info": "For extra privacy, tilt your device face down to instantly hide your asset balances. This feature uses your phone’s built-in sensors.",
+        "enableAcceleration": "Enable acceleration access in your settings.",
+        "gyroscropePhone": " Our technology uses your phone's built-in gyroscope to instantly hide your balance when you tilt your device."
+    }
 }

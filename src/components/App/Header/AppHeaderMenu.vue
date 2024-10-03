@@ -185,7 +185,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
                 {
                   value: HeaderMenuType.TurnPhoneHide,
                   icon: 'gadgets-iPhone-24',
-                  text: 'Turn phone & hide',
+                  text: this.t('headerMenu.turnPhoneHideBalances'),
                   iconType: 'arrows-chevron-right-rounded-24',
                 },
               ]

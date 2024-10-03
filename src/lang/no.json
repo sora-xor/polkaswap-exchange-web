@@ -872,10 +872,14 @@
         "hideBalances": "Skjul saldoer",
         "settings": "Innstillinger",
         "switchTheme": "Bytt til {theme} -modus",
-        "switchLanguage": "Velg språk",
         "showDisclaimer": "Vis ansvarsfraskrivelse",
         "hideDisclaimer": "Skjul ansvarsfraskrivelse",
-        "selectCurrency": "Velg Valuta"
+        "selectCurrency": "Velg Valuta",
+        "turnPhoneHideBalances": "Snu telefonen og skjul",
+        "titleBalance": "Saldi",
+        "titleTheme": "Fargetema",
+        "titleCurrency": "Fiatvaluta",
+        "titleMisc": "Annet"
     },
     "sentText": "Sendt",
     "learnMoreText": "Lær mer",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Åpne {Telegram}",
         "toEarnPoints": "For å tjene poeng"
     },
-    "addAssetsText": "Legg til eiendel | Legg til eiendeler"
+    "addAssetsText": "Legg til eiendel | Legg til eiendeler",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Snu enheten opp ned for å skjule saldoer.",
+        "info": "For ekstra personvern, vipp enheten med skjermen nedover for å umiddelbart skjule saldoen for eiendelene dine. Denne funksjonen bruker telefonens innebygde sensorer.",
+        "enableAcceleration": "Aktiver akselerasjonstilgang i innstillingene dine.",
+        "gyroscropePhone": "Vår teknologi bruker telefonens innebygde gyroskop for å umiddelbart skjule saldoen din når du vipper enheten."
+    }
 }

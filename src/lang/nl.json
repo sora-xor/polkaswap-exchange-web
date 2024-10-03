@@ -872,10 +872,14 @@
         "hideBalances": "Saldi verbergen",
         "settings": "Instellingen",
         "switchTheme": "Overschakelen naar {theme} -modus",
-        "switchLanguage": "Kies een taal",
         "showDisclaimer": "Disclaimer tonen",
         "hideDisclaimer": "Disclaimer verbergen",
-        "selectCurrency": "selecteer valuta"
+        "selectCurrency": "selecteer valuta",
+        "turnPhoneHideBalances": "Draai de telefoon om en verberg",
+        "titleBalance": "Saldo's",
+        "titleTheme": "Kleurenthema",
+        "titleCurrency": "Fiat valuta",
+        "titleMisc": "Overig"
     },
     "sentText": "Verzonden",
     "learnMoreText": "Kom meer te weten",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Openen {Telegram}",
         "toEarnPoints": "Om punten te verdienen"
     },
-    "addAssetsText": "Activa toevoegen | Activa’s toevoegen"
+    "addAssetsText": "Activa toevoegen | Activa’s toevoegen",
+    "noir": "Zwart",
+    "rotatePhoneNotification": {
+        "title": "Draai uw apparaat ondersteboven om saldi te verbergen.",
+        "info": "Voor extra privacy, kantel je apparaat met het scherm naar beneden om je activa saldo onmiddellijk te verbergen. Deze functie maakt gebruik van de ingebouwde sensoren van je telefoon.",
+        "enableAcceleration": "Schakel versnellingssensor toegang in uw instellingen in.",
+        "gyroscropePhone": "Onze technologie gebruikt de ingebouwde gyroscoop van je telefoon om je saldo onmiddellijk te verbergen wanneer je je apparaat kantelt."
+    }
 }

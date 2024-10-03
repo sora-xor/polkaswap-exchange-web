@@ -872,10 +872,14 @@
         "hideBalances": "Сакријтe balans",
         "settings": "Подешавања",
         "switchTheme": "Пребаците се на {theme} mод",
-        "switchLanguage": "Изаберите језик",
         "showDisclaimer": "Схов Дисцлаимер",
         "hideDisclaimer": "Сакриј одрицање одговорности",
-        "selectCurrency": "Изаберите Валута"
+        "selectCurrency": "Изаберите Валута",
+        "turnPhoneHideBalances": "Okrenite telefon i sakrijte",
+        "titleBalance": "Stanja",
+        "titleTheme": "Tema boja",
+        "titleCurrency": "Fiat valuta",
+        "titleMisc": "Ostalo"
     },
     "sentText": "Poslato",
     "learnMoreText": "Сазнајте више",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Otvorite {Telegram}",
         "toEarnPoints": "Za zarađivanje poena"
     },
-    "addAssetsText": "Додај имовину | Додај имовине"
+    "addAssetsText": "Додај имовину | Додај имовине",
+    "noir": "Ноир",
+    "rotatePhoneNotification": {
+        "title": "Okrenite uređaj naopačke da sakrijete stanja.",
+        "info": "Za dodatnu privatnost, nagnite uređaj licem prema dole da odmah sakrijete stanje vaših sredstava. Ova funkcija koristi ugrađene senzore vašeg telefona.",
+        "enableAcceleration": "Omogućite pristup ubrzanja u svojim postavkama.",
+        "gyroscropePhone": "Naša tehnologija koristi ugrađeni žiroskop vašeg telefona kako bi trenutno sakrila vaš saldo kada nagnite uređaj."
+    }
 }
