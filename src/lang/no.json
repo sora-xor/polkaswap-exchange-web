@@ -1,1735 +1,1683 @@
 {
-  "closeText": "Lukk",
-  "backText": "Tilbake",
-  "createWalletText": "Opprett lommebok",
-  "nameText": "Navn",
-  "nextText": "Neste",
-  "importText": "Importere",
-  "settingsText": "Innstillinger",
-  "addAssetText": "Legg til aktiva",
-  "successText": "Suksess",
-  "warningText": "Advarsel",
-  "swapText": "Bytte",
-  "searchText": "Søk",
-  "cancelText": "Avbryt",
-  "saveText": "Lagre",
-  "logoutText": "Logg ut",
-  "sendText": "Send",
-  "addressText": "Adresse",
-  "amountText": "Beløp",
-  "errorText": "Feil",
-  "insufficientBalanceText": "Utilstrekkelig {tokenSymbol} saldo",
-  "unknownErrorText": "FEIL Noe gikk galt...",
-  "transactionSubmittedText": "Transaksjonen ble sendt",
-  "operations": {
-    "Swap": "Bytte",
-    "Transfer": "Overføre",
-    "AddLiquidity": "Legg til likviditet",
-    "RemoveLiquidity": "Fjern likviditet",
-    "CreatePair": "Opprett par",
-    "RegisterAsset": "Registrer aktiva",
-    "ClaimRewards": "Gjør krav på belønninger",
-    "andText": "og",
-    "finalized": {
-      "Transfer": "{action} {amount} {symbol} {direction} {address}",
-      "Swap": "Byttet {amount} {symbol} for {amount2} {symbol2}",
-      "AddLiquidity": "Levert {amount} {symbol} og {amount2} {symbol2}",
-      "RemoveLiquidity": "Fjernet {amount} {symbol} og {amount2} {symbol2}",
-      "CreatePair": "Levert {amount} {symbol} og {amount2} {symbol2}",
-      "RegisterAsset": "Registrert {symbol} aktivum",
-      "ClaimRewards": "Innhenting av belønning var vellykket {rewards}",
-      "ReferralReserveXor": "Bondet {amount} XOR",
-      "ReferralUnreserveXor": "Ubundet {amount} XOR",
-      "ReferralSetInvitedUser": "{role} {address} er satt",
-      "SwapAndSend": "Byttet {amount} {symbol} med {amount2} {symbol2} og {action} {direction} {address}",
-      "DemeterFarmingDepositLiquidity": "Levert {symbol} og {symbol2} {amount} LP-tokens",
-      "DemeterFarmingWithdrawLiquidity": "Fjernet {symbol} og {symbol2} {amount} LP-tokens",
-      "DemeterFarmingStakeToken": "Lagt til {amount} {symbol}",
-      "DemeterFarmingUnstakeToken": "Fjernet {amount} {symbol}",
-      "DemeterFarmingGetRewards": "{amount} {symbol} er gjort krav på",
-      "EthBridgeIncoming": "Overførte {amount} {symbol} fra {Ethereum} til {Sora}",
-      "EthBridgeOutgoing": "Overførte {amount} {symbol} fra {Sora} til {Ethereum}",
-      "SwapTransferBatch": "{action} {amount} {symbol}",
-      "StakingBondAndNominate": "Obligatorisk {amount} {symbol}",
-      "StakingBond": "Obligatorisk {amount} {symbol}",
-      "StakingBondExtra": "Obligatorisk ekstra {amount} {symbol}",
-      "StakingUnbond": "Ubundet {amount} {symbol}",
-      "StakingRebond": "Rebonded {amount} {symbol}",
-      "StakingNominate": "Nominerte validatorer",
-      "StakingWithdrawUnbonded": "Trakk ut {amount} {symbol}",
-      "StakingPayout": "Utbetalingsbelønninger",
-      "StakingChill": "Slapp av",
-      "StakingSetController": "Angi kontroller {address}",
-      "StakingSetPayee": "Angi betalingsmottaker {address}",
-      "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} til {price} {symbol2} plassert",
-      "OrderBookCancelLimitOrder": "Begrensningsbestilling kansellert",
-      "OrderBookCancelLimitOrders": "Limit bestillinger kansellert",
-      "Burn": "Brent {amount} {symbol}",
-      "Mint": "Preget {amount} {symbol} til {address}",
-      "CreateVault": "{symbol}/{symbol2} Posisjon opprettet",
-      "CloseVault": "{symbol}/{symbol2} Posisjon lukket",
-      "DepositCollateral": "Innskuddet {amount} {symbol}",
-      "RepayVaultDebt": "Gjelden tilbakebetalt {amount} {symbol}",
-      "BorrowVaultDebt": "Gjeld lånt {amount} {symbol}"
+    "closeText": "Lukk",
+    "backText": "Tilbake",
+    "createWalletText": "Opprett lommebok",
+    "nameText": "Navn",
+    "nextText": "Neste",
+    "importText": "Importere",
+    "settingsText": "Innstillinger",
+    "addAssetText": "Legg til aktiva",
+    "successText": "Suksess",
+    "warningText": "Advarsel",
+    "swapText": "Bytte",
+    "searchText": "Søk",
+    "cancelText": "Avbryt",
+    "saveText": "Lagre",
+    "logoutText": "Logg ut",
+    "sendText": "Send",
+    "addressText": "Adresse",
+    "amountText": "Beløp",
+    "errorText": "Feil",
+    "insufficientBalanceText": "Utilstrekkelig {tokenSymbol} saldo",
+    "unknownErrorText": "FEIL Noe gikk galt...",
+    "transactionSubmittedText": "Transaksjonen ble sendt",
+    "operations": {
+        "Swap": "Bytte",
+        "Transfer": "Overføre",
+        "AddLiquidity": "Legg til likviditet",
+        "RemoveLiquidity": "Fjern likviditet",
+        "CreatePair": "Opprett par",
+        "RegisterAsset": "Registrer aktiva",
+        "ClaimRewards": "Gjør krav på belønninger",
+        "andText": "og",
+        "finalized": {
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "Swap": "Byttet {amount} {symbol} for {amount2} {symbol2}",
+            "AddLiquidity": "Levert {amount} {symbol} og {amount2} {symbol2}",
+            "RemoveLiquidity": "Fjernet {amount} {symbol} og {amount2} {symbol2}",
+            "CreatePair": "Levert {amount} {symbol} og {amount2} {symbol2}",
+            "RegisterAsset": "Registrert {symbol} aktivum",
+            "ClaimRewards": "Innhenting av belønning var vellykket {rewards}",
+            "ReferralReserveXor": "Bondet {amount} XOR",
+            "ReferralUnreserveXor": "Ubundet {amount} XOR",
+            "ReferralSetInvitedUser": "{role} {address} er satt",
+            "SwapAndSend": "Byttet {amount} {symbol} med {amount2} {symbol2} og {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Levert {symbol} og {symbol2} {amount} LP-tokens",
+            "DemeterFarmingWithdrawLiquidity": "Fjernet {symbol} og {symbol2} {amount} LP-tokens",
+            "DemeterFarmingStakeToken": "Lagt til {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Fjernet {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} er gjort krav på",
+            "EthBridgeIncoming": "Overførte {amount} {symbol} fra {Ethereum} til {Sora}",
+            "EthBridgeOutgoing": "Overførte {amount} {symbol} fra {Sora} til {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Obligatorisk {amount} {symbol}",
+            "StakingBond": "Obligatorisk {amount} {symbol}",
+            "StakingBondExtra": "Obligatorisk ekstra {amount} {symbol}",
+            "StakingUnbond": "Ubundet {amount} {symbol}",
+            "StakingRebond": "Rebonded {amount} {symbol}",
+            "StakingNominate": "Nominerte validatorer",
+            "StakingWithdrawUnbonded": "Trakk ut {amount} {symbol}",
+            "StakingPayout": "Utbetalingsbelønninger",
+            "StakingChill": "Slapp av",
+            "StakingSetController": "Angi kontroller {address}",
+            "StakingSetPayee": "Angi betalingsmottaker {address}",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} til {price} {symbol2} plassert",
+            "OrderBookCancelLimitOrder": "Begrensningsbestilling kansellert",
+            "OrderBookCancelLimitOrders": "Limit bestillinger kansellert",
+            "Burn": "Brent {amount} {symbol}",
+            "Mint": "Preget {amount} {symbol} til {address}",
+            "CreateVault": "{symbol}\/{symbol2} Posisjon opprettet",
+            "CloseVault": "{symbol}\/{symbol2} Posisjon lukket",
+            "DepositCollateral": "Innskuddet {amount} {symbol}",
+            "RepayVaultDebt": "Gjelden tilbakebetalt {amount} {symbol}",
+            "BorrowVaultDebt": "Gjeld lånt {amount} {symbol}"
+        },
+        "error": {
+            "Transfer": "Kunne ikke {action} {amount} {symbol} {direction} {address}",
+            "Swap": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2}",
+            "AddLiquidity": "Kunne ikke levere {amount} {symbol} og {amount2} {symbol2}",
+            "RemoveLiquidity": "Kunne ikke fjerne {amount} {symbol} og {amount2} {symbol2}",
+            "CreatePair": "Kunne ikke levere {amount} {symbol} og {amount2} {symbol2}",
+            "RegisterAsset": "Kunne ikke registrere {symbol} ressurs",
+            "ClaimRewards": "Kunne ikke kreve belønninger {rewards}",
+            "ReferralReserveXor": "Kunne ikke binde {amount} XOR",
+            "ReferralUnreserveXor": "Kunne ikke frigjøre {amount} XOR",
+            "ReferralSetInvitedUser": "Kunne ikke angi {role} {address}",
+            "SwapAndSend": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2} og {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Kunne ikke oppgi {amount} {symbol} og {symbol2} LP-tokens",
+            "DemeterFarmingWithdrawLiquidity": "Kunne ikke fjerne {amount} {symbol} og {symbol2} LP-tokens",
+            "DemeterFarmingStakeToken": "Kunne ikke legge til {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Kunne ikke fjerne {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Kunne ikke gjøre krav på {symbol}",
+            "EthBridgeIncoming": "Kunne ikke overføre {amount} {symbol} fra {Ethereum} til {Sora}",
+            "EthBridgeOutgoing": "Kunne ikke overføre {amount} {symbol} fra {Sora} til {Ethereum}",
+            "SwapTransferBatch": "Kunne ikke {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Kunne ikke binde {amount} {symbol}",
+            "StakingBond": "Kunne ikke binde {amount} {symbol}",
+            "StakingBondExtra": "Kunne ikke binde ekstra {amount} {symbol}",
+            "StakingUnbond": "Kunne ikke frigjøre {amount} {symbol}",
+            "StakingRebond": "Kunne ikke gjenopprette {amount} {symbol}",
+            "StakingNominate": "Kunne ikke nominere validatorer",
+            "StakingWithdrawUnbonded": "Kunne ikke ta ut {amount} {symbol}",
+            "StakingPayout": "Kunne ikke utbetale belønninger",
+            "StakingChill": "Klarte ikke å slappe av",
+            "StakingSetController": "Kunne ikke angi kontrolleren {address}",
+            "StakingSetPayee": "Kunne ikke angi betalingsmottaker {address}",
+            "OrderBookPlaceLimitOrder": "Kunne ikke legge inn grensebestilling på {amount} {symbol} til {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Kunne ikke kansellere begrensede bestillinger",
+            "OrderBookCancelLimitOrder": "Kunne ikke kansellere begrenset ordre",
+            "Burn": "Kunne ikke brenne {amount} {symbol}",
+            "Mint": "Kunne ikke prege {amount} {symbol} til {address}",
+            "CreateVault": "Kunne ikke opprette posisjon {symbol}\/{symbol2}",
+            "CloseVault": "Kunne ikke lukke posisjon {symbol}\/{symbol2}",
+            "DepositCollateral": "Kunne ikke gjøre innskudd {amount} {symbol}",
+            "RepayVaultDebt": "Kunne ikke tilbakebetale {amount} {symbol} gjeld",
+            "BorrowVaultDebt": "Kunne ikke låne {amount} {symbol} gjeld"
+        },
+        "ReferralReserveXor": "Knytte bånd XOR",
+        "ReferralUnreserveXor": "Koble ut XOR",
+        "ReferralSetInvitedUser": "Angi {role}",
+        "SwapAndSend": "Bytt og send",
+        "DemeterFarmingDepositLiquidity": "Innsats likviditet",
+        "DemeterFarmingWithdrawLiquidity": "Unstake likviditet",
+        "DemeterFarmingStakeToken": "Stake Token",
+        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingGetRewards": "Gjør krav på belønninger",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Overføre",
+        "StakingBondAndNominate": "Bond og nominere",
+        "StakingBond": "Knytte bånd",
+        "StakingBondExtra": "Bond Extra",
+        "StakingUnbond": "Koble ut",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Innstille",
+        "StakingWithdrawUnbonded": "Trekk ut ubundet",
+        "StakingPayout": "Utbetalingsbelønninger",
+        "StakingChill": "Slapp av",
+        "StakingSetController": "Still inn kontrolleren",
+        "StakingSetPayee": "Angi betalingsmottaker",
+        "OrderBookPlaceLimitOrder": "Legg inn bestilling",
+        "OrderBookCancelLimitOrder": "Avbryt bestillingen",
+        "OrderBookCancelLimitOrders": "Kanseller bestillinger",
+        "Burn": "Brenne",
+        "Mint": "Mynte",
+        "CreateVault": "Opprett posisjon",
+        "CloseVault": "Lukk posisjon",
+        "DepositCollateral": "Innskudd Sikkerhet",
+        "RepayVaultDebt": "Betal tilbake gjeld",
+        "BorrowVaultDebt": "Lån gjeld"
     },
-    "error": {
-      "Transfer": "Kunne ikke {action} {amount} {symbol} {direction} {address}",
-      "Swap": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2}",
-      "AddLiquidity": "Kunne ikke levere {amount} {symbol} og {amount2} {symbol2}",
-      "RemoveLiquidity": "Kunne ikke fjerne {amount} {symbol} og {amount2} {symbol2}",
-      "CreatePair": "Kunne ikke levere {amount} {symbol} og {amount2} {symbol2}",
-      "RegisterAsset": "Kunne ikke registrere {symbol} ressurs",
-      "ClaimRewards": "Kunne ikke kreve belønninger {rewards}",
-      "ReferralReserveXor": "Kunne ikke binde {amount} XOR",
-      "ReferralUnreserveXor": "Kunne ikke frigjøre {amount} XOR",
-      "ReferralSetInvitedUser": "Kunne ikke angi {role} {address}",
-      "SwapAndSend": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2} og {action} {direction} {address}",
-      "DemeterFarmingDepositLiquidity": "Kunne ikke oppgi {amount} {symbol} og {symbol2} LP-tokens",
-      "DemeterFarmingWithdrawLiquidity": "Kunne ikke fjerne {amount} {symbol} og {symbol2} LP-tokens",
-      "DemeterFarmingStakeToken": "Kunne ikke legge til {amount} {symbol}",
-      "DemeterFarmingUnstakeToken": "Kunne ikke fjerne {amount} {symbol}",
-      "DemeterFarmingGetRewards": "Kunne ikke gjøre krav på {symbol}",
-      "EthBridgeIncoming": "Kunne ikke overføre {amount} {symbol} fra {Ethereum} til {Sora}",
-      "EthBridgeOutgoing": "Kunne ikke overføre {amount} {symbol} fra {Sora} til {Ethereum}",
-      "SwapTransferBatch": "Kunne ikke {action} {amount} {symbol}",
-      "StakingBondAndNominate": "Kunne ikke binde {amount} {symbol}",
-      "StakingBond": "Kunne ikke binde {amount} {symbol}",
-      "StakingBondExtra": "Kunne ikke binde ekstra {amount} {symbol}",
-      "StakingUnbond": "Kunne ikke frigjøre {amount} {symbol}",
-      "StakingRebond": "Kunne ikke gjenopprette {amount} {symbol}",
-      "StakingNominate": "Kunne ikke nominere validatorer",
-      "StakingWithdrawUnbonded": "Kunne ikke ta ut {amount} {symbol}",
-      "StakingPayout": "Kunne ikke utbetale belønninger",
-      "StakingChill": "Klarte ikke å slappe av",
-      "StakingSetController": "Kunne ikke angi kontrolleren {address}",
-      "StakingSetPayee": "Kunne ikke angi betalingsmottaker {address}",
-      "OrderBookPlaceLimitOrder": "Kunne ikke legge inn grensebestilling på {amount} {symbol} til {price} {symbol2}",
-      "OrderBookCancelLimitOrders": "Kunne ikke kansellere begrensede bestillinger",
-      "OrderBookCancelLimitOrder": "Kunne ikke kansellere begrenset ordre",
-      "Burn": "Kunne ikke brenne {amount} {symbol}",
-      "Mint": "Kunne ikke prege {amount} {symbol} til {address}",
-      "CreateVault": "Kunne ikke opprette posisjon {symbol}/{symbol2}",
-      "CloseVault": "Kunne ikke lukke posisjon {symbol}/{symbol2}",
-      "DepositCollateral": "Kunne ikke gjøre innskudd {amount} {symbol}",
-      "RepayVaultDebt": "Kunne ikke tilbakebetale {amount} {symbol} gjeld",
-      "BorrowVaultDebt": "Kunne ikke låne {amount} {symbol} gjeld"
+    "polkadotjs": {
+        "noExtensions": "Finner ingen {PolkadotJs} utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Det ser ikke ut til å være noen kontoer i {extension} utvidelsen. Legg til en konto, og prøv på nytt.",
+        "noAccount": "{extension} kontofeil. Sjekk kontoen din i {extension} utvidelsen",
+        "noExtension": "Ingen {extension} -utvidelse ble funnet. Installer den og last inn denne siden på nytt",
+        "noSigner": "Ingen tilgang. Gå til utvidelsesinnstillingene for {extension} og åpne «Administrer nettstedtilgang» for å tillate.",
+        "connectionError": "Det oppstod en feil under tilkobling av lommeboken. Du kan prøve å koble til lommeboken via {extension} igjen"
     },
-    "ReferralReserveXor": "Knytte bånd XOR",
-    "ReferralUnreserveXor": "Koble ut XOR",
-    "ReferralSetInvitedUser": "Angi {role}",
-    "SwapAndSend": "Bytt og send",
-    "DemeterFarmingDepositLiquidity": "Innsats likviditet",
-    "DemeterFarmingWithdrawLiquidity": "Unstake likviditet",
-    "DemeterFarmingStakeToken": "Stake Token",
-    "DemeterFarmingUnstakeToken": "Unstake Token",
-    "DemeterFarmingGetRewards": "Gjør krav på belønninger",
-    "EthBridgeIncoming": "@:hashiBridgeText",
-    "EthBridgeOutgoing": "@:hashiBridgeText",
-    "SwapTransferBatch": "{ADAR} Overføre",
-    "StakingBondAndNominate": "Bond og nominere",
-    "StakingBond": "Knytte bånd",
-    "StakingBondExtra": "Bond Extra",
-    "StakingUnbond": "Koble ut",
-    "StakingRebond": "Rebond",
-    "StakingNominate": "Innstille",
-    "StakingWithdrawUnbonded": "Trekk ut ubundet",
-    "StakingPayout": "Utbetalingsbelønninger",
-    "StakingChill": "Slapp av",
-    "StakingSetController": "Still inn kontrolleren",
-    "StakingSetPayee": "Angi betalingsmottaker",
-    "OrderBookPlaceLimitOrder": "Legg inn bestilling",
-    "OrderBookCancelLimitOrder": "Avbryt bestillingen",
-    "OrderBookCancelLimitOrders": "Kanseller bestillinger",
-    "Burn": "Brenne",
-    "Mint": "Mynte",
-    "CreateVault": "Opprett posisjon",
-    "CloseVault": "Lukk posisjon",
-    "DepositCollateral": "Innskudd Sikkerhet",
-    "RepayVaultDebt": "Betal tilbake gjeld",
-    "BorrowVaultDebt": "Lån gjeld"
-  },
-  "polkadotjs": {
-    "noExtensions": "Finner ingen {PolkadotJs} utvidelse. Installer den og last inn denne siden på nytt\nhttps://polkadot.js.org/extension/",
-    "noAccounts": "Det ser ikke ut til å være noen kontoer i {extension} utvidelsen. Legg til en konto, og prøv på nytt.",
-    "noAccount": "{extension} kontofeil. Sjekk kontoen din i {extension} utvidelsen",
-    "noExtension": "Ingen {extension} -utvidelse ble funnet. Installer den og last inn denne siden på nytt",
-    "noSigner": "Ingen tilgang. Gå til utvidelsesinnstillingene for {extension} og åpne «Administrer nettstedtilgang» for å tillate.",
-    "connectionError": "Det oppstod en feil under tilkobling av lommeboken. Du kan prøve å koble til lommeboken via {extension} igjen"
-  },
-  "connection": {
-    "text": "For å administrere eiendeler og signere transaksjoner på {Sora} , må en konto være tilkoblet. {Sora} -kontoer kan opprettes og kobles til ved hjelp av våre integrerte lommebøker eller nettleserutvidelser.",
-    "noAccounts": "Finner ingen konto i nettleserutvidelsen {extension}. Legg til en konto, og prøv på nytt.",
-    "selectAccount": "Velg kontoen du vil arbeide med",
-    "action": {
-      "install": "Installer utvidelse",
-      "learnMore": "Lær mer",
-      "connect": "Koble til konto",
-      "refresh": "Forfriske"
+    "connection": {
+        "text": "For å administrere eiendeler og signere transaksjoner på {Sora} , må en konto være tilkoblet. {Sora} -kontoer kan opprettes og kobles til ved hjelp av våre integrerte lommebøker eller nettleserutvidelser.",
+        "noAccounts": "Finner ingen konto i nettleserutvidelsen {extension}. Legg til en konto, og prøv på nytt.",
+        "selectAccount": "Velg kontoen du vil arbeide med",
+        "action": {
+            "install": "Installer utvidelse",
+            "learnMore": "Lær mer",
+            "connect": "Koble til konto",
+            "refresh": "Forfriske"
+        },
+        "selectWallet": "Velg en lommebok du vil jobbe med",
+        "wallet": {
+            "install": "Installere",
+            "connected": "Tilkoblet",
+            "notConnected": "Ikke tilkoblet"
+        },
+        "internalTitle": "Koble til {wallet}",
+        "internalText": "Du kan opprette eller importere en eksisterende {Sora} -konto for å koble til {wallet} -kontoen din. Alle data som er lagret av {wallet} er kryptert med innebygd avansert kryptering.",
+        "list": {
+            "integrated": "Integrert",
+            "extensions": "Utvidelser"
+        }
     },
-    "selectWallet": "Velg en lommebok du vil jobbe med",
     "wallet": {
-      "install": "Installere",
-      "connected": "Tilkoblet",
-      "notConnected": "Ikke tilkoblet"
+        "WalletAssets": "Aktiva",
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Aktivitet"
     },
-    "internalTitle": "Koble til {wallet}",
-    "internalText": "Du kan opprette eller importere en eksisterende {Sora} -konto for å koble til {wallet} -kontoen din. Alle data som er lagret av {wallet} er kryptert med innebygd avansert kryptering.",
-    "list": {
-      "integrated": "Integrert",
-      "extensions": "Utvidelser"
-    }
-  },
-  "wallet": {
-    "WalletAssets": "Aktiva",
-    "createToken": "@:createTokenText",
-    "WalletHistory": "Aktivitet"
-  },
-  "walletSend": {
-    "title": "Send",
-    "address": "@:addressText",
-    "amount": "@:amountText",
-    "balance": "Balanse",
-    "max": "MAKS",
-    "fee": "@:networkFeeText",
-    "enterAddress": "Angi adresse",
-    "badAddress": "Feil adresse",
-    "enterAmount": "Angi beløp",
-    "badAmount": "@:insufficientBalanceText",
-    "confirmTitle": "Bekreft transaksjon",
-    "errorAddress": "Ugyldig adresse. Kontroller den, og prøv på nytt.",
-    "feeTooltip": "@:networkFeeTooltipText",
-    "tooltip": "Send tokens mellom kontoer på {Sora} -nettverket",
-    "addressWarning": "Tokens vil bli sendt til {Sora} -adressen nedenfor. Sørg for at mottaker har tilgang til {Sora} -kjeden for å bruke tokenene:",
-    "addressError": "Du kan ikke sende tokens til samme konto du er tilkoblet med.",
-    "confirm": "@:confirmText"
-  },
-  "account": {
-    "successCopy": "Lommebokadressen kopieres til utklippstavlen",
-    "copy": "Kopier adresse",
-    "switch": "Bytt konto",
-    "walletAddress": "Lommebokadresse",
-    "delete": "Slett konto",
-    "rename": "Gi nytt navn til kontoen",
-    "export": "Eksporter .json",
-    "accountTitle": "Regnskap"
-  },
-  "history": {
-    "clearHistory": "Slett historikk",
-    "filterPlaceholder": "Filtrer etter adresse, symbol, type eller blokk-ID",
-    "empty": "Transaksjonene dine vises her",
-    "emptySearch": "Ingen transaksjoner funnet",
-    "firstText": "Først",
-    "lastText": "Siste",
-    "prevText": "Tidligere",
-    "nextText": "Neste"
-  },
-  "assets": {
-    "empty": "Det finnes ingen aktiva",
-    "swap": "@:swapText",
-    "send": "@:sendText",
-    "receive": "@:account.copy",
-    "liquidity": "Tilfør likviditet",
-    "bridge": "Bro",
-    "copy": "Kopier aktivum ID",
-    "successCopy": "{symbol} Aktivum ID ble kopiert til utklippstavlen",
-    "copied": "Kopiert!",
-    "balance": {
-      "transferable": "Overførbar",
-      "frozen": "Fryst",
-      "locked": "Låst",
-      "reserved": "Reservert",
-      "total": "Totalt",
-      "bonded": "Bundet"
+    "walletSend": {
+        "title": "Send",
+        "address": "@:addressText",
+        "amount": "@:amountText",
+        "balance": "Balanse",
+        "max": "MAKS",
+        "fee": "@:networkFeeText",
+        "enterAddress": "Angi adresse",
+        "badAddress": "Feil adresse",
+        "enterAmount": "Angi beløp",
+        "badAmount": "@:insufficientBalanceText",
+        "confirmTitle": "Bekreft transaksjon",
+        "errorAddress": "Ugyldig adresse. Kontroller den, og prøv på nytt.",
+        "feeTooltip": "@:networkFeeTooltipText",
+        "tooltip": "Send tokens mellom kontoer på {Sora} -nettverket",
+        "addressWarning": "Tokens vil bli sendt til {Sora} -adressen nedenfor. Sørg for at mottaker har tilgang til {Sora} -kjeden for å bruke tokenene:",
+        "addressError": "Du kan ikke sende tokens til samme konto du er tilkoblet med.",
+        "confirm": "@:confirmText"
     },
-    "totalAssetsValue": "Totalverdi aktiva:",
-    "details": "Detaljer",
-    "assetId": "Aktivum ID"
-  },
-  "asset": {
-    "remove": "Fjern aktiva",
-    "select": "Velg aktivum",
-    "receive": "Motta {symbol}"
-  },
-  "addAsset": {
-    "success": "Ressursen {symbol} ble lagt til.",
-    "empty": "Finner ingen token",
-    "alreadyAttached": "Token er allerede vedlagt",
-    "understand": "Jeg skjønner",
-    "warningTitle": "Handle på egen risiko!",
-    "warningMessage": "Alle kan opprette et token, inkludert å opprette falske versjoner av eksisterende tokens som hevder å representere prosjekter.\nHvis du kjøper dette tokenet, kan det hende du ikke kan selge det tilbake.",
-    "approved": "Aktiva godkjent av fellesskapet",
-    "unknown": "Ukjent kilde",
-    "scam": "SVINDEL",
-    "next": "Neste",
-    "AddAssetToken": {
-      "title": "Valutaer",
-      "switchBtn": "Kun bekreftede eiendeler"
+    "account": {
+        "successCopy": "Lommebokadressen kopieres til utklippstavlen",
+        "copy": "Kopier adresse",
+        "switch": "Bytt konto",
+        "walletAddress": "Lommebokadresse",
+        "delete": "Slett konto",
+        "rename": "Gi nytt navn til kontoen",
+        "export": "Eksporter .json",
+        "accountTitle": "Regnskap"
     },
-    "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol"
-  },
-  "createToken": {
-    "desc": "Opprett og distribuer egendefinert token på {Sora}",
-    "enterSymbol": "Angi tokensymbol",
-    "enterName": "Angi tokennavn",
-    "enterSupply": "Angi tokenforsyning (antall)",
-    "success": {
-      "title": "Transaksjon sendt",
-      "desc": "Opprett {symbol} token"
-    },
-    "tooltipValue": "@:networkFeeTooltipText",
-    "fee": "@:networkFeeText",
-    "insufficientBalance": "@:insufficientBalanceText",
-    "feeError": "Mislyktes i å hente transaksjonsgebyr",
-    "error": "Oppretting av token med {symbol} mislyktes.",
-    "tokenSymbol": {
-      "placeholder": "Token symbol",
-      "desc": "Dette er en identifikator for tokenet. Du kan bruke fra 1 til 7 tegn."
-    },
-    "tokenName": {
-      "placeholder": "Token navn",
-      "desc": "Dette er et navn på token. Du kan bruke fra 1 til 33 tegn for valget."
-    },
-    "tokenSupply": {
-      "placeholder": "Token forsyning",
-      "desc": "Du vil motta disse tokenene ved opprettelse."
-    },
-    "extensibleSupply": {
-      "placeholder": "Utvidbar forsyning",
-      "desc": "Evne til å lage flere tokens."
-    },
-    "provideContent": "Gi innhold",
-    "selectLocalFile": "Velg lokal fil",
-    "CreateSimpleToken": "Token",
-    "nft": {
-      "source": {
-        "label": "Kilde",
-        "value": "Lokale filer",
-        "limit": "Velg en annen fil"
-      },
-      "link": {
-        "placeholder": "IPFS-kobling",
-        "copyLink": "Kopier link",
-        "tooltip": "IPFS er et distribuert system for lagring og tilgang til filer, som gjør det mulig å få tilgang til filer fra mange steder som ikke administreres av én organisasjon."
-      },
-      "image": {
-        "placeholderNoImage": "Last opp filen ved enten å skrive inn en lenke eller velge fra lokal lagring",
-        "placeholderBadSource": "Filen kunne ikke behandles",
-        "placeholderBadSourceAddition": "eller det er ikke lastet opp til IPFS ennå",
-        "placeholderFileLimit": "Filstørrelsen overskrider grensen på {value} mb"
-      },
-      "supply": {
-        "placeholder": "Token forsyning",
-        "desc": "Antall NFT-er du kommer til å få.",
-        "quantity": "Mengde"
-      },
-      "description": {
-        "placeholder": "Beskrivelse"
-      }
-    },
-    "enterTokenDescription": "Skriv inn beskrivelse",
-    "divisible": {
-      "placeholder": "Delelig",
-      "desc": "NFTs evne til å dele opp i brøkdeler. Likviditetsavsetning fungerer kun med delbare eiendeler"
-    },
-    "title": "@:createTokenText",
-    "action": "@:createTokenText",
-    "confirm": "@:confirmText",
-    "titleCommon": "Skape",
-    "confirmTokenTitleCommon": "Opprett token",
-    "confirmTokenTitleNFT": "Lag NFT",
-    "actionNFT": "@:createTokenTextNFT"
-  },
-  "transaction": {
-    "title": "Transaksjonsdetaljer",
-    "blockId": "Blokk-ID",
-    "status": "Status",
-    "statuses": {
-      "pending": "Pågår",
-      "failed": "Transaksjon mislyktes",
-      "complete": "Ferdig"
-    },
-    "errorMessage": "Feil",
-    "startTime": "Dato",
-    "amount": "@:amountText",
-    "amount2": "@:amountText 2",
-    "fee": "Transaksjonsgebyr",
-    "total": "Total",
-    "from": "Fra",
-    "to": "Til",
-    "successCopy": "{value} er kopiert til utklippstavlen",
-    "copy": "Kopier {value}",
     "history": {
-      "created": "Transaksjon for {amount} {symbol} er opprettet.",
-      "submitted": "Transaksjon sendt med gebyr på {fee} {symbol}",
-      "confirmed": "Transaksjon bekreftet"
+        "clearHistory": "Slett historikk",
+        "filterPlaceholder": "Filtrer etter adresse, symbol, type eller blokk-ID",
+        "empty": "Transaksjonene dine vises her",
+        "emptySearch": "Ingen transaksjoner funnet",
+        "firstText": "Først",
+        "lastText": "Siste",
+        "prevText": "Tidligere",
+        "nextText": "Neste"
     },
-    "txId": "Transaksjons ID",
-    "viewIn": "Vis i {explorer}",
-    "referrer": "Henviser",
-    "referral": "Henvisning",
-    "adarTxDetailsTitle": "Transaksjonsdetaljer",
-    "comment": "Kommentar",
-    "price": "Pris",
-    "side": "Side"
-  },
-  "appName": "{AppName}",
-  "changeNetworkText": "Bytt nettverk i lommeboken",
-  "transactionText": "transaksjon | transaksjoner",
-  "connectWalletText": "Koble til konto",
-  "changeAccountText": "Bytt konto",
-  "connectedText": "Tilkoblet",
-  "connectWalletTextTooltip": "Koble til {Sora} Network med {PolkadotJs}",
-  "selectNodeText": "Velg node",
-  "bridgeText": "Bro",
-  "disclaimer": "{disclaimerPrefix} Dette nettstedet vedlikeholdes av {Sora} -fellesskapet. Før du fortsetter å bruke dette nettstedet, må du lese {polkaswapFaqLink} og dokumentasjonen, som inkluderer en detaljert forklaring på hvordan {AppName} fungerer, samt {memorandumLink} og {privacyLink}. Disse dokumentene er avgjørende for en sikker og positiv brukeropplevelse. Ved å bruke {AppName} erkjenner du at du har lest og forstått disse dokumentene. Du erkjenner også følgende: 1) ditt eget ansvar for å overholde alle lover som kan gjelde for din spesielle bruk av {AppName} i din juridiske jurisdiksjon; 2) din forståelse av at den nåværende versjonen av {AppName} er en alfaversjon: den er ikke fullstendig testet, og noen funksjoner fungerer kanskje ikke som designet; og 3) din forståelse og frivillig aksept av risikoen ved bruk av {AppName}, inkludert, men ikke begrenset til, risikoen for å miste tokens. Igjen, ikke fortsett uten å lese {polkaswapFaqLink}, {memorandumLink} og {privacyLink}!",
-  "poweredBy": "Drevet av",
-  "confirmTransactionText": "Bekreft transaksjon",
-  "retryText": "Prøv igjen",
-  "networkFeeText": "Nettverksgebyr",
-  "networkFeeTooltipText": "Nettverksavgift brukes til å sikre {Sora} -systemets vekst og stabile ytelse.",
-  "ethNetworkFeeTooltipText": "Vær oppmerksom på at {network} -nettverksavgiftene som vises på {AppName} bare er grove anslag. Du kan se det riktige gebyrbeløpet i den tilkoblede {network} -lommeboken din før du bekrefter transaksjonen.",
-  "marketText": "Marked",
-  "marketAlgorithmText": "Markedsalgoritme",
-  "firstPerSecond": "{first} per {second}",
-  "pairIsNotCreated": "Tokenpar er ikke opprettet",
-  "pageTitle": {
-    "Swap": "Bytte",
-    "Pool": "Pool",
-    "Bridge": "@:bridgeText",
-    "Stats": "Statistikk",
-    "Wallet": "Lommebok",
-    "AddLiquidity": "Legg til likviditet",
-    "RemoveLiquidity": "Fjern likviditet",
-    "Rewards": "Belønninger",
-    "Explore/Tokens": "Tokens",
-    "Explore/Pools": "Bassenger",
-    "Explore/Staking": "Staking",
-    "Explore/Farming": "Farming",
-    "Staking": "Staking",
-    "OrderBook": "Handel",
-    "Explore/Books": "@:pageTitle.OrderBook",
-    "AssetOwner": "Eier av eiendeler",
-    "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-    "Vaults": "{Kensetsu}",
-    "VaultDetails": "Posisjonsdetaljer",
-    "Burn": "Brenne"
-  },
-  "mainMenu": {
-    "Swap": "Bytte",
-    "Pool": "Pool",
-    "Bridge": "@:bridgeText",
-    "Farming": "Farming",
-    "Wallet": "Konto",
-    "Rewards": "Belønninger",
-    "About": "Om",
-    "Stats": "Statistikk",
-    "StakingContainer": "Staking",
-    "Explore/Container": "Utforske",
-    "SoraCard": "{Sora} Kort",
-    "OrderBook": "Handel",
-    "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-    "VaultsContainer": "@:pageTitle.Vaults",
-    "Burn": "@:pageTitle.Burn"
-  },
-  "social": {
-    "twitter": "Twitter",
-    "telegram": "Telegram",
-    "medium": "Medium",
-    "reddit": "Reddit",
-    "github": "GitHub",
-    "wiki": "{Sora} Wiki"
-  },
-  "footerMenu": {
-    "faucet": "Faucet",
-    "github": "GitHub",
-    "sorawiki": "{Sora} Wiki",
-    "memorandum": "{AppName} Memorandum og vilkår for bruk",
-    "privacy": "Personvernerklæring",
-    "info": "Info og fellesskap"
-  },
-  "helpDialog": {
-    "title": "Hjelp",
-    "termsOfService": "Vilkår for bruk",
-    "privacyPolicy": "Personvernerklæring",
-    "appVersion": "{AppName} versjon",
-    "contactUs": "Kontakt oss"
-  },
-  "aboutNetworkDialog": {
-    "title": "Om",
-    "network": {
-      "title": "Hva er {Sora}?",
-      "description": "{AppName} er bygget på toppen av {Sora} Network, og {Sora} token (XOR) brukes til gass / avgifter og likviditetsbestemmelse på {AppName}. {Sora} Network gir mulighet for reduserte avgifter, raskere transaksjoner og enklere konsensus-sluttføring og er fokusert på å levere interoperabilitet på tvers av andre blokkjedeøkosystemer som {Ethereum}."
-    },
-    "polkadot": {
-      "title": "Hva er {PolkadotJs}?",
-      "description": "{PolkadotJs} utvidelse er en nettleserutvidelse tilgjengelig for Firefox og Chrome dedikert til å administrere kontoer for Substrate-baserte kjeder, inkludert {Sora}, {Polkadot} og {Kusama}. Du kan legge til, importere og eksportere kontoer og signere transaksjoner eller ekstrinsikk som du har startet fra webområder du har godkjent."
-    }
-  },
-  "node": {
-    "errors": {
-      "connection": "Det oppstod en feil under tilkobling til noden\n{address}\n",
-      "network": "Noden\n{address}\n er fra et annet nettverk\n",
-      "existing": "Denne noden er allerede lagt til: {title}\n"
-    },
-    "messages": {
-      "connected": "Tilkobling etablert til node\n{address}\n",
-      "selectNode": "Velg en node som skal tilkobles fra listen"
-    },
-    "warnings": {
-      "disconnect": "Mistet forbinnelse til noden. Prøver å koble til på nytt..."
-    }
-  },
-  "selectNodeDialog": {
-    "title": "Nettverk nodevalg",
-    "addNode": "Legg til egendefinert node",
-    "customNode": "Egendefinert node",
-    "howToSetupOwnNode": "Sett opp din node",
-    "select": "Velg",
-    "connected": "Tilkoblet",
-    "nodeTitle": "{chain} driftet av {name}",
-    "messages": {
-      "emptyName": "Skriv inn navnet på noden",
-      "emptyAddress": "Skriv inn adressen til noden",
-      "incorrectProtocol": "Adressen må starte fra ws:// eller wss://",
-      "incorrectAddress": "Feil adresse"
-    },
-    "updateNode": "Oppdater node"
-  },
-  "buttons": {
-    "max": "MAKS",
-    "chooseToken": "Velg token",
-    "chooseAToken": "Velg token",
-    "chooseTokens": "Velg tokens",
-    "enterAmount": "Angi beløp"
-  },
-  "transfers": {
-    "from": "Fra",
-    "to": "Til"
-  },
-  "exchange": {
-    "Swap": "Bytte",
-    "Pool": "Pool",
-    "balance": "Balanse",
-    "price": "Pris",
-    "transactionSubmitted": "Transaksjon sendt",
-    "transactionMessage": "{firstToken} og {secondToken}",
-    "ok": "OK",
-    "confirm": "Bekrefte",
-    "lossWarning": "Du kommer til å miste {value}% på handelen din. Vi har oppdaget et problem med likviditetsavsetning. Dette kan føre til betydelige tap under token-bytte. Sørg for at det er tilstrekkelig likviditet for ønsket byttepar."
-  },
-  "swap": {
-    "estimated": "estimert",
-    "slippageTolerance": "Sklitoleranse",
-    "minReceived": "Minimum mottatt",
-    "maxSold": "Maksimalt solgt",
-    "minReceivedTooltip": "Transaksjonen vil gå tilbake hvis det er en stor, ugunstig prisbevegelse før den bekreftes.",
-    "priceImpact": "Prispåvirkning",
-    "priceImpactTooltip": "Forskjell mellom markedspris og estimert pris på grunn av handelsstørrelse.",
-    "liquidityProviderFee": "Gebyr for likviditetsleverandør",
-    "liquidityProviderFeeTooltip": "En del av hver handel ({liquidityProviderFee}%) går til likviditetsleverandører som et protokollinsentiv.",
-    "insufficientAmount": "Utilstrekkelig {tokenSymbol} saldo",
-    "insufficientLiquidity": "Utilstrekkelig likviditet",
-    "confirmSwap": "Bekreft bytte",
-    "swapOutputMessage": "Beløp er estimert. Du vil motta minst {transactionValue} ellers vil transaksjonen gå tilbake.",
-    "rewardsForSwap": "Strategiske PSWAP belønninger",
-    "swapInputMessage": "Inndata er estimert. Du vil selge maksimalt {transactionValue} ellers vil transaksjonen gå tilbake.",
-    "route": "Rute",
-    "errorFetching": "Feil under henting av data"
-  },
-  "pool": {
-    "connectToWallet": "Koble til en konto for å se din likviditet.",
-    "liquidityNotFound": "Ingen likviditet funnet.",
-    "addLiquidity": "Tilfør likviditet",
-    "removeLiquidity": "Fjern likviditet",
-    "createPair": "Opprett par",
-    "pooledToken": "{tokenSymbol} Pooled",
-    "pairTokens": "{pair} Pool Tokens",
-    "poolShare": "Din pool andel",
-    "description": "Når du legger til likviditet, får du pool -tokens som representerer posisjonen din. Disse symbolene tjener automatisk gebyrer som er proporsjonale med din andel av bassenget, og kan innløses når som helst.",
-    "strategicBonusApy": "Strategisk bonus APY"
-  },
-  "bridge": {
-    "title": "Bro",
-    "info": "Konverter tokens mellom {Sora} og {Ethereum} -nettverkene.",
-    "balance": "Balanse",
-    "next": "Neste",
-    "connectWallets": "Koble til lommebøker for å se respektive transaksjonshistorikk.",
-    "soraNetworkFee": "{Sora} Nettverksgebyr",
-    "ethereumNetworkFee": "{Ethereum} Nettverksgebyr",
-    "total": "Total",
-    "viewHistory": "Se transaksjonshistorikk",
-    "transactionSubmitted": "Transaksjon sendt",
-    "transactionMessage": "{assetA} for {assetB}",
-    "notRegisteredAsset": "Aktivum {assetSymbol} er ikke registrert",
-    "selectNetwork": "Velg nettverk",
-    "networkInfo": "Bridge {Sora} Network med:",
-    "copy": "Kopier nettverksadressen",
-    "soraAddress": "{Sora} adresse",
-    "ethereumAddress": "{Ethereum} adresse",
-    "limitMessage": "For øyeblikket er det en {type} {amount} {symbol} for brobygging for å sikre stabiliteten og sikkerheten til {Sora} -nettverket. Vi setter pris på din forståelse.",
-    "externalTransferFee": "{network} {XCM} gebyr",
-    "externalTransferFeeTooltip": "Når du sender en brotransaksjon til {network} -nettverket, tas et mindre gebyr fra beløpet du overfører",
-    "externalMinDeposit": "{network} min. innskudd",
-    "externalMinDepositTooltip": "Minimumsaldo {symbol} som må være på {network} -kontoen din etter brooverføringen"
-  },
-  "selectRegisteredAsset": {
-    "title": "Velg token",
-    "search": {
-      "title": "Tokens",
-      "placeholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol",
-      "networkLabelSora": "{Sora} nettverk tokens",
-      "networkLabelEthereum": "{network} nettverksspeiltokener",
-      "emptyListMessage": "Ingen resultat"
-    },
-    "customAsset": {
-      "title": "Egendefinert",
-      "customInfo": "Viktig! Egendefinerte tokener må registreres i {Sora}.",
-      "registerToken": "Registrer token",
-      "addressPlaceholder": "Aktivum ID",
-      "symbolPlaceholder": "Token symbol",
-      "empty": "Finner ingen token",
-      "alreadyAttached": "Token er allerede vedlagt"
-    }
-  },
-  "bridgeTransaction": {
-    "details": "{from} for {to}",
-    "for": " for ",
-    "steps": {
-      "step": "{step} av 2",
-      "step1": "1.",
-      "step2": "2."
-    },
-    "status": {
-      "pending": "{step} transaksjoner venter ...",
-      "failed": "{step} transaksjoner mislyktes. @:(retryText).",
-      "confirm": "Bekreft 2/2 transaksjoner...",
-      "complete": "Ferdig",
-      "convertionComplete": "Konvertering er fullført"
-    },
-    "statuses": {
-      "waiting": "Venter",
-      "ready": "Klar",
-      "pending": "Pågår",
-      "frozen": "Fryst",
-      "failed": "Transaksjon mislyktes",
-      "done": "Ferdig",
-      "waitingForConfirmation": "Venter på bekreftelse..."
-    },
-    "networkTitle": "{network} transaksjon",
-    "transactionHash": "Transaksjon hash",
-    "networkInfo": {
-      "status": "Status",
-      "date": "Dato",
-      "amount": "Beløp",
-      "transactionFee": "Transaksjonsgebyr",
-      "total": "Total"
-    },
-    "successCopy": "Transaksjons hash er kopiert til utklippstavlen",
-    "ethereum": "{Ethereum}",
-    "sora": "{Sora}",
-    "pending": "{network} transaksjon pågår...",
-    "newTransaction": "Opprett ny transaksjon",
-    "title": "Bro Transaksjon",
-    "allowToken": "Tillat {AppName} å bruke {tokenSymbol}",
-    "approveToken": "Vær oppmerksom på at det bare er nødvendig å godkjenne tokenet én gang. Hvis utvidelsen din har flere forespørsler om godkjenning av token, må du bare bekrefte den siste mens du avviser resten.",
-    "blocksLeft": "{count} blokker igjen..."
-  },
-  "bridgeHistory": {
-    "title": "Historie",
-    "showHistory": "Vis historikk",
-    "clearHistory": "Slett historikk",
-    "empty": "Transaksjonene dine vises her.",
-    "filterPlaceholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol",
-    "restoreHistory": "Gjenopprett historikk",
-    "statusAction": "Handling nødvendig"
-  },
-  "selectToken": {
-    "title": "Velg token",
-    "searchPlaceholder": "Filtrer etter aktivum ID, Navn eller Tickersymbol",
-    "emptyListMessage": "Ingen resultat",
-    "copy": "Kopier aktivum ID",
-    "successCopy": "{symbol} Aktivum ID ble kopiert til utklippstavlen",
     "assets": {
-      "title": "Aktiva"
+        "empty": "Det finnes ingen aktiva",
+        "swap": "@:swapText",
+        "send": "@:sendText",
+        "receive": "@:account.copy",
+        "liquidity": "Tilfør likviditet",
+        "bridge": "Bro",
+        "copy": "Kopier aktivum ID",
+        "successCopy": "{symbol} Aktivum ID ble kopiert til utklippstavlen",
+        "copied": "Kopiert!",
+        "balance": {
+            "transferable": "Overførbar",
+            "frozen": "Fryst",
+            "locked": "Låst",
+            "reserved": "Reservert",
+            "total": "Totalt",
+            "bonded": "Bundet"
+        },
+        "totalAssetsValue": "Totalverdi aktiva:",
+        "details": "Detaljer",
+        "assetId": "Aktivum ID"
     },
-    "custom": {
-      "title": "Egendefinert",
-      "search": "Angi ID for aktivum",
-      "text": "EGENDEFINERTE TOKENS",
-      "alreadyAttached": "Token er allerede vedlagt",
-      "notFound": "Finner ikke token"
-    }
-  },
-  "createPair": {
-    "title": "Opprett par",
-    "deposit": "Innskudd",
-    "balance": "Balanse",
-    "pricePool": "Priser og gebyrer",
-    "shareOfPool": "Andel av pool",
-    "firstSecondPoolTokens": "{first}-{second} Pool",
-    "connect": "Koble til lommebok",
-    "supply": "Forsyning",
-    "yourPosition": "Din posisjon",
-    "yourPositionEstimated": "Din posisjon (estimert)",
-    "youWillReceive": "Du vil motta",
-    "remove": "ta bort",
-    "add": "LEGG TIL",
-    "ok": "OK",
-    "alreadyCreated": "Tokenpar er allerede opprettet",
-    "firstLiquidityProvider": "Du er den første likviditetsleverandøren",
-    "firstLiquidityProviderInfo": "Forholdet mellom tokener du legger til, angir prisen på denne pool.<br/> Når du er fornøyd med prisen klikk forsyning for å gjennomgå."
-  },
-  "confirmSupply": {
-    "title": "Din pool andel vil være",
-    "outputDescription": "Beløp er estimert. Hvis prisen endres mer enn {slippageTolerance}%, vil transaksjonen gå tilbake.",
-    "poolTokensBurned": "{first}-{second} Pool tokens brent",
-    "price": "Pris"
-  },
-  "addLiquidity": {
-    "title": "Tilfør likviditet"
-  },
-  "removeLiquidity": {
-    "title": "Fjern likviditet",
-    "liquidity": "likviditet",
-    "balance": "Balanse",
-    "amount": "Beløp",
-    "input": "Inngang",
-    "output": "Utgang",
-    "price": "Pris",
-    "remove": "Fjerne",
-    "description": "Fjerne pool -tokens konverterer posisjonen din tilbake til underliggende tokens med den nåværende hastigheten, proporsjonal med din andel av bassenget. Påløpte gebyrer er inkludert i beløpene du mottar.",
-    "outputMessage": "Beløp er estimert. Hvis prisen endres mer enn {slippageTolerance}%, vil transaksjonen gå tilbake.",
-    "confirmTitle": "Du vil motta",
-    "shareOfPool": "Andel av pool etter transaksjon",
-    "locked": "{percent} av puljen din er i {lock}"
-  },
-  "dexSettings": {
-    "title": "Innstillinger",
-    "marketAlgorithm": "@.upper:marketAlgorithmText",
-    "marketAlgorithmTooltip": {
-      "main": " - mulighet til å velge mellom Primærmarkedet (TBC), Sekundærmarkedet (XYK) eller en kombinert smart algoritme for garantert beste pris for en gitt transaksjon."
+    "asset": {
+        "remove": "Fjern aktiva",
+        "select": "Velg aktivum",
+        "receive": "Motta {symbol}"
     },
-    "slippageTolerance": "SLIPPAGE TOLERANSE",
-    "slippageToleranceHint": "Transaksjonen din vil gå tilbake hvis prisen endres ugunstig med mer enn denne prosentandelen.",
-    "slippageToleranceValidation": {
-      "warning": "Transaksjonen kan mislykkes",
-      "frontrun": "Transaksjonen din kan bli forhåndskjørt",
-      "error": "Skriv inn en gyldig glideprosent"
+    "addAsset": {
+        "success": "Ressursen {symbol} ble lagt til.",
+        "empty": "Finner ingen token",
+        "alreadyAttached": "Token er allerede vedlagt",
+        "understand": "Jeg skjønner",
+        "warningTitle": "Handle på egen risiko!",
+        "warningMessage": "denne {assetType} | disse {assetTypePlural}",
+        "approved": "Aktiva godkjent av fellesskapet",
+        "unknown": "Ukjent kilde",
+        "scam": "SVINDEL",
+        "next": "Neste",
+        "AddAssetToken": {
+            "title": "Valutaer",
+            "switchBtn": "Kun bekreftede eiendeler"
+        },
+        "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol",
+        "warningMessageText": "Hvem som helst kan opprette en {assetType}, inkludert å lage falske versjoner av eksisterende {assetTypePlural} som hevder å representere prosjekter. Hvis du kjøper en {purchaseAssetType}, kan det hende du ikke kan selge den tilbake.",
+        "assetType": {
+            "token": "Token | Tokens",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Legg til",
+        "pinAsset": "Fest eiendel",
+        "unpinAsset": "Fjern feste på eiendel"
     },
-    "custom": "TILPASSET",
-    "transactionDeadline": "TRANSAKSJONSFRIST",
-    "transactionDeadlineHint": "Transaksjonen avbrytes hvis den venter i mer enn så lang tid.",
-    "nodeAddress": "NODE ADRESSE",
-    "ip": "IP",
-    "port": "PORT",
-    "min": "MIN",
-    "marketAlgorithms": {
-      "SMART": "{smartAlgorithm} likviditetsruting sikrer den beste prisen for enhver transaksjon ved å kombinere bare de beste prisalternativene fra alle tilgjengelige markeder. Når Token Bonding Curve ({tbcAlgorithm}) vil bli brukt til likviditet så lenge aktivaprisen er rimeligere enn fra andre kilder, hvorpå {xycAlgorithm} utvalget benyttes.",
-      "TBC": "{tbcAlgorithm} - kjøper bare fra Token Bonding Curve (Primary Market). Det er en mulighet for at prisen kan bli ugunstig sammenlignet med {xycAlgorithm} pool (Sekundærmarkedet), men verdien mottatt fra de opptjente belønningene kan vise seg å være mye gunstigere over tid.",
-      "XYK": "{xycAlgorithm}- kjøper bare fra XYK Pool (sekundærmarkedet). Tradisjonelt XYK-bassengbytte."
+    "createToken": {
+        "desc": "Opprett og distribuer egendefinert token på {Sora}",
+        "enterSymbol": "Angi tokensymbol",
+        "enterName": "Angi tokennavn",
+        "enterSupply": "Angi tokenforsyning (antall)",
+        "success": {
+            "title": "Transaksjon sendt",
+            "desc": "Opprett {symbol} token"
+        },
+        "tooltipValue": "@:networkFeeTooltipText",
+        "fee": "@:networkFeeText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "feeError": "Mislyktes i å hente transaksjonsgebyr",
+        "error": "Oppretting av token med {symbol} mislyktes.",
+        "tokenSymbol": {
+            "placeholder": "Token symbol",
+            "desc": "Dette er en identifikator for tokenet. Du kan bruke fra 1 til 7 tegn."
+        },
+        "tokenName": {
+            "placeholder": "Token navn",
+            "desc": "Dette er et navn på token. Du kan bruke fra 1 til 33 tegn for valget."
+        },
+        "tokenSupply": {
+            "placeholder": "Token forsyning",
+            "desc": "Du vil motta disse tokenene ved opprettelse."
+        },
+        "extensibleSupply": {
+            "placeholder": "Utvidbar forsyning",
+            "desc": "Evne til å lage flere tokens."
+        },
+        "provideContent": "Gi innhold",
+        "selectLocalFile": "Velg lokal fil",
+        "CreateSimpleToken": "Token",
+        "nft": {
+            "source": {
+                "label": "Kilde",
+                "value": "Lokale filer",
+                "limit": "Velg en annen fil"
+            },
+            "link": {
+                "placeholder": "IPFS-kobling",
+                "copyLink": "Kopier link",
+                "tooltip": "IPFS er et distribuert system for lagring og tilgang til filer, som gjør det mulig å få tilgang til filer fra mange steder som ikke administreres av én organisasjon."
+            },
+            "image": {
+                "placeholderNoImage": "Last opp filen ved enten å skrive inn en lenke eller velge fra lokal lagring",
+                "placeholderBadSource": "Filen kunne ikke behandles",
+                "placeholderBadSourceAddition": "eller det er ikke lastet opp til IPFS ennå",
+                "placeholderFileLimit": "Filstørrelsen overskrider grensen på {value} mb"
+            },
+            "supply": {
+                "placeholder": "Token forsyning",
+                "desc": "Antall NFT-er du kommer til å få.",
+                "quantity": "Mengde"
+            },
+            "description": {
+                "placeholder": "Beskrivelse"
+            }
+        },
+        "enterTokenDescription": "Skriv inn beskrivelse",
+        "divisible": {
+            "placeholder": "Delelig",
+            "desc": "NFTs evne til å dele opp i brøkdeler. Likviditetsavsetning fungerer kun med delbare eiendeler"
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Skape",
+        "confirmTokenTitleCommon": "Opprett token",
+        "confirmTokenTitleNFT": "Lag NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
-    "charts": "Diagrammer",
-    "сhartsDescription": "Se diagrammer for tokenpriser"
-  },
-  "resultDialog": {
-    "title": "Transaksjonen er sendt inn",
-    "ok": "OK"
-  },
-  "rewards": {
-    "title": "Gjør krav på belønninger",
-    "andText": "og",
-    "claiming": {
-      "pending": "Henter...",
-      "success": "Innkrevingen var vellykket"
+    "transaction": {
+        "title": "Transaksjonsdetaljer",
+        "blockId": "Blokk-ID",
+        "status": "Status",
+        "statuses": {
+            "pending": "Pågår",
+            "failed": "Transaksjon mislyktes",
+            "complete": "Ferdig"
+        },
+        "errorMessage": "Feil",
+        "startTime": "Dato",
+        "amount": "@:amountText",
+        "amount2": "@:amountText 2",
+        "fee": "Transaksjonsgebyr",
+        "total": "Total",
+        "from": "Fra",
+        "to": "Til",
+        "successCopy": "{value} er kopiert til utklippstavlen",
+        "copy": "Kopier {value}",
+        "history": {
+            "created": "Transaksjon for {amount} {symbol} er opprettet.",
+            "submitted": "Transaksjon sendt med gebyr på {fee} {symbol}",
+            "confirmed": "Transaksjon bekreftet"
+        },
+        "txId": "Transaksjons ID",
+        "viewIn": "Vis i {explorer}",
+        "referrer": "Henviser",
+        "referral": "Henvisning",
+        "adarTxDetailsTitle": "Transaksjonsdetaljer",
+        "comment": "Kommentar",
+        "price": "Pris",
+        "side": "Side"
     },
-    "transactions": {
-      "confimation": "Bekreft {order} av {total} transaksjoner...",
-      "success": "Du vil om kort tid motta din belønning",
-      "failed": "{order} av {total} transaksjoner mislyktes. @:retryText"
+    "appName": "{AppName}",
+    "changeNetworkText": "Bytt nettverk i lommeboken",
+    "transactionText": "transaksjon | transaksjoner",
+    "connectWalletText": "Koble til konto",
+    "changeAccountText": "Bytt konto",
+    "connectedText": "Tilkoblet",
+    "connectWalletTextTooltip": "Koble til {Sora} Network med {PolkadotJs}",
+    "selectNodeText": "Velg node",
+    "bridgeText": "Bro",
+    "disclaimer": "{disclaimerPrefix} Dette nettstedet vedlikeholdes av {Sora} -fellesskapet. Før du fortsetter å bruke dette nettstedet, må du lese {polkaswapFaqLink} og dokumentasjonen, som inkluderer en detaljert forklaring på hvordan {AppName} fungerer, samt {memorandumLink} og {privacyLink}. Disse dokumentene er avgjørende for en sikker og positiv brukeropplevelse. Ved å bruke {AppName} erkjenner du at du har lest og forstått disse dokumentene. Du erkjenner også følgende: 1) ditt eget ansvar for å overholde alle lover som kan gjelde for din spesielle bruk av {AppName} i din juridiske jurisdiksjon; 2) din forståelse av at den nåværende versjonen av {AppName} er en alfaversjon: den er ikke fullstendig testet, og noen funksjoner fungerer kanskje ikke som designet; og 3) din forståelse og frivillig aksept av risikoen ved bruk av {AppName}, inkludert, men ikke begrenset til, risikoen for å miste tokens. Igjen, ikke fortsett uten å lese {polkaswapFaqLink}, {memorandumLink} og {privacyLink}!",
+    "poweredBy": "Drevet av",
+    "confirmTransactionText": "Bekreft transaksjon",
+    "retryText": "Prøv igjen",
+    "networkFeeText": "Nettverksgebyr",
+    "networkFeeTooltipText": "Nettverksavgift brukes til å sikre {Sora} -systemets vekst og stabile ytelse.",
+    "ethNetworkFeeTooltipText": "Vær oppmerksom på at {network} -nettverksavgiftene som vises på {AppName} bare er grove anslag. Du kan se det riktige gebyrbeløpet i den tilkoblede {network} -lommeboken din før du bekrefter transaksjonen.",
+    "marketText": "Marked",
+    "marketAlgorithmText": "Markedsalgoritme",
+    "firstPerSecond": "{first} per {second}",
+    "pairIsNotCreated": "Tokenpar er ikke opprettet",
+    "pageTitle": {
+        "Swap": "Bytte",
+        "Pool": "Pool",
+        "Bridge": "@:bridgeText",
+        "Stats": "Statistikk",
+        "Wallet": "Lommebok",
+        "AddLiquidity": "Legg til likviditet",
+        "RemoveLiquidity": "Fjern likviditet",
+        "Rewards": "Belønninger",
+        "Explore\/Tokens": "Tokens",
+        "Explore\/Pools": "Bassenger",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking",
+        "OrderBook": "Handel",
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "AssetOwner": "Eier av eiendeler",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "{Kensetsu}",
+        "VaultDetails": "Posisjonsdetaljer",
+        "Burn": "Brenne"
     },
-    "signing": {
-      "extension": "{PolkadotJs} nettleserutvidelse",
-      "accounts": "{Sora} og {Ethereum} kontoene dine"
+    "mainMenu": {
+        "Swap": "Bytte",
+        "Pool": "Pool",
+        "Bridge": "@:bridgeText",
+        "Farming": "Farming",
+        "Wallet": "Konto",
+        "Rewards": "Belønninger",
+        "About": "Om",
+        "Stats": "Statistikk",
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Utforske",
+        "SoraCard": "{Sora} Kort",
+        "OrderBook": "Handel",
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Burn": "@:pageTitle.Burn"
     },
-    "hint": {
-      "connectExternalAccount": "Koble til en {Ethereum} konto for å se tilgjengelig PSWAP- og VAL -belønninger.",
-      "connectAccounts": "For å kreve PSWAP- og VAL -belønninger må du koble til både {Sora} og {Ethereum} kontoene.",
-      "connectAnotherAccount": "Koble til en annen {Ethereum} konto for å se etter tilgjengelige PSWAP og VAL-belønninger.",
-      "howToClaimRewards": "Hvis du vil gjøre krav på {symbols}-belønningene dine, må du signere {count} {transactions} i {destination}. Belønninger vil bli satt inn på din {Sora} -konto."
+    "social": {
+        "twitter": "Twitter",
+        "telegram": "Telegram",
+        "medium": "Medium",
+        "reddit": "Reddit",
+        "github": "GitHub",
+        "wiki": "{Sora} Wiki"
     },
-    "action": {
-      "connectExternalWallet": "Koble til {Ethereum} -konto",
-      "signAndClaim": "Signer og hev belønning",
-      "pendingInternal": "{Sora} -transaksjon pågår...",
-      "pendingExternal": "{Ethereum} transaksjon pågår...",
-      "checkRewards": "Sjekk"
+    "footerMenu": {
+        "faucet": "Faucet",
+        "github": "GitHub",
+        "sorawiki": "{Sora} Wiki",
+        "memorandum": "{AppName} Memorandum og vilkår for bruk",
+        "privacy": "Personvernerklæring",
+        "info": "Info og fellesskap"
     },
-    "notification": {
-      "empty": "Denne kontoen har ingen opptjent belønning"
+    "helpDialog": {
+        "title": "Hjelp",
+        "termsOfService": "Vilkår for bruk",
+        "privacyPolicy": "Personvernerklæring",
+        "appVersion": "{AppName} versjon",
+        "contactUs": "Kontakt oss"
     },
-    "events": {
-      "XorErc20": "XOR ERC-20",
-      "SoraFarmHarvest": "{Sora}.farm høsting",
-      "NtfAirdrop": "NFT Airdrop",
-      "LiquidityProvision": "Gebyrer oppnådd ved likviditetsavsetning",
-      "BuyOnBondingCurve": "kjøp fra TBC",
-      "MarketMakerVolume": "Markedsproduksjon",
-      "LiquidityProvisionFarming": "Farming"
+    "aboutNetworkDialog": {
+        "title": "Om",
+        "network": {
+            "title": "Hva er {Sora}?",
+            "description": "{AppName} er bygget på toppen av {Sora} Network, og {Sora} token (XOR) brukes til gass \/ avgifter og likviditetsbestemmelse på {AppName}. {Sora} Network gir mulighet for reduserte avgifter, raskere transaksjoner og enklere konsensus-sluttføring og er fokusert på å levere interoperabilitet på tvers av andre blokkjedeøkosystemer som {Ethereum}."
+        },
+        "polkadot": {
+            "title": "Hva er {PolkadotJs}?",
+            "description": "{PolkadotJs} utvidelse er en nettleserutvidelse tilgjengelig for Firefox og Chrome dedikert til å administrere kontoer for Substrate-baserte kjeder, inkludert {Sora}, {Polkadot} og {Kusama}. Du kan legge til, importere og eksportere kontoer og signere transaksjoner eller ekstrinsikk som du har startet fra webområder du har godkjent."
+        }
     },
-    "vested": "midlertidig låst",
-    "forText": "for",
-    "totalVested": "Total belønning",
-    "claimableAmountDoneVesting": "Tilgjengelige belønninger",
-    "groups": {
-      "strategic": "Strategiske belønninger",
-      "external": "Belønninger for tilkoblet {Ethereum} konto",
-      "crowdloan": "Crowdloan belønninger"
+    "node": {
+        "errors": {
+            "connection": "Det oppstod en feil under tilkobling til noden\n{address}\n",
+            "network": "Noden\n{address}\n er fra et annet nettverk\n",
+            "existing": "Denne noden er allerede lagt til: {title}\n"
+        },
+        "messages": {
+            "connected": "Tilkobling etablert til node\n{address}\n",
+            "selectNode": "Velg en node som skal tilkobles fra listen"
+        },
+        "warnings": {
+            "disconnect": "Mistet forbinnelse til noden. Prøver å koble til på nytt..."
+        }
     },
-    "Rewards": "Belønninger",
-    "ReferralProgram": "Henvisninger",
-    "PointSystem": "Poeng"
-  },
-  "provider": {
-    "messages": {
-      "checkExtension": "{name} er opptatt. vennligst sjekk",
-      "extensionLogin": "Logg på utvidelsen {name}",
-      "installExtension": "Finner ikke utvidelsen {name}. Vennligst installer denne for og fortsette.\n\nAllerede installert utvidelse? Last inn siden på nytt",
-      "reloadPage": "Last inn siden på nytt",
-      "notAvailable": "{name} er ikke tilgjengelig."
-    }
-  },
-  "selectLanguageDialog": {
-    "title": "Språk"
-  },
-  "tokens": {
-    "symbol": "Symbol",
-    "assetId": "Aktivum ID"
-  },
-  "memorandum": "{AppName} Memorandum og vilkår for bruk",
-  "FAQ": "{AppName} FAQ",
-  "connectedAccount": "Tilkoblet konto",
-  "selectNodeConnected": "Koblet til: {chain}",
-  "moonpayText": "MoonPay",
-  "forText": "for",
-  "moonpay": {
-    "notifications": {
-      "success": {
-        "title": "Tokens kjøpt",
-        "text": "Token -kjøpet er fullført. {Hashi} bridge -transaksjonen starter automatisk så snart tokens er mottatt i den tilkoblede {Ethereum} -kontoen. Det er trygt å lukke dette vinduet og fortsette å bruke {AppName}. Det vil bli varslet om brotransaksjonen når den er klar."
-      },
-      "supportError": {
-        "title": "Token støttes ikke",
-        "text": "Dessverre støttes ikke tokenet som er kjøpt via @:moonpayText av {Hashi} -broen i {AppName}. Normalt skal bare de støttede tokens være tilgjengelig for kjøp via MoonPay i {AppName}, derfor må noe ha gått galt et sted. Ikke nøl med å informere samfunnet om denne saken i <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> {AppName} Telegram group </a> ."
-      },
-      "feeError": {
-        "title": "Ikke nok ETH for broen tx",
-        "text": "Dessverre har {Hashi} bridge -transaksjonen mislyktes på grunn av at det ikke er nok ETH til å betale for {Ethereum} -nettverkets transaksjonsgebyrer. Legg til mer ETH og prøv igjen."
-      },
-      "transactionError": {
-        "title": "Transaksjonen mislyktes",
-        "text": "Dessverre ser det ut til at @:moonpayText -transaksjonen mislyktes. Vær så snill, prøv på nytt. For @:moonpayText -støtte gå til <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https: // support.moonpay.com </a>"
-      },
-      "amountError": {
-        "title": "Utilstrekkelig balanse",
-        "text": "Dessverre har {Hashi} bridge -transaksjonen mislyktes på grunn av at det ikke er nok tokens for transaksjonen. Kontroller saldoen på {Ethereum} -kontoen, og prøv igjen."
-      },
-      "accountAddressError": {
-        "title": "Feil {Ethereum} -konto",
-        "text": "Dessverre mislyktes {Hashi} bridge -transaksjonen på grunn av mottakeradressen til tokens i @:moonpayText -bestillingen som ikke samsvarer med din nåværende {Ethereum} -kontoadresse. Vennligst bytt {Ethereum} -konto i utvidelsen, og prøv igjen."
-      }
+    "selectNodeDialog": {
+        "title": "Nettverk nodevalg",
+        "addNode": "Legg til egendefinert node",
+        "customNode": "Egendefinert node",
+        "howToSetupOwnNode": "Sett opp din node",
+        "select": "Velg",
+        "connected": "Tilkoblet",
+        "nodeTitle": "{chain} driftet av {name}",
+        "messages": {
+            "emptyName": "Skriv inn navnet på noden",
+            "emptyAddress": "Skriv inn adressen til noden",
+            "incorrectProtocol": "Adressen må starte fra ws:\/\/ eller wss:\/\/",
+            "incorrectAddress": "Feil adresse"
+        },
+        "updateNode": "Oppdater node"
     },
     "buttons": {
-      "buy": "Kjøp Tokens",
-      "history": "Kjøpshistorikk",
-      "transfer": "Start broen",
-      "view": "Se transaksjonen"
+        "max": "MAKS",
+        "chooseToken": "Velg token",
+        "chooseAToken": "Velg token",
+        "chooseTokens": "Velg tokens",
+        "enterAmount": "Angi beløp"
     },
-    "history": {
-      "title": "Kjøpshistorikk",
-      "empty": "@:noDataText"
+    "transfers": {
+        "from": "Fra",
+        "to": "Til"
     },
-    "confirmations": {
-      "txReady": "Transaksjon klar for bro"
+    "exchange": {
+        "Swap": "Bytte",
+        "Pool": "Pool",
+        "balance": "Balanse",
+        "price": "Pris",
+        "transactionSubmitted": "Transaksjon sendt",
+        "transactionMessage": "{firstToken} og {secondToken}",
+        "ok": "OK",
+        "confirm": "Bekrefte",
+        "lossWarning": "Du kommer til å miste {value}% på handelen din. Vi har oppdaget et problem med likviditetsavsetning. Dette kan føre til betydelige tap under token-bytte. Sørg for at det er tilstrekkelig likviditet for ønsket byttepar."
+    },
+    "swap": {
+        "estimated": "estimert",
+        "slippageTolerance": "Sklitoleranse",
+        "minReceived": "Minimum mottatt",
+        "maxSold": "Maksimalt solgt",
+        "minReceivedTooltip": "Transaksjonen vil gå tilbake hvis det er en stor, ugunstig prisbevegelse før den bekreftes.",
+        "priceImpact": "Prispåvirkning",
+        "priceImpactTooltip": "Forskjell mellom markedspris og estimert pris på grunn av handelsstørrelse.",
+        "liquidityProviderFee": "Gebyr for likviditetsleverandør",
+        "liquidityProviderFeeTooltip": "En del av hver handel ({liquidityProviderFee}%) går til likviditetsleverandører som et protokollinsentiv.",
+        "insufficientAmount": "Utilstrekkelig {tokenSymbol} saldo",
+        "insufficientLiquidity": "Utilstrekkelig likviditet",
+        "confirmSwap": "Bekreft bytte",
+        "swapOutputMessage": "Beløp er estimert. Du vil motta minst {transactionValue} ellers vil transaksjonen gå tilbake.",
+        "rewardsForSwap": "Strategiske PSWAP belønninger",
+        "swapInputMessage": "Inndata er estimert. Du vil selge maksimalt {transactionValue} ellers vil transaksjonen gå tilbake.",
+        "route": "Rute",
+        "errorFetching": "Feil under henting av data"
+    },
+    "pool": {
+        "connectToWallet": "Koble til en konto for å se din likviditet.",
+        "liquidityNotFound": "Ingen likviditet funnet.",
+        "addLiquidity": "Tilfør likviditet",
+        "removeLiquidity": "Fjern likviditet",
+        "createPair": "Opprett par",
+        "pooledToken": "{tokenSymbol} Pooled",
+        "pairTokens": "{pair} Pool Tokens",
+        "poolShare": "Din pool andel",
+        "description": "Når du legger til likviditet, får du pool -tokens som representerer posisjonen din. Disse symbolene tjener automatisk gebyrer som er proporsjonale med din andel av bassenget, og kan innløses når som helst.",
+        "strategicBonusApy": "Strategisk bonus APY"
+    },
+    "bridge": {
+        "title": "Bro",
+        "info": "Konverter tokens mellom {Sora} og {Ethereum} -nettverkene.",
+        "balance": "Balanse",
+        "next": "Neste",
+        "connectWallets": "Koble til lommebøker for å se respektive transaksjonshistorikk.",
+        "soraNetworkFee": "{Sora} Nettverksgebyr",
+        "ethereumNetworkFee": "{Ethereum} Nettverksgebyr",
+        "total": "Total",
+        "viewHistory": "Se transaksjonshistorikk",
+        "transactionSubmitted": "Transaksjon sendt",
+        "transactionMessage": "{assetA} for {assetB}",
+        "notRegisteredAsset": "Aktivum {assetSymbol} er ikke registrert",
+        "selectNetwork": "Velg nettverk",
+        "networkInfo": "Bridge {Sora} Network med:",
+        "copy": "Kopier nettverksadressen",
+        "soraAddress": "{Sora} adresse",
+        "ethereumAddress": "{Ethereum} adresse",
+        "limitMessage": "For øyeblikket er det en {type} {amount} {symbol} for brobygging for å sikre stabiliteten og sikkerheten til {Sora} -nettverket. Vi setter pris på din forståelse.",
+        "externalTransferFee": "{network} {XCM} gebyr",
+        "externalTransferFeeTooltip": "Når du sender en brotransaksjon til {network} -nettverket, tas et mindre gebyr fra beløpet du overfører",
+        "externalMinDeposit": "{network} min. innskudd",
+        "externalMinDepositTooltip": "Minimumsaldo {symbol} som må være på {network} -kontoen din etter brooverføringen"
+    },
+    "selectRegisteredAsset": {
+        "title": "Velg token",
+        "search": {
+            "title": "Tokens",
+            "placeholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol",
+            "networkLabelSora": "{Sora} nettverk tokens",
+            "networkLabelEthereum": "{network} nettverksspeiltokener",
+            "emptyListMessage": "Ingen resultat"
+        },
+        "customAsset": {
+            "title": "Egendefinert",
+            "customInfo": "Viktig! Egendefinerte tokener må registreres i {Sora}.",
+            "registerToken": "Registrer token",
+            "addressPlaceholder": "Aktivum ID",
+            "symbolPlaceholder": "Token symbol",
+            "empty": "Finner ingen token",
+            "alreadyAttached": "Token er allerede vedlagt"
+        }
+    },
+    "bridgeTransaction": {
+        "details": "{from} for {to}",
+        "for": " for ",
+        "steps": {
+            "step": "{step} av 2",
+            "step1": "1.",
+            "step2": "2."
+        },
+        "status": {
+            "pending": "{step} transaksjoner venter ...",
+            "failed": "{step} transaksjoner mislyktes. @:(retryText).",
+            "confirm": "Bekreft 2\/2 transaksjoner...",
+            "complete": "Ferdig",
+            "convertionComplete": "Konvertering er fullført"
+        },
+        "statuses": {
+            "waiting": "Venter",
+            "ready": "Klar",
+            "pending": "Pågår",
+            "frozen": "Fryst",
+            "failed": "Transaksjon mislyktes",
+            "done": "Ferdig",
+            "waitingForConfirmation": "Venter på bekreftelse..."
+        },
+        "networkTitle": "{network} transaksjon",
+        "transactionHash": "Transaksjon hash",
+        "networkInfo": {
+            "status": "Status",
+            "date": "Dato",
+            "amount": "Beløp",
+            "transactionFee": "Transaksjonsgebyr",
+            "total": "Total"
+        },
+        "successCopy": "Transaksjons hash er kopiert til utklippstavlen",
+        "ethereum": "{Ethereum}",
+        "sora": "{Sora}",
+        "pending": "{network} transaksjon pågår...",
+        "newTransaction": "Opprett ny transaksjon",
+        "title": "Bro Transaksjon",
+        "allowToken": "Tillat {AppName} å bruke {tokenSymbol}",
+        "approveToken": "Vær oppmerksom på at det bare er nødvendig å godkjenne tokenet én gang. Hvis utvidelsen din har flere forespørsler om godkjenning av token, må du bare bekrefte den siste mens du avviser resten.",
+        "blocksLeft": "{count} blokker igjen..."
+    },
+    "bridgeHistory": {
+        "title": "Historie",
+        "showHistory": "Vis historikk",
+        "clearHistory": "Slett historikk",
+        "empty": "Transaksjonene dine vises her.",
+        "filterPlaceholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol",
+        "restoreHistory": "Gjenopprett historikk",
+        "statusAction": "Handling nødvendig"
+    },
+    "selectToken": {
+        "title": "Velg token",
+        "searchPlaceholder": "Filtrer etter aktivum ID, Navn eller Tickersymbol",
+        "emptyListMessage": "Ingen resultat",
+        "copy": "Kopier aktivum ID",
+        "successCopy": "{symbol} Aktivum ID ble kopiert til utklippstavlen",
+        "assets": {
+            "title": "Aktiva"
+        },
+        "custom": {
+            "title": "Egendefinert",
+            "search": "Angi ID for aktivum",
+            "text": "EGENDEFINERTE TOKENS",
+            "alreadyAttached": "Token er allerede vedlagt",
+            "notFound": "Finner ikke token"
+        }
+    },
+    "createPair": {
+        "title": "Opprett par",
+        "deposit": "Innskudd",
+        "balance": "Balanse",
+        "pricePool": "Priser og gebyrer",
+        "shareOfPool": "Andel av pool",
+        "firstSecondPoolTokens": "{first}-{second} Pool",
+        "connect": "Koble til lommebok",
+        "supply": "Forsyning",
+        "yourPosition": "Din posisjon",
+        "yourPositionEstimated": "Din posisjon (estimert)",
+        "youWillReceive": "Du vil motta",
+        "remove": "ta bort",
+        "add": "LEGG TIL",
+        "ok": "OK",
+        "alreadyCreated": "Tokenpar er allerede opprettet",
+        "firstLiquidityProvider": "Du er den første likviditetsleverandøren",
+        "firstLiquidityProviderInfo": "Forholdet mellom tokener du legger til, angir prisen på denne pool.<br\/> Når du er fornøyd med prisen klikk forsyning for å gjennomgå."
+    },
+    "confirmSupply": {
+        "title": "Din pool andel vil være",
+        "outputDescription": "Beløp er estimert. Hvis prisen endres mer enn {slippageTolerance}%, vil transaksjonen gå tilbake.",
+        "poolTokensBurned": "{first}-{second} Pool tokens brent",
+        "price": "Pris"
+    },
+    "addLiquidity": {
+        "title": "Tilfør likviditet"
+    },
+    "removeLiquidity": {
+        "title": "Fjern likviditet",
+        "liquidity": "likviditet",
+        "balance": "Balanse",
+        "amount": "Beløp",
+        "input": "Inngang",
+        "output": "Utgang",
+        "price": "Pris",
+        "remove": "Fjerne",
+        "description": "Fjerne pool -tokens konverterer posisjonen din tilbake til underliggende tokens med den nåværende hastigheten, proporsjonal med din andel av bassenget. Påløpte gebyrer er inkludert i beløpene du mottar.",
+        "outputMessage": "Beløp er estimert. Hvis prisen endres mer enn {slippageTolerance}%, vil transaksjonen gå tilbake.",
+        "confirmTitle": "Du vil motta",
+        "shareOfPool": "Andel av pool etter transaksjon",
+        "locked": "{percent} av puljen din er i {lock}"
+    },
+    "dexSettings": {
+        "title": "Innstillinger",
+        "marketAlgorithm": "@.upper:marketAlgorithmText",
+        "marketAlgorithmTooltip": {
+            "main": " - mulighet til å velge mellom Primærmarkedet (TBC), Sekundærmarkedet (XYK) eller en kombinert smart algoritme for garantert beste pris for en gitt transaksjon."
+        },
+        "slippageTolerance": "SLIPPAGE TOLERANSE",
+        "slippageToleranceHint": "Transaksjonen din vil gå tilbake hvis prisen endres ugunstig med mer enn denne prosentandelen.",
+        "slippageToleranceValidation": {
+            "warning": "Transaksjonen kan mislykkes",
+            "frontrun": "Transaksjonen din kan bli forhåndskjørt",
+            "error": "Skriv inn en gyldig glideprosent"
+        },
+        "custom": "TILPASSET",
+        "transactionDeadline": "TRANSAKSJONSFRIST",
+        "transactionDeadlineHint": "Transaksjonen avbrytes hvis den venter i mer enn så lang tid.",
+        "nodeAddress": "NODE ADRESSE",
+        "ip": "IP",
+        "port": "PORT",
+        "min": "MIN",
+        "marketAlgorithms": {
+            "SMART": "{smartAlgorithm} likviditetsruting sikrer den beste prisen for enhver transaksjon ved å kombinere bare de beste prisalternativene fra alle tilgjengelige markeder. Når Token Bonding Curve ({tbcAlgorithm}) vil bli brukt til likviditet så lenge aktivaprisen er rimeligere enn fra andre kilder, hvorpå {xycAlgorithm} utvalget benyttes.",
+            "TBC": "{tbcAlgorithm} - kjøper bare fra Token Bonding Curve (Primary Market). Det er en mulighet for at prisen kan bli ugunstig sammenlignet med {xycAlgorithm} pool (Sekundærmarkedet), men verdien mottatt fra de opptjente belønningene kan vise seg å være mye gunstigere over tid.",
+            "XYK": "{xycAlgorithm}- kjøper bare fra XYK Pool (sekundærmarkedet). Tradisjonelt XYK-bassengbytte."
+        },
+        "charts": "Diagrammer",
+        "сhartsDescription": "Se diagrammer for tokenpriser"
+    },
+    "resultDialog": {
+        "title": "Transaksjonen er sendt inn",
+        "ok": "OK"
+    },
+    "rewards": {
+        "title": "Gjør krav på belønninger",
+        "andText": "og",
+        "claiming": {
+            "pending": "Henter...",
+            "success": "Innkrevingen var vellykket"
+        },
+        "transactions": {
+            "confimation": "Bekreft {order} av {total} transaksjoner...",
+            "success": "Du vil om kort tid motta din belønning",
+            "failed": "{order} av {total} transaksjoner mislyktes. @:retryText"
+        },
+        "signing": {
+            "extension": "{PolkadotJs} nettleserutvidelse",
+            "accounts": "{Sora} og {Ethereum} kontoene dine"
+        },
+        "hint": {
+            "connectExternalAccount": "Koble til en {Ethereum} konto for å se tilgjengelig PSWAP- og VAL -belønninger.",
+            "connectAccounts": "For å kreve PSWAP- og VAL -belønninger må du koble til både {Sora} og {Ethereum} kontoene.",
+            "connectAnotherAccount": "Koble til en annen {Ethereum} konto for å se etter tilgjengelige PSWAP og VAL-belønninger.",
+            "howToClaimRewards": "Hvis du vil gjøre krav på {symbols}-belønningene dine, må du signere {count} {transactions} i {destination}. Belønninger vil bli satt inn på din {Sora} -konto."
+        },
+        "action": {
+            "connectExternalWallet": "Koble til {Ethereum} -konto",
+            "signAndClaim": "Signer og hev belønning",
+            "pendingInternal": "{Sora} -transaksjon pågår...",
+            "pendingExternal": "{Ethereum} transaksjon pågår...",
+            "checkRewards": "Sjekk"
+        },
+        "notification": {
+            "empty": "Denne kontoen har ingen opptjent belønning"
+        },
+        "events": {
+            "XorErc20": "XOR ERC-20",
+            "SoraFarmHarvest": "{Sora}.farm høsting",
+            "NtfAirdrop": "NFT Airdrop",
+            "LiquidityProvision": "Gebyrer oppnådd ved likviditetsavsetning",
+            "BuyOnBondingCurve": "kjøp fra TBC",
+            "MarketMakerVolume": "Markedsproduksjon",
+            "LiquidityProvisionFarming": "Farming"
+        },
+        "vested": "midlertidig låst",
+        "forText": "for",
+        "totalVested": "Total belønning",
+        "claimableAmountDoneVesting": "Tilgjengelige belønninger",
+        "groups": {
+            "strategic": "Strategiske belønninger",
+            "external": "Belønninger for tilkoblet {Ethereum} konto",
+            "crowdloan": "Crowdloan belønninger"
+        },
+        "Rewards": "Belønninger",
+        "ReferralProgram": "Henvisninger",
+        "PointSystem": "Poeng"
+    },
+    "provider": {
+        "messages": {
+            "checkExtension": "{name} er opptatt. vennligst sjekk",
+            "extensionLogin": "Logg på utvidelsen {name}",
+            "installExtension": "Finner ikke utvidelsen {name}. Vennligst installer denne for og fortsette.\n\nAllerede installert utvidelse? Last inn siden på nytt",
+            "reloadPage": "Last inn siden på nytt",
+            "notAvailable": "{name} er ikke tilgjengelig."
+        }
+    },
+    "selectLanguageDialog": {
+        "title": "Språk"
+    },
+    "tokens": {
+        "symbol": "Symbol",
+        "assetId": "Aktivum ID"
+    },
+    "memorandum": "{AppName} Memorandum og vilkår for bruk",
+    "FAQ": "{AppName} FAQ",
+    "connectedAccount": "Tilkoblet konto",
+    "selectNodeConnected": "Koblet til: {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "for",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Tokens kjøpt",
+                "text": "Token -kjøpet er fullført. {Hashi} bridge -transaksjonen starter automatisk så snart tokens er mottatt i den tilkoblede {Ethereum} -kontoen. Det er trygt å lukke dette vinduet og fortsette å bruke {AppName}. Det vil bli varslet om brotransaksjonen når den er klar."
+            },
+            "supportError": {
+                "title": "Token støttes ikke",
+                "text": "Dessverre støttes ikke tokenet som er kjøpt via @:moonpayText av {Hashi} -broen i {AppName}. Normalt skal bare de støttede tokens være tilgjengelig for kjøp via MoonPay i {AppName}, derfor må noe ha gått galt et sted. Ikke nøl med å informere samfunnet om denne saken i <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> {AppName} Telegram group <\/a> ."
+            },
+            "feeError": {
+                "title": "Ikke nok ETH for broen tx",
+                "text": "Dessverre har {Hashi} bridge -transaksjonen mislyktes på grunn av at det ikke er nok ETH til å betale for {Ethereum} -nettverkets transaksjonsgebyrer. Legg til mer ETH og prøv igjen."
+            },
+            "transactionError": {
+                "title": "Transaksjonen mislyktes",
+                "text": "Dessverre ser det ut til at @:moonpayText -transaksjonen mislyktes. Vær så snill, prøv på nytt. For @:moonpayText -støtte gå til <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https: \/\/ support.moonpay.com <\/a>"
+            },
+            "amountError": {
+                "title": "Utilstrekkelig balanse",
+                "text": "Dessverre har {Hashi} bridge -transaksjonen mislyktes på grunn av at det ikke er nok tokens for transaksjonen. Kontroller saldoen på {Ethereum} -kontoen, og prøv igjen."
+            },
+            "accountAddressError": {
+                "title": "Feil {Ethereum} -konto",
+                "text": "Dessverre mislyktes {Hashi} bridge -transaksjonen på grunn av mottakeradressen til tokens i @:moonpayText -bestillingen som ikke samsvarer med din nåværende {Ethereum} -kontoadresse. Vennligst bytt {Ethereum} -konto i utvidelsen, og prøv igjen."
+            }
+        },
+        "buttons": {
+            "buy": "Kjøp Tokens",
+            "history": "Kjøpshistorikk",
+            "transfer": "Start broen",
+            "view": "Se transaksjonen"
+        },
+        "history": {
+            "title": "Kjøpshistorikk",
+            "empty": "@:noDataText"
+        },
+        "confirmations": {
+            "txReady": "Transaksjon klar for bro"
+        },
+        "tooltips": {
+            "transfer": "Tokens er kjøpt!\n Klikk for å starte brotransaksjonen"
+        }
+    },
+    "light": "Lys",
+    "dark": "Mørk",
+    "headerMenu": {
+        "showBalances": "Vis saldoer",
+        "hideBalances": "Skjul saldoer",
+        "settings": "Innstillinger",
+        "switchTheme": "Bytt til {theme} -modus",
+        "switchLanguage": "Velg språk",
+        "showDisclaimer": "Vis ansvarsfraskrivelse",
+        "hideDisclaimer": "Skjul ansvarsfraskrivelse",
+        "selectCurrency": "Velg Valuta"
+    },
+    "sentText": "Sendt",
+    "learnMoreText": "Lær mer",
+    "marketMakerCountdown": {
+        "title": "Market Maker Nedtelling",
+        "blocks": "blokker",
+        "daysLeft": "dager igjen",
+        "txs": "TXs",
+        "volume": "MM TX volum",
+        "description": "20 millioner PSWAP \/ måned vil bli distribuert til markedsmakere med minst 500 tx \/ måned verdt over 1 XOR."
+    },
+    "confirmNextTxFailure": {
+        "header": "Merk følgende",
+        "info": "Din {symbol} -saldo vil være mindre enn {fee} {symbol} etter denne transaksjonen. Du vil ikke kunne betale for nettverksavgiften for en annen transaksjon.",
+        "payoff": "Du må bruke broen for å få XOR fra andre nettverk, få tilsendt XOR fra en annen {Sora}-konto, eller bytte et hvilket som helst annet token som allerede er på kontoen din til XOR.",
+        "button": "Ja, jeg forstår risikoen"
+    },
+    "blockNumberText": "Blokknummer",
+    "referralProgram": {
+        "title": "Referral Program",
+        "connectAccount": "For å invitere brukere må du koble til {Sora}-kontoen din.",
+        "bondedXOR": "XOR Bundet",
+        "referralsNumber": "{number}-henvisninger",
+        "startInviting": "Bond XOR for å henvise andre",
+        "preview": "Inviter nye brukere og få 10% fra deres transaksjonsgebyrer.<br\/>For å starte, obligasjon et hvilket som helst beløp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Lær mer<\/a>",
+        "deposit": "Innskudd",
+        "balance": "Balanse",
+        "insufficientBondedBalance": "Utilstrekkelig bundet balanse",
+        "action": {
+            "empty": "Angi mengden {tokenSymbol}",
+            "startInviting": "Bond {tokenSymbol} for å begynne å invitere",
+            "bondMore": "Bond mer",
+            "bond": "Knytte bånd",
+            "unbond": "Koble ut",
+            "copyLink": "Kopier link",
+            "shareLink": "Del"
+        },
+        "transactionDetails": "Transaksjonsdetaljer",
+        "receivedRewards": "Mottatte belønninger",
+        "invitationLink": "Invitasjonslenke",
+        "successCopy": "Henvisningslenken er kopiert til utklippstavlen",
+        "bondTitle": "Knytte bånd XOR",
+        "unbondTitle": "Koble ut XOR",
+        "confirm": {
+            "bond": "Bekreft obligasjon",
+            "unbond": "Bekreft frigjøring",
+            "inviteTitle": "Du har blitt invitert til {AppName}",
+            "inviteDescription": "For hver transaksjon vil 10% av gebyret gå til din henvisning, uten ekstra kostnad for deg.",
+            "signInvitation": "Vedta",
+            "freeOfCharge": "Denne handlingen er gratis",
+            "hasReferrerTitle": "Du har allerede angitt henvisningsadressen din",
+            "hasReferrerDescription": "Dessverre kan du bare angi én",
+            "ok": "OK",
+            "text": "Bekrefte"
+        },
+        "referrer": {
+            "title": "Legg til henvisningsadressen din",
+            "titleReferrer": "Din henvisning",
+            "placeholder": "Skriv inn invitasjonslenke eller kode",
+            "label": "Invitasjonslenke eller kode",
+            "approve": "Vedta",
+            "approved": "Godkjent",
+            "description": "Du kan bli henvist til {AppName},<br\/>skriv inn lenken eller koden til refereren",
+            "referredBy": "Du har blitt henvist av {referrer}",
+            "info": "Når du betaler et gebyr for transaksjonen,<br\/>går 10% til henvisningsadressen din",
+            "referredLablel": "Henvist adresse"
+        },
+        "insufficientBondedAmount": "Hvis du vil invitere flere henvisninger, binder du minst {inviteUserFee} XOR",
+        "inviteViaTelegram": "Inviter via {Telegram}",
+        "welcomeMessage": "\nBli med meg på {Polkaswap}!\n\nOppdag den stilige {DEX} som lar deg bytte dusinvis av tokens med cross-chain swaps, ordrebok og mange belønninger!\n\n🎁 Inviter venner og tjen 10% av deres handelsgebyrer\n\nVi sees der!"
+    },
+    "transactionDetailsText": "Transaksjonsdetaljer",
+    "code": {
+        "download": "Last ned QR-kode",
+        "upload": "Skann QR",
+        "invalid": "Ugyldig QR-kode",
+        "import": "Importer et bilde",
+        "scan": "Skann med kamera",
+        "allowanceError": "Sjekk kameraets tilgjengelighet og nettlesertillatelser for å bruke det",
+        "receive": "Motta",
+        "camera": "Kamera",
+        "allowanceRequest": "Trykk på \"Tillat\" tilgang til kameraet"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Legg til {symbol} i lommeboken",
+        "title": "Brotransaksjonen ble vellykket"
+    },
+    "mobilePopup": {
+        "sideMenu": "Få {Sora} Wallet",
+        "header": "Last ned {Sora} Wallet med {polkaswapHighlight} funksjoner",
+        "info": "Bytt ut tokens fra forskjellige nettverk - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Gi likviditetspool og tjen % fra vekslingsgebyrer."
+    },
+    "releaseNotesText": "Utgivelsesnotater",
+    "copiedText": "Kopiert!",
+    "copyWithValue": "Kopier {value}",
+    "copiedWithValue": "{value} er kopiert!",
+    "signAndClaimText": "Signer og hev belønning",
+    "balanceText": "Balanse",
+    "unknownAssetText": "Ukjent aktivum",
+    "demeterFarming": {
+        "staking": {
+            "active": "Satser aktiv",
+            "inactive": "Innsats for å tjene flere belønninger",
+            "stopped": "Staking stoppet"
+        },
+        "info": {
+            "earned": "{symbol} opptjent",
+            "fee": "Avgift",
+            "feeTooltip": "Innskuddsgebyr påføres beløpet du vil satse på",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Din puljeandel satset",
+            "poolShareWillBe": "Din pool andel innsats vil være",
+            "rewardToken": "Belønningstoken",
+            "stake": "Din {symbol} satset",
+            "stakeWillBe": "Din {symbol} innsats vil være",
+            "totalLiquidityLocked": "Total likviditet låst"
+        },
+        "actions": {
+            "add": "Stake mer",
+            "claim": "Gjør krav på belønninger",
+            "remove": "Fjern innsatsen",
+            "start": "Start staking"
+        },
+        "amountAdd": "Beløp som skal satses",
+        "amountRemove": "Beløp som skal fjernes",
+        "poweredBy": "Drevet av Demeter Farming",
+        "calculator": "Kalkulator",
+        "results": "Resultater",
+        "rewards": "{symbol} belønninger"
+    },
+    "historyErrorMessages": {
+        "generalError": "Noe gikk galt",
+        "balances": {
+            "liquidityrestrictions": "Kontolikviditetsbegrensninger forhindrer uttak"
+        },
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Kildebalansen er ikke stor nok",
+            "targetbalanceisnotlargeenough": "Destinasjonsbalansen er ikke stor nok",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Forutsatt at beløpene er for forskjellige",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Beløp er utenfor påkrevde grenser",
+            "unabletodepositxorlessthanminimum": "XOR lavere enn minimumsverdien (0,007)",
+            "zerovalueinamountparameter": "Mengdeparameteren har nullverdi"
+        },
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Pool-par eksisterer allerede",
+            "slippagelimitexceeded": "Sklitoleranse har ikke nådd riktige grenser"
+        },
+        "referrals": {
+            "alreadyhasreferrer": "Kontoen har allerede en henvisning",
+            "referrerinsufficientbalance": "Henviseren har ikke nok av reservert saldo"
+        },
+        "vestedrewards": {
+            "rewardssupplyshortage": "Belønningsprogrammet er allerede ferdig",
+            "cantcalculatereward": "Kunne ikke utføre belønningsberegning",
+            "norewardsforasset": "Det er ingen belønninger for denne ressursen"
+        },
+        "liquidityproxy": {
+            "forbiddenfilter": "Valgt likviditetskilde er ikke tillatt",
+            "slippagenottolerated": "Prisimpakten har overskredet den valgte verdien"
+        },
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Utilstrekkelige midler",
+            "insufficientlptokens": "Utilstrekkelige likviditetsavsetningssymboler",
+            "pooldoesnothaverewards": "Bassenget har ikke belønninger"
+        },
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Det oppsto en feil under beregning av prisen"
+        }
+    },
+    "receivedText": "Tok imot",
+    "browserNotificationDialog": {
+        "title": "Angi varsler",
+        "info": "Vi sender deg bare relevante oppdateringer om lommeboken din, for eksempel: endringer i aktivabalansen",
+        "button": "Aktiver varsler",
+        "agree": "Ja jeg forstår",
+        "notificationBlocked": "For å motta varslene om {AppName} må du tillate varslene i nettleserens opprinnelige innstillinger",
+        "pointer": "Trykk på \"Tillat\" for å slå på varsler",
+        "rotatetitle": "Vennligst roter enheten din",
+        "rotateMessage": "Opplevelsen er bare tilgjengelig i portrettmodus"
+    },
+    "assetDeposit": "Eiendelsbalanse er satt inn",
+    "noDataText": "Ingen data",
+    "ofText": "{first} av {second}",
+    "filter": {
+        "all": "Alle",
+        "token": "Valutaer",
+        "verifiedOnly": "Vis kun bekreftede eiendeler",
+        "zeroBalance": "Skjul 0 saldoaktiva",
+        "showAssets": "Vis eiendeler",
+        "show": "Vise",
+        "reset": "Tilbakestill",
+        "synthetics": "Syntetiske stoffer",
+        "native": "Innfødt"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Velkommen til {AppName}!",
+            "headline": "La oss sette opp kontoen din",
+            "text": "Opprett din {Sora} Network-konto eller logg på de gamle ved å bruke mnemonisk frase eller .json-import. Dette lar deg signere transaksjoner og administrere aktiva i {Sora} Network på en sikker måte.",
+            "createAccount": "Opprett en konto",
+            "importAccount": "Importer konto"
+        },
+        "heading": {
+            "seedPhraseTitle": "Passordfrase",
+            "confirmSeedTitle": "Bekreft passordfrase",
+            "accountDetailsTitle": "kontodetaljer",
+            "importTitle": "Importer konto"
+        },
+        "button": {
+            "next": "Neste steg",
+            "skip": "Hopp over",
+            "createAccount": "Opprett konto",
+            "importAccount": "Importer konto"
+        },
+        "accountName": {
+            "placeholder": "Brukernavn",
+            "desc": "Dette er navnet på kontoen din. Den vil bare være synlig for deg i {Polkaswap}."
+        },
+        "password": {
+            "placeholder": "Passord",
+            "desc": "Sørg for at du bruker et sterkt unikt passord for riktig beskyttelse (minimum 8 tegn)"
+        },
+        "confirmPassword": {
+            "placeholder": "Bekreft passord"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemonisk setning"
+        },
+        "seedAdviceText": "Passordet på 12 ord er en privat nøkkel for å få tilbake tilgang til {Sora} -kontoen din i tilfelle du mister tilgangen til {wallet} -kontoen din. Oppbevar den trygt i nøyaktig rekkefølgen den vises ovenfor.",
+        "confirmSeedText": "Bekreft passordfrasen ved å klikke ordene i riktig rekkefølge",
+        "errorMnemonicText": "Feil rekkefølge for passordfrase",
+        "exportOptionText": "Eksporter {JSON} -fil for kontogjenoppretting",
+        "exportJsonText": "Du vil alltid kunne gjenopprette kontoen din ved å importere denne {JSON} -filen. Ikke del det med noen! Oppbevar den trygt, helst kryptert.",
+        "addAccount": "Legg til en konto",
+        "dialog": {
+            "confirmTitle": "Bekreft med passord",
+            "confirmButton": "Signer transaksjon",
+            "savePasswordText": "Husk passordet mitt i de neste 15 minuttene",
+            "extendPasswordText": "Forleng perioden uten passord med 15 minutter"
+        },
+        "errorMessages": {
+            "password": "Passordet stemte ikke",
+            "passwords": "Passordene stemte ikke",
+            "mnemonic": "Ugyldig bip39 mnemonic spesifisert",
+            "mnemonicLength": "Mnemonic skal inneholde {number} ord",
+            "jsonFields": "JSON-filen har ikke obligatoriske felt",
+            "alreadyImported": "Kontoen er allerede importert {address}"
+        },
+        "assetsAtRiskText": "Eiendeler i fare!",
+        "deleteAccountText": "Kontoen kan ikke gjenopprettes uten en frøfrase, .json-fil eller hvis den er lagret i en filtype. Du vil bli logget ut.",
+        "importSteps": {
+            "selectWallet": "Åpne lommeboken med eksisterende konto(er)",
+            "selectAccount": "Velg kontoen du vil eksportere",
+            "exportAccount": "Eksporter {JSON} -filen"
+        },
+        "exportTutorialsText": "Eksporter opplæringsprogrammer",
+        "seedAdviceAdditionTitle": "Del aldri passordfrasen din med noen!",
+        "seedAdviceAdditionText": "Hvis noen ber deg om passordfrasen din, prøver de mest sannsynlig å lure deg og stjele eiendelene dine!"
+    },
+    "hashiBridgeText": "{Hashi} bro",
+    "disclaimerTitle": "Ansvarsfraskrivelse",
+    "explore": {
+        "showOnly": "Vis bare {entities}",
+        "myPositions": "mine posisjoner",
+        "synthetics": "syntetiske tokens"
     },
     "tooltips": {
-      "transfer": "Tokens er kjøpt!\n Klikk for å starte brotransaksjonen"
-    }
-  },
-  "light": "Lys",
-  "dark": "Mørk",
-  "headerMenu": {
-    "showBalances": "Vis saldoer",
-    "hideBalances": "Skjul saldoer",
-    "settings": "Innstillinger",
-    "switchTheme": "Bytt til {theme} -modus",
-    "switchLanguage": "Velg språk",
-    "showDisclaimer": "Vis ansvarsfraskrivelse",
-    "hideDisclaimer": "Skjul ansvarsfraskrivelse",
-    "selectCurrency": "Velg Valuta"
-  },
-  "sentText": "Sendt",
-  "learnMoreText": "Lær mer",
-  "marketMakerCountdown": {
-    "title": "Market Maker Nedtelling",
-    "blocks": "blokker",
-    "daysLeft": "dager igjen",
-    "txs": "TXs",
-    "volume": "MM TX volum",
-    "description": "20 millioner PSWAP / måned vil bli distribuert til markedsmakere med minst 500 tx / måned verdt over 1 XOR."
-  },
-  "confirmNextTxFailure": {
-    "header": "Merk følgende",
-    "info": "Din {symbol} -saldo vil være mindre enn {fee} {symbol} etter denne transaksjonen. Du vil ikke kunne betale for nettverksavgiften for en annen transaksjon.",
-    "payoff": "Du må bruke broen for å få XOR fra andre nettverk, få tilsendt XOR fra en annen {Sora}-konto, eller bytte et hvilket som helst annet token som allerede er på kontoen din til XOR.",
-    "button": "Ja, jeg forstår risikoen"
-  },
-  "blockNumberText": "Blokknummer",
-  "referralProgram": {
-    "title": "Referral Program",
-    "connectAccount": "For å invitere brukere må du koble til {Sora}-kontoen din.",
-    "bondedXOR": "XOR Bundet",
-    "referralsNumber": "{number}-henvisninger",
-    "startInviting": "Bond XOR for å henvise andre",
-    "preview": "Inviter nye brukere og få 10% fra deres transaksjonsgebyrer.<br/>For å starte, obligasjon et hvilket som helst beløp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Lær mer</a>",
-    "deposit": "Innskudd",
-    "balance": "Balanse",
-    "insufficientBondedBalance": "Utilstrekkelig bundet balanse",
-    "action": {
-      "empty": "Angi mengden {tokenSymbol}",
-      "startInviting": "Bond {tokenSymbol} for å begynne å invitere",
-      "bondMore": "Bond mer",
-      "bond": "Knytte bånd",
-      "unbond": "Koble ut",
-      "copyLink": "Kopier link",
-      "shareLink": "Del"
+        "roi": "{ROI} står for Return on Investment. Den beregnes ved å dele fortjenesten opptjent på en investering med kostnaden for den investeringen i en prosentekvivalent.",
+        "tvl": "{TVL} står for Total Value Locked. Det representerer tokens som er låst i bassengene i dollarekvivalenten.",
+        "volume": "Volum refererer til den totale mengden eiendeler som har blitt handlet eller byttet på nettverket over en bestemt tidsperiode. Volumet er en viktig metrikk for å måle likviditeten og den totale aktiviteten til nettverket.",
+        "fees": "Gebyrer på {Sora} blokkjeden refererer til kostnadene som påløper for å utføre transaksjoner på nettverket. Disse avgiftene betales i XOR, den opprinnelige kryptovalutaen til {Sora} -nettverket. Gebyrbeløpet bestemmes av kompleksiteten og størrelsen på transaksjonen som utføres",
+        "supply": "Tokenforsyning refererer til det totale antallet tokens som er opprettet og er i omløp på nettverket. Tokentilførselen kan variere basert på mengden tokens som settes inn, brennes eller overføres på nettverket.",
+        "transactions": "Transaksjoner refererer til prosessen med å sende eller motta digitale eiendeler på nettverket, inkludert likviditetsoperasjoner, samt bytteavtaler.",
+        "accounts": "Kontoer er digitale adresser som holder brukerens eiendeler på nettverket. Hver konto er knyttet til en unik offentlig adresse og en privat nøkkel som lar brukeren få tilgang til og administrere sine eiendeler.",
+        "bridgeTransactions": "{from} til {to} -broen refererer til prosessen med å overføre eiendeler mellom {from} og {to} -nettverket ved hjelp av en bro. Broen gir mulighet for interoperabilitet mellom de to nettverkene, slik at brukere sømløst kan flytte eiendeler mellom dem.",
+        "velocity": "Tokenhastighet er antall ganger token endrer konto i løpet av perioden (måned) i gjennomsnitt. Det indikerer nivået på handelsaktivitet og likviditet."
     },
-    "transactionDetails": "Transaksjonsdetaljer",
-    "receivedRewards": "Mottatte belønninger",
-    "invitationLink": "Invitasjonslenke",
-    "successCopy": "Henvisningslenken er kopiert til utklippstavlen",
-    "bondTitle": "Knytte bånd XOR",
-    "unbondTitle": "Koble ut XOR",
-    "confirm": {
-      "bond": "Bekreft obligasjon",
-      "unbond": "Bekreft frigjøring",
-      "inviteTitle": "Du har blitt invitert til {AppName}",
-      "inviteDescription": "For hver transaksjon vil 10% av gebyret gå til din henvisning, uten ekstra kostnad for deg.",
-      "signInvitation": "Vedta",
-      "freeOfCharge": "Denne handlingen er gratis",
-      "hasReferrerTitle": "Du har allerede angitt henvisningsadressen din",
-      "hasReferrerDescription": "Dessverre kan du bare angi én",
-      "ok": "OK",
-      "text": "Bekrefte"
-    },
-    "referrer": {
-      "title": "Legg til henvisningsadressen din",
-      "titleReferrer": "Din henvisning",
-      "placeholder": "Skriv inn invitasjonslenke eller kode",
-      "label": "Invitasjonslenke eller kode",
-      "approve": "Vedta",
-      "approved": "Godkjent",
-      "description": "Du kan bli henvist til {AppName},<br/>skriv inn lenken eller koden til refereren",
-      "referredBy": "Du har blitt henvist av {referrer}",
-      "info": "Når du betaler et gebyr for transaksjonen,<br/>går 10% til henvisningsadressen din",
-      "referredLablel": "Henvist adresse"
-    },
-    "insufficientBondedAmount": "Hvis du vil invitere flere henvisninger, binder du minst {inviteUserFee} XOR",
-    "inviteViaTelegram": "Inviter via {Telegram}",
-    "welcomeMessage": "\nBli med meg på {Polkaswap}!\n\nOppdag den stilige {DEX} som lar deg bytte dusinvis av tokens med cross-chain swaps, ordrebok og mange belønninger!\n\n🎁 Inviter venner og tjen 10% av deres handelsgebyrer\n\nVi sees der!"
-  },
-  "transactionDetailsText": "Transaksjonsdetaljer",
-  "code": {
-    "download": "Last ned QR-kode",
-    "upload": "Skann QR",
-    "invalid": "Ugyldig QR-kode",
-    "import": "Importer et bilde",
-    "scan": "Skann med kamera",
-    "allowanceError": "Sjekk kameraets tilgjengelighet og nettlesertillatelser for å bruke det",
-    "receive": "Motta",
-    "camera": "Kamera",
-    "allowanceRequest": "Trykk på \"Tillat\" tilgang til kameraet"
-  },
-  "bridgeTransferNotification": {
-    "addToken": "Legg til {symbol} i lommeboken",
-    "title": "Brotransaksjonen ble vellykket"
-  },
-  "mobilePopup": {
-    "sideMenu": "Få {Sora} Wallet",
-    "header": "Last ned {Sora} Wallet med {polkaswapHighlight} funksjoner",
-    "info": "Bytt ut tokens fra forskjellige nettverk - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Gi likviditetspool og tjen % fra vekslingsgebyrer."
-  },
-  "releaseNotesText": "Utgivelsesnotater",
-  "copiedText": "Kopiert!",
-  "copyWithValue": "Kopier {value}",
-  "copiedWithValue": "{value} er kopiert!",
-  "signAndClaimText": "Signer og hev belønning",
-  "balanceText": "Balanse",
-  "unknownAssetText": "Ukjent aktivum",
-  "demeterFarming": {
-    "staking": {
-      "active": "Satser aktiv",
-      "inactive": "Innsats for å tjene flere belønninger",
-      "stopped": "Staking stoppet"
-    },
-    "info": {
-      "earned": "{symbol} opptjent",
-      "fee": "Avgift",
-      "feeTooltip": "Innskuddsgebyr påføres beløpet du vil satse på",
-      "owned": "{symbol} @:balanceText",
-      "poolShare": "Din puljeandel satset",
-      "poolShareWillBe": "Din pool andel innsats vil være",
-      "rewardToken": "Belønningstoken",
-      "stake": "Din {symbol} satset",
-      "stakeWillBe": "Din {symbol} innsats vil være",
-      "totalLiquidityLocked": "Total likviditet låst"
-    },
-    "actions": {
-      "add": "Stake mer",
-      "claim": "Gjør krav på belønninger",
-      "remove": "Fjern innsatsen",
-      "start": "Start staking"
-    },
-    "amountAdd": "Beløp som skal satses",
-    "amountRemove": "Beløp som skal fjernes",
-    "poweredBy": "Drevet av Demeter Farming",
-    "calculator": "Kalkulator",
-    "results": "Resultater",
-    "rewards": "{symbol} belønninger"
-  },
-  "historyErrorMessages": {
-    "generalError": "Noe gikk galt",
-    "balances": {
-      "liquidityrestrictions": "Kontolikviditetsbegrensninger forhindrer uttak"
-    },
-    "poolxyk": {
-      "sourcebalanceisnotlargeenough": "Kildebalansen er ikke stor nok",
-      "targetbalanceisnotlargeenough": "Destinasjonsbalansen er ikke stor nok",
-      "impossibletodecidevalidpairvaluesfromrangeforthispool": "Forutsatt at beløpene er for forskjellige",
-      "calculatedvalueisnotmeetsrequiredboundaries": "Beløp er utenfor påkrevde grenser",
-      "unabletodepositxorlessthanminimum": "XOR lavere enn minimumsverdien (0,007)",
-      "zerovalueinamountparameter": "Mengdeparameteren har nullverdi"
-    },
-    "xstpool": {
-      "poolalreadyinitializedforpair": "Pool-par eksisterer allerede",
-      "slippagelimitexceeded": "Sklitoleranse har ikke nådd riktige grenser"
-    },
-    "referrals": {
-      "alreadyhasreferrer": "Kontoen har allerede en henvisning",
-      "referrerinsufficientbalance": "Henviseren har ikke nok av reservert saldo"
-    },
-    "vestedrewards": {
-      "rewardssupplyshortage": "Belønningsprogrammet er allerede ferdig",
-      "cantcalculatereward": "Kunne ikke utføre belønningsberegning",
-      "norewardsforasset": "Det er ingen belønninger for denne ressursen"
-    },
-    "liquidityproxy": {
-      "forbiddenfilter": "Valgt likviditetskilde er ikke tillatt",
-      "slippagenottolerated": "Prisimpakten har overskredet den valgte verdien"
-    },
-    "demeterfarmingplatform": {
-      "insufficientfunds": "Utilstrekkelige midler",
-      "insufficientlptokens": "Utilstrekkelige likviditetsavsetningssymboler",
-      "pooldoesnothaverewards": "Bassenget har ikke belønninger"
-    },
-    "multicollateralbondingcurvepool": {
-      "pricecalculationfailed": "Det oppsto en feil under beregning av prisen"
-    }
-  },
-  "receivedText": "Tok imot",
-  "browserNotificationDialog": {
-    "title": "Angi varsler",
-    "info": "Vi sender deg bare relevante oppdateringer om lommeboken din, for eksempel: endringer i aktivabalansen",
-    "button": "Aktiver varsler",
-    "agree": "Ja jeg forstår",
-    "notificationBlocked": "For å motta varslene om {AppName} må du tillate varslene i nettleserens opprinnelige innstillinger",
-    "pointer": "Trykk på \"Tillat\" for å slå på varsler"
-  },
-  "assetDeposit": "Eiendelsbalanse er satt inn",
-  "noDataText": "Ingen data",
-  "ofText": "{first} av {second}",
-  "filter": {
-    "all": "Alle",
-    "token": "Valutaer",
-    "verifiedOnly": "Vis kun bekreftede eiendeler",
-    "zeroBalance": "Skjul 0 saldoaktiva",
-    "showAssets": "Vis eiendeler",
-    "show": "Vise"
-  },
-  "desktop": {
-    "welcome": {
-      "header": "Velkommen til {AppName}!",
-      "headline": "La oss sette opp kontoen din",
-      "text": "Opprett din {Sora} Network-konto eller logg på de gamle ved å bruke mnemonisk frase eller .json-import. Dette lar deg signere transaksjoner og administrere aktiva i {Sora} Network på en sikker måte.",
-      "createAccount": "Opprett en konto",
-      "importAccount": "Importer konto"
-    },
-    "heading": {
-      "seedPhraseTitle": "Passordfrase",
-      "confirmSeedTitle": "Bekreft passordfrase",
-      "accountDetailsTitle": "kontodetaljer",
-      "importTitle": "Importer konto"
-    },
-    "button": {
-      "next": "Neste steg",
-      "skip": "Hopp over",
-      "createAccount": "Opprett konto",
-      "importAccount": "Importer konto"
-    },
-    "accountName": {
-      "placeholder": "Brukernavn",
-      "desc": "Dette er navnet på kontoen din. Den vil bare være synlig for deg i {Polkaswap}."
-    },
-    "password": {
-      "placeholder": "Passord",
-      "desc": "Sørg for at du bruker et sterkt unikt passord for riktig beskyttelse (minimum 8 tegn)"
-    },
-    "confirmPassword": {
-      "placeholder": "Bekreft passord"
-    },
-    "accountMnemonic": {
-      "placeholder": "Mnemonisk setning"
-    },
-    "seedAdviceText": "Passordet på 12 ord er en privat nøkkel for å få tilbake tilgang til {Sora} -kontoen din i tilfelle du mister tilgangen til {wallet} -kontoen din. Oppbevar den trygt i nøyaktig rekkefølgen den vises ovenfor.",
-    "confirmSeedText": "Bekreft passordfrasen ved å klikke ordene i riktig rekkefølge",
-    "errorMnemonicText": "Feil rekkefølge for passordfrase",
-    "exportOptionText": "Eksporter {JSON} -fil for kontogjenoppretting",
-    "exportJsonText": "Du vil alltid kunne gjenopprette kontoen din ved å importere denne {JSON} -filen. Ikke del det med noen! Oppbevar den trygt, helst kryptert.",
-    "addAccount": "Legg til en konto",
-    "dialog": {
-      "confirmTitle": "Bekreft med passord",
-      "confirmButton": "Signer transaksjon",
-      "savePasswordText": "Husk passordet mitt i de neste 15 minuttene",
-      "extendPasswordText": "Forleng perioden uten passord med 15 minutter"
-    },
-    "errorMessages": {
-      "password": "Passordet stemte ikke",
-      "passwords": "Passordene stemte ikke",
-      "mnemonic": "Ugyldig bip39 mnemonic spesifisert",
-      "mnemonicLength": "Mnemonic skal inneholde {number} ord",
-      "jsonFields": "JSON-filen har ikke obligatoriske felt",
-      "alreadyImported": "Kontoen er allerede importert {address}"
-    },
-    "assetsAtRiskText": "Eiendeler i fare!",
-    "deleteAccountText": "Kontoen kan ikke gjenopprettes uten en frøfrase, .json-fil eller hvis den er lagret i en filtype. Du vil bli logget ut.",
-    "importSteps": {
-      "selectWallet": "Åpne lommeboken med eksisterende konto(er)",
-      "selectAccount": "Velg kontoen du vil eksportere",
-      "exportAccount": "Eksporter {JSON} -filen"
-    },
-    "exportTutorialsText": "Eksporter opplæringsprogrammer",
-    "seedAdviceAdditionTitle": "Del aldri passordfrasen din med noen!",
-    "seedAdviceAdditionText": "Hvis noen ber deg om passordfrasen din, prøver de mest sannsynlig å lure deg og stjele eiendelene dine!"
-  },
-  "hashiBridgeText": "{Hashi} bro",
-  "disclaimerTitle": "Ansvarsfraskrivelse",
-  "explore": {
-    "showOnly": "Vis bare {entities}",
-    "myPositions": "mine posisjoner",
-    "synthetics": "syntetiske tokens"
-  },
-  "tooltips": {
-    "roi": "{ROI} står for Return on Investment. Den beregnes ved å dele fortjenesten opptjent på en investering med kostnaden for den investeringen i en prosentekvivalent.",
-    "tvl": "{TVL} står for Total Value Locked. Det representerer tokens som er låst i bassengene i dollarekvivalenten.",
-    "volume": "Volum refererer til den totale mengden eiendeler som har blitt handlet eller byttet på nettverket over en bestemt tidsperiode. Volumet er en viktig metrikk for å måle likviditeten og den totale aktiviteten til nettverket.",
-    "fees": "Gebyrer på {Sora} blokkjeden refererer til kostnadene som påløper for å utføre transaksjoner på nettverket. Disse avgiftene betales i XOR, den opprinnelige kryptovalutaen til {Sora} -nettverket. Gebyrbeløpet bestemmes av kompleksiteten og størrelsen på transaksjonen som utføres",
-    "supply": "Tokenforsyning refererer til det totale antallet tokens som er opprettet og er i omløp på nettverket. Tokentilførselen kan variere basert på mengden tokens som settes inn, brennes eller overføres på nettverket.",
-    "transactions": "Transaksjoner refererer til prosessen med å sende eller motta digitale eiendeler på nettverket, inkludert likviditetsoperasjoner, samt bytteavtaler.",
-    "accounts": "Kontoer er digitale adresser som holder brukerens eiendeler på nettverket. Hver konto er knyttet til en unik offentlig adresse og en privat nøkkel som lar brukeren få tilgang til og administrere sine eiendeler.",
-    "bridgeTransactions": "{from} til {to} -broen refererer til prosessen med å overføre eiendeler mellom {from} og {to} -nettverket ved hjelp av en bro. Broen gir mulighet for interoperabilitet mellom de to nettverkene, slik at brukere sømløst kan flytte eiendeler mellom dem.",
-    "velocity": "Tokenhastighet er antall ganger token endrer konto i løpet av perioden (måned) i gjennomsnitt. Det indikerer nivået på handelsaktivitet og likviditet."
-  },
-  "createTokenText": "Opprett token",
-  "comingSoonText": "Kommer snart",
-  "confirmText": "Bekrefte",
-  "createTokenTextNFT": "Lag NFT",
-  "doNotShowText": "Ikke vis meg dette igjen",
-  "accountText": "konto | kontoer",
-  "networkStatisticsText": "Nettverksstatistikk",
-  "footer": {
-    "node": {
-      "title": {
-        "connected": "Node tilkoblet",
-        "loading": "Node kobler til på nytt",
-        "disconnected": "Node frakoblet"
-      }
-    },
-    "internet": {
-      "title": {
-        "disabled": "Internett deaktivert",
-        "unstable": "Internett ustabilt",
-        "stable": "Internett stabil"
-      },
-      "label": "Internett-hastigheten din",
-      "desc": {
-        "disabled": "Koblet fra",
-        "unstable": "Sakte tilkobling",
-        "stable": "Optimal hastighet"
-      },
-      "action": "Oppdater {Polkaswap}",
-      "dialogTitle": "Koble til internettkilde",
-      "dialogDesc": "{Polkaswap} krever internettforbindelse for stabil opplevelse"
-    },
-    "statistics": {
-      "title": {
-        "unavailable": "Statistikk utilgjengelig",
-        "loading": "Statistikk laster",
-        "available": "Statistikk tilgjengelig"
-      },
-      "label": "Statistikktjenester",
-      "desc": {
-        "unavailable": "Alle tjenester er frakoblet",
-        "loading": "Alle tjenester lastes inn",
-        "available": "Alle tjenester er stabile"
-      },
-      "action": "Velg tjenester",
-      "dialog": {
-        "title": "{Sora} Valg av nettverkstjeneste",
-        "indexer": "Indekser",
-        "useCeres": "Bruk {Ceres} for fiat-verdier"
-      }
-    }
-  },
-  "locationText": "plassering",
-  "acceptText": "Godta og skjul",
-  "newAccountsText": "Nye kontoer",
-  "dragAndDropText": "Dra og slipp eller velg {extension} -fil",
-  "copyPhraseText": "Kopier passordfrasen",
-  "stepText": "Steg",
-  "alerts": {
-    "drop": "Faller under",
-    "once": "En gang",
-    "always": "Alltid",
-    "edit": "Rediger varsel",
-    "delete": "Slett varsel",
-    "onDropDesc": "{token} synker under {price}",
-    "alertsTitle": "Varsler",
-    "alertsCreateTitle": "Sett opp prisvarsel",
-    "alertsTooltip": "Prisvarsler er varsler du kan stille inn til å motta oppdateringer når prisen på et bestemt token når et bestemt punkt du angir",
-    "createBtn": "Opprett nytt prisvarsel",
-    "enableSwitch": "Aktiver innskuddsvarslinger",
-    "currentPrice": "gjeldende pris",
-    "alertTypeTitle": "Varslingstype",
-    "alertFrequencyTitle": "Varslingsfrekvens",
-    "frequencyTooltip": "Velg mellom \"en gang\" og \"alltid\" for å bestemme hvor ofte du mottar varsler for den valgte varslingstypen. 'Once' vil sende ett enkelt varsel når betingelsen er oppfylt, mens 'alltid' vil fortsette å varsle deg hver gang prisgrensen krysses",
-    "noSupportMsg": "Varsler støttes ikke av nettleseren din",
-    "finishBtn": "Å fullføre",
-    "raise": "Hever seg over",
-    "onRaiseDesc": "{token} stiger over {price}",
-    "typeTooltip": "Velg enten alternativet \"faller under\" eller \"stiger over\" for å spesifisere varselbetingelse for sporing av viktige prisbevegelser. Disse alternativene lar deg motta rettidige varsler når verdien av eiendelen din enten faller under eller stiger over den angitte terskelen"
-  },
-  "accountAddressText": "Kontoadresse",
-  "fiatDisclaimer": "Vær oppmerksom på at fiat-verdiene knyttet til kryptovalutaer på nettsiden vår leveres av eksterne tjenester (Subquery, Subsquid, Ceres API) er omtrentlige. Gitt den iboende kompleksiteten til disse beregningene, kan absolutt presisjon til enhver tid ikke garanteres.",
-  "fiatPayment": {
-    "historyBtn": "Innkjøpene mine",
-    "historyTitle": "betalingshistorie",
-    "moonpayTitle": "Kjøp ETH via MoonPay",
-    "moonpayDesc": "Kjøp ETH-tokens på {Ethereum} og overfør dem til {SORA}-nettverket via broen",
-    "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere.",
-    "cedeStoreTitle": "Overføring fra {value}",
-    "cedeStoreDesc": "Overfør eventuelle tokens fra {value1} til {value2} via {value3}",
-    "cedeStoreBtn": "Overfør fra {value1} via {value2}"
-  },
-  "acceptOnScrollText": "Rull for å godta",
-  "addressBook": {
-    "myAccounts": "Mine kontoer",
-    "myBook": "Min bok",
-    "searchPlaceholder": "Søk på adresse, navn eller identitet",
-    "noFoundRecords": "Ingen opptak funnet",
-    "noContacts": "Du har ingen kontakter lagt til ennå",
-    "addContact": "Legg til kontakt",
-    "dialogTitle": "Dine kontakter",
-    "identity": "Identitet på kjeden",
-    "none": "Ingen",
-    "detected": "Ny adresse oppdaget",
-    "save": "Lagre som kontakt",
-    "tooltip": "Samle adressebok ved å oppgi navn og adresse for å holde kontaktene dine organiserte og oppdaterte",
-    "notSoraAddress": "Denne adressen vil bli lagret som {SORA}-adresse nedenfor. Sørg for at mottakeren har tilgang til {SORA}-kjeden:",
-    "options": {
-      "send": "Send tokens",
-      "edit": "Rediger kontakt",
-      "delete": "Slett"
-    },
-    "btn": {
-      "enterName": "Skriv inn navn",
-      "present": "Allerede til stede",
-      "saveChanges": "Lagre endringer"
-    },
-    "input": "Skriv inn adresse eller velg kontakt",
-    "selectContact": "Velg kontakt"
-  },
-  "browserPermission": {
-    "title": "Tillat kameratilgang i nettleserinnstillingene",
-    "desc": "For å sikre autentisiteten til dokumenter og validere brukeridentitet for KYC-verifisering, kreves tilgang til enhetens kamera.",
-    "disclaimer": "Kameratilgang er nødvendig for sanntidsdokumentfangst for å forhindre svindel.",
-    "btnGoToSettings": "Gå til Innstillinger",
-    "btnAllow": "Gi tilgang"
-  },
-  "continueText": "Fortsette",
-  "minAmountText": "min. beløp",
-  "maxAmountText": "maks. beløp",
-  "exceededAmountText": "{amount} overskredet",
-  "multipleRecipients": "Flere mottakere",
-  "disconnectWalletText": "Koble fra",
-  "connectEthereumWalletText": "Koble til {Ethereum} -lommeboken",
-  "soraStaking": {
-    "dropdownMenu": {
-      "pendingRewards": "Ventende belønninger",
-      "controllerAccount": "Kontrollørkonto"
-    },
-    "actions": {
-      "claim": "Gjør krav på belønninger",
-      "remove": "Fjern innsatsen",
-      "more": "Sats mer",
-      "confirm": "Bekreft staking",
-      "withdraw": "Ta ut"
-    },
-    "overview": {
-      "title": "{Sora} Staking",
-      "description": "Sats {XOR}-tokens på {Sora} Network som nominator for å validere transaksjoner og tjene {VAL}-tokenbelønninger."
-    },
-    "newStake": {
-      "title": "Begynn å stake",
-      "minStakeWarning": "Minimumsinnsatsen for å motta belønningen er {min} {symbol}"
-    },
-    "validators": {
-      "save": "Lagre endringer",
-      "selected": "{selected} / {total} valgt",
-      "recommended": "Anbefalte validatorer",
-      "change": "Endre validatorer",
-      "select": "Velg validatorer",
-      "next": "Neste",
-      "alreadyNominated": "Utvalgte validatorer er allerede nominert",
-      "tooManyValidators": "For mange validatorer er valgt ( {Max} {max} )"
-    },
-    "validatorsList": {
-      "search": "Søk...",
-      "name": "Navn",
-      "noNominatedValidators": "Du har ingen nominerte validatorer",
-      "noValidators": "Det er ingen validatorer som tilfredsstiller det angitte filteret",
-      "commission": "Kommisjon",
-      "commissionTooltip": "Provisjon refererer til gebyret som kreves av validatorer for deres tjenester i innsatsprosessen. Denne avgiften, uttrykt som en prosentandel, trekkes fra innsatsbelønningene opptjent av nominatorer før utdeling. Det er viktig å merke seg at validatorer kan justere sine provisjonssatser når som helst",
-      "return": "Komme tilbake"
-    },
-    "info": {
-      "unstaking": "Unstaking",
-      "stakingBalance": "Staking balanse",
-      "rewarded": "Belønnet",
-      "totalLiquidityStaked": "Total likviditet satset",
-      "rewardToken": "Belønningstoken",
-      "unstakingPeriod": "Ustabil periode",
-      "minimumStake": "Minimumsinnsats",
-      "nominators": "Nominatorer",
-      "validators": "Validatorer",
-      "selectedValidators": "Utvalgte validatorer"
-    },
-    "validatorsFilterDialog": {
-      "title": "Filtre",
-      "save": "Lagre filter",
-      "reset": "Tilbakestill alt",
-      "filters": {
-        "hasIdentity": {
-          "name": "Identitet på kjeden",
-          "description": "Minst én identitetskontakt koblet til kontoen"
+    "createTokenText": "Opprett token",
+    "comingSoonText": "Kommer snart",
+    "confirmText": "Bekrefte",
+    "createTokenTextNFT": "Lag NFT",
+    "doNotShowText": "Ikke vis meg dette igjen",
+    "accountText": "konto | kontoer",
+    "networkStatisticsText": "Nettverksstatistikk",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Node tilkoblet",
+                "loading": "Node kobler til på nytt",
+                "disconnected": "Node frakoblet"
+            }
         },
-        "notSlashed": {
-          "name": "Ikke kuttet",
-          "description": "Ikke opplevd noen straffer eller reduksjoner i sine innsatsmidler på grunn av feil oppførsel eller brudd på protokollen."
+        "internet": {
+            "title": {
+                "disabled": "Internett deaktivert",
+                "unstable": "Internett ustabilt",
+                "stable": "Internett stabil"
+            },
+            "label": "Internett-hastigheten din",
+            "desc": {
+                "disabled": "Koblet fra",
+                "unstable": "Sakte tilkobling",
+                "stable": "Optimal hastighet"
+            },
+            "action": "Oppdater {Polkaswap}",
+            "dialogTitle": "Koble til internettkilde",
+            "dialogDesc": "{Polkaswap} krever internettforbindelse for stabil opplevelse"
         },
-        "notOversubscribed": {
-          "name": "Ikke overtegnet",
-          "description": "Konto innenfor tildelingsgrensen, unngår overtegningsstraffer på {Polkadot}-staking."
-        },
-        "twoValidatorsPerIdentity": {
-          "name": "Begrensning på 2 validatorer per identitet",
-          "description": "Maksimalt to validatorer per identitet for å fremme desentralisering og forhindre konsentrasjon av makt."
+        "statistics": {
+            "title": {
+                "unavailable": "Statistikk utilgjengelig",
+                "loading": "Statistikk laster",
+                "available": "Statistikk tilgjengelig"
+            },
+            "label": "Statistikktjenester",
+            "desc": {
+                "unavailable": "Alle tjenester er frakoblet",
+                "loading": "Alle tjenester lastes inn",
+                "available": "Alle tjenester er stabile"
+            },
+            "action": "Velg tjenester",
+            "dialog": {
+                "title": "{Sora} Valg av nettverkstjeneste",
+                "indexer": "Indekser",
+                "useCeres": "Bruk {Ceres} for fiat-verdier"
+            }
         }
-      }
     },
-    "validatorsDialog": {
-      "title": {
-        "edit": "Rediger mine validatorer"
-      },
-      "tabs": {
-        "user": "Validatorene dine",
-        "all": "Alle validatorer"
-      }
+    "locationText": "plassering",
+    "acceptText": "Godta og skjul",
+    "newAccountsText": "Nye kontoer",
+    "dragAndDropText": "Dra og slipp eller velg {extension} -fil",
+    "copyPhraseText": "Kopier passordfrasen",
+    "stepText": "Steg",
+    "alerts": {
+        "drop": "Faller under",
+        "once": "En gang",
+        "always": "Alltid",
+        "edit": "Rediger varsel",
+        "delete": "Slett varsel",
+        "onDropDesc": "{token} synker under {price}",
+        "alertsTitle": "Varsler",
+        "alertsCreateTitle": "Sett opp prisvarsel",
+        "alertsTooltip": "Prisvarsler er varsler du kan stille inn til å motta oppdateringer når prisen på et bestemt token når et bestemt punkt du angir",
+        "createBtn": "Opprett nytt prisvarsel",
+        "enableSwitch": "Aktiver innskuddsvarslinger",
+        "currentPrice": "gjeldende pris",
+        "alertTypeTitle": "Varslingstype",
+        "alertFrequencyTitle": "Varslingsfrekvens",
+        "frequencyTooltip": "Velg mellom \"en gang\" og \"alltid\" for å bestemme hvor ofte du mottar varsler for den valgte varslingstypen. 'Once' vil sende ett enkelt varsel når betingelsen er oppfylt, mens 'alltid' vil fortsette å varsle deg hver gang prisgrensen krysses",
+        "noSupportMsg": "Varsler støttes ikke av nettleseren din",
+        "finishBtn": "Å fullføre",
+        "raise": "Hever seg over",
+        "onRaiseDesc": "{token} stiger over {price}",
+        "typeTooltip": "Velg enten alternativet \"faller under\" eller \"stiger over\" for å spesifisere varselbetingelse for sporing av viktige prisbevegelser. Disse alternativene lar deg motta rettidige varsler når verdien av eiendelen din enten faller under eller stiger over den angitte terskelen"
     },
-    "validatorsAttentionDialog": {
-      "title": "Merk følgende",
-      "description": [
-        "Algoritmiske valideringsforslag utgjør ikke økonomisk konsultasjon eller råd. Staking er en høyrisikoaktivitet, og algoritmiske valideringsforslag reduserer ikke nødvendigvis denne risikoen.",
-        "En validator foreslått av algoritmen kan fortsatt kuttes. En validator foreslått av algoritmen kan også endre sine parametere (f.eks. provisjonssatser osv.) når som helst etter å ha blitt foreslått og/eller valgt.",
-        "Du kan miste tokens eller belønninger av disse eller andre årsaker. Sats kun på tokens og bruk valideringsforslag etter eget skjønn, etter å ha utført due diligence og nøye vurdert risikoene involvert."
-      ],
-      "confirm": "Ja, jeg forstår risikoen"
+    "accountAddressText": "Kontoadresse",
+    "fiatDisclaimer": "Vær oppmerksom på at fiat-verdiene knyttet til kryptovalutaer på nettsiden vår leveres av eksterne tjenester (Subquery, Subsquid, Ceres API) er omtrentlige. Gitt den iboende kompleksiteten til disse beregningene, kan absolutt presisjon til enhver tid ikke garanteres.",
+    "fiatPayment": {
+        "historyBtn": "Innkjøpene mine",
+        "historyTitle": "betalingshistorie",
+        "moonpayTitle": "Kjøp ETH via MoonPay",
+        "moonpayDesc": "Kjøp ETH-tokens på {Ethereum} og overfør dem til {SORA}-nettverket via broen",
+        "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere.",
+        "cedeStoreTitle": "Overføring fra {value}",
+        "cedeStoreDesc": "Overfør eventuelle tokens fra {value1} til {value2} via {value3}",
+        "cedeStoreBtn": "Overfør fra {value1} via {value2}"
     },
-    "pendingRewardsDialog": {
-      "noPendingRewards": "Det er ingen ventende belønninger",
-      "information": "Validatorer utbetaler belønningene hver 2.–5. dag. Du kan imidlertid utbetale dem selv, spesielt hvis belønninger nærmer seg utløp, men du betaler avgiften.",
-      "title": "Ventende belønninger",
-      "noSelectedRewards": "Velg belønninger",
-      "payout": "Utbetaling"
+    "acceptOnScrollText": "Rull for å godta",
+    "addressBook": {
+        "myAccounts": "Mine kontoer",
+        "myBook": "Min bok",
+        "searchPlaceholder": "Søk på adresse, navn eller identitet",
+        "noFoundRecords": "Ingen opptak funnet",
+        "noContacts": "Du har ingen kontakter lagt til ennå",
+        "addContact": "Legg til kontakt",
+        "dialogTitle": "Dine kontakter",
+        "identity": "Identitet på kjeden",
+        "none": "Ingen",
+        "detected": "Ny adresse oppdaget",
+        "save": "Lagre som kontakt",
+        "tooltip": "Samle adressebok ved å oppgi navn og adresse for å holde kontaktene dine organiserte og oppdaterte",
+        "notSoraAddress": "Denne adressen vil bli lagret som {SORA}-adresse nedenfor. Sørg for at mottakeren har tilgang til {SORA}-kjeden:",
+        "options": {
+            "send": "Send tokens",
+            "edit": "Rediger kontakt",
+            "delete": "Slett"
+        },
+        "btn": {
+            "enterName": "Skriv inn navn",
+            "present": "Allerede til stede",
+            "saveChanges": "Lagre endringer"
+        },
+        "input": "Skriv inn adresse eller velg kontakt",
+        "selectContact": "Velg kontakt"
     },
-    "selectValidatorsMode": {
-      "title": "Innsats med validatorer foreslått av algoritmen",
-      "description": "{Sora} nettverksalgoritme har valgt en liste over anbefalte validatorer basert på kriteriene:",
-      "criteria": [
-        "Mest lønnsomt",
-        "Ikke overtegnet",
-        "Å ha onchain-identitet",
-        "Ikke kuttet",
-        "Begrensning på 2 validatorer per identitet"
-      ],
-      "confirm": {
-        "suggested": "Innsats med foreslått",
-        "manual": "Jeg velger validatorene selv"
-      }
+    "browserPermission": {
+        "title": "Tillat kameratilgang i nettleserinnstillingene",
+        "desc": "For å sikre autentisiteten til dokumenter og validere brukeridentitet for KYC-verifisering, kreves tilgang til enhetens kamera.",
+        "disclaimer": "Kameratilgang er nødvendig for sanntidsdokumentfangst for å forhindre svindel.",
+        "btnGoToSettings": "Gå til Innstillinger",
+        "btnAllow": "Gi tilgang"
     },
-    "claimRewardsDialog": {
-      "title": "Gjør krav på belønninger",
-      "checkRewards": "Sjekk belønninger per epoke og validator",
-      "rewardsDestination": "Destinasjonsadresse for belønninger"
+    "continueText": "Fortsette",
+    "minAmountText": "min. beløp",
+    "maxAmountText": "maks. beløp",
+    "exceededAmountText": "{amount} overskredet",
+    "multipleRecipients": "Flere mottakere",
+    "disconnectWalletText": "Koble fra",
+    "connectEthereumWalletText": "Koble til {Ethereum} -lommeboken",
+    "soraStaking": {
+        "dropdownMenu": {
+            "pendingRewards": "Ventende belønninger",
+            "controllerAccount": "Kontrollørkonto"
+        },
+        "actions": {
+            "claim": "Gjør krav på belønninger",
+            "remove": "Fjern innsatsen",
+            "more": "Sats mer",
+            "confirm": "Bekreft staking",
+            "withdraw": "Ta ut"
+        },
+        "overview": {
+            "title": "{Sora} Staking",
+            "description": "Sats {XOR}-tokens på {Sora} Network som nominator for å validere transaksjoner og tjene {VAL}-tokenbelønninger."
+        },
+        "newStake": {
+            "title": "Begynn å stake",
+            "minStakeWarning": "Minimumsinnsatsen for å motta belønningen er {min} {symbol}"
+        },
+        "validators": {
+            "save": "Lagre endringer",
+            "selected": "{selected} \/ {total} valgt",
+            "recommended": "Anbefalte validatorer",
+            "change": "Endre validatorer",
+            "select": "Velg validatorer",
+            "next": "Neste",
+            "alreadyNominated": "Utvalgte validatorer er allerede nominert",
+            "tooManyValidators": "For mange validatorer er valgt ( {Max} {max} )"
+        },
+        "validatorsList": {
+            "search": "Søk...",
+            "name": "Navn",
+            "noNominatedValidators": "Du har ingen nominerte validatorer",
+            "noValidators": "Det er ingen validatorer som tilfredsstiller det angitte filteret",
+            "commission": "Kommisjon",
+            "commissionTooltip": "Provisjon refererer til gebyret som kreves av validatorer for deres tjenester i innsatsprosessen. Denne avgiften, uttrykt som en prosentandel, trekkes fra innsatsbelønningene opptjent av nominatorer før utdeling. Det er viktig å merke seg at validatorer kan justere sine provisjonssatser når som helst",
+            "return": "Komme tilbake"
+        },
+        "info": {
+            "unstaking": "Unstaking",
+            "stakingBalance": "Staking balanse",
+            "rewarded": "Belønnet",
+            "totalLiquidityStaked": "Total likviditet satset",
+            "rewardToken": "Belønningstoken",
+            "unstakingPeriod": "Ustabil periode",
+            "minimumStake": "Minimumsinnsats",
+            "nominators": "Nominatorer",
+            "validators": "Validatorer",
+            "selectedValidators": "Utvalgte validatorer"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filtre",
+            "save": "Lagre filter",
+            "reset": "Tilbakestill alt",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identitet på kjeden",
+                    "description": "Minst én identitetskontakt koblet til kontoen"
+                },
+                "notSlashed": {
+                    "name": "Ikke kuttet",
+                    "description": "Ikke opplevd noen straffer eller reduksjoner i sine innsatsmidler på grunn av feil oppførsel eller brudd på protokollen."
+                },
+                "notOversubscribed": {
+                    "name": "Ikke overtegnet",
+                    "description": "Konto innenfor tildelingsgrensen, unngår overtegningsstraffer på {Polkadot}-staking."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Begrensning på 2 validatorer per identitet",
+                    "description": "Maksimalt to validatorer per identitet for å fremme desentralisering og forhindre konsentrasjon av makt."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "edit": "Rediger mine validatorer"
+            },
+            "tabs": {
+                "user": "Validatorene dine",
+                "all": "Alle validatorer"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Merk følgende",
+            "description": [
+                "Algoritmiske valideringsforslag utgjør ikke økonomisk konsultasjon eller råd. Staking er en høyrisikoaktivitet, og algoritmiske valideringsforslag reduserer ikke nødvendigvis denne risikoen.",
+                "En validator foreslått av algoritmen kan fortsatt kuttes. En validator foreslått av algoritmen kan også endre sine parametere (f.eks. provisjonssatser osv.) når som helst etter å ha blitt foreslått og\/eller valgt.",
+                "Du kan miste tokens eller belønninger av disse eller andre årsaker. Sats kun på tokens og bruk valideringsforslag etter eget skjønn, etter å ha utført due diligence og nøye vurdert risikoene involvert."
+            ],
+            "confirm": "Ja, jeg forstår risikoen"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Det er ingen ventende belønninger",
+            "information": "Validatorer utbetaler belønningene hver 2.–5. dag. Du kan imidlertid utbetale dem selv, spesielt hvis belønninger nærmer seg utløp, men du betaler avgiften.",
+            "title": "Ventende belønninger",
+            "noSelectedRewards": "Velg belønninger",
+            "payout": "Utbetaling"
+        },
+        "selectValidatorsMode": {
+            "title": "Innsats med validatorer foreslått av algoritmen",
+            "description": "{Sora} nettverksalgoritme har valgt en liste over anbefalte validatorer basert på kriteriene:",
+            "criteria": [
+                "Mest lønnsomt",
+                "Ikke overtegnet",
+                "Å ha onchain-identitet",
+                "Ikke kuttet",
+                "Begrensning på 2 validatorer per identitet"
+            ],
+            "confirm": {
+                "suggested": "Innsats med foreslått",
+                "manual": "Jeg velger validatorene selv"
+            }
+        },
+        "claimRewardsDialog": {
+            "title": "Gjør krav på belønninger",
+            "checkRewards": "Sjekk belønninger per epoke og validator",
+            "rewardsDestination": "Destinasjonsadresse for belønninger"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Uttrekkbar",
+            "beingWithdrawn": "Blir trukket tilbake",
+            "seeAll": "Se alt",
+            "nextWithdrawal": "Neste uttak",
+            "countdownLeft": "igjen"
+        },
+        "stakeDialog": {
+            "toStake": "Å satse",
+            "toRemove": "Å fjerne"
+        },
+        "withdrawDialog": {
+            "title": "Ta ut uinnsatte midler",
+            "showAllWithdraws": "Vis alle uttak"
+        },
+        "allWithdrawsDialog": {
+            "title": "Ustabil aktivitet",
+            "information": "Når du har trukket ut tokens, er det en obligatorisk 7-dagers utsettingsperiode. Etter denne perioden vil ikke tokens automatisk bli returnert til lommeboken din. Du må fullføre prosessen ved å trekke ut tokens manuelt."
+        }
     },
-    "selectedValidators": "{count} ( {Max} {max} )",
-    "withdraw": {
-      "withdrawable": "Uttrekkbar",
-      "beingWithdrawn": "Blir trukket tilbake",
-      "seeAll": "Se alt",
-      "nextWithdrawal": "Neste uttak",
-      "countdownLeft": "igjen"
+    "collapseText": "Kollapse",
+    "expandText": "Utvide",
+    "orderBook": {
+        "Buy": "Kjøp {asset}",
+        "Sell": "Selg {asset}",
+        "orderBook": "Bestillingsbok",
+        "marketTrades": "Markedshandler",
+        "market": "Marked",
+        "limit": "Grense",
+        "price": "Pris",
+        "total": "Total",
+        "amount": "beløp",
+        "time": "tid",
+        "month": "måned",
+        "change": "endring",
+        "cantPlaceOrder": "Kan ikke bestille",
+        "enterAmount": "Tast inn beløp",
+        "setPrice": "Sett pris",
+        "dayVolume": "1D volum",
+        "stop": "Boken stoppet",
+        "tokenPair": "Token-par",
+        "book": {
+            "noAsks": "Ingen åpnet spør",
+            "noBids": "Ingen åpnede bud"
+        },
+        "history": {
+            "tradeHistory": "Handelshistorie",
+            "orderHistory": "Ordrehistorikk",
+            "openOrders": "Åpne bestillinger {value}",
+            "connect": "Koble til en konto for å begynne å handle",
+            "cancel": "Kanseller bestillingen {value}",
+            "cancelAll": "Avbryt alle"
+        },
+        "orderTable": {
+            "time": "tid",
+            "pair": "par",
+            "side": "side",
+            "filled": "fylt",
+            "lifetime": "livstid",
+            "noOrders": "Ingen bestillinger. Lag din første!"
+        },
+        "dialog": {
+            "placeMarket": "Legg inn markedsordre",
+            "placeLimit": "Legg inn grensebestilling",
+            "askCancel": "Er du sikker på at du vil kansellere alle åpne bestillinger?",
+            "cancelAll": "Ja, avbryt alle",
+            "buy": "Kjøp {amount} {symbol}",
+            "sell": "Selg {amount} {symbol}",
+            "at": "til {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Velg handelspar",
+            "volume": "Volum",
+            "dailyChange": "Daglig endring",
+            "status": "Status",
+            "total": "{amount} {symbol} ved {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Aktiv",
+            "placeable": "Plasserbar",
+            "cancelable": "Kan kanselleres",
+            "inactive": "Inaktiv"
+        },
+        "tooltip": {
+            "limitOrder": "En \"Limit\"-ordre lar deg spesifisere den nøyaktige prisen du vil kjøpe eller selge en eiendel til. En 'Limit Buy'-ordre vil kun bli utført til den angitte prisen eller lavere, mens en 'Limit Sell'-ordre vil kun utføres til den spesifiserte prisen eller høyere. Denne kontrollen sikrer at du ikke betaler mer eller selger for mindre enn du er komfortabel med.",
+            "marketOrder": "En 'markedsordre' er en ordre for å umiddelbart kjøpe eller selge til den beste tilgjengelige gjeldende prisen. Det krever ikke å sette en pris, for å sikre en rask utførelse, men med en avveining av mindre kontroll over prisen som mottas eller betales. Denne typen ordre brukes når sikkerhet for utførelse er en prioritet fremfor priskontroll.",
+            "pairsList": "En sanntidsliste som viser gjeldende kjøps- og salgsordrer for en kryptovaluta. Det hjelper deg å forstå etterspørselen, potensiell prisretning og handelsvolum på SORA Network og Polkaswap DEX",
+            "bookWidget": "En live, konstant oppdatering av kjøps- (bud) og salgs- (spør)-ordrer for en spesifikk eiendel, organisert etter prisnivå. Ordreboken viser dybden av markedet, inkludert mengden eiendeler som tilbys til ulike priser. Traders bruker denne detaljerte visningen for å måle markedssentiment, identifisere potensielle motstands- og støttenivåer og forutse prisbevegelser basert på eksisterende etterspørsel og tilbud",
+            "marketWidget": "Denne widgeten viser en sanntidsstrøm av utførte handler i markedet, og gir informasjon om transaksjonsvolumer, nylig aktivitet og gjeldende markedstrender. Ved å observere timingen, prisen og størrelsen på faktiske handler, kan tradere få innsikt i markedsdynamikk og sentiment, og hjelpe dem med å oppdage handelsmuligheter og ta informerte beslutninger",
+            "txDetails": {
+                "orderType": "'Kjøp'-ordre vil kun bli utført til den spesifiserte prisen eller lavere, mens en 'selg'-ordre vil kun utføres til den angitte prisen eller høyere. Denne kontrollen sikrer at du ikke betaler mer eller selger for mindre enn du er komfortabel med.",
+                "expiryDate": "\"Utløpsdatoen\" er fristen for å utføre bestillingen din. Hvis markedet ikke når den angitte prisen før denne datoen, kanselleres bestillingen automatisk. Du er ikke bundet til en evig venting hvis markedsforholdene ikke stemmer overens med dine handelspreferanser.",
+                "amount": "'Beløp' refererer til det totale antallet eiendeler du ønsker å kjøpe eller selge i bestillingen din. Det er viktig å spesifisere, siden det bestemmer størrelsen på transaksjonen din, og påvirker den totale kostnaden for kjøpsordrer eller inntekter for salgsordrer.",
+                "limit": "'Limit Price' er den nøyaktige prisen du angir for en limitordre. Handelen vil bare utføres når eiendelens markedspris oppfyller grenseprisen din, og sikrer at du ikke kjøper over eller selger under denne angitte verdien.",
+                "locked": "'Låst' viser hvor mye eiendel som skal holdes mens bestillingen pågår."
+            },
+            "bookStatus": {
+                "active": "Full handelsfunksjonalitet aktivert. Du kan legge inn nye bestillinger eller kansellere eksisterende.",
+                "placeable": "Begrenset funksjonalitet. Du kan legge inn nye bestillinger og kansellere eksisterende, men enkelte funksjoner kan være utilgjengelige.",
+                "cancelable": "Du kan kun kansellere eksisterende bestillinger. Ny bestillingsplassering er for øyeblikket deaktivert.",
+                "inactive": "All handelsvirksomhet er for øyeblikket stanset. Ingen bestillinger kan legges inn eller kanselleres på dette tidspunktet."
+            }
+        },
+        "txDetails": {
+            "orderType": "ordretype",
+            "limitPrice": "grensepris",
+            "expiryDate": "utløpsdato"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "Oppgitt pris er for nøyaktig til å beregnes",
+                "reading": "Presisjon overskredet: Beløpet\/prisen som er angitt har for mange desimaler. Skriv inn en verdi med færre desimaler"
+            },
+            "marketNotAvailable": {
+                "reason": "Ikke nok tilgjengelige bestillinger til å fullføre denne bestillingen",
+                "reading": "Markedsordrebegrensning: Det er ikke nok bestillinger tilgjengelig til å oppfylle denne markedsordren. Vennligst juster bestillingsstørrelsen eller vent på at flere bestillinger legges inn"
+            },
+            "exceedsSpread": {
+                "reason": "Pris overskredet spredning",
+                "reading": "Pris overskredet: et markeds kjøps- eller salgskurs oversteg kjøps-\/salgskursen"
+            },
+            "spotLimit": {
+                "reason": "Handelssiden er fylt",
+                "reading": "Prisklassetak: Hver ordrebokside er begrenset til 1024 unike prispunkter. Velg en pris innenfor det eksisterende området eller vent til det blir ledig plass"
+            },
+            "accountLimit": {
+                "reason": "For mange bestillinger pågår",
+                "reading": "Grensen nådd: Hver konto er begrenset til 1024 grenseordrer. Vent til noen av bestillingene dine oppfylles"
+            },
+            "singlePriceLimit": {
+                "reason": "For mange bestillinger pågår for denne prisen",
+                "reading": "Grensen nådd: Hver posisjon er begrenset til 1024 grenseordrer. Vennligst vent til noen bestillinger oppfylles"
+            },
+            "outOfBounds": {
+                "reading": "Blockchain-området er overskredet: Det angitte beløpet ditt faller utenfor blokkjedens tillatte område. Min: {min} ; Maks: {max}",
+                "reason": "Beløpet samsvarer ikke med blokkjedeområdet"
+            },
+            "multipleOf": {
+                "reading": "For å behandle bestillingen din, skriv inn en pris som er et multiplum av {value}",
+                "reason": "Oppgitt pris er for spesifikk"
+            }
+        },
+        "orderStatus": {
+            "active": "Aktiv",
+            "canceled": "Kansellert",
+            "expired": "Utløpt",
+            "filled": "Fylt"
+        },
+        "pricePerToken": "Pris per 1 {token}"
     },
-    "stakeDialog": {
-      "toStake": "Å satse",
-      "toRemove": "Å fjerne"
+    "calculatingText": "Beregner",
+    "customisePageText": "Tilpass siden",
+    "priceChartText": "Prisdiagram",
+    "editText": "Redigere",
+    "resetText": "Tilbakestill",
+    "kensetsu": {
+        "addCollateral": "Legg til sikkerhet",
+        "addCollateralDescription": "Sett inn flere eiendeler i din posisjon for å øke din lånegrense eller forbedre din belåningsgrad. Dette kan også bidra til å forhindre likvidasjon.",
+        "depositCollateral": "Innskudd sikkerhet",
+        "totalCollateral": "Total sikkerhet",
+        "totalCollateralDescription": "Den totale verdien av alle eiendeler som for øyeblikket er deponert i din posisjon. Denne verdien påvirker din lånekapasitet og risikoen for likvidasjon.",
+        "debtAvailable": "Gjeld tilgjengelig",
+        "debtAvailableDescription": "Mengden midler du fortsatt kan trekke fra din posisjon uten å overskride din lånegrense, basert på din nåværende sikkerhet.",
+        "ltv": "Lån til verdi ({LTV})",
+        "ltvDescription": "Forholdet mellom det beløpet som er trukket og verdien av sikkerheten i din posisjon, uttrykt som en prosentandel. En høyere {LTV} øker potensielle avkastninger, men også risikoen, inkludert muligheten for likvidasjon.",
+        "borrowMore": "Lån mer",
+        "borrowMoreDescription": "Trekk ytterligere midler fra din posisjon opp til det maksimale tilgjengelige beløpet. Sørg for at verdien av din sikkerhet støtter økt gjeld for å unngå likvidasjonsrisiko.",
+        "available": "Tilgjengelig",
+        "outstandingDebt": "Utestående gjeld",
+        "outstandingDebtDescription": "Det totale beløpet du for øyeblikket skylder fra de midlene som er trukket fra din posisjon, inkludert påløpte renter. Dette må tilbakebetales for å lukke din posisjon eller opprettholde sunne belåningsgrader.",
+        "createVault": "Åpne en lånestilling",
+        "createVaultDescription": "Start en ny transaksjon ved å deponere sikkerhet i din posisjon og trekke midler. Dette skaper en gjeldsforpliktelse som du må administrere.",
+        "createVaultAction": "Åpne posisjon",
+        "borrowDebt": "Lån gjeld",
+        "minDepositCollateral": "Minimum innskudd sikkerhet",
+        "minDepositCollateralDescription": "Det minste beløpet av eiendeler som kreves for å åpne en posisjon. Dette første innskuddet sikrer de midlene du ønsker å låne.",
+        "maxAvailableToBorrow": "Maks. tilgjengelig for å låne",
+        "maxAvailableToBorrowDescription": "Det maksimale beløpet du kan trekke fra din posisjon, bestemt av verdien av din sikkerhet. Denne grensen justeres etter hvert som verdien av sikkerheten endres.",
+        "borrowTax": "Lån skatt",
+        "borrowTaxDescription": "Skatten {value} som pålegges det utlånte beløpet",
+        "repayDebt": "Gjeld tilbakebetaling",
+        "repayDebtDescription": "Returner lånte midler for å redusere din utestående gjeld. Dette kan redusere rentekostnader og senke risikoen for likvidasjon.",
+        "closeVault": "Lukk min posisjon",
+        "closeVaultDescription": "Lukk den valgte posisjonen ved å tilbakebetale all utestående gjeld og trekke tilbake all sikkerhet",
+        "yourCollateral": "Din sikkerhet",
+        "yourCollateralDescription": "Eiendelene du har deponert i din posisjon for å sikre de trukne midlene. Disse eiendelene kan likvideres av långiveren hvis du ikke opprettholder den nødvendige belåningsgraden.",
+        "yourDebt": "Din gjeld",
+        "yourDebtDescription": "Det totale beløpet som for øyeblikket er utestående i din posisjon, inkludert det trukne beløpet og påløpte renter. Denne saldoen øker over tid hvis renter akkumuleres.",
+        "yourDebtTokenBalance": "Din {tokenSymbol} balanse",
+        "requiredAmountWithSlippage": "Påkrevd beløp inkludert slitasje",
+        "requiredAmountWithSlippageDescription": "For en jevn lukking av din posisjon, kjøp litt mer {tokenSymbol} enn det nødvendige {amount} på grunn av mulig slippage. Du trenger ekstra for å dekke underskuddet. Bytt dine eiendeler til {tokenSymbol} for å møte dette behovet.",
+        "openSwap": "Åpne bytte",
+        "introTitle": "Åpne lånestillinger & Tjen med {Kensetsu}",
+        "introDescription": "Opplev trygg og problemfri utlån og låntagning. Åpne låne-posisjoner med {Kensetsu} plattformen.",
+        "disclaimerDescription": "Å låne digitale eiendeler gjennom {Polkaswap} innebærer betydelig risiko og er helt på egen risiko. Verdien av digitale eiendeler er svært volatil, og endringer i markedsprisene på de eiendelene du har lånt eller brukt som sikkerhet, kan føre til betydelige økonomiske tap.",
+        "availableToBorrow": "Tilgjengelig for å låne",
+        "availableToBorrowDescription": "Det gjenværende beløpet du er kvalifisert til å trekke under de nåværende forholdene i din posisjon, basert på din deponerte sikkerhet og eventuell eksisterende gjeld.",
+        "collateralDetails": "Sikkerhetsdetaljer",
+        "debtDetails": "Gjelddetaljer",
+        "positionInfo": "Posisjonsinformasjon",
+        "liquidationPenalty": "Likvidasjon straff",
+        "liquidationPenaltyDescription": "Et gebyr som pålegges hvis verdien av sikkerheten din faller under en viss terskel, og utløser salg av eiendeler for å dekke gjelden. Denne straffen øker din totale gjeld.",
+        "positionSafe": "Posisjon trygg",
+        "liquidationClose": "Likvidasjon lukk",
+        "highLiquidationRisk": "Høy likvidasjonsrisiko",
+        "error": {
+            "enterCollateral": "Angi sikkerhet",
+            "enterBorrow": "Angi lånebeløpet",
+            "borrowMoreThanAvailable": "Tilgjengelig gjeld overskredet",
+            "insufficientCollateral": "Utilstrekkelig sikkerhet",
+            "enterRepayDebt": "Skriv inn tilbakebetalt gjeld",
+            "repayMoreThanDebt": "Gjeld overbetalt",
+            "incorrectCollateral": "Token-par støttes ikke"
+        },
+        "interest": "Renter",
+        "interestDescription": "Et årlig gebyr belastet på det beløpet som trekkes fra lageret ditt, beregnet som prosentandel. Dette gebyret kompenserer for risikoer og markedsfluktuasjoner.",
+        "positionHistory": "Posisjonshistorikk",
+        "liquidated": "Likvidert",
+        "liquidatedMessage": "Likvidert {amount} {symbol}",
+        "status": {
+            "Opened": "Åpen",
+            "Closed": "Lukket",
+            "Liquidated": "Likvidert"
+        },
+        "readMore": "Les mer",
+        "reopen": "Gjenåpne",
+        "totalCollateralReturned": "Totalt tilbakeført sikkerhet",
+        "totalCollateralReturnedDescription": "Den totale verdien av eiendeler som er returnert til deg etter at din posisjon ble lukket, inkludert all gjenværende sikkerhet.",
+        "overallTotalCollateral": "Totalt sikkerhet",
+        "overallTotalCollateralDescription": "Den totale verdien av eiendeler som er deponert av låntakere for å sikre deres låneposisjoner på {Kensetsu}-plattformen.",
+        "overallTotalDebt": "Total gjeld",
+        "overallTotalDebtDescription": "Det totale beløpet av gjeld som for tiden er utestående på alle låneposisjoner på {Kensetsu}-plattformen.",
+        "overallBadDebt": "Dårlig gjeld",
+        "overallBadDebtDescription": "Delen av gjelden som sannsynligvis ikke vil bli innkrevd på grunn av mislighold fra låntaker eller utilstrekkelig sikkerhet.",
+        "ltvMaxTooltip": "Den maksimale mengden av en lånestilling som kan tilbys i forhold til den vurderte verdien av eiendelen som brukes som sikkerhet.",
+        "overallAvailable": "Totalt tilgjengelig",
+        "overallAvailableDescription": "Det totale beløpet av midler tilgjengelig for utlån på {Kensetsu}-plattformen."
     },
-    "withdrawDialog": {
-      "title": "Ta ut uinnsatte midler",
-      "showAllWithdraws": "Vis alle uttak"
+    "accountSettings": {
+        "title": "Kontoinnstillinger",
+        "hint": "Du kan aktivere dette tilbake i kontoinnstillingene",
+        "disable": "Deaktiver på",
+        "disabled": "Deaktivert for",
+        "confirmation": {
+            "title": "Deaktiver transaksjonsbekreftelse",
+            "description": "En popup-skjerm som viser detaljer om transaksjonene før signeringen."
+        },
+        "signature": {
+            "title": "Deaktiver passordbekreftelse",
+            "description": "Aktiver eller deaktiver behovet for å skrive inn passordet ditt under signatur-popup-vinduet i transaksjoner."
+        },
+        "enterPassword": "Oppgi passord",
+        "googleOnly": "Bare {Google} -kontoer"
     },
-    "allWithdrawsDialog": {
-      "title": "Ustabil aktivitet",
-      "information": "Når du har trukket ut tokens, er det en obligatorisk 7-dagers utsettingsperiode. Etter denne perioden vil ikke tokens automatisk bli returnert til lommeboken din. Du må fullføre prosessen ved å trekke ut tokens manuelt."
-    }
-  },
-  "collapseText": "Kollapse",
-  "expandText": "Utvide",
-  "orderBook": {
-    "Buy": "Kjøp {asset}",
-    "Sell": "Selg {asset}",
-    "orderBook": "Bestillingsbok",
-    "marketTrades": "Markedshandler",
-    "market": "Marked",
-    "limit": "Grense",
-    "price": "Pris",
-    "total": "Total",
-    "amount": "beløp",
-    "time": "tid",
-    "month": "måned",
-    "change": "endring",
-    "cantPlaceOrder": "Kan ikke bestille",
-    "enterAmount": "Tast inn beløp",
-    "setPrice": "Sett pris",
-    "dayVolume": "1D volum",
-    "stop": "Boken stoppet",
-    "tokenPair": "Token-par",
-    "book": {
-      "noAsks": "Ingen åpnet spør",
-      "noBids": "Ingen åpnede bud"
+    "currencyDialog": {
+        "currency": "Valuta",
+        "searchPlaceholder": "Søk etter valutanavn eller symbol"
     },
-    "history": {
-      "tradeHistory": "Handelshistorie",
-      "orderHistory": "Ordrehistorikk",
-      "openOrders": "Åpne bestillinger {value}",
-      "connect": "Koble til en konto for å begynne å handle",
-      "cancel": "Kanseller bestillingen {value}",
-      "cancelAll": "Avbryt alle"
+    "browserNotificationLocalStorageOverride": {
+        "title": "Tøm lokal {AppName} lagring",
+        "info": "Din lokale lagring er overbelastet, for å fortsette å bruke {AppName} må du rense den",
+        "agree": "Ja jeg forstår"
     },
-    "orderTable": {
-      "time": "tid",
-      "pair": "par",
-      "side": "side",
-      "filled": "fylt",
-      "lifetime": "livstid",
-      "noOrders": "Ingen bestillinger. Lag din første!"
+    "points": {
+        "title": "Dine poengfremgang",
+        "loginText": "Koble til kontoen din for å se poengene dine",
+        "bridgeVolume": "Brovolum",
+        "feesSpent": "Brukte avgifter",
+        "xorBurned": "{XOR} brent",
+        "yourReferrals": "Dine henvisninger",
+        "accountsText": "{amount} kontoer",
+        "yourRewards": "Dine belønninger",
+        "openTelegram": "Åpne {Telegram}",
+        "toEarnPoints": "For å tjene poeng"
     },
-    "dialog": {
-      "placeMarket": "Legg inn markedsordre",
-      "placeLimit": "Legg inn grensebestilling",
-      "askCancel": "Er du sikker på at du vil kansellere alle åpne bestillinger?",
-      "cancelAll": "Ja, avbryt alle",
-      "buy": "Kjøp {amount} {symbol}",
-      "sell": "Selg {amount} {symbol}",
-      "at": "til {price} {symbol}"
-    },
-    "tradingPair": {
-      "choosePair": "Velg handelspar",
-      "volume": "Volum",
-      "dailyChange": "Daglig endring",
-      "status": "Status",
-      "total": "{amount} {symbol} ved {amount2} {symbol2}"
-    },
-    "bookStatus": {
-      "active": "Aktiv",
-      "placeable": "Plasserbar",
-      "cancelable": "Kan kanselleres",
-      "inactive": "Inaktiv"
-    },
-    "tooltip": {
-      "limitOrder": "En \"Limit\"-ordre lar deg spesifisere den nøyaktige prisen du vil kjøpe eller selge en eiendel til. En 'Limit Buy'-ordre vil kun bli utført til den angitte prisen eller lavere, mens en 'Limit Sell'-ordre vil kun utføres til den spesifiserte prisen eller høyere. Denne kontrollen sikrer at du ikke betaler mer eller selger for mindre enn du er komfortabel med.",
-      "marketOrder": "En 'markedsordre' er en ordre for å umiddelbart kjøpe eller selge til den beste tilgjengelige gjeldende prisen. Det krever ikke å sette en pris, for å sikre en rask utførelse, men med en avveining av mindre kontroll over prisen som mottas eller betales. Denne typen ordre brukes når sikkerhet for utførelse er en prioritet fremfor priskontroll.",
-      "pairsList": "En sanntidsliste som viser gjeldende kjøps- og salgsordrer for en kryptovaluta. Det hjelper deg å forstå etterspørselen, potensiell prisretning og handelsvolum på SORA Network og Polkaswap DEX",
-      "bookWidget": "En live, konstant oppdatering av kjøps- (bud) og salgs- (spør)-ordrer for en spesifikk eiendel, organisert etter prisnivå. Ordreboken viser dybden av markedet, inkludert mengden eiendeler som tilbys til ulike priser. Traders bruker denne detaljerte visningen for å måle markedssentiment, identifisere potensielle motstands- og støttenivåer og forutse prisbevegelser basert på eksisterende etterspørsel og tilbud",
-      "marketWidget": "Denne widgeten viser en sanntidsstrøm av utførte handler i markedet, og gir informasjon om transaksjonsvolumer, nylig aktivitet og gjeldende markedstrender. Ved å observere timingen, prisen og størrelsen på faktiske handler, kan tradere få innsikt i markedsdynamikk og sentiment, og hjelpe dem med å oppdage handelsmuligheter og ta informerte beslutninger",
-      "txDetails": {
-        "orderType": "'Kjøp'-ordre vil kun bli utført til den spesifiserte prisen eller lavere, mens en 'selg'-ordre vil kun utføres til den angitte prisen eller høyere. Denne kontrollen sikrer at du ikke betaler mer eller selger for mindre enn du er komfortabel med.",
-        "expiryDate": "\"Utløpsdatoen\" er fristen for å utføre bestillingen din. Hvis markedet ikke når den angitte prisen før denne datoen, kanselleres bestillingen automatisk. Du er ikke bundet til en evig venting hvis markedsforholdene ikke stemmer overens med dine handelspreferanser.",
-        "amount": "'Beløp' refererer til det totale antallet eiendeler du ønsker å kjøpe eller selge i bestillingen din. Det er viktig å spesifisere, siden det bestemmer størrelsen på transaksjonen din, og påvirker den totale kostnaden for kjøpsordrer eller inntekter for salgsordrer.",
-        "limit": "'Limit Price' er den nøyaktige prisen du angir for en limitordre. Handelen vil bare utføres når eiendelens markedspris oppfyller grenseprisen din, og sikrer at du ikke kjøper over eller selger under denne angitte verdien.",
-        "locked": "'Låst' viser hvor mye eiendel som skal holdes mens bestillingen pågår."
-      },
-      "bookStatus": {
-        "active": "Full handelsfunksjonalitet aktivert. Du kan legge inn nye bestillinger eller kansellere eksisterende.",
-        "placeable": "Begrenset funksjonalitet. Du kan legge inn nye bestillinger og kansellere eksisterende, men enkelte funksjoner kan være utilgjengelige.",
-        "cancelable": "Du kan kun kansellere eksisterende bestillinger. Ny bestillingsplassering er for øyeblikket deaktivert.",
-        "inactive": "All handelsvirksomhet er for øyeblikket stanset. Ingen bestillinger kan legges inn eller kanselleres på dette tidspunktet."
-      }
-    },
-    "txDetails": {
-      "orderType": "ordretype",
-      "limitPrice": "grensepris",
-      "expiryDate": "utløpsdato"
-    },
-    "error": {
-      "beyondPrecision": {
-        "reason": "Oppgitt pris er for nøyaktig til å beregnes",
-        "reading": "Presisjon overskredet: Beløpet/prisen som er angitt har for mange desimaler. Skriv inn en verdi med færre desimaler"
-      },
-      "marketNotAvailable": {
-        "reason": "Ikke nok tilgjengelige bestillinger til å fullføre denne bestillingen",
-        "reading": "Markedsordrebegrensning: Det er ikke nok bestillinger tilgjengelig til å oppfylle denne markedsordren. Vennligst juster bestillingsstørrelsen eller vent på at flere bestillinger legges inn"
-      },
-      "exceedsSpread": {
-        "reason": "Pris overskredet spredning",
-        "reading": "Pris overskredet: et markeds kjøps- eller salgskurs oversteg kjøps-/salgskursen"
-      },
-      "spotLimit": {
-        "reason": "Handelssiden er fylt",
-        "reading": "Prisklassetak: Hver ordrebokside er begrenset til 1024 unike prispunkter. Velg en pris innenfor det eksisterende området eller vent til det blir ledig plass"
-      },
-      "accountLimit": {
-        "reason": "For mange bestillinger pågår",
-        "reading": "Grensen nådd: Hver konto er begrenset til 1024 grenseordrer. Vent til noen av bestillingene dine oppfylles"
-      },
-      "singlePriceLimit": {
-        "reason": "For mange bestillinger pågår for denne prisen",
-        "reading": "Grensen nådd: Hver posisjon er begrenset til 1024 grenseordrer. Vennligst vent til noen bestillinger oppfylles"
-      },
-      "outOfBounds": {
-        "reading": "Blockchain-området er overskredet: Det angitte beløpet ditt faller utenfor blokkjedens tillatte område. Min: {min} ; Maks: {max}",
-        "reason": "Beløpet samsvarer ikke med blokkjedeområdet"
-      },
-      "multipleOf": {
-        "reading": "For å behandle bestillingen din, skriv inn en pris som er et multiplum av {value}",
-        "reason": "Oppgitt pris er for spesifikk"
-      }
-    },
-    "orderStatus": {
-      "active": "Aktiv",
-      "canceled": "Kansellert",
-      "expired": "Utløpt",
-      "filled": "Fylt"
-    },
-    "pricePerToken": "Pris per 1 {token}"
-  },
-  "calculatingText": "Beregner",
-  "customisePageText": "Tilpass siden",
-  "priceChartText": "Prisdiagram",
-  "editText": "Redigere",
-  "resetText": "Tilbakestill",
-  "kensetsu": {
-    "addCollateral": "Legg til sikkerhet",
-    "addCollateralDescription": "Sett inn flere eiendeler i din posisjon for å øke din lånegrense eller forbedre din belåningsgrad. Dette kan også bidra til å forhindre likvidasjon.",
-    "depositCollateral": "Innskudd sikkerhet",
-    "totalCollateral": "Total sikkerhet",
-    "totalCollateralDescription": "Den totale verdien av alle eiendeler som for øyeblikket er deponert i din posisjon. Denne verdien påvirker din lånekapasitet og risikoen for likvidasjon.",
-    "debtAvailable": "Gjeld tilgjengelig",
-    "debtAvailableDescription": "Mengden midler du fortsatt kan trekke fra din posisjon uten å overskride din lånegrense, basert på din nåværende sikkerhet.",
-    "ltv": "Lån til verdi ({LTV})",
-    "ltvDescription": "Forholdet mellom det beløpet som er trukket og verdien av sikkerheten i din posisjon, uttrykt som en prosentandel. En høyere {LTV} øker potensielle avkastninger, men også risikoen, inkludert muligheten for likvidasjon.",
-    "borrowMore": "Lån mer",
-    "borrowMoreDescription": "Trekk ytterligere midler fra din posisjon opp til det maksimale tilgjengelige beløpet. Sørg for at verdien av din sikkerhet støtter økt gjeld for å unngå likvidasjonsrisiko.",
-    "available": "Tilgjengelig",
-    "outstandingDebt": "Utestående gjeld",
-    "outstandingDebtDescription": "Det totale beløpet du for øyeblikket skylder fra de midlene som er trukket fra din posisjon, inkludert påløpte renter. Dette må tilbakebetales for å lukke din posisjon eller opprettholde sunne belåningsgrader.",
-    "createVault": "Åpne en lånestilling",
-    "createVaultDescription": "Start en ny transaksjon ved å deponere sikkerhet i din posisjon og trekke midler. Dette skaper en gjeldsforpliktelse som du må administrere.",
-    "createVaultAction": "Åpne posisjon",
-    "borrowDebt": "Lån gjeld",
-    "minDepositCollateral": "Minimum innskudd sikkerhet",
-    "minDepositCollateralDescription": "Det minste beløpet av eiendeler som kreves for å åpne en posisjon. Dette første innskuddet sikrer de midlene du ønsker å låne.",
-    "maxAvailableToBorrow": "Maks. tilgjengelig for å låne",
-    "maxAvailableToBorrowDescription": "Det maksimale beløpet du kan trekke fra din posisjon, bestemt av verdien av din sikkerhet. Denne grensen justeres etter hvert som verdien av sikkerheten endres.",
-    "borrowTax": "Lån skatt",
-    "borrowTaxDescription": "Skatten {value} som pålegges det utlånte beløpet",
-    "repayDebt": "Gjeld tilbakebetaling",
-    "repayDebtDescription": "Returner lånte midler for å redusere din utestående gjeld. Dette kan redusere rentekostnader og senke risikoen for likvidasjon.",
-    "closeVault": "Lukk min posisjon",
-    "closeVaultDescription": "Lukk den valgte posisjonen ved å tilbakebetale all utestående gjeld og trekke tilbake all sikkerhet",
-    "yourCollateral": "Din sikkerhet",
-    "yourCollateralDescription": "Eiendelene du har deponert i din posisjon for å sikre de trukne midlene. Disse eiendelene kan likvideres av långiveren hvis du ikke opprettholder den nødvendige belåningsgraden.",
-    "yourDebt": "Din gjeld",
-    "yourDebtDescription": "Det totale beløpet som for øyeblikket er utestående i din posisjon, inkludert det trukne beløpet og påløpte renter. Denne saldoen øker over tid hvis renter akkumuleres.",
-    "yourDebtTokenBalance": "Din {tokenSymbol} balanse",
-    "requiredAmountWithSlippage": "Påkrevd beløp inkludert slitasje",
-    "requiredAmountWithSlippageDescription": "For en jevn lukking av din posisjon, kjøp litt mer {tokenSymbol} enn det nødvendige {amount} på grunn av mulig slippage. Du trenger ekstra for å dekke underskuddet. Bytt dine eiendeler til {tokenSymbol} for å møte dette behovet.",
-    "openSwap": "Åpne bytte",
-    "introTitle": "Åpne lånestillinger & Tjen med {Kensetsu}",
-    "introDescription": "Opplev trygg og problemfri utlån og låntagning. Åpne låne-posisjoner med {Kensetsu} plattformen.",
-    "disclaimerDescription": "Å låne digitale eiendeler gjennom {Polkaswap} innebærer betydelig risiko og er helt på egen risiko. Verdien av digitale eiendeler er svært volatil, og endringer i markedsprisene på de eiendelene du har lånt eller brukt som sikkerhet, kan føre til betydelige økonomiske tap.",
-    "availableToBorrow": "Tilgjengelig for å låne",
-    "availableToBorrowDescription": "Det gjenværende beløpet du er kvalifisert til å trekke under de nåværende forholdene i din posisjon, basert på din deponerte sikkerhet og eventuell eksisterende gjeld.",
-    "collateralDetails": "Sikkerhetsdetaljer",
-    "debtDetails": "Gjelddetaljer",
-    "positionInfo": "Posisjonsinformasjon",
-    "liquidationPenalty": "Likvidasjon straff",
-    "liquidationPenaltyDescription": "Et gebyr som pålegges hvis verdien av sikkerheten din faller under en viss terskel, og utløser salg av eiendeler for å dekke gjelden. Denne straffen øker din totale gjeld.",
-    "positionSafe": "Posisjon trygg",
-    "liquidationClose": "Likvidasjon lukk",
-    "highLiquidationRisk": "Høy likvidasjonsrisiko",
-    "error": {
-      "enterCollateral": "Angi sikkerhet",
-      "enterBorrow": "Angi lånebeløpet",
-      "borrowMoreThanAvailable": "Tilgjengelig gjeld overskredet",
-      "insufficientCollateral": "Utilstrekkelig sikkerhet",
-      "enterRepayDebt": "Skriv inn tilbakebetalt gjeld",
-      "repayMoreThanDebt": "Gjeld overbetalt",
-      "incorrectCollateral": "Token-par støttes ikke"
-    },
-    "interest": "Renter",
-    "interestDescription": "Et årlig gebyr belastet på det beløpet som trekkes fra lageret ditt, beregnet som prosentandel. Dette gebyret kompenserer for risikoer og markedsfluktuasjoner.",
-    "positionHistory": "Posisjonshistorikk",
-    "liquidated": "Likvidert",
-    "liquidatedMessage": "Likvidert {amount} {symbol}",
-    "status": {
-      "Opened": "Åpen",
-      "Closed": "Lukket",
-      "Liquidated": "Likvidert"
-    },
-    "readMore": "Les mer",
-    "reopen": "Gjenåpne",
-    "totalCollateralReturned": "Totalt tilbakeført sikkerhet",
-    "totalCollateralReturnedDescription": "Den totale verdien av eiendeler som er returnert til deg etter at din posisjon ble lukket, inkludert all gjenværende sikkerhet.",
-    "overallTotalCollateral": "Totalt sikkerhet",
-    "overallTotalCollateralDescription": "Den totale verdien av eiendeler som er deponert av låntakere for å sikre deres låneposisjoner på {Kensetsu}-plattformen.",
-    "overallTotalDebt": "Total gjeld",
-    "overallTotalDebtDescription": "Det totale beløpet av gjeld som for tiden er utestående på alle låneposisjoner på {Kensetsu}-plattformen.",
-    "overallBadDebt": "Dårlig gjeld",
-    "overallBadDebtDescription": "Delen av gjelden som sannsynligvis ikke vil bli innkrevd på grunn av mislighold fra låntaker eller utilstrekkelig sikkerhet.",
-    "ltvMaxTooltip": "Den maksimale mengden av en lånestilling som kan tilbys i forhold til den vurderte verdien av eiendelen som brukes som sikkerhet.",
-    "overallAvailable": "Totalt tilgjengelig",
-    "overallAvailableDescription": "Det totale beløpet av midler tilgjengelig for utlån på {Kensetsu}-plattformen."
-  },
-  "accountSettings": {
-    "title": "Kontoinnstillinger",
-    "hint": "Du kan aktivere dette tilbake i kontoinnstillingene",
-    "disable": "Deaktiver på",
-    "disabled": "Deaktivert for",
-    "confirmation": {
-      "title": "Deaktiver transaksjonsbekreftelse",
-      "description": "En popup-skjerm som viser detaljer om transaksjonene før signeringen."
-    },
-    "signature": {
-      "title": "Deaktiver passordbekreftelse",
-      "description": "Aktiver eller deaktiver behovet for å skrive inn passordet ditt under signatur-popup-vinduet i transaksjoner."
-    },
-    "enterPassword": "Oppgi passord",
-    "googleOnly": "Bare {Google} -kontoer"
-  },
-  "currencyDialog": {
-    "currency": "Valuta",
-    "searchPlaceholder": "Søk etter valutanavn eller symbol"
-  },
-  "browserNotificationLocalStorageOverride": {
-    "title": "Tøm lokal {AppName} lagring",
-    "info": "Din lokale lagring er overbelastet, for å fortsette å bruke {AppName} må du rense den",
-    "agree": "Ja jeg forstår"
-  },
-  "points": {
-    "title": "Dine poengfremgang",
-    "loginText": "Koble til kontoen din for å se poengene dine",
-    "bridgeVolume": "Brovolum",
-    "feesSpent": "Brukte avgifter",
-    "xorBurned": "{XOR} brent",
-    "yourReferrals": "Dine henvisninger",
-    "accountsText": "{amount} kontoer",
-    "yourRewards": "Dine belønninger",
-    "openTelegram": "Åpne {Telegram}",
-    "toEarnPoints": "For å tjene poeng"
-  },
-  "sbtDetails": {
-    "description": "Denne SBT gir tilgang til flere tokens og pooler og er knyttet til kontoen din",
-    "issuedBy": "{SBT} utstedt av",
-    "kycVerification": "{KYC} Verifisering",
-    "kycProvider": "{KYC} Leverandør",
-    "accessPermitted": "Tilgang tillatt",
-    "listOperable": "Regulerte eiendeler kan opereres",
-    "noPermissions": "Ingen ekstra tillatelser",
-    "regulatedInstitution": "Regulert institusjon",
-    "expiryDate": "Utløpsdato",
-    "expiryDateTooltip": "'Utløpsdato' er fristen for din tilgang til regulerte eiendeler fra SBT",
-    "expiresIn": "Utløper om",
-    "expiresInTooltip": "'Utløper om' viser perioden eller tidspunktet tilgangen er ervervet",
-    "indefiniteExp": "åpen",
-    "permission": "tillatelse",
-    "permissions": "tillatelser",
-    "noReceiverAccess": "Du prøver å sende regulert token til en bruker uten SBT-tilgang"
-  },
-  "assetOwner": {
-    "letsStartBtn": "LA OSS BEGYNNE",
-    "selectExisting": "Velg eksisterende",
-    "createSbt": "Opprett {type}",
-    "orSelectExisting": "Eller velg eksisterende",
-    "createRegulatedAsset": "Opprett en ny regulert eiendel",
-    "addRegulatedAsset": "Legg til en annen regulert eiendel",
-    "attachedRegulatedAssets": "Vedlagte regulerte eiendeler",
-    "ownerSbtTitle": "Din {type}",
-    "regulatedAssetsConnected": "Regulerte eiendeler tilkoblet",
-    "regulatedPools": "Regulerte pooler",
-    "sbtManagers": "{type} Forvaltere",
-    "you": "Du",
-    "accountWithAccess": "Konto med SBT-tilgang",
-    "issueSbtAccess": "Utsted {type} tilgang",
-    "startIssue": "Start utstedelse av tilgang for SBT til kontoer",
-    "permissionedAssets": "Tillatte eiendeler",
-    "addRegulatedAssets": "Legg til regulerte eiendeler",
-    "sbtCreation": {
-      "addAssets": "Legg til eiendeler til SBT",
-      "addDescription": "Skriv inn SBT-detaljer",
-      "addMeta": "Skriv inn SBT-detaljer",
-      "preview": "SBT Forhåndsvisning"
-    },
-    "guide": {
-      "createToken": "Opprett tokenet ditt",
-      "createTokenDesc": "Start enkelt din unike token—tilgjengelig i flere formater som NFT-er og SBT-er—ved hjelp av den robuste, sikre infrastrukturen til SORA-nettverket",
-      "title": "Hvordan lage en {type}:",
-      "stepOneTitle": "Velg eller Opprett Regulerte Eiendeler",
-      "stepOneDesc": "Velg eller opprett eiendeler som du personlig har laget og regulert. Dette er eiendeler under din kontroll og forvaltning.",
-      "stepTwoTitle": "Skriv inn SBT-detaljer",
-      "stepTwoDesc": "Oppgi viktig informasjon som navnet og ticker-symbolet til SBT-en, samt ikonet.",
-      "stepThreeTitle": "Gjennomgå og signer transaksjonen",
-      "stepThreeDesc": "Gjennomgå og signer den endelige opprettelsestransaksjonen for å fullføre oppsettet av SBT-en.",
-      "disclaimerSbt": "Hold denne siden åpen gjennom hele prosessen. Å lukke eller navigere bort vil kreve at du starter på nytt. Fullfør trinnene raskt for å unngå timeout."
-    },
-    "dialog": {
-      "createAsset": "Opprett en ny eiendel",
-      "createAssetDesc": "Sett opp en ny tillatt eiendel for {type}",
-      "addExisting": "Legg til en eksisterende eiendel",
-      "addExistingDesc": "Legg til en allerede opprettet eiendel for SBT",
-      "enterAddress": "Skriv inn adresse for utstedelse",
-      "selectAccessEnd": "Velg når tilgangen skal avsluttes",
-      "selectDate": "Velg dato",
-      "issueAccess": "Utsted tilgang",
-      "pickDate": "Velg en dag"
-    }
-  }
+    "addAssetsText": "Legg til eiendel | Legg til eiendeler"
 }

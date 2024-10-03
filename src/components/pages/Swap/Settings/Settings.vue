@@ -1,12 +1,18 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('dexSettings.title')" custom-class="settings" append-to-body>
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('dexSettings.title')"
+    :append-to-body="appendToBody"
+    :modal-append-to-body="appendToBody"
+    custom-class="settings"
+  >
     <swap-market-algorithm />
   </dialog-base>
 </template>
 
 <script lang="ts">
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -18,7 +24,9 @@ import SwapMarketAlgorithm from './MarketAlgorithm/MarketAlgorithm.vue';
     SwapMarketAlgorithm,
   },
 })
-export default class SwapSettings extends Mixins(TranslationMixin, mixins.DialogMixin) {}
+export default class SwapSettings extends Mixins(TranslationMixin, mixins.DialogMixin) {
+  @Prop({ default: false, type: Boolean }) readonly appendToBody!: boolean;
+}
 </script>
 
 <style lang="scss">

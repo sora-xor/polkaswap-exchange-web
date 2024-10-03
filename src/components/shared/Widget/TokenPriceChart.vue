@@ -1,6 +1,6 @@
 <template>
   <price-chart-widget v-bind="$attrs" :base-asset="selectedToken" is-available class="token-price-chart">
-    <template v-if="!predefinedToken" #types>
+    <template v-if="!predefinedToken" #title>
       <token-select-button
         :icon="selectTokenIcon"
         :token="selectedToken"
@@ -10,7 +10,6 @@
       <select-token
         disabled-custom
         :visible.sync="showSelectTokenDialog"
-        :append-to-body="false"
         :asset="selectedToken"
         @select="changeToken"
       />

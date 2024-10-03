@@ -197,4 +197,3 @@ export default class PoolCard extends Mixins(PoolCardMixin, InternalConnectMixin
   }
 }
 </style>
-../../router../consts

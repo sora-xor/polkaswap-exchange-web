@@ -23,11 +23,7 @@
         @focus="handleFocusField(false)"
         @max="handleMaxValue"
         @select="openSelectTokenDialog(true)"
-      >
-        <template #title-append v-if="areTokensSelected && !isZeroToAmount && isExchangeB">
-          <span class="input-title--uppercase input-title--primary"> ({{ t('swap.estimated') }}) </span>
-        </template>
-      </token-input>
+      />
 
       <s-button
         class="el-button--switch-tokens"
@@ -49,9 +45,6 @@
         @focus="handleFocusField(true)"
         @select="openSelectTokenDialog(false)"
       >
-        <template #title-append v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB">
-          <span class="input-title--uppercase input-title--primary"> ({{ t('swap.estimated') }}) </span>
-        </template>
         <template #fiat-amount-append v-if="tokenTo">
           <value-status-wrapper :value="fiatDifference" badge class="price-difference__value">
             <formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>
@@ -107,7 +100,20 @@
         </template>
       </s-button>
 
-      <swap-transaction-details v-if="areTokensSelected && !hasZeroAmount" :info-only="false" />
+      <swap-transaction-details :disabled="!areTokensSelected || hasZeroAmount" class="swap-details">
+        <template #reference>
+          <info-line
+            :label="t('networkFeeText')"
+            :label-tooltip="t('networkFeeTooltipText')"
+            :value="networkFeeFormatted"
+            :asset-symbol="xorSymbol"
+            :fiat-value="getFiatAmountByCodecString(networkFee)"
+            is-formatted
+            class="swap-details-info-line"
+          />
+        </template>
+      </swap-transaction-details>
+
       <select-token
         :visible.sync="showSelectTokenDialog"
         :connected="isLoggedIn"
@@ -137,6 +143,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
+import SwapAmountsMixin from '@/components/mixins/SwapAmountsMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import { Components, MarketAlgorithms } from '@/consts';
 import { lazyComponent } from '@/router';
@@ -173,6 +180,7 @@ import type { Subscription } from 'rxjs';
     TokenInput: lazyComponent(Components.TokenInput),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine,
   },
 })
 export default class SwapFormWidget extends Mixins(
@@ -180,13 +188,12 @@ export default class SwapFormWidget extends Mixins(
   mixins.TransactionMixin,
   TokenSelectMixin,
   ConfirmDialogMixin,
-  InternalConnectMixin
+  InternalConnectMixin,
+  SwapAmountsMixin
 ) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
 
   @state.swap.isExchangeB isExchangeB!: boolean;
-  @state.swap.fromValue fromValue!: string;
-  @state.swap.toValue toValue!: string;
   @state.swap.isAvailable isAvailable!: boolean;
   @state.swap.swapQuote private swapQuote!: Nullable<SwapQuote>;
   @state.swap.allowLossPopup private allowLossPopup!: boolean;
@@ -197,12 +204,8 @@ export default class SwapFormWidget extends Mixins(
   @getter.swap.swapLiquiditySource liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.settings.debugEnabled private debugEnabled!: boolean;
-  @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
-  @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
 
-  @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
-  @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setAmountWithoutImpact private setAmountWithoutImpact!: (amount?: CodecString) => void;
   @mutation.swap.setExchangeB private setExchangeB!: (isExchangeB: boolean) => void;
   @mutation.swap.setLiquidityProviderFee private setLiquidityProviderFee!: (value?: CodecString) => void;
@@ -212,8 +215,6 @@ export default class SwapFormWidget extends Mixins(
   @mutation.swap.selectDexId private selectDexId!: (dexId?: DexId) => void;
   @mutation.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload?: SwapQuoteData) => void;
 
-  @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
-  @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
   @action.swap.switchTokens private switchTokens!: AsyncFnWithoutArgs;
   @action.swap.reset private reset!: AsyncFnWithoutArgs;
 
@@ -244,28 +245,16 @@ export default class SwapFormWidget extends Mixins(
   quoteLoading = false;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
+  get xorSymbol(): string {
+    return ' ' + XOR.symbol;
+  }
+
+  get networkFeeFormatted(): string {
+    return this.formatCodecNumber(this.networkFee);
+  }
+
   get tokenFromSymbol(): string {
     return this.tokenFrom?.symbol ?? '';
-  }
-
-  get areTokensSelected(): boolean {
-    return !!(this.tokenFrom && this.tokenTo);
-  }
-
-  get isZeroFromAmount(): boolean {
-    return asZeroValue(this.fromValue);
-  }
-
-  get isZeroToAmount(): boolean {
-    return asZeroValue(this.toValue);
-  }
-
-  get hasZeroAmount(): boolean {
-    return this.isZeroFromAmount || this.isZeroToAmount;
-  }
-
-  get areZeroAmounts(): boolean {
-    return this.isZeroFromAmount && this.isZeroToAmount;
   }
 
   get fromFiatAmount(): FPNumber {
@@ -599,6 +588,7 @@ export default class SwapFormWidget extends Mixins(
 .swap-widget {
   @include buttons;
   @include full-width-button('action-button');
+  @include full-width-button('swap-details', 0);
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
 }
 

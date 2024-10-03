@@ -1,1735 +1,1683 @@
 {
-  "closeText": "փակել",
-  "backText": "Վերադառնալ",
-  "createWalletText": "Ստեղծել դրամապանակ",
-  "nameText": "Անուն",
-  "nextText": "Հաջորդը",
-  "importText": "Ներմուծել",
-  "settingsText": "Կարգավորումներ",
-  "addAssetText": "Ավելացնել ակտիվ",
-  "successText": "Հաջողություն",
-  "warningText": "Զգուշացում",
-  "swapText": "Փոխանակել",
-  "searchText": "Փնտրել",
-  "cancelText": "Չեղարկել",
-  "saveText": "Պահպանել",
-  "logoutText": "Դուրս գալ",
-  "sendText": "Ուղարկել",
-  "addressText": "Հասցե",
-  "amountText": "Գումար",
-  "errorText": "Սխալ",
-  "insufficientBalanceText": "Անբավարար {tokenSymbol} հաշիվ",
-  "unknownErrorText": "Սխալ Ինչ-որ բան սխալ է տեղի ունեցել...",
-  "transactionSubmittedText": "Գործարքը ներկայացվել է",
-  "operations": {
-    "Swap": "Փոխանակել",
-    "Transfer": "Տեղափոխել",
-    "AddLiquidity": "Ավելացնել իրացվելիություն",
-    "RemoveLiquidity": "Հեռացնել իրացվելիությունը",
-    "CreatePair": "Ստեղծել զույգ",
-    "RegisterAsset": "Գրանցել ակտիվը",
-    "ClaimRewards": "Հաստատել Պարգևները",
-    "andText": "և",
-    "finalized": {
-      "Transfer": "{action} {amount} {symbol} {direction} {address}",
-      "Swap": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2}",
-      "AddLiquidity": "Մատակարարված {amount} {symbol} և {amount2} {symbol2}",
-      "RemoveLiquidity": "Հեռացված {amount} {symbol} և {amount2} {symbol2}",
-      "CreatePair": "Մատակարարված {amount} {symbol} և {amount2} {symbol2}",
-      "RegisterAsset": "Գրանցված է {symbol} ակտիվ",
-      "ClaimRewards": "Պարգևատրումը հաջողությամբ հաստատված է {rewards}",
-      "ReferralReserveXor": "Խճճված {amount} XOR",
-      "ReferralUnreserveXor": "Unbonded {amount} XOR",
-      "ReferralSetInvitedUser": "{role} {address} դրվում է հաջողությամբ",
-      "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
-      "DemeterFarmingDepositLiquidity": "Տրամադրված {symbol} և {symbol2} {amount} LP ժետոններ",
-      "DemeterFarmingWithdrawLiquidity": "Հեռացվել են {symbol} և {symbol2} {amount} LP նշանները",
-      "DemeterFarmingStakeToken": "Ավելացվեց {amount} {symbol}",
-      "DemeterFarmingUnstakeToken": "Հեռացվել է {amount} {symbol}",
-      "DemeterFarmingGetRewards": "{amount} {symbol} ը հաջողությամբ ներկայացվեց",
-      "EthBridgeIncoming": "Փոխանցվել է {amount} {symbol} {Ethereum} ից {Sora}",
-      "EthBridgeOutgoing": "Փոխանցվել է {amount} {symbol} {Sora} ից {Ethereum}",
-      "SwapTransferBatch": "{action} {amount} {symbol}",
-      "StakingBondAndNominate": "Խճճված {amount} {symbol}",
-      "StakingBond": "Խճճված {amount} {symbol}",
-      "StakingBondExtra": "Խճճված լրացուցիչ {amount} {symbol}",
-      "StakingUnbond": "Չպարտադրված {amount} {symbol}",
-      "StakingRebond": "Վերադարձված {amount} {symbol}",
-      "StakingNominate": "Առաջադրված վավերացնողներ",
-      "StakingWithdrawUnbonded": "Հանվել է {amount} {symbol}",
-      "StakingPayout": "Վճարման պարգևներ",
-      "StakingChill": "Հանգստացեք",
-      "StakingSetController": "Կարգավորել {address}",
-      "StakingSetPayee": "Սահմանել վճարողի {address}",
-      "OrderBookPlaceLimitOrder": "Տեղադրված է {side} {amount} {symbol} {price} {symbol2} ով",
-      "OrderBookCancelLimitOrder": "Սահմանափակման պատվերը չեղարկվել է",
-      "OrderBookCancelLimitOrders": "Սահմանափակ պատվերները չեղարկվել են",
-      "Burn": "Այրված {amount} {symbol}",
-      "Mint": "Նշված է {amount} {symbol} {address} -ին",
-      "CreateVault": "{symbol}/{symbol2} Դիրքը ստեղծված է",
-      "CloseVault": "{symbol}/{symbol2} Դիրքը փակված է",
-      "DepositCollateral": "{amount} {symbol} արտաքին ապրանքը մուտք է գալիս",
-      "RepayVaultDebt": "{amount} {symbol} պարտքը մաքրվել է",
-      "BorrowVaultDebt": "{amount} {symbol} պարտքի վարկի գումարը վարվել է"
+    "closeText": "փակել",
+    "backText": "Վերադառնալ",
+    "createWalletText": "Ստեղծել դրամապանակ",
+    "nameText": "Անուն",
+    "nextText": "Հաջորդը",
+    "importText": "Ներմուծել",
+    "settingsText": "Կարգավորումներ",
+    "addAssetText": "Ավելացնել ակտիվ",
+    "successText": "Հաջողություն",
+    "warningText": "Զգուշացում",
+    "swapText": "Փոխանակել",
+    "searchText": "Փնտրել",
+    "cancelText": "Չեղարկել",
+    "saveText": "Պահպանել",
+    "logoutText": "Դուրս գալ",
+    "sendText": "Ուղարկել",
+    "addressText": "Հասցե",
+    "amountText": "Գումար",
+    "errorText": "Սխալ",
+    "insufficientBalanceText": "Անբավարար {tokenSymbol} հաշիվ",
+    "unknownErrorText": "Սխալ Ինչ-որ բան սխալ է տեղի ունեցել...",
+    "transactionSubmittedText": "Գործարքը ներկայացվել է",
+    "operations": {
+        "Swap": "Փոխանակել",
+        "Transfer": "Տեղափոխել",
+        "AddLiquidity": "Ավելացնել իրացվելիություն",
+        "RemoveLiquidity": "Հեռացնել իրացվելիությունը",
+        "CreatePair": "Ստեղծել զույգ",
+        "RegisterAsset": "Գրանցել ակտիվը",
+        "ClaimRewards": "Հաստատել Պարգևները",
+        "andText": "և",
+        "finalized": {
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "Swap": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2}",
+            "AddLiquidity": "Մատակարարված {amount} {symbol} և {amount2} {symbol2}",
+            "RemoveLiquidity": "Հեռացված {amount} {symbol} և {amount2} {symbol2}",
+            "CreatePair": "Մատակարարված {amount} {symbol} և {amount2} {symbol2}",
+            "RegisterAsset": "Գրանցված է {symbol} ակտիվ",
+            "ClaimRewards": "Պարգևատրումը հաջողությամբ հաստատված է {rewards}",
+            "ReferralReserveXor": "Խճճված {amount} XOR",
+            "ReferralUnreserveXor": "Unbonded {amount} XOR",
+            "ReferralSetInvitedUser": "{role} {address} դրվում է հաջողությամբ",
+            "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Տրամադրված {symbol} և {symbol2} {amount} LP ժետոններ",
+            "DemeterFarmingWithdrawLiquidity": "Հեռացվել են {symbol} և {symbol2} {amount} LP նշանները",
+            "DemeterFarmingStakeToken": "Ավելացվեց {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Հեռացվել է {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} ը հաջողությամբ ներկայացվեց",
+            "EthBridgeIncoming": "Փոխանցվել է {amount} {symbol} {Ethereum} ից {Sora}",
+            "EthBridgeOutgoing": "Փոխանցվել է {amount} {symbol} {Sora} ից {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Խճճված {amount} {symbol}",
+            "StakingBond": "Խճճված {amount} {symbol}",
+            "StakingBondExtra": "Խճճված լրացուցիչ {amount} {symbol}",
+            "StakingUnbond": "Չպարտադրված {amount} {symbol}",
+            "StakingRebond": "Վերադարձված {amount} {symbol}",
+            "StakingNominate": "Առաջադրված վավերացնողներ",
+            "StakingWithdrawUnbonded": "Հանվել է {amount} {symbol}",
+            "StakingPayout": "Վճարման պարգևներ",
+            "StakingChill": "Հանգստացեք",
+            "StakingSetController": "Կարգավորել {address}",
+            "StakingSetPayee": "Սահմանել վճարողի {address}",
+            "OrderBookPlaceLimitOrder": "Տեղադրված է {side} {amount} {symbol} {price} {symbol2} ով",
+            "OrderBookCancelLimitOrder": "Սահմանափակման պատվերը չեղարկվել է",
+            "OrderBookCancelLimitOrders": "Սահմանափակ պատվերները չեղարկվել են",
+            "Burn": "Այրված {amount} {symbol}",
+            "Mint": "Նշված է {amount} {symbol} {address} -ին",
+            "CreateVault": "{symbol}\/{symbol2} Դիրքը ստեղծված է",
+            "CloseVault": "{symbol}\/{symbol2} Դիրքը փակված է",
+            "DepositCollateral": "{amount} {symbol} արտաքին ապրանքը մուտք է գալիս",
+            "RepayVaultDebt": "{amount} {symbol} պարտքը մաքրվել է",
+            "BorrowVaultDebt": "{amount} {symbol} պարտքի վարկի գումարը վարվել է"
+        },
+        "error": {
+            "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
+            "Swap": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2}",
+            "AddLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} եւ {amount2} {symbol2}",
+            "RemoveLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {amount2} {symbol2}",
+            "CreatePair": "Չհաջողվեց մատակարարել {amount} {symbol} եւ {amount2} {symbol2}",
+            "RegisterAsset": "Չհաջողվեց գրանցել {symbol} ակտիվը",
+            "ClaimRewards": "Չհաջողվեց հաստատել պարգեւատրումները {rewards}",
+            "ReferralReserveXor": "Ձախողվել է {amount} XOR",
+            "ReferralUnreserveXor": "Ձախողվել է չկցված {amount} XOR",
+            "ReferralSetInvitedUser": "Չհաջողվեց սահմանել {role} {address}",
+            "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} և {symbol2} LP նշաններ",
+            "DemeterFarmingWithdrawLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {symbol2} LP նշանները",
+            "DemeterFarmingStakeToken": "Չհաջողվեց ավելացնել {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Չհաջողվեց հեռացնել {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Չհաջողվեց պահանջել {symbol}",
+            "EthBridgeIncoming": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Ethereum} ից {Sora} ին",
+            "EthBridgeOutgoing": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Sora} ից {Ethereum} ին",
+            "SwapTransferBatch": "Չհաջողվեց {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Չհաջողվեց կապել {amount} {symbol}",
+            "StakingBond": "Չհաջողվեց կապել {amount} {symbol}",
+            "StakingBondExtra": "Չհաջողվեց կապել լրացուցիչ {amount} {symbol}",
+            "StakingUnbond": "Չհաջողվեց ապակապել {amount} {symbol}",
+            "StakingRebond": "Չհաջողվեց նորից կապակցել {amount} {symbol}",
+            "StakingNominate": "Չհաջողվեց առաջադրել վավերացնողներ",
+            "StakingWithdrawUnbonded": "Չհաջողվեց հանել {amount} {symbol}",
+            "StakingPayout": "Չհաջողվեց վճարել պարգևները",
+            "StakingChill": "Չհաջողվեց սառեցնել",
+            "StakingSetController": "Չհաջողվեց կարգավորել {address} կարգավորիչը",
+            "StakingSetPayee": "Չհաջողվեց սահմանել վճարողի {address}",
+            "OrderBookPlaceLimitOrder": "Չհաջողվեց սահմանել {amount} {symbol} ի սահմանային պատվեր {price} {symbol2} ով",
+            "OrderBookCancelLimitOrders": "Չհաջողվեց չեղարկել սահմանափակ պատվերները",
+            "OrderBookCancelLimitOrder": "Չհաջողվեց չեղարկել սահմանաչափի պատվերը",
+            "Burn": "Չհաջողվեց այրել {amount} {symbol}",
+            "Mint": "Չհաջողվեց հատել {amount} {symbol} {address} -ին",
+            "CreateVault": "Չհաջողվեց ստեղծել {symbol}\/{symbol2} դիրքը",
+            "CloseVault": "Չհաջողվեց փակել {symbol}\/{symbol2} դիրքը",
+            "DepositCollateral": "Սխալ՝ {amount} {symbol} արտաքին ապրանքի մուտքի ընթացքում",
+            "RepayVaultDebt": "Սխալ՝ {amount} {symbol} պարտքի մաքրման ընթացքում",
+            "BorrowVaultDebt": "Սխալ՝ {amount} {symbol} պարտքի վարկի գումարի վարվելիքի ընթացքում"
+        },
+        "ReferralReserveXor": "Բոնդ XOR",
+        "ReferralUnreserveXor": "Ունբոնդ XOR",
+        "ReferralSetInvitedUser": "Սահմանել {role}",
+        "SwapAndSend": "Փոխանակեք և ուղարկեք",
+        "DemeterFarmingDepositLiquidity": "Բաժնի իրացվելիություն",
+        "DemeterFarmingWithdrawLiquidity": "Չվճարված իրացվելիություն",
+        "DemeterFarmingStakeToken": "Ցցի նշան",
+        "DemeterFarmingUnstakeToken": "Անցկացնել նշան",
+        "DemeterFarmingGetRewards": "Հաստատել Պարգևները",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Տեղափոխել",
+        "StakingBondAndNominate": "Պարտատոմսեր և առաջադրել",
+        "StakingBond": "Բոնդ",
+        "StakingBondExtra": "Bond Extra",
+        "StakingUnbond": "Ունբոնդ",
+        "StakingRebond": "Ռեբոնդ",
+        "StakingNominate": "Առաջադրել",
+        "StakingWithdrawUnbonded": "Հանել Unbonded",
+        "StakingPayout": "Վճարման պարգևներ",
+        "StakingChill": "Հանգստացեք",
+        "StakingSetController": "Կարգավորիչի կարգավորում",
+        "StakingSetPayee": "Սահմանել վճարողին",
+        "OrderBookPlaceLimitOrder": "Պատվիրել",
+        "OrderBookCancelLimitOrder": "Չեղարկել պատվերը",
+        "OrderBookCancelLimitOrders": "Չեղարկել պատվերները",
+        "Burn": "Այրվել",
+        "Mint": "անանուխ",
+        "CreateVault": "Ստեղծել դիրք",
+        "CloseVault": "Փակել դիրքը",
+        "DepositCollateral": "Ավազարկղի արտաքին ապրանքի մուտք",
+        "RepayVaultDebt": "Պարտքի մաքրում",
+        "BorrowVaultDebt": "Պարտքի վարկանիշային վերաբերյալ վարկի գումար"
     },
-    "error": {
-      "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
-      "Swap": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2}",
-      "AddLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} եւ {amount2} {symbol2}",
-      "RemoveLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {amount2} {symbol2}",
-      "CreatePair": "Չհաջողվեց մատակարարել {amount} {symbol} եւ {amount2} {symbol2}",
-      "RegisterAsset": "Չհաջողվեց գրանցել {symbol} ակտիվը",
-      "ClaimRewards": "Չհաջողվեց հաստատել պարգեւատրումները {rewards}",
-      "ReferralReserveXor": "Ձախողվել է {amount} XOR",
-      "ReferralUnreserveXor": "Ձախողվել է չկցված {amount} XOR",
-      "ReferralSetInvitedUser": "Չհաջողվեց սահմանել {role} {address}",
-      "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
-      "DemeterFarmingDepositLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} և {symbol2} LP նշաններ",
-      "DemeterFarmingWithdrawLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {symbol2} LP նշանները",
-      "DemeterFarmingStakeToken": "Չհաջողվեց ավելացնել {amount} {symbol}",
-      "DemeterFarmingUnstakeToken": "Չհաջողվեց հեռացնել {amount} {symbol}",
-      "DemeterFarmingGetRewards": "Չհաջողվեց պահանջել {symbol}",
-      "EthBridgeIncoming": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Ethereum} ից {Sora} ին",
-      "EthBridgeOutgoing": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Sora} ից {Ethereum} ին",
-      "SwapTransferBatch": "Չհաջողվեց {action} {amount} {symbol}",
-      "StakingBondAndNominate": "Չհաջողվեց կապել {amount} {symbol}",
-      "StakingBond": "Չհաջողվեց կապել {amount} {symbol}",
-      "StakingBondExtra": "Չհաջողվեց կապել լրացուցիչ {amount} {symbol}",
-      "StakingUnbond": "Չհաջողվեց ապակապել {amount} {symbol}",
-      "StakingRebond": "Չհաջողվեց նորից կապակցել {amount} {symbol}",
-      "StakingNominate": "Չհաջողվեց առաջադրել վավերացնողներ",
-      "StakingWithdrawUnbonded": "Չհաջողվեց հանել {amount} {symbol}",
-      "StakingPayout": "Չհաջողվեց վճարել պարգևները",
-      "StakingChill": "Չհաջողվեց սառեցնել",
-      "StakingSetController": "Չհաջողվեց կարգավորել {address} կարգավորիչը",
-      "StakingSetPayee": "Չհաջողվեց սահմանել վճարողի {address}",
-      "OrderBookPlaceLimitOrder": "Չհաջողվեց սահմանել {amount} {symbol} ի սահմանային պատվեր {price} {symbol2} ով",
-      "OrderBookCancelLimitOrders": "Չհաջողվեց չեղարկել սահմանափակ պատվերները",
-      "OrderBookCancelLimitOrder": "Չհաջողվեց չեղարկել սահմանաչափի պատվերը",
-      "Burn": "Չհաջողվեց այրել {amount} {symbol}",
-      "Mint": "Չհաջողվեց հատել {amount} {symbol} {address} -ին",
-      "CreateVault": "Չհաջողվեց ստեղծել {symbol}/{symbol2} դիրքը",
-      "CloseVault": "Չհաջողվեց փակել {symbol}/{symbol2} դիրքը",
-      "DepositCollateral": "Սխալ՝ {amount} {symbol} արտաքին ապրանքի մուտքի ընթացքում",
-      "RepayVaultDebt": "Սխալ՝ {amount} {symbol} պարտքի մաքրման ընթացքում",
-      "BorrowVaultDebt": "Սխալ՝ {amount} {symbol} պարտքի վարկի գումարի վարվելիքի ընթացքում"
+    "polkadotjs": {
+        "noExtensions": "{PolkadotJs} ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Ձեր {extension} ընդլայնման մեջ կարծես որևէ հաշիվ չկա: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
+        "noAccount": "{extension} հաշվի սխալ: Խնդրում ենք ստուգել ձեր հաշիվը {extension} ընդլայնման մեջ",
+        "noExtension": "{extension} ընդլայնում չի գտնվել: Խնդրում ենք տեղադրել այն և վերաբեռնել այս էջը",
+        "noSigner": "Մուտքն արգելված է. Գնացեք {extension} ընդլայնման կարգավորումներ և բացեք «Կառավարել վեբ կայքի մուտքը»՝ թույլ տալու համար:",
+        "connectionError": "Դրամապանակը միացնելիս սխալ է տեղի ունեցել: Կարող եք կրկին փորձել միացնել դրամապանակը {extension} ի միջոցով"
     },
-    "ReferralReserveXor": "Բոնդ XOR",
-    "ReferralUnreserveXor": "Ունբոնդ XOR",
-    "ReferralSetInvitedUser": "Սահմանել {role}",
-    "SwapAndSend": "Փոխանակեք և ուղարկեք",
-    "DemeterFarmingDepositLiquidity": "Բաժնի իրացվելիություն",
-    "DemeterFarmingWithdrawLiquidity": "Չվճարված իրացվելիություն",
-    "DemeterFarmingStakeToken": "Ցցի նշան",
-    "DemeterFarmingUnstakeToken": "Անցկացնել նշան",
-    "DemeterFarmingGetRewards": "Հաստատել Պարգևները",
-    "EthBridgeIncoming": "@:hashiBridgeText",
-    "EthBridgeOutgoing": "@:hashiBridgeText",
-    "SwapTransferBatch": "{ADAR} Տեղափոխել",
-    "StakingBondAndNominate": "Պարտատոմսեր և առաջադրել",
-    "StakingBond": "Բոնդ",
-    "StakingBondExtra": "Bond Extra",
-    "StakingUnbond": "Ունբոնդ",
-    "StakingRebond": "Ռեբոնդ",
-    "StakingNominate": "Առաջադրել",
-    "StakingWithdrawUnbonded": "Հանել Unbonded",
-    "StakingPayout": "Վճարման պարգևներ",
-    "StakingChill": "Հանգստացեք",
-    "StakingSetController": "Կարգավորիչի կարգավորում",
-    "StakingSetPayee": "Սահմանել վճարողին",
-    "OrderBookPlaceLimitOrder": "Պատվիրել",
-    "OrderBookCancelLimitOrder": "Չեղարկել պատվերը",
-    "OrderBookCancelLimitOrders": "Չեղարկել պատվերները",
-    "Burn": "Այրվել",
-    "Mint": "անանուխ",
-    "CreateVault": "Ստեղծել դիրք",
-    "CloseVault": "Փակել դիրքը",
-    "DepositCollateral": "Ավազարկղի արտաքին ապրանքի մուտք",
-    "RepayVaultDebt": "Պարտքի մաքրում",
-    "BorrowVaultDebt": "Պարտքի վարկանիշային վերաբերյալ վարկի գումար"
-  },
-  "polkadotjs": {
-    "noExtensions": "{PolkadotJs} ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https://polkadot.js.org/extension/",
-    "noAccounts": "Ձեր {extension} ընդլայնման մեջ կարծես որևէ հաշիվ չկա: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
-    "noAccount": "{extension} հաշվի սխալ: Խնդրում ենք ստուգել ձեր հաշիվը {extension} ընդլայնման մեջ",
-    "noExtension": "{extension} ընդլայնում չի գտնվել: Խնդրում ենք տեղադրել այն և վերաբեռնել այս էջը",
-    "noSigner": "Մուտքն արգելված է. Գնացեք {extension} ընդլայնման կարգավորումներ և բացեք «Կառավարել վեբ կայքի մուտքը»՝ թույլ տալու համար:",
-    "connectionError": "Դրամապանակը միացնելիս սխալ է տեղի ունեցել: Կարող եք կրկին փորձել միացնել դրամապանակը {extension} ի միջոցով"
-  },
-  "connection": {
-    "text": "Ակտիվները կառավարելու և {Sora} -ում գործարքներ կնքելու համար անհրաժեշտ է միացնել հաշիվ: {Sora} հաշիվները կարող են ստեղծվել և միանալ մեր ինտեգրված դրամապանակների կամ դիտարկիչի ընդլայնումների միջոցով:",
-    "noAccounts": "{extension} բրաուզերի ընդլայնման մեջ հաշիվ չի գտնվել: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
-    "selectAccount": "Ընտրել հաշիվ աշխատելու համար",
-    "action": {
-      "install": "Տեղադրել ընդլայնումը",
-      "learnMore": "Իմանալ ավելին",
-      "connect": "Միանալ հաշվին",
-      "refresh": "Թարմացնել"
+    "connection": {
+        "text": "Ակտիվները կառավարելու և {Sora} -ում գործարքներ կնքելու համար անհրաժեշտ է միացնել հաշիվ: {Sora} հաշիվները կարող են ստեղծվել և միանալ մեր ինտեգրված դրամապանակների կամ դիտարկիչի ընդլայնումների միջոցով:",
+        "noAccounts": "{extension} բրաուզերի ընդլայնման մեջ հաշիվ չի գտնվել: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
+        "selectAccount": "Ընտրել հաշիվ աշխատելու համար",
+        "action": {
+            "install": "Տեղադրել ընդլայնումը",
+            "learnMore": "Իմանալ ավելին",
+            "connect": "Միանալ հաշվին",
+            "refresh": "Թարմացնել"
+        },
+        "selectWallet": "Ընտրեք դրամապանակ՝ աշխատելու համար",
+        "wallet": {
+            "install": "Տեղադրեք",
+            "connected": "Միացված է",
+            "notConnected": "Միացված չէ"
+        },
+        "internalTitle": "Միացեք {wallet} ին",
+        "internalText": "Դուք կարող եք ստեղծել կամ ներմուծել գոյություն ունեցող {Sora} հաշիվ` ձեր {wallet} հաշվի հետ կապվելու համար: Բոլոր տվյալները, որոնք պահվում են {wallet} ի կողմից, կոդավորված են ներկառուցված առաջադեմ գաղտնագրման միջոցով:",
+        "list": {
+            "integrated": "Ինտեգրված",
+            "extensions": "Ընդլայնումներ"
+        }
     },
-    "selectWallet": "Ընտրեք դրամապանակ՝ աշխատելու համար",
     "wallet": {
-      "install": "Տեղադրեք",
-      "connected": "Միացված է",
-      "notConnected": "Միացված չէ"
+        "WalletAssets": "Ակտիվներ",
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Գործունեություն"
     },
-    "internalTitle": "Միացեք {wallet} ին",
-    "internalText": "Դուք կարող եք ստեղծել կամ ներմուծել գոյություն ունեցող {Sora} հաշիվ` ձեր {wallet} հաշվի հետ կապվելու համար: Բոլոր տվյալները, որոնք պահվում են {wallet} ի կողմից, կոդավորված են ներկառուցված առաջադեմ գաղտնագրման միջոցով:",
-    "list": {
-      "integrated": "Ինտեգրված",
-      "extensions": "Ընդլայնումներ"
-    }
-  },
-  "wallet": {
-    "WalletAssets": "Ակտիվներ",
-    "createToken": "@:createTokenText",
-    "WalletHistory": "Գործունեություն"
-  },
-  "walletSend": {
-    "title": "Ուղարկել",
-    "address": "@:addressText",
-    "amount": "@:amountText",
-    "balance": "Բալանս",
-    "max": "Մաքսիմում",
-    "fee": "@:networkFeeText",
-    "enterAddress": "Մուտքագրեք հասցեն",
-    "badAddress": "Սխալ հասցե",
-    "enterAmount": "Մուտքագրեք գումարը",
-    "badAmount": "@:insufficientBalanceText",
-    "confirmTitle": "Հաստատել գործարքը",
-    "errorAddress": "Անվավեր հասցե: Խնդրում ենք ստուգել այն և կրկին փորձել:",
-    "feeTooltip": "@:networkFeeTooltipText",
-    "tooltip": "Ուղարկեք նշաններ {Sora} ցանցի հաշիվների միջև",
-    "addressWarning": "Նշանները կուղարկվեն ստորև նշված {Sora} հասցեին: Համոզվեք, որ ստացողը կարող է մուտք գործել {Sora} ցանց ՝ խորհրդանիշներ օգտագործելու համար.",
-    "addressError": "Դուք չեք կարող նշաններ ուղարկել նույն հաշվին, որին այժմ կապված եք:",
-    "confirm": "@:confirmText"
-  },
-  "account": {
-    "successCopy": "Դրամապանակի հասցեն պատճենվում է սեղմատախտակին",
-    "copy": "Պատճենել հասցեն",
-    "switch": "Փոխել հաշիվը",
-    "walletAddress": "Դրամապանակի հասցեն",
-    "delete": "Հաշիվը ջնջել",
-    "rename": "Վերանվանել հաշիվը",
-    "export": "Արտահանել .json",
-    "accountTitle": "Հաշիվ"
-  },
-  "history": {
-    "clearHistory": "Մաքրել պատմությունը",
-    "filterPlaceholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի",
-    "empty": "Ձեր գործարքները կհայտնվեն այստեղ",
-    "emptySearch": "Գործարքներ չեն գտնվել",
-    "firstText": "Առաջին",
-    "lastText": "Վերջին",
-    "prevText": "Նախորդ",
-    "nextText": "Հաջորդը"
-  },
-  "assets": {
-    "empty": "Ակտիվներ չկան",
-    "swap": "@:swapText",
-    "send": "@:sendText",
-    "receive": "@:account.copy",
-    "liquidity": "Ավելացրեք իրացվելիություն",
-    "bridge": "Կամուրջ",
-    "copy": "Պատճենել Ակտիվի ID- ն",
-    "successCopy": "{symbol} Ակտիվի ID- ն պատճենված է ցուցատախտակում",
-    "copied": "Պատճենված է",
-    "balance": {
-      "transferable": "Փոխանցելի",
-      "frozen": "Սառեցված է",
-      "locked": "կողպված է",
-      "reserved": "վերապահված է",
-      "total": "Ընդհանուր",
-      "bonded": "Խճճված"
+    "walletSend": {
+        "title": "Ուղարկել",
+        "address": "@:addressText",
+        "amount": "@:amountText",
+        "balance": "Բալանս",
+        "max": "Մաքսիմում",
+        "fee": "@:networkFeeText",
+        "enterAddress": "Մուտքագրեք հասցեն",
+        "badAddress": "Սխալ հասցե",
+        "enterAmount": "Մուտքագրեք գումարը",
+        "badAmount": "@:insufficientBalanceText",
+        "confirmTitle": "Հաստատել գործարքը",
+        "errorAddress": "Անվավեր հասցե: Խնդրում ենք ստուգել այն և կրկին փորձել:",
+        "feeTooltip": "@:networkFeeTooltipText",
+        "tooltip": "Ուղարկեք նշաններ {Sora} ցանցի հաշիվների միջև",
+        "addressWarning": "Նշանները կուղարկվեն ստորև նշված {Sora} հասցեին: Համոզվեք, որ ստացողը կարող է մուտք գործել {Sora} ցանց ՝ խորհրդանիշներ օգտագործելու համար.",
+        "addressError": "Դուք չեք կարող նշաններ ուղարկել նույն հաշվին, որին այժմ կապված եք:",
+        "confirm": "@:confirmText"
     },
-    "totalAssetsValue": "Ձեր ակտիվների ընդհանուր արժեքը.",
-    "details": "Մանրամասներ",
-    "assetId": "Ակտիվի ID"
-  },
-  "asset": {
-    "remove": "Հեռացնել ակտիվը",
-    "select": "Ընտրեք ակտիվ",
-    "receive": "Ստանալ {symbol}"
-  },
-  "addAsset": {
-    "success": "Ակտիվը {symbol} հաջողությամբ ավելացվեց:",
-    "empty": "Ոչ մի տոկեն չի գտնվել",
-    "alreadyAttached": "Տոկենն արդեն կցված էր",
-    "understand": "Ես հասկանում եմ",
-    "warningTitle": "Կատարե՛ք առևտուր Ձեր սեփական ռիսկով",
-    "warningMessage": "Յուրաքանչյուրը կարող է ստեղծել տոկեն, այդ թվում `ստեղծել գոյություն ունեցող տոկենների կեղծ տարբերակներ, որոնք հավակնում են ներկայացնել նախագծեր:\n Եթե գնեք այս տոկենը, հնարավոր է, որ չկարողանաք այն հետ վաճառել:",
-    "approved": "Ակտիվը հաստատված է համայնքի կողմից",
-    "unknown": "Անհայտ աղբյուր",
-    "scam": "Խաբեություն",
-    "next": "Հաջորդը",
-    "AddAssetToken": {
-      "title": "Արժույթներ",
-      "switchBtn": "Միայն ստուգված ակտիվներ"
+    "account": {
+        "successCopy": "Դրամապանակի հասցեն պատճենվում է սեղմատախտակին",
+        "copy": "Պատճենել հասցեն",
+        "switch": "Փոխել հաշիվը",
+        "walletAddress": "Դրամապանակի հասցեն",
+        "delete": "Հաշիվը ջնջել",
+        "rename": "Վերանվանել հաշիվը",
+        "export": "Արտահանել .json",
+        "accountTitle": "Հաշիվ"
     },
-    "searchInputText": "Որոնում ըստ ակտիվի ID-ի, անվանման կամ նշիչի նշանի"
-  },
-  "createToken": {
-    "desc": "Ստեղծեք և տեղակայեք անհատական ակտիվ {Sora}- ում",
-    "enterSymbol": "Մուտքագրեք տոկենի սիմվոլը",
-    "enterName": "Մուտքագրեք տոկենի անվանումը",
-    "enterSupply": "Մուտքագրեք տոկենի մատակարարը",
-    "success": {
-      "title": "Գործարքը ներկայացված է",
-      "desc": "Ստեղծեք {symbol} տոկեն"
-    },
-    "tooltipValue": "Տոկեն ստեղծելու համար Դուք պետք է վճարեք",
-    "fee": "Ցանցային վճար",
-    "insufficientBalance": "@:insufficientBalanceText",
-    "feeError": "Չհաջողվեց վճար ստանալ գործարքի համար",
-    "error": "Չհաջողվեց ստեղծել {symbol} տոկեն",
-    "tokenSymbol": {
-      "placeholder": "Տոկենի սիմվոլ",
-      "desc": "Սա տոկենի նույնացուցիչ է: Ընտրության համար կարող եք օգտագործել 1-ից 7 նիշ:"
-    },
-    "tokenName": {
-      "placeholder": "Տոկենի անվանումը",
-      "desc": "Սա տոկենի անուն է: Ընտրության համար կարող եք օգտագործել 1-ից 33 նիշ:"
-    },
-    "tokenSupply": {
-      "placeholder": "Տոկենի մատակարարում",
-      "desc": "Այս տոկենները կստանաք ստեղծումից հետո:"
-    },
-    "extensibleSupply": {
-      "placeholder": "Ընդարձակվող մատակարարում",
-      "desc": "Ավելի շատ նշաններ հատելու ունակություն:"
-    },
-    "provideContent": "Տրամադրել բովանդակություն",
-    "selectLocalFile": "Ընտրեք տեղական ֆայլը",
-    "CreateSimpleToken": "Նշան",
-    "nft": {
-      "source": {
-        "label": "Աղբյուր",
-        "value": "Տեղական ֆայլեր",
-        "limit": "Ընտրեք մեկ այլ ֆայլ"
-      },
-      "link": {
-        "placeholder": "IPFS հղում",
-        "copyLink": "Պատճենել հղումը",
-        "tooltip": "IPFS-ը ֆայլեր պահելու և մուտք գործելու բաշխված համակարգ է, որը հնարավորություն է տալիս մուտք գործել ֆայլեր բազմաթիվ վայրերից, որոնք չեն կառավարվում մեկ կազմակերպության կողմից:"
-      },
-      "image": {
-        "placeholderNoImage": "Վերբեռնեք ֆայլը՝ մուտքագրելով հղում կամ ընտրելով տեղական պահեստից",
-        "placeholderBadSource": "Ֆայլը չհաջողվեց մշակել",
-        "placeholderBadSourceAddition": "կամ այն դեռ վերբեռնված չէ IPFS-ում",
-        "placeholderFileLimit": "Ֆայլի չափը գերազանցում է {value} մբ սահմանաչափը"
-      },
-      "supply": {
-        "placeholder": "Տոկենի մատակարարում",
-        "desc": "NFT-ների քանակը, որոնք դուք պատրաստվում եք ստանալ:",
-        "quantity": "Քանակ"
-      },
-      "description": {
-        "placeholder": "Նկարագրություն"
-      }
-    },
-    "enterTokenDescription": "Մուտքագրեք նկարագրությունը",
-    "divisible": {
-      "placeholder": "Բաժանելի",
-      "desc": "NFT-ի կոտորակային մասերի բաժանվելու ունակությունը: Իրացվելիության տրամադրումն աշխատում է միայն բաժանելի ակտիվների հետ"
-    },
-    "title": "@:createTokenText",
-    "action": "@:createTokenText",
-    "confirm": "@:confirmText",
-    "titleCommon": "Ստեղծել",
-    "confirmTokenTitleCommon": "Ստեղծեք նշան",
-    "confirmTokenTitleNFT": "Ստեղծեք NFT",
-    "actionNFT": "@:createTokenTextNFT"
-  },
-  "transaction": {
-    "title": "Գործարքի պարամետրերը",
-    "blockId": "Բլոկ Id",
-    "status": "Կարգավիճակ",
-    "statuses": {
-      "pending": "Սպասվող ...",
-      "failed": "Գործարքը ձախողվել է",
-      "complete": "Վերջացված է"
-    },
-    "errorMessage": "Սխալ",
-    "startTime": "Ամսաթիվ",
-    "amount": "@:amountText",
-    "amount2": "@:amountText 2",
-    "fee": "Գործարքի վճար",
-    "total": "Ընդհանուր",
-    "from": "Սկսած",
-    "to": "Դեպի",
-    "successCopy": "{value} ը պատճենված է սեղմատախտակին",
-    "copy": "Պատճենել {value}",
     "history": {
-      "created": "Ստեղծվել է {amount} {symbol}-ի համար կատարված գործարքը:",
-      "submitted": "Գործարքը ներկայացվել է {fee} {symbol} վճարով",
-      "confirmed": "Գործարքը հաստատված է"
+        "clearHistory": "Մաքրել պատմությունը",
+        "filterPlaceholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի",
+        "empty": "Ձեր գործարքները կհայտնվեն այստեղ",
+        "emptySearch": "Գործարքներ չեն գտնվել",
+        "firstText": "Առաջին",
+        "lastText": "Վերջին",
+        "prevText": "Նախորդ",
+        "nextText": "Հաջորդը"
     },
-    "txId": "Գործարքի ID",
-    "viewIn": "Դիտել {explorer}- ում",
-    "referrer": "Ուղղորդող",
-    "referral": "Ուղղորդում",
-    "adarTxDetailsTitle": "գործարքի մանրամասներ",
-    "comment": "Մեկնաբանություն",
-    "price": "Գին",
-    "side": "Կողք"
-  },
-  "appName": "{AppName} (Փոլքասվափ)",
-  "changeNetworkText": "Փոխեք ցանցը դրամապանակում",
-  "transactionText": "գործարք | գործարքներ",
-  "connectWalletText": "Միանալ հաշվին",
-  "changeAccountText": "Փոխել հաշիվը",
-  "connectedText": "Միացված է",
-  "connectWalletTextTooltip": "Միացեք {Sora} Network-ին {PolkadotJs} -ի միջոցով",
-  "selectNodeText": "Ընտրել հանգույցը",
-  "bridgeText": "Կամուրջ",
-  "disclaimer": "{disclaimerPrefix} Այս կայքը պահպանվում է {Sora} համայնքի կողմից: Նախքան այս կայքի օգտագործումը շարունակելը, խնդրում ենք ծանոթանալ {polkaswapFaqLink}-ին և փաստաթղթերին, որոնք ներառում են մանրամասն բացատրություն, թե ինչպես է աշխատում {AppName}-ը, ինչպես նաև {memorandumLink} և {privacyLink}: Այս փաստաթղթերը չափազանց կարևոր են օգտատերերի անվտանգ և դրական փորձի համար: Օգտվելով {AppName}-ից՝ դուք ընդունում եք, որ կարդացել և հասկացել եք այս փաստաթղթերը: Դուք նաև ընդունում եք հետևյալը. 1) ձեր միանձնյա պատասխանատվությունը բոլոր օրենքներին համապատասխանելու համար, որոնք կարող են կիրառվել ձեր իրավական իրավասության մեջ {AppName}-ի հատուկ օգտագործման համար. 2) ձեր ըմբռնումը, որ {AppName}-ի ներկայիս տարբերակը ալֆա տարբերակ է. այն ամբողջությամբ չի փորձարկվել, և որոշ գործառույթներ կարող են չաշխատել այնպես, ինչպես նախատեսված է. և 3) {AppName}-ի օգտագործման հետ կապված ռիսկերի ձեր ըմբռնումը և կամավոր ընդունումը, ներառյալ, բայց չսահմանափակվելով դրանցով, նշաններ կորցնելու ռիսկը: Խնդրում ենք չշարունակել առանց {polkaswapFaqLink}, {memorandumLink}, {privacyLink}-ը կարդալու:",
-  "poweredBy": "Երաշխավորվոած է",
-  "confirmTransactionText": "Հաստատեք գործարքը",
-  "retryText": "Նորից փորձել",
-  "networkFeeText": "Ցանցային վճար",
-  "networkFeeTooltipText": "Ցանցի վճարն օգտագործվում է {Sora} համակարգի աճն ու կայուն աշխատանքը ապահովելու համար:",
-  "ethNetworkFeeTooltipText": "Խնդրում ենք նկատի ունենալ, որ {AppName} -ում ցուցադրվող {network} ցանցի վճարները միայն մոտավոր հաշվարկներ են, դուք կարող եք տեսնել վճարի ճիշտ գումարը ձեր միացված {network} դրամապանակում` նախքան գործարքը հաստատելը:",
-  "marketText": "Շուկա",
-  "marketAlgorithmText": "Շուկայի ալգորիթմ",
-  "firstPerSecond": "{first} յուրաքանչյուր {second}",
-  "pairIsNotCreated": "Տոկենների զույգը չի ստեղծվել",
-  "pageTitle": {
-    "Swap": "Փոխանակում",
-    "Pool": "պահուստ",
-    "Bridge": "@:bridgeText",
-    "Stats": "Վիճակագրություն",
-    "Wallet": "Դրամապանակ",
-    "AddLiquidity": "Ավելացնել իրացվելիություն",
-    "RemoveLiquidity": "Հեռացնել իրացվելիությունը",
-    "Rewards": "Պարգեւներ",
-    "Explore/Tokens": "Նշաններ",
-    "Explore/Pools": "Լողավազաններ",
-    "Explore/Staking": "Ցուցադրում",
-    "Explore/Farming": "Ֆարմինգ",
-    "Staking": "Ցուցադրում",
-    "OrderBook": "Առևտուր",
-    "Explore/Books": "@:pageTitle.OrderBook",
-    "AssetOwner": "Ակտիվների սեփականատեր",
-    "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-    "Vaults": "{Kensetsu}",
-    "VaultDetails": "Դիրքի մանրամասներ",
-    "Burn": "Այրվել"
-  },
-  "mainMenu": {
-    "Swap": "Փոխանակում",
-    "Pool": "պահուստ",
-    "Bridge": "@:bridgeText",
-    "Farming": "Ֆարմինգ",
-    "Wallet": "Հաշիվ",
-    "Rewards": "Պարգեւատրումներ",
-    "About": "Մասին",
-    "Stats": "Վիճակագրություն",
-    "StakingContainer": "Ցուցադրում",
-    "Explore/Container": "Հետազոտել",
-    "SoraCard": "{Sora} Քարտ",
-    "OrderBook": "Առևտուր",
-    "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-    "VaultsContainer": "@:pageTitle.Vaults",
-    "Burn": "@:pageTitle.Burn"
-  },
-  "social": {
-    "twitter": "Twitter",
-    "telegram": "Telegram",
-    "medium": "Medium",
-    "reddit": "Reddit",
-    "github": "GitHub",
-    "wiki": "{Sora} Wiki"
-  },
-  "footerMenu": {
-    "faucet": "Faucet(Ֆասեթ)",
-    "github": "GitHub",
-    "sorawiki": "{Sora} Wiki",
-    "memorandum": "{AppName}- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
-    "privacy": "Գաղտնիության քաղաքականություն",
-    "info": "Ինֆո & Հասարակություն"
-  },
-  "helpDialog": {
-    "title": "Օգնություն",
-    "termsOfService": "Սպասարկման պայմաններ",
-    "privacyPolicy": "Գաղտնիության քաղաքականություն",
-    "appVersion": "{AppName} տարբերակը",
-    "contactUs": "Կապվեք մեզ հետ"
-  },
-  "aboutNetworkDialog": {
-    "title": "Մասին",
-    "network": {
-      "title": "Ի՞նչ է {Sora} ը:",
-      "description": "{AppName}- ը կառուցված է {Sora} ցանցի հիման վրա, իսկ {Sora} տոկենը (XOR) օգտագործվում է {AppName}- ում գազի / վճարների և իրացվելիության ապահովման համար: {Sora} ցանցը թույլ է տալիս նվազեցնել վճարները, արագացնել գործարքները և ավելի պարզ համաձայնության հասնելը և կենտրոնացած է այլ բլոկչեյն էկոհամակարգերի միջև փոխգործունակության ապահովման վրա, ինչպիսիք են {Ethereum}:"
-    },
-    "polkadot": {
-      "title": "Ի՞նչ է {PolkadotJs}-ը :",
-      "description": "{PolkadotJs} ընդլայնումը Firefox- ի և Chrome- ի համար հասանելի բրաուզերի ընդլայնում է, որը շեշտադրված է Substrate- ի վրա հիմնված շղթաների հաշիվների կառավարմանը, ներառյալ {Sora}, {Polkadot} և {Kusama}: Կարող եք ավելացնել, ներմուծել և արտահանել հաշիվներ և կնքել գործարքներ կամ այլազերծումներ, որոնք նախաձեռնել եք ձեր կողմից թույլատրված կայքերից:"
-    }
-  },
-  "node": {
-    "errors": {
-      "connection": "Հանգույցին միանալու ժամանակ սխալ է տեղի ունեցել\n{address}\n",
-      "network": "Հանգույցը\n{address}\n մեկ այլ ցանցից է\n",
-      "existing": "Այս հանգույցն արդեն ավելացվել է' {title}\n"
-    },
-    "messages": {
-      "connected": "Հանգույցի հետ կապը հաստատված է\n{address}\n",
-      "selectNode": "Խնդրում ենք հանգույցների ցանկից միանալու համար ընտրել հանգույց"
-    },
-    "warnings": {
-      "disconnect": "Կապը հանգույցի հետ կորել է: Վերամիացում..."
-    }
-  },
-  "selectNodeDialog": {
-    "title": "Ցանցային հանգույցի ընտրություն",
-    "addNode": "Ավելացրեք օգտատերի հանգույցը",
-    "customNode": "Օգտատերի հանգույց",
-    "howToSetupOwnNode": "Կարգավորեք ձեր հանգույցը",
-    "select": "Ընտրել",
-    "connected": "Միացված է",
-    "nodeTitle": "{name}, որը հյուրընկալվում է {chain}",
-    "messages": {
-      "emptyName": "Խնդրում ենք մուտքագրել հանգույցի անվանումը",
-      "emptyAddress": "Խնդրում ենք մուտքագրել հանգույցի հասցեն",
-      "incorrectProtocol": "Հասցեն պետք է սկսվի ws:// կամ wss://",
-      "incorrectAddress": "Սխալ հասցե"
-    },
-    "updateNode": "Թարմացնել հանգույցը"
-  },
-  "buttons": {
-    "max": "Մաքսիմալ",
-    "chooseToken": "Ընտրել տոկեն",
-    "chooseAToken": "Ընտրեք տոկեն",
-    "chooseTokens": "Ընտրեք տոկեններ",
-    "enterAmount": "Մուտքագրեք գումարը"
-  },
-  "transfers": {
-    "from": "Սկսած",
-    "to": "Դեպի"
-  },
-  "exchange": {
-    "Swap": "Փոխանակում",
-    "Pool": "պահուստային",
-    "balance": "Բալանս",
-    "price": "Գին",
-    "transactionSubmitted": "Գործարքը ներկայացված է",
-    "transactionMessage": "{firstToken} և {secondToken}",
-    "ok": "Լավ",
-    "confirm": "Հաստատել",
-    "lossWarning": "Դուք կկորցնեք {value}% ձեր առևտրում: Մենք հայտնաբերել ենք իրացվելիության ապահովման խնդիր: Սա կարող է հանգեցնել զգալի կորուստների նշանների փոխանակման ժամանակ: Խնդրում ենք համոզվել, որ կա համապատասխան իրացվելիություն ձեր ցանկալի սվոպ զույգի համար:"
-  },
-  "swap": {
-    "estimated": "գնահատված",
-    "slippageTolerance": "Սայթաքման վճար",
-    "minReceived": "Ստացված նվազագույնը",
-    "maxSold": "Առավելագույնը վաճառված",
-    "minReceivedTooltip": "Ձեր գործարքը կվերադառնա, եթե գնի մեծ, անբարենպաստ տեղաշարժ լինի նախքան դրա հաստատումը:",
-    "priceImpact": "Գնի ազդեցությունը",
-    "priceImpactTooltip": "Առևտրի չափաքանակի հետևանքով շուկայական գնի և գնահատված գնի տարբերությունը:",
-    "liquidityProviderFee": "Իրացվելիության մատակարարի վճար",
-    "liquidityProviderFeeTooltip": "Յուրաքանչյուր առևտրի մի մասը ({liquidityProviderFee}%) բաժին է ընկնում իրացվելիության մատակարարներին ՝ որպես պրոտոկոլային խթան:",
-    "insufficientAmount": "{tokenSymbol} անբավարար գումար",
-    "insufficientLiquidity": "Անբավարար իրացվելիություն",
-    "confirmSwap": "Հաստատեք փոխանակումը",
-    "swapOutputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
-    "rewardsForSwap": "PSWAP ստրատեգիական պարգևատրումներ",
-    "swapInputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
-    "route": "Երթուղի",
-    "errorFetching": "Տվյալները հավաքելու սխալը"
-  },
-  "pool": {
-    "connectToWallet": "Միացեք դրամապանակին ՝ ձեր իրացվելիությունն ավելացնելու և դիտելու համար:",
-    "liquidityNotFound": "Իրացվելիություն չի հայտնաբերվել:",
-    "addLiquidity": "Ավելացնել",
-    "removeLiquidity": "Հեռացնել",
-    "createPair": "Զույգ կազմել",
-    "pooledToken": "{tokenSymbol} Պուլճուած",
-    "pairTokens": "{pair} պահուստային տոկեններ",
-    "poolShare": "Ձեր պահուստի բաժինը",
-    "description": "Երբ իրացվելիություն եք ավելացնում, ձեզ տրվում են ձեր դիրքը ներկայացնող պահուստային տոկեններ: Այս տոկեններն ավտոմատ կերպով գումար են կուտակում ՝ համամասնորեն պահուստի ձեր մասնաբաժնին և կարող են մարվել ցանկացած պահի:",
-    "strategicBonusApy": "Ռազմավարական բոնուս APY"
-  },
-  "bridge": {
-    "title": "Կամուրջ",
-    "info": "Փոխարկել տոկենները {Sora} և {Ethereum} ցանցերի միջև:",
-    "balance": "Բալանս",
-    "next": "Հաջորդը",
-    "connectWallets": "Միացրեք դրամապանակները ՝ համապատասխան գործարքի պատմությունը դիտելու համար:",
-    "soraNetworkFee": "{Sora} ցանցային վճար",
-    "ethereumNetworkFee": "{Ethereum} ցանցային վճար",
-    "total": "Ընդհանուր",
-    "viewHistory": "Դիտել գործարքների պատմությունը",
-    "transactionSubmitted": "Գործարքը ներկայացված է",
-    "transactionMessage": "{assetA} -ն {assetB}- ի համար",
-    "notRegisteredAsset": "Ակտիվը {assetSymbol} գրանցված չէ",
-    "selectNetwork": "Ընտրեք ցանցը",
-    "networkInfo": "Միացեք {Sora} Ցանցով.",
-    "copy": "Պատճենել ցանցի հասցեն",
-    "soraAddress": "{Sora} հասցե",
-    "ethereumAddress": "{Ethereum} հասցե",
-    "limitMessage": "Ներկայումս {Sora} ցանցի կայունությունն ու անվտանգությունն ապահովելու համար կամրջելու համար կա {type} {amount} {symbol} : Մենք գնահատում ենք ձեր ըմբռնումը:",
-    "externalTransferFee": "{network} {XCM} վճար",
-    "externalTransferFeeTooltip": "Երբ դուք կամուրջ գործարք եք ուղարկում {network} ցանցին, ձեր փոխանցվող գումարից փոքր վճար է վերցվում",
-    "externalMinDeposit": "{network} րոպե ավանդ",
-    "externalMinDepositTooltip": "Նվազագույն մնացորդը {symbol} , որը պետք է լինի ձեր {network} հաշվում կամրջի փոխանցումից հետո"
-  },
-  "selectRegisteredAsset": {
-    "title": "Ընտրեք տոկեն",
-    "search": {
-      "title": "Տոկեններ",
-      "placeholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի",
-      "networkLabelSora": "{Sora} ցանցի տոկեններ",
-      "networkLabelEthereum": "{network} ցանցի հայելային նշաններ",
-      "emptyListMessage": "Ոչ մի արդյունք"
-    },
-    "customAsset": {
-      "title": "Պատվեր",
-      "customInfo": "Կարևո՛ր է: Պատվերով տոկենները պետք է գրանցված լինեն {Sora} - ում:",
-      "registerToken": "Գրանցել token",
-      "addressPlaceholder": "Ակտիվի ID",
-      "symbolPlaceholder": "Տոկենի խորհրդանիշ",
-      "empty": "Ոչ մի տոկեն չի գտնվել",
-      "alreadyAttached": "Տոկենն արդեն կցված էր"
-    }
-  },
-  "bridgeTransaction": {
-    "details": "{from} համար {to}",
-    "for": " համար ",
-    "steps": {
-      "step": "2-ի {step}",
-      "step1": "1-ին",
-      "step2": "2-րդ"
-    },
-    "status": {
-      "pending": "{step} գործարքները սպասման մեջ են",
-      "failed": "{step} գործարքները ձախողվեցին: @:(retryText).",
-      "confirm": "Հաստատեք 2 գործարքներից 2-րդը...",
-      "complete": "Վերջացված է",
-      "convertionComplete": "Փոխարկումն ավարտված է"
-    },
-    "statuses": {
-      "waiting": "Սպասում",
-      "ready": "Պատրաստ է",
-      "pending": "Սպասման մեջ է",
-      "frozen": "Սառեցված",
-      "failed": "Գործարքը ձախողվել է",
-      "done": "Վերջացված է",
-      "waitingForConfirmation": "Հաստատման սպասում..."
-    },
-    "networkTitle": "{network} գործարք",
-    "transactionHash": "Գործարքի հաշ(կոդ)",
-    "networkInfo": {
-      "status": "Կարգավիճակ",
-      "date": "Ամսաթիվ",
-      "amount": "քանակ",
-      "transactionFee": "Գործարքի վճար",
-      "total": "Ընդհանուր"
-    },
-    "successCopy": "Գործարքի հաշը պատճենահանված է սեղմատախտակին",
-    "ethereum": "{Ethereum}",
-    "sora": "{Sora}",
-    "pending": "{network} գործարքը սպասման մեջ է...",
-    "newTransaction": "Ստեղծել նոր գործարք",
-    "title": "Կամուրջի գործարք",
-    "allowToken": "Թույլ տվեք {AppName} ին օգտագործել ձեր {tokenSymbol}",
-    "approveToken": "Խնդրում ենք նկատի ունենալ, որ անհրաժեշտ է միայն մեկ անգամ հաստատել նշանը: Եթե ձեր ընդլայնումն ունի նշանների հաստատման բազմաթիվ խնդրանքներ, համոզվեք, որ միայն վերջինը հաստատեք ՝ մնացածը մերժելով:",
-    "blocksLeft": "{count} բլոկները մնացել են..."
-  },
-  "bridgeHistory": {
-    "title": "Պատմություն",
-    "showHistory": "Ցույց տալ պատմությունը",
-    "clearHistory": "Մաքրել պատմությունը",
-    "empty": "Ձեր գործարքները կհայտնվեն այստեղ:",
-    "filterPlaceholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի",
-    "restoreHistory": "Վերականգնել պատմությունը",
-    "statusAction": "Գործողություն է անհրաժեշտ"
-  },
-  "selectToken": {
-    "title": "Ընտրեք տոկեն",
-    "searchPlaceholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի",
-    "emptyListMessage": "Ոչ մի արդյունք",
-    "copy": "Պատճենել Asset ID- ն",
-    "successCopy": "{symbol} Asset ID- ն պատճենված է ցուցատախտակում",
     "assets": {
-      "title": "Ակտիվներ"
+        "empty": "Ակտիվներ չկան",
+        "swap": "@:swapText",
+        "send": "@:sendText",
+        "receive": "@:account.copy",
+        "liquidity": "Ավելացրեք իրացվելիություն",
+        "bridge": "Կամուրջ",
+        "copy": "Պատճենել Ակտիվի ID- ն",
+        "successCopy": "{symbol} Ակտիվի ID- ն պատճենված է ցուցատախտակում",
+        "copied": "Պատճենված է",
+        "balance": {
+            "transferable": "Փոխանցելի",
+            "frozen": "Սառեցված է",
+            "locked": "կողպված է",
+            "reserved": "վերապահված է",
+            "total": "Ընդհանուր",
+            "bonded": "Խճճված"
+        },
+        "totalAssetsValue": "Ձեր ակտիվների ընդհանուր արժեքը.",
+        "details": "Մանրամասներ",
+        "assetId": "Ակտիվի ID"
     },
-    "custom": {
-      "title": "Հատուկ",
-      "search": "Մուտքագրեք ակտիվի ID",
-      "text": "ՀԱՏՈՒԿ ՏՈԿԵՆՆԵՐ ",
-      "alreadyAttached": "Այս տոկենն արդեն ամրակցված էր",
-      "notFound": "Տոկենը չի գտնվել"
-    }
-  },
-  "createPair": {
-    "title": "Զույգ կազմել",
-    "deposit": "Ավանդ",
-    "balance": "Բալանս",
-    "pricePool": "Գները և պահուստի բաժինը",
-    "shareOfPool": "Պահուստի բաժինը",
-    "firstSecondPoolTokens": "{first}-{second} պահուստային տոկեններ",
-    "connect": "Միացրեք դրամապանակը",
-    "supply": "Մատակարարում",
-    "yourPosition": "Ձեր դիրքը",
-    "yourPositionEstimated": "Ձեր դիրքը (հաշվարկված)",
-    "youWillReceive": "Դուք կստանաք",
-    "remove": "հեռացնել",
-    "add": "Ավելացնել",
-    "ok": "Լավ",
-    "alreadyCreated": "Տոկենների զույգն արդեն ստեղծված է",
-    "firstLiquidityProvider": "Դուք առաջին իրացվելիության մատակարարն եք",
-    "firstLiquidityProviderInfo": "Ձեր ավելացրած տոկենների հարաբերակցությունը կսահմանի այս պահուստի գինը: <br/> Երբ գոհ եք գներից, սեղմեք մատակարարում կոճակը ՝ վերանայելու համար:"
-  },
-  "confirmSupply": {
-    "title": "Դուք կստանաք",
-    "outputDescription": "Արդյունքը գնահատվում է: Եթե գինը փոխվի ավելի քան {slippageTolerance}%, ձեր գործարքը կվերականգնվի:",
-    "poolTokensBurned": "{first}-{second} Այրվել են պահուստի տոկենները",
-    "price": "Գին"
-  },
-  "addLiquidity": {
-    "title": "Ավելացրեք իրացվելիություն"
-  },
-  "removeLiquidity": {
-    "title": "Հեռացնել իրացվելիությունը",
-    "liquidity": "իրացվելիություն",
-    "balance": "Բալանս",
-    "amount": "քանակ",
-    "input": "Մուտքագրում",
-    "output": "Արդյունք",
-    "price": "Գին",
-    "remove": "Հեռացնել",
-    "description": "Պահուստի տոկենների վերացումը ձեր դիրքը վերափոխում է հիմքում ընկած տոկենների ներկայիս արագությամբ ՝ համամասնորեն պահուստի ձեր մասնաբաժնի: Հաշվարկված վճարները ներառված են ձեր ստացած գումարների մեջ:",
-    "outputMessage": "Արդյունքը գնահատվում է: Եթե գինը փոխվի ավելի քան {slippageTolerance} %, ձեր գործարքը կվերականգնվի:",
-    "confirmTitle": "Դուք կստանաք",
-    "shareOfPool": "Գործարքից հետո լողավազանի մասնաբաժինը",
-    "locked": "Ձեր լողավազանի {percent} -ը {lock} մեջ է"
-  },
-  "dexSettings": {
-    "title": "Կարգավորումներ",
-    "marketAlgorithm": "@.upper:marketAlgorithmText",
-    "marketAlgorithmTooltip": {
-      "main": " - առաջնային շուկայի (TBC), Երկրորդային շուկայի (XYK) կամ համակցված սմարթ ալգորիթմի միջև ընտրության հնարավորություն, ցանկացած տրված գործարքի երաշխավորված լավագույն գնի համար:"
+    "asset": {
+        "remove": "Հեռացնել ակտիվը",
+        "select": "Ընտրեք ակտիվ",
+        "receive": "Ստանալ {symbol}"
     },
-    "slippageTolerance": "Սայթաքման վճար",
-    "slippageToleranceHint": "Ձեր գործարքը կվերադարձվի, եթե գինն անբարենպաստ կերպով փոփոխվի այս տոկոսից ավել:",
-    "slippageToleranceValidation": {
-      "warning": "Ձեր գործարքը կարող է ձախողվել",
-      "frontrun": "Ձեր գործարքը կարող է առաջևի վազք լինել",
-      "error": "Մուտքագրեք սայթաքման վավեր տոկոս"
+    "addAsset": {
+        "success": "Ակտիվը {symbol} հաջողությամբ ավելացվեց:",
+        "empty": "Ոչ մի տոկեն չի գտնվել",
+        "alreadyAttached": "Տոկենն արդեն կցված էր",
+        "understand": "Ես հասկանում եմ",
+        "warningTitle": "Կատարե՛ք առևտուր Ձեր սեփական ռիսկով",
+        "warningMessage": "այս {assetType} | այս {assetTypePlural}",
+        "approved": "Ակտիվը հաստատված է համայնքի կողմից",
+        "unknown": "Անհայտ աղբյուր",
+        "scam": "Խաբեություն",
+        "next": "Հաջորդը",
+        "AddAssetToken": {
+            "title": "Արժույթներ",
+            "switchBtn": "Միայն ստուգված ակտիվներ"
+        },
+        "searchInputText": "Որոնում ըստ ակտիվի ID-ի, անվանման կամ նշիչի նշանի",
+        "warningMessageText": "Ցանկացած մեկը կարող է ստեղծել {assetType}, այդ թվում՝ գոյություն ունեցող {assetTypePlural}-ի կեղծ տարբերակներ, որոնք պնդում են, որ ներկայացնում են նախագծեր: Եթե դուք գնում եք {purchaseAssetType}, հնարավոր է՝ չկարողանաք այն վաճառել հետ.",
+        "assetType": {
+            "token": "Նշան | Նշաններ",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Ավելացնել",
+        "pinAsset": "Ամրագրել ակտիվը",
+        "unpinAsset": "Ապահանել ակտիվը"
     },
-    "custom": "Պատվեր",
-    "transactionDeadline": "Գործարքի վերջնաժամկետ",
-    "transactionDeadlineHint": "Գործարքը կչեղարկվի, եթե այն սպասվում է ավելի քան այսքան երկար:",
-    "nodeAddress": "Node Հասցե",
-    "ip": "IP",
-    "port": "PORT",
-    "min": "MIN",
-    "marketAlgorithms": {
-      "SMART": "{smartAlgorithm} իրացվելիության երթուղին ապահովում է ցանկացած գործարքի լավագույն գինը `համատեղելով մատչելի բոլոր շուկաներից միայն լավագույն գների տարբերակները: Հասանելիության դեպքում, Token Bonding Curve-ը ({tbcAlgorithm}) կօգտագործվի իրացվելիության համար, քանի դեռ ակտիվի գինն ավելի մատչելի է, քան այլ աղբյուրներինը, որոնց վրա {xycAlgorithm}պահուստն օգտագործվում է:",
-      "TBC": "{tbcAlgorithm} - գնում միայն Token Bonding Curve- ից (Առաջնային շուկա): Հնարավոր է, որ գինը կարող է անբարենպաստ դառնալ {xycAlgorithm} պահուստի (Երկրորդային շուկա) համեմատ, բայց հատկացված պարգևներից ստացված արժեքը ժամանակի ընթացքում կարող է շատ ավելի բարենպաստ լինել: ,",
-      "XYK": "{xycAlgorithm} - գնում միայն XYK պահուստներից (երկրորդային շուկա): Ավանդական XYK պահուստների փոխանակում:"
+    "createToken": {
+        "desc": "Ստեղծեք և տեղակայեք անհատական ակտիվ {Sora}- ում",
+        "enterSymbol": "Մուտքագրեք տոկենի սիմվոլը",
+        "enterName": "Մուտքագրեք տոկենի անվանումը",
+        "enterSupply": "Մուտքագրեք տոկենի մատակարարը",
+        "success": {
+            "title": "Գործարքը ներկայացված է",
+            "desc": "Ստեղծեք {symbol} տոկեն"
+        },
+        "tooltipValue": "Տոկեն ստեղծելու համար Դուք պետք է վճարեք",
+        "fee": "Ցանցային վճար",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "feeError": "Չհաջողվեց վճար ստանալ գործարքի համար",
+        "error": "Չհաջողվեց ստեղծել {symbol} տոկեն",
+        "tokenSymbol": {
+            "placeholder": "Տոկենի սիմվոլ",
+            "desc": "Սա տոկենի նույնացուցիչ է: Ընտրության համար կարող եք օգտագործել 1-ից 7 նիշ:"
+        },
+        "tokenName": {
+            "placeholder": "Տոկենի անվանումը",
+            "desc": "Սա տոկենի անուն է: Ընտրության համար կարող եք օգտագործել 1-ից 33 նիշ:"
+        },
+        "tokenSupply": {
+            "placeholder": "Տոկենի մատակարարում",
+            "desc": "Այս տոկենները կստանաք ստեղծումից հետո:"
+        },
+        "extensibleSupply": {
+            "placeholder": "Ընդարձակվող մատակարարում",
+            "desc": "Ավելի շատ նշաններ հատելու ունակություն:"
+        },
+        "provideContent": "Տրամադրել բովանդակություն",
+        "selectLocalFile": "Ընտրեք տեղական ֆայլը",
+        "CreateSimpleToken": "Նշան",
+        "nft": {
+            "source": {
+                "label": "Աղբյուր",
+                "value": "Տեղական ֆայլեր",
+                "limit": "Ընտրեք մեկ այլ ֆայլ"
+            },
+            "link": {
+                "placeholder": "IPFS հղում",
+                "copyLink": "Պատճենել հղումը",
+                "tooltip": "IPFS-ը ֆայլեր պահելու և մուտք գործելու բաշխված համակարգ է, որը հնարավորություն է տալիս մուտք գործել ֆայլեր բազմաթիվ վայրերից, որոնք չեն կառավարվում մեկ կազմակերպության կողմից:"
+            },
+            "image": {
+                "placeholderNoImage": "Վերբեռնեք ֆայլը՝ մուտքագրելով հղում կամ ընտրելով տեղական պահեստից",
+                "placeholderBadSource": "Ֆայլը չհաջողվեց մշակել",
+                "placeholderBadSourceAddition": "կամ այն դեռ վերբեռնված չէ IPFS-ում",
+                "placeholderFileLimit": "Ֆայլի չափը գերազանցում է {value} մբ սահմանաչափը"
+            },
+            "supply": {
+                "placeholder": "Տոկենի մատակարարում",
+                "desc": "NFT-ների քանակը, որոնք դուք պատրաստվում եք ստանալ:",
+                "quantity": "Քանակ"
+            },
+            "description": {
+                "placeholder": "Նկարագրություն"
+            }
+        },
+        "enterTokenDescription": "Մուտքագրեք նկարագրությունը",
+        "divisible": {
+            "placeholder": "Բաժանելի",
+            "desc": "NFT-ի կոտորակային մասերի բաժանվելու ունակությունը: Իրացվելիության տրամադրումն աշխատում է միայն բաժանելի ակտիվների հետ"
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Ստեղծել",
+        "confirmTokenTitleCommon": "Ստեղծեք նշան",
+        "confirmTokenTitleNFT": "Ստեղծեք NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
-    "charts": "Գծապատկերներ",
-    "сhartsDescription": "Դիտեք գծապատկերները խորհրդանշական գների համար"
-  },
-  "resultDialog": {
-    "title": "Գործարքը ներկայացված է",
-    "ok": "Լավ"
-  },
-  "rewards": {
-    "title": "Հաստատել Պարգևները",
-    "andText": "և",
-    "claiming": {
-      "pending": "Հաստատման ընթացքում է...",
-      "success": "Հաստատված է հաջողությամբ"
+    "transaction": {
+        "title": "Գործարքի պարամետրերը",
+        "blockId": "Բլոկ Id",
+        "status": "Կարգավիճակ",
+        "statuses": {
+            "pending": "Սպասվող ...",
+            "failed": "Գործարքը ձախողվել է",
+            "complete": "Վերջացված է"
+        },
+        "errorMessage": "Սխալ",
+        "startTime": "Ամսաթիվ",
+        "amount": "@:amountText",
+        "amount2": "@:amountText 2",
+        "fee": "Գործարքի վճար",
+        "total": "Ընդհանուր",
+        "from": "Սկսած",
+        "to": "Դեպի",
+        "successCopy": "{value} ը պատճենված է սեղմատախտակին",
+        "copy": "Պատճենել {value}",
+        "history": {
+            "created": "Ստեղծվել է {amount} {symbol}-ի համար կատարված գործարքը:",
+            "submitted": "Գործարքը ներկայացվել է {fee} {symbol} վճարով",
+            "confirmed": "Գործարքը հաստատված է"
+        },
+        "txId": "Գործարքի ID",
+        "viewIn": "Դիտել {explorer}- ում",
+        "referrer": "Ուղղորդող",
+        "referral": "Ուղղորդում",
+        "adarTxDetailsTitle": "գործարքի մանրամասներ",
+        "comment": "Մեկնաբանություն",
+        "price": "Գին",
+        "side": "Կողք"
     },
-    "transactions": {
-      "confimation": "Հաստատել {order} ի {total} գործարքները...",
-      "success": "Դուք շուտով կստանաք ձեր պարգևատրումը",
-      "failed": "{order} ի {total} գործարքները ձախողվեցին: @:retryText"
+    "appName": "{AppName} (Փոլքասվափ)",
+    "changeNetworkText": "Փոխեք ցանցը դրամապանակում",
+    "transactionText": "գործարք | գործարքներ",
+    "connectWalletText": "Միանալ հաշվին",
+    "changeAccountText": "Փոխել հաշիվը",
+    "connectedText": "Միացված է",
+    "connectWalletTextTooltip": "Միացեք {Sora} Network-ին {PolkadotJs} -ի միջոցով",
+    "selectNodeText": "Ընտրել հանգույցը",
+    "bridgeText": "Կամուրջ",
+    "disclaimer": "{disclaimerPrefix} Այս կայքը պահպանվում է {Sora} համայնքի կողմից: Նախքան այս կայքի օգտագործումը շարունակելը, խնդրում ենք ծանոթանալ {polkaswapFaqLink}-ին և փաստաթղթերին, որոնք ներառում են մանրամասն բացատրություն, թե ինչպես է աշխատում {AppName}-ը, ինչպես նաև {memorandumLink} և {privacyLink}: Այս փաստաթղթերը չափազանց կարևոր են օգտատերերի անվտանգ և դրական փորձի համար: Օգտվելով {AppName}-ից՝ դուք ընդունում եք, որ կարդացել և հասկացել եք այս փաստաթղթերը: Դուք նաև ընդունում եք հետևյալը. 1) ձեր միանձնյա պատասխանատվությունը բոլոր օրենքներին համապատասխանելու համար, որոնք կարող են կիրառվել ձեր իրավական իրավասության մեջ {AppName}-ի հատուկ օգտագործման համար. 2) ձեր ըմբռնումը, որ {AppName}-ի ներկայիս տարբերակը ալֆա տարբերակ է. այն ամբողջությամբ չի փորձարկվել, և որոշ գործառույթներ կարող են չաշխատել այնպես, ինչպես նախատեսված է. և 3) {AppName}-ի օգտագործման հետ կապված ռիսկերի ձեր ըմբռնումը և կամավոր ընդունումը, ներառյալ, բայց չսահմանափակվելով դրանցով, նշաններ կորցնելու ռիսկը: Խնդրում ենք չշարունակել առանց {polkaswapFaqLink}, {memorandumLink}, {privacyLink}-ը կարդալու:",
+    "poweredBy": "Երաշխավորվոած է",
+    "confirmTransactionText": "Հաստատեք գործարքը",
+    "retryText": "Նորից փորձել",
+    "networkFeeText": "Ցանցային վճար",
+    "networkFeeTooltipText": "Ցանցի վճարն օգտագործվում է {Sora} համակարգի աճն ու կայուն աշխատանքը ապահովելու համար:",
+    "ethNetworkFeeTooltipText": "Խնդրում ենք նկատի ունենալ, որ {AppName} -ում ցուցադրվող {network} ցանցի վճարները միայն մոտավոր հաշվարկներ են, դուք կարող եք տեսնել վճարի ճիշտ գումարը ձեր միացված {network} դրամապանակում` նախքան գործարքը հաստատելը:",
+    "marketText": "Շուկա",
+    "marketAlgorithmText": "Շուկայի ալգորիթմ",
+    "firstPerSecond": "{first} յուրաքանչյուր {second}",
+    "pairIsNotCreated": "Տոկենների զույգը չի ստեղծվել",
+    "pageTitle": {
+        "Swap": "Փոխանակում",
+        "Pool": "պահուստ",
+        "Bridge": "@:bridgeText",
+        "Stats": "Վիճակագրություն",
+        "Wallet": "Դրամապանակ",
+        "AddLiquidity": "Ավելացնել իրացվելիություն",
+        "RemoveLiquidity": "Հեռացնել իրացվելիությունը",
+        "Rewards": "Պարգեւներ",
+        "Explore\/Tokens": "Նշաններ",
+        "Explore\/Pools": "Լողավազաններ",
+        "Explore\/Staking": "Ցուցադրում",
+        "Explore\/Farming": "Ֆարմինգ",
+        "Staking": "Ցուցադրում",
+        "OrderBook": "Առևտուր",
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "AssetOwner": "Ակտիվների սեփականատեր",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "{Kensetsu}",
+        "VaultDetails": "Դիրքի մանրամասներ",
+        "Burn": "Այրվել"
     },
-    "signing": {
-      "extension": "{PolkadotJs} բրաուզերի հավելված",
-      "accounts": "Ձեր {Sora} և {Ethereum} հաշիվները համապատասխանաբար"
+    "mainMenu": {
+        "Swap": "Փոխանակում",
+        "Pool": "պահուստ",
+        "Bridge": "@:bridgeText",
+        "Farming": "Ֆարմինգ",
+        "Wallet": "Հաշիվ",
+        "Rewards": "Պարգեւատրումներ",
+        "About": "Մասին",
+        "Stats": "Վիճակագրություն",
+        "StakingContainer": "Ցուցադրում",
+        "Explore\/Container": "Հետազոտել",
+        "SoraCard": "{Sora} Քարտ",
+        "OrderBook": "Առևտուր",
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Burn": "@:pageTitle.Burn"
     },
-    "hint": {
-      "connectExternalAccount": "Միացրեք {Ethereum} հաշվին՝ ստուգելու համար առկա PSWAP եւ VAL պարգեւատրումները:",
-      "connectAccounts": "Ձեր PSWAP և VAL պարգևւատրումները հաստատելու համար անհրաժեշտ է միացնել և՛ ձեր {Sora} և՛ {Ethereum} հաշիվները:",
-      "connectAnotherAccount": "Միացեք այլ {Ethereum} հաշվին ստուգելու համար առկա PSWAP և VAL պարգևատրումները:",
-      "howToClaimRewards": "Ձեր {symbols} պարգևները ստանալու համար դուք պետք է գրանցվեք {count} {transactions} {destination} ում: Պարգևները կվճարվեն ձեր {Sora} հաշվին:"
+    "social": {
+        "twitter": "Twitter",
+        "telegram": "Telegram",
+        "medium": "Medium",
+        "reddit": "Reddit",
+        "github": "GitHub",
+        "wiki": "{Sora} Wiki"
     },
-    "action": {
-      "connectExternalWallet": "Միացնել {Ethereum} հաշիվը",
-      "signAndClaim": "Ստորագրեք և հաստատեք",
-      "pendingInternal": "{Sora} գործարքը ընթացքի մեջ է...",
-      "pendingExternal": "{Ethereum} գործարքը ընթացքի մեջ է ...",
-      "checkRewards": "Ստուգել"
+    "footerMenu": {
+        "faucet": "Faucet(Ֆասեթ)",
+        "github": "GitHub",
+        "sorawiki": "{Sora} Wiki",
+        "memorandum": "{AppName}- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
+        "privacy": "Գաղտնիության քաղաքականություն",
+        "info": "Ինֆո & Հասարակություն"
     },
-    "notification": {
-      "empty": "Չկան առկա պահանջներ այս հաշվի համար"
+    "helpDialog": {
+        "title": "Օգնություն",
+        "termsOfService": "Սպասարկման պայմաններ",
+        "privacyPolicy": "Գաղտնիության քաղաքականություն",
+        "appVersion": "{AppName} տարբերակը",
+        "contactUs": "Կապվեք մեզ հետ"
     },
-    "events": {
-      "XorErc20": "XOR ERC-20",
-      "SoraFarmHarvest": "{Sora}.farm բերք",
-      "NtfAirdrop": "NFT Airdrop",
-      "LiquidityProvision": "Հեղուկի մատակարարումից ստացված վճարներ",
-      "BuyOnBondingCurve": "TBC-ից գնելու դեպքում ստրատեգիական պարգևատրումներ",
-      "MarketMakerVolume": "Շուկա ստեղծող",
-      "LiquidityProvisionFarming": "Ֆարմինգ"
+    "aboutNetworkDialog": {
+        "title": "Մասին",
+        "network": {
+            "title": "Ի՞նչ է {Sora} ը:",
+            "description": "{AppName}- ը կառուցված է {Sora} ցանցի հիման վրա, իսկ {Sora} տոկենը (XOR) օգտագործվում է {AppName}- ում գազի \/ վճարների և իրացվելիության ապահովման համար: {Sora} ցանցը թույլ է տալիս նվազեցնել վճարները, արագացնել գործարքները և ավելի պարզ համաձայնության հասնելը և կենտրոնացած է այլ բլոկչեյն էկոհամակարգերի միջև փոխգործունակության ապահովման վրա, ինչպիսիք են {Ethereum}:"
+        },
+        "polkadot": {
+            "title": "Ի՞նչ է {PolkadotJs}-ը :",
+            "description": "{PolkadotJs} ընդլայնումը Firefox- ի և Chrome- ի համար հասանելի բրաուզերի ընդլայնում է, որը շեշտադրված է Substrate- ի վրա հիմնված շղթաների հաշիվների կառավարմանը, ներառյալ {Sora}, {Polkadot} և {Kusama}: Կարող եք ավելացնել, ներմուծել և արտահանել հաշիվներ և կնքել գործարքներ կամ այլազերծումներ, որոնք նախաձեռնել եք ձեր կողմից թույլատրված կայքերից:"
+        }
     },
-    "vested": "երաշխավորված",
-    "forText": "համար",
-    "totalVested": "երաշխավորված",
-    "claimableAmountDoneVesting": "Պահանջվող գումարը (կատարված ապահովումը)",
-    "groups": {
-      "strategic": "Ռազմավարական պարգևներ",
-      "external": "Պարգևատրումներ կապված {Ethereum} հաշվի համար",
-      "crowdloan": "Crowdloan պարգևներ"
+    "node": {
+        "errors": {
+            "connection": "Հանգույցին միանալու ժամանակ սխալ է տեղի ունեցել\n{address}\n",
+            "network": "Հանգույցը\n{address}\n մեկ այլ ցանցից է\n",
+            "existing": "Այս հանգույցն արդեն ավելացվել է' {title}\n"
+        },
+        "messages": {
+            "connected": "Հանգույցի հետ կապը հաստատված է\n{address}\n",
+            "selectNode": "Խնդրում ենք հանգույցների ցանկից միանալու համար ընտրել հանգույց"
+        },
+        "warnings": {
+            "disconnect": "Կապը հանգույցի հետ կորել է: Վերամիացում..."
+        }
     },
-    "Rewards": "Պարգեւներ",
-    "ReferralProgram": "Հղումներ",
-    "PointSystem": "Միավորներ"
-  },
-  "provider": {
-    "messages": {
-      "checkExtension": "{name} Հավելվածը զբաղված է, խնդրում ենք ստուգել այն",
-      "extensionLogin": "Խնդրում ենք մուտք գործելՁեր {name} հավելված",
-      "installExtension": "{name} ընդլայնումը չի գտնվել: Խնդրում ենք տեղադրել այն: \n\n Արդեն տեղադրե՞լ եք ընդլայնում: Խնդրում ենք վերաբեռնել էջը",
-      "reloadPage": "Վերաբեռնել էջը",
-      "notAvailable": "{name} ը հասանելի չէ:"
-    }
-  },
-  "selectLanguageDialog": {
-    "title": "Լեզու"
-  },
-  "tokens": {
-    "symbol": "Խորհրդանիշ",
-    "assetId": "Ակտիվի ID"
-  },
-  "memorandum": "{AppName}- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
-  "FAQ": "{AppName} ՀՏՀ",
-  "connectedAccount": "Միացված հաշիվ",
-  "selectNodeConnected": "Միացված է ՝ {chain}",
-  "moonpayText": "MoonPay",
-  "forText": "համար",
-  "moonpay": {
-    "notifications": {
-      "success": {
-        "title": "Գնված նշաններ",
-        "text": "Նշանների գնումն ավարտված է: {Hashi} կամուրջի գործարքը կսկսվի ավտոմատ կերպով, հենց որ ժետոնները ստացվեն միացված {Ethereum} հաշվում: Ապահով է փակել այս պատուհանը և շարունակել օգտագործել {AppName} : Կամուրջի գործարքի մասին ծանուցում կլինի, երբ պատրաստ լինի:"
-      },
-      "supportError": {
-        "title": "Նշանը չի աջակցվում",
-        "text": "Ցավոք, @:moonpayText-ի միջոցով գնված նշանը դեռ չի աջակցվում {AppName} -ի {Hashi} կամրջի կողմից: Սովորաբար միայն աջակցվող թոքենները պետք է հասանելի լինեն MoonPay-ի միջոցով {AppName} -ում գնելու համար, հետևաբար ինչ-որ տեղ ինչ-որ բան սխալ է տեղի ունեցել: Խնդրում ենք մի հապաղեք տեղեկացնել համայնքին այս դեպքի մասին <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> {AppName} Telegram խումբ </a> :"
-      },
-      "feeError": {
-        "title": "Կամրջի համար tx բավարար ETH չէ",
-        "text": "Ցավոք, {Hashi} կամուրջի գործարքը ձախողվել է, քանի որ բավականաչափ ETH չկար {Ethereum} ցանցի տրանսլյացիայի ծախսերը վճարելու համար: Խնդրում ենք ավելացնել ավելին ETH եւ կրկին փորձել:"
-      },
-      "transactionError": {
-        "title": "Գործարքը ձախողվեց",
-        "text": "Ցավոք, երեւում է, որ @:moonpayText գործարքը ձախողվել է: Խնդրում եմ նորից փորձեք: @:moonpayText-ի աջակցության համար անցեք <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https://support.moonpay.com</a>"
-      },
-      "amountError": {
-        "title": "Անբավարար մնացորդ",
-        "text": "Ցավոք, {Hashi} կամրջի գործարքը ձախողվել է, քանի որ գործարքի համար բավարար նշաններ չկան: Խնդրում ենք ստուգել ձեր {Ethereum} հաշվի հաշվեկշիռը եւ կրկին փորձել:"
-      },
-      "accountAddressError": {
-        "title": "Սխալ {Ethereum} հաշիվ",
-        "text": "Ցավոք, {Hashi} կամրջի գործարքը ձախողվեց @:moonpayText պատվերի նշանը ստացողի հասցեի պատճառով, որը չի համապատասխանում ձեր ընթացիկ {Ethereum} հաշվի հասցեին: Խնդրում ենք երկարացման դեպքում փոխել {Ethereum} հաշիվը եւ կրկին փորձել:"
-      }
+    "selectNodeDialog": {
+        "title": "Ցանցային հանգույցի ընտրություն",
+        "addNode": "Ավելացրեք օգտատերի հանգույցը",
+        "customNode": "Օգտատերի հանգույց",
+        "howToSetupOwnNode": "Կարգավորեք ձեր հանգույցը",
+        "select": "Ընտրել",
+        "connected": "Միացված է",
+        "nodeTitle": "{name}, որը հյուրընկալվում է {chain}",
+        "messages": {
+            "emptyName": "Խնդրում ենք մուտքագրել հանգույցի անվանումը",
+            "emptyAddress": "Խնդրում ենք մուտքագրել հանգույցի հասցեն",
+            "incorrectProtocol": "Հասցեն պետք է սկսվի ws:\/\/ կամ wss:\/\/",
+            "incorrectAddress": "Սխալ հասցե"
+        },
+        "updateNode": "Թարմացնել հանգույցը"
     },
     "buttons": {
-      "buy": "Գնել",
-      "history": "Գնումներ",
-      "transfer": "Սկսել կամուրջը",
-      "view": "Դիտել գործարքը"
+        "max": "Մաքսիմալ",
+        "chooseToken": "Ընտրել տոկեն",
+        "chooseAToken": "Ընտրեք տոկեն",
+        "chooseTokens": "Ընտրեք տոկեններ",
+        "enterAmount": "Մուտքագրեք գումարը"
     },
-    "history": {
-      "title": "Գնումներ պատմություն",
-      "empty": "@:noDataText"
+    "transfers": {
+        "from": "Սկսած",
+        "to": "Դեպի"
     },
-    "confirmations": {
-      "txReady": "Գործարքը պատրաստ է կամրջի համար"
+    "exchange": {
+        "Swap": "Փոխանակում",
+        "Pool": "պահուստային",
+        "balance": "Բալանս",
+        "price": "Գին",
+        "transactionSubmitted": "Գործարքը ներկայացված է",
+        "transactionMessage": "{firstToken} և {secondToken}",
+        "ok": "Լավ",
+        "confirm": "Հաստատել",
+        "lossWarning": "Դուք կկորցնեք {value}% ձեր առևտրում: Մենք հայտնաբերել ենք իրացվելիության ապահովման խնդիր: Սա կարող է հանգեցնել զգալի կորուստների նշանների փոխանակման ժամանակ: Խնդրում ենք համոզվել, որ կա համապատասխան իրացվելիություն ձեր ցանկալի սվոպ զույգի համար:"
+    },
+    "swap": {
+        "estimated": "գնահատված",
+        "slippageTolerance": "Սայթաքման վճար",
+        "minReceived": "Ստացված նվազագույնը",
+        "maxSold": "Առավելագույնը վաճառված",
+        "minReceivedTooltip": "Ձեր գործարքը կվերադառնա, եթե գնի մեծ, անբարենպաստ տեղաշարժ լինի նախքան դրա հաստատումը:",
+        "priceImpact": "Գնի ազդեցությունը",
+        "priceImpactTooltip": "Առևտրի չափաքանակի հետևանքով շուկայական գնի և գնահատված գնի տարբերությունը:",
+        "liquidityProviderFee": "Իրացվելիության մատակարարի վճար",
+        "liquidityProviderFeeTooltip": "Յուրաքանչյուր առևտրի մի մասը ({liquidityProviderFee}%) բաժին է ընկնում իրացվելիության մատակարարներին ՝ որպես պրոտոկոլային խթան:",
+        "insufficientAmount": "{tokenSymbol} անբավարար գումար",
+        "insufficientLiquidity": "Անբավարար իրացվելիություն",
+        "confirmSwap": "Հաստատեք փոխանակումը",
+        "swapOutputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
+        "rewardsForSwap": "PSWAP ստրատեգիական պարգևատրումներ",
+        "swapInputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
+        "route": "Երթուղի",
+        "errorFetching": "Տվյալները հավաքելու սխալը"
+    },
+    "pool": {
+        "connectToWallet": "Միացեք դրամապանակին ՝ ձեր իրացվելիությունն ավելացնելու և դիտելու համար:",
+        "liquidityNotFound": "Իրացվելիություն չի հայտնաբերվել:",
+        "addLiquidity": "Ավելացնել",
+        "removeLiquidity": "Հեռացնել",
+        "createPair": "Զույգ կազմել",
+        "pooledToken": "{tokenSymbol} Պուլճուած",
+        "pairTokens": "{pair} պահուստային տոկեններ",
+        "poolShare": "Ձեր պահուստի բաժինը",
+        "description": "Երբ իրացվելիություն եք ավելացնում, ձեզ տրվում են ձեր դիրքը ներկայացնող պահուստային տոկեններ: Այս տոկեններն ավտոմատ կերպով գումար են կուտակում ՝ համամասնորեն պահուստի ձեր մասնաբաժնին և կարող են մարվել ցանկացած պահի:",
+        "strategicBonusApy": "Ռազմավարական բոնուս APY"
+    },
+    "bridge": {
+        "title": "Կամուրջ",
+        "info": "Փոխարկել տոկենները {Sora} և {Ethereum} ցանցերի միջև:",
+        "balance": "Բալանս",
+        "next": "Հաջորդը",
+        "connectWallets": "Միացրեք դրամապանակները ՝ համապատասխան գործարքի պատմությունը դիտելու համար:",
+        "soraNetworkFee": "{Sora} ցանցային վճար",
+        "ethereumNetworkFee": "{Ethereum} ցանցային վճար",
+        "total": "Ընդհանուր",
+        "viewHistory": "Դիտել գործարքների պատմությունը",
+        "transactionSubmitted": "Գործարքը ներկայացված է",
+        "transactionMessage": "{assetA} -ն {assetB}- ի համար",
+        "notRegisteredAsset": "Ակտիվը {assetSymbol} գրանցված չէ",
+        "selectNetwork": "Ընտրեք ցանցը",
+        "networkInfo": "Միացեք {Sora} Ցանցով.",
+        "copy": "Պատճենել ցանցի հասցեն",
+        "soraAddress": "{Sora} հասցե",
+        "ethereumAddress": "{Ethereum} հասցե",
+        "limitMessage": "Ներկայումս {Sora} ցանցի կայունությունն ու անվտանգությունն ապահովելու համար կամրջելու համար կա {type} {amount} {symbol} : Մենք գնահատում ենք ձեր ըմբռնումը:",
+        "externalTransferFee": "{network} {XCM} վճար",
+        "externalTransferFeeTooltip": "Երբ դուք կամուրջ գործարք եք ուղարկում {network} ցանցին, ձեր փոխանցվող գումարից փոքր վճար է վերցվում",
+        "externalMinDeposit": "{network} րոպե ավանդ",
+        "externalMinDepositTooltip": "Նվազագույն մնացորդը {symbol} , որը պետք է լինի ձեր {network} հաշվում կամրջի փոխանցումից հետո"
+    },
+    "selectRegisteredAsset": {
+        "title": "Ընտրեք տոկեն",
+        "search": {
+            "title": "Տոկեններ",
+            "placeholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի",
+            "networkLabelSora": "{Sora} ցանցի տոկեններ",
+            "networkLabelEthereum": "{network} ցանցի հայելային նշաններ",
+            "emptyListMessage": "Ոչ մի արդյունք"
+        },
+        "customAsset": {
+            "title": "Պատվեր",
+            "customInfo": "Կարևո՛ր է: Պատվերով տոկենները պետք է գրանցված լինեն {Sora} - ում:",
+            "registerToken": "Գրանցել token",
+            "addressPlaceholder": "Ակտիվի ID",
+            "symbolPlaceholder": "Տոկենի խորհրդանիշ",
+            "empty": "Ոչ մի տոկեն չի գտնվել",
+            "alreadyAttached": "Տոկենն արդեն կցված էր"
+        }
+    },
+    "bridgeTransaction": {
+        "details": "{from} համար {to}",
+        "for": " համար ",
+        "steps": {
+            "step": "2-ի {step}",
+            "step1": "1-ին",
+            "step2": "2-րդ"
+        },
+        "status": {
+            "pending": "{step} գործարքները սպասման մեջ են",
+            "failed": "{step} գործարքները ձախողվեցին: @:(retryText).",
+            "confirm": "Հաստատեք 2 գործարքներից 2-րդը...",
+            "complete": "Վերջացված է",
+            "convertionComplete": "Փոխարկումն ավարտված է"
+        },
+        "statuses": {
+            "waiting": "Սպասում",
+            "ready": "Պատրաստ է",
+            "pending": "Սպասման մեջ է",
+            "frozen": "Սառեցված",
+            "failed": "Գործարքը ձախողվել է",
+            "done": "Վերջացված է",
+            "waitingForConfirmation": "Հաստատման սպասում..."
+        },
+        "networkTitle": "{network} գործարք",
+        "transactionHash": "Գործարքի հաշ(կոդ)",
+        "networkInfo": {
+            "status": "Կարգավիճակ",
+            "date": "Ամսաթիվ",
+            "amount": "քանակ",
+            "transactionFee": "Գործարքի վճար",
+            "total": "Ընդհանուր"
+        },
+        "successCopy": "Գործարքի հաշը պատճենահանված է սեղմատախտակին",
+        "ethereum": "{Ethereum}",
+        "sora": "{Sora}",
+        "pending": "{network} գործարքը սպասման մեջ է...",
+        "newTransaction": "Ստեղծել նոր գործարք",
+        "title": "Կամուրջի գործարք",
+        "allowToken": "Թույլ տվեք {AppName} ին օգտագործել ձեր {tokenSymbol}",
+        "approveToken": "Խնդրում ենք նկատի ունենալ, որ անհրաժեշտ է միայն մեկ անգամ հաստատել նշանը: Եթե ձեր ընդլայնումն ունի նշանների հաստատման բազմաթիվ խնդրանքներ, համոզվեք, որ միայն վերջինը հաստատեք ՝ մնացածը մերժելով:",
+        "blocksLeft": "{count} բլոկները մնացել են..."
+    },
+    "bridgeHistory": {
+        "title": "Պատմություն",
+        "showHistory": "Ցույց տալ պատմությունը",
+        "clearHistory": "Մաքրել պատմությունը",
+        "empty": "Ձեր գործարքները կհայտնվեն այստեղ:",
+        "filterPlaceholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի",
+        "restoreHistory": "Վերականգնել պատմությունը",
+        "statusAction": "Գործողություն է անհրաժեշտ"
+    },
+    "selectToken": {
+        "title": "Ընտրեք տոկեն",
+        "searchPlaceholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի",
+        "emptyListMessage": "Ոչ մի արդյունք",
+        "copy": "Պատճենել Asset ID- ն",
+        "successCopy": "{symbol} Asset ID- ն պատճենված է ցուցատախտակում",
+        "assets": {
+            "title": "Ակտիվներ"
+        },
+        "custom": {
+            "title": "Հատուկ",
+            "search": "Մուտքագրեք ակտիվի ID",
+            "text": "ՀԱՏՈՒԿ ՏՈԿԵՆՆԵՐ ",
+            "alreadyAttached": "Այս տոկենն արդեն ամրակցված էր",
+            "notFound": "Տոկենը չի գտնվել"
+        }
+    },
+    "createPair": {
+        "title": "Զույգ կազմել",
+        "deposit": "Ավանդ",
+        "balance": "Բալանս",
+        "pricePool": "Գները և պահուստի բաժինը",
+        "shareOfPool": "Պահուստի բաժինը",
+        "firstSecondPoolTokens": "{first}-{second} պահուստային տոկեններ",
+        "connect": "Միացրեք դրամապանակը",
+        "supply": "Մատակարարում",
+        "yourPosition": "Ձեր դիրքը",
+        "yourPositionEstimated": "Ձեր դիրքը (հաշվարկված)",
+        "youWillReceive": "Դուք կստանաք",
+        "remove": "հեռացնել",
+        "add": "Ավելացնել",
+        "ok": "Լավ",
+        "alreadyCreated": "Տոկենների զույգն արդեն ստեղծված է",
+        "firstLiquidityProvider": "Դուք առաջին իրացվելիության մատակարարն եք",
+        "firstLiquidityProviderInfo": "Ձեր ավելացրած տոկենների հարաբերակցությունը կսահմանի այս պահուստի գինը: <br\/> Երբ գոհ եք գներից, սեղմեք մատակարարում կոճակը ՝ վերանայելու համար:"
+    },
+    "confirmSupply": {
+        "title": "Դուք կստանաք",
+        "outputDescription": "Արդյունքը գնահատվում է: Եթե գինը փոխվի ավելի քան {slippageTolerance}%, ձեր գործարքը կվերականգնվի:",
+        "poolTokensBurned": "{first}-{second} Այրվել են պահուստի տոկենները",
+        "price": "Գին"
+    },
+    "addLiquidity": {
+        "title": "Ավելացրեք իրացվելիություն"
+    },
+    "removeLiquidity": {
+        "title": "Հեռացնել իրացվելիությունը",
+        "liquidity": "իրացվելիություն",
+        "balance": "Բալանս",
+        "amount": "քանակ",
+        "input": "Մուտքագրում",
+        "output": "Արդյունք",
+        "price": "Գին",
+        "remove": "Հեռացնել",
+        "description": "Պահուստի տոկենների վերացումը ձեր դիրքը վերափոխում է հիմքում ընկած տոկենների ներկայիս արագությամբ ՝ համամասնորեն պահուստի ձեր մասնաբաժնի: Հաշվարկված վճարները ներառված են ձեր ստացած գումարների մեջ:",
+        "outputMessage": "Արդյունքը գնահատվում է: Եթե գինը փոխվի ավելի քան {slippageTolerance} %, ձեր գործարքը կվերականգնվի:",
+        "confirmTitle": "Դուք կստանաք",
+        "shareOfPool": "Գործարքից հետո լողավազանի մասնաբաժինը",
+        "locked": "Ձեր լողավազանի {percent} -ը {lock} մեջ է"
+    },
+    "dexSettings": {
+        "title": "Կարգավորումներ",
+        "marketAlgorithm": "@.upper:marketAlgorithmText",
+        "marketAlgorithmTooltip": {
+            "main": " - առաջնային շուկայի (TBC), Երկրորդային շուկայի (XYK) կամ համակցված սմարթ ալգորիթմի միջև ընտրության հնարավորություն, ցանկացած տրված գործարքի երաշխավորված լավագույն գնի համար:"
+        },
+        "slippageTolerance": "Սայթաքման վճար",
+        "slippageToleranceHint": "Ձեր գործարքը կվերադարձվի, եթե գինն անբարենպաստ կերպով փոփոխվի այս տոկոսից ավել:",
+        "slippageToleranceValidation": {
+            "warning": "Ձեր գործարքը կարող է ձախողվել",
+            "frontrun": "Ձեր գործարքը կարող է առաջևի վազք լինել",
+            "error": "Մուտքագրեք սայթաքման վավեր տոկոս"
+        },
+        "custom": "Պատվեր",
+        "transactionDeadline": "Գործարքի վերջնաժամկետ",
+        "transactionDeadlineHint": "Գործարքը կչեղարկվի, եթե այն սպասվում է ավելի քան այսքան երկար:",
+        "nodeAddress": "Node Հասցե",
+        "ip": "IP",
+        "port": "PORT",
+        "min": "MIN",
+        "marketAlgorithms": {
+            "SMART": "{smartAlgorithm} իրացվելիության երթուղին ապահովում է ցանկացած գործարքի լավագույն գինը `համատեղելով մատչելի բոլոր շուկաներից միայն լավագույն գների տարբերակները: Հասանելիության դեպքում, Token Bonding Curve-ը ({tbcAlgorithm}) կօգտագործվի իրացվելիության համար, քանի դեռ ակտիվի գինն ավելի մատչելի է, քան այլ աղբյուրներինը, որոնց վրա {xycAlgorithm}պահուստն օգտագործվում է:",
+            "TBC": "{tbcAlgorithm} - գնում միայն Token Bonding Curve- ից (Առաջնային շուկա): Հնարավոր է, որ գինը կարող է անբարենպաստ դառնալ {xycAlgorithm} պահուստի (Երկրորդային շուկա) համեմատ, բայց հատկացված պարգևներից ստացված արժեքը ժամանակի ընթացքում կարող է շատ ավելի բարենպաստ լինել: ,",
+            "XYK": "{xycAlgorithm} - գնում միայն XYK պահուստներից (երկրորդային շուկա): Ավանդական XYK պահուստների փոխանակում:"
+        },
+        "charts": "Գծապատկերներ",
+        "сhartsDescription": "Դիտեք գծապատկերները խորհրդանշական գների համար"
+    },
+    "resultDialog": {
+        "title": "Գործարքը ներկայացված է",
+        "ok": "Լավ"
+    },
+    "rewards": {
+        "title": "Հաստատել Պարգևները",
+        "andText": "և",
+        "claiming": {
+            "pending": "Հաստատման ընթացքում է...",
+            "success": "Հաստատված է հաջողությամբ"
+        },
+        "transactions": {
+            "confimation": "Հաստատել {order} ի {total} գործարքները...",
+            "success": "Դուք շուտով կստանաք ձեր պարգևատրումը",
+            "failed": "{order} ի {total} գործարքները ձախողվեցին: @:retryText"
+        },
+        "signing": {
+            "extension": "{PolkadotJs} բրաուզերի հավելված",
+            "accounts": "Ձեր {Sora} և {Ethereum} հաշիվները համապատասխանաբար"
+        },
+        "hint": {
+            "connectExternalAccount": "Միացրեք {Ethereum} հաշվին՝ ստուգելու համար առկա PSWAP եւ VAL պարգեւատրումները:",
+            "connectAccounts": "Ձեր PSWAP և VAL պարգևւատրումները հաստատելու համար անհրաժեշտ է միացնել և՛ ձեր {Sora} և՛ {Ethereum} հաշիվները:",
+            "connectAnotherAccount": "Միացեք այլ {Ethereum} հաշվին ստուգելու համար առկա PSWAP և VAL պարգևատրումները:",
+            "howToClaimRewards": "Ձեր {symbols} պարգևները ստանալու համար դուք պետք է գրանցվեք {count} {transactions} {destination} ում: Պարգևները կվճարվեն ձեր {Sora} հաշվին:"
+        },
+        "action": {
+            "connectExternalWallet": "Միացնել {Ethereum} հաշիվը",
+            "signAndClaim": "Ստորագրեք և հաստատեք",
+            "pendingInternal": "{Sora} գործարքը ընթացքի մեջ է...",
+            "pendingExternal": "{Ethereum} գործարքը ընթացքի մեջ է ...",
+            "checkRewards": "Ստուգել"
+        },
+        "notification": {
+            "empty": "Չկան առկա պահանջներ այս հաշվի համար"
+        },
+        "events": {
+            "XorErc20": "XOR ERC-20",
+            "SoraFarmHarvest": "{Sora}.farm բերք",
+            "NtfAirdrop": "NFT Airdrop",
+            "LiquidityProvision": "Հեղուկի մատակարարումից ստացված վճարներ",
+            "BuyOnBondingCurve": "TBC-ից գնելու դեպքում ստրատեգիական պարգևատրումներ",
+            "MarketMakerVolume": "Շուկա ստեղծող",
+            "LiquidityProvisionFarming": "Ֆարմինգ"
+        },
+        "vested": "երաշխավորված",
+        "forText": "համար",
+        "totalVested": "երաշխավորված",
+        "claimableAmountDoneVesting": "Պահանջվող գումարը (կատարված ապահովումը)",
+        "groups": {
+            "strategic": "Ռազմավարական պարգևներ",
+            "external": "Պարգևատրումներ կապված {Ethereum} հաշվի համար",
+            "crowdloan": "Crowdloan պարգևներ"
+        },
+        "Rewards": "Պարգեւներ",
+        "ReferralProgram": "Հղումներ",
+        "PointSystem": "Միավորներ"
+    },
+    "provider": {
+        "messages": {
+            "checkExtension": "{name} Հավելվածը զբաղված է, խնդրում ենք ստուգել այն",
+            "extensionLogin": "Խնդրում ենք մուտք գործելՁեր {name} հավելված",
+            "installExtension": "{name} ընդլայնումը չի գտնվել: Խնդրում ենք տեղադրել այն: \n\n Արդեն տեղադրե՞լ եք ընդլայնում: Խնդրում ենք վերաբեռնել էջը",
+            "reloadPage": "Վերաբեռնել էջը",
+            "notAvailable": "{name} ը հասանելի չէ:"
+        }
+    },
+    "selectLanguageDialog": {
+        "title": "Լեզու"
+    },
+    "tokens": {
+        "symbol": "Խորհրդանիշ",
+        "assetId": "Ակտիվի ID"
+    },
+    "memorandum": "{AppName}- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
+    "FAQ": "{AppName} ՀՏՀ",
+    "connectedAccount": "Միացված հաշիվ",
+    "selectNodeConnected": "Միացված է ՝ {chain}",
+    "moonpayText": "MoonPay",
+    "forText": "համար",
+    "moonpay": {
+        "notifications": {
+            "success": {
+                "title": "Գնված նշաններ",
+                "text": "Նշանների գնումն ավարտված է: {Hashi} կամուրջի գործարքը կսկսվի ավտոմատ կերպով, հենց որ ժետոնները ստացվեն միացված {Ethereum} հաշվում: Ապահով է փակել այս պատուհանը և շարունակել օգտագործել {AppName} : Կամուրջի գործարքի մասին ծանուցում կլինի, երբ պատրաստ լինի:"
+            },
+            "supportError": {
+                "title": "Նշանը չի աջակցվում",
+                "text": "Ցավոք, @:moonpayText-ի միջոցով գնված նշանը դեռ չի աջակցվում {AppName} -ի {Hashi} կամրջի կողմից: Սովորաբար միայն աջակցվող թոքենները պետք է հասանելի լինեն MoonPay-ի միջոցով {AppName} -ում գնելու համար, հետևաբար ինչ-որ տեղ ինչ-որ բան սխալ է տեղի ունեցել: Խնդրում ենք մի հապաղեք տեղեկացնել համայնքին այս դեպքի մասին <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> {AppName} Telegram խումբ <\/a> :"
+            },
+            "feeError": {
+                "title": "Կամրջի համար tx բավարար ETH չէ",
+                "text": "Ցավոք, {Hashi} կամուրջի գործարքը ձախողվել է, քանի որ բավականաչափ ETH չկար {Ethereum} ցանցի տրանսլյացիայի ծախսերը վճարելու համար: Խնդրում ենք ավելացնել ավելին ETH եւ կրկին փորձել:"
+            },
+            "transactionError": {
+                "title": "Գործարքը ձախողվեց",
+                "text": "Ցավոք, երեւում է, որ @:moonpayText գործարքը ձախողվել է: Խնդրում եմ նորից փորձեք: @:moonpayText-ի աջակցության համար անցեք <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https:\/\/support.moonpay.com<\/a>"
+            },
+            "amountError": {
+                "title": "Անբավարար մնացորդ",
+                "text": "Ցավոք, {Hashi} կամրջի գործարքը ձախողվել է, քանի որ գործարքի համար բավարար նշաններ չկան: Խնդրում ենք ստուգել ձեր {Ethereum} հաշվի հաշվեկշիռը եւ կրկին փորձել:"
+            },
+            "accountAddressError": {
+                "title": "Սխալ {Ethereum} հաշիվ",
+                "text": "Ցավոք, {Hashi} կամրջի գործարքը ձախողվեց @:moonpayText պատվերի նշանը ստացողի հասցեի պատճառով, որը չի համապատասխանում ձեր ընթացիկ {Ethereum} հաշվի հասցեին: Խնդրում ենք երկարացման դեպքում փոխել {Ethereum} հաշիվը եւ կրկին փորձել:"
+            }
+        },
+        "buttons": {
+            "buy": "Գնել",
+            "history": "Գնումներ",
+            "transfer": "Սկսել կամուրջը",
+            "view": "Դիտել գործարքը"
+        },
+        "history": {
+            "title": "Գնումներ պատմություն",
+            "empty": "@:noDataText"
+        },
+        "confirmations": {
+            "txReady": "Գործարքը պատրաստ է կամրջի համար"
+        },
+        "tooltips": {
+            "transfer": "Նշանները հաջողությամբ գնվեցին\n Կտտացրեք կամուրջի գործարքը սկսելու համար"
+        }
+    },
+    "light": "Լույս",
+    "dark": "Մութ",
+    "headerMenu": {
+        "showBalances": "Showույց տալ հաշվեկշիռները",
+        "hideBalances": "Թաքցնել հավասարակշռությունները",
+        "settings": "Կարգավորումներ",
+        "switchTheme": "Անցնել {theme} ռեժիմի",
+        "switchLanguage": "Ընտրեք Լեզուն",
+        "showDisclaimer": "Ցույց տալ հերքումը",
+        "hideDisclaimer": "Թաքցնել հերքումը",
+        "selectCurrency": "Ընտրեք արժույթ"
+    },
+    "sentText": "Ուղարկված է",
+    "learnMoreText": "Իմանալ ավելին",
+    "marketMakerCountdown": {
+        "title": "Շուկա ստեղծողի countdown",
+        "blocks": "բլոկներ",
+        "daysLeft": "մնացել են օրեր",
+        "txs": "TX-ներ",
+        "volume": "MM TX ծավալը",
+        "description": "20 միլիոն PSWAP \/ ամիս կտարածվի շուկա ստեղծողներին առնվազն 500 tx \/ ամիս 1 XOR-ից բարձր արժեքով:"
+    },
+    "confirmNextTxFailure": {
+        "header": "Ուշադրություն",
+        "info": "Այս գործարքից հետո ձեր {symbol} մնացորդը կլինի {fee} {symbol} ից պակաս: Դուք չեք կարողանա վճարել ցանցի վճարը մեկ այլ գործարքի համար:",
+        "payoff": "Դուք պետք է օգտագործեք Bridge-ը XOR-ը այլ ցանցերից ստանալու, XOR-ի ուղարկված մեկ այլ {Sora} հաշվից կամ ձեր հաշվում եղած ցանկացած այլ նշան XOR-ով փոխելու համար:",
+        "button": "Այո, ես հասկանում եմ ռիսկը"
+    },
+    "blockNumberText": "Արգելափակման համարը",
+    "referralProgram": {
+        "title": "Ուղղորդման ծրագիր",
+        "connectAccount": "Օգտագործողներին հրավիրելու համար անհրաժեշտ է միացնել ձեր {Sora} հաշիվը:",
+        "bondedXOR": "XOR Խճճված",
+        "referralsNumber": "{number} ուղղորդումներ",
+        "startInviting": "Bond XOR՝ ուրիշներին ուղղորդելու համար",
+        "preview": "Հրավիրեք նոր օգտվողներ և ստացեք 10% նրանց գործարքների վճարներից: <br\/> Սկսելու համար կապեք XOR-ի ցանկացած քանակություն: <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Իմացեք ավելին <\/a>",
+        "deposit": "Ավանդ",
+        "balance": "Բալանս",
+        "insufficientBondedBalance": "Պարտատոմսերի անբավարար մնացորդ",
+        "action": {
+            "empty": "Մուտքագրեք {tokenSymbol}",
+            "startInviting": "Բոնդ {tokenSymbol} ՝ հրավիրելը սկսելու համար",
+            "bondMore": "Բոնդ Ավելին",
+            "bond": "Բոնդ",
+            "unbond": "Ունբոնդ",
+            "copyLink": "Պատճենել հղումը",
+            "shareLink": "Կիսվել"
+        },
+        "transactionDetails": "Գործարքի պարամետրերը",
+        "receivedRewards": "Ստացել է պարգևներ",
+        "invitationLink": "Հրավերի հղում",
+        "successCopy": "Հղման հղումը պատճենված է",
+        "bondTitle": "Բոնդ XOR",
+        "unbondTitle": "Ունբոնդ XOR",
+        "confirm": {
+            "bond": "Հաստատել պարտատոմ",
+            "unbond": "Հաստատել չպարտատոմսը",
+            "inviteTitle": "Դուք հրավիրվել եք {AppName}",
+            "inviteDescription": "Յուրաքանչյուր գործարքի համար միջնորդավճարի 10%-ը կգնա ձեր ուղղորդողին՝ առանց ձեզ համար հավելյալ ծախսերի:",
+            "signInvitation": "Հաստատել",
+            "freeOfCharge": "Այս գործողությունը անվճար է",
+            "hasReferrerTitle": "Դուք արդեն սահմանել եք ձեր ուղղորդիչը",
+            "hasReferrerDescription": "Ցավոք, դուք կարող եք սահմանել միայն մեկը",
+            "ok": "Լավ",
+            "text": "Հաստատել"
+        },
+        "referrer": {
+            "title": "Ավելացրեք ձեր ուղղորդիչը",
+            "titleReferrer": "Ձեր ուղղորդողը",
+            "placeholder": "Մուտքագրեք հրավերի հղումը կամ կոդը",
+            "label": "Հրավերի հղում կամ ծածկագիր",
+            "approve": "Հաստատել",
+            "approved": "Հաստատված է",
+            "description": "Դուք կարող եք հղում կատարել {AppName}-ին,<br\/>մուտքագրեք հղումը կամ ուղղորդողի կոդը",
+            "referredBy": "Ձեզ ուղղորդել է {referrer} ը",
+            "info": "Երբ գործարքի համար վճար կվճարեք,<br\/>10%-ը կգնա ձեր ուղղորդողին",
+            "referredLablel": "Նշված հասցեն"
+        },
+        "insufficientBondedAmount": "Ավելի շատ referrals հրավիրելու համար, bond առնվազն {inviteUserFee} XOR",
+        "inviteViaTelegram": "Հրավիրել {Telegram}-ով",
+        "welcomeMessage": "\nՄիացեք ինձ {Polkaswap}-ում!\n\nԲացահայտեք ոճային {DEX}-ը, որը թույլ է տալիս փոխանակել տասնյակ թոքեններ խաչաձև փոխանակումներով, պատվերների գրքով և բազմաթիվ պարգևներով!\n\n🎁 Հրավիրեք ընկերներին և վաստակեք նրանց առևտրային վճարների 10%-ը\n\nԿհանդիպենք այնտեղ!"
+    },
+    "transactionDetailsText": "Գործարքի մանրամասները",
+    "code": {
+        "download": "Ներբեռնեք QR կոդը",
+        "upload": "Սկան QR",
+        "invalid": "Անվավեր QR կոդը",
+        "import": "Ներմուծեք պատկեր",
+        "scan": "Սկան տեսախցիկով",
+        "allowanceError": "Ստուգեք ձեր տեսախցիկի առկայությունը և դիտարկիչի թույլտվությունները՝ այն օգտագործելու համար",
+        "receive": "Ստանալ",
+        "camera": "Տեսախցիկ",
+        "allowanceRequest": "Սեղմեք «Թույլատրել»՝ տեսախցիկ մուտք գործելու համար"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Ավելացրեք {symbol} դրամապանակին",
+        "title": "Կամուրջի գործարքը հաջողվեց"
+    },
+    "mobilePopup": {
+        "sideMenu": "Ստացեք {Sora} Wallet",
+        "header": "Ներբեռնեք {Sora} դրամապանակը {polkaswapHighlight} հատկանիշներով",
+        "info": "Փոխանակեք նշաններ տարբեր ցանցերից՝ {Sora}, {Ethereum}, {Polkadot}, {Kusama}: Ապահովեք իրացվելիության ֆոնդ և վաստակեք տոկոս փոխանակման վճարներից:"
+    },
+    "releaseNotesText": "Թողարկման նշումներ",
+    "copiedText": "Պատճենվել է!",
+    "copyWithValue": "Պատճենել {value}",
+    "copiedWithValue": "{value} արտագրվում է!",
+    "signAndClaimText": "Ստորագրեք և հաստատեք",
+    "balanceText": "Բալանս",
+    "unknownAssetText": "Անհայտ ակտիվ",
+    "demeterFarming": {
+        "staking": {
+            "active": "Ակտիվ խաղադրույք",
+            "inactive": "Խաղադրույք՝ լրացուցիչ պարգևներ ստանալու համար",
+            "stopped": "Խաղադրույքը դադարեց"
+        },
+        "info": {
+            "earned": "{symbol} վաստակած",
+            "fee": "Վճար",
+            "feeTooltip": "Ավանդի վճարը կիրառվում է բաժնետոմսի ձեր գումարի նկատմամբ",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Ձեր լողավազանի բաժնեմասը դրված է",
+            "poolShareWillBe": "Ձեր ավազանի բաժնեմասը կկազմի",
+            "rewardToken": "Պարգևատրման նշան",
+            "stake": "Ձեր {symbol} խաղադրույքը",
+            "stakeWillBe": "Ձեր {symbol} խաղադրույքը կլինի",
+            "totalLiquidityLocked": "Ընդհանուր հեղուկը կողպված է"
+        },
+        "actions": {
+            "add": "Ցից ավելին",
+            "claim": "ստանալ պարգևներ",
+            "remove": "Հեռացնել ցցը",
+            "start": "Սկսեք staking"
+        },
+        "amountAdd": "Խաղադրույքի չափը",
+        "amountRemove": "Հեռացնելու գումարը",
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Հաշվիչ",
+        "results": "Արդյունքներ",
+        "rewards": "{symbol} պարգևներ"
+    },
+    "historyErrorMessages": {
+        "generalError": "Ինչ որ բան այնպես չգնաց",
+        "balances": {
+            "liquidityrestrictions": "Հաշվի իրացվելիության սահմանափակումները կանխում են դուրսբերումը"
+        },
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Աղբյուրի հաշվեկշիռը բավականաչափ մեծ չէ",
+            "targetbalanceisnotlargeenough": "Նպատակակետի հաշվեկշիռը բավականաչափ մեծ չէ",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Տրամադրված գումարները չափազանց բազմազան են",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Գումարները դուրս են պահանջվող սահմաններից",
+            "unabletodepositxorlessthanminimum": "XOR նվազագույն արժեքից ցածր (0,007)",
+            "zerovalueinamountparameter": "Գումարի պարամետրը զրո արժեք ունի"
+        },
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Լողավազանների զույգն արդեն գոյություն ունի",
+            "slippagelimitexceeded": "Սայթաքման հանդուրժողականությունը չի համապատասխանում համապատասխան սահմաններին"
+        },
+        "referrals": {
+            "alreadyhasreferrer": "Հաշիվն արդեն ունի ուղղորդող",
+            "referrerinsufficientbalance": "Ուղղորդողին չի բավականացնում վերապահված մնացորդը"
+        },
+        "vestedrewards": {
+            "rewardssupplyshortage": "Պարգևատրման ծրագիրն արդեն ավարտված է",
+            "cantcalculatereward": "Չհաջողվեց կատարել պարգևների հաշվարկը",
+            "norewardsforasset": "Այս ակտիվի համար պարգևներ չկան"
+        },
+        "liquidityproxy": {
+            "forbiddenfilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում",
+            "slippagenottolerated": "Գինը ազդել է ընտրված արժեքը"
+        },
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Անբավարար միջոցներ",
+            "insufficientlptokens": "Անբավարար իրացվելիության տրամադրման նշաններ",
+            "pooldoesnothaverewards": "Լողավազանը պարգևներ չունի"
+        },
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Գինը հաշվարկելիս սխալ է տեղի ունեցել"
+        }
+    },
+    "receivedText": "Ստացվել է",
+    "browserNotificationDialog": {
+        "title": "Սահմանել ծանուցումները",
+        "info": "Մենք ձեզ կուղարկենք միայն համապատասխան թարմացումներ ձեր դրամապանակի վերաբերյալ, օրինակ՝ ակտիվների մնացորդի փոփոխությունները",
+        "button": "Միացնել ծանուցումները",
+        "agree": "Այո ես հասկանում եմ",
+        "notificationBlocked": "{AppName}-ի մասին ծանուցումներ ստանալու համար խնդրում ենք թույլատրել ծանուցումները ձեր բրաուզերի բնիկ կարգավորումներում",
+        "pointer": "Սեղմեք «Թույլատրել»՝ ծանուցումները միացնելու համար",
+        "rotatetitle": "Խնդրում ենք պտտել ձեր սարքը",
+        "rotateMessage": "Փորձառությունը հասանելի է միայն ուղղահայաց ռեժիմում"
+    },
+    "assetDeposit": "Ակտիվների մնացորդը մուտքագրվել է",
+    "noDataText": "Տվյալներ չկան",
+    "ofText": "{first} -ի {second}",
+    "filter": {
+        "all": "Բոլորը",
+        "token": "Արժույթներ",
+        "verifiedOnly": "Ցուցադրել միայն հաստատված ակտիվները",
+        "zeroBalance": "Թաքցնել 0 մնացորդային ակտիվներ",
+        "showAssets": "Ցույց տալ ակտիվները",
+        "show": "Ցուցադրել",
+        "reset": "Վերականգնել",
+        "synthetics": "Սինթետիկ",
+        "native": "Մայրենի"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Բարի գալուստ {AppName}:",
+            "headline": "Եկեք կարգավորենք ձեր հաշիվը",
+            "text": "Ստեղծեք ձեր {Sora} ցանցի հաշիվը կամ մուտք գործեք հին հաշիվներ՝ օգտագործելով մեմոնիկ արտահայտությունը կամ .json ներմուծումը: Սա թույլ է տալիս ապահով կերպով ստորագրել գործարքները և կառավարել ակտիվները {Sora} ցանցում:",
+            "createAccount": "Ստեղծել հաշիվ",
+            "importAccount": "Ներմուծել հաշիվ"
+        },
+        "heading": {
+            "seedPhraseTitle": "Անցաբառ",
+            "confirmSeedTitle": "Հաստատեք անցաբառը",
+            "accountDetailsTitle": "հաշվի մանրամասներ",
+            "importTitle": "Ներմուծել հաշիվ"
+        },
+        "button": {
+            "next": "Հաջորդ քայլը",
+            "skip": "Սկիպ",
+            "createAccount": "Գրանցվել",
+            "importAccount": "Ներմուծել հաշիվ"
+        },
+        "accountName": {
+            "placeholder": "Հաշվեհամար",
+            "desc": "Սա ձեր հաշվի անունն է: Այն տեսանելի կլինի միայն ձեզ {Polkaswap} -ում:"
+        },
+        "password": {
+            "placeholder": "Գաղտնաբառ",
+            "desc": "Համոզվեք, որ դուք օգտագործում եք ամուր եզակի գաղտնաբառ պատշաճ պաշտպանության համար (առնվազն 8 նիշ)"
+        },
+        "confirmPassword": {
+            "placeholder": "Հաստատել գաղտնաբառը"
+        },
+        "accountMnemonic": {
+            "placeholder": "Մնեմոնիկ արտահայտություն"
+        },
+        "seedAdviceText": "12 բառից բաղկացած անցաբառը անձնական բանալի է՝ ձեր {Sora} հաշիվը վերականգնելու համար, եթե կորցնեք մուտքը դեպի ձեր {wallet} հաշիվ: Պահպանեք այն ապահով կերպով, ճիշտ այնպես, ինչպես նշված է վերևում:",
+        "confirmSeedText": "Հաստատեք անցաբառը` սեղմելով բառերը ճիշտ հերթականությամբ",
+        "errorMnemonicText": "Անցաբառի սխալ կարգը",
+        "exportOptionText": "Արտահանեք {JSON} ֆայլը հաշվի վերականգնման համար",
+        "exportJsonText": "Դուք միշտ կկարողանաք վերականգնել ձեր հաշիվը՝ ներմուծելով այս {JSON} ֆայլը: Մի կիսվեք այն որևէ մեկի հետ: Պահպանեք այն ապահով, ցանկալի է կոդավորված:",
+        "addAccount": "Ավելացնել հաշիվ",
+        "dialog": {
+            "confirmTitle": "Հաստատեք գաղտնաբառով",
+            "confirmButton": "Ստորագրեք գործարք",
+            "savePasswordText": "Հիշեք իմ գաղտնաբառը հաջորդ 15 րոպեի ընթացքում",
+            "extendPasswordText": "Առանց գաղտնաբառի ժամկետը երկարացնել 15 րոպեով"
+        },
+        "errorMessages": {
+            "password": "Գաղտնաբառը չի համընկնում",
+            "passwords": "Գաղտնաբառերը չեն համընկնում",
+            "mnemonic": "Նշված է անվավեր bip39 մնեմոնիկ",
+            "mnemonicLength": "Mnemonic-ը պետք է պարունակի {number} բառ",
+            "jsonFields": "JSON ֆայլը պարտադիր դաշտեր չունի",
+            "alreadyImported": "Հաշիվն արդեն ներմուծվել է {address}"
+        },
+        "assetsAtRiskText": "Ռիսկի տակ գտնվող ակտիվներ!",
+        "deleteAccountText": "Հաշիվը չի կարող վերականգնվել առանց հիմնական արտահայտության, .json ֆայլի կամ եթե այն պահվում է որևէ ընդլայնման մեջ: Դուք դուրս կգրվեք:",
+        "importSteps": {
+            "selectWallet": "Բացեք դրամապանակը ձեր գոյություն ունեցող հաշիվ(ներով)",
+            "selectAccount": "Ընտրեք այն հաշիվը, որը ցանկանում եք արտահանել",
+            "exportAccount": "Արտահանել {JSON} ֆայլը"
+        },
+        "exportTutorialsText": "Արտահանման ձեռնարկներ",
+        "seedAdviceAdditionTitle": "Երբեք մի կիսվեք ձեր անցաբառը որևէ մեկի հետ:",
+        "seedAdviceAdditionText": "Եթե ինչ-որ մեկը ձեզանից խնդրում է ձեր անցաբառը, նա, ամենայն հավանականությամբ, փորձում է խաբել ձեզ և գողանալ ձեր ակտիվները:"
+    },
+    "hashiBridgeText": "{Hashi} կամուրջ",
+    "disclaimerTitle": "Հրաժարում պատասխանատվությունից",
+    "explore": {
+        "showOnly": "Ցուցադրել միայն {entities}",
+        "myPositions": "իմ դիրքերը",
+        "synthetics": "արհեստական թոքեններ"
     },
     "tooltips": {
-      "transfer": "Նշանները հաջողությամբ գնվեցին\n Կտտացրեք կամուրջի գործարքը սկսելու համար"
-    }
-  },
-  "light": "Լույս",
-  "dark": "Մութ",
-  "headerMenu": {
-    "showBalances": "Showույց տալ հաշվեկշիռները",
-    "hideBalances": "Թաքցնել հավասարակշռությունները",
-    "settings": "Կարգավորումներ",
-    "switchTheme": "Անցնել {theme} ռեժիմի",
-    "switchLanguage": "Ընտրեք Լեզուն",
-    "showDisclaimer": "Ցույց տալ հերքումը",
-    "hideDisclaimer": "Թաքցնել հերքումը",
-    "selectCurrency": "Ընտրեք արժույթ"
-  },
-  "sentText": "Ուղարկված է",
-  "learnMoreText": "Իմանալ ավելին",
-  "marketMakerCountdown": {
-    "title": "Շուկա ստեղծողի countdown",
-    "blocks": "բլոկներ",
-    "daysLeft": "մնացել են օրեր",
-    "txs": "TX-ներ",
-    "volume": "MM TX ծավալը",
-    "description": "20 միլիոն PSWAP / ամիս կտարածվի շուկա ստեղծողներին առնվազն 500 tx / ամիս 1 XOR-ից բարձր արժեքով:"
-  },
-  "confirmNextTxFailure": {
-    "header": "Ուշադրություն",
-    "info": "Այս գործարքից հետո ձեր {symbol} մնացորդը կլինի {fee} {symbol} ից պակաս: Դուք չեք կարողանա վճարել ցանցի վճարը մեկ այլ գործարքի համար:",
-    "payoff": "Դուք պետք է օգտագործեք Bridge-ը XOR-ը այլ ցանցերից ստանալու, XOR-ի ուղարկված մեկ այլ {Sora} հաշվից կամ ձեր հաշվում եղած ցանկացած այլ նշան XOR-ով փոխելու համար:",
-    "button": "Այո, ես հասկանում եմ ռիսկը"
-  },
-  "blockNumberText": "Արգելափակման համարը",
-  "referralProgram": {
-    "title": "Ուղղորդման ծրագիր",
-    "connectAccount": "Օգտագործողներին հրավիրելու համար անհրաժեշտ է միացնել ձեր {Sora} հաշիվը:",
-    "bondedXOR": "XOR Խճճված",
-    "referralsNumber": "{number} ուղղորդումներ",
-    "startInviting": "Bond XOR՝ ուրիշներին ուղղորդելու համար",
-    "preview": "Հրավիրեք նոր օգտվողներ և ստացեք 10% նրանց գործարքների վճարներից: <br/> Սկսելու համար կապեք XOR-ի ցանկացած քանակություն: <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Իմացեք ավելին </a>",
-    "deposit": "Ավանդ",
-    "balance": "Բալանս",
-    "insufficientBondedBalance": "Պարտատոմսերի անբավարար մնացորդ",
-    "action": {
-      "empty": "Մուտքագրեք {tokenSymbol}",
-      "startInviting": "Բոնդ {tokenSymbol} ՝ հրավիրելը սկսելու համար",
-      "bondMore": "Բոնդ Ավելին",
-      "bond": "Բոնդ",
-      "unbond": "Ունբոնդ",
-      "copyLink": "Պատճենել հղումը",
-      "shareLink": "Կիսվել"
+        "roi": "{ROI} նշանակում է ներդրումների վերադարձ: Այն հաշվարկվում է ներդրումներից ստացված շահույթը բաժանելով այդ ներդրման արժեքին` տոկոսային համարժեքով:",
+        "tvl": "{TVL} ը նշանակում է կողպված ընդհանուր արժեքը: Այն ներկայացնում է լողավազաններում փակված ժետոնները դոլարի համարժեքով:",
+        "volume": "Ծավալը վերաբերում է ակտիվների ընդհանուր քանակին, որոնք վաճառվել կամ փոխանակվել են ցանցում որոշակի ժամանակահատվածում: Ծավալը կարևոր չափիչ է ցանցի իրացվելիությունը և ընդհանուր ակտիվությունը չափելու համար:",
+        "fees": "{Sora} բլոկչեյնի վճարները վերաբերում են ցանցում գործարքների իրականացման համար գանձվող վճարներին: Այս վճարները վճարվում են XOR-ով՝ {Sora} ցանցի բնիկ կրիպտոարժույթով: Վճարի չափը որոշվում է կատարվող գործարքի բարդությունից և չափից",
+        "supply": "Նշանների մատակարարումը վերաբերում է ցանցում ստեղծված և շրջանառության մեջ գտնվող նշանների ընդհանուր թվին: Նշանների մատակարարումը կարող է տատանվել՝ կախված ցանցում դրված, այրվող կամ փոխանցվող նշանների քանակից:",
+        "transactions": "Գործարքները վերաբերում են ցանցում թվային ակտիվներ ուղարկելու կամ ստանալու գործընթացին, ներառյալ իրացվելիության գործառնությունները, ինչպես նաև սվոպները:",
+        "accounts": "Հաշիվները թվային հասցեներ են, որոնք պահում են օգտվողի ակտիվները ցանցում: Յուրաքանչյուր հաշիվ կապված է եզակի հանրային հասցեի և մասնավոր բանալիի հետ, որը թույլ է տալիս օգտվողին մուտք գործել և կառավարել իր ակտիվները:",
+        "bridgeTransactions": "{from} -ից {to} կամուրջ վերաբերում է ակտիվների փոխանցման գործընթացին {from} և {to} ցանցերի միջև կամուրջի միջոցով: Կամուրջը թույլ է տալիս երկու ցանցերի փոխգործունակությունը՝ հնարավորություն տալով օգտվողներին անխափան կերպով շարժել ակտիվները նրանց միջև:",
+        "velocity": "Նշանների արագությունը միջին հաշվով ժամանակաշրջանի (ամսվա) ընթացքում նիշերի փոփոխությունների հաշիվների քանակն է: Այն ցույց է տալիս առևտրային ակտիվության և իրացվելիության մակարդակը:"
     },
-    "transactionDetails": "Գործարքի պարամետրերը",
-    "receivedRewards": "Ստացել է պարգևներ",
-    "invitationLink": "Հրավերի հղում",
-    "successCopy": "Հղման հղումը պատճենված է",
-    "bondTitle": "Բոնդ XOR",
-    "unbondTitle": "Ունբոնդ XOR",
-    "confirm": {
-      "bond": "Հաստատել պարտատոմ",
-      "unbond": "Հաստատել չպարտատոմսը",
-      "inviteTitle": "Դուք հրավիրվել եք {AppName}",
-      "inviteDescription": "Յուրաքանչյուր գործարքի համար միջնորդավճարի 10%-ը կգնա ձեր ուղղորդողին՝ առանց ձեզ համար հավելյալ ծախսերի:",
-      "signInvitation": "Հաստատել",
-      "freeOfCharge": "Այս գործողությունը անվճար է",
-      "hasReferrerTitle": "Դուք արդեն սահմանել եք ձեր ուղղորդիչը",
-      "hasReferrerDescription": "Ցավոք, դուք կարող եք սահմանել միայն մեկը",
-      "ok": "Լավ",
-      "text": "Հաստատել"
-    },
-    "referrer": {
-      "title": "Ավելացրեք ձեր ուղղորդիչը",
-      "titleReferrer": "Ձեր ուղղորդողը",
-      "placeholder": "Մուտքագրեք հրավերի հղումը կամ կոդը",
-      "label": "Հրավերի հղում կամ ծածկագիր",
-      "approve": "Հաստատել",
-      "approved": "Հաստատված է",
-      "description": "Դուք կարող եք հղում կատարել {AppName}-ին,<br/>մուտքագրեք հղումը կամ ուղղորդողի կոդը",
-      "referredBy": "Ձեզ ուղղորդել է {referrer} ը",
-      "info": "Երբ գործարքի համար վճար կվճարեք,<br/>10%-ը կգնա ձեր ուղղորդողին",
-      "referredLablel": "Նշված հասցեն"
-    },
-    "insufficientBondedAmount": "Ավելի շատ referrals հրավիրելու համար, bond առնվազն {inviteUserFee} XOR",
-    "inviteViaTelegram": "Հրավիրել {Telegram}-ով",
-    "welcomeMessage": "\nՄիացեք ինձ {Polkaswap}-ում!\n\nԲացահայտեք ոճային {DEX}-ը, որը թույլ է տալիս փոխանակել տասնյակ թոքեններ խաչաձև փոխանակումներով, պատվերների գրքով և բազմաթիվ պարգևներով!\n\n🎁 Հրավիրեք ընկերներին և վաստակեք նրանց առևտրային վճարների 10%-ը\n\nԿհանդիպենք այնտեղ!"
-  },
-  "transactionDetailsText": "Գործարքի մանրամասները",
-  "code": {
-    "download": "Ներբեռնեք QR կոդը",
-    "upload": "Սկան QR",
-    "invalid": "Անվավեր QR կոդը",
-    "import": "Ներմուծեք պատկեր",
-    "scan": "Սկան տեսախցիկով",
-    "allowanceError": "Ստուգեք ձեր տեսախցիկի առկայությունը և դիտարկիչի թույլտվությունները՝ այն օգտագործելու համար",
-    "receive": "Ստանալ",
-    "camera": "Տեսախցիկ",
-    "allowanceRequest": "Սեղմեք «Թույլատրել»՝ տեսախցիկ մուտք գործելու համար"
-  },
-  "bridgeTransferNotification": {
-    "addToken": "Ավելացրեք {symbol} դրամապանակին",
-    "title": "Կամուրջի գործարքը հաջողվեց"
-  },
-  "mobilePopup": {
-    "sideMenu": "Ստացեք {Sora} Wallet",
-    "header": "Ներբեռնեք {Sora} դրամապանակը {polkaswapHighlight} հատկանիշներով",
-    "info": "Փոխանակեք նշաններ տարբեր ցանցերից՝ {Sora}, {Ethereum}, {Polkadot}, {Kusama}: Ապահովեք իրացվելիության ֆոնդ և վաստակեք տոկոս փոխանակման վճարներից:"
-  },
-  "releaseNotesText": "Թողարկման նշումներ",
-  "copiedText": "Պատճենվել է!",
-  "copyWithValue": "Պատճենել {value}",
-  "copiedWithValue": "{value} արտագրվում է!",
-  "signAndClaimText": "Ստորագրեք և հաստատեք",
-  "balanceText": "Բալանս",
-  "unknownAssetText": "Անհայտ ակտիվ",
-  "demeterFarming": {
-    "staking": {
-      "active": "Ակտիվ խաղադրույք",
-      "inactive": "Խաղադրույք՝ լրացուցիչ պարգևներ ստանալու համար",
-      "stopped": "Խաղադրույքը դադարեց"
-    },
-    "info": {
-      "earned": "{symbol} վաստակած",
-      "fee": "Վճար",
-      "feeTooltip": "Ավանդի վճարը կիրառվում է բաժնետոմսի ձեր գումարի նկատմամբ",
-      "owned": "{symbol} @:balanceText",
-      "poolShare": "Ձեր լողավազանի բաժնեմասը դրված է",
-      "poolShareWillBe": "Ձեր ավազանի բաժնեմասը կկազմի",
-      "rewardToken": "Պարգևատրման նշան",
-      "stake": "Ձեր {symbol} խաղադրույքը",
-      "stakeWillBe": "Ձեր {symbol} խաղադրույքը կլինի",
-      "totalLiquidityLocked": "Ընդհանուր հեղուկը կողպված է"
-    },
-    "actions": {
-      "add": "Ցից ավելին",
-      "claim": "ստանալ պարգևներ",
-      "remove": "Հեռացնել ցցը",
-      "start": "Սկսեք staking"
-    },
-    "amountAdd": "Խաղադրույքի չափը",
-    "amountRemove": "Հեռացնելու գումարը",
-    "poweredBy": "Powered by Demeter Farming",
-    "calculator": "Հաշվիչ",
-    "results": "Արդյունքներ",
-    "rewards": "{symbol} պարգևներ"
-  },
-  "historyErrorMessages": {
-    "generalError": "Ինչ որ բան այնպես չգնաց",
-    "balances": {
-      "liquidityrestrictions": "Հաշվի իրացվելիության սահմանափակումները կանխում են դուրսբերումը"
-    },
-    "poolxyk": {
-      "sourcebalanceisnotlargeenough": "Աղբյուրի հաշվեկշիռը բավականաչափ մեծ չէ",
-      "targetbalanceisnotlargeenough": "Նպատակակետի հաշվեկշիռը բավականաչափ մեծ չէ",
-      "impossibletodecidevalidpairvaluesfromrangeforthispool": "Տրամադրված գումարները չափազանց բազմազան են",
-      "calculatedvalueisnotmeetsrequiredboundaries": "Գումարները դուրս են պահանջվող սահմաններից",
-      "unabletodepositxorlessthanminimum": "XOR նվազագույն արժեքից ցածր (0,007)",
-      "zerovalueinamountparameter": "Գումարի պարամետրը զրո արժեք ունի"
-    },
-    "xstpool": {
-      "poolalreadyinitializedforpair": "Լողավազանների զույգն արդեն գոյություն ունի",
-      "slippagelimitexceeded": "Սայթաքման հանդուրժողականությունը չի համապատասխանում համապատասխան սահմաններին"
-    },
-    "referrals": {
-      "alreadyhasreferrer": "Հաշիվն արդեն ունի ուղղորդող",
-      "referrerinsufficientbalance": "Ուղղորդողին չի բավականացնում վերապահված մնացորդը"
-    },
-    "vestedrewards": {
-      "rewardssupplyshortage": "Պարգևատրման ծրագիրն արդեն ավարտված է",
-      "cantcalculatereward": "Չհաջողվեց կատարել պարգևների հաշվարկը",
-      "norewardsforasset": "Այս ակտիվի համար պարգևներ չկան"
-    },
-    "liquidityproxy": {
-      "forbiddenfilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում",
-      "slippagenottolerated": "Գինը ազդել է ընտրված արժեքը"
-    },
-    "demeterfarmingplatform": {
-      "insufficientfunds": "Անբավարար միջոցներ",
-      "insufficientlptokens": "Անբավարար իրացվելիության տրամադրման նշաններ",
-      "pooldoesnothaverewards": "Լողավազանը պարգևներ չունի"
-    },
-    "multicollateralbondingcurvepool": {
-      "pricecalculationfailed": "Գինը հաշվարկելիս սխալ է տեղի ունեցել"
-    }
-  },
-  "receivedText": "Ստացվել է",
-  "browserNotificationDialog": {
-    "title": "Սահմանել ծանուցումները",
-    "info": "Մենք ձեզ կուղարկենք միայն համապատասխան թարմացումներ ձեր դրամապանակի վերաբերյալ, օրինակ՝ ակտիվների մնացորդի փոփոխությունները",
-    "button": "Միացնել ծանուցումները",
-    "agree": "Այո ես հասկանում եմ",
-    "notificationBlocked": "{AppName}-ի մասին ծանուցումներ ստանալու համար խնդրում ենք թույլատրել ծանուցումները ձեր բրաուզերի բնիկ կարգավորումներում",
-    "pointer": "Սեղմեք «Թույլատրել»՝ ծանուցումները միացնելու համար"
-  },
-  "assetDeposit": "Ակտիվների մնացորդը մուտքագրվել է",
-  "noDataText": "Տվյալներ չկան",
-  "ofText": "{first} -ի {second}",
-  "filter": {
-    "all": "Բոլորը",
-    "token": "Արժույթներ",
-    "verifiedOnly": "Ցուցադրել միայն հաստատված ակտիվները",
-    "zeroBalance": "Թաքցնել 0 մնացորդային ակտիվներ",
-    "showAssets": "Ցույց տալ ակտիվները",
-    "show": "Ցուցադրել"
-  },
-  "desktop": {
-    "welcome": {
-      "header": "Բարի գալուստ {AppName}:",
-      "headline": "Եկեք կարգավորենք ձեր հաշիվը",
-      "text": "Ստեղծեք ձեր {Sora} ցանցի հաշիվը կամ մուտք գործեք հին հաշիվներ՝ օգտագործելով մեմոնիկ արտահայտությունը կամ .json ներմուծումը: Սա թույլ է տալիս ապահով կերպով ստորագրել գործարքները և կառավարել ակտիվները {Sora} ցանցում:",
-      "createAccount": "Ստեղծել հաշիվ",
-      "importAccount": "Ներմուծել հաշիվ"
-    },
-    "heading": {
-      "seedPhraseTitle": "Անցաբառ",
-      "confirmSeedTitle": "Հաստատեք անցաբառը",
-      "accountDetailsTitle": "հաշվի մանրամասներ",
-      "importTitle": "Ներմուծել հաշիվ"
-    },
-    "button": {
-      "next": "Հաջորդ քայլը",
-      "skip": "Սկիպ",
-      "createAccount": "Գրանցվել",
-      "importAccount": "Ներմուծել հաշիվ"
-    },
-    "accountName": {
-      "placeholder": "Հաշվեհամար",
-      "desc": "Սա ձեր հաշվի անունն է: Այն տեսանելի կլինի միայն ձեզ {Polkaswap} -ում:"
-    },
-    "password": {
-      "placeholder": "Գաղտնաբառ",
-      "desc": "Համոզվեք, որ դուք օգտագործում եք ամուր եզակի գաղտնաբառ պատշաճ պաշտպանության համար (առնվազն 8 նիշ)"
-    },
-    "confirmPassword": {
-      "placeholder": "Հաստատել գաղտնաբառը"
-    },
-    "accountMnemonic": {
-      "placeholder": "Մնեմոնիկ արտահայտություն"
-    },
-    "seedAdviceText": "12 բառից բաղկացած անցաբառը անձնական բանալի է՝ ձեր {Sora} հաշիվը վերականգնելու համար, եթե կորցնեք մուտքը դեպի ձեր {wallet} հաշիվ: Պահպանեք այն ապահով կերպով, ճիշտ այնպես, ինչպես նշված է վերևում:",
-    "confirmSeedText": "Հաստատեք անցաբառը` սեղմելով բառերը ճիշտ հերթականությամբ",
-    "errorMnemonicText": "Անցաբառի սխալ կարգը",
-    "exportOptionText": "Արտահանեք {JSON} ֆայլը հաշվի վերականգնման համար",
-    "exportJsonText": "Դուք միշտ կկարողանաք վերականգնել ձեր հաշիվը՝ ներմուծելով այս {JSON} ֆայլը: Մի կիսվեք այն որևէ մեկի հետ: Պահպանեք այն ապահով, ցանկալի է կոդավորված:",
-    "addAccount": "Ավելացնել հաշիվ",
-    "dialog": {
-      "confirmTitle": "Հաստատեք գաղտնաբառով",
-      "confirmButton": "Ստորագրեք գործարք",
-      "savePasswordText": "Հիշեք իմ գաղտնաբառը հաջորդ 15 րոպեի ընթացքում",
-      "extendPasswordText": "Առանց գաղտնաբառի ժամկետը երկարացնել 15 րոպեով"
-    },
-    "errorMessages": {
-      "password": "Գաղտնաբառը չի համընկնում",
-      "passwords": "Գաղտնաբառերը չեն համընկնում",
-      "mnemonic": "Նշված է անվավեր bip39 մնեմոնիկ",
-      "mnemonicLength": "Mnemonic-ը պետք է պարունակի {number} բառ",
-      "jsonFields": "JSON ֆայլը պարտադիր դաշտեր չունի",
-      "alreadyImported": "Հաշիվն արդեն ներմուծվել է {address}"
-    },
-    "assetsAtRiskText": "Ռիսկի տակ գտնվող ակտիվներ!",
-    "deleteAccountText": "Հաշիվը չի կարող վերականգնվել առանց հիմնական արտահայտության, .json ֆայլի կամ եթե այն պահվում է որևէ ընդլայնման մեջ: Դուք դուրս կգրվեք:",
-    "importSteps": {
-      "selectWallet": "Բացեք դրամապանակը ձեր գոյություն ունեցող հաշիվ(ներով)",
-      "selectAccount": "Ընտրեք այն հաշիվը, որը ցանկանում եք արտահանել",
-      "exportAccount": "Արտահանել {JSON} ֆայլը"
-    },
-    "exportTutorialsText": "Արտահանման ձեռնարկներ",
-    "seedAdviceAdditionTitle": "Երբեք մի կիսվեք ձեր անցաբառը որևէ մեկի հետ:",
-    "seedAdviceAdditionText": "Եթե ինչ-որ մեկը ձեզանից խնդրում է ձեր անցաբառը, նա, ամենայն հավանականությամբ, փորձում է խաբել ձեզ և գողանալ ձեր ակտիվները:"
-  },
-  "hashiBridgeText": "{Hashi} կամուրջ",
-  "disclaimerTitle": "Հրաժարում պատասխանատվությունից",
-  "explore": {
-    "showOnly": "Ցուցադրել միայն {entities}",
-    "myPositions": "իմ դիրքերը",
-    "synthetics": "արհեստական թոքեններ"
-  },
-  "tooltips": {
-    "roi": "{ROI} նշանակում է ներդրումների վերադարձ: Այն հաշվարկվում է ներդրումներից ստացված շահույթը բաժանելով այդ ներդրման արժեքին` տոկոսային համարժեքով:",
-    "tvl": "{TVL} ը նշանակում է կողպված ընդհանուր արժեքը: Այն ներկայացնում է լողավազաններում փակված ժետոնները դոլարի համարժեքով:",
-    "volume": "Ծավալը վերաբերում է ակտիվների ընդհանուր քանակին, որոնք վաճառվել կամ փոխանակվել են ցանցում որոշակի ժամանակահատվածում: Ծավալը կարևոր չափիչ է ցանցի իրացվելիությունը և ընդհանուր ակտիվությունը չափելու համար:",
-    "fees": "{Sora} բլոկչեյնի վճարները վերաբերում են ցանցում գործարքների իրականացման համար գանձվող վճարներին: Այս վճարները վճարվում են XOR-ով՝ {Sora} ցանցի բնիկ կրիպտոարժույթով: Վճարի չափը որոշվում է կատարվող գործարքի բարդությունից և չափից",
-    "supply": "Նշանների մատակարարումը վերաբերում է ցանցում ստեղծված և շրջանառության մեջ գտնվող նշանների ընդհանուր թվին: Նշանների մատակարարումը կարող է տատանվել՝ կախված ցանցում դրված, այրվող կամ փոխանցվող նշանների քանակից:",
-    "transactions": "Գործարքները վերաբերում են ցանցում թվային ակտիվներ ուղարկելու կամ ստանալու գործընթացին, ներառյալ իրացվելիության գործառնությունները, ինչպես նաև սվոպները:",
-    "accounts": "Հաշիվները թվային հասցեներ են, որոնք պահում են օգտվողի ակտիվները ցանցում: Յուրաքանչյուր հաշիվ կապված է եզակի հանրային հասցեի և մասնավոր բանալիի հետ, որը թույլ է տալիս օգտվողին մուտք գործել և կառավարել իր ակտիվները:",
-    "bridgeTransactions": "{from} -ից {to} կամուրջ վերաբերում է ակտիվների փոխանցման գործընթացին {from} և {to} ցանցերի միջև կամուրջի միջոցով: Կամուրջը թույլ է տալիս երկու ցանցերի փոխգործունակությունը՝ հնարավորություն տալով օգտվողներին անխափան կերպով շարժել ակտիվները նրանց միջև:",
-    "velocity": "Նշանների արագությունը միջին հաշվով ժամանակաշրջանի (ամսվա) ընթացքում նիշերի փոփոխությունների հաշիվների քանակն է: Այն ցույց է տալիս առևտրային ակտիվության և իրացվելիության մակարդակը:"
-  },
-  "createTokenText": "Ստեղծել տոկեն",
-  "comingSoonText": "Շուտով",
-  "confirmText": "Հաստատել",
-  "createTokenTextNFT": "Ստեղծեք NFT",
-  "doNotShowText": "Սա ինձ այլևս ցույց մի տուր",
-  "accountText": "հաշիվ | հաշիվներ",
-  "networkStatisticsText": "Ցանցի վիճակագրություն",
-  "footer": {
-    "node": {
-      "title": {
-        "connected": "Հանգույցը միացված է",
-        "loading": "Հանգույցի վերամիացում",
-        "disconnected": "Հանգույցն անջատված է"
-      }
-    },
-    "internet": {
-      "title": {
-        "disabled": "Ինտերնետն անջատված է",
-        "unstable": "Ինտերնետը անկայուն է",
-        "stable": "Ինտերնետ կայուն"
-      },
-      "label": "Ձեր ինտերնետի արագությունը",
-      "desc": {
-        "disabled": "Անջատված է",
-        "unstable": "Դանդաղ միացում",
-        "stable": "Օպտիմալ արագություն"
-      },
-      "action": "Թարմացնել {Polkaswap}",
-      "dialogTitle": "Միացեք ինտերնետ աղբյուրին",
-      "dialogDesc": "{Polkaswap} պահանջում է ինտերնետ կապ կայուն փորձի համար"
-    },
-    "statistics": {
-      "title": {
-        "unavailable": "Վիճակագրությունն անհասանելի է",
-        "loading": "Վիճակագրություն բեռնում",
-        "available": "Հասանելի վիճակագրություն"
-      },
-      "label": "Վիճակագրական ծառայություններ",
-      "desc": {
-        "unavailable": "Բոլոր ծառայություններն անջատված են",
-        "loading": "Բոլոր ծառայությունները բեռնվում են",
-        "available": "Բոլոր ծառայությունները կայուն են"
-      },
-      "action": "Ընտրեք ծառայություններ",
-      "dialog": {
-        "title": "{Sora} Ցանցային ծառայության ընտրություն",
-        "indexer": "Ինդեքսավորող",
-        "useCeres": "Ֆիատ արժեքների համար օգտագործեք {Ceres}"
-      }
-    }
-  },
-  "locationText": "Գտնվելու վայրը",
-  "acceptText": "Ընդունել և թաքցնել",
-  "newAccountsText": "Նոր հաշիվներ",
-  "dragAndDropText": "Քաշեք և թողեք կամ ընտրեք {extension} ֆայլը",
-  "copyPhraseText": "Պատճենել արտահայտությունը",
-  "stepText": "Քայլ",
-  "alerts": {
-    "drop": "Կաթիլներ ներքևում",
-    "once": "Մի անգամ",
-    "always": "Միշտ",
-    "edit": "Խմբագրել ծանուցումը",
-    "delete": "Ջնջել ծանուցումը",
-    "onDropDesc": "{token} ընկնում է {price} ից ցածր",
-    "alertsTitle": "Ահազանգեր",
-    "alertsCreateTitle": "Կարգավորեք գների ծանուցում",
-    "alertsTooltip": "Գնային ծանուցումները ծանուցումներ են, որոնք կարող եք սահմանել ձեր կողմից՝ թարմացումներ ստանալու համար, երբ որոշակի նշանի գինը հասնում է ձեր սահմանած որոշակի կետին:",
-    "createBtn": "Ստեղծեք նոր գնային ծանուցում",
-    "enableSwitch": "Միացնել ակտիվների ավանդի մասին ծանուցումները",
-    "currentPrice": "ընթացիկ գինը",
-    "alertTypeTitle": "Զգուշացման տեսակը",
-    "alertFrequencyTitle": "Զգուշացման հաճախականությունը",
-    "frequencyTooltip": "Ընտրեք «մեկ անգամ» և «միշտ» միջև՝ որոշելու համար, թե որքան հաճախ եք ստանում ծանուցումներ ընտրված ազդանշանի տեսակի համար: «Once»-ը մեկ ծանուցում կուղարկի, երբ պայմանը կատարվի, մինչդեռ «միշտ»-ը կշարունակի ծանուցել ձեզ ամեն անգամ, երբ գնային շեմը հատվի:",
-    "noSupportMsg": "Ծանուցումները չեն աջակցվում ձեր դիտարկիչի կողմից",
-    "finishBtn": "Ավարտելու համար",
-    "raise": "Բարձրանում է վերևում",
-    "onRaiseDesc": "{token} բարձրանում է {price} ից",
-    "typeTooltip": "Ընտրեք կամ «իջնում է ներքև» կամ «բարձրանում է վերևում» տարբերակը՝ նշելու զգոնության պայման՝ գների կարևոր տեղաշարժերին հետևելու համար: Այս ընտրանքները թույլ են տալիս ժամանակին ծանուցումներ ստանալ, երբ ձեր ակտիվի արժեքը կա՛մ իջնի ձեր նշանակված շեմից, կա՛մ բարձրանա:"
-  },
-  "accountAddressText": "Հաշվի հասցեն",
-  "fiatDisclaimer": "Խնդրում ենք նկատի ունենալ, որ մեր կայքում կրիպտոարժույթների հետ կապված fiat արժեքները տրամադրվում են արտաքին ծառայությունների կողմից (Subquery, Subsquid, Ceres API) մոտավոր են: Հաշվի առնելով այս հաշվարկների բնորոշ բարդությունը, բացարձակ ճշգրտությունը բոլոր ժամանակներում չի կարող երաշխավորվել:",
-  "fiatPayment": {
-    "historyBtn": "Իմ գնումները",
-    "historyTitle": "Գործարքների պատմություն",
-    "moonpayTitle": "Գնեք ETH MoonPay-ի միջոցով",
-    "moonpayDesc": "Գնեք ETH նշաններ {Ethereum}-ում և կամրջի միջոցով փոխանցեք դրանք {SORA} ցանցին",
-    "errorMessage": "Ներողություն ենք խնդրում անհարմարության համար։ Մենք ջանասիրաբար աշխատում ենք այս խնդիրը լուծելու համար: Խնդրում եմ փորձեք մի փոքր ուշ.",
-    "cedeStoreTitle": "Փոխանցում {value} -ից",
-    "cedeStoreDesc": "Փոխանցեք ցանկացած նշան {value1} -ից {value2} {value3} ի միջոցով",
-    "cedeStoreBtn": "Փոխանցում {value1} -ից {value2} միջոցով"
-  },
-  "acceptOnScrollText": "Ոլորեք՝ ընդունելու համար",
-  "addressBook": {
-    "myAccounts": "Իմ հաշիվները",
-    "myBook": "Իմ գիրքը",
-    "searchPlaceholder": "Որոնել ըստ հասցեի, անունով կամ ինքնության",
-    "noFoundRecords": "Գրառումներ չեն գտնվել",
-    "noContacts": "Դուք դեռ ավելացված կոնտակտներ չունեք",
-    "addContact": "Ավելացնել կոնտակտ",
-    "dialogTitle": "Ձեր կոնտակտները",
-    "identity": "Ինքնությունը շղթայի վրա",
-    "none": "Ոչ ոք",
-    "detected": "Հայտնաբերվել է նոր հասցե",
-    "save": "Պահել որպես կոնտակտ",
-    "tooltip": "Հավաքեք հասցեագիրք՝ նշելով անուն և հասցե՝ ձեր կոնտակտները կազմակերպված և արդիական պահելու համար",
-    "notSoraAddress": "Այս հասցեն կպահվի ստորև որպես {SORA} հասցե: Համոզվեք, որ ստացողը կարող է մուտք գործել {SORA} շղթա.",
-    "options": {
-      "send": "Ուղարկեք նշաններ",
-      "edit": "Խմբագրել կոնտակտը",
-      "delete": "Ջնջել"
-    },
-    "btn": {
-      "enterName": "Մուտքագրեք անունը",
-      "present": "Արդեն ներկա",
-      "saveChanges": "Պահպանել փոփոխությունները"
-    },
-    "input": "Մուտքագրեք հասցեն կամ ընտրեք կոնտակտ",
-    "selectContact": "Ընտրեք կոնտակտ"
-  },
-  "browserPermission": {
-    "title": "Թույլատրել տեսախցիկի մուտքը դիտարկիչի կարգավորումներում",
-    "desc": "Փաստաթղթերի իսկությունն ապահովելու և օգտատիրոջ ինքնությունը KYC ստուգման համար վավերացնելու համար անհրաժեշտ է մուտք գործել ձեր սարքի տեսախցիկ:",
-    "disclaimer": "Խարդախությունը կանխելու համար փաստաթղթերը իրական ժամանակում նկարահանելու համար պահանջվում է տեսախցիկի հասանելիություն:",
-    "btnGoToSettings": "Գնացեք կարգավորումներ",
-    "btnAllow": "Թույլ են տալիս մուտք գործել"
-  },
-  "continueText": "Շարունակել",
-  "minAmountText": "ր. գումարը",
-  "maxAmountText": "առավելագույնը գումարը",
-  "exceededAmountText": "{amount} ը գերազանցվել է",
-  "multipleRecipients": "Մի շարք ստացողներ",
-  "disconnectWalletText": "Անջատել",
-  "connectEthereumWalletText": "Միացրեք {Ethereum} դրամապանակը",
-  "soraStaking": {
-    "dropdownMenu": {
-      "pendingRewards": "Սպասվող պարգևներ",
-      "controllerAccount": "Վերահսկիչ հաշիվ"
-    },
-    "actions": {
-      "claim": "Պահանջեք պարգևներ",
-      "remove": "Հեռացնել ցցը",
-      "more": "Ավելի շատ խաղադրույք կատարեք",
-      "confirm": "Հաստատեք խաղադրույքը",
-      "withdraw": "Հանել"
-    },
-    "overview": {
-      "title": "{Sora} Սաթ",
-      "description": "Stake {XOR} tokens on {Sora} Network- ը որպես նոմինատոր գործարքների վավերացման եւ {VAL} token վարձատրության համար:"
-    },
-    "newStake": {
-      "title": "Սկսեք խաղադրույք կատարել",
-      "minStakeWarning": "Պարգևը ստանալու նվազագույն խաղադրույքը {min} {symbol} է"
-    },
-    "validators": {
-      "save": "Պահպանել փոփոխությունները",
-      "selected": "{selected} / ընտրված է {total}",
-      "recommended": "Առաջարկվող վավերացնողներ",
-      "change": "Փոխել վավերացնողները",
-      "select": "Ընտրեք վավերացնողներ",
-      "next": "Հաջորդը",
-      "alreadyNominated": "Ընտրված վավերացնողներն արդեն առաջադրված են",
-      "tooManyValidators": "Ընտրված են չափազանց շատ վավերացուցիչներ ( {Max} {max} )"
-    },
-    "validatorsList": {
-      "search": "Որոնել...",
-      "name": "Անուն",
-      "noNominatedValidators": "Դուք առաջադրված վավերացնողներ չունեք",
-      "noValidators": "Նշված ֆիլտրը բավարարող վավերացնողներ չկան",
-      "commission": "հանձնաժողով",
-      "commissionTooltip": "Հանձնաժողովը վերաբերում է այն վճարին, որը գանձվում է վավերացնողների կողմից խաղադրույքի գործընթացում իրենց ծառայությունների համար: Այս վճարը, արտահայտված որպես տոկոս, հանվում է խաղադրույքի պարգևներից, որոնք վաստակել են առաջադրողները մինչև բաշխումը: Կարևոր է նշել, որ վավերացնողները ցանկացած պահի կարող են հարմարեցնել իրենց միջնորդավճարները",
-      "return": "Վերադարձ"
-    },
-    "info": {
-      "unstaking": "Անցանկալի",
-      "stakingBalance": "Խաղադրույքի մնացորդը",
-      "rewarded": "Պարգևատրվել է",
-      "totalLiquidityStaked": "Ընդհանուր իրացվելիությունը խաղադրույքով",
-      "rewardToken": "Պարգևատրման նշան",
-      "unstakingPeriod": "Բացասական շրջան",
-      "minimumStake": "Նվազագույն խաղադրույքը",
-      "nominators": "Առաջադրողներ",
-      "validators": "Վավերացնողներ",
-      "selectedValidators": "Ընտրված վավերացնողներ"
-    },
-    "validatorsFilterDialog": {
-      "title": "Զտիչներ",
-      "save": "Պահպանել զտիչը",
-      "reset": "Վերականգնել բոլորը",
-      "filters": {
-        "hasIdentity": {
-          "name": "Ինքնությունը շղթայի վրա",
-          "description": "Առնվազն մեկ ինքնության կոնտակտ միացված է հաշվին"
+    "createTokenText": "Ստեղծել տոկեն",
+    "comingSoonText": "Շուտով",
+    "confirmText": "Հաստատել",
+    "createTokenTextNFT": "Ստեղծեք NFT",
+    "doNotShowText": "Սա ինձ այլևս ցույց մի տուր",
+    "accountText": "հաշիվ | հաշիվներ",
+    "networkStatisticsText": "Ցանցի վիճակագրություն",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Հանգույցը միացված է",
+                "loading": "Հանգույցի վերամիացում",
+                "disconnected": "Հանգույցն անջատված է"
+            }
         },
-        "notSlashed": {
-          "name": "Ոչ կտրատված",
-          "description": "Չեն զգացել որևէ տույժ կամ կրճատում իրենց խաղադրույքների ֆոնդերում սխալ վարքագծի կամ արձանագրության խախտումների պատճառով:"
+        "internet": {
+            "title": {
+                "disabled": "Ինտերնետն անջատված է",
+                "unstable": "Ինտերնետը անկայուն է",
+                "stable": "Ինտերնետ կայուն"
+            },
+            "label": "Ձեր ինտերնետի արագությունը",
+            "desc": {
+                "disabled": "Անջատված է",
+                "unstable": "Դանդաղ միացում",
+                "stable": "Օպտիմալ արագություն"
+            },
+            "action": "Թարմացնել {Polkaswap}",
+            "dialogTitle": "Միացեք ինտերնետ աղբյուրին",
+            "dialogDesc": "{Polkaswap} պահանջում է ինտերնետ կապ կայուն փորձի համար"
         },
-        "notOversubscribed": {
-          "name": "Չի գերազանցում բաժանորդագրությունը",
-          "description": "Հաշիվը տեղաբաշխման սահմանաչափի սահմաններում, խուսափում է {Polkadot} staking-ի նկատմամբ գերսուբսիդացիայի տույժերից:"
-        },
-        "twoValidatorsPerIdentity": {
-          "name": "Յուրաքանչյուր ինքնության համար 2 վավերացնողի սահմանաչափ",
-          "description": "Յուրաքանչյուր ինքնության համար առավելագույնը երկու վավերացուցիչ՝ ապակենտրոնացումը խթանելու և իշխանության կենտրոնացումը կանխելու համար:"
+        "statistics": {
+            "title": {
+                "unavailable": "Վիճակագրությունն անհասանելի է",
+                "loading": "Վիճակագրություն բեռնում",
+                "available": "Հասանելի վիճակագրություն"
+            },
+            "label": "Վիճակագրական ծառայություններ",
+            "desc": {
+                "unavailable": "Բոլոր ծառայություններն անջատված են",
+                "loading": "Բոլոր ծառայությունները բեռնվում են",
+                "available": "Բոլոր ծառայությունները կայուն են"
+            },
+            "action": "Ընտրեք ծառայություններ",
+            "dialog": {
+                "title": "{Sora} Ցանցային ծառայության ընտրություն",
+                "indexer": "Ինդեքսավորող",
+                "useCeres": "Ֆիատ արժեքների համար օգտագործեք {Ceres}"
+            }
         }
-      }
     },
-    "validatorsDialog": {
-      "title": {
-        "edit": "Խմբագրել Իմ վավերացնողները"
-      },
-      "tabs": {
-        "user": "Ձեր վավերացնողները",
-        "all": "Բոլոր վավերացնողները"
-      }
+    "locationText": "Գտնվելու վայրը",
+    "acceptText": "Ընդունել և թաքցնել",
+    "newAccountsText": "Նոր հաշիվներ",
+    "dragAndDropText": "Քաշեք և թողեք կամ ընտրեք {extension} ֆայլը",
+    "copyPhraseText": "Պատճենել արտահայտությունը",
+    "stepText": "Քայլ",
+    "alerts": {
+        "drop": "Կաթիլներ ներքևում",
+        "once": "Մի անգամ",
+        "always": "Միշտ",
+        "edit": "Խմբագրել ծանուցումը",
+        "delete": "Ջնջել ծանուցումը",
+        "onDropDesc": "{token} ընկնում է {price} ից ցածր",
+        "alertsTitle": "Ահազանգեր",
+        "alertsCreateTitle": "Կարգավորեք գների ծանուցում",
+        "alertsTooltip": "Գնային ծանուցումները ծանուցումներ են, որոնք կարող եք սահմանել ձեր կողմից՝ թարմացումներ ստանալու համար, երբ որոշակի նշանի գինը հասնում է ձեր սահմանած որոշակի կետին:",
+        "createBtn": "Ստեղծեք նոր գնային ծանուցում",
+        "enableSwitch": "Միացնել ակտիվների ավանդի մասին ծանուցումները",
+        "currentPrice": "ընթացիկ գինը",
+        "alertTypeTitle": "Զգուշացման տեսակը",
+        "alertFrequencyTitle": "Զգուշացման հաճախականությունը",
+        "frequencyTooltip": "Ընտրեք «մեկ անգամ» և «միշտ» միջև՝ որոշելու համար, թե որքան հաճախ եք ստանում ծանուցումներ ընտրված ազդանշանի տեսակի համար: «Once»-ը մեկ ծանուցում կուղարկի, երբ պայմանը կատարվի, մինչդեռ «միշտ»-ը կշարունակի ծանուցել ձեզ ամեն անգամ, երբ գնային շեմը հատվի:",
+        "noSupportMsg": "Ծանուցումները չեն աջակցվում ձեր դիտարկիչի կողմից",
+        "finishBtn": "Ավարտելու համար",
+        "raise": "Բարձրանում է վերևում",
+        "onRaiseDesc": "{token} բարձրանում է {price} ից",
+        "typeTooltip": "Ընտրեք կամ «իջնում է ներքև» կամ «բարձրանում է վերևում» տարբերակը՝ նշելու զգոնության պայման՝ գների կարևոր տեղաշարժերին հետևելու համար: Այս ընտրանքները թույլ են տալիս ժամանակին ծանուցումներ ստանալ, երբ ձեր ակտիվի արժեքը կա՛մ իջնի ձեր նշանակված շեմից, կա՛մ բարձրանա:"
     },
-    "validatorsAttentionDialog": {
-      "title": "Ուշադրություն",
-      "description": [
-        "Ալգորիթմական վավերացնողի առաջարկները չեն հանդիսանում ֆինանսական խորհրդատվություն կամ խորհրդատվություն: Ցուցադրումը բարձր ռիսկային գործունեություն է, և ալգորիթմական վավերացնող առաջարկները պարտադիր չէ, որ մեղմացնեն այդ ռիսկը:",
-        "Ալգորիթմի առաջարկած վավերացուցիչը դեռ կարող է կրճատվել: Ալգորիթմի կողմից առաջարկվող վավերացնողը կարող է նաև փոխել դրանց պարամետրերը (օրինակ՝ միջնորդավճարները և այլն) առաջարկվելուց և/կամ ընտրվելուց հետո ցանկացած ժամանակ:",
-        "Դուք կարող եք կորցնել նշաններ կամ պարգևներ այս կամ այլ պատճառներով: Միայն դրեք նշաններ և օգտագործեք վավերացնող առաջարկները ձեր հայեցողությամբ՝ պատշաճ ուսումնասիրություն կատարելուց և ներգրավված ռիսկերը ուշադիր դիտարկելուց հետո:"
-      ],
-      "confirm": "Այո, ես հասկանում եմ ռիսկը"
+    "accountAddressText": "Հաշվի հասցեն",
+    "fiatDisclaimer": "Խնդրում ենք նկատի ունենալ, որ մեր կայքում կրիպտոարժույթների հետ կապված fiat արժեքները տրամադրվում են արտաքին ծառայությունների կողմից (Subquery, Subsquid, Ceres API) մոտավոր են: Հաշվի առնելով այս հաշվարկների բնորոշ բարդությունը, բացարձակ ճշգրտությունը բոլոր ժամանակներում չի կարող երաշխավորվել:",
+    "fiatPayment": {
+        "historyBtn": "Իմ գնումները",
+        "historyTitle": "Գործարքների պատմություն",
+        "moonpayTitle": "Գնեք ETH MoonPay-ի միջոցով",
+        "moonpayDesc": "Գնեք ETH նշաններ {Ethereum}-ում և կամրջի միջոցով փոխանցեք դրանք {SORA} ցանցին",
+        "errorMessage": "Ներողություն ենք խնդրում անհարմարության համար։ Մենք ջանասիրաբար աշխատում ենք այս խնդիրը լուծելու համար: Խնդրում եմ փորձեք մի փոքր ուշ.",
+        "cedeStoreTitle": "Փոխանցում {value} -ից",
+        "cedeStoreDesc": "Փոխանցեք ցանկացած նշան {value1} -ից {value2} {value3} ի միջոցով",
+        "cedeStoreBtn": "Փոխանցում {value1} -ից {value2} միջոցով"
     },
-    "pendingRewardsDialog": {
-      "noPendingRewards": "Սպասվող պարգևներ չկան",
-      "information": "Վավերացնողները պարգևները վճարում են 2-5 օրը մեկ: Այնուամենայնիվ, դուք կարող եք դրանք վճարել ինքներդ, հատկապես, եթե պարգևների ժամկետը մոտ է ավարտին, բայց դուք վճարելու եք վճարը:",
-      "title": "Սպասվող պարգևներ",
-      "noSelectedRewards": "Ընտրեք պարգեւատրումները",
-      "payout": "Վճարել"
+    "acceptOnScrollText": "Ոլորեք՝ ընդունելու համար",
+    "addressBook": {
+        "myAccounts": "Իմ հաշիվները",
+        "myBook": "Իմ գիրքը",
+        "searchPlaceholder": "Որոնել ըստ հասցեի, անունով կամ ինքնության",
+        "noFoundRecords": "Գրառումներ չեն գտնվել",
+        "noContacts": "Դուք դեռ ավելացված կոնտակտներ չունեք",
+        "addContact": "Ավելացնել կոնտակտ",
+        "dialogTitle": "Ձեր կոնտակտները",
+        "identity": "Ինքնությունը շղթայի վրա",
+        "none": "Ոչ ոք",
+        "detected": "Հայտնաբերվել է նոր հասցե",
+        "save": "Պահել որպես կոնտակտ",
+        "tooltip": "Հավաքեք հասցեագիրք՝ նշելով անուն և հասցե՝ ձեր կոնտակտները կազմակերպված և արդիական պահելու համար",
+        "notSoraAddress": "Այս հասցեն կպահվի ստորև որպես {SORA} հասցե: Համոզվեք, որ ստացողը կարող է մուտք գործել {SORA} շղթա.",
+        "options": {
+            "send": "Ուղարկեք նշաններ",
+            "edit": "Խմբագրել կոնտակտը",
+            "delete": "Ջնջել"
+        },
+        "btn": {
+            "enterName": "Մուտքագրեք անունը",
+            "present": "Արդեն ներկա",
+            "saveChanges": "Պահպանել փոփոխությունները"
+        },
+        "input": "Մուտքագրեք հասցեն կամ ընտրեք կոնտակտ",
+        "selectContact": "Ընտրեք կոնտակտ"
     },
-    "selectValidatorsMode": {
-      "title": "Խաղադրույքը վավերացնողների հետ, որոնք առաջարկվում են ալգորիթմի կողմից",
-      "description": "{Sora} ցանցային ալգորիթմը ընտրել է առաջարկվող վավերականների ցանկը՝ հիմնվելով չափանիշների վրա.",
-      "criteria": [
-        "Առավել շահավետ",
-        "Չի գերազանցում բաժանորդագրությունը",
-        "Շղթայական ինքնություն ունենալը",
-        "Ոչ կտրատված",
-        "Յուրաքանչյուր ինքնության համար 2 վավերացնողի սահմանաչափ"
-      ],
-      "confirm": {
-        "suggested": "Ցուցադրել առաջարկվող հետ",
-        "manual": "Ես ինքս կընտրեմ վավերացնողներին"
-      }
+    "browserPermission": {
+        "title": "Թույլատրել տեսախցիկի մուտքը դիտարկիչի կարգավորումներում",
+        "desc": "Փաստաթղթերի իսկությունն ապահովելու և օգտատիրոջ ինքնությունը KYC ստուգման համար վավերացնելու համար անհրաժեշտ է մուտք գործել ձեր սարքի տեսախցիկ:",
+        "disclaimer": "Խարդախությունը կանխելու համար փաստաթղթերը իրական ժամանակում նկարահանելու համար պահանջվում է տեսախցիկի հասանելիություն:",
+        "btnGoToSettings": "Գնացեք կարգավորումներ",
+        "btnAllow": "Թույլ են տալիս մուտք գործել"
     },
-    "claimRewardsDialog": {
-      "title": "Պահանջեք պարգևներ",
-      "checkRewards": "Ստուգեք պարգեւատրումը մեկ դարաշրջանում եւ վավերական",
-      "rewardsDestination": "Պարգևատրման նպատակակետ հասցե"
+    "continueText": "Շարունակել",
+    "minAmountText": "ր. գումարը",
+    "maxAmountText": "առավելագույնը գումարը",
+    "exceededAmountText": "{amount} ը գերազանցվել է",
+    "multipleRecipients": "Մի շարք ստացողներ",
+    "disconnectWalletText": "Անջատել",
+    "connectEthereumWalletText": "Միացրեք {Ethereum} դրամապանակը",
+    "soraStaking": {
+        "dropdownMenu": {
+            "pendingRewards": "Սպասվող պարգևներ",
+            "controllerAccount": "Վերահսկիչ հաշիվ"
+        },
+        "actions": {
+            "claim": "Պահանջեք պարգևներ",
+            "remove": "Հեռացնել ցցը",
+            "more": "Ավելի շատ խաղադրույք կատարեք",
+            "confirm": "Հաստատեք խաղադրույքը",
+            "withdraw": "Հանել"
+        },
+        "overview": {
+            "title": "{Sora} Սաթ",
+            "description": "Stake {XOR} tokens on {Sora} Network- ը որպես նոմինատոր գործարքների վավերացման եւ {VAL} token վարձատրության համար:"
+        },
+        "newStake": {
+            "title": "Սկսեք խաղադրույք կատարել",
+            "minStakeWarning": "Պարգևը ստանալու նվազագույն խաղադրույքը {min} {symbol} է"
+        },
+        "validators": {
+            "save": "Պահպանել փոփոխությունները",
+            "selected": "{selected} \/ ընտրված է {total}",
+            "recommended": "Առաջարկվող վավերացնողներ",
+            "change": "Փոխել վավերացնողները",
+            "select": "Ընտրեք վավերացնողներ",
+            "next": "Հաջորդը",
+            "alreadyNominated": "Ընտրված վավերացնողներն արդեն առաջադրված են",
+            "tooManyValidators": "Ընտրված են չափազանց շատ վավերացուցիչներ ( {Max} {max} )"
+        },
+        "validatorsList": {
+            "search": "Որոնել...",
+            "name": "Անուն",
+            "noNominatedValidators": "Դուք առաջադրված վավերացնողներ չունեք",
+            "noValidators": "Նշված ֆիլտրը բավարարող վավերացնողներ չկան",
+            "commission": "հանձնաժողով",
+            "commissionTooltip": "Հանձնաժողովը վերաբերում է այն վճարին, որը գանձվում է վավերացնողների կողմից խաղադրույքի գործընթացում իրենց ծառայությունների համար: Այս վճարը, արտահայտված որպես տոկոս, հանվում է խաղադրույքի պարգևներից, որոնք վաստակել են առաջադրողները մինչև բաշխումը: Կարևոր է նշել, որ վավերացնողները ցանկացած պահի կարող են հարմարեցնել իրենց միջնորդավճարները",
+            "return": "Վերադարձ"
+        },
+        "info": {
+            "unstaking": "Անցանկալի",
+            "stakingBalance": "Խաղադրույքի մնացորդը",
+            "rewarded": "Պարգևատրվել է",
+            "totalLiquidityStaked": "Ընդհանուր իրացվելիությունը խաղադրույքով",
+            "rewardToken": "Պարգևատրման նշան",
+            "unstakingPeriod": "Բացասական շրջան",
+            "minimumStake": "Նվազագույն խաղադրույքը",
+            "nominators": "Առաջադրողներ",
+            "validators": "Վավերացնողներ",
+            "selectedValidators": "Ընտրված վավերացնողներ"
+        },
+        "validatorsFilterDialog": {
+            "title": "Զտիչներ",
+            "save": "Պահպանել զտիչը",
+            "reset": "Վերականգնել բոլորը",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Ինքնությունը շղթայի վրա",
+                    "description": "Առնվազն մեկ ինքնության կոնտակտ միացված է հաշվին"
+                },
+                "notSlashed": {
+                    "name": "Ոչ կտրատված",
+                    "description": "Չեն զգացել որևէ տույժ կամ կրճատում իրենց խաղադրույքների ֆոնդերում սխալ վարքագծի կամ արձանագրության խախտումների պատճառով:"
+                },
+                "notOversubscribed": {
+                    "name": "Չի գերազանցում բաժանորդագրությունը",
+                    "description": "Հաշիվը տեղաբաշխման սահմանաչափի սահմաններում, խուսափում է {Polkadot} staking-ի նկատմամբ գերսուբսիդացիայի տույժերից:"
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Յուրաքանչյուր ինքնության համար 2 վավերացնողի սահմանաչափ",
+                    "description": "Յուրաքանչյուր ինքնության համար առավելագույնը երկու վավերացուցիչ՝ ապակենտրոնացումը խթանելու և իշխանության կենտրոնացումը կանխելու համար:"
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "edit": "Խմբագրել Իմ վավերացնողները"
+            },
+            "tabs": {
+                "user": "Ձեր վավերացնողները",
+                "all": "Բոլոր վավերացնողները"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Ուշադրություն",
+            "description": [
+                "Ալգորիթմական վավերացնողի առաջարկները չեն հանդիսանում ֆինանսական խորհրդատվություն կամ խորհրդատվություն: Ցուցադրումը բարձր ռիսկային գործունեություն է, և ալգորիթմական վավերացնող առաջարկները պարտադիր չէ, որ մեղմացնեն այդ ռիսկը:",
+                "Ալգորիթմի առաջարկած վավերացուցիչը դեռ կարող է կրճատվել: Ալգորիթմի կողմից առաջարկվող վավերացնողը կարող է նաև փոխել դրանց պարամետրերը (օրինակ՝ միջնորդավճարները և այլն) առաջարկվելուց և\/կամ ընտրվելուց հետո ցանկացած ժամանակ:",
+                "Դուք կարող եք կորցնել նշաններ կամ պարգևներ այս կամ այլ պատճառներով: Միայն դրեք նշաններ և օգտագործեք վավերացնող առաջարկները ձեր հայեցողությամբ՝ պատշաճ ուսումնասիրություն կատարելուց և ներգրավված ռիսկերը ուշադիր դիտարկելուց հետո:"
+            ],
+            "confirm": "Այո, ես հասկանում եմ ռիսկը"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Սպասվող պարգևներ չկան",
+            "information": "Վավերացնողները պարգևները վճարում են 2-5 օրը մեկ: Այնուամենայնիվ, դուք կարող եք դրանք վճարել ինքներդ, հատկապես, եթե պարգևների ժամկետը մոտ է ավարտին, բայց դուք վճարելու եք վճարը:",
+            "title": "Սպասվող պարգևներ",
+            "noSelectedRewards": "Ընտրեք պարգեւատրումները",
+            "payout": "Վճարել"
+        },
+        "selectValidatorsMode": {
+            "title": "Խաղադրույքը վավերացնողների հետ, որոնք առաջարկվում են ալգորիթմի կողմից",
+            "description": "{Sora} ցանցային ալգորիթմը ընտրել է առաջարկվող վավերականների ցանկը՝ հիմնվելով չափանիշների վրա.",
+            "criteria": [
+                "Առավել շահավետ",
+                "Չի գերազանցում բաժանորդագրությունը",
+                "Շղթայական ինքնություն ունենալը",
+                "Ոչ կտրատված",
+                "Յուրաքանչյուր ինքնության համար 2 վավերացնողի սահմանաչափ"
+            ],
+            "confirm": {
+                "suggested": "Ցուցադրել առաջարկվող հետ",
+                "manual": "Ես ինքս կընտրեմ վավերացնողներին"
+            }
+        },
+        "claimRewardsDialog": {
+            "title": "Պահանջեք պարգևներ",
+            "checkRewards": "Ստուգեք պարգեւատրումը մեկ դարաշրջանում եւ վավերական",
+            "rewardsDestination": "Պարգևատրման նպատակակետ հասցե"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Հետ կանչելի",
+            "beingWithdrawn": "Հեռացված լինելը",
+            "seeAll": "Տեսնել բոլորը",
+            "nextWithdrawal": "Հաջորդ դուրսբերումը",
+            "countdownLeft": "Մնաց"
+        },
+        "stakeDialog": {
+            "toStake": "Խաղադրույք կատարել",
+            "toRemove": "Հեռացնելու համար"
+        },
+        "withdrawDialog": {
+            "title": "Հանեք չստացված միջոցները",
+            "showAllWithdraws": "Ցուցադրել բոլոր դուրսբերումները"
+        },
+        "allWithdrawsDialog": {
+            "title": "Բացասական գործունեություն",
+            "information": "Նշանները հանելուց հետո կա պարտադիր 7-օրյա ժամկետ: Այս ժամանակահատվածից հետո ձեր նշանները ավտոմատ կերպով չեն վերադարձվի ձեր դրամապանակ: Դուք պետք է ավարտեք գործընթացը՝ ձեռքով հանելով ձեր նշանները:"
+        }
     },
-    "selectedValidators": "{count} ( {Max} {max} )",
-    "withdraw": {
-      "withdrawable": "Հետ կանչելի",
-      "beingWithdrawn": "Հեռացված լինելը",
-      "seeAll": "Տեսնել բոլորը",
-      "nextWithdrawal": "Հաջորդ դուրսբերումը",
-      "countdownLeft": "Մնաց"
+    "collapseText": "Փլուզվել",
+    "expandText": "Ընդարձակել",
+    "orderBook": {
+        "Buy": "Գնել {asset}",
+        "Sell": "Վաճառել {asset}",
+        "orderBook": "Պատվերների գրքույկ",
+        "marketTrades": "Շուկայական առևտուր",
+        "market": "Շուկա",
+        "limit": "Սահման",
+        "price": "Գին",
+        "total": "Ընդամենը",
+        "amount": "գումարը",
+        "time": "ժամանակ",
+        "month": "ամիս",
+        "change": "փոփոխություն",
+        "cantPlaceOrder": "Հնարավոր չէ պատվիրել",
+        "enterAmount": "Մուտքագրեք գումարը",
+        "setPrice": "Սահմանել գինը",
+        "dayVolume": "1D Ծավալ",
+        "stop": "Գիրքը կանգ է առել",
+        "tokenPair": "Նշանների զույգ",
+        "book": {
+            "noAsks": "Ոչ բացված հարցնում է",
+            "noBids": "Բացված հայտեր չկան"
+        },
+        "history": {
+            "tradeHistory": "Առևտրի պատմություն",
+            "orderHistory": "Պատվերների պատմություն",
+            "openOrders": "Բացել պատվերներ {value}",
+            "connect": "Միացրեք հաշիվ՝ առևտուր սկսելու համար",
+            "cancel": "Չեղարկել պատվերը {value}",
+            "cancelAll": "Չեղարկել բոլորը"
+        },
+        "orderTable": {
+            "time": "ժամանակ",
+            "pair": "զույգ",
+            "side": "կողմը",
+            "filled": "լրացված",
+            "lifetime": "կյանքի ընթացքում",
+            "noOrders": "Ոչ մի պատվեր: Ստեղծի՛ր քո առաջինը:"
+        },
+        "dialog": {
+            "placeMarket": "Տեղադրեք շուկայական պատվեր",
+            "placeLimit": "Տեղադրեք սահմանաչափի պատվեր",
+            "askCancel": "Իսկապե՞ս ուզում եք չեղարկել ձեր բոլոր բաց պատվերները:",
+            "cancelAll": "Այո, չեղարկել բոլորը",
+            "buy": "Գնել {amount} {symbol}",
+            "sell": "Վաճառել {amount} {symbol}",
+            "at": "{price} {symbol} ով"
+        },
+        "tradingPair": {
+            "choosePair": "Ընտրեք առևտրային զույգ",
+            "volume": "Ծավալը",
+            "dailyChange": "Ամենօրյա փոփոխություն",
+            "status": "Կարգավիճակ",
+            "total": "{amount} {symbol} համար {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Ակտիվ",
+            "placeable": "Տեղադրելի",
+            "cancelable": "Չեղարկվող",
+            "inactive": "Անգործուն"
+        },
+        "tooltip": {
+            "limitOrder": "«Սահմանափակ» պատվերը թույլ է տալիս նշել այն ճշգրիտ գինը, որով ցանկանում եք գնել կամ վաճառել ակտիվը: «Limit Buy» պատվերը կկատարվի միայն նշված գնով կամ ավելի ցածր, մինչդեռ «Limit Sell» պատվերը կկատարվի միայն նշված գնով կամ ավելի բարձր: Այս հսկողությունը երաշխավորում է, որ չվճարեք ավելին կամ չվաճառեք ավելի քիչ գնով, քան ձեզ հարմար է:",
+            "marketOrder": "«Շուկայական պատվերը» անհապաղ գնելու կամ վաճառելու պատվեր է լավագույն առկա ընթացիկ գնով: Այն չի պահանջում գին սահմանել, ապահովել արագ կատարում, բայց ստացված կամ վճարված գնի նկատմամբ ավելի քիչ վերահսկողության փոխզիջումով: Պատվերների այս տեսակն օգտագործվում է այն դեպքում, երբ կատարման որոշակիությունն առաջնահերթ է գնի վերահսկողությունից:",
+            "pairsList": "Իրական ժամանակի ցուցակ, որը ցույց է տալիս կրիպտոարժույթի գնման և վաճառքի ընթացիկ պատվերները: Այն օգնում է ձեզ հասկանալ պահանջարկը, հնարավոր գների ուղղությունը և առևտրի ծավալը SORA ցանցում և Polkaswap DEX-ում:",
+            "bookWidget": "Հատուկ ակտիվի գնման (առաջարկի) և վաճառքի (հարցման) պատվերների կենդանի, անընդհատ թարմացվող գրառում՝ կազմակերպված ըստ գների մակարդակի: Պատվերների գիրքը ցույց է տալիս շուկայի խորությունը, ներառյալ տարբեր գներով առաջարկվող ակտիվների քանակը: Առևտրականներն օգտագործում են այս մանրամասն տեսակետը՝ շուկայական տրամադրությունները չափելու, պոտենցիալ դիմադրության և աջակցության մակարդակները բացահայտելու և առկա պահանջարկի և առաջարկի հիման վրա գների շարժը կանխատեսելու համար։",
+            "marketWidget": "Այս վիջեթը ցույց է տալիս իրական ժամանակում կատարված գործարքների հոսքը շուկայում՝ տրամադրելով տեղեկատվություն գործարքների ծավալների, վերջին գործունեության և շուկայի ընթացիկ միտումների մասին: Դիտարկելով փաստացի առևտրի ժամանակացույցը, գինը և չափը, թրեյդերները կարող են պատկերացում կազմել շուկայի դինամիկայի և տրամադրությունների մասին՝ օգնելով նրանց հայտնաբերել առևտրի հնարավորությունները և կայացնել տեղեկացված որոշումներ:",
+            "txDetails": {
+                "orderType": "«Գնել» պատվերը կկատարվի միայն նշված գնով կամ ավելի ցածր, մինչդեռ «Վաճառքի» պատվերը կկատարվի միայն նշված գնով կամ ավելի բարձր: Այս հսկողությունը երաշխավորում է, որ դուք չեք վճարում ավելին կամ չեք վաճառում ավելի քիչ գնով, քան ձեզ հարմար է:",
+                "expiryDate": "«Ժամկետանց ամսաթիվը» ձեր պատվերի կատարման վերջնաժամկետն է: Եթե մինչև այս ամսաթիվը շուկան չհասնի ձեր նշված գնին, պատվերն ինքնաբերաբար չեղարկվում է: Դուք պարտավորված չեք հավերժական սպասել, եթե շուկայական պայմանները չեն համընկնում ձեր առևտրային նախապատվությունների հետ:",
+                "amount": "«Գումարը» վերաբերում է ակտիվների ընդհանուր թվին, որոնք ցանկանում եք գնել կամ վաճառել ձեր պատվերի մեջ: Կարևոր է նշել, քանի որ դա որոշում է ձեր գործարքի չափը՝ ազդելով գնման պատվերների ընդհանուր արժեքի կամ վաճառքի պատվերների հասույթի վրա:",
+                "limit": "«Սահմանափակ գինը» այն ճշգրիտ գինն է, որը դուք սահմանել եք սահմանային պատվերի համար: Առևտուրը կկատարվի միայն այն ժամանակ, երբ ակտիվի շուկայական գինը համապատասխանում է ձեր սահմանաչափին, ապահովելով, որ դուք չեք գնում այս նշված արժեքից բարձր կամ վաճառում:",
+                "locked": "«Կողպված է» ցույց է տալիս ակտիվի գումարը, որը պետք է պահվի, քանի դեռ պատվերը շարունակվում է:"
+            },
+            "bookStatus": {
+                "active": "Ամբողջական առևտրային գործառույթը միացված է: Դուք կարող եք տեղադրել նոր պատվերներ կամ չեղարկել առկա պատվերները:",
+                "placeable": "Սահմանափակ ֆունկցիոնալություն: Դուք կարող եք տեղադրել նոր պատվերներ և չեղարկել առկաները, սակայն որոշ գործառույթներ կարող են անհասանելի լինել:",
+                "cancelable": "Դուք կարող եք չեղարկել միայն առկա պատվերները: Նոր պատվերի տեղադրումն այս պահին անջատված է:",
+                "inactive": "Առևտրային բոլոր գործունեությունը ներկայումս դադարեցված է։ Այս պահին պատվերներ չեն կարող տեղադրվել կամ չեղարկվել:"
+            }
+        },
+        "txDetails": {
+            "orderType": "պատվերի տեսակը",
+            "limitPrice": "սահմանաչափ գինը",
+            "expiryDate": "ժամկետի ավարտը"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "Մուտքագրված գինը չափազանց ճշգրիտ է հաշվարկելու համար",
+                "reading": "Ճշգրիտությունը գերազանցվել է. մուտքագրված գումարը\/գինը չափազանց շատ տասնորդական թվեր ունի: Խնդրում ենք մուտքագրել ավելի քիչ տասնորդական թվերով արժեք"
+            },
+            "marketNotAvailable": {
+                "reason": "Այս պատվերը կատարելու համար բավարար պատվերներ չկան",
+                "reading": "Շուկայական պատվերի սահմանափակում. այս շուկայական պատվերը կատարելու համար բավարար պատվերներ չկան: Խնդրում ենք հարմարեցնել ձեր պատվերի չափը կամ սպասել լրացուցիչ պատվերների տեղադրմանը"
+            },
+            "exceedsSpread": {
+                "reason": "Գինը գերազանցել է սպրեդը",
+                "reading": "Գինը գերազանցված է. շուկայական հայտի կամ հայտի գինը գերազանցել է իր հարցման\/հայտի գինը"
+            },
+            "spotLimit": {
+                "reason": "Առևտրային կողմը լրացված է",
+                "reading": "Գնային միջակայքի սահմանաչափ. պատվերի գրքի յուրաքանչյուր կողմը սահմանափակված է 1024 եզակի գնային միավորով: Խնդրում ենք ընտրել գին գոյություն ունեցող միջակայքում կամ սպասել, որ տարածքը հասանելի դառնա"
+            },
+            "accountLimit": {
+                "reason": "Չափազանց շատ պատվերներ շարունակվում են",
+                "reading": "Սահմանաչափը հասել է. յուրաքանչյուր հաշիվ սահմանափակված է 1024 սահմանաչափով: Խնդրում ենք սպասել, մինչև ձեր պատվերներից մի քանիսը կատարվեն"
+            },
+            "singlePriceLimit": {
+                "reason": "Այս գնով շատ պատվերներ շարունակվում են",
+                "reading": "Սահմանաչափը հասել է. Յուրաքանչյուր դիրք սահմանափակվում է 1024 սահմանաչափով: Խնդրում ենք սպասել, մինչև որոշ պատվերներ կատարվեն"
+            },
+            "outOfBounds": {
+                "reading": "Բլոկչեյնի միջակայքը գերազանցվել է. Ձեր մուտքագրած գումարը դուրս է բլոկչեյնի թույլատրելի միջակայքից: Նվազագույնը՝ {min} ; Առավելագույնը՝ {max}",
+                "reason": "Գումարը չի համապատասխանում բլոկչեյնի տիրույթին"
+            },
+            "multipleOf": {
+                "reading": "Ձեր պատվերը մշակելու համար խնդրում ենք մուտքագրել {value} -ի բազմապատիկ գին",
+                "reason": "Մուտքագրված գինը չափազանց կոնկրետ է"
+            }
+        },
+        "orderStatus": {
+            "active": "Ակտիվ",
+            "canceled": "Չեղարկված է",
+            "expired": "Ժամկետանց",
+            "filled": "Լրացված"
+        },
+        "pricePerToken": "Գինը 1 {token} ի համար"
     },
-    "stakeDialog": {
-      "toStake": "Խաղադրույք կատարել",
-      "toRemove": "Հեռացնելու համար"
+    "calculatingText": "Հաշվարկում",
+    "customisePageText": "Անհատականացրեք էջը",
+    "priceChartText": "Գնային շրջանագիծ",
+    "editText": "Խմբագրել",
+    "resetText": "Վերականգնել",
+    "kensetsu": {
+        "addCollateral": "Ավելացնել գրանցամատ",
+        "addCollateralDescription": "Ավելացրեք ավելի շատ ակտիվներ ձեր դիրքում, որպեսզի բարձրացնեք ձեր վարկավորման սահմանաչափը կամ բարելավեք ձեր վարկի արժեքի հարաբերակցությունը: Սա նաև կարող է օգնել կանխելու լիկվիդացումը:",
+        "depositCollateral": "Ավելացնել գրանցամատ",
+        "totalCollateral": "Ընդհանուր գրանցամատ",
+        "totalCollateralDescription": "Ձեր դիրքում ներկայումս պահված բոլոր ակտիվների ընդհանուր արժեքը: Այս արժեքը ազդում է ձեր վարկունակության վրա և լիկվիդացման ռիսկի վրա:",
+        "debtAvailable": "Վարկագումարը մատչելի է",
+        "debtAvailableDescription": "Ձեր դիրքից կարող եք դեռ վերցնել գումարը առանց վարկի սահմանաչափը գերազանցելու՝ հիմնված ձեր ներկայիս ապահովագրության վրա:",
+        "ltv": "Վարկագրման արժեք ({LTV})",
+        "ltvDescription": "Ձեր դիրքում ապահովագրության արժեքի և վերցված գումարի հարաբերակցությունը, արտահայտված տոկոսադրույքով: Բարձր {LTV} ավելացնում է հնարավոր եկամուտները, բայց նաև ռիսկը, ներառյալ լիկվիդացման հնարավորությունը:",
+        "borrowMore": "Վարկագրել ավելի",
+        "borrowMoreDescription": "Վերցրեք հավելյալ գումարներ ձեր դիրքից մինչև առավելագույն հասանելի գումարը: Համոզվեք, որ ձեր ապահովագրության արժեքը աջակցում է ավելացված պարտքին, որպեսզի խուսափեք լիկվիդացման ռիսկերից:",
+        "available": "Մատչելի",
+        "outstandingDebt": "Ընդհանուր գումար",
+        "outstandingDebtDescription": "Ընդհանուր գումարը, որ այժմ պարտք եք ձեր դիրքից վերցված գումարներից, ներառյալ կուտակված տոկոսները: Սա պետք է վերադարձվի ձեր դիրքը փակելու համար կամ վարկի արժեքի առողջ հարաբերակցությունը պահպանելու համար:",
+        "createVault": "Բացեք վարկագրման դուրս",
+        "createVaultDescription": "Սկսեք նոր գործարք՝ ապահովագրությունը ձեր դիրքում պահելու և գումարներ վերցնելու միջոցով: Սա ստեղծում է պարտքի պարտականություն, որը դուք պետք է կառավարեք:",
+        "createVaultAction": "Բացեք դուրս",
+        "borrowDebt": "Վարկագրել գումար",
+        "minDepositCollateral": "Նվազագույն գրանցամատ",
+        "minDepositCollateralDescription": "Առավելագույն ակտիվների քանակությունը, որն անհրաժեշտ է դիրքը բացելու համար: Այս նախնական ավանդը ապահովում է այն գումարները, որոնք դուք ցանկանում եք վերցնել վարկի:",
+        "maxAvailableToBorrow": "Առավելագույն հասանելի գումար",
+        "maxAvailableToBorrowDescription": "Ձեր դիրքից կարող եք վերցնել առավելագույն գումարը, որը որոշվում է ձեր ապահովագրության արժեքով: Այս սահմանաչափը կարգավորվում է՝ կախված ապահովագրության արժեքի փոփոխություններից:",
+        "borrowTax": "Արժեքահաշվարկ",
+        "borrowTaxDescription": "Վարկագրման արժեքահաշվարկի հարկի {value}-ը",
+        "repayDebt": "Վարկագրել գումար",
+        "repayDebtDescription": "Վերադարձեք վարկագրված գումարները ձեր վարկագրումից վարկագրված արժեքը նվազելու համար: Այսպես, կարող եք կանխատեսել տոկոսային արժեքները և փոքրատառականությամբ նվազել ռիսկը:",
+        "closeVault": "Փակեք իմ վարկագրումը",
+        "closeVaultDescription": "Փակեք ընտրված դիտարկությունը, վերադարձեք բոլոր վարկագրումները կազմված համակարգով եւ հանեք ամեն գումարը:",
+        "yourCollateral": "Ձեր գրանցամատը",
+        "yourCollateralDescription": "Ակտիվները, որոնք դուք պահել եք ձեր դիրքում, որպեսզի ապահովեք վերցված գումարները: Այս ակտիվները կարող են լիկվիդացվել վարկատուի կողմից, եթե չեք կարողանում պահպանել վարկի արժեքի պահանջվող հարաբերակցությունը:",
+        "yourDebt": "Ձեր վարկագիրը",
+        "yourDebtDescription": "Ներկայումս ձեր դիրքում առկա ընդհանուր պարտքը, ներառյալ վերցված գումարը և ցանկացած կուտակված տոկոս: Այս մնացորդը ժամանակի ընթացքում ավելանում է, եթե տոկոսները կուտակվում են:",
+        "yourDebtTokenBalance": "Ձեր {tokenSymbol}-ի հաշվիչը",
+        "requiredAmountWithSlippage": "Պահանջվող քանակը, ներառելով սխտավորությունը",
+        "requiredAmountWithSlippageDescription": "Հարթ դիրքի փակման համար գնել մի փոքր ավելի {tokenSymbol}, քան պահանջված {amount}՝ հնարավոր սահքի պատճառով: Ձեզ անհրաժեշտ կլինի լրացուցիչ գումար՝ սահքը ծածկելու համար: Ձեր ակտիվները փոխեք {tokenSymbol}՝ այս պահանջը բավարարելու համար:",
+        "openSwap": "Բացեք փոխանակում",
+        "introTitle": "Բացեք վարկագրման դուրս & Հավասարեք {Kensetsu}-ով",
+        "introDescription": "Կրկնեք անվտանգ եւ հարմար վարկագրումներ՝ բացեք վարկագրման դուրս {Kensetsu} պլատֆորմայով:",
+        "disclaimerDescription": "{Polkaswap}-ի միջոցով տիրապետվող թերթիկային ակտիվները վերահսկման արվարարված է ու ամբողջությամբ ձեր առաջարկությամբ է: Թերթիկային ակտիվների արժեքը շատ փոքր է, եւ ցածունակության արժեքների փոքրատառական փորձերը կարող են առնվազանց մեծ գործադրություն ներկայացնել:",
+        "availableToBorrow": "Հասանելի է վարկագրել",
+        "availableToBorrowDescription": "Մնացյալ գումարը, որը դուք իրավունք ունեք վերցնելու՝ ձեր դիրքի ներկա պայմանների ներքո, հիմնված ձեր պահված ապահովագրության և ցանկացած առկա պարտքի վրա:",
+        "collateralDetails": "Նվազագույն գրանցամատ",
+        "debtDetails": "Վարկագրման մանրամասներ",
+        "positionInfo": "Պահանջարկային տեղերը",
+        "liquidationPenalty": "Լիգվիդացիայի ուղղարկման ուղղարկում",
+        "liquidationPenaltyDescription": "Միայնակ տոկոսը, որը վճարվում է, եթե ձեր գրանցամատի արժեքը գերազանցում է հատկապես նախատեսված չափերը, իրականացնում է վարկագրված ակտիվների վաճառքը պատկանող արժեքավորությունը: Այս վճարումը բարձրացնում է ձեր ընդարձակ գումարը:",
+        "positionSafe": "Բնակարան անվտանգ",
+        "liquidationClose": "Լիգվիդացիայի դուրս գրեք",
+        "highLiquidationRisk": "Բարձր լիգվիդացիայի ռիսկ",
+        "error": {
+            "enterCollateral": "Մուտքագրեք գրանցամատ",
+            "enterBorrow": "Մուտքագրեք վարկագրվող գումարը",
+            "borrowMoreThanAvailable": "Առավելացված վարկագրությունը",
+            "insufficientCollateral": "Չափաբաժանորդ գրանցամատ",
+            "enterRepayDebt": "Մուտքագրեք վարկագրված գումարը",
+            "repayMoreThanDebt": "Վարկագրված ավելի քան վարկագրված գումարը",
+            "incorrectCollateral": "Թոքեն զույգը չի աջակցվում"
+        },
+        "interest": "Տոկոսադրույք",
+        "interestDescription": "Տարեթվային մանրահամար գումարային միայնակ պահանջարկության մասին, հաշվառվում է տոկոսային: Այս մանրահամարը գումարային թույլտվությունների համար է:",
+        "positionHistory": "Դիրքի պատմություն",
+        "liquidated": "Լիկվիդացված",
+        "liquidatedMessage": "Լիկվիդացված {amount} {symbol}",
+        "status": {
+            "Opened": "Ակտիվ",
+            "Closed": "Փակված",
+            "Liquidated": "Լիկվիդացված"
+        },
+        "readMore": "Կարդալ ավելին",
+        "reopen": "Վերաբացել",
+        "totalCollateralReturned": "Ընդհանուր վերադարձված ապահովվածություն",
+        "totalCollateralReturnedDescription": "Ձեր դիրքը փակելուց հետո վերադարձված ակտիվների ընդհանուր արժեքը, ներառյալ մնացած ապահովվածությունը:",
+        "overallTotalCollateral": "Ընդհանուր ապահովվածություն",
+        "overallTotalCollateralDescription": "Ակտիվների ընդհանուր արժեքը, որոնք մուծել են վարկառուները՝ իրենց վարկային դիրքերը ապահովելու համար {Kensetsu} հարթակում:",
+        "overallTotalDebt": "Ընդհանուր պարտք",
+        "overallTotalDebtDescription": "Ընդհանուր պարտքի չափը, որը ներկայումս գոյություն ունի բոլոր վարկային դիրքերի համար {Kensetsu} հարթակում:",
+        "overallBadDebt": "Վատ պարտք",
+        "overallBadDebtDescription": "Պարտքի այն մասը, որը քիչ հավանական է վերականգնվի վարկառուի չկատարելու կամ անբավարար ապահովվածության պատճառով:",
+        "ltvMaxTooltip": "Ավազարկղի կազմակերպված ակտիվների արժեթղի համար տրամադրվող վարկային դիրքի առավելագույն գումարը:",
+        "overallAvailable": "Ընդհանուր առմամբ հասանելի",
+        "overallAvailableDescription": "{Kensetsu} հարթակում վարկավորման համար հասանելի ընդհանուր գումարը։"
     },
-    "withdrawDialog": {
-      "title": "Հանեք չստացված միջոցները",
-      "showAllWithdraws": "Ցուցադրել բոլոր դուրսբերումները"
+    "accountSettings": {
+        "title": "Հաշվի կարգավորումները",
+        "hint": "Դուք կարող եք նորից միացնել սա հաշվի կարգավորումներում",
+        "disable": "Անջատել միացված",
+        "disabled": "Հաշմանդամ է",
+        "confirmation": {
+            "title": "Անջատել գործարքի հաստատումը",
+            "description": "Բացվող էկրան, որը ցույց է տալիս գործարքների մասին մանրամասները մինչև ստորագրումը:"
+        },
+        "signature": {
+            "title": "Անջատել գաղտնաբառի հաստատումը",
+            "description": "Գործարքներում ստորագրության բացվող պատուհանի ժամանակ միացրեք կամ անջատեք ձեր գաղտնաբառը մուտքագրելու անհրաժեշտությունը:"
+        },
+        "enterPassword": "Մուտքագրեք գաղտնաբառը",
+        "googleOnly": "Միայն {Google} հաշիվները"
     },
-    "allWithdrawsDialog": {
-      "title": "Բացասական գործունեություն",
-      "information": "Նշանները հանելուց հետո կա պարտադիր 7-օրյա ժամկետ: Այս ժամանակահատվածից հետո ձեր նշանները ավտոմատ կերպով չեն վերադարձվի ձեր դրամապանակ: Դուք պետք է ավարտեք գործընթացը՝ ձեռքով հանելով ձեր նշանները:"
-    }
-  },
-  "collapseText": "Փլուզվել",
-  "expandText": "Ընդարձակել",
-  "orderBook": {
-    "Buy": "Գնել {asset}",
-    "Sell": "Վաճառել {asset}",
-    "orderBook": "Պատվերների գրքույկ",
-    "marketTrades": "Շուկայական առևտուր",
-    "market": "Շուկա",
-    "limit": "Սահման",
-    "price": "Գին",
-    "total": "Ընդամենը",
-    "amount": "գումարը",
-    "time": "ժամանակ",
-    "month": "ամիս",
-    "change": "փոփոխություն",
-    "cantPlaceOrder": "Հնարավոր չէ պատվիրել",
-    "enterAmount": "Մուտքագրեք գումարը",
-    "setPrice": "Սահմանել գինը",
-    "dayVolume": "1D Ծավալ",
-    "stop": "Գիրքը կանգ է առել",
-    "tokenPair": "Նշանների զույգ",
-    "book": {
-      "noAsks": "Ոչ բացված հարցնում է",
-      "noBids": "Բացված հայտեր չկան"
+    "currencyDialog": {
+        "currency": "Արժույթ",
+        "searchPlaceholder": "Որոնել ըստ արժույթի անվանման կամ խորհրդանիշի"
     },
-    "history": {
-      "tradeHistory": "Առևտրի պատմություն",
-      "orderHistory": "Պատվերների պատմություն",
-      "openOrders": "Բացել պատվերներ {value}",
-      "connect": "Միացրեք հաշիվ՝ առևտուր սկսելու համար",
-      "cancel": "Չեղարկել պատվերը {value}",
-      "cancelAll": "Չեղարկել բոլորը"
+    "browserNotificationLocalStorageOverride": {
+        "title": "Մաքրել տեղական {AppName} պահոցը",
+        "info": "Ձեր տեղական պահոցը գերբեռնված է, շարունակելու համար {AppName}-ով պետք է մաքրել այն",
+        "agree": "Այո ես հասկանում եմ"
     },
-    "orderTable": {
-      "time": "ժամանակ",
-      "pair": "զույգ",
-      "side": "կողմը",
-      "filled": "լրացված",
-      "lifetime": "կյանքի ընթացքում",
-      "noOrders": "Ոչ մի պատվեր: Ստեղծի՛ր քո առաջինը:"
+    "points": {
+        "title": "Ձեր միավորների առաջընթացը",
+        "loginText": "Միացրեք ձեր հաշիվը, որպեսզի տեսնեք ձեր միավորները",
+        "bridgeVolume": "Կամուրջի ծավալը",
+        "feesSpent": "Ծախսված վճարները",
+        "xorBurned": "{XOR} այրված է",
+        "yourReferrals": "Ձեր հղումները",
+        "accountsText": "{amount} հաշիվներ",
+        "yourRewards": "Ձեր մրցանակները",
+        "openTelegram": "Բացել {Telegram}",
+        "toEarnPoints": "Միավորներ ստանալու համար"
     },
-    "dialog": {
-      "placeMarket": "Տեղադրեք շուկայական պատվեր",
-      "placeLimit": "Տեղադրեք սահմանաչափի պատվեր",
-      "askCancel": "Իսկապե՞ս ուզում եք չեղարկել ձեր բոլոր բաց պատվերները:",
-      "cancelAll": "Այո, չեղարկել բոլորը",
-      "buy": "Գնել {amount} {symbol}",
-      "sell": "Վաճառել {amount} {symbol}",
-      "at": "{price} {symbol} ով"
-    },
-    "tradingPair": {
-      "choosePair": "Ընտրեք առևտրային զույգ",
-      "volume": "Ծավալը",
-      "dailyChange": "Ամենօրյա փոփոխություն",
-      "status": "Կարգավիճակ",
-      "total": "{amount} {symbol} համար {amount2} {symbol2}"
-    },
-    "bookStatus": {
-      "active": "Ակտիվ",
-      "placeable": "Տեղադրելի",
-      "cancelable": "Չեղարկվող",
-      "inactive": "Անգործուն"
-    },
-    "tooltip": {
-      "limitOrder": "«Սահմանափակ» պատվերը թույլ է տալիս նշել այն ճշգրիտ գինը, որով ցանկանում եք գնել կամ վաճառել ակտիվը: «Limit Buy» պատվերը կկատարվի միայն նշված գնով կամ ավելի ցածր, մինչդեռ «Limit Sell» պատվերը կկատարվի միայն նշված գնով կամ ավելի բարձր: Այս հսկողությունը երաշխավորում է, որ չվճարեք ավելին կամ չվաճառեք ավելի քիչ գնով, քան ձեզ հարմար է:",
-      "marketOrder": "«Շուկայական պատվերը» անհապաղ գնելու կամ վաճառելու պատվեր է լավագույն առկա ընթացիկ գնով: Այն չի պահանջում գին սահմանել, ապահովել արագ կատարում, բայց ստացված կամ վճարված գնի նկատմամբ ավելի քիչ վերահսկողության փոխզիջումով: Պատվերների այս տեսակն օգտագործվում է այն դեպքում, երբ կատարման որոշակիությունն առաջնահերթ է գնի վերահսկողությունից:",
-      "pairsList": "Իրական ժամանակի ցուցակ, որը ցույց է տալիս կրիպտոարժույթի գնման և վաճառքի ընթացիկ պատվերները: Այն օգնում է ձեզ հասկանալ պահանջարկը, հնարավոր գների ուղղությունը և առևտրի ծավալը SORA ցանցում և Polkaswap DEX-ում:",
-      "bookWidget": "Հատուկ ակտիվի գնման (առաջարկի) և վաճառքի (հարցման) պատվերների կենդանի, անընդհատ թարմացվող գրառում՝ կազմակերպված ըստ գների մակարդակի: Պատվերների գիրքը ցույց է տալիս շուկայի խորությունը, ներառյալ տարբեր գներով առաջարկվող ակտիվների քանակը: Առևտրականներն օգտագործում են այս մանրամասն տեսակետը՝ շուկայական տրամադրությունները չափելու, պոտենցիալ դիմադրության և աջակցության մակարդակները բացահայտելու և առկա պահանջարկի և առաջարկի հիման վրա գների շարժը կանխատեսելու համար։",
-      "marketWidget": "Այս վիջեթը ցույց է տալիս իրական ժամանակում կատարված գործարքների հոսքը շուկայում՝ տրամադրելով տեղեկատվություն գործարքների ծավալների, վերջին գործունեության և շուկայի ընթացիկ միտումների մասին: Դիտարկելով փաստացի առևտրի ժամանակացույցը, գինը և չափը, թրեյդերները կարող են պատկերացում կազմել շուկայի դինամիկայի և տրամադրությունների մասին՝ օգնելով նրանց հայտնաբերել առևտրի հնարավորությունները և կայացնել տեղեկացված որոշումներ:",
-      "txDetails": {
-        "orderType": "«Գնել» պատվերը կկատարվի միայն նշված գնով կամ ավելի ցածր, մինչդեռ «Վաճառքի» պատվերը կկատարվի միայն նշված գնով կամ ավելի բարձր: Այս հսկողությունը երաշխավորում է, որ դուք չեք վճարում ավելին կամ չեք վաճառում ավելի քիչ գնով, քան ձեզ հարմար է:",
-        "expiryDate": "«Ժամկետանց ամսաթիվը» ձեր պատվերի կատարման վերջնաժամկետն է: Եթե մինչև այս ամսաթիվը շուկան չհասնի ձեր նշված գնին, պատվերն ինքնաբերաբար չեղարկվում է: Դուք պարտավորված չեք հավերժական սպասել, եթե շուկայական պայմանները չեն համընկնում ձեր առևտրային նախապատվությունների հետ:",
-        "amount": "«Գումարը» վերաբերում է ակտիվների ընդհանուր թվին, որոնք ցանկանում եք գնել կամ վաճառել ձեր պատվերի մեջ: Կարևոր է նշել, քանի որ դա որոշում է ձեր գործարքի չափը՝ ազդելով գնման պատվերների ընդհանուր արժեքի կամ վաճառքի պատվերների հասույթի վրա:",
-        "limit": "«Սահմանափակ գինը» այն ճշգրիտ գինն է, որը դուք սահմանել եք սահմանային պատվերի համար: Առևտուրը կկատարվի միայն այն ժամանակ, երբ ակտիվի շուկայական գինը համապատասխանում է ձեր սահմանաչափին, ապահովելով, որ դուք չեք գնում այս նշված արժեքից բարձր կամ վաճառում:",
-        "locked": "«Կողպված է» ցույց է տալիս ակտիվի գումարը, որը պետք է պահվի, քանի դեռ պատվերը շարունակվում է:"
-      },
-      "bookStatus": {
-        "active": "Ամբողջական առևտրային գործառույթը միացված է: Դուք կարող եք տեղադրել նոր պատվերներ կամ չեղարկել առկա պատվերները:",
-        "placeable": "Սահմանափակ ֆունկցիոնալություն: Դուք կարող եք տեղադրել նոր պատվերներ և չեղարկել առկաները, սակայն որոշ գործառույթներ կարող են անհասանելի լինել:",
-        "cancelable": "Դուք կարող եք չեղարկել միայն առկա պատվերները: Նոր պատվերի տեղադրումն այս պահին անջատված է:",
-        "inactive": "Առևտրային բոլոր գործունեությունը ներկայումս դադարեցված է։ Այս պահին պատվերներ չեն կարող տեղադրվել կամ չեղարկվել:"
-      }
-    },
-    "txDetails": {
-      "orderType": "պատվերի տեսակը",
-      "limitPrice": "սահմանաչափ գինը",
-      "expiryDate": "ժամկետի ավարտը"
-    },
-    "error": {
-      "beyondPrecision": {
-        "reason": "Մուտքագրված գինը չափազանց ճշգրիտ է հաշվարկելու համար",
-        "reading": "Ճշգրիտությունը գերազանցվել է. մուտքագրված գումարը/գինը չափազանց շատ տասնորդական թվեր ունի: Խնդրում ենք մուտքագրել ավելի քիչ տասնորդական թվերով արժեք"
-      },
-      "marketNotAvailable": {
-        "reason": "Այս պատվերը կատարելու համար բավարար պատվերներ չկան",
-        "reading": "Շուկայական պատվերի սահմանափակում. այս շուկայական պատվերը կատարելու համար բավարար պատվերներ չկան: Խնդրում ենք հարմարեցնել ձեր պատվերի չափը կամ սպասել լրացուցիչ պատվերների տեղադրմանը"
-      },
-      "exceedsSpread": {
-        "reason": "Գինը գերազանցել է սպրեդը",
-        "reading": "Գինը գերազանցված է. շուկայական հայտի կամ հայտի գինը գերազանցել է իր հարցման/հայտի գինը"
-      },
-      "spotLimit": {
-        "reason": "Առևտրային կողմը լրացված է",
-        "reading": "Գնային միջակայքի սահմանաչափ. պատվերի գրքի յուրաքանչյուր կողմը սահմանափակված է 1024 եզակի գնային միավորով: Խնդրում ենք ընտրել գին գոյություն ունեցող միջակայքում կամ սպասել, որ տարածքը հասանելի դառնա"
-      },
-      "accountLimit": {
-        "reason": "Չափազանց շատ պատվերներ շարունակվում են",
-        "reading": "Սահմանաչափը հասել է. յուրաքանչյուր հաշիվ սահմանափակված է 1024 սահմանաչափով: Խնդրում ենք սպասել, մինչև ձեր պատվերներից մի քանիսը կատարվեն"
-      },
-      "singlePriceLimit": {
-        "reason": "Այս գնով շատ պատվերներ շարունակվում են",
-        "reading": "Սահմանաչափը հասել է. Յուրաքանչյուր դիրք սահմանափակվում է 1024 սահմանաչափով: Խնդրում ենք սպասել, մինչև որոշ պատվերներ կատարվեն"
-      },
-      "outOfBounds": {
-        "reading": "Բլոկչեյնի միջակայքը գերազանցվել է. Ձեր մուտքագրած գումարը դուրս է բլոկչեյնի թույլատրելի միջակայքից: Նվազագույնը՝ {min} ; Առավելագույնը՝ {max}",
-        "reason": "Գումարը չի համապատասխանում բլոկչեյնի տիրույթին"
-      },
-      "multipleOf": {
-        "reading": "Ձեր պատվերը մշակելու համար խնդրում ենք մուտքագրել {value} -ի բազմապատիկ գին",
-        "reason": "Մուտքագրված գինը չափազանց կոնկրետ է"
-      }
-    },
-    "orderStatus": {
-      "active": "Ակտիվ",
-      "canceled": "Չեղարկված է",
-      "expired": "Ժամկետանց",
-      "filled": "Լրացված"
-    },
-    "pricePerToken": "Գինը 1 {token} ի համար"
-  },
-  "calculatingText": "Հաշվարկում",
-  "customisePageText": "Անհատականացրեք էջը",
-  "priceChartText": "Գնային շրջանագիծ",
-  "editText": "Խմբագրել",
-  "resetText": "Վերականգնել",
-  "kensetsu": {
-    "addCollateral": "Ավելացնել գրանցամատ",
-    "addCollateralDescription": "Ավելացրեք ավելի շատ ակտիվներ ձեր դիրքում, որպեսզի բարձրացնեք ձեր վարկավորման սահմանաչափը կամ բարելավեք ձեր վարկի արժեքի հարաբերակցությունը: Սա նաև կարող է օգնել կանխելու լիկվիդացումը:",
-    "depositCollateral": "Ավելացնել գրանցամատ",
-    "totalCollateral": "Ընդհանուր գրանցամատ",
-    "totalCollateralDescription": "Ձեր դիրքում ներկայումս պահված բոլոր ակտիվների ընդհանուր արժեքը: Այս արժեքը ազդում է ձեր վարկունակության վրա և լիկվիդացման ռիսկի վրա:",
-    "debtAvailable": "Վարկագումարը մատչելի է",
-    "debtAvailableDescription": "Ձեր դիրքից կարող եք դեռ վերցնել գումարը առանց վարկի սահմանաչափը գերազանցելու՝ հիմնված ձեր ներկայիս ապահովագրության վրա:",
-    "ltv": "Վարկագրման արժեք ({LTV})",
-    "ltvDescription": "Ձեր դիրքում ապահովագրության արժեքի և վերցված գումարի հարաբերակցությունը, արտահայտված տոկոսադրույքով: Բարձր {LTV} ավելացնում է հնարավոր եկամուտները, բայց նաև ռիսկը, ներառյալ լիկվիդացման հնարավորությունը:",
-    "borrowMore": "Վարկագրել ավելի",
-    "borrowMoreDescription": "Վերցրեք հավելյալ գումարներ ձեր դիրքից մինչև առավելագույն հասանելի գումարը: Համոզվեք, որ ձեր ապահովագրության արժեքը աջակցում է ավելացված պարտքին, որպեսզի խուսափեք լիկվիդացման ռիսկերից:",
-    "available": "Մատչելի",
-    "outstandingDebt": "Ընդհանուր գումար",
-    "outstandingDebtDescription": "Ընդհանուր գումարը, որ այժմ պարտք եք ձեր դիրքից վերցված գումարներից, ներառյալ կուտակված տոկոսները: Սա պետք է վերադարձվի ձեր դիրքը փակելու համար կամ վարկի արժեքի առողջ հարաբերակցությունը պահպանելու համար:",
-    "createVault": "Բացեք վարկագրման դուրս",
-    "createVaultDescription": "Սկսեք նոր գործարք՝ ապահովագրությունը ձեր դիրքում պահելու և գումարներ վերցնելու միջոցով: Սա ստեղծում է պարտքի պարտականություն, որը դուք պետք է կառավարեք:",
-    "createVaultAction": "Բացեք դուրս",
-    "borrowDebt": "Վարկագրել գումար",
-    "minDepositCollateral": "Նվազագույն գրանցամատ",
-    "minDepositCollateralDescription": "Առավելագույն ակտիվների քանակությունը, որն անհրաժեշտ է դիրքը բացելու համար: Այս նախնական ավանդը ապահովում է այն գումարները, որոնք դուք ցանկանում եք վերցնել վարկի:",
-    "maxAvailableToBorrow": "Առավելագույն հասանելի գումար",
-    "maxAvailableToBorrowDescription": "Ձեր դիրքից կարող եք վերցնել առավելագույն գումարը, որը որոշվում է ձեր ապահովագրության արժեքով: Այս սահմանաչափը կարգավորվում է՝ կախված ապահովագրության արժեքի փոփոխություններից:",
-    "borrowTax": "Արժեքահաշվարկ",
-    "borrowTaxDescription": "Վարկագրման արժեքահաշվարկի հարկի {value}-ը",
-    "repayDebt": "Վարկագրել գումար",
-    "repayDebtDescription": "Վերադարձեք վարկագրված գումարները ձեր վարկագրումից վարկագրված արժեքը նվազելու համար: Այսպես, կարող եք կանխատեսել տոկոսային արժեքները և փոքրատառականությամբ նվազել ռիսկը:",
-    "closeVault": "Փակեք իմ վարկագրումը",
-    "closeVaultDescription": "Փակեք ընտրված դիտարկությունը, վերադարձեք բոլոր վարկագրումները կազմված համակարգով եւ հանեք ամեն գումարը:",
-    "yourCollateral": "Ձեր գրանցամատը",
-    "yourCollateralDescription": "Ակտիվները, որոնք դուք պահել եք ձեր դիրքում, որպեսզի ապահովեք վերցված գումարները: Այս ակտիվները կարող են լիկվիդացվել վարկատուի կողմից, եթե չեք կարողանում պահպանել վարկի արժեքի պահանջվող հարաբերակցությունը:",
-    "yourDebt": "Ձեր վարկագիրը",
-    "yourDebtDescription": "Ներկայումս ձեր դիրքում առկա ընդհանուր պարտքը, ներառյալ վերցված գումարը և ցանկացած կուտակված տոկոս: Այս մնացորդը ժամանակի ընթացքում ավելանում է, եթե տոկոսները կուտակվում են:",
-    "yourDebtTokenBalance": "Ձեր {tokenSymbol}-ի հաշվիչը",
-    "requiredAmountWithSlippage": "Պահանջվող քանակը, ներառելով սխտավորությունը",
-    "requiredAmountWithSlippageDescription": "Հարթ դիրքի փակման համար գնել մի փոքր ավելի {tokenSymbol}, քան պահանջված {amount}՝ հնարավոր սահքի պատճառով: Ձեզ անհրաժեշտ կլինի լրացուցիչ գումար՝ սահքը ծածկելու համար: Ձեր ակտիվները փոխեք {tokenSymbol}՝ այս պահանջը բավարարելու համար:",
-    "openSwap": "Բացեք փոխանակում",
-    "introTitle": "Բացեք վարկագրման դուրս & Հավասարեք {Kensetsu}-ով",
-    "introDescription": "Կրկնեք անվտանգ եւ հարմար վարկագրումներ՝ բացեք վարկագրման դուրս {Kensetsu} պլատֆորմայով:",
-    "disclaimerDescription": "{Polkaswap}-ի միջոցով տիրապետվող թերթիկային ակտիվները վերահսկման արվարարված է ու ամբողջությամբ ձեր առաջարկությամբ է: Թերթիկային ակտիվների արժեքը շատ փոքր է, եւ ցածունակության արժեքների փոքրատառական փորձերը կարող են առնվազանց մեծ գործադրություն ներկայացնել:",
-    "availableToBorrow": "Հասանելի է վարկագրել",
-    "availableToBorrowDescription": "Մնացյալ գումարը, որը դուք իրավունք ունեք վերցնելու՝ ձեր դիրքի ներկա պայմանների ներքո, հիմնված ձեր պահված ապահովագրության և ցանկացած առկա պարտքի վրա:",
-    "collateralDetails": "Նվազագույն գրանցամատ",
-    "debtDetails": "Վարկագրման մանրամասներ",
-    "positionInfo": "Պահանջարկային տեղերը",
-    "liquidationPenalty": "Լիգվիդացիայի ուղղարկման ուղղարկում",
-    "liquidationPenaltyDescription": "Միայնակ տոկոսը, որը վճարվում է, եթե ձեր գրանցամատի արժեքը գերազանցում է հատկապես նախատեսված չափերը, իրականացնում է վարկագրված ակտիվների վաճառքը պատկանող արժեքավորությունը: Այս վճարումը բարձրացնում է ձեր ընդարձակ գումարը:",
-    "positionSafe": "Բնակարան անվտանգ",
-    "liquidationClose": "Լիգվիդացիայի դուրս գրեք",
-    "highLiquidationRisk": "Բարձր լիգվիդացիայի ռիսկ",
-    "error": {
-      "enterCollateral": "Մուտքագրեք գրանցամատ",
-      "enterBorrow": "Մուտքագրեք վարկագրվող գումարը",
-      "borrowMoreThanAvailable": "Առավելացված վարկագրությունը",
-      "insufficientCollateral": "Չափաբաժանորդ գրանցամատ",
-      "enterRepayDebt": "Մուտքագրեք վարկագրված գումարը",
-      "repayMoreThanDebt": "Վարկագրված ավելի քան վարկագրված գումարը",
-      "incorrectCollateral": "Թոքեն զույգը չի աջակցվում"
-    },
-    "interest": "Տոկոսադրույք",
-    "interestDescription": "Տարեթվային մանրահամար գումարային միայնակ պահանջարկության մասին, հաշվառվում է տոկոսային: Այս մանրահամարը գումարային թույլտվությունների համար է:",
-    "positionHistory": "Դիրքի պատմություն",
-    "liquidated": "Լիկվիդացված",
-    "liquidatedMessage": "Լիկվիդացված {amount} {symbol}",
-    "status": {
-      "Opened": "Ակտիվ",
-      "Closed": "Փակված",
-      "Liquidated": "Լիկվիդացված"
-    },
-    "readMore": "Կարդալ ավելին",
-    "reopen": "Վերաբացել",
-    "totalCollateralReturned": "Ընդհանուր վերադարձված ապահովվածություն",
-    "totalCollateralReturnedDescription": "Ձեր դիրքը փակելուց հետո վերադարձված ակտիվների ընդհանուր արժեքը, ներառյալ մնացած ապահովվածությունը:",
-    "overallTotalCollateral": "Ընդհանուր ապահովվածություն",
-    "overallTotalCollateralDescription": "Ակտիվների ընդհանուր արժեքը, որոնք մուծել են վարկառուները՝ իրենց վարկային դիրքերը ապահովելու համար {Kensetsu} հարթակում:",
-    "overallTotalDebt": "Ընդհանուր պարտք",
-    "overallTotalDebtDescription": "Ընդհանուր պարտքի չափը, որը ներկայումս գոյություն ունի բոլոր վարկային դիրքերի համար {Kensetsu} հարթակում:",
-    "overallBadDebt": "Վատ պարտք",
-    "overallBadDebtDescription": "Պարտքի այն մասը, որը քիչ հավանական է վերականգնվի վարկառուի չկատարելու կամ անբավարար ապահովվածության պատճառով:",
-    "ltvMaxTooltip": "Ավազարկղի կազմակերպված ակտիվների արժեթղի համար տրամադրվող վարկային դիրքի առավելագույն գումարը:",
-    "overallAvailable": "Ընդհանուր առմամբ հասանելի",
-    "overallAvailableDescription": "{Kensetsu} հարթակում վարկավորման համար հասանելի ընդհանուր գումարը։"
-  },
-  "accountSettings": {
-    "title": "Հաշվի կարգավորումները",
-    "hint": "Դուք կարող եք նորից միացնել սա հաշվի կարգավորումներում",
-    "disable": "Անջատել միացված",
-    "disabled": "Հաշմանդամ է",
-    "confirmation": {
-      "title": "Անջատել գործարքի հաստատումը",
-      "description": "Բացվող էկրան, որը ցույց է տալիս գործարքների մասին մանրամասները մինչև ստորագրումը:"
-    },
-    "signature": {
-      "title": "Անջատել գաղտնաբառի հաստատումը",
-      "description": "Գործարքներում ստորագրության բացվող պատուհանի ժամանակ միացրեք կամ անջատեք ձեր գաղտնաբառը մուտքագրելու անհրաժեշտությունը:"
-    },
-    "enterPassword": "Մուտքագրեք գաղտնաբառը",
-    "googleOnly": "Միայն {Google} հաշիվները"
-  },
-  "currencyDialog": {
-    "currency": "Արժույթ",
-    "searchPlaceholder": "Որոնել ըստ արժույթի անվանման կամ խորհրդանիշի"
-  },
-  "browserNotificationLocalStorageOverride": {
-    "title": "Մաքրել տեղական {AppName} պահոցը",
-    "info": "Ձեր տեղական պահոցը գերբեռնված է, շարունակելու համար {AppName}-ով պետք է մաքրել այն",
-    "agree": "Այո ես հասկանում եմ"
-  },
-  "points": {
-    "title": "Ձեր միավորների առաջընթացը",
-    "loginText": "Միացրեք ձեր հաշիվը, որպեսզի տեսնեք ձեր միավորները",
-    "bridgeVolume": "Կամուրջի ծավալը",
-    "feesSpent": "Ծախսված վճարները",
-    "xorBurned": "{XOR} այրված է",
-    "yourReferrals": "Ձեր հղումները",
-    "accountsText": "{amount} հաշիվներ",
-    "yourRewards": "Ձեր մրցանակները",
-    "openTelegram": "Բացել {Telegram}",
-    "toEarnPoints": "Միավորներ ստանալու համար"
-  },
-  "sbtDetails": {
-    "description": "Այս SBT-ն մուտք է տալիս մի քանի նշումների և բջիջների և կապված է ձեր հաշվին",
-    "issuedBy": "{SBT} թողարկել է",
-    "kycVerification": "{KYC} Հաստատում",
-    "kycProvider": "{KYC} Մատակարար",
-    "accessPermitted": "Մուտքը թույլատրված է",
-    "listOperable": "Կարգավորված ակտիվները գործում են",
-    "noPermissions": "Պարունակում է առանց լրացուցիչ իրավունքների",
-    "regulatedInstitution": "Կարգավորվող հաստատություն",
-    "expiryDate": "Եզրափակման ամսաթիվ",
-    "expiryDateTooltip": "'Եզրափակման ամսաթիվը' վերջնաժամկետն է ձեր մուտքը կարգավորվող ակտիվներին SBT-ից",
-    "expiresIn": "Սպառվում է",
-    "expiresInTooltip": "'Սպառվում է' ցույց է տալիս ժամանակահատվածը կամ այն ​​ժամանակը, երբ մուտքը ձեռք է բերվել",
-    "indefiniteExp": "բաց",
-    "permission": "իրավունք",
-    "permissions": "իրավունքներ",
-    "noReceiverAccess": "Դուք փորձում եք ուղարկել կարգավորվող նշում օգտվողին, ով չունի SBT մուտք"
-  },
-  "assetOwner": {
-    "letsStartBtn": "ՍՏԱՑՆԵՆՔ",
-    "selectExisting": "Ընտրել առկա",
-    "createSbt": "Ստեղծել {type}",
-    "orSelectExisting": "Կամ ընտրեք առկա",
-    "createRegulatedAsset": "Ստեղծել նոր կարգավորվող ակտիվ",
-    "addRegulatedAsset": "Ավելացնել մեկ այլ կարգավորվող ակտիվ",
-    "attachedRegulatedAssets": "Կցված կարգավորվող ակտիվներ",
-    "ownerSbtTitle": "Ձեր {type}",
-    "regulatedAssetsConnected": "Կարգավորվող ակտիվներ կապված",
-    "regulatedPools": "Կարգավորվող բջիջներ",
-    "sbtManagers": "{type} Կառավարողներ",
-    "you": "Դուք",
-    "accountWithAccess": "Հաշիվ SBT մուտքով",
-    "issueSbtAccess": "Ստեղծել {type} մուտք",
-    "startIssue": "Սկսել մուտքի տրամադրում SBT-ին հաշիվներին",
-    "permissionedAssets": "Թույլտվություն ունեցող ակտիվներ",
-    "addRegulatedAssets": "Ավելացնել կարգավորվող ակտիվներ",
-    "sbtCreation": {
-      "addAssets": "Ավելացնել ակտիվներ SBT-ին",
-      "addDescription": "Մուտքագրել SBT մանրամասները",
-      "addMeta": "Մուտքագրել SBT մանրամասները",
-      "preview": "SBT Հեռանկար"
-    },
-    "guide": {
-      "createToken": "Ստեղծել ձեր նշումը",
-      "createTokenDesc": "Ամբողջությամբ գործարկեք ձեր յուրահատուկ նշումը՝ օգտագործելով SORA ցանցի ամուր և անվտանգ ենթակառուցվածքը, որը հասանելի է բազմաթիվ ձևաչափերով, ինչպես NFT-ներ և SBT-ներ",
-      "title": "Ինչպես ստեղծել {type}:",
-      "stepOneTitle": "Ընտրել կամ ստեղծել կարգավորվող ակտիվներ",
-      "stepOneDesc": "Ընտրեք կամ ստեղծեք այն ակտիվները, որոնք դուք անձամբ ստեղծել և կարգավորել եք։ Դրանք են ակտիվները, որոնք ձեր վերահսկողության և կառավարման տակ են:",
-      "stepTwoTitle": "Մուտքագրել SBT մանրամասները",
-      "stepTwoDesc": "Provide essential information such as the SBT's name and ticker symbol, as well as the icon.",
-      "stepThreeTitle": "Կանխել և ստորագրել գործարքը",
-      "stepThreeDesc": "Կանխել և ստորագրել ստեղծման վերջնական գործարքը, որպեսզի ավարտի SBT-ի կարգավորումը.",
-      "disclaimerSbt": "Պահպանեք այս էջը բաց ողջ գործընթացի ընթացքում: Թողնելը կամ այլ էջի վրա անցնելը կպահանջի, որ դուք սկսեք նորից: Ավարտեք քայլերը արագ, որպեսզի խուսափեք ժամկետի անցումից:"
-    },
-    "dialog": {
-      "createAsset": "Ստեղծել նոր ակտիվ",
-      "createAssetDesc": "Կարգավորող նոր ակտիվ ստեղծել {type}-ի համար",
-      "addExisting": "Ավելացնել առկա ակտիվ",
-      "addExistingDesc": "Ավելացնել արդեն ստեղծված ակտիվ SBT-ի համար",
-      "enterAddress": "Մուտքագրեք հասցեն տրամադրման համար",
-      "selectAccessEnd": "Ընտրել, թե երբ կվերջանա մուտքը",
-      "selectDate": "Ընտրել ամսաթիվ",
-      "issueAccess": "Տրամադրել մուտք",
-      "pickDate": "Ընտրել մի օր"
-    }
-  }
+    "addAssetsText": "Ավելացնել ակտիվ | Ավելացնել ակտիվներ"
 }
