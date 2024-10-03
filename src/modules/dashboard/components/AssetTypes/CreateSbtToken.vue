@@ -24,7 +24,7 @@
                 <div v-for="(asset, index) in filteredRegulatedAssets" :key="index" class="assets-list__item">
                   <el-checkbox-group v-model="checkList">
                     <el-checkbox :label="asset.address">
-                      <asset-list-item :asset="asset">
+                      <asset-list-item :asset="asset" :pinnable="false">
                         <template #default>
                           <span class="label">Regulated</span>
                         </template>
