@@ -1681,5 +1681,71 @@
         "openTelegram": "Open {Telegram}",
         "toEarnPoints": "To earn points"
     },
-    "addAssetsText": "Add asset | Add assets"
+    "addAssetsText": "Add asset | Add assets",
+    "assetOwner": {
+        "letsStartBtn": "LET’S START",
+        "selectExisting": "Select existing",
+        "createSbt": "Create {type}",
+        "orSelectExisting": "Or select existing",
+        "createRegulatedAsset": "Create new regulated asset",
+        "addRegulatedAsset": "Add another regulated asset",
+        "attachedRegulatedAssets": "Attached regulated assets",
+        "ownerSbtTitle": "Your {type}",
+        "regulatedAssetsConnected": "Regulated assets connected",
+        "regulatedPools": "Regulated pools",
+        "sbtManagers": "{type} Managers",
+        "you": "You",
+        "accountWithAccess": "Account with SBT access",
+        "issueSbtAccess": "Issue {type} access",
+        "startIssue": "Start issuing access for the SBT to accounts",
+        "permissionedAssets": "Permissioned assets",
+        "addRegulatedAssets": "Add regulated assets",
+        "sbtCreation": {
+            "addAssets": "Add Assets to SBT",
+            "addDescription": "Enter SBT Details",
+            "addMeta": "Enter SBT Details",
+            "preview": "SBT Preview"
+        },
+        "guide": {
+            "createToken": "Create your token",
+            "createTokenDesc": "Easily launch your unique token—available in multiple formats like NFTs and SBTs—using the robust, secure infrastructure of the SORA Network",
+            "title": "How to create an {type}:",
+            "stepOneTitle": "Select or Create Regulated Assets",
+            "stepOneDesc": "Choose or create assets that you have personally created and regulate. These are assets under your control and management.",
+            "stepTwoTitle": "Enter SBT Details",
+            "stepTwoDesc": "Provide essential information such as the SBT's name and ticker symbol, as well as the icon.",
+            "stepThreeTitle": "Review and sign the transaction",
+            "stepThreeDesc": "Review and sign the final creation transaction to complete the SBT setup.",
+            "disclaimerSbt": "Keep this page open during the entire process. Closing or navigating away will require you to restart from the beginning. Complete steps quickly to avoid timeout."
+        },
+        "dialog": {
+            "createAsset": "Create a new asset",
+            "createAssetDesc": "Set up a new permissioned asset for the {type}",
+            "addExisting": "Add an existing asset",
+            "addExistingDesc": "Add an already created asset for the SBT",
+            "enterAddress": "Enter address for issuance",
+            "selectAccessEnd": "Select when access will end",
+            "selectDate": "Select date",
+            "issueAccess": "Issue access",
+            "pickDate": "Pick a day"
+        }
+    },
+    "sbtDetails": {
+        "description": "This SBT provides access to multiple tokens & pools and is attached to your account",
+        "issuedBy": "{SBT} issued by",
+        "kycVerification": "{KYC} Verification",
+        "kycProvider": "{KYC} Provider",
+        "accessPermitted": "Access permitted",
+        "listOperable": "Regulated assets operable",
+        "noPermissions": "No additional permissions",
+        "regulatedInsitution": "Regulated Institution",
+        "expiryDate": "Expiry date",
+        "expiryDateTooltip": "The 'Expiry Date' is the deadline for your access to regulated assets of SBT",
+        "expiresIn": "Expires in",
+        "expiresInTooltip": "The 'Expires in' shows period or point of time the access is acquired",
+        "indefiniteExp": "open-ended",
+        "permission": "permission",
+        "permissions": "permissions",
+        "noReceiverAccess": "You're trying to send regulated token to the user with no SBT access"
+    }
 }
