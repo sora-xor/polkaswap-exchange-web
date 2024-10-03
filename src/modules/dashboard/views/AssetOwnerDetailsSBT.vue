@@ -232,7 +232,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { BreakpointClass } from '@/consts/layout';
-import { fetchTokensData } from '@/indexer/queries/assets';
+import { fetchTokensData } from '@/indexer/queries/asset/assets';
 import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset, AssetCreationType } from '@/modules/dashboard/types';
