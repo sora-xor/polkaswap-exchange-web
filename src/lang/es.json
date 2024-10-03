@@ -162,7 +162,7 @@
         "selectAccount": "Seleccione la cuenta con la que desea trabajar",
         "action": {
             "install": "Instalar extensión",
-            "learnMore": "Aprende más",
+            "learnMore": "Obtenga más información sobre la conexión de billetera",
             "connect": "Conectar cuenta",
             "refresh": "Actualizar"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Instalar",
             "connected": "Conectado",
-            "notConnected": "No conectado"
+            "notConnected": "No conectado",
+            "recommended": "Recomendado"
         },
         "internalTitle": "Conectar con {wallet}",
         "internalText": "Puede crear o importar una cuenta {Sora} existente para conectarse con su cuenta {wallet}. Todos los datos almacenados por {wallet} se cifran mediante el cifrado avanzado incorporado.",
         "list": {
             "integrated": "Integrado",
             "extensions": "Extensiones"
-        }
+        },
+        "disclaimer": "Tenga en cuenta que es posible que algunas billeteras no sean totalmente compatibles."
     },
     "wallet": {
         "WalletAssets": "Activos",
