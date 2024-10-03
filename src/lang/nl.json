@@ -162,7 +162,7 @@
         "selectAccount": "Selecteer account om mee te werken",
         "action": {
             "install": "Extensie installeren",
-            "learnMore": "Kom meer te weten",
+            "learnMore": "Meer informatie over wallet-verbinding",
             "connect": "Account aansluiten",
             "refresh": "Vernieuwen"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Installeren",
             "connected": "Verbonden",
-            "notConnected": "Niet verbonden"
+            "notConnected": "Niet verbonden",
+            "recommended": "Aanbevolen"
         },
         "internalTitle": "Maak verbinding met {wallet}",
         "internalText": "U kunt een bestaand {Sora} account maken of importeren om verbinding te maken met uw {wallet} -account. Alle gegevens die worden opgeslagen door {wallet} zijn versleuteld met ingebouwde geavanceerde versleuteling.",
         "list": {
             "integrated": "Geïntegreerd",
             "extensions": "Extensies"
-        }
+        },
+        "disclaimer": "Houd er rekening mee dat bepaalde wallets mogelijk niet volledig worden ondersteund."
     },
     "wallet": {
         "WalletAssets": "Assets",

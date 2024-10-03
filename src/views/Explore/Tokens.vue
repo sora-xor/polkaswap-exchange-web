@@ -167,7 +167,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_TYPES, getAssetsSubset } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
@@ -177,7 +177,7 @@ import type { TokenData } from '@/indexer/queries/asset/assets';
 import { lazyComponent } from '@/router';
 import { state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
-import { formatAmountWithSuffix, sortAssets, getAssetsSubset } from '@/utils';
+import { formatAmountWithSuffix, sortAssets } from '@/utils';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 

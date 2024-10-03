@@ -162,7 +162,7 @@
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
         "action": {
             "install": "Zainstaluj rozszerzenie",
-            "learnMore": "Dowiedz się więcej",
+            "learnMore": "Dowiedz się więcej o połączeniu portfela",
             "connect": "Połącz z kontem",
             "refresh": "Odśwież"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "zainstalować",
             "connected": "Połączony",
-            "notConnected": "Nie połączony"
+            "notConnected": "Nie połączony",
+            "recommended": "Zalecane"
         },
         "internalTitle": "Połącz się z {wallet}",
         "internalText": "Możesz utworzyć lub zaimportować istniejące konto {Sora}, aby połączyć je z kontem {wallet}. Wszystkie dane przechowywane przez {wallet} są szyfrowane przy użyciu wbudowanego zaawansowanego szyfrowania.",
         "list": {
             "integrated": "Zintegrowany",
             "extensions": "Rozszerzenia"
-        }
+        },
+        "disclaimer": "Należy pamiętać, że niektóre portfele mogą nie być w pełni obsługiwane."
     },
     "wallet": {
         "WalletAssets": "Waluty",

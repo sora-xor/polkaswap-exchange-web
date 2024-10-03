@@ -162,7 +162,7 @@
         "selectAccount": "Seleziona l'account con cui lavorare",
         "action": {
             "install": "Installa l'estensione",
-            "learnMore": "Per saperne di più",
+            "learnMore": "Scopri di più sulla connessione al portafoglio",
             "connect": "Connetti account",
             "refresh": "Aggiorna"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Installare",
             "connected": "Collegato",
-            "notConnected": "Non connesso"
+            "notConnected": "Non connesso",
+            "recommended": "Consigliato"
         },
         "internalTitle": "Connettiti con {wallet}",
         "internalText": "Puoi creare o importare un account {Sora} esistente per connetterti al tuo account {wallet}. Tutti i dati archiviati da {wallet} sono crittografati utilizzando la crittografia avanzata integrata.",
         "list": {
             "integrated": "Integrato",
             "extensions": "Estensioni"
-        }
+        },
+        "disclaimer": "Si prega di notare che alcuni portafogli potrebbero non essere completamente supportati."
     },
     "wallet": {
         "WalletAssets": "Assets",

@@ -162,7 +162,7 @@
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
         "action": {
             "install": "Erweiterung installieren",
-            "learnMore": "Mehr erfahren",
+            "learnMore": "Erfahren Sie mehr über die Wallet-Anbindung",
             "connect": "Konto verbinden",
             "refresh": "Aktualisieren"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Installieren",
             "connected": "In Verbindung gebracht",
-            "notConnected": "Nicht verbunden"
+            "notConnected": "Nicht verbunden",
+            "recommended": "Empfohlen"
         },
         "internalTitle": "Mit {wallet} verbinden",
         "internalText": "Sie können ein bestehendes {Sora} Konto erstellen oder importieren, um es mit Ihrem {wallet} Konto zu verbinden. Alle von {wallet} gespeicherten Daten werden mithilfe der integrierten erweiterten Verschlüsselung verschlüsselt.",
         "list": {
             "integrated": "Integriert",
             "extensions": "Erweiterungen"
-        }
+        },
+        "disclaimer": "Bitte beachten Sie, dass bestimmte Geldbörsen möglicherweise nicht vollständig unterstützt werden."
     },
     "wallet": {
         "WalletAssets": "Assets",
