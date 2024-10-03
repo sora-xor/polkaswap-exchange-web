@@ -22,7 +22,7 @@
           </div>
           <s-divider />
           <div v-for="section in dropdownHeaderMenuItems" :key="section.title">
-            <p class="dropdown-section-title">{{ section.title }}</p>
+            <p class="dropdown-section-title">{{ section.title.toUpperCase() }}</p>
             <div v-for="(item, index) in section.items" :key="item.value" @click="handleSelectHeaderMenu(item.value)">
               <s-dropdown-item
                 class="header-menu__item"
@@ -172,7 +172,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   private getHeaderMenuItems(isDropdown = false): Array<{ title: string; items: Array<MenuItem> }> {
     return [
       {
-        title: 'BALANCES',
+        title: this.t('headerMenu.titleBalance'),
         items: [
           {
             value: HeaderMenuType.HideBalances,
@@ -193,7 +193,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         ],
       },
       {
-        title: 'COLOR THEME',
+        title: this.t('headerMenu.titleTheme'),
         items: [
           {
             value: HeaderMenuType.SystemPreference,
@@ -222,7 +222,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         ],
       },
       {
-        title: 'FIAT CURRENCY',
+        title: this.t('headerMenu.titleCurrency'),
         items: [
           {
             value: HeaderMenuType.Currency,
@@ -234,7 +234,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         ],
       },
       {
-        title: 'MISC',
+        title: this.t('headerMenu.titleMisc'),
         items: [
           {
             value: HeaderMenuType.Notification,
@@ -252,9 +252,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
           {
             value: HeaderMenuType.Language,
             icon: 'basic-globe-24',
-            text: `${Languages.find((lang) => lang.key === this.currentLanguage)?.name} ${this.t(
-              'headerMenu.switchLanguage'
-            )}`,
+            text: `${Languages.find((lang) => lang.key === this.currentLanguage)?.name}`,
 
             iconType: 'arrows-chevron-right-rounded-24',
             isTextInsteadIcon: true,

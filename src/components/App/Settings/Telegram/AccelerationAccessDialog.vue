@@ -1,16 +1,16 @@
 <template>
   <dialog-base class="browser-notification" :visible.sync="visibility">
     <div class="browser-notification-dialog">
-      <p class="browser-notification-dialog__title">Enable acceleration access in your settings.</p>
+      <p class="browser-notification-dialog__title">{{ t('rotatePhoneNotification.enableAcceleration') }}</p>
       <p class="browser-notification-dialog__info">
-        Our technology uses your phone's built-in gyroscope to instantly hide your balance when you tilt your device.
+        {{ t('rotatePhoneNotification.gyroscropePhone') }}
       </p>
       <s-button
         type="secondary"
         class="s-typography-button--large browser-notification-dialog__btn"
         @click="reloadPage"
       >
-        {{ this.t('provider.messages.reloadPage') }}
+        {{ t('provider.messages.reloadPage') }}
       </s-button>
     </div>
   </dialog-base>
