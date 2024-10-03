@@ -162,7 +162,7 @@
         "selectAccount": "Odaberite račun za rad",
         "action": {
             "install": "Instalirajte proširenje",
-            "learnMore": "Saznajte više",
+            "learnMore": "Saznajte više o povezivanju novčanika",
             "connect": "Povežite račun",
             "refresh": "Osvježite"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Instalirati",
             "connected": "Povezan",
-            "notConnected": "Nije povezano"
+            "notConnected": "Nije povezano",
+            "recommended": "Preporučeno"
         },
         "internalTitle": "Povežite se s {wallet}",
         "internalText": "Možete stvoriti ili uvesti postojeći {Sora} račun za povezivanje sa svojim {wallet} računom. Svi podaci koje pohranjuje {wallet} šifrirani su pomoću ugrađene napredne enkripcije.",
         "list": {
             "integrated": "Integriran",
             "extensions": "Ekstenzije"
-        }
+        },
+        "disclaimer": "Imajte na umu da određeni novčanici možda neće biti u potpunosti podržani."
     },
     "wallet": {
         "WalletAssets": "Sredstva",

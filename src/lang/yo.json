@@ -162,7 +162,7 @@
         "selectAccount": "Yan ifowosi lati ṣiṣẹ pẹlu rẹ",
         "action": {
             "install": "Fi sori ẹrọ itẹsiwaju",
-            "learnMore": "Kọ ẹkọ si",
+            "learnMore": "Kọ ẹkọ diẹ sii nipa asopọ apamọwọ",
             "connect": "So ifowisi pọ",
             "refresh": "Tunwo"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Fi sori ẹrọ",
             "connected": "Ti sopọ",
-            "notConnected": "Ko ti sopọ"
+            "notConnected": "Ko ti sopọ",
+            "recommended": "Ti a ṣe iṣeduro"
         },
         "internalTitle": "Sopọ pẹlu {wallet}",
         "internalText": "O le ṣẹda tabi gbe wọle si akọọlẹ {Sora} to wa tẹlẹ lati sopọ pẹlu akọọlẹ {wallet} rẹ. Gbogbo data ti o wa ni ipamọ nipasẹ {wallet} jẹ fifi ẹnọ kọ nkan nipa lilo fifi ẹnọ kọ nkan ilọsiwaju.",
         "list": {
             "integrated": "Ti ṣepọ",
             "extensions": "Awọn amugbooro"
-        }
+        },
+        "disclaimer": "Jọwọ ṣe akiyesi pe awọn apamọwọ kan le ma ṣe atilẹyin ni kikun."
     },
     "wallet": {
         "WalletAssets": "Awọn dukia",

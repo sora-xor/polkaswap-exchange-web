@@ -162,7 +162,7 @@
         "selectAccount": "选择要使用的账户",
         "action": {
             "install": "安装扩展",
-            "learnMore": "了解更多",
+            "learnMore": "了解有关钱包连接的更多信息",
             "connect": "连接账户",
             "refresh": "刷新"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "安装",
             "connected": "连接的",
-            "notConnected": "未连接"
+            "notConnected": "未连接",
+            "recommended": "受到推崇的"
         },
         "internalTitle": "连接{wallet}",
         "internalText": "您可以创建或导入现有的{Sora}账户来连接您的{wallet}账户。 {wallet}存储的所有数据均使用内置高级加密进行加密。",
         "list": {
             "integrated": "融合的",
             "extensions": "扩展"
-        }
+        },
+        "disclaimer": "请注意，某些钱包可能无法完全支持。"
     },
     "wallet": {
         "WalletAssets": "资产",

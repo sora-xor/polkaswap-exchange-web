@@ -162,7 +162,7 @@
         "selectAccount": "Vyberte účet, s ktorým chcete pracovať",
         "action": {
             "install": "Inštalovať rozšírenie",
-            "learnMore": "Dozvedieť sa viac",
+            "learnMore": "Prečítajte si viac o pripojení k peňaženke",
             "connect": "Pripojiť účet",
             "refresh": "Obnoviť"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Inštalácia",
             "connected": "Pripojené",
-            "notConnected": "Nepripojený"
+            "notConnected": "Nepripojený",
+            "recommended": "Odporúčané"
         },
         "internalTitle": "Spojte sa s {wallet}",
         "internalText": "Môžete si vytvoriť alebo importovať existujúci účet {Sora} a spojiť sa so svojím účtom {wallet}. Všetky údaje uložené v službe {wallet} sú šifrované pomocou vstavaného pokročilého šifrovania.",
         "list": {
             "integrated": "Integrovaný",
             "extensions": "Rozšírenia"
-        }
+        },
+        "disclaimer": "Upozorňujeme, že niektoré peňaženky nemusia byť plne podporované."
     },
     "wallet": {
         "WalletAssets": "Aktíva",
