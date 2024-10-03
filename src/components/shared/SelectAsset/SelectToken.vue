@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins, components, WALLET_TYPES, getAssetsSubset } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
@@ -72,7 +72,6 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
-import { getAssetsSubset } from '@/utils';
 
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
