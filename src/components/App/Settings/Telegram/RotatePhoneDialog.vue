@@ -21,13 +21,13 @@
       >
         {{ t('browserPermission.btnAllow') }}
       </s-button>
-      <s-button
+      <!-- <s-button
         type="primary"
         class="s-typography-button--large browser-notification-dialog__btn"
         @click="declinedAccess()"
       >
         decline access
-      </s-button>
+      </s-button> -->
     </div>
   </dialog-base>
 </template>
