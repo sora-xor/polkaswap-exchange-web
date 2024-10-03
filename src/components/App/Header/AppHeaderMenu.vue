@@ -42,7 +42,7 @@
                   </div>
                 </template>
                 <template v-else-if="item.value === HeaderMenuType.HideBalances">
-                  <s-switch class="icontype" :value="shouldBalanceBeHidden" @input="toggleHideBalance" />
+                  <s-switch class="icontype" :value="shouldBalanceBeHidden" />
                 </template>
                 <template v-else>
                   <s-icon :name="item.iconType" size="14px" class="icontype" />
@@ -290,6 +290,9 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     console.info('handleSelectHeaderMenu was called');
     console.info(value);
     switch (value) {
+      case HeaderMenuType.HideBalances:
+        this.toggleHideBalance();
+        break;
       case HeaderMenuType.LightMode:
       case HeaderMenuType.NoirMode:
         this.selectedTheme = value;
@@ -393,16 +396,15 @@ $item-padding: 17px;
       margin-left: auto;
     }
 
-    &:hover,
     &:focus {
       background-color: transparent;
-      & {
-        color: var(--s-color-base-content-secondary);
-      }
+      color: var(--s-color-base-content-primary);
     }
 
-    &:focus {
-      color: var(--s-color-base-content-primary) !important;
+    &:hover,
+    &:focus:hover {
+      background-color: transparent;
+      color: var(--s-color-base-content-secondary);
     }
 
     .current-currency {
