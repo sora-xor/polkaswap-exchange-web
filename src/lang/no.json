@@ -162,7 +162,7 @@
         "selectAccount": "Velg kontoen du vil arbeide med",
         "action": {
             "install": "Installer utvidelse",
-            "learnMore": "Lær mer",
+            "learnMore": "Finn ut mer om lommeboktilkobling",
             "connect": "Koble til konto",
             "refresh": "Forfriske"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Installere",
             "connected": "Tilkoblet",
-            "notConnected": "Ikke tilkoblet"
+            "notConnected": "Ikke tilkoblet",
+            "recommended": "Anbefalt"
         },
         "internalTitle": "Koble til {wallet}",
         "internalText": "Du kan opprette eller importere en eksisterende {Sora} -konto for å koble til {wallet} -kontoen din. Alle data som er lagret av {wallet} er kryptert med innebygd avansert kryptering.",
         "list": {
             "integrated": "Integrert",
             "extensions": "Utvidelser"
-        }
+        },
+        "disclaimer": "Vær oppmerksom på at enkelte lommebøker kanskje ikke støttes fullt ut."
     },
     "wallet": {
         "WalletAssets": "Aktiva",

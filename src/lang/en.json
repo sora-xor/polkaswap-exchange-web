@@ -162,7 +162,7 @@
         "selectAccount": "Select account to work with",
         "action": {
             "install": "Install extension",
-            "learnMore": "Learn more",
+            "learnMore": "Learn more about wallet connection",
             "connect": "Connect account",
             "refresh": "Refresh"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Install",
             "connected": "Connected",
-            "notConnected": "Not connected"
+            "notConnected": "Not connected",
+            "recommended": "Recommended"
         },
         "internalTitle": "Connect with {wallet}",
         "internalText": "You can create or import an existing {Sora} account to connect with your {wallet} account. All data that is stored by {wallet} is encrypted using built-in advanced encryption.",
         "list": {
             "integrated": "Integrated",
             "extensions": "Extensions"
-        }
+        },
+        "disclaimer": "Please note that certain wallets may not be fully supported."
     },
     "wallet": {
         "WalletAssets": "Assets",

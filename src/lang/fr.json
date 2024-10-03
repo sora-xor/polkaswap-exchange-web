@@ -162,7 +162,7 @@
         "selectAccount": "Sélectionnez le compte approprié",
         "action": {
             "install": "Installer l'extension",
-            "learnMore": "En savoir plus",
+            "learnMore": "En savoir plus sur la connexion au portefeuille",
             "connect": "Connecter un compte",
             "refresh": "Rafraîchir"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Installer",
             "connected": "Connecté",
-            "notConnected": "Pas connecté"
+            "notConnected": "Pas connecté",
+            "recommended": "Recommandé"
         },
         "internalTitle": "Connectez-vous avec {wallet}",
         "internalText": "Vous pouvez créer ou importer un compte {Sora} existant pour vous connecter à votre compte {wallet}. Toutes les données stockées par {wallet} sont cryptées à l'aide du cryptage avancé intégré.",
         "list": {
             "integrated": "Intégré",
             "extensions": "Rallonges"
-        }
+        },
+        "disclaimer": "Veuillez noter que certains portefeuilles peuvent ne pas être entièrement pris en charge."
     },
     "wallet": {
         "WalletAssets": "Actifs",

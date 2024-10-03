@@ -162,7 +162,7 @@
         "selectAccount": "Vyberte účet, se kterým chcete pracovat",
         "action": {
             "install": "Nainstalovat rozšíření",
-            "learnMore": "Zjistit více",
+            "learnMore": "Další informace o připojení k peněžence",
             "connect": "Připojit účet",
             "refresh": "Obnovit"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Nainstalujte",
             "connected": "Připojeno",
-            "notConnected": "Nepřipojený"
+            "notConnected": "Nepřipojený",
+            "recommended": "Doporučeno"
         },
         "internalTitle": "Spojte se s {wallet}",
         "internalText": "Můžete vytvořit nebo importovat stávající účet {Sora} a propojit ho se svým účtem {wallet} . Všechna data uložená ve službě {wallet} jsou šifrována pomocí vestavěného pokročilého šifrování.",
         "list": {
             "integrated": "Integrovaný",
             "extensions": "Rozšíření"
-        }
+        },
+        "disclaimer": "Upozorňujeme, že některé peněženky nemusí být plně podporovány."
     },
     "wallet": {
         "WalletAssets": "Aktiva",

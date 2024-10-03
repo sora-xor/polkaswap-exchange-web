@@ -162,7 +162,7 @@
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
         "action": {
             "install": "Bővítmény telepítése",
-            "learnMore": "Tudj meg többet",
+            "learnMore": "További információ a pénztárca csatlakoztatásáról",
             "connect": "Fiók csatlakoztatása",
             "refresh": "Frissítés"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Telepítés",
             "connected": "csatlakoztatva",
-            "notConnected": "Nem kapcsolódik"
+            "notConnected": "Nem kapcsolódik",
+            "recommended": "Ajánlott"
         },
         "internalTitle": "Csatlakozás a következővel {wallet}",
         "internalText": "Létrehozhat vagy importálhat egy meglévő {Sora} -fiókot, hogy összekapcsolódjon {wallet} -fiókjával. A {wallet} által tárolt összes adat a beépített fejlett titkosítással titkosítva van.",
         "list": {
             "integrated": "Integrált",
             "extensions": "Kiterjesztések"
-        }
+        },
+        "disclaimer": "Kérjük, vegye figyelembe, hogy bizonyos pénztárcák nem támogatottak teljes mértékben."
     },
     "wallet": {
         "WalletAssets": "Eszközök",

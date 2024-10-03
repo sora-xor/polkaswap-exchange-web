@@ -162,7 +162,7 @@
         "selectAccount": "Chọn tài khoản để dùng",
         "action": {
             "install": "Cài đặt tiện ích mở rộng",
-            "learnMore": "Tìm hiểu thêm",
+            "learnMore": "Tìm hiểu thêm về kết nối ví",
             "connect": "Kết nối tài khoản",
             "refresh": "Làm mới"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Cài đặt",
             "connected": "kết nối",
-            "notConnected": "Không kết nối"
+            "notConnected": "Không kết nối",
+            "recommended": "Được đề xuất"
         },
         "internalTitle": "Kết nối với {wallet}",
         "internalText": "Bạn có thể tạo hoặc nhập tài khoản {Sora} hiện có để kết nối với tài khoản {wallet} của mình. Tất cả dữ liệu được lưu trữ bởi {wallet} được mã hóa bằng mã hóa nâng cao tích hợp.",
         "list": {
             "integrated": "tích hợp",
             "extensions": "tiện ích mở rộng"
-        }
+        },
+        "disclaimer": "Xin lưu ý rằng một số ví có thể không được hỗ trợ đầy đủ."
     },
     "wallet": {
         "WalletAssets": "Tài sản",
