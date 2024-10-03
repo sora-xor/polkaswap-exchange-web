@@ -67,7 +67,7 @@
           primary
         >
           <div class="asset-managers-issue s-flex">
-            <p class="p3">{{ t('assetOwner.accountWithAccess') }} <span class="asset-managers-number">(0)</span></p>
+            <p class="p3">{{ t('assetOwner.accountWithAccess') }} <span class="asset-managers-number"></span></p>
             <s-button
               class="asset-managers-issue-access-btn s-typography-button--small"
               size="mini"
