@@ -162,7 +162,7 @@
         "selectAccount": "Välj konto att arbeta med",
         "action": {
             "install": "Installera tillägg",
-            "learnMore": "Lär dig mer",
+            "learnMore": "Läs mer om plånboksanslutning",
             "connect": "Anslut konto",
             "refresh": "Uppdatera"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Installera",
             "connected": "Ansluten",
-            "notConnected": "Ej ansluten"
+            "notConnected": "Ej ansluten",
+            "recommended": "Rekommenderad"
         },
         "internalTitle": "Anslut med {wallet}",
         "internalText": "Du kan skapa eller importera ett befintligt {Sora} -konto för att ansluta till ditt {wallet} -konto. All data som lagras av {wallet} krypteras med inbyggd avancerad kryptering.",
         "list": {
             "integrated": "Integrerad",
             "extensions": "Tillägg"
-        }
+        },
+        "disclaimer": "Observera att vissa plånböcker kanske inte stöds fullt ut."
     },
     "wallet": {
         "WalletAssets": "Tillgångar",
