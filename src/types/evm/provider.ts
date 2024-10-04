@@ -7,6 +7,7 @@ export type EIP1193Provider = Eip1193Provider & {
 
 declare global {
   interface Window {
+    ethereum?: EIP1193Provider;
     fearlessWallet?: {
       provider: EIP1193Provider;
     };
