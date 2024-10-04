@@ -3,17 +3,18 @@
     <s-button
       type="action"
       class="settings-control s-pressed"
-      :tooltip="isSettingsMenuOpen ? '' : t('headerMenu.settings')"
+      :tooltip="isDropdownVisible ? '' : t('headerMenu.settings')"
       @click="handleClickHeaderMenu"
     >
       <s-dropdown
         ref="headerMenu"
+        :popper-class="`header-menu ${!isDropdownVisible ? 'slide-in' : ''}`"
         class="header-menu__button"
-        popper-class="header-menu"
         icon="grid-block-align-left-24"
         type="ellipsis"
         placement="bottom-start"
         :hide-on-click="false"
+        @visible-change="handleDropdownVisibilityChange"
       >
         <template #menu>
           <div class="header-menu__settings">
@@ -43,6 +44,14 @@
                 </template>
                 <template v-else-if="item.value === HeaderMenuType.HideBalances">
                   <s-switch class="icontype" :value="shouldBalanceBeHidden" />
+                </template>
+                <template v-else-if="item.value === HeaderMenuType.TurnPhoneHide">
+                  <s-switch
+                    v-if="isAccessRotationListener && !isAccessAccelerometrEventDeclined"
+                    class="icontype"
+                    :value="isRotatePhoneHideBalanceFeatureEnabled"
+                  />
+                  <s-icon v-else :name="item.iconType" size="14px" class="icontype" />
                 </template>
                 <template v-else>
                   <s-icon :name="item.iconType" size="14px" class="icontype" />
@@ -74,9 +83,7 @@ import type { Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency'
 enum HeaderMenuType {
   HideBalances = 'hide-balances',
   TurnPhoneHide = 'turn-phone-hide',
-  SystemPreference = 'system-preference',
   LightMode = 'light',
-  DarkMode = 'dark',
   NoirMode = 'noir',
   Theme = 'theme',
   Language = 'language',
@@ -107,12 +114,13 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
   selectedTheme: HeaderMenuType | null = null;
-  isSettingsMenuOpen = false;
+  isDropdownVisible = false;
 
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
   @state.settings.isRotatePhoneHideBalanceFeatureEnabled private isRotatePhoneHideBalanceFeatureEnabled!: boolean;
   @state.settings.isAccessRotationListener private isAccessRotationListener!: boolean;
+  @state.settings.isAccessAccelerometrEventDeclined private isAccessAccelerometrEventDeclined!: boolean;
   @state.settings.language currentLanguage!: Language;
   @state.settings.isTMA isTMA!: boolean;
   @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
@@ -139,6 +147,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   mounted() {
     this.selectedTheme = this.libraryTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
+  }
+
+  handleDropdownVisibilityChange(visible: boolean) {
+    this.isDropdownVisible = visible;
   }
 
   get isMobile(): boolean {
@@ -196,21 +208,9 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         title: this.t('headerMenu.titleTheme'),
         items: [
           {
-            value: HeaderMenuType.SystemPreference,
-            icon: 'basic-lightning-24',
-            text: 'System preferences',
-            isThemeItem: true,
-          },
-          {
             value: HeaderMenuType.LightMode,
             icon: 'various-brightness-low-24',
             text: this.t('headerMenu.switchTheme', { theme: this.t('light') }),
-            isThemeItem: true,
-          },
-          {
-            value: HeaderMenuType.DarkMode,
-            icon: 'various-moon-24',
-            text: this.t('headerMenu.switchTheme', { theme: this.t('dark') }),
             isThemeItem: true,
           },
           {
@@ -278,10 +278,25 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     this.setAlertSettingsPopup(true);
   }
 
+  getDropdownVisible(): boolean {
+    const dropdown = (this.$refs.headerMenu as any)?.dropdown;
+    return dropdown ? dropdown.visible : false;
+  }
+
   handleClickHeaderMenu(): void {
-    this.isSettingsMenuOpen = !this.isSettingsMenuOpen;
     const dropdown = (this.$refs.headerMenu as any).dropdown;
-    dropdown.visible ? dropdown.hide() : dropdown.show();
+
+    if (dropdown) {
+      // Если меню открыто, закрыть его и изменить состояние видимости
+      if (dropdown.visible) {
+        dropdown.hide();
+        this.isDropdownVisible = false;
+      } else {
+        // Если меню закрыто, открыть его и изменить состояние видимости
+        dropdown.show();
+        this.isDropdownVisible = true;
+      }
+    }
   }
 
   async handleSelectHeaderMenu(value: HeaderMenuType): Promise<void> {
@@ -342,6 +357,14 @@ $item-padding: 17px;
 .header-menu {
   $dropdown-background: var(--s-color-utility-surface);
   $dropdown-item-line-height: 42px;
+
+  transform: translateX(-100%);
+  transition: transform 0.2s cubic-bezier(0.22, 0.77, 0.81, 0.61);
+
+  &.slide-in {
+    transform: translateX(0);
+  }
+
   &.el-dropdown-menu.el-popper {
     background-color: $dropdown-background;
     box-shadow: var(--s-shadow-element-pressed);
@@ -349,9 +372,10 @@ $item-padding: 17px;
     top: -16px !important;
     max-width: $menu-setting-max-width;
     height: calc(100% - #{$footer-height} + 4px);
-    right: 0;
+    right: calc(0px - ($menu-setting-max-width - $inner-spacing-small));
     left: auto !important;
-    border-radius: var(--s-border-radius-small) 0 0 0;
+    border-radius: unset;
+    border: unset;
     .popper__arrow {
       display: none;
     }

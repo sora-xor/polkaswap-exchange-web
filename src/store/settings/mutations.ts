@@ -146,7 +146,7 @@ const mutations = defineMutations<SettingsState>()({
     settingsStorage.set('isAccessRotationListener', value);
   },
   setIsAccessAccelerometrEventDeclined(state, value: boolean): void {
-    state.isAccessAccelerometrEventDeclined = true;
+    state.isAccessAccelerometrEventDeclined = value;
     settingsStorage.set('isAccessAccelerometrEventDeclined', value);
   },
   showOrientationWarning(state): void {
