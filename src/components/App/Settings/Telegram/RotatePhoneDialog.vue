@@ -91,7 +91,6 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
             console.error('Error requesting device motion permission:', error);
           });
       } else {
-        console.info('no need permission request');
         this.setAccessGranted(true);
         this.setIsRotatePhoneHideBalanceFeatureEnabled(true);
         tmaSdkService.listenForDeviceRotation();

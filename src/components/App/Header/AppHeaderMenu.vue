@@ -285,14 +285,11 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   handleClickHeaderMenu(): void {
     const dropdown = (this.$refs.headerMenu as any).dropdown;
-
     if (dropdown) {
-      // Если меню открыто, закрыть его и изменить состояние видимости
       if (dropdown.visible) {
         dropdown.hide();
         this.isDropdownVisible = false;
       } else {
-        // Если меню закрыто, открыть его и изменить состояние видимости
         dropdown.show();
         this.isDropdownVisible = true;
       }
@@ -300,8 +297,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   async handleSelectHeaderMenu(value: HeaderMenuType): Promise<void> {
-    console.info('handleSelectHeaderMenu was called');
-    console.info(value);
     switch (value) {
       case HeaderMenuType.HideBalances:
         this.toggleHideBalance();
@@ -315,7 +310,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         tmaSdkService.updateTheme();
         break;
       case HeaderMenuType.TurnPhoneHide:
-        console.info(this.isRotatePhoneHideBalanceFeatureEnabled);
         if (this.isRotatePhoneHideBalanceFeatureEnabled) {
           this.setIsRotatePhoneHideBalanceFeatureEnabled(false);
           tmaSdkService.removeDeviceRotationListener();
@@ -427,6 +421,12 @@ $item-padding: 17px;
     &:focus:hover {
       background-color: transparent;
       color: var(--s-color-base-content-secondary);
+    }
+
+    @include tablet(true) {
+      &:hover {
+        color: unset !important;
+      }
     }
 
     .current-currency {

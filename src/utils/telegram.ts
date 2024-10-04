@@ -76,10 +76,7 @@ class TmaSdk {
         store.state.settings.isAccessAccelerometrEventDeclined
       ) {
         const accessGranted = await this.checkAccelerometerAccess();
-        console.info('here is access to accelerometr');
-        console.info(accessGranted);
         if (accessGranted) {
-          console.info('we are in accessgratned');
           this.listenForDeviceRotation();
           store.commit.settings.setIsRotatePhoneHideBalanceFeatureEnabled(true);
           store.commit.settings.setAccessGranted(true);
@@ -127,7 +124,6 @@ class TmaSdk {
   }
 
   public listenForDeviceRotation(): void {
-    console.info('called listenForDeviceRotation');
     let wasRotatedTo180 = false;
 
     this.deviceOrientationHandler = (event: DeviceOrientationEvent) => {
@@ -139,9 +135,7 @@ class TmaSdk {
         }
 
         if (wasRotatedTo180 && Math.abs(beta) < 30) {
-          console.info('was rotated, we will use haptic');
           useHaptic('soft');
-          console.info('now we will toggle hidebalance');
           store.commit.wallet.settings.toggleHideBalance();
           store.commit.wallet.account.syncWithStorage();
           wasRotatedTo180 = false;
@@ -163,11 +157,9 @@ class TmaSdk {
     let hasAccess = false;
 
     try {
-      // Check if permissions API is available and try to query the accelerometer permission
       if ('permissions' in navigator && navigator.permissions.query) {
         try {
           const permissionStatus = await (navigator.permissions.query as any)({ name: 'accelerometer' });
-          console.info(`Accelerometer permission state: ${permissionStatus.state}`);
           hasAccess = permissionStatus.state === 'granted';
         } catch (permissionError) {
           console.warn('Error querying accelerometer permission:', permissionError);
@@ -176,17 +168,13 @@ class TmaSdk {
         console.warn('Permissions API is not available in this environment.');
       }
 
-      // If we don't have access through permissions API, attempt direct access
       if (!hasAccess) {
-        console.info('Attempting direct access to accelerometer...');
-
         try {
           const sensor = new (window as any).Accelerometer({ frequency: 60 });
 
           sensor.onreading = () => {
             hasAccess = true;
-            console.info('Accelerometer readings received.');
-            sensor.stop(); // Stop the sensor once access is confirmed
+            sensor.stop();
           };
 
           sensor.onerror = (event: { error: any }) => {
@@ -203,8 +191,6 @@ class TmaSdk {
         }
       }
 
-      // Log the result of the access attempt
-      console.info('Has access to accelerometer:', hasAccess);
       return hasAccess;
     } catch (error) {
       console.error('Unexpected error during accelerometer check:', error);
