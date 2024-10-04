@@ -18,7 +18,16 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { action, getter, state } from '@/store/decorators';
 import type { AppEIPProvider } from '@/types/evm/provider';
 
-import type { WalletInfo } from '@sora-test/wallet-connect/types';
+type EvmWalletInfo = {
+  extensionName: string;
+  title: string;
+  logo: {
+    src: string;
+    alt: string;
+  };
+  installed?: boolean;
+  installUrl?: string;
+};
 
 @Component({
   components: {
@@ -51,7 +60,7 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
     this.setSelectProviderDialogVisibility(flag);
   }
 
-  get wallets(): WalletInfo[] {
+  get wallets(): EvmWalletInfo[] {
     return this.appEvmProviders.map((provider) => {
       return {
         extensionName: provider.uuid,
@@ -62,8 +71,6 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
         },
         installed: provider.installed,
         installUrl: provider.installUrl,
-        chromeUrl: '', // to match type
-        mozillaUrl: '', // to match type
       };
     });
   }
@@ -84,7 +91,7 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
     return !!this.loadingWallet && !!this.selectedWallet && this.loadingWallet === this.selectedWallet;
   }
 
-  async handleSelectProvider(wallet: WalletInfo): Promise<void> {
+  async handleSelectProvider(wallet: EvmWalletInfo): Promise<void> {
     const uuid = wallet.extensionName;
     const provider = this.appEvmProviders.find((provider) => provider.uuid === uuid);
     if (!provider) return;
