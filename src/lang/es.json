@@ -872,10 +872,14 @@
         "hideBalances": "Ocultar saldos",
         "settings": "Ajustes",
         "switchTheme": "Cambiar al modo {theme}",
-        "switchLanguage": "Elige lenguaje",
         "showDisclaimer": "Mostrar descargo de responsabilidad",
         "hideDisclaimer": "Ocultar descargo de responsabilidad",
-        "selectCurrency": "Seleccione el tipo de moneda"
+        "selectCurrency": "Seleccione el tipo de moneda",
+        "turnPhoneHideBalances": "Gire el teléfono y oculte",
+        "titleBalance": "Saldos",
+        "titleTheme": "Tema de color",
+        "titleCurrency": "Moneda fiduciaria",
+        "titleMisc": "Varios"
     },
     "sentText": "Enviado",
     "learnMoreText": "Aprende más",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Abrir {Telegram}",
         "toEarnPoints": "Para ganar puntos"
     },
-    "addAssetsText": "Añadir activo | Añadir activos"
+    "addAssetsText": "Añadir activo | Añadir activos",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Gire su dispositivo boca abajo para ocultar los saldos.",
+        "info": "Para mayor privacidad, incline su dispositivo con la pantalla hacia abajo para ocultar instantáneamente los saldos de sus activos. Esta función utiliza los sensores integrados de su teléfono.",
+        "enableAcceleration": "Habilite el acceso a la aceleración en su configuración.",
+        "gyroscropePhone": "Nuestra tecnología utiliza el giroscopio incorporado de su teléfono para ocultar instantáneamente su saldo cuando inclina el dispositivo"
+    }
 }

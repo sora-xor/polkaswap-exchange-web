@@ -872,10 +872,14 @@
         "hideBalances": "Dölj Saldon",
         "settings": "Inställningar",
         "switchTheme": "Byt till {theme} Läge",
-        "switchLanguage": "Välj Språk",
         "showDisclaimer": "Visa ansvarsfriskrivning",
         "hideDisclaimer": "Dölj ansvarsfriskrivning",
-        "selectCurrency": "Välj valuta"
+        "selectCurrency": "Välj valuta",
+        "turnPhoneHideBalances": "Vänd telefonen och dölj",
+        "titleBalance": "Saldo",
+        "titleTheme": "Färgtema",
+        "titleCurrency": "Fiatvaluta",
+        "titleMisc": "Övrigt"
     },
     "sentText": "Skickat",
     "learnMoreText": "Lär dig mer",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Öppna {Telegram}",
         "toEarnPoints": "För att tjäna poäng"
     },
-    "addAssetsText": "Lägg till tillgång | Lägg till tillgångar"
+    "addAssetsText": "Lägg till tillgång | Lägg till tillgångar",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Vänd din enhet upp och ner för att dölja saldon.",
+        "info": "För extra integritet, luta din enhet med skärmen nedåt för att omedelbart dölja dina tillgångssaldon. Denna funktion använder telefonens inbyggda sensorer.",
+        "enableAcceleration": "Aktivera accelerationsåtkomst i dina inställningar.",
+        "gyroscropePhone": "Vår teknik använder telefonens inbyggda gyroskop för att omedelbart dölja ditt saldo när du lutar din enhet."
+    }
 }

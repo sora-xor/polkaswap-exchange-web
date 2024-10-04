@@ -872,10 +872,14 @@
         "hideBalances": "Sembunyikan Saldo",
         "settings": "Pengaturan",
         "switchTheme": "Beralih ke Mode {theme}",
-        "switchLanguage": "Pilih bahasa",
         "showDisclaimer": "Tampilkan Penafian",
         "hideDisclaimer": "Sembunyikan Penafian",
-        "selectCurrency": "Pilih Mata Uang"
+        "selectCurrency": "Pilih Mata Uang",
+        "turnPhoneHideBalances": "Putar ponsel & sembunyikan",
+        "titleBalance": "Saldo",
+        "titleTheme": "Tema warna",
+        "titleCurrency": "Mata uang fiat",
+        "titleMisc": "Lainnya"
     },
     "sentText": "Terkirim",
     "learnMoreText": "Pelajari lebih lanjut",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Buka {Telegram}",
         "toEarnPoints": "Untuk mendapatkan poin"
     },
-    "addAssetsText": "Tambah aset | Tambah aset-aset"
+    "addAssetsText": "Tambah aset | Tambah aset-aset",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Balikkan perangkat Anda terbalik untuk menyembunyikan saldo.",
+        "info": "Untuk privasi tambahan, miringkan perangkat Anda menghadap ke bawah untuk menyembunyikan saldo aset Anda secara instan. Fitur ini menggunakan sensor bawaan ponsel Anda.",
+        "enableAcceleration": "Aktifkan akses akselerasi di pengaturan Anda.",
+        "gyroscropePhone": "Teknologi kami menggunakan giroskop bawaan ponsel Anda untuk menyembunyikan saldo Anda secara instan saat Anda memiringkan perangkat."
+    }
 }

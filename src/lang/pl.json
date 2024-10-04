@@ -872,10 +872,14 @@
         "hideBalances": "Ukryj salda",
         "settings": "Ustawienia",
         "switchTheme": "Przełącz na tryb {theme}",
-        "switchLanguage": "Wybierz język",
         "showDisclaimer": "Pokaż zastrzeżenie",
         "hideDisclaimer": "Ukryj wyłączenie odpowiedzialności",
-        "selectCurrency": "Wybierz walutę"
+        "selectCurrency": "Wybierz walutę",
+        "turnPhoneHideBalances": "Obróć telefon i ukryj",
+        "titleBalance": "Salda",
+        "titleTheme": "Motyw kolorystyczny",
+        "titleCurrency": "Waluta fiat",
+        "titleMisc": "Inne"
     },
     "sentText": "Wysłano",
     "learnMoreText": "Dowiedz się więcej",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Otwórz {Telegram}",
         "toEarnPoints": "Aby zdobyć punkty"
     },
-    "addAssetsText": "Dodaj aktywo | Dodaj aktywa"
+    "addAssetsText": "Dodaj aktywo | Dodaj aktywa",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Obróć urządzenie do góry nogami, aby ukryć salda.",
+        "info": "Dla dodatkowej prywatności obróć urządzenie ekranem w dół, aby natychmiast ukryć swoje salda aktywów. Ta funkcja wykorzystuje wbudowane czujniki telefonu.",
+        "enableAcceleration": "Włącz dostęp do akceleracji w ustawieniach.",
+        "gyroscropePhone": "Nasza technologia wykorzystuje wbudowany żyroskop telefonu, aby natychmiast ukryć saldo po przechyleniu urządzenia."
+    }
 }

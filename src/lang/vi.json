@@ -872,10 +872,14 @@
         "hideBalances": "Ẩn số dư",
         "settings": "Cài đặt",
         "switchTheme": "Chuyển sang chế độ {theme}",
-        "switchLanguage": "Chọn ngôn ngữ",
         "showDisclaimer": "Hiển thị tuyên bố miễn trừ trách nhiệm",
         "hideDisclaimer": "Ẩn tuyên bố từ chối trách nhiệm",
-        "selectCurrency": "Chọn tiền tệ"
+        "selectCurrency": "Chọn tiền tệ",
+        "turnPhoneHideBalances": "Lật điện thoại và ẩn",
+        "titleBalance": "Số dư",
+        "titleTheme": "Chủ đề màu sắc",
+        "titleCurrency": "Tiền pháp định",
+        "titleMisc": "Khác"
     },
     "sentText": "Đã gửi",
     "learnMoreText": "Tìm hiểu thêm",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Mở {Telegram}",
         "toEarnPoints": "Để kiếm điểm"
     },
-    "addAssetsText": "Thêm tài sản | Thêm các tài sản"
+    "addAssetsText": "Thêm tài sản | Thêm các tài sản",
+    "noir": "Đen",
+    "rotatePhoneNotification": {
+        "title": "Lật ngược thiết bị của bạn để ẩn số dư.",
+        "info": "Để tăng tính bảo mật, hãy nghiêng thiết bị của bạn úp xuống để ẩn số dư tài sản ngay lập tức. Tính năng này sử dụng cảm biến tích hợp sẵn của điện thoại.",
+        "enableAcceleration": "Bật quyền truy cập gia tốc trong cài đặt của bạn.",
+        "gyroscropePhone": "Công nghệ của chúng tôi sử dụng con quay hồi chuyển tích hợp sẵn của điện thoại để ẩn số dư của bạn ngay lập tức khi bạn nghiêng thiết bị."
+    }
 }
