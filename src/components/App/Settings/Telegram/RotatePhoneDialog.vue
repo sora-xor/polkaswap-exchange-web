@@ -21,13 +21,6 @@
       >
         {{ t('browserPermission.btnAllow') }}
       </s-button>
-      <s-button
-        type="primary"
-        class="s-typography-button--large browser-notification-dialog__btn"
-        @click="declinedAccess()"
-      >
-        decline access
-      </s-button>
     </div>
   </dialog-base>
 </template>
@@ -107,11 +100,6 @@ export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
       console.warn('Device does not support motion events.');
     }
     this.visibility = false;
-  }
-
-  declinedAccess() {
-    this.setAccessGranted(false);
-    this.setIsAccessAccelerometrEventDeclined(true);
   }
 }
 </script>
