@@ -334,7 +334,7 @@ export default class RemoveLiquidityForm extends Mixins(
   async withdrawLiquidity(): Promise<void> {
     await this.withNotifications(async () => {
       await this.removeLiquidity();
-
+      // to close dialog that contains form
       this.$emit('back');
     });
   }

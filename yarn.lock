@@ -1718,11 +1718,6 @@
   resolved "https://registry.yarnpkg.com/@metamask/safe-event-emitter/-/safe-event-emitter-3.1.1.tgz#e89b840a7af8097a8ed4953d8dc8470d1302d3ef"
   integrity sha512-ihb3B0T/wJm1eUuArYP4lCTSEoZsClHhuWyfo/kMX3m/odpqNcPfsz5O2A3NT7dXCAgWPGDQGPqygCpgeniKMw==
 
-"@metamask/types@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@metamask/types/-/types-1.1.0.tgz#9bd14b33427932833c50c9187298804a18c2e025"
-  integrity sha512-EEV/GjlYkOSfSPnYXfOosxa3TqYtIW3fhg6jdw+cok/OhMgNn4wCfbENFqjytrHMU2f7ZKtBAvtiP5V8H44sSw==
-
 "@motionone/animation@^10.15.1", "@motionone/animation@^10.16.3":
   version "10.16.3"
   resolved "https://registry.yarnpkg.com/@motionone/animation/-/animation-10.16.3.tgz#f5b71e27fd8b88b61f983adb0ed6c8e3e89281f9"
@@ -2179,7 +2174,7 @@
     "@polkadot/util" "^10.4.2"
     "@polkadot/util-crypto" "^10.4.2"
 
-"@polkadot/extension-inject@0.44.7", "@polkadot/extension-inject@^0.44.7", "@polkadot/extension-inject@^0.44.9":
+"@polkadot/extension-inject@^0.44.7", "@polkadot/extension-inject@^0.44.9":
   version "0.44.9"
   resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.44.9.tgz#5c4486fabdd799387274a62b0628688e162e206c"
   integrity sha512-c23vp0C/8R5C3gdqoH2JRlKcvVjJFl9uM3t6rM/uwDs7GEQr9jrsmIOHGhNoI1/M/xBrCm/KuYNYi0dafdm/Vw==
@@ -2955,21 +2950,10 @@
     "@polkadot/types" "9.14.2"
     "@sora-substrate/type-definitions" "1.40.4"
 
-"@sora-test/wallet-connect@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@sora-test/wallet-connect/-/wallet-connect-0.0.9.tgz#6d18f0a711ee450e045f9f51d43b9f614a9d2788"
-  integrity sha512-V5MztZiXpOKwZ5BS/pFwEKIL12eEiOeh6Sbg6t8Y6BcWX3xswAYcDtqAObuKVBX7OGlSJ0wUYi7pCrIKlUNu/w==
-  dependencies:
-    "@metamask/providers" "^8.1.1"
-    "@metamask/types" "^1.1.0"
-    "@polkadot/extension-inject" "0.44.7"
-    "@polkadot/types" "9.14.2"
-    "@polkadot/util" "10.4.2"
-
-"@soramitsu-ui/ui-vue2@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@soramitsu-ui/ui-vue2/-/ui-vue2-1.1.4.tgz#a2c9b396818529ce14bc76ea5d5ac086f0da3653"
-  integrity sha512-m2VII+epVPt4fB1SlhGWBxwgJJNRw0VBc4ROf9GrEz4tBQBCeqs/jNAxjK1jQyzSaTkDuPp/iyNVtlawMPbVcQ==
+"@soramitsu-ui/ui-vue2@^1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@soramitsu-ui/ui-vue2/-/ui-vue2-1.1.5.tgz#44bc1a653fc8e4acd76f353a5dac765a125524ab"
+  integrity sha512-cyipq+/heSio9IctA/UM2DFvmxkauegfS9jNMsckQNsdAX/bG5xV03B0KlisKh77sVpg7u6O7vFPhXYv23l+rg==
   dependencies:
     core-js "^3.26.1"
     element-resize-detector "^1.2.4"
@@ -2983,15 +2967,15 @@
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
 
-"@soramitsu/soraneo-wallet-web@1.40.13":
-  version "1.40.13"
-  resolved "https://registry.yarnpkg.com/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.40.13.tgz#43937eb3a57eba3448a379ac5217059e9e23b4e9"
-  integrity sha512-cEJCw0BA5nXWDDsi1Gwx5rLHl30Hbh6mxBZKrcZMpfMz924IJ3GBTiqAmGwFarXT8MKhqkSky03+0CCA04pKXw==
+"@soramitsu/soraneo-wallet-web@1.40.15":
+  version "1.40.15"
+  resolved "https://registry.yarnpkg.com/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.40.15.tgz#0a5103282cfe88791948c764d8e521f11cddee79"
+  integrity sha512-oLKRDGVyo3qmgDL2a6p2RwfWhcUpPe1FB2J98DMXadLE/ItvaRu5/kiFnOK4hpAIWDF3+nX9frK0xKeLvO4dWQ==
   dependencies:
+    "@polkadot/extension-inject" "^0.44.7"
     "@polkadot/vue-identicon" "2.12.1"
     "@sora-substrate/sdk" "1.40.4"
-    "@sora-test/wallet-connect" "^0.0.9"
-    "@soramitsu-ui/ui-vue2" "^1.1.4"
+    "@soramitsu-ui/ui-vue2" "^1.1.5"
     "@urql/core" "^5.0.4"
     "@walletconnect/modal" "^2.6.2"
     "@walletconnect/universal-provider" "^2.14.0"
