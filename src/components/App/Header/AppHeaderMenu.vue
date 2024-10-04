@@ -303,11 +303,13 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         break;
       case HeaderMenuType.LightMode:
       case HeaderMenuType.NoirMode:
-        this.selectedTheme = value;
-        await switchTheme();
-        await this.$nextTick();
-        updatePipTheme();
-        tmaSdkService.updateTheme();
+        if (this.selectedTheme !== value) {
+          this.selectedTheme = value;
+          await switchTheme();
+          await this.$nextTick();
+          updatePipTheme();
+          tmaSdkService.updateTheme();
+        }
         break;
       case HeaderMenuType.TurnPhoneHide:
         if (this.isRotatePhoneHideBalanceFeatureEnabled) {
@@ -425,7 +427,7 @@ $item-padding: 17px;
 
     @include tablet(true) {
       &:hover {
-        color: unset !important;
+        color: var(--s-color-base-content-primary) !important;
       }
     }
 
