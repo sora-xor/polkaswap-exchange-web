@@ -1,7 +1,9 @@
 <template>
   <dialog-base :visible.sync="visibility" :title="t('connectEthereumWalletText')" append-to-body>
     <extension-connection-list
+      show-disclaimer
       :wallets="wallets"
+      :recommended-wallets="recommendedWallets"
       :connected-wallet="connectedWallet"
       :selected-wallet="selectedWallet"
       :selected-wallet-loading="selectedWalletLoading"
@@ -17,6 +19,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { action, getter, state } from '@/store/decorators';
 import type { AppEIPProvider } from '@/types/evm/provider';
+import { PredefinedProvider } from '@/utils/connection/evm/providers';
 
 type EvmWalletInfo = {
   extensionName: string;
@@ -41,6 +44,8 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
   @getter.web3.appEvmProviders private appEvmProviders!: AppEIPProvider[];
 
   private providersSubscription: Nullable<VoidFunction> = null;
+
+  readonly recommendedWallets = [PredefinedProvider.Fearless];
 
   @Watch('visibility')
   private async updateProviders(value: boolean): Promise<void> {
