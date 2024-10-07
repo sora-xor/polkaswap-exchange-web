@@ -293,38 +293,38 @@ const parseCounter = (data: AccountMetaEventCounter) => {
 };
 
 const parseAccountMeta = (item: QueryData<AccountMetaEntity>) => {
-  return item.data;
-  // const {
-  //   createdAtTimestamp,
-  //   createdAtBlock,
-  //   xorFees,
-  //   xorBurned,
-  //   xorStakingValRewards,
-  //   orderBook,
-  //   vault,
-  //   governance,
-  //   deposit,
-  // } = item.data;
+  // return item.data;
+  const {
+    createdAtTimestamp,
+    createdAtBlock,
+    xorFees,
+    xorBurned,
+    xorStakingValRewards,
+    orderBook,
+    vault,
+    governance,
+    deposit,
+  } = item.data;
 
-  // return {
-  //   createdAt: {
-  //     block: Number(createdAtBlock),
-  //     timestamp: Number(createdAtTimestamp) * 1000,
-  //   },
-  //   fees: parseVolume(xorFees),
-  //   burned: parseVolume(xorBurned),
-  //   staking: parseVolume(xorStakingValRewards),
-  //   orderBook: parseCounter(orderBook),
-  //   kensetsu: parseCounter(vault),
-  //   governance: {
-  //     votes: new FPNumber(governance.votes),
-  //     ...parseVolume(governance),
-  //   },
-  //   bridge: {
-  //     incomingUSD: new FPNumber(deposit.incomingUSD),
-  //     outgoingUSD: new FPNumber(deposit.outgoingUSD),
-  //   },
-  // };
+  return {
+    createdAt: {
+      block: Number(createdAtBlock),
+      timestamp: Number(createdAtTimestamp) * 1000,
+    },
+    fees: parseVolume(xorFees),
+    burned: parseVolume(xorBurned),
+    staking: parseVolume(xorStakingValRewards),
+    orderBook: parseCounter(orderBook),
+    kensetsu: parseCounter(vault),
+    governance: {
+      votes: new FPNumber(governance.votes),
+      ...parseVolume(governance),
+    },
+    bridge: {
+      incomingUSD: new FPNumber(deposit.incomingUSD),
+      outgoingUSD: new FPNumber(deposit.outgoingUSD),
+    },
+  };
 };
 
 export async function fetchAccountMeta(accountAddress: string) {

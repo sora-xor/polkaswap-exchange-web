@@ -3,8 +3,8 @@ import { Category } from '@/types/pointSystem';
 export const POINTS_PER_PERCENT = 1000;
 
 const defaultMultipliers = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
-const thresholdLevelZero25K = [0, 100, 500, 1000, 5000, 25000];
-const thresholdLevelZero10K = [0, 50, 100, 500, 1000, 10000];
+const progressZero25K = [0, 100, 500, 1000, 5000, 25000];
+const progressZero10K = [0, 50, 100, 500, 1000, 10000];
 
 const timestampThresholds = [
   1667260800, // Nov 1, 2022
@@ -24,47 +24,47 @@ const generateLevels = (thresholds: number[], multipliers: number[] = defaultMul
 export const categoriesPointSystem: { [key: string]: Category } = {
   liquidityProvision: {
     maxPercentage: 10,
-    levels: generateLevels(thresholdLevelZero25K),
+    levels: generateLevels(progressZero25K),
   },
-  referralSystem: {
+  referralRewards: {
     maxPercentage: 7,
     levels: generateLevels([0, 10, 50, 100, 250, 1000]),
   },
   depositVolumeBridges: {
     maxPercentage: 6,
-    levels: generateLevels(thresholdLevelZero25K),
+    levels: generateLevels(progressZero25K),
   },
   networkFeeSpent: {
     maxPercentage: 5,
-    levels: generateLevels(thresholdLevelZero10K),
+    levels: generateLevels(progressZero10K),
   },
   XORBurned: {
     maxPercentage: 5,
-    levels: generateLevels(thresholdLevelZero10K),
+    levels: generateLevels(progressZero10K),
   },
   XORHoldings: {
     maxPercentage: 5,
-    levels: generateLevels(thresholdLevelZero10K),
+    levels: generateLevels(progressZero10K),
   },
   kensetsuVolumeRepaid: {
     maxPercentage: 5,
-    levels: generateLevels(thresholdLevelZero10K),
+    levels: generateLevels(progressZero10K),
   },
   kensetsuHold: {
     maxPercentage: 5,
-    levels: generateLevels(thresholdLevelZero10K),
+    levels: generateLevels(progressZero10K),
   },
   orderbookVolume: {
     maxPercentage: 5,
-    levels: generateLevels(thresholdLevelZero10K),
+    levels: generateLevels(progressZero10K),
   },
   governanceLockedXOR: {
     maxPercentage: 4,
-    levels: generateLevels(thresholdLevelZero25K),
+    levels: generateLevels(progressZero25K),
   },
   nativeXorStaking: {
     maxPercentage: 2.5,
-    levels: generateLevels(thresholdLevelZero10K),
+    levels: generateLevels(progressZero10K),
   },
   firstTxAccount: {
     maxPercentage: 0.5,

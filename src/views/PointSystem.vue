@@ -157,7 +157,7 @@ import {
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import { action, getter, state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
-import { formatAmountWithSuffix } from '@/utils';
+import { formatAmountWithSuffix, convertFPNumberToNumber } from '@/utils';
 import { calculateAllCategoryPoints } from '@/utils/pointSystem';
 
 import type { NetworkFeesObject, FPNumber } from '@sora-substrate/sdk';
@@ -328,17 +328,29 @@ export default class PointSystem extends Mixins(
       this.totalSwapTxs = await fetchCount(0, end, account, CountType.Swap);
       this.poolDepositCount = await fetchCount(0, end, account, CountType.PoolDeposit);
       this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
-      // const accountMeta = await fetchAccountMeta(account);
+      const accountMeta = await fetchAccountMeta(account);
+
+      // TODO maybe move somewhere
+      const liquidityProvision = 0; // FOR NOW don't have it I think
+      const fees = convertFPNumberToNumber(accountMeta?.fees.amountUSD ?? this.Zero);
+      const bridgeVolume = convertFPNumberToNumber(this.bridgeVolume);
+      const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards ?? this.Zero);
+      const XORBurned = convertFPNumberToNumber(accountMeta?.burned.amountUSD ?? this.Zero);
+      console.info(fees);
+      console.info(bridgeVolume);
+      console.info(referralRewards);
+      console.info(XORBurned);
+
       // Тут составим объект который передадим в utils для подсчета поинтов
-      console.info(categoriesPointSystem);
       // Пример использования:
-      const inputValues = {
-        liquidityProvision: 50,
-        referralSystem: 300,
-        depositVolumeBridges: 27650,
-        networkFeeSpent: 100,
+      const pointsForCategories = {
+        liquidityProvision: liquidityProvision, // FOR now we don't have it
+        referralRewards: referralRewards,
+        depositVolumeBridges: bridgeVolume,
+        networkFeeSpent: fees,
+        XORBurned: XORBurned,
       };
-      console.info(calculateAllCategoryPoints(inputValues));
+      console.info(calculateAllCategoryPoints(pointsForCategories));
       // console.info('AccountMeta', accountMeta);
     }
   }
