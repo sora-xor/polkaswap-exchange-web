@@ -158,7 +158,7 @@ import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import { action, getter, state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, convertFPNumberToNumber } from '@/utils';
-import { calculateAllCategoryPoints } from '@/utils/pointSystem';
+import { pointsService } from '@/utils/pointSystem';
 
 import type { NetworkFeesObject, FPNumber } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
@@ -342,6 +342,41 @@ export default class PointSystem extends Mixins(
     return fiatBalanceFloat;
   }
 
+  getPointsForCategories(accountMeta: any): any {
+    const liquidityProvision = this.getTotalLiquidityFiatValue();
+    const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards ?? this.Zero);
+    const depositVolumeBridges =
+      convertFPNumberToNumber(accountMeta?.bridge.incomingUSD ?? this.Zero) +
+      convertFPNumberToNumber(accountMeta?.bridge.outgoingUSD ?? this.Zero);
+    const networkFeeSpent = convertFPNumberToNumber(accountMeta?.fees.amountUSD ?? this.Zero);
+    const XORBurned = convertFPNumberToNumber(accountMeta?.burned.amountUSD ?? this.Zero);
+    const XORHoldings = this.getCurrentFiatBalanceForToken(this.xorSymbol);
+    const kensetsuVolumeRepaid = convertFPNumberToNumber(accountMeta?.kensetsu.amountUSD ?? this.Zero);
+    const kensetsuHold = this.getCurrentFiatBalanceForToken(KUSD.symbol);
+    const orderbookVolume = convertFPNumberToNumber(accountMeta?.orderBook.amountUSD ?? this.Zero);
+    const governanceLockedXOR = convertFPNumberToNumber(accountMeta?.governance.amountUSD ?? this.Zero);
+    const nativeXorStaking = convertFPNumberToNumber(accountMeta?.staking.amountUSD ?? this.Zero);
+    const firstTxAccount = accountMeta?.createdAt.timestamp ?? 0;
+
+    // Тут составим объект который передадим в utils для подсчета поинтов
+    // Пример использования:
+    const pointsForCategories = {
+      liquidityProvision,
+      referralRewards,
+      depositVolumeBridges,
+      networkFeeSpent,
+      XORBurned,
+      XORHoldings,
+      kensetsuVolumeRepaid,
+      kensetsuHold,
+      orderbookVolume,
+      governanceLockedXOR,
+      nativeXorStaking,
+      firstTxAccount,
+    };
+    return pointsForCategories;
+  }
+
   private async initData(): Promise<void> {
     if (this.isLoggedIn) {
       // Referral rewards
@@ -360,39 +395,7 @@ export default class PointSystem extends Mixins(
       this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
       const accountMeta = await fetchAccountMeta(account);
 
-      // TODO maybe move somewhere
-      const liquidityProvision = this.getTotalLiquidityFiatValue();
-      const fees = convertFPNumberToNumber(accountMeta?.fees.amountUSD ?? this.Zero);
-      const bridgeVolume =
-        convertFPNumberToNumber(accountMeta?.bridge.incomingUSD ?? this.Zero) +
-        convertFPNumberToNumber(accountMeta?.bridge.outgoingUSD ?? this.Zero);
-      const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards ?? this.Zero);
-      const XORBurned = convertFPNumberToNumber(accountMeta?.burned.amountUSD ?? this.Zero);
-      const XORFiatBalanceCurrent = this.getCurrentFiatBalanceForToken(this.xorSymbol);
-      const kensetsuVolumeOfRepaid = convertFPNumberToNumber(accountMeta?.kensetsu.amountUSD ?? this.Zero);
-      const KUSDHoldCurrent = this.getCurrentFiatBalanceForToken(KUSD.symbol);
-      const orderBookVolume = convertFPNumberToNumber(accountMeta?.orderBook.amountUSD ?? this.Zero);
-      const governanceLockedXOR = convertFPNumberToNumber(accountMeta?.governance.amountUSD ?? this.Zero);
-      const nativeXORStaking = convertFPNumberToNumber(accountMeta?.staking.amountUSD ?? this.Zero);
-      const firstTx = accountMeta?.createdAt.timestamp ?? 0;
-
-      // Тут составим объект который передадим в utils для подсчета поинтов
-      // Пример использования:
-      const pointsForCategories = {
-        liquidityProvision: liquidityProvision,
-        referralRewards: referralRewards,
-        depositVolumeBridges: bridgeVolume,
-        networkFeeSpent: fees,
-        XORBurned: XORBurned,
-        XORHoldings: XORFiatBalanceCurrent,
-        kensetsuVolumeRepaid: kensetsuVolumeOfRepaid,
-        kensetsuHold: KUSDHoldCurrent,
-        orderbookVolume: orderBookVolume,
-        governanceLockedXOR: governanceLockedXOR,
-        nativeXorStaking: nativeXORStaking,
-        firstTxAccount: firstTx,
-      };
-      console.info(calculateAllCategoryPoints(pointsForCategories));
+      console.info(pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta)));
       console.info('AccountMeta', accountMeta);
     }
   }
