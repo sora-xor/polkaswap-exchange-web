@@ -162,6 +162,7 @@ import { calculateAllCategoryPoints } from '@/utils/pointSystem';
 
 import type { NetworkFeesObject, FPNumber } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 /*
@@ -196,6 +197,7 @@ export default class PointSystem extends Mixins(
   @state.referrals.referralRewards private referralRewards!: Nullable<ReferrerRewards>;
   @state.settings.blockNumber private blockNumber!: number;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
 
   @getter.libraryTheme private libraryTheme!: Theme;
   @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
@@ -312,6 +314,13 @@ export default class PointSystem extends Mixins(
     return this.getFiatAmountByFPNumber(this.referralRewards.rewards) || ZeroStringValue;
   }
 
+  getCurrnetFiatBalanceForToken(assetSymbol: string): number {
+    const fiatBalanceString =
+      this.getFiatBalance(this.accountAssets.find((asset) => asset.symbol === assetSymbol)) ?? '0';
+    const fiatBalanceFloat = parseFloat(fiatBalanceString.replace(',', '.'));
+    return fiatBalanceFloat;
+  }
+
   private async initData(): Promise<void> {
     if (this.isLoggedIn) {
       // Referral rewards
@@ -336,10 +345,12 @@ export default class PointSystem extends Mixins(
       const bridgeVolume = convertFPNumberToNumber(this.bridgeVolume);
       const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards ?? this.Zero);
       const XORBurned = convertFPNumberToNumber(accountMeta?.burned.amountUSD ?? this.Zero);
+      const XORFiatBalanceCurrent = this.getCurrnetFiatBalanceForToken(this.xorSymbol);
       console.info(fees);
       console.info(bridgeVolume);
       console.info(referralRewards);
       console.info(XORBurned);
+      console.info(XORFiatBalanceCurrent); // Выводит 'number', если переменная является числом
 
       // Тут составим объект который передадим в utils для подсчета поинтов
       // Пример использования:
@@ -349,6 +360,7 @@ export default class PointSystem extends Mixins(
         depositVolumeBridges: bridgeVolume,
         networkFeeSpent: fees,
         XORBurned: XORBurned,
+        XORHoldings: XORFiatBalanceCurrent,
       };
       console.info(calculateAllCategoryPoints(pointsForCategories));
       // console.info('AccountMeta', accountMeta);
