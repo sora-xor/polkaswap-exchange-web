@@ -363,7 +363,9 @@ export default class PointSystem extends Mixins(
       // TODO maybe move somewhere
       const liquidityProvision = this.getTotalLiquidityFiatValue();
       const fees = convertFPNumberToNumber(accountMeta?.fees.amountUSD ?? this.Zero);
-      const bridgeVolume = convertFPNumberToNumber(this.bridgeVolume);
+      const bridgeVolume =
+        convertFPNumberToNumber(accountMeta?.bridge.incomingUSD ?? this.Zero) +
+        convertFPNumberToNumber(accountMeta?.bridge.outgoingUSD ?? this.Zero);
       const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards ?? this.Zero);
       const XORBurned = convertFPNumberToNumber(accountMeta?.burned.amountUSD ?? this.Zero);
       const XORFiatBalanceCurrent = this.getCurrentFiatBalanceForToken(this.xorSymbol);
