@@ -7,11 +7,11 @@ const progressZero25K = [0, 100, 500, 1000, 5000, 25000];
 const progressZero10K = [0, 50, 100, 500, 1000, 10000];
 
 const timestampThresholds = [
-  1667260800, // Nov 1, 2022
-  1672531200, // Jan 1, 2023
-  1685603802, // Jun 1, 2023
-  1704067200, // Jan 1, 2024
-  1717226202, // Jun 1, 2024
+  1667260800000, // Nov 1, 2022
+  1672531200000, // Jan 1, 2023
+  1685603802000, // Jun 1, 2023
+  1704067200000, // Jan 1, 2024
+  1717226202000, // Jun 1, 2024
 ];
 
 const generateLevels = (thresholds: number[], multipliers: number[] = defaultMultipliers) => {

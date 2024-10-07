@@ -139,7 +139,7 @@
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR, KUSD } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -198,13 +198,17 @@ export default class PointSystem extends Mixins(
   @state.settings.blockNumber private blockNumber!: number;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
+  @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
   @getter.libraryTheme private libraryTheme!: Theme;
   @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
   @getter.wallet.settings.currencySymbol currencySymbol!: string;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   @action.referrals.getAccountReferralRewards private getAccountReferralRewards!: AsyncFnWithoutArgs;
+  @action.pool.subscribeOnAccountLiquidityList private subscribeOnList!: AsyncFnWithoutArgs;
+  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnUpdates!: AsyncFnWithoutArgs;
 
   private burnData: Nullable<FPNumber> = null;
   private bridgeData: BridgeData[] = [];
@@ -314,7 +318,24 @@ export default class PointSystem extends Mixins(
     return this.getFiatAmountByFPNumber(this.referralRewards.rewards) || ZeroStringValue;
   }
 
-  getCurrnetFiatBalanceForToken(assetSymbol: string): number {
+  getTotalLiquidityFiatValue(): number {
+    let totalFiatValue = 0;
+    this.accountLiquidity.forEach((liquidity) => {
+      const firstAsset = this.getAsset(liquidity.firstAddress) as AccountAsset;
+      const secondAsset = this.getAsset(liquidity.secondAddress) as AccountAsset;
+      const firstAssetFiatValue = parseFloat(
+        this.getFiatAmountByCodecString(liquidity.firstBalance, firstAsset)?.replace(',', '.') || '0'
+      );
+      console.info(firstAssetFiatValue);
+      const secondAssetFiatValue = parseFloat(
+        this.getFiatAmountByCodecString(liquidity.secondBalance, secondAsset)?.replace(',', '.') || '0'
+      );
+      totalFiatValue += firstAssetFiatValue + secondAssetFiatValue;
+    });
+    return totalFiatValue;
+  }
+
+  getCurrentFiatBalanceForToken(assetSymbol: string): number {
     const fiatBalanceString =
       this.getFiatBalance(this.accountAssets.find((asset) => asset.symbol === assetSymbol)) ?? '0';
     const fiatBalanceFloat = parseFloat(fiatBalanceString.replace(',', '.'));
@@ -340,35 +361,44 @@ export default class PointSystem extends Mixins(
       const accountMeta = await fetchAccountMeta(account);
 
       // TODO maybe move somewhere
-      const liquidityProvision = 0; // FOR NOW don't have it I think
+      const liquidityProvision = this.getTotalLiquidityFiatValue();
       const fees = convertFPNumberToNumber(accountMeta?.fees.amountUSD ?? this.Zero);
       const bridgeVolume = convertFPNumberToNumber(this.bridgeVolume);
       const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards ?? this.Zero);
       const XORBurned = convertFPNumberToNumber(accountMeta?.burned.amountUSD ?? this.Zero);
-      const XORFiatBalanceCurrent = this.getCurrnetFiatBalanceForToken(this.xorSymbol);
-      console.info(fees);
-      console.info(bridgeVolume);
-      console.info(referralRewards);
-      console.info(XORBurned);
-      console.info(XORFiatBalanceCurrent); // Выводит 'number', если переменная является числом
+      const XORFiatBalanceCurrent = this.getCurrentFiatBalanceForToken(this.xorSymbol);
+      const kensetsuVolumeOfRepaid = convertFPNumberToNumber(accountMeta?.kensetsu.amountUSD ?? this.Zero);
+      const KUSDHoldCurrent = this.getCurrentFiatBalanceForToken(KUSD.symbol);
+      const orderBookVolume = convertFPNumberToNumber(accountMeta?.orderBook.amountUSD ?? this.Zero);
+      const governanceLockedXOR = convertFPNumberToNumber(accountMeta?.governance.amountUSD ?? this.Zero);
+      const nativeXORStaking = convertFPNumberToNumber(accountMeta?.staking.amountUSD ?? this.Zero);
+      const firstTx = accountMeta?.createdAt.timestamp ?? 0;
 
       // Тут составим объект который передадим в utils для подсчета поинтов
       // Пример использования:
       const pointsForCategories = {
-        liquidityProvision: liquidityProvision, // FOR now we don't have it
+        liquidityProvision: liquidityProvision,
         referralRewards: referralRewards,
         depositVolumeBridges: bridgeVolume,
         networkFeeSpent: fees,
         XORBurned: XORBurned,
         XORHoldings: XORFiatBalanceCurrent,
+        kensetsuVolumeRepaid: kensetsuVolumeOfRepaid,
+        kensetsuHold: KUSDHoldCurrent,
+        orderbookVolume: orderBookVolume,
+        governanceLockedXOR: governanceLockedXOR,
+        nativeXorStaking: nativeXORStaking,
+        firstTxAccount: firstTx,
       };
       console.info(calculateAllCategoryPoints(pointsForCategories));
-      // console.info('AccountMeta', accountMeta);
+      console.info('AccountMeta', accountMeta);
     }
   }
 
   created(): void {
     this.withApi(async () => {
+      this.subscribeOnList();
+      this.subscribeOnUpdates();
       await this.initData();
     });
   }

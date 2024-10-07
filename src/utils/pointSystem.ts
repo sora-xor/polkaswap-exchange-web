@@ -66,7 +66,6 @@ export const calculateAllCategoryPoints = (categoryValues: { [key: string]: numb
     // Найти соответствующий уровень и рассчитать очки для следующего уровня
     const { levelCurrent, threshold, multiplier, nextLevelRewardPoints, currentProgress, minimumAmountForNextLevel } =
       findLevel(category.levels, value);
-
     // Рассчитать текущие очки
     const points = parseFloat((multiplier * category.maxPercentage * POINTS_PER_PERCENT).toFixed(0));
 
@@ -75,9 +74,9 @@ export const calculateAllCategoryPoints = (categoryValues: { [key: string]: numb
       levelCurrent,
       threshold,
       points,
-      nextLevelRewardPoints, // Добавление информации о очках для следующего уровня
-      currentProgress, // Текущее значение, переданное для данной категории
-      minimumAmountForNextLevel, // Минимальный порог для следующего уровня
+      nextLevelRewardPoints,
+      currentProgress,
+      minimumAmountForNextLevel,
     };
   });
 
