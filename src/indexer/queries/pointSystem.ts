@@ -4,6 +4,7 @@ import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/
 import { gql } from '@urql/core';
 
 import type {
+  QueryData,
   ConnectionQueryResponse,
   HistoryElement,
   HistoryElementEthBridgeIncoming,
@@ -222,4 +223,127 @@ export async function fetchCount(start: number, end: number, account: string, ty
   }
 
   return 0;
+}
+
+type AccountMetaAssetVolume = {
+  amount: string; // formatted NumberLike
+  amountUSD: string; // formatted NumberLike
+};
+
+type AccountMetaEventCounter = {
+  created: number; // count
+  closed: number; // count
+  amountUSD: string; // formatted NumberLike
+};
+
+type AccountMetaGovernance = {
+  votes: number; // count
+  amount: string; // formatted NumberLike
+  amountUSD: string; // formatted NumberLike
+};
+
+type AccountMetaDeposit = {
+  incomingUSD: string; // formatted NumberLike
+  outgoingUSD: string; // formatted NumberLike
+};
+
+type AccountMetaEntity = {
+  id: string;
+  accountId: string;
+  createdAtTimestamp: number;
+  createdAtBlock: number;
+  xorFees: AccountMetaAssetVolume;
+  xorBurned: AccountMetaAssetVolume;
+  xorStakingValRewards: AccountMetaAssetVolume;
+  orderBook: AccountMetaEventCounter;
+  vault: AccountMetaEventCounter;
+  governance: AccountMetaGovernance;
+  deposit: AccountMetaDeposit;
+};
+
+const SubqueryAccountMetaQuery = gql<QueryData<AccountMetaEntity>>`
+  query AccountMetaQuery($id: String = "") {
+    data: accountMeta(id: $id) {
+      createdAtTimestamp
+      createdAtBlock
+      xorFees
+      xorBurned
+      xorStakingValRewards
+      orderBook
+      vault
+      governance
+      deposit
+    }
+  }
+`;
+
+const parseVolume = (data: AccountMetaAssetVolume | AccountMetaGovernance) => {
+  return {
+    amount: new FPNumber(data.amount),
+    amountUSD: new FPNumber(data.amountUSD),
+  };
+};
+
+const parseCounter = (data: AccountMetaEventCounter) => {
+  return {
+    created: new FPNumber(data.created),
+    closed: new FPNumber(data.closed),
+    amountUSD: new FPNumber(data.amountUSD),
+  };
+};
+
+const parseAccountMeta = (item: QueryData<AccountMetaEntity>) => {
+  return item.data;
+  // const {
+  //   createdAtTimestamp,
+  //   createdAtBlock,
+  //   xorFees,
+  //   xorBurned,
+  //   xorStakingValRewards,
+  //   orderBook,
+  //   vault,
+  //   governance,
+  //   deposit,
+  // } = item.data;
+
+  // return {
+  //   createdAt: {
+  //     block: Number(createdAtBlock),
+  //     timestamp: Number(createdAtTimestamp) * 1000,
+  //   },
+  //   fees: parseVolume(xorFees),
+  //   burned: parseVolume(xorBurned),
+  //   staking: parseVolume(xorStakingValRewards),
+  //   orderBook: parseCounter(orderBook),
+  //   kensetsu: parseCounter(vault),
+  //   governance: {
+  //     votes: new FPNumber(governance.votes),
+  //     ...parseVolume(governance),
+  //   },
+  //   bridge: {
+  //     incomingUSD: new FPNumber(deposit.incomingUSD),
+  //     outgoingUSD: new FPNumber(deposit.outgoingUSD),
+  //   },
+  // };
+};
+
+export async function fetchAccountMeta(accountAddress: string) {
+  const indexer = getCurrentIndexer();
+  const variables = { id: accountAddress };
+
+  try {
+    switch (indexer.type) {
+      case IndexerType.SUBQUERY: {
+        const subqueryIndexer = indexer as SubqueryIndexer;
+        const response = await subqueryIndexer.services.explorer.request(SubqueryAccountMetaQuery, variables);
+        if (!response) return null;
+
+        return parseAccountMeta(response);
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }

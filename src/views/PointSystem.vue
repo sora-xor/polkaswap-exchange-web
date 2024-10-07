@@ -145,16 +145,40 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { ZeroStringValue } from '@/consts';
+import { categoriesPointSystem } from '@/consts/pointSystem';
 import { fetchData as fetchBurnXorData } from '@/indexer/queries/burnXor';
-import { type BridgeData, fetchBridgeData, fetchCount, CountType } from '@/indexer/queries/pointSystem';
+import {
+  type BridgeData,
+  fetchBridgeData,
+  fetchCount,
+  fetchAccountMeta,
+  CountType,
+} from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import { action, getter, state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix } from '@/utils';
+import { calculateAllCategoryPoints } from '@/utils/pointSystem';
 
 import type { NetworkFeesObject, FPNumber } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
+
+/*
+1. Liquidity provision - Видимо нету
+2. Referral System: volume of rewards - getAccountReferralRewards видимо
+3. Deposit volum bridge - в pointSystem.ts
+4. Networks fee spent: xorFees.amountUSD
+5. XOR burned: xorBurned.amountUSD
+6. Xor current holdings - считаем сейчас
+7. Kensetsu volume - vault в pointSystem.ts ???
+8. Kensetsu HOLD KUSD/KGOLD - текущее ???
+9. Orderbook volume - orderBook в pointSystem.ts
+10. Governance participating - governance в pointSystem.ts
+11. Native XOR staking - xorStakingValRewards  в pointSystem.ts
+12. First tx of account - createdAt - в AccountMetaData
+
+*/
 
 @Component({
   components: {
@@ -304,6 +328,18 @@ export default class PointSystem extends Mixins(
       this.totalSwapTxs = await fetchCount(0, end, account, CountType.Swap);
       this.poolDepositCount = await fetchCount(0, end, account, CountType.PoolDeposit);
       this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
+      // const accountMeta = await fetchAccountMeta(account);
+      // Тут составим объект который передадим в utils для подсчета поинтов
+      console.info(categoriesPointSystem);
+      // Пример использования:
+      const inputValues = {
+        liquidityProvision: 50,
+        referralSystem: 300,
+        depositVolumeBridges: 27650,
+        networkFeeSpent: 100,
+      };
+      console.info(calculateAllCategoryPoints(inputValues));
+      // console.info('AccountMeta', accountMeta);
     }
   }
 
