@@ -26,9 +26,13 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     maxPercentage: 10,
     levels: generateLevels(progressZero25K),
   },
+  VXORHoldings: {
+    maxPercentage: 10,
+    levels: generateLevels(progressZero10K),
+  },
   referralRewards: {
-    maxPercentage: 7,
-    levels: generateLevels([0, 10, 50, 100, 250, 1000]),
+    maxPercentage: 6,
+    levels: generateLevels([0, 10, 50, 100, 250, 1001]),
   },
   depositVolumeBridges: {
     maxPercentage: 6,
@@ -43,27 +47,27 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     levels: generateLevels(progressZero10K),
   },
   XORHoldings: {
-    maxPercentage: 5,
-    levels: generateLevels(progressZero10K),
-  },
-  kensetsuVolumeRepaid: {
-    maxPercentage: 5,
-    levels: generateLevels(progressZero10K),
-  },
-  kensetsuHold: {
-    maxPercentage: 5,
-    levels: generateLevels(progressZero10K),
-  },
-  orderbookVolume: {
-    maxPercentage: 5,
+    maxPercentage: 4,
     levels: generateLevels(progressZero10K),
   },
   governanceLockedXOR: {
     maxPercentage: 4,
     levels: generateLevels(progressZero25K),
   },
+  kensetsuVolumeRepaid: {
+    maxPercentage: 3,
+    levels: generateLevels(progressZero10K),
+  },
+  orderbookVolume: {
+    maxPercentage: 3,
+    levels: generateLevels(progressZero10K),
+  },
   nativeXorStaking: {
     maxPercentage: 2.5,
+    levels: generateLevels(progressZero10K),
+  },
+  KUSDHoldings: {
+    maxPercentage: 1,
     levels: generateLevels(progressZero10K),
   },
   firstTxAccount: {

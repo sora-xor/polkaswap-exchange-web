@@ -25,16 +25,17 @@ export type CategoryValues = {
 
 export type CategoryPoints = {
   liquidityProvision: number;
+  VXORHoldings: number;
   referralRewards: number;
   depositVolumeBridges: number;
   networkFeeSpent: number;
   XORBurned: number;
   XORHoldings: number;
-  kensetsuVolumeRepaid: number;
-  kensetsuHold: number;
-  orderbookVolume: number;
   governanceLockedXOR: number;
+  kensetsuVolumeRepaid: number;
+  orderbookVolume: number;
   nativeXorStaking: number;
+  KUSDHoldings: number;
   firstTxAccount: number;
 };
 
@@ -70,5 +71,5 @@ export interface AccountPointsCalculation {
     incomingUSD: FPNumber;
     outgoingUSD: FPNumber;
   };
-  createdAt: { timestamp: number; block: number }; // Здесь число
+  createdAt: { timestamp: number; block: number };
 }

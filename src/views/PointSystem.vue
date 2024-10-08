@@ -145,7 +145,6 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { ZeroStringValue } from '@/consts';
-import { categoriesPointSystem } from '@/consts/pointSystem';
 import { fetchData as fetchBurnXorData } from '@/indexer/queries/burnXor';
 import {
   type BridgeData,
@@ -165,22 +164,6 @@ import type { NetworkFeesObject, FPNumber } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
-
-/*
-1. Liquidity provision - Видимо нету
-2. Referral System: volume of rewards - getAccountReferralRewards видимо
-3. Deposit volum bridge - в pointSystem.ts
-4. Networks fee spent: xorFees.amountUSD
-5. XOR burned: xorBurned.amountUSD
-6. Xor current holdings - считаем сейчас
-7. Kensetsu volume - vault в pointSystem.ts ???
-8. Kensetsu HOLD KUSD/KGOLD - текущее ???
-9. Orderbook volume - orderBook в pointSystem.ts
-10. Governance participating - governance в pointSystem.ts
-11. Native XOR staking - xorStakingValRewards  в pointSystem.ts
-12. First tx of account - createdAt - в AccountMetaData
-
-*/
 
 @Component({
   components: {
@@ -345,6 +328,7 @@ export default class PointSystem extends Mixins(
 
   getPointsForCategories(accountDataForPointsCalculation: AccountPointsCalculation): CategoryPoints {
     const liquidityProvision = this.getTotalLiquidityFiatValue();
+    const VXORHoldings = this.getCurrentFiatBalanceForToken('VXOR');
     const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards ?? this.Zero);
     const depositVolumeBridges =
       convertFPNumberToNumber(accountDataForPointsCalculation?.bridge.incomingUSD ?? this.Zero) +
@@ -355,7 +339,7 @@ export default class PointSystem extends Mixins(
     const kensetsuVolumeRepaid = convertFPNumberToNumber(
       accountDataForPointsCalculation?.kensetsu.amountUSD ?? this.Zero
     );
-    const kensetsuHold = this.getCurrentFiatBalanceForToken(KUSD.symbol);
+    const KUSDHoldings = this.getCurrentFiatBalanceForToken(KUSD.symbol);
     const orderbookVolume = convertFPNumberToNumber(accountDataForPointsCalculation?.orderBook.amountUSD ?? this.Zero);
     const governanceLockedXOR = convertFPNumberToNumber(
       accountDataForPointsCalculation?.governance.amountUSD ?? this.Zero
@@ -365,16 +349,17 @@ export default class PointSystem extends Mixins(
 
     const pointsForCategories = {
       liquidityProvision,
+      VXORHoldings,
       referralRewards,
       depositVolumeBridges,
       networkFeeSpent,
       XORBurned,
       XORHoldings,
-      kensetsuVolumeRepaid,
-      kensetsuHold,
-      orderbookVolume,
       governanceLockedXOR,
+      kensetsuVolumeRepaid,
+      orderbookVolume,
       nativeXorStaking,
+      KUSDHoldings,
       firstTxAccount,
     };
     return pointsForCategories;
