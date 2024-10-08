@@ -464,17 +464,6 @@
         "appVersion": "Verzia {AppName}",
         "contactUs": "Kontaktujte nás"
     },
-    "aboutNetworkDialog": {
-        "title": "O aplikácii",
-        "network": {
-            "title": "Čo je {Sora}?",
-            "description": "{AppName} je postavený na sieti {Sora} a {Sora} (XOR) token sa používa na platenie plynu\/poplatkov a na poskytovanie likvidity na {AppName}. Sieť {Sora} umožňuje nižšie poplatky, rýchlejšie transakcie a jednoduchšiu finalizáciu konsenzu a zameriava sa na zabezpečenie interoperability s inými ekosystémami blockchainu, ako je {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Čo je {PolkadotJs}?",
-            "description": "Rozšírenie {PolkadotJs} je rozšírenie prehliadača dostupné pre Firefox a Chrome. Je určené pre správu účtov pre siete založené na Substrate vrátane {Sora}, {Polkadot} a {Kusama}. Umožňuje pridávanie, import a export účtov ako aj podpisovanie transakcií alebo alebo externých údajov, ktoré ste zahájili z vami autorizovaných webových stránok."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Pri pripájaní k uzlu sa vyskytla chyba\n{address}\n",
@@ -875,7 +864,7 @@
         "showDisclaimer": "Zobraziť vylúčenie zodpovednosti",
         "hideDisclaimer": "Skryť vylúčenie zodpovednosti",
         "selectCurrency": "Vyberte položku Mena",
-        "turnPhoneHideBalances": "Otočte telefón a skryte",
+        "turnPhoneHideBalances": "Otočte telefón a skryte.",
         "titleBalance": "Zostatky",
         "titleTheme": "Farebná téma",
         "titleCurrency": "Fiat mena",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Pridať aktívum | Pridať aktíva",
     "noir": "Noir",
     "rotatePhoneNotification": {
-        "title": "Otočte zariadenie hore nohami, aby ste skryli zostatky.",
+        "title": "Otočte zariadenie hore nohami, aby ste skryli zostatky",
         "info": "Pre vyššie súkromie nakloňte zariadenie obrazovkou nadol, aby ste okamžite skryli zostatky aktív. Táto funkcia využíva vstavané senzory vášho telefónu.",
         "enableAcceleration": "Povoľte prístup k akcelerácii v nastaveniach.",
         "gyroscropePhone": "Naša technológia využíva vstavaný gyroskop vášho telefónu na okamžité skrytie vášho zostatku pri naklonení zariadenia."

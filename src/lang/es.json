@@ -464,17 +464,6 @@
         "appVersion": "Versión {AppName}",
         "contactUs": "Contáctenos"
     },
-    "aboutNetworkDialog": {
-        "title": "Acerca de",
-        "network": {
-            "title": "¿Qué es {Sora}?",
-            "description": "{AppName} está construido sobre la Red {Sora}, y el token {Sora} (XOR) se utiliza para la provisión de gas\/comisiones y liquidez en {AppName}. La red {Sora} permite reducir las tarifas, agilizar las transacciones y simplificar la finalización del consenso, y se centra en ofrecer interoperabilidad en otros ecosistemas de blockchain como {Ethereum}."
-        },
-        "polkadot": {
-            "title": "¿Qué es {PolkadotJs}?",
-            "description": "La extensión {PolkadotJs} es una extensión de navegador disponible para Firefox y Chrome dedicada a administrar cuentas para cadenas basadas en Substrate, incluyendo {Sora}, {Polkadot} y {Kusama}. Puede agregar, importar y exportar cuentas y firmar transacciones o elementos extrínsecos que haya iniciado desde sitios web que haya autorizado."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Se ha producido un error al conectarse al nodo\n{address}\n",
@@ -875,7 +864,7 @@
         "showDisclaimer": "Mostrar descargo de responsabilidad",
         "hideDisclaimer": "Ocultar descargo de responsabilidad",
         "selectCurrency": "Seleccione el tipo de moneda",
-        "turnPhoneHideBalances": "Gire el teléfono y oculte",
+        "turnPhoneHideBalances": "Gire el teléfono y oculte.",
         "titleBalance": "Saldos",
         "titleTheme": "Tema de color",
         "titleCurrency": "Moneda fiduciaria",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Añadir activo | Añadir activos",
     "noir": "Noir",
     "rotatePhoneNotification": {
-        "title": "Gire su dispositivo boca abajo para ocultar los saldos.",
+        "title": "Gire su dispositivo boca abajo para ocultar los saldos",
         "info": "Para mayor privacidad, incline su dispositivo con la pantalla hacia abajo para ocultar instantáneamente los saldos de sus activos. Esta función utiliza los sensores integrados de su teléfono.",
         "enableAcceleration": "Habilite el acceso a la aceleración en su configuración.",
         "gyroscropePhone": "Nuestra tecnología utiliza el giroscopio incorporado de su teléfono para ocultar instantáneamente su saldo cuando inclina el dispositivo"

@@ -464,17 +464,6 @@
         "appVersion": "{AppName} Version",
         "contactUs": "Kontaktiere uns"
     },
-    "aboutNetworkDialog": {
-        "title": "Über",
-        "network": {
-            "title": "Was ist {Sora}?",
-            "description": "{AppName} ist auf dem {Sora} -Netzwerk aufgebaut, und der {Sora} -Token (XOR) wird für Gas\/Gebühren und Liquiditätsbereitstellung auf {AppName} verwendet. {Sora} -Netzwerk ermöglicht geringere Gebühren, schnellere Transaktionen und einfachere Konsensabschlüsse und fokussiert sich somit die Bereitstellung der Interoperabilität zwischen anderen Blockchain-Ökosystemen wie {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Was ist {PolkadotJs}?",
-            "description": "Die {PolkadotJs} -Erweiterung ist eine für Firefox und Chrome verfügbare Browsererweiterung zur Verwaltung von Konten für Substrate-basierte Chains, einschließlich {Sora}, {Polkadot} und {Kusama}. Du kannst Konten hinzufügen, importieren und exportieren, und Transaktionen oder Extrinsics, die du von autorisierten Websites initiiert hast, signieren."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Beim Verbinden mit dem Node ist ein Fehler aufgetreten\n {address}\n",
@@ -875,7 +864,7 @@
         "showDisclaimer": "Haftungsausschluss anzeigen",
         "hideDisclaimer": "Haftungsausschluss ausblenden",
         "selectCurrency": "Währung wählen",
-        "turnPhoneHideBalances": "Drehen Sie das Telefon und verstecken",
+        "turnPhoneHideBalances": "Drehen Sie das Telefon und verstecken.",
         "titleBalance": "Salden",
         "titleTheme": "Farbthema",
         "titleCurrency": "Fiatgeld",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Asset hinzufügen | Assets hinzufügen",
     "noir": "Noir",
     "rotatePhoneNotification": {
-        "title": "Drehen Sie Ihr Gerät auf den Kopf, um Salden zu verbergen.",
+        "title": "Drehen Sie Ihr Gerät auf den Kopf, um Salden zu verbergen",
         "info": "Für zusätzlichen Datenschutz kippen Sie Ihr Gerät nach unten, um Ihre Vermögenssalden sofort zu verbergen. Diese Funktion verwendet die integrierten Sensoren Ihres Telefons.",
         "enableAcceleration": "Aktivieren Sie den Zugriff auf die Beschleunigung in Ihren Einstellungen.",
         "gyroscropePhone": "Unsere Technologie nutzt das integrierte Gyroskop Ihres Telefons, um Ihr Guthaben sofort zu verbergen, wenn Sie Ihr Gerät neigen."

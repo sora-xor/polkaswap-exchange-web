@@ -464,17 +464,6 @@
         "appVersion": "{AppName} verzió",
         "contactUs": "Kapcsolat"
     },
-    "aboutNetworkDialog": {
-        "title": "Leírás",
-        "network": {
-            "title": "Mi az a {Sora}?",
-            "description": "A {AppName} a {Sora} hálózatra épül, és a {Sora} tokent (XOR) használják a {AppName} a gáz\/díjak és a likviditás biztosításához. A {Sora} Network lehetővé teszi a csökkentett díjakat, a gyorsabb tranzakciókat és az egyszerűbb konszenzus véglegesítést, és arra összpontosít, hogy más blokklánc ökoszisztémák, például az {Ethereum} közötti átjárhatóságot biztosítsa."
-        },
-        "polkadot": {
-            "title": "Mi az a {PolkadotJs}?",
-            "description": "A {PolkadotJs} bővítmény egy Firefox és Chrome böngészőbővítmény, amely a Substrate-alapú blokkláncok, köztük a {Sora}, a {Polkadot} és a {Kusama} fiókjainak kezelésére szolgál. Hozzáadhatsz, importálhatsz és exportálhatsz fiókokat, valamint aláírhat tranzakciókatsz vagy külső adatokat, amelyeket az Általad engedélyezett webhelyekről származnak."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Hiba történt a csomóponthoz való csatlakozás során\n{address}\n",
@@ -875,7 +864,7 @@
         "showDisclaimer": "Felelősségi nyilatkozat megjelenítése",
         "hideDisclaimer": "Felelősségi nyilatkozat elrejtése",
         "selectCurrency": "Válassza a Pénznem lehetőséget",
-        "turnPhoneHideBalances": "Fordítsa meg a telefont és rejtse el",
+        "turnPhoneHideBalances": "Fordítsa meg a telefont és rejtse el.",
         "titleBalance": "Egyenlegek",
         "titleTheme": "Színtéma",
         "titleCurrency": "Fiat pénz",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Eszköz hozzáadása | Eszközök hozzáadása",
     "noir": "Noir",
     "rotatePhoneNotification": {
-        "title": "Fordítsa meg a készüléket fejjel lefelé, hogy elrejtse az egyenlegeket.",
+        "title": "Fordítsa meg a készüléket fejjel lefelé, hogy elrejtse az egyenlegeket",
         "info": "A nagyobb adatvédelem érdekében fordítsa készülékét képernyővel lefelé, hogy azonnal elrejtse eszköz egyenlegeit. Ez a funkció a telefon beépített érzékelőit használja.",
         "enableAcceleration": "Engedélyezze a gyorsulás hozzáférést a beállításokban.",
         "gyroscropePhone": "Technológiánk a telefon beépített giroszkópját használja a mérleg azonnali elrejtésére, amikor megdönti az eszközt."

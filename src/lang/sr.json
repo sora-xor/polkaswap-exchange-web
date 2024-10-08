@@ -464,17 +464,6 @@
         "appVersion": "{AppName} верзија",
         "contactUs": "Контактирајте нас"
     },
-    "aboutNetworkDialog": {
-        "title": "О",
-        "network": {
-            "title": "Шта је {Sora}?",
-            "description": "{AppName} је изграђен на {Sora} мрежи, а {Sora} токен (XOR) се користи за обезбеђивање гаса\/накнаде и ликвидности на {AppName}. {Sora} мрежа омогућава смањене накнаде, брже трансакције и једноставнију финализацију консензуса и фокусирана је на испоруку интероперабилности у другим блокчеин екосистемима као што је {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Шта је {PolkadotJs}?",
-            "description": "{PolkadotJs} екстензија је проширење прегледача доступно за Firefox и Chrome намењено управљању рачунима за ланце засноване на Substrate, укључујући {Sora}, {Polkadot} и {Kusama}. Можете да додајете, увозите и извозите рачуне и потписујете трансакције или екстринзике које сте покренули са веб странице које сте овластили."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Дошло је до грешке при повезивању са нодом\n{address}\n",
@@ -875,7 +864,7 @@
         "showDisclaimer": "Схов Дисцлаимер",
         "hideDisclaimer": "Сакриј одрицање одговорности",
         "selectCurrency": "Изаберите Валута",
-        "turnPhoneHideBalances": "Okrenite telefon i sakrijte",
+        "turnPhoneHideBalances": "Okrenite telefon i sakrijte.",
         "titleBalance": "Stanja",
         "titleTheme": "Tema boja",
         "titleCurrency": "Fiat valuta",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Додај имовину | Додај имовине",
     "noir": "Ноир",
     "rotatePhoneNotification": {
-        "title": "Okrenite uređaj naopačke da sakrijete stanja.",
+        "title": "Okrenite uređaj naopačke da sakrijete stanja",
         "info": "Za dodatnu privatnost, nagnite uređaj licem prema dole da odmah sakrijete stanje vaših sredstava. Ova funkcija koristi ugrađene senzore vašeg telefona.",
         "enableAcceleration": "Omogućite pristup ubrzanja u svojim postavkama.",
         "gyroscropePhone": "Naša tehnologija koristi ugrađeni žiroskop vašeg telefona kako bi trenutno sakrila vaš saldo kada nagnite uređaj."

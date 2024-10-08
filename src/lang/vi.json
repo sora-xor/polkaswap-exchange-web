@@ -464,17 +464,6 @@
         "appVersion": "Phiên bản {AppName}",
         "contactUs": "Liên hệ với chúng tôi"
     },
-    "aboutNetworkDialog": {
-        "title": "Giới thiệu",
-        "network": {
-            "title": "{Sora} là gì?",
-            "description": "{AppName} được xây dựng trên {Sora} Network, và tokens {Sora} (XOR) được sử dụng làm phí gas và cung cấp thanh khoản trên {AppName}. Mạng {Sora} cho phép giảm phí gas, giao dịch nhanh hơn, hoàn thiện đồng thuận đơn giản hơn và tập trung vào việc cung cấp khả năng tương tác với các hệ sinh thái blockchain khác như {Ethereum}."
-        },
-        "polkadot": {
-            "title": "{PolkadotJs} là gì?",
-            "description": "Ví {PolkadotJs} là một tiện ích mở rộng (extension) của Firefox và Chrome, dành riêng cho việc quản lý tài khoản được tạo nên từ nền tảng Substrate, bao gồm {Sora}, {Polkadot} và {Kusama}. Bạn có thể thêm, nhập và xuất tài khoản và ký các giao dịch thực hiện từ ví hoặc những giao dịch trên các websites bên ngoài mà bạn ủy quyền."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Phát sinh lỗi trong quá trình kết nối đến node\n{address}\n",
@@ -875,7 +864,7 @@
         "showDisclaimer": "Hiển thị tuyên bố miễn trừ trách nhiệm",
         "hideDisclaimer": "Ẩn tuyên bố từ chối trách nhiệm",
         "selectCurrency": "Chọn tiền tệ",
-        "turnPhoneHideBalances": "Lật điện thoại và ẩn",
+        "turnPhoneHideBalances": "Lật điện thoại và ẩn.",
         "titleBalance": "Số dư",
         "titleTheme": "Chủ đề màu sắc",
         "titleCurrency": "Tiền pháp định",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Thêm tài sản | Thêm các tài sản",
     "noir": "Đen",
     "rotatePhoneNotification": {
-        "title": "Lật ngược thiết bị của bạn để ẩn số dư.",
+        "title": "Lật ngược thiết bị của bạn để ẩn số dư",
         "info": "Để tăng tính bảo mật, hãy nghiêng thiết bị của bạn úp xuống để ẩn số dư tài sản ngay lập tức. Tính năng này sử dụng cảm biến tích hợp sẵn của điện thoại.",
         "enableAcceleration": "Bật quyền truy cập gia tốc trong cài đặt của bạn.",
         "gyroscropePhone": "Công nghệ của chúng tôi sử dụng con quay hồi chuyển tích hợp sẵn của điện thoại để ẩn số dư của bạn ngay lập tức khi bạn nghiêng thiết bị."
