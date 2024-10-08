@@ -16,6 +16,14 @@
           </s-button>
         </div>
         <div v-else v-loading="loading">
+          <point-card
+            v-for="(pointsForCategory, categoryName) in pointsForCards"
+            :key="categoryName"
+            :points-for-category="pointsForCategory"
+            :category-name="categoryName"
+            class="points__card"
+          />
+
           <div class="points__card points__card-bridge" :style="bridgeCardStyles">
             <div class="points__card-header s-flex-column">
               <span class="points__card-title">{{ t('points.bridgeVolume') }}</span>
@@ -144,7 +152,7 @@ import { components, mixins, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/sora
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
-import { ZeroStringValue } from '@/consts';
+import { ZeroStringValue, Components } from '@/consts';
 import { fetchData as fetchBurnXorData } from '@/indexer/queries/burnXor';
 import {
   type BridgeData,
@@ -154,9 +162,10 @@ import {
   CountType,
 } from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
+import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
-import { AccountPointsCalculation, CategoryPoints } from '@/types/pointSystem';
+import { AccountPointsCalculation, CalculateCategoryPointResult, CategoryPoints } from '@/types/pointSystem';
 import { formatAmountWithSuffix, convertFPNumberToNumber } from '@/utils';
 import { pointsService } from '@/utils/pointSystem';
 
@@ -169,6 +178,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
   components: {
     FormattedAmount: components.FormattedAmount,
     TokenLogo: components.TokenLogo,
+    PointCard: lazyComponent(Components.PointCard),
   },
 })
 export default class PointSystem extends Mixins(
@@ -199,6 +209,7 @@ export default class PointSystem extends Mixins(
   private poolDepositCount = 0;
   private poolWithdrawCount = 0;
   totalSwapTxs = 0;
+  pointsForCards: { [key: string]: CalculateCategoryPointResult } | null = null;
 
   @Watch('isLoggedIn')
   private updateSubscriptions(value: boolean): void {
@@ -384,7 +395,8 @@ export default class PointSystem extends Mixins(
       const accountMeta = await fetchAccountMeta(account);
 
       if (accountMeta) {
-        console.info(pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta)));
+        this.pointsForCards = pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta));
+        console.info(this.pointsForCards);
         console.info('AccountMeta:', accountMeta);
       } else {
         console.info('No AccountMeta data');

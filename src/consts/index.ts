@@ -254,6 +254,8 @@ export enum Components {
   RewardsGradientBox = 'pages/Rewards/GradientBox',
   // Wallet Page
   WalletAboutNetworkDialog = 'pages/Wallet/AboutNetworkDialog',
+  // Point System Page
+  PointCard = 'pages/PointSystem/PointCard',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
   LinksDropdown = 'shared/LinksDropdown',
