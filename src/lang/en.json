@@ -162,7 +162,7 @@
         "selectAccount": "Select account to work with",
         "action": {
             "install": "Install extension",
-            "learnMore": "Learn more",
+            "learnMore": "Learn more about wallet connection",
             "connect": "Connect account",
             "refresh": "Refresh"
         },
