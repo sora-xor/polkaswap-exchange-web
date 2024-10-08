@@ -327,14 +327,11 @@ export default class AssetOwnerDetailsSBT extends Mixins(
     }, []);
   }
 
-  get asset(): Nullable<any> {
+  get asset(): Nullable<OwnedAsset> {
     const assetId = this.$route.params.asset;
     if (!assetId) return null;
     const asset = this.assets.find(({ address }) => address === assetId);
-    return {
-      isSBT: true,
-      ...asset,
-    };
+    return asset;
   }
 
   get loadingState(): boolean {

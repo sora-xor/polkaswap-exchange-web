@@ -124,7 +124,8 @@
 </template>
 
 <script lang="ts">
-import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
+import { AssetTypes } from '@sora-substrate/sdk/build/assets/types';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
@@ -156,9 +157,7 @@ export default class AssetOwner extends Mixins(InternalConnectMixin, mixins.Form
   }
 
   async handleOpenAssetDetails(asset: OwnedAsset): Promise<void> {
-    // TODO: [Rustem] migrate to AsssetInfosV2 and rely on AssetType
-    const sbtIds = await api.extendedAssets.getAllSbtIds();
-    if (sbtIds.find((adress) => adress === asset.address)) {
+    if (asset.type === AssetTypes.Soulbound) {
       router.push({ name: DashboardPageNames.AssetOwnerDetailsSBT, params: { asset: asset.address } });
     } else {
       router.push({ name: DashboardPageNames.AssetOwnerDetails, params: { asset: asset.address } });

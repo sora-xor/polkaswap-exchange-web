@@ -145,7 +145,7 @@
           <s-scrollbar class="dashboard-regulated-assets__scrollbar" :key="scrollbarComponentKey">
             <div class="selected-assets">
               <div v-for="(asset, index) in selectedRegulatedAssets" :key="index" class="assets-list">
-                <asset-list-item :asset="asset">
+                <asset-list-item :asset="asset" :pinnable="false">
                   <template #default>
                     <s-icon class="delete-icon" name="basic-trash-24" @click.native="removeAsset(asset)" />
                   </template>
@@ -186,6 +186,7 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { AssetTypes, Asset } from '@sora-substrate/sdk/build/assets/types';
 import { mixins, components, api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import difference from 'lodash/fp/difference';
 import { Component, Mixins, Ref, Prop } from 'vue-property-decorator';
@@ -220,7 +221,8 @@ export default class CreateSbtToken extends Mixins(
   mixins.NetworkFeeWarningMixin,
   SubscriptionsMixin
 ) {
-  @state.dashboard.ownedAssetIds ownedAssetIds!: any;
+  @state.wallet.account.assets private assets!: Asset[];
+  @state.dashboard.ownedAssetIds ownedAssetIds!: string[];
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
 
@@ -255,16 +257,16 @@ export default class CreateSbtToken extends Mixins(
 
   step: Step = Step.AssetsChoice;
   query = '';
-  ownerAssetsList: any = [];
-  selectedAssetsIds = [];
+  ownerAssetsList: Asset[] = [];
+  selectedAssetsIds: Array<string> = [];
   scrollbarComponentKey = 0;
   requlatedAssetsInterval: Nullable<ReturnType<typeof setInterval>> = null;
 
-  get checkList(): any {
+  get checkList(): string[] {
     return this.selectedAssetsIds;
   }
 
-  set checkList(list) {
+  set checkList(list: string[]) {
     this.selectedAssetsIds = list;
   }
 
@@ -286,7 +288,6 @@ export default class CreateSbtToken extends Mixins(
   }
 
   get selectedRegulatedAssets() {
-    // @ts-expect-error err
     return this.ownerAssetsList.filter((asset) => this.selectedAssetsIds.includes(asset.address));
   }
 
@@ -530,31 +531,21 @@ export default class CreateSbtToken extends Mixins(
   }
 
   async requestRegulatedAssets(exclude = false): Promise<void> {
-    const ownRegulatedAssetsIds = [] as any;
-    let regulatedAssetsAttached = [] as any;
+    let regulatedAssetsAttached = [] as Array<string>;
     await this.requestOwnedAssetIds();
 
     if (exclude) {
-      regulatedAssetsAttached = (await api.extendedAssets.getSbtMetaInfo(this.sbtAddress)).regulatedAssets;
+      regulatedAssetsAttached = (await api.extendedAssets.getSbtMetaInfo(this.sbtAddress)).regulatedAssets as string[];
     }
 
-    const filtered = difference(this.ownedAssetIds, regulatedAssetsAttached) as any;
+    // not to show already attached ones when only attachment is needed
+    const filtered = difference(this.ownedAssetIds, regulatedAssetsAttached);
 
-    // TODO: move to lib, migrate to assetInfosV2
-    const assetInfos = filtered.map(async (address) => {
-      const result: any = await api.api.query.assets.assetInfosV2(address);
-      return [address, result];
+    const regulatedAssets = this.assets.filter((asset) => {
+      return filtered.includes(asset.address) && asset.type === AssetTypes.Regulated;
     });
 
-    for await (const [address, assetInfo] of assetInfos) {
-      const { assetType, symbol, name } = (assetInfo as any).toHuman();
-
-      if (assetType === 'Regulated') {
-        ownRegulatedAssetsIds.push({ symbol, address, name });
-      }
-    }
-
-    this.ownerAssetsList = ownRegulatedAssetsIds;
+    this.ownerAssetsList = regulatedAssets;
   }
 
   async created(): Promise<void> {
