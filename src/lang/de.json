@@ -162,7 +162,7 @@
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
         "action": {
             "install": "Erweiterung installieren",
-            "learnMore": "Mehr erfahren",
+            "learnMore": "Erfahren Sie mehr über die Wallet-Anbindung",
             "connect": "Konto verbinden",
             "refresh": "Aktualisieren"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Installieren",
             "connected": "In Verbindung gebracht",
-            "notConnected": "Nicht verbunden"
+            "notConnected": "Nicht verbunden",
+            "recommended": "Empfohlen"
         },
         "internalTitle": "Mit {wallet} verbinden",
         "internalText": "Sie können ein bestehendes {Sora} Konto erstellen oder importieren, um es mit Ihrem {wallet} Konto zu verbinden. Alle von {wallet} gespeicherten Daten werden mithilfe der integrierten erweiterten Verschlüsselung verschlüsselt.",
         "list": {
             "integrated": "Integriert",
             "extensions": "Erweiterungen"
-        }
+        },
+        "disclaimer": "Bitte beachten Sie, dass bestimmte Geldbörsen möglicherweise nicht vollständig unterstützt werden."
     },
     "wallet": {
         "WalletAssets": "Assets",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Der Token wurde schon hinzugefügt",
         "understand": "Ich verstehe",
         "warningTitle": "Handeln auf eigene Gefahr!",
-        "warningMessage": "Jeder kann ein Token erstellen, einschließlich gefälschter Versionen vorhandener Token, die behaupten, das entsprechende Projekt darzustellen. Wenn du solch einen Token kaufst, kannst du diesen möglicherweise nicht wieder verkaufen.",
+        "warningMessage": "dieses {assetType} | diese {assetTypePlural}",
         "approved": "Asset von der Community genehmigt",
         "unknown": "Unbekannte Quelle",
         "scam": "BETRUG",
@@ -265,7 +267,15 @@
             "title": "Währungen",
             "switchBtn": "Nur verifizierte Assets"
         },
-        "searchInputText": "Suche nach Asset-ID, Name oder Tickersymbol"
+        "searchInputText": "Suche nach Asset-ID, Name oder Tickersymbol",
+        "warningMessageText": "Jeder kann ein {assetType} erstellen, einschließlich gefälschter Versionen bestehender {assetTypePlural}, die behaupten, Projekte zu repräsentieren. Wenn Sie ein {purchaseAssetType} kaufen, können Sie es möglicherweise nicht zurückverkaufen.",
+        "assetType": {
+            "token": "Token | Tokens",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Hinzufügen",
+        "pinAsset": "Vermögenswert anheften",
+        "unpinAsset": "Vermögenswert lösen"
     },
     "createToken": {
         "desc": "Erstelle und nutze benutzerdefinierte Assets auf {Sora}",
@@ -862,10 +872,14 @@
         "hideBalances": "Salden ausblenden",
         "settings": "Einstellungen",
         "switchTheme": "Wechseln Sie in den {theme}-Modus",
-        "switchLanguage": "Sprache wählen",
         "showDisclaimer": "Haftungsausschluss anzeigen",
         "hideDisclaimer": "Haftungsausschluss ausblenden",
-        "selectCurrency": "Währung wählen"
+        "selectCurrency": "Währung wählen",
+        "turnPhoneHideBalances": "Drehen Sie das Telefon und verstecken",
+        "titleBalance": "Salden",
+        "titleTheme": "Farbthema",
+        "titleCurrency": "Fiatgeld",
+        "titleMisc": "Sonstiges"
     },
     "sentText": "Gesendet",
     "learnMoreText": "Mehr erfahren",
@@ -1042,7 +1056,9 @@
         "button": "Benachrichtigungen aktivieren",
         "agree": "Ja ich verstehe",
         "notificationBlocked": "Um die Benachrichtigungen über {AppName} zu erhalten, erlauben Sie bitte die Benachrichtigungen in den nativen Einstellungen Ihres Browsers",
-        "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten"
+        "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten",
+        "rotatetitle": "Bitte drehen Sie Ihr Gerät",
+        "rotateMessage": "Die Erfahrung ist nur im Hochformat verfügbar"
     },
     "assetDeposit": "Guthaben wurde hinterlegt",
     "noDataText": "Keine Daten",
@@ -1053,7 +1069,10 @@
         "verifiedOnly": "Nur verifizierte Assets anzeigen",
         "zeroBalance": "0 Guthaben ausblenden",
         "showAssets": "Vermögen anzeigen",
-        "show": "Zeigen"
+        "show": "Zeigen",
+        "reset": "Zurücksetzen",
+        "synthetics": "Synthetik",
+        "native": "Einheimisch"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1684,13 @@
         "yourRewards": "Ihre Belohnungen",
         "openTelegram": "Öffnen {Telegram}",
         "toEarnPoints": "Um Punkte zu verdienen"
+    },
+    "addAssetsText": "Asset hinzufügen | Assets hinzufügen",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Drehen Sie Ihr Gerät auf den Kopf, um Salden zu verbergen.",
+        "info": "Für zusätzlichen Datenschutz kippen Sie Ihr Gerät nach unten, um Ihre Vermögenssalden sofort zu verbergen. Diese Funktion verwendet die integrierten Sensoren Ihres Telefons.",
+        "enableAcceleration": "Aktivieren Sie den Zugriff auf die Beschleunigung in Ihren Einstellungen.",
+        "gyroscropePhone": "Unsere Technologie nutzt das integrierte Gyroskop Ihres Telefons, um Ihr Guthaben sofort zu verbergen, wenn Sie Ihr Gerät neigen."
     }
 }

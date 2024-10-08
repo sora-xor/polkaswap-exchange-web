@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('removeLiquidity.confirmTitle')">
+  <dialog-base :visible.sync="isVisible" :title="t('removeLiquidity.confirmTitle')" append-to-body>
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
@@ -41,23 +41,23 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
+import { PoolComponents } from '@/modules/pool/consts';
+import { poolLazyComponent } from '@/modules/pool/router';
 import { state, getter } from '@/store/decorators';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {
+    RemoveLiquidityTransactionDetails: poolLazyComponent(PoolComponents.RemoveLiquidityTransactionDetails),
     DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
     AccountConfirmationOption: components.AccountConfirmationOption,
-    RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
   },
 })
-export default class ConfirmRemoveLiquidity extends Mixins(
-  mixins.NumberFormatterMixin,
+export default class RemoveLiquidityConfirm extends Mixins(
   TranslationMixin,
+  mixins.NumberFormatterMixin,
   mixins.DialogMixin,
   mixins.LoadingMixin
 ) {

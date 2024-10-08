@@ -40,8 +40,6 @@ export default class SelectedTokenRouteMixin extends Vue {
         // Second asset address should be used as quote for Orderbook /trade/base/quote
         // only XOR for now, like /trade/xst/xor
         return bothArePresented && secondAddress === XOR.address;
-      case PageNames.RemoveLiquidity:
-        return bothArePresented && api.dex.baseAssetsIds.includes(firstAddress);
       case PageNames.AddLiquidity: {
         if (!(bothArePresented && api.dex.baseAssetsIds.includes(firstAddress))) {
           return false;
@@ -99,9 +97,7 @@ export default class SelectedTokenRouteMixin extends Vue {
 
     if (!isValidRoute) {
       this.wasRedirected = true;
-      if (name === PageNames.RemoveLiquidity) {
-        this.$router.push({ name: PageNames.Pool });
-      } else if (this.$route.params) {
+      if (this.$route.params) {
         this.$router.replace({ name, params: undefined });
       }
       return false;

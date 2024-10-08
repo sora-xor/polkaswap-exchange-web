@@ -162,7 +162,7 @@
         "selectAccount": "Seleziona l'account con cui lavorare",
         "action": {
             "install": "Installa l'estensione",
-            "learnMore": "Per saperne di più",
+            "learnMore": "Scopri di più sulla connessione al portafoglio",
             "connect": "Connetti account",
             "refresh": "Aggiorna"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Installare",
             "connected": "Collegato",
-            "notConnected": "Non connesso"
+            "notConnected": "Non connesso",
+            "recommended": "Consigliato"
         },
         "internalTitle": "Connettiti con {wallet}",
         "internalText": "Puoi creare o importare un account {Sora} esistente per connetterti al tuo account {wallet}. Tutti i dati archiviati da {wallet} sono crittografati utilizzando la crittografia avanzata integrata.",
         "list": {
             "integrated": "Integrato",
             "extensions": "Estensioni"
-        }
+        },
+        "disclaimer": "Si prega di notare che alcuni portafogli potrebbero non essere completamente supportati."
     },
     "wallet": {
         "WalletAssets": "Assets",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Il token era già stato aggiunto",
         "understand": "Capisco",
         "warningTitle": "Fai trading a tuo rischio!",
-        "warningMessage": "Chiunque può creare un token, inclusa la creazione di versioni false di token esistenti che pretendono di rappresentare progetti.\nSe acquisti questo token, potresti non essere in grado di rivenderlo.",
+        "warningMessage": "questo {assetType} | questi {assetTypePlural}",
         "approved": "Asset approvata dalla comunità",
         "unknown": "Fonte sconosciuta",
         "scam": "SCAM",
@@ -265,7 +267,15 @@
             "title": "Valute",
             "switchBtn": "Solo asset verificati"
         },
-        "searchInputText": "Cerca per ID asset, nome o simbolo del ticker"
+        "searchInputText": "Cerca per ID asset, nome o simbolo del ticker",
+        "warningMessageText": "Chiunque può creare un {assetType}, comprese versioni false di {assetTypePlural} esistenti che pretendono di rappresentare progetti. Se acquisti un {purchaseAssetType}, potresti non essere in grado di rivenderlo.",
+        "assetType": {
+            "token": "Gettone | Gettoni",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Inserisci",
+        "pinAsset": "Fissa bene",
+        "unpinAsset": "Sblocca bene"
     },
     "createToken": {
         "desc": "Crea e distribuisci asset personalizzati su {Sora}",
@@ -862,10 +872,14 @@
         "hideBalances": "Nascondi saldi",
         "settings": "Impostazioni",
         "switchTheme": "Passa alla modalità {theme}",
-        "switchLanguage": "Scegli la lingua",
         "showDisclaimer": "Mostra esclusione di responsabilità",
         "hideDisclaimer": "Nascondi Dichiarazione di non responsabilità",
-        "selectCurrency": "Seleziona Valuta"
+        "selectCurrency": "Seleziona Valuta",
+        "turnPhoneHideBalances": "Gira il telefono e nascondi",
+        "titleBalance": "Saldi",
+        "titleTheme": "Tema colore",
+        "titleCurrency": "Valuta fiat",
+        "titleMisc": "Varie"
     },
     "sentText": "Inviato",
     "learnMoreText": "Per saperne di più",
@@ -1042,7 +1056,9 @@
         "button": "Attivare le notifiche",
         "agree": "Si, capisco",
         "notificationBlocked": "Per ricevere le notifiche su {AppName}, consenti le notifiche nelle impostazioni native del tuo browser",
-        "pointer": "Premi \"Consenti\" per attivare le notifiche"
+        "pointer": "Premi \"Consenti\" per attivare le notifiche",
+        "rotatetitle": "Si prega di ruotare il dispositivo",
+        "rotateMessage": "L'esperienza è disponibile solo in modalità verticale"
     },
     "assetDeposit": "Il saldo patrimoniale è stato depositato",
     "noDataText": "Nessun dato",
@@ -1053,7 +1069,10 @@
         "verifiedOnly": "Mostra solo risorse verificate",
         "zeroBalance": "Nascondi 0 saldo attivo",
         "showAssets": "Mostra risorse",
-        "show": "Mostra"
+        "show": "Mostra",
+        "reset": "Reset",
+        "synthetics": "Sintetici",
+        "native": "Nativo"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1684,13 @@
         "yourRewards": "Le tue ricompense",
         "openTelegram": "Apri {Telegram}",
         "toEarnPoints": "Per guadagnare punti"
+    },
+    "addAssetsText": "Aggiungi bene | Aggiungi beni",
+    "noir": "Il noir",
+    "rotatePhoneNotification": {
+        "title": "Capovolgi il dispositivo per nascondere i saldi.",
+        "info": "Per una maggiore privacy, inclina il dispositivo a faccia in giù per nascondere istantaneamente i saldi delle tue risorse. Questa funzione utilizza i sensori integrati del telefono.",
+        "enableAcceleration": "Abilita l'accesso all'accelerazione nelle tue impostazioni.",
+        "gyroscropePhone": "La nostra tecnologia utilizza il giroscopio integrato del telefono per nascondere istantaneamente il saldo quando inclini il dispositivo."
     }
 }

@@ -162,7 +162,7 @@
         "selectAccount": "Välj konto att arbeta med",
         "action": {
             "install": "Installera tillägg",
-            "learnMore": "Lär dig mer",
+            "learnMore": "Läs mer om plånboksanslutning",
             "connect": "Anslut konto",
             "refresh": "Uppdatera"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Installera",
             "connected": "Ansluten",
-            "notConnected": "Ej ansluten"
+            "notConnected": "Ej ansluten",
+            "recommended": "Rekommenderad"
         },
         "internalTitle": "Anslut med {wallet}",
         "internalText": "Du kan skapa eller importera ett befintligt {Sora} -konto för att ansluta till ditt {wallet} -konto. All data som lagras av {wallet} krypteras med inbyggd avancerad kryptering.",
         "list": {
             "integrated": "Integrerad",
             "extensions": "Tillägg"
-        }
+        },
+        "disclaimer": "Observera att vissa plånböcker kanske inte stöds fullt ut."
     },
     "wallet": {
         "WalletAssets": "Tillgångar",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Token var redan bifogad",
         "understand": "Jag förstår",
         "warningTitle": "Handla på egen risk!",
-        "warningMessage": "Vem som helst kan skapa en token, inklusive skapa falska versioner av befintliga tokens som påstår sig representera olika projekt.\nOm du köper denna token finns det en risk för du efterföljande inte kan sälja den.",
+        "warningMessage": "denna {assetType} | dessa {assetTypePlural}",
         "approved": "Tillgång godkänd av communityn",
         "unknown": "Okänt ursprung",
         "scam": "BLUFF",
@@ -265,7 +267,15 @@
             "title": "Valutor",
             "switchBtn": "Endast verifierade tillgångar"
         },
-        "searchInputText": "Sök efter Tillgångs-ID, Namn eller Ticker-symbol"
+        "searchInputText": "Sök efter Tillgångs-ID, Namn eller Ticker-symbol",
+        "warningMessageText": "Vem som helst kan skapa en {assetType}, inklusive falska versioner av befintliga {assetTypePlural} som påstår sig representera projekt. Om du köper en {purchaseAssetType}, kanske du inte kan sälja tillbaka den.",
+        "assetType": {
+            "token": "Tecken | Tecken",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Addera",
+        "pinAsset": "Fäst tillgång",
+        "unpinAsset": "Lossa tillgång"
     },
     "createToken": {
         "desc": "Skapa och utplacera anpassad tillgång på {Sora}",
@@ -862,10 +872,14 @@
         "hideBalances": "Dölj Saldon",
         "settings": "Inställningar",
         "switchTheme": "Byt till {theme} Läge",
-        "switchLanguage": "Välj Språk",
         "showDisclaimer": "Visa ansvarsfriskrivning",
         "hideDisclaimer": "Dölj ansvarsfriskrivning",
-        "selectCurrency": "Välj valuta"
+        "selectCurrency": "Välj valuta",
+        "turnPhoneHideBalances": "Vänd telefonen och dölj",
+        "titleBalance": "Saldo",
+        "titleTheme": "Färgtema",
+        "titleCurrency": "Fiatvaluta",
+        "titleMisc": "Övrigt"
     },
     "sentText": "Skickat",
     "learnMoreText": "Lär dig mer",
@@ -1042,7 +1056,9 @@
         "button": "Aktivera aviseringar",
         "agree": "Ja, jag förstår",
         "notificationBlocked": "För att få aviseringar om {AppName}, vänligen tillåt aviseringarna i webbläsarens inställningar",
-        "pointer": "Tryck på \"Tillåt\" för att aktivera aviseringar"
+        "pointer": "Tryck på \"Tillåt\" för att aktivera aviseringar",
+        "rotatetitle": "Vänligen rotera din enhet",
+        "rotateMessage": "Upplevelsen är endast tillgänglig i porträttläge"
     },
     "assetDeposit": "Tillgångssaldo har satts in",
     "noDataText": "Ingen data",
@@ -1053,7 +1069,10 @@
         "verifiedOnly": "Visa endast verifierade tillgångar",
         "zeroBalance": "Dölj 0 saldo tillgångar",
         "showAssets": "Visa tillgångar",
-        "show": "Visa"
+        "show": "Visa",
+        "reset": "Återställa",
+        "synthetics": "Syntetmaterial",
+        "native": "Inföding"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1684,13 @@
         "yourRewards": "Dina belöningar",
         "openTelegram": "Öppna {Telegram}",
         "toEarnPoints": "För att tjäna poäng"
+    },
+    "addAssetsText": "Lägg till tillgång | Lägg till tillgångar",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Vänd din enhet upp och ner för att dölja saldon.",
+        "info": "För extra integritet, luta din enhet med skärmen nedåt för att omedelbart dölja dina tillgångssaldon. Denna funktion använder telefonens inbyggda sensorer.",
+        "enableAcceleration": "Aktivera accelerationsåtkomst i dina inställningar.",
+        "gyroscropePhone": "Vår teknik använder telefonens inbyggda gyroskop för att omedelbart dölja ditt saldo när du lutar din enhet."
     }
 }

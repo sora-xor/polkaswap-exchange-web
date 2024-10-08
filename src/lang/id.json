@@ -162,7 +162,7 @@
         "selectAccount": "Pilih akun untuk dikerjakan",
         "action": {
             "install": "Instal ekstensi",
-            "learnMore": "Pelajari lebih lanjut",
+            "learnMore": "Pelajari lebih lanjut tentang koneksi dompet",
             "connect": "Hubungkan akun",
             "refresh": "Menyegarkan"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Install",
             "connected": "Terhubung",
-            "notConnected": "Tidak terhubung"
+            "notConnected": "Tidak terhubung",
+            "recommended": "Direkomendasikan"
         },
         "internalTitle": "Terhubung dengan {wallet}",
         "internalText": "Anda dapat membuat atau mengimpor akun {Sora} yang sudah ada untuk terhubung dengan akun {wallet} Anda. Semua data yang disimpan oleh {wallet} dienkripsi menggunakan enkripsi lanjutan bawaan.",
         "list": {
             "integrated": "Terintegrasi",
             "extensions": "Ekstensi"
-        }
+        },
+        "disclaimer": "Harap perhatikan bahwa dompet tertentu mungkin tidak didukung sepenuhnya."
     },
     "wallet": {
         "WalletAssets": "Aset",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Token sudah terlampir",
         "understand": "Saya mengerti",
         "warningTitle": "Perdagangkan dengan risiko Anda sendiri!",
-        "warningMessage": "Siapapun dapat membuat token, termasuk membuat versi palsu dari token yang ada yang menyatakan representasi suatu proyek.\nJika Anda membeli token ini, Anda mungkin tidak dapat menjualnya kembali.",
+        "warningMessage": "{assetType} ini | {assetTypePlural} ini",
         "approved": "Aset disetujui oleh komunitas",
         "unknown": "Sumber tidak diketahui",
         "scam": "SCAM",
@@ -265,7 +267,15 @@
             "title": "Mata Uang",
             "switchBtn": "Hanya aset yang diverifikasi"
         },
-        "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker"
+        "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker",
+        "warningMessageText": "Siapapun dapat membuat {assetType}, termasuk membuat versi palsu dari {assetTypePlural} yang ada yang mengklaim mewakili proyek. Jika Anda membeli {purchaseAssetType}, Anda mungkin tidak dapat menjualnya kembali.",
+        "assetType": {
+            "token": "Token | Token",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Menambahkan",
+        "pinAsset": "Pin aset",
+        "unpinAsset": "Lepas pin aset"
     },
     "createToken": {
         "desc": "Buat dan terapkan kostum aset di {Sora}",
@@ -862,10 +872,14 @@
         "hideBalances": "Sembunyikan Saldo",
         "settings": "Pengaturan",
         "switchTheme": "Beralih ke Mode {theme}",
-        "switchLanguage": "Pilih bahasa",
         "showDisclaimer": "Tampilkan Penafian",
         "hideDisclaimer": "Sembunyikan Penafian",
-        "selectCurrency": "Pilih Mata Uang"
+        "selectCurrency": "Pilih Mata Uang",
+        "turnPhoneHideBalances": "Putar ponsel & sembunyikan",
+        "titleBalance": "Saldo",
+        "titleTheme": "Tema warna",
+        "titleCurrency": "Mata uang fiat",
+        "titleMisc": "Lainnya"
     },
     "sentText": "Terkirim",
     "learnMoreText": "Pelajari lebih lanjut",
@@ -1042,7 +1056,9 @@
         "button": "Aktifkan notifikasi",
         "agree": "Ya saya mengerti",
         "notificationBlocked": "Untuk menerima notifikasi tentang {AppName}, izinkan notifikasi di setelan asli browser Anda",
-        "pointer": "Tekan \"Izinkan\" untuk mengaktifkan notifikasi"
+        "pointer": "Tekan \"Izinkan\" untuk mengaktifkan notifikasi",
+        "rotatetitle": "Silakan putar perangkat Anda",
+        "rotateMessage": "Pengalaman ini hanya tersedia dalam mode potret"
     },
     "assetDeposit": "Saldo aset telah disetorkan",
     "noDataText": "Tidak ada data",
@@ -1053,7 +1069,10 @@
         "verifiedOnly": "Tampilkan aset terverifikasi saja",
         "zeroBalance": "Sembunyikan 0 aset saldo",
         "showAssets": "Tampilkan aset",
-        "show": "Tunjukkan"
+        "show": "Tunjukkan",
+        "reset": "Mengatur ulang",
+        "synthetics": "Sintetis",
+        "native": "Warga asli"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1684,13 @@
         "yourRewards": "Hadiah Anda",
         "openTelegram": "Buka {Telegram}",
         "toEarnPoints": "Untuk mendapatkan poin"
+    },
+    "addAssetsText": "Tambah aset | Tambah aset-aset",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Balikkan perangkat Anda terbalik untuk menyembunyikan saldo.",
+        "info": "Untuk privasi tambahan, miringkan perangkat Anda menghadap ke bawah untuk menyembunyikan saldo aset Anda secara instan. Fitur ini menggunakan sensor bawaan ponsel Anda.",
+        "enableAcceleration": "Aktifkan akses akselerasi di pengaturan Anda.",
+        "gyroscropePhone": "Teknologi kami menggunakan giroskop bawaan ponsel Anda untuk menyembunyikan saldo Anda secara instan saat Anda memiringkan perangkat."
     }
 }

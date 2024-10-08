@@ -1,4 +1,3 @@
-import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/sdk';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
@@ -7,8 +6,9 @@ import { ethers } from 'ethers';
 import { ZeroStringValue } from '@/consts';
 import { SmartContracts, SmartContractType } from '@/consts/evm';
 import type { NetworkData } from '@/types/bridge';
+import type { AppEIPProvider } from '@/types/evm/provider';
+import { PredefinedProvider } from '@/utils/connection/evm/providers';
 import { settingsStorage } from '@/utils/storage';
-import { getWcEthereumProvider } from '@/utils/walletconnect';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
@@ -19,19 +19,13 @@ type ethersProvider = ethers.BrowserProvider;
 let ethereumProvider!: any;
 let ethersInstance: ethersProvider | null = null;
 
-export enum Provider {
-  // Fearless = 'Fearless',
-  Metamask = 'Metamask',
-  SubWallet = 'SubWallet',
-  TrustWallet = 'TrustWallet',
-  WalletConnect = 'WalletConnect',
-}
-
 export enum PROVIDER_ERROR {
   // 1013: Disconnected from chain. Attempting to connect
   DisconnectedFromChain = 1013,
   // 4001: User rejected the request
   UserRejectedRequest = 4001,
+  // 4200: Unsupported method
+  UnsupportedMethod = 4200,
   // -32002: Already processing eth_requestAccounts. Please wait
   // -32002: Request of type 'wallet_requestPermissions' already pending for origin. Please wait
   AlreadyProcessing = -32002,
@@ -51,95 +45,70 @@ const handleErrorCode = (code: number, message?: string): string => {
   }
 };
 
-export const handleRpcProviderError = (error: any): string => {
-  let code = 0;
-  let message!: string;
+const getErrorCodeMessage = (error: any) => {
+  let code = error.code;
+  let message = error.message;
 
   // Metamask, TrustWallet
   if ('info' in error) {
     code = error.info.error.code;
     message = error.info.error.message;
     // SubWallet
-  } else if ('error' in error) {
-    code = error.error.data;
-    message = error.error.message;
+  } else if ('data' in error) {
+    code = error.data;
   }
+
+  return { code, message };
+};
+
+export const handleRpcProviderError = (error: any): string => {
+  const { code, message } = getErrorCodeMessage(error);
 
   return handleErrorCode(code, message);
 };
 
-function withTimeout<T>(promise: Promise<T>, timeout = 6000) {
-  return Promise.race([promise, new Promise((resolve, reject) => setTimeout(reject, timeout))]);
-}
+async function connectEvmProvider(appEvmProvider: AppEIPProvider, chainsProps: ChainsProps): Promise<string> {
+  try {
+    const ethereumProvider = await appEvmProvider.getProvider(chainsProps);
 
-async function connectEvmProvider(provider: Provider, chains: ChainsProps): Promise<string> {
-  switch (provider) {
-    case Provider.WalletConnect:
-      return await useWalletConnectProvider(chains);
-    default:
-      return await useExtensionProvider(provider);
+    if (!ethereumProvider) throw new Error(installExtensionKey);
+
+    await ethereumProvider.connect?.();
+
+    createWeb3Instance(ethereumProvider);
+
+    switch (appEvmProvider.uuid) {
+      case PredefinedProvider.WalletConnect: {
+        return await getAccount();
+      }
+      default: {
+        const accounts = await requestWalletAccounts();
+        return accounts[0];
+      }
+    }
+  } catch (error: any) {
+    // [WalletConnect] user rejected request
+    if (error.code === PROVIDER_ERROR.UserRejectedRequest) {
+      return '';
+    }
+    // [WalletConnect] user cancelled qr modal
+    if (error.message === 'Connection request reset. Please try again.') {
+      return '';
+    }
+    throw error;
   }
 }
 
-function disconnectEvmProvider(provider?: Nullable<Provider>): void {
-  ethereumProvider?.disconnect?.();
+function disconnectEvmProvider(appEvmProvider?: Nullable<AppEIPProvider>): void {
   // don't wait promise execution, that's for wallets lifecycle
   revokeWalletAccounts();
+  ethereumProvider?.disconnect?.();
 }
 
 function createWeb3Instance(provider: any) {
   ethereumProvider = provider;
   // 'any' - because ethers throws errors after network switch
   ethersInstance = new ethers.BrowserProvider(ethereumProvider, 'any');
-}
-
-async function useExtensionProvider(provider: Provider): Promise<string> {
-  const injectedWindow = window as any;
-
-  let ethereumProvider!: any;
-
-  switch (provider) {
-    case Provider.Metamask:
-      ethereumProvider = await detectEthereumProvider({ mustBeMetaMask: true, timeout: 0 });
-      break;
-    case Provider.SubWallet:
-      ethereumProvider = injectedWindow.SubWallet;
-      break;
-    case Provider.TrustWallet:
-      ethereumProvider = injectedWindow.trustwallet;
-      break;
-    // case Provider.Fearless:
-    //   ethereumProvider = injectedWindow.fearlessWallet;
-    //   break;
-    default:
-      throw new Error('Unknown provider');
-  }
-
-  if (!ethereumProvider) throw new Error(installExtensionKey);
-
-  createWeb3Instance(ethereumProvider);
-
-  const accounts = await requestWalletAccounts();
-
-  return accounts[0];
-}
-
-async function useWalletConnectProvider(chainProps: ChainsProps): Promise<string> {
-  try {
-    const ethereumProvider = await getWcEthereumProvider(chainProps);
-
-    await ethereumProvider.connect();
-
-    createWeb3Instance(ethereumProvider);
-
-    return await getAccount();
-  } catch (error: any) {
-    // user cancelled qr modal
-    if (error.message === 'Connection request reset. Please try again.') {
-      return '';
-    }
-    throw error;
-  }
 }
 
 function getEthersInstance(): ethersProvider {
@@ -269,44 +238,71 @@ async function watchEthereum(cb: {
   const provider = ethereumProvider;
 
   if (provider) {
-    provider.on('accountsChanged', cb.onAccountChange);
-    provider.on('chainChanged', cb.onNetworkChange);
-    provider.on('disconnect', cb.onDisconnect);
+    const enable = ['on', 'addListener'].find((prop) => prop in provider) as string;
+
+    provider[enable]('accountsChanged', cb.onAccountChange);
+    provider[enable]('chainChanged', cb.onNetworkChange);
+    provider[enable]('disconnect', cb.onDisconnect);
   }
 
   return function disconnect() {
     if (provider) {
-      provider.off('accountsChanged', cb.onAccountChange);
-      provider.off('chainChanged', cb.onNetworkChange);
-      provider.off('disconnect', cb.onDisconnect);
+      const disable = ['off', 'removeListener'].find((prop) => prop in provider) as string;
+
+      provider[disable]('accountsChanged', cb.onAccountChange);
+      provider[disable]('chainChanged', cb.onNetworkChange);
+      provider[disable]('disconnect', cb.onDisconnect);
     }
   };
 }
 
 async function requestWalletAccounts(): Promise<string[]> {
-  const result = await ethereumProvider.request({
-    method: 'wallet_requestPermissions',
-    params: [
-      {
-        eth_accounts: {},
-      },
-    ],
-  });
+  try {
+    const permissions = await ethereumProvider.request({
+      method: 'wallet_requestPermissions',
+      params: [
+        {
+          eth_accounts: {},
+        },
+      ],
+    });
 
-  const accounts = result[0].caveats[0].value;
+    const permission = permissions[0];
+    const caveat = permission?.caveats?.find((caveat) => Array.isArray(caveat.value));
 
-  return accounts as string[];
+    if (!caveat) throw new Error('Accounts not found');
+
+    return caveat.value as string[];
+  } catch (error: any) {
+    const { code } = getErrorCodeMessage(error);
+
+    if (
+      [
+        PROVIDER_ERROR.UserRejectedRequest, // user reject request
+        PROVIDER_ERROR.UnsupportedMethod, // trust wallet on method reject
+      ].includes(code)
+    )
+      return [];
+
+    const accounts = await ethereumProvider.request({
+      method: 'eth_requestAccounts',
+    });
+
+    return accounts as string[];
+  }
 }
 
 async function revokeWalletAccounts(): Promise<void> {
-  await ethereumProvider.request({
-    method: 'wallet_revokePermissions',
-    params: [
-      {
-        eth_accounts: {},
-      },
-    ],
-  });
+  try {
+    await ethereumProvider.request({
+      method: 'wallet_revokePermissions',
+      params: [
+        {
+          eth_accounts: {},
+        },
+      ],
+    });
+  } catch {}
 }
 
 async function addToken(address: string, symbol: string, decimals: number, image?: string): Promise<void> {
