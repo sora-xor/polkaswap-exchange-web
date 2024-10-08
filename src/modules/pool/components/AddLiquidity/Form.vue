@@ -281,6 +281,8 @@ export default class AddLiquidityForm extends Mixins(
   async depositLiquidity(): Promise<void> {
     await this.withNotifications(async () => {
       await this.addLiquidity();
+      // to close dialog that contains form
+      this.$emit('back');
     });
   }
 }

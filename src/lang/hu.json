@@ -872,10 +872,14 @@
         "hideBalances": "Egyenlegek elrejtése",
         "settings": "Beállítások",
         "switchTheme": "Váltás {theme} módra",
-        "switchLanguage": "Nyelv kiválasztása",
         "showDisclaimer": "Felelősségi nyilatkozat megjelenítése",
         "hideDisclaimer": "Felelősségi nyilatkozat elrejtése",
-        "selectCurrency": "Válassza a Pénznem lehetőséget"
+        "selectCurrency": "Válassza a Pénznem lehetőséget",
+        "turnPhoneHideBalances": "Fordítsa meg a telefont és rejtse el",
+        "titleBalance": "Egyenlegek",
+        "titleTheme": "Színtéma",
+        "titleCurrency": "Fiat pénz",
+        "titleMisc": "Egyéb"
     },
     "sentText": "Küldött",
     "learnMoreText": "Tudj meg többet",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Megnyitni {Telegram}",
         "toEarnPoints": "Pontok megszerzéséhez"
     },
-    "addAssetsText": "Eszköz hozzáadása | Eszközök hozzáadása"
+    "addAssetsText": "Eszköz hozzáadása | Eszközök hozzáadása",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Fordítsa meg a készüléket fejjel lefelé, hogy elrejtse az egyenlegeket.",
+        "info": "A nagyobb adatvédelem érdekében fordítsa készülékét képernyővel lefelé, hogy azonnal elrejtse eszköz egyenlegeit. Ez a funkció a telefon beépített érzékelőit használja.",
+        "enableAcceleration": "Engedélyezze a gyorsulás hozzáférést a beállításokban.",
+        "gyroscropePhone": "Technológiánk a telefon beépített giroszkópját használja a mérleg azonnali elrejtésére, amikor megdönti az eszközt."
+    }
 }

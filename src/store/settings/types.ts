@@ -39,6 +39,7 @@ export type SettingsState = {
   selectIndexerDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
   selectCurrencyDialogVisibility: boolean;
+  rotatePhoneDialogVisibility: boolean;
   disclaimerVisibility: boolean;
   alertSettingsVisibility: boolean;
   browserNotifPopupVisibility: boolean;
@@ -55,5 +56,8 @@ export type SettingsState = {
   adsArray: Array<Ad>;
   isTMA: boolean;
   telegramBotUrl: Nullable<string>;
+  isRotatePhoneHideBalanceFeatureEnabled: boolean;
   isOrientationWarningVisible: boolean;
+  isAccessAccelerometrEventDeclined: boolean;
+  isAccessRotationListener: boolean;
 };

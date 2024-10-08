@@ -10,6 +10,10 @@ import type { SettingsState } from './types';
 
 function initialState(): SettingsState {
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
+  const isRotatePhoneHideBalanceFeatureEnabled =
+    settingsStorage.get('isRotatePhoneHideBalanceFeatureEnabled') === 'true';
+  const isAccessAccelerometrEventDeclined = settingsStorage.get('isAccessAccelerometrEventDeclined') === 'true';
+  const isAccessRotationListener = settingsStorage.get('isAccessRotationListener') === 'true';
   const isBrowserNotificationApiAvailable = 'Notification' in window;
   const appConnection = new NodesConnection(settingsStorage, connection);
 
@@ -31,6 +35,7 @@ function initialState(): SettingsState {
     selectIndexerDialogVisibility: false,
     selectLanguageDialogVisibility: false,
     selectCurrencyDialogVisibility: false,
+    rotatePhoneDialogVisibility: false,
     disclaimerVisibility: false,
     alertSettingsVisibility: false,
     browserNotifPopupVisibility: false,
@@ -45,7 +50,10 @@ function initialState(): SettingsState {
     adsArray: [],
     isTMA: false,
     telegramBotUrl: undefined,
+    isRotatePhoneHideBalanceFeatureEnabled,
     isOrientationWarningVisible: false,
+    isAccessAccelerometrEventDeclined,
+    isAccessRotationListener,
   };
 }
 

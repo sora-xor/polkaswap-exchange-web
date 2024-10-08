@@ -872,10 +872,14 @@
         "hideBalances": "Skrýt zůstatky",
         "settings": "Nastavení",
         "switchTheme": "Přepnout do režimu {theme}",
-        "switchLanguage": "Vybrat jazyk",
         "showDisclaimer": "Zobrazit vyloučení odpovědnosti",
         "hideDisclaimer": "Skrýt vyloučení odpovědnosti",
-        "selectCurrency": "Vyberte možnost Měna"
+        "selectCurrency": "Vyberte možnost Měna",
+        "turnPhoneHideBalances": "Otočte telefon a skryjte",
+        "titleBalance": "Zůstatky",
+        "titleTheme": "Barevné téma",
+        "titleCurrency": "Fiat měna",
+        "titleMisc": "Ostatní"
     },
     "sentText": "Odesláno",
     "learnMoreText": "Zjistit více",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Otevřít {Telegram}",
         "toEarnPoints": "Pro získání bodů"
     },
-    "addAssetsText": "Přidat aktivum | Přidat aktiva"
+    "addAssetsText": "Přidat aktivum | Přidat aktiva",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Otočte zařízení vzhůru nohama, abyste skryli zůstatky.",
+        "info": "Pro vyšší úroveň soukromí nakloňte své zařízení obrazovkou dolů a okamžitě skryjte zůstatky svých aktiv. Tato funkce používá vestavěné senzory vašeho telefonu.",
+        "enableAcceleration": "Povolte přístup k akceleraci v nastavení.",
+        "gyroscropePhone": "Naše technologie využívá vestavěný gyroskop vašeho telefonu k okamžitému skrytí vašeho zůstatku při naklonění zařízení."
+    }
 }

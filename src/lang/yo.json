@@ -872,10 +872,14 @@
         "hideBalances": "Tọju Awọn iwọntunwọnsi",
         "settings": "Ètò",
         "switchTheme": "Yipada si {theme} Ipo",
-        "switchLanguage": "Yan Ede",
         "showDisclaimer": "Ṣafihan AlAIgBA",
         "hideDisclaimer": "Tọju AlAIgBA",
-        "selectCurrency": "Yan Owo"
+        "selectCurrency": "Yan Owo",
+        "turnPhoneHideBalances": "Yipada foonu & fi pamọ",
+        "titleBalance": "Awọn iyokù",
+        "titleTheme": "Àkọ́lé àwọ̀",
+        "titleCurrency": "Owo fiat",
+        "titleMisc": "Miiran"
     },
     "sentText": "Ti firanṣẹ",
     "learnMoreText": "Kọ ẹkọ si",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Ṣii {Telegram}",
         "toEarnPoints": "Lati gba awọn dimegilio"
     },
-    "addAssetsText": "Fi dukia kun | Fi awọn dukia kun"
+    "addAssetsText": "Fi dukia kun | Fi awọn dukia kun",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Yipada ẹrọ rẹ sí abẹ́lẹ̀ láti fi àwọn ìwontúnwọnsi pamọ́.",
+        "info": "Fun ìpamọ́ tó kù díẹ̀, tẹ ẹrọ rẹ sórí pẹ̀tẹ̀rẹ̀tẹ̀ láti fi pamọ́ iwọntunwọnsi dukia rẹ lẹsẹkẹsẹ. Ẹya yii nlo awọn sensọ ti inu foonu rẹ.",
+        "enableAcceleration": "Ṣii wiwọle iyara ni awọn eto rẹ.",
+        "gyroscropePhone": "Imọ-ẹrọ wa nlo ẹrọ girosikopu ti inu foonu rẹ lati tọju iwọntunwọnsi rẹ lẹsẹkẹsẹ nigbati o tẹ ẹrọ rẹ."
+    }
 }

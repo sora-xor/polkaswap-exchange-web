@@ -8,7 +8,7 @@ import { SUB_NETWORKS } from '@/consts/sub';
 import { web3GetterContext } from '@/store/web3';
 import type { NetworkData } from '@/types/bridge';
 import type { AppEIPProvider } from '@/types/evm/provider';
-import { FearlessWalletProvider, WalletConnectProvider } from '@/utils/connection/evm/providers';
+import { FearlessWalletProvider, MetamaskProvider, WalletConnectProvider } from '@/utils/connection/evm/providers';
 
 import type { Web3State, AvailableNetwork } from './types';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
@@ -122,15 +122,22 @@ const getters = defineGetters<Web3State>()({
 
     if (isDesktop) return [WalletConnectProvider];
 
-    const providers: AppEIPProvider[] = [...state.evmProviders];
+    const providers: AppEIPProvider[] = state.evmProviders.map((provider) => ({ ...provider }));
+    const predefinedProviders: AppEIPProvider[] = [];
 
-    [FearlessWalletProvider, WalletConnectProvider].forEach((provider) => {
-      const exists = !!providers.find((added) => added.name === provider.name);
+    const predefinedWallets = [FearlessWalletProvider, MetamaskProvider, WalletConnectProvider];
 
-      if (!exists) providers.push(provider);
+    predefinedWallets.forEach((provider) => {
+      const injected = providers.find((added) => added.name === provider.name);
+
+      if (injected) {
+        injected.uuid = provider.uuid;
+      } else {
+        predefinedProviders.push(provider);
+      }
     });
 
-    const sortedProviders = [...providers].sort((a, b) => {
+    const sortedProviders = [...providers, ...predefinedProviders].sort((a, b) => {
       if (a.name === FearlessWalletProvider.name) {
         return -1;
       }

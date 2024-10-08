@@ -872,10 +872,14 @@
         "hideBalances": "Salden ausblenden",
         "settings": "Einstellungen",
         "switchTheme": "Wechseln Sie in den {theme}-Modus",
-        "switchLanguage": "Sprache wählen",
         "showDisclaimer": "Haftungsausschluss anzeigen",
         "hideDisclaimer": "Haftungsausschluss ausblenden",
-        "selectCurrency": "Währung wählen"
+        "selectCurrency": "Währung wählen",
+        "turnPhoneHideBalances": "Drehen Sie das Telefon und verstecken",
+        "titleBalance": "Salden",
+        "titleTheme": "Farbthema",
+        "titleCurrency": "Fiatgeld",
+        "titleMisc": "Sonstiges"
     },
     "sentText": "Gesendet",
     "learnMoreText": "Mehr erfahren",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Öffnen {Telegram}",
         "toEarnPoints": "Um Punkte zu verdienen"
     },
-    "addAssetsText": "Asset hinzufügen | Assets hinzufügen"
+    "addAssetsText": "Asset hinzufügen | Assets hinzufügen",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Drehen Sie Ihr Gerät auf den Kopf, um Salden zu verbergen.",
+        "info": "Für zusätzlichen Datenschutz kippen Sie Ihr Gerät nach unten, um Ihre Vermögenssalden sofort zu verbergen. Diese Funktion verwendet die integrierten Sensoren Ihres Telefons.",
+        "enableAcceleration": "Aktivieren Sie den Zugriff auf die Beschleunigung in Ihren Einstellungen.",
+        "gyroscropePhone": "Unsere Technologie nutzt das integrierte Gyroskop Ihres Telefons, um Ihr Guthaben sofort zu verbergen, wenn Sie Ihr Gerät neigen."
+    }
 }

@@ -872,10 +872,14 @@
         "hideBalances": "Nascondi saldi",
         "settings": "Impostazioni",
         "switchTheme": "Passa alla modalità {theme}",
-        "switchLanguage": "Scegli la lingua",
         "showDisclaimer": "Mostra esclusione di responsabilità",
         "hideDisclaimer": "Nascondi Dichiarazione di non responsabilità",
-        "selectCurrency": "Seleziona Valuta"
+        "selectCurrency": "Seleziona Valuta",
+        "turnPhoneHideBalances": "Gira il telefono e nascondi",
+        "titleBalance": "Saldi",
+        "titleTheme": "Tema colore",
+        "titleCurrency": "Valuta fiat",
+        "titleMisc": "Varie"
     },
     "sentText": "Inviato",
     "learnMoreText": "Per saperne di più",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Apri {Telegram}",
         "toEarnPoints": "Per guadagnare punti"
     },
-    "addAssetsText": "Aggiungi bene | Aggiungi beni"
+    "addAssetsText": "Aggiungi bene | Aggiungi beni",
+    "noir": "Il noir",
+    "rotatePhoneNotification": {
+        "title": "Capovolgi il dispositivo per nascondere i saldi.",
+        "info": "Per una maggiore privacy, inclina il dispositivo a faccia in giù per nascondere istantaneamente i saldi delle tue risorse. Questa funzione utilizza i sensori integrati del telefono.",
+        "enableAcceleration": "Abilita l'accesso all'accelerazione nelle tue impostazioni.",
+        "gyroscropePhone": "La nostra tecnologia utilizza il giroscopio integrato del telefono per nascondere istantaneamente il saldo quando inclini il dispositivo."
+    }
 }

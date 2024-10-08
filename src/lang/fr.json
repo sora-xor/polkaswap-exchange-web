@@ -872,10 +872,14 @@
         "hideBalances": "Masquer les soldes",
         "settings": "Paramètres",
         "switchTheme": "Passer en mode {theme}",
-        "switchLanguage": "Choisissez la langue",
         "showDisclaimer": "Afficher la clause de non-responsabilité",
         "hideDisclaimer": "Masquer la clause de non-responsabilité",
-        "selectCurrency": "Sélectionnez la devise"
+        "selectCurrency": "Sélectionnez la devise",
+        "turnPhoneHideBalances": "Tournez le téléphone et cachez",
+        "titleBalance": "Soldes",
+        "titleTheme": "Thème de couleur",
+        "titleCurrency": "Monnaie fiduciaire",
+        "titleMisc": "Divers"
     },
     "sentText": "Envoyé",
     "learnMoreText": "En savoir plus",
@@ -1681,5 +1685,12 @@
         "openTelegram": "Ouvrir {Telegram}",
         "toEarnPoints": "Pour gagner des points"
     },
-    "addAssetsText": "Ajouter un actif | Ajouter des actifs"
+    "addAssetsText": "Ajouter un actif | Ajouter des actifs",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Retournez votre appareil à l'envers pour masquer les soldes.",
+        "info": "Pour plus de confidentialité, inclinez votre appareil face vers le bas pour masquer instantanément le solde de vos actifs. Cette fonctionnalité utilise les capteurs intégrés de votre téléphone.",
+        "enableAcceleration": "Activez l'accès à l'accélération dans vos paramètres.",
+        "gyroscropePhone": "Notre technologie utilise le gyroscope intégré de votre téléphone pour masquer instantanément votre solde lorsque vous inclinez votre appareil."
+    }
 }
