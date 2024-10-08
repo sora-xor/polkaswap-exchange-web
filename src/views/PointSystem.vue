@@ -157,6 +157,7 @@ import {
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import { action, getter, state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
+import { AccountPointsCalculation, CategoryPoints } from '@/types/pointSystem';
 import { formatAmountWithSuffix, convertFPNumberToNumber } from '@/utils';
 import { pointsService } from '@/utils/pointSystem';
 
@@ -342,24 +343,26 @@ export default class PointSystem extends Mixins(
     return fiatBalanceFloat;
   }
 
-  getPointsForCategories(accountMeta: any): any {
+  getPointsForCategories(accountDataForPointsCalculation: AccountPointsCalculation): CategoryPoints {
     const liquidityProvision = this.getTotalLiquidityFiatValue();
     const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards ?? this.Zero);
     const depositVolumeBridges =
-      convertFPNumberToNumber(accountMeta?.bridge.incomingUSD ?? this.Zero) +
-      convertFPNumberToNumber(accountMeta?.bridge.outgoingUSD ?? this.Zero);
-    const networkFeeSpent = convertFPNumberToNumber(accountMeta?.fees.amountUSD ?? this.Zero);
-    const XORBurned = convertFPNumberToNumber(accountMeta?.burned.amountUSD ?? this.Zero);
+      convertFPNumberToNumber(accountDataForPointsCalculation?.bridge.incomingUSD ?? this.Zero) +
+      convertFPNumberToNumber(accountDataForPointsCalculation?.bridge.outgoingUSD ?? this.Zero);
+    const networkFeeSpent = convertFPNumberToNumber(accountDataForPointsCalculation?.fees.amountUSD ?? this.Zero);
+    const XORBurned = convertFPNumberToNumber(accountDataForPointsCalculation?.burned.amountUSD ?? this.Zero);
     const XORHoldings = this.getCurrentFiatBalanceForToken(this.xorSymbol);
-    const kensetsuVolumeRepaid = convertFPNumberToNumber(accountMeta?.kensetsu.amountUSD ?? this.Zero);
+    const kensetsuVolumeRepaid = convertFPNumberToNumber(
+      accountDataForPointsCalculation?.kensetsu.amountUSD ?? this.Zero
+    );
     const kensetsuHold = this.getCurrentFiatBalanceForToken(KUSD.symbol);
-    const orderbookVolume = convertFPNumberToNumber(accountMeta?.orderBook.amountUSD ?? this.Zero);
-    const governanceLockedXOR = convertFPNumberToNumber(accountMeta?.governance.amountUSD ?? this.Zero);
-    const nativeXorStaking = convertFPNumberToNumber(accountMeta?.staking.amountUSD ?? this.Zero);
-    const firstTxAccount = accountMeta?.createdAt.timestamp ?? 0;
+    const orderbookVolume = convertFPNumberToNumber(accountDataForPointsCalculation?.orderBook.amountUSD ?? this.Zero);
+    const governanceLockedXOR = convertFPNumberToNumber(
+      accountDataForPointsCalculation?.governance.amountUSD ?? this.Zero
+    );
+    const nativeXorStaking = convertFPNumberToNumber(accountDataForPointsCalculation?.staking.amountUSD ?? this.Zero);
+    const firstTxAccount = accountDataForPointsCalculation?.createdAt.timestamp ?? 0;
 
-    // Тут составим объект который передадим в utils для подсчета поинтов
-    // Пример использования:
     const pointsForCategories = {
       liquidityProvision,
       referralRewards,
@@ -395,8 +398,12 @@ export default class PointSystem extends Mixins(
       this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
       const accountMeta = await fetchAccountMeta(account);
 
-      console.info(pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta)));
-      console.info('AccountMeta', accountMeta);
+      if (accountMeta) {
+        console.info(pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta)));
+        console.info('AccountMeta:', accountMeta);
+      } else {
+        console.info('No AccountMeta data');
+      }
     }
   }
 

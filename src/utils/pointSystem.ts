@@ -1,22 +1,8 @@
 // pointsService.ts
 import { categoriesPointSystem, POINTS_PER_PERCENT } from '@/consts/pointSystem';
-
-// Интерфейсы для типов входных и выходных данных
-interface CategoryPointResult {
-  levelCurrent: number;
-  threshold: number;
-  points: number;
-  nextLevelRewardPoints: number | null;
-  currentProgress: number;
-  minimumAmountForNextLevel: number | null;
-}
-
-interface CategoryValues {
-  [key: string]: number;
-}
+import { CalculateCategoryPointResult, CategoryValues } from '@/types/pointSystem';
 
 class PointsService {
-  // Функция для поиска соответствующего уровня на основе входного значения
   private findLevel(
     levels: { threshold: number; multiplier: number }[],
     value: number
@@ -45,7 +31,7 @@ class PointsService {
     const minimumAmountForNextLevel = nextLevel ? nextLevel.threshold : null;
 
     return {
-      levelCurrent: finalIndex + 1, // Уровни начинаются с 1
+      levelCurrent: finalIndex + 1,
       threshold: matchedLevel.threshold,
       multiplier: matchedLevel.multiplier,
       nextLevelRewardPoints,
@@ -54,9 +40,8 @@ class PointsService {
     };
   }
 
-  // Функция для расчета очков и определения уровня, текущего прогресса и минимума для следующего уровня по каждой категории
-  public calculateCategoryPoints(categoryValues: CategoryValues): { [key: string]: CategoryPointResult } {
-    const results: { [key: string]: CategoryPointResult } = {};
+  public calculateCategoryPoints(categoryValues: CategoryValues): { [key: string]: CalculateCategoryPointResult } {
+    const results: { [key: string]: CalculateCategoryPointResult } = {};
 
     Object.entries(categoryValues).forEach(([categoryName, value]) => {
       const category = categoriesPointSystem[categoryName];
@@ -83,6 +68,5 @@ class PointsService {
   }
 }
 
-// Экспортируем экземпляр класса PointsService
 const pointsService = new PointsService();
 export { pointsService };
