@@ -4,7 +4,16 @@
       <template #header>
         <h3 class="points__header">{{ t('points.title') }}</h3>
       </template>
-      <div class="points__main s-flex-column">
+
+      <point-card
+        v-for="(pointsForCategory, categoryName) in pointsForCards"
+        :key="categoryName"
+        :points-for-category="pointsForCategory"
+        :category-name="categoryName"
+        class="points__card"
+      />
+
+      <!-- <div class="points__main s-flex-column">
         <div v-if="!isLoggedIn" class="points__connect s-flex-column">
           <span class="points__connect-title d2">{{ t('points.loginText') }}</span>
           <s-button
@@ -16,14 +25,6 @@
           </s-button>
         </div>
         <div v-else v-loading="loading">
-          <point-card
-            v-for="(pointsForCategory, categoryName) in pointsForCards"
-            :key="categoryName"
-            :points-for-category="pointsForCategory"
-            :category-name="categoryName"
-            class="points__card"
-          />
-
           <div class="points__card points__card-bridge" :style="bridgeCardStyles">
             <div class="points__card-header s-flex-column">
               <span class="points__card-title">{{ t('points.bridgeVolume') }}</span>
@@ -141,7 +142,7 @@
             <span class="points__soratopia-text">{{ t('points.toEarnPoints') }}</span>
           </div>
         </a>
-      </div>
+      </div> -->
     </s-card>
   </div>
 </template>
@@ -209,8 +210,107 @@ export default class PointSystem extends Mixins(
   private poolDepositCount = 0;
   private poolWithdrawCount = 0;
   totalSwapTxs = 0;
-  pointsForCards: { [key: string]: CalculateCategoryPointResult } | null = null;
+  dummyPoints: { [key: string]: CalculateCategoryPointResult } = {
+    liquidityProvision: {
+      currentProgress: 50,
+      levelCurrent: 2,
+      minimumAmountForNextLevel: 100,
+      nextLevelRewardPoints: 150,
+      points: 500,
+      threshold: 0,
+    },
+    referralRewards: {
+      currentProgress: 20,
+      levelCurrent: 1,
+      minimumAmountForNextLevel: 50,
+      nextLevelRewardPoints: 100,
+      points: 300,
+      threshold: 0,
+    },
+    depositVolumeBridges: {
+      currentProgress: 70,
+      levelCurrent: 3,
+      minimumAmountForNextLevel: 150,
+      nextLevelRewardPoints: 200,
+      points: 600,
+      threshold: 0,
+    },
+    networkFeeSpent: {
+      currentProgress: 30,
+      levelCurrent: 1,
+      minimumAmountForNextLevel: 60,
+      nextLevelRewardPoints: 120,
+      points: 400,
+      threshold: 0,
+    },
+    XORBurned: {
+      currentProgress: 10,
+      levelCurrent: 1,
+      minimumAmountForNextLevel: 40,
+      nextLevelRewardPoints: 80,
+      points: 200,
+      threshold: 0,
+    },
+    XORHoldings: {
+      currentProgress: 90,
+      levelCurrent: 4,
+      minimumAmountForNextLevel: 180,
+      nextLevelRewardPoints: 250,
+      points: 800,
+      threshold: 0,
+    },
+    kensetsuVolumeRepaid: {
+      currentProgress: 0,
+      levelCurrent: 1,
+      minimumAmountForNextLevel: 30,
+      nextLevelRewardPoints: 60,
+      points: 100,
+      threshold: 0,
+    },
+    kensetsuHold: {
+      currentProgress: 25,
+      levelCurrent: 1,
+      minimumAmountForNextLevel: 50,
+      nextLevelRewardPoints: 100,
+      points: 300,
+      threshold: 0,
+    },
+    orderbookVolume: {
+      currentProgress: 60,
+      levelCurrent: 3,
+      minimumAmountForNextLevel: 120,
+      nextLevelRewardPoints: 240,
+      points: 700,
+      threshold: 0,
+    },
+    governanceLockedXOR: {
+      currentProgress: 15,
+      levelCurrent: 1,
+      minimumAmountForNextLevel: 45,
+      nextLevelRewardPoints: 90,
+      points: 250,
+      threshold: 0,
+    },
+    nativeXorStaking: {
+      currentProgress: 35,
+      levelCurrent: 2,
+      minimumAmountForNextLevel: 75,
+      nextLevelRewardPoints: 150,
+      points: 450,
+      threshold: 0,
+    },
+    firstTxAccount: {
+      currentProgress: 0,
+      levelCurrent: 1,
+      minimumAmountForNextLevel: null,
+      nextLevelRewardPoints: null,
+      points: 0,
+      threshold: 0,
+    },
+  };
 
+  // Использование dummy-данных в компоненте
+  pointsForCards: { [key: string]: CalculateCategoryPointResult } | null = this.dummyPoints;
   @Watch('isLoggedIn')
   private updateSubscriptions(value: boolean): void {
     if (value) {
@@ -392,15 +492,15 @@ export default class PointSystem extends Mixins(
       this.totalSwapTxs = await fetchCount(0, end, account, CountType.Swap);
       this.poolDepositCount = await fetchCount(0, end, account, CountType.PoolDeposit);
       this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
-      const accountMeta = await fetchAccountMeta(account);
+      // const accountMeta = await fetchAccountMeta(account);
 
-      if (accountMeta) {
-        this.pointsForCards = pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta));
-        console.info(this.pointsForCards);
-        console.info('AccountMeta:', accountMeta);
-      } else {
-        console.info('No AccountMeta data');
-      }
+      // if (accountMeta) {
+      //   this.pointsForCards = pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta));
+      //   console.info(this.pointsForCards);
+      //   console.info('AccountMeta:', accountMeta);
+      // } else {
+      //   console.info('No AccountMeta data');
+      // }
     }
   }
 
@@ -429,6 +529,11 @@ export default class PointSystem extends Mixins(
   background-size: contain;
   background-repeat: no-repeat;
   background-position: top;
+  &__container {
+    display: flex; /* Makes child elements align in a row */
+    flex-wrap: wrap; /* Allows wrapping to a new row if space is insufficient */
+    gap: 16px; /* Adds space between cards */
+  }
   &__header {
     color: white;
   }
@@ -451,6 +556,8 @@ export default class PointSystem extends Mixins(
     }
   }
   &__card {
+    width: $sidebar-max-width;
+    height: calc($sidebar-max-width - $inner-spacing-mini);
     background-color: var(--s-color-utility-surface);
     box-shadow: var(--s-shadow-element-pressed);
     border-radius: var(--s-border-radius-mini);
