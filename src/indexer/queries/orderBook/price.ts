@@ -85,7 +85,7 @@ const SubsquidOrderBookPriceQuery = gql<ConnectionQueryResponse<OrderBookSnapsho
   }
 `;
 
-export async function fetchOrderBookData(
+export async function fetchOrderBookPriceData(
   orderBookId: string,
   type: SnapshotTypes,
   first?: number,

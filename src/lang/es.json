@@ -162,7 +162,7 @@
         "selectAccount": "Seleccione la cuenta con la que desea trabajar",
         "action": {
             "install": "Instalar extensión",
-            "learnMore": "Aprende más",
+            "learnMore": "Obtenga más información sobre la conexión de billetera",
             "connect": "Conectar cuenta",
             "refresh": "Actualizar"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Instalar",
             "connected": "Conectado",
-            "notConnected": "No conectado"
+            "notConnected": "No conectado",
+            "recommended": "Recomendado"
         },
         "internalTitle": "Conectar con {wallet}",
         "internalText": "Puede crear o importar una cuenta {Sora} existente para conectarse con su cuenta {wallet}. Todos los datos almacenados por {wallet} se cifran mediante el cifrado avanzado incorporado.",
         "list": {
             "integrated": "Integrado",
             "extensions": "Extensiones"
-        }
+        },
+        "disclaimer": "Tenga en cuenta que es posible que algunas billeteras no sean totalmente compatibles."
     },
     "wallet": {
         "WalletAssets": "Activos",
@@ -256,7 +258,7 @@
         "alreadyAttached": "El Token ya estaba adjunto",
         "understand": "Comprendo",
         "warningTitle": "¡Comercie bajo su propio riesgo!",
-        "warningMessage": "Cualquiera puede crear un Token, incluso crear versiones falsas de Tokens existentes que dicen representar proyectos.\nSi compras este Token, es posible que no puedas volver a venderlo.",
+        "warningMessage": "este {assetType} | estos {assetTypePlural}",
         "approved": "Activo aprobado por la comunidad",
         "unknown": "Fuente desconocida",
         "scam": "ESTAFA",
@@ -265,7 +267,15 @@
             "title": "Monedas",
             "switchBtn": "Solo activos verificados"
         },
-        "searchInputText": "Buscar por ID de activo, nombre o símbolo de etiqueta"
+        "searchInputText": "Buscar por ID de activo, nombre o símbolo de etiqueta",
+        "warningMessageText": "Cualquiera puede crear un {assetType}, incluidas versiones falsas de {assetTypePlural} existentes que afirman representar proyectos. Si compras un {purchaseAssetType}, es posible que no puedas venderlo de nuevo.",
+        "assetType": {
+            "token": "Ficha | Fichas",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Añadir",
+        "pinAsset": "Anclar activo",
+        "unpinAsset": "Desanclar activo"
     },
     "createToken": {
         "desc": "Crear y desplegar Activos personalizados en {Sora}",
@@ -453,17 +463,6 @@
         "privacyPolicy": "Política de privacidad",
         "appVersion": "Versión {AppName}",
         "contactUs": "Contáctenos"
-    },
-    "aboutNetworkDialog": {
-        "title": "Acerca de",
-        "network": {
-            "title": "¿Qué es {Sora}?",
-            "description": "{AppName} está construido sobre la Red {Sora}, y el token {Sora} (XOR) se utiliza para la provisión de gas\/comisiones y liquidez en {AppName}. La red {Sora} permite reducir las tarifas, agilizar las transacciones y simplificar la finalización del consenso, y se centra en ofrecer interoperabilidad en otros ecosistemas de blockchain como {Ethereum}."
-        },
-        "polkadot": {
-            "title": "¿Qué es {PolkadotJs}?",
-            "description": "La extensión {PolkadotJs} es una extensión de navegador disponible para Firefox y Chrome dedicada a administrar cuentas para cadenas basadas en Substrate, incluyendo {Sora}, {Polkadot} y {Kusama}. Puede agregar, importar y exportar cuentas y firmar transacciones o elementos extrínsecos que haya iniciado desde sitios web que haya autorizado."
-        }
     },
     "node": {
         "errors": {
@@ -862,10 +861,14 @@
         "hideBalances": "Ocultar saldos",
         "settings": "Ajustes",
         "switchTheme": "Cambiar al modo {theme}",
-        "switchLanguage": "Elige lenguaje",
         "showDisclaimer": "Mostrar descargo de responsabilidad",
         "hideDisclaimer": "Ocultar descargo de responsabilidad",
-        "selectCurrency": "Seleccione el tipo de moneda"
+        "selectCurrency": "Seleccione el tipo de moneda",
+        "turnPhoneHideBalances": "Gire el teléfono y oculte.",
+        "titleBalance": "Saldos",
+        "titleTheme": "Tema de color",
+        "titleCurrency": "Moneda fiduciaria",
+        "titleMisc": "Varios"
     },
     "sentText": "Enviado",
     "learnMoreText": "Aprende más",
@@ -1042,7 +1045,9 @@
         "button": "Permitir notificaciones",
         "agree": "Si, entiendo",
         "notificationBlocked": "Para recibir notificaciones sobre {AppName}, permita las notificaciones en la configuración nativa de su navegador",
-        "pointer": "Presione \"Permitir\" para activar las notificaciones"
+        "pointer": "Presione \"Permitir\" para activar las notificaciones",
+        "rotatetitle": "Por favor, gira tu dispositivo",
+        "rotateMessage": "La experiencia solo está disponible en modo retrato"
     },
     "assetDeposit": "El saldo de los activos ha sido depositado",
     "noDataText": "Sin datos",
@@ -1053,7 +1058,10 @@
         "verifiedOnly": "Mostrar solo activos verificados",
         "zeroBalance": "Ocultar activos de saldo 0",
         "showAssets": "Mostrar activos",
-        "show": "Mostrar"
+        "show": "Mostrar",
+        "reset": "Reiniciar",
+        "synthetics": "Sintéticos",
+        "native": "Nativo"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1673,13 @@
         "yourRewards": "Tus recompensas",
         "openTelegram": "Abrir {Telegram}",
         "toEarnPoints": "Para ganar puntos"
+    },
+    "addAssetsText": "Añadir activo | Añadir activos",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Gire su dispositivo boca abajo para ocultar los saldos",
+        "info": "Para mayor privacidad, incline su dispositivo con la pantalla hacia abajo para ocultar instantáneamente los saldos de sus activos. Esta función utiliza los sensores integrados de su teléfono.",
+        "enableAcceleration": "Habilite el acceso a la aceleración en su configuración.",
+        "gyroscropePhone": "Nuestra tecnología utiliza el giroscopio incorporado de su teléfono para ocultar instantáneamente su saldo cuando inclina el dispositivo"
     }
 }

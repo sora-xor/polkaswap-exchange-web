@@ -290,4 +290,3 @@ export default class CalculatorDialog extends Mixins(PoolCardMixin, mixins.Dialo
   @include focus-outline;
 }
 </style>
-../../router../consts

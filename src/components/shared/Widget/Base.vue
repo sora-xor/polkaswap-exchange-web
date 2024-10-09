@@ -94,7 +94,8 @@ export default class BaseWidget extends Vue {
   @Ref('container') readonly container!: Vue;
   @Ref('content') readonly content!: HTMLDivElement;
 
-  private observer: ResizeObserver | null = null;
+  private contentObserver: ResizeObserver | null = null;
+  private mutationObserver: MutationObserver | null = null;
   private handleContentResize = debouncedInputHandler(this.onContentResize, 300, { leading: false });
 
   private size: Size = {
@@ -164,14 +165,17 @@ export default class BaseWidget extends Vue {
       for (const attribute of originalHtmlElement.attributes) {
         htmlElement.setAttribute(attribute.nodeName, attribute.nodeValue);
       }
+
       // Move the Vue component to the Picture-in-Picture window
       pipWindow.document.body.appendChild(widgetElement);
+      // watch original document style adding
+      this.createMutationObserver();
 
       // Event listener when the PiP window is closed
       pipWindow.addEventListener('pagehide', () => {
         // Move the element back to the original document when PiP is closed
         this.$nextTick(() => {
-          this.pipOpened = false;
+          this.closePip();
           originalParent.appendChild(widgetElement);
         });
       });
@@ -187,7 +191,12 @@ export default class BaseWidget extends Vue {
 
   beforeDestroy(): void {
     this.destroyContentObserver();
+    this.closePip();
+  }
+
+  private closePip(): void {
     if (this.pipOpened && this.pipWindow) {
+      this.destroyMutationObserver();
       this.pipWindow.close();
       this.pipOpened = false;
       this.pipWindow = null;
@@ -197,13 +206,37 @@ export default class BaseWidget extends Vue {
   private createContentObserver(): void {
     if (!this.hasContent) return;
 
-    this.observer = new ResizeObserver(this.handleContentResize);
-    this.observer.observe(this.content);
+    this.contentObserver = new ResizeObserver(this.handleContentResize);
+    this.contentObserver.observe(this.content);
   }
 
   private destroyContentObserver(): void {
-    this.observer?.disconnect();
-    this.observer = null;
+    this.contentObserver?.disconnect();
+    this.contentObserver = null;
+  }
+
+  private createMutationObserver(): void {
+    const config: MutationObserverInit = { childList: true };
+
+    const callback: MutationCallback = (mutationList: MutationRecord[]) => {
+      const pipWindow = this.pipWindow;
+
+      if (!pipWindow) return;
+
+      for (const mutation of mutationList) {
+        Array.from(mutation.addedNodes).forEach((node) => {
+          pipWindow.document.head.appendChild(node.cloneNode(true));
+        });
+      }
+    };
+
+    this.mutationObserver = new MutationObserver(callback);
+    this.mutationObserver.observe(document.head, config);
+  }
+
+  private destroyMutationObserver(): void {
+    this.mutationObserver?.disconnect();
+    this.mutationObserver = null;
   }
 
   private getWidgetSize(): Size {
@@ -314,29 +347,14 @@ $left: $inner-spacing-medium;
 
     font-size: var(--s-font-size-medium);
     font-weight: 500;
-    line-height: var(--s-line-height-medium);
+    line-height: var(--s-line-height-reset);
 
     min-height: var(--s-size-small);
 
     &.primary {
       font-size: var(--s-font-size-large);
       font-weight: 300;
-      line-height: var(--s-line-height-reset);
     }
-  }
-
-  &-filters {
-    order: 1;
-
-    @include large-desktop {
-      margin-left: auto;
-      width: auto;
-      order: initial;
-    }
-  }
-
-  &-pip {
-    order: 2;
   }
 
   &-content {

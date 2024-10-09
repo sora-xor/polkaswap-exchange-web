@@ -162,7 +162,7 @@
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
         "action": {
             "install": "Bővítmény telepítése",
-            "learnMore": "Tudj meg többet",
+            "learnMore": "További információ a pénztárca csatlakoztatásáról",
             "connect": "Fiók csatlakoztatása",
             "refresh": "Frissítés"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Telepítés",
             "connected": "csatlakoztatva",
-            "notConnected": "Nem kapcsolódik"
+            "notConnected": "Nem kapcsolódik",
+            "recommended": "Ajánlott"
         },
         "internalTitle": "Csatlakozás a következővel {wallet}",
         "internalText": "Létrehozhat vagy importálhat egy meglévő {Sora} -fiókot, hogy összekapcsolódjon {wallet} -fiókjával. A {wallet} által tárolt összes adat a beépített fejlett titkosítással titkosítva van.",
         "list": {
             "integrated": "Integrált",
             "extensions": "Kiterjesztések"
-        }
+        },
+        "disclaimer": "Kérjük, vegye figyelembe, hogy bizonyos pénztárcák nem támogatottak teljes mértékben."
     },
     "wallet": {
         "WalletAssets": "Eszközök",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Tokent már csatolták",
         "understand": "Megértettem",
         "warningTitle": "Kereskedj a saját felelősségedre!",
-        "warningMessage": "Bárki létrehozhat tokent, beleértve a meglévő tokenek hamisított verzióinak létrehozását, amelyek azt állítják, hogy valós projekteket képviselnek.\nHa megvásárolod ezt a tokent, nem biztos, hogy el tudod adni.",
+        "warningMessage": "ez a {assetType} | ezek a {assetTypePlural}",
         "approved": "A közösség által jóváhagyott eszköz",
         "unknown": "Ismeretlen forrás",
         "scam": "ÁTVERÉS",
@@ -265,7 +267,15 @@
             "title": "Valuták",
             "switchBtn": "Csak ellenőrzött eszközök"
         },
-        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján"
+        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján",
+        "warningMessageText": "Bárki létrehozhat egy {assetType}-t, beleértve a meglévő {assetTypePlural} hamis változatait is, amelyek azt állítják, hogy projekteket képviselnek. Ha {purchaseAssetType}-t vásárolsz, lehet, hogy nem tudod visszaadni.",
+        "assetType": {
+            "token": "Zseton | Zsetonok",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Hozzáadás",
+        "pinAsset": "Rögzítés",
+        "unpinAsset": "Rögzítés feloldása"
     },
     "createToken": {
         "desc": "Egyéni eszköz létrehozása és telepítése a {Sora} hálózaton",
@@ -453,17 +463,6 @@
         "privacyPolicy": "Adatvédelmi irányelvek",
         "appVersion": "{AppName} verzió",
         "contactUs": "Kapcsolat"
-    },
-    "aboutNetworkDialog": {
-        "title": "Leírás",
-        "network": {
-            "title": "Mi az a {Sora}?",
-            "description": "A {AppName} a {Sora} hálózatra épül, és a {Sora} tokent (XOR) használják a {AppName} a gáz\/díjak és a likviditás biztosításához. A {Sora} Network lehetővé teszi a csökkentett díjakat, a gyorsabb tranzakciókat és az egyszerűbb konszenzus véglegesítést, és arra összpontosít, hogy más blokklánc ökoszisztémák, például az {Ethereum} közötti átjárhatóságot biztosítsa."
-        },
-        "polkadot": {
-            "title": "Mi az a {PolkadotJs}?",
-            "description": "A {PolkadotJs} bővítmény egy Firefox és Chrome böngészőbővítmény, amely a Substrate-alapú blokkláncok, köztük a {Sora}, a {Polkadot} és a {Kusama} fiókjainak kezelésére szolgál. Hozzáadhatsz, importálhatsz és exportálhatsz fiókokat, valamint aláírhat tranzakciókatsz vagy külső adatokat, amelyeket az Általad engedélyezett webhelyekről származnak."
-        }
     },
     "node": {
         "errors": {
@@ -862,10 +861,14 @@
         "hideBalances": "Egyenlegek elrejtése",
         "settings": "Beállítások",
         "switchTheme": "Váltás {theme} módra",
-        "switchLanguage": "Nyelv kiválasztása",
         "showDisclaimer": "Felelősségi nyilatkozat megjelenítése",
         "hideDisclaimer": "Felelősségi nyilatkozat elrejtése",
-        "selectCurrency": "Válassza a Pénznem lehetőséget"
+        "selectCurrency": "Válassza a Pénznem lehetőséget",
+        "turnPhoneHideBalances": "Fordítsa meg a telefont és rejtse el.",
+        "titleBalance": "Egyenlegek",
+        "titleTheme": "Színtéma",
+        "titleCurrency": "Fiat pénz",
+        "titleMisc": "Egyéb"
     },
     "sentText": "Küldött",
     "learnMoreText": "Tudj meg többet",
@@ -1042,7 +1045,9 @@
         "button": "Értesítések engedélyezése",
         "agree": "Igen, értem",
         "notificationBlocked": "Ahhoz, hogy értesítést kapjon az {AppName} alkalmazásról, kérjük, engedélyezze az értesítéseket a böngésző natív beállításaiban.",
-        "pointer": "Nyomja meg az „Engedélyezés” gombot az értesítések bekapcsolásához"
+        "pointer": "Nyomja meg az „Engedélyezés” gombot az értesítések bekapcsolásához",
+        "rotatetitle": "Kérjük, forgassa el a készülékét",
+        "rotateMessage": "Az élmény csak álló módban érhető el"
     },
     "assetDeposit": "Az eszközök egyenlege letétbe helyezve",
     "noDataText": "Nincs adat",
@@ -1053,7 +1058,10 @@
         "verifiedOnly": "Csak ellenőrzött eszközök megjelenítése",
         "zeroBalance": "0 egyenlegeszköz elrejtése",
         "showAssets": "Eszközök megjelenítése",
-        "show": "Mutat"
+        "show": "Mutat",
+        "reset": "Reset",
+        "synthetics": "Szintetika",
+        "native": "Bennszülött"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1673,13 @@
         "yourRewards": "Jutalmaitok",
         "openTelegram": "Megnyitni {Telegram}",
         "toEarnPoints": "Pontok megszerzéséhez"
+    },
+    "addAssetsText": "Eszköz hozzáadása | Eszközök hozzáadása",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Fordítsa meg a készüléket fejjel lefelé, hogy elrejtse az egyenlegeket",
+        "info": "A nagyobb adatvédelem érdekében fordítsa készülékét képernyővel lefelé, hogy azonnal elrejtse eszköz egyenlegeit. Ez a funkció a telefon beépített érzékelőit használja.",
+        "enableAcceleration": "Engedélyezze a gyorsulás hozzáférést a beállításokban.",
+        "gyroscropePhone": "Technológiánk a telefon beépített giroszkópját használja a mérleg azonnali elrejtésére, amikor megdönti az eszközt."
     }
 }

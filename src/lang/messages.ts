@@ -6,6 +6,7 @@ import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
 import { DashboardPageNames } from '../modules/dashboard/consts';
+import { PoolPageNames } from '../modules/pool/consts';
 import { StakingPageNames } from '../modules/staking/consts';
 import { ValidatorsFilterType, ValidatorsListMode } from '../modules/staking/sora/consts';
 import { VaultPageNames } from '../modules/vault/consts';
@@ -73,12 +74,11 @@ export default {
   [Theme.DARK]: 'Dark',
   pageTitle: {
     [PageNames.Swap]: 'Swap',
-    [PageNames.Pool]: 'Pool',
+    [PoolPageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',
     [PageNames.Stats]: 'Statistics',
     [PageNames.Wallet]: 'Wallet',
     [PageNames.AddLiquidity]: 'Add Liquidity',
-    [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.Rewards]: 'Rewards',
     [PageNames.ExploreTokens]: 'Tokens',
     [PageNames.ExplorePools]: 'Pools',
@@ -94,7 +94,7 @@ export default {
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',
-    [PageNames.Pool]: 'Pool',
+    [PoolPageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',
     [PageNames.Farming]: 'Farming',
     [PageNames.Wallet]: 'Account',
@@ -106,7 +106,7 @@ export default {
     [PageNames.StakingContainer]: 'Staking',
     [PageNames.SoraCard]: '{Sora} Card',
     [PageNames.AssetOwnerContainer]: 'Asset owner',
-    [PageNames.VaultsContainer]: '{Kensetsu}',
+    [VaultPageNames.VaultsContainer]: '{Kensetsu}',
   },
   alerts: {
     [AlertTypeTabs.Drop]: 'Drops below',
@@ -146,11 +146,13 @@ export default {
     showBalances: 'Show Balances',
     hideBalances: 'Hide Balances',
     settings: 'Settings',
-    switchTheme: 'Switch to {theme} Mode',
-    switchLanguage: 'Choose Language',
+    switchTheme: '{theme} Mode',
+    systemPreference: 'System Preferences',
+    switchLanguage: 'language',
     selectCurrency: 'Select Currency',
     showDisclaimer: 'Show Disclaimer',
     hideDisclaimer: 'Hide Disclaimer',
+    turnPhoneHideBalances: 'Turn phone & hide',
   },
   social: {
     wiki: '{Sora} Wiki',
@@ -176,19 +178,6 @@ export default {
   currencyDialog: {
     currency: 'Currency',
     searchPlaceholder: 'Search by currency name or symbol',
-  },
-  aboutNetworkDialog: {
-    title: 'About',
-    network: {
-      title: 'What is {Sora}?',
-      description:
-        '{AppName} is built on top of the {Sora} Network, and the {Sora} token (XOR) is used for gas/fees and liquidity provision on {AppName}. {Sora} Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like {Ethereum}.',
-    },
-    polkadot: {
-      title: 'What is {PolkadotJs}?',
-      description:
-        '{PolkadotJs} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including {Sora}, {Polkadot} and {Kusama}. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.',
-    },
   },
   node: {
     errors: {
@@ -369,7 +358,7 @@ export default {
   },
   exchange: {
     [PageNames.Swap]: 'Swap',
-    [PageNames.Pool]: 'Pool',
+    [PoolPageNames.Pool]: 'Pool',
     balance: 'Balance',
     price: 'Price',
     transactionSubmitted: 'Transaction submitted',
@@ -750,6 +739,7 @@ export default {
       installExtension:
         '{name} extension is not found. Please install it!\n\nAlready installed extension? Please reload the page',
       reloadPage: 'Reload page',
+      notAvailable: '{name} is not available.',
     },
   },
   referralProgram: {
@@ -988,6 +978,8 @@ export default {
     notificationBlocked:
       "To receive the notifications about {AppName}, please, allow the notifications in your browser's native settings",
     pointer: 'Press “Allow” to turn notifications on',
+    rotatetitle: 'Please, rotate your device',
+    rotateMessage: 'The experience is only available in portrait mode',
   },
   assetDeposit: 'Asset balance has been deposited',
   ofText: '{first} of {second}',

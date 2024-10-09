@@ -162,7 +162,7 @@
         "selectAccount": "Odaberite račun za rad",
         "action": {
             "install": "Instalirajte proširenje",
-            "learnMore": "Saznajte više",
+            "learnMore": "Saznajte više o povezivanju novčanika",
             "connect": "Povežite račun",
             "refresh": "Osvježite"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Instalirati",
             "connected": "Povezan",
-            "notConnected": "Nije povezano"
+            "notConnected": "Nije povezano",
+            "recommended": "Preporučeno"
         },
         "internalTitle": "Povežite se s {wallet}",
         "internalText": "Možete stvoriti ili uvesti postojeći {Sora} račun za povezivanje sa svojim {wallet} računom. Svi podaci koje pohranjuje {wallet} šifrirani su pomoću ugrađene napredne enkripcije.",
         "list": {
             "integrated": "Integriran",
             "extensions": "Ekstenzije"
-        }
+        },
+        "disclaimer": "Imajte na umu da određeni novčanici možda neće biti u potpunosti podržani."
     },
     "wallet": {
         "WalletAssets": "Sredstva",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Token je već bio priložen",
         "understand": "Razumijem",
         "warningTitle": "Trgujte na vlastitu odgovornost!",
-        "warningMessage": "Svatko može izraditi token, uključujući stvaranje lažnih verzija postojećih tokena koji tvrde da predstavljaju projekte.\nAko kupite ovaj token, možda ga nećete moći prodati natrag.",
+        "warningMessage": "ovaj {assetType} | ovi {assetTypePlural}",
         "approved": "Sredstvo odobreno od zajednice",
         "unknown": "Nepoznati izvor",
         "scam": "PREVARA",
@@ -265,7 +267,15 @@
             "title": "Valute",
             "switchBtn": "Samo provjerena sredstva"
         },
-        "searchInputText": "Pretraživanje po ID-u sredstva, nazivu ili simbolu oznake"
+        "searchInputText": "Pretraživanje po ID-u sredstva, nazivu ili simbolu oznake",
+        "warningMessageText": "Svatko može stvoriti {assetType}, uključujući lažne verzije postojećih {assetTypePlural} koje tvrde da predstavljaju projekte. Ako kupite {purchaseAssetType}, možda ga nećete moći prodati natrag.",
+        "assetType": {
+            "token": "Žeton | Žetoni",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Dodajte",
+        "pinAsset": "Prikači imovinu",
+        "unpinAsset": "Otkači imovinu"
     },
     "createToken": {
         "desc": "Izradite i primijenite prilagođena sredstva na {Sora}",
@@ -453,17 +463,6 @@
         "privacyPolicy": "Pravila o privatnosti",
         "appVersion": "{AppName} verzija",
         "contactUs": "Kontaktirajte nas"
-    },
-    "aboutNetworkDialog": {
-        "title": "O",
-        "network": {
-            "title": "Što je {Sora}?",
-            "description": "{AppName} je izgrađen na {Sora} Network, a token {Sora} (XOR) koristi se za opskrbu gasom\/naknadama i likvidnošću na {AppName}. {Sora} Network omogućuje smanjene naknade, brže transakcije i jednostavniju finalizaciju konsenzusa i usmjerena je na isporuku interoperabilnosti u drugim blockchain ekosustavima kao što je {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Što je {PolkadotJs}?",
-            "description": "{PolkadotJs} proširenje je proširenje preglednika dostupno za Firefox i Chrome posvećeno upravljanju računima za lance temeljene na Substrate-u, uključujući {Sora}, {Polkadot} i {Kusama}. Možete dodavati, uvoziti i izvoziti račune te potpisivati transakcije ili ekstrinzike koje ste pokrenuli s web stranice koja ste ovlastili."
-        }
     },
     "node": {
         "errors": {
@@ -862,10 +861,14 @@
         "hideBalances": "Sakrijte saldove",
         "settings": "Postavke",
         "switchTheme": "Prijeđite na {theme} modus",
-        "switchLanguage": "Odaberite jezik",
         "showDisclaimer": "Prikaži Odricanje od odgovornosti",
         "hideDisclaimer": "Sakrij izjavu o odricanju odgovornosti",
-        "selectCurrency": "Odaberite Valutu"
+        "selectCurrency": "Odaberite Valutu",
+        "turnPhoneHideBalances": "Okrenite telefon i sakrijte.",
+        "titleBalance": "Stanja",
+        "titleTheme": "Tematika boja",
+        "titleCurrency": "Fiat valuta",
+        "titleMisc": "Ostalo"
     },
     "sentText": "Poslano",
     "learnMoreText": "Saznajte više",
@@ -1042,7 +1045,9 @@
         "button": "Omogući obavijesti",
         "agree": "Da, razumijem",
         "notificationBlocked": "Da biste primali obavijesti o {AppName}, omogućite obavijesti u izvornim postavkama preglednika",
-        "pointer": "Pritisnite \"Dopusti\" za uključivanje obavijesti"
+        "pointer": "Pritisnite \"Dopusti\" za uključivanje obavijesti",
+        "rotatetitle": "Molimo, okrenite svoj uređaj",
+        "rotateMessage": "Iskustvo je dostupno samo u portretnom načinu"
     },
     "assetDeposit": "Stanje imovine je deponirano",
     "noDataText": "Nema podataka",
@@ -1053,7 +1058,10 @@
         "verifiedOnly": "Prikaži samo provjerenu imovinu",
         "zeroBalance": "Sakrij 0 salda imovine",
         "showAssets": "Prikaži imovinu",
-        "show": "Pokazati"
+        "show": "Pokazati",
+        "reset": "Resetiraj",
+        "synthetics": "Sintetika",
+        "native": "Zavičajni"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1673,13 @@
         "yourRewards": "Vaše nagrade",
         "openTelegram": "Otvorite {Telegram}",
         "toEarnPoints": "Za zarađivanje bodova"
+    },
+    "addAssetsText": "Dodaj imovinu | Dodaj imovine",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Okrenite uređaj naopako kako biste sakrili salda",
+        "info": "Za dodatnu privatnost, nagnite uređaj licem prema dolje kako biste trenutno sakrili svoje stanje imovine. Ova značajka koristi ugrađene senzore vašeg telefona.",
+        "enableAcceleration": "Omogućite pristup ubrzanja u svojim postavkama.",
+        "gyroscropePhone": "Naša tehnologija koristi ugrađeni žiroskop vašeg telefona kako bi trenutno sakrila vaš saldo kada nagnete uređaj."
     }
 }

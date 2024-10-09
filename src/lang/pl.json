@@ -162,7 +162,7 @@
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
         "action": {
             "install": "Zainstaluj rozszerzenie",
-            "learnMore": "Dowiedz się więcej",
+            "learnMore": "Dowiedz się więcej o połączeniu portfela",
             "connect": "Połącz z kontem",
             "refresh": "Odśwież"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "zainstalować",
             "connected": "Połączony",
-            "notConnected": "Nie połączony"
+            "notConnected": "Nie połączony",
+            "recommended": "Zalecane"
         },
         "internalTitle": "Połącz się z {wallet}",
         "internalText": "Możesz utworzyć lub zaimportować istniejące konto {Sora}, aby połączyć je z kontem {wallet}. Wszystkie dane przechowywane przez {wallet} są szyfrowane przy użyciu wbudowanego zaawansowanego szyfrowania.",
         "list": {
             "integrated": "Zintegrowany",
             "extensions": "Rozszerzenia"
-        }
+        },
+        "disclaimer": "Należy pamiętać, że niektóre portfele mogą nie być w pełni obsługiwane."
     },
     "wallet": {
         "WalletAssets": "Waluty",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Ten token został już dodany.",
         "understand": "Rozumiem",
         "warningTitle": "Handluj na własne ryzyko!",
-        "warningMessage": "Każdy może utworzyć token, w tym tworzyć fałszywe wersje istniejących tokenów, podszywając się pod prawdziwe projekty.\nJeśli kupisz taki token, możesz nie być w stanie go odsprzedać.",
+        "warningMessage": "ten {assetType} | te {assetTypePlural}",
         "approved": "Waluta zatwierdzona przez społeczność",
         "unknown": "Nieznane źródło",
         "scam": "SCAM",
@@ -265,7 +267,15 @@
             "title": "Waluty",
             "switchBtn": "Tylko zweryfikowane zasoby"
         },
-        "searchInputText": "Wyszukaj według identyfikatora zasobu, nazwy lub symbolu giełdowego"
+        "searchInputText": "Wyszukaj według identyfikatora zasobu, nazwy lub symbolu giełdowego",
+        "warningMessageText": "Każdy może stworzyć {assetType}, w tym fałszywe wersje istniejących {assetTypePlural}, które twierdzą, że reprezentują projekty. Jeśli kupisz {purchaseAssetType}, możesz nie być w stanie go sprzedać.",
+        "assetType": {
+            "token": "Żeton | Żetony",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Dodaj",
+        "pinAsset": "Przypnij zasób",
+        "unpinAsset": "Odepnij zasób"
     },
     "createToken": {
         "desc": "Twórz i wdrażaj niestandardowe waluty w sieci {Sora}",
@@ -453,17 +463,6 @@
         "privacyPolicy": "Polityka prywatności",
         "appVersion": "Wersja {AppName}",
         "contactUs": "Skontaktuj się z nami"
-    },
-    "aboutNetworkDialog": {
-        "title": "O giełdzie",
-        "network": {
-            "title": "Czym jest {Sora}?",
-            "description": "{AppName} jest zbudowany na bazie sieci {Sora} , a token {Sora} (XOR) jest używany do dostarczania gazu\/opłat i płynności w {AppName}. Sieć {Sora} pozwala na obniżenie opłat, szybsze transakcje i prostsze finalizowanie konsensusu i koncentruje się na zapewnieniu interoperacyjności w innych ekosystemach blockchain, takich jak {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Czym jest {PolkadotJs}?",
-            "description": "{PolkadotJs} to rozszerzenie przeglądarki dostępne dla Firefoksa i Chrome, przeznaczone do zarządzania kontami w sieciach opartych na platformie Substrate, w tym {Sora}, {Polkadot} i {Kusama}. Konta można dodawać, importować i eksportować oraz podpisywać transakcje lub dane zewnętrzne inicjowane z autoryzowanych przez Ciebie witryn."
-        }
     },
     "node": {
         "errors": {
@@ -862,10 +861,14 @@
         "hideBalances": "Ukryj salda",
         "settings": "Ustawienia",
         "switchTheme": "Przełącz na tryb {theme}",
-        "switchLanguage": "Wybierz język",
         "showDisclaimer": "Pokaż zastrzeżenie",
         "hideDisclaimer": "Ukryj wyłączenie odpowiedzialności",
-        "selectCurrency": "Wybierz walutę"
+        "selectCurrency": "Wybierz walutę",
+        "turnPhoneHideBalances": "Obróć telefon i ukryj.",
+        "titleBalance": "Salda",
+        "titleTheme": "Motyw kolorystyczny",
+        "titleCurrency": "Waluta fiat",
+        "titleMisc": "Inne"
     },
     "sentText": "Wysłano",
     "learnMoreText": "Dowiedz się więcej",
@@ -1042,7 +1045,9 @@
         "button": "Włącz powiadomienia",
         "agree": "Tak, rozumiem",
         "notificationBlocked": "Aby otrzymywać powiadomienia o {AppName}, należy włączyć powiadomienia w ustawieniach natywnych przeglądarki.",
-        "pointer": "Naciśnij „Zezwól”, aby włączyć powiadomienia"
+        "pointer": "Naciśnij „Zezwól”, aby włączyć powiadomienia",
+        "rotatetitle": "Proszę obrócić urządzenie",
+        "rotateMessage": "Doświadczenie dostępne tylko w trybie pionowym"
     },
     "assetDeposit": "Saldo aktywów zostało zdeponowane",
     "noDataText": "Brak danych",
@@ -1053,7 +1058,10 @@
         "verifiedOnly": "Pokaż tylko zweryfikowane zasoby",
         "zeroBalance": "Ukryj 0 saldo aktywów",
         "showAssets": "Pokaż aktywa",
-        "show": "Pokaż"
+        "show": "Pokaż",
+        "reset": "Nastawić",
+        "synthetics": "Syntetyki",
+        "native": "Rodzinny"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1673,13 @@
         "yourRewards": "Twoje nagrody",
         "openTelegram": "Otwórz {Telegram}",
         "toEarnPoints": "Aby zdobyć punkty"
+    },
+    "addAssetsText": "Dodaj aktywo | Dodaj aktywa",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Obróć urządzenie do góry nogami, aby ukryć salda",
+        "info": "Dla dodatkowej prywatności obróć urządzenie ekranem w dół, aby natychmiast ukryć swoje salda aktywów. Ta funkcja wykorzystuje wbudowane czujniki telefonu.",
+        "enableAcceleration": "Włącz dostęp do akceleracji w ustawieniach.",
+        "gyroscropePhone": "Nasza technologia wykorzystuje wbudowany żyroskop telefonu, aby natychmiast ukryć saldo po przechyleniu urządzenia."
     }
 }

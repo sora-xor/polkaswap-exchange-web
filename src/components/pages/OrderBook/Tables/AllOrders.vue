@@ -7,7 +7,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { fetchOrderBookAccountOrders } from '@/indexer/queries/orderBook';
+import { fetchOrderBookAccountOrders } from '@/indexer/queries/orderBook/orders';
 import { getter, state } from '@/store/decorators';
 import { Filter, OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';

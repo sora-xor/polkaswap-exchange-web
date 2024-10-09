@@ -1,6 +1,6 @@
 import type { NetworkData } from '@/types/bridge';
+import type { AppEIPProvider } from '@/types/evm/provider';
 import type { Node } from '@/types/nodes';
-import type { Provider } from '@/utils/ethers-util';
 
 import type { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
@@ -36,8 +36,9 @@ export type Web3State = {
   networkType: Nullable<BridgeNetworkType>;
   networkSelected: Nullable<BridgeNetworkId>;
 
-  evmProvider: Nullable<Provider>;
-  evmProviderLoading: Nullable<Provider>;
+  evmProviders: AppEIPProvider[];
+  evmProvider: Nullable<AppEIPProvider>;
+  evmProviderLoading: Nullable<AppEIPProvider>;
   evmProviderNetwork: Nullable<BridgeNetworkId>;
   evmProviderSubscription: Nullable<FnWithoutArgs>;
 

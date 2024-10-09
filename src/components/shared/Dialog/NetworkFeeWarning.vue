@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible">
+  <dialog-base :visible.sync="isVisible" :append-to-body="appendToBody" :modal-append-to-body="appendToBody">
     <network-fee-warning class="network-fee" :fee="fee" :symbol="symbol" :payoff="payoff" @confirm="handleConfirm" />
   </dialog-base>
 </template>
@@ -21,6 +21,7 @@ export default class NetworkFeeWarningDialog extends Mixins(mixins.DialogMixin, 
   @Prop({ type: String }) readonly fee!: string;
   @Prop({ type: String, default: KnownSymbols.XOR }) readonly symbol!: string;
   @Prop({ type: Boolean, default: true }) readonly payoff!: boolean;
+  @Prop({ type: Boolean, default: true }) readonly appendToBody!: boolean;
 
   handleConfirm(): void {
     this.closeDialog();

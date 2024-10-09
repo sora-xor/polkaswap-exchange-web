@@ -87,8 +87,8 @@ const SubsquidAssetPriceQuery = gql<ConnectionQueryResponse<AssetSnapshotEntity>
   }
 `;
 
-export async function fetchAssetData(
-  assetId: string,
+export async function fetchAssetPriceData(
+  entityId: string,
   type: SnapshotTypes,
   first?: number,
   after?: string | null
@@ -100,7 +100,7 @@ export async function fetchAssetData(
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
       const subqueryIndexer = indexer as SubqueryIndexer;
-      const filter = subqueryAssetPriceFilter(assetId, type);
+      const filter = subqueryAssetPriceFilter(entityId, type);
       const variables = { filter, first, after };
       data = await subqueryIndexer.services.explorer.fetchEntities(SubqueryAssetPriceQuery, variables);
       break;
@@ -112,7 +112,7 @@ export async function fetchAssetData(
         after = null;
       }
 
-      const filter = subsquidAssetPriceFilter(assetId, type);
+      const filter = subsquidAssetPriceFilter(entityId, type);
       const variables = { filter, first, after };
       data = await subsquidIndexer.services.explorer.fetchEntitiesConnection(SubsquidAssetPriceQuery, variables);
       break;

@@ -33,7 +33,7 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 import IndexerDataFetchMixin from '@/components/mixins/IndexerDataFetchMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { ObjectInit } from '@/consts';
-import { fetchVaultEvents } from '@/indexer/queries/kensetsu';
+import { fetchVaultEvents } from '@/indexer/queries/vault/events';
 import { VaultEventTypes } from '@/modules/vault/consts';
 import type { VaultEvent, VaultEventType } from '@/modules/vault/types';
 import { state } from '@/store/decorators';

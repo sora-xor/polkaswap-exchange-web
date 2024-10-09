@@ -162,7 +162,7 @@
         "selectAccount": "Yan ifowosi lati ṣiṣẹ pẹlu rẹ",
         "action": {
             "install": "Fi sori ẹrọ itẹsiwaju",
-            "learnMore": "Kọ ẹkọ si",
+            "learnMore": "Kọ ẹkọ diẹ sii nipa asopọ apamọwọ",
             "connect": "So ifowisi pọ",
             "refresh": "Tunwo"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Fi sori ẹrọ",
             "connected": "Ti sopọ",
-            "notConnected": "Ko ti sopọ"
+            "notConnected": "Ko ti sopọ",
+            "recommended": "Ti a ṣe iṣeduro"
         },
         "internalTitle": "Sopọ pẹlu {wallet}",
         "internalText": "O le ṣẹda tabi gbe wọle si akọọlẹ {Sora} to wa tẹlẹ lati sopọ pẹlu akọọlẹ {wallet} rẹ. Gbogbo data ti o wa ni ipamọ nipasẹ {wallet} jẹ fifi ẹnọ kọ nkan nipa lilo fifi ẹnọ kọ nkan ilọsiwaju.",
         "list": {
             "integrated": "Ti ṣepọ",
             "extensions": "Awọn amugbooro"
-        }
+        },
+        "disclaimer": "Jọwọ ṣe akiyesi pe awọn apamọwọ kan le ma ṣe atilẹyin ni kikun."
     },
     "wallet": {
         "WalletAssets": "Awọn dukia",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Tokini yii ti ni asopọ tẹlẹ",
         "understand": "O ye mi",
         "warningTitle": "Iṣowo ni eewu tirẹ!",
-        "warningMessage": "Ẹnikẹni le ṣẹda token, pẹlu ṣiṣẹda awọn ẹya iro ti awọn token ti o wa tẹlẹ ti o sọ pe o ṣe aṣoju awọn iṣẹ akanṣe.\n Ti o ba ra tokini yii, o le ma ni anfani lati ta pada.",
+        "warningMessage": "eyi {assetType} | awọn {assetTypePlural} wọnyi",
         "approved": "Dukia ti a fọwọsi nipasẹ agbegbe",
         "unknown": "Orisun aimọ",
         "scam": "Itanjẹ",
@@ -265,7 +267,15 @@
             "title": "Awọn owo nina",
             "switchBtn": "Awọn ohun-ini ti a rii daju nikan"
         },
-        "searchInputText": "Wa nipasẹ ID Dukia, Orukọ tabi Aami Tika"
+        "searchInputText": "Wa nipasẹ ID Dukia, Orukọ tabi Aami Tika",
+        "warningMessageText": "Ẹnikẹni le ṣẹda {assetType}, pẹlu ṣiṣẹda awọn ẹya iro ti awọn {assetTypePlural} ti o wa tẹlẹ ti o sọ pe wọn ṣe aṣoju awọn iṣẹ akanṣe. Ti o ba ra {purchaseAssetType}, o le ma ni anfani lati ta pada.",
+        "assetType": {
+            "token": "Ami | Awọn ami",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Fikun",
+        "pinAsset": "Di ajogun",
+        "unpinAsset": "Yọ lodiṣinpo ajogun"
     },
     "createToken": {
         "desc": "Ṣẹda ki o ran awọn dukia atowunwa lori {Sora}",
@@ -453,17 +463,6 @@
         "privacyPolicy": "Ofin Asiri",
         "appVersion": "eya {AppName}",
         "contactUs": "Pe wa"
-    },
-    "aboutNetworkDialog": {
-        "title": "Nipa",
-        "network": {
-            "title": "Kini {Sora}?",
-            "description": "{AppName} ti wa ni itumọ lori oke ti Nẹtiwọọki {Sora}, ati pe {Sora} token (XOR) ti lo fun gaasi \/ owo ati ipese oloomi lori {AppName}. {Sora} Nẹtiwọọki ngbanilaaye fun awọn owo ti o dinku, awọn iṣowo yiyara ati ipari ipari ipohunpo rọrun ati pe o wa ni idojukọ fifiranṣẹ ibaraenisepo kọja awọn ilolupo eda abemi-idena miiran bi {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Kini {PolkadotJs}?",
-            "description": "Itẹsiwaju {PolkadotJs} jẹ itẹsiwaju aṣawakiri ti o wa fun Firefox ati Chrome ti a ṣe igbẹhin si iṣakoso awọn iroyin fun Awọn ẹwọn ti o da lori Substrate, pẹlu {Sora}, {Polkadot} ati {Kusama}. O le ṣafikun, gbe wọle, ati gbejade awọn iroyin ati buwọlu awọn iṣowo tabi awọn nkan elekeji ti o ti bẹrẹ lati awọn oju opo wẹẹbu ti o fun ni aṣẹ."
-        }
     },
     "node": {
         "errors": {
@@ -862,10 +861,14 @@
         "hideBalances": "Tọju Awọn iwọntunwọnsi",
         "settings": "Ètò",
         "switchTheme": "Yipada si {theme} Ipo",
-        "switchLanguage": "Yan Ede",
         "showDisclaimer": "Ṣafihan AlAIgBA",
         "hideDisclaimer": "Tọju AlAIgBA",
-        "selectCurrency": "Yan Owo"
+        "selectCurrency": "Yan Owo",
+        "turnPhoneHideBalances": "Yipada foonu & fi pamọ.",
+        "titleBalance": "Awọn iyokù",
+        "titleTheme": "Àkọ́lé àwọ̀",
+        "titleCurrency": "Owo fiat",
+        "titleMisc": "Miiran"
     },
     "sentText": "Ti firanṣẹ",
     "learnMoreText": "Kọ ẹkọ si",
@@ -1042,7 +1045,9 @@
         "button": "Mu awọn iwifunni ṣiṣẹ",
         "agree": "Bẹẹni, Mo loye",
         "notificationBlocked": "Lati gba awọn ifitonileti nipa {AppName}, jọwọ gba awọn iwifunni ni awọn eto abinibi ti aṣawakiri rẹ",
-        "pointer": "Tẹ \"Gba laaye\" lati tan awọn iwifunni"
+        "pointer": "Tẹ \"Gba laaye\" lati tan awọn iwifunni",
+        "rotatetitle": "Jọwọ yi ẹrọ rẹ pada",
+        "rotateMessage": "Iriri naa wa nikan ni ipo àfonífojì"
     },
     "assetDeposit": "Iwontunwonsi dukia ti wa ni idogo",
     "noDataText": "Ko si data",
@@ -1053,7 +1058,10 @@
         "verifiedOnly": "Ṣafihan awọn ohun-ini ti a rii daju nikan",
         "zeroBalance": "Tọju awọn ohun-ini iwọntunwọnsi 0",
         "showAssets": "Ṣe afihan awọn ohun-ini",
-        "show": "Ṣe afihan"
+        "show": "Ṣe afihan",
+        "reset": "Tunto",
+        "synthetics": "Sintetiki",
+        "native": "Ilu abinibi"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1673,13 @@
         "yourRewards": "Awọn ere rẹ",
         "openTelegram": "Ṣii {Telegram}",
         "toEarnPoints": "Lati gba awọn dimegilio"
+    },
+    "addAssetsText": "Fi dukia kun | Fi awọn dukia kun",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Yipada ẹrọ rẹ sí abẹ́lẹ̀ láti fi àwọn ìwontúnwọnsi pamọ́",
+        "info": "Fun ìpamọ́ tó kù díẹ̀, tẹ ẹrọ rẹ sórí pẹ̀tẹ̀rẹ̀tẹ̀ láti fi pamọ́ iwọntunwọnsi dukia rẹ lẹsẹkẹsẹ. Ẹya yii nlo awọn sensọ ti inu foonu rẹ.",
+        "enableAcceleration": "Ṣii wiwọle iyara ni awọn eto rẹ.",
+        "gyroscropePhone": "Imọ-ẹrọ wa nlo ẹrọ girosikopu ti inu foonu rẹ lati tọju iwọntunwọnsi rẹ lẹsẹkẹsẹ nigbati o tẹ ẹrọ rẹ."
     }
 }

@@ -162,7 +162,7 @@
         "selectAccount": "Chọn tài khoản để dùng",
         "action": {
             "install": "Cài đặt tiện ích mở rộng",
-            "learnMore": "Tìm hiểu thêm",
+            "learnMore": "Tìm hiểu thêm về kết nối ví",
             "connect": "Kết nối tài khoản",
             "refresh": "Làm mới"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Cài đặt",
             "connected": "kết nối",
-            "notConnected": "Không kết nối"
+            "notConnected": "Không kết nối",
+            "recommended": "Được đề xuất"
         },
         "internalTitle": "Kết nối với {wallet}",
         "internalText": "Bạn có thể tạo hoặc nhập tài khoản {Sora} hiện có để kết nối với tài khoản {wallet} của mình. Tất cả dữ liệu được lưu trữ bởi {wallet} được mã hóa bằng mã hóa nâng cao tích hợp.",
         "list": {
             "integrated": "tích hợp",
             "extensions": "tiện ích mở rộng"
-        }
+        },
+        "disclaimer": "Xin lưu ý rằng một số ví có thể không được hỗ trợ đầy đủ."
     },
     "wallet": {
         "WalletAssets": "Tài sản",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Token đã được thêm vào",
         "understand": "Tôi hiểu",
         "warningTitle": "Giao dịch với khẩu vị rủi ro của riêng bạn!",
-        "warningMessage": "Bất cứ ai cũng có thể tạo mã token, kể cả tạo ra các phiên bản giả mạo của các token hiện có và nhận vơ có liên quan tới các dự án đang chạy.\nNếu bạn mua token này, có thể bạn không thể bán được.",
+        "warningMessage": "{assetType} này | những {assetTypePlural} này",
         "approved": "Tài sản được cộng đồng phê duyệt",
         "unknown": "Nguồn không xác định",
         "scam": "LỪA ĐẢO",
@@ -265,7 +267,15 @@
             "title": "Tiền tệ",
             "switchBtn": "Chỉ nội dung đã xác minh"
         },
-        "searchInputText": "Tìm kiếm theo ID, tên hoặc ký hiệu mã"
+        "searchInputText": "Tìm kiếm theo ID, tên hoặc ký hiệu mã",
+        "warningMessageText": "Bất kỳ ai cũng có thể tạo {assetType}, bao gồm cả việc tạo phiên bản giả mạo của các {assetTypePlural} hiện có tuyên bố đại diện cho các dự án. Nếu bạn mua {purchaseAssetType}, bạn có thể sẽ không bán lại được.",
+        "assetType": {
+            "token": "Mã thông báo | Mã thông báo",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Thêm",
+        "pinAsset": "Ghim tài sản",
+        "unpinAsset": "Bỏ ghim tài sản"
     },
     "createToken": {
         "desc": "Tạo và triển khai tài sản tùy chỉnh trên {Sora}",
@@ -453,17 +463,6 @@
         "privacyPolicy": "Chính sách bảo mật",
         "appVersion": "Phiên bản {AppName}",
         "contactUs": "Liên hệ với chúng tôi"
-    },
-    "aboutNetworkDialog": {
-        "title": "Giới thiệu",
-        "network": {
-            "title": "{Sora} là gì?",
-            "description": "{AppName} được xây dựng trên {Sora} Network, và tokens {Sora} (XOR) được sử dụng làm phí gas và cung cấp thanh khoản trên {AppName}. Mạng {Sora} cho phép giảm phí gas, giao dịch nhanh hơn, hoàn thiện đồng thuận đơn giản hơn và tập trung vào việc cung cấp khả năng tương tác với các hệ sinh thái blockchain khác như {Ethereum}."
-        },
-        "polkadot": {
-            "title": "{PolkadotJs} là gì?",
-            "description": "Ví {PolkadotJs} là một tiện ích mở rộng (extension) của Firefox và Chrome, dành riêng cho việc quản lý tài khoản được tạo nên từ nền tảng Substrate, bao gồm {Sora}, {Polkadot} và {Kusama}. Bạn có thể thêm, nhập và xuất tài khoản và ký các giao dịch thực hiện từ ví hoặc những giao dịch trên các websites bên ngoài mà bạn ủy quyền."
-        }
     },
     "node": {
         "errors": {
@@ -862,10 +861,14 @@
         "hideBalances": "Ẩn số dư",
         "settings": "Cài đặt",
         "switchTheme": "Chuyển sang chế độ {theme}",
-        "switchLanguage": "Chọn ngôn ngữ",
         "showDisclaimer": "Hiển thị tuyên bố miễn trừ trách nhiệm",
         "hideDisclaimer": "Ẩn tuyên bố từ chối trách nhiệm",
-        "selectCurrency": "Chọn tiền tệ"
+        "selectCurrency": "Chọn tiền tệ",
+        "turnPhoneHideBalances": "Lật điện thoại và ẩn.",
+        "titleBalance": "Số dư",
+        "titleTheme": "Chủ đề màu sắc",
+        "titleCurrency": "Tiền pháp định",
+        "titleMisc": "Khác"
     },
     "sentText": "Đã gửi",
     "learnMoreText": "Tìm hiểu thêm",
@@ -1042,7 +1045,9 @@
         "button": "Bật thông báo",
         "agree": "Vâng, tôi hiểu",
         "notificationBlocked": "Để nhận thông báo về {AppName}, vui lòng cho phép thông báo trong cài đặt gốc của trình duyệt của bạn",
-        "pointer": "Nhấn “Cho phép” để bật thông báo"
+        "pointer": "Nhấn “Cho phép” để bật thông báo",
+        "rotatetitle": "Vui lòng xoay thiết bị của bạn",
+        "rotateMessage": "Trải nghiệm chỉ có sẵn ở chế độ dọc"
     },
     "assetDeposit": "Số dư tài sản đã được gửi",
     "noDataText": "Không có dữ liệu",
@@ -1053,7 +1058,10 @@
         "verifiedOnly": "Chỉ hiển thị nội dung đã xác minh",
         "zeroBalance": "Ẩn tài sản có số dư là 0",
         "showAssets": "Hiển thị tài sản",
-        "show": "HIện"
+        "show": "HIện",
+        "reset": "Cài lại",
+        "synthetics": "Tổng hợp",
+        "native": "Tự nhiên"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1673,13 @@
         "yourRewards": "Phần thưởng của bạn",
         "openTelegram": "Mở {Telegram}",
         "toEarnPoints": "Để kiếm điểm"
+    },
+    "addAssetsText": "Thêm tài sản | Thêm các tài sản",
+    "noir": "Đen",
+    "rotatePhoneNotification": {
+        "title": "Lật ngược thiết bị của bạn để ẩn số dư",
+        "info": "Để tăng tính bảo mật, hãy nghiêng thiết bị của bạn úp xuống để ẩn số dư tài sản ngay lập tức. Tính năng này sử dụng cảm biến tích hợp sẵn của điện thoại.",
+        "enableAcceleration": "Bật quyền truy cập gia tốc trong cài đặt của bạn.",
+        "gyroscropePhone": "Công nghệ của chúng tôi sử dụng con quay hồi chuyển tích hợp sẵn của điện thoại để ẩn số dư của bạn ngay lập tức khi bạn nghiêng thiết bị."
     }
 }
