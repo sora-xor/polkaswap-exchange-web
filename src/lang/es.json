@@ -860,7 +860,7 @@
         "showBalances": "Mostrar saldos",
         "hideBalances": "Ocultar saldos",
         "settings": "Ajustes",
-        "switchTheme": "Cambiar al modo {theme}",
+        "switchTheme": "Modo {theme}",
         "showDisclaimer": "Mostrar descargo de responsabilidad",
         "hideDisclaimer": "Ocultar descargo de responsabilidad",
         "selectCurrency": "Seleccione el tipo de moneda",

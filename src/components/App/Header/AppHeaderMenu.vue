@@ -8,7 +8,7 @@
     >
       <s-dropdown
         ref="headerMenu"
-        :popper-class="`header-menu ${!isDropdownVisible ? 'slide-in' : ''}`"
+        :popper-class="`header-menu ${!isDropdownVisible ? 'slide-in' : ''} custom-z-index`"
         class="header-menu__button"
         icon="grid-block-align-left-24"
         type="ellipsis"
@@ -354,6 +354,9 @@ $item-padding: 17px;
   $dropdown-background: var(--s-color-utility-surface);
   $dropdown-item-line-height: 42px;
 
+  &.custom-z-index {
+    z-index: calc($app-loader-layer - 1) !important;
+  }
   transform: translateX(-100%);
   transition: transform 0.2s cubic-bezier(0.22, 0.77, 0.81, 0.61);
 
@@ -404,7 +407,9 @@ $item-padding: 17px;
     display: flex;
     align-items: center;
     p {
+      @include text-ellipsis;
       margin-left: $inner-spacing-small;
+      margin-right: $inner-spacing-tiny;
     }
     i {
       color: var(--s-color-base-content-tertiary);

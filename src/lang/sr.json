@@ -860,7 +860,7 @@
         "showBalances": "Прикажитe balans",
         "hideBalances": "Сакријтe balans",
         "settings": "Подешавања",
-        "switchTheme": "Пребаците се на {theme} mод",
+        "switchTheme": "{theme} mod",
         "showDisclaimer": "Схов Дисцлаимер",
         "hideDisclaimer": "Сакриј одрицање одговорности",
         "selectCurrency": "Изаберите Валута",

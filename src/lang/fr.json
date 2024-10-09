@@ -860,7 +860,7 @@
         "showBalances": "Afficher les soldes",
         "hideBalances": "Masquer les soldes",
         "settings": "Paramètres",
-        "switchTheme": "Passer en mode {theme}",
+        "switchTheme": "Mode {theme}",
         "showDisclaimer": "Afficher la clause de non-responsabilité",
         "hideDisclaimer": "Masquer la clause de non-responsabilité",
         "selectCurrency": "Sélectionnez la devise",
