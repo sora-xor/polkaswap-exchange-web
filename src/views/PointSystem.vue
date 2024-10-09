@@ -1,19 +1,10 @@
 <template>
   <div class="points__container">
-    <s-card border-radius="small" shadow="always" size="medium" pressed class="points">
+    <s-card border-radius="small" shadow="always" size="medium" pressed class="points" :class="{ loading: loading }">
       <template #header>
         <h3 class="points__header">{{ t('points.title') }}</h3>
       </template>
-
-      <point-card
-        v-for="(pointsForCategory, categoryName) in pointsForCards"
-        :key="categoryName"
-        :points-for-category="pointsForCategory"
-        :category-name="categoryName"
-        class="points__card"
-      />
-
-      <!-- <div class="points__main s-flex-column">
+      <div class="points__main s-flex-row">
         <div v-if="!isLoggedIn" class="points__connect s-flex-column">
           <span class="points__connect-title d2">{{ t('points.loginText') }}</span>
           <s-button
@@ -24,125 +15,16 @@
             {{ t('connectWalletText') }}
           </s-button>
         </div>
-        <div v-else v-loading="loading">
-          <div class="points__card points__card-bridge" :style="bridgeCardStyles">
-            <div class="points__card-header s-flex-column">
-              <span class="points__card-title">{{ t('points.bridgeVolume') }}</span>
-              <formatted-amount
-                class="points__card-value"
-                :font-weight-rate="FontWeightRate.MEDIUM"
-                :font-size-rate="FontSizeRate.MEDIUM"
-                :value="totalBridgeVolume.amount"
-                :asset-symbol="totalBridgeVolume.suffix"
-                symbol-as-decimal
-              >
-                <template #prefix>{{ currencySymbol }}</template>
-              </formatted-amount>
-            </div>
-          </div>
-          <div class="points__card points__card-xor">
-            <div class="item s-flex">
-              <span class="item-title">{{ t('points.feesSpent') }}</span>
-              <div class="item-value s-flex">
-                <div class="s-flex-column">
-                  <formatted-amount class="item-value__tokens" :value="feesSpent.amount">
-                    <template #prefix>{{ xorSymbol }}</template>
-                    {{ feesSpent.suffix }}
-                  </formatted-amount>
-                  <formatted-amount
-                    class="item-value__fiat"
-                    is-fiat-value
-                    fiat-default-rounding
-                    value-can-be-hidden
-                    :font-size-rate="FontSizeRate.MEDIUM"
-                    :value="feesSpentFiat"
-                    is-formatted
-                  />
-                </div>
-                <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL" />
-              </div>
-            </div>
-            <s-divider class="points__card-divider" />
-            <div class="item s-flex">
-              <span class="item-title">{{ t('points.xorBurned') }}</span>
-              <div class="item-value s-flex">
-                <div class="s-flex-column">
-                  <formatted-amount class="item-value__tokens" :value="xorBurned.amount">
-                    <template #prefix>{{ xorSymbol }}</template>
-                    {{ xorBurned.suffix }}
-                  </formatted-amount>
-                  <formatted-amount
-                    class="item-value__fiat"
-                    is-fiat-value
-                    fiat-default-rounding
-                    value-can-be-hidden
-                    :font-size-rate="FontSizeRate.MEDIUM"
-                    :value="xorBurnedFiat"
-                    is-formatted
-                  />
-                </div>
-                <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL" />
-              </div>
-            </div>
-          </div>
-          <div class="points__txs s-flex">
-            <div class="points__block swap s-flex-column">
-              <span class="points__block-header">SWAP TXNS</span>
-              <span class="points__block-value">{{ totalSwapTxs }}</span>
-            </div>
-            <div class="points__block bridge s-flex-column">
-              <span class="points__block-header">BRIDGE TXNS</span>
-              <span class="points__block-value">{{ totalBridgeTxs }}</span>
-            </div>
-            <div class="points__block pool s-flex-column">
-              <span class="points__block-header">POOL TXNS</span>
-              <span class="points__block-value">{{ totalPoolTxs }}</span>
-            </div>
-          </div>
-          <div class="points__card points__card-referrals" :style="referralsCardStyles">
-            <div class="points__card-header s-flex-column">
-              <span class="points__card-title">{{ t('points.yourReferrals') }}</span>
-              <span class="points__card-value s-flex">
-                <span class="account-icon" />
-                {{ t('points.accountsText', { amount: totalReferrals }) }}
-              </span>
-            </div>
-            <s-divider class="points__card-divider" />
-            <div class="item s-flex">
-              <span class="item-title">{{ t('points.yourRewards') }}</span>
-              <div class="item-value s-flex">
-                <div class="s-flex-column">
-                  <formatted-amount class="item-value__tokens" :value="totalReferralRewards.amount">
-                    <template #prefix>{{ xorSymbol }}</template>
-                    {{ totalReferralRewards.suffix }}
-                  </formatted-amount>
-                  <formatted-amount
-                    class="item-value__fiat"
-                    is-fiat-value
-                    fiat-default-rounding
-                    value-can-be-hidden
-                    :font-size-rate="FontSizeRate.MEDIUM"
-                    :value="totalReferralRewardsFiat"
-                    is-formatted
-                  />
-                </div>
-                <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL" />
-              </div>
-            </div>
-          </div>
+        <div v-else v-loading="loading" class="points__cards s-flex-row">
+          <point-card
+            v-for="(pointsForCategory, categoryName) in pointsForCards"
+            :key="categoryName"
+            :points-for-category="pointsForCategory"
+            :category-name="categoryName"
+            class="points__card"
+          />
         </div>
-        <a
-          class="points__soratopia s-flex"
-          rel="nofollow noopener"
-          target="_blank"
-          href="https://t.me/soratopia_bot/app"
-        >
-          <div class="points__soratopia-container s-flex">
-            <button class="points__soratopia-action">{{ t('points.openTelegram') }}</button>
-            <span class="points__soratopia-text">{{ t('points.toEarnPoints') }}</span>
-          </div>
-        </a>
-      </div> -->
+      </div>
     </s-card>
   </div>
 </template>
@@ -514,31 +396,31 @@ export default class PointSystem extends Mixins(
 }
 </script>
 
-<style lang="scss">
-.container .points .el-loading-mask {
-  border-radius: var(--s-border-radius-mini);
-  margin-left: -$inner-spacing-mini;
-  width: calc(100% + $inner-spacing-medium);
-  height: calc(100% - $inner-spacing-mini);
-}
-</style>
-
 <style lang="scss" scoped>
+// .loading {
+//   background-size: cover !important;
+//   width: 100%;
+//   height: 150px;
+// }
 .points {
   background-image: url('~@/assets/img/points/header.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: top;
+  width: 100%;
   &__container {
-    display: flex; /* Makes child elements align in a row */
-    flex-wrap: wrap; /* Allows wrapping to a new row if space is insufficient */
-    gap: 16px; /* Adds space between cards */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
   }
   &__header {
     color: white;
   }
-  &__main {
-    padding-top: $inner-spacing-small;
+  &_main {
+    display: flex;
+    flex-wrap: wrap; // Ensure elements can wrap
+    justify-content: space-between; // Space out elements evenly
+    align-items: flex-start; // Align items at the start of each row
   }
   &__connect {
     height: 350px;
@@ -555,6 +437,11 @@ export default class PointSystem extends Mixins(
       margin: 0 $basic-spacing-medium;
     }
   }
+  &__cards {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
   &__card {
     width: $sidebar-max-width;
     height: calc($sidebar-max-width - $inner-spacing-mini);
@@ -566,116 +453,53 @@ export default class PointSystem extends Mixins(
     background-size: contain;
     background-repeat: no-repeat;
     background-position: top right;
-    text-transform: uppercase;
-    &-title {
-      color: var(--s-color-base-content-secondary);
-      font-size: var(--s-font-size-small);
-      font-weight: 800;
-      margin-bottom: $inner-spacing-mini;
-    }
-    &-value {
-      align-items: center;
-      font-size: var(--s-font-size-medium);
-      font-weight: 800;
-    }
-    &-divider {
-      margin: $inner-spacing-mini 0;
-    }
-    &-referrals {
-      background-size: 90px;
-      .account-icon {
-        background: var(--s-color-base-content-tertiary) url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
-        border-radius: 50%;
-        width: var(--s-size-small);
-        height: var(--s-size-small);
-        margin-right: $inner-spacing-mini;
-      }
-    }
+    box-sizing: border-box;
   }
-  &__txs {
-    justify-content: space-between;
-    margin-bottom: $inner-spacing-mini;
-    gap: $inner-spacing-mini;
-  }
-  &__block {
-    background-color: var(--s-color-utility-surface);
-    box-shadow: var(--s-shadow-element-pressed);
-    border-radius: var(--s-border-radius-mini);
-    padding: $inner-spacing-medium;
-    font-weight: 800;
-    &-header {
-      color: var(--s-color-base-content-secondary);
-      font-size: var(--s-font-size-small);
-      margin-bottom: $inner-spacing-mini;
-    }
-    &-value {
-      font-size: var(--s-font-size-medium);
-    }
-  }
-  &__soratopia {
-    min-height: 102px;
-    box-shadow: var(--s-shadow-element-pressed);
-    background-image: url('~@/assets/img/points/soratopia.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    text-decoration: none;
-    color: var(--s-color-base-on-accent);
-    border-radius: var(--s-border-radius-mini);
-    align-items: flex-end;
-    @include focus-outline;
-    &-container {
-      align-items: center;
-      gap: $inner-spacing-medium;
-      margin: $inner-spacing-medium;
-    }
-    &-action {
-      background-color: #52a1e3;
-      border-radius: var(--s-border-radius-small);
-      color: var(--s-color-base-on-accent);
-      font-size: var(--s-font-size-small);
-      font-weight: 500;
-      white-space: nowrap;
-      padding: $inner-spacing-mini $inner-spacing-medium;
-      cursor: pointer;
-      @include focus-outline;
-    }
-    &-text {
-      flex: 1;
-      text-transform: uppercase;
-      opacity: 0.8;
-      color: white;
-      font-size: var(--s-font-size-mini);
-      font-weight: 700;
-    }
-    @include large-mobile(true) {
-      background-repeat: round;
-      &-container {
-        margin: $inner-spacing-small;
-      }
-      &-action {
-        font-size: var(--s-font-size-mini);
-      }
-    }
-  }
-}
-.item {
-  align-items: center;
-  font-size: var(--s-font-size-small);
-  font-weight: 700;
-  &-title {
-    flex: 1;
-    margin-right: $inner-spacing-mini;
-    color: var(--s-color-base-content-secondary);
-    text-transform: uppercase;
-  }
-  &-value {
-    align-items: center;
-    & > div {
-      align-items: flex-end;
-    }
-    &__icon {
-      margin-left: $inner-spacing-mini;
-    }
-  }
+  // TODO not sure we need it
+  // &__soratopia {
+  //   min-height: 102px;
+  //   box-shadow: var(--s-shadow-element-pressed);
+  //   background-image: url('~@/assets/img/points/soratopia.png');
+  //   background-repeat: no-repeat;
+  //   background-size: cover;
+  //   text-decoration: none;
+  //   color: var(--s-color-base-on-accent);
+  //   border-radius: var(--s-border-radius-mini);
+  //   align-items: flex-end;
+  //   @include focus-outline;
+  //   &-container {
+  //     align-items: center;
+  //     gap: $inner-spacing-medium;
+  //     margin: $inner-spacing-medium;
+  //   }
+  //   &-action {
+  //     background-color: #52a1e3;
+  //     border-radius: var(--s-border-radius-small);
+  //     color: var(--s-color-base-on-accent);
+  //     font-size: var(--s-font-size-small);
+  //     font-weight: 500;
+  //     white-space: nowrap;
+  //     padding: $inner-spacing-mini $inner-spacing-medium;
+  //     cursor: pointer;
+  //     @include focus-outline;
+  //   }
+  //   &-text {
+  //     flex: 1;
+  //     text-transform: uppercase;
+  //     opacity: 0.8;
+  //     color: white;
+  //     font-size: var(--s-font-size-mini);
+  //     font-weight: 700;
+  //   }
+  //   @include large-mobile(true) {
+  //     background-repeat: round;
+  //     &-container {
+  //       margin: $inner-spacing-small;
+  //     }
+  //     &-action {
+  //       font-size: var(--s-font-size-mini);
+  //     }
+  //   }
+  // }
 }
 </style>

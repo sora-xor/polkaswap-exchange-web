@@ -19,7 +19,7 @@
     </div>
     <div class="point-card__amount-of-points">
       <p>Next LVL</p>
-      <p>250K Points</p>
+      <p>{{ this.pointsForCategory.nextLevelRewardPoints }}</p>
     </div>
   </div>
 </template>
