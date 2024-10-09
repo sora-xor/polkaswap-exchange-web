@@ -28,6 +28,7 @@ export default {
   unknownAssetText: 'Unknown asset',
   connectWalletText: 'Connect account',
   disconnectWalletText: 'Disconnect',
+  editText: 'Edit',
   changeAccountText: 'Change account',
   connectedText: 'Connected',
   connectedAccount: 'Connected account',
@@ -43,20 +44,20 @@ export default {
   releaseNotesText: 'Release notes',
   memorandum: '{AppName} Memorandum and Terms of Services',
   FAQ: '{AppName} FAQ',
-  disclaimerTitle: 'Disclaimer:',
+  disclaimerTitle: 'Disclaimer',
   disclaimer:
     '{disclaimerPrefix} This website is maintained by the {Sora} community. Before continuing to use this website, please review the {polkaswapFaqLink} and documentation, which includes a detailed explanation on how {AppName} works, as well as the {memorandumLink}, and {privacyLink}. These documents are crucial to a secure and positive user experience. By using {AppName}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {AppName} in your legal jurisdiction; 2) your understanding that the current version of {AppName} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {AppName}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!',
   fiatDisclaimer:
     'Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API)  are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
-  confirmTransactionText: 'Confirm transaction in {direction}',
+  confirmTransactionText: 'Confirm transaction',
   signAndClaimText: 'Sign and claim',
   retryText: 'Retry',
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: "Network fee is used to ensure {Sora} system's growth and stable performance.",
   ethNetworkFeeTooltipText:
-    'Please note that the {Ethereum} network fees displayed on {AppName} are only rough estimations, you can see the correct fee amount in your connected {Ethereum} wallet prior to confirming the transaction.',
+    'Please note that the {network} network fees displayed on {AppName} are only rough estimations, you can see the correct fee amount in your connected {network} wallet prior to confirming the transaction.',
   marketText: 'Market',
   marketAlgorithmText: 'Market algorithm',
   balanceText: 'Balance',
@@ -110,14 +111,15 @@ export default {
   },
   alerts: {
     [AlertTypeTabs.Drop]: 'Drops below',
-    [AlertTypeTabs.Raise]: 'Raises above',
+    [AlertTypeTabs.Raise]: 'Rises above',
     [AlertFrequencyTabs.Once]: 'Once',
     [AlertFrequencyTabs.Always]: 'Always',
     edit: 'Edit alert',
     delete: 'Delete alert',
     onDropDesc: '{token} drops below {price}',
-    onRaiseDesc: '{token} raises above {price}',
+    onRaiseDesc: '{token} rises above {price}',
     alertsTitle: 'Alerts',
+    alertsCreateTitle: 'Set up price alert',
     alertsTooltip:
       'Price alerts are notifications that can be set by you to receive updates when the price of a particular token reaches certain point you set',
     createBtn: 'Create new price alert',
@@ -126,10 +128,10 @@ export default {
     currentPrice: 'current price',
     alertTypeTitle: 'Alert type',
     typeTooltip:
-      "Choose either 'drops below' or 'raises above' option to specify the alert condition for tracking important price movements. These options allow you receive timely notifications when the value of your asset either falls below or rises above your designated threshold.",
+      "Choose either 'drops below' or 'rises above' option to specify alert condition for tracking important price movements. These options allow you receive timely notifications when the value of your asset either falls below or rises above your designated threshold",
     alertFrequencyTitle: 'Alert frequency',
     frequencyTooltip:
-      "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed.",
+      "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed",
     noSupportMsg: "Notifications aren't supported by your browser",
   },
   fiatPayment: {
@@ -146,9 +148,7 @@ export default {
     showBalances: 'Show Balances',
     hideBalances: 'Hide Balances',
     settings: 'Settings',
-    switchTheme: '{theme} Mode',
-    systemPreference: 'System Preferences',
-    switchLanguage: 'language',
+    switchTheme: '{theme} mode',
     selectCurrency: 'Select Currency',
     showDisclaimer: 'Show Disclaimer',
     hideDisclaimer: 'Hide Disclaimer',
@@ -161,6 +161,50 @@ export default {
     medium: 'Medium',
     reddit: 'Reddit',
     github: 'GitHub',
+  },
+  footer: {
+    internet: {
+      action: 'Refresh {Polkaswap}',
+      desc: {
+        disabled: 'Disconnected',
+        stable: 'Optimal speed',
+        unstable: 'Slow connection',
+      },
+      dialogDesc: '{Polkaswap} requires internet connection for stable experience',
+      dialogTitle: 'Connect to internet source',
+      label: 'Your internet speed',
+      title: {
+        disabled: 'Internet disabled',
+        stable: 'Internet stable',
+        unstable: 'Internet unstable',
+      },
+    },
+    node: {
+      title: {
+        connected: 'Node connected',
+        disconnected: 'Node disconnected',
+        loading: 'Node re-connecting',
+      },
+    },
+    statistics: {
+      action: 'Select services',
+      desc: {
+        available: 'All services are stable',
+        loading: 'All services are loading',
+        unavailable: 'All services are disconnected',
+      },
+      dialog: {
+        indexer: 'Indexer',
+        title: '{Sora} Network service selection',
+        useCeres: 'Use {Ceres} for fiat values',
+      },
+      label: 'Statistics services',
+      title: {
+        available: 'Statistics available',
+        loading: 'Statistics loading',
+        unavailable: 'Statistics unavailable',
+      },
+    },
   },
   footerMenu: {
     faucet: 'Faucet',
@@ -404,16 +448,13 @@ export default {
     strategicBonusApy: 'Strategic Bonus APY',
   },
   bridge: {
-    title: '{Hashi} Bridge',
+    title: 'Bridge',
     info: 'Convert tokens between the {Sora} and {Ethereum} networks.',
     balance: 'Balance',
     next: 'Next',
     connectWallets: 'Connect wallets to view respective transaction history.',
     soraNetworkFee: '{Sora} Network Fee',
     ethereumNetworkFee: '{Ethereum} Network Fee',
-    externalTransferFee: '{network} {XCM} fee',
-    externalTransferFeeTooltip:
-      'When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are trasferring',
     total: 'Total',
     viewHistory: 'View transactions history',
     transactionSubmitted: 'Transaction submitted',
@@ -426,6 +467,16 @@ export default {
     ethereumAddress: '{Ethereum} address',
     limitMessage:
       "Currently, there's a {type} {amount} {symbol} for bridging to ensure the stability and security of the {Sora} Network. We appreciate your understanding.",
+    externalTransferFee: '{network} {XCM} fee',
+    externalTransferFeeTooltip:
+      'When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are transferring',
+    externalMinDeposit: '{network} min. deposit',
+    externalMinDepositTooltip:
+      'Minimum balance {symbol} that must be on your {network} account after the bridge transfer',
+  },
+  bridgeTransferNotification: {
+    addToken: 'Add {symbol} to wallet',
+    title: 'Bridge transaction successful',
   },
   selectRegisteredAsset: {
     title: 'Select a token',
@@ -481,7 +532,6 @@ export default {
       transactionFee: 'Transaction Fee',
       total: 'Total',
     },
-    successCopy: 'Transaction hash is copied to the clipboard',
     pending: '{network} transaction pending...',
     ethereum: '{Ethereum}',
     sora: '{Sora}',
@@ -505,7 +555,6 @@ export default {
     searchPlaceholder: 'Filter by Asset ID, Name or Ticker Symbol',
     emptyListMessage: 'No results',
     copy: 'Copy Asset ID',
-    successCopy: '{symbol} Asset ID is copied to the clipboard',
     assets: {
       title: 'Assets',
     },
@@ -767,7 +816,6 @@ export default {
     inviteViaTelegram: 'Invite via {Telegram}',
     welcomeMessage:
       '\nJoin me on {Polkaswap}!\n\nDiscover the stylish {DEX} that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!\n\n🎁 Refer friends and earn 10% of their trading fees\n\nSee you there!',
-    successCopy: 'Referral link is copied to the clipboard',
     bondTitle: 'Bond XOR',
     unbondTitle: 'Unbond XOR',
     confirm: {
@@ -802,7 +850,7 @@ export default {
       poolShare: 'Your pool share staked',
       poolShareWillBe: 'Your pool share staked will be',
       rewardToken: 'Reward token',
-      stake: '{symbol} staked',
+      stake: 'Your {symbol} staked',
       stakeWillBe: 'Your {symbol} stake will be',
       totalLiquidityLocked: 'Total liquidity locked',
     },
@@ -961,15 +1009,6 @@ export default {
       },
     },
   },
-  code: {
-    download: 'Download QR Code',
-    upload: 'Scan QR',
-    receive: 'Receive',
-    invalid: 'Invalid QR Code',
-    import: 'Import an image',
-    scan: 'Scan with camera',
-    allowanceError: 'Check your camera availability and browser permissions to use it',
-  },
   browserNotificationDialog: {
     title: 'Enable browser notifications',
     info: 'We will send you only relevant updates about your wallet, for example: asset balance changes',
@@ -1002,6 +1041,11 @@ export default {
       'Token velocity is the number of times token changes accounts during period (month) on average. It indicates the level of trading activity and liquidity.',
   },
   networkStatisticsText: 'Network statistics',
+  browserNotificationLocalStorageOverride: {
+    agree: 'Yes, I understand',
+    info: 'Your local storage is overloaded, to continue work with {AppName} need to clean it',
+    title: 'Clear local {AppName} storage',
+  },
   browserPermission: {
     title: 'Allow camera access in browser settings',
     desc: "To ensure the authenticity of documents and validate user identity for KYC verification, access to your device's camera is required.",
@@ -1014,6 +1058,7 @@ export default {
   exceededAmountText: '{amount} exceeded',
   connectEthereumWalletText: 'Connect {Ethereum} wallet',
   collapseText: 'Collapse',
+  calculatingText: 'Calculating',
   expandText: 'Expand',
   orderBook: {
     Buy: 'Buy {asset}',
