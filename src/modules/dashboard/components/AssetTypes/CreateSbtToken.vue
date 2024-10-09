@@ -531,6 +531,7 @@ export default class CreateSbtToken extends Mixins(
   }
 
   async requestRegulatedAssets(exclude = false): Promise<void> {
+    const ownRegulatedAssets: Array<Asset> = [];
     let regulatedAssetsAttached = [] as Array<string>;
     await this.requestOwnedAssetIds();
 
@@ -541,11 +542,24 @@ export default class CreateSbtToken extends Mixins(
     // not to show already attached ones when only attachment is needed
     const filtered = difference(this.ownedAssetIds, regulatedAssetsAttached);
 
-    const regulatedAssets = this.assets.filter((asset) => {
-      return filtered.includes(asset.address) && asset.type === AssetTypes.Regulated;
-    });
+    // TODO: [Rustem] Check this code for feasibility instead of refetching
+    // const regulatedAssets = this.assets.filter((asset) => {
+    //   return filtered.includes(asset.address) && asset.type === AssetTypes.Regulated;
+    // });
 
-    this.ownerAssetsList = regulatedAssets;
+    // TODO: move to lib, migrate to assetInfosV2
+    const assetInfos = filtered.map(async (address) => {
+      const result: any = await api.api.query.assets.assetInfosV2(address);
+      return [address, result];
+    });
+    for await (const [address, assetInfo] of assetInfos) {
+      const { assetType, symbol, name } = (assetInfo as any).toHuman();
+      if (assetType === 'Regulated') {
+        ownRegulatedAssets.push({ symbol, address, name } as Asset);
+      }
+    }
+
+    this.ownerAssetsList = ownRegulatedAssets;
   }
 
   async created(): Promise<void> {
