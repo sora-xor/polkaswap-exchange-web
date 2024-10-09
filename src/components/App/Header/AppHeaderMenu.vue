@@ -346,10 +346,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 $icon-size: 28px;
 $item-padding: 17px;
 
-.header-menu.custom-z-index {
-  z-index: calc($app-loader-layer - 1) !important;
-}
-
 .app-header-menu {
   display: flex;
 }
@@ -358,6 +354,9 @@ $item-padding: 17px;
   $dropdown-background: var(--s-color-utility-surface);
   $dropdown-item-line-height: 42px;
 
+  &.custom-z-index {
+    z-index: calc($app-loader-layer - 1) !important;
+  }
   transform: translateX(-100%);
   transition: transform 0.2s cubic-bezier(0.22, 0.77, 0.81, 0.61);
 
