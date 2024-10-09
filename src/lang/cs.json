@@ -162,7 +162,7 @@
         "selectAccount": "Vyberte účet, se kterým chcete pracovat",
         "action": {
             "install": "Nainstalovat rozšíření",
-            "learnMore": "Zjistit více",
+            "learnMore": "Další informace o připojení k peněžence",
             "connect": "Připojit účet",
             "refresh": "Obnovit"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Nainstalujte",
             "connected": "Připojeno",
-            "notConnected": "Nepřipojený"
+            "notConnected": "Nepřipojený",
+            "recommended": "Doporučeno"
         },
         "internalTitle": "Spojte se s {wallet}",
         "internalText": "Můžete vytvořit nebo importovat stávající účet {Sora} a propojit ho se svým účtem {wallet} . Všechna data uložená ve službě {wallet} jsou šifrována pomocí vestavěného pokročilého šifrování.",
         "list": {
             "integrated": "Integrovaný",
             "extensions": "Rozšíření"
-        }
+        },
+        "disclaimer": "Upozorňujeme, že některé peněženky nemusí být plně podporovány."
     },
     "wallet": {
         "WalletAssets": "Aktiva",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Token byl již přidán",
         "understand": "Rozumím",
         "warningTitle": "Obchodujte na vlastní nebezpečí!",
-        "warningMessage": "Token může vytvořit kdokoli, včetně vytváření falešných verzí existujících tokenů údajně reprezentujících projekty.\nPokud si tento token zakoupíte, nemusí být možné jej prodat zpět.",
+        "warningMessage": "tento {assetType} | tyto {assetTypePlural}",
         "approved": "Aktivum schváleno komunitou",
         "unknown": "Neznámý zdroj",
         "scam": "SCAM",
@@ -265,7 +267,15 @@
             "title": "Měny",
             "switchBtn": "Pouze ověřená aktiva"
         },
-        "searchInputText": "Vyhledávání podle Asset ID, Name nebo Ticker Symbol"
+        "searchInputText": "Vyhledávání podle Asset ID, Name nebo Ticker Symbol",
+        "warningMessageText": "Kdokoliv může vytvořit {assetType}, včetně falešných verzí existujících {assetTypePlural}, které tvrdí, že představují projekty. Pokud si koupíte {purchaseAssetType}, nemusí být možné ho prodat zpět.",
+        "assetType": {
+            "token": "Token | Tokeny",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Přidat",
+        "pinAsset": "Připnout aktivum",
+        "unpinAsset": "Odepřít aktivum"
     },
     "createToken": {
         "desc": "Vytvořte a zaveďte vlastní aktivum na síti {Sora}",
@@ -453,17 +463,6 @@
         "privacyPolicy": "Zásady ochrany osobních údajů",
         "appVersion": "{AppName} verze",
         "contactUs": "Kontaktujte nás"
-    },
-    "aboutNetworkDialog": {
-        "title": "O projektu",
-        "network": {
-            "title": "Co je to {Sora}?",
-            "description": "{AppName} je postaven na síti {Sora} a token {Sora} (XOR) se používá pro placení gasu\/poplatků a pro poskytování likvidity na {AppName}. Síť {Sora} umožňuje snížení poplatků, rychlejší transakce a jednodušší finalizaci konsensu a zaměřuje se na zajištění interoperability napříč ostatními blockchain ekosystémy, jako je {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Co je to {PolkadotJs}?",
-            "description": "Rozšíření {PolkadotJs} je rozšíření prohlížeče dostupné pro Firefox a Chrome určené pro správu účtů blockchainů založených na Substrate, včetně {Sora}, {Polkadot} a {Kusama}. Můžete přidávat, importovat a exportovat účty a podepisovat transakce nebo extrinsics, které jste iniciovali z autorizovaných webových stránek."
-        }
     },
     "node": {
         "errors": {
@@ -861,11 +860,15 @@
         "showBalances": "Zobrazit zůstatky",
         "hideBalances": "Skrýt zůstatky",
         "settings": "Nastavení",
-        "switchTheme": "Přepnout do režimu {theme}",
-        "switchLanguage": "Vybrat jazyk",
+        "switchTheme": "{theme} režim",
         "showDisclaimer": "Zobrazit vyloučení odpovědnosti",
         "hideDisclaimer": "Skrýt vyloučení odpovědnosti",
-        "selectCurrency": "Vyberte možnost Měna"
+        "selectCurrency": "Vyberte možnost Měna",
+        "turnPhoneHideBalances": "Otočte telefon a skryjte.",
+        "titleBalance": "Zůstatky",
+        "titleTheme": "Barevné téma",
+        "titleCurrency": "Fiat měna",
+        "titleMisc": "Ostatní"
     },
     "sentText": "Odesláno",
     "learnMoreText": "Zjistit více",
@@ -1042,7 +1045,9 @@
         "button": "Povolit upozornění",
         "agree": "Ano, rozumím",
         "notificationBlocked": "Chcete-li dostávat oznámení o {AppName}, povolte oznámení v nativním nastavení prohlížeče",
-        "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení"
+        "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení",
+        "rotatetitle": "Prosím, otočte své zařízení",
+        "rotateMessage": "Zážitek je dostupný pouze v režimu na výšku"
     },
     "assetDeposit": "Zůstatek aktiv byl uložen",
     "noDataText": "Žádné údaje",
@@ -1053,7 +1058,10 @@
         "verifiedOnly": "Zobrazit pouze ověřená díla",
         "zeroBalance": "Skrýt 0 bilančních aktiv",
         "showAssets": "Zobrazit aktiva",
-        "show": "Ukázat"
+        "show": "Ukázat",
+        "reset": "Resetovat",
+        "synthetics": "Syntetika",
+        "native": "Rodák"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1673,13 @@
         "yourRewards": "Vaše odměny",
         "openTelegram": "Otevřít {Telegram}",
         "toEarnPoints": "Pro získání bodů"
+    },
+    "addAssetsText": "Přidat aktivum | Přidat aktiva",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Otočte zařízení vzhůru nohama, abyste skryli zůstatky",
+        "info": "Pro vyšší úroveň soukromí nakloňte své zařízení obrazovkou dolů a okamžitě skryjte zůstatky svých aktiv. Tato funkce používá vestavěné senzory vašeho telefonu.",
+        "enableAcceleration": "Povolte přístup k akceleraci v nastavení.",
+        "gyroscropePhone": "Naše technologie využívá vestavěný gyroskop vašeho telefonu k okamžitému skrytí vašeho zůstatku při naklonění zařízení."
     }
 }

@@ -162,7 +162,7 @@
         "selectAccount": "选择要使用的账户",
         "action": {
             "install": "安装扩展",
-            "learnMore": "了解更多",
+            "learnMore": "了解有关钱包连接的更多信息",
             "connect": "连接账户",
             "refresh": "刷新"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "安装",
             "connected": "连接的",
-            "notConnected": "未连接"
+            "notConnected": "未连接",
+            "recommended": "受到推崇的"
         },
         "internalTitle": "连接{wallet}",
         "internalText": "您可以创建或导入现有的{Sora}账户来连接您的{wallet}账户。 {wallet}存储的所有数据均使用内置高级加密进行加密。",
         "list": {
             "integrated": "融合的",
             "extensions": "扩展"
-        }
+        },
+        "disclaimer": "请注意，某些钱包可能无法完全支持。"
     },
     "wallet": {
         "WalletAssets": "资产",
@@ -256,7 +258,7 @@
         "alreadyAttached": "代币已附加",
         "understand": "我明白",
         "warningTitle": "交易风险自担!",
-        "warningMessage": "任何人都可以创建代币，包括创建声称代表项目的现有代币的假版本。\n如果您购买了这种代币，您可能无法将其卖出。",
+        "warningMessage": "这个 {assetType} | 这些 {assetTypePlural}",
         "approved": "社区批准的资产",
         "unknown": "未知来源",
         "scam": "骗局",
@@ -265,7 +267,15 @@
             "title": "货币",
             "switchBtn": "仅经过验证的资产"
         },
-        "searchInputText": "按资产 ID、名称或股票代码搜索"
+        "searchInputText": "按资产 ID、名称或股票代码搜索",
+        "warningMessageText": "任何人都可以创建{assetType}，包括创建现有{assetTypePlural}的假版本，这些假版本声称代表项目。 如果您购买{purchaseAssetType}，您可能无法将其卖回。",
+        "assetType": {
+            "token": "代币 | 代币",
+            "nft": "NFT | NFTs"
+        },
+        "add": "添加",
+        "pinAsset": "固定资产",
+        "unpinAsset": "取消固定资产"
     },
     "createToken": {
         "desc": "在 {Sora} 上创建和部署自定义资产",
@@ -453,17 +463,6 @@
         "privacyPolicy": "隐私政策",
         "appVersion": "{AppName} 版本",
         "contactUs": "联系我们"
-    },
-    "aboutNetworkDialog": {
-        "title": "关于",
-        "network": {
-            "title": "什么是{Sora}？",
-            "description": "{AppName}建立在{Sora}网络之上，{Sora}代币（XOR）被用于{AppName}上的费用和流动性供应。{Sora}网络允许减少的费用和加快交易，并简化共识的最终确定，专注于提供跨其他区块链生态系统的互操作性，如{Ethereum}。"
-        },
-        "polkadot": {
-            "title": "什么是 {PolkadotJs}？",
-            "description": "{PolkadotJs}扩展是一个可用于 Firefox 浏览器和 Chrome 的浏览器扩展，专门用于管理基于 Substrate 的链的账户，包括 {Sora}、{Polkadot} 和 {Kusama}。您可以添加、导入和导出账户并签署您从授权的网站发起的交易或外部信息。"
-        }
     },
     "node": {
         "errors": {
@@ -861,11 +860,15 @@
         "showBalances": "显示余额",
         "hideBalances": "隐藏余额",
         "settings": "设置",
-        "switchTheme": "切换到{theme}模式",
-        "switchLanguage": "选择语言",
+        "switchTheme": "{theme} 模式",
         "showDisclaimer": "显示免责声明",
         "hideDisclaimer": "隐藏免责声明",
-        "selectCurrency": "选择货币"
+        "selectCurrency": "选择货币",
+        "turnPhoneHideBalances": "翻转手机并隐藏.",
+        "titleBalance": "余额",
+        "titleTheme": "颜色主题",
+        "titleCurrency": "法定货币",
+        "titleMisc": "其他"
     },
     "sentText": "已发送",
     "learnMoreText": "了解更多",
@@ -1042,7 +1045,9 @@
         "button": "启用通知",
         "agree": "是的我明白",
         "notificationBlocked": "要接收有关{AppName}的通知，请在浏览器的本机设置中允许通知",
-        "pointer": "按“允许”打开通知"
+        "pointer": "按“允许”打开通知",
+        "rotatetitle": "请旋转您的设备",
+        "rotateMessage": "该体验仅在纵向模式下可用"
     },
     "assetDeposit": "资产余额已存入",
     "noDataText": "没有数据",
@@ -1053,7 +1058,10 @@
         "verifiedOnly": "只显示经过验证的资产",
         "zeroBalance": "隐藏0余额资产",
         "showAssets": "显示资产",
-        "show": "显示"
+        "show": "显示",
+        "reset": "重置",
+        "synthetics": "合成材料",
+        "native": "本国的"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1673,13 @@
         "yourRewards": "您的奖励",
         "openTelegram": "打开 {Telegram}",
         "toEarnPoints": "获得积分"
+    },
+    "addAssetsText": "添加资产 | 添加资产",
+    "noir": "暗黑",
+    "rotatePhoneNotification": {
+        "title": "将设备倒置以隐藏余额",
+        "info": "为了额外的隐私保护，将设备向下倾斜，即可立即隐藏您的资产余额。此功能使用您的手机内置传感器.",
+        "enableAcceleration": "在设置中启用加速度访问.",
+        "gyroscropePhone": "我们的技术使用手机内置的陀螺仪，在您倾斜设备时立即隐藏您的余额."
     }
 }

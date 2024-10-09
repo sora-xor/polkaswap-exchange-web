@@ -38,6 +38,9 @@ const mutations = defineMutations<SettingsState>()({
   setSelectCurrencyDialogVisibility(state, value: boolean): void {
     state.selectCurrencyDialogVisibility = value;
   },
+  setRotatePhoneDialogVisibility(state, value: boolean): void {
+    state.rotatePhoneDialogVisibility = value;
+  },
   toggleDisclaimerDialogVisibility(state): void {
     state.disclaimerVisibility = !state.disclaimerVisibility;
   },
@@ -133,6 +136,24 @@ const mutations = defineMutations<SettingsState>()({
   },
   setTelegramBotUrl(state, url: Nullable<string>): void {
     state.telegramBotUrl = url;
+  },
+  setIsRotatePhoneHideBalanceFeatureEnabled(state, value: boolean): void {
+    state.isRotatePhoneHideBalanceFeatureEnabled = value;
+    settingsStorage.set('isRotatePhoneHideBalanceFeatureEnabled', value);
+  },
+  setAccessGranted(state, value: boolean): void {
+    state.isAccessRotationListener = value;
+    settingsStorage.set('isAccessRotationListener', value);
+  },
+  setIsAccessAccelerometrEventDeclined(state, value: boolean): void {
+    state.isAccessAccelerometrEventDeclined = value;
+    settingsStorage.set('isAccessAccelerometrEventDeclined', value);
+  },
+  showOrientationWarning(state): void {
+    state.isOrientationWarningVisible = true;
+  },
+  hideOrientationWarning(state): void {
+    state.isOrientationWarningVisible = false;
   },
 });
 

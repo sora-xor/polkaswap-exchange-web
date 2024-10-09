@@ -1,7 +1,7 @@
 <template>
   <base-widget v-bind="$attrs" :title="title" :tooltip="tooltip">
     <template #filters>
-      <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
+      <stats-filter is-dropdown :filters="filters" :value="filter" @input="changeFilter" />
     </template>
 
     <chart-skeleton
@@ -31,7 +31,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
-import { fetchData } from '@/indexer/queries/networkVolume';
+import { fetchData } from '@/indexer/queries/network/volume';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
 import type { SnapshotFilter } from '@/types/filters';

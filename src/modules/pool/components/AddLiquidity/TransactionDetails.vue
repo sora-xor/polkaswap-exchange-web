@@ -47,10 +47,10 @@ import { FPNumber, CodecString } from '@sora-substrate/sdk';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import BaseTokenPairMixin from '@/components/mixins/BaseTokenPairMixin';
-import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import BaseTokenPairMixin from '@/modules/pool/mixins/BaseTokenPair';
+import PoolApyMixin from '@/modules/pool/mixins/PoolApy';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
 

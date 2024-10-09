@@ -95,7 +95,12 @@ const parse = (node: AssetSnapshotEntity): ChartData => {
   };
 };
 
-export async function fetchData(id: string, from: number, to: number, type: SnapshotTypes): Promise<ChartData[]> {
+export async function fetchAssetSupplyData(
+  id: string,
+  from: number,
+  to: number,
+  type: SnapshotTypes
+): Promise<ChartData[]> {
   const indexer = getCurrentIndexer();
   let data: Nullable<ChartData[]>;
   switch (indexer.type) {

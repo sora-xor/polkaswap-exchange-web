@@ -2,7 +2,8 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { combineLatest } from 'rxjs';
 
-import { subscribeOnOrderBookUpdates, fetchOrderBooks } from '@/indexer/queries/orderBook';
+import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook/orderBook';
+import { fetchOrderBooks } from '@/indexer/queries/orderBook/orderBooks';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import { orderBookActionContext } from '.';
@@ -125,10 +126,10 @@ const actions = defineActions({
 
     if (!(baseAsset && quoteAsset)) return;
 
+    const orderBookId = [dexId, baseAsset.address, quoteAsset.address].join('-');
+
     const subscription = await subscribeOnOrderBookUpdates(
-      dexId,
-      baseAsset.address,
-      quoteAsset.address,
+      orderBookId,
       (data) => {
         const {
           id: { base, quote },

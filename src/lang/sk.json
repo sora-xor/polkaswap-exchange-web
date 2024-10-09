@@ -162,7 +162,7 @@
         "selectAccount": "Vyberte účet, s ktorým chcete pracovať",
         "action": {
             "install": "Inštalovať rozšírenie",
-            "learnMore": "Dozvedieť sa viac",
+            "learnMore": "Prečítajte si viac o pripojení k peňaženke",
             "connect": "Pripojiť účet",
             "refresh": "Obnoviť"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Inštalácia",
             "connected": "Pripojené",
-            "notConnected": "Nepripojený"
+            "notConnected": "Nepripojený",
+            "recommended": "Odporúčané"
         },
         "internalTitle": "Spojte sa s {wallet}",
         "internalText": "Môžete si vytvoriť alebo importovať existujúci účet {Sora} a spojiť sa so svojím účtom {wallet}. Všetky údaje uložené v službe {wallet} sú šifrované pomocou vstavaného pokročilého šifrovania.",
         "list": {
             "integrated": "Integrovaný",
             "extensions": "Rozšírenia"
-        }
+        },
+        "disclaimer": "Upozorňujeme, že niektoré peňaženky nemusia byť plne podporované."
     },
     "wallet": {
         "WalletAssets": "Aktíva",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Token už bol pridaný",
         "understand": "Rozumiem",
         "warningTitle": "Obchodujte na vlastné riziko!",
-        "warningMessage": "Ktokoľvek môže vytvoriť token, vrátane vytvárania falošných verzií už existujúcich tokenov, vydávaných za skutočné tokeny projektu.\nAk si kúpite takýto token, je možné, že ho už nebudete môcť predať späť.",
+        "warningMessage": "tento {assetType} | tieto {assetTypePlural}",
         "approved": "Komunitou schválené aktívum",
         "unknown": "Neznámy zdroj",
         "scam": "PODVOD",
@@ -265,7 +267,15 @@
             "title": "Meny",
             "switchBtn": "Iba overené aktíva"
         },
-        "searchInputText": "Vyhľadávajte podľa Asset ID, Name alebo Ticker Symbol"
+        "searchInputText": "Vyhľadávajte podľa Asset ID, Name alebo Ticker Symbol",
+        "warningMessageText": "Ktokoľvek môže vytvoriť {assetType}, vrátane falošných verzií existujúcich {assetTypePlural}, ktoré tvrdia, že zastupujú projekty. Ak si kúpite {purchaseAssetType}, nemusíte ho vedieť predať späť.",
+        "assetType": {
+            "token": "Token | Tokeny",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Pridať",
+        "pinAsset": "Pripnúť aktívum",
+        "unpinAsset": "Uvoľniť aktívum"
     },
     "createToken": {
         "desc": "Vytvorte a nasaďte vlastné aktívum na {Sora}",
@@ -453,17 +463,6 @@
         "privacyPolicy": "Zásady ochrany osobných údajov",
         "appVersion": "Verzia {AppName}",
         "contactUs": "Kontaktujte nás"
-    },
-    "aboutNetworkDialog": {
-        "title": "O aplikácii",
-        "network": {
-            "title": "Čo je {Sora}?",
-            "description": "{AppName} je postavený na sieti {Sora} a {Sora} (XOR) token sa používa na platenie plynu\/poplatkov a na poskytovanie likvidity na {AppName}. Sieť {Sora} umožňuje nižšie poplatky, rýchlejšie transakcie a jednoduchšiu finalizáciu konsenzu a zameriava sa na zabezpečenie interoperability s inými ekosystémami blockchainu, ako je {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Čo je {PolkadotJs}?",
-            "description": "Rozšírenie {PolkadotJs} je rozšírenie prehliadača dostupné pre Firefox a Chrome. Je určené pre správu účtov pre siete založené na Substrate vrátane {Sora}, {Polkadot} a {Kusama}. Umožňuje pridávanie, import a export účtov ako aj podpisovanie transakcií alebo alebo externých údajov, ktoré ste zahájili z vami autorizovaných webových stránok."
-        }
     },
     "node": {
         "errors": {
@@ -861,11 +860,15 @@
         "showBalances": "Zobraziť zostatky",
         "hideBalances": "Skryť zostatky",
         "settings": "Nastavenia",
-        "switchTheme": "Prepnite do režimu {theme}",
-        "switchLanguage": "Vyberte Jazyk",
+        "switchTheme": "Režim {theme}",
         "showDisclaimer": "Zobraziť vylúčenie zodpovednosti",
         "hideDisclaimer": "Skryť vylúčenie zodpovednosti",
-        "selectCurrency": "Vyberte položku Mena"
+        "selectCurrency": "Vyberte položku Mena",
+        "turnPhoneHideBalances": "Otočte telefón a skryte.",
+        "titleBalance": "Zostatky",
+        "titleTheme": "Farebná téma",
+        "titleCurrency": "Fiat mena",
+        "titleMisc": "Iné"
     },
     "sentText": "Odoslané",
     "learnMoreText": "Dozvedieť sa viac",
@@ -1042,7 +1045,9 @@
         "button": "Povoliť upozornenia",
         "agree": "Áno rozumiem",
         "notificationBlocked": "Ak chcete dostávať upozornenia o {AppName}, povoľte upozornenia v natívnych nastaveniach prehliadača",
-        "pointer": "Stlačením „Povoliť“ zapnite upozornenia"
+        "pointer": "Stlačením „Povoliť“ zapnite upozornenia",
+        "rotatetitle": "Prosím, otočte svoje zariadenie",
+        "rotateMessage": "Zážitok je k dispozícii iba v režime na výšku"
     },
     "assetDeposit": "Zostatok aktív bol uložený",
     "noDataText": "Žiadne dáta",
@@ -1053,7 +1058,10 @@
         "verifiedOnly": "Zobraziť iba overené aktíva",
         "zeroBalance": "Skryť 0 bilančných aktív",
         "showAssets": "Zobraziť aktíva",
-        "show": "Šou"
+        "show": "Šou",
+        "reset": "Resetovať",
+        "synthetics": "Syntetika",
+        "native": "Natívne"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1673,13 @@
         "yourRewards": "Vaše odmeny",
         "openTelegram": "Otvoriť {Telegram}",
         "toEarnPoints": "Na získanie bodov"
+    },
+    "addAssetsText": "Pridať aktívum | Pridať aktíva",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Otočte zariadenie hore nohami, aby ste skryli zostatky",
+        "info": "Pre vyššie súkromie nakloňte zariadenie obrazovkou nadol, aby ste okamžite skryli zostatky aktív. Táto funkcia využíva vstavané senzory vášho telefónu.",
+        "enableAcceleration": "Povoľte prístup k akcelerácii v nastaveniach.",
+        "gyroscropePhone": "Naša technológia využíva vstavaný gyroskop vášho telefónu na okamžité skrytie vášho zostatku pri naklonení zariadenia."
     }
 }

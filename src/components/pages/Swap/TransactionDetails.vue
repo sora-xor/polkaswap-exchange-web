@@ -1,5 +1,9 @@
 <template>
-  <transaction-details :info-only="infoOnly">
+  <transaction-details :info-only="expanded" :disabled="disabled">
+    <template #reference>
+      <slot name="reference" />
+    </template>
+
     <div class="swap-info-container">
       <info-line v-for="{ id, label, value } in priceValues" :key="id" :label="label" :value="value" />
       <info-line
@@ -16,7 +20,7 @@
           <formatted-amount class="swap-value" :value="priceImpactFormatted">%</formatted-amount>
         </value-status-wrapper>
       </info-line>
-      <info-line :label="t('swap.route')">
+      <info-line v-if="full" :label="t('swap.route')">
         <div class="swap-route">
           <div class="swap-route-paths s-flex">
             <div v-for="(token, index) in swapRoute" class="swap-route-value" :key="token">
@@ -34,7 +38,7 @@
         is-formatted
       />
       <info-line
-        v-if="isLoggedIn"
+        v-if="full"
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="networkFeeFormatted"
@@ -82,6 +86,10 @@ type RewardValue = {
   },
 })
 export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+  @Prop({ default: false, type: Boolean }) readonly full!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly expanded!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
+
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.swap.liquidityProviderFee private liquidityProviderFee!: CodecString;
   @state.swap.rewards private rewards!: Array<LPRewardsInfo>;
@@ -90,15 +98,12 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
 
   @getter.swap.price private price!: string;
   @getter.swap.priceReversed private priceReversed!: string;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
   @getter.swap.tokenTo tokenTo!: AccountAsset;
   @getter.swap.minMaxReceived minMaxReceived!: CodecString;
   @getter.swap.priceImpact priceImpact!: string;
 
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
-
-  @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
 
   get liquidityProviderFeeTooltipText(): string {
     return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue });

@@ -162,7 +162,7 @@
         "selectAccount": "Select account to work with",
         "action": {
             "install": "Install extension",
-            "learnMore": "Learn more",
+            "learnMore": "Learn more about wallet connection",
             "connect": "Connect account",
             "refresh": "Refresh"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Install",
             "connected": "Connected",
-            "notConnected": "Not connected"
+            "notConnected": "Not connected",
+            "recommended": "Recommended"
         },
         "internalTitle": "Connect with {wallet}",
         "internalText": "You can create or import an existing {Sora} account to connect with your {wallet} account. All data that is stored by {wallet} is encrypted using built-in advanced encryption.",
         "list": {
             "integrated": "Integrated",
             "extensions": "Extensions"
-        }
+        },
+        "disclaimer": "Please note that certain wallets may not be fully supported."
     },
     "wallet": {
         "WalletAssets": "Assets",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Token was already attached",
         "understand": "I understand",
         "warningTitle": "Trade at your own risk!",
-        "warningMessage": "Anyone can create a token, including creating fake versions of existing tokens that claim to represent projects.\nIf you purchase this token, you may not be able to sell it back.",
+        "warningMessage": "this {assetType} | these {assetTypePlural}",
         "approved": "Asset approved by community",
         "unknown": "Unknown source",
         "scam": "SCAM",
@@ -265,7 +267,15 @@
             "title": "Currencies",
             "switchBtn": "Verified assets only"
         },
-        "searchInputText": "Search by Asset ID, Name or Ticker Symbol"
+        "searchInputText": "Search by Asset ID, Name or Ticker Symbol",
+        "warningMessageText": "Anyone can create a {assetType}, including creating fake versions of existing {assetTypePlural} that claim to represent projects.\nIf you purchase {purchaseAssetType}, you may not be able to sell it back.",
+        "assetType": {
+            "token": "token | tokens",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Add",
+        "pinAsset": "Pin Asset",
+        "unpinAsset": "Unpin Asset"
     },
     "createToken": {
         "desc": "Create and deploy custom asset on {Sora}",
@@ -453,17 +463,6 @@
         "privacyPolicy": "Privacy Policy",
         "appVersion": "{AppName} version",
         "contactUs": "Contact us"
-    },
-    "aboutNetworkDialog": {
-        "title": "About",
-        "network": {
-            "title": "What is {Sora}?",
-            "description": "{AppName} is built on top of the {Sora} Network, and the {Sora} token (XOR) is used for gas\/fees and liquidity provision on {AppName}. {Sora} Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like {Ethereum}."
-        },
-        "polkadot": {
-            "title": "What is {PolkadotJs}?",
-            "description": "{PolkadotJs} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including {Sora}, {Polkadot} and {Kusama}. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized."
-        }
     },
     "node": {
         "errors": {
@@ -861,11 +860,15 @@
         "showBalances": "Show Balances",
         "hideBalances": "Hide Balances",
         "settings": "Settings",
-        "switchTheme": "Switch to {theme} Mode",
-        "switchLanguage": "Choose Language",
+        "switchTheme": "{theme} mode",
         "showDisclaimer": "Show Disclaimer",
         "hideDisclaimer": "Hide Disclaimer",
-        "selectCurrency": "Select Currency"
+        "selectCurrency": "Select Currency",
+        "turnPhoneHideBalances": "Turn phone & hide",
+        "titleBalance": "Balances",
+        "titleTheme": "Color theme",
+        "titleCurrency": "Fiat currency",
+        "titleMisc": "Misc"
     },
     "sentText": "Sent",
     "learnMoreText": "Learn more",
@@ -1042,7 +1045,9 @@
         "button": "Enable notifications",
         "agree": "Yes, I understand",
         "notificationBlocked": "To receive the notifications about {AppName}, please, allow the notifications in your browser's native settings",
-        "pointer": "Press “Allow” to turn notifications on"
+        "pointer": "Press “Allow” to turn notifications on",
+        "rotatetitle": "Please, rotate your device",
+        "rotateMessage": "The experience is only available in portrait mode"
     },
     "assetDeposit": "Asset balance has been deposited",
     "noDataText": "No data",
@@ -1053,7 +1058,10 @@
         "verifiedOnly": "Show verified assets only",
         "zeroBalance": "Hide 0 balance assets",
         "showAssets": "Show assets",
-        "show": "Show"
+        "show": "Show",
+        "reset": "Reset",
+        "synthetics": "Synthetics",
+        "native": "Native"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1673,13 @@
         "yourRewards": "Your rewards",
         "openTelegram": "Open {Telegram}",
         "toEarnPoints": "To earn points"
+    },
+    "addAssetsText": "Add asset | Add assets",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Turn your device upside down to hide balances",
+        "info": "For extra privacy, tilt your device face down to instantly hide your asset balances. This feature uses your phone’s built-in sensors.",
+        "enableAcceleration": "Enable acceleration access in your settings.",
+        "gyroscropePhone": " Our technology uses your phone's built-in gyroscope to instantly hide your balance when you tilt your device."
     }
 }

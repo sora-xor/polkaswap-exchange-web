@@ -1,5 +1,6 @@
 export enum VaultPageNames {
   Vaults = 'Vaults',
+  VaultsContainer = 'VaultsContainer',
   VaultDetails = 'VaultDetails',
 }
 

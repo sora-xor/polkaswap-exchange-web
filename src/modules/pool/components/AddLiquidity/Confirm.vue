@@ -1,5 +1,10 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('confirmSupply.title')" v-if="firstToken && secondToken">
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('confirmSupply.title')"
+    v-if="firstToken && secondToken"
+    append-to-body
+  >
     <div class="pool-tokens-amount">{{ shareOfPool }}%</div>
     <s-row v-if="firstToken && secondToken" flex align="middle" class="pool-tokens">
       <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="small" />
@@ -61,9 +66,9 @@ import { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import PoolApyMixin from '@/modules/pool/mixins/PoolApy';
 import { lazyComponent } from '@/router';
 
 @Component({
@@ -75,7 +80,7 @@ import { lazyComponent } from '@/router';
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
   },
 })
-export default class ConfirmAddLiquidity extends Mixins(
+export default class AddLiquidityConfirm extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.LoadingMixin,
   mixins.DialogMixin,

@@ -162,7 +162,7 @@
         "selectAccount": "Sélectionnez le compte approprié",
         "action": {
             "install": "Installer l'extension",
-            "learnMore": "En savoir plus",
+            "learnMore": "En savoir plus sur la connexion au portefeuille",
             "connect": "Connecter un compte",
             "refresh": "Rafraîchir"
         },
@@ -170,14 +170,16 @@
         "wallet": {
             "install": "Installer",
             "connected": "Connecté",
-            "notConnected": "Pas connecté"
+            "notConnected": "Pas connecté",
+            "recommended": "Recommandé"
         },
         "internalTitle": "Connectez-vous avec {wallet}",
         "internalText": "Vous pouvez créer ou importer un compte {Sora} existant pour vous connecter à votre compte {wallet}. Toutes les données stockées par {wallet} sont cryptées à l'aide du cryptage avancé intégré.",
         "list": {
             "integrated": "Intégré",
             "extensions": "Rallonges"
-        }
+        },
+        "disclaimer": "Veuillez noter que certains portefeuilles peuvent ne pas être entièrement pris en charge."
     },
     "wallet": {
         "WalletAssets": "Actifs",
@@ -256,7 +258,7 @@
         "alreadyAttached": "Le jeton était déjà attaché",
         "understand": "Je comprends",
         "warningTitle": "Tradez à vos risques et périls!",
-        "warningMessage": "Tout le monde peut créer un jeton, y compris en créant de fausses versions de jetons existants qui prétendent représenter des projets.\n Si vous achetez ce jeton, vous ne pourrez peut-être pas le revendre.",
+        "warningMessage": "ce {assetType} | ces {assetTypePlural}",
         "approved": "Actif approuvé par la communauté",
         "unknown": "Source inconnue",
         "scam": "ARNAQUE",
@@ -265,7 +267,15 @@
             "title": "Devises",
             "switchBtn": "Actifs vérifiés uniquement"
         },
-        "searchInputText": "Rechercher par ID d'actif, nom ou symbole boursier"
+        "searchInputText": "Rechercher par ID d'actif, nom ou symbole boursier",
+        "warningMessageText": "N'importe qui peut créer un {assetType}, y compris des versions factices de {assetTypePlural} existants prétendant représenter des projets. Si vous achetez un {purchaseAssetType}, il se peut que vous ne puissiez pas le revendre.",
+        "assetType": {
+            "token": "Jeton | Jetons",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Ajouter",
+        "pinAsset": "Épingler l'actif",
+        "unpinAsset": "Détacher l'actif"
     },
     "createToken": {
         "desc": "Créer et déployer des ressources personnalisées sur {Sora}",
@@ -453,17 +463,6 @@
         "privacyPolicy": "Politique de confidentialité",
         "appVersion": "{AppName} version",
         "contactUs": "Nous contacter"
-    },
-    "aboutNetworkDialog": {
-        "title": "À propos",
-        "network": {
-            "title": "Qu'est-ce que {Sora}?",
-            "description": "{AppName} est construit sur le réseau {Sora} et le jeton {Sora} (XOR) est utilisé pour le gaz\/les frais et la fourniture de liquidités sur {AppName}. {Sora} Network permet des frais réduits, des transactions plus rapides et une finalisation de consensus plus simple et se concentre sur l'interopérabilité entre d'autres écosystèmes de blockchain comme {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Qu'est-ce que {PolkadotJs}?",
-            "description": "L'extension {PolkadotJs} est une extension de navigateur disponible pour Firefox et Chrome dédiée à la gestion des comptes pour les chaînes basées sur le Substrat, notamment {Sora}, {Polkadot} et {Kusama}. Vous pouvez ajouter, importer et exporter des comptes et signer des transactions ou des éléments extrinsèques que vous avez initiés à partir de sites Web que vous avez autorisés."
-        }
     },
     "node": {
         "errors": {
@@ -861,11 +860,15 @@
         "showBalances": "Afficher les soldes",
         "hideBalances": "Masquer les soldes",
         "settings": "Paramètres",
-        "switchTheme": "Passer en mode {theme}",
-        "switchLanguage": "Choisissez la langue",
+        "switchTheme": "Mode {theme}",
         "showDisclaimer": "Afficher la clause de non-responsabilité",
         "hideDisclaimer": "Masquer la clause de non-responsabilité",
-        "selectCurrency": "Sélectionnez la devise"
+        "selectCurrency": "Sélectionnez la devise",
+        "turnPhoneHideBalances": "Tournez le téléphone et cachez.",
+        "titleBalance": "Soldes",
+        "titleTheme": "Thème de couleur",
+        "titleCurrency": "Monnaie fiduciaire",
+        "titleMisc": "Divers"
     },
     "sentText": "Envoyé",
     "learnMoreText": "En savoir plus",
@@ -1042,7 +1045,9 @@
         "button": "Activer les notifications",
         "agree": "Oui je comprends",
         "notificationBlocked": "Pour recevoir les notifications concernant {AppName} , veuillez autoriser les notifications dans les paramètres natifs de votre navigateur",
-        "pointer": "Appuyez sur \"Autoriser\" pour activer les notifications"
+        "pointer": "Appuyez sur \"Autoriser\" pour activer les notifications",
+        "rotatetitle": "Veuillez faire pivoter votre appareil",
+        "rotateMessage": "L'expérience est uniquement disponible en mode portrait"
     },
     "assetDeposit": "Le solde de l'actif a été déposé",
     "noDataText": "Pas de données",
@@ -1053,7 +1058,10 @@
         "verifiedOnly": "Afficher uniquement les actifs vérifiés",
         "zeroBalance": "Cachez 0 solde actif",
         "showAssets": "Afficher les actifs",
-        "show": "Montrer"
+        "show": "Montrer",
+        "reset": "Réinitialiser",
+        "synthetics": "Synthétiques",
+        "native": "Indigène"
     },
     "desktop": {
         "welcome": {
@@ -1665,5 +1673,13 @@
         "yourRewards": "Vos récompenses",
         "openTelegram": "Ouvrir {Telegram}",
         "toEarnPoints": "Pour gagner des points"
+    },
+    "addAssetsText": "Ajouter un actif | Ajouter des actifs",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Retournez votre appareil à l'envers pour masquer les soldes",
+        "info": "Pour plus de confidentialité, inclinez votre appareil face vers le bas pour masquer instantanément le solde de vos actifs. Cette fonctionnalité utilise les capteurs intégrés de votre téléphone.",
+        "enableAcceleration": "Activez l'accès à l'accélération dans vos paramètres.",
+        "gyroscropePhone": "Notre technologie utilise le gyroscope intégré de votre téléphone pour masquer instantanément votre solde lorsque vous inclinez votre appareil."
     }
 }
