@@ -464,17 +464,6 @@
         "appVersion": "eya {AppName}",
         "contactUs": "Pe wa"
     },
-    "aboutNetworkDialog": {
-        "title": "Nipa",
-        "network": {
-            "title": "Kini {Sora}?",
-            "description": "{AppName} ti wa ni itumọ lori oke ti Nẹtiwọọki {Sora}, ati pe {Sora} token (XOR) ti lo fun gaasi \/ owo ati ipese oloomi lori {AppName}. {Sora} Nẹtiwọọki ngbanilaaye fun awọn owo ti o dinku, awọn iṣowo yiyara ati ipari ipari ipohunpo rọrun ati pe o wa ni idojukọ fifiranṣẹ ibaraenisepo kọja awọn ilolupo eda abemi-idena miiran bi {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Kini {PolkadotJs}?",
-            "description": "Itẹsiwaju {PolkadotJs} jẹ itẹsiwaju aṣawakiri ti o wa fun Firefox ati Chrome ti a ṣe igbẹhin si iṣakoso awọn iroyin fun Awọn ẹwọn ti o da lori Substrate, pẹlu {Sora}, {Polkadot} ati {Kusama}. O le ṣafikun, gbe wọle, ati gbejade awọn iroyin ati buwọlu awọn iṣowo tabi awọn nkan elekeji ti o ti bẹrẹ lati awọn oju opo wẹẹbu ti o fun ni aṣẹ."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Aṣiṣe kan waye lakoko sisopọ si oju ipade\n{address}\n",
@@ -871,11 +860,11 @@
         "showBalances": "Fihan Awọn iwọntunwọnsi",
         "hideBalances": "Tọju Awọn iwọntunwọnsi",
         "settings": "Ètò",
-        "switchTheme": "Yipada si {theme} Ipo",
+        "switchTheme": "{theme} ipo",
         "showDisclaimer": "Ṣafihan AlAIgBA",
         "hideDisclaimer": "Tọju AlAIgBA",
         "selectCurrency": "Yan Owo",
-        "turnPhoneHideBalances": "Yipada foonu & fi pamọ",
+        "turnPhoneHideBalances": "Yipada foonu & fi pamọ.",
         "titleBalance": "Awọn iyokù",
         "titleTheme": "Àkọ́lé àwọ̀",
         "titleCurrency": "Owo fiat",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Fi dukia kun | Fi awọn dukia kun",
     "noir": "Noir",
     "rotatePhoneNotification": {
-        "title": "Yipada ẹrọ rẹ sí abẹ́lẹ̀ láti fi àwọn ìwontúnwọnsi pamọ́.",
+        "title": "Yipada ẹrọ rẹ sí abẹ́lẹ̀ láti fi àwọn ìwontúnwọnsi pamọ́",
         "info": "Fun ìpamọ́ tó kù díẹ̀, tẹ ẹrọ rẹ sórí pẹ̀tẹ̀rẹ̀tẹ̀ láti fi pamọ́ iwọntunwọnsi dukia rẹ lẹsẹkẹsẹ. Ẹya yii nlo awọn sensọ ti inu foonu rẹ.",
         "enableAcceleration": "Ṣii wiwọle iyara ni awọn eto rẹ.",
         "gyroscropePhone": "Imọ-ẹrọ wa nlo ẹrọ girosikopu ti inu foonu rẹ lati tọju iwọntunwọnsi rẹ lẹsẹkẹsẹ nigbati o tẹ ẹrọ rẹ."

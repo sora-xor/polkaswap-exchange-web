@@ -464,17 +464,6 @@
         "appVersion": "{AppName} Versi",
         "contactUs": "Hubungi Kami"
     },
-    "aboutNetworkDialog": {
-        "title": "Tentang",
-        "network": {
-            "title": "Apa it {Sora}?",
-            "description": "{AppName} dibangun di atas Jaringan {Sora}, dan token {Sora} (XOR) digunakan untuk penyediaan gas \/biaya dan likuiditas pada {AppName}. {Sora} Network memungkinkan pengurangan biaya, transaksi yang lebih cepat, dan finalisasi konsensus yang lebih sederhana dan berfokus pada memberikan interoperabilitas di seluruh ekosistem blockchain lainnya seperti {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Apa itu {PolkadotJs}?",
-            "description": "Ekstensi {PolkadotJs} adalah ekstensi browser yang tersedia untuk Firefox dan Chrome yang didedikasikan untuk mengelola akun untuk chain berbasis Substrate, termasuk {Sora}, {Polkadot} dan {Kusama}. Anda dapat menambahkan, mengimpor, dan mengekspor akun dan menandatangani transaksi atau ekstrinsik yang telah Anda mulai dari situs web yang telah Anda izinkan."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Terjadi kesalahan saat menghubungkan ke node\n{address}\n",
@@ -871,11 +860,11 @@
         "showBalances": "Tampilkan Saldo",
         "hideBalances": "Sembunyikan Saldo",
         "settings": "Pengaturan",
-        "switchTheme": "Beralih ke Mode {theme}",
+        "switchTheme": "Mode {theme}",
         "showDisclaimer": "Tampilkan Penafian",
         "hideDisclaimer": "Sembunyikan Penafian",
         "selectCurrency": "Pilih Mata Uang",
-        "turnPhoneHideBalances": "Putar ponsel & sembunyikan",
+        "turnPhoneHideBalances": "Putar ponsel & sembunyikan.",
         "titleBalance": "Saldo",
         "titleTheme": "Tema warna",
         "titleCurrency": "Mata uang fiat",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Tambah aset | Tambah aset-aset",
     "noir": "Noir",
     "rotatePhoneNotification": {
-        "title": "Balikkan perangkat Anda terbalik untuk menyembunyikan saldo.",
+        "title": "Balikkan perangkat Anda terbalik untuk menyembunyikan saldo",
         "info": "Untuk privasi tambahan, miringkan perangkat Anda menghadap ke bawah untuk menyembunyikan saldo aset Anda secara instan. Fitur ini menggunakan sensor bawaan ponsel Anda.",
         "enableAcceleration": "Aktifkan akses akselerasi di pengaturan Anda.",
         "gyroscropePhone": "Teknologi kami menggunakan giroskop bawaan ponsel Anda untuk menyembunyikan saldo Anda secara instan saat Anda memiringkan perangkat."

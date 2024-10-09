@@ -464,17 +464,6 @@
         "appVersion": "{AppName} versie",
         "contactUs": "Contacteer ons"
     },
-    "aboutNetworkDialog": {
-        "title": "Over",
-        "network": {
-            "title": "Wat is {Sora}?",
-            "description": "{AppName} is gebouwd bovenop het {Sora} Netwerk, en het {Sora} token (XOR) wordt gebruikt voor gas\/vergoedingen en liquiditeitsverschaffing op {AppName}. {Sora} Network maakt lagere vergoedingen, snellere transacties en eenvoudigere consensus finalisatie mogelijk en is gericht op het leveren van interoperabiliteit over andere blockchain ecosystemen zoals {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Wat is {PolkadotJs}?",
-            "description": "{PolkadotJs} extensie is een browser extensie beschikbaar voor Firefox en Chrome die gewijd is aan het beheer van accounts voor Substrate-gebaseerde chains, waaronder {Sora}, {Polkadot} en {Kusama}. U kunt accounts toevoegen, importeren en exporteren en transacties of extrinsics ondertekenen die u hebt geïnitieerd vanaf websites die u hebt geautoriseerd."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Er is een fout opgetreden tijdens het verbinden met de node\n{address}\n",
@@ -871,11 +860,11 @@
         "showBalances": "Saldi tonen",
         "hideBalances": "Saldi verbergen",
         "settings": "Instellingen",
-        "switchTheme": "Overschakelen naar {theme} -modus",
+        "switchTheme": "{theme}-modus",
         "showDisclaimer": "Disclaimer tonen",
         "hideDisclaimer": "Disclaimer verbergen",
         "selectCurrency": "selecteer valuta",
-        "turnPhoneHideBalances": "Draai de telefoon om en verberg",
+        "turnPhoneHideBalances": "Draai de telefoon om en verberg.",
         "titleBalance": "Saldo's",
         "titleTheme": "Kleurenthema",
         "titleCurrency": "Fiat valuta",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Activa toevoegen | Activa’s toevoegen",
     "noir": "Zwart",
     "rotatePhoneNotification": {
-        "title": "Draai uw apparaat ondersteboven om saldi te verbergen.",
+        "title": "Draai uw apparaat ondersteboven om saldi te verbergen",
         "info": "Voor extra privacy, kantel je apparaat met het scherm naar beneden om je activa saldo onmiddellijk te verbergen. Deze functie maakt gebruik van de ingebouwde sensoren van je telefoon.",
         "enableAcceleration": "Schakel versnellingssensor toegang in uw instellingen in.",
         "gyroscropePhone": "Onze technologie gebruikt de ingebouwde gyroscoop van je telefoon om je saldo onmiddellijk te verbergen wanneer je je apparaat kantelt."

@@ -464,17 +464,6 @@
         "appVersion": "{AppName} verze",
         "contactUs": "Kontaktujte nás"
     },
-    "aboutNetworkDialog": {
-        "title": "O projektu",
-        "network": {
-            "title": "Co je to {Sora}?",
-            "description": "{AppName} je postaven na síti {Sora} a token {Sora} (XOR) se používá pro placení gasu\/poplatků a pro poskytování likvidity na {AppName}. Síť {Sora} umožňuje snížení poplatků, rychlejší transakce a jednodušší finalizaci konsensu a zaměřuje se na zajištění interoperability napříč ostatními blockchain ekosystémy, jako je {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Co je to {PolkadotJs}?",
-            "description": "Rozšíření {PolkadotJs} je rozšíření prohlížeče dostupné pro Firefox a Chrome určené pro správu účtů blockchainů založených na Substrate, včetně {Sora}, {Polkadot} a {Kusama}. Můžete přidávat, importovat a exportovat účty a podepisovat transakce nebo extrinsics, které jste iniciovali z autorizovaných webových stránek."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Při připojování k nodu došlo k chybě\n{address}\n",
@@ -871,11 +860,11 @@
         "showBalances": "Zobrazit zůstatky",
         "hideBalances": "Skrýt zůstatky",
         "settings": "Nastavení",
-        "switchTheme": "Přepnout do režimu {theme}",
+        "switchTheme": "{theme} režim",
         "showDisclaimer": "Zobrazit vyloučení odpovědnosti",
         "hideDisclaimer": "Skrýt vyloučení odpovědnosti",
         "selectCurrency": "Vyberte možnost Měna",
-        "turnPhoneHideBalances": "Otočte telefon a skryjte",
+        "turnPhoneHideBalances": "Otočte telefon a skryjte.",
         "titleBalance": "Zůstatky",
         "titleTheme": "Barevné téma",
         "titleCurrency": "Fiat měna",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Přidat aktivum | Přidat aktiva",
     "noir": "Noir",
     "rotatePhoneNotification": {
-        "title": "Otočte zařízení vzhůru nohama, abyste skryli zůstatky.",
+        "title": "Otočte zařízení vzhůru nohama, abyste skryli zůstatky",
         "info": "Pro vyšší úroveň soukromí nakloňte své zařízení obrazovkou dolů a okamžitě skryjte zůstatky svých aktiv. Tato funkce používá vestavěné senzory vašeho telefonu.",
         "enableAcceleration": "Povolte přístup k akceleraci v nastavení.",
         "gyroscropePhone": "Naše technologie využívá vestavěný gyroskop vašeho telefonu k okamžitému skrytí vašeho zůstatku při naklonění zařízení."

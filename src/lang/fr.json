@@ -464,17 +464,6 @@
         "appVersion": "{AppName} version",
         "contactUs": "Nous contacter"
     },
-    "aboutNetworkDialog": {
-        "title": "À propos",
-        "network": {
-            "title": "Qu'est-ce que {Sora}?",
-            "description": "{AppName} est construit sur le réseau {Sora} et le jeton {Sora} (XOR) est utilisé pour le gaz\/les frais et la fourniture de liquidités sur {AppName}. {Sora} Network permet des frais réduits, des transactions plus rapides et une finalisation de consensus plus simple et se concentre sur l'interopérabilité entre d'autres écosystèmes de blockchain comme {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Qu'est-ce que {PolkadotJs}?",
-            "description": "L'extension {PolkadotJs} est une extension de navigateur disponible pour Firefox et Chrome dédiée à la gestion des comptes pour les chaînes basées sur le Substrat, notamment {Sora}, {Polkadot} et {Kusama}. Vous pouvez ajouter, importer et exporter des comptes et signer des transactions ou des éléments extrinsèques que vous avez initiés à partir de sites Web que vous avez autorisés."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Une erreur s'est produite lors de la connexion au nœud\n{address}\n",
@@ -871,11 +860,11 @@
         "showBalances": "Afficher les soldes",
         "hideBalances": "Masquer les soldes",
         "settings": "Paramètres",
-        "switchTheme": "Passer en mode {theme}",
+        "switchTheme": "Mode {theme}",
         "showDisclaimer": "Afficher la clause de non-responsabilité",
         "hideDisclaimer": "Masquer la clause de non-responsabilité",
         "selectCurrency": "Sélectionnez la devise",
-        "turnPhoneHideBalances": "Tournez le téléphone et cachez",
+        "turnPhoneHideBalances": "Tournez le téléphone et cachez.",
         "titleBalance": "Soldes",
         "titleTheme": "Thème de couleur",
         "titleCurrency": "Monnaie fiduciaire",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Ajouter un actif | Ajouter des actifs",
     "noir": "Noir",
     "rotatePhoneNotification": {
-        "title": "Retournez votre appareil à l'envers pour masquer les soldes.",
+        "title": "Retournez votre appareil à l'envers pour masquer les soldes",
         "info": "Pour plus de confidentialité, inclinez votre appareil face vers le bas pour masquer instantanément le solde de vos actifs. Cette fonctionnalité utilise les capteurs intégrés de votre téléphone.",
         "enableAcceleration": "Activez l'accès à l'accélération dans vos paramètres.",
         "gyroscropePhone": "Notre technologie utilise le gyroscope intégré de votre téléphone pour masquer instantanément votre solde lorsque vous inclinez votre appareil."

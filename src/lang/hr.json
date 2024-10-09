@@ -464,17 +464,6 @@
         "appVersion": "{AppName} verzija",
         "contactUs": "Kontaktirajte nas"
     },
-    "aboutNetworkDialog": {
-        "title": "O",
-        "network": {
-            "title": "Što je {Sora}?",
-            "description": "{AppName} je izgrađen na {Sora} Network, a token {Sora} (XOR) koristi se za opskrbu gasom\/naknadama i likvidnošću na {AppName}. {Sora} Network omogućuje smanjene naknade, brže transakcije i jednostavniju finalizaciju konsenzusa i usmjerena je na isporuku interoperabilnosti u drugim blockchain ekosustavima kao što je {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Što je {PolkadotJs}?",
-            "description": "{PolkadotJs} proširenje je proširenje preglednika dostupno za Firefox i Chrome posvećeno upravljanju računima za lance temeljene na Substrate-u, uključujući {Sora}, {Polkadot} i {Kusama}. Možete dodavati, uvoziti i izvoziti račune te potpisivati transakcije ili ekstrinzike koje ste pokrenuli s web stranice koja ste ovlastili."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Došlo je do pogreške pri povezivanju s nodom\n{address}\n",
@@ -871,11 +860,11 @@
         "showBalances": "Prikažite saldove",
         "hideBalances": "Sakrijte saldove",
         "settings": "Postavke",
-        "switchTheme": "Prijeđite na {theme} modus",
+        "switchTheme": "{theme} modus",
         "showDisclaimer": "Prikaži Odricanje od odgovornosti",
         "hideDisclaimer": "Sakrij izjavu o odricanju odgovornosti",
         "selectCurrency": "Odaberite Valutu",
-        "turnPhoneHideBalances": "Okrenite telefon i sakrijte",
+        "turnPhoneHideBalances": "Okrenite telefon i sakrijte.",
         "titleBalance": "Stanja",
         "titleTheme": "Tematika boja",
         "titleCurrency": "Fiat valuta",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Dodaj imovinu | Dodaj imovine",
     "noir": "Noir",
     "rotatePhoneNotification": {
-        "title": "Okrenite uređaj naopako kako biste sakrili salda.",
+        "title": "Okrenite uređaj naopako kako biste sakrili salda",
         "info": "Za dodatnu privatnost, nagnite uređaj licem prema dolje kako biste trenutno sakrili svoje stanje imovine. Ova značajka koristi ugrađene senzore vašeg telefona.",
         "enableAcceleration": "Omogućite pristup ubrzanja u svojim postavkama.",
         "gyroscropePhone": "Naša tehnologija koristi ugrađeni žiroskop vašeg telefona kako bi trenutno sakrila vaš saldo kada nagnete uređaj."

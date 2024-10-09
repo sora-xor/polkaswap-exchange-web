@@ -464,17 +464,6 @@
         "appVersion": "{AppName} versjon",
         "contactUs": "Kontakt oss"
     },
-    "aboutNetworkDialog": {
-        "title": "Om",
-        "network": {
-            "title": "Hva er {Sora}?",
-            "description": "{AppName} er bygget på toppen av {Sora} Network, og {Sora} token (XOR) brukes til gass \/ avgifter og likviditetsbestemmelse på {AppName}. {Sora} Network gir mulighet for reduserte avgifter, raskere transaksjoner og enklere konsensus-sluttføring og er fokusert på å levere interoperabilitet på tvers av andre blokkjedeøkosystemer som {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Hva er {PolkadotJs}?",
-            "description": "{PolkadotJs} utvidelse er en nettleserutvidelse tilgjengelig for Firefox og Chrome dedikert til å administrere kontoer for Substrate-baserte kjeder, inkludert {Sora}, {Polkadot} og {Kusama}. Du kan legge til, importere og eksportere kontoer og signere transaksjoner eller ekstrinsikk som du har startet fra webområder du har godkjent."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Det oppstod en feil under tilkobling til noden\n{address}\n",
@@ -871,11 +860,11 @@
         "showBalances": "Vis saldoer",
         "hideBalances": "Skjul saldoer",
         "settings": "Innstillinger",
-        "switchTheme": "Bytt til {theme} -modus",
+        "switchTheme": "{theme}-modus",
         "showDisclaimer": "Vis ansvarsfraskrivelse",
         "hideDisclaimer": "Skjul ansvarsfraskrivelse",
         "selectCurrency": "Velg Valuta",
-        "turnPhoneHideBalances": "Snu telefonen og skjul",
+        "turnPhoneHideBalances": "Snu telefonen og skjul.",
         "titleBalance": "Saldi",
         "titleTheme": "Fargetema",
         "titleCurrency": "Fiatvaluta",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Legg til eiendel | Legg til eiendeler",
     "noir": "Noir",
     "rotatePhoneNotification": {
-        "title": "Snu enheten opp ned for å skjule saldoer.",
+        "title": "Snu enheten opp ned for å skjule saldoer",
         "info": "For ekstra personvern, vipp enheten med skjermen nedover for å umiddelbart skjule saldoen for eiendelene dine. Denne funksjonen bruker telefonens innebygde sensorer.",
         "enableAcceleration": "Aktiver akselerasjonstilgang i innstillingene dine.",
         "gyroscropePhone": "Vår teknologi bruker telefonens innebygde gyroskop for å umiddelbart skjule saldoen din når du vipper enheten."

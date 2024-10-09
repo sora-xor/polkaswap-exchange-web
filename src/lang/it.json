@@ -464,17 +464,6 @@
         "appVersion": "{AppName} versione",
         "contactUs": "Contattaci"
     },
-    "aboutNetworkDialog": {
-        "title": "Più informazioni",
-        "network": {
-            "title": "Cos'è {Sora}?",
-            "description": "{AppName} è costruito sulla rete {Sora} e il token {Sora} (XOR) viene utilizzato per gas\/fees e per la fornitura di liquidità su {AppName}. {Sora} Network consente commissioni ridotte, transazioni più veloci e più semplice finalizzazione del consenso. Si concentra sulla produzione di interoperabilità tra altri ecosistemi blockchain come {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Che cos'è {PolkadotJs}?",
-            "description": "{PolkadotJs} è un'estensione del browser disponibile per Firefox e Chrome dedicata alla gestione degli account per le chain basate su Substrate, tra cui {Sora}, {Polkadot} e {Kusama}. Puoi aggiungere, importare ed esportare account e firmare transazioni o extrinsics che hai inizializzato da siti Web che hai autorizzato."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Si è verificato un errore durante la connessione al nodo\n{address}\n",
@@ -871,11 +860,11 @@
         "showBalances": "Mostra saldi",
         "hideBalances": "Nascondi saldi",
         "settings": "Impostazioni",
-        "switchTheme": "Passa alla modalità {theme}",
+        "switchTheme": "Modalità {theme}",
         "showDisclaimer": "Mostra esclusione di responsabilità",
         "hideDisclaimer": "Nascondi Dichiarazione di non responsabilità",
         "selectCurrency": "Seleziona Valuta",
-        "turnPhoneHideBalances": "Gira il telefono e nascondi",
+        "turnPhoneHideBalances": "Gira il telefono e nascondi.",
         "titleBalance": "Saldi",
         "titleTheme": "Tema colore",
         "titleCurrency": "Valuta fiat",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Aggiungi bene | Aggiungi beni",
     "noir": "Il noir",
     "rotatePhoneNotification": {
-        "title": "Capovolgi il dispositivo per nascondere i saldi.",
+        "title": "Capovolgi il dispositivo per nascondere i saldi",
         "info": "Per una maggiore privacy, inclina il dispositivo a faccia in giù per nascondere istantaneamente i saldi delle tue risorse. Questa funzione utilizza i sensori integrati del telefono.",
         "enableAcceleration": "Abilita l'accesso all'accelerazione nelle tue impostazioni.",
         "gyroscropePhone": "La nostra tecnologia utilizza il giroscopio integrato del telefono per nascondere istantaneamente il saldo quando inclini il dispositivo."

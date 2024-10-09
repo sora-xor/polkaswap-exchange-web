@@ -464,17 +464,6 @@
         "appVersion": "{AppName} 版本",
         "contactUs": "联系我们"
     },
-    "aboutNetworkDialog": {
-        "title": "关于",
-        "network": {
-            "title": "什么是{Sora}？",
-            "description": "{AppName}建立在{Sora}网络之上，{Sora}代币（XOR）被用于{AppName}上的费用和流动性供应。{Sora}网络允许减少的费用和加快交易，并简化共识的最终确定，专注于提供跨其他区块链生态系统的互操作性，如{Ethereum}。"
-        },
-        "polkadot": {
-            "title": "什么是 {PolkadotJs}？",
-            "description": "{PolkadotJs}扩展是一个可用于 Firefox 浏览器和 Chrome 的浏览器扩展，专门用于管理基于 Substrate 的链的账户，包括 {Sora}、{Polkadot} 和 {Kusama}。您可以添加、导入和导出账户并签署您从授权的网站发起的交易或外部信息。"
-        }
-    },
     "node": {
         "errors": {
             "connection": "连接到节点时发生错误\n{address}\n",
@@ -871,11 +860,11 @@
         "showBalances": "显示余额",
         "hideBalances": "隐藏余额",
         "settings": "设置",
-        "switchTheme": "切换到{theme}模式",
+        "switchTheme": "{theme} 模式",
         "showDisclaimer": "显示免责声明",
         "hideDisclaimer": "隐藏免责声明",
         "selectCurrency": "选择货币",
-        "turnPhoneHideBalances": "翻转手机并隐藏",
+        "turnPhoneHideBalances": "翻转手机并隐藏.",
         "titleBalance": "余额",
         "titleTheme": "颜色主题",
         "titleCurrency": "法定货币",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "添加资产 | 添加资产",
     "noir": "暗黑",
     "rotatePhoneNotification": {
-        "title": "将设备倒置以隐藏余额.",
+        "title": "将设备倒置以隐藏余额",
         "info": "为了额外的隐私保护，将设备向下倾斜，即可立即隐藏您的资产余额。此功能使用您的手机内置传感器.",
         "enableAcceleration": "在设置中启用加速度访问.",
         "gyroscropePhone": "我们的技术使用手机内置的陀螺仪，在您倾斜设备时立即隐藏您的余额."
