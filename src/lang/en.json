@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Swap",
         "Transfer": "Transfer",
+        "XorlessTransfer": "Transfer",
         "AddLiquidity": "Add Liquidity",
         "RemoveLiquidity": "Remove Liquidity",
         "CreatePair": "Create Pair",
@@ -32,6 +33,7 @@
         "andText": "and",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Supplied {amount} {symbol} and {amount2} {symbol2}",
             "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
@@ -79,6 +81,7 @@
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
+            "XorlessTransfer": "Failed to {action} {amount} {symbol} {direction} {address}",
             "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
             "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
