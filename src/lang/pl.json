@@ -464,17 +464,6 @@
         "appVersion": "Wersja {AppName}",
         "contactUs": "Skontaktuj się z nami"
     },
-    "aboutNetworkDialog": {
-        "title": "O giełdzie",
-        "network": {
-            "title": "Czym jest {Sora}?",
-            "description": "{AppName} jest zbudowany na bazie sieci {Sora} , a token {Sora} (XOR) jest używany do dostarczania gazu\/opłat i płynności w {AppName}. Sieć {Sora} pozwala na obniżenie opłat, szybsze transakcje i prostsze finalizowanie konsensusu i koncentruje się na zapewnieniu interoperacyjności w innych ekosystemach blockchain, takich jak {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Czym jest {PolkadotJs}?",
-            "description": "{PolkadotJs} to rozszerzenie przeglądarki dostępne dla Firefoksa i Chrome, przeznaczone do zarządzania kontami w sieciach opartych na platformie Substrate, w tym {Sora}, {Polkadot} i {Kusama}. Konta można dodawać, importować i eksportować oraz podpisywać transakcje lub dane zewnętrzne inicjowane z autoryzowanych przez Ciebie witryn."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Wystąpił błąd podczas łączenia się z węzłem\n{address}\n",
@@ -875,7 +864,7 @@
         "showDisclaimer": "Pokaż zastrzeżenie",
         "hideDisclaimer": "Ukryj wyłączenie odpowiedzialności",
         "selectCurrency": "Wybierz walutę",
-        "turnPhoneHideBalances": "Obróć telefon i ukryj",
+        "turnPhoneHideBalances": "Obróć telefon i ukryj.",
         "titleBalance": "Salda",
         "titleTheme": "Motyw kolorystyczny",
         "titleCurrency": "Waluta fiat",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Dodaj aktywo | Dodaj aktywa",
     "noir": "Noir",
     "rotatePhoneNotification": {
-        "title": "Obróć urządzenie do góry nogami, aby ukryć salda.",
+        "title": "Obróć urządzenie do góry nogami, aby ukryć salda",
         "info": "Dla dodatkowej prywatności obróć urządzenie ekranem w dół, aby natychmiast ukryć swoje salda aktywów. Ta funkcja wykorzystuje wbudowane czujniki telefonu.",
         "enableAcceleration": "Włącz dostęp do akceleracji w ustawieniach.",
         "gyroscropePhone": "Nasza technologia wykorzystuje wbudowany żyroskop telefonu, aby natychmiast ukryć saldo po przechyleniu urządzenia."

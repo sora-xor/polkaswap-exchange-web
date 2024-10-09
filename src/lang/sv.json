@@ -464,17 +464,6 @@
         "appVersion": "{AppName} version",
         "contactUs": "Kontakta oss"
     },
-    "aboutNetworkDialog": {
-        "title": "Om",
-        "network": {
-            "title": "Vad är {Sora}?",
-            "description": "{AppName} är byggt ovanpå {Sora} -nätverket och {Sora} -token (XOR) används för bränsle\/avgifter och likviditets-tillhandahållning på {AppName}. {Sora} Nätverk möjliggör minskade avgifter, snabbare transaktioner och enklare konsensusslutgiltighet, och är inriktat på att leverera interoperabilitet mellan andra blockkedje-ekosystem som {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Vad är {PolkadotJs}?",
-            "description": "Tillägget {PolkadotJs} är ett webbläsartillägg som är tillgängligt för Firefox och Chrome avsett att hantera konton för Substrate-baserade kedjor, inklusive {Sora}, {Polkadot} och {Kusama}. Du kan lägga till, importera och exportera konton samt signera transaktioner eller extrinsics som du har initierat från webbplatser som du har auktoriserat."
-        }
-    },
     "node": {
         "errors": {
             "connection": "Ett fel uppstod vid anslutning till noden\n{address}\n",
@@ -875,7 +864,7 @@
         "showDisclaimer": "Visa ansvarsfriskrivning",
         "hideDisclaimer": "Dölj ansvarsfriskrivning",
         "selectCurrency": "Välj valuta",
-        "turnPhoneHideBalances": "Vänd telefonen och dölj",
+        "turnPhoneHideBalances": "Vänd telefonen och dölj.",
         "titleBalance": "Saldo",
         "titleTheme": "Färgtema",
         "titleCurrency": "Fiatvaluta",
@@ -1688,7 +1677,7 @@
     "addAssetsText": "Lägg till tillgång | Lägg till tillgångar",
     "noir": "Noir",
     "rotatePhoneNotification": {
-        "title": "Vänd din enhet upp och ner för att dölja saldon.",
+        "title": "Vänd din enhet upp och ner för att dölja saldon",
         "info": "För extra integritet, luta din enhet med skärmen nedåt för att omedelbart dölja dina tillgångssaldon. Denna funktion använder telefonens inbyggda sensorer.",
         "enableAcceleration": "Aktivera accelerationsåtkomst i dina inställningar.",
         "gyroscropePhone": "Vår teknik använder telefonens inbyggda gyroskop för att omedelbart dölja ditt saldo när du lutar din enhet."

@@ -162,7 +162,7 @@
         "selectAccount": "Select account to work with",
         "action": {
             "install": "Install extension",
-            "learnMore": "Learn more",
+            "learnMore": "Learn more about wallet connection",
             "connect": "Connect account",
             "refresh": "Refresh"
         },
@@ -463,17 +463,6 @@
         "privacyPolicy": "Privacy Policy",
         "appVersion": "{AppName} version",
         "contactUs": "Contact us"
-    },
-    "aboutNetworkDialog": {
-        "title": "About",
-        "network": {
-            "title": "What is {Sora}?",
-            "description": "{AppName} is built on top of the {Sora} Network, and the {Sora} token (XOR) is used for gas\/fees and liquidity provision on {AppName}. {Sora} Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like {Ethereum}."
-        },
-        "polkadot": {
-            "title": "What is {PolkadotJs}?",
-            "description": "{PolkadotJs} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including {Sora}, {Polkadot} and {Kusama}. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized."
-        }
     },
     "node": {
         "errors": {

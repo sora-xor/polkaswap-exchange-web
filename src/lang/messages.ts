@@ -179,19 +179,6 @@ export default {
     currency: 'Currency',
     searchPlaceholder: 'Search by currency name or symbol',
   },
-  aboutNetworkDialog: {
-    title: 'About',
-    network: {
-      title: 'What is {Sora}?',
-      description:
-        '{AppName} is built on top of the {Sora} Network, and the {Sora} token (XOR) is used for gas/fees and liquidity provision on {AppName}. {Sora} Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like {Ethereum}.',
-    },
-    polkadot: {
-      title: 'What is {PolkadotJs}?',
-      description:
-        '{PolkadotJs} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including {Sora}, {Polkadot} and {Kusama}. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.',
-    },
-  },
   node: {
     errors: {
       connection: 'An error occurred while connecting to the node\n{address}\n',
@@ -752,6 +739,7 @@ export default {
       installExtension:
         '{name} extension is not found. Please install it!\n\nAlready installed extension? Please reload the page',
       reloadPage: 'Reload page',
+      notAvailable: '{name} is not available.',
     },
   },
   referralProgram: {
