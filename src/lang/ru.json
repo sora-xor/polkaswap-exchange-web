@@ -860,7 +860,7 @@
         "showBalances": "Показать балансы",
         "hideBalances": "Скрыть балансы",
         "settings": "Настройки",
-        "switchTheme": "Перейти в {theme} режим",
+        "switchTheme": "{theme} режим",
         "showDisclaimer": "Показать дисклеймер",
         "hideDisclaimer": "Скрыть дисклеймер",
         "selectCurrency": "Выберите валюту",

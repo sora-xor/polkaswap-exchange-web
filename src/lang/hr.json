@@ -860,7 +860,7 @@
         "showBalances": "Prikažite saldove",
         "hideBalances": "Sakrijte saldove",
         "settings": "Postavke",
-        "switchTheme": "Prijeđite na {theme} modus",
+        "switchTheme": "{theme} modus",
         "showDisclaimer": "Prikaži Odricanje od odgovornosti",
         "hideDisclaimer": "Sakrij izjavu o odricanju odgovornosti",
         "selectCurrency": "Odaberite Valutu",

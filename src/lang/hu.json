@@ -860,7 +860,7 @@
         "showBalances": "Egyenlegek megjelenítése",
         "hideBalances": "Egyenlegek elrejtése",
         "settings": "Beállítások",
-        "switchTheme": "Váltás {theme} módra",
+        "switchTheme": "{theme} mód",
         "showDisclaimer": "Felelősségi nyilatkozat megjelenítése",
         "hideDisclaimer": "Felelősségi nyilatkozat elrejtése",
         "selectCurrency": "Válassza a Pénznem lehetőséget",

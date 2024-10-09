@@ -860,7 +860,7 @@
         "showBalances": "Saldi tonen",
         "hideBalances": "Saldi verbergen",
         "settings": "Instellingen",
-        "switchTheme": "Overschakelen naar {theme} -modus",
+        "switchTheme": "{theme}-modus",
         "showDisclaimer": "Disclaimer tonen",
         "hideDisclaimer": "Disclaimer verbergen",
         "selectCurrency": "selecteer valuta",

@@ -8,7 +8,7 @@
     >
       <s-dropdown
         ref="headerMenu"
-        :popper-class="`header-menu ${!isDropdownVisible ? 'slide-in' : ''}`"
+        :popper-class="`header-menu ${!isDropdownVisible ? 'slide-in' : ''} custom-z-index`"
         class="header-menu__button"
         icon="grid-block-align-left-24"
         type="ellipsis"
@@ -346,6 +346,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 $icon-size: 28px;
 $item-padding: 17px;
 
+.header-menu.custom-z-index {
+  z-index: calc($app-loader-layer - 1) !important;
+}
+
 .app-header-menu {
   display: flex;
 }
@@ -404,7 +408,9 @@ $item-padding: 17px;
     display: flex;
     align-items: center;
     p {
+      @include text-ellipsis;
       margin-left: $inner-spacing-small;
+      margin-right: $inner-spacing-tiny;
     }
     i {
       color: var(--s-color-base-content-tertiary);

@@ -860,7 +860,7 @@
         "showBalances": "Zobrazit zůstatky",
         "hideBalances": "Skrýt zůstatky",
         "settings": "Nastavení",
-        "switchTheme": "Přepnout do režimu {theme}",
+        "switchTheme": "{theme} režim",
         "showDisclaimer": "Zobrazit vyloučení odpovědnosti",
         "hideDisclaimer": "Skrýt vyloučení odpovědnosti",
         "selectCurrency": "Vyberte možnost Měna",
