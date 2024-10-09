@@ -69,7 +69,6 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
   position: relative;
   padding: 8px;
   border-radius: 12px;
-  margin-bottom: 16px;
   text-align: center;
 
   &__progress {
@@ -133,7 +132,7 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background-color: rgba(245, 100, 169, 0.2);
+    background-color: rgba(245, 100, 169, 0.12);
     border-radius: 0 0 12px 12px;
 
     p {

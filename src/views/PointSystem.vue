@@ -1,8 +1,11 @@
 <template>
   <div class="points__container">
-    <s-card border-radius="small" shadow="always" size="medium" pressed class="points" :class="{ loading: loading }">
+    <s-card border-radius="small" shadow="always" size="medium" pressed class="points">
       <template #header>
-        <h3 class="points__header">{{ t('points.title') }}</h3>
+        <div class="points__header">
+          <p>{{ t('points.title').toUpperCase() }}</p>
+          <h3>15000</h3>
+        </div>
       </template>
       <div class="points__main s-flex-row">
         <div v-if="!isLoggedIn" class="points__connect s-flex-column">
@@ -15,14 +18,31 @@
             {{ t('connectWalletText') }}
           </s-button>
         </div>
-        <div v-else v-loading="loading" class="points__cards s-flex-row">
-          <point-card
-            v-for="(pointsForCategory, categoryName) in pointsForCards"
-            :key="categoryName"
-            :points-for-category="pointsForCategory"
-            :category-name="categoryName"
-            class="points__card"
-          />
+        <div v-else v-loading="loading" class="points__cards s-flex-column">
+          <div class="points__cards">
+            <point-card
+              v-for="[categoryName, pointsForCategory] in firstRowCards"
+              :key="categoryName"
+              :points-for-category="pointsForCategory"
+              :category-name="categoryName"
+              class="points__card"
+            />
+          </div>
+          <div class="points__card-first-trx">
+            <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL" />
+            <p>first ever transaction</p>
+            <p>{{ this?.pointsForCards?.firstTxAccount.currentProgress }} POINTS</p>
+          </div>
+
+          <div class="points__cards">
+            <point-card
+              v-for="[categoryName, pointsForCategory] in remainingCards"
+              :key="categoryName"
+              :points-for-category="pointsForCategory"
+              :category-name="categoryName"
+              class="points__card"
+            />
+          </div>
         </div>
       </div>
     </s-card>
@@ -91,6 +111,7 @@ export default class PointSystem extends Mixins(
   private bridgeData: BridgeData[] = [];
   private poolDepositCount = 0;
   private poolWithdrawCount = 0;
+  private numberOfCardsInFirstRow = 2;
   totalSwapTxs = 0;
   dummyPoints: { [key: string]: CalculateCategoryPointResult } = {
     liquidityProvision: {
@@ -208,6 +229,14 @@ export default class PointSystem extends Mixins(
 
   get xorSymbol(): string {
     return XOR.symbol;
+  }
+
+  get firstRowCards() {
+    return this.pointsForCards ? Object.entries(this.pointsForCards).slice(0, this.numberOfCardsInFirstRow) : [];
+  }
+
+  get remainingCards() {
+    return this.pointsForCards ? Object.entries(this.pointsForCards).slice(this.numberOfCardsInFirstRow) : [];
   }
 
   get referralsCardStyles() {
@@ -396,31 +425,64 @@ export default class PointSystem extends Mixins(
 }
 </script>
 
+<style lang="scss">
+.container .points .el-loading-mask {
+  border-radius: var(--s-border-radius-mini);
+  margin-left: -$inner-spacing-mini;
+  width: calc(100% + $inner-spacing-medium);
+  height: calc(100% - $inner-spacing-mini);
+  box-shadow: var(--s-shadow-element-pressed);
+}
+</style>
+
 <style lang="scss" scoped>
-// .loading {
-//   background-size: cover !important;
-//   width: 100%;
-//   height: 150px;
-// }
+.s-card {
+  padding: 12px !important;
+}
 .points {
   background-image: url('~@/assets/img/points/header.png');
-  background-size: contain;
   background-repeat: no-repeat;
   background-position: top;
+  background-color: #fbf7f9;
   width: 100%;
+  &__row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
   &__container {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
   }
+  &__first-cards {
+    display: flex;
+    flex-direction: column;
+  }
   &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    margin-top: 15px;
+    text-align: center;
     color: white;
+    p {
+      font-weight: 700;
+      font-size: 16px;
+      opacity: 0.4;
+    }
+    h3 {
+      font-weight: 300;
+      font-size: 36px;
+    }
   }
   &_main {
     display: flex;
-    flex-wrap: wrap; // Ensure elements can wrap
-    justify-content: space-between; // Space out elements evenly
-    align-items: flex-start; // Align items at the start of each row
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
   }
   &__connect {
     height: 350px;
@@ -440,13 +502,34 @@ export default class PointSystem extends Mixins(
   &__cards {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  &__card-first-trx {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #f4f0f1;
     width: 100%;
+    padding: 18px 13px;
+    border-radius: 12px;
+    div {
+      margin-right: 9px;
+    }
+    p:last-of-type {
+      margin-left: auto;
+      color: #f564a9;
+      background-color: rgba(245, 100, 169, 0.12);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 12px;
+    }
   }
   &__card {
     width: $sidebar-max-width;
     height: calc($sidebar-max-width - $inner-spacing-mini);
-    background-color: var(--s-color-utility-surface);
-    box-shadow: var(--s-shadow-element-pressed);
+    background-color: #f4f0f1;
     border-radius: var(--s-border-radius-mini);
     padding: $inner-spacing-medium;
     margin-bottom: $inner-spacing-mini;

@@ -732,7 +732,7 @@ export default {
     button: 'Yes, I understand the risk',
   },
   points: {
-    title: 'Your Points Progress',
+    title: 'Your Points',
     loginText: 'Connect your account to see your points',
     bridgeVolume: 'Bridge volume',
     feesSpent: 'Fees spent',
