@@ -860,7 +860,7 @@
         "showBalances": "Visa Saldon",
         "hideBalances": "Dölj Saldon",
         "settings": "Inställningar",
-        "switchTheme": "Byt till {theme} Läge",
+        "switchTheme": "{theme} läge",
         "showDisclaimer": "Visa ansvarsfriskrivning",
         "hideDisclaimer": "Dölj ansvarsfriskrivning",
         "selectCurrency": "Välj valuta",

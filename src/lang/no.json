@@ -860,7 +860,7 @@
         "showBalances": "Vis saldoer",
         "hideBalances": "Skjul saldoer",
         "settings": "Innstillinger",
-        "switchTheme": "Bytt til {theme} -modus",
+        "switchTheme": "{theme}-modus",
         "showDisclaimer": "Vis ansvarsfraskrivelse",
         "hideDisclaimer": "Skjul ansvarsfraskrivelse",
         "selectCurrency": "Velg Valuta",
