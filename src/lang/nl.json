@@ -1,7 +1,6 @@
 {
     "closeText": "Sluit",
     "backText": "Terug",
-    "createWalletText": "Wallet maken",
     "nameText": "Naam",
     "nextText": "Volgende",
     "importText": "Importeren",
@@ -150,27 +149,20 @@
     },
     "polkadotjs": {
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Er lijken geen accounts te zijn in uw {extension} extensie. Voeg een account toe en probeer het opnieuw.",
         "noAccount": "{extension}-accountfout. Controleer uw account in de {extension}-extensie",
         "noExtension": "Er is geen {extension} -extensie gevonden. Installeer het en laad deze pagina opnieuw",
         "noSigner": "Toegang geweigerd. Ga naar {extension} extensie-instellingen en open \"Websitetoegang beheren\" om toe te staan.",
         "connectionError": "Er is een fout opgetreden tijdens het verbinden van de portemonnee. U kunt opnieuw proberen de portemonnee via {extension} te verbinden"
     },
     "connection": {
-        "text": "Om activa te beheren en transacties op {Sora} te ondertekenen, moet een account zijn gekoppeld. {Sora} accounts kunnen worden gemaakt en verbonden met onze geïntegreerde portefeuilles of browserextensies.",
-        "noAccounts": "Geen account gevonden in uw {extension} browser extensie. Voeg een account toe en probeer het opnieuw.",
         "selectAccount": "Selecteer account om mee te werken",
         "action": {
-            "install": "Extensie installeren",
             "learnMore": "Meer informatie over wallet-verbinding",
-            "connect": "Account aansluiten",
             "refresh": "Vernieuwen"
         },
-        "selectWallet": "Selecteer een portemonnee om mee te werken",
         "wallet": {
             "install": "Installeren",
             "connected": "Verbonden",
-            "notConnected": "Niet verbonden",
             "recommended": "Aanbevolen"
         },
         "internalTitle": "Maak verbinding met {wallet}",
@@ -183,30 +175,22 @@
     },
     "wallet": {
         "WalletAssets": "Assets",
-        "createToken": "@:createTokenText",
         "WalletHistory": "Activiteit"
     },
     "walletSend": {
         "title": "Verzenden",
-        "address": "@:addressText",
-        "amount": "@:amountText",
         "balance": "Saldo",
         "max": "MAX",
-        "fee": "@:networkFeeText",
         "enterAddress": "Adres invoeren",
         "badAddress": "Onjuist adres",
         "enterAmount": "Voer bedrag in",
-        "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Bevestig transactie",
         "errorAddress": "Ongeldig adres. Controleer het en probeer het opnieuw.",
-        "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Verzend tokens tussen accounts op het {Sora}-netwerk",
         "addressWarning": "Tokens worden naar het onderstaande {Sora}-adres gestuurd. Zorg ervoor dat de ontvanger toegang heeft tot de {Sora}-chain om de tokens te gebruiken:",
-        "addressError": "U kunt geen tokens verzenden naar hetzelfde account waarmee u momenteel bent verbonden.",
-        "confirm": "@:confirmText"
+        "addressError": "U kunt geen tokens verzenden naar hetzelfde account waarmee u momenteel bent verbonden."
     },
     "account": {
-        "successCopy": "Wallet-adres werd gekopieerd naar het klembord",
         "copy": "Adres kopiëren",
         "switch": "Van account wisselen",
         "walletAddress": "Portemonnee adres",
@@ -219,11 +203,7 @@
         "clearHistory": "Geschiedenis wissen",
         "filterPlaceholder": "Filteren op adres, symbool, type of blok-ID",
         "empty": "Uw transacties verschijnen hier appear",
-        "emptySearch": "Geen transacties gevonden",
-        "firstText": "Eerst",
-        "lastText": "Laatst",
-        "prevText": "Vorig",
-        "nextText": "Volgende"
+        "emptySearch": "Geen transacties gevonden"
     },
     "assets": {
         "empty": "Er zijn geen assets",
@@ -233,7 +213,6 @@
         "liquidity": "Liquiditeit toevoegen",
         "bridge": "Bridge",
         "copy": "Asset-ID kopiëren",
-        "successCopy": "{symbol} Asset ID is gekopieerd naar het klembord",
         "copied": "Gekopieerd!",
         "balance": {
             "transferable": "Overdraagbaar",
@@ -262,7 +241,6 @@
         "approved": "Goedgekeurd door de gemeenschap",
         "unknown": "Onbekende bron",
         "scam": "OPLICHTERIJ",
-        "next": "Volgende",
         "AddAssetToken": {
             "title": "Valuta",
             "switchBtn": "Alleen geverifieerde activa"
@@ -278,7 +256,6 @@
         "unpinAsset": "Losmaken activa"
     },
     "createToken": {
-        "desc": "Creëer en implementeer aangepaste asset op {Sora}",
         "enterSymbol": "Tokensymbool invoeren",
         "enterName": "Tokennaam invoeren",
         "enterSupply": "Tokenvoorraad invoeren",
@@ -286,10 +263,6 @@
             "title": "Transactie ingediend",
             "desc": "Maak {symbol} token"
         },
-        "tooltipValue": "Om een token te creëren, moet je een vergoeding betalen",
-        "fee": "Netwerkvergoeding",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "feeError": "Mislukt om een vergoeding voor een transactie te krijgen",
         "error": "Mislukt om {symbol} token aan te maken",
         "tokenSymbol": {
             "placeholder": "Token symbool",
@@ -308,7 +281,6 @@
             "desc": "Mogelijkheid om meer tokens te munten."
         },
         "provideContent": "Inhoud bieden",
-        "selectLocalFile": "Selecteer lokaal bestand",
         "CreateSimpleToken": "Token",
         "nft": {
             "source": {
@@ -341,13 +313,9 @@
             "placeholder": "Deelbaar",
             "desc": "Mogelijkheid van NFT om te verdelen in fractionele delen. Liquiditeitsvoorziening werkt alleen met deelbare activa"
         },
-        "title": "@:createTokenText",
-        "action": "@:createTokenText",
-        "confirm": "@:confirmText",
         "titleCommon": "Creëren",
         "confirmTokenTitleCommon": "Token maken",
-        "confirmTokenTitleNFT": "NFT maken",
-        "actionNFT": "@:createTokenTextNFT"
+        "confirmTokenTitleNFT": "NFT maken"
     },
     "transaction": {
         "title": "Transactiegegevens",
@@ -358,7 +326,6 @@
             "failed": "Transactie mislukt",
             "complete": "Compleet"
         },
-        "errorMessage": "Fout",
         "startTime": "Datum",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
@@ -366,7 +333,6 @@
         "total": "Totaal",
         "from": "Van",
         "to": "Naar",
-        "successCopy": "{value} werd naar het klembord gekopieerd",
         "copy": "Kopieer {value}",
         "history": {
             "created": "Transactie voor {amount} {symbol} is aangemaakt.",
@@ -377,7 +343,6 @@
         "viewIn": "Bekijk in {explorer}",
         "referrer": "Verwijzer",
         "referral": "Verwijzing",
-        "adarTxDetailsTitle": "Transactiegegevens",
         "comment": "Opmerking",
         "price": "Prijs",
         "side": "Kant"
@@ -409,7 +374,6 @@
         "Stats": "Stats",
         "Wallet": "Wallet",
         "AddLiquidity": "Liquiditeit toevoegen",
-        "RemoveLiquidity": "Liquiditeit verwijderen",
         "Rewards": "Beloningen",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Zwembaden",
@@ -421,8 +385,7 @@
         "AssetOwner": "Eigenaar van activa",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "{Kensetsu}",
-        "VaultDetails": "Positiedetails",
-        "Burn": "Branden"
+        "VaultDetails": "Positiedetails"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -453,7 +416,6 @@
         "faucet": "Faucet",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "{AppName} memorandum en servicevoorwaarden",
         "privacy": "Privacybeleid",
         "info": "Info & Community"
     },
@@ -623,7 +585,6 @@
             "transactionFee": "Transactievergoeding",
             "total": "Totaal"
         },
-        "successCopy": "Transactiehash werd naar het klembord gekopieerd",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transactie in behandeling...",
@@ -647,7 +608,6 @@
         "searchPlaceholder": "Filter op Asset-ID, naam of Tickersymbool",
         "emptyListMessage": "Geen resultaten",
         "copy": "Kopieer Asset-ID",
-        "successCopy": "{symbol} Asset ID is gekopieerd naar het klembord",
         "assets": {
             "title": "Assets"
         },
@@ -726,16 +686,13 @@
             "SMART": "{smartAlgorithm} liquiditeitsroutering zorgt voor de beste prijs voor elke transactie door alleen de beste prijsopties uit alle beschikbare markten te combineren. Indien beschikbaar, zal Token Bonding Curve ({tbcAlgorithm}) worden gebruikt voor liquiditeit zolang de assetprijs betaalbaarder is dan uit andere bronnen, waarop de {xycAlgorithm} pool wordt gebruikt.",
             "TBC": "{tbcAlgorithm} — alleen kopen van de Token Bonding Curve (Primary Market). Er is een mogelijkheid dat de prijs ongunstig kan worden in vergelijking met de {xycAlgorithm} pool (Secondary Market), maar de waarde die wordt ontvangen van de gevestigde beloningen kan in de loop van de tijd veel gunstiger blijken te zijn.",
             "XYK": "{xycAlgorithm} - alleen kopen van de XYK-pool (secundaire markt). Traditionele XYK-poolswap."
-        },
-        "charts": "Grafieken",
-        "сhartsDescription": "Bekijk grafieken voor tokenprijzen"
+        }
     },
     "resultDialog": {
         "title": "Transactie ingediend",
         "ok": "OK"
     },
     "rewards": {
-        "title": "Beloningen claimen",
         "andText": "en",
         "claiming": {
             "pending": "Aan het claimen...",
@@ -769,13 +726,12 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "{Sora}.farm oogst",
-            "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Vergoedingen verkregen uit liquiditeitsvoorziening",
             "BuyOnBondingCurve": "kopen van de TBC",
             "MarketMakerVolume": "Market Making",
-            "LiquidityProvisionFarming": "Farming"
+            "LiquidityProvisionFarming": "Farming",
+            "NftAirdrop": "NFT Airdrop"
         },
-        "vested": "gevestigde",
         "forText": "voor",
         "totalVested": "Totale beloningen",
         "claimableAmountDoneVesting": "Opeisbare beloningen",
@@ -893,13 +849,11 @@
         "bondedXOR": "XOR Gebonden",
         "referralsNumber": "{number} verwijzingen",
         "startInviting": "Bond XOR om anderen door te verwijzen",
-        "preview": "Nodig nieuwe gebruikers uit en ontvang 10% van hun transactiekosten.<br\/>Om te beginnen, borg elk bedrag van XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Meer informatie<\/a>",
         "deposit": "Storting",
         "balance": "Saldo",
         "insufficientBondedBalance": "Onvoldoende gebonden saldo",
         "action": {
             "empty": "Voer het bedrag van {tokenSymbol}",
-            "startInviting": "Bond {tokenSymbol} om te beginnen met uitnodigen",
             "bondMore": "Bond Meer",
             "bond": "Bond",
             "unbond": "Ontkoppelen",
@@ -909,7 +863,6 @@
         "transactionDetails": "Transactiegegevens",
         "receivedRewards": "Beloningen ontvangen",
         "invitationLink": "Uitnodiging link",
-        "successCopy": "Verwijzingslink wordt gekopieerd naar het klembord",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Ontbonden XOR",
         "confirm": {
@@ -921,8 +874,7 @@
             "freeOfCharge": "Deze actie is gratis",
             "hasReferrerTitle": "Je hebt je verwijzer al ingesteld",
             "hasReferrerDescription": "Helaas kun je er maar één instellen",
-            "ok": "OK",
-            "text": "Bevestigen"
+            "ok": "OK"
         },
         "referrer": {
             "title": "Voeg uw verwijzer toe",
@@ -1105,9 +1057,7 @@
         "addAccount": "Een account toevoegen",
         "dialog": {
             "confirmTitle": "Bevestig met wachtwoord",
-            "confirmButton": "Transactie ondertekenen",
-            "savePasswordText": "Onthoud mijn wachtwoord voor de komende 15 minuten",
-            "extendPasswordText": "Verleng de periode zonder wachtwoord met 15 minuten"
+            "confirmButton": "Transactie ondertekenen"
         },
         "errorMessages": {
             "password": "Wachtwoord komt niet overeen",
@@ -1281,7 +1231,6 @@
     "connectEthereumWalletText": "Sluit de {Ethereum} -portemonnee aan",
     "soraStaking": {
         "dropdownMenu": {
-            "pendingRewards": "Beloningen in behandeling",
             "controllerAccount": "Controller-account"
         },
         "actions": {
@@ -1296,8 +1245,7 @@
             "description": "Zet {XOR} tokens in op {Sora} Network als nominator om transacties te valideren en {VAL} token beloningen te verdienen."
         },
         "newStake": {
-            "title": "Begin met uitzetten",
-            "minStakeWarning": "De minimale inzet om de beloning te ontvangen is {min} {symbol}"
+            "title": "Begin met uitzetten"
         },
         "validators": {
             "save": "Wijzigingen opslaan",
@@ -1364,12 +1312,12 @@
         },
         "validatorsAttentionDialog": {
             "title": "Aandacht",
-            "description": [
-                "Suggesties voor algoritmische validatoren vormen geen financieel overleg of advies. Uitzetten is een activiteit met een hoog risico, en suggesties voor algoritmische validatoren beperken dit risico niet noodzakelijkerwijs.",
-                "Een door het algoritme voorgestelde validator kan nog steeds worden verwijderd. Een door het algoritme voorgestelde validator kan ook zijn parameters (bijvoorbeeld commissietarieven, enz.) op elk moment wijzigen nadat hij is voorgesteld en\/of geselecteerd.",
-                "Om deze of andere redenen kunt u tokens of beloningen verliezen. Zet alleen tokens in en gebruik validatorsuggesties naar eigen goeddunken, nadat u een due diligence-onderzoek heeft uitgevoerd en zorgvuldig de risico's heeft overwogen."
-            ],
-            "confirm": "Ja, ik begrijp het risico"
+            "confirm": "Ja, ik begrijp het risico",
+            "description": {
+                "0": "Suggesties voor algoritmische validatoren vormen geen financieel overleg of advies. Uitzetten is een activiteit met een hoog risico, en suggesties voor algoritmische validatoren beperken dit risico niet noodzakelijkerwijs.",
+                "1": "Een door het algoritme voorgestelde validator kan nog steeds worden verwijderd. Een door het algoritme voorgestelde validator kan ook zijn parameters (bijvoorbeeld commissietarieven, enz.) op elk moment wijzigen nadat hij is voorgesteld en\/of geselecteerd.",
+                "2": "Om deze of andere redenen kunt u tokens of beloningen verliezen. Zet alleen tokens in en gebruik validatorsuggesties naar eigen goeddunken, nadat u een due diligence-onderzoek heeft uitgevoerd en zorgvuldig de risico's heeft overwogen."
+            }
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Er zijn geen lopende beloningen",
@@ -1381,16 +1329,16 @@
         "selectValidatorsMode": {
             "title": "Zet in op validators die door het algoritme worden voorgesteld",
             "description": "{Sora} netwerkalgoritme heeft een lijst van aanbevolen validators geselecteerd op basis van de criteria:",
-            "criteria": [
-                "Meest winstgevend",
-                "Niet overtekend",
-                "Een onchain-identiteit hebben",
-                "Niet gesneden",
-                "Limiet van 2 validators per identiteit"
-            ],
             "confirm": {
                 "suggested": "Inzetten met voorgesteld",
                 "manual": "Ik kies zelf de validators"
+            },
+            "criteria": {
+                "0": "Meest winstgevend",
+                "1": "Niet overtekend",
+                "2": "Een onchain-identiteit hebben",
+                "3": "Niet gesneden",
+                "4": "Limiet van 2 validators per identiteit"
             }
         },
         "claimRewardsDialog": {
@@ -1546,8 +1494,7 @@
             "canceled": "Geannuleerd",
             "expired": "Verlopen",
             "filled": "Gevuld"
-        },
-        "pricePerToken": "Prijs per 1 {token}"
+        }
     },
     "calculatingText": "Berekenen",
     "customisePageText": "Pagina aanpassen",
@@ -1681,5 +1628,8 @@
         "info": "Voor extra privacy, kantel je apparaat met het scherm naar beneden om je activa saldo onmiddellijk te verbergen. Deze functie maakt gebruik van de ingebouwde sensoren van je telefoon.",
         "enableAcceleration": "Schakel versnellingssensor toegang in uw instellingen in.",
         "gyroscropePhone": "Onze technologie gebruikt de ingebouwde gyroscoop van je telefoon om je saldo onmiddellijk te verbergen wanneer je je apparaat kantelt."
-    }
+    },
+    "firstText": "Eerst",
+    "lastText": "Laatst",
+    "prevText": "Vorig"
 }

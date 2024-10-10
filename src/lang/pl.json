@@ -1,7 +1,6 @@
 {
     "closeText": "Zamknij",
     "backText": "Wstecz",
-    "createWalletText": "Utwórz portfel",
     "nameText": "Nazwa",
     "nextText": "Dalej",
     "importText": "Importuj",
@@ -150,27 +149,20 @@
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia {PolkadotJs}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Wygląda na to, że w Twoim rozszerzeniu {extension} nie ma kont. Dodaj konto i spróbuj ponownie.",
         "noAccount": "Błąd konta {extension}. Sprawdź swoje konto w rozszerzeniu {extension}.",
         "noExtension": "Nie znaleziono {extension} . Zainstaluj go i ponownie załaduj tę stronę",
         "noSigner": "Brak dostępu. Przejdź do ustawień {extension} i otwórz „Zarządzaj dostępem do witryny”, aby zezwolić.",
         "connectionError": "Wystąpił błąd podczas łączenia portfela. Możesz spróbować ponownie połączyć portfel przez {extension}"
     },
     "connection": {
-        "text": "Aby zarządzać aktywami i podpisywać transakcje na {Sora}, konto musi być połączone. Konta {Sora} można tworzyć i łączyć za pomocą naszych zintegrowanych portfeli lub rozszerzeń przeglądarki.",
-        "noAccounts": "W Twoim rozszerzeniu przeglądarki {extension} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
         "action": {
-            "install": "Zainstaluj rozszerzenie",
             "learnMore": "Dowiedz się więcej o połączeniu portfela",
-            "connect": "Połącz z kontem",
             "refresh": "Odśwież"
         },
-        "selectWallet": "Wybierz portfel do pracy",
         "wallet": {
             "install": "zainstalować",
             "connected": "Połączony",
-            "notConnected": "Nie połączony",
             "recommended": "Zalecane"
         },
         "internalTitle": "Połącz się z {wallet}",
@@ -183,30 +175,22 @@
     },
     "wallet": {
         "WalletAssets": "Waluty",
-        "createToken": "@:createTokenText",
         "WalletHistory": "Aktywność"
     },
     "walletSend": {
         "title": "Wyślij",
-        "address": "@:addressText",
-        "amount": "@:amountText",
         "balance": "Saldo",
         "max": "MAKS.",
-        "fee": "@:networkFeeText",
         "enterAddress": "Wprowadź adres",
         "badAddress": "Nieprawidłowy adres",
         "enterAmount": "Wprowadź kwotę",
-        "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Potwierdź transakcję",
         "errorAddress": "Nieprawidłowy adres. Sprawdź go i spróbuj ponownie.",
-        "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Wysyłaj tokeny między kontami sieci {Sora}",
         "addressWarning": "Tokeny zostaną wysłane na poniższy adres sieci {Sora}. Upewnij się, czy odbiorca może uzyskać dostęp do sieci {Sora}, aby korzystać z tokenów:",
-        "addressError": "Nie możesz wysyłać tokenów na konto, które jest teraz właśnie podłączone.",
-        "confirm": "@:confirmText"
+        "addressError": "Nie możesz wysyłać tokenów na konto, które jest teraz właśnie podłączone."
     },
     "account": {
-        "successCopy": "Adres portfela został skopiowany do schowka.",
         "copy": "Kopiuj adres",
         "switch": "Przełącz konto",
         "walletAddress": "Adres portfela",
@@ -219,11 +203,7 @@
         "clearHistory": "Wyczyść historię",
         "filterPlaceholder": "Filtruj według adresu, symbolu, typu lub identyfikatora bloku",
         "empty": "Tutaj pojawią się Twoje transakcje.",
-        "emptySearch": "Nie znaleziono transakcji.",
-        "firstText": "Pierwszy",
-        "lastText": "Ostatni",
-        "prevText": "Poprzedni",
-        "nextText": "Dalej"
+        "emptySearch": "Nie znaleziono transakcji."
     },
     "assets": {
         "empty": "Brak walut",
@@ -233,7 +213,6 @@
         "liquidity": "Dodaj płynność",
         "bridge": "Most",
         "copy": "Kopiuj identyfikator waluty",
-        "successCopy": "Identyfikator waluty {symbol} został skopiowany do schowka.",
         "copied": "Skopiowano!",
         "balance": {
             "transferable": "Transferowalne",
@@ -262,7 +241,6 @@
         "approved": "Waluta zatwierdzona przez społeczność",
         "unknown": "Nieznane źródło",
         "scam": "SCAM",
-        "next": "Dalej",
         "AddAssetToken": {
             "title": "Waluty",
             "switchBtn": "Tylko zweryfikowane zasoby"
@@ -278,7 +256,6 @@
         "unpinAsset": "Odepnij zasób"
     },
     "createToken": {
-        "desc": "Twórz i wdrażaj niestandardowe waluty w sieci {Sora}",
         "enterSymbol": "Podaj symbol tokena",
         "enterName": "Podaj nazwę tokena",
         "enterSupply": "Podaj podaż tokenów",
@@ -286,10 +263,6 @@
             "title": "Transakcja została złożona.",
             "desc": "Utwórz token {symbol}"
         },
-        "tooltipValue": "@:networkFeeTooltipText",
-        "fee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "feeError": "Nie udało się pobrać opłaty za transakcję.",
         "error": "Nie udało się utworzyć tokena {symbol}.",
         "tokenSymbol": {
             "placeholder": "Symbol tokena",
@@ -308,7 +281,6 @@
             "desc": "Możliwość wybicia większej liczby tokenów."
         },
         "provideContent": "Podaj treść",
-        "selectLocalFile": "Wybierz plik lokalny",
         "CreateSimpleToken": "Token",
         "nft": {
             "source": {
@@ -341,13 +313,9 @@
             "placeholder": "Podzielny",
             "desc": "Zdolność tokenu NFT do podziału na części ułamkowe. Zapewnienie płynności działa tylko w przypadku aktywów podzielnych."
         },
-        "title": "@:createTokenText",
-        "action": "@:createTokenText",
-        "confirm": "@:confirmText",
         "titleCommon": "Utwórz",
         "confirmTokenTitleCommon": "Utwórz token",
-        "confirmTokenTitleNFT": "Utwórz token NFT",
-        "actionNFT": "@:createTokenTextNFT"
+        "confirmTokenTitleNFT": "Utwórz token NFT"
     },
     "transaction": {
         "title": "Szczegóły transakcji",
@@ -358,7 +326,6 @@
             "failed": "Transakcja nie powiodła się.",
             "complete": "Ukończono"
         },
-        "errorMessage": "Błąd",
         "startTime": "Data",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
@@ -366,7 +333,6 @@
         "total": "Łącznie",
         "from": "Z",
         "to": "Na",
-        "successCopy": "{value} skopiowana do schowka.",
         "copy": "Kopiuj {value}",
         "history": {
             "created": "Transakcja na kwotę {amount} {symbol} została utworzona.",
@@ -377,7 +343,6 @@
         "viewIn": "Pokaż w {explorer}",
         "referrer": "Osoba polecająca",
         "referral": "Kod polecający",
-        "adarTxDetailsTitle": "Szczegóły transakcji",
         "comment": "Komentarz",
         "price": "Cena",
         "side": "Strona"
@@ -409,7 +374,6 @@
         "Stats": "Statystyki",
         "Wallet": "Portfel",
         "AddLiquidity": "Dodawanie płynności",
-        "RemoveLiquidity": "Usuwanie płynności",
         "Rewards": "Wynagrodzenie",
         "Explore\/Tokens": "Tokeny",
         "Explore\/Pools": "Baseny",
@@ -421,8 +385,7 @@
         "AssetOwner": "Właściciel aktywów",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "{Kensetsu}",
-        "VaultDetails": "Szczegóły pozycji",
-        "Burn": "Palić"
+        "VaultDetails": "Szczegóły pozycji"
     },
     "mainMenu": {
         "Swap": "Wymiana",
@@ -453,7 +416,6 @@
         "faucet": "Kranik",
         "github": "GitHub",
         "sorawiki": "Wiki {Sora}",
-        "memorandum": "Memo giełdy {AppName} i Warunki korzystania z usług",
         "privacy": "Polityka prywatności",
         "info": "Informacje i społeczność"
     },
@@ -623,7 +585,6 @@
             "transactionFee": "Opłata transakcyjna",
             "total": "Łącznie"
         },
-        "successCopy": "Skrót transakcji został skopiowany do schowka.",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "Transakcja {network} w toku...",
@@ -647,7 +608,6 @@
         "searchPlaceholder": "Filtruj według identyfikatora waluty, nazwy lub symbolu giełdowego",
         "emptyListMessage": "Brak wyników",
         "copy": "Kopiuj identyfikator waluty",
-        "successCopy": "Identyfikator waluty {symbol} został skopiowany do schowka.",
         "assets": {
             "title": "Waluty"
         },
@@ -726,16 +686,13 @@
             "SMART": "Routing płynności {smartAlgorithm} zapewnia najlepszą cenę dla każdej transakcji, łącząc tylko najlepsze opcje cenowe ze wszystkich dostępnych rynków. Jeśli jest on dostępny, Token Bonding Curve [krzywa wiązania tokenów] ({tbcAlgorithm}) zostanie wówczas wykorzystana do zapewnienia płynności, o ile cena waluty będzie bardziej przystępna niż z innych źródeł, na podstawie których pula {xycAlgorithm} jest użytkowana.",
             "TBC": "{tbcAlgorithm} – zakup jedynie z Token Bonding Curve [krzywa wiązania tokenów] (rynek pierwotny). Istnieje prawdopodobieństwo, że cena może ulec zmianie na niekorzyść w porównaniu do puli {xycAlgorithm} (rynek wtórny), ale wartość otrzymana z nabytego wynagrodzenia może z czasem okazać się o wiele korzystniejsza.",
             "XYK": "{xycAlgorithm} – zakup jedynie z puli XYK (rynek wtórny). Tradycyjna wymiana według modelu XYK."
-        },
-        "charts": "Wykresy",
-        "сhartsDescription": "Zobacz wykresy cen tokenów"
+        }
     },
     "resultDialog": {
         "title": "Transakcja została złożona.",
         "ok": "OK"
     },
     "rewards": {
-        "title": "Odbierz wynagrodzenie",
         "andText": "i",
         "claiming": {
             "pending": "Odbieranie...",
@@ -769,13 +726,12 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "Zbiory {Sora}.farm",
-            "NtfAirdrop": "Zrzut tokenów NFT",
             "LiquidityProvision": "Opłaty uzyskane z tytułu zapewniania płynności",
             "BuyOnBondingCurve": "Zakup z TBC",
             "MarketMakerVolume": "Animacja rynku",
-            "LiquidityProvisionFarming": "Farming"
+            "LiquidityProvisionFarming": "Farming",
+            "NftAirdrop": "Zrzut tokenów NFT"
         },
-        "vested": "przysługujące",
         "forText": "za",
         "totalVested": "Wynagrodzenia łącznie",
         "claimableAmountDoneVesting": "Przysługujące wynagrodzenie dostępne do wypłaty",
@@ -893,13 +849,11 @@
         "bondedXOR": "Rezerwy w XOR",
         "referralsNumber": "{number} zaproszonych",
         "startInviting": "Bond XOR, aby polecić innym",
-        "preview": "Zaproś nowych użytkowników, by otrzymać 10% z ich opłat transakcyjnych.<br\/>Aby rozpocząć, utwórz rezerwy w dowolnej kwocie waluty XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej.<\/a>",
         "deposit": "Deponuj",
         "balance": "Saldo",
         "insufficientBondedBalance": "Niewystarczające rezerwy",
         "action": {
             "empty": "Wprowadź kwotę {tokenSymbol}",
-            "startInviting": "Utwórz rezerwy w walucie {tokenSymbol}, aby rozpocząć zapraszanie.",
             "bondMore": "Więcej rezerw",
             "bond": "Utwórz rezerwy",
             "unbond": "Uwolnij rezerwy",
@@ -909,7 +863,6 @@
         "transactionDetails": "Szczegóły transakcji",
         "receivedRewards": "Otrzymane wynagrodzenie",
         "invitationLink": "Link polecający",
-        "successCopy": "Link polecający został skopiowany do schowka.",
         "bondTitle": "Utwórz rezerwy XOR",
         "unbondTitle": "Uwolnij rezerwy XOR",
         "confirm": {
@@ -921,8 +874,7 @@
             "freeOfCharge": "Ta transakcja nie jest obciążona żadnymi kosztami.",
             "hasReferrerTitle": "Wskazałeś już swoją osobę polecającą.",
             "hasReferrerDescription": "Niestety możesz wskazać tylko jedną osobę polecającą.",
-            "ok": "OK",
-            "text": "Potwierdź"
+            "ok": "OK"
         },
         "referrer": {
             "title": "Dodaj swoją osobę polecającą",
@@ -1105,9 +1057,7 @@
         "addAccount": "Dodaj konto",
         "dialog": {
             "confirmTitle": "Potwierdź hasłem",
-            "confirmButton": "Podpisz transakcję",
-            "savePasswordText": "Zapamiętaj moje hasło przez kolejne 15 minut",
-            "extendPasswordText": "Wydłuż okres bez hasła o 15 minut"
+            "confirmButton": "Podpisz transakcję"
         },
         "errorMessages": {
             "password": "Hasło Nie pasuje",
@@ -1281,7 +1231,6 @@
     "connectEthereumWalletText": "Podłącz portfel {Ethereum}",
     "soraStaking": {
         "dropdownMenu": {
-            "pendingRewards": "Oczekujące nagrody",
             "controllerAccount": "Konto kontrolera"
         },
         "actions": {
@@ -1296,8 +1245,7 @@
             "description": "Stakuj tokeny {XOR} w sieci {Sora} jako mianownik, aby zatwierdzać transakcje i zdobywać nagrody w postaci tokenów {VAL}."
         },
         "newStake": {
-            "title": "Zacznij obstawiać",
-            "minStakeWarning": "Minimalna stawka umożliwiająca otrzymanie nagrody to {min} {symbol}"
+            "title": "Zacznij obstawiać"
         },
         "validators": {
             "save": "Zapisz zmiany",
@@ -1364,12 +1312,12 @@
         },
         "validatorsAttentionDialog": {
             "title": "Uwaga",
-            "description": [
-                "Sugestie walidatora algorytmicznego nie stanowią konsultacji ani porady finansowej. Stakowanie jest działalnością obarczoną wysokim ryzykiem i sugestie walidatorów algorytmicznych niekoniecznie ograniczają to ryzyko.",
-                "Walidator sugerowany przez algorytm nadal może zostać obciążony. Walidator sugerowany przez algorytm może także zmieniać ich parametry (np. stawki prowizji itp.) w dowolnym momencie po tym, jak zostanie zasugerowany i\/lub wybrany.",
-                "Możesz stracić tokeny lub nagrody z tych lub innych powodów. Stawiaj tylko tokeny i korzystaj z sugestii walidatora według własnego uznania, po przeprowadzeniu należytej staranności i dokładnym rozważeniu związanego z tym ryzyka."
-            ],
-            "confirm": "Tak, rozumiem ryzyko"
+            "confirm": "Tak, rozumiem ryzyko",
+            "description": {
+                "0": "Sugestie walidatora algorytmicznego nie stanowią konsultacji ani porady finansowej. Stakowanie jest działalnością obarczoną wysokim ryzykiem i sugestie walidatorów algorytmicznych niekoniecznie ograniczają to ryzyko.",
+                "1": "Walidator sugerowany przez algorytm nadal może zostać obciążony. Walidator sugerowany przez algorytm może także zmieniać ich parametry (np. stawki prowizji itp.) w dowolnym momencie po tym, jak zostanie zasugerowany i\/lub wybrany.",
+                "2": "Możesz stracić tokeny lub nagrody z tych lub innych powodów. Stawiaj tylko tokeny i korzystaj z sugestii walidatora według własnego uznania, po przeprowadzeniu należytej staranności i dokładnym rozważeniu związanego z tym ryzyka."
+            }
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Brak oczekujących nagród",
@@ -1381,16 +1329,16 @@
         "selectValidatorsMode": {
             "title": "Stawkę z walidatorami sugerowanymi przez algorytm",
             "description": "Algorytm sieci {Sora} wybrał listę rekomendowanych walidatorów na podstawie kryteriów:",
-            "criteria": [
-                "Najbardziej dochodowy",
-                "Nie ma nadsubskrypcji",
-                "Posiadanie tożsamości onchain",
-                "Nie przecięty",
-                "Limit 2 walidatorów na tożsamość"
-            ],
             "confirm": {
                 "suggested": "Stawka z sugerowanymi",
                 "manual": "Sam wybiorę walidatorów"
+            },
+            "criteria": {
+                "0": "Najbardziej dochodowy",
+                "1": "Nie ma nadsubskrypcji",
+                "2": "Posiadanie tożsamości onchain",
+                "3": "Nie przecięty",
+                "4": "Limit 2 walidatorów na tożsamość"
             }
         },
         "claimRewardsDialog": {
@@ -1546,8 +1494,7 @@
             "canceled": "Odwołany",
             "expired": "Wygasły",
             "filled": "Wypełniony"
-        },
-        "pricePerToken": "Cena za 1 {token}"
+        }
     },
     "calculatingText": "Obliczanie",
     "customisePageText": "Dostosuj stronę",
@@ -1681,5 +1628,8 @@
         "info": "Dla dodatkowej prywatności obróć urządzenie ekranem w dół, aby natychmiast ukryć swoje salda aktywów. Ta funkcja wykorzystuje wbudowane czujniki telefonu.",
         "enableAcceleration": "Włącz dostęp do akceleracji w ustawieniach.",
         "gyroscropePhone": "Nasza technologia wykorzystuje wbudowany żyroskop telefonu, aby natychmiast ukryć saldo po przechyleniu urządzenia."
-    }
+    },
+    "firstText": "Pierwszy",
+    "lastText": "Ostatni",
+    "prevText": "Poprzedni"
 }
