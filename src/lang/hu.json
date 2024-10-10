@@ -1,7 +1,6 @@
 {
     "closeText": "Bezárás",
     "backText": "Vissza",
-    "createWalletText": "Tárca létrehozása",
     "nameText": "Név",
     "nextText": "Következő",
     "importText": "Importálás",
@@ -150,27 +149,20 @@
     },
     "polkadotjs": {
         "noExtensions": "Nem találtunk {PolkadotJs} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Úgy tűnik, hogy a {extension} bővítményben nincsenek fiókok. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "noAccount": "{extension} fiókhiba. Kérjük, ellenőrizd fiókodat a {extension} bővítményben.",
         "noExtension": "Nem található {extension} bővítmény. Kérjük, telepítse, és töltse be újra ezt az oldalt",
         "noSigner": "Hozzáférés megtagadva. Nyissa meg a {extension} bővítmény beállításait, és nyissa meg a „Webhely-hozzáférés kezelése” lehetőséget az engedélyezéshez.",
         "connectionError": "Hiba történt a pénztárca csatlakoztatása közben. Megpróbálhatja újra csatlakoztatni a pénztárcát a {extension} segítségével"
     },
     "connection": {
-        "text": "Az eszközök kezeléséhez és a tranzakciók aláírásához a {Sora} webhelyen fiókot kell csatlakoztatni. {Sora} fiókok hozhatók létre és kapcsolhatók össze integrált pénztárcánkkal vagy böngészőbővítményeinkkel.",
-        "noAccounts": "Nincs fiók a {extension} böngészőbővítményben. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
         "action": {
-            "install": "Bővítmény telepítése",
             "learnMore": "További információ a pénztárca csatlakoztatásáról",
-            "connect": "Fiók csatlakoztatása",
             "refresh": "Frissítés"
         },
-        "selectWallet": "Válasszon egy pénztárcát, amellyel dolgozni szeretne",
         "wallet": {
             "install": "Telepítés",
             "connected": "csatlakoztatva",
-            "notConnected": "Nem kapcsolódik",
             "recommended": "Ajánlott"
         },
         "internalTitle": "Csatlakozás a következővel {wallet}",
@@ -183,30 +175,22 @@
     },
     "wallet": {
         "WalletAssets": "Eszközök",
-        "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitás"
     },
     "walletSend": {
         "title": "Küldés",
-        "address": "@:addressText",
-        "amount": "@:amountText",
         "balance": "Egyenleg",
         "max": "MAX",
-        "fee": "@:networkFeeText",
         "enterAddress": "Cím megadása",
         "badAddress": "Helytelen cím",
         "enterAmount": "Összeg megadása",
-        "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Tranzakció megerősítése",
         "errorAddress": "Érvénytelen cím. Kérjük, ellenőrizd és próbáld újra.",
-        "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Tokenek küldése a {Sora} hálózat fiókjai között",
         "addressWarning": "A tokeneket az alábbi {Sora} címre küldjük. Győződj meg arról, hogy a címzett hozzáférhet a {Sora} lánchoz a tokenek használatához:",
-        "addressError": "Nem küldhetsz tokent ugyanahhoz a fiókhoz, amelyhez jelenleg csatlakozol.",
-        "confirm": "@:confirmText"
+        "addressError": "Nem küldhetsz tokent ugyanahhoz a fiókhoz, amelyhez jelenleg csatlakozol."
     },
     "account": {
-        "successCopy": "A tárca címe a vágólapra másolva",
         "copy": "Cím másolása",
         "switch": "Fiókváltás",
         "walletAddress": "Pénztárca címe",
@@ -219,11 +203,7 @@
         "clearHistory": "Előzmények törlése",
         "filterPlaceholder": "Szűrés cím, szimbólum, típus vagy blokkazonosító szerint",
         "empty": "A tranzakciók itt jelennek meg.",
-        "emptySearch": "Nem található tranzakció",
-        "firstText": "Első",
-        "lastText": "Utolsó",
-        "prevText": "Előző",
-        "nextText": "Következő"
+        "emptySearch": "Nem található tranzakció"
     },
     "assets": {
         "empty": "Nincsenek eszközök",
@@ -233,7 +213,6 @@
         "liquidity": "Poolhoz hozzáadás",
         "bridge": "Híd",
         "copy": "Eszközazonosító másolása",
-        "successCopy": "{symbol} Az eszköz azonosítója a vágólapra másolva",
         "copied": "Másolva!",
         "balance": {
             "transferable": "Átruházható",
@@ -262,7 +241,6 @@
         "approved": "A közösség által jóváhagyott eszköz",
         "unknown": "Ismeretlen forrás",
         "scam": "ÁTVERÉS",
-        "next": "Következő",
         "AddAssetToken": {
             "title": "Valuták",
             "switchBtn": "Csak ellenőrzött eszközök"
@@ -278,7 +256,6 @@
         "unpinAsset": "Rögzítés feloldása"
     },
     "createToken": {
-        "desc": "Egyéni eszköz létrehozása és telepítése a {Sora} hálózaton",
         "enterSymbol": "Írd be a token szimbólumot",
         "enterName": "Írd be a token nevét",
         "enterSupply": "Add meg a token kínálatot",
@@ -286,10 +263,6 @@
             "title": "Tranzakció elküldve",
             "desc": "{symbol} token létrehozása"
         },
-        "tooltipValue": "@:networkFeeTooltipText",
-        "fee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "feeError": "Nem sikerült díjat kérni a tranzakcióért",
         "error": "Nem sikerült létrehozni a {symbol} tokent",
         "tokenSymbol": {
             "placeholder": "Token szimbólum",
@@ -308,7 +281,6 @@
             "desc": "Képesség több token generálására."
         },
         "provideContent": "Tartalom megadása",
-        "selectLocalFile": "Helyi fájl kiválasztása",
         "CreateSimpleToken": "Token",
         "nft": {
             "source": {
@@ -341,13 +313,9 @@
             "placeholder": "Osztható",
             "desc": "Az NFTképessége, hogy frakcionált részekre oszlik. A likviditási tartalékképzés csak osztható eszközökkel működik."
         },
-        "title": "@:createTokenText",
-        "action": "@:createTokenText",
-        "confirm": "@:confirmText",
         "titleCommon": "Létrehozás",
         "confirmTokenTitleCommon": "Token létrehozása",
-        "confirmTokenTitleNFT": "NFT létrehozása",
-        "actionNFT": "@:createTokenTextNFT"
+        "confirmTokenTitleNFT": "NFT létrehozása"
     },
     "transaction": {
         "title": "Tranzakció részletei",
@@ -358,7 +326,6 @@
             "failed": "Sikertelen tranzakció",
             "complete": "Teljesítve"
         },
-        "errorMessage": "HIba",
         "startTime": "Dátum",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
@@ -366,7 +333,6 @@
         "total": "Összesen",
         "from": "-tól",
         "to": "Számára",
-        "successCopy": "{value} a vágólapra másolva",
         "copy": "Másolás {value}",
         "history": {
             "created": "{amount} {symbol} tranzakciót létrehoztuk.",
@@ -377,7 +343,6 @@
         "viewIn": "Megtekintés {explorer}-ben",
         "referrer": "Ajánló",
         "referral": "Ajánlás",
-        "adarTxDetailsTitle": "Tranzakció részlete",
         "comment": "Megjegyzés",
         "price": "Ár",
         "side": "Oldal"
@@ -409,7 +374,6 @@
         "Stats": "Statisztikák",
         "Wallet": "Tárca",
         "AddLiquidity": "Poolhoz hozzáadás",
-        "RemoveLiquidity": "Poolból eltávolítás",
         "Rewards": "Jutalmak",
         "Explore\/Tokens": "Tokenek",
         "Explore\/Pools": "Totó",
@@ -421,8 +385,7 @@
         "AssetOwner": "Eszköz tulajdonosa",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "{Kensetsu}",
-        "VaultDetails": "Pozíció részletei",
-        "Burn": "Éget"
+        "VaultDetails": "Pozíció részletei"
     },
     "mainMenu": {
         "Swap": "Váltás",
@@ -453,7 +416,6 @@
         "faucet": "Faucet",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "{AppName} Memorandum és Általános Szerződési Feltételek",
         "privacy": "Adatvédelmi irányelvek",
         "info": "Információ és közösség"
     },
@@ -623,7 +585,6 @@
             "transactionFee": "Tranzakciós díj",
             "total": "Összesen"
         },
-        "successCopy": "A tranzakciós hash a vágólapra másolva",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} tranzakció folyamatban...",
@@ -647,7 +608,6 @@
         "searchPlaceholder": "Szűrés eszközazonosító, név vagy szimbólum alapján",
         "emptyListMessage": "Nincs eredmény",
         "copy": "Eszközazonosító másolása",
-        "successCopy": "{symbol} eszköz azonosítója a vágólapra másolva",
         "assets": {
             "title": "Eszközök"
         },
@@ -726,16 +686,13 @@
             "SMART": "{smartAlgorithm} likviditás kezelés biztosítja a legjobb árat bármely tranzakciónál, kombinálva a legjobb árakat az elérhető összes piacról. Amikor elérhető, Token Bonding Curve ({tbcAlgorithm}) likviditását használja amíg az eszköz ára kedvezőbb más forrásokénál, amelyek az {xycAlgorithm} pool-t használják.",
             "TBC": "{tbcAlgorithm}— vásárlás csak a Token Bonding Curve -ből (Elsődleges Piac). Lehetséges, hogy az ár annyira nem kedvező a {xycAlgorithm} pool-hoz (Másodlagos Piac) képest, de az ezáltal megszerezhető jutalmak idővel kedvezőbbé tehetik.",
             "XYK": "{xycAlgorithm} — vásárlás csak az XYK Pool-ból (Másodlagos Piac). Tradícionális XYK pool váltás."
-        },
-        "charts": "Diagramok",
-        "сhartsDescription": "Tekintse meg a token árak diagramjait"
+        }
     },
     "resultDialog": {
         "title": "Tranzakció elküldve",
         "ok": "Rendben"
     },
     "rewards": {
-        "title": "Jutalmak igénylése",
         "andText": "és",
         "claiming": {
             "pending": "Igénylés...",
@@ -769,13 +726,12 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "{Sora}.farm begyűjtés",
-            "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "A likviditás biztosításából származó díjak",
             "BuyOnBondingCurve": "vásárlás a TBC-ből",
             "MarketMakerVolume": "Piacteremtés",
-            "LiquidityProvisionFarming": "Farmolás"
+            "LiquidityProvisionFarming": "Farmolás",
+            "NftAirdrop": "NFT Airdrop"
         },
-        "vested": "szerzett",
         "forText": "számára",
         "totalVested": "Összes jutalom",
         "claimableAmountDoneVesting": "Igényelhető jutalmak",
@@ -893,13 +849,11 @@
         "bondedXOR": "XOR lekötve",
         "referralsNumber": "{number} ajánlások",
         "startInviting": "Kössle XOR-t, és hívj meg másokat",
-        "preview": "Hívj meg új felhasználókat, és 10%-ot kapsz a tranzakciós díjaikból.<br\/> Kezdetben köss le bármilyen összegű XOR-t <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Tudjon meg többet<\/a>",
         "deposit": "Befizetés",
         "balance": "Egyenleg",
         "insufficientBondedBalance": "Elégtelen lekötött egyenleg",
         "action": {
             "empty": "Adja meg a {tokenSymbol} mennyiségét",
-            "startInviting": " {tokenSymbol} lekötés a meghíváshoz",
             "bondMore": "Több lekötése",
             "bond": "Lekötés",
             "unbond": "Feloldás",
@@ -909,7 +863,6 @@
         "transactionDetails": "Tranzakció részletei",
         "receivedRewards": "Kapott jutalmak",
         "invitationLink": "Meghívó link",
-        "successCopy": "Az ajánlói hivatkozás a vágólapra másolva",
         "bondTitle": "XOR lekötése",
         "unbondTitle": "XOR feloldása",
         "confirm": {
@@ -921,8 +874,7 @@
             "freeOfCharge": "Ez az intézkedés ingyenes",
             "hasReferrerTitle": "Már beállítottad az ajánlót",
             "hasReferrerDescription": "Sajnos csak egyet lehet beállítani",
-            "ok": "Rendben",
-            "text": "Megerősítés"
+            "ok": "Rendben"
         },
         "referrer": {
             "title": "Az ajánló hozzáadása",
@@ -1105,9 +1057,7 @@
         "addAccount": "Fiók hozzáadása",
         "dialog": {
             "confirmTitle": "Erősítse meg jelszóval",
-            "confirmButton": "Tranzakció aláírása",
-            "savePasswordText": "Emlékezzen a jelszavamra a következő 15 percben",
-            "extendPasswordText": "A jelszó nélküli időszak meghosszabbítása 15 perccel"
+            "confirmButton": "Tranzakció aláírása"
         },
         "errorMessages": {
             "password": "A jelszó nem egyezik",
@@ -1281,7 +1231,6 @@
     "connectEthereumWalletText": "Csatlakoztassa az {Ethereum} pénztárcát",
     "soraStaking": {
         "dropdownMenu": {
-            "pendingRewards": "Függőben lévő jutalmak",
             "controllerAccount": "Ellenőrző fiók"
         },
         "actions": {
@@ -1296,8 +1245,7 @@
             "description": "Tegyen {XOR} tokeneket a {Sora} hálózaton jelölőként, hogy érvényesítse a tranzakciókat és {VAL} tokenjutalmakat szerezzen."
         },
         "newStake": {
-            "title": "Kezdje el a tétet",
-            "minStakeWarning": "A minimális tét a jutalom elnyeréséhez {min} {symbol}"
+            "title": "Kezdje el a tétet"
         },
         "validators": {
             "save": "Változtatások mentése",
@@ -1364,12 +1312,12 @@
         },
         "validatorsAttentionDialog": {
             "title": "Figyelem",
-            "description": [
-                "Az algoritmikus érvényesítő javaslatai nem minősülnek pénzügyi tanácsadásnak vagy tanácsadásnak. A kockáztatás magas kockázatú tevékenység, és az algoritmikus érvényesítő javaslatok nem feltétlenül csökkentik ezt a kockázatot.",
-                "Az algoritmus által javasolt érvényesítőt még mindig le lehet vágni. Az algoritmus által javasolt érvényesítő a javaslatot és\/vagy kiválasztást követően bármikor megváltoztathatja a paramétereiket (pl. jutalékdíjakat stb.).",
-                "Ilyen vagy más okok miatt elveszíthet tokeneket vagy jutalmakat. Csak saját belátása szerint tét jelöljön meg tokeneket és használja az érvényesítő javaslatait, miután elvégezte a kellő körültekintést és gondosan mérlegelte az ezzel járó kockázatokat."
-            ],
-            "confirm": "Igen, megértem a kockázatot"
+            "confirm": "Igen, megértem a kockázatot",
+            "description": {
+                "0": "Az algoritmikus érvényesítő javaslatai nem minősülnek pénzügyi tanácsadásnak vagy tanácsadásnak. A kockáztatás magas kockázatú tevékenység, és az algoritmikus érvényesítő javaslatok nem feltétlenül csökkentik ezt a kockázatot.",
+                "1": "Az algoritmus által javasolt érvényesítőt még mindig le lehet vágni. Az algoritmus által javasolt érvényesítő a javaslatot és\/vagy kiválasztást követően bármikor megváltoztathatja a paramétereiket (pl. jutalékdíjakat stb.).",
+                "2": "Ilyen vagy más okok miatt elveszíthet tokeneket vagy jutalmakat. Csak saját belátása szerint tét jelöljön meg tokeneket és használja az érvényesítő javaslatait, miután elvégezte a kellő körültekintést és gondosan mérlegelte az ezzel járó kockázatokat."
+            }
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Nincsenek függőben lévő jutalmak",
@@ -1381,16 +1329,16 @@
         "selectValidatorsMode": {
             "title": "Tét az algoritmus által javasolt érvényesítőkkel",
             "description": "A {Sora} hálózati algoritmus a kritériumok alapján választotta ki az ajánlott validátorok listáját:",
-            "criteria": [
-                "Legjövedelmezőbb",
-                "Nincs túljelentkezés",
-                "Onchain identitás birtokában",
-                "Nem vágott",
-                "Identitásonként legfeljebb 2 érvényesítő használható"
-            ],
             "confirm": {
                 "suggested": "Tét javasolt",
                 "manual": "Az érvényesítőket magam választom ki"
+            },
+            "criteria": {
+                "0": "Legjövedelmezőbb",
+                "1": "Nincs túljelentkezés",
+                "2": "Onchain identitás birtokában",
+                "3": "Nem vágott",
+                "4": "Identitásonként legfeljebb 2 érvényesítő használható"
             }
         },
         "claimRewardsDialog": {
@@ -1546,8 +1494,7 @@
             "canceled": "Törölve",
             "expired": "Lejárt",
             "filled": "Megtöltött"
-        },
-        "pricePerToken": "1 {token} ár"
+        }
     },
     "calculatingText": "Számítás",
     "customisePageText": "Az oldal testreszabása",
@@ -1681,5 +1628,8 @@
         "info": "A nagyobb adatvédelem érdekében fordítsa készülékét képernyővel lefelé, hogy azonnal elrejtse eszköz egyenlegeit. Ez a funkció a telefon beépített érzékelőit használja.",
         "enableAcceleration": "Engedélyezze a gyorsulás hozzáférést a beállításokban.",
         "gyroscropePhone": "Technológiánk a telefon beépített giroszkópját használja a mérleg azonnali elrejtésére, amikor megdönti az eszközt."
-    }
+    },
+    "firstText": "Első",
+    "lastText": "Utolsó",
+    "prevText": "Előző"
 }
