@@ -97,7 +97,7 @@
           :base-asset="asset"
           :is-available="hasFiat"
         />
-        <s-row :gutter="20">
+        <s-row class="regular-token-stats-info" :gutter="20">
           <s-col :xs="6" :sm="6" :md="6" :lg="4">
             <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
               <p class="p3 asset-stats-card__title">
@@ -316,11 +316,18 @@ export default class AssetOwnerDetails extends Mixins(
 }
 </script>
 
+<style lang="scss">
+// TODO: remove when stats info start being fetched
+.regular-token-stats-info {
+  visibility: hidden;
+}
+</style>
+
 <style lang="scss" scoped>
 .asset-owner-details {
   &-container {
     display: flex;
-    gap: 16px;
+    gap: $basic-spacing;
 
     &.empty {
       height: calc(100dvh - #{$header-height} - #{$footer-height});

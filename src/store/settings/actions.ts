@@ -1,4 +1,4 @@
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
 import axiosInstance from '@/api';
@@ -6,6 +6,7 @@ import { Language } from '@/consts';
 import { getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { settingsActionContext } from '@/store/settings';
 import { updateDocumentTitle, updateFpNumberLocale } from '@/utils';
+import { IpfsStorage } from '@/utils/ipfsStorage';
 
 const actions = defineActions({
   async setLanguage(context, lang: Language): Promise<void> {
@@ -36,6 +37,20 @@ const actions = defineActions({
       commit.setAdsArray(data);
     } catch {
       commit.setAdsArray([]);
+    }
+  },
+  async createNftStorageInstance(context) {
+    const { commit, rootState } = settingsActionContext(context);
+
+    if (rootState.wallet.settings.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
+      try {
+        const { marketplaceDid, ucan } = await IpfsStorage.getUcanTokens();
+        commit.setNftStorage({ marketplaceDid, ucan });
+      } catch {
+        console.error('Error while getting API keys for NFT marketplace.');
+      }
+    } else {
+      commit.setNftStorage({ token: rootState.wallet.settings.apiKeys.nftStorage });
     }
   },
 });

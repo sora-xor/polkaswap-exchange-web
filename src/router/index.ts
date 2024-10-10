@@ -295,6 +295,22 @@ const routes: Array<RouteConfig> = [
           requiresAuth: true,
         },
       },
+      {
+        path: '/dashboard/owner/sbt/:asset',
+        name: DashboardPageNames.AssetOwnerDetailsSBT,
+        component: dashboardLazyView(DashboardPageNames.AssetOwnerDetailsSBT),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: '/dashboard/owner/create',
+        name: DashboardPageNames.AssetOwnerCreate,
+        component: dashboardLazyView(DashboardPageNames.AssetOwnerCreate),
+        meta: {
+          requiresAuth: true,
+        },
+      },
     ],
   },
   {
