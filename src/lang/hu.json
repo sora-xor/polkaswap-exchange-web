@@ -470,16 +470,9 @@
     "exchange": {
         "Swap": "Váltás",
         "Pool": "Pool",
-        "balance": "Egyenleg",
-        "price": "Ár",
-        "transactionSubmitted": "Tranzakció elküldve",
-        "transactionMessage": "{firstToken} és {secondToken}",
-        "ok": "Rendben",
-        "confirm": "Megerősítés",
         "lossWarning": "{value}%-ot fog veszíteni a kereskedésében. Likviditásellátási problémát észleltünk. Ez jelentős veszteségekhez vezethet a token-csere során. Kérjük, gondoskodjon megfelelő likviditásról a kívánt swappárhoz."
     },
     "swap": {
-        "estimated": "becsült",
         "slippageTolerance": "Csúszási tolerancia",
         "minReceived": "Minimálisan kapott",
         "maxSold": "Maximálisan eladott",
@@ -493,7 +486,6 @@
         "confirmSwap": "Váltás megerősítése",
         "swapOutputMessage": "Becsült eredmény. Legalább {transactionValue} kapsz, vagy a tranzakció visszafordul.",
         "rewardsForSwap": "PSWAP Stratégiai Jutalmak",
-        "swapInputMessage": "Becsült eredmény. Maximum {transactionValue} adsz el, vagy a tranzakció visszafordul.",
         "route": "Útvonal",
         "errorFetching": "Hiba történt az adatok lekérésekor"
     },
@@ -512,21 +504,12 @@
     "bridge": {
         "title": "Híd",
         "info": "Tokenek konvertálása a {Sora} és {Ethereum} hálózatok között.",
-        "balance": "Egyenleg",
         "next": "Következő",
         "connectWallets": "Csatlakoztasd a tárcákat a tranzakciós előzmények megtekintéséhez.",
         "soraNetworkFee": "{Sora} hálózati díj",
-        "ethereumNetworkFee": "{Ethereum} Hálózati díj",
-        "total": "Összesen",
-        "viewHistory": "Tranzakciók előzményeinek megtekintése",
-        "transactionSubmitted": "Tranzakció elküldve",
-        "transactionMessage": "{assetA} - {assetB}",
         "notRegisteredAsset": "Az eszköz {assetSymbol} nincs regisztrálva",
         "selectNetwork": "Hálózat kiválasztása",
         "networkInfo": "{Sora} hálózati híd a következőkkel:",
-        "copy": "Hálózati cím másolása",
-        "soraAddress": "{Sora} cím",
-        "ethereumAddress": "{Ethereum} cím",
         "limitMessage": "Jelenleg létezik egy {type} {amount} {symbol} áthidalás, amely biztosítja a {Sora} hálózat stabilitását és biztonságát. Köszönjük megértését.",
         "externalTransferFee": "{network} {XCM} díj",
         "externalTransferFeeTooltip": "Ha hídtranzakciót küld a {network} hálózatra, az átutalt összegből egy kisebb díjat számítanak fel",
@@ -536,57 +519,26 @@
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",
         "search": {
-            "title": "Tokenek",
             "placeholder": "Szűrés eszközazonosító, név vagy szimbólum alapján",
             "networkLabelSora": "{Sora} hálózati tokenek",
-            "networkLabelEthereum": "{network} hálózati tükrözési tokenek",
-            "emptyListMessage": "Nincs eredmény"
-        },
-        "customAsset": {
-            "title": "Egyéni",
-            "customInfo": "Fontos! Az egyéni tokeneket a {Sora} mezőben kell regisztrálni.",
-            "registerToken": "Token regisztrálása",
-            "addressPlaceholder": "Eszköz azonosítója",
-            "symbolPlaceholder": "Token szimbólum",
-            "empty": "Nem található token",
-            "alreadyAttached": "Tokent már csatolták"
+            "networkLabelEthereum": "{network} hálózati tükrözési tokenek"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} - {to}",
         "for": " számára ",
-        "steps": {
-            "step": "{step}. a 2 -ből",
-            "step1": "1.",
-            "step2": "2."
-        },
-        "status": {
-            "pending": "{step} tranzakciók folyamatban...",
-            "failed": "{step} tranzakciók sikertelenek. @:(retryText).",
-            "confirm": "2 tranzakcióból a 2. megerősítése...",
-            "complete": "Teljesítve",
-            "convertionComplete": "A konverzió befejeződött"
-        },
         "statuses": {
-            "waiting": "Várakozás",
-            "ready": "Kész",
             "pending": "Függőben",
-            "frozen": "Fagyasztva",
             "failed": "Sikertelen tranzakció",
             "done": "Teljesítve",
             "waitingForConfirmation": "Megerősítésre vár..."
         },
-        "networkTitle": "{network} tranzakció",
         "transactionHash": "Tranzakciós hash",
         "networkInfo": {
             "status": "Állapot",
             "date": "Dátum",
             "amount": "Összeg",
-            "transactionFee": "Tranzakciós díj",
-            "total": "Összesen"
+            "transactionFee": "Tranzakciós díj"
         },
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} tranzakció folyamatban...",
         "newTransaction": "Új tranzakció létrehozása",
         "title": "Híd tranzakció",
@@ -607,7 +559,6 @@
         "title": "Token kiválasztása",
         "searchPlaceholder": "Szűrés eszközazonosító, név vagy szimbólum alapján",
         "emptyListMessage": "Nincs eredmény",
-        "copy": "Eszközazonosító másolása",
         "assets": {
             "title": "Eszközök"
         },
@@ -620,29 +571,18 @@
         }
     },
     "createPair": {
-        "title": "Pár létrehozása",
         "deposit": "Befizetés",
-        "balance": "Egyenleg",
         "pricePool": "Árak és díjak",
         "shareOfPool": "A pool részesedése",
         "firstSecondPoolTokens": "{first}-{second} Pool",
-        "connect": "Pénztárca csatlakoztatása",
         "supply": "Kínálat",
         "yourPosition": "Pozíciód",
-        "yourPositionEstimated": "Pozíciód (becsült)",
-        "youWillReceive": "Kapni fogsz",
-        "remove": "eltávolítás",
-        "add": "HOZZÁAD",
-        "ok": "Rendben",
-        "alreadyCreated": "Token pár már létre lett hozva",
         "firstLiquidityProvider": "Te vagy az első likviditás szolgáltató",
         "firstLiquidityProviderInfo": "A hozzáadott tokenek aránya határozza meg a pool árát.<br\/>Ha elégedett vagy az árral, kattints a felülvizsgálathoz a supply gombra."
     },
     "confirmSupply": {
         "title": "A pool részesedésed",
-        "outputDescription": "Becsült eredmény. Ha az ár a {slippageTolerance}%-nál nagyobb mértékben változik, a tranzakció visszafordul.",
-        "poolTokensBurned": "{first}-{second} Elégetett pool tokenek",
-        "price": "Ár"
+        "outputDescription": "Becsült eredmény. Ha az ár a {slippageTolerance}%-nál nagyobb mértékben változik, a tranzakció visszafordul."
     },
     "addLiquidity": {
         "title": "Hozzáadás"
@@ -650,11 +590,9 @@
     "removeLiquidity": {
         "title": "Eltávolítás",
         "liquidity": "likviditás",
-        "balance": "Egyenleg",
         "amount": "Mennyiség",
         "input": "Bevitel",
         "output": "Kimenet",
-        "price": "Ár",
         "remove": "Eltávolítás",
         "description": "A pool tokenek eltávolítása a pozícióját az aktuális árfolyamon, a készlet részesedésével arányosan alakítja vissza mögöttes tokenekké. A felhalmozott díjakat a kapott összegek tartalmazzák.",
         "outputMessage": "Becsült eredmény. Ha az ár a {slippageTolerance}%-nál nagyobb mértékben változik, a tranzakció visszafordul.",
@@ -675,22 +613,11 @@
             "frontrun": "Előfordulhat, hogy a tranzakció előre fut",
             "error": "Adjon meg egy érvényes csúszási százalékot"
         },
-        "custom": "EGYEDI",
-        "transactionDeadline": "TRANZAKCIÓS HATÁRIDŐ",
-        "transactionDeadlineHint": "A tranzakció törlésre kerül, ha ennél tovább függőben van.",
-        "nodeAddress": "CSOMÓPONT CÍME",
-        "ip": "IP",
-        "port": "PORT",
-        "min": "MIN",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} likviditás kezelés biztosítja a legjobb árat bármely tranzakciónál, kombinálva a legjobb árakat az elérhető összes piacról. Amikor elérhető, Token Bonding Curve ({tbcAlgorithm}) likviditását használja amíg az eszköz ára kedvezőbb más forrásokénál, amelyek az {xycAlgorithm} pool-t használják.",
             "TBC": "{tbcAlgorithm}— vásárlás csak a Token Bonding Curve -ből (Elsődleges Piac). Lehetséges, hogy az ár annyira nem kedvező a {xycAlgorithm} pool-hoz (Másodlagos Piac) képest, de az ezáltal megszerezhető jutalmak idővel kedvezőbbé tehetik.",
             "XYK": "{xycAlgorithm} — vásárlás csak az XYK Pool-ból (Másodlagos Piac). Tradícionális XYK pool váltás."
         }
-    },
-    "resultDialog": {
-        "title": "Tranzakció elküldve",
-        "ok": "Rendben"
     },
     "rewards": {
         "andText": "és",
@@ -757,7 +684,6 @@
         "title": "Nyelv"
     },
     "tokens": {
-        "symbol": "Szimbólum",
         "assetId": "Eszköz azonosítója"
     },
     "memorandum": "{AppName} Memorandum és Általános Szerződési Feltételek",
@@ -828,14 +754,6 @@
     },
     "sentText": "Küldött",
     "learnMoreText": "Tudj meg többet",
-    "marketMakerCountdown": {
-        "title": "Market Maker visszaszámlálás",
-        "blocks": "blokkok",
-        "daysLeft": "nap van hátra",
-        "txs": "TX-ek",
-        "volume": "MM TX forgalom",
-        "description": "20 millió PSWAP\/hó kerül kiosztásra azon market makerek között, akik legalább 500 tx\/hó értékű, 1 XOR feletti értékkel rendelkeznek."
-    },
     "confirmNextTxFailure": {
         "header": "Figyelem",
         "info": "A tranzakciót követően az Ön {symbol} egyenlege kevesebb lesz, mint {fee} {symbol} . Egy másik tranzakció esetén nem tudja fizetni a hálózati díjat.",
@@ -849,18 +767,14 @@
         "bondedXOR": "XOR lekötve",
         "referralsNumber": "{number} ajánlások",
         "startInviting": "Kössle XOR-t, és hívj meg másokat",
-        "deposit": "Befizetés",
-        "balance": "Egyenleg",
         "insufficientBondedBalance": "Elégtelen lekötött egyenleg",
         "action": {
-            "empty": "Adja meg a {tokenSymbol} mennyiségét",
             "bondMore": "Több lekötése",
             "bond": "Lekötés",
             "unbond": "Feloldás",
             "copyLink": "Link másolása",
             "shareLink": "Megosztás"
         },
-        "transactionDetails": "Tranzakció részletei",
         "receivedRewards": "Kapott jutalmak",
         "invitationLink": "Meghívó link",
         "bondTitle": "XOR lekötése",
@@ -1376,7 +1290,6 @@
         "marketTrades": "Piaci kereskedések",
         "market": "Piac",
         "limit": "Határ",
-        "price": "Ár",
         "total": "Teljes",
         "amount": "összeg",
         "time": "idő",
@@ -1631,5 +1544,6 @@
     },
     "firstText": "Első",
     "lastText": "Utolsó",
-    "prevText": "Előző"
+    "prevText": "Előző",
+    "priceText": "Ár"
 }

@@ -470,16 +470,9 @@
     "exchange": {
         "Swap": "Scambia",
         "Pool": "Pool",
-        "balance": "Saldo",
-        "price": "Prezzo",
-        "transactionSubmitted": "Transazione inviata",
-        "transactionMessage": "{firstToken} e {secondToken}",
-        "ok": "OK",
-        "confirm": "Conferma",
         "lossWarning": "Perderai {value}% sulla tua operazione. Abbiamo rilevato un problema di fornitura di liquidità. Ciò può portare a perdite significative durante gli scambi di token. Assicurati che ci sia liquidità adeguata per la coppia di swap desiderata."
     },
     "swap": {
-        "estimated": "stimato",
         "slippageTolerance": "Tolleranza di Slippage",
         "minReceived": "Minimo ricevuto",
         "maxSold": "Massimo venduto",
@@ -493,7 +486,6 @@
         "confirmSwap": "Conferma lo scambio",
         "swapOutputMessage": "L'output è stimato. Riceverai almeno {transactionValue} o la transazione tornerà indietro.",
         "rewardsForSwap": "PSWAP Strategic Rewards",
-        "swapInputMessage": "L'input è stimato. Venderai al massimo {transactionValue} o la transazione verrà annullata.",
         "route": "Rotta",
         "errorFetching": "Errore durante il recupero dei dati"
     },
@@ -512,21 +504,12 @@
     "bridge": {
         "title": "Bridge",
         "info": "Converti i token tra le reti {Sora} e {Ethereum}.",
-        "balance": "Saldo",
         "next": "Next",
         "connectWallets": "Collega i wallets per visualizzare la rispettiva cronologia delle transazioni.",
         "soraNetworkFee": "{Sora} Network fee",
-        "ethereumNetworkFee": "{Ethereum} Network fee",
-        "total": "Totale",
-        "viewHistory": "Visualizza la cronologia delle transazioni",
-        "transactionSubmitted": "Transazione inviata",
-        "transactionMessage": "{assetA} per {assetB}",
         "notRegisteredAsset": "L' asset {assetSymbol} non è registrato",
         "selectNetwork": "Seleziona network",
         "networkInfo": "Bridge {Sora} Network con:",
-        "copy": "Copia l'indirizzo di rete",
-        "soraAddress": "{Sora} indirizzo",
-        "ethereumAddress": "{Ethereum} indirizzo",
         "limitMessage": "Attualmente, esiste un {type} {amount} {symbol} per il bridging per garantire la stabilità e la sicurezza della rete {Sora} . Apprezziamo la tua comprensione.",
         "externalTransferFee": "Tariffa {network} {XCM}",
         "externalTransferFeeTooltip": "Quando invii una transazione bridge alla rete {network} , viene trattenuta una commissione minore dall'importo che stai trasferendo",
@@ -536,57 +519,26 @@
     "selectRegisteredAsset": {
         "title": "Seleziona un token",
         "search": {
-            "title": "Tokens",
             "placeholder": "Filtra per Asset ID, Nome o Simbolo Ticker",
             "networkLabelSora": "{Sora} network tokens",
-            "networkLabelEthereum": "{network} token mirror di rete",
-            "emptyListMessage": "Nessun risultato"
-        },
-        "customAsset": {
-            "title": "Personalizzato",
-            "customInfo": "Importante! I token personalizzati devono essere registrati in {Sora}.",
-            "registerToken": "Registra il token",
-            "addressPlaceholder": "Asset ID",
-            "symbolPlaceholder": "Simbolo del token",
-            "empty": "Nessun token trovato",
-            "alreadyAttached": "Il token era già stato aggiunto"
+            "networkLabelEthereum": "{network} token mirror di rete"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} per {to}",
         "for": " per ",
-        "steps": {
-            "step": "{step} di 2",
-            "step1": "1°",
-            "step2": "2°"
-        },
-        "status": {
-            "pending": "{step} transazioni in coda...",
-            "failed": "{step} transazioni non riuscite. @:(retryText).",
-            "confirm": "Conferma la seconda di 2 transazioni...",
-            "complete": "Completata",
-            "convertionComplete": "Conversione completata"
-        },
         "statuses": {
-            "waiting": "In attesa",
-            "ready": "Pronto",
             "pending": "In sospeso",
-            "frozen": "Congelato",
             "failed": "Transazione fallita",
             "done": "Completata",
             "waitingForConfirmation": "In attesa di conferma..."
         },
-        "networkTitle": "transazione {network}",
         "transactionHash": "Hash della transazione",
         "networkInfo": {
             "status": "Stato",
             "date": "Data",
             "amount": "Quantità",
-            "transactionFee": "Fee della transazione",
-            "total": "Totale"
+            "transactionFee": "Fee della transazione"
         },
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} transazione in coda...",
         "newTransaction": "Crea una nuova transazione",
         "title": "Transazione sul Bridge",
@@ -607,7 +559,6 @@
         "title": "Seleziona un token",
         "searchPlaceholder": "Filtra per Asset ID, Nome o Simbolo Ticker",
         "emptyListMessage": "Nessun risultato",
-        "copy": "Copia Asset ID",
         "assets": {
             "title": "Assets"
         },
@@ -620,29 +571,18 @@
         }
     },
     "createPair": {
-        "title": "Crea una pair",
         "deposit": "Deposita",
-        "balance": "Saldo",
         "pricePool": "Prezzi e fees",
         "shareOfPool": "Quota della pool",
         "firstSecondPoolTokens": "{first}-{second} Pool",
-        "connect": "Connetti wallet",
         "supply": "Fornisci",
         "yourPosition": "La tua posizione",
-        "yourPositionEstimated": "La tua posizione (stimata)",
-        "youWillReceive": "Riceverai",
-        "remove": "rimuovi",
-        "add": "INSERISCI",
-        "ok": "OK",
-        "alreadyCreated": "La token pair è già stata creata",
         "firstLiquidityProvider": "Sei il primo liquidity provider",
         "firstLiquidityProviderInfo": "Il rapporto tra i token che aggiungi determinerà il prezzo di questa pool. <br\/> Una volta che sei soddisfatto della rapport, fai clic su aggiungi per esaminarla."
     },
     "confirmSupply": {
         "title": "La tua share della pool sarà",
-        "outputDescription": "L'output è stimato. Se il prezzo cambiasse più di {slippageTolerance}% la tua transazione tornerà indietro.",
-        "poolTokensBurned": "{first}-{second} Pool Tokens Bruciati",
-        "price": "Prezzo"
+        "outputDescription": "L'output è stimato. Se il prezzo cambiasse più di {slippageTolerance}% la tua transazione tornerà indietro."
     },
     "addLiquidity": {
         "title": "Aggiungi liquidità"
@@ -650,11 +590,9 @@
     "removeLiquidity": {
         "title": "Rimuovi liquidità",
         "liquidity": "liquidità",
-        "balance": "Saldo",
         "amount": "Quantità",
         "input": "Input",
         "output": "Output",
-        "price": "Prezzo",
         "remove": "Rimuovi",
         "description": "La rimozione dei token nella pool converte la tua posizione nei due token sottostanti al tasso attuale, proporzionale alla tua quota nella pool. Le fees maturate sono incluse negli importi che ricevi.",
         "outputMessage": "L'output è stimato. Se il prezzo cambiasse più di {slippageTolerance}% la tua transazione tornerà indietro.",
@@ -675,22 +613,11 @@
             "frontrun": "La tua transazione potrebbe essere anticipata",
             "error": "Inserisci una percentuale di slippage valida"
         },
-        "custom": "PERSONALIZZATO",
-        "transactionDeadline": "DEADLINE DELLA TRANSAZIONE",
-        "transactionDeadlineHint": "La transazione verrà annullata se è in attesa per più di questo tempo.",
-        "nodeAddress": "INDIRIZZO DEL NODO",
-        "ip": "IP",
-        "port": "PORT",
-        "min": "MIN",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} garantisce il miglior prezzo per qualsiasi transazione combinando le migliori opzioni di prezzo da tutti i mercati disponibili. Quando disponibile, la Token Bonding Curve ({tbcAlgorithm}) verrà utilizzata per la liquidità a condizione che il prezzo del token sia più conveniente rispetto ad altre fonti, altrimenti la pool {xycAlgorithm} viene utilizzata.",
             "TBC": "{tbcAlgorithm} — comprare solo dalla Token Bonding Curve (Mercato Primario). C'è la possibilità che il prezzo possa diventare sfavorevole rispetto al {xycAlgorithm} (Mercato sScondario), tuttavia il valore ricevuto dalle vested rewards potrebbe rivelarsi molto più favorevole nel tempo.",
             "XYK": "{xycAlgorithm} - comprare solo dalla pool XYK (Mercato Secondario). Scambio tradizionale su pool XYK."
         }
-    },
-    "resultDialog": {
-        "title": "Transazione inviata",
-        "ok": "OK"
     },
     "rewards": {
         "andText": "e",
@@ -757,7 +684,6 @@
         "title": "Lingua"
     },
     "tokens": {
-        "symbol": "Simbolo",
         "assetId": "Asset ID"
     },
     "memorandum": "Memorandum di {AppName} e Termini di servizio",
@@ -828,14 +754,6 @@
     },
     "sentText": "Inviato",
     "learnMoreText": "Per saperne di più",
-    "marketMakerCountdown": {
-        "title": "Conto alla rovescia Market Maker",
-        "blocks": "blocchi",
-        "daysLeft": "giorni rimasti",
-        "txs": "TX",
-        "volume": "Volume MM TX",
-        "description": "20 milioni di PSWAP\/mese verranno distribuiti ai market maker con almeno 500 tx\/mese valutati oltre 1 XOR."
-    },
     "confirmNextTxFailure": {
         "header": "Attenzione",
         "info": "Il tuo saldo {symbol} sarà inferiore a {fee} {symbol} dopo questa transazione. Non sarai in grado di pagare la commissione di rete per un'altra transazione.",
@@ -849,18 +767,14 @@
         "bondedXOR": "XOR legato",
         "referralsNumber": "{number} referenze",
         "startInviting": "Bond XOR per fare riferimento ad altri",
-        "deposit": "Deposita",
-        "balance": "Bilancia",
         "insufficientBondedBalance": "Equilibrio vincolato insufficiente",
         "action": {
-            "empty": "Inserisci l'importo di {tokenSymbol}",
             "bondMore": "Legare di più",
             "bond": "Riserva",
             "unbond": "Separare",
             "copyLink": "Copia link",
             "shareLink": "Condividi"
         },
-        "transactionDetails": "Dettagli di Transazione",
         "receivedRewards": "Ricompense ricevute",
         "invitationLink": "Link all'invito",
         "bondTitle": "Legame XOR",
@@ -1376,7 +1290,6 @@
         "marketTrades": "Commerci di mercato",
         "market": "Mercato",
         "limit": "Limite",
-        "price": "Prezzo",
         "total": "Totale",
         "amount": "quantità",
         "time": "tempo",
@@ -1631,5 +1544,6 @@
     },
     "firstText": "Primo",
     "lastText": "Scorso",
-    "prevText": "Precedente"
+    "prevText": "Precedente",
+    "priceText": "Prezzo"
 }

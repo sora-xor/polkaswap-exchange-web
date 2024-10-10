@@ -470,16 +470,9 @@
     "exchange": {
         "Swap": "Iŕopo",
         "Pool": "Pulu",
-        "balance": "Iśeku",
-        "price": "Iye",
-        "transactionSubmitted": "Iṣowo ti a fi silẹ",
-        "transactionMessage": "{firstToken} ati {secondToken}",
-        "ok": "O DARA",
-        "confirm": "Jẹrisi",
         "lossWarning": "Iwọ yoo padanu {value}% lori iṣowo rẹ. A ti rii ọran ipese oloomi kan. Eyi le ja si awọn adanu nla lakoko awọn swaps àmi. Jọwọ rii daju pe oloomi to peye wa fun bata swap ti o fẹ."
     },
     "swap": {
-        "estimated": "ifoju wo",
         "slippageTolerance": "Ifarada Slippage",
         "minReceived": "O kere ju ta gba",
         "maxSold": "Apoju Tata",
@@ -493,7 +486,6 @@
         "confirmSwap": "Jẹrisi afiropo ",
         "swapOutputMessage": "Ti ṣe iṣiro iṣẹjade. Iwọ yoo gba o kere ju {transactionValue} tabi idunadura naa yoo pada.",
         "rewardsForSwap": "Awọn ere ilana PSWAP",
-        "swapInputMessage": "Iṣagbewọle ti ni iṣiro. Iwọ yoo ta o pọju {transactionValue} tabi idunadura naa yoo pada.",
         "route": "Ipa ọna",
         "errorFetching": "Aṣiṣe gbigba data naa"
     },
@@ -512,21 +504,12 @@
     "bridge": {
         "title": "Afara",
         "info": "Yi awọn token pada laarin awọn nẹtiwọọki {Sora} ati {Ethereum}.",
-        "balance": "Iśeku",
         "next": "Itele",
         "connectWallets": "So awọn woleti pọ lati wo itan iṣowo kọọkan.",
         "soraNetworkFee": "{Sora} Owo Nẹtiwọọki",
-        "ethereumNetworkFee": "{Ethereum} Owo Nẹtiwọọki",
-        "total": "Lapapọ",
-        "viewHistory": "Wo awọn itan-iṣowo",
-        "transactionSubmitted": "Iṣowo ti a fi silẹ",
-        "transactionMessage": "{assetA} fun {assetB}",
         "notRegisteredAsset": "Dukia {assetSymbol} ko forukọsilẹ",
         "selectNetwork": "Yan nẹtiwọọki",
         "networkInfo": "Safara {Sora} Nẹtiwọọki pẹlu:",
-        "copy": "Daakọ adirẹsi nẹtiwọki",
-        "soraAddress": "{Sora} adirẹsi",
-        "ethereumAddress": "{Ethereum} adirẹsi",
         "limitMessage": "Lọwọlọwọ, {type} {amount} {symbol} wa fun sisọpọ lati rii daju iduroṣinṣin ati aabo ti Nẹtiwọọki {Sora} . A dupe oye rẹ.",
         "externalTransferFee": "{network} {XCM} ọya",
         "externalTransferFeeTooltip": "Nigbati o ba fi iṣowo afara ranṣẹ si netiwọki {network} , owo kekere kan yoo gba lati iye ti o n gbe",
@@ -536,57 +519,26 @@
     "selectRegisteredAsset": {
         "title": "Yan Tokini kan",
         "search": {
-            "title": "Awon Tokini",
             "placeholder": "Àlẹmọ nipasẹ Idanimo dukia, Orukọ tabi Aami Ticker",
             "networkLabelSora": "{Sora} awon tokini netiwooki",
-            "networkLabelEthereum": "{network} awọn ami digi nẹtiwọki",
-            "emptyListMessage": "Ko si awọn abajade"
-        },
-        "customAsset": {
-            "title": "Atowunwa",
-            "customInfo": "Pataki! Awọn Tokini atowunwa gbọdọ forukọsilẹ ni {Sora}.",
-            "registerToken": "Forukọsilẹ Token",
-            "addressPlaceholder": "Idanimo dukia",
-            "symbolPlaceholder": "Aami Token ",
-            "empty": "A ko ri token",
-            "alreadyAttached": "Token yii ti ni asopọ tẹlẹ"
+            "networkLabelEthereum": "{network} awọn ami digi nẹtiwọki"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} fun {to}",
         "for": " fun ",
-        "steps": {
-            "step": "{step} ti keji",
-            "step1": "Ikini",
-            "step2": "Ikeji"
-        },
-        "status": {
-            "pending": "{step} Idunadura n sunmọtosi ...",
-            "failed": "{step} idunadura kuna. @:(retryText).",
-            "confirm": "Jẹrisi ikeji ninu awọn iṣowo meji...",
-            "complete": "Pari",
-            "convertionComplete": "Iyipada ti pari"
-        },
         "statuses": {
-            "waiting": "Nduro",
-            "ready": "Ṣetan",
             "pending": "Ni isunmọtosi",
-            "frozen": "Fisi itimole",
             "failed": "Idunadura kuna",
             "done": "Pari",
             "waitingForConfirmation": "Nduro fun idaniloju..."
         },
-        "networkTitle": "idunadura {network}",
         "transactionHash": "Ami Iṣowo",
         "networkInfo": {
             "status": "Ipo",
             "date": "Ọjọ",
             "amount": "Iye",
-            "transactionFee": "Owo Iṣowo",
-            "total": "Lapapọ"
+            "transactionFee": "Owo Iṣowo"
         },
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "idunadura ni isunmọtosi ni {network}",
         "newTransaction": "Ṣẹda idunadura tuntun",
         "title": "Idunadura Bridge",
@@ -607,7 +559,6 @@
         "title": "Yan Tokini kan",
         "searchPlaceholder": "Àlẹmọ nipasẹ Idanimo dukia, Orukọ tabi Aami Ticker",
         "emptyListMessage": "Ko si awọn abajade",
-        "copy": "Daakọ Idanimo dukia",
         "assets": {
             "title": "Awọn dukia"
         },
@@ -620,29 +571,18 @@
         }
     },
     "createPair": {
-        "title": "Ṣẹda onimeji kan",
         "deposit": "Idogo",
-        "balance": "Iśeku",
         "pricePool": "Awọn iye ati ipin puulu",
         "shareOfPool": "Pinpin pool",
         "firstSecondPoolTokens": "{first}-{second} Puulu",
-        "connect": "So apamọwọ pọ",
         "supply": "Ipese",
         "yourPosition": "Ipo rẹ",
-        "yourPositionEstimated": "Ipo rẹ (ifoju)",
-        "youWillReceive": "Iwo yoo gba",
-        "remove": "Yọ",
-        "add": "Fikun",
-        "ok": "O DARA",
-        "alreadyCreated": "A ti ṣẹda Token pair tele",
         "firstLiquidityProvider": "Iwọ ni olupese liquidity akọkọ",
         "firstLiquidityProviderInfo": "Ipin awọn ami ti o ṣafikun yoo ṣeto idiyele ti adagun-odo yii. <br\/> Ni kete ti o ba ni ayọ pẹlu oṣuwọn tẹ ipese lati ṣe atunyẹwo."
     },
     "confirmSupply": {
         "title": "Iwo yoo gba",
-        "outputDescription": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance}% iṣowo rẹ yoo pada.",
-        "poolTokensBurned": "{first}-{second} Awọn Pool Tokens ta ti sun",
-        "price": "Iye"
+        "outputDescription": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance}% iṣowo rẹ yoo pada."
     },
     "addLiquidity": {
         "title": "Fi liquidity si"
@@ -650,11 +590,9 @@
     "removeLiquidity": {
         "title": "Yọ liquidity kuro",
         "liquidity": "liquidity",
-        "balance": "Iśeku",
         "amount": "Iye",
         "input": "Ifisi",
         "output": "Ijade",
-        "price": "Iye",
         "remove": "Yọ",
         "description": "Yiyọ awọn ami adagun yi pada ipo rẹ pada si awọn ami atokọ ni oṣuwọn lọwọlọwọ, ni ibamu si ipin rẹ ti adagun-odo. Awọn owo ti a gba ni o wa ninu awọn oye ti o gba.",
         "outputMessage": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance} % iṣowo rẹ yoo pada.",
@@ -675,22 +613,11 @@
             "frontrun": "Iṣowo rẹ le jẹ iwaju",
             "error": "Tẹ ogorun yiyọ to wulo sii"
         },
-        "custom": "Atowunwa",
-        "transactionDeadline": "AKOKAN IKILE",
-        "transactionDeadlineHint": "Yoo paarẹ iṣowo ti o ba wa ni isunmọtosi fun diẹ sii ju gigun yii.",
-        "nodeAddress": "ADIRESI NODU",
-        "ip": "IP",
-        "port": "Ibudo",
-        "min": "O kere ju",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} afisona liquidity ṣe idaniloju owo ti o dara julọ fun eyikeyi idunadura nipasẹ apapọ awọn aṣayan idiyele ti o dara julọ lati gbogbo awọn ọja to wa. Nigbati o ba wa, Tite'mora tokini tabi\nToken Bonding Curve ({tbcAlgorithm}) yoo ṣee lo fun oloomi bi igba ti iye dukia jẹ ifarada diẹ sii ju awọn orisun miiran lọ, lori eyiti {xycAlgorithm} pool lo.",
             "TBC": "{tbcAlgorithm} - rira nikan lati Tokini Bonding Curve (Ọja Alakọbẹrẹ). O ṣee ṣe pe iye owo le di aibikita ni akawe si adagbe {xycAlgorithm} (Ile-iwe Atẹle), ṣugbọn iye ti o gba lati awọn ẹbun ti o ni ẹtọ le yipada lati jẹ ọpẹ pupọ diẹ sii ju akoko lọ .",
             "XYK": "{xycAlgorithm} - rira nikan lati Omi ikudu XYK (Ọja Atẹle). Iyipada paṣipaarọ pool XYK ti atile."
         }
-    },
-    "resultDialog": {
-        "title": "Iṣowo ti a fi silẹ",
-        "ok": "O DARA"
     },
     "rewards": {
         "andText": "ati",
@@ -757,7 +684,6 @@
         "title": "Edé"
     },
     "tokens": {
-        "symbol": "Ami",
         "assetId": "Idanimo dukia"
     },
     "memorandum": "Memorandum {AppName} ati Awọn ofin lilo",
@@ -828,14 +754,6 @@
     },
     "sentText": "Ti firanṣẹ",
     "learnMoreText": "Kọ ẹkọ si",
-    "marketMakerCountdown": {
-        "title": "Oja Ẹlẹda kika",
-        "blocks": "ohun amorindun",
-        "daysLeft": "ọjọ osi",
-        "txs": "TXs",
-        "volume": "MM TX iwọn didun",
-        "description": "20 million PSWAP \/ osù ni yoo pin si awọn oluṣe ọja pẹlu o kere ju 500 tx \/ osù ti o ni idiyele lori 1 XOR."
-    },
     "confirmNextTxFailure": {
         "header": "Ifarabalẹ",
         "info": "Iwọntunwọnsi {symbol} rẹ yoo kere ju {fee} {symbol} lẹhin iṣowo yii. Iwọ kii yoo ni anfani lati sanwo fun ọya nẹtiwọki fun iṣowo miiran.",
@@ -849,18 +767,14 @@
         "bondedXOR": "XOR ti o ni asopọ",
         "referralsNumber": "awọn itọkasi {number}",
         "startInviting": "Bond XOR lati tọka si awọn miiran",
-        "deposit": "Idogo",
-        "balance": "Iwontunwonsi",
         "insufficientBondedBalance": "Aini iwọntunwọnsi ti o darapọ mọ",
         "action": {
-            "empty": "Tẹ iye {tokenSymbol}",
             "bondMore": "Dipọ Die",
             "bond": "Dipọ",
             "unbond": "Yọọ",
             "copyLink": "Daakọ ọna asopọ",
             "shareLink": "Pin"
         },
-        "transactionDetails": "Idunadura Awọn alaye",
         "receivedRewards": "Awọn ere ti o gba",
         "invitationLink": "Ọna asopọ ifiwepe",
         "bondTitle": "Dipọ XOR",
@@ -1376,7 +1290,6 @@
         "marketTrades": "Awọn iṣowo ọja",
         "market": "Oja",
         "limit": "Idiwọn",
-        "price": "Iye owo",
         "total": "Lapapọ",
         "amount": "iye",
         "time": "aago",
@@ -1631,5 +1544,6 @@
     },
     "firstText": "Akoko",
     "lastText": "Ikẹhin",
-    "prevText": "Ti tẹlẹ"
+    "prevText": "Ti tẹlẹ",
+    "priceText": "Iye owo"
 }

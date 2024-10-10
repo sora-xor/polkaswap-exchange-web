@@ -35,7 +35,7 @@
       </template>
     </info-line>
     <info-line
-      :label="t('confirmSupply.price')"
+      :label="t('priceText')"
       :value="`1 ${firstToken.symbol} = ${formattedPriceReversed}`"
       :asset-symbol="secondToken.symbol"
     />
@@ -54,7 +54,7 @@
           {{ t('insufficientBalanceText', { tokenSymbol: insufficientBalanceTokenSymbol }) }}
         </template>
         <template v-else>
-          {{ t('exchange.confirm') }}
+          {{ t('confirmText') }}
         </template>
       </s-button>
     </template>

@@ -140,11 +140,7 @@
     "balanceText": "Balance",
     "blockNumberText": "Block number",
     "bridge": {
-        "balance": "Balance",
         "connectWallets": "Connect wallets to view respective transaction history.",
-        "copy": "Copy network address",
-        "ethereumAddress": "{Ethereum} address",
-        "ethereumNetworkFee": "{Ethereum} Network Fee",
         "externalMinDeposit": "{network} min. deposit",
         "externalMinDepositTooltip": "Minimum balance {symbol} that must be on your {network} account after the bridge transfer",
         "externalTransferFee": "{network} {XCM} fee",
@@ -155,13 +151,8 @@
         "next": "Next",
         "notRegisteredAsset": "Asset {assetSymbol} is not registered",
         "selectNetwork": "Select network",
-        "soraAddress": "{Sora} address",
         "soraNetworkFee": "{Sora} Network Fee",
-        "title": "Bridge",
-        "total": "Total",
-        "transactionMessage": "{assetA} for {assetB}",
-        "transactionSubmitted": "Transaction submitted",
-        "viewHistory": "View transactions history"
+        "title": "Bridge"
     },
     "bridgeHistory": {
         "clearHistory": "Clear history",
@@ -177,40 +168,20 @@
         "allowToken": "Allow {AppName} to use your {tokenSymbol}",
         "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.",
         "blocksLeft": "{count} blocks left...",
-        "details": "{from} for {to}",
-        "ethereum": "{Ethereum}",
         "for": " for ",
         "networkInfo": {
             "amount": "Amount",
             "date": "Date",
             "status": "Status",
-            "total": "Total",
             "transactionFee": "Transaction Fee"
         },
-        "networkTitle": "{network} transaction",
         "newTransaction": "Create new transaction",
         "pending": "{network} transaction pending...",
-        "sora": "{Sora}",
-        "status": {
-            "complete": "Complete",
-            "confirm": "Confirm 2nd of 2 transactions...",
-            "convertionComplete": "Conversion complete",
-            "failed": "{step} transactions failed. @:(retryText).",
-            "pending": "{step} transactions pending..."
-        },
         "statuses": {
             "done": "Complete",
             "failed": "Transaction failed",
-            "frozen": "Frozen",
             "pending": "Pending",
-            "ready": "Ready",
-            "waiting": "Waiting",
             "waitingForConfirmation": "Waiting for confirmation..."
-        },
-        "steps": {
-            "step": "{step} of 2",
-            "step1": "1st",
-            "step2": "2nd"
         },
         "title": "Bridge Transaction",
         "transactionHash": "Transaction hash"
@@ -269,13 +240,11 @@
     "confirmNextTxFailure": {
         "button": "Yes, I understand the risk",
         "header": "Attention",
-        "info": "Your {symbol} balance will be less than {fee} {symbol} after this transaction. You won’t be able to pay for the network fee for another transaction.",
+        "info": "Your XOR balance will be less than {fee} XOR after this transaction. You won’t be able to pay for the network fee for another transaction.",
         "payoff": "You would have to use the Bridge to get XOR from other networks, get sent XOR from another {Sora} account, or swap any other token already in your account into XOR."
     },
     "confirmSupply": {
         "outputDescription": "Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.",
-        "poolTokensBurned": "{first}-{second} Pool Tokens Burned",
-        "price": "Price",
         "title": "Your pool share will be"
     },
     "confirmText": "Confirm",
@@ -310,23 +279,14 @@
     "copyPhraseText": "Copy Passphrase",
     "copyWithValue": "Copy {value}",
     "createPair": {
-        "add": "ADD",
-        "alreadyCreated": "Token pair is already created",
-        "balance": "Balance",
-        "connect": "Connect wallet",
         "deposit": "Deposit",
         "firstLiquidityProvider": "You are the first liquidity provider",
         "firstLiquidityProviderInfo": "The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.",
         "firstSecondPoolTokens": "{first}-{second} Pool",
-        "ok": "OK",
         "pricePool": "Prices and fees",
-        "remove": "remove",
         "shareOfPool": "Share of pool",
         "supply": "Supply",
-        "title": "Create a pair",
-        "yourPosition": "Your position",
-        "yourPositionEstimated": "Your position (estimated)",
-        "youWillReceive": "You will receive"
+        "yourPosition": "Your position"
     },
     "createToken": {
         "confirmTokenTitleCommon": "Create Token",
@@ -493,8 +453,6 @@
         }
     },
     "dexSettings": {
-        "custom": "CUSTOM",
-        "ip": "IP",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} liquidity routing ensures the best price for any transaction by combining only the best price options from all available markets. When available, Token Bonding Curve ({tbcAlgorithm}) will be used for liquidity as long as the asset price is more affordable than from other sources, upon which the {xycAlgorithm} pool is utilized.",
@@ -504,9 +462,6 @@
         "marketAlgorithmTooltip": {
             "main": " - option to choose between Primary Market (TBC), Secondary Market (XYK) or a combined smart algorithm for guaranteed best price for any given transaction."
         },
-        "min": "MIN",
-        "nodeAddress": "NODE ADDRESS",
-        "port": "PORT",
         "slippageTolerance": "SLIPPAGE TOLERANCE",
         "slippageToleranceHint": "Your transaction will revert if the price changes unfavorably by more than this percentage.",
         "slippageToleranceValidation": {
@@ -514,9 +469,7 @@
             "frontrun": "Your transaction may be frontrun",
             "warning": "Your transaction may fail"
         },
-        "title": "Settings",
-        "transactionDeadline": "TRANSACTION DEADLINE",
-        "transactionDeadlineHint": "Transaction will be cancelled if it is pending for more than this long."
+        "title": "Settings"
     },
     "disclaimer": "{disclaimerPrefix} This website is maintained by the {Sora} community. Before continuing to use this website, please review the {polkaswapFaqLink} and documentation, which includes a detailed explanation on how {AppName} works, as well as the {memorandumLink}, and {privacyLink}. These documents are crucial to a secure and positive user experience. By using {AppName}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {AppName} in your legal jurisdiction; 2) your understanding that the current version of {AppName} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {AppName}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "disclaimerTitle": "Disclaimer",
@@ -528,15 +481,9 @@
     "ethNetworkFeeTooltipText": "Please note that the {network} network fees displayed on {AppName} are only rough estimations, you can see the correct fee amount in your connected {network} wallet prior to confirming the transaction.",
     "exceededAmountText": "{amount} exceeded",
     "exchange": {
-        "balance": "Balance",
-        "confirm": "Confirm",
         "lossWarning": "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair.",
-        "ok": "OK",
         "Pool": "Pool",
-        "price": "Price",
-        "Swap": "Swap",
-        "transactionMessage": "{firstToken} and {secondToken}",
-        "transactionSubmitted": "Transaction submitted"
+        "Swap": "Swap"
     },
     "expandText": "Expand",
     "explore": {
@@ -796,14 +743,6 @@
         "Wallet": "Account"
     },
     "marketAlgorithmText": "Market algorithm",
-    "marketMakerCountdown": {
-        "blocks": "blocks",
-        "daysLeft": "days left",
-        "description": "20 million PSWAP / month will be distributed to market makers with at least 500 tx / month valued over 1 XOR.",
-        "title": "Market Maker Countdown",
-        "txs": "TXs",
-        "volume": "MM TX volume"
-    },
     "marketText": "Market",
     "maxAmountText": "max. amount",
     "memorandum": "{AppName} Memorandum and Terms of Services",
@@ -1096,7 +1035,6 @@
             "side": "side",
             "time": "time"
         },
-        "price": "Price",
         "Sell": "Sell {asset}",
         "setPrice": "Set price",
         "stop": "Book stopped",
@@ -1191,6 +1129,7 @@
     "poweredBy": "Powered by",
     "prevText": "Previous",
     "priceChartText": "Price chart",
+    "priceText": "Price",
     "provider": {
         "messages": {
             "checkExtension": "{name} extension is busy, please check it",
@@ -1206,11 +1145,9 @@
             "bond": "Bond",
             "bondMore": "Bond More",
             "copyLink": "Copy link",
-            "empty": "Enter amount of {tokenSymbol}",
             "shareLink": "Share",
             "unbond": "Unbond"
         },
-        "balance": "Balance",
         "bondedXOR": "XOR Bonded",
         "bondTitle": "Bond XOR",
         "confirm": {
@@ -1225,7 +1162,6 @@
             "unbond": "Confirm unbond"
         },
         "connectAccount": "To invite users you need to connect your {Sora} account.",
-        "deposit": "Deposit",
         "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR",
         "insufficientBondedBalance": "Insufficient bonded balance",
         "invitationLink": "Invitation link",
@@ -1246,14 +1182,12 @@
         },
         "startInviting": "Bond XOR to refer others",
         "title": "Referral Program",
-        "transactionDetails": "Transaction Details",
         "unbondTitle": "Unbond XOR",
         "welcomeMessage": "\nJoin me on {AppName}!\n\nDiscover the stylish {DEX} that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!\n\n🎁 Invite friends and earn 10% of their trading fees\n\nSee you there!"
     },
     "releaseNotesText": "Release notes",
     "removeLiquidity": {
         "amount": "Amount",
-        "balance": "Balance",
         "confirmTitle": "You will receive",
         "description": "Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.",
         "input": "Input",
@@ -1261,16 +1195,11 @@
         "locked": "{percent} of your pool is in {lock}",
         "output": "Output",
         "outputMessage": "Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.",
-        "price": "Price",
         "remove": "Remove",
         "shareOfPool": "Share of pool after transaction",
         "title": "Remove liquidity"
     },
     "resetText": "Reset",
-    "resultDialog": {
-        "ok": "OK",
-        "title": "Transaction submitted"
-    },
     "retryText": "Retry",
     "rewards": {
         "action": {
@@ -1354,21 +1283,10 @@
     },
     "selectNodeText": "Select Network Node",
     "selectRegisteredAsset": {
-        "customAsset": {
-            "addressPlaceholder": "Asset ID",
-            "alreadyAttached": "Token was already attached",
-            "customInfo": "Important! Custom tokens must be registered in {Sora}.",
-            "empty": "No tokens found",
-            "registerToken": "Register token",
-            "symbolPlaceholder": "Token symbol",
-            "title": "Custom"
-        },
         "search": {
-            "emptyListMessage": "No results",
             "networkLabelEthereum": "{network} network mirror tokens",
             "networkLabelSora": "{Sora} network tokens",
-            "placeholder": "Filter by Asset ID, Name or Ticker Symbol",
-            "title": "Tokens"
+            "placeholder": "Filter by Asset ID, Name or Ticker Symbol"
         },
         "title": "Select a token"
     },
@@ -1376,7 +1294,6 @@
         "assets": {
             "title": "Assets"
         },
-        "copy": "Copy Asset ID",
         "custom": {
             "alreadyAttached": "This token was already attached",
             "notFound": "Token not found",
@@ -1543,7 +1460,6 @@
     "swap": {
         "confirmSwap": "Confirm swap",
         "errorFetching": "Error fetching the data",
-        "estimated": "estimated",
         "insufficientAmount": "Insufficient {tokenSymbol} amount",
         "insufficientLiquidity": "Insufficient liquidity",
         "liquidityProviderFee": "Liquidity Provider Fee",
@@ -1556,13 +1472,11 @@
         "rewardsForSwap": "PSWAP Strategic Rewards",
         "route": "Route",
         "slippageTolerance": "Slippage Tolerance",
-        "swapInputMessage": "Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.",
         "swapOutputMessage": "Output is estimated. You will receive at least {transactionValue} or the transaction will revert."
     },
     "swapText": "Swap",
     "tokens": {
-        "assetId": "Asset ID",
-        "symbol": "Symbol"
+        "assetId": "Asset ID"
     },
     "tooltips": {
         "accounts": "Accounts are digital addresses that hold user's assets on the network. Each account is associated with a unique public address and a private key that allows the user to access and manage their assets.",

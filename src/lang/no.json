@@ -470,16 +470,9 @@
     "exchange": {
         "Swap": "Bytte",
         "Pool": "Pool",
-        "balance": "Balanse",
-        "price": "Pris",
-        "transactionSubmitted": "Transaksjon sendt",
-        "transactionMessage": "{firstToken} og {secondToken}",
-        "ok": "OK",
-        "confirm": "Bekrefte",
         "lossWarning": "Du kommer til å miste {value}% på handelen din. Vi har oppdaget et problem med likviditetsavsetning. Dette kan føre til betydelige tap under token-bytte. Sørg for at det er tilstrekkelig likviditet for ønsket byttepar."
     },
     "swap": {
-        "estimated": "estimert",
         "slippageTolerance": "Sklitoleranse",
         "minReceived": "Minimum mottatt",
         "maxSold": "Maksimalt solgt",
@@ -493,7 +486,6 @@
         "confirmSwap": "Bekreft bytte",
         "swapOutputMessage": "Beløp er estimert. Du vil motta minst {transactionValue} ellers vil transaksjonen gå tilbake.",
         "rewardsForSwap": "Strategiske PSWAP belønninger",
-        "swapInputMessage": "Inndata er estimert. Du vil selge maksimalt {transactionValue} ellers vil transaksjonen gå tilbake.",
         "route": "Rute",
         "errorFetching": "Feil under henting av data"
     },
@@ -512,21 +504,12 @@
     "bridge": {
         "title": "Bro",
         "info": "Konverter tokens mellom {Sora} og {Ethereum} -nettverkene.",
-        "balance": "Balanse",
         "next": "Neste",
         "connectWallets": "Koble til lommebøker for å se respektive transaksjonshistorikk.",
         "soraNetworkFee": "{Sora} Nettverksgebyr",
-        "ethereumNetworkFee": "{Ethereum} Nettverksgebyr",
-        "total": "Total",
-        "viewHistory": "Se transaksjonshistorikk",
-        "transactionSubmitted": "Transaksjon sendt",
-        "transactionMessage": "{assetA} for {assetB}",
         "notRegisteredAsset": "Aktivum {assetSymbol} er ikke registrert",
         "selectNetwork": "Velg nettverk",
         "networkInfo": "Bridge {Sora} Network med:",
-        "copy": "Kopier nettverksadressen",
-        "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse",
         "limitMessage": "For øyeblikket er det en {type} {amount} {symbol} for brobygging for å sikre stabiliteten og sikkerheten til {Sora} -nettverket. Vi setter pris på din forståelse.",
         "externalTransferFee": "{network} {XCM} gebyr",
         "externalTransferFeeTooltip": "Når du sender en brotransaksjon til {network} -nettverket, tas et mindre gebyr fra beløpet du overfører",
@@ -536,57 +519,26 @@
     "selectRegisteredAsset": {
         "title": "Velg token",
         "search": {
-            "title": "Tokens",
             "placeholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol",
             "networkLabelSora": "{Sora} nettverk tokens",
-            "networkLabelEthereum": "{network} nettverksspeiltokener",
-            "emptyListMessage": "Ingen resultat"
-        },
-        "customAsset": {
-            "title": "Egendefinert",
-            "customInfo": "Viktig! Egendefinerte tokener må registreres i {Sora}.",
-            "registerToken": "Registrer token",
-            "addressPlaceholder": "Aktivum ID",
-            "symbolPlaceholder": "Token symbol",
-            "empty": "Finner ingen token",
-            "alreadyAttached": "Token er allerede vedlagt"
+            "networkLabelEthereum": "{network} nettverksspeiltokener"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} for {to}",
         "for": " for ",
-        "steps": {
-            "step": "{step} av 2",
-            "step1": "1.",
-            "step2": "2."
-        },
-        "status": {
-            "pending": "{step} transaksjoner venter ...",
-            "failed": "{step} transaksjoner mislyktes. @:(retryText).",
-            "confirm": "Bekreft 2\/2 transaksjoner...",
-            "complete": "Ferdig",
-            "convertionComplete": "Konvertering er fullført"
-        },
         "statuses": {
-            "waiting": "Venter",
-            "ready": "Klar",
             "pending": "Pågår",
-            "frozen": "Fryst",
             "failed": "Transaksjon mislyktes",
             "done": "Ferdig",
             "waitingForConfirmation": "Venter på bekreftelse..."
         },
-        "networkTitle": "{network} transaksjon",
         "transactionHash": "Transaksjon hash",
         "networkInfo": {
             "status": "Status",
             "date": "Dato",
             "amount": "Beløp",
-            "transactionFee": "Transaksjonsgebyr",
-            "total": "Total"
+            "transactionFee": "Transaksjonsgebyr"
         },
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} transaksjon pågår...",
         "newTransaction": "Opprett ny transaksjon",
         "title": "Bro Transaksjon",
@@ -607,7 +559,6 @@
         "title": "Velg token",
         "searchPlaceholder": "Filtrer etter aktivum ID, Navn eller Tickersymbol",
         "emptyListMessage": "Ingen resultat",
-        "copy": "Kopier aktivum ID",
         "assets": {
             "title": "Aktiva"
         },
@@ -620,29 +571,18 @@
         }
     },
     "createPair": {
-        "title": "Opprett par",
         "deposit": "Innskudd",
-        "balance": "Balanse",
         "pricePool": "Priser og gebyrer",
         "shareOfPool": "Andel av pool",
         "firstSecondPoolTokens": "{first}-{second} Pool",
-        "connect": "Koble til lommebok",
         "supply": "Forsyning",
         "yourPosition": "Din posisjon",
-        "yourPositionEstimated": "Din posisjon (estimert)",
-        "youWillReceive": "Du vil motta",
-        "remove": "ta bort",
-        "add": "LEGG TIL",
-        "ok": "OK",
-        "alreadyCreated": "Tokenpar er allerede opprettet",
         "firstLiquidityProvider": "Du er den første likviditetsleverandøren",
         "firstLiquidityProviderInfo": "Forholdet mellom tokener du legger til, angir prisen på denne pool.<br\/> Når du er fornøyd med prisen klikk forsyning for å gjennomgå."
     },
     "confirmSupply": {
         "title": "Din pool andel vil være",
-        "outputDescription": "Beløp er estimert. Hvis prisen endres mer enn {slippageTolerance}%, vil transaksjonen gå tilbake.",
-        "poolTokensBurned": "{first}-{second} Pool tokens brent",
-        "price": "Pris"
+        "outputDescription": "Beløp er estimert. Hvis prisen endres mer enn {slippageTolerance}%, vil transaksjonen gå tilbake."
     },
     "addLiquidity": {
         "title": "Tilfør likviditet"
@@ -650,11 +590,9 @@
     "removeLiquidity": {
         "title": "Fjern likviditet",
         "liquidity": "likviditet",
-        "balance": "Balanse",
         "amount": "Beløp",
         "input": "Inngang",
         "output": "Utgang",
-        "price": "Pris",
         "remove": "Fjerne",
         "description": "Fjerne pool -tokens konverterer posisjonen din tilbake til underliggende tokens med den nåværende hastigheten, proporsjonal med din andel av bassenget. Påløpte gebyrer er inkludert i beløpene du mottar.",
         "outputMessage": "Beløp er estimert. Hvis prisen endres mer enn {slippageTolerance}%, vil transaksjonen gå tilbake.",
@@ -675,22 +613,11 @@
             "frontrun": "Transaksjonen din kan bli forhåndskjørt",
             "error": "Skriv inn en gyldig glideprosent"
         },
-        "custom": "TILPASSET",
-        "transactionDeadline": "TRANSAKSJONSFRIST",
-        "transactionDeadlineHint": "Transaksjonen avbrytes hvis den venter i mer enn så lang tid.",
-        "nodeAddress": "NODE ADRESSE",
-        "ip": "IP",
-        "port": "PORT",
-        "min": "MIN",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} likviditetsruting sikrer den beste prisen for enhver transaksjon ved å kombinere bare de beste prisalternativene fra alle tilgjengelige markeder. Når Token Bonding Curve ({tbcAlgorithm}) vil bli brukt til likviditet så lenge aktivaprisen er rimeligere enn fra andre kilder, hvorpå {xycAlgorithm} utvalget benyttes.",
             "TBC": "{tbcAlgorithm} - kjøper bare fra Token Bonding Curve (Primary Market). Det er en mulighet for at prisen kan bli ugunstig sammenlignet med {xycAlgorithm} pool (Sekundærmarkedet), men verdien mottatt fra de opptjente belønningene kan vise seg å være mye gunstigere over tid.",
             "XYK": "{xycAlgorithm}- kjøper bare fra XYK Pool (sekundærmarkedet). Tradisjonelt XYK-bassengbytte."
         }
-    },
-    "resultDialog": {
-        "title": "Transaksjonen er sendt inn",
-        "ok": "OK"
     },
     "rewards": {
         "andText": "og",
@@ -757,7 +684,6 @@
         "title": "Språk"
     },
     "tokens": {
-        "symbol": "Symbol",
         "assetId": "Aktivum ID"
     },
     "memorandum": "{AppName} Memorandum og vilkår for bruk",
@@ -828,14 +754,6 @@
     },
     "sentText": "Sendt",
     "learnMoreText": "Lær mer",
-    "marketMakerCountdown": {
-        "title": "Market Maker Nedtelling",
-        "blocks": "blokker",
-        "daysLeft": "dager igjen",
-        "txs": "TXs",
-        "volume": "MM TX volum",
-        "description": "20 millioner PSWAP \/ måned vil bli distribuert til markedsmakere med minst 500 tx \/ måned verdt over 1 XOR."
-    },
     "confirmNextTxFailure": {
         "header": "Merk følgende",
         "info": "Din {symbol} -saldo vil være mindre enn {fee} {symbol} etter denne transaksjonen. Du vil ikke kunne betale for nettverksavgiften for en annen transaksjon.",
@@ -849,18 +767,14 @@
         "bondedXOR": "XOR Bundet",
         "referralsNumber": "{number}-henvisninger",
         "startInviting": "Bond XOR for å henvise andre",
-        "deposit": "Innskudd",
-        "balance": "Balanse",
         "insufficientBondedBalance": "Utilstrekkelig bundet balanse",
         "action": {
-            "empty": "Angi mengden {tokenSymbol}",
             "bondMore": "Bond mer",
             "bond": "Knytte bånd",
             "unbond": "Koble ut",
             "copyLink": "Kopier link",
             "shareLink": "Del"
         },
-        "transactionDetails": "Transaksjonsdetaljer",
         "receivedRewards": "Mottatte belønninger",
         "invitationLink": "Invitasjonslenke",
         "bondTitle": "Knytte bånd XOR",
@@ -1376,7 +1290,6 @@
         "marketTrades": "Markedshandler",
         "market": "Marked",
         "limit": "Grense",
-        "price": "Pris",
         "total": "Total",
         "amount": "beløp",
         "time": "tid",
@@ -1631,5 +1544,6 @@
     },
     "firstText": "Først",
     "lastText": "Siste",
-    "prevText": "Tidligere"
+    "prevText": "Tidligere",
+    "priceText": "Pris"
 }

@@ -25,7 +25,7 @@
     </template>
 
     <div class="book-columns">
-      <div>{{ t('orderBook.price') }}</div>
+      <div>{{ t('priceText') }}</div>
       <div>{{ t('orderBook.amount') }}</div>
       <div>{{ t('orderBook.total') }}</div>
     </div>

@@ -30,7 +30,7 @@
         :loading="parentLoading"
         @click="handleConfirmRemoveLiquidity"
       >
-        {{ t('exchange.confirm') }}
+        {{ t('confirmText') }}
       </s-button>
     </template>
   </dialog-base>
