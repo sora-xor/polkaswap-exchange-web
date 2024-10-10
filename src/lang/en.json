@@ -73,7 +73,7 @@
         "noContacts": "You don’t have any contacts added yet",
         "noFoundRecords": "No records found",
         "none": "None",
-        "notSoraAddress": "This address will be saved as {SORA} address below. Make sure the recipient can access the {SORA} chain:",
+        "notSoraAddress": "This address will be saved as {Sora} address below. Make sure the recipient can access the {Sora} chain:",
         "options": {
             "delete": "Delete",
             "edit": "Edit contact",
@@ -434,7 +434,7 @@
             "placeholder": "Mnemonic phrase"
         },
         "accountName": {
-            "desc": "This is the name of your account. It will be visible only to you in {Polkaswap}.",
+            "desc": "This is the name of your account. It will be visible only to you in {AppName}.",
             "placeholder": "Account name"
         },
         "addAccount": "Add an account",
@@ -553,7 +553,7 @@
         "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later.",
         "historyBtn": "My purchases",
         "historyTitle": "Transaction History",
-        "moonpayDesc": "Purchase ETH tokens on {Ethereum} and transfer them to {SORA} network via the bridge",
+        "moonpayDesc": "Purchase ETH tokens on {Ethereum} and transfer them to {Sora} network via the bridge",
         "moonpayTitle": "Buy ETH via MoonPay"
     },
     "filter": {
@@ -571,13 +571,13 @@
     "firstText": "First",
     "footer": {
         "internet": {
-            "action": "Refresh {Polkaswap}",
+            "action": "Refresh {AppName}",
             "desc": {
                 "disabled": "Disconnected",
                 "stable": "Optimal speed",
                 "unstable": "Slow connection"
             },
-            "dialogDesc": "{Polkaswap} requires internet connection for stable experience",
+            "dialogDesc": "{AppName} requires internet connection for stable experience",
             "dialogTitle": "Connect to internet source",
             "label": "Your internet speed",
             "title": {
@@ -711,7 +711,7 @@
         "debtAvailableDescription": "The amount of funds you can still draw from your position without exceeding your borrowing limit, based on your current collateral.",
         "debtDetails": "Debt details",
         "depositCollateral": "Deposit collateral",
-        "disclaimerDescription": "Borrowing digital assets through {Polkaswap} carries significant risk and is entirely at your own risk. The value of digital assets is highly volatile, and any changes in the market prices of the assets you have borrowed or used as collateral can lead to substantial financial losses.",
+        "disclaimerDescription": "Borrowing digital assets through {AppName} carries significant risk and is entirely at your own risk. The value of digital assets is highly volatile, and any changes in the market prices of the assets you have borrowed or used as collateral can lead to substantial financial losses.",
         "error": {
             "borrowMoreThanAvailable": "Available debt exceeded",
             "enterBorrow": "Enter borrow amount",
@@ -1113,7 +1113,7 @@
             "limitOrder": "A 'Limit' order lets you specify the exact price at which you want to buy or sell an asset. A 'Limit Buy' order will only be executed at the specified price or lower, while a 'Limit Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.",
             "marketOrder": "A 'Market Order' is an order to immediately buy or sell at the best available current price. It doesn't require setting a price, ensuring a fast execution but with the trade-off of less control over the price received or paid. This type of order is used when certainty of execution is a priority over price control.",
             "marketWidget": "This widget shows a real-time stream of executed trades in the market, providing information on transaction volumes, recent activity, and current market trends. By observing the timing, price, and size of actual trades, traders can gain insights into market dynamics and sentiment, helping them to spot trading opportunities and make informed decisions",
-            "pairsList": "A real-time list showing current buy and sell orders for a cryptocurrency. It helps you understand the demand, potential price direction, and trade volume on the SORA Network and Polkaswap DEX",
+            "pairsList": "A real-time list showing current buy and sell orders for a cryptocurrency. It helps you understand the demand, potential price direction, and trade volume on the {Sora} Network and {AppName} DEX",
             "txDetails": {
                 "amount": "The 'Amount' refers to the total number of assets you want to buy or sell in your order. It's important to specify, as it determines the size of your transaction, impacting the total cost for buy orders or revenue for sell orders.",
                 "expiryDate": "The 'Expiry Date' is the deadline for your order to be executed. If the market doesn't reach your specified price before this date, the order is automatically cancelled. You're not bound to a perpetual wait if market conditions don't align with your trading preferences.",
@@ -1248,7 +1248,7 @@
         "title": "Referral Program",
         "transactionDetails": "Transaction Details",
         "unbondTitle": "Unbond XOR",
-        "welcomeMessage": "\nJoin me on {Polkaswap}!\n\nDiscover the stylish {DEX} that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!\n\n🎁 Invite friends and earn 10% of their trading fees\n\nSee you there!"
+        "welcomeMessage": "\nJoin me on {AppName}!\n\nDiscover the stylish {DEX} that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!\n\n🎁 Invite friends and earn 10% of their trading fees\n\nSee you there!"
     },
     "releaseNotesText": "Release notes",
     "removeLiquidity": {

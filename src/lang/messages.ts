@@ -142,7 +142,7 @@ export default {
     historyBtn: 'My purchases',
     historyTitle: 'Transaction History',
     moonpayTitle: 'Buy ETH via MoonPay',
-    moonpayDesc: 'Purchase ETH tokens on {Ethereum} and transfer them to {SORA} network via the bridge',
+    moonpayDesc: 'Purchase ETH tokens on {Ethereum} and transfer them to {Sora} network via the bridge',
     cedeStoreTitle: 'Transfer from {value}',
     cedeStoreDesc: 'Transfer any tokens from {value1} to {value2} via {value3}',
     cedeStoreBtn: 'Transfer from {value1} via {value2}',
@@ -172,13 +172,13 @@ export default {
   },
   footer: {
     internet: {
-      action: 'Refresh {Polkaswap}',
+      action: 'Refresh {AppName}',
       desc: {
         disabled: 'Disconnected',
         stable: 'Optimal speed',
         unstable: 'Slow connection',
       },
-      dialogDesc: '{Polkaswap} requires internet connection for stable experience',
+      dialogDesc: '{AppName} requires internet connection for stable experience',
       dialogTitle: 'Connect to internet source',
       label: 'Your internet speed',
       title: {
@@ -688,7 +688,7 @@ export default {
     invitationLink: 'Invitation link',
     inviteViaTelegram: 'Invite via {Telegram}',
     welcomeMessage:
-      '\nJoin me on {Polkaswap}!\n\nDiscover the stylish {DEX} that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!\n\n🎁 Invite friends and earn 10% of their trading fees\n\nSee you there!',
+      '\nJoin me on {AppName}!\n\nDiscover the stylish {DEX} that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!\n\n🎁 Invite friends and earn 10% of their trading fees\n\nSee you there!',
     bondTitle: 'Bond XOR',
     unbondTitle: 'Unbond XOR',
     confirm: {
@@ -1020,7 +1020,7 @@ export default {
       marketOrder:
         "A 'Market Order' is an order to immediately buy or sell at the best available current price. It doesn't require setting a price, ensuring a fast execution but with the trade-off of less control over the price received or paid. This type of order is used when certainty of execution is a priority over price control.",
       pairsList:
-        'A real-time list showing current buy and sell orders for a cryptocurrency. It helps you understand the demand, potential price direction, and trade volume on the SORA Network and Polkaswap DEX',
+        'A real-time list showing current buy and sell orders for a cryptocurrency. It helps you understand the demand, potential price direction, and trade volume on the {Sora} Network and {AppName} DEX',
       bookWidget:
         'A live, constantly updating record of buy (bid) and sell (ask) orders for a specific asset, organized by price level. The order book displays the depth of the market, including the quantities of assets being offered at various prices. Traders utilize this detailed view to gauge market sentiment, identify potential resistance and support levels, and anticipate price movements based on existing demand and supply',
       marketWidget:
@@ -1149,7 +1149,7 @@ export default {
     introDescription:
       'Experience safe and effortless borrowing and lending. Open borrowing positions with {Kensetsu} platform.',
     disclaimerDescription:
-      'Borrowing digital assets through {Polkaswap} carries significant risk and is entirely at your own risk. The value of digital assets is highly volatile, and any changes in the market prices of the assets you have borrowed or used as collateral can lead to substantial financial losses.',
+      'Borrowing digital assets through {AppName} carries significant risk and is entirely at your own risk. The value of digital assets is highly volatile, and any changes in the market prices of the assets you have borrowed or used as collateral can lead to substantial financial losses.',
     availableToBorrow: 'Available to borrow',
     availableToBorrowDescription:
       'The remaining amount you are eligible to draw under the current conditions of your position, based on your deposited collateral and any existing debt.',
