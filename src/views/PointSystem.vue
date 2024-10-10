@@ -3,8 +3,11 @@
     <s-card border-radius="small" shadow="always" size="medium" pressed class="points">
       <template #header>
         <div class="points__header">
-          <p>{{ t('points.title').toUpperCase() }}</p>
-          <h3>15000</h3>
+          <div>
+            <h2>{{ t('points.title') }}</h2>
+            <h3 v-if="!loading && isLoggedIn">{{ totalPoints }}</h3>
+          </div>
+          <p>Complete SORA Ecosystem-related tasks in order to qualify for a $3m AIRDROP</p>
         </div>
       </template>
       <div class="points__main s-flex-row">
@@ -22,22 +25,7 @@
           <s-scrollbar class="points__cards-scrollbar">
             <div class="points__cards">
               <point-card
-                v-for="[categoryName, pointsForCategory] in firstRowCards"
-                :key="categoryName"
-                :points-for-category="pointsForCategory"
-                :category-name="categoryName"
-                class="points__card"
-              />
-            </div>
-            <!-- <div class="points__card-first-trx">
-            <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL" />
-            <p>first ever transaction</p>
-            <p>{{ this?.pointsForCards?.firstTxAccount.currentProgress }} POINTS</p>
-          </div> -->
-
-            <div class="points__cards">
-              <point-card
-                v-for="[categoryName, pointsForCategory] in remainingCards"
+                v-for="(pointsForCategory, categoryName) in pointsForCards"
                 :key="categoryName"
                 :points-for-category="pointsForCategory"
                 :category-name="categoryName"
@@ -113,7 +101,6 @@ export default class PointSystem extends Mixins(
   private bridgeData: BridgeData[] = [];
   private poolDepositCount = 0;
   private poolWithdrawCount = 0;
-  private numberOfCardsInFirstRow = 2;
   totalSwapTxs = 0;
   dummyPoints: { [key: string]: CalculateCategoryPointResult } = {
     liquidityProvision: {
@@ -233,14 +220,6 @@ export default class PointSystem extends Mixins(
     return XOR.symbol;
   }
 
-  get firstRowCards() {
-    return this.pointsForCards ? Object.entries(this.pointsForCards).slice(0, this.numberOfCardsInFirstRow) : [];
-  }
-
-  get remainingCards() {
-    return this.pointsForCards ? Object.entries(this.pointsForCards).slice(this.numberOfCardsInFirstRow) : [];
-  }
-
   get referralsCardStyles() {
     return { backgroundImage: `url('/points/${this.libraryTheme}/referrals.png')` };
   }
@@ -324,6 +303,15 @@ export default class PointSystem extends Mixins(
     if (!this.referralRewards?.rewards) return ZeroStringValue;
 
     return this.getFiatAmountByFPNumber(this.referralRewards.rewards) || ZeroStringValue;
+  }
+
+  get totalPoints(): number {
+    if (!this.pointsForCards) {
+      return 0;
+    }
+    return Object.values(this.pointsForCards).reduce((sum, category) => {
+      return sum + (category.points || 0);
+    }, 0);
   }
 
   getTotalLiquidityFiatValue(): number {
@@ -428,11 +416,14 @@ export default class PointSystem extends Mixins(
 </script>
 
 <style lang="scss">
+.el-scrollbar__bar.is-horizontal {
+  display: none;
+}
 .container .points .el-loading-mask {
   border-radius: var(--s-border-radius-mini);
-  margin-left: -$inner-spacing-mini;
-  width: calc(100% + $inner-spacing-medium);
-  height: calc(100% - $inner-spacing-mini);
+  margin-left: -14px;
+  width: calc(100% + $inner-spacing-big);
+  height: calc(100% + $inner-spacing-medium);
   box-shadow: var(--s-shadow-element-pressed);
 }
 </style>
@@ -445,7 +436,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
   @include scrollbar();
 }
 .s-card {
-  padding: 12px !important;
+  padding: $inner-spacing-small !important;
 }
 .points {
   background-image: url('~@/assets/img/points/header.png');
@@ -453,6 +444,9 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
   background-position: top;
   background-color: #fbf7f9;
   width: 100%;
+  &__main {
+    margin-top: calc($inner-spacing-medium + $inner-spacing-tiny);
+  }
   &__row {
     display: flex;
     flex-direction: row;
@@ -461,7 +455,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
   &__container {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: $inner-spacing-medium;
   }
   &__first-cards {
     display: flex;
@@ -470,20 +464,31 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
   &__header {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 24px;
-    margin-top: 15px;
-    text-align: center;
-    color: white;
-    p {
-      font-weight: 700;
-      font-size: 16px;
-      opacity: 0.4;
+    gap: calc($inner-spacing-big + 3px);
+    margin-bottom: calc($inner-spacing-small + 2px);
+    margin-top: $inner-spacing-small;
+    div {
+      align-items: center;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      color: #ffffff;
+      h3 {
+        font-weight: 300;
+        font-size: 32px;
+      }
+      h2 {
+        text-align: left;
+        max-width: calc($select-asset-item-height * 2);
+        font-weight: 700;
+        font-size: 16px;
+      }
     }
-    h3 {
-      font-weight: 300;
-      font-size: 36px;
+    p {
+      max-width: $explore-search-input-max-width;
+      color: #f4f0f1;
+      font-weight: 400;
     }
   }
   &_main {
@@ -511,7 +516,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: calc($basic-spacing-small + 1px);
   }
   &__card-first-trx {
     display: flex;
@@ -522,7 +527,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
     padding: 18px 13px;
     border-radius: 12px;
     div {
-      margin-right: 9px;
+      margin-right: $inner-spacing-mini;
     }
     p:last-of-type {
       margin-left: auto;
