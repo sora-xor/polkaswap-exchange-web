@@ -79,3 +79,19 @@ yarn electron:build --linux --mac zip dmg --win portable --x64 --ia32
 ```
 
 Executable files (`.exe`, `.dmg` or `.snap`) will be located in `dist_electron` folder.
+
+
+## How to add translations?
+1) Add your translations to `src/lang/messages.ts`
+2) Run script to generate `en.json` file from `src/lang/messages.ts`
+```
+yarn lang:generate
+```
+This will update `en.json` file with new translations, ordered alphabetical
+3) Load updated `en.json` file to Lokalise
+4) Add translations for other languages in Localise
+5) Download translations from Localise, update these files in project
+6) Run script to order translations alphabetical in `en.json` file
+```
+yarn lang:fix
+```
