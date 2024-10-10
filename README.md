@@ -87,7 +87,8 @@ Executable files (`.exe`, `.dmg` or `.snap`) will be located in `dist_electron` 
 ```
 yarn lang:generate
 ```
-This will update `en.json` file with new translations, ordered alphabetical
+This will update `en.json` file with new translations, arranged in alphabetical order
+
 3) Load updated `en.json` file to Lokalise
 4) Add translations for other languages in Localise
 5) Download translations from Localise, update these files in project
