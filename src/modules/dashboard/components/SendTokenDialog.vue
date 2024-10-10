@@ -217,7 +217,8 @@ export default class SendTokenDialog extends Mixins(
       this.isInsufficientXorForFee ||
       this.emptyValue ||
       !this.validAddress ||
-      this.isInsufficientBalance
+      this.isInsufficientBalance ||
+      this.showIsNotSbtOwnerReceiver
     );
   }
 
