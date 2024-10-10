@@ -17,8 +17,13 @@
       <p>{{ categoryName }}</p>
       <i class="icontype s-icon-arrows-chevron-right-rounded-24" />
     </div>
+    <div class="point-card__currently-amount">
+      <p>CURRENTLY</p>
+      <p>{{ this.pointsForCategory.currentProgress }}</p>
+    </div>
+    <s-divider />
     <div class="point-card__amount-of-points">
-      <p>Next LVL</p>
+      <p>NEXT LVL</p>
       <p>{{ this.pointsForCategory.nextLevelRewardPoints }}</p>
     </div>
   </div>
@@ -65,6 +70,10 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
 </script>
 
 <style lang="scss" scoped>
+.el-divider {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
 .point-card {
   position: relative;
   padding: 8px;
@@ -113,8 +122,6 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
       font-weight: 300;
       font-size: 15px;
       color: var(--s-color-base-content-primary);
-      max-width: 124px;
-      word-wrap: break-word;
     }
     i {
       align-self: center;
@@ -122,29 +129,30 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
     }
   }
 
+  &__currently-amount,
   &__amount-of-points {
-    position: absolute;
-    bottom: 0;
-    left: 0;
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
-    background-color: rgba(245, 100, 169, 0.12);
-    border-radius: 0 0 12px 12px;
-
     p {
       font-weight: 800;
       font-size: 11px;
-      color: #f564a9;
       &:first-of-type {
-        text-align: left;
+        color: #a19a9d;
       }
-      &:last-of-type {
-        text-align: right;
-      }
+    }
+  }
+  &__currently-amount {
+    margin-top: 14px;
+    p {
+      color: #479aef;
+    }
+  }
+  &__amount-of-points {
+    p {
+      color: #f564a9;
     }
   }
 }

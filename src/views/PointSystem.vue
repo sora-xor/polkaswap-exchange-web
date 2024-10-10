@@ -19,30 +19,32 @@
           </s-button>
         </div>
         <div v-else v-loading="loading" class="points__cards s-flex-column">
-          <div class="points__cards">
-            <point-card
-              v-for="[categoryName, pointsForCategory] in firstRowCards"
-              :key="categoryName"
-              :points-for-category="pointsForCategory"
-              :category-name="categoryName"
-              class="points__card"
-            />
-          </div>
-          <div class="points__card-first-trx">
+          <s-scrollbar class="points__cards-scrollbar">
+            <div class="points__cards">
+              <point-card
+                v-for="[categoryName, pointsForCategory] in firstRowCards"
+                :key="categoryName"
+                :points-for-category="pointsForCategory"
+                :category-name="categoryName"
+                class="points__card"
+              />
+            </div>
+            <!-- <div class="points__card-first-trx">
             <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL" />
             <p>first ever transaction</p>
             <p>{{ this?.pointsForCards?.firstTxAccount.currentProgress }} POINTS</p>
-          </div>
+          </div> -->
 
-          <div class="points__cards">
-            <point-card
-              v-for="[categoryName, pointsForCategory] in remainingCards"
-              :key="categoryName"
-              :points-for-category="pointsForCategory"
-              :category-name="categoryName"
-              class="points__card"
-            />
-          </div>
+            <div class="points__cards">
+              <point-card
+                v-for="[categoryName, pointsForCategory] in remainingCards"
+                :key="categoryName"
+                :points-for-category="pointsForCategory"
+                :category-name="categoryName"
+                class="points__card"
+              />
+            </div>
+          </s-scrollbar>
         </div>
       </div>
     </s-card>
@@ -436,6 +438,12 @@ export default class PointSystem extends Mixins(
 </style>
 
 <style lang="scss" scoped>
+$card-height: calc($sidebar-max-width - $inner-spacing-mini);
+
+.points__cards-scrollbar {
+  max-height: calc($card-height * 2.5);
+  @include scrollbar();
+}
 .s-card {
   padding: 12px !important;
 }
@@ -528,7 +536,7 @@ export default class PointSystem extends Mixins(
   }
   &__card {
     width: $sidebar-max-width;
-    height: calc($sidebar-max-width - $inner-spacing-mini);
+    height: $card-height;
     background-color: #f4f0f1;
     border-radius: var(--s-border-radius-mini);
     padding: $inner-spacing-medium;
