@@ -1,6 +1,4 @@
-import fs from 'fs';
-
-function format(obj: any) {
+export function format(obj: any) {
   if (typeof obj !== 'object' || obj === null) return obj;
 
   const keys = Object.keys(obj);
@@ -19,7 +17,7 @@ function format(obj: any) {
   return formatted;
 }
 
-function sortAlpha(obj: any) {
+export function sortAlpha(obj: any) {
   if (typeof obj !== 'object') return obj;
 
   const sorted = {};
@@ -35,15 +33,3 @@ function sortAlpha(obj: any) {
 
   return sorted;
 }
-
-(async function main() {
-  const buildDir = './src/lang';
-  if (!fs.existsSync(buildDir)) {
-    fs.mkdirSync(buildDir);
-  }
-  const langObj = (await import('../src/lang/en.json')).default;
-  const formatted = format(langObj);
-  const sorted = sortAlpha(formatted);
-  fs.writeFileSync(`${buildDir}/en.json`, JSON.stringify(sorted, null, 4));
-  console.info(`${buildDir}/en.json created!`);
-})();

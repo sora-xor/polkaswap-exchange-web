@@ -1,4 +1,3 @@
-import { Operation, TransactionStatus } from '@sora-substrate/sdk';
 import { RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
 import { en as walletEn } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
@@ -10,7 +9,7 @@ import { PoolPageNames } from '../modules/pool/consts';
 import { StakingPageNames } from '../modules/staking/consts';
 import { ValidatorsFilterType, ValidatorsListMode } from '../modules/staking/sora/consts';
 import { VaultPageNames } from '../modules/vault/consts';
-import { AlertFrequencyTabs, AlertTypeTabs, FiatOptionTabs } from '../types/tabs';
+import { AlertFrequencyTabs, AlertTypeTabs } from '../types/tabs';
 
 export default {
   // Wallet project keys
@@ -29,13 +28,14 @@ export default {
   connectWalletText: 'Connect account',
   disconnectWalletText: 'Disconnect',
   editText: 'Edit',
+  resetText: 'Reset',
+  priceChartText: 'Price chart',
   changeAccountText: 'Change account',
   connectedText: 'Connected',
   connectedAccount: 'Connected account',
   selectNodeConnected: 'Connected to: {chain}',
   connectWalletTextTooltip: 'Connect to {Sora} Network with {PolkadotJs}',
-  selectNodeText: 'Select node',
-  selectIndexerText: 'Select indexer',
+  selectNodeText: 'Select Network Node',
   bridgeText: 'Bridge',
   acceptText: 'Accept & Hide',
   continueText: 'Continue',
@@ -52,8 +52,10 @@ export default {
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction',
+  customisePageText: 'Customize page',
   signAndClaimText: 'Sign and claim',
   retryText: 'Retry',
+  locationText: 'Location',
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: "Network fee is used to ensure {Sora} system's growth and stable performance.",
   ethNetworkFeeTooltipText:
@@ -71,6 +73,7 @@ export default {
   blockNumberText: 'Block number',
   transactionDetailsText: 'Transaction Details',
   noDataText: 'No data',
+  noir: 'Noir',
   [Theme.LIGHT]: 'Light',
   [Theme.DARK]: 'Dark',
   pageTitle: {
@@ -91,7 +94,7 @@ export default {
     [DashboardPageNames.AssetOwner]: 'Asset owner',
     [DashboardPageNames.AssetOwnerDetails]: '@:pageTitle.AssetOwner',
     [VaultPageNames.Vaults]: '{Kensetsu}',
-    [VaultPageNames.VaultDetails]: 'Position details',
+    [VaultPageNames.VaultDetails]: 'Position Details',
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',
@@ -101,13 +104,14 @@ export default {
     [PageNames.Wallet]: 'Account',
     [PageNames.Rewards]: 'Rewards',
     About: 'About',
+    Burn: '@:pageTitle.Burn',
     [PageNames.Stats]: 'Statistics',
     [PageNames.OrderBook]: 'Trade',
     [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
     [PageNames.SoraCard]: '{Sora} Card',
-    [PageNames.AssetOwnerContainer]: 'Asset owner',
-    [VaultPageNames.VaultsContainer]: '{Kensetsu}',
+    [PageNames.AssetOwnerContainer]: '@:pageTitle.AssetOwner',
+    [VaultPageNames.VaultsContainer]: '@:pageTitle.Vaults',
   },
   alerts: {
     [AlertTypeTabs.Drop]: 'Drops below',
@@ -135,14 +139,14 @@ export default {
     noSupportMsg: "Notifications aren't supported by your browser",
   },
   fiatPayment: {
-    [FiatOptionTabs.moonpay]: 'MoonPay',
     historyBtn: 'My purchases',
     historyTitle: 'Transaction History',
     moonpayTitle: 'Buy ETH via MoonPay',
-    moonpayDesc: 'Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge',
+    moonpayDesc: 'Purchase ETH tokens on {Ethereum} and transfer them to {SORA} network via the bridge',
     cedeStoreTitle: 'Transfer from {value}',
     cedeStoreDesc: 'Transfer any tokens from {value1} to {value2} via {value3}',
     cedeStoreBtn: 'Transfer from {value1} via {value2}',
+    errorMessage: "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later.",
   },
   headerMenu: {
     showBalances: 'Show Balances',
@@ -153,6 +157,10 @@ export default {
     showDisclaimer: 'Show Disclaimer',
     hideDisclaimer: 'Hide Disclaimer',
     turnPhoneHideBalances: 'Turn phone & hide',
+    titleBalance: 'Balances',
+    titleCurrency: 'Fiat currency',
+    titleMisc: 'Misc',
+    titleTheme: 'Color theme',
   },
   social: {
     wiki: '{Sora} Wiki',
@@ -211,6 +219,7 @@ export default {
     info: 'Info & Community',
     github: 'GitHub',
     sorawiki: '{Sora} Wiki',
+    privacy: 'Privacy Policy',
   },
   helpDialog: {
     title: 'Help',
@@ -227,25 +236,24 @@ export default {
     errors: {
       connection: 'An error occurred while connecting to the node\n{address}\n',
       network: 'The node\n{address}\n is from the another network\n',
-      existing: "This node is already added: '{title}'\n",
+      existing: 'This node is already added: {title}\n',
     },
     warnings: {
-      disconnect: 'Сonnection to the node has been lost. Reconnecting...',
+      disconnect: 'Connection to the node has been lost. Reconnecting...',
     },
     messages: {
-      connected: 'Connection estabilished with node\n{address}\n',
+      connected: 'Connection established with node\n{address}\n',
       selectNode: 'Please select node to connect from the node list',
     },
   },
   selectNodeDialog: {
-    title: '{Sora} Network node selection',
+    title: 'Network node selection',
     addNode: 'Add custom node',
     updateNode: 'Update node',
     customNode: 'Custom node',
     howToSetupOwnNode: 'Setup your node',
     select: 'Select',
     connected: 'Connected',
-    selectNodeForEnvironment: 'Select a node for {environment} environment:',
     nodeTitle: '{chain} hosted by {name}',
     messages: {
       emptyName: 'Please input the name of the node',
@@ -253,17 +261,6 @@ export default {
       incorrectProtocol: 'Address should starts from ws:// or wss://',
       incorrectAddress: 'Incorrect address',
     },
-  },
-  selectIndexerDialog: {
-    title: '{Sora} Network indexer selection',
-    addIndexer: 'Add custom indexer',
-    updateIndexer: 'Update indexer',
-    customIndexer: 'Custom indexer',
-    howToSetupOwnIndexer: 'How to setup your own {Sora} indexer',
-    select: 'Select',
-    connected: 'Connected',
-    selectIndexerForEnvironment: 'Select a indexer for {environment} environment:',
-    indexerTitle: '{chain} hosted by {name}',
   },
   selectLanguageDialog: {
     title: 'Language',
@@ -278,127 +275,6 @@ export default {
   transfers: {
     from: 'From',
     to: 'To',
-  },
-  operations: {
-    [Operation.Swap]: 'Swap',
-    [Operation.Transfer]: 'Transfer',
-    [Operation.AddLiquidity]: 'Add Liquidity',
-    [Operation.RemoveLiquidity]: 'Remove Liquidity',
-    [Operation.CreatePair]: 'Create Pair',
-    [Operation.RegisterAsset]: 'Register Asset',
-    [Operation.ClaimRewards]: 'Claim Rewards',
-    [Operation.ReferralReserveXor]: 'Bond XOR',
-    [Operation.ReferralUnreserveXor]: 'Unbond XOR',
-    [Operation.ReferralSetInvitedUser]: 'Set {role}',
-    [Operation.DemeterFarmingDepositLiquidity]: 'Add Liquidity Stake',
-    [Operation.DemeterFarmingWithdrawLiquidity]: 'Remove Liquidity Stake',
-    [Operation.DemeterFarmingStakeToken]: 'Add Stake',
-    [Operation.DemeterFarmingUnstakeToken]: 'Remove Stake',
-    [Operation.DemeterFarmingGetRewards]: 'Claim Rewards',
-    [Operation.EthBridgeIncoming]: '@:hashiBridgeText',
-    [Operation.EthBridgeOutgoing]: '@:hashiBridgeText',
-    [Operation.StakingBondAndNominate]: 'Bond and Nominate',
-    [Operation.StakingBond]: 'Bond',
-    [Operation.StakingBondExtra]: 'Bond Extra',
-    [Operation.StakingUnbond]: 'Unbond',
-    [Operation.StakingRebond]: 'Rebond',
-    [Operation.StakingNominate]: 'Nominate',
-    [Operation.StakingWithdrawUnbonded]: 'Withdraw Unbonded',
-    [Operation.StakingPayout]: 'Payout Rewards',
-    [Operation.StakingChill]: 'Chill',
-    [Operation.StakingSetController]: 'Set Controller',
-    [Operation.StakingSetPayee]: 'Set Payee',
-    [Operation.OrderBookPlaceLimitOrder]: 'Place Order',
-    [Operation.OrderBookCancelLimitOrder]: 'Cancel Order',
-    [Operation.OrderBookCancelLimitOrders]: 'Cancel Orders',
-    [Operation.Burn]: 'Burn',
-    [Operation.Mint]: 'Mint',
-    [Operation.CreateVault]: 'Create Position',
-    [Operation.CloseVault]: 'Close Position',
-    [Operation.DepositCollateral]: 'Deposit Position',
-    [Operation.RepayVaultDebt]: 'Repay Debt',
-    [Operation.BorrowVaultDebt]: 'Borrow Debt',
-    andText: 'and',
-    [TransactionStatus.Finalized]: {
-      [Operation.Transfer]: '{action} {amount} {symbol} {direction} {address}',
-      [Operation.Swap]: 'Swapped {amount} {symbol} for {amount2} {symbol2}',
-      [Operation.AddLiquidity]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.RemoveLiquidity]: 'Removed {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.CreatePair]: 'Supplied {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.RegisterAsset]: 'Registered {symbol} asset',
-      [Operation.ClaimRewards]: 'Reward claimed successfully {rewards}',
-      [Operation.ReferralReserveXor]: 'Bonded XOR successfully',
-      [Operation.ReferralUnreserveXor]: 'Unbonded XOR successfully',
-      [Operation.ReferralSetInvitedUser]: 'Set {role} {address}',
-      [Operation.DemeterFarmingDepositLiquidity]: 'Supplied {symbol} and {symbol2} {amount} LP tokens',
-      [Operation.DemeterFarmingWithdrawLiquidity]: 'Removed {symbol} and {symbol2} {amount} LP tokens',
-      [Operation.DemeterFarmingStakeToken]: 'Added {amount} {symbol}',
-      [Operation.DemeterFarmingUnstakeToken]: 'Removed {amount} {symbol}',
-      [Operation.DemeterFarmingGetRewards]: '{amount} {symbol} claimed successfully',
-      [Operation.EthBridgeIncoming]: 'Transferred {amount} {symbol} from {Ethereum} to {Sora}',
-      [Operation.EthBridgeOutgoing]: 'Transferred {amount} {symbol} from {Sora} to {Ethereum}',
-      [Operation.StakingBondAndNominate]: 'Bonded {amount} {symbol}',
-      [Operation.StakingBond]: 'Bonded {amount} {symbol}',
-      [Operation.StakingBondExtra]: 'Bonded extra {amount} {symbol}',
-      [Operation.StakingUnbond]: 'Unbonded {amount} {symbol}',
-      [Operation.StakingRebond]: 'Rebonded {amount} {symbol}',
-      [Operation.StakingNominate]: 'Nominated validators',
-      [Operation.StakingWithdrawUnbonded]: 'Withdrew {amount} {symbol}',
-      [Operation.StakingPayout]: 'Payout rewards',
-      [Operation.StakingChill]: 'Chill',
-      [Operation.StakingSetController]: 'Set controller {address}',
-      [Operation.StakingSetPayee]: 'Set payee {address}',
-      [Operation.OrderBookPlaceLimitOrder]: '{side} {amount} {symbol} at {price} {symbol2} placed',
-      [Operation.OrderBookCancelLimitOrder]: 'Limit order cancelled',
-      [Operation.OrderBookCancelLimitOrders]: 'Limit orders cancelled',
-      [Operation.Burn]: 'Burned {amount} {symbol}',
-      [Operation.Mint]: 'Minted {amount} {symbol} to {address}',
-      [Operation.CreateVault]: '{symbol}/{symbol2} Position created',
-      [Operation.CloseVault]: '{symbol}/{symbol2} Position closed',
-      [Operation.DepositCollateral]: 'Deposited {amount} {symbol}',
-      [Operation.RepayVaultDebt]: 'Repaid {amount} {symbol}',
-      [Operation.BorrowVaultDebt]: 'Borrowed {amount} {symbol}',
-    },
-    [TransactionStatus.Error]: {
-      [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
-      [Operation.Swap]: 'Failed to swap {amount} {symbol} for {amount2} {symbol2}',
-      [Operation.AddLiquidity]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.RemoveLiquidity]: 'Failed to remove {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.CreatePair]: 'Failed to supply {amount} {symbol} and {amount2} {symbol2}',
-      [Operation.RegisterAsset]: 'Failed to register {symbol} asset',
-      [Operation.ClaimRewards]: 'Failed to claim rewards {rewards}',
-      [Operation.ReferralReserveXor]: 'Failed to bond XOR',
-      [Operation.ReferralUnreserveXor]: 'Failed to unbonded XOR',
-      [Operation.ReferralSetInvitedUser]: 'Failed to set {role} {address}',
-      [Operation.DemeterFarmingDepositLiquidity]: 'Failed to supply {amount} {symbol} and {symbol2} LP tokens',
-      [Operation.DemeterFarmingWithdrawLiquidity]: 'Failed to remove {amount} {symbol} and {symbol2} LP tokens',
-      [Operation.DemeterFarmingStakeToken]: 'Failed to add {amount} {symbol}',
-      [Operation.DemeterFarmingUnstakeToken]: 'Failed to remove {amount} {symbol}',
-      [Operation.DemeterFarmingGetRewards]: 'Failed to claim {symbol}',
-      [Operation.EthBridgeIncoming]: 'Failed to transfer {amount} {symbol} from {Ethereum} to {Sora}',
-      [Operation.EthBridgeOutgoing]: 'Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}',
-      [Operation.StakingBondAndNominate]: 'Failed to bond {amount} {symbol}',
-      [Operation.StakingBond]: 'Failed to bond {amount} {symbol}',
-      [Operation.StakingBondExtra]: 'Failed to bond extra {amount} {symbol}',
-      [Operation.StakingUnbond]: 'Failed to unbond {amount} {symbol}',
-      [Operation.StakingRebond]: 'Failed to rebond {amount} {symbol}',
-      [Operation.StakingNominate]: 'Failed to nominate validators',
-      [Operation.StakingWithdrawUnbonded]: 'Failed to withdraw {amount} {symbol}',
-      [Operation.StakingPayout]: 'Failed to payout rewards',
-      [Operation.StakingChill]: 'Failed to chill',
-      [Operation.StakingSetController]: 'Failed to set controller {address}',
-      [Operation.StakingSetPayee]: 'Failed to set payee {address}',
-      [Operation.OrderBookPlaceLimitOrder]: 'Failed to place limit order of {amount} {symbol} at {price} {symbol2}',
-      [Operation.OrderBookCancelLimitOrders]: 'Failed to cancel limit orders',
-      [Operation.OrderBookCancelLimitOrder]: 'Failed to cancel limit order',
-      [Operation.Burn]: 'Failed to burn {amount} {symbol}',
-      [Operation.Mint]: 'Failed to mint {amount} {symbol} to {address}',
-      [Operation.CreateVault]: 'Failed to create {symbol}/{symbol2} position',
-      [Operation.CloseVault]: 'Failed to close {symbol}/{symbol2} position',
-      [Operation.DepositCollateral]: 'Failed to deposit {amount} {symbol}',
-      [Operation.RepayVaultDebt]: 'Failed to repaid {amount} {symbol}',
-      [Operation.BorrowVaultDebt]: 'Failed to borrow {amount} {symbol}',
-    },
   },
   exchange: {
     [PageNames.Swap]: 'Swap',
@@ -484,7 +360,7 @@ export default {
       title: 'Tokens',
       placeholder: 'Filter by Asset ID, Name or Ticker Symbol',
       networkLabelSora: '{Sora} network tokens',
-      networkLabelEthereum: '{Ethereum} network mirror tokens',
+      networkLabelEthereum: '{network} network mirror tokens',
       emptyListMessage: 'No results',
     },
     customAsset: {
@@ -539,7 +415,6 @@ export default {
     allowToken: 'Allow {AppName} to use your {tokenSymbol}',
     approveToken:
       'Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.',
-    accountAddress: '{network} @:accountAddressText',
   },
   bridgeHistory: {
     title: 'History',
@@ -581,7 +456,6 @@ export default {
     remove: 'remove',
     add: 'ADD',
     ok: 'OK',
-    networkFee: 'Network fee',
     alreadyCreated: 'Token pair is already created',
     firstLiquidityProvider: 'You are the first liquidity provider',
     firstLiquidityProviderInfo:
@@ -624,7 +498,7 @@ export default {
     synthetics: 'synthetic tokens',
   },
   dexSettings: {
-    title: 'Transaction settings',
+    title: 'Settings',
     marketAlgorithm: '@.upper:marketAlgorithmText',
     marketAlgorithms: {
       SMART:
@@ -717,7 +591,7 @@ export default {
       },
       [MoonpayNotifications.SupportError]: {
         title: 'Token not supported',
-        text: 'Unfortunately the token purchased via @:moonpayText is not yet supported by the {Hashi} bridge in {AppName}. Normally only the supported tokens should be available for purchase via @:moonpayText in {AppName}, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class="link" href="https://t.me/polkaswap" target="_blank" rel="nofollow noopener" title="{AppName}">{AppName} Telegram group</a>',
+        text: 'Unfortunately the token purchased via @:moonpayText is not yet supported by the {Hashi} bridge in {AppName}. Normally only the supported tokens should be available for purchase via MoonPay in {AppName}, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class="link" href="https://t.me/polkaswap" target="_blank" rel="nofollow noopener" title="{AppName}">{AppName} Telegram group</a>.',
       },
       [MoonpayNotifications.FeeError]: {
         title: 'Not enough ETH for the bridge tx',
@@ -747,7 +621,7 @@ export default {
     },
     history: {
       title: 'Purchase history',
-      empty: 'No data',
+      empty: '@:noDataText',
     },
     confirmations: {
       txReady: 'Transaction Ready For Bridge',
@@ -796,14 +670,13 @@ export default {
     connectAccount: 'To invite users you need to connect your {Sora} account.',
     bondedXOR: 'XOR Bonded',
     referralsNumber: '{number} referrals',
-    startInviting: 'To start inviting, bond any amount of XOR.',
+    startInviting: 'Bond XOR to refer others',
     insufficientBondedAmount: 'To invite more referrals, bond at least {inviteUserFee} XOR',
     deposit: 'Deposit',
     balance: 'Balance',
     insufficientBondedBalance: 'Insufficient bonded balance',
     action: {
       empty: 'Enter amount of {tokenSymbol}',
-      startInviting: 'Bond {tokenSymbol} to start inviting',
       bondMore: 'Bond More',
       bond: 'Bond',
       unbond: 'Unbond',
@@ -815,7 +688,7 @@ export default {
     invitationLink: 'Invitation link',
     inviteViaTelegram: 'Invite via {Telegram}',
     welcomeMessage:
-      '\nJoin me on {Polkaswap}!\n\nDiscover the stylish {DEX} that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!\n\n🎁 Refer friends and earn 10% of their trading fees\n\nSee you there!',
+      '\nJoin me on {Polkaswap}!\n\nDiscover the stylish {DEX} that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!\n\n🎁 Invite friends and earn 10% of their trading fees\n\nSee you there!',
     bondTitle: 'Bond XOR',
     unbondTitle: 'Unbond XOR',
     confirm: {
@@ -829,6 +702,18 @@ export default {
       hasReferrerTitle: 'You’ve already set your referrer',
       hasReferrerDescription: 'Unfortunately, you can only set one',
       ok: 'OK',
+    },
+    referrer: {
+      approve: 'Approve',
+      approved: 'Approved',
+      description: 'You can get referred to {AppName},<br/>type in the link or code of the referrer',
+      info: 'When you’ll pay a fee for transaction,<br/>10% will go to your referrer',
+      label: 'Invitation link or code',
+      placeholder: 'Enter invitation link or code',
+      referredBy: 'You’ve been referred by {referrer}',
+      referredLablel: 'Referred address',
+      title: 'Add your referrer',
+      titleReferrer: 'Your referrer',
     },
   },
   mobilePopup: {
@@ -876,7 +761,6 @@ export default {
       claim: 'Claim rewards',
       remove: 'Remove stake',
       more: 'Stake more',
-      payout: 'Payout',
       confirm: 'Confirm Staking',
       withdraw: 'Withdraw',
     },
@@ -917,6 +801,9 @@ export default {
       validators: 'Validators',
       selectedValidators: 'Selected validators',
     },
+    newStake: {
+      title: 'Start staking',
+    },
     withdraw: {
       countdownLeft: 'left',
       withdrawable: 'Withdrawable',
@@ -940,7 +827,7 @@ export default {
         },
         [ValidatorsFilterType.NOT_OVERSUBSCRIBED]: {
           name: 'Not oversubscribed',
-          description: 'Account within allocation limit, avoids oversubscription penalties on Polkadot staking.',
+          description: 'Account within allocation limit, avoids oversubscription penalties on {Polkadot} staking.',
         },
         [ValidatorsFilterType.TWO_VALIDATORS_PER_IDENTITY]: {
           name: 'Limit of 2 validators per identity',
@@ -995,7 +882,7 @@ export default {
     },
     selectValidatorsMode: {
       title: 'Stake with validators suggested by the algorithm',
-      description: 'SORA Network algorithm has selected a list of recommended validators based on the criteria:',
+      description: '{Sora} network algorithm has selected a list of recommended validators based on the criteria:',
       criteria: [
         'Most profitable',
         'Not oversubscribed',
@@ -1010,9 +897,9 @@ export default {
     },
   },
   browserNotificationDialog: {
-    title: 'Enable browser notifications',
+    title: 'Set Notifications',
     info: 'We will send you only relevant updates about your wallet, for example: asset balance changes',
-    enable: 'Enable notifications',
+    button: 'Enable notifications',
     agree: 'Yes, I understand',
     notificationBlocked:
       "To receive the notifications about {AppName}, please, allow the notifications in your browser's native settings",
@@ -1097,14 +984,19 @@ export default {
       side: 'side',
       filled: 'filled',
       lifetime: 'lifetime',
-      noOrders: 'No orders',
+      noOrders: 'No orders. Create your first one!',
+    },
+    orderStatus: {
+      active: 'Active',
+      canceled: 'Canceled',
+      expired: 'Expired',
+      filled: 'Filled',
     },
     dialog: {
       placeMarket: 'Place market order',
       placeLimit: 'Place limit order',
       askCancel: 'Are you sure you want to cancel all of your open orders?',
       cancelAll: 'Yes, cancel all',
-      noCancel: 'No, don’t cancel it',
       buy: 'Buy {amount} {symbol}',
       sell: 'Sell {amount} {symbol}',
       at: 'at {price} {symbol}',
@@ -1114,7 +1006,7 @@ export default {
       volume: 'Volume',
       dailyChange: 'Daily change',
       status: 'Status',
-      total: '{amount} {symbol} AT {amount2} {symbol2}',
+      total: '{amount} {symbol} at {amount2} {symbol2}',
     },
     bookStatus: {
       active: 'Active',
@@ -1142,6 +1034,7 @@ export default {
           "The 'Amount' refers to the total number of assets you want to buy or sell in your order. It's important to specify, as it determines the size of your transaction, impacting the total cost for buy orders or revenue for sell orders.",
         limit:
           "The 'Limit Price' is the precise price you set for a limit order. The trade will only execute when the asset's market price meets your limit price, ensuring you don't purchase above or sell below this specified value.",
+        locked: "The 'Locked' shows the amount of asset to be held while order is ongoing.",
       },
       bookStatus: {
         active: 'Full trading functionality enabled. You can place new orders or cancel existing ones.',
@@ -1149,12 +1042,6 @@ export default {
           'Limited functionality. You can place new orders and cancel existing ones, but some features may be unavailable.',
         cancelable: 'You can only cancel existing orders. New order placement is currently disabled.',
         inactive: 'All trading activities are currently halted. No orders can be placed or canceled at this time.',
-      },
-      orderStatus: {
-        active: 'Active',
-        canceled: 'Canceled',
-        expired: 'Expired',
-        filled: 'Filled',
       },
     },
     txDetails: {
@@ -1175,7 +1062,7 @@ export default {
       marketNotAvailable: {
         reason: 'Not enough orders available to fullfill this order',
         reading:
-          'Market order limitation: There are not enough orders available to fulfill this market limit order. Please adjust your order size or wait for more orders to be placed',
+          'Market order limitation: There are not enough orders available to fulfill this market order. Please adjust your order size or wait for more orders to be placed',
       },
       exceedsSpread: {
         reason: 'Price exceeded spread',
@@ -1308,5 +1195,12 @@ export default {
       repayMoreThanDebt: 'Debt overpaid',
       incorrectCollateral: 'Token pair is not supported',
     },
+  },
+  rotatePhoneNotification: {
+    enableAcceleration: 'Enable acceleration access in your settings.',
+    gyroscropePhone:
+      " Our technology uses your phone's built-in gyroscope to instantly hide your balance when you tilt your device.",
+    info: 'For extra privacy, tilt your device face down to instantly hide your asset balances. This feature uses your phone’s built-in sensors.',
+    title: 'Turn your device upside down to hide balances',
   },
 };

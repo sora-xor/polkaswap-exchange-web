@@ -41,7 +41,6 @@
             "token": "token | tokens"
         },
         "empty": "No tokens found",
-        "next": "Next",
         "pinAsset": "Pin Asset",
         "scam": "SCAM",
         "searchInputText": "Search by Asset ID, Name or Ticker Symbol",
@@ -286,8 +285,6 @@
     "connectEthereumWalletText": "Connect {Ethereum} wallet",
     "connection": {
         "action": {
-            "connect": "Connect account",
-            "install": "Install extension",
             "learnMore": "Learn more about wallet connection",
             "refresh": "Refresh"
         },
@@ -298,14 +295,10 @@
             "extensions": "Extensions",
             "integrated": "Integrated"
         },
-        "noAccounts": "No account found in your {extension} browser extension. Please add an account and try again.",
         "selectAccount": "Select account to work with",
-        "selectWallet": "Select a wallet to work with",
-        "text": "In order to manage assets and sign transactions on {Sora}, an account must be connected. {Sora} accounts can be created and connected using our integrated wallets or browser extensions.",
         "wallet": {
             "connected": "Connected",
             "install": "Install",
-            "notConnected": "Not connected",
             "recommended": "Recommended"
         }
     },
@@ -336,13 +329,9 @@
         "youWillReceive": "You will receive"
     },
     "createToken": {
-        "action": "@:createTokenText",
-        "actionNFT": "@:createTokenTextNFT",
-        "confirm": "@:confirmText",
         "confirmTokenTitleCommon": "Create Token",
         "confirmTokenTitleNFT": "Create NFT",
         "CreateSimpleToken": "Token",
-        "desc": "Create and deploy custom asset on {Sora}",
         "divisible": {
             "desc": "Ability of NFT to divide into fractional parts. Liquidity provisioning only works with divisible assets",
             "placeholder": "Divisible"
@@ -356,9 +345,6 @@
             "desc": "Ability to mint more tokens.",
             "placeholder": "Extensible supply"
         },
-        "fee": "@:networkFeeText",
-        "feeError": "Failed to get a fee for a transaction",
-        "insufficientBalance": "@:insufficientBalanceText",
         "nft": {
             "description": {
                 "placeholder": "Description"
@@ -390,7 +376,6 @@
             "desc": "Create {symbol} token",
             "title": "Transaction submitted"
         },
-        "title": "@:createTokenText",
         "titleCommon": "Create",
         "tokenName": {
             "desc": "This is a name for the token. You can use from 1 to 33 characters for the selection.",
@@ -403,12 +388,10 @@
         "tokenSymbol": {
             "desc": "This is an identifier for the token. You can use from 1 to 7 characters for the selection.",
             "placeholder": "Token symbol"
-        },
-        "tooltipValue": "@:networkFeeTooltipText"
+        }
     },
     "createTokenText": "Create",
     "createTokenTextNFT": "Create NFT",
-    "createWalletText": "Create wallet",
     "currencyDialog": {
         "currency": "Currency",
         "searchPlaceholder": "Search by currency name or symbol"
@@ -585,6 +568,7 @@
         "zeroBalance": "Hide 0 balance assets"
     },
     "firstPerSecond": "{first} per {second}",
+    "firstText": "First",
     "footer": {
         "internet": {
             "action": "Refresh {Polkaswap}",
@@ -633,7 +617,6 @@
         "faucet": "Faucet",
         "github": "GitHub",
         "info": "Info & Community",
-        "memorandum": "{AppName} Memorandum and Terms of Services",
         "privacy": "Privacy Policy",
         "sorawiki": "{Sora} Wiki"
     },
@@ -664,11 +647,7 @@
         "clearHistory": "Clear history",
         "empty": "Your transactions will appear here",
         "emptySearch": "No transactions found",
-        "filterPlaceholder": "Filter by Address, Symbol, Type or Block ID",
-        "firstText": "First",
-        "lastText": "Last",
-        "nextText": "Next",
-        "prevText": "Previous"
+        "filterPlaceholder": "Filter by Address, Symbol, Type or Block ID"
     },
     "historyErrorMessages": {
         "balances": {
@@ -794,6 +773,7 @@
         "yourDebtDescription": "The total amount currently outstanding in your position, including the drawn amount and any accrued interest. This balance increases over time if interest accumulates.",
         "yourDebtTokenBalance": "Your {tokenSymbol} balance"
     },
+    "lastText": "Last",
     "learnMoreText": "Learn more",
     "light": "Light",
     "locationText": "Location",
@@ -1117,7 +1097,6 @@
             "time": "time"
         },
         "price": "Price",
-        "pricePerToken": "Price per 1 {token}",
         "Sell": "Sell {asset}",
         "setPrice": "Set price",
         "stop": "Book stopped",
@@ -1162,7 +1141,6 @@
         "AssetOwner": "Asset owner",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Bridge": "@:bridgeText",
-        "Burn": "Burn",
         "Explore/Books": "@:pageTitle.OrderBook",
         "Explore/Farming": "Farming",
         "Explore/Pools": "Pools",
@@ -1170,7 +1148,6 @@
         "Explore/Tokens": "Tokens",
         "OrderBook": "Trade",
         "Pool": "Pool",
-        "RemoveLiquidity": "Remove Liquidity",
         "Rewards": "Rewards",
         "Staking": "Staking",
         "Stats": "Statistics",
@@ -1195,7 +1172,6 @@
     "polkadotjs": {
         "connectionError": "An error occured while connecting the wallet. You can try to connect the wallet via {extension} again",
         "noAccount": "{extension} account error. Please check your account in the {extension} extension",
-        "noAccounts": "There seems to be no accounts in your {extension} extension. Please add an account and try again.",
         "noExtension": "No {extension} extension was found. Please install it and reload this page",
         "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps://polkadot.js.org/extension/",
         "noSigner": "Access denied. Go to {extension} extension settings and open \"Manage Website Access\" to allow."
@@ -1213,6 +1189,7 @@
         "strategicBonusApy": "Strategic Bonus APY"
     },
     "poweredBy": "Powered by",
+    "prevText": "Previous",
     "priceChartText": "Price chart",
     "provider": {
         "messages": {
@@ -1231,7 +1208,6 @@
             "copyLink": "Copy link",
             "empty": "Enter amount of {tokenSymbol}",
             "shareLink": "Share",
-            "startInviting": "Bond {tokenSymbol} to start inviting",
             "unbond": "Unbond"
         },
         "balance": "Balance",
@@ -1246,7 +1222,6 @@
             "inviteTitle": "You have been invited to {AppName}",
             "ok": "OK",
             "signInvitation": "Approve",
-            "text": "Confirm",
             "unbond": "Confirm unbond"
         },
         "connectAccount": "To invite users you need to connect your {Sora} account.",
@@ -1255,7 +1230,6 @@
         "insufficientBondedBalance": "Insufficient bonded balance",
         "invitationLink": "Invitation link",
         "inviteViaTelegram": "Invite via {Telegram}",
-        "preview": "Invite new users and get 10% from their transaction fees.<br/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more</a>",
         "receivedRewards": "Received rewards",
         "referralsNumber": "{number} referrals",
         "referrer": {
@@ -1317,7 +1291,7 @@
             "LiquidityProvision": "Fees gained from liquidity provision",
             "LiquidityProvisionFarming": "Farming",
             "MarketMakerVolume": "Market Making",
-            "NtfAirdrop": "NFT Airdrop",
+            "NftAirdrop": "NFT Airdrop",
             "SoraFarmHarvest": "{Sora}.farm harvest",
             "XorErc20": "XOR ERC-20"
         },
@@ -1343,14 +1317,12 @@
             "accounts": "your {Sora} and {Ethereum} accounts respectively",
             "extension": "{PolkadotJs} browser extension"
         },
-        "title": "Claim Rewards",
         "totalVested": "Total rewards",
         "transactions": {
             "confimation": "Confirm {order} of {total} transactions...",
             "failed": "{order} of {total} transactions failed. @:retryText",
             "success": "You will receive your rewards shortly"
-        },
-        "vested": "vested"
+        }
     },
     "rotatePhoneNotification": {
         "enableAcceleration": "Enable acceleration access in your settings.",
@@ -1446,8 +1418,7 @@
             "title": "Claim rewards"
         },
         "dropdownMenu": {
-            "controllerAccount": "Controller account",
-            "pendingRewards": "Pending rewards"
+            "controllerAccount": "Controller account"
         },
         "info": {
             "minimumStake": "Minimum stake",
@@ -1462,7 +1433,6 @@
             "validators": "Validators"
         },
         "newStake": {
-            "minStakeWarning": "The minimum stake to receive the reward is {min} {symbol}",
             "title": "Start staking"
         },
         "overview": {
@@ -1606,13 +1576,11 @@
         "volume": "Volume refers to the total amount of assets that have been traded or exchanged on the network over a specific period of time. The volume is an important metric for measuring the liquidity and overall activity of the network."
     },
     "transaction": {
-        "adarTxDetailsTitle": "Transaction details",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
         "blockId": "Block Id",
         "comment": "Comment",
         "copy": "Copy {value}",
-        "errorMessage": "Error",
         "fee": "Transaction Fee",
         "from": "From",
         "history": {
@@ -1647,25 +1615,18 @@
     "unknownAssetText": "Unknown asset",
     "unknownErrorText": "ERROR Something went wrong...",
     "wallet": {
-        "createToken": "@:createTokenText",
         "WalletAssets": "Assets",
         "WalletHistory": "Activity"
     },
     "walletSend": {
-        "address": "@:addressText",
         "addressError": "You cannot send tokens to the same account that you are currently connected to.",
         "addressWarning": "Tokens will be sent to the {Sora} address below. Make sure the recipient can access the {Sora} chain to use the tokens:",
-        "amount": "@:amountText",
         "badAddress": "Incorrect address",
-        "badAmount": "@:insufficientBalanceText",
         "balance": "Balance",
-        "confirm": "@:confirmText",
         "confirmTitle": "Confirm transaction",
         "enterAddress": "Enter address",
         "enterAmount": "Enter amount",
         "errorAddress": "Invalid address. Please check it and try again.",
-        "fee": "@:networkFeeText",
-        "feeTooltip": "@:networkFeeTooltipText",
         "max": "MAX",
         "title": "Send",
         "tooltip": "Send tokens between {Sora} network accounts"

@@ -37,10 +37,6 @@ export default class DepositTxHistory extends Mixins(InternalConnectMixin, mixin
     return FiatOptionTabs.moonpay;
   }
 
-  getLabel(tab: string): string | undefined {
-    if (tab === 'MoonpayHistory') return 'MoonPay';
-  }
-
   navigateToDepositOptions(): void {
     goTo(PageNames.DepositOptions);
   }
