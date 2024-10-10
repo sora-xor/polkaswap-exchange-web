@@ -451,7 +451,7 @@ export default class PointSystem extends Mixins(
     padding: 0 50px !important;
   }
 }
-.s-tabs.el-tabs__header.el-tabs__item {
+.s-tabs .el-tabs__header .el-tabs__item {
   font-weight: 400 !important;
 }
 </style>
