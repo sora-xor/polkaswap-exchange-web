@@ -8,6 +8,9 @@
         :is-valid="validAddress"
         :disabled="loading"
       />
+      <p v-if="showIsNotSbtOwnerReceiver" class="dashboard-send__address-error">
+        {{ t('sbtDetails.noReceiverAccess') }}
+      </p>
       <token-input
         ref="tokenInput"
         class="dashboard-send__token-input"
@@ -69,8 +72,10 @@
 </template>
 
 <script lang="ts">
-import { Operation } from '@sora-substrate/sdk';
+import { Operation, FPNumber } from '@sora-substrate/sdk';
+import { getAssetBalance } from '@sora-substrate/sdk/build/assets';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { type AccountAsset, type Asset, AssetTypes } from '@sora-substrate/sdk/build/assets/types';
 import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch, Ref, Prop } from 'vue-property-decorator';
 
@@ -82,7 +87,6 @@ import { getter, state } from '@/store/decorators';
 import { isMaxButtonAvailable } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Component({
   components: {
@@ -106,11 +110,36 @@ export default class SendTokenDialog extends Mixins(
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: OwnedAsset;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.wallet.account.assets private assets!: Asset[];
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
 
   value = '';
   address = '';
   comment = '';
+  showIsNotSbtOwnerReceiver = false;
+
+  @Watch('address')
+  async getIsNotSbtOwnerReceiver(): Promise<void> {
+    if (this.validAddress && this.asset.address) {
+      const regulatedAsset = this.assets.find(
+        (asset) => asset.address === this.asset.address && asset.type === AssetTypes.Regulated
+      );
+
+      if (regulatedAsset) {
+        const sbtAddress = await api.extendedAssets.getSbtAddress(regulatedAsset.address);
+
+        const balance = await getAssetBalance(api.api, this.address, sbtAddress);
+
+        if (this.getFPNumberFromCodec(balance.total).lte(FPNumber.ZERO)) {
+          this.showIsNotSbtOwnerReceiver = true;
+        } else {
+          this.showIsNotSbtOwnerReceiver = false;
+        }
+      }
+    } else {
+      this.showIsNotSbtOwnerReceiver = false;
+    }
+  }
 
   @Watch('visible')
   private async handleDialogVisibility(value: boolean): Promise<void> {
@@ -255,6 +284,16 @@ export default class SendTokenDialog extends Mixins(
   &__button,
   &__token-input {
     margin-bottom: $basic-spacing;
+  }
+
+  &__address-error {
+    color: var(--s-color-status-error);
+    margin-bottom: var(--s-basic-spacing);
+    font-weight: 400;
+    font-size: var(--s-font-size-extra-small);
+    line-height: var(--s-line-height-base);
+    padding-right: calc(var(--s-basic-spacing) * 1.25);
+    padding-left: calc(var(--s-basic-spacing) * 1.25);
   }
 }
 </style>
