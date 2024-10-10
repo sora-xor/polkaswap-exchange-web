@@ -21,17 +21,24 @@
             {{ t('connectWalletText') }}
           </s-button>
         </div>
-        <div v-else v-loading="loading" class="points__cards s-flex-column">
+        <div v-else class="points__cards s-flex-column">
           <s-scrollbar class="points__cards-scrollbar">
-            <div class="points__cards">
-              <point-card
-                v-for="(pointsForCategory, categoryName) in pointsForCards"
-                :key="categoryName"
-                :points-for-category="pointsForCategory"
-                :category-name="categoryName"
-                class="points__card"
-              />
-            </div>
+            <s-tabs v-model="categoryPoints" type="rounded" class="points__tabs">
+              <s-tab label="YOUR TASKS" name="tasks">
+                <p>the tasks</p>
+              </s-tab>
+              <s-tab label="PROGRESS" name="progress">
+                <div class="points__cards">
+                  <point-card
+                    v-for="(pointsForCategory, categoryName) in pointsForCards"
+                    :key="categoryName"
+                    :points-for-category="pointsForCategory"
+                    :category-name="categoryName"
+                    class="points__card"
+                  />
+                </div>
+              </s-tab>
+            </s-tabs>
           </s-scrollbar>
         </div>
       </div>
@@ -46,6 +53,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { ZeroStringValue, Components } from '@/consts';
+import { pointSysemCategory } from '@/consts/pointSystem';
 import { fetchData as fetchBurnXorData } from '@/indexer/queries/burnXor';
 import {
   type BridgeData,
@@ -72,6 +80,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     FormattedAmount: components.FormattedAmount,
     TokenLogo: components.TokenLogo,
     PointCard: lazyComponent(Components.PointCard),
+    SettingsTabs: lazyComponent(Components.SettingsTabs),
   },
 })
 export default class PointSystem extends Mixins(
@@ -97,11 +106,13 @@ export default class PointSystem extends Mixins(
   @action.pool.subscribeOnAccountLiquidityList private subscribeOnList!: AsyncFnWithoutArgs;
   @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnUpdates!: AsyncFnWithoutArgs;
 
+  readonly pointSysemCategory = pointSysemCategory;
   private burnData: Nullable<FPNumber> = null;
   private bridgeData: BridgeData[] = [];
   private poolDepositCount = 0;
   private poolWithdrawCount = 0;
   totalSwapTxs = 0;
+  categoryPoints: string = this.pointSysemCategory.progress;
   dummyPoints: { [key: string]: CalculateCategoryPointResult } = {
     liquidityProvision: {
       currentProgress: 50,
@@ -419,23 +430,36 @@ export default class PointSystem extends Mixins(
 .el-scrollbar__bar.is-horizontal {
   display: none;
 }
+
 .container .points .el-loading-mask {
   border-radius: var(--s-border-radius-mini);
-  margin-left: -14px;
+  margin-left: calc(0px - $inner-spacing-small);
   width: calc(100% + $inner-spacing-big);
   height: calc(100% + $inner-spacing-medium);
   box-shadow: var(--s-shadow-element-pressed);
+}
+.el-tabs__header {
+  width: 100% !important;
+}
+.el-tabs__nav {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.points__tabs {
+  .el-tabs__item {
+    padding: 0 50px !important;
+  }
+}
+.s-tabs.el-tabs__header.el-tabs__item {
+  font-weight: 400 !important;
 }
 </style>
 
 <style lang="scss" scoped>
 $card-height: calc($sidebar-max-width - $inner-spacing-mini);
-
-.points__cards-scrollbar {
-  max-height: calc($card-height * 2.5);
-  @include scrollbar();
-}
 .s-card {
+  box-shadow: unset !important;
   padding: $inner-spacing-small !important;
 }
 .points {
@@ -444,6 +468,9 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
   background-position: top;
   background-color: #fbf7f9;
   width: 100%;
+  &__cards-scrollbar {
+    max-height: calc($card-height * 2.5);
+  }
   &__main {
     margin-top: calc($inner-spacing-medium + $inner-spacing-tiny);
   }

@@ -20,7 +20,7 @@ const generateLevels = (thresholds: number[], multipliers: number[] = defaultMul
     multiplier: multipliers[index] ?? multipliers[multipliers.length - 1],
   }));
 };
-// Константа категорий
+
 export const categoriesPointSystem: { [key: string]: Category } = {
   liquidityProvision: {
     maxPercentage: 10,
@@ -75,3 +75,8 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     levels: generateLevels(timestampThresholds, [1.0, 0.9, 0.75, 0.5, 0]),
   },
 };
+
+export enum pointSysemCategory {
+  tasks = 'tasks',
+  progress = 'progress',
+}
