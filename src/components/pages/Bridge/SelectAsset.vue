@@ -36,6 +36,7 @@ import { lazyComponent } from '@/router';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state, getter } from '@/store/decorators';
 import type { NetworkData } from '@/types/bridge';
+import { filterAssetsByQuery } from '@/utils/assets';
 
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -72,10 +73,7 @@ export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAs
   }
 
   get filteredAssets(): Array<RegisteredAccountAsset> {
-    return this.filterAssetsByQuery(
-      this.assetsList,
-      !this.isSoraToEvm
-    )(this.searchQuery) as Array<RegisteredAccountAsset>;
+    return filterAssetsByQuery(this.assetsList, !this.isSoraToEvm)(this.searchQuery) as Array<RegisteredAccountAsset>;
   }
 
   get hasFilteredAssets(): boolean {

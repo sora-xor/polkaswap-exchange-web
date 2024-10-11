@@ -201,9 +201,10 @@ import { MAX_TIMESTAMP } from '@sora-substrate/sdk/build/orderBook/consts';
 import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import SwapAmountsMixin from '@/components/mixins/SwapAmountsMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useConfirmDialog } from '@/composables/Dialog/useConfirm';
 import { Components, LimitOrderType, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -238,11 +239,16 @@ import type { Subscription } from 'rxjs';
     PriceChange: lazyComponent(Components.PriceChange),
     Error: lazyComponent(Components.ErrorButton),
   },
+  setup() {
+    return {
+      ...useConfirmDialog(),
+    };
+  },
 })
 export default class BuySellWidget extends Mixins(
-  ConfirmDialogMixin,
   InternalConnectMixin,
   SwapAmountsMixin,
+  TranslationMixin,
   mixins.TransactionMixin,
   mixins.FormattedAmountMixin
 ) {

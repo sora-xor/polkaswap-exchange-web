@@ -63,8 +63,9 @@ import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useConfirmDialog } from '@/composables/Dialog/useConfirm';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter, mutation, action } from '@/store/decorators';
@@ -81,10 +82,15 @@ import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
     OpenOrders: lazyComponent(Components.OpenOrders),
     CancelConfirm: lazyComponent(Components.CancelOrders),
   },
+  setup() {
+    return {
+      ...useConfirmDialog(),
+    };
+  },
 })
 export default class OrderHistoryWidget extends Mixins(
-  ConfirmDialogMixin,
   InternalConnectMixin,
+  TranslationMixin,
   mixins.LoadingMixin,
   mixins.TransactionMixin
 ) {

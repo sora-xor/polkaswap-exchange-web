@@ -55,7 +55,8 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useConfirmDialog } from '@/composables/Dialog/useConfirm';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { getter, mutation, state } from '@/store/decorators';
@@ -71,11 +72,16 @@ import type { AccountAsset, AccountBalance } from '@sora-substrate/sdk/build/ass
     ReferralsConfirmBonding: lazyComponent(Components.ReferralsConfirmBonding),
     InfoLine: components.InfoLine,
   },
+  setup() {
+    return {
+      ...useConfirmDialog(),
+    };
+  },
 })
 export default class ReferralBonding extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.TransactionMixin,
-  ConfirmDialogMixin
+  TranslationMixin
 ) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.referrals.amount amount!: string;

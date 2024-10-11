@@ -122,8 +122,9 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
-import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useConfirmDialog } from '@/composables/Dialog/useConfirm';
+import { useNetworkFeeDialog } from '@/composables/Dialog/useNetworkFee';
 import { Components } from '@/consts';
 import { PoolComponents } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
@@ -144,13 +145,18 @@ import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
     TokenInput: lazyComponent(Components.TokenInput),
     InfoLine: components.InfoLine,
   },
+  setup() {
+    return {
+      ...useConfirmDialog(),
+      ...useNetworkFeeDialog(),
+    };
+  },
 })
 export default class RemoveLiquidityForm extends Mixins(
   mixins.NetworkFeeWarningMixin,
   mixins.FormattedAmountMixin,
   mixins.TransactionMixin,
-  ConfirmDialogMixin,
-  NetworkFeeDialogMixin
+  TranslationMixin
 ) {
   readonly XOR_SYMBOL = XOR.symbol;
   readonly MAX_PART = 100;

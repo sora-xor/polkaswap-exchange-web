@@ -141,10 +141,11 @@ import { KnownSymbols, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import SwapAmountsMixin from '@/components/mixins/SwapAmountsMixin';
-import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useConfirmDialog } from '@/composables/Dialog/useConfirm';
+import { useSelectAssetLoading } from '@/composables/useSelectAssetLoading';
 import { Components, MarketAlgorithms } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -182,12 +183,17 @@ import type { Subscription } from 'rxjs';
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
   },
+  setup() {
+    return {
+      ...useSelectAssetLoading(),
+      ...useConfirmDialog(),
+    };
+  },
 })
 export default class SwapFormWidget extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.TransactionMixin,
-  TokenSelectMixin,
-  ConfirmDialogMixin,
+  TranslationMixin,
   InternalConnectMixin,
   SwapAmountsMixin
 ) {
@@ -516,6 +522,7 @@ export default class SwapFormWidget extends Mixins(
 
   async handleSelectToken(token: AccountAsset): Promise<void> {
     if (token) {
+      // @ts-ignore
       await this.withSelectAssetLoading(async () => {
         if (this.isTokenFromSelected) {
           await this.setTokenFromAddress(token.address);

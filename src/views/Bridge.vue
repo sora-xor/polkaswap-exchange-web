@@ -247,10 +247,11 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
-import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useConfirmDialog } from '@/composables/Dialog/useConfirm';
+import { useNetworkFeeDialog } from '@/composables/Dialog/useNetworkFee';
+import { useSelectAssetLoading } from '@/composables/useSelectAssetLoading';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { FocusedField } from '@/store/bridge/types';
@@ -292,15 +293,20 @@ import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/ty
     InfoLine: components.InfoLine,
     TokenAddress: components.TokenAddress,
   },
+  setup() {
+    return {
+      ...useConfirmDialog(),
+      ...useNetworkFeeDialog(),
+      ...useSelectAssetLoading(),
+    };
+  },
 })
 export default class Bridge extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.NetworkFeeWarningMixin,
   BridgeMixin,
-  ConfirmDialogMixin,
   NetworkFormatterMixin,
-  NetworkFeeDialogMixin,
-  TokenSelectMixin
+  TranslationMixin
 ) {
   readonly KnownSymbols = KnownSymbols;
   readonly FocusedField = FocusedField;

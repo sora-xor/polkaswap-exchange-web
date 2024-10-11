@@ -112,9 +112,10 @@ import { XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
-import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
-import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useConfirmDialog } from '@/composables/Dialog/useConfirm';
+import { useNetworkFeeDialog } from '@/composables/Dialog/useNetworkFee';
+import { useSelectAssetLoading } from '@/composables/useSelectAssetLoading';
 import { Components } from '@/consts';
 import { PoolComponents } from '@/modules/pool/consts';
 import BaseTokenPairMixin from '@/modules/pool/mixins/BaseTokenPair';
@@ -141,14 +142,19 @@ type SetValue = (v: string) => Promise<void>;
     InfoLine: components.InfoLine,
     DialogBase: components.DialogBase,
   },
+  setup() {
+    return {
+      ...useConfirmDialog(),
+      ...useNetworkFeeDialog(),
+      ...useSelectAssetLoading(),
+    };
+  },
 })
 export default class AddLiquidityForm extends Mixins(
   mixins.TransactionMixin,
   mixins.NetworkFeeWarningMixin,
   BaseTokenPairMixin,
-  NetworkFeeDialogMixin,
-  ConfirmDialogMixin,
-  TokenSelectMixin
+  TranslationMixin
 ) {
   readonly FocusedField = FocusedField;
 

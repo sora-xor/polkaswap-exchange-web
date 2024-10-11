@@ -72,6 +72,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
+import { filterAssetsByQuery } from '@/utils/assets';
 
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
@@ -168,7 +169,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get filteredWhitelistTokens(): Array<AccountAsset> {
-    const filteredAssets = this.filterAssetsByQuery(this.whitelistAssetsList)(this.searchQuery) as Array<AccountAsset>;
+    const filteredAssets = filterAssetsByQuery(this.whitelistAssetsList)(this.searchQuery) as Array<AccountAsset>;
     const pinnedOrderMap = new Map(this.pinnedAssetsAddresses.map((address, index) => [address, index]));
     return filteredAssets.sort((a, b) => {
       const aPinnedIndex = pinnedOrderMap.get(a.address);
