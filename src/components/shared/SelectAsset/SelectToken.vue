@@ -72,7 +72,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
-import { filterAssetsByQuery } from '@/utils/assets';
+import { filterAssetsByQuery, sortByBalance } from '@/utils/assets';
 
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
@@ -163,7 +163,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     const assetsAddresses = whiteList.map((asset) => asset.address);
     const excludeAddress = this.asset?.address;
     const list = this.getAssetsWithBalances(assetsAddresses, excludeAddress);
-    const orderedList = [...list].sort(this.sortByBalance);
+    const orderedList = [...list].sort(sortByBalance);
 
     return orderedList;
   }
@@ -222,7 +222,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     // TODO: we already have balances in nonWhitelistAccountAssets.
     // Need to improve that logic
     return this.getAssetsWithBalances(Object.keys(this.nonWhitelistAccountAssets), excludeAsset?.address).sort(
-      this.sortByBalance
+      sortByBalance
     );
   }
 

@@ -177,7 +177,8 @@ import type { TokenData } from '@/indexer/queries/asset/assets';
 import { lazyComponent } from '@/router';
 import { state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
-import { formatAmountWithSuffix, sortAssets } from '@/utils';
+import { formatAmountWithSuffix } from '@/utils';
+import { sortAssets } from '@/utils/assets';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 

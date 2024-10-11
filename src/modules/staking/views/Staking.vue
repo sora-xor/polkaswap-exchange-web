@@ -103,7 +103,7 @@ import { Components } from '@/consts';
 import type { DemeterPoolDerivedData } from '@/modules/staking/demeter/types';
 import { lazyComponent } from '@/router';
 import { state } from '@/store/decorators';
-import { sortAssets } from '@/utils';
+import { sortAssets } from '@/utils/assets';
 
 import { DemeterStakingComponents } from '../demeter/consts';
 import PageMixin from '../demeter/mixins/PageMixin';

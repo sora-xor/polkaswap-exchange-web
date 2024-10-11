@@ -1,5 +1,4 @@
 import { FPNumber, CodecString } from '@sora-substrate/sdk';
-import { isNativeAsset } from '@sora-substrate/sdk/build/assets';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
@@ -12,13 +11,10 @@ import store from '@/store';
 
 import type { AmountWithSuffix } from '../types/formats';
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type { Currency, CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 import type { Route } from 'vue-router';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
-
-type PoolAssets<T extends Asset> = { baseAsset: T; poolAsset: T };
 
 export async function waitUntil(condition: () => boolean): Promise<void> {
   if (condition()) return;
@@ -211,10 +207,6 @@ export const getAssetBalance = (
   return (asset as AccountAsset)?.balance?.transferable;
 };
 
-export const getLiquidityBalance = (liquidity: Nullable<AccountLiquidity>): CodecString | undefined => {
-  return liquidity?.balance;
-};
-
 export const getAssetDecimals = (asset: any, { internal = true } = {}): number | undefined => {
   if (!asset) return undefined;
 
@@ -358,35 +350,6 @@ export const formatDecimalPlaces = (value: FPNumber | number, asPercent = false)
   const postfix = asPercent ? '%' : '';
 
   return `${formatted}${postfix}`;
-};
-
-const sortAssetsByProp = <T extends Asset>(a: T, b: T, prop: 'address' | 'symbol' | 'name') => {
-  if (a[prop] < b[prop]) return -1;
-  if (a[prop] > b[prop]) return 1;
-  return 0;
-};
-
-export const sortAssets = <T extends Asset>(a: T, b: T) => {
-  const isNativeA = isNativeAsset(a);
-  const isNativeB = isNativeAsset(b);
-  // sort native assets by address
-  if (isNativeA && isNativeB) {
-    return sortAssetsByProp(a, b, 'address');
-  }
-  if (isNativeA && !isNativeB) {
-    return -1;
-  }
-  if (!isNativeA && isNativeB) {
-    return 1;
-  }
-  // sort non native assets by symbol
-  return sortAssetsByProp(a, b, 'symbol');
-};
-
-export const sortPools = <T extends Asset>(a: PoolAssets<T>, b: PoolAssets<T>) => {
-  const byBaseAsset = sortAssets(a.baseAsset, b.baseAsset);
-
-  return byBaseAsset === 0 ? sortAssets(a.poolAsset, b.poolAsset) : byBaseAsset;
 };
 
 export const calcElScrollGutter: () => number = scrollbarWidth;

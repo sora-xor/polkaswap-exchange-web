@@ -106,7 +106,7 @@ import { poolLazyComponent } from '@/modules/pool/router';
 import { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { LiquidityParams } from '@/store/pool/types';
-import { sortPools } from '@/utils';
+import { sortPools } from '@/utils/assets';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';

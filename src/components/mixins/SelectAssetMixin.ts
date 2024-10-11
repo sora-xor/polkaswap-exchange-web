@@ -1,14 +1,10 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import isNil from 'lodash/fp/isNil';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SearchInputMixin from '@/components/mixins/SearchInputMixin';
 import { getter } from '@/store/decorators';
-import { sortAssets } from '@/utils';
 
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-
-const isEmpty = (a): boolean => isNil(a.balance) || !+a.balance.transferable;
 
 @Component
 export default class SelectAssetMixin extends Mixins(mixins.DialogMixin, SearchInputMixin) {
@@ -20,15 +16,6 @@ export default class SelectAssetMixin extends Mixins(mixins.DialogMixin, SearchI
 
     if (!value) return;
     this.clearAndFocusSearch();
-  }
-
-  public sortByBalance(a: AccountAsset | RegisteredAccountAsset, b: AccountAsset | RegisteredAccountAsset): number {
-    const emptyABalance = isEmpty(a);
-    const emptyBBalance = isEmpty(b);
-
-    if (emptyABalance === emptyBBalance) return sortAssets(a, b);
-
-    return emptyABalance && !emptyBBalance ? 1 : -1;
   }
 
   public getAssetsWithBalances(addresses: string[], excludeAddress = ''): Array<RegisteredAccountAsset> {

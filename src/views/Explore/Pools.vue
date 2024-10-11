@@ -154,7 +154,8 @@ import type { PoolData } from '@/indexer/queries/pool/pools';
 import { lazyComponent } from '@/router';
 import { state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
-import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
+import { formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
+import { sortPools } from '@/utils/assets';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';

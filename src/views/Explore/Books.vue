@@ -138,7 +138,8 @@ import { fetchOrderBooks } from '@/indexer/queries/orderBook/orderBooks';
 import { lazyComponent } from '@/router';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { OrderBookWithStats } from '@/types/orderBook';
-import { formatAmountWithSuffix, sortPools, showMostFittingValue } from '@/utils';
+import { formatAmountWithSuffix, showMostFittingValue } from '@/utils';
+import { sortPools } from '@/utils/assets';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 

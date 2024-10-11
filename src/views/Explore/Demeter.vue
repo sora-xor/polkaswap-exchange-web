@@ -174,7 +174,8 @@ import type { DemeterPoolDerivedData } from '@/modules/staking/demeter/types';
 import { demeterStakingLazyComponent } from '@/modules/staking/router';
 import { lazyComponent } from '@/router';
 import type { AmountWithSuffix } from '@/types/formats';
-import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
+import { formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
+import { sortPools } from '@/utils/assets';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { DemeterPool } from '@sora-substrate/sdk/build/demeterFarming/types';
