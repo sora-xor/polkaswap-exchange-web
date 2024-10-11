@@ -10,7 +10,7 @@
     </div>
     <div class="point-card__currently-amount">
       <p>Currently</p>
-      <p>${{ this.pointsForCategory.currentProgress }}</p>
+      <p>${{ this.pointsForCategory.currentProgress.toFixed(2) }}</p>
     </div>
     <s-divider />
     <div class="point-card__amount-of-points">

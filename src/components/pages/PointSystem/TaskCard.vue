@@ -10,7 +10,7 @@
     </div>
     <div class="task-card__current-progress">
       <p v-if="categoryName === 'firstTxAccount'">Currently {{ formattedCurrentProgress }}</p>
-      <p v-else>Currently ${{ this.pointsForCategory.currentProgress }}</p>
+      <p v-else>Currently ${{ this.pointsForCategory.currentProgress.toFixed(2) }}</p>
       <s-button :class="{ completed: !this.pointsForCategory.minimumAmountForNextLevel }">
         {{ !this.pointsForCategory.minimumAmountForNextLevel ? 'Completed' : 'Complete' }}
       </s-button>
@@ -29,7 +29,7 @@ import { CalculateCategoryPointResult } from '@/types/pointSystem';
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class TaskCard extends Mixins(mixins.FormattedAmountMixin, mixins.NumberFormatterMixin) {
+export default class TaskCard extends Mixins(mixins.TranslationMixin) {
   @Prop({ required: true, type: Object })
   readonly pointsForCategory!: CalculateCategoryPointResult;
 
@@ -46,10 +46,9 @@ export default class TaskCard extends Mixins(mixins.FormattedAmountMixin, mixins
 
   get formattedCurrentProgress(): string {
     if (this.categoryName === 'firstTxAccount' && typeof this.pointsForCategory.currentProgress === 'number') {
-      const date = new Date(this.pointsForCategory.currentProgress);
-      return date.toLocaleDateString(); // Format the date as a readable string
+      return this.formatDate(this.pointsForCategory.currentProgress, 'L');
     }
-    return this.pointsForCategory.currentProgress.toString(); // Return the original value if not firstTxAccount
+    return this.pointsForCategory.currentProgress.toString();
   }
 }
 </script>

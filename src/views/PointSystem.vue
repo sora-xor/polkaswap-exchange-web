@@ -42,7 +42,10 @@
                     class="points__card"
                   />
 
-                  <first-tx-card :date="this.pointsForCards?.firstTxAccount.currentProgress" />
+                  <first-tx-card
+                    class="points__first-tx-card"
+                    :date="this.pointsForCards?.firstTxAccount.currentProgress"
+                  />
                 </div>
               </s-tab>
             </s-tabs>
@@ -503,10 +506,6 @@ export default class PointSystem extends Mixins(
 </script>
 
 <style lang="scss">
-.el-scrollbar__bar.is-horizontal {
-  display: none;
-}
-
 .container .points .el-loading-mask {
   border-radius: var(--s-border-radius-mini);
   margin-left: calc(0px - $inner-spacing-small);
@@ -525,6 +524,9 @@ export default class PointSystem extends Mixins(
 .points__tabs {
   .el-tabs__item {
     padding: 0 50px !important;
+    @include mobile(true) {
+      padding: 0 25px !important;
+    }
   }
 }
 .s-tabs .el-tabs__header .el-tabs__item {
@@ -621,29 +623,10 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
     flex-wrap: wrap;
     gap: calc($basic-spacing-small + 1px);
   }
-  &__card-first-trx {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: #f4f0f1;
-    width: 100%;
-    padding: 18px 13px;
-    border-radius: 12px;
-    div {
-      margin-right: $inner-spacing-mini;
-    }
-    p:last-of-type {
-      margin-left: auto;
-      color: #f564a9;
-      background-color: rgba(245, 100, 169, 0.12);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 3px 12px;
-      border-radius: 12px;
-    }
-  }
+
   &__card,
-  &__card-task {
+  &__card-task,
+  &__first-tx-card {
     width: $sidebar-max-width;
     height: $card-height;
     background-color: #f4f0f1;
@@ -655,10 +638,28 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
     background-position: top right;
     box-sizing: border-box;
   }
+  &__first-tx-card {
+    height: 48px;
+    width: 100%;
+    padding: 10px 16px;
+  }
   &__card-task {
     width: 100%;
     max-height: 141px;
     padding: 16px;
+  }
+
+  @include mobile(true) {
+    &__card {
+      width: 100%;
+    }
+    &__first-tx-card {
+      height: unset;
+    }
+    &__card-task {
+      max-height: unset;
+      height: unset;
+    }
   }
 
   // TODO not sure we need it
