@@ -470,16 +470,9 @@
     "exchange": {
         "Swap": "Обмен",
         "Pool": "Пул",
-        "balance": "Баланс",
-        "price": "Цена",
-        "transactionSubmitted": "Транзакция отправлена",
-        "transactionMessage": "{firstToken} и {secondToken}",
-        "ok": "OK",
-        "confirm": "Подтвердить",
         "lossWarning": "Вы потеряете {value}% на своей сделке. Мы обнаружили проблему с обеспечением ликвидности. Это может привести к значительным потерям при обмене токенов. Пожалуйста, убедитесь, что для желаемой пары достаточно ликвидности."
     },
     "swap": {
-        "estimated": "приблизительно",
         "slippageTolerance": "Допустимое проскальзывание",
         "minReceived": "Минимум получено",
         "maxSold": "Максимум продано",
@@ -493,7 +486,6 @@
         "confirmSwap": "Подтвердить обмен",
         "swapOutputMessage": "Вывод оценён. Вы получите как минимум {transactionValue} или транзакция будет отменена.",
         "rewardsForSwap": "Стратегические вознаграждения PSWAP",
-        "swapInputMessage": "Ввод оценивается. Вы продадите максимум {transactionValue} иначе транзакция будет отменена.",
         "route": "Маршрут",
         "errorFetching": "Ошибка при получении данных"
     },
@@ -512,21 +504,12 @@
     "bridge": {
         "title": "Мост",
         "info": "Конвертировать токены между {Sora} и {Ethereum} сетями.",
-        "balance": "Баланс",
         "next": "Далее",
         "connectWallets": "Подключите кошельки для просмотра соответствующей истории транзакций.",
         "soraNetworkFee": "{Sora} Комиссия сети",
-        "ethereumNetworkFee": "{Ethereum} Комиссия сети",
-        "total": "Всего",
-        "viewHistory": "Посмотреть историю транзакции",
-        "transactionSubmitted": "Транзакция отправлена",
-        "transactionMessage": "{assetA} для {assetB}",
         "notRegisteredAsset": "Актив {assetSymbol} не зарегистрирован",
         "selectNetwork": "Выбрать сеть",
         "networkInfo": "Соединить {Sora} Сеть с:",
-        "copy": "Скопировать адрес сети",
-        "soraAddress": "{Sora} адрес",
-        "ethereumAddress": "{Ethereum} адрес",
         "limitMessage": "В настоящее время существует {type} {amount} {symbol} для моста, обеспечивающая стабильность и безопасность сети {Sora}. Мы ценим ваше понимание.",
         "externalTransferFee": "{network} комиссия {XCM}",
         "externalTransferFeeTooltip": "Когда вы отправляете транзакцию моста в сеть {network}, из суммы перевода взимается небольшая комиссия.",
@@ -536,57 +519,26 @@
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
         "search": {
-            "title": "Токены",
             "placeholder": "Фильтр по ID актива, имени или символу тикера",
             "networkLabelSora": "{Sora} токены сети",
-            "networkLabelEthereum": "{network} зеркальные токены сети",
-            "emptyListMessage": "Нет результатов"
-        },
-        "customAsset": {
-            "title": "Кастомный",
-            "customInfo": "Важно! Персонализированные токены должны быть зарегистрированы в {Sora}.",
-            "registerToken": "Зарегистрировать токен",
-            "addressPlaceholder": "ID актива",
-            "symbolPlaceholder": "Символ токена",
-            "empty": "Токен не найден",
-            "alreadyAttached": "Этот токен уже был добавлен"
+            "networkLabelEthereum": "{network} зеркальные токены сети"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} для {to}",
         "for": " для ",
-        "steps": {
-            "step": "{step} из 2",
-            "step1": "Первая",
-            "step2": "Вторая"
-        },
-        "status": {
-            "pending": "{step} транзакция в обработке...",
-            "failed": "{step} транзакция не удалась. @:(retryText).",
-            "confirm": "Подтверждена 2ая из 2 транзакций...",
-            "complete": "Выполнено",
-            "convertionComplete": "Конверсия завершена"
-        },
         "statuses": {
-            "waiting": "Ожидание",
-            "ready": "Готово",
             "pending": "В обработке",
-            "frozen": "Заморожено",
             "failed": "Транзакция не удалась",
             "done": "Выполнено",
             "waitingForConfirmation": "Ожидание подтверждения..."
         },
-        "networkTitle": "{network} транзакция",
         "transactionHash": "Хеш транзакции",
         "networkInfo": {
             "status": "Статус",
             "date": "Дата",
             "amount": "Количество",
-            "transactionFee": "Комиссия за транзакцию",
-            "total": "Всего"
+            "transactionFee": "Комиссия за транзакцию"
         },
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} транзакция в процессе...",
         "newTransaction": "Создать новую транзакцию",
         "title": "Транзакция Моста",
@@ -607,7 +559,6 @@
         "title": "Выберите токен",
         "searchPlaceholder": "Фильтр по ID актива, имени или символу тикера",
         "emptyListMessage": "Нет результатов",
-        "copy": "Скопировать ID актива",
         "assets": {
             "title": "Активы"
         },
@@ -620,29 +571,18 @@
         }
     },
     "createPair": {
-        "title": "Создать пару",
         "deposit": "Пополнить",
-        "balance": "Баланс",
         "pricePool": "Цены и доля пула",
         "shareOfPool": "Доля пула",
         "firstSecondPoolTokens": "{first}-{second} Токены пула",
-        "connect": "Подключить кошелек",
         "supply": "Добавить",
         "yourPosition": "Ваша позиция",
-        "yourPositionEstimated": "Ваша позиция (предполагаемая)",
-        "youWillReceive": "Вы получите",
-        "remove": "Удалить",
-        "add": "Добавить",
-        "ok": "OK",
-        "alreadyCreated": "Пара токенов уже создана",
         "firstLiquidityProvider": "Вы первый провайдер ликвидности",
         "firstLiquidityProviderInfo": "Соотношение добавляемых токенов будет определять цену этого пула.<br\/> Настройте соотношение на ваше усмотрение и нажмите \"добавить\" для подтверждения действия."
     },
     "confirmSupply": {
         "title": "Вы получите",
-        "outputDescription": "Вывод является оценочным. Если цена изменится более чем на {slippageTolerance}%, ваша транзакция будет отменена.",
-        "poolTokensBurned": "{first}-{second} Токены пула сожжены",
-        "price": "Цена"
+        "outputDescription": "Вывод является оценочным. Если цена изменится более чем на {slippageTolerance}%, ваша транзакция будет отменена."
     },
     "addLiquidity": {
         "title": "Добавить ликвидность"
@@ -650,11 +590,9 @@
     "removeLiquidity": {
         "title": "Забрать ликвидность",
         "liquidity": "ликвидность",
-        "balance": "Баланс",
         "amount": "Количество",
         "input": "Вход",
         "output": "Выход",
-        "price": "Цена",
         "remove": "Забрать",
         "description": "Вывод токенов пула конвертирует вашу позицию обратно в базовые токены по текущему курсу, пропорциональному вашей доле в пуле. Начисленные комиссионные включаются в получаемые вами суммы.",
         "outputMessage": "Вывод является оценочным. Если цена изменится более чем на {slippageTolerance}%, ваша транзакция будет отменена.",
@@ -675,22 +613,11 @@
             "frontrun": "Ваша транзакция может быть осуществлена заранее",
             "error": "Введите допустимый процент проскальзывания"
         },
-        "custom": "Ручное значение",
-        "transactionDeadline": "СРОК ТРАНЗАКЦИИ",
-        "transactionDeadlineHint": "Транзакция будет отменена, если она находится в ожидании более указанного времени.",
-        "nodeAddress": "Адрес ноды",
-        "ip": "IP",
-        "port": "ПОРТ",
-        "min": "МИНИМУМ",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} маршрутизация ликвидности обеспечивает лучшую цену для любой транзакции, комбинируя только лучшие ценовые варианты со всех доступных рынков. Когда доступно, кривая связывания токенов ({tbcAlgorithm}) будет использоваться для обеспечения ликвидности, если цена актива будет более привлекательной, чем из других источников, на которых используется пул {xycAlgorithm}.",
             "TBC": "{tbcAlgorithm} — покупка только из кривой связывания токенов (Token Bonding Curve) (Первичный Рынок). Есть вероятность того, что цена может стать невыгодной по сравнению с {xycAlgorithm} пулом (Вторичным Рынком), но ценность полученных вознаграждений со временем может оказаться гораздо более выгодной.",
             "XYK": "{xycAlgorithm} — покупка только из пула XYK (вторичный рынок). Традиционный пул обмена XYK."
         }
-    },
-    "resultDialog": {
-        "title": "Транзакция отправлена",
-        "ok": "OK"
     },
     "rewards": {
         "andText": "и",
@@ -757,7 +684,6 @@
         "title": "Язык"
     },
     "tokens": {
-        "symbol": "Символ",
         "assetId": "ID актива"
     },
     "memorandum": "Меморандум {AppName} и Условия предоставления услуг",
@@ -828,14 +754,6 @@
     },
     "sentText": "Отправить",
     "learnMoreText": "Узнать больше",
-    "marketMakerCountdown": {
-        "title": "Обратный отсчет маркет-мейкера",
-        "blocks": "блоков",
-        "daysLeft": "осталось дней",
-        "txs": "TXs",
-        "volume": "Объем MM TX",
-        "description": "20 миллионов PSWAP \/ месяц будут распределены среди маркет-мейкеров, имеющих не менее 500 tx \/ месяц с объемом более 1 XOR."
-    },
     "confirmNextTxFailure": {
         "header": "Внимание",
         "info": "Ваш баланс {symbol} будет меньше, чем {fee} {symbol} после этой транзакции. Вы не сможете оплатить сетевую комиссию за другую транзакцию.",
@@ -849,18 +767,14 @@
         "bondedXOR": "XOR зарезервировано",
         "referralsNumber": "{number} рефералов",
         "startInviting": "Bond XOR для приглашения других",
-        "deposit": "Пополнить",
-        "balance": "Баланс",
         "insufficientBondedBalance": "Недостаточный зарезервированный баланс",
         "action": {
-            "empty": "Введите сумму {tokenSymbol}",
             "bondMore": "Внести еще",
             "bond": "Внести",
             "unbond": "Вывести",
             "copyLink": "Копировать ссылку",
             "shareLink": "Поделиться"
         },
-        "transactionDetails": "Детали Транзакции",
         "receivedRewards": "Полученные награды",
         "invitationLink": "Ссылка для приглашения",
         "bondTitle": "Зарезервировать XOR",
@@ -1376,7 +1290,6 @@
         "marketTrades": "Рыночные сделки",
         "market": "Рынок",
         "limit": "Лимит",
-        "price": "Цена",
         "total": "Итого",
         "amount": "количество",
         "time": "время",
@@ -1631,5 +1544,6 @@
     },
     "firstText": "Первая",
     "lastText": "Последняя",
-    "prevText": "Предыдущая"
+    "prevText": "Предыдущая",
+    "priceText": "Цена"
 }

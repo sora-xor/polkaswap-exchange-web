@@ -470,16 +470,9 @@
     "exchange": {
         "Swap": "Swap",
         "Pool": "pool",
-        "balance": "Balans",
-        "price": "Prijs",
-        "transactionSubmitted": "Transactie ingediend",
-        "transactionMessage": "{firstToken} en {secondToken}",
-        "ok": "OK",
-        "confirm": "Bevestigen",
         "lossWarning": "U verliest {value}% op uw transactie. We hebben een probleem met de liquiditeitsvoorziening ontdekt. Dit kan leiden tot aanzienlijke verliezen tijdens token-swaps. Zorg ervoor dat er voldoende liquiditeit is voor uw gewenste swappaar."
     },
     "swap": {
-        "estimated": "geschat",
         "slippageTolerance": "Slip tolerantie",
         "minReceived": "Minimum ontvangen",
         "maxSold": "Maximum verkocht",
@@ -493,7 +486,6 @@
         "confirmSwap": "Swap bevestigen",
         "swapOutputMessage": "De output wordt geschat. U ontvangt minimaal {transactionValue} of de transactie wordt teruggedraaid.",
         "rewardsForSwap": "PSWAP Strategische Beloningen",
-        "swapInputMessage": "Invoer wordt geschat. U verkoopt maximaal {transactionValue} of de transactie wordt teruggedraaid.",
         "route": "Route",
         "errorFetching": "Fout bij het ophalen van de gegevens"
     },
@@ -512,21 +504,12 @@
     "bridge": {
         "title": "Bridge",
         "info": "Converteer tokens tussen de {Sora}-en {Ethereum}-netwerken.",
-        "balance": "Saldo",
         "next": "Volgende",
         "connectWallets": "Verbind wallets om hun respectievelijke transactiegeschiedenis te bekijken.",
         "soraNetworkFee": "{Sora} Netwerk Vergoeding",
-        "ethereumNetworkFee": "{Ethereum} Netwerk Vergoeding",
-        "total": "Totaal",
-        "viewHistory": "Transactiegeschiedenis bekijken",
-        "transactionSubmitted": "Ingediende verrichting",
-        "transactionMessage": "{assetA} voor {assetB}",
         "notRegisteredAsset": "Asset {assetSymbol} is niet geregistreerd",
         "selectNetwork": "Selecteer netwerk",
         "networkInfo": "Bridge {Sora} Netwerk met:",
-        "copy": "Netwerkadres kopiëren",
-        "soraAddress": "{Sora} adres",
-        "ethereumAddress": "{Ethereum} adres",
         "limitMessage": "Momenteel is er een {type} {amount} {symbol} voor overbrugging om de stabiliteit en veiligheid van het {Sora}-netwerk te garanderen. We waarderen je begrip.",
         "externalTransferFee": "{network} {XCM} kosten",
         "externalTransferFeeTooltip": "Wanneer u een overbruggingstransactie naar het {network} -netwerk verzendt, wordt er een kleine vergoeding in rekening gebracht op het bedrag dat u overdraagt",
@@ -536,57 +519,26 @@
     "selectRegisteredAsset": {
         "title": "Kies een token",
         "search": {
-            "title": "Tokens",
             "placeholder": "Filter op Asset-ID, naam of Tickersymbool",
             "networkLabelSora": "{Sora} netwerk tokens",
-            "networkLabelEthereum": "{network} netwerkspiegeltokens",
-            "emptyListMessage": "Geen resultaten"
-        },
-        "customAsset": {
-            "title": "Custom",
-            "customInfo": "Belangrijk! Custom tokens moeten worden geregistreerd in {Sora}.",
-            "registerToken": "Registreer token",
-            "addressPlaceholder": "Asset-ID",
-            "symbolPlaceholder": "Token symbool",
-            "empty": "Geen tokens gevonden",
-            "alreadyAttached": "Token was al gekoppeld"
+            "networkLabelEthereum": "{network} netwerkspiegeltokens"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} voor {to}",
         "for": " voor ",
-        "steps": {
-            "step": "{step} van 2",
-            "step1": "1e",
-            "step2": "2e"
-        },
-        "status": {
-            "pending": "{step} transacties in behandeling...",
-            "failed": "{step} transacties mislukt. @:(retryText).",
-            "confirm": "Bevestig 2e van 2 transacties...",
-            "complete": "Compleet",
-            "convertionComplete": "Conversie compleet"
-        },
         "statuses": {
-            "waiting": "Aan het wachten",
-            "ready": "Klaar",
             "pending": "In afwachting",
-            "frozen": "Bevroren",
             "failed": "Transactie mislukt",
             "done": "Compleet",
             "waitingForConfirmation": "Wachten op bevestiging..."
         },
-        "networkTitle": "{network} transactie",
         "transactionHash": "Transactie hash",
         "networkInfo": {
             "status": "Status",
             "date": "Datum",
             "amount": "Bedrag",
-            "transactionFee": "Transactievergoeding",
-            "total": "Totaal"
+            "transactionFee": "Transactievergoeding"
         },
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} transactie in behandeling...",
         "newTransaction": "Nieuwe transactie aanmaken",
         "title": "Bridge-transactie",
@@ -607,7 +559,6 @@
         "title": "Kies een token",
         "searchPlaceholder": "Filter op Asset-ID, naam of Tickersymbool",
         "emptyListMessage": "Geen resultaten",
-        "copy": "Kopieer Asset-ID",
         "assets": {
             "title": "Assets"
         },
@@ -620,29 +571,18 @@
         }
     },
     "createPair": {
-        "title": "Maak een paar",
         "deposit": "Storting",
-        "balance": "Saldo",
         "pricePool": "Prijzen en vergoedingen",
         "shareOfPool": "Aandeel van de pool",
         "firstSecondPoolTokens": "{eerste}-{tweede} Pool tokens",
-        "connect": "Wallet verbinden",
         "supply": "Toevoegen",
         "yourPosition": "Uw positie",
-        "yourPositionEstimated": "Uw positie (geschat)",
-        "youWillReceive": "U ontvangt",
-        "remove": "Verwijder",
-        "add": "Voeg Toe",
-        "ok": "OK",
-        "alreadyCreated": "Token paar is al aangemaakt",
         "firstLiquidityProvider": "U bent de eerste liquiditeitsverschaffer",
         "firstLiquidityProviderInfo": "De verhouding van de tokens die u toevoegt zal de prijs van deze pool bepalen.<br\/>Zodra u tevreden bent met de koers klikt u op leveren om te herzien."
     },
     "confirmSupply": {
         "title": "Jouw aandeel in de pool bedraagt",
-        "outputDescription": "De output wordt geschat. Als de prijs meer dan {slippageTolerance}% verandert, wordt uw transactie teruggedraaid.",
-        "poolTokensBurned": "{first}-{second} Pool Tokens Verbrand",
-        "price": "Prijs"
+        "outputDescription": "De output wordt geschat. Als de prijs meer dan {slippageTolerance}% verandert, wordt uw transactie teruggedraaid."
     },
     "addLiquidity": {
         "title": "Liquiditeit toevoegen"
@@ -650,11 +590,9 @@
     "removeLiquidity": {
         "title": "Liquiditeit verwijderen",
         "liquidity": "liquiditeit",
-        "balance": "Balans",
         "amount": "Bedrag",
         "input": "invoer",
         "output": "uitvoer",
-        "price": "Prijs",
         "remove": "Verwijder",
         "description": "Het verwijderen van pool-tokens zet uw positie terug in onderliggende tokens tegen de huidige koers, evenredig met uw aandeel in de pool. Opgebouwde vergoedingen zijn inbegrepen in de bedragen die u ontvangt.",
         "outputMessage": "De output wordt geschat. Als de prijs meer dan {slippageTolerance}% verandert, zal uw transactie worden teruggedraaid.",
@@ -675,22 +613,11 @@
             "frontrun": "Uw transactie kan frontrun zijn",
             "error": "Voer een geldig slippercentage in"
         },
-        "custom": "CUSTOM",
-        "transactionDeadline": "TRANSACTIETERMIJN",
-        "transactionDeadlineHint": "De transactie wordt geannuleerd als ze langer dan deze tijd in behandeling is.",
-        "nodeAddress": "NODE ADRES",
-        "ip": "IP",
-        "port": "PORT",
-        "min": "MIN",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} liquiditeitsroutering zorgt voor de beste prijs voor elke transactie door alleen de beste prijsopties uit alle beschikbare markten te combineren. Indien beschikbaar, zal Token Bonding Curve ({tbcAlgorithm}) worden gebruikt voor liquiditeit zolang de assetprijs betaalbaarder is dan uit andere bronnen, waarop de {xycAlgorithm} pool wordt gebruikt.",
             "TBC": "{tbcAlgorithm} — alleen kopen van de Token Bonding Curve (Primary Market). Er is een mogelijkheid dat de prijs ongunstig kan worden in vergelijking met de {xycAlgorithm} pool (Secondary Market), maar de waarde die wordt ontvangen van de gevestigde beloningen kan in de loop van de tijd veel gunstiger blijken te zijn.",
             "XYK": "{xycAlgorithm} - alleen kopen van de XYK-pool (secundaire markt). Traditionele XYK-poolswap."
         }
-    },
-    "resultDialog": {
-        "title": "Transactie ingediend",
-        "ok": "OK"
     },
     "rewards": {
         "andText": "en",
@@ -757,7 +684,6 @@
         "title": "Taal"
     },
     "tokens": {
-        "symbol": "Symbool",
         "assetId": "Asset-ID"
     },
     "memorandum": "{AppName} memorandum en servicevoorwaarden",
@@ -828,14 +754,6 @@
     },
     "sentText": "Verzonden",
     "learnMoreText": "Kom meer te weten",
-    "marketMakerCountdown": {
-        "title": "Market Maker Countdown",
-        "blocks": "blokken",
-        "daysLeft": "resterende dagen",
-        "txs": "TX's",
-        "volume": "MM TX-volume",
-        "description": "20 miljoen PSWAP \/ maand zal worden verdeeld onder market makers met ten minste 500 tx \/ maand met een waarde van meer dan 1 XOR."
-    },
     "confirmNextTxFailure": {
         "header": "Aandacht",
         "info": "Uw {symbol} -saldo is na deze transactie minder dan {fee} {symbol} . U kunt de netwerkkosten voor een andere transactie niet betalen.",
@@ -849,18 +767,14 @@
         "bondedXOR": "XOR Gebonden",
         "referralsNumber": "{number} verwijzingen",
         "startInviting": "Bond XOR om anderen door te verwijzen",
-        "deposit": "Storting",
-        "balance": "Saldo",
         "insufficientBondedBalance": "Onvoldoende gebonden saldo",
         "action": {
-            "empty": "Voer het bedrag van {tokenSymbol}",
             "bondMore": "Bond Meer",
             "bond": "Bond",
             "unbond": "Ontkoppelen",
             "copyLink": "Kopieer link",
             "shareLink": "Delen"
         },
-        "transactionDetails": "Transactiegegevens",
         "receivedRewards": "Beloningen ontvangen",
         "invitationLink": "Uitnodiging link",
         "bondTitle": "Bond XOR",
@@ -1376,7 +1290,6 @@
         "marketTrades": "Markttransacties",
         "market": "Markt",
         "limit": "Begrenzing",
-        "price": "Prijs",
         "total": "Totaal",
         "amount": "hoeveelheid",
         "time": "tijd",
@@ -1631,5 +1544,6 @@
     },
     "firstText": "Eerst",
     "lastText": "Laatst",
-    "prevText": "Vorig"
+    "prevText": "Vorig",
+    "priceText": "Prijs"
 }
