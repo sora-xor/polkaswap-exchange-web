@@ -42,6 +42,7 @@ class PointsService {
 
   public calculateCategoryPoints(categoryValues: CategoryValues): { [key: string]: CalculateCategoryPointResult } {
     const results: { [key: string]: CalculateCategoryPointResult } = {};
+    const firstTxAccountResult: { [key: string]: CalculateCategoryPointResult } = {};
 
     Object.entries(categoryValues).forEach(([categoryName, value]) => {
       const category = categoriesPointSystem[categoryName];
@@ -54,17 +55,30 @@ class PointsService {
 
       const points = parseFloat((multiplier * category.maxPercentage * POINTS_PER_PERCENT).toFixed(0));
 
-      results[categoryName] = {
+      const categoryData = {
         levelCurrent,
         threshold,
         points,
         nextLevelRewardPoints,
         currentProgress,
         minimumAmountForNextLevel,
+        titleProgress: category.titleProgress,
+        titleTask: category.titleTask,
+        descriptionTask: category.descriptionTask,
+        imageName: category.imageName,
       };
+
+      if (categoryName === 'firstTxAccount') {
+        // Store firstTxAccount category separately
+        firstTxAccountResult[categoryName] = categoryData;
+      } else {
+        // Store other categories in results
+        results[categoryName] = categoryData;
+      }
     });
 
-    return results;
+    // Merge results and add firstTxAccount at the end
+    return { ...results, ...firstTxAccountResult };
   }
 }
 

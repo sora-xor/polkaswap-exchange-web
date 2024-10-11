@@ -95,6 +95,7 @@ $rewards-tabs-height: 72px;
     }
     & + * {
       padding-top: $inner-spacing-big;
+      padding-bottom: 0;
     }
   }
 

@@ -25,17 +25,24 @@
           <s-scrollbar class="points__cards-scrollbar">
             <s-tabs v-model="categoryPoints" type="rounded" class="points__tabs">
               <s-tab label="YOUR TASKS" name="tasks">
-                <p>the tasks</p>
+                <task-card
+                  v-for="(pointsForCategory, categoryName) in this.pointsForCards"
+                  :key="categoryName"
+                  :points-for-category="pointsForCategory"
+                  :category-name="categoryName"
+                  class="points__card-task"
+                />
               </s-tab>
               <s-tab label="PROGRESS" name="progress">
                 <div class="points__cards">
                   <point-card
-                    v-for="(pointsForCategory, categoryName) in pointsForCards"
+                    v-for="[categoryName, pointsForCategory] in Object.entries(this.pointsForCards ?? {}).slice(0, -1)"
                     :key="categoryName"
                     :points-for-category="pointsForCategory"
-                    :category-name="categoryName"
                     class="points__card"
                   />
+
+                  <first-tx-card :date="this.pointsForCards?.firstTxAccount.currentProgress" />
                 </div>
               </s-tab>
             </s-tabs>
@@ -80,6 +87,8 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     FormattedAmount: components.FormattedAmount,
     TokenLogo: components.TokenLogo,
     PointCard: lazyComponent(Components.PointCard),
+    TaskCard: lazyComponent(Components.TaskCard),
+    FirstTxCard: lazyComponent(Components.FirstTxCard),
     SettingsTabs: lazyComponent(Components.SettingsTabs),
   },
 })
@@ -112,7 +121,7 @@ export default class PointSystem extends Mixins(
   private poolDepositCount = 0;
   private poolWithdrawCount = 0;
   totalSwapTxs = 0;
-  categoryPoints: string = this.pointSysemCategory.progress;
+  categoryPoints: string = this.pointSysemCategory.tasks;
   dummyPoints: { [key: string]: CalculateCategoryPointResult } = {
     liquidityProvision: {
       currentProgress: 50,
@@ -121,6 +130,10 @@ export default class PointSystem extends Mixins(
       nextLevelRewardPoints: 150,
       points: 500,
       threshold: 0,
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+      imageName: 'governance',
     },
     referralRewards: {
       currentProgress: 20,
@@ -129,6 +142,10 @@ export default class PointSystem extends Mixins(
       nextLevelRewardPoints: 100,
       points: 300,
       threshold: 0,
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+      imageName: 'governance',
     },
     depositVolumeBridges: {
       currentProgress: 70,
@@ -137,6 +154,10 @@ export default class PointSystem extends Mixins(
       nextLevelRewardPoints: 200,
       points: 600,
       threshold: 0,
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+      imageName: 'governance',
     },
     networkFeeSpent: {
       currentProgress: 30,
@@ -145,6 +166,10 @@ export default class PointSystem extends Mixins(
       nextLevelRewardPoints: 120,
       points: 400,
       threshold: 0,
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+      imageName: 'governance',
     },
     XORBurned: {
       currentProgress: 10,
@@ -153,6 +178,10 @@ export default class PointSystem extends Mixins(
       nextLevelRewardPoints: 80,
       points: 200,
       threshold: 0,
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+      imageName: 'governance',
     },
     XORHoldings: {
       currentProgress: 90,
@@ -161,6 +190,10 @@ export default class PointSystem extends Mixins(
       nextLevelRewardPoints: 250,
       points: 800,
       threshold: 0,
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+      imageName: 'governance',
     },
     kensetsuVolumeRepaid: {
       currentProgress: 0,
@@ -169,6 +202,10 @@ export default class PointSystem extends Mixins(
       nextLevelRewardPoints: 60,
       points: 100,
       threshold: 0,
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+      imageName: 'governance',
     },
     kensetsuHold: {
       currentProgress: 25,
@@ -177,6 +214,10 @@ export default class PointSystem extends Mixins(
       nextLevelRewardPoints: 100,
       points: 300,
       threshold: 0,
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+      imageName: 'governance',
     },
     orderbookVolume: {
       currentProgress: 60,
@@ -185,6 +226,10 @@ export default class PointSystem extends Mixins(
       nextLevelRewardPoints: 240,
       points: 700,
       threshold: 0,
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+      imageName: 'governance',
     },
     governanceLockedXOR: {
       currentProgress: 15,
@@ -193,6 +238,10 @@ export default class PointSystem extends Mixins(
       nextLevelRewardPoints: 90,
       points: 250,
       threshold: 0,
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+      imageName: 'governance',
     },
     nativeXorStaking: {
       currentProgress: 35,
@@ -201,6 +250,10 @@ export default class PointSystem extends Mixins(
       nextLevelRewardPoints: 150,
       points: 450,
       threshold: 0,
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+      imageName: 'governance',
     },
     firstTxAccount: {
       currentProgress: 0,
@@ -209,7 +262,27 @@ export default class PointSystem extends Mixins(
       nextLevelRewardPoints: null,
       points: 0,
       threshold: 0,
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+      imageName: 'governance',
     },
+  };
+
+  somePointsForCategories = {
+    liquidityProvision: 25000,
+    KUSDHoldings: 10000,
+    VXORHoldings: 9999,
+    XORBurned: 10001,
+    XORHoldings: 150,
+    depositVolumeBridges: 0,
+    firstTxAccount: 1728499896000,
+    governanceLockedXOR: 124,
+    kensetsuVolumeRepaid: 2524,
+    nativeXorStaking: 42,
+    networkFeeSpent: 343,
+    orderbookVolume: 0,
+    referralRewards: 242,
   };
 
   // Использование dummy-данных в компоненте
@@ -405,8 +478,11 @@ export default class PointSystem extends Mixins(
       this.poolDepositCount = await fetchCount(0, end, account, CountType.PoolDeposit);
       this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
       // const accountMeta = await fetchAccountMeta(account);
+      this.pointsForCards = pointsService.calculateCategoryPoints(this.somePointsForCategories);
+      // console.info(accountMeta);
 
       // if (accountMeta) {
+      //   console.info(this.getPointsForCategories(accountMeta));
       //   this.pointsForCards = pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta));
       //   console.info(this.pointsForCards);
       //   console.info('AccountMeta:', accountMeta);
@@ -469,7 +545,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
   background-color: #fbf7f9;
   width: 100%;
   &__cards-scrollbar {
-    max-height: calc($card-height * 2.5);
+    max-height: calc($card-height * 2.6);
   }
   &__main {
     margin-top: calc($inner-spacing-medium + $inner-spacing-tiny);
@@ -566,7 +642,8 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
       border-radius: 12px;
     }
   }
-  &__card {
+  &__card,
+  &__card-task {
     width: $sidebar-max-width;
     height: $card-height;
     background-color: #f4f0f1;
@@ -578,6 +655,12 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
     background-position: top right;
     box-sizing: border-box;
   }
+  &__card-task {
+    width: 100%;
+    max-height: 141px;
+    padding: 16px;
+  }
+
   // TODO not sure we need it
   // &__soratopia {
   //   min-height: 102px;

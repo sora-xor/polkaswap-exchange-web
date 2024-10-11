@@ -1,30 +1,26 @@
-<!-- <div class="point-card__info">
-        <p>Level: {{ levelCurrent }}</p>
-        <p>Points: {{ this.pointsForCategory.points }}</p>
-        <p>Current Progress: {{ currentProgress }}</p>
-        <p>Minimum Amount For Next Level: {{ minimumAmountForNextLevel }}</p>
-        <p>Next Level Reward Points: {{ this.pointsForCategory.nextLevelRewardPoints }}</p>
-        <p>Threshold: {{ this.pointsForCategory.threshold }}</p>
-      </div> -->
-
 <template>
   <div class="point-card">
     <div class="point-card__progress">
-      <progress-card imageName="governance" :progressPercentage="progressPercentage" />
-      <p>LVL {{ levelCurrent }} <span>/ LVL 5</span></p>
+      <progress-card :imageName="imageName" :progressPercentage="progressPercentage" />
+      <p>LVL {{ levelCurrent }} <span>/ LVL 6</span></p>
     </div>
     <div class="point-card__name">
-      <p>{{ categoryName }}</p>
+      <p>{{ this.pointsForCategory.titleProgress }}</p>
       <i class="icontype s-icon-arrows-chevron-right-rounded-24" />
     </div>
     <div class="point-card__currently-amount">
-      <p>CURRENTLY</p>
-      <p>{{ this.pointsForCategory.currentProgress }}</p>
+      <p>Currently</p>
+      <p>${{ this.pointsForCategory.currentProgress }}</p>
     </div>
     <s-divider />
     <div class="point-card__amount-of-points">
-      <p>NEXT LVL</p>
-      <p>{{ this.pointsForCategory.nextLevelRewardPoints }}</p>
+      <template v-if="this.pointsForCategory.nextLevelRewardPoints !== null">
+        <p>NEXT LVL</p>
+        <p>{{ this.pointsForCategory.nextLevelRewardPoints }}</p>
+      </template>
+      <template v-else>
+        <p class="max-level">You reached max lvl</p>
+      </template>
     </div>
   </div>
 </template>
@@ -47,9 +43,6 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
   @Prop({ required: true, type: Object })
   readonly pointsForCategory!: CalculateCategoryPointResult;
 
-  @Prop({ required: true, type: String })
-  readonly categoryName!: string;
-
   get levelCurrent(): number {
     return this.pointsForCategory.levelCurrent;
   }
@@ -60,6 +53,10 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
 
   get minimumAmountForNextLevel(): number | null {
     return this.pointsForCategory.minimumAmountForNextLevel;
+  }
+
+  get imageName(): string {
+    return this.pointsForCategory.imageName;
   }
 
   get progressPercentage(): number {
@@ -73,6 +70,7 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
 .el-divider {
   margin-top: 8px;
   margin-bottom: 8px;
+  background-color: var(--s-color-base-content-tertiary);
 }
 .point-card {
   position: relative;
@@ -153,6 +151,9 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
   &__amount-of-points {
     p {
       color: #f564a9;
+    }
+    .max-level {
+      color: #f564a9 !important;
     }
   }
 }

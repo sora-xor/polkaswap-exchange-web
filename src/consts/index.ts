@@ -256,6 +256,8 @@ export enum Components {
   WalletAboutNetworkDialog = 'pages/Wallet/AboutNetworkDialog',
   // Point System Page
   PointCard = 'pages/PointSystem/PointCard',
+  TaskCard = 'pages/PointSystem/TaskCard',
+  FirstTxCard = 'pages/PointSystem/FirstTxCard',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
   LinksDropdown = 'shared/LinksDropdown',

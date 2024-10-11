@@ -8,6 +8,10 @@ interface Level {
 export interface Category {
   maxPercentage: number;
   levels: Level[];
+  titleProgress: string;
+  titleTask: string;
+  descriptionTask: string;
+  imageName: string;
 }
 
 export type CalculateCategoryPointResult = {
@@ -17,6 +21,10 @@ export type CalculateCategoryPointResult = {
   nextLevelRewardPoints: number | null;
   currentProgress: number;
   minimumAmountForNextLevel: number | null;
+  titleProgress: string;
+  titleTask: string;
+  descriptionTask: string;
+  imageName: string;
 };
 
 export type CategoryValues = {
