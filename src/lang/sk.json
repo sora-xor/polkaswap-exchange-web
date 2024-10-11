@@ -470,16 +470,9 @@
     "exchange": {
         "Swap": "Výmena",
         "Pool": "Fond",
-        "balance": "Zostatok",
-        "price": "Cena",
-        "transactionSubmitted": "Transakcia bola odoslaná",
-        "transactionMessage": "{firstToken} a {secondToken}",
-        "ok": "OK",
-        "confirm": "Potvrdiť",
         "lossWarning": "Pri svojom obchode stratíte {value}%. Zistili sme problém s poskytovaním likvidity. To môže viesť k významným stratám počas výmeny tokenov. Uistite sa, že máte dostatočnú likviditu pre požadovaný swapový pár."
     },
     "swap": {
-        "estimated": "približne",
         "slippageTolerance": "Tolerancia sklzu",
         "minReceived": "Obdržané minimum",
         "maxSold": "Maximum k predaju",
@@ -493,7 +486,6 @@
         "confirmSwap": "Potvrdiť výmenu",
         "swapOutputMessage": "Výsledná čiastka je len odhadom. Obdržíte minimálne {transactionValue}, inak sa transakcia vráti späť.",
         "rewardsForSwap": "Strategické odmeny PSWAP",
-        "swapInputMessage": "Vstupná čiastka je len odhadom. Predáte maximálne {transactionValue}, inak sa transakcia vráti späť.",
         "route": "Cesta",
         "errorFetching": "Chyba pri načítaní údajov"
     },
@@ -512,21 +504,12 @@
     "bridge": {
         "title": "Most",
         "info": "Konverzia tokenov medzi sieťami {Sora} a {Ethereum}.",
-        "balance": "Zostatok",
         "next": "Nasledujúci",
         "connectWallets": "Pripojením peňaženiek zobrazíte príslušnú históriu transakcií.",
         "soraNetworkFee": "{Sora} poplatok za sieť",
-        "ethereumNetworkFee": "{Ethereum} poplatok za sieť",
-        "total": "Celkom",
-        "viewHistory": "Zobraziť históriu transakcií",
-        "transactionSubmitted": "Transakcia bola odoslaná",
-        "transactionMessage": "{assetA} za {assetB}",
         "notRegisteredAsset": "Aktívum {assetSymbol} nie je zaregistrované",
         "selectNetwork": "Vybrať sieť",
         "networkInfo": "Prepojiť {Sora} sieť s:",
-        "copy": "Skopírujte sieťovú adresu",
-        "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa",
         "limitMessage": "V súčasnosti existuje {type} {amount} {symbol} na premostenie na zaistenie stability a bezpečnosti siete {Sora}. Ďakujeme za pochopenie.",
         "externalTransferFee": "{network} poplatok {XCM}",
         "externalTransferFeeTooltip": "Keď odošlete preklenovaciu transakciu do siete {network} , zo sumy, ktorú prenášate, sa účtuje malý poplatok",
@@ -536,57 +519,26 @@
     "selectRegisteredAsset": {
         "title": "Vybrať token",
         "search": {
-            "title": "Tokeny",
             "placeholder": "Filtrovať podľa ID, názvu alebo symbolu aktíva",
             "networkLabelSora": "Tokeny siete {Sora}",
-            "networkLabelEthereum": "{network} sieťové zrkadlové tokeny",
-            "emptyListMessage": "Žiadne výsledky"
-        },
-        "customAsset": {
-            "title": "Vlastné",
-            "customInfo": "Dôležité! Vlastné tokeny musia byť zaregistrované v {Sora}.",
-            "registerToken": "Zaregistrovať token",
-            "addressPlaceholder": "ID aktíva",
-            "symbolPlaceholder": "Symbol tokenu",
-            "empty": "Nenašli sa žiadne tokeny",
-            "alreadyAttached": "Token už bol pridaný"
+            "networkLabelEthereum": "{network} sieťové zrkadlové tokeny"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} pre {to}",
         "for": " pre ",
-        "steps": {
-            "step": "{step} z 2",
-            "step1": "1.",
-            "step2": "2."
-        },
-        "status": {
-            "pending": "{step} nespracované transakcie…",
-            "failed": "{step} transakcií zlyhalo. @:(retryText).",
-            "confirm": "Potvrďte 2. z 2 transakcií…",
-            "complete": "Dokončené",
-            "convertionComplete": "Konverzia dokončená"
-        },
         "statuses": {
-            "waiting": "Čaká sa",
-            "ready": "Pripravené",
             "pending": "Čaká na spracovanie",
-            "frozen": "Zmrazené",
             "failed": "Transakcia zlyhala",
             "done": "Dokončené",
             "waitingForConfirmation": "Čaká sa na potvrdenie…"
         },
-        "networkTitle": "{network} transakcia",
         "transactionHash": "Hash transakcie",
         "networkInfo": {
             "status": "Stav",
             "date": "Dátum",
             "amount": "Čiastka",
-            "transactionFee": "Poplatok za transakciu",
-            "total": "Celkom"
+            "transactionFee": "Poplatok za transakciu"
         },
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} transakcia vo fáze spracovania…",
         "newTransaction": "Vytvoriť novú transakciu",
         "title": "Preklenovacia transakcia",
@@ -607,7 +559,6 @@
         "title": "Vybrať token",
         "searchPlaceholder": "Filtrovať podľa ID, názvu alebo symbolu aktíva",
         "emptyListMessage": "Žiadne výsledky",
-        "copy": "Kopírovať ID aktíva",
         "assets": {
             "title": "Aktíva"
         },
@@ -620,29 +571,18 @@
         }
     },
     "createPair": {
-        "title": "Vytvoriť pár",
         "deposit": "Vklad",
-        "balance": "Zostatok",
         "pricePool": "Ceny a poplatky",
         "shareOfPool": "Podiel vo fonde",
         "firstSecondPoolTokens": "{first}-{second} fond",
-        "connect": "Pripojiť peňaženku",
         "supply": "Poskytnúť",
         "yourPosition": "Vaša pozícia",
-        "yourPositionEstimated": "Vaša pozícia (odhadovaná)",
-        "youWillReceive": "Obdržíte",
-        "remove": "odstrániť",
-        "add": "PRIDAŤ",
-        "ok": "OK",
-        "alreadyCreated": "Tokenový pár je už vytvorený",
         "firstLiquidityProvider": "Ste prvým poskytovateľom likvidity",
         "firstLiquidityProviderInfo": "Pomer tokenov, ktoré pridáte, určí cenu tohto fondu.<br\/>Upravte pomer podľa vlastného uváženia a akciu potvrďte kliknutím na položku Poskytnúť."
     },
     "confirmSupply": {
         "title": "Váš podiel vo fonde bude",
-        "outputDescription": "Výsledná čiastka je len odhadom. Ak sa cena zmení o viac ako {slippageTolerance}%, transakcia bude zrušená.",
-        "poolTokensBurned": "Tokeny v {first}-{second} fonde spálené",
-        "price": "Cena"
+        "outputDescription": "Výsledná čiastka je len odhadom. Ak sa cena zmení o viac ako {slippageTolerance}%, transakcia bude zrušená."
     },
     "addLiquidity": {
         "title": "Pridať likviditu"
@@ -650,11 +590,9 @@
     "removeLiquidity": {
         "title": "Odobrať likviditu",
         "liquidity": "likvidita",
-        "balance": "Zostatok",
         "amount": "Čiastka",
         "input": "Vstup",
         "output": "Výstup",
-        "price": "Cena",
         "remove": "Odobrať",
         "description": "Odobratie tokenov fondu prevedie vašu pozíciu späť na základné tokeny pri aktuálnom kurze, úmerne vášmu podielu vo fonde. Naakumulované poplatky budú zahrnuté do čiastok, ktoré obdržíte.",
         "outputMessage": "Výsledná čiastka je len odhadom. Ak sa cena zmení o viac ako {slippageTolerance}%, transakcia bude zrušená.",
@@ -675,22 +613,11 @@
             "frontrun": "Vaša transakcia môže byť predbehnutá",
             "error": "Zadajte platné percento sklzu"
         },
-        "custom": "VLASTNÉ",
-        "transactionDeadline": "TERMÍN TRANSAKCIE",
-        "transactionDeadlineHint": "Transakcia bude zrušená, ak trvá dlhšie ako určený čas.",
-        "nodeAddress": "ADRESA UZLA",
-        "ip": "IP",
-        "port": "PORT",
-        "min": "MIN",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} presmerovanie likvidity zaisťuje najlepšiu cenu pre akúkoľvek transakciu, a to kombináciou najlepších cenových možnosti zo všetkých dostupných trhov. Ak je k dispozícii a pokiaľ je cena aktív cenovo dostupnejšia ako z iných zdrojov, pre likviditu sa použije krivka závislosti ceny tokenu na jeho ponuke ({tbcAlgorithm}). V opačnom prípade sa použije {xycAlgorithm} fond.",
             "TBC": "{tbcAlgorithm} - nákup iba z krivky závislosti ceny tokenu na jeho ponuke (Token Bonding Curve) (primárny trh). Existuje možnosť nepriaznivého vývoja ceny v porovnaní s fondom {xycAlgorithm} (sekundárny trh), ale hodnota získaná z priznaných odmien sa časom môže ukázať ako oveľa priaznivejšia.",
             "XYK": "{xycAlgorithm} – nákup iba z fondu XYK (sekundárny trh). Tradičný výmenný fond XYK."
         }
-    },
-    "resultDialog": {
-        "title": "Transakcia bola odoslaná",
-        "ok": "OK"
     },
     "rewards": {
         "andText": "a",
@@ -757,7 +684,6 @@
         "title": "Jazyk"
     },
     "tokens": {
-        "symbol": "Symbol",
         "assetId": "ID aktíva"
     },
     "memorandum": "{AppName} Memorandum a Podmienky poskytovania služieb",
@@ -828,14 +754,6 @@
     },
     "sentText": "Odoslané",
     "learnMoreText": "Dozvedieť sa viac",
-    "marketMakerCountdown": {
-        "title": "Market Maker odpočítavanie",
-        "blocks": "bloky",
-        "daysLeft": "zostávajúce dni",
-        "txs": "TXs",
-        "volume": "Objem MM TX",
-        "description": "20 miliónov PSWAP\/mesiac bude distribuovaných tvorcom trhu s minimálne 500 tx\/mesiac v hodnote nad 1 XOR."
-    },
     "confirmNextTxFailure": {
         "header": "Pozornosť",
         "info": "Váš zostatok {symbol} bude po tejto transakcii nižší ako {fee} {symbol} . Nebudete môcť zaplatiť sieťový poplatok za ďalšiu transakciu.",
@@ -849,18 +767,14 @@
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} odporúčaní",
         "startInviting": "Bond XOR odporučiť ostatným",
-        "deposit": "Záloha",
-        "balance": "Zostatok",
         "insufficientBondedBalance": "Nedostatočný viazaný zostatok",
         "action": {
-            "empty": "Zadajte sumu {tokenSymbol}",
             "bondMore": "Bond viac",
             "bond": "Bond",
             "unbond": "Odpojiť",
             "copyLink": "Skopírovať odkaz",
             "shareLink": "Zdieľať"
         },
-        "transactionDetails": "Detaily transakcie",
         "receivedRewards": "Prijaté odmeny",
         "invitationLink": "Odkaz na pozvánku",
         "bondTitle": "Bond XOR",
@@ -1376,7 +1290,6 @@
         "marketTrades": "Trhové obchody",
         "market": "trhu",
         "limit": "Limit",
-        "price": "cena",
         "total": "Celkom",
         "amount": "čiastka",
         "time": "čas",
@@ -1631,5 +1544,6 @@
     },
     "firstText": "Najprv",
     "lastText": "Posledný",
-    "prevText": "Predchádzajúce"
+    "prevText": "Predchádzajúce",
+    "priceText": "cena"
 }
