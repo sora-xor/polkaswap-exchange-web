@@ -57,18 +57,18 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
 .task-card {
   .el-divider {
     background-color: var(--s-color-base-content-tertiary);
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: $basic-spacing-small;
+    margin-bottom: $basic-spacing-small;
   }
   .el-button.s-secondary {
-    padding: 6px 12px;
-    background-color: #ffffff;
+    padding: 6px $inner-spacing-small;
+    background-color: var(--s-color-base-on-accent);
     box-shadow: unset;
     color: var(--s-color-base-content-primary);
 
     &:hover {
       box-shadow: var(--s-shadow-element-pressed);
-      background-color: #ffffff;
+      background-color: var(--s-color-base-on-accent);
       color: var(--s-color-base-content-primary);
     }
   }
@@ -92,7 +92,7 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
   &__title-image {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: $basic-spacing-small;
     p {
       font-weight: 800;
     }
@@ -100,8 +100,8 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
   &__description-task {
     color: var(--s-color-base-content-secondary);
     font-weight: 400;
-    margin-left: 28px;
-    margin-top: 8px;
+    margin-left: calc($inner-spacing-mini * 3.5);
+    margin-top: $inner-spacing-mini;
   }
 
   &__current-progress {

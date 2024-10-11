@@ -544,7 +544,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
   background-image: url('~@/assets/img/points/header.png');
   background-repeat: no-repeat;
   background-position: top;
-  background-color: #fbf7f9;
+  background-color: var(--s-color-base-disabled);
   width: 100%;
   &__cards-scrollbar {
     max-height: calc($card-height * 2.6);
@@ -578,7 +578,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      color: #ffffff;
+      color: var(--s-color-base-on-accent);
       h3 {
         font-weight: 300;
         font-size: 32px;
@@ -592,7 +592,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
     }
     p {
       max-width: $explore-search-input-max-width;
-      color: #f4f0f1;
+      color: var(--s-color-base-border-primary);
       font-weight: 400;
     }
   }
@@ -629,7 +629,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
   &__first-tx-card {
     width: $sidebar-max-width;
     height: $card-height;
-    background-color: #f4f0f1;
+    background-color: var(--s-color-base-border-primary);
     border-radius: var(--s-border-radius-mini);
     padding: $inner-spacing-medium;
     margin-bottom: $inner-spacing-mini;
@@ -639,14 +639,14 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
     box-sizing: border-box;
   }
   &__first-tx-card {
-    height: 48px;
+    height: calc($basic-spacing * 3);
     width: 100%;
-    padding: 10px 16px;
+    padding: $basic-spacing-small $basic-spacing;
   }
   &__card-task {
     width: 100%;
-    max-height: 141px;
-    padding: 16px;
+    max-height: calc($select-asset-item-height * 2);
+    padding: $basic-spacing;
   }
 
   @include mobile(true) {

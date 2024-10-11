@@ -66,8 +66,8 @@ export default class ProgressCard extends Vue {
 <style lang="scss" scoped>
 .progress-circle {
   position: relative;
-  width: 72px;
-  height: 72px;
+  width: calc($inner-spacing-big * 3);
+  height: calc($inner-spacing-big * 3);
   display: flex;
   justify-content: center;
   align-items: center;

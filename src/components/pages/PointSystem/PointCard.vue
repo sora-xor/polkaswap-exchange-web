@@ -68,13 +68,13 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
 
 <style lang="scss" scoped>
 .el-divider {
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: $inner-spacing-mini;
+  margin-bottom: $inner-spacing-mini;
   background-color: var(--s-color-base-content-tertiary);
 }
 .point-card {
   position: relative;
-  padding: 8px;
+  padding: $inner-spacing-mini;
   border-radius: 12px;
   text-align: center;
 
@@ -82,16 +82,16 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: $inner-spacing-small;
 
     .progress-circle {
-      margin-top: 8px;
+      margin-top: $inner-spacing-mini;
     }
 
     p {
       font-size: 12px;
       font-weight: 700;
-      padding: 3px 8px;
+      padding: 3px $inner-spacing-mini;
       border-radius: 12px;
       margin-left: auto;
       margin-bottom: auto;
@@ -105,7 +105,7 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
   }
 
   &__name {
-    margin-top: 12px;
+    margin-top: $inner-spacing-small;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -138,23 +138,26 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
       font-weight: 800;
       font-size: 11px;
       &:first-of-type {
-        color: #a19a9d;
+        color: var(--s-color-base-content-secondary);
       }
     }
   }
   &__currently-amount {
-    margin-top: 14px;
+    margin-top: calc($inner-spacing-small + 2px);
     p {
-      color: #479aef;
+      color: var(--s-color-status-info);
     }
   }
   &__amount-of-points {
     p {
-      color: #f564a9;
+      color: var(--s-color-status-error);
     }
     .max-level {
-      color: #f564a9 !important;
+      color: var(--s-color-status-error) !important;
     }
+  }
+  @include mobile(true) {
+    padding: $inner-spacing-mini $inner-spacing-big;
   }
 }
 </style>

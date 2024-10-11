@@ -41,16 +41,16 @@ export default class FirstTxCard extends Mixins(mixins.TranslationMixin) {
   &__first-trx {
     font-size: 15px;
     font-weight: 300;
-    max-width: 182px;
+    max-width: calc($inner-spacing-large * 4.5);
   }
   &__date {
-    margin-left: 24px;
+    margin-left: $inner-spacing-big;
     display: flex;
     flex-direction: column;
     color: var(--s-color-base-content-secondary);
     font-weight: 800;
     font-size: 11px;
-    gap: 6px;
+    gap: $inner-spacing-tiny;
     p:last-of-type {
       color: var(--s-color-status-info);
     }
@@ -62,6 +62,9 @@ export default class FirstTxCard extends Mixins(mixins.TranslationMixin) {
     &__date {
       gap: unset;
       margin-left: unset;
+    }
+    &__first-trx {
+      margin-right: 16px;
     }
   }
 }
