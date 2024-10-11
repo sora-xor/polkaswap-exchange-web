@@ -54,13 +54,7 @@ export async function setDayJsLocale(lang: Language): Promise<void> {
 
   try {
     // importing dayjs locale file automatically runs `dayjs.locale(code)`
-    // "webpackInclude" - optimization to exclude unused files from "chunk-vendors"
-    await import(
-      /* webpackInclude: /(en|ru|cs|de|es|fr|hr|hu|hy-am|id|it|nl|no|pl|sk|sr|sv|vi|yo|zh-cn)\.js$/ */
-      /* webpackChunkName: "dayjs-locale-[request]" */
-      /* webpackMode: "lazy" */
-      `dayjs/locale/${code}.js`
-    );
+    await import(`dayjs/locale/${code}.js`);
   } catch (error) {
     console.warn(`[dayjs]: unsupported locale "${code}"`, error);
   }
@@ -72,17 +66,9 @@ export async function setI18nLocale(lang: Language): Promise<void> {
   if (!loadedLanguages.includes(locale)) {
     // transform locale string 'eu-ES' to filename 'eu_ES' like in localise
     const filename = locale.replace('-', '_');
-    const messagesModule = await import(
-      /* webpackChunkName: "lang-[request]" */
-      /* webpackMode: "lazy" */
-      `@/lang/${filename}.json`
-    );
+    const messagesModule = await import(`@/lang/${filename}.json`);
 
-    const cardMessagesModule = await import(
-      /* webpackChunkName: "lang-card-[request]" */
-      /* webpackMode: "lazy" */
-      `@/lang/card/${filename}.json`
-    );
+    const cardMessagesModule = await import(`@/lang/card/${filename}.json`);
 
     i18n.setLocaleMessage(locale, { ...messagesModule.default, ...cardMessagesModule.default });
     loadedLanguages.push(locale);
