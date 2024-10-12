@@ -60,9 +60,9 @@ $s-border-radius-small: $s-border-radius-base * 1.5;
 $s-border-radius-medium: $s-border-radius-base * 2;
 $s-border-radius-big: $s-border-radius-base * 3;
 // Fonts paths
-$s-font-family-default-path: '~@soramitsu-ui/ui-vue2/lib/assets/fonts/Sora-VariableFont_wght.ttf' !default;
-$s-font-family-mono-path: '~@soramitsu-ui/ui-vue2/lib/assets/fonts/JetBrainsMono-Regular.woff' !default;
-$s-font-family-icons-path: '~@/assets/fonts/polkaswap_icons.ttf' !default;
+$s-font-family-default-path: '@soramitsu-ui/ui-vue2/lib/assets/fonts/Sora-VariableFont_wght.ttf' !default;
+$s-font-family-mono-path: '@soramitsu-ui/ui-vue2/lib/assets/fonts/JetBrainsMono-Regular.woff' !default;
+$s-font-family-icons-path: '@/assets/fonts/polkaswap_icons.ttf' !default;
 // Font Feature Settings
 $s-font-feature-settings-common: normal;
 $s-font-feature-settings-heading: normal;

@@ -169,7 +169,7 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
     display: block;
     height: 70px;
     width: 70px;
-    background: url('~@/assets/img/no-results.svg') center no-repeat;
+    background: url('@/assets/img/no-results.svg') center no-repeat;
   }
 }
 .pin-button {

@@ -285,14 +285,6 @@ export const updateDocumentTitle = (to?: Route) => {
   }
 };
 
-export const preloadFontFace = async (name: string): Promise<void> => {
-  try {
-    await (document as any).fonts.load(`1em ${name}`);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 export const getCssVariableValue = (name: string): string => {
   return getComputedStyle(document.documentElement as any)
     .getPropertyValue(name)

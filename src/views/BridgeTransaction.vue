@@ -738,14 +738,14 @@ $network-title-max-width: 250px;
   &-icon {
     margin: $inner-spacing-medium auto;
     &--success {
-      background-image: url('~@/assets/img/status-success.svg');
+      background-image: url('@/assets/img/status-success.svg');
       background-size: 110%;
     }
     &--wait {
-      background-image: url('~@/assets/img/header-wait.svg');
+      background-image: url('@/assets/img/header-wait.svg');
     }
     &--error {
-      background-image: url('~@/assets/img/header-error.svg');
+      background-image: url('@/assets/img/header-error.svg');
       background-size: 125%;
     }
     &.el-loading-parent--relative {
