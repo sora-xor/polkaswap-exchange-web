@@ -22,7 +22,8 @@
     "test:unit": "vue-cli-service test:unit --testPathIgnorePatterns Translation.spec.ts",
     "test:translation": "vue-cli-service test:unit -- Translation.spec.ts",
     "test:e2e": "vue-cli-service test:e2e",
-    "test:all": "yarn test:unit --coverage"
+    "test:all": "yarn test:unit --coverage",
+    "prepare": "husky"
   },
   "dependencies": {
     "@cedelabs/widgets-universal": "^1.3.1",
@@ -72,6 +73,7 @@
     "eslint-plugin-promise": "^5.2.0",
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "8",
+    "husky": "^9.1.6",
     "jest": "^27.5.1",
     "jsdom": "^16.7.0",
     "lint-staged": "^9.5.0",
@@ -96,10 +98,11 @@
     "ipfs-unixfs-importer": "9.0.6"
   },
   "gitHooks": {
+    "pre-commit": "lint-staged"
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
-      "vue-cli-service lint",
+      "yarn lint",
       "git add"
     ]
   }
