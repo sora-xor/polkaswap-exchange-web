@@ -16,7 +16,7 @@
     "serve": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore --fix src",
+    "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore src",
     "lang:generate": "tsx ./scripts/lang/generate.ts",
     "lang:fix": "tsx ./scripts/lang/fix.ts",
     "test:unit": "vue-cli-service test:unit --testPathIgnorePatterns Translation.spec.ts",
@@ -102,7 +102,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
-      "yarn lint",
+      "eslint --fix",
       "git add"
     ]
   }
