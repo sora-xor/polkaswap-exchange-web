@@ -54,8 +54,7 @@ export async function setDayJsLocale(lang: Language): Promise<void> {
 
   try {
     // importing dayjs locale file automatically runs `dayjs.locale(code)`
-    const result = await import(`../../node_modules/dayjs/locale/${code}.js`);
-    console.log(result);
+    await import(`dayjs/esm/locale/${code}.js`);
   } catch (error) {
     console.warn(`[dayjs]: unsupported locale "${code}"`, error);
   }

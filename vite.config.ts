@@ -11,20 +11,13 @@ export default defineConfig({
   plugins: [
     vue(),
     // vueDevTools(),
-    dynamicImport({
-      filter(id) {
-        // `node_modules` is exclude by default, so we need to include it explicitly
-        // https://github.com/vite-plugin/vite-plugin-dynamic-import/blob/v1.3.0/src/index.ts#L133-L135
-        if (id.includes('node_modules/dayjs')) {
-          return true;
-        }
-      }
-    }),
+    dynamicImport(),
     svgLoader(),
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '~': fileURLToPath(new URL('./node_modules', import.meta.url)),
     },
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
   },
