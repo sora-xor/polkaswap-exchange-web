@@ -1,6 +1,12 @@
 <template>
   <div class="points__container">
-    <s-card border-radius="small" shadow="always" size="medium" pressed class="points">
+    <s-card
+      border-radius="small"
+      shadow="always"
+      size="medium"
+      pressed
+      :class="['points', { 'points-loading': loading }]"
+    >
       <template #header>
         <div class="points__header">
           <div>
@@ -21,10 +27,9 @@
             {{ t('connectWalletText') }}
           </s-button>
         </div>
-        <div v-else class="points__cards s-flex-column">
+        <div v-else v-loading="loading" :class="['points__cards', 's-flex-column', { loading: loading }]">
           <s-tabs v-model="categoryPoints" type="rounded" class="points__tabs">
             <s-tab label="YOUR TASKS" name="tasks">
-              <!-- Place s-scrollbar inside each s-tab -->
               <s-scrollbar
                 class="points__cards-scrollbar"
                 :wrap-style="{ padding: '0', margin: '0', overflowY: 'auto' }"
@@ -52,7 +57,7 @@
                   />
                   <first-tx-card
                     class="points__first-tx-card"
-                    :date="this.pointsForCards?.firstTxAccount.currentProgress"
+                    :date="this.pointsForCards?.firstTxAccount?.currentProgress ?? 0"
                   />
                 </div>
               </s-scrollbar>
@@ -297,7 +302,7 @@ export default class PointSystem extends Mixins(
   };
 
   // Использование dummy-данных в компоненте
-  pointsForCards: { [key: string]: CalculateCategoryPointResult } | null = this.dummyPoints;
+  pointsForCards: { [key: string]: CalculateCategoryPointResult } | null = null;
   @Watch('isLoggedIn')
   private updateSubscriptions(value: boolean): void {
     if (value) {
@@ -474,6 +479,7 @@ export default class PointSystem extends Mixins(
 
   private async initData(): Promise<void> {
     if (this.isLoggedIn) {
+      // await new Promise((resolve) => setTimeout(resolve, 6000000)); // 10 minutes
       // Referral rewards
       await this.getAccountReferralRewards();
       const account = this.account.address;
@@ -488,18 +494,18 @@ export default class PointSystem extends Mixins(
       this.totalSwapTxs = await fetchCount(0, end, account, CountType.Swap);
       this.poolDepositCount = await fetchCount(0, end, account, CountType.PoolDeposit);
       this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
-      // const accountMeta = await fetchAccountMeta(account);
-      this.pointsForCards = pointsService.calculateCategoryPoints(this.somePointsForCategories);
-      // console.info(accountMeta);
+      const accountMeta = await fetchAccountMeta(account);
+      // this.pointsForCards = pointsService.calculateCategoryPoints(this.somePointsForCategories);
+      console.info(accountMeta);
 
-      // if (accountMeta) {
-      //   console.info(this.getPointsForCategories(accountMeta));
-      //   this.pointsForCards = pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta));
-      //   console.info(this.pointsForCards);
-      //   console.info('AccountMeta:', accountMeta);
-      // } else {
-      //   console.info('No AccountMeta data');
-      // }
+      if (accountMeta) {
+        console.info(this.getPointsForCategories(accountMeta));
+        this.pointsForCards = pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta));
+        console.info(this.pointsForCards);
+        console.info('AccountMeta:', accountMeta);
+      } else {
+        console.info('No AccountMeta data');
+      }
     }
   }
 
@@ -515,11 +521,8 @@ export default class PointSystem extends Mixins(
 
 <style lang="scss">
 .container .points .el-loading-mask {
-  border-radius: var(--s-border-radius-mini);
   margin-left: calc(0px - $inner-spacing-small);
   width: calc(100% + $inner-spacing-big);
-  height: calc(100% + $inner-spacing-medium);
-  box-shadow: var(--s-shadow-element-pressed);
 }
 .el-tabs__header {
   width: 100% !important;
@@ -549,6 +552,8 @@ export default class PointSystem extends Mixins(
 
 <style lang="scss" scoped>
 $card-height: calc($sidebar-max-width - $inner-spacing-mini);
+$scrollbar-loader-height: calc($card-height * 2.6);
+$max-asset-size: calc($select-asset-item-height * 2);
 
 .s-card {
   box-shadow: unset !important;
@@ -556,13 +561,16 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
   padding-bottom: unset !important;
 }
 .points {
+  &.points-loading {
+    background-color: unset;
+  }
   background-image: url('~@/assets/img/points/header.png');
   background-repeat: no-repeat;
   background-position: top;
   background-color: var(--s-color-base-disabled);
   width: 100%;
   &__cards-scrollbar {
-    max-height: calc($card-height * 2.6);
+    max-height: $scrollbar-loader-height;
     overflow-y: auto;
   }
   &__main {
@@ -601,7 +609,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
       }
       h2 {
         text-align: left;
-        max-width: calc($select-asset-item-height * 2);
+        max-width: $max-asset-size;
         font-weight: 700;
         font-size: 16px;
       }
@@ -638,6 +646,9 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
     flex-direction: row;
     flex-wrap: wrap;
     gap: calc($basic-spacing-small + 1px);
+    &.loading {
+      height: $scrollbar-loader-height;
+    }
   }
 
   &__card,
@@ -662,7 +673,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
   }
   &__card-task {
     width: 100%;
-    max-height: calc($select-asset-item-height * 2);
+    max-height: $max-asset-size;
     padding: $basic-spacing;
   }
 
