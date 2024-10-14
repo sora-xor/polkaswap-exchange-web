@@ -234,8 +234,8 @@ const dividePrices = (priceA: OCLH, priceB: OCLH): OCLH => {
 
 const mergeSnapshots = (a: Nullable<SnapshotItem>, b: Nullable<SnapshotItem>): SnapshotItem => {
   const timestamp = (a?.timestamp ?? b?.timestamp) as number;
-  const price = b?.price && a?.price ? dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0];
-  const volume = b?.volume && a?.volume ? Math.min(b.volume, a.volume) : a?.volume ?? 0;
+  const price = b?.price && a?.price ? dividePrices(a.price, b.price) : (a?.price ?? [0, 0, 0, 0]);
+  const volume = b?.volume && a?.volume ? Math.min(b.volume, a.volume) : (a?.volume ?? 0);
 
   return { timestamp, price, volume };
 };

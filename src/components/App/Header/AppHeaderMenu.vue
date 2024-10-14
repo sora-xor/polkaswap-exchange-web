@@ -451,7 +451,10 @@ $item-padding: 17px;
     height: 24px;
     border: 1px solid var(--s-color-base-content-secondary);
     border-radius: 50%;
-    transition: opacity 150ms, border-color 150ms, background-color 150ms;
+    transition:
+      opacity 150ms,
+      border-color 150ms,
+      background-color 150ms;
     margin-left: auto;
     i {
       margin: unset;

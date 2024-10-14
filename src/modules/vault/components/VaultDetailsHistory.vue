@@ -119,7 +119,7 @@ export default class VaultDetailsHistory extends Mixins(TranslationMixin, Indexe
   }
 
   private getAmount(hidden: boolean, item: VaultEvent): string {
-    return hidden ? this.HiddenValue : item.amount?.toLocaleString() ?? '';
+    return hidden ? this.HiddenValue : (item.amount?.toLocaleString() ?? '');
   }
 
   getOperationMessage(item: VaultEvent): string {

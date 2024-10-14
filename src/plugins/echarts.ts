@@ -18,4 +18,4 @@ use([
   LegendComponent,
 ]);
 
-Vue.component('v-chart', ECharts);
+Vue.component('VChart', ECharts);

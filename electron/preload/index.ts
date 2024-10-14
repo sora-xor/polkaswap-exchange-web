@@ -112,6 +112,7 @@ const { appendLoading, removeLoading } = useLoading();
 domReady().then(appendLoading);
 
 window.onmessage = (ev) => {
+  /* eslint-disable  @typescript-eslint/no-unused-expressions */
   ev.data.payload === 'removeLoading' && removeLoading();
 };
 

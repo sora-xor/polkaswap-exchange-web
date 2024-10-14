@@ -182,7 +182,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   formatAmount(item: IBridgeTransaction, received = false): string {
-    const amount = received ? item.amount2 ?? item.amount : item.amount;
+    const amount = received ? (item.amount2 ?? item.amount) : item.amount;
 
     if (!item.assetAddress || !amount) return '';
 

@@ -14,7 +14,6 @@ import type {
   SubscriptionPayload,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
-/* eslint-disable camelcase */
 type OrderBookEntityMutation = {
   price: string;
   price_change_day: number;
@@ -22,7 +21,6 @@ type OrderBookEntityMutation = {
   status: string;
   last_deals: string;
 };
-/* eslint-enable camelcase */
 
 const { IndexerType } = WALLET_CONSTS;
 
@@ -110,7 +108,6 @@ const SubsquidOrderBookDataSubscription = gql<SubscriptionPayload<OrderBookEntit
   }
 `;
 
-/* eslint-disable camelcase */
 const parseOrderBookMutation =
   (dexId: number, base: string, quote: string) =>
   (item: OrderBookEntityMutation): OrderBookUpdateData => {
@@ -131,7 +128,6 @@ const parseOrderBookMutation =
       deals: parseDeals(last_deals),
     };
   };
-/* eslint-enable camelcase */
 
 const parseOrderBookUpdate =
   (dexId: number, base: string, quote: string) =>

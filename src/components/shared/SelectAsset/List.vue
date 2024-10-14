@@ -22,7 +22,7 @@
           class="pin-button"
           :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
         >
-          <pin-icon :isPinned="isAssetPinned(token)" />
+          <pin-icon :is-pinned="isAssetPinned(token)" />
         </button>
 
         <formatted-amount-with-fiat-value
@@ -43,7 +43,7 @@
             class="pin-button"
             :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
           >
-            <pin-icon :isPinned="isAssetPinned(token)" />
+            <pin-icon :is-pinned="isAssetPinned(token)" />
           </button>
         </span>
       </div>
