@@ -21,9 +21,9 @@
     "lint": "eslint .",
     "lang:generate": "tsx ./scripts/lang/generate.ts",
     "lang:fix": "tsx ./scripts/lang/fix.ts",
-    "test:unit": "vue-cli-service test:unit --testPathIgnorePatterns Translation.spec.ts",
-    "test:translation": "vue-cli-service test:unit -- Translation.spec.ts",
-    "test:e2e": "vue-cli-service test:e2e",
+    "test:unit": "npx jest --runTestsByPath './tests/unit' --testPathIgnorePatterns Translation.spec.ts",
+    "test:translation": "npx jest -- Translation.spec.ts",
+    "test:e2e": "npx jest -runTestsByPath './tests/e2e'",
     "test:all": "yarn test:unit --coverage",
     "prepare": "husky"
   },
