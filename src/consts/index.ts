@@ -258,6 +258,7 @@ export enum Components {
   PointCard = 'pages/PointSystem/PointCard',
   TaskCard = 'pages/PointSystem/TaskCard',
   FirstTxCard = 'pages/PointSystem/FirstTxCard',
+  TaskDialog = 'pages/PointSystem/TaskDialog',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
   LinksDropdown = 'shared/LinksDropdown',

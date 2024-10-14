@@ -11,10 +11,16 @@
     <div class="task-card__current-progress">
       <p v-if="categoryName === 'firstTxAccount'">Currently {{ formattedCurrentProgress }}</p>
       <p v-else>Currently ${{ this.pointsForCategory.currentProgress.toFixed(2) }}</p>
-      <s-button :class="{ completed: !this.pointsForCategory.minimumAmountForNextLevel }">
+      <s-button :class="{ completed: !this.pointsForCategory.minimumAmountForNextLevel }" @click="handleButtonClick">
         {{ !this.pointsForCategory.minimumAmountForNextLevel ? 'Completed' : 'Complete' }}
       </s-button>
     </div>
+    <task-dialog
+      :pointsForCategory="pointsForCategory"
+      :visible="isDialogVisible"
+      @close="handleDialogClose"
+      :onClose="handleDialogClose"
+    />
   </div>
 </template>
 
@@ -22,11 +28,14 @@
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { CalculateCategoryPointResult } from '@/types/pointSystem';
 
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
+    TaskDialog: lazyComponent(Components.TaskDialog),
   },
 })
 export default class TaskCard extends Mixins(mixins.TranslationMixin) {
@@ -35,6 +44,8 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
 
   @Prop({ required: true, type: String })
   readonly categoryName!: string;
+
+  private isDialogVisible = false;
 
   get imageName(): string {
     return this.pointsForCategory.imageName;
@@ -50,9 +61,18 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
     }
     return this.pointsForCategory.currentProgress.toString();
   }
+
+  handleButtonClick() {
+    if (this.pointsForCategory.minimumAmountForNextLevel) {
+      this.isDialogVisible = true;
+    }
+  }
+
+  handleDialogClose() {
+    this.isDialogVisible = false;
+  }
 }
 </script>
-
 <style lang="scss" scoped>
 .task-card {
   .el-divider {
@@ -61,12 +81,13 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
     margin-bottom: $basic-spacing-small;
   }
   .el-button.s-secondary {
-    padding: 6px $inner-spacing-small;
+    padding: $inner-spacing-tiny $inner-spacing-small;
     background-color: var(--s-color-base-on-accent);
     box-shadow: unset;
     color: var(--s-color-base-content-primary);
 
-    &:hover {
+    &:hover,
+    &:focus {
       box-shadow: var(--s-shadow-element-pressed);
       background-color: var(--s-color-base-on-accent);
       color: var(--s-color-base-content-primary);
@@ -78,12 +99,14 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
     color: var(--s-color-base-content-secondary);
     border: 1px solid var(--s-color-base-content-tertiary);
 
-    &:hover {
+    &:hover,
+    &:focus {
       box-shadow: none;
       border: 1px solid var(--s-color-base-content-tertiary);
       background-color: transparent;
       cursor: default;
       color: var(--s-color-base-content-secondary);
+      outline: unset !important;
     }
   }
 

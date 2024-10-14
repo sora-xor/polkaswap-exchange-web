@@ -5,7 +5,8 @@ import { CalculateCategoryPointResult, CategoryValues } from '@/types/pointSyste
 class PointsService {
   private findLevel(
     levels: { threshold: number; multiplier: number }[],
-    value: number
+    value: number,
+    maxPercentage: number
   ): {
     levelCurrent: number;
     threshold: number;
@@ -24,8 +25,9 @@ class PointsService {
 
     const nextLevel = levels[finalIndex + 1] ?? null;
 
-    const nextLevelRewardPoints = nextLevel ? parseFloat((nextLevel.multiplier * POINTS_PER_PERCENT).toFixed(0)) : null;
-
+    const nextLevelRewardPoints = nextLevel
+      ? parseFloat((nextLevel.multiplier * maxPercentage * POINTS_PER_PERCENT).toFixed(0))
+      : null;
     const currentProgress = value;
 
     const minimumAmountForNextLevel = nextLevel ? nextLevel.threshold : null;
@@ -51,7 +53,7 @@ class PointsService {
       }
 
       const { levelCurrent, threshold, multiplier, nextLevelRewardPoints, currentProgress, minimumAmountForNextLevel } =
-        this.findLevel(category.levels, value);
+        this.findLevel(category.levels, value, category.maxPercentage);
 
       const points = parseFloat((multiplier * category.maxPercentage * POINTS_PER_PERCENT).toFixed(0));
 

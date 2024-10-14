@@ -22,9 +22,13 @@
           </s-button>
         </div>
         <div v-else class="points__cards s-flex-column">
-          <s-scrollbar class="points__cards-scrollbar">
-            <s-tabs v-model="categoryPoints" type="rounded" class="points__tabs">
-              <s-tab label="YOUR TASKS" name="tasks">
+          <s-tabs v-model="categoryPoints" type="rounded" class="points__tabs">
+            <s-tab label="YOUR TASKS" name="tasks">
+              <!-- Place s-scrollbar inside each s-tab -->
+              <s-scrollbar
+                class="points__cards-scrollbar"
+                :wrap-style="{ padding: '0', margin: '0', overflowY: 'auto' }"
+              >
                 <task-card
                   v-for="(pointsForCategory, categoryName) in this.pointsForCards"
                   :key="categoryName"
@@ -32,8 +36,13 @@
                   :category-name="categoryName"
                   class="points__card-task"
                 />
-              </s-tab>
-              <s-tab label="PROGRESS" name="progress">
+              </s-scrollbar>
+            </s-tab>
+            <s-tab label="PROGRESS" name="progress">
+              <s-scrollbar
+                class="points__cards-scrollbar"
+                :wrap-style="{ padding: '0', margin: '0', overflowY: 'auto' }"
+              >
                 <div class="points__cards">
                   <point-card
                     v-for="[categoryName, pointsForCategory] in Object.entries(this.pointsForCards ?? {}).slice(0, -1)"
@@ -41,15 +50,14 @@
                     :points-for-category="pointsForCategory"
                     class="points__card"
                   />
-
                   <first-tx-card
                     class="points__first-tx-card"
                     :date="this.pointsForCards?.firstTxAccount.currentProgress"
                   />
                 </div>
-              </s-tab>
-            </s-tabs>
-          </s-scrollbar>
+              </s-scrollbar>
+            </s-tab>
+          </s-tabs>
         </div>
       </div>
     </s-card>
@@ -273,10 +281,10 @@ export default class PointSystem extends Mixins(
   };
 
   somePointsForCategories = {
-    liquidityProvision: 25000,
-    KUSDHoldings: 10000,
-    VXORHoldings: 9999,
-    XORBurned: 10001,
+    liquidityProvision: 25999,
+    KUSDHoldings: 1000,
+    VXORHoldings: 999,
+    XORBurned: 1001,
     XORHoldings: 150,
     depositVolumeBridges: 0,
     firstTxAccount: 1728499896000,
@@ -532,13 +540,20 @@ export default class PointSystem extends Mixins(
 .s-tabs .el-tabs__header .el-tabs__item {
   font-weight: 400 !important;
 }
+
+.points__cards-scrollbar {
+  scrollbar-width: none;
+  padding: 0;
+}
 </style>
 
 <style lang="scss" scoped>
 $card-height: calc($sidebar-max-width - $inner-spacing-mini);
+
 .s-card {
   box-shadow: unset !important;
   padding: $inner-spacing-small !important;
+  padding-bottom: unset !important;
 }
 .points {
   background-image: url('~@/assets/img/points/header.png');
@@ -548,6 +563,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
   width: 100%;
   &__cards-scrollbar {
     max-height: calc($card-height * 2.6);
+    overflow-y: auto;
   }
   &__main {
     margin-top: calc($inner-spacing-medium + $inner-spacing-tiny);
@@ -642,6 +658,7 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
     height: calc($basic-spacing * 3);
     width: 100%;
     padding: $basic-spacing-small $basic-spacing;
+    margin-bottom: unset;
   }
   &__card-task {
     width: 100%;

@@ -4,9 +4,16 @@
       <progress-card :imageName="imageName" :progressPercentage="progressPercentage" />
       <p>LVL {{ levelCurrent }} <span>/ LVL 6</span></p>
     </div>
-    <div class="point-card__name">
+    <div
+      class="point-card__name"
+      :class="{ disabled: pointsForCategory.nextLevelRewardPoints === null }"
+      @click="handleClick"
+    >
       <p>{{ this.pointsForCategory.titleProgress }}</p>
-      <i class="icontype s-icon-arrows-chevron-right-rounded-24" />
+      <i
+        v-if="this.pointsForCategory.nextLevelRewardPoints !== null"
+        class="icontype s-icon-arrows-chevron-right-rounded-24"
+      />
     </div>
     <div class="point-card__currently-amount">
       <p>Currently</p>
@@ -22,6 +29,12 @@
         <p class="max-level">You reached max lvl</p>
       </template>
     </div>
+    <task-dialog
+      :pointsForCategory="pointsForCategory"
+      :visible="isDialogVisible"
+      @close="handleDialogClose"
+      :onClose="handleDialogClose"
+    />
   </div>
 </template>
 
@@ -29,6 +42,8 @@
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { CalculateCategoryPointResult } from '@/types/pointSystem';
 
 import ProgressCard from './ProgressCard.vue';
@@ -36,12 +51,15 @@ import ProgressCard from './ProgressCard.vue';
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
+    TaskDialog: lazyComponent(Components.TaskDialog),
     ProgressCard,
   },
 })
 export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixins.NumberFormatterMixin) {
   @Prop({ required: true, type: Object })
   readonly pointsForCategory!: CalculateCategoryPointResult;
+
+  private isDialogVisible = false;
 
   get levelCurrent(): number {
     return this.pointsForCategory.levelCurrent;
@@ -62,6 +80,16 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
   get progressPercentage(): number {
     if (!this.minimumAmountForNextLevel || this.minimumAmountForNextLevel === 0) return 0;
     return Math.min((this.currentProgress / this.minimumAmountForNextLevel) * 100, 100);
+  }
+
+  handleClick() {
+    if (this.pointsForCategory.minimumAmountForNextLevel) {
+      this.isDialogVisible = true;
+    }
+  }
+
+  handleDialogClose() {
+    this.isDialogVisible = false;
   }
 }
 </script>
@@ -124,6 +152,15 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
     i {
       align-self: center;
       color: var(--s-color-base-content-tertiary);
+    }
+    &.disabled {
+      cursor: default;
+
+      &:hover {
+        p {
+          color: var(--s-color-base-content-primary);
+        }
+      }
     }
   }
 
