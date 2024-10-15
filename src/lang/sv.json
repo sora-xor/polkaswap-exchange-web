@@ -1,7 +1,6 @@
 {
     "closeText": "Stäng",
     "backText": "Tillbaka",
-    "createWalletText": "Skapa plånbok",
     "nameText": "Namn",
     "nextText": "Nästa",
     "importText": "Importera",
@@ -150,27 +149,20 @@
     },
     "polkadotjs": {
         "noExtensions": "Inget {PolkadotJs} tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Det verkar inte finnas några konton i ditt {extension} tillägg. Vänligen lägg till ett konto och försök igen.",
         "noAccount": "{extension} konto fel. Vänligen kontrollera ditt konto i {extension}-tillägget.",
         "noExtension": "Inget {extension} -tillägg hittades. Installera det och ladda om den här sidan",
         "noSigner": "Tillträde beviljas ej. Gå till tilläggsinställningarna för {extension} och öppna \"Hantera webbplatsåtkomst\" för att tillåta.",
         "connectionError": "Ett fel uppstod vid anslutning av plånboken. Du kan försöka ansluta plånboken via {extension} igen"
     },
     "connection": {
-        "text": "För att hantera tillgångar och signera transaktioner på {Sora} måste ett konto vara anslutet. {Sora} -konton kan skapas och anslutas med hjälp av våra integrerade plånböcker eller webbläsartillägg.",
-        "noAccounts": "Inget konto hittades i ditt {extension} webbläsartillägg. Vänligen lägg till ett konto och försök igen.",
         "selectAccount": "Välj konto att arbeta med",
         "action": {
-            "install": "Installera tillägg",
             "learnMore": "Läs mer om plånboksanslutning",
-            "connect": "Anslut konto",
             "refresh": "Uppdatera"
         },
-        "selectWallet": "Välj en plånbok att arbeta med",
         "wallet": {
             "install": "Installera",
             "connected": "Ansluten",
-            "notConnected": "Ej ansluten",
             "recommended": "Rekommenderad"
         },
         "internalTitle": "Anslut med {wallet}",
@@ -183,30 +175,22 @@
     },
     "wallet": {
         "WalletAssets": "Tillgångar",
-        "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitet"
     },
     "walletSend": {
         "title": "Skicka",
-        "address": "@:addressText",
-        "amount": "@:amountText",
         "balance": "Saldo",
         "max": "MAX",
-        "fee": "@:networkFeeText",
         "enterAddress": "Ange adress",
         "badAddress": "Felaktig adress",
         "enterAmount": "Ange belopp",
-        "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Bekräfta transaktion",
         "errorAddress": "Ogiltig adress. Vänligen kontrollera den och försök igen.",
-        "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Skicka tokens mellan {Sora}-nätverkskonton",
         "addressWarning": "Tokens skickas till {Sora}-adressen nedan. Se till att mottagaren kan få tillgång till {Sora}-kedjan för att använda dessa skickade tokens:",
-        "addressError": "Du kan inte skicka tokens till samma konto som du för närvarande är ansluten till.",
-        "confirm": "@:confirmText"
+        "addressError": "Du kan inte skicka tokens till samma konto som du för närvarande är ansluten till."
     },
     "account": {
-        "successCopy": "Plånboksadressen kopieras till klippbordet",
         "copy": "Kopiera adress",
         "switch": "Byt konto",
         "walletAddress": "Plånboksadress",
@@ -219,11 +203,7 @@
         "clearHistory": "Rensa historik",
         "filterPlaceholder": "Filtrera efter Adress, Symbol, Typ eller Block-ID",
         "empty": "Dina transaktioner kommer att visas här.",
-        "emptySearch": "Inga transaktioner hittades",
-        "firstText": "Först",
-        "lastText": "Sista",
-        "prevText": "Tidigare",
-        "nextText": "Nästa"
+        "emptySearch": "Inga transaktioner hittades"
     },
     "assets": {
         "empty": "Det finns inga tillgångar",
@@ -233,7 +213,6 @@
         "liquidity": "Lägg till likviditet",
         "bridge": "Brygga",
         "copy": "Kopiera Tillgångs-ID",
-        "successCopy": "{symbol} Tillgångs-ID är kopierad till Urklipp",
         "copied": "Kopierad!",
         "balance": {
             "transferable": "Överförbar",
@@ -262,7 +241,6 @@
         "approved": "Tillgång godkänd av communityn",
         "unknown": "Okänt ursprung",
         "scam": "BLUFF",
-        "next": "Nästa",
         "AddAssetToken": {
             "title": "Valutor",
             "switchBtn": "Endast verifierade tillgångar"
@@ -278,7 +256,6 @@
         "unpinAsset": "Lossa tillgång"
     },
     "createToken": {
-        "desc": "Skapa och utplacera anpassad tillgång på {Sora}",
         "enterSymbol": "Ange symbol för token",
         "enterName": "Ange namn för token",
         "enterSupply": "Ange token utbud",
@@ -286,10 +263,6 @@
             "title": "Transaktion inskickad",
             "desc": "Skapa {symbol} token"
         },
-        "tooltipValue": "@:networkFeeTooltipText",
-        "fee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "feeError": "Misslyckades med att hämta en avgift för en transaktion",
         "error": "Misslyckades med att skapa {symbol} token",
         "tokenSymbol": {
             "placeholder": "Token-symbol",
@@ -308,7 +281,6 @@
             "desc": "Möjlighet att mynta fler tokens."
         },
         "provideContent": "Tillhandahåll innehåll",
-        "selectLocalFile": "Välj lokal fil",
         "CreateSimpleToken": "Token",
         "nft": {
             "source": {
@@ -341,13 +313,9 @@
             "placeholder": "Delbar",
             "desc": "NFT:s förmåga att delas i bråkdelar. Likviditet tillhandahållande fungerar endast med delbara tillgångar"
         },
-        "title": "@:createTokenText",
-        "action": "@:createTokenText",
-        "confirm": "@:confirmText",
         "titleCommon": "Skapa",
         "confirmTokenTitleCommon": "Skapa Token",
-        "confirmTokenTitleNFT": "Skapa NFT",
-        "actionNFT": "@:createTokenTextNFT"
+        "confirmTokenTitleNFT": "Skapa NFT"
     },
     "transaction": {
         "title": "Transaktions detaljer",
@@ -358,7 +326,6 @@
             "failed": "Transaktion misslyckades",
             "complete": "Slutförd"
         },
-        "errorMessage": "Fel",
         "startTime": "Datum",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
@@ -366,7 +333,6 @@
         "total": "Totalsumma",
         "from": "Från",
         "to": "Till",
-        "successCopy": "{value} är kopierat till Urklipp",
         "copy": "Kopiera {value}",
         "history": {
             "created": "Transaktion för {amount} {symbol} har skapats.",
@@ -377,7 +343,6 @@
         "viewIn": "Visa i {explorer}",
         "referrer": "Referrer",
         "referral": "Hänvisning",
-        "adarTxDetailsTitle": "Transaktionsdetaljer",
         "comment": "Kommentar",
         "price": "Pris",
         "side": "Sida"
@@ -409,7 +374,6 @@
         "Stats": "Statistik",
         "Wallet": "Plånbok",
         "AddLiquidity": "Lägg Till Likviditet",
-        "RemoveLiquidity": "Ta Bort Likviditet",
         "Rewards": "Rewards",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Pooler",
@@ -421,8 +385,7 @@
         "AssetOwner": "Tillgångens ägare",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "{Kensetsu}",
-        "VaultDetails": "Positionsdetaljer",
-        "Burn": "Bränna"
+        "VaultDetails": "Positionsdetaljer"
     },
     "mainMenu": {
         "Swap": "Byt",
@@ -453,7 +416,6 @@
         "faucet": "Faucet",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "{AppName} Promemoria och Användarvillkor",
         "privacy": "Integritetspolicy",
         "info": "Info & Community"
     },
@@ -508,16 +470,9 @@
     "exchange": {
         "Swap": "Byt",
         "Pool": "Pool",
-        "balance": "Saldo",
-        "price": "Pris",
-        "transactionSubmitted": "Transaktion inskickad",
-        "transactionMessage": "{firstToken} och {secondToken}",
-        "ok": "OK",
-        "confirm": "Bekräfta",
         "lossWarning": "Du kommer att förlora {value}% på din handel. Vi har upptäckt ett likviditetsproblem. Detta kan leda till betydande förluster under tokenswappar. Se till att det finns tillräcklig likviditet för ditt önskade swappar."
     },
     "swap": {
-        "estimated": "uppskattad",
         "slippageTolerance": "Prisförskjutnings Tolerans",
         "minReceived": "Minimum Mottaget",
         "maxSold": "Maximalt Sålt",
@@ -531,7 +486,6 @@
         "confirmSwap": "Bekräfta byte",
         "swapOutputMessage": "Utdata är beräknad ungefärligt. Du kommer att få {transactionValue} eller så återgår transaktionen.",
         "rewardsForSwap": "PSWAP strategiska belöningar",
-        "swapInputMessage": "Indata är beräknad ungefärligt. Du kommer att sälja maximalt {transactionValue} eller så återgår transaktionen.",
         "route": "Rutt",
         "errorFetching": "Fel vid hämtning av data"
     },
@@ -550,21 +504,12 @@
     "bridge": {
         "title": "Brygga",
         "info": "Konvertera tokens mellan {Sora} och {Ethereum} nätverken.",
-        "balance": "Saldo",
         "next": "Nästa",
         "connectWallets": "Anslut plånböcker för att se respektive transaktionshistorik.",
         "soraNetworkFee": "{Sora} Nätverksavgift",
-        "ethereumNetworkFee": "{Ethereum} Nätverksavgift",
-        "total": "Totalsumma",
-        "viewHistory": "Visa transaktionshistorik",
-        "transactionSubmitted": "Transaktion inskickad",
-        "transactionMessage": "{assetA} för {assetB}",
         "notRegisteredAsset": "Tillgång {assetSymbol} är ej registrerad",
         "selectNetwork": "Välj nätverk",
         "networkInfo": "Brygga {Sora} Nätverk med:",
-        "copy": "Kopiera nätverksadress",
-        "soraAddress": "{Sora} adress",
-        "ethereumAddress": "{Ethereum} adress",
         "limitMessage": "För närvarande finns det en {type} {amount} {symbol} för överbryggning för att säkerställa stabiliteten och säkerheten i {Sora} -nätverket. Vi uppskattar din förståelse.",
         "externalTransferFee": "{network} {XCM} avgift",
         "externalTransferFeeTooltip": "När du skickar en bryggtransaktion till {network} -nätverket tas en mindre avgift från beloppet du överför",
@@ -574,58 +519,26 @@
     "selectRegisteredAsset": {
         "title": "Välj en token",
         "search": {
-            "title": "Tokens",
             "placeholder": "Filtrera efter Tillgångs-ID, Namn, eller Ticker-symbol",
             "networkLabelSora": "{Sora} nätverks-token",
-            "networkLabelEthereum": "{network} nätverksspegeltokens",
-            "emptyListMessage": "Inga resultat"
-        },
-        "customAsset": {
-            "title": "Anpassade",
-            "customInfo": "Viktig! Anpassade tokens måste registreras i {Sora}.",
-            "registerToken": "Registrera token",
-            "addressPlaceholder": "Tillgångs-ID",
-            "symbolPlaceholder": "Token-symbol",
-            "empty": "Inga tokens hittades",
-            "alreadyAttached": "Token var redan bifogad"
+            "networkLabelEthereum": "{network} nätverksspegeltokens"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} för {to}",
         "for": " för ",
-        "steps": {
-            "step": "{step} av 2",
-            "step1": "1:a",
-            "step2": "2:a"
-        },
-        "status": {
-            "pending": "{step} transaktioner pågående...",
-            "failed": "{step} transaktioner misslyckades. @:(retryText).",
-            "confirm": "Bekräfta 2:a av 2 transaktioner...",
-            "complete": "Slutförd",
-            "convertionComplete": "Konvertering slutförd"
-        },
         "statuses": {
-            "waiting": "Väntar",
-            "ready": "Redo",
             "pending": "Väntande",
-            "frozen": "Frusen",
             "failed": "Transaktionen misslyckades",
             "done": "Slutförd",
             "waitingForConfirmation": "Väntar på bekräftelse..."
         },
-        "networkTitle": "{network} transaktion",
         "transactionHash": "Transaktionshash",
         "networkInfo": {
             "status": "Status",
             "date": "Datum",
             "amount": "Belopp",
-            "transactionFee": "Transaktionsavgift",
-            "total": "Totalsumma"
+            "transactionFee": "Transaktionsavgift"
         },
-        "successCopy": "Transaktionshash är kopierad till urklipp",
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} transaktion väntande...",
         "newTransaction": "Skapa ny transaktion",
         "title": "Transaktion över Brygga",
@@ -646,8 +559,6 @@
         "title": "Välj en token",
         "searchPlaceholder": "Filtrera efter Tillgångs-ID, Namn, eller Ticker-symbol",
         "emptyListMessage": "Inga resultat",
-        "copy": "Kopiera Tillgångs-ID",
-        "successCopy": "{symbol} Tillgångs-ID är kopierad till urklipp",
         "assets": {
             "title": "Tillgångar"
         },
@@ -660,29 +571,18 @@
         }
     },
     "createPair": {
-        "title": "Skapa ett par",
         "deposit": "Insättning",
-        "balance": "Saldo",
         "pricePool": "Priser och avgifter",
         "shareOfPool": "Andel av poolen",
         "firstSecondPoolTokens": "{first}-{second} Pool",
-        "connect": "Anslut plånbok",
         "supply": "Tillgång",
         "yourPosition": "Din position",
-        "yourPositionEstimated": "Din position (uppskattad)",
-        "youWillReceive": "Du kommer att mottaga",
-        "remove": "ta bort",
-        "add": "LÄGG TILL",
-        "ok": "OK",
-        "alreadyCreated": "Token-paret har redan skapats",
         "firstLiquidityProvider": "Du är den första likviditetsleverantören",
         "firstLiquidityProviderInfo": "Förhållandet mellan tokens du lägger till kommer att ange priset för denna pool. <br\/>Klicka på \"Lägg till\" när du är nöjd med kursen för att granska."
     },
     "confirmSupply": {
         "title": "Din andel av poolen kommer att vara",
-        "outputDescription": "Utdata är beräknad ungefärligt. Om priset ändras mer än {slippageTolerance} så återgår din transaktion.",
-        "poolTokensBurned": "{first}-{second} Pool-Tokens Brända",
-        "price": "Pris"
+        "outputDescription": "Utdata är beräknad ungefärligt. Om priset ändras mer än {slippageTolerance} så återgår din transaktion."
     },
     "addLiquidity": {
         "title": "Lägg till likviditet"
@@ -690,11 +590,9 @@
     "removeLiquidity": {
         "title": "Ta bort likviditet",
         "liquidity": "likviditet",
-        "balance": "Saldo",
         "amount": "Belopp",
         "input": "Indata",
         "output": "Utdata",
-        "price": "Pris",
         "remove": "Ta bort",
         "description": "Genom att tar bort pool-tokens så omvandlas din position till underliggande tokens med den aktuella växlingskursen, proportionell till din andel av poolen. Upplupna avgifter ingår i de belopp du erhåller.",
         "outputMessage": "Utdata är beräknad ungefärligt. Om priset ändras mer än {slippageTolerance} så återgår din transaktion.",
@@ -715,27 +613,13 @@
             "frontrun": "Din transaktion kan bli \"frontrun\"",
             "error": "Ange en giltig prisförskjutnings procent"
         },
-        "custom": "ANPASSAD",
-        "transactionDeadline": "DEADLINE FÖR TRANSAKTIONEN",
-        "transactionDeadlineHint": "Transaktionen kommer att avbrytas om den är väntande längre än denna tid.",
-        "nodeAddress": "NOD ADRESS",
-        "ip": "IP",
-        "port": "PORT",
-        "min": "MIN",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} likviditetsdirigering säkerställer det bästa priset för vilken transaktion som helst genom att kombinera endast de bästa prisalternativen från alla tillgängliga marknader. När det är tillgängligt så kommer Token Bonding Curve ({tbcAlgorithm}) att användas för likviditet om tillgångens pris är mer överkomligt än från andra källor, varpå {xycAlgorithm}-poolen används.",
             "TBC": "{tbcAlgorithm} - köpa endast från Token Bonding Curve (Primärmarknad). Det finns en möjlighet att priset kan bli ofördelaktigt jämfört med {xycAlgorithm}-pool (Sekundärmarknad), men det värde som erhålls från de bestående belöningar kan visa sig vara mycket mer fördelaktiga med tiden.",
             "XYK": "{xycAlgorithm} — köpa endast från XYK-Poolen (Sekundär Marknad). Traditionell XYK pool byte."
-        },
-        "charts": "Grafer",
-        "сhartsDescription": "Visa diagram för tokenpriser"
-    },
-    "resultDialog": {
-        "title": "Transaktion inskickad",
-        "ok": "OK"
+        }
     },
     "rewards": {
-        "title": "Gör Anspråk på Belöningar",
         "andText": "och",
         "claiming": {
             "pending": "Hävdar...",
@@ -769,13 +653,12 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "{Sora}.farm skörd",
-            "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Avgifter tjänade från tillhandahållande av likviditet",
             "BuyOnBondingCurve": "köpa från TBC",
             "MarketMakerVolume": "Likviditetsgarant Aktivitet",
-            "LiquidityProvisionFarming": "Farming"
+            "LiquidityProvisionFarming": "Farming",
+            "NftAirdrop": "NFT Airdrop"
         },
-        "vested": "innestående",
         "forText": "för",
         "totalVested": "Sammanlagda belöningar",
         "claimableAmountDoneVesting": "Belöningar som kan göras anspråk på ",
@@ -801,7 +684,6 @@
         "title": "Språk"
     },
     "tokens": {
-        "symbol": "Symbol",
         "assetId": "Tillgångs-ID"
     },
     "memorandum": "{AppName} Promemoria och Användarvillkor",
@@ -872,14 +754,6 @@
     },
     "sentText": "Skickat",
     "learnMoreText": "Lär dig mer",
-    "marketMakerCountdown": {
-        "title": "Marknadsgarant Nedräkning",
-        "blocks": "block",
-        "daysLeft": "dagar kvar",
-        "txs": "TXs",
-        "volume": "MM TX volym",
-        "description": "20 miljoner PSWAP \/ månad kommer att distribueras till marknadsgaranter med minst 500 tx \/ månad värderade mer än 1 XOR."
-    },
     "confirmNextTxFailure": {
         "header": "Observera",
         "info": "Ditt saldo {symbol} kommer att vara mindre än {fee} {symbol} efter denna transaktion. Du kommer inte att kunna betala för nätverksavgiften för en annan transaktion.",
@@ -893,23 +767,16 @@
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} inbjudningar",
         "startInviting": "Bond XOR för att hänvisa andra",
-        "preview": "Bjud in nya användare och få 10 % av deras transaktionsavgifter. <br\/> För att börja, bond valfritt belopp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Lär dig mer <\/a>",
-        "deposit": "Insättning",
-        "balance": "Saldo",
         "insufficientBondedBalance": "Otillräcklig bonded saldo",
         "action": {
-            "empty": "Ange belopp för {tokenSymbol}",
-            "startInviting": "Bond {tokenSymbol} för att börja bjuda in",
             "bondMore": "Bond Mera",
             "bond": "Bond",
             "unbond": "Unbond",
             "copyLink": "Kopiera länk",
             "shareLink": "Dela"
         },
-        "transactionDetails": "Transaktions Detaljer",
         "receivedRewards": "Mottagna rewards",
         "invitationLink": "Inbjudningslänk",
-        "successCopy": "Hänvisningslänk är kopierad till urklipp",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",
         "confirm": {
@@ -921,8 +788,7 @@
             "freeOfCharge": "Denna åtgärd är kostnadsfri",
             "hasReferrerTitle": "Du har redan ställt in din inbjudare",
             "hasReferrerDescription": "Tyvärr kan du bara tillämpa en",
-            "ok": "OK",
-            "text": "Bekräfta"
+            "ok": "OK"
         },
         "referrer": {
             "title": "Lägg till din referrer",
@@ -1105,9 +971,7 @@
         "addAccount": "Lägg till ett konto",
         "dialog": {
             "confirmTitle": "Bekräfta med lösenord",
-            "confirmButton": "Signera Transaktion",
-            "savePasswordText": "Kom ihåg mitt lösenord under de kommande 15 minuterna",
-            "extendPasswordText": "Förläng perioden utan lösenord med 15 minuter"
+            "confirmButton": "Signera Transaktion"
         },
         "errorMessages": {
             "password": "Lösenord matchade inte",
@@ -1281,7 +1145,6 @@
     "connectEthereumWalletText": "Anslut {Ethereum} plånbok",
     "soraStaking": {
         "dropdownMenu": {
-            "pendingRewards": "Väntande belöningar",
             "controllerAccount": "Controllerkonto"
         },
         "actions": {
@@ -1296,8 +1159,7 @@
             "description": "Satsa {XOR}-tokens på {Sora} Network som nominator för att validera transaktioner och tjäna {VAL}-tokenbelöningar."
         },
         "newStake": {
-            "title": "Börja staka",
-            "minStakeWarning": "Minsta insats för att få belöningen är {min} {symbol}"
+            "title": "Börja staka"
         },
         "validators": {
             "save": "Spara ändringar",
@@ -1364,12 +1226,12 @@
         },
         "validatorsAttentionDialog": {
             "title": "Uppmärksamhet",
-            "description": [
-                "Algoritmiska valideringsförslag utgör inte ekonomisk konsultation eller rådgivning. Satsning är en högriskaktivitet, och algoritmiska valideringsförslag minskar inte nödvändigtvis denna risk.",
-                "En validator som föreslagits av algoritmen kan fortfarande skäras ned. En validator som föreslås av algoritmen kan också ändra sina parametrar (t.ex. provisionssatser, etc.) när som helst efter att ha föreslagits och\/eller valts.",
-                "Du kan förlora tokens eller belöningar av dessa eller andra skäl. Satsa endast in polletter och använd valideringsförslag efter eget gottfinnande, efter due diligence och noggrant övervägt riskerna."
-            ],
-            "confirm": "Ja, jag förstår risken"
+            "confirm": "Ja, jag förstår risken",
+            "description": {
+                "0": "Algoritmiska valideringsförslag utgör inte ekonomisk konsultation eller rådgivning. Satsning är en högriskaktivitet, och algoritmiska valideringsförslag minskar inte nödvändigtvis denna risk.",
+                "1": "En validator som föreslagits av algoritmen kan fortfarande skäras ned. En validator som föreslås av algoritmen kan också ändra sina parametrar (t.ex. provisionssatser, etc.) när som helst efter att ha föreslagits och\/eller valts.",
+                "2": "Du kan förlora tokens eller belöningar av dessa eller andra skäl. Satsa endast in polletter och använd valideringsförslag efter eget gottfinnande, efter due diligence och noggrant övervägt riskerna."
+            }
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Det finns inga väntande belöningar",
@@ -1381,16 +1243,16 @@
         "selectValidatorsMode": {
             "title": "Insats med validatorer som föreslagits av algoritmen",
             "description": "{Sora} nätverksalgoritm har valt en lista över rekommenderade validerare baserat på kriterierna:",
-            "criteria": [
-                "Mest lönsamt",
-                "Inte övertecknat",
-                "Att ha onchain-identitet",
-                "Inte skuren",
-                "Begränsning av 2 validerare per identitet"
-            ],
             "confirm": {
                 "suggested": "Insats med föreslagna",
                 "manual": "Jag väljer validatorerna själv"
+            },
+            "criteria": {
+                "0": "Mest lönsamt",
+                "1": "Inte övertecknat",
+                "2": "Att ha onchain-identitet",
+                "3": "Inte skuren",
+                "4": "Begränsning av 2 validerare per identitet"
             }
         },
         "claimRewardsDialog": {
@@ -1428,7 +1290,6 @@
         "marketTrades": "Marknadsaffärer",
         "market": "Marknadsföra",
         "limit": "Begränsa",
-        "price": "Pris",
         "total": "Total",
         "amount": "belopp",
         "time": "tid",
@@ -1546,8 +1407,7 @@
             "canceled": "Inställt",
             "expired": "Utgånget",
             "filled": "Fylld"
-        },
-        "pricePerToken": "Pris per 1 {token}"
+        }
     },
     "calculatingText": "Beräknar",
     "customisePageText": "Anpassa sidan",
@@ -1681,5 +1541,9 @@
         "info": "För extra integritet, luta din enhet med skärmen nedåt för att omedelbart dölja dina tillgångssaldon. Denna funktion använder telefonens inbyggda sensorer.",
         "enableAcceleration": "Aktivera accelerationsåtkomst i dina inställningar.",
         "gyroscropePhone": "Vår teknik använder telefonens inbyggda gyroskop för att omedelbart dölja ditt saldo när du lutar din enhet."
-    }
+    },
+    "firstText": "Först",
+    "lastText": "Sista",
+    "prevText": "Tidigare",
+    "priceText": "Pris"
 }
