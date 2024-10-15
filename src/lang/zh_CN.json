@@ -470,16 +470,9 @@
     "exchange": {
         "Swap": "兑换",
         "Pool": "流动池",
-        "balance": "余额",
-        "price": "价钱",
-        "transactionSubmitted": "已提交的交易",
-        "transactionMessage": "{firstToken}和{secondToken}",
-        "ok": "好的",
-        "confirm": "确认",
         "lossWarning": "您的交易可能会损失{value}%。我们检测到了流动性供应问题。这可能导致在代币兑换过程中出现重大亏损。请确保所选的兑换对具有足够的流动性。"
     },
     "swap": {
-        "estimated": "估计的",
         "slippageTolerance": "滑点容忍度",
         "minReceived": "最低可接收数量",
         "maxSold": "最大可卖数量",
@@ -493,7 +486,6 @@
         "confirmSwap": "确认兑换",
         "swapOutputMessage": "输出是估计的。您将至少收到{transactionValue}，否则交易将被取消。",
         "rewardsForSwap": "PSWAP 战略奖励",
-        "swapInputMessage": "输入是估计的。您将卖出最大{transactionValue}或交易将被取消。",
         "route": "路线",
         "errorFetching": "获取数据时出错"
     },
@@ -512,21 +504,12 @@
     "bridge": {
         "title": "桥",
         "info": "在{Sora}和{Ethereum}网络之间转换代币。",
-        "balance": "余额",
         "next": "下一个",
         "connectWallets": "连接钱包以查看各自的交易历史。",
         "soraNetworkFee": "{Sora} 网络费用",
-        "ethereumNetworkFee": "{Ethereum} 网络费用",
-        "total": "总共",
-        "viewHistory": "查看交易记录",
-        "transactionSubmitted": "交易已提交",
-        "transactionMessage": "{assetA}为{assetB}",
         "notRegisteredAsset": "资产{assetSymbol}未注册",
         "selectNetwork": "选择网络",
         "networkInfo": "与 {Sora} 网络桥接：",
-        "copy": "复制网络地址",
-        "soraAddress": "{Sora} 地址",
-        "ethereumAddress": "{Ethereum} 地址",
         "limitMessage": "目前，为了确保{Sora}网络的稳定性和安全性，跨链桥转账的{type}金额为{amount} {symbol}。感谢您的理解。",
         "externalTransferFee": "{network} {XCM}费用",
         "externalTransferFeeTooltip": "当您向{network}网络发送桥接交易时，将从您传输的金额中收取少量费用",
@@ -536,57 +519,26 @@
     "selectRegisteredAsset": {
         "title": "选择一个代币",
         "search": {
-            "title": "代币",
             "placeholder": "按资产 ID、名称或代币符号进行筛选",
             "networkLabelSora": "{Sora} 网络代币",
-            "networkLabelEthereum": "{network}网络镜像令牌",
-            "emptyListMessage": "没有结果"
-        },
-        "customAsset": {
-            "title": "自定义",
-            "customInfo": "重要提醒！自定义代币必须在{Sora} 中注册。",
-            "registerToken": "注册代币",
-            "addressPlaceholder": "资产 ID",
-            "symbolPlaceholder": "代币符号",
-            "empty": "未找到代币",
-            "alreadyAttached": "代币已添加"
+            "networkLabelEthereum": "{network}网络镜像令牌"
         }
     },
     "bridgeTransaction": {
-        "details": "{from}为{to}",
         "for": " 给 ",
-        "steps": {
-            "step": "{step} of 2",
-            "step1": "第一个",
-            "step2": "第二个"
-        },
-        "status": {
-            "pending": "{step}交易等待确认...",
-            "failed": "{step}交易失败。@:(retryText)。",
-            "confirm": "两笔交易中的第二笔交易正在等待确认中...",
-            "complete": "完成",
-            "convertionComplete": "转换完成"
-        },
         "statuses": {
-            "waiting": "等待",
-            "ready": "准备",
             "pending": "等待确认",
-            "frozen": "已被冻结",
             "failed": "交易失败",
             "done": "完成",
             "waitingForConfirmation": "等待确认..."
         },
-        "networkTitle": "{network}交易",
         "transactionHash": "交易哈希值",
         "networkInfo": {
             "status": "状态",
             "date": "日期",
             "amount": "数量",
-            "transactionFee": "交易费用",
-            "total": "总共"
+            "transactionFee": "交易费用"
         },
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} 交易等待确认...",
         "newTransaction": "创建新的交易",
         "title": "转接桥交易",
@@ -607,7 +559,6 @@
         "title": "选择一个代币",
         "searchPlaceholder": "按资产 ID、名称或代币符号进行筛选",
         "emptyListMessage": "没有结果",
-        "copy": "复制资产 ID",
         "assets": {
             "title": "资产"
         },
@@ -620,29 +571,18 @@
         }
     },
     "createPair": {
-        "title": "创建一个流动性对",
         "deposit": "存款",
-        "balance": "余额",
         "pricePool": "价格和费用",
         "shareOfPool": "流动池份额",
         "firstSecondPoolTokens": "{first}-{second}流动池",
-        "connect": "连接钱包",
         "supply": "供应",
         "yourPosition": "您的头寸",
-        "yourPositionEstimated": "您的头寸（估计）",
-        "youWillReceive": "您将收到",
-        "remove": "删除",
-        "add": "添加",
-        "ok": "好的",
-        "alreadyCreated": "代币对已经创建",
         "firstLiquidityProvider": "您是第一个流动性提供者",
         "firstLiquidityProviderInfo": "你添加的代币比例将决定这个池子的价格。<br\/>当你对比率满意后，点击供应以进行审核。"
     },
     "confirmSupply": {
         "title": "您的流动池份额将是",
-        "outputDescription": "产出是估计的。如果价格变化超过{slippageTolerance}%，您的交易将被取消。",
-        "poolTokensBurned": "{first}-{second}流动池代币被销毁",
-        "price": "价格"
+        "outputDescription": "产出是估计的。如果价格变化超过{slippageTolerance}%，您的交易将被取消。"
     },
     "addLiquidity": {
         "title": "增加流动性"
@@ -650,11 +590,9 @@
     "removeLiquidity": {
         "title": "移除流动性",
         "liquidity": "流动性",
-        "balance": "余额",
         "amount": "数量",
         "input": "输入",
         "output": "输出",
-        "price": "价格",
         "remove": "移除",
         "description": "将池子代币移除会按照当前比例，将您在池子中的份额转换回基础代币。所得金额包括已累积的手续费。",
         "outputMessage": "产出是估计的。如果价格变化超过 {slippageTolerance}% ，您的交易将被取消。",
@@ -675,22 +613,11 @@
             "frontrun": "您的交易可能会抢跑",
             "error": "输入有效的滑点百分比"
         },
-        "custom": "自定义",
-        "transactionDeadline": "交易期限",
-        "transactionDeadlineHint": "如果交易的等待时间超过这个时间，交易将被取消。",
-        "nodeAddress": "节点地址",
-        "ip": "IP",
-        "port": "端口",
-        "min": "最小",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm}流动性路由通过从所有可用市场中仅选择最佳价格选项，确保任何交易的最佳价格。在可用时，将使用Token Bonding Curve（{tbcAlgorithm}）提供流动性，前提是资产价格比其他来源更实惠；否则将利用{xycAlgorithm}池。",
             "TBC": "{tbcAlgorithm} — 仅从代币绑定曲线（一级市场）购买。 与{xycAlgorithm}流动池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
             "XYK": "{xycAlgorithm} — 仅从 XYK 池（二级市场）购买。传统的 XYK 流动池兑换。"
         }
-    },
-    "resultDialog": {
-        "title": "交易已提交",
-        "ok": "好的"
     },
     "rewards": {
         "andText": "和",
@@ -757,7 +684,6 @@
         "title": "语言"
     },
     "tokens": {
-        "symbol": "符号",
         "assetId": "资产 ID"
     },
     "memorandum": "{AppName} 备忘录和服务条款",
@@ -828,14 +754,6 @@
     },
     "sentText": "已发送",
     "learnMoreText": "了解更多",
-    "marketMakerCountdown": {
-        "title": "做市商倒计时",
-        "blocks": "区块",
-        "daysLeft": "剩余天数",
-        "txs": "交易",
-        "volume": "做市商交易量",
-        "description": "每月 2000 万个 PSWAP 将分发给至少 500 笔交易\/月价值超过 1 个 XOR 的做市商。"
-    },
     "confirmNextTxFailure": {
         "header": "注意",
         "info": "在此交易后，您的 {symbol} 余额将低于{fee}{symbol} 您将无法支付另一笔交易的网络费用。",
@@ -849,18 +767,14 @@
         "bondedXOR": "XOR绑定",
         "referralsNumber": "{number}推荐者",
         "startInviting": "绑定 XOR 以推荐他人",
-        "deposit": "存款",
-        "balance": "余额",
         "insufficientBondedBalance": "绑定余额不足",
         "action": {
-            "empty": "输入{tokenSymbol}的金额",
             "bondMore": "绑定更多",
             "bond": "绑定",
             "unbond": "解绑",
             "copyLink": "复制链接",
             "shareLink": "分享"
         },
-        "transactionDetails": "交易详情",
         "receivedRewards": "已领取奖励",
         "invitationLink": "邀请链接",
         "bondTitle": "绑定XOR",
@@ -1376,7 +1290,6 @@
         "marketTrades": "市场交易",
         "market": "市价",
         "limit": "限价",
-        "price": "价格",
         "total": "总计",
         "amount": "数量",
         "time": "时间",
@@ -1631,5 +1544,6 @@
     },
     "firstText": "第一的",
     "lastText": "最后的",
-    "prevText": "以前的"
+    "prevText": "以前的",
+    "priceText": "价格"
 }

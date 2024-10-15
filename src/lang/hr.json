@@ -470,16 +470,9 @@
     "exchange": {
         "Swap": "Zamijenite",
         "Pool": "Pul",
-        "balance": "Stanje",
-        "price": "Cijena",
-        "transactionSubmitted": "Transakcija je poslana",
-        "transactionMessage": "{firstToken} i {secondToken}",
-        "ok": "U redu",
-        "confirm": "Potvrdite",
         "lossWarning": "Izgubit ćete {value}% na svojoj trgovini. Otkrili smo problem s pružanjem likvidnosti. To može dovesti do značajnih gubitaka tijekom zamjene tokena. Provjerite postoji li odgovarajuća likvidnost za vaš željeni swap par."
     },
     "swap": {
-        "estimated": "procijenjeno",
         "slippageTolerance": "Tolerancija klizanja",
         "minReceived": "Minimalno primljeno",
         "maxSold": "Maksimalno prodano",
@@ -493,7 +486,6 @@
         "confirmSwap": "Potvrdite zamjenu",
         "swapOutputMessage": "Procjenjuje se izlaz. Primit ćete najmanje {transactionValue} ili će se transakcija vratiti.",
         "rewardsForSwap": "PSWAP strateške nagrade",
-        "swapInputMessage": "Procjenjuje se ulaz. Prodat ćete najviše {transactionValue} ili će se transakcija vratiti.",
         "route": "Ruta",
         "errorFetching": "Pogreška pri dohvaćanju podataka"
     },
@@ -512,21 +504,12 @@
     "bridge": {
         "title": "Most",
         "info": "Pretvorite tokene između mreža {Sora} i {Ethereum}.",
-        "balance": "Stanje",
         "next": "Sljedeći",
         "connectWallets": "Povežite novčanike da biste vidjeli odgovarajuću povijest transakcija.",
         "soraNetworkFee": "{Sora} mrežna naknada",
-        "ethereumNetworkFee": "{Ethereum} mrežna naknada",
-        "total": "Ukupno",
-        "viewHistory": "Prikazite povijesti transakcija",
-        "transactionSubmitted": "Transakcija je poslana",
-        "transactionMessage": "{assetA} za {assetB}",
         "notRegisteredAsset": "Sredstvo {assetSymbol} nije registrirano",
         "selectNetwork": "Odaberite mrežu",
         "networkInfo": "Bridge {Sora} mrežna naknada s:",
-        "copy": "Kopiraj mrežnu adresu",
-        "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa",
         "limitMessage": "Trenutno postoji {type} {amount} {symbol} za premošćivanje kako bi se osigurala stabilnost i sigurnost {Sora} mreže. Cijenimo vaše razumijevanje.",
         "externalTransferFee": "{network} {XCM} naknada",
         "externalTransferFeeTooltip": "Kada pošaljete premosnu transakciju na mrežu {network} , od iznosa koji prenosite uzima se manja naknada",
@@ -536,57 +519,26 @@
     "selectRegisteredAsset": {
         "title": "Odaberite token",
         "search": {
-            "title": "Tokeni",
             "placeholder": "Filtrirajte prema ID-u sredstva, nazivu ili simbolu oznake",
             "networkLabelSora": "{Sora} mrežni tokeni",
-            "networkLabelEthereum": "{network} mrežni zrcalni tokeni",
-            "emptyListMessage": "Nema rezultata"
-        },
-        "customAsset": {
-            "title": "Prilagođen",
-            "customInfo": "Važno! Prilagođeni tokeni moraju biti registrirani u {Sora}.",
-            "registerToken": "Registrirajte token",
-            "addressPlaceholder": "ID sredstva",
-            "symbolPlaceholder": "Simbol tokena",
-            "empty": "Tokeni nisu pronađeni",
-            "alreadyAttached": "Token je već bio priložen"
+            "networkLabelEthereum": "{network} mrežni zrcalni tokeni"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} za {to}",
         "for": " za ",
-        "steps": {
-            "step": "{step} od 2",
-            "step1": "1.",
-            "step2": "2."
-        },
-        "status": {
-            "pending": "{step} transakcije na čekanju ...",
-            "failed": "{step} transakcije nisu uspjele. @:(retryText).",
-            "confirm": "Potvrdite 2. od 2 transakcije...",
-            "complete": "Potpuno",
-            "convertionComplete": "Konverzija je dovršena"
-        },
         "statuses": {
-            "waiting": "Čekanje",
-            "ready": "Spremno",
             "pending": "U tijeku",
-            "frozen": "Zamrznuto",
             "failed": "Transakcija nije uspjela",
             "done": "Potpuno",
             "waitingForConfirmation": "Čeka se potvrda..."
         },
-        "networkTitle": "{network} transakcija",
         "transactionHash": "Hash transakcije",
         "networkInfo": {
             "status": "Status",
             "date": "Datum",
             "amount": "Iznos",
-            "transactionFee": "Naknada za transakciju",
-            "total": "Ukupno"
+            "transactionFee": "Naknada za transakciju"
         },
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} transakcija na čekanju...",
         "newTransaction": "Izradite novu transakciju",
         "title": "Bridge transakcije",
@@ -607,7 +559,6 @@
         "title": "Odaberite token",
         "searchPlaceholder": "Filtrirajte prema ID-u sredstva, nazivu ili simbolu oznake",
         "emptyListMessage": "Nema rezultata",
-        "copy": "Kopirajte ID sredstva",
         "assets": {
             "title": "Sredstva"
         },
@@ -620,29 +571,18 @@
         }
     },
     "createPair": {
-        "title": "Napravite par",
         "deposit": "Depozit",
-        "balance": "Stanje",
         "pricePool": "Cijene i naknade",
         "shareOfPool": "Udio u pulu",
         "firstSecondPoolTokens": "{first}-{second} Pul",
-        "connect": "Spojite novčanik",
         "supply": "Opskrba",
         "yourPosition": "Vaša pozicija",
-        "yourPositionEstimated": "Vaša pozicija (procijenjena)",
-        "youWillReceive": "Dobit ćete",
-        "remove": "uklonite",
-        "add": "DODAJTE",
-        "ok": "U redu",
-        "alreadyCreated": "Par tokena već je stvoren",
         "firstLiquidityProvider": "Vi ste prvi davatelj likvidnosti",
         "firstLiquidityProviderInfo": "Omjer tokena koje dodate postavit će cijenu ovog pula.<br\/> Nakon što ste zadovoljni s cijenom kliknite opskrbu za pregled."
     },
     "confirmSupply": {
         "title": "Vaš udio u pulu bit će",
-        "outputDescription": "Procjenjuje se izlaz. Ako se cijena promijeni više od {slippageTolerance}%, vaša će se transakcija vratiti.",
-        "poolTokensBurned": "{first}-{second} Spaljeni pul tokeni",
-        "price": "Cijena"
+        "outputDescription": "Procjenjuje se izlaz. Ako se cijena promijeni više od {slippageTolerance}%, vaša će se transakcija vratiti."
     },
     "addLiquidity": {
         "title": "Dodajte likvidnost"
@@ -650,11 +590,9 @@
     "removeLiquidity": {
         "title": "Uklonite likvidnost",
         "liquidity": "likvidnost",
-        "balance": "Stanje",
         "amount": "Iznos",
         "input": "Ulaz",
         "output": "Izlaz",
-        "price": "Cijena",
         "remove": "Uklonite",
         "description": "Uklanjanje tokena pula pretvara vašu poziciju natrag u temeljne tokene po trenutnoj stopi, proporcionalno vašem udjelu u pulu. Obračunate naknade uključene su u iznose koje primite.",
         "outputMessage": "Procjenjuje se izlazna količina. Ako se cijena promijeni više od {slippageTolerance}%, vaša će se transakcija vratiti.",
@@ -675,22 +613,11 @@
             "frontrun": "Vaša transakcija može biti \"frontrun\"",
             "error": "Unesite valjani postotak tolerancije"
         },
-        "custom": "PRILAGOĐEN",
-        "transactionDeadline": "ROK TRANSAKCIJE",
-        "transactionDeadlineHint": "Transakcija će biti otkazana ako je na čekanju dulje od ovog vremena.",
-        "nodeAddress": "ADRESA NODA",
-        "ip": "IP",
-        "port": "PORT",
-        "min": "MIN",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} usmjeravanje likvidnosti osigurava najbolju cijenu za bilo koju transakciju kombiniranjem samo najboljih opcija cijena sa svih dostupnih tržišta. Kada je dostupna, Krivulja povezivanja tokena ({tbcAlgorithm}) koristit će se za likvidnost sve dok je cijena sredstva pristupačnija nego iz drugih izvora, na kojima se koristi {xycAlgorithm} pul.",
             "TBC": "{tbcAlgorithm} — kupnja samo od Krivulje povezivanja tokena (Primarno tržište). Postoji mogućnost da cijena postane nepovoljna u usporedbi s {xycAlgorithm} bazen (Sekundarno tržište), ali vrijednost primljena od dodijeljenih nagrada mogla bi se s vremenom pokazati mnogo povoljnijom.",
             "XYK": "{xycAlgorithm} — kupnja samo iz XYK pula (sekundarno tržište). Tradicionalna zamjena XYK pula."
         }
-    },
-    "resultDialog": {
-        "title": "Transakcija je poslana",
-        "ok": "U redu"
     },
     "rewards": {
         "andText": "i",
@@ -757,7 +684,6 @@
         "title": "Jezik"
     },
     "tokens": {
-        "symbol": "Simbol",
         "assetId": "ID sredstva"
     },
     "memorandum": "{AppName} Memorandum i Uvjeti pružanja usluga",
@@ -828,14 +754,6 @@
     },
     "sentText": "Poslano",
     "learnMoreText": "Saznajte više",
-    "marketMakerCountdown": {
-        "title": "Market Maker odbrojavanje",
-        "blocks": "blokova",
-        "daysLeft": "preostalih dani",
-        "txs": "TX-ovi",
-        "volume": "MM TX promet",
-        "description": "20 milijuna PSWAP-a mjesečno će se distribuirati market makerima s najmanje 500 tx-a mjesečno u vrijednosti od 1 XOR-a."
-    },
     "confirmNextTxFailure": {
         "header": "Pažnja",
         "info": "Vaš saldo {symbol} bit će manji od {fee} {symbol} nakon ove transakcije. Nećete moći platiti mrežnu naknadu za drugu transakciju.",
@@ -849,18 +767,14 @@
         "bondedXOR": "XOR vezano",
         "referralsNumber": "Broj preporuka {number}",
         "startInviting": "Povežite XOR za upućivanje drugih",
-        "deposit": "Polog",
-        "balance": "Stanje",
         "insufficientBondedBalance": "Nedovoljno vezano saldo",
         "action": {
-            "empty": "Unesite iznos {tokenSymbol}",
             "bondMore": "Bond više",
             "bond": "Bond",
             "unbond": "Unbond",
             "copyLink": "Kopirajte link",
             "shareLink": "Podijeli"
         },
-        "transactionDetails": "Detalji transakcije",
         "receivedRewards": "Primljene nagrade",
         "invitationLink": "Link za pozivnicu",
         "bondTitle": "Bond XOR",
@@ -1376,7 +1290,6 @@
         "marketTrades": "Trgovine na tržištu",
         "market": "Tržište",
         "limit": "Ograničiti",
-        "price": "Cijena",
         "total": "Ukupno",
         "amount": "iznos",
         "time": "vrijeme",
@@ -1631,5 +1544,6 @@
     },
     "firstText": "Prvi",
     "lastText": "Posljednji",
-    "prevText": "Prethodno"
+    "prevText": "Prethodno",
+    "priceText": "Cijena"
 }
