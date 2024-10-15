@@ -3036,6 +3036,7 @@
     bignumber.js "^9.1.2"
     lodash "^4.17.21"
 
+<<<<<<< HEAD
 "@sora-substrate/sdk@1.40.7":
   version "1.40.7"
   resolved "https://registry.yarnpkg.com/@sora-substrate/sdk/-/sdk-1.40.7.tgz#448272df18f554a3309b9b894587482c99843158"
@@ -3047,10 +3048,24 @@
     "@sora-substrate/liquidity-proxy" "1.40.7"
     "@sora-substrate/math" "1.40.7"
     "@sora-substrate/types" "1.40.7"
+=======
+"@sora-substrate/sdk@1.41.2":
+  version "1.41.2"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/sdk/-/sdk-1.41.2.tgz#6a534361176b46802dc16826b5d520cc03990a1b"
+  integrity sha512-WWk7ZyfkxxopDq8fng0Yi7ILNrtmRYqvXTTvQ9YB69UVfAECTrZX0zCGNVZfGjEb7OXhSQJYwhsaAPtDPl1xig==
+  dependencies:
+    "@polkadot/ui-keyring" "2.12.1"
+    "@sora-substrate/api" "1.41.2"
+    "@sora-substrate/connection" "1.41.2"
+    "@sora-substrate/liquidity-proxy" "1.41.2"
+    "@sora-substrate/math" "1.41.2"
+    "@sora-substrate/types" "1.41.2"
+>>>>>>> origin/develop
     axios "^1.7.7"
     crypto-js "^4.2.0"
     lodash "^4.17.21"
 
+<<<<<<< HEAD
 "@sora-substrate/type-definitions@1.40.7":
   version "1.40.7"
   resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.40.7.tgz#ed6c37ca11c6233c8e7f35c0a6e06bc6e0dbd77e"
@@ -3062,18 +3077,35 @@
   version "1.40.7"
   resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.40.7.tgz#058f52bcf5baeea22ffe2d5c96e5e3eb88adda69"
   integrity sha512-4WdnVVx9klTWgaz4ULGmTBhwlW5XiPMMw/bb6j9v1rMYm2UJI0yJWKbdruoi2uHd1PIRTuJyu1rQuwWYG0eUFw==
+=======
+"@sora-substrate/type-definitions@1.41.2":
+  version "1.41.2"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.41.2.tgz#598dfe6c3a73a0c86377fc1addae181547fdb19c"
+  integrity sha512-S1uTlXVhvFJbC8SAzkQDuZhZDhelWPtCBWf80LA4dnfzClBF4OCXJPZVBxm+CbkNpvYHxqk5Cwr+LWVH7XedUw==
+  dependencies:
+    "@open-web3/orml-type-definitions" "1.1.4"
+
+"@sora-substrate/types@1.41.2":
+  version "1.41.2"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.41.2.tgz#219e8679ace94581f5ad8522d063ef20af127492"
+  integrity sha512-AOGJ0Y+1YErihhH9VORLNy9yScd9QsnSTH16EozDq+PxH3/WJsUTjdh6sy8NW+xtYLa+6BcqCa1qkG8xggp81Q==
+>>>>>>> origin/develop
   dependencies:
     "@open-web3/api-mobx" "0.9.4-26"
     "@open-web3/orml-types" "1.1.4"
     "@polkadot/api" "9.14.2"
     "@polkadot/typegen" "9.14.2"
     "@polkadot/types" "9.14.2"
+<<<<<<< HEAD
     "@sora-substrate/type-definitions" "1.40.7"
+=======
+    "@sora-substrate/type-definitions" "1.41.2"
+>>>>>>> origin/develop
 
-"@soramitsu-ui/ui-vue2@^1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@soramitsu-ui/ui-vue2/-/ui-vue2-1.1.5.tgz#44bc1a653fc8e4acd76f353a5dac765a125524ab"
-  integrity sha512-cyipq+/heSio9IctA/UM2DFvmxkauegfS9jNMsckQNsdAX/bG5xV03B0KlisKh77sVpg7u6O7vFPhXYv23l+rg==
+"@soramitsu-ui/ui-vue2@^1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@soramitsu-ui/ui-vue2/-/ui-vue2-1.1.6.tgz#acb7c4cb0305e8edbb29bda2162c79f2caf7d37d"
+  integrity sha512-G5uyxiXFA7RZxs6H0pmSQx2ml0O6LzwJs+SyYqFwxEG6j3aHcYAIlnXvvORUxR767X+nzRITZNeUxgrhi10jyw==
   dependencies:
     core-js "^3.26.1"
     element-resize-detector "^1.2.4"
@@ -3087,6 +3119,7 @@
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
 
+<<<<<<< HEAD
 "@soramitsu/soraneo-wallet-web@1.41.0-beta-1":
   version "1.41.0-beta-1"
   resolved "https://registry.yarnpkg.com/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.41.0-beta-1.tgz#23626fce542cba003d817d1e123158427a27a234"
@@ -3096,6 +3129,17 @@
     "@polkadot/vue-identicon" "2.12.1"
     "@sora-substrate/sdk" "1.40.7"
     "@soramitsu-ui/ui-vue2" "^1.1.5"
+=======
+"@soramitsu/soraneo-wallet-web@1.41.1":
+  version "1.41.1"
+  resolved "https://registry.yarnpkg.com/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.41.1.tgz#82e60f137e6baf99f2209561bd5819ca86c94b2e"
+  integrity sha512-VmgoOOWpW4AG3JD/IcYRWK9DKnQ1K5zkS8QNO0C/+hd6LBwlWIThAK68+BeHNwJLab0yOWr2UfTawON6pI8MyA==
+  dependencies:
+    "@polkadot/extension-inject" "^0.44.7"
+    "@polkadot/vue-identicon" "2.12.1"
+    "@sora-substrate/sdk" "1.41.2"
+    "@soramitsu-ui/ui-vue2" "^1.1.6"
+>>>>>>> origin/develop
     "@urql/core" "^5.0.4"
     "@walletconnect/modal" "^2.6.2"
     "@walletconnect/universal-provider" "^2.14.0"

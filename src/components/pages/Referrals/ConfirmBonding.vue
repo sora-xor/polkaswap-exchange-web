@@ -25,7 +25,7 @@
     <template #footer>
       <account-confirmation-option with-hint class="confirmation-option" />
       <s-button type="primary" class="s-typography-button--large" @click="handleConfirmBonding">
-        {{ t('referralProgram.confirm.text') }}
+        {{ t('confirmText') }}
       </s-button>
     </template>
   </dialog-base>
