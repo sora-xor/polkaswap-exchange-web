@@ -5,7 +5,7 @@ if (import.meta.env.PROD) {
   }
 }
 const pathname = window.location.pathname;
-if (pathname !== '/' && pathname.slice(-1) !== '/') {
+if (pathname !== '/' && !pathname.endsWith('/')) {
   const paths = pathname.split('/');
   paths.pop();
   paths.push('');
