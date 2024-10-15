@@ -15,8 +15,6 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "types": [
-      "webpack-env",
-      "jest",
       "node",
       "element-ui",
       "telegram-web-app"
@@ -39,7 +37,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx",
-    "electron/background.ts"
+    "electron/**/*.ts"
   ],
   "exclude": [
     "node_modules"
