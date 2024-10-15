@@ -74,14 +74,24 @@ const isSoraPartCompleted = async (isOutgoing: boolean, soraHash: string) => {
   return false;
 };
 
-const getTransactionState = (isOutgoing: boolean, soraPartCompleted: boolean, externalHash: string, hash: string) => {
+const getTransactionState = (
+  isOutgoing: boolean,
+  soraPartCompleted: boolean,
+  soraHash: string,
+  ethereumTx: ethers.TransactionResponse | null
+) => {
   if (!isOutgoing) return ETH_BRIDGE_STATES.SORA_COMMITED;
 
-  if (externalHash) {
+  const externalHash = getEvmTxHash(ethereumTx);
+  const externalError = !!Number((ethereumTx as any)?.isError ?? 0);
+
+  if (externalError) {
+    return ETH_BRIDGE_STATES.EVM_REJECTED;
+  } else if (externalHash) {
     return ETH_BRIDGE_STATES.EVM_COMMITED;
   } else if (soraPartCompleted) {
     return ETH_BRIDGE_STATES.EVM_REJECTED;
-  } else if (hash) {
+  } else if (soraHash) {
     return ETH_BRIDGE_STATES.SORA_PENDING;
   } else {
     return ETH_BRIDGE_STATES.SORA_REJECTED;
@@ -100,6 +110,10 @@ const hasFinishedState = (item: Nullable<EthHistory>) => {
 
 const getReceiptData = async (externalHash: string) => {
   return externalHash ? await getEvmTransactionRecieptByHash(externalHash) : null;
+};
+
+const getEvmTxHash = (ethereumTx: ethers.TransactionResponse | null) => {
+  return ethereumTx?.hash ?? '';
 };
 
 const getEvmBlockNumber = (ethereumTx: ethers.TransactionResponse | null) => {
@@ -319,17 +333,17 @@ export class EthBridgeHistory {
       if ((localHistoryItem?.id as string) in inProgressIds) continue;
       if (hasFinishedState(localHistoryItem)) continue;
 
-      const hash = await getSoraHash(isOutgoing, requestHash);
+      const soraHash = await getSoraHash(isOutgoing, requestHash);
       const asset = assetDataByAddress(assetAddress);
       const symbol = asset?.symbol;
       const soraNetworkFee = getSoraNetworkFee(isOutgoing, networkFees);
       const soraTimestamp = historyElement.timestamp * 1000;
-      const soraPartCompleted = await isSoraPartCompleted(isOutgoing, hash);
+      const soraPartCompleted = await isSoraPartCompleted(isOutgoing, soraHash);
       const ethereumTx = isOutgoing
-        ? await this.findEthTxBySoraHash(sidechainAddress, hash, fromTimestamp)
+        ? await this.findEthTxBySoraHash(sidechainAddress, soraHash, fromTimestamp)
         : await this.findEthTxByEthereumHash(requestHash);
 
-      const externalHash = ethereumTx?.hash ?? '';
+      const externalHash = getEvmTxHash(ethereumTx);
       const recieptData = await getReceiptData(externalHash);
       const to = isOutgoing ? sidechainAddress : recieptData?.from;
       const externalNetworkFee = recieptData?.fee;
@@ -338,7 +352,7 @@ export class EthBridgeHistory {
       const evmTimestamp = await getEvmTimestamp(ethereumTx);
 
       const [startTime, endTime] = getTimes(isOutgoing, soraTimestamp, evmTimestamp);
-      const transactionState = getTransactionState(isOutgoing, soraPartCompleted, externalHash, hash);
+      const transactionState = getTransactionState(isOutgoing, soraPartCompleted, soraHash, ethereumTx);
 
       const historyItemData = {
         txId,
@@ -351,7 +365,7 @@ export class EthBridgeHistory {
         assetAddress,
         startTime,
         endTime,
-        hash,
+        hash: soraHash,
         externalHash,
         soraNetworkFee,
         transactionState,
