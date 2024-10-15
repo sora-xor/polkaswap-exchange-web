@@ -62,7 +62,7 @@ export default [
               group: 'internal',
             },
           ],
-
+          // Uncomment this line, to group all types imports at the end
           // pathGroupsExcludedImportTypes: ['type'],
 
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
