@@ -104,7 +104,7 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   // Block explorer
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.settings.indexerType private indexerType!: WALLET_CONSTS.IndexerType;
-  @state.settings.blockNumber blockNumber!: number;
+  @state.wallet.settings.blockNumber blockNumber!: number;
   @getter.libraryTheme libraryTheme!: Theme;
 
   get blockExplorerLink(): string | undefined {

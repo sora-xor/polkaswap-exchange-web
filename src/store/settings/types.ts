@@ -45,8 +45,6 @@ export type SettingsState = {
   browserNotifPopupBlockedVisibility: boolean;
   isBrowserNotificationApiAvailable: boolean;
   browserNotifsPermission: NotificationPermission;
-  blockNumber: number;
-  blockNumberUpdates: Nullable<Subscription>;
   internetConnection: Nullable<boolean>;
   internetConnectionSpeed: Nullable<number>;
   screenBreakpointClass: BreakpointClass;
