@@ -4,16 +4,9 @@
       <progress-card :imageName="imageName" :progressPercentage="progressPercentage" />
       <p>LVL {{ levelCurrent }} <span>/ LVL 6</span></p>
     </div>
-    <div
-      class="point-card__name"
-      :class="{ disabled: pointsForCategory.nextLevelRewardPoints === null }"
-      @click="handleClick"
-    >
+    <div class="point-card__name" :class="{ disabled: noNextLevel }" @click="handleClick">
       <p>{{ this.pointsForCategory.titleProgress }}</p>
-      <i
-        v-if="this.pointsForCategory.nextLevelRewardPoints !== null"
-        class="icontype s-icon-arrows-chevron-right-rounded-24"
-      />
+      <i v-if="!noNextLevel" class="icontype s-icon-arrows-chevron-right-rounded-24" />
     </div>
     <div class="point-card__currently-amount">
       <p>Currently</p>
@@ -21,7 +14,7 @@
     </div>
     <s-divider />
     <div class="point-card__amount-of-points">
-      <template v-if="this.pointsForCategory.nextLevelRewardPoints !== null">
+      <template v-if="!noNextLevel">
         <p>NEXT LVL</p>
         <p>{{ this.pointsForCategory.nextLevelRewardPoints }}</p>
       </template>
@@ -55,7 +48,7 @@ import ProgressCard from './ProgressCard.vue';
     ProgressCard,
   },
 })
-export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixins.NumberFormatterMixin) {
+export default class PointCard extends Mixins(mixins.TranslationMixin) {
   @Prop({ required: true, type: Object })
   readonly pointsForCategory!: CalculateCategoryPointResult;
 
@@ -75,6 +68,10 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
 
   get imageName(): string {
     return this.pointsForCategory.imageName;
+  }
+
+  get noNextLevel(): boolean {
+    return this.pointsForCategory.nextLevelRewardPoints === null;
   }
 
   get progressPercentage(): number {
@@ -103,7 +100,7 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
 .point-card {
   position: relative;
   padding: $inner-spacing-mini;
-  border-radius: 12px;
+  border-radius: $inner-spacing-small;
   text-align: center;
 
   &__progress {
@@ -120,7 +117,7 @@ export default class PointCard extends Mixins(mixins.FormattedAmountMixin, mixin
       font-size: 12px;
       font-weight: 700;
       padding: 3px $inner-spacing-mini;
-      border-radius: 12px;
+      border-radius: $inner-spacing-small;
       margin-left: auto;
       margin-bottom: auto;
       background-color: var(--s-color-base-on-accent);

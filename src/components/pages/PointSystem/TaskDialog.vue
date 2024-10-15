@@ -38,8 +38,8 @@
 </template>
 
 <script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import { getImageSrc, isTokenImage } from '@/consts/pointSystem';
 import { CalculateCategoryPointResult } from '@/types/pointSystem';
@@ -50,7 +50,7 @@ import { CalculateCategoryPointResult } from '@/types/pointSystem';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class TaskDialog extends Vue {
+export default class TaskDialog extends Mixins(mixins.TranslationMixin) {
   @Prop({ required: true }) readonly pointsForCategory!: CalculateCategoryPointResult;
   @Prop({ required: true }) readonly visible!: boolean;
   @Prop({ required: true }) readonly onClose!: () => void;
@@ -79,7 +79,7 @@ export default class TaskDialog extends Vue {
   }
 
   get progressPercentage(): number {
-    if (!this.pointsForCategory.minimumAmountForNextLevel || this.pointsForCategory.minimumAmountForNextLevel === 0) {
+    if (!this.pointsForCategory.minimumAmountForNextLevel) {
       return 0;
     }
     return Math.min(

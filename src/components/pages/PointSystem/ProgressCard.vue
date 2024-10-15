@@ -122,8 +122,8 @@ export default class ProgressCard extends Vue {
 
   &__image {
     z-index: 1;
-    width: 32px;
-    height: 32px;
+    width: $footer-height;
+    height: $footer-height;
   }
 }
 </style>

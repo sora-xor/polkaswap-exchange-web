@@ -353,9 +353,7 @@ export const formatAmountWithSuffix = (value: FPNumber, precision = 2): AmountWi
   }
 };
 
-// Функция для преобразования FPNumber в обычное число
 export const convertFPNumberToNumber = (fpValue: FPNumber, precision = 2): number => {
-  // Преобразование FPNumber в обычное число с заданной точностью
   return parseFloat(fpValue.toFixed(precision));
 };
 

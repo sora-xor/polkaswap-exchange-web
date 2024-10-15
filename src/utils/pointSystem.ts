@@ -1,4 +1,3 @@
-// pointsService.ts
 import { categoriesPointSystem, POINTS_PER_PERCENT } from '@/consts/pointSystem';
 import { CalculateCategoryPointResult, CategoryValues } from '@/types/pointSystem';
 
@@ -71,15 +70,12 @@ class PointsService {
       };
 
       if (categoryName === 'firstTxAccount') {
-        // Store firstTxAccount category separately
         firstTxAccountResult[categoryName] = categoryData;
       } else {
-        // Store other categories in results
         results[categoryName] = categoryData;
       }
     });
 
-    // Merge results and add firstTxAccount at the end
     return { ...results, ...firstTxAccountResult };
   }
 }

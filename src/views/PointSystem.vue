@@ -259,7 +259,6 @@ export default class PointSystem extends Mixins(
       const firstAssetFiatValue = parseFloat(
         this.getFiatAmountByCodecString(liquidity.firstBalance, firstAsset)?.replace(',', '.') || '0'
       );
-      console.info(firstAssetFiatValue);
       const secondAssetFiatValue = parseFloat(
         this.getFiatAmountByCodecString(liquidity.secondBalance, secondAsset)?.replace(',', '.') || '0'
       );
@@ -316,7 +315,6 @@ export default class PointSystem extends Mixins(
 
   private async initData(): Promise<void> {
     if (this.isLoggedIn) {
-      // await new Promise((resolve) => setTimeout(resolve, 6000000)); // 10 minutes
       // Referral rewards
       await this.getAccountReferralRewards();
       const account = this.account.address;

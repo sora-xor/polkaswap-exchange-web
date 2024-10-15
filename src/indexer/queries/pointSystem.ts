@@ -293,7 +293,6 @@ const parseCounter = (data: AccountMetaEventCounter) => {
 };
 
 const parseAccountMeta = (item: QueryData<AccountMetaEntity>) => {
-  // return item.data;
   const {
     createdAtTimestamp,
     createdAtBlock,

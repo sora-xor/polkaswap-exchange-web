@@ -11,7 +11,9 @@
     </div>
     <div class="task-card__current-progress">
       <p v-if="categoryName === 'firstTxAccount'">Currently {{ formattedCurrentProgress }}</p>
-      <p v-else>Currently ${{ pointsForCategory.currentProgress.toFixed(2) }}</p>
+      <p v-else>
+        Currently: <span>${{ pointsForCategory.currentProgress.toFixed(2) }}</span>
+      </p>
       <s-button :class="{ completed: !pointsForCategory.minimumAmountForNextLevel }" @click="handleButtonClick">
         {{ !pointsForCategory.minimumAmountForNextLevel ? 'Completed' : 'Complete' }}
       </s-button>
@@ -82,7 +84,8 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
 </script>
 
 <style lang="scss">
-.asset-logo--small {
+.asset-logo--small,
+.task-card__title-image img {
   width: 18px !important;
   height: 18px !important;
 }
@@ -134,10 +137,6 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
     p {
       font-weight: 800;
     }
-    img {
-      width: 18px;
-      height: 18px;
-    }
   }
   &__description-task {
     color: var(--s-color-base-content-secondary);
@@ -151,6 +150,10 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    span {
+      color: var(--s-color-status-info);
+      margin-left: $inner-spacing-tiny;
+    }
   }
 }
 </style>
