@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@duty/migrate-pswap-to-vite') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
@@ -8,7 +8,7 @@ if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
 
 def pipeline = new org.js.AppPipeline(steps: this,
     dockerImageName: 'polkaswap/exchange-web',
-    buildDockerImage: 'build-tools/node:20-alpine',
+    buildDockerImage: 'build-tools/node:20.18-alpine',
     dockerRegistryCred: 'bot-polkaswap-rw',
     buildEnvironment: buildEnvironment,
     sonarProjectName: 'polkaswap-exchange-web',
