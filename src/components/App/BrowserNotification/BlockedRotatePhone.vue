@@ -1,7 +1,7 @@
 <template>
   <dialog-base class="browser-notification" :visible.sync="isVisible">
     <div class="browser-notification-dialog">
-      <img src="@/assets/img/mobile/rotate_phone.svg" alt="mobile-rotate-phone" />
+      <img src="@/assets/img/mobile/rotate_phone.svg?inline" alt="mobile-rotate-phone" />
       <p class="notification-title">{{ t('browserNotificationDialog.rotatetitle') }}</p>
       <p class="notification-message">{{ t('browserNotificationDialog.rotateMessage') }}</p>
       <s-button

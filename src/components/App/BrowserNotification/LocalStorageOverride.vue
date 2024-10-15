@@ -31,7 +31,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
     DialogBase: components.DialogBase,
   },
 })
-export default class AppBrowserNotifsBlockedDialog extends Mixins(
+export default class AppBrowserNotifsLocalStorageOverride extends Mixins(
   TranslationMixin,
   mixins.DialogMixin,
   mixins.LoadingMixin
