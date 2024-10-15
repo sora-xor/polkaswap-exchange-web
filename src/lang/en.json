@@ -876,7 +876,8 @@
             "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
             "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "SwapTransferBatch": "Failed to {action} {amount} {symbol}",
-            "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}"
+            "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "Failed to {action} {amount} {symbol} {direction} {address}"
         },
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
@@ -920,7 +921,8 @@
             "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
             "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "SwapTransferBatch": "{action} {amount} {symbol}",
-            "Transfer": "{action} {amount} {symbol} {direction} {address}"
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "Mint": "Mint",
         "OrderBookCancelLimitOrder": "Cancel Order",
@@ -946,7 +948,8 @@
         "Swap": "Swap",
         "SwapAndSend": "Swap and Send",
         "SwapTransferBatch": "{ADAR} transfer",
-        "Transfer": "Transfer"
+        "Transfer": "Transfer",
+        "VestedTransfer": "Transfer"
     },
     "orderBook": {
         "amount": "amount",
@@ -1538,12 +1541,16 @@
         "badAddress": "Incorrect address",
         "balance": "Balance",
         "confirmTitle": "Confirm transaction",
+        "enableVesting": "Enable token vesting",
         "enterAddress": "Enter address",
         "enterAmount": "Enter amount",
+        "enterVestingPercentage": "Enter vesting percentage",
         "errorAddress": "Invalid address. Please check it and try again.",
         "max": "MAX",
         "title": "Send",
-        "tooltip": "Send tokens between {Sora} network accounts"
+        "tooltip": "Send tokens between {Sora} network accounts",
+        "unlockFrequency": "Unlock frequency",
+        "vestingPercentage": "Vesting percentage"
     },
     "warningText": "Warning"
 }
