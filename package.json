@@ -16,16 +16,16 @@
     "serve": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "prepare": "husky",
     "electron:build": "electron-vite build",
     "electron:serve": "electron-vite dev",
-    "lint": "eslint .",
+    "lint": "eslint",
     "lang:generate": "tsx ./scripts/lang/generate.ts",
     "lang:fix": "tsx ./scripts/lang/fix.ts",
     "test:unit": "echo 0",
     "test:translation": "echo 0",
     "test:e2e": "echo 0",
-    "test:all": "echo 0",
-    "prepare": "husky"
+    "test:all": "echo 0"
   },
   "dependencies": {
     "@cedelabs/widgets-universal": "^1.3.1",
