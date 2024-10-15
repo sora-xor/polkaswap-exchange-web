@@ -14,14 +14,35 @@
         :transform="'rotate(-90 ' + center + ' ' + center + ')'"
       />
     </svg>
-    <img class="progress-circle__image" :src="imageSrc" :alt="imageName" :width="imageSize" :height="imageSize" />
+    <token-logo
+      v-if="isTokenImage"
+      class="progress-circle__image"
+      :token="this.getImageSrc(imageName)"
+      :width="imageSize"
+      :height="imageSize"
+    />
+    <img
+      v-else
+      class="progress-circle__image"
+      :src="this.getImageSrc(imageName)"
+      :alt="imageName"
+      :width="imageSize"
+      :height="imageSize"
+    />
   </div>
 </template>
 
 <script lang="ts">
+import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-@Component
+import { getImageSrc, isTokenImage } from '@/consts/pointSystem';
+
+@Component({
+  components: {
+    TokenLogo: components.TokenLogo,
+  },
+})
 export default class ProgressCard extends Vue {
   @Prop({ required: true, type: String })
   readonly imageName!: string;
@@ -53,12 +74,16 @@ export default class ProgressCard extends Vue {
     return this.circumference * (1 - this.progressPercentage / 100);
   }
 
-  get imageSrc(): string {
-    return require(`@/assets/img/points/${this.imageName}.svg`);
-  }
-
   get imageSize(): number {
     return 27;
+  }
+
+  getImageSrc(imageName: string): any {
+    return getImageSrc(imageName);
+  }
+
+  get isTokenImage(): boolean {
+    return isTokenImage(this.imageName);
   }
 }
 </script>
@@ -97,6 +122,8 @@ export default class ProgressCard extends Vue {
 
   &__image {
     z-index: 1;
+    width: 32px;
+    height: 32px;
   }
 }
 </style>

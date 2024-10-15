@@ -1,18 +1,19 @@
 <template>
   <div class="task-card">
     <div class="task-card__title-image">
-      <img :src="imageSrc" :alt="imageName" width="18" height="18" />
-      <p>{{ this.pointsForCategory.titleTask }}</p>
+      <token-logo v-if="isTokenImage" :token="this.getImageSrc(imageName)" size="small" />
+      <img v-else :src="this.getImageSrc(imageName)" :alt="imageName" />
+      <p>{{ pointsForCategory.titleTask }}</p>
     </div>
-    <p class="task-card__description-task">{{ this.pointsForCategory.descriptionTask }}</p>
+    <p class="task-card__description-task">{{ pointsForCategory.descriptionTask }}</p>
     <div>
       <s-divider />
     </div>
     <div class="task-card__current-progress">
       <p v-if="categoryName === 'firstTxAccount'">Currently {{ formattedCurrentProgress }}</p>
-      <p v-else>Currently ${{ this.pointsForCategory.currentProgress.toFixed(2) }}</p>
-      <s-button :class="{ completed: !this.pointsForCategory.minimumAmountForNextLevel }" @click="handleButtonClick">
-        {{ !this.pointsForCategory.minimumAmountForNextLevel ? 'Completed' : 'Complete' }}
+      <p v-else>Currently ${{ pointsForCategory.currentProgress.toFixed(2) }}</p>
+      <s-button :class="{ completed: !pointsForCategory.minimumAmountForNextLevel }" @click="handleButtonClick">
+        {{ !pointsForCategory.minimumAmountForNextLevel ? 'Completed' : 'Complete' }}
       </s-button>
     </div>
     <task-dialog
@@ -29,12 +30,14 @@ import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
+import { getImageSrc, isTokenImage } from '@/consts/pointSystem';
 import { lazyComponent } from '@/router';
 import { CalculateCategoryPointResult } from '@/types/pointSystem';
 
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
+    TokenLogo: components.TokenLogo,
     TaskDialog: lazyComponent(Components.TaskDialog),
   },
 })
@@ -47,12 +50,16 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
 
   private isDialogVisible = false;
 
-  get imageName(): string {
-    return this.pointsForCategory.imageName;
+  getImageSrc(imageName: string): any {
+    return getImageSrc(imageName);
   }
 
-  get imageSrc(): string {
-    return require(`@/assets/img/points/${this.imageName}.svg`);
+  get isTokenImage(): boolean {
+    return isTokenImage(this.imageName);
+  }
+
+  get imageName(): string {
+    return this.pointsForCategory.imageName;
   }
 
   get formattedCurrentProgress(): string {
@@ -73,6 +80,14 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
   }
 }
 </script>
+
+<style lang="scss">
+.asset-logo--small {
+  width: 18px !important;
+  height: 18px !important;
+}
+</style>
+
 <style lang="scss" scoped>
 .task-card {
   .el-divider {
@@ -118,6 +133,10 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
     gap: $basic-spacing-small;
     p {
       font-weight: 800;
+    }
+    img {
+      width: 18px;
+      height: 18px;
     }
   }
   &__description-task {

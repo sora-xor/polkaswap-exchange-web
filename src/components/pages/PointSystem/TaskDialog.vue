@@ -17,13 +17,14 @@
         </div>
 
         <div class="next-level">
-          <p>next level reward</p>
+          <p>Next level reward</p>
           <p>{{ pointsForCategory.nextLevelRewardPoints }}</p>
         </div>
       </div>
       <div class="task-dialog__card-current">
         <div class="img-title">
-          <img :src="imageSrc" :alt="imageName" width="17" height="17" />
+          <token-logo v-if="isTokenImage" :token="this.getImageSrc(imageName)" size="small" />
+          <img v-else :src="this.getImageSrc(imageName)" :alt="imageName" />
           <p>{{ pointsForCategory.titleTask }}</p>
         </div>
         <p class="description">{{ pointsForCategory.descriptionTask }}</p>
@@ -40,11 +41,13 @@
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
+import { getImageSrc, isTokenImage } from '@/consts/pointSystem';
 import { CalculateCategoryPointResult } from '@/types/pointSystem';
 
 @Component({
   components: {
     DialogBase: components.DialogBase,
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class TaskDialog extends Vue {
@@ -52,23 +55,27 @@ export default class TaskDialog extends Vue {
   @Prop({ required: true }) readonly visible!: boolean;
   @Prop({ required: true }) readonly onClose!: () => void;
 
-  handleVisibleChange(newVal: boolean) {
+  private handleVisibleChange(newVal: boolean) {
     if (!newVal) {
       this.onClose();
       this.$emit('close');
     }
   }
 
-  get levelCurrent(): number {
+  getImageSrc(imageName: string): any {
+    return getImageSrc(imageName);
+  }
+
+  get isTokenImage(): boolean {
+    return isTokenImage(this.imageName);
+  }
+
+  private get levelCurrent(): number {
     return this.pointsForCategory.levelCurrent;
   }
 
-  get imageName(): string {
+  private get imageName(): string {
     return this.pointsForCategory.imageName;
-  }
-
-  get imageSrc(): string {
-    return require(`@/assets/img/points/${this.imageName}.svg`);
   }
 
   get progressPercentage(): number {
@@ -161,6 +168,10 @@ export default class TaskDialog extends Vue {
         font-size: 14px;
         font-weight: 800;
         color: var(--s-color-base-content-primary);
+      }
+      img {
+        width: 18px;
+        height: 18px;
       }
     }
     .description,

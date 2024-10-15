@@ -1,3 +1,7 @@
+import { KUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+
+import store from '@/store';
 import { Category } from '@/types/pointSystem';
 
 export const POINTS_PER_PERCENT = 1000;
@@ -21,6 +25,27 @@ const generateLevels = (thresholds: number[], multipliers: number[] = defaultMul
   }));
 };
 
+const getAsset = (imageName: string): AccountAsset | null => {
+  if (!isTokenImage(imageName)) {
+    return null;
+  }
+  const getAssetFromStore = store.getters.assets.assetDataByAddress;
+  const asset = getAssetFromStore(imageName);
+  return asset !== undefined ? asset : null;
+};
+
+export const isTokenImage = (imageName: string): boolean => {
+  return imageName.startsWith('0x');
+};
+
+export const getImageSrc = (imageName: string): AccountAsset | string => {
+  const asset = getAsset(imageName);
+  if (asset) {
+    return asset;
+  }
+  return `/point-system/${imageName}.svg`;
+};
+
 export const categoriesPointSystem: { [key: string]: Category } = {
   liquidityProvision: {
     maxPercentage: 10,
@@ -28,7 +53,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'Liquidity provision',
     titleTask: ' Provide Liquidity',
     descriptionTask: 'Provide liquidity across pools',
-    imageName: 'governance',
+    imageName: 'liquidity',
   },
   VXORHoldings: {
     maxPercentage: 10,
@@ -36,7 +61,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'VXOR holdings',
     titleTask: 'Hold VXOR',
     descriptionTask: 'Hold your current VXOR holdings',
-    imageName: 'governance',
+    imageName: '0x006a271832f44c93bd8692584d85415f0f3dccef9748fecd129442c8edcb4361',
   },
   referralRewards: {
     maxPercentage: 6,
@@ -44,7 +69,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'Referral Sytem',
     titleTask: 'Refer accounts',
     descriptionTask: 'Refer accounts through the referral system',
-    imageName: 'governance',
+    imageName: 'referral_rewards',
   },
   depositVolumeBridges: {
     maxPercentage: 6,
@@ -52,7 +77,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'Deposit volume',
     titleTask: 'Deposit & Withdraw ',
     descriptionTask: 'Deposit & withdraw via Bridges, bitget, 1x, gateio',
-    imageName: 'governance',
+    imageName: 'bridges',
   },
   networkFeeSpent: {
     maxPercentage: 5,
@@ -60,7 +85,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'Network fees',
     titleTask: 'Spend XOR on Network Fees',
     descriptionTask: 'Spend XOR in network fees across multiple on-chain transactions',
-    imageName: 'governance',
+    imageName: 'network_fee',
   },
   XORBurned: {
     maxPercentage: 5,
@@ -68,7 +93,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'XOR Burned',
     titleTask: 'Burn XOR',
     descriptionTask: 'Burn XOR and convert to $ value',
-    imageName: 'governance',
+    imageName: 'xor_burned',
   },
   XORHoldings: {
     maxPercentage: 4,
@@ -76,7 +101,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'XOR Hold',
     titleTask: 'Hold XOR',
     descriptionTask: 'Hold your current XOR holdings',
-    imageName: 'governance',
+    imageName: XOR.address,
   },
   governanceLockedXOR: {
     maxPercentage: 4,
@@ -92,7 +117,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'Kensetsu volume',
     titleTask: 'Repay KUSD Debt',
     descriptionTask: 'Repay KUSD debt during liquidations or closing positions',
-    imageName: 'governance',
+    imageName: KUSD.address,
   },
   orderbookVolume: {
     maxPercentage: 3,
@@ -100,7 +125,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'Orderbook',
     titleTask: 'Create Limit Orders',
     descriptionTask: 'Create limit orders in the orderbook',
-    imageName: 'governance',
+    imageName: 'orderbook',
   },
   nativeXorStaking: {
     maxPercentage: 2.5,
@@ -108,7 +133,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'XOR Staking',
     titleTask: 'Stake XOR',
     descriptionTask: 'Stake XOR and earn VAL rewards',
-    imageName: 'governance',
+    imageName: 'staking',
   },
   KUSDHoldings: {
     maxPercentage: 1,
@@ -116,7 +141,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'KUSD Hold',
     titleTask: 'Hold Kusd',
     descriptionTask: 'Hold your current KUSD holdings',
-    imageName: 'governance',
+    imageName: KUSD.address,
   },
   firstTxAccount: {
     maxPercentage: 0.5,
