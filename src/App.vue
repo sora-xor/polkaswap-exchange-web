@@ -263,6 +263,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
     console.info('we are goind to update theme');
     updatePipTheme();
+    console.info('we updated pip theme, going to update tmasdk');
     tmaSdkService.updateTheme();
   }
 
@@ -282,11 +283,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     preloadFontFace('element-icons');
     this.setResponsiveClass();
     updateBaseUrl(router);
+
     AlertsApiService.baseRoute = getFullBaseUrl(router);
 
     await this.setLanguage(getLocale() as Language);
-
-    this.detectSystemTheme();
 
     await this.withLoading(async () => {
       const { data } = await axiosInstance.get('/env.json');
@@ -327,6 +327,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     updateDocumentTitle(); // For the first load
     this.showDisclaimer();
     this.fetchAdsArray();
+    this.detectSystemTheme();
   }
 
   mounted(): void {

@@ -457,6 +457,7 @@ export const soraExplorerLinks = (
 };
 
 export const updatePipTheme = (): void => {
+  console.info('we are in update pip theme updated');
   const pipWindow = (window as any).documentPictureInPicture?.window;
   if (pipWindow) {
     const htmlElement = pipWindow.document.documentElement;
