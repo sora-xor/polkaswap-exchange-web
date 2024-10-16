@@ -13,7 +13,7 @@
         v-if="userInfo.iban"
         class="sora-card-hub-balance"
         :value="balance"
-        fiatSign="€"
+        fiat-sign="€"
         value-can-be-hidden
         is-fiat-value
       />

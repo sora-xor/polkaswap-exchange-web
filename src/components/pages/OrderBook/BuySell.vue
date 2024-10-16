@@ -699,7 +699,11 @@ export default class BuySellWidget extends Mixins(
     }
 
     if (this.isMarketType) {
-      value ? this.subscribeOnBookQuote() : this.setQuoteValue('');
+      if (value) {
+        this.subscribeOnBookQuote();
+      } else {
+        this.setQuoteValue('');
+      }
     }
   }
 

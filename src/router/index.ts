@@ -1,7 +1,7 @@
 import { WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import VueRouter, { RouteConfig } from 'vue-router';
+import VueRouter from 'vue-router';
 
 import { PageNames, BridgeChildPages } from '@/consts';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
@@ -16,6 +16,8 @@ import { VaultPageNames } from '@/modules/vault/consts';
 import { vaultLazyView } from '@/modules/vault/router';
 import store from '@/store';
 import { updateDocumentTitle } from '@/utils';
+
+import type { RouteConfig } from 'vue-router';
 
 Vue.use(VueRouter);
 

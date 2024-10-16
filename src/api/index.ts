@@ -2,7 +2,7 @@ import { axiosInstance } from '@sora-substrate/sdk';
 
 import type VueRouter from 'vue-router';
 
-export const BASE_URL = process.env.BASE_URL;
+export const BASE_URL = import.meta.env.BASE_URL;
 
 axiosInstance.defaults.headers.common['Cache-Control'] = 'no-cache';
 

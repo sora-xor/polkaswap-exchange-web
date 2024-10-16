@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import merge from 'lodash/fp/merge';
 import { Component, Mixins } from 'vue-property-decorator';
 

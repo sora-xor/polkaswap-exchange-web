@@ -4,7 +4,7 @@
       <div class="alerts-list">
         <account-card v-for="(alert, index) in alerts" :key="index" class="alerts-list__item" v-button>
           <template #avatar>
-            <token-logo :tokenSymbol="alert.token" />
+            <token-logo :token-symbol="alert.token" />
           </template>
           <template #name>
             <span class="condition">{{ getDescription(alert) }}</span>

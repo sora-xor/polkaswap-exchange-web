@@ -321,7 +321,11 @@ export default class Overview extends Mixins(InternalConnectMixin, StakingMixin,
     const dropdownMenu = this.$refs['dropdown-menu'];
     if (!dropdownMenu) return;
     const dropdown = (dropdownMenu as any).dropdown;
-    dropdown.visible ? dropdown.hide() : dropdown.show();
+    if (dropdown.visible) {
+      dropdown.hide();
+    } else {
+      dropdown.show();
+    }
   }
 
   handleSelectDropdownMenuItem(value: DropdownMenuItemType): void {

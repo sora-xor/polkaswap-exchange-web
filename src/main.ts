@@ -10,7 +10,7 @@ import './plugins';
 import './styles';
 
 Vue.config.productionTip = false;
-Vue.config.devtools = process.env.NODE_ENV === 'development';
+Vue.config.devtools = import.meta.env.DEV;
 
 new Vue({
   i18n,

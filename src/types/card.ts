@@ -51,7 +51,7 @@ export interface AttemptCounter {
 
 export interface PhoneCode {
   name: string;
-  // eslint-disable-next-line camelcase
+
   dial_code: string;
 }
 

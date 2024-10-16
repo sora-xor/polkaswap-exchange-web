@@ -104,7 +104,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     { nextState, rejectState, handler }: TransactionHandlerPayload<Transaction>
   ): Promise<void> {
     try {
-      const updatedId = handler ? (await handler(id)) ?? id : id;
+      const updatedId = handler ? ((await handler(id)) ?? id) : id;
 
       this.updateTransactionParams(updatedId, { transactionState: nextState });
     } catch (error) {
@@ -212,7 +212,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
 export class Bridge<
   Transaction extends IBridgeTransaction,
   Reducer extends IBridgeReducer<Transaction>,
-  ConstructorOptions extends IBridgeConstructorOptions<Transaction, Reducer>
+  ConstructorOptions extends IBridgeConstructorOptions<Transaction, Reducer>,
 > {
   protected reducers!: Partial<Record<Transaction['type'], Reducer>>;
   protected readonly getTransaction!: GetTransaction<Transaction>;

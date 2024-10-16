@@ -32,7 +32,7 @@
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirmToS">
       <span class="text">{{ t('card.acceptAndContinue') }}</span>
     </s-button>
-    <tos-dialog :visible.sync="showDialog" :srcLink="link" :title="t(dialogTitle)" :key="link" />
+    <tos-dialog :visible.sync="showDialog" :src-link="link" :title="t(dialogTitle)" :key="link" />
   </div>
 </template>
 

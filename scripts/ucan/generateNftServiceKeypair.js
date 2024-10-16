@@ -1,5 +1,6 @@
 import { writeFile } from 'fs';
 import { join } from 'path';
+
 import fetch from 'node-fetch';
 import { KeyPair } from 'ucan-storage/keypair';
 import { build } from 'ucan-storage/ucan-storage';

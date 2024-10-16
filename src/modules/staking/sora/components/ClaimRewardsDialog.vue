@@ -10,7 +10,7 @@
           :fiat-value="rewardedFundsFiat"
         />
         <template v-if="rewardAsset">
-          <token-logo class="reward-logo" :tokenSymbol="rewardAsset.symbol" />
+          <token-logo class="reward-logo" :token-symbol="rewardAsset.symbol" />
           <span class="reward-symbol">
             {{ rewardAsset.symbol }}
           </span>
