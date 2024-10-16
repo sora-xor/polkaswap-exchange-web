@@ -44,7 +44,7 @@
       </s-table-column>
       <s-table-column width="126">
         <template #header>
-          <span>{{ t('orderBook.price') }}</span>
+          <span>{{ t('priceText') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="order-table__price">

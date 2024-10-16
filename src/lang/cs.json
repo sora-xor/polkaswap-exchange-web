@@ -1,7 +1,6 @@
 {
     "closeText": "Zavřít",
     "backText": "Zpět",
-    "createWalletText": "Vytvořit peněženku",
     "nameText": "Název",
     "nextText": "Další",
     "importText": "Importovat",
@@ -150,27 +149,20 @@
     },
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření {PolkadotJs}. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Zdá se, že ve vašem rozšíření {extension} nejsou žádné účty. Přidejte účet a zkuste to znovu prosím.",
         "noAccount": "Chyba účtu {extension}. Zkontrolujte prosím svůj účet v rozšíření {extension}.",
         "noExtension": "Nebylo nalezeno žádné {extension} . Nainstalujte jej a znovu načtěte tuto stránku",
         "noSigner": "Přístup odepřen. Přejděte do nastavení {extension} a povolte otevřením možnosti Správa přístupu k webu.",
         "connectionError": "Při připojování peněženky došlo k chybě. Můžete zkusit znovu připojit peněženku přes {extension}"
     },
     "connection": {
-        "text": "Aby bylo možné spravovat aktiva a podepisovat transakce na {Sora}, musí být připojen účet. Účty {Sora} lze vytvořit a propojit pomocí našich integrovaných peněženek nebo rozšíření prohlížeče.",
-        "noAccounts": "V rozšíření prohlížeče {extension} nebyl nalezen žádný účet. Přidejte prosím účet a zkuste to znovu.",
         "selectAccount": "Vyberte účet, se kterým chcete pracovat",
         "action": {
-            "install": "Nainstalovat rozšíření",
             "learnMore": "Další informace o připojení k peněžence",
-            "connect": "Připojit účet",
             "refresh": "Obnovit"
         },
-        "selectWallet": "Vyberte peněženku, se kterou chcete pracovat",
         "wallet": {
             "install": "Nainstalujte",
             "connected": "Připojeno",
-            "notConnected": "Nepřipojený",
             "recommended": "Doporučeno"
         },
         "internalTitle": "Spojte se s {wallet}",
@@ -183,30 +175,22 @@
     },
     "wallet": {
         "WalletAssets": "Aktiva",
-        "createToken": "@:createTokenText",
         "WalletHistory": "Aktivita"
     },
     "walletSend": {
         "title": "Odeslat",
-        "address": "@:addressText",
-        "amount": "@:amountText",
         "balance": "Zůstatek",
         "max": "MAX",
-        "fee": "@:networkFeeText",
         "enterAddress": "Zadejte adresu",
         "badAddress": "Nesprávná adresa",
         "enterAmount": "Zadejte částku",
-        "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Potvrďte transakci",
         "errorAddress": "Neplatná adresa. Zkontrolujte ji a zkuste to znovu.",
-        "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Poslat tokeny mezi síťovými účty {Sora}",
         "addressWarning": "Tokeny budou zaslány na níže uvedenou {Sora} adresu. Ujistěte se, že příjemce má přístup k {Sora} chainu, aby mohl tokeny používat:",
-        "addressError": "Tokeny nelze odesílat na stejný účet, ke kterému jste právě připojeni.",
-        "confirm": "@:confirmText"
+        "addressError": "Tokeny nelze odesílat na stejný účet, ke kterému jste právě připojeni."
     },
     "account": {
-        "successCopy": "Adresa peněženky je zkopírována do schránky",
         "copy": "Zkopírovat adresu",
         "switch": "Přepnout na jiný účet",
         "walletAddress": "Adresa peněženky",
@@ -219,11 +203,7 @@
         "clearHistory": "Vymazat historii",
         "filterPlaceholder": "Filtrování podle adresy, symbolu, typu nebo ID bloku",
         "empty": "Zde se zobrazí vaše transakce",
-        "emptySearch": "Nebyly nalezeny žádné transakce",
-        "firstText": "První",
-        "lastText": "Poslední",
-        "prevText": "Předchozí",
-        "nextText": "Další"
+        "emptySearch": "Nebyly nalezeny žádné transakce"
     },
     "assets": {
         "empty": "Nejsou k dispozici žádná aktiva",
@@ -233,7 +213,6 @@
         "liquidity": "Přidat likviditu",
         "bridge": "Bridge",
         "copy": "Kopírovat ID aktiva",
-        "successCopy": "{symbol} ID aktiva je zkopírováno do schránky",
         "copied": "Zkopírováno!",
         "balance": {
             "transferable": "Převoditelné",
@@ -262,7 +241,6 @@
         "approved": "Aktivum schváleno komunitou",
         "unknown": "Neznámý zdroj",
         "scam": "SCAM",
-        "next": "Další",
         "AddAssetToken": {
             "title": "Měny",
             "switchBtn": "Pouze ověřená aktiva"
@@ -278,7 +256,6 @@
         "unpinAsset": "Odepřít aktivum"
     },
     "createToken": {
-        "desc": "Vytvořte a zaveďte vlastní aktivum na síti {Sora}",
         "enterSymbol": "Zadejte symbol tokenu",
         "enterName": "Zadejte název tokenu",
         "enterSupply": "Zadejte množství tokenů",
@@ -286,10 +263,6 @@
             "title": "Transakce byla odeslána",
             "desc": "Vytvořit token {symbol}"
         },
-        "tooltipValue": "@:networkFeeTooltipText",
-        "fee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "feeError": "Získání poplatku za transakci se nezdařilo.",
         "error": "Vytvoření tokenu {symbol} se nezdařilo.",
         "tokenSymbol": {
             "placeholder": "Symbol tokenu",
@@ -308,7 +281,6 @@
             "desc": "Možnost tisknout více tokenů."
         },
         "provideContent": "Poskytněte obsah",
-        "selectLocalFile": "Vyberte místní soubor",
         "CreateSimpleToken": "Token",
         "nft": {
             "source": {
@@ -341,13 +313,9 @@
             "placeholder": "Dělitelný",
             "desc": "Schopnost NFT dělit se na dílčí části. Opravné položky likvidity fungují pouze u dělitelných aktiv"
         },
-        "title": "@:createTokenText",
-        "action": "@:createTokenText",
-        "confirm": "@:confirmText",
         "titleCommon": "Vytvořit",
         "confirmTokenTitleCommon": "Vytvořit token",
-        "confirmTokenTitleNFT": "Vytvořit NFT",
-        "actionNFT": "@:createTokenTextNFT"
+        "confirmTokenTitleNFT": "Vytvořit NFT"
     },
     "transaction": {
         "title": "Detaily transakce",
@@ -358,7 +326,6 @@
             "failed": "Transakce se nezdařila",
             "complete": "Hotovo"
         },
-        "errorMessage": "Chyba",
         "startTime": "Datum",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
@@ -366,7 +333,6 @@
         "total": "Celkem",
         "from": "Z",
         "to": "Na",
-        "successCopy": "{value} je zkopírováno do schránky",
         "copy": "Kopírovat {value}",
         "history": {
             "created": "Transakce s částkou {amount} {symbol} byla vytvořena.",
@@ -377,7 +343,6 @@
         "viewIn": "Zobrazit v {explorer}",
         "referrer": "Doporučitel",
         "referral": "Doporučení",
-        "adarTxDetailsTitle": "Podrobnosti transakce",
         "comment": "Komentář",
         "price": "Cena",
         "side": "Boční"
@@ -409,7 +374,6 @@
         "Stats": "Statistiky",
         "Wallet": "Peněženka",
         "AddLiquidity": "Přidat likviditu",
-        "RemoveLiquidity": "Odebrat likviditu",
         "Rewards": "Odměny",
         "Explore\/Tokens": "Tokeny",
         "Explore\/Pools": "Bazény",
@@ -421,8 +385,7 @@
         "AssetOwner": "Vlastník aktiv",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "{Kensetsu}",
-        "VaultDetails": "Detaily pozice",
-        "Burn": "Hořet"
+        "VaultDetails": "Detaily pozice"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -453,7 +416,6 @@
         "faucet": "Faucet",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "{AppName} Memorandum a Smluvní podmínky",
         "privacy": "Zásady ochrany osobních údajů",
         "info": "Informace a komunita"
     },
@@ -508,16 +470,9 @@
     "exchange": {
         "Swap": "Swap",
         "Pool": "Pool",
-        "balance": "Zůstatek",
-        "price": "Cena",
-        "transactionSubmitted": "Transakce byla odeslána",
-        "transactionMessage": "{firstToken} a {secondToken}",
-        "ok": "OK",
-        "confirm": "Potvrdit",
         "lossWarning": "Ztratíte {value}% ze svého obchodu. Zjistili jsme problém se zajištěním likvidity. To může vést ke značným ztrátám během swapů tokenů. Ujistěte se, že je pro požadovaný swapový pár dostatečná likvidita."
     },
     "swap": {
-        "estimated": "odhadnuto",
         "slippageTolerance": "Tolerance skluzu",
         "minReceived": "Obdržené minimum",
         "maxSold": "Maximum k prodeji",
@@ -531,7 +486,6 @@
         "confirmSwap": "Potvrďte výměnu",
         "swapOutputMessage": "Výstup je odhadován. Obdržíte alespoň {transactionValue}, jinak se transakce vrátí zpět.",
         "rewardsForSwap": "Strategické odměny PSWAP",
-        "swapInputMessage": "Vstup je odhadován. Prodáte maximálně {transactionValue}, jinak se transakce vrátí zpět.",
         "route": "Trasa",
         "errorFetching": "Chyba při načítání dat"
     },
@@ -550,21 +504,12 @@
     "bridge": {
         "title": "Bridge",
         "info": "Převeďte tokeny mezi sítěmi {Sora} a {Ethereum}.",
-        "balance": "Zůstatek",
         "next": "Další",
         "connectWallets": "Připojte peněženky pro zobrazení historie příslušných transakcí.",
         "soraNetworkFee": "{Sora} síťový poplatek",
-        "ethereumNetworkFee": "{Ethereum} síťový poplatek",
-        "total": "Celkem",
-        "viewHistory": "Zobrazit historii transakcí",
-        "transactionSubmitted": "Transakce byla odeslána",
-        "transactionMessage": "{assetA} za {assetB}",
         "notRegisteredAsset": "Aktivum {assetSymbol} není zaregistrováno",
         "selectNetwork": "Vyberte síť",
         "networkInfo": "Přemostit {Sora} síť s:",
-        "copy": "Zkopírujte síťovou adresu",
-        "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa",
         "limitMessage": "V současné době existuje {type} {amount} {symbol} pro přemostění, aby byla zajištěna stabilita a bezpečnost sítě {Sora}. Děkujeme za pochopení.",
         "externalTransferFee": "{network} poplatek {XCM}",
         "externalTransferFeeTooltip": "Když odešlete překlenovací transakci do sítě {network} , z částky, kterou převádíte, se strhne menší poplatek",
@@ -574,58 +519,26 @@
     "selectRegisteredAsset": {
         "title": "Vyberte token",
         "search": {
-            "title": "Tokeny",
             "placeholder": "Filtrování podle ID aktiva, jeho názvu nebo tickeru",
             "networkLabelSora": "tokeny {Sora} sítě",
-            "networkLabelEthereum": "{network} síťové zrcadlové tokeny",
-            "emptyListMessage": "Žádné výsledky"
-        },
-        "customAsset": {
-            "title": "Vlastní",
-            "customInfo": "Důležité! Vlastní tokeny musí být registrovány v {Sora}.",
-            "registerToken": "Zaregistrujte token",
-            "addressPlaceholder": "ID aktiva",
-            "symbolPlaceholder": "Symbol tokenu",
-            "empty": "Žádné tokeny nenalezeny",
-            "alreadyAttached": "Token byl již přidán"
+            "networkLabelEthereum": "{network} síťové zrcadlové tokeny"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} za {to}",
         "for": " pro ",
-        "steps": {
-            "step": "{step} ze 2",
-            "step1": "1.",
-            "step2": "2."
-        },
-        "status": {
-            "pending": "{step} čekající transakce...",
-            "failed": "{step} transakce se nezdařily. @:(retryText).",
-            "confirm": "Potvrďte 2. ze 2 transakcí...",
-            "complete": "Hotovo",
-            "convertionComplete": "Převod je dokončen"
-        },
         "statuses": {
-            "waiting": "Čekající",
-            "ready": "Připraveno",
             "pending": "Čekající",
-            "frozen": "Zamrzlé",
             "failed": "Transakce se nezdařila",
             "done": "Hotovo",
             "waitingForConfirmation": "Čeká se na potvrzení..."
         },
-        "networkTitle": "{network} transakce",
         "transactionHash": "Hash transakce",
         "networkInfo": {
             "status": "Stav",
             "date": "Datum",
             "amount": "Částka",
-            "transactionFee": "Transakční poplatek",
-            "total": "Celkem"
+            "transactionFee": "Transakční poplatek"
         },
-        "successCopy": "Hash transakce je zkopírován do schránky",
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} transakce čeká na vyřízení...",
         "newTransaction": "Vytvořit novou transakci",
         "title": "Bridge transakce",
@@ -646,8 +559,6 @@
         "title": "Vyberte token",
         "searchPlaceholder": "Filtrování podle ID aktiva, jeho názvu nebo tickeru",
         "emptyListMessage": "Žádné výsledky",
-        "copy": "Kopírovat ID aktiva",
-        "successCopy": "{symbol} ID aktiva je zkopírováno do schránky",
         "assets": {
             "title": "Aktiva"
         },
@@ -660,29 +571,18 @@
         }
     },
     "createPair": {
-        "title": "Vytvořit pár",
         "deposit": "Vklad",
-        "balance": "Zůstatek",
         "pricePool": "Ceny a poplatky",
         "shareOfPool": "Podíl z poolu",
         "firstSecondPoolTokens": "{first}-{second} Pool",
-        "connect": "Připojte peněženku",
         "supply": "Dodat",
         "yourPosition": "Vaše pozice",
-        "yourPositionEstimated": "Vaše pozice (odhad)",
-        "youWillReceive": "Obdržíte",
-        "remove": "odstranit",
-        "add": "PŘIDAT",
-        "ok": "OK",
-        "alreadyCreated": "Tokenový pár je již vytvořen",
         "firstLiquidityProvider": "Jste prvním poskytovatelem likvidity",
         "firstLiquidityProviderInfo": "Poměr tokenů, které přidáte, určí cenu tohoto poolu.<br\/>Jakmile jste se sazbou spokojeni, klikněte na tlačítko zadat k přezkoumání."
     },
     "confirmSupply": {
         "title": "Váš podíl v poolu bude",
-        "outputDescription": "Výstup je odhadován. Pokud se cena změní o více než {slippageTolerance}%, transakce se vrátí zpět.",
-        "poolTokensBurned": "{first}-{second} Pool tokeny spálené",
-        "price": "Cena"
+        "outputDescription": "Výstup je odhadován. Pokud se cena změní o více než {slippageTolerance}%, transakce se vrátí zpět."
     },
     "addLiquidity": {
         "title": "Přidat likviditu"
@@ -690,11 +590,9 @@
     "removeLiquidity": {
         "title": "Odstranit likviditu",
         "liquidity": "likvidita",
-        "balance": "Zůstatek",
         "amount": "Částka",
         "input": "Vstup",
         "output": "Výstup",
-        "price": "Cena",
         "remove": "Odstranit",
         "description": "Výběrem tokenů z poolu se vaše pozice převede zpět na podkladové tokeny v aktuálním kurzu, který je úměrný vašemu podílu v poolu. Nasbírané poplatky jsou zahrnuty v částkách, které obdržíte.",
         "outputMessage": "Výstup je odhadován. Pokud se cena změní o více než {slippageTolerance}%, transakce se vrátí zpět.",
@@ -715,27 +613,13 @@
             "frontrun": "Vaše transakce může být předběhnuta",
             "error": "Zadejte platné procento skluzu"
         },
-        "custom": "VLASTNÍ",
-        "transactionDeadline": "KONEČNÝ TERMÍN TRANSAKCE",
-        "transactionDeadlineHint": "Transakce bude zrušena, pokud nebude vyřízena do této doby.",
-        "nodeAddress": "ADRESA NODU",
-        "ip": "IP",
-        "port": "PORT",
-        "min": "MIN",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} přesměrování likvidity zajišťuje nejlepší cenu pro každou transakci tím, že kombinuje pouze nejlepší cenové možnosti ze všech dostupných trhů. Pokud je k dispozici, použije se pro likviditu Token Bonding Curve ({tbcAlgorithm}) dokud je cena aktiva příznivější než z jiných zdrojů. V opačném případě se využívá {xycAlgorithm} pool.",
             "TBC": "{tbcAlgorithm} - nákup pouze z Token Bonding Curve (primární trh). Je tu možnost, že se cena může stát nevýhodnou ve srovnání s {xycAlgorithm} poolem (sekundární trh), ale hodnota získaná z uzamčených odměn se může časem ukázat jako mnohem výhodnější.",
             "XYK": "{xycAlgorithm} - nákup pouze z XYK poolu (sekundární trh). Tradiční XYK pool swap."
-        },
-        "charts": "Grafy",
-        "сhartsDescription": "Prohlédněte si grafy cen tokenů"
-    },
-    "resultDialog": {
-        "title": "Transakce byla odeslána",
-        "ok": "OK"
+        }
     },
     "rewards": {
-        "title": "Nárokovat odměny",
         "andText": "a",
         "claiming": {
             "pending": "Nárokování...",
@@ -769,13 +653,12 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "{Sora}.farm sklizeň",
-            "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Poplatky získané za poskytování likvidity",
             "BuyOnBondingCurve": "nákup z TBC",
             "MarketMakerVolume": "Market Making",
-            "LiquidityProvisionFarming": "Farming"
+            "LiquidityProvisionFarming": "Farming",
+            "NftAirdrop": "NFT Airdrop"
         },
-        "vested": "uzamčené",
         "forText": "za",
         "totalVested": "Celkové odměny",
         "claimableAmountDoneVesting": "Nárokovatelné odměny",
@@ -801,7 +684,6 @@
         "title": "Jazyk"
     },
     "tokens": {
-        "symbol": "Symbol",
         "assetId": "ID aktiva"
     },
     "memorandum": "{AppName} Memorandum a Smluvní podmínky",
@@ -872,14 +754,6 @@
     },
     "sentText": "Odesláno",
     "learnMoreText": "Zjistit více",
-    "marketMakerCountdown": {
-        "title": "Market Maker odpočet",
-        "blocks": "bloky",
-        "daysLeft": "dny zbývají",
-        "txs": "TXs",
-        "volume": "Objem MM TX",
-        "description": "20 milionů PSWAP \/ měsíc bude rozděleno market makerům s alespoň 500 tx \/ měsíc v hodnotě nad 1 XOR."
-    },
     "confirmNextTxFailure": {
         "header": "Pozor",
         "info": "Váš zůstatek {symbol} bude po této transakci nižší než {fee} {symbol} . Nebudete moci platit za síťový poplatek za další transakci.",
@@ -893,23 +767,16 @@
         "bondedXOR": "Vázané XOR",
         "referralsNumber": "{number} doporučení",
         "startInviting": "Bond XOR doporučit ostatním",
-        "preview": "Pozvěte nové uživatele a získejte 10 % z jejich transakčních poplatků.<br\/>Pro začátek se zavažte libovolnou částkou XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Zjistěte více<\/a>",
-        "deposit": "Vklad",
-        "balance": "Zůstatek",
         "insufficientBondedBalance": "Vázaná částka je nedostatečná",
         "action": {
-            "empty": "Zadejte množství {tokenSymbol}",
-            "startInviting": "Vázat {tokenSymbol} pro rozesílání pozvánek",
             "bondMore": "Vázat více",
             "bond": "Vázat",
             "unbond": "Zrušit vazbu",
             "copyLink": "Kopírovat odkaz",
             "shareLink": "Sdílet"
         },
-        "transactionDetails": "Detaily transakce",
         "receivedRewards": "Přijaté odměny",
         "invitationLink": "Odkaz na pozvánku",
-        "successCopy": "Odkaz na doporučení se zkopíruje do schránky",
         "bondTitle": "Vázat XOR",
         "unbondTitle": "Zrušit vazbu XOR",
         "confirm": {
@@ -921,8 +788,7 @@
             "freeOfCharge": "Tato akce je bezplatná",
             "hasReferrerTitle": "Již jste nastavili svého referrera",
             "hasReferrerDescription": "Bohužel můžete nastavit pouze jeden",
-            "ok": "OK",
-            "text": "Potvrdit"
+            "ok": "OK"
         },
         "referrer": {
             "title": "Přidejte svého referrera",
@@ -1105,9 +971,7 @@
         "addAccount": "Přidat účet",
         "dialog": {
             "confirmTitle": "Potvrďte heslem",
-            "confirmButton": "Podepsat transakci",
-            "savePasswordText": "Zapamatovat si moje heslo na dalších 15 minut",
-            "extendPasswordText": "Prodlužte dobu bez hesla o 15 minut"
+            "confirmButton": "Podepsat transakci"
         },
         "errorMessages": {
             "password": "Heslo se neshoduje",
@@ -1281,7 +1145,6 @@
     "connectEthereumWalletText": "Připojte peněženku {Ethereum}",
     "soraStaking": {
         "dropdownMenu": {
-            "pendingRewards": "Čekající odměny",
             "controllerAccount": "Účet správce"
         },
         "actions": {
@@ -1296,8 +1159,7 @@
             "description": "Vsaďte tokeny {XOR} v síti {Sora} jako nominátor, abyste mohli ověřovat transakce a získávat odměny v tokenech {VAL}."
         },
         "newStake": {
-            "title": "Začněte sázet",
-            "minStakeWarning": "Minimální vklad pro získání odměny je {min} {symbol}"
+            "title": "Začněte sázet"
         },
         "validators": {
             "save": "Uložit změny",
@@ -1364,12 +1226,12 @@
         },
         "validatorsAttentionDialog": {
             "title": "Pozornost",
-            "description": [
-                "Návrhy algoritmického validátoru nepředstavují finanční konzultace nebo poradenství. Vytyčování je vysoce riziková činnost a návrhy algoritmických validátorů toto riziko nutně nezmírňují.",
-                "Validátor navržený algoritmem může být stále seříznut. Validátor navržený algoritmem by také mohl změnit jejich parametry (např. sazby provize atd.) kdykoli poté, co byl navržen a\/nebo vybrán.",
-                "Z těchto nebo jiných důvodů můžete ztratit žetony nebo odměny. Sázkové žetony a návrhy validátorů používejte pouze podle vlastního uvážení, po provedení náležité péče a pečlivém zvážení souvisejících rizik."
-            ],
-            "confirm": "Ano, chápu riziko"
+            "confirm": "Ano, chápu riziko",
+            "description": {
+                "0": "Návrhy algoritmického validátoru nepředstavují finanční konzultace nebo poradenství. Vytyčování je vysoce riziková činnost a návrhy algoritmických validátorů toto riziko nutně nezmírňují.",
+                "1": "Validátor navržený algoritmem může být stále seříznut. Validátor navržený algoritmem by také mohl změnit jejich parametry (např. sazby provize atd.) kdykoli poté, co byl navržen a\/nebo vybrán.",
+                "2": "Z těchto nebo jiných důvodů můžete ztratit žetony nebo odměny. Sázkové žetony a návrhy validátorů používejte pouze podle vlastního uvážení, po provedení náležité péče a pečlivém zvážení souvisejících rizik."
+            }
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Nejsou zde žádné čekající odměny",
@@ -1381,16 +1243,16 @@
         "selectValidatorsMode": {
             "title": "Sázka s validátory navrženými algoritmem",
             "description": "Síťový algoritmus {Sora} vybral seznam doporučených validátorů na základě kritérií:",
-            "criteria": [
-                "Nejvýnosnější",
-                "Není přepsáno",
-                "Mít onchain identitu",
-                "Není seříznutý",
-                "Limit 2 validátorů na identitu"
-            ],
             "confirm": {
                 "suggested": "Vsadit s navrhovaným",
                 "manual": "Validátory si vyberu sám"
+            },
+            "criteria": {
+                "0": "Nejvýnosnější",
+                "1": "Není přepsáno",
+                "2": "Mít onchain identitu",
+                "3": "Není seříznutý",
+                "4": "Limit 2 validátorů na identitu"
             }
         },
         "claimRewardsDialog": {
@@ -1428,7 +1290,6 @@
         "marketTrades": "Tržní obchody",
         "market": "Trh",
         "limit": "Omezit",
-        "price": "Cena",
         "total": "Celkový",
         "amount": "množství",
         "time": "čas",
@@ -1546,8 +1407,7 @@
             "canceled": "Zrušeno",
             "expired": "Prošlý",
             "filled": "Naplněné"
-        },
-        "pricePerToken": "Cena za 1 {token}"
+        }
     },
     "calculatingText": "Vypočítávání",
     "customisePageText": "Přizpůsobit stránku",
@@ -1681,5 +1541,9 @@
         "info": "Pro vyšší úroveň soukromí nakloňte své zařízení obrazovkou dolů a okamžitě skryjte zůstatky svých aktiv. Tato funkce používá vestavěné senzory vašeho telefonu.",
         "enableAcceleration": "Povolte přístup k akceleraci v nastavení.",
         "gyroscropePhone": "Naše technologie využívá vestavěný gyroskop vašeho telefonu k okamžitému skrytí vašeho zůstatku při naklonění zařízení."
-    }
+    },
+    "firstText": "První",
+    "lastText": "Poslední",
+    "prevText": "Předchozí",
+    "priceText": "Cena"
 }
