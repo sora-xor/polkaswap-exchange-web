@@ -1,4 +1,4 @@
-import { KUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { KUSD, XOR, VXOR } from '@sora-substrate/sdk/build/assets/consts';
 import { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 import store from '@/store';
@@ -61,7 +61,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'VXOR holdings',
     titleTask: 'Hold VXOR',
     descriptionTask: 'Hold your current VXOR holdings',
-    imageName: '0x006a271832f44c93bd8692584d85415f0f3dccef9748fecd129442c8edcb4361',
+    imageName: VXOR.address,
   },
   referralRewards: {
     maxPercentage: 6,

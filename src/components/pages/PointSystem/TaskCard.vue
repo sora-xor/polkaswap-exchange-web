@@ -10,8 +10,7 @@
       <s-divider />
     </div>
     <div class="task-card__current-progress">
-      <p v-if="categoryName === 'firstTxAccount'">Currently {{ formattedCurrentProgress }}</p>
-      <p v-else>
+      <p v-if="categoryName != 'firstTxAccount'">
         Currently: <span>${{ pointsForCategory.currentProgress.toFixed(2) }}</span>
       </p>
       <s-button :class="{ completed: !pointsForCategory.minimumAmountForNextLevel }" @click="handleButtonClick">
@@ -62,13 +61,6 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
 
   get imageName(): string {
     return this.pointsForCategory.imageName;
-  }
-
-  get formattedCurrentProgress(): string {
-    if (this.categoryName === 'firstTxAccount' && typeof this.pointsForCategory.currentProgress === 'number') {
-      return this.formatDate(this.pointsForCategory.currentProgress, 'L');
-    }
-    return this.pointsForCategory.currentProgress.toString();
   }
 
   handleButtonClick() {
@@ -153,6 +145,9 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
     span {
       color: var(--s-color-status-info);
       margin-left: $inner-spacing-tiny;
+    }
+    button {
+      margin-left: auto;
     }
   }
 }

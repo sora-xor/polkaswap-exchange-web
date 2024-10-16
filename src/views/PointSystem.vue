@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import { XOR, KUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR, KUSD, VXOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -151,10 +151,6 @@ export default class PointSystem extends Mixins(
       this.poolWithdrawCount = 0;
       this.totalSwapTxs = 0;
     }
-  }
-
-  get xorSymbol(): string {
-    return XOR.symbol;
   }
 
   get referralsCardStyles() {
@@ -276,14 +272,14 @@ export default class PointSystem extends Mixins(
 
   getPointsForCategories(accountDataForPointsCalculation: AccountPointsCalculation): CategoryPoints {
     const liquidityProvision = this.getTotalLiquidityFiatValue();
-    const VXORHoldings = this.getCurrentFiatBalanceForToken('VXOR');
+    const VXORHoldings = this.getCurrentFiatBalanceForToken(VXOR.symbol);
     const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards ?? this.Zero);
     const depositVolumeBridges =
       convertFPNumberToNumber(accountDataForPointsCalculation?.bridge.incomingUSD ?? this.Zero) +
       convertFPNumberToNumber(accountDataForPointsCalculation?.bridge.outgoingUSD ?? this.Zero);
     const networkFeeSpent = convertFPNumberToNumber(accountDataForPointsCalculation?.fees.amountUSD ?? this.Zero);
     const XORBurned = convertFPNumberToNumber(accountDataForPointsCalculation?.burned.amountUSD ?? this.Zero);
-    const XORHoldings = this.getCurrentFiatBalanceForToken(this.xorSymbol);
+    const XORHoldings = this.getCurrentFiatBalanceForToken(XOR.symbol);
     const kensetsuVolumeRepaid = convertFPNumberToNumber(
       accountDataForPointsCalculation?.kensetsu.amountUSD ?? this.Zero
     );
