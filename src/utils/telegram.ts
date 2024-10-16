@@ -91,11 +91,8 @@ class TmaSdk {
   }
 
   public getColorScheme(): 'light' | 'dark' | null {
-    console.info('we are in getColorScheme');
     try {
       const WebApp = Telegram?.WebApp;
-      console.info('here is WebApp');
-      console.info(WebApp);
       return WebApp?.colorScheme || null;
     } catch (error) {
       console.warn('[TMA]: getColorScheme', error);
@@ -105,15 +102,13 @@ class TmaSdk {
 
   public onThemeChanged(callback: (colorScheme: 'light' | 'dark' | null) => void): () => void {
     const WebApp = Telegram?.WebApp;
-    console.info('here is webapp');
-    console.info(WebApp);
     if (WebApp && WebApp.onEvent) {
       const handler = () => {
         // Delay to allow Telegram.WebApp.colorScheme to update
         setTimeout(() => {
           const newColorScheme = WebApp.colorScheme || null;
           callback(newColorScheme);
-        }, 50); // Adjust delay as needed
+        }, 150); // Adjust delay as needed
       };
       WebApp.onEvent('themeChanged', handler);
       return () => {
