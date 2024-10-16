@@ -146,7 +146,13 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { ZeroStringValue } from '@/consts';
 import { fetchData as fetchBurnXorData } from '@/indexer/queries/burnXor';
-import { type BridgeData, fetchBridgeData, fetchCount, CountType } from '@/indexer/queries/pointSystem';
+import {
+  type BridgeData,
+  fetchBridgeData,
+  fetchCount,
+  fetchAccountMeta,
+  CountType,
+} from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import { action, getter, state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
@@ -304,6 +310,10 @@ export default class PointSystem extends Mixins(
       this.totalSwapTxs = await fetchCount(0, end, account, CountType.Swap);
       this.poolDepositCount = await fetchCount(0, end, account, CountType.PoolDeposit);
       this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
+
+      // AccountMeta
+      const accountMeta = await fetchAccountMeta(account);
+      console.info('AccountMeta', accountMeta);
     }
   }
 
