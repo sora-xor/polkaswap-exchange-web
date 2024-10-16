@@ -254,17 +254,22 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private async applyTheme(isDark: boolean) {
+    console.info('we are in apply theme');
+    console.info(isDark);
     if (isDark) {
       await setTheme(Theme.DARK);
     } else {
       await setTheme(Theme.LIGHT);
     }
+    console.info('we are goind to update theme');
     updatePipTheme();
     tmaSdkService.updateTheme();
   }
 
   private async detectSystemTheme() {
+    console.info('we are in detectSystemTheme');
     this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    console.info(this.prefersDarkScheme);
     this.handleThemeChange = async (e: MediaQueryListEvent) => {
       await this.applyTheme(e.matches);
     };
