@@ -1095,18 +1095,6 @@
         "Wallet": "Wallet"
     },
     "pairIsNotCreated": "Token pair isn't created",
-    "points": {
-        "accountsText": "{amount} accounts",
-        "bridgeVolume": "Bridge volume",
-        "feesSpent": "Fees spent",
-        "loginText": "Connect your account to see your points",
-        "openTelegram": "Open {Telegram}",
-        "title": "Your Points Progress",
-        "toEarnPoints": "To earn points",
-        "xorBurned": "{XOR} burned",
-        "yourReferrals": "Your referrals",
-        "yourRewards": "Your rewards"
-    },
     "polkadotjs": {
         "connectionError": "An error occured while connecting the wallet. You can try to connect the wallet via {extension} again",
         "noAccount": "{extension} account error. Please check your account in the {extension} extension",
@@ -1543,6 +1531,7 @@
         "yourRewards": "Your rewards",
         "openTelegram": "Open {Telegram}",
         "toEarnPoints": "To earn points"
+    },
     "walletSend": {
         "addressError": "You cannot send tokens to the same account that you are currently connected to.",
         "addressWarning": "Tokens will be sent to the {Sora} address below. Make sure the recipient can access the {Sora} chain to use the tokens:",
