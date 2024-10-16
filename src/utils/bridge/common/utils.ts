@@ -122,7 +122,7 @@ export const onEvmTransactionPending = async (
     }
   });
 
-  const { fee, blockNumber, blockHash } = txReceipt || {};
+  const { fee, blockNumber, blockHash, status } = txReceipt || {};
 
   if (!(fee && blockNumber && blockHash)) {
     updateTransaction(id, { externalHash: undefined, externalNetworkFee: undefined });
@@ -137,4 +137,10 @@ export const onEvmTransactionPending = async (
     externalBlockHeight: blockNumber,
     externalBlockId: blockHash,
   });
+
+  const failedStatus = !Number(status ?? 0);
+
+  if (failedStatus) {
+    throw new Error(`[onEvmTransactionPending]: Ethereum transaction has failed status, hash: ${tx.externalHash}.`);
+  }
 };
