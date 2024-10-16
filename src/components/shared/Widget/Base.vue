@@ -121,17 +121,9 @@ export default class BaseWidget extends Vue {
   }
 
   get isPipAvailable() {
-    try {
-      if (this.pipDisabled) return false;
-      if (typeof window === 'undefined') {
-        console.info('typeof window === undefined');
-        return false;
-      }
-      return 'documentPictureInPicture' in window && !this.pipOpened;
-    } catch (e) {
-      console.error('Error when trying get pip availability:', e);
-      return false;
-    }
+    if (this.pipDisabled) return false;
+
+    return 'documentPictureInPicture' in window && !this.pipOpened;
   }
 
   async openPip() {
