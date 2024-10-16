@@ -40,8 +40,6 @@ function initialState(): SettingsState {
     alertSettingsVisibility: false,
     browserNotifPopupVisibility: false,
     browserNotifPopupBlockedVisibility: false,
-    blockNumber: 0,
-    blockNumberUpdates: undefined,
     internetConnection: undefined,
     internetConnectionSpeed: undefined,
     screenBreakpointClass: BreakpointClass.LargeDesktop,
