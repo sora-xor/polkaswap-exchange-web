@@ -69,7 +69,7 @@
 <script lang="ts">
 import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { switchTheme } from '@soramitsu-ui/ui-vue2/lib/utils';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Language, Languages } from '@/consts';
@@ -140,6 +140,11 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   ) => void;
 
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
+
+  @Watch('libraryTheme', { immediate: true })
+  onLibraryThemeChange(newTheme: Theme) {
+    this.selectedTheme = newTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
+  }
 
   get mediaQueryList(): MediaQueryList {
     return window.matchMedia(`(min-width: ${BREAKPOINT}px)`);

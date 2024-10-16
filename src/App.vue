@@ -58,6 +58,8 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
+import { setTheme } from '@soramitsu-ui/ui-vue2/lib/utils';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -72,7 +74,7 @@ import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
+import { getMobileCssClasses, preloadFontFace, updateDocumentTitle, updatePipTheme } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { tmaSdkService } from '@/utils/telegram';
@@ -83,7 +85,6 @@ import type { History, HistoryItem } from '@sora-substrate/sdk';
 import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
@@ -169,6 +170,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.wallet.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
   @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
 
+  private prefersDarkScheme: MediaQueryList | null = null;
+  private handleThemeChange: ((e: MediaQueryListEvent) => Promise<void>) | null = null;
+
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
     if (!whitelistAssetArray.length) return;
@@ -249,6 +253,25 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
+  private async applyTheme(isDark: boolean) {
+    if (isDark) {
+      await setTheme(Theme.DARK);
+    } else {
+      await setTheme(Theme.LIGHT);
+    }
+    updatePipTheme();
+    tmaSdkService.updateTheme();
+  }
+
+  private async detectSystemTheme() {
+    this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    this.handleThemeChange = async (e: MediaQueryListEvent) => {
+      await this.applyTheme(e.matches);
+    };
+    await this.applyTheme(this.prefersDarkScheme.matches);
+    this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
+  }
+
   async created() {
     window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
     preloadFontFace('element-icons');
@@ -257,6 +280,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     AlertsApiService.baseRoute = getFullBaseUrl(router);
 
     await this.setLanguage(getLocale() as Language);
+
+    this.detectSystemTheme();
 
     await this.withLoading(async () => {
       const { data } = await axiosInstance.get('/env.json');
@@ -401,6 +426,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async beforeDestroy(): Promise<void> {
     window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
+    if (this.prefersDarkScheme && this.handleThemeChange) {
+      this.prefersDarkScheme.removeEventListener('change', this.handleThemeChange);
+    }
     if (screen.orientation) {
       screen.orientation.removeEventListener('change', this.handleOrientationChange);
     } else {
