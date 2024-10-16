@@ -171,6 +171,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.wallet.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
   @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
 
+  private previousTelegramColorScheme: 'light' | 'dark' | null = null;
+
   private prefersDarkScheme: MediaQueryList | null = null;
   private handleThemeChange: ((e: MediaQueryListEvent) => Promise<void>) | null = null;
   private removeTelegramThemeChangedListener: (() => void) | null = null;
@@ -273,53 +275,43 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     };
     this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
 
+    const systemPrefersDark = this.prefersDarkScheme.matches;
+
     if (this.isTMA) {
       console.info('Running inside Telegram');
 
+      // Get initial Telegram color scheme and store it
+      const colorScheme = tmaSdkService.getColorScheme();
+      this.previousTelegramColorScheme = colorScheme;
+
       // Listen for Telegram theme changes
       this.removeTelegramThemeChangedListener = tmaSdkService.onThemeChanged(async () => {
-        console.info('Telegram theme changed:', Telegram.WebApp.colorScheme);
+        console.info('Telegram theme changed event fired');
 
-        // Delay to allow Telegram.WebApp.colorScheme to update
-        setTimeout(async () => {
-          const colorScheme = tmaSdkService.getColorScheme();
-          console.info('Updated Telegram color scheme:', colorScheme);
+        const newColorScheme = tmaSdkService.getColorScheme();
+        console.info('New Telegram color scheme:', newColorScheme);
+        console.info('Previous Telegram color scheme:', this.previousTelegramColorScheme);
 
-          // Check if Telegram's colorScheme matches prefers-color-scheme
-          const systemPrefersDark = this.prefersDarkScheme?.matches ?? false;
-          const telegramSaysDark = colorScheme === 'dark';
+        if (newColorScheme === this.previousTelegramColorScheme) {
+          console.info('Telegram color scheme has not changed, ignoring themeChanged event');
+          return;
+        }
 
-          if (telegramSaysDark !== systemPrefersDark) {
-            // Trust Telegram's colorScheme when the user manually changes it
-            console.info('Applying theme based on Telegram colorScheme');
-            await this.applyTheme(telegramSaysDark);
-          } else {
-            // Otherwise, rely on prefers-color-scheme
-            console.info('Applying theme based on prefers-color-scheme');
-            await this.applyTheme(systemPrefersDark);
-          }
-        }, 50); // Adjust delay as needed
+        this.previousTelegramColorScheme = newColorScheme;
+
+        // Apply the new theme based on Telegram's color scheme
+        await this.applyTheme(newColorScheme === 'dark');
       });
 
-      // Apply initial theme
-      const colorScheme = tmaSdkService.getColorScheme();
-      const systemPrefersDark = this.prefersDarkScheme.matches;
-      console.info('Telegram color scheme:', colorScheme);
-      console.info('System prefers dark:', systemPrefersDark);
-
       // Determine initial theme
-      const telegramSaysDark = colorScheme === 'dark';
-
-      if (telegramSaysDark !== systemPrefersDark) {
-        // Trust Telegram's colorScheme
-        await this.applyTheme(telegramSaysDark);
+      if (colorScheme) {
+        await this.applyTheme(colorScheme === 'dark');
       } else {
-        // Rely on prefers-color-scheme
         await this.applyTheme(systemPrefersDark);
       }
     } else {
       console.info('Running outside Telegram');
-      await this.applyTheme(this.prefersDarkScheme.matches);
+      await this.applyTheme(systemPrefersDark);
     }
   }
 

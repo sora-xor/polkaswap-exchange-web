@@ -104,11 +104,8 @@ class TmaSdk {
     const WebApp = Telegram?.WebApp;
     if (WebApp && WebApp.onEvent) {
       const handler = () => {
-        // Delay to allow Telegram.WebApp.colorScheme to update
-        setTimeout(() => {
-          const newColorScheme = WebApp.colorScheme || null;
-          callback(newColorScheme);
-        }, 150); // Adjust delay as needed
+        const newColorScheme = WebApp.colorScheme || null;
+        callback(newColorScheme);
       };
       WebApp.onEvent('themeChanged', handler);
       return () => {
