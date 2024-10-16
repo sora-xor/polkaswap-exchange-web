@@ -269,26 +269,48 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private async detectSystemTheme() {
+    console.info('Detecting system theme');
+
+    // Set up prefers-color-scheme listener
+    this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    this.handleThemeChange = async (e: MediaQueryListEvent) => {
+      console.info('prefers-color-scheme changed:', e.matches ? 'dark' : 'light');
+      await this.applyTheme(e.matches);
+    };
+    this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
+
+    const systemPrefersDark = this.prefersDarkScheme.matches;
+
     if (this.isTMA) {
       console.info('Running inside Telegram');
+
+      // Listen for Telegram theme changes
+      this.removeTelegramThemeChangedListener = tmaSdkService.onThemeChanged(async () => {
+        console.info('Telegram theme changed:', Telegram.WebApp.colorScheme);
+        // Use a delay to allow Telegram.WebApp.colorScheme to update
+        setTimeout(async () => {
+          const colorScheme = tmaSdkService.getColorScheme();
+          console.info('Updated Telegram color scheme:', colorScheme);
+
+          if (colorScheme) {
+            await this.applyTheme(colorScheme === 'dark');
+          } else {
+            await this.applyTheme(this.prefersDarkScheme?.matches ?? false);
+          }
+        }, 100); // Adjust delay as needed
+      });
+
+      // Apply initial theme
       const colorScheme = tmaSdkService.getColorScheme();
       console.info('Telegram color scheme:', colorScheme);
-      await this.applyTheme(colorScheme === 'dark');
-
-      // Listen for theme changes in Telegram
-      this.removeTelegramThemeChangedListener = tmaSdkService.onThemeChanged(async (newColorScheme) => {
-        console.info('Telegram theme changed:', newColorScheme);
-        await this.applyTheme(newColorScheme === 'dark');
-      });
+      if (colorScheme) {
+        await this.applyTheme(colorScheme === 'dark');
+      } else {
+        await this.applyTheme(systemPrefersDark);
+      }
     } else {
       console.info('Running outside Telegram');
-      this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-      console.info(this.prefersDarkScheme);
-      this.handleThemeChange = async (e: MediaQueryListEvent) => {
-        await this.applyTheme(e.matches);
-      };
-      await this.applyTheme(this.prefersDarkScheme.matches);
-      this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
+      await this.applyTheme(systemPrefersDark);
     }
   }
 
@@ -311,7 +333,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // To start running as Telegram Web App (desktop capabilities)
       tmaSdkService.init(data?.TG_BOT_URL);
-
+      await this.detectSystemTheme();
       await this.setApiKeys(data?.API_KEYS);
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
@@ -341,7 +363,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     updateDocumentTitle(); // For the first load
     this.showDisclaimer();
     this.fetchAdsArray();
-    this.detectSystemTheme();
   }
 
   mounted(): void {
