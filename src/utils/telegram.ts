@@ -90,10 +90,46 @@ class TmaSdk {
     }
   }
 
+  public getColorScheme(): 'light' | 'dark' | null {
+    console.info('we are in getColorScheme');
+    try {
+      const WebApp = Telegram?.WebApp;
+      console.info('here is WebApp');
+      return WebApp?.colorScheme || null;
+    } catch (error) {
+      console.warn('[TMA]: getColorScheme', error);
+      return null;
+    }
+  }
+
+  public onThemeChanged(callback: (colorScheme: 'light' | 'dark') => void): () => void {
+    console.info('we are in onThemeChanged');
+    try {
+      const WebApp = Telegram?.WebApp;
+      if (WebApp && WebApp.onEvent) {
+        const handler = () => {
+          callback(WebApp.colorScheme);
+        };
+        console.info('we changed');
+        WebApp.onEvent('themeChanged', handler);
+        // Return a function to remove the listener
+        return () => {
+          if (WebApp.offEvent) {
+            WebApp.offEvent('themeChanged', handler);
+          }
+        };
+      }
+    } catch (error) {
+      console.warn('[TMA]: onThemeChanged', error);
+    }
+    return () => {};
+  }
+
   /**
    * Update the theme of the Telegram Mini App using `var(--s-color-utility-body)`
    */
   public updateTheme(): void {
+    console.info('we are in update theme');
     try {
       const colorUtilityBody =
         (getComputedStyle(document.documentElement).getPropertyValue('--s-color-utility-body') as `#${string}`) ||

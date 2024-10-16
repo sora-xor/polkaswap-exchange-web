@@ -120,6 +120,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
+  @state.settings.isTMA isTMA!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
@@ -172,6 +173,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   private prefersDarkScheme: MediaQueryList | null = null;
   private handleThemeChange: ((e: MediaQueryListEvent) => Promise<void>) | null = null;
+  private removeTelegramThemeChangedListener: (() => void) | null = null;
 
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
@@ -254,8 +256,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private async applyTheme(isDark: boolean) {
-    console.info('we are in apply theme');
-    console.info(isDark);
+    console.info('Applying theme:', isDark ? 'Dark' : 'Light');
     if (isDark) {
       await setTheme(Theme.DARK);
     } else {
@@ -268,14 +269,27 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private async detectSystemTheme() {
-    console.info('we are in detectSystemTheme');
-    this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    console.info(this.prefersDarkScheme);
-    this.handleThemeChange = async (e: MediaQueryListEvent) => {
-      await this.applyTheme(e.matches);
-    };
-    await this.applyTheme(this.prefersDarkScheme.matches);
-    this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
+    if (this.isTMA) {
+      console.info('Running inside Telegram');
+      const colorScheme = tmaSdkService.getColorScheme();
+      console.info('Telegram color scheme:', colorScheme);
+      await this.applyTheme(colorScheme === 'dark');
+
+      // Listen for theme changes in Telegram
+      this.removeTelegramThemeChangedListener = tmaSdkService.onThemeChanged(async (newColorScheme) => {
+        console.info('Telegram theme changed:', newColorScheme);
+        await this.applyTheme(newColorScheme === 'dark');
+      });
+    } else {
+      console.info('Running outside Telegram');
+      this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+      console.info(this.prefersDarkScheme);
+      this.handleThemeChange = async (e: MediaQueryListEvent) => {
+        await this.applyTheme(e.matches);
+      };
+      await this.applyTheme(this.prefersDarkScheme.matches);
+      this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
+    }
   }
 
   async created() {
@@ -434,6 +448,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
     if (this.prefersDarkScheme && this.handleThemeChange) {
       this.prefersDarkScheme.removeEventListener('change', this.handleThemeChange);
+    }
+    if (this.isTMA && this.removeTelegramThemeChangedListener) {
+      this.removeTelegramThemeChangedListener();
     }
     if (screen.orientation) {
       screen.orientation.removeEventListener('change', this.handleOrientationChange);
