@@ -1,16 +1,12 @@
 <template>
-  <div>
-    <sora-wallet
-      v-loading="parentLoading"
-      class="container container--wallet"
-      @close="handleClose"
-      @swap="handleSwap"
-      @liquidity="handleLiquidity"
-      @bridge="handleBridge"
-      @learn-more="openAboutNetworkDialog"
-    />
-    <wallet-about-network-dialog :visible.sync="showAboutNetworkDialog" />
-  </div>
+  <sora-wallet
+    v-loading="parentLoading"
+    class="container container--wallet"
+    @close="handleClose"
+    @swap="handleSwap"
+    @liquidity="handleLiquidity"
+    @bridge="handleBridge"
+  />
 </template>
 
 <script lang="ts">
@@ -19,17 +15,13 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PageNames, Components } from '@/consts';
-import router, { lazyComponent } from '@/router';
+import { PageNames } from '@/consts';
+import router from '@/router';
 import { action, getter } from '@/store/decorators';
 
 import type { AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
-  components: {
-    WalletAboutNetworkDialog: lazyComponent(Components.WalletAboutNetworkDialog),
-  },
-})
+@Component
 export default class Wallet extends Mixins(TranslationMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean;
 
@@ -38,8 +30,6 @@ export default class Wallet extends Mixins(TranslationMixin) {
   @action.swap.setTokenFromAddress private setSwapFromAsset!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setSwapToAsset!: (address?: string) => Promise<void>;
   @action.addLiquidity.setFirstTokenAddress private setAddliquidityAssetA!: (address: string) => Promise<void>;
-
-  showAboutNetworkDialog = false;
 
   handleClose(): void {
     router.back();
@@ -70,10 +60,6 @@ export default class Wallet extends Mixins(TranslationMixin) {
 
   handleBridge(asset: AccountAsset): void {
     router.push({ name: PageNames.Bridge, params: { address: asset.address } });
-  }
-
-  openAboutNetworkDialog(): void {
-    this.showAboutNetworkDialog = true;
   }
 }
 </script>

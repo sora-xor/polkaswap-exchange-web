@@ -9,7 +9,7 @@
     <template v-if="firstTokenSymbol && secondTokenSymbol">
       <info-line
         v-if="priceReversed"
-        :label="t('removeLiquidity.price')"
+        :label="t('priceText')"
         :value="`1 ${firstTokenSymbol} = ${formattedPriceReversed}`"
         :asset-symbol="secondTokenSymbol"
       />
