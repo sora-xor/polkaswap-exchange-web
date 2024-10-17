@@ -332,20 +332,20 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     await this.applyTheme(systemPrefersDark);
 
     // Optional: Add Telegram theme change listener as a fallback
-    if (Telegram?.WebApp?.onEvent) {
-      const telegramThemeHandler = () => {
-        const newColorScheme = Telegram.WebApp.colorScheme || (systemPrefersDark ? 'dark' : 'light');
-        console.info('Telegram theme changed event fired');
-        console.info('New Telegram color scheme:', newColorScheme);
-        this.applyTheme(newColorScheme === 'dark');
-      };
-      Telegram.WebApp.onEvent('themeChanged', telegramThemeHandler);
+    // if (Telegram?.WebApp?.onEvent) {
+    //   const telegramThemeHandler = () => {
+    //     const newColorScheme = Telegram.WebApp.colorScheme || (systemPrefersDark ? 'dark' : 'light');
+    //     console.info('Telegram theme changed event fired');
+    //     console.info('New Telegram color scheme:', newColorScheme);
+    //     this.applyTheme(newColorScheme === 'dark');
+    //   };
+    //   Telegram.WebApp.onEvent('themeChanged', telegramThemeHandler);
 
-      // Store the cleanup function if needed
-      this.removeTelegramThemeChangedListener = () => {
-        Telegram.WebApp.offEvent?.('themeChanged', telegramThemeHandler);
-      };
-    }
+    //   // Store the cleanup function if needed
+    //   this.removeTelegramThemeChangedListener = () => {
+    //     Telegram.WebApp.offEvent?.('themeChanged', telegramThemeHandler);
+    //   };
+    // }
   }
 
   async created() {
