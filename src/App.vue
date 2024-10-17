@@ -58,6 +58,8 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
+import { setTheme } from '@soramitsu-ui/ui-vue2/lib/utils';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -72,7 +74,7 @@ import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
+import { getMobileCssClasses, preloadFontFace, updateDocumentTitle, updatePipTheme } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { tmaSdkService } from '@/utils/telegram';
@@ -83,7 +85,6 @@ import type { History, HistoryItem } from '@sora-substrate/sdk';
 import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
@@ -119,6 +120,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
+  @state.settings.isTMA isTMA!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
@@ -168,6 +170,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @state.wallet.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
   @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
+
+  private prefersDarkScheme: MediaQueryList | null = null;
+  private handleThemeChange: ((e: MediaQueryListEvent) => Promise<void>) | null = null;
+  private removeTelegramThemeChangedListener: (() => void) | null = null;
 
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
@@ -249,11 +255,89 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
+  private async applyTheme(isDark: boolean) {
+    console.info('Applying theme:', isDark ? 'Dark' : 'Light');
+    await setTheme(isDark ? Theme.DARK : Theme.LIGHT);
+    updatePipTheme();
+    tmaSdkService.updateTheme();
+  }
+
+  // private async detectSystemTheme() {
+  //   console.info('Detecting system theme');
+
+  //   // Set up prefers-color-scheme listener
+  //   this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+  //   this.handleThemeChange = async (e: MediaQueryListEvent) => {
+  //     console.info('we are in handleThemeChange');
+  //     console.info('prefers-color-scheme changed:', e.matches ? 'dark' : 'light');
+  //     await this.applyTheme(e.matches);
+  //   };
+  //   this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
+
+  //   const systemPrefersDark = this.prefersDarkScheme.matches;
+
+  //   if (this.isTMA) {
+  //     console.info('Running inside Telegram');
+
+  //     // Get initial Telegram color scheme and store it
+  //     const colorScheme = tmaSdkService.getColorScheme();
+  //     this.previousTelegramColorScheme = colorScheme;
+
+  //     // Listen for Telegram theme changes
+  //     this.removeTelegramThemeChangedListener = tmaSdkService.onThemeChanged(async () => {
+  //       console.info('Telegram theme changed event fired');
+
+  //       const newColorScheme = tmaSdkService.getColorScheme();
+  //       console.info('New Telegram color scheme:', newColorScheme);
+  //       console.info('Previous Telegram color scheme:', this.previousTelegramColorScheme);
+
+  //       if (newColorScheme === this.previousTelegramColorScheme) {
+  //         console.info('Telegram color scheme has not changed, ignoring themeChanged event');
+  //         return;
+  //       }
+
+  //       this.previousTelegramColorScheme = newColorScheme;
+
+  //       // Apply the new theme based on Telegram's color scheme
+  //       await this.applyTheme(newColorScheme === 'dark');
+  //     });
+  //     console.info('here is colorScheme', colorScheme);
+  //     console.info('here is systemPrefersDark', systemPrefersDark);
+  //     // If light no need to change
+  //     if (colorScheme && systemPrefersDark) {
+  //       await this.applyTheme(colorScheme === 'dark');
+  //     }
+  //   } else {
+  //     console.info('Running outside Telegram');
+  //     await this.applyTheme(systemPrefersDark);
+  //   }
+  // }
+
+  // THIS IS THE LAST ONE
+  private async detectSystemTheme() {
+    console.info('Detecting system theme');
+
+    // Set up prefers-color-scheme listener
+    this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    this.handleThemeChange = async (e: MediaQueryListEvent) => {
+      console.info('we are in handleThemeChange');
+      console.info('prefers-color-scheme changed:', e.matches ? 'dark' : 'light');
+      await this.applyTheme(e.matches);
+    };
+    this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
+
+    const systemPrefersDark = this.prefersDarkScheme.matches;
+
+    console.info('we will now apply initial theme');
+    await this.applyTheme(systemPrefersDark);
+  }
+
   async created() {
     window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
     preloadFontFace('element-icons');
     this.setResponsiveClass();
     updateBaseUrl(router);
+
     AlertsApiService.baseRoute = getFullBaseUrl(router);
 
     await this.setLanguage(getLocale() as Language);
@@ -267,7 +351,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // To start running as Telegram Web App (desktop capabilities)
       tmaSdkService.init(data?.TG_BOT_URL);
-
+      await this.detectSystemTheme();
       await this.setApiKeys(data?.API_KEYS);
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
@@ -401,6 +485,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async beforeDestroy(): Promise<void> {
     window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
+    if (this.prefersDarkScheme && this.handleThemeChange) {
+      this.prefersDarkScheme.removeEventListener('change', this.handleThemeChange);
+    }
+    if (this.removeTelegramThemeChangedListener) {
+      this.removeTelegramThemeChangedListener();
+    }
     if (screen.orientation) {
       screen.orientation.removeEventListener('change', this.handleOrientationChange);
     } else {
