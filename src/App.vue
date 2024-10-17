@@ -302,12 +302,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         // Apply the new theme based on Telegram's color scheme
         await this.applyTheme(newColorScheme === 'dark');
       });
-
-      // Determine initial theme
-      if (colorScheme) {
+      console.info('here is colorScheme', colorScheme);
+      console.info('here is systemPrefersDark', systemPrefersDark);
+      // If light no need to change
+      if (colorScheme && systemPrefersDark) {
         await this.applyTheme(colorScheme === 'dark');
-      } else {
-        await this.applyTheme(systemPrefersDark);
       }
     } else {
       console.info('Running outside Telegram');
