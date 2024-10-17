@@ -90,6 +90,7 @@ class TmaSdk {
     }
   }
 
+  // TODO delete later
   public getColorScheme(): 'light' | 'dark' | null {
     try {
       const WebApp = Telegram?.WebApp;
@@ -105,6 +106,7 @@ class TmaSdk {
   //       // Retrieve the new color scheme
   // const newColorScheme = newWebApp.colorScheme || null;
 
+  // TODO delete later
   public onThemeChanged(callback: (colorScheme: 'light' | 'dark' | null) => void): () => void {
     console.info('[onThemeChanged] Function called.');
 
