@@ -100,28 +100,25 @@ class TmaSdk {
     }
   }
 
+  //       const newWebApp = Telegram?.WebApp;
+  //       console.info('newWebApp', newWebApp);
+  //       // Retrieve the new color scheme
+  // const newColorScheme = newWebApp.colorScheme || null;
+
   public onThemeChanged(callback: (colorScheme: 'light' | 'dark' | null) => void): () => void {
     console.info('[onThemeChanged] Function called.');
 
-    // Attempt to access the Telegram WebApp object
     const WebApp = Telegram?.WebApp;
-    console.info('[onThemeChanged] Telegram WebApp object:', WebApp);
-
-    // Check if the onEvent method is available
-    console.info('[onThemeChanged] WebApp.onEvent method:', WebApp?.onEvent);
 
     if (WebApp && WebApp.onEvent) {
       console.info('[onThemeChanged] WebApp and onEvent are available.');
 
-      // Define the event handler
       const handler = () => {
         console.info('[onThemeChanged] themeChanged event triggered.');
 
-        // Retrieve the new color scheme
         const newColorScheme = WebApp.colorScheme || null;
         console.info('[onThemeChanged] New color scheme:', newColorScheme);
 
-        // Execute the callback with the new color scheme
         try {
           console.info('[onThemeChanged] Executing callback with new color scheme.');
           callback(newColorScheme);
@@ -130,30 +127,14 @@ class TmaSdk {
         }
       };
 
-      // Register the event handler for the themeChanged event
-      try {
-        console.info('[onThemeChanged] Registering themeChanged event handler.');
-        WebApp.onEvent('themeChanged', handler);
-      } catch (error) {
-        console.error('[onThemeChanged] Error registering event handler:', error);
-      }
+      WebApp.onEvent('themeChanged', handler);
 
-      // Return the cleanup function
       return () => {
-        console.info('[onThemeChanged] Cleanup function called. Unregistering event handler.');
-        try {
-          WebApp.offEvent?.('themeChanged', handler);
-          console.info('[onThemeChanged] Event handler unregistered successfully.');
-        } catch (error) {
-          console.error('[onThemeChanged] Error unregistering event handler:', error);
-        }
-      };
-    } else {
-      console.warn('[onThemeChanged] WebApp or onEvent is not available. Event handler not registered.');
-      return () => {
-        console.info('[onThemeChanged] Cleanup function called. No event handler to unregister.');
+        WebApp.offEvent('themeChanged', handler);
       };
     }
+
+    return () => {};
   }
 
   /**
