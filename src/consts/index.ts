@@ -254,6 +254,13 @@ export enum Components {
   RewardsAmountHeader = 'pages/Rewards/AmountHeader',
   RewardsAmountTable = 'pages/Rewards/AmountTable',
   RewardsGradientBox = 'pages/Rewards/GradientBox',
+  // Wallet Page
+  WalletAboutNetworkDialog = 'pages/Wallet/AboutNetworkDialog',
+  // Point System Page
+  PointCard = 'pages/PointSystem/PointCard',
+  TaskCard = 'pages/PointSystem/TaskCard',
+  FirstTxCard = 'pages/PointSystem/FirstTxCard',
+  TaskDialog = 'pages/PointSystem/TaskDialog',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
   LinksDropdown = 'shared/LinksDropdown',
