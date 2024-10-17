@@ -448,8 +448,8 @@ export default class ReferralProgram extends Mixins(
 
 <style lang="scss">
 .referral-program {
-  @include collapse-items(false, true);
   margin-top: $inner-spacing-mini;
+  @include collapse-items(false, true);
   &.el-loading-parent--relative {
     .el-collapse-item,
     .el-collapse-item__header {
@@ -525,12 +525,12 @@ export default class ReferralProgram extends Mixins(
 .invited-users,
 .referrer {
   &-collapse-title {
-    &:not(:first-child) {
-      padding-left: $inner-spacing-medium;
-    }
     font-size: var(--s-font-size-large);
     line-height: var(--s-line-height-reset);
     font-weight: 700;
+    &:not(:first-child) {
+      padding-left: $inner-spacing-medium;
+    }
   }
 }
 .bonded,

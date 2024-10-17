@@ -98,7 +98,7 @@ $progress-bar-radius: 8px;
 
 .pointer {
   position: absolute;
-  top: -(($progress-bar-container-height - $progress-bar-height) / 2); // center
+  top: ($progress-bar-container-height - $progress-bar-height) * -0.5; // center
   height: $progress-bar-container-height;
   width: $progress-bar-pointer-width;
   background-color: var(--s-color-base-content-primary);

@@ -317,7 +317,6 @@ $el-input-class: '.el-input';
       }
     }
     #{$el-input-class}__inner {
-      @include text-ellipsis;
       height: var(--s-size-small);
       padding-right: 0;
       padding-left: 0;
@@ -326,6 +325,8 @@ $el-input-class: '.el-input';
       font-size: var(--s-font-size-large);
       line-height: var(--s-line-height-small);
       font-weight: 800;
+
+      @include text-ellipsis;
     }
     .s-placeholder {
       display: none;
@@ -363,8 +364,9 @@ $el-input-class: '.el-input';
 }
 
 .input-line--footer-with-slider {
-  @include input-slider;
   width: 100%;
+
+  @include input-slider;
 
   .el-slider__button {
     background-color: #fff;
