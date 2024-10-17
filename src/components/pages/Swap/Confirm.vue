@@ -2,8 +2,9 @@
   <dialog-base
     :visible.sync="isVisible"
     :title="t('swap.confirmSwap')"
+    :append-to-body="appendToBody"
+    :modal-append-to-body="appendToBody"
     custom-class="dialog--confirm-swap"
-    append-to-body
   >
     <div class="tokens">
       <div class="tokens-info-container">
@@ -32,7 +33,7 @@
       "
     />
     <s-divider />
-    <swap-transaction-details />
+    <swap-transaction-details full expanded />
     <template #footer>
       <account-confirmation-option with-hint class="confirmation-option" />
       <s-button
@@ -41,7 +42,7 @@
         :disabled="isInsufficientBalance"
         @click="handleConfirm"
       >
-        {{ t('exchange.confirm') }}
+        {{ t('confirmText') }}
       </s-button>
     </template>
   </dialog-base>
@@ -66,7 +67,7 @@ import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
   },
 })
-export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
+export default class SwapConfirm extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
   @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;
   @state.swap.isExchangeB isExchangeB!: boolean;
@@ -76,6 +77,7 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
   @getter.swap.tokenTo tokenTo!: AccountAsset;
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly appendToBody!: boolean;
 
   get formattedFromValue(): string {
     return this.formatStringValue(this.fromValue, this.tokenFrom?.decimals);

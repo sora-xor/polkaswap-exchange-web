@@ -15,7 +15,7 @@
           <div class="delimiter" />
           <div class="order-book-pair-data">
             <div class="order-book-pair-data-item">
-              <span>{{ t('orderBook.price') }}</span>
+              <span>{{ t('priceText') }}</span>
               <span class="order-book-pair-data-item__value order-book-fiat">
                 <formatted-amount :value="orderBookPrice" />
               </span>
@@ -71,7 +71,7 @@
     <token-input
       :balance="getTokenBalance(quoteAsset)"
       :is-max-available="false"
-      :title="t('orderBook.price')"
+      :title="t('priceText')"
       :token="quoteAsset"
       :value="quoteValue"
       :disabled="isPriceInputDisabled"
@@ -203,6 +203,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
+import SwapAmountsMixin from '@/components/mixins/SwapAmountsMixin';
 import { Components, LimitOrderType, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -241,6 +242,7 @@ import type { Subscription } from 'rxjs';
 export default class BuySellWidget extends Mixins(
   ConfirmDialogMixin,
   InternalConnectMixin,
+  SwapAmountsMixin,
   mixins.TransactionMixin,
   mixins.FormattedAmountMixin
 ) {
@@ -258,30 +260,22 @@ export default class BuySellWidget extends Mixins(
   @state.orderBook.dexId dexId!: DexId;
 
   @state.settings.slippageTolerance private slippageTolerance!: string;
-  @state.swap.fromValue private fromValue!: string;
-  @state.swap.toValue private toValue!: string;
 
   @getter.assets.xor xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
   @getter.orderBook.orderBookStats orderBookStats!: Nullable<OrderBookStats>;
-  @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
-  @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
 
   @mutation.orderBook.setBaseValue setBaseValue!: (value: string) => void;
   @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
   @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
   @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
-  @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
-  @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setLiquiditySource setLiquiditySource!: (liquiditySource: string) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
   @mutation.orderBook.setLimitOrderType private setLimitOrderType!: (type: LimitOrderType) => void;
   @mutation.swap.resetTokenToAddress private resetTokenToAddress!: FnWithoutArgs;
 
-  @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
-  @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
   @action.orderBook.updateBalanceSubscription private updateBalanceSubscription!: (reset?: boolean) => void;
   @action.orderBook.updateOrderBooksStats private updateOrderBooksStats!: AsyncFnWithoutArgs;
 

@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" append-to-body>
+  <dialog-base :visible.sync="isVisible" :append-to-body="appendToBody" :modal-append-to-body="appendToBody">
     <simple-notification
       optional
       modal-content
@@ -29,6 +29,7 @@ import { mutation } from '@/store/decorators';
 })
 export default class SwapLossWarningDialog extends Mixins(mixins.DialogMixin, TranslationMixin) {
   @Prop({ default: ZeroStringValue, type: String }) readonly value!: string;
+  @Prop({ default: false, type: Boolean }) readonly appendToBody!: boolean;
 
   @mutation.swap.setAllowLossPopup private setAllowLossPopup!: (flag: boolean) => void;
 

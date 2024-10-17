@@ -38,7 +38,9 @@ function useHaptic(type: HapticFeedbackBinding): void {
 }
 
 class TmaSdk {
-  public init(botUrl?: string): void {
+  private deviceOrientationHandler: ((event: DeviceOrientationEvent) => void) | null = null;
+
+  public async init(botUrl?: string): Promise<void> {
     try {
       // Check if the current platform is Telegram Mini App
       const WebApp = Telegram?.WebApp;
@@ -63,6 +65,24 @@ class TmaSdk {
       }
       // Init haptic feedback
       this.addHapticListener();
+
+      if (
+        store.state.settings.isRotatePhoneHideBalanceFeatureEnabled &&
+        store.state.settings.isAccessRotationListener
+      ) {
+        this.listenForDeviceRotation();
+      } else if (
+        !store.state.settings.isAccessRotationListener &&
+        store.state.settings.isAccessAccelerometrEventDeclined
+      ) {
+        const accessGranted = await this.checkAccelerometerAccess();
+        if (accessGranted) {
+          this.listenForDeviceRotation();
+          store.commit.settings.setIsRotatePhoneHideBalanceFeatureEnabled(true);
+          store.commit.settings.setAccessGranted(true);
+          store.commit.settings.setIsAccessAccelerometrEventDeclined(false);
+        }
+      }
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
       store.commit.settings.disableTMA();
@@ -99,6 +119,85 @@ class TmaSdk {
     useHaptic(type);
   }
 
+  public checkAccelerometerSupport(): boolean {
+    return 'DeviceMotionEvent' in window || 'DeviceOrientationEvent' in window;
+  }
+
+  public listenForDeviceRotation(): void {
+    let wasRotatedTo180 = false;
+
+    this.deviceOrientationHandler = (event: DeviceOrientationEvent) => {
+      const { beta } = event;
+
+      if (beta !== null) {
+        if (Math.abs(beta) > 170 && !wasRotatedTo180) {
+          wasRotatedTo180 = true;
+        }
+
+        if (wasRotatedTo180 && Math.abs(beta) < 30) {
+          useHaptic('soft');
+          store.commit.wallet.settings.toggleHideBalance();
+          store.commit.wallet.account.syncWithStorage();
+          wasRotatedTo180 = false;
+        }
+      }
+    };
+
+    window.addEventListener('deviceorientation', this.deviceOrientationHandler);
+  }
+
+  public removeDeviceRotationListener(): void {
+    if (this.deviceOrientationHandler) {
+      window.removeEventListener('deviceorientation', this.deviceOrientationHandler);
+      this.deviceOrientationHandler = null;
+    }
+  }
+
+  private async checkAccelerometerAccess(): Promise<boolean> {
+    let hasAccess = false;
+
+    try {
+      if ('permissions' in navigator && navigator.permissions.query) {
+        try {
+          const permissionStatus = await (navigator.permissions.query as any)({ name: 'accelerometer' });
+          hasAccess = permissionStatus.state === 'granted';
+        } catch (permissionError) {
+          console.warn('Error querying accelerometer permission:', permissionError);
+        }
+      } else {
+        console.warn('Permissions API is not available in this environment.');
+      }
+
+      if (!hasAccess) {
+        try {
+          const sensor = new (window as any).Accelerometer({ frequency: 60 });
+
+          sensor.onreading = () => {
+            hasAccess = true;
+            sensor.stop();
+          };
+
+          sensor.onerror = (event: { error: any }) => {
+            console.error('Accelerometer error:', event.error);
+          };
+
+          sensor.start();
+
+          // Wait for a short duration to see if readings are available
+          await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
+          sensor.stop();
+        } catch (sensorError) {
+          console.error('Accelerometer not supported or permission denied:', sensorError);
+        }
+      }
+
+      return hasAccess;
+    } catch (error) {
+      console.error('Unexpected error during accelerometer check:', error);
+      return false;
+    }
+  }
+
   private onTouchEnd(event: TouchEvent): void {
     let clickedElement = event.target as Nullable<HTMLElement>;
 
@@ -129,6 +228,7 @@ class TmaSdk {
 
   public destroy(): void {
     this.removeHapticListener();
+    this.removeDeviceRotationListener();
   }
 }
 

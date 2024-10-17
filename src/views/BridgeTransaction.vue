@@ -150,7 +150,7 @@
           {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
         </template>
         <template v-else-if="isTxWaiting">{{ t('confirmTransactionText') }}</template>
-        <template v-else-if="isTxFailed && txIsUnsigned">{{ t('retryText') }}</template>
+        <template v-else-if="hasRetry">{{ t('retryText') }}</template>
       </s-button>
 
       <div v-if="txWaitingForApprove" class="transaction-approval-text">
@@ -232,6 +232,12 @@ export default class BridgeTransaction extends Mixins(
     if (!this.historyItem?.id) return false;
 
     return isUnsignedTx(this.historyItem);
+  }
+
+  get hasRetry(): boolean {
+    if (!this.isTxFailed) return false;
+    // failed evm transaction could be retried
+    return this.txIsUnsigned || this.isEvmTxType;
   }
 
   get txInProcess(): boolean {
@@ -361,7 +367,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txIsFinilized(): boolean {
-    return !this.isTxPending && !this.isTxWaiting && !this.txIsUnsigned;
+    return !this.isTxPending && !this.isTxWaiting && !this.hasRetry;
   }
 
   get headerIconClasses(): string {

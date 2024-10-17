@@ -31,7 +31,7 @@
       </s-table-column>
       <s-table-column width="90">
         <template #header>
-          <span>{{ t('orderBook.price') }}</span>
+          <span>{{ t('priceText') }}</span>
         </template>
         <template v-slot="{ row }">
           <formatted-amount :value="row.price" fiatSign="" />

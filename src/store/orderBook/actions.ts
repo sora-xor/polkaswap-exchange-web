@@ -2,7 +2,8 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { combineLatest } from 'rxjs';
 
-import { subscribeOnOrderBookUpdates, fetchOrderBooks } from '@/indexer/queries/orderBook';
+import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook/orderBook';
+import { fetchOrderBooks } from '@/indexer/queries/orderBook/orderBooks';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import { orderBookActionContext } from '.';

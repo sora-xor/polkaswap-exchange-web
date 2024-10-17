@@ -20,7 +20,7 @@
         :disabled="isInsufficientBalance"
         @click="handleConfirm"
       >
-        {{ t('exchange.confirm') }}
+        {{ t('confirmText') }}
       </s-button>
     </template>
   </dialog-base>

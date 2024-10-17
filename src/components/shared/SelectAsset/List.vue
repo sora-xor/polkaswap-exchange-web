@@ -1,5 +1,12 @@
 <template>
-  <asset-list :assets="assets" v-bind="$attrs" v-on="$listeners" class="asset-select-list" data-test-name="selectToken">
+  <asset-list
+    :assets="assets"
+    v-bind="$attrs"
+    v-on="$listeners"
+    :selectable="false"
+    class="asset-select-list"
+    data-test-name="selectToken"
+  >
     <template #list-empty>
       <div class="asset-select-list__empty">
         <span class="empty-results-icon" />
@@ -9,6 +16,15 @@
 
     <template #default="token">
       <div v-if="connected" class="asset__balance-container">
+        <button
+          v-if="formatBalance(token) !== FormattedZeroSymbol"
+          @click.stop="togglePinnedAsset(token)"
+          class="pin-button"
+          :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
+        >
+          <pin-icon :isPinned="isAssetPinned(token)" />
+        </button>
+
         <formatted-amount-with-fiat-value
           v-if="formatBalance(token) !== FormattedZeroSymbol"
           value-class="asset__balance"
@@ -20,8 +36,15 @@
           :fiat-font-size-rate="FontSizeRate.MEDIUM"
           :fiat-font-weight-rate="FontWeightRate.MEDIUM"
         />
+
         <span v-else class="asset__balance">
-          {{ shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol }}
+          <button
+            @click.stop="togglePinnedAsset(token)"
+            class="pin-button"
+            :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
+          >
+            <pin-icon :isPinned="isAssetPinned(token)" />
+          </button>
         </span>
       </div>
       <slot name="action" v-bind="token" />
@@ -34,6 +57,7 @@ import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { getter, mutation } from '@/store/decorators';
 import { formatAssetBalance } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -42,6 +66,7 @@ import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
   components: {
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     AssetList: components.AssetList,
+    PinIcon: components.PinIcon,
   },
 })
 export default class SelectAssetList extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
@@ -50,10 +75,23 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
   @Prop({ default: false, type: Boolean }) readonly shouldBalanceBeHidden!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
 
+  @getter.wallet.account.isAssetPinned isAssetPinned!: (asset: AccountAsset) => boolean;
+
+  @mutation.wallet.account.setPinnedAsset setPinnedAsset!: (asset: AccountAsset) => void;
+  @mutation.wallet.account.removePinnedAsset removePinnedAsset!: (asset: AccountAsset) => void;
+
   readonly FormattedZeroSymbol = '-';
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
   readonly HiddenValue = WALLET_CONSTS.HiddenValue;
+
+  togglePinnedAsset(asset: AccountAsset): void {
+    if (this.isAssetPinned(asset)) {
+      this.removePinnedAsset(asset);
+    } else {
+      this.setPinnedAsset(asset);
+    }
+  }
 
   formatBalance(token: AccountAsset): string {
     return formatAssetBalance(token, {
@@ -132,6 +170,17 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
     height: 70px;
     width: 70px;
     background: url('~@/assets/img/no-results.svg') center no-repeat;
+  }
+}
+.pin-button {
+  background-color: unset;
+  border: unset;
+  &:hover {
+    cursor: pointer;
+  }
+  svg {
+    width: 16px;
+    height: 16px;
   }
 }
 </style>

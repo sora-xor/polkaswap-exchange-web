@@ -477,6 +477,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   // el-table style overrides
   .explore-table.el-table {
     background: transparent;
+    color: var(--s-color-base-content-primary);
     font-size: var(--s-font-size-medium);
     font-weight: 400;
 

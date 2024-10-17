@@ -1,8 +1,8 @@
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { defineMutations } from 'direct-vuex';
 
+import type { AppEIPProvider } from '@/types/evm/provider';
 import ethersUtil from '@/utils/ethers-util';
-import type { Provider } from '@/utils/ethers-util';
 
 import type { Web3State, EthBridgeSettings, SubNetworkApps } from './types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
@@ -33,15 +33,20 @@ const mutations = defineMutations<Web3State>()({
   setSupportedApps(state, supportedApps: SupportedApps): void {
     state.supportedApps = Object.freeze({ ...supportedApps });
   },
-  setEvmProvider(state, provider: Provider): void {
-    state.evmProvider = provider;
+
+  addEvmProvider(state, appEvmProvider: AppEIPProvider): void {
+    state.evmProviders = [...state.evmProviders, appEvmProvider];
+  },
+  setEvmProvider(state, appEvmProvider: AppEIPProvider): void {
+    state.evmProvider = appEvmProvider;
   },
   resetEvmProvider(state): void {
     state.evmProvider = null;
   },
-  setEvmProviderLoading(state, provider: Nullable<Provider> = null): void {
-    state.evmProviderLoading = provider;
+  setEvmProviderLoading(state, appEvmProvider: Nullable<AppEIPProvider> = null): void {
+    state.evmProviderLoading = appEvmProvider;
   },
+
   // by provider
   setProvidedEvmNetwork(state, networkId: BridgeNetworkId | null): void {
     state.evmProviderNetwork = networkId;

@@ -1,7 +1,6 @@
 {
     "closeText": "Zavrieť",
     "backText": "Späť",
-    "createWalletText": "Vytvoriť peňaženku",
     "nameText": "Názov",
     "nextText": "Nasledujúci",
     "importText": "Import",
@@ -150,61 +149,48 @@
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie {PolkadotJs} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Zdá sa, že vo vašom rozšírení {extension} nie sú žiadne účty. Pridajte účet a skúste to znova.",
         "noAccount": "Chyba účtu {extension}. Skontrolujte váš účet v rozšírení {extension}",
         "noExtension": "Nenašlo sa žiadne {extension} . Nainštalujte si ho a znova načítajte túto stránku",
         "noSigner": "Prístup zamietnutý. Prejdite do nastavení {extension} a otvorte položku Spravovať prístup k webovým stránkam.",
         "connectionError": "Pri pripájaní peňaženky sa vyskytla chyba. Môžete skúsiť znova pripojiť peňaženku cez {extension}"
     },
     "connection": {
-        "text": "Ak chcete spravovať aktíva a podpisovať transakcie na {Sora}, musí byť pripojený účet. Účty {Sora} je možné vytvoriť a prepojiť pomocou našich integrovaných peňaženiek alebo rozšírení prehliadača.",
-        "noAccounts": "Vo vašom rozšírení prehliadača {extension} nebol nájdený žiadny účet. Pridajte účet a skúste to znova.",
         "selectAccount": "Vyberte účet, s ktorým chcete pracovať",
         "action": {
-            "install": "Inštalovať rozšírenie",
-            "learnMore": "Dozvedieť sa viac",
-            "connect": "Pripojiť účet",
+            "learnMore": "Prečítajte si viac o pripojení k peňaženke",
             "refresh": "Obnoviť"
         },
-        "selectWallet": "Vyberte peňaženku, s ktorou chcete pracovať",
         "wallet": {
             "install": "Inštalácia",
             "connected": "Pripojené",
-            "notConnected": "Nepripojený"
+            "recommended": "Odporúčané"
         },
         "internalTitle": "Spojte sa s {wallet}",
         "internalText": "Môžete si vytvoriť alebo importovať existujúci účet {Sora} a spojiť sa so svojím účtom {wallet}. Všetky údaje uložené v službe {wallet} sú šifrované pomocou vstavaného pokročilého šifrovania.",
         "list": {
             "integrated": "Integrovaný",
             "extensions": "Rozšírenia"
-        }
+        },
+        "disclaimer": "Upozorňujeme, že niektoré peňaženky nemusia byť plne podporované."
     },
     "wallet": {
         "WalletAssets": "Aktíva",
-        "createToken": "@:createTokenText",
         "WalletHistory": "Aktivita"
     },
     "walletSend": {
         "title": "Odoslať",
-        "address": "@:addressText",
-        "amount": "@:amountText",
         "balance": "Zostatok",
         "max": "MAX",
-        "fee": "@:networkFeeText",
         "enterAddress": "Zadajte adresu",
         "badAddress": "Nesprávna adresa",
         "enterAmount": "Zadajte čiastku",
-        "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Potvrdiť transakciu",
         "errorAddress": "Neplatná adresa. Overte správnosť adresy a skúste to znova.",
-        "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Posielanie tokenov medzi účtami siete {Sora}",
         "addressWarning": "Tokeny budú odoslané na nižšie uvedenú adresu {Sora}. Uistite sa, že príjemca, aby mohol tokeny používať, má prístup k reťazcu {Sora}:",
-        "addressError": "Tokeny nemôžete posielať na ten istý účet, ku ktorému ste momentálne pripojený.",
-        "confirm": "@:confirmText"
+        "addressError": "Tokeny nemôžete posielať na ten istý účet, ku ktorému ste momentálne pripojený."
     },
     "account": {
-        "successCopy": "Adresa peňaženky bola skopírovaná do schránky",
         "copy": "Kopírovať adresu",
         "switch": "Prepnúť účet",
         "walletAddress": "Adresa peňaženky",
@@ -217,11 +203,7 @@
         "clearHistory": "Vymazať históriu",
         "filterPlaceholder": "Filtrovať podľa adresy, symbolu, typu alebo ID bloku",
         "empty": "Vaše transakcie sa zobrazia tu",
-        "emptySearch": "Neboli nájdené žiadne transakcie",
-        "firstText": "Najprv",
-        "lastText": "Posledný",
-        "prevText": "Predchádzajúce",
-        "nextText": "Nasledujúci"
+        "emptySearch": "Neboli nájdené žiadne transakcie"
     },
     "assets": {
         "empty": "Žiadne aktíva nie sú k dispozícii",
@@ -231,7 +213,6 @@
         "liquidity": "Pridať likviditu",
         "bridge": "Most",
         "copy": "Kopírovať ID aktíva",
-        "successCopy": "{symbol} ID aktíva bolo skopírované do schránky",
         "copied": "Skopírované!",
         "balance": {
             "transferable": "Prevoditeľné",
@@ -256,19 +237,25 @@
         "alreadyAttached": "Token už bol pridaný",
         "understand": "Rozumiem",
         "warningTitle": "Obchodujte na vlastné riziko!",
-        "warningMessage": "Ktokoľvek môže vytvoriť token, vrátane vytvárania falošných verzií už existujúcich tokenov, vydávaných za skutočné tokeny projektu.\nAk si kúpite takýto token, je možné, že ho už nebudete môcť predať späť.",
+        "warningMessage": "tento {assetType} | tieto {assetTypePlural}",
         "approved": "Komunitou schválené aktívum",
         "unknown": "Neznámy zdroj",
         "scam": "PODVOD",
-        "next": "Nasledujúci",
         "AddAssetToken": {
             "title": "Meny",
             "switchBtn": "Iba overené aktíva"
         },
-        "searchInputText": "Vyhľadávajte podľa Asset ID, Name alebo Ticker Symbol"
+        "searchInputText": "Vyhľadávajte podľa Asset ID, Name alebo Ticker Symbol",
+        "warningMessageText": "Ktokoľvek môže vytvoriť {assetType}, vrátane falošných verzií existujúcich {assetTypePlural}, ktoré tvrdia, že zastupujú projekty. Ak si kúpite {purchaseAssetType}, nemusíte ho vedieť predať späť.",
+        "assetType": {
+            "token": "Token | Tokeny",
+            "nft": "NFT | NFTs"
+        },
+        "add": "Pridať",
+        "pinAsset": "Pripnúť aktívum",
+        "unpinAsset": "Uvoľniť aktívum"
     },
     "createToken": {
-        "desc": "Vytvorte a nasaďte vlastné aktívum na {Sora}",
         "enterSymbol": "Zadajte symbol tokenu",
         "enterName": "Zadajte názov tokenu",
         "enterSupply": "Zadajte počet tokenov",
@@ -276,10 +263,6 @@
             "title": "Transakcia bola odoslaná",
             "desc": "Vytvoriť {symbol} token"
         },
-        "tooltipValue": "@:networkFeeTooltipText",
-        "fee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "feeError": "Nepodarilo sa získať poplatok za transakciu",
         "error": "Nepodarilo sa vytvoriť {symbol} token",
         "tokenSymbol": {
             "placeholder": "Symbol tokenu",
@@ -298,7 +281,6 @@
             "desc": "Možnosť vydať viac tokenov."
         },
         "provideContent": "Poskytovať obsah",
-        "selectLocalFile": "Vyberte lokálny súbor",
         "CreateSimpleToken": "Token",
         "nft": {
             "source": {
@@ -331,13 +313,9 @@
             "placeholder": "Deliteľný",
             "desc": "Schopnosť NFT rozdeliť sa na zlomkové časti. Tvorba opravných položiek na likviditu funguje len pri deliteľných aktívach"
         },
-        "title": "@:createTokenText",
-        "action": "@:createTokenText",
-        "confirm": "@:confirmText",
         "titleCommon": "Vytvorte",
         "confirmTokenTitleCommon": "Vytvoriť token",
-        "confirmTokenTitleNFT": "Vytvorte NFT",
-        "actionNFT": "@:createTokenTextNFT"
+        "confirmTokenTitleNFT": "Vytvorte NFT"
     },
     "transaction": {
         "title": "Podrobnosti o transakcii",
@@ -348,7 +326,6 @@
             "failed": "Transakcia zlyhala",
             "complete": "Hotovo"
         },
-        "errorMessage": "Chyba",
         "startTime": "Dátum",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
@@ -356,7 +333,6 @@
         "total": "Celkom",
         "from": "Od",
         "to": "Komu",
-        "successCopy": "{value} bola skopírovaná do schránky",
         "copy": "Kopírovať {value}",
         "history": {
             "created": "Transakcia pre čiastku {amount} {symbol} bola vytvorená.",
@@ -367,7 +343,6 @@
         "viewIn": "Zobraziť v {explorer}",
         "referrer": "Sprostredkovateľ",
         "referral": "Doporučenie",
-        "adarTxDetailsTitle": "Detaily transakcie",
         "comment": "Komentujte",
         "price": "cena",
         "side": "Side"
@@ -399,7 +374,6 @@
         "Stats": "Štatistiky",
         "Wallet": "Peňaženka",
         "AddLiquidity": "Pridať likviditu",
-        "RemoveLiquidity": "Odobrať likviditu",
         "Rewards": "Odmeny",
         "Explore\/Tokens": "Tokeny",
         "Explore\/Pools": "Bazény",
@@ -411,8 +385,7 @@
         "AssetOwner": "Vlastník aktíva",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "{Kensetsu}",
-        "VaultDetails": "Detaily pozície",
-        "Burn": "Spáliť"
+        "VaultDetails": "Detaily pozície"
     },
     "mainMenu": {
         "Swap": "Výmena",
@@ -443,7 +416,6 @@
         "faucet": "Faucet",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "{AppName} Memorandum a Podmienky poskytovania služieb",
         "privacy": "Zásady ochrany osobných údajov",
         "info": "Informácie a komunita"
     },
@@ -453,17 +425,6 @@
         "privacyPolicy": "Zásady ochrany osobných údajov",
         "appVersion": "Verzia {AppName}",
         "contactUs": "Kontaktujte nás"
-    },
-    "aboutNetworkDialog": {
-        "title": "O aplikácii",
-        "network": {
-            "title": "Čo je {Sora}?",
-            "description": "{AppName} je postavený na sieti {Sora} a {Sora} (XOR) token sa používa na platenie plynu\/poplatkov a na poskytovanie likvidity na {AppName}. Sieť {Sora} umožňuje nižšie poplatky, rýchlejšie transakcie a jednoduchšiu finalizáciu konsenzu a zameriava sa na zabezpečenie interoperability s inými ekosystémami blockchainu, ako je {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Čo je {PolkadotJs}?",
-            "description": "Rozšírenie {PolkadotJs} je rozšírenie prehliadača dostupné pre Firefox a Chrome. Je určené pre správu účtov pre siete založené na Substrate vrátane {Sora}, {Polkadot} a {Kusama}. Umožňuje pridávanie, import a export účtov ako aj podpisovanie transakcií alebo alebo externých údajov, ktoré ste zahájili z vami autorizovaných webových stránok."
-        }
     },
     "node": {
         "errors": {
@@ -509,16 +470,9 @@
     "exchange": {
         "Swap": "Výmena",
         "Pool": "Fond",
-        "balance": "Zostatok",
-        "price": "Cena",
-        "transactionSubmitted": "Transakcia bola odoslaná",
-        "transactionMessage": "{firstToken} a {secondToken}",
-        "ok": "OK",
-        "confirm": "Potvrdiť",
         "lossWarning": "Pri svojom obchode stratíte {value}%. Zistili sme problém s poskytovaním likvidity. To môže viesť k významným stratám počas výmeny tokenov. Uistite sa, že máte dostatočnú likviditu pre požadovaný swapový pár."
     },
     "swap": {
-        "estimated": "približne",
         "slippageTolerance": "Tolerancia sklzu",
         "minReceived": "Obdržané minimum",
         "maxSold": "Maximum k predaju",
@@ -532,7 +486,6 @@
         "confirmSwap": "Potvrdiť výmenu",
         "swapOutputMessage": "Výsledná čiastka je len odhadom. Obdržíte minimálne {transactionValue}, inak sa transakcia vráti späť.",
         "rewardsForSwap": "Strategické odmeny PSWAP",
-        "swapInputMessage": "Vstupná čiastka je len odhadom. Predáte maximálne {transactionValue}, inak sa transakcia vráti späť.",
         "route": "Cesta",
         "errorFetching": "Chyba pri načítaní údajov"
     },
@@ -551,21 +504,12 @@
     "bridge": {
         "title": "Most",
         "info": "Konverzia tokenov medzi sieťami {Sora} a {Ethereum}.",
-        "balance": "Zostatok",
         "next": "Nasledujúci",
         "connectWallets": "Pripojením peňaženiek zobrazíte príslušnú históriu transakcií.",
         "soraNetworkFee": "{Sora} poplatok za sieť",
-        "ethereumNetworkFee": "{Ethereum} poplatok za sieť",
-        "total": "Celkom",
-        "viewHistory": "Zobraziť históriu transakcií",
-        "transactionSubmitted": "Transakcia bola odoslaná",
-        "transactionMessage": "{assetA} za {assetB}",
         "notRegisteredAsset": "Aktívum {assetSymbol} nie je zaregistrované",
         "selectNetwork": "Vybrať sieť",
         "networkInfo": "Prepojiť {Sora} sieť s:",
-        "copy": "Skopírujte sieťovú adresu",
-        "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa",
         "limitMessage": "V súčasnosti existuje {type} {amount} {symbol} na premostenie na zaistenie stability a bezpečnosti siete {Sora}. Ďakujeme za pochopenie.",
         "externalTransferFee": "{network} poplatok {XCM}",
         "externalTransferFeeTooltip": "Keď odošlete preklenovaciu transakciu do siete {network} , zo sumy, ktorú prenášate, sa účtuje malý poplatok",
@@ -575,58 +519,26 @@
     "selectRegisteredAsset": {
         "title": "Vybrať token",
         "search": {
-            "title": "Tokeny",
             "placeholder": "Filtrovať podľa ID, názvu alebo symbolu aktíva",
             "networkLabelSora": "Tokeny siete {Sora}",
-            "networkLabelEthereum": "{network} sieťové zrkadlové tokeny",
-            "emptyListMessage": "Žiadne výsledky"
-        },
-        "customAsset": {
-            "title": "Vlastné",
-            "customInfo": "Dôležité! Vlastné tokeny musia byť zaregistrované v {Sora}.",
-            "registerToken": "Zaregistrovať token",
-            "addressPlaceholder": "ID aktíva",
-            "symbolPlaceholder": "Symbol tokenu",
-            "empty": "Nenašli sa žiadne tokeny",
-            "alreadyAttached": "Token už bol pridaný"
+            "networkLabelEthereum": "{network} sieťové zrkadlové tokeny"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} pre {to}",
         "for": " pre ",
-        "steps": {
-            "step": "{step} z 2",
-            "step1": "1.",
-            "step2": "2."
-        },
-        "status": {
-            "pending": "{step} nespracované transakcie…",
-            "failed": "{step} transakcií zlyhalo. @:(retryText).",
-            "confirm": "Potvrďte 2. z 2 transakcií…",
-            "complete": "Dokončené",
-            "convertionComplete": "Konverzia dokončená"
-        },
         "statuses": {
-            "waiting": "Čaká sa",
-            "ready": "Pripravené",
             "pending": "Čaká na spracovanie",
-            "frozen": "Zmrazené",
             "failed": "Transakcia zlyhala",
             "done": "Dokončené",
             "waitingForConfirmation": "Čaká sa na potvrdenie…"
         },
-        "networkTitle": "{network} transakcia",
         "transactionHash": "Hash transakcie",
         "networkInfo": {
             "status": "Stav",
             "date": "Dátum",
             "amount": "Čiastka",
-            "transactionFee": "Poplatok za transakciu",
-            "total": "Celkom"
+            "transactionFee": "Poplatok za transakciu"
         },
-        "successCopy": "Hash transakcie bol skopírovaný do schránky",
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} transakcia vo fáze spracovania…",
         "newTransaction": "Vytvoriť novú transakciu",
         "title": "Preklenovacia transakcia",
@@ -647,8 +559,6 @@
         "title": "Vybrať token",
         "searchPlaceholder": "Filtrovať podľa ID, názvu alebo symbolu aktíva",
         "emptyListMessage": "Žiadne výsledky",
-        "copy": "Kopírovať ID aktíva",
-        "successCopy": "{symbol} ID aktíva bolo skopírované do schránky",
         "assets": {
             "title": "Aktíva"
         },
@@ -661,29 +571,18 @@
         }
     },
     "createPair": {
-        "title": "Vytvoriť pár",
         "deposit": "Vklad",
-        "balance": "Zostatok",
         "pricePool": "Ceny a poplatky",
         "shareOfPool": "Podiel vo fonde",
         "firstSecondPoolTokens": "{first}-{second} fond",
-        "connect": "Pripojiť peňaženku",
         "supply": "Poskytnúť",
         "yourPosition": "Vaša pozícia",
-        "yourPositionEstimated": "Vaša pozícia (odhadovaná)",
-        "youWillReceive": "Obdržíte",
-        "remove": "odstrániť",
-        "add": "PRIDAŤ",
-        "ok": "OK",
-        "alreadyCreated": "Tokenový pár je už vytvorený",
         "firstLiquidityProvider": "Ste prvým poskytovateľom likvidity",
         "firstLiquidityProviderInfo": "Pomer tokenov, ktoré pridáte, určí cenu tohto fondu.<br\/>Upravte pomer podľa vlastného uváženia a akciu potvrďte kliknutím na položku Poskytnúť."
     },
     "confirmSupply": {
         "title": "Váš podiel vo fonde bude",
-        "outputDescription": "Výsledná čiastka je len odhadom. Ak sa cena zmení o viac ako {slippageTolerance}%, transakcia bude zrušená.",
-        "poolTokensBurned": "Tokeny v {first}-{second} fonde spálené",
-        "price": "Cena"
+        "outputDescription": "Výsledná čiastka je len odhadom. Ak sa cena zmení o viac ako {slippageTolerance}%, transakcia bude zrušená."
     },
     "addLiquidity": {
         "title": "Pridať likviditu"
@@ -691,11 +590,9 @@
     "removeLiquidity": {
         "title": "Odobrať likviditu",
         "liquidity": "likvidita",
-        "balance": "Zostatok",
         "amount": "Čiastka",
         "input": "Vstup",
         "output": "Výstup",
-        "price": "Cena",
         "remove": "Odobrať",
         "description": "Odobratie tokenov fondu prevedie vašu pozíciu späť na základné tokeny pri aktuálnom kurze, úmerne vášmu podielu vo fonde. Naakumulované poplatky budú zahrnuté do čiastok, ktoré obdržíte.",
         "outputMessage": "Výsledná čiastka je len odhadom. Ak sa cena zmení o viac ako {slippageTolerance}%, transakcia bude zrušená.",
@@ -716,27 +613,13 @@
             "frontrun": "Vaša transakcia môže byť predbehnutá",
             "error": "Zadajte platné percento sklzu"
         },
-        "custom": "VLASTNÉ",
-        "transactionDeadline": "TERMÍN TRANSAKCIE",
-        "transactionDeadlineHint": "Transakcia bude zrušená, ak trvá dlhšie ako určený čas.",
-        "nodeAddress": "ADRESA UZLA",
-        "ip": "IP",
-        "port": "PORT",
-        "min": "MIN",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} presmerovanie likvidity zaisťuje najlepšiu cenu pre akúkoľvek transakciu, a to kombináciou najlepších cenových možnosti zo všetkých dostupných trhov. Ak je k dispozícii a pokiaľ je cena aktív cenovo dostupnejšia ako z iných zdrojov, pre likviditu sa použije krivka závislosti ceny tokenu na jeho ponuke ({tbcAlgorithm}). V opačnom prípade sa použije {xycAlgorithm} fond.",
             "TBC": "{tbcAlgorithm} - nákup iba z krivky závislosti ceny tokenu na jeho ponuke (Token Bonding Curve) (primárny trh). Existuje možnosť nepriaznivého vývoja ceny v porovnaní s fondom {xycAlgorithm} (sekundárny trh), ale hodnota získaná z priznaných odmien sa časom môže ukázať ako oveľa priaznivejšia.",
             "XYK": "{xycAlgorithm} – nákup iba z fondu XYK (sekundárny trh). Tradičný výmenný fond XYK."
-        },
-        "charts": "Grafy",
-        "сhartsDescription": "Pozrite si grafy cien tokenov"
-    },
-    "resultDialog": {
-        "title": "Transakcia bola odoslaná",
-        "ok": "OK"
+        }
     },
     "rewards": {
-        "title": "Nárokovať odmeny",
         "andText": "a",
         "claiming": {
             "pending": "Prebieha nárokovanie…",
@@ -770,13 +653,12 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "{Sora}.farm zber",
-            "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Poplatky získané z poskytovania likvidity",
             "BuyOnBondingCurve": "nákup z TBC",
             "MarketMakerVolume": "Tvorba trhu",
-            "LiquidityProvisionFarming": "Farmárčenie"
+            "LiquidityProvisionFarming": "Farmárčenie",
+            "NftAirdrop": "NFT Airdrop"
         },
-        "vested": "viazané",
         "forText": "za",
         "totalVested": "Celkové odmeny",
         "claimableAmountDoneVesting": "Nárokovateľné odmeny",
@@ -802,7 +684,6 @@
         "title": "Jazyk"
     },
     "tokens": {
-        "symbol": "Symbol",
         "assetId": "ID aktíva"
     },
     "memorandum": "{AppName} Memorandum a Podmienky poskytovania služieb",
@@ -861,22 +742,18 @@
         "showBalances": "Zobraziť zostatky",
         "hideBalances": "Skryť zostatky",
         "settings": "Nastavenia",
-        "switchTheme": "Prepnite do režimu {theme}",
-        "switchLanguage": "Vyberte Jazyk",
+        "switchTheme": "Režim {theme}",
         "showDisclaimer": "Zobraziť vylúčenie zodpovednosti",
         "hideDisclaimer": "Skryť vylúčenie zodpovednosti",
-        "selectCurrency": "Vyberte položku Mena"
+        "selectCurrency": "Vyberte položku Mena",
+        "turnPhoneHideBalances": "Otočte telefón a skryte.",
+        "titleBalance": "Zostatky",
+        "titleTheme": "Farebná téma",
+        "titleCurrency": "Fiat mena",
+        "titleMisc": "Iné"
     },
     "sentText": "Odoslané",
     "learnMoreText": "Dozvedieť sa viac",
-    "marketMakerCountdown": {
-        "title": "Market Maker odpočítavanie",
-        "blocks": "bloky",
-        "daysLeft": "zostávajúce dni",
-        "txs": "TXs",
-        "volume": "Objem MM TX",
-        "description": "20 miliónov PSWAP\/mesiac bude distribuovaných tvorcom trhu s minimálne 500 tx\/mesiac v hodnote nad 1 XOR."
-    },
     "confirmNextTxFailure": {
         "header": "Pozornosť",
         "info": "Váš zostatok {symbol} bude po tejto transakcii nižší ako {fee} {symbol} . Nebudete môcť zaplatiť sieťový poplatok za ďalšiu transakciu.",
@@ -890,23 +767,16 @@
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} odporúčaní",
         "startInviting": "Bond XOR odporučiť ostatným",
-        "preview": "Pozvite nových používateľov a získajte 10 % z ich transakčných poplatkov. <br\/> Na začiatok prilepte ľubovoľné množstvo XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Ďalšie informácie <\/a>",
-        "deposit": "Záloha",
-        "balance": "Zostatok",
         "insufficientBondedBalance": "Nedostatočný viazaný zostatok",
         "action": {
-            "empty": "Zadajte sumu {tokenSymbol}",
-            "startInviting": "Bond {tokenSymbol} začnite pozývať",
             "bondMore": "Bond viac",
             "bond": "Bond",
             "unbond": "Odpojiť",
             "copyLink": "Skopírovať odkaz",
             "shareLink": "Zdieľať"
         },
-        "transactionDetails": "Detaily transakcie",
         "receivedRewards": "Prijaté odmeny",
         "invitationLink": "Odkaz na pozvánku",
-        "successCopy": "Spoj na sprostredkovanie sa skopíruje do schránky",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",
         "confirm": {
@@ -918,8 +788,7 @@
             "freeOfCharge": "Táto akcia je bezplatná",
             "hasReferrerTitle": "Už ste nastavili svojho sprostredkovateľa",
             "hasReferrerDescription": "Bohužiaľ, môžete nastaviť iba jeden",
-            "ok": "V poriadku",
-            "text": "Potvrďte"
+            "ok": "V poriadku"
         },
         "referrer": {
             "title": "Pridajte svojho sprostredkovateľa",
@@ -1042,7 +911,9 @@
         "button": "Povoliť upozornenia",
         "agree": "Áno rozumiem",
         "notificationBlocked": "Ak chcete dostávať upozornenia o {AppName}, povoľte upozornenia v natívnych nastaveniach prehliadača",
-        "pointer": "Stlačením „Povoliť“ zapnite upozornenia"
+        "pointer": "Stlačením „Povoliť“ zapnite upozornenia",
+        "rotatetitle": "Prosím, otočte svoje zariadenie",
+        "rotateMessage": "Zážitok je k dispozícii iba v režime na výšku"
     },
     "assetDeposit": "Zostatok aktív bol uložený",
     "noDataText": "Žiadne dáta",
@@ -1053,7 +924,10 @@
         "verifiedOnly": "Zobraziť iba overené aktíva",
         "zeroBalance": "Skryť 0 bilančných aktív",
         "showAssets": "Zobraziť aktíva",
-        "show": "Šou"
+        "show": "Šou",
+        "reset": "Resetovať",
+        "synthetics": "Syntetika",
+        "native": "Natívne"
     },
     "desktop": {
         "welcome": {
@@ -1097,9 +971,7 @@
         "addAccount": "Pridajte účet",
         "dialog": {
             "confirmTitle": "Potvrďte heslom",
-            "confirmButton": "Podpísať transakciu",
-            "savePasswordText": "Zapamätať si moje heslo na ďalších 15 minút",
-            "extendPasswordText": "Predĺžte obdobie bez hesla o 15 minút"
+            "confirmButton": "Podpísať transakciu"
         },
         "errorMessages": {
             "password": "Heslo sa nezhoduje",
@@ -1273,7 +1145,6 @@
     "connectEthereumWalletText": "Pripojte peňaženku {Ethereum}",
     "soraStaking": {
         "dropdownMenu": {
-            "pendingRewards": "Čakajúce odmeny",
             "controllerAccount": "Účet správcu"
         },
         "actions": {
@@ -1288,8 +1159,7 @@
             "description": "Vložte tokeny {XOR} do siete {Sora} ako nominátor na overenie transakcií a získanie tokenových odmien {VAL}."
         },
         "newStake": {
-            "title": "Začnite stávkovať",
-            "minStakeWarning": "Minimálny vklad na získanie odmeny je {min} {symbol}"
+            "title": "Začnite stávkovať"
         },
         "validators": {
             "save": "Uložiť zmeny",
@@ -1356,12 +1226,12 @@
         },
         "validatorsAttentionDialog": {
             "title": "Pozornosť",
-            "description": [
-                "Návrhy algoritmického validátora nepredstavujú finančnú konzultáciu ani poradenstvo. Staking je vysoko riziková činnosť a návrhy algoritmických validátorov nemusia nevyhnutne zmierniť toto riziko.",
-                "Validátor navrhnutý algoritmom môže byť stále skrátený. Validátor navrhnutý algoritmom by tiež mohol zmeniť ich parametre (napr. sadzby provízií atď.) kedykoľvek po tom, čo bol navrhnutý a\/alebo vybraný.",
-                "Z týchto alebo iných dôvodov môžete stratiť žetóny alebo odmeny. Vkladové žetóny a návrhy validátora používajte len podľa vlastného uváženia, po vykonaní náležitej starostlivosti a starostlivom zvážení súvisiacich rizík."
-            ],
-            "confirm": "Áno, chápem riziko"
+            "confirm": "Áno, chápem riziko",
+            "description": {
+                "0": "Návrhy algoritmického validátora nepredstavujú finančnú konzultáciu ani poradenstvo. Staking je vysoko riziková činnosť a návrhy algoritmických validátorov nemusia nevyhnutne zmierniť toto riziko.",
+                "1": "Validátor navrhnutý algoritmom môže byť stále skrátený. Validátor navrhnutý algoritmom by tiež mohol zmeniť ich parametre (napr. sadzby provízií atď.) kedykoľvek po tom, čo bol navrhnutý a\/alebo vybraný.",
+                "2": "Z týchto alebo iných dôvodov môžete stratiť žetóny alebo odmeny. Vkladové žetóny a návrhy validátora používajte len podľa vlastného uváženia, po vykonaní náležitej starostlivosti a starostlivom zvážení súvisiacich rizík."
+            }
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Neexistujú žiadne čakajúce odmeny",
@@ -1373,16 +1243,16 @@
         "selectValidatorsMode": {
             "title": "Vklad s validátormi navrhnutými algoritmom",
             "description": "Sieťový algoritmus {Sora} vybral zoznam odporúčaných validátorov na základe kritérií:",
-            "criteria": [
-                "Najziskovejšie",
-                "Nie je nadmerne prihlásený",
-                "Mať onchain identitu",
-                "Neprerezané",
-                "Limit 2 overovateľov na identitu"
-            ],
             "confirm": {
                 "suggested": "Vsaďte s navrhovaným",
                 "manual": "Validátory si vyberiem sám"
+            },
+            "criteria": {
+                "0": "Najziskovejšie",
+                "1": "Nie je nadmerne prihlásený",
+                "2": "Mať onchain identitu",
+                "3": "Nie skosené",
+                "4": "Limit 2 overovateľov na identitu"
             }
         },
         "claimRewardsDialog": {
@@ -1420,7 +1290,6 @@
         "marketTrades": "Trhové obchody",
         "market": "trhu",
         "limit": "Limit",
-        "price": "cena",
         "total": "Celkom",
         "amount": "čiastka",
         "time": "čas",
@@ -1538,8 +1407,7 @@
             "canceled": "Zrušené",
             "expired": "Platnosť vypršala",
             "filled": "Naplnené"
-        },
-        "pricePerToken": "Cena za 1 {token}"
+        }
     },
     "calculatingText": "Výpočet",
     "customisePageText": "Prispôsobiť stránku",
@@ -1665,5 +1533,17 @@
         "yourRewards": "Vaše odmeny",
         "openTelegram": "Otvoriť {Telegram}",
         "toEarnPoints": "Na získanie bodov"
-    }
+    },
+    "addAssetsText": "Pridať aktívum | Pridať aktíva",
+    "noir": "Noir",
+    "rotatePhoneNotification": {
+        "title": "Otočte zariadenie hore nohami, aby ste skryli zostatky",
+        "info": "Pre vyššie súkromie nakloňte zariadenie obrazovkou nadol, aby ste okamžite skryli zostatky aktív. Táto funkcia využíva vstavané senzory vášho telefónu.",
+        "enableAcceleration": "Povoľte prístup k akcelerácii v nastaveniach.",
+        "gyroscropePhone": "Naša technológia využíva vstavaný gyroskop vášho telefónu na okamžité skrytie vášho zostatku pri naklonení zariadenia."
+    },
+    "firstText": "Najprv",
+    "lastText": "Posledný",
+    "prevText": "Predchádzajúce",
+    "priceText": "cena"
 }
