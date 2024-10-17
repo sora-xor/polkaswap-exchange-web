@@ -117,7 +117,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'Kensetsu volume',
     titleTask: 'Repay KUSD Debt',
     descriptionTask: 'Repay KUSD debt during liquidations or closing positions',
-    imageName: KUSD.address,
+    imageName: 'kensetsu',
   },
   orderbookVolume: {
     maxPercentage: 3,
@@ -149,7 +149,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleProgress: 'First Trx',
     titleTask: 'Do your first transaction',
     descriptionTask: 'Complete your first XOR transaction ever and receive the reward',
-    imageName: 'governance',
+    imageName: 'liquidity',
   },
 };
 

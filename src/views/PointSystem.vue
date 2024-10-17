@@ -34,6 +34,23 @@
                 class="points__cards-scrollbar"
                 :wrap-style="{ padding: '0', margin: '0', overflowY: 'auto' }"
               >
+                <a
+                  class="points__soratopia s-flex"
+                  rel="nofollow noopener"
+                  target="_blank"
+                  href="https://t.me/soratopia_bot/app"
+                >
+                  <div class="points__soratopia-container s-flex">
+                    <button class="points__soratopia-action">{{ t('points.openTelegram') }}</button>
+                    <span class="points__soratopia-text">{{ t('points.toEarnPoints') }}</span>
+                  </div>
+                </a>
+                <a class="points__sora-card s-flex" rel="nofollow noopener" target="_blank" href="https://soracard.com">
+                  <div class="points__sora-card-container s-flex">
+                    <button class="points__sora-card-action">Apply now</button>
+                    <span class="points__sora-card-text">{{ t('points.toEarnPoints') }}</span>
+                  </div>
+                </a>
                 <task-card
                   v-for="(pointsForCategory, categoryName) in this.pointsForCards"
                   :key="categoryName"
@@ -515,51 +532,59 @@ $max-asset-size: calc($select-asset-item-height * 2);
     }
   }
 
-  // TODO not sure we need it
-  // &__soratopia {
-  //   min-height: 102px;
-  //   box-shadow: var(--s-shadow-element-pressed);
-  //   background-image: url('~@/assets/img/points/soratopia.png');
-  //   background-repeat: no-repeat;
-  //   background-size: cover;
-  //   text-decoration: none;
-  //   color: var(--s-color-base-on-accent);
-  //   border-radius: var(--s-border-radius-mini);
-  //   align-items: flex-end;
-  //   @include focus-outline;
-  //   &-container {
-  //     align-items: center;
-  //     gap: $inner-spacing-medium;
-  //     margin: $inner-spacing-medium;
-  //   }
-  //   &-action {
-  //     background-color: #52a1e3;
-  //     border-radius: var(--s-border-radius-small);
-  //     color: var(--s-color-base-on-accent);
-  //     font-size: var(--s-font-size-small);
-  //     font-weight: 500;
-  //     white-space: nowrap;
-  //     padding: $inner-spacing-mini $inner-spacing-medium;
-  //     cursor: pointer;
-  //     @include focus-outline;
-  //   }
-  //   &-text {
-  //     flex: 1;
-  //     text-transform: uppercase;
-  //     opacity: 0.8;
-  //     color: white;
-  //     font-size: var(--s-font-size-mini);
-  //     font-weight: 700;
-  //   }
-  //   @include large-mobile(true) {
-  //     background-repeat: round;
-  //     &-container {
-  //       margin: $inner-spacing-small;
-  //     }
-  //     &-action {
-  //       font-size: var(--s-font-size-mini);
-  //     }
-  //   }
-  // }
+  &__soratopia,
+  &__sora-card {
+    min-height: 102px;
+    background-image: url('~@/assets/img/points/soratopia.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-decoration: none;
+    color: var(--s-color-base-on-accent);
+    border-radius: var(--s-border-radius-mini);
+    align-items: flex-end;
+    margin-bottom: 8px;
+    @include focus-outline;
+    &-container {
+      align-items: center;
+      gap: $inner-spacing-medium;
+      margin: $inner-spacing-medium;
+    }
+    &-action {
+      background-color: var(--s-color-status-info);
+      border-radius: var(--s-border-radius-small);
+      color: var(--s-color-base-on-accent);
+      font-size: var(--s-font-size-small);
+      font-weight: 500;
+      white-space: nowrap;
+      padding: $inner-spacing-mini $inner-spacing-medium;
+      cursor: pointer;
+      @include focus-outline;
+    }
+    &-text {
+      flex: 1;
+      text-transform: uppercase;
+      opacity: 0.8;
+      color: white;
+      font-size: var(--s-font-size-mini);
+      font-weight: 700;
+    }
+    @include large-mobile(true) {
+      background-repeat: round;
+      &-container {
+        margin: $inner-spacing-small;
+      }
+      &-action {
+        font-size: var(--s-font-size-mini);
+      }
+    }
+  }
+  &__sora-card {
+    background-image: url('~@/assets/img/points/sora-card.png');
+    &-action {
+      background-color: white;
+      color: #ee2233;
+      border: unset;
+    }
+  }
 }
 </style>
