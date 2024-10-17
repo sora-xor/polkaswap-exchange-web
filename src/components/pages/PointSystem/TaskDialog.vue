@@ -126,7 +126,6 @@ export default class TaskDialog extends Mixins(mixins.TranslationMixin) {
         font-weight: 700;
         color: var(--s-color-base-content-primary);
         span {
-          font-size: 14px;
           opacity: 0.4;
           font-size: 10px;
         }

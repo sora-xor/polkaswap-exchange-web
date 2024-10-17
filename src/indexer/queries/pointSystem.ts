@@ -331,14 +331,12 @@ export async function fetchAccountMeta(accountAddress: string) {
   const variables = { id: accountAddress };
 
   try {
-    switch (indexer.type) {
-      case IndexerType.SUBQUERY: {
-        const subqueryIndexer = indexer as SubqueryIndexer;
-        const response = await subqueryIndexer.services.explorer.request(SubqueryAccountMetaQuery, variables);
-        if (!response) return null;
+    if (indexer.type === IndexerType.SUBQUERY) {
+      const subqueryIndexer = indexer as SubqueryIndexer;
+      const response = await subqueryIndexer.services.explorer.request(SubqueryAccountMetaQuery, variables);
+      if (!response) return null;
 
-        return parseAccountMeta(response);
-      }
+      return parseAccountMeta(response);
     }
     return null;
   } catch (error) {
