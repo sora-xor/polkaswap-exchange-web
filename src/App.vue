@@ -255,9 +255,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  private async applyTheme(isDark: boolean) {
+  private applyTheme(isDark: boolean) {
     console.info('Applying theme:', isDark ? 'Dark' : 'Light');
-    await setTheme(isDark ? Theme.DARK : Theme.LIGHT);
+    setTheme(isDark ? Theme.DARK : Theme.LIGHT);
     updatePipTheme();
     tmaSdkService.updateTheme();
   }
@@ -314,22 +314,30 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   // }
 
   // THIS IS THE LAST ONE
-  private async detectSystemTheme() {
+  private detectSystemTheme() {
     console.info('Detecting system theme');
 
     // Set up prefers-color-scheme listener
     this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    console.info('Prefers dark scheme:', this.prefersDarkScheme.matches ? 'dark mode' : 'light mode');
+
     this.handleThemeChange = async (e: MediaQueryListEvent) => {
-      console.info('we are in handleThemeChange');
-      console.info('prefers-color-scheme changed:', e.matches ? 'dark' : 'light');
-      await this.applyTheme(e.matches);
+      console.info('We are in handleThemeChange');
+      console.info('Prefers-color-scheme changed:', e.matches ? 'dark' : 'light');
+      console.info('MediaQueryListEvent:', e);
+
+      console.info('We will now apply theme based on the change');
+      this.applyTheme(e.matches);
     };
+
+    console.info('Adding event listener for prefers-color-scheme change');
     this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
 
     const systemPrefersDark = this.prefersDarkScheme.matches;
 
-    console.info('we will now apply initial theme');
-    await this.applyTheme(systemPrefersDark);
+    console.info('Initial theme:', systemPrefersDark ? 'dark mode' : 'light mode');
+    console.info('We will now apply the initial theme');
+    this.applyTheme(systemPrefersDark);
   }
 
   async created() {
@@ -351,7 +359,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // To start running as Telegram Web App (desktop capabilities)
       tmaSdkService.init(data?.TG_BOT_URL);
-      await this.detectSystemTheme();
       await this.setApiKeys(data?.API_KEYS);
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
@@ -381,6 +388,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     updateDocumentTitle(); // For the first load
     this.showDisclaimer();
     this.fetchAdsArray();
+    this.detectSystemTheme();
   }
 
   mounted(): void {
