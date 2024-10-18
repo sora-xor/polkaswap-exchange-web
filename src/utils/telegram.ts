@@ -94,7 +94,6 @@ class TmaSdk {
    * Update the theme of the Telegram Mini App using `var(--s-color-utility-body)`
    */
   public updateTheme(): void {
-    console.info('we are in update theme');
     try {
       const colorUtilityBody =
         (getComputedStyle(document.documentElement).getPropertyValue('--s-color-utility-body') as `#${string}`) ||

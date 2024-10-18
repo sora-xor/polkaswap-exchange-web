@@ -256,7 +256,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private applyTheme(isDark: boolean) {
-    console.info('Applying theme:', isDark ? 'Dark' : 'Light');
     setTheme(isDark ? Theme.DARK : Theme.LIGHT);
     updatePipTheme();
     tmaSdkService.updateTheme();
