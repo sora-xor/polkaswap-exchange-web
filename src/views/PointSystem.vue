@@ -87,6 +87,7 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/sdk';
 import { XOR, KUSD, VXOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
@@ -110,7 +111,7 @@ import { AccountPointsCalculation, CalculateCategoryPointResult, CategoryPoints 
 import { formatAmountWithSuffix, convertFPNumberToNumber } from '@/utils';
 import { pointsService } from '@/utils/pointSystem';
 
-import type { NetworkFeesObject, FPNumber } from '@sora-substrate/sdk';
+import type { NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
@@ -155,6 +156,43 @@ export default class PointSystem extends Mixins(
   private poolWithdrawCount = 0;
   totalSwapTxs = 0;
   categoryPoints: string = this.pointSysemCategory.tasks;
+  accountDataForPointsCalculation: AccountPointsCalculation = {
+    fees: {
+      amount: this.Zero,
+      amountUSD: this.Zero,
+    },
+    burned: {
+      amount: this.Zero,
+      amountUSD: this.Zero,
+    },
+    kensetsu: {
+      created: this.Zero,
+      closed: this.Zero,
+      amountUSD: this.Zero,
+    },
+    staking: {
+      amount: this.Zero,
+      amountUSD: this.Zero,
+    },
+    orderBook: {
+      created: this.Zero,
+      closed: this.Zero,
+      amountUSD: this.Zero,
+    },
+    governance: {
+      votes: this.Zero,
+      amount: this.Zero,
+      amountUSD: this.Zero,
+    },
+    bridge: {
+      incomingUSD: this.Zero,
+      outgoingUSD: this.Zero,
+    },
+    createdAt: {
+      timestamp: 0,
+      block: 0,
+    },
+  };
 
   pointsForCards: { [key: string]: CalculateCategoryPointResult } | null = null;
   @Watch('isLoggedIn')
@@ -343,11 +381,25 @@ export default class PointSystem extends Mixins(
       this.poolDepositCount = await fetchCount(0, end, account, CountType.PoolDeposit);
       this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
       const accountMeta = await fetchAccountMeta(account);
+
       if (accountMeta) {
-        this.pointsForCards = pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta));
+        this.accountDataForPointsCalculation = accountMeta;
       } else {
-        console.info('No AccountMeta data');
+        this.accountDataForPointsCalculation.fees = {
+          amount: this.totalFees ?? this.Zero,
+          amountUSD: new FPNumber(this.getFiatAmountByFPNumber(this.totalFees) || '0'),
+        };
+        this.accountDataForPointsCalculation.burned = {
+          amount: this.burnData ?? this.Zero,
+          amountUSD: new FPNumber(this.getFiatAmountByFPNumber(this.burnData) || '0'),
+        };
+        // Setting for incominUSD all bridge volume
+        this.accountDataForPointsCalculation.bridge.incomingUSD = new FPNumber(this.bridgeVolume || '0');
       }
+
+      this.pointsForCards = pointsService.calculateCategoryPoints(
+        this.getPointsForCategories(this.accountDataForPointsCalculation)
+      );
     }
   }
 
