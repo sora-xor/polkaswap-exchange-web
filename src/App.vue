@@ -58,6 +58,8 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
+import { setTheme } from '@soramitsu-ui/ui-vue2/lib/utils';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -72,7 +74,7 @@ import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
+import { getMobileCssClasses, preloadFontFace, updateDocumentTitle, updatePipTheme } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { tmaSdkService } from '@/utils/telegram';
@@ -83,7 +85,6 @@ import type { History, HistoryItem } from '@sora-substrate/sdk';
 import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
@@ -119,6 +120,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
+  @state.settings.isTMA isTMA!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
@@ -168,6 +170,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @state.wallet.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
   @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
+
+  private prefersDarkScheme: MediaQueryList | null = null;
+  private handleThemeChange: ((e: MediaQueryListEvent) => Promise<void>) | null = null;
+  private removeTelegramThemeChangedListener: (() => void) | null = null;
 
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
@@ -249,11 +255,52 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
+  private applyTheme(isDark: boolean) {
+    setTheme(isDark ? Theme.DARK : Theme.LIGHT);
+    updatePipTheme();
+    tmaSdkService.updateTheme();
+  }
+
+  private detectSystemTheme() {
+    this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+    // This is needed when change not in TG Mini App
+    this.handleThemeChange = async (e: MediaQueryListEvent) => {
+      console.info('Prefers-color-scheme changed:', e.matches ? 'dark' : 'light');
+      this.applyTheme(e.matches);
+    };
+
+    this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
+
+    const systemPrefersDark = this.prefersDarkScheme.matches;
+    this.applyTheme(systemPrefersDark);
+
+    const telegram = (window.Telegram as any) || {};
+
+    if (this.isTMA) {
+      const webApp = window.Telegram.WebApp;
+
+      // This is needed when change in Chat Settings "Day" / "Night" Mode
+      const colorScheme = webApp.colorScheme;
+      console.info('Telegram WebApp colorScheme:', colorScheme);
+      this.applyTheme(colorScheme === 'dark');
+
+      // This is needed when change by "Auto-Night Mode" with "System Default"
+      telegram.WebView.receiveEvent = (eventType: string, eventData: any) => {
+        if (eventType === 'theme_changed') {
+          const isDark = eventData.theme_params.bg_color < -1;
+          this.applyTheme(isDark);
+        }
+      };
+    }
+  }
+
   async created() {
     window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
     preloadFontFace('element-icons');
     this.setResponsiveClass();
     updateBaseUrl(router);
+
     AlertsApiService.baseRoute = getFullBaseUrl(router);
 
     await this.setLanguage(getLocale() as Language);
@@ -267,7 +314,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // To start running as Telegram Web App (desktop capabilities)
       tmaSdkService.init(data?.TG_BOT_URL);
-
       await this.setApiKeys(data?.API_KEYS);
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
@@ -297,6 +343,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     updateDocumentTitle(); // For the first load
     this.showDisclaimer();
     this.fetchAdsArray();
+    this.detectSystemTheme();
   }
 
   mounted(): void {
@@ -401,6 +448,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async beforeDestroy(): Promise<void> {
     window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
+    if (this.prefersDarkScheme && this.handleThemeChange) {
+      this.prefersDarkScheme.removeEventListener('change', this.handleThemeChange);
+    }
+    if (this.removeTelegramThemeChangedListener) {
+      this.removeTelegramThemeChangedListener();
+    }
     if (screen.orientation) {
       screen.orientation.removeEventListener('change', this.handleOrientationChange);
     } else {
