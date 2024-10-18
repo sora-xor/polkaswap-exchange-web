@@ -337,8 +337,13 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       console.info('we received event');
       console.info(eventType);
       console.info(eventData);
-      if (eventType === 'theme_changed' && !systemPrefersDark) {
-        this.applyTheme(true);
+      console.info(eventData.theme_params.bg_color);
+      const isDark = eventData.theme_params.bg_color < -1;
+      console.info('isDark', isDark);
+      if (eventType === 'theme_changed') {
+        console.info('we will update theme now');
+        console.info(systemPrefersDark);
+        this.applyTheme(isDark);
       }
     };
   }
