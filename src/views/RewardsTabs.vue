@@ -82,9 +82,9 @@ $rewards-tabs-height: 72px;
           overflow-x: hidden;
           &,
           &.is-active {
-            @include page-header-title(true);
             border-top-right-radius: 0;
             border-top-left-radius: inherit;
+            @include page-header-title(true);
           }
           &:last-child {
             border-top-right-radius: inherit;

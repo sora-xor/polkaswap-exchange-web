@@ -152,9 +152,9 @@ export default class AllWithdrawsDialog extends Mixins(StakingMixin, mixins.Dial
 }
 
 .all-withdraws-scrollbar {
-  @include scrollbar;
   height: 200px !important;
   margin: 0 -24px !important;
+  @include scrollbar;
 
   ul {
     list-style-type: none;
