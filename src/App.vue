@@ -263,9 +263,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private detectSystemTheme() {
-    console.info('Detecting system theme');
     this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    console.info('Prefers dark scheme:', this.prefersDarkScheme.matches ? 'dark mode' : 'light mode');
 
     // This is needed when change not in TG Mini App
     this.handleThemeChange = async (e: MediaQueryListEvent) => {
@@ -273,18 +271,16 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       this.applyTheme(e.matches);
     };
 
-    console.info('Adding event listener for prefers-color-scheme change');
     this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
 
     const systemPrefersDark = this.prefersDarkScheme.matches;
-    console.info('Initial theme:', systemPrefersDark ? 'dark mode' : 'light mode');
     this.applyTheme(systemPrefersDark);
 
     const telegram = (window.Telegram as any) || {};
 
     if (this.isTMA) {
-      console.info('we are in teelgrm');
       const webApp = window.Telegram.WebApp;
+
       // This is needed when change in Chat Settings "Day" / "Night" Mode
       const colorScheme = webApp.colorScheme;
       console.info('Telegram WebApp colorScheme:', colorScheme);
@@ -293,15 +289,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // This is needed when change by "Auto-Night Mode" with "System Default"
       telegram.WebView.receiveEvent = (eventType: string, eventData: any) => {
         if (eventType === 'theme_changed') {
-          console.info('we received theme_changed event');
-          console.info(eventType);
-          console.info(eventData);
-          console.info(eventData.theme_params.bg_color);
-
           const isDark = eventData.theme_params.bg_color < -1;
-          console.info('isDark', isDark);
-
-          console.info('we will update theme now');
           this.applyTheme(isDark);
         }
       };
