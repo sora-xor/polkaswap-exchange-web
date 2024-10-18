@@ -90,54 +90,54 @@ class TmaSdk {
     }
   }
 
-  // TODO delete later
-  public getColorScheme(): 'light' | 'dark' | null {
-    try {
-      const WebApp = Telegram?.WebApp;
-      return WebApp?.colorScheme || null;
-    } catch (error) {
-      console.warn('[TMA]: getColorScheme', error);
-      return null;
-    }
-  }
+  // // TODO delete later
+  // public getColorScheme(): 'light' | 'dark' | null {
+  //   try {
+  //     const WebApp = Telegram?.WebApp;
+  //     return WebApp?.colorScheme || null;
+  //   } catch (error) {
+  //     console.warn('[TMA]: getColorScheme', error);
+  //     return null;
+  //   }
+  // }
 
-  //       const newWebApp = Telegram?.WebApp;
-  //       console.info('newWebApp', newWebApp);
-  //       // Retrieve the new color scheme
-  // const newColorScheme = newWebApp.colorScheme || null;
+  // //       const newWebApp = Telegram?.WebApp;
+  // //       console.info('newWebApp', newWebApp);
+  // //       // Retrieve the new color scheme
+  // // const newColorScheme = newWebApp.colorScheme || null;
 
-  // TODO delete later
-  public onThemeChanged(callback: (colorScheme: 'light' | 'dark' | null) => void): () => void {
-    console.info('[onThemeChanged] Function called.');
+  // // TODO delete later
+  // public onThemeChanged(callback: (colorScheme: 'light' | 'dark' | null) => void): () => void {
+  //   console.info('[onThemeChanged] Function called.');
 
-    const WebApp = Telegram?.WebApp;
+  //   const WebApp = Telegram?.WebApp;
 
-    if (WebApp && WebApp.onEvent) {
-      console.info('[onThemeChanged] WebApp and onEvent are available.');
+  //   if (WebApp && WebApp.onEvent) {
+  //     console.info('[onThemeChanged] WebApp and onEvent are available.');
 
-      const handler = () => {
-        console.info('[onThemeChanged] themeChanged event triggered.');
+  //     const handler = () => {
+  //       console.info('[onThemeChanged] themeChanged event triggered.');
 
-        const newColorScheme = WebApp.colorScheme || null;
-        console.info('[onThemeChanged] New color scheme:', newColorScheme);
+  //       const newColorScheme = WebApp.colorScheme || null;
+  //       console.info('[onThemeChanged] New color scheme:', newColorScheme);
 
-        try {
-          console.info('[onThemeChanged] Executing callback with new color scheme.');
-          callback(newColorScheme);
-        } catch (error) {
-          console.error('[onThemeChanged] Error executing callback:', error);
-        }
-      };
+  //       try {
+  //         console.info('[onThemeChanged] Executing callback with new color scheme.');
+  //         callback(newColorScheme);
+  //       } catch (error) {
+  //         console.error('[onThemeChanged] Error executing callback:', error);
+  //       }
+  //     };
 
-      WebApp.onEvent('themeChanged', handler);
+  //     WebApp.onEvent('themeChanged', handler);
 
-      return () => {
-        WebApp.offEvent('themeChanged', handler);
-      };
-    }
+  //     return () => {
+  //       WebApp.offEvent('themeChanged', handler);
+  //     };
+  //   }
 
-    return () => {};
-  }
+  //   return () => {};
+  // }
 
   /**
    * Update the theme of the Telegram Mini App using `var(--s-color-utility-body)`
