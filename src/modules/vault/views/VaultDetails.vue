@@ -691,13 +691,14 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     &-icon {
       $icon-size: 12px;
 
-      @include ltv-status('success');
-      @include ltv-status('warning');
-      @include ltv-status('error');
       border-radius: 50%;
       height: $icon-size;
       width: $icon-size;
       margin-right: 2px;
+
+      @include ltv-status('success');
+      @include ltv-status('warning');
+      @include ltv-status('error');
     }
   }
 }

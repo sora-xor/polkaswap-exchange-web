@@ -305,7 +305,7 @@ $sora-logo-width: 115px;
     color: var(--s-color-base-content-secondary);
     font-size: 12px;
     line-height: 12px;
-    margin-right: $basic-spacing / 2;
+    margin-right: $basic-spacing * 0.5;
     margin-top: 2px;
     white-space: nowrap;
   }

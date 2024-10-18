@@ -419,10 +419,10 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     align-items: center;
 
     .link {
-      @include focus-outline;
       font-size: var(--s-heading6-font-size);
       margin-bottom: 12px;
       color: var(--s-color-status-info);
+      @include focus-outline;
     }
   }
   &-info {
