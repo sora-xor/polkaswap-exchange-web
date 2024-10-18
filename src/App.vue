@@ -264,7 +264,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   // THIS IS THE LAST ONE
   private detectSystemTheme() {
-    console.info('Detecting system theme');
+    console.info('NEW Detecting system theme');
 
     // Set up prefers-color-scheme listener
     this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
@@ -283,22 +283,25 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     // Initial theme application
     const systemPrefersDark = this.prefersDarkScheme.matches;
     console.info('Initial theme:', systemPrefersDark ? 'dark mode' : 'light mode');
-    this.applyTheme(systemPrefersDark);
 
-    // Listen for Telegram WebView's `theme_changed` event
-    window.addEventListener('message', (event) => {
-      if (event.data && event.data.eventName === 'theme_changed') {
-        const themeParams = event.data.theme_params;
-        console.info('Received Telegram theme_changed event:', themeParams);
+    // Check if Telegram WebApp is available
+    if (window.Telegram && window.Telegram.WebApp) {
+      const webApp = window.Telegram.WebApp;
+      // Apply initial Telegram theme
+      const colorScheme = webApp.colorScheme; // 'light' or 'dark'
+      console.info('Telegram WebApp colorScheme:', colorScheme);
+      this.applyTheme(systemPrefersDark);
 
-        // Check if the system does not prefer dark mode, but the Telegram theme indicates a dark theme
-        if ((!systemPrefersDark && themeParams) || themeParams.bg_color < -10000000) {
-          // Example condition for dark theme
-          console.info('Applying dark theme based on Telegram theme params');
-          this.applyTheme(true); // Apply dark theme
-        }
-      }
-    });
+      // Listen for Telegram WebApp's `theme_changed` event
+      (webApp as any).onEvent('theme_changed', () => {
+        const newColorScheme = webApp.colorScheme;
+        console.info('Received Telegram theme_changed event:', newColorScheme);
+        this.applyTheme(true);
+      });
+    } else {
+      // If Telegram WebApp is not available, use system theme
+      this.applyTheme(systemPrefersDark);
+    }
   }
 
   async created() {
