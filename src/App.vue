@@ -262,56 +262,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     tmaSdkService.updateTheme();
   }
 
-  // THIS IS THE LAST ONE
-  // private detectSystemTheme() {
-  //   console.info('NEW Detecting system theme');
-
-  //   // Set up prefers-color-scheme listener
-  //   this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-  //   console.info('Prefers dark scheme:', this.prefersDarkScheme.matches ? 'dark mode' : 'light mode');
-
-  //   // Handle system theme change
-  //   this.handleThemeChange = async (e: MediaQueryListEvent) => {
-  //     console.info('We are in handleThemeChange');
-  //     console.info('Prefers-color-scheme changed:', e.matches ? 'dark' : 'light');
-  //     this.applyTheme(e.matches); // Apply the system theme change
-  //   };
-
-  //   console.info('Adding event listener for prefers-color-scheme change');
-  //   this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
-
-  //   // Initial theme application
-  //   const systemPrefersDark = this.prefersDarkScheme.matches;
-  //   console.info('Initial theme:', systemPrefersDark ? 'dark mode' : 'light mode');
-
-  //   // Check if Telegram WebApp is available
-  //   if (window.Telegram && window.Telegram.WebApp) {
-  //     const webApp = window.Telegram.WebApp;
-  //     // Apply initial Telegram theme
-  //     const colorScheme = webApp.colorScheme; // 'light' or 'dark'
-  //     console.info('Telegram WebApp colorScheme:', colorScheme);
-  //     this.applyTheme(systemPrefersDark);
-
-  //     // Listen for Telegram WebApp's `theme_changed` event
-  //     (webApp as any).onEvent('theme_changed', () => {
-  //       const newColorScheme = webApp.colorScheme;
-  //       console.info('Received Telegram theme_changed event:', newColorScheme);
-  //       this.applyTheme(true);
-  //     });
-  //   } else {
-  //     // If Telegram WebApp is not available, use system theme
-  //     this.applyTheme(systemPrefersDark);
-  //   }
-  // }
-
   private detectSystemTheme() {
-    console.info('NEW Detecting system theme');
-
-    // Set up prefers-color-scheme listener
+    console.info('Detecting system theme');
     this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
     console.info('Prefers dark scheme:', this.prefersDarkScheme.matches ? 'dark mode' : 'light mode');
 
-    // Handle system theme change
+    // This is needed when change not in TG Mini App
     this.handleThemeChange = async (e: MediaQueryListEvent) => {
       console.info('Prefers-color-scheme changed:', e.matches ? 'dark' : 'light');
       this.applyTheme(e.matches);
@@ -320,51 +276,21 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     console.info('Adding event listener for prefers-color-scheme change');
     this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
 
-    // Initial theme application
     const systemPrefersDark = this.prefersDarkScheme.matches;
     console.info('Initial theme:', systemPrefersDark ? 'dark mode' : 'light mode');
     this.applyTheme(systemPrefersDark);
 
-    // const telegram = (window.Telegram as any) || {};
-    // telegram.WebView.receiveEvent = (eventType: string, eventData: any) => {
-    //   if (eventType === 'theme_changed') {
-    //     console.info('we received theme_changed event');
-    //     console.info(eventType);
-    //     console.info(eventData);
-    //     console.info(eventData.theme_params.bg_color);
-
-    //     const isDark = eventData.theme_params.bg_color < -1;
-    //     console.info('isDark', isDark);
-
-    //     console.info('we will update theme now');
-    //     this.applyTheme(isDark);
-    //   }
-    // };
-
     const telegram = (window.Telegram as any) || {};
-    // telegram.WebView.receiveEvent = (eventType: string, eventData: any) => {
-    //   if (eventType === 'theme_changed') {
-    //     console.info('we received theme_changed event');
-    //     console.info(eventType);
-    //     console.info(eventData);
-    //     console.info(eventData.theme_params.bg_color);
 
-    //     const isDark = eventData.theme_params.bg_color < -1;
-    //     console.info('isDark', isDark);
-
-    //     console.info('we will update theme now');
-    //     this.applyTheme(isDark);
-    //   }
-    // };
-
-    if (window.Telegram && window.Telegram.WebApp) {
+    if (this.isTMA) {
+      console.info('we are in teelgrm');
       const webApp = window.Telegram.WebApp;
-      // Apply initial Telegram theme
-      const colorScheme = webApp.colorScheme; // 'light' or 'dark'
+      // This is needed when change in Chat Settings "Day" / "Night" Mode
+      const colorScheme = webApp.colorScheme;
       console.info('Telegram WebApp colorScheme:', colorScheme);
       this.applyTheme(colorScheme === 'dark');
 
-      // Listen for Telegram WebApp's `theme_changed` event
+      // This is needed when change by "Auto-Night Mode" with "System Default"
       telegram.WebView.receiveEvent = (eventType: string, eventData: any) => {
         if (eventType === 'theme_changed') {
           console.info('we received theme_changed event');
