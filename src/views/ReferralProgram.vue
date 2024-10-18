@@ -540,7 +540,7 @@ export default class ReferralProgram extends Mixins(
     padding-left: $inner-spacing-medium;
   }
   &-icon {
-    background: var(--s-color-base-content-tertiary) url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
+    background: var(--s-color-base-content-tertiary) url('@/assets/img/invited-users.svg') 50% 50% no-repeat;
     border-radius: 50%;
     width: var(--s-size-small);
     height: var(--s-size-small);

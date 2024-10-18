@@ -282,7 +282,7 @@ export default class ExploreDemeter extends Mixins(DemeterBasePageMixin, Explore
 
       const assets = pool.isFarm ? [baseAsset, poolAsset] : [poolAsset];
       const name = assets.map((asset) => asset?.symbol ?? '').join('-');
-      const description = pool.isFarm ? '' : poolAsset?.name ?? '';
+      const description = pool.isFarm ? '' : (poolAsset?.name ?? '');
       const depositFee = new FPNumber(pool.depositFee ?? 0).mul(FPNumber.HUNDRED);
       const tvl = poolTokenPrice.mul(pool.totalTokensInPool);
       const emission = this.getEmission(pool, tokenInfo);

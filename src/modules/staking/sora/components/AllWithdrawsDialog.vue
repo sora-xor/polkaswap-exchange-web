@@ -11,7 +11,7 @@
           size="mini"
         >
           <div class="withdraw-content">
-            <token-logo class="withdraw-logo" :tokenSymbol="stakingAsset?.symbol" />
+            <token-logo class="withdraw-logo" :token-symbol="stakingAsset?.symbol" />
             <formatted-amount-with-fiat-value
               class="amount"
               :asset-symbol="stakingAsset?.symbol"

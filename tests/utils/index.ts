@@ -1,10 +1,12 @@
 import Wallet from '@soramitsu/soraneo-wallet-web';
 import SoramitsuElements, { Message, MessageBox, Notification } from '@soramitsu-ui/ui-vue2';
 import { createLocalVue } from '@vue/test-utils';
-import Vue, { VueConstructor } from 'vue';
+import Vue from 'vue';
 import Vuex from 'vuex';
 
 import i18n from '../../src/lang';
+
+import type { VueConstructor } from 'vue';
 
 export const localVue = createLocalVue();
 localVue.use(Vuex);

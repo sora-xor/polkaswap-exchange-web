@@ -122,8 +122,8 @@ function bridgeDataToHistoryItem(
   const externalNetworkType = isEthBridge
     ? BridgeNetworkType.Eth
     : isEvmBridge
-    ? BridgeNetworkType.Evm
-    : BridgeNetworkType.Sub;
+      ? BridgeNetworkType.Evm
+      : BridgeNetworkType.Sub;
 
   const [from, to] = isSubBridge
     ? state.isSoraToEvm

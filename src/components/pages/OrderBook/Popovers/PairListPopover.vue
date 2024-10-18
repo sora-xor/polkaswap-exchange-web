@@ -34,7 +34,7 @@
           <span>{{ t('priceText') }}</span>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount :value="row.price" fiatSign="" />
+          <formatted-amount :value="row.price" fiat-sign="" />
         </template>
       </s-table-column>
       <s-table-column width="110">

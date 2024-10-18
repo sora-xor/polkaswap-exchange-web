@@ -39,11 +39,12 @@
 </template>
 
 <script lang="ts">
-import { IndexerType } from '@soramitsu/soraneo-wallet-web/lib/consts';
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import type { Indexer } from '@/types/indexers';
+
+import type { IndexerType } from '@soramitsu/soraneo-wallet-web/lib/consts';
 
 @Component
 export default class SelectIndexer extends Mixins(TranslationMixin) {

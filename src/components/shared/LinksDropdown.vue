@@ -1,7 +1,7 @@
 <template>
   <s-dropdown
     class="s-dropdown--hash-menu"
-    borderRadius="mini"
+    border-radius="mini"
     type="ellipsis"
     icon="basic-more-vertical-24"
     placement="bottom-end"
