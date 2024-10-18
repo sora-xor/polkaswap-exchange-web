@@ -175,6 +175,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   private handleThemeChange: ((e: MediaQueryListEvent) => Promise<void>) | null = null;
   private removeTelegramThemeChangedListener: (() => void) | null = null;
 
+  private handleTelegramMessageEvent: ((event: MessageEvent) => void) | undefined;
+  private receiveEventFunction: ((eventType: string, eventData: any) => void) | undefined;
+  private isColorDark: ((color: string) => boolean) | undefined;
+
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
     if (!whitelistAssetArray.length) return;
@@ -263,8 +267,49 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   // THIS IS THE LAST ONE
+  // private detectSystemTheme() {
+  //   console.info('NEW Detecting system theme');
+
+  //   // Set up prefers-color-scheme listener
+  //   this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+  //   console.info('Prefers dark scheme:', this.prefersDarkScheme.matches ? 'dark mode' : 'light mode');
+
+  //   // Handle system theme change
+  //   this.handleThemeChange = async (e: MediaQueryListEvent) => {
+  //     console.info('We are in handleThemeChange');
+  //     console.info('Prefers-color-scheme changed:', e.matches ? 'dark' : 'light');
+  //     this.applyTheme(e.matches); // Apply the system theme change
+  //   };
+
+  //   console.info('Adding event listener for prefers-color-scheme change');
+  //   this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
+
+  //   // Initial theme application
+  //   const systemPrefersDark = this.prefersDarkScheme.matches;
+  //   console.info('Initial theme:', systemPrefersDark ? 'dark mode' : 'light mode');
+
+  //   // Check if Telegram WebApp is available
+  //   if (window.Telegram && window.Telegram.WebApp) {
+  //     const webApp = window.Telegram.WebApp;
+  //     // Apply initial Telegram theme
+  //     const colorScheme = webApp.colorScheme; // 'light' or 'dark'
+  //     console.info('Telegram WebApp colorScheme:', colorScheme);
+  //     this.applyTheme(systemPrefersDark);
+
+  //     // Listen for Telegram WebApp's `theme_changed` event
+  //     (webApp as any).onEvent('theme_changed', () => {
+  //       const newColorScheme = webApp.colorScheme;
+  //       console.info('Received Telegram theme_changed event:', newColorScheme);
+  //       this.applyTheme(true);
+  //     });
+  //   } else {
+  //     // If Telegram WebApp is not available, use system theme
+  //     this.applyTheme(systemPrefersDark);
+  //   }
+  // }
+
   private detectSystemTheme() {
-    console.info('NEW Detecting system theme');
+    console.info('Detecting system theme');
 
     // Set up prefers-color-scheme listener
     this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
@@ -272,7 +317,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
     // Handle system theme change
     this.handleThemeChange = async (e: MediaQueryListEvent) => {
-      console.info('We are in handleThemeChange');
       console.info('Prefers-color-scheme changed:', e.matches ? 'dark' : 'light');
       this.applyTheme(e.matches); // Apply the system theme change
     };
@@ -283,25 +327,43 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     // Initial theme application
     const systemPrefersDark = this.prefersDarkScheme.matches;
     console.info('Initial theme:', systemPrefersDark ? 'dark mode' : 'light mode');
+    this.applyTheme(systemPrefersDark);
 
-    // Check if Telegram WebApp is available
-    if (window.Telegram && window.Telegram.WebApp) {
-      const webApp = window.Telegram.WebApp;
-      // Apply initial Telegram theme
-      const colorScheme = webApp.colorScheme; // 'light' or 'dark'
-      console.info('Telegram WebApp colorScheme:', colorScheme);
-      this.applyTheme(systemPrefersDark);
+    // Function to determine if a color is dark
+    this.isColorDark = (color: string): boolean => {
+      // Remove '#' if present
+      if (color.startsWith('#')) {
+        color = color.slice(1);
+      }
+      // Parse RGB components
+      const r = parseInt(color.substring(0, 2), 16);
+      const g = parseInt(color.substring(2, 4), 16);
+      const b = parseInt(color.substring(4, 6), 16);
+      // Calculate luminance
+      const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      return luminance < 0.5; // Returns true if dark
+    };
 
-      // Listen for Telegram WebApp's `theme_changed` event
-      (webApp as any).onEvent('theme_changed', () => {
-        const newColorScheme = webApp.colorScheme;
-        console.info('Received Telegram theme_changed event:', newColorScheme);
-        this.applyTheme(true);
-      });
-    } else {
-      // If Telegram WebApp is not available, use system theme
-      this.applyTheme(systemPrefersDark);
-    }
+    // Handle events from Telegram Mobile (iOS, Android)
+    const handleTelegramThemeChanged = (eventData: any) => {
+      console.info('Received Telegram theme_changed event:', eventData);
+      this.applyTheme(true);
+    };
+
+    const telegram = (window.Telegram as any) || {};
+
+    // if (!telegram.WebView) {
+    //   telegram.WebView = {};
+    // }
+
+    telegram.WebView.receiveEvent = (eventType: string, eventData: any) => {
+      console.info('we received event');
+      console.info(eventType);
+      console.info(eventData);
+      if (eventType === 'theme_changed') {
+        handleTelegramThemeChanged(eventData);
+      }
+    };
   }
 
   async created() {
