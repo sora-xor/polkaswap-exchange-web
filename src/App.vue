@@ -362,7 +362,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // Apply initial Telegram theme
       const colorScheme = webApp.colorScheme; // 'light' or 'dark'
       console.info('Telegram WebApp colorScheme:', colorScheme);
-      this.applyTheme(systemPrefersDark);
+      this.applyTheme(colorScheme === 'dark');
 
       // Listen for Telegram WebApp's `theme_changed` event
       telegram.WebView.receiveEvent = (eventType: string, eventData: any) => {
