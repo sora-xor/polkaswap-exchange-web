@@ -145,14 +145,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   @Watch('libraryTheme', { immediate: true })
   onLibraryThemeChange(newTheme: Theme) {
-    console.info('we are in watch library theme');
-    console.info(newTheme);
-    console.info(this.selectedTheme);
-    if (this.isThemePreference) {
-      this.selectedTheme = HeaderMenuType.Theme;
-    } else {
-      this.selectedTheme = newTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
-    }
+    this.updateSelectedTheme(newTheme);
   }
 
   get mediaQueryList(): MediaQueryList {
@@ -160,11 +153,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   mounted() {
-    if (this.isThemePreference) {
-      this.selectedTheme = HeaderMenuType.Theme;
-    } else {
-      this.selectedTheme = this.libraryTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
-    }
+    this.updateSelectedTheme(this.libraryTheme);
   }
 
   handleDropdownVisibilityChange(visible: boolean) {
@@ -177,6 +166,14 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   get disclaimerText(): string {
     return this.disclaimerVisibility ? this.t('headerMenu.hideDisclaimer') : this.t('headerMenu.showDisclaimer');
+  }
+
+  private updateSelectedTheme(newTheme: Theme) {
+    if (this.isThemePreference) {
+      this.selectedTheme = HeaderMenuType.Theme;
+    } else {
+      this.selectedTheme = newTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
+    }
   }
 
   private getHideBalancesIcon(isDropdown = false): string {
