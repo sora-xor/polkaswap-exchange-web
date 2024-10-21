@@ -1,22 +1,10 @@
 <template>
   <div class="points__container">
-    <s-card
-      border-radius="small"
-      shadow="always"
-      size="medium"
-      pressed
-      :class="['points', { 'points-loading': loading }]"
-    >
+    <s-card border-radius="small" shadow="always" size="medium" pressed class="points">
       <template #header>
-        <div class="points__header">
-          <div>
-            <h2>{{ t('points.title') }}</h2>
-            <h3 v-if="!loading && isLoggedIn">{{ totalPoints }}</h3>
-          </div>
-          <p>Complete SORA Ecosystem-related tasks in order to qualify for a $3m AIRDROP</p>
-        </div>
+        <h3 class="points__header">{{ t('points.title') }}</h3>
       </template>
-      <div class="points__main s-flex-row">
+      <div class="points__main s-flex-column">
         <div v-if="!isLoggedIn" class="points__connect s-flex-column">
           <span class="points__connect-title d2">{{ t('points.loginText') }}</span>
           <s-button
@@ -27,101 +15,151 @@
             {{ t('connectWalletText') }}
           </s-button>
         </div>
-        <div v-else v-loading="loading" :class="['points__cards', 's-flex-column', { loading: loading }]">
-          <s-tabs v-model="categoryPoints" type="rounded" class="points__tabs">
-            <s-tab label="YOUR TASKS" name="tasks">
-              <s-scrollbar
-                class="points__cards-scrollbar"
-                :wrap-style="{ padding: '0', margin: '0', overflowY: 'auto' }"
+        <div v-else v-loading="loading">
+          <div class="points__card points__card-bridge" :style="bridgeCardStyles">
+            <div class="points__card-header s-flex-column">
+              <span class="points__card-title">{{ t('points.bridgeVolume') }}</span>
+              <formatted-amount
+                class="points__card-value"
+                :font-weight-rate="FontWeightRate.MEDIUM"
+                :font-size-rate="FontSizeRate.MEDIUM"
+                :value="totalBridgeVolume.amount"
+                :asset-symbol="totalBridgeVolume.suffix"
+                symbol-as-decimal
               >
-                <a
-                  class="points__soratopia s-flex"
-                  rel="nofollow noopener"
-                  target="_blank"
-                  href="https://t.me/soratopia_bot/app"
-                >
-                  <div class="points__soratopia-container s-flex">
-                    <button class="points__soratopia-action">{{ t('points.openTelegram') }}</button>
-                    <span class="points__soratopia-text">{{ t('points.toEarnPoints') }}</span>
-                  </div>
-                </a>
-                <a class="points__sora-card s-flex" rel="nofollow noopener" target="_blank" href="https://soracard.com">
-                  <div class="points__sora-card-container s-flex">
-                    <button class="points__sora-card-action">Apply now</button>
-                    <span class="points__sora-card-text">{{ t('points.toEarnPoints') }}</span>
-                  </div>
-                </a>
-                <task-card
-                  v-for="(pointsForCategory, categoryName) in pointsForCards"
-                  :key="categoryName"
-                  :points-for-category="pointsForCategory"
-                  :category-name="categoryName"
-                  class="points__card-task"
-                />
-              </s-scrollbar>
-            </s-tab>
-            <s-tab label="PROGRESS" name="progress">
-              <s-scrollbar
-                class="points__cards-scrollbar"
-                :wrap-style="{ padding: '0', margin: '0', overflowY: 'auto' }"
-              >
-                <div class="points__cards">
-                  <point-card
-                    v-for="[categoryName, pointsForCategory] in Object.entries(pointsForCards ?? {}).slice(0, -1)"
-                    :key="categoryName"
-                    :points-for-category="pointsForCategory"
-                    class="points__card"
-                  />
-                  <first-tx-card
-                    class="points__first-tx-card"
-                    :date="pointsForCards?.firstTxAccount?.currentProgress ?? 0"
+                <template #prefix>{{ currencySymbol }}</template>
+              </formatted-amount>
+            </div>
+          </div>
+          <div class="points__card points__card-xor">
+            <div class="item s-flex">
+              <span class="item-title">{{ t('points.feesSpent') }}</span>
+              <div class="item-value s-flex">
+                <div class="s-flex-column">
+                  <formatted-amount class="item-value__tokens" :value="feesSpent.amount">
+                    <template #prefix>{{ xorSymbol }}</template>
+                    {{ feesSpent.suffix }}
+                  </formatted-amount>
+                  <formatted-amount
+                    class="item-value__fiat"
+                    is-fiat-value
+                    fiat-default-rounding
+                    value-can-be-hidden
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :value="feesSpentFiat"
+                    is-formatted
                   />
                 </div>
-              </s-scrollbar>
-            </s-tab>
-          </s-tabs>
+                <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL" />
+              </div>
+            </div>
+            <s-divider class="points__card-divider" />
+            <div class="item s-flex">
+              <span class="item-title">{{ t('points.xorBurned') }}</span>
+              <div class="item-value s-flex">
+                <div class="s-flex-column">
+                  <formatted-amount class="item-value__tokens" :value="xorBurned.amount">
+                    <template #prefix>{{ xorSymbol }}</template>
+                    {{ xorBurned.suffix }}
+                  </formatted-amount>
+                  <formatted-amount
+                    class="item-value__fiat"
+                    is-fiat-value
+                    fiat-default-rounding
+                    value-can-be-hidden
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :value="xorBurnedFiat"
+                    is-formatted
+                  />
+                </div>
+                <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL" />
+              </div>
+            </div>
+          </div>
+          <div class="points__txs s-flex">
+            <div class="points__block swap s-flex-column">
+              <span class="points__block-header">SWAP TXNS</span>
+              <span class="points__block-value">{{ totalSwapTxs }}</span>
+            </div>
+            <div class="points__block bridge s-flex-column">
+              <span class="points__block-header">BRIDGE TXNS</span>
+              <span class="points__block-value">{{ totalBridgeTxs }}</span>
+            </div>
+            <div class="points__block pool s-flex-column">
+              <span class="points__block-header">POOL TXNS</span>
+              <span class="points__block-value">{{ totalPoolTxs }}</span>
+            </div>
+          </div>
+          <div class="points__card points__card-referrals" :style="referralsCardStyles">
+            <div class="points__card-header s-flex-column">
+              <span class="points__card-title">{{ t('points.yourReferrals') }}</span>
+              <span class="points__card-value s-flex">
+                <span class="account-icon" />
+                {{ t('points.accountsText', { amount: totalReferrals }) }}
+              </span>
+            </div>
+            <s-divider class="points__card-divider" />
+            <div class="item s-flex">
+              <span class="item-title">{{ t('points.yourRewards') }}</span>
+              <div class="item-value s-flex">
+                <div class="s-flex-column">
+                  <formatted-amount class="item-value__tokens" :value="totalReferralRewards.amount">
+                    <template #prefix>{{ xorSymbol }}</template>
+                    {{ totalReferralRewards.suffix }}
+                  </formatted-amount>
+                  <formatted-amount
+                    class="item-value__fiat"
+                    is-fiat-value
+                    fiat-default-rounding
+                    value-can-be-hidden
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :value="totalReferralRewardsFiat"
+                    is-formatted
+                  />
+                </div>
+                <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL" />
+              </div>
+            </div>
+          </div>
         </div>
+        <a
+          class="points__soratopia s-flex"
+          rel="nofollow noopener"
+          target="_blank"
+          href="https://t.me/soratopia_bot/app"
+        >
+          <div class="points__soratopia-container s-flex">
+            <button class="points__soratopia-action">{{ t('points.openTelegram') }}</button>
+            <span class="points__soratopia-text">{{ t('points.toEarnPoints') }}</span>
+          </div>
+        </a>
       </div>
     </s-card>
   </div>
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/sdk';
-import { XOR, KUSD, VXOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
-import { Components } from '@/consts';
-import { pointSystemCategory } from '@/consts/pointSystem';
+import { ZeroStringValue } from '@/consts';
 import { fetchData as fetchBurnXorData } from '@/indexer/queries/burnXor';
-import {
-  type BridgeData,
-  fetchBridgeData,
-  fetchCount,
-  fetchAccountMeta,
-  CountType,
-} from '@/indexer/queries/pointSystem';
+import { type BridgeData, fetchBridgeData, fetchCount, CountType } from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
-import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
-import { AccountPointsCalculation, CalculateCategoryPointResult, CategoryPoints } from '@/types/pointSystem';
-import { convertFPNumberToNumber } from '@/utils';
-import { pointsService } from '@/utils/pointSystem';
+import type { AmountWithSuffix } from '@/types/formats';
+import { formatAmountWithSuffix } from '@/utils';
 
-import type { NetworkFeesObject } from '@sora-substrate/sdk';
+import type { NetworkFeesObject, FPNumber } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
     TokenLogo: components.TokenLogo,
-    PointCard: lazyComponent(Components.PointCard),
-    TaskCard: lazyComponent(Components.TaskCard),
-    FirstTxCard: lazyComponent(Components.FirstTxCard),
-    SettingsTabs: lazyComponent(Components.SettingsTabs),
   },
 })
 export default class PointSystem extends Mixins(
@@ -134,62 +172,20 @@ export default class PointSystem extends Mixins(
   @state.referrals.referralRewards private referralRewards!: Nullable<ReferrerRewards>;
   @state.settings.blockNumber private blockNumber!: number;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
-  @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
+  @getter.libraryTheme private libraryTheme!: Theme;
   @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
+  @getter.assets.xor xor!: Nullable<AccountAsset>;
+  @getter.wallet.settings.currencySymbol currencySymbol!: string;
 
   @action.referrals.getAccountReferralRewards private getAccountReferralRewards!: AsyncFnWithoutArgs;
-  @action.pool.subscribeOnAccountLiquidityList private subscribeOnList!: AsyncFnWithoutArgs;
-  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnUpdates!: AsyncFnWithoutArgs;
 
-  readonly pointSystemCategory = pointSystemCategory;
   private burnData: Nullable<FPNumber> = null;
   private bridgeData: BridgeData[] = [];
   private poolDepositCount = 0;
   private poolWithdrawCount = 0;
   totalSwapTxs = 0;
-  categoryPoints: string = this.pointSystemCategory.tasks;
-  accountDataForPointsCalculation: AccountPointsCalculation = {
-    fees: {
-      amount: this.Zero,
-      amountUSD: this.Zero,
-    },
-    burned: {
-      amount: this.Zero,
-      amountUSD: this.Zero,
-    },
-    kensetsu: {
-      created: this.Zero,
-      closed: this.Zero,
-      amountUSD: this.Zero,
-    },
-    staking: {
-      amount: this.Zero,
-      amountUSD: this.Zero,
-    },
-    orderBook: {
-      created: this.Zero,
-      closed: this.Zero,
-      amountUSD: this.Zero,
-    },
-    governance: {
-      votes: this.Zero,
-      amount: this.Zero,
-      amountUSD: this.Zero,
-    },
-    bridge: {
-      incomingUSD: this.Zero,
-      outgoingUSD: this.Zero,
-    },
-    createdAt: {
-      timestamp: 0,
-      block: 0,
-    },
-  };
 
-  pointsForCards: { [key: string]: CalculateCategoryPointResult } | null = null;
   @Watch('isLoggedIn')
   private updateSubscriptions(value: boolean): void {
     if (value) {
@@ -203,6 +199,25 @@ export default class PointSystem extends Mixins(
     }
   }
 
+  get xorSymbol(): string {
+    return XOR.symbol;
+  }
+
+  get referralsCardStyles() {
+    return { backgroundImage: `url('/points/${this.libraryTheme}/referrals.png')` };
+  }
+
+  get bridgeCardStyles() {
+    return { backgroundImage: `url('/points/${this.libraryTheme}/bridge.png')` };
+  }
+
+  get totalReferrals(): number {
+    if (!this.referralRewards) {
+      return 0;
+    }
+    return Object.keys(this.referralRewards.invitedUserRewards).length;
+  }
+
   private get bridgeVolume(): FPNumber {
     return this.bridgeData.reduce((acc, { amount, assetId }) => {
       const fiat = this.getFPNumberFiatAmountByFPNumber(amount, { address: assetId } as Asset);
@@ -213,8 +228,29 @@ export default class PointSystem extends Mixins(
     }, this.Zero);
   }
 
+  get totalBridgeVolume(): AmountWithSuffix {
+    return formatAmountWithSuffix(this.bridgeVolume);
+  }
+
+  get xorBurned(): AmountWithSuffix {
+    return formatAmountWithSuffix(this.burnData ?? this.Zero);
+  }
+
+  get xorBurnedFiat(): string {
+    if (!this.burnData) return ZeroStringValue;
+    return this.getFiatAmountByFPNumber(this.burnData) || ZeroStringValue;
+  }
+
   private get totalOutgoingBridgeTxs(): number {
     return this.bridgeData.filter(({ type }) => type === 'outgoing').length;
+  }
+
+  get totalBridgeTxs(): number {
+    return this.bridgeData.length;
+  }
+
+  get totalPoolTxs(): number {
+    return this.poolDepositCount + this.poolWithdrawCount;
   }
 
   private get totalFees(): FPNumber {
@@ -234,75 +270,22 @@ export default class PointSystem extends Mixins(
     return fees;
   }
 
-  get totalPoints(): number {
-    if (!this.pointsForCards) {
-      return 0;
-    }
-    return Object.values(this.pointsForCards).reduce((sum, category) => {
-      return sum + (category.points || 0);
-    }, 0);
+  get feesSpent(): AmountWithSuffix {
+    return formatAmountWithSuffix(this.totalFees);
   }
 
-  getTotalLiquidityFiatValue(): number {
-    let totalFiatValue = 0;
-    this.accountLiquidity.forEach((liquidity) => {
-      const firstAsset = this.getAsset(liquidity.firstAddress) as AccountAsset;
-      const secondAsset = this.getAsset(liquidity.secondAddress) as AccountAsset;
-      const firstAssetFiatValue = parseFloat(
-        this.getFiatAmountByCodecString(liquidity.firstBalance, firstAsset)?.replace(',', '.') || '0'
-      );
-      const secondAssetFiatValue = parseFloat(
-        this.getFiatAmountByCodecString(liquidity.secondBalance, secondAsset)?.replace(',', '.') || '0'
-      );
-      totalFiatValue += firstAssetFiatValue + secondAssetFiatValue;
-    });
-    return totalFiatValue;
+  get feesSpentFiat(): string {
+    return this.getFiatAmountByFPNumber(this.totalFees) || ZeroStringValue;
   }
 
-  getCurrentFiatBalanceForToken(assetSymbol: string): number {
-    const fiatBalanceString =
-      this.getFiatBalance(this.accountAssets.find((asset) => asset.symbol === assetSymbol)) ?? '0';
-    const fiatBalanceFloat = parseFloat(fiatBalanceString.replace(',', '.'));
-    return fiatBalanceFloat;
+  get totalReferralRewards(): AmountWithSuffix {
+    return formatAmountWithSuffix(this.referralRewards?.rewards ?? this.Zero);
   }
 
-  getPointsForCategories(accountDataForPointsCalculation: AccountPointsCalculation): CategoryPoints {
-    const liquidityProvision = this.getTotalLiquidityFiatValue();
-    const VXORHoldings = this.getCurrentFiatBalanceForToken(VXOR.symbol);
-    const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards ?? this.Zero);
-    const depositVolumeBridges =
-      convertFPNumberToNumber(accountDataForPointsCalculation?.bridge.incomingUSD ?? this.Zero) +
-      convertFPNumberToNumber(accountDataForPointsCalculation?.bridge.outgoingUSD ?? this.Zero);
-    const networkFeeSpent = convertFPNumberToNumber(accountDataForPointsCalculation?.fees.amountUSD ?? this.Zero);
-    const XORBurned = convertFPNumberToNumber(accountDataForPointsCalculation?.burned.amountUSD ?? this.Zero);
-    const XORHoldings = this.getCurrentFiatBalanceForToken(XOR.symbol);
-    const kensetsuVolumeRepaid = convertFPNumberToNumber(
-      accountDataForPointsCalculation?.kensetsu.amountUSD ?? this.Zero
-    );
-    const KUSDHoldings = this.getCurrentFiatBalanceForToken(KUSD.symbol);
-    const orderbookVolume = convertFPNumberToNumber(accountDataForPointsCalculation?.orderBook.amountUSD ?? this.Zero);
-    const governanceLockedXOR = convertFPNumberToNumber(
-      accountDataForPointsCalculation?.governance.amountUSD ?? this.Zero
-    );
-    const nativeXorStaking = convertFPNumberToNumber(accountDataForPointsCalculation?.staking.amountUSD ?? this.Zero);
-    const firstTxAccount = accountDataForPointsCalculation?.createdAt.timestamp ?? 0;
+  get totalReferralRewardsFiat(): string {
+    if (!this.referralRewards?.rewards) return ZeroStringValue;
 
-    const pointsForCategories = {
-      liquidityProvision,
-      VXORHoldings,
-      referralRewards,
-      depositVolumeBridges,
-      networkFeeSpent,
-      XORBurned,
-      XORHoldings,
-      governanceLockedXOR,
-      kensetsuVolumeRepaid,
-      orderbookVolume,
-      nativeXorStaking,
-      KUSDHoldings,
-      firstTxAccount,
-    };
-    return pointsForCategories;
+    return this.getFiatAmountByFPNumber(this.referralRewards.rewards) || ZeroStringValue;
   }
 
   private async initData(): Promise<void> {
@@ -312,43 +295,20 @@ export default class PointSystem extends Mixins(
       const account = this.account.address;
       const end = this.blockNumber;
       if (!(account && end)) return;
-
-      const accountMeta = await fetchAccountMeta(account);
-      if (accountMeta) {
-        this.accountDataForPointsCalculation = accountMeta;
-      } else {
-        // Burned XOR
-        const burnData = await fetchBurnXorData(0, end, account);
-        this.burnData = burnData.reduce((acc, { amount }) => acc.add(amount), this.Zero);
-        // Bridge data
-        this.bridgeData = await fetchBridgeData(0, end, account);
-        // Swap, pool deposit and withdraw txs count
-        this.totalSwapTxs = await fetchCount(0, end, account, CountType.Swap);
-        this.poolDepositCount = await fetchCount(0, end, account, CountType.PoolDeposit);
-        this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
-
-        this.accountDataForPointsCalculation.fees = {
-          amount: this.totalFees ?? this.Zero,
-          amountUSD: new FPNumber(this.getFiatAmountByFPNumber(this.totalFees) || '0'),
-        };
-        this.accountDataForPointsCalculation.burned = {
-          amount: this.burnData ?? this.Zero,
-          amountUSD: new FPNumber(this.getFiatAmountByFPNumber(this.burnData) || '0'),
-        };
-        // Setting for incominUSD all bridge volume
-        this.accountDataForPointsCalculation.bridge.incomingUSD = new FPNumber(this.bridgeVolume || '0');
-      }
-
-      this.pointsForCards = pointsService.calculateCategoryPoints(
-        this.getPointsForCategories(this.accountDataForPointsCalculation)
-      );
+      // Burned XOR
+      const burnData = await fetchBurnXorData(0, end, account);
+      this.burnData = burnData.reduce((acc, { amount }) => acc.add(amount), this.Zero);
+      // Bridge data
+      this.bridgeData = await fetchBridgeData(0, end, account);
+      // Swap, pool deposit and withdraw txs count
+      this.totalSwapTxs = await fetchCount(0, end, account, CountType.Swap);
+      this.poolDepositCount = await fetchCount(0, end, account, CountType.PoolDeposit);
+      this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
     }
   }
 
   created(): void {
     this.withApi(async () => {
-      this.subscribeOnList();
-      this.subscribeOnUpdates();
       await this.initData();
     });
   }
@@ -357,110 +317,24 @@ export default class PointSystem extends Mixins(
 
 <style lang="scss">
 .container .points .el-loading-mask {
-  margin-left: calc(0px - $inner-spacing-small);
-  width: calc(100% + $inner-spacing-big);
-}
-.el-tabs__header {
-  width: 100% !important;
-}
-.el-tabs__nav {
-  width: 100%;
-  justify-content: space-between;
-}
-
-.points__tabs {
-  .el-tabs__item {
-    padding: 0 50px !important;
-    @include mobile(true) {
-      padding: 0 25px !important;
-    }
-  }
-}
-.s-tabs .el-tabs__header .el-tabs__item {
-  font-weight: 400 !important;
-}
-
-.points__cards-scrollbar {
-  scrollbar-width: none;
-  padding: 0;
+  border-radius: var(--s-border-radius-mini);
+  margin-left: -$inner-spacing-mini;
+  width: calc(100% + $inner-spacing-medium);
+  height: calc(100% - $inner-spacing-mini);
 }
 </style>
 
 <style lang="scss" scoped>
-$card-height: calc($sidebar-max-width - $inner-spacing-mini);
-$scrollbar-loader-height: calc($card-height * 2.6);
-$max-asset-size: calc($select-asset-item-height * 2);
-
-.s-card {
-  box-shadow: unset !important;
-  padding: $inner-spacing-small !important;
-  padding-bottom: unset !important;
-}
 .points {
-  &.points-loading {
-    background-color: unset;
-  }
   background-image: url('~@/assets/img/points/header.png');
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: top;
-  background-color: var(--s-color-base-disabled);
-  width: 100%;
-  &__cards-scrollbar {
-    max-height: $scrollbar-loader-height;
-    overflow-y: auto;
+  &__header {
+    color: white;
   }
   &__main {
-    margin-top: calc($inner-spacing-medium + $inner-spacing-tiny);
-  }
-  &__row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  &__container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: $inner-spacing-medium;
-  }
-  &__first-cards {
-    display: flex;
-    flex-direction: column;
-  }
-  &__header {
-    display: flex;
-    flex-direction: column;
-    gap: calc($inner-spacing-big + 3px);
-    margin-bottom: calc($inner-spacing-small + 2px);
-    margin-top: $inner-spacing-small;
-    div {
-      align-items: center;
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      color: var(--s-color-base-on-accent);
-      h3 {
-        font-weight: 300;
-        font-size: 32px;
-      }
-      h2 {
-        text-align: left;
-        max-width: $max-asset-size;
-        font-weight: 700;
-        font-size: 16px;
-      }
-    }
-    p {
-      max-width: $explore-search-input-max-width;
-      color: var(--s-color-base-border-primary);
-      font-weight: 400;
-    }
-  }
-  &_main {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
+    padding-top: $inner-spacing-small;
   }
   &__connect {
     height: 350px;
@@ -477,58 +351,64 @@ $max-asset-size: calc($select-asset-item-height * 2);
       margin: 0 $basic-spacing-medium;
     }
   }
-  &__cards {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: calc($basic-spacing-small + 1px);
-    &.loading {
-      height: $scrollbar-loader-height;
-    }
-  }
-
-  &__card,
-  &__card-task,
-  &__first-tx-card {
-    width: $sidebar-max-width;
-    height: $card-height;
-    background-color: var(--s-color-base-border-primary);
+  &__card {
+    background-color: var(--s-color-utility-surface);
+    box-shadow: var(--s-shadow-element-pressed);
     border-radius: var(--s-border-radius-mini);
     padding: $inner-spacing-medium;
     margin-bottom: $inner-spacing-mini;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: top right;
-    box-sizing: border-box;
-  }
-  &__first-tx-card {
-    height: calc($basic-spacing * 3);
-    width: 100%;
-    padding: $basic-spacing-small $basic-spacing;
-    margin-bottom: unset;
-  }
-  &__card-task {
-    width: 100%;
-    max-height: $max-asset-size;
-    padding: $basic-spacing;
-  }
-
-  @include mobile(true) {
-    &__card {
-      width: 100%;
+    text-transform: uppercase;
+    &-title {
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-small);
+      font-weight: 800;
+      margin-bottom: $inner-spacing-mini;
     }
-    &__first-tx-card {
-      height: unset;
+    &-value {
+      align-items: center;
+      font-size: var(--s-font-size-medium);
+      font-weight: 800;
     }
-    &__card-task {
-      max-height: unset;
-      height: unset;
+    &-divider {
+      margin: $inner-spacing-mini 0;
+    }
+    &-referrals {
+      background-size: 90px;
+      .account-icon {
+        background: var(--s-color-base-content-tertiary) url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
+        border-radius: 50%;
+        width: var(--s-size-small);
+        height: var(--s-size-small);
+        margin-right: $inner-spacing-mini;
+      }
     }
   }
-
-  &__soratopia,
-  &__sora-card {
+  &__txs {
+    justify-content: space-between;
+    margin-bottom: $inner-spacing-mini;
+    gap: $inner-spacing-mini;
+  }
+  &__block {
+    background-color: var(--s-color-utility-surface);
+    box-shadow: var(--s-shadow-element-pressed);
+    border-radius: var(--s-border-radius-mini);
+    padding: $inner-spacing-medium;
+    font-weight: 800;
+    &-header {
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-small);
+      margin-bottom: $inner-spacing-mini;
+    }
+    &-value {
+      font-size: var(--s-font-size-medium);
+    }
+  }
+  &__soratopia {
     min-height: 102px;
+    box-shadow: var(--s-shadow-element-pressed);
     background-image: url('~@/assets/img/points/soratopia.png');
     background-repeat: no-repeat;
     background-size: cover;
@@ -536,7 +416,6 @@ $max-asset-size: calc($select-asset-item-height * 2);
     color: var(--s-color-base-on-accent);
     border-radius: var(--s-border-radius-mini);
     align-items: flex-end;
-    margin-bottom: 8px;
     @include focus-outline;
     &-container {
       align-items: center;
@@ -544,7 +423,7 @@ $max-asset-size: calc($select-asset-item-height * 2);
       margin: $inner-spacing-medium;
     }
     &-action {
-      background-color: var(--s-color-status-info);
+      background-color: #52a1e3;
       border-radius: var(--s-border-radius-small);
       color: var(--s-color-base-on-accent);
       font-size: var(--s-font-size-small);
@@ -572,12 +451,24 @@ $max-asset-size: calc($select-asset-item-height * 2);
       }
     }
   }
-  &__sora-card {
-    background-image: url('~@/assets/img/points/sora-card.png');
-    &-action {
-      background-color: white;
-      color: #ee2233;
-      border: unset;
+}
+.item {
+  align-items: center;
+  font-size: var(--s-font-size-small);
+  font-weight: 700;
+  &-title {
+    flex: 1;
+    margin-right: $inner-spacing-mini;
+    color: var(--s-color-base-content-secondary);
+    text-transform: uppercase;
+  }
+  &-value {
+    align-items: center;
+    & > div {
+      align-items: flex-end;
+    }
+    &__icon {
+      margin-left: $inner-spacing-mini;
     }
   }
 }

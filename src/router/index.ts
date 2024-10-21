@@ -16,6 +16,7 @@ import { VaultPageNames } from '@/modules/vault/consts';
 import { vaultLazyView } from '@/modules/vault/router';
 import store from '@/store';
 import { updateDocumentTitle } from '@/utils';
+// import { state } from '@/store/decorators';
 
 Vue.use(VueRouter);
 
@@ -205,6 +206,11 @@ const routes: Array<RouteConfig> = [
     path: '',
     component: lazyView(PageNames.RewardsTabs),
     children: [
+      {
+        path: '/pointsv2',
+        name: PageNames.PointSystemV2,
+        component: lazyView(PageNames.PointSystemV2),
+      },
       {
         path: '/points',
         name: PageNames.PointSystem,
