@@ -1,16 +1,15 @@
 <template>
-  <dialog-base
-    :visible="visible"
-    @update:visible="handleVisibleChange"
-    :title="pointsForCategory.titleProgress"
-    class="task-dialog"
-  >
+  <dialog-base :visible.sync="isVisible" class="task-dialog" :title="pointsForCategory.titleProgress">
     <div>
-      <p>Complete {{ pointsForCategory.titleProgress }}-related tasks in order to level up your skill</p>
+      <p class="task-dialog__title-progress">
+        Complete {{ pointsForCategory.titleProgress }}-related tasks in order to level up your skill
+      </p>
       <div class="task-dialog__card-progress">
         <div class="current-level">
           <p>Your level</p>
-          <p>LVL {{ levelCurrent }} <span>/ LVL 6</span></p>
+          <p>
+            LVL {{ levelCurrent }} <span>/ LVL {{ maxLevel }}</span>
+          </p>
         </div>
         <div class="progress-container">
           <div class="progress-bar" :style="{ width: progressPercentage + '%' }"></div>
@@ -23,14 +22,14 @@
       </div>
       <div class="task-dialog__card-current">
         <div class="img-title">
-          <token-logo v-if="isTokenImage" :token="this.getImageSrc(imageName)" size="small" />
-          <img v-else :src="this.getImageSrc(imageName)" :alt="imageName" />
+          <token-logo v-if="isTokenImage" :token="getImageSrc(imageName)" size="small" />
+          <img v-else :src="getImageSrc(imageName)" :alt="imageName" />
           <p>{{ pointsForCategory.titleTask }}</p>
         </div>
         <p class="description">{{ pointsForCategory.descriptionTask }}</p>
         <s-divider />
         <p class="currently-amount">
-          Currently: <span> ${{ this.pointsForCategory.currentProgress.toFixed(2) }}</span>
+          Currently: <span> ${{ pointsForCategory.currentProgress.toFixed(2) }}</span>
         </p>
       </div>
     </div>
@@ -41,7 +40,7 @@
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import { getImageSrc, isTokenImage } from '@/consts/pointSystem';
+import { getImageSrc, isTokenImage, MAX_LEVEL } from '@/consts/pointSystem';
 import { CalculateCategoryPointResult } from '@/types/pointSystem';
 
 @Component({
@@ -50,20 +49,15 @@ import { CalculateCategoryPointResult } from '@/types/pointSystem';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class TaskDialog extends Mixins(mixins.TranslationMixin) {
+export default class TaskDialog extends Mixins(mixins.TranslationMixin, mixins.DialogMixin) {
   @Prop({ required: true }) readonly pointsForCategory!: CalculateCategoryPointResult;
-  @Prop({ required: true }) readonly visible!: boolean;
-  @Prop({ required: true }) readonly onClose!: () => void;
-
-  private handleVisibleChange(newVal: boolean) {
-    if (!newVal) {
-      this.onClose();
-      this.$emit('close');
-    }
-  }
 
   getImageSrc(imageName: string): any {
     return getImageSrc(imageName);
+  }
+
+  get maxLevel(): number {
+    return MAX_LEVEL;
   }
 
   get isTokenImage(): boolean {
@@ -87,6 +81,10 @@ export default class TaskDialog extends Mixins(mixins.TranslationMixin) {
       100
     );
   }
+
+  closeTaskDialog() {
+    this.closeDialog();
+  }
 }
 </script>
 
@@ -97,6 +95,9 @@ export default class TaskDialog extends Mixins(mixins.TranslationMixin) {
     margin-top: $basic-spacing-small;
     margin-bottom: $inner-spacing-medium;
     background-color: var(--s-color-base-content-tertiary);
+  }
+  &__title-progress {
+    text-align: left;
   }
   &__card-progress,
   &__card-current {

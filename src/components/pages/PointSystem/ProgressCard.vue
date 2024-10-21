@@ -17,14 +17,14 @@
     <token-logo
       v-if="isTokenImage"
       class="progress-circle__image"
-      :token="this.getImageSrc(imageName)"
+      :token="getImageSrc(imageName)"
       :width="imageSize"
       :height="imageSize"
     />
     <img
       v-else
       class="progress-circle__image"
-      :src="this.getImageSrc(imageName)"
+      :src="getImageSrc(imageName)"
       :alt="imageName"
       :width="imageSize"
       :height="imageSize"
@@ -44,19 +44,15 @@ import { getImageSrc, isTokenImage } from '@/consts/pointSystem';
   },
 })
 export default class ProgressCard extends Vue {
+  private svgSize = 72;
+  private strokeWidth = 3;
+  private imageSize = 27;
+
   @Prop({ required: true, type: String })
   readonly imageName!: string;
 
   @Prop({ required: true, type: Number })
   readonly progressPercentage!: number;
-
-  get svgSize(): number {
-    return 72;
-  }
-
-  get strokeWidth(): number {
-    return 3;
-  }
 
   get center(): number {
     return this.svgSize / 2;
@@ -72,10 +68,6 @@ export default class ProgressCard extends Vue {
 
   get progressDashOffset(): number {
     return this.circumference * (1 - this.progressPercentage / 100);
-  }
-
-  get imageSize(): number {
-    return 27;
   }
 
   getImageSrc(imageName: string): any {

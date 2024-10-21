@@ -2,32 +2,29 @@
   <div class="point-card">
     <div class="point-card__progress">
       <progress-card :imageName="imageName" :progressPercentage="progressPercentage" />
-      <p>LVL {{ levelCurrent }} <span>/ LVL 6</span></p>
+      <p>
+        LVL {{ levelCurrent }} <span>/ LVL {{ maxLevel }}</span>
+      </p>
     </div>
     <div class="point-card__name" :class="{ disabled: noNextLevel }" @click="handleClick">
-      <p>{{ this.pointsForCategory.titleProgress }}</p>
+      <p>{{ pointsForCategory.titleProgress }}</p>
       <i v-if="!noNextLevel" class="icontype s-icon-arrows-chevron-right-rounded-24" />
     </div>
     <div class="point-card__currently-amount">
       <p>Currently</p>
-      <p>${{ this.pointsForCategory.currentProgress.toFixed(2) }}</p>
+      <p>${{ pointsForCategory.currentProgress.toFixed(2) }}</p>
     </div>
     <s-divider />
     <div class="point-card__amount-of-points">
       <template v-if="!noNextLevel">
         <p>NEXT LVL</p>
-        <p>{{ this.pointsForCategory.nextLevelRewardPoints }}</p>
+        <p>{{ pointsForCategory.nextLevelRewardPoints }}</p>
       </template>
       <template v-else>
         <p class="max-level">You reached max lvl</p>
       </template>
     </div>
-    <task-dialog
-      :pointsForCategory="pointsForCategory"
-      :visible="isDialogVisible"
-      @close="handleDialogClose"
-      :onClose="handleDialogClose"
-    />
+    <task-dialog :pointsForCategory="pointsForCategory" :visible.sync="isDialogVisible" />
   </div>
 </template>
 
@@ -36,6 +33,7 @@ import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
+import { MAX_LEVEL } from '@/consts/pointSystem';
 import { lazyComponent } from '@/router';
 import { CalculateCategoryPointResult } from '@/types/pointSystem';
 
@@ -53,6 +51,10 @@ export default class PointCard extends Mixins(mixins.TranslationMixin) {
   readonly pointsForCategory!: CalculateCategoryPointResult;
 
   private isDialogVisible = false;
+
+  get maxLevel(): number {
+    return MAX_LEVEL;
+  }
 
   get levelCurrent(): number {
     return this.pointsForCategory.levelCurrent;

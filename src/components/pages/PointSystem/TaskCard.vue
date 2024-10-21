@@ -1,8 +1,8 @@
 <template>
   <div class="task-card">
     <div class="task-card__title-image">
-      <token-logo v-if="isTokenImage" :token="this.getImageSrc(imageName)" size="small" />
-      <img v-else :src="this.getImageSrc(imageName)" :alt="imageName" />
+      <token-logo v-if="isTokenImage" :token="getImageSrc(imageName)" size="small" />
+      <img v-else :src="getImageSrc(imageName)" :alt="imageName" />
       <p>{{ pointsForCategory.titleTask }}</p>
     </div>
     <p class="task-card__description-task">{{ pointsForCategory.descriptionTask }}</p>
@@ -17,12 +17,7 @@
         {{ !pointsForCategory.minimumAmountForNextLevel ? 'Completed' : 'Complete' }}
       </s-button>
     </div>
-    <task-dialog
-      :pointsForCategory="pointsForCategory"
-      :visible="isDialogVisible"
-      @close="handleDialogClose"
-      :onClose="handleDialogClose"
-    />
+    <task-dialog :pointsForCategory="pointsForCategory" :visible.sync="isDialogVisible" />
   </div>
 </template>
 

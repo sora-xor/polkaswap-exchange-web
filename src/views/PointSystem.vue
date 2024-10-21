@@ -52,7 +52,7 @@
                   </div>
                 </a>
                 <task-card
-                  v-for="(pointsForCategory, categoryName) in this.pointsForCards"
+                  v-for="(pointsForCategory, categoryName) in pointsForCards"
                   :key="categoryName"
                   :points-for-category="pointsForCategory"
                   :category-name="categoryName"
@@ -67,14 +67,14 @@
               >
                 <div class="points__cards">
                   <point-card
-                    v-for="[categoryName, pointsForCategory] in Object.entries(this.pointsForCards ?? {}).slice(0, -1)"
+                    v-for="[categoryName, pointsForCategory] in Object.entries(pointsForCards ?? {}).slice(0, -1)"
                     :key="categoryName"
                     :points-for-category="pointsForCategory"
                     class="points__card"
                   />
                   <first-tx-card
                     class="points__first-tx-card"
-                    :date="this.pointsForCards?.firstTxAccount?.currentProgress ?? 0"
+                    :date="pointsForCards?.firstTxAccount?.currentProgress ?? 0"
                   />
                 </div>
               </s-scrollbar>
@@ -94,7 +94,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { Components } from '@/consts';
-import { pointSysemCategory } from '@/consts/pointSystem';
+import { pointSystemCategory } from '@/consts/pointSystem';
 import { fetchData as fetchBurnXorData } from '@/indexer/queries/burnXor';
 import {
   type BridgeData,
@@ -144,13 +144,13 @@ export default class PointSystem extends Mixins(
   @action.pool.subscribeOnAccountLiquidityList private subscribeOnList!: AsyncFnWithoutArgs;
   @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnUpdates!: AsyncFnWithoutArgs;
 
-  readonly pointSysemCategory = pointSysemCategory;
+  readonly pointSystemCategory = pointSystemCategory;
   private burnData: Nullable<FPNumber> = null;
   private bridgeData: BridgeData[] = [];
   private poolDepositCount = 0;
   private poolWithdrawCount = 0;
   totalSwapTxs = 0;
-  categoryPoints: string = this.pointSysemCategory.tasks;
+  categoryPoints: string = this.pointSystemCategory.tasks;
   accountDataForPointsCalculation: AccountPointsCalculation = {
     fees: {
       amount: this.Zero,

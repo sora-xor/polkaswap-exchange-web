@@ -4,9 +4,13 @@ import { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import store from '@/store';
 import { Category } from '@/types/pointSystem';
 
+export const MAX_LEVEL = 6;
 export const POINTS_PER_PERCENT = 1000;
 
+// 50%, 60%, 70%, 80%, 90%, 100%
 const defaultMultipliers = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+
+// Volume 0-100$, 100-500$ e.t.c
 const progressZero25K = [0, 100, 500, 1000, 5000, 25000];
 const progressZero10K = [0, 50, 100, 500, 1000, 10000];
 
@@ -31,7 +35,7 @@ const getAsset = (imageName: string): AccountAsset | null => {
   }
   const getAssetFromStore = store.getters.assets.assetDataByAddress;
   const asset = getAssetFromStore(imageName);
-  return asset !== undefined ? asset : null;
+  return asset ?? null;
 };
 
 export const isTokenImage = (imageName: string): boolean => {
@@ -153,7 +157,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
   },
 };
 
-export enum pointSysemCategory {
+export enum pointSystemCategory {
   tasks = 'tasks',
   progress = 'progress',
 }

@@ -5,7 +5,7 @@
 
     <div class="task-card__date">
       <p>Dated</p>
-      <p>{{ this.formattedDate }}</p>
+      <p>{{ formattedDate }}</p>
     </div>
   </div>
 </template>
