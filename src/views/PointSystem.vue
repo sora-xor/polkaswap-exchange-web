@@ -93,7 +93,7 @@ import { components, mixins, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/sora
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
-import { ZeroStringValue, Components } from '@/consts';
+import { Components } from '@/consts';
 import { pointSysemCategory } from '@/consts/pointSystem';
 import { fetchData as fetchBurnXorData } from '@/indexer/queries/burnXor';
 import {
@@ -106,15 +106,13 @@ import {
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
-import type { AmountWithSuffix } from '@/types/formats';
 import { AccountPointsCalculation, CalculateCategoryPointResult, CategoryPoints } from '@/types/pointSystem';
-import { formatAmountWithSuffix, convertFPNumberToNumber } from '@/utils';
+import { convertFPNumberToNumber } from '@/utils';
 import { pointsService } from '@/utils/pointSystem';
 
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
@@ -139,10 +137,7 @@ export default class PointSystem extends Mixins(
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
-  @getter.libraryTheme private libraryTheme!: Theme;
   @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
-  @getter.assets.xor xor!: Nullable<AccountAsset>;
-  @getter.wallet.settings.currencySymbol currencySymbol!: string;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   @action.referrals.getAccountReferralRewards private getAccountReferralRewards!: AsyncFnWithoutArgs;
@@ -208,21 +203,6 @@ export default class PointSystem extends Mixins(
     }
   }
 
-  get referralsCardStyles() {
-    return { backgroundImage: `url('/points/${this.libraryTheme}/referrals.png')` };
-  }
-
-  get bridgeCardStyles() {
-    return { backgroundImage: `url('/points/${this.libraryTheme}/bridge.png')` };
-  }
-
-  get totalReferrals(): number {
-    if (!this.referralRewards) {
-      return 0;
-    }
-    return Object.keys(this.referralRewards.invitedUserRewards).length;
-  }
-
   private get bridgeVolume(): FPNumber {
     return this.bridgeData.reduce((acc, { amount, assetId }) => {
       const fiat = this.getFPNumberFiatAmountByFPNumber(amount, { address: assetId } as Asset);
@@ -233,29 +213,8 @@ export default class PointSystem extends Mixins(
     }, this.Zero);
   }
 
-  get totalBridgeVolume(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.bridgeVolume);
-  }
-
-  get xorBurned(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.burnData ?? this.Zero);
-  }
-
-  get xorBurnedFiat(): string {
-    if (!this.burnData) return ZeroStringValue;
-    return this.getFiatAmountByFPNumber(this.burnData) || ZeroStringValue;
-  }
-
   private get totalOutgoingBridgeTxs(): number {
     return this.bridgeData.filter(({ type }) => type === 'outgoing').length;
-  }
-
-  get totalBridgeTxs(): number {
-    return this.bridgeData.length;
-  }
-
-  get totalPoolTxs(): number {
-    return this.poolDepositCount + this.poolWithdrawCount;
   }
 
   private get totalFees(): FPNumber {
@@ -273,24 +232,6 @@ export default class PointSystem extends Mixins(
       fees = fees.add(this.getFPNumberFromCodec(this.networkFees.RemoveLiquidity).mul(this.poolWithdrawCount));
     }
     return fees;
-  }
-
-  get feesSpent(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.totalFees);
-  }
-
-  get feesSpentFiat(): string {
-    return this.getFiatAmountByFPNumber(this.totalFees) || ZeroStringValue;
-  }
-
-  get totalReferralRewards(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.referralRewards?.rewards ?? this.Zero);
-  }
-
-  get totalReferralRewardsFiat(): string {
-    if (!this.referralRewards?.rewards) return ZeroStringValue;
-
-    return this.getFiatAmountByFPNumber(this.referralRewards.rewards) || ZeroStringValue;
   }
 
   get totalPoints(): number {
