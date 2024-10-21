@@ -479,8 +479,9 @@ ul ul {
   }
 
   &-body-scrollbar {
-    @include scrollbar;
     flex: 1;
+
+    @include scrollbar;
   }
 }
 

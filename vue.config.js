@@ -1,4 +1,5 @@
 const { defineConfig } = require('@vue/cli-service');
+const cssnano = require('cssnano');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 
@@ -94,6 +95,26 @@ module.exports = defineConfig({
           @import "@/styles/_mixins.scss";
           @import "@/styles/_typography.scss";
         `,
+      },
+      postcss: {
+        postcssOptions: {
+          plugins: [
+            cssnano({
+              preset: [
+                'default',
+                {
+                  discardComments: {
+                    removeAll: true,
+                  },
+                  normalizeWhitespace: true,
+                  mergeLonghand: true,
+                  mergeRules: true, // Merge duplicated CSS rules
+                  discardDuplicates: true, // Discard duplicate rules (mostly element-ui)
+                },
+              ],
+            }),
+          ],
+        },
       },
     },
   },

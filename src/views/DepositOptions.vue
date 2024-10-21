@@ -191,7 +191,7 @@ export default class DepositOptions extends Mixins(WalletConnectMixin) {
     box-shadow: var(--s-shadow-element);
     border-radius: 30px;
     padding: 1px 12px;
-    margin-right: $basic-spacing / 2;
+    margin-right: $inner-spacing-mini;
 
     &--pending {
       background: var(--s-color-base-content-secondary);

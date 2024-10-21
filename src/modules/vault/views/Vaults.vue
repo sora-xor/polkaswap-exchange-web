@@ -626,10 +626,10 @@ export default class Vaults extends Mixins(
         text-align: center;
       }
       &__link {
-        @include focus-outline;
         font-size: var(--s-heading6-font-size);
         margin-top: $inner-spacing-mini;
         color: var(--s-color-status-info);
+        @include focus-outline;
       }
     }
   }
