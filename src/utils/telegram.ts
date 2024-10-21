@@ -39,6 +39,7 @@ function useHaptic(type: HapticFeedbackBinding): void {
 
 class TmaSdk {
   private deviceOrientationHandler: ((event: DeviceOrientationEvent) => void) | null = null;
+  private themeChangeListener: ((eventType: string, eventData: any) => void) | null = null;
 
   public async init(botUrl?: string): Promise<void> {
     try {
@@ -87,6 +88,32 @@ class TmaSdk {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
       store.commit.settings.disableTMA();
       store.commit.wallet.account.setIsDesktop(false);
+    }
+  }
+
+  public listenForThemeChanges(applyThemeCallback: (isDark: boolean) => void): void {
+    console.info('we are in listenForThemeChanges');
+    const telegram = window.Telegram as any;
+
+    if (telegram?.WebView) {
+      console.info('the theme change listener');
+      this.themeChangeListener = (eventType: string, eventData: any) => {
+        if (eventType === 'theme_changed') {
+          const isDark = eventData.theme_params.bg_color < -1;
+          console.info('[TMA]: Theme changed to:', isDark ? 'dark' : 'light');
+          applyThemeCallback(isDark);
+        }
+      };
+      telegram.WebView.receiveEvent = this.themeChangeListener;
+    }
+  }
+
+  public removeThemeListener(): void {
+    console.info('we are in removeThemeListener');
+    const telegram = window.Telegram as any;
+    if (this.themeChangeListener && telegram?.WebView) {
+      telegram.WebView.receiveEvent = null;
+      this.themeChangeListener = null;
     }
   }
 

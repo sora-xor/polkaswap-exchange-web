@@ -74,7 +74,7 @@ import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { getMobileCssClasses, preloadFontFace, updateDocumentTitle, updatePipTheme } from '@/utils';
+import { getMobileCssClasses, preloadFontFace, updateDocumentTitle, updatePipTheme, applyTheme } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { tmaSdkService } from '@/utils/telegram';
@@ -121,6 +121,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
   @state.settings.isTMA isTMA!: boolean;
+  @state.settings.isThemePreference isThemePreference!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
@@ -172,7 +173,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
 
   private prefersDarkScheme: MediaQueryList | null = null;
-  private handleThemeChange: ((e: MediaQueryListEvent) => Promise<void>) | null = null;
+  private handleThemeChange: ((e: MediaQueryListEvent) => void) | null = null;
   private removeTelegramThemeChangedListener: (() => void) | null = null;
 
   @Watch('assetsToNotifyQueue')
@@ -210,6 +211,17 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   private async confirmInviteUserIfHasStorage(storageReferrerValue: string): Promise<void> {
     if (this.isLoggedIn && !!storageReferrerValue) {
       await this.confirmInvititation();
+    }
+  }
+
+  @Watch('isThemePreference', { immediate: true })
+  private onIsThemePreferenceChange(newVal: boolean) {
+    console.info('we are in watch');
+    console.info(newVal);
+    if (newVal) {
+      this.detectSystemTheme();
+    } else {
+      this.removeThemeListeners();
     }
   }
 
@@ -256,42 +268,42 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private applyTheme(isDark: boolean) {
+    console.info('we are in applyTheme');
     setTheme(isDark ? Theme.DARK : Theme.LIGHT);
     updatePipTheme();
     tmaSdkService.updateTheme();
   }
 
   private detectSystemTheme() {
+    console.info('we are in detectSystemTheme');
     this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-
-    // This is needed when change not in TG Mini App
-    this.handleThemeChange = async (e: MediaQueryListEvent) => {
-      console.info('Prefers-color-scheme changed:', e.matches ? 'dark' : 'light');
+    console.info('this.prefersDarkScheme', this.prefersDarkScheme);
+    this.handleThemeChange = (e: MediaQueryListEvent) => {
+      console.info('System theme changed:', e.matches ? 'dark' : 'light');
       this.applyTheme(e.matches);
     };
 
+    console.info('we will add this.prefersDarkScheme.addEventListener');
     this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
 
     const systemPrefersDark = this.prefersDarkScheme.matches;
+    console.info('systemPrefersDark', systemPrefersDark);
     this.applyTheme(systemPrefersDark);
 
-    const telegram = (window.Telegram as any) || {};
+    if (this.isTMA) {
+      tmaSdkService.listenForThemeChanges(this.applyTheme);
+    }
+  }
+
+  private removeThemeListeners() {
+    if (this.prefersDarkScheme && this.handleThemeChange) {
+      this.prefersDarkScheme.removeEventListener('change', this.handleThemeChange);
+      this.prefersDarkScheme = null;
+      this.handleThemeChange = null;
+    }
 
     if (this.isTMA) {
-      const webApp = window.Telegram.WebApp;
-
-      // This is needed when change in Chat Settings "Day" / "Night" Mode
-      const colorScheme = webApp.colorScheme;
-      console.info('Telegram WebApp colorScheme:', colorScheme);
-      this.applyTheme(colorScheme === 'dark');
-
-      // This is needed when change by "Auto-Night Mode" with "System Default"
-      telegram.WebView.receiveEvent = (eventType: string, eventData: any) => {
-        if (eventType === 'theme_changed') {
-          const isDark = eventData.theme_params.bg_color < -1;
-          this.applyTheme(isDark);
-        }
-      };
+      tmaSdkService.removeThemeListener();
     }
   }
 
@@ -343,7 +355,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     updateDocumentTitle(); // For the first load
     this.showDisclaimer();
     this.fetchAdsArray();
-    this.detectSystemTheme();
+    this.onIsThemePreferenceChange(this.isThemePreference);
   }
 
   mounted(): void {
@@ -448,10 +460,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async beforeDestroy(): Promise<void> {
     window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
-    if (this.prefersDarkScheme && this.handleThemeChange) {
-      this.prefersDarkScheme.removeEventListener('change', this.handleThemeChange);
-    }
-    this.removeTelegramThemeChangedListener?.();
+    // if (this.prefersDarkScheme && this.handleThemeChange) {
+    //   this.prefersDarkScheme.removeEventListener('change', this.handleThemeChange);
+    // }
+    // this.removeTelegramThemeChangedListener?.();
+    this.removeThemeListeners();
     if (screen.orientation) {
       screen.orientation.removeEventListener('change', this.handleOrientationChange);
     } else {

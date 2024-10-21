@@ -75,7 +75,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Language, Languages } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { getter, mutation, state } from '@/store/decorators';
-import { updatePipTheme } from '@/utils';
+import { updatePipTheme, applyTheme } from '@/utils';
 import { tmaSdkService } from '@/utils/telegram';
 
 import type { Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
@@ -124,6 +124,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @state.settings.language currentLanguage!: Language;
   @state.settings.isTMA isTMA!: boolean;
   @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
+  @state.settings.isThemePreference isThemePreference!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @state.wallet.settings.currency currency!: Currency;
 
@@ -131,6 +132,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @getter.settings.notificationActivated notificationActivated!: boolean;
 
   @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: FnWithoutArgs;
+  @mutation.settings.setIsThemePreference private setIsThemePreference!: (flag: boolean) => void;
   @mutation.settings.setAlertSettingsPopup private setAlertSettingsPopup!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.setSelectCurrencyDialogVisibility private setCurrencyDialogVisibility!: (flag: boolean) => void;
@@ -143,7 +145,14 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   @Watch('libraryTheme', { immediate: true })
   onLibraryThemeChange(newTheme: Theme) {
-    this.selectedTheme = newTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
+    console.info('we are in watch library theme');
+    console.info(newTheme);
+    console.info(this.selectedTheme);
+    if (this.isThemePreference) {
+      this.selectedTheme = HeaderMenuType.Theme;
+    } else {
+      this.selectedTheme = newTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
+    }
   }
 
   get mediaQueryList(): MediaQueryList {
@@ -151,7 +160,11 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   mounted() {
-    this.selectedTheme = this.libraryTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
+    if (this.isThemePreference) {
+      this.selectedTheme = HeaderMenuType.Theme;
+    } else {
+      this.selectedTheme = this.libraryTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
+    }
   }
 
   handleDropdownVisibilityChange(visible: boolean) {
@@ -312,14 +325,33 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       case HeaderMenuType.HideBalances:
         this.toggleHideBalance();
         break;
-      case HeaderMenuType.LightMode:
-      case HeaderMenuType.NoirMode:
+      case HeaderMenuType.Theme:
+        console.info('we are in HeaderMenuType.Theme');
+        console.info(this.selectedTheme);
+        console.info(value);
         if (this.selectedTheme !== value) {
           this.selectedTheme = value;
-          await switchTheme();
-          await this.$nextTick();
-          updatePipTheme();
-          tmaSdkService.updateTheme();
+          console.info('we will now setIsThemePreference to true');
+          this.setIsThemePreference(true);
+        }
+        break;
+      case HeaderMenuType.LightMode:
+      case HeaderMenuType.NoirMode:
+        console.info('we are in header menu type light node or noir mode');
+        console.info(value);
+        console.info(this.selectedTheme);
+        if (this.selectedTheme !== value) {
+          this.selectedTheme = value;
+          console.info('here is selectedTheme');
+          console.info(this.selectedTheme);
+          console.info(this.libraryTheme);
+          this.setIsThemePreference(false);
+          if ((this.selectedTheme === 'noir' ? 'dark' : this.selectedTheme) !== this.libraryTheme) {
+            await switchTheme();
+            await this.$nextTick();
+            updatePipTheme();
+            tmaSdkService.updateTheme();
+          }
         }
         break;
       case HeaderMenuType.TurnPhoneHide:
