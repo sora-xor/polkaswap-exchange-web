@@ -371,20 +371,21 @@ export default class PointSystem extends Mixins(
       const account = this.account.address;
       const end = this.blockNumber;
       if (!(account && end)) return;
-      // Burned XOR
-      const burnData = await fetchBurnXorData(0, end, account);
-      this.burnData = burnData.reduce((acc, { amount }) => acc.add(amount), this.Zero);
-      // Bridge data
-      this.bridgeData = await fetchBridgeData(0, end, account);
-      // Swap, pool deposit and withdraw txs count
-      this.totalSwapTxs = await fetchCount(0, end, account, CountType.Swap);
-      this.poolDepositCount = await fetchCount(0, end, account, CountType.PoolDeposit);
-      this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
-      const accountMeta = await fetchAccountMeta(account);
 
+      const accountMeta = await fetchAccountMeta(account);
       if (accountMeta) {
         this.accountDataForPointsCalculation = accountMeta;
       } else {
+        // Burned XOR
+        const burnData = await fetchBurnXorData(0, end, account);
+        this.burnData = burnData.reduce((acc, { amount }) => acc.add(amount), this.Zero);
+        // Bridge data
+        this.bridgeData = await fetchBridgeData(0, end, account);
+        // Swap, pool deposit and withdraw txs count
+        this.totalSwapTxs = await fetchCount(0, end, account, CountType.Swap);
+        this.poolDepositCount = await fetchCount(0, end, account, CountType.PoolDeposit);
+        this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
+
         this.accountDataForPointsCalculation.fees = {
           amount: this.totalFees ?? this.Zero,
           amountUSD: new FPNumber(this.getFiatAmountByFPNumber(this.totalFees) || '0'),
