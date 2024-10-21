@@ -451,9 +451,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     if (this.prefersDarkScheme && this.handleThemeChange) {
       this.prefersDarkScheme.removeEventListener('change', this.handleThemeChange);
     }
-    if (this.removeTelegramThemeChangedListener) {
-      this.removeTelegramThemeChangedListener();
-    }
+    this.removeTelegramThemeChangedListener?.();
     if (screen.orientation) {
       screen.orientation.removeEventListener('change', this.handleOrientationChange);
     } else {

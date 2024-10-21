@@ -213,6 +213,12 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         title: this.t('headerMenu.titleTheme'),
         items: [
           {
+            value: HeaderMenuType.Theme,
+            icon: 'basic-lightning-24',
+            text: 'System preferences',
+            isThemeItem: true,
+          },
+          {
             value: HeaderMenuType.LightMode,
             icon: 'various-brightness-low-24',
             text: this.t('headerMenu.switchTheme', { theme: this.t('light') }),
