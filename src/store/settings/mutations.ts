@@ -155,6 +155,10 @@ const mutations = defineMutations<SettingsState>()({
   hideOrientationWarning(state): void {
     state.isOrientationWarningVisible = false;
   },
+  setIsThemePreference(state, value: boolean): void {
+    state.isThemePreference = value;
+    settingsStorage.set('isThemePreference', value);
+  },
 });
 
 export default mutations;
