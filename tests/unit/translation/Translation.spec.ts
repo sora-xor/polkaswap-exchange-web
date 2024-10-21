@@ -5,20 +5,13 @@ import * as deJson from '../../../src/lang/de.json';
 import * as enJson from '../../../src/lang/en.json';
 import * as esJson from '../../../src/lang/es.json';
 import * as frJson from '../../../src/lang/fr.json';
-import * as hrJson from '../../../src/lang/hr.json';
-import * as huJson from '../../../src/lang/hu.json';
-import * as hyJson from '../../../src/lang/hy.json';
 import * as idJson from '../../../src/lang/id.json';
 import * as itJson from '../../../src/lang/it.json';
 import * as nlJson from '../../../src/lang/nl.json';
-import * as noJson from '../../../src/lang/no.json';
 import * as plJson from '../../../src/lang/pl.json';
 import * as ruJson from '../../../src/lang/ru.json';
-import * as skJson from '../../../src/lang/sk.json';
 import * as srJson from '../../../src/lang/sr.json';
-import * as svJson from '../../../src/lang/sv.json';
 import * as viJson from '../../../src/lang/vi.json';
-import * as yoJson from '../../../src/lang/yo.json';
 import * as zhCnJson from '../../../src/lang/zh_CN.json';
 
 const TranslationConsts = WALLET_CONSTS.TranslationConsts;
@@ -179,19 +172,12 @@ test('Translation Multiple Whitespaces check and fix', () => {
   checkTranslationItem('de', deJson, deJson);
   checkTranslationItem('es', esJson, esJson);
   checkTranslationItem('fr', frJson, frJson);
-  checkTranslationItem('hr', hrJson, hrJson);
-  checkTranslationItem('hu', huJson, huJson);
-  checkTranslationItem('hy', hyJson, hyJson);
   checkTranslationItem('id', idJson, idJson);
   checkTranslationItem('it', itJson, itJson);
   checkTranslationItem('nl', nlJson, nlJson);
-  checkTranslationItem('no', noJson, noJson);
   checkTranslationItem('pl', plJson, plJson);
-  checkTranslationItem('sk', skJson, skJson);
   checkTranslationItem('sr', srJson, srJson);
-  checkTranslationItem('sv', svJson, svJson);
   checkTranslationItem('vi', viJson, viJson);
-  checkTranslationItem('yo', yoJson, yoJson);
   checkTranslationItem('zh-CN', zhCnJson, zhCnJson);
 
   expect(false).toEqual(!!brokenWhitespacesNumber);
@@ -242,19 +228,12 @@ test('Translation Multiple Dots check and fix', () => {
   checkTranslationItem('de', deJson, deJson);
   checkTranslationItem('es', esJson, esJson);
   checkTranslationItem('fr', frJson, frJson);
-  checkTranslationItem('hr', hrJson, hrJson);
-  checkTranslationItem('hu', huJson, huJson);
-  checkTranslationItem('hy', hyJson, hyJson);
   checkTranslationItem('id', idJson, idJson);
   checkTranslationItem('it', itJson, itJson);
   checkTranslationItem('nl', nlJson, nlJson);
-  checkTranslationItem('no', noJson, noJson);
   checkTranslationItem('pl', plJson, plJson);
-  checkTranslationItem('sk', skJson, skJson);
   checkTranslationItem('sr', srJson, srJson);
-  checkTranslationItem('sv', svJson, svJson);
   checkTranslationItem('vi', viJson, viJson);
-  checkTranslationItem('yo', yoJson, yoJson);
   checkTranslationItem('zh-CN', zhCnJson, zhCnJson);
 
   expect(false).toEqual(!!brokenDotsNumber);
@@ -310,19 +289,12 @@ test('Translation Missed Braces check and fix', () => {
   checkTranslationItem('de', deJson, deJson);
   checkTranslationItem('es', esJson, esJson);
   checkTranslationItem('fr', frJson, frJson);
-  checkTranslationItem('hr', hrJson, hrJson);
-  checkTranslationItem('hu', huJson, huJson);
-  checkTranslationItem('hy', hyJson, hyJson);
   checkTranslationItem('id', idJson, idJson);
   checkTranslationItem('it', itJson, itJson);
   checkTranslationItem('nl', nlJson, nlJson);
-  checkTranslationItem('no', noJson, noJson);
   checkTranslationItem('pl', plJson, plJson);
-  checkTranslationItem('sk', skJson, skJson);
   checkTranslationItem('sr', srJson, srJson);
-  checkTranslationItem('sv', svJson, svJson);
   checkTranslationItem('vi', viJson, viJson);
-  checkTranslationItem('yo', yoJson, yoJson);
   checkTranslationItem('zh-CN', zhCnJson, zhCnJson);
 
   // Prints all current errors
