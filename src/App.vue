@@ -291,6 +291,13 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     this.applyTheme(systemPrefersDark);
 
     if (this.isTMA) {
+      // This is needed when change in Chat Settings "Day" / "Night" Mode
+      const webApp = window.Telegram.WebApp;
+      const colorScheme = webApp.colorScheme;
+      console.info('Telegram WebApp colorScheme:', colorScheme);
+      this.applyTheme(colorScheme === 'dark');
+
+      // This is needed when change by "Auto-Night Mode" with "System Default
       tmaSdkService.listenForThemeChanges(this.applyTheme);
     }
   }
