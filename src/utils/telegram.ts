@@ -92,11 +92,9 @@ class TmaSdk {
   }
 
   public listenForThemeChanges(applyThemeCallback: (isDark: boolean) => void): void {
-    console.info('we are in listenForThemeChanges');
     const telegram = window.Telegram as any;
 
     if (telegram?.WebView) {
-      console.info('the theme change listener');
       this.themeChangeListener = (eventType: string, eventData: any) => {
         if (eventType === 'theme_changed') {
           const isDark = eventData.theme_params.bg_color < -1;
@@ -109,7 +107,6 @@ class TmaSdk {
   }
 
   public removeThemeListener(): void {
-    console.info('we are in removeThemeListener');
     const telegram = window.Telegram as any;
     if (this.themeChangeListener && telegram?.WebView) {
       telegram.WebView.receiveEvent = null;

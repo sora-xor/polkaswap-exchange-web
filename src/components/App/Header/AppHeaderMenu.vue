@@ -323,25 +323,15 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         this.toggleHideBalance();
         break;
       case HeaderMenuType.Theme:
-        console.info('we are in HeaderMenuType.Theme');
-        console.info(this.selectedTheme);
-        console.info(value);
         if (this.selectedTheme !== value) {
           this.selectedTheme = value;
-          console.info('we will now setIsThemePreference to true');
           this.setIsThemePreference(true);
         }
         break;
       case HeaderMenuType.LightMode:
       case HeaderMenuType.NoirMode:
-        console.info('we are in header menu type light node or noir mode');
-        console.info(value);
-        console.info(this.selectedTheme);
         if (this.selectedTheme !== value) {
           this.selectedTheme = value;
-          console.info('here is selectedTheme');
-          console.info(this.selectedTheme);
-          console.info(this.libraryTheme);
           this.setIsThemePreference(false);
           if ((this.selectedTheme === 'noir' ? 'dark' : this.selectedTheme) !== this.libraryTheme) {
             await switchTheme();

@@ -216,8 +216,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @Watch('isThemePreference', { immediate: true })
   private onIsThemePreferenceChange(newVal: boolean) {
-    console.info('we are in watch');
-    console.info(newVal);
     if (newVal) {
       this.detectSystemTheme();
     } else {
@@ -268,33 +266,26 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private applyTheme(isDark: boolean) {
-    console.info('we are in applyTheme');
     setTheme(isDark ? Theme.DARK : Theme.LIGHT);
     updatePipTheme();
     tmaSdkService.updateTheme();
   }
 
   private detectSystemTheme() {
-    console.info('we are in detectSystemTheme');
     this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    console.info('this.prefersDarkScheme', this.prefersDarkScheme);
     this.handleThemeChange = (e: MediaQueryListEvent) => {
-      console.info('System theme changed:', e.matches ? 'dark' : 'light');
       this.applyTheme(e.matches);
     };
 
-    console.info('we will add this.prefersDarkScheme.addEventListener');
     this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
 
     const systemPrefersDark = this.prefersDarkScheme.matches;
-    console.info('systemPrefersDark', systemPrefersDark);
     this.applyTheme(systemPrefersDark);
 
     if (this.isTMA) {
       // This is needed when change in Chat Settings "Day" / "Night" Mode
       const webApp = window.Telegram.WebApp;
       const colorScheme = webApp.colorScheme;
-      console.info('Telegram WebApp colorScheme:', colorScheme);
       this.applyTheme(colorScheme === 'dark');
 
       // This is needed when change by "Auto-Night Mode" with "System Default
