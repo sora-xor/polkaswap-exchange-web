@@ -3,27 +3,11 @@
     <h4 class="sbt-title">{{ t('assetOwner.guide.title', { type: WALLET_CONSTS.TranslationConsts.SBT }) }}</h4>
     <div class="sbt-instructions">
       <div class="sbt-instructions__text-info">
-        <div class="sbt-instructions__section">
-          <span class="sbt-instructions__number">1</span>
+        <div class="sbt-instructions__section" v-for="(text, idx) in guideText" :key="idx">
+          <span class="sbt-instructions__number">{{ idx + 1 }}</span>
           <div class="text">
-            <h4 class="sbt-instructions__point">{{ t('assetOwner.guide.stepOneTitle') }}</h4>
-            <span class="sbt-instructions__point-desc">{{ t('assetOwner.guide.stepOneDesc') }}</span>
-            <div class="line" />
-          </div>
-        </div>
-        <div class="sbt-instructions__section">
-          <span class="sbt-instructions__number">2</span>
-          <div class="text">
-            <h4 class="sbt-instructions__point">{{ t('assetOwner.guide.stepTwoTitle') }}</h4>
-            <span class="sbt-instructions__point-desc">{{ t('assetOwner.guide.stepTwoDesc') }}</span>
-            <div class="line" />
-          </div>
-        </div>
-        <div class="sbt-instructions__section">
-          <span class="sbt-instructions__number">3</span>
-          <div class="text">
-            <h4 class="sbt-instructions__point">{{ t('assetOwner.guide.stepThreeTitle') }}</h4>
-            <span class="sbt-instructions__point-desc">{{ t('assetOwner.guide.stepThreeDesc') }}</span>
+            <h4 class="sbt-instructions__point">{{ text.title }}</h4>
+            <span class="sbt-instructions__point-desc">{{ text.desc }}</span>
             <div class="line" />
           </div>
         </div>
@@ -47,6 +31,14 @@ import { Mixins } from 'vue-property-decorator';
 
 export default class SbtGuide extends Mixins(mixins.TranslationMixin) {
   readonly WALLET_CONSTS = WALLET_CONSTS;
+
+  get guideText(): any {
+    return [
+      { title: this.t('assetOwner.guide.stepOneTitle'), desc: this.t('assetOwner.guide.stepOneDesc') },
+      { title: this.t('assetOwner.guide.stepTwoTitle'), desc: this.t('assetOwner.guide.stepTwoDesc') },
+      { title: this.t('assetOwner.guide.stepThreeTitle'), desc: this.t('assetOwner.guide.stepThreeDesc') },
+    ];
+  }
 }
 </script>
 
