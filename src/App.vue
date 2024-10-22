@@ -212,6 +212,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @Watch('isThemePreference', { immediate: true })
   private onIsThemePreferenceChange(newVal: boolean) {
+    console.info('we are in onIsThemePreferenceChange');
+    console.info(newVal);
     if (newVal) {
       detectSystemTheme();
     } else {
