@@ -33,43 +33,29 @@ export enum Language {
   DE = 'de',
   ES = 'es',
   FR = 'fr',
-  HR = 'hr',
-  HU = 'hu',
-  HY = 'hy',
   ID = 'id',
   IT = 'it',
   NL = 'nl',
-  NO = 'no',
   PL = 'pl',
-  SK = 'sk',
   SR = 'sr',
-  SV = 'sv',
   VI = 'vi',
-  YO = 'yo',
   ZH_CN = 'zh-CN',
 }
 
 export const Languages = [
   { key: Language.EN, value: 'English', name: 'English (UK)' },
-  { key: Language.HY, value: 'Armenian', name: 'հայերեն' },
   { key: Language.ZH_CN, value: 'Chinese Simplified', name: '简体中文' },
-  { key: Language.HR, value: 'Croatian', name: 'Hrvatski' },
   { key: Language.CS, value: 'Czech', name: 'Čeština' },
   { key: Language.NL, value: 'Dutch', name: 'Nederlands' },
   { key: Language.FR, value: 'French', name: 'Français' },
   { key: Language.DE, value: 'German', name: 'Deutsch' },
-  { key: Language.HU, value: 'Hungarian', name: 'Magyar' },
   { key: Language.ID, value: 'Indonesian', name: 'bahasa Indonesia' },
   { key: Language.IT, value: 'Italian', name: 'Italiano' },
-  { key: Language.NO, value: 'Norwegian', name: 'Norsk' },
   { key: Language.PL, value: 'Polish', name: 'Polski' },
   { key: Language.RU, value: 'Russian', name: 'Русский' },
   { key: Language.SR, value: 'Serbian', name: 'Српски' },
-  { key: Language.SK, value: 'Slovak', name: 'Slovenský' },
   { key: Language.ES, value: 'Spanish', name: 'Español' },
-  { key: Language.SV, value: 'Swedish', name: 'Svenska' },
   { key: Language.VI, value: 'Vietnamese', name: 'Tiếng Việt' },
-  { key: Language.YO, value: 'Yoruba', name: 'Yoruba' },
 ];
 
 export const Links = {
@@ -136,6 +122,7 @@ export enum PageNames {
   Farming = 'Farming',
   Rewards = 'Rewards',
   ReferralProgram = 'ReferralProgram',
+  PointSystemV2 = `PointSystemV2`,
   PointSystem = 'PointSystem',
   RewardsTabs = 'RewardsTabs',
   ReferralBonding = 'ReferralBonding',
@@ -255,6 +242,11 @@ export enum Components {
   RewardsAmountHeader = 'pages/Rewards/AmountHeader',
   RewardsAmountTable = 'pages/Rewards/AmountTable',
   RewardsGradientBox = 'pages/Rewards/GradientBox',
+  // Point System Page
+  PointCard = 'pages/PointSystem/PointCard',
+  TaskCard = 'pages/PointSystem/TaskCard',
+  FirstTxCard = 'pages/PointSystem/FirstTxCard',
+  TaskDialog = 'pages/PointSystem/TaskDialog',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
   LinksDropdown = 'shared/LinksDropdown',
@@ -306,6 +298,7 @@ export enum LimitOrderType {
 }
 
 export enum RewardsTabsItems {
+  PointSystemV2 = PageNames.PointSystemV2,
   PointSystem = PageNames.PointSystem,
   Rewards = PageNames.Rewards,
   ReferralProgram = PageNames.ReferralProgram,
@@ -476,6 +469,7 @@ export const SidebarMenuGroups = [...MainMenu, ...OtherPagesMenu];
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
 export const PoolChildPages = [PageNames.AddLiquidity];
 export const RewardsChildPages = [
+  PageNames.PointSystemV2,
   PageNames.PointSystem,
   PageNames.Rewards,
   PageNames.ReferralProgram,

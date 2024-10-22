@@ -356,6 +356,10 @@ export const formatAmountWithSuffix = (value: FPNumber, precision = 2): AmountWi
   }
 };
 
+export const convertFPNumberToNumber = (fpValue: FPNumber, precision = 2): number => {
+  return parseFloat(fpValue.toFixed(precision));
+};
+
 export const formatDecimalPlaces = (value: FPNumber | number, asPercent = false): string => {
   const formatted = new FPNumber(value.toFixed(2)).toLocaleString();
   const postfix = asPercent ? '%' : '';

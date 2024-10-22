@@ -43,6 +43,10 @@ const getters = defineGetters<SettingsState>()({
     const { state } = settingsGetterContext(args);
     return !!state.featureFlags.debug;
   },
+  pointSystemV2(...args): Nullable<boolean> {
+    const { state } = settingsGetterContext(args);
+    return state.featureFlags.pointSystemV2;
+  },
   notificationActivated(...args): boolean {
     const { state } = settingsGetterContext(args);
     return state.browserNotifsPermission === 'granted';

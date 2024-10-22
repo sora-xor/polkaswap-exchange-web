@@ -69,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} Positie gesloten",
             "DepositCollateral": "{amount} {symbol} gestort",
             "RepayVaultDebt": "{amount} {symbol} schuld terugbetaald",
-            "BorrowVaultDebt": "{amount} {symbol} schuld geleend"
+            "BorrowVaultDebt": "{amount} {symbol} schuld geleend",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Bind Asset {symbol2} aan SBT",
+            "IssueSoulBoundToken": "Uitgifte Soulbound Token {symbol}",
+            "RegisterAndRegulateAsset": "Registreer en reguleer {symbol} activa",
+            "RegulateAsset": "Activa reguleren {symbol}",
+            "SetAccessExpiration": "SB-token {symbol} Vervaldatum bijgewerkt naar {endTime}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -111,7 +118,14 @@
             "CloseVault": "Mislukt om positie {symbol}\/{symbol2} te sluiten",
             "DepositCollateral": "Kon {amount} {symbol} niet storten",
             "RepayVaultDebt": "Kon {amount} {symbol} schuld niet terugbetalen",
-            "BorrowVaultDebt": "Kon {amount} {symbol} schuld niet lenen"
+            "BorrowVaultDebt": "Kon {amount} {symbol} schuld niet lenen",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Kan asset {symbol} niet koppelen aan SBT {symbol2}",
+            "IssueSoulBoundToken": "Het is niet gelukt om Soulbound-token {symbol} uit te geven",
+            "RegisterAndRegulateAsset": "Mislukt om te registreren en te reguleren {symbol}",
+            "RegulateAsset": "Failed to Regulation Asset {symbol}",
+            "SetAccessExpiration": "Het is niet gelukt om de vervaldatum voor {symbol} {to} }",
+            "XorlessTransfer": "Het is niet gelukt om {amount} {symbol} naar {address} te verzenden"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -145,7 +159,14 @@
         "CloseVault": "Positie sluiten",
         "DepositCollateral": "Stort Onderpand",
         "RepayVaultDebt": "Schuld Terugbetalen",
-        "BorrowVaultDebt": "Schuld Lenen"
+        "BorrowVaultDebt": "Schuld Lenen",
+        "VestedTransfer": "",
+        "BindRegulatedAsset": "Bind gereguleerde activa",
+        "IssueSoulBoundToken": "Probleem SBT",
+        "RegisterAndRegulateAsset": "Activa registreren",
+        "RegulateAsset": "Activa reguleren",
+        "SetAccessExpiration": "SBT-vervaldatum instellen",
+        "XorlessTransfer": "Overdracht"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
@@ -188,7 +209,10 @@
         "errorAddress": "Ongeldig adres. Controleer het en probeer het opnieuw.",
         "tooltip": "Verzend tokens tussen accounts op het {Sora}-netwerk",
         "addressWarning": "Tokens worden naar het onderstaande {Sora}-adres gestuurd. Zorg ervoor dat de ontvanger toegang heeft tot de {Sora}-chain om de tokens te gebruiken:",
-        "addressError": "U kunt geen tokens verzenden naar hetzelfde account waarmee u momenteel bent verbonden."
+        "addressError": "U kunt geen tokens verzenden naar hetzelfde account waarmee u momenteel bent verbonden.",
+        "enableVesting": "",
+        "enterVestingPercentage": "",
+        "vestingPercentage": ""
     },
     "account": {
         "copy": "Adres kopiëren",
@@ -1532,7 +1556,86 @@
         "accountsText": "{amount} accounts",
         "yourRewards": "Uw beloningen",
         "openTelegram": "Openen {Telegram}",
-        "toEarnPoints": "Om punten te verdienen"
+        "toEarnPoints": "Om punten te verdienen",
+        "airdrop": "Voltooi SORA Ecosysteem-gerelateerde taken om in aanmerking te komen voor een airdrop van $3 miljoen",
+        "complete": "Voltooid | Voltooien",
+        "currently": "Momenteel",
+        "dated": "Gedateerd",
+        "depositVolumeBridges": {
+            "descriptionTask": "Storten & opnemen via Bruggen, bitget, 1x, gateio",
+            "titleProgress": "Stortingsvolume",
+            "titleTask": "Storten & Opnemen"
+        },
+        "firstSoraNetworkTransaction": "Uw eerste SORA-netwerktransactie",
+        "firstTxAccount": {
+            "descriptionTask": "Voltooi uw allereerste XOR-transactie en ontvang de beloning",
+            "titleProgress": "Eerste transactie",
+            "titleTask": "Doe uw eerste transactie"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Vergrendel XOR door deel te nemen aan governance-stemgebeurtenissen",
+            "titleProgress": "Governance",
+            "titleTask": "Vergrendel XOR in governance-stemmen"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Los KUSD-schuld af tijdens liquidaties of het sluiten van posities",
+            "titleProgress": "Kensetsu-volume",
+            "titleTask": "Los KUSD-schuld af"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "Houd uw huidige KUSD-bezit vast",
+            "titleProgress": "KUSD Vasthouden",
+            "titleTask": "Houd KUSD"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "Liquiditeit verstrekken over meerdere pools",
+            "titleProgress": "Liquiditeitsvoorziening",
+            "titleTask": "Liquiditeit verstrekken"
+        },
+        "lvl": "Niveau",
+        "maxLvl": "Je hebt het maximale niveau bereikt",
+        "nativeXorStaking": {
+            "descriptionTask": "Stake XOR en verdien VAL-beloningen",
+            "titleProgress": "XOR Staken",
+            "titleTask": "Stake XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "Besteed XOR aan netwerkvergoedingen bij meerdere on-chain transacties",
+            "titleProgress": "Netwerkkosten",
+            "titleTask": "Besteed XOR aan netwerkvergoedingen"
+        },
+        "nextLvl": "Volgende lvl",
+        "orderbookVolume": {
+            "descriptionTask": "Maak limietorders aan in het orderboek",
+            "titleProgress": "Orderboek",
+            "titleTask": "Maak limietorders aan"
+        },
+        "progress": "Voortgang",
+        "referralRewards": {
+            "descriptionTask": "Verwijs accounts via het verwijzingssysteem",
+            "titleProgress": "Verwijzingssysteem",
+            "titleTask": "Verwijs accounts"
+        },
+        "relatedTasks": "Voltooi taken met betrekking tot {title} om je vaardigheid te verbeteren",
+        "rewardNextLvl": "Volgende niveaubeloning",
+        "soraCard": "Solliciteer nu",
+        "VXORHoldings": {
+            "descriptionTask": "Houd uw huidige VXOR bezit vast",
+            "titleProgress": "VXOR-bezittingen",
+            "titleTask": "Houd VXOR"
+        },
+        "XORBurned": {
+            "descriptionTask": "Verbrand XOR en zet om naar $ waarde",
+            "titleProgress": "XOR verbrand",
+            "titleTask": "XOR branden"
+        },
+        "XORHoldings": {
+            "descriptionTask": "Houd uw huidige XOR-bezit vast",
+            "titleProgress": "XOR Vasthouden",
+            "titleTask": "Houd XOR"
+        },
+        "yourLevel": "Uw niveau",
+        "yourTasks": "Uw taken"
     },
     "addAssetsText": "Activa toevoegen | Activa’s toevoegen",
     "noir": "Zwart",
@@ -1545,5 +1648,71 @@
     "firstText": "Eerst",
     "lastText": "Laatst",
     "prevText": "Vorig",
-    "priceText": "Prijs"
+    "priceText": "Prijs",
+    "assetOwner": {
+        "accountWithAccess": "Account met SBT-toegang",
+        "addRegulatedAsset": "Voeg een ander gereguleerd actief toe",
+        "addRegulatedAssets": "Gereguleerde activa toevoegen",
+        "attachedRegulatedAssets": "Bijgevoegde gereguleerde activa",
+        "createRegulatedAsset": "Creëer een nieuw gereguleerd actief",
+        "createSbt": "Maak {type}",
+        "dialog": {
+            "addExisting": "Een bestaand bezit toevoegen",
+            "addExistingDesc": "Voeg een reeds aangemaakt asset toe voor de SBT",
+            "createAsset": "Een nieuw actief aanmaken",
+            "createAssetDesc": "Stel een nieuw gemachtigde asset in voor de {type}",
+            "enterAddress": "Voer adres in voor uitgifte",
+            "issueAccess": "Probleemtoegang",
+            "pickDate": "Kies een dag",
+            "selectAccessEnd": "Selecteer wanneer de toegang eindigt",
+            "selectDate": "Selecteer datum"
+        },
+        "guide": {
+            "createToken": "Maak je token aan",
+            "createTokenDesc": "Lanceer eenvoudig uw unieke token, beschikbaar in meerdere formaten zoals NFT's en SBT's, met behulp van de robuuste, veilige infrastructuur van het SORA-netwerk",
+            "disclaimerSbt": "Houd deze pagina open tijdens het hele proces. Als u de pagina sluit of wegnavigeert, moet u opnieuw beginnen. Voltooi de stappen snel om time-outs te voorkomen.",
+            "stepOneDesc": "Kies of creëer assets die u persoonlijk hebt gecreëerd en gereguleerd. Dit zijn assets die onder uw controle en beheer vallen.",
+            "stepOneTitle": "Gereguleerde activa selecteren of creëren",
+            "stepThreeDesc": "Controleer en onderteken de definitieve aanmaaktransactie om de SBT-installatie te voltooien.",
+            "stepThreeTitle": "Controleer en onderteken de transactie",
+            "stepTwoDesc": "Geef essentiële informatie, zoals de naam van de SBT, het tickersymbool en het pictogram.",
+            "stepTwoTitle": "Voer SBT-gegevens in",
+            "title": "Hoe maak je een {type} :"
+        },
+        "issueSbtAccess": "Probleem {type} toegang",
+        "letsStartBtn": "Laten we beginnen",
+        "orSelectExisting": "Of selecteer bestaande",
+        "ownerSbtTitle": "Jouw {type}",
+        "permissionedAssets": "Toegestane activa",
+        "regulatedAssetsConnected": "Gereguleerde activa verbonden",
+        "regulatedPools": "Gereguleerde zwembaden",
+        "sbtCreation": {
+            "addAssets": "Activa toevoegen aan SBT",
+            "addDescription": "Voer SBT-gegevens in",
+            "addMeta": "Voer SBT-gegevens in",
+            "preview": "SBT-voorbeschouwing"
+        },
+        "sbtManagers": "{type} Beheerders",
+        "selectExisting": "Selecteer bestaande",
+        "startIssue": "Begin met het verlenen van toegang voor de SBT tot accounts",
+        "you": "Jij"
+    },
+    "sbtDetails": {
+        "accessPermitted": "Toegang toegestaan",
+        "description": "Deze SBT biedt toegang tot meerdere tokens en pools en is gekoppeld aan uw account",
+        "expiresIn": "Verloopt over",
+        "expiresInTooltip": "'Verloopt over' geeft de periode of het tijdstip aan waarop de toegang is verkregen",
+        "expiryDate": "Vervaldatum",
+        "expiryDateTooltip": "De 'Vervaldatum' is de deadline voor uw toegang tot gereguleerde activa van SBT",
+        "indefiniteExp": "open einde",
+        "issuedBy": "{SBT} uitgegeven door",
+        "kycProvider": "{KYC} -aanbieder",
+        "kycVerification": "{KYC} Verificatie",
+        "listOperable": "Gereguleerde activa operationeel",
+        "noPermissions": "Geen extra rechten",
+        "noReceiverAccess": "U probeert een gereguleerd token te verzenden naar de gebruiker zonder SBT-toegang",
+        "permission": "toestemming",
+        "permissions": "toestemmingen",
+        "regulatedInsitution": "Gereguleerde instelling"
+    }
 }

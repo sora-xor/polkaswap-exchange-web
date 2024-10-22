@@ -3074,6 +3074,10 @@
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/@soramitsu-ui/ui-vue2/-/ui-vue2-1.1.6.tgz#acb7c4cb0305e8edbb29bda2162c79f2caf7d37d"
   integrity sha512-G5uyxiXFA7RZxs6H0pmSQx2ml0O6LzwJs+SyYqFwxEG6j3aHcYAIlnXvvORUxR767X+nzRITZNeUxgrhi10jyw==
+"@soramitsu-ui/ui-vue2@^1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@soramitsu-ui/ui-vue2/-/ui-vue2-1.1.6.tgz#acb7c4cb0305e8edbb29bda2162c79f2caf7d37d"
+  integrity sha512-G5uyxiXFA7RZxs6H0pmSQx2ml0O6LzwJs+SyYqFwxEG6j3aHcYAIlnXvvORUxR767X+nzRITZNeUxgrhi10jyw==
   dependencies:
     core-js "^3.26.1"
     element-resize-detector "^1.2.4"
@@ -3086,11 +3090,10 @@
     vue-i18n "^8.28.2"
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
-
-"@soramitsu/soraneo-wallet-web@1.43.4":
-  version "1.43.4"
-  resolved "https://registry.yarnpkg.com/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.43.4.tgz#3814e298b0f37e8f916c111ea1c1517fd61b3e78"
-  integrity sha512-t+lnUy9qvGdmSo4A0Iv1Iq9kwbpj2nr6vg88J1LL5F+RnUnRCt7X+la9pKv2DJFlsneKxgMBnaAqM00XVFB3Aw==
+"@soramitsu/soraneo-wallet-web@1.43.1":
+  version "1.43.1"
+  resolved "https://registry.yarnpkg.com/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.43.1.tgz#a611936b2ba698612346149c1d7365308a24f8aa"
+  integrity sha512-2zmfkapsFczpl7yktPT7EKiwyY5/ssFqbkwaHMrQVZE+fSHq/6ogeIIIXfQcbwsTt4AZLQHqmXjUeVDg9vydbA==
   dependencies:
     "@polkadot/extension-inject" "^0.44.7"
     "@polkadot/vue-identicon" "2.12.1"

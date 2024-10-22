@@ -122,6 +122,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
   @state.settings.isTMA isTMA!: boolean;
   @state.settings.isThemePreference isThemePreference!: boolean;
+  @state.settings.featureFlags private featureFlags!: FeatureFlags;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
@@ -407,7 +408,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   goTo(name: PageNames): void {
     if (name === PageNames.Rewards) {
       // Rewards is a menu route but we need to show PointSystem by default
-      goTo(PageNames.PointSystem);
+      if (this.featureFlags.pointSystemV2) {
+        goTo(PageNames.PointSystemV2);
+      } else {
+        goTo(PageNames.PointSystem);
+      }
     } else {
       goTo(name);
     }
