@@ -186,7 +186,7 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { AssetTypes, Asset } from '@sora-substrate/sdk/build/assets/types';
+import { Asset } from '@sora-substrate/sdk/build/assets/types';
 import { mixins, components, api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import difference from 'lodash/fp/difference';
 import { Component, Mixins, Ref, Prop } from 'vue-property-decorator';
