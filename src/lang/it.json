@@ -212,7 +212,8 @@
         "addressError": "Non puoi inviare token allo stesso account a cui sei attualmente connesso.",
         "enableVesting": "",
         "enterVestingPercentage": "",
-        "vestingPercentage": ""
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Copia indirizzo",
@@ -774,7 +775,8 @@
         "titleBalance": "Saldi",
         "titleTheme": "Tema colore",
         "titleCurrency": "Valuta fiat",
-        "titleMisc": "Varie"
+        "titleMisc": "Varie",
+        "systemPreferencesTheme": "Preferenze di sistema"
     },
     "sentText": "Inviato",
     "learnMoreText": "Per saperne di più",
@@ -1635,7 +1637,12 @@
             "titleTask": "Tieni XOR"
         },
         "yourLevel": "Il tuo livello",
-        "yourTasks": "I tuoi compiti"
+        "yourTasks": "I tuoi compiti",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Aggiungi bene | Aggiungi beni",
     "noir": "Il noir",

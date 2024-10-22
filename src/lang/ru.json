@@ -212,7 +212,8 @@
         "addressError": "Вы не можете отправлять токены в ту же учетную запись, к которой вы в настоящее время подключены.",
         "enableVesting": "",
         "enterVestingPercentage": "",
-        "vestingPercentage": ""
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Копировать адрес",
@@ -774,7 +775,8 @@
         "titleBalance": "Балансы",
         "titleTheme": "Цветовая тема",
         "titleCurrency": "Фиатная валюта",
-        "titleMisc": "Другое"
+        "titleMisc": "Другое",
+        "systemPreferencesTheme": "Системный режим"
     },
     "sentText": "Отправить",
     "learnMoreText": "Узнать больше",
@@ -1635,7 +1637,12 @@
             "titleTask": "Владеть XOR"
         },
         "yourLevel": "Ваш уровень",
-        "yourTasks": "Ваши задачи"
+        "yourTasks": "Ваши задачи",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Добавить актив | Добавить активы",
     "noir": "Нуар",

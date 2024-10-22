@@ -212,7 +212,8 @@
         "addressError": "Tokeny nelze odesílat na stejný účet, ke kterému jste právě připojeni.",
         "enableVesting": "",
         "enterVestingPercentage": "",
-        "vestingPercentage": ""
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Zkopírovat adresu",
@@ -774,7 +775,8 @@
         "titleBalance": "Zůstatky",
         "titleTheme": "Barevné téma",
         "titleCurrency": "Fiat měna",
-        "titleMisc": "Ostatní"
+        "titleMisc": "Ostatní",
+        "systemPreferencesTheme": "Systémové předvolby"
     },
     "sentText": "Odesláno",
     "learnMoreText": "Zjistit více",
@@ -1635,7 +1637,12 @@
             "titleTask": "Držet XOR"
         },
         "yourLevel": "Vaše úroveň",
-        "yourTasks": "Vaše úkoly"
+        "yourTasks": "Vaše úkoly",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Přidat aktivum | Přidat aktiva",
     "noir": "Noir",

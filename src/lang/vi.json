@@ -212,7 +212,8 @@
         "addressError": "Bạn không thể gửi những token này đến cùng tài khoản mà bạn đang kết nối",
         "enableVesting": "",
         "enterVestingPercentage": "",
-        "vestingPercentage": ""
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Sao chép địa chỉ",
@@ -774,7 +775,8 @@
         "titleBalance": "Số dư",
         "titleTheme": "Chủ đề màu sắc",
         "titleCurrency": "Tiền pháp định",
-        "titleMisc": "Khác"
+        "titleMisc": "Khác",
+        "systemPreferencesTheme": "Tùy chọn hệ thống"
     },
     "sentText": "Đã gửi",
     "learnMoreText": "Tìm hiểu thêm",
@@ -1635,7 +1637,12 @@
             "titleTask": "Giữ XOR"
         },
         "yourLevel": "Cấp độ của bạn",
-        "yourTasks": "Nhiệm vụ của bạn"
+        "yourTasks": "Nhiệm vụ của bạn",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Thêm tài sản | Thêm các tài sản",
     "noir": "Đen",

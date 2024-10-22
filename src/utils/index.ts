@@ -471,9 +471,3 @@ export const updatePipTheme = (): void => {
     htmlElement.setAttribute('design-system-theme', theme);
   }
 };
-
-export const applyTheme = (isDark: boolean): void => {
-  setTheme(isDark ? Theme.DARK : Theme.LIGHT);
-  updatePipTheme();
-  tmaSdkService.updateTheme();
-};

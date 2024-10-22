@@ -75,7 +75,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Language, Languages } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { getter, mutation, state } from '@/store/decorators';
-import { updatePipTheme, applyTheme } from '@/utils';
+import { updatePipTheme } from '@/utils';
+import { applyTheme } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
 import type { Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
@@ -225,7 +226,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
           {
             value: HeaderMenuType.Theme,
             icon: 'basic-lightning-24',
-            text: 'System preferences',
+            text: this.t('headerMenu.systemPreferencesTheme'),
             isThemeItem: true,
           },
           {
@@ -332,12 +333,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       case HeaderMenuType.NoirMode:
         if (this.selectedTheme !== value) {
           this.selectedTheme = value;
+          console.info(this.selectedTheme);
           this.setIsThemePreference(false);
           if ((this.selectedTheme === 'noir' ? 'dark' : this.selectedTheme) !== this.libraryTheme) {
-            await switchTheme();
-            await this.$nextTick();
-            updatePipTheme();
-            tmaSdkService.updateTheme();
+            applyTheme(this.selectedTheme !== 'light');
           }
         }
         break;

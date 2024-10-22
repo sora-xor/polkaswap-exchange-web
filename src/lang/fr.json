@@ -212,7 +212,8 @@
         "addressError": "Vous ne pouvez pas envoyer de jetons au même compte auquel vous êtes actuellement connecté.",
         "enableVesting": "",
         "enterVestingPercentage": "",
-        "vestingPercentage": ""
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Copier l'adresse",
@@ -774,7 +775,8 @@
         "titleBalance": "Soldes",
         "titleTheme": "Thème de couleur",
         "titleCurrency": "Monnaie fiduciaire",
-        "titleMisc": "Divers"
+        "titleMisc": "Divers",
+        "systemPreferencesTheme": "Préférences système"
     },
     "sentText": "Envoyé",
     "learnMoreText": "En savoir plus",
@@ -1635,7 +1637,12 @@
             "titleTask": "Détenir XOR"
         },
         "yourLevel": "Votre niveau",
-        "yourTasks": "Vos tâches"
+        "yourTasks": "Vos tâches",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Ajouter un actif | Ajouter des actifs",
     "noir": "Noir",

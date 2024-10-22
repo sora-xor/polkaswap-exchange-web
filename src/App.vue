@@ -59,7 +59,6 @@ import {
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
-import { setTheme } from '@soramitsu-ui/ui-vue2/lib/utils';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -74,9 +73,10 @@ import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { getMobileCssClasses, preloadFontFace, updateDocumentTitle, updatePipTheme, applyTheme } from '@/utils';
+import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
+import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
@@ -218,9 +218,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Watch('isThemePreference', { immediate: true })
   private onIsThemePreferenceChange(newVal: boolean) {
     if (newVal) {
-      this.detectSystemTheme();
+      detectSystemTheme();
     } else {
-      this.removeThemeListeners();
+      removeThemeListeners();
     }
   }
 
@@ -263,46 +263,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       this.showOrientationWarning();
     } else {
       this.hideOrientationWarning();
-    }
-  }
-
-  private applyTheme(isDark: boolean) {
-    setTheme(isDark ? Theme.DARK : Theme.LIGHT);
-    updatePipTheme();
-    tmaSdkService.updateTheme();
-  }
-
-  private detectSystemTheme() {
-    this.prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    this.handleThemeChange = (e: MediaQueryListEvent) => {
-      this.applyTheme(e.matches);
-    };
-
-    this.prefersDarkScheme.addEventListener('change', this.handleThemeChange);
-
-    const systemPrefersDark = this.prefersDarkScheme.matches;
-    this.applyTheme(systemPrefersDark);
-
-    if (this.isTMA) {
-      // This is needed when change in Chat Settings "Day" / "Night" Mode
-      const webApp = window.Telegram.WebApp;
-      const colorScheme = webApp.colorScheme;
-      this.applyTheme(colorScheme === 'dark');
-
-      // This is needed when change by "Auto-Night Mode" with "System Default
-      tmaSdkService.listenForThemeChanges(this.applyTheme);
-    }
-  }
-
-  private removeThemeListeners() {
-    if (this.prefersDarkScheme && this.handleThemeChange) {
-      this.prefersDarkScheme.removeEventListener('change', this.handleThemeChange);
-      this.prefersDarkScheme = null;
-      this.handleThemeChange = null;
-    }
-
-    if (this.isTMA) {
-      tmaSdkService.removeThemeListener();
     }
   }
 
@@ -463,11 +423,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async beforeDestroy(): Promise<void> {
     window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
-    // if (this.prefersDarkScheme && this.handleThemeChange) {
-    //   this.prefersDarkScheme.removeEventListener('change', this.handleThemeChange);
-    // }
-    // this.removeTelegramThemeChangedListener?.();
-    this.removeThemeListeners();
+    removeThemeListeners();
     if (screen.orientation) {
       screen.orientation.removeEventListener('change', this.handleOrientationChange);
     } else {
