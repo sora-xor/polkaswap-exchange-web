@@ -69,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} Position fermée",
             "DepositCollateral": "Dépôt de {amount} {symbol}",
             "RepayVaultDebt": "Dette remboursée {amount} {symbol}",
-            "BorrowVaultDebt": "Dette empruntée {amount} {symbol}"
+            "BorrowVaultDebt": "Dette empruntée {amount} {symbol}",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Lier l'actif {symbol2} à SBT",
+            "IssueSoulBoundToken": "Émettre un jeton lié à l'âme {symbol}",
+            "RegisterAndRegulateAsset": "Enregistrer et réguler l'actif {symbol}",
+            "RegulateAsset": "Réglementer l'actif {symbol}",
+            "SetAccessExpiration": "Jeton SB {symbol} Expiration mise à jour à {endTime}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
@@ -111,7 +118,14 @@
             "CloseVault": "Échec de la fermeture de la position {symbol}\/{symbol2}",
             "DepositCollateral": "Impossible de déposer {amount} {symbol}",
             "RepayVaultDebt": "Impossible de rembourser {amount} {symbol}",
-            "BorrowVaultDebt": "Impossible d'emprunter {amount} {symbol}"
+            "BorrowVaultDebt": "Impossible d'emprunter {amount} {symbol}",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Échec de la liaison de l'actif {symbol} au SBT {symbol2}",
+            "IssueSoulBoundToken": "Échec de l'émission du jeton Soulbound {symbol}",
+            "RegisterAndRegulateAsset": "Échec de l'enregistrement et de la réglementation {symbol}",
+            "RegulateAsset": "Échec de la régulation de l'actif {symbol}",
+            "SetAccessExpiration": "Échec de la mise à jour de l'expiration à {to} pour {symbol}",
+            "XorlessTransfer": "Échec de l'envoi {amount} {symbol} à {address}"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
@@ -145,7 +159,14 @@
         "CloseVault": "Fermer la position",
         "DepositCollateral": "Déposer du collatéral",
         "RepayVaultDebt": "Rembourser la dette",
-        "BorrowVaultDebt": "Emprunter de la dette"
+        "BorrowVaultDebt": "Emprunter de la dette",
+        "VestedTransfer": "",
+        "BindRegulatedAsset": "Lier un actif réglementé",
+        "IssueSoulBoundToken": "Problème SBT",
+        "RegisterAndRegulateAsset": "Enregistrer un actif",
+        "RegulateAsset": "Réglementer les actifs",
+        "SetAccessExpiration": "Définir l'expiration du SBT",
+        "XorlessTransfer": "Transfert"
     },
     "polkadotjs": {
         "noExtensions": "Aucune extension {PolkadotJs} n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
@@ -188,7 +209,10 @@
         "errorAddress": "Adresse invalide. Veuillez la vérifier et réessayer.",
         "tooltip": "Envoyer des jetons entre des comptes du réseau {Sora}",
         "addressWarning": "Les jetons seront envoyés à l'adresse {Sora} ci-dessous. Assurez-vous que le destinataire peut accéder à la chaîne {Sora} pour utiliser les jetons:",
-        "addressError": "Vous ne pouvez pas envoyer de jetons au même compte auquel vous êtes actuellement connecté."
+        "addressError": "Vous ne pouvez pas envoyer de jetons au même compte auquel vous êtes actuellement connecté.",
+        "enableVesting": "",
+        "enterVestingPercentage": "",
+        "vestingPercentage": ""
     },
     "account": {
         "copy": "Copier l'adresse",
@@ -1532,7 +1556,86 @@
         "accountsText": "{amount} comptes",
         "yourRewards": "Vos récompenses",
         "openTelegram": "Ouvrir {Telegram}",
-        "toEarnPoints": "Pour gagner des points"
+        "toEarnPoints": "Pour gagner des points",
+        "airdrop": "Complétez des tâches liées à l'écosystème SORA pour être éligible à un airdrop de 3 millions de dollars",
+        "complete": "Terminé | Terminer",
+        "currently": "Actuellement",
+        "dated": "Daté",
+        "depositVolumeBridges": {
+            "descriptionTask": "Dépôt et retrait via Ponts, bitget, 1x, gateio",
+            "titleProgress": "Volume de dépôt",
+            "titleTask": "Dépôt et Retrait"
+        },
+        "firstSoraNetworkTransaction": "Votre première transaction sur le réseau SORA",
+        "firstTxAccount": {
+            "descriptionTask": "Réalisez votre première transaction XOR et recevez la récompense",
+            "titleProgress": "Première transaction",
+            "titleTask": "Effectuez votre première transaction"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Verrouillez XOR en participant aux événements de vote de gouvernance",
+            "titleProgress": "Gouvernance",
+            "titleTask": "Verrouillez XOR dans le vote de gouvernance"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Remboursez la dette en KUSD lors des liquidations ou de la fermeture de positions",
+            "titleProgress": "",
+            "titleTask": "Rembourser la dette KUSD"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        },
+        "liquidityProvision": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        },
+        "lvl": "",
+        "maxLvl": "",
+        "nativeXorStaking": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        },
+        "nextLvl": "",
+        "orderbookVolume": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        },
+        "progress": "",
+        "referralRewards": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        },
+        "relatedTasks": "",
+        "rewardNextLvl": "",
+        "soraCard": "",
+        "VXORHoldings": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        },
+        "XORBurned": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        },
+        "XORHoldings": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        },
+        "yourLevel": "",
+        "yourTasks": ""
     },
     "addAssetsText": "Ajouter un actif | Ajouter des actifs",
     "noir": "Noir",
@@ -1545,5 +1648,71 @@
     "firstText": "Première",
     "lastText": "Dernier",
     "prevText": "Précédent",
-    "priceText": "Prix"
+    "priceText": "Prix",
+    "assetOwner": {
+        "accountWithAccess": "Compte avec accès SBT",
+        "addRegulatedAsset": "Ajouter un autre actif réglementé",
+        "addRegulatedAssets": "Ajouter des actifs réglementés",
+        "attachedRegulatedAssets": "Actifs réglementés rattachés",
+        "createRegulatedAsset": "Créer un nouvel actif réglementé",
+        "createSbt": "Créer {type}",
+        "dialog": {
+            "addExisting": "Ajouter un actif existant",
+            "addExistingDesc": "Ajouter un actif déjà créé pour le SBT",
+            "createAsset": "Créer un nouvel actif",
+            "createAssetDesc": "Configurer un nouvel actif autorisé pour le {type}",
+            "enterAddress": "Entrez l'adresse pour l'émission",
+            "issueAccess": "Problème d'accès",
+            "pickDate": "Choisissez un jour",
+            "selectAccessEnd": "Sélectionnez quand l'accès prendra fin",
+            "selectDate": "Sélectionnez la date"
+        },
+        "guide": {
+            "createToken": "Créez votre token",
+            "createTokenDesc": "Lancez facilement votre jeton unique, disponible dans plusieurs formats tels que les NFT et les SBT, en utilisant l'infrastructure robuste et sécurisée du réseau SORA",
+            "disclaimerSbt": "Gardez cette page ouverte pendant toute la durée du processus. La fermeture ou la navigation vous obligera à recommencer depuis le début. Effectuez les étapes rapidement pour éviter tout délai d'attente.",
+            "stepOneDesc": "Choisissez ou créez des actifs que vous avez personnellement créés et régulés. Il s'agit d'actifs sous votre contrôle et votre gestion.",
+            "stepOneTitle": "Sélectionner ou créer des actifs réglementés",
+            "stepThreeDesc": "Vérifiez et signez la transaction de création finale pour terminer la configuration SBT.",
+            "stepThreeTitle": "Examiner et signer la transaction",
+            "stepTwoDesc": "Fournissez des informations essentielles telles que le nom et le symbole boursier du SBT, ainsi que l'icône.",
+            "stepTwoTitle": "Entrez les détails SBT",
+            "title": "Comment créer un {type} :"
+        },
+        "issueSbtAccess": "Problème d'accès {type}",
+        "letsStartBtn": "COMMENCEZ",
+        "orSelectExisting": "Ou sélectionnez existant",
+        "ownerSbtTitle": "Votre {type}",
+        "permissionedAssets": "Ressources autorisées",
+        "regulatedAssetsConnected": "Actifs réglementés liés",
+        "regulatedPools": "Piscines réglementées",
+        "sbtCreation": {
+            "addAssets": "Ajouter des actifs à SBT",
+            "addDescription": "Entrez les détails SBT",
+            "addMeta": "Entrez les détails SBT",
+            "preview": "Aperçu de SBT"
+        },
+        "sbtManagers": "{type} Gestionnaires",
+        "selectExisting": "Sélectionner existant",
+        "startIssue": "Commencer à accorder l'accès au SBT aux comptes",
+        "you": "Toi"
+    },
+    "sbtDetails": {
+        "accessPermitted": "Accès autorisé",
+        "description": "Ce SBT donne accès à plusieurs jetons et pools et est attaché à votre compte",
+        "expiresIn": "Expire dans",
+        "expiresInTooltip": "La mention « Expire dans » indique la période ou le moment où l'accès est acquis",
+        "expiryDate": "Date d'expiration",
+        "expiryDateTooltip": "La « date d'expiration » est la date limite pour votre accès aux actifs réglementés de SBT",
+        "indefiniteExp": "ouvert",
+        "issuedBy": "{SBT} émis par",
+        "kycProvider": "Fournisseur {KYC}",
+        "kycVerification": "Vérification {KYC}",
+        "listOperable": "Actifs réglementés exploitables",
+        "noPermissions": "Aucune autorisation supplémentaire",
+        "noReceiverAccess": "Vous essayez d'envoyer un jeton réglementé à l'utilisateur sans accès SBT",
+        "permission": "autorisation",
+        "permissions": "autorisations",
+        "regulatedInsitution": "Institution réglementée"
+    }
 }

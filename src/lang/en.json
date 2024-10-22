@@ -115,6 +115,54 @@
         "select": "Select an asset"
     },
     "assetDeposit": "Asset balance has been deposited",
+    "assetOwner": {
+        "accountWithAccess": "Account with SBT access",
+        "addRegulatedAsset": "Add another regulated asset",
+        "addRegulatedAssets": "Add regulated assets",
+        "attachedRegulatedAssets": "Attached regulated assets",
+        "createRegulatedAsset": "Create new regulated asset",
+        "createSbt": "Create {type}",
+        "dialog": {
+            "addExisting": "Add an existing asset",
+            "addExistingDesc": "Add an already created asset for the SBT",
+            "createAsset": "Create a new asset",
+            "createAssetDesc": "Set up a new permissioned asset for the {type}",
+            "enterAddress": "Enter address for issuance",
+            "issueAccess": "Issue access",
+            "pickDate": "Pick a day",
+            "selectAccessEnd": "Select when access will end",
+            "selectDate": "Select date"
+        },
+        "guide": {
+            "createToken": "Create your token",
+            "createTokenDesc": "Easily launch your unique token—available in multiple formats like NFTs and SBTs—using the robust, secure infrastructure of the SORA Network",
+            "disclaimerSbt": "Keep this page open during the entire process. Closing or navigating away will require you to restart from the beginning. Complete steps quickly to avoid timeout.",
+            "stepOneDesc": "Choose or create assets that you have personally created and regulate. These are assets under your control and management.",
+            "stepOneTitle": "Select or Create Regulated Assets",
+            "stepThreeDesc": "Review and sign the final creation transaction to complete the SBT setup.",
+            "stepThreeTitle": "Review and sign the transaction",
+            "stepTwoDesc": "Provide essential information such as the SBT's name and ticker symbol, as well as the icon.",
+            "stepTwoTitle": "Enter SBT Details",
+            "title": "How to create an {type}:"
+        },
+        "issueSbtAccess": "Issue {type} access",
+        "letsStartBtn": "LET’S START",
+        "orSelectExisting": "Or select existing",
+        "ownerSbtTitle": "Your {type}",
+        "permissionedAssets": "Permissioned assets",
+        "regulatedAssetsConnected": "Regulated assets connected",
+        "regulatedPools": "Regulated pools",
+        "sbtCreation": {
+            "addAssets": "Add Assets to SBT",
+            "addDescription": "Enter SBT Details",
+            "addMeta": "Enter SBT Details",
+            "preview": "SBT Preview"
+        },
+        "sbtManagers": "{type} Managers",
+        "selectExisting": "Select existing",
+        "startIssue": "Start issuing access for the SBT to accounts",
+        "you": "You"
+    },
     "assets": {
         "assetId": "Asset ID",
         "balance": {
@@ -824,6 +872,7 @@
     "operations": {
         "AddLiquidity": "Add Liquidity",
         "andText": "and",
+        "BindRegulatedAsset": "Bind Regulated Asset",
         "BorrowVaultDebt": "Borrow Debt",
         "Burn": "Burn",
         "ClaimRewards": "Claim Rewards",
@@ -838,6 +887,7 @@
         "DepositCollateral": "Deposit Position",
         "error": {
             "AddLiquidity": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
+            "BindRegulatedAsset": "Failed To Bind Asset {symbol} to SBT {symbol2}",
             "BorrowVaultDebt": "Failed to borrow {amount} {symbol}",
             "Burn": "Failed to burn {amount} {symbol}",
             "ClaimRewards": "Failed to claim rewards {rewards}",
@@ -852,6 +902,7 @@
             "DepositCollateral": "Failed to deposit {amount} {symbol}",
             "EthBridgeIncoming": "Failed to transfer {amount} {symbol} from {Ethereum} to {Sora}",
             "EthBridgeOutgoing": "Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}",
+            "IssueSoulBoundToken": "Failed to issue Soulbound token {symbol}",
             "Mint": "Failed to mint {amount} {symbol} to {address}",
             "OrderBookCancelLimitOrder": "Failed to cancel limit order",
             "OrderBookCancelLimitOrders": "Failed to cancel limit orders",
@@ -859,9 +910,12 @@
             "ReferralReserveXor": "Failed to bond {amount} XOR",
             "ReferralSetInvitedUser": "Failed to set {role} {address}",
             "ReferralUnreserveXor": "Failed to unbond {amount} XOR",
+            "RegisterAndRegulateAsset": "Failed To Register And Regulate {symbol}",
             "RegisterAsset": "Failed to register {symbol} asset",
+            "RegulateAsset": "Failed To Regulate Asset {symbol}",
             "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
             "RepayVaultDebt": "Failed to repaid {amount} {symbol}",
+            "SetAccessExpiration": "Failed to update expiration to {to} for {symbol}",
             "StakingBond": "Failed to bond {amount} {symbol}",
             "StakingBondAndNominate": "Failed to bond {amount} {symbol}",
             "StakingBondExtra": "Failed to bond extra {amount} {symbol}",
@@ -876,12 +930,15 @@
             "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
             "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "SwapTransferBatch": "Failed to {action} {amount} {symbol}",
-            "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}"
+            "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "Failed to {action} {amount} {symbol} {direction} {address}",
+            "XorlessTransfer": "Failed to send {amount} {symbol} to {address}"
         },
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
         "finalized": {
             "AddLiquidity": "Supplied {amount} {symbol} and {amount2} {symbol2}",
+            "BindRegulatedAsset": "Bind Asset {symbol2} to SBT",
             "BorrowVaultDebt": "Borrowed {amount} {symbol}",
             "Burn": "Burned {amount} {symbol}",
             "ClaimRewards": "Reward claimed successfully {rewards}",
@@ -896,6 +953,7 @@
             "DepositCollateral": "Deposited {amount} {symbol}",
             "EthBridgeIncoming": "Transfered {amount} {symbol} from {Ethereum} to {Sora}",
             "EthBridgeOutgoing": "Transfered {amount} {symbol} from {Sora} to {Ethereum}",
+            "IssueSoulBoundToken": "Issue Soulbound Token {symbol}",
             "Mint": "Minted {amount} {symbol} to {address}",
             "OrderBookCancelLimitOrder": "Limit order cancelled",
             "OrderBookCancelLimitOrders": "Limit orders cancelled",
@@ -903,9 +961,12 @@
             "ReferralReserveXor": "Bonded {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} is set successfully",
             "ReferralUnreserveXor": "Unbonded {amount} XOR",
+            "RegisterAndRegulateAsset": "Register And Regulate {symbol} asset",
             "RegisterAsset": "Registered {symbol} asset",
+            "RegulateAsset": "Regulate Asset {symbol}",
             "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
             "RepayVaultDebt": "Repaid {amount} {symbol}",
+            "SetAccessExpiration": "SB token {symbol} Updated expiration to {endTime}",
             "StakingBond": "Bonded {amount} {symbol}",
             "StakingBondAndNominate": "Bonded {amount} {symbol}",
             "StakingBondExtra": "Bonded extra {amount} {symbol}",
@@ -920,8 +981,11 @@
             "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
             "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "SwapTransferBatch": "{action} {amount} {symbol}",
-            "Transfer": "{action} {amount} {symbol} {direction} {address}"
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
+        "IssueSoulBoundToken": "Issue SBT",
         "Mint": "Mint",
         "OrderBookCancelLimitOrder": "Cancel Order",
         "OrderBookCancelLimitOrders": "Cancel Orders",
@@ -929,9 +993,12 @@
         "ReferralReserveXor": "Bond XOR",
         "ReferralSetInvitedUser": "Set {role}",
         "ReferralUnreserveXor": "Unbond XOR",
+        "RegisterAndRegulateAsset": "Register Asset",
         "RegisterAsset": "Register Asset",
+        "RegulateAsset": "Regulate Asset",
         "RemoveLiquidity": "Remove Liquidity",
         "RepayVaultDebt": "Repay Debt",
+        "SetAccessExpiration": "Set SBT Expiration",
         "StakingBond": "Bond",
         "StakingBondAndNominate": "Bond and Nominate",
         "StakingBondExtra": "Bond Extra",
@@ -946,7 +1013,9 @@
         "Swap": "Swap",
         "SwapAndSend": "Swap and Send",
         "SwapTransferBatch": "{ADAR} transfer",
-        "Transfer": "Transfer"
+        "Transfer": "Transfer",
+        "VestedTransfer": "Transfer",
+        "XorlessTransfer": "Transfer"
     },
     "orderBook": {
         "amount": "amount",
@@ -1097,15 +1166,94 @@
     "pairIsNotCreated": "Token pair isn't created",
     "points": {
         "accountsText": "{amount} accounts",
+        "airdrop": "Complete SORA Ecosystem-related tasks in order to qualify for a $3m AIRDROP",
         "bridgeVolume": "Bridge volume",
+        "complete": "Completed | Complete",
+        "currently": "Currently",
+        "dated": "Dated",
+        "depositVolumeBridges": {
+            "descriptionTask": "Deposit & withdraw via Bridges, bitget, 1x, gateio",
+            "titleProgress": "Deposit volume",
+            "titleTask": "Deposit & Withdraw"
+        },
         "feesSpent": "Fees spent",
+        "firstSoraNetworkTransaction": "Your first SORA Network Transaction",
+        "firstTxAccount": {
+            "descriptionTask": "Complete your first XOR transaction ever and receive the reward",
+            "titleProgress": "First Trx",
+            "titleTask": "Do your first transaction"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Lock XOR by participating in governance voting events",
+            "titleProgress": "Governance",
+            "titleTask": "Lock XOR in Governance Voting"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Repay KUSD debt during liquidations or closing positions",
+            "titleProgress": "Kensetsu volume",
+            "titleTask": "Repay KUSD Debt"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "Hold your current KUSD holdings",
+            "titleProgress": "KUSD Hold",
+            "titleTask": "Hold Kusd"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "Provide liquidity across pools",
+            "titleProgress": "Liquidity provision",
+            "titleTask": "Provide Liquidity"
+        },
         "loginText": "Connect your account to see your points",
+        "lvl": "Lvl",
+        "maxLvl": "You reached max lvl",
+        "nativeXorStaking": {
+            "descriptionTask": "Stake XOR and earn VAL rewards",
+            "titleProgress": "XOR Staking",
+            "titleTask": "Stake XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "Spend XOR in network fees across multiple on-chain transactions",
+            "titleProgress": "Network fees",
+            "titleTask": "Spend XOR on Network Fees"
+        },
+        "nextLvl": "Next lvl",
         "openTelegram": "Open {Telegram}",
+        "orderbookVolume": {
+            "descriptionTask": "Create limit orders in the orderbook",
+            "titleProgress": "Orderbook",
+            "titleTask": "Create Limit Orders"
+        },
+        "progress": "Progress",
+        "referralRewards": {
+            "descriptionTask": "Refer accounts through the referral system",
+            "titleProgress": "Referral Sytem",
+            "titleTask": "Refer accounts"
+        },
+        "relatedTasks": "Complete {title}-related tasks in order to level up your skill",
+        "rewardNextLvl": "Next level reward",
+        "soraCard": "Apply now",
         "title": "Your Points Progress",
         "toEarnPoints": "To earn points",
+        "VXORHoldings": {
+            "descriptionTask": "Hold your current VXOR holdings",
+            "titleProgress": "VXOR holdings",
+            "titleTask": "Hold VXOR"
+        },
         "xorBurned": "{XOR} burned",
+        "XORBurned": {
+            "descriptionTask": "Burn XOR and convert to $ value",
+            "titleProgress": "XOR Burned",
+            "titleTask": "Burn XOR"
+        },
+        "XORHoldings": {
+            "descriptionTask": "Hold your current XOR holdings",
+            "titleProgress": "XOR Hold",
+            "titleTask": "Hold XOR"
+        },
+        "yourLevel": "Your level",
         "yourReferrals": "Your referrals",
-        "yourRewards": "Your rewards"
+        "yourRewards": "Your rewards",
+        "yourTasks": "Your Tasks"
     },
     "polkadotjs": {
         "connectionError": "An error occured while connecting the wallet. You can try to connect the wallet via {extension} again",
@@ -1260,6 +1408,24 @@
         "title": "Turn your device upside down to hide balances"
     },
     "saveText": "Save",
+    "sbtDetails": {
+        "accessPermitted": "Access permitted",
+        "description": "This SBT provides access to multiple tokens & pools and is attached to your account",
+        "expiresIn": "Expires in",
+        "expiresInTooltip": "The 'Expires in' shows period or point of time the access is acquired",
+        "expiryDate": "Expiry date",
+        "expiryDateTooltip": "The 'Expiry Date' is the deadline for your access to regulated assets of SBT",
+        "indefiniteExp": "open-ended",
+        "issuedBy": "{SBT} issued by",
+        "kycProvider": "{KYC} Provider",
+        "kycVerification": "{KYC} Verification",
+        "listOperable": "Regulated assets operable",
+        "noPermissions": "No additional permissions",
+        "noReceiverAccess": "You're trying to send regulated token to the user with no SBT access",
+        "permission": "permission",
+        "permissions": "permissions",
+        "regulatedInsitution": "Regulated Institution"
+    },
     "searchText": "Search",
     "selectLanguageDialog": {
         "title": "Language"
@@ -1538,12 +1704,15 @@
         "badAddress": "Incorrect address",
         "balance": "Balance",
         "confirmTitle": "Confirm transaction",
+        "enableVesting": "Enable token vesting",
         "enterAddress": "Enter address",
         "enterAmount": "Enter amount",
+        "enterVestingPercentage": "Enter vesting percentage",
         "errorAddress": "Invalid address. Please check it and try again.",
         "max": "MAX",
         "title": "Send",
-        "tooltip": "Send tokens between {Sora} network accounts"
+        "tooltip": "Send tokens between {Sora} network accounts",
+        "vestingPercentage": "Vesting percentage"
     },
     "warningText": "Warning"
 }
