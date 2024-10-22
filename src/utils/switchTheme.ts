@@ -11,17 +11,12 @@ let prefersDarkScheme: MediaQueryList | null = null;
 let handleThemeChange: ((e: MediaQueryListEvent) => void) | null = null;
 
 export const applyTheme = (isDark: boolean): void => {
-  console.info('we are in applytheme');
-  console.info('we will set theme now');
-  console.info(isDark);
   setTheme(isDark ? Theme.DARK : Theme.LIGHT);
   updatePipTheme();
   tmaSdkService.updateTheme();
 };
 
 export const detectSystemTheme = (isTMA: boolean): void => {
-  console.info('we are in detectSystemTheme');
-  console.info(isTMA);
   prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
   handleThemeChange = (e: MediaQueryListEvent) => {
     applyTheme(e.matches);
@@ -33,10 +28,8 @@ export const detectSystemTheme = (isTMA: boolean): void => {
   applyTheme(systemPrefersDark);
 
   if (isTMA) {
-    console.info('we are in tma');
     const webApp = window.Telegram.WebApp;
     const colorScheme = webApp.colorScheme;
-    console.info('color scheme');
     applyTheme(colorScheme === 'dark');
 
     tmaSdkService.listenForThemeChanges(applyTheme);
