@@ -30,6 +30,36 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   color: var(--s-color-base-content-primary);
 }
 
+@mixin drag-drop-content {
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__icon {
+    color: var(--s-color-base-content-tertiary);
+    margin-bottom: calc(var(--s-size-small) / 2);
+
+    &.icon--error {
+      color: var(--s-color-theme-accent);
+    }
+  }
+
+  &__btn {
+    margin-top: calc(var(--s-size-small) / 2);
+    height: 32px !important;
+  }
+
+  &__placeholder {
+    letter-spacing: var(--s-letter-spacing-small);
+    color: var(--s-color-base-content-primary);
+    font-size: calc(var(--s-size-small) / 2);
+    text-align: center;
+    padding: 0 50px;
+  }
+}
+
 @mixin text-ellipsis {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -300,6 +330,22 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
+@mixin switch-block($fontSize: var(--s-font-size-medium)) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: #{$basic-spacing-medium};
+  cursor: pointer;
+
+  & > span {
+    margin-left: #{$basic-spacing-small};
+    font-size: $fontSize;
+    font-weight: 300;
+    letter-spacing: var(--s-letter-spacing-small);
+    line-height: var(--s-line-height-medium);
+  }
+}
+
 @mixin slippage-tolerance-tabs {
   flex: 1;
   font-size: var(--s-font-size-medium);
@@ -501,7 +547,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
     &:not(.el-table--border) {
       tr {
-        td, th {
+        td,
+        th {
           & > .cell {
             padding: $inner-spacing-tiny $inner-spacing-mini;
           }
@@ -515,7 +562,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       }
     }
 
-    &, &.el-table--enable-row-hover {
+    &,
+    &.el-table--enable-row-hover {
       .el-table__body,
       .el-table__header {
         tr,

@@ -1,0 +1,152 @@
+<template>
+  <dialog-base
+    :title="t('assetOwner.issueSbtAccess', { type: WALLET_CONSTS.TranslationConsts.SBT })"
+    :visible.sync="isVisible"
+  >
+    <div class="dashboard-give-access">
+      <p class="p3 dashboard-give-access__text">{{ t('assetOwner.dialog.enterAddress') }}</p>
+      <address-book-input
+        class="dashboard-give-access__address"
+        v-model="address"
+        :is-valid="validAddress"
+        :disabled="loading"
+      />
+      <p class="p3 dashboard-give-access__text">{{ t('assetOwner.dialog.selectAccessEnd') }}</p>
+      <s-date-picker
+        v-model="value"
+        value-format="timestamp"
+        type="date"
+        :placeholder="datePlaceholder"
+        @change="handleDatePickerChange"
+      />
+      <s-button
+        type="primary"
+        class="s-typography-button--large action-button dashboard-give-access__button"
+        :disabled="disabled"
+        @click="handleGiveAccess"
+      >
+        <template v-if="isInsufficientXorForFee">
+          {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
+        </template>
+        <template v-else-if="emptyAddress">
+          {{ t('walletSend.enterAddress') }}
+        </template>
+        <template v-else-if="emptyValue">
+          {{ t('assetOwner.dialog.selectDate') }}
+        </template>
+        <template v-else>{{ t('assetOwner.dialog.issueAccess') }}</template>
+      </s-button>
+    </div>
+  </dialog-base>
+</template>
+
+<script lang="ts">
+import { Operation } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { mixins, components, api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+
+import { ZeroStringValue } from '@/consts';
+import { getter, state } from '@/store/decorators';
+
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+
+@Component({
+  components: {
+    DialogBase: components.DialogBase,
+    AddressBookInput: components.AddressBookInput,
+  },
+})
+export default class GrantPrivilegeDialog extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
+
+  @Prop({ type: String, default: '' }) readonly sbtAddress!: string;
+
+  readonly xorSymbol = XOR.symbol;
+  readonly WALLET_CONSTS = WALLET_CONSTS;
+
+  address = '';
+  value = '';
+  datePlaceholder = this.t('assetOwner.dialog.pickDate');
+
+  get validAddress(): boolean {
+    return !this.emptyAddress && api.validateAddress(this.address);
+  }
+
+  get emptyAddress(): boolean {
+    return !this.address.trim();
+  }
+
+  private get xorBalance() {
+    return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
+  }
+
+  get isInsufficientXorForFee(): boolean {
+    return this.xorBalance.sub(this.fpNetworkFee).isLtZero();
+  }
+
+  get networkFee(): CodecString {
+    return this.networkFees[Operation.SetAccessExpiration];
+  }
+
+  get disabled(): boolean {
+    return this.loading || this.isInsufficientXorForFee || this.emptyValue || !this.validAddress;
+  }
+
+  get emptyValue(): boolean {
+    return !+this.value;
+  }
+
+  private get fpNetworkFee() {
+    return this.getFPNumberFromCodec(this.networkFee);
+  }
+
+  handleDatePickerChange(): void {
+    this.datePlaceholder = this.emptyValue ? this.t('assetOwner.dialog.pickDate') : '';
+  }
+
+  async handleGiveAccess(): Promise<void> {
+    try {
+      await this.withNotifications(async () => {
+        const sbtAsset = await api.assets.getAssetInfo(this.sbtAddress);
+        await api.extendedAssets.givePrivilege(this.address, sbtAsset, Number(this.value));
+        this.isVisible = false;
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.dashboard-give-access {
+  @include full-width-button('action-button');
+
+  &__address,
+  &__button,
+  &__text {
+    margin-bottom: $basic-spacing;
+  }
+
+  &__text {
+    font-weight: 600;
+    color: var(--s-color-base-content-secondary);
+    text-transform: uppercase;
+  }
+}
+</style>
+
+<style lang="scss">
+.dashboard-give-access {
+  .s-date-picker {
+    .el-date-editor {
+      .el-input__inner {
+        box-shadow: var(--s-shadow-element);
+      }
+    }
+  }
+}
+</style>

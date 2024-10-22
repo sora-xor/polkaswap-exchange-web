@@ -120,17 +120,16 @@
         </s-col>
       </s-row>
     </template>
-    <create-token-dialog :visible.sync="showCreateTokenDialog" />
   </div>
 </template>
 
 <script lang="ts">
+import { AssetTypes } from '@sora-substrate/sdk/build/assets/types';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
-import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
-import { dashboardLazyComponent } from '@/modules/dashboard/router';
+import { DashboardPageNames } from '@/modules/dashboard/consts';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import router from '@/router';
 import { getter } from '@/store/decorators';
@@ -141,7 +140,6 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
-    CreateTokenDialog: dashboardLazyComponent(DashboardComponents.CreateTokenDialog),
   },
 })
 export default class AssetOwner extends Mixins(InternalConnectMixin, mixins.FormattedAmountMixin) {
@@ -155,11 +153,15 @@ export default class AssetOwner extends Mixins(InternalConnectMixin, mixins.Form
   }
 
   handleCreateAsset(): void {
-    this.showCreateTokenDialog = true;
+    router.push({ name: DashboardPageNames.AssetOwnerCreate });
   }
 
-  handleOpenAssetDetails(asset: OwnedAsset): void {
-    router.push({ name: DashboardPageNames.AssetOwnerDetails, params: { asset: asset.address } });
+  async handleOpenAssetDetails(asset: OwnedAsset): Promise<void> {
+    if (asset.type === AssetTypes.Soulbound) {
+      router.push({ name: DashboardPageNames.AssetOwnerDetailsSBT, params: { asset: asset.address } });
+    } else {
+      router.push({ name: DashboardPageNames.AssetOwnerDetails, params: { asset: asset.address } });
+    }
   }
 
   get noAssetsImg(): string {

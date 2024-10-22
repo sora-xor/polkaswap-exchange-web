@@ -1,5 +1,6 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineMutations } from 'direct-vuex';
+import { NFTStorage } from 'nft.storage';
 
 import { MarketAlgorithms } from '@/consts';
 import type { Language } from '@/consts';
@@ -127,6 +128,25 @@ const mutations = defineMutations<SettingsState>()({
   },
   setAdsArray(state, arr: Array<Ad>): void {
     state.adsArray = arr;
+  },
+  setNftStorage(
+    state,
+    { marketplaceDid, ucan, token = '' }: { marketplaceDid?: string; ucan?: string; token?: string }
+  ): void {
+    let nftStorage: NFTStorage;
+
+    if (marketplaceDid && ucan) {
+      // on prod environment
+      nftStorage = new NFTStorage({
+        token: ucan,
+        did: marketplaceDid,
+      });
+    } else {
+      // on dev, test environments
+      nftStorage = new NFTStorage({ token });
+    }
+
+    state.nftStorage = nftStorage;
   },
   enableTMA(state): void {
     state.isTMA = true;
