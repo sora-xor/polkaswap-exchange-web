@@ -9,7 +9,6 @@ import { updatePipTheme } from '.';
 
 let prefersDarkScheme: MediaQueryList | null = null;
 let handleThemeChange: ((e: MediaQueryListEvent) => void) | null = null;
-const isTMA = store.state.settings.isTMA;
 
 export const applyTheme = (isDark: boolean): void => {
   console.info('we are in applytheme');
@@ -20,7 +19,7 @@ export const applyTheme = (isDark: boolean): void => {
   tmaSdkService.updateTheme();
 };
 
-export const detectSystemTheme = (): void => {
+export const detectSystemTheme = (isTMA: boolean): void => {
   console.info('we are in detectSystemTheme');
   console.info(isTMA);
   prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
@@ -44,7 +43,7 @@ export const detectSystemTheme = (): void => {
   }
 };
 
-export const removeThemeListeners = (): void => {
+export const removeThemeListeners = (isTMA: boolean): void => {
   if (prefersDarkScheme && handleThemeChange) {
     prefersDarkScheme.removeEventListener('change', handleThemeChange);
     prefersDarkScheme = null;

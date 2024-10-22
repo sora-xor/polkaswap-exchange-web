@@ -122,6 +122,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
   @state.settings.isThemePreference isThemePreference!: boolean;
   @state.settings.featureFlags private featureFlags!: FeatureFlags;
+  @state.settings.isTMA isTMA!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
@@ -149,6 +150,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (windowWidth: number) => void;
   @mutation.settings.showOrientationWarning private showOrientationWarning!: FnWithoutArgs;
   @mutation.settings.hideOrientationWarning private hideOrientationWarning!: FnWithoutArgs;
+
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
   @mutation.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
@@ -215,9 +217,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     console.info('we are in onIsThemePreferenceChange');
     console.info(newVal);
     if (newVal) {
-      detectSystemTheme();
+      detectSystemTheme(this.isTMA);
     } else {
-      removeThemeListeners();
+      removeThemeListeners(this.isTMA);
     }
   }
 
@@ -420,7 +422,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async beforeDestroy(): Promise<void> {
     window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
-    removeThemeListeners();
+    removeThemeListeners(this.isTMA);
     if (screen.orientation) {
       screen.orientation.removeEventListener('change', this.handleOrientationChange);
     } else {
