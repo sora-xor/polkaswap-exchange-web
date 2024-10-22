@@ -69,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} Pozicija zatvorena",
             "DepositCollateral": "Уплаћен залог {amount} {symbol}",
             "RepayVaultDebt": "Дуг враћен {amount} {symbol}",
-            "BorrowVaultDebt": "Дуг позајмљен {amount} {symbol}"
+            "BorrowVaultDebt": "Дуг позајмљен {amount} {symbol}",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Повежите средство {symbol2} са СБТ",
+            "IssueSoulBoundToken": "Издајте соулбоунд токен {symbol}",
+            "RegisterAndRegulateAsset": "Региструјте и регулишите {symbol} средство",
+            "RegulateAsset": "Регулисање имовине {symbol}",
+            "SetAccessExpiration": "СБ токен {symbol} Истек је ажуриран на {endTime}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
@@ -111,7 +118,14 @@
             "CloseVault": "Neuspešno zatvaranje pozicije {symbol}\/{symbol2}",
             "DepositCollateral": "Грешка при уплати залога {amount} {symbol}",
             "RepayVaultDebt": "Грешка при враћању дуга {amount} {symbol}",
-            "BorrowVaultDebt": "Грешка при позајмљивању дуга {amount} {symbol}"
+            "BorrowVaultDebt": "Грешка при позајмљивању дуга {amount} {symbol}",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Повезивање средства {symbol} са СБТ {symbol2} није успело",
+            "IssueSoulBoundToken": "Издавање Соулбоунд токена {symbol} није успело",
+            "RegisterAndRegulateAsset": "Регистровање и регулисање {symbol} није успело",
+            "RegulateAsset": "Регулисање имовине {symbol} није успело",
+            "SetAccessExpiration": "Ажурирање истека на {to} за {symbol} није успело",
+            "XorlessTransfer": "Слање {amount} {symbol} на {address} није успело"
         },
         "ReferralReserveXor": "Veži XOR",
         "ReferralUnreserveXor": "Razveži XOR",
@@ -145,7 +159,14 @@
         "CloseVault": "Zatvori poziciju",
         "DepositCollateral": "Уплати залог",
         "RepayVaultDebt": "Врати дуг",
-        "BorrowVaultDebt": "Позајми дуг"
+        "BorrowVaultDebt": "Позајми дуг",
+        "VestedTransfer": "",
+        "BindRegulatedAsset": "Везати регулисано средство",
+        "IssueSoulBoundToken": "Иссуе СБТ",
+        "RegisterAndRegulateAsset": "Региструјте имовину",
+        "RegulateAsset": "Регулишите имовину",
+        "SetAccessExpiration": "Подесите СБТ истека",
+        "XorlessTransfer": "Трансфер"
     },
     "polkadotjs": {
         "noExtensions": "Није пронађена ниједна екстензија {PolkadotJs}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -188,7 +209,11 @@
         "errorAddress": "Погрешна адреса. Проверите и покушајте поново.",
         "tooltip": "Шаљите токене између рачуна {Sora} мреже",
         "addressWarning": "Токени ће бити послати на {Sora} адресу испод. Уверите се да прималац може да приступи ланцу {Sora} да би користио токене:",
-        "addressError": "Не можете слати токене на исти рачун са којим сте тренутно повезани."
+        "addressError": "Не можете слати токене на исти рачун са којим сте тренутно повезани.",
+        "enableVesting": "",
+        "enterVestingPercentage": "",
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Копирајте адресу",
@@ -750,7 +775,8 @@
         "titleBalance": "Stanja",
         "titleTheme": "Tema boja",
         "titleCurrency": "Fiat valuta",
-        "titleMisc": "Ostalo"
+        "titleMisc": "Ostalo",
+        "systemPreferencesTheme": "Системски режим"
     },
     "sentText": "Poslato",
     "learnMoreText": "Сазнајте више",
@@ -1532,7 +1558,91 @@
         "accountsText": "{amount} naloga",
         "yourRewards": "Vaše nagrade",
         "openTelegram": "Otvorite {Telegram}",
-        "toEarnPoints": "Za zarađivanje poena"
+        "toEarnPoints": "Za zarađivanje poena",
+        "airdrop": "Завршите задатке везане за SORA екосистем да бисте се квалификовали за аирдроп од 3 милиона долара",
+        "complete": "Завршено | Заврши",
+        "currently": "Тренутно",
+        "dated": "Датирано",
+        "depositVolumeBridges": {
+            "descriptionTask": "Депозит и повлачење преко Мостова, bitget, 1x, gateio",
+            "titleProgress": "Обим депозита",
+            "titleTask": "Депозит и Повлачење"
+        },
+        "firstSoraNetworkTransaction": "Ваша прва трансакција на SORA мрежи",
+        "firstTxAccount": {
+            "descriptionTask": "Завршите своју прву XOR трансакцију и добијте награду",
+            "titleProgress": "Прва трансакција",
+            "titleTask": "Обавите своју прву трансакцију"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Закључајте XOR учешћем у догађајима гласања за управљање",
+            "titleProgress": "Управљање",
+            "titleTask": "Закључајте XOR у гласању за управљање"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Отплатите KUSD дуг током ликвидације или затварања позиција",
+            "titleProgress": "Обим Kensetsu",
+            "titleTask": "Отплатите KUSD дуг"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "Држите ваше тренутно KUSD власништво",
+            "titleProgress": "Држање KUSD",
+            "titleTask": "Држати KUSD"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "Обезбедите ликвидност у разним пуловима",
+            "titleProgress": "Обезбеђивање ликвидности",
+            "titleTask": "Обезбедите ликвидност"
+        },
+        "lvl": "Лвл",
+        "maxLvl": "Достигли сте максимални ниво",
+        "nativeXorStaking": {
+            "descriptionTask": "Уложи XOR и заради VAL награде",
+            "titleProgress": "Стејковање XOR",
+            "titleTask": "Уложите XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "Потрошите XOR на накнаде мреже у више on-chain трансакција",
+            "titleProgress": "Накнаде мреже",
+            "titleTask": "Потрошите XOR на накнаде мреже"
+        },
+        "nextLvl": "Следећи лвл",
+        "orderbookVolume": {
+            "descriptionTask": "Направите лимитиране налоге у књизи налога",
+            "titleProgress": "Ордербоок",
+            "titleTask": "Направи лимитиране налоге"
+        },
+        "progress": "Напредак",
+        "referralRewards": {
+            "descriptionTask": "Препоручи налоге преко рефералног система",
+            "titleProgress": "Реферални систем",
+            "titleTask": "Препоручи налоге"
+        },
+        "relatedTasks": "Завршите задатке везане за {title} да бисте унапредили своје вештине",
+        "rewardNextLvl": "Награда за следећи ниво",
+        "soraCard": "Пријавите се сада",
+        "VXORHoldings": {
+            "descriptionTask": "Држите ваше тренутно VXOR власништво",
+            "titleProgress": "VXOR холдингс",
+            "titleTask": "Држати VXOR"
+        },
+        "XORBurned": {
+            "descriptionTask": "Спалите XOR и претворите у $ вредност",
+            "titleProgress": "XOR је спаљен",
+            "titleTask": "Бурн КСОР"
+        },
+        "XORHoldings": {
+            "descriptionTask": "Држите ваше тренутно XOR власништво",
+            "titleProgress": "Држање XOR",
+            "titleTask": "Држати XOR"
+        },
+        "yourLevel": "Ваш ниво",
+        "yourTasks": "Ваши задаци",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Додај имовину | Додај имовине",
     "noir": "Ноир",
@@ -1545,5 +1655,71 @@
     "firstText": "Први",
     "lastText": "Poslednja",
     "prevText": "Претходна",
-    "priceText": "Цена"
+    "priceText": "Цена",
+    "assetOwner": {
+        "accountWithAccess": "Рачун са СБТ приступом",
+        "addRegulatedAsset": "Додајте још једно регулисано средство",
+        "addRegulatedAssets": "Додајте регулисана средства",
+        "attachedRegulatedAssets": "Приложена регулисана имовина",
+        "createRegulatedAsset": "Креирајте нову регулисану имовину",
+        "createSbt": "Направите {type}",
+        "dialog": {
+            "addExisting": "Додајте постојеће средство",
+            "addExistingDesc": "Додајте већ креирано средство за СБТ",
+            "createAsset": "Направите ново средство",
+            "createAssetDesc": "Подесите ново дозвољено средство за {type}",
+            "enterAddress": "Унесите адресу за издавање",
+            "issueAccess": "Проблем приступа",
+            "pickDate": "Изаберите дан",
+            "selectAccessEnd": "Изаберите када ће се приступ завршити",
+            "selectDate": "Изаберите датум"
+        },
+        "guide": {
+            "createToken": "Креирајте свој токен",
+            "createTokenDesc": "Лако покрените свој јединствени токен – доступан у више формата као што су НФТ и СБТ – користећи робусну, безбедну инфраструктуру СОРА мреже",
+            "disclaimerSbt": "Оставите ову страницу отвореном током целог процеса. Затварање или напуштање ће захтевати да поново покренете из почетка. Брзо довршите кораке да бисте избегли временско ограничење.",
+            "stepOneDesc": "Изаберите или креирајте средства која сте лично креирали и регулисали. Ово су средства под вашом контролом и управљањем.",
+            "stepOneTitle": "Изаберите или креирајте регулисана средства",
+            "stepThreeDesc": "Прегледајте и потпишите коначну трансакцију креирања да бисте довршили СБТ подешавање.",
+            "stepThreeTitle": "Прегледајте и потпишите трансакцију",
+            "stepTwoDesc": "Наведите основне информације као што су име СБТ-а и симбол ознаке, као и икона.",
+            "stepTwoTitle": "Унесите СБТ детаље",
+            "title": "Како да направите {type} :"
+        },
+        "issueSbtAccess": "Издајте приступ {type}",
+        "letsStartBtn": "ПОЧНИМО",
+        "orSelectExisting": "Или изаберите постојеће",
+        "ownerSbtTitle": "Ваш {type}",
+        "permissionedAssets": "Дозвољена средства",
+        "regulatedAssetsConnected": "Регулисана имовина повезана",
+        "regulatedPools": "Регулисани базени",
+        "sbtCreation": {
+            "addAssets": "Додајте средства у СБТ",
+            "addDescription": "Унесите СБТ детаље",
+            "addMeta": "Унесите СБТ детаље",
+            "preview": "СБТ Превиев"
+        },
+        "sbtManagers": "{type} Менаџери",
+        "selectExisting": "Изаберите постојеће",
+        "startIssue": "Почните са издавањем приступа за СБТ рачунима",
+        "you": "Ви"
+    },
+    "sbtDetails": {
+        "accessPermitted": "Приступ дозвољен",
+        "description": "Овај СБТ пружа приступ вишеструким токенима и скуповима и везан је за ваш налог",
+        "expiresIn": "Истиче за",
+        "expiresInTooltip": "„Истиче за“ показује период или временско тачку када је приступ стечен",
+        "expiryDate": "Датум истека",
+        "expiryDateTooltip": "„Датум истека“ је крајњи рок за ваш приступ регулисаним средствима СБТ-а",
+        "indefiniteExp": "отвореног типа",
+        "issuedBy": "{SBT} издао",
+        "kycProvider": "{KYC} добављач",
+        "kycVerification": "{KYC} верификација",
+        "listOperable": "Регулисана имовина оперативна",
+        "noPermissions": "Нема додатних дозвола",
+        "noReceiverAccess": "Покушавате да пошаљете регулисани токен кориснику који нема СБТ приступ",
+        "permission": "дозволу",
+        "permissions": "дозволе",
+        "regulatedInsitution": "Регулисана институција"
+    }
 }

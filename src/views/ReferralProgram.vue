@@ -459,7 +459,7 @@ export default class ReferralProgram extends Mixins(
   .el-loading-mask {
     margin-right: auto;
     margin-left: auto;
-    width: calc(100% - #{$inner-spacing-big} * 2);
+    width: 100%;
   }
   .invited-users-container {
     .el-collapse-item__content {

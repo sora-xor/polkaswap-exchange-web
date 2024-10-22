@@ -69,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} Vị thế được đóng",
             "DepositCollateral": "Đã nộp tài sản đảm bảo {amount} {symbol}",
             "RepayVaultDebt": "Đã trả nợ kho bảo {amount} {symbol}",
-            "BorrowVaultDebt": "Đã vay nợ kho bảo {amount} {symbol}"
+            "BorrowVaultDebt": "Đã vay nợ kho bảo {amount} {symbol}",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Liên kết tài sản {symbol2} với SBT",
+            "IssueSoulBoundToken": "Phát hành Soulbound Token {symbol}",
+            "RegisterAndRegulateAsset": "Đăng ký và quản lý tài sản {symbol}",
+            "RegulateAsset": "Điều chỉnh Tài sản {symbol}",
+            "SetAccessExpiration": "Mã thông báo SB {symbol} Đã cập nhật ngày hết hạn thành {endTime}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "Không gửi được {action} {amount} {symbol} {direction} {address}",
@@ -111,7 +118,14 @@
             "CloseVault": "Không thể đóng vị thế {symbol}\/{symbol2}",
             "DepositCollateral": "Không thể nộp tài sản đảm bảo {amount} {symbol}",
             "RepayVaultDebt": "Không thể trả nợ kho bảo {amount} {symbol}",
-            "BorrowVaultDebt": "Không thể vay nợ kho bảo {amount} {symbol}"
+            "BorrowVaultDebt": "Không thể vay nợ kho bảo {amount} {symbol}",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Không thể liên kết tài sản {symbol} với SBT {symbol2}",
+            "IssueSoulBoundToken": "Không thể phát hành mã thông báo Soulbound {symbol}",
+            "RegisterAndRegulateAsset": "Không Đăng Ký Và Điều Chỉnh Được {symbol}",
+            "RegulateAsset": "Không thể điều chỉnh Tài sản {symbol}",
+            "SetAccessExpiration": "Không cập nhật được ngày hết hạn thành {to} cho {symbol}",
+            "XorlessTransfer": "Không gửi được {amount} {symbol} đến {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -145,7 +159,14 @@
         "CloseVault": "Đóng vị thế",
         "DepositCollateral": "Nộp Tài Sản Đảm Bảo",
         "RepayVaultDebt": "Trả Nợ Kho Bảo",
-        "BorrowVaultDebt": "Vay Nợ Kho Bảo"
+        "BorrowVaultDebt": "Vay Nợ Kho Bảo",
+        "VestedTransfer": "",
+        "BindRegulatedAsset": "Liên kết tài sản được quản lý",
+        "IssueSoulBoundToken": "Vấn đề SBT",
+        "RegisterAndRegulateAsset": "Đăng ký tài sản",
+        "RegulateAsset": "Điều chỉnh tài sản",
+        "SetAccessExpiration": "Đặt ngày hết hạn SBT",
+        "XorlessTransfer": "Chuyển khoản"
     },
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) {PolkadotJs}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -188,7 +209,11 @@
         "errorAddress": "Địa chỉ không hợp lệ. Vui lòng kiểm tra và thử lại.",
         "tooltip": "Gửi token giữa những tài khoản cùng Mạng {Sora}",
         "addressWarning": "Những Token này sẽ được chuyển đến địa chỉ {Sora} bên dưới. Hãy đảm bảo rằng người nhận có thể truy cập vào Chuỗi {Sora} để sử dụng những token này.",
-        "addressError": "Bạn không thể gửi những token này đến cùng tài khoản mà bạn đang kết nối"
+        "addressError": "Bạn không thể gửi những token này đến cùng tài khoản mà bạn đang kết nối",
+        "enableVesting": "",
+        "enterVestingPercentage": "",
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Sao chép địa chỉ",
@@ -750,7 +775,8 @@
         "titleBalance": "Số dư",
         "titleTheme": "Chủ đề màu sắc",
         "titleCurrency": "Tiền pháp định",
-        "titleMisc": "Khác"
+        "titleMisc": "Khác",
+        "systemPreferencesTheme": "Tùy chọn hệ thống"
     },
     "sentText": "Đã gửi",
     "learnMoreText": "Tìm hiểu thêm",
@@ -1532,7 +1558,91 @@
         "accountsText": "{amount} tài khoản",
         "yourRewards": "Phần thưởng của bạn",
         "openTelegram": "Mở {Telegram}",
-        "toEarnPoints": "Để kiếm điểm"
+        "toEarnPoints": "Để kiếm điểm",
+        "airdrop": "Hoàn thành các nhiệm vụ liên quan đến Hệ sinh thái SORA để đủ điều kiện nhận airdrop trị giá 3 triệu đô la",
+        "complete": "Đã hoàn thành | Hoàn thành",
+        "currently": "Hiện nay",
+        "dated": "Ngày tháng",
+        "depositVolumeBridges": {
+            "descriptionTask": "Gửi tiền & rút tiền qua Cầu, bitget, 1x, gateio",
+            "titleProgress": "Khối lượng tiền gửi",
+            "titleTask": "Gửi tiền & Rút tiền"
+        },
+        "firstSoraNetworkTransaction": "Giao dịch mạng SORA đầu tiên của bạn",
+        "firstTxAccount": {
+            "descriptionTask": "Hoàn thành giao dịch XOR đầu tiên của bạn và nhận phần thưởng",
+            "titleProgress": "Giao dịch đầu tiên",
+            "titleTask": "Thực hiện giao dịch đầu tiên của bạn"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Khóa XOR bằng cách tham gia các sự kiện bỏ phiếu quản trị",
+            "titleProgress": "Quản trị",
+            "titleTask": "Khóa XOR trong Bỏ phiếu Quản trị"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Trả nợ KUSD trong quá trình thanh lý hoặc đóng vị thế",
+            "titleProgress": "Khối lượng Kensetsu",
+            "titleTask": "Trả nợ KUSD"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "Giữ lượng KUSD hiện tại của bạn",
+            "titleProgress": "Nắm giữ KUSD",
+            "titleTask": "Giữ KUSD"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "Cung cấp thanh khoản trên nhiều pool",
+            "titleProgress": "Cung cấp thanh khoản",
+            "titleTask": "Cung cấp thanh khoản"
+        },
+        "lvl": "Cấp độ",
+        "maxLvl": "Bạn đã đạt cấp độ tối đa",
+        "nativeXorStaking": {
+            "descriptionTask": "Stake XOR và nhận phần thưởng VAL",
+            "titleProgress": "Đặt cọc XOR",
+            "titleTask": "Stake XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "Dùng XOR để trả phí mạng cho nhiều giao dịch on-chain",
+            "titleProgress": "Phí mạng",
+            "titleTask": "Dùng XOR để trả phí mạng"
+        },
+        "nextLvl": "Cấp độ tiếp theo",
+        "orderbookVolume": {
+            "descriptionTask": "Tạo lệnh giới hạn trong sổ lệnh",
+            "titleProgress": "Sổ lệnh",
+            "titleTask": "Tạo lệnh giới hạn"
+        },
+        "progress": "Tiến triển",
+        "referralRewards": {
+            "descriptionTask": "Giới thiệu tài khoản thông qua hệ thống giới thiệu",
+            "titleProgress": "Hệ thống giới thiệu",
+            "titleTask": "Giới thiệu tài khoản"
+        },
+        "relatedTasks": "Hoàn thành các nhiệm vụ liên quan đến {title} để nâng cao kỹ năng của bạn",
+        "rewardNextLvl": "Phần thưởng cấp độ tiếp theo",
+        "soraCard": "Nộp đơn ngay",
+        "VXORHoldings": {
+            "descriptionTask": "Giữ lượng VXOR hiện tại của bạn",
+            "titleProgress": "Cổ phần VXOR",
+            "titleTask": "Giữ VXOR"
+        },
+        "XORBurned": {
+            "descriptionTask": "Đốt XOR và chuyển đổi sang giá trị $",
+            "titleProgress": "XOR đã cháy",
+            "titleTask": "Đốt cháy XOR"
+        },
+        "XORHoldings": {
+            "descriptionTask": "Giữ lượng XOR hiện tại của bạn",
+            "titleProgress": "Nắm giữ XOR",
+            "titleTask": "Giữ XOR"
+        },
+        "yourLevel": "Cấp độ của bạn",
+        "yourTasks": "Nhiệm vụ của bạn",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Thêm tài sản | Thêm các tài sản",
     "noir": "Đen",
@@ -1545,5 +1655,71 @@
     "firstText": "Đầu tiên",
     "lastText": "Cuối",
     "prevText": "Trước",
-    "priceText": "Giá"
+    "priceText": "Giá",
+    "assetOwner": {
+        "accountWithAccess": "Tài khoản có quyền truy cập SBT",
+        "addRegulatedAsset": "Thêm một tài sản được quản lý khác",
+        "addRegulatedAssets": "Thêm tài sản được quản lý",
+        "attachedRegulatedAssets": "Tài sản được quản lý kèm theo",
+        "createRegulatedAsset": "Tạo tài sản được quản lý mới",
+        "createSbt": "Tạo {type}",
+        "dialog": {
+            "addExisting": "Thêm một tài sản hiện có",
+            "addExistingDesc": "Thêm một tài sản đã tạo cho SBT",
+            "createAsset": "Tạo một tài sản mới",
+            "createAssetDesc": "Thiết lập một tài sản được cấp phép mới cho {type}",
+            "enterAddress": "Nhập địa chỉ để phát hành",
+            "issueAccess": "Vấn đề truy cập",
+            "pickDate": "Chọn một ngày",
+            "selectAccessEnd": "Chọn thời điểm kết thúc quyền truy cập",
+            "selectDate": "Chọn ngày"
+        },
+        "guide": {
+            "createToken": "Tạo mã thông báo của bạn",
+            "createTokenDesc": "Dễ dàng khởi chạy mã thông báo duy nhất của bạn—có sẵn ở nhiều định dạng như NFT và SBT—bằng cách sử dụng cơ sở hạ tầng mạnh mẽ, an toàn của Mạng SORA",
+            "disclaimerSbt": "Giữ trang này mở trong suốt quá trình. Đóng hoặc điều hướng đi sẽ yêu cầu bạn phải khởi động lại từ đầu. Hoàn thành các bước một cách nhanh chóng để tránh hết thời gian chờ.",
+            "stepOneDesc": "Chọn hoặc tạo tài sản do chính bạn tạo ra và quản lý. Đây là tài sản do bạn kiểm soát và quản lý.",
+            "stepOneTitle": "Chọn hoặc Tạo Tài sản được Quản lý",
+            "stepThreeDesc": "Xem lại và ký giao dịch tạo cuối cùng để hoàn tất thiết lập SBT.",
+            "stepThreeTitle": "Xem lại và ký giao dịch",
+            "stepTwoDesc": "Cung cấp thông tin cần thiết như tên SBT và mã chứng khoán cũng như biểu tượng.",
+            "stepTwoTitle": "Nhập thông tin chi tiết SBT",
+            "title": "Cách tạo {type} :"
+        },
+        "issueSbtAccess": "Vấn đề {type} truy cập",
+        "letsStartBtn": "HÃY BẮT ĐẦU",
+        "orSelectExisting": "Hoặc chọn hiện có",
+        "ownerSbtTitle": "{type} của bạn",
+        "permissionedAssets": "Tài sản được phép",
+        "regulatedAssetsConnected": "Tài sản được quản lý kết nối",
+        "regulatedPools": "Các hồ bơi được quản lý",
+        "sbtCreation": {
+            "addAssets": "Thêm tài sản vào SBT",
+            "addDescription": "Nhập thông tin chi tiết SBT",
+            "addMeta": "Nhập thông tin chi tiết SBT",
+            "preview": "Xem trước SBT"
+        },
+        "sbtManagers": "{type} Người quản lý",
+        "selectExisting": "Chọn hiện có",
+        "startIssue": "Bắt đầu cấp quyền truy cập cho SBT vào các tài khoản",
+        "you": "Bạn"
+    },
+    "sbtDetails": {
+        "accessPermitted": "Được phép truy cập",
+        "description": "SBT này cung cấp quyền truy cập vào nhiều mã thông báo và nhóm và được đính kèm vào tài khoản của bạn",
+        "expiresIn": "Hết hạn trong",
+        "expiresInTooltip": "'Hết hạn trong' hiển thị khoảng thời gian hoặc thời điểm quyền truy cập được cấp",
+        "expiryDate": "Ngày hết hạn",
+        "expiryDateTooltip": "'Ngày hết hạn' là thời hạn cuối cùng để bạn có thể truy cập vào các tài sản được quản lý của SBT",
+        "indefiniteExp": "mở",
+        "issuedBy": "{SBT} được phát hành bởi",
+        "kycProvider": "Nhà cung cấp {KYC}",
+        "kycVerification": "Xác minh {KYC}",
+        "listOperable": "Tài sản được quản lý có thể hoạt động",
+        "noPermissions": "Không có quyền bổ sung",
+        "noReceiverAccess": "Bạn đang cố gắng gửi mã thông báo được quản lý tới người dùng không có quyền truy cập SBT",
+        "permission": "sự cho phép",
+        "permissions": "quyền hạn",
+        "regulatedInsitution": "Cơ quan quản lý"
+    }
 }

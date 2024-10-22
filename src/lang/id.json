@@ -69,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} Posisi ditutup",
             "DepositCollateral": "Deposito {amount} {symbol}",
             "RepayVaultDebt": "Utang dibayar {amount} {symbol}",
-            "BorrowVaultDebt": "Utang dipinjam {amount} {symbol}"
+            "BorrowVaultDebt": "Utang dipinjam {amount} {symbol}",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Ikat Aset {symbol2} ke SBT",
+            "IssueSoulBoundToken": "Masalah Token Soulbound {symbol}",
+            "RegisterAndRegulateAsset": "Daftarkan dan Atur aset {symbol}",
+            "RegulateAsset": "Mengatur Aset {symbol}",
+            "SetAccessExpiration": "Token SB {symbol} Diperbarui masa berlakunya menjadi {endTime}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "Gagal {action} {amount} {symbol} {direction} {address}",
@@ -111,7 +118,14 @@
             "CloseVault": "Gagal menutup posisi {symbol}\/{symbol2}",
             "DepositCollateral": "Gagal melakukan deposit {amount} {symbol}",
             "RepayVaultDebt": "Gagal membayar {amount} {symbol} utang",
-            "BorrowVaultDebt": "Gagal meminjam {amount} {symbol} utang"
+            "BorrowVaultDebt": "Gagal meminjam {amount} {symbol} utang",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Gagal Mengikat Aset {symbol} ke SBT {symbol2}",
+            "IssueSoulBoundToken": "Gagal mengeluarkan token Soulbound {symbol}",
+            "RegisterAndRegulateAsset": "Gagal Mendaftar dan Mengatur {symbol}",
+            "RegulateAsset": "Gagal Mengatur Aset {symbol}",
+            "SetAccessExpiration": "Gagal memperbarui tanggal kedaluwarsa ke {to} untuk {symbol}",
+            "XorlessTransfer": "Gagal mengirim {amount} {symbol} ke {address}"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
@@ -145,7 +159,14 @@
         "CloseVault": "Tutup Posisi",
         "DepositCollateral": "Deposit Kolateral",
         "RepayVaultDebt": "Bayar Utang",
-        "BorrowVaultDebt": "Pinjam Utang"
+        "BorrowVaultDebt": "Pinjam Utang",
+        "VestedTransfer": "",
+        "BindRegulatedAsset": "Mengikat Aset yang Diatur",
+        "IssueSoulBoundToken": "Masalah SBT",
+        "RegisterAndRegulateAsset": "Daftarkan Aset",
+        "RegulateAsset": "Mengatur Aset",
+        "SetAccessExpiration": "Tetapkan Kedaluwarsa SBT",
+        "XorlessTransfer": "Transfer"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi {PolkadotJs} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
@@ -188,7 +209,11 @@
         "errorAddress": "Alamat tidak valid. Silakan periksa dan coba lagi.",
         "tooltip": "Kirim token antar akun jaringan {Sora}",
         "addressWarning": "Token akan dikirim ke alamat {Sora} di bawah ini. Pastikan penerima dapat mengakses rantai {Sora} untuk menggunakan token:",
-        "addressError": "Anda tidak dapat mengirim token ke akun yang sama dengan yang saat ini terhubung dengan Anda."
+        "addressError": "Anda tidak dapat mengirim token ke akun yang sama dengan yang saat ini terhubung dengan Anda.",
+        "enableVesting": "",
+        "enterVestingPercentage": "",
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Salin alamat",
@@ -750,7 +775,8 @@
         "titleBalance": "Saldo",
         "titleTheme": "Tema warna",
         "titleCurrency": "Mata uang fiat",
-        "titleMisc": "Lainnya"
+        "titleMisc": "Lainnya",
+        "systemPreferencesTheme": "Preferensi Sistem"
     },
     "sentText": "Terkirim",
     "learnMoreText": "Pelajari lebih lanjut",
@@ -1532,7 +1558,91 @@
         "accountsText": "{amount} akun",
         "yourRewards": "Hadiah Anda",
         "openTelegram": "Buka {Telegram}",
-        "toEarnPoints": "Untuk mendapatkan poin"
+        "toEarnPoints": "Untuk mendapatkan poin",
+        "airdrop": "Selesaikan tugas yang terkait dengan Ekosistem SORA untuk memenuhi syarat airdrop senilai $3 juta",
+        "complete": "Selesai | Selesaikan",
+        "currently": "Saat ini",
+        "dated": "Bertanggal",
+        "depositVolumeBridges": {
+            "descriptionTask": "Setor & tarik melalui Jembatan, bitget, 1x, gateio",
+            "titleProgress": "Volume setoran",
+            "titleTask": "Setor & Tarik"
+        },
+        "firstSoraNetworkTransaction": "Transaksi Jaringan SORA pertama Anda",
+        "firstTxAccount": {
+            "descriptionTask": "Selesaikan transaksi XOR pertama Anda dan terima hadiah",
+            "titleProgress": "Transaksi pertama",
+            "titleTask": "Lakukan transaksi pertama Anda"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Kunci XOR dengan berpartisipasi dalam acara pemungutan suara tata kelola",
+            "titleProgress": "Pemerintahan",
+            "titleTask": "Kunci XOR dalam Pemungutan Suara Tata Kelola"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Bayar kembali utang KUSD selama likuidasi atau penutupan posisi",
+            "titleProgress": "Volume Kensetsu",
+            "titleTask": "Bayar kembali utang KUSD"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "Tahan kepemilikan KUSD Anda saat ini",
+            "titleProgress": "Kepemilikan KUSD",
+            "titleTask": "Tahan KUSD"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "Sediakan likuiditas di berbagai pool",
+            "titleProgress": "Penyediaan Likuiditas",
+            "titleTask": "Sediakan Likuiditas"
+        },
+        "lvl": "Tingkat",
+        "maxLvl": "Anda telah mencapai level maksimal",
+        "nativeXorStaking": {
+            "descriptionTask": "Stake XOR dan dapatkan hadiah VAL",
+            "titleProgress": "Staking XOR",
+            "titleTask": "Stake XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "Gunakan XOR untuk biaya jaringan di berbagai transaksi on-chain",
+            "titleProgress": "Biaya jaringan",
+            "titleTask": "Gunakan XOR untuk biaya jaringan"
+        },
+        "nextLvl": "Level berikutnya",
+        "orderbookVolume": {
+            "descriptionTask": "Buat pesanan batasan di buku pesanan",
+            "titleProgress": "Buku pesanan",
+            "titleTask": "Buat Pesanan Batasan"
+        },
+        "progress": "Kemajuan",
+        "referralRewards": {
+            "descriptionTask": "Rujuk akun melalui sistem referensi",
+            "titleProgress": "Sistem Referensi",
+            "titleTask": "Rujuk akun"
+        },
+        "relatedTasks": "Selesaikan tugas terkait {title} untuk meningkatkan keterampilan Anda",
+        "rewardNextLvl": "Hadiah level berikutnya",
+        "soraCard": "Daftar sekarang",
+        "VXORHoldings": {
+            "descriptionTask": "Tahan kepemilikan VXOR Anda saat ini",
+            "titleProgress": "kepemilikan VXOR",
+            "titleTask": "Tahan VXOR"
+        },
+        "XORBurned": {
+            "descriptionTask": "Bakar XOR dan ubah ke nilai $",
+            "titleProgress": "XOR Terbakar",
+            "titleTask": "Bakar XOR"
+        },
+        "XORHoldings": {
+            "descriptionTask": "Tahan kepemilikan XOR Anda saat ini",
+            "titleProgress": "Kepemilikan XOR",
+            "titleTask": "Tahan XOR"
+        },
+        "yourLevel": "Level Anda",
+        "yourTasks": "Tugas Anda",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Tambah aset | Tambah aset-aset",
     "noir": "Noir",
@@ -1545,5 +1655,71 @@
     "firstText": "Pertama",
     "lastText": "Terakhir",
     "prevText": "Sebelumnya",
-    "priceText": "Harga"
+    "priceText": "Harga",
+    "assetOwner": {
+        "accountWithAccess": "Akun dengan akses SBT",
+        "addRegulatedAsset": "Tambahkan aset teregulasi lainnya",
+        "addRegulatedAssets": "Tambahkan aset yang diatur",
+        "attachedRegulatedAssets": "Aset teregulasi yang terlampir",
+        "createRegulatedAsset": "Buat aset teregulasi baru",
+        "createSbt": "Buat {type}",
+        "dialog": {
+            "addExisting": "Tambahkan aset yang ada",
+            "addExistingDesc": "Tambahkan aset yang sudah dibuat untuk SBT",
+            "createAsset": "Buat aset baru",
+            "createAssetDesc": "Siapkan aset baru yang diizinkan untuk {type}",
+            "enterAddress": "Masukkan alamat untuk penerbitan",
+            "issueAccess": "Masalah akses",
+            "pickDate": "Pilih satu hari",
+            "selectAccessEnd": "Pilih kapan akses akan berakhir",
+            "selectDate": "Pilih tanggal"
+        },
+        "guide": {
+            "createToken": "Buat token Anda",
+            "createTokenDesc": "Luncurkan token unik Anda dengan mudah—tersedia dalam berbagai format seperti NFT dan SBT—menggunakan infrastruktur SORA Network yang kuat dan aman",
+            "disclaimerSbt": "Biarkan halaman ini terbuka selama seluruh proses. Menutup atau keluar akan mengharuskan Anda memulai ulang dari awal. Selesaikan langkah-langkah dengan cepat untuk menghindari waktu habis.",
+            "stepOneDesc": "Pilih atau ciptakan aset yang Anda ciptakan dan kelola sendiri. Aset ini berada di bawah kendali dan pengelolaan Anda.",
+            "stepOneTitle": "Pilih atau Buat Aset yang Diatur",
+            "stepThreeDesc": "Tinjau dan tandatangani transaksi pembuatan akhir untuk menyelesaikan pengaturan SBT.",
+            "stepThreeTitle": "Tinjau dan tandatangani transaksi",
+            "stepTwoDesc": "Berikan informasi penting seperti nama SBT dan simbol ticker, serta ikonnya.",
+            "stepTwoTitle": "Masukkan Rincian SBT",
+            "title": "Cara membuat {type} :"
+        },
+        "issueSbtAccess": "Masalah {type} akses",
+        "letsStartBtn": "MARI KITA MULAI",
+        "orSelectExisting": "Atau pilih yang sudah ada",
+        "ownerSbtTitle": "{type} Anda",
+        "permissionedAssets": "Aset yang diizinkan",
+        "regulatedAssetsConnected": "Aset yang diatur terhubung",
+        "regulatedPools": "Kolam renang yang diatur",
+        "sbtCreation": {
+            "addAssets": "Tambahkan Aset ke SBT",
+            "addDescription": "Masukkan Rincian SBT",
+            "addMeta": "Masukkan Rincian SBT",
+            "preview": "Pratinjau SBT"
+        },
+        "sbtManagers": "{type} Manajer",
+        "selectExisting": "Pilih yang sudah ada",
+        "startIssue": "Mulai mengeluarkan akses untuk SBT ke akun",
+        "you": "Anda"
+    },
+    "sbtDetails": {
+        "accessPermitted": "Akses diizinkan",
+        "description": "SBT ini menyediakan akses ke beberapa token & pool dan dilampirkan ke akun Anda",
+        "expiresIn": "Kedaluwarsa dalam",
+        "expiresInTooltip": "'Kadaluarsa dalam' menunjukkan periode atau titik waktu akses diperoleh",
+        "expiryDate": "Tanggal kadaluarsa",
+        "expiryDateTooltip": "'Tanggal Kedaluwarsa' adalah batas waktu akses Anda ke aset teregulasi SBT",
+        "indefiniteExp": "terbuka",
+        "issuedBy": "{SBT} dikeluarkan oleh",
+        "kycProvider": "Penyedia {KYC}",
+        "kycVerification": "Verifikasi {KYC}",
+        "listOperable": "Aset yang diatur dapat dioperasikan",
+        "noPermissions": "Tidak ada izin tambahan",
+        "noReceiverAccess": "Anda mencoba mengirim token yang diatur ke pengguna tanpa akses SBT",
+        "permission": "izin",
+        "permissions": "izin",
+        "regulatedInsitution": "Lembaga yang Diatur"
+    }
 }

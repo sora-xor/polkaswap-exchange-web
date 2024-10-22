@@ -69,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} 头寸已关闭",
             "DepositCollateral": "已存入 {amount} {symbol}",
             "RepayVaultDebt": "已偿还债务 {amount} {symbol}",
-            "BorrowVaultDebt": "已借入债务 {amount} {symbol}"
+            "BorrowVaultDebt": "已借入债务 {amount} {symbol}",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "将资产{symbol2}绑定到SBT",
+            "IssueSoulBoundToken": "发行灵魂绑定代币{symbol}",
+            "RegisterAndRegulateAsset": "注册并监管{symbol}资产",
+            "RegulateAsset": "调节资产{symbol}",
+            "SetAccessExpiration": "SB 代币{symbol}已更新到期日期至{endTime}",
+            "XorlessTransfer": "{action} {amount} { {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -111,7 +118,14 @@
             "CloseVault": "关闭 {symbol}\/{symbol2} 头寸失败",
             "DepositCollateral": "存入 {amount} {symbol} 抵押品失败",
             "RepayVaultDebt": "偿还 {amount} {symbol} 债务失败",
-            "BorrowVaultDebt": "借入 {amount} {symbol} 债务失败"
+            "BorrowVaultDebt": "借入 {amount} {symbol} 债务失败",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "无法将资产{symbol}绑定到 SBT {symbol2}",
+            "IssueSoulBoundToken": "无法发出灵魂绑定令牌{symbol}",
+            "RegisterAndRegulateAsset": "无法注册和监管{symbol}",
+            "RegulateAsset": "未能监管资产{symbol}",
+            "SetAccessExpiration": "无法将{symbol}到期日期更新为{to}",
+            "XorlessTransfer": "无法将{amount} {symbol}发送到{address}"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -145,7 +159,14 @@
         "CloseVault": "关闭头寸",
         "DepositCollateral": "存入抵押品",
         "RepayVaultDebt": "偿还债务",
-        "BorrowVaultDebt": "借入债务"
+        "BorrowVaultDebt": "借入债务",
+        "VestedTransfer": "",
+        "BindRegulatedAsset": "绑定监管资产",
+        "IssueSoulBoundToken": "发行 SBT",
+        "RegisterAndRegulateAsset": "注册资产",
+        "RegulateAsset": "监管资产",
+        "SetAccessExpiration": "设置 SBT 到期时间",
+        "XorlessTransfer": "转移"
     },
     "polkadotjs": {
         "noExtensions": "没有找到 {PolkadotJs} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -188,7 +209,11 @@
         "errorAddress": "无效地址。请检查并重试。",
         "tooltip": "在{Sora}网络账户之间发送代币",
         "addressWarning": "代币将被发送至以下{Sora}地址。请确保收件人能够访问{Sora}链以使用代币。",
-        "addressError": "您不能向您当前已连接的同一个账户发送代币。"
+        "addressError": "您不能向您当前已连接的同一个账户发送代币。",
+        "enableVesting": "",
+        "enterVestingPercentage": "",
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "复制地址",
@@ -750,7 +775,8 @@
         "titleBalance": "余额",
         "titleTheme": "颜色主题",
         "titleCurrency": "法定货币",
-        "titleMisc": "其他"
+        "titleMisc": "其他",
+        "systemPreferencesTheme": "系统偏好设置"
     },
     "sentText": "已发送",
     "learnMoreText": "了解更多",
@@ -1532,7 +1558,91 @@
         "accountsText": "{amount} 个账户",
         "yourRewards": "您的奖励",
         "openTelegram": "打开 {Telegram}",
-        "toEarnPoints": "获得积分"
+        "toEarnPoints": "获得积分",
+        "airdrop": "完成 SORA 生态系统相关任务以获得 $300 万空投资格",
+        "complete": "已完成 | 完成",
+        "currently": "现在",
+        "dated": "已过时",
+        "depositVolumeBridges": {
+            "descriptionTask": "通过桥接、bitget、1x、gateio 存款和取款",
+            "titleProgress": "存款量",
+            "titleTask": "存款和取款"
+        },
+        "firstSoraNetworkTransaction": "您的第一次 SORA 网络交易",
+        "firstTxAccount": {
+            "descriptionTask": "完成您的第一次 XOR 交易并领取奖励",
+            "titleProgress": "首次交易",
+            "titleTask": "完成您的第一次交易"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "通过参与治理投票活动锁定 XOR",
+            "titleProgress": "治理",
+            "titleTask": "在治理投票中锁定 XOR"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "在清算或关闭头寸时偿还 KUSD 债务",
+            "titleProgress": "Kensetsu 量",
+            "titleTask": "偿还 KUSD 债务"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "持有您当前的 KUSD 持仓",
+            "titleProgress": "KUSD 持有",
+            "titleTask": "保持 KUSD"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "在多个资金池中提供流动性",
+            "titleProgress": "提供流动性",
+            "titleTask": "提供流动性"
+        },
+        "lvl": "等级",
+        "maxLvl": "您已达到最高等级",
+        "nativeXorStaking": {
+            "descriptionTask": "质押 XOR 并赚取 VAL 奖励",
+            "titleProgress": "XOR 质押",
+            "titleTask": "质押 XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "在多笔链上交易中使用 XOR 支付网络费用",
+            "titleProgress": "网络费用",
+            "titleTask": "使用 XOR 支付网络费用"
+        },
+        "nextLvl": "下一等级",
+        "orderbookVolume": {
+            "descriptionTask": "在订单簿中创建限价单",
+            "titleProgress": "订单簿",
+            "titleTask": "创建限价单"
+        },
+        "progress": "进步",
+        "referralRewards": {
+            "descriptionTask": "通过推荐系统推荐账户",
+            "titleProgress": "推荐系统",
+            "titleTask": "推荐账户"
+        },
+        "relatedTasks": "完成与 {title} 相关的任务以提升您的技能",
+        "rewardNextLvl": "下一级奖励",
+        "soraCard": "立即申请",
+        "VXORHoldings": {
+            "descriptionTask": "持有您当前的 VXOR 持仓",
+            "titleProgress": "VXOR 控股",
+            "titleTask": "保持 VXOR"
+        },
+        "XORBurned": {
+            "descriptionTask": "销毁 XOR 并转换为美元价值",
+            "titleProgress": "XOR 烧毁",
+            "titleTask": "烧毁 XOR"
+        },
+        "XORHoldings": {
+            "descriptionTask": "持有您当前的 XOR 持仓",
+            "titleProgress": "XOR 持有",
+            "titleTask": "保持 XOR"
+        },
+        "yourLevel": "您的等级",
+        "yourTasks": "您的任务",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "添加资产 | 添加资产",
     "noir": "暗黑",
@@ -1545,5 +1655,71 @@
     "firstText": "第一的",
     "lastText": "最后的",
     "prevText": "以前的",
-    "priceText": "价格"
+    "priceText": "价格",
+    "assetOwner": {
+        "accountWithAccess": "具有 SBT 访问权限的帐户",
+        "addRegulatedAsset": "添加另一项受监管资产",
+        "addRegulatedAssets": "添加受监管资产",
+        "attachedRegulatedAssets": "受监管资产",
+        "createRegulatedAsset": "创建新的受监管资产",
+        "createSbt": "创建{type}",
+        "dialog": {
+            "addExisting": "添加现有资产",
+            "addExistingDesc": "为 SBT 添加已创建的资产",
+            "createAsset": "创建新资产",
+            "createAssetDesc": "为{type}设置新的许可资产",
+            "enterAddress": "输入发证地址",
+            "issueAccess": "问题访问",
+            "pickDate": "选择一天",
+            "selectAccessEnd": "选择访问结束时间",
+            "selectDate": "选择日期"
+        },
+        "guide": {
+            "createToken": "创建你的代币",
+            "createTokenDesc": "使用 SORA 网络强大、安全的基础设施，轻松发布您的独特代币（以 NFT 和 SBT 等多种格式提供）",
+            "disclaimerSbt": "在整个过程中保持此页面打开。关闭或离开将需要您从头开始。快速完成步骤以避免超时。",
+            "stepOneDesc": "选择或创建您亲自创建并管理的资产。这些是受您控制和管理的资产。",
+            "stepOneTitle": "选择或创建受监管资产",
+            "stepThreeDesc": "审查并签署最终创建交易以完成 SBT 设置。",
+            "stepThreeTitle": "审查并签署交易",
+            "stepTwoDesc": "提供基本信息，例如 SBT 的名称和股票代码以及图标。",
+            "stepTwoTitle": "输入 SBT 详细信息",
+            "title": "如何创建{type} ："
+        },
+        "issueSbtAccess": "发出{type}访问权限",
+        "letsStartBtn": "让我们开始吧",
+        "orSelectExisting": "或选择现有的",
+        "ownerSbtTitle": "您的{type}",
+        "permissionedAssets": "许可资产",
+        "regulatedAssetsConnected": "监管资产相关",
+        "regulatedPools": "受监管的矿池",
+        "sbtCreation": {
+            "addAssets": "将资产添加到 SBT",
+            "addDescription": "输入 SBT 详细信息",
+            "addMeta": "输入 SBT 详细信息",
+            "preview": "SBT 预览"
+        },
+        "sbtManagers": "{type}经理",
+        "selectExisting": "选择现有的",
+        "startIssue": "开始向 SBT 发放账户访问权限",
+        "you": "你"
+    },
+    "sbtDetails": {
+        "accessPermitted": "允许访问",
+        "description": "此 SBT 提供对多个代币和池的访问权限，并附加到您的帐户",
+        "expiresIn": "有效期：",
+        "expiresInTooltip": "“有效期”显示获取访问权限的时间段或时间点",
+        "expiryDate": "到期日",
+        "expiryDateTooltip": "“到期日”是您访问 SBT 监管资产的最后期限",
+        "indefiniteExp": "开放式",
+        "issuedBy": "{SBT}发行者",
+        "kycProvider": "{KYC}提供商",
+        "kycVerification": "{KYC}验证",
+        "listOperable": "受监管资产可操作",
+        "noPermissions": "无额外权限",
+        "noReceiverAccess": "您正在尝试向没有 SBT 访问权限的用户发送受监管的代币",
+        "permission": "允许",
+        "permissions": "权限",
+        "regulatedInsitution": "监管机构"
+    }
 }
