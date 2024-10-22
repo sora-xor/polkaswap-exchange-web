@@ -1,8 +1,6 @@
 import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { setTheme } from '@soramitsu-ui/ui-vue2/lib/utils';
 
-import store from '@/store';
-
 import { tmaSdkService } from './telegram';
 
 import { updatePipTheme } from '.';
