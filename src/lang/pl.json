@@ -212,7 +212,8 @@
         "addressError": "Nie możesz wysyłać tokenów na konto, które jest teraz właśnie podłączone.",
         "enableVesting": "",
         "enterVestingPercentage": "",
-        "vestingPercentage": ""
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Kopiuj adres",
@@ -774,7 +775,8 @@
         "titleBalance": "Salda",
         "titleTheme": "Motyw kolorystyczny",
         "titleCurrency": "Waluta fiat",
-        "titleMisc": "Inne"
+        "titleMisc": "Inne",
+        "systemPreferencesTheme": "Preferencje systemowe"
     },
     "sentText": "Wysłano",
     "learnMoreText": "Dowiedz się więcej",
@@ -1635,7 +1637,12 @@
             "titleTask": "Trzymaj XOR"
         },
         "yourLevel": "Twój poziom",
-        "yourTasks": "Twoje zadania"
+        "yourTasks": "Twoje zadania",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Dodaj aktywo | Dodaj aktywa",
     "noir": "Noir",

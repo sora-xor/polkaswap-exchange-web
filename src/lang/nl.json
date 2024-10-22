@@ -212,7 +212,8 @@
         "addressError": "U kunt geen tokens verzenden naar hetzelfde account waarmee u momenteel bent verbonden.",
         "enableVesting": "",
         "enterVestingPercentage": "",
-        "vestingPercentage": ""
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Adres kopiëren",
@@ -774,7 +775,8 @@
         "titleBalance": "Saldo's",
         "titleTheme": "Kleurenthema",
         "titleCurrency": "Fiat valuta",
-        "titleMisc": "Overig"
+        "titleMisc": "Overig",
+        "systemPreferencesTheme": "Systeemvoorkeuren"
     },
     "sentText": "Verzonden",
     "learnMoreText": "Kom meer te weten",
@@ -1635,7 +1637,12 @@
             "titleTask": "Houd XOR"
         },
         "yourLevel": "Uw niveau",
-        "yourTasks": "Uw taken"
+        "yourTasks": "Uw taken",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Activa toevoegen | Activa’s toevoegen",
     "noir": "Zwart",

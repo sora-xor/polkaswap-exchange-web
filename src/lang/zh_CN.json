@@ -212,7 +212,8 @@
         "addressError": "您不能向您当前已连接的同一个账户发送代币。",
         "enableVesting": "",
         "enterVestingPercentage": "",
-        "vestingPercentage": ""
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "复制地址",
@@ -774,7 +775,8 @@
         "titleBalance": "余额",
         "titleTheme": "颜色主题",
         "titleCurrency": "法定货币",
-        "titleMisc": "其他"
+        "titleMisc": "其他",
+        "systemPreferencesTheme": "系统偏好设置"
     },
     "sentText": "已发送",
     "learnMoreText": "了解更多",
@@ -1635,7 +1637,12 @@
             "titleTask": "保持 XOR"
         },
         "yourLevel": "您的等级",
-        "yourTasks": "您的任务"
+        "yourTasks": "您的任务",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "添加资产 | 添加资产",
     "noir": "暗黑",

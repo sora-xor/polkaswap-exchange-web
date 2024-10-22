@@ -212,7 +212,8 @@
         "addressError": "No puede enviar tokens a la misma cuenta a la que está conectado actualmente.",
         "enableVesting": "",
         "enterVestingPercentage": "",
-        "vestingPercentage": ""
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Copiar dirección",
@@ -774,7 +775,8 @@
         "titleBalance": "Saldos",
         "titleTheme": "Tema de color",
         "titleCurrency": "Moneda fiduciaria",
-        "titleMisc": "Varios"
+        "titleMisc": "Varios",
+        "systemPreferencesTheme": "Preferencias del sistema"
     },
     "sentText": "Enviado",
     "learnMoreText": "Aprende más",
@@ -1635,7 +1637,12 @@
             "titleTask": "Mantener XOR"
         },
         "yourLevel": "Tu nivel",
-        "yourTasks": "Tus tareas"
+        "yourTasks": "Tus tareas",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Añadir activo | Añadir activos",
     "noir": "Noir",

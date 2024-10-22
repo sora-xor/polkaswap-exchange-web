@@ -212,7 +212,8 @@
         "addressError": "Не можете слати токене на исти рачун са којим сте тренутно повезани.",
         "enableVesting": "",
         "enterVestingPercentage": "",
-        "vestingPercentage": ""
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Копирајте адресу",
@@ -774,7 +775,8 @@
         "titleBalance": "Stanja",
         "titleTheme": "Tema boja",
         "titleCurrency": "Fiat valuta",
-        "titleMisc": "Ostalo"
+        "titleMisc": "Ostalo",
+        "systemPreferencesTheme": "Системски режим"
     },
     "sentText": "Poslato",
     "learnMoreText": "Сазнајте више",
@@ -1635,7 +1637,12 @@
             "titleTask": "Држати XOR"
         },
         "yourLevel": "Ваш ниво",
-        "yourTasks": "Ваши задаци"
+        "yourTasks": "Ваши задаци",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Додај имовину | Додај имовине",
     "noir": "Ноир",

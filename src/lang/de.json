@@ -212,7 +212,8 @@
         "addressError": "Du kannst keine Token an dasselbe Konto senden, mit dem du derzeit verbunden bist.",
         "enableVesting": "",
         "enterVestingPercentage": "",
-        "vestingPercentage": ""
+        "vestingPercentage": "",
+        "unlockFrequency": ""
     },
     "account": {
         "copy": "Adresse kopieren",
@@ -774,7 +775,8 @@
         "titleBalance": "Salden",
         "titleTheme": "Farbthema",
         "titleCurrency": "Fiatgeld",
-        "titleMisc": "Sonstiges"
+        "titleMisc": "Sonstiges",
+        "systemPreferencesTheme": "Systemeinstellungen"
     },
     "sentText": "Gesendet",
     "learnMoreText": "Mehr erfahren",
@@ -1635,7 +1637,12 @@
             "titleTask": "Halten XOR"
         },
         "yourLevel": "Ihr Niveau",
-        "yourTasks": "Ihre Aufgaben"
+        "yourTasks": "Ihre Aufgaben",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Asset hinzufügen | Assets hinzufügen",
     "noir": "Noir",

@@ -154,6 +154,7 @@ export default {
     hideBalances: 'Hide Balances',
     settings: 'Settings',
     switchTheme: '{theme} mode',
+    systemPreferencesTheme: 'System preferences',
     selectCurrency: 'Select Currency',
     showDisclaimer: 'Show Disclaimer',
     hideDisclaimer: 'Hide Disclaimer',

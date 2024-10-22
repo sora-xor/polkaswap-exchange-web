@@ -59,4 +59,5 @@ export type SettingsState = {
   isOrientationWarningVisible: boolean;
   isAccessAccelerometrEventDeclined: boolean;
   isAccessRotationListener: boolean;
+  isThemePreference: boolean;
 };
