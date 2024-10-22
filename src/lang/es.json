@@ -1579,63 +1579,63 @@
         },
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Reembolsa la deuda de KUSD durante liquidaciones o cierre de posiciones",
-            "titleProgress": "",
+            "titleProgress": "Volumen Kensetsu",
             "titleTask": "Reembolsar deuda de KUSD"
         },
         "KUSDHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Mantén tus actuales tenencias de KUSD",
+            "titleProgress": "Retención KUSD",
+            "titleTask": "Mantener KUSD"
         },
         "liquidityProvision": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Proporcionar liquidez en múltiples pools",
+            "titleProgress": "Provisión de liquidez",
+            "titleTask": "Proporcionar liquidez"
         },
-        "lvl": "",
-        "maxLvl": "",
+        "lvl": "Nivel",
+        "maxLvl": "Has alcanzado el nivel máximo",
         "nativeXorStaking": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Haz stake de XOR y gana recompensas VAL",
+            "titleProgress": "Staking de XOR",
+            "titleTask": "Haz stake de XOR"
         },
         "networkFeeSpent": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Gasta XOR en tarifas de red en múltiples transacciones on-chain",
+            "titleProgress": "Tarifas de red",
+            "titleTask": "Gasta XOR en tarifas de red"
         },
-        "nextLvl": "",
+        "nextLvl": "Siguiente nivel",
         "orderbookVolume": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Crea órdenes limitadas en el libro de órdenes",
+            "titleProgress": "Cartera de pedidos",
+            "titleTask": "Crear órdenes limitadas"
         },
-        "progress": "",
+        "progress": "Progreso",
         "referralRewards": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Recomienda cuentas a través del sistema de referidos",
+            "titleProgress": "Sistema de referidos",
+            "titleTask": "Recomendar cuentas"
         },
-        "relatedTasks": "",
-        "rewardNextLvl": "",
-        "soraCard": "",
+        "relatedTasks": "Completa tareas relacionadas con {title} para mejorar tu habilidad",
+        "rewardNextLvl": "Recompensa del siguiente nivel",
+        "soraCard": "Aplicar ahora",
         "VXORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Mantén tus actuales tenencias de VXOR",
+            "titleProgress": "Tenencias de VXOR",
+            "titleTask": "Mantener VXOR"
         },
         "XORBurned": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Quema XOR y conviértelo en valor $",
+            "titleProgress": "XOR quemado",
+            "titleTask": "Grabar XOR"
         },
         "XORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Mantén tus actuales tenencias de XOR",
+            "titleProgress": "Retención XOR",
+            "titleTask": "Mantener XOR"
         },
-        "yourLevel": "",
-        "yourTasks": ""
+        "yourLevel": "Tu nivel",
+        "yourTasks": "Tus tareas"
     },
     "addAssetsText": "Añadir activo | Añadir activos",
     "noir": "Noir",

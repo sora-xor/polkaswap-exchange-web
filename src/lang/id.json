@@ -1579,63 +1579,63 @@
         },
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Bayar kembali utang KUSD selama likuidasi atau penutupan posisi",
-            "titleProgress": "",
+            "titleProgress": "Volume Kensetsu",
             "titleTask": "Bayar kembali utang KUSD"
         },
         "KUSDHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Tahan kepemilikan KUSD Anda saat ini",
+            "titleProgress": "Kepemilikan KUSD",
+            "titleTask": "Tahan KUSD"
         },
         "liquidityProvision": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Sediakan likuiditas di berbagai pool",
+            "titleProgress": "Penyediaan Likuiditas",
+            "titleTask": "Sediakan Likuiditas"
         },
-        "lvl": "",
-        "maxLvl": "",
+        "lvl": "Tingkat",
+        "maxLvl": "Anda telah mencapai level maksimal",
         "nativeXorStaking": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Stake XOR dan dapatkan hadiah VAL",
+            "titleProgress": "Staking XOR",
+            "titleTask": "Stake XOR"
         },
         "networkFeeSpent": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Gunakan XOR untuk biaya jaringan di berbagai transaksi on-chain",
+            "titleProgress": "Biaya jaringan",
+            "titleTask": "Gunakan XOR untuk biaya jaringan"
         },
-        "nextLvl": "",
+        "nextLvl": "Level berikutnya",
         "orderbookVolume": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Buat pesanan batasan di buku pesanan",
+            "titleProgress": "Buku pesanan",
+            "titleTask": "Buat Pesanan Batasan"
         },
-        "progress": "",
+        "progress": "Kemajuan",
         "referralRewards": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Rujuk akun melalui sistem referensi",
+            "titleProgress": "Sistem Referensi",
+            "titleTask": "Rujuk akun"
         },
-        "relatedTasks": "",
-        "rewardNextLvl": "",
-        "soraCard": "",
+        "relatedTasks": "Selesaikan tugas terkait {title} untuk meningkatkan keterampilan Anda",
+        "rewardNextLvl": "Hadiah level berikutnya",
+        "soraCard": "Daftar sekarang",
         "VXORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Tahan kepemilikan VXOR Anda saat ini",
+            "titleProgress": "kepemilikan VXOR",
+            "titleTask": "Tahan VXOR"
         },
         "XORBurned": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Bakar XOR dan ubah ke nilai $",
+            "titleProgress": "XOR Terbakar",
+            "titleTask": "Bakar XOR"
         },
         "XORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Tahan kepemilikan XOR Anda saat ini",
+            "titleProgress": "Kepemilikan XOR",
+            "titleTask": "Tahan XOR"
         },
-        "yourLevel": "",
-        "yourTasks": ""
+        "yourLevel": "Level Anda",
+        "yourTasks": "Tugas Anda"
     },
     "addAssetsText": "Tambah aset | Tambah aset-aset",
     "noir": "Noir",

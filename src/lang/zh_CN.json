@@ -1579,63 +1579,63 @@
         },
         "kensetsuVolumeRepaid": {
             "descriptionTask": "在清算或关闭头寸时偿还 KUSD 债务",
-            "titleProgress": "",
+            "titleProgress": "Kensetsu 量",
             "titleTask": "偿还 KUSD 债务"
         },
         "KUSDHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "持有您当前的 KUSD 持仓",
+            "titleProgress": "KUSD 持有",
+            "titleTask": "保持 KUSD"
         },
         "liquidityProvision": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "在多个资金池中提供流动性",
+            "titleProgress": "提供流动性",
+            "titleTask": "提供流动性"
         },
-        "lvl": "",
-        "maxLvl": "",
+        "lvl": "等级",
+        "maxLvl": "您已达到最高等级",
         "nativeXorStaking": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "质押 XOR 并赚取 VAL 奖励",
+            "titleProgress": "XOR 质押",
+            "titleTask": "质押 XOR"
         },
         "networkFeeSpent": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "在多笔链上交易中使用 XOR 支付网络费用",
+            "titleProgress": "网络费用",
+            "titleTask": "使用 XOR 支付网络费用"
         },
-        "nextLvl": "",
+        "nextLvl": "下一等级",
         "orderbookVolume": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "在订单簿中创建限价单",
+            "titleProgress": "订单簿",
+            "titleTask": "创建限价单"
         },
-        "progress": "",
+        "progress": "进步",
         "referralRewards": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "通过推荐系统推荐账户",
+            "titleProgress": "推荐系统",
+            "titleTask": "推荐账户"
         },
-        "relatedTasks": "",
-        "rewardNextLvl": "",
-        "soraCard": "",
+        "relatedTasks": "完成与 {title} 相关的任务以提升您的技能",
+        "rewardNextLvl": "下一级奖励",
+        "soraCard": "立即申请",
         "VXORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "持有您当前的 VXOR 持仓",
+            "titleProgress": "VXOR 控股",
+            "titleTask": "保持 VXOR"
         },
         "XORBurned": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "销毁 XOR 并转换为美元价值",
+            "titleProgress": "XOR 烧毁",
+            "titleTask": "烧毁 XOR"
         },
         "XORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "持有您当前的 XOR 持仓",
+            "titleProgress": "XOR 持有",
+            "titleTask": "保持 XOR"
         },
-        "yourLevel": "",
-        "yourTasks": ""
+        "yourLevel": "您的等级",
+        "yourTasks": "您的任务"
     },
     "addAssetsText": "添加资产 | 添加资产",
     "noir": "暗黑",

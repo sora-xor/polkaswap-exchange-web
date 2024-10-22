@@ -1579,63 +1579,63 @@
         },
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Splaťte dluh KUSD během likvidací nebo uzavírání pozic",
-            "titleProgress": "",
+            "titleProgress": "Objem Kensetsu",
             "titleTask": "Splaťte KUSD dluh"
         },
         "KUSDHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Držte své aktuální KUSD držby",
+            "titleProgress": "KUSD Držení",
+            "titleTask": "Držet KUSD"
         },
         "liquidityProvision": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Poskytněte likviditu napříč pooly",
+            "titleProgress": "Poskytování likvidity",
+            "titleTask": "Poskytněte likviditu"
         },
-        "lvl": "",
-        "maxLvl": "",
+        "lvl": "Lvl",
+        "maxLvl": "Dosáhli jste maximální úrovně",
         "nativeXorStaking": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Stakujte XOR a získejte odměny VAL",
+            "titleProgress": "Stakování XOR",
+            "titleTask": "Stakujte XOR"
         },
         "networkFeeSpent": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Utraťte XOR za poplatky v síti při více on-chain transakcích",
+            "titleProgress": "Poplatky v síti",
+            "titleTask": "Utraťte XOR za poplatky v síti"
         },
-        "nextLvl": "",
+        "nextLvl": "Další lvl",
         "orderbookVolume": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Vytvořte limitní příkazy v knize objednávek",
+            "titleProgress": "Objednávka",
+            "titleTask": "Vytvořte limitní příkazy"
         },
-        "progress": "",
+        "progress": "Pokrok",
         "referralRewards": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Doporučte účty prostřednictvím doporučovacího systému",
+            "titleProgress": "Doporučovací systém",
+            "titleTask": "Doporučte účty"
         },
-        "relatedTasks": "",
-        "rewardNextLvl": "",
-        "soraCard": "",
+        "relatedTasks": "Splňte úkoly související s {title}, abyste zvýšili svou dovednost",
+        "rewardNextLvl": "Odměna za další úroveň",
+        "soraCard": "Požádejte nyní",
         "VXORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Držte své aktuální VXOR držby",
+            "titleProgress": "Holdingy VXOR",
+            "titleTask": "Držet VXOR"
         },
         "XORBurned": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Spalte XOR a převeďte na hodnotu v $",
+            "titleProgress": "XOR vyhořel",
+            "titleTask": "Vypálit XOR"
         },
         "XORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Držte své aktuální XOR držby",
+            "titleProgress": "XOR Držení",
+            "titleTask": "Držet XOR"
         },
-        "yourLevel": "",
-        "yourTasks": ""
+        "yourLevel": "Vaše úroveň",
+        "yourTasks": "Vaše úkoly"
     },
     "addAssetsText": "Přidat aktivum | Přidat aktiva",
     "noir": "Noir",

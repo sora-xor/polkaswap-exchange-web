@@ -1579,63 +1579,63 @@
         },
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Trả nợ KUSD trong quá trình thanh lý hoặc đóng vị thế",
-            "titleProgress": "",
+            "titleProgress": "Khối lượng Kensetsu",
             "titleTask": "Trả nợ KUSD"
         },
         "KUSDHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Giữ lượng KUSD hiện tại của bạn",
+            "titleProgress": "Nắm giữ KUSD",
+            "titleTask": "Giữ KUSD"
         },
         "liquidityProvision": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Cung cấp thanh khoản trên nhiều pool",
+            "titleProgress": "Cung cấp thanh khoản",
+            "titleTask": "Cung cấp thanh khoản"
         },
-        "lvl": "",
-        "maxLvl": "",
+        "lvl": "Cấp độ",
+        "maxLvl": "Bạn đã đạt cấp độ tối đa",
         "nativeXorStaking": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Stake XOR và nhận phần thưởng VAL",
+            "titleProgress": "Đặt cọc XOR",
+            "titleTask": "Stake XOR"
         },
         "networkFeeSpent": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Dùng XOR để trả phí mạng cho nhiều giao dịch on-chain",
+            "titleProgress": "Phí mạng",
+            "titleTask": "Dùng XOR để trả phí mạng"
         },
-        "nextLvl": "",
+        "nextLvl": "Cấp độ tiếp theo",
         "orderbookVolume": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Tạo lệnh giới hạn trong sổ lệnh",
+            "titleProgress": "Sổ lệnh",
+            "titleTask": "Tạo lệnh giới hạn"
         },
-        "progress": "",
+        "progress": "Tiến triển",
         "referralRewards": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Giới thiệu tài khoản thông qua hệ thống giới thiệu",
+            "titleProgress": "Hệ thống giới thiệu",
+            "titleTask": "Giới thiệu tài khoản"
         },
-        "relatedTasks": "",
-        "rewardNextLvl": "",
-        "soraCard": "",
+        "relatedTasks": "Hoàn thành các nhiệm vụ liên quan đến {title} để nâng cao kỹ năng của bạn",
+        "rewardNextLvl": "Phần thưởng cấp độ tiếp theo",
+        "soraCard": "Nộp đơn ngay",
         "VXORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Giữ lượng VXOR hiện tại của bạn",
+            "titleProgress": "Cổ phần VXOR",
+            "titleTask": "Giữ VXOR"
         },
         "XORBurned": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Đốt XOR và chuyển đổi sang giá trị $",
+            "titleProgress": "XOR đã cháy",
+            "titleTask": "Đốt cháy XOR"
         },
         "XORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Giữ lượng XOR hiện tại của bạn",
+            "titleProgress": "Nắm giữ XOR",
+            "titleTask": "Giữ XOR"
         },
-        "yourLevel": "",
-        "yourTasks": ""
+        "yourLevel": "Cấp độ của bạn",
+        "yourTasks": "Nhiệm vụ của bạn"
     },
     "addAssetsText": "Thêm tài sản | Thêm các tài sản",
     "noir": "Đen",

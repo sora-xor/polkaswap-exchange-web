@@ -21,6 +21,7 @@ export type FeatureFlags = {
   assetOwner?: boolean;
   alt?: boolean;
   debug?: boolean;
+  pointSystemV2?: boolean;
 };
 
 export type SettingsState = {

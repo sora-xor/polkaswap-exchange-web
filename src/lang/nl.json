@@ -1579,63 +1579,63 @@
         },
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Los KUSD-schuld af tijdens liquidaties of het sluiten van posities",
-            "titleProgress": "",
+            "titleProgress": "Kensetsu-volume",
             "titleTask": "Los KUSD-schuld af"
         },
         "KUSDHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Houd uw huidige KUSD-bezit vast",
+            "titleProgress": "KUSD Vasthouden",
+            "titleTask": "Houd KUSD"
         },
         "liquidityProvision": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Liquiditeit verstrekken over meerdere pools",
+            "titleProgress": "Liquiditeitsvoorziening",
+            "titleTask": "Liquiditeit verstrekken"
         },
-        "lvl": "",
-        "maxLvl": "",
+        "lvl": "Niveau",
+        "maxLvl": "Je hebt het maximale niveau bereikt",
         "nativeXorStaking": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Stake XOR en verdien VAL-beloningen",
+            "titleProgress": "XOR Staken",
+            "titleTask": "Stake XOR"
         },
         "networkFeeSpent": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Besteed XOR aan netwerkvergoedingen bij meerdere on-chain transacties",
+            "titleProgress": "Netwerkkosten",
+            "titleTask": "Besteed XOR aan netwerkvergoedingen"
         },
-        "nextLvl": "",
+        "nextLvl": "Volgende lvl",
         "orderbookVolume": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Maak limietorders aan in het orderboek",
+            "titleProgress": "Orderboek",
+            "titleTask": "Maak limietorders aan"
         },
-        "progress": "",
+        "progress": "Voortgang",
         "referralRewards": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Verwijs accounts via het verwijzingssysteem",
+            "titleProgress": "Verwijzingssysteem",
+            "titleTask": "Verwijs accounts"
         },
-        "relatedTasks": "",
-        "rewardNextLvl": "",
-        "soraCard": "",
+        "relatedTasks": "Voltooi taken met betrekking tot {title} om je vaardigheid te verbeteren",
+        "rewardNextLvl": "Volgende niveaubeloning",
+        "soraCard": "Solliciteer nu",
         "VXORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Houd uw huidige VXOR bezit vast",
+            "titleProgress": "VXOR-bezittingen",
+            "titleTask": "Houd VXOR"
         },
         "XORBurned": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Verbrand XOR en zet om naar $ waarde",
+            "titleProgress": "XOR verbrand",
+            "titleTask": "XOR branden"
         },
         "XORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Houd uw huidige XOR-bezit vast",
+            "titleProgress": "XOR Vasthouden",
+            "titleTask": "Houd XOR"
         },
-        "yourLevel": "",
-        "yourTasks": ""
+        "yourLevel": "Uw niveau",
+        "yourTasks": "Uw taken"
     },
     "addAssetsText": "Activa toevoegen | Activa’s toevoegen",
     "noir": "Zwart",

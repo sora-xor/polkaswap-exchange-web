@@ -1196,7 +1196,7 @@
         "KUSDHoldings": {
             "descriptionTask": "Hold your current KUSD holdings",
             "titleProgress": "KUSD Hold",
-            "titleTask": "Hold Kusd"
+            "titleTask": "Hold KUSD"
         },
         "liquidityProvision": {
             "descriptionTask": "Provide liquidity across pools",

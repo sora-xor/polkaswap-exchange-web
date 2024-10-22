@@ -1579,63 +1579,63 @@
         },
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Отплатите KUSD дуг током ликвидације или затварања позиција",
-            "titleProgress": "",
+            "titleProgress": "Обим Kensetsu",
             "titleTask": "Отплатите KUSD дуг"
         },
         "KUSDHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Држите ваше тренутно KUSD власништво",
+            "titleProgress": "Држање KUSD",
+            "titleTask": "Држати KUSD"
         },
         "liquidityProvision": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Обезбедите ликвидност у разним пуловима",
+            "titleProgress": "Обезбеђивање ликвидности",
+            "titleTask": "Обезбедите ликвидност"
         },
-        "lvl": "",
-        "maxLvl": "",
+        "lvl": "Лвл",
+        "maxLvl": "Достигли сте максимални ниво",
         "nativeXorStaking": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Уложи XOR и заради VAL награде",
+            "titleProgress": "Стејковање XOR",
+            "titleTask": "Уложите XOR"
         },
         "networkFeeSpent": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Потрошите XOR на накнаде мреже у више on-chain трансакција",
+            "titleProgress": "Накнаде мреже",
+            "titleTask": "Потрошите XOR на накнаде мреже"
         },
-        "nextLvl": "",
+        "nextLvl": "Следећи лвл",
         "orderbookVolume": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Направите лимитиране налоге у књизи налога",
+            "titleProgress": "Ордербоок",
+            "titleTask": "Направи лимитиране налоге"
         },
-        "progress": "",
+        "progress": "Напредак",
         "referralRewards": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Препоручи налоге преко рефералног система",
+            "titleProgress": "Реферални систем",
+            "titleTask": "Препоручи налоге"
         },
-        "relatedTasks": "",
-        "rewardNextLvl": "",
-        "soraCard": "",
+        "relatedTasks": "Завршите задатке везане за {title} да бисте унапредили своје вештине",
+        "rewardNextLvl": "Награда за следећи ниво",
+        "soraCard": "Пријавите се сада",
         "VXORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Држите ваше тренутно VXOR власништво",
+            "titleProgress": "VXOR холдингс",
+            "titleTask": "Држати VXOR"
         },
         "XORBurned": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Спалите XOR и претворите у $ вредност",
+            "titleProgress": "XOR је спаљен",
+            "titleTask": "Бурн КСОР"
         },
         "XORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Држите ваше тренутно XOR власништво",
+            "titleProgress": "Држање XOR",
+            "titleTask": "Држати XOR"
         },
-        "yourLevel": "",
-        "yourTasks": ""
+        "yourLevel": "Ваш ниво",
+        "yourTasks": "Ваши задаци"
     },
     "addAssetsText": "Додај имовину | Додај имовине",
     "noir": "Ноир",

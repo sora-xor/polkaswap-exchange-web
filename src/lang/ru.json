@@ -1579,63 +1579,63 @@
         },
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Погасите долг в KUSD во время ликвидации или закрытия позиций",
-            "titleProgress": "",
+            "titleProgress": "Объем Kensetsu",
             "titleTask": "Погасить долг в KUSD"
         },
         "KUSDHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Держите ваши текущие активы KUSD",
+            "titleProgress": "Владение KUSD",
+            "titleTask": "Держите KUSD"
         },
         "liquidityProvision": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Предоставьте ликвидность через несколько пулов",
+            "titleProgress": "Предоставление ликвидности",
+            "titleTask": "Предоставьте ликвидность"
         },
-        "lvl": "",
-        "maxLvl": "",
+        "lvl": "Уровень",
+        "maxLvl": "Вы достигли максимального уровня",
         "nativeXorStaking": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Стейкайте XOR и зарабатывайте награды в VAL",
+            "titleProgress": "Стейкинг XOR",
+            "titleTask": "Стейк XOR"
         },
         "networkFeeSpent": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Используйте XOR для оплаты комиссий в сети в нескольких on-chain транзакциях",
+            "titleProgress": "Комиссии в сети",
+            "titleTask": "Используйте XOR для оплаты комиссий в сети"
         },
-        "nextLvl": "",
+        "nextLvl": "Следующий уровень",
         "orderbookVolume": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Создайте лимитные ордера в ордербук",
+            "titleProgress": "Ордербук",
+            "titleTask": "Создайте лимитные ордера"
         },
-        "progress": "",
+        "progress": "Прогресс",
         "referralRewards": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Приглашайте пользователей через реферальную систему",
+            "titleProgress": "Реферальная система",
+            "titleTask": "Пригласить пользователей"
         },
-        "relatedTasks": "",
-        "rewardNextLvl": "",
-        "soraCard": "",
+        "relatedTasks": "Выполните задачи, связанные с {title}, чтобы повысить свои навыки",
+        "rewardNextLvl": "Награда за следующий уровень",
+        "soraCard": "Подать заявку сейчас",
         "VXORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Держите ваши текущие активы VXOR",
+            "titleProgress": "Владение VXOR",
+            "titleTask": "Владеть VXOR"
         },
         "XORBurned": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Сожгите XOR в $ эквивалент",
+            "titleProgress": "XOR сожжен",
+            "titleTask": "Сжечь XOR"
         },
         "XORHoldings": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Держите ваши текущие активы XOR",
+            "titleProgress": "Владение XOR",
+            "titleTask": "Владеть XOR"
         },
-        "yourLevel": "",
-        "yourTasks": ""
+        "yourLevel": "Ваш уровень",
+        "yourTasks": "Ваши задачи"
     },
     "addAssetsText": "Добавить актив | Добавить активы",
     "noir": "Нуар",
