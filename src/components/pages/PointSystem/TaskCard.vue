@@ -17,7 +17,11 @@
         {{ isCompleted ? tc('points.complete', 1) : tc('points.complete', 2) }}
       </s-button>
     </div>
-    <task-dialog :pointsForCategory="pointsForCategory" :visible.sync="isDialogVisible" :category-name="categoryName" />
+    <task-dialog
+      :points-for-category="pointsForCategory"
+      :visible.sync="isDialogVisible"
+      :category-name="categoryName"
+    />
   </div>
 </template>
 

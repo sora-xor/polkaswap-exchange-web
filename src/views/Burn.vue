@@ -110,7 +110,7 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR, KEN } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';

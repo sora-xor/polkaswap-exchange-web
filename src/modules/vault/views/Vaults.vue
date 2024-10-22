@@ -169,7 +169,12 @@
                 <span class="vault__ltv-value s-flex">
                   <template v-if="vault.ltv && vault.adjustedLtv">
                     {{ format(vault.adjustedLtv) }}%
-                    <value-status class="vault__ltv-badge" badge :value="toNumber(vault.ltv)" :getStatus="getLtvStatus">
+                    <value-status
+                      class="vault__ltv-badge"
+                      badge
+                      :value="toNumber(vault.ltv)"
+                      :get-status="getLtvStatus"
+                    >
                       {{ getLtvText(vault.ltv) }}
                     </value-status>
                   </template>

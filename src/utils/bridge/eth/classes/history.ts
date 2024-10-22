@@ -1,7 +1,7 @@
 import { Operation } from '@sora-substrate/sdk';
 import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { api, SUBQUERY_TYPES, WALLET_CONSTS, getCurrentIndexer } from '@soramitsu/soraneo-wallet-web';
-import { ethers, EtherscanProvider, BlockTag } from 'ethers';
+import { ethers, EtherscanProvider } from 'ethers';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 
@@ -16,6 +16,7 @@ import ethersUtil from '@/utils/ethers-util';
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { BlockTag } from 'ethers';
 import type { ActionContext } from 'vuex';
 
 export default class EtherscanHistoryProvider extends EtherscanProvider {

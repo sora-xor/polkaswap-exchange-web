@@ -73,7 +73,9 @@ h4 {
   padding: 18px;
   border-radius: 24px;
   background: var(--s-color-base-border-primary);
-  box-shadow: 1px 1px 2px 0px rgba(255, 255, 255, 0.8) inset, 1px 1px 10px 0px rgba(0, 0, 0, 0.1),
+  box-shadow:
+    1px 1px 2px 0px rgba(255, 255, 255, 0.8) inset,
+    1px 1px 10px 0px rgba(0, 0, 0, 0.1),
     -5px -5px 10px 0px #fff;
 }
 

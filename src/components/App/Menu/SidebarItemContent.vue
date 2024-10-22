@@ -75,7 +75,9 @@ $icon-size: 42px;
     }
   }
   .el-menu-item.is-active & {
-    box-shadow: -1px -1px 1px var(--s-shadow-color-dark-light), 1px 1px 3px var(--s-shadow-color-dark),
+    box-shadow:
+      -1px -1px 1px var(--s-shadow-color-dark-light),
+      1px 1px 3px var(--s-shadow-color-dark),
       inset 1px 1px 2px var(--s-shadow-color-light-dark);
   }
   .menu-item--small & {

@@ -326,7 +326,7 @@ export default class PointSystem extends Mixins(
 
 <style lang="scss" scoped>
 .points {
-  background-image: url('~@/assets/img/points/header.png');
+  background-image: url('@/assets/img/points/header.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: top;
@@ -378,7 +378,7 @@ export default class PointSystem extends Mixins(
     &-referrals {
       background-size: 90px;
       .account-icon {
-        background: var(--s-color-base-content-tertiary) url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
+        background: var(--s-color-base-content-tertiary) url('@/assets/img/invited-users.svg') 50% 50% no-repeat;
         border-radius: 50%;
         width: var(--s-size-small);
         height: var(--s-size-small);
@@ -409,7 +409,7 @@ export default class PointSystem extends Mixins(
   &__soratopia {
     min-height: 102px;
     box-shadow: var(--s-shadow-element-pressed);
-    background-image: url('~@/assets/img/points/soratopia.png');
+    background-image: url('@/assets/img/points/soratopia.png');
     background-repeat: no-repeat;
     background-size: cover;
     text-decoration: none;

@@ -1,7 +1,7 @@
 <template>
   <div class="point-card">
     <div class="point-card__progress">
-      <progress-card :imageName="imageName" :progressPercentage="progressPercentage" />
+      <progress-card :image-name="imageName" :progress-percentage="progressPercentage" />
       <p>
         {{ t('points.lvl').toUpperCase() }} {{ levelCurrent }}
         <span>/ {{ t('points.lvl').toUpperCase() }} {{ maxLevel }}</span>
@@ -25,7 +25,11 @@
         <p class="max-level">{{ t('points.maxLvl') }}</p>
       </template>
     </div>
-    <task-dialog :pointsForCategory="pointsForCategory" :visible.sync="isDialogVisible" :category-name="categoryName" />
+    <task-dialog
+      :points-for-category="pointsForCategory"
+      :visible.sync="isDialogVisible"
+      :category-name="categoryName"
+    />
   </div>
 </template>
 

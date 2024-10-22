@@ -73,7 +73,7 @@ import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
+import { getMobileCssClasses, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
@@ -265,7 +265,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   async created() {
     window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
-    preloadFontFace('element-icons');
     this.setResponsiveClass();
     updateBaseUrl(router);
     AlertsApiService.baseRoute = getFullBaseUrl(router);
