@@ -13,7 +13,7 @@
             <h2>{{ t('points.title') }}</h2>
             <h3 v-if="!loading && isLoggedIn">{{ totalPoints }}</h3>
           </div>
-          <p>Complete SORA Ecosystem-related tasks in order to qualify for a $3m AIRDROP</p>
+          <p>{{ t('points.airdrop') }}</p>
         </div>
       </template>
       <div class="points__main s-flex-row">
@@ -47,7 +47,7 @@
                 </a>
                 <a class="points__sora-card s-flex" rel="nofollow noopener" target="_blank" href="https://soracard.com">
                   <div class="points__sora-card-container s-flex">
-                    <button class="points__sora-card-action">Apply now</button>
+                    <button class="points__sora-card-action">{{ t('points.soraCard') }}</button>
                     <span class="points__sora-card-text">{{ t('points.toEarnPoints') }}</span>
                   </div>
                 </a>
@@ -94,7 +94,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { Components } from '@/consts';
 import { pointSystemCategory } from '@/consts/pointSystem';
-import { type BridgeData, fetchAccountMeta } from '@/indexer/queries/pointSystem';
+import { fetchAccountMeta } from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
@@ -102,7 +102,6 @@ import { AccountPointsCalculation, CalculateCategoryPointResult, CategoryPoints 
 import { convertFPNumberToNumber } from '@/utils';
 import { pointsService } from '@/utils/pointSystem';
 
-import type { NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
@@ -125,7 +124,6 @@ export default class PointSystemV2 extends Mixins(
 
   @state.referrals.referralRewards private referralRewards!: Nullable<ReferrerRewards>;
   @state.settings.blockNumber private blockNumber!: number;
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 

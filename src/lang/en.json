@@ -876,7 +876,8 @@
             "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
             "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "SwapTransferBatch": "Failed to {action} {amount} {symbol}",
-            "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}"
+            "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "Failed to {action} {amount} {symbol} {direction} {address}"
         },
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
@@ -920,7 +921,8 @@
             "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
             "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "SwapTransferBatch": "{action} {amount} {symbol}",
-            "Transfer": "{action} {amount} {symbol} {direction} {address}"
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "Mint": "Mint",
         "OrderBookCancelLimitOrder": "Cancel Order",
@@ -946,7 +948,8 @@
         "Swap": "Swap",
         "SwapAndSend": "Swap and Send",
         "SwapTransferBatch": "{ADAR} transfer",
-        "Transfer": "Transfer"
+        "Transfer": "Transfer",
+        "VestedTransfer": "Transfer"
     },
     "orderBook": {
         "amount": "amount",
@@ -1095,6 +1098,29 @@
         "Wallet": "Wallet"
     },
     "pairIsNotCreated": "Token pair isn't created",
+    "points": {
+        "accountsText": "{amount} accounts",
+        "airdrop": "Complete SORA Ecosystem-related tasks in order to qualify for a $3m AIRDROP",
+        "bridgeVolume": "Bridge volume",
+        "currently": "Currently",
+        "dated": "Dated",
+        "feesSpent": "Fees spent",
+        "firstSoraNetworkTransaction": "Your first SORA Network Transaction",
+        "loginText": "Connect your account to see your points",
+        "lvl": "Lvl",
+        "maxLvl": "You reached max lvl",
+        "nextLvl": "Next lvl",
+        "openTelegram": "Open {Telegram}",
+        "relatedTasks": "Complete {title}-related tasks in order to level up your skill",
+        "rewardNextLvl": "Next level reward",
+        "soraCard": "Apply now",
+        "title": "Your Points",
+        "toEarnPoints": "To earn points",
+        "xorBurned": "{XOR} burned",
+        "yourLevel": "Your level",
+        "yourReferrals": "Your referrals",
+        "yourRewards": "Your rewards"
+    },
     "polkadotjs": {
         "connectionError": "An error occured while connecting the wallet. You can try to connect the wallet via {extension} again",
         "noAccount": "{extension} account error. Please check your account in the {extension} extension",
@@ -1520,30 +1546,22 @@
         "WalletAssets": "Assets",
         "WalletHistory": "Activity"
     },
-    "points": {
-        "title": "YOUR SORA AIRDROP POINTS",
-        "loginText": "Connect your account to see your points",
-        "bridgeVolume": "Bridge volume",
-        "feesSpent": "Fees spent",
-        "xorBurned": "{XOR} burned",
-        "yourReferrals": "Your referrals",
-        "accountsText": "{amount} accounts",
-        "yourRewards": "Your rewards",
-        "openTelegram": "Open {Telegram}",
-        "toEarnPoints": "To earn points"
-    },
     "walletSend": {
         "addressError": "You cannot send tokens to the same account that you are currently connected to.",
         "addressWarning": "Tokens will be sent to the {Sora} address below. Make sure the recipient can access the {Sora} chain to use the tokens:",
         "badAddress": "Incorrect address",
         "balance": "Balance",
         "confirmTitle": "Confirm transaction",
+        "enableVesting": "Enable token vesting",
         "enterAddress": "Enter address",
         "enterAmount": "Enter amount",
+        "enterVestingPercentage": "Enter vesting percentage",
         "errorAddress": "Invalid address. Please check it and try again.",
         "max": "MAX",
         "title": "Send",
-        "tooltip": "Send tokens between {Sora} network accounts"
+        "tooltip": "Send tokens between {Sora} network accounts",
+        "unlockFrequency": "Unlock frequency",
+        "vestingPercentage": "Vesting percentage"
     },
     "warningText": "Warning"
 }

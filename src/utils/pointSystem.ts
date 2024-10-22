@@ -1,9 +1,9 @@
 import { categoriesPointSystem, POINTS_PER_PERCENT } from '@/consts/pointSystem';
-import { CalculateCategoryPointResult, CategoryValues } from '@/types/pointSystem';
+import { CalculateCategoryPointResult, CategoryValues, Level } from '@/types/pointSystem';
 
 class PointsService {
   private findLevel(
-    levels: { threshold: number; multiplier: number }[],
+    levels: Level[],
     value: number,
     maxPercentage: number
   ): {

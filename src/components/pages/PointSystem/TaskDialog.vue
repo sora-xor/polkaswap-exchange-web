@@ -2,13 +2,14 @@
   <dialog-base :visible.sync="isVisible" class="task-dialog" :title="pointsForCategory.titleProgress">
     <div>
       <p class="task-dialog__title-progress">
-        Complete {{ pointsForCategory.titleProgress }}-related tasks in order to level up your skill
+        {{ t('points.relatedTasks', { title: pointsForCategory.titleProgress }) }}
       </p>
       <div class="task-dialog__card-progress">
         <div class="current-level">
-          <p>Your level</p>
+          <p>{{ t('points.yourLevel') }}</p>
           <p>
-            LVL {{ levelCurrent }} <span>/ LVL {{ maxLevel }}</span>
+            {{ t('points.lvl').toUpperCase() }} {{ levelCurrent }}
+            <span>/ {{ t('points.lvl').toUpperCase() }} {{ maxLevel }}</span>
           </p>
         </div>
         <div class="progress-container">
@@ -16,7 +17,7 @@
         </div>
 
         <div class="next-level">
-          <p>Next level reward</p>
+          <p>{{ t('points.rewardNextLvl') }}</p>
           <p>{{ pointsForCategory.nextLevelRewardPoints }}</p>
         </div>
       </div>
@@ -29,7 +30,7 @@
         <p class="description">{{ pointsForCategory.descriptionTask }}</p>
         <s-divider />
         <p class="currently-amount">
-          Currently: <span> ${{ pointsForCategory.currentProgress.toFixed(2) }}</span>
+          {{ t('points.currently') }}: <span> ${{ pointsForCategory.currentProgress.toFixed(2) }}</span>
         </p>
       </div>
     </div>
@@ -52,38 +53,29 @@ import { CalculateCategoryPointResult } from '@/types/pointSystem';
 export default class TaskDialog extends Mixins(mixins.TranslationMixin, mixins.DialogMixin) {
   @Prop({ required: true }) readonly pointsForCategory!: CalculateCategoryPointResult;
 
-  getImageSrc(imageName: string): any {
-    return getImageSrc(imageName);
-  }
-
-  get maxLevel(): number {
-    return MAX_LEVEL;
-  }
+  public getImageSrc = getImageSrc;
+  public readonly maxLevel = MAX_LEVEL;
 
   get isTokenImage(): boolean {
     return isTokenImage(this.imageName);
   }
 
-  private get levelCurrent(): number {
+  public get levelCurrent(): number {
     return this.pointsForCategory.levelCurrent;
   }
 
-  private get imageName(): string {
+  public get imageName(): string {
     return this.pointsForCategory.imageName;
   }
 
   get progressPercentage(): number {
-    if (!this.pointsForCategory.minimumAmountForNextLevel) {
+    if (!this.pointsForCategory.minimumAmountForNextLevel || this.pointsForCategory.minimumAmountForNextLevel === 0) {
       return 0;
     }
     return Math.min(
       (this.pointsForCategory.currentProgress / this.pointsForCategory.minimumAmountForNextLevel) * 100,
       100
     );
-  }
-
-  closeTaskDialog() {
-    this.closeDialog();
   }
 }
 </script>

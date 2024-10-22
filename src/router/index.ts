@@ -16,7 +16,6 @@ import { VaultPageNames } from '@/modules/vault/consts';
 import { vaultLazyView } from '@/modules/vault/router';
 import store from '@/store';
 import { updateDocumentTitle } from '@/utils';
-// import { state } from '@/store/decorators';
 
 Vue.use(VueRouter);
 

@@ -3,7 +3,8 @@
     <div class="point-card__progress">
       <progress-card :imageName="imageName" :progressPercentage="progressPercentage" />
       <p>
-        LVL {{ levelCurrent }} <span>/ LVL {{ maxLevel }}</span>
+        {{ t('points.lvl').toUpperCase() }} {{ levelCurrent }}
+        <span>/ {{ t('points.lvl').toUpperCase() }} {{ maxLevel }}</span>
       </p>
     </div>
     <div class="point-card__name" :class="{ disabled: noNextLevel }" @click="handleClick">
@@ -11,17 +12,17 @@
       <i v-if="!noNextLevel" class="icontype s-icon-arrows-chevron-right-rounded-24" />
     </div>
     <div class="point-card__currently-amount">
-      <p>Currently</p>
+      <p>{{ t('points.currently') }}</p>
       <p>${{ pointsForCategory.currentProgress.toFixed(2) }}</p>
     </div>
     <s-divider />
     <div class="point-card__amount-of-points">
       <template v-if="!noNextLevel">
-        <p>NEXT LVL</p>
+        <p>{{ t('points.nextLvl').toUpperCase() }}</p>
         <p>{{ pointsForCategory.nextLevelRewardPoints }}</p>
       </template>
       <template v-else>
-        <p class="max-level">You reached max lvl</p>
+        <p class="max-level">{{ t('points.maxLvl') }}</p>
       </template>
     </div>
     <task-dialog :pointsForCategory="pointsForCategory" :visible.sync="isDialogVisible" />
@@ -50,11 +51,8 @@ export default class PointCard extends Mixins(mixins.TranslationMixin) {
   @Prop({ required: true, type: Object })
   readonly pointsForCategory!: CalculateCategoryPointResult;
 
-  private isDialogVisible = false;
-
-  get maxLevel(): number {
-    return MAX_LEVEL;
-  }
+  public isDialogVisible = false;
+  public readonly maxLevel = MAX_LEVEL;
 
   get levelCurrent(): number {
     return this.pointsForCategory.levelCurrent;
@@ -81,14 +79,10 @@ export default class PointCard extends Mixins(mixins.TranslationMixin) {
     return Math.min((this.currentProgress / this.minimumAmountForNextLevel) * 100, 100);
   }
 
-  handleClick() {
-    if (this.pointsForCategory.minimumAmountForNextLevel) {
+  handleClick(): void {
+    if (this.minimumAmountForNextLevel) {
       this.isDialogVisible = true;
     }
-  }
-
-  handleDialogClose() {
-    this.isDialogVisible = false;
   }
 }
 </script>

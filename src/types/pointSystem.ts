@@ -1,6 +1,6 @@
 import { FPNumber } from '@sora-substrate/math';
 
-interface Level {
+export interface Level {
   threshold: number;
   multiplier: number;
 }

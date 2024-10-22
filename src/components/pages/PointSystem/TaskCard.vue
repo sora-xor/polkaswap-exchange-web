@@ -11,10 +11,10 @@
     </div>
     <div class="task-card__current-progress">
       <p v-if="categoryName != 'firstTxAccount'">
-        Currently: <span>${{ pointsForCategory.currentProgress.toFixed(2) }}</span>
+        {{ t('points.currently') }}: <span>${{ pointsForCategory.currentProgress.toFixed(2) }}</span>
       </p>
-      <s-button :class="{ completed: !pointsForCategory.minimumAmountForNextLevel }" @click="handleButtonClick">
-        {{ !pointsForCategory.minimumAmountForNextLevel ? 'Completed' : 'Complete' }}
+      <s-button :class="{ completed: isCompleted }" @click="handleButtonClick">
+        {{ isCompleted ? 'Completed' : 'Complete' }}
       </s-button>
     </div>
     <task-dialog :pointsForCategory="pointsForCategory" :visible.sync="isDialogVisible" />
@@ -44,11 +44,8 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
   @Prop({ required: true, type: String })
   readonly categoryName!: string;
 
-  private isDialogVisible = false;
-
-  getImageSrc(imageName: string): any {
-    return getImageSrc(imageName);
-  }
+  public isDialogVisible = false;
+  public getImageSrc = getImageSrc;
 
   get isTokenImage(): boolean {
     return isTokenImage(this.imageName);
@@ -58,14 +55,14 @@ export default class TaskCard extends Mixins(mixins.TranslationMixin) {
     return this.pointsForCategory.imageName;
   }
 
-  handleButtonClick() {
-    if (this.pointsForCategory.minimumAmountForNextLevel) {
-      this.isDialogVisible = true;
-    }
+  get isCompleted(): boolean {
+    return !this.pointsForCategory.minimumAmountForNextLevel;
   }
 
-  handleDialogClose() {
-    this.isDialogVisible = false;
+  handleButtonClick(): void {
+    if (!this.isCompleted) {
+      this.isDialogVisible = true;
+    }
   }
 }
 </script>

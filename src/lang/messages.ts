@@ -565,6 +565,17 @@ export default {
     yourRewards: 'Your rewards',
     openTelegram: 'Open {Telegram}',
     toEarnPoints: 'To earn points',
+    firstSoraNetworkTransaction: 'Your first SORA Network Transaction',
+    dated: 'Dated',
+    lvl: 'Lvl',
+    currently: 'Currently',
+    nextLvl: 'Next lvl',
+    maxLvl: 'You reached max lvl',
+    relatedTasks: 'Complete {title}-related tasks in order to level up your skill',
+    yourLevel: 'Your level',
+    rewardNextLvl: 'Next level reward',
+    airdrop: 'Complete SORA Ecosystem-related tasks in order to qualify for a $3m AIRDROP',
+    soraCard: 'Apply now',
   },
   provider: {
     messages: {

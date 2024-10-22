@@ -1,10 +1,10 @@
 <template>
   <div class="task-card">
-    <p class="task-card__first-trx">Your first SORA Network Transaction</p>
+    <p class="task-card__first-trx">{{ t('points.firstSoraNetworkTransaction') }}</p>
     <s-divider direction="vertical" />
 
     <div class="task-card__date">
-      <p>Dated</p>
+      <p>{{ t('points.dated') }}</p>
       <p>{{ formattedDate }}</p>
     </div>
   </div>

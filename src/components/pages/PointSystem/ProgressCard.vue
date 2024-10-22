@@ -44,9 +44,10 @@ import { getImageSrc, isTokenImage } from '@/consts/pointSystem';
   },
 })
 export default class ProgressCard extends Vue {
-  private svgSize = 72;
-  private strokeWidth = 3;
-  private imageSize = 27;
+  public svgSize = 72;
+  public strokeWidth = 3;
+  public imageSize = 27;
+  public getImageSrc = getImageSrc;
 
   @Prop({ required: true, type: String })
   readonly imageName!: string;
@@ -68,10 +69,6 @@ export default class ProgressCard extends Vue {
 
   get progressDashOffset(): number {
     return this.circumference * (1 - this.progressPercentage / 100);
-  }
-
-  getImageSrc(imageName: string): any {
-    return getImageSrc(imageName);
   }
 
   get isTokenImage(): boolean {
