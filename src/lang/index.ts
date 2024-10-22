@@ -43,13 +43,8 @@ export async function setDayJsLocale(lang: Language): Promise<void> {
   const locale = getSupportedLocale(lang);
   let code = first(locale.split('-')) as string;
   // There is no "no" lang, let's keep it for now, "en" will be used by default
-  switch (code) {
-    case 'zh':
-      code = 'zh-cn';
-      break;
-    case 'hy':
-      code = 'hy-am';
-      break;
+  if (code === 'zh') {
+    code = 'zh-cn';
   }
 
   try {
