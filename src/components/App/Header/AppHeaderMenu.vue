@@ -68,14 +68,12 @@
 
 <script lang="ts">
 import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
-import { switchTheme } from '@soramitsu-ui/ui-vue2/lib/utils';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Language, Languages } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { getter, mutation, state } from '@/store/decorators';
-import { updatePipTheme } from '@/utils';
 import { applyTheme } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
@@ -333,7 +331,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       case HeaderMenuType.NoirMode:
         if (this.selectedTheme !== value) {
           this.selectedTheme = value;
-          console.info(this.selectedTheme);
           this.setIsThemePreference(false);
           if ((this.selectedTheme === 'noir' ? 'dark' : this.selectedTheme) !== this.libraryTheme) {
             applyTheme(this.selectedTheme !== 'light');

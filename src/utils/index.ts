@@ -2,8 +2,6 @@ import { FPNumber, CodecString } from '@sora-substrate/sdk';
 import { isNativeAsset } from '@sora-substrate/sdk/build/assets';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
-import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
-import { setTheme } from '@soramitsu-ui/ui-vue2/lib/utils';
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
 
@@ -11,7 +9,6 @@ import { app, TranslationConsts, ZeroStringValue } from '@/consts';
 import i18n from '@/lang';
 import router from '@/router';
 import store from '@/store';
-import { tmaSdkService } from '@/utils/telegram';
 
 import type { AmountWithSuffix } from '../types/formats';
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';

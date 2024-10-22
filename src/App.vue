@@ -120,7 +120,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
-  @state.settings.isTMA isTMA!: boolean;
   @state.settings.isThemePreference isThemePreference!: boolean;
   @state.settings.featureFlags private featureFlags!: FeatureFlags;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
@@ -172,10 +171,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @state.wallet.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
   @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
-
-  private prefersDarkScheme: MediaQueryList | null = null;
-  private handleThemeChange: ((e: MediaQueryListEvent) => void) | null = null;
-  private removeTelegramThemeChangedListener: (() => void) | null = null;
 
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
@@ -271,7 +266,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     preloadFontFace('element-icons');
     this.setResponsiveClass();
     updateBaseUrl(router);
-
     AlertsApiService.baseRoute = getFullBaseUrl(router);
 
     await this.setLanguage(getLocale() as Language);
@@ -285,6 +279,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // To start running as Telegram Web App (desktop capabilities)
       tmaSdkService.init(data?.TG_BOT_URL);
+
       await this.setApiKeys(data?.API_KEYS);
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
