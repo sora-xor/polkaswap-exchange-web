@@ -1,8 +1,8 @@
 <template>
-  <dialog-base :visible.sync="isVisible" class="task-dialog" :title="pointsForCategory.titleProgress">
+  <dialog-base :visible.sync="isVisible" class="task-dialog" :title="t(`points.${categoryName}.titleProgress`)">
     <div>
       <p class="task-dialog__title-progress">
-        {{ t('points.relatedTasks', { title: pointsForCategory.titleProgress }) }}
+        {{ t('points.relatedTasks', { title: t(`points.${categoryName}.titleProgress`) }) }}
       </p>
       <div class="task-dialog__card-progress">
         <div class="current-level">
@@ -25,9 +25,9 @@
         <div class="img-title">
           <token-logo v-if="isTokenImage" :token="getImageSrc(imageName)" size="small" />
           <img v-else :src="getImageSrc(imageName)" :alt="imageName" />
-          <p>{{ pointsForCategory.titleTask }}</p>
+          <p>{{ t(`points.${categoryName}.titleTask`) }}</p>
         </div>
-        <p class="description">{{ pointsForCategory.descriptionTask }}</p>
+        <p class="description">{{ t(`points.${categoryName}.descriptionTask`) }}</p>
         <s-divider />
         <p class="currently-amount">
           {{ t('points.currently') }}: <span> ${{ pointsForCategory.currentProgress.toFixed(2) }}</span>
@@ -52,6 +52,7 @@ import { CalculateCategoryPointResult } from '@/types/pointSystem';
 })
 export default class TaskDialog extends Mixins(mixins.TranslationMixin, mixins.DialogMixin) {
   @Prop({ required: true }) readonly pointsForCategory!: CalculateCategoryPointResult;
+  @Prop({ required: true, type: String }) readonly categoryName!: string;
 
   public getImageSrc = getImageSrc;
   public readonly maxLevel = MAX_LEVEL;
@@ -175,6 +176,7 @@ export default class TaskDialog extends Mixins(mixins.TranslationMixin, mixins.D
       margin-left: calc($basic-spacing-small * 3);
       color: var(--s-color-base-content-secondary);
       max-width: $explore-search-input-max-width;
+      text-align: left;
     }
     .currently-amount {
       color: var(--s-color-base-content-secondary);

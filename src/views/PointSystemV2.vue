@@ -29,7 +29,7 @@
         </div>
         <div v-else v-loading="loading" :class="['points__cards', 's-flex-column', { loading: loading }]">
           <s-tabs v-model="categoryPoints" type="rounded" class="points__tabs">
-            <s-tab label="YOUR TASKS" name="tasks">
+            <s-tab :label="t('points.yourTasks').toUpperCase()" name="tasks">
               <s-scrollbar
                 class="points__cards-scrollbar"
                 :wrap-style="{ padding: '0', margin: '0', overflowY: 'auto' }"
@@ -60,7 +60,7 @@
                 />
               </s-scrollbar>
             </s-tab>
-            <s-tab label="PROGRESS" name="progress">
+            <s-tab :label="t('points.progress').toUpperCase()" name="progress">
               <s-scrollbar
                 class="points__cards-scrollbar"
                 :wrap-style="{ padding: '0', margin: '0', overflowY: 'auto' }"
@@ -70,6 +70,7 @@
                     v-for="[categoryName, pointsForCategory] in Object.entries(pointsForCards ?? {}).slice(0, -1)"
                     :key="categoryName"
                     :points-for-category="pointsForCategory"
+                    :category-name="categoryName"
                     class="points__card"
                   />
                   <first-tx-card

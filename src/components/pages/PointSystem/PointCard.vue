@@ -8,7 +8,7 @@
       </p>
     </div>
     <div class="point-card__name" :class="{ disabled: noNextLevel }" @click="handleClick">
-      <p>{{ pointsForCategory.titleProgress }}</p>
+      <p>{{ t(`points.${categoryName}.titleProgress`) }}</p>
       <i v-if="!noNextLevel" class="icontype s-icon-arrows-chevron-right-rounded-24" />
     </div>
     <div class="point-card__currently-amount">
@@ -25,7 +25,7 @@
         <p class="max-level">{{ t('points.maxLvl') }}</p>
       </template>
     </div>
-    <task-dialog :pointsForCategory="pointsForCategory" :visible.sync="isDialogVisible" />
+    <task-dialog :pointsForCategory="pointsForCategory" :visible.sync="isDialogVisible" :category-name="categoryName" />
   </div>
 </template>
 
@@ -50,6 +50,9 @@ import ProgressCard from './ProgressCard.vue';
 export default class PointCard extends Mixins(mixins.TranslationMixin) {
   @Prop({ required: true, type: Object })
   readonly pointsForCategory!: CalculateCategoryPointResult;
+
+  @Prop({ required: true, type: String })
+  readonly categoryName!: string;
 
   public isDialogVisible = false;
   public readonly maxLevel = MAX_LEVEL;
@@ -118,6 +121,7 @@ export default class PointCard extends Mixins(mixins.TranslationMixin) {
       margin-bottom: auto;
       background-color: var(--s-color-base-on-accent);
       color: var(--s-color-base-content-primary);
+      max-width: 100px;
       span {
         opacity: 0.4;
         font-size: 10px;
@@ -139,7 +143,7 @@ export default class PointCard extends Mixins(mixins.TranslationMixin) {
     }
     p {
       font-weight: 300;
-      font-size: 15px;
+      font-size: 12px;
       color: var(--s-color-base-content-primary);
     }
     i {

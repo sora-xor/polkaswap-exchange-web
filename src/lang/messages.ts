@@ -576,6 +576,79 @@ export default {
     rewardNextLvl: 'Next level reward',
     airdrop: 'Complete SORA Ecosystem-related tasks in order to qualify for a $3m AIRDROP',
     soraCard: 'Apply now',
+    complete: 'Completed | Complete',
+    progress: 'Progress',
+    yourTasks: 'Your Tasks',
+    liquidityProvision: {
+      titleProgress: 'Liquidity provision',
+      titleTask: 'Provide Liquidity',
+      descriptionTask: 'Provide liquidity across pools',
+    },
+    tokenHold: {
+      titleProgress: '{token} holdings',
+      titleTask: 'Hold {token}',
+      descriptionTask: 'Hold your current {token} holdings',
+    },
+    VXORHoldings: {
+      titleProgress: 'VXOR holdings',
+      titleTask: 'Hold VXOR',
+      descriptionTask: 'Hold your current VXOR holdings',
+    },
+    referralRewards: {
+      titleProgress: 'Referral Sytem',
+      titleTask: 'Refer accounts',
+      descriptionTask: 'Refer accounts through the referral system',
+    },
+    depositVolumeBridges: {
+      titleProgress: 'Deposit volume',
+      titleTask: 'Deposit & Withdraw',
+      descriptionTask: 'Deposit & withdraw via Bridges, bitget, 1x, gateio',
+    },
+    networkFeeSpent: {
+      titleProgress: 'Network fees',
+      titleTask: 'Spend XOR on Network Fees',
+      descriptionTask: 'Spend XOR in network fees across multiple on-chain transactions',
+    },
+    XORBurned: {
+      titleProgress: 'XOR Burned',
+      titleTask: 'Burn XOR',
+      descriptionTask: 'Burn XOR and convert to $ value',
+    },
+    XORHoldings: {
+      titleProgress: 'XOR Hold',
+      titleTask: 'Hold XOR',
+      descriptionTask: 'Hold your current XOR holdings',
+    },
+    governanceLockedXOR: {
+      titleProgress: 'Governance',
+      titleTask: 'Lock XOR in Governance Voting',
+      descriptionTask: 'Lock XOR by participating in governance voting events',
+    },
+    kensetsuVolumeRepaid: {
+      titleProgress: 'Kensetsu volume',
+      titleTask: 'Repay KUSD Debt',
+      descriptionTask: 'Repay KUSD debt during liquidations or closing positions',
+    },
+    orderbookVolume: {
+      titleProgress: 'Orderbook',
+      titleTask: 'Create Limit Orders',
+      descriptionTask: 'Create limit orders in the orderbook',
+    },
+    nativeXorStaking: {
+      titleProgress: 'XOR Staking',
+      titleTask: 'Stake XOR',
+      descriptionTask: 'Stake XOR and earn VAL rewards',
+    },
+    KUSDHoldings: {
+      titleProgress: 'KUSD Hold',
+      titleTask: 'Hold Kusd',
+      descriptionTask: 'Hold your current KUSD holdings',
+    },
+    firstTxAccount: {
+      titleProgress: 'First Trx',
+      titleTask: 'Do your first transaction',
+      descriptionTask: 'Complete your first XOR transaction ever and receive the reward',
+    },
   },
   provider: {
     messages: {

@@ -69,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} Posizione chiusa",
             "DepositCollateral": "Depositato {amount} {symbol}",
             "RepayVaultDebt": "Debito ripagato {amount} {symbol}",
-            "BorrowVaultDebt": "Debito preso in prestito {amount} {symbol}"
+            "BorrowVaultDebt": "Debito preso in prestito {amount} {symbol}",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Associa Asset {symbol2} a SBT",
+            "IssueSoulBoundToken": "Emetti il token Anima Vincolata {symbol}",
+            "RegisterAndRegulateAsset": "Registra e regola {symbol} risorsa",
+            "RegulateAsset": "Regolamentare Asset {symbol}",
+            "SetAccessExpiration": "Token SB {symbol} Scadenza aggiornata a {endTime}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "Impossibile {action} {amount} {symbol} {direction} {address}",
@@ -111,7 +118,14 @@
             "CloseVault": "Chiusura della posizione {symbol}\/{symbol2} fallita",
             "DepositCollateral": "Impossibile depositare {amount} {symbol}",
             "RepayVaultDebt": "Impossibile ripagare {amount} {symbol} di debito",
-            "BorrowVaultDebt": "Impossibile prendere in prestito {amount} {symbol} di debito"
+            "BorrowVaultDebt": "Impossibile prendere in prestito {amount} {symbol} di debito",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Impossibile associare la risorsa {symbol} a SBT {symbol2}",
+            "IssueSoulBoundToken": "Impossibile emettere il token Soulbound {symbol}",
+            "RegisterAndRegulateAsset": "Impossibile registrare e regolare {symbol}",
+            "RegulateAsset": "Impossibile regolare l'asset {symbol}",
+            "SetAccessExpiration": "Impossibile aggiornare la scadenza a {to} per {symbol}",
+            "XorlessTransfer": "Impossibile inviare {amount} {symbol} a {address}"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
@@ -145,7 +159,14 @@
         "CloseVault": "Chiudi posizione",
         "DepositCollateral": "Deposita Collaterale",
         "RepayVaultDebt": "Ripaga Debito Vault",
-        "BorrowVaultDebt": "Prendi in Prestito Debito Vault"
+        "BorrowVaultDebt": "Prendi in Prestito Debito Vault",
+        "VestedTransfer": "",
+        "BindRegulatedAsset": "Vincola asset regolamentato",
+        "IssueSoulBoundToken": "Problema SBT",
+        "RegisterAndRegulateAsset": "Registra risorsa",
+        "RegulateAsset": "Regolamentare le risorse",
+        "SetAccessExpiration": "Imposta scadenza SBT",
+        "XorlessTransfer": "Trasferire"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione {PolkadotJs} trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -188,7 +209,10 @@
         "errorAddress": "Indirizzo non valido. Si prega di controllare e riprovare.",
         "tooltip": "Invia token tra account di rete {Sora}",
         "addressWarning": "I token verranno inviati all'indirizzo {Sora} riportato di seguito. Assicurati che il destinatario possa accedere alla catena {Sora} per utilizzare i token:",
-        "addressError": "Non puoi inviare token allo stesso account a cui sei attualmente connesso."
+        "addressError": "Non puoi inviare token allo stesso account a cui sei attualmente connesso.",
+        "enableVesting": "",
+        "enterVestingPercentage": "",
+        "vestingPercentage": ""
     },
     "account": {
         "copy": "Copia indirizzo",
@@ -1532,7 +1556,86 @@
         "accountsText": "{amount} account",
         "yourRewards": "Le tue ricompense",
         "openTelegram": "Apri {Telegram}",
-        "toEarnPoints": "Per guadagnare punti"
+        "toEarnPoints": "Per guadagnare punti",
+        "airdrop": "Completa le attività relative all'ecosistema SORA per qualificarti per un airdrop da 3 milioni di dollari",
+        "complete": "Completato | Completa",
+        "currently": "Attualmente",
+        "dated": "Datato",
+        "depositVolumeBridges": {
+            "descriptionTask": "Deposito e prelievo tramite Ponti, bitget, 1x, gateio",
+            "titleProgress": "Volume dei depositi",
+            "titleTask": "Deposito e Prelievo"
+        },
+        "firstSoraNetworkTransaction": "La tua prima transazione sulla rete SORA",
+        "firstTxAccount": {
+            "descriptionTask": "Completa la tua prima transazione XOR e ricevi la ricompensa",
+            "titleProgress": "Prima transazione",
+            "titleTask": "Effettua la tua prima transazione"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Blocca XOR partecipando agli eventi di voto di governance",
+            "titleProgress": "Governance",
+            "titleTask": "Blocca XOR nelle votazioni di governance"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Ripaga il debito KUSD durante le liquidazioni o la chiusura delle posizioni",
+            "titleProgress": "Volume Kensetsu",
+            "titleTask": "Ripaga il debito KUSD"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "Tieni i tuoi attuali possedimenti di KUSD",
+            "titleProgress": "Possesso KUSD",
+            "titleTask": "Tieni KUSD"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "Fornisci liquidità su diversi pool",
+            "titleProgress": "Fornitura di liquidità",
+            "titleTask": "Fornisci liquidità"
+        },
+        "lvl": "Livello",
+        "maxLvl": "Hai raggiunto il livello massimo",
+        "nativeXorStaking": {
+            "descriptionTask": "Metti in staking XOR e guadagna ricompense in VAL",
+            "titleProgress": "Staking di XOR",
+            "titleTask": "Staka XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "Usa XOR per le commissioni di rete in più transazioni on-chain",
+            "titleProgress": "Commissioni di rete",
+            "titleTask": "Usa XOR per le commissioni di rete"
+        },
+        "nextLvl": "Livello successivo",
+        "orderbookVolume": {
+            "descriptionTask": "Crea ordini limite nel libro ordini",
+            "titleProgress": "Libro degli ordini",
+            "titleTask": "Crea ordini limite"
+        },
+        "progress": "Progressi",
+        "referralRewards": {
+            "descriptionTask": "Riferisci account tramite il sistema di riferimento",
+            "titleProgress": "Sistema di riferimento",
+            "titleTask": "Riferisci account"
+        },
+        "relatedTasks": "Completa le attività relative a {title} per aumentare la tua abilità",
+        "rewardNextLvl": "Ricompensa del livello successivo",
+        "soraCard": "Candidarsi ora",
+        "VXORHoldings": {
+            "descriptionTask": "Tieni i tuoi attuali possedimenti di VXOR",
+            "titleProgress": "Titoli VXOR",
+            "titleTask": "Tieni VXOR"
+        },
+        "XORBurned": {
+            "descriptionTask": "Brucia XOR e converti in valore $",
+            "titleProgress": "XOR bruciato",
+            "titleTask": "Brucia XOR"
+        },
+        "XORHoldings": {
+            "descriptionTask": "Tieni i tuoi attuali possedimenti di XOR",
+            "titleProgress": "Possesso XOR",
+            "titleTask": "Tieni XOR"
+        },
+        "yourLevel": "Il tuo livello",
+        "yourTasks": "I tuoi compiti"
     },
     "addAssetsText": "Aggiungi bene | Aggiungi beni",
     "noir": "Il noir",
@@ -1545,5 +1648,71 @@
     "firstText": "Primo",
     "lastText": "Scorso",
     "prevText": "Precedente",
-    "priceText": "Prezzo"
+    "priceText": "Prezzo",
+    "assetOwner": {
+        "accountWithAccess": "Account con accesso SBT",
+        "addRegulatedAsset": "Aggiungi un altro asset regolamentato",
+        "addRegulatedAssets": "Aggiungere asset regolamentati",
+        "attachedRegulatedAssets": "Attività regolamentate collegate",
+        "createRegulatedAsset": "Crea una nuova risorsa regolamentata",
+        "createSbt": "Crea {type}",
+        "dialog": {
+            "addExisting": "Aggiungi una risorsa esistente",
+            "addExistingDesc": "Aggiungere una risorsa già creata per l'SBT",
+            "createAsset": "Crea una nuova risorsa",
+            "createAssetDesc": "Imposta una nuova risorsa autorizzata per {type}",
+            "enterAddress": "Inserisci l'indirizzo per l'emissione",
+            "issueAccess": "Accesso al problema",
+            "pickDate": "Scegli un giorno",
+            "selectAccessEnd": "Seleziona quando terminerà l'accesso",
+            "selectDate": "Seleziona la data"
+        },
+        "guide": {
+            "createToken": "Crea il tuo token",
+            "createTokenDesc": "Lancia facilmente il tuo token univoco, disponibile in più formati come NFT e SBT, utilizzando l'infrastruttura solida e sicura della rete SORA",
+            "disclaimerSbt": "Tieni aperta questa pagina durante l'intero processo. Per chiuderla o abbandonarla dovrai ricominciare dall'inizio. Completa rapidamente i passaggi per evitare timeout.",
+            "stepOneDesc": "Scegli o crea asset che hai creato e regolato personalmente. Questi sono asset sotto il tuo controllo e la tua gestione.",
+            "stepOneTitle": "Seleziona o crea asset regolamentati",
+            "stepThreeDesc": "Rivedere e firmare la transazione di creazione finale per completare la configurazione SBT.",
+            "stepThreeTitle": "Rivedere e firmare la transazione",
+            "stepTwoDesc": "Fornire informazioni essenziali come il nome e il simbolo del titolo SBT, nonché l'icona.",
+            "stepTwoTitle": "Inserisci i dettagli SBT",
+            "title": "Come creare un {type} :"
+        },
+        "issueSbtAccess": "Emetti {type} accesso",
+        "letsStartBtn": "INIZIAMO",
+        "orSelectExisting": "Oppure seleziona esistente",
+        "ownerSbtTitle": "Il tuo {type}",
+        "permissionedAssets": "Risorse autorizzate",
+        "regulatedAssetsConnected": "Attività regolamentate connesse",
+        "regulatedPools": "Piscine regolamentate",
+        "sbtCreation": {
+            "addAssets": "Aggiungi risorse a SBT",
+            "addDescription": "Inserisci i dettagli SBT",
+            "addMeta": "Inserisci i dettagli SBT",
+            "preview": "Anteprima SBT"
+        },
+        "sbtManagers": "{type} Gestori",
+        "selectExisting": "Seleziona esistente",
+        "startIssue": "Inizia a rilasciare l'accesso per l'SBT agli account",
+        "you": "Voi"
+    },
+    "sbtDetails": {
+        "accessPermitted": "Accesso consentito",
+        "description": "Questo SBT fornisce l'accesso a più token e pool ed è collegato al tuo account",
+        "expiresIn": "Scade tra",
+        "expiresInTooltip": "La \"Scade in\" mostra il periodo o il momento in cui viene acquisito l'accesso",
+        "expiryDate": "Data di scadenza",
+        "expiryDateTooltip": "La \"Data di scadenza\" è la scadenza per l'accesso alle attività regolamentate di SBT",
+        "indefiniteExp": "aperto",
+        "issuedBy": "{SBT} rilasciato da",
+        "kycProvider": "Fornitore {KYC}",
+        "kycVerification": "Verifica {KYC}",
+        "listOperable": "Attività regolamentate operative",
+        "noPermissions": "Nessuna autorizzazione aggiuntiva",
+        "noReceiverAccess": "Stai tentando di inviare un token regolamentato all'utente senza accesso SBT",
+        "permission": "permesso",
+        "permissions": "permessi",
+        "regulatedInsitution": "Istituzione regolamentata"
+    }
 }

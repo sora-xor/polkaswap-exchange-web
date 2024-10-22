@@ -69,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} Позиция закрыта",
             "DepositCollateral": "Внесено {amount} {symbol}",
             "RepayVaultDebt": "Погашено {amount} {symbol} долга",
-            "BorrowVaultDebt": "Взято в долг {amount} {symbol}"
+            "BorrowVaultDebt": "Взято в долг {amount} {symbol}",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Привязать актив {symbol2} к SBT",
+            "IssueSoulBoundToken": "Выпуск Soulbound Token {symbol}",
+            "RegisterAndRegulateAsset": "Регистрация и регулирование {symbol} актива",
+            "RegulateAsset": "Регулировать актив {symbol}",
+            "SetAccessExpiration": "Токен SB {symbol} обновлен до {endTime}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -111,7 +118,14 @@
             "CloseVault": "Не удалось закрыть позицию {symbol}\/{symbol2}",
             "DepositCollateral": "Ошибка при внесении залога {amount} {symbol}",
             "RepayVaultDebt": "Ошибка при погашении долга {amount} {symbol}",
-            "BorrowVaultDebt": "Ошибка при взятии в долг {amount} {symbol}"
+            "BorrowVaultDebt": "Ошибка при взятии в долг {amount} {symbol}",
+            "VestedTransfer": "",
+            "BindRegulatedAsset": "Не удалось привязать актив {symbol} к SBT {symbol2}",
+            "IssueSoulBoundToken": "Не удалось выдать токен Soulbound {symbol}",
+            "RegisterAndRegulateAsset": "Не удалось зарегистрировать и отрегулировать {symbol}",
+            "RegulateAsset": "Не удалось отрегулировать актив {symbol}",
+            "SetAccessExpiration": "Не удалось обновить срок действия до {to} для {symbol}",
+            "XorlessTransfer": "Не удалось отправить {amount} {symbol} на {address}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
@@ -145,7 +159,14 @@
         "CloseVault": "Закрыть позицию",
         "DepositCollateral": "Внести залог",
         "RepayVaultDebt": "Погасить долг",
-        "BorrowVaultDebt": "Взять в долг"
+        "BorrowVaultDebt": "Взять в долг",
+        "VestedTransfer": "",
+        "BindRegulatedAsset": "Связать регулируемый актив",
+        "IssueSoulBoundToken": "Выпуск СБТ",
+        "RegisterAndRegulateAsset": "Зарегистрировать актив",
+        "RegulateAsset": "Регулировать активы",
+        "SetAccessExpiration": "Установить срок действия SBT",
+        "XorlessTransfer": "Передача"
     },
     "polkadotjs": {
         "noExtensions": "Расширение {PolkadotJs} не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
@@ -188,7 +209,10 @@
         "errorAddress": "Неверный адрес. Пожалуйста, перепроверьте и попробуйте еще раз.",
         "tooltip": "Отправка токенов между учетными записями сети {Sora}",
         "addressWarning": "Токены будут отправлены на адрес {Sora}, указанный ниже. Убедитесь, что получатель может получить доступ к сети {Sora} для использования токенов:",
-        "addressError": "Вы не можете отправлять токены в ту же учетную запись, к которой вы в настоящее время подключены."
+        "addressError": "Вы не можете отправлять токены в ту же учетную запись, к которой вы в настоящее время подключены.",
+        "enableVesting": "",
+        "enterVestingPercentage": "",
+        "vestingPercentage": ""
     },
     "account": {
         "copy": "Копировать адрес",
@@ -1532,7 +1556,86 @@
         "accountsText": "{amount} аккаунтов",
         "yourRewards": "Ваши награды",
         "openTelegram": "Открыть {Telegram}",
-        "toEarnPoints": "Чтобы заработать очки"
+        "toEarnPoints": "Чтобы заработать очки",
+        "airdrop": "Выполните задания, связанные с экосистемой SORA, чтобы претендовать на эирдроп в $3 млн",
+        "complete": "Завершено | Завершить",
+        "currently": "Текущее",
+        "dated": "Дата",
+        "depositVolumeBridges": {
+            "descriptionTask": "Депозит и вывод через Мосты, bitget, 1x, gateio",
+            "titleProgress": "Объем депозита",
+            "titleTask": "Депозит и Вывод"
+        },
+        "firstSoraNetworkTransaction": "Ваша первая транзакция в сети SORA",
+        "firstTxAccount": {
+            "descriptionTask": "Завершите вашу первую XOR транзакцию и получите награду",
+            "titleProgress": "Первая транзакция",
+            "titleTask": "Совершите свою первую транзакцию"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Заблокируйте XOR, участвуя в голосованиях по управлению",
+            "titleProgress": "Управление",
+            "titleTask": "Заблокируйте XOR в голосовании по управлению"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Погасите долг в KUSD во время ликвидации или закрытия позиций",
+            "titleProgress": "Объем Kensetsu",
+            "titleTask": "Погасить долг в KUSD"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "Держите ваши текущие активы KUSD",
+            "titleProgress": "Владение KUSD",
+            "titleTask": "Держите KUSD"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "Предоставьте ликвидность через несколько пулов",
+            "titleProgress": "Предоставление ликвидности",
+            "titleTask": "Предоставьте ликвидность"
+        },
+        "lvl": "Уровень",
+        "maxLvl": "Вы достигли максимального уровня",
+        "nativeXorStaking": {
+            "descriptionTask": "Стейкайте XOR и зарабатывайте награды в VAL",
+            "titleProgress": "Стейкинг XOR",
+            "titleTask": "Стейк XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "Используйте XOR для оплаты комиссий в сети в нескольких on-chain транзакциях",
+            "titleProgress": "Комиссии в сети",
+            "titleTask": "Используйте XOR для оплаты комиссий в сети"
+        },
+        "nextLvl": "Следующий уровень",
+        "orderbookVolume": {
+            "descriptionTask": "Создайте лимитные ордера в ордербук",
+            "titleProgress": "Ордербук",
+            "titleTask": "Создайте лимитные ордера"
+        },
+        "progress": "Прогресс",
+        "referralRewards": {
+            "descriptionTask": "Приглашайте пользователей через реферальную систему",
+            "titleProgress": "Реферальная система",
+            "titleTask": "Пригласить пользователей"
+        },
+        "relatedTasks": "Выполните задачи, связанные с {title}, чтобы повысить свои навыки",
+        "rewardNextLvl": "Награда за следующий уровень",
+        "soraCard": "Подать заявку сейчас",
+        "VXORHoldings": {
+            "descriptionTask": "Держите ваши текущие активы VXOR",
+            "titleProgress": "Владение VXOR",
+            "titleTask": "Владеть VXOR"
+        },
+        "XORBurned": {
+            "descriptionTask": "Сожгите XOR в $ эквивалент",
+            "titleProgress": "XOR сожжен",
+            "titleTask": "Сжечь XOR"
+        },
+        "XORHoldings": {
+            "descriptionTask": "Держите ваши текущие активы XOR",
+            "titleProgress": "Владение XOR",
+            "titleTask": "Владеть XOR"
+        },
+        "yourLevel": "Ваш уровень",
+        "yourTasks": "Ваши задачи"
     },
     "addAssetsText": "Добавить актив | Добавить активы",
     "noir": "Нуар",
@@ -1545,5 +1648,71 @@
     "firstText": "Первая",
     "lastText": "Последняя",
     "prevText": "Предыдущая",
-    "priceText": "Цена"
+    "priceText": "Цена",
+    "assetOwner": {
+        "accountWithAccess": "Счет с доступом к SBT",
+        "addRegulatedAsset": "Добавить еще один регулируемый актив",
+        "addRegulatedAssets": "Добавить регулируемые активы",
+        "attachedRegulatedAssets": "Прикрепленные регулируемые активы",
+        "createRegulatedAsset": "Создать новый регулируемый актив",
+        "createSbt": "Создать {type}",
+        "dialog": {
+            "addExisting": "Добавить существующий актив",
+            "addExistingDesc": "Добавить уже созданный актив для SBT",
+            "createAsset": "Создать новый актив",
+            "createAssetDesc": "Настройте новый разрешенный актив для {type}",
+            "enterAddress": "Введите адрес для выдачи",
+            "issueAccess": "Выдать доступ",
+            "pickDate": "Выберите день",
+            "selectAccessEnd": "Выберите, когда доступ будет прекращен",
+            "selectDate": "Выберите дату"
+        },
+        "guide": {
+            "createToken": "Создайте свой токен",
+            "createTokenDesc": "Легко запускайте свой уникальный токен, доступный в различных форматах, таких как NFT и SBT, используя надежную и безопасную инфраструктуру сети SORA.",
+            "disclaimerSbt": "Держите эту страницу открытой в течение всего процесса. Закрытие или уход с нее потребует перезапуска с самого начала. Выполняйте шаги быстро, чтобы избежать тайм-аута.",
+            "stepOneDesc": "Выбирайте или создавайте активы, которые вы лично создали и регулируете. Это активы под вашим контролем и управлением.",
+            "stepOneTitle": "Выберите или создайте регулируемые активы",
+            "stepThreeDesc": "Проверьте и подпишите окончательную транзакцию создания, чтобы завершить настройку SBT.",
+            "stepThreeTitle": "Проверьте и подпишите транзакцию",
+            "stepTwoDesc": "Укажите основную информацию, такую как название и тикер SBT, а также значок.",
+            "stepTwoTitle": "Введите данные SBT",
+            "title": "Как создать {type} :"
+        },
+        "issueSbtAccess": "Выпуск {type} доступа",
+        "letsStartBtn": "НАЧНЕМ",
+        "orSelectExisting": "Или выберите существующий",
+        "ownerSbtTitle": "Ваш {type}",
+        "permissionedAssets": "Разрешенные активы",
+        "regulatedAssetsConnected": "Регулируемые активы связаны",
+        "regulatedPools": "Регулируемые бассейны",
+        "sbtCreation": {
+            "addAssets": "Добавить активы в SBT",
+            "addDescription": "Введите данные SBT",
+            "addMeta": "Введите данные SBT",
+            "preview": "Предварительный просмотр SBT"
+        },
+        "sbtManagers": "{type} Менеджеры",
+        "selectExisting": "Выбрать существующий",
+        "startIssue": "Начать выдачу доступа к счетам СБТ",
+        "you": "Ты"
+    },
+    "sbtDetails": {
+        "accessPermitted": "Доступ разрешен",
+        "description": "Этот SBT обеспечивает доступ к нескольким токенам и пулам и привязан к вашей учетной записи.",
+        "expiresIn": "Истекает через",
+        "expiresInTooltip": "«Истекает через» показывает период или момент времени, когда был получен доступ.",
+        "expiryDate": "Дата истечения срока действия",
+        "expiryDateTooltip": "«Дата истечения срока» — это крайний срок вашего доступа к регулируемым активам SBT.",
+        "indefiniteExp": "открытый",
+        "issuedBy": "{SBT} выдан",
+        "kycProvider": "{KYC} Поставщик",
+        "kycVerification": "{KYC} Проверка",
+        "listOperable": "Регулируемые активы работоспособны",
+        "noPermissions": "Никаких дополнительных разрешений.",
+        "noReceiverAccess": "Вы пытаетесь отправить регулируемый токен пользователю, не имеющему доступа к SBT.",
+        "permission": "разрешение",
+        "permissions": "разрешения",
+        "regulatedInsitution": "Регулируемое учреждение"
+    }
 }

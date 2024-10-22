@@ -3,9 +3,9 @@
     <div class="task-card__title-image">
       <token-logo v-if="isTokenImage" :token="getImageSrc(imageName)" size="small" />
       <img v-else :src="getImageSrc(imageName)" :alt="imageName" />
-      <p>{{ pointsForCategory.titleTask }}</p>
+      <p>{{ t(`points.${categoryName}.titleProgress`) }}</p>
     </div>
-    <p class="task-card__description-task">{{ pointsForCategory.descriptionTask }}</p>
+    <p class="task-card__description-task">{{ t(`points.${categoryName}.descriptionTask`) }}</p>
     <div>
       <s-divider />
     </div>
@@ -14,10 +14,10 @@
         {{ t('points.currently') }}: <span>${{ pointsForCategory.currentProgress.toFixed(2) }}</span>
       </p>
       <s-button :class="{ completed: isCompleted }" @click="handleButtonClick">
-        {{ isCompleted ? 'Completed' : 'Complete' }}
+        {{ isCompleted ? tc('points.complete', 1) : tc('points.complete', 2) }}
       </s-button>
     </div>
-    <task-dialog :pointsForCategory="pointsForCategory" :visible.sync="isDialogVisible" />
+    <task-dialog :pointsForCategory="pointsForCategory" :visible.sync="isDialogVisible" :category-name="categoryName" />
   </div>
 </template>
 
