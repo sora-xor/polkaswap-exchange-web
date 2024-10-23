@@ -225,11 +225,6 @@ export default class CreateAlert extends Mixins(
   }
 
   async mounted(): Promise<void> {
-    // Re-center dialog programmatically (need to simplify it). Components lazy loading might break it
-    await this.$nextTick();
-    const sDialog: any = this.$parent?.$parent;
-    sDialog?.computeTop?.();
-
     if (this.isEditMode) {
       this.amount = this.alertToEdit.price;
       this.currentTypeTab = this.alertToEdit.type === 'drop' ? AlertTypeTabs.Drop : AlertTypeTabs.Raise;
