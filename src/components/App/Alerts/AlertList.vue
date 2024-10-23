@@ -124,13 +124,6 @@ export default class AlertList extends Mixins(
     return `${priceChangeFormatted}% · ${this.t('alerts.currentPrice')}: $${currentPriceFormatted}`;
   }
 
-  /** Re-center dialog programmatically (need to simplify it). Components lazy loading might break it */
-  private async recenterDialog(): Promise<void> {
-    await this.$nextTick();
-    const sDialog: any = this.$parent?.$parent;
-    sDialog?.computeTop?.();
-  }
-
   /** Force close menu if it wasn't closed */
   private forceCloseAlertMenu(index: number): void {
     this.$refs['alertMenu' + index]?.[0]?.doClose?.();
@@ -152,7 +145,6 @@ export default class AlertList extends Mixins(
   handleDeleteAlert(position: number): void {
     this.removePriceAlert(position);
     this.forceCloseAlertMenu(position);
-    this.recenterDialog();
     this.scrollForceUpdate();
   }
 
@@ -167,8 +159,6 @@ export default class AlertList extends Mixins(
   }
 
   mounted(): void {
-    this.recenterDialog();
-
     if (Notification.permission !== 'granted') {
       this.setDepositNotifications(false);
     }
