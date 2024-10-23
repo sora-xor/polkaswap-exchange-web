@@ -111,7 +111,10 @@ button.el-button.neumorphic#{$baseClass} {
     &.focusing,
     &.s-pressed {
       background-color: var(--s-color-utility-surface);
-      box-shadow: 1px 1px 5px rgba(255, 255, 255, 0.7), -1px -1px 5px #ffffff, 0px 0px 20px rgba(247, 84, 163, 0.5);
+      box-shadow:
+        1px 1px 5px rgba(255, 255, 255, 0.7),
+        -1px -1px 5px #ffffff,
+        0px 0px 20px rgba(247, 84, 163, 0.5);
 
       #{$baseClass}__icon {
         background-color: var(--s-color-base-content-secondary);

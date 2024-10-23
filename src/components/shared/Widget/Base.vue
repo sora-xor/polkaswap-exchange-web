@@ -121,17 +121,9 @@ export default class BaseWidget extends Vue {
   }
 
   get isPipAvailable() {
-    try {
-      if (this.pipDisabled) return false;
-      if (typeof window === 'undefined') {
-        console.info('typeof window === undefined');
-        return false;
-      }
-      return 'documentPictureInPicture' in window && !this.pipOpened;
-    } catch (e) {
-      console.error('Error when trying get pip availability:', e);
-      return false;
-    }
+    if (this.pipDisabled) return false;
+
+    return 'documentPictureInPicture' in window && !this.pipOpened;
   }
 
   async openPip() {
@@ -303,7 +295,7 @@ export default class BaseWidget extends Vue {
 
 <style lang="scss" scoped>
 $top: $inner-spacing-medium;
-$between: $top / 2;
+$between: $top * 0.5;
 $left: $inner-spacing-medium;
 
 .base-widget {

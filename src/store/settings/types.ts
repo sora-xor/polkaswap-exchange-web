@@ -20,6 +20,7 @@ export type FeatureFlags = {
   assetOwner?: boolean;
   alt?: boolean;
   debug?: boolean;
+  pointSystemV2?: boolean;
 };
 
 export type SettingsState = {
@@ -56,4 +57,5 @@ export type SettingsState = {
   isOrientationWarningVisible: boolean;
   isAccessAccelerometrEventDeclined: boolean;
   isAccessRotationListener: boolean;
+  isThemePreference: boolean;
 };

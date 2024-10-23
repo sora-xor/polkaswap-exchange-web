@@ -58,6 +58,7 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -72,9 +73,10 @@ import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
+import { getMobileCssClasses, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
+import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
@@ -83,7 +85,6 @@ import type { History, HistoryItem } from '@sora-substrate/sdk';
 import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
@@ -119,6 +120,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
+  @state.settings.isThemePreference isThemePreference!: boolean;
+  @state.settings.featureFlags private featureFlags!: FeatureFlags;
+  @state.settings.isTMA isTMA!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
@@ -145,6 +149,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (windowWidth: number) => void;
   @mutation.settings.showOrientationWarning private showOrientationWarning!: FnWithoutArgs;
   @mutation.settings.hideOrientationWarning private hideOrientationWarning!: FnWithoutArgs;
+
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
   @mutation.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
@@ -204,6 +209,15 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
+  @Watch('isThemePreference', { immediate: true })
+  private onIsThemePreferenceChange(newVal: boolean) {
+    if (newVal) {
+      detectSystemTheme(this.isTMA);
+    } else {
+      removeThemeListeners(this.isTMA);
+    }
+  }
+
   private async confirmInvititation(): Promise<void> {
     await this.withApi(async () => {
       await this.getReferrer();
@@ -248,7 +262,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   async created() {
     window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
-    preloadFontFace('element-icons');
     this.setResponsiveClass();
     updateBaseUrl(router);
     AlertsApiService.baseRoute = getFullBaseUrl(router);
@@ -294,6 +307,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     updateDocumentTitle(); // For the first load
     this.showDisclaimer();
     this.fetchAdsArray();
+    this.onIsThemePreferenceChange(this.isThemePreference);
   }
 
   mounted(): void {
@@ -347,7 +361,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   goTo(name: PageNames): void {
     if (name === PageNames.Rewards) {
       // Rewards is a menu route but we need to show PointSystem by default
-      goTo(PageNames.PointSystem);
+      if (this.featureFlags.pointSystemV2) {
+        goTo(PageNames.PointSystemV2);
+      } else {
+        goTo(PageNames.PointSystem);
+      }
     } else {
       goTo(name);
     }
@@ -398,6 +416,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async beforeDestroy(): Promise<void> {
     window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
+    removeThemeListeners(this.isTMA);
     if (screen.orientation) {
       screen.orientation.removeEventListener('change', this.handleOrientationChange);
     } else {
@@ -475,8 +494,9 @@ ul ul {
   }
 
   &-body-scrollbar {
-    @include scrollbar;
     flex: 1;
+
+    @include scrollbar;
   }
 }
 

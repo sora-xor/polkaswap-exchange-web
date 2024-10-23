@@ -15,7 +15,7 @@
         <span>{{ t('selectNodeConnected') }}</span>
         <span v-if="node">{{ node.chain || node.name }}</span>
       </template>
-      <template>
+      <template #default>
         <span v-if="node">{{ node.address }}</span>
         <span v-if="formattedNodeLocation">
           {{ formattedNodeLocation.name }} <span class="flag-emodji">{{ formattedNodeLocation.flag }}</span>
@@ -34,7 +34,7 @@
         <span>{{ t('footer.internet.label') }}</span>
         <span>{{ internetConnectionSpeedMbText }}</span>
       </template>
-      <template>
+      <template #default>
         <span>{{ internetConnectionDesc }}</span>
       </template>
     </footer-popper>
@@ -305,7 +305,7 @@ $sora-logo-width: 115px;
     color: var(--s-color-base-content-secondary);
     font-size: 12px;
     line-height: 12px;
-    margin-right: $basic-spacing / 2;
+    margin-right: $basic-spacing * 0.5;
     margin-top: 2px;
     white-space: nowrap;
   }

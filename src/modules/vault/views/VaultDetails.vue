@@ -210,7 +210,7 @@
                   badge
                   error-icon-size="15"
                   :value="ltvNumber"
-                  :getStatus="getLtvStatus"
+                  :get-status="getLtvStatus"
                 >
                   {{ ltvText }}
                 </value-status>
@@ -541,7 +541,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     if (!(this.vault && this.lockedAsset && this.isClosed(this.vault))) return ZeroStringValue;
 
     return this.vault.returned
-      ? this.getFiatAmountByFPNumber(this.vault.returned, this.lockedAsset) ?? ZeroStringValue
+      ? (this.getFiatAmountByFPNumber(this.vault.returned, this.lockedAsset) ?? ZeroStringValue)
       : ZeroStringValue;
   }
 
@@ -691,13 +691,14 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     &-icon {
       $icon-size: 12px;
 
-      @include ltv-status('success');
-      @include ltv-status('warning');
-      @include ltv-status('error');
       border-radius: 50%;
       height: $icon-size;
       width: $icon-size;
       margin-right: 2px;
+
+      @include ltv-status('success');
+      @include ltv-status('warning');
+      @include ltv-status('error');
     }
   }
 }

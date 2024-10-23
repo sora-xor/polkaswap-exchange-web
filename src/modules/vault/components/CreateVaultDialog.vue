@@ -50,7 +50,7 @@
           asset-symbol="%"
           is-formatted
         >
-          <value-status v-if="ltv" class="ltv-badge-status" badge :value="ltvNumber" :getStatus="getLtvStatus">
+          <value-status v-if="ltv" class="ltv-badge-status" badge :value="ltvNumber" :get-status="getLtvStatus">
             {{ ltvText }}
           </value-status>
         </info-line>

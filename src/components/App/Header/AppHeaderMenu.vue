@@ -68,14 +68,13 @@
 
 <script lang="ts">
 import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
-import { switchTheme } from '@soramitsu-ui/ui-vue2/lib/utils';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Language, Languages } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { getter, mutation, state } from '@/store/decorators';
-import { updatePipTheme } from '@/utils';
+import { applyTheme } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
 import type { Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
@@ -124,6 +123,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @state.settings.language currentLanguage!: Language;
   @state.settings.isTMA isTMA!: boolean;
   @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
+  @state.settings.isThemePreference isThemePreference!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @state.wallet.settings.currency currency!: Currency;
 
@@ -131,6 +131,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @getter.settings.notificationActivated notificationActivated!: boolean;
 
   @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: FnWithoutArgs;
+  @mutation.settings.setIsThemePreference private setIsThemePreference!: (flag: boolean) => void;
   @mutation.settings.setAlertSettingsPopup private setAlertSettingsPopup!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.setSelectCurrencyDialogVisibility private setCurrencyDialogVisibility!: (flag: boolean) => void;
@@ -141,12 +142,17 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
 
+  @Watch('libraryTheme', { immediate: true })
+  onLibraryThemeChange(newTheme: Theme) {
+    this.updateSelectedTheme(newTheme);
+  }
+
   get mediaQueryList(): MediaQueryList {
     return window.matchMedia(`(min-width: ${BREAKPOINT}px)`);
   }
 
   mounted() {
-    this.selectedTheme = this.libraryTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
+    this.updateSelectedTheme(this.libraryTheme);
   }
 
   handleDropdownVisibilityChange(visible: boolean) {
@@ -159,6 +165,14 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   get disclaimerText(): string {
     return this.disclaimerVisibility ? this.t('headerMenu.hideDisclaimer') : this.t('headerMenu.showDisclaimer');
+  }
+
+  private updateSelectedTheme(newTheme: Theme) {
+    if (this.isThemePreference) {
+      this.selectedTheme = HeaderMenuType.Theme;
+    } else {
+      this.selectedTheme = newTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
+    }
   }
 
   private getHideBalancesIcon(isDropdown = false): string {
@@ -207,6 +221,12 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       {
         title: this.t('headerMenu.titleTheme'),
         items: [
+          {
+            value: HeaderMenuType.Theme,
+            icon: 'basic-lightning-24',
+            text: this.t('headerMenu.systemPreferencesTheme'),
+            isThemeItem: true,
+          },
           {
             value: HeaderMenuType.LightMode,
             icon: 'various-brightness-low-24',
@@ -301,14 +321,20 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       case HeaderMenuType.HideBalances:
         this.toggleHideBalance();
         break;
+      case HeaderMenuType.Theme:
+        if (this.selectedTheme !== value) {
+          this.selectedTheme = value;
+          this.setIsThemePreference(true);
+        }
+        break;
       case HeaderMenuType.LightMode:
       case HeaderMenuType.NoirMode:
         if (this.selectedTheme !== value) {
           this.selectedTheme = value;
-          await switchTheme();
-          await this.$nextTick();
-          updatePipTheme();
-          tmaSdkService.updateTheme();
+          this.setIsThemePreference(false);
+          if ((this.selectedTheme === 'noir' ? 'dark' : this.selectedTheme) !== this.libraryTheme) {
+            applyTheme(this.selectedTheme !== 'light');
+          }
         }
         break;
       case HeaderMenuType.TurnPhoneHide:
@@ -451,7 +477,10 @@ $item-padding: 17px;
     height: 24px;
     border: 1px solid var(--s-color-base-content-secondary);
     border-radius: 50%;
-    transition: opacity 150ms, border-color 150ms, background-color 150ms;
+    transition:
+      opacity 150ms,
+      border-color 150ms,
+      background-color 150ms;
     margin-left: auto;
     i {
       margin: unset;

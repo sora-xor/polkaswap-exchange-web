@@ -4,7 +4,7 @@
     <sora-card-intro v-else-if="showIntro" :maintenance="isUnderMaintenance" @confirm-apply="openKycPage" />
     <sora-card-kyc
       v-else-if="step === Step.KYC"
-      :getReadyPage="getReadyPage"
+      :get-ready-page="getReadyPage"
       @go-to-start="openStartPage"
       @go-to-kyc-result="openKycResultPage"
       @go-to-dashboard="openDashboard"

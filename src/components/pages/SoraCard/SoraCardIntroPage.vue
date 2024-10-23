@@ -19,9 +19,9 @@
           </div>
         </div>
         <div class="maintenance-desc__mobile">
-          <img src="@/assets/img/mobile/sora-app-left.png?inline" alt="mobile-left" class="left-image" />
+          <img src="@/assets/img/mobile/sora-app-left.png" alt="mobile-left" class="left-image" />
           <img src="@/assets/img/mobile/qr-code.svg?inline" alt="qr-code" class="qr-code" />
-          <img src="@/assets/img/mobile/sora-app-right.png?inline" alt="mobile-right" class="right-image" />
+          <img src="@/assets/img/mobile/sora-app-right.png" alt="mobile-right" class="right-image" />
         </div>
       </div>
     </template>

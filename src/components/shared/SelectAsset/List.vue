@@ -22,7 +22,7 @@
           class="pin-button"
           :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
         >
-          <pin-icon :isPinned="isAssetPinned(token)" />
+          <pin-icon :is-pinned="isAssetPinned(token)" />
         </button>
 
         <formatted-amount-with-fiat-value
@@ -43,7 +43,7 @@
             class="pin-button"
             :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
           >
-            <pin-icon :isPinned="isAssetPinned(token)" />
+            <pin-icon :is-pinned="isAssetPinned(token)" />
           </button>
         </span>
       </div>
@@ -169,7 +169,7 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
     display: block;
     height: 70px;
     width: 70px;
-    background: url('~@/assets/img/no-results.svg') center no-repeat;
+    background: url('@/assets/img/no-results.svg') center no-repeat;
   }
 }
 .pin-button {

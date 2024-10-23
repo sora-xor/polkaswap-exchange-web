@@ -269,9 +269,9 @@ export default class PendingRewardsDialog extends Mixins(
 }
 
 .pending-rewards-scrollbar {
-  @include scrollbar;
   height: 410px !important;
   margin: 0 -24px !important;
+  @include scrollbar;
 
   ul {
     list-style-type: none;

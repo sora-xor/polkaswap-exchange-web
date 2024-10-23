@@ -285,14 +285,6 @@ export const updateDocumentTitle = (to?: Route) => {
   }
 };
 
-export const preloadFontFace = async (name: string): Promise<void> => {
-  try {
-    await (document as any).fonts.load(`1em ${name}`);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 export const getCssVariableValue = (name: string): string => {
   return getComputedStyle(document.documentElement as any)
     .getPropertyValue(name)
@@ -351,6 +343,10 @@ export const formatAmountWithSuffix = (value: FPNumber, precision = 2): AmountWi
     const amount = format(val.toFixed(precision));
     return { amount, suffix: '' };
   }
+};
+
+export const convertFPNumberToNumber = (fpValue: FPNumber, precision = 2): number => {
+  return parseFloat(fpValue.toFixed(precision));
 };
 
 export const formatDecimalPlaces = (value: FPNumber | number, asPercent = false): string => {

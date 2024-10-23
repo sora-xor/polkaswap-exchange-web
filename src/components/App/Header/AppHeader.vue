@@ -22,11 +22,10 @@
 
 <script lang="ts">
 import { XOR, ETH } from '@sora-substrate/sdk/build/assets/consts';
-import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import InternalConnectMixin from '../../../components/mixins/InternalConnectMixin';
-import PolkaswapLogo from '../../../components/shared/Logo/Polkaswap.vue';
 import { PageNames, Components } from '../../../consts';
 import { BreakpointClass } from '../../../consts/layout';
 import { lazyComponent, goTo } from '../../../router';
@@ -34,24 +33,20 @@ import { state, getter } from '../../../store/decorators';
 
 import AppAccountButton from './AppAccountButton.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
-import AppLogoButton from './AppLogoButton.vue';
-import AppMarketing from './AppMarketing.vue';
 
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
-    PolkaswapLogo,
     AppAccountButton,
-    AppMarketing,
     AppHeaderMenu,
-    AppLogoButton,
+    AppMarketing: lazyComponent(Components.AppMarketing),
+    AppLogoButton: lazyComponent(Components.AppLogoButton),
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     SelectCurrencyDialog: lazyComponent(Components.SelectCurrencyDialog),
     RotatePhoneDialog: lazyComponent(Components.RotatePhoneDialog),
     AccelerationAccessDialog: lazyComponent(Components.AccelerationAccessDialog),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    WalletAvatar: components.WalletAvatar,
   },
 })
 export default class AppHeader extends Mixins(InternalConnectMixin) {
