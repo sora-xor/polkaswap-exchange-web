@@ -113,6 +113,12 @@ export default class SupplyChartWidget extends Mixins(WithTokenSelectMixin, Char
   }
 
   get chartSpec() {
+    const formatter = (value: number | string): string => {
+      const val = new FPNumber(value);
+      const { amount, suffix } = formatAmountWithSuffix(val);
+      return `${amount} ${suffix}`;
+    };
+
     return {
       dataset: {
         source: this.data.map((item) => [item.timestamp, item.value, item.mint, item.burn]),
@@ -134,11 +140,7 @@ export default class SupplyChartWidget extends Mixins(WithTokenSelectMixin, Char
           type: 'log',
           min: 1,
           axisLabel: {
-            formatter: (value) => {
-              const val = new FPNumber(value);
-              const { amount, suffix } = formatAmountWithSuffix(val);
-              return `${amount} ${suffix}`;
-            },
+            formatter,
           },
           splitLine: false,
         }),
@@ -149,11 +151,7 @@ export default class SupplyChartWidget extends Mixins(WithTokenSelectMixin, Char
             align: 'left',
           },
           axisLabel: {
-            formatter: (value) => {
-              const val = new FPNumber(value);
-              const { amount, suffix } = formatAmountWithSuffix(val);
-              return `${amount} ${suffix}`;
-            },
+            formatter,
           },
         }),
       ],

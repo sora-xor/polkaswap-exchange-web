@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import first from 'lodash/fp/first';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
@@ -49,7 +50,11 @@ export async function setDayJsLocale(lang: Language): Promise<void> {
 
   try {
     // importing dayjs locale file automatically runs `dayjs.locale(code)`
-    await import(`dayjs/esm/locale/${code}.js`);
+    const preset = await import(`dayjs/esm/locale/${code}.js`);
+    console.log(preset);
+    // [TODO] remove after wallet transfer
+    // wallet compability: cjs dayjs in wallet
+    dayjs.locale(preset.default, undefined, false);
   } catch (error) {
     console.warn(`[dayjs]: unsupported locale "${code}"`, error);
   }
@@ -62,7 +67,6 @@ export async function setI18nLocale(lang: Language): Promise<void> {
     // transform locale string 'eu-ES' to filename 'eu_ES' like in localise
     const filename = locale.replace('-', '_');
     const messagesModule = await import(`@/lang/${filename}.json`);
-
     const cardMessagesModule = await import(`@/lang/card/${filename}.json`);
 
     i18n.setLocaleMessage(locale, { ...messagesModule.default, ...cardMessagesModule.default });

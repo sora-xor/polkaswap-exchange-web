@@ -674,7 +674,9 @@ export default class PriceChartWidget extends Mixins(
       itemStyle: {
         color: ({ data }) => {
           const [_timestamp, open, close] = data;
-          return open > close ? this.theme.color.status.error : this.theme.color.status.success;
+          if (open > close) return this.theme.color.status.error;
+          if (open < close) return this.theme.color.status.success;
+          return this.theme.color.base.content.secondary;
         },
         opacity: 0.7,
       },
