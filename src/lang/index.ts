@@ -51,7 +51,6 @@ export async function setDayJsLocale(lang: Language): Promise<void> {
   try {
     // importing dayjs locale file automatically runs `dayjs.locale(code)`
     const preset = await import(`dayjs/esm/locale/${code}.js`);
-    console.log(preset);
     // [TODO] remove after wallet transfer
     // wallet compability: cjs dayjs in wallet
     dayjs.locale(preset.default, undefined, false);
