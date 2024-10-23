@@ -771,13 +771,7 @@
         "SwapAndSend": "Swap and Send",
         "SwapTransferBatch": "{ADAR} transfer",
         "Transfer": "Transfer",
-        "VestedTransfer": "Transfer"
-    },
-    "orderBook": {
-        "amount": "amount",
-        "book": {
-            "noAsks": "No opened asks",
-            "noBids": "No opened bids"
+        "VestedTransfer": "Transfer",
         "claiming": {
             "pending": "Claiming...",
             "success": "Claimed successfully"
@@ -1680,22 +1674,6 @@
         "info": "Your local storage is overloaded, to continue work with {AppName} need to clean it",
         "agree": "Yes, I understand"
     },
-    "walletSend": {
-        "addressError": "You cannot send tokens to the same account that you are currently connected to.",
-        "addressWarning": "Tokens will be sent to the {Sora} address below. Make sure the recipient can access the {Sora} chain to use the tokens:",
-        "badAddress": "Incorrect address",
-        "balance": "Balance",
-        "confirmTitle": "Confirm transaction",
-        "enableVesting": "Enable token vesting",
-        "enterAddress": "Enter address",
-        "enterAmount": "Enter amount",
-        "enterVestingPercentage": "Enter vesting percentage",
-        "errorAddress": "Invalid address. Please check it and try again.",
-        "max": "MAX",
-        "title": "Send",
-        "tooltip": "Send tokens between {Sora} network accounts",
-        "unlockFrequency": "Unlock frequency",
-        "vestingPercentage": "Vesting percentage"
     "points": {
         "title": "Your Points",
         "loginText": "Connect your account to see your points",
