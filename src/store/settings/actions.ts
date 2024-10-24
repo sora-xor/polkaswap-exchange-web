@@ -1,4 +1,3 @@
-import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
 import axiosInstance from '@/api';
@@ -19,15 +18,6 @@ const actions = defineActions({
     updateFpNumberLocale(locale);
     commit.setLanguage(locale);
     commit.updateIntlUtils(); // based on locale
-  },
-  async setBlockNumber(context): Promise<void> {
-    const { commit } = settingsActionContext(context);
-    commit.resetBlockNumberSubscription();
-
-    const blockNumberSubscription = api.system.getBlockNumberObservable().subscribe((blockNumber) => {
-      commit.setBlockNumber(blockNumber);
-    });
-    commit.setBlockNumberUpdates(blockNumberSubscription);
   },
   async fetchAdsArray(context): Promise<void> {
     const { commit } = settingsActionContext(context);
