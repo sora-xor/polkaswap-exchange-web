@@ -45,15 +45,14 @@ export async function setDayJsLocale(lang: Language): Promise<void> {
   let code = first(locale.split('-')) as string;
   // There is no "no" lang, let's keep it for now, "en" will be used by default
   if (code === 'zh') {
-    code = 'zh-cn';
+    code = Language.ZH_CN;
   }
 
   try {
-    // importing dayjs locale file automatically runs `dayjs.locale(code)`
-    const preset = await import(`dayjs/esm/locale/${code}.js`);
-    // [TODO] remove after wallet transfer
+    const { default: preset } = code !== Language.EN ? await import(`dayjs/esm/locale/${code}.js`) : {};
+    // [TODO] check after wallet transfer
     // wallet compability: cjs dayjs in wallet
-    dayjs.locale(preset.default, undefined, false);
+    dayjs.locale(code, preset, false);
   } catch (error) {
     console.warn(`[dayjs]: unsupported locale "${code}"`, error);
   }
