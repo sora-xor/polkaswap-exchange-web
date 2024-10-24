@@ -124,7 +124,7 @@ export default class PointSystemV2 extends Mixins(
   readonly LogoSize = WALLET_CONSTS.LogoSize;
 
   @state.referrals.referralRewards private referralRewards!: Nullable<ReferrerRewards>;
-  @state.settings.blockNumber private blockNumber!: number;
+  @state.wallet.settings.blockNumber private blockNumber!: number;
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
