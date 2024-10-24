@@ -218,7 +218,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   selectedMax = this.campaigns[0].max;
   selectedMin = this.campaigns[0].min;
 
-  @state.settings.blockNumber private blockNumber!: number;
+  @state.wallet.settings.blockNumber private blockNumber!: number;
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   get minBlock(): number {
