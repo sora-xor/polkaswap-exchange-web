@@ -2,8 +2,6 @@ import type { MarketAlgorithms } from '@/consts';
 import type { BreakpointClass } from '@/consts/layout';
 import type { NodesConnection } from '@/utils/connection';
 
-import type { Subscription } from 'rxjs';
-
 export type Ad = {
   title: string;
   img: string;
