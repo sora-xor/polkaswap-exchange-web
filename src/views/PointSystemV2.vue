@@ -288,7 +288,7 @@ $max-asset-size: calc($select-asset-item-height * 2);
   &.points-loading {
     background-color: unset;
   }
-  background-image: url('~@/assets/img/points/header.png');
+  background-image: url('@/assets/img/points/header.png');
   background-repeat: no-repeat;
   background-position: top;
   background-color: var(--s-color-base-disabled);
@@ -417,7 +417,7 @@ $max-asset-size: calc($select-asset-item-height * 2);
   &__soratopia,
   &__sora-card {
     min-height: 102px;
-    background-image: url('~@/assets/img/points/soratopia.png');
+    background-image: url('@/assets/img/points/soratopia.png');
     background-repeat: no-repeat;
     background-size: cover;
     text-decoration: none;
@@ -461,7 +461,7 @@ $max-asset-size: calc($select-asset-item-height * 2);
     }
   }
   &__sora-card {
-    background-image: url('~@/assets/img/points/sora-card.png');
+    background-image: url('@/assets/img/points/sora-card.png');
     &-action {
       background-color: white;
       color: #ee2233;
