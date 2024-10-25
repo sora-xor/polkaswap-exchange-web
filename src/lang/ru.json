@@ -694,7 +694,7 @@
         },
         "Rewards": "Награды",
         "ReferralProgram": "Рефералы",
-        "PointSystem": "Очки"
+        "PointSystemWrapper": "Очки"
     },
     "provider": {
         "messages": {

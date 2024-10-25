@@ -694,7 +694,7 @@
         },
         "Rewards": "Wynagrodzenie",
         "ReferralProgram": "Polecenia",
-        "PointSystem": "Punkty"
+        "PointSystemWrapper": "Punkty"
     },
     "provider": {
         "messages": {

@@ -694,7 +694,7 @@
         },
         "Rewards": "Récompenses",
         "ReferralProgram": "Parrainages",
-        "PointSystem": "Points"
+        "PointSystemWrapper": "Points"
     },
     "provider": {
         "messages": {

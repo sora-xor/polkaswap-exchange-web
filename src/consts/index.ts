@@ -122,8 +122,7 @@ export enum PageNames {
   Farming = 'Farming',
   Rewards = 'Rewards',
   ReferralProgram = 'ReferralProgram',
-  PointSystemV2 = `PointSystemV2`,
-  PointSystem = 'PointSystem',
+  PointSystemWrapper = 'PointSystemWrapper',
   RewardsTabs = 'RewardsTabs',
   ReferralBonding = 'ReferralBonding',
   ReferralUnbonding = 'ReferralUnbonding',
@@ -298,8 +297,7 @@ export enum LimitOrderType {
 }
 
 export enum RewardsTabsItems {
-  PointSystemV2 = PageNames.PointSystemV2,
-  PointSystem = PageNames.PointSystem,
+  PointSystem = PageNames.PointSystemWrapper,
   Rewards = PageNames.Rewards,
   ReferralProgram = PageNames.ReferralProgram,
 }
@@ -469,8 +467,7 @@ export const SidebarMenuGroups = [...MainMenu, ...OtherPagesMenu];
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
 export const PoolChildPages = [PageNames.AddLiquidity];
 export const RewardsChildPages = [
-  PageNames.PointSystemV2,
-  PageNames.PointSystem,
+  PageNames.PointSystemWrapper,
   PageNames.Rewards,
   PageNames.ReferralProgram,
   PageNames.ReferralBonding,

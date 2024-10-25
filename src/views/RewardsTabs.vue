@@ -2,9 +2,9 @@
   <div class="container rewards-tabs">
     <s-tabs class="rewards-tabs__tabs" :key="windowWidth" :value="currentTab" type="card" @input="handleChangeTab">
       <s-tab
-        v-for="(rewardsTab, index) in RewardsTabsItemsUpdated"
+        v-for="(rewardsTab, index) in RewardsTabsItems"
         :key="rewardsTab"
-        :label="t(`rewards.${RewardsTabsLabels[index]}`)"
+        :label="t(`rewards.${RewardsTabsItems[index]}`)"
         :name="rewardsTab"
       />
     </s-tabs>
@@ -24,29 +24,15 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { RewardsTabsItems, PageNames } from '@/consts';
+import { RewardsTabsItems } from '@/consts';
 import router from '@/router';
-import { state, getter } from '@/store/decorators';
+import { state } from '@/store/decorators';
 
 @Component
 export default class RewardsTabs extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   readonly RewardsTabsItems = RewardsTabsItems;
 
   @state.settings.windowWidth windowWidth!: number;
-  @getter.settings.pointSystemV2 pointSystemV2!: Nullable<boolean>;
-
-  get RewardsTabsItemsUpdated(): string[] {
-    const tabs = [
-      this.pointSystemV2 ? PageNames.PointSystemV2 : PageNames.PointSystem,
-      PageNames.Rewards,
-      PageNames.ReferralProgram,
-    ];
-    return tabs;
-  }
-
-  get RewardsTabsLabels(): string[] {
-    return this.RewardsTabsItemsUpdated.map((tab) => (tab === PageNames.PointSystemV2 ? PageNames.PointSystem : tab));
-  }
 
   get currentTab(): string {
     return this.$route.name as string;

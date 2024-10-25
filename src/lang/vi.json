@@ -694,7 +694,7 @@
         },
         "Rewards": "Thưởng",
         "ReferralProgram": "Giới thiệu",
-        "PointSystem": "Điểm"
+        "PointSystemWrapper": "Điểm"
     },
     "provider": {
         "messages": {

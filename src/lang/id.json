@@ -694,7 +694,7 @@
         },
         "Rewards": "Hadiah",
         "ReferralProgram": "Rujukan",
-        "PointSystem": "Poin"
+        "PointSystemWrapper": "Poin"
     },
     "provider": {
         "messages": {
