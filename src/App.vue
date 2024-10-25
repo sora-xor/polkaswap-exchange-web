@@ -73,7 +73,7 @@ import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { getMobileCssClasses, updateDocumentTitle } from '@/utils';
+import { getMobileCssClasses } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
@@ -154,7 +154,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
   @mutation.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
-  @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => Promise<void>;
+  @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => void;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
 
   @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
@@ -241,15 +241,21 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
 
-  public clearLocalStorage(): void {
-    clearLocalStorage();
-  }
+  public clearLocalStorage = clearLocalStorage;
 
-  private handleLocalStorageChange() {
+  private handleLocalStorageChange(): void {
     const usagePercentage = calculateStorageUsagePercentage();
     if (usagePercentage >= LOCAL_STORAGE_LIMIT_PERCENTAGE) {
       this.showErrorLocalStorageExceed = true;
     }
+  }
+
+  private subscribeOnLocalStorage(): void {
+    window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
+  }
+
+  private unsubscribeFromLocalStorage(): void {
+    window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
   }
 
   private handleOrientationChange(): void {
@@ -263,13 +269,37 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
+  private subscribeOnScreenOrientation(): void {
+    if (window.innerWidth <= Breakpoint.LargeMobile) {
+      if (screen.orientation) {
+        screen.orientation.addEventListener('change', this.handleOrientationChange);
+      } else {
+        window.addEventListener('resize', this.handleOrientationChange);
+      }
+    }
+  }
+
+  private unsubscribeFromScreenOrientation(): void {
+    if (screen.orientation) {
+      screen.orientation.removeEventListener('change', this.handleOrientationChange);
+    } else {
+      window.removeEventListener('resize', this.handleOrientationChange);
+    }
+  }
+
+  private subscribeOnScreenSize(): void {
+    window.addEventListener('resize', this.setResponsiveClassDebounced);
+  }
+
+  private unsubscribeFromScreenSize(): void {
+    window.removeEventListener('resize', this.setResponsiveClassDebounced);
+  }
+
   async created() {
-    window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
     this.setResponsiveClass();
+    this.setLanguage(getLocale() as Language);
     updateBaseUrl(router);
     AlertsApiService.baseRoute = getFullBaseUrl(router);
-
-    await this.setLanguage(getLocale() as Language);
 
     await this.withLoading(async () => {
       const { data } = await axiosInstance.get('/env.json');
@@ -282,18 +312,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       tmaSdkService.init(data?.TG_BOT_URL);
 
       await this.setApiKeys(data?.API_KEYS);
-      await this.setEthBridgeSettings(data.ETH_BRIDGE);
+      this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
       this.setSubNetworkApps(data.SUB_NETWORKS);
-
-      this.subscribeOnExchangeRatesApi();
-
-      if (data.PARACHAIN_IDS) {
-        api.bridgeProxy.sub.parachainIds = data.PARACHAIN_IDS;
-      }
-
       this.setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBQUERY, endpoint: data.SUBQUERY_ENDPOINT });
       this.setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBSQUID, endpoint: data.SUBSQUID_ENDPOINT });
 
@@ -307,21 +330,17 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // connection to node
       await this.runAppConnectionToNode();
     });
-    updateDocumentTitle(); // For the first load
+
+    this.subscribeOnExchangeRatesApi();
     this.showDisclaimer();
     this.fetchAdsArray();
     this.onIsThemePreferenceChange(this.isThemePreference);
   }
 
   mounted(): void {
-    window.addEventListener('resize', this.setResponsiveClassDebounced);
-    if (window.innerWidth <= Breakpoint.LargeMobile) {
-      if (screen.orientation) {
-        screen.orientation.addEventListener('change', this.handleOrientationChange);
-      } else {
-        window.addEventListener('resize', this.handleOrientationChange);
-      }
-    }
+    this.subscribeOnLocalStorage();
+    this.subscribeOnScreenSize();
+    this.subscribeOnScreenOrientation();
   }
 
   private get mobileCssClasses(): string[] | undefined {
@@ -413,14 +432,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
-    window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
-    window.removeEventListener('resize', this.setResponsiveClassDebounced);
+    this.unsubscribeFromLocalStorage();
+    this.unsubscribeFromScreenSize();
+    this.unsubscribeFromScreenOrientation();
     removeThemeListeners(this.isTMA);
-    if (screen.orientation) {
-      screen.orientation.removeEventListener('change', this.handleOrientationChange);
-    } else {
-      window.removeEventListener('resize', this.handleOrientationChange);
-    }
     tmaSdkService.destroy();
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();

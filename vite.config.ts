@@ -1,8 +1,8 @@
 import { fileURLToPath, URL } from 'node:url';
 
+import vue from '@vitejs/plugin-vue2';
 import { defineConfig } from 'vite';
 import dynamicImport from 'vite-plugin-dynamic-import';
-import { createVuePlugin as vue } from 'vite-plugin-vue2';
 import svgLoader from 'vite-svg-loader';
 
 // https://vitejs.dev/config/
