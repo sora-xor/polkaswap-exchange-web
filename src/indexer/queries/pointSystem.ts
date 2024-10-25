@@ -261,6 +261,21 @@ type AccountMetaEntity = {
   deposit: AccountMetaDeposit;
 };
 
+type AccountPointSystemEntity = {
+  id: string;
+  accountId: string;
+  version: number;
+  startedAtBlock: number;
+  // points
+  xorFees: AccountMetaAssetVolume;
+  xorBurned: AccountMetaAssetVolume;
+  xorStakingValRewards: AccountMetaAssetVolume;
+  orderBook: AccountMetaEventCounter;
+  vault: AccountMetaEventCounter;
+  governance: AccountMetaGovernance;
+  deposit: AccountMetaDeposit;
+};
+
 const SubqueryAccountMetaQuery = gql<QueryData<AccountMetaEntity>>`
   query AccountMetaQuery($id: String = "") {
     data: accountMeta(id: $id) {
@@ -273,6 +288,32 @@ const SubqueryAccountMetaQuery = gql<QueryData<AccountMetaEntity>>`
       vault
       governance
       deposit
+    }
+  }
+`;
+
+const SubqueryAccountPointSystemsQuery = gql<ConnectionQueryResponse<AccountPointSystemEntity>>`
+  query AccountPointSystemsQuery($id: String = "", $after: Cursor) {
+    data: accountPointSystems(orderBy: ID_ASC, after: $after, filter: { accountId: { equalTo: $id } }) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          accountId
+          version
+          startedAtBlock
+          xorFees
+          xorBurned
+          xorStakingValRewards
+          orderBook
+          vault
+          governance
+          deposit
+        }
+      }
     }
   }
 `;
@@ -292,24 +333,10 @@ const parseCounter = (data: AccountMetaEventCounter) => {
   };
 };
 
-const parseAccountMeta = (item: QueryData<AccountMetaEntity>) => {
-  const {
-    createdAtTimestamp,
-    createdAtBlock,
-    xorFees,
-    xorBurned,
-    xorStakingValRewards,
-    orderBook,
-    vault,
-    governance,
-    deposit,
-  } = item.data;
+const parseAccountPoints = (item: AccountMetaEntity | AccountPointSystemEntity) => {
+  const { xorFees, xorBurned, xorStakingValRewards, orderBook, vault, governance, deposit } = item;
 
   return {
-    createdAt: {
-      block: Number(createdAtBlock),
-      timestamp: Number(createdAtTimestamp) * 1000,
-    },
     fees: parseVolume(xorFees),
     burned: parseVolume(xorBurned),
     staking: parseVolume(xorStakingValRewards),
@@ -326,6 +353,35 @@ const parseAccountMeta = (item: QueryData<AccountMetaEntity>) => {
   };
 };
 
+const parseAccountMeta = (item: AccountMetaEntity) => {
+  const { createdAtTimestamp, createdAtBlock } = item;
+  const startedAtBlock = Number(createdAtBlock);
+
+  return {
+    createdAt: {
+      block: startedAtBlock,
+      timestamp: Number(createdAtTimestamp) * 1000,
+    },
+    points: [
+      {
+        version: 1,
+        startedAtBlock,
+        ...parseAccountPoints(item),
+      },
+    ],
+  };
+};
+
+const parseAccountPointSystem = (item: AccountPointSystemEntity) => {
+  const { version, startedAtBlock } = item;
+
+  return {
+    version,
+    startedAtBlock,
+    ...parseAccountPoints(item),
+  };
+};
+
 export async function fetchAccountMeta(accountAddress: string) {
   const indexer = getCurrentIndexer();
   const variables = { id: accountAddress };
@@ -336,8 +392,34 @@ export async function fetchAccountMeta(accountAddress: string) {
       const response = await subqueryIndexer.services.explorer.request(SubqueryAccountMetaQuery, variables);
       if (!response) return null;
 
-      return parseAccountMeta(response);
+      return parseAccountMeta(response.data);
     }
+
+    return null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function fetchAccountPointSystems(accountAddress: string) {
+  const indexer = getCurrentIndexer();
+  const variables = { id: accountAddress };
+
+  try {
+    if (indexer.type === IndexerType.SUBQUERY) {
+      const subqueryIndexer = indexer as SubqueryIndexer;
+      const response = await subqueryIndexer.services.explorer.fetchAllEntities(
+        SubqueryAccountPointSystemsQuery,
+        variables,
+        parseAccountPointSystem
+      );
+
+      if (!response) return null;
+
+      return response;
+    }
+
     return null;
   } catch (error) {
     console.error(error);
