@@ -694,7 +694,7 @@
         },
         "Rewards": "奖励",
         "ReferralProgram": "推荐",
-        "PointSystem": "积分"
+        "PointSystemWrapper": "积分"
     },
     "provider": {
         "messages": {
