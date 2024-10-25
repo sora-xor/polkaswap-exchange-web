@@ -1327,7 +1327,7 @@
         "notification": {
             "empty": "No available claims for this account"
         },
-        "PointSystem": "Points",
+        "PointSystemWrapper": "Points",
         "ReferralProgram": "Referrals",
         "Rewards": "Rewards",
         "signing": {
