@@ -6,7 +6,11 @@ import { tmaSdkService } from './telegram';
 import { updatePipTheme } from '.';
 
 let prefersDarkScheme: MediaQueryList | null = null;
-let handleThemeChange: ((e: MediaQueryListEvent) => void) | null = null;
+
+const handleThemeChange = (e: MediaQueryListEvent): void => {
+  console.info('[SYSTEM THEME] we are in handleThemeChange');
+  applyTheme(e.matches);
+};
 
 export const applyTheme = (isDark: boolean): void => {
   console.info('[SYSTEM THEME] we are in applyTheme, theme to switch, isDark', isDark);
@@ -17,14 +21,12 @@ export const applyTheme = (isDark: boolean): void => {
 
 export const detectSystemTheme = (isTMA: boolean): void => {
   console.info('[SYSTEM THEME] we are in detectSystemTheme');
-  prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-  console.info('[SYSTEM THEME] here is prefersDarkScheme');
-  handleThemeChange = (e: MediaQueryListEvent) => {
-    console.info('[SYSTEM THEME] we are in handleThemeChange');
-    applyTheme(e.matches);
-  };
 
-  prefersDarkScheme.addEventListener('change', handleThemeChange);
+  if (!prefersDarkScheme) {
+    prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    console.info('[SYSTEM THEME] here is prefersDarkScheme');
+    prefersDarkScheme.addEventListener('change', handleThemeChange);
+  }
 
   const systemPrefersDark = prefersDarkScheme.matches;
   console.info('[SYSTEM THEME] initial systemPrefersDark', systemPrefersDark);
@@ -40,10 +42,9 @@ export const detectSystemTheme = (isTMA: boolean): void => {
 };
 
 export const removeThemeListeners = (isTMA: boolean): void => {
-  if (prefersDarkScheme && handleThemeChange) {
+  if (prefersDarkScheme) {
     prefersDarkScheme.removeEventListener('change', handleThemeChange);
     prefersDarkScheme = null;
-    handleThemeChange = null;
   }
 
   if (isTMA) {
