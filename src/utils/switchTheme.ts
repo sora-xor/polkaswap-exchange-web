@@ -6,7 +6,10 @@ import { tmaSdkService } from './telegram';
 import { updatePipTheme } from '.';
 
 let prefersDarkScheme: MediaQueryList | null = null;
-let handleThemeChange: ((e: MediaQueryListEvent) => void) | null = null;
+
+const handleThemeChange = (e: MediaQueryListEvent): void => {
+  applyTheme(e.matches);
+};
 
 export const applyTheme = (isDark: boolean): void => {
   setTheme(isDark ? Theme.DARK : Theme.LIGHT);
@@ -15,12 +18,10 @@ export const applyTheme = (isDark: boolean): void => {
 };
 
 export const detectSystemTheme = (isTMA: boolean): void => {
-  prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-  handleThemeChange = (e: MediaQueryListEvent) => {
-    applyTheme(e.matches);
-  };
-
-  prefersDarkScheme.addEventListener('change', handleThemeChange);
+  if (!prefersDarkScheme) {
+    prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    prefersDarkScheme.addEventListener('change', handleThemeChange);
+  }
 
   const systemPrefersDark = prefersDarkScheme.matches;
   applyTheme(systemPrefersDark);
@@ -35,10 +36,9 @@ export const detectSystemTheme = (isTMA: boolean): void => {
 };
 
 export const removeThemeListeners = (isTMA: boolean): void => {
-  if (prefersDarkScheme && handleThemeChange) {
+  if (prefersDarkScheme) {
     prefersDarkScheme.removeEventListener('change', handleThemeChange);
     prefersDarkScheme = null;
-    handleThemeChange = null;
   }
 
   if (isTMA) {
