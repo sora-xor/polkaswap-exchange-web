@@ -211,6 +211,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @Watch('isThemePreference', { immediate: true })
   private onIsThemePreferenceChange(newVal: boolean) {
+    console.info('[SYSTEM THEME] we are onIsThemePreferenceChange, isThemePreference', newVal);
     if (newVal) {
       detectSystemTheme(this.isTMA);
     } else {
@@ -331,6 +332,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     this.subscribeOnExchangeRatesApi();
     this.showDisclaimer();
     this.fetchAdsArray();
+    console.info(
+      '[SYSTEM THEME] we are in app,gonna onIsThemePreferenceChange and this.isThemePreference',
+      this.isThemePreference
+    );
     this.onIsThemePreferenceChange(this.isThemePreference);
   }
 

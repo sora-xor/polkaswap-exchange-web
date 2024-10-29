@@ -9,20 +9,25 @@ let prefersDarkScheme: MediaQueryList | null = null;
 let handleThemeChange: ((e: MediaQueryListEvent) => void) | null = null;
 
 export const applyTheme = (isDark: boolean): void => {
+  console.info('[SYSTEM THEME] we are in applyTheme, theme to switch, isDark', isDark);
   setTheme(isDark ? Theme.DARK : Theme.LIGHT);
   updatePipTheme();
   tmaSdkService.updateTheme();
 };
 
 export const detectSystemTheme = (isTMA: boolean): void => {
+  console.info('[SYSTEM THEME] we are in detectSystemTheme');
   prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+  console.info('[SYSTEM THEME] here is prefersDarkScheme');
   handleThemeChange = (e: MediaQueryListEvent) => {
+    console.info('[SYSTEM THEME] we are in handleThemeChange');
     applyTheme(e.matches);
   };
 
   prefersDarkScheme.addEventListener('change', handleThemeChange);
 
   const systemPrefersDark = prefersDarkScheme.matches;
+  console.info('[SYSTEM THEME] initial systemPrefersDark', systemPrefersDark);
   applyTheme(systemPrefersDark);
 
   if (isTMA) {
