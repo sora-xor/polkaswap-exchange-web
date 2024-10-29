@@ -168,8 +168,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   private updateSelectedTheme(newTheme: Theme) {
-    console.info('[SYSTEM THEME] we are in updateSelectedTheme');
-    console.info('[SYSTEM THEME] the isThemePreference', this.isThemePreference);
     if (this.isThemePreference) {
       this.selectedTheme = HeaderMenuType.Theme;
     } else {
@@ -324,9 +322,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         this.toggleHideBalance();
         break;
       case HeaderMenuType.Theme:
-        console.info('[SYSTEM THEME] we are in handleSelectHeaderMenu, HeaderMenuType.Theme');
-        console.info('[SYSTEM THEME] this.selectedTheme is', this.selectedTheme);
-        console.info('[SYSTEM THEME] value is', value);
         if (this.selectedTheme !== value) {
           this.selectedTheme = value;
           this.setIsThemePreference(true);
@@ -334,9 +329,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         break;
       case HeaderMenuType.LightMode:
       case HeaderMenuType.NoirMode:
-        console.info('[SYSTEM THEME] we are in handleSelectHeaderMenu, HeaderMenuType.LightMode or Noir Mode');
-        console.info('[SYSTEM THEME] this.selectedTheme is', this.selectedTheme);
-        console.info('[SYSTEM THEME] value is', value);
         if (this.selectedTheme !== value) {
           this.selectedTheme = value;
           this.setIsThemePreference(false);
