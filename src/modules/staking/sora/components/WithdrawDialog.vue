@@ -10,7 +10,7 @@
           :fiat-value="withdrawableFundsFiat"
         />
         <template v-if="stakingAsset">
-          <token-logo class="reward-logo" :tokenSymbol="stakingAsset.symbol" />
+          <token-logo class="reward-logo" :token-symbol="stakingAsset.symbol" />
           <span class="reward-symbol">
             {{ stakingAsset.symbol }}
           </span>

@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import merge from 'lodash/fp/merge';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -39,7 +39,7 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
           const date = dayjs(+value);
           const isNewDay = date.hour() === 0 && date.minute() === 0;
           const isNewMonth = date.date() === 1 && isNewDay;
-          const timeFormat = isNewMonth ? 'MMM' : isNewDay ? 'D' : 'HH:mm';
+          const timeFormat = isNewMonth ? 'MMM YY' : isNewDay ? 'D MMM' : 'HH:mm';
           const formatted = this.formatDate(+value, timeFormat);
 
           if (isNewMonth) {

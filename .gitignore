@@ -1,6 +1,9 @@
 .DS_Store
 node_modules
+# Vite-builder output
 /dist
+# Electron-builder output
+/dist-electron
 
 /tests/e2e/videos/
 /tests/e2e/screenshots/
@@ -24,9 +27,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-
-# Electron-builder output
-/dist_electron
 
 # Webpack config inspect
 .webpack-config.js

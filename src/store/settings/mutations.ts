@@ -7,7 +7,6 @@ import { Breakpoint, BreakpointClass } from '@/consts/layout';
 import storage, { settingsStorage } from '@/utils/storage';
 
 import type { Ad, FeatureFlags, SettingsState } from './types';
-import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<SettingsState>()({
   setSlippageTolerance(state, value: string): void {
@@ -81,18 +80,8 @@ const mutations = defineMutations<SettingsState>()({
       api.swap.isALT = true;
     }
   },
-  setBlockNumber(state, value: number): void {
-    state.blockNumber = value || 0;
-  },
   setMenuCollapsed(state, collapsed: boolean): void {
     state.menuCollapsed = collapsed;
-  },
-  setBlockNumberUpdates(state, subscription: Subscription): void {
-    state.blockNumberUpdates = subscription;
-  },
-  resetBlockNumberSubscription(state): void {
-    state.blockNumberUpdates?.unsubscribe();
-    state.blockNumberUpdates = null;
   },
   setInternetConnectionEnabled(state): void {
     state.internetConnection = true;
@@ -154,6 +143,10 @@ const mutations = defineMutations<SettingsState>()({
   },
   hideOrientationWarning(state): void {
     state.isOrientationWarningVisible = false;
+  },
+  setIsThemePreference(state, value: boolean): void {
+    state.isThemePreference = value;
+    settingsStorage.set('isThemePreference', value);
   },
 });
 

@@ -381,6 +381,14 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     height: 100%;
   }
   &-menu {
+    flex-shrink: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $app-sidebar-layer;
+    visibility: hidden;
+
     .collapse-button {
       opacity: 0;
 
@@ -400,14 +408,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
         }
       }
     }
-
-    flex-shrink: 0;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: $app-sidebar-layer;
-    visibility: hidden;
 
     @include large-mobile(true) {
       position: fixed;

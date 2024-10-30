@@ -577,6 +577,7 @@
         "showBalances": "Show Balances",
         "showDisclaimer": "Show Disclaimer",
         "switchTheme": "{theme} mode",
+        "systemPreferencesTheme": "System preferences",
         "titleBalance": "Balances",
         "titleCurrency": "Fiat currency",
         "titleMisc": "Misc",
@@ -876,7 +877,8 @@
             "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
             "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "SwapTransferBatch": "Failed to {action} {amount} {symbol}",
-            "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}"
+            "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "Failed to {action} {amount} {symbol} {direction} {address}"
         },
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
@@ -920,7 +922,8 @@
             "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
             "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "SwapTransferBatch": "{action} {amount} {symbol}",
-            "Transfer": "{action} {amount} {symbol} {direction} {address}"
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "Mint": "Mint",
         "OrderBookCancelLimitOrder": "Cancel Order",
@@ -946,7 +949,8 @@
         "Swap": "Swap",
         "SwapAndSend": "Swap and Send",
         "SwapTransferBatch": "{ADAR} transfer",
-        "Transfer": "Transfer"
+        "Transfer": "Transfer",
+        "VestedTransfer": "Transfer"
     },
     "orderBook": {
         "amount": "amount",
@@ -1097,15 +1101,99 @@
     "pairIsNotCreated": "Token pair isn't created",
     "points": {
         "accountsText": "{amount} accounts",
+        "airdrop": "Complete SORA Ecosystem-related tasks in order to qualify for a $3m AIRDROP",
         "bridgeVolume": "Bridge volume",
+        "complete": "Completed | Complete",
+        "currently": "Currently",
+        "dated": "Dated",
+        "depositVolumeBridges": {
+            "descriptionTask": "Deposit & withdraw via Bridges, bitget, 1x, gateio",
+            "titleProgress": "Deposit volume",
+            "titleTask": "Deposit & Withdraw"
+        },
         "feesSpent": "Fees spent",
+        "firstSoraNetworkTransaction": "Your first SORA Network Transaction",
+        "firstTxAccount": {
+            "descriptionTask": "Complete your first XOR transaction ever and receive the reward",
+            "titleProgress": "First Trx",
+            "titleTask": "Do your first transaction"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Lock XOR by participating in governance voting events",
+            "titleProgress": "Governance",
+            "titleTask": "Lock XOR in Governance Voting"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Repay KUSD debt during liquidations or closing positions",
+            "titleProgress": "Kensetsu volume",
+            "titleTask": "Repay KUSD Debt"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "Hold your current KUSD holdings",
+            "titleProgress": "KUSD Hold",
+            "titleTask": "Hold Kusd"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "Provide liquidity across pools",
+            "titleProgress": "Liquidity provision",
+            "titleTask": "Provide Liquidity"
+        },
         "loginText": "Connect your account to see your points",
+        "lvl": "Lvl",
+        "maxLvl": "You reached max lvl",
+        "nativeXorStaking": {
+            "descriptionTask": "Stake XOR and earn VAL rewards",
+            "titleProgress": "XOR Staking",
+            "titleTask": "Stake XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "Spend XOR in network fees across multiple on-chain transactions",
+            "titleProgress": "Network fees",
+            "titleTask": "Spend XOR on Network Fees"
+        },
+        "nextLvl": "Next lvl",
         "openTelegram": "Open {Telegram}",
-        "title": "Your Points Progress",
+        "orderbookVolume": {
+            "descriptionTask": "Create limit orders in the orderbook",
+            "titleProgress": "Orderbook",
+            "titleTask": "Create Limit Orders"
+        },
+        "progress": "Progress",
+        "referralRewards": {
+            "descriptionTask": "Refer accounts through the referral system",
+            "titleProgress": "Referral Sytem",
+            "titleTask": "Refer accounts"
+        },
+        "relatedTasks": "Complete {title}-related tasks in order to level up your skill",
+        "rewardNextLvl": "Next level reward",
+        "soraCard": "Apply now",
+        "title": "Your Points",
         "toEarnPoints": "To earn points",
+        "tokenHold": {
+            "descriptionTask": "Hold your current {token} holdings",
+            "titleProgress": "{token} holdings",
+            "titleTask": "Hold {token}"
+        },
+        "VXORHoldings": {
+            "descriptionTask": "Hold your current VXOR holdings",
+            "titleProgress": "VXOR holdings",
+            "titleTask": "Hold VXOR"
+        },
         "xorBurned": "{XOR} burned",
+        "XORBurned": {
+            "descriptionTask": "Burn XOR and convert to $ value",
+            "titleProgress": "XOR Burned",
+            "titleTask": "Burn XOR"
+        },
+        "XORHoldings": {
+            "descriptionTask": "Hold your current XOR holdings",
+            "titleProgress": "XOR Hold",
+            "titleTask": "Hold XOR"
+        },
+        "yourLevel": "Your level",
         "yourReferrals": "Your referrals",
-        "yourRewards": "Your rewards"
+        "yourRewards": "Your rewards",
+        "yourTasks": "Your Tasks"
     },
     "polkadotjs": {
         "connectionError": "An error occured while connecting the wallet. You can try to connect the wallet via {extension} again",
@@ -1239,7 +1327,7 @@
         "notification": {
             "empty": "No available claims for this account"
         },
-        "PointSystem": "Points",
+        "PointSystemWrapper": "Points",
         "ReferralProgram": "Referrals",
         "Rewards": "Rewards",
         "signing": {
@@ -1538,12 +1626,16 @@
         "badAddress": "Incorrect address",
         "balance": "Balance",
         "confirmTitle": "Confirm transaction",
+        "enableVesting": "Enable token vesting",
         "enterAddress": "Enter address",
         "enterAmount": "Enter amount",
+        "enterVestingPercentage": "Enter vesting percentage",
         "errorAddress": "Invalid address. Please check it and try again.",
         "max": "MAX",
         "title": "Send",
-        "tooltip": "Send tokens between {Sora} network accounts"
+        "tooltip": "Send tokens between {Sora} network accounts",
+        "unlockFrequency": "Unlock frequency",
+        "vestingPercentage": "Vesting percentage"
     },
     "warningText": "Warning"
 }

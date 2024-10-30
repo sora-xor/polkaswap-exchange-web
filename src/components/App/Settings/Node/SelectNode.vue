@@ -89,13 +89,6 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   reconnect(node: Node) {
     this.$emit('input', node.address);
   }
-
-  async mounted(): Promise<void> {
-    // Re-center dialog programmatically (need to simplify it). Components lazy loading might break it
-    await this.$nextTick();
-    const sDialog: any = this.$parent?.$parent;
-    sDialog?.computeTop?.();
-  }
 }
 </script>
 
