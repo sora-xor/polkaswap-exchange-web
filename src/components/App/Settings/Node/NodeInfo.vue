@@ -137,10 +137,6 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   }
 
   async mounted(): Promise<void> {
-    // Re-center dialog programmatically (need to simplify it). Components lazy loading might break it
-    await this.$nextTick();
-    const sDialog: any = this.$parent?.$parent;
-    sDialog?.computeTop?.();
     // Focus first element if inputs are editable
     if (!this.inputDisabled) {
       this.nodeNameInput?.focus?.();

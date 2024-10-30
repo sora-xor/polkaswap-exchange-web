@@ -39,7 +39,7 @@ $logo-full-height: 46px;
   }
 
   &.responsive {
-    background-image: url('~@/assets/img/pswap.svg');
+    background-image: url('@/assets/img/pswap.svg');
     width: var(--s-size-medium);
     height: var(--s-size-medium);
 

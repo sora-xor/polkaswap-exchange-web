@@ -1,5 +1,5 @@
 import { vuex } from '@soramitsu/soraneo-wallet-web';
-import { createDirectStore, StoreOrModuleOptions } from 'direct-vuex';
+import { createDirectStore } from 'direct-vuex';
 import Vue from 'vue';
 import Vuex from 'vuex';
 
@@ -22,6 +22,7 @@ import swap from './swap';
 import vault from './vault';
 import web3 from './web3';
 
+import type { StoreOrModuleOptions } from 'direct-vuex';
 import type { DirectActions, DirectGetters, DirectMutations, DirectState } from 'direct-vuex/types/direct-types';
 
 Vue.use(Vuex);

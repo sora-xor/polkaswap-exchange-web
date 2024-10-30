@@ -14,6 +14,7 @@ function initialState(): SettingsState {
     settingsStorage.get('isRotatePhoneHideBalanceFeatureEnabled') === 'true';
   const isAccessAccelerometrEventDeclined = settingsStorage.get('isAccessAccelerometrEventDeclined') === 'true';
   const isAccessRotationListener = settingsStorage.get('isAccessRotationListener') === 'true';
+  const isThemePreference = settingsStorage.get('isThemePreference') === 'true';
   const isBrowserNotificationApiAvailable = 'Notification' in window;
   const appConnection = new NodesConnection(settingsStorage, connection);
 
@@ -40,8 +41,6 @@ function initialState(): SettingsState {
     alertSettingsVisibility: false,
     browserNotifPopupVisibility: false,
     browserNotifPopupBlockedVisibility: false,
-    blockNumber: 0,
-    blockNumberUpdates: undefined,
     internetConnection: undefined,
     internetConnectionSpeed: undefined,
     screenBreakpointClass: BreakpointClass.LargeDesktop,
@@ -53,6 +52,7 @@ function initialState(): SettingsState {
     isOrientationWarningVisible: false,
     isAccessAccelerometrEventDeclined,
     isAccessRotationListener,
+    isThemePreference,
   };
 }
 

@@ -1,10 +1,10 @@
 <template>
   <div class="container rewards-tabs">
-    <s-tabs :key="windowWidth" :value="currentTab" type="card" @input="handleChangeTab">
+    <s-tabs class="rewards-tabs__tabs" :key="windowWidth" :value="currentTab" type="card" @input="handleChangeTab">
       <s-tab
-        v-for="rewardsTab in RewardsTabsItems"
+        v-for="(rewardsTab, index) in RewardsTabsItems"
         :key="rewardsTab"
-        :label="t(`rewards.${rewardsTab}`)"
+        :label="t(`rewards.${RewardsTabsItems[index]}`)"
         :name="rewardsTab"
       />
     </s-tabs>
@@ -47,18 +47,15 @@ export default class RewardsTabs extends Mixins(mixins.LoadingMixin, Translation
 <style lang="scss">
 $rewards-tabs-height: 72px;
 
-.rewards-tabs {
-  &.container {
-    padding: 0 0 $inner-spacing-big;
-    .s-tabs {
-      background-color: inherit;
-      &,
-      .el-tabs__header,
-      .el-tabs__nav-wrap,
-      .el-tabs__active-bar {
-        border-top-right-radius: inherit;
-        border-top-left-radius: inherit;
-      }
+.rewards-tabs.container {
+  .rewards-tabs__tabs {
+    background-color: inherit;
+    &,
+    .el-tabs__header,
+    .el-tabs__nav-wrap,
+    .el-tabs__active-bar {
+      border-top-right-radius: inherit;
+      border-top-left-radius: inherit;
     }
     .el-tabs__header,
     .el-tabs__nav {
@@ -85,9 +82,9 @@ $rewards-tabs-height: 72px;
           overflow-x: hidden;
           &,
           &.is-active {
-            @include page-header-title(true);
             border-top-right-radius: 0;
             border-top-left-radius: inherit;
+            @include page-header-title(true);
           }
           &:last-child {
             border-top-right-radius: inherit;
@@ -96,20 +93,19 @@ $rewards-tabs-height: 72px;
         }
       }
     }
-    .s-tabs + * {
+    & + * {
       padding-top: $inner-spacing-big;
-      padding-right: $inner-spacing-big;
-      padding-left: $inner-spacing-big;
+      padding-bottom: 0;
+    }
+  }
+
+  @include mobile(true) {
+    #tab-Rewards {
+      font-size: var(--s-icon-font-size-medium);
     }
 
-    @include mobile(true) {
-      #tab-Rewards {
-        font-size: var(--s-icon-font-size-medium);
-      }
-
-      #tab-ReferralProgram {
-        font-size: var(--s-icon-font-size-medium);
-      }
+    #tab-ReferralProgram {
+      font-size: var(--s-icon-font-size-medium);
     }
   }
 }

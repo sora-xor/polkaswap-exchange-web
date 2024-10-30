@@ -448,8 +448,8 @@ export default class ReferralProgram extends Mixins(
 
 <style lang="scss">
 .referral-program {
-  @include collapse-items(false, true);
   margin-top: $inner-spacing-mini;
+  @include collapse-items(false, true);
   &.el-loading-parent--relative {
     .el-collapse-item,
     .el-collapse-item__header {
@@ -459,7 +459,7 @@ export default class ReferralProgram extends Mixins(
   .el-loading-mask {
     margin-right: auto;
     margin-left: auto;
-    width: calc(100% - #{$inner-spacing-big} * 2);
+    width: 100%;
   }
   .invited-users-container {
     .el-collapse-item__content {
@@ -525,12 +525,12 @@ export default class ReferralProgram extends Mixins(
 .invited-users,
 .referrer {
   &-collapse-title {
-    &:not(:first-child) {
-      padding-left: $inner-spacing-medium;
-    }
     font-size: var(--s-font-size-large);
     line-height: var(--s-line-height-reset);
     font-weight: 700;
+    &:not(:first-child) {
+      padding-left: $inner-spacing-medium;
+    }
   }
 }
 .bonded,
@@ -540,7 +540,7 @@ export default class ReferralProgram extends Mixins(
     padding-left: $inner-spacing-medium;
   }
   &-icon {
-    background: var(--s-color-base-content-tertiary) url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
+    background: var(--s-color-base-content-tertiary) url('@/assets/img/invited-users.svg') 50% 50% no-repeat;
     border-radius: 50%;
     width: var(--s-size-small);
     height: var(--s-size-small);

@@ -69,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} Pozice uzavřena",
             "DepositCollateral": "Vloženo {amount} {symbol}",
             "RepayVaultDebt": "Splatit {amount} {symbol}",
-            "BorrowVaultDebt": "Půjčeno {amount} {symbol}"
+            "BorrowVaultDebt": "Půjčeno {amount} {symbol}",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
+            "BindRegulatedAsset": "Svázat aktivum {symbol2} na SBT",
+            "IssueSoulBoundToken": "Vydání Soulbound Token {symbol}",
+            "RegisterAndRegulateAsset": "Registrovat a regulovat {symbol} aktivum",
+            "RegulateAsset": "Regulovat aktivum {symbol}",
+            "SetAccessExpiration": "SB token {symbol} Aktualizováno vypršení platnosti na {endTime}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} se nezdařilo.",
@@ -111,7 +118,14 @@
             "CloseVault": "Nepodařilo se uzavřít pozici {symbol}\/{symbol2}",
             "DepositCollateral": "Nepodařilo se vložit {amount} {symbol}",
             "RepayVaultDebt": "Nepodařilo se splatit {amount} {symbol}",
-            "BorrowVaultDebt": "Nepodařilo se půjčit {amount} {symbol}"
+            "BorrowVaultDebt": "Nepodařilo se půjčit {amount} {symbol}",
+            "VestedTransfer": "Nepodařilo se {action} {amount} {symbol} {direction} {address}",
+            "BindRegulatedAsset": "Nepodařilo se svázat aktivum {symbol} s SBT {symbol2}",
+            "IssueSoulBoundToken": "Nepodařilo se vydat Soulbound token {symbol}",
+            "RegisterAndRegulateAsset": "Nepodařilo se zaregistrovat a regulovat {symbol}",
+            "RegulateAsset": "Nepodařilo se regulovat aktivum {symbol}",
+            "SetAccessExpiration": "Aktualizace vypršení platnosti na {to} pro {symbol} se nezdařila",
+            "XorlessTransfer": "Odeslání {amount} {symbol} na {address} se nezdařilo"
         },
         "ReferralReserveXor": "Vázat XOR",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
@@ -145,7 +159,14 @@
         "CloseVault": "Uzavřít pozici",
         "DepositCollateral": "Vložit zástavu",
         "RepayVaultDebt": "Splnit dluh",
-        "BorrowVaultDebt": "Půjčit si dluh"
+        "BorrowVaultDebt": "Půjčit si dluh",
+        "VestedTransfer": "Převod",
+        "BindRegulatedAsset": "Svázat regulované aktivum",
+        "IssueSoulBoundToken": "Vydání SBT",
+        "RegisterAndRegulateAsset": "Registrovat aktivum",
+        "RegulateAsset": "Regulovat aktiva",
+        "SetAccessExpiration": "Nastavte SBT expiraci",
+        "XorlessTransfer": "Převod"
     },
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření {PolkadotJs}. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
@@ -188,7 +209,11 @@
         "errorAddress": "Neplatná adresa. Zkontrolujte ji a zkuste to znovu.",
         "tooltip": "Poslat tokeny mezi síťovými účty {Sora}",
         "addressWarning": "Tokeny budou zaslány na níže uvedenou {Sora} adresu. Ujistěte se, že příjemce má přístup k {Sora} chainu, aby mohl tokeny používat:",
-        "addressError": "Tokeny nelze odesílat na stejný účet, ke kterému jste právě připojeni."
+        "addressError": "Tokeny nelze odesílat na stejný účet, ke kterému jste právě připojeni.",
+        "enableVesting": "Povolit vesting tokenů",
+        "enterVestingPercentage": "Zadejte procento vestingu",
+        "vestingPercentage": "Procento vestingu",
+        "unlockFrequency": "Frekvence odemknutí"
     },
     "account": {
         "copy": "Zkopírovat adresu",
@@ -669,7 +694,7 @@
         },
         "Rewards": "Odměny",
         "ReferralProgram": "Doporučení",
-        "PointSystem": "Body"
+        "PointSystemWrapper": "Body"
     },
     "provider": {
         "messages": {
@@ -750,7 +775,8 @@
         "titleBalance": "Zůstatky",
         "titleTheme": "Barevné téma",
         "titleCurrency": "Fiat měna",
-        "titleMisc": "Ostatní"
+        "titleMisc": "Ostatní",
+        "systemPreferencesTheme": "Systémové předvolby"
     },
     "sentText": "Odesláno",
     "learnMoreText": "Zjistit více",
@@ -1532,7 +1558,91 @@
         "accountsText": "{amount} účtů",
         "yourRewards": "Vaše odměny",
         "openTelegram": "Otevřít {Telegram}",
-        "toEarnPoints": "Pro získání bodů"
+        "toEarnPoints": "Pro získání bodů",
+        "airdrop": "Splňte úkoly související s ekosystémem SORA, abyste se kvalifikovali na airdrop v hodnotě 3 milionů dolarů",
+        "complete": "Dokončeno | Dokončit",
+        "currently": "V současné době",
+        "dated": "Datováno",
+        "depositVolumeBridges": {
+            "descriptionTask": "Vklad a výběr přes Mosty, bitget, 1x, gateio",
+            "titleProgress": "Objem vkladu",
+            "titleTask": "Vklad a výběr"
+        },
+        "firstSoraNetworkTransaction": "Vaše první transakce v síti SORA",
+        "firstTxAccount": {
+            "descriptionTask": "Dokončete svou první XOR transakci a získejte odměnu",
+            "titleProgress": "První transakce",
+            "titleTask": "Proveďte svou první transakci"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Uzamkněte XOR účastí na hlasovacích událostech správy",
+            "titleProgress": "Správa",
+            "titleTask": "Uzamkněte XOR při hlasování o správě"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Splaťte dluh KUSD během likvidací nebo uzavírání pozic",
+            "titleProgress": "Objem Kensetsu",
+            "titleTask": "Splaťte KUSD dluh"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "Držte své aktuální KUSD držby",
+            "titleProgress": "KUSD Držení",
+            "titleTask": "Držet KUSD"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "Poskytněte likviditu napříč pooly",
+            "titleProgress": "Poskytování likvidity",
+            "titleTask": "Poskytněte likviditu"
+        },
+        "lvl": "Lvl",
+        "maxLvl": "Dosáhli jste maximální úrovně",
+        "nativeXorStaking": {
+            "descriptionTask": "Stakujte XOR a získejte odměny VAL",
+            "titleProgress": "Stakování XOR",
+            "titleTask": "Stakujte XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "Utraťte XOR za poplatky v síti při více on-chain transakcích",
+            "titleProgress": "Poplatky v síti",
+            "titleTask": "Utraťte XOR za poplatky v síti"
+        },
+        "nextLvl": "Další lvl",
+        "orderbookVolume": {
+            "descriptionTask": "Vytvořte limitní příkazy v knize objednávek",
+            "titleProgress": "Objednávka",
+            "titleTask": "Vytvořte limitní příkazy"
+        },
+        "progress": "Pokrok",
+        "referralRewards": {
+            "descriptionTask": "Doporučte účty prostřednictvím doporučovacího systému",
+            "titleProgress": "Doporučovací systém",
+            "titleTask": "Doporučte účty"
+        },
+        "relatedTasks": "Splňte úkoly související s {title}, abyste zvýšili svou dovednost",
+        "rewardNextLvl": "Odměna za další úroveň",
+        "soraCard": "Požádejte nyní",
+        "VXORHoldings": {
+            "descriptionTask": "Držte své aktuální VXOR držby",
+            "titleProgress": "Holdingy VXOR",
+            "titleTask": "Držet VXOR"
+        },
+        "XORBurned": {
+            "descriptionTask": "Spalte XOR a převeďte na hodnotu v $",
+            "titleProgress": "XOR vyhořel",
+            "titleTask": "Vypálit XOR"
+        },
+        "XORHoldings": {
+            "descriptionTask": "Držte své aktuální XOR držby",
+            "titleProgress": "XOR Držení",
+            "titleTask": "Držet XOR"
+        },
+        "yourLevel": "Vaše úroveň",
+        "yourTasks": "Vaše úkoly",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Přidat aktivum | Přidat aktiva",
     "noir": "Noir",
@@ -1545,5 +1655,71 @@
     "firstText": "První",
     "lastText": "Poslední",
     "prevText": "Předchozí",
-    "priceText": "Cena"
+    "priceText": "Cena",
+    "assetOwner": {
+        "accountWithAccess": "Účet s přístupem SBT",
+        "addRegulatedAsset": "Přidejte další regulované aktivum",
+        "addRegulatedAssets": "Přidejte regulovaná aktiva",
+        "attachedRegulatedAssets": "Připojená regulovaná aktiva",
+        "createRegulatedAsset": "Vytvořte nové regulované aktivum",
+        "createSbt": "Vytvořit {type}",
+        "dialog": {
+            "addExisting": "Přidejte existující dílo",
+            "addExistingDesc": "Přidejte již vytvořený majetek pro SBT",
+            "createAsset": "Vytvořte nové dílo",
+            "createAssetDesc": "Nastavte nové dílo s oprávněním pro {type}",
+            "enterAddress": "Zadejte adresu pro vydání",
+            "issueAccess": "Vydat přístup",
+            "pickDate": "Vyberte si den",
+            "selectAccessEnd": "Vyberte, kdy bude přístup ukončen",
+            "selectDate": "Vyberte datum"
+        },
+        "guide": {
+            "createToken": "Vytvořte si token",
+            "createTokenDesc": "Snadno spusťte svůj jedinečný token – dostupný v několika formátech, jako jsou NFT a SBT – pomocí robustní a zabezpečené infrastruktury sítě SORA.",
+            "disclaimerSbt": "Během celého procesu mějte tuto stránku otevřenou. Zavření nebo opuštění bude vyžadovat restart od začátku. Dokončete kroky rychle, abyste se vyhnuli vypršení časového limitu.",
+            "stepOneDesc": "Vyberte nebo vytvořte aktiva, která jste sami vytvořili a regulujte. Jedná se o aktiva pod vaší kontrolou a správou.",
+            "stepOneTitle": "Vyberte nebo vytvořte regulovaná aktiva",
+            "stepThreeDesc": "Zkontrolujte a podepište závěrečnou transakci vytvoření a dokončete nastavení SBT.",
+            "stepThreeTitle": "Zkontrolujte a podepište transakci",
+            "stepTwoDesc": "Poskytněte základní informace, jako je název a symbol SBT a také ikona.",
+            "stepTwoTitle": "Zadejte podrobnosti SBT",
+            "title": "Jak vytvořit {type} :"
+        },
+        "issueSbtAccess": "Vydejte {type} přístup",
+        "letsStartBtn": "ZAČÍNÁME",
+        "orSelectExisting": "Nebo vyberte existující",
+        "ownerSbtTitle": "Váš {type}",
+        "permissionedAssets": "Povolená aktiva",
+        "regulatedAssetsConnected": "Připojená regulovaná aktiva",
+        "regulatedPools": "Regulované bazény",
+        "sbtCreation": {
+            "addAssets": "Přidejte aktiva do SBT",
+            "addDescription": "Zadejte podrobnosti SBT",
+            "addMeta": "Zadejte podrobnosti SBT",
+            "preview": "Náhled SBT"
+        },
+        "sbtManagers": "{type} Manažeři",
+        "selectExisting": "Vyberte existující",
+        "startIssue": "Začněte udělovat přístup pro SBT k účtům",
+        "you": "Vy"
+    },
+    "sbtDetails": {
+        "accessPermitted": "Přístup povolen",
+        "description": "Tento SBT poskytuje přístup k více tokenům a fondům a je připojen k vašemu účtu",
+        "expiresIn": "Platnost vyprší za",
+        "expiresInTooltip": "'Expires in' ukazuje období nebo okamžik, kdy byl přístup získán",
+        "expiryDate": "Datum vypršení platnosti",
+        "expiryDateTooltip": "„Datum vypršení platnosti“ je lhůta pro váš přístup k regulovaným aktivům SBT",
+        "indefiniteExp": "s otevřeným koncem",
+        "issuedBy": "{SBT} vydal",
+        "kycProvider": "Poskytovatel {KYC}",
+        "kycVerification": "Ověření {KYC}",
+        "listOperable": "Regulovaná aktiva provozuschopná",
+        "noPermissions": "Žádná další oprávnění",
+        "noReceiverAccess": "Pokoušíte se odeslat regulovaný token uživateli bez přístupu SBT",
+        "permission": "povolení",
+        "permissions": "oprávnění",
+        "regulatedInsitution": "Regulovaná instituce"
+    }
 }

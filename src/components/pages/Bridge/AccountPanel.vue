@@ -98,6 +98,7 @@ export default class BridgeAccountPanel extends Mixins(mixins.CopyAddressMixin, 
   &-logo {
     width: 18px;
     height: 18px;
+    border-radius: 50%;
   }
 
   &-name {

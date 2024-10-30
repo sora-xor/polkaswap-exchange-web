@@ -426,7 +426,7 @@ export default class SwapFormWidget extends Mixins(
           this.isExchangeB,
           this.liquiditySource ?? undefined
         );
-        // eslint-disable-next-line
+
         console.table({
           frontend: amount,
           backend: rpcResult.amount,
@@ -621,10 +621,10 @@ export default class SwapFormWidget extends Mixins(
 }
 
 i.action-button-icon[class*=' s-icon-'] {
+  margin-right: $inner-spacing-mini;
   &,
   &:hover {
     color: inherit;
   }
-  margin-right: $inner-spacing-mini;
 }
 </style>

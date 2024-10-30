@@ -106,7 +106,7 @@
 <script lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { getCurrentIndexer, components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import IndexerDataFetchMixin from '@/components/mixins/IndexerDataFetchMixin';

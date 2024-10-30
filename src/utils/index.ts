@@ -285,14 +285,6 @@ export const updateDocumentTitle = (to?: Route) => {
   }
 };
 
-export const preloadFontFace = async (name: string): Promise<void> => {
-  try {
-    await (document as any).fonts.load(`1em ${name}`);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 export const getCssVariableValue = (name: string): string => {
   return getComputedStyle(document.documentElement as any)
     .getPropertyValue(name)
@@ -336,21 +328,37 @@ export const calcPriceChange = (current: FPNumber, prev: FPNumber): FPNumber => 
 // [TODO]: move to FPNumber
 export const formatAmountWithSuffix = (value: FPNumber, precision = 2): AmountWithSuffix => {
   const val = value.toNumber();
-  const format = (value: string) => new FPNumber(value).toLocaleString();
+  const entries: [number, string][] = [
+    [3, 'K'], // Thousand (Kilo)
+    [6, 'M'], // Million
+    [9, 'B'], // Billion
+    [12, 't'], // trillion
+    [15, 'q'], // quadrillion
+    [18, 'Q'], // Quintillion
+  ];
 
-  if (Math.trunc(val / 1_000_000_000) > 0) {
-    const amount = format((val / 1_000_000_000).toFixed(precision));
-    return { amount, suffix: 'B' };
-  } else if (Math.trunc(val / 1_000_000) > 0) {
-    const amount = format((val / 1_000_000).toFixed(precision));
-    return { amount, suffix: 'M' };
-  } else if (Math.trunc(val / 1_000) > 0) {
-    const amount = format((val / 1_000).toFixed(precision));
-    return { amount, suffix: 'K' };
-  } else {
-    const amount = format(val.toFixed(precision));
-    return { amount, suffix: '' };
+  let suffix = '';
+  let result = val;
+
+  for (const [pow, symbol] of entries) {
+    const res = val / Math.pow(10, pow);
+
+    if (Math.trunc(res) > 0) {
+      suffix = symbol;
+      result = res;
+    } else {
+      break;
+    }
   }
+
+  return {
+    amount: new FPNumber(result.toFixed(precision)).toLocaleString(),
+    suffix,
+  };
+};
+
+export const convertFPNumberToNumber = (fpValue: FPNumber, precision = 2): number => {
+  return parseFloat(fpValue.toFixed(precision));
 };
 
 export const formatDecimalPlaces = (value: FPNumber | number, asPercent = false): string => {

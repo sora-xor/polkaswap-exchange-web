@@ -196,7 +196,7 @@ $status-classes: 'error', 'warning', 'success';
   &__loading {
     height: var(--s-font-size-mini);
     width: var(--s-font-size-mini);
-    background-image: url('~@/assets/img/status-pending.svg');
+    background-image: url('@/assets/img/status-pending.svg');
     @include loading;
   }
   &__text {

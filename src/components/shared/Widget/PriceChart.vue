@@ -234,8 +234,8 @@ const dividePrices = (priceA: OCLH, priceB: OCLH): OCLH => {
 
 const mergeSnapshots = (a: Nullable<SnapshotItem>, b: Nullable<SnapshotItem>): SnapshotItem => {
   const timestamp = (a?.timestamp ?? b?.timestamp) as number;
-  const price = b?.price && a?.price ? dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0];
-  const volume = b?.volume && a?.volume ? Math.min(b.volume, a.volume) : a?.volume ?? 0;
+  const price = b?.price && a?.price ? dividePrices(a.price, b.price) : (a?.price ?? [0, 0, 0, 0]);
+  const volume = b?.volume && a?.volume ? Math.min(b.volume, a.volume) : (a?.volume ?? 0);
 
   return { timestamp, price, volume };
 };
@@ -674,7 +674,9 @@ export default class PriceChartWidget extends Mixins(
       itemStyle: {
         color: ({ data }) => {
           const [_timestamp, open, close] = data;
-          return open > close ? this.theme.color.status.error : this.theme.color.status.success;
+          if (open > close) return this.theme.color.status.error;
+          if (open < close) return this.theme.color.status.success;
+          return this.theme.color.base.content.secondary;
         },
         opacity: 0.7,
       },
