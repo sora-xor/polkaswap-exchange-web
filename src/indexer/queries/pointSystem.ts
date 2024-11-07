@@ -3,6 +3,8 @@ import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
 
+import { AccountPointSystems, AccountPointsVersioned, AccountPointsCalculation } from '@/types/pointSystem';
+
 import type {
   QueryData,
   ConnectionQueryResponse,
@@ -333,7 +335,7 @@ const parseCounter = (data: AccountMetaEventCounter) => {
   };
 };
 
-const parseAccountPoints = (item: AccountMetaEntity | AccountPointSystemEntity) => {
+const parseAccountPoints = (item: AccountMetaEntity | AccountPointSystemEntity): AccountPointsCalculation => {
   const { xorFees, xorBurned, xorStakingValRewards, orderBook, vault, governance, deposit } = item;
 
   return {
@@ -353,7 +355,7 @@ const parseAccountPoints = (item: AccountMetaEntity | AccountPointSystemEntity) 
   };
 };
 
-const parseAccountMeta = (item: AccountMetaEntity) => {
+const parseAccountMeta = (item: AccountMetaEntity): AccountPointSystems => {
   const { createdAtTimestamp, createdAtBlock } = item;
   const startedAtBlock = Number(createdAtBlock);
 
@@ -372,7 +374,7 @@ const parseAccountMeta = (item: AccountMetaEntity) => {
   };
 };
 
-const parseAccountPointSystem = (item: AccountPointSystemEntity) => {
+const parseAccountPointSystem = (item: AccountPointSystemEntity): AccountPointsVersioned => {
   const { version, startedAtBlock } = item;
 
   return {
@@ -382,7 +384,7 @@ const parseAccountPointSystem = (item: AccountPointSystemEntity) => {
   };
 };
 
-export async function fetchAccountMeta(accountAddress: string) {
+export async function fetchAccountMeta(accountAddress: string): Promise<AccountPointSystems | null> {
   const indexer = getCurrentIndexer();
   const variables = { id: accountAddress };
 
@@ -390,6 +392,7 @@ export async function fetchAccountMeta(accountAddress: string) {
     if (indexer.type === IndexerType.SUBQUERY) {
       const subqueryIndexer = indexer as SubqueryIndexer;
       const response = await subqueryIndexer.services.explorer.request(SubqueryAccountMetaQuery, variables);
+
       if (!response) return null;
 
       return parseAccountMeta(response.data);
@@ -402,7 +405,7 @@ export async function fetchAccountMeta(accountAddress: string) {
   }
 }
 
-export async function fetchAccountPointSystems(accountAddress: string) {
+export async function fetchAccountPointSystems(accountAddress: string): Promise<AccountPointsVersioned[] | null> {
   const indexer = getCurrentIndexer();
   const variables = { id: accountAddress };
 
@@ -425,4 +428,16 @@ export async function fetchAccountPointSystems(accountAddress: string) {
     console.error(error);
     return null;
   }
+}
+
+export async function fetchAccountPoints(accountAddress: string): Promise<AccountPointSystems | null> {
+  const meta = await fetchAccountMeta(accountAddress);
+  const points = await fetchAccountPointSystems(accountAddress);
+
+  if (!meta) return null;
+
+  return {
+    createdAt: meta.createdAt,
+    points: Array.isArray(points) ? points : meta.points,
+  };
 }
