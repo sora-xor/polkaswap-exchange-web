@@ -146,7 +146,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
-  @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
   @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (windowWidth: number) => void;
   @mutation.settings.showOrientationWarning private showOrientationWarning!: FnWithoutArgs;
   @mutation.settings.hideOrientationWarning private hideOrientationWarning!: FnWithoutArgs;
@@ -163,7 +162,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncFnWithoutArgs;
   @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncFnWithoutArgs;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
-  @action.settings.setBlockNumber private setBlockNumber!: AsyncFnWithoutArgs;
   @action.settings.fetchAdsArray private fetchAdsArray!: AsyncFnWithoutArgs;
   @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
   @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
@@ -192,7 +190,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (this.isWalletLoaded) {
         this.activateNetwokSubscriptions();
       }
-      this.setBlockNumber();
     } else {
       this.resetNetworkSubscriptions();
     }
@@ -439,7 +436,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     tmaSdkService.destroy();
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
-    this.resetBlockNumberSubscription();
     this.unsubscribeFromInvitedUsers();
     await connection.close();
   }
