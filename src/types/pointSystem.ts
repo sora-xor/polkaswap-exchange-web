@@ -79,5 +79,17 @@ export interface AccountPointsCalculation {
     incomingUSD: FPNumber;
     outgoingUSD: FPNumber;
   };
-  createdAt: { timestamp: number; block: number };
+}
+
+export interface AccountPointsVersioned extends AccountPointsCalculation {
+  version: number;
+  startedAtBlock: number;
+}
+
+export interface AccountPointSystems {
+  createdAt: {
+    timestamp: number;
+    block: number;
+  };
+  points: AccountPointsVersioned[];
 }
