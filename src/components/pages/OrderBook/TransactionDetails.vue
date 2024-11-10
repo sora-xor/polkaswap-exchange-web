@@ -38,7 +38,7 @@
       :label="t('networkFeeText')"
       :label-tooltip="t('networkFeeTooltipText')"
       :value="formattedNetworkFee"
-      :asset-symbol="quoteSymbol"
+      :asset-symbol="xorSymbol"
       :fiat-value="getFiatAmountByCodecString(networkFee)"
       is-formatted
     />
@@ -77,6 +77,10 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMarketType!: boolean;
+
+  get xorSymbol(): string {
+    return XOR.symbol;
+  }
 
   get networkFee(): CodecString {
     return this.networkFees[Operation.OrderBookPlaceLimitOrder];
