@@ -114,11 +114,11 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
     return this.isBuy ? this.quoteSymbol : this.baseSymbol;
   }
 
-  get total(): FPNumber {
+  private get total(): FPNumber {
     return this.getFPNumber(this.baseValue).mul(this.getFPNumber(this.quoteValue));
   }
 
-  get isBuy(): boolean {
+  private get isBuy(): boolean {
     return this.side === PriceVariant.Buy;
   }
 
