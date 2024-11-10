@@ -69,13 +69,11 @@ import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   @state.orderBook.baseValue baseValue!: string;
   @state.orderBook.quoteValue quoteValue!: string;
-  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
-  @state.orderBook.quoteAssetAddress quoteAssetAddress!: string;
   @state.orderBook.side side!: PriceVariant;
   @state.swap.toValue toValue!: string;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => AccountAsset;
+  @getter.orderBook.baseAsset private baseAsset!: AccountAsset;
+  @getter.orderBook.quoteAsset private quoteAsset!: AccountAsset;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMarketType!: boolean;
@@ -84,12 +82,12 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
     return this.networkFees[Operation.OrderBookPlaceLimitOrder];
   }
 
-  get baseSymbol(): string | undefined {
-    return this.getAsset(this.baseAssetAddress)?.symbol;
+  get baseSymbol(): string {
+    return this.baseAsset.symbol;
   }
 
   get quoteSymbol(): string {
-    return XOR.symbol;
+    return this.quoteAsset.symbol;
   }
 
   get sideText(): string {
@@ -105,7 +103,7 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
   }
 
   get lockedAsset(): AccountAsset {
-    return this.isBuy ? this.getAsset(this.quoteAssetAddress) : this.getAsset(this.baseAssetAddress);
+    return this.isBuy ? this.quoteAsset : this.baseAsset;
   }
 
   get lockedAssetSymbol(): string | undefined {
