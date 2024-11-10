@@ -4,7 +4,7 @@
       :label="t('orderBook.txDetails.orderType')"
       :label-tooltip="t('orderBook.tooltip.txDetails.orderType')"
       :value="sideText"
-      :class="getComputedClass()"
+      :class="computedClass"
     />
     <info-line
       :label="t('orderBook.txDetails.limitPrice')"
@@ -132,14 +132,11 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
     return this.formatCodecNumber(this.networkFee);
   }
 
-  formatFee(fee: string, formattedFee: string): string {
-    return fee !== ZeroStringValue ? formattedFee : ZeroStringValue;
-  }
-
-  getComputedClass(): string | undefined {
+  get computedClass(): string | undefined {
     if (this.infoOnly) {
       return this.side === PriceVariant.Buy ? 'limit-order-type--buy' : 'limit-order-type--sell';
     }
+    return undefined;
   }
 }
 </script>
