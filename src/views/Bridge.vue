@@ -12,7 +12,7 @@
         <generic-page-header class="header--bridge" :title="t('hashiBridgeText')" :tooltip="t('bridge.info')">
           <div class="bridge-header-buttons">
             <s-button
-              v-if="areAccountsConnected"
+              v-if="isLoggedIn"
               class="el-button--history"
               type="action"
               icon="time-time-history-24"
@@ -21,21 +21,7 @@
               @click="handleViewTransactionsHistory"
             />
 
-            <swap-status-action-badge>
-              <template #value>
-                {{ selectedNetworkShortName }}
-              </template>
-              <template #action>
-                <s-button
-                  class="el-button--settings"
-                  type="action"
-                  icon="basic-settings-24"
-                  :tooltip="t('bridge.selectNetwork')"
-                  tooltip-placement="bottom-end"
-                  @click="handleChangeNetwork"
-                />
-              </template>
-            </swap-status-action-badge>
+            <bridge-network-selector />
           </div>
         </generic-page-header>
 
@@ -202,7 +188,6 @@
 
     <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
     <bridge-select-sub-account />
-    <bridge-select-network />
     <select-provider-dialog />
     <select-node-dialog
       v-if="subConnection"
@@ -273,19 +258,18 @@ import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/ty
 @Component({
   components: {
     BridgeSelectAsset: lazyComponent(Components.BridgeSelectAsset),
-    BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
     BridgeSelectSubAccount: lazyComponent(Components.BridgeSelectSubAccount),
     BridgeAccountPanel: lazyComponent(Components.BridgeAccountPanel),
     BridgeNodeIcon: lazyComponent(Components.BridgeNodeIcon),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     BridgeLimitCard: lazyComponent(Components.BridgeLimitCard),
+    BridgeNetworkSelector: lazyComponent(Components.BridgeNetworkSelector),
     SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
     TokenInput: lazyComponent(Components.TokenInput),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
@@ -322,7 +306,6 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
   @mutation.bridge.setFocusedField setFocusedField!: (field: FocusedField) => void;
-  @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
   @action.bridge.setSendedAmount setSendedAmount!: (value?: string) => void;
   @action.bridge.setReceivedAmount setReceivedAmount!: (value?: string) => void;
@@ -598,10 +581,6 @@ export default class Bridge extends Mixins(
     }
 
     this.confirmOrExecute(this.confirmTransaction);
-  }
-
-  handleChangeNetwork(): void {
-    this.setSelectNetworkDialogVisibility(true);
   }
 
   handleChangeSubNode(): void {

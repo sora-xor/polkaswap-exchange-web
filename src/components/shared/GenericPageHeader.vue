@@ -69,6 +69,7 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
 #{$page-header-class} {
   position: relative;
   display: flex;
+  gap: $inner-spacing-small;
   margin: 0 0 $inner-spacing-medium;
   width: 100%;
   &--center {

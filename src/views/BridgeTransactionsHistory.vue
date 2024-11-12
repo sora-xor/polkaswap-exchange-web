@@ -16,21 +16,7 @@
             @click="updateExternalHistory(true)"
           />
 
-          <swap-status-action-badge>
-            <template #value>
-              {{ selectedNetworkShortName }}
-            </template>
-            <!-- <template #action>
-              <s-button
-                class="el-button--settings"
-                type="action"
-                icon="basic-settings-24"
-                :tooltip="t('bridge.selectNetwork')"
-                tooltip-placement="bottom-end"
-                @click="handleChangeNetwork"
-              />
-            </template> -->
-          </swap-status-action-badge>
+          <bridge-network-selector />
         </div>
       </generic-page-header>
       <s-form class="history-form" :show-message="false">
@@ -97,7 +83,7 @@
 
 <script lang="ts">
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -126,7 +112,7 @@ const SearchAttrs = [
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
+    BridgeNetworkSelector: lazyComponent(Components.BridgeNetworkSelector),
     SearchInput: components.SearchInput,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
@@ -143,6 +129,21 @@ export default class BridgeTransactionsHistory extends Mixins(
   @state.bridge.historyPage historyPage!: number;
 
   pageAmount = 8; // override PaginationSearchMixin
+
+  @Watch('networkSelected', { immediate: true })
+  private fetchNetworkHistory() {
+    this.withParentLoading(async () => {
+      this.updateInternalHistory();
+      this.updateExternalHistory();
+
+      if (this.historyPage !== 1) {
+        this.currentPage = this.historyPage;
+        if (this.currentPage !== 1 && this.currentPage === this.lastPage) {
+          this.isLtrDirection = false;
+        }
+      }
+    });
+  }
 
   get historyList(): Array<IBridgeTransaction> {
     return Object.values(this.history);
@@ -170,20 +171,6 @@ export default class BridgeTransactionsHistory extends Mixins(
       : Math.max((this.lastPage - this.currentPage) * this.pageAmount - this.directionShift, 0);
 
     return this.sortTransactions(this.getPageItems(this.filteredHistory, start, end), true);
-  }
-
-  created(): void {
-    this.withParentLoading(async () => {
-      this.updateInternalHistory();
-      this.updateExternalHistory();
-
-      if (this.historyPage !== 1) {
-        this.currentPage = this.historyPage;
-        if (this.currentPage !== 1 && this.currentPage === this.lastPage) {
-          this.isLtrDirection = false;
-        }
-      }
-    });
   }
 
   getFilteredHistory(history: Array<IBridgeTransaction>): Array<IBridgeTransaction> {

@@ -355,15 +355,13 @@ router.beforeEach((to, from, next) => {
       return;
     }
   }
-  if (isRequiresAuth) {
-    if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.bridge.externalAccount) {
+  if (isRequiresAuth && !isLoggedIn) {
+    if (BridgeChildPages.includes(current)) {
       setRoute(PageNames.Bridge);
-      return;
-    }
-    if (!isLoggedIn) {
+    } else {
       setRoute(PageNames.Wallet);
-      return;
     }
+    return;
   }
   setRoute(current, false);
 });

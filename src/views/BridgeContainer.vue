@@ -13,6 +13,7 @@
       :visibility="isSignTxDialogVisible"
       :set-visibility="setSignTxDialogVisibility"
     />
+    <bridge-select-network />
   </div>
 </template>
 
@@ -23,6 +24,8 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { NetworkData } from '@/types/bridge';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -30,6 +33,7 @@ import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 @Component({
   components: {
     ConfirmDialog: components.ConfirmDialog,
+    BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
   },
 })
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
