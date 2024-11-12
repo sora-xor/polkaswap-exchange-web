@@ -10,8 +10,7 @@ import { state, getter } from '@/store/decorators';
 import type { AvailableNetwork } from '@/store/web3/types';
 import type { NetworkData } from '@/types/bridge';
 import { getSubstrateExplorerLinks } from '@/utils';
-import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
-import { isUnsignedToPart } from '@/utils/bridge/eth/utils';
+import { isOutgoingTransaction, isWaitingForAction } from '@/utils/bridge/common/utils';
 
 import TranslationMixin from './TranslationMixin';
 
@@ -228,7 +227,7 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
   isWaitingForAction(item: Nullable<IBridgeTransaction>): boolean {
     if (!item) return false;
     // ETH
-    return item.transactionState === ETH_BRIDGE_STATES.EVM_REJECTED && isUnsignedToPart(item);
+    return isWaitingForAction(item);
   }
 
   formatDatetime(item: Nullable<IBridgeTransaction>): string {

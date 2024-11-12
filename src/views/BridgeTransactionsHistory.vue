@@ -91,7 +91,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
-import { state } from '@/store/decorators';
+import { action, state } from '@/store/decorators';
 
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
 
@@ -125,6 +125,8 @@ export default class BridgeTransactionsHistory extends Mixins(
   mixins.PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
+  @action.bridge.updateBridgeHistory updateBridgeHistory!: FnWithoutArgs;
+
   @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeRegisteredAsset>;
   @state.bridge.historyPage historyPage!: number;
 
@@ -133,8 +135,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   @Watch('networkSelected', { immediate: true })
   private fetchNetworkHistory() {
     this.withParentLoading(async () => {
-      this.updateInternalHistory();
-      this.updateExternalHistory();
+      this.updateBridgeHistory();
 
       if (this.historyPage !== 1) {
         this.currentPage = this.historyPage;

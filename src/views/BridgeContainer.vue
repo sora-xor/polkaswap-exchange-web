@@ -14,6 +14,7 @@
       :set-visibility="setSignTxDialogVisibility"
     />
     <bridge-select-network />
+    <select-provider-dialog />
   </div>
 </template>
 
@@ -34,6 +35,7 @@ import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
   components: {
     ConfirmDialog: components.ConfirmDialog,
     BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
+    SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
   },
 })
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {

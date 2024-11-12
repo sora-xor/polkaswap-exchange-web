@@ -13,7 +13,7 @@
           <div class="bridge-header-buttons">
             <s-button
               v-if="isLoggedIn"
-              class="el-button--history"
+              :class="['history-button', { info: hasWaitingForActionTx }]"
               type="action"
               icon="time-time-history-24"
               :tooltip="t('bridgeHistory.showHistory')"
@@ -188,7 +188,6 @@
 
     <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
     <bridge-select-sub-account />
-    <select-provider-dialog />
     <select-node-dialog
       v-if="subConnection"
       :connection="subConnection"
@@ -264,7 +263,6 @@ import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/ty
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     BridgeLimitCard: lazyComponent(Components.BridgeLimitCard),
     BridgeNetworkSelector: lazyComponent(Components.BridgeNetworkSelector),
-    SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
@@ -301,6 +299,7 @@ export default class Bridge extends Mixins(
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
   @getter.bridge.operation private operation!: Operation;
   @getter.bridge.autoselectedAssetAddress autoselectedAssetAddress!: Nullable<string>;
+  @getter.bridge.hasWaitingForActionTx hasWaitingForActionTx!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;
@@ -313,6 +312,7 @@ export default class Bridge extends Mixins(
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<IBridgeTransaction>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
+  @action.bridge.updateBridgeHistory private updateBridgeHistory!: FnWithoutArgs;
 
   showSelectTokenDialog = false;
 
@@ -541,6 +541,9 @@ export default class Bridge extends Mixins(
       if (address) {
         this.updateAssetAddress(address);
       }
+      if (this.isLoggedIn) {
+        this.updateBridgeHistory();
+      }
     });
   }
 
@@ -669,6 +672,12 @@ export default class Bridge extends Mixins(
 .connect-wallet-logo {
   width: 18px;
   height: 18px;
+}
+
+.history-button {
+  &.info {
+    color: var(--s-color-status-info) !important;
+  }
 }
 
 .bridge {

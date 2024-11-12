@@ -118,44 +118,49 @@
         <links-dropdown v-if="links.length" :links="links" />
       </div>
 
-      <s-button
-        v-if="!txIsFinilized"
-        type="primary"
-        class="s-typograhy-button--big"
-        :disabled="confirmationButtonDisabled"
-        @click="handleTransaction"
-      >
-        <template v-if="confirmationBlocksLeft">
-          {{ t('bridgeTransaction.blocksLeft', { count: confirmationBlocksLeft }) }}
-        </template>
-        <template v-else-if="txWaitingForApprove">{{
-          t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
-        }}</template>
-        <template v-else-if="isTxPending">{{ t('bridgeTransaction.pending') }}</template>
-        <template v-else-if="isAnotherEvmAddress">{{ t('changeAccountText') }}</template>
-        <template v-else-if="!(isOutgoing || isValidNetwork)">{{ t('changeNetworkText') }}</template>
-        <template v-else-if="isInsufficientBalance">{{
-          t('insufficientBalanceText', { tokenSymbol: assetSymbol })
-        }}</template>
-        <template v-else-if="isInsufficientXorForFee">{{
-          t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR })
-        }}</template>
-        <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
-          t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol })
-        }}</template>
-        <template v-else-if="isGreaterThanMaxAmount">
-          {{ t('exceededAmountText', { amount: t('maxAmountText') }) }}
-        </template>
-        <template v-else-if="isLowerThanMinAmount">
-          {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
-        </template>
-        <template v-else-if="isTxWaiting">{{ t('confirmTransactionText') }}</template>
-        <template v-else-if="hasRetry">{{ t('retryText') }}</template>
-      </s-button>
+      <template v-if="!txIsFinilized">
+        <s-button v-if="isAnotherEvmAddress" if="changeAccount" type="primary" @click="connectEvmWallet">
+          {{ t('changeAccountText') }}
+        </s-button>
 
-      <div v-if="txWaitingForApprove" class="transaction-approval-text">
-        {{ t('bridgeTransaction.approveToken') }}
-      </div>
+        <s-button
+          v-else
+          type="primary"
+          class="s-typograhy-button--big"
+          :disabled="confirmationButtonDisabled"
+          @click="handleTransaction"
+        >
+          <template v-if="confirmationBlocksLeft">
+            {{ t('bridgeTransaction.blocksLeft', { count: confirmationBlocksLeft }) }}
+          </template>
+          <template v-else-if="txWaitingForApprove">{{
+            t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
+          }}</template>
+          <template v-else-if="isTxPending">{{ t('bridgeTransaction.pending') }}</template>
+          <template v-else-if="!(isOutgoing || isValidNetwork)">{{ t('changeNetworkText') }}</template>
+          <template v-else-if="isInsufficientBalance">{{
+            t('insufficientBalanceText', { tokenSymbol: assetSymbol })
+          }}</template>
+          <template v-else-if="isInsufficientXorForFee">{{
+            t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR })
+          }}</template>
+          <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
+            t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol })
+          }}</template>
+          <template v-else-if="isGreaterThanMaxAmount">
+            {{ t('exceededAmountText', { amount: t('maxAmountText') }) }}
+          </template>
+          <template v-else-if="isLowerThanMinAmount">
+            {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
+          </template>
+          <template v-else-if="isTxWaiting">{{ t('confirmTransactionText') }}</template>
+          <template v-else-if="hasRetry">{{ t('retryText') }}</template>
+        </s-button>
+
+        <div v-if="txWaitingForApprove" class="transaction-approval-text">
+          {{ t('bridgeTransaction.approveToken') }}
+        </div>
+      </template>
     </div>
     <s-button v-if="txIsFinilized" class="s-typography-button--large" type="secondary" @click="navigateToBridge">
       {{ t('bridgeTransaction.newTransaction') }}

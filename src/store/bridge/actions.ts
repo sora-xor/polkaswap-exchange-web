@@ -610,6 +610,13 @@ const actions = defineActions({
     return historyItem;
   },
 
+  updateBridgeHistory(context): void {
+    const { dispatch } = bridgeActionContext(context);
+
+    dispatch.updateInternalHistory();
+    dispatch.updateExternalHistory(false);
+  },
+
   updateInternalHistory(context): void {
     const { commit, rootState } = bridgeActionContext(context);
     const { networkSelected } = rootState.web3;
