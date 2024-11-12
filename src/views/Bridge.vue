@@ -23,7 +23,7 @@
 
             <swap-status-action-badge>
               <template #value>
-                {{ selectedNetworkShortName || '-' }}
+                {{ selectedNetworkShortName }}
               </template>
               <template #action>
                 <s-button
@@ -567,9 +567,9 @@ export default class Bridge extends Mixins(
   }
 
   getProviderIcon(isSoraNetwork = false): string {
-    if (!this.evmProvider || isSoraNetwork) return '';
+    if (this.isSubBridge || isSoraNetwork) return '';
 
-    return this.getEvmProviderIcon(this.evmProvider);
+    return this.evmProvider ? this.getEvmProviderIcon(this.evmProvider) : '';
   }
 
   handleMaxValue(): void {

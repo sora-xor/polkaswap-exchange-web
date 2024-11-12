@@ -1,15 +1,37 @@
 <template>
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
-      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
-        <s-button
-          :class="['history-restore-btn', { loading: networkHistoryLoading }]"
-          type="action"
-          icon="arrows-swap-90-24"
-          :disabled="networkHistoryLoading"
-          :tooltip="t('bridgeHistory.restoreHistory')"
-          @click="updateExternalHistory(true)"
-        />
+      <generic-page-header :title="t('bridgeHistory.title')">
+        <template #back>
+          <s-button type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
+        </template>
+
+        <div class="history-header-buttons">
+          <s-button
+            :class="['history-restore-btn', { loading: networkHistoryLoading }]"
+            type="action"
+            icon="arrows-swap-90-24"
+            :disabled="networkHistoryLoading"
+            :tooltip="t('bridgeHistory.restoreHistory')"
+            @click="updateExternalHistory(true)"
+          />
+
+          <swap-status-action-badge>
+            <template #value>
+              {{ selectedNetworkShortName }}
+            </template>
+            <!-- <template #action>
+              <s-button
+                class="el-button--settings"
+                type="action"
+                icon="basic-settings-24"
+                :tooltip="t('bridge.selectNetwork')"
+                tooltip-placement="bottom-end"
+                @click="handleChangeNetwork"
+              />
+            </template> -->
+          </swap-status-action-badge>
+        </div>
       </generic-page-header>
       <s-form class="history-form" :show-message="false">
         <search-input
@@ -321,6 +343,12 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     align-items: center;
     margin-top: $inner-spacing-large;
     margin-right: auto;
+    margin-left: auto;
+  }
+  &-header-buttons {
+    display: flex;
+    align-items: center;
+    gap: $inner-spacing-mini;
     margin-left: auto;
   }
   &-content {

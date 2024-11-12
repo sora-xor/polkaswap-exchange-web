@@ -1,6 +1,9 @@
 <template>
   <div :class="headerClasses">
-    <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack($event)" />
+    <slot name="back">
+      <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack($event)" />
+    </slot>
+
     <h3 class="page-header-title" :class="{ bold }">
       <slot name="title">
         {{ title }}
