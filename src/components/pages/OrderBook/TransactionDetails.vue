@@ -4,7 +4,7 @@
       :label="t('orderBook.txDetails.orderType')"
       :label-tooltip="t('orderBook.tooltip.txDetails.orderType')"
       :value="sideText"
-      :class="getComputedClass()"
+      :class="computedClass"
     />
     <info-line
       :label="t('orderBook.txDetails.limitPrice')"
@@ -38,7 +38,7 @@
       :label="t('networkFeeText')"
       :label-tooltip="t('networkFeeTooltipText')"
       :value="formattedNetworkFee"
-      :asset-symbol="quoteSymbol"
+      :asset-symbol="xorSymbol"
       :fiat-value="getFiatAmountByCodecString(networkFee)"
       is-formatted
     />
@@ -69,27 +69,29 @@ import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   @state.orderBook.baseValue baseValue!: string;
   @state.orderBook.quoteValue quoteValue!: string;
-  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
-  @state.orderBook.quoteAssetAddress quoteAssetAddress!: string;
   @state.orderBook.side side!: PriceVariant;
   @state.swap.toValue toValue!: string;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => AccountAsset;
+  @getter.orderBook.baseAsset private baseAsset!: AccountAsset;
+  @getter.orderBook.quoteAsset private quoteAsset!: AccountAsset;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMarketType!: boolean;
+
+  get xorSymbol(): string {
+    return XOR.symbol;
+  }
 
   get networkFee(): CodecString {
     return this.networkFees[Operation.OrderBookPlaceLimitOrder];
   }
 
-  get baseSymbol(): string | undefined {
-    return this.getAsset(this.baseAssetAddress)?.symbol;
+  get baseSymbol(): string {
+    return this.baseAsset.symbol;
   }
 
   get quoteSymbol(): string {
-    return XOR.symbol;
+    return this.quoteAsset.symbol;
   }
 
   get sideText(): string {
@@ -105,18 +107,18 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
   }
 
   get lockedAsset(): AccountAsset {
-    return this.isBuy ? this.getAsset(this.quoteAssetAddress) : this.getAsset(this.baseAssetAddress);
+    return this.isBuy ? this.quoteAsset : this.baseAsset;
   }
 
   get lockedAssetSymbol(): string | undefined {
     return this.isBuy ? this.quoteSymbol : this.baseSymbol;
   }
 
-  get total(): FPNumber {
+  private get total(): FPNumber {
     return this.getFPNumber(this.baseValue).mul(this.getFPNumber(this.quoteValue));
   }
 
-  get isBuy(): boolean {
+  private get isBuy(): boolean {
     return this.side === PriceVariant.Buy;
   }
 
@@ -130,14 +132,11 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
     return this.formatCodecNumber(this.networkFee);
   }
 
-  formatFee(fee: string, formattedFee: string): string {
-    return fee !== ZeroStringValue ? formattedFee : ZeroStringValue;
-  }
-
-  getComputedClass(): string | undefined {
+  get computedClass(): string | undefined {
     if (this.infoOnly) {
       return this.side === PriceVariant.Buy ? 'limit-order-type--buy' : 'limit-order-type--sell';
     }
+    return undefined;
   }
 }
 </script>
