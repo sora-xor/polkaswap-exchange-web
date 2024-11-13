@@ -13,13 +13,15 @@
           <div class="bridge-header-buttons">
             <s-button
               v-if="isLoggedIn"
-              :class="['history-button', { info: hasWaitingForActionTx }]"
+              class="history-button"
               type="action"
               icon="time-time-history-24"
               :tooltip="t('bridgeHistory.showHistory')"
               tooltip-placement="bottom-end"
               @click="handleViewTransactionsHistory"
-            />
+            >
+              <span v-if="hasWaitingForActionTx" class="history-button-icon" />
+            </s-button>
 
             <bridge-network-selector />
           </div>
@@ -669,14 +671,35 @@ export default class Bridge extends Mixins(
 </style>
 
 <style lang="scss" scoped>
+@keyframes pulse-animation {
+  0% {
+    box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.25);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+}
+
 .connect-wallet-logo {
   width: 18px;
   height: 18px;
 }
 
 .history-button {
-  &.info {
-    color: var(--s-color-status-info) !important;
+  &-icon {
+    position: absolute;
+    bottom: 4px;
+    right: 2px;
+
+    width: 12px;
+    height: 12px;
+    background: var(--s-color-status-info);
+    border-radius: 50%;
+    animation: pulse-animation 2s infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
   }
 }
 
