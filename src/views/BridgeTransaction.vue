@@ -119,8 +119,13 @@
       </div>
 
       <template v-if="!txIsFinilized">
-        <s-button v-if="isAnotherEvmAddress" if="changeAccount" type="primary" @click="connectEvmWallet">
-          {{ t('changeAccountText') }}
+        <s-button v-if="isAnotherEvmAddress" type="primary" @click="connectEvmWallet">
+          <template v-if="!externalAccount">
+            {{ t('connectWalletText') }}
+          </template>
+          <template v-else>
+            {{ t('changeAccountText') }}
+          </template>
         </s-button>
 
         <s-button
