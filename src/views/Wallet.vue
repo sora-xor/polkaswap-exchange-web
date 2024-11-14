@@ -40,6 +40,8 @@ export default class Wallet extends Mixins(TranslationMixin, mixins.LoadingMixin
     try {
       const query = this.$route.query;
       const page = query.page;
+      // /#/wallet?page=send&asset=kusd&to=any_address&amount=1000
+      // where `asset` is required, `to` and `amount` are optional
       if (!page || page !== 'send') return;
       const to = query.to;
       const amount = query.amount;
@@ -55,13 +57,13 @@ export default class Wallet extends Mixins(TranslationMixin, mixins.LoadingMixin
     }
   }
 
-  created() {
+  created(): void {
     this.withApi(() => {
       this.tryNavigate();
     });
   }
 
-  beforeRouteUpdate(to: Route, from: Route, next: NavigationGuardNext<Vue>) {
+  beforeRouteUpdate(to: Route, from: Route, next: NavigationGuardNext<Vue>): void {
     next();
     this.withApi(() => {
       this.tryNavigate();
