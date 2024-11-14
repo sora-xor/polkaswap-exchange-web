@@ -38,38 +38,36 @@ export default class Wallet extends Mixins(TranslationMixin, mixins.LoadingMixin
   }) => void;
 
   private tryNavigate(): void {
-    try {
-      if (!this.isLoggedIn) return;
-      const query = this.$route.query;
-      const page = query.page;
-      // /#/wallet?page=send&asset=kusd&to=any_address&amount=1000
-      // where `asset` is required, `to` and `amount` are optional
-      if (!page || page !== 'send') return;
-      const to = query.to;
-      const amount = query.amount;
-      const assetId = this.whitelistIdsBySymbol[(query.asset as string).toUpperCase()];
-      if (!assetId) return;
-      const asset = this.getAsset(assetId);
-      this.navigate({
-        name: WALLET_CONSTS.RouteNames.WalletSend,
-        params: { address: to, amount, asset },
-      });
-    } catch (error) {
-      console.warn('[WALLET] Navigate issue:', error);
-    }
+    this.withApi(() => {
+      try {
+        if (!this.isLoggedIn) return;
+        const query = this.$route.query;
+        const page = query.page;
+        // /#/wallet?page=send&asset=kusd&to=any_address&amount=1000
+        // where `asset` is required, `to` and `amount` are optional
+        if (!page || page !== 'send') return;
+        const to = query.to;
+        const amount = query.amount;
+        const assetId = this.whitelistIdsBySymbol[(query.asset as string).toUpperCase()];
+        if (!assetId) return;
+        const asset = this.getAsset(assetId);
+        this.navigate({
+          name: WALLET_CONSTS.RouteNames.WalletSend,
+          params: { address: to, amount, asset },
+        });
+      } catch (error) {
+        console.warn('[WALLET] Navigate issue:', error);
+      }
+    });
   }
 
   created(): void {
-    this.withApi(() => {
-      this.tryNavigate();
-    });
+    this.tryNavigate();
   }
 
   beforeRouteUpdate(to: Route, from: Route, next: NavigationGuardNext<Vue>): void {
     next();
-    this.withApi(() => {
-      this.tryNavigate();
-    });
+    this.tryNavigate();
   }
 
   handleClose(): void {
