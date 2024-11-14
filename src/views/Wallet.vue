@@ -24,6 +24,7 @@ import type { NavigationGuardNext, Route } from 'vue-router';
 
 @Component
 export default class Wallet extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: Record<string, string>;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => AccountAsset;
@@ -38,6 +39,7 @@ export default class Wallet extends Mixins(TranslationMixin, mixins.LoadingMixin
 
   private tryNavigate(): void {
     try {
+      if (!this.isLoggedIn) return;
       const query = this.$route.query;
       const page = query.page;
       // /#/wallet?page=send&asset=kusd&to=any_address&amount=1000
