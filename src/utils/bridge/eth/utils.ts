@@ -1,6 +1,7 @@
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { EthCurrencyType, EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
 import { asZeroValue } from '@/utils';
@@ -10,6 +11,8 @@ import ethersUtil from '@/utils/ethers-util';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { EthHistory, EthApprovedRequest } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { Subscription } from 'rxjs';
+
+const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 type EthTxParams = {
   asset: RegisteredAccountAsset;
@@ -43,6 +46,10 @@ export const isUnsignedToPart = (tx: EthHistory): boolean => {
 
 export const isUnsignedTx = (tx: EthHistory): boolean => {
   return isUnsignedFromPart(tx);
+};
+
+export const isWaitingForAction = (tx: EthHistory): boolean => {
+  return tx.transactionState === ETH_BRIDGE_STATES.EVM_REJECTED && isUnsignedToPart(tx);
 };
 
 export const getTransaction = (id: string): EthHistory => {

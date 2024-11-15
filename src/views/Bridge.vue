@@ -12,30 +12,18 @@
         <generic-page-header class="header--bridge" :title="t('hashiBridgeText')" :tooltip="t('bridge.info')">
           <div class="bridge-header-buttons">
             <s-button
-              v-if="areAccountsConnected"
-              class="el-button--history"
+              v-if="isLoggedIn"
+              class="history-button"
               type="action"
               icon="time-time-history-24"
               :tooltip="t('bridgeHistory.showHistory')"
               tooltip-placement="bottom-end"
               @click="handleViewTransactionsHistory"
-            />
+            >
+              <span v-if="hasWaitingForActionTx" class="history-button-icon" />
+            </s-button>
 
-            <swap-status-action-badge>
-              <template #value>
-                {{ selectedNetworkShortName || '-' }}
-              </template>
-              <template #action>
-                <s-button
-                  class="el-button--settings"
-                  type="action"
-                  icon="basic-settings-24"
-                  :tooltip="t('bridge.selectNetwork')"
-                  tooltip-placement="bottom-end"
-                  @click="handleChangeNetwork"
-                />
-              </template>
-            </swap-status-action-badge>
+            <bridge-network-selector />
           </div>
         </generic-page-header>
 
@@ -202,8 +190,6 @@
 
     <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
     <bridge-select-sub-account />
-    <bridge-select-network />
-    <select-provider-dialog />
     <select-node-dialog
       v-if="subConnection"
       :connection="subConnection"
@@ -273,19 +259,17 @@ import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/ty
 @Component({
   components: {
     BridgeSelectAsset: lazyComponent(Components.BridgeSelectAsset),
-    BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
     BridgeSelectSubAccount: lazyComponent(Components.BridgeSelectSubAccount),
     BridgeAccountPanel: lazyComponent(Components.BridgeAccountPanel),
     BridgeNodeIcon: lazyComponent(Components.BridgeNodeIcon),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     BridgeLimitCard: lazyComponent(Components.BridgeLimitCard),
-    SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
+    BridgeNetworkSelector: lazyComponent(Components.BridgeNetworkSelector),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
     TokenInput: lazyComponent(Components.TokenInput),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
@@ -317,12 +301,12 @@ export default class Bridge extends Mixins(
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
   @getter.bridge.operation private operation!: Operation;
   @getter.bridge.autoselectedAssetAddress autoselectedAssetAddress!: Nullable<string>;
+  @getter.bridge.hasWaitingForActionTx hasWaitingForActionTx!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
   @mutation.bridge.setFocusedField setFocusedField!: (field: FocusedField) => void;
-  @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
   @action.bridge.setSendedAmount setSendedAmount!: (value?: string) => void;
   @action.bridge.setReceivedAmount setReceivedAmount!: (value?: string) => void;
@@ -330,6 +314,7 @@ export default class Bridge extends Mixins(
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<IBridgeTransaction>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
+  @action.bridge.updateBridgeHistory private updateBridgeHistory!: FnWithoutArgs;
 
   showSelectTokenDialog = false;
 
@@ -558,6 +543,9 @@ export default class Bridge extends Mixins(
       if (address) {
         this.updateAssetAddress(address);
       }
+      if (this.isLoggedIn) {
+        this.updateBridgeHistory();
+      }
     });
   }
 
@@ -567,9 +555,9 @@ export default class Bridge extends Mixins(
   }
 
   getProviderIcon(isSoraNetwork = false): string {
-    if (!this.evmProvider || isSoraNetwork) return '';
+    if (this.isSubBridge || isSoraNetwork) return '';
 
-    return this.getEvmProviderIcon(this.evmProvider);
+    return this.evmProvider ? this.getEvmProviderIcon(this.evmProvider) : '';
   }
 
   handleMaxValue(): void {
@@ -598,10 +586,6 @@ export default class Bridge extends Mixins(
     }
 
     this.confirmOrExecute(this.confirmTransaction);
-  }
-
-  handleChangeNetwork(): void {
-    this.setSelectNetworkDialogVisibility(true);
   }
 
   handleChangeSubNode(): void {
@@ -687,9 +671,36 @@ export default class Bridge extends Mixins(
 </style>
 
 <style lang="scss" scoped>
+@keyframes pulse-animation {
+  0% {
+    box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.25);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+}
+
 .connect-wallet-logo {
   width: 18px;
   height: 18px;
+}
+
+.history-button {
+  &-icon {
+    position: absolute;
+    bottom: 4px;
+    right: 2px;
+
+    width: 12px;
+    height: 12px;
+    background: var(--s-color-status-info);
+    border-radius: 50%;
+    animation: pulse-animation 2s infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
+  }
 }
 
 .bridge {

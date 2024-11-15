@@ -11,7 +11,6 @@ import { rootActionContext } from '@/store';
 import type { EthBridgeContractsAddresses } from '@/store/web3/types';
 import { getEvmTransactionRecieptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import ethersUtil from '@/utils/ethers-util';
 
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -24,8 +23,8 @@ export default class EtherscanHistoryProvider extends EtherscanProvider {
     const params = {
       action: 'txlist',
       address,
-      startblock: startBlock == null ? 0 : startBlock,
-      endblock: endBlock == null ? 99999999 : endBlock,
+      startblock: startBlock ?? 0,
+      endblock: endBlock ?? 99999999,
       sort: 'asc',
     };
 
@@ -125,17 +124,6 @@ const getEvmBlockId = (ethereumTx: ethers.TransactionResponse | null) => {
   return ethereumTx?.blockHash;
 };
 
-const getEvmTimestamp = async (ethereumTx: ethers.TransactionResponse | null) => {
-  if (ethereumTx?.blockNumber) {
-    const block = await ethersUtil.getBlock(ethereumTx.blockNumber);
-
-    if (block) {
-      return block.timestamp * 1000;
-    }
-  }
-  return Date.now();
-};
-
 const getTimes = (isOutgoing: boolean, soraTimestamp: number, evmTimestamp: number) => {
   return isOutgoing ? [soraTimestamp, evmTimestamp] : [evmTimestamp, soraTimestamp];
 };
@@ -171,12 +159,10 @@ export class EthBridgeHistory {
     ethBridgeApi.accountStorage?.set('ethBridgeHistorySyncTimestamp', timestamp);
   }
 
-  public async init(contracts: EthBridgeContractsAddresses): Promise<void> {
-    const network = await ethersUtil.getEvmNetworkId();
-
-    this.etherscanInstance = new EtherscanHistoryProvider(network, this.etherscanApiKey);
-    this.externalNetwork = await ethersUtil.getEvmNetworkId();
+  public async init(contracts: EthBridgeContractsAddresses, evmId: number): Promise<void> {
+    this.externalNetwork = evmId;
     this.contracts = contracts;
+    this.etherscanInstance = new EtherscanHistoryProvider(evmId, this.etherscanApiKey);
   }
 
   private async getEthStartBlock(timestampMs: number): Promise<number> {
@@ -192,16 +178,27 @@ export class EthBridgeHistory {
     return this.ethStartBlock[timestamp];
   }
 
+  private async getEvmTimestamp(ethereumTx: ethers.TransactionResponse | null) {
+    if (ethereumTx?.blockNumber) {
+      const block = await this.etherscanInstance.getBlock(+ethereumTx.blockNumber);
+
+      if (block) {
+        return block.timestamp * 1000;
+      }
+    }
+    return Date.now();
+  }
+
   public async getEthAccountTransactions(
     address: string,
-    fromTimestamp: number,
-    contracts?: string[]
+    contracts?: string[],
+    fromTimestamp?: number
   ): Promise<EthTransactionsMap> {
     const key = address.toLowerCase();
-    const contractsToLower = (contracts || []).map((contract) => contract.toLowerCase());
 
     if (!this.ethAccountTransactionsMap[key]) {
-      const ethStartBlock = await this.getEthStartBlock(fromTimestamp);
+      const contractsToLower = (contracts || []).map((contract) => contract.toLowerCase());
+      const ethStartBlock = fromTimestamp ? await this.getEthStartBlock(fromTimestamp) : undefined;
       const history = await this.etherscanInstance.getHistory(address, ethStartBlock);
       const filtered = history.reduce<EthTransactionsMap>((buffer, tx) => {
         if (!contracts || (!!tx.to && contractsToLower.includes(tx.to.toLowerCase()))) {
@@ -234,11 +231,11 @@ export class EthBridgeHistory {
   public async findEthTxBySoraHash(
     accountAddress: string,
     hash: string,
-    fromTimestamp: number
+    fromTimestamp?: number
   ): Promise<ethers.TransactionResponse | null> {
     if (!(accountAddress && hash)) return null;
     const contracts = Object.values(this.contracts);
-    const transactions = await this.getEthAccountTransactions(accountAddress, fromTimestamp, contracts);
+    const transactions = await this.getEthAccountTransactions(accountAddress, contracts, fromTimestamp);
 
     for (const tx of Object.values(transactions)) {
       try {
@@ -257,14 +254,16 @@ export class EthBridgeHistory {
     return null;
   }
 
-  public async findEthTxByEthereumHash(externalHash: string): Promise<ethers.TransactionResponse | null> {
+  public async findEthTxByEthereumHash(hash: string): Promise<ethers.TransactionResponse | null> {
     for (const address in this.ethAccountTransactionsMap) {
-      if (externalHash in this.ethAccountTransactionsMap[address]) {
-        return this.ethAccountTransactionsMap[address][externalHash];
+      if (hash in this.ethAccountTransactionsMap[address]) {
+        return this.ethAccountTransactionsMap[address][hash];
       }
     }
 
-    return await ethersUtil.getEvmTransaction(externalHash);
+    const tx = await this.etherscanInstance.getTransaction(hash);
+
+    return tx;
   }
 
   public async fetchHistoryElements(address: string, timestamp = 0, ids?: string[]): Promise<HistoryElement[]> {
@@ -349,7 +348,7 @@ export class EthBridgeHistory {
       const externalNetworkFee = recieptData?.fee;
       const externalBlockId = getEvmBlockId(ethereumTx);
       const externalBlockHeight = getEvmBlockNumber(ethereumTx);
-      const evmTimestamp = await getEvmTimestamp(ethereumTx);
+      const evmTimestamp = await this.getEvmTimestamp(ethereumTx);
 
       const [startTime, endTime] = getTimes(isOutgoing, soraTimestamp, evmTimestamp);
       const transactionState = getTransactionState(isOutgoing, soraPartCompleted, soraHash, ethereumTx);
@@ -391,6 +390,25 @@ export class EthBridgeHistory {
   }
 }
 
+export const getEthBridgeHistoryInstance = async (context: ActionContext<any, any>): Promise<EthBridgeHistory> => {
+  const { rootState } = rootActionContext(context);
+
+  const {
+    wallet: {
+      settings: {
+        apiKeys: { etherscan: etherscanApiKey },
+      },
+    },
+    web3: { ethBridgeContractAddress, ethBridgeEvmNetwork },
+  } = rootState;
+
+  const bridgeHistory = new EthBridgeHistory(etherscanApiKey);
+
+  await bridgeHistory.init(ethBridgeContractAddress, ethBridgeEvmNetwork);
+
+  return bridgeHistory;
+};
+
 /**
  * Restore ETH bridge account transactions, using Subquery & Etherscan
  * @param context store context
@@ -404,35 +422,13 @@ export const updateEthBridgeHistory =
       const {
         wallet: {
           account: { address },
-          settings: {
-            apiKeys: { etherscan: etherscanApiKey },
-            networkFees,
-          },
+          settings: { networkFees },
         },
-        web3: { ethBridgeEvmNetwork, ethBridgeContractAddress },
         bridge: { inProgressIds },
       } = rootState;
 
-      const networkData = rootGetters.web3.availableNetworks[BridgeNetworkType.Eth][ethBridgeEvmNetwork];
-
-      if (!networkData) {
-        throw new Error(
-          `[HASHI Bridge History]: Network "${ethBridgeEvmNetwork}" is not available in app. Please check app config`
-        );
-      }
-
-      await ethersUtil.switchOrAddChain(networkData.data);
-
-      if ((await ethersUtil.getEvmNetworkId()) !== ethBridgeEvmNetwork) {
-        throw new Error(
-          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmProviderNetwork}" is connected, "${ethBridgeEvmNetwork}" expected`
-        );
-      }
-
       const assetDataByAddress = rootGetters.assets.assetDataByAddress;
-      const ethBridgeHistory = new EthBridgeHistory(etherscanApiKey);
-
-      await ethBridgeHistory.init(ethBridgeContractAddress);
+      const ethBridgeHistory = await getEthBridgeHistoryInstance(context);
 
       if (clearHistory) {
         await ethBridgeHistory.clearHistory(inProgressIds, updateCallback);
