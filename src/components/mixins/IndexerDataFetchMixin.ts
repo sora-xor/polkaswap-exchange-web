@@ -1,6 +1,6 @@
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import isEqual from 'lodash/fp/isEqual';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import { type FetchVariables } from '@/types/indexers';
 import { debouncedInputHandler } from '@/utils';
@@ -8,7 +8,9 @@ import { debouncedInputHandler } from '@/utils';
 @Component
 export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, mixins.PaginationSearchMixin) {
   totalCount = 0;
-  items: any[] = [];
+  items: readonly any[] = [];
+
+  visibleAmount = 5;
 
   intervalTimestamp = 0;
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
@@ -37,6 +39,30 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
     return {};
   }
 
+  get dataPage(): number {
+    const viewed = this.visibleAmount * this.currentPage;
+
+    return Math.ceil(viewed / this.pageAmount);
+  }
+
+  get loadedDataPages(): number {
+    return Math.floor(this.items.length / this.pageAmount);
+  }
+
+  get visibleItems(): any[] {
+    const start = this.visibleAmount * (this.currentPage - 1);
+    const end = start + this.visibleAmount;
+
+    return this.items.slice(start, end);
+  }
+
+  @Watch('dataPage')
+  private checkPageToLoad(): void {
+    if (this.dataPage > this.loadedDataPages) {
+      this.updateItems();
+    }
+  }
+
   checkTriggerUpdate(current: any, prev: any) {
     if (!isEqual(current)(prev)) {
       this.resetPage();
@@ -57,7 +83,6 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
 
   async onPaginationClick(button: WALLET_CONSTS.PaginationButton): Promise<void> {
     this.handlePaginationClick(button);
-    this.updateItems();
   }
 
   public handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
@@ -79,14 +104,9 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
   }
 
   private async updateData(): Promise<void> {
-    this.resetDataSubscription();
-
     await this.fetchData();
-
-    if (this.currentPage === 1) {
-      this.updateIntervalTimestamp();
-      this.subscribeOnData();
-    }
+    this.updateIntervalTimestamp();
+    this.subscribeOnData();
   }
 
   private resetItems(): void {
@@ -99,14 +119,14 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
       await this.withParentLoading(async () => {
         const { totalCount, items } = await this.requestData(this.dataVariables);
         this.totalCount = totalCount;
-        this.items = items;
+        this.items = Object.freeze([...this.items, ...items]);
       });
     });
   }
 
   private async fetchDataUpdates(): Promise<void> {
     const { items, totalCount } = await this.requestData(this.updateVariables);
-    this.items = [...items, ...this.items].slice(0, this.pageAmount);
+    this.items = Object.freeze([...items, ...this.items]);
     this.totalCount = this.totalCount + totalCount;
     this.updateIntervalTimestamp();
   }

@@ -94,7 +94,7 @@
     <history-pagination
       class="explore-table-pagination"
       :current-page="currentPage"
-      :page-amount="pageAmount"
+      :page-amount="visibleAmount"
       :total="total"
       :loading="loading"
       :last-page="lastPage"
@@ -157,14 +157,14 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin,
     this.checkTriggerUpdate(curr, prev);
   }
 
-  pageAmount = 5; // override PaginationSearchMixin
+  pageAmount = 100; // override PaginationSearchMixin
 
   private readonly operations = [Operation.Swap];
   private readonly fromTimestamp = dayjs().subtract(1, 'month').startOf('day').unix(); // month ago, start of the day
 
   // override ScrollableTableMixin
   get tableItems(): TableItem[] {
-    return this.items.map((item) => {
+    return this.visibleItems.map((item) => {
       const txId = item.id ?? '';
       const blockId = item.blockId ?? '';
       const address = item.from ?? '';
@@ -223,7 +223,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin,
     return {
       filter: this.createFilter(this.fromTimestamp),
       first: this.pageAmount,
-      offset: this.pageAmount * (this.currentPage - 1),
+      offset: this.items.length,
     };
   }
 
