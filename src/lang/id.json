@@ -1359,7 +1359,6 @@
         "tradingPair": {
             "choosePair": "Pilih pasangan perdagangan",
             "volume": "Volume",
-            "dailyChange": "Perubahan harian",
             "status": "Status",
             "total": "{amount} {symbol} di {amount2} {symbol2}"
         },
