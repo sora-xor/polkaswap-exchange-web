@@ -10,7 +10,7 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
   totalCount = 0;
   items: readonly any[] = [];
 
-  visibleAmount = 5;
+  tableAmount = 5;
 
   intervalTimestamp = 0;
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
@@ -40,9 +40,9 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
   }
 
   get dataPage(): number {
-    const viewed = this.visibleAmount * this.currentPage;
+    const tableItems = this.tableAmount * this.currentPage;
 
-    return Math.ceil(viewed / this.pageAmount);
+    return Math.ceil(tableItems / this.pageAmount);
   }
 
   get loadedDataPages(): number {
@@ -50,8 +50,8 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
   }
 
   get visibleItems(): any[] {
-    const start = this.visibleAmount * (this.currentPage - 1);
-    const end = start + this.visibleAmount;
+    const start = this.tableAmount * (this.currentPage - 1);
+    const end = start + this.tableAmount;
 
     return this.items.slice(start, end);
   }
@@ -126,7 +126,7 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
 
   private async fetchDataUpdates(): Promise<void> {
     const { items, totalCount } = await this.requestData(this.updateVariables);
-    this.items = Object.freeze([...items, ...this.items]);
+    this.items = Object.freeze([...items, ...this.items].slice(0, this.loadedDataPages * this.pageAmount));
     this.totalCount = this.totalCount + totalCount;
     this.updateIntervalTimestamp();
   }
