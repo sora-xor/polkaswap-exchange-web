@@ -186,7 +186,7 @@ export default class SwapTransactionsWidget extends Mixins(
   pageAmount = 100; // override PaginationSearchMixin
 
   private readonly operations = [Operation.Swap];
-  private readonly fromTimestamp = dayjs().subtract(1, 'month').startOf('day').unix(); // month ago, start of the day
+  private readonly fromTimestamp = dayjs().subtract(1, 'week').startOf('day').unix(); // week ago, start of the day
 
   // override ScrollableTableMixin
   get tableItems(): TableItem[] {
