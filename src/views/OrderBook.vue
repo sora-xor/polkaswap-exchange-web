@@ -133,7 +133,14 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
       // If it's still not set, we need to select 1st from the list
       if (!this.orderBookId) {
-        const orderbook = orderbooks[0];
+        const orderbook = orderbooks.sort((a, b) => {
+          // Compare `status`
+          if (a.status !== b.status) {
+            return b.status > a.status ? 1 : -1; // Sort by status in descending order
+          }
+          // Compare `dexId` if `status` is equal
+          return b.orderBookId.dexId - a.orderBookId.dexId;
+        })[0];
         if (orderbook) {
           this.setCurrentOrderBook(orderbook.orderBookId);
           this.updateRouteAfterSelectTokens(this.baseAsset, this.quoteAsset);
