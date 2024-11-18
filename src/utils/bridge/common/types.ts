@@ -70,7 +70,7 @@ export interface IBridgeReducer<T extends IBridgeTransaction> {
 
 export interface IBridgeConstructorOptions<
   Transaction extends IBridgeTransaction,
-  Reducer extends IBridgeReducer<Transaction>
+  Reducer extends IBridgeReducer<Transaction>,
 > extends IBridgeOptions<Transaction> {
   reducers: Record<Transaction['type'], Constructable<Reducer>>;
 }

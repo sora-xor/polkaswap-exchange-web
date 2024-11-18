@@ -19,7 +19,7 @@
         :loading="loading"
         :total="total"
         :last-page="lastPage"
-        @pagination-click="onPaginationClick"
+        @pagination-click="handlePaginationClick"
       />
     </template>
     <div v-else v-loading="loadingState" class="details-history__empty p4">{{ t('noDataText') }}</div>
@@ -119,7 +119,7 @@ export default class VaultDetailsHistory extends Mixins(TranslationMixin, Indexe
   }
 
   private getAmount(hidden: boolean, item: VaultEvent): string {
-    return hidden ? this.HiddenValue : item.amount?.toLocaleString() ?? '';
+    return hidden ? this.HiddenValue : (item.amount?.toLocaleString() ?? '');
   }
 
   getOperationMessage(item: VaultEvent): string {

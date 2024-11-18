@@ -44,7 +44,7 @@
       </s-table-column>
       <s-table-column width="126">
         <template #header>
-          <span>{{ t('orderBook.price') }}</span>
+          <span>{{ t('priceText') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="order-table__price">
@@ -115,7 +115,7 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 

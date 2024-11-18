@@ -34,6 +34,7 @@ const SubqueryPoolsQuery = gql<ConnectionQueryResponse<SubqueryPoolXYKEntity>>`
           baseAssetReserves
           targetAssetReserves
           priceUSD
+          liquidityUSD
           strategicBonusApy
         }
       }
@@ -83,6 +84,32 @@ const parse = (item: PoolXYKEntity): PoolData => {
   };
 };
 
+const subqueryPoolsFilter = (ids: string[]) => {
+  const filter: any = {
+    baseAssetReserves: { greaterThan: '0' },
+    targetAssetReserves: { greaterThan: '0' },
+  };
+
+  if (ids.length) {
+    filter.targetAssetId = { in: ids };
+  }
+
+  return filter;
+};
+
+const subsquidPoolsFilter = (ids: string[]) => {
+  const where: any = {
+    baseAssetReserves_gt: '0',
+    targetAssetReserves_gt: '0',
+  };
+
+  if (ids.length) {
+    where.targetAsset = { id_in: ids };
+  }
+
+  return where;
+};
+
 export async function fetchPoolsData(assets?: Asset[]): Promise<PoolData[]> {
   const ids = assets?.map((item) => item.address) ?? [];
   const indexer = getCurrentIndexer();
@@ -91,14 +118,14 @@ export async function fetchPoolsData(assets?: Asset[]): Promise<PoolData[]> {
 
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
-      const filter = ids.length ? { targetAssetId: { in: ids }, targetAssetReserves: { greaterThan: '0' } } : undefined;
+      const filter = subqueryPoolsFilter(ids);
       const variables = { filter };
       const subqueryIndexer = indexer as SubqueryIndexer;
       result = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryPoolsQuery, variables, parse);
       break;
     }
     case IndexerType.SUBSQUID: {
-      const where = ids.length ? { targetAsset: { id_in: ids }, targetAssetReserves_gt: '0' } : undefined;
+      const where = subsquidPoolsFilter(ids);
       const variables = { where };
       const subsquidIndexer = indexer as SubsquidIndexer;
       result = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(SubsquidPoolsQuery, variables, parse);

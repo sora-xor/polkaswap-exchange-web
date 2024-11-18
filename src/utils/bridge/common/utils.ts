@@ -3,7 +3,11 @@ import { api as soraApi } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
 import type { GetTransaction, UpdateTransaction } from '@/utils/bridge/common/types';
-import { isUnsignedTx as isUnsignedEthTx, isOutgoingTx as isOutgoingEthTx } from '@/utils/bridge/eth/utils';
+import {
+  isUnsignedTx as isUnsignedEthTx,
+  isOutgoingTx as isOutgoingEthTx,
+  isWaitingForAction as isWaitingForEthAction,
+} from '@/utils/bridge/eth/utils';
 import { isUnsignedTx as isUnsignedEvmTx, isOutgoingTx as isOutgoingEvmTx } from '@/utils/bridge/evm/utils';
 import { isUnsignedTx as isUnsignedSubTx, isOutgoingTx as isOutgoingSubTx } from '@/utils/bridge/sub/utils';
 import ethersUtil from '@/utils/ethers-util';
@@ -102,6 +106,14 @@ export const isUnsignedTx = (transaction: Nullable<IBridgeTransaction>): boolean
   return true;
 };
 
+export const isWaitingForAction = (transaction: Nullable<IBridgeTransaction>): boolean => {
+  if (!transaction?.type) return false;
+
+  if (isEthOperation(transaction.type)) return isWaitingForEthAction(transaction as EthHistory);
+
+  return false;
+};
+
 export const onEvmTransactionPending = async (
   id: string,
   getTransaction: GetTransaction<IBridgeTransaction>,
@@ -122,7 +134,7 @@ export const onEvmTransactionPending = async (
     }
   });
 
-  const { fee, blockNumber, blockHash } = txReceipt || {};
+  const { fee, blockNumber, blockHash, status } = txReceipt || {};
 
   if (!(fee && blockNumber && blockHash)) {
     updateTransaction(id, { externalHash: undefined, externalNetworkFee: undefined });
@@ -137,4 +149,10 @@ export const onEvmTransactionPending = async (
     externalBlockHeight: blockNumber,
     externalBlockId: blockHash,
   });
+
+  const failedStatus = !Number(status ?? 0);
+
+  if (failedStatus) {
+    throw new Error(`[onEvmTransactionPending]: Ethereum transaction has failed status, hash: ${tx.externalHash}.`);
+  }
 };

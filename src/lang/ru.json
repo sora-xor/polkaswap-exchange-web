@@ -1,7 +1,6 @@
 {
     "closeText": "Закрыть",
     "backText": "Назад",
-    "createWalletText": "Создать кошелек",
     "nameText": "Имя",
     "nextText": "Далее",
     "importText": "Импорт",
@@ -70,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} Позиция закрыта",
             "DepositCollateral": "Внесено {amount} {symbol}",
             "RepayVaultDebt": "Погашено {amount} {symbol} долга",
-            "BorrowVaultDebt": "Взято в долг {amount} {symbol}"
+            "BorrowVaultDebt": "Взято в долг {amount} {symbol}",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
+            "BindRegulatedAsset": "Привязать актив {symbol2} к SBT",
+            "IssueSoulBoundToken": "Выпуск Soulbound Token {symbol}",
+            "RegisterAndRegulateAsset": "Регистрация и регулирование {symbol} актива",
+            "RegulateAsset": "Регулировать актив {symbol}",
+            "SetAccessExpiration": "Токен SB {symbol} обновлен до {endTime}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -112,7 +118,14 @@
             "CloseVault": "Не удалось закрыть позицию {symbol}\/{symbol2}",
             "DepositCollateral": "Ошибка при внесении залога {amount} {symbol}",
             "RepayVaultDebt": "Ошибка при погашении долга {amount} {symbol}",
-            "BorrowVaultDebt": "Ошибка при взятии в долг {amount} {symbol}"
+            "BorrowVaultDebt": "Ошибка при взятии в долг {amount} {symbol}",
+            "VestedTransfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
+            "BindRegulatedAsset": "Не удалось привязать актив {symbol} к SBT {symbol2}",
+            "IssueSoulBoundToken": "Не удалось выдать токен Soulbound {symbol}",
+            "RegisterAndRegulateAsset": "Не удалось зарегистрировать и отрегулировать {symbol}",
+            "RegulateAsset": "Не удалось отрегулировать актив {symbol}",
+            "SetAccessExpiration": "Не удалось обновить срок действия до {to} для {symbol}",
+            "XorlessTransfer": "Не удалось отправить {amount} {symbol} на {address}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
@@ -146,31 +159,31 @@
         "CloseVault": "Закрыть позицию",
         "DepositCollateral": "Внести залог",
         "RepayVaultDebt": "Погасить долг",
-        "BorrowVaultDebt": "Взять в долг"
+        "BorrowVaultDebt": "Взять в долг",
+        "VestedTransfer": "Перевод",
+        "BindRegulatedAsset": "Связать регулируемый актив",
+        "IssueSoulBoundToken": "Выпуск СБТ",
+        "RegisterAndRegulateAsset": "Зарегистрировать актив",
+        "RegulateAsset": "Регулировать активы",
+        "SetAccessExpiration": "Установить срок действия SBT",
+        "XorlessTransfer": "Передача"
     },
     "polkadotjs": {
         "noExtensions": "Расширение {PolkadotJs} не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Похоже, что в вашем расширении {extension} нет аккаунтов. Пожалуйста, добавьте аккаунт и повторите попытку.",
         "noAccount": "Ошибка аккаунта {extension}. Пожалуйста, проверьте свою учетную запись в расширении {extension}",
         "noExtension": "Расширение {extension} не найдено. Пожалуйста, установите его и перезагрузите эту страницу",
         "noSigner": "В доступе отказано. Перейдите в настройки {extension} и откройте «Управление доступом к веб-сайту», чтобы разрешить.",
         "connectionError": "Произошла ошибка при подключении кошелька. Вы можете попробовать снова подключить кошелек через {extension}"
     },
     "connection": {
-        "text": "Чтобы управлять активами и подписывать транзакции на {Sora}, необходимо подключить учетную запись. Учетные записи {Sora} можно создавать и подключать с помощью наших встроенных кошельков или расширений браузера.",
-        "noAccounts": "Не найдено аккаунтов в вашем {extension} браузерном расширении. Пожалуйста, добавьте аккаунт и повторите попытку.",
         "selectAccount": "Выберите аккаунт для работы",
         "action": {
-            "install": "Установить расширение",
             "learnMore": "Узнайте больше о подключении кошелька",
-            "connect": "Подключить аккаунт",
             "refresh": "Обновить"
         },
-        "selectWallet": "Выберите кошелек для работы",
         "wallet": {
             "install": "Установить",
             "connected": "Подключено",
-            "notConnected": "Не подключен",
             "recommended": "Рекомендуется"
         },
         "internalTitle": "Подключиться с {wallet}",
@@ -183,30 +196,26 @@
     },
     "wallet": {
         "WalletAssets": "Активы",
-        "createToken": "@:createTokenText",
         "WalletHistory": "Активность"
     },
     "walletSend": {
         "title": "Отправить",
-        "address": "@:addressText",
-        "amount": "@:amountText",
         "balance": "Баланс",
         "max": "МАКС",
-        "fee": "@:networkFeeText",
         "enterAddress": "Введите адрес",
         "badAddress": "Неверный адрес",
         "enterAmount": "Введите сумму",
-        "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Подтвердить транзакцию",
         "errorAddress": "Неверный адрес. Пожалуйста, перепроверьте и попробуйте еще раз.",
-        "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Отправка токенов между учетными записями сети {Sora}",
         "addressWarning": "Токены будут отправлены на адрес {Sora}, указанный ниже. Убедитесь, что получатель может получить доступ к сети {Sora} для использования токенов:",
         "addressError": "Вы не можете отправлять токены в ту же учетную запись, к которой вы в настоящее время подключены.",
-        "confirm": "@:confirmText"
+        "enableVesting": "Включить вестинг токенов",
+        "enterVestingPercentage": "Введите процент вестинга",
+        "vestingPercentage": "Процент вестинга",
+        "unlockFrequency": "Частота разблокировки"
     },
     "account": {
-        "successCopy": "Адрес кошелька скопирован в буфер обмена",
         "copy": "Копировать адрес",
         "switch": "Сменить аккаунт",
         "walletAddress": "Адрес кошелька",
@@ -219,11 +228,7 @@
         "clearHistory": "Очистить историю",
         "filterPlaceholder": "Фильтр по Адресу, Символу, Типу или ID Блока",
         "empty": "Здесь появятся Ваши транзакции",
-        "emptySearch": "Транзакции не найдены",
-        "firstText": "Первая",
-        "lastText": "Последняя",
-        "prevText": "Предыдущая",
-        "nextText": "Следующая"
+        "emptySearch": "Транзакции не найдены"
     },
     "assets": {
         "empty": "Нет активов",
@@ -233,7 +238,6 @@
         "liquidity": "Добавить ликвидность",
         "bridge": "Мост",
         "copy": "Скопировать ID актива",
-        "successCopy": "{symbol} ID актива скопирован в буфер обмена",
         "copied": "Скопировано!",
         "balance": {
             "transferable": "Доступны к отправке",
@@ -262,7 +266,6 @@
         "approved": "Актив одобрен сообществом",
         "unknown": "Неизвестный источник",
         "scam": "МОШЕННИЧЕСТВО",
-        "next": "Далее",
         "AddAssetToken": {
             "title": "Валюта",
             "switchBtn": "Только проверенные активы"
@@ -278,7 +281,6 @@
         "unpinAsset": "Открепить актив"
     },
     "createToken": {
-        "desc": "Создание и развертывание своего актива на {Sora}",
         "enterSymbol": "Введите символ токена",
         "enterName": "Введите название токена",
         "enterSupply": "Введите количество токенов",
@@ -286,10 +288,6 @@
             "title": "Транзакция отправлена",
             "desc": "Создать {symbol} токен "
         },
-        "tooltipValue": "Чтобы создать токен, вы должны заплатить комиссию.",
-        "fee": "Комиссия сети",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "feeError": "Не удалось получить комиссию за транзакцию",
         "error": "Не удалось создать {symbol} токен",
         "tokenSymbol": {
             "placeholder": "Символ токена",
@@ -308,7 +306,6 @@
             "desc": "Возможность выпустить больше токенов."
         },
         "provideContent": "Предоставить контент",
-        "selectLocalFile": "Выберите локальный файл",
         "CreateSimpleToken": "Токен",
         "nft": {
             "source": {
@@ -341,13 +338,9 @@
             "placeholder": "Делимый",
             "desc": "Способность NFT делиться на дробные части. Предоставление ликвидности работает только с делимыми активами"
         },
-        "title": "@:createTokenText",
-        "action": "@:createTokenText",
-        "confirm": "@:confirmText",
         "titleCommon": "Создать",
         "confirmTokenTitleCommon": "Создать токен",
-        "confirmTokenTitleNFT": "Создать NFT",
-        "actionNFT": "@:createTokenTextNFT"
+        "confirmTokenTitleNFT": "Создать NFT"
     },
     "transaction": {
         "title": "Детали транзакции",
@@ -358,7 +351,6 @@
             "failed": "Транзакция не удалась",
             "complete": "Выполнено"
         },
-        "errorMessage": "Ошибка",
         "startTime": "Дата",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
@@ -366,7 +358,6 @@
         "total": "Всего",
         "from": "От",
         "to": "Кому",
-        "successCopy": "{value} скопирована в буфер обмена",
         "copy": "Копировать {value}",
         "history": {
             "created": "Транзакция для {amount} {symbol} была создана.",
@@ -377,7 +368,6 @@
         "viewIn": "Смотреть в {explorer}",
         "referrer": "Реферер",
         "referral": "Реферал",
-        "adarTxDetailsTitle": "Детали транзакции",
         "comment": "Комментарий",
         "price": "Цена",
         "side": "Сторона"
@@ -409,7 +399,6 @@
         "Stats": "Статистика",
         "Wallet": "Кошелек",
         "AddLiquidity": "Добавить ликвидность",
-        "RemoveLiquidity": "Забрать ликвидность",
         "Rewards": "Награды",
         "Explore\/Tokens": "Токены",
         "Explore\/Pools": "Пулы",
@@ -421,8 +410,7 @@
         "AssetOwner": "Владелец активов",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "{Kensetsu}",
-        "VaultDetails": "Детали позиции",
-        "Burn": "Сжечь"
+        "VaultDetails": "Детали позиции"
     },
     "mainMenu": {
         "Swap": "Обмен",
@@ -453,7 +441,6 @@
         "faucet": "Кран",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "Меморандум и условия предоставления услуг {AppName}",
         "privacy": "Политика конфиденциальности",
         "info": "Инфо и сообщество"
     },
@@ -463,17 +450,6 @@
         "privacyPolicy": "Политика конфиденциальности",
         "appVersion": "{AppName} версия",
         "contactUs": "Свяжитесь с нами"
-    },
-    "aboutNetworkDialog": {
-        "title": "О приложении",
-        "network": {
-            "title": "Что такое {Sora}?",
-            "description": "{AppName} построен поверх сети {Sora}, а токен {Sora} (XOR) используется для газа\/комиссий и предоставления ликвидности в {AppName}. {Sora} Network позволяет снизить комиссию, ускорить транзакции, упростить достижение консенсуса сети, и ориентирована на обеспечение взаимодействия с другими экосистемами блокчейнов, такими как {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Что такое {PolkadotJs}?",
-            "description": "Расширение {PolkadotJs} - это расширение браузера для Firefox и Chrome, предназначенное для управления аккаунтами сетей на основе Substrate, включая {Sora}, {Polkadot} и {Kusama}. Вы можете добавлять, импортировать и экспортировать аккаунты и подписывать транзакции или внешние данные, которые вы инициировали с авторизованных вами веб-сайтов."
-        }
     },
     "node": {
         "errors": {
@@ -519,16 +495,9 @@
     "exchange": {
         "Swap": "Обмен",
         "Pool": "Пул",
-        "balance": "Баланс",
-        "price": "Цена",
-        "transactionSubmitted": "Транзакция отправлена",
-        "transactionMessage": "{firstToken} и {secondToken}",
-        "ok": "OK",
-        "confirm": "Подтвердить",
         "lossWarning": "Вы потеряете {value}% на своей сделке. Мы обнаружили проблему с обеспечением ликвидности. Это может привести к значительным потерям при обмене токенов. Пожалуйста, убедитесь, что для желаемой пары достаточно ликвидности."
     },
     "swap": {
-        "estimated": "приблизительно",
         "slippageTolerance": "Допустимое проскальзывание",
         "minReceived": "Минимум получено",
         "maxSold": "Максимум продано",
@@ -542,7 +511,6 @@
         "confirmSwap": "Подтвердить обмен",
         "swapOutputMessage": "Вывод оценён. Вы получите как минимум {transactionValue} или транзакция будет отменена.",
         "rewardsForSwap": "Стратегические вознаграждения PSWAP",
-        "swapInputMessage": "Ввод оценивается. Вы продадите максимум {transactionValue} иначе транзакция будет отменена.",
         "route": "Маршрут",
         "errorFetching": "Ошибка при получении данных"
     },
@@ -561,21 +529,12 @@
     "bridge": {
         "title": "Мост",
         "info": "Конвертировать токены между {Sora} и {Ethereum} сетями.",
-        "balance": "Баланс",
         "next": "Далее",
         "connectWallets": "Подключите кошельки для просмотра соответствующей истории транзакций.",
         "soraNetworkFee": "{Sora} Комиссия сети",
-        "ethereumNetworkFee": "{Ethereum} Комиссия сети",
-        "total": "Всего",
-        "viewHistory": "Посмотреть историю транзакции",
-        "transactionSubmitted": "Транзакция отправлена",
-        "transactionMessage": "{assetA} для {assetB}",
         "notRegisteredAsset": "Актив {assetSymbol} не зарегистрирован",
         "selectNetwork": "Выбрать сеть",
         "networkInfo": "Соединить {Sora} Сеть с:",
-        "copy": "Скопировать адрес сети",
-        "soraAddress": "{Sora} адрес",
-        "ethereumAddress": "{Ethereum} адрес",
         "limitMessage": "В настоящее время существует {type} {amount} {symbol} для моста, обеспечивающая стабильность и безопасность сети {Sora}. Мы ценим ваше понимание.",
         "externalTransferFee": "{network} комиссия {XCM}",
         "externalTransferFeeTooltip": "Когда вы отправляете транзакцию моста в сеть {network}, из суммы перевода взимается небольшая комиссия.",
@@ -585,58 +544,26 @@
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
         "search": {
-            "title": "Токены",
             "placeholder": "Фильтр по ID актива, имени или символу тикера",
             "networkLabelSora": "{Sora} токены сети",
-            "networkLabelEthereum": "{network} зеркальные токены сети",
-            "emptyListMessage": "Нет результатов"
-        },
-        "customAsset": {
-            "title": "Кастомный",
-            "customInfo": "Важно! Персонализированные токены должны быть зарегистрированы в {Sora}.",
-            "registerToken": "Зарегистрировать токен",
-            "addressPlaceholder": "ID актива",
-            "symbolPlaceholder": "Символ токена",
-            "empty": "Токен не найден",
-            "alreadyAttached": "Этот токен уже был добавлен"
+            "networkLabelEthereum": "{network} зеркальные токены сети"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} для {to}",
         "for": " для ",
-        "steps": {
-            "step": "{step} из 2",
-            "step1": "Первая",
-            "step2": "Вторая"
-        },
-        "status": {
-            "pending": "{step} транзакция в обработке...",
-            "failed": "{step} транзакция не удалась. @:(retryText).",
-            "confirm": "Подтверждена 2ая из 2 транзакций...",
-            "complete": "Выполнено",
-            "convertionComplete": "Конверсия завершена"
-        },
         "statuses": {
-            "waiting": "Ожидание",
-            "ready": "Готово",
             "pending": "В обработке",
-            "frozen": "Заморожено",
             "failed": "Транзакция не удалась",
             "done": "Выполнено",
             "waitingForConfirmation": "Ожидание подтверждения..."
         },
-        "networkTitle": "{network} транзакция",
         "transactionHash": "Хеш транзакции",
         "networkInfo": {
             "status": "Статус",
             "date": "Дата",
             "amount": "Количество",
-            "transactionFee": "Комиссия за транзакцию",
-            "total": "Всего"
+            "transactionFee": "Комиссия за транзакцию"
         },
-        "successCopy": "Хеш транзакции скопирован в буфер обмена",
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} транзакция в процессе...",
         "newTransaction": "Создать новую транзакцию",
         "title": "Транзакция Моста",
@@ -657,8 +584,6 @@
         "title": "Выберите токен",
         "searchPlaceholder": "Фильтр по ID актива, имени или символу тикера",
         "emptyListMessage": "Нет результатов",
-        "copy": "Скопировать ID актива",
-        "successCopy": "{symbol} ID актива скопирован в буфер обмена",
         "assets": {
             "title": "Активы"
         },
@@ -671,29 +596,18 @@
         }
     },
     "createPair": {
-        "title": "Создать пару",
         "deposit": "Пополнить",
-        "balance": "Баланс",
         "pricePool": "Цены и доля пула",
         "shareOfPool": "Доля пула",
         "firstSecondPoolTokens": "{first}-{second} Токены пула",
-        "connect": "Подключить кошелек",
         "supply": "Добавить",
         "yourPosition": "Ваша позиция",
-        "yourPositionEstimated": "Ваша позиция (предполагаемая)",
-        "youWillReceive": "Вы получите",
-        "remove": "Удалить",
-        "add": "Добавить",
-        "ok": "OK",
-        "alreadyCreated": "Пара токенов уже создана",
         "firstLiquidityProvider": "Вы первый провайдер ликвидности",
         "firstLiquidityProviderInfo": "Соотношение добавляемых токенов будет определять цену этого пула.<br\/> Настройте соотношение на ваше усмотрение и нажмите \"добавить\" для подтверждения действия."
     },
     "confirmSupply": {
         "title": "Вы получите",
-        "outputDescription": "Вывод является оценочным. Если цена изменится более чем на {slippageTolerance}%, ваша транзакция будет отменена.",
-        "poolTokensBurned": "{first}-{second} Токены пула сожжены",
-        "price": "Цена"
+        "outputDescription": "Вывод является оценочным. Если цена изменится более чем на {slippageTolerance}%, ваша транзакция будет отменена."
     },
     "addLiquidity": {
         "title": "Добавить ликвидность"
@@ -701,11 +615,9 @@
     "removeLiquidity": {
         "title": "Забрать ликвидность",
         "liquidity": "ликвидность",
-        "balance": "Баланс",
         "amount": "Количество",
         "input": "Вход",
         "output": "Выход",
-        "price": "Цена",
         "remove": "Забрать",
         "description": "Вывод токенов пула конвертирует вашу позицию обратно в базовые токены по текущему курсу, пропорциональному вашей доле в пуле. Начисленные комиссионные включаются в получаемые вами суммы.",
         "outputMessage": "Вывод является оценочным. Если цена изменится более чем на {slippageTolerance}%, ваша транзакция будет отменена.",
@@ -726,27 +638,13 @@
             "frontrun": "Ваша транзакция может быть осуществлена заранее",
             "error": "Введите допустимый процент проскальзывания"
         },
-        "custom": "Ручное значение",
-        "transactionDeadline": "СРОК ТРАНЗАКЦИИ",
-        "transactionDeadlineHint": "Транзакция будет отменена, если она находится в ожидании более указанного времени.",
-        "nodeAddress": "Адрес ноды",
-        "ip": "IP",
-        "port": "ПОРТ",
-        "min": "МИНИМУМ",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} маршрутизация ликвидности обеспечивает лучшую цену для любой транзакции, комбинируя только лучшие ценовые варианты со всех доступных рынков. Когда доступно, кривая связывания токенов ({tbcAlgorithm}) будет использоваться для обеспечения ликвидности, если цена актива будет более привлекательной, чем из других источников, на которых используется пул {xycAlgorithm}.",
             "TBC": "{tbcAlgorithm} — покупка только из кривой связывания токенов (Token Bonding Curve) (Первичный Рынок). Есть вероятность того, что цена может стать невыгодной по сравнению с {xycAlgorithm} пулом (Вторичным Рынком), но ценность полученных вознаграждений со временем может оказаться гораздо более выгодной.",
             "XYK": "{xycAlgorithm} — покупка только из пула XYK (вторичный рынок). Традиционный пул обмена XYK."
-        },
-        "charts": "Графики",
-        "сhartsDescription": "Показывать графики цен токенов"
-    },
-    "resultDialog": {
-        "title": "Транзакция отправлена",
-        "ok": "OK"
+        }
     },
     "rewards": {
-        "title": "Получить награды",
         "andText": "и",
         "claiming": {
             "pending": "Получение...",
@@ -780,13 +678,12 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "{Sora}.farm урожай",
-            "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Комиссия за предоставление ликвидности",
             "BuyOnBondingCurve": "Покупки с TBC",
             "MarketMakerVolume": "Маркет-мейкинг",
-            "LiquidityProvisionFarming": "Фарминг"
+            "LiquidityProvisionFarming": "Фарминг",
+            "NftAirdrop": "NFT Airdrop"
         },
-        "vested": "vested",
         "forText": "за",
         "totalVested": "Все вознаграждения",
         "claimableAmountDoneVesting": "Требуемая сумма (наделение завершено)",
@@ -797,7 +694,7 @@
         },
         "Rewards": "Награды",
         "ReferralProgram": "Рефералы",
-        "PointSystem": "Очки"
+        "PointSystemWrapper": "Очки"
     },
     "provider": {
         "messages": {
@@ -812,7 +709,6 @@
         "title": "Язык"
     },
     "tokens": {
-        "symbol": "Символ",
         "assetId": "ID актива"
     },
     "memorandum": "Меморандум {AppName} и Условия предоставления услуг",
@@ -871,26 +767,19 @@
         "showBalances": "Показать балансы",
         "hideBalances": "Скрыть балансы",
         "settings": "Настройки",
-        "switchTheme": "Перейти в {theme} режим",
+        "switchTheme": "{theme} режим",
         "showDisclaimer": "Показать дисклеймер",
         "hideDisclaimer": "Скрыть дисклеймер",
         "selectCurrency": "Выберите валюту",
-        "turnPhoneHideBalances": "Повернуть телефон и скрыть",
+        "turnPhoneHideBalances": "Повернуть телефон и скрыть.",
         "titleBalance": "Балансы",
         "titleTheme": "Цветовая тема",
         "titleCurrency": "Фиатная валюта",
-        "titleMisc": "Другое"
+        "titleMisc": "Другое",
+        "systemPreferencesTheme": "Системный режим"
     },
     "sentText": "Отправить",
     "learnMoreText": "Узнать больше",
-    "marketMakerCountdown": {
-        "title": "Обратный отсчет маркет-мейкера",
-        "blocks": "блоков",
-        "daysLeft": "осталось дней",
-        "txs": "TXs",
-        "volume": "Объем MM TX",
-        "description": "20 миллионов PSWAP \/ месяц будут распределены среди маркет-мейкеров, имеющих не менее 500 tx \/ месяц с объемом более 1 XOR."
-    },
     "confirmNextTxFailure": {
         "header": "Внимание",
         "info": "Ваш баланс {symbol} будет меньше, чем {fee} {symbol} после этой транзакции. Вы не сможете оплатить сетевую комиссию за другую транзакцию.",
@@ -904,23 +793,16 @@
         "bondedXOR": "XOR зарезервировано",
         "referralsNumber": "{number} рефералов",
         "startInviting": "Bond XOR для приглашения других",
-        "preview": "Приглашайте новых пользователей и получайте 10% от их транзакционных сборов.<br\/>Чтобы начать, зарезервируйте любую сумму XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Узнать больше<\/a>",
-        "deposit": "Пополнить",
-        "balance": "Баланс",
         "insufficientBondedBalance": "Недостаточный зарезервированный баланс",
         "action": {
-            "empty": "Введите сумму {tokenSymbol}",
-            "startInviting": "Зарезервируйте {tokenSymbol}, чтобы начать приглашать",
             "bondMore": "Внести еще",
             "bond": "Внести",
             "unbond": "Вывести",
             "copyLink": "Копировать ссылку",
             "shareLink": "Поделиться"
         },
-        "transactionDetails": "Детали Транзакции",
         "receivedRewards": "Полученные награды",
         "invitationLink": "Ссылка для приглашения",
-        "successCopy": "Реферальная ссылка скопирована в буфер обмена",
         "bondTitle": "Зарезервировать XOR",
         "unbondTitle": "Вывести XOR из резерва",
         "confirm": {
@@ -932,8 +814,7 @@
             "freeOfCharge": "Данная транзакция бесплатна",
             "hasReferrerTitle": "Вы уже установили реферера",
             "hasReferrerDescription": "К сожалению, вы можете установить только одного реферера",
-            "ok": "OK",
-            "text": "Подтвердить"
+            "ok": "OK"
         },
         "referrer": {
             "title": "Добавьте реферера",
@@ -1116,9 +997,7 @@
         "addAccount": "Добавить аккаунт",
         "dialog": {
             "confirmTitle": "Подтвердите паролем",
-            "confirmButton": "Подписать транзакцию",
-            "savePasswordText": "Запомнить мой пароль на следующие 15 минут",
-            "extendPasswordText": "Продлить период без пароля на 15 минут"
+            "confirmButton": "Подписать транзакцию"
         },
         "errorMessages": {
             "password": "Пароль не совпадает",
@@ -1292,7 +1171,6 @@
     "connectEthereumWalletText": "Подключите кошелек {Ethereum}",
     "soraStaking": {
         "dropdownMenu": {
-            "pendingRewards": "Ожидаемые награды",
             "controllerAccount": "Аккаунт контроллера"
         },
         "actions": {
@@ -1307,8 +1185,7 @@
             "description": "Застейкайте токены {XOR} в сети {Sora} в качестве номинатора, чтобы подтверждать транзакции, и получать вознаграждение в токенах {VAL}."
         },
         "newStake": {
-            "title": "Начать стейкинг",
-            "minStakeWarning": "Минимальный стейк для получения вознаграждения — {min} {symbol}"
+            "title": "Начать стейкинг"
         },
         "validators": {
             "save": "Сохранить изменения",
@@ -1375,12 +1252,12 @@
         },
         "validatorsAttentionDialog": {
             "title": "Внимание",
-            "description": [
-                "Предложения валидаторов с помощью алгоритма не являются финансовой консультацией или советом. Стейкинг — это деятельность с высоким риском, и предложенные с помощью алгоритма валидаторы не обязательно снижают этот риск.",
-                "Валидатор, предложенный алгоритмом, все равно может быть оштрафован. Валидатор, предложенный алгоритмом, также может изменить свои параметры (например, размер комиссии и т. д.) в любое время после того, как он был предложен и\/или выбран.",
-                "Вы можете потерять токены или награды по тем или иным причинам. Стейкайте токены и используйте предложенных валидаторов только по своему усмотрению, после проведения комплексной проверки и тщательного рассмотрения связанных с этим рисков."
-            ],
-            "confirm": "Да, я понимаю риск"
+            "confirm": "Да, я понимаю риск",
+            "description": {
+                "0": "Предложения валидаторов с помощью алгоритма не являются финансовой консультацией или советом. Стейкинг — это деятельность с высоким риском, и предложенные с помощью алгоритма валидаторы не обязательно снижают этот риск.",
+                "1": "Валидатор, предложенный алгоритмом, все равно может быть оштрафован. Валидатор, предложенный алгоритмом, также может изменить свои параметры (например, размер комиссии и т. д.) в любое время после того, как он был предложен и\/или выбран.",
+                "2": "Вы можете потерять токены или награды по тем или иным причинам. Стейкайте токены и используйте предложенных валидаторов только по своему усмотрению, после проведения комплексной проверки и тщательного рассмотрения связанных с этим рисков."
+            }
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Ожидаемых наград нет",
@@ -1392,16 +1269,16 @@
         "selectValidatorsMode": {
             "title": "Стейкинг с валидаторами, предложенными алгоритмом",
             "description": "Алгоритм сети {Sora} отобрал список рекомендуемых валидаторов на основе критериев:",
-            "criteria": [
-                "Самый прибыльный",
-                "Не превышено количество подписчиков",
-                "Наличие ончейн-идентификации",
-                "Нет штрафов",
-                "Не более 2 валидаторов на одну личность"
-            ],
             "confirm": {
                 "suggested": "Застейкать с предложенными",
                 "manual": "Я сам выберу валидаторов"
+            },
+            "criteria": {
+                "0": "Самый прибыльный",
+                "1": "Не превышен лимит номинаторов",
+                "2": "Наличие ончейн-идентификации",
+                "3": "Нет штрафов",
+                "4": "Ограничение 2 валидаторов на одну личность"
             }
         },
         "claimRewardsDialog": {
@@ -1439,7 +1316,6 @@
         "marketTrades": "Рыночные сделки",
         "market": "Рынок",
         "limit": "Лимит",
-        "price": "Цена",
         "total": "Итого",
         "amount": "количество",
         "time": "время",
@@ -1483,7 +1359,6 @@
         "tradingPair": {
             "choosePair": "Выберите торговую пару",
             "volume": "Объем",
-            "dailyChange": "1D изм.",
             "status": "Статус",
             "total": "{amount} {symbol} по {amount2} {symbol2}"
         },
@@ -1557,8 +1432,7 @@
             "canceled": "Отменен",
             "expired": "Истек",
             "filled": "Заполнен"
-        },
-        "pricePerToken": "Цена за 1 {token}"
+        }
     },
     "calculatingText": "Вычисление",
     "customisePageText": "Настроить страницу",
@@ -1683,14 +1557,168 @@
         "accountsText": "{amount} аккаунтов",
         "yourRewards": "Ваши награды",
         "openTelegram": "Открыть {Telegram}",
-        "toEarnPoints": "Чтобы заработать очки"
+        "toEarnPoints": "Чтобы заработать очки",
+        "airdrop": "Выполните задания, связанные с экосистемой SORA, чтобы претендовать на эирдроп в $3 млн",
+        "complete": "Завершено | Завершить",
+        "currently": "Текущее",
+        "dated": "Дата",
+        "depositVolumeBridges": {
+            "descriptionTask": "Депозит и вывод через Мосты, bitget, 1x, gateio",
+            "titleProgress": "Объем депозита",
+            "titleTask": "Депозит и Вывод"
+        },
+        "firstSoraNetworkTransaction": "Ваша первая транзакция в сети SORA",
+        "firstTxAccount": {
+            "descriptionTask": "Завершите вашу первую XOR транзакцию и получите награду",
+            "titleProgress": "Первая транзакция",
+            "titleTask": "Совершите свою первую транзакцию"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Заблокируйте XOR, участвуя в голосованиях по управлению",
+            "titleProgress": "Управление",
+            "titleTask": "Заблокируйте XOR в голосовании по управлению"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Погасите долг в KUSD во время ликвидации или закрытия позиций",
+            "titleProgress": "Объем Kensetsu",
+            "titleTask": "Погасить долг в KUSD"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "Держите ваши текущие активы KUSD",
+            "titleProgress": "Владение KUSD",
+            "titleTask": "Держите KUSD"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "Предоставьте ликвидность через несколько пулов",
+            "titleProgress": "Предоставление ликвидности",
+            "titleTask": "Предоставьте ликвидность"
+        },
+        "lvl": "Уровень",
+        "maxLvl": "Вы достигли максимального уровня",
+        "nativeXorStaking": {
+            "descriptionTask": "Стейкайте XOR и зарабатывайте награды в VAL",
+            "titleProgress": "Стейкинг XOR",
+            "titleTask": "Стейк XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "Используйте XOR для оплаты комиссий в сети в нескольких on-chain транзакциях",
+            "titleProgress": "Комиссии в сети",
+            "titleTask": "Используйте XOR для оплаты комиссий в сети"
+        },
+        "nextLvl": "Следующий уровень",
+        "orderbookVolume": {
+            "descriptionTask": "Создайте лимитные ордера в ордербук",
+            "titleProgress": "Ордербук",
+            "titleTask": "Создайте лимитные ордера"
+        },
+        "progress": "Прогресс",
+        "referralRewards": {
+            "descriptionTask": "Приглашайте пользователей через реферальную систему",
+            "titleProgress": "Реферальная система",
+            "titleTask": "Пригласить пользователей"
+        },
+        "relatedTasks": "Выполните задачи, связанные с {title}, чтобы повысить свои навыки",
+        "rewardNextLvl": "Награда за следующий уровень",
+        "soraCard": "Подать заявку сейчас",
+        "VXORHoldings": {
+            "descriptionTask": "Держите ваши текущие активы VXOR",
+            "titleProgress": "Владение VXOR",
+            "titleTask": "Владеть VXOR"
+        },
+        "XORBurned": {
+            "descriptionTask": "Сожгите XOR в $ эквивалент",
+            "titleProgress": "XOR сожжен",
+            "titleTask": "Сжечь XOR"
+        },
+        "XORHoldings": {
+            "descriptionTask": "Держите ваши текущие активы XOR",
+            "titleProgress": "Владение XOR",
+            "titleTask": "Владеть XOR"
+        },
+        "yourLevel": "Ваш уровень",
+        "yourTasks": "Ваши задачи",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Добавить актив | Добавить активы",
     "noir": "Нуар",
     "rotatePhoneNotification": {
-        "title": "Переверните устройство, чтобы скрыть балансы.",
+        "title": "Переверните устройство, чтобы скрыть балансы",
         "info": "Для дополнительной конфиденциальности наклоните устройство экраном вниз, чтобы мгновенно скрыть свои балансы активов. Эта функция использует встроенные датчики вашего телефона.",
         "enableAcceleration": "Включите доступ к акселерометру в настройках.",
         "gyroscropePhone": "Наша технология использует встроенный в телефон гироскоп, чтобы мгновенно скрыть ваш баланс, когда вы наклоняете устройство."
+    },
+    "firstText": "Первая",
+    "lastText": "Последняя",
+    "prevText": "Предыдущая",
+    "priceText": "Цена",
+    "assetOwner": {
+        "accountWithAccess": "Счет с доступом к SBT",
+        "addRegulatedAsset": "Добавить еще один регулируемый актив",
+        "addRegulatedAssets": "Добавить регулируемые активы",
+        "attachedRegulatedAssets": "Прикрепленные регулируемые активы",
+        "createRegulatedAsset": "Создать новый регулируемый актив",
+        "createSbt": "Создать {type}",
+        "dialog": {
+            "addExisting": "Добавить существующий актив",
+            "addExistingDesc": "Добавить уже созданный актив для SBT",
+            "createAsset": "Создать новый актив",
+            "createAssetDesc": "Настройте новый разрешенный актив для {type}",
+            "enterAddress": "Введите адрес для выдачи",
+            "issueAccess": "Выдать доступ",
+            "pickDate": "Выберите день",
+            "selectAccessEnd": "Выберите, когда доступ будет прекращен",
+            "selectDate": "Выберите дату"
+        },
+        "guide": {
+            "createToken": "Создайте свой токен",
+            "createTokenDesc": "Легко запускайте свой уникальный токен, доступный в различных форматах, таких как NFT и SBT, используя надежную и безопасную инфраструктуру сети SORA.",
+            "disclaimerSbt": "Держите эту страницу открытой в течение всего процесса. Закрытие или уход с нее потребует перезапуска с самого начала. Выполняйте шаги быстро, чтобы избежать тайм-аута.",
+            "stepOneDesc": "Выбирайте или создавайте активы, которые вы лично создали и регулируете. Это активы под вашим контролем и управлением.",
+            "stepOneTitle": "Выберите или создайте регулируемые активы",
+            "stepThreeDesc": "Проверьте и подпишите окончательную транзакцию создания, чтобы завершить настройку SBT.",
+            "stepThreeTitle": "Проверьте и подпишите транзакцию",
+            "stepTwoDesc": "Укажите основную информацию, такую как название и тикер SBT, а также значок.",
+            "stepTwoTitle": "Введите данные SBT",
+            "title": "Как создать {type} :"
+        },
+        "issueSbtAccess": "Выпуск {type} доступа",
+        "letsStartBtn": "НАЧНЕМ",
+        "orSelectExisting": "Или выберите существующий",
+        "ownerSbtTitle": "Ваш {type}",
+        "permissionedAssets": "Разрешенные активы",
+        "regulatedAssetsConnected": "Регулируемые активы связаны",
+        "regulatedPools": "Регулируемые бассейны",
+        "sbtCreation": {
+            "addAssets": "Добавить активы в SBT",
+            "addDescription": "Введите данные SBT",
+            "addMeta": "Введите данные SBT",
+            "preview": "Предварительный просмотр SBT"
+        },
+        "sbtManagers": "{type} Менеджеры",
+        "selectExisting": "Выбрать существующий",
+        "startIssue": "Начать выдачу доступа к счетам СБТ",
+        "you": "Ты"
+    },
+    "sbtDetails": {
+        "accessPermitted": "Доступ разрешен",
+        "description": "Этот SBT обеспечивает доступ к нескольким токенам и пулам и привязан к вашей учетной записи.",
+        "expiresIn": "Истекает через",
+        "expiresInTooltip": "«Истекает через» показывает период или момент времени, когда был получен доступ.",
+        "expiryDate": "Дата истечения срока действия",
+        "expiryDateTooltip": "«Дата истечения срока» — это крайний срок вашего доступа к регулируемым активам SBT.",
+        "indefiniteExp": "открытый",
+        "issuedBy": "{SBT} выдан",
+        "kycProvider": "{KYC} Поставщик",
+        "kycVerification": "{KYC} Проверка",
+        "listOperable": "Регулируемые активы работоспособны",
+        "noPermissions": "Никаких дополнительных разрешений.",
+        "noReceiverAccess": "Вы пытаетесь отправить регулируемый токен пользователю, не имеющему доступа к SBT.",
+        "permission": "разрешение",
+        "permissions": "разрешения",
+        "regulatedInsitution": "Регулируемое учреждение"
     }
 }

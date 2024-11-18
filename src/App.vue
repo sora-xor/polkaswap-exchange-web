@@ -58,6 +58,7 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -72,9 +73,10 @@ import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
+import { getMobileCssClasses } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
+import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
@@ -83,7 +85,6 @@ import type { History, HistoryItem } from '@sora-substrate/sdk';
 import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
@@ -119,6 +120,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
+  @state.settings.isThemePreference isThemePreference!: boolean;
+  @state.settings.isTMA isTMA!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
@@ -142,14 +145,14 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
-  @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
   @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (windowWidth: number) => void;
   @mutation.settings.showOrientationWarning private showOrientationWarning!: FnWithoutArgs;
   @mutation.settings.hideOrientationWarning private hideOrientationWarning!: FnWithoutArgs;
+
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
   @mutation.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
-  @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => Promise<void>;
+  @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => void;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
 
   @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
@@ -158,7 +161,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncFnWithoutArgs;
   @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncFnWithoutArgs;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
-  @action.settings.setBlockNumber private setBlockNumber!: AsyncFnWithoutArgs;
   @action.settings.fetchAdsArray private fetchAdsArray!: AsyncFnWithoutArgs;
   @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
   @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
@@ -187,7 +189,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (this.isWalletLoaded) {
         this.activateNetwokSubscriptions();
       }
-      this.setBlockNumber();
     } else {
       this.resetNetworkSubscriptions();
     }
@@ -204,6 +205,15 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   private async confirmInviteUserIfHasStorage(storageReferrerValue: string): Promise<void> {
     if (this.isLoggedIn && !!storageReferrerValue) {
       await this.confirmInvititation();
+    }
+  }
+
+  @Watch('isThemePreference', { immediate: true })
+  private onIsThemePreferenceChange(newVal: boolean) {
+    if (newVal) {
+      detectSystemTheme(this.isTMA);
+    } else {
+      removeThemeListeners(this.isTMA);
     }
   }
 
@@ -227,15 +237,21 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
 
-  public clearLocalStorage(): void {
-    clearLocalStorage();
-  }
+  public clearLocalStorage = clearLocalStorage;
 
-  private handleLocalStorageChange() {
+  private handleLocalStorageChange(): void {
     const usagePercentage = calculateStorageUsagePercentage();
     if (usagePercentage >= LOCAL_STORAGE_LIMIT_PERCENTAGE) {
       this.showErrorLocalStorageExceed = true;
     }
+  }
+
+  private subscribeOnLocalStorage(): void {
+    window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
+  }
+
+  private unsubscribeFromLocalStorage(): void {
+    window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
   }
 
   private handleOrientationChange(): void {
@@ -249,14 +265,37 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
+  private subscribeOnScreenOrientation(): void {
+    if (window.innerWidth <= Breakpoint.LargeMobile) {
+      if (screen.orientation) {
+        screen.orientation.addEventListener('change', this.handleOrientationChange);
+      } else {
+        window.addEventListener('resize', this.handleOrientationChange);
+      }
+    }
+  }
+
+  private unsubscribeFromScreenOrientation(): void {
+    if (screen.orientation) {
+      screen.orientation.removeEventListener('change', this.handleOrientationChange);
+    } else {
+      window.removeEventListener('resize', this.handleOrientationChange);
+    }
+  }
+
+  private subscribeOnScreenSize(): void {
+    window.addEventListener('resize', this.setResponsiveClassDebounced);
+  }
+
+  private unsubscribeFromScreenSize(): void {
+    window.removeEventListener('resize', this.setResponsiveClassDebounced);
+  }
+
   async created() {
-    window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
-    preloadFontFace('element-icons');
     this.setResponsiveClass();
+    this.setLanguage(getLocale() as Language);
     updateBaseUrl(router);
     AlertsApiService.baseRoute = getFullBaseUrl(router);
-
-    await this.setLanguage(getLocale() as Language);
 
     await this.withLoading(async () => {
       const { data } = await axiosInstance.get('/env.json');
@@ -269,18 +308,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       tmaSdkService.init(data?.TG_BOT_URL);
 
       await this.setApiKeys(data?.API_KEYS);
-      await this.setEthBridgeSettings(data.ETH_BRIDGE);
+      this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
       this.setSubNetworkApps(data.SUB_NETWORKS);
-
-      this.subscribeOnExchangeRatesApi();
-
-      if (data.PARACHAIN_IDS) {
-        api.bridgeProxy.sub.parachainIds = data.PARACHAIN_IDS;
-      }
-
       this.setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBQUERY, endpoint: data.SUBQUERY_ENDPOINT });
       this.setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBSQUID, endpoint: data.SUBSQUID_ENDPOINT });
 
@@ -294,20 +326,17 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // connection to node
       await this.runAppConnectionToNode();
     });
-    updateDocumentTitle(); // For the first load
+
+    this.subscribeOnExchangeRatesApi();
     this.showDisclaimer();
     this.fetchAdsArray();
+    this.onIsThemePreferenceChange(this.isThemePreference);
   }
 
   mounted(): void {
-    window.addEventListener('resize', this.setResponsiveClassDebounced);
-    if (window.innerWidth <= Breakpoint.LargeMobile) {
-      if (screen.orientation) {
-        screen.orientation.addEventListener('change', this.handleOrientationChange);
-      } else {
-        window.addEventListener('resize', this.handleOrientationChange);
-      }
-    }
+    this.subscribeOnLocalStorage();
+    this.subscribeOnScreenSize();
+    this.subscribeOnScreenOrientation();
   }
 
   private get mobileCssClasses(): string[] | undefined {
@@ -350,7 +379,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   goTo(name: PageNames): void {
     if (name === PageNames.Rewards) {
       // Rewards is a menu route but we need to show PointSystem by default
-      goTo(PageNames.PointSystem);
+      goTo(PageNames.PointSystemWrapper);
     } else {
       goTo(name);
     }
@@ -399,17 +428,13 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
-    window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
-    window.removeEventListener('resize', this.setResponsiveClassDebounced);
-    if (screen.orientation) {
-      screen.orientation.removeEventListener('change', this.handleOrientationChange);
-    } else {
-      window.removeEventListener('resize', this.handleOrientationChange);
-    }
+    this.unsubscribeFromLocalStorage();
+    this.unsubscribeFromScreenSize();
+    this.unsubscribeFromScreenOrientation();
+    removeThemeListeners(this.isTMA);
     tmaSdkService.destroy();
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
-    this.resetBlockNumberSubscription();
     this.unsubscribeFromInvitedUsers();
     await connection.close();
   }
@@ -479,8 +504,9 @@ ul ul {
   }
 
   &-body-scrollbar {
-    @include scrollbar;
     flex: 1;
+
+    @include scrollbar;
   }
 }
 

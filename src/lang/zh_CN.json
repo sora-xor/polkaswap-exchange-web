@@ -1,7 +1,6 @@
 {
     "closeText": "关闭",
     "backText": "返回",
-    "createWalletText": "创建钱包",
     "nameText": "名称",
     "nextText": "下一个",
     "importText": "导入",
@@ -70,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} 头寸已关闭",
             "DepositCollateral": "已存入 {amount} {symbol}",
             "RepayVaultDebt": "已偿还债务 {amount} {symbol}",
-            "BorrowVaultDebt": "已借入债务 {amount} {symbol}"
+            "BorrowVaultDebt": "已借入债务 {amount} {symbol}",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
+            "BindRegulatedAsset": "将资产{symbol2}绑定到SBT",
+            "IssueSoulBoundToken": "发行灵魂绑定代币{symbol}",
+            "RegisterAndRegulateAsset": "注册并监管{symbol}资产",
+            "RegulateAsset": "调节资产{symbol}",
+            "SetAccessExpiration": "SB 代币{symbol}已更新到期日期至{endTime}",
+            "XorlessTransfer": "{action} {amount} { {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -112,7 +118,14 @@
             "CloseVault": "关闭 {symbol}\/{symbol2} 头寸失败",
             "DepositCollateral": "存入 {amount} {symbol} 抵押品失败",
             "RepayVaultDebt": "偿还 {amount} {symbol} 债务失败",
-            "BorrowVaultDebt": "借入 {amount} {symbol} 债务失败"
+            "BorrowVaultDebt": "借入 {amount} {symbol} 债务失败",
+            "VestedTransfer": "无法 {action} {amount} {symbol} {direction} {address}",
+            "BindRegulatedAsset": "无法将资产{symbol}绑定到 SBT {symbol2}",
+            "IssueSoulBoundToken": "无法发出灵魂绑定令牌{symbol}",
+            "RegisterAndRegulateAsset": "无法注册和监管{symbol}",
+            "RegulateAsset": "未能监管资产{symbol}",
+            "SetAccessExpiration": "无法将{symbol}到期日期更新为{to}",
+            "XorlessTransfer": "无法将{amount} {symbol}发送到{address}"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -146,31 +159,31 @@
         "CloseVault": "关闭头寸",
         "DepositCollateral": "存入抵押品",
         "RepayVaultDebt": "偿还债务",
-        "BorrowVaultDebt": "借入债务"
+        "BorrowVaultDebt": "借入债务",
+        "VestedTransfer": "转移",
+        "BindRegulatedAsset": "绑定监管资产",
+        "IssueSoulBoundToken": "发行 SBT",
+        "RegisterAndRegulateAsset": "注册资产",
+        "RegulateAsset": "监管资产",
+        "SetAccessExpiration": "设置 SBT 到期时间",
+        "XorlessTransfer": "转移"
     },
     "polkadotjs": {
         "noExtensions": "没有找到 {PolkadotJs} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "您的{extension}扩展中似乎没有账户。请添加一个账户并再次尝试。",
         "noAccount": "{extension} 帐户错误. 请在{extension} 中检查您的帐户",
         "noExtension": "未找到{extension}扩展名。请安装它并重新加载此页面",
         "noSigner": "拒绝访问。转到{extension}扩展设置并打开“管理网站访问”以允许。",
         "connectionError": "连接钱包时发生错误。您可以尝试再次通过{extension}连接钱包"
     },
     "connection": {
-        "text": "为了在{Sora}上管理资产并签署交易，必须连接一个账户。可以使用我们的集成钱包或浏览器扩展来创建和连接{Sora}账户。",
-        "noAccounts": "在您的{extension}浏览器扩展中没有找到账户。请添加一个账户并重试。",
         "selectAccount": "选择要使用的账户",
         "action": {
-            "install": "安装扩展",
             "learnMore": "了解有关钱包连接的更多信息",
-            "connect": "连接账户",
             "refresh": "刷新"
         },
-        "selectWallet": "选择要使用的钱包",
         "wallet": {
             "install": "安装",
             "connected": "连接的",
-            "notConnected": "未连接",
             "recommended": "受到推崇的"
         },
         "internalTitle": "连接{wallet}",
@@ -183,30 +196,26 @@
     },
     "wallet": {
         "WalletAssets": "资产",
-        "createToken": "@:createTokenText",
         "WalletHistory": "活动"
     },
     "walletSend": {
         "title": "发送",
-        "address": "@:addressText",
-        "amount": "@:amountText",
         "balance": "余额",
         "max": "最大限度",
-        "fee": "@:networkFeeText",
         "enterAddress": "输入地址",
         "badAddress": "地址不正确",
         "enterAmount": "输入数量",
-        "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "确认交易",
         "errorAddress": "无效地址。请检查并重试。",
-        "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "在{Sora}网络账户之间发送代币",
         "addressWarning": "代币将被发送至以下{Sora}地址。请确保收件人能够访问{Sora}链以使用代币。",
         "addressError": "您不能向您当前已连接的同一个账户发送代币。",
-        "confirm": "@:confirmText"
+        "enableVesting": "启用代币归属",
+        "enterVestingPercentage": "输入归属百分比",
+        "vestingPercentage": "归属百分比",
+        "unlockFrequency": "解锁频率"
     },
     "account": {
-        "successCopy": "钱包地址已被复制到剪贴板上",
         "copy": "复制地址",
         "switch": "切换账户",
         "walletAddress": "钱包地址",
@@ -219,11 +228,7 @@
         "clearHistory": "清除历史记录",
         "filterPlaceholder": "按地址、符号、类型或区块ID进行筛选",
         "empty": "您的交易将显示在此处",
-        "emptySearch": "未找到交易",
-        "firstText": "第一的",
-        "lastText": "最后的",
-        "prevText": "以前的",
-        "nextText": "下一个"
+        "emptySearch": "未找到交易"
     },
     "assets": {
         "empty": "没有资产",
@@ -233,7 +238,6 @@
         "liquidity": "增加流动性",
         "bridge": "桥",
         "copy": "复制资产 ID",
-        "successCopy": "{symbol}资产 ID 被复制到剪贴板",
         "copied": "已复制！",
         "balance": {
             "transferable": "可转让",
@@ -262,7 +266,6 @@
         "approved": "社区批准的资产",
         "unknown": "未知来源",
         "scam": "骗局",
-        "next": "下一个",
         "AddAssetToken": {
             "title": "货币",
             "switchBtn": "仅经过验证的资产"
@@ -278,7 +281,6 @@
         "unpinAsset": "取消固定资产"
     },
     "createToken": {
-        "desc": "在 {Sora} 上创建和部署自定义资产",
         "enterSymbol": "输入代币符号",
         "enterName": "输入代币名称",
         "enterSupply": "输入代币供应",
@@ -286,10 +288,6 @@
             "title": "交易已提交",
             "desc": "创建{symbol}代币"
         },
-        "tooltipValue": "@:networkFeeTooltipText",
-        "fee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "feeError": "无法获得交易费用",
         "error": "创建{symbol}代币失败",
         "tokenSymbol": {
             "placeholder": "代币符号",
@@ -308,7 +306,6 @@
             "desc": "铸造更多代币的能力。"
         },
         "provideContent": "提供内容",
-        "selectLocalFile": "选择本地文件",
         "CreateSimpleToken": "代币",
         "nft": {
             "source": {
@@ -341,13 +338,9 @@
             "placeholder": "可分的",
             "desc": "NFT 分割成小数部分的能力。流动性拨备仅适用于可分割资产"
         },
-        "title": "@:createTokenText",
-        "action": "@:createTokenText",
-        "confirm": "@:confirmText",
         "titleCommon": "创建",
         "confirmTokenTitleCommon": "创建代币",
-        "confirmTokenTitleNFT": "创建 NFT",
-        "actionNFT": "@:createTokenTextNFT"
+        "confirmTokenTitleNFT": "创建 NFT"
     },
     "transaction": {
         "title": "交易细节",
@@ -358,7 +351,6 @@
             "failed": "交易失败",
             "complete": "完成"
         },
-        "errorMessage": "错误",
         "startTime": "日期",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
@@ -366,7 +358,6 @@
         "total": "总共",
         "from": "从",
         "to": "至",
-        "successCopy": "{value}被复制到剪贴板",
         "copy": "复制{value}",
         "history": {
             "created": "已经创建了{amount}{symbol}的交易。",
@@ -377,7 +368,6 @@
         "viewIn": "在{explorer}中查看",
         "referrer": "推荐人",
         "referral": "推荐",
-        "adarTxDetailsTitle": "交易详情",
         "comment": "评论",
         "price": "价格",
         "side": "边"
@@ -409,7 +399,6 @@
         "Stats": "统计数据",
         "Wallet": "钱包",
         "AddLiquidity": "增加流动性",
-        "RemoveLiquidity": "删除流动性",
         "Rewards": "奖励",
         "Explore\/Tokens": "代币",
         "Explore\/Pools": "流动池",
@@ -421,8 +410,7 @@
         "AssetOwner": "资产所有者",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "{Kensetsu}",
-        "VaultDetails": "头寸详情",
-        "Burn": "烧伤"
+        "VaultDetails": "头寸详情"
     },
     "mainMenu": {
         "Swap": "兑换",
@@ -453,7 +441,6 @@
         "faucet": "水龙头",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "{AppName} 备忘录和服务条款",
         "privacy": "隐私政策",
         "info": "信息与社区"
     },
@@ -463,17 +450,6 @@
         "privacyPolicy": "隐私政策",
         "appVersion": "{AppName} 版本",
         "contactUs": "联系我们"
-    },
-    "aboutNetworkDialog": {
-        "title": "关于",
-        "network": {
-            "title": "什么是{Sora}？",
-            "description": "{AppName}建立在{Sora}网络之上，{Sora}代币（XOR）被用于{AppName}上的费用和流动性供应。{Sora}网络允许减少的费用和加快交易，并简化共识的最终确定，专注于提供跨其他区块链生态系统的互操作性，如{Ethereum}。"
-        },
-        "polkadot": {
-            "title": "什么是 {PolkadotJs}？",
-            "description": "{PolkadotJs}扩展是一个可用于 Firefox 浏览器和 Chrome 的浏览器扩展，专门用于管理基于 Substrate 的链的账户，包括 {Sora}、{Polkadot} 和 {Kusama}。您可以添加、导入和导出账户并签署您从授权的网站发起的交易或外部信息。"
-        }
     },
     "node": {
         "errors": {
@@ -519,16 +495,9 @@
     "exchange": {
         "Swap": "兑换",
         "Pool": "流动池",
-        "balance": "余额",
-        "price": "价钱",
-        "transactionSubmitted": "已提交的交易",
-        "transactionMessage": "{firstToken}和{secondToken}",
-        "ok": "好的",
-        "confirm": "确认",
         "lossWarning": "您的交易可能会损失{value}%。我们检测到了流动性供应问题。这可能导致在代币兑换过程中出现重大亏损。请确保所选的兑换对具有足够的流动性。"
     },
     "swap": {
-        "estimated": "估计的",
         "slippageTolerance": "滑点容忍度",
         "minReceived": "最低可接收数量",
         "maxSold": "最大可卖数量",
@@ -542,7 +511,6 @@
         "confirmSwap": "确认兑换",
         "swapOutputMessage": "输出是估计的。您将至少收到{transactionValue}，否则交易将被取消。",
         "rewardsForSwap": "PSWAP 战略奖励",
-        "swapInputMessage": "输入是估计的。您将卖出最大{transactionValue}或交易将被取消。",
         "route": "路线",
         "errorFetching": "获取数据时出错"
     },
@@ -561,21 +529,12 @@
     "bridge": {
         "title": "桥",
         "info": "在{Sora}和{Ethereum}网络之间转换代币。",
-        "balance": "余额",
         "next": "下一个",
         "connectWallets": "连接钱包以查看各自的交易历史。",
         "soraNetworkFee": "{Sora} 网络费用",
-        "ethereumNetworkFee": "{Ethereum} 网络费用",
-        "total": "总共",
-        "viewHistory": "查看交易记录",
-        "transactionSubmitted": "交易已提交",
-        "transactionMessage": "{assetA}为{assetB}",
         "notRegisteredAsset": "资产{assetSymbol}未注册",
         "selectNetwork": "选择网络",
         "networkInfo": "与 {Sora} 网络桥接：",
-        "copy": "复制网络地址",
-        "soraAddress": "{Sora} 地址",
-        "ethereumAddress": "{Ethereum} 地址",
         "limitMessage": "目前，为了确保{Sora}网络的稳定性和安全性，跨链桥转账的{type}金额为{amount} {symbol}。感谢您的理解。",
         "externalTransferFee": "{network} {XCM}费用",
         "externalTransferFeeTooltip": "当您向{network}网络发送桥接交易时，将从您传输的金额中收取少量费用",
@@ -585,58 +544,26 @@
     "selectRegisteredAsset": {
         "title": "选择一个代币",
         "search": {
-            "title": "代币",
             "placeholder": "按资产 ID、名称或代币符号进行筛选",
             "networkLabelSora": "{Sora} 网络代币",
-            "networkLabelEthereum": "{network}网络镜像令牌",
-            "emptyListMessage": "没有结果"
-        },
-        "customAsset": {
-            "title": "自定义",
-            "customInfo": "重要提醒！自定义代币必须在{Sora} 中注册。",
-            "registerToken": "注册代币",
-            "addressPlaceholder": "资产 ID",
-            "symbolPlaceholder": "代币符号",
-            "empty": "未找到代币",
-            "alreadyAttached": "代币已添加"
+            "networkLabelEthereum": "{network}网络镜像令牌"
         }
     },
     "bridgeTransaction": {
-        "details": "{from}为{to}",
         "for": " 给 ",
-        "steps": {
-            "step": "{step} of 2",
-            "step1": "第一个",
-            "step2": "第二个"
-        },
-        "status": {
-            "pending": "{step}交易等待确认...",
-            "failed": "{step}交易失败。@:(retryText)。",
-            "confirm": "两笔交易中的第二笔交易正在等待确认中...",
-            "complete": "完成",
-            "convertionComplete": "转换完成"
-        },
         "statuses": {
-            "waiting": "等待",
-            "ready": "准备",
             "pending": "等待确认",
-            "frozen": "已被冻结",
             "failed": "交易失败",
             "done": "完成",
             "waitingForConfirmation": "等待确认..."
         },
-        "networkTitle": "{network}交易",
         "transactionHash": "交易哈希值",
         "networkInfo": {
             "status": "状态",
             "date": "日期",
             "amount": "数量",
-            "transactionFee": "交易费用",
-            "total": "总共"
+            "transactionFee": "交易费用"
         },
-        "successCopy": "交易哈希已被复制到剪贴板上",
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} 交易等待确认...",
         "newTransaction": "创建新的交易",
         "title": "转接桥交易",
@@ -657,8 +584,6 @@
         "title": "选择一个代币",
         "searchPlaceholder": "按资产 ID、名称或代币符号进行筛选",
         "emptyListMessage": "没有结果",
-        "copy": "复制资产 ID",
-        "successCopy": "{symbol}资产 ID 被复制到剪贴板",
         "assets": {
             "title": "资产"
         },
@@ -671,29 +596,18 @@
         }
     },
     "createPair": {
-        "title": "创建一个流动性对",
         "deposit": "存款",
-        "balance": "余额",
         "pricePool": "价格和费用",
         "shareOfPool": "流动池份额",
         "firstSecondPoolTokens": "{first}-{second}流动池",
-        "connect": "连接钱包",
         "supply": "供应",
         "yourPosition": "您的头寸",
-        "yourPositionEstimated": "您的头寸（估计）",
-        "youWillReceive": "您将收到",
-        "remove": "删除",
-        "add": "添加",
-        "ok": "好的",
-        "alreadyCreated": "代币对已经创建",
         "firstLiquidityProvider": "您是第一个流动性提供者",
         "firstLiquidityProviderInfo": "你添加的代币比例将决定这个池子的价格。<br\/>当你对比率满意后，点击供应以进行审核。"
     },
     "confirmSupply": {
         "title": "您的流动池份额将是",
-        "outputDescription": "产出是估计的。如果价格变化超过{slippageTolerance}%，您的交易将被取消。",
-        "poolTokensBurned": "{first}-{second}流动池代币被销毁",
-        "price": "价格"
+        "outputDescription": "产出是估计的。如果价格变化超过{slippageTolerance}%，您的交易将被取消。"
     },
     "addLiquidity": {
         "title": "增加流动性"
@@ -701,11 +615,9 @@
     "removeLiquidity": {
         "title": "移除流动性",
         "liquidity": "流动性",
-        "balance": "余额",
         "amount": "数量",
         "input": "输入",
         "output": "输出",
-        "price": "价格",
         "remove": "移除",
         "description": "将池子代币移除会按照当前比例，将您在池子中的份额转换回基础代币。所得金额包括已累积的手续费。",
         "outputMessage": "产出是估计的。如果价格变化超过 {slippageTolerance}% ，您的交易将被取消。",
@@ -726,27 +638,13 @@
             "frontrun": "您的交易可能会抢跑",
             "error": "输入有效的滑点百分比"
         },
-        "custom": "自定义",
-        "transactionDeadline": "交易期限",
-        "transactionDeadlineHint": "如果交易的等待时间超过这个时间，交易将被取消。",
-        "nodeAddress": "节点地址",
-        "ip": "IP",
-        "port": "端口",
-        "min": "最小",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm}流动性路由通过从所有可用市场中仅选择最佳价格选项，确保任何交易的最佳价格。在可用时，将使用Token Bonding Curve（{tbcAlgorithm}）提供流动性，前提是资产价格比其他来源更实惠；否则将利用{xycAlgorithm}池。",
             "TBC": "{tbcAlgorithm} — 仅从代币绑定曲线（一级市场）购买。 与{xycAlgorithm}流动池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
             "XYK": "{xycAlgorithm} — 仅从 XYK 池（二级市场）购买。传统的 XYK 流动池兑换。"
-        },
-        "charts": "图表",
-        "сhartsDescription": "查看代币价格图表"
-    },
-    "resultDialog": {
-        "title": "交易已提交",
-        "ok": "好的"
+        }
     },
     "rewards": {
-        "title": "申请奖励",
         "andText": "和",
         "claiming": {
             "pending": "声称...",
@@ -780,13 +678,12 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "{Sora}.农场收获",
-            "NtfAirdrop": "NFT空投",
             "LiquidityProvision": "从流动性提供中获得的费用",
             "BuyOnBondingCurve": "从 TBC 购买",
             "MarketMakerVolume": "做市商",
-            "LiquidityProvisionFarming": "农业"
+            "LiquidityProvisionFarming": "农业",
+            "NftAirdrop": "NFT空投"
         },
-        "vested": "已归属",
         "forText": "给",
         "totalVested": "总奖励",
         "claimableAmountDoneVesting": "可申领金额(完成归属)",
@@ -797,7 +694,7 @@
         },
         "Rewards": "奖励",
         "ReferralProgram": "推荐",
-        "PointSystem": "积分"
+        "PointSystemWrapper": "积分"
     },
     "provider": {
         "messages": {
@@ -812,7 +709,6 @@
         "title": "语言"
     },
     "tokens": {
-        "symbol": "符号",
         "assetId": "资产 ID"
     },
     "memorandum": "{AppName} 备忘录和服务条款",
@@ -871,26 +767,19 @@
         "showBalances": "显示余额",
         "hideBalances": "隐藏余额",
         "settings": "设置",
-        "switchTheme": "切换到{theme}模式",
+        "switchTheme": "{theme} 模式",
         "showDisclaimer": "显示免责声明",
         "hideDisclaimer": "隐藏免责声明",
         "selectCurrency": "选择货币",
-        "turnPhoneHideBalances": "翻转手机并隐藏",
+        "turnPhoneHideBalances": "翻转手机并隐藏.",
         "titleBalance": "余额",
         "titleTheme": "颜色主题",
         "titleCurrency": "法定货币",
-        "titleMisc": "其他"
+        "titleMisc": "其他",
+        "systemPreferencesTheme": "系统偏好设置"
     },
     "sentText": "已发送",
     "learnMoreText": "了解更多",
-    "marketMakerCountdown": {
-        "title": "做市商倒计时",
-        "blocks": "区块",
-        "daysLeft": "剩余天数",
-        "txs": "交易",
-        "volume": "做市商交易量",
-        "description": "每月 2000 万个 PSWAP 将分发给至少 500 笔交易\/月价值超过 1 个 XOR 的做市商。"
-    },
     "confirmNextTxFailure": {
         "header": "注意",
         "info": "在此交易后，您的 {symbol} 余额将低于{fee}{symbol} 您将无法支付另一笔交易的网络费用。",
@@ -904,23 +793,16 @@
         "bondedXOR": "XOR绑定",
         "referralsNumber": "{number}推荐者",
         "startInviting": "绑定 XOR 以推荐他人",
-        "preview": "邀请新用户并从他们的交易费用中获得 10%。 <br\/>首先，绑定任意数量的XOR。 <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">了解更多<\/a>",
-        "deposit": "存款",
-        "balance": "余额",
         "insufficientBondedBalance": "绑定余额不足",
         "action": {
-            "empty": "输入{tokenSymbol}的金额",
-            "startInviting": "绑定{tokenSymbol}以便开始您的邀请",
             "bondMore": "绑定更多",
             "bond": "绑定",
             "unbond": "解绑",
             "copyLink": "复制链接",
             "shareLink": "分享"
         },
-        "transactionDetails": "交易详情",
         "receivedRewards": "已领取奖励",
         "invitationLink": "邀请链接",
-        "successCopy": "推荐链接被复制到剪贴板",
         "bondTitle": "绑定XOR",
         "unbondTitle": "解绑XOR",
         "confirm": {
@@ -932,8 +814,7 @@
             "freeOfCharge": "此活动是免费的",
             "hasReferrerTitle": "您已经设置好了您的推荐人",
             "hasReferrerDescription": "亲爱的真不巧，您只能设置一个",
-            "ok": "好的",
-            "text": "确认"
+            "ok": "好的"
         },
         "referrer": {
             "title": "添加您的推荐人",
@@ -1116,9 +997,7 @@
         "addAccount": "添加帐户",
         "dialog": {
             "confirmTitle": "用密码确认",
-            "confirmButton": "签署交易",
-            "savePasswordText": "在接下来的 15 分钟内记住我的密码",
-            "extendPasswordText": "延长无密码时间15分钟"
+            "confirmButton": "签署交易"
         },
         "errorMessages": {
             "password": "密码不匹配",
@@ -1292,7 +1171,6 @@
     "connectEthereumWalletText": "连接{Ethereum}钱包",
     "soraStaking": {
         "dropdownMenu": {
-            "pendingRewards": "待奖励",
             "controllerAccount": "控制者账户"
         },
         "actions": {
@@ -1307,8 +1185,7 @@
             "description": "在{Sora}网络上作为提名人质押{XOR}代币，以验证交易并赚取{VAL}代币奖励。"
         },
         "newStake": {
-            "title": "开始质押",
-            "minStakeWarning": "领取奖励的最低质押额为{min} {symbol}"
+            "title": "开始质押"
         },
         "validators": {
             "save": "保存更改",
@@ -1375,12 +1252,12 @@
         },
         "validatorsAttentionDialog": {
             "title": "注意力",
-            "description": [
-                "算法验证者建议不构成财务咨询或建议。质押是一项高风险活动，算法验证者的建议并不一定能减轻这种风险。",
-                "算法建议的验证器仍然可能被削减。算法建议的验证者还可以在被建议和\/或选择之后随时改变其参数（例如，佣金率等）。",
-                "您可能会因为这些或其他原因而失去代币或奖励。在进行尽职调查并仔细考虑所涉及的风险后，仅可以自行决定质押代币并使用验证者的建议。"
-            ],
-            "confirm": "是的，我了解风险"
+            "confirm": "是的，我了解风险",
+            "description": {
+                "0": "算法验证人的建议并不构成财务咨询或建议。质押是一项高风险活动，算法验证人的建议并不能完全减轻这种风险。",
+                "1": "算法建议的验证者仍然可能被惩罚。算法建议的验证者在被建议和\/或选择之后，也可以随时更改其参数（例如佣金率等）。",
+                "2": "您可能会因为这些或其他原因而失去代币或奖励。在进行尽职调查并仔细考虑所涉及的风险后，仅可以自行决定质押代币并使用验证者的建议。"
+            }
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "没有待处理的奖励",
@@ -1392,16 +1269,16 @@
         "selectValidatorsMode": {
             "title": "与算法建议的验证者进行质押",
             "description": "{Sora} 网络算法根据以下标准选择了推荐的验证者列表：",
-            "criteria": [
-                "最赚钱",
-                "未超额认购",
-                "拥有链上身份",
-                "没有被砍掉",
-                "每个身份最多有 2 个验证者"
-            ],
             "confirm": {
                 "suggested": "与建议的股份",
                 "manual": "我会自己选择验证者"
+            },
+            "criteria": {
+                "0": "最赚钱",
+                "1": "未超额认购",
+                "2": "拥有链上身份",
+                "3": "没有被砍掉",
+                "4": "每个身份最多有 2 个验证者"
             }
         },
         "claimRewardsDialog": {
@@ -1439,7 +1316,6 @@
         "marketTrades": "市场交易",
         "market": "市价",
         "limit": "限价",
-        "price": "价格",
         "total": "总计",
         "amount": "数量",
         "time": "时间",
@@ -1483,7 +1359,6 @@
         "tradingPair": {
             "choosePair": "选择交易对",
             "volume": "成交量",
-            "dailyChange": "每日变化",
             "status": "状态",
             "total": "{amount} {symbol} 在{amount2} {symbol2}"
         },
@@ -1557,8 +1432,7 @@
             "canceled": "取消",
             "expired": "已到期",
             "filled": "填充"
-        },
-        "pricePerToken": "每 1 个{token}价格"
+        }
     },
     "calculatingText": "正在计算",
     "customisePageText": "自定义页面",
@@ -1683,14 +1557,168 @@
         "accountsText": "{amount} 个账户",
         "yourRewards": "您的奖励",
         "openTelegram": "打开 {Telegram}",
-        "toEarnPoints": "获得积分"
+        "toEarnPoints": "获得积分",
+        "airdrop": "完成 SORA 生态系统相关任务以获得 $300 万空投资格",
+        "complete": "已完成 | 完成",
+        "currently": "现在",
+        "dated": "已过时",
+        "depositVolumeBridges": {
+            "descriptionTask": "通过桥接、bitget、1x、gateio 存款和取款",
+            "titleProgress": "存款量",
+            "titleTask": "存款和取款"
+        },
+        "firstSoraNetworkTransaction": "您的第一次 SORA 网络交易",
+        "firstTxAccount": {
+            "descriptionTask": "完成您的第一次 XOR 交易并领取奖励",
+            "titleProgress": "首次交易",
+            "titleTask": "完成您的第一次交易"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "通过参与治理投票活动锁定 XOR",
+            "titleProgress": "治理",
+            "titleTask": "在治理投票中锁定 XOR"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "在清算或关闭头寸时偿还 KUSD 债务",
+            "titleProgress": "Kensetsu 量",
+            "titleTask": "偿还 KUSD 债务"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "持有您当前的 KUSD 持仓",
+            "titleProgress": "KUSD 持有",
+            "titleTask": "保持 KUSD"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "在多个资金池中提供流动性",
+            "titleProgress": "提供流动性",
+            "titleTask": "提供流动性"
+        },
+        "lvl": "等级",
+        "maxLvl": "您已达到最高等级",
+        "nativeXorStaking": {
+            "descriptionTask": "质押 XOR 并赚取 VAL 奖励",
+            "titleProgress": "XOR 质押",
+            "titleTask": "质押 XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "在多笔链上交易中使用 XOR 支付网络费用",
+            "titleProgress": "网络费用",
+            "titleTask": "使用 XOR 支付网络费用"
+        },
+        "nextLvl": "下一等级",
+        "orderbookVolume": {
+            "descriptionTask": "在订单簿中创建限价单",
+            "titleProgress": "订单簿",
+            "titleTask": "创建限价单"
+        },
+        "progress": "进步",
+        "referralRewards": {
+            "descriptionTask": "通过推荐系统推荐账户",
+            "titleProgress": "推荐系统",
+            "titleTask": "推荐账户"
+        },
+        "relatedTasks": "完成与 {title} 相关的任务以提升您的技能",
+        "rewardNextLvl": "下一级奖励",
+        "soraCard": "立即申请",
+        "VXORHoldings": {
+            "descriptionTask": "持有您当前的 VXOR 持仓",
+            "titleProgress": "VXOR 控股",
+            "titleTask": "保持 VXOR"
+        },
+        "XORBurned": {
+            "descriptionTask": "销毁 XOR 并转换为美元价值",
+            "titleProgress": "XOR 烧毁",
+            "titleTask": "烧毁 XOR"
+        },
+        "XORHoldings": {
+            "descriptionTask": "持有您当前的 XOR 持仓",
+            "titleProgress": "XOR 持有",
+            "titleTask": "保持 XOR"
+        },
+        "yourLevel": "您的等级",
+        "yourTasks": "您的任务",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "添加资产 | 添加资产",
     "noir": "暗黑",
     "rotatePhoneNotification": {
-        "title": "将设备倒置以隐藏余额.",
+        "title": "将设备倒置以隐藏余额",
         "info": "为了额外的隐私保护，将设备向下倾斜，即可立即隐藏您的资产余额。此功能使用您的手机内置传感器.",
         "enableAcceleration": "在设置中启用加速度访问.",
         "gyroscropePhone": "我们的技术使用手机内置的陀螺仪，在您倾斜设备时立即隐藏您的余额."
+    },
+    "firstText": "第一的",
+    "lastText": "最后的",
+    "prevText": "以前的",
+    "priceText": "价格",
+    "assetOwner": {
+        "accountWithAccess": "具有 SBT 访问权限的帐户",
+        "addRegulatedAsset": "添加另一项受监管资产",
+        "addRegulatedAssets": "添加受监管资产",
+        "attachedRegulatedAssets": "受监管资产",
+        "createRegulatedAsset": "创建新的受监管资产",
+        "createSbt": "创建{type}",
+        "dialog": {
+            "addExisting": "添加现有资产",
+            "addExistingDesc": "为 SBT 添加已创建的资产",
+            "createAsset": "创建新资产",
+            "createAssetDesc": "为{type}设置新的许可资产",
+            "enterAddress": "输入发证地址",
+            "issueAccess": "问题访问",
+            "pickDate": "选择一天",
+            "selectAccessEnd": "选择访问结束时间",
+            "selectDate": "选择日期"
+        },
+        "guide": {
+            "createToken": "创建你的代币",
+            "createTokenDesc": "使用 SORA 网络强大、安全的基础设施，轻松发布您的独特代币（以 NFT 和 SBT 等多种格式提供）",
+            "disclaimerSbt": "在整个过程中保持此页面打开。关闭或离开将需要您从头开始。快速完成步骤以避免超时。",
+            "stepOneDesc": "选择或创建您亲自创建并管理的资产。这些是受您控制和管理的资产。",
+            "stepOneTitle": "选择或创建受监管资产",
+            "stepThreeDesc": "审查并签署最终创建交易以完成 SBT 设置。",
+            "stepThreeTitle": "审查并签署交易",
+            "stepTwoDesc": "提供基本信息，例如 SBT 的名称和股票代码以及图标。",
+            "stepTwoTitle": "输入 SBT 详细信息",
+            "title": "如何创建{type} ："
+        },
+        "issueSbtAccess": "发出{type}访问权限",
+        "letsStartBtn": "让我们开始吧",
+        "orSelectExisting": "或选择现有的",
+        "ownerSbtTitle": "您的{type}",
+        "permissionedAssets": "许可资产",
+        "regulatedAssetsConnected": "监管资产相关",
+        "regulatedPools": "受监管的矿池",
+        "sbtCreation": {
+            "addAssets": "将资产添加到 SBT",
+            "addDescription": "输入 SBT 详细信息",
+            "addMeta": "输入 SBT 详细信息",
+            "preview": "SBT 预览"
+        },
+        "sbtManagers": "{type}经理",
+        "selectExisting": "选择现有的",
+        "startIssue": "开始向 SBT 发放账户访问权限",
+        "you": "你"
+    },
+    "sbtDetails": {
+        "accessPermitted": "允许访问",
+        "description": "此 SBT 提供对多个代币和池的访问权限，并附加到您的帐户",
+        "expiresIn": "有效期：",
+        "expiresInTooltip": "“有效期”显示获取访问权限的时间段或时间点",
+        "expiryDate": "到期日",
+        "expiryDateTooltip": "“到期日”是您访问 SBT 监管资产的最后期限",
+        "indefiniteExp": "开放式",
+        "issuedBy": "{SBT}发行者",
+        "kycProvider": "{KYC}提供商",
+        "kycVerification": "{KYC}验证",
+        "listOperable": "受监管资产可操作",
+        "noPermissions": "无额外权限",
+        "noReceiverAccess": "您正在尝试向没有 SBT 访问权限的用户发送受监管的代币",
+        "permission": "允许",
+        "permissions": "权限",
+        "regulatedInsitution": "监管机构"
     }
 }

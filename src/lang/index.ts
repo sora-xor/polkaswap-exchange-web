@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import first from 'lodash/fp/first';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
@@ -43,24 +44,15 @@ export async function setDayJsLocale(lang: Language): Promise<void> {
   const locale = getSupportedLocale(lang);
   let code = first(locale.split('-')) as string;
   // There is no "no" lang, let's keep it for now, "en" will be used by default
-  switch (code) {
-    case 'zh':
-      code = 'zh-cn';
-      break;
-    case 'hy':
-      code = 'hy-am';
-      break;
+  if (code === 'zh') {
+    code = Language.ZH_CN;
   }
 
   try {
-    // importing dayjs locale file automatically runs `dayjs.locale(code)`
-    // "webpackInclude" - optimization to exclude unused files from "chunk-vendors"
-    await import(
-      /* webpackInclude: /(en|ru|cs|de|es|fr|hr|hu|hy-am|id|it|nl|no|pl|sk|sr|sv|vi|yo|zh-cn)\.js$/ */
-      /* webpackChunkName: "dayjs-locale-[request]" */
-      /* webpackMode: "lazy" */
-      `dayjs/locale/${code}.js`
-    );
+    const { default: preset } = code !== Language.EN ? await import(`dayjs/esm/locale/${code}.js`) : {};
+    // [TODO] check after wallet transfer
+    // wallet compability: cjs dayjs in wallet
+    dayjs.locale(code, preset, false);
   } catch (error) {
     console.warn(`[dayjs]: unsupported locale "${code}"`, error);
   }
@@ -72,17 +64,8 @@ export async function setI18nLocale(lang: Language): Promise<void> {
   if (!loadedLanguages.includes(locale)) {
     // transform locale string 'eu-ES' to filename 'eu_ES' like in localise
     const filename = locale.replace('-', '_');
-    const messagesModule = await import(
-      /* webpackChunkName: "lang-[request]" */
-      /* webpackMode: "lazy" */
-      `@/lang/${filename}.json`
-    );
-
-    const cardMessagesModule = await import(
-      /* webpackChunkName: "lang-card-[request]" */
-      /* webpackMode: "lazy" */
-      `@/lang/card/${filename}.json`
-    );
+    const messagesModule = await import(`@/lang/${filename}.json`);
+    const cardMessagesModule = await import(`@/lang/card/${filename}.json`);
 
     i18n.setLocaleMessage(locale, { ...messagesModule.default, ...cardMessagesModule.default });
     loadedLanguages.push(locale);

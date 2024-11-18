@@ -20,7 +20,7 @@
     >
       <div v-if="amount" slot="left" class="price-input__prefix">$</div>
       <div class="price-input-inner" slot="top">
-        <div>{{ `${asset.symbol} ${t('exchange.price')}` }}</div>
+        <div>{{ `${asset.symbol} ${t('priceText')}` }}</div>
         <div class="price-input-inner-ratio">
           <span class="price-input-current-title">{{ t('alerts.currentPrice') }}</span>
           <formatted-amount-with-fiat-value
@@ -225,11 +225,6 @@ export default class CreateAlert extends Mixins(
   }
 
   async mounted(): Promise<void> {
-    // Re-center dialog programmatically (need to simplify it). Components lazy loading might break it
-    await this.$nextTick();
-    const sDialog: any = this.$parent?.$parent;
-    sDialog?.computeTop?.();
-
     if (this.isEditMode) {
       this.amount = this.alertToEdit.price;
       this.currentTypeTab = this.alertToEdit.type === 'drop' ? AlertTypeTabs.Drop : AlertTypeTabs.Raise;

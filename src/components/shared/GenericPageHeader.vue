@@ -1,6 +1,9 @@
 <template>
   <div :class="headerClasses">
-    <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack($event)" />
+    <slot name="back">
+      <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack($event)" />
+    </slot>
+
     <h3 class="page-header-title" :class="{ bold }">
       <slot name="title">
         {{ title }}
@@ -66,6 +69,7 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
 #{$page-header-class} {
   position: relative;
   display: flex;
+  gap: $inner-spacing-small;
   margin: 0 0 $inner-spacing-medium;
   width: 100%;
   &--center {
@@ -80,9 +84,11 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
     }
   }
   &-title {
-    @include page-header-title;
     color: var(--s-color-base-content-primary);
     line-height: $tooltip-area-height;
+
+    @include page-header-title;
+
     & + .el-button {
       right: 0;
       &--settings {

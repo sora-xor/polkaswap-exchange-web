@@ -1,7 +1,6 @@
 {
     "closeText": "Sluit",
     "backText": "Terug",
-    "createWalletText": "Wallet maken",
     "nameText": "Naam",
     "nextText": "Volgende",
     "importText": "Importeren",
@@ -70,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} Positie gesloten",
             "DepositCollateral": "{amount} {symbol} gestort",
             "RepayVaultDebt": "{amount} {symbol} schuld terugbetaald",
-            "BorrowVaultDebt": "{amount} {symbol} schuld geleend"
+            "BorrowVaultDebt": "{amount} {symbol} schuld geleend",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
+            "BindRegulatedAsset": "Bind Asset {symbol2} aan SBT",
+            "IssueSoulBoundToken": "Uitgifte Soulbound Token {symbol}",
+            "RegisterAndRegulateAsset": "Registreer en reguleer {symbol} activa",
+            "RegulateAsset": "Activa reguleren {symbol}",
+            "SetAccessExpiration": "SB-token {symbol} Vervaldatum bijgewerkt naar {endTime}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -112,7 +118,14 @@
             "CloseVault": "Mislukt om positie {symbol}\/{symbol2} te sluiten",
             "DepositCollateral": "Kon {amount} {symbol} niet storten",
             "RepayVaultDebt": "Kon {amount} {symbol} schuld niet terugbetalen",
-            "BorrowVaultDebt": "Kon {amount} {symbol} schuld niet lenen"
+            "BorrowVaultDebt": "Kon {amount} {symbol} schuld niet lenen",
+            "VestedTransfer": "Kon {action} {amount} {symbol} {direction} {address} niet voltooien",
+            "BindRegulatedAsset": "Kan asset {symbol} niet koppelen aan SBT {symbol2}",
+            "IssueSoulBoundToken": "Het is niet gelukt om Soulbound-token {symbol} uit te geven",
+            "RegisterAndRegulateAsset": "Mislukt om te registreren en te reguleren {symbol}",
+            "RegulateAsset": "Failed to Regulation Asset {symbol}",
+            "SetAccessExpiration": "Het is niet gelukt om de vervaldatum voor {symbol} {to} }",
+            "XorlessTransfer": "Het is niet gelukt om {amount} {symbol} naar {address} te verzenden"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -146,31 +159,31 @@
         "CloseVault": "Positie sluiten",
         "DepositCollateral": "Stort Onderpand",
         "RepayVaultDebt": "Schuld Terugbetalen",
-        "BorrowVaultDebt": "Schuld Lenen"
+        "BorrowVaultDebt": "Schuld Lenen",
+        "VestedTransfer": "Overdracht",
+        "BindRegulatedAsset": "Bind gereguleerde activa",
+        "IssueSoulBoundToken": "Probleem SBT",
+        "RegisterAndRegulateAsset": "Activa registreren",
+        "RegulateAsset": "Activa reguleren",
+        "SetAccessExpiration": "SBT-vervaldatum instellen",
+        "XorlessTransfer": "Overdracht"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Er lijken geen accounts te zijn in uw {extension} extensie. Voeg een account toe en probeer het opnieuw.",
         "noAccount": "{extension}-accountfout. Controleer uw account in de {extension}-extensie",
         "noExtension": "Er is geen {extension} -extensie gevonden. Installeer het en laad deze pagina opnieuw",
         "noSigner": "Toegang geweigerd. Ga naar {extension} extensie-instellingen en open \"Websitetoegang beheren\" om toe te staan.",
         "connectionError": "Er is een fout opgetreden tijdens het verbinden van de portemonnee. U kunt opnieuw proberen de portemonnee via {extension} te verbinden"
     },
     "connection": {
-        "text": "Om activa te beheren en transacties op {Sora} te ondertekenen, moet een account zijn gekoppeld. {Sora} accounts kunnen worden gemaakt en verbonden met onze geïntegreerde portefeuilles of browserextensies.",
-        "noAccounts": "Geen account gevonden in uw {extension} browser extensie. Voeg een account toe en probeer het opnieuw.",
         "selectAccount": "Selecteer account om mee te werken",
         "action": {
-            "install": "Extensie installeren",
             "learnMore": "Meer informatie over wallet-verbinding",
-            "connect": "Account aansluiten",
             "refresh": "Vernieuwen"
         },
-        "selectWallet": "Selecteer een portemonnee om mee te werken",
         "wallet": {
             "install": "Installeren",
             "connected": "Verbonden",
-            "notConnected": "Niet verbonden",
             "recommended": "Aanbevolen"
         },
         "internalTitle": "Maak verbinding met {wallet}",
@@ -183,30 +196,26 @@
     },
     "wallet": {
         "WalletAssets": "Assets",
-        "createToken": "@:createTokenText",
         "WalletHistory": "Activiteit"
     },
     "walletSend": {
         "title": "Verzenden",
-        "address": "@:addressText",
-        "amount": "@:amountText",
         "balance": "Saldo",
         "max": "MAX",
-        "fee": "@:networkFeeText",
         "enterAddress": "Adres invoeren",
         "badAddress": "Onjuist adres",
         "enterAmount": "Voer bedrag in",
-        "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Bevestig transactie",
         "errorAddress": "Ongeldig adres. Controleer het en probeer het opnieuw.",
-        "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Verzend tokens tussen accounts op het {Sora}-netwerk",
         "addressWarning": "Tokens worden naar het onderstaande {Sora}-adres gestuurd. Zorg ervoor dat de ontvanger toegang heeft tot de {Sora}-chain om de tokens te gebruiken:",
         "addressError": "U kunt geen tokens verzenden naar hetzelfde account waarmee u momenteel bent verbonden.",
-        "confirm": "@:confirmText"
+        "enableVesting": "Token-vesting inschakelen",
+        "enterVestingPercentage": "Voer het vestingpercentage in",
+        "vestingPercentage": "Vestingpercentage",
+        "unlockFrequency": "Ontgrendelfrequentie"
     },
     "account": {
-        "successCopy": "Wallet-adres werd gekopieerd naar het klembord",
         "copy": "Adres kopiëren",
         "switch": "Van account wisselen",
         "walletAddress": "Portemonnee adres",
@@ -219,11 +228,7 @@
         "clearHistory": "Geschiedenis wissen",
         "filterPlaceholder": "Filteren op adres, symbool, type of blok-ID",
         "empty": "Uw transacties verschijnen hier appear",
-        "emptySearch": "Geen transacties gevonden",
-        "firstText": "Eerst",
-        "lastText": "Laatst",
-        "prevText": "Vorig",
-        "nextText": "Volgende"
+        "emptySearch": "Geen transacties gevonden"
     },
     "assets": {
         "empty": "Er zijn geen assets",
@@ -233,7 +238,6 @@
         "liquidity": "Liquiditeit toevoegen",
         "bridge": "Bridge",
         "copy": "Asset-ID kopiëren",
-        "successCopy": "{symbol} Asset ID is gekopieerd naar het klembord",
         "copied": "Gekopieerd!",
         "balance": {
             "transferable": "Overdraagbaar",
@@ -262,7 +266,6 @@
         "approved": "Goedgekeurd door de gemeenschap",
         "unknown": "Onbekende bron",
         "scam": "OPLICHTERIJ",
-        "next": "Volgende",
         "AddAssetToken": {
             "title": "Valuta",
             "switchBtn": "Alleen geverifieerde activa"
@@ -278,7 +281,6 @@
         "unpinAsset": "Losmaken activa"
     },
     "createToken": {
-        "desc": "Creëer en implementeer aangepaste asset op {Sora}",
         "enterSymbol": "Tokensymbool invoeren",
         "enterName": "Tokennaam invoeren",
         "enterSupply": "Tokenvoorraad invoeren",
@@ -286,10 +288,6 @@
             "title": "Transactie ingediend",
             "desc": "Maak {symbol} token"
         },
-        "tooltipValue": "Om een token te creëren, moet je een vergoeding betalen",
-        "fee": "Netwerkvergoeding",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "feeError": "Mislukt om een vergoeding voor een transactie te krijgen",
         "error": "Mislukt om {symbol} token aan te maken",
         "tokenSymbol": {
             "placeholder": "Token symbool",
@@ -308,7 +306,6 @@
             "desc": "Mogelijkheid om meer tokens te munten."
         },
         "provideContent": "Inhoud bieden",
-        "selectLocalFile": "Selecteer lokaal bestand",
         "CreateSimpleToken": "Token",
         "nft": {
             "source": {
@@ -341,13 +338,9 @@
             "placeholder": "Deelbaar",
             "desc": "Mogelijkheid van NFT om te verdelen in fractionele delen. Liquiditeitsvoorziening werkt alleen met deelbare activa"
         },
-        "title": "@:createTokenText",
-        "action": "@:createTokenText",
-        "confirm": "@:confirmText",
         "titleCommon": "Creëren",
         "confirmTokenTitleCommon": "Token maken",
-        "confirmTokenTitleNFT": "NFT maken",
-        "actionNFT": "@:createTokenTextNFT"
+        "confirmTokenTitleNFT": "NFT maken"
     },
     "transaction": {
         "title": "Transactiegegevens",
@@ -358,7 +351,6 @@
             "failed": "Transactie mislukt",
             "complete": "Compleet"
         },
-        "errorMessage": "Fout",
         "startTime": "Datum",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
@@ -366,7 +358,6 @@
         "total": "Totaal",
         "from": "Van",
         "to": "Naar",
-        "successCopy": "{value} werd naar het klembord gekopieerd",
         "copy": "Kopieer {value}",
         "history": {
             "created": "Transactie voor {amount} {symbol} is aangemaakt.",
@@ -377,7 +368,6 @@
         "viewIn": "Bekijk in {explorer}",
         "referrer": "Verwijzer",
         "referral": "Verwijzing",
-        "adarTxDetailsTitle": "Transactiegegevens",
         "comment": "Opmerking",
         "price": "Prijs",
         "side": "Kant"
@@ -409,7 +399,6 @@
         "Stats": "Stats",
         "Wallet": "Wallet",
         "AddLiquidity": "Liquiditeit toevoegen",
-        "RemoveLiquidity": "Liquiditeit verwijderen",
         "Rewards": "Beloningen",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Zwembaden",
@@ -421,8 +410,7 @@
         "AssetOwner": "Eigenaar van activa",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "{Kensetsu}",
-        "VaultDetails": "Positiedetails",
-        "Burn": "Branden"
+        "VaultDetails": "Positiedetails"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -453,7 +441,6 @@
         "faucet": "Faucet",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "{AppName} memorandum en servicevoorwaarden",
         "privacy": "Privacybeleid",
         "info": "Info & Community"
     },
@@ -463,17 +450,6 @@
         "privacyPolicy": "Privacybeleid",
         "appVersion": "{AppName} versie",
         "contactUs": "Contacteer ons"
-    },
-    "aboutNetworkDialog": {
-        "title": "Over",
-        "network": {
-            "title": "Wat is {Sora}?",
-            "description": "{AppName} is gebouwd bovenop het {Sora} Netwerk, en het {Sora} token (XOR) wordt gebruikt voor gas\/vergoedingen en liquiditeitsverschaffing op {AppName}. {Sora} Network maakt lagere vergoedingen, snellere transacties en eenvoudigere consensus finalisatie mogelijk en is gericht op het leveren van interoperabiliteit over andere blockchain ecosystemen zoals {Ethereum}."
-        },
-        "polkadot": {
-            "title": "Wat is {PolkadotJs}?",
-            "description": "{PolkadotJs} extensie is een browser extensie beschikbaar voor Firefox en Chrome die gewijd is aan het beheer van accounts voor Substrate-gebaseerde chains, waaronder {Sora}, {Polkadot} en {Kusama}. U kunt accounts toevoegen, importeren en exporteren en transacties of extrinsics ondertekenen die u hebt geïnitieerd vanaf websites die u hebt geautoriseerd."
-        }
     },
     "node": {
         "errors": {
@@ -519,16 +495,9 @@
     "exchange": {
         "Swap": "Swap",
         "Pool": "pool",
-        "balance": "Balans",
-        "price": "Prijs",
-        "transactionSubmitted": "Transactie ingediend",
-        "transactionMessage": "{firstToken} en {secondToken}",
-        "ok": "OK",
-        "confirm": "Bevestigen",
         "lossWarning": "U verliest {value}% op uw transactie. We hebben een probleem met de liquiditeitsvoorziening ontdekt. Dit kan leiden tot aanzienlijke verliezen tijdens token-swaps. Zorg ervoor dat er voldoende liquiditeit is voor uw gewenste swappaar."
     },
     "swap": {
-        "estimated": "geschat",
         "slippageTolerance": "Slip tolerantie",
         "minReceived": "Minimum ontvangen",
         "maxSold": "Maximum verkocht",
@@ -542,7 +511,6 @@
         "confirmSwap": "Swap bevestigen",
         "swapOutputMessage": "De output wordt geschat. U ontvangt minimaal {transactionValue} of de transactie wordt teruggedraaid.",
         "rewardsForSwap": "PSWAP Strategische Beloningen",
-        "swapInputMessage": "Invoer wordt geschat. U verkoopt maximaal {transactionValue} of de transactie wordt teruggedraaid.",
         "route": "Route",
         "errorFetching": "Fout bij het ophalen van de gegevens"
     },
@@ -561,21 +529,12 @@
     "bridge": {
         "title": "Bridge",
         "info": "Converteer tokens tussen de {Sora}-en {Ethereum}-netwerken.",
-        "balance": "Saldo",
         "next": "Volgende",
         "connectWallets": "Verbind wallets om hun respectievelijke transactiegeschiedenis te bekijken.",
         "soraNetworkFee": "{Sora} Netwerk Vergoeding",
-        "ethereumNetworkFee": "{Ethereum} Netwerk Vergoeding",
-        "total": "Totaal",
-        "viewHistory": "Transactiegeschiedenis bekijken",
-        "transactionSubmitted": "Ingediende verrichting",
-        "transactionMessage": "{assetA} voor {assetB}",
         "notRegisteredAsset": "Asset {assetSymbol} is niet geregistreerd",
         "selectNetwork": "Selecteer netwerk",
         "networkInfo": "Bridge {Sora} Netwerk met:",
-        "copy": "Netwerkadres kopiëren",
-        "soraAddress": "{Sora} adres",
-        "ethereumAddress": "{Ethereum} adres",
         "limitMessage": "Momenteel is er een {type} {amount} {symbol} voor overbrugging om de stabiliteit en veiligheid van het {Sora}-netwerk te garanderen. We waarderen je begrip.",
         "externalTransferFee": "{network} {XCM} kosten",
         "externalTransferFeeTooltip": "Wanneer u een overbruggingstransactie naar het {network} -netwerk verzendt, wordt er een kleine vergoeding in rekening gebracht op het bedrag dat u overdraagt",
@@ -585,58 +544,26 @@
     "selectRegisteredAsset": {
         "title": "Kies een token",
         "search": {
-            "title": "Tokens",
             "placeholder": "Filter op Asset-ID, naam of Tickersymbool",
             "networkLabelSora": "{Sora} netwerk tokens",
-            "networkLabelEthereum": "{network} netwerkspiegeltokens",
-            "emptyListMessage": "Geen resultaten"
-        },
-        "customAsset": {
-            "title": "Custom",
-            "customInfo": "Belangrijk! Custom tokens moeten worden geregistreerd in {Sora}.",
-            "registerToken": "Registreer token",
-            "addressPlaceholder": "Asset-ID",
-            "symbolPlaceholder": "Token symbool",
-            "empty": "Geen tokens gevonden",
-            "alreadyAttached": "Token was al gekoppeld"
+            "networkLabelEthereum": "{network} netwerkspiegeltokens"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} voor {to}",
         "for": " voor ",
-        "steps": {
-            "step": "{step} van 2",
-            "step1": "1e",
-            "step2": "2e"
-        },
-        "status": {
-            "pending": "{step} transacties in behandeling...",
-            "failed": "{step} transacties mislukt. @:(retryText).",
-            "confirm": "Bevestig 2e van 2 transacties...",
-            "complete": "Compleet",
-            "convertionComplete": "Conversie compleet"
-        },
         "statuses": {
-            "waiting": "Aan het wachten",
-            "ready": "Klaar",
             "pending": "In afwachting",
-            "frozen": "Bevroren",
             "failed": "Transactie mislukt",
             "done": "Compleet",
             "waitingForConfirmation": "Wachten op bevestiging..."
         },
-        "networkTitle": "{network} transactie",
         "transactionHash": "Transactie hash",
         "networkInfo": {
             "status": "Status",
             "date": "Datum",
             "amount": "Bedrag",
-            "transactionFee": "Transactievergoeding",
-            "total": "Totaal"
+            "transactionFee": "Transactievergoeding"
         },
-        "successCopy": "Transactiehash werd naar het klembord gekopieerd",
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} transactie in behandeling...",
         "newTransaction": "Nieuwe transactie aanmaken",
         "title": "Bridge-transactie",
@@ -657,8 +584,6 @@
         "title": "Kies een token",
         "searchPlaceholder": "Filter op Asset-ID, naam of Tickersymbool",
         "emptyListMessage": "Geen resultaten",
-        "copy": "Kopieer Asset-ID",
-        "successCopy": "{symbol} Asset ID is gekopieerd naar het klembord",
         "assets": {
             "title": "Assets"
         },
@@ -671,29 +596,18 @@
         }
     },
     "createPair": {
-        "title": "Maak een paar",
         "deposit": "Storting",
-        "balance": "Saldo",
         "pricePool": "Prijzen en vergoedingen",
         "shareOfPool": "Aandeel van de pool",
         "firstSecondPoolTokens": "{eerste}-{tweede} Pool tokens",
-        "connect": "Wallet verbinden",
         "supply": "Toevoegen",
         "yourPosition": "Uw positie",
-        "yourPositionEstimated": "Uw positie (geschat)",
-        "youWillReceive": "U ontvangt",
-        "remove": "Verwijder",
-        "add": "Voeg Toe",
-        "ok": "OK",
-        "alreadyCreated": "Token paar is al aangemaakt",
         "firstLiquidityProvider": "U bent de eerste liquiditeitsverschaffer",
         "firstLiquidityProviderInfo": "De verhouding van de tokens die u toevoegt zal de prijs van deze pool bepalen.<br\/>Zodra u tevreden bent met de koers klikt u op leveren om te herzien."
     },
     "confirmSupply": {
         "title": "Jouw aandeel in de pool bedraagt",
-        "outputDescription": "De output wordt geschat. Als de prijs meer dan {slippageTolerance}% verandert, wordt uw transactie teruggedraaid.",
-        "poolTokensBurned": "{first}-{second} Pool Tokens Verbrand",
-        "price": "Prijs"
+        "outputDescription": "De output wordt geschat. Als de prijs meer dan {slippageTolerance}% verandert, wordt uw transactie teruggedraaid."
     },
     "addLiquidity": {
         "title": "Liquiditeit toevoegen"
@@ -701,11 +615,9 @@
     "removeLiquidity": {
         "title": "Liquiditeit verwijderen",
         "liquidity": "liquiditeit",
-        "balance": "Balans",
         "amount": "Bedrag",
         "input": "invoer",
         "output": "uitvoer",
-        "price": "Prijs",
         "remove": "Verwijder",
         "description": "Het verwijderen van pool-tokens zet uw positie terug in onderliggende tokens tegen de huidige koers, evenredig met uw aandeel in de pool. Opgebouwde vergoedingen zijn inbegrepen in de bedragen die u ontvangt.",
         "outputMessage": "De output wordt geschat. Als de prijs meer dan {slippageTolerance}% verandert, zal uw transactie worden teruggedraaid.",
@@ -726,27 +638,13 @@
             "frontrun": "Uw transactie kan frontrun zijn",
             "error": "Voer een geldig slippercentage in"
         },
-        "custom": "CUSTOM",
-        "transactionDeadline": "TRANSACTIETERMIJN",
-        "transactionDeadlineHint": "De transactie wordt geannuleerd als ze langer dan deze tijd in behandeling is.",
-        "nodeAddress": "NODE ADRES",
-        "ip": "IP",
-        "port": "PORT",
-        "min": "MIN",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} liquiditeitsroutering zorgt voor de beste prijs voor elke transactie door alleen de beste prijsopties uit alle beschikbare markten te combineren. Indien beschikbaar, zal Token Bonding Curve ({tbcAlgorithm}) worden gebruikt voor liquiditeit zolang de assetprijs betaalbaarder is dan uit andere bronnen, waarop de {xycAlgorithm} pool wordt gebruikt.",
             "TBC": "{tbcAlgorithm} — alleen kopen van de Token Bonding Curve (Primary Market). Er is een mogelijkheid dat de prijs ongunstig kan worden in vergelijking met de {xycAlgorithm} pool (Secondary Market), maar de waarde die wordt ontvangen van de gevestigde beloningen kan in de loop van de tijd veel gunstiger blijken te zijn.",
             "XYK": "{xycAlgorithm} - alleen kopen van de XYK-pool (secundaire markt). Traditionele XYK-poolswap."
-        },
-        "charts": "Grafieken",
-        "сhartsDescription": "Bekijk grafieken voor tokenprijzen"
-    },
-    "resultDialog": {
-        "title": "Transactie ingediend",
-        "ok": "OK"
+        }
     },
     "rewards": {
-        "title": "Beloningen claimen",
         "andText": "en",
         "claiming": {
             "pending": "Aan het claimen...",
@@ -780,13 +678,12 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "{Sora}.farm oogst",
-            "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Vergoedingen verkregen uit liquiditeitsvoorziening",
             "BuyOnBondingCurve": "kopen van de TBC",
             "MarketMakerVolume": "Market Making",
-            "LiquidityProvisionFarming": "Farming"
+            "LiquidityProvisionFarming": "Farming",
+            "NftAirdrop": "NFT Airdrop"
         },
-        "vested": "gevestigde",
         "forText": "voor",
         "totalVested": "Totale beloningen",
         "claimableAmountDoneVesting": "Opeisbare beloningen",
@@ -797,7 +694,7 @@
         },
         "Rewards": "Beloningen",
         "ReferralProgram": "Verwijzingen",
-        "PointSystem": "Punten"
+        "PointSystemWrapper": "Punten"
     },
     "provider": {
         "messages": {
@@ -812,7 +709,6 @@
         "title": "Taal"
     },
     "tokens": {
-        "symbol": "Symbool",
         "assetId": "Asset-ID"
     },
     "memorandum": "{AppName} memorandum en servicevoorwaarden",
@@ -871,26 +767,19 @@
         "showBalances": "Saldi tonen",
         "hideBalances": "Saldi verbergen",
         "settings": "Instellingen",
-        "switchTheme": "Overschakelen naar {theme} -modus",
+        "switchTheme": "{theme}-modus",
         "showDisclaimer": "Disclaimer tonen",
         "hideDisclaimer": "Disclaimer verbergen",
         "selectCurrency": "selecteer valuta",
-        "turnPhoneHideBalances": "Draai de telefoon om en verberg",
+        "turnPhoneHideBalances": "Draai de telefoon om en verberg.",
         "titleBalance": "Saldo's",
         "titleTheme": "Kleurenthema",
         "titleCurrency": "Fiat valuta",
-        "titleMisc": "Overig"
+        "titleMisc": "Overig",
+        "systemPreferencesTheme": "Systeemvoorkeuren"
     },
     "sentText": "Verzonden",
     "learnMoreText": "Kom meer te weten",
-    "marketMakerCountdown": {
-        "title": "Market Maker Countdown",
-        "blocks": "blokken",
-        "daysLeft": "resterende dagen",
-        "txs": "TX's",
-        "volume": "MM TX-volume",
-        "description": "20 miljoen PSWAP \/ maand zal worden verdeeld onder market makers met ten minste 500 tx \/ maand met een waarde van meer dan 1 XOR."
-    },
     "confirmNextTxFailure": {
         "header": "Aandacht",
         "info": "Uw {symbol} -saldo is na deze transactie minder dan {fee} {symbol} . U kunt de netwerkkosten voor een andere transactie niet betalen.",
@@ -904,23 +793,16 @@
         "bondedXOR": "XOR Gebonden",
         "referralsNumber": "{number} verwijzingen",
         "startInviting": "Bond XOR om anderen door te verwijzen",
-        "preview": "Nodig nieuwe gebruikers uit en ontvang 10% van hun transactiekosten.<br\/>Om te beginnen, borg elk bedrag van XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Meer informatie<\/a>",
-        "deposit": "Storting",
-        "balance": "Saldo",
         "insufficientBondedBalance": "Onvoldoende gebonden saldo",
         "action": {
-            "empty": "Voer het bedrag van {tokenSymbol}",
-            "startInviting": "Bond {tokenSymbol} om te beginnen met uitnodigen",
             "bondMore": "Bond Meer",
             "bond": "Bond",
             "unbond": "Ontkoppelen",
             "copyLink": "Kopieer link",
             "shareLink": "Delen"
         },
-        "transactionDetails": "Transactiegegevens",
         "receivedRewards": "Beloningen ontvangen",
         "invitationLink": "Uitnodiging link",
-        "successCopy": "Verwijzingslink wordt gekopieerd naar het klembord",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Ontbonden XOR",
         "confirm": {
@@ -932,8 +814,7 @@
             "freeOfCharge": "Deze actie is gratis",
             "hasReferrerTitle": "Je hebt je verwijzer al ingesteld",
             "hasReferrerDescription": "Helaas kun je er maar één instellen",
-            "ok": "OK",
-            "text": "Bevestigen"
+            "ok": "OK"
         },
         "referrer": {
             "title": "Voeg uw verwijzer toe",
@@ -1116,9 +997,7 @@
         "addAccount": "Een account toevoegen",
         "dialog": {
             "confirmTitle": "Bevestig met wachtwoord",
-            "confirmButton": "Transactie ondertekenen",
-            "savePasswordText": "Onthoud mijn wachtwoord voor de komende 15 minuten",
-            "extendPasswordText": "Verleng de periode zonder wachtwoord met 15 minuten"
+            "confirmButton": "Transactie ondertekenen"
         },
         "errorMessages": {
             "password": "Wachtwoord komt niet overeen",
@@ -1292,7 +1171,6 @@
     "connectEthereumWalletText": "Sluit de {Ethereum} -portemonnee aan",
     "soraStaking": {
         "dropdownMenu": {
-            "pendingRewards": "Beloningen in behandeling",
             "controllerAccount": "Controller-account"
         },
         "actions": {
@@ -1307,8 +1185,7 @@
             "description": "Zet {XOR} tokens in op {Sora} Network als nominator om transacties te valideren en {VAL} token beloningen te verdienen."
         },
         "newStake": {
-            "title": "Begin met uitzetten",
-            "minStakeWarning": "De minimale inzet om de beloning te ontvangen is {min} {symbol}"
+            "title": "Begin met uitzetten"
         },
         "validators": {
             "save": "Wijzigingen opslaan",
@@ -1375,12 +1252,12 @@
         },
         "validatorsAttentionDialog": {
             "title": "Aandacht",
-            "description": [
-                "Suggesties voor algoritmische validatoren vormen geen financieel overleg of advies. Uitzetten is een activiteit met een hoog risico, en suggesties voor algoritmische validatoren beperken dit risico niet noodzakelijkerwijs.",
-                "Een door het algoritme voorgestelde validator kan nog steeds worden verwijderd. Een door het algoritme voorgestelde validator kan ook zijn parameters (bijvoorbeeld commissietarieven, enz.) op elk moment wijzigen nadat hij is voorgesteld en\/of geselecteerd.",
-                "Om deze of andere redenen kunt u tokens of beloningen verliezen. Zet alleen tokens in en gebruik validatorsuggesties naar eigen goeddunken, nadat u een due diligence-onderzoek heeft uitgevoerd en zorgvuldig de risico's heeft overwogen."
-            ],
-            "confirm": "Ja, ik begrijp het risico"
+            "confirm": "Ja, ik begrijp het risico",
+            "description": {
+                "0": "Suggesties voor algoritmische validatoren vormen geen financieel overleg of advies. Uitzetten is een activiteit met een hoog risico, en suggesties voor algoritmische validatoren beperken dit risico niet noodzakelijkerwijs.",
+                "1": "Een door het algoritme voorgestelde validator kan nog steeds worden verwijderd. Een door het algoritme voorgestelde validator kan ook zijn parameters (bijvoorbeeld commissietarieven, enz.) op elk moment wijzigen nadat hij is voorgesteld en\/of geselecteerd.",
+                "2": "Om deze of andere redenen kunt u tokens of beloningen verliezen. Zet alleen tokens in en gebruik validatorsuggesties naar eigen goeddunken, nadat u een due diligence-onderzoek heeft uitgevoerd en zorgvuldig de risico's heeft overwogen."
+            }
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Er zijn geen lopende beloningen",
@@ -1392,16 +1269,16 @@
         "selectValidatorsMode": {
             "title": "Zet in op validators die door het algoritme worden voorgesteld",
             "description": "{Sora} netwerkalgoritme heeft een lijst van aanbevolen validators geselecteerd op basis van de criteria:",
-            "criteria": [
-                "Meest winstgevend",
-                "Niet overtekend",
-                "Een onchain-identiteit hebben",
-                "Niet gesneden",
-                "Limiet van 2 validators per identiteit"
-            ],
             "confirm": {
                 "suggested": "Inzetten met voorgesteld",
                 "manual": "Ik kies zelf de validators"
+            },
+            "criteria": {
+                "0": "Meest winstgevend",
+                "1": "Niet overtekend",
+                "2": "Een onchain-identiteit hebben",
+                "3": "Niet gesneden",
+                "4": "Limiet van 2 validators per identiteit"
             }
         },
         "claimRewardsDialog": {
@@ -1439,7 +1316,6 @@
         "marketTrades": "Markttransacties",
         "market": "Markt",
         "limit": "Begrenzing",
-        "price": "Prijs",
         "total": "Totaal",
         "amount": "hoeveelheid",
         "time": "tijd",
@@ -1483,7 +1359,6 @@
         "tradingPair": {
             "choosePair": "Kies een handelspaar",
             "volume": "Volume",
-            "dailyChange": "Dagelijkse verandering",
             "status": "Toestand",
             "total": "{amount} {symbol} op {amount2} {symbol2}"
         },
@@ -1557,8 +1432,7 @@
             "canceled": "Geannuleerd",
             "expired": "Verlopen",
             "filled": "Gevuld"
-        },
-        "pricePerToken": "Prijs per 1 {token}"
+        }
     },
     "calculatingText": "Berekenen",
     "customisePageText": "Pagina aanpassen",
@@ -1683,14 +1557,168 @@
         "accountsText": "{amount} accounts",
         "yourRewards": "Uw beloningen",
         "openTelegram": "Openen {Telegram}",
-        "toEarnPoints": "Om punten te verdienen"
+        "toEarnPoints": "Om punten te verdienen",
+        "airdrop": "Voltooi SORA Ecosysteem-gerelateerde taken om in aanmerking te komen voor een airdrop van $3 miljoen",
+        "complete": "Voltooid | Voltooien",
+        "currently": "Momenteel",
+        "dated": "Gedateerd",
+        "depositVolumeBridges": {
+            "descriptionTask": "Storten & opnemen via Bruggen, bitget, 1x, gateio",
+            "titleProgress": "Stortingsvolume",
+            "titleTask": "Storten & Opnemen"
+        },
+        "firstSoraNetworkTransaction": "Uw eerste SORA-netwerktransactie",
+        "firstTxAccount": {
+            "descriptionTask": "Voltooi uw allereerste XOR-transactie en ontvang de beloning",
+            "titleProgress": "Eerste transactie",
+            "titleTask": "Doe uw eerste transactie"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Vergrendel XOR door deel te nemen aan governance-stemgebeurtenissen",
+            "titleProgress": "Governance",
+            "titleTask": "Vergrendel XOR in governance-stemmen"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Los KUSD-schuld af tijdens liquidaties of het sluiten van posities",
+            "titleProgress": "Kensetsu-volume",
+            "titleTask": "Los KUSD-schuld af"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "Houd uw huidige KUSD-bezit vast",
+            "titleProgress": "KUSD Vasthouden",
+            "titleTask": "Houd KUSD"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "Liquiditeit verstrekken over meerdere pools",
+            "titleProgress": "Liquiditeitsvoorziening",
+            "titleTask": "Liquiditeit verstrekken"
+        },
+        "lvl": "Niveau",
+        "maxLvl": "Je hebt het maximale niveau bereikt",
+        "nativeXorStaking": {
+            "descriptionTask": "Stake XOR en verdien VAL-beloningen",
+            "titleProgress": "XOR Staken",
+            "titleTask": "Stake XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "Besteed XOR aan netwerkvergoedingen bij meerdere on-chain transacties",
+            "titleProgress": "Netwerkkosten",
+            "titleTask": "Besteed XOR aan netwerkvergoedingen"
+        },
+        "nextLvl": "Volgende lvl",
+        "orderbookVolume": {
+            "descriptionTask": "Maak limietorders aan in het orderboek",
+            "titleProgress": "Orderboek",
+            "titleTask": "Maak limietorders aan"
+        },
+        "progress": "Voortgang",
+        "referralRewards": {
+            "descriptionTask": "Verwijs accounts via het verwijzingssysteem",
+            "titleProgress": "Verwijzingssysteem",
+            "titleTask": "Verwijs accounts"
+        },
+        "relatedTasks": "Voltooi taken met betrekking tot {title} om je vaardigheid te verbeteren",
+        "rewardNextLvl": "Volgende niveaubeloning",
+        "soraCard": "Solliciteer nu",
+        "VXORHoldings": {
+            "descriptionTask": "Houd uw huidige VXOR bezit vast",
+            "titleProgress": "VXOR-bezittingen",
+            "titleTask": "Houd VXOR"
+        },
+        "XORBurned": {
+            "descriptionTask": "Verbrand XOR en zet om naar $ waarde",
+            "titleProgress": "XOR verbrand",
+            "titleTask": "XOR branden"
+        },
+        "XORHoldings": {
+            "descriptionTask": "Houd uw huidige XOR-bezit vast",
+            "titleProgress": "XOR Vasthouden",
+            "titleTask": "Houd XOR"
+        },
+        "yourLevel": "Uw niveau",
+        "yourTasks": "Uw taken",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Activa toevoegen | Activa’s toevoegen",
     "noir": "Zwart",
     "rotatePhoneNotification": {
-        "title": "Draai uw apparaat ondersteboven om saldi te verbergen.",
+        "title": "Draai uw apparaat ondersteboven om saldi te verbergen",
         "info": "Voor extra privacy, kantel je apparaat met het scherm naar beneden om je activa saldo onmiddellijk te verbergen. Deze functie maakt gebruik van de ingebouwde sensoren van je telefoon.",
         "enableAcceleration": "Schakel versnellingssensor toegang in uw instellingen in.",
         "gyroscropePhone": "Onze technologie gebruikt de ingebouwde gyroscoop van je telefoon om je saldo onmiddellijk te verbergen wanneer je je apparaat kantelt."
+    },
+    "firstText": "Eerst",
+    "lastText": "Laatst",
+    "prevText": "Vorig",
+    "priceText": "Prijs",
+    "assetOwner": {
+        "accountWithAccess": "Account met SBT-toegang",
+        "addRegulatedAsset": "Voeg een ander gereguleerd actief toe",
+        "addRegulatedAssets": "Gereguleerde activa toevoegen",
+        "attachedRegulatedAssets": "Bijgevoegde gereguleerde activa",
+        "createRegulatedAsset": "Creëer een nieuw gereguleerd actief",
+        "createSbt": "Maak {type}",
+        "dialog": {
+            "addExisting": "Een bestaand bezit toevoegen",
+            "addExistingDesc": "Voeg een reeds aangemaakt asset toe voor de SBT",
+            "createAsset": "Een nieuw actief aanmaken",
+            "createAssetDesc": "Stel een nieuw gemachtigde asset in voor de {type}",
+            "enterAddress": "Voer adres in voor uitgifte",
+            "issueAccess": "Probleemtoegang",
+            "pickDate": "Kies een dag",
+            "selectAccessEnd": "Selecteer wanneer de toegang eindigt",
+            "selectDate": "Selecteer datum"
+        },
+        "guide": {
+            "createToken": "Maak je token aan",
+            "createTokenDesc": "Lanceer eenvoudig uw unieke token, beschikbaar in meerdere formaten zoals NFT's en SBT's, met behulp van de robuuste, veilige infrastructuur van het SORA-netwerk",
+            "disclaimerSbt": "Houd deze pagina open tijdens het hele proces. Als u de pagina sluit of wegnavigeert, moet u opnieuw beginnen. Voltooi de stappen snel om time-outs te voorkomen.",
+            "stepOneDesc": "Kies of creëer assets die u persoonlijk hebt gecreëerd en gereguleerd. Dit zijn assets die onder uw controle en beheer vallen.",
+            "stepOneTitle": "Gereguleerde activa selecteren of creëren",
+            "stepThreeDesc": "Controleer en onderteken de definitieve aanmaaktransactie om de SBT-installatie te voltooien.",
+            "stepThreeTitle": "Controleer en onderteken de transactie",
+            "stepTwoDesc": "Geef essentiële informatie, zoals de naam van de SBT, het tickersymbool en het pictogram.",
+            "stepTwoTitle": "Voer SBT-gegevens in",
+            "title": "Hoe maak je een {type} :"
+        },
+        "issueSbtAccess": "Probleem {type} toegang",
+        "letsStartBtn": "Laten we beginnen",
+        "orSelectExisting": "Of selecteer bestaande",
+        "ownerSbtTitle": "Jouw {type}",
+        "permissionedAssets": "Toegestane activa",
+        "regulatedAssetsConnected": "Gereguleerde activa verbonden",
+        "regulatedPools": "Gereguleerde zwembaden",
+        "sbtCreation": {
+            "addAssets": "Activa toevoegen aan SBT",
+            "addDescription": "Voer SBT-gegevens in",
+            "addMeta": "Voer SBT-gegevens in",
+            "preview": "SBT-voorbeschouwing"
+        },
+        "sbtManagers": "{type} Beheerders",
+        "selectExisting": "Selecteer bestaande",
+        "startIssue": "Begin met het verlenen van toegang voor de SBT tot accounts",
+        "you": "Jij"
+    },
+    "sbtDetails": {
+        "accessPermitted": "Toegang toegestaan",
+        "description": "Deze SBT biedt toegang tot meerdere tokens en pools en is gekoppeld aan uw account",
+        "expiresIn": "Verloopt over",
+        "expiresInTooltip": "'Verloopt over' geeft de periode of het tijdstip aan waarop de toegang is verkregen",
+        "expiryDate": "Vervaldatum",
+        "expiryDateTooltip": "De 'Vervaldatum' is de deadline voor uw toegang tot gereguleerde activa van SBT",
+        "indefiniteExp": "open einde",
+        "issuedBy": "{SBT} uitgegeven door",
+        "kycProvider": "{KYC} -aanbieder",
+        "kycVerification": "{KYC} Verificatie",
+        "listOperable": "Gereguleerde activa operationeel",
+        "noPermissions": "Geen extra rechten",
+        "noReceiverAccess": "U probeert een gereguleerd token te verzenden naar de gebruiker zonder SBT-toegang",
+        "permission": "toestemming",
+        "permissions": "toestemmingen",
+        "regulatedInsitution": "Gereguleerde instelling"
     }
 }

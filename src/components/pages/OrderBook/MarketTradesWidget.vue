@@ -9,7 +9,7 @@
     <s-table class="market-trades-table" :data="completedOrders">
       <s-table-column>
         <template #header>
-          <span class="market-trades__header">{{ t('orderBook.price') }}</span>
+          <span class="market-trades__header">{{ t('priceText') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-info price" :class="{ buy: row.isBuy }">{{ row.price }}</span>
@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';

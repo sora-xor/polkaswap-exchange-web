@@ -1,7 +1,6 @@
 {
     "closeText": "Đóng",
     "backText": "Trở lại",
-    "createWalletText": "Kết nối ví",
     "nameText": "Tên",
     "nextText": "Kế tiếp",
     "importText": "Nhập",
@@ -70,7 +69,14 @@
             "CloseVault": "{symbol}\/{symbol2} Vị thế được đóng",
             "DepositCollateral": "Đã nộp tài sản đảm bảo {amount} {symbol}",
             "RepayVaultDebt": "Đã trả nợ kho bảo {amount} {symbol}",
-            "BorrowVaultDebt": "Đã vay nợ kho bảo {amount} {symbol}"
+            "BorrowVaultDebt": "Đã vay nợ kho bảo {amount} {symbol}",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
+            "BindRegulatedAsset": "Liên kết tài sản {symbol2} với SBT",
+            "IssueSoulBoundToken": "Phát hành Soulbound Token {symbol}",
+            "RegisterAndRegulateAsset": "Đăng ký và quản lý tài sản {symbol}",
+            "RegulateAsset": "Điều chỉnh Tài sản {symbol}",
+            "SetAccessExpiration": "Mã thông báo SB {symbol} Đã cập nhật ngày hết hạn thành {endTime}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "error": {
             "Transfer": "Không gửi được {action} {amount} {symbol} {direction} {address}",
@@ -112,7 +118,14 @@
             "CloseVault": "Không thể đóng vị thế {symbol}\/{symbol2}",
             "DepositCollateral": "Không thể nộp tài sản đảm bảo {amount} {symbol}",
             "RepayVaultDebt": "Không thể trả nợ kho bảo {amount} {symbol}",
-            "BorrowVaultDebt": "Không thể vay nợ kho bảo {amount} {symbol}"
+            "BorrowVaultDebt": "Không thể vay nợ kho bảo {amount} {symbol}",
+            "VestedTransfer": "Không thể {action} {amount} {symbol} {direction} {address}",
+            "BindRegulatedAsset": "Không thể liên kết tài sản {symbol} với SBT {symbol2}",
+            "IssueSoulBoundToken": "Không thể phát hành mã thông báo Soulbound {symbol}",
+            "RegisterAndRegulateAsset": "Không Đăng Ký Và Điều Chỉnh Được {symbol}",
+            "RegulateAsset": "Không thể điều chỉnh Tài sản {symbol}",
+            "SetAccessExpiration": "Không cập nhật được ngày hết hạn thành {to} cho {symbol}",
+            "XorlessTransfer": "Không gửi được {amount} {symbol} đến {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -146,31 +159,31 @@
         "CloseVault": "Đóng vị thế",
         "DepositCollateral": "Nộp Tài Sản Đảm Bảo",
         "RepayVaultDebt": "Trả Nợ Kho Bảo",
-        "BorrowVaultDebt": "Vay Nợ Kho Bảo"
+        "BorrowVaultDebt": "Vay Nợ Kho Bảo",
+        "VestedTransfer": "Chuyển",
+        "BindRegulatedAsset": "Liên kết tài sản được quản lý",
+        "IssueSoulBoundToken": "Vấn đề SBT",
+        "RegisterAndRegulateAsset": "Đăng ký tài sản",
+        "RegulateAsset": "Điều chỉnh tài sản",
+        "SetAccessExpiration": "Đặt ngày hết hạn SBT",
+        "XorlessTransfer": "Chuyển khoản"
     },
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) {PolkadotJs}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Dường như không có tài khoản nào trong tiện ích (extension) {extension}. Vui lòng thêm tài khoản và thử lại.",
         "noAccount": "Tài khoản {extension} gặp lỗi. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) {extension}.",
         "noExtension": "Không tìm thấy {extension} . Vui lòng cài đặt nó và tải lại trang này",
         "noSigner": "Quyền truy cập bị từ chối. Đi tới cài đặt tiện ích {extension} và mở \"Quản lý quyền truy cập trang web\" để cho phép.",
         "connectionError": "Đã xảy ra lỗi khi kết nối ví. Bạn có thể thử kết nối lại ví qua {extension}"
     },
     "connection": {
-        "text": "Để quản lý tài sản và ký giao dịch trên {Sora} , tài khoản phải được kết nối. Tài khoản {Sora} có thể được tạo và kết nối bằng ví tích hợp hoặc tiện ích mở rộng trình duyệt của chúng tôi.",
-        "noAccounts": "Không có tài khoản nào trong tiện ích (extension) {extension} của bạn. Vui lòng thêm tài khoản và thử lại.",
         "selectAccount": "Chọn tài khoản để dùng",
         "action": {
-            "install": "Cài đặt tiện ích mở rộng",
             "learnMore": "Tìm hiểu thêm về kết nối ví",
-            "connect": "Kết nối tài khoản",
             "refresh": "Làm mới"
         },
-        "selectWallet": "Chọn một ví để kết nối",
         "wallet": {
             "install": "Cài đặt",
             "connected": "kết nối",
-            "notConnected": "Không kết nối",
             "recommended": "Được đề xuất"
         },
         "internalTitle": "Kết nối với {wallet}",
@@ -183,30 +196,26 @@
     },
     "wallet": {
         "WalletAssets": "Tài sản",
-        "createToken": "@:createTokenText",
         "WalletHistory": "Hoạt động"
     },
     "walletSend": {
         "title": "Gửi",
-        "address": "@:addressText",
-        "amount": "@:amountText",
         "balance": "Số dư",
         "max": "TỐI ĐA",
-        "fee": "@:networkFeeText",
         "enterAddress": "Nhập địa chỉ",
         "badAddress": "Địa chỉ không chính xác",
         "enterAmount": "Nhập số tiền",
-        "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Xác nhận giao dịch",
         "errorAddress": "Địa chỉ không hợp lệ. Vui lòng kiểm tra và thử lại.",
-        "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Gửi token giữa những tài khoản cùng Mạng {Sora}",
         "addressWarning": "Những Token này sẽ được chuyển đến địa chỉ {Sora} bên dưới. Hãy đảm bảo rằng người nhận có thể truy cập vào Chuỗi {Sora} để sử dụng những token này.",
         "addressError": "Bạn không thể gửi những token này đến cùng tài khoản mà bạn đang kết nối",
-        "confirm": "@:confirmText"
+        "enableVesting": "Kích hoạt vesting token",
+        "enterVestingPercentage": "Nhập tỷ lệ vesting",
+        "vestingPercentage": "Tỷ lệ vesting",
+        "unlockFrequency": "Tần suất mở khóa"
     },
     "account": {
-        "successCopy": "Địa chỉ ví được sao chép vào bảng tạm",
         "copy": "Sao chép địa chỉ",
         "switch": "Chuyển đổi tài khoản",
         "walletAddress": "Địa chỉ ví",
@@ -219,11 +228,7 @@
         "clearHistory": "Xóa lịch sử",
         "filterPlaceholder": "Lọc theo Địa chỉ, Mã, Phân loại hoặc ID Khối",
         "empty": "Giao dịch của bạn sẽ xuất hiện tại đây",
-        "emptySearch": "Không tìm thấy giao dịch",
-        "firstText": "Đầu tiên",
-        "lastText": "Cuối",
-        "prevText": "Trước",
-        "nextText": "Kế tiếp"
+        "emptySearch": "Không tìm thấy giao dịch"
     },
     "assets": {
         "empty": "Không có tài sản",
@@ -233,7 +238,6 @@
         "liquidity": "Thêm thanh khoản",
         "bridge": "Cầu nối",
         "copy": "Sao chép ID Tài sản",
-        "successCopy": "{symbol} Đã sao chép ID tài sản",
         "copied": "Đã sao chép!",
         "balance": {
             "transferable": "Có thể chuyển nhượng",
@@ -262,7 +266,6 @@
         "approved": "Tài sản được cộng đồng phê duyệt",
         "unknown": "Nguồn không xác định",
         "scam": "LỪA ĐẢO",
-        "next": "Kế tiếp",
         "AddAssetToken": {
             "title": "Tiền tệ",
             "switchBtn": "Chỉ nội dung đã xác minh"
@@ -278,7 +281,6 @@
         "unpinAsset": "Bỏ ghim tài sản"
     },
     "createToken": {
-        "desc": "Tạo và triển khai tài sản tùy chỉnh trên {Sora}",
         "enterSymbol": "Nhập mã token",
         "enterName": "Nhập mã token",
         "enterSupply": "Nhập số lượng token",
@@ -286,10 +288,6 @@
             "title": "Giao dịch đã gửi đi",
             "desc": "Tạo token {symbol}"
         },
-        "tooltipValue": "@:networkFeeTooltipText",
-        "fee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "feeError": "Không nhận được phí cho một giao dịch",
         "error": "Không thể tạo token {symbol}",
         "tokenSymbol": {
             "placeholder": "Mã token",
@@ -308,7 +306,6 @@
             "desc": "Có thể mint được nhiều token hơn"
         },
         "provideContent": "Cung cấp nội dung",
-        "selectLocalFile": "Chọn tập tin từ máy",
         "CreateSimpleToken": "Token",
         "nft": {
             "source": {
@@ -341,13 +338,9 @@
             "placeholder": "Chia hết",
             "desc": "NFT có thể chia thành các phần phân nhỏ khác nhau. Việc cung cấp thanh khoản Liquedity chỉ hoạt động với tài sản có thể phân chia được"
         },
-        "title": "@:createTokenText",
-        "action": "@:createTokenText",
-        "confirm": "@:confirmText",
         "titleCommon": "Tạo",
         "confirmTokenTitleCommon": "Tạo Token",
-        "confirmTokenTitleNFT": "Tạo NFT",
-        "actionNFT": "@:createTokenTextNFT"
+        "confirmTokenTitleNFT": "Tạo NFT"
     },
     "transaction": {
         "title": "Chi tiết giao dịch",
@@ -358,7 +351,6 @@
             "failed": "Giao dịch thất bại",
             "complete": "Hoàn tất"
         },
-        "errorMessage": "Lỗi",
         "startTime": "Ngày",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
@@ -366,7 +358,6 @@
         "total": "Tất cả",
         "from": "Từ",
         "to": "Đến",
-        "successCopy": "{value} được sao chép vào bộ nhớ tạm",
         "copy": "Sao chép {value}",
         "history": {
             "created": "Giao dịch {amount} {symbol} đã được tạo.",
@@ -377,7 +368,6 @@
         "viewIn": "Xem trong {explorer}",
         "referrer": "Người giới thiệu",
         "referral": "Giới thiệu",
-        "adarTxDetailsTitle": "Chi tiết giao dịch",
         "comment": "Bình luận",
         "price": "Giá",
         "side": "Bên"
@@ -409,7 +399,6 @@
         "Stats": "Thống kê",
         "Wallet": "Ví",
         "AddLiquidity": "Thêm Thanh Khoản",
-        "RemoveLiquidity": "Rút Thanh Khoản",
         "Rewards": "Phần thưởng",
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "hồ bơi",
@@ -421,8 +410,7 @@
         "AssetOwner": "Chủ tài sản",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "{Kensetsu}",
-        "VaultDetails": "Chi tiết vị thế",
-        "Burn": "Đốt cháy"
+        "VaultDetails": "Chi tiết vị thế"
     },
     "mainMenu": {
         "Swap": "Đổi",
@@ -453,7 +441,6 @@
         "faucet": "Faucet",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "Bản ghi nhớ và Điều khoản dịch vụ {AppName}",
         "privacy": "Chính sách bảo mật",
         "info": "Thông tin & Cộng đồng"
     },
@@ -463,17 +450,6 @@
         "privacyPolicy": "Chính sách bảo mật",
         "appVersion": "Phiên bản {AppName}",
         "contactUs": "Liên hệ với chúng tôi"
-    },
-    "aboutNetworkDialog": {
-        "title": "Giới thiệu",
-        "network": {
-            "title": "{Sora} là gì?",
-            "description": "{AppName} được xây dựng trên {Sora} Network, và tokens {Sora} (XOR) được sử dụng làm phí gas và cung cấp thanh khoản trên {AppName}. Mạng {Sora} cho phép giảm phí gas, giao dịch nhanh hơn, hoàn thiện đồng thuận đơn giản hơn và tập trung vào việc cung cấp khả năng tương tác với các hệ sinh thái blockchain khác như {Ethereum}."
-        },
-        "polkadot": {
-            "title": "{PolkadotJs} là gì?",
-            "description": "Ví {PolkadotJs} là một tiện ích mở rộng (extension) của Firefox và Chrome, dành riêng cho việc quản lý tài khoản được tạo nên từ nền tảng Substrate, bao gồm {Sora}, {Polkadot} và {Kusama}. Bạn có thể thêm, nhập và xuất tài khoản và ký các giao dịch thực hiện từ ví hoặc những giao dịch trên các websites bên ngoài mà bạn ủy quyền."
-        }
     },
     "node": {
         "errors": {
@@ -519,16 +495,9 @@
     "exchange": {
         "Swap": "Hoán đổi",
         "Pool": "Pool",
-        "balance": "Số dư",
-        "price": "Giá",
-        "transactionSubmitted": "Giao dịch đã được gửi đi",
-        "transactionMessage": "{firstToken} và {secondToken}",
-        "ok": "OK",
-        "confirm": "Xác nhận",
         "lossWarning": "Bạn sẽ mất {value}% cho giao dịch của mình. Chúng tôi đã phát hiện một vấn đề cung cấp thanh khoản. Điều này có thể dẫn đến tổn thất đáng kể trong quá trình hoán đổi mã thông báo. Vui lòng đảm bảo có đủ thanh khoản cho cặp hoán đổi mong muốn của bạn."
     },
     "swap": {
-        "estimated": "ước lượng",
         "slippageTolerance": "Mức trượt giá",
         "minReceived": "Nhận tối thiểu",
         "maxSold": "Bán tối đa",
@@ -542,7 +511,6 @@
         "confirmSwap": "Xác nhận hoán đổi",
         "swapOutputMessage": "Ước lượng đầu ra. Bạn sẽ nhận ít nhất {transactionValue} hoặc giao dịch sẽ hoàn tác.",
         "rewardsForSwap": "Phần thưởng chiến lược PSWAP",
-        "swapInputMessage": "Dự tính đầu vào. Bạn sẽ bán tối đa {transactionValue} hoặc giao dịch sẽ hoàn tác.",
         "route": "Route",
         "errorFetching": "Lỗi khi tìm nạp dữ liệu"
     },
@@ -561,21 +529,12 @@
     "bridge": {
         "title": "Cầu nối",
         "info": "Chuyển token giữa mạng {Sora} và {Ethereum}.",
-        "balance": "Số dư",
         "next": "Kế tiếp",
         "connectWallets": "Kết nối ví để xem lịch sử giao dịch tương ứng.",
         "soraNetworkFee": "Phí mạng {Sora}",
-        "ethereumNetworkFee": "Phí mạng {Ethereum}",
-        "total": "Tất cả",
-        "viewHistory": "Xem lịch sử giao dịch",
-        "transactionSubmitted": "Giao dịch đã được gửi đi",
-        "transactionMessage": "{assetA} tới {assetB}",
         "notRegisteredAsset": "Tài sản {assetSymbol} không được đăng ký",
         "selectNetwork": "Chọn mạng",
         "networkInfo": "Cầu nối Mạng {Sora} với:",
-        "copy": "Sao chép địa chỉ mạng",
-        "soraAddress": "địa chỉ {Sora}",
-        "ethereumAddress": "địa chỉ {Ethereum}",
         "limitMessage": "Hiện tại, có một {type} {amount} {symbol} để kết nối nhằm đảm bảo tính ổn định và bảo mật của Mạng {Sora} . Chúng tôi đánh giá cao sự hiểu biết của bạn.",
         "externalTransferFee": "Phí {network} {XCM}",
         "externalTransferFeeTooltip": "Khi bạn gửi giao dịch bắc cầu tới mạng {network} , số tiền bạn chuyển sẽ bị tính một khoản phí nhỏ",
@@ -585,58 +544,26 @@
     "selectRegisteredAsset": {
         "title": "Chọn token",
         "search": {
-            "title": "Tokens",
             "placeholder": "Lọc theo Id Tài sản, Tên hoặc Mã token",
             "networkLabelSora": "Token mạng {Sora}",
-            "networkLabelEthereum": "{network} mã thông báo nhân bản mạng",
-            "emptyListMessage": "Không có kết quả"
-        },
-        "customAsset": {
-            "title": "Tùy chỉnh",
-            "customInfo": "Quan trọng! Mã token tùy chỉnh phải được đăng ký với {Sora}.",
-            "registerToken": "Đăng ký token",
-            "addressPlaceholder": "ID tài sản",
-            "symbolPlaceholder": "Mã token",
-            "empty": "Không tìm thấy token",
-            "alreadyAttached": "Token này đã được thêm vào"
+            "networkLabelEthereum": "{network} mã thông báo nhân bản mạng"
         }
     },
     "bridgeTransaction": {
-        "details": "{from} tới {to}",
         "for": " cho ",
-        "steps": {
-            "step": "{step} trên 2",
-            "step1": "Lần 1",
-            "step2": "Lần 2"
-        },
-        "status": {
-            "pending": "{step} giao dịch đang chờ xử lý...",
-            "failed": "{step} giao dịch thất bại. @:(retryText).",
-            "confirm": "Xác nhận thứ 2 trong 2 giao dịch...",
-            "complete": "Hoàn tất",
-            "convertionComplete": "Hoàn tất chuyển đổi"
-        },
         "statuses": {
-            "waiting": "Đang chờ",
-            "ready": "Sẵn sàng",
             "pending": "Đang chờ xử lý",
-            "frozen": "Đóng băng",
             "failed": "Giao dịch thất bại",
             "done": "Hoàn tất",
             "waitingForConfirmation": "Đang chờ xác nhận..."
         },
-        "networkTitle": "giao dịch {network}",
         "transactionHash": "Chi tiết giao dịch",
         "networkInfo": {
             "status": "Trạng thái",
             "date": "Ngày",
             "amount": "Số lượng",
-            "transactionFee": "Phí giao dịch",
-            "total": "Tất cả"
+            "transactionFee": "Phí giao dịch"
         },
-        "successCopy": "Đã sao chép mã giao dịch vào bộ nhớ tạm",
-        "ethereum": "{Ethereum}",
-        "sora": "{Sora}",
         "pending": "{network} giao dịch đang chờ xử lý...",
         "newTransaction": "Tạo giao dịch mới",
         "title": "Giao dịch cầu nối",
@@ -657,8 +584,6 @@
         "title": "Chọn một token",
         "searchPlaceholder": "Lọc theo Id Tài sản, Tên hoặc Mã token",
         "emptyListMessage": "Không có kết quả",
-        "copy": "Sao chép ID Tài sản",
-        "successCopy": "{symbol} đã được sao chép vào bộ nhớ tạm",
         "assets": {
             "title": "Tài sản"
         },
@@ -671,29 +596,18 @@
         }
     },
     "createPair": {
-        "title": "Tạo một cặp token",
         "deposit": "Gửi vào",
-        "balance": "Số dư",
         "pricePool": "Giá cả và phí",
         "shareOfPool": "Cổ phần trong pool",
         "firstSecondPoolTokens": "Pool {first}-{second}",
-        "connect": "Kết nối ví",
         "supply": "Cung cấp",
         "yourPosition": "Vị thế của bạn",
-        "yourPositionEstimated": "Vị thế của bạn (ước tính)",
-        "youWillReceive": "Bạn sẽ nhận được",
-        "remove": "rút",
-        "add": "THÊM",
-        "ok": "OK",
-        "alreadyCreated": "Cặp token này đã được tạo rồi",
         "firstLiquidityProvider": "Bạn là nhà cung cấp thanh khoản đầu tiên",
         "firstLiquidityProviderInfo": "Tỉ lệ token của bạn thêm vào sẽ định lại giá của pool. <br\/> Nếu bạn hài lòng với tỉ lệ này, nhấn Cung cấp để xem trước."
     },
     "confirmSupply": {
         "title": "Bạn sẽ góp vào pool:",
-        "outputDescription": "Kết quả là ước lượng. Nếu giá biến động hơn {slippageTolerance}% thì giao dịch của bạn sẽ hoàn tác.",
-        "poolTokensBurned": "Pool {first}-{second} tokens bị đốt",
-        "price": "Giá"
+        "outputDescription": "Kết quả là ước lượng. Nếu giá biến động hơn {slippageTolerance}% thì giao dịch của bạn sẽ hoàn tác."
     },
     "addLiquidity": {
         "title": "Thêm thanh khoản"
@@ -701,11 +615,9 @@
     "removeLiquidity": {
         "title": "Rút thanh khoản",
         "liquidity": "thanh khoản",
-        "balance": "Số dư",
         "amount": "Số lượng",
         "input": "Đầu vào",
         "output": "Đầu ra",
-        "price": "Giá",
         "remove": "Rút",
         "description": "Thực hiện lấy tokens ra khỏi pool sẽ chuyển vị thế của bạn về lại dưới mức định giá hiện tại, tùy theo tỉ lệ đóng góp của bạn. Phí lũy kế cũng được tính vào phần mà bạn nhận được.",
         "outputMessage": "Kết quả là ước lượng. Nếu giá biến động hơn {slippageTolerance}% thì giao dịch của bạn sẽ hoàn tác.",
@@ -726,27 +638,13 @@
             "frontrun": "Giao dịch của bạn có thể khiến giá biến động đáng kể",
             "error": "Nhập mức trượt giá hợp lý"
         },
-        "custom": "TÙY CHỈNH",
-        "transactionDeadline": "THỜI HẠN GIAO DỊCH",
-        "transactionDeadlineHint": "Giao dịch sẽ bị hủy nếu giao dịch trạng thái chờ quá lâu.",
-        "nodeAddress": "ĐỊA CHỈ NODE",
-        "ip": "IP",
-        "port": "PORT",
-        "min": "TỐI THIỂU",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} định tuyến thanh khoản đảm bảo giá tốt nhất cho giao dịch bất kỳ bằng cách kết hợp mức giá tốt nhất hiện có trên thị trường. Khi thuận lợi, Token Bonding Curve {tbcAlgorithm} sẽ dùng để tạo thanh khoản miễn là giá của tài sản hợp lý hơn các nguồn khác, vì thế pool {xycAlgorithm} được khai thác.",
             "TBC": "{tbcAlgorithm} - chỉ mua từ Đường cong liên kết mã thông báo (Thị trường sơ cấp). Có khả năng giá có thể trở nên bất lợi so với nhóm {xycAlgorithm} (Thị trường thứ cấp), nhưng giá trị nhận được từ phần thưởng được trao có thể trở nên ưu đãi hơn nhiều theo thời gian.",
             "XYK": "{xycAlgorithm} - chỉ mua từ Pool XYK (thị trường thứ cấp). Hoán đổi gốc từ Pool XYK."
-        },
-        "charts": "Biểu đồ",
-        "сhartsDescription": "Xem biểu đồ về giá mã thông báo"
-    },
-    "resultDialog": {
-        "title": "Giao dịch đã được gửi",
-        "ok": "OK"
+        }
     },
     "rewards": {
-        "title": "Nhận phần thưởng",
         "andText": "và",
         "claiming": {
             "pending": "Đang yêu cầu...",
@@ -780,13 +678,12 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "Thu hoach {Sora}.farm",
-            "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Phí thu được từ cung cấp thanh khoản",
             "BuyOnBondingCurve": "mua từ TBC",
             "MarketMakerVolume": "Điều phối thị trường",
-            "LiquidityProvisionFarming": "Farming"
+            "LiquidityProvisionFarming": "Farming",
+            "NftAirdrop": "NFT Airdrop"
         },
-        "vested": "được tặng",
         "forText": "cho",
         "totalVested": "Tổng giải thưởng",
         "claimableAmountDoneVesting": "Phần thưởng có thể nhận",
@@ -797,7 +694,7 @@
         },
         "Rewards": "Thưởng",
         "ReferralProgram": "Giới thiệu",
-        "PointSystem": "Điểm"
+        "PointSystemWrapper": "Điểm"
     },
     "provider": {
         "messages": {
@@ -812,7 +709,6 @@
         "title": "Ngôn ngữ"
     },
     "tokens": {
-        "symbol": "Mã",
         "assetId": "ID tài sản"
     },
     "memorandum": "Bản ghi nhớ và Điều khoản dịch vụ {AppName}",
@@ -871,26 +767,19 @@
         "showBalances": "Hiện số dư",
         "hideBalances": "Ẩn số dư",
         "settings": "Cài đặt",
-        "switchTheme": "Chuyển sang chế độ {theme}",
+        "switchTheme": "Chế độ {theme}",
         "showDisclaimer": "Hiển thị tuyên bố miễn trừ trách nhiệm",
         "hideDisclaimer": "Ẩn tuyên bố từ chối trách nhiệm",
         "selectCurrency": "Chọn tiền tệ",
-        "turnPhoneHideBalances": "Lật điện thoại và ẩn",
+        "turnPhoneHideBalances": "Lật điện thoại và ẩn.",
         "titleBalance": "Số dư",
         "titleTheme": "Chủ đề màu sắc",
         "titleCurrency": "Tiền pháp định",
-        "titleMisc": "Khác"
+        "titleMisc": "Khác",
+        "systemPreferencesTheme": "Tùy chọn hệ thống"
     },
     "sentText": "Đã gửi",
     "learnMoreText": "Tìm hiểu thêm",
-    "marketMakerCountdown": {
-        "title": "Market Maker Countdown",
-        "blocks": "khối (block)",
-        "daysLeft": "ngày còn lại",
-        "txs": "TXs",
-        "volume": "MM TX volume",
-        "description": "20 triệu PSWAP\/tháng sẽ được phân phối cho các nhà tạo lập thị trường với ít nhất 500 tx\/tháng trị giá trên 1 XOR."
-    },
     "confirmNextTxFailure": {
         "header": "Chú ý",
         "info": "Số dư {symbol} của bạn sẽ ít hơn {fee} {symbol} sau giao dịch này. Bạn sẽ không thể thanh toán phí mạng cho một giao dịch khác.",
@@ -904,23 +793,16 @@
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} giới thiệu",
         "startInviting": "Bond XOR để giới thiệu những người khác",
-        "preview": "Mời người dùng mới và nhận 10% từ phí giao dịch của họ. <br\/> Để bắt đầu, hãy bond số lượng XOR bất kỳ. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Tìm hiểu thêm <\/a>",
-        "deposit": "Gửi vào",
-        "balance": "Số dư",
         "insufficientBondedBalance": "Số dư bonded không đủ",
         "action": {
-            "empty": "Nhập số lượng {tokenSymbol}",
-            "startInviting": "Bond {tokenSymbol} để bắt đầu mời",
             "bondMore": "Bond Thêm",
             "bond": "Bond",
             "unbond": "Unbond",
             "copyLink": "Sao chép đường dẫn",
             "shareLink": "Chia sẻ"
         },
-        "transactionDetails": "Chi tiết giao dịch",
         "receivedRewards": "Phần thưởng đã nhận",
         "invitationLink": "Liên kết lời mời",
-        "successCopy": "Liên kết giới thiệu được sao chép vào khay nhớ tạm",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",
         "confirm": {
@@ -932,8 +814,7 @@
             "freeOfCharge": "Hành động này là miễn phí",
             "hasReferrerTitle": "Bạn đã thêm người giới thiệu của bạn",
             "hasReferrerDescription": "Thật không may, bạn chỉ có thể đặt một",
-            "ok": "OK",
-            "text": "Xác nhận"
+            "ok": "OK"
         },
         "referrer": {
             "title": "Thêm người đã giới thiệu bạn",
@@ -1116,9 +997,7 @@
         "addAccount": "Thêm tài khoản",
         "dialog": {
             "confirmTitle": "Xác nhận bằng mật khẩu",
-            "confirmButton": "Ký giao dịch",
-            "savePasswordText": "Nhớ mật khẩu của tôi trong 15 phút tới",
-            "extendPasswordText": "Kéo dài thời gian không cần mật khẩu thêm 15 phút"
+            "confirmButton": "Ký giao dịch"
         },
         "errorMessages": {
             "password": "Mật khẩu không khớp",
@@ -1292,7 +1171,6 @@
     "connectEthereumWalletText": "Kết nối ví {Ethereum}",
     "soraStaking": {
         "dropdownMenu": {
-            "pendingRewards": "Phần thưởng đang chờ xử lý",
             "controllerAccount": "Tài khoản điều khiển"
         },
         "actions": {
@@ -1307,8 +1185,7 @@
             "description": "Stake {XOR} token trên {Sora} Network với tư cách là người đề cử để xác thực giao dịch và kiếm phần thưởng token {VAL}."
         },
         "newStake": {
-            "title": "Bắt đầu đặt cược",
-            "minStakeWarning": "Số tiền đặt cược tối thiểu để nhận phần thưởng là {min} {symbol}"
+            "title": "Bắt đầu đặt cược"
         },
         "validators": {
             "save": "Lưu thay đổi",
@@ -1375,12 +1252,12 @@
         },
         "validatorsAttentionDialog": {
             "title": "Chú ý",
-            "description": [
-                "Đề xuất của trình xác thực thuật toán không cấu thành tư vấn hoặc tư vấn tài chính. Đặt cược là một hoạt động có rủi ro cao và các đề xuất của trình xác thực thuật toán không nhất thiết phải giảm thiểu rủi ro này.",
-                "Trình xác thực được thuật toán đề xuất vẫn có thể bị cắt bỏ. Trình xác thực được thuật toán đề xuất cũng có thể thay đổi các tham số của họ (ví dụ: tỷ lệ hoa hồng, v.v.) bất kỳ lúc nào sau khi được đề xuất và\/hoặc chọn.",
-                "Bạn có thể mất token hoặc phần thưởng vì lý do này hoặc lý do khác. Chỉ đặt cọc mã thông báo và sử dụng các đề xuất của trình xác thực theo quyết định riêng của bạn sau khi tiến hành thẩm định và xem xét cẩn thận các rủi ro liên quan."
-            ],
-            "confirm": "Vâng, tôi hiểu rủi ro"
+            "confirm": "Vâng, tôi hiểu rủi ro",
+            "description": {
+                "0": "Đề xuất của trình xác thực thuật toán không cấu thành tư vấn hoặc tư vấn tài chính. Đặt cược là một hoạt động có rủi ro cao và các đề xuất của trình xác thực thuật toán không nhất thiết phải giảm thiểu rủi ro này.",
+                "1": "Trình xác thực được thuật toán đề xuất vẫn có thể bị cắt bỏ. Trình xác thực được thuật toán đề xuất cũng có thể thay đổi các tham số của họ (ví dụ: tỷ lệ hoa hồng, v.v.) bất kỳ lúc nào sau khi được đề xuất và\/hoặc chọn.",
+                "2": "Bạn có thể mất token hoặc phần thưởng vì lý do này hoặc lý do khác. Chỉ đặt cọc mã thông báo và sử dụng các đề xuất của trình xác thực theo quyết định riêng của bạn sau khi tiến hành thẩm định và xem xét cẩn thận các rủi ro liên quan."
+            }
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Không có phần thưởng đang chờ xử lý",
@@ -1392,16 +1269,16 @@
         "selectValidatorsMode": {
             "title": "Cổ phần với các trình xác nhận được đề xuất bởi thuật toán",
             "description": "Thuật toán mạng {Sora} đã chọn một danh sách các trình xác thực được đề xuất dựa trên các tiêu chí:",
-            "criteria": [
-                "Có lợi nhất",
-                "Không đăng ký vượt mức",
-                "Có danh tính trên chuỗi",
-                "Không bị chém",
-                "Giới hạn 2 trình xác thực cho mỗi danh tính"
-            ],
             "confirm": {
                 "suggested": "Đặt cược với đề xuất",
                 "manual": "Tôi sẽ tự mình chọn người xác thực"
+            },
+            "criteria": {
+                "0": "Có lợi nhất",
+                "1": "Không đăng ký vượt mức",
+                "2": "Có danh tính trên chuỗi",
+                "3": "Không bị chém",
+                "4": "Giới hạn 2 trình xác thực cho mỗi danh tính"
             }
         },
         "claimRewardsDialog": {
@@ -1439,7 +1316,6 @@
         "marketTrades": "Giao dịch thị trường",
         "market": "Chợ",
         "limit": "Giới hạn",
-        "price": "Giá",
         "total": "Tổng cộng",
         "amount": "số lượng",
         "time": "thời gian",
@@ -1483,7 +1359,6 @@
         "tradingPair": {
             "choosePair": "Chọn cặp giao dịch",
             "volume": "Âm lượng",
-            "dailyChange": "Thay đổi hàng ngày",
             "status": "Trạng thái",
             "total": "{amount} {symbol} ở mức {amount2} {symbol2}"
         },
@@ -1557,8 +1432,7 @@
             "canceled": "Đã hủy",
             "expired": "Hết hạn",
             "filled": "Điền"
-        },
-        "pricePerToken": "Giá mỗi 1 {token}"
+        }
     },
     "calculatingText": "Đang tính toán",
     "customisePageText": "Tùy chỉnh trang",
@@ -1683,14 +1557,168 @@
         "accountsText": "{amount} tài khoản",
         "yourRewards": "Phần thưởng của bạn",
         "openTelegram": "Mở {Telegram}",
-        "toEarnPoints": "Để kiếm điểm"
+        "toEarnPoints": "Để kiếm điểm",
+        "airdrop": "Hoàn thành các nhiệm vụ liên quan đến Hệ sinh thái SORA để đủ điều kiện nhận airdrop trị giá 3 triệu đô la",
+        "complete": "Đã hoàn thành | Hoàn thành",
+        "currently": "Hiện nay",
+        "dated": "Ngày tháng",
+        "depositVolumeBridges": {
+            "descriptionTask": "Gửi tiền & rút tiền qua Cầu, bitget, 1x, gateio",
+            "titleProgress": "Khối lượng tiền gửi",
+            "titleTask": "Gửi tiền & Rút tiền"
+        },
+        "firstSoraNetworkTransaction": "Giao dịch mạng SORA đầu tiên của bạn",
+        "firstTxAccount": {
+            "descriptionTask": "Hoàn thành giao dịch XOR đầu tiên của bạn và nhận phần thưởng",
+            "titleProgress": "Giao dịch đầu tiên",
+            "titleTask": "Thực hiện giao dịch đầu tiên của bạn"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "Khóa XOR bằng cách tham gia các sự kiện bỏ phiếu quản trị",
+            "titleProgress": "Quản trị",
+            "titleTask": "Khóa XOR trong Bỏ phiếu Quản trị"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "Trả nợ KUSD trong quá trình thanh lý hoặc đóng vị thế",
+            "titleProgress": "Khối lượng Kensetsu",
+            "titleTask": "Trả nợ KUSD"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "Giữ lượng KUSD hiện tại của bạn",
+            "titleProgress": "Nắm giữ KUSD",
+            "titleTask": "Giữ KUSD"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "Cung cấp thanh khoản trên nhiều pool",
+            "titleProgress": "Cung cấp thanh khoản",
+            "titleTask": "Cung cấp thanh khoản"
+        },
+        "lvl": "Cấp độ",
+        "maxLvl": "Bạn đã đạt cấp độ tối đa",
+        "nativeXorStaking": {
+            "descriptionTask": "Stake XOR và nhận phần thưởng VAL",
+            "titleProgress": "Đặt cọc XOR",
+            "titleTask": "Stake XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "Dùng XOR để trả phí mạng cho nhiều giao dịch on-chain",
+            "titleProgress": "Phí mạng",
+            "titleTask": "Dùng XOR để trả phí mạng"
+        },
+        "nextLvl": "Cấp độ tiếp theo",
+        "orderbookVolume": {
+            "descriptionTask": "Tạo lệnh giới hạn trong sổ lệnh",
+            "titleProgress": "Sổ lệnh",
+            "titleTask": "Tạo lệnh giới hạn"
+        },
+        "progress": "Tiến triển",
+        "referralRewards": {
+            "descriptionTask": "Giới thiệu tài khoản thông qua hệ thống giới thiệu",
+            "titleProgress": "Hệ thống giới thiệu",
+            "titleTask": "Giới thiệu tài khoản"
+        },
+        "relatedTasks": "Hoàn thành các nhiệm vụ liên quan đến {title} để nâng cao kỹ năng của bạn",
+        "rewardNextLvl": "Phần thưởng cấp độ tiếp theo",
+        "soraCard": "Nộp đơn ngay",
+        "VXORHoldings": {
+            "descriptionTask": "Giữ lượng VXOR hiện tại của bạn",
+            "titleProgress": "Cổ phần VXOR",
+            "titleTask": "Giữ VXOR"
+        },
+        "XORBurned": {
+            "descriptionTask": "Đốt XOR và chuyển đổi sang giá trị $",
+            "titleProgress": "XOR đã cháy",
+            "titleTask": "Đốt cháy XOR"
+        },
+        "XORHoldings": {
+            "descriptionTask": "Giữ lượng XOR hiện tại của bạn",
+            "titleProgress": "Nắm giữ XOR",
+            "titleTask": "Giữ XOR"
+        },
+        "yourLevel": "Cấp độ của bạn",
+        "yourTasks": "Nhiệm vụ của bạn",
+        "tokenHold": {
+            "descriptionTask": "",
+            "titleProgress": "",
+            "titleTask": ""
+        }
     },
     "addAssetsText": "Thêm tài sản | Thêm các tài sản",
     "noir": "Đen",
     "rotatePhoneNotification": {
-        "title": "Lật ngược thiết bị của bạn để ẩn số dư.",
+        "title": "Lật ngược thiết bị của bạn để ẩn số dư",
         "info": "Để tăng tính bảo mật, hãy nghiêng thiết bị của bạn úp xuống để ẩn số dư tài sản ngay lập tức. Tính năng này sử dụng cảm biến tích hợp sẵn của điện thoại.",
         "enableAcceleration": "Bật quyền truy cập gia tốc trong cài đặt của bạn.",
         "gyroscropePhone": "Công nghệ của chúng tôi sử dụng con quay hồi chuyển tích hợp sẵn của điện thoại để ẩn số dư của bạn ngay lập tức khi bạn nghiêng thiết bị."
+    },
+    "firstText": "Đầu tiên",
+    "lastText": "Cuối",
+    "prevText": "Trước",
+    "priceText": "Giá",
+    "assetOwner": {
+        "accountWithAccess": "Tài khoản có quyền truy cập SBT",
+        "addRegulatedAsset": "Thêm một tài sản được quản lý khác",
+        "addRegulatedAssets": "Thêm tài sản được quản lý",
+        "attachedRegulatedAssets": "Tài sản được quản lý kèm theo",
+        "createRegulatedAsset": "Tạo tài sản được quản lý mới",
+        "createSbt": "Tạo {type}",
+        "dialog": {
+            "addExisting": "Thêm một tài sản hiện có",
+            "addExistingDesc": "Thêm một tài sản đã tạo cho SBT",
+            "createAsset": "Tạo một tài sản mới",
+            "createAssetDesc": "Thiết lập một tài sản được cấp phép mới cho {type}",
+            "enterAddress": "Nhập địa chỉ để phát hành",
+            "issueAccess": "Vấn đề truy cập",
+            "pickDate": "Chọn một ngày",
+            "selectAccessEnd": "Chọn thời điểm kết thúc quyền truy cập",
+            "selectDate": "Chọn ngày"
+        },
+        "guide": {
+            "createToken": "Tạo mã thông báo của bạn",
+            "createTokenDesc": "Dễ dàng khởi chạy mã thông báo duy nhất của bạn—có sẵn ở nhiều định dạng như NFT và SBT—bằng cách sử dụng cơ sở hạ tầng mạnh mẽ, an toàn của Mạng SORA",
+            "disclaimerSbt": "Giữ trang này mở trong suốt quá trình. Đóng hoặc điều hướng đi sẽ yêu cầu bạn phải khởi động lại từ đầu. Hoàn thành các bước một cách nhanh chóng để tránh hết thời gian chờ.",
+            "stepOneDesc": "Chọn hoặc tạo tài sản do chính bạn tạo ra và quản lý. Đây là tài sản do bạn kiểm soát và quản lý.",
+            "stepOneTitle": "Chọn hoặc Tạo Tài sản được Quản lý",
+            "stepThreeDesc": "Xem lại và ký giao dịch tạo cuối cùng để hoàn tất thiết lập SBT.",
+            "stepThreeTitle": "Xem lại và ký giao dịch",
+            "stepTwoDesc": "Cung cấp thông tin cần thiết như tên SBT và mã chứng khoán cũng như biểu tượng.",
+            "stepTwoTitle": "Nhập thông tin chi tiết SBT",
+            "title": "Cách tạo {type} :"
+        },
+        "issueSbtAccess": "Vấn đề {type} truy cập",
+        "letsStartBtn": "HÃY BẮT ĐẦU",
+        "orSelectExisting": "Hoặc chọn hiện có",
+        "ownerSbtTitle": "{type} của bạn",
+        "permissionedAssets": "Tài sản được phép",
+        "regulatedAssetsConnected": "Tài sản được quản lý kết nối",
+        "regulatedPools": "Các hồ bơi được quản lý",
+        "sbtCreation": {
+            "addAssets": "Thêm tài sản vào SBT",
+            "addDescription": "Nhập thông tin chi tiết SBT",
+            "addMeta": "Nhập thông tin chi tiết SBT",
+            "preview": "Xem trước SBT"
+        },
+        "sbtManagers": "{type} Người quản lý",
+        "selectExisting": "Chọn hiện có",
+        "startIssue": "Bắt đầu cấp quyền truy cập cho SBT vào các tài khoản",
+        "you": "Bạn"
+    },
+    "sbtDetails": {
+        "accessPermitted": "Được phép truy cập",
+        "description": "SBT này cung cấp quyền truy cập vào nhiều mã thông báo và nhóm và được đính kèm vào tài khoản của bạn",
+        "expiresIn": "Hết hạn trong",
+        "expiresInTooltip": "'Hết hạn trong' hiển thị khoảng thời gian hoặc thời điểm quyền truy cập được cấp",
+        "expiryDate": "Ngày hết hạn",
+        "expiryDateTooltip": "'Ngày hết hạn' là thời hạn cuối cùng để bạn có thể truy cập vào các tài sản được quản lý của SBT",
+        "indefiniteExp": "mở",
+        "issuedBy": "{SBT} được phát hành bởi",
+        "kycProvider": "Nhà cung cấp {KYC}",
+        "kycVerification": "Xác minh {KYC}",
+        "listOperable": "Tài sản được quản lý có thể hoạt động",
+        "noPermissions": "Không có quyền bổ sung",
+        "noReceiverAccess": "Bạn đang cố gắng gửi mã thông báo được quản lý tới người dùng không có quyền truy cập SBT",
+        "permission": "sự cho phép",
+        "permissions": "quyền hạn",
+        "regulatedInsitution": "Cơ quan quản lý"
     }
 }

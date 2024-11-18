@@ -20,7 +20,7 @@ $country-emoji-font: 'Twemoji Country Flags';
   z-index: $app-loader-layer;
 
   .el-loading-spinner {
-    background-image: url('~@/assets/img/pswap-loader.svg');
+    background-image: url('@/assets/img/pswap-loader.svg');
     height: var(--s-size-medium);
     width: var(--s-size-medium);
     margin-left: calc(50% - (var(--s-size-medium) / 2));
@@ -52,20 +52,20 @@ $networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polyg
 
   @each $network in $networks {
     &--#{$network} {
-      background-image: url('~@/assets/img/networks/#{$network}.svg')
+      background-image: url('@/assets/img/networks/#{$network}.svg')
     }
   }
 
   @each $network in 'rococo', 'alphanet' {
     &--sora-#{$network} {
-      background-image: url('~@/assets/img/networks/#{$network}.svg');
+      background-image: url('@/assets/img/networks/#{$network}.svg');
       &::after {
         content: '';
         display: block;
         width: 50%;
         height: 50%;
         filter: drop-shadow(2px 4px 6px black);
-        background-image: url('~@/assets/img/networks/sora.svg');
+        background-image: url('@/assets/img/networks/sora.svg');
       }
     }
   }

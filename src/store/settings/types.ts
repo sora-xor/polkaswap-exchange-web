@@ -2,8 +2,6 @@ import type { MarketAlgorithms } from '@/consts';
 import type { BreakpointClass } from '@/consts/layout';
 import type { NodesConnection } from '@/utils/connection';
 
-import type { Subscription } from 'rxjs';
-
 export type Ad = {
   title: string;
   img: string;
@@ -20,6 +18,7 @@ export type FeatureFlags = {
   assetOwner?: boolean;
   alt?: boolean;
   debug?: boolean;
+  pointSystemV2?: boolean;
 };
 
 export type SettingsState = {
@@ -45,8 +44,6 @@ export type SettingsState = {
   browserNotifPopupBlockedVisibility: boolean;
   isBrowserNotificationApiAvailable: boolean;
   browserNotifsPermission: NotificationPermission;
-  blockNumber: number;
-  blockNumberUpdates: Nullable<Subscription>;
   internetConnection: Nullable<boolean>;
   internetConnectionSpeed: Nullable<number>;
   screenBreakpointClass: BreakpointClass;
@@ -58,4 +55,5 @@ export type SettingsState = {
   isOrientationWarningVisible: boolean;
   isAccessAccelerometrEventDeclined: boolean;
   isAccessRotationListener: boolean;
+  isThemePreference: boolean;
 };

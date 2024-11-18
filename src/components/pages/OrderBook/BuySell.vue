@@ -15,7 +15,7 @@
           <div class="delimiter" />
           <div class="order-book-pair-data">
             <div class="order-book-pair-data-item">
-              <span>{{ t('orderBook.price') }}</span>
+              <span>{{ t('priceText') }}</span>
               <span class="order-book-pair-data-item__value order-book-fiat">
                 <formatted-amount :value="orderBookPrice" />
               </span>
@@ -71,7 +71,7 @@
     <token-input
       :balance="getTokenBalance(quoteAsset)"
       :is-max-available="false"
-      :title="t('orderBook.price')"
+      :title="t('priceText')"
       :token="quoteAsset"
       :value="quoteValue"
       :disabled="isPriceInputDisabled"
@@ -699,7 +699,11 @@ export default class BuySellWidget extends Mixins(
     }
 
     if (this.isMarketType) {
-      value ? this.subscribeOnBookQuote() : this.setQuoteValue('');
+      if (value) {
+        this.subscribeOnBookQuote();
+      } else {
+        this.setQuoteValue('');
+      }
     }
   }
 

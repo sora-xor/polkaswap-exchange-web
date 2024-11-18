@@ -17,7 +17,8 @@ import { FocusedField } from '@/store/bridge/types';
 import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { EthBridgeHistory, updateEthBridgeHistory } from '@/utils/bridge/eth/classes/history';
+import { getEthBridgeHistoryInstance, updateEthBridgeHistory } from '@/utils/bridge/eth/classes/history';
+import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
 import {
   getEthNetworkFee,
   getOutgoingEvmTransactionData,
@@ -122,8 +123,8 @@ function bridgeDataToHistoryItem(
   const externalNetworkType = isEthBridge
     ? BridgeNetworkType.Eth
     : isEvmBridge
-    ? BridgeNetworkType.Evm
-    : BridgeNetworkType.Sub;
+      ? BridgeNetworkType.Evm
+      : BridgeNetworkType.Sub;
 
   const [from, to] = isSubBridge
     ? state.isSoraToEvm
@@ -609,6 +610,13 @@ const actions = defineActions({
     return historyItem;
   },
 
+  updateBridgeHistory(context): void {
+    const { dispatch } = bridgeActionContext(context);
+
+    dispatch.updateInternalHistory();
+    dispatch.updateExternalHistory(false);
+  },
+
   updateInternalHistory(context): void {
     const { commit, rootState } = bridgeActionContext(context);
     const { networkSelected } = rootState.web3;
@@ -698,13 +706,9 @@ const actions = defineActions({
 
   // ETH BRIDGE
   async getEthBridgeHistoryInstance(context): Promise<EthBridgeHistory> {
-    const { rootState } = bridgeActionContext(context);
-    const etherscanApiKey = rootState.wallet.settings.apiKeys?.etherscan;
-    const bridgeHistory = new EthBridgeHistory(etherscanApiKey);
+    const bridgeHistoryInstance = await getEthBridgeHistoryInstance(context);
 
-    await bridgeHistory.init(rootState.web3.ethBridgeContractAddress);
-
-    return bridgeHistory;
+    return bridgeHistoryInstance;
   },
 
   async signEthBridgeOutgoingEvm(context, id: string): Promise<ethers.TransactionResponse> {

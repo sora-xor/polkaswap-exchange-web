@@ -1,7 +1,7 @@
 import { WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import VueRouter, { RouteConfig } from 'vue-router';
+import VueRouter from 'vue-router';
 
 import { PageNames, BridgeChildPages } from '@/consts';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
@@ -16,6 +16,8 @@ import { VaultPageNames } from '@/modules/vault/consts';
 import { vaultLazyView } from '@/modules/vault/router';
 import store from '@/store';
 import { updateDocumentTitle } from '@/utils';
+
+import type { RouteConfig } from 'vue-router';
 
 Vue.use(VueRouter);
 
@@ -207,8 +209,8 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: '/points',
-        name: PageNames.PointSystem,
-        component: lazyView(PageNames.PointSystem),
+        name: PageNames.PointSystemWrapper,
+        component: lazyView(PageNames.PointSystemWrapper),
       },
       {
         path: '/rewards',
@@ -353,15 +355,13 @@ router.beforeEach((to, from, next) => {
       return;
     }
   }
-  if (isRequiresAuth) {
-    if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.bridge.externalAccount) {
+  if (isRequiresAuth && !isLoggedIn) {
+    if (BridgeChildPages.includes(current)) {
       setRoute(PageNames.Bridge);
-      return;
-    }
-    if (!isLoggedIn) {
+    } else {
       setRoute(PageNames.Wallet);
-      return;
     }
+    return;
   }
   setRoute(current, false);
 });
