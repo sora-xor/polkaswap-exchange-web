@@ -1359,7 +1359,6 @@
         "tradingPair": {
             "choosePair": "Kies een handelspaar",
             "volume": "Volume",
-            "dailyChange": "Dagelijkse verandering",
             "status": "Toestand",
             "total": "{amount} {symbol} op {amount2} {symbol2}"
         },

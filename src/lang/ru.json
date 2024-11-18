@@ -1359,7 +1359,6 @@
         "tradingPair": {
             "choosePair": "Выберите торговую пару",
             "volume": "Объем",
-            "dailyChange": "1D изм.",
             "status": "Статус",
             "total": "{amount} {symbol} по {amount2} {symbol2}"
         },

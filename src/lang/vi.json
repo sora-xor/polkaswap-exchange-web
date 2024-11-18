@@ -1359,7 +1359,6 @@
         "tradingPair": {
             "choosePair": "Chọn cặp giao dịch",
             "volume": "Âm lượng",
-            "dailyChange": "Thay đổi hàng ngày",
             "status": "Trạng thái",
             "total": "{amount} {symbol} ở mức {amount2} {symbol2}"
         },

@@ -18,7 +18,7 @@
       :highlight-current-row="false"
       @row-click="chooseBook"
     >
-      <s-table-column width="178">
+      <s-table-column width="184">
         <template #header>
           <span>{{ t('orderBook.tokenPair') }}</span>
         </template>
@@ -29,7 +29,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="90">
+      <s-table-column width="130">
         <template #header>
           <span>{{ t('priceText') }}</span>
         </template>
@@ -45,15 +45,15 @@
           <formatted-amount :value="row.volume" is-fiat-value />
         </template>
       </s-table-column>
-      <s-table-column width="140">
+      <s-table-column width="100">
         <template #header>
-          <span>{{ t('orderBook.tradingPair.dailyChange') }}</span>
+          <span>1D %</span>
         </template>
         <template v-slot="{ row }">
           <price-change :value="row.priceChange" />
         </template>
       </s-table-column>
-      <s-table-column>
+      <s-table-column width="176">
         <template #header>
           <span>{{ t('orderBook.tradingPair.status') }}</span>
         </template>
@@ -92,12 +92,14 @@ import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 interface BookFields {
+  id: OrderBookId;
   pair: string;
   baseAsset?: Nullable<AccountAsset>;
   targetAsset?: Nullable<AccountAsset>;
-  price?: string;
-  priceChange?: FPNumber;
-  volume?: string;
+  price: string;
+  priceChange: FPNumber;
+  volumeNumber: number;
+  volume: string;
   status: string;
 }
 
@@ -114,12 +116,11 @@ export default class PairListPopover extends Mixins(
   mixins.LoadingMixin,
   mixins.FormattedAmountMixin
 ) {
-  @state.orderBook.orderBooks orderBooks!: Record<string, OrderBook>;
-  @state.orderBook.orderBooksStats orderBooksStats!: Record<string, OrderBookStats>;
+  @state.orderBook.orderBooks private orderBooks!: Record<string, OrderBook>;
+  @state.orderBook.orderBooksStats private orderBooksStats!: Record<string, OrderBookStats>;
 
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
-
-  @mutation.orderBook.setCurrentOrderBook setCurrentOrderBook!: (orderBookId: OrderBookId) => void;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
+  @mutation.orderBook.setCurrentOrderBook private setCurrentOrderBook!: (id: OrderBookId) => void;
 
   getTooltipText(status: OrderBookStatus): string {
     switch (status) {
@@ -136,8 +137,8 @@ export default class PairListPopover extends Mixins(
     }
   }
 
-  chooseBook(row): void {
-    this.setCurrentOrderBook(row.orderBookId);
+  chooseBook(row: BookFields): void {
+    this.setCurrentOrderBook(row.id);
     this.$emit('close');
   }
 
@@ -148,20 +149,33 @@ export default class PairListPopover extends Mixins(
       if (!orderBookId) return buffer;
       const { base, quote } = value.orderBookId;
       const decimals = getBookDecimals(value);
-      const price = this.orderBooksStats[orderBookId]?.price ?? FPNumber.ZERO;
+      const price = (this.orderBooksStats[orderBookId]?.price ?? FPNumber.ZERO).dp(decimals);
       const priceChange = this.orderBooksStats[orderBookId]?.priceChange ?? FPNumber.ZERO;
       const volume = this.orderBooksStats[orderBookId]?.volume ?? FPNumber.ZERO;
-      const row = {
-        orderBookId: value.orderBookId,
-        baseAsset: this.getAsset(base),
-        targetAsset: this.getAsset(quote),
-        pair: `${this.getAsset(base)?.symbol}-${this.getAsset(quote)?.symbol}`,
+      const baseAsset = this.getAsset(base);
+      const targetAsset = this.getAsset(quote);
+      const row: BookFields = {
+        id: value.orderBookId,
+        baseAsset,
+        targetAsset,
+        pair: `${baseAsset?.symbol}-${targetAsset?.symbol}`,
         status: value.status,
-        price: price.dp(decimals).toLocaleString(),
+        price: price.toLocaleString(),
         priceChange,
+        volumeNumber: volume.toNumber(),
         volume: volume.toLocaleString(),
       };
-      buffer.push(row);
+      const index = buffer.findIndex(
+        (item) =>
+          row.status > item.status ||
+          (row.status === item.status && row.id.dexId > item.id.dexId) ||
+          (row.status === item.status && row.id.dexId === item.id.dexId && row.volumeNumber > item.volumeNumber)
+      );
+      if (index !== -1) {
+        buffer.splice(index, 0, row);
+      } else {
+        buffer.push(row);
+      }
       return buffer;
     }, []);
   }

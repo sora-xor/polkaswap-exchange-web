@@ -1067,7 +1067,6 @@
         "total": "Total",
         "tradingPair": {
             "choosePair": "Choose trading pair",
-            "dailyChange": "Daily change",
             "status": "Status",
             "total": "{amount} {symbol} at {amount2} {symbol2}",
             "volume": "Volume"
