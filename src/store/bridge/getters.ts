@@ -6,6 +6,7 @@ import { defineGetters } from 'direct-vuex';
 
 import { ZeroStringValue } from '@/consts';
 import { bridgeGetterContext } from '@/store/bridge';
+import { isWaitingForAction } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 
@@ -242,6 +243,12 @@ const getters = defineGetters<BridgeState>()({
     const { networkHistoryId } = getters;
 
     return !!(networkHistoryId && state.historyLoading[networkHistoryId]);
+  },
+
+  hasWaitingForActionTx(...args): boolean {
+    const { getters } = bridgeGetterContext(args);
+
+    return Object.values(getters.history).some((item) => isWaitingForAction(item));
   },
 });
 

@@ -121,7 +121,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
   @state.settings.isThemePreference isThemePreference!: boolean;
-  @state.settings.featureFlags private featureFlags!: FeatureFlags;
   @state.settings.isTMA isTMA!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;

@@ -1,5 +1,21 @@
 <template>
   <base-widget v-bind="$attrs" :title="tc('transactionText', 2)" class="swap-transactions-widget">
+    <template #types>
+      <token-select-button
+        :icon="selectTokenIcon"
+        :token="selectedToken"
+        :tabindex="tokenTabIndex"
+        @click.stop="handleSelectToken"
+      />
+      <select-token
+        v-if="!predefinedToken"
+        disabled-custom
+        :visible.sync="showSelectTokenDialog"
+        :asset="selectedToken"
+        @select="changeToken"
+      />
+    </template>
+
     <s-table
       ref="table"
       v-loading="loading"
@@ -24,10 +40,11 @@
           <span>{{ t('removeLiquidity.input') }}</span>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount
-            class="explore-table-item-token"
+          <formatted-amount-with-fiat-value
+            class="explore-table-item-token tx-amount"
             :font-size-rate="FontSizeRate.SMALL"
             :value="row.inputAmount"
+            :fiat-value="row.inputAmountUSD"
           />
         </template>
       </s-table-column>
@@ -36,10 +53,11 @@
           <span>{{ t('removeLiquidity.output') }}</span>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount
-            class="explore-table-item-token"
+          <formatted-amount-with-fiat-value
+            class="explore-table-item-token tx-amount"
             :font-size-rate="FontSizeRate.SMALL"
             :value="row.outputAmount"
+            :fiat-value="row.outputAmountUSD"
           />
         </template>
       </s-table-column>
@@ -98,7 +116,7 @@
       :total="total"
       :loading="loading"
       :last-page="lastPage"
-      @pagination-click="onPaginationClick"
+      @pagination-click="handlePaginationClick"
     />
   </base-widget>
 </template>
@@ -111,6 +129,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import IndexerDataFetchMixin from '@/components/mixins/IndexerDataFetchMixin';
 import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
+import WithTokenSelectMixin from '@/components/mixins/Widget/WithTokenSelect';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
@@ -127,7 +146,9 @@ type TableItem = {
   outputAsset: Nullable<Asset>;
   outputAssetSymbol: string;
   inputAmount: string;
+  inputAmountUSD: string;
   outputAmount: string;
+  outputAmountUSD: string;
   datetime: {
     date: string;
     time: string;
@@ -139,17 +160,22 @@ type TableItem = {
   components: {
     BaseWidget: lazyComponent(Components.BaseWidget),
     LinksDropdown: lazyComponent(Components.LinksDropdown),
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    SelectToken: lazyComponent(Components.SelectToken),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     FormattedAddress: components.FormattedAddress,
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin, IndexerDataFetchMixin) {
+export default class SwapTransactionsWidget extends Mixins(
+  WithTokenSelectMixin,
+  ScrollableTableMixin,
+  IndexerDataFetchMixin
+) {
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
-  @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
-  @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
 
   @Watch('assetsAddresses', { immediate: true })
@@ -157,14 +183,14 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin,
     this.checkTriggerUpdate(curr, prev);
   }
 
-  pageAmount = 5; // override PaginationSearchMixin
+  fetchAmount = 100; // override IndexerDataFetchMixin
 
   private readonly operations = [Operation.Swap];
-  private readonly fromTimestamp = dayjs().subtract(1, 'month').startOf('day').unix(); // month ago, start of the day
+  private readonly fromTimestamp = dayjs().subtract(1, 'week').startOf('day').unix(); // week ago, start of the day
 
   // override ScrollableTableMixin
   get tableItems(): TableItem[] {
-    return this.items.map((item) => {
+    return this.visibleItems.map((item) => {
       const txId = item.id ?? '';
       const blockId = item.blockId ?? '';
       const address = item.from ?? '';
@@ -173,7 +199,9 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin,
       const outputAsset = item.asset2Address ? this.assetsDataTable[item.asset2Address] : null;
       const outputAssetSymbol = outputAsset?.symbol ?? '??';
       const inputAmount = showMostFittingValue(new FPNumber(item.amount ?? 0));
+      const inputAmountUSD = new FPNumber(item.payload.amountUSD ?? 0).toLocaleString();
       const outputAmount = showMostFittingValue(new FPNumber(item.amount2 ?? 0));
+      const outputAmountUSD = new FPNumber(item.payload.amount2USD ?? 0).toLocaleString();
       const date = dayjs(item.startTime);
       const links = soraExplorerLinks(this.soraNetwork, txId, blockId);
 
@@ -184,7 +212,9 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin,
         outputAsset,
         outputAssetSymbol,
         inputAmount,
+        inputAmountUSD,
         outputAmount,
+        outputAmountUSD,
         datetime: { date: date.format('M/DD'), time: date.format('HH:mm:ss') },
         links,
       };
@@ -192,7 +222,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin,
   }
 
   get assetsAddresses(): string[] {
-    const filtered = [this.tokenFrom, this.tokenTo].filter((token) => !!token) as AccountAsset[];
+    const filtered = [this.selectedToken].filter((token) => !!token) as AccountAsset[];
 
     return filtered
       .map((token) => token.address)
@@ -205,14 +235,12 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin,
 
   private createFilter(timestamp?: number) {
     const indexer = getCurrentIndexer();
-    const { operations, tokenFrom, tokenTo } = this;
-    const assetAddress = tokenFrom?.address;
-    const assetsAddresses = tokenTo?.address ? [tokenTo.address] : [];
+    const { operations, selectedToken } = this;
+    const assetAddress = selectedToken?.address;
     const filter = indexer.historyElementsFilter({
       operations,
       assetAddress,
       timestamp,
-      query: { assetsAddresses },
     });
 
     return filter;
@@ -222,8 +250,8 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin,
   get dataVariables(): FetchVariables {
     return {
       filter: this.createFilter(this.fromTimestamp),
-      first: this.pageAmount,
-      offset: this.pageAmount * (this.currentPage - 1),
+      first: this.fetchAmount,
+      offset: this.fetchAmount * (this.fetchPage - 1),
     };
   }
 
@@ -269,6 +297,16 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin,
 
 <style lang="scss">
 @include explore-table;
+
+.swap-transactions-widget {
+  .tx-amount.formatted-amount__container {
+    text-align: inherit;
+    & > * {
+      width: 100%;
+      text-align: inherit;
+    }
+  }
+}
 </style>
 
 <style lang="scss" scoped>

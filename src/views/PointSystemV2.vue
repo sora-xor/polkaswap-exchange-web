@@ -99,7 +99,7 @@ import { fetchAccountMeta } from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
-import { AccountPointsCalculation, CalculateCategoryPointResult, CategoryPoints } from '@/types/pointSystem';
+import { AccountPointSystems, CalculateCategoryPointResult, CategoryPoints } from '@/types/pointSystem';
 import { convertFPNumberToNumber } from '@/utils';
 import { pointsService } from '@/utils/pointSystem';
 
@@ -124,7 +124,6 @@ export default class PointSystemV2 extends Mixins(
   readonly LogoSize = WALLET_CONSTS.LogoSize;
 
   @state.referrals.referralRewards private referralRewards!: Nullable<ReferrerRewards>;
-  @state.wallet.settings.blockNumber private blockNumber!: number;
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
@@ -179,41 +178,57 @@ export default class PointSystemV2 extends Mixins(
     return fiatBalanceFloat;
   }
 
-  getPointsForCategories(accountDataForPointsCalculation: AccountPointsCalculation): CategoryPoints {
+  private getPointsForCategories(pointSystems: AccountPointSystems): CategoryPoints {
+    const firstTxAccount = pointSystems.createdAt.timestamp ?? 0;
+
     const liquidityProvision = this.getTotalLiquidityFiatValue();
-    const VXORHoldings = this.getCurrentFiatBalanceForToken(VXOR.symbol);
-    const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards ?? this.Zero);
-    const depositVolumeBridges =
-      convertFPNumberToNumber(accountDataForPointsCalculation?.bridge.incomingUSD ?? this.Zero) +
-      convertFPNumberToNumber(accountDataForPointsCalculation?.bridge.outgoingUSD ?? this.Zero);
-    const networkFeeSpent = convertFPNumberToNumber(accountDataForPointsCalculation?.fees.amountUSD ?? this.Zero);
-    const XORBurned = convertFPNumberToNumber(accountDataForPointsCalculation?.burned.amountUSD ?? this.Zero);
     const XORHoldings = this.getCurrentFiatBalanceForToken(XOR.symbol);
-    const kensetsuVolumeRepaid = convertFPNumberToNumber(
-      accountDataForPointsCalculation?.kensetsu.amountUSD ?? this.Zero
-    );
+    const VXORHoldings = this.getCurrentFiatBalanceForToken(VXOR.symbol);
     const KUSDHoldings = this.getCurrentFiatBalanceForToken(KUSD.symbol);
-    const orderbookVolume = convertFPNumberToNumber(accountDataForPointsCalculation?.orderBook.amountUSD ?? this.Zero);
-    const governanceLockedXOR = convertFPNumberToNumber(
-      accountDataForPointsCalculation?.governance.amountUSD ?? this.Zero
+    const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards);
+
+    const points = pointSystems.points.reduce(
+      (acc, era) => {
+        const eraCoefficient = pointsService.getEraCoefficient(era.version);
+
+        const depositVolumeBridges =
+          convertFPNumberToNumber(era.bridge.incomingUSD) + convertFPNumberToNumber(era.bridge.outgoingUSD);
+        const networkFeeSpent = convertFPNumberToNumber(era.fees.amountUSD);
+        const XORBurned = convertFPNumberToNumber(era.burned.amountUSD);
+        const kensetsuVolumeRepaid = convertFPNumberToNumber(era.kensetsu.amountUSD);
+        const orderbookVolume = convertFPNumberToNumber(era.orderBook.amountUSD);
+        const governanceLockedXOR = convertFPNumberToNumber(era.governance.amountUSD);
+        const nativeXorStaking = convertFPNumberToNumber(era.staking.amountUSD);
+
+        acc.depositVolumeBridges += depositVolumeBridges * eraCoefficient;
+        acc.networkFeeSpent += networkFeeSpent * eraCoefficient;
+        acc.XORBurned += XORBurned * eraCoefficient;
+        acc.kensetsuVolumeRepaid += kensetsuVolumeRepaid * eraCoefficient;
+        acc.orderbookVolume += orderbookVolume * eraCoefficient;
+        acc.governanceLockedXOR += governanceLockedXOR * eraCoefficient;
+        acc.nativeXorStaking += nativeXorStaking * eraCoefficient;
+
+        return acc;
+      },
+      {
+        depositVolumeBridges: 0,
+        networkFeeSpent: 0,
+        XORBurned: 0,
+        kensetsuVolumeRepaid: 0,
+        orderbookVolume: 0,
+        governanceLockedXOR: 0,
+        nativeXorStaking: 0,
+      }
     );
-    const nativeXorStaking = convertFPNumberToNumber(accountDataForPointsCalculation?.staking.amountUSD ?? this.Zero);
-    const firstTxAccount = accountDataForPointsCalculation?.createdAt.timestamp ?? 0;
 
     const pointsForCategories = {
-      liquidityProvision,
-      VXORHoldings,
-      referralRewards,
-      depositVolumeBridges,
-      networkFeeSpent,
-      XORBurned,
-      XORHoldings,
-      governanceLockedXOR,
-      kensetsuVolumeRepaid,
-      orderbookVolume,
-      nativeXorStaking,
-      KUSDHoldings,
       firstTxAccount,
+      liquidityProvision,
+      XORHoldings,
+      VXORHoldings,
+      KUSDHoldings,
+      referralRewards,
+      ...points,
     };
     return pointsForCategories;
   }
@@ -222,11 +237,10 @@ export default class PointSystemV2 extends Mixins(
     if (this.isLoggedIn) {
       // Referral rewards
       await this.getAccountReferralRewards();
-      const account = this.account.address;
-      const end = this.blockNumber;
-      if (!(account && end)) return;
 
+      const account = this.account.address;
       const accountMeta = await fetchAccountMeta(account);
+
       if (accountMeta) {
         this.pointsForCards = pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta));
       }

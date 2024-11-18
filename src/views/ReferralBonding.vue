@@ -2,14 +2,14 @@
   <div v-loading="parentLoading" class="container">
     <generic-page-header
       has-button-back
-      :title="t(`referralProgram.${isBond ? 'bondTitle' : 'unbondTitle'}`)"
+      :title="t(isBond ? 'referralProgram.bondTitle' : 'referralProgram.unbondTitle')"
       @back="handleBack"
     />
     <s-form class="el-form--actions" :show-message="false">
       <token-input
         :balance="balance"
         :is-max-available="isMaxButtonAvailable"
-        :title="t(`referralProgram.${isBond ? 'deposit' : 'action.unbond'}`)"
+        :title="t(isBond ? 'referralProgram.action.bond' : 'referralProgram.action.unbond')"
         :token="xor"
         :value="amount"
         @input="handleInputXor"
@@ -33,7 +33,7 @@
           {{ t('referralProgram.insufficientBondedBalance') }}
         </template>
         <template v-else>
-          {{ t(`referralProgram.action.${isBond ? 'bond' : 'unbond'}`) }}
+          {{ t(isBond ? 'referralProgram.action.bond' : 'referralProgram.action.unbond') }}
         </template>
       </s-button>
       <info-line

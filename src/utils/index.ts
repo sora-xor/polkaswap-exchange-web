@@ -357,8 +357,8 @@ export const formatAmountWithSuffix = (value: FPNumber, precision = 2): AmountWi
   };
 };
 
-export const convertFPNumberToNumber = (fpValue: FPNumber, precision = 2): number => {
-  return parseFloat(fpValue.toFixed(precision));
+export const convertFPNumberToNumber = (fpValue: Nullable<FPNumber>, precision = 2): number => {
+  return parseFloat((fpValue ?? FPNumber.ZERO).toFixed(precision));
 };
 
 export const formatDecimalPlaces = (value: FPNumber | number, asPercent = false): string => {

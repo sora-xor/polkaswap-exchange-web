@@ -1,15 +1,23 @@
 <template>
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
-      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
-        <s-button
-          :class="['history-restore-btn', { loading: networkHistoryLoading }]"
-          type="action"
-          icon="arrows-swap-90-24"
-          :disabled="networkHistoryLoading"
-          :tooltip="t('bridgeHistory.restoreHistory')"
-          @click="updateExternalHistory(true)"
-        />
+      <generic-page-header :title="t('bridgeHistory.title')">
+        <template #back>
+          <s-button type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
+        </template>
+
+        <div class="history-header-buttons">
+          <s-button
+            :class="['history-restore-btn', { loading: networkHistoryLoading }]"
+            type="action"
+            icon="arrows-swap-90-24"
+            :disabled="networkHistoryLoading"
+            :tooltip="t('bridgeHistory.restoreHistory')"
+            @click="updateExternalHistory(true)"
+          />
+
+          <bridge-network-selector />
+        </div>
       </generic-page-header>
       <s-form class="history-form" :show-message="false">
         <search-input
@@ -75,7 +83,7 @@
 
 <script lang="ts">
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -83,7 +91,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
-import { state } from '@/store/decorators';
+import { action, state } from '@/store/decorators';
 
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
 
@@ -104,7 +112,7 @@ const SearchAttrs = [
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
+    BridgeNetworkSelector: lazyComponent(Components.BridgeNetworkSelector),
     SearchInput: components.SearchInput,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
@@ -117,10 +125,26 @@ export default class BridgeTransactionsHistory extends Mixins(
   mixins.PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
+  @action.bridge.updateBridgeHistory updateBridgeHistory!: FnWithoutArgs;
+
   @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeRegisteredAsset>;
   @state.bridge.historyPage historyPage!: number;
 
   pageAmount = 8; // override PaginationSearchMixin
+
+  @Watch('networkSelected', { immediate: true })
+  private fetchNetworkHistory() {
+    this.withParentLoading(async () => {
+      this.updateBridgeHistory();
+
+      if (this.historyPage !== 1) {
+        this.currentPage = this.historyPage;
+        if (this.currentPage !== 1 && this.currentPage === this.lastPage) {
+          this.isLtrDirection = false;
+        }
+      }
+    });
+  }
 
   get historyList(): Array<IBridgeTransaction> {
     return Object.values(this.history);
@@ -148,20 +172,6 @@ export default class BridgeTransactionsHistory extends Mixins(
       : Math.max((this.lastPage - this.currentPage) * this.pageAmount - this.directionShift, 0);
 
     return this.sortTransactions(this.getPageItems(this.filteredHistory, start, end), true);
-  }
-
-  created(): void {
-    this.withParentLoading(async () => {
-      this.updateInternalHistory();
-      this.updateExternalHistory();
-
-      if (this.historyPage !== 1) {
-        this.currentPage = this.historyPage;
-        if (this.currentPage !== 1 && this.currentPage === this.lastPage) {
-          this.isLtrDirection = false;
-        }
-      }
-    });
   }
 
   getFilteredHistory(history: Array<IBridgeTransaction>): Array<IBridgeTransaction> {
@@ -321,6 +331,12 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     align-items: center;
     margin-top: $inner-spacing-large;
     margin-right: auto;
+    margin-left: auto;
+  }
+  &-header-buttons {
+    display: flex;
+    align-items: center;
+    gap: $inner-spacing-mini;
     margin-left: auto;
   }
   &-content {

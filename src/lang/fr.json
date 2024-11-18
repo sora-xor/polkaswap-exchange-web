@@ -1359,7 +1359,6 @@
         "tradingPair": {
             "choosePair": "Choisissez une paire de trading",
             "volume": "Volume",
-            "dailyChange": "Changement quotidien",
             "status": "Statut",
             "total": "{amount} {symbol} à {amount2} {symbol2}"
         },
