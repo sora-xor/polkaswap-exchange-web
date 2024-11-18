@@ -1359,7 +1359,6 @@
         "tradingPair": {
             "choosePair": "选择交易对",
             "volume": "成交量",
-            "dailyChange": "每日变化",
             "status": "状态",
             "total": "{amount} {symbol} 在{amount2} {symbol2}"
         },

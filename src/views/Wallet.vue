@@ -10,6 +10,7 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/math';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, WALLET_CONSTS, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
@@ -47,7 +48,7 @@ export default class Wallet extends Mixins(TranslationMixin, mixins.LoadingMixin
         // where `asset` is required, `to` and `amount` are optional
         if (!page || page !== 'send') return;
         const to = query.to;
-        const amount = query.amount;
+        const amount = typeof query.amount === 'string' ? new FPNumber(query.amount || 0).toString() : undefined;
         const assetId = this.whitelistIdsBySymbol[(query.asset as string).toUpperCase()];
         if (!assetId) return;
         const asset = this.getAsset(assetId);

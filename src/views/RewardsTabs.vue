@@ -46,10 +46,14 @@ export default class RewardsTabs extends Mixins(mixins.LoadingMixin, Translation
 
 <style lang="scss">
 $rewards-tabs-height: 72px;
+$tab-margin: 22px;
 
 .rewards-tabs.container {
   .rewards-tabs__tabs {
     background-color: inherit;
+    margin-left: -$tab-margin;
+    margin-top: -$tab-margin;
+    width: calc(100% + $tab-margin * 2);
     &,
     .el-tabs__header,
     .el-tabs__nav-wrap,
