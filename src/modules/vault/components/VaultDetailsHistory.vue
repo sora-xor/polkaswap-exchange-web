@@ -19,7 +19,7 @@
         :loading="loading"
         :total="total"
         :last-page="lastPage"
-        @pagination-click="onPaginationClick"
+        @pagination-click="handlePaginationClick"
       />
     </template>
     <div v-else v-loading="loadingState" class="details-history__empty p4">{{ t('noDataText') }}</div>
