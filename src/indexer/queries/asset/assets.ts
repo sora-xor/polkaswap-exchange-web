@@ -89,20 +89,44 @@ const parse = (item: AssetEntity): Record<string, TokenData> => {
   };
 };
 
+const subqueryAssetsFilter = (ids: string[]) => {
+  const filter: any = {
+    or: [{ liquidity: { greaterThan: '0' } }, { liquidityBooks: { greaterThan: '0' } }],
+  };
+
+  if (ids.length) {
+    filter.id = { in: ids };
+  }
+
+  return filter;
+};
+
+const subsquidAssetsFilter = (ids: string[]) => {
+  const where: any = {
+    OR: [{ liquidity_gt: '0' }, { liquidityBooks_gt: '0' }],
+  };
+
+  if (ids.length) {
+    where.id_in = ids;
+  }
+
+  return where;
+};
+
 export async function fetchTokensData(assets: Asset[]): Promise<Record<string, TokenData>> {
   const ids = assets.map((item) => item.address);
   const indexer = getCurrentIndexer();
   let items: Nullable<Record<string, TokenData>[]>;
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
-      const filter = ids.length ? { id: { in: ids } } : undefined;
+      const filter = subqueryAssetsFilter(ids);
       const variables = { filter };
       const subqueryIndexer = indexer as SubqueryIndexer;
       items = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAssetsQuery, variables, parse);
       break;
     }
     case IndexerType.SUBSQUID: {
-      const where = ids.length ? { id_in: ids } : undefined;
+      const where = subsquidAssetsFilter(ids);
       const variables = { where };
       const subsquidIndexer = indexer as SubsquidIndexer;
       items = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(SubsquidAssetsQuery, variables, parse);

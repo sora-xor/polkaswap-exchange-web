@@ -995,7 +995,6 @@ export default {
     tradingPair: {
       choosePair: 'Choose trading pair',
       volume: 'Volume',
-      dailyChange: 'Daily change',
       status: 'Status',
       total: '{amount} {symbol} at {amount2} {symbol2}',
     },

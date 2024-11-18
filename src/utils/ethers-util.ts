@@ -267,8 +267,11 @@ async function requestWalletAccounts(): Promise<string[]> {
       ],
     });
 
-    const permission = permissions[0];
-    const caveat = permission?.caveats?.find((caveat) => Array.isArray(caveat.value));
+    const permission = permissions.find((persmission) => persmission.parentCapability === 'eth_accounts');
+
+    if (!permission) throw new Error('Permission not found');
+
+    const caveat = permission.caveats?.find((caveat) => Array.isArray(caveat.value));
 
     if (!caveat) throw new Error('Accounts not found');
 

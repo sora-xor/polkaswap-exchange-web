@@ -52,7 +52,7 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
         });
       } catch (error: any) {
         // maybe transaction already completed, try to restore ethereum transaction hash
-        if (error.code === 'UNPREDICTABLE_GAS_LIMIT') {
+        if (error.code !== 'ACTION_REJECTED') {
           const { to, hash, startTime } = tx;
           const bridgeHistory = await this.getBridgeHistoryInstance();
           const transaction = await bridgeHistory.findEthTxBySoraHash(

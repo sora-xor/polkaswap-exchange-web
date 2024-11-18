@@ -41,6 +41,14 @@ class PointsService {
     };
   }
 
+  public getEraCoefficient(era: number): number {
+    if (era === 1) {
+      return 0.5;
+    }
+
+    return 1;
+  }
+
   public calculateCategoryPoints(categoryValues: CategoryValues): { [key: string]: CalculateCategoryPointResult } {
     const results: { [key: string]: CalculateCategoryPointResult } = {};
     const firstTxAccountResult: { [key: string]: CalculateCategoryPointResult } = {};
