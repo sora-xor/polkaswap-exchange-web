@@ -13,11 +13,14 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
   pageAmount = 5;
   fetchAmount = 5;
 
-  intervalTimestamp = 0;
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
   private updateItems = debouncedInputHandler(this.updateData, 250, { leading: false });
 
   updateInterval = 24_000; // 4 blocks
+
+  get intervalTimestamp(): number {
+    return Math.floor(this.getItemTimestamp(this.items[0]) / 1000);
+  }
 
   get loadingState(): boolean {
     return this.parentLoading || this.loading;
@@ -99,7 +102,6 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
     await this.fetchData();
 
     if (this.fetchPage === 1) {
-      this.updateIntervalTimestamp();
       this.subscribeOnData();
     }
   }
@@ -113,8 +115,8 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
         const { totalCount, items } = await this.requestData(this.dataVariables);
-        this.totalCount = totalCount;
         this.items = Object.freeze([...items]);
+        this.totalCount = totalCount;
       });
     });
   }
@@ -123,11 +125,6 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
     const { items, totalCount } = await this.requestData(this.updateVariables);
     this.items = Object.freeze([...items, ...this.items].slice(0, this.fetchAmount));
     this.totalCount = this.totalCount + totalCount;
-    this.updateIntervalTimestamp();
-  }
-
-  private updateIntervalTimestamp(): void {
-    this.intervalTimestamp = Math.floor(this.getItemTimestamp(this.items[0]) / 1000);
   }
 
   private subscribeOnData(): void {
