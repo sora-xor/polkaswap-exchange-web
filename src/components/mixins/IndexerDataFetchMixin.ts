@@ -10,7 +10,8 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
   totalCount = 0;
   items: readonly any[] = [];
 
-  tableAmount = 5;
+  pageAmount = 5;
+  fetchAmount = 5;
 
   intervalTimestamp = 0;
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
@@ -39,28 +40,21 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
     return {};
   }
 
-  get dataPage(): number {
-    const tableItems = this.tableAmount * this.currentPage;
-
-    return Math.ceil(tableItems / this.pageAmount);
-  }
-
-  get loadedDataPages(): number {
-    return Math.floor(this.items.length / this.pageAmount);
+  get fetchPage(): number {
+    return Math.ceil((this.pageAmount * this.currentPage) / this.fetchAmount);
   }
 
   get visibleItems(): any[] {
-    const start = this.tableAmount * (this.currentPage - 1);
-    const end = start + this.tableAmount;
+    const offset = this.fetchAmount * (this.fetchPage - 1);
+    const start = this.pageAmount * (this.currentPage - 1) - offset;
+    const end = start + this.pageAmount;
 
     return this.items.slice(start, end);
   }
 
-  @Watch('dataPage')
+  @Watch('fetchPage')
   private checkPageToLoad(): void {
-    if (this.dataPage > this.loadedDataPages) {
-      this.updateItems();
-    }
+    this.updateItems();
   }
 
   checkTriggerUpdate(current: any, prev: any) {
@@ -79,10 +73,6 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
   getItemTimestamp(item: any): number {
     console.info('[IndexerDataFetchMixin]: getItemTimestamp is not implemented');
     return 0;
-  }
-
-  async onPaginationClick(button: WALLET_CONSTS.PaginationButton): Promise<void> {
-    this.handlePaginationClick(button);
   }
 
   public handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
@@ -104,9 +94,14 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
   }
 
   private async updateData(): Promise<void> {
+    this.resetDataSubscription();
+
     await this.fetchData();
-    this.updateIntervalTimestamp();
-    this.subscribeOnData();
+
+    if (this.fetchPage === 1) {
+      this.updateIntervalTimestamp();
+      this.subscribeOnData();
+    }
   }
 
   private resetItems(): void {
@@ -119,14 +114,14 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
       await this.withParentLoading(async () => {
         const { totalCount, items } = await this.requestData(this.dataVariables);
         this.totalCount = totalCount;
-        this.items = Object.freeze([...this.items, ...items]);
+        this.items = Object.freeze([...items]);
       });
     });
   }
 
   private async fetchDataUpdates(): Promise<void> {
     const { items, totalCount } = await this.requestData(this.updateVariables);
-    this.items = Object.freeze([...items, ...this.items].slice(0, this.loadedDataPages * this.pageAmount));
+    this.items = Object.freeze([...items, ...this.items].slice(0, this.fetchAmount));
     this.totalCount = this.totalCount + totalCount;
     this.updateIntervalTimestamp();
   }

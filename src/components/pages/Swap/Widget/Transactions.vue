@@ -112,11 +112,11 @@
     <history-pagination
       class="explore-table-pagination"
       :current-page="currentPage"
-      :page-amount="tableAmount"
+      :page-amount="pageAmount"
       :total="total"
       :loading="loading"
       :last-page="lastPage"
-      @pagination-click="onPaginationClick"
+      @pagination-click="handlePaginationClick"
     />
   </base-widget>
 </template>
@@ -183,7 +183,7 @@ export default class SwapTransactionsWidget extends Mixins(
     this.checkTriggerUpdate(curr, prev);
   }
 
-  pageAmount = 100; // override PaginationSearchMixin
+  fetchAmount = 100; // override IndexerDataFetchMixin
 
   private readonly operations = [Operation.Swap];
   private readonly fromTimestamp = dayjs().subtract(1, 'week').startOf('day').unix(); // week ago, start of the day
@@ -250,8 +250,8 @@ export default class SwapTransactionsWidget extends Mixins(
   get dataVariables(): FetchVariables {
     return {
       filter: this.createFilter(this.fromTimestamp),
-      first: this.pageAmount,
-      offset: this.items.length,
+      first: this.fetchAmount,
+      offset: this.fetchAmount * (this.fetchPage - 1),
     };
   }
 
