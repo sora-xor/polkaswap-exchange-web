@@ -66,6 +66,7 @@
         autoresize
         @zr:mousewheel="handleZoom"
         @datazoom="changeZoomLevel"
+        @brushEnd="zoomInBrushArea"
       />
     </chart-skeleton>
   </base-widget>
@@ -278,6 +279,21 @@ const getPrecision = (value: number): number => {
   }
 
   return precision;
+};
+
+const findDataIndexByTimestamp = (data: readonly ChartDataItem[], search: number, startIndex: number = 0): number => {
+  for (let i = startIndex; i < data.length; i++) {
+    const timestamp = data[i][0];
+
+    if (timestamp < search) continue;
+
+    if (timestamp === search) {
+      return i;
+    } else {
+      return i > 0 ? i - 1 : i;
+    }
+  }
+  return 0;
 };
 
 @Component({
@@ -703,6 +719,16 @@ export default class PriceChartWidget extends Mixins(
       yAxis: [priceYAxis],
       tooltip,
       series: [priceSeria],
+      brush: {
+        brushLink: [0],
+        toolbox: ['lineX'],
+        xAxisIndex: 0,
+        brushType: 'lineX',
+        brushMode: 'single',
+        throttleType: 'debounce',
+        throttleDelay: 300,
+        transformable: false,
+      },
     };
 
     if (withVolume) {
@@ -1024,6 +1050,33 @@ export default class PriceChartWidget extends Mixins(
     const data = event?.batch?.[0];
     this.zoomStart = data?.start ?? 0;
     this.zoomEnd = data?.end ?? 0;
+  }
+
+  async zoomInBrushArea(event: any): Promise<void> {
+    const area = event.areas[0];
+
+    if (!area) return;
+
+    const [timestampStart, timestampEnd] = area.coordRange;
+    const indexStart = findDataIndexByTimestamp(this.chartData, timestampStart);
+    const indexEnd = findDataIndexByTimestamp(this.chartData, timestampEnd, indexStart);
+    const count = this.chartData.length;
+    const zoomStart = (indexStart / count) * 100;
+    const zoomEnd = (indexEnd / count) * 100;
+
+    await this.setChartZoomLevel(zoomStart, zoomEnd);
+    await this.resetChartBrushArea();
+  }
+
+  private async resetChartBrushArea(): Promise<void> {
+    await this.$nextTick();
+
+    const chart = this.$refs.chart as any;
+
+    chart.dispatchAction({
+      type: 'brush',
+      areas: [],
+    });
   }
 
   private async setChartZoomLevel(start: number, end: number): Promise<void> {
