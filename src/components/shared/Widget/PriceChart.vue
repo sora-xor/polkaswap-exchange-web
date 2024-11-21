@@ -49,15 +49,29 @@
       :is-error="isFetchingError"
       @retry="updatePrices"
     >
-      <formatted-amount
-        class="charts-price"
-        :value="currentPriceFormatted"
-        :font-weight-rate="FontWeightRate.MEDIUM"
-        :font-size-rate="FontWeightRate.MEDIUM"
-        :asset-symbol="symbol"
-        symbol-as-decimal
-      />
-      <price-change v-if="!isFetchingError" :value="priceChange" />
+      <div v-if="!isFetchingError" class="charts-stats">
+        <div class="charts-stats-group">
+          <formatted-amount
+            class="charts-price"
+            :value="currentPriceFormatted"
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :font-size-rate="FontWeightRate.MEDIUM"
+            :asset-symbol="symbol"
+            symbol-as-decimal
+          />
+          <price-change :value="priceChange" />
+        </div>
+
+        <div v-if="highlightData" class="charts-highlight" :style="{ color: highlightData.color }">
+          <table v-for="(group, idx) in highlightData.data" :key="idx">
+            <tr v-for="(row, index) in group" :key="index">
+              <td class="charts-highlight-name">{{ row[0] }}</td>
+              <td align="right">{{ row[1] }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
       <v-chart
         ref="chart"
         class="chart"
@@ -68,6 +82,8 @@
         @zr:mousewheel="handleZoom"
         @datazoom="changeZoomLevel"
         @brushEnd="zoomInBrushArea"
+        @highlight="handleHighlight"
+        @globalout="resetHighlighIndex"
       />
     </chart-skeleton>
   </base-widget>
@@ -222,10 +238,6 @@ const formatAmount = (value: FPNumber, precision: number) => {
   return value.toLocaleString(precision);
 };
 
-const formatPrice = (value: FPNumber, precision: number, symbol: string) => {
-  return `${formatAmount(value, precision)} ${symbol}`;
-};
-
 const dividePrice = (priceA: number, priceB: number): number => {
   return priceB !== 0 ? priceA / priceB : 0;
 };
@@ -356,7 +368,9 @@ export default class PriceChartWidget extends Mixins(
     min: Infinity,
     max: 0,
   };
+  private highlightIndex = 0;
 
+  handleHighlight = debouncedInputHandler(this.updateHighlightIndex, 50, { leading: true });
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
   private forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
   private priceUpdateRequestId = 0;
@@ -382,10 +396,12 @@ export default class PriceChartWidget extends Mixins(
    * Works the same like `formatPrice` if `isTokensPair === true`.
    * Otherwise, it converts amount to fiat amount according to the selected fiat + `formatPrice`.
    */
-  private toPrice(price: FPNumber | number, precision: number): string {
+  private toPrice(price: FPNumber | number, precision: number, withSymbol = true): string {
     const fp = price instanceof FPNumber ? price : new FPNumber(price);
     const value = this.isTokensPair ? fp : fp.mul(this.exchangeRate);
-    return formatPrice(value, precision, this.symbol);
+    const symbol = withSymbol ? this.symbol : '';
+
+    return `${formatAmount(value, precision)} ${symbol}`;
   }
 
   get chartKey(): string | undefined {
@@ -487,6 +503,38 @@ export default class PriceChartWidget extends Mixins(
     const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.[2] ?? 0); // "close" price
 
     return calcPriceChange(rangeClosePrice, rangeStartPrice);
+  }
+
+  get highlightData() {
+    const item = this.chartData[this.highlightIndex];
+
+    if (!item) return null;
+
+    const [timestamp, open, close, low, high] = item;
+
+    const openFp = new FPNumber(open);
+    const closeFp = new FPNumber(close);
+    const change = calcPriceChange(closeFp, openFp);
+    const color = signific(change)(
+      this.theme.color.status.success,
+      this.theme.color.status.error,
+      this.theme.color.base.content.primary
+    );
+
+    return {
+      color,
+      data: [
+        [
+          ['O', this.toPrice(openFp, this.precision)],
+          ['C', this.toPrice(closeFp, this.precision)],
+          ['%', formatChange(change)],
+        ],
+        [
+          ['H', this.toPrice(high, this.precision)],
+          ['L', this.toPrice(low, this.precision)],
+        ],
+      ],
+    };
   }
 
   get gridLeftOffset(): number {
@@ -617,33 +665,14 @@ export default class PriceChartWidget extends Mixins(
         type: 'cross',
       },
       formatter: (params) => {
-        const { data, seriesType } = params[0];
-        const [, open, close, low, high, volume] = data; // [timestamp, open, close, low, high, volume]
+        const { data } = params[0];
+        const [, _open, close, _low, _high, volume] = data; // [timestamp, open, close, low, high, volume]
         const rows: any[] = [];
 
-        const closeFp = new FPNumber(close);
-        if (seriesType === CHART_TYPES.CANDLE) {
-          const openFp = new FPNumber(open);
-          const change = calcPriceChange(closeFp, openFp);
-          const changeColor = signific(change)(
-            this.theme.color.status.success,
-            this.theme.color.status.error,
-            this.theme.color.base.content.primary
-          );
-
-          rows.push(
-            { title: 'Open', data: this.toPrice(openFp, this.precision) },
-            { title: 'High', data: this.toPrice(high, this.precision) },
-            { title: 'Low', data: this.toPrice(low, this.precision) },
-            { title: 'Close', data: this.toPrice(closeFp, this.precision) },
-            { title: 'Change', data: formatChange(change), color: changeColor }
-          );
-        } else {
-          rows.push({
-            title: 'Price',
-            data: this.toPrice(closeFp, this.precision),
-          });
-        }
+        rows.push({
+          title: 'Price',
+          data: this.toPrice(close, this.precision, true),
+        });
 
         if (withVolume) {
           // `volume` is in $ value here
@@ -1007,6 +1036,7 @@ export default class PriceChartWidget extends Mixins(
       max: 0,
     };
     this.precision = 2;
+    this.highlightIndex = 0;
 
     if (!saveReversedState) {
       this.isReversedChart = false;
@@ -1054,6 +1084,17 @@ export default class PriceChartWidget extends Mixins(
     await this.setChartZoomLevel(this.zoomStart, this.zoomEnd);
   }
 
+  private updateHighlightIndex(event: any): void {
+    const seria = event.batch[0];
+    if (!seria) return;
+    this.highlightIndex = seria.dataIndex;
+  }
+
+  resetHighlighIndex(): void {
+    this.highlightIndex = this.chartData.length - 1;
+    console.log(this.highlightIndex);
+  }
+
   handleClick(): void {
     this.setBrush(!this.isBrushMode);
   }
@@ -1096,8 +1137,6 @@ export default class PriceChartWidget extends Mixins(
       type: 'brush',
       areas: [],
     });
-
-    this.setBrush(false);
   }
 
   private setBrush(state: boolean): void {
@@ -1149,6 +1188,13 @@ export default class PriceChartWidget extends Mixins(
 
 <style lang="scss">
 .charts {
+  &-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $inner-spacing-medium;
+  }
+
   &-price {
     display: flex;
     margin-bottom: $inner-spacing-tiny;
@@ -1168,6 +1214,20 @@ export default class PriceChartWidget extends Mixins(
       &__symbol {
         color: var(--s-color-base-content-secondary);
       }
+    }
+  }
+
+  &-highlight {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    gap: $inner-spacing-mini;
+
+    font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-reset);
+
+    &-name {
+      color: var(--s-color-base-content-secondary);
     }
   }
 }
