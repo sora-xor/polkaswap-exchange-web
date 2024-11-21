@@ -283,6 +283,8 @@ const getPrecision = (value: number): number => {
 };
 
 const findDataIndexByTimestamp = (data: readonly ChartDataItem[], search: number, startIndex: number = 0): number => {
+  const isStart = startIndex === 0;
+
   for (let i = startIndex; i < data.length; i++) {
     const timestamp = data[i][0];
 
@@ -291,7 +293,7 @@ const findDataIndexByTimestamp = (data: readonly ChartDataItem[], search: number
     if (timestamp === search) {
       return i;
     } else {
-      return i > 0 ? i - 1 : i;
+      return isStart && i > 0 ? i - 1 : i;
     }
   }
   return 0;
@@ -530,7 +532,7 @@ export default class PriceChartWidget extends Mixins(
     const withVolume = this.entities.length === 1;
 
     const priceGrid = this.gridSpec({
-      top: 20,
+      top: 24,
       left: this.gridLeftOffset,
     });
 
@@ -732,7 +734,15 @@ export default class PriceChartWidget extends Mixins(
         transformable: false,
       },
       toolbox: {
-        show: false,
+        show: true,
+        iconStyle: {
+          borderColor: this.theme.color.base.content.secondary,
+        },
+        emphasis: {
+          iconStyle: {
+            borderColor: this.theme.color.theme.accent,
+          },
+        },
       },
     };
 
