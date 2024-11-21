@@ -64,6 +64,7 @@
         :key="chartKey"
         :option="chartSpec"
         autoresize
+        @zr:click="handleClick"
         @zr:mousewheel="handleZoom"
         @datazoom="changeZoomLevel"
         @brushEnd="zoomInBrushArea"
@@ -363,6 +364,7 @@ export default class PriceChartWidget extends Mixins(
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: SnapshotFilter = LINE_CHART_FILTERS[0];
   isReversedChart = false;
+  isBrushMode = false;
 
   /**
    * Works the same like `formatAmount` if `isTokensPair === true`.
@@ -729,6 +731,9 @@ export default class PriceChartWidget extends Mixins(
         throttleDelay: 300,
         transformable: false,
       },
+      toolbox: {
+        show: false,
+      },
     };
 
     if (withVolume) {
@@ -1039,6 +1044,10 @@ export default class PriceChartWidget extends Mixins(
     await this.setChartZoomLevel(this.zoomStart, this.zoomEnd);
   }
 
+  handleClick(): void {
+    this.setBrush(!this.isBrushMode);
+  }
+
   handleZoom(event: any): void {
     event?.stop?.();
     if (event?.wheelDelta < 0 && this.zoomStart === 0 && this.zoomEnd === 100) {
@@ -1077,6 +1086,31 @@ export default class PriceChartWidget extends Mixins(
       type: 'brush',
       areas: [],
     });
+
+    this.setBrush(false);
+  }
+
+  private setBrush(state: boolean): void {
+    const chart = this.$refs.chart as any;
+
+    if (state) {
+      // enable
+      chart.dispatchAction({
+        type: 'takeGlobalCursor',
+        key: 'brush',
+        brushOption: {
+          brushType: 'lineX',
+          brushMode: 'single',
+        },
+      });
+    } else {
+      // disable
+      chart.dispatchAction({
+        type: 'takeGlobalCursor',
+      });
+    }
+
+    this.isBrushMode = state;
   }
 
   private async setChartZoomLevel(start: number, end: number): Promise<void> {
@@ -1108,6 +1142,7 @@ export default class PriceChartWidget extends Mixins(
   &-price {
     display: flex;
     margin-bottom: $inner-spacing-tiny;
+
     font-weight: 800;
     font-size: var(--s-heading3-font-size);
     line-height: var(--s-line-height-extra-small);
