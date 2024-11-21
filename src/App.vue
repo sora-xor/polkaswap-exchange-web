@@ -26,6 +26,7 @@
     <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
     <app-browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
     <app-browser-notifs-blocked-rotate-phone :visible.sync="orientationWarningVisible" />
+    <app-browser-mst-notification-trxs :visible.sync="showNotificationMST" />
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
@@ -100,6 +101,7 @@ import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
     AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
     AppBrowserNotifsLocalStorageOverride: lazyComponent(Components.AppBrowserNotifsLocalStorageOverride),
     AppBrowserNotifsBlockedRotatePhone: lazyComponent(Components.AppBrowserNotifsBlockedRotatePhone),
+    AppBrowserMstNotificationTrxs: lazyComponent(Components.AppBrowserMstNotificationTrxs),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
     SelectSoraAccountDialog: lazyComponent(Components.SelectSoraAccountDialog),
@@ -114,6 +116,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showConfirmInviteUser = false;
   showNotifsDarkPage = false;
   showErrorLocalStorageExceed = false;
+  showNotificationMST = false;
 
   @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
   @state.settings.appConnection private appConnection!: NodesConnection;
@@ -123,6 +126,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.isThemePreference isThemePreference!: boolean;
   @state.settings.isTMA isTMA!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
+  @state.wallet.transactions.pendingMstTransactions pendingMstTransactions!: Array<HistoryItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
@@ -214,6 +218,14 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       detectSystemTheme(this.isTMA);
     } else {
       removeThemeListeners(this.isTMA);
+    }
+  }
+
+  @Watch('pendingMstTransactions.length', { immediate: true })
+  onPendingMstTransactionsChange(newLength: number): void {
+    console.info('we are in polkaswap thing Pending MST transactions length:', newLength);
+    if (newLength > 0) {
+      this.showNotificationMST = true;
     }
   }
 
