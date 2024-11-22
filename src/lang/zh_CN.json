@@ -202,6 +202,7 @@
         "title": "发送",
         "balance": "余额",
         "max": "最大限度",
+        "startUnlockingDate": "开始解锁日期",
         "enterAddress": "输入地址",
         "badAddress": "地址不正确",
         "enterAmount": "输入数量",

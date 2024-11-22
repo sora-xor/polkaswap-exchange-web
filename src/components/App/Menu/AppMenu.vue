@@ -15,6 +15,7 @@
         <div class="app-sidebar-menu">
           <s-menu
             class="menu"
+            role="menubar"
             mode="vertical"
             background-color="transparent"
             box-shadow="none"
@@ -60,6 +61,7 @@
 
           <s-menu
             class="menu"
+            role="menubar"
             mode="vertical"
             background-color="transparent"
             box-shadow="none"

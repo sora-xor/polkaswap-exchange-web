@@ -202,6 +202,7 @@
         "title": "Verzenden",
         "balance": "Saldo",
         "max": "MAX",
+        "startUnlockingDate": "Startdatum van ontgrendelen",
         "enterAddress": "Adres invoeren",
         "badAddress": "Onjuist adres",
         "enterAmount": "Voer bedrag in",
