@@ -202,6 +202,7 @@
         "title": "Odeslat",
         "balance": "Zůstatek",
         "max": "MAX",
+        "startUnlockingDate": "Datum zahájení odemykání",
         "enterAddress": "Zadejte adresu",
         "badAddress": "Nesprávná adresa",
         "enterAmount": "Zadejte částku",

@@ -1631,6 +1631,7 @@
         "enterVestingPercentage": "Enter vesting percentage",
         "errorAddress": "Invalid address. Please check it and try again.",
         "max": "MAX",
+        "startUnlockingDate": "Start unlocking date",
         "title": "Send",
         "tooltip": "Send tokens between {Sora} network accounts",
         "unlockFrequency": "Unlock frequency",
