@@ -202,6 +202,7 @@
         "title": "Отправить",
         "balance": "Баланс",
         "max": "МАКС",
+        "startUnlockingDate": "Начало разблокировки",
         "enterAddress": "Введите адрес",
         "badAddress": "Неверный адрес",
         "enterAmount": "Введите сумму",
