@@ -202,6 +202,7 @@
         "title": "Пошаљите",
         "balance": "Balans",
         "max": "МАКС",
+        "startUnlockingDate": "Датум почетка откључавања",
         "enterAddress": "Унесите адресу",
         "badAddress": "Нетачна адреса",
         "enterAmount": "Унесите износ",

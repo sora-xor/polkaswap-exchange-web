@@ -202,6 +202,7 @@
         "title": "Gửi",
         "balance": "Số dư",
         "max": "TỐI ĐA",
+        "startUnlockingDate": "Ngày bắt đầu mở khóa",
         "enterAddress": "Nhập địa chỉ",
         "badAddress": "Địa chỉ không chính xác",
         "enterAmount": "Nhập số tiền",
