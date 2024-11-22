@@ -24,15 +24,17 @@
             </div>
           </s-radio>
         </s-radio-group>
-        <s-divider />
-        <div class="statistics-dialog__group">
-          <div class="statistics-dialog__item">
-            <div class="switcher">
-              <s-switch v-model="useCeres" />
-              <span>{{ t('footer.statistics.dialog.useCeres') }}</span>
+        <template v-if="showCeresSwitcher">
+          <s-divider />
+          <div class="statistics-dialog__group">
+            <div class="statistics-dialog__item">
+              <div class="switcher">
+                <s-switch v-model="useCeres" />
+                <span>{{ t('footer.statistics.dialog.useCeres') }}</span>
+              </div>
             </div>
           </div>
-        </div>
+        </template>
       </div>
     </s-scrollbar>
   </div>
@@ -52,6 +54,9 @@ export default class SelectIndexer extends Mixins(TranslationMixin) {
 
   @ModelSync('indexer', 'update:indexer', { type: String }) readonly indexerType!: IndexerType;
   @ModelSync('ceres', 'update:ceres', { type: Boolean }) readonly useCeres!: boolean;
+
+  // [CERES] do not show switcher by default
+  public readonly showCeresSwitcher = false;
 }
 </script>
 
