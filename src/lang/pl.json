@@ -202,6 +202,7 @@
         "title": "Wyślij",
         "balance": "Saldo",
         "max": "MAKS.",
+        "startUnlockingDate": "Data rozpoczęcia odblokowywania",
         "enterAddress": "Wprowadź adres",
         "badAddress": "Nieprawidłowy adres",
         "enterAmount": "Wprowadź kwotę",

@@ -202,6 +202,7 @@
         "title": "Enviar",
         "balance": "Balance",
         "max": "MAX",
+        "startUnlockingDate": "Fecha de inicio del desbloqueo",
         "enterAddress": "Introduzca dirección",
         "badAddress": "Dirección incorrecta",
         "enterAmount": "Introduzca monto",
