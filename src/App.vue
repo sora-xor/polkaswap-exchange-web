@@ -126,6 +126,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.isThemePreference isThemePreference!: boolean;
   @state.settings.isTMA isTMA!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
+  @state.wallet.account.address private accountAddress!: string;
   @state.wallet.transactions.pendingMstTransactions pendingMstTransactions!: Array<HistoryItem>;
   @state.referrals.storageReferrer private storageReferrer!: string;
   @state.referrals.referrer private referrer!: string;
@@ -226,6 +227,13 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     console.info('we are in polkaswap thing Pending MST transactions length:', newLength);
     if (newLength > 0) {
       this.showNotificationMST = true;
+    }
+  }
+
+  @Watch('accountAddress')
+  private onAccountAddressChange(newAddress: string, oldAddress: string): void {
+    if (newAddress !== oldAddress) {
+      this.showNotificationMST = false;
     }
   }
 
