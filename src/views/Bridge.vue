@@ -189,7 +189,8 @@
     <div v-if="!areAccountsConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
 
     <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-    <bridge-select-sub-account />
+    <bridge-select-sub-account :visible.sync="showSelectTokenDialog" />
+    <app-browser-m-s-t-warning-bridge :visible.sync="showMSTWarning" />
     <select-node-dialog
       v-if="subConnection"
       :connection="subConnection"
@@ -271,6 +272,7 @@ import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/ty
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenInput: lazyComponent(Components.TokenInput),
+    AppBrowserMSTWarningBridge: lazyComponent(Components.AppBrowserMSTWarningBridge),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
@@ -295,6 +297,7 @@ export default class Bridge extends Mixins(
   @state.assets.registeredAssetsFetching private registeredAssetsFetching!: boolean;
   @state.bridge.amountSend amountSend!: string;
   @state.bridge.amountReceived amountReceived!: string;
+  @state.wallet.account.isMST isMST!: boolean;
 
   @getter.bridge.senderName senderName!: string;
   @getter.bridge.recipientName recipientName!: string;
@@ -320,7 +323,7 @@ export default class Bridge extends Mixins(
 
   showWarningExternalFeeDialog = false;
   isWarningExternalFeeDialogConfirmed = false;
-
+  showMSTWarning = false;
   // Sub Node Select
   @state.web3.selectSubNodeDialogVisibility selectSubNodeDialogVisibility!: boolean;
   @mutation.web3.setSelectSubNodeDialogVisibility private setSelectSubNodeDialogVisibility!: (flag: boolean) => void;
@@ -565,6 +568,12 @@ export default class Bridge extends Mixins(
   }
 
   async handleConfirmButtonClick(): Promise<void> {
+    console.info('we are in handleConfirmButtonClick');
+    if (this.isMST) {
+      console.info('we are in mst');
+      this.showMSTWarning = true;
+      return;
+    }
     // XOR check
     if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();

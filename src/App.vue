@@ -125,6 +125,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
   @state.settings.isThemePreference isThemePreference!: boolean;
   @state.settings.isTMA isTMA!: boolean;
+  @state.wallet.settings.isMSTAvailable isMSTAvailable!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.wallet.account.address private accountAddress!: string;
   @state.wallet.transactions.pendingMstTransactions pendingMstTransactions!: Array<HistoryItem>;
@@ -225,7 +226,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Watch('pendingMstTransactions.length', { immediate: true })
   onPendingMstTransactionsChange(newLength: number): void {
     console.info('we are in polkaswap thing Pending MST transactions length:', newLength);
-    if (newLength > 0) {
+    if (newLength > 0 && this.isMSTAvailable) {
       this.showNotificationMST = true;
     }
   }
