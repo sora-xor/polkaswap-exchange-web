@@ -61,7 +61,7 @@ export default class AppBrowserMstNotificationTrxs extends Mixins(
   right: 16px;
   width: 370px;
   height: 116px;
-  z-index: 1000;
+  z-index: $app-above-loader-layer;
   background-color: #a09a9d;
   border-radius: 12px;
   padding: 14px;
