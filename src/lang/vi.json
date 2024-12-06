@@ -1639,9 +1639,9 @@
         "yourLevel": "Cấp độ của bạn",
         "yourTasks": "Nhiệm vụ của bạn",
         "tokenHold": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Giữ số dư {token} hiện tại của bạn",
+            "titleProgress": "Số dư {token}",
+            "titleTask": "Giữ {token}"
         }
     },
     "addAssetsText": "Thêm tài sản | Thêm các tài sản",
@@ -1761,6 +1761,11 @@
         "switchMst": "Chuyển sang tài khoản Multisig",
         "threshold": "Ngưỡng",
         "thresholdNumber": "Đặt ngưỡng phê duyệt giao dịch",
-        "yourAddress": "Địa chỉ của bạn"
+        "yourAddress": "Địa chỉ của bạn",
+        "mstBridgeWarning": "Chuyển từ MST hiện tại không được hỗ trợ",
+        "seeActivity": "Xem hoạt động Multisig",
+        "suggestSwitchFromMst": "Bạn có thể chuyển từ MST hoặc chuyển sang MST",
+        "switchFromMst": "Chuyển từ MST",
+        "warningSwitch": "Cần có chữ ký để xác nhận giao dịch. Vui lòng chuyển sang tài khoản multisig."
     }
 }

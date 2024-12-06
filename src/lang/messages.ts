@@ -1235,5 +1235,10 @@ export default {
     minFee: 'Min amount of fee SIGNER need',
     loading: 'Loading...',
     successMstSetUp: 'Multisig wallet has been successfully set up!',
+    mstBridgeWarning: 'Transfer from MST is not supported for now',
+    suggestSwitchFromMst: 'You could switch from MST or transfer to MST',
+    switchFromMst: 'Switch from MST',
+    warningSwitch: 'A sign is needed to confirm the transaction. Please switch to a multisig account.',
+    seeActivity: 'See Multisig activity',
   },
 };

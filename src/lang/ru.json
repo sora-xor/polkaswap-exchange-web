@@ -1639,9 +1639,9 @@
         "yourLevel": "Ваш уровень",
         "yourTasks": "Ваши задачи",
         "tokenHold": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Владейте своими текущими накоплениями {token}",
+            "titleProgress": "Владение {token}",
+            "titleTask": "Владейте  {token}"
         }
     },
     "addAssetsText": "Добавить актив | Добавить активы",
@@ -1761,6 +1761,11 @@
         "switchMst": "Переключиться на аккаунт Multisig",
         "threshold": "Порог",
         "thresholdNumber": "Установите порог одобрения транзакций",
-        "yourAddress": "Ваш адрес"
+        "yourAddress": "Ваш адрес",
+        "mstBridgeWarning": "Перевод с MST в настоящее время не поддерживается",
+        "seeActivity": "Просмотреть активность Multisig",
+        "suggestSwitchFromMst": "Вы можете переключиться с MST или перевести на MST",
+        "switchFromMst": "Переключитесь с MST",
+        "warningSwitch": "Для подтверждения транзакции необходима подпись. Пожалуйста, переключитесь на multisig-аккаунт."
     }
 }

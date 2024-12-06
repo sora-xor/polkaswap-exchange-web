@@ -1,15 +1,15 @@
 <template>
   <dialog-base class="browser-notification" title="MST Bridge" :visible.sync="isVisible">
     <div class="browser-notification-dialog">
-      <p>Transfer from MST is not supported for now</p>
-      <p>You could switch from MST or transfer to MST</p>
+      <p>{{ t('mst.mstBridgeWarning') }}</p>
+      <p>{{ t('mst.suggestSwitchFromMst') }}</p>
       <s-button
         type="primary"
         class="s-typography-button--large browser-notification-dialog__btn"
         :loading="loading"
         @click="agree"
       >
-        Swith from MST
+        {{ t('mst.switchFromMst') }}
       </s-button>
     </div>
   </dialog-base>

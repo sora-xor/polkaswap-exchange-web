@@ -1639,9 +1639,9 @@
         "yourLevel": "Ваш ниво",
         "yourTasks": "Ваши задаци",
         "tokenHold": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Držite svoje trenutne {token} držanje",
+            "titleProgress": "{token} držanje",
+            "titleTask": "Držite {token}"
         }
     },
     "addAssetsText": "Додај имовину | Додај имовине",
@@ -1761,6 +1761,11 @@
         "switchMst": "Пребаците се на Multisig налог",
         "threshold": "Праг",
         "thresholdNumber": "Поставите праг одобрења трансакција",
-        "yourAddress": "Ваша адреса"
+        "yourAddress": "Ваша адреса",
+        "mstBridgeWarning": "Prenos sa MST trenutno nije podržan",
+        "seeActivity": "Pogledajte aktivnost Multisig",
+        "suggestSwitchFromMst": "Možete se prebaciti sa MST ili preneti na MST",
+        "switchFromMst": "Пребаците се са MST",
+        "warningSwitch": "Potpis je potreban za potvrdu transakcije. Molimo prebacite se na multisig nalog."
     }
 }

@@ -1639,9 +1639,9 @@
         "yourLevel": "Uw niveau",
         "yourTasks": "Uw taken",
         "tokenHold": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Houd uw huidige {token} bezittingen",
+            "titleProgress": "{token} bezittingen",
+            "titleTask": "Houd {token}"
         }
     },
     "addAssetsText": "Activa toevoegen | Activa’s toevoegen",
@@ -1761,6 +1761,11 @@
         "switchMst": "Overschakelen naar Multisig-account",
         "threshold": "Drempel",
         "thresholdNumber": "Stel een drempel in voor transactiegoedkeuring",
-        "yourAddress": "Uw adres"
+        "yourAddress": "Uw adres",
+        "mstBridgeWarning": "Overdracht van MST wordt voorlopig niet ondersteund",
+        "seeActivity": "Bekijk Multisig-activiteit",
+        "suggestSwitchFromMst": "Je kunt overschakelen van MST of overdragen naar MST",
+        "switchFromMst": "Schakel over van MST",
+        "warningSwitch": "Een handtekening is nodig om de transactie te bevestigen. Schakel over naar een multisig-account."
     }
 }

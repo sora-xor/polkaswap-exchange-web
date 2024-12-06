@@ -1639,9 +1639,9 @@
         "yourLevel": "Level Anda",
         "yourTasks": "Tugas Anda",
         "tokenHold": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Pegang kepemilikan {token} Anda saat ini",
+            "titleProgress": "Kepemilikan {token}",
+            "titleTask": "Pegang {token}"
         }
     },
     "addAssetsText": "Tambah aset | Tambah aset-aset",
@@ -1761,6 +1761,11 @@
         "switchMst": "Beralih ke akun Multisig",
         "threshold": "Ambang",
         "thresholdNumber": "Tetapkan ambang persetujuan transaksi",
-        "yourAddress": "Alamat Anda"
+        "yourAddress": "Alamat Anda",
+        "mstBridgeWarning": "Transfer dari MST saat ini tidak didukung",
+        "seeActivity": "Lihat aktivitas Multisig",
+        "suggestSwitchFromMst": "Anda bisa beralih dari MST atau mentransfer ke MST",
+        "switchFromMst": "Beralih dari MST",
+        "warningSwitch": "Tanda tangan diperlukan untuk mengonfirmasi transaksi. Harap beralih ke akun multisig."
     }
 }

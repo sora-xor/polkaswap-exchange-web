@@ -1639,9 +1639,9 @@
         "yourLevel": "Ihr Niveau",
         "yourTasks": "Ihre Aufgaben",
         "tokenHold": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Halten Sie Ihre aktuellen {token} Bestände",
+            "titleProgress": "{token} Bestände",
+            "titleTask": "Halte {token}"
         }
     },
     "addAssetsText": "Asset hinzufügen | Assets hinzufügen",
@@ -1761,6 +1761,11 @@
         "switchMst": "Zu Multisig-Konto wechseln",
         "threshold": "Schwellenwert",
         "thresholdNumber": "Legen Sie einen Schwellenwert für die Transaktionsgenehmigung fest",
-        "yourAddress": "Ihre Adresse"
+        "yourAddress": "Ihre Adresse",
+        "mstBridgeWarning": "Der Transfer von MST wird derzeit nicht unterstützt",
+        "seeActivity": "Multisig-Aktivität anzeigen",
+        "suggestSwitchFromMst": "Sie können von MST wechseln oder zu MST übertragen",
+        "switchFromMst": "Wechseln Sie von MST",
+        "warningSwitch": "Eine Unterschrift ist erforderlich, um die Transaktion zu bestätigen. Bitte wechseln Sie zu einem multisig-Konto."
     }
 }

@@ -1639,9 +1639,9 @@
         "yourLevel": "Il tuo livello",
         "yourTasks": "I tuoi compiti",
         "tokenHold": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Tieni i tuoi attuali detenuti di {token}",
+            "titleProgress": "Detenuti di {token}",
+            "titleTask": "Tieni {token}"
         }
     },
     "addAssetsText": "Aggiungi bene | Aggiungi beni",
@@ -1761,6 +1761,11 @@
         "switchMst": "Passa all'account Multisig",
         "threshold": "Soglia",
         "thresholdNumber": "Imposta una soglia di approvazione delle transazioni",
-        "yourAddress": "Il tuo indirizzo"
+        "yourAddress": "Il tuo indirizzo",
+        "mstBridgeWarning": "Il trasferimento da MST non è supportato per ora",
+        "seeActivity": "Vedi l'attività Multisig",
+        "suggestSwitchFromMst": "Puoi passare da MST o trasferire a MST",
+        "switchFromMst": "Passa da MST",
+        "warningSwitch": "È necessaria una firma per confermare la transazione. Passa a un account multisig."
     }
 }

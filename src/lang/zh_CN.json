@@ -1639,9 +1639,9 @@
         "yourLevel": "您的等级",
         "yourTasks": "您的任务",
         "tokenHold": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "持有您当前的 {token} 持有量",
+            "titleProgress": "{token} 持有量",
+            "titleTask": "持有 {token}"
         }
     },
     "addAssetsText": "添加资产 | 添加资产",
@@ -1761,6 +1761,11 @@
         "switchMst": "切换到 Multisig 账户",
         "threshold": "阈值",
         "thresholdNumber": "设置交易批准阈值",
-        "yourAddress": "您的地址"
+        "yourAddress": "您的地址",
+        "mstBridgeWarning": "目前不支持从 MST 转移",
+        "seeActivity": "查看 Multisig 活动",
+        "suggestSwitchFromMst": "你可以从 MST 切换或转移到 MST",
+        "switchFromMst": "从 MST 切换",
+        "warningSwitch": "需要签名以确认交易。请切换到 multisig 账户."
     }
 }

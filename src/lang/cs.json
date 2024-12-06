@@ -1639,9 +1639,9 @@
         "yourLevel": "Vaše úroveň",
         "yourTasks": "Vaše úkoly",
         "tokenHold": {
-            "descriptionTask": "",
-            "titleProgress": "",
-            "titleTask": ""
+            "descriptionTask": "Držte své současné {token} držby",
+            "titleProgress": "Držby {token}",
+            "titleTask": "Držte {token}"
         }
     },
     "addAssetsText": "Přidat aktivum | Přidat aktiva",
@@ -1761,6 +1761,11 @@
         "switchMst": "Přepnout na účet Multisig",
         "threshold": "Práh",
         "thresholdNumber": "Nastavte práh schválení transakce",
-        "yourAddress": "Vaše adresa"
+        "yourAddress": "Vaše adresa",
+        "mstBridgeWarning": "Přenos z MST není momentálně podporován",
+        "seeActivity": "Zobrazit aktivitu Multisig",
+        "suggestSwitchFromMst": "Můžete přepnout z MST nebo přenést na MST",
+        "switchFromMst": "Přepněte z MST",
+        "warningSwitch": "K potvrzení transakce je potřeba podpis. Přepněte na multisig účet."
     }
 }

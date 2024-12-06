@@ -2,8 +2,8 @@
   <div v-if="visible" class="notification-mst">
     <s-button class="close-button" @click="closeNotification"> <s-icon name="x-16" size="14" /> </s-button>
 
-    <p>A sign is needed to confirm the transaction. Please switch to a multisig account.</p>
-    <s-button type="secondary" @click="handleButtonClick">See Multisig activity</s-button>
+    <p>{{ t('mst.warningSwitch') }}</p>
+    <s-button type="secondary" @click="handleButtonClick">{{ t('mst.seeActivity') }}</s-button>
   </div>
 </template>
 
