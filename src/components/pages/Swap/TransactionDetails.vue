@@ -158,7 +158,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   }
 
   get liquidityProviderFeeValue(): string {
-    return this.formatStringValue('0.3');
+    return this.formatStringValue('0.6');
   }
 
   get formattedLiquidityProviderFee(): string {
