@@ -1,0 +1,1 @@
+.pool-info{display:flex;flex-direction:column}.pool-info>:not(:last-child){margin-bottom:16px}.pool-info-buttons{display:flex;justify-content:center}.pool-info-buttons>*{width:100%}.pool-info-buttons>:not(:first-child),.pool-info-buttons>:not(:last-child){width:50%}.pool-info-buttons .el-button+.el-button{margin-left:12px}
