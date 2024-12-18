@@ -25,7 +25,8 @@
     "test:unit": "vitest run --project unit --pass-with-no-tests",
     "test:translation": "vitest run --project translation --pass-with-no-tests",
     "test:e2e": "vitest run --project e2e --pass-with-no-tests",
-    "test:all": "yarn test:unit"
+    "test:all": "yarn test:unit",
+    "points:users": "tsx ./scripts/pointSystem/users.ts"
   },
   "dependencies": {
     "@cedelabs/widgets-universal": "^1.3.1",
