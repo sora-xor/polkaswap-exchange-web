@@ -93,7 +93,7 @@ import { components, mixins, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/sora
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
-import { Components } from '@/consts';
+import { Components, ZeroStringValue } from '@/consts';
 import { pointSystemCategory } from '@/consts/pointSystem';
 import { fetchAccountMeta } from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
@@ -103,7 +103,7 @@ import { AccountPointSystems, CalculateCategoryPointResult, CategoryPoints } fro
 import { convertFPNumberToNumber } from '@/utils';
 import { pointsService } from '@/utils/pointSystem';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
 @Component({
@@ -156,26 +156,30 @@ export default class PointSystemV2 extends Mixins(
   }
 
   getTotalLiquidityFiatValue(): number {
-    let totalFiatValue = 0;
-    this.accountLiquidity.forEach((liquidity) => {
+    return this.accountLiquidity.reduce((sum, liquidity) => {
       const firstAsset = this.getAsset(liquidity.firstAddress) as AccountAsset;
       const secondAsset = this.getAsset(liquidity.secondAddress) as AccountAsset;
-      const firstAssetFiatValue = parseFloat(
-        this.getFiatAmountByCodecString(liquidity.firstBalance, firstAsset)?.replace(',', '.') || '0'
-      );
-      const secondAssetFiatValue = parseFloat(
-        this.getFiatAmountByCodecString(liquidity.secondBalance, secondAsset)?.replace(',', '.') || '0'
-      );
-      totalFiatValue += firstAssetFiatValue + secondAssetFiatValue;
-    });
-    return totalFiatValue;
+      const firstAssetFiatValue = this.getFiatAmountForAsset(liquidity.firstBalance, firstAsset);
+      const secondAssetFiatValue = this.getFiatAmountForAsset(liquidity.secondBalance, secondAsset);
+
+      return sum + firstAssetFiatValue + secondAssetFiatValue;
+    }, 0);
+  }
+
+  getFiatAmountForAsset(amountCodecString: string, asset: Asset): number {
+    const assetAmount = this.getFPNumberFromCodec(amountCodecString, asset.decimals);
+    const assetPrice = this.getFPNumberFromCodec(this.getAssetFiatPrice(asset) ?? ZeroStringValue);
+    const fiatAmount = assetAmount.mul(assetPrice);
+
+    return fiatAmount.toNumber();
   }
 
   getCurrentFiatBalanceForToken(assetSymbol: string): number {
-    const fiatBalanceString =
-      this.getFiatBalance(this.accountAssets.find((asset) => asset.symbol === assetSymbol)) ?? '0';
-    const fiatBalanceFloat = parseFloat(fiatBalanceString.replace(',', '.'));
-    return fiatBalanceFloat;
+    const accountAsset = this.accountAssets.find((asset) => asset.symbol === assetSymbol);
+
+    if (!accountAsset) return 0;
+
+    return this.getFiatAmountForAsset(accountAsset.balance.transferable, accountAsset);
   }
 
   private getPointsForCategories(pointSystems: AccountPointSystems): CategoryPoints {
@@ -184,7 +188,7 @@ export default class PointSystemV2 extends Mixins(
     const liquidityProvision = this.getTotalLiquidityFiatValue();
     const XORHoldings = this.getCurrentFiatBalanceForToken(XOR.symbol);
     const KUSDHoldings = this.getCurrentFiatBalanceForToken(KUSD.symbol);
-    const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards);
+    const referralRewards = this.getFiatAmountForAsset(this.referralRewards?.rewards.toCodecString(), XOR);
 
     const points = pointSystems.points.reduce(
       (acc, era) => {
