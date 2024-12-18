@@ -52,6 +52,14 @@ export const getImageSrc = (imageName: string): AccountAsset | string => {
 };
 
 export const categoriesPointSystem: { [key: string]: Category } = {
+  KUSDHoldings: {
+    maxPercentage: 11,
+    levels: generateLevels(progressZero10K),
+    titleProgress: messages.points.KUSDHoldings.titleProgress,
+    titleTask: messages.points.KUSDHoldings.titleTask,
+    descriptionTask: messages.points.KUSDHoldings.descriptionTask,
+    imageName: KUSD.address,
+  },
   liquidityProvision: {
     maxPercentage: 10,
     levels: generateLevels(progressZero25K),
@@ -60,17 +68,9 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     descriptionTask: messages.points.liquidityProvision.descriptionTask,
     imageName: 'liquidity',
   },
-  VXORHoldings: {
-    maxPercentage: 10,
-    levels: generateLevels(progressZero10K),
-    titleProgress: messages.points.VXORHoldings.titleProgress,
-    titleTask: messages.points.VXORHoldings.titleTask,
-    descriptionTask: messages.points.VXORHoldings.descriptionTask,
-    imageName: VXOR.address,
-  },
   referralRewards: {
     maxPercentage: 6,
-    levels: generateLevels([0, 10, 50, 100, 250, 1001]),
+    levels: generateLevels([0, 10, 50, 100, 250, 1000]),
     titleProgress: messages.points.referralRewards.titleProgress,
     titleTask: messages.points.referralRewards.titleTask,
     descriptionTask: messages.points.referralRewards.descriptionTask,
@@ -139,14 +139,6 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     titleTask: messages.points.nativeXorStaking.titleTask,
     descriptionTask: messages.points.nativeXorStaking.descriptionTask,
     imageName: 'staking',
-  },
-  KUSDHoldings: {
-    maxPercentage: 1,
-    levels: generateLevels(progressZero10K),
-    titleProgress: messages.points.KUSDHoldings.titleProgress,
-    titleTask: messages.points.KUSDHoldings.titleTask,
-    descriptionTask: messages.points.KUSDHoldings.descriptionTask,
-    imageName: KUSD.address,
   },
   firstTxAccount: {
     maxPercentage: 0.5,

@@ -590,11 +590,6 @@ export default {
       titleTask: 'Hold {token}',
       descriptionTask: 'Hold your current {token} holdings',
     },
-    VXORHoldings: {
-      titleProgress: 'VXOR holdings',
-      titleTask: 'Hold VXOR',
-      descriptionTask: 'Hold your current VXOR holdings',
-    },
     referralRewards: {
       titleProgress: 'Referral Sytem',
       titleTask: 'Refer accounts',

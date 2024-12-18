@@ -88,7 +88,7 @@
 </template>
 
 <script lang="ts">
-import { XOR, KUSD, VXOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR, KUSD } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -183,7 +183,6 @@ export default class PointSystemV2 extends Mixins(
 
     const liquidityProvision = this.getTotalLiquidityFiatValue();
     const XORHoldings = this.getCurrentFiatBalanceForToken(XOR.symbol);
-    const VXORHoldings = this.getCurrentFiatBalanceForToken(VXOR.symbol);
     const KUSDHoldings = this.getCurrentFiatBalanceForToken(KUSD.symbol);
     const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards);
 
@@ -225,7 +224,6 @@ export default class PointSystemV2 extends Mixins(
       firstTxAccount,
       liquidityProvision,
       XORHoldings,
-      VXORHoldings,
       KUSDHoldings,
       referralRewards,
       ...points,

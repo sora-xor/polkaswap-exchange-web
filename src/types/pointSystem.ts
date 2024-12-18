@@ -33,7 +33,6 @@ export type CategoryValues = {
 
 export type CategoryPoints = {
   liquidityProvision: number;
-  VXORHoldings: number;
   referralRewards: number;
   depositVolumeBridges: number;
   networkFeeSpent: number;
