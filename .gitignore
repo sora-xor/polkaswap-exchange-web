@@ -30,3 +30,6 @@ pnpm-debug.log*
 
 # Webpack config inspect
 .webpack-config.js
+
+# scripts generated data
+/scripts/pointSystem/data/

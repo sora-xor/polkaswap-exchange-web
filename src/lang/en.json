@@ -1173,11 +1173,6 @@
             "titleProgress": "{token} holdings",
             "titleTask": "Hold {token}"
         },
-        "VXORHoldings": {
-            "descriptionTask": "Hold your current VXOR holdings",
-            "titleProgress": "VXOR holdings",
-            "titleTask": "Hold VXOR"
-        },
         "xorBurned": "{XOR} burned",
         "XORBurned": {
             "descriptionTask": "Burn XOR and convert to $ value",
