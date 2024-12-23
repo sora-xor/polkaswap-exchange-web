@@ -14,6 +14,9 @@ const kusd = '0x02000c0000000000000000000000000000000000000000000000000000000000
 const blockchainWSUrl = 'wss://mof3.sora.org';
 const indexerUrl = 'https://api.subquery.network/sq/sora-xor/sora-prod';
 
+const ROW_DELIMETER = '\r\n';
+const CELL_DELIMETER = ';';
+
 function getRpcEndpoint(wsEndpoint: string): string {
   return wsEndpoint.replace(/^ws(s)?:\/\/(ws)?/, (_, p1, p2) => {
     let str = 'http';
@@ -286,7 +289,7 @@ const parseAccountMetaData = (item) => {
 };
 
 function formatRow(data: string[]) {
-  return data.join(';').concat('\r\n');
+  return data.join(CELL_DELIMETER).concat(ROW_DELIMETER);
 }
 
 (async function main() {
@@ -323,12 +326,21 @@ function formatRow(data: string[]) {
     append(formatRow(tableHeader));
   }
 
-  const poolTokensPrices = await requestPoolTokensPrices();
+  let hasNextPage = true;
+  let after = '';
+
+  if (continueWrite) {
+    const text = fs.readFileSync(csvPath, { encoding: 'utf8', flag: 'r' });
+    const rows = text.split(ROW_DELIMETER);
+    const lastRow = rows[rows.length - 2]; // file has row delimeter at the end, so lat item is empty after split
+    const cells = lastRow.split(CELL_DELIMETER);
+
+    after = cells[0];
+  }
 
   console.info(`[Main] Start collecting users`);
 
-  let hasNextPage = true;
-  let after = '';
+  const poolTokensPrices = await requestPoolTokensPrices();
 
   while (hasNextPage) {
     const variables = { after, filter: undefined };
