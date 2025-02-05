@@ -9,7 +9,7 @@
         size="big"
         primary
       >
-        <generic-page-header class="header--bridge" :title="t('hashiBridgeText')" :tooltip="t('bridge.info')">
+        <generic-page-header class="header--bridge" :title="t('bridgeText')">
           <div class="bridge-header-buttons">
             <s-button
               v-if="isLoggedIn"

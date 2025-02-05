@@ -90,19 +90,6 @@
             class="input-value"
           />
         </div>
-
-        <div v-if="withSlider" class="input-line--footer-with-slider">
-          <div class="delimiter" />
-          <s-slider
-            class="slider-container"
-            :value="slideValue"
-            :disabled="!withSlider || disabled"
-            :show-tooltip="false"
-            :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
-            @input="handleSlideInputChange"
-            @mousedown.native="handleSlideClick"
-          />
-        </div>
       </slot>
 
       <slot />
@@ -141,8 +128,6 @@ export default class TokenInput extends Mixins(
   @getter.wallet.settings.currencySymbol currencySymbol!: string;
   @getter.wallet.settings.exchangeRate exchangeRate!: number;
 
-  @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
-
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   @Prop({ type: String }) readonly value!: string;
@@ -156,9 +141,7 @@ export default class TokenInput extends Mixins(
   @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly withSlider!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isFiatEditable!: boolean;
-  @Prop({ default: 0, type: Number }) readonly sliderValue!: number;
   @Prop({ default: 2, type: Number }) readonly fiatDecimals!: number;
   @Prop({ default: false, type: Boolean }) readonly withAddress!: number;
 
@@ -202,14 +185,6 @@ export default class TokenInput extends Mixins(
 
   handleFiatBlur(): void {
     this.fiatFocus = false;
-  }
-
-  get slideValue(): number {
-    return this.sliderValue;
-  }
-
-  set slideValue(value: number) {
-    this.setAmountSliderValue(value);
   }
 
   get isBalanceAvailable(): boolean {

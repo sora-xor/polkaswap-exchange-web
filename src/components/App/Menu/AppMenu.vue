@@ -45,18 +45,6 @@
                 />
               </s-menu-item>
             </s-menu-item-group>
-            <s-menu-item-group>
-              <app-sidebar-item-content
-                v-button
-                class="menu-item menu-item--bottom el-menu-item s-flex"
-                icon="finance-PSWAP-24"
-                href="https://about.polkaswap.io"
-                tag="a"
-                target="_blank"
-                rel="nofollow noopener"
-                :title="t('mainMenu.About')"
-              />
-            </s-menu-item-group>
           </s-menu>
 
           <s-menu
@@ -111,23 +99,7 @@ import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import {
-  PageNames,
-  PoolChildPages,
-  BridgeChildPages,
-  RewardsChildPages,
-  ExploreChildPages,
-  SidebarMenuGroups,
-  SidebarMenuItemLink,
-  FaucetLink,
-} from '@/consts';
-import { DashboardPageNames } from '@/modules/dashboard/consts';
-import { isDashboardPage } from '@/modules/dashboard/router';
-import { PoolPageNames } from '@/modules/pool/consts';
-import { StakingPageNames } from '@/modules/staking/consts';
-import { isStakingPage } from '@/modules/staking/router';
-import { VaultPageNames } from '@/modules/vault/consts';
-import { isVaultPage } from '@/modules/vault/router';
+import { PageNames, BridgeChildPages, SidebarMenuGroups, SidebarMenuItemLink, FaucetLink } from '@/consts';
 import { getter, mutation, state } from '@/store/decorators';
 
 import AppInfoPopper from './AppInfoPopper.vue';
@@ -147,9 +119,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @state.router.loading pageLoading!: boolean;
   @state.settings.menuCollapsed collapsed!: boolean;
 
-  @getter.settings.orderBookEnabled private orderBookEnabled!: boolean;
-  @getter.settings.kensetsuEnabled private kensetsuEnabled!: boolean;
-  @getter.settings.assetOwnerEnabled private assetOwnerEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
   @mutation.settings.setMenuCollapsed private setMenuCollapsed!: (collapsed: boolean) => void;
@@ -191,42 +160,16 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   get sidebarMenuItems(): Array<SidebarMenuItemLink> {
     let menuItems = SidebarMenuGroups;
 
-    if (!this.orderBookEnabled) {
-      menuItems = menuItems.filter(({ title }) => title !== PageNames.OrderBook);
-    }
-    if (!this.kensetsuEnabled) {
-      menuItems = menuItems.filter(({ title }) => title !== VaultPageNames.VaultsContainer);
-    }
-    if (!this.assetOwnerEnabled) {
-      menuItems = menuItems.filter(({ title }) => title !== PageNames.AssetOwnerContainer);
-    }
-
     return menuItems;
   }
 
   get currentPath(): string {
     const currentName = this.$route.name as PageNames;
-    if (PoolChildPages.includes(currentName)) {
-      return PoolPageNames.Pool;
-    }
+
     if (BridgeChildPages.includes(currentName)) {
       return PageNames.Bridge;
     }
-    if (RewardsChildPages.includes(currentName)) {
-      return PageNames.Rewards;
-    }
-    if (isStakingPage(currentName)) {
-      return StakingPageNames.Staking;
-    }
-    if (ExploreChildPages.includes(currentName)) {
-      return PageNames.ExploreTokens;
-    }
-    if (isDashboardPage(currentName)) {
-      return DashboardPageNames.AssetOwner;
-    }
-    if (isVaultPage(currentName)) {
-      return VaultPageNames.Vaults;
-    }
+
     return currentName;
   }
 

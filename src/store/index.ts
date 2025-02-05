@@ -3,23 +3,11 @@ import { createDirectStore } from 'direct-vuex';
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import addLiquidity from './addLiquidity';
 import assets from './assets';
 import bridge from './bridge';
-import dashboard from './dashboard';
-import demeterFarming from './demeterFarming';
-import moonpay from './moonpay';
-import orderBook from './orderBook';
-import pool from './pool';
-import referrals from './referrals';
-import removeLiquidity from './removeLiquidity';
-import rewards from './rewards';
 import router from './router';
 import settings from './settings';
-import soraCard from './soraCard';
-import staking from './staking';
 import swap from './swap';
-import vault from './vault';
 import web3 from './web3';
 
 import type { StoreOrModuleOptions } from 'direct-vuex';
@@ -34,19 +22,7 @@ const modules = {
   assets,
   settings,
   swap,
-  referrals,
-  pool,
-  moonpay,
   bridge,
-  addLiquidity,
-  removeLiquidity,
-  rewards,
-  staking,
-  demeterFarming,
-  soraCard,
-  orderBook,
-  dashboard,
-  vault,
 };
 
 const { store, rootGetterContext, rootActionContext } = createDirectStore({

@@ -18,10 +18,6 @@ const mutations = defineMutations<SettingsState>()({
     state.marketAlgorithm = value;
     storage.set('marketAlgorithm', value);
   },
-  setTransactionDeadline(state, value: number): void {
-    state.transactionDeadline = value;
-    storage.set('transactionDeadline', value);
-  },
   setFaucetUrl(state, url: string): void {
     state.faucetUrl = url;
   },
@@ -113,9 +109,6 @@ const mutations = defineMutations<SettingsState>()({
     if (newClass !== state.screenBreakpointClass) {
       state.screenBreakpointClass = newClass;
     }
-  },
-  setAdsArray(state, arr: Array<Ad>): void {
-    state.adsArray = arr;
   },
   enableTMA(state): void {
     state.isTMA = true;

@@ -2,14 +2,6 @@
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="app" :class="dsProviderClasses">
     <app-header :loading="loading" @toggle-menu="toggleMenu" />
     <div :class="appClasses">
-      <app-menu
-        :visible="menuVisibility"
-        :on-select="goTo"
-        @open-product-dialog="openProductDialog"
-        @click.native="handleAppMenuClick"
-      >
-        <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap" />
-      </app-menu>
       <div class="app-body">
         <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div class="app-content">
@@ -20,7 +12,6 @@
       </div>
     </div>
     <app-footer />
-    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
     <bridge-transfer-notification />
     <app-mobile-popup :visible.sync="showSoraMobilePopup" />
     <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
@@ -100,7 +91,6 @@ import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
     AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
     AppBrowserNotifsLocalStorageOverride: lazyComponent(Components.AppBrowserNotifsLocalStorageOverride),
     AppBrowserNotifsBlockedRotatePhone: lazyComponent(Components.AppBrowserNotifsBlockedRotatePhone),
-    ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
     SelectSoraAccountDialog: lazyComponent(Components.SelectSoraAccountDialog),
     NotificationEnablingPage: components.NotificationEnablingPage,
@@ -111,7 +101,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   /** Product-based class fields should be like show${product}Popup */
   showSoraMobilePopup = false;
   menuVisibility = false;
-  showConfirmInviteUser = false;
   showNotifsDarkPage = false;
   showErrorLocalStorageExceed = false;
 
@@ -123,8 +112,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.isThemePreference isThemePreference!: boolean;
   @state.settings.isTMA isTMA!: boolean;
   @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
-  @state.referrals.storageReferrer private storageReferrer!: string;
-  @state.referrals.referrer private referrer!: string;
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.router.loading pageLoading!: boolean;
 
@@ -149,11 +136,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.showOrientationWarning private showOrientationWarning!: FnWithoutArgs;
   @mutation.settings.hideOrientationWarning private hideOrientationWarning!: FnWithoutArgs;
 
-  @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
   @mutation.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
   @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => void;
-  @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
 
   @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
   @action.wallet.settings.subscribeOnExchangeRatesApi subscribeOnExchangeRatesApi!: AsyncFnWithoutArgs;
@@ -161,8 +146,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncFnWithoutArgs;
   @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncFnWithoutArgs;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
-  @action.settings.fetchAdsArray private fetchAdsArray!: AsyncFnWithoutArgs;
-  @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
   @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
     asset: WhitelistArrayItem;
     message: string;
@@ -194,20 +177,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  @Watch('isLoggedIn')
-  private async confirmInviteUserIfConnected(isSoraConnected: boolean): Promise<void> {
-    if (isSoraConnected) {
-      await this.confirmInvititation();
-    }
-  }
-
-  @Watch('storageReferrer', { immediate: true })
-  private async confirmInviteUserIfHasStorage(storageReferrerValue: string): Promise<void> {
-    if (this.isLoggedIn && !!storageReferrerValue) {
-      await this.confirmInvititation();
-    }
-  }
-
   @Watch('isThemePreference', { immediate: true })
   private onIsThemePreferenceChange(newVal: boolean) {
     if (newVal) {
@@ -215,20 +184,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     } else {
       removeThemeListeners(this.isTMA);
     }
-  }
-
-  private async confirmInvititation(): Promise<void> {
-    await this.withApi(async () => {
-      await this.getReferrer();
-      if (!this.storageReferrer) {
-        return;
-      }
-      if (this.storageReferrer === this.account.address) {
-        this.resetStorageReferrer();
-      } else if (!this.referrer) {
-        this.showConfirmInviteUser = true;
-      }
-    });
   }
 
   private setResponsiveClass(): void {
@@ -329,7 +284,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
     this.subscribeOnExchangeRatesApi();
     this.showDisclaimer();
-    this.fetchAdsArray();
     this.onIsThemePreferenceChange(this.isThemePreference);
   }
 
@@ -377,17 +331,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   goTo(name: PageNames): void {
-    if (name === PageNames.Rewards) {
-      // Rewards is a menu route but we need to show PointSystem by default
-      goTo(PageNames.PointSystemWrapper);
-    } else {
-      goTo(name);
-    }
+    goTo(name);
     this.closeMenu();
   }
 
-  goToSwap(): void {
-    this.goTo(PageNames.Swap);
+  goToBridge(): void {
+    this.goTo(PageNames.Bridge);
   }
 
   toggleMenu(): void {
@@ -410,23 +359,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  handleAppMenuClick(e: Event): void {
-    const target = e.target as any;
-    const sidebar = !!target.closest('.app-sidebar');
-
-    if (!sidebar) {
-      this.closeMenu();
-    }
-  }
-
-  openProductDialog(product: string): void {
-    // Product-based class fields should be like show${product}Popup (like showSoraMobilePopup)
-    const fieldName = `show${product[0].toUpperCase() + product.slice(1)}Popup`;
-    if (typeof this[fieldName] === 'boolean') {
-      this[fieldName] = true;
-    }
-  }
-
   async beforeDestroy(): Promise<void> {
     this.unsubscribeFromLocalStorage();
     this.unsubscribeFromScreenSize();
@@ -435,7 +367,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     tmaSdkService.destroy();
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
-    this.unsubscribeFromInvitedUsers();
     await connection.close();
   }
 

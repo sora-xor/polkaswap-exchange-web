@@ -68,10 +68,8 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
   slippageToleranceOpened = true;
 
   @state.settings.slippageTolerance slippageTolerance!: string;
-  @state.settings.transactionDeadline transactionDeadline!: number;
 
   @mutation.settings.setSlippageTolerance private setSlippageTolerance!: (value: string) => void;
-  @mutation.settings.setTransactionDeadline private setTransactionDeadline!: (value: number) => void;
 
   get localeFormattedSlippageTolerance() {
     return `${this.formatStringValue(this.slippageTolerance)}%`;
@@ -159,10 +157,6 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
 
   handleSlippageToleranceOnFocus(): void {
     this.slippageToleranceFocused = true;
-  }
-
-  handleSetTransactionDeadline(value: number): void {
-    this.setTransactionDeadline(value);
   }
 
   handleCollapseChange(): void {

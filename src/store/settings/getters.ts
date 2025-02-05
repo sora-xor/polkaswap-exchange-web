@@ -15,37 +15,9 @@ const getters = defineGetters<SettingsState>()({
     const { state } = settingsGetterContext(args);
     return LiquiditySourceForMarketAlgorithm[state.marketAlgorithm];
   },
-  moonpayApiKey(...args): string {
-    const { rootState } = settingsGetterContext(args);
-    return rootState.wallet.settings.apiKeys.moonpay;
-  },
-  moonpayEnabled(...args): boolean {
-    const { state, getters } = settingsGetterContext(args);
-    return !!getters.moonpayApiKey && !!state.featureFlags.moonpay;
-  },
-  soraCardEnabled(...args): Nullable<boolean> {
-    const { state } = settingsGetterContext(args);
-    return state.featureFlags.soraCard;
-  },
-  orderBookEnabled(...args): Nullable<boolean> {
-    const { state } = settingsGetterContext(args);
-    return state.featureFlags.orderBook;
-  },
-  kensetsuEnabled(...args): Nullable<boolean> {
-    const { state } = settingsGetterContext(args);
-    return state.featureFlags.kensetsu;
-  },
-  assetOwnerEnabled(...args): Nullable<boolean> {
-    const { state } = settingsGetterContext(args);
-    return state.featureFlags.assetOwner;
-  },
   debugEnabled(...args): Nullable<boolean> {
     const { state } = settingsGetterContext(args);
     return !!state.featureFlags.debug;
-  },
-  pointSystemV2(...args): Nullable<boolean> {
-    const { state } = settingsGetterContext(args);
-    return state.featureFlags.pointSystemV2;
   },
   notificationActivated(...args): boolean {
     const { state } = settingsGetterContext(args);

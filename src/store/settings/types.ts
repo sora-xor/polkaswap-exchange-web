@@ -11,14 +11,8 @@ export type Ad = {
 };
 
 export type FeatureFlags = {
-  moonpay?: boolean;
-  soraCard?: boolean;
-  orderBook?: boolean;
-  kensetsu?: boolean;
-  assetOwner?: boolean;
   alt?: boolean;
   debug?: boolean;
-  pointSystemV2?: boolean;
 };
 
 export type SettingsState = {
@@ -27,7 +21,6 @@ export type SettingsState = {
   slippageTolerance: string;
   marketAlgorithm: MarketAlgorithms;
   userDisclaimerApprove: boolean;
-  transactionDeadline: number;
   language: string;
   displayRegions: Nullable<Intl.DisplayNames>;
   percentFormat: Nullable<Intl.NumberFormat>;
@@ -48,7 +41,6 @@ export type SettingsState = {
   internetConnectionSpeed: Nullable<number>;
   screenBreakpointClass: BreakpointClass;
   windowWidth: number;
-  adsArray: Array<Ad>;
   isTMA: boolean;
   telegramBotUrl: Nullable<string>;
   isRotatePhoneHideBalanceFeatureEnabled: boolean;
