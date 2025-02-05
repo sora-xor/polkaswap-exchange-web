@@ -131,3 +131,17 @@ div.el-tabs__item {
 button.el-button.neumorphic {
   text-transform: none;
 }
+
+.el-message-box .el-message-box__btns {
+  button.el-button.el-button--default {
+    color: var(--s-color-base-on-accent);
+  }
+}
+
+.account-select-dialog {
+  .wallet-connection-text {
+    .external-link {
+      display: none !important;
+    }
+  }
+}

@@ -321,4 +321,5 @@ export const TranslationConsts = {
   Telegram: 'Telegram',
   DEX: 'DEX',
   Sora: 'Time Chain',
+  Polkaswap: 'Analog Bridge',
 } as const;

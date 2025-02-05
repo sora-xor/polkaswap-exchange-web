@@ -69,14 +69,16 @@
           />
         </token-input>
 
-        <s-button
-          class="s-button--switch"
-          data-test-name="switchToken"
-          type="action"
-          icon="arrows-swap-90-24"
-          :disabled="isConfirmTxLoading"
-          @click="switchDirection"
-        />
+        <div class="switch-block">
+          <s-button
+            class="s-button--switch"
+            data-test-name="switchToken"
+            type="action"
+            icon="arrows-swap-90-24"
+            :disabled="isConfirmTxLoading"
+            @click="switchDirection"
+          />
+        </div>
 
         <token-input
           id="bridgeTo"
@@ -686,6 +688,35 @@ export default class Bridge extends Mixins(
   }
 }
 
+.switch-block {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    width: calc((100% - var(--s-size-medium)) / 2);
+    height: 1px;
+    background-color: var(--s-color-base-border-primary);
+  }
+  &::before {
+    left: 0;
+  }
+  &::after {
+    right: 0;
+  }
+
+  .s-button--switch {
+    border: 1px solid var(--s-color-base-border-primary) !important;
+  }
+}
+
 .connect-wallet-logo {
   width: 18px;
   height: 18px;
@@ -715,7 +746,7 @@ export default class Bridge extends Mixins(
 
   &-content {
     @include bridge-content;
-    @include vertical-divider('s-button--switch', $inner-spacing-medium);
+    @include vertical-divider('switch-block', $inner-spacing-medium);
     @include vertical-divider('s-divider-tertiary');
     @include buttons;
     @include full-width-button('el-button--next');

@@ -98,10 +98,6 @@ button.el-button.neumorphic#{$baseClass} {
   &.focusing,
   &.s-pressed {
     box-shadow: $button-custom-shadow;
-
-    #{$baseClass}__icon {
-      color: var(--s-color-base-content-secondary) !important;
-    }
   }
 
   &--token {
@@ -111,11 +107,6 @@ button.el-button.neumorphic#{$baseClass} {
     &.focusing,
     &.s-pressed {
       background-color: var(--s-color-utility-surface);
-
-      #{$baseClass}__icon {
-        background-color: var(--s-color-base-content-secondary);
-        color: var(--s-color-utility-surface) !important;
-      }
     }
   }
 }
@@ -136,9 +127,12 @@ $baseClass: '.token-select-button';
 
   &__icon {
     margin-left: $inner-spacing-tiny;
-    background-color: var(--s-color-base-on-accent);
-    color: var(--s-color-base-content-tertiary) !important;
+    color: var(--s-color-base-on-accent) !important;
     border-radius: var(--s-border-radius-medium);
+
+    &:hover {
+      color: inherit;
+    }
   }
 
   &--token {

@@ -22,7 +22,7 @@
         </span>
       </template>
     </footer-popper>
-    <footer-popper
+    <!-- <footer-popper
       icon="wi-fi-16"
       panel-class="internet"
       :panel-text="internetConnectionText"
@@ -37,8 +37,8 @@
       <template #default>
         <span>{{ internetConnectionDesc }}</span>
       </template>
-    </footer-popper>
-    <footer-popper
+    </footer-popper> -->
+    <!-- <footer-popper
       icon="software-cloud-24"
       panel-class="statistics"
       :panel-text="statisticsConnectionText"
@@ -50,7 +50,7 @@
         <span>{{ t('footer.statistics.label') }}</span>
         <span>{{ statisticsConnectionDesc }}</span>
       </template>
-    </footer-popper>
+    </footer-popper> -->
     <select-node-dialog
       :connection="appConnection"
       :visibility="selectNodeDialogVisibility"

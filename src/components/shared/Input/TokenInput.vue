@@ -51,7 +51,7 @@
       </s-button>
       <token-select-button
         v-if="token || isSelectAvailable"
-        icon="chevron-down-rounded-16"
+        icon="arrows-chevron-down-rounded-24"
         :disabled="!isSelectAvailable"
         :token="token"
         @click.stop="handleSelectToken"
