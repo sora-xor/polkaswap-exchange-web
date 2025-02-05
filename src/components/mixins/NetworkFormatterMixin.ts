@@ -135,6 +135,9 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
       case EvmNetworkId.EthereumClassicMainnet:
       case EvmNetworkId.EthereumClassicTestnetMordor:
         return 'ethereum-classic';
+      case EvmNetworkId.ArbitrumMainnet:
+      case EvmNetworkId.ArbitrumGoerliTestnet:
+        return 'arbitrum';
       // sub
       case SubNetworkId.Polkadot:
         return 'polkadot';
