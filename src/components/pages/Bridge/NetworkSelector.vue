@@ -8,6 +8,8 @@
         class="el-button--settings"
         type="action"
         icon="basic-settings-24"
+        size="small"
+        alternative
         :tooltip="t('bridge.selectNetwork')"
         tooltip-placement="bottom-end"
         @click="handleChangeNetwork"

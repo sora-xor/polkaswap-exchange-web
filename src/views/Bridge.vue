@@ -15,6 +15,8 @@
               v-if="isLoggedIn"
               class="history-button"
               type="action"
+              alternative
+              size="small"
               icon="time-time-history-24"
               :tooltip="t('bridgeHistory.showHistory')"
               tooltip-placement="bottom-end"
@@ -124,7 +126,7 @@
 
         <template v-else-if="areAccountsConnected">
           <s-button
-            class="el-button--next s-typography-button--large"
+            class="el-button--next s-typography-button--medium"
             data-test-name="nextButton"
             type="primary"
             :disabled="isTxConfirmDisabled"
@@ -186,7 +188,7 @@
       </s-card>
     </s-form>
 
-    <div v-if="!areAccountsConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
+    <!-- <div v-if="!areAccountsConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div> -->
 
     <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
     <bridge-select-sub-account />
@@ -658,10 +660,14 @@ export default class Bridge extends Mixins(
 
 <style lang="scss">
 .bridge {
-  &-content > .el-card__body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  &-content {
+    background: var(--analog-background-surface) !important;
+
+    > .el-card__body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   }
 
   &-form {

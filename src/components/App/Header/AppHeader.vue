@@ -1,8 +1,7 @@
 <template>
   <header class="header">
-    <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
-    <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
-    <div class="app-controls s-flex">
+    <app-logo-button class="app-logo--header" :theme="libraryTheme" @click="goTo(PageNames.Bridge)" />
+    <div class="app-controls app-controls--middle s-flex">
       <app-header-menu />
     </div>
     <rotate-phone-dialog />
@@ -14,7 +13,6 @@
 
 <script lang="ts">
 import { XOR, ETH } from '@sora-substrate/sdk/build/assets/consts';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import InternalConnectMixin from '../../../components/mixins/InternalConnectMixin';
@@ -50,21 +48,6 @@ export default class AppHeader extends Mixins(InternalConnectMixin) {
 
   goTo = goTo;
 
-  get isMobile(): boolean {
-    return this.screenBreakpointClass === BreakpointClass.Mobile;
-  }
-
-  get isAnyMobile(): boolean {
-    return this.isMobile || this.screenBreakpointClass === BreakpointClass.LargeMobile;
-  }
-
-  get nodeLogo() {
-    return {
-      size: WALLET_CONSTS.LogoSize.MEDIUM,
-      tokenSymbol: XOR.symbol,
-    };
-  }
-
   toggleMenu(): void {
     this.$emit('toggle-menu');
   }
@@ -91,15 +74,7 @@ export default class AppHeader extends Mixins(InternalConnectMixin) {
   padding: $inner-spacing-mini;
   min-height: $header-height;
   position: relative;
-  &:after {
-    content: '';
-    position: absolute;
-    height: 1px;
-    bottom: 0;
-    left: $inner-spacing-mini;
-    right: $inner-spacing-mini;
-    background-color: var(--s-color-base-border-secondary);
-  }
+
   @include tablet {
     padding: $inner-spacing-mini $inner-spacing-medium;
 
@@ -119,57 +94,14 @@ export default class AppHeader extends Mixins(InternalConnectMixin) {
     margin-right: $inner-spacing-mini;
   }
 
-  .node-control {
-    @include element-size('token-logo', 32px);
-    &__logo {
-      display: block;
-      margin: auto;
-    }
-  }
-
-  &-fiat-btn.s-action .payment-icon {
-    margin: auto;
-    margin-top: 2px; // Only for action button
-  }
-
   .el-button {
     + .el-button {
       margin-left: 0;
     }
   }
 
-  @include desktop {
-    margin-left: auto;
-  }
-
   &--middle {
     margin-left: auto;
-
-    @include desktop {
-      position: absolute;
-      top: 50%;
-      left: 42.5%; // Because of marketing banner
-      transform: translate(-50%, -50%);
-      margin-right: 0;
-    }
-
-    @media (minmax(1220px, false)) {
-      left: 50%;
-    }
-  }
-}
-
-.app-menu-button {
-  flex-shrink: 0;
-
-  @include large-mobile {
-    display: none;
-  }
-}
-
-.app-logo--header {
-  @include large-mobile(true) {
-    display: none;
   }
 }
 </style>

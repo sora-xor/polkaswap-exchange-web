@@ -34,7 +34,7 @@
     />
     <template #footer>
       <account-confirmation-option with-hint class="confirmation-option" />
-      <s-button type="primary" class="s-typography-button--large" :loading="loading" @click="handleConfirm">
+      <s-button type="primary" class="s-typography-button--big" :loading="loading" @click="handleConfirm">
         {{ confirmText }}
       </s-button>
     </template>

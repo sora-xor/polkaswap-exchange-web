@@ -218,29 +218,29 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
             : []),
         ],
       },
-      {
-        title: this.t('headerMenu.titleTheme'),
-        items: [
-          {
-            value: HeaderMenuType.Theme,
-            icon: 'basic-lightning-24',
-            text: this.t('headerMenu.systemPreferencesTheme'),
-            isThemeItem: true,
-          },
-          {
-            value: HeaderMenuType.LightMode,
-            icon: 'various-brightness-low-24',
-            text: this.t('headerMenu.switchTheme', { theme: this.t('light') }),
-            isThemeItem: true,
-          },
-          {
-            value: HeaderMenuType.NoirMode,
-            icon: 'finance-PSWAP-24',
-            text: this.t('headerMenu.switchTheme', { theme: this.t('noir') }),
-            isThemeItem: true,
-          },
-        ],
-      },
+      // {
+      //   title: this.t('headerMenu.titleTheme'),
+      //   items: [
+      //     {
+      //       value: HeaderMenuType.Theme,
+      //       icon: 'basic-lightning-24',
+      //       text: this.t('headerMenu.systemPreferencesTheme'),
+      //       isThemeItem: true,
+      //     },
+      //     {
+      //       value: HeaderMenuType.LightMode,
+      //       icon: 'various-brightness-low-24',
+      //       text: this.t('headerMenu.switchTheme', { theme: this.t('light') }),
+      //       isThemeItem: true,
+      //     },
+      //     {
+      //       value: HeaderMenuType.NoirMode,
+      //       icon: 'finance-PSWAP-24',
+      //       text: this.t('headerMenu.switchTheme', { theme: this.t('noir') }),
+      //       isThemeItem: true,
+      //     },
+      //   ],
+      // },
       {
         title: this.t('headerMenu.titleCurrency'),
         items: [
@@ -256,12 +256,12 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       {
         title: this.t('headerMenu.titleMisc'),
         items: [
-          {
-            value: HeaderMenuType.Notification,
-            icon: 'notifications-bell-24',
-            text: this.t('browserNotificationDialog.title'),
-            iconType: 'arrows-chevron-right-rounded-24',
-          },
+          // {
+          //   value: HeaderMenuType.Notification,
+          //   icon: 'notifications-bell-24',
+          //   text: this.t('browserNotificationDialog.title'),
+          //   iconType: 'arrows-chevron-right-rounded-24',
+          // },
           // {
           //   value: HeaderMenuType.Disclaimer,
           //   icon: 'info-16',
@@ -391,7 +391,8 @@ $item-padding: 17px;
   }
 
   &.el-dropdown-menu.el-popper {
-    background-color: $dropdown-background;
+    background: var(--analog-background-surface);
+    backdrop-filter: blur(40px);
     box-shadow: var(--s-shadow-element-pressed);
     position: fixed !important;
     top: -16px !important;
@@ -413,7 +414,7 @@ $item-padding: 17px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 17px;
+    padding: 9px 17px 10px;
     width: 100%;
     i {
       font-size: 24px !important;

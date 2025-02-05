@@ -312,6 +312,7 @@ $el-input-class: '.el-input';
     padding: 0;
     min-height: initial;
     box-shadow: none !important;
+    background: none !important;
     border-radius: 0;
 
     & > .s-input__content {

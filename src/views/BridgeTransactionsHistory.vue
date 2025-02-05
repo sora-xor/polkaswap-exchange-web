@@ -3,13 +3,15 @@
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header :title="t('bridgeHistory.title')">
         <template #back>
-          <s-button type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
+          <s-button type="action" alternative icon="arrows-chevron-left-rounded-24" @click="handleBack" />
         </template>
 
         <div class="history-header-buttons">
           <s-button
             :class="['history-restore-btn', { loading: networkHistoryLoading }]"
             type="action"
+            size="small"
+            alternative
             icon="arrows-swap-90-24"
             :disabled="networkHistoryLoading"
             :tooltip="t('bridgeHistory.restoreHistory')"
@@ -329,7 +331,6 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   &-container {
     flex-direction: column;
     align-items: center;
-    margin-top: $inner-spacing-large;
     margin-right: auto;
     margin-left: auto;
   }

@@ -16,17 +16,14 @@ $country-emoji-font: 'Twemoji Country Flags';
 @include generic-input-lines;
 
 .el-loading-mask {
-  background-color: var(--s-color-utility-body);
+  background-color: transparent;
+  backdrop-filter: blur(5px);
   z-index: $app-loader-layer;
 
   .el-loading-spinner {
-    background-image: url('@/assets/img/pswap-loader.svg');
     height: var(--s-size-medium);
     width: var(--s-size-medium);
     margin-left: calc(50% - (var(--s-size-medium) / 2));
-    > svg {
-      display: none;
-    }
   }
 }
 
@@ -81,12 +78,6 @@ h3 {
   outline: none;
 }
 
-/* FONT WEIGHTS */
-button.el-button--primary span,
-button.el-button--max {
-  font-variation-settings: $font-weight-800 !important;
-}
-
 div.el-pagination button,
 div.el-collapse-item__wrap {
   background-color: unset !important;
@@ -126,4 +117,17 @@ div.el-tabs__item {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+
+.s-divider-tertiary {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.el-button--max {
+  color: rgba(64, 216, 110, 1) !important;
+}
+
+button.el-button.neumorphic {
+  text-transform: none;
 }

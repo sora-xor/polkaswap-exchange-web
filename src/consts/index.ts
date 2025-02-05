@@ -8,9 +8,9 @@ import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 export const app = {
   version: pkg.version,
-  name: 'Polkaswap',
+  name: 'Analog Bridge',
   email: 'jihoon@tutanota.de',
-  title: 'Polkaswap — The DEX for the Interoperable Future.',
+  title: 'Analog Bridge - Transfer your tokens to Time Chain',
 };
 
 export const WalletPermissions = {
@@ -135,7 +135,6 @@ export enum Components {
   AppMobilePopup = 'App/MobilePopup',
   AppBrowserNotifsEnableDialog = 'App/BrowserNotification/EnableDialog',
   AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BlockedDialog',
-  AppBrowserNotifsLocalStorageOverride = 'App/BrowserNotification/LocalStorageOverride',
   AppBrowserNotifsBlockedRotatePhone = 'App/BrowserNotification/BlockedRotatePhone',
   Alerts = 'App/Alerts/Alerts',
   AlertList = 'App/Alerts/AlertList',
@@ -165,15 +164,7 @@ export enum Components {
   BridgeNodeIcon = 'pages/Bridge/NodeIcon',
   BridgeNetworkSelector = 'pages/Bridge/NetworkSelector',
   // Swap Page
-  SwapFormWidget = 'pages/Swap/Widget/Form',
-  SwapTransactionsWidget = 'pages/Swap/Widget/Transactions',
-  SwapDistributionWidget = 'pages/Swap/Widget/Distribution',
-  SwapTransactionDetailsWidget = 'pages/Swap/Widget/TransactionDetails',
-  SwapConfirm = 'pages/Swap/Confirm',
   SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
-  SwapTransactionDetails = 'pages/Swap/TransactionDetails',
-  SwapSettings = 'pages/Swap/Settings/Settings',
-  SwapLossWarningDialog = 'pages/Swap/LossWarningDialog',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
   LinksDropdown = 'shared/LinksDropdown',
@@ -329,4 +320,5 @@ export const TranslationConsts = {
   LTV: 'LTV',
   Telegram: 'Telegram',
   DEX: 'DEX',
+  Sora: 'Time Chain',
 } as const;

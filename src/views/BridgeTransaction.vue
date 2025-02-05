@@ -167,7 +167,7 @@
         </div>
       </template>
     </div>
-    <s-button v-if="txIsFinilized" class="s-typography-button--large" type="secondary" @click="navigateToBridge">
+    <s-button v-if="txIsFinilized" class="s-typography-button--big" type="secondary" @click="navigateToBridge">
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
   </div>
@@ -696,7 +696,7 @@ $network-title-max-width: 250px;
     }
   }
   &-content .el-button,
-  &-container .s-typography-button--large {
+  &-container .s-typography-button--big {
     width: 100%;
     margin-top: $inner-spacing-medium;
   }

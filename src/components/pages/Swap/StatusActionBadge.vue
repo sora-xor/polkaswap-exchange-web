@@ -51,7 +51,6 @@ $base-class: '.status-action-badge';
     right: 0;
     top: 50%;
     transform: translate(0, -50%);
-    background-color: var(--s-color-utility-body);
     border-radius: 50%;
   }
 }

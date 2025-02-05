@@ -1,43 +1,43 @@
 $s-color-brand-day: #a19a9d; // 0d0248
+
 // Primary theme colors
-$s-color-theme-accent: #f8087b; // NEU bright pink fluro
-$s-color-theme-accent-hover: #f754a3; // NEU pale quartz pink
-$s-color-theme-accent-pressed: #bf065f;
-$s-color-theme-accent-focused: #ab0555;
+$s-color-theme-accent: #FFFFFF;
+$s-color-theme-accent-hover: #FFFFFF;
+$s-color-theme-accent-pressed: #FFFFFF;
+$s-color-theme-accent-focused: #FFFFFF;
 // Secondary theme colors
-$s-color-theme-secondary: #44e5b2;
-$s-color-theme-secondary-hover: #24daa0;
-$s-color-theme-secondary-pressed: #24daa0;
-$s-color-theme-secondary-focused: #24daa0;
+$s-color-theme-secondary: rgba(16, 69, 29);
+$s-color-theme-secondary-hover: rgba(16, 69, 29, 0.32);
+$s-color-theme-secondary-pressed: rgba(16, 69, 29, 0.32);
+$s-color-theme-secondary-focused: rgba(16, 69, 29, 0.32);
 // Base content colors
-$s-color-base-content-primary: #2a171f;
+$s-color-base-content-primary: rgba(255, 255, 255, 1);
 $s-color-base-content-secondary: #a19a9d;
 $s-color-base-content-tertiary: #d5cdd0;
 $s-color-base-content-quaternary: #75787b;
 // Base misc colors
-$s-color-base-background: #faf4f8;
-$s-color-base-border-primary: #f7f3f4;
-$s-color-base-border-secondary: #ede4e7;
-$s-color-base-background-hover: #f7f3f4;
+$s-color-base-background: rgba(255, 255, 255, 0.08);
+$s-color-base-border-primary: rgba(255, 255, 255, 0.20);
+$s-color-base-border-secondary: rgba(255, 255, 255, 0.12);
+$s-color-base-background-hover: rgba(255, 255, 255, 0.04);
 $s-color-base-disabled: #fdf7fb;
 $s-color-base-on-disabled: #a19a9d;
-$s-color-base-on-accent: #ffffff;
+$s-color-base-on-accent: rgba(0, 0, 0, 1);
 // Utility colors
-$s-color-utility-body: #f7f3f4;
-$s-color-utility-surface: #fdf7fb;
+$s-color-utility-body: rgba(115, 115, 115, 1);
+$s-color-utility-surface: rgba(13, 16, 23, 1);
 $s-color-utility-overlay: rgba(42, 23, 31, 0.1);
 // Status colors
-$s-color-status-success: #34ad87;
+$s-color-status-success: rgba(40, 202, 66, 1);
 $s-color-status-warning: #eba332;
-$s-color-status-error: #f754a3;
-$s-color-status-info: #479aef;
+$s-color-status-error: rgba(219, 74, 50, 1);
+$s-color-status-info: rgba(71, 154, 239, 1);
 $s-color-status-success-background: #b9ebdb;
 $s-color-status-warning-background: #fceebd;
 $s-color-status-error-background: #ffd8eb;
 $s-color-status-info-background: #c6e2ff;
 // Fiat colors
-$s-color-fiat-value: rgba(71, 154, 239, 1) !default;
-$s-color-rewards: #c0e2ff !default;
+$s-color-fiat-value: rgba(71, 154, 239, 0.6) !default;
 // Sizes
 $s-size-mini: 24px;
 $s-size-small: 32px;
@@ -50,7 +50,7 @@ $s-shadow-tab: 1px 1px 2px #ffffff, inset 1px 1px 2px rgba(0, 0, 0, 0.1); // 0px
 $s-shadow-dropdown: 0px 4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-tap-bar: 0px -4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-side-menu: -4px 4px 8px rgba(19, 19, 19, 0.15);
-$s-shadow-dialog: -5px -5px 10px var(--s-shadow-color-light), 1px 1px 10px var(--s-shadow-color-dark), inset 1px 1px 2px var(--s-shadow-color-light-dark);
+$s-shadow-dialog: 0px 0px 40px 0px rgba(0, 0, 0, 0.8);
 $s-shadow-dialog--dark: -5px -5px 10px var(--s-shadow-color-dark-lighten--dark), 2px 2px 15px var(--s-color-base-background--dark), inset 1px 1px 2px var(--s-shadow-color-dark-lighten--dark);
 
 // Border Radius
@@ -81,6 +81,21 @@ $s-asset-item-height--fiat: 86px;
 // override dark theme on disabled
 $s-color-base-on-disabled--dark: #c29ab7;
 
+
+// overrides
+$neu-button-primary-box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15) inset, 0px 0px 40px 0px rgba(255, 255, 255, 0.4);
+$neu-button-primary-box-shadow-hover: 0px 0px 40px 0px rgba(255, 255, 255, 0.4);
+$neu-button-border-width: 0px;
+$neu-button-primary-border-color: rgba(209, 209, 209, 1);
+$neu-button-primary-border-color-hover: rgba(102, 102, 102, 1);
+$neu-button-secondary-box-shadow: none;
+$neu-button-secondary-box-shadow-active: none;
+$neu-button-action-background-color: rgba(255, 255, 255, 0.08);
+
+$s-shadow-element: none;
+$s-shadow-element-pressed: none;
+
+
 @import '../../node_modules/@soramitsu-ui/ui-vue2/lib/styles/index';
 
 :root {
@@ -88,7 +103,6 @@ $s-color-base-on-disabled--dark: #c29ab7;
   --s-transition-default: #{$s-transition-default};
   // Fiat colors
   --s-color-fiat-value: #{$s-color-fiat-value};
-  --s-color-rewards: #{$s-color-rewards};
   // Asset item height
   --s-asset-item-height: #{$s-asset-item-height};
   --s-asset-item-height--fiat: #{$s-asset-item-height--fiat};

@@ -28,11 +28,6 @@
       :set-visibility="setSignTxDialogVisibility"
     />
     <select-sora-account-dialog />
-    <app-browser-notifs-local-storage-override
-      :visible.sync="showErrorLocalStorageExceed"
-      @delete-data-local-storage="clearLocalStorage"
-    >
-    </app-browser-notifs-local-storage-override>
   </s-design-system-provider>
 </template>
 
@@ -58,15 +53,13 @@ import AppFooter from '@/components/App/Footer/AppFooter.vue';
 import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
-import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { PageNames, Components, Language, WalletPermissions, LOCAL_STORAGE_LIMIT_PERCENTAGE } from '@/consts';
+import { PageNames, Components, Language, WalletPermissions } from '@/consts';
 import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
-import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
@@ -79,7 +72,6 @@ import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
 
 @Component({
   components: {
-    SoraLogo,
     AppHeader,
     AppFooter,
     AppMenu,
@@ -89,7 +81,6 @@ import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
     AppDisclaimer: lazyComponent(Components.AppDisclaimer),
     AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),
     AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
-    AppBrowserNotifsLocalStorageOverride: lazyComponent(Components.AppBrowserNotifsLocalStorageOverride),
     AppBrowserNotifsBlockedRotatePhone: lazyComponent(Components.AppBrowserNotifsBlockedRotatePhone),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
     SelectSoraAccountDialog: lazyComponent(Components.SelectSoraAccountDialog),
@@ -102,7 +93,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showSoraMobilePopup = false;
   menuVisibility = false;
   showNotifsDarkPage = false;
-  showErrorLocalStorageExceed = false;
 
   @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
   @state.settings.appConnection private appConnection!: NodesConnection;
@@ -192,23 +182,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
 
-  public clearLocalStorage = clearLocalStorage;
-
-  private handleLocalStorageChange(): void {
-    const usagePercentage = calculateStorageUsagePercentage();
-    if (usagePercentage >= LOCAL_STORAGE_LIMIT_PERCENTAGE) {
-      this.showErrorLocalStorageExceed = true;
-    }
-  }
-
-  private subscribeOnLocalStorage(): void {
-    window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
-  }
-
-  private unsubscribeFromLocalStorage(): void {
-    window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
-  }
-
   private handleOrientationChange(): void {
     const isLandscape = screen.orientation
       ? screen.orientation.type.startsWith('landscape')
@@ -288,7 +261,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   mounted(): void {
-    this.subscribeOnLocalStorage();
     this.subscribeOnScreenSize();
     this.subscribeOnScreenOrientation();
   }
@@ -360,7 +332,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
-    this.unsubscribeFromLocalStorage();
     this.unsubscribeFromScreenSize();
     this.unsubscribeFromScreenOrientation();
     removeThemeListeners(this.isTMA);
@@ -373,7 +344,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   private async runAppConnectionToNode() {
     const walletOptions = {
       permissions: WalletPermissions,
-      appName: WALLET_CONSTS.TranslationConsts.Polkaswap,
+      appName: 'Analog Bridge',
     };
 
     try {
@@ -420,7 +391,7 @@ ul ul {
   font-family: 'Sora', sans-serif;
   height: 100dvh;
   color: var(--s-color-base-content-primary);
-  background-color: var(--s-color-utility-body);
+  background-color: var(--analog-background-primary-base);
   transition: background-color 500ms linear;
 }
 
