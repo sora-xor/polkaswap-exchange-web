@@ -232,9 +232,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       }
 
       await this.setApiKeys(data?.API_KEYS);
-      this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setSoraNetwork(data.NETWORK_TYPE);
-      this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
+      this.setEthBridgeSettings(data.ETH_BRIDGE);
+      this.setEvmNetworksApp(data.EVM_NETWORKS);
       this.setSubNetworkApps(data.SUB_NETWORKS);
       this.setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBQUERY, endpoint: data.SUBQUERY_ENDPOINT });
       this.setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBSQUID, endpoint: data.SUBSQUID_ENDPOINT });

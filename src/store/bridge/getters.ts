@@ -4,7 +4,7 @@ import { EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
 import { SubAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { defineGetters } from 'direct-vuex';
 
-import { ZeroStringValue } from '@/consts';
+import { ZeroStringValue, EthAddress } from '@/consts';
 import { bridgeGetterContext } from '@/store/bridge';
 import { isWaitingForAction } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
@@ -44,7 +44,6 @@ const getters = defineGetters<BridgeState>()({
       wallet: {
         account: { assets },
       },
-      assets: { registeredAssets },
     } = rootState;
     const {
       web3: { selectedNetwork },
@@ -57,14 +56,19 @@ const getters = defineGetters<BridgeState>()({
 
     if (!symbol) return null;
 
-    const filteredBySymbol = assets.filter((asset) => asset.symbol === symbol);
-    // const registered = filteredBySymbol.find((asset) => asset.address in registeredAssets);
+    const foundAsset = assets.find((asset) => asset.symbol === symbol);
 
-    // if (!registered) return null;
+    if (!foundAsset) return null;
 
-    if (!filteredBySymbol[0]) return null;
+    const assetData = assetDataByAddress(foundAsset.address);
 
-    return assetDataByAddress(filteredBySymbol[0].address);
+    if (!assetData) return null;
+
+    return {
+      ...assetData,
+      externalAddress: EthAddress,
+      externalDecimals: selectedNetwork.nativeCurrency.decimals,
+    };
   },
 
   isNativeTokenSelected(...args): boolean {
