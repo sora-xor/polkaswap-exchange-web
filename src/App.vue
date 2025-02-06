@@ -527,42 +527,6 @@ ul ul {
 i.icon-divider {
   @include icon-styles;
 }
-
-.app-main--orderbook {
-  @include large-mobile {
-    .app-menu {
-      // TODO: [Rustem] fix shadow issues between menu and orderbook
-      position: absolute;
-      right: initial;
-    }
-  }
-
-  .app-content {
-    display: flex;
-    justify-content: center;
-  }
-}
-
-@include desktop {
-  .app-main--swap,
-  .app-main--vaults,
-  .app-main--vaultdetails,
-  .app-main--assetowner,
-  .app-main--assetownerdetails {
-    &.app-main {
-      .app-menu {
-        &:not(.collapsed) {
-          position: relative;
-        }
-        &.collapsed {
-          & + .app-body {
-            margin-left: 74px;
-          }
-        }
-      }
-    }
-  }
-}
 </style>
 
 <style lang="scss" scoped>

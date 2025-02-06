@@ -140,7 +140,6 @@ export enum Components {
   PriceChange = 'shared/PriceChange',
   TransactionDetails = 'shared/TransactionDetails',
   TokensRow = 'shared/TokensRow',
-  ValueStatusWrapper = 'shared/ValueStatusWrapper',
   // Shared Input
   TokenInput = 'shared/Input/TokenInput',
   TokenSelectButton = 'shared/Input/TokenSelectButton',

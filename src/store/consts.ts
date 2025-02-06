@@ -7,7 +7,6 @@ export enum Module {
   Web3 = 'web3',
   Assets = 'assets',
   Settings = 'settings',
-  Swap = 'swap',
   Bridge = 'bridge',
 }
 

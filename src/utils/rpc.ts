@@ -1,10 +1,6 @@
 import axiosInstance from '@/api';
 
 export const getRpcEndpoint = (wsEndpoint: string): string => {
-  // for soramitsu nodes
-  if (/^wss:\/\/ws\.(?:.+\.)*sora2\.soramitsu\.co\.jp\/?$/.test(wsEndpoint)) {
-    return wsEndpoint.replace(/^wss:\/\/ws/, 'https://rpc');
-  }
   return wsEndpoint.replace(/^ws(s)?:/, 'http$1:');
 };
 

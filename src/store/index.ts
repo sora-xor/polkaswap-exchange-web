@@ -7,7 +7,6 @@ import assets from './assets';
 import bridge from './bridge';
 import router from './router';
 import settings from './settings';
-import swap from './swap';
 import web3 from './web3';
 
 import type { StoreOrModuleOptions } from 'direct-vuex';
@@ -21,7 +20,6 @@ const modules = {
   web3,
   assets,
   settings,
-  swap,
   bridge,
 };
 

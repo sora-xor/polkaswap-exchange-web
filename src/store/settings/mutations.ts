@@ -71,10 +71,6 @@ const mutations = defineMutations<SettingsState>()({
   },
   setFeatureFlags(state, featureFlags: FeatureFlags = {}): void {
     state.featureFlags = { ...state.featureFlags, ...featureFlags };
-    // Enable ALT mechanism for swaps
-    if (state.featureFlags.alt) {
-      api.swap.isALT = true;
-    }
   },
   setMenuCollapsed(state, collapsed: boolean): void {
     state.menuCollapsed = collapsed;
