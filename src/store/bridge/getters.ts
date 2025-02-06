@@ -58,11 +58,13 @@ const getters = defineGetters<BridgeState>()({
     if (!symbol) return null;
 
     const filteredBySymbol = assets.filter((asset) => asset.symbol === symbol);
-    const registered = filteredBySymbol.find((asset) => asset.address in registeredAssets);
+    // const registered = filteredBySymbol.find((asset) => asset.address in registeredAssets);
 
-    if (!registered) return null;
+    // if (!registered) return null;
 
-    return assetDataByAddress(registered.address);
+    if (!filteredBySymbol[0]) return null;
+
+    return assetDataByAddress(filteredBySymbol[0].address);
   },
 
   isNativeTokenSelected(...args): boolean {

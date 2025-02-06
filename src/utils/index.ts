@@ -1,11 +1,11 @@
 import { FPNumber, CodecString } from '@sora-substrate/sdk';
 import { isNativeAsset } from '@sora-substrate/sdk/build/assets';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, WALLET_CONSTS, connection } from '@soramitsu/soraneo-wallet-web';
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
 
 import { app, TranslationConsts, ZeroStringValue } from '@/consts';
+import { ANLOG_TIMECHAIN } from '@/consts/analog';
 import i18n from '@/lang';
 import router from '@/router';
 import store from '@/store';
@@ -57,7 +57,7 @@ export const formatAddress = (address: string, length = address.length / 2): str
 export const areEqual = <T>(prev: T, curr: T): boolean => JSON.stringify(prev) === JSON.stringify(curr);
 
 export const isXorAccountAsset = (asset: Asset | AssetWithBalance): boolean => {
-  return asset ? asset.address === XOR.address : false;
+  return asset ? asset.address === ANLOG_TIMECHAIN.address : false;
 };
 
 export const isMaxButtonAvailable = (

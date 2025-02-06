@@ -12,7 +12,6 @@
 </template>
 
 <script lang="ts">
-import { XOR, ETH } from '@sora-substrate/sdk/build/assets/consts';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import InternalConnectMixin from '../../../components/mixins/InternalConnectMixin';
@@ -37,8 +36,6 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 })
 export default class AppHeader extends Mixins(InternalConnectMixin) {
   readonly PageNames = PageNames;
-  readonly xor = XOR;
-  readonly eth = ETH;
 
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
 

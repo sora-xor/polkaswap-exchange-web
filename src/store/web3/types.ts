@@ -8,8 +8,6 @@ import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types
 import type { SupportedApps, BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 export type EthBridgeContractsAddresses = {
-  XOR: string;
-  VAL: string;
   OTHER: string;
 };
 

@@ -169,7 +169,7 @@ export async function getOutgoingEvmTransactionData({
   if (!request) throw new Error('request is required!');
 
   const symbol = asset.symbol as KnownEthBridgeAsset;
-  const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
+  const isValOrXor = false;
   const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
 
   const contractAddress = getContractAddress(bridgeAsset) as string;

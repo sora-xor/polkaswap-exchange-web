@@ -174,19 +174,6 @@ export enum Components {
   TransactionDetails = 'shared/TransactionDetails',
   TokensRow = 'shared/TokensRow',
   ValueStatusWrapper = 'shared/ValueStatusWrapper',
-  ResponsiveTabs = 'shared/ResponsiveTabs',
-  // Shared Widgets
-  BaseWidget = 'shared/Widget/Base',
-  WidgetsGrid = 'shared/Widget/Grid',
-  // Shared Widgets Components
-  CustomiseWidget = 'shared/Widget/Customise',
-  IFrameWidget = 'shared/Widget/IFrame',
-  PriceChartWidget = 'shared/Widget/PriceChart',
-  TokenPriceChartWidget = 'shared/Widget/TokenPriceChart',
-  SupplyChartWidget = 'shared/Widget/SupplyChart',
-  // Shared Buttons
-  SortButton = 'shared/Button/SortButton',
-  SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',
   // Shared Input
   TokenInput = 'shared/Input/TokenInput',
   TokenSelectButton = 'shared/Input/TokenSelectButton',
@@ -201,11 +188,6 @@ export enum Components {
   // Shared Settings
   SettingsTabs = 'shared/Settings/Tabs',
   SlippageTolerance = 'shared/Settings/SlippageTolerance',
-  // Shared Stats
-  StatsFilter = 'shared/Stats/StatsFilter',
-  // Shared Chart
-  ChartSkeleton = 'shared/Chart/ChartSkeleton',
-  DataRowSkeleton = 'shared/Skeleton/DataRow',
 }
 
 export interface EditableAlertObject {
@@ -314,12 +296,13 @@ export const TranslationConsts = {
   offline: 'Offline',
   XCM: 'XCM',
   Max: 'Max.',
-  XOR: 'XOR',
   VAL: 'VAL',
   Kensetsu: 'Kensetsu',
   LTV: 'LTV',
   Telegram: 'Telegram',
   DEX: 'DEX',
+  // Analog Overrides
+  XOR: 'ANLOG',
   Sora: 'Timechain',
   Polkaswap: 'Analog Bridge',
 } as const;

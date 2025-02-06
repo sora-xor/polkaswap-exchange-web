@@ -76,7 +76,7 @@
         is-formatted
         :label="getNetworkText(t('bridgeTransaction.networkInfo.transactionFee'))"
         :value="txSoraNetworkFeeFormatted"
-        :asset-symbol="KnownSymbols.XOR"
+        :asset-symbol="ANLOG.symbol"
         :fiat-value="txSoraNetworkFeeFiatValue"
       />
       <info-line
@@ -147,7 +147,7 @@
             t('insufficientBalanceText', { tokenSymbol: assetSymbol })
           }}</template>
           <template v-else-if="isInsufficientXorForFee">{{
-            t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR })
+            t('insufficientBalanceText', { tokenSymbol: ANLOG.symbol })
           }}</template>
           <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
             t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol })
@@ -174,7 +174,6 @@
 </template>
 
 <script lang="ts">
-import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
@@ -183,6 +182,7 @@ import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
+import { ANLOG_TIMECHAIN } from '@/consts/analog';
 import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientNativeTokenForFee } from '@/utils';
@@ -219,7 +219,7 @@ export default class BridgeTransaction extends Mixins(
   BridgeTransactionMixin,
   NetworkFormatterMixin
 ) {
-  readonly KnownSymbols = KnownSymbols;
+  readonly ANLOG = ANLOG_TIMECHAIN;
 
   @state.bridge.externalBlockNumber private externalBlockNumber!: number;
   @state.bridge.waitingForApprove private waitingForApprove!: Record<string, boolean>;

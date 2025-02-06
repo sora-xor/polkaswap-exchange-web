@@ -15,3 +15,17 @@ export const ANLOG_ETHEREUM: BridgeRegisteredAsset = {
   decimals: 12,
   kind: 'Thischain',
 };
+
+export const ETH_TIMECHAIN: Asset = {
+  address: 'ETH',
+  symbol: 'ETH',
+  name: 'Ethereum',
+  decimals: 18,
+  isMintable: false,
+};
+
+export const ETH_ETHEREUM: BridgeRegisteredAsset = {
+  address: '0x0000000000000000000000000000000000000000', // address will be here
+  decimals: 12,
+  kind: 'Sidechain',
+};

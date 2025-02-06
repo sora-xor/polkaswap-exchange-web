@@ -151,7 +151,7 @@
               {{ t('insufficientBalanceText', { tokenSymbol: assetSymbol }) }}
             </template>
             <template v-else-if="isInsufficientXorForFee">
-              {{ t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR }) }}
+              {{ t('insufficientBalanceText', { tokenSymbol: ANLOG.symbol }) }}
             </template>
             <template v-else-if="isInsufficientNativeTokenForFee">
               {{ t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol }) }}
@@ -232,7 +232,6 @@
 
 <script lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -242,6 +241,7 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import { Components, PageNames } from '@/consts';
+import { ANLOG_TIMECHAIN } from '@/consts/analog';
 import router, { lazyComponent } from '@/router';
 import { FocusedField } from '@/store/bridge/types';
 import { getter, action, mutation, state } from '@/store/decorators';
@@ -290,7 +290,7 @@ export default class Bridge extends Mixins(
   NetworkFeeDialogMixin,
   TokenSelectMixin
 ) {
-  readonly KnownSymbols = KnownSymbols;
+  readonly ANLOG = ANLOG_TIMECHAIN;
   readonly FocusedField = FocusedField;
 
   @state.bridge.subBridgeConnector private subBridgeConnector!: SubNetworksConnector;
@@ -569,7 +569,7 @@ export default class Bridge extends Mixins(
   }
 
   async handleConfirmButtonClick(): Promise<void> {
-    // XOR check
+    // Own native check
     if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
       await this.waitOnFeeWarningConfirmation();

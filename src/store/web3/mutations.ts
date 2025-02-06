@@ -97,8 +97,6 @@ const mutations = defineMutations<Web3State>()({
   setEthBridgeSettings(state, { evmNetwork, address }: EthBridgeSettings): void {
     state.ethBridgeEvmNetwork = evmNetwork;
     state.ethBridgeContractAddress = Object.freeze({
-      XOR: address.XOR,
-      VAL: address.VAL,
       OTHER: address.OTHER,
     });
   },
