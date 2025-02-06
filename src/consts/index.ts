@@ -24,33 +24,15 @@ export const WalletPermissions = {
 export enum Language {
   EN = 'en',
   RU = 'ru',
-  CS = 'cs',
-  DE = 'de',
   ES = 'es',
-  FR = 'fr',
-  ID = 'id',
-  IT = 'it',
-  NL = 'nl',
-  PL = 'pl',
-  SR = 'sr',
-  VI = 'vi',
   ZH_CN = 'zh-CN',
 }
 
 export const Languages = [
   { key: Language.EN, value: 'English', name: 'English (UK)' },
   { key: Language.ZH_CN, value: 'Chinese Simplified', name: '简体中文' },
-  { key: Language.CS, value: 'Czech', name: 'Čeština' },
-  { key: Language.NL, value: 'Dutch', name: 'Nederlands' },
-  { key: Language.FR, value: 'French', name: 'Français' },
-  { key: Language.DE, value: 'German', name: 'Deutsch' },
-  { key: Language.ID, value: 'Indonesian', name: 'bahasa Indonesia' },
-  { key: Language.IT, value: 'Italian', name: 'Italiano' },
-  { key: Language.PL, value: 'Polish', name: 'Polski' },
   { key: Language.RU, value: 'Russian', name: 'Русский' },
-  { key: Language.SR, value: 'Serbian', name: 'Српски' },
   { key: Language.ES, value: 'Spanish', name: 'Español' },
-  { key: Language.VI, value: 'Vietnamese', name: 'Tiếng Việt' },
 ];
 
 export const Links = {
@@ -109,24 +91,10 @@ export const LiquiditySourceForMarketAlgorithm = {
 export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm);
 
 export enum PageNames {
-  Swap = 'Swap',
-  Pool = 'Pool',
-  Stats = 'Stats',
-  Wallet = 'Wallet',
-  AddLiquidity = 'AddLiquidity',
-  Farming = 'Farming',
-  Rewards = 'Rewards',
-  ReferralProgram = 'ReferralProgram',
-  RewardsTabs = 'RewardsTabs',
-  ReferralBonding = 'ReferralBonding',
-  ReferralUnbonding = 'ReferralUnbonding',
   BridgeContainer = 'BridgeContainer',
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
-  Tokens = 'Tokens',
-  DepositOptions = 'DepositOptions',
-  DepositTxHistory = 'DepositTxHistory',
 }
 
 export enum Components {
@@ -169,7 +137,6 @@ export enum Components {
   GenericPageHeader = 'shared/GenericPageHeader',
   LinksDropdown = 'shared/LinksDropdown',
   PairTokenLogo = 'shared/PairTokenLogo',
-  PoolInfo = 'shared/PoolInfo',
   PriceChange = 'shared/PriceChange',
   TransactionDetails = 'shared/TransactionDetails',
   TokensRow = 'shared/TokensRow',
@@ -185,9 +152,6 @@ export enum Components {
   // Shared Asset selection
   SelectAssetList = 'shared/SelectAsset/List',
   SelectToken = 'shared/SelectAsset/SelectToken',
-  // Shared Settings
-  SettingsTabs = 'shared/Settings/Tabs',
-  SlippageTolerance = 'shared/Settings/SlippageTolerance',
 }
 
 export interface EditableAlertObject {
@@ -217,11 +181,6 @@ export interface SidebarMenuItemLink extends SidebarMenuItem {
 }
 
 const MainMenu: Array<SidebarMenuItemLink> = [
-  {
-    icon: 'arrows-swap-90-24',
-    title: PageNames.Swap,
-    href: '/#/swap',
-  },
   {
     icon: 'grid-block-distribute-vertically-24',
     title: PageNames.Bridge,
