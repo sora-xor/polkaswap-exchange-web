@@ -77,16 +77,6 @@
                 tabindex="0"
               />
             </app-info-popper>
-            <app-sidebar-item-content
-              v-if="faucetUrl"
-              :icon="FaucetLink.icon"
-              :title="t(`footerMenu.${FaucetLink.title}`)"
-              :href="faucetUrl"
-              tag="a"
-              target="_blank"
-              rel="nofollow noopener"
-              class="el-menu-item menu-item--small"
-            />
           </s-menu>
         </div>
       </aside>
@@ -115,7 +105,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean;
   @Prop({ default: () => {}, type: Function }) readonly onSelect!: (item: any) => void;
 
-  @state.settings.faucetUrl faucetUrl!: string;
   @state.router.loading pageLoading!: boolean;
   @state.settings.menuCollapsed collapsed!: boolean;
 

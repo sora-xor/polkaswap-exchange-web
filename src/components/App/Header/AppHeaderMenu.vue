@@ -163,9 +163,9 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     return this.screenBreakpointClass === BreakpointClass.Mobile;
   }
 
-  // get disclaimerText(): string {
-  //   return this.disclaimerVisibility ? this.t('headerMenu.hideDisclaimer') : this.t('headerMenu.showDisclaimer');
-  // }
+  get disclaimerText(): string {
+    return this.disclaimerVisibility ? this.t('headerMenu.hideDisclaimer') : this.t('headerMenu.showDisclaimer');
+  }
 
   private updateSelectedTheme(newTheme: Theme) {
     if (this.isThemePreference) {

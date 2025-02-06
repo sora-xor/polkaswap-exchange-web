@@ -19,14 +19,12 @@ function initialState(): SettingsState {
 
   return {
     appConnection,
-    featureFlags: {},
     userDisclaimerApprove: disclaimerApprove ? JSON.parse(disclaimerApprove) : false,
     isBrowserNotificationApiAvailable,
     browserNotifsPermission: isBrowserNotificationApiAvailable ? Notification.permission : 'default',
     language: getLocale(),
     displayRegions: undefined,
     percentFormat: undefined,
-    faucetUrl: '',
     menuCollapsed: false,
     selectNodeDialogVisibility: false,
     selectIndexerDialogVisibility: false,

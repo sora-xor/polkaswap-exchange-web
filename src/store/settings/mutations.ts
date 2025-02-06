@@ -4,12 +4,9 @@ import type { Language } from '@/consts';
 import { Breakpoint, BreakpointClass } from '@/consts/layout';
 import { settingsStorage } from '@/utils/storage';
 
-import type { FeatureFlags, SettingsState } from './types';
+import type { SettingsState } from './types';
 
 const mutations = defineMutations<SettingsState>()({
-  setFaucetUrl(state, url: string): void {
-    state.faucetUrl = url;
-  },
   setSelectNodeDialogVisibility(state, value: boolean): void {
     state.selectNodeDialogVisibility = value;
   },
@@ -57,9 +54,6 @@ const mutations = defineMutations<SettingsState>()({
       state.displayRegions = null;
       state.percentFormat = null;
     }
-  },
-  setFeatureFlags(state, featureFlags: FeatureFlags = {}): void {
-    state.featureFlags = { ...state.featureFlags, ...featureFlags };
   },
   setMenuCollapsed(state, collapsed: boolean): void {
     state.menuCollapsed = collapsed;

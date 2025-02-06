@@ -9,10 +9,6 @@ const getters = defineGetters<SettingsState>()({
     const { state } = settingsGetterContext(args);
     return state.appConnection.nodeIsConnected;
   },
-  debugEnabled(...args): Nullable<boolean> {
-    const { state } = settingsGetterContext(args);
-    return !!state.featureFlags.debug;
-  },
   notificationActivated(...args): boolean {
     const { state } = settingsGetterContext(args);
     return state.browserNotifsPermission === 'granted';

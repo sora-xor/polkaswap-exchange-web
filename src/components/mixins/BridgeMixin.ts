@@ -16,7 +16,6 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<FPNumber>;
   @state.bridge.assetExternalMinBalance assetExternalMinBalance!: CodecString;
   @state.bridge.outgoingMinLimit outgoingMinLimit!: Nullable<FPNumber>;
-  @state.bridge.outgoingMaxLimit outgoingMaxLimit!: Nullable<FPNumber>;
   @state.bridge.incomingMinLimit incomingMinAmount!: FPNumber;
   @state.bridge.soraNetworkFee soraNetworkFee!: CodecString;
   @state.bridge.externalTransferFee externalTransferFee!: CodecString;
@@ -45,7 +44,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   }
 
   get outgoingMaxAmount(): FPNumber | null {
-    const locks = [this.outgoingMaxLimit];
+    const locks: Nullable<FPNumber>[] = [];
 
     if (this.isSidechainAsset) locks.push(this.assetLockedBalance);
 

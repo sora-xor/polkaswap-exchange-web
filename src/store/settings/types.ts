@@ -1,27 +1,12 @@
 import type { BreakpointClass } from '@/consts/layout';
 import type { NodesConnection } from '@/utils/connection';
 
-export type Ad = {
-  title: string;
-  img: string;
-  link: string;
-  backgroundColor?: string;
-  right?: string;
-};
-
-export type FeatureFlags = {
-  alt?: boolean;
-  debug?: boolean;
-};
-
 export type SettingsState = {
   appConnection: NodesConnection;
-  featureFlags: FeatureFlags;
   userDisclaimerApprove: boolean;
   language: string;
   displayRegions: Nullable<Intl.DisplayNames>;
   percentFormat: Nullable<Intl.NumberFormat>;
-  faucetUrl: string;
   menuCollapsed: boolean;
   selectNodeDialogVisibility: boolean;
   selectIndexerDialogVisibility: boolean;

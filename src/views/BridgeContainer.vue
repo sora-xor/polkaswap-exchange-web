@@ -43,10 +43,8 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @action.web3.restoreSelectedNetwork private restoreSelectedNetwork!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
   @action.bridge.subscribeOnBlockUpdates private subscribeOnBlockUpdates!: AsyncFnWithoutArgs;
-  @action.bridge.updateOutgoingMaxLimit private updateOutgoingMaxLimit!: AsyncFnWithoutArgs;
   @action.bridge.resetBridgeForm private resetBridgeForm!: AsyncFnWithoutArgs;
   @mutation.bridge.resetBlockUpdatesSubscription private resetBlockUpdatesSubscription!: FnWithoutArgs;
-  @mutation.bridge.resetOutgoingMaxLimitSubscription private resetOutgoingMaxLimitSubscription!: FnWithoutArgs;
   @getter.web3.selectedNetwork private selectedNetwork!: Nullable<NetworkData>;
   @getter.bridge.externalAccount private externalAccount!: string;
   // bridge transaction signing
@@ -75,8 +73,8 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   }
 
   async created(): Promise<void> {
-    this.setStartSubscriptions([this.subscribeOnBlockUpdates, this.updateOutgoingMaxLimit, this.updateBridgeApps]);
-    this.setResetSubscriptions([this.resetBlockUpdatesSubscription, this.resetOutgoingMaxLimitSubscription]);
+    this.setStartSubscriptions([this.subscribeOnBlockUpdates, this.updateBridgeApps]);
+    this.setResetSubscriptions([this.resetBlockUpdatesSubscription]);
   }
 
   beforeDestroy(): void {

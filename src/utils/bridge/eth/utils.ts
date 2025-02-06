@@ -91,6 +91,7 @@ export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprove
 
   subscription.unsubscribe();
 
+  // [TODO] change usage to storage
   const request = await ethBridgeApi.getApprovedRequest(hash);
 
   if (!request) throw new Error(`[Bridge]: getApprovedRequest is empty, hash="${hash}"`);

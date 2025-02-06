@@ -62,7 +62,6 @@ import type { NodesConnection } from '@/utils/connection';
 import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
-import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
 import type { History, HistoryItem } from '@sora-substrate/sdk';
 import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
@@ -114,8 +113,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     endpoint: string;
   }) => void;
 
-  @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
-  @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
@@ -234,13 +231,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         tmaSdkService.init(data.TG_BOT_URL);
       }
 
-      if (data.FAUCET_URL) {
-        this.setFaucetUrl(data.FAUCET_URL);
-      }
-
       await this.setApiKeys(data?.API_KEYS);
       this.setEthBridgeSettings(data.ETH_BRIDGE);
-      this.setFeatureFlags(data?.FEATURE_FLAGS);
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
       this.setSubNetworkApps(data.SUB_NETWORKS);

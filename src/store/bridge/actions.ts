@@ -273,7 +273,7 @@ async function updateEthHistory(context: ActionContext<any, any>, clearHistory =
 async function updateEthLockedBalance(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, rootGetters, rootState } = bridgeActionContext(context);
   const { isRegisteredAsset, isSidechainAsset, asset } = getters;
-  const { address, decimals, externalAddress, externalDecimals } = asset ?? {};
+  const { address, externalAddress, externalDecimals } = asset ?? {};
   const { networkSelected } = rootState.web3;
   const { isValidNetwork, contractAddress } = rootGetters.web3;
   const bridgeContractAddress = contractAddress(KnownEthBridgeAsset.Other);
@@ -282,14 +282,8 @@ async function updateEthLockedBalance(context: ActionContext<any, any>): Promise
   const hasAssetData = !!address && !!externalAddress && isRegisteredAsset;
 
   if (hasNetworkData && hasAssetData && isSidechainAsset) {
-    const [lockedValue, bridgeValue] = await Promise.all([
-      ethBridgeApi.getLockedAssets(networkSelected as number, address),
-      ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress),
-    ]);
-    const balance = FPNumber.min(
-      FPNumber.fromCodecValue(lockedValue, decimals),
-      FPNumber.fromCodecValue(bridgeValue, externalDecimals)
-    );
+    const bridgeValue = await ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress);
+    const balance = FPNumber.fromCodecValue(bridgeValue, externalDecimals);
     commit.setAssetLockedBalance(balance);
   } else {
     commit.setAssetLockedBalance();
@@ -499,7 +493,6 @@ const actions = defineActions({
 
     await Promise.allSettled([
       dispatch.updateOutgoingMinLimit(),
-      dispatch.updateOutgoingMaxLimit(),
       dispatch.updateIncomingMinLimit(),
       updateBalancesFeesAndAmounts(context),
     ]);
@@ -553,39 +546,6 @@ const actions = defineActions({
     }
 
     commit.setOutgoingMinLimit(minLimit);
-  },
-
-  async updateOutgoingMaxLimit(context): Promise<void> {
-    const { state, commit } = bridgeActionContext(context);
-
-    const limitAsset = state.assetAddress;
-
-    commit.resetOutgoingMaxLimitSubscription();
-
-    if (!limitAsset) return;
-
-    const hasOutgoingLimit = await api.bridgeProxy.isAssetTransferLimited(limitAsset);
-
-    if (!hasOutgoingLimit) return;
-
-    const referenceAsset = DAI.address;
-    const sources = [LiquiditySourceTypes.XYKPool, LiquiditySourceTypes.XSTPool, LiquiditySourceTypes.OrderBook];
-    const limitObservable = api.bridgeProxy.getCurrentTransferLimitObservable();
-    const quoteObservable = api.swap.getSwapQuoteObservable(referenceAsset, limitAsset, sources, DexId.XOR);
-
-    if (!quoteObservable) return;
-
-    let subscription!: Subscription;
-
-    await new Promise<void>((resolve) => {
-      subscription = combineLatest([limitObservable, quoteObservable]).subscribe(([usdLimit, { quote }]) => {
-        const outgoingMaxLimit = calculateMaxLimit(limitAsset, referenceAsset, usdLimit, quote);
-        commit.setOutgoingMaxLimit(outgoingMaxLimit);
-        resolve();
-      });
-    });
-
-    commit.setOutgoingMaxLimitSubscription(subscription);
   },
 
   async subscribeOnBlockUpdates(context): Promise<void> {
