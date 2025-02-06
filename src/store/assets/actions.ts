@@ -2,6 +2,7 @@ import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts'
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { defineActions } from 'direct-vuex';
 
+import { ANLOG_TIMECHAIN, ANLOG_ETHEREUM } from '@/consts/analog';
 import { assetsActionContext } from '@/store/assets';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
@@ -41,23 +42,11 @@ async function getEthRegisteredAssets(
 ): Promise<Record<string, BridgeRegisteredAsset>[]> {
   const { rootCommit } = assetsActionContext(context);
 
-  rootCommit.wallet.account.setAssets([
-    {
-      address: 'DANLOG',
-      symbol: '$ANLOG',
-      name: 'DANLOG',
-      decimals: 12,
-      isMintable: false,
-    },
-  ]);
+  rootCommit.wallet.account.setAssets([ANLOG_TIMECHAIN]);
 
   return [
     {
-      DANLOG: {
-        address: '',
-        decimals: 12,
-        kind: 'Thischain',
-      },
+      [ANLOG_TIMECHAIN.address]: ANLOG_ETHEREUM,
     },
   ];
 }

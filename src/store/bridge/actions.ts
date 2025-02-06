@@ -1,6 +1,6 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber } from '@sora-substrate/sdk';
-import { getAssetBalance } from '@sora-substrate/sdk/build/assets';
+import { getAssetBalance, formatBalance } from '@sora-substrate/sdk/build/assets';
 import { DAI } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { DexId } from '@sora-substrate/sdk/build/dex/consts';
@@ -42,9 +42,15 @@ import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/type
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 
+// [ANALOG] Only native token
 const getSoraBalance = async (accountAddress: string, asset: RegisteredAccountAsset): Promise<CodecString> => {
-  const accountBalance = await getAssetBalance(api.api, accountAddress, asset.address, asset.decimals);
-  return accountBalance.transferable;
+  const accountInfo = await api.api.query.system.account(accountAddress);
+  const balance = formatBalance((accountInfo as any).data, api.chainDecimals);
+
+  return balance.transferable;
+
+  // const accountBalance = await getAssetBalance(api.api, accountAddress, asset.address, asset.decimals);
+  // return accountBalance.transferable;
 };
 
 const getExternalBalance = async (
