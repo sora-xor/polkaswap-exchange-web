@@ -1,19 +1,13 @@
 import { defineGetters } from 'direct-vuex';
 
-import { LiquiditySourceForMarketAlgorithm } from '@/consts';
 import { settingsGetterContext } from '@/store/settings';
 
 import type { SettingsState } from './types';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 const getters = defineGetters<SettingsState>()({
   nodeIsConnected(...args): boolean {
     const { state } = settingsGetterContext(args);
     return state.appConnection.nodeIsConnected;
-  },
-  liquiditySource(...args): LiquiditySourceTypes {
-    const { state } = settingsGetterContext(args);
-    return LiquiditySourceForMarketAlgorithm[state.marketAlgorithm];
   },
   debugEnabled(...args): Nullable<boolean> {
     const { state } = settingsGetterContext(args);

@@ -1,23 +1,12 @@
-import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineMutations } from 'direct-vuex';
 
-import { MarketAlgorithms } from '@/consts';
 import type { Language } from '@/consts';
 import { Breakpoint, BreakpointClass } from '@/consts/layout';
-import storage, { settingsStorage } from '@/utils/storage';
+import { settingsStorage } from '@/utils/storage';
 
-import type { Ad, FeatureFlags, SettingsState } from './types';
+import type { FeatureFlags, SettingsState } from './types';
 
 const mutations = defineMutations<SettingsState>()({
-  setSlippageTolerance(state, value: string): void {
-    state.slippageTolerance = value;
-    storage.set('slippageTolerance', value);
-  },
-  /** Set market algorithm, `MarketAlgorithms.SMART` is set by default */
-  setMarketAlgorithm(state, value: MarketAlgorithms = MarketAlgorithms.SMART): void {
-    state.marketAlgorithm = value;
-    storage.set('marketAlgorithm', value);
-  },
   setFaucetUrl(state, url: string): void {
     state.faucetUrl = url;
   },

@@ -13,7 +13,6 @@
     </div>
     <app-footer />
     <bridge-transfer-notification />
-    <app-mobile-popup :visible.sync="showSoraMobilePopup" />
     <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
     <app-browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
     <app-browser-notifs-blocked-rotate-phone :visible.sync="orientationWarningVisible" />
@@ -76,7 +75,6 @@ import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
     AppFooter,
     AppMenu,
     Alerts: lazyComponent(Components.Alerts),
-    AppMobilePopup: lazyComponent(Components.AppMobilePopup),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     AppDisclaimer: lazyComponent(Components.AppDisclaimer),
     AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),
@@ -90,7 +88,6 @@ import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
   /** Product-based class fields should be like show${product}Popup */
-  showSoraMobilePopup = false;
   menuVisibility = false;
   showNotifsDarkPage = false;
 

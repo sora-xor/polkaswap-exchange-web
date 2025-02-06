@@ -1,4 +1,3 @@
-import type { MarketAlgorithms } from '@/consts';
 import type { BreakpointClass } from '@/consts/layout';
 import type { NodesConnection } from '@/utils/connection';
 
@@ -18,8 +17,6 @@ export type FeatureFlags = {
 export type SettingsState = {
   appConnection: NodesConnection;
   featureFlags: FeatureFlags;
-  slippageTolerance: string;
-  marketAlgorithm: MarketAlgorithms;
   userDisclaimerApprove: boolean;
   language: string;
   displayRegions: Nullable<Intl.DisplayNames>;

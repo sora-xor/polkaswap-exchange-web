@@ -1,10 +1,9 @@
 import { connection } from '@soramitsu/soraneo-wallet-web';
 
-import { DefaultMarketAlgorithm, DefaultSlippageTolerance, MarketAlgorithms } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import { NodesConnection } from '@/utils/connection';
-import storage, { settingsStorage } from '@/utils/storage';
+import { settingsStorage } from '@/utils/storage';
 
 import type { SettingsState } from './types';
 
@@ -21,8 +20,6 @@ function initialState(): SettingsState {
   return {
     appConnection,
     featureFlags: {},
-    slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
-    marketAlgorithm: (storage.get('marketAlgorithm') || DefaultMarketAlgorithm) as MarketAlgorithms,
     userDisclaimerApprove: disclaimerApprove ? JSON.parse(disclaimerApprove) : false,
     isBrowserNotificationApiAvailable,
     browserNotifsPermission: isBrowserNotificationApiAvailable ? Notification.permission : 'default',

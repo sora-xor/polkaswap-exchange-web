@@ -1,6 +1,4 @@
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import invert from 'lodash/fp/invert';
 
 import pkg from '../../package.json';
 
@@ -57,8 +55,6 @@ export const ZeroStringValue = '0';
 
 export const HundredNumber = 100;
 
-export const DefaultSlippageTolerance = '0.5';
-
 export const LOCAL_STORAGE_MAX_SIZE = 4 * 1024 * 1024;
 
 export const LOCAL_STORAGE_LIMIT_PERCENTAGE = 95;
@@ -81,15 +77,6 @@ export enum MarketAlgorithms {
 
 export const DefaultMarketAlgorithm = MarketAlgorithms.SMART;
 
-export const LiquiditySourceForMarketAlgorithm = {
-  [MarketAlgorithms.SMART]: LiquiditySourceTypes.Default,
-  [MarketAlgorithms.TBC]: LiquiditySourceTypes.MulticollateralBondingCurvePool,
-  [MarketAlgorithms.XYK]: LiquiditySourceTypes.XYKPool,
-  [MarketAlgorithms.ORB]: LiquiditySourceTypes.OrderBook,
-};
-
-export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm);
-
 export enum PageNames {
   BridgeContainer = 'BridgeContainer',
   Bridge = 'Bridge',
@@ -100,7 +87,6 @@ export enum PageNames {
 export enum Components {
   // App
   AppLogoButton = 'App/Header/AppLogoButton',
-  AppMobilePopup = 'App/MobilePopup',
   AppBrowserNotifsEnableDialog = 'App/BrowserNotification/EnableDialog',
   AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BlockedDialog',
   AppBrowserNotifsBlockedRotatePhone = 'App/BrowserNotification/BlockedRotatePhone',
