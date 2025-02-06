@@ -1,6 +1,6 @@
 {
-  "name": "polkaswap-exchange-web",
-  "version": "1.44.2",
+  "name": "analog-bridge-frontend",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
@@ -28,25 +28,17 @@
     "test:all": "yarn test:unit"
   },
   "dependencies": {
-    "@cedelabs/widgets-universal": "^1.3.1",
-    "@metamask/detect-provider": "^2.0.0",
     "@soramitsu/soraneo-wallet-web": "1.44.5",
     "@walletconnect/ethereum-provider": "^2.13.3",
     "@walletconnect/modal": "^2.6.2",
     "country-code-emoji": "^2.3.0",
     "country-flag-emoji-polyfill": "^0.1.8",
     "direct-vuex": "^0.12.1",
-    "echarts": "^5.5.1",
-    "email-validator": "^2.0.4",
     "ethers": "6.13.4",
-    "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "polkadotApi": "npm:@polkadot/api@11.2.1",
-    "uuidv4": "^6.2.13",
     "vue": "2.7.14",
     "vue-class-component": "^7.2.6",
-    "vue-echarts": "^6.7.3",
-    "vue-grid-layout": "^2.4.0",
     "vue-i18n": "^8.28.2",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.6.5",

@@ -123,9 +123,7 @@ export enum Components {
   GenericPageHeader = 'shared/GenericPageHeader',
   LinksDropdown = 'shared/LinksDropdown',
   PairTokenLogo = 'shared/PairTokenLogo',
-  PriceChange = 'shared/PriceChange',
   TransactionDetails = 'shared/TransactionDetails',
-  TokensRow = 'shared/TokensRow',
   // Shared Input
   TokenInput = 'shared/Input/TokenInput',
   TokenSelectButton = 'shared/Input/TokenSelectButton',
