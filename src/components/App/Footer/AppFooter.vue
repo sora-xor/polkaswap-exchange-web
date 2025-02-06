@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Status } from '@soramitsu-ui/ui-vue2/lib/types';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -72,6 +72,7 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter, mutation } from '@/store/decorators';
 import type { Node } from '@/types/nodes';
+import { getExplorerLinks } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 
 import { formatLocation } from '../Settings/Node/utils';
@@ -94,13 +95,12 @@ const MAX_INTERNET_CONNECTION_LIMIT = 10;
 })
 export default class AppFooter extends Mixins(TranslationMixin) {
   // Block explorer
-  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.settings.indexerType private indexerType!: WALLET_CONSTS.IndexerType;
   @state.wallet.settings.blockNumber blockNumber!: number;
   @getter.libraryTheme libraryTheme!: Theme;
 
   get blockExplorerLink(): string | undefined {
-    const links = getExplorerLinks(this.soraNetwork);
+    const links = getExplorerLinks();
     if (!links.length) {
       return undefined;
     }

@@ -36,19 +36,30 @@ async function updateEthAssetsData(context: ActionContext<any, any>): Promise<vo
   commit.setRegisteredAssets(assets);
 }
 
-async function getEthRegisteredAssets(): Promise<Record<string, BridgeRegisteredAsset>[]> {
-  const networkAssets = await ethBridgeApi.getRegisteredAssets();
-  const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
-    return {
-      [soraAddress]: {
-        address: assetData.address,
-        decimals: assetData.decimals ?? 18,
-        kind: assetData.assetKind,
-      },
-    };
-  });
+async function getEthRegisteredAssets(
+  context: ActionContext<any, any>
+): Promise<Record<string, BridgeRegisteredAsset>[]> {
+  const { rootCommit } = assetsActionContext(context);
 
-  return registeredAssets;
+  rootCommit.wallet.account.setAssets([
+    {
+      address: 'DANLOG',
+      symbol: '$ANLOG',
+      name: 'DANLOG',
+      decimals: 12,
+      isMintable: false,
+    },
+  ]);
+
+  return [
+    {
+      DANLOG: {
+        address: '',
+        decimals: 12,
+        kind: 'Thischain',
+      },
+    },
+  ];
 }
 
 async function getEvmRegisteredAssets(
@@ -140,7 +151,7 @@ async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Re
 
   switch (rootState.web3.networkType) {
     case BridgeNetworkType.Eth: {
-      return await getEthRegisteredAssets();
+      return await getEthRegisteredAssets(context);
     }
     case BridgeNetworkType.Evm: {
       return await getEvmRegisteredAssets(context);

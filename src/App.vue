@@ -233,7 +233,13 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       }
 
       // To start running as Telegram Web App (desktop capabilities)
-      tmaSdkService.init(data?.TG_BOT_URL);
+      if (data?.TG_BOT_URL) {
+        tmaSdkService.init(data.TG_BOT_URL);
+      }
+
+      if (data.FAUCET_URL) {
+        this.setFaucetUrl(data.FAUCET_URL);
+      }
 
       await this.setApiKeys(data?.API_KEYS);
       this.setEthBridgeSettings(data.ETH_BRIDGE);
@@ -243,10 +249,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       this.setSubNetworkApps(data.SUB_NETWORKS);
       this.setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBQUERY, endpoint: data.SUBQUERY_ENDPOINT });
       this.setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBSQUID, endpoint: data.SUBSQUID_ENDPOINT });
-
-      if (data.FAUCET_URL) {
-        this.setFaucetUrl(data.FAUCET_URL);
-      }
 
       this.appConnection.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.appConnection.setNetworkChainGenesisHash(data?.CHAIN_GENESIS_HASH);

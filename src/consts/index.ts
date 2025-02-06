@@ -10,7 +10,7 @@ export const app = {
   version: pkg.version,
   name: 'Analog Bridge',
   email: 'jihoon@tutanota.de',
-  title: 'Analog Bridge - Transfer your tokens to Time Chain',
+  title: 'Analog Bridge - Transfer your tokens to Timechain',
 };
 
 export const WalletPermissions = {
@@ -320,6 +320,6 @@ export const TranslationConsts = {
   LTV: 'LTV',
   Telegram: 'Telegram',
   DEX: 'DEX',
-  Sora: 'Time Chain',
+  Sora: 'Timechain',
   Polkaswap: 'Analog Bridge',
 } as const;

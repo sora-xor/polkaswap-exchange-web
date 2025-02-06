@@ -204,26 +204,17 @@ const actions = defineActions({
   async getSupportedApps(context): Promise<void> {
     const { commit, getters } = web3ActionContext(context);
     // production mock
-    let supportedApps = {
+    const supportedApps = {
       [BridgeNetworkType.Eth]: {},
       [BridgeNetworkType.Evm]: {},
-      [BridgeNetworkType.Sub]: [
-        SubNetworkId.Kusama,
-        SubNetworkId.KusamaCurio,
-        SubNetworkId.KusamaSora,
-        SubNetworkId.Polkadot,
-        SubNetworkId.PolkadotAstar,
-        SubNetworkId.PolkadotAcala,
-        SubNetworkId.PolkadotSora,
-        SubNetworkId.Liberland,
-      ],
+      [BridgeNetworkType.Sub]: [],
     };
 
-    try {
-      supportedApps = await soraApi.bridgeProxy.getListApps();
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   supportedApps = await soraApi.bridgeProxy.getListApps();
+    // } catch (error) {
+    //   console.error(error);
+    // }
 
     commit.setSupportedApps(supportedApps as any);
 

@@ -1,7 +1,7 @@
 import { FPNumber, CodecString } from '@sora-substrate/sdk';
 import { isNativeAsset } from '@sora-substrate/sdk/build/assets';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_CONSTS, connection } from '@soramitsu/soraneo-wallet-web';
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
 
@@ -450,6 +450,22 @@ export const getSubstrateExplorerLinks = (
       return link;
     })
     .filter((value) => !!value.value);
+};
+
+export const getExplorerLinks = (): Array<WALLET_CONSTS.ExplorerLink> => {
+  const links: Array<WALLET_CONSTS.ExplorerLink> = [];
+
+  // links.push({
+  //   type: WALLET_CONSTS.ExplorerType.Subscan,
+  //   value: 'https://sora.subscan.io'
+  // });
+
+  links.push({
+    type: WALLET_CONSTS.ExplorerType.Polkadot,
+    value: `https://polkadot.js.org/apps/?rpc=${connection.endpoint}#/explorer/query`,
+  });
+
+  return links;
 };
 
 export const soraExplorerLinks = (
