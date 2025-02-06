@@ -1,16 +1,11 @@
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber } from '@sora-substrate/sdk';
 import { getAssetBalance, formatBalance } from '@sora-substrate/sdk/build/assets';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { DexId } from '@sora-substrate/sdk/build/dex/consts';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
-import { combineLatest } from 'rxjs';
 
 import { MaxUint256, ZeroStringValue } from '@/consts';
-import { KnownEthBridgeAsset } from '@/consts/evm';
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
 import { FocusedField } from '@/store/bridge/types';
@@ -39,7 +34,6 @@ import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/ty
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
-import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 
 // [ANALOG] Only native token
@@ -163,7 +157,8 @@ function bridgeDataToHistoryItem(
 async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, state, rootState, rootGetters } = bridgeActionContext(context);
   const { asset, isRegisteredAsset } = getters;
-  const { isValidNetwork, contractAddress } = rootGetters.web3;
+  const { isValidNetwork } = rootGetters.web3;
+  const contractAddress = rootState.web3.ethBridgeContractAddress;
   const evmAccount = rootState.web3.evmAddress;
   const soraAccount = rootState.wallet.account.address;
 
@@ -274,15 +269,14 @@ async function updateEthLockedBalance(context: ActionContext<any, any>): Promise
   const { commit, getters, rootGetters, rootState } = bridgeActionContext(context);
   const { isRegisteredAsset, isSidechainAsset, asset } = getters;
   const { address, externalAddress, externalDecimals } = asset ?? {};
-  const { networkSelected } = rootState.web3;
-  const { isValidNetwork, contractAddress } = rootGetters.web3;
-  const bridgeContractAddress = contractAddress(KnownEthBridgeAsset.Other);
+  const { networkSelected, ethBridgeContractAddress } = rootState.web3;
+  const { isValidNetwork } = rootGetters.web3;
 
-  const hasNetworkData = !!networkSelected && isValidNetwork && !!bridgeContractAddress;
+  const hasNetworkData = !!networkSelected && isValidNetwork && !!ethBridgeContractAddress;
   const hasAssetData = !!address && !!externalAddress && isRegisteredAsset;
 
   if (hasNetworkData && hasAssetData && isSidechainAsset) {
-    const bridgeValue = await ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress);
+    const bridgeValue = await ethersUtil.getAccountAssetBalance(ethBridgeContractAddress, externalAddress);
     const balance = FPNumber.fromCodecValue(bridgeValue, externalDecimals);
     commit.setAssetLockedBalance(balance);
   } else {
@@ -620,7 +614,7 @@ const actions = defineActions({
   },
 
   removeHistory(context, { tx, force = false }: { tx: Partial<IBridgeTransaction>; force: boolean }): void {
-    const { commit, dispatch, state, rootState } = bridgeActionContext(context);
+    const { commit, dispatch, state } = bridgeActionContext(context);
 
     const { id, hash } = tx;
 
@@ -642,13 +636,6 @@ const actions = defineActions({
     // update active view if needed
     if (hash && state.historyId === id) {
       commit.setHistoryId(hash);
-    }
-    // update moonpay records if needed
-    if (item.payload?.moonpayId) {
-      rootState.moonpay.api.accountRecords = {
-        ...rootState.moonpay.api.accountRecords,
-        [item.payload.moonpayId]: item.externalHash,
-      };
     }
     // remove tx from history
     bridgeApi.removeHistory(id);
@@ -703,7 +690,7 @@ const actions = defineActions({
       asset,
       value: tx.amount,
       recipient: tx.to,
-      getContractAddress: rootGetters.web3.contractAddress,
+      contractAddress: rootState.web3.ethBridgeContractAddress,
       request,
     });
 
@@ -731,7 +718,7 @@ const actions = defineActions({
 
     if (!isEvmAccountConnected) throw new Error('Connect account in ethereum wallet');
 
-    const contractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other) as string;
+    const contractAddress = rootState.web3.ethBridgeContractAddress;
 
     const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
 
@@ -757,7 +744,7 @@ const actions = defineActions({
       asset,
       value: tx.amount,
       recipient: rootState.wallet.account.address,
-      getContractAddress: rootGetters.web3.contractAddress,
+      contractAddress,
     });
 
     checkEvmNetwork(context);

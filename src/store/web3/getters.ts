@@ -3,7 +3,6 @@ import { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
 
 import { EVM_NETWORKS } from '@/consts/evm';
-import type { KnownEthBridgeAsset } from '@/consts/evm';
 import { SUB_NETWORKS } from '@/consts/sub';
 import { web3GetterContext } from '@/store/web3';
 import type { NetworkData } from '@/types/bridge';
@@ -96,13 +95,6 @@ const getters = defineGetters<Web3State>()({
     }
 
     return evmProviderNetwork === selectedNetwork.id;
-  },
-
-  contractAddress(...args): (asset: KnownEthBridgeAsset) => Nullable<string> {
-    return (asset: KnownEthBridgeAsset) => {
-      const { state } = web3GetterContext(args);
-      return state.ethBridgeContractAddress[asset];
-    };
   },
 
   subAccount(...args): WALLET_TYPES.PolkadotJsAccount {

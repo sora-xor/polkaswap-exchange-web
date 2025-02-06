@@ -31,9 +31,7 @@ export function initialState(): Web3State {
 
     // eth bridge history
     ethBridgeEvmNetwork: EvmNetworkId.EthereumSepolia,
-    ethBridgeContractAddress: {
-      OTHER: '',
-    },
+    ethBridgeContractAddress: '',
 
     // dialogs
     selectSubNodeDialogVisibility: false,

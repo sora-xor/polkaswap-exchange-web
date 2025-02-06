@@ -7,13 +7,11 @@ import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { SupportedApps, BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
-export type EthBridgeContractsAddresses = {
-  OTHER: string;
-};
+export type EthBridgeContractAddress = string;
 
 export type EthBridgeSettings = {
   evmNetwork: EvmNetwork;
-  address: EthBridgeContractsAddresses;
+  address: EthBridgeContractAddress;
 };
 
 export type SubNetworkApps = Partial<Record<SubNetwork, boolean | Node[]>>;
@@ -45,7 +43,7 @@ export type Web3State = {
   supportedApps: SupportedApps;
 
   ethBridgeEvmNetwork: EvmNetwork;
-  ethBridgeContractAddress: EthBridgeContractsAddresses;
+  ethBridgeContractAddress: EthBridgeContractAddress;
 
   selectSubNodeDialogVisibility: boolean;
   selectNetworkDialogVisibility: boolean;

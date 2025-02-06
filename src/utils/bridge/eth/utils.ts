@@ -3,7 +3,7 @@ import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { EthCurrencyType, EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
+import { SmartContractType, SmartContracts } from '@/consts/evm';
 import { asZeroValue } from '@/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import ethersUtil from '@/utils/ethers-util';
@@ -18,7 +18,7 @@ type EthTxParams = {
   asset: RegisteredAccountAsset;
   value: string;
   recipient: string;
-  getContractAddress: (symbol: KnownEthBridgeAsset) => Nullable<string>;
+  contractAddress: string;
   request?: EthApprovedRequest;
 };
 
@@ -131,13 +131,12 @@ export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: st
   return { hash: soraHash, blockId: soraBlockHash };
 };
 
-export async function getIncomingEvmTransactionData({ asset, value, recipient, getContractAddress }: EthTxParams) {
+export async function getIncomingEvmTransactionData({ asset, value, recipient, contractAddress }: EthTxParams) {
   const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
   const accountId = ethersUtil.accountAddressToHex(recipient);
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
 
-  const contractAddress = getContractAddress(KnownEthBridgeAsset.Other) as string;
-  const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other];
+  const contractAbi = SmartContracts[SmartContractType.EthBridge];
   const contract = await ethersUtil.getContract(contractAddress, contractAbi);
 
   const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain';
@@ -164,17 +163,14 @@ export async function getOutgoingEvmTransactionData({
   asset,
   value,
   recipient,
-  getContractAddress,
+  contractAddress,
   request,
 }: EthTxParams) {
   if (!request) throw new Error('request is required!');
 
-  const symbol = asset.symbol as KnownEthBridgeAsset;
   const isValOrXor = false;
-  const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
 
-  const contractAddress = getContractAddress(bridgeAsset) as string;
-  const contractAbi = SmartContracts[SmartContractType.EthBridge][bridgeAsset];
+  const contractAbi = SmartContracts[SmartContractType.EthBridge];
   const contract = await ethersUtil.getContract(contractAddress, contractAbi);
 
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
@@ -255,7 +251,7 @@ const getEthBridgeIncomingGasLimit = (assetEvmAddress: string): bigint => {
 export async function getEthNetworkFee(
   asset: RegisteredAccountAsset,
   assetKind: string,
-  getContractAddress: (symbol: KnownEthBridgeAsset) => Nullable<string>,
+  bridgeContractAddress: string,
   value: string,
   isOutgoing: boolean,
   soraAccount: string,
@@ -266,7 +262,6 @@ export async function getEthNetworkFee(
   if (isOutgoing) {
     gasLimitTotal = getEthBridgeOutgoingGasLimit(asset.externalAddress, assetKind as EthAssetKind);
   } else {
-    const bridgeContractAddress = getContractAddress(KnownEthBridgeAsset.Other) as string;
     const allowance = await ethersUtil.getAllowance(evmAccount, bridgeContractAddress, asset.externalAddress);
     const approveGasLimit = !!allowance && Number(allowance) < Number(value) ? gasLimit.approve : BigInt(0);
 
@@ -281,7 +276,7 @@ export async function getEthNetworkFee(
         asset,
         value,
         recipient: soraAccount,
-        getContractAddress,
+        bridgeContractAddress,
       };
       const { contract, method, args } = await getIncomingEvmTransactionData(txParams);
       const signer = contract.runner;

@@ -11,19 +11,13 @@ export enum EvmLinkType {
   Transaction = 'Transaction',
 }
 
-export enum KnownEthBridgeAsset {
-  Other = 'OTHER',
-}
-
 export enum SmartContractType {
   EthBridge = 'ETH_BRIDGE',
   ERC20 = 'ERC20',
 }
 
 export const SmartContracts = {
-  [SmartContractType.EthBridge]: {
-    [KnownEthBridgeAsset.Other]: BRIDGE_ABI,
-  },
+  [SmartContractType.EthBridge]: BRIDGE_ABI,
   [SmartContractType.ERC20]: ERC20_ABI,
 };
 

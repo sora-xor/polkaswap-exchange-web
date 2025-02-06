@@ -1,10 +1,9 @@
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
-import { api as soraApi, accountUtils, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { accountUtils, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
-import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
+import { SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
 import { AppEIPProvider } from '@/types/evm/provider';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -210,12 +209,6 @@ const actions = defineActions({
       [BridgeNetworkType.Sub]: [],
     };
 
-    // try {
-    //   supportedApps = await soraApi.bridgeProxy.getListApps();
-    // } catch (error) {
-    //   console.error(error);
-    // }
-
     commit.setSupportedApps(supportedApps as any);
 
     const networks = getters.availableNetworks[BridgeNetworkType.Sub];
@@ -257,16 +250,18 @@ const actions = defineActions({
    * "Thischain" for SORA, "Sidechain" for EVM
    */
   async getEvmTokenAddressByAssetId(context, soraAssetId: string): Promise<string> {
-    const { getters } = web3ActionContext(context);
+    const { state } = web3ActionContext(context);
     try {
       if (!soraAssetId) {
         return '';
       }
-      const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other];
-      const contractAddress = getters.contractAddress(KnownEthBridgeAsset.Other);
+      const contractAbi = SmartContracts[SmartContractType.EthBridge];
+      const contractAddress = state.ethBridgeContractAddress;
+
       if (!contractAddress || !contractAbi) {
         throw new Error('Contract address/abi is not found');
       }
+
       const contractInstance = await ethersUtil.getContract(contractAddress, contractAbi);
       const methodArgs = [soraAssetId];
       const externalAddress = await contractInstance._sidechainTokens(...methodArgs);
