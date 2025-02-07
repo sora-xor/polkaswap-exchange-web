@@ -45,7 +45,7 @@
                   <formatted-amount
                     value-can-be-hidden
                     :value="formatAmount(item, false)"
-                    :asset-symbol="item.symbol"
+                    :asset-symbol="formatSymbol(item, !isOutgoingTx(item))"
                   />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
@@ -53,7 +53,11 @@
                     )}`"
                   />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
-                  <formatted-amount value-can-be-hidden :value="formatAmount(item, true)" :asset-symbol="item.symbol" />
+                  <formatted-amount
+                    value-can-be-hidden
+                    :value="formatAmount(item, true)"
+                    :asset-symbol="formatSymbol(item, isOutgoingTx(item))"
+                  />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
                       !isOutgoingTx(item) ? 0 : item.externalNetwork
@@ -191,6 +195,12 @@ export default class BridgeTransactionsHistory extends Mixins(
 
       return criterias.some((criteria) => String(criteria).toLowerCase().includes(query));
     });
+  }
+
+  formatSymbol(item: IBridgeTransaction, received = false): string {
+    const symbol = received ? (item.symbol2 ?? item.symbol) : item.symbol;
+
+    return symbol;
   }
 
   formatAmount(item: IBridgeTransaction, received = false): string {

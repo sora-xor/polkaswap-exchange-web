@@ -20,7 +20,7 @@
             class="info-line-value"
             value-can-be-hidden
             :value="formattedAmount"
-            :asset-symbol="assetSymbol"
+            :asset-symbol="symbolSent"
           >
             <i :class="`network-icon network-icon--${getNetworkIcon(isOutgoing ? 0 : externalNetworkId)}`" />
           </formatted-amount>
@@ -29,7 +29,7 @@
             class="info-line-value"
             value-can-be-hidden
             :value="formattedAmountReceived"
-            :asset-symbol="assetSymbol"
+            :asset-symbol="symbolReceived"
           >
             <i :class="`network-icon network-icon--${getNetworkIcon(isOutgoing ? externalNetworkId : 0)}`" />
           </formatted-amount>
@@ -61,7 +61,7 @@
         value-can-be-hidden
         :label="t('bridgeTransaction.networkInfo.amount')"
         :value="formattedAmount"
-        :asset-symbol="assetSymbol"
+        :asset-symbol="symbolSent"
         :fiat-value="amountFiatValue"
       />
       <info-line
@@ -70,7 +70,7 @@
         value-can-be-hidden
         :label="t('receivedText')"
         :value="formattedAmountReceived"
-        :asset-symbol="assetSymbol"
+        :asset-symbol="symbolReceived"
         :fiat-value="amountReceivedFiatValue"
       />
       <info-line
@@ -289,6 +289,18 @@ export default class BridgeTransaction extends Mixins(
 
   get assetSymbol(): string {
     return this.asset?.symbol ?? '';
+  }
+
+  get assetSymbol2(): string {
+    return (this.asset as any)?.externalSymbol ?? this.assetSymbol;
+  }
+
+  get symbolSent(): string {
+    return this.isOutgoing ? this.assetSymbol : this.assetSymbol2;
+  }
+
+  get symbolReceived(): string {
+    return this.isOutgoing ? this.assetSymbol2 : this.assetSymbol;
   }
 
   get parachainNetworkId(): Nullable<SubNetwork> {
@@ -591,7 +603,7 @@ export default class BridgeTransaction extends Mixins(
 <style lang="scss">
 $header-icon-size: 52px;
 $header-spinner-size: 62px;
-$header-font-size: var(--s-heading3-font-size);
+$header-font-size: var(--s-heading4-font-size);
 
 .transaction {
   &-container {
@@ -774,6 +786,7 @@ $network-title-max-width: 250px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: baseline;
     margin-bottom: $inner-spacing-mini;
     font-weight: 700;
     line-height: var(--s-line-height-medium);
@@ -783,8 +796,9 @@ $network-title-max-width: 250px;
     &-separator {
       margin-right: $inner-spacing-tiny;
       margin-left: $inner-spacing-tiny;
-      font-size: var(--s-heading3-font-size);
+      font-size: var(--s-heading4-font-size);
       font-weight: 300;
+      color: var(--s-color-base-content-secondary);
     }
   }
 }
