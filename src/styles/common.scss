@@ -132,6 +132,11 @@ button.el-button.neumorphic {
   text-transform: none;
 }
 
+.s-typography-button--medium {
+  font-family: var(--s-font-family-system) !important;
+  letter-spacing: var(--s-letter-spacing-mini) !important;
+}
+
 .el-message-box .el-message-box__btns {
   button.el-button.el-button--default {
     color: var(--s-color-base-on-accent);

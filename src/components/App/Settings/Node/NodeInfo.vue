@@ -47,18 +47,6 @@
     >
       {{ buttonText }}
     </s-button>
-    <a
-      v-if="showTutorial"
-      :href="tutorialLink"
-      class="node-info-button"
-      tabindex="-1"
-      target="_blank"
-      rel="noreferrer noopener"
-    >
-      <s-button type="tertiary" class="node-info-tutorial-button s-typography-button--medium">
-        {{ t('selectNodeDialog.howToSetupOwnNode') }}
-      </s-button>
-    </a>
   </s-form>
 </template>
 
