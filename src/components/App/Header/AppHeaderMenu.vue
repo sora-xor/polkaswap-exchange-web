@@ -241,18 +241,18 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       //     },
       //   ],
       // },
-      {
-        title: this.t('headerMenu.titleCurrency'),
-        items: [
-          {
-            value: HeaderMenuType.Currency,
-            icon: 'various-lightbulb-24',
-            text: this.t('headerMenu.selectCurrency'),
-            iconType: 'arrows-chevron-right-rounded-24',
-            isTextInsteadIcon: true,
-          },
-        ],
-      },
+      // {
+      //   title: this.t('headerMenu.titleCurrency'),
+      //   items: [
+      //     {
+      //       value: HeaderMenuType.Currency,
+      //       icon: 'various-lightbulb-24',
+      //       text: this.t('headerMenu.selectCurrency'),
+      //       iconType: 'arrows-chevron-right-rounded-24',
+      //       isTextInsteadIcon: true,
+      //     },
+      //   ],
+      // },
       {
         title: this.t('headerMenu.titleMisc'),
         items: [

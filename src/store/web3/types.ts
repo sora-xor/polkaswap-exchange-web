@@ -10,6 +10,7 @@ import type { SupportedApps, BridgeNetworkId } from '@sora-substrate/sdk/build/b
 export type EthBridgeContractAddress = string;
 
 export type EthBridgeSettings = {
+  ethNetwork: number;
   evmNetwork: EvmNetwork;
   address: EthBridgeContractAddress;
 };

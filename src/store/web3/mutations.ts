@@ -94,7 +94,8 @@ const mutations = defineMutations<Web3State>()({
   },
 
   // for hashi bridge
-  setEthBridgeSettings(state, { evmNetwork, address }: EthBridgeSettings): void {
+  setEthBridgeSettings(state, { ethNetwork, evmNetwork, address }: EthBridgeSettings): void {
+    state.ethBridgeNetwork = ethNetwork;
     state.ethBridgeEvmNetwork = evmNetwork;
     state.ethBridgeContractAddress = address;
   },

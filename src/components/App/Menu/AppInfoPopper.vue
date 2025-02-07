@@ -105,10 +105,10 @@ export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.Loadi
         title: this.t('footerMenu.privacy'),
         href: Links.privacy,
       },
-      {
-        title: this.t('releaseNotesText'),
-        href: Links.releaseNotes,
-      },
+      // {
+      //   title: this.t('releaseNotesText'),
+      //   href: Links.releaseNotes,
+      // },
       {
         title: this.t('helpDialog.termsOfService'),
         href: Links.terms,

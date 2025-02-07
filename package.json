@@ -1,10 +1,6 @@
 {
   "name": "analog-bridge-frontend",
   "version": "1.0.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
-  },
   "engines": {
     "node": ">=20"
   },
@@ -28,7 +24,7 @@
     "test:all": "yarn test:unit"
   },
   "dependencies": {
-    "@soramitsu/soraneo-wallet-web": "1.44.5",
+    "@soramitsu/soraneo-wallet-web": "1.44.7-analog.0",
     "@walletconnect/ethereum-provider": "^2.13.3",
     "@walletconnect/modal": "^2.6.2",
     "country-code-emoji": "^2.3.0",
