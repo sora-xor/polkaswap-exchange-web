@@ -45,6 +45,7 @@ export default class TokenSelectButton extends Mixins(TranslationMixin) {
   @Prop({ type: String, default: '' }) readonly icon!: string;
   @Prop({ type: [Number, String], default: 0 }) readonly tabindex!: number | string;
   @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly external!: boolean;
 
   get hasToken(): boolean {
     return this.tokens.length !== 0 || !!this.token;
@@ -83,7 +84,13 @@ export default class TokenSelectButton extends Mixins(TranslationMixin) {
       return this.tokens.map((item) => item.symbol).join('-');
     }
 
-    return this.token?.symbol ?? '';
+    const symbol = this.token?.symbol ?? '';
+
+    if (this.external) {
+      return (this.token as any)?.externalSymbol ?? symbol;
+    } else {
+      return symbol;
+    }
   }
 }
 </script>

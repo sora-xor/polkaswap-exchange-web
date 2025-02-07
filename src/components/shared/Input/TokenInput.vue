@@ -53,6 +53,7 @@
         v-if="token || isSelectAvailable"
         icon="arrows-chevron-down-rounded-24"
         :disabled="!isSelectAvailable"
+        :external="external"
         :token="token"
         @click.stop="handleSelectToken"
       />
@@ -105,7 +106,7 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, mutation } from '@/store/decorators';
+import { getter } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';

@@ -232,7 +232,7 @@
 
 <script lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -273,12 +273,7 @@ import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/ty
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenInput: lazyComponent(Components.TokenInput),
-    FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    InfoLine: components.InfoLine,
-    TokenAddress: components.TokenAddress,
   },
 })
 export default class Bridge extends Mixins(

@@ -138,6 +138,7 @@ function bridgeDataToHistoryItem(
     amount: (params as any).amount ?? state.amountSend,
     amount2: (params as any).amount2 ?? state.amountReceived,
     symbol: (params as any).symbol ?? getters.asset?.symbol,
+    symbol2: (params as any).symbol2 ?? (getters.asset as any)?.externalSymbol,
     assetAddress: (params as any).assetAddress ?? getters.asset?.address,
     startTime: date,
     endTime: date,
