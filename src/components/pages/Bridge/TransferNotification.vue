@@ -136,7 +136,8 @@ export default class BridgeTransferNotification extends Mixins(BridgeTransaction
       const image = this.whitelist[address]?.icon;
 
       let tokenAddress = externalAddress;
-      let tokenSymbol = symbol;
+      // [HARDCODE]
+      let tokenSymbol = (this.asset as any).externalSymbol ?? symbol;
       let tokenDecimals = +externalDecimals;
 
       if (this.isSubEvm) {

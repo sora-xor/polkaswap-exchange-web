@@ -136,7 +136,7 @@ export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprove
 
   subscription.unsubscribe();
 
-  // [HARDCODE] hardcoded 0 ethNetwork
+  // [HARDCODE] hardcoded "0" ethNetwork
   const request = await getRequestData(hash);
   const proofs = await ethBridgeApi.api.query.ethBridge.requestApprovals(0, hash);
   const approvedRequest = formatApprovedRequest(hash, request, proofs as any);

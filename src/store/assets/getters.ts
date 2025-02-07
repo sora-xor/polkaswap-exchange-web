@@ -16,12 +16,14 @@ const getters = defineGetters<AssetsState>()({
     );
   },
   assetDataByAddress(...args): (address?: Nullable<string>) => Nullable<RegisteredAccountAsset> {
-    const { state, rootGetters } = assetsGetterContext(args);
+    const { state, rootGetters, rootState } = assetsGetterContext(args);
 
     return (address?: Nullable<string>): Nullable<RegisteredAccountAsset> => {
       if (!address) return undefined;
-
-      const asset = rootGetters.wallet.account.assetsDataTable[address];
+      // chain hasn't address
+      const asset = rootState.wallet.account.assets.find(
+        (asset) => asset.address === address || asset.symbol === address
+      );
 
       if (!asset) return null;
 

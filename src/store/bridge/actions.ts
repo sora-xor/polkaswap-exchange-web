@@ -6,6 +6,7 @@ import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
 import { MaxUint256, ZeroStringValue } from '@/consts';
+import { BRIDGE_TIMECHAIN_OUTGOING_FEE, BRIDGE_INCOMING_MIN_AMOUNT } from '@/consts/analog';
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
 import { FocusedField } from '@/store/bridge/types';
@@ -382,7 +383,7 @@ async function updateSoraNetworkFee(context: ActionContext<any, any>): Promise<v
   if (networkSelected && asset && state.isSoraToEvm) {
     if (getters.isEthBridge) {
       // [HARDCODE] hardcoded timechain network fee
-      fee = '2900000000';
+      fee = BRIDGE_TIMECHAIN_OUTGOING_FEE;
     } else {
       const bridgeApi = getBridgeApi(context) as typeof subBridgeApi | typeof evmBridgeApi;
       fee = await bridgeApi.getNetworkFee(asset, networkSelected as never);
@@ -489,7 +490,7 @@ const actions = defineActions({
   async updateIncomingMinLimit(context): Promise<void> {
     const { commit, getters, state } = bridgeActionContext(context);
     // [HARDCODE]
-    let minLimit = FPNumber.ONE;
+    let minLimit = BRIDGE_INCOMING_MIN_AMOUNT;
 
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset && state.subBridgeConnector.soraParachain) {
       try {
