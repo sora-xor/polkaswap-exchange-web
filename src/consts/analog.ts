@@ -13,7 +13,7 @@ export const ANLOG_TIMECHAIN: Asset = {
 export const ANLOG_ETHEREUM: BridgeRegisteredAsset = {
   address: '', // address will be here
   decimals: 12,
-  kind: 'Thischain',
+  kind: 'Sidechain', // to check contract balance
 };
 
 export const ETH_TIMECHAIN: Asset = {

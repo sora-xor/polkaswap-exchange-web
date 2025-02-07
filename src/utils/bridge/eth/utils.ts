@@ -1,7 +1,6 @@
 import { decodeAddress } from '@polkadot/util-crypto';
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EthCurrencyType } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import { SmartContractType, SmartContracts } from '@/consts/evm';
@@ -97,12 +96,6 @@ function formatApprovedRequest(hash: string, request: any, proofs: any[]): EthAp
   formattedItem.from = toPk20BytesHex(transferRequest.from.toString());
   formattedItem.to = transferRequest.to.toString();
   formattedItem.amount = new FPNumber(transferRequest.amount).toCodecString();
-  // formattedItem.currencyType = transferRequest.currencyId.isAssetId
-  //   ? EthCurrencyType.AssetId
-  //   : EthCurrencyType.TokenAddress;
-
-  // [HARDCODE] hardcoded TokenAddress
-  formattedItem.currencyType = EthCurrencyType.TokenAddress;
 
   formattedItem.r = [];
   formattedItem.s = [];

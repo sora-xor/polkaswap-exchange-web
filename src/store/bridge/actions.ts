@@ -382,7 +382,7 @@ async function updateSoraNetworkFee(context: ActionContext<any, any>): Promise<v
   if (networkSelected && asset && state.isSoraToEvm) {
     if (getters.isEthBridge) {
       // [HARDCODE] hardcoded timechain network fee
-      fee = '29000000000';
+      fee = '2900000000';
     } else {
       const bridgeApi = getBridgeApi(context) as typeof subBridgeApi | typeof evmBridgeApi;
       fee = await bridgeApi.getNetworkFee(asset, networkSelected as never);
