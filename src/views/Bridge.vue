@@ -395,8 +395,10 @@ export default class Bridge extends Mixins(
     if (!(this.asset && this.isRegisteredAsset && this.areAccountsConnected)) return FPNumber.ZERO;
 
     const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
+    const minBalance = this.isSoraToEvm
+      ? FPNumber.fromCodecValue(this.assetInternalMinBalance, this.asset.decimals)
+      : FPNumber.fromCodecValue(this.assetExternalMinBalance, this.asset.externalDecimals);
 
-    const minBalance = FPNumber.fromCodecValue(this.assetExternalMinBalance, this.asset.externalDecimals);
     const maxBalance = getMaxBalance(this.asset, fee, {
       isExternalBalance: !this.isSoraToEvm,
       isExternalNative: this.isNativeTokenSelected,
@@ -429,7 +431,8 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.xor, this.soraNetworkFee);
+    // [HARDCODE] xor -> asset
+    return hasInsufficientXorForFee(this.asset, this.soraNetworkFee);
   }
 
   get isInsufficientNativeTokenForFee(): boolean {
@@ -451,7 +454,7 @@ export default class Bridge extends Mixins(
   }
 
   get formattedSoraNetworkFee(): string {
-    return this.getStringFromCodec(this.soraNetworkFee);
+    return this.getStringFromCodec(this.soraNetworkFee, this.asset?.decimals);
   }
 
   get formattedExternalNetworkFee(): string {

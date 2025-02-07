@@ -266,7 +266,11 @@ async function updateEthLockedBalance(context: ActionContext<any, any>): Promise
   const hasNetworkData = !!networkSelected && isValidNetwork && !!ethBridgeContractAddress;
   const hasAssetData = !!address && !!externalAddress && isRegisteredAsset;
 
-  if (hasNetworkData && hasAssetData && isSidechainAsset) {
+  if (
+    hasNetworkData &&
+    hasAssetData
+    // && isSidechainAsset
+  ) {
     const bridgeValue = await ethersUtil.getAccountAssetBalance(ethBridgeContractAddress, externalAddress);
     const balance = FPNumber.fromCodecValue(bridgeValue, externalDecimals);
     commit.setAssetLockedBalance(balance);
@@ -319,35 +323,17 @@ async function updateExternalMinBalance(context: ActionContext<any, any>): Promi
   commit.setExternalMinBalance(minBalance);
 }
 
-function calculateMaxLimit(
-  limitAsset: string,
-  referenceAsset: string,
-  usdLimit: CodecString,
-  quote: SwapQuote
-): FPNumber | null {
-  const outgoingLimitUSD = FPNumber.fromCodecValue(usdLimit);
+async function updateInternalMinBalance(context: ActionContext<any, any>): Promise<void> {
+  const { commit, getters, state } = bridgeActionContext(context);
 
-  if (outgoingLimitUSD.isZero() || limitAsset === referenceAsset) return outgoingLimitUSD;
+  let minBalance = ZeroStringValue;
 
-  try {
-    const quoteAmount = FPNumber.ONE;
-
-    const {
-      result: { amount },
-    } = quote(limitAsset, referenceAsset, quoteAmount.toString(), false, [], false);
-    // result amount multiplied by a multiplier to get asset price
-
-    const assetPriceUSD = FPNumber.fromCodecValue(amount);
-
-    // zero price means liquidity problem - disable limit
-    if (!assetPriceUSD.isFinity() || assetPriceUSD.isZero()) return null;
-
-    return outgoingLimitUSD.div(assetPriceUSD);
-  } catch (error) {
-    console.error(error);
-    // disable limit on calculation error
-    return null;
+  if (getters.isEthBridge && getters.asset && state.isSoraToEvm) {
+    // [HARDCODE]
+    minBalance = ethBridgeApi.api.consts.balances.existentialDeposit.toString();
   }
+
+  commit.setInternalMinBalance(minBalance);
 }
 
 async function updateExternalBlockNumber(context: ActionContext<any, any>): Promise<void> {
@@ -395,7 +381,8 @@ async function updateSoraNetworkFee(context: ActionContext<any, any>): Promise<v
 
   if (networkSelected && asset && state.isSoraToEvm) {
     if (getters.isEthBridge) {
-      fee = networkFees[operation];
+      // [HARDCODE] hardcoded timechain network fee
+      fee = '29000000000';
     } else {
       const bridgeApi = getBridgeApi(context) as typeof subBridgeApi | typeof evmBridgeApi;
       fee = await bridgeApi.getNetworkFee(asset, networkSelected as never);
@@ -411,6 +398,7 @@ async function updateBalancesFeesAndAmounts(context: ActionContext<any, any>): P
   await Promise.allSettled([
     dispatch.updateExternalBalance(),
     updateExternalMinBalance(context),
+    updateInternalMinBalance(context),
     updateFeesAndLockedFunds(context),
   ]);
 }
@@ -500,8 +488,8 @@ const actions = defineActions({
 
   async updateIncomingMinLimit(context): Promise<void> {
     const { commit, getters, state } = bridgeActionContext(context);
-
-    let minLimit = FPNumber.ZERO;
+    // [HARDCODE]
+    let minLimit = FPNumber.ONE;
 
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset && state.subBridgeConnector.soraParachain) {
       try {

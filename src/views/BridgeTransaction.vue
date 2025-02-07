@@ -435,7 +435,8 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isInsufficientXorForFee(): boolean {
-    return this.txIsUnsigned && hasInsufficientXorForFee(this.xor, this.txSoraNetworkFee);
+    // [HARDCODE] xor -> asset
+    return this.txIsUnsigned && hasInsufficientXorForFee(this.asset, this.txSoraNetworkFee);
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {

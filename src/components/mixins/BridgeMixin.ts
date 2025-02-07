@@ -15,6 +15,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
   @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<FPNumber>;
   @state.bridge.assetExternalMinBalance assetExternalMinBalance!: CodecString;
+  @state.bridge.assetInternalMinBalance assetInternalMinBalance!: CodecString;
   @state.bridge.outgoingMinLimit outgoingMinLimit!: Nullable<FPNumber>;
   @state.bridge.incomingMinLimit incomingMinAmount!: FPNumber;
   @state.bridge.soraNetworkFee soraNetworkFee!: CodecString;
