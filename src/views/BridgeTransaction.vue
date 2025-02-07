@@ -4,6 +4,7 @@
       <s-button
         class="el-button--history"
         type="action"
+        alternative
         icon="time-time-history-24"
         :tooltip="t('bridgeHistory.showHistory')"
         tooltip-placement="bottom-end"

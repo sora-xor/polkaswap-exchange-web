@@ -1,6 +1,7 @@
+import { decodeAddress } from '@polkadot/util-crypto';
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EthCurrencyType, EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
+import { EthCurrencyType } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import { SmartContractType, SmartContracts } from '@/consts/evm';
@@ -65,6 +66,57 @@ export const updateTransaction = async (id: string, params = {}) => {
   ethBridgeApi.saveHistory({ ...tx, ...params });
 };
 
+async function getRequestData(hash: string) {
+  const request = await ethBridgeApi.api.query.ethBridge.requests(0, hash);
+  const value = (request as any).value;
+
+  let data;
+
+  if (value.isOutgoing) {
+    data = value.asOutgoing;
+  } else if (value.isIncoming) {
+    data = value.asIncoming;
+  }
+
+  return data[0];
+}
+
+function toPk20BytesHex(address: string) {
+  const publicKey = decodeAddress(address, false);
+  const publicKey20Bytes = Buffer.from(publicKey.slice(0, 20));
+  const publicKey20BytesHex = `0x${publicKey20Bytes.toString('hex')}`;
+
+  return publicKey20BytesHex;
+}
+
+function formatApprovedRequest(hash: string, request: any, proofs: any[]): EthApprovedRequest {
+  const formattedItem = {} as EthApprovedRequest;
+  const transferRequest = request.asTransfer;
+
+  formattedItem.hash = hash;
+  formattedItem.from = toPk20BytesHex(transferRequest.from.toString());
+  formattedItem.to = transferRequest.to.toString();
+  formattedItem.amount = new FPNumber(transferRequest.amount).toCodecString();
+  // formattedItem.currencyType = transferRequest.currencyId.isAssetId
+  //   ? EthCurrencyType.AssetId
+  //   : EthCurrencyType.TokenAddress;
+
+  // [HARDCODE] hardcoded TokenAddress
+  formattedItem.currencyType = EthCurrencyType.TokenAddress;
+
+  formattedItem.r = [];
+  formattedItem.s = [];
+  formattedItem.v = [];
+
+  for (const proof of proofs) {
+    formattedItem.r.push(proof.r.toString());
+    formattedItem.s.push(proof.s.toString());
+    formattedItem.v.push(proof.v.toNumber() + 27);
+  }
+
+  return formattedItem;
+}
+
 export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprovedRequest> => {
   const hash = tx.hash;
 
@@ -91,12 +143,14 @@ export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprove
 
   subscription.unsubscribe();
 
-  // [TODO] change usage to storage
-  const request = await ethBridgeApi.getApprovedRequest(hash);
+  // [HARDCODE] hardcoded 0 ethNetwork
+  const request = await getRequestData(hash);
+  const proofs = await ethBridgeApi.api.query.ethBridge.requestApprovals(0, hash);
+  const approvedRequest = formatApprovedRequest(hash, request, proofs as any);
 
-  if (!request) throw new Error(`[Bridge]: getApprovedRequest is empty, hash="${hash}"`);
+  if (!approvedRequest) throw new Error(`[Bridge]: getApprovedRequest is empty, hash="${hash}"`);
 
-  return request;
+  return approvedRequest as EthApprovedRequest;
 };
 
 export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: string; blockId: string }> => {
@@ -132,25 +186,18 @@ export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: st
 };
 
 export async function getIncomingEvmTransactionData({ asset, value, recipient, contractAddress }: EthTxParams) {
-  const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
   const accountId = ethersUtil.accountAddressToHex(recipient);
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
 
   const contractAbi = SmartContracts[SmartContractType.EthBridge];
   const contract = await ethersUtil.getContract(contractAddress, contractAbi);
 
-  const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain';
-  const methodArgs = isNativeEvmToken
-    ? [
-        accountId, // bytes32 to
-      ]
-    : [
-        accountId, // bytes32 to
-        amount, // uint256 amount
-        asset.externalAddress, // address tokenAddress
-      ];
-  const overrides = isNativeEvmToken ? { value: amount } : {};
-  const args = [...methodArgs, overrides];
+  const method = 'sendERC20ToSidechain';
+  const args = [
+    accountId, // bytes32 to
+    amount, // uint256 amount
+    asset.externalAddress, // address tokenAddress
+  ];
 
   return {
     contract,
@@ -168,42 +215,21 @@ export async function getOutgoingEvmTransactionData({
 }: EthTxParams) {
   if (!request) throw new Error('request is required!');
 
-  const isValOrXor = false;
-
   const contractAbi = SmartContracts[SmartContractType.EthBridge];
   const contract = await ethersUtil.getContract(contractAddress, contractAbi);
 
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
-
-  const isEthereumCurrency = request.currencyType === EthCurrencyType.TokenAddress;
-  const bridgeContractMethod = isEthereumCurrency ? 'receiveByEthereumAssetAddress' : 'receiveBySidechainAssetId';
-
-  const method = isValOrXor ? 'mintTokensByPeers' : bridgeContractMethod;
-
+  const method = 'receiveByEthereumAssetAddress';
   const args: Array<any> = [
-    isValOrXor || isEthereumCurrency
-      ? asset.externalAddress // address tokenAddress OR
-      : asset.address, // bytes32 assetId
+    asset.externalAddress, // address tokenAddress
     amount, // uint256 amount
-    recipient, // address beneficiary
+    recipient, // address to
+    request.from, // address from
+    request.hash, // bytes32 txHash
+    request.v, // uint8[] memory v
+    request.r, // bytes32[] memory r
+    request.s, // bytes32[] memory s
   ];
-  args.push(
-    ...(isValOrXor
-      ? [
-          request.hash, // bytes32 txHash
-          request.v, // uint8[] memory v
-          request.r, // bytes32[] memory r
-          request.s, // bytes32[] memory s
-          request.from, // address from
-        ]
-      : [
-          request.from, // address from
-          request.hash, // bytes32 txHash
-          request.v, // uint8[] memory v
-          request.r, // bytes32[] memory r
-          request.s, // bytes32[] memory s
-        ])
-  );
 
   return {
     contract,
@@ -215,43 +241,23 @@ export async function getOutgoingEvmTransactionData({
 const gasLimit = {
   approve: BigInt(45000),
   sendERC20ToSidechain: BigInt(53000),
-  sendEthToSidechain: BigInt(26093),
-  mintTokensByPeers: BigInt(211000),
-  receiveByEthereumAssetAddress: {
-    ETH: BigInt(155000),
-    OTHER: BigInt(181000),
-  },
-  receiveBySidechainAssetId: BigInt(184000),
+  receiveByEthereumAssetAddress: BigInt(181000),
 };
 
 /**
  * It's in gwei.
  */
-const getEthBridgeOutgoingGasLimit = (assetEvmAddress: string, assetKind: EthAssetKind): bigint => {
-  switch (assetKind) {
-    case EthAssetKind.SidechainOwned:
-      return gasLimit.mintTokensByPeers;
-    case EthAssetKind.Thischain:
-      return gasLimit.receiveBySidechainAssetId;
-    case EthAssetKind.Sidechain:
-      return ethersUtil.isNativeEvmTokenAddress(assetEvmAddress)
-        ? gasLimit.receiveByEthereumAssetAddress.ETH
-        : gasLimit.receiveByEthereumAssetAddress.OTHER;
-    default:
-      throw new Error(`Unknown kind "${assetKind}" for asset "${assetEvmAddress}"`);
-  }
+const getEthBridgeOutgoingGasLimit = (): bigint => {
+  return gasLimit.receiveByEthereumAssetAddress;
 };
 
-const getEthBridgeIncomingGasLimit = (assetEvmAddress: string): bigint => {
-  return ethersUtil.isNativeEvmTokenAddress(assetEvmAddress)
-    ? gasLimit.sendEthToSidechain
-    : gasLimit.sendERC20ToSidechain;
+const getEthBridgeIncomingGasLimit = (): bigint => {
+  return gasLimit.sendERC20ToSidechain;
 };
 
 export async function getEthNetworkFee(
   asset: RegisteredAccountAsset,
-  assetKind: string,
-  bridgeContractAddress: string,
+  contractAddress: string,
   value: string,
   isOutgoing: boolean,
   soraAccount: string,
@@ -260,9 +266,9 @@ export async function getEthNetworkFee(
   let gasLimitTotal!: bigint;
 
   if (isOutgoing) {
-    gasLimitTotal = getEthBridgeOutgoingGasLimit(asset.externalAddress, assetKind as EthAssetKind);
+    gasLimitTotal = getEthBridgeOutgoingGasLimit();
   } else {
-    const allowance = await ethersUtil.getAllowance(evmAccount, bridgeContractAddress, asset.externalAddress);
+    const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
     const approveGasLimit = !!allowance && Number(allowance) < Number(value) ? gasLimit.approve : BigInt(0);
 
     let txGasLimit!: bigint;
@@ -276,7 +282,7 @@ export async function getEthNetworkFee(
         asset,
         value,
         recipient: soraAccount,
-        bridgeContractAddress,
+        contractAddress,
       };
       const { contract, method, args } = await getIncomingEvmTransactionData(txParams);
       const signer = contract.runner;
@@ -284,7 +290,7 @@ export async function getEthNetworkFee(
 
       txGasLimit = (await signer?.estimateGas?.(tx)) ?? BigInt(0);
     } catch {
-      txGasLimit = getEthBridgeIncomingGasLimit(asset.externalAddress);
+      txGasLimit = getEthBridgeIncomingGasLimit();
     }
 
     gasLimitTotal = txGasLimit + approveGasLimit;

@@ -131,10 +131,10 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
         endTime: Date.now(),
       });
 
-      if (tx.assetAddress && !this.getAssetByAddress(tx.assetAddress)) {
-        // Add asset to account assets
-        this.addAsset(tx.assetAddress);
-      }
+      // if (tx.assetAddress && !this.getAssetByAddress(tx.assetAddress)) {
+      //   // Add asset to account assets
+      //   this.addAsset(tx.assetAddress);
+      // }
 
       this.showNotification(tx);
     }

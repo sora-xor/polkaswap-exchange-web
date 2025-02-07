@@ -64,9 +64,8 @@ export async function setI18nLocale(lang: Language): Promise<void> {
     // transform locale string 'eu-ES' to filename 'eu_ES' like in localise
     const filename = locale.replace('-', '_');
     const messagesModule = await import(`@/lang/${filename}.json`);
-    const cardMessagesModule = await import(`@/lang/card/${filename}.json`);
 
-    i18n.setLocaleMessage(locale, { ...messagesModule.default, ...cardMessagesModule.default });
+    i18n.setLocaleMessage(locale, { ...messagesModule.default });
     loadedLanguages.push(locale);
   }
 

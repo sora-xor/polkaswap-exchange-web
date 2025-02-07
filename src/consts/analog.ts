@@ -3,7 +3,7 @@ import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 export const ANLOG_TIMECHAIN: Asset = {
-  address: 'ANLOG',
+  address: 'Balances',
   symbol: 'ANLOG',
   name: 'Analog',
   decimals: 12,

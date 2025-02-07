@@ -1,6 +1,21 @@
+import { Connection } from '@sora-substrate/connection';
 import { axiosInstance } from '@sora-substrate/sdk';
+import { api } from '@soramitsu/soraneo-wallet-web';
+import { ApiPromise, WsProvider } from 'polkadotApi';
+
+import { NodesConnection } from '@/utils/connection';
+import { settingsStorage } from '@/utils/storage';
 
 import type VueRouter from 'vue-router';
+
+export const connection = new Connection(ApiPromise as any, WsProvider as any, {});
+
+export const createAppConnection = () => {
+  // inject connection to api
+  api.setConnection(connection);
+
+  return new NodesConnection(settingsStorage, connection);
+};
 
 export const BASE_URL = import.meta.env.BASE_URL;
 

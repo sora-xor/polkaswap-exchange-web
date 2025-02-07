@@ -249,6 +249,7 @@ const actions = defineActions({
    * Only for assets, created in SORA network!
    * "Thischain" for SORA, "Sidechain" for EVM
    */
+  // [PANIC]
   async getEvmTokenAddressByAssetId(context, soraAssetId: string): Promise<string> {
     const { state } = web3ActionContext(context);
     try {

@@ -1,9 +1,10 @@
 import { FPNumber, CodecString } from '@sora-substrate/sdk';
 import { isNativeAsset } from '@sora-substrate/sdk/build/assets';
-import { api, WALLET_CONSTS, connection } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
 
+import { connection } from '@/api';
 import { app, TranslationConsts, ZeroStringValue } from '@/consts';
 import { ANLOG_TIMECHAIN } from '@/consts/analog';
 import i18n from '@/lang';

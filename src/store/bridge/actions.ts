@@ -165,22 +165,13 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
   let fee = ZeroStringValue;
 
   if (asset && isRegisteredAsset && isValidNetwork && evmAccount && soraAccount) {
-    const bridgeRegisteredAsset = rootState.assets.registeredAssets[asset.address];
     const decimals = state.isSoraToEvm ? asset.decimals : asset.externalDecimals;
     // using max balance to not overflow contract calculation
     const maxAmount = FPNumber.fromCodecValue(state.assetSenderBalance ?? 0, decimals);
     const amount = new FPNumber(state.amountSend ?? 0, decimals);
     const value = maxAmount.min(amount).toString();
 
-    fee = await getEthNetworkFee(
-      asset,
-      bridgeRegisteredAsset.kind,
-      contractAddress,
-      value,
-      state.isSoraToEvm,
-      soraAccount,
-      evmAccount
-    );
+    fee = await getEthNetworkFee(asset, contractAddress, value, state.isSoraToEvm, soraAccount, evmAccount);
   }
 
   commit.setExternalNetworkFee(fee);

@@ -1,8 +1,6 @@
-import { connection } from '@soramitsu/soraneo-wallet-web';
-
+import { createAppConnection } from '@/api';
 import { BreakpointClass } from '@/consts/layout';
 import { getLocale } from '@/lang';
-import { NodesConnection } from '@/utils/connection';
 import { settingsStorage } from '@/utils/storage';
 
 import type { SettingsState } from './types';
@@ -15,10 +13,9 @@ function initialState(): SettingsState {
   const isAccessRotationListener = settingsStorage.get('isAccessRotationListener') === 'true';
   const isThemePreference = settingsStorage.get('isThemePreference') === 'true';
   const isBrowserNotificationApiAvailable = 'Notification' in window;
-  const appConnection = new NodesConnection(settingsStorage, connection);
 
   return {
-    appConnection,
+    appConnection: createAppConnection(),
     userDisclaimerApprove: disclaimerApprove ? JSON.parse(disclaimerApprove) : false,
     isBrowserNotificationApiAvailable,
     browserNotifsPermission: isBrowserNotificationApiAvailable ? Notification.permission : 'default',

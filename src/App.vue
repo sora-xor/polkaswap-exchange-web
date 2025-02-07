@@ -336,6 +336,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     const walletOptions = {
       permissions: WalletPermissions,
       appName: 'Analog Bridge',
+      connection: this.appConnection.connection,
     };
 
     try {

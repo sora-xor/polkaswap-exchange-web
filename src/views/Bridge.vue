@@ -492,15 +492,15 @@ export default class Bridge extends Mixins(
     );
   }
 
-  get isXorSufficientForNextOperation(): boolean {
-    if (!this.asset) return false;
+  // get isXorSufficientForNextOperation(): boolean {
+  //   if (!this.asset) return false;
 
-    return this.isXorSufficientForNextTx({
-      type: this.operation,
-      isXor: isXorAccountAsset(this.asset),
-      amount: this.getFPNumber(this.amountSend),
-    });
-  }
+  //   return this.isXorSufficientForNextTx({
+  //     type: this.operation,
+  //     isXor: isXorAccountAsset(this.asset),
+  //     amount: this.getFPNumber(this.amountSend),
+  //   });
+  // }
 
   get isNativeTokenSufficientForNextOperation(): boolean {
     if (!this.asset || this.isZeroAmountSend) return false;
@@ -570,24 +570,24 @@ export default class Bridge extends Mixins(
 
   async handleConfirmButtonClick(): Promise<void> {
     // Own native check
-    if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
-      this.openWarningFeeDialog();
-      await this.waitOnFeeWarningConfirmation();
-      if (!this.isWarningFeeDialogConfirmed) {
-        return;
-      }
-      this.isWarningFeeDialogConfirmed = false;
-    }
+    // if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
+    //   this.openWarningFeeDialog();
+    //   await this.waitOnFeeWarningConfirmation();
+    //   if (!this.isWarningFeeDialogConfirmed) {
+    //     return;
+    //   }
+    //   this.isWarningFeeDialogConfirmed = false;
+    // }
 
     // Native token check
-    if (this.allowFeePopup && !this.isNativeTokenSufficientForNextOperation) {
-      this.openWarningExternalFeeDialog();
-      await this.waitOnExternalFeeWarningConfirmation();
-      if (!this.isWarningExternalFeeDialogConfirmed) {
-        return;
-      }
-      this.isWarningExternalFeeDialogConfirmed = false;
-    }
+    // if (this.allowFeePopup && !this.isNativeTokenSufficientForNextOperation) {
+    //   this.openWarningExternalFeeDialog();
+    //   await this.waitOnExternalFeeWarningConfirmation();
+    //   if (!this.isWarningExternalFeeDialogConfirmed) {
+    //     return;
+    //   }
+    //   this.isWarningExternalFeeDialogConfirmed = false;
+    // }
 
     this.confirmOrExecute(this.confirmTransaction);
   }
@@ -617,9 +617,9 @@ export default class Bridge extends Mixins(
     const { assetAddress, id } = await this.generateHistoryItem();
 
     // Add asset to account assets for balances subscriptions
-    if (assetAddress && !this.accountAssetsAddressTable[assetAddress]) {
-      await this.addAssetToAccountAssets(assetAddress);
-    }
+    // if (assetAddress && !this.accountAssetsAddressTable[assetAddress]) {
+    //   await this.addAssetToAccountAssets(assetAddress);
+    // }
 
     this.setHistoryId(id);
 
