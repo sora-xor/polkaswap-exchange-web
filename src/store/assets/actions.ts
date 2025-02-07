@@ -15,9 +15,10 @@ import type { SubNetwork, SubAssetId } from '@sora-substrate/sdk/build/bridgePro
 import type { ActionContext } from 'vuex';
 
 async function updateEthAssetsData(context: ActionContext<any, any>): Promise<void> {
-  const { state, commit, rootDispatch, rootGetters } = assetsActionContext(context);
+  const { state, commit, rootGetters, rootState } = assetsActionContext(context);
   const { registeredAssets } = state;
   const { isValidNetwork } = rootGetters.web3;
+  const { ethBridgeNetwork } = rootState.web3;
 
   if (!isValidNetwork) return;
 
@@ -25,7 +26,9 @@ async function updateEthAssetsData(context: ActionContext<any, any>): Promise<vo
     Object.entries(registeredAssets).map(async ([soraAddress, assetData]) => {
       const asset = { ...assetData };
       if (!asset.address) {
-        asset.address = await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress);
+        asset.address = (
+          await ethBridgeApi.api.query.ethBridge.registeredSidechainToken(ethBridgeNetwork, soraAddress)
+        ).toString();
         asset.decimals = await ethersUtil.getTokenDecimals(asset.address);
       }
       return [soraAddress, asset];

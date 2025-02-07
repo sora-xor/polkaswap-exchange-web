@@ -42,6 +42,7 @@ export type Web3State = {
   subNetworkApps: SubNetworkApps;
   supportedApps: SupportedApps;
 
+  ethBridgeNetwork: number;
   ethBridgeEvmNetwork: EvmNetwork;
   ethBridgeContractAddress: EthBridgeContractAddress;
 

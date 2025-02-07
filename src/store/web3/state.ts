@@ -29,7 +29,8 @@ export function initialState(): Web3State {
       [BridgeNetworkType.Sub]: [],
     }, // supported apps from chain
 
-    // eth bridge history
+    // eth bridge
+    ethBridgeNetwork: 0,
     ethBridgeEvmNetwork: EvmNetworkId.EthereumSepolia,
     ethBridgeContractAddress: '',
 

@@ -3,7 +3,6 @@ import { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import { accountUtils, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
-import { SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
 import { AppEIPProvider } from '@/types/evm/provider';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -243,38 +242,6 @@ const actions = defineActions({
       id: state.ethBridgeEvmNetwork,
       type: BridgeNetworkType.Eth,
     });
-  },
-
-  /**
-   * Only for assets, created in SORA network!
-   * "Thischain" for SORA, "Sidechain" for EVM
-   */
-  // [PANIC]
-  async getEvmTokenAddressByAssetId(context, soraAssetId: string): Promise<string> {
-    const { state } = web3ActionContext(context);
-    try {
-      if (!soraAssetId) {
-        return '';
-      }
-      const contractAbi = SmartContracts[SmartContractType.EthBridge];
-      const contractAddress = state.ethBridgeContractAddress;
-
-      if (!contractAddress || !contractAbi) {
-        throw new Error('Contract address/abi is not found');
-      }
-
-      const contractInstance = await ethersUtil.getContract(contractAddress, contractAbi);
-      const methodArgs = [soraAssetId];
-      const externalAddress = await contractInstance._sidechainTokens(...methodArgs);
-      // Not (wrong) registered Sora asset on bridge contract return '0' address (like native token)
-      if (ethersUtil.isNativeEvmTokenAddress(externalAddress)) {
-        throw new Error('Asset is not registered');
-      }
-      return externalAddress;
-    } catch (error) {
-      console.error(soraAssetId, error);
-      return '';
-    }
   },
 });
 

@@ -11,7 +11,7 @@ export const ANLOG_TIMECHAIN: Asset = {
 };
 
 export const ANLOG_ETHEREUM: BridgeRegisteredAsset = {
-  address: '0x9f5ab33da3c3a7e209510a82d54aa81a94ea64a6', // address will be here
+  address: '', // address will be here
   decimals: 12,
   kind: 'Thischain',
 };

@@ -153,6 +153,14 @@ export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprove
   return approvedRequest as EthApprovedRequest;
 };
 
+const getSoraBlockHashByRequestHash = async (ethereumHash: string) => {
+  const height = await ethBridgeApi.api.query.ethBridge.requestSubmissionHeight(0, ethereumHash);
+  const blockNumber = (height as any).toNumber();
+  const blockHash = (await ethBridgeApi.api.rpc.chain.getBlockHash(blockNumber)).toString();
+
+  return blockHash;
+};
+
 export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: string; blockId: string }> => {
   if (!tx.externalHash) throw new Error('[Bridge]: externalHash cannot be empty!');
   if (!Number.isFinite(tx.externalNetwork))
@@ -179,10 +187,10 @@ export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: st
 
   subscription.unsubscribe();
 
-  const soraHash = await ethBridgeApi.getSoraHashByEthereumHash(tx.externalHash as string);
-  const soraBlockHash = await ethBridgeApi.getSoraBlockHashByRequestHash(tx.externalHash as string);
+  const hash = await ethBridgeApi.getSoraHashByEthereumHash(tx.externalHash as string);
+  const blockId = await getSoraBlockHashByRequestHash(tx.externalHash as string);
 
-  return { hash: soraHash, blockId: soraBlockHash };
+  return { hash, blockId };
 };
 
 export async function getIncomingEvmTransactionData({ asset, value, recipient, contractAddress }: EthTxParams) {
@@ -241,7 +249,7 @@ export async function getOutgoingEvmTransactionData({
 const gasLimit = {
   approve: BigInt(45000),
   sendERC20ToSidechain: BigInt(53000),
-  receiveByEthereumAssetAddress: BigInt(181000),
+  receiveByEthereumAssetAddress: BigInt(221000),
 };
 
 /**
