@@ -331,6 +331,7 @@ export class EthBridgeHistory {
       const soraHash = await getSoraHash(isOutgoing, requestHash);
       const asset = assetDataByAddress(assetAddress);
       const symbol = asset?.symbol;
+      const symbol2 = (asset as any)?.externalSymbol ?? symbol;
       const soraNetworkFee = getSoraNetworkFee(isOutgoing, networkFees);
       const soraTimestamp = historyElement.timestamp * 1000;
       const soraPartCompleted = await isSoraPartCompleted(isOutgoing, soraHash);
@@ -357,6 +358,7 @@ export class EthBridgeHistory {
         from: address,
         amount,
         symbol,
+        symbol2,
         assetAddress,
         startTime,
         endTime,
