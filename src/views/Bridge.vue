@@ -52,7 +52,12 @@
             <span class="input-title--network">{{ formatSelectedNetwork(isSoraToEvm) }}</span>
             <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkSelected)}`" />
             <bridge-node-icon
-              v-if="isSubBridge && !isSoraToEvm"
+              v-if="!isSubBridge && isSoraToEvm"
+              :connection="appConnection"
+              @click="handleChangeAppNode"
+            />
+            <bridge-node-icon
+              v-else-if="isSubBridge && !isSoraToEvm"
               :connection="subConnection"
               @click="handleChangeSubNode"
             />
@@ -100,7 +105,12 @@
             <span class="input-title--network">{{ formatSelectedNetwork(!isSoraToEvm) }}</span>
             <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkSelected)}`" />
             <bridge-node-icon
-              v-if="isSubBridge && isSoraToEvm"
+              v-if="!isSubBridge && !isSoraToEvm"
+              :connection="appConnection"
+              @click="handleChangeAppNode"
+            />
+            <bridge-node-icon
+              v-else-if="isSubBridge && isSoraToEvm"
               :connection="subConnection"
               @click="handleChangeSubNode"
             />
@@ -288,6 +298,7 @@ export default class Bridge extends Mixins(
   readonly ANLOG = ANLOG_TIMECHAIN;
   readonly FocusedField = FocusedField;
 
+  @state.settings.appConnection appConnection!: NodesConnection;
   @state.bridge.subBridgeConnector private subBridgeConnector!: SubNetworksConnector;
   @state.bridge.balancesFetching private balancesFetching!: boolean;
   @state.bridge.feesAndLockedFundsFetching private feesAndLockedFundsFetching!: boolean;
@@ -323,6 +334,8 @@ export default class Bridge extends Mixins(
   // Sub Node Select
   @state.web3.selectSubNodeDialogVisibility selectSubNodeDialogVisibility!: boolean;
   @mutation.web3.setSelectSubNodeDialogVisibility private setSelectSubNodeDialogVisibility!: (flag: boolean) => void;
+  // App Node Select
+  @mutation.settings.setSelectNodeDialogVisibility private setSelectNodeDialogVisibility!: (flag: boolean) => void;
 
   get subConnection(): Nullable<NodesConnection> {
     if (!this.isSubBridge) return null;
@@ -588,6 +601,10 @@ export default class Bridge extends Mixins(
     // }
 
     this.confirmOrExecute(this.confirmTransaction);
+  }
+
+  handleChangeAppNode(): void {
+    this.setSelectNodeDialogVisibility(true);
   }
 
   handleChangeSubNode(): void {
