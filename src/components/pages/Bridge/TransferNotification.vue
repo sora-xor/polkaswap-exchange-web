@@ -74,7 +74,7 @@ export default class BridgeTransferNotification extends Mixins(BridgeTransaction
   }
 
   get assetSymbol(): string {
-    return this.asset?.symbol ?? '';
+    return (this.asset as any)?.externalSymbol ?? this.asset?.symbol ?? '';
   }
 
   get isSubEvm(): boolean {
@@ -132,12 +132,12 @@ export default class BridgeTransferNotification extends Mixins(BridgeTransaction
     if (!this.asset) return;
 
     try {
-      const { externalAddress, externalDecimals, symbol, address } = this.asset;
+      const { externalAddress, externalDecimals, address } = this.asset;
       const image = this.whitelist[address]?.icon;
 
       let tokenAddress = externalAddress;
       // [HARDCODE]
-      let tokenSymbol = (this.asset as any).externalSymbol ?? symbol;
+      let tokenSymbol = this.assetSymbol;
       let tokenDecimals = +externalDecimals;
 
       if (this.isSubEvm) {

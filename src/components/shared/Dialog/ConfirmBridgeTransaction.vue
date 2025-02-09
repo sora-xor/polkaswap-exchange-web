@@ -11,7 +11,7 @@
         <span class="token-value">{{ formattedAmountSend }}</span>
         <div v-if="asset" class="token">
           <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : network)}`" />
-          {{ tokenSymbol }}
+          {{ isSoraToEvm ? tokenSymbol : tokenSymbol2 }}
         </div>
       </div>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
@@ -19,7 +19,7 @@
         <span class="token-value">{{ formattedAmountReceived }}</span>
         <div v-if="asset" class="token">
           <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? network : 0)}`" />
-          {{ tokenSymbol }}
+          {{ isSoraToEvm ? tokenSymbol2 : tokenSymbol }}
         </div>
       </div>
     </div>
@@ -95,6 +95,10 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
 
   get tokenSymbol(): string {
     return this.asset?.symbol || '';
+  }
+
+  get tokenSymbol2(): string {
+    return (this.asset as any).externalSymbol ?? this.tokenSymbol;
   }
 
   get networkName(): string {

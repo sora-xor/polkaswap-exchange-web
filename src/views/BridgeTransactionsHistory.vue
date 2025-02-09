@@ -104,6 +104,7 @@ import type { IBridgeTransaction } from '@sora-substrate/sdk';
 const SearchAttrs = [
   'assetAddress',
   'symbol',
+  'symbol2',
   'hash',
   'blockId',
   'txId',
