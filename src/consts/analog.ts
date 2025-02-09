@@ -4,8 +4,6 @@ import type { BridgeRegisteredAsset } from '@/store/assets/types';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
-export const BRIDGE_TIMECHAIN_OUTGOING_FEE = '2900000000';
-
 export const BRIDGE_INCOMING_MIN_AMOUNT = FPNumber.ONE;
 
 export const ANLOG_TIMECHAIN: Asset & { externalSymbol?: string } = {

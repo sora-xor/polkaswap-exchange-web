@@ -12,7 +12,7 @@ import type { EthBridgeContractAddress } from '@/store/web3/types';
 import { getEvmTransactionRecieptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 
-import type { NetworkFeesObject } from '@sora-substrate/sdk';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { BlockTag } from 'ethers';
@@ -53,8 +53,8 @@ const getSoraHash = async (isOutgoing: boolean, requestHash: string) => {
   return isOutgoing ? requestHash : await ethBridgeApi.getSoraHashByEthereumHash(requestHash);
 };
 
-const getSoraNetworkFee = (isOutgoing: boolean, networkFees: NetworkFeesObject) => {
-  return isOutgoing ? networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
+const getSoraNetworkFee = (isOutgoing: boolean, networkFee: CodecString) => {
+  return isOutgoing ? networkFee : ZeroStringValue;
 };
 
 // [WARNING]: api.query.ethBridge storage usage
@@ -335,7 +335,7 @@ export class EthBridgeHistory {
     for (const historyElement of historyElements) {
       const type = getType(historyElement.module);
       const isOutgoing = isOutgoingTransaction({ type });
-      const { id: txId, blockHash: blockId, blockHeight, data: historyElementData } = historyElement;
+      const { id: txId, networkFee, blockHash: blockId, blockHeight, data: historyElementData } = historyElement;
       const { requestHash, amount, assetId: assetAddress, sidechainAddress } = historyElementData as HistoryElementData;
 
       const localHistoryItem = currentHistory.find((item: EthHistory) =>
@@ -350,7 +350,7 @@ export class EthBridgeHistory {
       const asset = assetDataByAddress(assetAddress);
       const symbol = asset?.symbol;
       const symbol2 = (asset as any)?.externalSymbol ?? symbol;
-      const soraNetworkFee = getSoraNetworkFee(isOutgoing, networkFees);
+      const soraNetworkFee = getSoraNetworkFee(isOutgoing, networkFee);
       const soraTimestamp = historyElement.timestamp * 1000;
       const soraPartCompleted = await isSoraPartCompleted(isOutgoing, soraHash);
       const ethereumTx = isOutgoing

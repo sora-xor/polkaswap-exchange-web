@@ -6,7 +6,7 @@ import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
 import { MaxUint256, ZeroStringValue } from '@/consts';
-import { BRIDGE_TIMECHAIN_OUTGOING_FEE, BRIDGE_INCOMING_MIN_AMOUNT } from '@/consts/analog';
+import { BRIDGE_INCOMING_MIN_AMOUNT } from '@/consts/analog';
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
 import { FocusedField } from '@/store/bridge/types';
@@ -371,20 +371,29 @@ async function updateFeesAndLockedFunds(context: ActionContext<any, any>): Promi
 
 async function updateSoraNetworkFee(context: ActionContext<any, any>): Promise<void> {
   const { commit, state, getters, rootState } = bridgeActionContext(context);
-  const { asset, operation } = getters;
+  const { isSoraToEvm, amountSend } = state;
+  const { asset, operation, recipient } = getters;
   const {
-    web3: { networkSelected },
-    wallet: {
-      settings: { networkFees },
-    },
+    web3: { networkSelected, ethBridgeNetwork },
   } = rootState;
 
   let fee = ZeroStringValue;
 
-  if (networkSelected && asset && state.isSoraToEvm) {
+  if (networkSelected && asset && isSoraToEvm) {
     if (getters.isEthBridge) {
-      // [HARDCODE] hardcoded timechain network fee
-      fee = BRIDGE_TIMECHAIN_OUTGOING_FEE;
+      try {
+        const emptyExtrinsic = api.api.tx.ethBridge.transferToSidechain(
+          asset.address,
+          recipient,
+          new FPNumber(amountSend, asset.decimals).toCodecString(),
+          ethBridgeNetwork
+        );
+        const res = await emptyExtrinsic.paymentInfo(rootState.wallet.account.address);
+        fee = new FPNumber(res.partialFee, api.chainDecimals).toCodecString();
+      } catch (error) {
+        console.error(error);
+        fee = api.NetworkFee[operation];
+      }
     } else {
       const bridgeApi = getBridgeApi(context) as typeof subBridgeApi | typeof evmBridgeApi;
       fee = await bridgeApi.getNetworkFee(asset, networkSelected as never);

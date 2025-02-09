@@ -1904,10 +1904,10 @@
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
 
-"@soramitsu/soraneo-wallet-web@1.44.7-analog.0":
-  version "1.44.7-analog.0"
-  resolved "https://registry.yarnpkg.com/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.44.7-analog.0.tgz#11457e32428fd8655550211962d286d7ac3fdbc7"
-  integrity sha512-4L8K26De1a3ym1H0nKfLEmEhms9cwSdVoA1WoVRatgu26lnaqoxc+zm9jD4IUpcz92yFcf0viuEoWp2nFxJ+2Q==
+"@soramitsu/soraneo-wallet-web@1.44.7-analog.1":
+  version "1.44.7-analog.1"
+  resolved "https://registry.yarnpkg.com/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.44.7-analog.1.tgz#f1df5831f6d5476ff1869f226740172214d778c2"
+  integrity sha512-byIZSrJ7Mg4dJjuNWCxxKkYsUoS8M5jtQYLNft6U0F9EEdOSYQuNpAJyHTcWr60SKyk+ehgqhOUl32kNLoSISg==
   dependencies:
     "@polkadot/extension-inject" "^0.44.9"
     "@polkadot/vue-identicon" "2.12.1"

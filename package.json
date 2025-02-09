@@ -24,7 +24,7 @@
     "test:all": "yarn test:unit"
   },
   "dependencies": {
-    "@soramitsu/soraneo-wallet-web": "1.44.7-analog.0",
+    "@soramitsu/soraneo-wallet-web": "1.44.7-analog.1",
     "@walletconnect/ethereum-provider": "^2.13.3",
     "@walletconnect/modal": "^2.6.2",
     "country-code-emoji": "^2.3.0",
