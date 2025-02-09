@@ -52,15 +52,15 @@
             <span class="input-title--network">{{ formatSelectedNetwork(isSoraToEvm) }}</span>
             <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkSelected)}`" />
             <bridge-node-icon
-              v-if="!isSubBridge && isSoraToEvm"
-              :connection="appConnection"
-              @click="handleChangeAppNode"
-            />
-            <bridge-node-icon
-              v-else-if="isSubBridge && !isSoraToEvm"
+              v-if="isSubBridge && !isSoraToEvm"
               :connection="subConnection"
               @click="handleChangeSubNode"
             />
+            <!-- <bridge-node-icon
+              v-else-if="!isSubBridge && isSoraToEvm"
+              :connection="appConnection"
+              @click="handleChangeAppNode"
+            /> -->
           </template>
 
           <bridge-account-panel
@@ -105,15 +105,15 @@
             <span class="input-title--network">{{ formatSelectedNetwork(!isSoraToEvm) }}</span>
             <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkSelected)}`" />
             <bridge-node-icon
-              v-if="!isSubBridge && !isSoraToEvm"
-              :connection="appConnection"
-              @click="handleChangeAppNode"
-            />
-            <bridge-node-icon
-              v-else-if="isSubBridge && isSoraToEvm"
+              v-if="isSubBridge && isSoraToEvm"
               :connection="subConnection"
               @click="handleChangeSubNode"
             />
+            <!-- <bridge-node-icon
+              v-if="!isSubBridge && !isSoraToEvm"
+              :connection="appConnection"
+              @click="handleChangeAppNode"
+            /> -->
           </template>
 
           <bridge-account-panel

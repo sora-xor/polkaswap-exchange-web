@@ -3,7 +3,7 @@
     <a v-if="blockNumber" class="block-number s-flex" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
       <span class="block-number-icon" /><span>{{ blockNumberFormatted }}</span>
     </a>
-    <!-- <footer-popper
+    <footer-popper
       icon="globe-16"
       panel-class="node"
       :panel-text="nodeConnectionText"
@@ -21,8 +21,8 @@
           {{ formattedNodeLocation.name }} <span class="flag-emodji">{{ formattedNodeLocation.flag }}</span>
         </span>
       </template>
-    </footer-popper> -->
-    <!-- <footer-popper
+    </footer-popper>
+    <footer-popper
       icon="wi-fi-16"
       panel-class="internet"
       :panel-text="internetConnectionText"
@@ -37,7 +37,7 @@
       <template #default>
         <span>{{ internetConnectionDesc }}</span>
       </template>
-    </footer-popper> -->
+    </footer-popper>
     <!-- <footer-popper
       icon="software-cloud-24"
       panel-class="statistics"
@@ -265,7 +265,7 @@ $sora-logo-width: 115px;
   font-size: var(--s-font-size-extra-mini);
   font-weight: 300;
   height: $footer-height;
-  // border-top: 1px solid var(--s-color-base-border-secondary);
+  border-top: 1px solid var(--s-color-base-border-secondary);
   background-color: var(--s-color-utility-surface);
   justify-content: center;
   align-items: center;
