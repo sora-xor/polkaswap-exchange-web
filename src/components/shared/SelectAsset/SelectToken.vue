@@ -62,7 +62,6 @@
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, mixins, components, WALLET_TYPES, getAssetsSubset } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
@@ -70,6 +69,7 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
+// import { ANLOG_TIMECHAIN } from '@/consts/analog';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
 
@@ -148,14 +148,14 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   get whitelistAssetsList(): Array<AccountAsset> {
     let whiteList: Array<Asset> = [];
 
-    if (this.isAddLiquidity) {
-      whiteList = this.isFirstTokenSelected
-        ? this.mainLPSources
-        : // XOR could be only as base asset
-          this.whitelistAssets.filter((asset) => asset.address !== XOR.address);
-    } else {
-      whiteList = this.whitelistAssets;
-    }
+    // if (this.isAddLiquidity) {
+    //   whiteList = this.isFirstTokenSelected
+    //     ? this.mainLPSources
+    //     : // could be only as base asset
+    //       this.whitelistAssets.filter((asset) => asset.address !== ANLOG_TIMECHAIN.address);
+    // } else {
+    whiteList = this.whitelistAssets;
+    // }
 
     whiteList = getAssetsSubset(whiteList, this.assetsFilter);
 

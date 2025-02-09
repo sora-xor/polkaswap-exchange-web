@@ -1,12 +1,9 @@
-import { Storage } from '@sora-substrate/sdk';
 import { storage as soraStorage } from '@soramitsu/soraneo-wallet-web';
 
 import { LOCAL_STORAGE_MAX_SIZE, listOfRemoveForLocalStorage } from '@/consts/index';
 export { settingsStorage } from '@soramitsu/soraneo-wallet-web';
 
 export default soraStorage;
-
-export const layoutsStorage = new Storage('layouts');
 
 function calculateLocalStorageSize(): number {
   let totalSize = 0;

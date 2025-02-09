@@ -1,16 +1,12 @@
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber } from '@sora-substrate/sdk';
-import { getAssetBalance } from '@sora-substrate/sdk/build/assets';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { getAssetBalance, formatBalance } from '@sora-substrate/sdk/build/assets';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { DexId } from '@sora-substrate/sdk/build/dex/consts';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
-import { combineLatest } from 'rxjs';
 
 import { MaxUint256, ZeroStringValue } from '@/consts';
-import { KnownEthBridgeAsset } from '@/consts/evm';
+import { BRIDGE_INCOMING_MIN_AMOUNT } from '@/consts/analog';
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
 import { FocusedField } from '@/store/bridge/types';
@@ -39,12 +35,17 @@ import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/ty
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
-import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 
+// [ANALOG] Only native token
 const getSoraBalance = async (accountAddress: string, asset: RegisteredAccountAsset): Promise<CodecString> => {
-  const accountBalance = await getAssetBalance(api.api, accountAddress, asset.address, asset.decimals);
-  return accountBalance.transferable;
+  const accountInfo = await api.api.query.system.account(accountAddress);
+  const balance = formatBalance((accountInfo as any).data, api.chainDecimals);
+
+  return balance.transferable;
+
+  // const accountBalance = await getAssetBalance(api.api, accountAddress, asset.address, asset.decimals);
+  // return accountBalance.transferable;
 };
 
 const getExternalBalance = async (
@@ -137,6 +138,7 @@ function bridgeDataToHistoryItem(
     amount: (params as any).amount ?? state.amountSend,
     amount2: (params as any).amount2 ?? state.amountReceived,
     symbol: (params as any).symbol ?? getters.asset?.symbol,
+    symbol2: (params as any).symbol2 ?? (getters.asset as any)?.externalSymbol,
     assetAddress: (params as any).assetAddress ?? getters.asset?.address,
     startTime: date,
     endTime: date,
@@ -157,29 +159,21 @@ function bridgeDataToHistoryItem(
 async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, state, rootState, rootGetters } = bridgeActionContext(context);
   const { asset, isRegisteredAsset } = getters;
-  const { isValidNetwork, contractAddress } = rootGetters.web3;
+  const { isValidNetwork } = rootGetters.web3;
+  const contractAddress = rootState.web3.ethBridgeContractAddress;
   const evmAccount = rootState.web3.evmAddress;
   const soraAccount = rootState.wallet.account.address;
 
   let fee = ZeroStringValue;
 
   if (asset && isRegisteredAsset && isValidNetwork && evmAccount && soraAccount) {
-    const bridgeRegisteredAsset = rootState.assets.registeredAssets[asset.address];
     const decimals = state.isSoraToEvm ? asset.decimals : asset.externalDecimals;
     // using max balance to not overflow contract calculation
     const maxAmount = FPNumber.fromCodecValue(state.assetSenderBalance ?? 0, decimals);
     const amount = new FPNumber(state.amountSend ?? 0, decimals);
     const value = maxAmount.min(amount).toString();
 
-    fee = await getEthNetworkFee(
-      asset,
-      bridgeRegisteredAsset.kind,
-      contractAddress,
-      value,
-      state.isSoraToEvm,
-      soraAccount,
-      evmAccount
-    );
+    fee = await getEthNetworkFee(asset, contractAddress, value, state.isSoraToEvm, soraAccount, evmAccount);
   }
 
   commit.setExternalNetworkFee(fee);
@@ -267,23 +261,20 @@ async function updateEthHistory(context: ActionContext<any, any>, clearHistory =
 async function updateEthLockedBalance(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, rootGetters, rootState } = bridgeActionContext(context);
   const { isRegisteredAsset, isSidechainAsset, asset } = getters;
-  const { address, decimals, externalAddress, externalDecimals } = asset ?? {};
-  const { networkSelected } = rootState.web3;
-  const { isValidNetwork, contractAddress } = rootGetters.web3;
-  const bridgeContractAddress = contractAddress(KnownEthBridgeAsset.Other);
+  const { address, externalAddress, externalDecimals } = asset ?? {};
+  const { networkSelected, ethBridgeContractAddress } = rootState.web3;
+  const { isValidNetwork } = rootGetters.web3;
 
-  const hasNetworkData = !!networkSelected && isValidNetwork && !!bridgeContractAddress;
+  const hasNetworkData = !!networkSelected && isValidNetwork && !!ethBridgeContractAddress;
   const hasAssetData = !!address && !!externalAddress && isRegisteredAsset;
 
-  if (hasNetworkData && hasAssetData && isSidechainAsset) {
-    const [lockedValue, bridgeValue] = await Promise.all([
-      ethBridgeApi.getLockedAssets(networkSelected as number, address),
-      ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress),
-    ]);
-    const balance = FPNumber.min(
-      FPNumber.fromCodecValue(lockedValue, decimals),
-      FPNumber.fromCodecValue(bridgeValue, externalDecimals)
-    );
+  if (
+    hasNetworkData &&
+    hasAssetData
+    // && isSidechainAsset
+  ) {
+    const bridgeValue = await ethersUtil.getAccountAssetBalance(ethBridgeContractAddress, externalAddress);
+    const balance = FPNumber.fromCodecValue(bridgeValue, externalDecimals);
     commit.setAssetLockedBalance(balance);
   } else {
     commit.setAssetLockedBalance();
@@ -334,35 +325,17 @@ async function updateExternalMinBalance(context: ActionContext<any, any>): Promi
   commit.setExternalMinBalance(minBalance);
 }
 
-function calculateMaxLimit(
-  limitAsset: string,
-  referenceAsset: string,
-  usdLimit: CodecString,
-  quote: SwapQuote
-): FPNumber | null {
-  const outgoingLimitUSD = FPNumber.fromCodecValue(usdLimit);
+async function updateInternalMinBalance(context: ActionContext<any, any>): Promise<void> {
+  const { commit, getters, state } = bridgeActionContext(context);
 
-  if (outgoingLimitUSD.isZero() || limitAsset === referenceAsset) return outgoingLimitUSD;
+  let minBalance = ZeroStringValue;
 
-  try {
-    const quoteAmount = FPNumber.ONE;
-
-    const {
-      result: { amount },
-    } = quote(limitAsset, referenceAsset, quoteAmount.toString(), false, [], false);
-    // result amount multiplied by a multiplier to get asset price
-
-    const assetPriceUSD = FPNumber.fromCodecValue(amount);
-
-    // zero price means liquidity problem - disable limit
-    if (!assetPriceUSD.isFinity() || assetPriceUSD.isZero()) return null;
-
-    return outgoingLimitUSD.div(assetPriceUSD);
-  } catch (error) {
-    console.error(error);
-    // disable limit on calculation error
-    return null;
+  if (getters.isEthBridge && getters.asset && state.isSoraToEvm) {
+    // [HARDCODE]
+    minBalance = ethBridgeApi.api.consts.balances.existentialDeposit.toString();
   }
+
+  commit.setInternalMinBalance(minBalance);
 }
 
 async function updateExternalBlockNumber(context: ActionContext<any, any>): Promise<void> {
@@ -398,19 +371,29 @@ async function updateFeesAndLockedFunds(context: ActionContext<any, any>): Promi
 
 async function updateSoraNetworkFee(context: ActionContext<any, any>): Promise<void> {
   const { commit, state, getters, rootState } = bridgeActionContext(context);
-  const { asset, operation } = getters;
+  const { isSoraToEvm, amountSend } = state;
+  const { asset, operation, recipient } = getters;
   const {
-    web3: { networkSelected },
-    wallet: {
-      settings: { networkFees },
-    },
+    web3: { networkSelected, ethBridgeNetwork },
   } = rootState;
 
   let fee = ZeroStringValue;
 
-  if (networkSelected && asset && state.isSoraToEvm) {
+  if (networkSelected && asset && isSoraToEvm) {
     if (getters.isEthBridge) {
-      fee = networkFees[operation];
+      try {
+        const emptyExtrinsic = api.api.tx.ethBridge.transferToSidechain(
+          asset.address,
+          recipient,
+          new FPNumber(amountSend, asset.decimals).toCodecString(),
+          ethBridgeNetwork
+        );
+        const res = await emptyExtrinsic.paymentInfo(rootState.wallet.account.address);
+        fee = new FPNumber(res.partialFee, api.chainDecimals).toCodecString();
+      } catch (error) {
+        console.error(error);
+        fee = api.NetworkFee[operation];
+      }
     } else {
       const bridgeApi = getBridgeApi(context) as typeof subBridgeApi | typeof evmBridgeApi;
       fee = await bridgeApi.getNetworkFee(asset, networkSelected as never);
@@ -426,6 +409,7 @@ async function updateBalancesFeesAndAmounts(context: ActionContext<any, any>): P
   await Promise.allSettled([
     dispatch.updateExternalBalance(),
     updateExternalMinBalance(context),
+    updateInternalMinBalance(context),
     updateFeesAndLockedFunds(context),
   ]);
 }
@@ -493,7 +477,6 @@ const actions = defineActions({
 
     await Promise.allSettled([
       dispatch.updateOutgoingMinLimit(),
-      dispatch.updateOutgoingMaxLimit(),
       dispatch.updateIncomingMinLimit(),
       updateBalancesFeesAndAmounts(context),
     ]);
@@ -516,8 +499,8 @@ const actions = defineActions({
 
   async updateIncomingMinLimit(context): Promise<void> {
     const { commit, getters, state } = bridgeActionContext(context);
-
-    let minLimit = FPNumber.ZERO;
+    // [HARDCODE]
+    let minLimit = BRIDGE_INCOMING_MIN_AMOUNT;
 
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset && state.subBridgeConnector.soraParachain) {
       try {
@@ -547,39 +530,6 @@ const actions = defineActions({
     }
 
     commit.setOutgoingMinLimit(minLimit);
-  },
-
-  async updateOutgoingMaxLimit(context): Promise<void> {
-    const { state, commit } = bridgeActionContext(context);
-
-    const limitAsset = state.assetAddress;
-
-    commit.resetOutgoingMaxLimitSubscription();
-
-    if (!limitAsset) return;
-
-    const hasOutgoingLimit = await api.bridgeProxy.isAssetTransferLimited(limitAsset);
-
-    if (!hasOutgoingLimit) return;
-
-    const referenceAsset = DAI.address;
-    const sources = [LiquiditySourceTypes.XYKPool, LiquiditySourceTypes.XSTPool, LiquiditySourceTypes.OrderBook];
-    const limitObservable = api.bridgeProxy.getCurrentTransferLimitObservable();
-    const quoteObservable = api.swap.getSwapQuoteObservable(referenceAsset, limitAsset, sources, DexId.XOR);
-
-    if (!quoteObservable) return;
-
-    let subscription!: Subscription;
-
-    await new Promise<void>((resolve) => {
-      subscription = combineLatest([limitObservable, quoteObservable]).subscribe(([usdLimit, { quote }]) => {
-        const outgoingMaxLimit = calculateMaxLimit(limitAsset, referenceAsset, usdLimit, quote);
-        commit.setOutgoingMaxLimit(outgoingMaxLimit);
-        resolve();
-      });
-    });
-
-    commit.setOutgoingMaxLimitSubscription(subscription);
   },
 
   async subscribeOnBlockUpdates(context): Promise<void> {
@@ -654,7 +604,7 @@ const actions = defineActions({
   },
 
   removeHistory(context, { tx, force = false }: { tx: Partial<IBridgeTransaction>; force: boolean }): void {
-    const { commit, dispatch, state, rootState } = bridgeActionContext(context);
+    const { commit, dispatch, state } = bridgeActionContext(context);
 
     const { id, hash } = tx;
 
@@ -676,13 +626,6 @@ const actions = defineActions({
     // update active view if needed
     if (hash && state.historyId === id) {
       commit.setHistoryId(hash);
-    }
-    // update moonpay records if needed
-    if (item.payload?.moonpayId) {
-      rootState.moonpay.api.accountRecords = {
-        ...rootState.moonpay.api.accountRecords,
-        [item.payload.moonpayId]: item.externalHash,
-      };
     }
     // remove tx from history
     bridgeApi.removeHistory(id);
@@ -737,7 +680,7 @@ const actions = defineActions({
       asset,
       value: tx.amount,
       recipient: tx.to,
-      getContractAddress: rootGetters.web3.contractAddress,
+      contractAddress: rootState.web3.ethBridgeContractAddress,
       request,
     });
 
@@ -765,7 +708,7 @@ const actions = defineActions({
 
     if (!isEvmAccountConnected) throw new Error('Connect account in ethereum wallet');
 
-    const contractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other) as string;
+    const contractAddress = rootState.web3.ethBridgeContractAddress;
 
     const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
 
@@ -791,7 +734,7 @@ const actions = defineActions({
       asset,
       value: tx.amount,
       recipient: rootState.wallet.account.address,
-      getContractAddress: rootGetters.web3.contractAddress,
+      contractAddress,
     });
 
     checkEvmNetwork(context);

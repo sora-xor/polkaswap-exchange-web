@@ -16,10 +16,9 @@ export type BridgeState = {
   assetRecipientBalance: Nullable<CodecString>;
   assetLockedBalance: Nullable<FPNumber>;
   assetExternalMinBalance: CodecString;
+  assetInternalMinBalance: CodecString;
   incomingMinLimit: FPNumber;
   outgoingMinLimit: Nullable<FPNumber>;
-  outgoingMaxLimit: Nullable<FPNumber>;
-  outgoingMaxLimitSubscription: Nullable<Subscription>;
   blockUpdatesSubscription: Nullable<Subscription>;
   amountSend: string;
   amountReceived: string;

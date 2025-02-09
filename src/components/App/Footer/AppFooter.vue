@@ -38,7 +38,7 @@
         <span>{{ internetConnectionDesc }}</span>
       </template>
     </footer-popper>
-    <footer-popper
+    <!-- <footer-popper
       icon="software-cloud-24"
       panel-class="statistics"
       :panel-text="statisticsConnectionText"
@@ -50,13 +50,7 @@
         <span>{{ t('footer.statistics.label') }}</span>
         <span>{{ statisticsConnectionDesc }}</span>
       </template>
-    </footer-popper>
-    <div class="sora-logo">
-      <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-      <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
-        <sora-logo :theme="libraryTheme" />
-      </a>
-    </div>
+    </footer-popper> -->
     <select-node-dialog
       :connection="appConnection"
       :visibility="selectNodeDialogVisibility"
@@ -69,16 +63,16 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Status } from '@soramitsu-ui/ui-vue2/lib/types';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import SoraLogo from '@/components/shared/Logo/Sora.vue';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter, mutation } from '@/store/decorators';
 import type { Node } from '@/types/nodes';
+import { getExplorerLinks } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
 
 import { formatLocation } from '../Settings/Node/utils';
@@ -93,7 +87,6 @@ const MAX_INTERNET_CONNECTION_LIMIT = 10;
 
 @Component({
   components: {
-    SoraLogo,
     FooterPopper,
     NoInternetDialog,
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
@@ -102,13 +95,12 @@ const MAX_INTERNET_CONNECTION_LIMIT = 10;
 })
 export default class AppFooter extends Mixins(TranslationMixin) {
   // Block explorer
-  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.settings.indexerType private indexerType!: WALLET_CONSTS.IndexerType;
   @state.wallet.settings.blockNumber blockNumber!: number;
   @getter.libraryTheme libraryTheme!: Theme;
 
   get blockExplorerLink(): string | undefined {
-    const links = getExplorerLinks(this.soraNetwork);
+    const links = getExplorerLinks();
     if (!links.length) {
       return undefined;
     }
@@ -289,37 +281,6 @@ $sora-logo-width: 115px;
     height: $block-icon-size;
     width: $block-icon-size;
     margin-right: 2px;
-  }
-}
-
-.sora-logo {
-  display: flex;
-  align-items: center;
-  align-self: flex-end;
-  position: absolute;
-  right: 0;
-
-  &__title {
-    text-transform: uppercase;
-    font-weight: 200;
-    color: var(--s-color-base-content-secondary);
-    font-size: 12px;
-    line-height: 12px;
-    margin-right: $basic-spacing * 0.5;
-    margin-top: 2px;
-    white-space: nowrap;
-  }
-
-  &__image {
-    width: $sora-logo-width;
-    height: $sora-logo-height;
-    @include focus-outline;
-  }
-}
-
-@include desktop(true) {
-  .sora-logo {
-    display: none;
   }
 }
 </style>

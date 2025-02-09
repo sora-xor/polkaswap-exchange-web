@@ -1,6 +1,5 @@
 import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
 
-import INTERNAL_ABI from '@/abi/ethereum/internal/MASTER.json';
 import BRIDGE_ABI from '@/abi/ethereum/other/BRIDGE.json';
 import ERC20_ABI from '@/abi/ethereum/other/ERC20.json';
 import type { NetworkData } from '@/types/bridge';
@@ -12,23 +11,13 @@ export enum EvmLinkType {
   Transaction = 'Transaction',
 }
 
-export enum KnownEthBridgeAsset {
-  VAL = 'VAL',
-  XOR = 'XOR',
-  Other = 'OTHER',
-}
-
 export enum SmartContractType {
   EthBridge = 'ETH_BRIDGE',
   ERC20 = 'ERC20',
 }
 
 export const SmartContracts = {
-  [SmartContractType.EthBridge]: {
-    [KnownEthBridgeAsset.XOR]: INTERNAL_ABI,
-    [KnownEthBridgeAsset.VAL]: INTERNAL_ABI,
-    [KnownEthBridgeAsset.Other]: BRIDGE_ABI,
-  },
+  [SmartContractType.EthBridge]: BRIDGE_ABI,
   [SmartContractType.ERC20]: ERC20_ABI,
 };
 

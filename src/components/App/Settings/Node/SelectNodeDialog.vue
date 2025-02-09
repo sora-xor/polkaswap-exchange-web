@@ -23,7 +23,7 @@
       :handle-back="handleBack"
       :handle-node="handleNode"
       :remove-node="removeNode"
-      :show-tutorial="isSoraNetwork"
+      :show-tutorial="false"
       :disabled="!connectionAllowance"
     />
   </dialog-base>

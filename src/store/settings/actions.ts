@@ -19,15 +19,6 @@ const actions = defineActions({
     commit.setLanguage(locale);
     commit.updateIntlUtils(); // based on locale
   },
-  async fetchAdsArray(context): Promise<void> {
-    const { commit } = settingsActionContext(context);
-    try {
-      const { data } = await axiosInstance.get('/marketing.json');
-      commit.setAdsArray(data);
-    } catch {
-      commit.setAdsArray([]);
-    }
-  },
 });
 
 export default actions;

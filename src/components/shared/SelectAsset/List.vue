@@ -16,14 +16,14 @@
 
     <template #default="token">
       <div v-if="connected" class="asset__balance-container">
-        <button
+        <!-- <button
           v-if="formatBalance(token) !== FormattedZeroSymbol"
           @click.stop="togglePinnedAsset(token)"
           class="pin-button"
           :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
         >
           <pin-icon :is-pinned="isAssetPinned(token)" />
-        </button>
+        </button> -->
 
         <formatted-amount-with-fiat-value
           v-if="formatBalance(token) !== FormattedZeroSymbol"
@@ -37,7 +37,7 @@
           :fiat-font-weight-rate="FontWeightRate.MEDIUM"
         />
 
-        <span v-else class="asset__balance">
+        <!-- <span v-else class="asset__balance">
           <button
             @click.stop="togglePinnedAsset(token)"
             class="pin-button"
@@ -45,7 +45,7 @@
           >
             <pin-icon :is-pinned="isAssetPinned(token)" />
           </button>
-        </span>
+        </span> -->
       </div>
       <slot name="action" v-bind="token" />
     </template>

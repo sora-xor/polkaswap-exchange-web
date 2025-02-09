@@ -106,7 +106,13 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
               // format account address to sora format
               const { from: address } = getTransaction(id);
               const bridgeHistory = await this.getBridgeHistoryInstance();
-              const historyItem = first(await bridgeHistory.fetchHistoryElements(address as string, 0, [tx.txId]));
+              const historyItem = first(
+                await bridgeHistory.fetchHistoryElements({
+                  address: address as string,
+                  ids: [tx.txId],
+                  isOutgoing: true,
+                })
+              );
 
               if (historyItem) {
                 this.updateTransactionParams(id, {

@@ -3,9 +3,9 @@
     <info-line
       :label="t('bridge.soraNetworkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
-      :value="formatStringValue(soraNetworkFee, XOR.decimals)"
-      :asset-symbol="XOR.symbol"
-      :fiat-value="getFiatAmountByString(soraNetworkFee, XOR)"
+      :value="formatStringValue(soraNetworkFee, ANLOG.decimals)"
+      :asset-symbol="ANLOG.symbol"
+      :fiat-value="getFiatAmountByString(soraNetworkFee, ANLOG)"
       is-formatted
     />
     <info-line
@@ -38,12 +38,12 @@
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
+import { ANLOG_TIMECHAIN } from '@/consts/analog';
 import { lazyComponent } from '@/router';
 
 import type { CodecString } from '@sora-substrate/sdk';
@@ -56,7 +56,7 @@ import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/ty
   },
 })
 export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  readonly XOR = XOR;
+  readonly ANLOG = ANLOG_TIMECHAIN;
 
   @Prop({ default: () => null, type: Object }) readonly asset!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: () => null, type: Object }) readonly nativeToken!: Nullable<RegisteredAccountAsset>;

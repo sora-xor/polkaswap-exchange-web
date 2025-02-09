@@ -45,6 +45,7 @@ export default class TokenSelectButton extends Mixins(TranslationMixin) {
   @Prop({ type: String, default: '' }) readonly icon!: string;
   @Prop({ type: [Number, String], default: 0 }) readonly tabindex!: number | string;
   @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly external!: boolean;
 
   get hasToken(): boolean {
     return this.tokens.length !== 0 || !!this.token;
@@ -83,7 +84,13 @@ export default class TokenSelectButton extends Mixins(TranslationMixin) {
       return this.tokens.map((item) => item.symbol).join('-');
     }
 
-    return this.token?.symbol ?? '';
+    const symbol = this.token?.symbol ?? '';
+
+    if (this.external) {
+      return (this.token as any)?.externalSymbol ?? symbol;
+    } else {
+      return symbol;
+    }
   }
 }
 </script>
@@ -98,10 +105,6 @@ button.el-button.neumorphic#{$baseClass} {
   &.focusing,
   &.s-pressed {
     box-shadow: $button-custom-shadow;
-
-    #{$baseClass}__icon {
-      color: var(--s-color-base-content-secondary) !important;
-    }
   }
 
   &--token {
@@ -111,15 +114,6 @@ button.el-button.neumorphic#{$baseClass} {
     &.focusing,
     &.s-pressed {
       background-color: var(--s-color-utility-surface);
-      box-shadow:
-        1px 1px 5px rgba(255, 255, 255, 0.7),
-        -1px -1px 5px #ffffff,
-        0px 0px 20px rgba(247, 84, 163, 0.5);
-
-      #{$baseClass}__icon {
-        background-color: var(--s-color-base-content-secondary);
-        color: var(--s-color-utility-surface) !important;
-      }
     }
   }
 }
@@ -140,9 +134,12 @@ $baseClass: '.token-select-button';
 
   &__icon {
     margin-left: $inner-spacing-tiny;
-    background-color: var(--s-color-base-on-accent);
-    color: var(--s-color-base-content-tertiary) !important;
+    color: var(--s-color-base-on-accent) !important;
     border-radius: var(--s-border-radius-medium);
+
+    &:hover {
+      color: inherit;
+    }
   }
 
   &--token {

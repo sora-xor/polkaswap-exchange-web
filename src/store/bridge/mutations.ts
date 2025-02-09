@@ -37,26 +37,16 @@ const mutations = defineMutations<BridgeState>()({
     state.assetExternalMinBalance = balance;
   },
 
+  setInternalMinBalance(state, balance: CodecString = ZeroStringValue): void {
+    state.assetInternalMinBalance = balance;
+  },
+
   setIncomingMinLimit(state, amount: FPNumber): void {
     state.incomingMinLimit = amount;
   },
 
   setOutgoingMinLimit(state, amount: FPNumber): void {
     state.outgoingMinLimit = amount;
-  },
-
-  setOutgoingMaxLimit(state, amount: Nullable<FPNumber>): void {
-    state.outgoingMaxLimit = amount;
-  },
-
-  setOutgoingMaxLimitSubscription(state, subscription: Subscription): void {
-    state.outgoingMaxLimitSubscription = subscription;
-  },
-
-  resetOutgoingMaxLimitSubscription(state): void {
-    state.outgoingMaxLimitSubscription?.unsubscribe();
-    state.outgoingMaxLimitSubscription = null;
-    state.outgoingMaxLimit = null;
   },
 
   setBlockUpdatesSubscription(state, subscription: Subscription): void {

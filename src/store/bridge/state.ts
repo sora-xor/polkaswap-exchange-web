@@ -18,10 +18,9 @@ function initialState(): BridgeState {
     assetRecipientBalance: null, // balance for bridge network
     assetLockedBalance: null, // asset balance locked on bridge
     assetExternalMinBalance: ZeroStringValue, // min account balance should be (existential deposit)
+    assetInternalMinBalance: ZeroStringValue, // min account balance should be (existential deposit)
     incomingMinLimit: FPNumber.ZERO, // incoming min limit in asset amount
     outgoingMinLimit: null, // outgoing min limit in asset amount
-    outgoingMaxLimit: null, // outgoing max limit in asset amount
-    outgoingMaxLimitSubscription: null,
     soraNetworkFee: ZeroStringValue,
     externalTransferFee: ZeroStringValue, // fee for transfer between networks (xcm message fee for substrate network)
     externalNetworkFee: ZeroStringValue, // fee for transaction execution

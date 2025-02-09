@@ -1,30 +1,12 @@
-import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineMutations } from 'direct-vuex';
 
-import { MarketAlgorithms } from '@/consts';
 import type { Language } from '@/consts';
 import { Breakpoint, BreakpointClass } from '@/consts/layout';
-import storage, { settingsStorage } from '@/utils/storage';
+import { settingsStorage } from '@/utils/storage';
 
-import type { Ad, FeatureFlags, SettingsState } from './types';
+import type { SettingsState } from './types';
 
 const mutations = defineMutations<SettingsState>()({
-  setSlippageTolerance(state, value: string): void {
-    state.slippageTolerance = value;
-    storage.set('slippageTolerance', value);
-  },
-  /** Set market algorithm, `MarketAlgorithms.SMART` is set by default */
-  setMarketAlgorithm(state, value: MarketAlgorithms = MarketAlgorithms.SMART): void {
-    state.marketAlgorithm = value;
-    storage.set('marketAlgorithm', value);
-  },
-  setTransactionDeadline(state, value: number): void {
-    state.transactionDeadline = value;
-    storage.set('transactionDeadline', value);
-  },
-  setFaucetUrl(state, url: string): void {
-    state.faucetUrl = url;
-  },
   setSelectNodeDialogVisibility(state, value: boolean): void {
     state.selectNodeDialogVisibility = value;
   },
@@ -73,13 +55,6 @@ const mutations = defineMutations<SettingsState>()({
       state.percentFormat = null;
     }
   },
-  setFeatureFlags(state, featureFlags: FeatureFlags = {}): void {
-    state.featureFlags = { ...state.featureFlags, ...featureFlags };
-    // Enable ALT mechanism for swaps
-    if (state.featureFlags.alt) {
-      api.swap.isALT = true;
-    }
-  },
   setMenuCollapsed(state, collapsed: boolean): void {
     state.menuCollapsed = collapsed;
   },
@@ -113,9 +88,6 @@ const mutations = defineMutations<SettingsState>()({
     if (newClass !== state.screenBreakpointClass) {
       state.screenBreakpointClass = newClass;
     }
-  },
-  setAdsArray(state, arr: Array<Ad>): void {
-    state.adsArray = arr;
   },
   enableTMA(state): void {
     state.isTMA = true;

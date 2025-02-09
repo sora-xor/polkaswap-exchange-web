@@ -51,8 +51,9 @@
       </s-button>
       <token-select-button
         v-if="token || isSelectAvailable"
-        icon="chevron-down-rounded-16"
+        icon="arrows-chevron-down-rounded-24"
         :disabled="!isSelectAvailable"
+        :external="external"
         :token="token"
         @click.stop="handleSelectToken"
       />
@@ -90,19 +91,6 @@
             class="input-value"
           />
         </div>
-
-        <div v-if="withSlider" class="input-line--footer-with-slider">
-          <div class="delimiter" />
-          <s-slider
-            class="slider-container"
-            :value="slideValue"
-            :disabled="!withSlider || disabled"
-            :show-tooltip="false"
-            :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
-            @input="handleSlideInputChange"
-            @mousedown.native="handleSlideClick"
-          />
-        </div>
       </slot>
 
       <slot />
@@ -118,7 +106,7 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, mutation } from '@/store/decorators';
+import { getter } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -141,8 +129,6 @@ export default class TokenInput extends Mixins(
   @getter.wallet.settings.currencySymbol currencySymbol!: string;
   @getter.wallet.settings.exchangeRate exchangeRate!: number;
 
-  @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
-
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   @Prop({ type: String }) readonly value!: string;
@@ -156,9 +142,7 @@ export default class TokenInput extends Mixins(
   @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly withSlider!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isFiatEditable!: boolean;
-  @Prop({ default: 0, type: Number }) readonly sliderValue!: number;
   @Prop({ default: 2, type: Number }) readonly fiatDecimals!: number;
   @Prop({ default: false, type: Boolean }) readonly withAddress!: number;
 
@@ -202,14 +186,6 @@ export default class TokenInput extends Mixins(
 
   handleFiatBlur(): void {
     this.fiatFocus = false;
-  }
-
-  get slideValue(): number {
-    return this.sliderValue;
-  }
-
-  set slideValue(value: number) {
-    this.setAmountSliderValue(value);
   }
 
   get isBalanceAvailable(): boolean {
@@ -337,6 +313,7 @@ $el-input-class: '.el-input';
     padding: 0;
     min-height: initial;
     box-shadow: none !important;
+    background: none !important;
     border-radius: 0;
 
     & > .s-input__content {

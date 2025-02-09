@@ -25,7 +25,7 @@
 
   <s-button
     v-else
-    class="account-panel-button s-typography-button--large"
+    class="account-panel-button s-typography-button--medium"
     data-test-name="connectPolkadot"
     type="primary"
     @click="handleConnect"

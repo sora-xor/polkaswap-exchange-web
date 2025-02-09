@@ -25,8 +25,4 @@ export default class InternalConnectMixin extends Mixins(TranslationMixin) {
   public disconnectSoraWallet(): void {
     this.logout();
   }
-
-  public navigateToWallet(): void {
-    goTo(PageNames.Wallet);
-  }
 }

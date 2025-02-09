@@ -4,6 +4,7 @@
       <s-button
         class="el-button--history"
         type="action"
+        alternative
         icon="time-time-history-24"
         :tooltip="t('bridgeHistory.showHistory')"
         tooltip-placement="bottom-end"
@@ -19,7 +20,7 @@
             class="info-line-value"
             value-can-be-hidden
             :value="formattedAmount"
-            :asset-symbol="assetSymbol"
+            :asset-symbol="symbolSent"
           >
             <i :class="`network-icon network-icon--${getNetworkIcon(isOutgoing ? 0 : externalNetworkId)}`" />
           </formatted-amount>
@@ -28,7 +29,7 @@
             class="info-line-value"
             value-can-be-hidden
             :value="formattedAmountReceived"
-            :asset-symbol="assetSymbol"
+            :asset-symbol="symbolReceived"
           >
             <i :class="`network-icon network-icon--${getNetworkIcon(isOutgoing ? externalNetworkId : 0)}`" />
           </formatted-amount>
@@ -60,7 +61,7 @@
         value-can-be-hidden
         :label="t('bridgeTransaction.networkInfo.amount')"
         :value="formattedAmount"
-        :asset-symbol="assetSymbol"
+        :asset-symbol="symbolSent"
         :fiat-value="amountFiatValue"
       />
       <info-line
@@ -69,14 +70,14 @@
         value-can-be-hidden
         :label="t('receivedText')"
         :value="formattedAmountReceived"
-        :asset-symbol="assetSymbol"
+        :asset-symbol="symbolReceived"
         :fiat-value="amountReceivedFiatValue"
       />
       <info-line
         is-formatted
         :label="getNetworkText(t('bridgeTransaction.networkInfo.transactionFee'))"
         :value="txSoraNetworkFeeFormatted"
-        :asset-symbol="KnownSymbols.XOR"
+        :asset-symbol="ANLOG.symbol"
         :fiat-value="txSoraNetworkFeeFiatValue"
       />
       <info-line
@@ -147,7 +148,7 @@
             t('insufficientBalanceText', { tokenSymbol: assetSymbol })
           }}</template>
           <template v-else-if="isInsufficientXorForFee">{{
-            t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR })
+            t('insufficientBalanceText', { tokenSymbol: ANLOG.symbol })
           }}</template>
           <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
             t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol })
@@ -167,14 +168,13 @@
         </div>
       </template>
     </div>
-    <s-button v-if="txIsFinilized" class="s-typography-button--large" type="secondary" @click="navigateToBridge">
+    <s-button v-if="txIsFinilized" class="s-typography-button--medium" type="secondary" @click="navigateToBridge">
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
   </div>
 </template>
 
 <script lang="ts">
-import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
@@ -183,6 +183,7 @@ import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
+import { ANLOG_TIMECHAIN } from '@/consts/analog';
 import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientNativeTokenForFee } from '@/utils';
@@ -219,7 +220,7 @@ export default class BridgeTransaction extends Mixins(
   BridgeTransactionMixin,
   NetworkFormatterMixin
 ) {
-  readonly KnownSymbols = KnownSymbols;
+  readonly ANLOG = ANLOG_TIMECHAIN;
 
   @state.bridge.externalBlockNumber private externalBlockNumber!: number;
   @state.bridge.waitingForApprove private waitingForApprove!: Record<string, boolean>;
@@ -288,6 +289,18 @@ export default class BridgeTransaction extends Mixins(
 
   get assetSymbol(): string {
     return this.asset?.symbol ?? '';
+  }
+
+  get assetSymbol2(): string {
+    return (this.asset as any)?.externalSymbol ?? this.assetSymbol;
+  }
+
+  get symbolSent(): string {
+    return this.isOutgoing ? this.assetSymbol : this.assetSymbol2;
+  }
+
+  get symbolReceived(): string {
+    return this.isOutgoing ? this.assetSymbol2 : this.assetSymbol;
   }
 
   get parachainNetworkId(): Nullable<SubNetwork> {
@@ -434,7 +447,8 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isInsufficientXorForFee(): boolean {
-    return this.txIsUnsigned && hasInsufficientXorForFee(this.xor, this.txSoraNetworkFee);
+    // [HARDCODE] xor -> asset
+    return this.txIsUnsigned && hasInsufficientXorForFee(this.asset, this.txSoraNetworkFee);
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
@@ -589,7 +603,7 @@ export default class BridgeTransaction extends Mixins(
 <style lang="scss">
 $header-icon-size: 52px;
 $header-spinner-size: 62px;
-$header-font-size: var(--s-heading3-font-size);
+$header-font-size: var(--s-heading4-font-size);
 
 .transaction {
   &-container {
@@ -696,7 +710,7 @@ $network-title-max-width: 250px;
     }
   }
   &-content .el-button,
-  &-container .s-typography-button--large {
+  &-container .s-typography-button--medium {
     width: 100%;
     margin-top: $inner-spacing-medium;
   }
@@ -772,6 +786,7 @@ $network-title-max-width: 250px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: baseline;
     margin-bottom: $inner-spacing-mini;
     font-weight: 700;
     line-height: var(--s-line-height-medium);
@@ -781,8 +796,9 @@ $network-title-max-width: 250px;
     &-separator {
       margin-right: $inner-spacing-tiny;
       margin-left: $inner-spacing-tiny;
-      font-size: var(--s-heading3-font-size);
+      font-size: var(--s-heading4-font-size);
       font-weight: 300;
+      color: var(--s-color-base-content-secondary);
     }
   }
 }

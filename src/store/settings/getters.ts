@@ -1,51 +1,13 @@
 import { defineGetters } from 'direct-vuex';
 
-import { LiquiditySourceForMarketAlgorithm } from '@/consts';
 import { settingsGetterContext } from '@/store/settings';
 
 import type { SettingsState } from './types';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 const getters = defineGetters<SettingsState>()({
   nodeIsConnected(...args): boolean {
     const { state } = settingsGetterContext(args);
     return state.appConnection.nodeIsConnected;
-  },
-  liquiditySource(...args): LiquiditySourceTypes {
-    const { state } = settingsGetterContext(args);
-    return LiquiditySourceForMarketAlgorithm[state.marketAlgorithm];
-  },
-  moonpayApiKey(...args): string {
-    const { rootState } = settingsGetterContext(args);
-    return rootState.wallet.settings.apiKeys.moonpay;
-  },
-  moonpayEnabled(...args): boolean {
-    const { state, getters } = settingsGetterContext(args);
-    return !!getters.moonpayApiKey && !!state.featureFlags.moonpay;
-  },
-  soraCardEnabled(...args): Nullable<boolean> {
-    const { state } = settingsGetterContext(args);
-    return state.featureFlags.soraCard;
-  },
-  orderBookEnabled(...args): Nullable<boolean> {
-    const { state } = settingsGetterContext(args);
-    return state.featureFlags.orderBook;
-  },
-  kensetsuEnabled(...args): Nullable<boolean> {
-    const { state } = settingsGetterContext(args);
-    return state.featureFlags.kensetsu;
-  },
-  assetOwnerEnabled(...args): Nullable<boolean> {
-    const { state } = settingsGetterContext(args);
-    return state.featureFlags.assetOwner;
-  },
-  debugEnabled(...args): Nullable<boolean> {
-    const { state } = settingsGetterContext(args);
-    return !!state.featureFlags.debug;
-  },
-  pointSystemV2(...args): Nullable<boolean> {
-    const { state } = settingsGetterContext(args);
-    return state.featureFlags.pointSystemV2;
   },
   notificationActivated(...args): boolean {
     const { state } = settingsGetterContext(args);

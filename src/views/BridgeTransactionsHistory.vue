@@ -3,13 +3,15 @@
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header :title="t('bridgeHistory.title')">
         <template #back>
-          <s-button type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
+          <s-button type="action" alternative icon="arrows-chevron-left-rounded-24" @click="handleBack" />
         </template>
 
         <div class="history-header-buttons">
           <s-button
             :class="['history-restore-btn', { loading: networkHistoryLoading }]"
             type="action"
+            size="small"
+            alternative
             icon="arrows-swap-90-24"
             :disabled="networkHistoryLoading"
             :tooltip="t('bridgeHistory.restoreHistory')"
@@ -43,7 +45,7 @@
                   <formatted-amount
                     value-can-be-hidden
                     :value="formatAmount(item, false)"
-                    :asset-symbol="item.symbol"
+                    :asset-symbol="formatSymbol(item, !isOutgoingTx(item))"
                   />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
@@ -51,7 +53,11 @@
                     )}`"
                   />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
-                  <formatted-amount value-can-be-hidden :value="formatAmount(item, true)" :asset-symbol="item.symbol" />
+                  <formatted-amount
+                    value-can-be-hidden
+                    :value="formatAmount(item, true)"
+                    :asset-symbol="formatSymbol(item, isOutgoingTx(item))"
+                  />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
                       !isOutgoingTx(item) ? 0 : item.externalNetwork
@@ -98,6 +104,7 @@ import type { IBridgeTransaction } from '@sora-substrate/sdk';
 const SearchAttrs = [
   'assetAddress',
   'symbol',
+  'symbol2',
   'hash',
   'blockId',
   'txId',
@@ -189,6 +196,12 @@ export default class BridgeTransactionsHistory extends Mixins(
 
       return criterias.some((criteria) => String(criteria).toLowerCase().includes(query));
     });
+  }
+
+  formatSymbol(item: IBridgeTransaction, received = false): string {
+    const symbol = received ? (item.symbol2 ?? item.symbol) : item.symbol;
+
+    return symbol;
   }
 
   formatAmount(item: IBridgeTransaction, received = false): string {
@@ -329,7 +342,6 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   &-container {
     flex-direction: column;
     align-items: center;
-    margin-top: $inner-spacing-large;
     margin-right: auto;
     margin-left: auto;
   }

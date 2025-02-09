@@ -1,18 +1,16 @@
-# polkaswap-exchange-web
+# analog-bridge-frontend
 
 ## Project deploy info
-There is `public/env.json` file which contains `BASE_API_URL` and `DEFAULT_NETWORKS` variables.
-
-`BASE_API_URL` will be used for the address of the current stand.
+There is `public/env.json` file which contains `DEFAULT_NETWORKS` variables.
 
 `DEFAULT_NETWORKS` variable has the following format:
 
 ```
 "DEFAULT_NETWORKS": [
     {
-        "chain": "SORA-staging Testnet",
-        "name": "SORA",
-        "address": "wss://ws.stage.sora2.soramitsu.co.jp"
+        "chain": "Analog Timechain",
+        "name": "Analog",
+        "address": "wss://rpc-sora.development.analog.one"
     }
 ]
 ```
@@ -21,9 +19,9 @@ There is `public/env.json` file which contains `BASE_API_URL` and `DEFAULT_NETWO
 `"name"` is used as the node name.
 `"address"` is used for the address of the node to which the frontend project will be connected.
 
-`DEFAULT_NETWORKS[0]` must be a Soramitsu trusted node. App used it's `genesisHash` to check custom user node for connection
+`DEFAULT_NETWORKS[0]` must be a trusted node. App used it's `genesisHash` to check custom user node for connection
 
-`CHAIN_GENESIS_HASH` should be defined for 'prod' & 'stage' environments, to not polling nodes for getting it (because genesis hash for these env's not changing).
+`CHAIN_GENESIS_HASH` should be defined for 'prod' environments, to not polling nodes for getting it (because genesis hash for these env's not changing).
 
 ## Project setup
 ```

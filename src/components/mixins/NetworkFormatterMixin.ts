@@ -91,8 +91,8 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
   }
 
   formatSelectedNetwork(isSora: boolean): string {
-    if (isSora && this.soraNetwork) {
-      return this.TranslationConsts.soraNetwork[this.soraNetwork];
+    if (isSora) {
+      return 'Analog Timechain';
     }
 
     return this.selectedNetworkName;
@@ -118,7 +118,7 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
     switch (network) {
       // special case
       case 0:
-        return 'sora';
+        return 'analog';
       // evm
       case EvmNetworkId.BinanceSmartChainMainnet:
       case EvmNetworkId.BinanceSmartChainTestnet:
@@ -135,6 +135,9 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
       case EvmNetworkId.EthereumClassicMainnet:
       case EvmNetworkId.EthereumClassicTestnetMordor:
         return 'ethereum-classic';
+      case EvmNetworkId.ArbitrumMainnet:
+      case EvmNetworkId.ArbitrumGoerliTestnet:
+        return 'arbitrum';
       // sub
       case SubNetworkId.Polkadot:
         return 'polkadot';

@@ -9,12 +9,14 @@
         size="big"
         primary
       >
-        <generic-page-header class="header--bridge" :title="t('hashiBridgeText')" :tooltip="t('bridge.info')">
+        <generic-page-header class="header--bridge" :title="t('bridgeText')">
           <div class="bridge-header-buttons">
             <s-button
               v-if="isLoggedIn"
               class="history-button"
               type="action"
+              alternative
+              size="small"
               icon="time-time-history-24"
               :tooltip="t('bridgeHistory.showHistory')"
               tooltip-placement="bottom-end"
@@ -54,6 +56,11 @@
               :connection="subConnection"
               @click="handleChangeSubNode"
             />
+            <!-- <bridge-node-icon
+              v-else-if="!isSubBridge && isSoraToEvm"
+              :connection="appConnection"
+              @click="handleChangeAppNode"
+            /> -->
           </template>
 
           <bridge-account-panel
@@ -67,14 +74,16 @@
           />
         </token-input>
 
-        <s-button
-          class="s-button--switch"
-          data-test-name="switchToken"
-          type="action"
-          icon="arrows-swap-90-24"
-          :disabled="isConfirmTxLoading"
-          @click="switchDirection"
-        />
+        <div class="switch-block">
+          <s-button
+            class="s-button--switch"
+            data-test-name="switchToken"
+            type="action"
+            icon="arrows-swap-90-24"
+            :disabled="isConfirmTxLoading"
+            @click="switchDirection"
+          />
+        </div>
 
         <token-input
           id="bridgeTo"
@@ -100,6 +109,11 @@
               :connection="subConnection"
               @click="handleChangeSubNode"
             />
+            <!-- <bridge-node-icon
+              v-if="!isSubBridge && !isSoraToEvm"
+              :connection="appConnection"
+              @click="handleChangeAppNode"
+            /> -->
           </template>
 
           <bridge-account-panel
@@ -124,7 +138,7 @@
 
         <template v-else-if="areAccountsConnected">
           <s-button
-            class="el-button--next s-typography-button--large"
+            class="el-button--next s-typography-button--medium"
             data-test-name="nextButton"
             type="primary"
             :disabled="isTxConfirmDisabled"
@@ -147,7 +161,7 @@
               {{ t('insufficientBalanceText', { tokenSymbol: assetSymbol }) }}
             </template>
             <template v-else-if="isInsufficientXorForFee">
-              {{ t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR }) }}
+              {{ t('insufficientBalanceText', { tokenSymbol: ANLOG.symbol }) }}
             </template>
             <template v-else-if="isInsufficientNativeTokenForFee">
               {{ t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol }) }}
@@ -186,7 +200,7 @@
       </s-card>
     </s-form>
 
-    <div v-if="!areAccountsConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
+    <!-- <div v-if="!areAccountsConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div> -->
 
     <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
     <bridge-select-sub-account />
@@ -228,8 +242,7 @@
 
 <script lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -238,6 +251,7 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import { Components, PageNames } from '@/consts';
+import { ANLOG_TIMECHAIN } from '@/consts/analog';
 import router, { lazyComponent } from '@/router';
 import { FocusedField } from '@/store/bridge/types';
 import { getter, action, mutation, state } from '@/store/decorators';
@@ -269,12 +283,7 @@ import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/ty
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenInput: lazyComponent(Components.TokenInput),
-    FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    InfoLine: components.InfoLine,
-    TokenAddress: components.TokenAddress,
   },
 })
 export default class Bridge extends Mixins(
@@ -286,9 +295,10 @@ export default class Bridge extends Mixins(
   NetworkFeeDialogMixin,
   TokenSelectMixin
 ) {
-  readonly KnownSymbols = KnownSymbols;
+  readonly ANLOG = ANLOG_TIMECHAIN;
   readonly FocusedField = FocusedField;
 
+  @state.settings.appConnection appConnection!: NodesConnection;
   @state.bridge.subBridgeConnector private subBridgeConnector!: SubNetworksConnector;
   @state.bridge.balancesFetching private balancesFetching!: boolean;
   @state.bridge.feesAndLockedFundsFetching private feesAndLockedFundsFetching!: boolean;
@@ -324,6 +334,8 @@ export default class Bridge extends Mixins(
   // Sub Node Select
   @state.web3.selectSubNodeDialogVisibility selectSubNodeDialogVisibility!: boolean;
   @mutation.web3.setSelectSubNodeDialogVisibility private setSelectSubNodeDialogVisibility!: (flag: boolean) => void;
+  // App Node Select
+  @mutation.settings.setSelectNodeDialogVisibility private setSelectNodeDialogVisibility!: (flag: boolean) => void;
 
   get subConnection(): Nullable<NodesConnection> {
     if (!this.isSubBridge) return null;
@@ -391,8 +403,10 @@ export default class Bridge extends Mixins(
     if (!(this.asset && this.isRegisteredAsset && this.areAccountsConnected)) return FPNumber.ZERO;
 
     const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
+    const minBalance = this.isSoraToEvm
+      ? FPNumber.fromCodecValue(this.assetInternalMinBalance, this.asset.decimals)
+      : FPNumber.fromCodecValue(this.assetExternalMinBalance, this.asset.externalDecimals);
 
-    const minBalance = FPNumber.fromCodecValue(this.assetExternalMinBalance, this.asset.externalDecimals);
     const maxBalance = getMaxBalance(this.asset, fee, {
       isExternalBalance: !this.isSoraToEvm,
       isExternalNative: this.isNativeTokenSelected,
@@ -425,7 +439,8 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.xor, this.soraNetworkFee);
+    // [HARDCODE] xor -> asset
+    return hasInsufficientXorForFee(this.asset, this.soraNetworkFee);
   }
 
   get isInsufficientNativeTokenForFee(): boolean {
@@ -447,7 +462,7 @@ export default class Bridge extends Mixins(
   }
 
   get formattedSoraNetworkFee(): string {
-    return this.getStringFromCodec(this.soraNetworkFee);
+    return this.getStringFromCodec(this.soraNetworkFee, this.asset?.decimals);
   }
 
   get formattedExternalNetworkFee(): string {
@@ -488,15 +503,15 @@ export default class Bridge extends Mixins(
     );
   }
 
-  get isXorSufficientForNextOperation(): boolean {
-    if (!this.asset) return false;
+  // get isXorSufficientForNextOperation(): boolean {
+  //   if (!this.asset) return false;
 
-    return this.isXorSufficientForNextTx({
-      type: this.operation,
-      isXor: isXorAccountAsset(this.asset),
-      amount: this.getFPNumber(this.amountSend),
-    });
-  }
+  //   return this.isXorSufficientForNextTx({
+  //     type: this.operation,
+  //     isXor: isXorAccountAsset(this.asset),
+  //     amount: this.getFPNumber(this.amountSend),
+  //   });
+  // }
 
   get isNativeTokenSufficientForNextOperation(): boolean {
     if (!this.asset || this.isZeroAmountSend) return false;
@@ -565,27 +580,31 @@ export default class Bridge extends Mixins(
   }
 
   async handleConfirmButtonClick(): Promise<void> {
-    // XOR check
-    if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
-      this.openWarningFeeDialog();
-      await this.waitOnFeeWarningConfirmation();
-      if (!this.isWarningFeeDialogConfirmed) {
-        return;
-      }
-      this.isWarningFeeDialogConfirmed = false;
-    }
+    // Own native check
+    // if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
+    //   this.openWarningFeeDialog();
+    //   await this.waitOnFeeWarningConfirmation();
+    //   if (!this.isWarningFeeDialogConfirmed) {
+    //     return;
+    //   }
+    //   this.isWarningFeeDialogConfirmed = false;
+    // }
 
     // Native token check
-    if (this.allowFeePopup && !this.isNativeTokenSufficientForNextOperation) {
-      this.openWarningExternalFeeDialog();
-      await this.waitOnExternalFeeWarningConfirmation();
-      if (!this.isWarningExternalFeeDialogConfirmed) {
-        return;
-      }
-      this.isWarningExternalFeeDialogConfirmed = false;
-    }
+    // if (this.allowFeePopup && !this.isNativeTokenSufficientForNextOperation) {
+    //   this.openWarningExternalFeeDialog();
+    //   await this.waitOnExternalFeeWarningConfirmation();
+    //   if (!this.isWarningExternalFeeDialogConfirmed) {
+    //     return;
+    //   }
+    //   this.isWarningExternalFeeDialogConfirmed = false;
+    // }
 
     this.confirmOrExecute(this.confirmTransaction);
+  }
+
+  handleChangeAppNode(): void {
+    this.setSelectNodeDialogVisibility(true);
   }
 
   handleChangeSubNode(): void {
@@ -613,9 +632,9 @@ export default class Bridge extends Mixins(
     const { assetAddress, id } = await this.generateHistoryItem();
 
     // Add asset to account assets for balances subscriptions
-    if (assetAddress && !this.accountAssetsAddressTable[assetAddress]) {
-      await this.addAssetToAccountAssets(assetAddress);
-    }
+    // if (assetAddress && !this.accountAssetsAddressTable[assetAddress]) {
+    //   await this.addAssetToAccountAssets(assetAddress);
+    // }
 
     this.setHistoryId(id);
 
@@ -658,10 +677,14 @@ export default class Bridge extends Mixins(
 
 <style lang="scss">
 .bridge {
-  &-content > .el-card__body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  &-content {
+    background: var(--analog-background-surface) !important;
+
+    > .el-card__body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   }
 
   &-form {
@@ -677,6 +700,35 @@ export default class Bridge extends Mixins(
   }
   100% {
     box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+}
+
+.switch-block {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    width: calc((100% - var(--s-size-medium)) / 2);
+    height: 1px;
+    background-color: var(--s-color-base-border-primary);
+  }
+  &::before {
+    left: 0;
+  }
+  &::after {
+    right: 0;
+  }
+
+  .s-button--switch {
+    border: 1px solid var(--s-color-base-border-primary) !important;
   }
 }
 
@@ -709,7 +761,7 @@ export default class Bridge extends Mixins(
 
   &-content {
     @include bridge-content;
-    @include vertical-divider('s-button--switch', $inner-spacing-medium);
+    @include vertical-divider('switch-block', $inner-spacing-medium);
     @include vertical-divider('s-divider-tertiary');
     @include buttons;
     @include full-width-button('el-button--next');

@@ -33,8 +33,10 @@ $base-class: '.status-action-badge';
   font-weight: 300;
   text-transform: uppercase;
   overflow: unset;
+  background: transparent;
   box-shadow: var(--s-shadow-element);
   max-width: $max-width;
+  border: 1px solid var(--s-color-base-border-primary);
 
   #{$base-class}__label {
     margin-right: $inner-spacing-tiny;
@@ -51,7 +53,6 @@ $base-class: '.status-action-badge';
     right: 0;
     top: 50%;
     transform: translate(0, -50%);
-    background-color: var(--s-color-utility-body);
     border-radius: 50%;
   }
 }

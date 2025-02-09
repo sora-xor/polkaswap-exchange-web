@@ -2,6 +2,7 @@ import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts'
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { defineActions } from 'direct-vuex';
 
+import { ANLOG_TIMECHAIN, ANLOG_ETHEREUM, ETH_TIMECHAIN } from '@/consts/analog';
 import { assetsActionContext } from '@/store/assets';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
@@ -14,9 +15,10 @@ import type { SubNetwork, SubAssetId } from '@sora-substrate/sdk/build/bridgePro
 import type { ActionContext } from 'vuex';
 
 async function updateEthAssetsData(context: ActionContext<any, any>): Promise<void> {
-  const { state, commit, rootDispatch, rootGetters } = assetsActionContext(context);
+  const { state, commit, rootGetters, rootState } = assetsActionContext(context);
   const { registeredAssets } = state;
   const { isValidNetwork } = rootGetters.web3;
+  const { ethBridgeNetwork } = rootState.web3;
 
   if (!isValidNetwork) return;
 
@@ -24,7 +26,9 @@ async function updateEthAssetsData(context: ActionContext<any, any>): Promise<vo
     Object.entries(registeredAssets).map(async ([soraAddress, assetData]) => {
       const asset = { ...assetData };
       if (!asset.address) {
-        asset.address = await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress);
+        asset.address = (
+          await ethBridgeApi.api.query.ethBridge.registeredSidechainToken(ethBridgeNetwork, soraAddress)
+        ).toString();
         asset.decimals = await ethersUtil.getTokenDecimals(asset.address);
       }
       return [soraAddress, asset];
@@ -36,19 +40,18 @@ async function updateEthAssetsData(context: ActionContext<any, any>): Promise<vo
   commit.setRegisteredAssets(assets);
 }
 
-async function getEthRegisteredAssets(): Promise<Record<string, BridgeRegisteredAsset>[]> {
-  const networkAssets = await ethBridgeApi.getRegisteredAssets();
-  const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
-    return {
-      [soraAddress]: {
-        address: assetData.address,
-        decimals: assetData.decimals ?? 18,
-        kind: assetData.assetKind,
-      },
-    };
-  });
+async function getEthRegisteredAssets(
+  context: ActionContext<any, any>
+): Promise<Record<string, BridgeRegisteredAsset>[]> {
+  const { rootCommit } = assetsActionContext(context);
 
-  return registeredAssets;
+  rootCommit.wallet.account.setAssets([ANLOG_TIMECHAIN, ETH_TIMECHAIN]);
+
+  return [
+    {
+      [ANLOG_TIMECHAIN.address]: ANLOG_ETHEREUM,
+    },
+  ];
 }
 
 async function getEvmRegisteredAssets(
@@ -140,7 +143,7 @@ async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Re
 
   switch (rootState.web3.networkType) {
     case BridgeNetworkType.Eth: {
-      return await getEthRegisteredAssets();
+      return await getEthRegisteredAssets(context);
     }
     case BridgeNetworkType.Evm: {
       return await getEvmRegisteredAssets(context);

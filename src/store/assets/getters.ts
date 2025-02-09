@@ -1,8 +1,8 @@
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
 
 import { ZeroStringValue } from '@/consts';
+import { ANLOG_TIMECHAIN } from '@/consts/analog';
 import { assetsGetterContext } from '@/store/assets';
 
 import type { AssetsState } from './types';
@@ -16,12 +16,14 @@ const getters = defineGetters<AssetsState>()({
     );
   },
   assetDataByAddress(...args): (address?: Nullable<string>) => Nullable<RegisteredAccountAsset> {
-    const { state, rootGetters } = assetsGetterContext(args);
+    const { state, rootGetters, rootState } = assetsGetterContext(args);
 
     return (address?: Nullable<string>): Nullable<RegisteredAccountAsset> => {
       if (!address) return undefined;
-
-      const asset = rootGetters.wallet.account.assetsDataTable[address];
+      // chain hasn't address
+      const asset = rootState.wallet.account.assets.find(
+        (asset) => asset.address === address || asset.symbol === address
+      );
 
       if (!asset) return null;
 
@@ -40,7 +42,7 @@ const getters = defineGetters<AssetsState>()({
   },
   xor(...args): Nullable<RegisteredAccountAsset> {
     const { getters } = assetsGetterContext(args);
-    return getters.assetDataByAddress(XOR.address);
+    return getters.assetDataByAddress(ANLOG_TIMECHAIN.address);
   },
 });
 
