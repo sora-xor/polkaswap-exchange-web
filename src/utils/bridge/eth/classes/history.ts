@@ -266,10 +266,24 @@ export class EthBridgeHistory {
     return tx;
   }
 
-  public async fetchHistoryElements(address: string, timestamp = 0, ids?: string[]): Promise<HistoryElement[]> {
+  public async fetchHistoryElements({
+    address,
+    timestamp = 0,
+    ids,
+    isOutgoing = true,
+  }: {
+    address: string;
+    timestamp?: number;
+    ids?: string[];
+    isOutgoing?: boolean;
+  }): Promise<HistoryElement[]> {
     const indexer = getCurrentIndexer();
     const operations = [Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming];
-    const filter = indexer.historyElementsFilter({ address, operations, timestamp, ids });
+    const filterCommonOptions = { operations, timestamp, ids };
+    const filterOptions = isOutgoing
+      ? { address, ...filterCommonOptions }
+      : { ...filterCommonOptions, query: { accountAddress: address } };
+    const filter = indexer.historyElementsFilter(filterOptions);
     const history: HistoryElement[] = [];
 
     let hasNext = true;
@@ -307,7 +321,11 @@ export class EthBridgeHistory {
     assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>,
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
-    const historyElements = await this.fetchHistoryElements(address, this.historySyncTimestamp);
+    const filter = { address, timestamp: this.historySyncTimestamp };
+    const outgoing = await this.fetchHistoryElements({ ...filter, isOutgoing: true });
+    const incoming = await this.fetchHistoryElements({ ...filter, isOutgoing: false });
+
+    const historyElements = [...outgoing, ...incoming];
 
     if (!historyElements.length) return;
 
