@@ -1,0 +1,1 @@
+import{c as n}from"./index-FQSVVDWu.js";var s=(r=>(r.Success="success",r.Warning="warning",r.Error="error",r))(s||{});const u=(r,e)=>r.isZero()||e.isZero()?n.FPNumber.ZERO:e.sub(r).div(r).mul(n.FPNumber.HUNDRED),t=r=>r>0?"success":r<-10?"error":r<-1?"warning":"";export{s as D,u as c,t as g};
