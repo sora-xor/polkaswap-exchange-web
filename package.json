@@ -1,6 +1,6 @@
 {
   "name": "polkaswap-exchange-web",
-  "version": "1.44.2",
+  "version": "1.44.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
@@ -104,5 +104,6 @@
       "eslint --fix",
       "git add"
     ]
-  }
+  },
+  "packageManager": "yarn@1.22.22"
 }
