@@ -1,7 +1,7 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber } from '@sora-substrate/sdk';
 import { getAssetBalance } from '@sora-substrate/sdk/build/assets';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, XOR, TBCD } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { DexId } from '@sora-substrate/sdk/build/dex/consts';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
@@ -41,6 +41,12 @@ import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
+
+const DenominatedAssets = [XOR.address, TBCD.address];
+
+const isDenominatedAsset = (assetId: string): boolean => {
+  return DenominatedAssets.includes(assetId);
+};
 
 const getSoraBalance = async (accountAddress: string, asset: RegisteredAccountAsset): Promise<CodecString> => {
   const accountBalance = await getAssetBalance(api.api, accountAddress, asset.address, asset.decimals);
@@ -432,7 +438,7 @@ async function updateBalancesFeesAndAmounts(context: ActionContext<any, any>): P
 
 const actions = defineActions({
   setSendedAmount(context, value?: string) {
-    const { commit, state, getters } = bridgeActionContext(context);
+    const { commit, state, getters, rootState } = bridgeActionContext(context);
 
     commit.setFocusedField(FocusedField.Sended);
     commit.setAmountSend(value);
@@ -441,7 +447,16 @@ const actions = defineActions({
       const sended = new FPNumber(value);
       const fee = FPNumber.fromCodecValue(state.externalTransferFee, getters.asset?.externalDecimals);
       const expected = sended.sub(fee);
-      const received = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+      let received = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+
+      if (getters.isEthBridge && isDenominatedAsset(state.assetAddress)) {
+        const denominator = rootState.web3.denominator;
+        if (state.isSoraToEvm) {
+          received = received.div(denominator);
+        } else {
+          received = received.mul(denominator);
+        }
+      }
 
       commit.setAmountReceived(received.toString());
     } else {
@@ -450,7 +465,7 @@ const actions = defineActions({
   },
 
   setReceivedAmount(context, value?: string) {
-    const { commit, state, getters } = bridgeActionContext(context);
+    const { commit, state, getters, rootState } = bridgeActionContext(context);
 
     commit.setFocusedField(FocusedField.Received);
     commit.setAmountReceived(value);
@@ -459,7 +474,16 @@ const actions = defineActions({
       const received = new FPNumber(value);
       const fee = FPNumber.fromCodecValue(state.externalTransferFee, getters.asset?.externalDecimals);
       const expected = received.add(fee);
-      const sended = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+      let sended = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+
+      if (getters.isEthBridge && isDenominatedAsset(state.assetAddress)) {
+        const denominator = rootState.web3.denominator;
+        if (state.isSoraToEvm) {
+          sended = sended.mul(denominator);
+        } else {
+          sended = sended.div(denominator);
+        }
+      }
 
       commit.setAmountSend(sended.toString());
     } else {
