@@ -568,9 +568,7 @@ export default class Bridge extends Mixins(
   }
 
   async handleConfirmButtonClick(): Promise<void> {
-    console.info('we are in handleConfirmButtonClick');
     if (this.isMST) {
-      console.info('we are in mst');
       this.showMSTWarning = true;
       return;
     }

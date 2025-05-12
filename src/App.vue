@@ -225,7 +225,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @Watch('pendingMstTransactions.length', { immediate: true })
   onPendingMstTransactionsChange(newLength: number): void {
-    console.info('we are in polkaswap thing Pending MST transactions length:', newLength);
     if (newLength > 0 && this.isMSTAvailable) {
       this.showNotificationMST = true;
     }
