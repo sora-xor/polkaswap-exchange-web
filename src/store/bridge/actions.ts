@@ -452,9 +452,9 @@ const actions = defineActions({
       if (getters.isEthBridge && isDenominatedAsset(state.assetAddress)) {
         const denominator = rootState.web3.denominator;
         if (state.isSoraToEvm) {
-          received = received.div(denominator);
-        } else {
           received = received.mul(denominator);
+        } else {
+          received = received.div(denominator);
         }
       }
 
@@ -479,9 +479,9 @@ const actions = defineActions({
       if (getters.isEthBridge && isDenominatedAsset(state.assetAddress)) {
         const denominator = rootState.web3.denominator;
         if (state.isSoraToEvm) {
-          sended = sended.mul(denominator);
-        } else {
           sended = sended.div(denominator);
+        } else {
+          sended = sended.mul(denominator);
         }
       }
 
