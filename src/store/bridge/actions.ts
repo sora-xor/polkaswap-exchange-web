@@ -757,9 +757,11 @@ const actions = defineActions({
 
     checkEvmNetwork(context);
 
+    const amount = isDenominatedAsset(asset.address) ? tx.amount2 || tx.amount : tx.amount;
+
     const { contract, method, args } = await getOutgoingEvmTransactionData({
       asset,
-      value: tx.amount,
+      value: amount,
       recipient: tx.to,
       getContractAddress: rootGetters.web3.contractAddress,
       request,
