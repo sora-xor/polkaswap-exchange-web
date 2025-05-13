@@ -208,6 +208,8 @@ export async function getOutgoingEvmTransactionData({
         ])
   );
 
+  console.info('DENOMINATION: getOutgoingEvmTransactionData', args, `decimals: ${asset.externalDecimals}`);
+
   return {
     contract,
     method,

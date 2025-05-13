@@ -617,8 +617,9 @@ export default class Bridge extends Mixins(
 
   async confirmTransaction(): Promise<void> {
     // create new history item
-    const { assetAddress, id } = await this.generateHistoryItem();
-
+    const tx = await this.generateHistoryItem();
+    const { assetAddress, id } = tx;
+    console.info('DENOMINATION: tx', tx);
     // Add asset to account assets for balances subscriptions
     if (assetAddress && !this.accountAssetsAddressTable[assetAddress]) {
       await this.addAssetToAccountAssets(assetAddress);
