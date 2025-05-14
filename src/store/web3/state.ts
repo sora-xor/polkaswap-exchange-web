@@ -1,3 +1,4 @@
+import { FPNumber } from '@sora-substrate/sdk';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
 
@@ -44,6 +45,8 @@ export function initialState(): Web3State {
 
     subAccountDialogVisibility: false,
     soraAccountDialogVisibility: false,
+
+    denominator: FPNumber.ONE, // denominator for evm network
   };
 }
 

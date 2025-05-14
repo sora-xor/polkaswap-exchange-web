@@ -1,3 +1,4 @@
+import { FPNumber } from '@sora-substrate/math';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
@@ -183,6 +184,7 @@ const actions = defineActions({
     const { commit, dispatch, rootDispatch } = web3ActionContext(context);
 
     await dispatch.disconnectExternalNetwork();
+    await dispatch.fetchDenominatorCoefficient();
 
     commit.setNetworkType(type);
     commit.setSelectedNetwork(id);
@@ -287,6 +289,20 @@ const actions = defineActions({
     } catch (error) {
       console.error(soraAssetId, error);
       return '';
+    }
+  },
+
+  async fetchDenominatorCoefficient(context) {
+    const { commit } = web3ActionContext(context);
+    try {
+      const denominator = await soraApi.system.getDenominator();
+      if (denominator.isFinity() && !denominator.isZero()) {
+        commit.setDenominator(denominator);
+      } else {
+        commit.setDenominator(FPNumber.ONE);
+      }
+    } catch (error) {
+      commit.setDenominator(FPNumber.ONE);
     }
   },
 });
