@@ -35,6 +35,7 @@
           :decimals="amountDecimals"
           :disabled="!(areAccountsConnected && isAssetSelected)"
           :external="!isSoraToEvm"
+          :without-fiat="!isSoraToEvm && isDenominatedAsset"
           :is-max-available="isMaxAvailable"
           :is-select-available="!autoselectedAssetAddress"
           :loading="isConfirmTxLoading"
@@ -84,6 +85,7 @@
           :decimals="amountDecimals"
           :disabled="!(areAccountsConnected && isAssetSelected)"
           :external="isSoraToEvm"
+          :without-fiat="isSoraToEvm && isDenominatedAsset"
           :loading="isConfirmTxLoading"
           :value="amountReceived"
           :title="t('transfers.to')"
@@ -251,6 +253,7 @@ import {
   asZeroValue,
   delay,
 } from '@/utils';
+import { isDenominatedAsset } from '@/utils/bridge/common/utils';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { NodesConnection } from '@/utils/connection';
 
@@ -341,6 +344,10 @@ export default class Bridge extends Mixins(
 
   get limitCardAmount(): string {
     return (this.isGreaterThanMaxAmount ? this.transferMaxAmount : this.transferMinAmount)?.toLocaleString() ?? '';
+  }
+
+  get isDenominatedAsset(): boolean {
+    return isDenominatedAsset(this.asset?.address ?? '');
   }
 
   confirmExternalNetworkFeeWarningDialog(): void {
@@ -619,7 +626,6 @@ export default class Bridge extends Mixins(
     // create new history item
     const tx = await this.generateHistoryItem();
     const { assetAddress, id } = tx;
-    console.info('DENOMINATION: tx', tx);
     // Add asset to account assets for balances subscriptions
     if (assetAddress && !this.accountAssetsAddressTable[assetAddress]) {
       await this.addAssetToAccountAssets(assetAddress);
