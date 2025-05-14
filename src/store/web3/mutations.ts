@@ -5,6 +5,7 @@ import type { AppEIPProvider } from '@/types/evm/provider';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { Web3State, EthBridgeSettings, SubNetworkApps } from './types';
+import type { FPNumber } from '@sora-substrate/sdk';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type { SupportedApps, BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
@@ -101,6 +102,10 @@ const mutations = defineMutations<Web3State>()({
       VAL: address.VAL,
       OTHER: address.OTHER,
     });
+  },
+
+  setDenominator(state, denominator: FPNumber): void {
+    state.denominator = denominator;
   },
 });
 

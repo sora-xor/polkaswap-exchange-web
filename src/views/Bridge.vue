@@ -35,6 +35,7 @@
           :decimals="amountDecimals"
           :disabled="!(areAccountsConnected && isAssetSelected)"
           :external="!isSoraToEvm"
+          :without-fiat="!isSoraToEvm && isDenominatedAsset"
           :is-max-available="isMaxAvailable"
           :is-select-available="!autoselectedAssetAddress"
           :loading="isConfirmTxLoading"
@@ -84,6 +85,7 @@
           :decimals="amountDecimals"
           :disabled="!(areAccountsConnected && isAssetSelected)"
           :external="isSoraToEvm"
+          :without-fiat="isSoraToEvm && isDenominatedAsset"
           :loading="isConfirmTxLoading"
           :value="amountReceived"
           :title="t('transfers.to')"
@@ -189,7 +191,8 @@
     <div v-if="!areAccountsConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
 
     <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-    <bridge-select-sub-account />
+    <bridge-select-sub-account :visible.sync="showSelectTokenDialog" />
+    <app-browser-m-s-t-warning-bridge :visible.sync="showMSTWarning" />
     <select-node-dialog
       v-if="subConnection"
       :connection="subConnection"
@@ -250,6 +253,7 @@ import {
   asZeroValue,
   delay,
 } from '@/utils';
+import { isDenominatedAsset } from '@/utils/bridge/common/utils';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { NodesConnection } from '@/utils/connection';
 
@@ -271,6 +275,7 @@ import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/ty
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenInput: lazyComponent(Components.TokenInput),
+    AppBrowserMSTWarningBridge: lazyComponent(Components.AppBrowserMSTWarningBridge),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
@@ -295,6 +300,7 @@ export default class Bridge extends Mixins(
   @state.assets.registeredAssetsFetching private registeredAssetsFetching!: boolean;
   @state.bridge.amountSend amountSend!: string;
   @state.bridge.amountReceived amountReceived!: string;
+  @state.wallet.account.isMST isMST!: boolean;
 
   @getter.bridge.senderName senderName!: string;
   @getter.bridge.recipientName recipientName!: string;
@@ -320,7 +326,7 @@ export default class Bridge extends Mixins(
 
   showWarningExternalFeeDialog = false;
   isWarningExternalFeeDialogConfirmed = false;
-
+  showMSTWarning = false;
   // Sub Node Select
   @state.web3.selectSubNodeDialogVisibility selectSubNodeDialogVisibility!: boolean;
   @mutation.web3.setSelectSubNodeDialogVisibility private setSelectSubNodeDialogVisibility!: (flag: boolean) => void;
@@ -338,6 +344,10 @@ export default class Bridge extends Mixins(
 
   get limitCardAmount(): string {
     return (this.isGreaterThanMaxAmount ? this.transferMaxAmount : this.transferMinAmount)?.toLocaleString() ?? '';
+  }
+
+  get isDenominatedAsset(): boolean {
+    return isDenominatedAsset(this.asset?.address ?? '');
   }
 
   confirmExternalNetworkFeeWarningDialog(): void {
@@ -565,6 +575,10 @@ export default class Bridge extends Mixins(
   }
 
   async handleConfirmButtonClick(): Promise<void> {
+    if (this.isMST) {
+      this.showMSTWarning = true;
+      return;
+    }
     // XOR check
     if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
@@ -610,8 +624,8 @@ export default class Bridge extends Mixins(
 
   async confirmTransaction(): Promise<void> {
     // create new history item
-    const { assetAddress, id } = await this.generateHistoryItem();
-
+    const tx = await this.generateHistoryItem();
+    const { assetAddress, id } = tx;
     // Add asset to account assets for balances subscriptions
     if (assetAddress && !this.accountAssetsAddressTable[assetAddress]) {
       await this.addAssetToAccountAssets(assetAddress);
