@@ -1,0 +1,1 @@
+.svg-icon-button svg>path{fill:var(--s-color-base-content-tertiary)}.svg-icon-button:focus svg>path,.svg-icon-button:hover svg>path{fill:var(--s-color-base-content-secondary)}.svg-icon-button.s-pressed svg>path{fill:var(--s-color-theme-accent)}
