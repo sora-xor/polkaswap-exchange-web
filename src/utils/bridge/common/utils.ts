@@ -1,4 +1,5 @@
 import { isEthOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/sdk';
+import { XOR, TBCD } from '@sora-substrate/sdk/build/assets/consts';
 import { api as soraApi } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
@@ -17,6 +18,12 @@ import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { EvmHistory } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type { SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+
+const DenominatedAssets = [XOR.address, TBCD.address];
+
+export const isDenominatedAsset = (assetId: string): boolean => {
+  return DenominatedAssets.includes(assetId);
+};
 
 export const getEvmTransactionFee = (tx: ethers.TransactionResponse | ethers.TransactionReceipt) => {
   const gasPrice = tx.gasPrice;

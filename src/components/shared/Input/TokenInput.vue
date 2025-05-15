@@ -161,6 +161,7 @@ export default class TokenInput extends Mixins(
   @Prop({ default: 0, type: Number }) readonly sliderValue!: number;
   @Prop({ default: 2, type: Number }) readonly fiatDecimals!: number;
   @Prop({ default: false, type: Boolean }) readonly withAddress!: number;
+  @Prop({ default: false, type: Boolean }) readonly withoutFiat!: boolean;
 
   @Ref('floatInput') private readonly floatInput!: any;
   @Ref('fiatEl') private readonly fiatEl!: any;
@@ -246,7 +247,7 @@ export default class TokenInput extends Mixins(
   }
 
   get hasFiatValue(): boolean {
-    return !this.tokenPrice.isZero();
+    return !(this.withoutFiat || this.tokenPrice.isZero());
   }
 
   get fpBalance(): FPNumber {

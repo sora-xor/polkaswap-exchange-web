@@ -14,7 +14,7 @@ import { KnownEthBridgeAsset } from '@/consts/evm';
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
 import { FocusedField } from '@/store/bridge/types';
-import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
+import { isDenominatedAsset, waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { getEthBridgeHistoryInstance, updateEthBridgeHistory } from '@/utils/bridge/eth/classes/history';
@@ -432,7 +432,7 @@ async function updateBalancesFeesAndAmounts(context: ActionContext<any, any>): P
 
 const actions = defineActions({
   setSendedAmount(context, value?: string) {
-    const { commit, state, getters } = bridgeActionContext(context);
+    const { commit, state, getters, rootState } = bridgeActionContext(context);
 
     commit.setFocusedField(FocusedField.Sended);
     commit.setAmountSend(value);
@@ -441,7 +441,16 @@ const actions = defineActions({
       const sended = new FPNumber(value);
       const fee = FPNumber.fromCodecValue(state.externalTransferFee, getters.asset?.externalDecimals);
       const expected = sended.sub(fee);
-      const received = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+      let received = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+
+      if (getters.isEthBridge && isDenominatedAsset(state.assetAddress)) {
+        const denominator = rootState.web3.denominator;
+        if (state.isSoraToEvm) {
+          received = received.mul(denominator);
+        } else {
+          received = received.div(denominator);
+        }
+      }
 
       commit.setAmountReceived(received.toString());
     } else {
@@ -450,7 +459,7 @@ const actions = defineActions({
   },
 
   setReceivedAmount(context, value?: string) {
-    const { commit, state, getters } = bridgeActionContext(context);
+    const { commit, state, getters, rootState } = bridgeActionContext(context);
 
     commit.setFocusedField(FocusedField.Received);
     commit.setAmountReceived(value);
@@ -459,7 +468,16 @@ const actions = defineActions({
       const received = new FPNumber(value);
       const fee = FPNumber.fromCodecValue(state.externalTransferFee, getters.asset?.externalDecimals);
       const expected = received.add(fee);
-      const sended = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+      let sended = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+
+      if (getters.isEthBridge && isDenominatedAsset(state.assetAddress)) {
+        const denominator = rootState.web3.denominator;
+        if (state.isSoraToEvm) {
+          sended = sended.div(denominator);
+        } else {
+          sended = sended.mul(denominator);
+        }
+      }
 
       commit.setAmountSend(sended.toString());
     } else {
@@ -733,9 +751,11 @@ const actions = defineActions({
 
     checkEvmNetwork(context);
 
+    const amount = isDenominatedAsset(asset.address) ? tx.amount2 || tx.amount : tx.amount;
+
     const { contract, method, args } = await getOutgoingEvmTransactionData({
       asset,
-      value: tx.amount,
+      value: amount,
       recipient: tx.to,
       getContractAddress: rootGetters.web3.contractAddress,
       request,
