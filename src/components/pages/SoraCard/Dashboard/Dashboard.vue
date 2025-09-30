@@ -43,7 +43,7 @@
       </div>
       <div v-else class="sora-card-hub-info-iban-missing">
         <p class="label">{{ t('card.cardHub.ibanLabel') }}</p>
-        <p v-html="t('card.ibanPendingDesc', { email: emailLink })" />
+        <p v-html="ibanPendingDescription" />
       </div>
       <div v-button class="sora-card-hub-logout" @click="logoutFromSoraCard">
         <span>{{ t('card.cardHub.logout') }}</span>
@@ -62,6 +62,7 @@ import { state } from '@/store/decorators';
 import { UserInfo } from '@/types/card';
 import { copyToClipboard } from '@/utils';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
+import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
 
 enum OptionsIcon {
   TopUp = 'basic-download-24',
@@ -91,7 +92,20 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
   email = 'techsupport@soracard.com';
 
   get emailLink(): string {
-    return `<a href='mailto: ${this.email} rel="nofollow noopener"'>${this.email}</a>`;
+    const safeEmail = escapeHtml(this.email);
+    return `<a href="mailto:${safeEmail}" rel="nofollow noopener">${safeEmail}</a>`;
+  }
+
+  get ibanPendingDescription(): string {
+    const translation = this.t('card.ibanPendingDesc', { email: this.emailLink });
+
+    return sanitizeHtml(translation, {
+      allowedTags: ['a', 'span', 'p', 'br'],
+      allowedAttributes: {
+        '*': ['class'],
+        a: ['href', 'rel', 'target', 'title'],
+      },
+    });
   }
 
   options: Array<Options> = [

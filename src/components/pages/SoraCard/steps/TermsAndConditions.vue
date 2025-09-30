@@ -42,11 +42,10 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, TosExternalLinks } from '@/consts';
+import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
 import { delay } from '@/utils';
-
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 type TermsAndConditionsType = 't&c' | 'privacyPolicy' | 'unsupported';
 

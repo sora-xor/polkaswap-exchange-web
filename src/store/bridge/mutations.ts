@@ -24,6 +24,14 @@ const mutations = defineMutations<BridgeState>()({
   setAssetRecipientBalance(state, balance: Nullable<CodecString> = null): void {
     state.assetRecipientBalance = balance;
   },
+  setBalancesBatch(
+    state,
+    data: { sender?: Nullable<CodecString>; recipient?: Nullable<CodecString>; native?: CodecString }
+  ): void {
+    if (data.sender !== undefined) state.assetSenderBalance = data.sender ?? null;
+    if (data.recipient !== undefined) state.assetRecipientBalance = data.recipient ?? null;
+    if (data.native !== undefined) state.externalNativeBalance = data.native ?? ZeroStringValue;
+  },
 
   setAssetLockedBalance(state, balance: Nullable<FPNumber> = null): void {
     state.assetLockedBalance = balance;

@@ -14,6 +14,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 import { Components } from '@/consts';
+import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
 import { getter, state, mutation, action } from '@/store/decorators';
 import { getCssVariableValue } from '@/utils';
@@ -22,7 +23,6 @@ import type { MoonpayTransaction } from '@/utils/moonpay';
 import MoonpayBridgeInitMixin from './BridgeInitMixin';
 
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {

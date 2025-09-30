@@ -6,8 +6,9 @@
 </template>
 
 <script lang="ts">
-import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Prop, Vue } from 'vue-property-decorator';
+
+import { SortDirection } from '@/compat/soramitsu-ui';
 
 interface SortData {
   order: string;

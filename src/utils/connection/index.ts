@@ -9,8 +9,17 @@ import type { Storage } from '@sora-substrate/sdk';
 
 const NODE_TIMEOUT = 30_000;
 const LOCK_TIMEOUT = 6_000;
+// Backoff tuning for production-grade WS stability on Polkaswap
+// Start modestly to avoid thrashing, grow with a gentle multiplier, cap at 2 minutes
+const BASE_BACKOFF_DELAY = 2_000; // 2s
+const BACKOFF_MULTIPLIER = 1.7; // gentler than 2x for smoother growth
+const MAX_BACKOFF_DELAY = 120_000; // 120s
 
 export class NodesConnection {
+  // Feature flags can be toggled at runtime, e.g. from App.vue after env is loaded
+  static enableBackoff = false;
+  static enableLatencyProbe = true;
+  static enableParallelDial = false;
   public readonly connection!: Connection;
   public readonly network!: SubNetworkId;
   protected readonly storage!: Storage;
@@ -20,6 +29,9 @@ export class NodesConnection {
   public defaultNodes: readonly Node[] = [];
   public nodeAddressConnecting = '';
   public chainId = '';
+  protected nodeLatencies: Record<string, number> = {};
+  public lastReconnectDelayMs = 0;
+  public reconnectAttempt = 0;
 
   protected connectionLocked = false;
   protected connectionLockTimeout: Nullable<NodeJS.Timeout> = null;
@@ -57,9 +69,11 @@ export class NodesConnection {
   protected initData(): void {
     const node = this.storage.get('node');
     const nodes = this.storage.get('customNodes');
+    const lat = this.storage.get('nodeLatencies');
 
     this.setNode(node ? JSON.parse(node) : null);
     this.setCustomNodes(nodes ? JSON.parse(nodes) : []);
+    this.nodeLatencies = lat ? JSON.parse(lat) : {};
   }
 
   protected addCustomNode(node: Node): void {
@@ -102,6 +116,12 @@ export class NodesConnection {
     if (!defaultNode) return;
     // If node from default nodes list - keep this node from localstorage up to date
     this.setNode(defaultNode);
+
+    // Probe default nodes latency asynchronously to reorder by fastest
+    if (NodesConnection.enableLatencyProbe) {
+      // fire and forget
+      this.probeAndSortDefaultNodesByLatency();
+    }
   }
 
   public setNetworkChainGenesisHash(hash?: string): void {
@@ -121,6 +141,42 @@ export class NodesConnection {
     const id = await fetchRpc(getRpcEndpoint(endpoint), 'chain_getBlockHash', [0]);
 
     return id;
+  }
+
+  protected async probeAndSortDefaultNodesByLatency(): Promise<void> {
+    const nodes = [...this.defaultNodes];
+    const timings: Array<{ addr: string; t: number | null }> = await Promise.all(
+      nodes.map(async (n) => {
+        const start = Date.now();
+        try {
+          // race with timeout 5s
+          await Promise.race([
+            this.getChainId(n.address),
+            new Promise((_resolve, reject) => setTimeout(() => reject(new Error('probe-timeout')), 5000)),
+          ]);
+          return { addr: n.address, t: Date.now() - start };
+        } catch (_) {
+          return { addr: n.address, t: null };
+        }
+      })
+    );
+
+    // Update latencies and persist
+    this.nodeLatencies = timings.reduce((acc, { addr, t }) => ({ ...acc, [addr]: t ?? Number.MAX_SAFE_INTEGER }), {});
+    this.storage.set('nodeLatencies', JSON.stringify(this.nodeLatencies));
+
+    // Sort by latency (unknowns at end)
+    const sorted = [...this.defaultNodes].sort((a, b) => {
+      const ta = this.nodeLatencies[a.address] ?? Number.MAX_SAFE_INTEGER;
+      const tb = this.nodeLatencies[b.address] ?? Number.MAX_SAFE_INTEGER;
+      return ta - tb;
+    });
+    this.defaultNodes = Object.freeze(sorted);
+  }
+
+  /** Public wrapper to trigger latency probe and resort nodes */
+  public async testLatency(): Promise<void> {
+    await this.probeAndSortDefaultNodesByLatency();
   }
 
   protected lockConnection(): void {
@@ -147,10 +203,38 @@ export class NodesConnection {
   }
 
   public async connect(options: ConnectToNodeOptions = {}): Promise<void> {
-    const { node, onError, currentNodeIndex = 0, ...restOptions } = options;
+    const { node, onError, currentNodeIndex = 0, attempt = 0, ...restOptions } = options;
 
     const defaultNode = this.nodeList[currentNodeIndex];
-    const requestedNode = node ?? this.node ?? defaultNode;
+    let requestedNode = node ?? this.node ?? defaultNode;
+
+    // Parallel dial (probe) on cold start to choose the fastest node among top 2
+    if (
+      NodesConnection.enableParallelDial &&
+      !this.connection?.api &&
+      !node &&
+      !this.node &&
+      this.nodeList.length > 1
+    ) {
+      try {
+        const top = this.nodeList.slice(0, 2);
+        const race = await Promise.any(
+          top.map(async (n) => {
+            const start = Date.now();
+            await this.getChainId(n.address);
+            return { n, t: Date.now() - start };
+          })
+        );
+        if (race?.n) {
+          requestedNode = race.n;
+          // Update latency cache for future sorts
+          this.nodeLatencies[race.n.address] = race.t;
+          this.storage.set('nodeLatencies', JSON.stringify(this.nodeLatencies));
+        }
+      } catch (e) {
+        // ignore probe errors; fallback to requestedNode
+      }
+    }
 
     try {
       this.lockConnection();
@@ -163,10 +247,36 @@ export class NodesConnection {
         this.setNode(null);
       }
 
-      // loop through the node list
+      // loop through the node list with optional backoff scheduling
       if (this.node?.address || currentNodeIndex !== this.defaultNodes.length - 1) {
         const nextIndex = requestedNode.address === defaultNode.address ? currentNodeIndex + 1 : 0;
-        await this.connect({ onError, currentNodeIndex: nextIndex, ...restOptions });
+        // If we wrapped around to index 0, we completed a cycle and should increment attempt
+        const nextAttempt = nextIndex === 0 ? attempt + 1 : 0;
+        const nextNode = this.nodeList[nextIndex] ?? defaultNode;
+        const nextCall = () =>
+          this.connect({ onError, currentNodeIndex: nextIndex, attempt: nextAttempt, ...restOptions });
+        if (NodesConnection.enableBackoff) {
+          const exp = Math.min(
+            MAX_BACKOFF_DELAY,
+            Math.floor(BASE_BACKOFF_DELAY * Math.pow(BACKOFF_MULTIPLIER, nextAttempt))
+          );
+          const jitter = Math.floor(exp * 0.25 * Math.random()); // up to 25% jitter
+          const delay = exp + jitter;
+          this.lastReconnectDelayMs = delay;
+          this.reconnectAttempt = nextAttempt;
+          console.info(
+            `[${this.network}] Reconnect scheduled in ${delay}ms (attempt ${nextAttempt}) to`,
+            nextNode?.address
+          );
+          setTimeout(() => {
+            // Consume reconnect promise so repeated failures do not surface as unhandled rejections.
+            void nextCall().catch((retryError) => {
+              console.warn(`[${this.network}] Reconnect attempt failed`, retryError);
+            });
+          }, delay);
+        } else {
+          await nextCall();
+        }
       }
 
       throw error;
@@ -275,5 +385,11 @@ export class NodesConnection {
       }
       throw err;
     }
+  }
+
+  /** Returns measured latency in ms for a node address, if available */
+  public getNodeLatency(address: string): Nullable<number> {
+    const t = this.nodeLatencies[address];
+    return Number.isFinite(t) ? t : null;
   }
 }

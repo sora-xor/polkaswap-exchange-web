@@ -10,9 +10,9 @@
 <script lang="ts">
 import { renderSendWidget } from '@cedelabs/widgets-universal';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { Component, Mixins } from 'vue-property-decorator';
 
+import { Theme } from '@/consts/theme';
 import { capitalize } from '@/utils';
 
 import { Components, PageNames } from '../consts';

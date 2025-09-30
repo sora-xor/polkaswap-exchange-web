@@ -127,3 +127,34 @@ div.el-tabs__item {
   -ms-user-select: none;
   user-select: none;
 }
+
+.ps-skeleton {
+  display: inline-flex;
+  flex-direction: column;
+  gap: $inner-spacing-mini;
+}
+
+.ps-skeleton__item {
+  border-radius: var(--s-border-radius-mini);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 25%, rgba(0, 0, 0, 0.1) 37%, rgba(0, 0, 0, 0.06) 63%);
+  background-size: 400% 100%;
+  min-height: 12px;
+  animation: ps-skeleton-loading 1.4s ease infinite;
+}
+
+.ps-skeleton__item--circle {
+  border-radius: 50%;
+}
+
+.ps-skeleton--animated .ps-skeleton__item {
+  animation-duration: 1.4s;
+}
+
+@keyframes ps-skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}

@@ -55,7 +55,7 @@
         "infoMessageTryAgain": "Ada yang salah. Silakan, coba lagi",
         "blacklistedCountriesExcuse": "Sayangnya, saat ini kami tidak dapat mendukung negara-negara berikut:",
         "xorAmountNeeded": "Anda membutuhkan {xor} lebih banyak XOR (€{euro})",
-        "statusPendingText": "Anda telah berhasil menyelesaikan aplikasi KYC Anda. Peninjauan sedang berlangsung dan Anda akan segera mendapatkan keputusan.<br \/><br \/>Biasanya keputusan dibuat pada hari yang sama dan dalam beberapa kasus dapat memakan waktu hingga 3 hari.",
+        "statusPendingText": "Anda telah berhasil menyelesaikan aplikasi KYC Anda. Peninjauan sedang berlangsung dan Anda akan segera mendapatkan keputusan.<br /><br />Biasanya keputusan dibuat pada hari yang sama dan dalam beberapa kasus dapat memakan waktu hingga 3 hari.",
         "resendInBtn": "KIRIM ULANG KE {value}",
         "statusRejectTitle": "Lamaran ditolak",
         "statusRejectText": "Permohonan Anda telah ditolak oleh audit internal, mohon periksa persyaratan dan ketentuan layanan kami dengan cermat sebelum mengajukan permohonan lagi",

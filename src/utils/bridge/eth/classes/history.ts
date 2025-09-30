@@ -9,7 +9,7 @@ import { ZeroStringValue } from '@/consts';
 import { SmartContracts, SmartContractType, KnownEthBridgeAsset } from '@/consts/evm';
 import { rootActionContext } from '@/store';
 import type { EthBridgeContractsAddresses } from '@/store/web3/types';
-import { getEvmTransactionRecieptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
+import { getEvmTransactionReceiptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
@@ -108,7 +108,7 @@ const hasFinishedState = (item: Nullable<EthHistory>) => {
 };
 
 const getReceiptData = async (externalHash: string) => {
-  return externalHash ? await getEvmTransactionRecieptByHash(externalHash) : null;
+  return externalHash ? await getEvmTransactionReceiptByHash(externalHash) : null;
 };
 
 const getEvmTxHash = (ethereumTx: ethers.TransactionResponse | null) => {

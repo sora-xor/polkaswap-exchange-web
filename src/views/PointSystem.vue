@@ -145,6 +145,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { ZeroStringValue } from '@/consts';
+import { Theme } from '@/consts/theme';
 import { fetchData as fetchBurnXorData } from '@/indexer/queries/burnXor';
 import { type BridgeData, fetchBridgeData, fetchCount, CountType } from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
@@ -154,7 +155,6 @@ import { formatAmountWithSuffix } from '@/utils';
 
 import type { NetworkFeesObject, FPNumber } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {

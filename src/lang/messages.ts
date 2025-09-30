@@ -1,6 +1,7 @@
 import { RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
 import { en as walletEn } from '@soramitsu/soraneo-wallet-web';
-import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
+
+import { Theme } from '@/consts/theme';
 
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 import { PageNames, RewardsTabsItems } from '../consts';

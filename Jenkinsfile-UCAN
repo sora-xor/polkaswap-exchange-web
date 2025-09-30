@@ -1,6 +1,6 @@
 @Library('jenkins-library') _
 
-def agentImage   = 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu-extended'
+def agentImage   = 'docker.soramitsu.co.jp/build-tools/node:24-ubuntu-extended'
 def agentLabel   = 'docker-build-agent'
 def gitHubUser   = 'sorabot'
 def gitAddrRegex = ''

@@ -347,7 +347,8 @@ $line: var(--s-color-base-border-secondary);
 
   .grid-lines {
     position: absolute;
-    background-image: linear-gradient(to right, $line 1px, transparent 1px), linear-gradient($line 1px, transparent 1px);
+    background-image:
+      linear-gradient(to right, $line 1px, transparent 1px), linear-gradient($line 1px, transparent 1px);
     background-repeat: repeat;
   }
 

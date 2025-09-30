@@ -2,13 +2,13 @@ import { FPNumber, CodecString } from '@sora-substrate/sdk';
 import { isNativeAsset } from '@sora-substrate/sdk/build/assets';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api, WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
-import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
 
 import { app, TranslationConsts, ZeroStringValue } from '@/consts';
 import i18n from '@/lang';
 import router from '@/router';
 import store from '@/store';
+import getScrollbarWidth from '@/utils/scrollbar-width';
 
 import type { AmountWithSuffix } from '../types/formats';
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -397,7 +397,7 @@ export const sortPools = <T extends Asset>(a: PoolAssets<T>, b: PoolAssets<T>) =
   return byBaseAsset === 0 ? sortAssets(a.poolAsset, b.poolAsset) : byBaseAsset;
 };
 
-export const calcElScrollGutter: () => number = scrollbarWidth;
+export const calcElScrollGutter: () => number = getScrollbarWidth;
 
 const getSubscanTxLink = (baseUrl: string, txId?: string, blockId?: number | string, eventIndex?: number): string => {
   if (!(txId || blockId)) return '';

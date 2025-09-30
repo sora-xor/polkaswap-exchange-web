@@ -55,7 +55,7 @@
         "infoMessageTryAgain": "Coś poszło nie tak. Proszę spróbuj ponownie",
         "blacklistedCountriesExcuse": "Niestety, w tej chwili nie jesteśmy w stanie obsługiwać następujących krajów:",
         "xorAmountNeeded": "Potrzebujesz {xor} więcej XOR (€{euro})",
-        "statusPendingText": "Pomyślnie ukończyłeś aplikację KYC. Przegląd jest w toku i wkrótce możesz spodziewać się decyzji. <br \/> <br \/> Zwykle decyzja jest podejmowana tego samego dnia, aw niektórych przypadkach może trwać do 3 dni.",
+        "statusPendingText": "Pomyślnie ukończyłeś aplikację KYC. Przegląd jest w toku i wkrótce możesz spodziewać się decyzji. <br /> <br /> Zwykle decyzja jest podejmowana tego samego dnia, aw niektórych przypadkach może trwać do 3 dni.",
         "resendInBtn": "WYŚLIJ PONOWNIE W {value}",
         "statusRejectTitle": "Wniosek odrzucony",
         "statusRejectText": "Twoje zgłoszenie zostało odrzucone przez audyt wewnętrzny, przed ponownym zgłoszeniem sprawdź dokładnie nasze wymagania i regulamin.",

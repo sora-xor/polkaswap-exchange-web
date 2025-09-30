@@ -12,6 +12,8 @@
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
+import { toDwebLink } from '@/utils/ipfs';
+
 import StakingMixin from '../mixins/StakingMixin';
 
 import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
@@ -25,7 +27,12 @@ export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingM
   @Prop({ required: true, type: Object }) readonly validator!: ValidatorInfoFull;
 
   get avatar() {
-    return this.validator.identity?.info.image;
+    const url = this.validator.identity?.info.image;
+    try {
+      return toDwebLink(url);
+    } catch (e) {
+      return url;
+    }
   }
 }
 </script>

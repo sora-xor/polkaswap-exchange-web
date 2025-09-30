@@ -55,7 +55,7 @@
         "infoMessageTryAgain": "Une erreur s'est produite. Veuillez réessayer",
         "blacklistedCountriesExcuse": "Malheureusement, pour le moment, nous ne sommes pas en mesure de prendre en charge les pays suivants:",
         "xorAmountNeeded": "Vous avez besoin de {xor} plus XOR (€{euro})",
-        "statusPendingText": "Vous avez complété avec succès votre demande KYC. L'examen est en cours et vous pouvez vous attendre à recevoir une décision sous peu.<br \/><br \/>En général, la décision est prise le jour même, mais dans certains cas, elle peut prendre jusqu'à trois jours.",
+        "statusPendingText": "Vous avez complété avec succès votre demande KYC. L'examen est en cours et vous pouvez vous attendre à recevoir une décision sous peu.<br /><br />En général, la décision est prise le jour même, mais dans certains cas, elle peut prendre jusqu'à trois jours.",
         "resendInBtn": "RENVOYER DANS {value}",
         "statusRejectTitle": "Demande rejetée",
         "statusRejectText": "Votre candidature a été rejetée par l'audit interne. Veuillez consulter attentivement nos exigences et nos conditions d'utilisation avant de postuler à nouveau.",
@@ -92,7 +92,7 @@
         "cardhub": {
             "accountInfo": "Information sur le compte"
         },
-        "attentionText": "Attention",
+        "attentionText": "Avertissement",
         "or": "ou",
         "oneTimeApplicationFee": "Frais uniques pour émettre une carte",
         "applicationFeeNote": "Remarque : l'émission de cartes payantes sera disponible ultérieurement.",

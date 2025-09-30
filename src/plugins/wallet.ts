@@ -1,8 +1,11 @@
 import Wallet from '@soramitsu/soraneo-wallet-web';
-import Vue from 'vue';
 
 import store from '@/store';
 
+import type { App } from 'vue';
+
 import '@soramitsu/soraneo-wallet-web/lib/soraneo-wallet-web.css';
 
-Vue.use(Wallet, { store });
+export function install(app: App): void {
+  app.use(Wallet, { store: store.original });
+}

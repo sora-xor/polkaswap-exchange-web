@@ -1,5 +1,11 @@
 import { polyfillCountryFlagEmojis } from 'country-flag-emoji-polyfill';
 
-if (/windows/.test(navigator.userAgent.toLowerCase()) && !/firefox/.test(navigator.userAgent.toLowerCase())) {
-  polyfillCountryFlagEmojis();
+export function installCountryFlagEmoji(): void {
+  if (typeof navigator === 'undefined') return;
+
+  const userAgent = navigator.userAgent.toLowerCase();
+
+  if (/windows/.test(userAgent) && !/firefox/.test(userAgent)) {
+    polyfillCountryFlagEmojis();
+  }
 }

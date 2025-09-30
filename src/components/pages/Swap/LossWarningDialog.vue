@@ -13,32 +13,58 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@soramitsu/soraneo-wallet-web';
+import { ref, watch, computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import { ZeroStringValue } from '@/consts';
-import { mutation } from '@/store/decorators';
+import { useSwapStore } from '@/stores/swap';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    SimpleNotification: components.SimpleNotification,
-  },
-})
-export default class SwapLossWarningDialog extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  @Prop({ default: ZeroStringValue, type: String }) readonly value!: string;
-  @Prop({ default: false, type: Boolean }) readonly appendToBody!: boolean;
+const DialogBase = components.DialogBase;
+const SimpleNotification = components.SimpleNotification;
 
-  @mutation.swap.setAllowLossPopup private setAllowLossPopup!: (flag: boolean) => void;
-
-  hidePopup = false;
-
-  async handleConfirm(): Promise<void> {
-    this.setAllowLossPopup(!this.hidePopup);
-    this.closeDialog();
-    this.$emit('confirm');
+const props = withDefaults(
+  defineProps<{
+    visible: boolean;
+    value?: string;
+    appendToBody?: boolean;
+  }>(),
+  {
+    value: ZeroStringValue,
+    appendToBody: false,
   }
-}
+);
+
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'confirm'): void;
+}>();
+
+const { t } = useTranslation();
+const swapStore = useSwapStore();
+
+const isVisible = ref(props.visible);
+
+watch(
+  () => props.visible,
+  (value) => {
+    isVisible.value = value;
+  },
+  { immediate: true }
+);
+
+watch(isVisible, (value) => {
+  emit('update:visible', value);
+});
+
+const appendToBody = computed(() => props.appendToBody);
+const value = computed(() => props.value);
+const hidePopup = ref(false);
+
+const handleConfirm = async () => {
+  swapStore.setAllowLossPopup(!hidePopup.value);
+  isVisible.value = false;
+  emit('confirm');
+};
 </script>

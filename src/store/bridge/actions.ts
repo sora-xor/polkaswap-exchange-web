@@ -222,15 +222,31 @@ async function updateEvmBalances(context: ActionContext<any, any>): Promise<void
   const { isSoraToEvm, subBridgeConnector: subConnector } = state;
   const spender = isSoraToEvm ? recipient : sender;
 
-  const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
-    getAccountBridgeBalance(sender, asset, isSoraToEvm, false, subConnector),
-    getAccountBridgeBalance(recipient, asset, !isSoraToEvm, false, subConnector),
-    getAccountBridgeBalance(spender, nativeToken, false, false, subConnector),
-  ]);
+  let senderBalance = ZeroStringValue;
+  let recipientBalance = ZeroStringValue;
+  // Batch ERC20 balances if token is non-native
+  const tokenAddr = asset?.externalAddress;
+  if (tokenAddr && !ethersUtil.isNativeEvmTokenAddress(tokenAddr)) {
+    try {
+      const res = await (ethersUtil as any).getErc20BalancesBatch([
+        { token: tokenAddr, account: sender },
+        { token: tokenAddr, account: recipient },
+      ]);
+      senderBalance = res[0]?.balance ?? ZeroStringValue;
+      recipientBalance = res[1]?.balance ?? ZeroStringValue;
+    } catch {
+      // Fallback sequentially
+      senderBalance = await getAccountBridgeBalance(sender, asset, isSoraToEvm, false, subConnector);
+      recipientBalance = await getAccountBridgeBalance(recipient, asset, !isSoraToEvm, false, subConnector);
+    }
+  } else {
+    // Native token or missing address
+    senderBalance = await getAccountBridgeBalance(sender, asset, isSoraToEvm, false, subConnector);
+    recipientBalance = await getAccountBridgeBalance(recipient, asset, !isSoraToEvm, false, subConnector);
+  }
+  const nativeBalance = await getAccountBridgeBalance(spender, nativeToken, false, false, subConnector);
 
-  commit.setAssetSenderBalance(senderBalance);
-  commit.setAssetRecipientBalance(recipientBalance);
-  commit.setExternalNativeBalance(nativeBalance);
+  commit.setBalancesBatch({ sender: senderBalance, recipient: recipientBalance, native: nativeBalance });
 }
 
 async function updateSubBalances(context: ActionContext<any, any>): Promise<void> {
@@ -239,15 +255,21 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<void
   const { isSoraToEvm, subBridgeConnector: subConnector } = state;
   const spender = sender;
 
-  const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
-    getAccountBridgeBalance(sender, asset, isSoraToEvm, true, subConnector),
-    getAccountBridgeBalance(recipient, asset, !isSoraToEvm, true, subConnector),
-    getAccountBridgeBalance(spender, nativeToken, false, true, subConnector),
-  ]);
-
-  commit.setAssetSenderBalance(senderBalance);
-  commit.setAssetRecipientBalance(recipientBalance);
-  commit.setExternalNativeBalance(nativeBalance);
+  try {
+    const res = await subConnector.network.getTokenBalancesBatch([
+      { accountAddress: sender, asset },
+      { accountAddress: recipient, asset },
+      { accountAddress: spender, asset: nativeToken },
+    ]);
+    commit.setBalancesBatch({ sender: res[0], recipient: res[1], native: res[2] });
+  } catch {
+    const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
+      getAccountBridgeBalance(sender, asset, isSoraToEvm, true, subConnector),
+      getAccountBridgeBalance(recipient, asset, !isSoraToEvm, true, subConnector),
+      getAccountBridgeBalance(spender, nativeToken, false, true, subConnector),
+    ]);
+    commit.setBalancesBatch({ sender: senderBalance, recipient: recipientBalance, native: nativeBalance });
+  }
 }
 
 async function updateSubHistory(context: ActionContext<any, any>, clearHistory = false): Promise<void> {
@@ -365,13 +387,20 @@ function calculateMaxLimit(
   }
 }
 
+let lastEvmBlockPollTs = 0;
 async function updateExternalBlockNumber(context: ActionContext<any, any>): Promise<void> {
   const { getters, commit, state } = bridgeActionContext(context);
   try {
-    const blockNumber = getters.isSubBridge
-      ? await state.subBridgeConnector.network.getBlockNumber()
-      : await ethersUtil.getBlockNumber();
-
+    if (getters.isSubBridge) {
+      const blockNumber = await state.subBridgeConnector.network.getBlockNumber();
+      commit.setExternalBlockNumber(blockNumber);
+      return;
+    }
+    // Throttle EVM block number polling to reduce RPC load
+    const now = Date.now();
+    if (now - lastEvmBlockPollTs < 3000) return;
+    lastEvmBlockPollTs = now;
+    const blockNumber = await ethersUtil.getBlockNumber();
     commit.setExternalBlockNumber(blockNumber);
   } catch (error) {
     console.error(error);

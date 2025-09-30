@@ -50,11 +50,11 @@ export default class AccelerationAccessDialog extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-dialog__header {
+:deep(.el-dialog__header) {
   padding: 0 !important;
 }
 
-::v-deep .el-dialog__close {
+:deep(.el-dialog__close) {
   position: absolute;
   top: calc($inner-spacing-big * 2);
   right: $inner-spacing-small;

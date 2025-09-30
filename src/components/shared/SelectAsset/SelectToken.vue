@@ -70,11 +70,11 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
+import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
 
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 enum Tabs {
   Assets = 'assets',

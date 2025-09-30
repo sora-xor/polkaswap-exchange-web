@@ -55,7 +55,7 @@
         "infoMessageTryAgain": "Něco se pokazilo. Prosím zkuste to znovu",
         "blacklistedCountriesExcuse": "Bohužel v tuto chvíli nejsme schopni podporovat následující země:",
         "xorAmountNeeded": "Potřebujete {xor} více XOR (€{euro}).",
-        "statusPendingText": "Úspěšně jste dokončili žádost o KYC. Přezkoumání probíhá a rozhodnutí můžete očekávat v nejbližší době.<br \/><br \/>Obvykle je rozhodnutí vydáno tentýž den, v některých případech může trvat až 3 dny.",
+        "statusPendingText": "Úspěšně jste dokončili žádost o KYC. Přezkoumání probíhá a rozhodnutí můžete očekávat v nejbližší době.<br /><br />Obvykle je rozhodnutí vydáno tentýž den, v některých případech může trvat až 3 dny.",
         "resendInBtn": "ZNOVU ODESLAT V {value}",
         "statusRejectTitle": "Přihláška zamítnuta",
         "statusRejectText": "Vaše žádost byla zamítnuta interním auditem. Než se znovu přihlásíte, pečlivě si prostudujte naše požadavky a podmínky služby",

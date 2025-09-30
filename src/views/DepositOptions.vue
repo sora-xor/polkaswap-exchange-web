@@ -41,6 +41,8 @@
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
+import { Theme } from '@/consts/theme';
+
 import WalletConnectMixin from '../components/mixins/WalletConnectMixin';
 import CedeStoreLogo from '../components/shared/Logo/CedeStore.vue';
 import MoonpayLogo from '../components/shared/Logo/Moonpay.vue';
@@ -49,7 +51,6 @@ import { goTo, lazyComponent } from '../router';
 import { mutation, state, getter } from '../store/decorators';
 
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {

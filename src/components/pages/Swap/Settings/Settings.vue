@@ -10,23 +10,50 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@soramitsu/soraneo-wallet-web';
+import { computed, ref, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 
 import SwapMarketAlgorithm from './MarketAlgorithm/MarketAlgorithm.vue';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    SwapMarketAlgorithm,
+const DialogBase = components.DialogBase;
+
+defineOptions({ name: 'SwapSettingsDialog' });
+
+const props = withDefaults(
+  defineProps<{
+    visible: boolean;
+    appendToBody?: boolean;
+  }>(),
+  {
+    appendToBody: false,
+  }
+);
+
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+}>();
+
+const { t } = useTranslation();
+
+const isVisible = ref(props.visible);
+
+watch(
+  () => props.visible,
+  (value) => {
+    isVisible.value = value;
   },
-})
-export default class SwapSettings extends Mixins(TranslationMixin, mixins.DialogMixin) {
-  @Prop({ default: false, type: Boolean }) readonly appendToBody!: boolean;
-}
+  { immediate: true }
+);
+
+watch(isVisible, (value) => {
+  emit('update:visible', value);
+});
+
+const appendToBody = computed(() => props.appendToBody);
 </script>
 
 <style lang="scss">

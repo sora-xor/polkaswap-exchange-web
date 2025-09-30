@@ -51,10 +51,7 @@
           </template>
           <div v-if="!hasAccountWithBondedXor" class="unbonded-info">
             <token-logo :token="xor" />
-            <p
-              class="referral-program-hint referral-program-hint--connected"
-              v-html="t('referralProgram.startInviting')"
-            />
+            <p class="referral-program-hint referral-program-hint--connected" v-html="startInvitingHtml" />
           </div>
           <info-line
             is-formatted
@@ -119,7 +116,7 @@
           </template>
           <template v-if="referrer">
             <h5>{{ t('referralProgram.referrer.referredBy', { referrer: referrerFormatted }) }}</h5>
-            <p class="referrer-description" v-html="t('referralProgram.referrer.info')" />
+            <p class="referrer-description" v-html="referrerInfoHtml" />
           </template>
           <template v-else>
             <div class="referrer-link-details">
@@ -142,7 +139,7 @@
                 </template>
               </s-input>
             </div>
-            <p class="referrer-description" v-html="t('referralProgram.referrer.description')" />
+            <p class="referrer-description" v-html="referrerDescriptionHtml" />
           </template>
           <s-card v-if="referrer" shadow="always" size="small" border-radius="medium">
             <div class="referrer-link-details with-text">
@@ -154,7 +151,7 @@
       </s-collapse>
     </template>
     <template v-else>
-      <p class="referral-program-hint" v-html="t('referralProgram.connectAccount')" />
+      <p class="referral-program-hint" v-html="connectAccountHtml" />
       <s-button
         v-if="!isLoggedIn"
         class="connect-button s-typography-button--large"
@@ -181,6 +178,7 @@ import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import router, { lazyView } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
+import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
 import { tmaSdkService } from '@/utils/telegram';
 
 import type { CodecString } from '@sora-substrate/sdk';
@@ -319,7 +317,7 @@ export default class ReferralProgram extends Mixins(
 
   get referralLink() {
     return {
-      href: `${this.linkHrefBase}${this.account.address}`,
+      href: this.getSafeReferralLinkHref(this.account.address),
       label: this.getLinkLabel(this.account.address),
     };
   }
@@ -354,6 +352,16 @@ export default class ReferralProgram extends Mixins(
     return last(this.referrerLinkOrCode.split('/')) ?? '';
   }
 
+  get startInvitingHtml(): string {
+    return sanitizeHtml(this.t('referralProgram.startInviting'), {
+      allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br'],
+      allowedAttributes: {
+        '*': ['class'],
+        a: ['href', 'rel', 'target', 'title'],
+      },
+    });
+  }
+
   get isValidReferrerLink(): boolean {
     if (this.isReferrerLinkEmpty) {
       return false;
@@ -380,13 +388,33 @@ export default class ReferralProgram extends Mixins(
 
   get referrerLink() {
     return {
-      href: `${this.linkHrefBase}${this.referrerAddress}`,
+      href: this.getSafeReferralLinkHref(this.referrerAddress),
       label: this.getLinkLabel(this.referrerAddress),
     };
   }
 
   get bondButtonType(): string {
     return this.hasAccountWithBondedXor ? 'secondary' : 'primary';
+  }
+
+  get referrerInfoHtml(): string {
+    return sanitizeHtml(this.t('referralProgram.referrer.info'), {
+      allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br', 'ul', 'li'],
+      allowedAttributes: {
+        '*': ['class'],
+        a: ['href', 'rel', 'target', 'title'],
+      },
+    });
+  }
+
+  get referrerDescriptionHtml(): string {
+    return sanitizeHtml(this.t('referralProgram.referrer.description'), {
+      allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br', 'ul', 'li'],
+      allowedAttributes: {
+        '*': ['class'],
+        a: ['href', 'rel', 'target', 'title'],
+      },
+    });
   }
 
   private get hasTMALink(): boolean {
@@ -397,6 +425,16 @@ export default class ReferralProgram extends Mixins(
     return this.hasTMALink
       ? this.t('referralProgram.inviteViaTelegram')
       : this.copyTooltip(this.t('referralProgram.invitationLink'));
+  }
+
+  get connectAccountHtml(): string {
+    return sanitizeHtml(this.t('referralProgram.connectAccount'), {
+      allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br'],
+      allowedAttributes: {
+        '*': ['class'],
+        a: ['href', 'rel', 'target', 'title'],
+      },
+    });
   }
 
   get refLinkText(): string {
@@ -425,7 +463,20 @@ export default class ReferralProgram extends Mixins(
 
   private getLinkLabel(address: string): string {
     const routerMode = getRouterMode(router);
-    return `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${address}`;
+    const safeAddress = escapeHtml(address);
+    const raw = `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${safeAddress}`;
+
+    return sanitizeHtml(raw, {
+      allowedTags: ['span'],
+      allowedAttributes: {
+        span: ['class'],
+      },
+    });
+  }
+
+  private getSafeReferralLinkHref(address: string): string {
+    const safeAddress = escapeHtml(address);
+    return `${this.linkHrefBase}${safeAddress}`;
   }
 
   getInvitedUserReward(invitedUser: string): string {

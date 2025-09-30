@@ -267,7 +267,9 @@ export async function getEthNetworkFee(
   } else {
     const bridgeContractAddress = getContractAddress(KnownEthBridgeAsset.Other) as string;
     const allowance = await ethersUtil.getAllowance(evmAccount, bridgeContractAddress, asset.externalAddress);
-    const approveGasLimit = !!allowance && Number(allowance) < Number(value) ? gasLimit.approve : BigInt(0);
+    // Use FPNumber comparison to avoid precision loss in token math
+    const approveGasLimit =
+      !!allowance && FPNumber.isLessThan(new FPNumber(allowance), new FPNumber(value)) ? gasLimit.approve : BigInt(0);
 
     let txGasLimit!: bigint;
 

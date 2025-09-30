@@ -29,10 +29,9 @@ import { Component, Mixins } from 'vue-property-decorator';
 import MoonpayBridgeInitMixin from '@/components/pages/Moonpay/BridgeInitMixin';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 import { Components } from '@/consts';
+import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
-
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {

@@ -16,12 +16,14 @@
     "baseUrl": ".",
     "types": [
       "node",
-      "element-ui",
       "telegram-web-app"
     ],
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "vue-property-decorator": [
+        "src/compat/vue-property-decorator.ts"
       ]
     },
     "lib": [

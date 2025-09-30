@@ -44,10 +44,10 @@
 </template>
 
 <script lang="ts">
-import { Size } from '@soramitsu-ui/ui-vue2/lib/types';
 import { Component, Prop, Mixins, ModelSync } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { UiSize } from '@/consts/theme';
 import type { ResponsiveTab } from '@/types/tabs';
 
 @Component
@@ -55,7 +55,7 @@ export default class ResponsiveTabs extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly isHeader!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isMobile!: boolean;
   @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
-  @Prop({ default: Size.MEDIUM }) readonly size!: string;
+  @Prop({ default: UiSize.MEDIUM }) readonly size!: UiSize;
   @Prop({ default: () => [], type: Array }) readonly tabs!: Array<ResponsiveTab>;
 
   @ModelSync('value', 'input', { type: String })

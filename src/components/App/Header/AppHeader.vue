@@ -25,6 +25,8 @@ import { XOR, ETH } from '@sora-substrate/sdk/build/assets/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
+import { Theme } from '@/consts/theme';
+
 import InternalConnectMixin from '../../../components/mixins/InternalConnectMixin';
 import { PageNames, Components } from '../../../consts';
 import { BreakpointClass } from '../../../consts/layout';
@@ -33,8 +35,6 @@ import { state, getter } from '../../../store/decorators';
 
 import AppAccountButton from './AppAccountButton.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
-
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {

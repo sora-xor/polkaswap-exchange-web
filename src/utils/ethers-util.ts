@@ -19,6 +19,23 @@ type ethersProvider = ethers.BrowserProvider;
 let ethereumProvider!: any;
 let ethersInstance: ethersProvider | null = null;
 
+// Cache for ERC20 contract instances by token address (lowercased)
+const tokenContractCache = new Map<string, ethers.Contract>();
+// Cache for token decimals by token address (lowercased)
+const tokenDecimalsCache = new Map<string, number>();
+// TTL cache for gas price to reduce eth_gasPrice RPC spam
+let gasPriceCache: { value: bigint; ts: number } | null = null;
+const GAS_PRICE_TTL_MS = 5000; // 5 seconds
+
+type ContractFactory = (
+  contractAddress: string,
+  contractAbi: ethers.InterfaceAbi,
+  signer: ethers.JsonRpcSigner
+) => ethers.Contract;
+
+let contractFactory: ContractFactory = (contractAddress, contractAbi, signer) =>
+  new ethers.Contract(contractAddress, contractAbi, signer);
+
 export enum PROVIDER_ERROR {
   // 1013: Disconnected from chain. Attempting to connect
   DisconnectedFromChain = 1013,
@@ -121,6 +138,37 @@ function getEthersInstance(): ethersProvider {
   return ethersInstance;
 }
 
+/**
+ * Test helper: allow unit tests to inject a mocked provider without going through browser flows.
+ * Should not be used in production code.
+ */
+export function __setTestEthersProvider(provider: ethersProvider | null, rawProvider: any = provider): void {
+  ethereumProvider = rawProvider;
+  ethersInstance = provider;
+}
+
+export function __resetTestEthersProvider(): void {
+  ethereumProvider = undefined as any;
+  ethersInstance = null;
+}
+
+export function __clearTokenContractCache(): void {
+  tokenContractCache.clear();
+}
+
+export function __clearTokenDecimalsCache(): void {
+  tokenDecimalsCache.clear();
+  gasPriceCache = null;
+}
+
+export function __setContractFactory(factory: ContractFactory): void {
+  contractFactory = factory;
+}
+
+export function __resetContractFactory(): void {
+  contractFactory = (contractAddress, contractAbi, signer) => new ethers.Contract(contractAddress, contractAbi, signer);
+}
+
 async function getSigner(): Promise<ethers.JsonRpcSigner> {
   const ethersInstance = getEthersInstance();
   const signer = await ethersInstance.getSigner();
@@ -137,14 +185,21 @@ async function getAccount(): Promise<string> {
 
 async function getContract(contractAddress: string, contractAbi: ethers.InterfaceAbi): Promise<ethers.Contract> {
   const signer = await getSigner();
-  const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+  const contract = contractFactory(contractAddress, contractAbi, signer);
 
   return contract;
 }
 
+/**
+ * Return memoized ERC20 contract instance for the given token address.
+ */
 async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> {
-  const contract = await getContract(tokenAddress, SmartContracts[SmartContractType.ERC20]);
+  const key = tokenAddress?.toLowerCase?.() ?? tokenAddress;
+  const cached = tokenContractCache.get(key);
+  if (cached) return cached;
 
+  const contract = await getContract(tokenAddress, SmartContracts[SmartContractType.ERC20]);
+  tokenContractCache.set(key, contract);
   return contract;
 }
 
@@ -177,13 +232,20 @@ async function getAccountTokenBalance(accountAddress: string, tokenAddress: stri
   }
 }
 
+/**
+ * Get token decimals with memoization. Native token defaults to DEFAULT_PRECISION.
+ */
 async function getTokenDecimals(tokenAddress: string): Promise<number> {
   if (!isNativeEvmTokenAddress(tokenAddress)) {
+    const key = tokenAddress?.toLowerCase?.() ?? tokenAddress;
+    const cached = tokenDecimalsCache.get(key);
+    if (typeof cached === 'number') return cached;
     try {
       const contract = await getTokenContract(tokenAddress);
       const result: bigint = await contract.decimals();
-
-      return Number(result);
+      const value = Number(result);
+      tokenDecimalsCache.set(key, value);
+      return value;
     } catch (error) {
       console.error(tokenAddress, error);
     }
@@ -310,6 +372,11 @@ async function revokeWalletAccounts(): Promise<void> {
 
 async function addToken(address: string, symbol: string, decimals: number, image?: string): Promise<void> {
   try {
+    let logo = image;
+    try {
+      const { toDwebLink } = await import('@/utils/ipfs');
+      logo = toDwebLink(image) ?? image;
+    } catch {}
     await ethereumProvider.request({
       method: 'wallet_watchAsset',
       params: {
@@ -318,7 +385,7 @@ async function addToken(address: string, symbol: string, decimals: number, image
           address, // The address that the token is at.
           symbol, // A ticker symbol or shorthand, up to 5 chars.
           decimals, // The number of decimals in the token
-          image, // A string url of the token logo
+          image: logo, // A string url of the token logo (normalized to dweb.link if IPFS)
         },
       },
     });
@@ -379,6 +446,10 @@ async function getEvmNetworkId(): Promise<number> {
 }
 
 async function getEvmGasPrice(): Promise<bigint> {
+  const now = Date.now();
+  if (gasPriceCache && now - gasPriceCache.ts < GAS_PRICE_TTL_MS) {
+    return gasPriceCache.value;
+  }
   const ethersInstance = getEthersInstance();
   const priorityFee = BigInt('1500000000'); // 1.5 GWEI
   const baseFeeHex = await ethersInstance.send('eth_gasPrice', []); // hex
@@ -386,6 +457,7 @@ async function getEvmGasPrice(): Promise<bigint> {
   const baseFeeMarket = (baseFee * BigInt(1355)) / BigInt(1000); // market rate like in Metamask
   const gasPrice = baseFeeMarket + priorityFee;
 
+  gasPriceCache = { value: gasPrice, ts: now };
   return gasPrice;
 }
 
@@ -483,6 +555,119 @@ export default {
   getContract,
   getTokenContract,
   getTokenDecimals,
+  /**
+   * Batch fetch ERC20 balances using Multicall3 aggregate3 when available.
+   * Fallback to sequential calls if multicall is unavailable.
+   */
+  async getErc20BalancesBatch(
+    pairs: Array<{ token: string; account: string }>
+  ): Promise<Array<{ token: string; account: string; balance: string }>> {
+    const results: Array<{ token: string; account: string; balance: string }> = [];
+    try {
+      const provider = getEthersInstance();
+      const network = await provider.getNetwork();
+      const chainId = Number(network.chainId);
+      const multicall = getMulticallAddress(chainId);
+      if (!multicall) throw new Error('Multicall is not available');
+      const multicallAbi = [
+        'function aggregate3(tuple(address target, bool allowFailure, bytes callData)[] calls) public payable returns (tuple(bool success, bytes returnData)[] returnData)',
+      ];
+      const erc20Iface = new ethers.Interface(['function balanceOf(address) view returns (uint256)']);
+      const mc = new ethers.Contract(multicall, multicallAbi, provider);
+      const calls = pairs.map(({ token, account }) => ({
+        target: token,
+        allowFailure: true,
+        callData: erc20Iface.encodeFunctionData('balanceOf', [account]),
+      }));
+      const ret = await mc.aggregate3(calls);
+      ret.forEach((item: any, idx: number) => {
+        let bal = '0';
+        if (item?.success && item?.returnData) {
+          try {
+            const [val] = erc20Iface.decodeFunctionResult('balanceOf', item.returnData);
+            bal = (val as bigint).toString();
+          } catch {}
+        }
+        results.push({ token: pairs[idx].token, account: pairs[idx].account, balance: bal });
+      });
+      return results;
+    } catch (e) {
+      // Fallback to sequential calls
+      for (const p of pairs) {
+        const bal = await getAccountTokenBalance(p.account, p.token);
+        results.push({ token: p.token, account: p.account, balance: bal });
+      }
+      return results;
+    }
+  },
+  /**
+   * Batch fetch ERC20 allowances using Multicall3 aggregate3 when available.
+   * Returns normalized string values (natural units) using token decimals.
+   * Falls back to sequential calls if multicall is unavailable.
+   */
+  async getAllowancesBatch(
+    pairs: Array<{ owner: string; spender: string; token: string }>
+  ): Promise<Array<{ token: string; owner: string; spender: string; allowance: string }>> {
+    const out: Array<{ token: string; owner: string; spender: string; allowance: string }> = [];
+    try {
+      const provider = getEthersInstance();
+      const network = await provider.getNetwork();
+      const chainId = Number(network.chainId);
+      const multicall = getMulticallAddress(chainId);
+      if (!multicall) throw new Error('Multicall is not available');
+      const multicallAbi = [
+        'function aggregate3(tuple(address target, bool allowFailure, bytes callData)[] calls) public payable returns (tuple(bool success, bytes returnData)[] returnData)',
+      ];
+      const erc20Iface = new ethers.Interface([
+        'function allowance(address,address) view returns (uint256)',
+        'function decimals() view returns (uint8)',
+      ]);
+      const mc = new ethers.Contract(multicall, multicallAbi, provider);
+      const calls: any[] = [];
+      // Make paired calls per token: [allowance, decimals]
+      pairs.forEach(({ token, owner, spender }) => {
+        calls.push({
+          target: token,
+          allowFailure: true,
+          callData: erc20Iface.encodeFunctionData('allowance', [owner, spender]),
+        });
+        calls.push({
+          target: token,
+          allowFailure: true,
+          callData: erc20Iface.encodeFunctionData('decimals', []),
+        });
+      });
+      const ret = await mc.aggregate3(calls);
+      for (let i = 0; i < pairs.length; i++) {
+        const aIdx = 2 * i;
+        const dIdx = 2 * i + 1;
+        let raw = '0';
+        let dec = FPNumber.DEFAULT_PRECISION;
+        if (ret[aIdx]?.success) {
+          try {
+            const [val] = erc20Iface.decodeFunctionResult('allowance', ret[aIdx].returnData);
+            raw = (val as bigint).toString();
+          } catch {}
+        }
+        if (ret[dIdx]?.success) {
+          try {
+            const [val] = erc20Iface.decodeFunctionResult('decimals', ret[dIdx].returnData);
+            dec = Number(val);
+          } catch {}
+        }
+        const allowance = FPNumber.fromCodecValue(raw, dec).toString();
+        out.push({ token: pairs[i].token, owner: pairs[i].owner, spender: pairs[i].spender, allowance });
+      }
+      return out;
+    } catch (e) {
+      // Fallback to sequential calls
+      for (const p of pairs) {
+        const val = await getAllowance(p.owner, p.spender, p.token);
+        out.push({ token: p.token, owner: p.owner, spender: p.spender, allowance: val ?? '0' });
+      }
+      return out;
+    }
+  },
   getAllowance,
   checkAccountIsConnected,
   getEthersInstance,
@@ -507,4 +692,32 @@ export default {
   // bridge type
   getSelectedBridgeType,
   storeSelectedBridgeType,
+  __setTestEthersProvider,
+  __resetTestEthersProvider,
+  __clearTokenContractCache,
+  __clearTokenDecimalsCache,
+  __setContractFactory,
+  __resetContractFactory,
 };
+
+function getMulticallAddress(chainId: number): string | null {
+  // Multicall3 canonical address deployed on many chains
+  const CA11 = '0xcA11bde05977b3631167028862bE2a173976CA11';
+  const supported = new Set([
+    1, // Ethereum
+    11155111, // Sepolia
+    56,
+    97, // BSC
+    137,
+    80001, // Polygon
+    42161,
+    421614, // Arbitrum One, Arbitrum Sepolia
+    43114,
+    43113, // Avalanche
+    250,
+    4002, // Fantom
+    8217,
+    1001, // Klaytn
+  ]);
+  return supported.has(chainId) ? CA11 : null;
+}

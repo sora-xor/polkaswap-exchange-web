@@ -59,7 +59,7 @@
           <p class="info-line-container__title">{{ t('createPair.firstLiquidityProvider') }}</p>
           <info-line>
             <template #info-line-prefix>
-              <p class="info-line--first-liquidity" v-html="t('createPair.firstLiquidityProviderInfo')" />
+              <p class="info-line--first-liquidity" v-html="firstLiquidityProviderInfo" />
             </template>
           </info-line>
         </div>
@@ -123,6 +123,7 @@ import { lazyComponent } from '@/router';
 import { FocusedField } from '@/store/addLiquidity/types';
 import { getter, action, mutation, state } from '@/store/decorators';
 import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBalance } from '@/utils';
+import { sanitizeHtml } from '@/utils/sanitize';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -228,6 +229,15 @@ export default class AddLiquidityForm extends Mixins(
     }
     this.insufficientBalanceTokenSymbol = '';
     return false;
+  }
+
+  get firstLiquidityProviderInfo(): string {
+    return sanitizeHtml(this.t('createPair.firstLiquidityProviderInfo'), {
+      allowedTags: ['strong', 'em', 'span', 'p', 'br'],
+      allowedAttributes: {
+        '*': ['class'],
+      },
+    });
   }
 
   async handleAddLiquidityMaxValue(token: Nullable<AccountAsset>, setValue: SetValue): Promise<void> {

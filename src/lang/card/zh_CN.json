@@ -53,9 +53,9 @@
         "emailInputAfterSendDesc": "我们已经向您发送了神奇的链接。查看你的电子邮件！",
         "personalNameInputDesc": "使用您的真实姓名。",
         "infoMessageTryAgain": "出了些问题。请再试一次",
-        "blacklistedCountriesExcuse": "很遗憾，目前我们无法支持以下国家\/地区：",
+        "blacklistedCountriesExcuse": "很遗憾，目前我们无法支持以下国家/地区：",
         "xorAmountNeeded": "您需要{xor}更多 XOR (€ {euro} )",
-        "statusPendingText": "您已成功完成KYC申请。审核正在进行中，您可以很快收到决定。<br \/><br \/>通常情况下，决定会在同一天做出，在某些情况下可能需要最多3天。",
+        "statusPendingText": "您已成功完成KYC申请。审核正在进行中，您可以很快收到决定。<br /><br />通常情况下，决定会在同一天做出，在某些情况下可能需要最多3天。",
         "resendInBtn": "重新发送 {value}",
         "statusRejectTitle": "验证被拒绝",
         "statusRejectText": "您的申请已被内部审核拒绝，请在再次申请前仔细阅读我们的要求和服务条款。",
@@ -97,7 +97,7 @@
         "oneTimeApplicationFee": "一次性发卡费用",
         "applicationFeeNote": "注：付费卡发行将在稍后阶段提供。",
         "statusRejectReasonMultiple": "您的申请因多种原因被拒绝：",
-        "selectCountryText": "选择您所在的国家\/地区",
+        "selectCountryText": "选择您所在的国家/地区",
         "filterCountries": "按国家或拨号码筛选",
         "ibanPendingDesc": "您的 IBAN 正在等待签发。\n如果等待时间超过 72 小时，请通过{email}联系我们"
     }

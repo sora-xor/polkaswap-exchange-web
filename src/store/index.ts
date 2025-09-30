@@ -1,7 +1,5 @@
 import { vuex } from '@soramitsu/soraneo-wallet-web';
 import { createDirectStore } from 'direct-vuex';
-import Vue from 'vue';
-import Vuex from 'vuex';
 
 import addLiquidity from './addLiquidity';
 import assets from './assets';
@@ -18,14 +16,11 @@ import router from './router';
 import settings from './settings';
 import soraCard from './soraCard';
 import staking from './staking';
-import swap from './swap';
 import vault from './vault';
 import web3 from './web3';
 
 import type { StoreOrModuleOptions } from 'direct-vuex';
 import type { DirectActions, DirectGetters, DirectMutations, DirectState } from 'direct-vuex/types/direct-types';
-
-Vue.use(Vuex);
 
 const modules = {
   wallet: vuex.walletModules.wallet,
@@ -33,7 +28,6 @@ const modules = {
   web3,
   assets,
   settings,
-  swap,
   referrals,
   pool,
   moonpay,

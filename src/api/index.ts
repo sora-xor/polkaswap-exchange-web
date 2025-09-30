@@ -5,6 +5,9 @@ import type VueRouter from 'vue-router';
 export const BASE_URL = import.meta.env.BASE_URL;
 
 axiosInstance.defaults.headers.common['Cache-Control'] = 'no-cache';
+// Set a sane default timeout for HTTP JSON-RPC calls
+// This avoids long hangs when probing node health or chain id
+axiosInstance.defaults.timeout = 7000;
 
 export const detectBaseUrl = (router?: VueRouter): string => {
   if (BASE_URL) return BASE_URL;

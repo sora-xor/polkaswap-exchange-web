@@ -59,7 +59,6 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
-import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -71,11 +70,14 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
 import { PageNames, Components, Language, WalletPermissions, LOCAL_STORAGE_LIMIT_PERCENTAGE } from '@/consts';
 import { BreakpointClass, Breakpoint } from '@/consts/layout';
+import { Theme } from '@/consts/theme';
+import type { DesignSystem } from '@/consts/theme';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses } from '@/utils';
-import type { NodesConnection } from '@/utils/connection';
+import { NodesConnection } from '@/utils/connection';
+import { toDwebLink } from '@/utils/ipfs';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
@@ -85,7 +87,6 @@ import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
 import type { History, HistoryItem } from '@sora-substrate/sdk';
 import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
-import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
 
 @Component({
   components: {
@@ -311,6 +312,51 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
   }
 
+  // Normalize IPFS/IPNS <img src> to dweb.link (helps NFT images behind gateways)
+  private ipfsObserver?: MutationObserver;
+  private normalizeImage(el: HTMLImageElement): void {
+    try {
+      const current = el.getAttribute('src') || '';
+      const normalized = toDwebLink(current);
+      if (normalized && normalized !== current) el.setAttribute('src', normalized);
+    } catch {}
+  }
+  private scanAndNormalizeImages(root: ParentNode | Document = document): void {
+    try {
+      const imgs = root.querySelectorAll ? root.querySelectorAll('img[src]') : [];
+      imgs.forEach((img) => this.normalizeImage(img as HTMLImageElement));
+    } catch {}
+  }
+  private startIpfsObserver(): void {
+    try {
+      this.scanAndNormalizeImages();
+      this.ipfsObserver = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+          if (m.type === 'attributes' && m.target instanceof HTMLImageElement && m.attributeName === 'src') {
+            this.normalizeImage(m.target);
+          } else if (m.type === 'childList') {
+            m.addedNodes.forEach((n) => {
+              if (n instanceof HTMLImageElement) this.normalizeImage(n);
+              else if ((n as ParentNode).querySelectorAll) this.scanAndNormalizeImages(n as ParentNode);
+            });
+          }
+        }
+      });
+      this.ipfsObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['src'],
+        childList: true,
+        subtree: true,
+      });
+    } catch {}
+  }
+  private stopIpfsObserver(): void {
+    try {
+      this.ipfsObserver?.disconnect();
+      this.ipfsObserver = undefined;
+    } catch {}
+  }
+
   async created() {
     this.setResponsiveClass();
     this.setLanguage(getLocale() as Language);
@@ -330,6 +376,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       await this.setApiKeys(data?.API_KEYS);
       this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
+      // Feature flag to enable WS backoff scheduling if provided in env
+      // Safe default is disabled
+      try {
+        NodesConnection.enableBackoff = !!data?.FEATURE_FLAGS?.wsBackoff;
+        NodesConnection.enableParallelDial = !!data?.FEATURE_FLAGS?.wsParallelDial;
+      } catch (e) {}
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
       this.setSubNetworkApps(data.SUB_NETWORKS);
@@ -354,6 +406,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   mounted(): void {
+    this.startIpfsObserver();
     this.subscribeOnLocalStorage();
     this.subscribeOnScreenSize();
     this.subscribeOnScreenOrientation();
@@ -448,6 +501,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
+    this.stopIpfsObserver();
     this.unsubscribeFromLocalStorage();
     this.unsubscribeFromScreenSize();
     this.unsubscribeFromScreenOrientation();

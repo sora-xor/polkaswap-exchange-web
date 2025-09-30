@@ -1,6 +1,4 @@
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import SScrollbar from '@soramitsu-ui/ui-vue2/lib/components/Scrollbar';
-import Vue from 'vue';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 @Component
@@ -12,7 +10,7 @@ export default class ScrollableTableMixin extends Mixins(
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
-  private scrollbarWatcher: Nullable<FnWithoutArgs> = null;
+  private teardownScrollSync: Nullable<FnWithoutArgs> = null;
 
   @Ref('table') readonly tableComponent!: any;
 
@@ -37,12 +35,12 @@ export default class ScrollableTableMixin extends Mixins(
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
       await this.$nextTick();
-      this.initScrollbar();
+      this.initScrollbarSync();
     });
   }
 
-  beforeDestroy(): void {
-    this.resetScrollbarWatcher();
+  beforeUnmount(): void {
+    this.resetScrollbarSync();
   }
 
   public handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
@@ -63,40 +61,31 @@ export default class ScrollableTableMixin extends Mixins(
     this.currentPage = current;
   }
 
-  public initScrollbar(): void {
+  public initScrollbarSync(): void {
     if (!this.tableComponent) return;
 
-    const Scrollbar = Vue.extend(SScrollbar);
-    const scrollbar = new Scrollbar();
-    scrollbar.$mount();
-
     const elTable = this.tableComponent.$refs.table;
-    const elTableBodyWrapper = elTable.$refs.bodyWrapper;
-    const elTableHeaderWrapper = elTable.$refs.headerWrapper;
-    const elTableNativeTable = elTableBodyWrapper.getElementsByTagName('table')[0];
-    const scrollbarContainer = scrollbar.$el;
-    const scrollbarWrap = scrollbar.$el.getElementsByClassName('el-scrollbar__wrap')[0];
-    const scrollbarView = scrollbar.$el.getElementsByClassName('el-scrollbar__view')[0];
+    const elTableBodyWrapper = elTable?.$refs?.bodyWrapper as HTMLElement | undefined;
+    const elTableHeaderWrapper = elTable?.$refs?.headerWrapper as HTMLElement | undefined;
 
-    scrollbarContainer.classList.add('scrollable-table');
-    elTableBodyWrapper.appendChild(scrollbar.$el);
-    scrollbarView.appendChild(elTableNativeTable);
+    if (!elTableBodyWrapper || !elTableHeaderWrapper) return;
 
-    this.scrollbarWatcher = this.$watch(
-      () => (scrollbar.$children[0] as any).moveX,
-      () => {
-        const scrollLeft = scrollbarWrap.scrollLeft;
-        // to scroll table content
-        elTableBodyWrapper.scrollLeft = scrollLeft;
-        elTableHeaderWrapper.scrollLeft = scrollLeft;
-        // to render box shadow on fixed table
-        elTable.scrollPosition = scrollLeft === 0 ? 'left' : 'right';
-      }
-    );
+    const syncScroll = () => {
+      const scrollLeft = elTableBodyWrapper.scrollLeft;
+      elTableHeaderWrapper.scrollLeft = scrollLeft;
+      elTable.scrollPosition = scrollLeft === 0 ? 'left' : 'right';
+    };
+
+    elTableBodyWrapper.addEventListener('scroll', syncScroll, { passive: true });
+    syncScroll();
+
+    this.teardownScrollSync = () => {
+      elTableBodyWrapper.removeEventListener('scroll', syncScroll);
+    };
   }
 
-  private resetScrollbarWatcher(): void {
-    this.scrollbarWatcher?.();
-    this.scrollbarWatcher = null;
+  private resetScrollbarSync(): void {
+    this.teardownScrollSync?.();
+    this.teardownScrollSync = null;
   }
 }

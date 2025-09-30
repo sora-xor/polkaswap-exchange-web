@@ -1,95 +1,224 @@
-$s-color-brand-day: #a19a9d; // 0d0248
-// Primary theme colors
-$s-color-theme-accent: #f8087b; // NEU bright pink fluro
-$s-color-theme-accent-hover: #f754a3; // NEU pale quartz pink
-$s-color-theme-accent-pressed: #bf065f;
-$s-color-theme-accent-focused: #ab0555;
-// Secondary theme colors
-$s-color-theme-secondary: #44e5b2;
-$s-color-theme-secondary-hover: #24daa0;
-$s-color-theme-secondary-pressed: #24daa0;
-$s-color-theme-secondary-focused: #24daa0;
-// Base content colors
-$s-color-base-content-primary: #2a171f;
-$s-color-base-content-secondary: #a19a9d;
-$s-color-base-content-tertiary: #d5cdd0;
-$s-color-base-content-quaternary: #75787b;
-// Base misc colors
-$s-color-base-background: #faf4f8;
-$s-color-base-border-primary: #f7f3f4;
-$s-color-base-border-secondary: #ede4e7;
-$s-color-base-background-hover: #f7f3f4;
-$s-color-base-disabled: #fdf7fb;
-$s-color-base-on-disabled: #a19a9d;
-$s-color-base-on-accent: #ffffff;
-// Utility colors
-$s-color-utility-body: #f7f3f4;
-$s-color-utility-surface: #fdf7fb;
-$s-color-utility-overlay: rgba(42, 23, 31, 0.1);
-// Status colors
-$s-color-status-success: #34ad87;
-$s-color-status-warning: #eba332;
-$s-color-status-error: #f754a3;
-$s-color-status-info: #479aef;
-$s-color-status-success-background: #b9ebdb;
-$s-color-status-warning-background: #fceebd;
-$s-color-status-error-background: #ffd8eb;
-$s-color-status-info-background: #c6e2ff;
-// Fiat colors
-$s-color-fiat-value: rgba(71, 154, 239, 1) !default;
-$s-color-rewards: #c0e2ff !default;
-// Sizes
-$s-size-mini: 24px;
-$s-size-small: 32px;
-$s-size-medium: 42px;
-$s-size-big: 58px;
-// Shadows
-$s-shadow-surface: 1px 1px 5px var(--s-shadow-color-dark), inset 1px 1px 1px var(--s-shadow-color-dark);
-$s-shadow-tooltip: 0px 1px 4px rgba(13, 2, 72, 0.35);
-$s-shadow-tab: 1px 1px 2px #ffffff, inset 1px 1px 2px rgba(0, 0, 0, 0.1); // 0px 1px 1px rgba(0, 0, 0, 0.1);
-$s-shadow-dropdown: 0px 4px 8px rgba(19, 19, 19, 0.15);
-$s-shadow-mobile-tap-bar: 0px -4px 8px rgba(19, 19, 19, 0.15);
-$s-shadow-mobile-side-menu: -4px 4px 8px rgba(19, 19, 19, 0.15);
-$s-shadow-dialog: -5px -5px 10px var(--s-shadow-color-light), 1px 1px 10px var(--s-shadow-color-dark), inset 1px 1px 2px var(--s-shadow-color-light-dark);
-$s-shadow-dialog--dark: -5px -5px 10px var(--s-shadow-color-dark-lighten--dark), 2px 2px 15px var(--s-color-base-background--dark), inset 1px 1px 2px var(--s-shadow-color-dark-lighten--dark);
+@use "sass:color";
+@use "sass:math";
+@use "sass:meta";
+@use "@soramitsu-ui/theme/sass" as theme;
+@use "@soramitsu-ui/theme/fonts/Sora";
 
-// Border Radius
-$s-border-radius-base: 16px;
-$s-border-radius-mini: $s-border-radius-base;
-$s-border-radius-small: $s-border-radius-base * 1.5;
-$s-border-radius-medium: $s-border-radius-base * 2;
-$s-border-radius-big: $s-border-radius-base * 3;
-// Fonts paths
-$s-font-family-default-path: '@soramitsu-ui/ui-vue2/lib/assets/fonts/Sora-VariableFont_wght.ttf' !default;
-$s-font-family-mono-path: '@soramitsu-ui/ui-vue2/lib/assets/fonts/JetBrainsMono-Regular.woff' !default;
-$s-font-family-icons-path: '@/assets/fonts/polkaswap_icons.ttf' !default;
-$--font-path: 'element-ui/lib/theme-chalk/fonts' !default;
-// Font Feature Settings
-$s-font-feature-settings-common: normal;
-$s-font-feature-settings-heading: normal;
-$s-font-feature-settings-caps-heading: normal;
-$s-font-feature-settings-caps: normal;
-$s-font-feature-settings-singleline: normal;
-$s-font-feature-settings-card-title: normal;
-$s-font-feature-settings-input: normal;
-$s-font-feature-settings-button: normal;
-// Transition
-$s-transition-default: all 0.125s ease-in-out;
-// Asset item height
-$s-asset-item-height: 71px;
-$s-asset-item-height--fiat: 86px;
-// override dark theme on disabled
-$s-color-base-on-disabled--dark: #c29ab7;
+@function mix($color1, $color2, $weight: 50%) {
+  @if $weight == null {
+    @return color.mix($color1, $color2);
+  }
 
-@import '../../node_modules/@soramitsu-ui/ui-vue2/lib/styles/index';
+  @if meta.type-of($weight) == 'number' and math.is-unitless($weight) {
+    $weight: $weight * 1%;
+  }
 
-:root {
-  --s-color-brand-day: #{$s-color-brand-day};
-  --s-transition-default: #{$s-transition-default};
-  // Fiat colors
-  --s-color-fiat-value: #{$s-color-fiat-value};
-  --s-color-rewards: #{$s-color-rewards};
-  // Asset item height
-  --s-asset-item-height: #{$s-asset-item-height};
-  --s-asset-item-height--fiat: #{$s-asset-item-height--fiat};
+  @return color.mix($color1, $color2, $weight: $weight);
+}
+
+$accent: #f8087b;
+$accent-hover: #f754a3;
+$accent-pressed: #bf065f;
+$accent-focused: #ab0555;
+$accent-background: mix(#ffffff, $accent, 10%);
+$accent-hover-background: mix(#ffffff, $accent, 15%);
+$accent-pressed-background: mix(#ffffff, $accent, 20%);
+$accent-focused-background: mix(#ffffff, $accent, 25%);
+
+$legacy-token-bridges: (
+  '--s-color-theme-accent': var(--sora_sys_color_primary),
+  '--s-color-theme-accent-hover': var(--sora_sys_color_primary-hover),
+  '--s-color-theme-accent-pressed': var(--sora_sys_color_primary-pressed),
+  '--s-color-theme-accent-focused': var(--sora_sys_color_primary-focused),
+  '--s-color-base-content-primary': var(--sora_sys_color_content-primary),
+  '--s-color-base-content-secondary': var(--sora_sys_color_content-secondary),
+  '--s-color-base-content-tertiary': var(--sora_sys_color_content-tertiary),
+  '--s-color-base-content-quaternary': var(--sora_sys_color_content-quaternary),
+  '--s-color-base-background': var(--sora_sys_color_background),
+  '--s-color-base-background-hover': var(--sora_sys_color_background-hover),
+  '--s-color-base-border-primary': var(--sora_sys_color_border-primary),
+  '--s-color-base-border-secondary': var(--sora_sys_color_border-secondary),
+  '--s-color-base-disabled': var(--sora_sys_color_disabled),
+  '--s-color-base-on-disabled': var(--sora_sys_color_on-disabled),
+  '--s-color-base-on-accent': var(--sora_sys_color_content-on-background-inverted),
+  '--s-color-utility-body': var(--sora_sys_color_util_body),
+  '--s-color-utility-surface': var(--sora_sys_color_util_surface),
+  '--s-color-utility-overlay': var(--sora_sys_color_util_overlay),
+  '--s-color-status-success': var(--sora_sys_color_status_success),
+  '--s-color-status-warning': var(--sora_sys_color_status_warning),
+  '--s-color-status-error': var(--sora_sys_color_status_error),
+  '--s-color-status-info': var(--sora_sys_color_status_info),
+  '--s-color-status-success-background': var(--sora_sys_color_status_success-background),
+  '--s-color-status-warning-background': var(--sora_sys_color_status_warning-background),
+  '--s-color-status-error-background': var(--sora_sys_color_status_error-background),
+  '--s-color-status-info-background': var(--sora_sys_color_status_info-background),
+  '--s-shadow-surface': var(--sora_sys_shadow_page-header),
+  '--s-shadow-tooltip': var(--sora_sys_shadow_dropdown),
+  '--s-shadow-element': var(--sora_sys_shadow_dropdown),
+  '--s-shadow-element-pressed': var(--sora_sys_shadow_active-tab),
+);
+
+$legacy-static-vars: (
+  '--s-color-brand-day': #a19a9d,
+  '--s-color-theme-secondary': #44e5b2,
+  '--s-color-theme-secondary-hover': #24daa0,
+  '--s-color-theme-secondary-pressed': #24daa0,
+  '--s-color-theme-secondary-focused': #24daa0,
+  '--s-color-base-on-disabled--dark': #c29ab7,
+  '--s-color-fiat-value': rgba(71, 154, 239, 1),
+  '--s-color-rewards': #c0e2ff,
+  '--s-size-big': 58px,
+  '--s-size-medium': 42px,
+  '--s-size-small': 32px,
+  '--s-size-mini': 24px,
+  '--s-asset-item-height': 71px,
+  '--s-asset-item-height--fiat': 86px,
+  '--s-border-radius-base': 16px,
+  '--s-border-radius-mini': 16px,
+  '--s-border-radius-small': 24px,
+  '--s-border-radius-medium': 32px,
+  '--s-border-radius-big': 48px,
+  '--s-transition-default': all 0.125s ease-in-out,
+  '--s-font-family-default': 'Sora, sans-serif',
+  '--s-font-family-mono': 'JetBrains Mono, monospace',
+  '--s-font-feature-settings-common': normal,
+  '--s-font-feature-settings-heading': normal,
+  '--s-font-feature-settings-caps-heading': normal,
+  '--s-font-feature-settings-caps': normal,
+  '--s-font-feature-settings-singleline': normal,
+  '--s-font-feature-settings-card-title': normal,
+  '--s-font-feature-settings-input': normal,
+  '--s-font-feature-settings-button': normal,
+);
+
+$legacy-metrics: (
+  '--s-basic-spacing': 8px,
+  '--s-font-size-extra-mini': 10px,
+  '--s-font-size-mini': 12px,
+  '--s-font-size-small': 14px,
+  '--s-font-size-medium': 16px,
+  '--s-font-size-large': 18px,
+  '--s-font-size-big': 24px,
+  '--s-font-size-default': 16px,
+  '--s-font-size-extra-small': 13px,
+  '--s-heading2-font-size': 30px,
+  '--s-heading6-font-size': 16px,
+  '--s-line-height-reset': 1,
+  '--s-line-height-mini': 1.1,
+  '--s-line-height-small': 1.3,
+  '--s-line-height-medium': 1.5,
+  '--s-line-height-base': 1.6,
+  '--s-line-height-big': 1.8,
+  '--s-line-height-extra-small': 1.2,
+  '--s-letter-spacing-mini': 0,
+  '--s-letter-spacing-small': 0.02em,
+  '--s-letter-spacing-big': 0.08em,
+  '--s-icon-font-size-mini': 16px,
+  '--s-icon-font-size-small': 20px,
+  '--s-icon-font-size-medium': 28px,
+  '--s-shadow-color-dark': rgba(0, 0, 0, 0.2),
+  '--s-color-outline': rgba(83, 86, 90, 0.25),
+);
+
+$legacy-dark-overrides: (
+  '--s-color-theme-secondary': #30c4a0,
+  '--s-color-theme-secondary-hover': #1fb89c,
+  '--s-color-theme-secondary-pressed': #1ba88d,
+  '--s-color-theme-secondary-focused': #25bea4,
+  '--s-color-fiat-value': rgba(71, 154, 239, 0.84),
+  '--s-shadow-element': 0px 10px 24px rgba(0, 0, 0, 0.4),
+  '--s-shadow-element-pressed': 0px 6px 16px rgba(0, 0, 0, 0.5),
+  '--s-shadow-tooltip': 0px 16px 40px rgba(0, 0, 0, 0.5),
+);
+
+$polkaswap-light-token-overrides: (
+  sys: (
+    color: (
+      primary: $accent,
+      primary-hover: $accent-hover,
+      primary-pressed: $accent-pressed,
+      primary-focused: $accent-focused,
+      primary-background: $accent-background,
+      primary-hover-background: $accent-hover-background,
+      primary-pressed-background: $accent-pressed-background,
+      primary-focused-background: $accent-focused-background,
+    ),
+  ),
+);
+
+$polkaswap-dark-token-overrides: (
+  sys: (
+    color: (
+      primary: $accent,
+      primary-hover: $accent-hover,
+      primary-pressed: $accent-pressed,
+      primary-focused: $accent-focused,
+    ),
+  ),
+);
+
+$wallet-dark-token-overrides: (
+  sys: (
+    color: (
+      background: #10121c,
+      background-hover: #181b26,
+      background-inverted: #f5f7f8,
+      content-primary: #f5f7f8,
+      content-secondary: #c7cadb,
+      content-tertiary: #979bb1,
+      content-quaternary: #6f7288,
+      border-primary: #2a2d3c,
+      border-secondary: #212333,
+      disabled: #1c1e2b,
+      on-disabled: #7a7d90,
+      util: (
+        body: #0c0d15,
+        surface: #151823,
+        surface-overlay: rgba(21, 24, 35, 0.72),
+        overlay: rgba(0, 0, 0, 0.55),
+      ),
+      status: (
+        success-background: rgba(0, 153, 0, 0.16),
+        success-background-hover: rgba(0, 153, 0, 0.28),
+        warning-background: rgba(255, 153, 0, 0.16),
+        warning-background-hover: rgba(255, 153, 0, 0.28),
+        error-background: rgba(255, 0, 0, 0.16),
+        error-background-hover: rgba(255, 0, 0, 0.28),
+        info-background: rgba(16, 112, 202, 0.16),
+        info-background-hover: rgba(16, 112, 202, 0.28),
+      ),
+    ),
+    shadow: (
+      dropdown: 0px 16px 40px rgba(3, 3, 8, 0.45),
+      floating-notification: 0px 68px 80px rgba(0, 0, 0, 0.6),
+      active-tab: 0px 1px 2px rgba(0, 0, 0, 0.6),
+      page-header: 0px 24px 80px rgba(0, 0, 0, 0.35),
+    ),
+  ),
+);
+
+@mixin apply-custom-properties($map) {
+  @each $name, $value in $map {
+    #{$name}: #{$value};
+  }
+}
+
+@include theme.typography-preset-default;
+
+.sora-theme-provider {
+  color-scheme: light;
+
+  @include theme.tokens-preset-light();
+  @include theme.eval-tokens-partial($polkaswap-light-token-overrides);
+  @include apply-custom-properties($legacy-token-bridges);
+  @include apply-custom-properties($legacy-static-vars);
+  @include apply-custom-properties($legacy-metrics);
+
+  &[data-theme='dark'] {
+    color-scheme: dark;
+
+    @include theme.eval-tokens-partial($polkaswap-dark-token-overrides);
+    @include theme.eval-tokens-partial($wallet-dark-token-overrides);
+    @include apply-custom-properties($legacy-dark-overrides);
+  }
 }

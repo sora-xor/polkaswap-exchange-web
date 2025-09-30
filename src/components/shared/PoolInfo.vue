@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <div class="pool-info">
     <slot name="prepend" />
 
@@ -6,7 +6,7 @@
       <slot />
     </div>
 
-    <div class="pool-info-buttons" v-if="$slots.buttons">
+    <div v-if="$slots.buttons" class="pool-info-buttons">
       <slot name="buttons" />
     </div>
 
@@ -15,10 +15,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
-@Component
-export default class PoolInfo extends Vue {}
+export default defineComponent({
+  name: 'PoolInfo',
+});
 </script>
 
 <style lang="scss">

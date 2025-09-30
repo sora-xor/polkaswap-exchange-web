@@ -54,6 +54,7 @@ import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import type { Node } from '@/types/nodes';
+import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
 
 import { formatLocation } from './utils';
 
@@ -71,9 +72,15 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   formatNodeLocation(code: string): string {
     const location = formatLocation(code);
     if (!location) return '';
-    const flag = `<span class="flag-emodji">${location.flag}</span>`;
-    if (!location.name) return flag;
-    return `${location.name} ${flag}`;
+    const safeFlag = `<span class="flag-emodji">${escapeHtml(location.flag)}</span>`;
+    const raw = location.name ? `${escapeHtml(location.name)} ${safeFlag}` : safeFlag;
+
+    return sanitizeHtml(raw, {
+      allowedTags: ['span'],
+      allowedAttributes: {
+        span: ['class'],
+      },
+    });
   }
 
   isConnecting(address: string) {

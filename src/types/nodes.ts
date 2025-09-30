@@ -21,4 +21,6 @@ export interface ConnectToNodeOptions {
   onReconnect?: (node: Node) => void;
   onDisconnect?: (node: Node) => void;
   currentNodeIndex?: number;
+  /** internal: reconnect attempt number for backoff */
+  attempt?: number;
 }

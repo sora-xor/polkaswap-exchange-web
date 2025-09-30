@@ -55,7 +55,7 @@
         "infoMessageTryAgain": "Qualcosa è andato storto. Per favore riprova",
         "blacklistedCountriesExcuse": "Purtroppo, al momento non siamo in grado di supportare i seguenti Paesi:",
         "xorAmountNeeded": "È necessario {xor} più XOR (€{euro})",
-        "statusPendingText": "Avete completato con successo la vostra richiesta KYC. La revisione è in corso e la decisione è attesa a breve.<br \/><br \/>Di solito la decisione viene presa il giorno stesso e in alcuni casi può richiedere fino a 3 giorni.",
+        "statusPendingText": "Avete completato con successo la vostra richiesta KYC. La revisione è in corso e la decisione è attesa a breve.<br /><br />Di solito la decisione viene presa il giorno stesso e in alcuni casi può richiedere fino a 3 giorni.",
         "resendInBtn": "RINVIA IN {value}",
         "statusRejectTitle": "Domanda respinta",
         "statusRejectText": "La sua candidatura è stata respinta dall'audit interno, la preghiamo di controllare attentamente i nostri requisiti e i termini di servizio prima di candidarsi nuovamente.",

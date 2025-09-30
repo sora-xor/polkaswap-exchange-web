@@ -6,19 +6,52 @@ import {
 
 // import { TranslationConsts } from '@/consts';
 
+import * as arJson from '../../src/lang/ar.json';
+import * as baJson from '../../src/lang/ba.json';
+import * as cardArJson from '../../src/lang/card/ar.json';
+import * as cardBaJson from '../../src/lang/card/ba.json';
+import * as cardCsJson from '../../src/lang/card/cs.json';
+import * as cardDeJson from '../../src/lang/card/de.json';
+import * as cardEnJson from '../../src/lang/card/en.json';
+import * as cardEsJson from '../../src/lang/card/es.json';
+import * as cardFrJson from '../../src/lang/card/fr.json';
+import * as cardHeJson from '../../src/lang/card/he.json';
+import * as cardIdJson from '../../src/lang/card/id.json';
+import * as cardItJson from '../../src/lang/card/it.json';
+import * as cardKmJson from '../../src/lang/card/km.json';
+import * as cardMyJson from '../../src/lang/card/my.json';
+import * as cardNlJson from '../../src/lang/card/nl.json';
+import * as cardPisJson from '../../src/lang/card/pis.json';
+import * as cardPlJson from '../../src/lang/card/pl.json';
+import * as cardRuJson from '../../src/lang/card/ru.json';
+import * as cardSrJson from '../../src/lang/card/sr.json';
+import * as cardThJson from '../../src/lang/card/th.json';
+import * as cardUkJson from '../../src/lang/card/uk.json';
+import * as cardUrJson from '../../src/lang/card/ur.json';
+import * as cardViJson from '../../src/lang/card/vi.json';
+import * as cardZhCnJson from '../../src/lang/card/zh_CN.json';
+import * as cardZhTwJson from '../../src/lang/card/zh_TW.json';
 import * as csJson from '../../src/lang/cs.json';
 import * as deJson from '../../src/lang/de.json';
 import * as enJson from '../../src/lang/en.json';
 import * as esJson from '../../src/lang/es.json';
 import * as frJson from '../../src/lang/fr.json';
+import * as heJson from '../../src/lang/he.json';
 import * as idJson from '../../src/lang/id.json';
 import * as itJson from '../../src/lang/it.json';
+import * as kmJson from '../../src/lang/km.json';
+import * as myJson from '../../src/lang/my.json';
 import * as nlJson from '../../src/lang/nl.json';
+import * as pisJson from '../../src/lang/pis.json';
 import * as plJson from '../../src/lang/pl.json';
 import * as ruJson from '../../src/lang/ru.json';
 import * as srJson from '../../src/lang/sr.json';
+import * as thJson from '../../src/lang/th.json';
+import * as ukJson from '../../src/lang/uk.json';
+import * as urJson from '../../src/lang/ur.json';
 import * as viJson from '../../src/lang/vi.json';
 import * as zhCnJson from '../../src/lang/zh_CN.json';
+import * as zhTwJson from '../../src/lang/zh_TW.json';
 
 const brokenTranslation: any = {};
 
@@ -127,6 +160,89 @@ const generateErrorLog = (
 //   });
 // });
 
+const getDefault = (module: Record<string, any>) => module.default ?? module;
+
+const flattenTranslationKeys = (source: Record<string, any>, prefix: Array<string> = []): Array<string> => {
+  const keys: Array<string> = [];
+
+  Object.keys(source).forEach((key) => {
+    const value = source[key];
+    const path = [...prefix, key];
+
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      keys.push(...flattenTranslationKeys(value, path));
+    } else {
+      keys.push(path.join('.'));
+    }
+  });
+
+  return keys;
+};
+
+test('Translation catalogs mirror English keys', () => {
+  const mainLocales = [
+    { lang: 'ba', data: getDefault(baJson) },
+    { lang: 'uk', data: getDefault(ukJson) },
+    { lang: 'cs', data: getDefault(csJson) },
+    { lang: 'de', data: getDefault(deJson) },
+    { lang: 'es', data: getDefault(esJson) },
+    { lang: 'fr', data: getDefault(frJson) },
+    { lang: 'id', data: getDefault(idJson) },
+    { lang: 'it', data: getDefault(itJson) },
+    { lang: 'nl', data: getDefault(nlJson) },
+    { lang: 'pl', data: getDefault(plJson) },
+    { lang: 'ru', data: getDefault(ruJson) },
+    { lang: 'sr', data: getDefault(srJson) },
+    { lang: 'vi', data: getDefault(viJson) },
+    { lang: 'zh-CN', data: getDefault(zhCnJson) },
+    { lang: 'zh-TW', data: getDefault(zhTwJson) },
+    { lang: 'he', data: getDefault(heJson) },
+    { lang: 'ar', data: getDefault(arJson) },
+    { lang: 'ur', data: getDefault(urJson) },
+    { lang: 'km', data: getDefault(kmJson) },
+    { lang: 'th', data: getDefault(thJson) },
+    { lang: 'pis', data: getDefault(pisJson) },
+    { lang: 'my', data: getDefault(myJson) },
+  ];
+
+  const expectedKeys = flattenTranslationKeys(getDefault(enJson)).sort();
+
+  mainLocales.forEach(({ data }) => {
+    expect(flattenTranslationKeys(data).sort()).toEqual(expectedKeys);
+  });
+
+  const cardLocales = [
+    { lang: 'ba', data: getDefault(cardBaJson) },
+    { lang: 'uk', data: getDefault(cardUkJson) },
+    { lang: 'cs', data: getDefault(cardCsJson) },
+    { lang: 'de', data: getDefault(cardDeJson) },
+    { lang: 'es', data: getDefault(cardEsJson) },
+    { lang: 'fr', data: getDefault(cardFrJson) },
+    { lang: 'id', data: getDefault(cardIdJson) },
+    { lang: 'it', data: getDefault(cardItJson) },
+    { lang: 'nl', data: getDefault(cardNlJson) },
+    { lang: 'pl', data: getDefault(cardPlJson) },
+    { lang: 'ru', data: getDefault(cardRuJson) },
+    { lang: 'sr', data: getDefault(cardSrJson) },
+    { lang: 'vi', data: getDefault(cardViJson) },
+    { lang: 'zh-CN', data: getDefault(cardZhCnJson) },
+    { lang: 'zh-TW', data: getDefault(cardZhTwJson) },
+    { lang: 'he', data: getDefault(cardHeJson) },
+    { lang: 'ar', data: getDefault(cardArJson) },
+    { lang: 'ur', data: getDefault(cardUrJson) },
+    { lang: 'km', data: getDefault(cardKmJson) },
+    { lang: 'th', data: getDefault(cardThJson) },
+    { lang: 'pis', data: getDefault(cardPisJson) },
+    { lang: 'my', data: getDefault(cardMyJson) },
+  ];
+
+  const expectedCardKeys = flattenTranslationKeys(getDefault(cardEnJson)).sort();
+
+  cardLocales.forEach(({ data }) => {
+    expect(flattenTranslationKeys(data).sort()).toEqual(expectedCardKeys);
+  });
+});
+
 test('Translation Multiple Whitespaces check and fix', () => {
   let brokenWhitespacesNumber = 0;
   const checkMultipleWhitespaces = (translation: string, lang: string, translationKeys: Array<string>) => {
@@ -169,7 +285,6 @@ test('Translation Multiple Whitespaces check and fix', () => {
       }
     }
   };
-
   // [TODO] some translations have whitespaces
   // checkTranslationItem('en', enJson, enJson);
   // checkTranslationItem('ru', ruJson, ruJson);

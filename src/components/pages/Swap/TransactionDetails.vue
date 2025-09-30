@@ -10,7 +10,7 @@
         :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
         :label-tooltip="t('swap.minReceivedTooltip')"
         :value="formattedMinMaxReceived"
-        :asset-symbol="getAssetSymbolText"
+        :asset-symbol="assetSymbol"
         :fiat-value="getFiatAmountByCodecString(minMaxReceived, isExchangeB ? tokenFrom : tokenTo)"
         is-formatted
       />
@@ -50,134 +50,109 @@
   </transaction-details>
 </template>
 
-<script lang="ts">
-import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/sdk';
-import { XOR, KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { Operation, type CodecString, type NetworkFeesObject } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { components } from '@soramitsu/soraneo-wallet-web';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
+import { useSwapStore } from '@/stores/swap';
 
 import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+const ValueStatusWrapper = lazyComponent(Components.ValueStatusWrapper);
+const TransactionDetails = lazyComponent(Components.TransactionDetails);
+const FormattedAmount = components.FormattedAmount;
+const InfoLine = components.InfoLine;
 
-type PriceValue = {
-  id: 'from' | 'to';
-  label: string;
-  value: string;
-};
-
-type RewardValue = {
-  value: string;
-  fiatValue: Nullable<string>;
-  assetSymbol: string;
-  label: string;
-};
-
-@Component({
-  components: {
-    ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
-    TransactionDetails: lazyComponent(Components.TransactionDetails),
-    FormattedAmount: components.FormattedAmount,
-    InfoLine: components.InfoLine,
-  },
-})
-export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly full!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly expanded!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
-
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @state.swap.liquidityProviderFee private liquidityProviderFee!: CodecString;
-  @state.swap.rewards private rewards!: Array<LPRewardsInfo>;
-  @state.swap.route private route!: Array<string>;
-  @state.swap.isExchangeB isExchangeB!: boolean;
-
-  @getter.swap.price private price!: string;
-  @getter.swap.priceReversed private priceReversed!: string;
-  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
-  @getter.swap.tokenTo tokenTo!: AccountAsset;
-  @getter.swap.minMaxReceived minMaxReceived!: CodecString;
-  @getter.swap.priceImpact priceImpact!: string;
-
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
-
-  get liquidityProviderFeeTooltipText(): string {
-    return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue });
+const props = withDefaults(
+  defineProps<{
+    full?: boolean;
+    expanded?: boolean;
+    disabled?: boolean;
+  }>(),
+  {
+    full: false,
+    expanded: false,
+    disabled: false,
   }
+);
 
-  get swapRoute(): Array<string> {
-    return this.route.map((assetId) => this.getAsset(assetId)?.symbol ?? '?');
-  }
+const swapStore = useSwapStore();
+const { t } = useTranslation();
+const { formatCodecNumber, formatStringValue, getFiatAmountByString, getFiatAmountByCodecString } =
+  useFormattedAmount();
 
-  get priceValues(): Array<PriceValue> {
-    const fromSymbol = this.tokenFrom?.symbol ?? '';
-    const toSymbol = this.tokenTo?.symbol ?? '';
+const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject);
+const networkFee = computed(() => networkFees.value[Operation.Swap]);
 
-    return [
-      {
-        id: 'from',
-        label: this.t('firstPerSecond', { first: fromSymbol, second: toSymbol }),
-        value: this.formatStringValue(this.price),
-      },
-      {
-        id: 'to',
-        label: this.t('firstPerSecond', { first: toSymbol, second: fromSymbol }),
-        value: this.formatStringValue(this.priceReversed),
-      },
-    ];
-  }
+const liquidityProviderFee = computed(() => swapStore.liquidityProviderFee as CodecString);
+const rewards = computed(() => swapStore.rewards as ReadonlyArray<LPRewardsInfo>);
+const route = computed(() => swapStore.route as ReadonlyArray<string>);
+const isExchangeB = computed(() => swapStore.isExchangeB);
+const tokenFrom = computed(() => swapStore.tokenFrom as AccountAsset | null);
+const tokenTo = computed(() => swapStore.tokenTo as AccountAsset | null);
+const minMaxReceived = computed(() => swapStore.minMaxReceived as CodecString);
+const priceImpact = computed(() => swapStore.priceImpact);
+const price = computed(() => swapStore.price);
+const priceReversed = computed(() => swapStore.priceReversed);
 
-  get priceImpactFormatted(): string {
-    return this.formatStringValue(this.priceImpact);
-  }
+const getAsset = (addr?: string) => store.getters.assets.assetDataByAddress(addr) as Nullable<AccountAsset>;
 
-  get rewardsValues(): Array<RewardValue> {
-    return this.rewards.map((reward, index) => {
-      const asset = KnownAssets.get(reward.currency);
-      const value = this.formatCodecNumber(reward.amount);
+const priceValues = computed(() => {
+  const fromSymbol = tokenFrom.value?.symbol ?? '';
+  const toSymbol = tokenTo.value?.symbol ?? '';
 
-      return {
-        value,
-        fiatValue: this.getFiatAmountByString(value, asset as AccountAsset),
-        assetSymbol: asset?.symbol ?? '',
-        label: index === 0 ? this.t('swap.rewardsForSwap') : '',
-      };
-    });
-  }
+  return [
+    {
+      id: 'from',
+      label: t('firstPerSecond', { first: fromSymbol, second: toSymbol }),
+      value: formatStringValue(price.value ?? ''),
+    },
+    {
+      id: 'to',
+      label: t('firstPerSecond', { first: toSymbol, second: fromSymbol }),
+      value: formatStringValue(priceReversed.value ?? ''),
+    },
+  ];
+});
 
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.Swap];
-  }
+const liquidityProviderFeeTooltipText = computed(() =>
+  t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: formatStringValue('0.6') })
+);
 
-  get networkFeeFormatted(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
+const swapRoute = computed(() => route.value.map((address) => getAsset(address)?.symbol ?? '?'));
 
-  get liquidityProviderFeeValue(): string {
-    return this.formatStringValue('0.6');
-  }
+const rewardsValues = computed(() =>
+  rewards.value.map((reward, index) => {
+    const asset = getAsset(reward.currency);
+    const value = formatCodecNumber(reward.amount);
 
-  get formattedLiquidityProviderFee(): string {
-    return this.formatCodecNumber(this.liquidityProviderFee);
-  }
+    return {
+      value,
+      fiatValue: asset ? getFiatAmountByString(value, asset) : null,
+      assetSymbol: asset?.symbol ?? '',
+      label: index === 0 ? t('swap.rewardsForSwap') : '',
+    };
+  })
+);
 
-  get formattedMinMaxReceived(): string {
-    const decimals = (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.decimals;
-    return this.formatCodecNumber(this.minMaxReceived, decimals);
-  }
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
+const formattedLiquidityProviderFee = computed(() => formatCodecNumber(liquidityProviderFee.value));
+const priceImpactFormatted = computed(() => formatStringValue(priceImpact.value ?? '0'));
 
-  get xorSymbol(): string {
-    return ' ' + XOR.symbol;
-  }
+const formattedMinMaxReceived = computed(() => {
+  const decimals = (isExchangeB.value ? tokenFrom.value : tokenTo.value)?.decimals;
+  return formatCodecNumber(minMaxReceived.value, decimals);
+});
 
-  get getAssetSymbolText(): string {
-    return (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.symbol ?? '';
-  }
-}
+const xorSymbol = ` ${XOR.symbol}`;
+const assetSymbol = computed(() => (isExchangeB.value ? tokenFrom.value : tokenTo.value)?.symbol ?? '');
 </script>
 
 <style lang="scss" scoped>

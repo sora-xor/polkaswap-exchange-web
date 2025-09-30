@@ -14,7 +14,7 @@
     </div>
 
     <div class="sora-card__header">{{ t(titleKey) }}</div>
-    <p class="sora-card__status-info" v-html="text" />
+    <div class="sora-card__status-info" v-html="safeText" />
 
     <div v-if="isRejected" class="sora-card__rejection">
       <div v-if="freeAttemptsLeft" class="tos__disclaimer">
@@ -60,6 +60,7 @@ import { Links } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { AttemptCounter, Fees, VerificationStatus } from '@/types/card';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
+import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
 
 const pendingTitle = 'card.statusPendingTitle';
 const pendingText = 'card.statusPendingText';
@@ -80,23 +81,25 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
 
   VerificationStatus = VerificationStatus;
 
-  private get rejectedText(): string {
-    if (this.currentStatus === VerificationStatus.Rejected && this.rejectReasons.length) {
-      if (this.isMultipleReasons) {
-        const rejectionList = this.rejectReasons.map((reason) => {
-          return `<li>${reason.toString()}</li>`;
-        });
+  private get sanitizedRejectReasons(): Array<string> {
+    return this.rejectReasons.map((reason) => escapeHtml(reason)).filter((reason) => !!reason);
+  }
 
-        return `${this.t('card.statusRejectReasonMultiple')} ${rejectionList.join('')}`;
+  private get rejectedText(): string {
+    if (this.currentStatus === VerificationStatus.Rejected && this.sanitizedRejectReasons.length) {
+      if (this.isMultipleReasons) {
+        const rejectionList = this.sanitizedRejectReasons.map((reason) => `<li>${reason}</li>`).join('');
+
+        return `${this.t('card.statusRejectReasonMultiple')} <ul class="sora-card__reject-reasons">${rejectionList}</ul>`;
       }
 
-      return `${this.t('card.statusRejectReason')}: ${this.rejectReasons[0]}`;
+      return `${this.t('card.statusRejectReason')}: ${this.sanitizedRejectReasons[0]}`;
     }
     return this.t('card.statusRejectText');
   }
 
   get isMultipleReasons(): boolean {
-    return this.rejectReasons.length > 1;
+    return this.sanitizedRejectReasons.length > 1;
   }
 
   get retryFee(): Nullable<string> {
@@ -147,6 +150,15 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       default:
         return this.t(pendingText);
     }
+  }
+
+  get safeText(): string {
+    return sanitizeHtml(this.text, {
+      allowedTags: ['ul', 'li', 'span', 'strong', 'em', 'p', 'br'],
+      allowedAttributes: {
+        '*': ['class'],
+      },
+    });
   }
 
   get icon(): string {

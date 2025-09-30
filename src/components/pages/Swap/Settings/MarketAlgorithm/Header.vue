@@ -15,22 +15,28 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed, toRefs, useSlots } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+const tooltipScopedSlot = 'tooltip-content';
 
-@Component
-export default class SettingsHeader extends Mixins(TranslationMixin) {
-  readonly tooltipScopedSlot = 'tooltip-content';
+defineOptions({ name: 'MarketAlgorithmHeader' });
 
-  @Prop({ type: String, default: '' }) title!: string;
-  @Prop({ type: String, default: '' }) tooltip!: string;
-
-  get hasTooltipContent(): boolean {
-    return !!this.tooltip || !!this.$scopedSlots[this.tooltipScopedSlot];
+const props = withDefaults(
+  defineProps<{
+    title?: string;
+    tooltip?: string;
+  }>(),
+  {
+    title: '',
+    tooltip: '',
   }
-}
+);
+
+const slots = useSlots();
+const { title, tooltip } = toRefs(props);
+
+const hasTooltipContent = computed(() => !!tooltip.value || !!slots[tooltipScopedSlot]);
 </script>
 
 <style lang="scss">

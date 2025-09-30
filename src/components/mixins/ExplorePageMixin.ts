@@ -1,7 +1,7 @@
 import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
-import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
+import { SortDirection } from '@/compat/soramitsu-ui';
 import { getter } from '@/store/decorators';
 
 import ScrollableTableMixin from './ScrollableTableMixin';

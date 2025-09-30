@@ -1,26 +1,40 @@
 import dayjs from 'dayjs';
 import first from 'lodash/fp/first';
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
+import { createI18n } from 'vue-i18n'; // eslint-disable-line import/named
 
-import { Language } from '@/consts';
+import { Language, TranslationConsts } from '@/consts';
 import { settingsStorage } from '@/utils/storage';
 
 import enCard from './card/en.json';
 import en from './en.json';
 
-Vue.use(VueI18n);
-
-const i18n = new VueI18n({
+const i18n = createI18n({
+  legacy: false,
+  globalInjection: true,
   locale: Language.EN,
   fallbackLocale: Language.EN,
   messages: {
     [Language.EN]: { ...en, ...enCard },
   },
-  silentTranslationWarn: process.env.NODE_ENV === 'production',
+  warnHtmlMessage: false,
 });
 
+const i18nGlobal = i18n.global;
 const loadedLanguages: Array<string> = [Language.EN];
+applyDocumentDirection(Language.EN);
+
+// Set document direction for RTL languages
+const rtlLocales = [Language.AR, Language.HE, Language.UR, Language.DV];
+function applyDocumentDirection(locale: string): void {
+  try {
+    if (typeof document !== 'undefined') {
+      const dir = rtlLocales.includes(locale as Language) ? 'rtl' : 'ltr';
+      document.documentElement.setAttribute('dir', dir);
+    }
+  } catch (e) {
+    // noop: environment may not have document (tests)
+  }
+}
 
 const hasLocale = (locale: string) => Object.values(Language).includes(locale as any);
 
@@ -42,17 +56,25 @@ export function getLocale(): string {
 
 export async function setDayJsLocale(lang: Language): Promise<void> {
   const locale = getSupportedLocale(lang);
-  let code = first(locale.split('-')) as string;
-  // There is no "no" lang, let's keep it for now, "en" will be used by default
+  let code: string = locale;
+
+  if (locale !== Language.ZH_CN && locale !== Language.ZH_TW && locale.includes('-')) {
+    code = first(locale.split('-')) as string;
+  }
+
   if (code === 'zh') {
     code = Language.ZH_CN;
   }
 
+  if (locale === Language.ZH_CN || locale === Language.ZH_TW) {
+    code = locale;
+  }
+
+  const dayjsLocale = code.toLowerCase();
+
   try {
-    const { default: preset } = code !== Language.EN ? await import(`dayjs/esm/locale/${code}.js`) : {};
-    // [TODO] check after wallet transfer
-    // wallet compability: cjs dayjs in wallet
-    dayjs.locale(code, preset, false);
+    const { default: preset } = dayjsLocale !== Language.EN ? await import(`dayjs/esm/locale/${dayjsLocale}.js`) : {};
+    dayjs.locale(dayjsLocale, preset, false);
   } catch (error) {
     console.warn(`[dayjs]: unsupported locale "${code}"`, error);
   }
@@ -67,11 +89,23 @@ export async function setI18nLocale(lang: Language): Promise<void> {
     const messagesModule = await import(`@/lang/${filename}.json`);
     const cardMessagesModule = await import(`@/lang/card/${filename}.json`);
 
-    i18n.setLocaleMessage(locale, { ...messagesModule.default, ...cardMessagesModule.default });
+    i18nGlobal.setLocaleMessage(locale, { ...messagesModule.default, ...cardMessagesModule.default });
     loadedLanguages.push(locale);
   }
 
-  i18n.locale = locale;
+  i18nGlobal.locale.value = locale;
+  applyDocumentDirection(locale);
+
+  // Apply locale-specific constant overrides (non-critical, optional)
+  if (locale === Language.AKK) {
+    try {
+      (TranslationConsts as any).AppName = '𒊹𒂵𒆜'; // Polkaswap
+      if ((TranslationConsts as any).Sora) (TranslationConsts as any).Sora = '𒀭'; // SORA
+      (TranslationConsts as any).VAL = '𒋾';
+    } catch (e) {
+      // noop
+    }
+  }
 }
 
 export default i18n;

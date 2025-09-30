@@ -52,6 +52,8 @@ import { soraCard, getUpdatedJwtPair } from '@/utils/card';
 
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin, mixins.CameraPermissionMixin) {
+  private static readonly KYC_STYLES_URL = 'https://kyc-test.soracard.com/web/v2/webkyc.css';
+
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.account.source private source!: WALLET_CONSTS.AppWallet;
   @state.soraCard.referenceNumber private referenceNumber!: Nullable<string>;
@@ -124,6 +126,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
       this.btnLoading = false;
     }
 
+    await this.ensureRemoteStylesLoaded();
     this.initKyc();
   }
 
@@ -239,6 +242,31 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
     }, 5_000);
   }
 
+  private async ensureRemoteStylesLoaded(): Promise<void> {
+    const href = KycView.KYC_STYLES_URL;
+    const selector = `link[data-soracard-css="${href}"]`;
+    const existing = document.querySelector(selector) as HTMLLinkElement | null;
+
+    if (existing) {
+      if (existing.sheet) return;
+      await new Promise<void>((resolve) => {
+        existing.addEventListener('load', () => resolve(), { once: true });
+        existing.addEventListener('error', () => resolve(), { once: true });
+      });
+      return;
+    }
+
+    await new Promise<void>((resolve) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      link.dataset.soracardCss = href;
+      link.onload = () => resolve();
+      link.onerror = () => resolve();
+      document.head.appendChild(link);
+    });
+  }
+
   async mounted(): Promise<void> {
     try {
       const { state } = await navigator.permissions.query({ name: 'camera' } as any);
@@ -250,6 +278,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
       return;
     }
 
+    await this.ensureRemoteStylesLoaded();
     this.initKyc();
   }
 }
@@ -257,8 +286,6 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
 
 <style lang="scss">
 .sora-card-kyc-wrapper {
-  @import 'https://kyc-test.soracard.com/web/v2/webkyc.css';
-
   .container {
     padding: 0;
   }

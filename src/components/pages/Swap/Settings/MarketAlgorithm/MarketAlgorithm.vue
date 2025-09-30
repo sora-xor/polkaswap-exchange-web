@@ -10,60 +10,55 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components, MarketAlgorithms } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state, getter, mutation } from '@/store/decorators';
+import store from '@/store';
+import { useSwapStore } from '@/stores/swap';
 import type { TabItem } from '@/types/tabs';
 
 import SwapSettingsHeader from './Header.vue';
 
-@Component({
-  components: {
-    SwapSettingsHeader,
-    SettingsTabs: lazyComponent(Components.SettingsTabs),
-  },
-})
-export default class SwapMarketAlgorithm extends Mixins(TranslationMixin) {
-  @state.settings.marketAlgorithm marketAlgorithm!: MarketAlgorithms;
-  @getter.swap.marketAlgorithms private marketAlgorithms!: Array<MarketAlgorithms>;
-  @getter.swap.marketAlgorithmsAvailable marketAlgorithmsAvailable!: boolean;
-  @mutation.settings.setMarketAlgorithm private setMarketAlgorithm!: (name: MarketAlgorithms) => void;
+const SettingsTabs = lazyComponent(Components.SettingsTabs);
 
-  get marketAlgorithmTabs(): Array<TabItem> {
-    return this.marketAlgorithms.map((name) => {
-      const contentKey = `dexSettings.marketAlgorithms.${name}`;
-      const content = this.te(contentKey)
-        ? this.t(`dexSettings.marketAlgorithms.${name}`, {
-            smartAlgorithm: this.generateAlgorithmItem(MarketAlgorithms.SMART),
-            tbcAlgorithm: this.generateAlgorithmItem(MarketAlgorithms.TBC),
-            xycAlgorithm: this.generateAlgorithmItem(MarketAlgorithms.XYK),
-          })
-        : '';
+const { t, te } = useTranslation();
+const swapStore = useSwapStore();
 
-      return {
-        name,
-        label: name,
-        content,
-      };
-    });
-  }
+const marketAlgorithm = computed(() => store.state.settings.marketAlgorithm as MarketAlgorithms);
+const marketAlgorithms = computed(() => swapStore.marketAlgorithms);
+const marketAlgorithmsAvailable = computed(() => swapStore.marketAlgorithmsAvailable);
 
-  get currentMarketAlgorithm(): MarketAlgorithms {
-    return this.marketAlgorithmsAvailable ? this.marketAlgorithm : MarketAlgorithms.SMART;
-  }
+const generateAlgorithmItem = (type: string) => `<span class="algorithm">${type}</span>`;
 
-  private generateAlgorithmItem(type: string): string {
-    return `<span class="algorithm">${type}</span>`;
-  }
+const marketAlgorithmTabs = computed<Array<TabItem>>(() =>
+  marketAlgorithms.value.map((name) => {
+    const contentKey = `dexSettings.marketAlgorithms.${name}`;
+    const content = te(contentKey)
+      ? t(`dexSettings.marketAlgorithms.${name}`, {
+          smartAlgorithm: generateAlgorithmItem(MarketAlgorithms.SMART),
+          tbcAlgorithm: generateAlgorithmItem(MarketAlgorithms.TBC),
+          xycAlgorithm: generateAlgorithmItem(MarketAlgorithms.XYK),
+        })
+      : '';
 
-  selectTab(name: MarketAlgorithms): void {
-    this.setMarketAlgorithm(name);
-  }
-}
+    return {
+      name,
+      label: name,
+      content,
+    };
+  })
+);
+
+const currentMarketAlgorithm = computed(() =>
+  marketAlgorithmsAvailable.value ? marketAlgorithm.value : MarketAlgorithms.SMART
+);
+
+const selectTab = (name: MarketAlgorithms) => {
+  store.commit.settings.setMarketAlgorithm(name);
+};
 </script>
 
 <style lang="scss">

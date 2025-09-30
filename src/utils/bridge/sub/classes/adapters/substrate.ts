@@ -1,7 +1,7 @@
+import { ApiPromise, WsProvider } from '@polkadot/api';
 import { Connection } from '@sora-substrate/connection';
 import { WithConnectionApi, FPNumber, Storage } from '@sora-substrate/sdk';
 import { formatBalance } from '@sora-substrate/sdk/build/assets';
-import { ApiPromise, WsProvider } from 'polkadotApi';
 
 import { ZeroStringValue } from '@/consts';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
@@ -92,6 +92,47 @@ class BaseSubAdapter extends WithConnectionApi {
         ? await this.getAccountBalance(accountAddress)
         : await this.getAccountAssetBalance(accountAddress, asset);
     }, ZeroStringValue);
+  }
+
+  /** Batch balances for mixed native/ERC20-like assets using queryMulti */
+  public async getTokenBalancesBatch(
+    pairs: Array<{ accountAddress: string; asset?: RegisteredAsset }>
+  ): Promise<CodecString[]> {
+    return await this.withConnection(
+      async () => {
+        const queries: any[] = [];
+        const meta: Array<{ native: boolean; idx: number; assetId?: any; account: string }> = [];
+        pairs.forEach((p, idx) => {
+          const isNative = !p.asset || p.asset.symbol === this.chainSymbol;
+          if (isNative) {
+            queries.push(this.api.query.system.account(p.accountAddress));
+            meta.push({ native: true, idx, account: p.accountAddress });
+          } else {
+            const assetId = (p.asset as any).address || (p.asset as any).assetId || (p.asset as any).id;
+            queries.push((this.api.query.assets as any).account(assetId, p.accountAddress));
+            meta.push({ native: false, idx, assetId, account: p.accountAddress });
+          }
+        });
+        const res = await this.api.queryMulti(queries);
+        const out: CodecString[] = [];
+        res.forEach((val: any, i: number) => {
+          const m = meta[i];
+          if (m.native) {
+            const balance = formatBalance(val.data, this.chainDecimals);
+            out[m.idx] = balance.transferable ?? ZeroStringValue;
+          } else {
+            if (val.isEmpty) {
+              out[m.idx] = ZeroStringValue;
+            } else {
+              const data = val.unwrap();
+              out[m.idx] = data.status.isLiquid ? data.balance.toString() : ZeroStringValue;
+            }
+          }
+        });
+        return out;
+      },
+      pairs.map(() => ZeroStringValue)
+    );
   }
 
   protected async getAccountBalance(accountAddress: string): Promise<CodecString> {

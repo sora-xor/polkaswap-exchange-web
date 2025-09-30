@@ -126,7 +126,7 @@
         @confirm="handleConfirm"
       />
       <swap-confirm
-        :visible.sync="confirmDialogVisibility"
+        :visible.sync="confirmDialogVisible"
         :is-insufficient-balance="isInsufficientBalance"
         @confirm="exchangeTokens"
       />
@@ -135,453 +135,424 @@
   </base-widget>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { KnownSymbols, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { api, components } from '@soramitsu/soraneo-wallet-web';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
-import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
-import SwapAmountsMixin from '@/components/mixins/SwapAmountsMixin';
-import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
+import { useConfirmDialog } from '@/composables/useConfirmDialog';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useSwapAmounts } from '@/composables/useSwapAmounts';
+import { useTokenSelect } from '@/composables/useTokenSelect';
+import { useTransaction } from '@/composables/useTransaction';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components, MarketAlgorithms } from '@/consts';
 import { lazyComponent } from '@/router';
-import { action, getter, mutation, state } from '@/store/decorators';
+import store from '@/store';
+import { useSwapStore } from '@/stores/swap';
 import {
-  isMaxButtonAvailable,
+  asZeroValue,
+  debouncedInputHandler,
+  getAssetBalance,
   getMaxValue,
   hasInsufficientBalance,
   hasInsufficientXorForFee,
-  asZeroValue,
-  getAssetBalance,
-  debouncedInputHandler,
+  isMaxButtonAvailable,
 } from '@/utils';
-import { DifferenceStatus, getDifferenceStatus, calcFiatDifference } from '@/utils/swap';
+import { DifferenceStatus, calcFiatDifference, getDifferenceStatus } from '@/utils/swap';
 
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { LPRewardsInfo, SwapQuote, Distribution } from '@sora-substrate/liquidity-proxy/build/types';
+import type { Distribution } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { DexId } from '@sora-substrate/sdk/build/dex/consts';
 import type { SwapQuoteData } from '@sora-substrate/sdk/build/swap/types';
 import type { Subscription } from 'rxjs';
 
-@Component({
-  components: {
-    BaseWidget: lazyComponent(Components.BaseWidget),
-    SwapSettings: lazyComponent(Components.SwapSettings),
-    SwapConfirm: lazyComponent(Components.SwapConfirm),
-    SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
-    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
-    SwapLossWarningDialog: lazyComponent(Components.SwapLossWarningDialog),
-    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    SelectToken: lazyComponent(Components.SelectToken),
-    TokenInput: lazyComponent(Components.TokenInput),
-    ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
-    FormattedAmount: components.FormattedAmount,
-    InfoLine: components.InfoLine,
-  },
-})
-export default class SwapFormWidget extends Mixins(
-  mixins.FormattedAmountMixin,
-  mixins.TransactionMixin,
-  TokenSelectMixin,
-  ConfirmDialogMixin,
-  InternalConnectMixin,
-  SwapAmountsMixin
-) {
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+const BaseWidget = lazyComponent(Components.BaseWidget);
+const SwapSettings = lazyComponent(Components.SwapSettings);
+const SwapConfirm = lazyComponent(Components.SwapConfirm);
+const SwapStatusActionBadge = lazyComponent(Components.SwapStatusActionBadge);
+const SwapTransactionDetails = lazyComponent(Components.SwapTransactionDetails);
+const SwapLossWarningDialog = lazyComponent(Components.SwapLossWarningDialog);
+const SlippageTolerance = lazyComponent(Components.SlippageTolerance);
+const SelectToken = lazyComponent(Components.SelectToken);
+const TokenInput = lazyComponent(Components.TokenInput);
+const ValueStatusWrapper = lazyComponent(Components.ValueStatusWrapper);
+const FormattedAmount = components.FormattedAmount;
+const InfoLine = components.InfoLine;
 
-  @state.swap.isExchangeB isExchangeB!: boolean;
-  @state.swap.isAvailable isAvailable!: boolean;
-  @state.swap.swapQuote private swapQuote!: Nullable<SwapQuote>;
-  @state.swap.allowLossPopup private allowLossPopup!: boolean;
-  @state.swap.selectedDexId private selectedDexId!: number;
-  @state.settings.slippageTolerance private slippageTolerance!: string;
+defineOptions({ name: 'SwapFormWidget' });
 
-  @getter.assets.xor private xor!: AccountAsset;
-  @getter.swap.swapLiquiditySource liquiditySource!: Nullable<LiquiditySourceTypes>;
-  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
-  @getter.settings.debugEnabled private debugEnabled!: boolean;
-  @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+  }>(),
+  {
+    parentLoading: false,
+  }
+);
 
-  @mutation.swap.setAmountWithoutImpact private setAmountWithoutImpact!: (amount?: CodecString) => void;
-  @mutation.swap.setExchangeB private setExchangeB!: (isExchangeB: boolean) => void;
-  @mutation.swap.setLiquidityProviderFee private setLiquidityProviderFee!: (value?: CodecString) => void;
-  @mutation.swap.setRewards private setRewards!: (rewards?: Array<LPRewardsInfo>) => void;
-  @mutation.swap.setRoute private setRoute!: (route?: Array<string>) => void;
-  @mutation.swap.setDistribution private setDistribution!: (distribution?: Distribution[][]) => void;
-  @mutation.swap.selectDexId private selectDexId!: (dexId?: DexId) => void;
-  @mutation.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload?: SwapQuoteData) => void;
+const { t } = useTranslation();
+const swapStore = useSwapStore();
+const {
+  tokenFrom,
+  tokenTo,
+  fromValue,
+  toValue,
+  areTokensSelected,
+  hasZeroAmount,
+  areZeroAmounts,
+  isZeroFromAmount,
+  isZeroToAmount,
+  setTokenFromAddress,
+  setTokenToAddress,
+  setFromValue,
+  setToValue,
+} = useSwapAmounts();
+const { isLoggedIn, connectSoraWallet } = useInternalConnect();
+const { confirmDialogVisible, confirmOrExecute } = useConfirmDialog();
+const { isSelectAssetLoading, withSelectAssetLoading } = useTokenSelect();
+const { loading, withApi, withNotifications } = useTransaction({
+  parentLoading: computed(() => props.parentLoading),
+});
+const {
+  getFPNumber,
+  getFPNumberFromCodec,
+  formatCodecNumber,
+  formatStringValue,
+  getFiatAmountByCodecString,
+  getFPNumberFiatAmountByFPNumber,
+} = useFormattedAmount();
 
-  @action.swap.switchTokens private switchTokens!: AsyncFnWithoutArgs;
-  @action.swap.reset private reset!: AsyncFnWithoutArgs;
+const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject);
+const networkFee = computed(() => networkFees.value[Operation.Swap]);
+const slippageTolerance = computed(() => store.state.settings.slippageTolerance);
+const xor = computed(() => store.getters.assets.xor as AccountAsset);
+const liquiditySource = computed(() => swapStore.swapLiquiditySource);
+const debugEnabled = computed(() => store.getters.settings.debugEnabled);
+const nodeIsConnected = computed(() => store.getters.settings.nodeIsConnected);
+const swapMarketAlgorithm = computed(() => swapStore.swapMarketAlgorithm);
+const isAvailable = computed(() => swapStore.isAvailable);
+const allowLossPopup = computed(() => swapStore.allowLossPopup);
+const isExchangeB = computed(() => swapStore.isExchangeB);
+const selectedDexId = computed(() => swapStore.selectedDexId);
 
-  @action.swap.resetSubscriptions private resetBalanceSubscriptions!: AsyncFnWithoutArgs;
-  @action.swap.updateSubscriptions private updateBalanceSubscriptions!: AsyncFnWithoutArgs;
+const showSettings = ref(false);
+const showSelectTokenDialog = ref(false);
+const lossWarningVisibility = ref(false);
+const isTokenFromSelected = ref(false);
+const quoteSubscription = ref<Subscription | null>(null);
+const quoteLoading = ref(false);
 
-  @Watch('liquiditySource')
-  private handleLiquiditySourceChange(): void {
-    this.runRecountSwapValues();
+const delimiters = FPNumber.DELIMITERS_CONFIG;
+const xorSymbol = ` ${XOR.symbol}`;
+
+const fiatDifference = computed(() => calcFiatDifference(fromFiatAmount.value, toFiatAmount.value).toFixed(2));
+
+const fiatDifferenceFormatted = computed(() => formatStringValue(fiatDifference.value));
+const isErrorFiatDifferenceStatus = computed(
+  () => getDifferenceStatus(Number(fiatDifference.value) || 0) === DifferenceStatus.Error
+);
+
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
+const tokenFromSymbol = computed(() => tokenFrom.value?.symbol ?? '');
+const isXorOutputSwap = computed(() => tokenTo.value?.address === XOR.address);
+const preparedForSwap = computed(() => isLoggedIn.value && areTokensSelected.value);
+const fromFiatAmount = computed(() => {
+  if (!tokenFrom.value || !fromValue.value) return FPNumber.ZERO;
+  return getFPNumberFiatAmountByFPNumber(new FPNumber(fromValue.value), tokenFrom.value) ?? FPNumber.ZERO;
+});
+const toFiatAmount = computed(() => {
+  if (!tokenTo.value || !toValue.value) return FPNumber.ZERO;
+  return getFPNumberFiatAmountByFPNumber(new FPNumber(toValue.value), tokenTo.value) ?? FPNumber.ZERO;
+});
+
+const isMaxSwapAvailable = computed(() => {
+  if (!preparedForSwap.value || !tokenFrom.value) return false;
+
+  return isMaxButtonAvailable(tokenFrom.value, fromValue.value, networkFee.value, xor.value, isXorOutputSwap.value);
+});
+
+const isInsufficientLiquidity = computed(
+  () => isAvailable.value && preparedForSwap.value && !areZeroAmounts.value && hasZeroAmount.value
+);
+const isInsufficientBalance = computed(() => {
+  if (!tokenFrom.value) return false;
+  return preparedForSwap.value && hasInsufficientBalance(tokenFrom.value, fromValue.value, networkFee.value);
+});
+const isInsufficientXorForFee = computed(() => {
+  const result = preparedForSwap.value && hasInsufficientXorForFee(xor.value, networkFee.value, isXorOutputSwap.value);
+  if (result || !isXorOutputSwap.value) {
+    return result;
+  }
+  const xorBalance = getFPNumberFromCodec(xor.value.balance?.transferable ?? '0', xor.value.decimals);
+  const fpNetworkFee = getFPNumberFromCodec(networkFee.value, xor.value.decimals).sub(xorBalance);
+  const fpAmount = getFPNumber(toValue.value || '0', xor.value.decimals).sub(
+    FPNumber.gt(fpNetworkFee, FPNumber.ZERO) ? fpNetworkFee : FPNumber.ZERO
+  );
+  return FPNumber.lte(fpAmount, FPNumber.ZERO);
+});
+
+const isConfirmSwapDisabled = computed(
+  () =>
+    !areTokensSelected.value ||
+    !swapStore.isAvailable ||
+    areZeroAmounts.value ||
+    isInsufficientLiquidity.value ||
+    isInsufficientBalance.value ||
+    isInsufficientXorForFee.value
+);
+
+const recountSwapValues = debouncedInputHandler(async () => {
+  await runRecountSwapValues();
+}, 100);
+
+function getTokenBalance(token: Nullable<AccountAsset>): CodecString {
+  return getAssetBalance(token);
+}
+
+function resetFieldFrom() {
+  setFromValue('');
+}
+
+function resetFieldTo() {
+  setToValue('');
+}
+
+async function handleInputFieldFrom(value: string) {
+  if (!areTokensSelected.value || asZeroValue(value)) {
+    resetFieldTo();
   }
 
-  @Watch('nodeIsConnected')
-  private updateConnectionSubsriptions(nodeConnected: boolean) {
-    if (nodeConnected) {
-      this.enableSwapSubscriptions();
-    } else {
-      this.resetSwapSubscriptions();
-    }
+  if (value === fromValue.value) return;
+
+  setFromValue(value);
+  recountSwapValues();
+}
+
+async function handleInputFieldTo(value: string) {
+  if (!areTokensSelected.value || asZeroValue(value)) {
+    resetFieldFrom();
   }
 
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-  KnownSymbols = KnownSymbols;
-  isTokenFromSelected = false;
-  showSettings = false;
-  showSelectTokenDialog = false;
-  lossWarningVisibility = false;
-  quoteSubscription: Nullable<Subscription> = null;
-  quoteLoading = false;
-  recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
+  if (value === toValue.value) return;
 
-  get xorSymbol(): string {
-    return ' ' + XOR.symbol;
+  setToValue(value);
+  recountSwapValues();
+}
+
+async function runRecountSwapValues() {
+  const value = isExchangeB.value ? toValue.value : fromValue.value;
+
+  const quote = swapStore.swapQuote;
+
+  if (!areTokensSelected.value || asZeroValue(value) || !quote) {
+    swapStore.setAmountWithoutImpact();
+    swapStore.setLiquidityProviderFee();
+    swapStore.setRewards();
+    swapStore.setRoute();
+    swapStore.setDistribution();
+    swapStore.selectDexId();
+    return;
   }
 
-  get networkFeeFormatted(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
+  const setOppositeValue = isExchangeB.value ? setFromValue : setToValue;
+  const resetOppositeValue = isExchangeB.value ? resetFieldFrom : resetFieldTo;
+  const oppositeToken = (isExchangeB.value ? tokenFrom.value : tokenTo.value) as AccountAsset;
 
-  get tokenFromSymbol(): string {
-    return this.tokenFrom?.symbol ?? '';
-  }
-
-  get fromFiatAmount(): FPNumber {
-    if (!(this.tokenFrom && this.fromValue)) return FPNumber.ZERO;
-    return this.getFPNumberFiatAmountByFPNumber(new FPNumber(this.fromValue), this.tokenFrom) ?? FPNumber.ZERO;
-  }
-
-  get toFiatAmount(): FPNumber {
-    if (!(this.tokenTo && this.toValue)) return FPNumber.ZERO;
-    return this.getFPNumberFiatAmountByFPNumber(new FPNumber(this.toValue), this.tokenTo) ?? FPNumber.ZERO;
-  }
-
-  get fiatDifference(): string {
-    return calcFiatDifference(this.fromFiatAmount, this.toFiatAmount).toFixed(2);
-  }
-
-  get fiatDifferenceFormatted(): string {
-    return this.formatStringValue(this.fiatDifference);
-  }
-
-  get isErrorFiatDifferenceStatus(): boolean {
-    const value = Number(this.fiatDifference);
-    const prepared = Number.isFinite(value) ? value : 0;
-    const status = getDifferenceStatus(prepared);
-
-    return status === DifferenceStatus.Error;
-  }
-
-  get isXorOutputSwap(): boolean {
-    return this.tokenTo?.address === XOR.address;
-  }
-
-  get isMaxSwapAvailable(): boolean {
-    if (!this.preparedForSwap) return false;
-
-    return isMaxButtonAvailable(
-      this.tokenFrom as AccountAsset,
-      this.fromValue,
-      this.networkFee,
-      this.xor,
-      this.isXorOutputSwap
+  try {
+    const {
+      dexId,
+      result: { amount, amountWithoutImpact, fee, rewards, route, distribution },
+    } = quote(
+      (tokenFrom.value as Asset).address,
+      (tokenTo.value as Asset).address,
+      value,
+      isExchangeB.value,
+      [liquiditySource.value].filter(Boolean) as Array<LiquiditySourceTypes>
     );
-  }
 
-  get preparedForSwap(): boolean {
-    return this.isLoggedIn && this.areTokensSelected;
-  }
-
-  get isInsufficientLiquidity(): boolean {
-    return this.isAvailable && this.preparedForSwap && !this.areZeroAmounts && this.hasZeroAmount;
-  }
-
-  get isInsufficientBalance(): boolean {
-    if (!this.tokenFrom) return false;
-
-    return this.preparedForSwap && hasInsufficientBalance(this.tokenFrom, this.fromValue, this.networkFee);
-  }
-
-  get isInsufficientXorForFee(): boolean {
-    const isInsufficientXorForFee =
-      this.preparedForSwap && hasInsufficientXorForFee(this.xor, this.networkFee, this.isXorOutputSwap);
-    if (isInsufficientXorForFee || !this.isXorOutputSwap) {
-      return isInsufficientXorForFee;
-    }
-    // It's required for XOR output without XOR or with XOR balance < network fee
-    const xorBalance = this.getFPNumberFromCodec(this.xor.balance?.transferable ?? '0', this.xor.decimals);
-    const fpNetworkFee = this.getFPNumberFromCodec(this.networkFee, this.xor.decimals).sub(xorBalance);
-    const fpAmount = this.getFPNumber(this.toValue, this.xor.decimals).sub(
-      FPNumber.gt(fpNetworkFee, this.Zero) ? fpNetworkFee : this.Zero
-    );
-    return FPNumber.lte(fpAmount, this.Zero);
-  }
-
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.Swap];
-  }
-
-  get isConfirmSwapDisabled(): boolean {
-    return (
-      !this.areTokensSelected ||
-      !this.isAvailable ||
-      this.areZeroAmounts ||
-      this.isInsufficientLiquidity ||
-      this.isInsufficientBalance ||
-      this.isInsufficientXorForFee
-    );
-  }
-
-  created(): void {
-    this.withApi(async () => {
-      // to update tbc & xst enabled assets
-      await api.swap.update();
-
-      this.enableSwapSubscriptions();
-    });
-  }
-
-  getTokenBalance(token: Nullable<AccountAsset>): CodecString {
-    return getAssetBalance(token);
-  }
-
-  resetFieldFrom(): void {
-    this.setFromValue('');
-  }
-
-  resetFieldTo(): void {
-    this.setToValue('');
-  }
-
-  handleInputFieldFrom(value: string): void {
-    if (!this.areTokensSelected || asZeroValue(value)) {
-      this.resetFieldTo();
-    }
-
-    if (value === this.fromValue) return;
-
-    this.setFromValue(value);
-
-    this.recountSwapValues();
-  }
-
-  handleInputFieldTo(value: string): void {
-    if (!this.areTokensSelected || asZeroValue(value)) {
-      this.resetFieldFrom();
-    }
-
-    if (value === this.toValue) return;
-
-    this.setToValue(value);
-
-    this.recountSwapValues();
-  }
-
-  private async runRecountSwapValues(): Promise<void> {
-    const value = this.isExchangeB ? this.toValue : this.fromValue;
-
-    if (!this.areTokensSelected || asZeroValue(value) || !this.swapQuote) {
-      this.setAmountWithoutImpact();
-      this.setLiquidityProviderFee();
-      this.setRewards();
-      this.setRoute();
-      this.setDistribution();
-      this.selectDexId();
-      return;
-    }
-
-    const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue;
-    const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo;
-    const oppositeToken = (this.isExchangeB ? this.tokenFrom : this.tokenTo) as AccountAsset;
-
-    try {
-      const {
-        dexId,
-        result: { amount, amountWithoutImpact, fee, rewards, route, distribution },
-      } = this.swapQuote(
-        (this.tokenFrom as Asset).address,
-        (this.tokenTo as Asset).address,
+    if (debugEnabled.value) {
+      const rpcResult = await api.swap.getResultRpc(
+        (tokenFrom.value as Asset).address,
+        (tokenTo.value as Asset).address,
         value,
-        this.isExchangeB,
-        [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>
+        isExchangeB.value,
+        liquiditySource.value ?? undefined
       );
 
-      // [DEBUG]
-      if (this.debugEnabled) {
-        const rpcResult = await api.swap.getResultRpc(
-          (this.tokenFrom as Asset).address,
-          (this.tokenTo as Asset).address,
-          value,
-          this.isExchangeB,
-          this.liquiditySource ?? undefined
-        );
-
-        console.table({
-          frontend: amount,
-          backend: rpcResult.amount,
-          difference: +amount - +rpcResult.amount,
-        });
-      }
-
-      setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
-      this.setAmountWithoutImpact(amountWithoutImpact as string);
-      this.setLiquidityProviderFee(fee as CodecString);
-      this.setRewards(rewards);
-      this.setRoute(route as string[]);
-      this.setDistribution(distribution as Distribution[][]);
-      this.selectDexId(dexId);
-    } catch (error: any) {
-      console.error(error);
-      resetOppositeValue();
-    }
-  }
-
-  private resetQuoteSubscription(): void {
-    this.quoteSubscription?.unsubscribe();
-    this.quoteSubscription = null;
-  }
-
-  private async subscribeOnQuote(): Promise<void> {
-    this.resetQuoteSubscription();
-
-    if (!this.areTokensSelected) return;
-
-    this.quoteLoading = true;
-
-    const observableQuote = api.swap.getDexesSwapQuoteObservable(
-      (this.tokenFrom as AccountAsset).address,
-      (this.tokenTo as AccountAsset).address
-    );
-
-    if (observableQuote) {
-      this.quoteSubscription = observableQuote.subscribe((quoteData) => {
-        this.setSubscriptionPayload(quoteData);
-        this.runRecountSwapValues();
-        this.quoteLoading = false;
-      });
-    } else {
-      this.setSubscriptionPayload();
-    }
-  }
-
-  handleFocusField(isExchangeB = false): void {
-    const isZeroValue = isExchangeB ? this.isZeroToAmount : this.isZeroFromAmount;
-    const prevFocus = this.isExchangeB;
-
-    this.setExchangeB(isExchangeB);
-
-    if (isZeroValue) {
-      this.resetFieldFrom();
-      this.resetFieldTo();
-    }
-
-    if (prevFocus !== this.isExchangeB) {
-      this.recountSwapValues();
-    }
-  }
-
-  async handleSwitchTokens(): Promise<void> {
-    if (!this.areTokensSelected) return;
-
-    await this.switchTokens();
-
-    this.runRecountSwapValues();
-  }
-
-  handleMaxValue(): void {
-    if (!this.tokenFrom) return;
-
-    this.setExchangeB(false);
-
-    const max = getMaxValue(this.tokenFrom, this.networkFee);
-
-    this.handleInputFieldFrom(max);
-  }
-
-  openSelectTokenDialog(isTokenFrom: boolean): void {
-    this.isTokenFromSelected = isTokenFrom;
-    this.showSelectTokenDialog = true;
-  }
-
-  async handleSelectToken(token: AccountAsset): Promise<void> {
-    if (token) {
-      await this.withSelectAssetLoading(async () => {
-        if (this.isTokenFromSelected) {
-          await this.setTokenFromAddress(token.address);
-        } else {
-          await this.setTokenToAddress(token.address);
-        }
-        this.subscribeOnQuote();
+      console.table({
+        frontend: amount,
+        backend: rpcResult.amount,
+        difference: +amount - +rpcResult.amount,
       });
     }
-  }
 
-  handleSwapClick(): void {
-    if (this.isErrorFiatDifferenceStatus && this.allowLossPopup) {
-      this.lossWarningVisibility = true;
-    } else {
-      this.handleConfirm();
-    }
-  }
-
-  handleConfirm(): void {
-    this.confirmOrExecute(this.exchangeTokens);
-  }
-
-  async exchangeTokens(): Promise<void> {
-    if (this.isConfirmSwapDisabled) return;
-
-    await this.withNotifications(async () => {
-      await api.swap.execute(
-        this.tokenFrom as AccountAsset,
-        this.tokenTo as AccountAsset,
-        this.fromValue,
-        this.toValue,
-        this.slippageTolerance,
-        this.isExchangeB,
-        this.liquiditySource as LiquiditySourceTypes,
-        this.selectedDexId
-      );
-
-      this.resetFieldFrom();
-      this.resetFieldTo();
-      this.setExchangeB(false);
-    });
-  }
-
-  openSettingsDialog(): void {
-    this.showSettings = true;
-  }
-
-  private enableSwapSubscriptions(): void {
-    this.updateBalanceSubscriptions();
-    this.subscribeOnQuote();
-  }
-
-  private resetSwapSubscriptions(): void {
-    this.resetBalanceSubscriptions();
-    this.resetQuoteSubscription();
-  }
-
-  beforeDestroy(): void {
-    this.resetSwapSubscriptions();
-  }
-
-  destroyed(): void {
-    this.reset();
+    setOppositeValue(getFPNumberFromCodec(amount, oppositeToken.decimals).toString());
+    swapStore.setAmountWithoutImpact(amountWithoutImpact as string);
+    swapStore.setLiquidityProviderFee(fee as CodecString);
+    swapStore.setRewards(rewards as Array<LPRewardsInfo>);
+    swapStore.setRoute(route as string[]);
+    swapStore.setDistribution(distribution as Distribution[][]);
+    swapStore.selectDexId(dexId as DexId);
+  } catch (error) {
+    console.error(error);
+    resetOppositeValue();
   }
 }
+
+function resetQuoteSubscription() {
+  quoteSubscription.value?.unsubscribe();
+  quoteSubscription.value = null;
+}
+
+async function subscribeOnQuote() {
+  resetQuoteSubscription();
+
+  if (!areTokensSelected.value) return;
+
+  quoteLoading.value = true;
+
+  const observableQuote = api.swap.getDexesSwapQuoteObservable(
+    (tokenFrom.value as AccountAsset).address,
+    (tokenTo.value as AccountAsset).address
+  );
+
+  if (observableQuote) {
+    quoteSubscription.value = observableQuote.subscribe((quoteData: SwapQuoteData) => {
+      const { quote, isAvailable, liquiditySources } = quoteData;
+      swapStore.setSubscriptionPayload({ quote, isAvailable, liquiditySources });
+      recountSwapValues();
+      quoteLoading.value = false;
+    });
+  } else {
+    swapStore.setSubscriptionPayload();
+    quoteLoading.value = false;
+  }
+}
+
+function enableSwapSubscriptions() {
+  swapStore.updateSubscriptions();
+  subscribeOnQuote();
+}
+
+function resetSwapSubscriptions() {
+  swapStore.resetSubscriptions();
+  resetQuoteSubscription();
+}
+
+function openSelectTokenDialog(isFrom: boolean) {
+  isTokenFromSelected.value = isFrom;
+  showSelectTokenDialog.value = true;
+}
+
+async function handleSelectToken(token: AccountAsset) {
+  if (!token) return;
+
+  await withSelectAssetLoading(async () => {
+    if (isTokenFromSelected.value) {
+      await setTokenFromAddress(token.address);
+    } else {
+      await setTokenToAddress(token.address);
+    }
+    subscribeOnQuote();
+  });
+}
+
+function handleSwapClick() {
+  if (isErrorFiatDifferenceStatus.value && allowLossPopup.value) {
+    lossWarningVisibility.value = true;
+  } else {
+    handleConfirm();
+  }
+}
+
+function handleConfirm() {
+  confirmOrExecute(exchangeTokens);
+}
+
+async function exchangeTokens() {
+  if (isConfirmSwapDisabled.value) return;
+
+  await withNotifications(async () => {
+    await api.swap.execute(
+      tokenFrom.value as AccountAsset,
+      tokenTo.value as AccountAsset,
+      fromValue.value,
+      toValue.value,
+      slippageTolerance.value,
+      isExchangeB.value,
+      liquiditySource.value as LiquiditySourceTypes,
+      selectedDexId.value
+    );
+
+    resetFieldFrom();
+    resetFieldTo();
+    swapStore.setExchangeB(false);
+  });
+}
+
+function handleFocusField(exchangeB = false) {
+  const isZeroValue = exchangeB ? isZeroToAmount.value : isZeroFromAmount.value;
+  const previous = isExchangeB.value;
+
+  swapStore.setExchangeB(exchangeB);
+
+  if (isZeroValue) {
+    resetFieldFrom();
+    resetFieldTo();
+  }
+
+  if (previous !== isExchangeB.value) {
+    recountSwapValues();
+  }
+}
+
+async function handleSwitchTokens() {
+  if (!areTokensSelected.value) return;
+
+  await swapStore.switchTokens();
+  recountSwapValues();
+}
+
+function handleMaxValue() {
+  if (!tokenFrom.value) return;
+
+  swapStore.setExchangeB(false);
+  const max = getMaxValue(tokenFrom.value, networkFee.value);
+  handleInputFieldFrom(max);
+}
+
+function openSettingsDialog() {
+  showSettings.value = true;
+}
+
+watch(liquiditySource, () => {
+  runRecountSwapValues();
+});
+
+watch(nodeIsConnected, (connected) => {
+  if (connected) {
+    enableSwapSubscriptions();
+  } else {
+    resetSwapSubscriptions();
+  }
+});
+
+onMounted(async () => {
+  await withApi(async () => {
+    await api.swap.update();
+    enableSwapSubscriptions();
+  });
+});
+
+onBeforeUnmount(() => {
+  resetSwapSubscriptions();
+  swapStore.reset();
+});
 </script>
 
 <style lang="scss" scoped>

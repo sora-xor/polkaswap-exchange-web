@@ -67,12 +67,12 @@
 </template>
 
 <script lang="ts">
-import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Language, Languages } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
+import { Theme } from '@/consts/theme';
 import { getter, mutation, state } from '@/store/decorators';
 import { applyTheme } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';

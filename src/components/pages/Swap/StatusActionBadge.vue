@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <s-card shadow="always" size="small" class="status-action-badge">
     <span class="status-action-badge__label"><slot name="label" /></span>
     <span class="status-action-badge__value"><slot name="value" /></span>
@@ -7,10 +7,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
-@Component
-export default class SwapStatusActionBadge extends Vue {}
+export default defineComponent({
+  name: 'SwapStatusActionBadge',
+});
 </script>
 
 <style lang="scss">

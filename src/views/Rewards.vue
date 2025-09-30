@@ -121,6 +121,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { Components } from '@/consts';
+import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { ClaimRewardsParams } from '@/store/rewards/types';
@@ -130,7 +131,6 @@ import ethersUtil from '@/utils/ethers-util';
 
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/sdk/build/rewards/types';
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {

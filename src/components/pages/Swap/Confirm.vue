@@ -26,11 +26,7 @@
     <p
       class="transaction-message"
       :class="{ 'transaction-message--min-received': !isExchangeB }"
-      v-html="
-        t(`swap.swap${isExchangeB ? 'Input' : 'Output'}Message`, {
-          transactionValue: `<span class='transaction-number'>${formattedMinMaxReceived}</span>`,
-        })
-      "
+      v-html="swapMessageHtml"
     />
     <s-divider />
     <swap-transaction-details full expanded />
@@ -48,55 +44,92 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@soramitsu/soraneo-wallet-web';
+import { computed, ref, watch } from 'vue';
 
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useSwapAmounts } from '@/composables/useSwapAmounts';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
+import { useSwapStore } from '@/stores/swap';
+import { sanitizeHtml } from '@/utils/sanitize';
 
 import type { CodecString } from '@sora-substrate/sdk';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    TokenLogo: components.TokenLogo,
-    AccountConfirmationOption: components.AccountConfirmationOption,
-    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
+const DialogBase = components.DialogBase;
+const TokenLogo = components.TokenLogo;
+const AccountConfirmationOption = components.AccountConfirmationOption;
+const SwapTransactionDetails = lazyComponent(Components.SwapTransactionDetails);
+
+defineOptions({ name: 'SwapConfirm' });
+
+const props = withDefaults(
+  defineProps<{
+    visible: boolean;
+    isInsufficientBalance?: boolean;
+    appendToBody?: boolean;
+  }>(),
+  {
+    isInsufficientBalance: false,
+    appendToBody: false,
+  }
+);
+
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'confirm'): void;
+}>();
+
+const { t } = useTranslation();
+const { formatStringValue, formatCodecNumber } = useFormattedAmount();
+const { tokenFrom, tokenTo, fromValue, toValue } = useSwapAmounts();
+const swapStore = useSwapStore();
+
+const isVisible = ref(props.visible);
+
+watch(
+  () => props.visible,
+  (value) => {
+    isVisible.value = value;
   },
-})
-export default class SwapConfirm extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
-  @state.swap.fromValue private fromValue!: string;
-  @state.swap.toValue private toValue!: string;
-  @state.swap.isExchangeB isExchangeB!: boolean;
+  { immediate: true }
+);
 
-  @getter.swap.minMaxReceived private minMaxReceived!: CodecString;
-  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
-  @getter.swap.tokenTo tokenTo!: AccountAsset;
+watch(isVisible, (value) => emit('update:visible', value));
 
-  @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly appendToBody!: boolean;
+const appendToBody = computed(() => props.appendToBody);
+const isInsufficientBalance = computed(() => props.isInsufficientBalance);
+const isExchangeB = computed(() => swapStore.isExchangeB);
+const minMaxReceived = computed(() => swapStore.minMaxReceived as CodecString);
 
-  get formattedFromValue(): string {
-    return this.formatStringValue(this.fromValue, this.tokenFrom?.decimals);
-  }
+const decimalsFrom = computed(() => tokenFrom.value?.decimals);
+const decimalsTo = computed(() => tokenTo.value?.decimals);
 
-  get formattedToValue(): string {
-    return this.formatStringValue(this.toValue, this.tokenTo?.decimals);
-  }
+const formattedFromValue = computed(() => formatStringValue(fromValue.value, decimalsFrom.value));
+const formattedToValue = computed(() => formatStringValue(toValue.value, decimalsTo.value));
+const formattedMinMaxReceived = computed(() =>
+  formatCodecNumber(minMaxReceived.value, (isExchangeB.value ? decimalsFrom.value : decimalsTo.value) ?? undefined)
+);
 
-  get formattedMinMaxReceived(): string {
-    const decimals = (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.decimals;
-    return this.formatCodecNumber(this.minMaxReceived, decimals);
-  }
+const swapMessageHtml = computed(() => {
+  const translation = t(`swap.swap${isExchangeB.value ? 'Input' : 'Output'}Message`, {
+    transactionValue: `<span class='transaction-number'>${formattedMinMaxReceived.value}</span>`,
+  });
 
-  async handleConfirm(): Promise<void> {
-    this.$emit('confirm');
-    this.closeDialog();
-  }
-}
+  return sanitizeHtml(translation, {
+    allowedTags: ['span', 'strong', 'em', 'p', 'br'],
+    allowedAttributes: {
+      span: ['class'],
+    },
+  });
+});
+
+const handleConfirm = () => {
+  emit('confirm');
+  isVisible.value = false;
+};
 </script>
 
 <style lang="scss">

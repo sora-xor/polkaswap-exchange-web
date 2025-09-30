@@ -4,12 +4,7 @@
       <s-icon class="icon" name="notifications-alert-triangle-24" size="64px" />
       <h1 class="title">{{ t('soraStaking.validatorsAttentionDialog.title') }}</h1>
       <div class="description">
-        <template v-for="item in description">
-          <p :key="'p_' + item">
-            {{ item }}
-          </p>
-          <br :key="'br_' + item" />
-        </template>
+        <p v-for="item in description" :key="item">{{ item }}</p>
       </div>
 
       <s-button type="primary" class="action-button" :loading="parentLoading" @click="handleConfirm">
@@ -86,6 +81,15 @@ export default class ValidatorsAttentionDialog extends Mixins(StakingMixin, mixi
   font-weight: 300;
   line-height: 150%;
   letter-spacing: -0.28px;
+
+  p {
+    width: 100%;
+    margin: 0 0 $inner-spacing-mini;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .action-button {

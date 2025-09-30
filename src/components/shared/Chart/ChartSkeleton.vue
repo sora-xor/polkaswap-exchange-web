@@ -36,8 +36,9 @@
 
 <script lang="ts">
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { SSkeleton, SSkeletonItem } from '@soramitsu-ui/ui-vue2/lib/components/Skeleton';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
+
+import { SSkeleton, SSkeletonItem } from '@/compat/soramitsu-ui';
 
 @Component({
   components: {

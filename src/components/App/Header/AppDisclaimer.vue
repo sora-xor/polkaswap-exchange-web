@@ -13,16 +13,7 @@
     </div>
     <s-scrollbar>
       <div class="disclaimer__text">
-        <p
-          v-html="
-            t('disclaimer', {
-              disclaimerPrefix,
-              polkaswapFaqLink,
-              memorandumLink,
-              privacyLink,
-            })
-          "
-        />
+        <p v-html="disclaimerContent" />
         <p class="disclaimer__text-fiat" ref="endLine">{{ t('fiatDisclaimer') }}</p>
       </div>
     </s-scrollbar>
@@ -46,6 +37,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Links } from '@/consts';
 import { mutation, state } from '@/store/decorators';
 import { delay } from '@/utils';
+import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
 
 @Component
 export default class AppDisclaimer extends Mixins(TranslationMixin) {
@@ -91,7 +83,28 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   }
 
   generateDisclaimerLink(href: string, content: string): string {
-    return `<a href="${href}" target="_blank" rel="nofollow noopener" class="link" title="${content}">${content}</a>`;
+    const safeContent = escapeHtml(content);
+    const safeHref = escapeHtml(href);
+
+    return `<a href="${safeHref}" target="_blank" rel="nofollow noopener" class="link" title="${safeContent}">${safeContent}</a>`;
+  }
+
+  get disclaimerContent(): string {
+    const raw = this.t('disclaimer', {
+      disclaimerPrefix: this.disclaimerPrefix,
+      polkaswapFaqLink: this.polkaswapFaqLink,
+      memorandumLink: this.memorandumLink,
+      privacyLink: this.privacyLink,
+    });
+
+    return sanitizeHtml(raw, {
+      allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br'],
+      allowedAttributes: {
+        '*': ['class'],
+        a: ['href', 'rel', 'target', 'title', 'class'],
+        span: ['class'],
+      },
+    });
   }
 
   checkUserScroll(): void {

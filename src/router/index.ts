@@ -1,7 +1,6 @@
 import { WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
-import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import VueRouter from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router'; // eslint-disable-line import/named
 
 import { PageNames, BridgeChildPages } from '@/consts';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
@@ -17,9 +16,7 @@ import { vaultLazyView } from '@/modules/vault/router';
 import store from '@/store';
 import { updateDocumentTitle } from '@/utils';
 
-import type { RouteConfig } from 'vue-router';
-
-Vue.use(VueRouter);
+import type { RouteLocationNormalized, RouteRecordRaw } from 'vue-router';
 
 Component.registerHooks(['beforeRouteEnter', 'beforeRouteUpdate', 'beforeRouteLeave']);
 
@@ -35,7 +32,7 @@ const lazyView = (name: string) => () => import(`@/views/${name}.vue`);
  * if the current route isn't the same as param, then it will wait for `router.push`
  */
 async function goTo(name: PageNames): Promise<void> {
-  const current = router.currentRoute.name;
+  const current = router.currentRoute.value?.name as PageNames | undefined;
   if (name === PageNames.Wallet) {
     if (!store.getters.wallet.account.isLoggedIn) {
       store.commit.wallet.router.navigate({ name: WALLET_CONSTS.RouteNames.WalletConnection });
@@ -54,7 +51,7 @@ async function goTo(name: PageNames): Promise<void> {
   }
 }
 
-const routes: Array<RouteConfig> = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     redirect: '/swap',
@@ -319,17 +316,17 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Burn),
   },
   {
-    path: '*',
+    path: '/:catchAll(.*)',
     redirect: '/swap',
   },
 ];
 
-const router = new VueRouter({
-  mode: 'hash',
+const router = createRouter({
+  history: createWebHashHistory(),
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next) => {
   const prev = from.name as Nullable<PageNames>;
   const current = to.name as PageNames;
   const setRoute = (name: PageNames, withNext = true) => {

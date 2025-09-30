@@ -1,9 +1,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 
+import { Theme } from '@/consts/theme';
 import { getter } from '@/store/decorators';
 import { getCssVariableValue as css } from '@/utils';
-
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component
 export default class ThemePaletteMixin extends Vue {

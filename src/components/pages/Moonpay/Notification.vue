@@ -5,7 +5,7 @@
     </template>
     <simple-notification :success="success" @submit.native.prevent="close">
       <template #title>{{ title }}</template>
-      <template #text><div v-html="text" /></template>
+      <template #text><div v-html="sanitizedText" /></template>
     </simple-notification>
   </dialog-base>
 </template>
@@ -16,11 +16,11 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
+import { Theme } from '@/consts/theme';
 import { mutation, state, getter } from '@/store/decorators';
+import { sanitizeHtml } from '@/utils/sanitize';
 
 import { MoonpayNotifications } from './consts';
-
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
@@ -56,6 +56,16 @@ export default class MoonpayNotification extends Mixins(TranslationMixin) {
   get text(): string {
     if (!this.notificationKey) return '';
     return this.t(`moonpay.notifications.${this.notificationKey}.text`);
+  }
+
+  get sanitizedText(): string {
+    return sanitizeHtml(this.text, {
+      allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br'],
+      allowedAttributes: {
+        '*': ['class'],
+        a: ['href', 'rel', 'target', 'title', 'class'],
+      },
+    });
   }
 
   close(): void {

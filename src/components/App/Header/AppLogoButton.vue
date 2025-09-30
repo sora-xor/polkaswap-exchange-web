@@ -5,10 +5,10 @@
 </template>
 
 <script lang="ts">
-import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 import PolkaswapLogo from '@/components/shared/Logo/Polkaswap.vue';
+import { Theme } from '@/consts/theme';
 
 @Component({
   components: {

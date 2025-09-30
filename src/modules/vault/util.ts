@@ -1,4 +1,4 @@
-import { Status } from '@soramitsu-ui/ui-vue2/lib/types';
+import { Status } from '@/compat/soramitsu-ui';
 
 export function getLtvStatus(ltv: number): Status {
   let status = Status.SUCCESS;

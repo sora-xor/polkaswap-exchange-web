@@ -107,7 +107,6 @@
 </template>
 
 <script lang="ts">
-import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -121,6 +120,7 @@ import {
   SidebarMenuItemLink,
   FaucetLink,
 } from '@/consts';
+import { Theme } from '@/consts/theme';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { isDashboardPage } from '@/modules/dashboard/router';
 import { PoolPageNames } from '@/modules/pool/consts';

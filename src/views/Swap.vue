@@ -52,177 +52,169 @@
   </widgets-grid>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { computed, reactive, ref, watch } from 'vue';
 
-import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
-import SwapAmountsMixin from '@/components/mixins/SwapAmountsMixin';
+import { useLoading } from '@/composables/useLoading';
+import { useSelectedTokensRoute } from '@/composables/useSelectedTokensRoute';
+import { useSwapAmounts } from '@/composables/useSwapAmounts';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
-import { action, getter, state } from '@/store/decorators';
+import store from '@/store';
+import { useSwapStore } from '@/stores/swap';
 import type { ResponsiveLayouts, WidgetsVisibilityModel } from '@/types/layout';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 enum SwapWidgets {
   Customise = 'customise',
-  // main
   Form = 'swapForm',
   Chart = 'swapChart',
   Distribution = 'swapDistribution',
-  // additional
   TransactionDetails = 'swapTransactionDetails',
   Transactions = 'swapTransactions',
   TokenPriceChart = 'swapTokenPriceChart',
   SupplyChart = 'swapSupplyChart',
 }
 
-@Component({
-  components: {
-    SwapFormWidget: lazyComponent(Components.SwapFormWidget),
-    SwapTransactionsWidget: lazyComponent(Components.SwapTransactionsWidget),
-    SwapTransactionDetailsWidget: lazyComponent(Components.SwapTransactionDetailsWidget),
-    SwapDistributionWidget: lazyComponent(Components.SwapDistributionWidget),
-    CustomiseWidget: lazyComponent(Components.CustomiseWidget),
-    PriceChartWidget: lazyComponent(Components.PriceChartWidget),
-    TokenPriceChartWidget: lazyComponent(Components.TokenPriceChartWidget),
-    SupplyChartWidget: lazyComponent(Components.SupplyChartWidget),
-    WidgetsGrid: lazyComponent(Components.WidgetsGrid),
-  },
-})
-export default class Swap extends Mixins(mixins.LoadingMixin, SwapAmountsMixin, SelectedTokenRouteMixin) {
-  @state.swap.isAvailable isAvailable!: boolean;
-  @state.router.prev private prevRoute!: Nullable<PageNames>;
+const SwapFormWidget = lazyComponent(Components.SwapFormWidget);
+const SwapTransactionsWidget = lazyComponent(Components.SwapTransactionsWidget);
+const SwapTransactionDetailsWidget = lazyComponent(Components.SwapTransactionDetailsWidget);
+const SwapDistributionWidget = lazyComponent(Components.SwapDistributionWidget);
+const CustomiseWidget = lazyComponent(Components.CustomiseWidget);
+const PriceChartWidget = lazyComponent(Components.PriceChartWidget);
+const TokenPriceChartWidget = lazyComponent(Components.TokenPriceChartWidget);
+const SupplyChartWidget = lazyComponent(Components.SupplyChartWidget);
+const WidgetsGrid = lazyComponent(Components.WidgetsGrid);
 
-  readonly SwapWidgets = SwapWidgets;
+defineOptions({ name: 'SwapPage' });
 
-  readonly DefaultLayouts: ResponsiveLayouts = {
-    lg: [
-      { x: 5, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 5, y: 20, w: 6, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
-      { x: 5, y: 24, w: 6, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
-      { x: 5, y: 24, w: 6, h: 8, minW: 4, minH: 8, i: SwapWidgets.TransactionDetails },
-      { x: 5, y: 24, w: 6, h: 16, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
-      { x: 11, y: 0, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
-      { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.TokenPriceChart },
-    ],
-    md: [
-      { x: 3, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 3, y: 20, w: 4, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
-      { x: 3, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
-      { x: 3, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.TransactionDetails },
-      { x: 3, y: 24, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.SupplyChart },
-      { x: 7, y: 0, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
-      { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.TokenPriceChart },
-    ],
-    sm: [
-      { x: 1, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 1, y: 20, w: 4, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
-      { x: 1, y: 24, w: 4, h: 9, minW: 4, minH: 9, i: SwapWidgets.Distribution },
-      { x: 1, y: 24, w: 4, h: 9, minW: 4, minH: 9, i: SwapWidgets.TransactionDetails },
-      { x: 1, y: 24, w: 4, h: 20, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
-      { x: 5, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      { x: 5, y: 20, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      { x: 5, y: 40, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.TokenPriceChart },
-    ],
-    xs: [
-      { x: 0, y: 0, w: 4, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
-      { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
-      { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.TransactionDetails },
-      { x: 4, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      { x: 0, y: 32, w: 4, h: 16, minW: 4, minH: 16, i: SwapWidgets.Transactions },
-      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.TokenPriceChart },
-      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
-    ],
-    xss: [
-      { x: 0, y: 0, w: 4, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
-      { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
-      { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.TransactionDetails },
-      { x: 0, y: 36, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.TokenPriceChart },
-      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
-    ],
+const { t, tc } = useTranslation();
+const { loading, withApi } = useLoading();
+const swapStore = useSwapStore();
+const { tokenFrom, tokenTo, setTokenFromAddress, setTokenToAddress } = useSwapAmounts();
+
+const customizePopper = ref(false);
+const options = reactive({ edit: false });
+const widgets = ref<WidgetsVisibilityModel>({
+  [SwapWidgets.Chart]: true,
+  [SwapWidgets.Distribution]: true,
+  [SwapWidgets.TransactionDetails]: false,
+  [SwapWidgets.Transactions]: false,
+  [SwapWidgets.TokenPriceChart]: false,
+  [SwapWidgets.SupplyChart]: false,
+});
+
+const DefaultLayouts: ResponsiveLayouts = {
+  lg: [
+    { x: 5, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+    { x: 5, y: 20, w: 6, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
+    { x: 5, y: 24, w: 6, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
+    { x: 5, y: 24, w: 6, h: 8, minW: 4, minH: 8, i: SwapWidgets.TransactionDetails },
+    { x: 5, y: 24, w: 6, h: 16, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
+    { x: 11, y: 0, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
+    { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+    { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.TokenPriceChart },
+  ],
+  md: [
+    { x: 3, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+    { x: 3, y: 20, w: 4, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
+    { x: 3, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
+    { x: 3, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.TransactionDetails },
+    { x: 3, y: 24, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.SupplyChart },
+    { x: 7, y: 0, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
+    { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+    { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.TokenPriceChart },
+  ],
+  sm: [
+    { x: 1, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+    { x: 1, y: 20, w: 4, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
+    { x: 1, y: 24, w: 4, h: 9, minW: 4, minH: 9, i: SwapWidgets.Distribution },
+    { x: 1, y: 24, w: 4, h: 9, minW: 4, minH: 9, i: SwapWidgets.TransactionDetails },
+    { x: 1, y: 24, w: 4, h: 20, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
+    { x: 5, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+    { x: 5, y: 20, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+    { x: 5, y: 40, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.TokenPriceChart },
+  ],
+  xs: [
+    { x: 0, y: 0, w: 4, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
+    { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+    { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
+    { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.TransactionDetails },
+    { x: 4, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+    { x: 0, y: 32, w: 4, h: 16, minW: 4, minH: 16, i: SwapWidgets.Transactions },
+    { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.TokenPriceChart },
+    { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
+  ],
+  xss: [
+    { x: 0, y: 0, w: 4, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
+    { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+    { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
+    { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.TransactionDetails },
+    { x: 0, y: 36, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+    { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.TokenPriceChart },
+    { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+    { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
+  ],
+};
+
+const isAvailable = computed(() => swapStore.isAvailable);
+const prevRoute = computed(() => store.state.router.prev as Nullable<PageNames>);
+
+const { firstRouteAddress, secondRouteAddress, isValidRoute, parseCurrentRoute, updateRouteAfterSelectTokens } =
+  useSelectedTokensRoute(async ({ firstAddress, secondAddress }) => {
+    await setTokenFromAddress(firstAddress);
+    await setTokenToAddress(secondAddress);
+  });
+
+watch([tokenFrom, tokenTo], ([from, to]) => {
+  if (from && to) {
+    updateRouteAfterSelectTokens(from as AccountAsset, to as AccountAsset);
+  }
+});
+
+const labels = computed(() => {
+  const priceText = t('priceChartText');
+  const aSymbol = tokenFrom.value?.symbol ?? '';
+  const bSymbol = tokenTo.value?.symbol ?? '';
+  const tokensText =
+    aSymbol && bSymbol ? [aSymbol, bSymbol].filter(Boolean).join('/') : `(${t('orderBook.tokenPair')})`;
+
+  return {
+    [SwapWidgets.Form]: t('swapText'),
+    [SwapWidgets.Distribution]: t('swap.route'),
+    [SwapWidgets.TransactionDetails]: t('transaction.title'),
+    [SwapWidgets.Transactions]: tc('transactionText', 2),
+    [SwapWidgets.Chart]: `${priceText} ${tokensText}`,
+    [SwapWidgets.TokenPriceChart]: priceText,
+    [SwapWidgets.SupplyChart]: t('createToken.tokenSupply.placeholder'),
+    edit: t('editText'),
   };
+});
 
-  customizePopper = false;
+const pageLoading = computed(() => loading.value);
 
-  options = {
-    edit: false,
-  };
+await withApi(async () => {
+  parseCurrentRoute();
 
-  widgets: WidgetsVisibilityModel = {
-    [SwapWidgets.Chart]: true,
-    [SwapWidgets.Distribution]: true,
-    [SwapWidgets.TransactionDetails]: false,
-    [SwapWidgets.Transactions]: false,
-    [SwapWidgets.TokenPriceChart]: false,
-    [SwapWidgets.SupplyChart]: false,
-  };
-
-  get labels(): Record<string, string> {
-    const priceText = this.t('priceChartText');
-
-    const aSymbol = this.tokenFrom?.symbol ?? '';
-    const bSymbol = this.tokenTo?.symbol ?? '';
-    const tokensText =
-      aSymbol && bSymbol ? [aSymbol, bSymbol].filter(Boolean).join('/') : `(${this.t('orderBook.tokenPair')})`;
-
-    return {
-      // widgets
-      [SwapWidgets.Form]: this.t('swapText'),
-      [SwapWidgets.Distribution]: this.t('swap.route'),
-      [SwapWidgets.TransactionDetails]: this.t('transaction.title'),
-      [SwapWidgets.Transactions]: this.tc('transactionText', 2),
-      [SwapWidgets.Chart]: `${priceText} ${tokensText}`,
-      [SwapWidgets.TokenPriceChart]: priceText,
-      [SwapWidgets.SupplyChart]: this.t('createToken.tokenSupply.placeholder'),
-      // options
-      edit: this.t('editText'),
-    };
+  if (tokenFrom.value && tokenTo.value && prevRoute.value !== PageNames.OrderBook) {
+    updateRouteAfterSelectTokens(tokenFrom.value as AccountAsset, tokenTo.value as AccountAsset);
+  } else if (isValidRoute.value && firstRouteAddress.value && secondRouteAddress.value) {
+    await setTokenFromAddress(firstRouteAddress.value);
+    await setTokenToAddress(secondRouteAddress.value);
+  } else if (!tokenFrom.value) {
+    await setTokenFromAddress(XOR.address);
+    await setTokenToAddress('');
   }
-
-  get pageLoading(): boolean {
-    return this.parentLoading || this.loading;
-  }
-
-  @Watch('tokenFrom')
-  @Watch('tokenTo')
-  private updateRouteTokensParams() {
-    this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
-  }
-
-  created(): void {
-    this.withApi(async () => {
-      this.parseCurrentRoute();
-      // Need to wait the previous page beforeDestroy somehow to set the route params
-      // TODO: [STEFAN]: add the core logic for each component using common Mixin + vuex router module
-      if (this.tokenFrom && this.tokenTo && this.prevRoute !== PageNames.OrderBook) {
-        this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
-      } else if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
-        await this.setData({
-          firstAddress: this.firstRouteAddress,
-          secondAddress: this.secondRouteAddress,
-        });
-      } else if (!this.tokenFrom) {
-        await this.setData({
-          firstAddress: XOR.address,
-          secondAddress: '',
-        });
-      }
-    });
-  }
-
-  /** Overrides SelectedTokenRouteMixin */
-  async setData(params: { firstAddress: string; secondAddress: string }): Promise<void> {
-    await this.setTokenFromAddress(params.firstAddress);
-    await this.setTokenToAddress(params.secondAddress);
-  }
-}
+});
 </script>
+
+<style lang="scss" scoped>
+.swap-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+</style>

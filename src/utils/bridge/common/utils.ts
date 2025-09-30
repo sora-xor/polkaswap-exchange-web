@@ -57,7 +57,7 @@ export const waitForEvmTransactionMined = async (
   }
 };
 
-export const getEvmTransactionRecieptByHash = async (
+export const getEvmTransactionReceiptByHash = async (
   transactionHash: string
 ): Promise<{ fee: string; blockHash: string; blockNumber: number; from: string } | null> => {
   try {

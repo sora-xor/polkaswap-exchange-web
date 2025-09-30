@@ -2,7 +2,7 @@
   <dialog-base class="popup" :visible.sync="isVisible">
     <div class="popup-mobile">
       <div class="popup-info">
-        <h3 class="popup-info__headline" v-html="t('mobilePopup.header', { polkaswapHighlight })" />
+        <h3 class="popup-info__headline" v-html="headlineHtml" />
         <p class="popup-info__text">
           {{ t('mobilePopup.info') }}
         </p>
@@ -30,6 +30,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { StoreLinks, app } from '@/consts';
+import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
 
 @Component({
   components: {
@@ -42,7 +43,19 @@ export default class AppMobilePopup extends Mixins(mixins.DialogMixin, Translati
   StoreLinks = StoreLinks;
 
   get polkaswapHighlight(): string {
-    return `<span class="popup-info__headline--highlight">${app.name}</span>`;
+    const safeName = escapeHtml(app.name);
+    return `<span class="popup-info__headline--highlight">${safeName}</span>`;
+  }
+
+  get headlineHtml(): string {
+    const headline = this.t('mobilePopup.header', { polkaswapHighlight: this.polkaswapHighlight });
+
+    return sanitizeHtml(headline, {
+      allowedTags: ['span', 'strong', 'em', 'br'],
+      allowedAttributes: {
+        span: ['class'],
+      },
+    });
   }
 
   handleConfirm(): void {

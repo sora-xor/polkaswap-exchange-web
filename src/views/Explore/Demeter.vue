@@ -163,9 +163,9 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
-import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
+import { SortDirection } from '@/compat/soramitsu-ui';
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import { Components } from '@/consts';
 import { DemeterStakingComponents } from '@/modules/staking/demeter/consts';

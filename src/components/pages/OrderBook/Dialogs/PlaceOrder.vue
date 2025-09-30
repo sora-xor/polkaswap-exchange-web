@@ -26,64 +26,73 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@soramitsu/soraneo-wallet-web';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useSwapAmounts } from '@/composables/useSwapAmounts';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
+import store from '@/store';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    TokenLogo: components.TokenLogo,
-    AccountConfirmationOption: components.AccountConfirmationOption,
-    PlaceTransactionDetails: lazyComponent(Components.PlaceTransactionDetails),
-  },
-})
-export default class PlaceLimitOrder extends Mixins(TranslationMixin, mixins.DialogMixin) {
-  @state.orderBook.baseValue private baseValue!: string;
-  @state.orderBook.quoteValue private quoteValue!: string;
-  @state.swap.toValue private toValue!: string;
+const DialogBase = components.DialogBase;
+const TokenLogo = components.TokenLogo;
+const AccountConfirmationOption = components.AccountConfirmationOption;
+const PlaceTransactionDetails = lazyComponent(Components.PlaceTransactionDetails);
 
-  @getter.orderBook.baseAsset baseAsset!: AccountAsset;
-  @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
+const props = withDefaults(
+  defineProps<{
+    isMarketType?: boolean;
+    isInsufficientBalance?: boolean;
+    isBuySide?: boolean;
+  }>(),
+  {
+    isMarketType: false,
+    isInsufficientBalance: false,
+    isBuySide: true,
+  }
+);
 
-  @Prop({ default: false, type: Boolean }) readonly isMarketType!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
-  @Prop({ default: true, type: Boolean }) readonly isBuySide!: boolean;
+const isVisible = defineModel<boolean>('visible', { default: false });
+const emit = defineEmits<{ (e: 'confirm'): void }>();
 
-  get title(): string {
-    return this.isMarketType ? this.t('orderBook.dialog.placeMarket') : this.t('orderBook.dialog.placeLimit');
+const { t } = useTranslation();
+const { toValue } = useSwapAmounts();
+
+const baseValue = computed(() => store.state.orderBook.baseValue);
+const quoteValue = computed(() => store.state.orderBook.quoteValue);
+const baseAsset = computed(() => store.getters.orderBook.baseAsset as Nullable<AccountAsset>);
+const quoteAsset = computed(() => store.getters.orderBook.quoteAsset as Nullable<AccountAsset>);
+
+const title = computed(() =>
+  props.isMarketType ? t('orderBook.dialog.placeMarket') : t('orderBook.dialog.placeLimit')
+);
+
+const upperText = computed(() => {
+  const symbol = baseAsset.value?.symbol;
+
+  if (props.isMarketType) {
+    return props.isBuySide
+      ? t('orderBook.dialog.buy', { amount: toValue.value, symbol })
+      : t('orderBook.dialog.sell', { amount: baseValue.value, symbol });
   }
 
-  get upperText(): string {
-    const symbol = this.baseAsset?.symbol;
+  return props.isBuySide
+    ? t('orderBook.dialog.buy', { amount: baseValue.value, symbol })
+    : t('orderBook.dialog.sell', { amount: baseValue.value, symbol });
+});
 
-    if (this.isMarketType) {
-      return this.isBuySide
-        ? this.t('orderBook.dialog.buy', { amount: this.toValue, symbol })
-        : this.t('orderBook.dialog.sell', { amount: this.baseValue, symbol });
-    } else {
-      return this.isBuySide
-        ? this.t('orderBook.dialog.buy', { amount: this.baseValue, symbol })
-        : this.t('orderBook.dialog.sell', { amount: this.baseValue, symbol });
-    }
-  }
+const lowerText = computed(() =>
+  t('orderBook.dialog.at', { price: quoteValue.value, symbol: quoteAsset.value?.symbol })
+);
 
-  get lowerText(): string {
-    return this.t('orderBook.dialog.at', { price: this.quoteValue, symbol: this.quoteAsset?.symbol });
-  }
-
-  async handleConfirm(): Promise<void> {
-    this.$emit('confirm');
-    this.isVisible = false;
-  }
-}
+const handleConfirm = async () => {
+  emit('confirm');
+  isVisible.value = false;
+};
 </script>
 
 <style lang="scss">

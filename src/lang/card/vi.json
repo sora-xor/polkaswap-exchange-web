@@ -55,7 +55,7 @@
         "infoMessageTryAgain": "Đã xảy ra sự cố. Vui lòng thử lại",
         "blacklistedCountriesExcuse": "Rất tiếc, tại thời điểm này, chúng tôi không thể hỗ trợ các quốc gia sau:",
         "xorAmountNeeded": "Bạn cần thêm {xor} XOR (€{euro})",
-        "statusPendingText": "Bạn đã hoàn thành thành công KYC của mình. Quá trình xem xét đang chờ xử lý và bạn có thể sớm nhận được quyết định. <br \/><br \/>Thông thường quyết định được đưa ra trong ngày và trong một số trường hợp có thể mất đến 3 ngày.",
+        "statusPendingText": "Bạn đã hoàn thành thành công KYC của mình. Quá trình xem xét đang chờ xử lý và bạn có thể sớm nhận được quyết định. <br /><br />Thông thường quyết định được đưa ra trong ngày và trong một số trường hợp có thể mất đến 3 ngày.",
         "resendInBtn": "GỬI LẠI VÀO {value}",
         "statusRejectTitle": "Xác minh bị từ chối",
         "statusRejectText": "Đơn đăng ký của bạn đã bị kiểm toán nội bộ từ chối, vui lòng kiểm tra kỹ các yêu cầu và điều khoản dịch vụ của chúng tôi trước khi đăng ký lại",

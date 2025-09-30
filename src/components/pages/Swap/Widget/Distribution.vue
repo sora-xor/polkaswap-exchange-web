@@ -73,104 +73,97 @@
   </base-widget>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { SSkeleton, SSkeletonItem } from '@soramitsu-ui/ui-vue2/lib/components/Skeleton';
-import { Component, Mixins } from 'vue-property-decorator';
+import { components } from '@soramitsu/soraneo-wallet-web';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { SSkeleton, SSkeletonItem } from '@/compat/soramitsu-ui';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useSwapAmounts } from '@/composables/useSwapAmounts';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
+import { useSwapStore } from '@/stores/swap';
 import { calcFiatDifference } from '@/utils/swap';
 
 import type { Distribution } from '@sora-substrate/liquidity-proxy/build/types';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-type SwapSource = {
-  income: string;
-  outcome: string;
-  fee: string;
-  source: string;
-  fiatDifference: string;
-};
+const BaseWidget = lazyComponent(Components.BaseWidget);
+const ValueStatusWrapper = lazyComponent(Components.ValueStatusWrapper);
+const TokenLogo = components.TokenLogo;
+const FormattedAmount = components.FormattedAmount;
 
-type SwapPath = {
-  input: AccountAsset;
-  amount: string;
-  sources: SwapSource[];
-  output?: AccountAsset;
-};
+defineOptions({ name: 'SwapDistributionWidget' });
 
-const MARKETS = {
+const MARKETS: Partial<Record<LiquiditySourceTypes, string>> = {
   [LiquiditySourceTypes.XYKPool]: 'XYK Pool',
   [LiquiditySourceTypes.MulticollateralBondingCurvePool]: 'TBC Pool',
   [LiquiditySourceTypes.XSTPool]: 'XST Pool',
   [LiquiditySourceTypes.OrderBook]: 'Order Book',
 };
 
-@Component({
-  components: {
-    SSkeleton,
-    SSkeletonItem,
-    TokenLogo: components.TokenLogo,
-    FormattedAmount: components.FormattedAmount,
-    BaseWidget: lazyComponent(Components.BaseWidget),
-    ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
-  },
-})
-export default class SwapDistributionWidget extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  @state.swap.distribution private distribution!: Distribution[][];
-  @state.swap.fromValue fromValue!: string;
-  @state.swap.toValue toValue!: string;
+const { t } = useTranslation();
+const { formatStringValue, getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
+const { tokenFrom, tokenTo, fromValue, toValue } = useSwapAmounts();
+const swapStore = useSwapStore();
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
-  @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
-  @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
+const distribution = computed(() => swapStore.distribution as Distribution[][]);
+const getAsset = (address?: string) => store.getters.assets.assetDataByAddress(address) as AccountAsset;
 
-  get swapPaths(): SwapPath[] {
-    const paths: SwapPath[] = [];
+const swapPaths = computed(() => {
+  const paths: Array<{
+    input: AccountAsset;
+    output?: AccountAsset;
+    amount: string;
+    sources: Array<{
+      income: string;
+      outcome: string;
+      source: string;
+      fiatDifference: string;
+    }>;
+  }> = [];
 
-    this.distribution.forEach((step, index, list) => {
-      const sources: SwapSource[] = [];
+  distribution.value.forEach((step, index, list) => {
+    if (!step.length) return;
 
-      let income = FPNumber.ZERO;
-      let outcome = FPNumber.ZERO;
+    const input = getAsset(step[0].input);
+    const output = getAsset(step[0].output);
 
-      const input = this.getAsset(step[0].input) as AccountAsset;
-      const output = this.getAsset(step[0].output) as AccountAsset;
+    let income = FPNumber.ZERO;
+    let outcome = FPNumber.ZERO;
+    const sources: Array<{ income: string; outcome: string; source: string; fiatDifference: string }> = [];
 
-      step.forEach((path) => {
-        const amountIn = path.income;
-        const amountOut = path.outcome;
-        const amountInFiat = this.getFPNumberFiatAmountByFPNumber(amountIn, input) ?? FPNumber.ZERO;
-        const amountOutFiat = this.getFPNumberFiatAmountByFPNumber(amountOut, output) ?? FPNumber.ZERO;
-        const fiatDifference = calcFiatDifference(amountInFiat, amountOutFiat).toFixed(2);
+    step.forEach((path) => {
+      const amountIn = path.income;
+      const amountOut = path.outcome;
+      const amountInFiat = getFPNumberFiatAmountByFPNumber(amountIn, input) ?? FPNumber.ZERO;
+      const amountOutFiat = getFPNumberFiatAmountByFPNumber(amountOut, output) ?? FPNumber.ZERO;
+      const fiatDifference = calcFiatDifference(amountInFiat, amountOutFiat).toFixed(2);
 
-        income = income.add(amountIn);
-        outcome = outcome.add(amountOut);
+      income = income.add(amountIn);
+      outcome = outcome.add(amountOut);
 
-        sources.push({
-          income: amountIn.toLocaleString(),
-          outcome: amountOut.toLocaleString(),
-          fee: path.fee.toLocaleString(),
-          source: MARKETS[path.market],
-          fiatDifference,
-        });
+      sources.push({
+        income: amountIn.toLocaleString(),
+        outcome: amountOut.toLocaleString(),
+        source: MARKETS[path.market] ?? path.market,
+        fiatDifference,
       });
-
-      paths.push({ input, output, amount: income.toLocaleString(), sources });
-
-      if (index === list.length - 1) {
-        paths.push({ input: output, amount: outcome.toLocaleString(), sources: [] });
-      }
     });
 
-    return paths;
-  }
-}
+    paths.push({ input, output, amount: income.toLocaleString(), sources });
+
+    if (index === list.length - 1 && output) {
+      paths.push({ input: output, amount: outcome.toLocaleString(), sources: [] });
+    }
+  });
+
+  return paths;
+});
 </script>
 
 <style lang="scss">

@@ -20,6 +20,23 @@
         <span v-if="formattedNodeLocation">
           {{ formattedNodeLocation.name }} <span class="flag-emodji">{{ formattedNodeLocation.flag }}</span>
         </span>
+        <div class="node-extras" v-if="node">
+          <span v-if="nodeLatencyText">Latency: {{ nodeLatencyText }}</span>
+          <span>Backoff: {{ backoffEnabledText }}</span>
+          <span>Parallel dial: {{ parallelDialEnabledText }}</span>
+          <span v-if="backoffNextText">Next retry: {{ backoffNextText }}</span>
+          <s-button class="s-typography-button--mini" size="mini" type="secondary" @click="runLatencyProbe">
+            Test latency
+          </s-button>
+          <div v-if="isDebug" class="node-dev s-flex">
+            <s-button class="s-typography-button--mini" size="mini" type="secondary" @click="toggleBackoff">
+              Toggle backoff ({{ backoffEnabledText }})
+            </s-button>
+            <s-button class="s-typography-button--mini" size="mini" type="secondary" @click="toggleParallel">
+              Toggle parallel ({{ parallelDialEnabledText }})
+            </s-button>
+          </div>
+        </div>
       </template>
     </footer-popper>
     <footer-popper
@@ -70,23 +87,24 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
 import { getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { Status } from '@soramitsu-ui/ui-vue2/lib/types';
 import { Component, Mixins } from 'vue-property-decorator';
 
+import { Status } from '@/compat/soramitsu-ui';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
 import { Components } from '@/consts';
+import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
 import { state, getter, mutation } from '@/store/decorators';
+import type { FeatureFlags } from '@/store/settings/types';
 import type { Node } from '@/types/nodes';
 import type { NodesConnection } from '@/utils/connection';
+import { NodesConnection as NodesConnectionClass } from '@/utils/connection';
 
 import { formatLocation } from '../Settings/Node/utils';
 
 import FooterPopper from './FooterPopper.vue';
 import NoInternetDialog from './NoInternetDialog.vue';
-
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 /** Max limit provided by navigator.connection.downlink */
 const MAX_INTERNET_CONNECTION_LIMIT = 10;
@@ -165,6 +183,46 @@ export default class AppFooter extends Mixins(TranslationMixin) {
       return null;
     }
     return formatLocation(this.node.location);
+  }
+
+  get nodeLatencyText(): string {
+    const addr = this.node?.address;
+    if (!addr) return '';
+    const t = this.appConnection.getNodeLatency(addr);
+    return t != null && isFinite(t as number) ? `${t} ms` : '';
+  }
+
+  get backoffEnabledText(): string {
+    return NodesConnectionClass.enableBackoff ? this.t('connectedText') : this.t('disabled');
+  }
+
+  get parallelDialEnabledText(): string {
+    return NodesConnectionClass.enableParallelDial ? this.t('connectedText') : this.t('disabled');
+  }
+
+  get backoffNextText(): string {
+    if (!NodesConnectionClass.enableBackoff) return '';
+    const ms = this.appConnection.lastReconnectDelayMs;
+    if (!ms) return '';
+    const s = Math.ceil(ms / 1000);
+    return `${s}s (attempt ${this.appConnection.reconnectAttempt})`;
+  }
+
+  @state.settings.featureFlags private featureFlags!: FeatureFlags;
+  get isDebug(): boolean {
+    return !!this.featureFlags?.debug;
+  }
+
+  async runLatencyProbe(): Promise<void> {
+    await this.appConnection.testLatency();
+  }
+
+  toggleBackoff(): void {
+    NodesConnectionClass.enableBackoff = !NodesConnectionClass.enableBackoff;
+  }
+
+  toggleParallel(): void {
+    NodesConnectionClass.enableParallelDial = !NodesConnectionClass.enableParallelDial;
   }
 
   openNodeSelectionDialog(): void {

@@ -45,98 +45,78 @@
   </transaction-details>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { Operation } from '@sora-substrate/sdk';
+import { Operation, type CodecString, type FPNumber, type NetworkFeesObject } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { components } from '@soramitsu/soraneo-wallet-web';
+import dayjs from 'dayjs/esm';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useSwapAmounts } from '@/composables/useSwapAmounts';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
 
-import type { CodecString, FPNumber, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
-  components: {
-    TransactionDetails: lazyComponent(Components.TransactionDetails),
-    InfoLine: components.InfoLine,
-  },
-})
-export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  @state.orderBook.baseValue baseValue!: string;
-  @state.orderBook.quoteValue quoteValue!: string;
-  @state.orderBook.side side!: PriceVariant;
-  @state.swap.toValue toValue!: string;
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @getter.orderBook.baseAsset private baseAsset!: AccountAsset;
-  @getter.orderBook.quoteAsset private quoteAsset!: AccountAsset;
+const TransactionDetails = lazyComponent(Components.TransactionDetails);
+const InfoLine = components.InfoLine;
 
-  @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isMarketType!: boolean;
-
-  get xorSymbol(): string {
-    return XOR.symbol;
+const props = withDefaults(
+  defineProps<{
+    infoOnly?: boolean;
+    isMarketType?: boolean;
+  }>(),
+  {
+    infoOnly: true,
+    isMarketType: false,
   }
+);
 
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.OrderBookPlaceLimitOrder];
-  }
+const { t } = useTranslation();
+const { getFPNumber, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
+const { toValue } = useSwapAmounts();
 
-  get baseSymbol(): string {
-    return this.baseAsset.symbol;
-  }
+const baseValue = computed(() => store.state.orderBook.baseValue);
+const quoteValue = computed(() => store.state.orderBook.quoteValue);
+const side = computed(() => store.state.orderBook.side as PriceVariant);
+const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject);
+const baseAsset = computed(() => store.getters.orderBook.baseAsset as AccountAsset);
+const quoteAsset = computed(() => store.getters.orderBook.quoteAsset as AccountAsset);
 
-  get quoteSymbol(): string {
-    return this.quoteAsset.symbol;
-  }
+const xorSymbol = XOR.symbol;
+const networkFee = computed<CodecString>(
+  () => networkFees.value[Operation.OrderBookPlaceLimitOrder] ?? ZeroStringValue
+);
 
-  get sideText(): string {
-    return this.side === PriceVariant.Buy ? this.t('orderBook.Buy') : this.t('orderBook.Sell');
-  }
+const baseSymbol = computed(() => baseAsset.value.symbol);
+const quoteSymbol = computed(() => quoteAsset.value.symbol);
 
-  get locked(): string {
-    return this.isBuy ? this.total.toString() : this.baseValue;
-  }
+const sideText = computed(() => (side.value === PriceVariant.Buy ? t('orderBook.Buy') : t('orderBook.Sell')));
 
-  get lockedCodec(): string {
-    return this.isBuy ? this.total.toCodecString() : this.getFPNumber(this.baseValue).toCodecString();
-  }
+const total = computed<FPNumber>(() => getFPNumber(baseValue.value).mul(getFPNumber(quoteValue.value)));
+const isBuy = computed(() => side.value === PriceVariant.Buy);
 
-  get lockedAsset(): AccountAsset {
-    return this.isBuy ? this.quoteAsset : this.baseAsset;
-  }
+const locked = computed(() => (isBuy.value ? total.value.toString() : baseValue.value));
+const lockedCodec = computed(() =>
+  isBuy.value ? total.value.toCodecString() : getFPNumber(baseValue.value).toCodecString()
+);
+const lockedAsset = computed(() => (isBuy.value ? quoteAsset.value : baseAsset.value));
+const lockedAssetSymbol = computed(() => (isBuy.value ? quoteSymbol.value : baseSymbol.value));
 
-  get lockedAssetSymbol(): string | undefined {
-    return this.isBuy ? this.quoteSymbol : this.baseSymbol;
-  }
+const limitOrderExpiryDate = computed<Nullable<string>>(() => {
+  if (props.isMarketType) return null;
+  const now = new Date();
+  const oneMonthAhead = now.setMonth(now.getMonth() + 1);
+  return dayjs(oneMonthAhead).format('LL');
+});
 
-  private get total(): FPNumber {
-    return this.getFPNumber(this.baseValue).mul(this.getFPNumber(this.quoteValue));
-  }
-
-  private get isBuy(): boolean {
-    return this.side === PriceVariant.Buy;
-  }
-
-  get limitOrderExpiryDate(): Nullable<string> {
-    const now = new Date();
-    const oneMonthAhead = now.setMonth(now.getMonth() + 1);
-    return this.formatDate(oneMonthAhead, 'LL');
-  }
-
-  get formattedNetworkFee(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
-
-  get computedClass(): string | undefined {
-    if (this.infoOnly) {
-      return this.side === PriceVariant.Buy ? 'limit-order-type--buy' : 'limit-order-type--sell';
-    }
-    return undefined;
-  }
-}
+const formattedNetworkFee = computed(() => formatCodecNumber(networkFee.value));
+const computedClass = computed(() => {
+  if (!props.infoOnly) return undefined;
+  return side.value === PriceVariant.Buy ? 'limit-order-type--buy' : 'limit-order-type--sell';
+});
 </script>

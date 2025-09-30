@@ -1,5 +1,5 @@
-import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
-import { setTheme } from '@soramitsu-ui/ui-vue2/lib/utils';
+import { Theme } from '@/consts/theme';
+import store from '@/store';
 
 import { tmaSdkService } from './telegram';
 
@@ -12,7 +12,8 @@ const handleThemeChange = (e: MediaQueryListEvent): void => {
 };
 
 export const applyTheme = (isDark: boolean): void => {
-  setTheme(isDark ? Theme.DARK : Theme.LIGHT);
+  const nextTheme = isDark ? Theme.DARK : Theme.LIGHT;
+  store.commit.wallet.settings.setTheme(nextTheme);
   updatePipTheme();
   tmaSdkService.updateTheme();
 };
