@@ -25,6 +25,41 @@ const AllowedProtocols = ['http:', 'https:', 'mailto:', 'tel:'];
 
 const tagRegexp = /<\/?([a-zA-Z0-9-]+)([^>]*)>/g;
 const attrRegexp = /([a-zA-Z0-9-:]+)(?:\s*=\s*("[^"]*"|'[^']*'|[^\s"'>]+))?/g;
+const htmlEntityRegexp = /&(#x?[0-9a-fA-F]+|[a-zA-Z]+);/g;
+
+const NamedEntities: Record<string, string> = {
+  amp: '&',
+  lt: '<',
+  gt: '>',
+  quot: '"',
+  apos: "'",
+  colon: ':',
+};
+
+function decodeHtmlEntities(value: string): string {
+  return value.replace(htmlEntityRegexp, (match, entity) => {
+    if (!entity) return match;
+
+    if (entity.startsWith('#')) {
+      const isHex = entity[1]?.toLowerCase() === 'x';
+      const codePoint = parseInt(entity.slice(isHex ? 2 : 1), isHex ? 16 : 10);
+
+      if (!Number.isNaN(codePoint)) {
+        try {
+          return String.fromCodePoint(codePoint);
+        } catch {
+          return match;
+        }
+      }
+
+      return match;
+    }
+
+    const replacement = NamedEntities[entity.toLowerCase()];
+
+    return replacement ?? match;
+  });
+}
 
 /**
  * Escape special HTML characters from untrusted text before injecting into HTML contexts.
@@ -75,11 +110,17 @@ export function sanitizeHtml(value: unknown, options: SanitizeOptions = {}): str
       }
 
       const unquoted = rawValue.trim().replace(/^['"]|['"]$/g, '');
+      const decodedValue = decodeHtmlEntities(unquoted);
       const escapedValue = escapeHtml(unquoted);
 
       if (attrName === 'href' || attrName === 'src') {
         try {
-          const url = new URL(escapedValue, 'http://localhost');
+          const normalizedValue = decodedValue.trim();
+          if (!normalizedValue) {
+            continue;
+          }
+
+          const url = new URL(normalizedValue, 'http://localhost');
           if (!AllowedProtocols.includes(url.protocol)) {
             continue;
           }

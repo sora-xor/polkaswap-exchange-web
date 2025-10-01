@@ -33,4 +33,12 @@ describe('sanitize utilities', () => {
 
     expect(sanitized).toBe('<a>Click</a>');
   });
+
+  it('sanitizeHtml drops entity-encoded dangerous protocols', () => {
+    const payload = '<a href="javascript&#58;alert(1)">Click</a>';
+
+    const sanitized = sanitizeHtml(payload);
+
+    expect(sanitized).toBe('<a>Click</a>');
+  });
 });
