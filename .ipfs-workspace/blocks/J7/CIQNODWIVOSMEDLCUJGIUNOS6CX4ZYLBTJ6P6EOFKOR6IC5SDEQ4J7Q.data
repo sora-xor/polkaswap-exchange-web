@@ -1,3 +1,0 @@
-
-Å½import{b as u,a0 as d,a1 as l}from"./index-DjB-Okl0.js";import{t as i}from"./polkadot-Bh6PX9YG.js";function f(){const{t:a}=u(),s=i(null),t=i(!1),r=async()=>{await l(500),t.value=!1;const e=s.value;e&&e.removeEventListener("mouseleave",r),s.value=null};return{handleCopyAddress:async(e,n)=>{if(n){n.stopImmediatePropagation?.();const o=n.target;o&&(s.value=o,o.addEventListener("mouseleave",r))}await d(e),t.value=!0,await l(1e3)},copyTooltip:e=>t.value?e?a("copiedWithValue",{value:e}):a("assets.copied"):e?a("copyWithValue",{value:e}):a("assets.receive")}}export{f as u};
-½

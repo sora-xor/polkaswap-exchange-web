@@ -1,3 +1,0 @@
-import './days-js-duration';
-import type { App } from 'vue';
-export default function installWalletPlugins(app: App): void;

@@ -1,3 +1,0 @@
-
-¡™import{X as v}from"./index-DjB-Okl0.js";import{t as r,j as n,D as T}from"./polkadot-Bh6PX9YG.js";function c(e){return e?typeof e=="function"?!!e():!!e.value:!1}function S(e={}){const l=r(e.defaultAsset??v),a=r(!1),u=n(()=>T(e.predefinedToken??null)),d=()=>c(e.parentLoading),f=()=>c(e.loading),t=n(()=>u.value??l.value),o=n(()=>d()||f()),i=n(()=>o.value?null:"chevron-down-rounded-16"),k=n(()=>o.value?-1:0);return{selectedToken:t,areActionsDisabled:o,selectTokenIcon:i,tokenTabIndex:k,showSelectTokenDialog:a,handleSelectToken:()=>{o.value||(a.value=!0)},changeToken:s=>{t.value.address!==s.address&&(l.value=s)},closeTokenDialog:()=>{a.value=!1}}}export{S as u};
-™

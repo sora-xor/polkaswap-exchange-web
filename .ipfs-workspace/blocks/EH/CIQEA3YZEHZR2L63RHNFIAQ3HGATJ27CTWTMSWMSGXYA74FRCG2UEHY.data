@@ -1,3 +1,0 @@
-
-ÜÔimport{l as n,v as r,m as c,o as a,A as i,z as m,n as d,W as l}from"./polkadot-Bh6PX9YG.js";import{C as p}from"./index-DjB-Okl0.js";import"./echarts-Cxkeyetf.js";import"./wallet-stack-BuqMcUTa.js";import"./lodash-vOcFpjD8.js";const u={class:"header"},k={class:"title"},_=n({__name:"StakingHeader",props:{previousPage:{default:void 0},hasBackButton:{type:Boolean,default:!0}},emits:["back"],setup(e,{emit:f}){return(t,o)=>{const s=r("back-button");return a(),c("div",u,[e.hasBackButton?(a(),i(s,{key:0,class:"back-button",page:e.previousPage,onBack:o[0]||(o[0]=B=>t.$emit("back"))},null,8,["page"])):m("",!0),d("h3",k,[l(t.$slots,"default",{},void 0,!0)])])}}}),S=p(_,[["__scopeId","data-v-0fdf9124"]]);export{S as default};
-Ô

@@ -1,3 +1,0 @@
-
-Âºimport{bE as s}from"./vendor-vue-BU49LsTx.js";import{n as e}from"./index-CLebdHLk.js";import"./lodash-DKukXVb-.js";import"./echarts-CDPJekDq.js";import"./polkadot-tm1sXUWB.js";import"./wallet-stack-LOAEjQjN.js";const n=s({name:"SwapStatusActionBadge"});var o=function(){var t=this,a=t._self._c;return t._self._setupProxy,a("s-card",{staticClass:"status-action-badge",attrs:{shadow:"always",size:"small"}},[a("span",{staticClass:"status-action-badge__label"},[t._t("label")],2),a("span",{staticClass:"status-action-badge__value"},[t._t("value")],2),a("div",{staticClass:"status-action-badge__action"},[t._t("action")],2)])},i=[],r=e(n,o,i,!1,null,"629f7f68");const u=r.exports;export{u as default};
-º

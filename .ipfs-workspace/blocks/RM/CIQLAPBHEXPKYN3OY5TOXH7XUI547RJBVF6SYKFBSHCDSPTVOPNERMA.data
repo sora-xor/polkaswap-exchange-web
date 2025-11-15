@@ -1,3 +1,0 @@
-
-ÖÎimport{F as n}from"./index-DjB-Okl0.js";import"./echarts-Cxkeyetf.js";import"./lodash-vOcFpjD8.js";var s=(r=>(r.Success="success",r.Warning="warning",r.Error="error",r))(s||{});const u=(r,e)=>r.isZero()||e.isZero()?n.ZERO:e.sub(r).div(r).mul(n.HUNDRED),a=r=>r>0?"success":r<-10?"error":r<-1?"warning":"";export{s as D,u as c,a as g};
-Î

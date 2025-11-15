@@ -1,3 +1,0 @@
-
-Á¹.notification-mst[data-v-b51b26bd]{background-color:#a09a9d;border-radius:12px;height:116px;padding:14px;position:fixed;right:16px;top:72px;width:370px;z-index:2001}.notification-mst p[data-v-b51b26bd]{color:#fff;font-size:13px;max-width:320px}.notification-mst button[data-v-b51b26bd]{box-shadow:unset!important;font-size:12px;margin-top:12px;padding:8px!important}.notification-mst button[data-v-b51b26bd]:hover{background:var(--s-color-base-content-tertiary)!important}.notification-mst .close-button[data-v-b51b26bd]{background:unset!important;border:none;cursor:pointer;position:absolute;right:8px;top:-8px}.notification-mst .close-button[data-v-b51b26bd]:hover{background:#a09a9d!important}
-¹

@@ -1,3 +1,0 @@
-
-ÐÈimport{t as s,j as n,u as o}from"./polkadot-Bh6PX9YG.js";function l(){const c=s(),a=s(""),t=n(()=>a.value.trim().toLowerCase()),e=()=>{a.value=""},r=async()=>{await o(),c.value?.focus?.()};return{search:c,query:a,searchQuery:t,handleClearSearch:e,focusSearchInput:r,clearAndFocusSearch:async()=>{e(),await r()}}}export{l as u};
-È

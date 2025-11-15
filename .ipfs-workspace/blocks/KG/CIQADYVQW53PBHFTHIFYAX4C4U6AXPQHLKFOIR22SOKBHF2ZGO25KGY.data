@@ -1,3 +1,0 @@
-
-°¨import{l as o,L as r,v as s,A as n,o as a,T as c,U as i,D as p}from"./polkadot-Bh6PX9YG.js";import"./echarts-Cxkeyetf.js";const v=o({inheritAttrs:!1,__name:"StakingContainer",setup(_){const e=r();return(u,l)=>{const t=s("router-view");return a(),n(t,c(i(p(e))),null,16)}}});export{v as default};
-¨

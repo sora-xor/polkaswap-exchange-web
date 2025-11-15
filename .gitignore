@@ -9,6 +9,7 @@ node_modules
 /tests/e2e/screenshots/
 
 .vitest-localstorage.sqlite
+.ipfs-workspace/*
 
 
 # local env files

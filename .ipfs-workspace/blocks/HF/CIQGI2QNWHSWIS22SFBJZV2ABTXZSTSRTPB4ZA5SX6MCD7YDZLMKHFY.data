@@ -1,3 +1,0 @@
-
-Ã»import{l as u,j as r,v as d,A as v,o as b,x as c,C as f}from"./polkadot-Bh6PX9YG.js";import"./echarts-Cxkeyetf.js";const x=u({name:"CustomisePage",__name:"CustomisePage",props:{visible:{type:Boolean,default:!1}},emits:["update:visible"],setup(o,{expose:i,emit:a}){const l=o,n=a,s=r({get:()=>l.visible,set:t=>n("update:visible",t)});return i({isVisible:s}),(t,e)=>{const p=d("dialog-base");return b(),v(p,{visible:s.value,"onUpdate:visible":e[0]||(e[0]=m=>s.value=m)},{default:c(()=>[...e[1]||(e[1]=[f("CustomisePage",-1)])]),_:1},8,["visible"])}}});export{x as default};
-»

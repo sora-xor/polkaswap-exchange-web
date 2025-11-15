@@ -1,3 +1,0 @@
-
-‘‰import{r as s}from"./index-CLebdHLk.js";function a(t){let r=s.Success;return t>30&&t<=50?r=s.Warning:t>50&&(r=s.Error),r}export{a as g};
-‰

@@ -1,3 +1,0 @@
-
-ãÛimport{M as _,O as l}from"./vendor-vue-BU49LsTx.js";import{n as p}from"./index-CLebdHLk.js";import"./lodash-DKukXVb-.js";import"./echarts-CDPJekDq.js";import"./polkadot-tm1sXUWB.js";import"./wallet-stack-LOAEjQjN.js";var c=Object.getOwnPropertyDescriptor,f=(e,r,n,a)=>{for(var t=a>1?void 0:a?c(r,n):r,o=e.length-1,i;o>=0;o--)(i=e[o])&&(t=i(t)||t);return t};let s=class extends _(){};s=f([l],s);var m=function(){var r=this,n=r._self._c;return r._self._setupProxy,n("router-view",r._g(r._b({},"router-view",r.$attrs,!1),r.$listeners))},v=[],u=p(s,m,v,!1,null,null);const P=u.exports;export{P as default};
-Û

@@ -1,3 +1,0 @@
-
-Ä¼import{l as n,m as e,o as t,W as s,n as a,z as r}from"./polkadot-Bh6PX9YG.js";import{C as l}from"./index-DjB-Okl0.js";import"./echarts-Cxkeyetf.js";import"./wallet-stack-BuqMcUTa.js";import"./lodash-vOcFpjD8.js";const p=n({name:"PoolInfo"}),i={class:"pool-info"},d={class:"pool-info-content"},c={key:0,class:"pool-info-buttons"};function f(o,m,u,_,$,h){return t(),e("div",i,[s(o.$slots,"prepend"),a("div",d,[s(o.$slots,"default")]),o.$slots.buttons?(t(),e("div",c,[s(o.$slots,"buttons")])):r("",!0),s(o.$slots,"append")])}const I=l(p,[["render",f]]);export{I as default};
-¼

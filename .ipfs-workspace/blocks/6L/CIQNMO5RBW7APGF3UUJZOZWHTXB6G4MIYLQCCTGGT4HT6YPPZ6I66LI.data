@@ -1,3 +1,0 @@
-
-ÝÕimport{b as i,C as p}from"./index-DjB-Okl0.js";import{l as _,j as l,v as m,m as f,o as u,n as t,w as v,y as s,D as e}from"./polkadot-Bh6PX9YG.js";import"./wallet-stack-BuqMcUTa.js";import"./echarts-Cxkeyetf.js";import"./lodash-vOcFpjD8.js";const k={class:"task-card"},x={class:"task-card__first-trx"},C={class:"task-card__date"},h=_({__name:"FirstTxCard",props:{date:{}},setup(o){const r=o,{t:a,formatDate:n}=i(),c=l(()=>n(r.date,"L"));return(D,T)=>{const d=m("s-divider");return u(),f("div",k,[t("p",x,s(e(a)("points.firstSoraNetworkTransaction")),1),v(d,{direction:"vertical"}),t("div",C,[t("p",null,s(e(a)("points.dated")),1),t("p",null,s(c.value),1)])])}}}),F=p(h,[["__scopeId","data-v-3ed4b41e"]]);export{F as default};
-Õ

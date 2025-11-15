@@ -1,3 +1,0 @@
-
-ãÛimport{e5 as o,e6 as p}from"./index-DjB-Okl0.js";import{l as f,K as u,A as t,o as a,x as l,W as _,n as k,z as r,D as e}from"./polkadot-Bh6PX9YG.js";import"./wallet-stack-BuqMcUTa.js";import"./echarts-Cxkeyetf.js";import"./lodash-vOcFpjD8.js";const B={class:"data-row-skeleton"},C=f({__name:"DataRow",props:{loading:{type:Boolean,default:!0},rect:{type:Boolean,default:!1},circle:{type:Boolean,default:!1}},setup(s){const n=s,{loading:c,rect:d,circle:i}=u(n);return(m,y)=>(a(),t(e(p),{loading:e(c),animated:""},{template:l(()=>[k("div",B,[e(d)?(a(),t(e(o),{key:0,element:"rect"})):r("",!0),e(i)?(a(),t(e(o),{key:1,element:"circle"})):r("",!0)])]),default:l(()=>[_(m.$slots,"default")]),_:3},8,["loading"]))}});export{C as default};
-Û

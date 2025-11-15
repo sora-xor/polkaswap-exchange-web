@@ -1,32 +1,0 @@
-
-çßimport{bQ as c,by as f,bB as l}from"./index-DjB-Okl0.js";import{s as a,a as p}from"./index-D1vJKCDW-BtS_4qC4.js";const g=c`
-  :host {
-    display: block;
-    background: linear-gradient(
-      90deg,
-      ${({tokens:e})=>e.theme.foregroundSecondary} 0%,
-      ${({tokens:e})=>e.theme.foregroundTertiary} 50%,
-      ${({tokens:e})=>e.theme.foregroundSecondary} 100%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1s ease-in-out infinite;
-    border-radius: ${({borderRadius:e})=>e[2]};
-  }
-
-  :host([data-rounded='true']) {
-    border-radius: ${({borderRadius:e})=>e[16]};
-  }
-
-  @keyframes shimmer {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
-  }
-`;var s=function(e,o,i,u){var d=arguments.length,t=d<3?o:u,n;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")t=Reflect.decorate(e,o,i,u);else for(var h=e.length-1;h>=0;h--)(n=e[h])&&(t=(d<3?n(t):d>3?n(o,i,t):n(o,i))||t);return d>3&&t&&Object.defineProperty(o,i,t),t};let r=class extends f{constructor(){super(...arguments),this.width="",this.height="",this.variant="default",this.rounded=!1}render(){return this.style.cssText=`
-      width: ${this.width};
-      height: ${this.height};
-    `,this.dataset.rounded=this.rounded?"true":"false",l`<slot></slot>`}};r.styles=[g];s([a()],r.prototype,"width",void 0);s([a()],r.prototype,"height",void 0);s([a()],r.prototype,"variant",void 0);s([a({type:Boolean})],r.prototype,"rounded",void 0);r=s([p("wui-shimmer")],r);
-ß

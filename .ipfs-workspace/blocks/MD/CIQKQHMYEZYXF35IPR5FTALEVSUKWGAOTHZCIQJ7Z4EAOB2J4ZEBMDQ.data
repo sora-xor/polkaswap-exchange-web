@@ -1,3 +1,0 @@
-
-öîvar c=Object.defineProperty;var f=(s,e,t)=>e in s?c(s,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):s[e]=t;var l=(s,e,t)=>f(s,typeof e!="symbol"?e+"":e,t);import{V as g,O as h}from"./vendor-vue-BU49LsTx.js";var p=Object.getOwnPropertyDescriptor,v=(s,e,t,o)=>{for(var r=o>1?void 0:o?p(e,t):e,a=s.length-1,i;a>=0;a--)(i=s[a])&&(r=i(r)||r);return r};let n=class extends g{constructor(){super(...arguments);l(this,"isSelectAssetLoading",!1)}async withSelectAssetLoading(e){this.isSelectAssetLoading=!0;try{await e()}catch(t){throw console.error(t),t}finally{this.isSelectAssetLoading=!1}}};n=v([h],n);export{n as T};
-î

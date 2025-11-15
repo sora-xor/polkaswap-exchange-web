@@ -1,3 +1,0 @@
-
-ðèimport{l as e,v as n,A as c,o as d,x as i,n as a,W as t}from"./polkadot-Bh6PX9YG.js";import{C as r}from"./index-DjB-Okl0.js";import"./echarts-Cxkeyetf.js";import"./wallet-stack-BuqMcUTa.js";import"./lodash-vOcFpjD8.js";const l=e({name:"SwapStatusActionBadge"}),_={class:"status-action-badge__label"},p={class:"status-action-badge__value"},u={class:"status-action-badge__action"};function m(s,f,v,$,b,g){const o=n("s-card");return d(),c(o,{shadow:"always",size:"small",class:"status-action-badge"},{default:i(()=>[a("span",_,[t(s.$slots,"label",{},void 0,!0)]),a("span",p,[t(s.$slots,"value",{},void 0,!0)]),a("div",u,[t(s.$slots,"action",{},void 0,!0)])]),_:3})}const A=r(l,[["render",m],["__scopeId","data-v-629f7f68"]]);export{A as default};
-è

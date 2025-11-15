@@ -1,3 +1,0 @@
-
-“‹import{ak as o}from"./vendor-vue-BU49LsTx.js";import{a as d}from"./useTranslation-Cdlh4Kbk.js";import{y as m}from"./index-CLebdHLk.js";function p(){const e=d(),r=o(()=>e.tokenFrom),a=o(()=>e.tokenTo),u=o(()=>e.fromValue),n=o(()=>e.toValue),l=o(()=>!!(r.value&&a.value)),s=o(()=>m(u.value)),t=o(()=>m(n.value)),c=o(()=>s.value||t.value),T=o(()=>s.value&&t.value);return{tokenFrom:r,tokenTo:a,fromValue:u,toValue:n,areTokensSelected:l,isZeroFromAmount:s,isZeroToAmount:t,hasZeroAmount:c,areZeroAmounts:T,setTokenFromAddress:e.setTokenFromAddress,setTokenToAddress:e.setTokenToAddress,setFromValue:e.setFromValue,setToValue:e.setToValue}}export{p as u};
-‹
