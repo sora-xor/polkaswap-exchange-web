@@ -1,0 +1,3 @@
+
+ûóimport o from"./CalculatorIcon-CKq1Nrqg.js";import{l as a,m as r,o as e,W as c,w as s}from"./polkadot-Bh6PX9YG.js";import{C as l}from"./index-DjB-Okl0.js";import"./wallet-stack-BuqMcUTa.js";import"./echarts-Cxkeyetf.js";import"./lodash-vOcFpjD8.js";const n={class:"calculator-button"},u=a({__name:"CalculatorButton",setup(m){return(t,p)=>(e(),r("button",n,[c(t.$slots,"default",{},void 0,!0),s(o,{class:"calculator-button-icon"})]))}}),b=l(u,[["__scopeId","data-v-5a3685d4"]]);export{b as default};
+ó

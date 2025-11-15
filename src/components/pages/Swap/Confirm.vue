@@ -1,6 +1,6 @@
 <template>
   <dialog-base
-    :visible.sync="isVisible"
+    v-model:visible="visible"
     :title="t('swap.confirmSwap')"
     :append-to-body="appendToBody"
     :modal-append-to-body="appendToBody"
@@ -10,15 +10,15 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
         <div v-if="tokenFrom" class="token">
-          <token-logo class="token-logo" :token="tokenFrom" />
+          <token-logo class="token-logo" :token="tokenFrom"></token-logo>
           {{ tokenFrom.symbol }}
         </div>
       </div>
-      <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
+      <s-icon class="icon-divider" name="arrows-arrow-bottom-24"></s-icon>
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedToValue }}</span>
         <div v-if="tokenTo" class="token">
-          <token-logo class="token-logo" :token="tokenTo" />
+          <token-logo class="token-logo" :token="tokenTo"></token-logo>
           {{ tokenTo.symbol }}
         </div>
       </div>
@@ -27,11 +27,11 @@
       class="transaction-message"
       :class="{ 'transaction-message--min-received': !isExchangeB }"
       v-html="swapMessageHtml"
-    />
-    <s-divider />
-    <swap-transaction-details full expanded />
+    ></p>
+    <s-divider></s-divider>
+    <swap-transaction-details full expanded></swap-transaction-details>
     <template #footer>
-      <account-confirmation-option with-hint class="confirmation-option" />
+      <account-confirmation-option with-hint class="confirmation-option"></account-confirmation-option>
       <s-button
         type="primary"
         class="s-typography-button--large"
@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@wallet';
 import { computed, ref, watch } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -58,12 +58,16 @@ import { sanitizeHtml } from '@/utils/sanitize';
 
 import type { CodecString } from '@sora-substrate/sdk';
 
-const DialogBase = components.DialogBase;
-const TokenLogo = components.TokenLogo;
-const AccountConfirmationOption = components.AccountConfirmationOption;
 const SwapTransactionDetails = lazyComponent(Components.SwapTransactionDetails);
 
-defineOptions({ name: 'SwapConfirm' });
+defineOptions({
+  name: 'SwapConfirm',
+  components: {
+    DialogBase: components.DialogBase,
+    TokenLogo: components.TokenLogo,
+    AccountConfirmationOption: components.AccountConfirmationOption,
+  },
+});
 
 const props = withDefaults(
   defineProps<{
@@ -87,17 +91,10 @@ const { formatStringValue, formatCodecNumber } = useFormattedAmount();
 const { tokenFrom, tokenTo, fromValue, toValue } = useSwapAmounts();
 const swapStore = useSwapStore();
 
-const isVisible = ref(props.visible);
-
-watch(
-  () => props.visible,
-  (value) => {
-    isVisible.value = value;
-  },
-  { immediate: true }
-);
-
-watch(isVisible, (value) => emit('update:visible', value));
+const visible = computed({
+  get: () => props.visible,
+  set: (value: boolean) => emit('update:visible', value),
+});
 
 const appendToBody = computed(() => props.appendToBody);
 const isInsufficientBalance = computed(() => props.isInsufficientBalance);
@@ -128,7 +125,7 @@ const swapMessageHtml = computed(() => {
 
 const handleConfirm = () => {
   emit('confirm');
-  isVisible.value = false;
+  visible.value = false;
 };
 </script>
 

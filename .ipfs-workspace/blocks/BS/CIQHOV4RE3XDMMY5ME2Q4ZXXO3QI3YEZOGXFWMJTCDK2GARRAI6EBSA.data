@@ -1,0 +1,83 @@
+
+ê%â%import{bP as b,bQ as y,bR as g,bS as h,by as w,bA as l,bB as c,bK as x,bL as v,bI as T,bM as $,bG as C}from"./index-DjB-Okl0.js";import{H as k,a as d}from"./index-D1vJKCDW-BtS_4qC4.js";import"./index-CAs464gf-C5BPsv6D.js";const P=b``;var U=function(e,r,n,a){var o=arguments.length,t=o<3?r:a===null?a=Object.getOwnPropertyDescriptor(r,n):a,i;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")t=Reflect.decorate(e,r,n,a);else for(var s=e.length-1;s>=0;s--)(i=e[s])&&(t=(o<3?i(t):o>3?i(r,n,t):i(r,n))||t);return o>3&&t&&Object.defineProperty(r,n,t),t};let p=class extends w{render(){const{termsConditionsUrl:e,privacyPolicyUrl:r}=l.state;return!e&&!r?null:c`
+      <wui-flex
+        .padding=${["4","3","3","3"]}
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        gap="3"
+      >
+        <wui-text color="secondary" variant="md-regular" align="center">
+          We work with the best providers to give you the lowest fees and best support. More options
+          coming soon!
+        </wui-text>
+
+        ${this.howDoesItWorkTemplate()}
+      </wui-flex>
+    `}howDoesItWorkTemplate(){return c` <wui-link @click=${this.onWhatIsBuy.bind(this)}>
+      <wui-icon size="xs" color="accent-primary" slot="iconLeft" name="helpCircle"></wui-icon>
+      How does it work?
+    </wui-link>`}onWhatIsBuy(){x.sendEvent({type:"track",event:"SELECT_WHAT_IS_A_BUY",properties:{isSmartAccount:v(T.state.activeChain)===$.ACCOUNT_TYPES.SMART_ACCOUNT}}),C.push("WhatIsABuy")}};p.styles=[P];p=U([d("w3m-onramp-providers-footer")],p);const j="https://reown.com",B=y`
+  .reown-logo {
+    height: 24px;
+  }
+
+  a {
+    text-decoration: none;
+    cursor: pointer;
+    color: ${({tokens:e})=>e.theme.textSecondary};
+  }
+
+  a:hover {
+    opacity: 0.9;
+  }
+`;var R=function(e,r,n,a){var o=arguments.length,t=o<3?r:a===null?a=Object.getOwnPropertyDescriptor(r,n):a,i;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")t=Reflect.decorate(e,r,n,a);else for(var s=e.length-1;s>=0;s--)(i=e[s])&&(t=(o<3?i(t):o>3?i(r,n,t):i(r,n))||t);return o>3&&t&&Object.defineProperty(r,n,t),t};let f=class extends w{render(){return c`
+      <a
+        data-testid="ux-branding-reown"
+        href=${j}
+        rel="noreferrer"
+        target="_blank"
+        style="text-decoration: none;"
+      >
+        <wui-flex
+          justifyContent="center"
+          alignItems="center"
+          gap="1"
+          .padding=${["01","0","3","0"]}
+        >
+          <wui-text variant="sm-regular" color="inherit"> UX by </wui-text>
+          <wui-icon name="reown" size="inherit" class="reown-logo"></wui-icon>
+        </wui-flex>
+      </a>
+    `}};f.styles=[g,h,B];f=R([d("wui-ux-by-reown")],f);const A=y`
+  :host wui-ux-by-reown {
+    padding-top: 0;
+  }
+
+  :host wui-ux-by-reown.branding-only {
+    padding-top: ${({spacing:e})=>e[3]};
+  }
+
+  a {
+    text-decoration: none;
+    color: ${({tokens:e})=>e.core.textAccentPrimary};
+    font-weight: 500;
+  }
+`;var m=function(e,r,n,a){var o=arguments.length,t=o<3?r:a,i;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")t=Reflect.decorate(e,r,n,a);else for(var s=e.length-1;s>=0;s--)(i=e[s])&&(t=(o<3?i(t):o>3?i(r,n,t):i(r,n))||t);return o>3&&t&&Object.defineProperty(r,n,t),t};let u=class extends w{constructor(){super(),this.unsubscribe=[],this.remoteFeatures=l.state.remoteFeatures,this.unsubscribe.push(l.subscribeKey("remoteFeatures",e=>this.remoteFeatures=e))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){const{termsConditionsUrl:e,privacyPolicyUrl:r}=l.state,n=l.state.features?.legalCheckbox;return!e&&!r||n?c`
+        <wui-flex flexDirection="column"> ${this.reownBrandingTemplate(!0)} </wui-flex>
+      `:c`
+      <wui-flex flexDirection="column">
+        <wui-flex .padding=${["4","3","3","3"]} justifyContent="center">
+          <wui-text color="secondary" variant="md-regular" align="center">
+            By connecting your wallet, you agree to our <br />
+            ${this.termsTemplate()} ${this.andTemplate()} ${this.privacyTemplate()}
+          </wui-text>
+        </wui-flex>
+        ${this.reownBrandingTemplate()}
+      </wui-flex>
+    `}andTemplate(){const{termsConditionsUrl:e,privacyPolicyUrl:r}=l.state;return e&&r?"and":""}termsTemplate(){const{termsConditionsUrl:e}=l.state;return e?c`<a href=${e} target="_blank" rel="noopener noreferrer"
+      >Terms of Service</a
+    >`:null}privacyTemplate(){const{privacyPolicyUrl:e}=l.state;return e?c`<a href=${e} target="_blank" rel="noopener noreferrer"
+      >Privacy Policy</a
+    >`:null}reownBrandingTemplate(e=!1){return this.remoteFeatures?.reownBranding?e?c`<wui-ux-by-reown class="branding-only"></wui-ux-by-reown>`:c`<wui-ux-by-reown></wui-ux-by-reown>`:null}};u.styles=[A];m([k()],u.prototype,"remoteFeatures",void 0);u=m([d("w3m-legal-footer")],u);
+â%

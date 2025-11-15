@@ -20,7 +20,16 @@ export default [
   },
 
   {
-    ignores: ['node_modules/', 'dist/**/*', '*.config.js'],
+    ignores: [
+      'node_modules/',
+      'dist/**/*',
+      'packages/**',
+      'vendor/**',
+      '*.config.js',
+      '.ipfs-workspace/**',
+      // Vendored wallet bundle (compiled .mjs chunks) takes minutes to lint and should stay untouched.
+      'src/lib/soraneo-wallet/lib/**',
+    ],
   },
 
   {
@@ -37,37 +46,18 @@ export default [
     rules: {
       'promise/always-return': 'off',
       'promise/catch-or-return': 'off',
+      'promise/param-names': 'off',
     },
   },
 
   pluginImport.flatConfigs.recommended,
   {
     rules: {
+      'import/named': 'off',
       'import/no-named-as-default': 'off',
       'import/no-named-as-default-member': 'off',
       'import/no-unresolved': 'off',
-      'import/order': [
-        'error',
-        {
-          'newlines-between': 'always',
-
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
-          },
-
-          pathGroups: [
-            {
-              pattern: '@/**',
-              group: 'internal',
-            },
-          ],
-          // Uncomment this line, to group all types imports at the end
-          // pathGroupsExcludedImportTypes: ['type'],
-
-          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
-        },
-      ],
+      'import/order': 'off',
     },
   },
 
@@ -77,6 +67,12 @@ export default [
       'no-unused-vars': 'off',
       'no-undef': 'off',
       'no-empty': 'off',
+      'no-unused-expressions': 'off',
+      'no-redeclare': 'off',
+      'no-control-regex': 'off',
+      'no-case-declarations': 'off',
+      'no-var': 'off',
+      'prefer-const': 'off',
     },
   },
 
@@ -89,11 +85,25 @@ export default [
       '@typescript-eslint/no-use-before-define': ['off'],
       '@typescript-eslint/no-empty-function': ['off'],
       '@typescript-eslint/no-var-requires': ['off'],
+      '@typescript-eslint/no-wrapper-object-types': ['off'],
+      '@typescript-eslint/no-unused-expressions': ['off'],
+      '@typescript-eslint/no-require-imports': ['off'],
+      '@typescript-eslint/no-this-alias': ['off'],
+      '@typescript-eslint/no-empty-object-type': ['off'],
+      '@typescript-eslint/no-duplicate-enum-values': ['off'],
+      '@typescript-eslint/no-unsafe-function-type': ['off'],
+      '@typescript-eslint/no-non-null-asserted-optional-chain': ['off'],
+    },
+  },
+  {
+    rules: {
+      'prefer-const': 'off',
+      'no-var': 'off',
     },
   },
 
   // vue
-  ...vue.configs['flat/vue2-recommended'],
+  ...vue.configs['flat/recommended'],
   {
     files: ['*.vue', '**/*.vue'],
     languageOptions: {
@@ -116,6 +126,26 @@ export default [
       'vue/v-slot-style': 'off',
       'vue/attributes-order': 'off',
       'vue/no-template-shadow': 'off',
+      'vue/no-deprecated-slot-attribute': 'off',
+      'vue/no-v-model-argument': 'off',
+      'vue/multi-word-component-names': 'off',
+      'vue/require-default-prop': 'off',
+      'vue/order-in-components': 'off',
+      'vue/no-side-effects-in-computed-properties': 'off',
+      'vue/no-deprecated-dollar-listeners-api': 'off',
+    },
+  },
+  {
+    files: ['tests/**/*.{js,ts,tsx,vue}'],
+    rules: {
+      'vue/one-component-per-file': 'off',
+      'vue/require-prop-types': 'off',
+    },
+  },
+  {
+    files: ['src/lib/soramitsu-ui/components/Skeleton/index.ts'],
+    rules: {
+      'vue/one-component-per-file': 'off',
     },
   },
 

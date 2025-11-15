@@ -1,11 +1,24 @@
 import { FPNumber } from '@sora-substrate/math';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+const piniaStub = vi.hoisted(() => ({
+  getActivePinia: vi.fn(),
+  setActivePinia: vi.fn(),
+  createPinia: vi.fn(() => ({})),
+  defineStore: vi.fn(),
+}));
+
+vi.mock('pinia', () => piniaStub);
+
 // Make bridgeActionContext a passthrough and stub default module to avoid importing the full store
 vi.mock('@/store/bridge', () => ({ bridgeActionContext: (ctx: any) => ctx, default: {} }));
 vi.mock('@/store/bridge/types', () => ({ FocusedField: { Sended: 'Sended', Received: 'Received' } }));
 // Stub heavy SDK subpaths required by actions module
-vi.mock('@sora-substrate/sdk/build/assets', () => ({ getAssetBalance: vi.fn() }));
+vi.mock('@sora-substrate/sdk/build/assets', () => ({
+  getAssetBalance: vi.fn(),
+  AssetsModule: class {},
+  ExtendedAssetsModule: class {},
+}));
 vi.mock('@sora-substrate/sdk/build/dex/consts', () => ({ DexId: {} }));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
   BridgeTxStatus: { Pending: 'Pending' },
@@ -17,22 +30,28 @@ vi.mock('@sora-substrate/sdk/build/bridgeProxy/sub/consts', () => ({ SubNetworkI
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/sub/types', () => ({}));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/eth/types', () => ({}));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/evm/types', () => ({}));
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/eth/consts', () => ({}));
+vi.mock('@sora-substrate/sdk/build/bridgeProxy/eth/consts', () => ({
+  BridgeTxDirection: {
+    Incoming: 'Incoming',
+    Outgoing: 'Outgoing',
+  },
+  EthNetwork: {
+    Ethereum: 0,
+  },
+}));
 vi.mock('@sora-substrate/liquidity-proxy/build/consts', () => ({ LiquiditySourceTypes: {} }));
-vi.mock('@soramitsu/soraneo-wallet-web', () => ({
-  api: { bridgeProxy: { sub: {}, evm: {}, eth: {} } },
-  vuex: { WalletModules: [], walletModules: { wallet: {} } },
-  WALLET_CONSTS: { ETH_BRIDGE_STATES: { INITIAL: 0 }, SoraNetwork: { Test: 'Test', Prod: 'Prod' } },
-  storage: { get: vi.fn(), set: vi.fn(), remove: vi.fn() },
-  settingsStorage: { get: vi.fn(), set: vi.fn(), remove: vi.fn() },
-  connection: {},
-}));
-vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({
-  XOR: { address: 'xor' },
-  TBCD: { address: 'tbcd' },
-  DAI: { address: 'dai' },
-  KUSD: { address: 'kusd' },
-}));
+vi.mock('@wallet', async () => {
+  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
+  return createWalletMock();
+});
+vi.mock('@sora-substrate/sdk/build/assets/consts', async () => {
+  const assets = await import('@stubs/sdk-assets-consts');
+
+  return {
+    ...assets,
+    MaxRustNumber: '0xffffffffffffffff',
+  };
+});
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/evm/consts', () => ({
   EvmNetworkId: {
     EthereumMainnet: 1,
@@ -79,10 +98,6 @@ vi.mock('@/consts/evm', () => ({
   SmartContractType: { EthBridge: 'ETH_BRIDGE', ERC20: 'ERC20' },
   SmartContracts: { ETH_BRIDGE: {}, ERC20: {} },
 }));
-// Stub Vue to avoid accessing navigator in runtime
-vi.mock('vue', () => ({ default: { use: () => {} }, reactive: (x: any) => x }));
-vi.mock('vue-router', () => ({ default: {} }));
-vi.mock('vue-i18n', () => ({ default: class VueI18n {} }));
 vi.mock('@/api', () => ({
   axiosInstance: { defaults: { headers: { common: {} } } },
   default: { defaults: { headers: { common: {} } } },
@@ -184,5 +199,19 @@ describe('bridge/actions amount math with denomination', () => {
     // reverse calc: sended = received + fee => 3
     expect(commits.setAmountSend).toHaveBeenCalledTimes(1);
     expect(commits.setAmountSend.mock.calls[0][0]).toBe('3');
+  });
+
+  it('applies fee and denomination using FPNumber precision for SORA -> EVM', () => {
+    const { ctx, commits } = makeCtx({ isSoraToEvm: true });
+    ctx.state.externalTransferFee = FPNumber.fromNatural(0.125).toCodecString();
+    ctx.rootState.web3.denominator = new FPNumber('1000000');
+
+    (actions as any).setSendedAmount(ctx, '10.5');
+
+    const result = new FPNumber(commits.setAmountReceived.mock.calls[0][0]);
+    const fee = FPNumber.fromCodecValue(ctx.state.externalTransferFee, ctx.getters.asset.externalDecimals);
+    const expected = new FPNumber('10.5').sub(fee).mul(ctx.rootState.web3.denominator);
+
+    expect(FPNumber.eq(result, expected)).toBe(true);
   });
 });

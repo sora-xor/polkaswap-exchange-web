@@ -1,8 +1,8 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('demeterFarming.actions.claim')">
+  <dialog-base v-model:visible="isVisible" :title="t('demeterFarming.actions.claim')">
     <div class="claim-dialog">
       <div class="claim-dialog-title">
-        <token-logo class="claim-dialog-logo" :token="rewardAsset" size="large" />
+        <token-logo class="claim-dialog-logo" :token="rewardAsset" size="large"></token-logo>
 
         <formatted-amount
           value-can-be-hidden
@@ -11,14 +11,14 @@
           :font-size-rate="FontSizeRate.SMALL"
           :asset-symbol="rewardAssetSymbol"
           class="claim-dialog-value"
-        />
+        ></formatted-amount>
         <formatted-amount
           value-can-be-hidden
           is-fiat-value
           :value="rewardsFiat"
           :font-size-rate="FontSizeRate.MEDIUM"
           class="claim-dialog-value--fiat"
-        />
+        ></formatted-amount>
       </div>
 
       <div class="claim-dialog-info">
@@ -29,7 +29,7 @@
           :asset-symbol="xorSymbol"
           :fiat-value="getFiatAmountByCodecString(networkFee)"
           is-formatted
-        />
+        ></info-line>
       </div>
 
       <s-button
@@ -50,34 +50,84 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed, toRefs, type PropType } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useTranslation } from '@/composables/useTranslation';
+import { useDemeterPoolCard } from '../composables/useDemeterPoolCard';
+import { useDemeterPoolStatus } from '../composables/useDemeterPoolStatus';
 
-import PoolCardMixin from '../mixins/PoolCardMixin';
+import type { DemeterAsset, DemeterPool, DemeterAccountPool } from '../types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { Nullable } from '@/types/common';
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
   },
-})
-export default class ClaimDialog extends Mixins(
-  PoolCardMixin,
-  TranslationMixin,
-  mixins.DialogMixin,
-  mixins.LoadingMixin
-) {
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
+});
 
-  confirm(): void {
-    this.$emit('confirm', this.accountPool);
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+
+const props = defineProps({
+  visible: { type: Boolean, default: false },
+  parentLoading: { type: Boolean, default: false },
+  liquidity: { type: Object as PropType<Nullable<AccountLiquidity>>, default: null },
+  pool: { type: Object as PropType<Nullable<DemeterPool>>, default: null },
+  accountPool: { type: Object as PropType<Nullable<DemeterAccountPool>>, default: null },
+  poolAsset: { type: Object as PropType<Nullable<DemeterAsset>>, default: null },
+  rewardAsset: { type: Object as PropType<Nullable<DemeterAsset>>, default: null },
+});
+
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+  (event: 'confirm', payload: Nullable<DemeterAccountPool>): void;
+}>();
+
+const { liquidity, pool, accountPool, poolAsset, rewardAsset } = toRefs(props);
+
+const dialogModel = useDialogModel(props, (event, value) => {
+  if (event === 'update:visible') {
+    emit('update:visible', value ?? false);
+  } else {
+    emit('close');
   }
-}
+});
+
+const { isVisible } = dialogModel;
+
+const statusApi = useDemeterPoolStatus({
+  liquidity,
+  pool,
+  accountPool,
+  poolAsset,
+  rewardAsset,
+});
+const cardApi = useDemeterPoolCard(statusApi);
+
+const { t } = useTranslation();
+
+const rewardAssetSymbol = computed(() => cardApi.rewardAssetSymbol.value);
+const rewardsFormatted = computed(() => cardApi.rewardsFormatted.value);
+const rewardsFiat = computed(() => cardApi.rewardsFiat.value);
+const networkFee = computed(() => cardApi.networkFee.value);
+const networkFeeFormatted = computed(() => cardApi.networkFeeFormatted.value);
+const xorSymbol = XOR.symbol;
+const isInsufficientXorForFee = computed(() => cardApi.isInsufficientXorForFee.value);
+const parentLoading = computed(() => props.parentLoading);
+
+const getFiatAmountByCodecString = statusApi.getFiatAmountByCodecString;
+
+const confirm = () => {
+  emit('confirm', statusApi.accountPool.value ?? null);
+};
 </script>
 
 <style lang="scss" scoped>

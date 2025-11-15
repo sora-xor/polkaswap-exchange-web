@@ -4,7 +4,7 @@
       <div class="alerts-list">
         <account-card v-for="(alert, index) in alerts" :key="index" class="alerts-list__item" v-button>
           <template #avatar>
-            <token-logo :token-symbol="alert.token" />
+            <token-logo :token-symbol="alert.token"></token-logo>
           </template>
           <template #name>
             <span class="condition">{{ getDescription(alert) }}</span>
@@ -14,158 +14,183 @@
           </template>
           <div class="alerts-list__type">{{ getType(alert) }}</div>
           <el-popover
-            :ref="'alertMenu' + index"
+            :ref="(el) => setAlertMenuRef(el, index)"
             popper-class="settings-alert-popover"
             trigger="click"
             :visible-arrow="false"
           >
             <div v-button class="settings-alert-option" @click="handleEditAlert(alert, index)">
-              <s-icon name="el-icon-edit" />
+              <s-icon name="el-icon-edit"></s-icon>
               <span>{{ t('alerts.edit') }}</span>
             </div>
             <div v-button class="settings-alert-option" @click="handleDeleteAlert(index)">
-              <s-icon name="el-icon-delete" />
+              <s-icon name="el-icon-delete"></s-icon>
               <span>{{ t('alerts.delete') }}</span>
             </div>
-            <div slot="reference">
-              <s-icon class="options-icon" name="basic-more-vertical-24" />
-            </div>
+            <template #reference>
+              <s-icon class="options-icon" name="basic-more-vertical-24"></s-icon>
+            </template>
           </el-popover>
         </account-card>
       </div>
     </s-scrollbar>
-    <s-divider v-if="alerts.length" />
+    <s-divider v-if="alerts.length"></s-divider>
     <div v-if="showCreateAlertBtn" class="settings-alert-section">
-      <s-button class="el-dialog__close" type="action" icon="plus-16" @click="handleCreateAlert" :disabled="loading" />
+      <s-button
+        class="el-dialog__close"
+        type="action"
+        icon="plus-16"
+        @click="handleCreateAlert"
+        :disabled="loading"
+      ></s-button>
       <span class="create">{{ t('alerts.createBtn') }}</span>
     </div>
     <div class="settings-alert-section">
-      <s-switch v-model="topUpNotifs" :disabled="loading" @change="handleTopUpNotifs" />
+      <s-switch v-model="topUpNotifs" :disabled="loading" @change="handleTopUpNotifs"></s-switch>
       <span>{{ t('alerts.enableSwitch') }}</span>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 
+import { useNotification } from '@/composables/useNotification';
+import { useTranslation } from '@/composables/useTranslation';
 import { ZeroStringValue } from '@/consts';
-import { getter, mutation, state } from '@/store/decorators';
+import store from '@/store';
+import type { Nullable } from '@/types/common';
 import { calcPriceChange, showMostFittingValue, toPrecision } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { Alert, WhitelistIdsBySymbol } from '@soramitsu/soraneo-wallet-web/lib/types/common';
+import type { Alert, WhitelistIdsBySymbol } from '@wallet/lib/types/common';
 
-@Component({
+defineOptions({
   components: {
     AccountCard: components.AccountCard,
     TokenLogo: components.TokenLogo,
   },
-})
-export default class AlertList extends Mixins(
-  mixins.TranslationMixin,
-  mixins.LoadingMixin,
-  mixins.NotificationMixin,
-  mixins.FormattedAmountMixin
-) {
-  @state.wallet.settings.alerts alerts!: Array<Alert>;
-  @state.wallet.settings.allowTopUpAlert private allowTopUpAlert!: boolean;
-  @state.settings.isBrowserNotificationApiAvailable private isBrowserNotificationApiAvailable!: boolean;
+});
 
-  @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WhitelistIdsBySymbol;
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => AccountAsset;
+const emit = defineEmits<{
+  (e: 'create'): void;
+  (e: 'edit-alert', payload: Alert & { position: number }): void;
+}>();
 
-  @mutation.wallet.settings.removePriceAlert private removePriceAlert!: (position: number) => void;
-  @mutation.wallet.settings.setDepositNotifications private setDepositNotifications!: (flag: boolean) => void;
-  @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopupEnabled!: (flag: boolean) => void;
-  @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
-  /** This key is needed for force re-rendering of the scrollbar component while getting rid of alerts */
-  scrollKey = 0;
-  topUpNotifs: Nullable<boolean> = null;
+const { t } = useTranslation();
+const { showAppNotification } = useNotification();
 
-  get showCreateAlertBtn(): boolean {
-    return this.alerts.length < WALLET_CONSTS.MAX_ALERTS_NUMBER;
-  }
+const alerts = computed(() => (store.state.wallet.settings.alerts as Array<Alert>) ?? []);
+const allowTopUpAlert = computed(() => Boolean(store.state.wallet.settings.allowTopUpAlert));
+const isBrowserNotificationApiAvailable = computed(() => store.state.settings.isBrowserNotificationApiAvailable);
+const whitelistIdsBySymbol = computed(() => store.getters.wallet.account.whitelistIdsBySymbol as WhitelistIdsBySymbol);
+const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => AccountAsset;
 
-  isNotificationsEnabledByUser(): boolean {
-    if (!this.isBrowserNotificationApiAvailable) {
-      this.showAppNotification(this.t('alerts.noSupportMsg'), 'error');
-      return false;
-    }
+const loading = ref(false);
+const scrollKey = ref(0);
+const topUpNotifs = ref<Nullable<boolean>>(null);
+const alertMenuRefs = reactive<Record<number, any>>({});
 
-    switch (Notification.permission) {
-      case 'denied':
-        this.setBrowserNotifsPopupBlocked(true);
-        return false;
-      case 'default':
-        this.setBrowserNotifsPopupEnabled(true);
-        return false;
-      default:
-        return true;
-    }
-  }
+const showCreateAlertBtn = computed(() => alerts.value.length < WALLET_CONSTS.MAX_ALERTS_NUMBER);
 
-  getDescription(alert: Alert) {
-    return alert.type === 'drop'
-      ? this.t('alerts.onDropDesc', { token: alert.token, price: `$${alert.price}` })
-      : this.t('alerts.onRaiseDesc', { token: alert.token, price: `$${alert.price}` });
-  }
-
-  getInfo(alert: Alert): string | undefined {
-    const desiredPrice = new FPNumber(alert.price);
-    const asset = this.getAsset(this.whitelistIdsBySymbol[alert.token]);
-    const currentPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? ZeroStringValue);
-    const priceChange = calcPriceChange(desiredPrice, currentPrice);
-    const priceChangeFormatted = toPrecision(priceChange, 2).toString();
-    const currentPriceFormatted = showMostFittingValue(currentPrice);
-
-    return `${priceChangeFormatted}% · ${this.t('alerts.currentPrice')}: $${currentPriceFormatted}`;
-  }
-
-  /** Force close menu if it wasn't closed */
-  private forceCloseAlertMenu(index: number): void {
-    this.$refs['alertMenu' + index]?.[0]?.doClose?.();
-  }
-
-  getType(alert: Alert) {
-    return alert.once ? this.t('alerts.once') : this.t('alerts.always');
-  }
-
-  handleCreateAlert(): void {
-    if (!this.isNotificationsEnabledByUser()) return;
-    this.$emit('create');
-  }
-
-  private scrollForceUpdate(): void {
-    this.scrollKey++;
-  }
-
-  handleDeleteAlert(position: number): void {
-    this.removePriceAlert(position);
-    this.forceCloseAlertMenu(position);
-    this.scrollForceUpdate();
-  }
-
-  handleEditAlert(alert: Alert, position: number): void {
-    this.$emit('edit-alert', { ...alert, position });
-    this.forceCloseAlertMenu(position);
-  }
-
-  handleTopUpNotifs(value: boolean): void {
-    this.isNotificationsEnabledByUser();
-    this.setDepositNotifications(value);
-  }
-
-  mounted(): void {
-    if (Notification.permission !== 'granted') {
-      this.setDepositNotifications(false);
-    }
-
-    this.topUpNotifs = this.allowTopUpAlert;
+function setAlertMenuRef(el: any, index: number): void {
+  if (el) {
+    alertMenuRefs[index] = el;
+  } else {
+    delete alertMenuRefs[index];
   }
 }
+
+function isNotificationsEnabledByUser(): boolean {
+  if (!isBrowserNotificationApiAvailable.value) {
+    showAppNotification(t('alerts.noSupportMsg'), 'error');
+    return false;
+  }
+
+  switch (Notification.permission) {
+    case 'denied':
+      store.commit.settings.setBrowserNotifsPopupBlocked(true);
+      return false;
+    case 'default':
+      store.commit.settings.setBrowserNotifsPopupEnabled(true);
+      return false;
+    default:
+      return true;
+  }
+}
+
+function getDescription(alert: Alert) {
+  return alert.type === 'drop'
+    ? t('alerts.onDropDesc', { token: alert.token, price: `$${alert.price}` })
+    : t('alerts.onRaiseDesc', { token: alert.token, price: `$${alert.price}` });
+}
+
+function getInfo(alert: Alert): string | undefined {
+  const desiredPrice = new FPNumber(alert.price);
+  const asset = getAsset(whitelistIdsBySymbol.value[alert.token]);
+  const currentPrice = FPNumber.fromCodecValue(getAssetFiatPrice(asset) ?? ZeroStringValue);
+  const priceChange = calcPriceChange(desiredPrice, currentPrice);
+  const priceChangeFormatted = toPrecision(priceChange, 2).toString();
+  const currentPriceFormatted = showMostFittingValue(currentPrice);
+
+  return `${priceChangeFormatted}% · ${t('alerts.currentPrice')}: $${currentPriceFormatted}`;
+}
+
+function getType(alert: Alert) {
+  return alert.once ? t('alerts.once') : t('alerts.always');
+}
+
+function closeAlertMenu(index: number): void {
+  alertMenuRefs[index]?.doClose?.();
+}
+
+function forceScrollUpdate(): void {
+  scrollKey.value += 1;
+}
+
+function handleCreateAlert(): void {
+  if (!isNotificationsEnabledByUser()) return;
+  emit('create');
+}
+
+function handleDeleteAlert(position: number): void {
+  store.commit.wallet.settings.removePriceAlert(position);
+  closeAlertMenu(position);
+  forceScrollUpdate();
+}
+
+function handleEditAlert(alert: Alert, position: number): void {
+  emit('edit-alert', { ...alert, position });
+  closeAlertMenu(position);
+}
+
+function handleTopUpNotifs(value: boolean): void {
+  isNotificationsEnabledByUser();
+  store.commit.wallet.settings.setDepositNotifications(value);
+}
+
+function getAssetFiatPrice(asset: AccountAsset | undefined): Nullable<string> {
+  if (!asset) return null;
+  return (store.state.wallet.account.fiatPriceObject as Record<string, string> | undefined)?.[asset.address] ?? null;
+}
+
+onMounted(() => {
+  if (Notification.permission !== 'granted') {
+    store.commit.wallet.settings.setDepositNotifications(false);
+  }
+
+  topUpNotifs.value = allowTopUpAlert.value;
+});
+
+watch(
+  allowTopUpAlert,
+  (value) => {
+    topUpNotifs.value = value;
+  },
+  { immediate: false }
+);
 </script>
 
 <style lang="scss">

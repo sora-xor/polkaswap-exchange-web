@@ -8,12 +8,12 @@
         :tooltip="t('bridgeHistory.showHistory')"
         tooltip-placement="bottom-end"
         @click="handleViewTransactionsHistory"
-      />
+      ></s-button>
     </generic-page-header>
 
     <div class="transaction-content">
       <div class="header">
-        <div v-loading="isTxPending" :class="headerIconClasses" />
+        <div v-loading="isTxPending" :class="headerIconClasses"></div>
         <h5 class="header-details">
           <formatted-amount
             class="info-line-value"
@@ -21,7 +21,7 @@
             :value="formattedAmount"
             :asset-symbol="assetSymbol"
           >
-            <i :class="`network-icon network-icon--${getNetworkIcon(isOutgoing ? 0 : externalNetworkId)}`" />
+            <i :class="`network-icon network-icon--${getNetworkIcon(isOutgoing ? 0 : externalNetworkId)}`"></i>
           </formatted-amount>
           <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
           <formatted-amount
@@ -30,7 +30,7 @@
             :value="formattedAmountReceived"
             :asset-symbol="assetSymbol"
           >
-            <i :class="`network-icon network-icon--${getNetworkIcon(isOutgoing ? externalNetworkId : 0)}`" />
+            <i :class="`network-icon network-icon--${getNetworkIcon(isOutgoing ? externalNetworkId : 0)}`"></i>
           </formatted-amount>
         </h5>
       </div>
@@ -40,7 +40,7 @@
         class="transaction-hash-container transaction-hash-container--with-dropdown"
         :key="value"
       >
-        <s-input :placeholder="placeholder" :value="formatted" readonly />
+        <s-input :placeholder="placeholder" :value="formatted" readonly></s-input>
         <s-button
           class="s-button--hash-copy"
           type="action"
@@ -48,12 +48,16 @@
           icon="basic-copy-24"
           :tooltip="tooltip"
           @click="handleCopyAddress(value, $event)"
-        />
-        <links-dropdown v-if="links.length" :links="links" />
+        ></s-button>
+        <links-dropdown v-if="links.length" :links="links"></links-dropdown>
       </div>
 
-      <info-line :class="failedClass" :label="t('bridgeTransaction.networkInfo.status')" :value="transactionStatus" />
-      <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="txDate" />
+      <info-line
+        :class="failedClass"
+        :label="t('bridgeTransaction.networkInfo.status')"
+        :value="transactionStatus"
+      ></info-line>
+      <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="txDate"></info-line>
       <info-line
         v-if="amount"
         is-formatted
@@ -62,7 +66,7 @@
         :value="formattedAmount"
         :asset-symbol="assetSymbol"
         :fiat-value="amountFiatValue"
-      />
+      ></info-line>
       <info-line
         v-if="amountReceived"
         is-formatted
@@ -71,14 +75,14 @@
         :value="formattedAmountReceived"
         :asset-symbol="assetSymbol"
         :fiat-value="amountReceivedFiatValue"
-      />
+      ></info-line>
       <info-line
         is-formatted
         :label="getNetworkText(t('bridgeTransaction.networkInfo.transactionFee'))"
         :value="txSoraNetworkFeeFormatted"
         :asset-symbol="KnownSymbols.XOR"
         :fiat-value="txSoraNetworkFeeFiatValue"
-      />
+      ></info-line>
       <info-line
         is-formatted
         :label="
@@ -91,7 +95,7 @@
         :value="txExternalNetworkFeeFormatted"
         :asset-symbol="nativeTokenSymbol"
         :fiat-value="txExternalNetworkFeeFiatValue"
-      />
+      ></info-line>
       <info-line
         v-if="txExternalTransferFeeNotZero"
         is-formatted
@@ -99,14 +103,14 @@
         :value="txExternalTransferFeeFormatted"
         :asset-symbol="assetSymbol"
         :fiat-value="txExternalTransferFeeFiatValue"
-      />
+      ></info-line>
 
       <div
         v-for="{ value, formatted, placeholder, tooltip, links } in transactionLinks"
         class="transaction-hash-container transaction-hash-container--with-dropdown"
         :key="value"
       >
-        <s-input :placeholder="placeholder" :value="formatted" readonly />
+        <s-input :placeholder="placeholder" :value="formatted" readonly></s-input>
         <s-button
           class="s-button--hash-copy"
           type="action"
@@ -114,8 +118,8 @@
           icon="basic-copy-24"
           :tooltip="tooltip"
           @click="handleCopyAddress(value, $event)"
-        />
-        <links-dropdown v-if="links.length" :links="links" />
+        ></s-button>
+        <links-dropdown v-if="links.length" :links="links"></links-dropdown>
       </div>
 
       <template v-if="!txIsFinilized">
@@ -173,27 +177,39 @@
   </div>
 </template>
 
-<script lang="ts">
-import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
+<script lang="ts" setup>
+import { KnownSymbols as KnownSymbolsEnum } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed, onBeforeUnmount, onMounted } from 'vue';
 
-import BridgeMixin from '@/components/mixins/BridgeMixin';
-import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
-import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
+import { useBridgeCore } from '@/composables/useBridgeCore';
+import { useBridgeTransaction } from '@/composables/useBridgeTransaction';
+import { useCopyAddress } from '@/composables/useCopyAddress';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
+import { useWeb3Connection } from '@/composables/useWeb3Connection';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
-import { action, state, getter, mutation } from '@/store/decorators';
-import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientNativeTokenForFee } from '@/utils';
+import store from '@/store';
+import {
+  formatAddress,
+  hasInsufficientBalance,
+  hasInsufficientNativeTokenForFee,
+  hasInsufficientXorForFee,
+} from '@/utils';
 import { isUnsignedTx } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/sdk';
-import type { SubNetwork, SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { SubHistory, SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { Nullable } from '@/types/common';
 
 const FORMATTED_HASH_LENGTH = 24;
+const KnownSymbols = KnownSymbolsEnum;
 
 type LinkData = {
   value: string;
@@ -203,7 +219,7 @@ type LinkData = {
   links: Array<WALLET_CONSTS.ExplorerLink>;
 };
 
-@Component({
+defineOptions({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
@@ -211,379 +227,378 @@ type LinkData = {
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
   },
-})
-export default class BridgeTransaction extends Mixins(
-  mixins.FormattedAmountMixin,
-  mixins.CopyAddressMixin,
-  BridgeMixin,
-  BridgeTransactionMixin,
-  NetworkFormatterMixin
-) {
-  readonly KnownSymbols = KnownSymbols;
+});
 
-  @state.bridge.externalBlockNumber private externalBlockNumber!: number;
-  @state.bridge.waitingForApprove private waitingForApprove!: Record<string, boolean>;
-  @state.bridge.inProgressIds private inProgressIds!: Record<string, boolean>;
-  @state.router.prev private prevRoute!: Nullable<PageNames>;
+const { t, tc } = useTranslation();
+const { handleCopyAddress, copyTooltip } = useCopyAddress();
+const { formatStringValue, formatCodecNumber, getFiatAmountByString, getFiatAmountByCodecString } =
+  useFormattedAmount();
+const { withParentLoading } = useLoading();
+const { connectEvmWallet } = useWeb3Connection();
+const bridgeCore = useBridgeCore();
+const {
+  handleViewTransactionsHistory,
+  navigateToBridge,
+  asset,
+  nativeToken,
+  nativeTokenSymbol,
+  nativeTokenDecimals,
+  isValidNetwork,
+  externalNativeBalance,
+  isNativeTokenSelected,
+  xor,
+  externalNetworkFee,
+  soraNetworkFee,
+} = bridgeCore;
 
-  @getter.bridge.historyItem private historyItem!: Nullable<IBridgeTransaction>;
-  @getter.bridge.externalAccount private externalAccount!: string;
+const tx = computed(() => store.getters.bridge.historyItem as Nullable<IBridgeTransaction>);
+const bridgeTransaction = useBridgeTransaction(tx);
+const getNetworkIcon = bridgeTransaction.formatter.getNetworkIcon;
+const getNetworkText = bridgeTransaction.getNetworkText;
+const isOutgoing = bridgeTransaction.isOutgoing;
+const externalNetworkId = bridgeTransaction.externalNetworkId;
 
-  @action.bridge.removeHistory private removeHistory!: ({ tx, force }: { tx: any; force?: boolean }) => Promise<void>;
-  @action.bridge.handleBridgeTransaction private handleBridgeTransaction!: (id: string) => Promise<void>;
-  @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
+const externalBlockNumber = computed(() => store.state.bridge.externalBlockNumber as number);
+const waitingForApprove = computed(() => store.state.bridge.waitingForApprove as Record<string, boolean>);
+const inProgressIds = computed(() => store.state.bridge.inProgressIds as Record<string, boolean>);
+const prevRoute = computed(() => store.state.router.prev as Nullable<PageNames>);
+const externalAccount = computed(() => store.getters.bridge.externalAccount as string);
 
-  // BridgeTransactionMixin override
-  get tx(): Nullable<IBridgeTransaction> {
-    return this.historyItem;
+const txIsUnsigned = computed(() => (tx.value?.id ? isUnsignedTx(tx.value) : false));
+const txInProcess = computed(() => {
+  const id = tx.value?.id;
+  if (!id) return false;
+  return Boolean(inProgressIds.value[id]);
+});
+const txWaitingForApprove = computed(() => {
+  const id = tx.value?.id;
+  if (!id) return false;
+  return Boolean(waitingForApprove.value[id]);
+});
+
+const amount = computed(() => tx.value?.amount ?? '');
+const amountReceived = computed(() => tx.value?.amount2 ?? amount.value);
+
+const amountFiatValue = computed(() => (asset.value ? getFiatAmountByString(amount.value, asset.value) : null));
+const amountReceivedFiatValue = computed(() =>
+  asset.value ? getFiatAmountByString(amountReceived.value, asset.value) : null
+);
+
+const formattedAmount = computed(() =>
+  amount.value && asset.value ? formatStringValue(amount.value, asset.value.decimals) : ''
+);
+const formattedAmountReceived = computed(() =>
+  amountReceived.value && asset.value ? formatStringValue(amountReceived.value, asset.value.decimals) : ''
+);
+
+const assetSymbol = computed(() => asset.value?.symbol ?? '');
+
+const parachainNetworkId = computed<Nullable<SubNetwork>>(() => {
+  const networkId = bridgeTransaction.externalNetworkId.value as SubNetwork | null;
+  if (!networkId) return null;
+  try {
+    return subBridgeApi.getSoraParachain(networkId);
+  } catch {
+    return null;
+  }
+});
+
+const txSoraNetworkFee = computed<CodecString>(() => tx.value?.soraNetworkFee ?? soraNetworkFee.value);
+const txSoraNetworkFeeFormatted = computed(() => formatCodecNumber(txSoraNetworkFee.value, xor.value?.decimals));
+const txSoraNetworkFeeFiatValue = computed(() => getFiatAmountByCodecString(txSoraNetworkFee.value));
+
+const txExternalNetworkFee = computed<CodecString>(() => tx.value?.externalNetworkFee ?? externalNetworkFee.value);
+const txExternalNetworkFeeFormatted = computed(() =>
+  formatCodecNumber(txExternalNetworkFee.value, nativeTokenDecimals.value)
+);
+const txExternalNetworkFeeApproximation = computed(() => {
+  if (txExternalNetworkFeeFormatted.value === ZeroStringValue) return false;
+  return !tx.value?.externalNetworkFee;
+});
+const txExternalNetworkFeeFiatValue = computed(() =>
+  nativeToken.value ? getFiatAmountByCodecString(txExternalNetworkFee.value, nativeToken.value) : null
+);
+
+const txExternalTransferFee = computed<CodecString>(
+  () => (tx.value as SubHistory | null)?.externalTransferFee ?? ZeroStringValue
+);
+const txExternalTransferFeeFormatted = computed(() =>
+  formatCodecNumber(txExternalTransferFee.value, asset.value?.externalDecimals)
+);
+const txExternalTransferFeeNotZero = computed(() => txExternalTransferFee.value !== ZeroStringValue);
+const txExternalTransferFeeFiatValue = computed(() =>
+  asset.value ? getFiatAmountByCodecString(txExternalTransferFee.value, asset.value) : null
+);
+
+const txParachainBlockId = computed(() => (tx.value as SubHistory | null)?.parachainBlockId ?? '');
+const txParachainBlockNumber = computed(() => (tx.value as SubHistory | null)?.parachainBlockHeight);
+
+const txDate = computed(() => bridgeTransaction.formatter.formatDatetime(tx.value));
+const txState = computed(() => tx.value?.transactionState ?? BridgeTxStatus.Pending);
+
+const isTxFailed = computed(() => bridgeTransaction.formatter.isFailedState(tx.value));
+const isTxCompleted = computed(() => bridgeTransaction.formatter.isSuccessState(tx.value));
+const isTxWaiting = computed(() => bridgeTransaction.formatter.isWaitingForActionState(tx.value));
+const isTxPending = computed(() => !isTxFailed.value && !isTxCompleted.value);
+const hasRetry = computed(() => isTxFailed.value && (txIsUnsigned.value || bridgeTransaction.isEvmTxType.value));
+const txIsFinilized = computed(() => !isTxPending.value && !isTxWaiting.value && !hasRetry.value);
+
+const headerIconClasses = computed(() => {
+  const iconClass = 'header-icon';
+  const classes = [iconClass];
+
+  if (isTxWaiting.value) {
+    classes.push(`${iconClass}--wait`);
+  } else if (isTxFailed.value) {
+    classes.push(`${iconClass}--error`);
+  } else if (isTxCompleted.value) {
+    classes.push(`${iconClass}--success`);
+  } else {
+    classes.push(`${iconClass}--wait`);
   }
 
-  get txIsUnsigned(): boolean {
-    if (!this.historyItem?.id) return false;
+  return classes.join(' ');
+});
 
-    return isUnsignedTx(this.historyItem);
+const transactionStatus = computed(() => {
+  if (txIsUnsigned.value || isTxWaiting.value) {
+    return t('bridgeTransaction.statuses.waitingForConfirmation');
+  }
+  if (isTxFailed.value) {
+    return t('bridgeTransaction.statuses.failed');
+  }
+  if (isTxCompleted.value) {
+    return t('bridgeTransaction.statuses.done');
   }
 
-  get hasRetry(): boolean {
-    if (!this.isTxFailed) return false;
-    // failed evm transaction could be retried
-    return this.txIsUnsigned || this.isEvmTxType;
+  return `${t('bridgeTransaction.statuses.pending')}...`;
+});
+
+const isGreaterThanMaxAmount = computed(
+  () =>
+    txIsUnsigned.value &&
+    bridgeCore.isGreaterThanTransferMaxAmount(amount.value, asset.value, bridgeTransaction.isOutgoing.value)
+);
+
+const isLowerThanMinAmount = computed(
+  () =>
+    txIsUnsigned.value &&
+    bridgeCore.isLowerThanTransferMinAmount(amount.value, asset.value, bridgeTransaction.isOutgoing.value)
+);
+
+const isInsufficientBalance = computed(() => {
+  const fee = bridgeTransaction.isOutgoing.value ? txSoraNetworkFee.value : txExternalNetworkFee.value;
+  if (!asset.value || !amount.value || !fee) return false;
+
+  return (
+    txIsUnsigned.value &&
+    hasInsufficientBalance(asset.value, amount.value, fee, {
+      isExternalBalance: !bridgeTransaction.isOutgoing.value,
+      isExternalNative: isNativeTokenSelected.value,
+    })
+  );
+});
+
+const isInsufficientXorForFee = computed(
+  () => txIsUnsigned.value && hasInsufficientXorForFee(xor.value, txSoraNetworkFee.value)
+);
+
+const isInsufficientEvmNativeTokenForFee = computed(() => {
+  const outgoing = bridgeTransaction.isOutgoing.value;
+  return (
+    ((txIsUnsigned.value && !outgoing) || (!txIsUnsigned.value && outgoing)) &&
+    hasInsufficientNativeTokenForFee(externalNativeBalance.value, txExternalNetworkFee.value)
+  );
+});
+
+const txExternalAccount = computed(() => bridgeTransaction.txExternalAccount.value ?? '');
+
+const isAnotherEvmAddress = computed(() => {
+  if (!bridgeTransaction.isEvmTxType.value) return false;
+  if (!txExternalAccount.value || !externalAccount.value) return false;
+  return txExternalAccount.value.toLowerCase() !== externalAccount.value.toLowerCase();
+});
+
+const confirmationButtonDisabled = computed(
+  () =>
+    !(bridgeTransaction.isOutgoing.value || isValidNetwork.value) ||
+    isAnotherEvmAddress.value ||
+    isInsufficientBalance.value ||
+    isGreaterThanMaxAmount.value ||
+    isLowerThanMinAmount.value ||
+    isInsufficientXorForFee.value ||
+    isInsufficientEvmNativeTokenForFee.value ||
+    isTxPending.value
+);
+
+const externalNetworkName = computed(() => {
+  const type = bridgeTransaction.externalNetworkType.value;
+  const id = bridgeTransaction.externalNetworkId.value;
+  if (!(type && id)) return '';
+  return bridgeTransaction.formatter.getNetworkName(type, id);
+});
+
+const parachainExplorerLinks = computed(() => {
+  const type = bridgeTransaction.externalNetworkType.value;
+  const networkId = parachainNetworkId.value;
+  if (!(type && networkId)) return [];
+
+  return bridgeTransaction.formatter.getNetworkExplorerLinks(type, networkId, '', txParachainBlockNumber.value);
+});
+
+const confirmationBlocksLeft = computed(() => {
+  if (
+    !(
+      bridgeTransaction.isEvmTxType.value &&
+      !bridgeTransaction.isOutgoing.value &&
+      bridgeTransaction.txExternalBlockNumber.value &&
+      externalBlockNumber.value
+    )
+  ) {
+    return 0;
   }
 
-  get txInProcess(): boolean {
-    if (!this.historyItem?.id) return false;
-
-    return this.historyItem.id in this.inProgressIds;
-  }
-
-  get txWaitingForApprove(): boolean {
-    if (!this.historyItem?.id) return false;
-
-    return this.historyItem.id in this.waitingForApprove;
-  }
-
-  get amount(): string {
-    return this.historyItem?.amount ?? '';
-  }
-
-  get amountReceived(): string {
-    return this.historyItem?.amount2 ?? this.amount;
-  }
-
-  get amountFiatValue(): Nullable<string> {
-    return this.asset ? this.getFiatAmountByString(this.amount, this.asset) : null;
-  }
-
-  get amountReceivedFiatValue(): Nullable<string> {
-    return this.asset ? this.getFiatAmountByString(this.amountReceived, this.asset) : null;
-  }
-
-  get formattedAmount(): string {
-    return this.amount && this.asset ? this.formatStringValue(this.amount, this.asset.decimals) : '';
-  }
-
-  get formattedAmountReceived(): string {
-    return this.amountReceived && this.asset ? this.formatStringValue(this.amountReceived, this.asset.decimals) : '';
-  }
-
-  get assetSymbol(): string {
-    return this.asset?.symbol ?? '';
-  }
-
-  get parachainNetworkId(): Nullable<SubNetwork> {
-    try {
-      return subBridgeApi.getSoraParachain(this.externalNetworkId as SubNetwork);
-    } catch {
-      return null;
-    }
-  }
-
-  get txSoraNetworkFee(): CodecString {
-    return this.historyItem?.soraNetworkFee ?? this.soraNetworkFee;
-  }
-
-  get txSoraNetworkFeeFormatted(): string {
-    return this.formatCodecNumber(this.txSoraNetworkFee, this.xor?.decimals);
-  }
-
-  get txSoraNetworkFeeFiatValue(): Nullable<string> {
-    return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
-  }
-
-  get txExternalNetworkFee(): CodecString {
-    return this.historyItem?.externalNetworkFee ?? this.externalNetworkFee;
-  }
-
-  get txExternalNetworkFeeFormatted(): string {
-    return this.formatCodecNumber(this.txExternalNetworkFee, this.nativeTokenDecimals);
-  }
-
-  get txExternalNetworkFeeApproximation(): boolean {
-    if (this.txExternalNetworkFeeFormatted === ZeroStringValue) return false;
-
-    return !this.historyItem?.externalNetworkFee;
-  }
-
-  get txExternalNetworkFeeFiatValue(): Nullable<string> {
-    return this.nativeToken ? this.getFiatAmountByCodecString(this.txExternalNetworkFee, this.nativeToken) : null;
-  }
-
-  get txExternalTransferFee(): CodecString {
-    return (this.historyItem as SubHistory)?.externalTransferFee ?? ZeroStringValue;
-  }
-
-  get txExternalTransferFeeFormatted(): string {
-    return this.formatCodecNumber(this.txExternalTransferFee, this.asset?.externalDecimals);
-  }
-
-  get txExternalTransferFeeNotZero(): boolean {
-    return this.txExternalTransferFee !== ZeroStringValue;
-  }
-
-  get txExternalTransferFeeFiatValue(): Nullable<string> {
-    return this.asset ? this.getFiatAmountByCodecString(this.txExternalTransferFee, this.asset) : null;
-  }
-
-  get txParachainBlockId(): string {
-    return (this.historyItem as SubHistory)?.parachainBlockId ?? '';
-  }
-
-  get txParachainBlockNumber(): number | undefined {
-    return (this.historyItem as SubHistory)?.parachainBlockHeight;
-  }
-
-  get txDate(): string {
-    return this.formatDatetime(this.historyItem);
-  }
-
-  get txState(): string {
-    return this.historyItem?.transactionState ?? BridgeTxStatus.Pending;
-  }
-
-  get isTxFailed(): boolean {
-    return this.isFailedState(this.historyItem);
-  }
-
-  get isTxCompleted(): boolean {
-    return this.isSuccessState(this.historyItem);
-  }
-
-  get isTxWaiting(): boolean {
-    return this.isWaitingForAction(this.historyItem);
-  }
-
-  get isTxPending(): boolean {
-    return !this.isTxFailed && !this.isTxCompleted;
-  }
-
-  get txIsFinilized(): boolean {
-    return !this.isTxPending && !this.isTxWaiting && !this.hasRetry;
-  }
-
-  get headerIconClasses(): string {
-    const iconClass = 'header-icon';
-    const classes = [iconClass];
-
-    if (this.isTxWaiting) {
-      classes.push(`${iconClass}--wait`);
-    } else if (this.isTxFailed) {
-      classes.push(`${iconClass}--error`);
-    } else if (this.isTxCompleted) {
-      classes.push(`${iconClass}--success`);
-    } else {
-      classes.push(`${iconClass}--wait`);
-    }
-
-    return classes.join(' ');
-  }
-
-  get transactionStatus(): string {
-    if (this.txIsUnsigned || this.isTxWaiting) {
-      return this.t('bridgeTransaction.statuses.waitingForConfirmation');
-    }
-    if (this.isTxFailed) {
-      return this.t('bridgeTransaction.statuses.failed');
-    }
-    if (this.isTxCompleted) {
-      return this.t('bridgeTransaction.statuses.done');
-    }
-
-    return this.t('bridgeTransaction.statuses.pending') + '...';
-  }
-
-  get isGreaterThanMaxAmount(): boolean {
-    return this.txIsUnsigned && this.isGreaterThanTransferMaxAmount(this.amount, this.asset, this.isOutgoing);
-  }
-
-  get isLowerThanMinAmount(): boolean {
-    return this.txIsUnsigned && this.isLowerThanTransferMinAmount(this.amount, this.asset, this.isOutgoing);
-  }
-
-  get isInsufficientBalance(): boolean {
-    const fee = this.isOutgoing ? this.txSoraNetworkFee : this.txExternalNetworkFee;
-
-    if (!this.asset || !this.amount || !fee) return false;
-
-    return (
-      this.txIsUnsigned &&
-      hasInsufficientBalance(this.asset, this.amount, fee, {
-        isExternalBalance: !this.isOutgoing,
-        isExternalNative: this.isNativeTokenSelected,
-      })
-    );
-  }
-
-  get isInsufficientXorForFee(): boolean {
-    return this.txIsUnsigned && hasInsufficientXorForFee(this.xor, this.txSoraNetworkFee);
-  }
-
-  get isInsufficientEvmNativeTokenForFee(): boolean {
-    return (
-      ((this.txIsUnsigned && !this.isOutgoing) || (!this.txIsUnsigned && this.isOutgoing)) &&
-      hasInsufficientNativeTokenForFee(this.externalNativeBalance, this.txExternalNetworkFee)
-    );
-  }
-
-  get isAnotherEvmAddress(): boolean {
-    if (!this.isEvmTxType) return false;
-
-    return this.txExternalAccount.toLowerCase() !== this.externalAccount.toLowerCase();
-  }
-
-  get confirmationButtonDisabled(): boolean {
-    return (
-      !(this.isOutgoing || this.isValidNetwork) ||
-      this.isAnotherEvmAddress ||
-      this.isInsufficientBalance ||
-      this.isGreaterThanMaxAmount ||
-      this.isLowerThanMinAmount ||
-      this.isInsufficientXorForFee ||
-      this.isInsufficientEvmNativeTokenForFee ||
-      this.isTxPending
-    );
-  }
-
-  get externalNetworkName(): string {
-    return this.externalNetworkType && this.externalNetworkId
-      ? this.getNetworkName(this.externalNetworkType, this.externalNetworkId)
-      : '';
-  }
-
-  get parachainExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
-    if (!(this.externalNetworkType && this.parachainNetworkId)) return [];
-
-    return this.getNetworkExplorerLinks(
-      this.externalNetworkType,
-      this.parachainNetworkId,
-      '',
-      this.txParachainBlockNumber
-    );
-  }
-
-  async created(): Promise<void> {
-    if (!this.historyItem) {
-      this.navigateToBridge();
-      return;
-    }
-
-    await this.withParentLoading(async () => {
-      const withAutoStart = !this.txInProcess && this.isTxPending;
-
-      await this.handleTransaction(withAutoStart);
-    });
-  }
-
-  beforeDestroy(): void {
-    if (!this.txInProcess && this.txIsUnsigned) {
-      const tx = { ...this.historyItem };
-      this.removeHistory({ tx, force: true });
-    }
-
-    // reset active history item
-    this.setHistoryId();
-  }
-
-  get confirmationBlocksLeft(): number {
-    if (!(this.isEvmTxType && !this.isOutgoing && this.txExternalBlockNumber && this.externalBlockNumber)) return 0;
-
-    const blocksLeft = this.txExternalBlockNumber + 30 - this.externalBlockNumber;
-
-    return Math.max(blocksLeft, 0);
-  }
-
-  get failedClass(): string {
-    return this.isTxFailed && !this.isTxWaiting ? 'info-line--error' : '';
-  }
-
-  async handleTransaction(withAutoStart = true): Promise<void> {
-    if (withAutoStart && this.historyItem?.id) {
-      await this.handleBridgeTransaction(this.historyItem.id);
-    }
-  }
-
-  handleBack(): void {
-    router.push({ name: this.prevRoute as string | undefined });
-  }
-
-  get txInternalHash(): string {
-    if (!this.isOutgoing) return this.txSoraHash;
-
-    return this.txSoraHash || this.txInternalBlockId || this.txSoraId;
-  }
-
-  get accountLinks(): LinkData[] {
-    const name = this.t('accountAddressText');
-    const internal = this.getLinkData(this.txInternalAccount, this.internalAccountLinks, name);
-    const external = this.getLinkData(this.txExternalAccount, this.externalAccountLinks, name, this.externalNetworkId);
-
-    return this.sortLinksByTxDirection([internal, external]);
-  }
-
-  get transactionLinks(): LinkData[] {
-    const txHashName = this.t('bridgeTransaction.transactionHash');
-    const txBlockName = this.t('transaction.blockId');
-    const internal = this.getLinkData(this.txInternalHash, this.internalExplorerLinks, txHashName);
-    const parachain = this.getLinkData(
-      this.txParachainBlockId,
-      this.parachainExplorerLinks,
-      txBlockName,
-      this.parachainNetworkId
-    );
-    const external = this.getLinkData(
-      this.txExternalHash ?? this.txExternalBlockId,
-      this.externalExplorerLinks,
-      this.txExternalHash ? txHashName : txBlockName,
-      this.externalNetworkId
-    );
-
-    return this.sortLinksByTxDirection([internal, parachain, external]);
-  }
-
-  private sortLinksByTxDirection(outgoingOrderedLinks: Array<LinkData | null>): LinkData[] {
-    const links = outgoingOrderedLinks.filter((link) => !!link) as LinkData[];
-
-    return this.isOutgoing ? links : [...links].reverse();
-  }
-
-  private getLinkData(
-    value: string,
-    links: Array<WALLET_CONSTS.ExplorerLink>,
-    name: string,
-    networkId?: Nullable<BridgeNetworkId>
-  ): LinkData | null {
-    if (!value) return null;
-
-    const placeholder = this.getNetworkText(name, networkId);
-
-    return {
-      value,
-      formatted: this.formatAddress(value, FORMATTED_HASH_LENGTH),
-      placeholder,
-      tooltip: this.copyTooltip(placeholder),
-      links,
-    };
+  const blocksLeft = (bridgeTransaction.txExternalBlockNumber.value ?? 0) + 30 - externalBlockNumber.value;
+
+  return Math.max(blocksLeft, 0);
+});
+
+const failedClass = computed(() => (isTxFailed.value && !isTxWaiting.value ? 'info-line--error' : ''));
+
+const txInternalHash = computed(() => {
+  if (!bridgeTransaction.isOutgoing.value) return bridgeTransaction.txSoraHash.value;
+  return (
+    bridgeTransaction.txSoraHash.value || bridgeTransaction.txInternalBlockId.value || bridgeTransaction.txSoraId.value
+  );
+});
+
+const parachainLinks = computed(() => parachainExplorerLinks.value);
+
+const accountLinks = computed(() => {
+  const name = t('accountAddressText');
+  const internal = getLinkData(
+    bridgeTransaction.txInternalAccount.value,
+    bridgeTransaction.internalAccountLinks.value,
+    name
+  );
+  const external = getLinkData(
+    bridgeTransaction.txExternalAccount.value,
+    bridgeTransaction.externalAccountLinks.value,
+    name,
+    bridgeTransaction.externalNetworkId.value
+  );
+
+  return sortLinksByTxDirection([internal, external]);
+});
+
+const transactionLinks = computed(() => {
+  const txHashName = t('bridgeTransaction.transactionHash');
+  const txBlockName = t('transaction.blockId');
+  const internal = getLinkData(txInternalHash.value, bridgeTransaction.internalExplorerLinks.value, txHashName);
+  const parachain = getLinkData(txParachainBlockId.value, parachainLinks.value, txBlockName, parachainNetworkId.value);
+  const external = getLinkData(
+    bridgeTransaction.txExternalHash.value ?? bridgeTransaction.txExternalBlockId.value,
+    bridgeTransaction.externalExplorerLinks.value,
+    bridgeTransaction.txExternalHash.value ? txHashName : txBlockName,
+    bridgeTransaction.externalNetworkId.value
+  );
+
+  return sortLinksByTxDirection([internal, parachain, external]);
+});
+
+function sortLinksByTxDirection(outgoingOrderedLinks: Array<LinkData | null>): LinkData[] {
+  const links = outgoingOrderedLinks.filter(Boolean) as LinkData[];
+  return bridgeTransaction.isOutgoing.value ? links : [...links].reverse();
+}
+
+function getLinkData(
+  value: string,
+  links: Array<WALLET_CONSTS.ExplorerLink>,
+  name: string,
+  networkId?: Nullable<BridgeNetworkId>
+): LinkData | null {
+  if (!value) return null;
+
+  const placeholder = bridgeTransaction.getNetworkText(name, networkId);
+
+  return {
+    value,
+    formatted: formatAddress(value, FORMATTED_HASH_LENGTH),
+    placeholder,
+    tooltip: copyTooltip(placeholder),
+    links,
+  };
+}
+
+async function handleTransaction(withAutoStart = true): Promise<void> {
+  if (withAutoStart && tx.value?.id) {
+    await store.dispatch.bridge.handleBridgeTransaction(tx.value.id);
   }
 }
+
+function handleBack(): void {
+  if (prevRoute.value) {
+    router.push({ name: prevRoute.value });
+    return;
+  }
+
+  navigateToBridge();
+}
+
+const txLink = computed(() => {
+  const link = bridgeTransaction.isOutgoing.value
+    ? bridgeTransaction.externalExplorerLinks.value[0]
+    : bridgeTransaction.internalExplorerLinks.value[0];
+  const network = bridgeTransaction.isOutgoing.value ? bridgeTransaction.externalNetworkId.value : undefined;
+
+  return prepareLink(link, network);
+});
+
+const txAccountLink = computed(() => {
+  const link = bridgeTransaction.isOutgoing.value
+    ? bridgeTransaction.externalAccountLinks.value[0]
+    : bridgeTransaction.internalAccountLinks.value[0];
+  const network = bridgeTransaction.isOutgoing.value ? bridgeTransaction.externalNetworkId.value : undefined;
+
+  return prepareLink(link, network, false);
+});
+
+function prepareLink(
+  link: WALLET_CONSTS.ExplorerLink | undefined,
+  externalNetworkId?: Nullable<BridgeNetworkId>,
+  isTxLink = true
+): { href: string; title: string } | null {
+  if (!link) return null;
+  const linkText = isTxLink ? tc('transactionText', 1) : tc('accountText', 1);
+
+  return {
+    href: link.value,
+    title: bridgeTransaction.getNetworkText(linkText, externalNetworkId),
+  };
+}
+
+onMounted(async () => {
+  if (!tx.value) {
+    navigateToBridge();
+    return;
+  }
+
+  await withParentLoading(async () => {
+    const withAutoStart = !txInProcess.value && isTxPending.value;
+    await handleTransaction(withAutoStart);
+  });
+});
+
+onBeforeUnmount(async () => {
+  if (!tx.value) return;
+
+  if (!txInProcess.value && txIsUnsigned.value) {
+    const historyCopy = { ...tx.value };
+    await store.dispatch.bridge.removeHistory({ tx: historyCopy, force: true });
+  }
+
+  store.commit.bridge.setHistoryId();
+});
 </script>
 
 <style lang="scss">

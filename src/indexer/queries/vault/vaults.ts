@@ -1,14 +1,14 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
-import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
+import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import type { ClosedVault } from '@/modules/vault/types';
 
-import type { SubqueryVaultEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
-import type { SubsquidVaultEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
-import type { ConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { SubqueryVaultEntity } from '@wallet/lib/services/indexer/subquery/types';
+import type { SubsquidVaultEntity } from '@wallet/lib/services/indexer/subsquid/types';
+import type { ConnectionQueryResponse } from '@wallet/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
 

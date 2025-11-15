@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { api, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
+import { api, ScriptLoader } from '@wallet';
 import { defineActions } from 'direct-vuex';
 
 import { soraCardActionContext } from '@/store/soraCard';

@@ -1,0 +1,57 @@
+
+©¡var x=Object.defineProperty;var A=(e,r,t)=>r in e?x(e,r,{enumerable:!0,configurable:!0,writable:!0,value:t}):e[r]=t;var i=(e,r,t)=>A(e,typeof r!="symbol"?r+"":r,t);import{k as _,f as q,t as I,b as c,u as f,$ as m}from"./wallet-stack-LOAEjQjN.js";import{M as g,P as k,O as w}from"./vendor-vue-BU49LsTx.js";import{T as v,b as P,g as O,n as F}from"./index-CLebdHLk.js";import{O as p,F as S}from"./orderBook-BDbQIn4v.js";import $ from"./OrderTable-5GPbOuYN.js";import"./echarts-CDPJekDq.js";import"./polkadot-tm1sXUWB.js";import"./lodash-DKukXVb-.js";import"./ScrollableTableMixin-ybC1OkG6.js";const{IndexerType:y}=q,C=e=>e?f.PriceVariant.Buy:f.PriceVariant.Sell,l=e=>e*1e3,T=I`
+  query SubqueryAccountOrdersQuery($after: Cursor, $filter: OrderBookOrderFilter) {
+    data: orderBookOrders(orderBy: TIMESTAMP_DESC, after: $after, filter: $filter) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          type
+          orderId
+          orderBookId
+          accountId
+          timestamp
+          isBuy
+          price
+          amount
+          amountFilled
+          lifetime
+          expiresAt
+          status
+        }
+      }
+    }
+  }
+`,D=I`
+  query SubsquidAccountOrdersQuery($after: Cursor, $where: OrderBookOrderWhereInput) {
+    data: orderBookOrdersConnection(orderBy: timestamp_DESC, after: $after, where: $filter) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          type
+          orderId
+          orderBook {
+            id
+          }
+          account {
+            id
+          }
+          timestamp
+          isBuy
+          price
+          amount
+          amountFilled
+          lifetime
+          expiresAt
+          status
+        }
+      }
+    }
+  }
+`,B=e=>{const r="accountId"in e?e.accountId:e.account.id,t="orderBookId"in e?e.orderBookId:e.orderBook.id,[s,o,a]=t.split("-"),n=new c.FPNumber(e.amount),b=new c.FPNumber(e.amountFilled),h=n.sub(b);return{orderBookId:{dexId:Number(s),base:o,quote:a},owner:r,time:l(e.timestamp),side:C(e.isBuy),price:new c.FPNumber(e.price),originalAmount:n,amount:h,id:e.orderId??0,lifespan:l(e.lifetime),expiresAt:l(e.expiresAt),status:e.status}},E=(e,r)=>{const t={and:[{accountId:{equalTo:e}},{status:{notEqualTo:p.Active}}]};if(r){const s=[r.dexId,r.base,r.quote].join("-");t.and.push({orderBookId:{equalTo:s}})}return t},M=(e,r)=>{const t={account:{id_eq:e},status_not_eq:p.Active};if(r){const s=[r.dexId,r.base,r.quote].join("-");t.orderBook={id_eq:s}}return t};async function N(e,r){const t=_();switch(t.type){case y.SUBQUERY:{const o={filter:E(e,r)};return await t.services.explorer.fetchAllEntities(T,o,B)}case y.SUBSQUID:{const o={where:M(e,r)};return await t.services.explorer.fetchAllEntitiesConnection(D,o,B)}}return null}var Q=Object.defineProperty,j=Object.getOwnPropertyDescriptor,u=(e,r,t,s)=>{for(var o=s>1?void 0:s?j(r,t):r,a=e.length-1,n;a>=0;a--)(n=e[a])&&(o=(s?n(r,t,o):n(o))||o);return s&&o&&Q(r,t,o),o};let d=class extends g(v,m.LoadingMixin,m.FormattedAmountMixin){constructor(){super(...arguments);i(this,"filter");i(this,"accountAddress");i(this,"currentOrderBook");i(this,"getAsset");i(this,"orders",[])}mounted(){this.fetchData()}get filtered(){return this.filter!==S.executed?this.orders:this.orders.filter(r=>r.status===p.Filled)}async fetchData(){this.accountAddress&&await this.withLoading(async()=>{var t;const r=await N(this.accountAddress,(t=this.currentOrderBook)==null?void 0:t.orderBookId);this.orders=r??[]})}};u([k({default:"",type:String})],d.prototype,"filter",2);u([P.wallet.account.address],d.prototype,"accountAddress",2);u([O.orderBook.currentOrderBook],d.prototype,"currentOrderBook",2);u([O.assets.assetDataByAddress],d.prototype,"getAsset",2);d=u([w({components:{OrderTable:$}})],d);var U=function(){var r=this,t=r._self._c;return r._self._setupProxy,t("order-table",{attrs:{orders:r.filtered,"parent-loading":r.loading}})},L=[],R=F(d,U,L,!1,null,null);const ee=R.exports;export{ee as default};
+¡

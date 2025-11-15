@@ -1,12 +1,12 @@
 <template>
-  <dialog-base class="browser-notification" :visible.sync="visibility">
+  <dialog-base class="browser-notification" v-model:visible="visibility">
     <template #title>
       <div class="browser-notification-dialog__header">
         <s-image
           src="browser-notification/rotate-phone-tg.png"
           class="browser-notification-dialog__image"
           fit="cover"
-        />
+        ></s-image>
       </div>
     </template>
     <div class="browser-notification-dialog">
@@ -25,82 +25,79 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state, mutation } from '@/store/decorators';
+import { components } from '@wallet';
+
+import { useTranslation } from '@/composables/useTranslation';
+import { useSettingsStore } from '@/stores/settings';
 import { tmaSdkService } from '@/utils/telegram';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
+defineOptions({ name: 'RotatePhoneDialog' });
+
+const DialogBase = components.DialogBase;
+
+const { t } = useTranslation();
+const settingsStore = useSettingsStore();
+
+const visibility = computed({
+  get: () => {
+    const dialogVisible = Boolean(settingsStore.rotatePhoneDialogVisibility);
+    const hideFeatureEnabled = Boolean(settingsStore.isRotatePhoneHideBalanceFeatureEnabled);
+    const accessDeclined = Boolean(settingsStore.isAccessAccelerometrEventDeclined);
+    const rotationListener = Boolean(settingsStore.isAccessRotationListener);
+
+    return dialogVisible && !hideFeatureEnabled && !accessDeclined && !rotationListener;
   },
-})
-export default class RotatePhoneDialog extends Mixins(TranslationMixin) {
-  @state.settings.rotatePhoneDialogVisibility private rotatePhoneDialogVisibility!: boolean;
-  @state.settings.isRotatePhoneHideBalanceFeatureEnabled private isRotatePhoneHideBalanceFeatureEnabled!: boolean;
-  @state.settings.isAccessAccelerometrEventDeclined private isAccessAccelerometrEventDeclined!: boolean;
-  @state.settings.isAccessRotationListener private isAccessRotationListener!: boolean;
+  set: (flag: boolean) => {
+    settingsStore.setRotatePhoneDialogVisibility(flag);
+  },
+});
 
-  @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
-  @mutation.settings.setIsRotatePhoneHideBalanceFeatureEnabled private setIsRotatePhoneHideBalanceFeatureEnabled!: (
-    flag: boolean
-  ) => void;
+const closeDialog = () => {
+  visibility.value = false;
+};
 
-  @mutation.settings.setIsAccessAccelerometrEventDeclined private setIsAccessAccelerometrEventDeclined!: (
-    flag: boolean
-  ) => void;
+const enableRotatePhoneHideBalanceFeature = (): void => {
+  const grantAccess = () => {
+    settingsStore.setAccessGranted(true);
+    settingsStore.setIsRotatePhoneHideBalanceFeatureEnabled(true);
+    tmaSdkService.listenForDeviceRotation();
+  };
 
-  @mutation.settings.setAccessGranted private setAccessGranted!: (flag: boolean) => void;
+  const denyAccess = () => {
+    settingsStore.setAccessGranted(false);
+    settingsStore.setIsAccessAccelerometrEventDeclined(true);
+    console.warn('Device motion permission denied.');
+  };
 
-  get visibility(): boolean {
-    return (
-      this.rotatePhoneDialogVisibility &&
-      !this.isRotatePhoneHideBalanceFeatureEnabled &&
-      !this.isAccessAccelerometrEventDeclined &&
-      !this.isAccessRotationListener
-    );
+  if (!tmaSdkService.checkAccelerometerSupport()) {
+    console.warn('Device does not support motion events.');
+    closeDialog();
+    return;
   }
 
-  set visibility(flag: boolean) {
-    this.setRotatePhoneDialogVisibility(flag);
+  if (typeof DeviceMotionEvent !== 'undefined' && typeof (DeviceMotionEvent as any).requestPermission === 'function') {
+    (DeviceMotionEvent as any)
+      .requestPermission()
+      .then((permissionState: PermissionState) => {
+        if (permissionState === 'granted') {
+          grantAccess();
+        } else {
+          denyAccess();
+        }
+      })
+      .catch((error: unknown) => {
+        console.error('Error requesting device motion permission:', error);
+      })
+      .finally(closeDialog);
+    return;
   }
 
-  enableRotatePhoneHideBalanceFeature() {
-    if (tmaSdkService.checkAccelerometerSupport()) {
-      if (
-        typeof DeviceMotionEvent !== 'undefined' &&
-        typeof (DeviceMotionEvent as any).requestPermission === 'function'
-      ) {
-        (DeviceMotionEvent as any)
-          .requestPermission()
-          .then((permissionState: PermissionState) => {
-            if (permissionState === 'granted') {
-              this.setAccessGranted(true);
-              this.setIsRotatePhoneHideBalanceFeatureEnabled(true);
-              tmaSdkService.listenForDeviceRotation();
-            } else {
-              this.setAccessGranted(false);
-              this.setIsAccessAccelerometrEventDeclined(true);
-              console.warn('Device motion permission denied.');
-            }
-          })
-          .catch((error: any) => {
-            console.error('Error requesting device motion permission:', error);
-          });
-      } else {
-        this.setAccessGranted(true);
-        this.setIsRotatePhoneHideBalanceFeatureEnabled(true);
-        tmaSdkService.listenForDeviceRotation();
-      }
-    } else {
-      console.warn('Device does not support motion events.');
-    }
-    this.visibility = false;
-  }
-}
+  grantAccess();
+  closeDialog();
+};
 </script>
 
 <style lang="scss" scoped>

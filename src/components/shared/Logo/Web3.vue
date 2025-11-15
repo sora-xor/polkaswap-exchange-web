@@ -92,23 +92,24 @@ c1.4,0,2.2-0.5,2.6-1.2c0,0.4,0,0.7,0.1,1.1h1.3c-0.2-1-0.2-1.9-0.2-2.9V34.4z M128
 c-0.9,0-1.5-0.5-1.5-1.2c0-1.1,1.5-1.4,3.9-1.6V35.9z M139.9,31.3c-1,0-2,0.5-2.6,1.4c-0.3-0.8-1-1.4-2.2-1.4c-1,0-1.8,0.5-2.3,1.3
 v-1.2h-1.3v7.7h1.3v-4.2c0-1.6,0.7-2.5,1.9-2.5c1.4,0,1.6,1,1.6,2.2v4.5h1.3v-4.2c0-1.6,0.7-2.5,1.9-2.5c1.4,0,1.6,1,1.6,2.2V39
 h1.3v-4.8C142.4,32.5,141.7,31.3,139.9,31.3z"
-      />
+      ></path>
     </g>
   </svg>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
 import { Theme } from '@/consts/theme';
 
-@Component
-export default class Web3Logo extends Vue {
-  @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme;
-
-  get textColor(): string {
-    if (this.theme === Theme.DARK) return 'var(--s-color-base-content-tertiary)';
-    return '#A19A9D';
+const props = withDefaults(
+  defineProps<{
+    theme?: Theme;
+  }>(),
+  {
+    theme: Theme.LIGHT,
   }
-}
+);
+
+const textColor = computed(() => (props.theme === Theme.DARK ? 'var(--s-color-base-content-tertiary)' : '#A19A9D'));
 </script>

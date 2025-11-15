@@ -1,8 +1,17 @@
 import { Storage } from '@sora-substrate/sdk';
-import { storage as soraStorage } from '@soramitsu/soraneo-wallet-web';
+import * as walletModule from '@wallet';
 
 import { LOCAL_STORAGE_MAX_SIZE, listOfRemoveForLocalStorage } from '@/consts/index';
-export { settingsStorage } from '@soramitsu/soraneo-wallet-web';
+
+type WalletModule = {
+  storage?: Storage;
+  settingsStorage?: Storage;
+};
+
+const wallet = walletModule as WalletModule;
+
+export const settingsStorage = wallet.settingsStorage ?? new Storage('settings');
+const soraStorage = wallet.storage ?? new Storage('wallet');
 
 export default soraStorage;
 

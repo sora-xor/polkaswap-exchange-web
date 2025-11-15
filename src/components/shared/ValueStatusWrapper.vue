@@ -5,37 +5,38 @@
       class="value-status-wrapper-icon"
       name="notifications-alert-triangle-24"
       :size="errorIconSize"
-    />
-    <slot />
+    ></s-icon>
+    <slot></slot>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
 import { DifferenceStatus, getDifferenceStatus } from '@/utils/swap';
 
-@Component
-export default class ValueStatusWrapper extends Vue {
-  @Prop({ default: false, type: Boolean }) readonly badge!: boolean;
-  @Prop({ default: '', type: [String, Number] }) readonly value!: string | number;
-  @Prop({ default: '12', type: [String, Number] }) readonly errorIconSize!: string | number;
-  @Prop({ default: getDifferenceStatus, type: Function }) readonly getStatus!: (value: number) => string;
-
-  get formatted(): number {
-    const value = Number(this.value);
-
-    return Number.isFinite(value) ? value : 0;
+const props = withDefaults(
+  defineProps<{
+    badge?: boolean;
+    value?: string | number;
+    errorIconSize?: string | number;
+    getStatus?: (value: number) => string;
+  }>(),
+  {
+    badge: false,
+    value: '',
+    errorIconSize: '12',
+    getStatus: getDifferenceStatus,
   }
+);
 
-  get status(): string {
-    return this.getStatus(this.formatted);
-  }
+const formatted = computed(() => {
+  const numericValue = Number(props.value);
+  return Number.isFinite(numericValue) ? numericValue : 0;
+});
 
-  get errorIcon(): boolean {
-    return this.status === DifferenceStatus.Error && this.badge;
-  }
-}
+const status = computed(() => props.getStatus(formatted.value));
+const errorIcon = computed(() => status.value === DifferenceStatus.Error && props.badge);
 </script>
 
 <style lang="scss" scoped>

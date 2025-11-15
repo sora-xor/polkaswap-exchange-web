@@ -1,7 +1,7 @@
 <template>
   <div>
     <s-table
-      ref="table"
+      ref="tableRef"
       v-loading="loadingState"
       :data="tableItems"
       :highlight-current-row="false"
@@ -21,7 +21,7 @@
             </span>
           </div>
           <div class="explore-table-item-logo">
-            <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head" />
+            <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head"></s-icon>
           </div>
           <div class="explore-table-item-info explore-table-item-info--head">
             <span class="explore-table__primary">{{ t('nameText') }}</span>
@@ -34,7 +34,7 @@
             :second-token="row.targetAsset"
             size="small"
             class="explore-table-item-logo"
-          />
+          ></pair-token-logo>
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.baseAsset.symbol }}-{{ row.targetAsset.symbol }}</div>
           </div>
@@ -54,7 +54,7 @@
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.priceUSDFormatted"
             class="explore-table-item-price"
-          />
+          ></formatted-amount>
         </template>
       </s-table-column>
       <!-- APY -->
@@ -81,8 +81,12 @@
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-token"
-              />
-              <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
+              ></formatted-amount>
+              <token-logo
+                size="small"
+                class="explore-table-item-logo explore-table-item-logo--plain"
+                :token="asset"
+              ></token-logo>
             </div>
           </div>
         </template>
@@ -99,8 +103,12 @@
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-token"
-              />
-              <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
+              ></formatted-amount>
+              <token-logo
+                size="small"
+                class="explore-table-item-logo explore-table-item-logo--plain"
+                :token="asset"
+              ></token-logo>
             </div>
           </div>
         </template>
@@ -111,7 +119,7 @@
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
             <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
-              <s-icon name="info-16" size="14px" />
+              <s-icon name="info-16" size="14px"></s-icon>
             </s-tooltip>
           </sort-button>
         </template>
@@ -138,47 +146,29 @@
       :last-page="lastPage"
       :loading="loadingState"
       @pagination-click="handlePaginationClick"
-    />
+    ></history-pagination>
   </div>
 </template>
 
-<script lang="ts">
-import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed, ref, watch } from 'vue';
 
-import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import { Components } from '@/consts';
-import { fetchPoolsData } from '@/indexer/queries/pool/pools';
-import type { PoolData } from '@/indexer/queries/pool/pools';
+import { SortDirection } from '@soramitsu-ui/ui/types';
+import { useExploreTable } from '@/composables/useExploreTable';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
+import { Components, TranslationConsts } from '@/consts';
+import { fetchPoolsData, type PoolData } from '@/indexer/queries/pool/pools';
 import { lazyComponent } from '@/router';
-import { state } from '@/store/decorators';
-import type { AmountWithSuffix } from '@/types/formats';
-import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
+import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { buildPoolTableItems, filterPoolTableItems, type PoolExploreTableItem } from '@/views/Explore/poolsTable';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
-type PoolToken = {
-  asset: Asset;
-  balance: string;
-};
-
-type TableItem = {
-  baseAsset: Asset;
-  targetAsset: Asset;
-  priceUSD: number;
-  priceUSDFormatted: string;
-  apy: number;
-  apyFormatted: string;
-  tvl: number;
-  tvlFormatted: AmountWithSuffix;
-  isAccountItem: boolean;
-  poolTokens: PoolToken[];
-  accountTokens: PoolToken[];
-};
-
-@Component({
+defineOptions({
   components: {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SortButton: lazyComponent(Components.SortButton),
@@ -187,93 +177,94 @@ type TableItem = {
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
   },
-})
-export default class ExplorePools extends Mixins(ExplorePageMixin) {
-  @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
+});
 
-  private poolsData: readonly PoolData[] = [];
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+const FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
-  get items(): TableItem[] {
-    const items = this.poolsData.reduce<any>((buffer, pool) => {
-      const { baseAssetId, targetAssetId, priceUSD, apy } = pool;
+const props = defineProps({
+  parentLoading: { type: Boolean, default: false },
+  exploreQuery: { type: String, default: '' },
+  isAccountItemsOnly: { type: Boolean, default: false },
+});
 
-      const baseAsset = this.getAsset(baseAssetId);
-      const targetAsset = this.getAsset(targetAssetId);
+const { t } = useTranslation();
+const parentLoading = computed(() => props.parentLoading);
+const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
+const loadingState = computed(() => loading.value || parentLoading.value);
 
-      if (!(baseAsset && targetAsset)) return buffer;
+const assetsStore = useAssetsStore();
+const whitelistAssets = computed(() => assetsStore.whitelistAssets ?? []);
+const allowedAssets = computed(() => (whitelistAssets.value.length ? whitelistAssets.value : KnownAssets));
 
-      const name = `${baseAsset.symbol}-${targetAsset.symbol}`; // For search
+const getAsset = (address?: string) => assetsStore.assetDataByAddress(address);
+const accountLiquidity = computed<readonly AccountLiquidity[]>(() => store.state.pool.accountLiquidity ?? []);
+const poolsData = ref<readonly PoolData[]>([]);
 
-      const baseAssetReserves = FPNumber.fromCodecValue(pool.baseAssetReserves ?? 0, baseAsset.decimals);
-      const targetAssetReserves = FPNumber.fromCodecValue(pool.targetAssetReserves ?? 0, targetAsset.decimals);
-      const tvlUSD = targetAssetReserves.mul(priceUSD).mul(FPNumber.TWO);
+const items = computed<PoolExploreTableItem[]>(() =>
+  buildPoolTableItems({
+    pools: poolsData.value,
+    accountLiquidity: accountLiquidity.value,
+    getAsset,
+  })
+);
 
-      const poolTokens = [
-        {
-          asset: baseAsset,
-          balance: formatDecimalPlaces(baseAssetReserves),
-        },
-        {
-          asset: targetAsset,
-          balance: formatDecimalPlaces(targetAssetReserves),
-        },
-      ];
+const prefilteredItems = computed(() =>
+  props.isAccountItemsOnly ? items.value.filter((item) => item.isAccountItem) : items.value
+);
 
-      const accountPool = this.accountLiquidity.find(
-        (liquidity) => liquidity.firstAddress === baseAsset.address && liquidity.secondAddress === targetAsset.address
-      );
-      const accountTokens = [
-        {
-          asset: baseAsset,
-          balance: formatDecimalPlaces(FPNumber.fromCodecValue(accountPool?.firstBalance ?? 0)),
-        },
-        {
-          asset: targetAsset,
-          balance: formatDecimalPlaces(FPNumber.fromCodecValue(accountPool?.secondBalance ?? 0)),
-        },
-      ];
+const exploreQuery = computed(() => props.exploreQuery ?? '');
 
-      buffer.push({
-        name,
-        baseAsset,
-        targetAsset,
-        priceUSD: priceUSD.toNumber(),
-        priceUSDFormatted: priceUSD.toLocaleString(),
-        apy: apy.toNumber(),
-        apyFormatted: formatDecimalPlaces(apy, true),
-        tvl: tvlUSD.toNumber(),
-        tvlFormatted: formatAmountWithSuffix(tvlUSD),
-        isAccountItem: !!accountPool,
-        accountTokens,
-        poolTokens,
-      });
+const table = useExploreTable<PoolExploreTableItem>({
+  items: prefilteredItems,
+  query: exploreQuery,
+  filter: filterPoolTableItems,
+  defaultOrder: SortDirection.DESC,
+  defaultProperty: 'tvl',
+});
 
-      return buffer;
-    }, []);
+const {
+  tableItems,
+  order,
+  property,
+  isDefaultSort,
+  handlePaginationClick,
+  changeSort,
+  handleResetSort,
+  currentPage,
+  pageAmount,
+  total,
+  lastPage,
+  startIndex,
+  tableRef,
+} = table;
 
-    const defaultSorted = [...items].sort((a, b) =>
-      sortPools(
-        { baseAsset: a.baseAsset, poolAsset: a.targetAsset },
-        { baseAsset: b.baseAsset, poolAsset: b.targetAsset }
-      )
-    );
+const pricesAvailable = computed(() => {
+  const fiatPriceObject = store.state.wallet.account.fiatPriceObject ?? {};
+  return Object.keys(fiatPriceObject).length > 0;
+});
 
-    return defaultSorted;
-  }
+const isLoggedIn = computed(() => store.getters.wallet.account.isLoggedIn as boolean);
+const whitelistSignature = computed(() => whitelistAssets.value.map((asset) => asset.address).join(';'));
 
-  get prefilteredItems(): TableItem[] {
-    return this.isAccountItemsOnly ? this.items.filter((item) => item.isAccountItem) : this.items;
-  }
+const updateExploreData = async (): Promise<void> => {
+  if (loading.value) return;
 
-  // ExplorePageMixin method implementation
-  async updateExploreData(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        this.poolsData = Object.freeze(await fetchPoolsData(this.allowedAssets));
-      });
+  await withLoading(async () => {
+    await withParentLoading(async () => {
+      const data = await fetchPoolsData(allowedAssets.value);
+      poolsData.value = Object.freeze(data ?? []);
     });
-  }
-}
+  });
+};
+
+watch(
+  () => whitelistSignature.value,
+  () => {
+    updateExploreData();
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss">

@@ -1,52 +1,66 @@
 <template>
-  <dialog-base :visible.sync="isVisible">
+  <DialogBase v-model:visible="isVisible">
     <div class="content">
-      <s-icon class="icon" name="notifications-alert-triangle-24" size="64px" />
+      <s-icon class="icon" name="notifications-alert-triangle-24" size="64px"></s-icon>
       <h1 class="title">{{ t('soraStaking.validatorsAttentionDialog.title') }}</h1>
       <div class="description">
         <p v-for="item in description" :key="item">{{ item }}</p>
       </div>
-
       <s-button type="primary" class="action-button" :loading="parentLoading" @click="handleConfirm">
         {{ t('soraStaking.validatorsAttentionDialog.confirm') }}
       </s-button>
     </div>
-  </dialog-base>
+  </DialogBase>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { Components } from '@/consts';
-import router, { lazyComponent } from '@/router';
+import { useDialogModel } from '@/composables/useDialogModel';
+import router from '@/router';
 
 import { SoraStakingPageNames } from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
 
-@Component({
-  components: {
-    TokenInput: lazyComponent(Components.TokenInput),
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-  },
-})
-export default class ValidatorsAttentionDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
-  @Prop({ default: () => true, type: Boolean }) readonly isRecommended!: boolean;
+const props = defineProps<{
+  visible: boolean;
+  parentLoading?: boolean;
+  isRecommended?: boolean;
+}>();
 
-  handleConfirm(): void {
-    if (this.isRecommended) {
-      router.push({ name: SoraStakingPageNames.SelectValidators });
-    }
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+  (event: 'proceed'): void;
+}>();
+
+const { t } = useI18n();
+const { isVisible, closeDialog } = useDialogModel(props, emit);
+
+const DialogBase = components.DialogBase;
+
+const description = computed(() => {
+  const value = t('soraStaking.validatorsAttentionDialog.description');
+  return Array.isArray(value) ? value : [];
+});
+
+const handleConfirm = (): void => {
+  emit('proceed');
+
+  if (props.isRecommended !== false) {
+    router.push({ name: SoraStakingPageNames.SelectValidators });
   }
 
-  get description() {
-    return this.t('soraStaking.validatorsAttentionDialog.description') as unknown as Array<string>;
-  }
-}
+  closeDialog();
+};
+
+defineExpose({
+  handleConfirm,
+});
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .content {
   display: flex;
   flex-direction: column;

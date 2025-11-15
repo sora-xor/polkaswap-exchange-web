@@ -1,11 +1,11 @@
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { mixins as walletMixins } from '@wallet';
+import { Options, Prop, mixins as vueMixins } from 'vue-property-decorator';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component
-export default class WidgetWithTokenSelect extends Mixins(mixins.LoadingMixin) {
+@Options({})
+export default class WidgetWithTokenSelect extends vueMixins(walletMixins.LoadingMixin) {
   @Prop({ type: Object }) predefinedToken!: Nullable<Asset>;
 
   public token = XOR;

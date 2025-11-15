@@ -1,5 +1,5 @@
 import { OrderBook } from '@sora-substrate/liquidity-proxy';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@wallet';
 import { defineGetters } from 'direct-vuex';
 
 import type { OrderBookStats, OrderBookDealData } from '@/types/orderBook';

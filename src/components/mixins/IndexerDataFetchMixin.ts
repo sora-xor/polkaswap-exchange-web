@@ -1,12 +1,15 @@
-import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { mixins as walletMixins, WALLET_CONSTS } from '@wallet';
 import isEqual from 'lodash/fp/isEqual';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Options, Watch, mixins as vueMixins } from 'vue-property-decorator';
 
 import { type FetchVariables } from '@/types/indexers';
 import { debouncedInputHandler } from '@/utils';
 
-@Component
-export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, mixins.PaginationSearchMixin) {
+@Options({})
+export default class IndexerDataFetchMixin extends vueMixins(
+  walletMixins.LoadingMixin,
+  walletMixins.PaginationSearchMixin
+) {
   totalCount = 0;
   items: readonly any[] = [];
 

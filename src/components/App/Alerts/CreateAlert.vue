@@ -2,10 +2,10 @@
   <div class="setup-price-alert">
     <span class="setup-price-alert__title">{{ t('alerts.alertTypeTitle') }}</span>
     <s-tooltip slot="suffix" border-radius="mini" :content="t('alerts.typeTooltip')" placement="top" tabindex="-1">
-      <s-icon name="info-16" size="14px" />
+      <s-icon name="info-16" size="14px"></s-icon>
     </s-tooltip>
     <s-tabs class="setup-price-alert__tab" v-model="currentTypeTab" type="rounded" @click="handleTabClick">
-      <s-tab v-for="tab in AlertTypeTabs" :key="tab" :label="t(`alerts.${tab}`)" :name="tab" />
+      <s-tab v-for="tab in AlertTypeTabs" :key="tab" :label="t(`alerts.${tab}`)" :name="tab"></s-tab>
     </s-tabs>
     <s-float-input
       ref="floatInput"
@@ -29,7 +29,7 @@
             value="1"
             :asset-symbol="asset.symbol"
             :fiat-value="fiatAmountValue"
-          />
+          ></formatted-amount-with-fiat-value>
         </div>
       </div>
       <token-select-button
@@ -37,22 +37,22 @@
         icon="chevron-down-rounded-16"
         :token="asset"
         @click.stop="openSelectAssetDialog"
-      />
+      ></token-select-button>
       <div class="info" slot="bottom">
         <span class="delta-percent">
           <span :class="activeSignClass('+')"> + </span>
           <span class="slash">/</span>
           <span :class="activeSignClass('-')"> - </span> {{ deltaPercentage }}%
         </span>
-        <token-address v-bind="asset" />
+        <token-address v-bind="asset"></token-address>
       </div>
     </s-float-input>
     <span class="setup-price-alert__title">{{ t('alerts.alertFrequencyTitle') }}</span>
     <s-tooltip slot="suffix" border-radius="mini" :content="t('alerts.frequencyTooltip')" placement="top" tabindex="-1">
-      <s-icon name="info-16" size="14px" />
+      <s-icon name="info-16" size="14px"></s-icon>
     </s-tooltip>
     <s-tabs class="setup-price-alert__tab" v-model="currentFrequencyTab" type="rounded">
-      <s-tab v-for="tab in AlertFrequencyTabs" :key="tab" :label="t(`alerts.${tab}`)" :name="tab" />
+      <s-tab v-for="tab in AlertFrequencyTabs" :key="tab" :label="t(`alerts.${tab}`)" :name="tab"></s-tab>
     </s-tabs>
     <s-button
       type="primary"
@@ -65,185 +65,187 @@
     </s-button>
   </div>
 </template>
-
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Watch, Ref } from 'vue-property-decorator';
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 
-import { Components, ZeroStringValue } from '@/consts';
+import { useNotification } from '@/composables/useNotification';
+import { useTranslation } from '@/composables/useTranslation';
+import { ZeroStringValue } from '@/consts';
+import store from '@/store';
 import type { EditableAlertObject, NumberedAlert } from '@/consts';
-import { lazyComponent } from '@/router';
-import { getter, mutation, state } from '@/store/decorators';
 import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
 import { calcPriceChange, showMostFittingValue } from '@/utils';
 
 import type { AccountAsset, WhitelistIdsBySymbol } from '@sora-substrate/sdk/build/assets/types';
-import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
+import type { Alert } from '@wallet/lib/types/common';
 
-@Component({
+defineOptions({
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     TokenAddress: components.TokenAddress,
-    AlertsSelectAsset: lazyComponent(Components.SelectToken),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenSelectButton: components.TokenSelectButton,
   },
-})
-export default class CreateAlert extends Mixins(
-  mixins.CopyAddressMixin,
-  mixins.TranslationMixin,
-  mixins.TransactionMixin,
-  mixins.LoadingMixin,
-  mixins.FormattedAmountMixin
-) {
-  @state.wallet.settings.alerts alerts!: Array<Alert>;
+});
 
-  @getter.assets.xor private xor!: AccountAsset;
-  @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WhitelistIdsBySymbol;
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => AccountAsset;
+const emit = defineEmits<{
+  (e: 'back'): void;
+  (e: 'open-select-token'): void;
+  (e: 'select-asset', asset: AccountAsset): void;
+}>();
 
-  @mutation.wallet.settings.addPriceAlert addPriceAlert!: (alert: Alert) => void;
-  @mutation.wallet.settings.editPriceAlert editPriceAlert!: (alert: EditableAlertObject) => void;
+const props = defineProps<{ alertToEdit: NumberedAlert | null }>();
 
-  @Prop({ default: null, type: Object }) readonly alertToEdit!: NumberedAlert;
-  @Ref('floatInput') private floatInput!: any;
+const { t } = useTranslation();
+const { showAppNotification } = useNotification();
 
-  @Watch('negativeDelta')
-  private updateChoise(value: boolean): void {
-    if (this.autoChoice) {
-      this.currentTypeTab = value ? AlertTypeTabs.Drop : AlertTypeTabs.Raise;
+const alerts = computed(() => store.state.wallet.settings.alerts as Alert[]);
+const whitelistIdsBySymbol = computed(() => store.getters.wallet.account.whitelistIdsBySymbol as WhitelistIdsBySymbol);
+const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => AccountAsset;
+const xor = computed(() => store.getters.assets.xor as AccountAsset);
+
+const floatInput = ref<any>();
+const amount = ref('');
+const asset = reactive<AccountAsset>({} as AccountAsset);
+const autoChoice = ref(true);
+const currentTypeTab = ref<AlertTypeTabs>(AlertTypeTabs.Drop);
+const currentFrequencyTab = ref<AlertFrequencyTabs>(AlertFrequencyTabs.Once);
+const loading = ref(false);
+
+const delimiters = FPNumber.DELIMITERS_CONFIG;
+
+const assetPrice = computed(() => FPNumber.fromCodecValue(getAssetFiatPrice(asset) ?? ZeroStringValue));
+
+const priceChange = computed(() => {
+  const price = FPNumber.fromNatural(amount.value || '0');
+  const desired = price.isZero() ? assetPrice.value : price;
+  return calcPriceChange(desired, assetPrice.value);
+});
+
+const negativeDelta = computed(() => FPNumber.lt(priceChange.value, FPNumber.ZERO));
+
+const deltaPercentage = computed(() => {
+  const value = negativeDelta.value ? priceChange.value.negative() : priceChange.value;
+  return showMostFittingValue(value);
+});
+
+const placeholder = computed(() => showMostFittingValue(assetPrice.value));
+
+const fiatAmountValue = computed(() => assetPrice.value.toLocaleString());
+
+const btnDisabled = computed(() => !amount.value);
+
+const isEditMode = computed(() => props.alertToEdit !== null);
+
+watch(
+  negativeDelta,
+  (value) => {
+    if (autoChoice.value) {
+      currentTypeTab.value = value ? AlertTypeTabs.Drop : AlertTypeTabs.Raise;
     }
+    autoChoice.value = true;
+  },
+  { immediate: false }
+);
 
-    this.autoChoice = true;
+function activeSignClass(sign: string): string {
+  if (sign === '+' && negativeDelta.value) return 'delta-percent--not-active';
+  if (sign === '-' && !negativeDelta.value) return 'delta-percent--not-active';
+  return '';
+}
+
+function handleTabClick(): void {
+  autoChoice.value = false;
+}
+
+function handleAlertCreation(): void {
+  if (!amount.value) {
+    showAppNotification(t('alerts.noAmount'), 'error');
+    return;
   }
 
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-
-  amount = '';
-  asset = {} as AccountAsset;
-  autoChoice = true;
-
-  currentTypeTab: AlertTypeTabs = AlertTypeTabs.Drop;
-  currentFrequencyTab: AlertFrequencyTabs = AlertFrequencyTabs.Once;
-
-  readonly AlertFrequencyTabs = AlertFrequencyTabs;
-  readonly AlertTypeTabs = AlertTypeTabs;
-
-  get assetPrice(): FPNumber {
-    return FPNumber.fromCodecValue(this.getAssetFiatPrice(this.asset) ?? ZeroStringValue);
-  }
-
-  get priceChange(): FPNumber {
-    const price = FPNumber.fromNatural(this.amount);
-    const desired = price.isZero() ? this.assetPrice : price;
-    return calcPriceChange(desired, this.assetPrice);
-  }
-
-  get negativeDelta(): boolean {
-    return FPNumber.lt(this.priceChange, FPNumber.ZERO);
-  }
-
-  get deltaPercentage(): string {
-    const value = this.negativeDelta ? this.priceChange.negative() : this.priceChange;
-    return showMostFittingValue(value);
-  }
-
-  get placeholder(): string {
-    return showMostFittingValue(this.assetPrice);
-  }
-
-  handleTabClick(): void {
-    this.autoChoice = false;
-  }
-
-  get fiatAmountValue(): string {
-    return this.assetPrice.toLocaleString();
-  }
-
-  get btnDisabled(): boolean {
-    return !this.amount;
-  }
-
-  get isEditMode(): boolean {
-    return this.alertToEdit !== null;
-  }
-
-  activeSignClass(sign: string): string {
-    if (sign === '+' && this.negativeDelta) return 'delta-percent--not-active';
-    if (sign === '-' && !this.negativeDelta) return 'delta-percent--not-active';
-    return '';
-  }
-
-  handleAlertCreation(): void {
-    const desiredPrice = FPNumber.fromNatural(this.amount);
-    const currentPrice = FPNumber.fromNatural(this.fiatAmountValue);
+  loading.value = true;
+  try {
+    const desiredPrice = FPNumber.fromNatural(amount.value);
+    const currentPrice = FPNumber.fromNatural(fiatAmountValue.value);
     let wasNotified = false;
 
-    // NOTE: handle abnormal situation when user wants specific alert despite the market
-    if (this.currentTypeTab === 'drop') {
-      if (FPNumber.lt(currentPrice, desiredPrice)) wasNotified = true;
-    } else if (this.currentTypeTab === 'raise') {
-      if (FPNumber.gt(currentPrice, desiredPrice)) wasNotified = true;
+    if (currentTypeTab.value === AlertTypeTabs.Drop && FPNumber.lt(currentPrice, desiredPrice)) {
+      wasNotified = true;
     }
 
-    if (this.isEditMode) {
-      this.editPriceAlert({
+    if (currentTypeTab.value === AlertTypeTabs.Raise && FPNumber.gt(currentPrice, desiredPrice)) {
+      wasNotified = true;
+    }
+
+    if (isEditMode.value && props.alertToEdit) {
+      store.commit.wallet.settings.editPriceAlert({
         alert: {
-          token: this.asset.symbol,
-          price: this.amount,
-          type: this.currentTypeTab,
-          once: this.currentFrequencyTab === 'once',
+          token: asset.symbol,
+          price: amount.value,
+          type: currentTypeTab.value,
+          once: currentFrequencyTab.value === AlertFrequencyTabs.Once,
           wasNotified,
         },
-        position: this.alertToEdit.position,
-      });
-      this.$emit('back');
+        position: props.alertToEdit.position,
+      } as EditableAlertObject);
+      emit('back');
       return;
     }
 
-    if (this.alerts.length > WALLET_CONSTS.MAX_ALERTS_NUMBER) return;
-
-    this.addPriceAlert({
-      token: this.asset.symbol,
-      price: this.amount,
-      type: this.currentTypeTab,
-      once: this.currentFrequencyTab === 'once',
-      wasNotified,
-    });
-    this.$emit('back');
-  }
-
-  openSelectAssetDialog(): void {
-    this.$emit('open-select-token');
-  }
-
-  selectAsset(selectedAsset?: AccountAsset): void {
-    if (!selectedAsset) return;
-    this.asset = selectedAsset;
-  }
-
-  async mounted(): Promise<void> {
-    if (this.isEditMode) {
-      this.amount = this.alertToEdit.price;
-      this.currentTypeTab = this.alertToEdit.type === 'drop' ? AlertTypeTabs.Drop : AlertTypeTabs.Raise;
-      this.currentFrequencyTab = this.alertToEdit.once ? AlertFrequencyTabs.Once : AlertFrequencyTabs.Always;
-      this.selectAsset(this.getAsset(this.whitelistIdsBySymbol[this.alertToEdit.token]));
-    } else {
-      this.amount = '';
-      this.currentTypeTab = AlertTypeTabs.Drop;
-      this.currentFrequencyTab = AlertFrequencyTabs.Once;
-      this.selectAsset(this.xor);
+    if (alerts.value.length >= WALLET_CONSTS.MAX_ALERTS_NUMBER) {
+      showAppNotification(t('alerts.limitReached'), 'error');
+      return;
     }
 
-    this.floatInput?.$children?.[0]?.focus?.(); // price input autofocus
-
-    this.$root.$on('selectAlertAsset', (selectedAsset: AccountAsset) => {
-      this.selectAsset(selectedAsset);
+    store.commit.wallet.settings.addPriceAlert({
+      token: asset.symbol,
+      price: amount.value,
+      type: currentTypeTab.value,
+      once: currentFrequencyTab.value === AlertFrequencyTabs.Once,
+      wasNotified,
     });
+    emit('back');
+  } finally {
+    loading.value = false;
   }
 }
+
+function openSelectAssetDialog(): void {
+  emit('open-select-token');
+}
+
+function setAsset(selectedAsset: AccountAsset | undefined): void {
+  if (!selectedAsset) return;
+  Object.assign(asset, selectedAsset);
+  emit('select-asset', selectedAsset);
+}
+
+function getAssetFiatPrice(currentAsset: AccountAsset | undefined): Nullable<string> {
+  if (!currentAsset) return null;
+  return (
+    (store.state.wallet.account.fiatPriceObject as Record<string, string> | undefined)?.[currentAsset.address] ?? null
+  );
+}
+
+onMounted(() => {
+  if (isEditMode.value && props.alertToEdit) {
+    amount.value = props.alertToEdit.price;
+    currentTypeTab.value = props.alertToEdit.type === 'drop' ? AlertTypeTabs.Drop : AlertTypeTabs.Raise;
+    currentFrequencyTab.value = props.alertToEdit.once ? AlertFrequencyTabs.Once : AlertFrequencyTabs.Always;
+    setAsset(getAsset(whitelistIdsBySymbol.value[props.alertToEdit.token]));
+  } else {
+    amount.value = '';
+    currentTypeTab.value = AlertTypeTabs.Drop;
+    currentFrequencyTab.value = AlertFrequencyTabs.Once;
+    setAsset(xor.value);
+  }
+
+  floatInput.value?.$children?.[0]?.focus?.();
+});
 </script>
 
 <style lang="scss">

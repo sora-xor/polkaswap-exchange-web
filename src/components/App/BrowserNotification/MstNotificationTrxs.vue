@@ -1,56 +1,59 @@
 <template>
   <div v-if="visible" class="notification-mst">
-    <s-button class="close-button" @click="closeNotification"> <s-icon name="x-16" size="14" /> </s-button>
+    <s-button class="close-button" @click="closeNotification"> <s-icon name="x-16" size="14"></s-icon> </s-button>
 
     <p>{{ t('mst.warningSwitch') }}</p>
     <s-button type="secondary" @click="handleButtonClick">{{ t('mst.seeActivity') }}</s-button>
   </div>
 </template>
 
-<script lang="ts">
-import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { api } from '@wallet';
+import { computed, nextTick, toRefs } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
+import { useTranslation } from '@/composables/useTranslation';
 import { PageNames } from '@/consts';
-import { mutation, state, action } from '@/store/decorators';
+import store from '@/store';
+import { useWalletStore } from '@/stores/wallet';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    SimpleNotification: components.SimpleNotification,
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false,
   },
-})
-export default class AppBrowserMstNotificationTrxs extends Mixins(
-  mixins.TranslationMixin,
-  mixins.NotificationMixin,
-  mixins.DialogMixin
-) {
-  declare visible: boolean;
-  @mutation.wallet.account.setIsMstAddressExist setIsMstAddressExist!: (isExist: boolean) => void;
-  @mutation.wallet.account.setIsMST setIsMST!: (isMST: boolean) => void;
-  @mutation.wallet.account.syncWithStorage syncWithStorage!: () => void;
-  @state.wallet.account.isMST isMST!: boolean;
+});
+const { visible } = toRefs(props);
 
-  @action.wallet.account.afterLogin afterLogin!: () => void;
+const emit = defineEmits<{
+  (e: 'update:visible', value: boolean): void;
+}>();
 
-  closeNotification() {
-    this.$emit('update:visible', false);
+const { t } = useTranslation();
+const router = useRouter();
+const route = useRoute();
+
+const walletStore = useWalletStore();
+const isMST = computed(() => store.state.wallet.account.isMST);
+
+function closeNotification(): void {
+  emit('update:visible', false);
+}
+
+async function handleButtonClick(): Promise<void> {
+  if (!isMST.value) {
+    api.mst.switchAccount(true);
+    store.commit.wallet.account.setIsMST(true);
+    store.commit.wallet.account.syncWithStorage();
+    await walletStore.afterLogin();
   }
 
-  handleButtonClick() {
-    if (!this.isMST) {
-      api.mst.switchAccount(true);
-      this.setIsMST(true);
-      this.syncWithStorage();
-      this.afterLogin();
-    }
-    if (this.$route.name !== PageNames.Wallet) {
-      this.$router.push({ name: PageNames.Wallet });
-    }
-    this.$nextTick(() => {
-      this.$emit('update:visible', false);
-    });
+  if (route.name !== PageNames.Wallet) {
+    await router.push({ name: PageNames.Wallet });
   }
+
+  await nextTick();
+  closeNotification();
 }
 </script>
 

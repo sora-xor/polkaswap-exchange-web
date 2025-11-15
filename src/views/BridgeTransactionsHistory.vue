@@ -3,7 +3,7 @@
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header :title="t('bridgeHistory.title')">
         <template #back>
-          <s-button type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
+          <s-button type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack"></s-button>
         </template>
 
         <div class="history-header-buttons">
@@ -13,10 +13,10 @@
             icon="arrows-swap-90-24"
             :disabled="networkHistoryLoading"
             :tooltip="t('bridgeHistory.restoreHistory')"
-            @click="updateExternalHistory(true)"
-          />
+            @click="refreshExternalHistory(true)"
+          ></s-button>
 
-          <bridge-network-selector />
+          <bridge-network-selector></bridge-network-selector>
         </div>
       </generic-page-header>
       <s-form class="history-form" :show-message="false">
@@ -27,7 +27,7 @@
           autofocus
           @clear="handleResetSearch"
           class="history--search"
-        />
+        ></search-input>
         <div class="history-items">
           <template v-if="hasHistory">
             <div
@@ -44,25 +44,29 @@
                     value-can-be-hidden
                     :value="formatAmount(item, false)"
                     :asset-symbol="item.symbol"
-                  />
+                  ></formatted-amount>
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
                       isOutgoingTx(item) ? 0 : item.externalNetwork
                     )}`"
-                  />
+                  ></i>
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
-                  <formatted-amount value-can-be-hidden :value="formatAmount(item, true)" :asset-symbol="item.symbol" />
+                  <formatted-amount
+                    value-can-be-hidden
+                    :value="formatAmount(item, true)"
+                    :asset-symbol="item.symbol"
+                  ></formatted-amount>
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
                       !isOutgoingTx(item) ? 0 : item.externalNetwork
                     )}`"
-                  />
+                  ></i>
                 </div>
                 <div class="history-item-date">{{ formatDatetime(item) }}</div>
               </div>
               <div :class="historyStatusClasses(item)">
                 <div class="history-item-status-text">{{ historyStatusText(item) }}</div>
-                <s-icon class="history-item-status-icon" :name="historyStatusIconName(item)" size="16" />
+                <s-icon class="history-item-status-icon" :name="historyStatusIconName(item)" size="16"></s-icon>
               </div>
             </div>
           </template>
@@ -74,25 +78,33 @@
             :total="total"
             :last-page="lastPage"
             @pagination-click="handlePaginationClick"
-          />
+          ></history-pagination>
         </div>
       </s-form>
     </s-card>
   </div>
 </template>
 
-<script lang="ts">
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { WALLET_CONSTS, components } from '@wallet';
+import { computed, nextTick, ref, watch } from 'vue';
 
-import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
-import BridgeMixin from '@/components/mixins/BridgeMixin';
-import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
+import { useBridgeCore } from '@/composables/useBridgeCore';
+import { useBridgeHistory } from '@/composables/useBridgeHistory';
+import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
+import { useLoading } from '@/composables/useLoading';
+import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
+import { useNumberFormatter } from '@/composables/useNumberFormatter';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import type { BridgeRegisteredAsset } from '@/store/assets/types';
-import { action, state } from '@/store/decorators';
+import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useBridgeFormStore } from '@/stores/bridge/form';
+import { useBridgeHistoryStore } from '@/stores/bridge/history';
+import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
 
+import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
 
 const SearchAttrs = [
@@ -107,9 +119,9 @@ const SearchAttrs = [
   'parachainHash',
   'relaychainBlockId',
   'relaychainHash',
-];
+] as const;
 
-@Component({
+defineOptions({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     BridgeNetworkSelector: lazyComponent(Components.BridgeNetworkSelector),
@@ -117,164 +129,234 @@ const SearchAttrs = [
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
   },
-})
-export default class BridgeTransactionsHistory extends Mixins(
-  BridgeMixin,
-  BridgeHistoryMixin,
-  NetworkFormatterMixin,
-  mixins.PaginationSearchMixin,
-  mixins.NumberFormatterMixin
-) {
-  @action.bridge.updateBridgeHistory updateBridgeHistory!: FnWithoutArgs;
+});
 
-  @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeRegisteredAsset>;
-  @state.bridge.historyPage historyPage!: number;
+const { t } = useTranslation();
+const { formatStringValue } = useNumberFormatter();
+const { getNetworkIcon, isOutgoingTx, isFailedState, isSuccessState, isWaitingForActionState, formatDatetime } =
+  useNetworkFormatter();
+const { loading: parentLoading, withParentLoading } = useLoading();
+const bridgeHistory = useBridgeHistory({ parentLoading });
+const bridgeHistoryStore = useBridgeHistoryStore();
+const bridgeTransactionsStore = useBridgeTransactionsStore();
+const bridgeFormStore = useBridgeFormStore();
+usePiniaTelemetry('bridge-history', [
+  { store: bridgeHistoryStore, storeId: 'bridgeHistory' },
+  { store: bridgeTransactionsStore, storeId: 'bridgeTransactions' },
+  { store: bridgeFormStore, storeId: 'bridgeForm' },
+]);
+const bridgeCore = useBridgeCore();
+const assetsStore = useAssetsStore();
 
-  pageAmount = 8; // override PaginationSearchMixin
+const { history, networkHistoryLoading, updateExternalHistory, showHistory, setHistoryPage } = bridgeHistory;
 
-  @Watch('networkSelected', { immediate: true })
-  private fetchNetworkHistory() {
-    this.withParentLoading(async () => {
-      this.updateBridgeHistory();
+const { navigateToBridge } = bridgeCore;
 
-      if (this.historyPage !== 1) {
-        this.currentPage = this.historyPage;
-        if (this.currentPage !== 1 && this.currentPage === this.lastPage) {
-          this.isLtrDirection = false;
-        }
+const registeredAssets = computed(() => assetsStore.registeredAssets as Record<string, BridgeRegisteredAsset>);
+const historyPage = computed(() => store.state.bridge.historyPage as number);
+const networkSelected = computed(() => store.state.web3.networkSelected);
+
+const query = ref('');
+const currentPage = ref(historyPage.value || 1);
+const isLtrDirection = ref(true);
+const pageAmount = 8;
+
+const historyList = computed(() => Object.values(history.value));
+
+const sortTransactions = (transactions: ReadonlyArray<IBridgeTransaction>, ascending = false): IBridgeTransaction[] => {
+  return [...transactions].sort((a, b) => {
+    if (!a?.startTime || !b?.startTime) return 0;
+    return ascending ? a.startTime - b.startTime : b.startTime - a.startTime;
+  });
+};
+
+const searchQuery = computed(() => query.value.trim().toLowerCase());
+
+const filteredHistory = computed(() => {
+  const sorted = sortTransactions(historyList.value, isLtrDirection.value);
+  if (!searchQuery.value) return sorted;
+
+  return sorted.filter((item) => {
+    const registeredAsset = registeredAssets.value[item.assetAddress as string];
+    const criteria: Array<unknown> = [registeredAsset?.address];
+
+    for (const attr of SearchAttrs) {
+      if (attr in item) {
+        criteria.push((item as Record<string, unknown>)[attr]);
       }
-    });
+    }
+
+    return criteria.some((value) =>
+      String(value ?? '')
+        .toLowerCase()
+        .includes(searchQuery.value)
+    );
+  });
+});
+
+const total = computed(() => filteredHistory.value.length);
+const lastPage = computed(() => (total.value ? Math.ceil(total.value / pageAmount) : 1));
+const directionShift = computed(() => {
+  const remainder = total.value % pageAmount || pageAmount;
+  return isLtrDirection.value ? 0 : pageAmount - remainder;
+});
+
+const clampCurrentPage = () => {
+  if (currentPage.value > lastPage.value) {
+    currentPage.value = lastPage.value;
+  }
+  if (currentPage.value < 1) {
+    currentPage.value = 1;
+  }
+};
+
+watch(total, clampCurrentPage);
+watch(historyPage, (value) => {
+  if (value !== currentPage.value) {
+    currentPage.value = value || 1;
+  }
+});
+
+const getPageItems = (items: IBridgeTransaction[], start: number, end: number) => items.slice(start, end);
+
+const filteredHistoryItems = computed(() => {
+  if (!filteredHistory.value.length) return [];
+
+  let start: number;
+  let end: number;
+
+  if (isLtrDirection.value) {
+    end = Math.min(currentPage.value * pageAmount, filteredHistory.value.length);
+    start = Math.max(end - pageAmount, 0);
+  } else {
+    end = Math.max((lastPage.value - currentPage.value + 1) * pageAmount - directionShift.value, 0);
+    start = Math.max((lastPage.value - currentPage.value) * pageAmount - directionShift.value, 0);
   }
 
-  get historyList(): Array<IBridgeTransaction> {
-    return Object.values(this.history);
-  }
+  return sortTransactions(getPageItems(filteredHistory.value, start, end), true);
+});
 
-  get filteredHistory(): Array<IBridgeTransaction> {
-    return this.getFilteredHistory(this.sortTransactions(this.historyList, this.isLtrDirection));
-  }
+const hasHistory = computed(() => filteredHistoryItems.value.length > 0);
 
-  get total(): number {
-    return this.filteredHistory.length;
-  }
+const resetPage = () => {
+  currentPage.value = 1;
+  isLtrDirection.value = true;
+  setHistoryPage(1);
+};
 
-  get hasHistory(): boolean {
-    return this.filteredHistoryItems && this.total > 0;
-  }
+const resetSearch = () => {
+  query.value = '';
+};
 
-  get filteredHistoryItems(): Array<IBridgeTransaction> {
-    const end = this.isLtrDirection
-      ? Math.min(this.currentPage * this.pageAmount, this.filteredHistory.length)
-      : Math.max((this.lastPage - this.currentPage + 1) * this.pageAmount - this.directionShift, 0);
+const handleResetSearch = () => {
+  resetPage();
+  resetSearch();
+};
 
-    const start = this.isLtrDirection
-      ? Math.max(end - this.pageAmount, 0)
-      : Math.max((this.lastPage - this.currentPage) * this.pageAmount - this.directionShift, 0);
+const updateBridgeHistoryAction = () => store.dispatch.bridge.updateBridgeHistory();
 
-    return this.sortTransactions(this.getPageItems(this.filteredHistory, start, end), true);
-  }
+const fetchNetworkHistory = async () => {
+  await withParentLoading(async () => {
+    await updateBridgeHistoryAction();
+    await nextTick();
 
-  getFilteredHistory(history: Array<IBridgeTransaction>): Array<IBridgeTransaction> {
-    if (!this.query) return history;
-
-    const query = this.query.toLowerCase().trim();
-
-    return history.filter((item) => {
-      const bridgeRegisteredAsset = this.registeredAssets[item.assetAddress as string];
-      const criterias = [bridgeRegisteredAsset?.address];
-
-      SearchAttrs.forEach((attr) => {
-        if (attr in item) criterias.push(item[attr]);
-      });
-
-      return criterias.some((criteria) => String(criteria).toLowerCase().includes(query));
-    });
-  }
-
-  formatAmount(item: IBridgeTransaction, received = false): string {
-    const amount = received ? (item.amount2 ?? item.amount) : item.amount;
-
-    if (!item.assetAddress || !amount) return '';
-
-    const bridgeRegisteredAsset = this.registeredAssets[item.assetAddress];
-    const decimals = bridgeRegisteredAsset?.decimals;
-
-    return this.formatStringValue(amount, decimals);
-  }
-
-  historyStatusClasses(item: IBridgeTransaction): string {
-    const iconClass = 'history-item-status';
-    const classes = [iconClass];
-
-    if (this.isWaitingForAction(item)) {
-      classes.push(`${iconClass}--info`);
-    } else if (this.isFailedState(item)) {
-      classes.push(`${iconClass}--error`);
-    } else if (this.isSuccessState(item)) {
-      classes.push(`${iconClass}--success`);
+    if (historyPage.value !== 1) {
+      currentPage.value = historyPage.value;
+      if (currentPage.value !== 1 && currentPage.value === lastPage.value) {
+        isLtrDirection.value = false;
+      }
     } else {
-      classes.push(`${iconClass}--pending`);
+      resetPage();
     }
+  });
+};
 
-    return classes.join(' ');
+watch(networkSelected, fetchNetworkHistory, { immediate: true });
+
+const formatAmount = (item: IBridgeTransaction, received = false): string => {
+  const amount = received ? (item.amount2 ?? item.amount) : item.amount;
+  if (!item.assetAddress || !amount) return '';
+
+  const registeredAsset = registeredAssets.value[item.assetAddress];
+  const decimals = registeredAsset?.decimals;
+
+  return formatStringValue(amount, decimals);
+};
+
+const historyStatusClasses = (item: IBridgeTransaction): string => {
+  const iconClass = 'history-item-status';
+  const classes = [iconClass];
+
+  if (isWaitingForActionState(item)) {
+    classes.push(`${iconClass}--info`);
+  } else if (isFailedState(item)) {
+    classes.push(`${iconClass}--error`);
+  } else if (isSuccessState(item)) {
+    classes.push(`${iconClass}--success`);
+  } else {
+    classes.push(`${iconClass}--pending`);
   }
 
-  historyStatusIconName(item: IBridgeTransaction): string {
-    if (this.isWaitingForAction(item)) {
-      return 'notifications-alert-triangle-24';
-    } else if (this.isFailedState(item)) {
-      return 'basic-clear-X-24';
-    } else if (this.isSuccessState(item)) {
-      return 'basic-check-marks-24';
-    } else {
-      return 'time-time-24';
-    }
+  return classes.join(' ');
+};
+
+const historyStatusIconName = (item: IBridgeTransaction): string => {
+  if (isWaitingForActionState(item)) {
+    return 'notifications-alert-triangle-24';
+  }
+  if (isFailedState(item)) {
+    return 'basic-clear-X-24';
+  }
+  if (isSuccessState(item)) {
+    return 'basic-check-marks-24';
+  }
+  return 'time-time-24';
+};
+
+const historyStatusText = (item: IBridgeTransaction): string => {
+  if (isWaitingForActionState(item)) {
+    return t('bridgeHistory.statusAction');
+  }
+  return '';
+};
+
+const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
+  let nextPage = currentPage.value;
+
+  switch (button) {
+    case WALLET_CONSTS.PaginationButton.Prev:
+      nextPage = currentPage.value - 1;
+      break;
+    case WALLET_CONSTS.PaginationButton.Next:
+      nextPage = currentPage.value + 1;
+      if (nextPage === lastPage.value) {
+        isLtrDirection.value = false;
+      }
+      break;
+    case WALLET_CONSTS.PaginationButton.First:
+      nextPage = 1;
+      isLtrDirection.value = true;
+      break;
+    case WALLET_CONSTS.PaginationButton.Last:
+      nextPage = lastPage.value;
+      isLtrDirection.value = false;
+      break;
   }
 
-  historyStatusText(item: IBridgeTransaction): string {
-    if (this.isWaitingForAction(item)) {
-      return this.t('bridgeHistory.statusAction');
-    } else {
-      return '';
-    }
-  }
+  currentPage.value = Math.min(Math.max(nextPage, 1), lastPage.value);
+  setHistoryPage(currentPage.value);
+};
 
-  async handlePaginationClick(button: WALLET_CONSTS.PaginationButton): Promise<void> {
-    let current = 1;
+const handleBack = () => {
+  setHistoryPage(1);
+  navigateToBridge();
+};
 
-    switch (button) {
-      case WALLET_CONSTS.PaginationButton.Prev:
-        current = this.currentPage - 1;
-        break;
-      case WALLET_CONSTS.PaginationButton.Next:
-        current = this.currentPage + 1;
-        if (current === this.lastPage) {
-          this.isLtrDirection = false;
-        }
-        break;
-      case WALLET_CONSTS.PaginationButton.First:
-        this.isLtrDirection = true;
-        break;
-      case WALLET_CONSTS.PaginationButton.Last:
-        current = this.lastPage;
-        this.isLtrDirection = false;
-        break;
-    }
-
-    this.currentPage = current;
-    this.setHistoryPage(this.currentPage);
-  }
-
-  handleBack(): void {
-    this.setHistoryPage(1);
-    this.navigateToBridge();
-  }
-
-  handleResetSearch(): void {
-    this.resetPage();
-    this.resetSearch();
-  }
-}
+const refreshExternalHistory = async (clearHistory = false) => {
+  await withParentLoading(async () => {
+    await updateExternalHistory(clearHistory);
+  });
+};
 </script>
 
 <style lang="scss">

@@ -1,8 +1,8 @@
 <template>
-  <dialog-base :title="title" :visible.sync="isVisible" tooltip="COMING SOON...">
+  <DialogBase :title="title" v-model:visible="isVisible" tooltip="COMING SOON...">
     <div class="dashboard-burn">
       <p class="p3 dashboard-burn__text">ENTER THE AMOUNT YOU WANT TO BURN</p>
-      <token-input
+      <TokenInput
         ref="tokenInput"
         class="dashboard-burn__token-input"
         with-slider
@@ -16,7 +16,7 @@
         :disabled="loading"
         @max="handleMaxValue"
         @slide="handlePercentChange"
-      />
+      ></TokenInput>
       <s-button
         type="primary"
         class="s-typography-button--large action-button dashboard-burn__button"
@@ -34,155 +34,183 @@
         </template>
         <template v-else>{{ title }}</template>
       </s-button>
-      <info-line
+      <InfoLine
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="networkFeeFormatted"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
-      />
+      ></InfoLine>
     </div>
-  </dialog-base>
+  </DialogBase>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch, Ref, Prop } from 'vue-property-decorator';
+import { api, components } from '@wallet';
+import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue';
 
-import type TokenInput from '@/components/shared/Input/TokenInput.vue';
-import { Components, HundredNumber, ZeroStringValue, ObjectInit } from '@/consts';
+import { Components, HundredNumber, ObjectInit, ZeroStringValue } from '@/consts';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTransaction } from '@/composables/useTransaction';
+import { useTranslation } from '@/composables/useTranslation';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
 import { isMaxButtonAvailable } from '@/utils';
 
+import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    TokenInput: lazyComponent(Components.TokenInput),
-  },
-})
-export default class BurnDialog extends Mixins(
-  mixins.TransactionMixin,
-  mixins.DialogMixin,
-  mixins.FormattedAmountMixin
-) {
-  readonly xorSymbol = XOR.symbol;
+const DialogBase = components.DialogBase;
+const InfoLine = components.InfoLine;
+const TokenInput = lazyComponent(Components.TokenInput);
 
-  @Ref('tokenInput') tokenInput!: Nullable<TokenInput>;
-
-  @Prop({ default: ZeroStringValue, type: String }) readonly balance!: CodecString;
-  @Prop({ default: false, type: Boolean }) readonly editableFiat!: boolean;
-  @Prop({ default: ObjectInit, type: Object }) readonly asset!: OwnedAsset;
-
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
-
-  value = '';
-
-  @Watch('visible')
-  private async handleDialogVisibility(value: boolean): Promise<void> {
-    await this.$nextTick();
-    this.value = '';
-    this.tokenInput?.focus();
+const props = withDefaults(
+  defineProps<{
+    visible?: boolean;
+    balance?: CodecString;
+    editableFiat?: boolean;
+    asset?: OwnedAsset;
+  }>(),
+  {
+    visible: false,
+    balance: ZeroStringValue,
+    editableFiat: false,
+    asset: () => ObjectInit as OwnedAsset,
   }
+);
 
-  private get fpBalance() {
-    return this.getFPNumberFromCodec(this.balance, this.asset.decimals);
-  }
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+}>();
 
-  private get xorBalance() {
-    return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
-  }
+const { t } = useTranslation();
+const { loading, withNotifications } = useTransaction();
+const { Zero, getFPNumber, getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
 
-  private get assetWithBalance(): AccountAsset {
-    return { ...this.asset, balance: { transferable: this.balance } } as unknown as AccountAsset;
-  }
+const isVisible = ref(props.visible);
+const value = ref('');
+const tokenInput = ref<InstanceType<typeof TokenInputComponent> | null>(null);
 
-  get title(): string {
-    return `Burn ${this.tokenSymbol}`;
-  }
+const xorSymbol = XOR.symbol;
+const asset = computed(() => props.asset);
+const editableFiat = computed(() => props.editableFiat);
+const balance = computed(() => props.balance);
 
-  get tokenSymbol(): string {
-    return this.asset.symbol;
-  }
+const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject | undefined);
+const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
 
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.Burn];
-  }
+const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.Burn] ?? ZeroStringValue);
+const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));
+const xorBalance = computed(() => getFPNumberFromCodec(accountXor.value?.balance?.transferable ?? ZeroStringValue));
+const tokenDecimals = computed(() => asset.value?.decimals);
+const tokenSymbol = computed(() => asset.value?.symbol ?? '');
+const title = computed(() => `Burn ${tokenSymbol.value}`);
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
 
-  private get fpNetworkFee() {
-    return this.getFPNumberFromCodec(this.networkFee);
-  }
+const fpBalance = computed(() => getFPNumberFromCodec(balance.value ?? ZeroStringValue, tokenDecimals.value));
 
-  get networkFeeFormatted(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
+const assetWithBalance = computed<Nullable<AccountAsset>>(() => {
+  if (!asset.value) return null;
+  return { ...asset.value, balance: { transferable: balance.value } } as unknown as AccountAsset;
+});
 
-  get emptyValue(): boolean {
-    return !+this.value;
-  }
+const emptyValue = computed(() => !Number(value.value));
+const isInsufficientXorForFee = computed(() => xorBalance.value.sub(fpNetworkFee.value).isLtZero());
+const isInsufficientBalance = computed(() => {
+  if (!value.value) return false;
+  const amount = getFPNumber(value.value, tokenDecimals.value);
+  return fpBalance.value.sub(amount).isLtZero();
+});
 
-  get isMaxAvailable(): boolean {
-    if (!this.accountXor) return false;
+const isMaxAvailable = computed(() => {
+  if (!assetWithBalance.value || !accountXor.value) return false;
+  return isMaxButtonAvailable(assetWithBalance.value, value.value ?? '', networkFee.value, accountXor.value);
+});
 
-    return isMaxButtonAvailable(this.assetWithBalance, this.value ?? 0, this.networkFee, this.accountXor);
-  }
+const valuePercent = computed(() => {
+  if (!value.value) return 0;
+  if (fpBalance.value.isZero()) return 0;
+  const percent = getFPNumber(value.value, tokenDecimals.value).div(fpBalance.value).mul(HundredNumber).toNumber(0);
+  return percent > HundredNumber ? HundredNumber : percent;
+});
 
-  get isInsufficientBalance(): boolean {
-    return this.fpBalance.sub(this.value || 0).isLtZero();
-  }
+const disabled = computed(
+  () => loading.value || isInsufficientXorForFee.value || emptyValue.value || isInsufficientBalance.value
+);
 
-  get isInsufficientXorForFee(): boolean {
-    return this.xorBalance.sub(this.fpNetworkFee).isLtZero();
-  }
+const instance = getCurrentInstance();
+const showAlert = (message: string) => {
+  const proxy = instance?.proxy as { $alert?: (msg: string, options?: Record<string, unknown>) => void } | null;
+  proxy?.$alert?.(message, { title: t('errorText') });
+};
 
-  get disabled(): boolean {
-    return this.loading || this.isInsufficientXorForFee || this.emptyValue || this.isInsufficientBalance;
-  }
+const resetForm = () => {
+  value.value = '';
+};
 
-  get valuePercent(): number {
-    if (!this.value) return 0;
+const handlePercentChange = (percent: number) => {
+  const amount = fpBalance.value.mul(percent / HundredNumber);
+  value.value = amount.toString();
+};
 
-    const percent = this.getFPNumber(this.value, this.asset.decimals)
-      .div(this.fpBalance)
-      .mul(HundredNumber)
-      .toNumber(0);
-    return percent > HundredNumber ? HundredNumber : percent;
-  }
+const handleMaxValue = () => {
+  value.value = fpBalance.value.toString();
+};
 
-  handlePercentChange(percent: number): void {
-    this.value = this.fpBalance.mul(percent / HundredNumber).toString();
-  }
-
-  handleMaxValue(): void {
-    this.value = this.fpBalance.toString();
-  }
-
-  async handleBurn(): Promise<void> {
-    if (this.isInsufficientBalance) {
-      this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.tokenSymbol }), {
-        title: this.t('errorText'),
-      });
-    } else {
-      try {
-        await this.withNotifications(async () => {
-          await api.assets.burn(this.asset, this.value);
-        });
-      } catch (error) {
-        console.error(error);
-      }
+const handleBurn = async () => {
+  if (disabled.value) {
+    if (isInsufficientBalance.value) {
+      showAlert(t('insufficientBalanceText', { tokenSymbol: tokenSymbol.value }));
     }
-    this.isVisible = false;
+    return;
   }
-}
+
+  if (!asset.value) return;
+
+  try {
+    await withNotifications(async () => {
+      await api.assets.burn(asset.value, value.value);
+    });
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isVisible.value = false;
+  }
+};
+
+watch(
+  () => props.visible,
+  async (visible) => {
+    isVisible.value = visible;
+    if (visible) {
+      resetForm();
+      await nextTick();
+      tokenInput.value?.focus?.();
+    }
+  },
+  { immediate: true }
+);
+
+watch(isVisible, (visible) => {
+  emit('update:visible', visible);
+});
+
+defineExpose({
+  isVisible,
+  value,
+  disabled,
+  isInsufficientBalance,
+  isInsufficientXorForFee,
+  handleBurn,
+  handleMaxValue,
+  handlePercentChange,
+  resetForm,
+});
 </script>
 
 <style lang="scss" scoped>

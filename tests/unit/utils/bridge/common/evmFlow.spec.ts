@@ -1,4 +1,4 @@
-import { api as walletApi } from '@soramitsu/soraneo-wallet-web';
+import { api as walletApi } from '@wallet';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock ethersUtil functions used in utils
@@ -14,17 +14,10 @@ import * as utils from '@/utils/bridge/common/utils';
 import ethersUtil from '@/utils/ethers-util';
 
 // Mock wallet api used by getTransactionEvents
-vi.mock('@soramitsu/soraneo-wallet-web', () => ({
-  api: {
-    system: {
-      getExtrinsicsFromBlock: vi.fn(),
-      getBlockEvents: vi.fn(),
-    },
-    bridgeProxy: { sub: {}, evm: {}, eth: {} },
-  },
-  vuex: { WalletModules: [] },
-  WALLET_CONSTS: { ETH_BRIDGE_STATES: { INITIAL: 0 } },
-}));
+vi.mock('@wallet', async () => {
+  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
+  return createWalletMock();
+});
 
 // Mock ethers.isError behavior
 vi.mock('ethers', () => ({
@@ -38,10 +31,40 @@ vi.mock('@sora-substrate/sdk', () => ({
   isEthOperation: () => false,
   isEvmOperation: () => false,
   isSubstrateOperation: () => false,
+  api: {
+    setStorage: vi.fn(),
+    shouldPairBeLocked: false,
+    initKeyring: vi.fn(),
+  },
+  connection: {},
+  Operation: {
+    SwapAndSend: 'SwapAndSend',
+    Transfer: 'Transfer',
+    VestedTransfer: 'VestedTransfer',
+    SwapTransferBatch: 'SwapTransferBatch',
+    Mint: 'Mint',
+  },
+  TransactionStatus: {
+    Finalized: 'Finalized',
+    Pending: 'Pending',
+    Failed: 'Failed',
+  },
 }));
-vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({ XOR: { address: 'xor' }, TBCD: { address: 'tbcd' } }));
+vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({
+  XOR: { address: 'xor' },
+  TBCD: { address: 'tbcd' },
+  XSTUSD: { address: 'xstusd' },
+  VXOR: { address: 'vxor' },
+  BalanceType: {
+    Transferable: 'Transferable',
+    Total: 'Total',
+    Locked: 'Locked',
+  },
+}));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
   BridgeNetworkType: { Eth: 'Eth', Evm: 'Evm', Sub: 'Sub' },
+  BridgeTxDirection: { Outgoing: 'Outgoing', Incoming: 'Incoming' },
+  BridgeTxStatus: { Pending: 'Pending', Ready: 'Ready', Failed: 'Failed' },
 }));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/eth/consts', () => ({}));
 vi.mock('@/consts/evm', () => ({

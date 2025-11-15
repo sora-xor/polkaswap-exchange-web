@@ -1,8 +1,8 @@
 <template>
-  <dialog-base class="popup" :visible.sync="isVisible">
+  <dialog-base class="popup" v-model:visible="isVisible">
     <div class="popup-mobile">
       <div class="popup-info">
-        <h3 class="popup-info__headline" v-html="headlineHtml" />
+        <h3 class="popup-info__headline" v-html="headlineHtml"></h3>
         <p class="popup-info__text">
           {{ t('mobilePopup.info') }}
         </p>
@@ -24,45 +24,55 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useTranslation } from '@/composables/useTranslation';
 import { StoreLinks, app } from '@/consts';
 import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
   },
-})
-export default class AppMobilePopup extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  @Prop({ type: String }) readonly fee!: string;
+});
 
-  StoreLinks = StoreLinks;
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false,
+  },
+  fee: {
+    type: String,
+    default: undefined,
+  },
+});
 
-  get polkaswapHighlight(): string {
-    const safeName = escapeHtml(app.name);
-    return `<span class="popup-info__headline--highlight">${safeName}</span>`;
-  }
+const emit = defineEmits<{
+  (e: 'update:visible', value: boolean): void;
+  (e: 'close'): void;
+}>();
 
-  get headlineHtml(): string {
-    const headline = this.t('mobilePopup.header', { polkaswapHighlight: this.polkaswapHighlight });
+const { t } = useTranslation();
+const { isVisible } = useDialogModel(props, emit);
 
-    return sanitizeHtml(headline, {
-      allowedTags: ['span', 'strong', 'em', 'br'],
-      allowedAttributes: {
-        span: ['class'],
-      },
-    });
-  }
+const polkaswapHighlight = computed(() => {
+  const safeName = escapeHtml(app.name);
+  return `<span class="popup-info__headline--highlight">${safeName}</span>`;
+});
 
-  handleConfirm(): void {
-    this.closeDialog();
-    this.$emit('confirm');
-  }
-}
+const headlineHtml = computed(() => {
+  const headline = t('mobilePopup.header', { polkaswapHighlight: polkaswapHighlight.value });
+
+  return sanitizeHtml(headline, {
+    allowedTags: ['span', 'strong', 'em', 'br'],
+    allowedAttributes: {
+      span: ['class'],
+    },
+  });
+});
 </script>
 
 <style lang="scss">

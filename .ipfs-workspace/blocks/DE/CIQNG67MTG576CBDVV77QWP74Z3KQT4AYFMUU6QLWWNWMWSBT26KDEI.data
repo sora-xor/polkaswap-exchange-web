@@ -1,0 +1,23 @@
+
+¹
+±
+import{bP as m,bR as c,by as b,bB as u}from"./index-DjB-Okl0.js";import{s as l,a as f}from"./index-D1vJKCDW-BtS_4qC4.js";import{m as h}from"./if-defined-DgIoGpc1-BpRFTkQ2.js";import"./index-Dmgyii2r-C3I2M76f.js";const v=m`
+  :host {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+`;var o=function(n,r,i,p){var a=arguments.length,e=a<3?r:p,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")e=Reflect.decorate(n,r,i,p);else for(var d=n.length-1;d>=0;d--)(s=n[d])&&(e=(a<3?s(e):a>3?s(r,i,e):s(r,i))||e);return a>3&&e&&Object.defineProperty(r,i,e),e};let t=class extends b{constructor(){super(...arguments),this.disabled=!1}render(){return u`
+      <wui-input-text
+        type="email"
+        placeholder="Email"
+        icon="mail"
+        size="lg"
+        .disabled=${this.disabled}
+        .value=${this.value}
+        data-testid="wui-email-input"
+        tabIdx=${h(this.tabIdx)}
+      ></wui-input-text>
+      ${this.templateError()}
+    `}templateError(){return this.errorMessage?u`<wui-text variant="sm-regular" color="error">${this.errorMessage}</wui-text>`:null}};t.styles=[c,v];o([l()],t.prototype,"errorMessage",void 0);o([l({type:Boolean})],t.prototype,"disabled",void 0);o([l()],t.prototype,"value",void 0);o([l()],t.prototype,"tabIdx",void 0);t=o([f("wui-email-input")],t);
+±

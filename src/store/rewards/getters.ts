@@ -1,5 +1,5 @@
 import { KnownAssets, KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
-import { groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
+import { groupRewardsByAssetsList } from '@wallet';
 import { defineGetters } from 'direct-vuex';
 
 import { rewardsGetterContext } from '@/store/rewards';

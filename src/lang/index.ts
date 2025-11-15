@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import first from 'lodash/fp/first';
-import { createI18n } from 'vue-i18n'; // eslint-disable-line import/named
+import { createI18n } from 'vue-i18n';
 
 import { Language, TranslationConsts } from '@/consts';
 import { settingsStorage } from '@/utils/storage';
@@ -106,6 +106,10 @@ export async function setI18nLocale(lang: Language): Promise<void> {
       // noop
     }
   }
+}
+const globalComposer = i18n.global as Record<string, unknown>;
+if (typeof globalComposer.rt !== 'function') {
+  globalComposer.rt = (...args: unknown[]) => (i18n.global as any).t(...(args as [unknown]));
 }
 
 export default i18n;

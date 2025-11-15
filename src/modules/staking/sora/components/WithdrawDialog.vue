@@ -1,16 +1,16 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="title">
+  <DialogBase v-model:visible="isVisible" :title="title">
     <div class="withdraw-dialog">
       <div class="reward">
-        <formatted-amount-with-fiat-value
+        <FormattedAmountWithFiatValue
           class="reward-amount"
           symbol-as-decimal
           value-can-be-hidden
           :value="withdrawableFundsFormatted"
           :fiat-value="withdrawableFundsFiat"
-        />
+        ></FormattedAmountWithFiatValue>
         <template v-if="stakingAsset">
-          <token-logo class="reward-logo" :token-symbol="stakingAsset.symbol" />
+          <TokenLogo class="reward-logo" :token-symbol="stakingAsset.symbol"></TokenLogo>
           <span class="reward-symbol">
             {{ stakingAsset.symbol }}
           </span>
@@ -18,96 +18,124 @@
       </div>
 
       <div class="info">
-        <info-line
+        <InfoLine
           :label="t('networkFeeText')"
           :label-tooltip="t('networkFeeTooltipText')"
           :value="networkFeeFormatted"
           :asset-symbol="xor?.symbol"
-          :fiat-value="getFiatAmountByCodecString(networkFee)"
+          :fiat-value="networkFeeFiat"
           is-formatted
-        />
+        ></InfoLine>
       </div>
 
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
-        :loading="parentLoading || loading"
-        :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
+        :loading="buttonLoading"
+        :disabled="confirmDisabled"
         @click="handleConfirm"
       >
-        <template v-if="isInsufficientXorForFee || isInsufficientBalance">
-          <template v-if="isInsufficientBalance">
-            {{ t('buttons.enterAmount') }}
-          </template>
-          <template v-if="isInsufficientXorForFee">
-            {{ t('insufficientBalanceText', { tokenSymbol: xor?.symbol }) }}
-          </template>
+        <template v-if="insufficientXorForFee">
+          {{ t('insufficientBalanceText', { tokenSymbol: xor?.symbol ?? '' }) }}
+        </template>
+        <template v-else-if="insufficientBalance">
+          {{ t('buttons.enterAmount') }}
         </template>
         <template v-else>
           {{ t('confirmText') }}
         </template>
       </s-button>
-      <div v-button class="check-all-withdraws" @click="showAllWithdraws">
+      <div v-button class="check-all-withdraws" @click="emit('show-all-withdraws')">
         {{ t('soraStaking.withdrawDialog.showAllWithdraws') }}
       </div>
     </div>
-  </dialog-base>
+  </DialogBase>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { Operation } from '@sora-substrate/sdk';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { components } from '@wallet';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import StakingMixin from '../mixins/StakingMixin';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTransaction } from '@/composables/useTransaction';
+import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
+import { useSettingsStore } from '@/stores/settings';
+import { hasInsufficientXorForFee } from '@/utils';
 
-import type { CodecString } from '@sora-substrate/sdk';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 
-@Component({
-  components: {
-    FormattedAmount: components.FormattedAmount,
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    TokenLogo: components.TokenLogo,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-  },
-})
-export default class WithdrawDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.TransactionMixin) {
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.StakingWithdrawUnbonded];
-  }
+const props = defineProps<{
+  visible: boolean;
+  parentLoading?: boolean;
+}>();
 
-  get title(): string {
-    return this.t('soraStaking.withdrawDialog.title');
-  }
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+  (event: 'show-all-withdraws'): void;
+}>();
 
-  get valueFundsEmpty(): boolean {
-    return this.withdrawableFunds.isZero();
-  }
+const { t } = useI18n();
+const dialogModel = useDialogModel(props, emit);
+const { isVisible, closeDialog } = dialogModel;
+const { getFiatAmountByCodecString } = useFormattedAmount();
+const settingsStore = useSettingsStore();
 
-  get isInsufficientBalance(): boolean {
-    return this.withdrawableFunds.isZero();
-  }
+const {
+  stakingAsset,
+  xor,
+  withdrawableFunds,
+  withdrawableFundsFiat,
+  withdrawableFundsFormatted,
+  formatCodecNumber,
+  withdraw,
+} = useSoraStaking();
 
-  get selectedValidatorsFormatted(): string {
-    return this.t('soraStaking.selectedValidators', {
-      count: this.selectedValidators.length,
-      max: this.validators.length,
-    });
-  }
+const { loading, withNotifications } = useTransaction({
+  parentLoading: () => Boolean(props.parentLoading),
+});
 
-  async handleConfirm(): Promise<void> {
-    try {
-      await this.withNotifications(async () => await this.withdraw(this.withdrawableFunds.toNumber()));
-    } finally {
-      this.closeDialog();
-    }
-  }
+const DialogBase = components.DialogBase;
+const InfoLine = components.InfoLine;
+const TokenLogo = components.TokenLogo;
+const FormattedAmountWithFiatValue = components.FormattedAmountWithFiatValue;
 
-  showAllWithdraws(): void {
-    this.$emit('show-all-withdraws');
-  }
-}
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
+
+const networkFee = computed<CodecString>(
+  () => (networkFees.value?.[Operation.StakingWithdrawUnbonded] ?? '0') as CodecString
+);
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
+const networkFeeFiat = computed(() => (xor.value ? getFiatAmountByCodecString(networkFee.value, xor.value) : null));
+const insufficientXorForFee = computed(() =>
+  xor.value ? hasInsufficientXorForFee(xor.value, networkFee.value) : false
+);
+const insufficientBalance = computed(() => withdrawableFunds.value.isZero());
+const confirmDisabled = computed(() => insufficientXorForFee.value || insufficientBalance.value);
+const buttonLoading = computed(() => Boolean(props.parentLoading) || loading.value);
+
+const title = computed(() => t('soraStaking.withdrawDialog.title'));
+
+/**
+ * Submits the withdraw extrinsic and closes the dialog once finalized.
+ */
+const handleConfirm = async () => {
+  if (confirmDisabled.value) return;
+
+  await withNotifications(async () => {
+    await withdraw(withdrawableFunds.value.toNumber());
+  });
+
+  closeDialog();
+};
+
+defineExpose({
+  isVisible,
+  handleConfirm,
+});
 </script>
 
 <style lang="scss">

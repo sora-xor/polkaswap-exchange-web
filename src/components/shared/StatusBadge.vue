@@ -1,8 +1,8 @@
 <template>
   <div :class="['status-badge', { active }]">
     <div class="status-badge-logo">
-      <token-logo :token="rewardAsset" size="mini" />
-      <div v-if="active" :class="['status-badge-logo-icon', { active: !stopped }]" />
+      <token-logo :token="rewardAsset" size="mini"></token-logo>
+      <div v-if="active" :class="['status-badge-logo-icon', { active: !stopped }]"></div>
     </div>
 
     <div class="status-badge-title">
@@ -12,35 +12,38 @@
   </div>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Prop, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTranslation } from '@/composables/useTranslation';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+defineOptions({
+  name: 'StatusBadge',
   components: {
     TokenLogo: components.TokenLogo,
   },
-})
-export default class StatusBadge extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  @Prop({ required: true, type: Boolean }) readonly stopped!: boolean;
-  @Prop({ required: true, type: Boolean }) readonly active!: boolean;
-  @Prop({ required: true, type: String }) readonly apr!: string;
-  @Prop({ type: Object }) readonly rewardAsset!: Nullable<AccountAsset>;
+});
 
-  get pricesAvailable(): boolean {
-    return Object.keys(this.fiatPriceObject).length > 0;
-  }
+const props = defineProps<{
+  stopped: boolean;
+  active: boolean;
+  apr: string;
+  rewardAsset?: Nullable<AccountAsset>;
+}>();
 
-  get title(): string {
-    if (this.stopped) return this.t('demeterFarming.staking.stopped');
+const { t, TranslationConsts } = useTranslation();
+const formattedAmount = useFormattedAmount();
 
-    return this.t(this.active ? 'demeterFarming.staking.active' : 'demeterFarming.actions.start');
-  }
-}
+const pricesAvailable = computed(() => Object.keys(formattedAmount.fiatPriceObject ?? {}).length > 0);
+
+const title = computed(() => {
+  if (props.stopped) return t('demeterFarming.staking.stopped');
+  return props.active ? t('demeterFarming.staking.active') : t('demeterFarming.actions.start');
+});
 </script>
 
 <style lang="scss">

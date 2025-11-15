@@ -1,0 +1,10 @@
+{{> header }}
+
+{{{ importsAll }}}
+
+{{#each items}}
+{{{this}}}
+
+{{/each}}
+
+export type PHANTOM_{{#upper}}{{{name}}}{{/upper}} = '{{{name}}}';

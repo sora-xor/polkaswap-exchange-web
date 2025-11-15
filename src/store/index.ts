@@ -1,5 +1,5 @@
-import { vuex } from '@soramitsu/soraneo-wallet-web';
 import { createDirectStore } from 'direct-vuex';
+import { vuex } from '@wallet/vuex';
 
 import addLiquidity from './addLiquidity';
 import assets from './assets';
@@ -18,6 +18,7 @@ import soraCard from './soraCard';
 import staking from './staking';
 import vault from './vault';
 import web3 from './web3';
+import { setLegacyStore } from '@/utils/legacy-store';
 
 import type { StoreOrModuleOptions } from 'direct-vuex';
 import type { DirectActions, DirectGetters, DirectMutations, DirectState } from 'direct-vuex/types/direct-types';
@@ -47,6 +48,12 @@ const { store, rootGetterContext, rootActionContext } = createDirectStore({
   modules,
   strict: false,
 });
+
+setLegacyStore(store);
+
+if (typeof globalThis !== 'undefined') {
+  (globalThis as Record<string, unknown>).__PS_APP_STORE__ = store;
+}
 
 // To enable types in the injected store '$store'.
 export type AppStore = typeof store;

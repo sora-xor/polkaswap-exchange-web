@@ -8,6 +8,8 @@ node_modules
 /tests/e2e/videos/
 /tests/e2e/screenshots/
 
+.vitest-localstorage.sqlite
+
 
 # local env files
 .env.local

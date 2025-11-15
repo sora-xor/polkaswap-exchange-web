@@ -6,10 +6,10 @@
       v-model="email"
       :disabled="loading"
       type="email"
-    />
+    ></s-input>
     <p :class="computedClassEmail">{{ emailInputDescription }}</p>
     <template v-if="emailSent">
-      <s-icon name="basic-check-mark-24" size="16px" />
+      <s-icon name="basic-check-mark-24" size="16px"></s-icon>
       <p v-if="emailSent" class="sora-card__email-input-description">{{ t('card.emailSpamReminder') }}</p>
     </template>
     <div v-if="showNameInputs">
@@ -19,8 +19,13 @@
         :placeholder="t('card.firstNamePlaceholder')"
         v-model="firstName"
         :disabled="loading"
-      />
-      <s-input maxlength="50" :placeholder="t('card.lastNamePlaceholder')" v-model="lastName" :disabled="loading" />
+      ></s-input>
+      <s-input
+        maxlength="50"
+        :placeholder="t('card.lastNamePlaceholder')"
+        v-model="lastName"
+        :disabled="loading"
+      ></s-input>
       <p class="sora-card__name-input-description">{{ t('card.personalNameInputDesc') }}</p>
     </div>
     <s-button
@@ -36,170 +41,202 @@
   </div>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+<script setup lang="ts">
 import EmailValidator from 'email-validator';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { getter, state } from '@/store/decorators';
+import { useTranslation } from '@/composables/useTranslation';
+import { useLoading } from '@/composables/useLoading';
+import store from '@/store';
 import { CardUIViews } from '@/types/card';
 
 const RESEND_INTERVAL = 59;
 
-@Component
-export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.soraCard.authLogin private authLogin!: any;
+const { t } = useTranslation();
+const { loading } = useLoading();
 
-  @getter.soraCard.isEuroBalanceEnough private isEuroBalanceEnough!: boolean;
+const emit = defineEmits<{
+  (event: 'confirm', view: CardUIViews): void;
+}>();
 
-  private emailCountDown = '';
-  private prefilledEmail = '';
-  private unconfirmedEmail = '';
-  private emailSentFirstTime = false;
-  private emailResendCount = RESEND_INTERVAL;
+const authLogin = computed<any>(() => store.state.soraCard.authLogin);
+const isEuroBalanceEnough = computed<boolean>(() => store.getters.soraCard?.isEuroBalanceEnough ?? false);
 
-  firstName = '';
-  lastName = '';
-  email = '';
-  emailSent = false;
+const prefilledEmail = ref<string>('undefined');
+const unconfirmedEmail = ref<string>('');
+const emailSentFirstTime = ref(false);
+const emailResendCount = ref(RESEND_INTERVAL);
 
-  @Watch('emailResendCount', { immediate: true })
-  private handleSmsCountChange(value: number): void {
-    const digit = value.toString().length > 1 ? '' : '0';
-    this.emailCountDown = `00:${digit}${value}`;
+const firstName = ref('');
+const lastName = ref('');
+const email = ref('');
+const emailSent = ref(false);
+
+const timerId = ref<ReturnType<typeof setInterval> | null>(null);
+const listenersAttached = ref(false);
+
+const emailCountDown = computed(() => {
+  const value = emailResendCount.value;
+  const padding = value > 9 ? '' : '0';
+  return `00:${padding}${value}`;
+});
+
+const emailInputDescription = computed(() =>
+  emailSent.value ? t('card.emailInputAfterSendDesc') : t('card.emailInputBeforeSendDesc')
+);
+
+const computedClassEmail = computed(() => {
+  const base = ['sora-card__email-input-description'];
+  if (emailSent.value) base.push('sora-card__email-input-description--sent');
+  return base.join(' ');
+});
+
+const buttonText = computed(() => {
+  if (emailSent.value && emailCountDown.value) {
+    return t('card.resendInBtn', { value: emailCountDown.value });
+  }
+  return t('card.sendEmailLinkBtn');
+});
+
+const isPrefilledEmailValid = computed(() => {
+  if (prefilledEmail.value !== 'undefined' || !!prefilledEmail.value) {
+    return EmailValidator.validate(prefilledEmail.value);
+  }
+  return false;
+});
+
+const isEmailMismatch = computed(() => {
+  if (!unconfirmedEmail.value) return false;
+  return unconfirmedEmail.value !== email.value;
+});
+
+const sendBtnDisabled = computed(() => {
+  if (emailSent.value) return true;
+
+  if (isPrefilledEmailValid.value) {
+    return !EmailValidator.validate(email.value);
   }
 
-  handleSendEmail(): void {
-    this.startEmailCountDown();
+  if (firstName.value && lastName.value) {
+    return !EmailValidator.validate(email.value);
+  }
 
-    if (this.isPrefilledEmailValid || this.isEmailMismatch) {
-      // user wants to change unconfirmed email
-      if (this.prefilledEmail !== this.email) {
-        this.authLogin.ChangeUnconfirmedEmail({ Email: this.email }).catch((error) => {
-          console.error('[SoraCard]: Error while changing email', error);
-        });
+  return true;
+});
 
-        this.unconfirmedEmail = this.email;
-        this.emailSent = true;
+const showNameInputs = computed(() => prefilledEmail.value === 'undefined' || !prefilledEmail.value);
 
-        return;
+const startEmailCountDown = () => {
+  if (timerId.value) clearInterval(timerId.value);
+
+  timerId.value = setInterval(() => {
+    emailResendCount.value -= 1;
+
+    if (emailResendCount.value < 0) {
+      emailSent.value = false;
+      emailResendCount.value = RESEND_INTERVAL;
+      if (timerId.value) {
+        clearInterval(timerId.value);
+        timerId.value = null;
       }
     }
+  }, 1000);
+};
 
-    // user signs on for the first time
-    if (!this.emailSentFirstTime && !this.isPrefilledEmailValid) {
-      this.authLogin
-        .UserMinimalRegistration({ Email: this.email, FirstName: this.firstName, LastName: this.lastName })
-        .catch((error) => {
-          console.error('[SoraCard]: Error while email setup', error);
-        });
+const setLanguageStep = (view: CardUIViews) => emit('confirm', view);
 
-      this.unconfirmedEmail = this.email;
-      this.emailSentFirstTime = true;
-      return;
-    }
+const registerAuthListeners = (login: any) => {
+  if (!login?.on || listenersAttached.value) return;
 
-    // user tries to resend email several times
-    this.authLogin.SendVerificationEmail().catch((error) => {
-      console.error('[SoraCard]: Error while resending email', error);
+  login
+    .on('Verification-Email-Sent-Success', () => {
+      emailSent.value = true;
+    })
+    .on('Verification-Email-ReSent-Success', () => {
+      emailSent.value = true;
+    })
+    .on('Email-verified', () => {
+      unconfirmedEmail.value = '';
+      if (isEuroBalanceEnough.value) {
+        setLanguageStep(CardUIViews.Kyc);
+      } else {
+        setLanguageStep(CardUIViews.Payment);
+      }
     });
 
-    this.emailSent = true;
-  }
+  listenersAttached.value = true;
+};
 
-  get emailInputDescription(): string {
-    if (this.emailSent) return this.t('card.emailInputAfterSendDesc');
-    return this.t('card.emailInputBeforeSendDesc');
-  }
+const handleSendEmail = () => {
+  const login = authLogin.value;
+  if (!login) return;
 
-  get computedClassEmail(): string {
-    const base = ['sora-card__email-input-description'];
+  startEmailCountDown();
 
-    if (this.emailSent) base.push('sora-card__email-input-description--sent');
-
-    return base.join(' ');
-  }
-
-  get buttonText() {
-    if (this.emailSent && this.emailCountDown) {
-      return this.t('card.resendInBtn', { value: this.emailCountDown });
-    }
-    return this.t('card.sendEmailLinkBtn');
-  }
-
-  get sendBtnDisabled(): boolean {
-    if (this.emailSent) return true;
-
-    if (this.isPrefilledEmailValid) {
-      if (EmailValidator.validate(this.email)) {
-        return false;
-      }
-
-      return true;
-    } else {
-      if (this.firstName && this.lastName) {
-        return !EmailValidator.validate(this.email);
-      }
-
-      return true;
-    }
-  }
-
-  get showNameInputs(): boolean {
-    return this.prefilledEmail === 'undefined' || !this.prefilledEmail;
-  }
-
-  get isPrefilledEmailValid(): boolean {
-    if (this.prefilledEmail !== 'undefined' || !!this.prefilledEmail) {
-      return EmailValidator.validate(this.prefilledEmail);
-    }
-    return false;
-  }
-
-  get isEmailMismatch(): boolean {
-    if (!this.unconfirmedEmail) return false;
-    return this.unconfirmedEmail !== this.email;
-  }
-
-  startEmailCountDown(): void {
-    const interval = setInterval(() => {
-      this.emailResendCount--;
-
-      if (this.emailResendCount < 0) {
-        this.emailSent = false;
-        this.emailResendCount = RESEND_INTERVAL;
-        clearInterval(interval);
-      }
-    }, 1000);
-  }
-
-  mounted(): void {
-    this.prefilledEmail = localStorage.getItem('PW-Email') || 'undefined';
-
-    if (this.prefilledEmail !== 'undefined') {
-      this.email = this.prefilledEmail;
-    }
-
-    if (!this.authLogin) return;
-
-    this.authLogin
-      .on('Verification-Email-Sent-Success', () => {
-        this.emailSent = true;
-      })
-      .on('Verification-Email-ReSent-Success', () => {
-        this.emailSent = true;
-      })
-      .on('Email-verified', () => {
-        this.unconfirmedEmail = '';
-        if (this.isEuroBalanceEnough) {
-          this.$emit('confirm', CardUIViews.Kyc);
-        } else {
-          this.$emit('confirm', CardUIViews.Payment);
-        }
+  if (isPrefilledEmailValid.value || isEmailMismatch.value) {
+    if (prefilledEmail.value !== email.value) {
+      login.ChangeUnconfirmedEmail({ Email: email.value }).catch((error: unknown) => {
+        console.error('[SoraCard]: Error while changing email', error);
       });
+
+      unconfirmedEmail.value = email.value;
+      emailSent.value = true;
+      return;
+    }
   }
-}
+
+  if (!emailSentFirstTime.value && !isPrefilledEmailValid.value) {
+    login
+      .UserMinimalRegistration({ Email: email.value, FirstName: firstName.value, LastName: lastName.value })
+      .catch((error: unknown) => {
+        console.error('[SoraCard]: Error while email setup', error);
+      });
+
+    unconfirmedEmail.value = email.value;
+    emailSentFirstTime.value = true;
+    return;
+  }
+
+  login.SendVerificationEmail().catch((error: unknown) => {
+    console.error('[SoraCard]: Error while resending email', error);
+  });
+
+  emailSent.value = true;
+};
+
+const handleClearSearch = () => {
+  // Exposed for template consistency (SearchInput emits clear)
+  query.value = '';
+};
+
+watch(
+  authLogin,
+  (login) => {
+    if (login) {
+      registerAuthListeners(login);
+    }
+  },
+  { immediate: true }
+);
+
+onMounted(() => {
+  prefilledEmail.value = localStorage.getItem('PW-Email') || 'undefined';
+
+  if (prefilledEmail.value !== 'undefined') {
+    email.value = prefilledEmail.value;
+  }
+
+  if (authLogin.value) {
+    registerAuthListeners(authLogin.value);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (timerId.value) {
+    clearInterval(timerId.value);
+    timerId.value = null;
+  }
+});
 </script>
 
 <style lang="scss" scoped>

@@ -8,7 +8,7 @@
         fit="cover"
         draggable="false"
         class="unselectable sora-card-hub-image"
-      />
+      ></s-image>
       <formatted-amount
         v-if="userInfo.iban"
         class="sora-card-hub-balance"
@@ -16,7 +16,7 @@
         fiat-sign="€"
         value-can-be-hidden
         is-fiat-value
-      />
+      ></formatted-amount>
       <p class="sora-card-hub-management-coming">
         {{ t('card.cardHub.comingSoon') }}
       </p>
@@ -29,7 +29,7 @@
           :disabled="true"
           class="sora-card-hub-button"
         >
-          <s-icon :name="option.icon" size="17" class="icon" />
+          <s-icon :name="option.icon" size="17" class="icon"></s-icon>
           {{ t(`card.cardHub.${option.type}`) }}
         </s-button>
       </div>
@@ -38,28 +38,30 @@
     <div class="sora-card container sora-card-hub-info" v-loading="loading">
       <h4 class="sora-card-hub-info-title">{{ t('card.cardhub.accountInfo') }}</h4>
       <div v-if="userInfo.iban" class="sora-card-hub-info-iban">
-        <s-input :placeholder="t('card.cardHub.ibanLabel')" :value="iban" readonly />
-        <s-icon v-button name="basic-copy-24" @click.native="handleCopyIban" />
+        <s-input :placeholder="t('card.cardHub.ibanLabel')" :value="iban" readonly></s-input>
+        <button v-button class="sora-card-hub-info-iban-copy" type="button" @click="handleCopyIban">
+          <s-icon name="basic-copy-24"></s-icon>
+        </button>
       </div>
       <div v-else class="sora-card-hub-info-iban-missing">
         <p class="label">{{ t('card.cardHub.ibanLabel') }}</p>
-        <p v-html="ibanPendingDescription" />
+        <p v-html="ibanPendingDescription"></p>
       </div>
       <div v-button class="sora-card-hub-logout" @click="logoutFromSoraCard">
         <span>{{ t('card.cardHub.logout') }}</span>
-        <s-icon name="arrows-chevron-right-rounded-24" size="18" />
+        <s-icon name="arrows-chevron-right-rounded-24" size="18"></s-icon>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed, ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state } from '@/store/decorators';
-import { UserInfo } from '@/types/card';
+import { useTranslation } from '@/composables/useTranslation';
+import store from '@/store';
+import type { UserInfo } from '@/types/card';
 import { copyToClipboard } from '@/utils';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
@@ -78,66 +80,76 @@ enum Option {
   Exchange = 'exchange',
 }
 
-type Options = { icon: OptionsIcon; type: Option };
+type CardOption = {
+  icon: OptionsIcon;
+  type: Option;
+};
 
-@Component({
+defineOptions({
+  name: 'SoraCardDashboard',
   components: {
     FormattedAmount: components.FormattedAmount,
   },
-})
-export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  @state.soraCard.userInfo userInfo!: UserInfo;
-  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
+});
 
-  email = 'techsupport@soracard.com';
+const emit = defineEmits<{
+  (event: 'logout'): void;
+}>();
 
-  get emailLink(): string {
-    const safeEmail = escapeHtml(this.email);
-    return `<a href="mailto:${safeEmail}" rel="nofollow noopener">${safeEmail}</a>`;
-  }
+const loading = ref(false);
+const { t } = useTranslation();
 
-  get ibanPendingDescription(): string {
-    const translation = this.t('card.ibanPendingDesc', { email: this.emailLink });
+const email = 'techsupport@soracard.com';
+const emailLink = computed(() => {
+  const safeEmail = escapeHtml(email);
+  return `<a href="mailto:${safeEmail}" rel="nofollow noopener">${safeEmail}</a>`;
+});
 
-    return sanitizeHtml(translation, {
-      allowedTags: ['a', 'span', 'p', 'br'],
-      allowedAttributes: {
-        '*': ['class'],
-        a: ['href', 'rel', 'target', 'title'],
-      },
-    });
-  }
+const userInfo = computed<UserInfo>(() => {
+  return (store.state?.soraCard?.userInfo as UserInfo | undefined) ?? { iban: null, availableBalance: null };
+});
 
-  options: Array<Options> = [
-    { icon: OptionsIcon.TopUp, type: Option.TopUp },
-    { icon: OptionsIcon.Transfer, type: Option.Transfer },
-    { icon: OptionsIcon.Freeze, type: Option.Freeze },
-    { icon: OptionsIcon.Exchange, type: Option.Exchange },
-  ];
+const shouldBalanceBeHidden = computed(() => Boolean(store.state?.wallet?.settings?.shouldBalanceBeHidden));
 
-  get iban(): Nullable<string> {
-    return this.shouldBalanceBeHidden ? WALLET_CONSTS.HiddenValue : this.userInfo.iban;
-  }
+const ibanPendingDescription = computed(() => {
+  const translation = t('card.ibanPendingDesc', { email: emailLink.value });
 
-  get balance(): string {
-    const balance = this.userInfo.availableBalance;
+  return sanitizeHtml(translation, {
+    allowedTags: ['a', 'span', 'p', 'br'],
+    allowedAttributes: {
+      '*': ['class'],
+      a: ['href', 'rel', 'target', 'title'],
+    },
+  });
+});
 
-    if (!balance) return '0';
+const options: ReadonlyArray<CardOption> = [
+  { icon: OptionsIcon.TopUp, type: Option.TopUp },
+  { icon: OptionsIcon.Transfer, type: Option.Transfer },
+  { icon: OptionsIcon.Freeze, type: Option.Freeze },
+  { icon: OptionsIcon.Exchange, type: Option.Exchange },
+];
 
-    return `${balance / 100}`;
-  }
+const iban = computed<Nullable<string>>(() => {
+  return shouldBalanceBeHidden.value ? WALLET_CONSTS.HiddenValue : userInfo.value.iban;
+});
 
-  handleClick(type: Option): void {}
+const balance = computed(() => {
+  const balanceValue = userInfo.value.availableBalance;
+  if (!balanceValue) return '0';
+  return `${balanceValue / 100}`;
+});
 
-  handleCopyIban(): void {
-    copyToClipboard(this.userInfo.iban || '');
-  }
+const handleClick = (_type: Option): void => {};
 
-  logoutFromSoraCard(): void {
-    clearPayWingsKeysFromLocalStorage(true);
-    this.$emit('logout');
-  }
-}
+const handleCopyIban = (): void => {
+  copyToClipboard(userInfo.value.iban || '');
+};
+
+const logoutFromSoraCard = (): void => {
+  clearPayWingsKeysFromLocalStorage(true);
+  emit('logout');
+};
 </script>
 
 <style lang="scss">
@@ -266,15 +278,27 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
     &-iban {
       position: relative;
 
-      .s-icon-basic-copy-24 {
+      .sora-card-hub-info-iban-copy {
         position: absolute;
         right: $basic-spacing;
         top: $basic-spacing;
+        display: inline-flex;
+        align-items: center;
         margin-top: auto;
         margin-bottom: auto;
+        padding: 0;
+        border: 0;
+        background: none;
         color: var(--s-color-base-content-tertiary);
+        cursor: pointer;
+
+        @include focus-outline;
+
+        .s-icon {
+          color: inherit;
+        }
+
         &:hover {
-          cursor: pointer;
           color: var(--s-color-base-content-secondary);
         }
       }

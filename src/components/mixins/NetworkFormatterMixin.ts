@@ -1,8 +1,8 @@
 import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { WALLET_CONSTS } from '@wallet';
+import { Options, mixins as vueMixins } from 'vue-property-decorator';
 
 import { EvmLinkType, EVM_NETWORKS } from '@/consts/evm';
 import { SUB_NETWORKS } from '@/consts/sub';
@@ -71,8 +71,8 @@ const getEvmNetworkLinks = (
   return links;
 };
 
-@Component
-export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
+@Options({})
+export default class NetworkFormatterMixin extends vueMixins(TranslationMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @getter.web3.selectedNetwork selectedNetwork!: Nullable<NetworkData>;
   @getter.web3.availableNetworks availableNetworks!: Record<

@@ -1,4 +1,4 @@
-import { vuex } from '@soramitsu/soraneo-wallet-web';
+import { vuex } from '@wallet/vuex';
 
 import store from '@/store';
 

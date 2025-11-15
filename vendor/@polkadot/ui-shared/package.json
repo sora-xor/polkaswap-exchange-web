@@ -1,0 +1,336 @@
+{
+  "author": "Jaco Greeff <jacogr@gmail.com>",
+  "bugs": "https://github.com/polkadot-js/ui/issues",
+  "description": "Shared logic that is usable accross all frameworks-specific areas",
+  "engines": {
+    "node": ">=18"
+  },
+  "homepage": "https://github.com/polkadot-js/ui/tree/master/packages/ui-shared#readme",
+  "license": "Apache-2.0",
+  "name": "@polkadot/ui-shared",
+  "repository": {
+    "directory": "packages/ui-shared",
+    "type": "git",
+    "url": "https://github.com/polkadot-js/ui.git"
+  },
+  "sideEffects": [
+    "./packageDetect.js",
+    "./cjs/packageDetect.js"
+  ],
+  "type": "module",
+  "version": "3.16.1",
+  "main": "./cjs/index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    "./cjs/package.json": "./cjs/package.json",
+    "./cjs/*": "./cjs/*.js",
+    ".": {
+      "module": {
+        "types": "./index.d.ts",
+        "default": "./index.js"
+      },
+      "require": {
+        "types": "./cjs/index.d.ts",
+        "default": "./cjs/index.js"
+      },
+      "default": {
+        "types": "./index.d.ts",
+        "default": "./index.js"
+      }
+    },
+    "./bundle": {
+      "module": {
+        "types": "./bundle.d.ts",
+        "default": "./bundle.js"
+      },
+      "require": {
+        "types": "./cjs/bundle.d.ts",
+        "default": "./cjs/bundle.js"
+      },
+      "default": {
+        "types": "./bundle.d.ts",
+        "default": "./bundle.js"
+      }
+    },
+    "./icons": {
+      "module": {
+        "types": "./icons/index.d.ts",
+        "default": "./icons/index.js"
+      },
+      "require": {
+        "types": "./cjs/icons/index.d.ts",
+        "default": "./cjs/icons/index.js"
+      },
+      "default": {
+        "types": "./icons/index.d.ts",
+        "default": "./icons/index.js"
+      }
+    },
+    "./icons/beachball": {
+      "module": {
+        "types": "./icons/beachball/index.d.ts",
+        "default": "./icons/beachball/index.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/index.d.ts",
+        "default": "./cjs/icons/beachball/index.js"
+      },
+      "default": {
+        "types": "./icons/beachball/index.d.ts",
+        "default": "./icons/beachball/index.js"
+      }
+    },
+    "./icons/beachball/colors": {
+      "module": {
+        "types": "./icons/beachball/colors.d.ts",
+        "default": "./icons/beachball/colors.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/colors.d.ts",
+        "default": "./cjs/icons/beachball/colors.js"
+      },
+      "default": {
+        "types": "./icons/beachball/colors.d.ts",
+        "default": "./icons/beachball/colors.js"
+      }
+    },
+    "./icons/beachball/container": {
+      "module": {
+        "types": "./icons/beachball/container.d.ts",
+        "default": "./icons/beachball/container.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/container.d.ts",
+        "default": "./cjs/icons/beachball/container.js"
+      },
+      "default": {
+        "types": "./icons/beachball/container.d.ts",
+        "default": "./icons/beachball/container.js"
+      }
+    },
+    "./icons/beachball/defaults": {
+      "module": {
+        "types": "./icons/beachball/defaults.d.ts",
+        "default": "./icons/beachball/defaults.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/defaults.d.ts",
+        "default": "./cjs/icons/beachball/defaults.js"
+      },
+      "default": {
+        "types": "./icons/beachball/defaults.d.ts",
+        "default": "./icons/beachball/defaults.js"
+      }
+    },
+    "./icons/beachball/demo": {
+      "module": {
+        "types": "./icons/beachball/demo.d.ts",
+        "default": "./icons/beachball/demo.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/demo.d.ts",
+        "default": "./cjs/icons/beachball/demo.js"
+      },
+      "default": {
+        "types": "./icons/beachball/demo.d.ts",
+        "default": "./icons/beachball/demo.js"
+      }
+    },
+    "./icons/beachball/README.md": "./icons/beachball/README.md",
+    "./icons/beachball/seeder": {
+      "module": {
+        "types": "./icons/beachball/seeder.d.ts",
+        "default": "./icons/beachball/seeder.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/seeder.d.ts",
+        "default": "./cjs/icons/beachball/seeder.js"
+      },
+      "default": {
+        "types": "./icons/beachball/seeder.d.ts",
+        "default": "./icons/beachball/seeder.js"
+      }
+    },
+    "./icons/beachball/shape/circle": {
+      "module": {
+        "types": "./icons/beachball/shape/circle.d.ts",
+        "default": "./icons/beachball/shape/circle.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/shape/circle.d.ts",
+        "default": "./cjs/icons/beachball/shape/circle.js"
+      },
+      "default": {
+        "types": "./icons/beachball/shape/circle.d.ts",
+        "default": "./icons/beachball/shape/circle.js"
+      }
+    },
+    "./icons/beachball/shape/square": {
+      "module": {
+        "types": "./icons/beachball/shape/square.d.ts",
+        "default": "./icons/beachball/shape/square.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/shape/square.d.ts",
+        "default": "./cjs/icons/beachball/shape/square.js"
+      },
+      "default": {
+        "types": "./icons/beachball/shape/square.d.ts",
+        "default": "./icons/beachball/shape/square.js"
+      }
+    },
+    "./icons/beachball/svg/circle": {
+      "module": {
+        "types": "./icons/beachball/svg/circle.d.ts",
+        "default": "./icons/beachball/svg/circle.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/svg/circle.d.ts",
+        "default": "./cjs/icons/beachball/svg/circle.js"
+      },
+      "default": {
+        "types": "./icons/beachball/svg/circle.d.ts",
+        "default": "./icons/beachball/svg/circle.js"
+      }
+    },
+    "./icons/beachball/svg/element": {
+      "module": {
+        "types": "./icons/beachball/svg/element.d.ts",
+        "default": "./icons/beachball/svg/element.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/svg/element.d.ts",
+        "default": "./cjs/icons/beachball/svg/element.js"
+      },
+      "default": {
+        "types": "./icons/beachball/svg/element.d.ts",
+        "default": "./icons/beachball/svg/element.js"
+      }
+    },
+    "./icons/beachball/svg/rect": {
+      "module": {
+        "types": "./icons/beachball/svg/rect.d.ts",
+        "default": "./icons/beachball/svg/rect.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/svg/rect.d.ts",
+        "default": "./cjs/icons/beachball/svg/rect.js"
+      },
+      "default": {
+        "types": "./icons/beachball/svg/rect.d.ts",
+        "default": "./icons/beachball/svg/rect.js"
+      }
+    },
+    "./icons/beachball/svg/svg": {
+      "module": {
+        "types": "./icons/beachball/svg/svg.d.ts",
+        "default": "./icons/beachball/svg/svg.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/svg/svg.d.ts",
+        "default": "./cjs/icons/beachball/svg/svg.js"
+      },
+      "default": {
+        "types": "./icons/beachball/svg/svg.d.ts",
+        "default": "./icons/beachball/svg/svg.js"
+      }
+    },
+    "./icons/beachball/types": {
+      "module": {
+        "types": "./icons/beachball/types.d.ts",
+        "default": "./icons/beachball/types.js"
+      },
+      "require": {
+        "types": "./cjs/icons/beachball/types.d.ts",
+        "default": "./cjs/icons/beachball/types.js"
+      },
+      "default": {
+        "types": "./icons/beachball/types.d.ts",
+        "default": "./icons/beachball/types.js"
+      }
+    },
+    "./icons/polkadot": {
+      "module": {
+        "types": "./icons/polkadot.d.ts",
+        "default": "./icons/polkadot.js"
+      },
+      "require": {
+        "types": "./cjs/icons/polkadot.d.ts",
+        "default": "./cjs/icons/polkadot.js"
+      },
+      "default": {
+        "types": "./icons/polkadot.d.ts",
+        "default": "./icons/polkadot.js"
+      }
+    },
+    "./icons/types": {
+      "module": {
+        "types": "./icons/types.d.ts",
+        "default": "./icons/types.js"
+      },
+      "require": {
+        "types": "./cjs/icons/types.d.ts",
+        "default": "./cjs/icons/types.js"
+      },
+      "default": {
+        "types": "./icons/types.d.ts",
+        "default": "./icons/types.js"
+      }
+    },
+    "./package.json": {
+      "require": "./cjs/package.json",
+      "default": "./package.json"
+    },
+    "./packageDetect": {
+      "module": {
+        "types": "./packageDetect.d.ts",
+        "default": "./packageDetect.js"
+      },
+      "require": {
+        "types": "./cjs/packageDetect.d.ts",
+        "default": "./cjs/packageDetect.js"
+      },
+      "default": {
+        "types": "./packageDetect.d.ts",
+        "default": "./packageDetect.js"
+      }
+    },
+    "./packageInfo.js": {
+      "module": {
+        "types": "./packageInfo.d.ts",
+        "default": "./packageInfo.js"
+      },
+      "require": {
+        "types": "./cjs/packageInfo.d.ts",
+        "default": "./cjs/packageInfo.js"
+      },
+      "default": {
+        "types": "./packageInfo.d.ts",
+        "default": "./packageInfo.js"
+      }
+    },
+    "./packageInfo": {
+      "module": {
+        "types": "./packageInfo.d.ts",
+        "default": "./packageInfo.js"
+      },
+      "require": {
+        "types": "./cjs/packageInfo.d.ts",
+        "default": "./cjs/packageInfo.js"
+      },
+      "default": {
+        "types": "./packageInfo.d.ts",
+        "default": "./packageInfo.js"
+      }
+    }
+  },
+  "dependencies": {
+    "colord": "^2.9.3",
+    "tslib": "^2.8.1"
+  },
+  "peerDependencies": {
+    "@polkadot/util": "*",
+    "@polkadot/util-crypto": "*"
+  }
+}

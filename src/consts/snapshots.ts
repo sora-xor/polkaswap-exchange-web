@@ -1,4 +1,4 @@
-import { SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { SUBQUERY_TYPES } from '@wallet';
 
 import { Timeframes } from '@/types/filters';
 import type { SnapshotFilter } from '@/types/filters';

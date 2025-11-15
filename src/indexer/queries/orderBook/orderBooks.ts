@@ -1,15 +1,12 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
+import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import type { OrderBookWithStats } from '@/types/orderBook';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
-import type {
-  OrderBookEntity,
-  ConnectionQueryResponse,
-} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { OrderBookEntity, ConnectionQueryResponse } from '@wallet/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
 

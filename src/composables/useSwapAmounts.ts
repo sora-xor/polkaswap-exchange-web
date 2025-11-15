@@ -1,20 +1,38 @@
-import { computed } from 'vue';
+import { computed, getCurrentScope, onScopeDispose, ref } from 'vue';
+import { storeToRefs } from 'pinia';
 
 import { useSwapStore } from '@/stores/swap';
 import { asZeroValue } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Nullable } from '@/types/common';
 
 /**
  * Aggregates swap amount helpers formerly mixed in via `SwapAmountsMixin`.
  */
 export function useSwapAmounts() {
   const swapStore = useSwapStore();
+  const { fromValue, toValue } = storeToRefs(swapStore);
 
-  const tokenFrom = computed(() => swapStore.tokenFrom as Nullable<AccountAsset>);
-  const tokenTo = computed(() => swapStore.tokenTo as Nullable<AccountAsset>);
-  const fromValue = computed(() => swapStore.fromValue);
-  const toValue = computed(() => swapStore.toValue);
+  const tokenFrom = ref<Nullable<AccountAsset>>(swapStore.tokenFrom ?? null);
+  const tokenTo = ref<Nullable<AccountAsset>>(swapStore.tokenTo ?? null);
+
+  const unsubscribe = swapStore.$subscribe(
+    (_mutation, state) => {
+      tokenFrom.value = (state.tokenFromCache as Nullable<AccountAsset>) ?? null;
+      tokenTo.value = (state.tokenToCache as Nullable<AccountAsset>) ?? null;
+    },
+    { detached: true }
+  );
+
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      unsubscribe();
+    });
+  }
+
+  const tokenFromComputed = computed<Nullable<AccountAsset>>(() => tokenFrom.value);
+  const tokenToComputed = computed<Nullable<AccountAsset>>(() => tokenTo.value);
 
   const areTokensSelected = computed(() => !!(tokenFrom.value && tokenTo.value));
   const isZeroFromAmount = computed(() => asZeroValue(fromValue.value));
@@ -23,8 +41,8 @@ export function useSwapAmounts() {
   const areZeroAmounts = computed(() => isZeroFromAmount.value && isZeroToAmount.value);
 
   return {
-    tokenFrom,
-    tokenTo,
+    tokenFrom: tokenFromComputed,
+    tokenTo: tokenToComputed,
     fromValue,
     toValue,
     areTokensSelected,

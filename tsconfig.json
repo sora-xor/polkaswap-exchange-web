@@ -14,34 +14,22 @@
     "noImplicitAny": false,
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "types": [
-      "node",
-      "telegram-web-app"
-    ],
+    "types": ["node", "telegram-web-app"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "vue-property-decorator": [
-        "src/compat/vue-property-decorator.ts"
-      ]
+      "@/*": ["src/*"],
+      "@wallet": ["src/shims/wallet.ts"],
+      "@wallet/*": ["src/lib/soraneo-wallet/src/*"],
+      "@stubs/*": ["tests/stubs/*"],
+      "@tests/*": ["tests/*"],
+      "@wallet/lib": ["src/lib/soraneo-wallet/lib"],
+      "@wallet/lib/*": ["src/lib/soraneo-wallet/lib/*"],
+      "@wallet/core": ["src/lib/soraneo-wallet/src/core.ts"],
+      "@wallet/internal": ["src/lib/soraneo-wallet/src/index.ts"],
+      "@wallet/vuex": ["src/lib/soraneo-wallet/src/vuex.ts"],
+      "vue-property-decorator": ["src/compat/vue-property-decorator.ts"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx",
-    "electron/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx", "electron/**/*.ts"],
+  "exclude": ["node_modules"]
 }

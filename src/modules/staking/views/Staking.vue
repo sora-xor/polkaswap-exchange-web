@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-loading="parentLoading">
-    <generic-page-header :title="t('pageTitle.Staking')" />
+    <generic-page-header :title="t('pageTitle.Staking')"></generic-page-header>
 
     <s-card v-if="!tokensData.length && !soraStaking" shadow="always" size="big" primary class="staking-empty-card">
       {{ t('demeterFarming.staking.stopped') }}
@@ -8,15 +8,15 @@
 
     <router-link class="staking-sora-link" :to="{ name: SoraStakingPageNames.Overview }">
       <s-card class="staking-sora-card">
-        <token-logo :token="soraStaking.asset" size="medium" class="token-logo" />
+        <token-logo :token="soraStaking.asset" size="medium" class="token-logo"></token-logo>
         <div>
           <h5 class="staking-info-subtitle">sora staking</h5>
           <h3 class="staking-info-title">{{ soraStaking.asset.symbol }}</h3>
-          <div v-show="!isActiveCollapseItem('sora', activeCollapseItems)" class="s-flex staking-info-badges">
-            <sora-status-badge />
+          <div v-show="!page.isActiveCollapseItem('sora', activeCollapseItems)" class="s-flex staking-info-badges">
+            <sora-status-badge></sora-status-badge>
           </div>
         </div>
-        <s-icon class="staking-sora-arrow" name="arrows-chevron-right-rounded-24" />
+        <s-icon class="staking-sora-arrow" name="arrows-chevron-right-rounded-24"></s-icon>
       </s-card>
     </router-link>
 
@@ -30,11 +30,11 @@
         class="staking-info"
       >
         <template #title>
-          <token-logo :token="token.asset" size="medium" class="token-logo" />
+          <token-logo :token="token.asset" size="medium" class="token-logo"></token-logo>
           <div>
             <h3 class="staking-info-title">{{ token.asset.symbol }}</h3>
             <div
-              v-show="!isActiveCollapseItem(token.asset.address, activeCollapseItems)"
+              v-show="!page.isActiveCollapseItem(token.asset.address, activeCollapseItems)"
               class="s-flex staking-info-badges"
             >
               <demeter-status-badge
@@ -45,14 +45,14 @@
                 :pool-asset="item.poolAsset"
                 :reward-asset="item.rewardAsset"
                 :apr="item.apr"
-                @add="changePoolStake($event, true)"
+                @add="page.changePoolStake($event, true)"
                 class="staking-info-badge"
-              />
+              ></demeter-status-badge>
             </div>
           </div>
         </template>
 
-        <template v-if="isActiveCollapseItem(token.asset.address, activeCollapseItems)">
+        <template v-if="page.isActiveCollapseItem(token.asset.address, activeCollapseItems)">
           <pool-card
             v-for="item in token.items"
             :key="item.pool.rewardAsset"
@@ -63,64 +63,72 @@
             :reward-asset="item.rewardAsset"
             :apr="item.apr"
             :tvl="item.tvl"
-            @add="changePoolStake($event, true)"
-            @remove="changePoolStake($event, false)"
-            @claim="claimPoolRewards"
+            @add="page.changePoolStake($event, true)"
+            @remove="page.changePoolStake($event, false)"
+            @claim="page.claimPoolRewards"
             @calculator="showPoolCalculator"
             show-balance
             class="staking-info-card"
-          />
+          ></pool-card>
         </template>
       </s-collapse-item>
     </s-collapse>
 
     <stake-dialog
-      :visible.sync="showStakeDialog"
-      :is-adding="isAddingStake"
-      :parent-loading="parentLoading || loading"
-      v-bind="selectedDerivedPool"
-      @add="handleStakeAction($event, deposit)"
-      @remove="handleStakeAction($event, withdraw)"
-    />
+      v-model:visible="page.showStakeDialog"
+      :is-adding="page.isAddingStake"
+      :parent-loading="parentLoading"
+      v-bind="page.selectedDerivedPool"
+      @add="page.handleStakeAction($event, page.deposit)"
+      @remove="page.handleStakeAction($event, page.withdraw)"
+    ></stake-dialog>
 
     <claim-dialog
-      :visible.sync="showClaimDialog"
-      :parent-loading="parentLoading || loading"
-      v-bind="selectedDerivedPool"
-      @confirm="handleClaimRewards"
-    />
+      v-model:visible="page.showClaimDialog"
+      :parent-loading="parentLoading"
+      v-bind="page.selectedDerivedPool"
+      @confirm="page.handleClaimRewards"
+    ></claim-dialog>
 
-    <calculator-dialog :visible.sync="showCalculatorDialog" v-bind="selectedDerivedPool" />
+    <calculator-dialog
+      v-model:visible="base.showCalculatorDialog"
+      v-bind="page.selectedDerivedPool"
+    ></calculator-dialog>
   </div>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed, ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
-import type { DemeterPoolDerivedData } from '@/modules/staking/demeter/types';
+import { PoolPageNames } from '@/modules/pool/consts';
+import { poolLazyView } from '@/modules/pool/router';
 import { lazyComponent } from '@/router';
-import { state } from '@/store/decorators';
 import { sortAssets } from '@/utils';
 
+import { useDemeterBasePage } from '../demeter/composables/useDemeterBasePage';
+import { useDemeterPage } from '../demeter/composables/useDemeterPage';
+import type { DemeterPoolDerivedData } from '../demeter/types';
 import { DemeterStakingComponents } from '../demeter/consts';
-import PageMixin from '../demeter/mixins/PageMixin';
 import { demeterStakingLazyComponent, soraStakingLazyComponent } from '../router';
-import { soraStaking, SoraStakingComponents, SoraStakingPageNames } from '../sora/consts';
-
+import { soraStaking as soraStakingConfig, SoraStakingComponents, SoraStakingPageNames } from '../sora/consts';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
 
 type DemeterStakingItem = {
   asset: Asset;
-  items: Array<DemeterPoolDerivedData>;
+  items: DemeterPoolDerivedData[];
 };
 
-@Component({
+const props = defineProps({
+  parentLoading: { type: Boolean, default: false },
+});
+
+defineOptions({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    PoolBase: poolLazyView(PoolPageNames.Pool),
     PoolCard: demeterStakingLazyComponent(DemeterStakingComponents.PoolCard),
     DemeterStatusBadge: demeterStakingLazyComponent(DemeterStakingComponents.StatusBadge),
     SoraStatusBadge: soraStakingLazyComponent(SoraStakingComponents.StatusBadge),
@@ -129,50 +137,40 @@ type DemeterStakingItem = {
     CalculatorDialog: demeterStakingLazyComponent(DemeterStakingComponents.CalculatorDialog),
     TokenLogo: components.TokenLogo,
   },
-})
-export default class Staking extends Mixins(PageMixin, TranslationMixin) {
-  @state.staking.validatorsInfo validators!: Array<ValidatorInfoFull>;
+});
 
-  activeCollapseItems: string[] = [];
+const { t } = useTranslation();
+const base = useDemeterBasePage({ isFarmingPage: true });
+const page = useDemeterPage(base, { parentLoading: computed(() => props.parentLoading) });
+const parentLoading = computed(() => props.parentLoading || page.loading.value);
+const soraStaking = soraStakingConfig;
 
-  soraStaking = soraStaking;
+const activeCollapseItems = ref<string[]>([]);
+const updateActiveCollapseItems = (items: string[]) => {
+  activeCollapseItems.value = items;
+};
 
-  SoraStakingPageNames = SoraStakingPageNames;
+const tokensData = computed<DemeterStakingItem[]>(() => {
+  const pools = base.pools.value;
+  const assets = base.demeterAssetsData.value;
 
-  updateActiveCollapseItems(items: string[]) {
-    this.activeCollapseItems = items;
-  }
-
-  get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {
-    if (!this.selectedPool) return null;
-
-    return this.prepareDerivedPoolData(this.selectedPool, this.selectedAccountPool);
-  }
-
-  get tokensData(): DemeterStakingItem[] {
-    const items = Object.entries(this.pools).reduce<DemeterStakingItem[]>((buffer, [address, poolsMap]) => {
-      const asset = this.demeterAssetsData[address];
-
+  return Object.entries(pools ?? {})
+    .reduce<DemeterStakingItem[]>((buffer, [address, poolMap]) => {
+      const asset = assets[address];
       if (!asset) return buffer;
 
-      const derived = this.getDerivedPools(poolsMap?.[address]);
-      const items = derived.map((item) => this.prepareDerivedPoolData(item.pool, item.accountPool));
-
-      if (!items.length) return buffer;
-
-      buffer.push({
-        asset,
-        items,
+      const derivedItems: DemeterPoolDerivedData[] = Object.values(poolMap ?? {}).flatMap((list) => {
+        const derived = base.getDerivedPools(list as any[]);
+        return derived.map((item) => base.prepareDerivedPoolData(item.pool, item.accountPool));
       });
 
+      if (!derivedItems.length) return buffer;
+
+      buffer.push({ asset, items: derivedItems });
       return buffer;
-    }, []);
-
-    const defaultSorted = [...items].sort((a, b) => sortAssets(a.asset, b.asset));
-
-    return defaultSorted;
-  }
-}
+    }, [])
+    .sort((a, b) => sortAssets(a.asset, b.asset));
+});
 </script>
 
 <style lang="scss">

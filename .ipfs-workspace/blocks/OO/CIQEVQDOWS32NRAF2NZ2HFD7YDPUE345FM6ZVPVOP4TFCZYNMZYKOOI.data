@@ -1,0 +1,3 @@
+
+âÅimport{V as i,j as n}from"./polkadot-Bh6PX9YG.js";import{s as a,F as m}from"./index-DjB-Okl0.js";import"./echarts-Cxkeyetf.js";import"./lodash-vOcFpjD8.js";var c=i();function N(){const s=n(()=>a.state.staking.historyDepth),e=t=>{const r=t.identity?.info.display;if(r)if(r.startsWith("0x"))try{return c.Buffer.from(r.slice(2),"hex").toString("utf8")}catch(o){console.error("Failed to decode validator name",o)}else return r;return t.address};return{historyDepth:s,decodeName:e,formatName:(t,r=20)=>{const o=e(t);return o.length>r?`${o.slice(0,r)}...`:o},formatCommission:t=>m.fromCodecValue(t,7).toString(),formatReturn:t=>t}}export{N as u};
+Å

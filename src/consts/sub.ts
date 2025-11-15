@@ -314,77 +314,84 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
   },
 };
 
+const BridgeDirection =
+  BridgeTxDirection ??
+  ({
+    Outgoing: 'Outgoing',
+    Incoming: 'Incoming',
+  } as Record<'Outgoing' | 'Incoming', string>);
+
 export const SUB_TRANSFER_FEES: SubNetworksFees = {
   [SubNetworkId.Rococo]: {
     ROC: {
-      [BridgeTxDirection.Outgoing]: '10124190',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeDirection.Outgoing]: '10124190',
+      [BridgeDirection.Incoming]: '0',
     },
   },
   [SubNetworkId.Kusama]: {
     KSM: {
-      [BridgeTxDirection.Outgoing]: '78327426',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeDirection.Outgoing]: '78327426',
+      [BridgeDirection.Incoming]: '0',
     },
   },
   [SubNetworkId.Polkadot]: {
     DOT: {
-      [BridgeTxDirection.Outgoing]: '19978738',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeDirection.Outgoing]: '19978738',
+      [BridgeDirection.Incoming]: '0',
     },
   },
   [SubNetworkId.PolkadotAcala]: {
     ACA: {
-      [BridgeTxDirection.Outgoing]: '6429600000',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeDirection.Outgoing]: '6429600000',
+      [BridgeDirection.Incoming]: '0',
     },
   },
   [SubNetworkId.PolkadotAstar]: {
     ASTR: {
-      [BridgeTxDirection.Outgoing]: '36000000000000000',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeDirection.Outgoing]: '36000000000000000',
+      [BridgeDirection.Incoming]: '0',
     },
   },
   [SubNetworkId.Alphanet]: {
     ALPHA: {
-      [BridgeTxDirection.Outgoing]: '2700000000',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeDirection.Outgoing]: '2700000000',
+      [BridgeDirection.Incoming]: '0',
     },
   },
   [SubNetworkId.AlphanetMoonbase]: {
     GLMR: {
-      [BridgeTxDirection.Outgoing]: '34313700000000',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeDirection.Outgoing]: '34313700000000',
+      [BridgeDirection.Incoming]: '0',
     },
     ALPHA: {
-      [BridgeTxDirection.Outgoing]: '44415350668',
-      [BridgeTxDirection.Incoming]: '46453162841',
+      [BridgeDirection.Outgoing]: '44415350668',
+      [BridgeDirection.Incoming]: '46453162841',
     },
     XOR: {
-      [BridgeTxDirection.Outgoing]: '8140448382622083802',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeDirection.Outgoing]: '8140448382622083802',
+      [BridgeDirection.Incoming]: '0',
     },
   },
   [SubNetworkId.KusamaCurio]: {
     XOR: {
-      [BridgeTxDirection.Outgoing]: '500000000000000000000',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeDirection.Outgoing]: '500000000000000000000',
+      [BridgeDirection.Incoming]: '0',
     },
     VAL: {
-      [BridgeTxDirection.Outgoing]: '348000000000000000',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeDirection.Outgoing]: '348000000000000000',
+      [BridgeDirection.Incoming]: '0',
     },
     PSWAP: {
-      [BridgeTxDirection.Outgoing]: '16000000000000000000',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeDirection.Outgoing]: '16000000000000000000',
+      [BridgeDirection.Incoming]: '0',
     },
     CGT: {
-      [BridgeTxDirection.Outgoing]: '112000000000000000',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeDirection.Outgoing]: '112000000000000000',
+      [BridgeDirection.Incoming]: '0',
     },
     KSM: {
-      [BridgeTxDirection.Outgoing]: '1900000000',
-      [BridgeTxDirection.Incoming]: '50407940264',
+      [BridgeDirection.Outgoing]: '1900000000',
+      [BridgeDirection.Incoming]: '50407940264',
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
-  <div class="container" v-loading="parentLoading">
+  <div class="container" v-loading="parentLoadingValue">
     <div class="header">
-      <back-button :page="StakingPageNames.Staking" />
+      <back-button :page="SoraStakingPageNames.Staking"></back-button>
       <s-button
         v-if="stakingInitialized"
         type="action"
@@ -10,7 +10,7 @@
         @click="handleClickDropdownMenu"
       >
         <s-dropdown
-          ref="dropdown-menu"
+          ref="dropdownMenu"
           popper-class="dropdown-menu"
           icon="basic-more-vertical-24"
           type="ellipsis"
@@ -33,8 +33,8 @@
     </div>
     <div class="staking-logo-container">
       <div class="staking-logo">
-        <token-logo :token="stakingAsset" size="large" class="token-logo" />
-        <token-logo :token="rewardAsset" size="medium" class="reward-token-logo" />
+        <token-logo :token="stakingAsset" size="large" class="token-logo"></token-logo>
+        <token-logo :token="rewardAsset" size="medium" class="reward-token-logo"></token-logo>
       </div>
     </div>
     <h1>{{ t('soraStaking.overview.title') }}</h1>
@@ -85,7 +85,7 @@
                 value-can-be-hidden
                 :value="withdrawableFundsFormatted"
                 :fiat-value="withdrawableFundsFiat"
-              />
+              ></formatted-amount-with-fiat-value>
             </div>
             <div class="withdraw-info">
               <span class="withdraw-info-title">
@@ -98,7 +98,7 @@
                 value-can-be-hidden
                 :value="unlockingFundsFormatted"
                 :fiat-value="unlockingFundsFiat"
-              />
+              ></formatted-amount-with-fiat-value>
             </div>
             <s-button
               class="withdraw-button"
@@ -113,7 +113,7 @@
           <div v-if="showNextWithdrawal" class="withdraw-footer">
             <div>
               <span> {{ t('soraStaking.withdraw.nextWithdrawal') }}: </span>
-              <era-countdown class="countdown" :target-era="nextWithdrawalEra" />
+              <era-countdown class="countdown" :target-era="nextWithdrawalEra"></era-countdown>
             </div>
             <div v-button class="withdraw-see-all" @click="showAllWithdraws">
               {{ t('soraStaking.withdraw.seeAll') }}
@@ -128,49 +128,57 @@
           :value="lockedFundsFormatted"
           :asset-symbol="stakingAsset?.symbol"
           :fiat-value="lockedFundsFiat"
-        />
+        ></info-line>
         <info-line
           v-if="stakingInitialized"
           :label="t('soraStaking.info.rewarded')"
           :value="rewardedFundsFormatted"
           :asset-symbol="rewardAsset?.symbol"
           :fiat-value="rewardedFundsFiat"
-        />
+        ></info-line>
         <info-line
           v-if="stakingInitialized && !showWithdrawCard"
           :label="t('soraStaking.info.unstaking')"
           :value="unlockingFundsFormatted"
           :asset-symbol="stakingAsset?.symbol"
           :fiat-value="unlockingFundsFiat"
-        />
+        ></info-line>
         <info-line
           v-if="stakingInitialized && !showWithdrawCard"
           :label="t('soraStaking.withdraw.withdrawable')"
           :value="withdrawableFundsFormatted"
           :asset-symbol="stakingAsset?.symbol"
           :fiat-value="withdrawableFundsFiat"
-        />
+        ></info-line>
         <info-line
           v-if="!stakingInitialized"
           :label="t('soraStaking.info.totalLiquidityStaked')"
           :value="totalStakedFormatted"
-        />
-        <info-line v-if="!stakingInitialized" :label="TranslationConsts.APY" :value="maxApy + '%'" />
-        <info-line :label="t('soraStaking.info.rewardToken')" :value="rewardAsset?.symbol" />
-        <info-line v-if="unbondPeriod" :label="t('soraStaking.info.unstakingPeriod')" :value="unbondPeriodFormatted" />
+        ></info-line>
+        <info-line v-if="!stakingInitialized" :label="TranslationConsts.APY" :value="`${maxApy}%`"></info-line>
+        <info-line :label="t('soraStaking.info.rewardToken')" :value="rewardAsset?.symbol"></info-line>
+        <info-line
+          v-if="unbondPeriod"
+          :label="t('soraStaking.info.unstakingPeriod')"
+          :value="unbondPeriodFormatted"
+        ></info-line>
         <info-line
           v-if="!stakingInitialized"
           :label="t('soraStaking.info.minimumStake')"
           :value="minNominatorBondFormatted"
           :asset-symbol="stakingAsset?.symbol"
           is-formatted
-        />
+        ></info-line>
         <info-line
           v-if="totalNominators !== null"
           :label="t('soraStaking.info.nominators')"
           :value="`${totalNominators}`"
-        />
-        <info-line v-if="validators.length" :label="t('soraStaking.info.validators')" :value="`${validators.length}`" />
+        ></info-line>
+        <info-line
+          v-if="validators.length"
+          :label="t('soraStaking.info.validators')"
+          :value="`${validators.length}`"
+        ></info-line>
       </div>
     </template>
     <s-button
@@ -183,48 +191,69 @@
       {{ t('connectWalletText') }}
     </s-button>
     <stake-dialog
+      v-model:visible="showStakeDialog"
       :mode="stakeDialogMode"
-      :visible.sync="showStakeDialog"
-      :parent-loading="parentLoading || loading"
+      :parent-loading="parentLoadingValue"
       @confirm="handleStake"
-    />
+    ></stake-dialog>
     <claim-rewards-dialog
-      :visible.sync="showClaimRewardsDialog"
-      :parent-loading="parentLoading || loading"
+      v-model:visible="showClaimRewardsDialog"
+      :parent-loading="parentLoadingValue"
       @show-rewards="showRewards"
-    />
+    ></claim-rewards-dialog>
     <withdraw-dialog
-      :visible.sync="showWithdrawDialog"
-      :parent-loading="parentLoading || loading"
+      v-model:visible="showWithdrawDialog"
+      :parent-loading="parentLoadingValue"
       @show-all-withdraws="showAllWithdraws"
-    />
-    <all-withdraws-dialog :visible.sync="showAllWithdrawsDialog" :parent-loading="parentLoading || loading" />
-    <pending-rewards-dialog :visible.sync="showPendingRewardsDialog" :parent-loading="parentLoading || loading" />
+    ></withdraw-dialog>
+    <all-withdraws-dialog
+      v-model:visible="showAllWithdrawsDialog"
+      :parent-loading="parentLoadingValue"
+    ></all-withdraws-dialog>
+    <pending-rewards-dialog
+      v-model:visible="showPendingRewardsDialog"
+      :parent-loading="parentLoadingValue"
+    ></pending-rewards-dialog>
     <validators-dialog
-      :visible.sync="showValidatorsDialog"
-      :parent-loading="parentLoading || loading"
+      v-model:visible="showValidatorsDialog"
+      :parent-loading="parentLoadingValue"
       @confirm="handleNominate"
-    />
-    <!-- <controller-dialog
-      :visible.sync="showControllerDialog"
-      :parent-loading="parentLoading || loading"
-      @confirm="handleChangeController"
-    /> -->
+    ></validators-dialog>
   </div>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components as walletComponents } from '@wallet';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useLoading } from '@/composables/useLoading';
+import { TranslationConsts } from '@/consts';
 import { fetchData } from '@/indexer/queries/staking/nominators';
+import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
+import { SoraStakingComponents, SoraStakingPageNames, StakeDialogMode } from '@/modules/staking/sora/consts';
+import { soraStakingLazyComponent } from '@/modules/staking/router';
 import router from '@/router';
-import { state, mutation } from '@/store/decorators';
+import store from '@/store';
 
-import { soraStakingLazyComponent } from '../../router';
-import { SoraStakingComponents, SoraStakingPageNames, StakeDialogMode } from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
+import type { Nullable } from '@/types/common';
+
+const props = defineProps<{
+  parentLoading?: boolean;
+}>();
+
+const TokenLogo = walletComponents.TokenLogo;
+const InfoLine = walletComponents.InfoLine;
+const FormattedAmountWithFiatValue = walletComponents.FormattedAmountWithFiatValue;
+const BackButton = soraStakingLazyComponent(SoraStakingComponents.BackButton);
+const StakeDialog = soraStakingLazyComponent(SoraStakingComponents.StakeDialog);
+const ClaimRewardsDialog = soraStakingLazyComponent(SoraStakingComponents.ClaimRewardsDialog);
+const PendingRewardsDialog = soraStakingLazyComponent(SoraStakingComponents.PendingRewardsDialog);
+const ValidatorsDialog = soraStakingLazyComponent(SoraStakingComponents.ValidatorsDialog);
+const WithdrawDialog = soraStakingLazyComponent(SoraStakingComponents.WithdrawDialog);
+const AllWithdrawsDialog = soraStakingLazyComponent(SoraStakingComponents.AllWithdrawsDialog);
+const EraCountdown = soraStakingLazyComponent(SoraStakingComponents.EraCountdown);
 
 enum DropdownMenuItemType {
   PendingRewards = 'pending-rewards',
@@ -232,179 +261,198 @@ enum DropdownMenuItemType {
   ControllerAccount = 'controller-account',
 }
 
-type MenuItem = {
+type DropdownItem = {
   value: DropdownMenuItemType;
   text: string;
 };
 
-@Component({
-  components: {
-    TokenLogo: components.TokenLogo,
-    InfoLine: components.InfoLine,
-    BackButton: soraStakingLazyComponent(SoraStakingComponents.BackButton),
-    StakeDialog: soraStakingLazyComponent(SoraStakingComponents.StakeDialog),
-    ClaimRewardsDialog: soraStakingLazyComponent(SoraStakingComponents.ClaimRewardsDialog),
-    PendingRewardsDialog: soraStakingLazyComponent(SoraStakingComponents.PendingRewardsDialog),
-    ValidatorsDialog: soraStakingLazyComponent(SoraStakingComponents.ValidatorsDialog),
-    WithdrawDialog: soraStakingLazyComponent(SoraStakingComponents.WithdrawDialog),
-    AllWithdrawsDialog: soraStakingLazyComponent(SoraStakingComponents.AllWithdrawsDialog),
-    // ControllerDialog: soraStakingLazyComponent(SoraStakingComponents.ControllerDialog),
-    EraCountdown: soraStakingLazyComponent(SoraStakingComponents.EraCountdown),
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
+type DropdownController = {
+  dropdown?: {
+    visible: boolean;
+    show: () => void;
+    hide: () => void;
+  };
+};
+
+const dropdownMenu = ref<DropdownController | null>(null);
+const showStakeDialog = ref(false);
+const showClaimRewardsDialog = ref(false);
+const showPendingRewardsDialog = ref(false);
+const showValidatorsDialog = ref(false);
+const showWithdrawDialog = ref(false);
+const showAllWithdrawsDialog = ref(false);
+const stakeDialogMode = ref<StakeDialogMode>(StakeDialogMode.ADD);
+
+const { t } = useI18n();
+const { isLoggedIn, connectSoraWallet } = useInternalConnect();
+const { loading } = useLoading();
+
+const parentLoadingValue = computed(() => Boolean(props.parentLoading) || loading.value);
+
+const {
+  stakingInitialized,
+  stakingAsset,
+  rewardAsset,
+  lockedFunds,
+  lockedFundsFiat,
+  unlockingFunds,
+  unlockingFundsFiat,
+  withdrawableFunds,
+  withdrawableFundsFiat,
+  withdrawableFundsFormatted,
+  rewardedFundsFormatted,
+  rewardedFundsFiat,
+  totalStakedFormatted,
+  unbondPeriod,
+  unbondPeriodFormatted,
+  minNominatorBondFormatted,
+  validators,
+  nextWithdrawalEra,
+  accountLedger,
+  currentEra,
+  activeEra,
+  maxApy,
+} = useSoraStaking();
+
+const lockedFundsFormatted = computed(() => lockedFunds.value.toLocaleString());
+const unlockingFundsFormatted = computed(() => unlockingFunds.value.toLocaleString());
+const showWithdrawCard = computed(() => Boolean(accountLedger.value?.unlocking?.length));
+const withdrawButtonDisabled = computed(() => withdrawableFunds.value.isZero());
+const showNextWithdrawal = computed(() => Boolean(nextWithdrawalEra.value));
+const stakeMoreText = computed(() =>
+  lockedFunds.value.isZero() ? t('soraStaking.newStake.title') : t('soraStaking.actions.more')
+);
+const totalNominators = computed(() => store.state.staking.totalNominators as Nullable<number>);
+
+const dropdownMenuItems = computed<DropdownItem[]>(() => [
+  {
+    value: DropdownMenuItemType.PendingRewards,
+    text: t('soraStaking.pendingRewardsDialog.title'),
   },
-})
-export default class Overview extends Mixins(InternalConnectMixin, StakingMixin, mixins.LoadingMixin) {
-  @mutation.staking.setTotalNominators setTotalNominators!: (value: number) => void;
+  {
+    value: DropdownMenuItemType.Validators,
+    text: t('soraStaking.info.validators'),
+  },
+]);
 
-  @state.staking.totalNominators totalNominators!: number;
+/**
+ * Retrieve the latest nominators count from the indexer and store it in the Vuex state.
+ */
+const fetchNominatorsCount = async (): Promise<void> => {
+  if (!activeEra.value) return;
 
-  stakeDialogMode: StakeDialogMode = StakeDialogMode.ADD;
+  const nominatorsCount = await fetchData();
 
-  showStakeDialog = false;
-  showClaimRewardsDialog = false;
-  showPendingRewardsDialog = false;
-  showValidatorsDialog = false;
-  showControllerDialog = false;
-  showWithdrawDialog = false;
-  showAllWithdrawsDialog = false;
+  if (nominatorsCount === undefined || nominatorsCount === null) return;
 
-  get lockedFundsFormatted(): string {
-    return this.lockedFunds.toLocaleString();
+  store.commit.staking.setTotalNominators(nominatorsCount);
+};
+
+watch(
+  () => currentEra.value,
+  () => {
+    void fetchNominatorsCount();
+  },
+  { immediate: true }
+);
+
+/**
+ * Open the validators selection wizard for a new stake.
+ */
+const stakeNew = (): void => {
+  router.push({ name: SoraStakingPageNames.ValidatorsType });
+};
+
+/**
+ * Open the staking dialog in "add" mode for topping up an existing stake.
+ */
+const stakeMore = (): void => {
+  stakeDialogMode.value = StakeDialogMode.ADD;
+  showStakeDialog.value = true;
+};
+
+/**
+ * Open the staking dialog in "remove" mode to initiate an unbond.
+ */
+const removeStake = (): void => {
+  stakeDialogMode.value = StakeDialogMode.REMOVE;
+  showStakeDialog.value = true;
+};
+
+/**
+ * Display the claim rewards dialog.
+ */
+const claimRewards = (): void => {
+  showClaimRewardsDialog.value = true;
+};
+
+/**
+ * Close the claim dialog and present the pending rewards overview.
+ */
+const showRewards = (): void => {
+  showClaimRewardsDialog.value = false;
+  showPendingRewardsDialog.value = true;
+};
+
+/**
+ * Switch from the withdraw dialog to the full withdraw history list.
+ */
+const showAllWithdraws = (): void => {
+  showWithdrawDialog.value = false;
+  showAllWithdrawsDialog.value = true;
+};
+
+/**
+ * Reveal the withdraw dialog.
+ */
+const handleWithdraw = (): void => {
+  showWithdrawDialog.value = true;
+};
+
+/**
+ * Reset the stake dialog visibility once an action has completed.
+ */
+const handleStake = (): void => {
+  showStakeDialog.value = false;
+};
+
+/**
+ * Close the validators dialog after nomination flow confirmation.
+ */
+const handleNominate = (): void => {
+  showValidatorsDialog.value = false;
+};
+
+/**
+ * Toggle the action dropdown visibility.
+ */
+const handleClickDropdownMenu = (): void => {
+  const dropdown = dropdownMenu.value?.dropdown;
+
+  if (!dropdown) return;
+
+  if (dropdown.visible) {
+    dropdown.hide();
+  } else {
+    dropdown.show();
   }
+};
 
-  get unlockingFundsFormatted(): string {
-    return this.unlockingFunds.toLocaleString();
+/**
+ * React to dropdown item selection by opening the appropriate dialog.
+ */
+const handleSelectDropdownMenuItem = (value: DropdownMenuItemType): void => {
+  switch (value) {
+    case DropdownMenuItemType.PendingRewards:
+      showPendingRewardsDialog.value = true;
+      break;
+    case DropdownMenuItemType.Validators:
+      showValidatorsDialog.value = true;
+      break;
+    case DropdownMenuItemType.ControllerAccount:
+      break;
   }
-
-  get rewardedFundsFormatted(): string {
-    return this.rewardedFunds.toLocaleString();
-  }
-
-  get showWithdrawCard(): boolean {
-    return !!this.accountLedger?.unlocking.length;
-  }
-
-  get showNextWithdrawal(): boolean {
-    return !!this.nextWithdrawalEra;
-  }
-
-  private getDropdownMenuItems(): Array<MenuItem> {
-    return [
-      {
-        value: DropdownMenuItemType.PendingRewards,
-        text: this.t('soraStaking.pendingRewardsDialog.title'),
-      },
-      {
-        value: DropdownMenuItemType.Validators,
-        text: this.t('soraStaking.info.validators'),
-      },
-      // {
-      //   value: DropdownMenuItemType.ControllerAccount,
-      //   text: this.t('soraStaking.dropdownMenu.controllerAccount'),
-      // },
-    ];
-  }
-
-  get dropdownMenuItems(): Array<MenuItem> {
-    return this.getDropdownMenuItems();
-  }
-
-  get stakeMoreText(): string {
-    return this.lockedFunds.isZero() ? this.t('soraStaking.newStake.title') : this.t('soraStaking.actions.more');
-  }
-
-  get withdrawButtonDisabled(): boolean {
-    return this.withdrawableFunds.isZero();
-  }
-
-  handleClickDropdownMenu(): void {
-    const dropdownMenu = this.$refs['dropdown-menu'];
-    if (!dropdownMenu) return;
-    const dropdown = (dropdownMenu as any).dropdown;
-    if (dropdown.visible) {
-      dropdown.hide();
-    } else {
-      dropdown.show();
-    }
-  }
-
-  handleSelectDropdownMenuItem(value: DropdownMenuItemType): void {
-    switch (value) {
-      case DropdownMenuItemType.PendingRewards:
-        this.showPendingRewardsDialog = true;
-        break;
-      case DropdownMenuItemType.Validators:
-        this.showValidatorsDialog = true;
-        break;
-      case DropdownMenuItemType.ControllerAccount:
-        this.showControllerDialog = true;
-        break;
-    }
-  }
-
-  stakeNew() {
-    router.push({ name: SoraStakingPageNames.ValidatorsType });
-  }
-
-  stakeMore() {
-    this.stakeDialogMode = StakeDialogMode.ADD;
-    this.showStakeDialog = true;
-  }
-
-  removeStake() {
-    this.stakeDialogMode = StakeDialogMode.REMOVE;
-    this.showStakeDialog = true;
-  }
-
-  claimRewards() {
-    this.showClaimRewardsDialog = true;
-  }
-
-  showRewards() {
-    this.showClaimRewardsDialog = false;
-    this.showPendingRewardsDialog = true;
-  }
-
-  showAllWithdraws() {
-    this.showWithdrawDialog = false;
-    this.showAllWithdrawsDialog = true;
-  }
-
-  handleWithdraw() {
-    this.showWithdrawDialog = true;
-  }
-
-  handleStake(): void {
-    this.showStakeDialog = false;
-  }
-
-  handleNominate() {
-    this.showValidatorsDialog = false;
-  }
-
-  handleChangeController() {
-    this.showControllerDialog = false;
-  }
-
-  @Watch('currentEra')
-  async fetchNominatorsCount() {
-    if (!this.activeEra) {
-      return;
-    }
-
-    const nominatorsCount = await fetchData();
-
-    if (nominatorsCount === undefined || nominatorsCount === null) {
-      return;
-    }
-
-    this.setTotalNominators(nominatorsCount);
-  }
-
-  created() {
-    this.fetchNominatorsCount();
-  }
-}
+};
 </script>
 
 <style lang="scss">

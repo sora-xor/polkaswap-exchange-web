@@ -1,7 +1,7 @@
 <template>
   <div class="sora-card sora-card-kyc-wrapper">
     <div v-if="!hasCameraAccess" class="camera-permission">
-      <s-icon name="camera-16" size="48" class="camera-permission-icon" />
+      <s-icon name="camera-16" size="48" class="camera-permission-icon"></s-icon>
       <h4 class="camera-permission-title">{{ t('browserPermission.title') }}</h4>
       <p class="camera-permission-desc">
         {{ t('browserPermission.desc') }}
@@ -12,7 +12,7 @@
             {{ t('browserPermission.disclaimer') }}
           </p>
           <div class="tos__disclaimer-warning icon">
-            <s-icon name="notifications-alert-triangle-24" size="28px" />
+            <s-icon name="notifications-alert-triangle-24" size="28px"></s-icon>
           </div>
         </div>
       </div>
@@ -39,249 +39,350 @@
   </div>
 </template>
 
-<script lang="ts">
-import { WALLET_CONSTS, mixins, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
+<script setup lang="ts">
+import { WALLET_CONSTS, ScriptLoader } from '@wallet';
+import { checkDevicesAvailability, checkCameraPermission } from '@wallet/src/util';
 import { v4 as uuidv4 } from 'uuid';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { mutation, state } from '@/store/decorators';
+import { useNotification } from '@/composables/useNotification';
+import { useTranslation } from '@/composables/useTranslation';
+import store from '@/store';
 import { CardUIViews } from '@/types/card';
+import type { Nullable, WindowInjectedWeb3 } from '@/types/common';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 import { soraCard, getUpdatedJwtPair } from '@/utils/card';
 
-@Component
-export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin, mixins.CameraPermissionMixin) {
-  private static readonly KYC_STYLES_URL = 'https://kyc-test.soracard.com/web/v2/webkyc.css';
+type CameraPermission = PermissionState | '' | null;
 
-  @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @state.wallet.account.source private source!: WALLET_CONSTS.AppWallet;
-  @state.soraCard.referenceNumber private referenceNumber!: Nullable<string>;
+const KYC_STYLES_URL = 'https://kyc-test.soracard.com/web/v2/webkyc.css';
 
-  @mutation.soraCard.setReferenceNumber setReferenceNumber!: (refNumber: Nullable<string>) => void;
+const props = withDefaults(
+  defineProps<{
+    accessToken?: string;
+  }>(),
+  {
+    accessToken: '',
+  }
+);
 
-  @Prop({ default: '', type: String }) readonly accessToken!: string;
+const emit = defineEmits<{
+  (event: 'confirm', view: CardUIViews): void;
+}>();
 
-  loadingKycView = true;
-  btnLoading = false;
-  cameraPermission: Nullable<PermissionState> = null;
+const { t, language } = useTranslation();
+const { showAppNotification } = useNotification();
 
-  async getReferenceNumber(URL: string): Promise<string | undefined> {
-    const soraNetwork = this.soraNetwork ?? (await waitForSoraNetworkFromEnv());
-    const { kycService } = soraCard(soraNetwork);
-    const token = localStorage.getItem('PW-token');
+const soraNetwork = computed(() => store.state.wallet.settings.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>);
+const source = computed(() => store.state.wallet.account.source as WALLET_CONSTS.AppWallet);
+const referenceNumber = computed(() => store.state.soraCard.referenceNumber as Nullable<string>);
+const setReferenceNumber = (value: Nullable<string>) => store.commit.soraCard.setReferenceNumber(value);
 
-    try {
-      const result = await fetch(URL, {
-        method: 'POST',
-        body: JSON.stringify({
-          ReferenceID: uuidv4(),
-          MobileNumber: '',
-          Email: '',
-          AddressChanged: false,
-          DocumentChanged: false,
-          IbanTypeID: null,
-          CardTypeID: null,
-          AdditionalData: '',
-        }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+const loadingKycView = ref(true);
+const btnLoading = ref(false);
+const cameraPermission = ref<CameraPermission>(null);
+const permissionDialogVisible = ref(false);
+const updateJwtTimeoutId = ref<ReturnType<typeof setTimeout> | null>(null);
+const loadingTimeoutId = ref<ReturnType<typeof setTimeout> | null>(null);
+const kycSdkUrl = ref<string | null>(null);
 
-      const data = await result.json();
-      return data.ReferenceNumber;
-    } catch (data) {
-      console.error('[SoraCard]: Error while getting reference number', data);
+const hasCameraAccess = computed(() => cameraPermission.value === 'granted');
+const forbiddenByBrowser = computed(() => cameraPermission.value === 'denied');
 
-      this.showAppNotification(this.t('card.infoMessageTryAgain'));
-      this.$emit('confirm', CardUIViews.Start);
+const isoLanguageName = computed(() => {
+  const value = language.value;
+  if (value === 'zh-CN') return 'zh';
+  return value || 'en';
+});
 
-      ScriptLoader.unload(kycService.sdkURL, false);
-    }
+const btnCameraText = computed(() => {
+  if (forbiddenByBrowser.value) return t('browserPermission.btnGoToSettings');
+  if (hasCameraAccess.value) return t('continueText');
+  return t('browserPermission.btnAllow');
+});
+
+const ensureRemoteStylesLoaded = async () => {
+  const selector = `link[data-soracard-css="${KYC_STYLES_URL}"]`;
+  const existing = document.querySelector(selector) as HTMLLinkElement | null;
+
+  if (existing) {
+    if (existing.sheet) return;
+    await new Promise<void>((resolve) => {
+      existing.addEventListener('load', () => resolve(), { once: true });
+      existing.addEventListener('error', () => resolve(), { once: true });
+    });
+    return;
   }
 
-  async updateJwtPairByInterval(): Promise<void> {
-    const setNewJwtPair = async () => {
+  if (isTestEnvironment) {
+    return;
+  }
+
+  await new Promise<void>((resolve) => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = KYC_STYLES_URL;
+    link.dataset.soracardCss = KYC_STYLES_URL;
+    link.onload = () => resolve();
+    link.onerror = () => resolve();
+    document.head.appendChild(link);
+  });
+};
+
+const getReferenceNumber = async (url: string): Promise<string | undefined> => {
+  const network = soraNetwork.value ?? (await waitForSoraNetworkFromEnv());
+  const { kycService } = soraCard(network);
+  const token = localStorage.getItem('PW-token');
+
+  try {
+    const result = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        ReferenceID: uuidv4(),
+        MobileNumber: '',
+        Email: '',
+        AddressChanged: false,
+        DocumentChanged: false,
+        IbanTypeID: null,
+        CardTypeID: null,
+        AdditionalData: '',
+      }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await result.json();
+    return data.ReferenceNumber;
+  } catch (error) {
+    console.error('[SoraCard]: Error while getting reference number', error);
+    showAppNotification(t('card.infoMessageTryAgain'));
+    emit('confirm', CardUIViews.Start);
+
+    void ScriptLoader.unload(kycService.sdkURL, false);
+    return undefined;
+  }
+};
+
+const importMetaMode = typeof import.meta !== 'undefined' ? (import.meta as any)?.env?.MODE : undefined;
+const isTestEnvironment = importMetaMode === 'test' || process.env.NODE_ENV === 'test' || process.env.VITEST === 'true';
+
+const scheduleJwtRefresh = async (): Promise<void> => {
+  const refreshToken = localStorage.getItem('PW-refresh-token');
+
+  if (!refreshToken) {
+    updateJwtTimeoutId.value = null;
+    return;
+  }
+
+  try {
+    await getUpdatedJwtPair(refreshToken);
+  } catch (error) {
+    console.error('[SoraCard]: Failed to refresh JWT pair', error);
+  }
+
+  if (isTestEnvironment) {
+    updateJwtTimeoutId.value = null;
+    return;
+  }
+
+  updateJwtTimeoutId.value = setTimeout(() => {
+    void scheduleJwtRefresh();
+  }, 60_000 * 19.85);
+};
+
+const startJwtRefresh = async () => {
+  stopJwtRefresh();
+  await scheduleJwtRefresh();
+};
+
+const stopJwtRefresh = () => {
+  if (updateJwtTimeoutId.value !== null) {
+    clearTimeout(updateJwtTimeoutId.value);
+    updateJwtTimeoutId.value = null;
+  }
+};
+
+const checkMediaDevicesAllowance = async (context: string): Promise<boolean> => {
+  try {
+    const cameraAvailable = await checkDevicesAvailability();
+
+    if (!cameraAvailable) throw new Error(`[${context}]: Cannot find camera device`);
+
+    const permission = await checkCameraPermission();
+    cameraPermission.value = permission as CameraPermission;
+
+    if (permission === 'denied') throw new Error(`[${context}]: Check camera browser permissions`);
+
+    permissionDialogVisible.value = permission !== 'granted';
+
+    if (context === 'SoraCard' && permission === 'granted') {
+      return true;
+    }
+
+    await navigator.mediaDevices.getUserMedia({ video: true });
+    cameraPermission.value = 'granted';
+
+    return true;
+  } catch (error) {
+    console.error(error);
+    showAppNotification(t('code.allowanceError'), context === 'QRcode' ? 'error' : undefined);
+    return false;
+  } finally {
+    permissionDialogVisible.value = false;
+  }
+};
+
+const initKyc = async () => {
+  const network = soraNetwork.value ?? (await waitForSoraNetworkFromEnv());
+  const { kycService, soraProxy } = soraCard(network);
+
+  kycSdkUrl.value = kycService.sdkURL;
+
+  const resolvedReferenceNumber =
+    referenceNumber.value ?? (await getReferenceNumber(soraProxy.referenceNumberEndpoint));
+
+  if (resolvedReferenceNumber) {
+    setReferenceNumber(resolvedReferenceNumber);
+  }
+
+  await ScriptLoader.unload(kycService.sdkURL, false).catch(() => undefined);
+
+  try {
+    await ScriptLoader.load(kycService.sdkURL);
+  } catch (error) {
+    console.error('[SoraCard]: Error while fetching script', error);
+    stopJwtRefresh();
+    return;
+  }
+
+  const paywings = (window as WindowInjectedWeb3 & { Paywings?: any }).Paywings;
+  const webKycFactory = paywings?.WebKyc?.create;
+
+  if (!webKycFactory) {
+    console.error('[SoraCard]: Paywings SDK is unavailable');
+    stopJwtRefresh();
+    return;
+  }
+
+  await startJwtRefresh();
+
+  webKycFactory({
+    KycCredentials: {
+      Username: kycService.username,
+      Password: kycService.pass,
+      Domain: 'soracard.com',
+      env: kycService.env,
+      UnifiedLoginApiKey: kycService.unifiedApiKey,
+    },
+    KycSettings: {
+      AppReferenceID: uuidv4(),
+      Language: isoLanguageName.value || 'en',
+      ReferenceNumber: resolvedReferenceNumber,
+      ElementId: '#kyc',
+      Logo: '',
+      WelcomeHidden: false,
+      WelcomeTitle: '',
+      DocumentCheckWindowHeight: '50vh',
+      DocumentCheckWindowWidth: '100%',
+      HideLoader: true,
+    },
+    KycUserData: {
+      FirstName: '',
+      MiddleName: '',
+      LastName: '',
+      Email: '',
+      MobileNumber: '',
+      Address1: '',
+      Address2: '',
+      Address3: '',
+      ZipCode: '',
+      City: '',
+      State: '',
+      CountryCode: '',
+    },
+    UserCredentials: {
+      AccessToken: localStorage.getItem('PW-token'),
+      RefreshToken: localStorage.getItem('PW-refresh-token'),
+    },
+  })
+    .on('Error', (data: unknown) => {
+      console.error('[SoraCard]: Error while initiating KYC', data);
+      showAppNotification(t('card.infoMessageTryAgain'));
+      emit('confirm', CardUIViews.Start);
+      stopJwtRefresh();
+      void ScriptLoader.unload(kycService.sdkURL);
+    })
+    .on('Success', async () => {
       const refreshToken = localStorage.getItem('PW-refresh-token');
-      if (refreshToken) await getUpdatedJwtPair(refreshToken);
-    };
+      if (source.value === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
+        await (window as WindowInjectedWeb3).injectedWeb3?.['fearless-wallet']?.saveSoraCardToken?.(refreshToken);
+      }
+      emit('confirm', CardUIViews.KycResult);
+      stopJwtRefresh();
+      void ScriptLoader.unload(kycService.sdkURL);
+    });
 
-    setNewJwtPair();
-    setInterval(setNewJwtPair, 60_000 * 19.85); // 10 seconds less before token expiration
-  }
-
-  async requestCameraAccess(): Promise<void> {
-    this.btnLoading = true;
-
-    try {
-      const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('SoraCard');
-
-      if (!mediaDevicesAllowance) return;
-
-      this.cameraPermission = 'granted';
-    } catch (error) {
-      console.error('[SoraCard]: Camera error.', error);
-    } finally {
-      this.btnLoading = false;
-    }
-
-    await this.ensureRemoteStylesLoaded();
-    this.initKyc();
-  }
-
-  get hasCameraAccess(): boolean {
-    return this.cameraPermission === 'granted';
-  }
-
-  get ISOLanguageName(): string {
-    // return ISO 639-1 code format
-    if (this.language === 'zh-CN') return 'zh';
-
-    return this.language;
-  }
-
-  get forbiddenByBrowser(): boolean {
-    return this.cameraPermission === 'denied';
-  }
-
-  get btnCameraText(): string {
-    if (this.forbiddenByBrowser) return this.t('browserPermission.btnGoToSettings');
-    if (this.hasCameraAccess) return this.t('continueText');
-    return this.t('browserPermission.btnAllow');
-  }
-
-  async initKyc(): Promise<void> {
-    const soraNetwork = this.soraNetwork ?? (await waitForSoraNetworkFromEnv());
-    this.updateJwtPairByInterval();
-    const { kycService, soraProxy } = soraCard(soraNetwork);
-
-    const referenceNumber = this.referenceNumber
-      ? this.referenceNumber
-      : await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
-
-    if (referenceNumber) this.setReferenceNumber(referenceNumber);
-
-    await ScriptLoader.unload(kycService.sdkURL, false).catch(() => {});
-
-    ScriptLoader.load(kycService.sdkURL)
-      .then(() => {
-        // @ts-expect-error no-undef
-        Paywings.WebKyc.create({
-          KycCredentials: {
-            Username: kycService.username, // api username
-            Password: kycService.pass, // api password
-            Domain: 'soracard.com',
-            env: kycService.env, // use Test for test environment and Prod for production
-            UnifiedLoginApiKey: kycService.unifiedApiKey,
-          },
-          KycSettings: {
-            AppReferenceID: uuidv4(),
-            Language: this.ISOLanguageName || 'en', // supported languages 'en'
-            ReferenceNumber: referenceNumber,
-            ElementId: '#kyc', // id of element in which web kyc will be injected
-            Logo: '',
-            WelcomeHidden: false, // false show welcome screen, true skip welcome screen
-            WelcomeTitle: '',
-            DocumentCheckWindowHeight: '50vh',
-            DocumentCheckWindowWidth: '100%',
-            HideLoader: true,
-          },
-          KycUserData: {
-            // Sample data without prefilled values
-            FirstName: '',
-            MiddleName: '',
-            LastName: '',
-            Email: '', // must be valid email address
-            MobileNumber: '', // if value is prefilled must be in valid international format eg. "+386 40 040 040" (without spaces)
-            Address1: '',
-            Address2: '',
-            Address3: '',
-            ZipCode: '',
-            City: '',
-            State: '',
-            CountryCode: '', // ISO 3 country code
-          },
-          UserCredentials: {
-            AccessToken: localStorage.getItem('PW-token'),
-            RefreshToken: localStorage.getItem('PW-refresh-token'),
-          },
-        })
-          .on('Error', (data) => {
-            console.error('[SoraCard]: Error while initiating KYC', data);
-
-            this.showAppNotification(this.t('card.infoMessageTryAgain'));
-            this.$emit('confirm', CardUIViews.Start);
-
-            ScriptLoader.unload(kycService.sdkURL);
-
-            // Integrator will be notified if user cancels KYC or something went wrong
-            // alert('Something went wrong ' + data.StatusDescription);
-          })
-          .on('Success', async (data) => {
-            // Integrator handles UI from this point on on successful kyc
-            // alert('Kyc was successfull, integrator takes control of flow from now on')
-
-            const refreshToken = localStorage.getItem('PW-refresh-token');
-            if (this.source === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
-              await (window as WindowInjectedWeb3).injectedWeb3?.['fearless-wallet']?.saveSoraCardToken?.(refreshToken);
-            }
-            this.$emit('confirm', CardUIViews.KycResult);
-            ScriptLoader.unload(kycService.sdkURL);
-
-            // document.getElementById('kyc')!.style.display = 'none';
-            // document.getElementById('finish')!.style.display = 'block';
-          });
-      })
-      .catch((error) => {
-        // Failed to fetch script
-        console.error('[SoraCard]: Error while fetching script', error);
-      });
-    setTimeout(() => {
-      this.loadingKycView = false;
+  if (isTestEnvironment) {
+    loadingKycView.value = false;
+    loadingTimeoutId.value = null;
+  } else {
+    loadingTimeoutId.value = setTimeout(() => {
+      loadingKycView.value = false;
     }, 5_000);
   }
+};
 
-  private async ensureRemoteStylesLoaded(): Promise<void> {
-    const href = KycView.KYC_STYLES_URL;
-    const selector = `link[data-soracard-css="${href}"]`;
-    const existing = document.querySelector(selector) as HTMLLinkElement | null;
+const requestCameraAccess = async () => {
+  btnLoading.value = true;
 
-    if (existing) {
-      if (existing.sheet) return;
-      await new Promise<void>((resolve) => {
-        existing.addEventListener('load', () => resolve(), { once: true });
-        existing.addEventListener('error', () => resolve(), { once: true });
-      });
-      return;
-    }
+  try {
+    const allowed = await checkMediaDevicesAllowance('SoraCard');
 
-    await new Promise<void>((resolve) => {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = href;
-      link.dataset.soracardCss = href;
-      link.onload = () => resolve();
-      link.onerror = () => resolve();
-      document.head.appendChild(link);
-    });
+    if (!allowed) return;
+
+    await ensureRemoteStylesLoaded();
+    await initKyc();
+  } finally {
+    btnLoading.value = false;
+  }
+};
+
+onMounted(async () => {
+  try {
+    const { state } = await navigator.permissions.query({ name: 'camera' } as PermissionDescriptor);
+    cameraPermission.value = state as CameraPermission;
+
+    if (!hasCameraAccess.value) return;
+  } catch (error) {
+    console.error('[SoraCard]: Camera error.', error);
+    return;
   }
 
-  async mounted(): Promise<void> {
-    try {
-      const { state } = await navigator.permissions.query({ name: 'camera' } as any);
-      this.cameraPermission = state;
+  await ensureRemoteStylesLoaded();
+  await initKyc();
+});
 
-      if (!this.hasCameraAccess) return;
-    } catch (error) {
-      console.error('[SoraCard]: Camera error.', error);
-      return;
-    }
+onBeforeUnmount(() => {
+  stopJwtRefresh();
 
-    await this.ensureRemoteStylesLoaded();
-    this.initKyc();
+  if (loadingTimeoutId.value) {
+    clearTimeout(loadingTimeoutId.value);
+    loadingTimeoutId.value = null;
   }
-}
+
+  if (kycSdkUrl.value) {
+    void ScriptLoader.unload(kycSdkUrl.value, false);
+  }
+});
+
+defineExpose({
+  requestCameraAccess,
+  hasCameraAccess,
+  forbiddenByBrowser,
+  btnCameraText,
+  cameraPermission,
+});
 </script>
 
 <style lang="scss">

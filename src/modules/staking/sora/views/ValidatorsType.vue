@@ -1,55 +1,60 @@
 <template>
   <div class="container">
-    <staking-header :previous-page="SoraStakingPageNames.Overview">
+    <StakingHeader :previous-page="SoraStakingPageNames.Overview">
       {{ t('soraStaking.info.validators') }}
-    </staking-header>
-    <select-validators-mode @recommended="stakeWithSuggested" @selected="stakeWithSelected" />
-    <validators-attention-dialog
-      :visible.sync="showValidatorsAttentionDialog"
-      :parent-loading="parentLoading || loading"
+    </StakingHeader>
+    <SelectValidatorsMode @recommended="stakeWithSuggested" @selected="stakeWithSelected"></SelectValidatorsMode>
+    <ValidatorsAttentionDialog
+      v-model:visible="showValidatorsAttentionDialog"
+      :parent-loading="dialogParentLoading"
       @proceed="handleSelectValidators"
-    />
+    ></ValidatorsAttentionDialog>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
-import router from '@/router';
-import { mutation } from '@/store/decorators';
+import { useLoading } from '@/composables/useLoading';
+import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
+import { SoraStakingComponents, SoraStakingPageNames, ValidatorsListMode } from '@/modules/staking/sora/consts';
+import { soraStakingLazyComponent } from '@/modules/staking/router';
 
-import { soraStakingLazyComponent } from '../../router';
-import { SoraStakingComponents, SoraStakingPageNames, ValidatorsListMode } from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
+defineOptions({ inheritAttrs: false });
 
-@Component({
-  components: {
-    StakingHeader: soraStakingLazyComponent(SoraStakingComponents.StakingHeader),
-    ValidatorsAttentionDialog: soraStakingLazyComponent(SoraStakingComponents.ValidatorsAttentionDialog),
-    SelectValidatorsMode: soraStakingLazyComponent(SoraStakingComponents.SelectValidatorsMode),
-  },
-})
-export default class ValidatorsType extends Mixins(StakingMixin, mixins.LoadingMixin) {
-  @mutation.staking.setValidatorsType private setValidatorsType!: (type: ValidatorsListMode) => void;
+const props = defineProps<{
+  parentLoading?: boolean;
+}>();
 
-  showValidatorsAttentionDialog = false;
+const { t } = useI18n();
+const router = useRouter();
+const { loading } = useLoading();
+const { setValidatorsType } = useSoraStaking();
 
-  stakeWithSuggested(): void {
-    this.showValidatorsAttentionDialog = true;
-    this.setValidatorsType(ValidatorsListMode.RECOMMENDED);
-  }
+const StakingHeader = soraStakingLazyComponent(SoraStakingComponents.StakingHeader);
+const ValidatorsAttentionDialog = soraStakingLazyComponent(SoraStakingComponents.ValidatorsAttentionDialog);
+const SelectValidatorsMode = soraStakingLazyComponent(SoraStakingComponents.SelectValidatorsMode);
 
-  stakeWithSelected(): void {
-    this.showValidatorsAttentionDialog = true;
-    this.setValidatorsType(ValidatorsListMode.SELECT);
-  }
+const showValidatorsAttentionDialog = ref(false);
 
-  handleSelectValidators(): void {
-    this.showValidatorsAttentionDialog = false;
-    router.push({ name: SoraStakingPageNames.SelectValidators });
-  }
-}
+const dialogParentLoading = computed(() => Boolean(props.parentLoading) || loading.value);
+
+const stakeWithSuggested = (): void => {
+  setValidatorsType(ValidatorsListMode.RECOMMENDED);
+  showValidatorsAttentionDialog.value = true;
+};
+
+const stakeWithSelected = (): void => {
+  setValidatorsType(ValidatorsListMode.SELECT);
+  showValidatorsAttentionDialog.value = true;
+};
+
+const handleSelectValidators = (): void => {
+  showValidatorsAttentionDialog.value = false;
+  router.push({ name: SoraStakingPageNames.SelectValidators });
+};
 </script>
 
 <style lang="scss" scoped>

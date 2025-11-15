@@ -1,0 +1,3 @@
+
+ýõimport{b as n}from"./index-DjB-Okl0.js";import{l as r,v as t,m as a,o as s,n as c,w as p,y as m,D as i}from"./polkadot-Bh6PX9YG.js";import"./wallet-stack-BuqMcUTa.js";import"./echarts-Cxkeyetf.js";import"./lodash-vOcFpjD8.js";const v=r({__name:"ErrorButton",props:{error:{default:""}},setup(l){const{t:o}=n();return(_,u)=>{const e=t("s-icon");return s(),a("span",null,[c("span",null,m(i(o)("orderBook.cantPlaceOrder")),1),p(e,{name:"info-16",class:"book-inform-icon-btn"})])}}});export{v as default};
+õ

@@ -1,25 +1,26 @@
 <template>
-  <s-button type="action" size="medium" @click="back()">
-    <s-icon name="arrows-chevron-left-rounded-24" />
+  <s-button type="action" size="medium" @click="handleBack">
+    <s-icon name="arrows-chevron-left-rounded-24"></s-icon>
   </s-button>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
-
+<script setup lang="ts">
 import router from '@/router';
 
 import { StakingPageNames } from '../../consts';
 
-@Component
-export default class BackButton extends Mixins() {
-  @Prop({ type: String }) readonly page?: StakingPageNames;
+const props = defineProps<{
+  page?: StakingPageNames;
+}>();
 
-  back() {
-    if (this.page) {
-      router.push({ name: this.page });
-    }
-    this.$emit('back');
+const emit = defineEmits<{
+  (event: 'back'): void;
+}>();
+
+const handleBack = () => {
+  if (props.page) {
+    router.push({ name: props.page });
   }
-}
+  emit('back');
+};
 </script>

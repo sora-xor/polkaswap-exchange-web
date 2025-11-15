@@ -1,0 +1,49 @@
+
+ï%ç%import{a2 as le,$ as ue,a3 as Z,F as u,z as ce,b as ie,c as pe,X as O,dq as k,dr as me,cM as P}from"./index-DjB-Okl0.js";import{f as fe,l as L}from"./lodash-vOcFpjD8.js";import{u as ve}from"./useChartSpec-Ds1Lt7oL.js";import{N as de,S as ye}from"./snapshots-B8F7163b.js";import"./echarts-Cxkeyetf.js";import{l as he,L as Se,j as n,t as w,K as ge,E as _e,v as S,A as V,o as U,x as g,w as x,D as N,C as z,y as M,M as $e}from"./polkadot-Bh6PX9YG.js";const{IndexerType:Q}=ue,we=Z`
+  query NetworkVolumeQuery($after: Cursor, $fees: Boolean!, $type: SnapshotType, $from: Int, $to: Int) {
+    data: networkSnapshots(
+      after: $after
+      orderBy: TIMESTAMP_DESC
+      filter: {
+        and: [
+          { type: { equalTo: $type } }
+          { timestamp: { lessThanOrEqualTo: $from } }
+          { timestamp: { greaterThanOrEqualTo: $to } }
+        ]
+      }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          timestamp
+          volumeUSD @skip(if: $fees)
+          fees @include(if: $fees)
+        }
+      }
+    }
+  }
+`,xe=Z`
+  query NetworkVolumeQuery($after: String, $fees: Boolean!, $type: SnapshotType, $from: Int, $to: Int) {
+    data: networkSnapshotsConnection(
+      after: $after
+      orderBy: timestamp_DESC
+      where: { AND: [{ type_eq: $type }, { timestamp_lte: $from }, { timestamp_gte: $to }] }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          timestamp
+          volumeUSD @skip(if: $fees)
+          fees @include(if: $fees)
+        }
+      }
+    }
+  }
+`,j=c=>l=>{const p=c?u.fromCodecValue(l.fees):new u(l.volumeUSD);return{timestamp:+l.timestamp*1e3,value:p.isFinity()?p:u.ZERO}};async function K(c,l,p,d){const y=le();let h;switch(y.type){case Q.SUBQUERY:{h=await y.services.explorer.fetchAllEntities(we,{fees:c,from:l,to:p,type:d},j(c));break}case Q.SUBSQUID:{h=await y.services.explorer.fetchAllEntitiesConnection(xe,{fees:c,from:l,to:p,type:d},j(c));break}}return h??[]}const ke=he({inheritAttrs:!1,__name:"BarChart",props:{fees:{type:Boolean,default:!1}},setup(c){const l=e=>e.reduce((a,t)=>a.add(t.value),u.ZERO),p=(e,a,t)=>{const r=[];for(;(a+=t)<e;)r.push({timestamp:a,value:u.ZERO});return r.reverse()},d=(e,a,t,r)=>{const o=L(e)?.timestamp??t,s=p(o,r,a);e.push(...s)},y=c,h=Se(),_=n(()=>!!h.parentLoading),{loading:W,withLoading:X,withParentLoading:Y}=ce({parentLoading:()=>_.value}),{t:H}=ie(),G=ve(),q=de,b=w(q[0]),f=w([]),A=w([]),T=w(!1),B=pe(),$=n(()=>B.exchangeRate??0),C=n(()=>B.currencySymbol??""),E=n(()=>l(f.value)),J=n(()=>l(A.value));n(()=>new u(fe(f.value)?.value??0)),n(()=>new u(L(f.value)?.value??0));const{fees:i}=ge(y),ee=n(()=>{if(!i.value)return`bar-chart-${C.value}-rate-${$.value}`}),te=n(()=>i.value?O.symbol:C.value),ae=n(()=>i.value?"Fees":"Volume"),oe=n(()=>H(i.value?"tooltips.fees":"tooltips.volume")),R=n(()=>i.value?k(E.value):k(E.value.mul($.value))),F=n(()=>me(E.value,J.value)),se=n(()=>{const{gridSpec:e,xAxisSpec:a,yAxisSpec:t,tooltipSpec:r,barSeriesSpec:o}=G;return{dataset:{source:f.value.map(s=>[s.timestamp,s.value.toNumber()]),dimensions:["timestamp","value"]},grid:e({top:20,left:45}),xAxis:a(),yAxis:t({axisLabel:{formatter:s=>{const m=new u(s).mul($.value),{amount:v,suffix:I}=k(m);return`${v} ${I}`}}}),tooltip:r({formatter:s=>{const{data:m}=s[0],[,v]=m;if(i.value)return`${P(v)} ${O.symbol}`;const I=new u(v).mul($.value);return`${C.value} ${P(I)}`}}),series:[o({itemStyle:{color:"#C86FFF"}})]}}),re=(e,a,t,r)=>{const o=[];for(const s of e)d(o,a,t,s.timestamp),o.push(s);return d(o,a,t,r),o},D=async()=>{await X(async()=>{await Y(async()=>{try{const{type:e,count:a}=b.value,t=ye[e],r=Math.floor(Date.now()/(t*1e3))*t,o=r-t*a,s=o-t*a,[m,v]=await Promise.all([K(i.value,r,o,e),K(i.value,o,s,e)]);f.value=Object.freeze(re(m,t*1e3,r*1e3,o*1e3)),A.value=Object.freeze(v),T.value=!1}catch(e){console.error(e),T.value=!0}})})},ne=e=>{b.value=e,D()};return _e(async()=>{await D()}),(e,a)=>{const t=S("stats-filter"),r=S("formatted-amount"),o=S("v-chart"),s=S("chart-skeleton"),m=S("base-widget");return U(),V(m,$e(e.$attrs,{title:ae.value,tooltip:oe.value}),{filters:g(()=>[x(t,{"is-dropdown":"",filters:N(q),value:b.value,onInput:ne},null,8,["filters","value"])]),default:g(()=>[x(s,{loading:_.value||N(W),"is-empty":f.value.length===0,"is-error":T.value,onRetry:D},{default:g(()=>[x(r,{class:"chart-price",value:R.value.amount},{prefix:g(()=>[z(M(te.value),1)]),default:g(()=>[z(" "+M(R.value.suffix),1)]),_:1},8,["value"]),x(N(F),{value:F.value},null,8,["value"]),(U(),V(o,{ref:"chart",class:"chart",key:ee.value,option:se.value,autoresize:""},null,8,["option"]))]),_:1},8,["loading","is-empty","is-error"])]),_:1},16,["title","tooltip"])}}});export{ke as _};
+ç%

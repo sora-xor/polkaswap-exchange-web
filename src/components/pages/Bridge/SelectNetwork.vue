@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="visibility" :title="t('bridge.selectNetwork')" class="networks">
+  <dialog-base v-model:visible="visibility" :title="t('bridge.selectNetwork')" class="networks">
     <p class="networks-info">{{ t('bridge.networkInfo') }}</p>
     <s-scrollbar class="networks-scrollbar">
       <s-radio-group v-model="selectedNetworkTuple" class="networks-list">
@@ -13,26 +13,28 @@
           <div class="network-name">
             <span>{{ name }}</span>
             <div v-if="info" class="network-name-info">
-              <external-link v-if="info.link" :title="info.content" :href="info.content" />
+              <external-link v-if="info.link" :title="info.content" :href="info.content"></external-link>
               <span v-else>{{ info.content }}</span>
             </div>
           </div>
-          <i :class="['network-icon', `network-icon--${getNetworkIcon(id)}`]" />
+          <i :class="['network-icon', `network-icon--${getNetworkIcon(id)}`]"></i>
         </s-radio>
       </s-radio-group>
     </s-scrollbar>
   </dialog-base>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { components } from '@wallet';
+import { computed } from 'vue';
 
-import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { action, mutation, state } from '@/store/decorators';
+import { useTranslation } from '@/composables/useTranslation';
+import store from '@/store';
+
+import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
+
 import type { AvailableNetwork } from '@/store/web3/types';
-
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
@@ -47,79 +49,83 @@ type NetworkItem = {
   };
 };
 
-const DELIMETER = '-';
+const DELIMITER = '-';
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
-    TokenLogo: components.TokenLogo,
     ExternalLink: components.ExternalLink,
+    TokenLogo: components.TokenLogo,
+    SRadioGroup: components.SRadioGroup,
+    SRadio: components.SRadio,
+    SScrollbar: components.SScrollbar,
   },
-})
-export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
-  @state.web3.networkType private networkType!: Nullable<BridgeNetworkType>;
-  @state.web3.networkSelected private networkSelected!: Nullable<BridgeNetworkId>;
-  @state.web3.selectNetworkDialogVisibility private selectNetworkDialogVisibility!: boolean;
+});
 
-  @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
+const { t } = useTranslation();
+const { getNetworkIcon } = useNetworkFormatter();
 
-  @action.web3.selectExternalNetwork selectExternalNetwork!: (network: {
-    id: BridgeNetworkId;
-    type: BridgeNetworkType;
-  }) => void;
+const visibility = computed({
+  get: () => Boolean(store.state.web3.selectNetworkDialogVisibility),
+  set: (flag: boolean) => {
+    store.commit.web3.setSelectNetworkDialogVisibility(flag);
+  },
+});
 
-  get visibility(): boolean {
-    return this.selectNetworkDialogVisibility;
-  }
+const availableNetworks = computed(
+  () =>
+    (store.getters.web3.availableNetworks as Record<
+      BridgeNetworkType,
+      Partial<Record<BridgeNetworkId, AvailableNetwork>>
+    >) ?? {}
+);
 
-  set visibility(flag: boolean) {
-    this.setSelectNetworkDialogVisibility(flag);
-  }
+const networkType = computed<Nullable<BridgeNetworkType>>(() => store.state.web3.networkType);
+const networkSelected = computed<Nullable<BridgeNetworkId>>(() => store.state.web3.networkSelected);
 
-  get networks(): NetworkItem[] {
-    return Object.entries(this.availableNetworks)
-      .map(([type, record]) => {
-        const networks = Object.values(record) as AvailableNetwork[];
+const networks = computed<NetworkItem[]>(() =>
+  Object.entries(availableNetworks.value)
+    .map(([type, record]) => {
+      const items = Object.values(record ?? {}) as AvailableNetwork[];
 
-        return networks.reduce<NetworkItem[]>((buffer, { disabled, data: { id, name } }) => {
-          let content = '';
+      return items.reduce<NetworkItem[]>((buffer, { disabled, data: { id, name } }) => {
+        const content = disabled ? t('comingSoonText') : '';
 
-          if (disabled) {
-            content = this.t('comingSoonText');
-          }
+        buffer.push({
+          id,
+          value: `${type}${DELIMITER}${id}`,
+          name,
+          disabled,
+          info: {
+            content,
+            link: false,
+          },
+        });
 
-          buffer.push({
-            id,
-            value: `${type}-${id}`,
-            name,
-            disabled,
-            info: {
-              content,
-              link: false, // if content should be a link
-            },
-          });
+        return buffer;
+      }, []);
+    })
+    .flat()
+    .sort((a, b) => Number(a.disabled) - Number(b.disabled))
+);
 
-          return buffer;
-        }, []);
-      })
-      .flat(1)
-      .sort((a, b) => +a.disabled - +b.disabled);
-  }
+const selectedNetworkTuple = computed({
+  get: () => {
+    if (networkType.value == null || networkSelected.value == null) return '';
+    return `${networkType.value}${DELIMITER}${networkSelected.value}`;
+  },
+  set: (value: string) => {
+    const [typeRaw, idRaw] = value.split(DELIMITER);
 
-  get selectedNetworkTuple(): string {
-    return [this.networkType, this.networkSelected].join(DELIMETER);
-  }
+    if (!typeRaw || !idRaw) return;
 
-  set selectedNetworkTuple(value: string) {
-    const [networkType, networkSelected] = value.split(DELIMETER);
+    const type = typeRaw as BridgeNetworkType;
+    const id = type === BridgeNetworkType.Sub ? (idRaw as SubNetwork) : (Number(idRaw) as BridgeNetworkId);
 
-    const type = networkType as BridgeNetworkType;
-    const id = type === BridgeNetworkType.Sub ? (networkSelected as SubNetwork) : Number(networkSelected);
-
-    this.selectExternalNetwork({ id, type });
-    this.visibility = false;
-  }
-}
+    store.dispatch.web3.selectExternalNetwork({ id, type });
+    visibility.value = false;
+  },
+});
 </script>
 
 <style lang="scss">

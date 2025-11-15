@@ -1,0 +1,10 @@
+*.md
+.changeset
+.gitattributes
+.gitignore
+.dockerignore
+*Dockerfile
+*Jenkinsfile
+lerna.json
+.vscode
+LICENSE

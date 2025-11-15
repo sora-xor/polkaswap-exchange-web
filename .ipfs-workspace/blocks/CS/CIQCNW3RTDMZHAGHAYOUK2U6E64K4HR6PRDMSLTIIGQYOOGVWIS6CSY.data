@@ -1,0 +1,15 @@
+
+»³import{bP as p,by as u,bG as b,bz as f,bB as c}from"./index-DjB-Okl0.js";import{s as g,H as w,a as m}from"./index-D1vJKCDW-BtS_4qC4.js";import{s as h}from"./index-CiCPU9Xw-B9PTMTYx.js";const M={interpolate(e,t,i){if(e.length!==2||t.length!==2)throw new Error("inputRange and outputRange must be an array of length 2");const n=e[0]||0,s=e[1]||0,o=t[0]||0,r=t[1]||0;return i<n?o:i>s?r:(r-o)/(s-n)*(i-n)+o}},v=p`
+  :host {
+    width: 100%;
+    display: block;
+  }
+`;var l=function(e,t,i,n){var s=arguments.length,o=s<3?t:n,r;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")o=Reflect.decorate(e,t,i,n);else for(var d=e.length-1;d>=0;d--)(r=e[d])&&(o=(s<3?r(o):s>3?r(t,i,o):r(t,i))||o);return s>3&&o&&Object.defineProperty(t,i,o),o};let a=class extends u{constructor(){super(),this.unsubscribe=[],this.text="",this.open=h.state.open,this.unsubscribe.push(b.subscribeKey("view",()=>{h.hide()}),f.subscribeKey("open",e=>{e||h.hide()}),h.subscribeKey("open",e=>{this.open=e}))}disconnectedCallback(){this.unsubscribe.forEach(e=>e()),h.hide()}render(){return c`
+      <div
+        @pointermove=${this.onMouseEnter.bind(this)}
+        @pointerleave=${this.onMouseLeave.bind(this)}
+      >
+        ${this.renderChildren()}
+      </div>
+    `}renderChildren(){return c`<slot></slot> `}onMouseEnter(){const e=this.getBoundingClientRect();if(!this.open){const t=document.querySelector("w3m-modal"),i={width:e.width,height:e.height,left:e.left,top:e.top};if(t){const n=t.getBoundingClientRect();i.left=e.left-(window.innerWidth-n.width)/2,i.top=e.top-(window.innerHeight-n.height)/2}h.showTooltip({message:this.text,triggerRect:i,variant:"shade"})}}onMouseLeave(e){this.contains(e.relatedTarget)||h.hide()}};a.styles=[v];l([g()],a.prototype,"text",void 0);l([w()],a.prototype,"open",void 0);a=l([m("w3m-tooltip-trigger")],a);export{M as C};
+³

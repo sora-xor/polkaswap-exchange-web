@@ -1,0 +1,252 @@
+
+Åˆ»ˆimport{by as S,bA as h,bB as n,bI as c,bC as P,bK as u,bF as v,bD as $,c1 as T,b$ as k,bG as w,bN as b,bz as A,bZ as F,c2 as W,bQ as L,bO as _,c3 as U,c4 as D}from"./index-DjB-Okl0.js";import{s as N,H as l,a as I}from"./index-D1vJKCDW-BtS_4qC4.js";import{m as C}from"./if-defined-DgIoGpc1-BpRFTkQ2.js";import{u as R}from"./index-BikJzTW8-DLucC-dv.js";import{P as z}from"./index-CC0ezhfo-DbCUh2bw.js";import"./index-v0YluuaR-D-9ON0jj.js";import"./index-CkAsfbcC-CYUjodAq.js";import"./index-CbYcNY2E-7qenQvRd.js";import"./index-CZQgiEVa-CrjR9x7o.js";import"./index-C3dyjDT6-CfNhJIKN.js";import"./polkadot-Bh6PX9YG.js";import"./echarts-Cxkeyetf.js";import"./wallet-stack-BuqMcUTa.js";import"./lodash-vOcFpjD8.js";import"./ref-CBFqMm98-PqNMe46B.js";import"./index-D9i8epM--CFaikW6F.js";import"./index-DIEZAM9s-B3mkUSok.js";const q=L`
+  :host {
+    margin-top: ${({spacing:e})=>e[1]};
+  }
+  wui-separator {
+    margin: ${({spacing:e})=>e[3]} calc(${({spacing:e})=>e[3]} * -1)
+      ${({spacing:e})=>e[2]} calc(${({spacing:e})=>e[3]} * -1);
+    width: calc(100% + ${({spacing:e})=>e[3]} * 2);
+  }
+`;var y=function(e,t,s,a){var o=arguments.length,i=o<3?t:a,r;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(e,t,s,a);else for(var d=e.length-1;d>=0;d--)(r=e[d])&&(i=(o<3?r(i):o>3?r(t,s,i):r(t,s))||i);return o>3&&i&&Object.defineProperty(t,s,i),i};let m=class extends S{constructor(){super(),this.unsubscribe=[],this.tabIdx=void 0,this.connectors=P.state.connectors,this.authConnector=this.connectors.find(e=>e.type==="AUTH"),this.remoteFeatures=h.state.remoteFeatures,this.isPwaLoading=!1,this.unsubscribe.push(P.subscribeKey("connectors",e=>{this.connectors=e,this.authConnector=this.connectors.find(t=>t.type==="AUTH")}),h.subscribeKey("remoteFeatures",e=>this.remoteFeatures=e))}connectedCallback(){super.connectedCallback(),this.handlePwaFrameLoad()}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){let e=this.remoteFeatures?.socials||[];const t=!!this.authConnector,s=e?.length,a=w.state.view==="ConnectSocials";return(!t||!s)&&!a?null:(a&&!s&&(e=_.DEFAULT_SOCIALS),n` <wui-flex flexDirection="column" gap="2">
+      ${e.map(o=>n`<wui-list-social
+            @click=${()=>{this.onSocialClick(o)}}
+            data-testid=${`social-selector-${o}`}
+            name=${o}
+            logo=${o}
+            ?disabled=${this.isPwaLoading}
+          ></wui-list-social>`)}
+    </wui-flex>`)}async onSocialClick(e){e&&await z(e)}async handlePwaFrameLoad(){if(v.isPWA()){this.isPwaLoading=!0;try{this.authConnector?.provider instanceof U&&await this.authConnector.provider.init()}catch(e){D.open({displayMessage:"Error loading embedded wallet in PWA",debugMessage:e.message},"error")}finally{this.isPwaLoading=!1}}}};m.styles=q;y([N()],m.prototype,"tabIdx",void 0);y([l()],m.prototype,"connectors",void 0);y([l()],m.prototype,"authConnector",void 0);y([l()],m.prototype,"remoteFeatures",void 0);y([l()],m.prototype,"isPwaLoading",void 0);m=y([I("w3m-social-login-list")],m);const j=L`
+  wui-flex {
+    max-height: clamp(360px, 540px, 80vh);
+    overflow: scroll;
+    scrollbar-width: none;
+    transition: opacity ${({durations:e})=>e.md}
+      ${({easings:e})=>e["ease-out-power-1"]};
+    will-change: opacity;
+  }
+
+  wui-flex::-webkit-scrollbar {
+    display: none;
+  }
+
+  wui-flex.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    user-select: none;
+  }
+`;var O=function(e,t,s,a){var o=arguments.length,i=o<3?t:a,r;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(e,t,s,a);else for(var d=e.length-1;d>=0;d--)(r=e[d])&&(i=(o<3?r(i):o>3?r(t,s,i):r(t,s))||i);return o>3&&i&&Object.defineProperty(t,s,i),i};let E=class extends S{constructor(){super(),this.unsubscribe=[],this.checked=R.state.isLegalCheckboxChecked,this.unsubscribe.push(R.subscribeKey("isLegalCheckboxChecked",e=>{this.checked=e}))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){const{termsConditionsUrl:e,privacyPolicyUrl:t}=h.state,s=h.state.features?.legalCheckbox,a=!!(e||t)&&!!s&&!this.checked,o=a?-1:void 0;return n`
+      <w3m-legal-checkbox></w3m-legal-checkbox>
+      <wui-flex
+        flexDirection="column"
+        .padding=${["0","3","3","3"]}
+        gap="01"
+        class=${C(a?"disabled":void 0)}
+      >
+        <w3m-social-login-list tabIdx=${C(o)}></w3m-social-login-list>
+      </wui-flex>
+    `}};E.styles=j;O([l()],E.prototype,"checked",void 0);E=O([I("w3m-connect-socials-view")],E);const G=L`
+  wui-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: ${({borderRadius:e})=>e[8]};
+  }
+  @keyframes shake {
+    0% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(3px);
+    }
+    50% {
+      transform: translateX(-3px);
+    }
+    75% {
+      transform: translateX(3px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  wui-flex:first-child:not(:only-child) {
+    position: relative;
+  }
+  wui-loading-thumbnail {
+    position: absolute;
+  }
+  wui-icon-box {
+    position: absolute;
+    right: calc(${({spacing:e})=>e[1]} * -1);
+    bottom: calc(${({spacing:e})=>e[1]} * -1);
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all ${({easings:e})=>e["ease-out-power-2"]}
+      ${({durations:e})=>e.lg};
+  }
+  wui-text[align='center'] {
+    width: 100%;
+    padding: 0px ${({spacing:e})=>e[4]};
+  }
+  [data-error='true'] wui-icon-box {
+    opacity: 1;
+    transform: scale(1);
+  }
+  [data-error='true'] > wui-flex:first-child {
+    animation: shake 250ms ${({easings:e})=>e["ease-out-power-2"]} both;
+  }
+  .capitalize {
+    text-transform: capitalize;
+  }
+`;var f=function(e,t,s,a){var o=arguments.length,i=o<3?t:a,r;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(e,t,s,a);else for(var d=e.length-1;d>=0;d--)(r=e[d])&&(i=(o<3?r(i):o>3?r(t,s,i):r(t,s))||i);return o>3&&i&&Object.defineProperty(t,s,i),i};let p=class extends S{constructor(){super(),this.unsubscribe=[],this.socialProvider=c.getAccountData()?.socialProvider,this.socialWindow=c.getAccountData()?.socialWindow,this.error=!1,this.connecting=!1,this.message="Connect in the provider window",this.remoteFeatures=h.state.remoteFeatures,this.address=c.getAccountData()?.address,this.connectionsByNamespace=k.getConnections(c.state.activeChain),this.hasMultipleConnections=this.connectionsByNamespace.length>0,this.authConnector=P.getAuthConnector(),this.handleSocialConnection=async e=>{if(e.data?.resultUri)if(e.origin===F.SECURE_SITE_ORIGIN){window.removeEventListener("message",this.handleSocialConnection,!1);try{if(this.authConnector&&!this.connecting){this.socialWindow&&(this.socialWindow.close(),c.setAccountProp("socialWindow",void 0,c.state.activeChain)),this.connecting=!0,this.updateMessage();const t=e.data.resultUri;this.socialProvider&&u.sendEvent({type:"track",event:"SOCIAL_LOGIN_REQUEST_USER_DATA",properties:{provider:this.socialProvider}}),await k.connectExternal({id:this.authConnector.id,type:this.authConnector.type,socialUri:t},this.authConnector.chain),this.socialProvider&&(T.setConnectedSocialProvider(this.socialProvider),u.sendEvent({type:"track",event:"SOCIAL_LOGIN_SUCCESS",properties:{provider:this.socialProvider}}))}}catch(t){this.error=!0,this.updateMessage(),this.socialProvider&&u.sendEvent({type:"track",event:"SOCIAL_LOGIN_ERROR",properties:{provider:this.socialProvider,message:v.parseError(t)}})}}else w.goBack(),b.showError("Untrusted Origin"),this.socialProvider&&u.sendEvent({type:"track",event:"SOCIAL_LOGIN_ERROR",properties:{provider:this.socialProvider,message:"Untrusted Origin"}})},W.EmbeddedWalletAbortController.signal.addEventListener("abort",()=>{this.socialWindow&&(this.socialWindow.close(),c.setAccountProp("socialWindow",void 0,c.state.activeChain))}),this.unsubscribe.push(c.subscribeChainProp("accountState",e=>{if(e&&(this.socialProvider=e.socialProvider,e.socialWindow&&(this.socialWindow=e.socialWindow),e.address)){const t=this.remoteFeatures?.multiWallet;e.address!==this.address&&(this.hasMultipleConnections&&t?(w.replace("ProfileWallets"),b.showSuccess("New Wallet Added"),this.address=e.address):(A.state.open||h.state.enableEmbedded)&&A.close())}}),h.subscribeKey("remoteFeatures",e=>{this.remoteFeatures=e})),this.authConnector&&this.connectSocial()}disconnectedCallback(){this.unsubscribe.forEach(e=>e()),window.removeEventListener("message",this.handleSocialConnection,!1),!c.state.activeCaipAddress&&this.socialProvider&&!this.connecting&&u.sendEvent({type:"track",event:"SOCIAL_LOGIN_CANCELED",properties:{provider:this.socialProvider}}),this.socialWindow?.close(),c.setAccountProp("socialWindow",void 0,c.state.activeChain)}render(){return n`
+      <wui-flex
+        data-error=${C(this.error)}
+        flexDirection="column"
+        alignItems="center"
+        .padding=${["10","5","5","5"]}
+        gap="6"
+      >
+        <wui-flex justifyContent="center" alignItems="center">
+          <wui-logo logo=${C(this.socialProvider)}></wui-logo>
+          ${this.error?null:this.loaderTemplate()}
+          <wui-icon-box color="error" icon="close" size="sm"></wui-icon-box>
+        </wui-flex>
+        <wui-flex flexDirection="column" alignItems="center" gap="2">
+          <wui-text align="center" variant="lg-medium" color="primary"
+            >Log in with
+            <span class="capitalize">${this.socialProvider??"Social"}</span></wui-text
+          >
+          <wui-text align="center" variant="lg-regular" color=${this.error?"error":"secondary"}
+            >${this.message}</wui-text
+          ></wui-flex
+        >
+      </wui-flex>
+    `}loaderTemplate(){const e=$.state.themeVariables["--w3m-border-radius-master"],t=e?parseInt(e.replace("px",""),10):4;return n`<wui-loading-thumbnail radius=${t*9}></wui-loading-thumbnail>`}connectSocial(){const e=setInterval(()=>{this.socialWindow?.closed&&(!this.connecting&&w.state.view==="ConnectingSocial"&&w.goBack(),clearInterval(e))},1e3);window.addEventListener("message",this.handleSocialConnection,!1)}updateMessage(){this.error?this.message="Something went wrong":this.connecting?this.message="Retrieving user data":this.message="Connect in the provider window"}};p.styles=G;f([l()],p.prototype,"socialProvider",void 0);f([l()],p.prototype,"socialWindow",void 0);f([l()],p.prototype,"error",void 0);f([l()],p.prototype,"connecting",void 0);f([l()],p.prototype,"message",void 0);f([l()],p.prototype,"remoteFeatures",void 0);p=f([I("w3m-connecting-social-view")],p);const M=L`
+  wui-shimmer {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: ${({borderRadius:e})=>e[4]};
+  }
+
+  wui-qr-code {
+    opacity: 0;
+    animation-duration: ${({durations:e})=>e.xl};
+    animation-timing-function: ${({easings:e})=>e["ease-out-power-2"]};
+    animation-name: fade-in;
+    animation-fill-mode: forwards;
+  }
+
+  wui-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: ${({borderRadius:e})=>e[8]};
+  }
+
+  wui-flex:first-child:not(:only-child) {
+    position: relative;
+  }
+
+  wui-loading-thumbnail {
+    position: absolute;
+  }
+
+  wui-icon-box {
+    position: absolute;
+    right: calc(${({spacing:e})=>e[1]} * -1);
+    bottom: calc(${({spacing:e})=>e[1]} * -1);
+    opacity: 0;
+    transform: scale(0.5);
+    transition:
+      opacity ${({durations:e})=>e.lg} ${({easings:e})=>e["ease-out-power-2"]},
+      transform ${({durations:e})=>e.lg}
+        ${({easings:e})=>e["ease-out-power-2"]};
+    will-change: opacity, transform;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`;var x=function(e,t,s,a){var o=arguments.length,i=o<3?t:a,r;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(e,t,s,a);else for(var d=e.length-1;d>=0;d--)(r=e[d])&&(i=(o<3?r(i):o>3?r(t,s,i):r(t,s))||i);return o>3&&i&&Object.defineProperty(t,s,i),i};let g=class extends S{constructor(){super(),this.unsubscribe=[],this.timeout=void 0,this.socialProvider=c.getAccountData()?.socialProvider,this.uri=c.getAccountData()?.farcasterUrl,this.ready=!1,this.loading=!1,this.remoteFeatures=h.state.remoteFeatures,this.authConnector=P.getAuthConnector(),this.forceUpdate=()=>{this.requestUpdate()},this.unsubscribe.push(c.subscribeChainProp("accountState",e=>{this.socialProvider=e?.socialProvider,this.uri=e?.farcasterUrl,this.connectFarcaster()}),h.subscribeKey("remoteFeatures",e=>{this.remoteFeatures=e})),window.addEventListener("resize",this.forceUpdate)}disconnectedCallback(){super.disconnectedCallback(),clearTimeout(this.timeout),window.removeEventListener("resize",this.forceUpdate),!c.state.activeCaipAddress&&this.socialProvider&&(this.uri||this.loading)&&u.sendEvent({type:"track",event:"SOCIAL_LOGIN_CANCELED",properties:{provider:this.socialProvider}})}render(){return this.onRenderProxy(),n`${this.platformTemplate()}`}platformTemplate(){return v.isMobile()?n`${this.mobileTemplate()}`:n`${this.desktopTemplate()}`}desktopTemplate(){return this.loading?n`${this.loadingTemplate()}`:n`${this.qrTemplate()}`}qrTemplate(){return n` <wui-flex
+      flexDirection="column"
+      alignItems="center"
+      .padding=${["0","5","5","5"]}
+      gap="5"
+    >
+      <wui-shimmer width="100%"> ${this.qrCodeTemplate()} </wui-shimmer>
+
+      <wui-text variant="lg-medium" color="primary"> Scan this QR Code with your phone </wui-text>
+      ${this.copyTemplate()}
+    </wui-flex>`}loadingTemplate(){return n`
+      <wui-flex
+        flexDirection="column"
+        alignItems="center"
+        .padding=${["5","5","5","5"]}
+        gap="5"
+      >
+        <wui-flex justifyContent="center" alignItems="center">
+          <wui-logo logo="farcaster"></wui-logo>
+          ${this.loaderTemplate()}
+          <wui-icon-box color="error" icon="close" size="sm"></wui-icon-box>
+        </wui-flex>
+        <wui-flex flexDirection="column" alignItems="center" gap="2">
+          <wui-text align="center" variant="md-medium" color="primary">
+            Loading user data
+          </wui-text>
+          <wui-text align="center" variant="sm-regular" color="secondary">
+            Please wait a moment while we load your data.
+          </wui-text>
+        </wui-flex>
+      </wui-flex>
+    `}mobileTemplate(){return n` <wui-flex
+      flexDirection="column"
+      alignItems="center"
+      .padding=${["10","5","5","5"]}
+      gap="5"
+    >
+      <wui-flex justifyContent="center" alignItems="center">
+        <wui-logo logo="farcaster"></wui-logo>
+        ${this.loaderTemplate()}
+        <wui-icon-box
+          color="error"
+          icon="close"
+          size="sm"
+        ></wui-icon-box>
+      </wui-flex>
+      <wui-flex flexDirection="column" alignItems="center" gap="2">
+        <wui-text align="center" variant="md-medium" color="primary"
+          >Continue in Farcaster</span></wui-text
+        >
+        <wui-text align="center" variant="sm-regular" color="secondary"
+          >Accept connection request in the app</wui-text
+        ></wui-flex
+      >
+      ${this.mobileLinkTemplate()}
+    </wui-flex>`}loaderTemplate(){const e=$.state.themeVariables["--w3m-border-radius-master"],t=e?parseInt(e.replace("px",""),10):4;return n`<wui-loading-thumbnail radius=${t*9}></wui-loading-thumbnail>`}async connectFarcaster(){if(this.authConnector)try{await this.authConnector?.provider.connectFarcaster(),this.socialProvider&&(T.setConnectedSocialProvider(this.socialProvider),u.sendEvent({type:"track",event:"SOCIAL_LOGIN_REQUEST_USER_DATA",properties:{provider:this.socialProvider}})),this.loading=!0;const e=k.getConnections(this.authConnector.chain).length>0;await k.connectExternal(this.authConnector,this.authConnector.chain);const t=this.remoteFeatures?.multiWallet;this.socialProvider&&u.sendEvent({type:"track",event:"SOCIAL_LOGIN_SUCCESS",properties:{provider:this.socialProvider}}),this.loading=!1,e&&t?(w.replace("ProfileWallets"),b.showSuccess("New Wallet Added")):A.close()}catch(e){this.socialProvider&&u.sendEvent({type:"track",event:"SOCIAL_LOGIN_ERROR",properties:{provider:this.socialProvider,message:v.parseError(e)}}),w.goBack(),b.showError(e)}}mobileLinkTemplate(){return n`<wui-button
+      size="md"
+      ?loading=${this.loading}
+      ?disabled=${!this.uri||this.loading}
+      @click=${()=>{this.uri&&v.openHref(this.uri,"_blank")}}
+    >
+      Open farcaster</wui-button
+    >`}onRenderProxy(){!this.ready&&this.uri&&(this.timeout=setTimeout(()=>{this.ready=!0},200))}qrCodeTemplate(){if(!this.uri||!this.ready)return null;const e=this.getBoundingClientRect().width-40;return n` <wui-qr-code
+      size=${e}
+      theme=${$.state.themeMode}
+      uri=${this.uri}
+      ?farcaster=${!0}
+      data-testid="wui-qr-code"
+      color=${C($.state.themeVariables["--w3m-qr-color"])}
+    ></wui-qr-code>`}copyTemplate(){const e=!this.uri||!this.ready;return n`<wui-button
+      .disabled=${e}
+      @click=${this.onCopyUri}
+      variant="neutral-secondary"
+      size="sm"
+      data-testid="copy-wc2-uri"
+    >
+      <wui-icon size="sm" color="default" slot="iconRight" name="copy"></wui-icon>
+      Copy link
+    </wui-button>`}onCopyUri(){try{this.uri&&(v.copyToClopboard(this.uri),b.showSuccess("Link copied"))}catch{b.showError("Failed to copy")}}};g.styles=M;x([l()],g.prototype,"socialProvider",void 0);x([l()],g.prototype,"uri",void 0);x([l()],g.prototype,"ready",void 0);x([l()],g.prototype,"loading",void 0);x([l()],g.prototype,"remoteFeatures",void 0);g=x([I("w3m-connecting-farcaster-view")],g);export{E as W3mConnectSocialsView,g as W3mConnectingFarcasterView,p as W3mConnectingSocialView};
+»ˆ

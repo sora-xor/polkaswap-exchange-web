@@ -7,7 +7,7 @@
       :asset-symbol="XOR.symbol"
       :fiat-value="getFiatAmountByString(soraNetworkFee, XOR)"
       is-formatted
-    />
+    ></info-line>
     <info-line
       :label="formattedNetworkFeeLabel"
       :label-tooltip="t('ethNetworkFeeTooltipText', { network: networkName })"
@@ -15,7 +15,7 @@
       :asset-symbol="nativeTokenSymbol"
       :fiat-value="getFiatAmountByString(externalNetworkFee, nativeToken)"
       is-formatted
-    />
+    ></info-line>
     <info-line
       v-if="isNotZero(externalTransferFee)"
       :label="t('bridge.externalTransferFee', { network: networkName })"
@@ -24,7 +24,7 @@
       :asset-symbol="assetSymbol"
       :fiat-value="getFiatAmountByString(externalTransferFee, asset)"
       is-formatted
-    />
+    ></info-line>
     <info-line
       v-if="isNotZero(externalMinBalance)"
       :label="t('bridge.externalMinDeposit', { network: networkName })"
@@ -33,57 +33,58 @@
       :asset-symbol="assetSymbol"
       :fiat-value="getFiatAmountByString(externalMinBalance, asset)"
       is-formatted
-    />
+    ></info-line>
   </transaction-details>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { components } from '@wallet';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+defineOptions({
   components: {
     TransactionDetails: lazyComponent(Components.TransactionDetails),
     InfoLine: components.InfoLine,
   },
-})
-export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  readonly XOR = XOR;
+});
 
-  @Prop({ default: () => null, type: Object }) readonly asset!: Nullable<RegisteredAccountAsset>;
-  @Prop({ default: () => null, type: Object }) readonly nativeToken!: Nullable<RegisteredAccountAsset>;
-  @Prop({ default: ZeroStringValue, type: String }) readonly externalTransferFee!: CodecString;
-  @Prop({ default: ZeroStringValue, type: String }) readonly externalNetworkFee!: CodecString;
-  @Prop({ default: ZeroStringValue, type: String }) readonly externalMinBalance!: CodecString;
-  @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
-  @Prop({ default: '', type: String }) readonly networkName!: string;
-
-  get assetSymbol(): string {
-    return this.asset?.symbol ?? '';
+const props = withDefaults(
+  defineProps<{
+    asset?: Nullable<RegisteredAccountAsset>;
+    nativeToken?: Nullable<RegisteredAccountAsset>;
+    externalTransferFee?: CodecString;
+    externalNetworkFee?: CodecString;
+    externalMinBalance?: CodecString;
+    soraNetworkFee?: CodecString;
+    networkName?: string;
+  }>(),
+  {
+    asset: null,
+    nativeToken: null,
+    externalTransferFee: ZeroStringValue,
+    externalNetworkFee: ZeroStringValue,
+    externalMinBalance: ZeroStringValue,
+    soraNetworkFee: ZeroStringValue,
+    networkName: '',
   }
+);
 
-  get nativeTokenSymbol(): string {
-    return this.nativeToken?.symbol ?? '';
-  }
+const { t, TranslationConsts } = useTranslation();
+const { formatStringValue, getFiatAmountByString } = useFormattedAmount();
 
-  get formattedNetworkFeeLabel(): string {
-    return `${this.TranslationConsts.Max} ${this.networkName} ${this.t('networkFeeText')}`;
-  }
+const assetSymbol = computed(() => props.asset?.symbol ?? '');
+const nativeTokenSymbol = computed(() => props.nativeToken?.symbol ?? '');
 
-  get isExternalTransferFeeNotZero(): boolean {
-    return this.externalTransferFee !== ZeroStringValue;
-  }
+const formattedNetworkFeeLabel = computed(() => `${TranslationConsts.Max} ${props.networkName} ${t('networkFeeText')}`);
 
-  isNotZero(value: CodecString): boolean {
-    return value !== ZeroStringValue;
-  }
-}
+const isNotZero = (value: CodecString): boolean => value !== ZeroStringValue;
 </script>

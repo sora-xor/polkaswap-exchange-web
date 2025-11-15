@@ -1,7 +1,8 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { DexId } from '@sora-substrate/sdk/build/dex/consts';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@wallet';
 import { defineStore } from 'pinia';
+import { nextTick } from 'vue';
 
 import {
   LiquiditySourceForMarketAlgorithm,
@@ -9,16 +10,23 @@ import {
   MarketAlgorithms,
   ZeroStringValue,
 } from '@/consts';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useSwapBalanceSubscriptions } from '@/composables/useSwapBalanceSubscriptions';
 import type { SwapState } from '@/stores/types/swap';
+import { requireLegacyStore } from '@/utils/legacy-store';
 import { settingsStorage } from '@/utils/storage';
-import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import type { Distribution, SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountBalance, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-const balanceSubscriptions = new TokenBalanceSubscriptions();
+let balanceSubscriptionApi: ReturnType<typeof useSwapBalanceSubscriptions> | null = null;
+const getBalanceSubscriptionApi = () => {
+  if (!balanceSubscriptionApi) {
+    balanceSubscriptionApi = useSwapBalanceSubscriptions();
+  }
+  return balanceSubscriptionApi;
+};
 
 const preservedResetKeys = new Set<keyof SwapState>(['tokenFromAddress', 'tokenToAddress']);
 
@@ -30,6 +38,8 @@ const buildInitialState = (): SwapState => {
     tokenToAddress: '',
     tokenFromBalance: null,
     tokenToBalance: null,
+    tokenFromCache: null,
+    tokenToCache: null,
     fromValue: '',
     toValue: '',
     amountWithoutImpact: '',
@@ -48,8 +58,8 @@ const buildInitialState = (): SwapState => {
 
 const resolveToken = (address: Nullable<string>): Nullable<RegisteredAccountAsset> => {
   if (!address) return null;
-
-  return store.getters.assets.assetDataByAddress(address) as Nullable<RegisteredAccountAsset>;
+  const assetsStore = useAssetsStore();
+  return assetsStore.assetDataByAddress(address) as Nullable<RegisteredAccountAsset>;
 };
 
 const applyBalance = (
@@ -62,18 +72,25 @@ const applyBalance = (
   return { ...token, balance } as RegisteredAccountAsset;
 };
 
+const resolveTokenWithBalance = (
+  address: Nullable<string>,
+  balance: Nullable<AccountBalance>
+): Nullable<RegisteredAccountAsset> => {
+  const token = resolveToken(address);
+  return applyBalance(token, balance);
+};
+
 /**
  * Pinia-powered swap store that mirrors the historic direct-vuex module.
  */
 export const useSwapStore = defineStore('swap', {
   state: (): SwapState => buildInitialState(),
   getters: {
-    tokenFrom: (state): Nullable<RegisteredAccountAsset> =>
-      applyBalance(resolveToken(state.tokenFromAddress), state.tokenFromBalance),
-    tokenTo: (state): Nullable<RegisteredAccountAsset> =>
-      applyBalance(resolveToken(state.tokenToAddress), state.tokenToBalance),
+    tokenFrom: (state): Nullable<RegisteredAccountAsset> => state.tokenFromCache,
+    tokenTo: (state): Nullable<RegisteredAccountAsset> => state.tokenToCache,
     marketAlgorithms(state): Array<MarketAlgorithms> {
-      const baseSources = store.getters.settings.debugEnabled
+      const legacyStore = requireLegacyStore();
+      const baseSources = legacyStore.getters.settings.debugEnabled
         ? state.liquiditySources
         : state.liquiditySources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
 
@@ -90,7 +107,7 @@ export const useSwapStore = defineStore('swap', {
     swapLiquiditySource(): Nullable<LiquiditySourceTypes> {
       if (!this.marketAlgorithmsAvailable) return undefined;
 
-      return store.getters.settings.liquiditySource;
+      return requireLegacyStore().getters.settings.liquiditySource;
     },
     swapMarketAlgorithm(): MarketAlgorithms {
       const liquiditySource = this.swapLiquiditySource ?? '';
@@ -139,7 +156,7 @@ export const useSwapStore = defineStore('swap', {
         state.fromValue,
         state.toValue,
         state.isExchangeB,
-        store.state.settings.slippageTolerance
+        requireLegacyStore().state.settings.slippageTolerance
       );
     },
   },
@@ -148,34 +165,25 @@ export const useSwapStore = defineStore('swap', {
       const token = direction === 'from' ? this.tokenFrom : this.tokenTo;
       const updateBalance = direction === 'from' ? this.setTokenFromBalance : this.setTokenToBalance;
 
-      balanceSubscriptions.remove(direction);
-
-      if (!store.getters.wallet.account.isLoggedIn || !token?.address) {
-        return;
-      }
-
-      if (token.address in store.getters.wallet.account.accountAssetsAddressTable) {
-        return;
-      }
-
-      balanceSubscriptions.add(direction, {
-        token,
-        updateBalance,
-      });
+      getBalanceSubscriptionApi().updateSubscription(direction, token, updateBalance);
     },
     setTokenFromAddress(address?: string) {
       this.tokenFromAddress = address ?? '';
+      this.tokenFromCache = resolveTokenWithBalance(this.tokenFromAddress, this.tokenFromBalance);
       this.updateTokenSubscription('from');
     },
     setTokenToAddress(address?: string) {
       this.tokenToAddress = address ?? '';
+      this.tokenToCache = resolveTokenWithBalance(this.tokenToAddress, this.tokenToBalance);
       this.updateTokenSubscription('to');
     },
     setTokenFromBalance(balance: Nullable<AccountBalance>) {
       this.tokenFromBalance = balance;
+      this.tokenFromCache = resolveTokenWithBalance(this.tokenFromAddress, this.tokenFromBalance);
     },
     setTokenToBalance(balance: Nullable<AccountBalance>) {
       this.tokenToBalance = balance;
+      this.tokenToCache = resolveTokenWithBalance(this.tokenToAddress, this.tokenToBalance);
     },
     setFromValue(value: string) {
       this.fromValue = value;
@@ -227,17 +235,22 @@ export const useSwapStore = defineStore('swap', {
       if (!(tokenFromAddress && tokenToAddress)) return;
 
       const [nextFromValue, nextToValue] = isExchangeB ? [toValue, ''] : ['', fromValue];
+      const nextFromCache = resolveTokenWithBalance(tokenToAddress, this.tokenToBalance);
+      const nextToCache = resolveTokenWithBalance(tokenFromAddress, this.tokenFromBalance);
 
-      this.tokenFromAddress = tokenToAddress;
-      this.tokenToAddress = tokenFromAddress;
-      this.fromValue = nextFromValue;
-      this.toValue = nextToValue;
-      this.isExchangeB = !isExchangeB;
+      this.setTokenFromAddress(tokenToAddress);
+      this.setTokenToAddress(tokenFromAddress);
+      this.setFromValue(nextFromValue);
+      this.setToValue(nextToValue);
+      this.setExchangeB(!isExchangeB);
+      this.tokenFromCache = nextFromCache;
+      this.tokenToCache = nextToCache;
 
-      await Promise.all([
-        Promise.resolve(this.updateTokenSubscription('from')),
-        Promise.resolve(this.updateTokenSubscription('to')),
-      ]);
+      await this.updateSubscriptions();
+      await nextTick();
+
+      this.tokenFromCache = resolveTokenWithBalance(this.tokenFromAddress, this.tokenFromBalance);
+      this.tokenToCache = resolveTokenWithBalance(this.tokenToAddress, this.tokenToBalance);
     },
     async updateSubscriptions() {
       await Promise.all([
@@ -246,8 +259,9 @@ export const useSwapStore = defineStore('swap', {
       ]);
     },
     resetSubscriptions() {
-      balanceSubscriptions.remove('from');
-      balanceSubscriptions.remove('to');
+      const manager = getBalanceSubscriptionApi();
+      manager.removeSubscription('from');
+      manager.removeSubscription('to');
     },
     reset() {
       this.resetSubscriptions();

@@ -1,0 +1,135 @@
+
+í*å*<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      (function () {
+        try {
+          if (typeof window === 'undefined') {
+            return;
+          }
+
+          var location = window.location;
+          if (!location) {
+            return;
+          }
+
+          var hostname = (location.hostname || '').toLowerCase();
+          var localHostnames = ['localhost', '127.0.0.1', '::1', '[::1]'];
+          var localSuffixes = ['.localhost'];
+          var ipv4Pattern = /^\d{1,3}(\.\d{1,3}){3}$/;
+          var privateRanges = [
+            /^127\.(\d{1,3}\.){2}\d{1,3}$/,
+            /^10\.(\d{1,3}\.){2}\d{1,3}$/,
+            /^192\.168\.(\d{1,3})\.\d{1,3}$/,
+            /^172\.(1[6-9]|2\d|3[0-1])\.(\d{1,3})\.\d{1,3}$/,
+            /^169\.254\.(\d{1,3})\.\d{1,3}$/,
+          ];
+
+          var isLocalHost =
+            localHostnames.indexOf(hostname) !== -1 ||
+            localSuffixes.some(function (suffix) {
+              return hostname.endsWith(suffix);
+            }) ||
+            (ipv4Pattern.test(hostname) &&
+              privateRanges.some(function (pattern) {
+                return pattern.test(hostname);
+              }));
+
+          if (location.protocol === 'http:' && !isLocalHost) {
+            location.protocol = 'https:';
+            return;
+          }
+
+          var pathname = location.pathname || '';
+          if (!pathname || pathname === '/' || pathname.endsWith('/')) {
+            return;
+          }
+
+          var segments = pathname.split('/');
+          var lastIndex = segments.length - 1;
+          var lastSegment = segments[lastIndex] || '';
+
+          if (lastSegment && lastSegment.indexOf('.') !== -1) {
+            segments[lastIndex] = '';
+          } else {
+            segments.push('');
+          }
+
+          var normalizedPath = segments.join('/');
+          if (normalizedPath !== pathname) {
+            var search = location.search || '';
+            var hash = location.hash || '';
+            location.replace(normalizedPath + search + hash);
+          }
+        } catch (error) {
+          console.warn('[redirect] skipped', error);
+        }
+      })();
+    </script>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <title>Polkaswap â€” The DEX for the Interoperable Future.</title>
+    <meta name="title" property="title" content="Polkaswap â€” The DEX for the Interoperable Future." />
+    <meta
+      name="description"
+      property="description"
+      content="Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of Polkadot is here and we are at the forefront!"
+    />
+    <meta
+      name="keywords"
+      property="keywords"
+      content="Polkaswap, DEX, Cross-chain, DeFi, AMM, Polkadot, Ecosystem, Interoperable, Future, SORA, SORA network, Kusama"
+    />
+    <meta name="author" property="author" content="SORA" />
+    <meta name="twitter:title" content="Polkaswap â€” The DEX for the Interoperable Future." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://polkaswap.io/polkaswap-share-image.jpg" />
+    <meta name="twitter:site" content="@polkaswap" />
+    <meta
+      name="twitter:description"
+      content="Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of Polkadot is here and we are at the forefront!"
+    />
+    <meta property="og:title" content="Polkaswap â€” The DEX for the Interoperable Future." />
+    <meta
+      property="og:description"
+      content="Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of Polkadot is here and we are at the forefront!"
+    />
+    <meta property="og:site_name" content="Polkaswap" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://polkaswap.io/" />
+    <meta property="og:image" content="https://polkaswap.io/polkaswap-share-image.jpg" />
+    <meta property="og:image:secure_url" content="https://polkaswap.io/polkaswap-share-image.jpg" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="630" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+      if (
+        typeof window !== 'undefined' &&
+        window.location &&
+        window.location.search &&
+        window.location.search.indexOf('ipfs-check') !== -1
+      ) {
+        window.__PS_IPFS_CHECK__ = true;
+      }
+    </script>
+    <script type="module" crossorigin src="./assets/index-DjB-Okl0.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/echarts-Cxkeyetf.js">
+    <link rel="modulepreload" crossorigin href="./assets/polkadot-Bh6PX9YG.js">
+    <link rel="modulepreload" crossorigin href="./assets/wallet-stack-BuqMcUTa.js">
+    <link rel="modulepreload" crossorigin href="./assets/lodash-vOcFpjD8.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-ClhD0gNz.css">
+  </head>
+  <body>
+    <noscript>
+      <strong
+        >We're sorry but Polkaswap doesn't work properly without JavaScript enabled. Please enable it to
+        continue.</strong
+      >
+    </noscript>
+    <div id="app"></div>
+  </body>
+</html>
+å*

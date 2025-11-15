@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="visibility" :show-close-button="false" append-to-body class="account-select-dialog">
+  <dialog-base v-model:visible="visibility" :show-close-button="false" append-to-body class="account-select-dialog">
     <connection-view
       :chain-api="chainApi"
       :account="subAccount"
@@ -10,63 +10,52 @@
       :check-connected-account-source="checkConnectedAccountSource"
       :show-close="!subAccount.address"
       shadow="never"
-    />
+    ></connection-view>
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components, WALLET_TYPES } from '@wallet';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { action, getter, state, mutation } from '@/store/decorators';
+import store from '@/store';
+
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
     ConnectionView: components.ConnectionView,
   },
-})
-export default class BridgeSelectSubAccount extends Mixins(TranslationMixin) {
-  @state.bridge.subBridgeConnector private subBridgeConnector!: SubNetworksConnector;
+});
 
-  @state.web3.subAccountDialogVisibility private subAccountDialogVisibility!: boolean;
-  @mutation.web3.setSubAccountDialogVisibility private setSubAccountDialogVisibility!: (flag: boolean) => void;
+const visibility = computed({
+  get: () => Boolean(store.state.web3.subAccountDialogVisibility),
+  set: (flag: boolean) => store.commit.web3.setSubAccountDialogVisibility(flag),
+});
 
-  @getter.web3.subAccount public subAccount!: WALLET_TYPES.PolkadotJsAccount;
+const subBridgeConnector = computed<SubNetworksConnector>(() => store.state.bridge.subBridgeConnector);
+const subAccount = computed<WALLET_TYPES.PolkadotJsAccount>(() => store.getters.web3.subAccount);
 
-  @action.web3.selectSubAccount private selectSubAccount!: (account: WALLET_TYPES.PolkadotJsAccount) => Promise<void>;
-  @action.web3.resetSubAccount public logout!: () => void;
-  @action.web3.changeSubAccountName public rename!: (data: { address: string; name: string }) => Promise<void>;
+const chainApi = computed(() => subBridgeConnector.value.accountApi);
 
-  get visibility(): boolean {
-    return this.subAccountDialogVisibility;
+const logout = () => store.dispatch.web3.resetSubAccount();
+const rename = (payload: { address: string; name: string }) => store.dispatch.web3.changeSubAccountName(payload);
+
+const checkConnectedAccountSource = (source: string) => {
+  if (source && subAccount.value && subAccount.value.source === source) {
+    logout();
   }
+};
 
-  set visibility(flag: boolean) {
-    this.setSubAccountDialogVisibility(flag);
-  }
+const closeView = () => {
+  visibility.value = false;
+};
 
-  get chainApi() {
-    return this.subBridgeConnector.accountApi;
-  }
-
-  checkConnectedAccountSource(source: string) {
-    if (source && this.subAccount && this.subAccount.source === source) {
-      this.logout();
-    }
-  }
-
-  async login(account: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
-    await this.selectSubAccount(account);
-    this.closeView();
-  }
-
-  closeView(): void {
-    this.visibility = false;
-  }
-}
+const login = async (account: WALLET_TYPES.PolkadotJsAccount): Promise<void> => {
+  await store.dispatch.web3.selectSubAccount(account);
+  closeView();
+};
 </script>
 
 <style lang="scss">

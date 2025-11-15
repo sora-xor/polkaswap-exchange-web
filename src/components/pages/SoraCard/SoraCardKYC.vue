@@ -7,34 +7,36 @@
     @back="handleBack"
     class="sora-card"
   >
-    <terms-and-conditions v-if="step === KycProcess.TermsAndConditions" @confirm="confirmToS" />
-    <phone v-else-if="step === KycProcess.Phone" @confirm="confirmPhone" />
-    <email v-else-if="step === KycProcess.Email" @confirm="confirmEmail" />
-    <payment v-else-if="step === KycProcess.Payment" @confirm="confirmPayment" />
-    <guidance v-else-if="step === KycProcess.Guidance" @confirm="confirmReadiness" />
-    <kyc-view v-else-if="step === KycProcess.KycView" @confirm="confirmKyc" />
+    <terms-and-conditions v-if="step === KycProcess.TermsAndConditions" @confirm="confirmToS"></terms-and-conditions>
+    <phone v-else-if="step === KycProcess.Phone" @confirm="confirmPhone"></phone>
+    <email v-else-if="step === KycProcess.Email" @confirm="confirmEmail"></email>
+    <payment v-else-if="step === KycProcess.Payment" @confirm="confirmPayment"></payment>
+    <guidance v-else-if="step === KycProcess.Guidance" @confirm="confirmReadiness"></guidance>
+    <kyc-view v-else-if="step === KycProcess.KycView" @confirm="confirmKyc"></kyc-view>
   </wallet-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed, onMounted, ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
 import { CardUIViews } from '@/types/card';
 
-enum KycProcess {
-  TermsAndConditions,
-  Phone,
-  Email,
-  Payment,
-  Guidance,
-  KycView,
-}
+const KycProcess = {
+  TermsAndConditions: 0,
+  Phone: 1,
+  Email: 2,
+  Payment: 3,
+  Guidance: 4,
+  KycView: 5,
+} as const;
 
-@Component({
+type KycProcessKey = (typeof KycProcess)[keyof typeof KycProcess];
+
+defineOptions({
   components: {
     WalletBase: components.WalletBase,
     TermsAndConditions: lazyComponent(Components.TermsAndConditions),
@@ -44,126 +46,131 @@ enum KycProcess {
     Payment: lazyComponent(Components.Payment),
     KycView: lazyComponent(Components.KycView),
   },
-})
-export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @Prop({ default: false, type: Boolean }) readonly getReadyPage!: boolean;
+});
 
-  step: KycProcess = KycProcess.TermsAndConditions;
+const props = defineProps<{ getReadyPage?: boolean }>();
 
-  KycProcess = KycProcess;
+const emit = defineEmits<{
+  (event: 'go-to-start'): void;
+  (event: 'go-to-kyc-result'): void;
+  (event: 'go-to-dashboard'): void;
+}>();
 
-  handleBack(): void {
-    if (this.step === KycProcess.TermsAndConditions) {
-      this.$emit('go-to-start');
-      return;
-    }
+const { t } = useTranslation();
 
-    if (this.step === KycProcess.Phone) {
-      this.step = KycProcess.TermsAndConditions;
-      return;
-    }
+const loading = ref(false);
+const step = ref<KycProcessKey>(KycProcess.TermsAndConditions);
 
-    if (this.step === KycProcess.Email) {
-      this.step = KycProcess.Phone;
-      return;
-    }
+const title = computed(() => {
+  switch (step.value) {
+    case KycProcess.TermsAndConditions:
+      return t('card.termsAndConditions');
+    case KycProcess.Guidance:
+      return t('card.getPrepared');
+    case KycProcess.Phone:
+      return t('card.phoneConfirmation');
+    case KycProcess.Email:
+      return t('card.emailConfirmation');
+    case KycProcess.KycView:
+      return t('card.completeKYC');
+    default:
+      return '';
+  }
+});
 
-    if (this.step === KycProcess.Payment) {
-      this.step = KycProcess.TermsAndConditions;
-      return;
-    }
-
-    if (this.step === KycProcess.Guidance) {
-      this.step = KycProcess.TermsAndConditions;
-      return;
-    }
-
-    if (this.step === KycProcess.KycView) {
-      this.step = KycProcess.Guidance;
-    }
+const handleBack = () => {
+  if (step.value === KycProcess.TermsAndConditions) {
+    emit('go-to-start');
+    return;
   }
 
-  get title(): string {
-    switch (this.step) {
-      case KycProcess.TermsAndConditions:
-        return this.t('card.termsAndConditions');
-      case KycProcess.Guidance:
-        return this.t('card.getPrepared');
-      case KycProcess.Phone:
-        return this.t('card.phoneConfirmation');
-      case KycProcess.Email:
-        return this.t('card.emailConfirmation');
-      case KycProcess.KycView:
-        return this.t('card.completeKYC');
-      default:
-        return '';
-    }
+  if (step.value === KycProcess.Phone || step.value === KycProcess.Payment || step.value === KycProcess.Guidance) {
+    step.value = KycProcess.TermsAndConditions;
+    return;
   }
 
-  confirmToS(): void {
-    this.step = KycProcess.Phone;
+  if (step.value === KycProcess.Email) {
+    step.value = KycProcess.Phone;
+    return;
   }
 
-  confirmSignIn(): void {
-    this.step = KycProcess.Phone;
+  if (step.value === KycProcess.KycView) {
+    step.value = KycProcess.Guidance;
+  }
+};
+
+const confirmToS = () => {
+  step.value = KycProcess.Phone;
+};
+
+const confirmPayment = () => {
+  step.value = KycProcess.Guidance;
+};
+
+const confirmPhone = (state: CardUIViews) => {
+  switch (state) {
+    case CardUIViews.Payment:
+      step.value = KycProcess.Payment;
+      break;
+    case CardUIViews.Kyc:
+      step.value = KycProcess.Guidance;
+      break;
+    case CardUIViews.Email:
+      step.value = KycProcess.Email;
+      break;
+    case CardUIViews.KycResult:
+      emit('go-to-kyc-result');
+      break;
+    case CardUIViews.Start:
+      emit('go-to-start');
+      break;
+    case CardUIViews.Dashboard:
+      emit('go-to-dashboard');
+      break;
+  }
+};
+
+const confirmEmail = (state: CardUIViews) => {
+  if (state === CardUIViews.Payment) {
+    step.value = KycProcess.Payment;
   }
 
-  confirmPayment(): void {
-    this.step = KycProcess.Guidance;
+  if (state === CardUIViews.Kyc) {
+    step.value = KycProcess.Guidance;
+  }
+};
+
+const confirmReadiness = () => {
+  step.value = KycProcess.KycView;
+};
+
+const confirmKyc = (state: CardUIViews) => {
+  if (state === CardUIViews.KycResult) {
+    emit('go-to-kyc-result');
+    return;
   }
 
-  confirmPhone(state: CardUIViews): void {
-    switch (state) {
-      case CardUIViews.Payment:
-        this.step = KycProcess.Payment;
-        break;
-      case CardUIViews.Kyc:
-        this.step = KycProcess.Guidance;
-        break;
-      case CardUIViews.Email:
-        this.step = KycProcess.Email;
-        break;
-      case CardUIViews.KycResult:
-        this.$emit('go-to-kyc-result');
-        break;
-      case CardUIViews.Start:
-        this.$emit('go-to-start');
-        break;
-      case CardUIViews.Dashboard:
-        this.$emit('go-to-dashboard');
-        break;
-    }
+  emit('go-to-start');
+};
+
+onMounted(() => {
+  if (props.getReadyPage) {
+    step.value = KycProcess.Guidance;
   }
+});
 
-  confirmEmail(state: CardUIViews): void {
-    if (state === CardUIViews.Payment) {
-      this.step = KycProcess.Payment;
-    }
-
-    if (state === CardUIViews.Kyc) {
-      this.step = KycProcess.Guidance;
-    }
-  }
-
-  confirmReadiness(): void {
-    this.step = KycProcess.KycView;
-  }
-
-  confirmKyc(state: CardUIViews): void {
-    if (state === CardUIViews.KycResult) {
-      this.$emit('go-to-kyc-result');
-      return;
-    }
-
-    this.$emit('go-to-start');
-  }
-
-  mounted(): void {
-    if (this.getReadyPage) {
-      this.step = KycProcess.Guidance;
-    }
-  }
-}
+defineExpose({
+  KycProcess,
+  step,
+  loading,
+  handleBack,
+  confirmToS,
+  confirmPayment,
+  confirmPhone,
+  confirmEmail,
+  confirmReadiness,
+  confirmKyc,
+});
 </script>
 
 <style lang="scss" scoped>

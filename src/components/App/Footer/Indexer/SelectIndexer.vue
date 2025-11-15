@@ -24,11 +24,11 @@
             </div>
           </s-radio>
         </s-radio-group>
-        <s-divider />
+        <s-divider></s-divider>
         <div class="statistics-dialog__group">
           <div class="statistics-dialog__item">
             <div class="switcher">
-              <s-switch v-model="useCeres" />
+              <s-switch v-model="useCeres"></s-switch>
               <span>{{ t('footer.statistics.dialog.useCeres') }}</span>
             </div>
           </div>
@@ -38,21 +38,50 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, toRef } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import type { Indexer } from '@/types/indexers';
 
-import type { IndexerType } from '@soramitsu/soraneo-wallet-web/lib/consts';
+import type { IndexerType } from '@wallet/lib/consts';
 
-@Component
-export default class SelectIndexer extends Mixins(TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) indexers!: Array<Indexer>;
+defineOptions({ name: 'SelectIndexer' });
 
-  @ModelSync('indexer', 'update:indexer', { type: String }) readonly indexerType!: IndexerType;
-  @ModelSync('ceres', 'update:ceres', { type: Boolean }) readonly useCeres!: boolean;
-}
+const props = withDefaults(
+  defineProps<{
+    indexers?: Array<Indexer>;
+    indexer?: IndexerType;
+    ceres?: boolean;
+  }>(),
+  {
+    indexers: () => [],
+    ceres: false,
+  }
+);
+
+const emit = defineEmits<{
+  (event: 'update:indexer', value: IndexerType): void;
+  (event: 'update:ceres', value: boolean): void;
+}>();
+
+const { t, TranslationConsts } = useTranslation();
+const indexers = toRef(props, 'indexers');
+
+const indexerType = computed<IndexerType | undefined>({
+  get: () => props.indexer,
+  set: (value) => {
+    if (value === undefined) return;
+    emit('update:indexer', value);
+  },
+});
+
+const useCeres = computed<boolean>({
+  get: () => props.ceres,
+  set: (value) => {
+    emit('update:ceres', value);
+  },
+});
 </script>
 
 <style lang="scss">

@@ -1,0 +1,133 @@
+
+»3³3import{by as g,bI as a,bN as w,cj as m,bD as f,bB as l,bL as v,bM as $,bG as C,bF as N,bQ as k,bR as R,bS as I}from"./index-DjB-Okl0.js";import{d as A,s as y,H as h,a as x}from"./index-D1vJKCDW-BtS_4qC4.js";import{m as S}from"./if-defined-DgIoGpc1-BpRFTkQ2.js";import"./index-DIEZAM9s-B3mkUSok.js";import"./index-CZQgiEVa-CrjR9x7o.js";import"./polkadot-Bh6PX9YG.js";import"./echarts-Cxkeyetf.js";import"./wallet-stack-BuqMcUTa.js";import"./lodash-vOcFpjD8.js";const T=k`
+  button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: ${({spacing:e})=>e[4]};
+    background-color: ${({tokens:e})=>e.theme.foregroundPrimary};
+    border-radius: ${({borderRadius:e})=>e[3]};
+    border: none;
+    padding: ${({spacing:e})=>e[3]};
+    transition: background-color ${({durations:e})=>e.lg}
+      ${({easings:e})=>e["ease-out-power-2"]};
+    will-change: background-color;
+  }
+
+  /* -- Hover & Active states ----------------------------------------------------------- */
+  button:hover:enabled,
+  button:active:enabled {
+    background-color: ${({tokens:e})=>e.theme.foregroundSecondary};
+  }
+
+  wui-text {
+    flex: 1;
+    color: ${({tokens:e})=>e.theme.textSecondary};
+  }
+
+  wui-flex {
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: ${({spacing:e})=>e["01"]};
+  }
+
+  wui-icon {
+    color: ${({tokens:e})=>e.theme.iconDefault};
+  }
+
+  .network-icon {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: ${({borderRadius:e})=>e[4]};
+    overflow: hidden;
+    margin-left: -8px;
+  }
+
+  .network-icon:first-child {
+    margin-left: 0px;
+  }
+
+  .network-icon:after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    border-radius: ${({borderRadius:e})=>e[4]};
+    box-shadow: inset 0 0 0 1px ${({tokens:e})=>e.core.glass010};
+  }
+`;var b=function(e,i,o,n){var r=arguments.length,t=r<3?i:n,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")t=Reflect.decorate(e,i,o,n);else for(var c=e.length-1;c>=0;c--)(s=e[c])&&(t=(r<3?s(t):r>3?s(i,o,t):s(i,o))||t);return r>3&&t&&Object.defineProperty(i,o,t),t};let u=class extends g{constructor(){super(...arguments),this.networkImages=[""],this.text=""}render(){return l`
+      <button>
+        <wui-text variant="md-regular" color="inherit">${this.text}</wui-text>
+        <wui-flex>
+          ${this.networksTemplate()}
+          <wui-icon name="chevronRight" size="sm" color="inherit"></wui-icon>
+        </wui-flex>
+      </button>
+    `}networksTemplate(){const e=this.networkImages.slice(0,5);return l` <wui-flex class="networks">
+      ${e?.map(i=>l` <wui-flex class="network-icon"> <wui-image src=${i}></wui-image> </wui-flex>`)}
+    </wui-flex>`}};u.styles=[R,I,T];b([y({type:Array})],u.prototype,"networkImages",void 0);b([y()],u.prototype,"text",void 0);u=b([x("wui-compatible-network")],u);const E=k`
+  wui-compatible-network {
+    margin-top: ${({spacing:e})=>e[4]};
+    width: 100%;
+  }
+
+  wui-qr-code {
+    width: unset !important;
+    height: unset !important;
+  }
+
+  wui-icon {
+    align-items: normal;
+  }
+`;var p=function(e,i,o,n){var r=arguments.length,t=r<3?i:n,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")t=Reflect.decorate(e,i,o,n);else for(var c=e.length-1;c>=0;c--)(s=e[c])&&(t=(r<3?s(t):r>3?s(i,o,t):s(i,o))||t);return r>3&&t&&Object.defineProperty(i,o,t),t};let d=class extends g{constructor(){super(),this.unsubscribe=[],this.address=a.getAccountData()?.address,this.profileName=a.getAccountData()?.profileName,this.network=a.state.activeCaipNetwork,this.unsubscribe.push(a.subscribeChainProp("accountState",e=>{e?(this.address=e.address,this.profileName=e.profileName):w.showError("Account not found")}),a.subscribeKey("activeCaipNetwork",e=>{e?.id&&(this.network=e)}))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){if(!this.address)throw new Error("w3m-wallet-receive-view: No account provided");const e=m.getNetworkImage(this.network);return l` <wui-flex
+      flexDirection="column"
+      .padding=${["0","4","4","4"]}
+      alignItems="center"
+    >
+      <wui-chip-button
+        data-testid="receive-address-copy-button"
+        @click=${this.onCopyClick.bind(this)}
+        text=${A.getTruncateString({string:this.profileName||this.address||"",charsStart:this.profileName?18:4,charsEnd:this.profileName?0:4,truncate:this.profileName?"end":"middle"})}
+        icon="copy"
+        size="sm"
+        imageSrc=${e||""}
+        variant="gray"
+      ></wui-chip-button>
+      <wui-flex
+        flexDirection="column"
+        .padding=${["4","0","0","0"]}
+        alignItems="center"
+        gap="4"
+      >
+        <wui-qr-code
+          size=${232}
+          theme=${f.state.themeMode}
+          uri=${this.address}
+          ?arenaClear=${!0}
+          color=${S(f.state.themeVariables["--w3m-qr-color"])}
+          data-testid="wui-qr-code"
+        ></wui-qr-code>
+        <wui-text variant="lg-regular" color="primary" align="center">
+          Copy your address or scan this QR code
+        </wui-text>
+        <wui-button @click=${this.onCopyClick.bind(this)} size="sm" variant="neutral-secondary">
+          <wui-icon slot="iconLeft" size="sm" color="inherit" name="copy"></wui-icon>
+          <wui-text variant="md-regular" color="inherit">Copy address</wui-text>
+        </wui-button>
+      </wui-flex>
+      ${this.networkTemplate()}
+    </wui-flex>`}networkTemplate(){const e=a.getAllRequestedCaipNetworks(),i=a.checkIfSmartAccountEnabled(),o=a.state.activeCaipNetwork,n=e.filter(t=>t?.chainNamespace===o?.chainNamespace);if(v(o?.chainNamespace)===$.ACCOUNT_TYPES.SMART_ACCOUNT&&i)return o?l`<wui-compatible-network
+        @click=${this.onReceiveClick.bind(this)}
+        text="Only receive assets on this network"
+        .networkImages=${[m.getNetworkImage(o)??""]}
+      ></wui-compatible-network>`:null;const r=(n?.filter(t=>t?.assets?.imageId)?.slice(0,5)).map(m.getNetworkImage).filter(Boolean);return l`<wui-compatible-network
+      @click=${this.onReceiveClick.bind(this)}
+      text="Only receive assets on these networks"
+      .networkImages=${r}
+    ></wui-compatible-network>`}onReceiveClick(){C.push("WalletCompatibleNetworks")}onCopyClick(){try{this.address&&(N.copyToClopboard(this.address),w.showSuccess("Address copied"))}catch{w.showError("Failed to copy")}}};d.styles=E;p([h()],d.prototype,"address",void 0);p([h()],d.prototype,"profileName",void 0);p([h()],d.prototype,"network",void 0);d=p([x("w3m-wallet-receive-view")],d);export{d as W3mWalletReceiveView};
+³3

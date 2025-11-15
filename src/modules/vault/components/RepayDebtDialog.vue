@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :title="title" :visible.sync="isVisible" :tooltip="t('kensetsu.repayDebtDescription')">
+  <dialog-base :title="title" v-model:visible="isVisible" :tooltip="t('kensetsu.repayDebtDescription')">
     <div class="repay-debt">
       <token-input
         ref="debtInput"
@@ -15,14 +15,14 @@
         :disabled="loading"
         @max="handleMaxRepayDebtValue"
         @slide="handleRepayPercentChange"
-      />
+      ></token-input>
       <prev-next-info-line
         :label="t('kensetsu.outstandingDebt')"
         :tooltip="t('kensetsu.outstandingDebtDescription')"
         :symbol="debtSymbol"
         :prev="formattedPrevBorrow"
         :next="formattedNextBorrow"
-      />
+      ></prev-next-info-line>
       <prev-next-info-line
         :label="t('kensetsu.ltv')"
         :tooltip="t('kensetsu.ltvDescription')"
@@ -50,242 +50,239 @@
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
-      />
+      ></info-line>
     </div>
   </dialog-base>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
+import { components, api } from '@wallet';
+import { computed, nextTick, ref, watch } from 'vue';
 
-import type TokenInput from '@/components/shared/Input/TokenInput.vue';
 import { Components, HundredNumber, ObjectInit, ZeroStringValue } from '@/consts';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useNotification } from '@/composables/useNotification';
+import { useTransaction } from '@/composables/useTransaction';
+import { useTranslation } from '@/composables/useTranslation';
 import { LtvTranslations, VaultComponents } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
 import { getLtvStatus } from '@/modules/vault/util';
 import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
 import { asZeroValue, getAssetBalance, hasInsufficientBalance } from '@/utils';
 
+import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Vault } from '@sora-substrate/sdk/build/kensetsu/types';
+import type { Nullable } from '@/types/common';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    TokenInput: lazyComponent(Components.TokenInput),
-    ValueStatus: lazyComponent(Components.ValueStatusWrapper),
-    PrevNextInfoLine: vaultLazyComponent(VaultComponents.PrevNextInfoLine),
+const DialogBase = components.DialogBase;
+const InfoLine = components.InfoLine;
+const TokenInput = lazyComponent(Components.TokenInput);
+const ValueStatus = lazyComponent(Components.ValueStatusWrapper);
+const PrevNextInfoLine = vaultLazyComponent(VaultComponents.PrevNextInfoLine);
+
+const props = withDefaults(
+  defineProps<{
+    visible?: boolean;
+    vault?: Nullable<Vault>;
+    debtAsset?: Nullable<RegisteredAccountAsset>;
+    prevLtv?: Nullable<FPNumber>;
+    maxSafeDebt?: FPNumber;
+    maxLtv?: number;
+  }>(),
+  {
+    visible: false,
+    vault: ObjectInit,
+    debtAsset: ObjectInit,
+    prevLtv: () => FPNumber.ZERO,
+    maxSafeDebt: () => FPNumber.ZERO,
+    maxLtv: HundredNumber,
+  }
+);
+
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'confirm'): void;
+}>();
+
+const { t } = useTranslation();
+const { withNotifications, loading } = useTransaction();
+const { showAppAlert } = useNotification();
+const { Zero, Hundred, getFPNumber, getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } =
+  useFormattedAmount();
+
+const xorSymbol = XOR.symbol;
+
+const debtInput = ref<InstanceType<typeof TokenInputComponent> | null>(null);
+const repayDebtValue = ref('');
+
+const isVisible = computed({
+  get: () => props.visible,
+  set: (value: boolean) => emit('update:visible', value),
+});
+
+const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject | undefined);
+const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
+const shouldBalanceBeHidden = computed(() => store.state.wallet.settings.shouldBalanceBeHidden ?? false);
+
+const vault = computed(() => props.vault as Nullable<Vault>);
+const debtAsset = computed(() => props.debtAsset as Nullable<RegisteredAccountAsset>);
+const prevLtv = computed(() => props.prevLtv as Nullable<FPNumber>);
+const maxSafeDebt = computed(() => props.maxSafeDebt ?? Zero);
+const maxLtv = computed(() => props.maxLtv ?? HundredNumber);
+
+const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.CreateVault] ?? ZeroStringValue);
+const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));
+const xorBalance = computed(() => getFPNumberFromCodec(accountXor.value?.balance?.transferable ?? ZeroStringValue));
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
+const isInsufficientXorForFee = computed(() => xorBalance.value.sub(fpNetworkFee.value).isLtZero());
+
+const title = computed(() => t('kensetsu.repayDebt'));
+
+const isRepayDebtZero = computed(() => asZeroValue(repayDebtValue.value));
+
+const repayDebtFp = computed(() => {
+  if (isRepayDebtZero.value) return Zero;
+  return getFPNumber(repayDebtValue.value, debtAsset.value?.decimals);
+});
+
+const debt = computed(() => vault.value?.debt ?? Zero);
+
+const debtAssetBalance = computed<CodecString>(() => getAssetBalance(debtAsset.value));
+const debtAssetBalanceFp = computed(() => getFPNumberFromCodec(debtAssetBalance.value, debtAsset.value?.decimals));
+
+const isRepayMoreThanDebt = computed(() => debt.value.lt(repayDebtFp.value));
+
+const isInsufficientBalance = computed(() => {
+  if (!debtAsset.value) return true;
+  return hasInsufficientBalance(debtAsset.value, repayDebtValue.value, networkFee.value);
+});
+
+const disabled = computed(
+  () =>
+    loading.value ||
+    isInsufficientXorForFee.value ||
+    isRepayDebtZero.value ||
+    isRepayMoreThanDebt.value ||
+    isInsufficientBalance.value
+);
+
+const isMaxRepayAvailable = computed(() => {
+  if (shouldBalanceBeHidden.value || isRepayDebtZero.value) return true;
+  if (!debt.value.isFinity() || debt.value.isLteZero()) return false;
+  return !repayDebtFp.value.isEqualTo(debt.value);
+});
+
+const debtSymbol = computed(() => debtAsset.value?.symbol ?? '');
+const formattedPrevBorrow = computed(() => vault.value?.debt.toLocaleString() ?? ZeroStringValue);
+
+const nextBorrow = computed<Nullable<FPNumber>>(() => {
+  const debtValue = vault.value?.debt;
+  if (!debtValue) return null;
+  if (isRepayDebtZero.value) return debtValue;
+  const diff = debtValue.sub(repayDebtFp.value);
+  return diff.isGteZero() ? diff : Zero;
+});
+
+const formattedNextBorrow = computed(() => nextBorrow.value?.toLocaleString() ?? ZeroStringValue);
+const formattedPrevLtv = computed(() => prevLtv.value?.toLocaleString(2) ?? ZeroStringValue);
+
+const ltvCoeff = computed<Nullable<FPNumber>>(() => {
+  if (!nextBorrow.value || maxSafeDebt.value.isZero()) return null;
+  return nextBorrow.value.div(maxSafeDebt.value);
+});
+
+const ltv = computed<Nullable<FPNumber>>(() => (ltvCoeff.value?.isFinity() ? ltvCoeff.value.mul(HundredNumber) : null));
+const ltvNumber = computed(() => ltv.value?.toNumber() ?? 0);
+const formattedLtv = computed(() =>
+  ltvCoeff.value ? ltvCoeff.value.mul(maxLtv.value).toLocaleString(2) : ZeroStringValue
+);
+const ltvText = computed(() => LtvTranslations[getLtvStatus(ltvNumber.value)]);
+
+const maxInputRepay = computed(() => (debt.value.gt(debtAssetBalanceFp.value) ? debtAssetBalanceFp.value : debt.value));
+
+const repayDebtValuePercent = computed(() => {
+  if (!repayDebtValue.value) return 0;
+  const percent = repayDebtFp.value.div(maxInputRepay.value).mul(HundredNumber).toNumber(0);
+  return percent > HundredNumber ? HundredNumber : percent;
+});
+
+const errorMessage = computed(() => {
+  if (isInsufficientXorForFee.value) {
+    return t('insufficientBalanceText', { tokenSymbol: xorSymbol });
+  }
+  if (isRepayDebtZero.value) {
+    return t('kensetsu.error.enterRepayDebt');
+  }
+  if (isRepayMoreThanDebt.value) {
+    return t('kensetsu.error.repayMoreThanDebt');
+  }
+  if (isInsufficientBalance.value) {
+    return t('insufficientBalanceText', { tokenSymbol: debtSymbol.value });
+  }
+  return '';
+});
+
+const handleMaxRepayDebtValue = () => {
+  repayDebtValue.value = maxInputRepay.value.toString();
+};
+
+const handleRepayPercentChange = (percent: number) => {
+  repayDebtValue.value = maxInputRepay.value.mul(percent / HundredNumber).toString();
+};
+
+const handleRepayDebt = async () => {
+  if (disabled.value) {
+    if (errorMessage.value) {
+      showAppAlert(errorMessage.value, t('errorText'));
+    }
+  } else {
+    try {
+      await withNotifications(async () => {
+        if (!(vault.value && debtAsset.value)) {
+          throw new Error('[api.kensetsu.repayVaultDebt]: vault or asset is null');
+        }
+        await api.kensetsu.repayVaultDebt(vault.value, repayDebtValue.value, debtAsset.value);
+      });
+      emit('confirm');
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  isVisible.value = false;
+};
+
+watch(
+  () => props.visible,
+  async (value) => {
+    await nextTick();
+    repayDebtValue.value = '';
+    if (value) {
+      const focus =
+        debtInput.value && typeof (debtInput.value as any).focus === 'function'
+          ? (debtInput.value as any).focus
+          : undefined;
+      focus?.();
+    }
   },
-})
-export default class RepayDebtDialog extends Mixins(
-  mixins.TransactionMixin,
-  mixins.DialogMixin,
-  mixins.FormattedAmountMixin
-) {
-  readonly xorSymbol = XOR.symbol;
-  readonly getLtvStatus = getLtvStatus;
+  { immediate: true }
+);
 
-  @Ref('debtInput') debtInput!: Nullable<TokenInput>;
-
-  @Prop({ type: Object, default: ObjectInit }) readonly vault!: Nullable<Vault>;
-  @Prop({ type: Object, default: ObjectInit }) readonly debtAsset!: Nullable<RegisteredAccountAsset>;
-  @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
-  @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly maxSafeDebt!: FPNumber;
-  @Prop({ type: Number, default: HundredNumber }) readonly maxLtv!: number;
-
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
-
-  repayDebtValue = '';
-
-  @Watch('visible')
-  private async handleDialogVisibility(value: boolean): Promise<void> {
-    await this.$nextTick();
-    this.repayDebtValue = '';
-    this.debtInput?.focus();
-  }
-
-  private get xorBalance(): FPNumber {
-    return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
-  }
-
-  get title(): string {
-    return this.t('kensetsu.repayDebt');
-  }
-
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.CreateVault];
-  }
-
-  private get fpNetworkFee(): FPNumber {
-    return this.getFPNumberFromCodec(this.networkFee);
-  }
-
-  get networkFeeFormatted(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
-
-  get isInsufficientXorForFee(): boolean {
-    return this.xorBalance.sub(this.fpNetworkFee).isLtZero();
-  }
-
-  get isRepayDebtZero(): boolean {
-    return asZeroValue(this.repayDebtValue);
-  }
-
-  private get repayDebtFp(): FPNumber {
-    if (this.isRepayDebtZero) return this.Zero;
-    return this.getFPNumber(this.repayDebtValue);
-  }
-
-  get isRepayMoreThanDebt(): boolean {
-    return this.debt.lt(this.repayDebtFp);
-  }
-
-  get isInsufficientBalance(): boolean {
-    if (!this.debtAsset) return true;
-    return hasInsufficientBalance(this.debtAsset, this.repayDebtValue, this.networkFee);
-  }
-
-  get disabled(): boolean {
-    return (
-      this.loading ||
-      this.isInsufficientXorForFee ||
-      this.isRepayDebtZero ||
-      this.isRepayMoreThanDebt ||
-      this.isInsufficientBalance
-    );
-  }
-
-  get debtAssetBalance(): CodecString {
-    return getAssetBalance(this.debtAsset);
-  }
-
-  private get debtAssetBalanceFp(): FPNumber {
-    return this.getFPNumberFromCodec(this.debtAssetBalance, this.debtAsset?.decimals);
-  }
-
-  private get debt(): FPNumber {
-    return this.vault?.debt ?? this.Zero;
-  }
-
-  get isMaxRepayAvailable(): boolean {
-    if (this.shouldBalanceBeHidden || this.isRepayDebtZero) return true;
-    if (!this.debt.isFinity() || this.debt.isLteZero()) return false;
-    return !this.repayDebtFp.isEqualTo(this.debt);
-  }
-
-  get debtSymbol(): string {
-    return this.debtAsset?.symbol ?? '';
-  }
-
-  get formattedPrevBorrow(): string {
-    return this.vault?.debt.toLocaleString() ?? ZeroStringValue;
-  }
-
-  private get nextBorrow(): Nullable<FPNumber> {
-    const debt = this.vault?.debt;
-    if (this.isRepayDebtZero) return debt;
-    const diff = debt?.sub(this.repayDebtValue);
-    return diff?.isGteZero() ? diff : this.Zero;
-  }
-
-  get formattedNextBorrow(): string {
-    return this.nextBorrow?.toLocaleString() ?? ZeroStringValue;
-  }
-
-  get formattedPrevLtv(): string {
-    return this.prevLtv?.toLocaleString(2) ?? ZeroStringValue;
-  }
-
-  private get ltvCoeff(): Nullable<FPNumber> {
-    if (!this.nextBorrow) return null;
-    return this.nextBorrow.div(this.maxSafeDebt);
-  }
-
-  get ltv(): Nullable<FPNumber> {
-    return this.ltvCoeff?.isFinity() ? this.ltvCoeff.mul(HundredNumber) : null;
-  }
-
-  get ltvNumber(): number {
-    if (!this.ltv) return 0;
-    return this.ltv.toNumber();
-  }
-
-  get formattedLtv(): string {
-    if (!this.ltvCoeff) return ZeroStringValue;
-    return this.ltvCoeff.mul(this.maxLtv).toLocaleString(2);
-  }
-
-  get ltvText(): string {
-    return LtvTranslations[getLtvStatus(this.ltvNumber)];
-  }
-
-  /**
-   * It's required for max & slider to realize what value should be used
-   * as maximum. When debt is lower than balance debt should be used.
-   * Otherwise, balance.
-   */
-  private get maxInputRepay(): FPNumber {
-    return this.debt.gt(this.debtAssetBalanceFp) ? this.debtAssetBalanceFp : this.debt;
-  }
-
-  get repayDebtValuePercent(): number {
-    if (!this.repayDebtValue) return 0;
-
-    const percent = this.repayDebtFp.div(this.maxInputRepay).mul(HundredNumber).toNumber(0);
-    return percent > HundredNumber ? HundredNumber : percent;
-  }
-
-  handleMaxRepayDebtValue(): void {
-    this.repayDebtValue = this.maxInputRepay.toString();
-  }
-
-  handleRepayPercentChange(percent: number): void {
-    this.repayDebtValue = this.maxInputRepay.mul(percent / HundredNumber).toString();
-  }
-
-  get errorMessage(): string {
-    let error = '';
-    if (this.isInsufficientXorForFee) {
-      error = this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol });
-    } else if (this.isRepayDebtZero) {
-      error = this.t('kensetsu.error.enterRepayDebt');
-    } else if (this.isRepayMoreThanDebt) {
-      error = this.t('kensetsu.error.repayMoreThanDebt');
-    } else if (this.isInsufficientBalance) {
-      error = this.t('insufficientBalanceText', { tokenSymbol: this.debtSymbol });
-    }
-    return error;
-  }
-
-  async handleRepayDebt(): Promise<void> {
-    if (this.disabled) {
-      if (this.errorMessage) {
-        this.$alert(this.errorMessage, { title: this.t('errorText') });
-      }
-    } else {
-      try {
-        await this.withNotifications(async () => {
-          if (!(this.vault && this.debtAsset)) {
-            throw new Error('[api.kensetsu.repayVaultDebt]: vault is null');
-          }
-          await api.kensetsu.repayVaultDebt(this.vault, this.repayDebtValue, this.debtAsset);
-        });
-        this.$emit('confirm');
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    this.isVisible = false;
-  }
-}
+defineExpose({
+  handleRepayDebt,
+  handleMaxRepayDebtValue,
+  handleRepayPercentChange,
+  repayDebtValue,
+  disabled,
+  errorMessage,
+  isInsufficientXorForFee,
+  isVisible,
+});
 </script>
 
 <style lang="scss" scoped>

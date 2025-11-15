@@ -1,0 +1,22 @@
+{{> header }}
+
+// import type lookup before we augment - in some environments
+// this is required to allow for ambient/previous definitions
+import '@polkadot/rpc-core/types/jsonrpc';
+
+{{{ importsAll }}}
+
+export type __AugmentedRpc = AugmentedRpc<() => unknown>;
+
+declare module '@polkadot/rpc-core/types/jsonrpc' {
+  interface RpcInterface {
+    {{#each modules}}
+    {{{name}}}: {
+      {{#each items}}
+      {{> docs}}
+      {{{name}}}: AugmentedRpc<{{#if generic}}<{{{generic}}}>{{/if}}({{{args}}}) => Observable<{{{type}}}>>;
+      {{/each}}
+    };
+    {{/each}}
+  } // RpcInterface
+} // declare module

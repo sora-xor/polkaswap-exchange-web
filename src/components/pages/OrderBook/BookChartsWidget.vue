@@ -8,50 +8,40 @@
     :request-subscription="requestSubscription"
     is-available
     class="order-book-chart"
-  />
+  ></price-chart-widget>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { useOrderBook } from '@/composables/useOrderBook';
 import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook/orderBook';
 import { fetchOrderBookPriceData } from '@/indexer/queries/orderBook/price';
 import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
+
 import type { RequestMethod, RequestSubscription, RequestSubscriptionCallback } from '@/types/chart';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { DexId } from '@sora-substrate/sdk/build/dex/consts';
-
-@Component({
+defineOptions({
   components: {
     PriceChartWidget: lazyComponent(Components.PriceChartWidget),
   },
-})
-export default class BookChartsWidget extends Mixins(TranslationMixin) {
-  @getter.orderBook.baseAsset baseAsset!: AccountAsset;
-  @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
-  @state.orderBook.dexId dexId!: DexId;
+});
 
-  get orderBookId(): Nullable<string> {
-    if (!(this.baseAsset && this.quoteAsset)) return null;
+const { baseAsset, quoteAsset } = useOrderBook();
+const dexId = computed(() => store.state.orderBook.dexId as string);
 
-    return [this.dexId, this.baseAsset.address, this.quoteAsset.address].join('-');
-  }
+const orderBookId = computed<Nullable<string>>(() => {
+  if (!(baseAsset.value && quoteAsset.value)) return null;
+  return [dexId.value, baseAsset.value.address, quoteAsset.value.address].join('-');
+});
 
-  get requestMethod(): RequestMethod {
-    return fetchOrderBookPriceData;
-  }
+const requestMethod: RequestMethod = fetchOrderBookPriceData;
 
-  get requestSubscription(): Nullable<RequestSubscription> {
-    const id = this.orderBookId;
-
-    if (!id) return null;
-
-    return async (callback: RequestSubscriptionCallback) =>
-      await subscribeOnOrderBookUpdates(id, callback, console.error);
-  }
-}
+const requestSubscription = computed<Nullable<RequestSubscription>>(() => {
+  if (!orderBookId.value) return null;
+  return async (callback: RequestSubscriptionCallback) =>
+    await subscribeOnOrderBookUpdates(orderBookId.value as string, callback, console.error);
+});
 </script>

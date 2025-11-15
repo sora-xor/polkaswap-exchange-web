@@ -1,30 +1,42 @@
 <template>
   <div class="widget-container" :class="{ 'widget-container--bordered': withBorder }" v-loading="widgetLoading">
-    <iframe v-if="src" class="widget" :src="src" @load="onLoadWidget" />
+    <iframe v-if="src" class="widget" :src="src" @load="onLoadWidget"></iframe>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { ref, watch } from 'vue';
 
-@Component
-export default class IFrameWidget extends Vue {
-  @Prop({ default: '', type: String }) readonly src!: string;
-  @Prop({ default: false, type: Boolean }) readonly withBorder!: boolean;
+const props = withDefaults(
+  defineProps<{
+    src?: string;
+    withBorder?: boolean;
+  }>(),
+  {
+    src: '',
+    withBorder: false,
+  }
+);
 
-  @Watch('src', { immediate: true })
-  private onChangeSrc(value) {
+const widgetLoading = ref(false);
+
+watch(
+  () => props.src,
+  (value) => {
     if (value) {
-      this.widgetLoading = true;
+      widgetLoading.value = true;
     }
-  }
+  },
+  { immediate: true }
+);
 
-  widgetLoading = false;
-
-  onLoadWidget(): void {
-    this.widgetLoading = false;
-  }
+function onLoadWidget(): void {
+  widgetLoading.value = false;
 }
+
+defineExpose({
+  widgetLoading,
+});
 </script>
 
 <style lang="scss">

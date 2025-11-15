@@ -1,0 +1,3 @@
+
+öîimport{_ as a}from"./Polkaswap.vue_vue_type_script_setup_true_lang-BXE-FFp6.js";import{T as p,C as n}from"./index-DjB-Okl0.js";import{l as r,v as m,A as c,o as l,x as _,w as i,M as f}from"./polkadot-Bh6PX9YG.js";import"./wallet-stack-BuqMcUTa.js";import"./echarts-Cxkeyetf.js";import"./lodash-vOcFpjD8.js";const u=r({name:"AppLogoButton",__name:"AppLogoButton",props:{theme:{default:p.LIGHT},responsive:{type:Boolean,default:!1}},setup(o){const e=o;return(t,d)=>{const s=m("s-button");return l(),c(s,f({class:["app-logo",{responsive:e.responsive}],type:"link",size:"large"},t.$attrs),{default:_(()=>[i(a,{theme:e.theme,class:"app-logo__image"},null,8,["theme"])]),_:1},16,["class"])}}}),C=n(u,[["__scopeId","data-v-a81c22f7"]]);export{C as default};
+î

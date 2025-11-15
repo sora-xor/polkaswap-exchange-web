@@ -1,95 +1,95 @@
 <template>
   <div class="bridge-container">
-    <router-view
-      v-bind="{
-        parentLoading: subscriptionsDataLoading,
-        ...$attrs,
-      }"
-      v-on="$listeners"
-    />
+    <router-view v-bind="forwardedAttrs"></router-view>
     <confirm-dialog
       :chain-api="chainApi"
       :account="subAccount"
       :visibility="isSignTxDialogVisible"
       :set-visibility="setSignTxDialogVisibility"
-    />
-    <bridge-select-network />
-    <select-provider-dialog />
+    ></confirm-dialog>
+    <bridge-select-network></bridge-select-network>
+    <select-provider-dialog></select-provider-dialog>
   </div>
 </template>
 
-<script lang="ts">
-import { components, mixins, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+<script lang="ts" setup>
+import { components, WALLET_TYPES } from '@wallet';
 import isEqual from 'lodash/fp/isEqual';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { computed, onBeforeUnmount, useAttrs, watch } from 'vue';
 
-import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useSubscriptions } from '@/composables/useSubscriptions';
+import { useWeb3Connection } from '@/composables/useWeb3Connection';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { action, getter, mutation, state } from '@/store/decorators';
+import store from '@/store';
+
+import type { Nullable } from '@/types/common';
 import type { NetworkData } from '@/types/bridge';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 
-@Component({
+defineOptions({
   components: {
     ConfirmDialog: components.ConfirmDialog,
     BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
     SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
   },
-})
-export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
-  @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
-  @action.web3.restoreSelectedNetwork private restoreSelectedNetwork!: AsyncFnWithoutArgs;
-  @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
-  @action.bridge.subscribeOnBlockUpdates private subscribeOnBlockUpdates!: AsyncFnWithoutArgs;
-  @action.bridge.updateOutgoingMaxLimit private updateOutgoingMaxLimit!: AsyncFnWithoutArgs;
-  @action.bridge.resetBridgeForm private resetBridgeForm!: AsyncFnWithoutArgs;
-  @mutation.bridge.resetBlockUpdatesSubscription private resetBlockUpdatesSubscription!: FnWithoutArgs;
-  @mutation.bridge.resetOutgoingMaxLimitSubscription private resetOutgoingMaxLimitSubscription!: FnWithoutArgs;
-  @getter.web3.selectedNetwork private selectedNetwork!: Nullable<NetworkData>;
-  @getter.bridge.externalAccount private externalAccount!: string;
-  // bridge transaction signing
-  @getter.web3.subAccount public subAccount!: WALLET_TYPES.PolkadotJsAccount;
-  @state.bridge.subBridgeConnector private subBridgeConnector!: SubNetworksConnector;
-  @state.bridge.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
-  @mutation.bridge.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
+});
 
-  trackLogin = false; // overrides SubscriptionsMixin property
+const attrs = useAttrs();
 
-  get chainApi() {
-    return this.subBridgeConnector.accountApi;
+const { disconnectExternalNetwork } = useWeb3Connection();
+const { soraAddress } = useInternalConnect();
+
+const selectedNetwork = computed(() => store.getters.web3.selectedNetwork as Nullable<NetworkData>);
+const externalAccount = computed(() => store.getters.bridge.externalAccount as string);
+const subAccount = computed(() => store.getters.web3.subAccount as WALLET_TYPES.PolkadotJsAccount);
+const subBridgeConnector = computed(() => store.state.bridge.subBridgeConnector as SubNetworksConnector);
+const chainApi = computed(() => subBridgeConnector.value?.accountApi);
+const isSignTxDialogVisible = computed(() => Boolean(store.state.bridge.isSignTxDialogVisible));
+
+const setSignTxDialogVisibility = (flag: boolean) => {
+  store.commit.bridge.setSignTxDialogVisibility(flag);
+};
+
+const getSupportedApps = () => store.dispatch.web3.getSupportedApps();
+const restoreSelectedNetwork = () => store.dispatch.web3.restoreSelectedNetwork();
+const updateExternalBalance = () => store.dispatch.bridge.updateExternalBalance();
+const subscribeOnBlockUpdates = () => store.dispatch.bridge.subscribeOnBlockUpdates();
+const updateOutgoingMaxLimit = () => store.dispatch.bridge.updateOutgoingMaxLimit();
+const resetBridgeForm = () => store.dispatch.bridge.resetBridgeForm();
+const resetBlockUpdatesSubscription = () => store.commit.bridge.resetBlockUpdatesSubscription();
+const resetOutgoingMaxLimitSubscription = () => store.commit.bridge.resetOutgoingMaxLimitSubscription();
+
+const updateBridgeApps = async () => {
+  await getSupportedApps();
+  // don't block UI while connecting to an external network
+  void restoreSelectedNetwork();
+};
+
+const { subscriptionsDataLoading, trackLogin } = useSubscriptions({
+  startSubscriptions: [subscribeOnBlockUpdates, updateOutgoingMaxLimit, updateBridgeApps],
+  resetSubscriptions: [resetBlockUpdatesSubscription, resetOutgoingMaxLimitSubscription],
+});
+
+trackLogin.value = false;
+
+watch(selectedNetwork, (curr, prev) => {
+  if (curr && prev && !isEqual(curr)(prev)) {
+    void resetBridgeForm();
   }
+});
 
-  @Watch('selectedNetwork')
-  private onSelectedNetworkChange(curr: Nullable<NetworkData>, prev: Nullable<NetworkData>): void {
-    if (curr && prev && !isEqual(curr)(prev)) {
-      this.resetBridgeForm();
-    }
-  }
+watch([soraAddress, externalAccount], () => {
+  void updateExternalBalance();
+});
 
-  @Watch('soraAddress')
-  @Watch('externalAccount')
-  private onExternalAccountChange(): void {
-    this.updateExternalBalance();
-  }
+onBeforeUnmount(() => {
+  disconnectExternalNetwork();
+});
 
-  async created(): Promise<void> {
-    this.setStartSubscriptions([this.subscribeOnBlockUpdates, this.updateOutgoingMaxLimit, this.updateBridgeApps]);
-    this.setResetSubscriptions([this.resetBlockUpdatesSubscription, this.resetOutgoingMaxLimitSubscription]);
-  }
-
-  beforeDestroy(): void {
-    this.disconnectExternalNetwork();
-  }
-
-  /**
-   * This is not subscription, but should be called after reconnect to node - so it's added to subscriptions list
-   */
-  private async updateBridgeApps(): Promise<void> {
-    await this.getSupportedApps();
-    // don't block ui while connecting to external network
-    this.restoreSelectedNetwork();
-  }
-}
+const forwardedAttrs = computed(() => ({
+  parentLoading: subscriptionsDataLoading.value,
+  ...attrs,
+}));
 </script>

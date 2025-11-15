@@ -1,6 +1,6 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@wallet';
 import { combineLatest } from 'rxjs';
 
 import { ZeroStringValue } from '@/consts';

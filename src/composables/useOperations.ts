@@ -1,6 +1,6 @@
 import { Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { HiddenValue, accountIdBasedOperations } from '@soramitsu/soraneo-wallet-web/src/consts';
-import { formatAddress, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web/src/util';
+import { HiddenValue, accountIdBasedOperations } from '@wallet/src/consts';
+import { formatAddress, groupRewardsByAssetsList } from '@wallet/src/util';
 import { computed } from 'vue';
 
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
@@ -8,7 +8,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import store from '@/store';
 
 import type { History } from '@sora-substrate/sdk';
-import type { PolkadotJsAccount } from '@soramitsu/soraneo-wallet-web/src/types/common';
+import type { PolkadotJsAccount } from '@wallet/src/types/common';
 
 const twoAssetsBasedOperations = [
   Operation.AddLiquidity,

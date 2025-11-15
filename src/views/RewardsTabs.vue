@@ -2,11 +2,11 @@
   <div class="container rewards-tabs">
     <s-tabs class="rewards-tabs__tabs" :key="windowWidth" :value="currentTab" type="card" @input="handleChangeTab">
       <s-tab
-        v-for="(rewardsTab, index) in RewardsTabsItems"
+        v-for="(rewardsTab, index) in rewardsTabsItems"
         :key="rewardsTab"
-        :label="t(`rewards.${RewardsTabsItems[index]}`)"
+        :label="t(`rewards.${rewardsTabsItems[index]}`)"
         :name="rewardsTab"
-      />
+      ></s-tab>
     </s-tabs>
 
     <router-view
@@ -14,34 +14,43 @@
         parentLoading: parentLoading,
         ...$attrs,
       }"
-      v-on="$listeners"
-    />
+    ></router-view>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, toRef } from 'vue';
+import { useRoute } from 'vue-router';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { RewardsTabsItems } from '@/consts';
+import { useTranslation } from '@/composables/useTranslation';
+import { RewardsTabsItems as RewardsTabsItemsEnum } from '@/consts';
 import router from '@/router';
-import { state } from '@/store/decorators';
+import store from '@/store';
 
-@Component
-export default class RewardsTabs extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  readonly RewardsTabsItems = RewardsTabsItems;
+defineOptions({
+  name: 'RewardsTabs',
+});
 
-  @state.settings.windowWidth windowWidth!: number;
-
-  get currentTab(): string {
-    return this.$route.name as string;
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+  }>(),
+  {
+    parentLoading: false,
   }
+);
 
-  handleChangeTab(name: string): void {
-    router.push({ name });
-  }
-}
+const parentLoading = toRef(props, 'parentLoading');
+const { t } = useTranslation();
+const route = useRoute();
+
+const rewardsTabsItems = Object.values(RewardsTabsItemsEnum);
+const windowWidth = computed(() => store.state.settings.windowWidth as number);
+const currentTab = computed(() => route.name as string);
+
+const handleChangeTab = (name: string) => {
+  router.push({ name });
+};
 </script>
 
 <style lang="scss">

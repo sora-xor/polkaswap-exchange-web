@@ -11,7 +11,7 @@
             placement="top"
             tabindex="-1"
           >
-            <s-icon class="vaults-header__title-icon" name="info-16" size="16px" />
+            <s-icon class="vaults-header__title-icon" name="info-16" size="16px"></s-icon>
           </s-tooltip>
         </h2>
       </s-col>
@@ -41,7 +41,7 @@
           :tabs="tabs"
           :value="selectedTab"
           @input="handleTabChange"
-        />
+        ></responsive-tabs>
       </s-col>
     </s-row>
     <template v-if="hasVaults">
@@ -61,16 +61,16 @@
                 :second-token="vault.lockedAsset"
                 size="medium"
                 class="vault-title__icon"
-              />
+              ></pair-token-logo>
               <div class="vault-title__container s-flex-column">
                 <h4 class="vault-title__name">{{ getVaultTitle(vault.lockedAsset, vault.debtAsset) }}</h4>
-                <position-status :status="selectedTab" />
+                <position-status :status="selectedTab"></position-status>
               </div>
               <s-button type="action" size="small" alternative :tooltip="t('assets.details')">
-                <s-icon name="arrows-chevron-right-rounded-24" size="24" />
+                <s-icon name="arrows-chevron-right-rounded-24" size="24"></s-icon>
               </s-button>
             </div>
-            <s-divider class="vault-title__divider" />
+            <s-divider class="vault-title__divider"></s-divider>
             <template v-if="isOpenedVault(vault)">
               <div class="vault-details s-flex">
                 <div class="vault-details__item s-flex-column">
@@ -83,7 +83,7 @@
                       placement="top"
                       tabindex="-1"
                     >
-                      <s-icon name="info-16" size="11px" />
+                      <s-icon name="info-16" size="11px"></s-icon>
                     </s-tooltip>
                   </p>
                   <template v-if="vault.lockedAsset">
@@ -91,12 +91,12 @@
                       value-can-be-hidden
                       :value="format(vault.lockedAmount)"
                       :asset-symbol="getLockedSymbol(vault.lockedAsset)"
-                    />
+                    ></formatted-amount>
                     <formatted-amount
                       value-can-be-hidden
                       is-fiat-value
                       :value="formatFiat(vault.lockedAmount, vault.lockedAsset)"
-                    />
+                    ></formatted-amount>
                   </template>
                 </div>
                 <div class="vault-details__item s-flex-column">
@@ -109,7 +109,7 @@
                       placement="top"
                       tabindex="-1"
                     >
-                      <s-icon name="info-16" size="11px" />
+                      <s-icon name="info-16" size="11px"></s-icon>
                     </s-tooltip>
                   </p>
                   <template v-if="vault.debtAsset">
@@ -117,12 +117,12 @@
                       value-can-be-hidden
                       :value="format(vault.debt)"
                       :asset-symbol="getDebtSymbol(vault.debtAsset)"
-                    />
+                    ></formatted-amount>
                     <formatted-amount
                       value-can-be-hidden
                       is-fiat-value
                       :value="formatFiat(vault.debt, vault.debtAsset)"
-                    />
+                    ></formatted-amount>
                   </template>
                 </div>
                 <div class="vault-details__item s-flex-column">
@@ -135,7 +135,7 @@
                       placement="top"
                       tabindex="-1"
                     >
-                      <s-icon name="info-16" size="11px" />
+                      <s-icon name="info-16" size="11px"></s-icon>
                     </s-tooltip>
                   </p>
                   <template v-if="vault.debtAsset">
@@ -143,16 +143,16 @@
                       value-can-be-hidden
                       :value="format(vault.available)"
                       :asset-symbol="getDebtSymbol(vault.debtAsset)"
-                    />
+                    ></formatted-amount>
                     <formatted-amount
                       value-can-be-hidden
                       is-fiat-value
                       :value="formatFiat(vault.available, vault.debtAsset)"
-                    />
+                    ></formatted-amount>
                   </template>
                 </div>
               </div>
-              <s-divider class="vault__divider" />
+              <s-divider class="vault__divider"></s-divider>
               <div class="vault__ltv s-flex">
                 <p class="p4 vault__label">
                   {{ TranslationConsts.LTV }}
@@ -163,7 +163,7 @@
                     placement="top"
                     tabindex="-1"
                   >
-                    <s-icon name="info-16" size="11px" />
+                    <s-icon name="info-16" size="11px"></s-icon>
                   </s-tooltip>
                 </p>
                 <span class="vault__ltv-value s-flex">
@@ -193,7 +193,7 @@
                     placement="top"
                     tabindex="-1"
                   >
-                    <s-icon name="info-16" size="11px" />
+                    <s-icon name="info-16" size="11px"></s-icon>
                   </s-tooltip>
                 </p>
                 <template v-if="vault.lockedAsset && vault.debtAsset">
@@ -201,12 +201,12 @@
                     value-can-be-hidden
                     :value="format(vault.returned)"
                     :asset-symbol="getLockedSymbol(vault.lockedAsset)"
-                  />
+                  ></formatted-amount>
                   <formatted-amount
                     value-can-be-hidden
                     is-fiat-value
                     :value="formatFiat(vault.returned, vault.lockedAsset)"
-                  />
+                  ></formatted-amount>
                   <s-button
                     class="vault-details__action"
                     size="small"
@@ -228,37 +228,36 @@
         :total="total"
         :last-page="lastPage"
         @pagination-click="handlePaginationClick"
-      />
-      <s-divider class="vaults-divider" />
+      ></history-pagination>
+      <s-divider class="vaults-divider"></s-divider>
     </template>
-    <explore-overall-stats />
+    <explore-overall-stats></explore-overall-stats>
     <explore-collaterals
       class="vaults-stats"
       :explore-query="exploreQuery"
       @update-search="updateSearch"
       @open="handleCreateSelectedVault"
-    />
+    ></explore-collaterals>
     <div class="vaults-disclaimer s-flex">
       <div class="disclaimer s-flex-column">
         <div class="disclaimer__title s-flex">
           <div class="disclaimer__badge">
-            <s-icon class="disclaimer__icon" name="notifications-alert-triangle-24" size="14" />
+            <s-icon class="disclaimer__icon" name="notifications-alert-triangle-24" size="14"></s-icon>
           </div>
           <h4>{{ t('disclaimerTitle') }}</h4>
         </div>
         <p class="disclaimer__description p4">{{ t('kensetsu.disclaimerDescription') }}</p>
-        <external-link class="disclaimer__link p4" :title="t('kensetsu.readMore')" :href="link" />
+        <external-link class="disclaimer__link p4" :title="t('kensetsu.readMore')" :href="link"></external-link>
       </div>
     </div>
-    <create-vault-dialog :visible.sync="showCreateVaultDialog" />
+    <create-vault-dialog v-model:visible="showCreateVaultDialog"></create-vault-dialog>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, ref, watch } from 'vue';
+import { components, WALLET_CONSTS, api } from '@wallet';
 
-import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { Components, HundredNumber, ZeroStringValue } from '@/consts';
 import { DsBreakpoints, BreakpointClass } from '@/consts/layout';
 import { LtvTranslations, VaultComponents, VaultPageNames, VaultStatuses } from '@/modules/vault/consts';
@@ -266,12 +265,33 @@ import { vaultLazyComponent } from '@/modules/vault/router';
 import type { ClosedVault, VaultStatus } from '@/modules/vault/types';
 import { getLtvStatus } from '@/modules/vault/util';
 import router, { lazyComponent } from '@/router';
-import { state, getter, action } from '@/store/decorators';
-import type { ResponsiveTab } from '@/types/tabs';
+import store from '@/store';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTranslation } from '@/composables/useTranslation';
 
-import type { FPNumber, CodecString } from '@sora-substrate/math';
+import type { Nullable } from '@/types/common';
+import type { ResponsiveTab } from '@/types/tabs';
+import type { FPNumber } from '@sora-substrate/math';
 import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/sdk/build/kensetsu/types';
+
+defineOptions({
+  components: {
+    TokenLogo: components.TokenLogo,
+    FormattedAmount: components.FormattedAmount,
+    ExternalLink: components.ExternalLink,
+    HistoryPagination: components.HistoryPagination,
+    CreateVaultDialog: vaultLazyComponent(VaultComponents.CreateVaultDialog),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    ValueStatus: lazyComponent(Components.ValueStatusWrapper),
+    ResponsiveTabs: lazyComponent(Components.ResponsiveTabs),
+    ExploreOverallStats: vaultLazyComponent(VaultComponents.ExploreOverallStats),
+    ExploreCollaterals: vaultLazyComponent(VaultComponents.ExploreCollaterals),
+    PositionStatus: vaultLazyComponent(VaultComponents.PositionStatus),
+  },
+});
 
 type OpenedVaultData = Vault & {
   lockedAsset: Nullable<RegisteredAccountAsset>;
@@ -288,265 +308,247 @@ type ClosedVaultData = ClosedVault & {
 
 type VaultData = OpenedVaultData | ClosedVaultData;
 
-@Component({
-  components: {
-    TokenLogo: components.TokenLogo,
-    FormattedAmount: components.FormattedAmount,
-    ExternalLink: components.ExternalLink,
-    HistoryPagination: components.HistoryPagination,
-    CreateVaultDialog: vaultLazyComponent(VaultComponents.CreateVaultDialog),
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    ValueStatus: lazyComponent(Components.ValueStatusWrapper),
-    ResponsiveTabs: lazyComponent(Components.ResponsiveTabs),
-    ExploreOverallStats: vaultLazyComponent(VaultComponents.ExploreOverallStats),
-    ExploreCollaterals: vaultLazyComponent(VaultComponents.ExploreCollaterals),
-    PositionStatus: vaultLazyComponent(VaultComponents.PositionStatus),
+const link = 'https://medium.com/@shibarimoto/kensetsu-ken-356077ebee78';
+
+const { t, TranslationConsts } = useTranslation();
+const { connectSoraWallet, isLoggedIn } = useInternalConnect();
+const { formatCodecNumber, formatStringValue, getFiatAmountByFPNumber, getFiatAmountByCodecString, Zero } =
+  useFormattedAmount();
+
+const loading = ref(false);
+const showCreateVaultDialog = ref(false);
+const selectedTab = ref<VaultStatus>(VaultStatuses.Opened);
+const exploreQuery = ref('');
+const activeCollapseItems = ref<string[]>([]);
+
+const currentPage = ref(1);
+const pageAmount = ref(6);
+const isLtrDirection = ref(true);
+
+const windowWidth = computed(() => store.state.settings.windowWidth as number);
+const screenBreakpointClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
+
+const openedVaults = computed(() => (store.state.vault.accountVaults as Vault[]) ?? []);
+const closedAccountVaults = computed(() => (store.state.vault.closedAccountVaults as ClosedVault[]) ?? []);
+const collaterals = computed(() => store.state.vault.collaterals as Record<string, Collateral>);
+const averageCollateralPrices = computed(
+  () => store.state.vault.averageCollateralPrices as Record<string, Nullable<FPNumber>>
+);
+
+const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
+const getBorrowTax = store.getters.vault.getBorrowTax as (debtAsset: Asset | AccountAsset | string) => number;
+
+const selectCollateral = (address?: string) => store.dispatch.vault.setCollateralTokenAddress(address);
+const selectDebt = (address?: string) => store.dispatch.vault.setDebtTokenAddress(address);
+
+const resolvePageAmount = (width: number): number => {
+  if (width <= DsBreakpoints.sm) return 2;
+  if (width <= DsBreakpoints.lg) return 4;
+  if (width <= DsBreakpoints.xl) return 6;
+  return 8;
+};
+
+watch(
+  windowWidth,
+  (width) => {
+    const next = resolvePageAmount(width);
+    if (next !== pageAmount.value) {
+      pageAmount.value = next;
+      currentPage.value = 1;
+      isLtrDirection.value = true;
+    }
   },
-})
-export default class Vaults extends Mixins(
-  InternalConnectMixin,
-  mixins.FormattedAmountMixin,
-  mixins.PaginationSearchMixin
-) {
-  readonly link = 'https://medium.com/@shibarimoto/kensetsu-ken-356077ebee78';
-  readonly getLtvStatus = getLtvStatus;
+  { immediate: true }
+);
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
-  @getter.vault.getBorrowTax private getTax!: (debtAsset: Asset | AccountAsset | string) => number;
-  @state.vault.closedAccountVaults private closedAccountVaults!: ClosedVault[];
-  @state.vault.accountVaults private openedVaults!: Vault[];
-  @state.vault.collaterals private collaterals!: Record<string, Collateral>;
-  @state.vault.averageCollateralPrices private averageCollateralPrices!: Record<string, Nullable<FPNumber>>;
-  @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
-  @state.settings.windowWidth windowWidth!: number;
+const closedVaultsData = computed<ClosedVaultData[]>(() =>
+  closedAccountVaults.value.map((item) => ({
+    ...item,
+    lockedAsset: getAsset(item.lockedAssetId),
+    debtAsset: getAsset(item.debtAssetId),
+  }))
+);
 
-  @action.vault.setCollateralTokenAddress private selectCollateral!: (address?: string) => Promise<void>;
-  @action.vault.setDebtTokenAddress private selectDebt!: (address?: string) => Promise<void>;
+const closedVaults = computed(() => closedVaultsData.value.filter((vault) => vault.status === VaultStatuses.Closed));
+const liquidatedVaults = computed(() =>
+  closedVaultsData.value.filter((vault) => vault.status === VaultStatuses.Liquidated)
+);
 
-  showCreateVaultDialog = false;
-  selectedTab: VaultStatus = VaultStatuses.Opened;
+const openedVaultsData = computed<OpenedVaultData[]>(() =>
+  openedVaults.value.map((vault) => {
+    const lockedAsset = getAsset(vault.lockedAssetId);
+    const debtAsset = getAsset(vault.debtAssetId);
+    const borrowTax = getBorrowTax(vault.debtAssetId);
+    const collateralId = api.kensetsu.serializeKey(vault.lockedAssetId, vault.debtAssetId);
+    const collateral = collaterals.value[collateralId];
+    const averagePrice = averageCollateralPrices.value[collateralId] ?? Zero;
+    const collateralVolume = averagePrice.mul(vault.lockedAmount);
+    const ratio = collateral?.riskParams.liquidationRatioReversed ?? 0;
+    const maxSafeDebt = collateralVolume.mul(ratio).div(HundredNumber);
+    const maxSafeDebtWithoutTax = maxSafeDebt.sub(maxSafeDebt.mul(borrowTax));
+    const ltvCoeff = vault.debt.div(maxSafeDebt);
+    const ltv = ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
+    const adjustedLtv = ltv ? ltvCoeff.mul(ratio) : null;
+    const availableCoeff = maxSafeDebtWithoutTax.sub(vault.debt);
+    let totalAvailable = collateral?.riskParams.hardCap.sub(collateral.debtSupply) ?? Zero;
+    totalAvailable = totalAvailable.sub(totalAvailable.mul(borrowTax));
+    let available = totalAvailable.lt(availableCoeff) ? totalAvailable : availableCoeff;
+    available = !available.isFinity() || available.isLteZero() ? Zero : available.dp(2);
 
-  pageAmount = 6; // override PaginationSearchMixin, getter cannot be used, that's why @Watch is used
+    return { ...vault, lockedAsset, debtAsset, ltv, adjustedLtv, available };
+  })
+);
 
-  exploreQuery = ''; // for the ExploreCollaterals, cannot be used inside because of the ExplorePageMixin
+const openedVaultsLength = computed(() => openedVaults.value.length);
+const closedVaultsLength = computed(() => closedVaults.value.length);
+const liquidatedVaultsLength = computed(() => liquidatedVaults.value.length);
 
-  @Watch('windowWidth')
-  onWindowWidthChange(): void {
-    let pageAmount: number;
-    if (this.windowWidth <= DsBreakpoints.sm) {
-      pageAmount = 2;
-    } else if (this.windowWidth <= DsBreakpoints.lg) {
-      pageAmount = 4;
-    } else if (this.windowWidth <= DsBreakpoints.xl) {
-      pageAmount = 6;
-    } else {
-      pageAmount = 8;
-    }
-    if (pageAmount !== this.pageAmount) {
-      this.pageAmount = pageAmount;
-      this.resetPage();
-    }
+const hasVaults = computed(
+  () => isLoggedIn.value && Boolean(openedVaultsLength.value + closedAccountVaults.value.length)
+);
+
+const showDropdown = computed(() =>
+  [BreakpointClass.Mobile, BreakpointClass.LargeMobile].includes(screenBreakpointClass.value)
+);
+
+const getVaultsLength = (status: VaultStatus): number => {
+  switch (status) {
+    case VaultStatuses.Closed:
+      return closedVaultsLength.value;
+    case VaultStatuses.Liquidated:
+      return liquidatedVaultsLength.value;
+    case VaultStatuses.Opened:
+      return openedVaultsLength.value;
+    default:
+      return 0;
+  }
+};
+
+const tabs = computed<ResponsiveTab[]>(() =>
+  Object.values(VaultStatuses).map((status) => ({
+    name: status,
+    label: `${t(`kensetsu.status.${status}`)} (${getVaultsLength(status)})`,
+  }))
+);
+
+const vaultsData = computed<VaultData[]>(() => {
+  switch (selectedTab.value) {
+    case VaultStatuses.Opened:
+      return openedVaultsData.value;
+    case VaultStatuses.Closed:
+      return closedVaults.value;
+    case VaultStatuses.Liquidated:
+      return liquidatedVaults.value;
+    default:
+      return openedVaultsData.value;
+  }
+});
+
+const total = computed(() => vaultsData.value.length);
+const lastPage = computed(() => Math.max(1, Math.ceil(total.value / pageAmount.value) || 1));
+
+const getPageItems = (items: VaultData[]): VaultData[] => {
+  const start = (currentPage.value - 1) * pageAmount.value;
+  const end = start + pageAmount.value;
+  return items.slice(start, end);
+};
+
+const filteredVaultsData = computed(() => getPageItems(vaultsData.value));
+
+watch(total, () => {
+  currentPage.value = 1;
+  isLtrDirection.value = true;
+});
+
+const handleTabChange = (tab: VaultStatus) => {
+  selectedTab.value = tab;
+  currentPage.value = 1;
+  isLtrDirection.value = true;
+};
+
+const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
+  let next = currentPage.value;
+
+  switch (button) {
+    case WALLET_CONSTS.PaginationButton.Prev:
+      next -= 1;
+      break;
+    case WALLET_CONSTS.PaginationButton.Next:
+      next += 1;
+      if (next === lastPage.value) {
+        isLtrDirection.value = false;
+      }
+      break;
+    case WALLET_CONSTS.PaginationButton.First:
+      next = 1;
+      isLtrDirection.value = true;
+      break;
+    case WALLET_CONSTS.PaginationButton.Last:
+      next = lastPage.value;
+      isLtrDirection.value = false;
+      break;
+    default:
+      next = 1;
   }
 
-  @Watch('total')
-  onTotalChange(): void {
-    this.resetPage();
-  }
+  currentPage.value = Math.min(Math.max(next, 1), lastPage.value);
+};
 
-  get showDropdown(): boolean {
-    return [BreakpointClass.Mobile, BreakpointClass.LargeMobile].includes(this.screenBreakpointClass);
-  }
+const updateSearch = (search: string) => {
+  exploreQuery.value = search;
+};
 
-  get tabs(): Array<ResponsiveTab> {
-    return Object.values(VaultStatuses).map((el) => ({
-      name: el,
-      label: this.t(`kensetsu.status.${el}`) + ' ' + `(${this.getVaultsLength(el)})`,
-    }));
-  }
+const updateActiveCollapseItems = (items: string[]) => {
+  activeCollapseItems.value = items;
+};
 
-  isOpenedVault(vault: VaultData): vault is OpenedVaultData {
-    return (vault as OpenedVaultData).lockedAmount !== undefined;
-  }
+const isOpenedVaultItem = (vault: VaultData): vault is OpenedVaultData =>
+  (vault as OpenedVaultData).lockedAmount !== undefined;
 
-  isClosedVault(vault: VaultData): vault is ClosedVaultData {
-    return (vault as OpenedVaultData).lockedAmount === undefined;
-  }
+const getVaultTitle = (
+  lockedAsset?: Nullable<RegisteredAccountAsset>,
+  debtAsset?: Nullable<RegisteredAccountAsset>
+): string => {
+  if (!(debtAsset && lockedAsset)) return '';
+  return `${debtAsset.symbol} / ${lockedAsset.symbol}`;
+};
 
-  private getVaultsLength(status: VaultStatus): number {
-    switch (status) {
-      case VaultStatuses.Closed:
-        return this.closedVaultsLength;
-      case VaultStatuses.Liquidated:
-        return this.liquidatedVaultsLength;
-      case VaultStatuses.Opened:
-        return this.openedVaultsLength;
-      default:
-        return 0;
-    }
-  }
+const getLockedSymbol = (lockedAsset?: RegisteredAccountAsset): string => lockedAsset?.symbol ?? '';
+const getDebtSymbol = (debtAsset?: RegisteredAccountAsset): string => debtAsset?.symbol ?? '';
 
-  handleTabChange(tab: VaultStatus): void {
-    this.selectedTab = tab;
-    this.resetPage();
-  }
+const format = (value?: FPNumber): string => value?.toLocaleString(2) ?? ZeroStringValue;
 
-  updateSearch(search: string): void {
-    this.exploreQuery = search;
-  }
+const formatFiat = (amount: Nullable<FPNumber>, asset: Nullable<RegisteredAccountAsset>): string => {
+  if (!(amount && asset)) return ZeroStringValue;
+  return getFiatAmountByFPNumber(amount, asset) ?? ZeroStringValue;
+};
 
-  handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
-    let current = 1;
+const getLtvText = (ltv: FPNumber): string => LtvTranslations[getLtvStatus(ltv.toNumber())];
+const toNumber = (value?: FPNumber): number => value?.toNumber() ?? 0;
 
-    switch (button) {
-      case WALLET_CONSTS.PaginationButton.Prev:
-        current = this.currentPage - 1;
-        break;
-      case WALLET_CONSTS.PaginationButton.Next:
-        current = this.currentPage + 1;
-        if (current === this.lastPage) {
-          this.isLtrDirection = false;
-        }
-        break;
-      case WALLET_CONSTS.PaginationButton.First:
-        this.isLtrDirection = true;
-        break;
-      case WALLET_CONSTS.PaginationButton.Last:
-        current = this.lastPage;
-        this.isLtrDirection = false;
-    }
+const handleCreateVault = () => {
+  showCreateVaultDialog.value = true;
+};
 
-    this.currentPage = current;
-  }
+const handleCreateSelectedVault = async (lockedAsset: RegisteredAccountAsset, debtAsset: RegisteredAccountAsset) => {
+  await selectCollateral(lockedAsset.address);
+  await selectDebt(debtAsset.address);
+  showCreateVaultDialog.value = true;
+};
 
-  private get closedVaultsData(): ClosedVaultData[] {
-    return this.closedAccountVaults.map((item) => {
-      const lockedAsset = this.getAsset(item.lockedAssetId);
-      const debtAsset = this.getAsset(item.debtAssetId);
-      return { ...item, lockedAsset, debtAsset };
-    });
-  }
+const handleOpenVaultDetails = (vault: VaultData) => {
+  router.push({ name: VaultPageNames.VaultDetails, params: { vault: `${vault.id}` } });
+};
 
-  private get closedVaults(): ClosedVaultData[] {
-    return this.closedVaultsData.filter((vault) => vault.status === VaultStatuses.Closed);
-  }
-
-  private get liquidatedVaults(): ClosedVaultData[] {
-    return this.closedVaultsData.filter((vault) => vault.status === VaultStatuses.Liquidated);
-  }
-
-  private get closedVaultsLength(): number {
-    return this.closedVaults.length;
-  }
-
-  private get liquidatedVaultsLength(): number {
-    return this.liquidatedVaults.length;
-  }
-
-  private get openedVaultsLength(): number {
-    return this.openedVaults.length;
-  }
-
-  get hasVaults(): boolean {
-    return this.isLoggedIn && !!(this.openedVaultsLength + this.closedAccountVaults.length);
-  }
-
-  private get openedVaultsData(): OpenedVaultData[] {
-    return this.openedVaults.map((vault) => {
-      const lockedAsset = this.getAsset(vault.lockedAssetId);
-      const debtAsset = this.getAsset(vault.debtAssetId);
-      const borrowTax = this.getTax(vault.debtAssetId);
-      const collateralId = api.kensetsu.serializeKey(vault.lockedAssetId, vault.debtAssetId);
-      const collateral = this.collaterals[collateralId];
-      const averagePrice = this.averageCollateralPrices[collateralId] ?? this.Zero;
-      const collateralVolume = averagePrice.mul(vault.lockedAmount);
-      const ratio = collateral?.riskParams.liquidationRatioReversed ?? 0;
-      const maxSafeDebt = collateralVolume.mul(ratio).div(HundredNumber);
-      const maxSafeDebtWithoutTax = maxSafeDebt.sub(maxSafeDebt.mul(borrowTax));
-      const ltvCoeff = vault.debt.div(maxSafeDebt);
-      const ltv = ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
-      const adjustedLtv = ltv ? ltvCoeff.mul(ratio) : null;
-      const availableCoeff = maxSafeDebtWithoutTax.sub(vault.debt);
-      let totalAvailable = collateral?.riskParams.hardCap.sub(collateral.debtSupply) ?? this.Zero;
-      totalAvailable = totalAvailable.sub(totalAvailable.mul(borrowTax));
-      let available = totalAvailable.lt(availableCoeff) ? totalAvailable : availableCoeff;
-      available = !available.isFinity() || available.isLteZero() ? this.Zero : available.dp(2);
-      return { ...vault, lockedAsset, debtAsset, ltv, adjustedLtv, available };
-    });
-  }
-
-  get vaultsData(): VaultData[] {
-    switch (this.selectedTab) {
-      case VaultStatuses.Opened:
-        return this.openedVaultsData;
-      case VaultStatuses.Closed:
-        return this.closedVaults;
-      case VaultStatuses.Liquidated:
-        return this.liquidatedVaults;
-      default:
-        return this.openedVaultsData;
-    }
-  }
-
-  get filteredVaultsData(): VaultData[] {
-    return this.getPageItems(this.vaultsData);
-  }
-
-  get total(): number {
-    return this.vaultsData.length;
-  }
-
-  getVaultTitle(lockedAsset?: Nullable<RegisteredAccountAsset>, debtAsset?: Nullable<RegisteredAccountAsset>): string {
-    if (!(debtAsset && lockedAsset)) return '';
-    return `${debtAsset.symbol} / ${lockedAsset.symbol}`;
-  }
-
-  getLockedSymbol(lockedAsset?: RegisteredAccountAsset): string {
-    return lockedAsset?.symbol ?? '';
-  }
-
-  getDebtSymbol(debtAsset?: RegisteredAccountAsset): string {
-    return debtAsset?.symbol ?? '';
-  }
-
-  format(number?: FPNumber): string {
-    return number?.toLocaleString(2) ?? ZeroStringValue;
-  }
-
-  formatFiat(amount: Nullable<FPNumber>, asset: Nullable<RegisteredAccountAsset>): string {
-    if (!(amount && asset)) return ZeroStringValue;
-    return this.getFiatAmountByFPNumber(amount, asset) ?? ZeroStringValue;
-  }
-
-  toCodec(number: FPNumber): CodecString {
-    return number.codec;
-  }
-
-  getLtvText(ltv: FPNumber): string {
-    return LtvTranslations[getLtvStatus(ltv.toNumber())];
-  }
-
-  toNumber(number?: FPNumber): number {
-    return number?.toNumber() ?? 0;
-  }
-
-  handleCreateVault(): void {
-    this.showCreateVaultDialog = true;
-  }
-
-  async handleCreateSelectedVault(
-    lockedAsset: RegisteredAccountAsset,
-    debtAsset: RegisteredAccountAsset
-  ): Promise<void> {
-    await this.selectCollateral(lockedAsset.address);
-    await this.selectDebt(debtAsset.address);
-    this.showCreateVaultDialog = true;
-  }
-
-  handleOpenVaultDetails(vault: VaultData): void {
-    router.push({ name: VaultPageNames.VaultDetails, params: { vault: `${vault.id}` } });
-  }
-}
+defineExpose({
+  connectSoraWallet,
+  handleCreateVault,
+  handleCreateSelectedVault,
+  handleOpenVaultDetails,
+  filteredVaultsData,
+  tabs,
+  showCreateVaultDialog,
+});
 </script>
 
 <style lang="scss">

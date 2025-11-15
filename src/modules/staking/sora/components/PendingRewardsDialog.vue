@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="title">
+  <DialogBase v-model:visible="isVisible" :title="title">
     <div class="pending-rewards-dialog">
       <s-scrollbar class="pending-rewards-scrollbar">
         <s-card class="information" shadow="always" primary>
@@ -8,7 +8,7 @@
               {{ t('soraStaking.pendingRewardsDialog.information') }}
             </div>
             <div class="information-icon">
-              <s-icon name="notifications-alert-triangle-24" size="20px" />
+              <s-icon name="notifications-alert-triangle-24" size="20px"></s-icon>
             </div>
           </div>
         </s-card>
@@ -20,18 +20,19 @@
           border-radius="medium"
           shadow="always"
           size="mini"
-          @click.native="toggleRewardSelection(reward)"
+          @click="toggleRewardSelection(reward)"
         >
           <div class="reward-content">
-            <validator-avatar class="avatar" :validator="reward.validator">
-              <s-icon
-                class="alert-icon"
-                v-if="reward.alert"
-                name="notifications-alert-triangle-24"
-                size="16px"
-                slot="icon"
-              />
-            </validator-avatar>
+            <ValidatorAvatar class="avatar" :validator="reward.validator">
+              <template #icon>
+                <s-icon
+                  v-if="reward.alert"
+                  class="alert-icon"
+                  name="notifications-alert-triangle-24"
+                  size="16px"
+                ></s-icon>
+              </template>
+            </ValidatorAvatar>
             <div class="reward-lines">
               <div class="reward-line">
                 <div class="name">
@@ -45,60 +46,72 @@
                 <div :class="computedClassDaysLeft(reward.alert)">
                   {{ reward.daysLeftFormatted }}
                 </div>
-                <formatted-amount class="value-fiat" is-fiat-value with-left-shift :value="reward.valueFiat" />
+                <FormattedAmount
+                  class="value-fiat"
+                  is-fiat-value
+                  with-left-shift
+                  :value="reward.valueFiat"
+                ></FormattedAmount>
               </div>
             </div>
             <div :class="{ ['reward-check']: true, ['reward-check--selected']: isRewardSelected(reward) }">
-              <s-icon name="basic-check-mark-24" size="18px" />
+              <s-icon name="basic-check-mark-24" size="18px"></s-icon>
             </div>
           </div>
         </s-card>
       </s-scrollbar>
 
       <div class="info">
-        <info-line
+        <InfoLine
           :label="t('networkFeeText')"
           :label-tooltip="t('networkFeeTooltipText')"
           :value="networkFeeFormatted"
           :asset-symbol="xor?.symbol"
-          :fiat-value="getFiatAmountByCodecString(networkFee)"
+          :fiat-value="networkFeeFiat"
           is-formatted
-        />
+        ></InfoLine>
       </div>
 
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
-        :loading="parentLoading || loading"
-        :disabled="isInsufficientXorForFee || noReward || noSelectedRewards"
+        :loading="buttonLoading"
+        :disabled="confirmDisabled"
         @click="handleConfirm"
       >
-        <template v-if="isInsufficientXorForFee">
-          {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset?.symbol }) }}
+        <template v-if="insufficientXorForFee">
+          {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset?.symbol ?? '' }) }}
         </template>
-        <template v-else-if="noReward">{{ t('soraStaking.pendingRewardsDialog.noPendingRewards') }}</template>
-        <template v-else-if="noSelectedRewards">{{ t('soraStaking.pendingRewardsDialog.noSelectedRewards') }}</template>
-        <template v-else>{{ t('soraStaking.pendingRewardsDialog.payout') }} ({{ selectedRewards.length }})</template>
+        <template v-else-if="noReward">
+          {{ t('soraStaking.pendingRewardsDialog.noPendingRewards') }}
+        </template>
+        <template v-else-if="noSelectedRewards">
+          {{ t('soraStaking.pendingRewardsDialog.noSelectedRewards') }}
+        </template>
+        <template v-else> {{ t('soraStaking.pendingRewardsDialog.payout') }} ({{ selectedRewards.length }}) </template>
       </s-button>
     </div>
-  </dialog-base>
+  </DialogBase>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { components } from '@wallet';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-import { formatDecimalPlaces } from '@/utils';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTransaction } from '@/composables/useTransaction';
+import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
+import { useValidatorsFormatting } from '@/modules/staking/sora/composables/useValidatorsFormatting';
+import { soraStakingLazyComponent } from '@/modules/staking/router';
+import { ERA_HOURS, SoraStakingComponents } from '@/modules/staking/sora/consts';
+import { formatDecimalPlaces, hasInsufficientXorForFee } from '@/utils';
 
-import { soraStakingLazyComponent } from '../../router';
-import { ERA_HOURS, SoraStakingComponents } from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
-import ValidatorsMixin from '../mixins/ValidatorsMixin';
-
+import type { CodecString } from '@sora-substrate/sdk';
 import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import type { Nullable } from '@/types/common';
 
 type Reward = {
   id: string;
@@ -117,135 +130,194 @@ type Reward = {
   validator: ValidatorInfoFull;
 };
 
-@Component({
-  components: {
-    TokenInput: lazyComponent(Components.TokenInput),
-    ValidatorAvatar: soraStakingLazyComponent(SoraStakingComponents.ValidatorAvatar),
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    FormattedAmount: components.FormattedAmount,
-  },
-})
-export default class PendingRewardsDialog extends Mixins(
-  StakingMixin,
-  ValidatorsMixin,
-  mixins.TransactionMixin,
-  mixins.DialogMixin
-) {
-  payoutNetworkFee: string | null = null;
-  selectedRewards: Reward[] = [];
+const props = defineProps<{
+  visible: boolean;
+  parentLoading?: boolean;
+}>();
 
-  @Watch('visible', { immediate: true })
-  private resetValue() {
-    if (this.visible) {
-      this.selectedRewards = [];
-    }
-  }
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+}>();
 
-  @Watch('selectedRewards')
-  async handlePendingRewardsChange() {
-    this.payoutNetworkFee = await this.getPayoutNetworkFee({
-      payouts: this.payouts,
-    });
-  }
+const { t } = useI18n();
+const { getFiatAmountByFPNumber, getFiatAmountByCodecString } = useFormattedAmount();
+const validatorsFormatting = useValidatorsFormatting();
+const dialogModel = useDialogModel(props, emit);
+const { isVisible, closeDialog } = dialogModel;
 
-  get networkFee() {
-    return this.payoutNetworkFee ?? '0';
-  }
+const {
+  pendingRewards,
+  rewardAsset,
+  stakingAsset,
+  validators,
+  currentEra,
+  formatCodecNumber,
+  xor,
+  getPayoutNetworkFee,
+  getPendingRewards,
+  payout,
+} = useSoraStaking();
 
-  get title(): string {
-    return this.t('soraStaking.pendingRewardsDialog.title');
-  }
+const { loading, withNotifications, withApi } = useTransaction({
+  parentLoading: () => Boolean(props.parentLoading),
+});
+const historyDepth = validatorsFormatting.historyDepth;
 
-  get rewards(): Reward[] {
-    if (!this.pendingRewards || !this.rewardAsset) return [];
+const DialogBase = components.DialogBase;
+const InfoLine = components.InfoLine;
+const FormattedAmount = components.FormattedAmount;
+const ValidatorAvatar = soraStakingLazyComponent(SoraStakingComponents.ValidatorAvatar);
 
-    const rewards = this.pendingRewards
-      .map((element) => {
-        return element.validators.map((validator) => {
-          const validatorInfo = this.validators.find((v) => v.address === validator.address);
-          if (!validatorInfo) {
-            throw new Error(`There is no validator "${validator.address}" in the list`);
-          }
-          const name = this.formatName(validatorInfo);
-          const hoursLeft = ((this.historyDepth ?? 0) - (this.currentEra - Number(element.era))) * ERA_HOURS;
-          const daysLeft = Math.floor(hoursLeft / 24);
-          const daysLeftFormatted = daysLeft < 1 ? 'less then 1 day left' : daysLeft + ' days left';
-          const alert = daysLeft < 5;
-          const value = validator.value;
-          const valueFormatted =
-            formatDecimalPlaces(new FPNumber(value, this.rewardAsset?.decimals)) + ' ' + this.rewardAsset?.symbol;
-          const valueFiat = this.getFiatAmountByFPNumber(
-            new FPNumber(value, this.rewardAsset?.decimals),
-            this.rewardAsset ?? undefined
-          );
+const selectedRewards = ref<Reward[]>([]);
+const payoutNetworkFee = ref<string | null>(null);
+const feeRequestToken = ref(0);
 
-          return {
-            id: `${validator.address}-${element.era}`,
-            era: element.era,
-            validators: element.validators,
-            name,
-            daysLeft,
-            daysLeftFormatted,
-            alert,
-            value,
-            valueFormatted,
-            valueFiat,
-            validator: validatorInfo,
-          };
-        });
+const title = computed(() => t('soraStaking.pendingRewardsDialog.title'));
+const payouts = computed(() =>
+  selectedRewards.value.map((reward) => ({
+    era: reward.era,
+    validators: reward.validators.map((validator) => validator.address),
+  }))
+);
+
+/**
+ * Flattens pending payouts into reward cards enriched with formatting metadata.
+ */
+const rewards = computed<Reward[]>(() => {
+  if (!pendingRewards.value || !rewardAsset.value) return [];
+
+  return pendingRewards.value
+    .map((element) =>
+      element.validators.map((validator) => {
+        const validatorInfo = validators.value.find((item) => item.address === validator.address);
+        if (!validatorInfo) {
+          throw new Error(`There is no validator "${validator.address}" in the list`);
+        }
+
+        const name = validatorsFormatting.formatName(validatorInfo);
+        const hoursLeft = ((historyDepth.value ?? 0) - ((currentEra.value ?? 0) - Number(element.era))) * ERA_HOURS;
+        const daysLeft = Math.floor(hoursLeft / 24);
+        const daysLeftFormatted = daysLeft < 1 ? 'less then 1 day left' : `${daysLeft} days left`;
+        const alert = daysLeft < 5;
+        const value = validator.value;
+        const rewardValue = new FPNumber(value, rewardAsset.value?.decimals);
+        const valueFormatted = `${formatDecimalPlaces(rewardValue)} ${rewardAsset.value?.symbol ?? ''}`;
+        const valueFiat = rewardAsset.value ? getFiatAmountByFPNumber(rewardValue, rewardAsset.value) : null;
+
+        return {
+          id: `${validator.address}-${element.era}`,
+          era: element.era,
+          validators: element.validators,
+          name,
+          daysLeft,
+          daysLeftFormatted,
+          alert,
+          value,
+          valueFormatted,
+          valueFiat,
+          validator: validatorInfo,
+        };
       })
-      .flat();
-    return rewards;
+    )
+    .flat();
+});
+
+const noReward = computed(() => !rewards.value.length);
+const noSelectedRewards = computed(() => !selectedRewards.value.length);
+
+const networkFee = computed<CodecString>(() => (payoutNetworkFee.value ?? '0') as CodecString);
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
+const networkFeeFiat = computed(() => (xor.value ? getFiatAmountByCodecString(networkFee.value, xor.value) : null));
+const insufficientXorForFee = computed(() =>
+  xor.value ? hasInsufficientXorForFee(xor.value, networkFee.value) : false
+);
+
+const confirmDisabled = computed(() => insufficientXorForFee.value || noReward.value || noSelectedRewards.value);
+const buttonLoading = computed(() => Boolean(props.parentLoading) || loading.value);
+
+const isRewardSelected = (reward: Reward) => selectedRewards.value.some((item) => item.id === reward.id);
+
+const toggleRewardSelection = (reward: Reward) => {
+  const index = selectedRewards.value.findIndex((item) => item.id === reward.id);
+
+  if (index > -1) {
+    const next = [...selectedRewards.value];
+    next.splice(index, 1);
+    selectedRewards.value = next;
+  } else {
+    selectedRewards.value = [...selectedRewards.value, reward];
+  }
+};
+
+const computedClassDaysLeft = (alert: boolean) => {
+  return ['days-left', alert ? 'days-left--alert' : ''].filter(Boolean).join(' ');
+};
+
+/**
+ * Refreshes the payout network fee when selection changes, guarding against stale races.
+ */
+const updatePayoutFee = async () => {
+  const currentToken = feeRequestToken.value + 1;
+  feeRequestToken.value = currentToken;
+
+  if (!payouts.value.length) {
+    payoutNetworkFee.value = '0';
+    return;
   }
 
-  isRewardSelected(reward: Reward) {
-    return this.selectedRewards.some((r) => r.id === reward.id);
-  }
-
-  toggleRewardSelection(reward: Reward) {
-    const index = this.selectedRewards.findIndex((r) => r.id === reward.id);
-    const selected = [...this.selectedRewards];
-    if (index > -1) {
-      selected.splice(index, 1);
-    } else {
-      selected.push(reward);
-    }
-    this.selectedRewards = selected;
-  }
-
-  computedClassDaysLeft(alert: boolean): string {
-    const base = ['days-left'];
-
-    if (alert) base.push('days-left--alert');
-
-    return base.join(' ');
-  }
-
-  get noReward(): boolean {
-    return !this.rewards.length;
-  }
-
-  get noSelectedRewards(): boolean {
-    return !this.selectedRewards.length;
-  }
-
-  get payouts() {
-    return this.selectedRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }));
-  }
-
-  async handleConfirm(): Promise<void> {
-    await this.withNotifications(async () => {
-      await this.payout({
-        payouts: this.payouts,
+  try {
+    await withApi(async () => {
+      const fee = await getPayoutNetworkFee({
+        payouts: payouts.value,
       });
 
-      await this.getPendingRewards();
-
-      this.closeDialog();
+      if (currentToken === feeRequestToken.value) {
+        payoutNetworkFee.value = fee;
+      }
     });
+  } catch (error) {
+    console.error('Failed to fetch payout fee', error);
+    if (currentToken === feeRequestToken.value) {
+      payoutNetworkFee.value = null;
+    }
   }
-}
+};
+
+watch(
+  () => props.visible,
+  (visible) => {
+    if (visible) {
+      selectedRewards.value = [];
+    }
+  },
+  { immediate: true }
+);
+
+watch(payouts, updatePayoutFee, { immediate: true });
+
+/**
+ * Executes the payout and refreshes pending rewards before closing the dialog.
+ */
+const handleConfirm = async () => {
+  if (confirmDisabled.value) return;
+
+  await withNotifications(async () => {
+    await payout({
+      payouts: payouts.value,
+    });
+
+    await getPendingRewards();
+    closeDialog();
+  });
+};
+
+defineExpose({
+  rewards,
+  selectedRewards,
+  payoutNetworkFee,
+  handleConfirm,
+});
 </script>
 
 <style lang="scss">

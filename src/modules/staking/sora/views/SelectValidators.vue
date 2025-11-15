@@ -1,76 +1,88 @@
 <template>
-  <div class="container" v-loading="parentLoading || !validators.length">
-    <staking-header :previous-page="SoraStakingPageNames.ValidatorsType">{{ title }}</staking-header>
-    <validators-list
+  <div class="container" v-loading="containerLoading">
+    <StakingHeader :previous-page="SoraStakingPageNames.ValidatorsType">{{ title }}</StakingHeader>
+    <ValidatorsList
       :mode="newStakeValidatorsMode"
       :validators="validators"
       :selected-validators="selectedValidators"
       @update:selected="selectValidators"
-    />
-    <s-button class="confirm" type="primary" @click="handleConfirm" :disabled="confirmDisabled">
+    ></ValidatorsList>
+    <s-button class="confirm" type="primary" :disabled="confirmDisabled" @click="handleConfirm">
       {{ confirmText }}
     </s-button>
-    <stake-dialog
+    <StakeDialog
+      v-model:visible="showStakeDialog"
       :mode="StakeDialogMode.NEW"
-      :visible.sync="showStakeDialog"
-      :parent-loading="parentLoading || loading"
+      :parent-loading="dialogParentLoading"
       @confirm="handleStake"
-    />
+    ></StakeDialog>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
-import router from '@/router';
+import { useLoading } from '@/composables/useLoading';
+import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
+import {
+  SoraStakingComponents,
+  SoraStakingPageNames,
+  StakeDialogMode,
+  ValidatorsListMode,
+} from '@/modules/staking/sora/consts';
+import { soraStakingLazyComponent } from '@/modules/staking/router';
 
-import { soraStakingLazyComponent } from '../../router';
-import { SoraStakingComponents, SoraStakingPageNames, StakeDialogMode, ValidatorsListMode } from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
+defineOptions({ inheritAttrs: false });
 
-@Component({
-  components: {
-    StakingHeader: soraStakingLazyComponent(SoraStakingComponents.StakingHeader),
-    ValidatorsList: soraStakingLazyComponent(SoraStakingComponents.ValidatorsList),
-    StakeDialog: soraStakingLazyComponent(SoraStakingComponents.StakeDialog),
-  },
-})
-export default class SelectValidators extends Mixins(StakingMixin, mixins.LoadingMixin) {
-  StakeDialogMode = StakeDialogMode;
+const props = defineProps<{
+  parentLoading?: boolean;
+}>();
 
-  showStakeDialog = false;
+const { t } = useI18n();
+const router = useRouter();
+const { loading } = useLoading();
+const { newStakeValidatorsMode, validators, selectedValidators, selectValidators } = useSoraStaking();
 
-  get title(): string {
-    return this.newStakeValidatorsMode === ValidatorsListMode.RECOMMENDED
-      ? this.t('soraStaking.validators.recommended')
-      : this.t('soraStaking.validators.select');
-  }
+const StakingHeader = soraStakingLazyComponent(SoraStakingComponents.StakingHeader);
+const ValidatorsList = soraStakingLazyComponent(SoraStakingComponents.ValidatorsList);
+const StakeDialog = soraStakingLazyComponent(SoraStakingComponents.StakeDialog);
 
-  get confirmText(): string {
-    return this.newStakeValidatorsMode === ValidatorsListMode.RECOMMENDED
-      ? this.t('soraStaking.validators.next')
-      : this.t('soraStaking.validators.selected', {
-          selected: this.selectedValidators.length,
-          total: this.validators.length,
-        });
-  }
+const showStakeDialog = ref(false);
 
-  get confirmDisabled(): boolean {
-    return this.selectedValidators.length === 0;
-  }
+const containerLoading = computed(() => Boolean(props.parentLoading) || !validators.value.length);
 
-  handleConfirm(): void {
-    this.showStakeDialog = true;
-  }
+const dialogParentLoading = computed(() => Boolean(props.parentLoading) || loading.value);
 
-  handleStake(): void {
-    router.push({ name: SoraStakingPageNames.Overview });
-  }
-}
+const title = computed(() =>
+  newStakeValidatorsMode.value === ValidatorsListMode.RECOMMENDED
+    ? t('soraStaking.validators.recommended')
+    : t('soraStaking.validators.select')
+);
+
+const confirmText = computed(() =>
+  newStakeValidatorsMode.value === ValidatorsListMode.RECOMMENDED
+    ? t('soraStaking.validators.next')
+    : t('soraStaking.validators.selected', {
+        selected: selectedValidators.value.length,
+        total: validators.value.length,
+      })
+);
+
+const confirmDisabled = computed(() => selectedValidators.value.length === 0);
+
+const handleConfirm = (): void => {
+  showStakeDialog.value = true;
+};
+
+const handleStake = (): void => {
+  showStakeDialog.value = false;
+  router.push({ name: SoraStakingPageNames.Overview });
+};
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .container {
   position: relative;
   max-height: 573px;

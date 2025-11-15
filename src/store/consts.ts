@@ -1,6 +1,7 @@
-import { vuex } from '@soramitsu/soraneo-wallet-web';
+import { vuex } from '@wallet/vuex';
 
-const { WalletModules } = vuex;
+const WalletModuleRegistry = vuex ?? { WalletModules: [] as string[] };
+const { WalletModules } = WalletModuleRegistry;
 
 export enum Module {
   Router = 'router',

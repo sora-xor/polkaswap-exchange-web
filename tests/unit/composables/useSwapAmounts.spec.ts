@@ -1,8 +1,41 @@
 import { createPinia, setActivePinia } from 'pinia';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { nextTick } from 'vue';
+import { Storage } from '@sora-substrate/sdk';
 
-import { useSwapAmounts } from '@/composables/useSwapAmounts';
-import { useSwapStore } from '@/stores/swap';
+import { setLegacyStoreOverride } from '@/utils/legacy-store';
+
+const walletApiMock = {
+  divideAssets: vi.fn(() => '0'),
+  swap: {
+    getDexesSwapQuoteObservable: vi.fn(),
+    getPriceImpact: vi.fn(() => '0'),
+    getMinMaxValue: vi.fn(() => '0'),
+  },
+};
+
+const walletModuleMock = {
+  api: walletApiMock,
+  storage: new Storage('wallet-mock'),
+  settingsStorage: new Storage('settings-mock'),
+};
+
+vi.mock('@wallet', () => ({
+  __esModule: true,
+  default: walletModuleMock,
+  ...walletModuleMock,
+}));
+
+const assetDataByAddress = vi.hoisted(() =>
+  vi.fn((address: string) => ({
+    address,
+    symbol: address.toUpperCase(),
+    decimals: 18,
+    balance: {
+      transferable: '0',
+    },
+  }))
+);
 
 vi.mock('@sora-substrate/sdk/build/dex/consts', () => ({
   DexId: { XOR: 0 },
@@ -10,35 +43,17 @@ vi.mock('@sora-substrate/sdk/build/dex/consts', () => ({
 
 vi.mock('@/utils', () => ({ asZeroValue: (value: string) => !value || Number(value) === 0 }));
 
-vi.mock('@soramitsu/soraneo-wallet-web', () => ({
-  api: {
-    divideAssets: vi.fn(() => '0'),
-    swap: {
-      getDexesSwapQuoteObservable: vi.fn(),
-      getPriceImpact: vi.fn(() => '0'),
-      getMinMaxValue: vi.fn(() => '0'),
-    },
-  },
-  WALLET_CONSTS: {
-    TranslationConsts: {},
-  },
-  components: {},
-  storage: {
-    get: vi.fn(),
-    set: vi.fn(),
-    remove: vi.fn(),
-  },
-  settingsStorage: {
-    set: vi.fn(),
-    get: vi.fn(() => null),
-  },
-}));
+const TokenBalanceSubscriptionsMock = vi
+  .fn(function TokenBalanceSubscriptionsStub(this: unknown) {
+    return {
+      add: vi.fn(),
+      remove: vi.fn(),
+    };
+  })
+  .mockName('TokenBalanceSubscriptionsMock');
 
 vi.mock('@/utils/subscriptions', () => ({
-  TokenBalanceSubscriptions: vi.fn().mockImplementation(() => ({
-    add: vi.fn(),
-    remove: vi.fn(),
-  })),
+  TokenBalanceSubscriptions: TokenBalanceSubscriptionsMock,
 }));
 
 vi.mock('@/store', () => ({
@@ -60,14 +75,7 @@ vi.mock('@/store', () => ({
     },
     getters: {
       assets: {
-        assetDataByAddress: vi.fn((address: string) => ({
-          address,
-          symbol: address.toUpperCase(),
-          decimals: 18,
-          balance: {
-            transferable: '0',
-          },
-        })),
+        assetDataByAddress,
       },
       settings: {
         debugEnabled: false,
@@ -97,12 +105,82 @@ vi.mock('@/store', () => ({
   },
 }));
 
+const { localStorageMock } = vi.hoisted(() => {
+  const storage = {
+    getItem: vi.fn(() => null),
+    setItem: vi.fn(),
+    removeItem: vi.fn(),
+    clear: vi.fn(),
+  };
+
+  vi.stubGlobal('localStorage', storage);
+
+  return { localStorageMock: storage };
+});
+
 describe('useSwapAmounts', () => {
-  beforeEach(() => {
-    setActivePinia(createPinia());
+  let useSwapAmounts: (typeof import('@/composables/useSwapAmounts'))['useSwapAmounts'];
+  let useSwapStore: typeof import('@/stores/swap').useSwapStore;
+
+  beforeAll(async () => {
+    setLegacyStoreOverride(legacyStore);
+    ({ useSwapAmounts } = await import('@/composables/useSwapAmounts'));
+    ({ useSwapStore } = await import('@/stores/swap'));
   });
 
-  it('exposes swap store values as computeds', () => {
+  const legacyStore = {
+    state: {
+      settings: {
+        slippageTolerance: '0',
+      },
+      wallet: {
+        account: {
+          isLoggedIn: false,
+        },
+      },
+    },
+    getters: {
+      wallet: {
+        account: {
+          isLoggedIn: false,
+          accountAssetsAddressTable: {},
+        },
+      },
+    },
+    commit: {},
+    dispatch: {},
+  } as unknown as Parameters<typeof setLegacyStoreOverride>[0];
+
+  beforeEach(async () => {
+    setActivePinia(createPinia());
+    assetDataByAddress.mockClear();
+    localStorageMock.getItem.mockClear();
+    localStorageMock.setItem.mockClear();
+    localStorageMock.removeItem.mockClear();
+    localStorageMock.clear.mockClear();
+    walletApiMock.divideAssets.mockReturnValue('0');
+    walletApiMock.swap.getDexesSwapQuoteObservable.mockReturnValue(undefined as any);
+    walletApiMock.swap.getPriceImpact.mockReturnValue('0');
+    walletApiMock.swap.getMinMaxValue.mockReturnValue('0');
+    (globalThis as Record<string, any>).__ASSETS_STORE_OVERRIDE = {
+      assetDataByAddress,
+      registeredAssets: {},
+      registeredAssetsFetching: false,
+    };
+    setLegacyStoreOverride(legacyStore);
+  });
+
+  afterEach(() => {
+    delete (globalThis as Record<string, any>).__ASSETS_STORE_OVERRIDE;
+    setLegacyStoreOverride(null);
+  });
+
+  afterAll(() => {
+    setLegacyStoreOverride(null);
+    vi.unstubAllGlobals();
+  });
+
+  it('exposes swap store values as computeds', async () => {
     const store = useSwapStore();
     const swap = useSwapAmounts();
 
@@ -110,6 +188,12 @@ describe('useSwapAmounts', () => {
     store.setTokenToAddress('token-b');
     store.setFromValue('12');
     store.setToValue('34');
+    await nextTick();
+
+    expect(assetDataByAddress).toHaveBeenCalledWith('token-a');
+    expect(assetDataByAddress).toHaveBeenCalledWith('token-b');
+    expect(store.tokenFrom?.symbol).toBe('TOKEN-A');
+    expect(store.tokenTo?.symbol).toBe('TOKEN-B');
 
     expect(swap.tokenFrom.value?.symbol).toBe('TOKEN-A');
     expect(swap.tokenTo.value?.symbol).toBe('TOKEN-B');

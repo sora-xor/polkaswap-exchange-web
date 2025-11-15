@@ -8,54 +8,69 @@
         :value="formatStringValue(amount, asset.decimals)"
         :font-size-rate="FontSizeRate.MEDIUM"
         :asset-symbol="asset.symbol"
-      />
+      ></formatted-amount>
     </div>
-    <formatted-amount v-if="totalFiatValue" is-fiat-value value-can-be-hidden :value="totalFiatValue" />
+    <formatted-amount
+      v-if="totalFiatValue"
+      is-fiat-value
+      value-can-be-hidden
+      :value="totalFiatValue"
+    ></formatted-amount>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed } from 'vue';
 
-import { RewardsAmountHeaderItem } from '@/types/rewards';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useNumberFormatter } from '@/composables/useNumberFormatter';
+import type { RewardsAmountHeaderItem } from '@/types/rewards';
 
 import type { FPNumber } from '@sora-substrate/math';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+defineOptions({
+  name: 'RewardsAmountHeader',
   components: {
     FormattedAmount: components.FormattedAmount,
   },
-})
-export default class RewardsAmountHeader extends Mixins(mixins.FormattedAmountMixin, mixins.NumberFormatterMixin) {
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
+});
 
-  @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>;
-
-  get totalFiatValue(): Nullable<string> {
-    const value = this.items.reduce<Nullable<FPNumber>>((result, item) => {
-      if (!item.amount || !item.asset) return result;
-
-      const fpAmount = this.getFPNumber(item.amount);
-
-      if (!fpAmount) return result;
-
-      const fpFiatAmount = this.getFPNumberFiatAmountByFPNumber(fpAmount, item.asset as Asset);
-
-      if (fpFiatAmount) {
-        if (!result) {
-          result = this.Zero;
-        }
-        return result.add(fpFiatAmount);
-      } else {
-        return result;
-      }
-    }, null);
-
-    return value?.toLocaleString();
+const props = withDefaults(
+  defineProps<{
+    items?: RewardsAmountHeaderItem[];
+  }>(),
+  {
+    items: () => [],
   }
-}
+);
+
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+
+const { getFPNumberFiatAmountByFPNumber, getFPNumber, Zero } = useFormattedAmount();
+const { formatStringValue } = useNumberFormatter();
+
+const totalFiatValue = computed(() => {
+  const value = props.items.reduce<Nullable<FPNumber>>((result, item) => {
+    if (!item.amount || !item.asset) return result;
+
+    const fpAmount = getFPNumber(item.amount);
+    if (!fpAmount) return result;
+
+    const fpFiatAmount = getFPNumberFiatAmountByFPNumber(fpAmount, item.asset as Asset);
+    if (!fpFiatAmount) return result;
+
+    const accumulator = result ?? Zero;
+    return accumulator.add(fpFiatAmount);
+  }, null);
+
+  return value?.toLocaleString();
+});
+
+defineExpose({
+  totalFiatValue,
+});
 </script>
 
 <style lang="scss">

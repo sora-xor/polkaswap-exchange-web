@@ -1,4 +1,7 @@
-import { useTranslation as useWalletTranslation } from '@soramitsu/soraneo-wallet-web/src/composables/useTranslation';
+import {
+  useTranslation as useWalletTranslation,
+  translationUtils as walletTranslationUtils,
+} from '@wallet/src/composables/useTranslation';
 import { computed } from 'vue';
 
 import { TranslationConsts } from '@/consts';
@@ -9,7 +12,13 @@ const OrdinalRules = {
     const normalized = Math.trunc(value);
     if (!Number.isFinite(normalized) || normalized === 0) return `${value}`;
 
-    const remainder = Math.abs(normalized) % 10;
+    const absolute = Math.abs(normalized);
+    const remainder = absolute % 10;
+    const remainderHundreds = absolute % 100;
+
+    if (remainderHundreds >= 11 && remainderHundreds <= 13) {
+      return `${normalized}th`;
+    }
 
     if (remainder === 1) return `${normalized}st`;
     if (remainder === 2) return `${normalized}nd`;
@@ -27,6 +36,22 @@ const OrdinalRules = {
 export function useTranslation() {
   const base = useWalletTranslation();
 
+  const wrapTranslate = <T extends (...args: any[]) => any>(fn: T): T => {
+    return ((...args: Parameters<T>): ReturnType<T> => {
+      const result = fn(...args);
+      if (result instanceof Promise) {
+        if (typeof window !== 'undefined') {
+          const scope = window as unknown as { __ASYNC_TRANSLATIONS__?: Array<unknown> };
+          (scope.__ASYNC_TRANSLATIONS__ ||= []).push(args[0]);
+        }
+      }
+      return result;
+    }) as T;
+  };
+
+  const t = wrapTranslate(base.t);
+  const tc = wrapTranslate(base.tc);
+
   const language = computed(() => store.state.settings.language);
 
   const tOrdinal = (value: number | string) => {
@@ -43,6 +68,8 @@ export function useTranslation() {
 
   return {
     ...base,
+    t,
+    tc,
     language,
     tOrdinal,
     TranslationConsts,
@@ -50,3 +77,5 @@ export function useTranslation() {
 }
 
 export type TranslationComposable = ReturnType<typeof useTranslation>;
+
+export const translationUtils = walletTranslationUtils;

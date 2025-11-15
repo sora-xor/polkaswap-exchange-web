@@ -7,10 +7,10 @@
     :lines="options.edit"
     :loading="pageLoading"
     :default-layouts="DefaultLayouts"
-    v-model="widgets"
+    v-model="widgets.value"
   >
     <template v-slot:[SwapWidgets.Form]="props">
-      <swap-form-widget v-bind="props" primary-title full />
+      <swap-form-widget v-bind="props" primary-title full></swap-form-widget>
     </template>
     <template v-slot:[SwapWidgets.Chart]="props">
       <price-chart-widget
@@ -19,23 +19,23 @@
         :quote-asset="tokenTo"
         :is-available="isAvailable"
         full
-      />
+      ></price-chart-widget>
     </template>
     <template v-slot:[SwapWidgets.Distribution]="props">
-      <swap-distribution-widget v-bind="props" full />
+      <swap-distribution-widget v-bind="props" full></swap-distribution-widget>
     </template>
     <template v-slot:[SwapWidgets.TransactionDetails]="props">
-      <swap-transaction-details-widget v-bind="props" full />
+      <swap-transaction-details-widget v-bind="props" full></swap-transaction-details-widget>
     </template>
     <template v-slot:[SwapWidgets.Transactions]="props">
-      <swap-transactions-widget v-bind="props" full extensive />
+      <swap-transactions-widget v-bind="props" full extensive></swap-transactions-widget>
     </template>
     <template v-slot:[SwapWidgets.Customise]="{ reset, ...props }">
       <customise-widget
         v-bind="props"
         v-model="customizePopper"
-        :widgets-model.sync="widgets"
-        :options-model.sync="options"
+        v-model:widgets="widgets.value"
+        v-model:options="options.value"
         :labels="labels"
         pip-disabled
         full
@@ -44,19 +44,20 @@
       </customise-widget>
     </template>
     <template v-slot:[SwapWidgets.TokenPriceChart]="props">
-      <token-price-chart-widget v-bind="props" full />
+      <token-price-chart-widget v-bind="props" full></token-price-chart-widget>
     </template>
     <template v-slot:[SwapWidgets.SupplyChart]="props">
-      <supply-chart-widget v-bind="props" full />
+      <supply-chart-widget v-bind="props" full></supply-chart-widget>
     </template>
   </widgets-grid>
 </template>
 
 <script setup lang="ts">
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import { useLoading } from '@/composables/useLoading';
+import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useSelectedTokensRoute } from '@/composables/useSelectedTokensRoute';
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useTranslation } from '@/composables/useTranslation';
@@ -96,8 +97,15 @@ const { loading, withApi } = useLoading();
 const swapStore = useSwapStore();
 const { tokenFrom, tokenTo, setTokenFromAddress, setTokenToAddress } = useSwapAmounts();
 
+usePiniaTelemetry('swap', [{ store: swapStore, storeId: 'swap' }], {
+  metadata: () => ({
+    tokenFrom: tokenFrom.value?.symbol ?? null,
+    tokenTo: tokenTo.value?.symbol ?? null,
+  }),
+});
+
 const customizePopper = ref(false);
-const options = reactive({ edit: false });
+const options = ref({ edit: false });
 const widgets = ref<WidgetsVisibilityModel>({
   [SwapWidgets.Chart]: true,
   [SwapWidgets.Distribution]: true,

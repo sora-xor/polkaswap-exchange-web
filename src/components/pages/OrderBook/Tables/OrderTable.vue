@@ -14,7 +14,7 @@
       @selection-change="handleSelectionChange"
       @select="handleSelect"
     >
-      <s-table-column v-if="selectable" type="selection" />
+      <s-table-column v-if="selectable" type="selection"></s-table-column>
       <s-table-column width="88">
         <template #header>
           <span>{{ t('orderBook.orderTable.time') }}</span>
@@ -106,147 +106,263 @@
         :last-page="lastPage"
         :loading="loadingState"
         @pagination-click="handlePagination"
-      />
+      ></history-pagination>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
+<script setup lang="ts">
+import { PriceVariant as LiquidityPriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_CONSTS } from '@wallet';
 import dayjs from 'dayjs/esm';
 import debounce from 'lodash/debounce';
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { getter, state } from '@/store/decorators';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import { OrderStatus } from '@/types/orderBook';
+
 import type { OrderData } from '@/types/orderBook';
-
 import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
-import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import type { OrderStatus as OrderStatusType } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { OrderStatus as OrderStatusType } from '@wallet/lib/services/indexer/types';
 
-type OrderDataUI = Omit<OrderData, 'owner' | 'lifespan' | 'time' | 'expiresAt'>[];
+type OrderTableRow = {
+  id: LimitOrder['id'];
+  orderBookId: LimitOrder['orderBookId'];
+  originalAmount: FPNumber;
+  amount: FPNumber;
+  filled: string;
+  baseAssetSymbol?: string;
+  quoteAssetSymbol?: string;
+  pair: string;
+  price: FPNumber;
+  total: string;
+  side: LimitOrder['side'];
+  status: string;
+  created: { date: string; time: string };
+  expires: string;
+};
 
-@Component({
+defineOptions({
   components: {
     HistoryPagination: components.HistoryPagination,
   },
-})
-export default class OrderTable extends Mixins(TranslationMixin, ScrollableTableMixin) {
-  readonly PriceVariant = PriceVariant;
+});
 
-  @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
-  @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
+const props = withDefaults(
+  defineProps<{
+    orders?: OrderData[];
+    selectable?: boolean;
+    isOpenOrders?: boolean;
+    parentLoading?: boolean;
+  }>(),
+  {
+    orders: () => [],
+    selectable: false,
+    isOpenOrders: false,
+    parentLoading: false,
+  }
+);
 
-  @Prop({ default: () => [], type: Array }) readonly orders!: OrderData[];
-  @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isOpenOrders!: boolean;
+const emit = defineEmits<{
+  (event: 'select', rows: LimitOrder[]): void;
+  (event: 'cell-click', row: LimitOrder): void;
+  (event: 'selection-change', rows: LimitOrder[]): void;
+  (event: 'page-updated', page: number, rows: OrderTableRow[]): void;
+  (event: 'sync', rows: OrderTableRow[]): void;
+}>();
 
-  private async syncTableItems(): Promise<void> {
-    if (this.currentPage !== 1 && !this.tableItems?.length) {
-      await this.handlePagination(WALLET_CONSTS.PaginationButton.Prev);
-      return;
-    }
-    this.$emit('sync', this.tableItems);
+const { t } = useTranslation();
+const walletStore = useWalletStore();
+const settingsStore = useSettingsStore();
+const formattedAmount = useFormattedAmount();
+const { loading, withParentLoading } = useLoading({ parentLoading: () => props.parentLoading });
+
+const tableComponent = ref<any>();
+const teardownScrollSync = ref<Nullable<() => void>>(null);
+
+const PriceVariant = LiquidityPriceVariant;
+
+const ordersList = computed(() => props.orders ?? []);
+const percentFormat = computed(() => settingsStore.percentFormat ?? null);
+const assetsDataTable = computed(() => walletStore.assetsDataTable ?? {});
+
+const currentPage = ref(1);
+const pageAmount = ref(10);
+
+const startIndex = computed(() => (currentPage.value - 1) * pageAmount.value);
+const lastIndex = computed(() => currentPage.value * pageAmount.value);
+
+const getStatusTranslation = (status: OrderStatusType | undefined): string => {
+  switch (status) {
+    case OrderStatus.Active:
+      return t('orderBook.orderStatus.active');
+    case OrderStatus.Aligned:
+    case OrderStatus.Canceled:
+      return t('orderBook.orderStatus.canceled');
+    case OrderStatus.Expired:
+      return t('orderBook.orderStatus.expired');
+    case OrderStatus.Filled:
+      return t('orderBook.orderStatus.filled');
+    default:
+      return t('orderBook.orderStatus.active');
+  }
+};
+
+const preparedItems = computed<OrderTableRow[]>(() =>
+  ordersList.value.map((order) => {
+    const { originalAmount, amount, price, side, id, orderBookId, time, status, lifespan } = order;
+    const { base, quote } = orderBookId;
+    const baseAsset = assetsDataTable.value?.[base];
+    const quoteAsset = assetsDataTable.value?.[quote];
+    const baseAssetSymbol = baseAsset?.symbol;
+    const quoteAssetSymbol = quoteAsset?.symbol;
+    const pair = `${baseAssetSymbol ?? base}-${quoteAssetSymbol ?? quote}`;
+    const created = dayjs(time);
+    const expires = dayjs.duration(lifespan);
+
+    const proportion = amount.div(originalAmount);
+    const percent = FPNumber.ONE.sub(proportion).toNumber(2);
+    const filled = percentFormat.value?.format?.(percent) ?? `${percent * 100}%`;
+    const totalFpn =
+      formattedAmount.getFPNumberFiatAmountByFPNumber(originalAmount.mul(price), quoteAsset) ?? FPNumber.ZERO;
+
+    return {
+      id,
+      orderBookId,
+      originalAmount: originalAmount.dp(2),
+      amount: originalAmount.sub(amount).dp(2),
+      filled,
+      baseAssetSymbol,
+      quoteAssetSymbol,
+      pair,
+      price: price.dp(2),
+      total: totalFpn.dp(2).toLocaleString(),
+      side,
+      status: getStatusTranslation(status as OrderStatusType),
+      created: { date: created.format('M/DD'), time: created.format('HH:mm:ss') },
+      expires: expires.format('D[D]'),
+    };
+  })
+);
+
+const tableItems = computed(() => preparedItems.value.slice(startIndex.value, lastIndex.value));
+const total = computed(() => preparedItems.value.length);
+const lastPage = computed(() => (total.value ? Math.ceil(total.value / pageAmount.value) : 1));
+const loadingState = computed(() => Boolean(props.parentLoading) || loading.value);
+const shouldEmptyStateBeShown = computed(() => !(loadingState.value || ordersList.value.length));
+const rowKey = computed(() => (props.selectable ? 'id' : undefined));
+
+const syncTableItems = async () => {
+  if (currentPage.value !== 1 && tableItems.value.length === 0) {
+    await handlePagination(WALLET_CONSTS.PaginationButton.Prev);
+    return;
   }
 
-  @Watch('tableItems', { deep: true, immediate: true })
-  private syncTableItemsDebounced = debounce(this.syncTableItems, 250);
+  emit('sync', tableItems.value);
+};
 
-  get shouldEmptyStateBeShown(): boolean {
-    return !(this.loadingState || this.orders?.length);
+const debouncedSync = debounce(syncTableItems, 250);
+
+watch(
+  tableItems,
+  () => {
+    debouncedSync();
+  },
+  { deep: true, immediate: true }
+);
+
+const initScrollbarSync = () => {
+  const elTable = tableComponent.value;
+  const elTableBodyWrapper = elTable?.$refs?.bodyWrapper as HTMLElement | undefined;
+  const elTableHeaderWrapper = elTable?.$refs?.headerWrapper as HTMLElement | undefined;
+
+  if (!elTableBodyWrapper || !elTableHeaderWrapper) return;
+
+  const syncScroll = () => {
+    const scrollLeft = elTableBodyWrapper.scrollLeft;
+    elTableHeaderWrapper.scrollLeft = scrollLeft;
+    elTable.scrollPosition = scrollLeft === 0 ? 'left' : 'right';
+  };
+
+  elTableBodyWrapper.addEventListener('scroll', syncScroll, { passive: true });
+  syncScroll();
+
+  teardownScrollSync.value = () => {
+    elTableBodyWrapper.removeEventListener('scroll', syncScroll);
+  };
+};
+
+const resetScrollbarSync = () => {
+  teardownScrollSync.value?.();
+  teardownScrollSync.value = null;
+};
+
+onMounted(async () => {
+  await withParentLoading(async () => {
+    await nextTick();
+    initScrollbarSync();
+  });
+});
+
+onBeforeUnmount(() => {
+  debouncedSync.cancel();
+  resetScrollbarSync();
+});
+
+const getString = (value: FPNumber): string => value.toLocaleString();
+
+const handleSelect = (rows: LimitOrder[]) => {
+  if (!props.selectable) return;
+  emit('select', rows);
+};
+
+const handleSelectRow = (row: LimitOrder) => {
+  if (!props.selectable) return;
+  emit('cell-click', row);
+};
+
+const handleSelectionChange = (rows: LimitOrder[]) => {
+  if (!props.selectable) return;
+  emit('selection-change', rows);
+};
+
+const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
+  let nextPage = 1;
+
+  switch (button) {
+    case WALLET_CONSTS.PaginationButton.Prev:
+      nextPage = currentPage.value - 1;
+      break;
+    case WALLET_CONSTS.PaginationButton.Next:
+      nextPage = currentPage.value + 1;
+      break;
+    case WALLET_CONSTS.PaginationButton.Last:
+      nextPage = lastPage.value;
+      break;
+    case WALLET_CONSTS.PaginationButton.First:
+    default:
+      nextPage = 1;
+      break;
   }
 
-  get rowKey() {
-    return this.selectable ? 'id' : undefined;
-  }
+  currentPage.value = Math.min(Math.max(nextPage, 1), lastPage.value);
+};
 
-  get preparedItems(): OrderDataUI {
-    return this.orders.map((order: OrderData) => {
-      const { originalAmount, amount, price, side, id, orderBookId, time, status, lifespan } = order;
-      const { base, quote } = orderBookId;
-      const baseAsset = this.assetsDataTable[base] || {};
-      const quoteAsset = this.assetsDataTable[quote] || {};
-      const baseAssetSymbol = baseAsset?.symbol;
-      const quoteAssetSymbol = quoteAsset?.symbol;
-      const pair = `${baseAssetSymbol}-${quoteAssetSymbol}`;
-      const created = dayjs(time);
-      const expires = dayjs.duration(lifespan);
+const handlePagination = async (button: WALLET_CONSTS.PaginationButton) => {
+  handlePaginationClick(button);
+  await nextTick();
+  emit('page-updated', currentPage.value, tableItems.value);
+};
 
-      const proportion = amount.div(originalAmount);
-      const percent = FPNumber.ONE.sub(proportion).toNumber(2);
-      const filled = this.percentFormat?.format?.(percent) ?? `${percent * 100}%`;
-      const total = this.getFPNumberFiatAmountByFPNumber(originalAmount.mul(price), quoteAsset) ?? FPNumber.ZERO;
-
-      const row = {
-        id,
-        orderBookId,
-        originalAmount: originalAmount.dp(2),
-        amount: originalAmount.sub(amount).dp(2),
-        filled,
-        baseAssetSymbol,
-        quoteAssetSymbol,
-        pair,
-        price: price.dp(2),
-        total: total.dp(2).toLocaleString(),
-        side,
-        status: this.getStatusTranslation(status as OrderStatusType),
-        created: { date: created.format('M/DD'), time: created.format('HH:mm:ss') },
-        expires: expires.format('D[D]'),
-      };
-
-      return row;
-    });
-  }
-
-  getStatusTranslation(status: OrderStatusType | undefined): string {
-    switch (status) {
-      case OrderStatus.Active:
-        return this.t('orderBook.orderStatus.active');
-      case OrderStatus.Aligned:
-      case OrderStatus.Canceled:
-        return this.t('orderBook.orderStatus.canceled');
-      case OrderStatus.Expired:
-        return this.t('orderBook.orderStatus.expired');
-      case OrderStatus.Filled:
-        return this.t('orderBook.orderStatus.filled');
-      default:
-        return this.t('orderBook.orderStatus.active');
-    }
-  }
-
-  getString(value: FPNumber): string {
-    return value.toLocaleString();
-  }
-
-  handleSelect(rows: LimitOrder[]): void {
-    if (!this.selectable) return;
-
-    this.$emit('select', rows);
-  }
-
-  handleSelectRow(row: LimitOrder): void {
-    if (!this.selectable) return;
-
-    this.$emit('cell-click', row);
-  }
-
-  handleSelectionChange(rows: LimitOrder[]): void {
-    if (!this.selectable) return;
-
-    this.$emit('selection-change', rows);
-  }
-
-  async handlePagination(button: WALLET_CONSTS.PaginationButton): Promise<void> {
-    this.handlePaginationClick(button);
-    await this.$nextTick(); // For this.tableItems to be loaded
-    this.$emit('page-updated', this.currentPage, this.tableItems);
-  }
-}
+defineExpose({
+  tableComponent,
+  tableItems,
+});
 </script>
 
 <style lang="scss">

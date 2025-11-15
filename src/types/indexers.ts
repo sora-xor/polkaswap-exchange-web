@@ -1,4 +1,4 @@
-import { IndexerType } from '@soramitsu/soraneo-wallet-web/lib/consts';
+import { IndexerType } from '@wallet/lib/consts';
 
 export interface Indexer {
   name: string;

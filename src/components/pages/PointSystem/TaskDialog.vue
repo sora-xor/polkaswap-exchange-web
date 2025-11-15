@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" class="task-dialog" :title="t(`points.${categoryName}.titleProgress`)">
+  <dialog-base v-model:visible="isVisible" class="task-dialog" :title="t(`points.${categoryName}.titleProgress`)">
     <div>
       <p class="task-dialog__title-progress">
         {{ t('points.relatedTasks', { title: t(`points.${categoryName}.titleProgress`) }) }}
@@ -23,12 +23,12 @@
       </div>
       <div class="task-dialog__card-current">
         <div class="img-title">
-          <token-logo v-if="isTokenImage" :token="getImageSrc(imageName)" size="small" />
+          <token-logo v-if="isTokenImage" :token="getImageSrc(imageName)" size="small"></token-logo>
           <img v-else :src="getImageSrc(imageName)" :alt="imageName" />
           <p>{{ t(`points.${categoryName}.titleTask`) }}</p>
         </div>
         <p class="description">{{ t(`points.${categoryName}.descriptionTask`) }}</p>
-        <s-divider />
+        <s-divider></s-divider>
         <p class="currently-amount">
           {{ t('points.currently') }}: <span> ${{ pointsForCategory.currentProgress.toFixed(2) }}</span>
         </p>
@@ -37,48 +37,54 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed } from 'vue';
 
-import { getImageSrc, isTokenImage, MAX_LEVEL } from '@/consts/pointSystem';
-import { CalculateCategoryPointResult } from '@/types/pointSystem';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useTranslation } from '@/composables/useTranslation';
+import { getImageSrc as resolveImageSrc, isTokenImage as isTokenImageName, MAX_LEVEL } from '@/consts/pointSystem';
+import type { CalculateCategoryPointResult } from '@/types/pointSystem';
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
   },
-})
-export default class TaskDialog extends Mixins(mixins.TranslationMixin, mixins.DialogMixin) {
-  @Prop({ required: true }) readonly pointsForCategory!: CalculateCategoryPointResult;
-  @Prop({ required: true, type: String }) readonly categoryName!: string;
+});
 
-  public getImageSrc = getImageSrc;
-  public readonly maxLevel = MAX_LEVEL;
-
-  get isTokenImage(): boolean {
-    return isTokenImage(this.imageName);
+const props = withDefaults(
+  defineProps<{
+    pointsForCategory: CalculateCategoryPointResult;
+    categoryName: string;
+    visible?: boolean;
+  }>(),
+  {
+    visible: false,
   }
+);
 
-  public get levelCurrent(): number {
-    return this.pointsForCategory.levelCurrent;
-  }
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+}>();
 
-  public get imageName(): string {
-    return this.pointsForCategory.imageName;
-  }
+const { t } = useTranslation();
+const { isVisible } = useDialogModel(props, emit);
 
-  get progressPercentage(): number {
-    if (!this.pointsForCategory.minimumAmountForNextLevel || this.pointsForCategory.minimumAmountForNextLevel === 0) {
-      return 0;
-    }
-    return Math.min(
-      (this.pointsForCategory.currentProgress / this.pointsForCategory.minimumAmountForNextLevel) * 100,
-      100
-    );
+const maxLevel = MAX_LEVEL;
+const getImageSrc = resolveImageSrc;
+
+const imageName = computed(() => props.pointsForCategory.imageName);
+const isTokenImage = computed(() => isTokenImageName(imageName.value));
+const levelCurrent = computed(() => props.pointsForCategory.levelCurrent);
+const progressPercentage = computed(() => {
+  const { minimumAmountForNextLevel, currentProgress } = props.pointsForCategory;
+  if (!minimumAmountForNextLevel || minimumAmountForNextLevel === 0) {
+    return 0;
   }
-}
+  return Math.min((currentProgress / minimumAmountForNextLevel) * 100, 100);
+});
 </script>
 
 <style lang="scss" scoped>

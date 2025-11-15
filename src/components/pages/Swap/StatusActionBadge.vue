@@ -1,8 +1,8 @@
 <template>
   <s-card shadow="always" size="small" class="status-action-badge">
-    <span class="status-action-badge__label"><slot name="label" /></span>
-    <span class="status-action-badge__value"><slot name="value" /></span>
-    <div class="status-action-badge__action"><slot name="action" /></div>
+    <span class="status-action-badge__label"><slot name="label"></slot></span>
+    <span class="status-action-badge__value"><slot name="value"></slot></span>
+    <div class="status-action-badge__action"><slot name="action"></slot></div>
   </s-card>
 </template>
 

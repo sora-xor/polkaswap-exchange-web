@@ -1,35 +1,40 @@
 <template>
-  <component :is="tag" :class="classes" :tabindex="tabindex">
+  <component :is="tag" :class="classes" :tabindex="tabindex" v-bind="attrs">
     <div class="icon-container">
-      <s-icon :name="icon" :tooltip-text="title" size="28" />
+      <s-icon :name="icon" :tooltip-text="title" size="28"></s-icon>
     </div>
     <span>{{ title }}</span>
   </component>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, useAttrs } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+const props = defineProps({
+  icon: {
+    type: String,
+    default: '',
+  },
+  title: {
+    type: String,
+    default: '',
+  },
+  tag: {
+    type: String,
+    default: 'div',
+  },
+  tabindex: {
+    type: [String, Number],
+    default: undefined,
+  },
+});
 
-@Component
-export default class AppSidebarItemContent extends Mixins(TranslationMixin) {
-  @Prop({ default: '', type: String }) readonly icon!: string;
-  @Prop({ default: '', type: String }) readonly title!: string;
-  @Prop({ default: 'div', type: String }) readonly tag!: string;
-  @Prop() readonly tabindex!: string | number;
+const attrs = useAttrs();
 
-  get classes(): Array<string> {
-    const base = 'sidebar-item-content';
-    const classes = [base];
-
-    if (this.tag === 'a') {
-      classes.push(`${base}--link`);
-    }
-
-    return classes;
-  }
-}
+const classes = computed(() => {
+  const base = 'sidebar-item-content';
+  return props.tag === 'a' ? [base, `${base}--link`] : [base];
+});
 </script>
 
 <style lang="scss" scoped>

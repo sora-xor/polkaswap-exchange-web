@@ -1,8 +1,8 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="title">
-    <div class="stake-dialog">
+  <DialogBase v-model:visible="isVisible" :title="title">
+    <div class="stake-dialog" ref="dialogRoot">
       <s-form class="el-form--actions" :show-message="false">
-        <token-input
+        <TokenInput
           key="stake-input"
           :balance="stakingBalanceCodec"
           :is-max-available="isMaxButtonAvailable"
@@ -11,33 +11,33 @@
           :value="value"
           @input="handleValue"
           @max="handleMaxValue"
-        />
+        ></TokenInput>
       </s-form>
 
       <div class="info">
-        <info-line
+        <InfoLine
           v-if="mode === StakeDialogMode.NEW"
           :label="t('soraStaking.info.selectedValidators')"
           :value="selectedValidatorsFormatted"
-        />
-        <info-line
+        ></InfoLine>
+        <InfoLine
           v-if="mode === StakeDialogMode.NEW"
           :label="t('soraStaking.info.rewardToken')"
           :value="rewardAsset?.symbol"
-        />
-        <info-line
+        ></InfoLine>
+        <InfoLine
           v-if="mode === StakeDialogMode.REMOVE"
           :label="t('soraStaking.info.unstakingPeriod')"
           :value="unbondPeriodFormatted"
-        />
-        <info-line
+        ></InfoLine>
+        <InfoLine
           :label="t('networkFeeText')"
           :label-tooltip="t('networkFeeTooltipText')"
           :value="networkFeeFormatted"
           :asset-symbol="xor?.symbol"
-          :fiat-value="getFiatAmountByCodecString(networkFee)"
+          :fiat-value="networkFeeFiat"
           is-formatted
-        />
+        ></InfoLine>
       </div>
 
       <s-card v-if="mode === StakeDialogMode.REMOVE" class="information" shadow="always" primary>
@@ -46,7 +46,7 @@
             {{ t('soraStaking.allWithdrawsDialog.information') }}
           </div>
           <div class="information-icon">
-            <s-icon name="notifications-alert-triangle-24" size="20px" />
+            <s-icon name="notifications-alert-triangle-24" size="20px"></s-icon>
           </div>
         </div>
       </s-card>
@@ -55,11 +55,11 @@
         v-if="stakingAsset"
         type="primary"
         class="s-typography-button--large action-button"
-        :loading="parentLoading || loading"
-        :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
+        :loading="buttonLoading"
+        :disabled="confirmDisabled"
         @click="handleConfirm"
       >
-        <template v-if="isInsufficientXorForFee || isInsufficientBalance">
+        <template v-if="confirmDisabled && (insufficientBalance || insufficientXorForFee)">
           {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset.symbol }) }}
         </template>
         <template v-else-if="valueFundsEmpty">
@@ -70,163 +70,219 @@
         </template>
       </s-button>
     </div>
-  </dialog-base>
+  </DialogBase>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
+import { components } from '@wallet';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { Components } from '@/consts';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTransaction } from '@/composables/useTransaction';
+import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
+import { StakeDialogMode } from '@/modules/staking/sora/consts';
+import { useSettingsStore } from '@/stores/settings';
+import type { NetworkFeesObject, CodecString } from '@sora-substrate/sdk';
 import { lazyComponent } from '@/router';
+import { hasInsufficientXorForFee } from '@/utils';
+import store from '@/store';
 
-import { StakeDialogMode } from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
+const props = defineProps<{
+  visible: boolean;
+  mode: StakeDialogMode;
+  parentLoading?: boolean;
+}>();
 
-import type { CodecString } from '@sora-substrate/sdk';
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+  (event: 'confirm'): void;
+}>();
 
-@Component({
-  components: {
-    TokenInput: lazyComponent(Components.TokenInput),
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    AccountCard: components.AccountCard,
-  },
-})
-export default class StakeDialog extends Mixins(StakingMixin, mixins.TransactionMixin, mixins.DialogMixin) {
-  @Prop({ required: true, type: String }) readonly mode!: StakeDialogMode;
+const { t } = useI18n();
+const { getFiatAmountByCodecString } = useFormattedAmount();
+const dialogModel = useDialogModel(props, emit);
+const { isVisible } = dialogModel;
 
-  @Watch('visible')
-  private resetValue() {
-    if (this.visible) {
-      if (this.mode === StakeDialogMode.NEW) {
-        this.value = this.stakeAmount;
-      } else {
-        this.value = '';
+const {
+  stakingAsset,
+  rewardAsset,
+  xor,
+  validators,
+  selectedValidators,
+  unbondPeriodFormatted,
+  lockedFunds,
+  availableFunds,
+  stakeAmount,
+  formatCodecNumber,
+  bondAndNominate,
+  bondExtra,
+  unbond,
+  getBondAndNominateNetworkFee,
+} = useSoraStaking();
+
+const { loading, withNotifications, withApi } = useTransaction({
+  parentLoading: () => Boolean(props.parentLoading),
+});
+
+const settingsStore = useSettingsStore();
+
+const TokenInput = lazyComponent(Components.TokenInput);
+const DialogBase = components.DialogBase;
+const InfoLine = components.InfoLine;
+
+const value = ref('');
+const bondAndNominateNetworkFee = ref<string | null>(null);
+const feeRequestId = ref(0);
+const dialogRoot = ref<HTMLElement | null>(null);
+
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
+const shouldBalanceBeHidden = computed(() => Boolean(store.state.wallet.settings.shouldBalanceBeHidden));
+
+const networkFee = computed<CodecString>(() => {
+  switch (props.mode) {
+    case StakeDialogMode.NEW:
+      return (bondAndNominateNetworkFee.value ?? '0') as CodecString;
+    case StakeDialogMode.ADD:
+      return (networkFees.value?.[Operation.StakingBondExtra] ?? '0') as CodecString;
+    default:
+      return (networkFees.value?.[Operation.StakingUnbond] ?? '0') as CodecString;
+  }
+});
+
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
+const networkFeeFiat = computed(() => (xor.value ? getFiatAmountByCodecString(networkFee.value, xor.value) : null));
+
+const insufficientXorForFee = computed(() =>
+  xor.value ? hasInsufficientXorForFee(xor.value, networkFee.value) : false
+);
+
+const stakingBalance = computed(() =>
+  props.mode !== StakeDialogMode.REMOVE ? availableFunds.value : lockedFunds.value
+);
+const stakingBalanceCodec = computed(() => stakingBalance.value.toCodecString());
+
+const valueFunds = computed(() => (value.value ? new FPNumber(value.value) : FPNumber.ZERO));
+const valueFundsEmpty = computed(() => valueFunds.value.isZero());
+
+const maxStake = computed(() => {
+  if (!stakingAsset.value) return FPNumber.ZERO;
+
+  const fee = FPNumber.fromCodecValue(networkFee.value);
+
+  return props.mode !== StakeDialogMode.REMOVE ? stakingBalance.value.sub(fee) : stakingBalance.value;
+});
+
+const isMaxButtonAvailable = computed(() => {
+  if (shouldBalanceBeHidden.value) return false;
+  return !FPNumber.eq(valueFunds.value, maxStake.value) && !FPNumber.lte(maxStake.value, FPNumber.ZERO);
+});
+
+const insufficientBalance = computed(() => {
+  const availableBalance = new FPNumber(maxStake.value, stakingAsset.value?.decimals);
+  return FPNumber.lt(availableBalance, valueFunds.value);
+});
+
+const selectedValidatorsFormatted = computed(() =>
+  t('soraStaking.selectedValidators', {
+    count: selectedValidators.value.length,
+    max: validators.value.length,
+  })
+);
+
+const title = computed(() => {
+  switch (props.mode) {
+    case StakeDialogMode.NEW:
+      return t('soraStaking.actions.confirm');
+    case StakeDialogMode.ADD:
+      return lockedFunds.value.isZero() ? t('soraStaking.newStake.title') : t('soraStaking.actions.more');
+    default:
+      return t('soraStaking.actions.remove');
+  }
+});
+
+const inputTitle = computed(() =>
+  props.mode !== StakeDialogMode.REMOVE ? t('soraStaking.stakeDialog.toStake') : t('soraStaking.stakeDialog.toRemove')
+);
+
+const confirmDisabled = computed(
+  () => insufficientXorForFee.value || valueFundsEmpty.value || insufficientBalance.value
+);
+const buttonLoading = computed(() => Boolean(props.parentLoading) || loading.value);
+
+/**
+ * Keeps the bond-and-nominate fee in sync with the latest validator selection and mode.
+ */
+const updateBondNetworkFee = async () => {
+  const currentId = ++feeRequestId.value;
+
+  if (props.mode !== StakeDialogMode.NEW) {
+    bondAndNominateNetworkFee.value = null;
+    return;
+  }
+
+  try {
+    await withApi(async () => {
+      const fee = await getBondAndNominateNetworkFee();
+      if (currentId === feeRequestId.value) {
+        bondAndNominateNetworkFee.value = fee;
       }
-    }
-  }
-
-  StakeDialogMode = StakeDialogMode;
-  value = '';
-  bondAndNominateNetworkFee: string | null = null;
-
-  @Watch('selectedValidators', { immediate: true })
-  handleSelectedValidatorsChange() {
-    this.withApi(async () => {
-      this.bondAndNominateNetworkFee = await this.getBondAndNominateNetworkFee();
     });
-  }
-
-  get networkFee(): CodecString {
-    switch (this.mode) {
-      case StakeDialogMode.NEW:
-        return this.bondAndNominateNetworkFee ?? '0';
-      case StakeDialogMode.ADD:
-        return this.networkFees[Operation.StakingBondExtra];
-      default:
-        return this.networkFees[Operation.StakingUnbond];
+  } catch (error) {
+    console.error('Failed to fetch bond and nominate fee', error);
+    if (currentId === feeRequestId.value) {
+      bondAndNominateNetworkFee.value = null;
     }
   }
+};
 
-  get title(): string {
-    switch (this.mode) {
-      case StakeDialogMode.NEW:
-        return this.t('soraStaking.actions.confirm');
-      case StakeDialogMode.ADD:
-        if (this.lockedFunds.isZero()) {
-          return this.t('soraStaking.newStake.title');
-        } else {
-          return this.t('soraStaking.actions.more');
-        }
-      default:
-        return this.t('soraStaking.actions.remove');
-    }
+watch([selectedValidators, () => props.mode], updateBondNetworkFee, { immediate: true });
+
+watch(isVisible, (visible) => {
+  if (visible) {
+    value.value = props.mode === StakeDialogMode.NEW ? stakeAmount.value : '';
+  }
+});
+
+const handleValue = (nextValue: string | number) => {
+  value.value = String(nextValue ?? '');
+};
+
+const handleMaxValue = () => {
+  handleValue(maxStake.value.toString());
+};
+
+/**
+ * Dispatches the appropriate staking extrinsic for the current mode and emits completion.
+ */
+const handleConfirm = async () => {
+  if (!stakingAsset.value || confirmDisabled.value) return;
+
+  stakeAmount.value = value.value;
+
+  let extrinsic = unbond;
+  if (props.mode === StakeDialogMode.NEW) {
+    extrinsic = bondAndNominate;
+  } else if (props.mode === StakeDialogMode.ADD) {
+    extrinsic = bondExtra;
   }
 
-  get inputTitle(): string {
-    return this.mode !== StakeDialogMode.REMOVE
-      ? this.t('soraStaking.stakeDialog.toStake')
-      : this.t('soraStaking.stakeDialog.toRemove');
-  }
+  await withNotifications(async () => {
+    await extrinsic();
+  });
 
-  get part(): FPNumber {
-    return new FPNumber(this.value).div(FPNumber.HUNDRED);
-  }
+  emit('confirm');
+};
 
-  get valueFunds(): FPNumber {
-    return new FPNumber(this.value);
-  }
-
-  get valueFundsEmpty(): boolean {
-    return this.valueFunds.isZero();
-  }
-
-  get stakingBalance(): FPNumber {
-    return this.mode !== StakeDialogMode.REMOVE ? this.availableFunds : this.lockedFunds;
-  }
-
-  get stakingBalanceCodec(): CodecString {
-    return this.stakingBalance.toCodecString();
-  }
-
-  get maxStake(): FPNumber {
-    if (!this.stakingAsset) return FPNumber.ZERO;
-
-    const fee = FPNumber.fromCodecValue(this.networkFee);
-
-    return this.mode !== StakeDialogMode.REMOVE ? this.stakingBalance.sub(fee) : this.stakingBalance;
-  }
-
-  get isMaxButtonAvailable(): boolean {
-    if (this.shouldBalanceBeHidden) {
-      return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
-    }
-    return !FPNumber.eq(this.valueFunds, this.maxStake) && !FPNumber.lte(this.maxStake, FPNumber.ZERO);
-  }
-
-  get isInsufficientBalance(): boolean {
-    const availableBalance = new FPNumber(this.maxStake, this.stakingAsset?.decimals);
-
-    return FPNumber.lt(availableBalance, this.valueFunds);
-  }
-
-  get selectedValidatorsFormatted(): string {
-    return this.t('soraStaking.selectedValidators', {
-      count: this.selectedValidators.length,
-      max: this.validators.length,
-    });
-  }
-
-  handleValue(value: string | number): void {
-    this.value = String(value);
-  }
-
-  handleMaxValue(): void {
-    this.handleValue(this.maxStake.toString());
-  }
-
-  async handleConfirm(): Promise<void> {
-    this.setStakeAmount(this.value);
-
-    let extrinsic = this.unbond;
-    if (this.mode === StakeDialogMode.NEW) {
-      extrinsic = this.bondAndNominate;
-    } else if (this.mode === StakeDialogMode.ADD) {
-      extrinsic = this.bondExtra;
-    }
-
-    await this.withNotifications(async () => await extrinsic());
-    this.$emit('confirm');
-  }
-
-  async mounted() {
-    await this.$nextTick();
-    const input: HTMLInputElement | null = this.$el.querySelector('.s-input .el-input__inner');
-    input?.focus();
-  }
-}
+onMounted(async () => {
+  await nextTick();
+  const input = dialogRoot.value?.querySelector<HTMLInputElement>('.s-input .el-input__inner');
+  input?.focus();
+});
 </script>
 
 <style lang="scss">

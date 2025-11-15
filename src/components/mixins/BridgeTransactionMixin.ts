@@ -1,6 +1,6 @@
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { WALLET_CONSTS } from '@wallet';
+import { Options, mixins as vueMixins } from 'vue-property-decorator';
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { soraExplorerLinks } from '@/utils';
@@ -8,8 +8,8 @@ import { soraExplorerLinks } from '@/utils';
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
-@Component
-export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin) {
+@Options({})
+export default class BridgeTransactionMixin extends vueMixins(NetworkFormatterMixin) {
   get tx(): Nullable<IBridgeTransaction> {
     console.warn('[BridgeTransactionMixin] "tx" computed property is not implemented');
     return null;

@@ -1,0 +1,66 @@
+{
+  "private": true,
+  "license": "Apache-2.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "yarn test:all",
+    "presb:serve": "yarn build:vite-plugin-svg",
+    "sb:serve": "yarn --cwd packages/ui sb:serve",
+    "presb:build": "yarn build:vite-plugin-svg",
+    "sb:build": "yarn --cwd packages/ui sb:build",
+    "test:all": "run-s lint:check test:theme:unit build:vite-plugin-svg test:ui:unit build:theme test:ui:cy build:ui:only-vite test:ui:after-build",
+    "test:theme:unit": "yarn --cwd packages/theme test",
+    "test:ui:unit": "yarn --cwd packages/ui test:unit",
+    "test:ui:cy": "yarn --cwd packages/ui cy:ci:component",
+    "test:ui:cy-open": "yarn --cwd packages/ui cy",
+    "test:ui:after-build": "yarn --cwd packages/ui test:after-build",
+    "build": "run-s build:theme build:vite-plugin-svg build:ui",
+    "build:theme": "yarn --cwd packages/theme build",
+    "build:vite-plugin-svg": "yarn --cwd packages/vite-plugin-svg build",
+    "build:ui": "yarn --cwd packages/ui build",
+    "build:ui:only-vite": "yarn --cwd packages/ui build:vite",
+    "lint:check": "run-s lint:es lint:format:check",
+    "lint:es": "eslint .",
+    "lint:es:fix": "yarn lint:es --fix",
+    "lint:format:base": "node ./scripts/format-with-eslint.mjs",
+    "lint:format:check": "yarn lint:format:base",
+    "lint:format:fix": "yarn lint:format:base --write",
+    "prestorybook:verify": "yarn build:vite-plugin-svg",
+    "storybook:verify": "yarn --cwd packages/ui sb:build",
+    "publish-workspaces": "lerna publish from-package"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.5",
+    "@babel/eslint-parser": "^7.26.5",
+    "@changesets/cli": "^2.29.7",
+    "@types/node": "^24.7.0",
+    "@typescript-eslint/eslint-plugin": "8.46.0",
+    "@typescript-eslint/parser": "8.46.0",
+    "esbuild": "^0.25.10",
+    "esbuild-jest": "^0.5.0",
+    "eslint": "9.37.0",
+    "eslint-config-alloy": "patch:eslint-config-alloy@npm:5.1.2#./.yarn/patches/eslint-config-alloy-npm-5.1.2-4eac6a6850.patch",
+    "eslint-plugin-cypress": "^5.2.0",
+    "eslint-plugin-vue": "^10.5.0",
+    "eslint-plugin-vuejs-accessibility": "^2.4.1",
+    "lerna": "^9.0.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.6.2",
+    "prettier-eslint": "^16.4.2",
+    "prettier-eslint-cli": "^8.0.1",
+    "typescript": "~5.8.2",
+    "vue-eslint-parser": "^10.2.0"
+  },
+  "dependencies": {
+    "@microsoft/api-extractor": "^7.53.1",
+    "@vue/test-utils": "^2.4.6"
+  },
+  "resolutions": {
+    "vue-component-meta": "3.1.1",
+    "vue-component-type-helpers": "3.1.1",
+    "@vue/language-core": "3.1.1",
+    "@volar/typescript": "2.4.23"
+  }
+}

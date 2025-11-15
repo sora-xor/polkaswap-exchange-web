@@ -1,0 +1,14 @@
+{
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "packages": ["packages/*"],
+  "version": "independent",
+  "command": {
+    "publish": {
+      "ignoreChanges": ["yarn.lock"],
+      "no-git-tag-version": true,
+      "no-push": true,
+      "yes": true
+    }
+  }
+}

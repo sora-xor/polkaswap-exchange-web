@@ -6,7 +6,7 @@
           <div class="distribution-step">
             <div class="distribution-asset">
               <template v-if="tokenFrom">
-                <token-logo :token="tokenFrom" size="small" class="distribution-asset-logo" />
+                <token-logo :token="tokenFrom" size="small" class="distribution-asset-logo"></token-logo>
                 <span class="distribution-asset-amount">{{ fromValue }} {{ tokenFrom.symbol }}</span>
               </template>
             </div>
@@ -15,14 +15,14 @@
               <div class="distribution-path-sources">
                 <div class="distribution-path-source">
                   <div class="flex-cell">
-                    <s-skeleton-item element="rect" class="distribution-path-source-name" />
-                    <s-skeleton-item element="rect" class="distribution-path-source-change" />
+                    <s-skeleton-item element="rect" class="distribution-path-source-name"></s-skeleton-item>
+                    <s-skeleton-item element="rect" class="distribution-path-source-change"></s-skeleton-item>
                   </div>
                   <div class="flex-cell">
-                    <s-skeleton-item element="circle" />
-                    <s-skeleton-item element="rect" />
-                    <s-skeleton-item element="circle" />
-                    <s-skeleton-item element="rect" />
+                    <s-skeleton-item element="circle"></s-skeleton-item>
+                    <s-skeleton-item element="rect"></s-skeleton-item>
+                    <s-skeleton-item element="circle"></s-skeleton-item>
+                    <s-skeleton-item element="rect"></s-skeleton-item>
                   </div>
                 </div>
               </div>
@@ -31,7 +31,7 @@
           <div class="distribution-step">
             <div class="distribution-asset">
               <template v-if="tokenTo">
-                <token-logo :token="tokenTo" size="small" class="distribution-asset-logo" />
+                <token-logo :token="tokenTo" size="small" class="distribution-asset-logo"></token-logo>
                 <span class="distribution-asset-amount">{{ toValue }} {{ tokenTo.symbol }}</span>
               </template>
             </div>
@@ -42,7 +42,7 @@
       <ul class="distribution">
         <li v-for="{ input, output, amount, sources } in swapPaths" :key="input.address" class="distribution-step">
           <div class="distribution-asset">
-            <token-logo :token="input" size="small" class="distribution-asset-logo" />
+            <token-logo :token="input" size="small" class="distribution-asset-logo"></token-logo>
             <span class="distribution-asset-amount">{{ amount }} {{ input.symbol }}</span>
           </div>
           <div v-if="sources.length" class="distribution-path">
@@ -60,9 +60,9 @@
                   </value-status-wrapper>
                 </div>
                 <div class="flex-cell">
-                  <div class="flex-cell"><token-logo :token="input" size="mini" />{{ income }}</div>
+                  <div class="flex-cell"><token-logo :token="input" size="mini"></token-logo>{{ income }}</div>
                   &rarr;
-                  <div class="flex-cell"><token-logo :token="output" size="mini" />{{ outcome }}</div>
+                  <div class="flex-cell"><token-logo :token="output" size="mini"></token-logo>{{ outcome }}</div>
                 </div>
               </div>
             </div>
@@ -76,17 +76,17 @@
 <script setup lang="ts">
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@wallet';
 import { computed } from 'vue';
 
-import { SSkeleton, SSkeletonItem } from '@/compat/soramitsu-ui';
+import { SSkeleton, SSkeletonItem } from '@soramitsu-ui/ui/components/Skeleton';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-import store from '@/store';
 import { useSwapStore } from '@/stores/swap';
+import { lazyComponent } from '@/router';
+import { useAssetsStore } from '@/stores/assets';
 import { calcFiatDifference } from '@/utils/swap';
 
 import type { Distribution } from '@sora-substrate/liquidity-proxy/build/types';
@@ -94,10 +94,14 @@ import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 const BaseWidget = lazyComponent(Components.BaseWidget);
 const ValueStatusWrapper = lazyComponent(Components.ValueStatusWrapper);
-const TokenLogo = components.TokenLogo;
-const FormattedAmount = components.FormattedAmount;
 
-defineOptions({ name: 'SwapDistributionWidget' });
+defineOptions({
+  name: 'SwapDistributionWidget',
+  components: {
+    TokenLogo: components.TokenLogo,
+    FormattedAmount: components.FormattedAmount,
+  },
+});
 
 const MARKETS: Partial<Record<LiquiditySourceTypes, string>> = {
   [LiquiditySourceTypes.XYKPool]: 'XYK Pool',
@@ -110,9 +114,10 @@ const { t } = useTranslation();
 const { formatStringValue, getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
 const { tokenFrom, tokenTo, fromValue, toValue } = useSwapAmounts();
 const swapStore = useSwapStore();
+const assetsStore = useAssetsStore();
 
 const distribution = computed(() => swapStore.distribution as Distribution[][]);
-const getAsset = (address?: string) => store.getters.assets.assetDataByAddress(address) as AccountAsset;
+const getAsset = (address?: string) => assetsStore.assetDataByAddress(address) as AccountAsset;
 
 const swapPaths = computed(() => {
   const paths: Array<{

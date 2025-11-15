@@ -1,14 +1,14 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="title">
+  <dialog-base v-model:visible="isVisible" :title="title">
     <div class="stake-dialog">
-      <dialog-title :base-asset="baseAsset" :pool-asset="poolAsset" :is-farm="isFarm" />
+      <dialog-title :base-asset="baseAsset" :pool-asset="poolAsset" :is-farm="isFarm"></dialog-title>
 
       <div v-if="isAdding" class="stake-dialog-info">
         <template v-if="pricesAvailable">
-          <info-line :label="TranslationConsts.APR" :value="apr" />
-          <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvl" />
+          <info-line :label="TranslationConsts.APR" :value="apr"></info-line>
+          <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvl"></info-line>
         </template>
-        <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
+        <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol"></info-line>
       </div>
 
       <s-form class="el-form--actions" :show-message="false">
@@ -43,7 +43,7 @@
             :value="Number(value)"
             :show-tooltip="false"
             @input="handleValue"
-          />
+          ></s-slider>
         </s-float-input>
 
         <token-input
@@ -56,7 +56,7 @@
           :value="value"
           @input="handleValue"
           @max="handleMaxValue"
-        />
+        ></token-input>
       </s-form>
 
       <info-line
@@ -65,19 +65,19 @@
         :label="poolShareText"
         :value="poolShareFormatted"
         :fiat-value="poolShareFiat"
-      />
+      ></info-line>
       <info-line
         value-can-be-hidden
         :label="poolShareAfterText"
         :value="poolShareAfterFormatted"
         :fiat-value="poolShareAfterFiat"
-      />
+      ></info-line>
       <info-line
         v-if="isAdding"
         :label="t('demeterFarming.info.fee')"
         :label-tooltip="t('demeterFarming.info.feeTooltip')"
         :value="depositFeeFormatted"
-      />
+      ></info-line>
       <info-line
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
@@ -85,12 +85,12 @@
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
-      />
+      ></info-line>
 
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
-        :loading="parentLoading"
+        :loading="combinedLoading"
         :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
         @click="handleConfirm"
       >
@@ -111,183 +111,247 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { FPNumber, Operation, type CodecString } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { components } from '@wallet';
+import { computed, ref, toRefs, watch, type PropType } from 'vue';
 
 import { Components, ZeroStringValue } from '@/consts';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
-import { state } from '@/store/decorators';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
-import { getMaxValue, isXorAccountAsset } from '@/utils';
+import type { Nullable } from '@/types/common';
+import { getMaxValue, hasInsufficientXorForFee, isXorAccountAsset } from '@/utils';
 
 import { demeterStakingLazyComponent } from '../../router';
 import { DemeterStakingComponents } from '../consts';
-import PoolCardMixin from '../mixins/PoolCardMixin';
+import { useDemeterPoolCard } from '../composables/useDemeterPoolCard';
+import { useDemeterPoolStatus } from '../composables/useDemeterPoolStatus';
 
-import type { CodecString } from '@sora-substrate/sdk';
+import type { DemeterAsset, DemeterPool, DemeterAccountPool } from '../types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+defineOptions({
   components: {
     DialogTitle: demeterStakingLazyComponent(DemeterStakingComponents.DialogTitle),
     TokenInput: lazyComponent(Components.TokenInput),
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
   },
-})
-export default class StakeDialog extends Mixins(PoolCardMixin, mixins.DialogMixin, mixins.LoadingMixin) {
-  @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
+});
 
-  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
+const props = defineProps({
+  visible: { type: Boolean, default: false },
+  parentLoading: { type: Boolean, default: false },
+  isAdding: { type: Boolean, default: true },
+  liquidity: { type: Object as PropType<Nullable<AccountLiquidity>>, default: null },
+  baseAsset: { type: Object as PropType<Nullable<DemeterAsset>>, default: null },
+  pool: { type: Object as PropType<Nullable<DemeterPool>>, default: null },
+  accountPool: { type: Object as PropType<Nullable<DemeterAccountPool>>, default: null },
+  poolAsset: { type: Object as PropType<Nullable<DemeterAsset>>, default: null },
+  rewardAsset: { type: Object as PropType<Nullable<DemeterAsset>>, default: null },
+  apr: { type: String, default: ZeroStringValue },
+  tvl: { type: String, default: ZeroStringValue },
+});
 
-  @Watch('visible')
-  private resetValue() {
-    this.value = '';
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+  (event: 'add', payload: DemeterLiquidityParams): void;
+  (event: 'remove', payload: DemeterLiquidityParams): void;
+}>();
+
+const { liquidity, pool, accountPool, poolAsset, rewardAsset, baseAsset, apr, tvl } = toRefs(props);
+
+const dialogModel = useDialogModel(props, (event, value) => {
+  if (event === 'update:visible') {
+    emit('update:visible', value ?? false);
+  } else {
+    emit('close');
+  }
+});
+
+const { isVisible } = dialogModel;
+
+const settingsStore = useSettingsStore();
+const assetsStore = useAssetsStore();
+
+const networkFees = computed(() => settingsStore.networkFees);
+const shouldBalanceBeHidden = computed(() => settingsStore.shouldBalanceBeHidden);
+const xorAsset = computed(() => assetsStore.xor as Nullable<AccountAsset>);
+
+const { t, TranslationConsts } = useTranslation();
+
+const statusApi = useDemeterPoolStatus({
+  liquidity,
+  pool,
+  accountPool,
+  poolAsset,
+  rewardAsset,
+});
+const cardApi = useDemeterPoolCard(statusApi);
+
+const value = ref<string>('');
+watch(
+  () => props.visible,
+  () => {
+    value.value = '';
+  }
+);
+
+const isAdding = computed(() => props.isAdding);
+const isFarm = computed(() => statusApi.isFarm.value);
+const pricesAvailable = computed(() => statusApi.pricesAvailable.value);
+const hasStake = computed(() => statusApi.hasStake.value);
+
+const networkFee = computed<CodecString>(() => {
+  const operation = isAdding.value
+    ? Operation.DemeterFarmingDepositLiquidity
+    : Operation.DemeterFarmingWithdrawLiquidity;
+  return networkFees.value?.[operation] ?? ZeroStringValue;
+});
+const networkFeeFormatted = computed(() => statusApi.formatCodecNumber(networkFee.value));
+const xorSymbol = XOR.symbol;
+const isInsufficientXorForFee = computed(() => hasInsufficientXorForFee(xorAsset.value, networkFee.value));
+
+const rewardAssetSymbol = computed(() => cardApi.rewardAssetSymbol.value);
+const poolAssetSymbol = computed(() => cardApi.poolAssetSymbol.value);
+const depositFee = computed(() => cardApi.depositFee.value);
+const depositFeeFormatted = computed(() => cardApi.depositFeeFormatted.value);
+const poolShareFormatted = computed(() => cardApi.poolShareFormatted.value);
+const poolShareFiat = computed(() => cardApi.poolShareFiat.value);
+
+const poolShareText = computed(() =>
+  isFarm.value ? t('demeterFarming.info.poolShare') : t('demeterFarming.info.stake', { symbol: poolAssetSymbol.value })
+);
+
+const part = computed(() => new FPNumber(value.value || '0').div(FPNumber.HUNDRED));
+
+const valueFunds = computed(() => {
+  const asset = poolAsset.value;
+  if (!asset) return FPNumber.ZERO;
+
+  if (!isFarm.value) return new FPNumber(value.value || '0');
+
+  if (isAdding.value) {
+    const fee = FPNumber.fromCodecValue(networkFee.value);
+    const amount = isXorAccountAsset(asset) ? statusApi.availableFunds.value.sub(fee) : statusApi.availableFunds.value;
+
+    return amount.mul(part.value);
   }
 
-  value = '';
+  return statusApi.lockedFunds.value.mul(part.value);
+});
 
-  get networkFee(): CodecString {
-    const operation = this.isAdding
-      ? Operation.DemeterFarmingDepositLiquidity
-      : Operation.DemeterFarmingWithdrawLiquidity;
-
-    return this.networkFees[operation];
+const poolShareAfter = computed(() => {
+  if (isAdding.value) {
+    const fee = new FPNumber(depositFee.value);
+    const feeFromValue = valueFunds.value.mul(fee);
+    const fundsAfter = statusApi.lockedFunds.value.add(valueFunds.value.sub(feeFromValue));
+    return isFarm.value ? fundsAfter.div(statusApi.funds.value.sub(feeFromValue)).mul(FPNumber.HUNDRED) : fundsAfter;
   }
 
-  get title(): string {
-    const actionKey = this.isAdding ? (this.hasStake ? 'add' : 'start') : 'remove';
+  const funds = FPNumber.max(statusApi.lockedFunds.value, statusApi.funds.value) as FPNumber;
+  const fundsAfter = FPNumber.max(statusApi.lockedFunds.value.sub(valueFunds.value), FPNumber.ZERO) as FPNumber;
 
-    return this.t(`demeterFarming.actions.${actionKey}`);
-  }
+  return isFarm.value ? fundsAfter.div(funds).mul(FPNumber.HUNDRED) : fundsAfter;
+});
 
-  get inputTitle(): string {
-    const key = this.isAdding ? 'amountAdd' : 'amountRemove';
+const poolShareAfterFiat = computed(() => {
+  if (isFarm.value || !statusApi.poolAsset.value) return null;
+  return statusApi.getFiatAmountByFPNumber(poolShareAfter.value, statusApi.poolAsset.value as AccountAsset);
+});
 
-    return this.t(`demeterFarming.${key}`);
-  }
+const poolShareAfterFormatted = computed(() => `${poolShareAfter.value.toLocaleString()}${isFarm.value ? '%' : ''}`);
 
-  get valuePartCharClass(): string {
-    const charClassName =
-      {
-        3: 'three',
-        2: 'two',
-      }[this.value.toString().length] ?? 'one';
+const poolShareAfterText = computed(() =>
+  isFarm.value
+    ? t('demeterFarming.info.poolShareWillBe')
+    : t('demeterFarming.info.stakeWillBe', { symbol: poolAssetSymbol.value })
+);
 
-    return `${charClassName}-char`;
-  }
+const valueFundsEmpty = computed(() => valueFunds.value.isZero());
 
-  get part(): FPNumber {
-    return new FPNumber(this.value).div(FPNumber.HUNDRED);
-  }
+const stakingBalance = computed(() => (isAdding.value ? statusApi.availableFunds.value : statusApi.lockedFunds.value));
+const stakingBalanceCodec = computed(() => stakingBalance.value.toCodecString());
 
-  get poolShareAfter(): FPNumber {
-    if (this.isAdding) {
-      const depositFee = new FPNumber(this.depositFee);
-      const feeFromValue = this.valueFunds.mul(depositFee);
-      const fundsAfter = this.lockedFunds.add(this.valueFunds.sub(feeFromValue));
+const isMaxButtonAvailable = computed(() => {
+  if (shouldBalanceBeHidden.value) return false;
+  const asset = poolAsset.value;
+  if (!asset) return false;
 
-      return this.isFarm ? fundsAfter.div(this.funds.sub(feeFromValue)).mul(FPNumber.HUNDRED) : fundsAfter;
-    } else {
-      const funds = FPNumber.max(this.lockedFunds, this.funds) as FPNumber;
-      const fundsAfter = FPNumber.max(this.lockedFunds.sub(this.valueFunds), FPNumber.ZERO) as FPNumber;
+  const fee = FPNumber.fromCodecValue(networkFee.value);
+  const amount = isAdding.value && isXorAccountAsset(asset) ? stakingBalance.value.sub(fee) : stakingBalance.value;
 
-      return this.isFarm ? fundsAfter.div(funds).mul(FPNumber.HUNDRED) : fundsAfter;
-    }
-  }
+  return !FPNumber.eq(valueFunds.value, amount);
+});
 
-  get poolShareAfterFiat(): Nullable<string> {
-    if (this.isFarm || !this.poolAsset) return null;
+const maxStake = computed(() => {
+  const asset = poolAsset.value;
+  if (!asset) return ZeroStringValue;
 
-    return this.getFiatAmountByFPNumber(this.poolShareAfter, this.poolAsset as AccountAsset);
-  }
+  return isAdding.value ? getMaxValue(asset, networkFee.value) : statusApi.lockedFunds.value.toString();
+});
 
-  get poolShareAfterFormatted(): string {
-    return this.poolShareAfter.toLocaleString() + (this.isFarm ? '%' : '');
-  }
+const isInsufficientBalance = computed(() => {
+  if (isFarm.value) return false;
 
-  get poolShareAfterText(): string {
-    return this.isFarm
-      ? this.t('demeterFarming.info.poolShareWillBe')
-      : this.t('demeterFarming.info.stakeWillBe', { symbol: this.poolAssetSymbol });
-  }
+  const asset = poolAsset.value;
+  if (!asset) return false;
 
-  get valueFunds(): FPNumber {
-    if (!this.poolAsset) return FPNumber.ZERO;
+  const availableBalance = new FPNumber(maxStake.value, asset.decimals);
+  return FPNumber.lt(availableBalance, valueFunds.value);
+});
 
-    if (!this.isFarm) return new FPNumber(this.value);
+const valuePartCharClass = computed(() => {
+  const charClassName =
+    {
+      3: 'three',
+      2: 'two',
+    }[value.value.length] ?? 'one';
 
-    if (this.isAdding) {
-      const fee = FPNumber.fromCodecValue(this.networkFee);
-      const amount = isXorAccountAsset(this.poolAsset) ? this.availableFunds.sub(fee) : this.availableFunds;
+  return `${charClassName}-char`;
+});
 
-      return amount.mul(this.part);
-    } else {
-      return this.lockedFunds.mul(this.part);
-    }
-  }
+const title = computed(() => {
+  const actionKey = isAdding.value ? (hasStake.value ? 'add' : 'start') : 'remove';
+  return t(`demeterFarming.actions.${actionKey}`);
+});
 
-  get valueFundsEmpty(): boolean {
-    return this.valueFunds.isZero();
-  }
+const inputTitle = computed(() => {
+  const key = isAdding.value ? 'amountAdd' : 'amountRemove';
+  return t(`demeterFarming.${key}`);
+});
 
-  get stakingBalance(): FPNumber {
-    return this.isAdding ? this.availableFunds : this.lockedFunds;
-  }
+const getFiatAmountByCodecString = statusApi.getFiatAmountByCodecString;
 
-  get stakingBalanceCodec(): CodecString {
-    return this.stakingBalance.toCodecString();
-  }
+const handleValue = (val: string | number) => {
+  value.value = String(val ?? '');
+};
 
-  get isMaxButtonAvailable(): boolean {
-    if (this.shouldBalanceBeHidden) {
-      return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
-    }
-    if (!this.poolAsset) return false;
+const handleMaxValue = () => {
+  handleValue(maxStake.value);
+};
 
-    const fee = FPNumber.fromCodecValue(this.networkFee);
-    const amount =
-      this.isAdding && isXorAccountAsset(this.poolAsset) ? this.stakingBalance.sub(fee) : this.stakingBalance;
+const handleConfirm = () => {
+  if (!statusApi.pool.value || !statusApi.accountPool.value) return;
 
-    return !FPNumber.eq(this.valueFunds, amount);
-  }
+  const params: DemeterLiquidityParams = {
+    pool: statusApi.pool.value,
+    accountPool: statusApi.accountPool.value,
+    value: valueFunds.value,
+  };
 
-  get maxStake(): string {
-    if (!this.poolAsset) return ZeroStringValue;
+  const event = isAdding.value ? 'add' : 'remove';
+  emit(event, params);
+};
 
-    return this.isAdding ? getMaxValue(this.poolAsset, this.networkFee) : this.lockedFunds.toString();
-  }
-
-  get isInsufficientBalance(): boolean {
-    if (this.isFarm) return false;
-
-    const availableBalance = new FPNumber(this.maxStake, this.poolAsset?.decimals);
-
-    return FPNumber.lt(availableBalance, this.valueFunds);
-  }
-
-  handleValue(value: string | number): void {
-    this.value = String(value);
-  }
-
-  handleMaxValue(): void {
-    this.handleValue(this.maxStake);
-  }
-
-  handleConfirm(): void {
-    const params: DemeterLiquidityParams = {
-      pool: this.pool,
-      accountPool: this.accountPool,
-      value: this.valueFunds,
-    };
-
-    const event = this.isAdding ? 'add' : 'remove';
-
-    this.$emit(event, params);
-  }
-}
+const combinedLoading = computed(() => props.parentLoading);
 </script>
 
 <style lang="scss" scoped>

@@ -1,0 +1,66 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button [ref=e5]
+    - text: "[object Promise]"
+    - generic [ref=e6]:
+      - text: "[object Promise]"
+      - button "[object Promise]Buy Tokens" [ref=e7]
+    - generic [ref=e8]:
+      - button "Connect account" [ref=e9]:
+        - generic [ref=e10]: Connect account
+      - button [ref=e12]
+    - text: "[object Promise][object Promise][object Promise][object Promise]"
+  - generic [ref=e14]:
+    - button [ref=e15]
+    - complementary [ref=e17]:
+      - generic [ref=e18]:
+        - menubar [ref=e19]:
+          - menuitem "Swap" [ref=e21]:
+            - link "Swap" [ref=e22] [cursor=pointer]:
+              - /url: /#/swap
+              - generic [ref=e24]: Swap
+          - menuitem "Rewards" [ref=e26]:
+            - link "Rewards" [ref=e27] [cursor=pointer]:
+              - /url: /#/points
+              - generic [ref=e29]: Rewards
+          - menuitem "Pool" [ref=e31]:
+            - link "Pool" [ref=e32] [cursor=pointer]:
+              - /url: /#/pool
+              - generic [ref=e34]: Pool
+          - menuitem "Staking" [ref=e36]:
+            - link "Staking" [ref=e37] [cursor=pointer]:
+              - /url: /#/staking
+              - generic [ref=e39]: Staking
+          - menuitem "Bridge" [ref=e41]:
+            - link "Bridge" [ref=e42] [cursor=pointer]:
+              - /url: /#/bridge
+              - generic [ref=e44]: Bridge
+          - menuitem "Account" [ref=e46]:
+            - link "Account" [ref=e47] [cursor=pointer]:
+              - /url: /#/wallet
+              - generic [ref=e49]: Account
+          - menuitem "Kensetsu" [ref=e51]:
+            - link "Kensetsu" [ref=e52] [cursor=pointer]:
+              - /url: /#/kensetsu
+              - generic [ref=e54]: Kensetsu
+          - menuitem "Explore" [ref=e56]:
+            - link "Explore" [ref=e57] [cursor=pointer]:
+              - /url: /#/explore
+              - generic [ref=e59]: Explore
+          - menuitem "Statistics" [ref=e61]:
+            - link "Statistics" [ref=e62] [cursor=pointer]:
+              - /url: /#/stats
+              - generic [ref=e64]: Statistics
+          - link "About" [ref=e66] [cursor=pointer]:
+            - /url: https://about.polkaswap.io
+            - generic [ref=e68]: About
+        - menubar [ref=e69]:
+          - generic [ref=e71]:
+            - paragraph [ref=e72]: footer.info.description
+            - button "footer.info.button" [ref=e73]
+  - text: "[object Promise][object Promise][object Promise][object Promise][object Promise][object Promise][object Promise][object Promise]"
+  - text: "[object Promise][object Promise]"
+```

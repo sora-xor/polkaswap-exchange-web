@@ -1,0 +1,3 @@
+
+Ÿ—import{p as i,d8 as f}from"./index-DjB-Okl0.js";function A(a,s,l={}){if(!s)return[...a];const o=s.trim().toLowerCase(),n=l.useExternalAddress?"externalAddress":"address";return a.filter(e=>{const t=e.name?.toLowerCase?.().includes?.(o)??!1,r=e.symbol?.toLowerCase?.().includes?.(o)??!1,d=e[n]?.toLowerCase?.()===o;return t||r||d})}const u=a=>{const s=a?.balance?.transferable;return s==null||Number(s)===0};function m(){const s=i().assetDataByAddress;return{sortByBalance:(n,e)=>{const t=u(n),r=u(e);return t===r?f(n,e):t&&!r?1:-1},getAssetsWithBalances:(n,e="")=>n.reduce((t,r)=>{if(r===e)return t;const c=s(r);return c&&t.push(c),t},[])}}export{A as f,m as u};
+—

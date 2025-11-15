@@ -6,6 +6,7 @@ import { defineGetters } from 'direct-vuex';
 
 import { ZeroStringValue } from '@/consts';
 import { bridgeGetterContext } from '@/store/bridge';
+import { resolveAssetLookup, resolveRegisteredAssets } from '@/store/bridge/utils';
 import { isWaitingForAction } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -24,7 +25,8 @@ const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = bridgeGetterContext(args);
     const { assetAddress, assetSenderBalance: sender, assetRecipientBalance: recipient, isSoraToEvm } = state;
-    const token = rootGetters.assets.assetDataByAddress(assetAddress);
+    const assetLookup = resolveAssetLookup(rootGetters);
+    const token = assetLookup(assetAddress);
 
     if (!token) return null;
     // to save old logic, pass sender & recipient balances
@@ -40,15 +42,14 @@ const getters = defineGetters<BridgeState>()({
 
   nativeToken(...args): Nullable<RegisteredAccountAsset> {
     const { rootGetters, rootState } = bridgeGetterContext(args);
+    const assetLookup = resolveAssetLookup(rootGetters);
     const {
       wallet: {
         account: { assets },
       },
-      assets: { registeredAssets },
     } = rootState;
     const {
       web3: { selectedNetwork },
-      assets: { assetDataByAddress },
     } = rootGetters;
 
     if (!selectedNetwork) return null;
@@ -58,11 +59,14 @@ const getters = defineGetters<BridgeState>()({
     if (!symbol) return null;
 
     const filteredBySymbol = assets.filter((asset) => asset.symbol === symbol);
-    const registered = filteredBySymbol.find((asset) => asset.address in registeredAssets);
+
+    const registry = resolveRegisteredAssets(rootState.assets);
+
+    const registered = filteredBySymbol.find((asset) => asset.address in registry);
 
     if (!registered) return null;
 
-    return assetDataByAddress(registered.address);
+    return assetLookup(registered.address);
   },
 
   isNativeTokenSelected(...args): boolean {
@@ -76,7 +80,7 @@ const getters = defineGetters<BridgeState>()({
     const { getters, rootState } = bridgeGetterContext(args);
 
     const { asset, isSubBridge } = getters;
-    const { registeredAssets } = rootState.assets;
+    const registeredAssets = resolveRegisteredAssets(rootState.assets);
 
     if (!asset) return false;
     if (!(asset.address in registeredAssets)) return false;
@@ -90,7 +94,7 @@ const getters = defineGetters<BridgeState>()({
   isSidechainAsset(...args): boolean {
     const { getters, rootState } = bridgeGetterContext(args);
     const { asset, isSubBridge } = getters;
-    const { registeredAssets } = rootState.assets;
+    const registeredAssets = resolveRegisteredAssets(rootState.assets);
 
     if (!asset) return false;
     if (!(asset.address in registeredAssets)) return false;
@@ -104,7 +108,8 @@ const getters = defineGetters<BridgeState>()({
 
   autoselectedAssetAddress(...args): Nullable<string> {
     const { rootState } = bridgeGetterContext(args);
-    const assetIds = Object.keys(rootState.assets.registeredAssets);
+    const registeredAssets = resolveRegisteredAssets(rootState.assets);
+    const assetIds = Object.keys(registeredAssets);
 
     if (assetIds.length !== 1) return null;
 

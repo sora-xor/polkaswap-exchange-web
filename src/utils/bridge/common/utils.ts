@@ -1,6 +1,6 @@
 import { isEthOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/sdk';
 import { XOR, TBCD } from '@sora-substrate/sdk/build/assets/consts';
-import { api as soraApi } from '@soramitsu/soraneo-wallet-web';
+import { api as soraApi } from '@wallet';
 import { ethers } from 'ethers';
 
 import type { GetTransaction, UpdateTransaction } from '@/utils/bridge/common/types';

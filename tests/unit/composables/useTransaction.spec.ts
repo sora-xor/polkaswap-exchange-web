@@ -1,16 +1,30 @@
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { Operation, TransactionStatus } from '@sora-substrate/sdk';
+import { api } from '@wallet';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useTransaction } from '@/composables/useTransaction';
 
 const addActiveTx = vi.hoisted(() => vi.fn());
-const withAppNotification = vi.fn(async (handler: () => Promise<void> | void) => {
-  await handler?.();
-});
-const showAppNotification = vi.fn();
-const notificationMock = { withAppNotification, showAppNotification };
+const removeActiveTxs = vi.hoisted(() => vi.fn());
+const addAsset = vi.hoisted(() => vi.fn(async () => undefined));
+const notificationStubs = vi.hoisted(() => {
+  const withAppNotification = vi.fn(async (handler: () => Promise<void> | void) => {
+    await handler?.();
+  });
+  const showAppNotification = vi.fn();
 
-vi.mock('@soramitsu/soraneo-wallet-web/src/composables/useNotification', () => ({
+  return {
+    notificationMock: { withAppNotification, showAppNotification },
+    withAppNotification,
+    showAppNotification,
+  };
+});
+const notificationMock = notificationStubs.notificationMock;
+const withAppNotification = notificationStubs.withAppNotification;
+const showAppNotification = notificationStubs.showAppNotification;
+const getOperationMessage = vi.hoisted(() => vi.fn(() => 'operation-message'));
+
+vi.mock('@/composables/useNotification', () => ({
   useNotification: () => notificationMock,
 }));
 
@@ -18,22 +32,41 @@ vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
-vi.mock('@soramitsu/soraneo-wallet-web', () => ({
-  api: {
-    historyList: [] as Array<{ id: string; startTime: string }> & {
-      push: Array<{ id: string; startTime: string }>['push'];
+type HistoryEntry = { id: string; startTime: string };
+const historyList = vi.hoisted(() => [] as HistoryEntry[]);
+
+vi.mock('@wallet', async () => {
+  const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
+  const wallet = createWalletMock();
+
+  return withWalletMock(wallet, {
+    api: {
+      ...wallet.api,
+      historyList,
     },
-  },
-  useNotification: () => notificationMock,
-  WALLET_CONSTS: { TranslationConsts: {} },
-  components: {},
-  storage: { get: vi.fn(), set: vi.fn(), remove: vi.fn() },
-  settingsStorage: { get: vi.fn(), set: vi.fn() },
+    useNotification: () => notificationMock,
+  });
+});
+
+vi.mock('@wallet/src/util', async () => {
+  const actual = await vi.importActual<typeof import('@wallet/src/util')>('@wallet/src/util');
+
+  return {
+    __esModule: true,
+    ...actual,
+    beforeTransactionSign: vi.fn(),
+    delay: vi.fn(async () => undefined),
+  };
+});
+
+vi.mock('@/composables/useOperations', () => ({
+  useOperations: () => ({ getOperationMessage }),
 }));
 
-vi.mock('@soramitsu/soraneo-wallet-web/src/util', () => ({
-  beforeTransactionSign: vi.fn(),
-  delay: vi.fn(async () => undefined),
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => ({
+    addAsset,
+  }),
 }));
 
 vi.mock('@/store', () => ({
@@ -44,6 +77,9 @@ vi.mock('@/store', () => ({
         language: 'en',
       },
       wallet: {
+        settings: {
+          shouldBalanceBeHidden: false,
+        },
         transactions: {
           isConfirmTxDialogDisabled: false,
         },
@@ -73,6 +109,7 @@ vi.mock('@/store', () => ({
       wallet: {
         transactions: {
           addActiveTx,
+          removeActiveTxs,
         },
       },
     },
@@ -91,6 +128,7 @@ describe('useTransaction', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (api.historyList as Array<{ id: string; startTime: string }>).length = 0;
+    getOperationMessage.mockClear();
   });
 
   it('wraps handlers with wallet notification flow', async () => {
@@ -107,5 +145,45 @@ describe('useTransaction', () => {
     expect(withAppNotification).toHaveBeenCalledTimes(1);
     expect(addActiveTx).toHaveBeenCalledWith('tx-1');
     expect(showAppNotification).toHaveBeenCalledWith('transactionSubmittedText');
+  });
+
+  it('shows error notification for failed transactions', () => {
+    const { handleChangeTransaction } = useTransaction();
+    const tx = { id: 'tx-error', status: TransactionStatus.Error } as any;
+
+    handleChangeTransaction(tx, null);
+
+    expect(getOperationMessage).toHaveBeenCalledWith(tx, false);
+    expect(showAppNotification).toHaveBeenCalledWith('operation-message', 'error');
+    expect(removeActiveTxs).toHaveBeenCalledWith(['tx-error']);
+  });
+
+  it('shows success notification for new finalized transactions', () => {
+    const { handleChangeTransaction } = useTransaction();
+    const tx = { id: 'tx-final', status: TransactionStatus.Finalized } as any;
+    const previous = { id: 'other', status: TransactionStatus.Finalized } as any;
+
+    handleChangeTransaction(tx, previous);
+
+    expect(showAppNotification).toHaveBeenCalledWith('operation-message', 'success');
+    expect(removeActiveTxs).toHaveBeenCalledWith(['tx-final']);
+  });
+
+  it('adds registered asset notifications when asset is missing', async () => {
+    const { handleChangeTransaction } = useTransaction();
+    const tx = {
+      id: 'tx-reg',
+      status: TransactionStatus.Finalized,
+      type: Operation.RegisterAsset,
+      assetAddress: '0x987',
+      symbol: 'REG',
+    } as any;
+
+    handleChangeTransaction(tx, { id: 'tx-reg', status: TransactionStatus.Finalized } as any);
+
+    expect(addAsset).toHaveBeenCalledWith('0x987');
+    await Promise.resolve();
+    expect(showAppNotification).toHaveBeenLastCalledWith('addAsset.success', 'success');
+    expect(removeActiveTxs).toHaveBeenCalledWith(['tx-reg']);
   });
 });

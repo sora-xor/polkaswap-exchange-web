@@ -7,9 +7,9 @@ import viteConfig from './vite.config.mjs';
 export default mergeConfig(
   viteConfig,
   defineConfig({
+    root: fileURLToPath(new URL('./', import.meta.url)),
     test: {
       environment: 'jsdom',
-      // Avoid Node 24 tinypool issues by using a single thread
       pool: 'threads',
       poolOptions: {
         threads: {
@@ -19,7 +19,33 @@ export default mergeConfig(
       maxConcurrency: 1,
       fileParallelism: false,
       exclude: [...configDefaults.exclude, 'e2e/**'],
-      root: fileURLToPath(new URL('./', import.meta.url)),
+      projects: [
+        {
+          extends: true,
+          test: {
+            name: 'unit',
+            include: ['tests/unit/**/*.spec.ts'],
+            exclude: ['tests/unit/scripts/**/*.spec.ts'],
+            setupFiles: ['tests/setup/vitest.setup.ts'],
+          },
+        },
+        {
+          extends: true,
+          test: {
+            name: 'unit-scripts',
+            include: ['tests/unit/scripts/**/*.spec.ts'],
+            environment: 'node',
+          },
+        },
+        {
+          extends: true,
+          test: {
+            name: 'translation',
+            include: ['tests/translation/**/*.spec.ts'],
+            environment: 'node',
+          },
+        },
+      ],
     },
   })
 );

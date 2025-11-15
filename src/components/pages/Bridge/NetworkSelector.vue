@@ -11,29 +11,32 @@
         :tooltip="t('bridge.selectNetwork')"
         tooltip-placement="bottom-end"
         @click="handleChangeNetwork"
-      />
+      ></s-button>
     </template>
   </swap-status-action-badge>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-
-import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
+<script lang="ts" setup>
+import { useTranslation } from '@/composables/useTranslation';
+import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { mutation } from '@/store/decorators';
+import store from '@/store';
 
-@Component({
+defineOptions({
+  name: 'BridgeNetworkSelector',
   components: {
     SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
   },
-})
-export default class BridgeNetworkSelector extends Mixins(NetworkFormatterMixin) {
-  @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
+});
 
-  handleChangeNetwork(): void {
-    this.setSelectNetworkDialogVisibility(true);
-  }
+const { t } = useTranslation();
+const { selectedNetworkShortName } = useNetworkFormatter();
+
+/**
+ * Opens the network selection dialog so the user can switch bridge networks.
+ */
+function handleChangeNetwork(): void {
+  store.commit.web3.setSelectNetworkDialogVisibility(true);
 }
 </script>

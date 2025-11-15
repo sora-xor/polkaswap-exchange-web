@@ -1,6 +1,6 @@
 import type { AccountLockedPool } from '@sora-substrate/sdk/build/ceresLiquidityLocker/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
-import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { PoolApyObject } from '@wallet/lib/services/indexer/types';
 import type { Subscription } from 'rxjs';
 
 export type PoolState = {

@@ -1,8 +1,12 @@
 <template>
-  <div class="stats-filter">
-    <s-button type="link" size="small" class="stats-filter-button" @click="toggleMenu" :disabled="disabled">
-      {{ filter.label }}
-      <s-icon name="el-icon-arrow-down" size="12px" :class="['stats-filter-button-icon', { opened: visibility }]" />
+  <div ref="root" class="stats-filter">
+    <s-button type="link" size="small" class="stats-filter-button" :disabled="disabled" @click="toggleMenu">
+      {{ currentFilter?.label }}
+      <s-icon
+        name="el-icon-arrow-down"
+        size="12px"
+        :class="['stats-filter-button-icon', { opened: visibility }]"
+      ></s-icon>
     </s-button>
     <div v-show="visibility" class="stats-filter-menu stats-filter-list">
       <s-button
@@ -10,7 +14,7 @@
         :key="name"
         type="link"
         size="small"
-        :class="['stats-filter-list-item', { 's-pressed': name === filter.name }]"
+        :class="['stats-filter-list-item', { 's-pressed': name === currentFilter?.name }]"
         @click="setValue(name)"
       >
         {{ label }}
@@ -19,79 +23,105 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, ModelSync, Watch } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, onBeforeUnmount, ref, toRef, watchEffect } from 'vue';
 
 import type { SnapshotFilter } from '@/types/filters';
 
-function hasParentEl(target: Node, el: Node): boolean {
-  if (target === el) return true;
-  if (!target.parentNode) return false;
+defineOptions({ name: 'StatsFilter' });
 
-  return hasParentEl(target.parentNode, el);
-}
+const props = withDefaults(
+  defineProps<{
+    filters?: SnapshotFilter[];
+    disabled?: boolean;
+    value?: SnapshotFilter | null;
+  }>(),
+  {
+    filters: () => [],
+    disabled: false,
+    value: null,
+  }
+);
 
-@Component
-export default class StatsFilter extends Mixins() {
-  @Prop({ default: () => [], type: Array }) readonly filters!: SnapshotFilter[];
-  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
+const emit = defineEmits<{
+  (event: 'update:value', value: Nullable<SnapshotFilter>): void;
+  (event: 'input', value: Nullable<SnapshotFilter>): void;
+}>();
 
-  @ModelSync('value', 'input', { type: Object })
-  filter!: SnapshotFilter;
+const root = ref<HTMLElement | null>(null);
+const visibility = ref(false);
 
-  visibility = false;
+const filterModel = computed<Nullable<SnapshotFilter>>({
+  get: () => props.value ?? props.filters[0] ?? null,
+  set: (value) => {
+    emit('update:value', value);
+    emit('input', value);
+  },
+});
 
-  @Watch('visibility')
-  private toggleListener(value: boolean): void {
-    if (value) {
-      this.addListener();
-    } else {
-      this.removeListener();
+const currentFilter = computed(() => filterModel.value);
+const isDisabled = toRef(props, 'disabled');
+
+const closeMenu = () => {
+  visibility.value = false;
+  removeListener();
+};
+
+const handleClickOutside = (event: MouseEvent) => {
+  const target = event.target as Node | null;
+  if (!target) return;
+  const container = root.value;
+  if (!container) return;
+  if (!container.contains(target)) {
+    closeMenu();
+  }
+};
+
+const addListener = () => {
+  const doc = root.value?.ownerDocument ?? document;
+  doc.addEventListener('click', handleClickOutside);
+};
+
+const removeListener = () => {
+  const doc = root.value?.ownerDocument ?? document;
+  doc.removeEventListener('click', handleClickOutside);
+};
+
+watchEffect(
+  () => {
+    if (isDisabled.value && visibility.value) {
+      closeMenu();
     }
+  },
+  { flush: 'post' }
+);
+
+onBeforeUnmount(() => {
+  removeListener();
+});
+
+const toggleMenu = () => {
+  if (props.disabled) return;
+  visibility.value = !visibility.value;
+  if (visibility.value) {
+    addListener();
+  } else {
+    removeListener();
   }
+};
 
-  private addListener(): void {
-    this.$el.ownerDocument.addEventListener('click', this.handleClickOutside);
-  }
+const setValue = (name: string) => {
+  const nextFilter = props.filters.find((item) => item.name === name);
+  if (!nextFilter) return;
+  filterModel.value = nextFilter;
+  closeMenu();
+};
 
-  private removeListener(): void {
-    this.$el.ownerDocument.removeEventListener('click', this.handleClickOutside);
-  }
-
-  beforeDestroy(): void {
-    this.removeListener();
-  }
-
-  toggleMenu(): void {
-    this.visibility = !this.visibility;
-  }
-
-  closeMenu(): void {
-    this.visibility = false;
-  }
-
-  handleClickOutside(e: Event): void {
-    const target = e.target as Node;
-    const isMenu = hasParentEl(target, this.$el);
-
-    if (!isMenu) {
-      this.closeMenu();
-    }
-  }
-
-  setValue(name: string): void {
-    const filter = this.getFilter(name);
-
-    if (filter) {
-      this.filter = filter;
-      this.closeMenu();
-    }
-  }
-
-  private getFilter(name: string): Nullable<SnapshotFilter> {
-    return this.filters.find((item) => item.name === name);
-  }
-}
+defineExpose({
+  visibility,
+  closeMenu,
+  toggleMenu,
+});
 </script>
 
 <style lang="scss" scoped>

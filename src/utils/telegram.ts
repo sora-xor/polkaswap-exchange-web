@@ -1,4 +1,4 @@
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@wallet';
 
 import store from '@/store';
 
@@ -22,7 +22,8 @@ function isNotification(value: HapticFeedbackBinding): value is HapticFeedbackSt
 }
 
 function useHaptic(type: HapticFeedbackBinding): void {
-  const HapticFeedback = Telegram?.WebApp?.HapticFeedback;
+  const telegram = window.Telegram as any;
+  const HapticFeedback = telegram?.WebApp?.HapticFeedback;
   if (!HapticFeedback) {
     return;
   }
@@ -44,7 +45,8 @@ class TmaSdk {
   public async init(botUrl?: string): Promise<void> {
     try {
       // Check if the current platform is Telegram Mini App
-      const WebApp = Telegram?.WebApp;
+      const telegram = window.Telegram as any;
+      const WebApp = telegram?.WebApp;
       if (!WebApp?.initData) {
         console.info('[TMA]: Not a Telegram Mini App, skipping initialization');
         return;
@@ -122,7 +124,8 @@ class TmaSdk {
       const colorUtilityBody =
         (getComputedStyle(document.documentElement).getPropertyValue('--s-color-utility-body') as `#${string}`) ||
         '#f7f3f4'; // Default color
-      const WebApp = Telegram?.WebApp;
+      const telegram = window.Telegram as any;
+      const WebApp = telegram?.WebApp;
       WebApp?.setHeaderColor(colorUtilityBody);
       WebApp?.setBackgroundColor(colorUtilityBody);
     } catch (error) {
@@ -133,7 +136,8 @@ class TmaSdk {
   public shareLink(url: string, text?: string): void {
     try {
       const desc = text ? encodeURIComponent(text) : text;
-      Telegram?.WebApp?.openLink(`https://t.me/share/url?url=${url}&text=${desc}`);
+      const telegram = window.Telegram as any;
+      telegram?.WebApp?.openLink(`https://t.me/share/url?url=${url}&text=${desc}`);
     } catch (error) {
       console.warn('[TMA]: shareLink', error);
     }

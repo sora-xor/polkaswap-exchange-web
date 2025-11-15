@@ -1,9 +1,9 @@
 <template>
   <div class="sora-card sora-card-payment">
     <div class="sora-card__threshold">
-      <token-logo :token="xor" :size="WALLET_CONSTS.LogoSize.LARGE" />
+      <token-logo :token="xor" :size="WALLET_CONSTS.LogoSize.LARGE"></token-logo>
       <h3 class="sora-card__threshold-title">{{ title }}</h3>
-      <balance-indicator />
+      <balance-indicator></balance-indicator>
     </div>
     <div class="sora-card__options--not-enough-euro s-flex">
       <s-button
@@ -26,18 +26,18 @@
   </div>
 </template>
 
-<script lang="ts">
-import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import { WALLET_CONSTS, components } from '@wallet';
+import { computed, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, PageNames } from '@/consts';
+import { useTranslation } from '@/composables/useTranslation';
 import router, { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
-import { Fees } from '@/types/card';
+import store from '@/store';
+import { PageNames } from '@/consts';
 
 import type { FPNumber } from '@sora-substrate/math';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Fees } from '@/types/card';
 
 enum BuyButtonType {
   Bridge,
@@ -46,71 +46,59 @@ enum BuyButtonType {
 
 type BuyButton = { type: BuyButtonType; text: string; button: 'primary' | 'secondary' | 'tertiary' };
 
-@Component({
+const BalanceIndicator = lazyComponent('SoraCardBalanceIndicator');
+
+defineOptions({
+  name: 'SoraCardPayment',
   components: {
     TokenLogo: components.TokenLogo,
-    BalanceIndicator: lazyComponent(Components.BalanceIndicator),
   },
-})
-export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
-  @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
-  @state.soraCard.fees fees!: Fees;
+});
 
-  @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.assets.xor xor!: Nullable<AccountAsset>;
+const emit = defineEmits<{
+  (event: 'confirm'): void;
+}>();
 
-  showPaywingsDialog = false;
+const { t } = useTranslation();
 
-  WALLET_CONSTS = WALLET_CONSTS;
+const xorToDeposit = computed<FPNumber>(() => store.state.soraCard.xorToDeposit as FPNumber);
+const wasEuroBalanceLoaded = computed<boolean>(() => store.state.soraCard.wasEuroBalanceLoaded as boolean);
+const fees = computed<Fees>(() => store.state.soraCard.fees as Fees);
+const isEuroBalanceEnough = computed<boolean>(() => Boolean(store.getters.soraCard?.isEuroBalanceEnough));
+const isLoggedIn = computed<boolean>(() => Boolean(store.getters.wallet?.account?.isLoggedIn));
+const xor = computed<Nullable<AccountAsset>>(() => store.getters.assets?.xor as Nullable<AccountAsset>);
 
-  @Watch('isEuroBalanceEnough', { immediate: true })
-  private handleXorDeposit(isEnough: boolean): void {
-    if (isEnough) {
-      this.$emit('confirm');
-    }
+watch(
+  isEuroBalanceEnough,
+  (enough) => {
+    if (enough) emit('confirm');
+  },
+  { immediate: true }
+);
+
+const buyOptions = computed<Array<BuyButton>>(() => [
+  { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'primary' },
+]);
+
+const title = computed(() => t('card.xorAmountNeededTitle', { value: xorToDeposit.value.format(3) }));
+
+const btnLoading = computed(() => {
+  if (!isLoggedIn.value) return false;
+  return !wasEuroBalanceLoaded.value;
+});
+
+const applicationFee = computed<Nullable<string>>(() => fees.value.application);
+const applicationFeeText = computed(() => t('card.applicationFee', { 0: applicationFee.value }));
+
+const bridgeTokens = () => {
+  if (!isEuroBalanceEnough.value) {
+    router.push({ name: PageNames.Bridge, params: { amount: xorToDeposit.value.toString() } });
   }
+};
 
-  get buyOptions(): Array<BuyButton> {
-    const options: Array<BuyButton> = [{ type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'primary' }];
-
-    return options;
-  }
-
-  get title(): string {
-    return this.t('card.xorAmountNeededTitle', { value: this.xorToDeposit.format(3) });
-  }
-
-  get btnLoading(): boolean {
-    if (!this.isLoggedIn) {
-      return this.loading;
-    }
-    return this.loading || !this.wasEuroBalanceLoaded;
-  }
-
-  get applicationFee(): Nullable<string> {
-    return this.fees.application;
-  }
-
-  get applicationFeeText(): string {
-    return this.t('card.applicationFee', { 0: this.applicationFee });
-  }
-
-  private bridgeTokens(): void {
-    if (!this.isEuroBalanceEnough) {
-      router.push({ name: PageNames.Bridge, params: { amount: this.xorToDeposit.toString() } });
-    }
-  }
-
-  buyTokens(type: BuyButtonType): void {
-    switch (type) {
-      case BuyButtonType.Bridge:
-        this.bridgeTokens();
-        break;
-    }
-  }
-}
+const buyTokens = (type: BuyButtonType) => {
+  if (type === BuyButtonType.Bridge) bridgeTokens();
+};
 </script>
 
 <style lang="scss">

@@ -7,17 +7,14 @@
     :disabled="disabled"
     :value="value"
     :max="maxValue"
-    v-bind="{
-      decimals,
-      delimiters,
-      ...$attrs,
-    }"
-    v-on="$listeners"
+    :decimals="decimals"
+    :delimiters="delimiters"
+    v-bind="$attrs"
   >
     <div slot="top" class="input-line">
       <div class="input-title">
         <span class="input-title--uppercase input-title--primary">{{ title }}</span>
-        <slot name="title-append" />
+        <slot name="title-append"></slot>
       </div>
       <div class="input-value">
         <slot name="balance">
@@ -30,7 +27,7 @@
               :value="formattedBalance"
               :has-fiat-value="hasFiatValue"
               :fiat-value="formattedFiatBalance"
-            />
+            ></formatted-amount-with-fiat-value>
           </template>
         </slot>
       </div>
@@ -55,7 +52,7 @@
         :disabled="!isSelectAvailable"
         :token="token"
         @click.stop="handleSelectToken"
-      />
+      ></token-select-button>
     </div>
 
     <template #bottom>
@@ -80,7 +77,7 @@
               <span slot="left" class="input-prefix">{{ currencySymbol }}</span>
             </s-float-input>
 
-            <slot name="fiat-amount-append" />
+            <slot name="fiat-amount-append"></slot>
           </div>
 
           <token-address
@@ -88,223 +85,245 @@
             v-bind="addressData"
             :external="external"
             class="input-value"
-          />
+          ></token-address>
         </div>
 
         <div v-if="withSlider" class="input-line--footer-with-slider">
-          <div class="delimiter" />
-          <s-slider
-            class="slider-container"
-            :value="slideValue"
-            :disabled="!withSlider || disabled"
-            :show-tooltip="false"
-            :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
-            @input="handleSlideInputChange"
-            @mousedown.native="handleSlideClick"
-          />
+          <div class="delimiter"></div>
+          <div class="slider-container-wrapper" @mousedown="handleSlideClick">
+            <s-slider
+              class="slider-container"
+              :value="slideValue"
+              :disabled="!withSlider || disabled"
+              :show-tooltip="false"
+              :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
+              @input="handleSlideInputChange"
+            ></s-slider>
+          </div>
         </div>
       </slot>
 
-      <slot />
+      <slot></slot>
     </template>
   </s-float-input>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
+import { components } from '@wallet';
+import { computed, ref, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, mutation } from '@/store/decorators';
+import store from '@/store';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Nullable } from '@/types/common';
 
-const stringifyAddress = (addr?: string) => (typeof addr === 'string' ? addr : '');
-
-@Component({
+defineOptions({
+  name: 'TokenInput',
   components: {
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     TokenAddress: components.TokenAddress,
   },
-})
-export default class TokenInput extends Mixins(
-  mixins.NumberFormatterMixin,
-  mixins.FormattedAmountMixin,
-  TranslationMixin
-) {
-  @getter.wallet.settings.currencySymbol currencySymbol!: string;
-  @getter.wallet.settings.exchangeRate exchangeRate!: number;
+});
 
-  @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
-
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-
-  @Prop({ type: String }) readonly value!: string;
-  @Prop({ type: [String, Number] }) readonly max!: string | number;
-  @Prop({ default: () => null, type: Object }) readonly token!: Nullable<RegisteredAccountAsset>;
-  @Prop({ default: () => null, type: String }) readonly balance!: Nullable<CodecString>;
-  @Prop({ default: '', type: String }) readonly title!: string;
-  @Prop({ default: '', type: String }) readonly balanceText!: string;
-  @Prop({ default: false, type: Boolean }) readonly external!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly withSlider!: boolean;
-  @Prop({ default: true, type: Boolean }) readonly isFiatEditable!: boolean;
-  @Prop({ default: 0, type: Number }) readonly sliderValue!: number;
-  @Prop({ default: 2, type: Number }) readonly fiatDecimals!: number;
-  @Prop({ default: false, type: Boolean }) readonly withAddress!: number;
-  @Prop({ default: false, type: Boolean }) readonly withoutFiat!: boolean;
-
-  @Ref('floatInput') private readonly floatInput!: any;
-  @Ref('fiatEl') private readonly fiatEl!: any;
-
-  fiatValue = '';
-  fiatFocus = false;
-
-  @Watch('fiatAmount', { immediate: true })
-  private updateFiatValue(): void {
-    if (this.fiatFocus) return;
-
-    this.fiatValue = this.fiatAmount.isZero() ? '' : this.fiatAmount.toFixed(this.fiatDecimals);
+const props = withDefaults(
+  defineProps<{
+    value?: string;
+    max?: string | number;
+    token?: Nullable<RegisteredAccountAsset>;
+    balance?: Nullable<CodecString>;
+    title?: string;
+    balanceText?: string;
+    external?: boolean;
+    loading?: boolean;
+    disabled?: boolean;
+    isMaxAvailable?: boolean;
+    isSelectAvailable?: boolean;
+    withSlider?: boolean;
+    isFiatEditable?: boolean;
+    sliderValue?: number;
+    fiatDecimals?: number;
+    withAddress?: boolean;
+    withoutFiat?: boolean;
+  }>(),
+  {
+    value: '',
+    token: null,
+    balance: null,
+    title: '',
+    balanceText: '',
+    external: false,
+    loading: false,
+    disabled: false,
+    isMaxAvailable: false,
+    isSelectAvailable: false,
+    withSlider: false,
+    isFiatEditable: true,
+    sliderValue: 0,
+    fiatDecimals: 2,
+    withAddress: false,
+    withoutFiat: false,
   }
+);
 
-  @Watch('currency', { immediate: true })
-  private reactToCurrencyChange(): void {
-    this.setFiatValue(this.fiatValue);
-  }
+const emit = defineEmits<{
+  (event: 'input', value: string): void;
+  (event: 'max', token: Nullable<RegisteredAccountAsset>): void;
+  (event: 'select'): void;
+  (event: 'slide', value: string): void;
+  (event: 'focus'): void;
+}>();
 
-  recalcValue(value: string): void {
-    const fiatValue = new FPNumber(value).div(this.exchangeRate);
+const floatInput = ref<any>(null);
+const fiatEl = ref<any>(null);
 
-    const result = !this.tokenPrice.isZero() && value ? new FPNumber(fiatValue).div(this.tokenPrice).toString() : '';
+const fiatValue = ref('');
+const fiatFocus = ref(false);
 
-    this.$emit('input', result);
-  }
+const delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  setFiatValue(fiatValue: string): void {
-    this.fiatValue =
-      fiatValue === this.maxFiatValueFormatted ? this.maxFiatValue.toFixed(this.fiatDecimals) : fiatValue;
+const { t } = useTranslation();
+const formattedAmount = useFormattedAmount();
 
-    this.recalcValue(fiatValue);
-  }
+const currencySymbol = computed(() => (store.getters.wallet.settings.currencySymbol as string) ?? '');
+const exchangeRate = computed(() => (store.getters.wallet.settings.exchangeRate as number) ?? 1);
+const currency = computed(() => store.state.wallet.settings.currency ?? null);
 
-  handleFiatFocus(): void {
-    this.fiatFocus = true;
-    this.$emit('focus');
-  }
+const decimals = computed(() => {
+  const token = props.token;
+  if (!token) return FPNumber.DEFAULT_PRECISION;
 
-  handleFiatBlur(): void {
-    this.fiatFocus = false;
-  }
+  const tokenDecimals = props.external ? token.externalDecimals : token.decimals;
+  return tokenDecimals ?? FPNumber.DEFAULT_PRECISION;
+});
 
-  get slideValue(): number {
-    return this.sliderValue;
-  }
+const tokenPrice = computed(() => {
+  const token = props.token;
+  if (!token) return FPNumber.ZERO;
 
-  set slideValue(value: number) {
-    this.setAmountSliderValue(value);
-  }
+  const price = formattedAmount.getAssetFiatPrice(token);
+  return price ? FPNumber.fromCodecValue(price) : FPNumber.ZERO;
+});
 
-  get isBalanceAvailable(): boolean {
-    return !!this.balance && !!this.token;
-  }
+const hasFiatValue = computed(() => !(props.withoutFiat || tokenPrice.value.isZero()));
 
-  get addressData(): Nullable<RegisteredAccountAsset> {
-    if (!this.token) return null;
+const fpBalance = computed(() =>
+  formattedAmount.getFPNumberFromCodec(props.balance ?? ZeroStringValue, decimals.value)
+);
+const formattedBalance = computed(() => fpBalance.value.toLocaleString());
+const formattedFiatBalance = computed(() => fpBalance.value.mul(tokenPrice.value).toLocaleString());
 
-    return {
-      ...this.token,
-      address: stringifyAddress(this.token.address),
-      externalAddress: stringifyAddress(this.token.externalAddress),
-    };
-  }
+const isBalanceAvailable = computed(() => Boolean(props.balance && props.token));
 
-  get hasFormattedAddress(): boolean {
-    if (!this.addressData) return false;
+const addressData = computed<Nullable<RegisteredAccountAsset>>(() => {
+  if (!props.token) return null;
 
-    const address = this.external ? this.addressData.externalAddress : this.addressData.address;
+  return {
+    ...props.token,
+    address: typeof props.token.address === 'string' ? props.token.address : '',
+    externalAddress: typeof props.token.externalAddress === 'string' ? props.token.externalAddress : '',
+  };
+});
 
-    return !!address;
-  }
+const hasFormattedAddress = computed(() => {
+  const target = addressData.value;
+  if (!target) return false;
 
-  get decimals(): number {
-    const tokenDecimals = this.external ? this.token?.externalDecimals : this.token?.decimals;
+  const address = props.external ? target.externalAddress : target.address;
+  return Boolean(address);
+});
 
-    return tokenDecimals ?? FPNumber.DEFAULT_PRECISION;
-  }
+const maxValue = computed(() => props.max ?? formattedAmount.MaxInputNumber);
 
-  get tokenPrice(): FPNumber {
-    if (!this.token) return FPNumber.ZERO;
-    return FPNumber.fromCodecValue(this.getAssetFiatPrice(this.token) ?? ZeroStringValue);
-  }
+const calcFiatAmount = (amount: string | number): FPNumber => {
+  if (!amount) return FPNumber.ZERO;
+  const tokenRate = tokenPrice.value.mul(exchangeRate.value);
+  return new FPNumber(amount).mul(tokenRate);
+};
 
-  get hasFiatValue(): boolean {
-    return !(this.withoutFiat || this.tokenPrice.isZero());
-  }
+const maxFiatValue = computed(() => calcFiatAmount(maxValue.value));
+const maxFiatValueFormatted = computed(() => maxFiatValue.value.toString());
 
-  get fpBalance(): FPNumber {
-    return FPNumber.fromCodecValue(this.balance ?? ZeroStringValue, this.decimals);
-  }
+const fiatAmount = computed(() => calcFiatAmount(props.value ?? ''));
 
-  get formattedBalance(): string {
-    return this.fpBalance.toLocaleString();
-  }
+const slideValue = computed({
+  get: () => props.sliderValue,
+  set: (value: number) => {
+    store.commit.orderBook.setAmountSliderValue(value);
+  },
+});
 
-  get formattedFiatBalance(): string {
-    return this.fpBalance.mul(this.tokenPrice).toLocaleString();
-  }
+const setFiatValue = (value: string): void => {
+  fiatValue.value = value === maxFiatValueFormatted.value ? maxFiatValue.value.toFixed(props.fiatDecimals) : value;
 
-  get fiatAmount(): FPNumber {
-    return this.calcFiatAmount(this.value);
-  }
+  recalcValue(value);
+};
 
-  get maxValue(): string | number {
-    return this.max || this.MaxInputNumber;
-  }
+const recalcValue = (value: string): void => {
+  const result =
+    !tokenPrice.value.isZero() && value
+      ? new FPNumber(value).div(exchangeRate.value).div(tokenPrice.value).toString()
+      : '';
 
-  get maxFiatValue(): FPNumber {
-    return this.calcFiatAmount(this.maxValue);
-  }
+  emit('input', result);
+};
 
-  get maxFiatValueFormatted(): string {
-    return this.maxFiatValue.toString();
-  }
+const handleFiatFocus = (): void => {
+  fiatFocus.value = true;
+  emit('focus');
+};
 
-  calcFiatAmount(value: string | number): FPNumber {
-    if (!value) return FPNumber.ZERO;
-    const tokenPrice = this.tokenPrice.mul(this.exchangeRate);
+const handleFiatBlur = (): void => {
+  fiatFocus.value = false;
+};
 
-    return new FPNumber(value).mul(tokenPrice);
-  }
+const handleMax = (): void => {
+  emit('max', props.token ?? null);
+};
 
-  handleMax(): void {
-    this.$emit('max', this.token);
-  }
+const handleSelectToken = (): void => {
+  emit('select');
+};
 
-  handleSelectToken(): void {
-    this.$emit('select');
-  }
+const handleSlideInputChange = (value: string): void => {
+  emit('slide', value);
+};
 
-  handleSlideInputChange(value: string): void {
-    this.$emit('slide', value);
-  }
+const handleSlideClick = (): void => {
+  fiatEl.value?.$children?.[0]?.blur?.();
+};
 
-  handleSlideClick(): void {
-    this.fiatEl?.$children?.[0]?.blur?.();
-  }
+const focus = (): void => {
+  floatInput.value?.inputComponent?.focus?.();
+};
 
-  public focus(): void {
-    this.floatInput?.inputComponent?.focus?.();
-  }
-}
+defineExpose({
+  focus,
+});
+
+watch(
+  fiatAmount,
+  (amount) => {
+    if (fiatFocus.value) return;
+    fiatValue.value = amount.isZero() ? '' : amount.toFixed(props.fiatDecimals);
+  },
+  { immediate: true }
+);
+
+watch(
+  currency,
+  () => {
+    setFiatValue(fiatValue.value);
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss">
@@ -395,6 +414,10 @@ $el-input-class: '.el-input';
     width: 100%;
     height: 1px;
     margin: 14px 0 4px 0;
+  }
+
+  .slider-container-wrapper {
+    width: 100%;
   }
 }
 </style>

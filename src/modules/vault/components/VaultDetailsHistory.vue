@@ -20,146 +20,236 @@
         :total="total"
         :last-page="lastPage"
         @pagination-click="handlePaginationClick"
-      />
+      ></history-pagination>
     </template>
     <div v-else v-loading="loadingState" class="details-history__empty p4">{{ t('noDataText') }}</div>
   </s-card>
 </template>
 
-<script lang="ts">
-import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
-import IndexerDataFetchMixin from '@/components/mixins/IndexerDataFetchMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
 import { ObjectInit } from '@/consts';
 import { fetchVaultEvents } from '@/indexer/queries/vault/events';
 import { VaultEventTypes } from '@/modules/vault/consts';
 import type { VaultEvent, VaultEventType } from '@/modules/vault/types';
-import { state } from '@/store/decorators';
-import { type FetchVariables } from '@/types/indexers';
+import store from '@/store';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
-  components: {
-    HistoryPagination: components.HistoryPagination,
-  },
-})
-export default class VaultDetailsHistory extends Mixins(TranslationMixin, IndexerDataFetchMixin) {
-  private readonly HiddenValue = WALLET_CONSTS.HiddenValue;
-  /** Date format without seconds */
-  readonly DateFormat = 'll LT';
+const HistoryPagination = components.HistoryPagination;
 
-  @Prop({ default: undefined, type: Number }) readonly id!: number;
-  @Prop({ default: ObjectInit, type: Object }) readonly lockedAsset!: Nullable<RegisteredAccountAsset>;
-  @Prop({ default: ObjectInit, type: Object }) readonly debtAsset!: Nullable<RegisteredAccountAsset>;
+const props = withDefaults(
+  defineProps<{
+    id?: number;
+    lockedAsset?: Nullable<RegisteredAccountAsset>;
+    debtAsset?: Nullable<RegisteredAccountAsset>;
+  }>(),
+  {
+    id: undefined,
+    lockedAsset: ObjectInit,
+    debtAsset: ObjectInit,
+  }
+);
 
-  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
+const pageAmount = 5;
+const fetchAmount = 5;
+const updateInterval = 24_000;
+const DateFormat = 'll LT';
+const HiddenValue = WALLET_CONSTS.HiddenValue;
 
-  @Watch('id', { immediate: true })
-  private async updateHistory(curr: number, prev: number) {
-    this.checkTriggerUpdate(curr, prev);
+const currentPage = ref(1);
+const totalCount = ref(0);
+const rawItems = ref<readonly VaultEvent[]>([]);
+const intervalId = ref<Nullable<ReturnType<typeof setInterval>>>(null);
+
+const { t, formatDate } = useTranslation();
+const { loading, withLoading } = useLoading();
+
+const loadingState = computed(() => loading.value);
+const shouldBalanceBeHidden = computed(() => store.state.wallet.settings.shouldBalanceBeHidden ?? false);
+const lockedAssetSymbol = computed(() => props.lockedAsset?.symbol ?? '');
+const debtAssetSymbol = computed(() => props.debtAsset?.symbol ?? '');
+
+const fetchPage = computed(() => Math.ceil((pageAmount * currentPage.value) / fetchAmount));
+const total = computed(() => totalCount.value);
+const lastPage = computed(() => (total.value ? Math.ceil(total.value / pageAmount) : 1));
+const hasItems = computed(() => total.value > 0);
+
+const offset = computed(() => pageAmount * (currentPage.value - 1));
+const dataVariables = computed(() => ({
+  id: props.id,
+  first: pageAmount,
+  offset: offset.value,
+}));
+
+const intervalTimestamp = computed(() => Math.floor((rawItems.value[0]?.timestamp ?? Date.now()) / 1000));
+
+const updateVariables = computed(() => ({
+  id: props.id,
+  fromTimestamp: intervalTimestamp.value,
+}));
+
+const visibleItems = computed(() => {
+  const currentFetchPage = fetchPage.value;
+  const offsetWithinFetch = fetchAmount * (currentFetchPage - 1);
+  const start = Math.max(pageAmount * (currentPage.value - 1) - offsetWithinFetch, 0);
+  const end = start + pageAmount;
+  return rawItems.value.slice(start, end);
+});
+
+const items = visibleItems;
+
+function resetDataSubscription(): void {
+  if (intervalId.value) {
+    clearInterval(intervalId.value);
+  }
+  intervalId.value = null;
+}
+
+function resetData(): void {
+  rawItems.value = [];
+  totalCount.value = 0;
+  resetDataSubscription();
+}
+
+async function applyPageData(): Promise<void> {
+  if (!props.id) {
+    resetData();
+    return;
   }
 
-  pageAmount = 5; // override PaginationSearchMixin
+  await withLoading(async () => {
+    const { items: fetchedItems, totalCount: count } = await fetchVaultEvents(dataVariables.value);
+    rawItems.value = Object.freeze(fetchedItems) as VaultEvent[];
+    totalCount.value = count;
+  });
 
-  get lockedAssetSymbol(): string {
-    return this.lockedAsset?.symbol ?? '';
-  }
+  resetDataSubscription();
 
-  get debtAssetSymbol(): string {
-    return this.debtAsset?.symbol ?? '';
-  }
-
-  // override IndexerDataFetchMixin
-  get dataVariables(): FetchVariables {
-    return {
-      id: this.id,
-      first: this.pageAmount,
-      offset: this.pageAmount * (this.currentPage - 1),
-    };
-  }
-
-  // override IndexerDataFetchMixin
-  get updateVariables(): FetchVariables {
-    return {
-      id: this.id,
-      fromTimestamp: this.intervalTimestamp,
-    };
-  }
-
-  // override IndexerDataFetchMixin
-  getItemTimestamp(item: Nullable<VaultEvent>): number {
-    return item?.timestamp ?? 0;
-  }
-
-  // override IndexerDataFetchMixin
-  async requestData(variables: FetchVariables): Promise<{ items: VaultEvent[]; totalCount: number }> {
-    return await fetchVaultEvents(variables);
-  }
-
-  getTitle(type: VaultEventType): string {
-    switch (type) {
-      case VaultEventTypes.Created:
-        return this.t('operations.CreateVault');
-      case VaultEventTypes.Closed:
-        return this.t('operations.CloseVault');
-      case VaultEventTypes.DebtIncreased:
-        return this.t('operations.BorrowVaultDebt');
-      case VaultEventTypes.CollateralDeposit:
-        return this.t('operations.DepositCollateral');
-      case VaultEventTypes.DebtPayment:
-        return this.t('operations.RepayVaultDebt');
-      case VaultEventTypes.Liquidated:
-        return this.t('kensetsu.liquidated');
-      default:
-        return '';
-    }
-  }
-
-  private getAmount(hidden: boolean, item: VaultEvent): string {
-    return hidden ? this.HiddenValue : (item.amount?.toLocaleString() ?? '');
-  }
-
-  getOperationMessage(item: VaultEvent): string {
-    const hidden = this.shouldBalanceBeHidden;
-    switch (item.type) {
-      case VaultEventTypes.Created:
-        return this.t('operations.finalized.CreateVault', {
-          symbol: this.debtAssetSymbol,
-          symbol2: this.lockedAssetSymbol,
-        });
-      case VaultEventTypes.Closed:
-        return this.t('operations.finalized.CloseVault', {
-          symbol: this.debtAssetSymbol,
-          symbol2: this.lockedAssetSymbol,
-        });
-      case VaultEventTypes.DebtIncreased:
-        return this.t('operations.finalized.BorrowVaultDebt', {
-          symbol: this.debtAssetSymbol,
-          amount: this.getAmount(hidden, item),
-        });
-      case VaultEventTypes.CollateralDeposit:
-        return this.t('operations.finalized.DepositCollateral', {
-          symbol: this.lockedAssetSymbol,
-          amount: this.getAmount(hidden, item),
-        });
-      case VaultEventTypes.DebtPayment:
-        return this.t('operations.finalized.RepayVaultDebt', {
-          symbol: this.debtAssetSymbol,
-          amount: this.getAmount(hidden, item),
-        });
-      case VaultEventTypes.Liquidated:
-        return this.t('kensetsu.liquidatedMessage', {
-          symbol: this.lockedAssetSymbol,
-          amount: this.getAmount(hidden, item),
-        });
-      default:
-        return '';
-    }
+  if (fetchPage.value === 1 && hasItems.value) {
+    intervalId.value = setInterval(async () => {
+      try {
+        const { items: updates, totalCount: newTotal } = await fetchVaultEvents(updateVariables.value);
+        if (updates.length) {
+          rawItems.value = Object.freeze([...updates, ...rawItems.value].slice(0, fetchAmount)) as VaultEvent[];
+        }
+        if (newTotal) {
+          totalCount.value = totalCount.value + newTotal;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }, updateInterval);
   }
 }
+
+watch(
+  () => props.id,
+  (current, previous) => {
+    if (current === previous) return;
+    currentPage.value = 1;
+    resetData();
+    applyPageData().catch((error) => console.error(error));
+  },
+  { immediate: true }
+);
+
+watch(currentPage, (current, previous) => {
+  if (current === previous) return;
+  applyPageData().catch((error) => console.error(error));
+});
+
+watch(lastPage, (value) => {
+  if (currentPage.value > value) {
+    currentPage.value = value;
+  }
+});
+
+onBeforeUnmount(() => {
+  resetDataSubscription();
+});
+
+const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
+  switch (button) {
+    case WALLET_CONSTS.PaginationButton.Prev:
+      currentPage.value = Math.max(currentPage.value - 1, 1);
+      break;
+    case WALLET_CONSTS.PaginationButton.Next:
+      currentPage.value = Math.min(currentPage.value + 1, lastPage.value);
+      break;
+    case WALLET_CONSTS.PaginationButton.Last:
+      currentPage.value = lastPage.value;
+      break;
+    default:
+      currentPage.value = 1;
+  }
+};
+
+const getTitle = (type: VaultEventType): string => {
+  switch (type) {
+    case VaultEventTypes.Created:
+      return t('operations.CreateVault');
+    case VaultEventTypes.Closed:
+      return t('operations.CloseVault');
+    case VaultEventTypes.DebtIncreased:
+      return t('operations.BorrowVaultDebt');
+    case VaultEventTypes.CollateralDeposit:
+      return t('operations.DepositCollateral');
+    case VaultEventTypes.DebtPayment:
+      return t('operations.RepayVaultDebt');
+    case VaultEventTypes.Liquidated:
+      return t('kensetsu.liquidated');
+    default:
+      return '';
+  }
+};
+
+const getAmount = (hidden: boolean, item: VaultEvent): string => {
+  return hidden ? HiddenValue : (item.amount?.toLocaleString() ?? '');
+};
+
+const getOperationMessage = (item: VaultEvent): string => {
+  const hidden = shouldBalanceBeHidden.value;
+
+  switch (item.type) {
+    case VaultEventTypes.Created:
+      return t('operations.finalized.CreateVault', {
+        symbol: debtAssetSymbol.value,
+        symbol2: lockedAssetSymbol.value,
+      });
+    case VaultEventTypes.Closed:
+      return t('operations.finalized.CloseVault', {
+        symbol: debtAssetSymbol.value,
+        symbol2: lockedAssetSymbol.value,
+      });
+    case VaultEventTypes.DebtIncreased:
+      return t('operations.finalized.BorrowVaultDebt', {
+        symbol: debtAssetSymbol.value,
+        amount: getAmount(hidden, item),
+      });
+    case VaultEventTypes.CollateralDeposit:
+      return t('operations.finalized.DepositCollateral', {
+        symbol: lockedAssetSymbol.value,
+        amount: getAmount(hidden, item),
+      });
+    case VaultEventTypes.DebtPayment:
+      return t('operations.finalized.RepayVaultDebt', {
+        symbol: debtAssetSymbol.value,
+        amount: getAmount(hidden, item),
+      });
+    case VaultEventTypes.Liquidated:
+      return t('kensetsu.liquidatedMessage', {
+        symbol: lockedAssetSymbol.value,
+        amount: getAmount(hidden, item),
+      });
+    default:
+      return '';
+  }
+};
 </script>
 
 <style lang="scss">

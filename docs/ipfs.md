@@ -1,0 +1,109 @@
+# IPFS Pre-flight & Publishing Guide
+
+This guide documents how to prepare Polkaswap for an IPFS release, publish the build artifacts, and verify the deployment using the automated smoke scripts.
+
+## 1. Prerequisites
+
+- Node.js 24 (see `.nvmrc`) and Yarn 1.x.
+- The `ipfs` CLI installed and available on your `$PATH`. Follow the [IPFS command-line quick start](https://docs.ipfs.tech/how-to/command-line-quick-start/).
+- Local access to the workspace repositories that the publish script consumes (e.g. `packages/soramitsu-js-ui-library`).
+- Production/testnet environment configs under `public/env.json` and `public/env.dev.json`.
+
+## 2. Pre-flight Checklist
+
+1. Install dependencies:
+   ```bash
+   yarn install
+   ```
+2. Run the nightly parity script (translation + compat build). This matches what the CI pipeline uses:
+   ```bash
+   yarn ci:nightly
+   ```
+   The command runs `yarn test:translation` followed by `yarn build:vue3`. Fix any failures before continuing.
+3. Ensure the regular Vite build succeeds with an IPFS-safe base path:
+   ```bash
+   yarn build --base ./
+   ```
+4. (Optional) Start a local IPFS daemon if you plan to host the bundle yourself:
+   ```bash
+   ipfs daemon
+   ```
+
+## 3. Publishing to IPFS
+
+Use the bundled publish script to build required workspaces, swap configs, and upload both production and testnet bundles in one run:
+
+```bash
+yarn ipfs:publish
+```
+
+The script performs the following:
+
+1. Verifies the `ipfs` CLI is available.
+2. Builds any local workspace dependencies (currently the Soramitsu UI library).
+3. Runs `yarn build --base ./` to generate an IPFS-friendly `dist/`.
+4. Publishes `dist/` to IPFS (production config) and prints the resulting CID and gateway URLs.
+5. Creates a temporary copy of `dist/`, swaps in `public/env.dev.json`, publishes the testnet variant, and prints its CID.
+
+The output looks similar to:
+
+```
+Production CID: QmProd...
+Production gateway (ipfs.io): https://ipfs.io/ipfs/QmProd/index.html
+
+Testnet CID: QmTest...
+Testnet gateway (ipfs.io): https://ipfs.io/ipfs/QmTest/index.html
+```
+
+Record both CIDs for the release announcement and downstream verification.
+
+## 4. Verifying a CID (`ipfs:check`)
+
+After publishing, run the Playwright-based smoke script against each CID or preview URL. The script opens the site in a headless browser, waits for `#app` to render content, and reports failed requests or console errors.
+
+```bash
+node scripts/ipfs/check-browser.js --cid QmProdCID \
+  --route '#/swap' \
+  --browser=chromium \
+  --screenshot ./ipfs-check.png
+```
+
+Common flags:
+
+| Flag                                | Description                                                             |
+| ----------------------------------- | ----------------------------------------------------------------------- |
+| `--cid <cid>`                       | CID to verify (mutually exclusive with `--url`).                        |
+| `--url <https://preview>`           | Full URL (useful for Fleek/staging previews).                           |
+| `--route '#/bridge'`                | Hash route to load. Defaults to `#/swap`.                               |
+| `--selector '#app'`                 | DOM selector that must contain content. Defaults to `#app`.             |
+| `--browser chromium,webkit,firefox` | Browser(s) to run. Defaults to all three (chromium > webkit > firefox). |
+| `--screenshot path.png`             | Save a full-page screenshot.                                            |
+| `--screenshot-base64`               | Output a base64 screenshot in the JSON summary.                         |
+| `--ipfs-path /path/to/.ipfs`        | Explicit IPFS repo to use when auto-spawning a gateway.                 |
+| `--no-spawn-gateway`                | Skip spawning a local IPFS daemon (useful when testing a remote CID).   |
+
+Results (pass/fail plus console/network details) are printed as a JSON blob at the end of the run. Any failures exit with a non-zero status so CI can alert.
+
+### Electron-based check
+
+For an additional layer that mimics the Electron shell, run:
+
+```bash
+yarn ipfs:check:electron --cid QmProdCID --route '#/swap'
+```
+
+It shares the same CLI flags as the browser script and captures console/network errors emitted by Electron’s `webContents`.
+
+## 5. Troubleshooting
+
+- **Missing `dist/` directory** – run `yarn build --base ./` before `yarn ipfs:publish`.
+- **Permission errors while building workspaces** – build the dependency manually (`yarn && yarn build` inside the workspace) so the generated files exist, then re-run `yarn ipfs:publish`.
+- **IPFS CLI not found** – install the CLI and ensure `ipfs --version` works in your shell.
+- **Gateway failures in `ipfs:check`** – use `--url` to point to a staging gateway or pass `--ipfs-path` plus `--no-spawn-gateway` if you already have a daemon running.
+- **Screenshots not written** – set `--screenshot` or export `IPFS_CHECK_SCREENSHOT=<path>` to capture evidence when tests run in CI.
+
+For additional details on the scripts themselves, see:
+
+- `scripts/ipfs/publish.ts` – build/publish workflow.
+- `scripts/ipfs/check-browser.js` – Playwright smoke test entrypoint.
+- `scripts/ipfs/check-electron.js` – Electron smoke test entrypoint.

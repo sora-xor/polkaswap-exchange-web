@@ -13,7 +13,7 @@
         <div slot="header" class="stats-card-title">
           <span>{{ title }}</span>
           <s-tooltip border-radius="mini" :content="tooltip">
-            <s-icon name="info-16" size="14px" />
+            <s-icon name="info-16" size="14px"></s-icon>
           </s-tooltip>
         </div>
         <div class="stats-card-data">
@@ -33,108 +33,104 @@
   </s-row>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state, getter } from '@/store/decorators';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTranslation } from '@/composables/useTranslation';
+import store from '@/store';
 import { formatAmountWithSuffix } from '@/utils';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral, StablecoinInfo } from '@sora-substrate/sdk/build/kensetsu/types';
 
-@Component({
-  components: {
-    FormattedAmount: components.FormattedAmount,
+const FormattedAmount = components.FormattedAmount;
+const FontWeightRate = WALLET_CONSTS.FontWeightRate;
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+
+const { t } = useTranslation();
+const { getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
+
+const collaterals = computed(() => Object.values(store.state.vault.collaterals as Record<string, Collateral>));
+const stablecoinInfos = computed(() => store.state.vault.stablecoinInfos as Record<string, StablecoinInfo>);
+
+const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
+const exchangeRate = computed(() => store.getters.wallet.settings.exchangeRate as number);
+const currencySymbol = computed(() => store.getters.wallet.settings.currencySymbol as string);
+
+const badDebt = computed(() =>
+  Object.entries(stablecoinInfos.value).reduce((acc, [id, info]) => {
+    const debtAsset = getAsset(id);
+    if (!debtAsset) return acc;
+
+    const value = getFPNumberFiatAmountByFPNumber(info.badDebt, debtAsset);
+    if (!value) return acc;
+
+    return acc.add(value.mul(exchangeRate.value));
+  }, FPNumber.ZERO)
+);
+
+const total = computed(() =>
+  collaterals.value.reduce(
+    (acc, { totalLocked, lockedAssetId, debtSupply, debtAssetId, riskParams: { hardCap } }) => {
+      const lockedAsset = getAsset(lockedAssetId);
+      if (lockedAsset) {
+        const fiatLocked = getFPNumberFiatAmountByFPNumber(totalLocked, lockedAsset);
+        if (fiatLocked) {
+          acc.collateral = acc.collateral.add(fiatLocked.mul(exchangeRate.value));
+        }
+      }
+
+      const debtAsset = getAsset(debtAssetId);
+      if (debtAsset) {
+        const fiatDebt = getFPNumberFiatAmountByFPNumber(debtSupply, debtAsset);
+        if (fiatDebt) {
+          acc.debt = acc.debt.add(fiatDebt.mul(exchangeRate.value));
+        }
+        const fiatAvailable = getFPNumberFiatAmountByFPNumber(hardCap.sub(debtSupply), debtAsset);
+        if (fiatAvailable) {
+          acc.available = acc.available.add(fiatAvailable.mul(exchangeRate.value));
+        }
+      }
+
+      return acc;
+    },
+    { debt: FPNumber.ZERO, collateral: FPNumber.ZERO, available: FPNumber.ZERO }
+  )
+);
+
+const columns = computed(() => [
+  {
+    title: t('kensetsu.overallTotalCollateral'),
+    tooltip: t('kensetsu.overallTotalCollateralDescription'),
+    amount: total.value.collateral,
   },
-})
-export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
-  @state.vault.collaterals private collateralsObj!: Record<string, Collateral>;
-  @state.vault.stablecoinInfos private stablecoinInfos!: Record<string, StablecoinInfo>;
+  {
+    title: t('kensetsu.overallTotalDebt'),
+    tooltip: t('kensetsu.overallTotalDebtDescription'),
+    amount: total.value.debt,
+  },
+  {
+    title: t('kensetsu.overallAvailable'),
+    tooltip: t('kensetsu.overallAvailableDescription'),
+    amount: total.value.available,
+  },
+  {
+    title: t('kensetsu.overallBadDebt'),
+    tooltip: t('kensetsu.overallBadDebtDescription'),
+    amount: badDebt.value,
+  },
+]);
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
-  @getter.wallet.settings.exchangeRate private exchangeRate!: number;
-  @getter.wallet.settings.currencySymbol currencySymbol!: string;
-
-  private get collaterals() {
-    return Object.values(this.collateralsObj);
-  }
-
-  get badDebt(): FPNumber {
-    return Object.entries(this.stablecoinInfos).reduce((acc, [id, info]) => {
-      const debtAsset = this.getAsset(id);
-      if (!debtAsset) return acc;
-
-      const value = this.getFPNumberFiatAmountByFPNumber(info.badDebt, debtAsset);
-      if (!value) return acc;
-
-      return acc.add(value.mul(this.exchangeRate));
-    }, FPNumber.ZERO);
-  }
-
-  private get total(): { debt: FPNumber; collateral: FPNumber; available: FPNumber } {
-    return this.collaterals.reduce(
-      (acc, { totalLocked, lockedAssetId, debtSupply, debtAssetId, riskParams: { hardCap } }) => {
-        const lockedAsset = this.getAsset(lockedAssetId);
-        if (lockedAsset) {
-          const fiatLocked = this.getFPNumberFiatAmountByFPNumber(totalLocked, lockedAsset);
-          if (fiatLocked) {
-            acc.collateral = acc.collateral.add(fiatLocked.mul(this.exchangeRate));
-          }
-        }
-
-        const debtAsset = this.getAsset(debtAssetId);
-        if (debtAsset) {
-          const fiatDebt = this.getFPNumberFiatAmountByFPNumber(debtSupply, debtAsset);
-          if (fiatDebt) {
-            acc.debt = acc.debt.add(fiatDebt.mul(this.exchangeRate));
-          }
-          const fiatAvailable = this.getFPNumberFiatAmountByFPNumber(hardCap.sub(debtSupply), debtAsset);
-          if (fiatAvailable) {
-            acc.available = acc.available.add(fiatAvailable.mul(this.exchangeRate));
-          }
-        }
-
-        return acc;
-      },
-      { debt: FPNumber.ZERO, collateral: FPNumber.ZERO, available: FPNumber.ZERO }
-    );
-  }
-
-  get columns() {
-    return [
-      {
-        title: this.t('kensetsu.overallTotalCollateral'),
-        tooltip: this.t('kensetsu.overallTotalCollateralDescription'),
-        amount: this.total.collateral,
-      },
-      {
-        title: this.t('kensetsu.overallTotalDebt'),
-        tooltip: this.t('kensetsu.overallTotalDebtDescription'),
-        amount: this.total.debt,
-      },
-      {
-        title: this.t('kensetsu.overallAvailable'),
-        tooltip: this.t('kensetsu.overallAvailableDescription'),
-        amount: this.total.available,
-      },
-      {
-        title: this.t('kensetsu.overallBadDebt'),
-        tooltip: this.t('kensetsu.overallBadDebtDescription'),
-        amount: this.badDebt,
-      },
-    ];
-  }
-
-  get statsColumns() {
-    return this.columns.map(({ amount, title, tooltip }) => {
-      const value = formatAmountWithSuffix(amount);
-      return { title, tooltip, value };
-    });
-  }
-}
+const statsColumns = computed(() =>
+  columns.value.map(({ amount, title, tooltip }) => ({
+    title,
+    tooltip,
+    value: formatAmountWithSuffix(amount),
+  }))
+);
 </script>
 
 <style lang="scss" scoped>

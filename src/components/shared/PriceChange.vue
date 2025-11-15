@@ -5,47 +5,39 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import FormattedAmount from '@wallet/src/components/FormattedAmount.vue';
+import { FontWeightRate } from '@wallet/src/consts';
+import { computed } from 'vue';
 
-import { toPrecision } from '@/utils';
+import { toPrecision } from '@/utils/fp';
 
-@Component({
+/**
+ * Renders percentage change with an arrow indicator and wallet-styled formatting.
+ */
+defineOptions({
+  name: 'PriceChange',
   components: {
-    FormattedAmount: components.FormattedAmount,
+    FormattedAmount,
   },
-})
-export default class PriceChange extends Vue {
-  @Prop({ default: FPNumber.ZERO, type: Object }) readonly value!: FPNumber;
+});
 
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
+const props = defineProps<{
+  value?: FPNumber;
+}>();
 
-  get increased(): boolean {
-    return FPNumber.gte(this.value, FPNumber.ZERO);
-  }
-
-  get icon(): string {
-    return `arrows-arrow-bold-${this.increased ? 'top' : 'bottom'}-24`;
-  }
-
-  get classes(): Array<string> {
-    const baseClass = 'price-change';
-    const cssClasses: Array<string> = [baseClass];
-    if (this.increased) {
-      cssClasses.push(`${baseClass}--increased`);
-    }
-    return cssClasses;
-  }
-
-  get formatted(): string {
-    const value = this.increased ? this.value : this.value.mul(new FPNumber(-1));
-    const number = toPrecision(value, 2);
-
-    return number.toLocaleString();
-  }
-}
+const price = computed(() => props.value ?? FPNumber.ZERO);
+const increased = computed(() => FPNumber.gte(price.value, FPNumber.ZERO));
+const icon = computed(() => `arrows-arrow-bold-${increased.value ? 'top' : 'bottom'}-24`);
+const classes = computed(() => {
+  const baseClass = 'price-change';
+  return increased.value ? [baseClass, `${baseClass}--increased`] : [baseClass];
+});
+const formatted = computed(() => {
+  const normalized = increased.value ? price.value : price.value.mul(new FPNumber(-1));
+  return toPrecision(normalized, 2).toLocaleString();
+});
 </script>
 
 <style lang="scss" scoped>

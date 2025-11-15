@@ -1,16 +1,15 @@
 <template>
-  <dialog-base :visible.sync="visibility" class="bridge-transfer-notification">
-    <simple-notification modal-content success @submit.native.prevent="close">
+  <dialog-base v-model:visible="visible" class="bridge-transfer-notification">
+    <simple-notification modal-content success @submit.prevent="close">
       <template #title>{{ t('bridgeTransferNotification.title') }}</template>
 
-      <external-link v-if="txLink" v-bind="txLink" />
-
-      <external-link v-if="txAccountLink" v-bind="txAccountLink" />
+      <external-link v-if="txLink" v-bind="txLink"></external-link>
+      <external-link v-if="txAccountLink" v-bind="txAccountLink"></external-link>
 
       <s-button v-if="addTokenBtnVisibility" @click="addToken" class="add-token-btn s-typography-button--big">
         <span>{{ t('bridgeTransferNotification.addToken', { symbol: assetSymbol }) }}</span>
         <div class="token-icons">
-          <token-logo size="small" :token="asset" />
+          <token-logo size="small" :token="asset"></token-logo>
         </div>
         <span>{{ t('operations.andText') }} {{ t('closeText') }}</span>
       </s-button>
@@ -18,143 +17,140 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed } from 'vue';
 
-import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
-import { getter, state, mutation } from '@/store/decorators';
-import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
+import { useBridgeTransaction } from '@/composables/useBridgeTransaction';
+import { useTranslation } from '@/composables/useTranslation';
+import { useAssetsStore } from '@/stores/assets';
+import store from '@/store';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
-import type { Whitelist, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { RegisteredAccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
-@Component({
+defineOptions({
   components: {
     SimpleNotification: components.SimpleNotification,
     DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
     ExternalLink: components.ExternalLink,
   },
-})
-export default class BridgeTransferNotification extends Mixins(BridgeTransactionMixin) {
-  @state.bridge.notificationData private notificationData!: Nullable<IBridgeTransaction>;
-  @state.bridge.subBridgeConnector private subBridgeConnector!: SubNetworksConnector;
+});
 
-  @getter.wallet.account.whitelist private whitelist!: Whitelist;
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
-
-  @mutation.bridge.setNotificationData private setNotificationData!: (tx?: IBridgeTransaction) => void;
-
-  // BridgeTransactionMixin override
-  get tx(): Nullable<IBridgeTransaction> {
-    return this.notificationData;
-  }
-
-  get visibility(): boolean {
-    return !!this.tx;
-  }
-
-  set visibility(flag: boolean) {
-    if (!flag) {
-      this.setNotificationData();
+const visible = defineModel<boolean>('visible', {
+  default: false,
+  set(value) {
+    if (!value) {
+      store.commit.bridge.setNotificationData();
     }
-  }
+    return value;
+  },
+});
 
-  get asset(): Nullable<RegisteredAccountAsset> {
-    if (!this.tx?.assetAddress) return null;
+const { t, tc } = useTranslation();
 
-    return this.getAsset(this.tx.assetAddress);
-  }
+const notificationData = computed(() => store.state.bridge.notificationData as Nullable<IBridgeTransaction>);
+const subBridgeConnector = computed<SubNetworksConnector>(() => store.state.bridge.subBridgeConnector);
+const whitelist = computed(() => store.getters.wallet.account.whitelist as Whitelist);
 
-  get assetSymbol(): string {
-    return this.asset?.symbol ?? '';
-  }
+const assetsStore = useAssetsStore();
 
-  get isSubEvm(): boolean {
-    return subBridgeApi.isEvmAccount(this.tx?.externalNetwork as SubNetwork);
-  }
+const asset = computed<Nullable<RegisteredAccountAsset>>(() => {
+  const address = notificationData.value?.assetAddress;
+  if (!address) return null;
+  return assetsStore.assetDataByAddress(address) as Nullable<RegisteredAccountAsset>;
+});
 
-  get isEvmNetwork(): boolean {
-    if (!this.tx?.externalNetworkType) return false;
-    if (this.tx.externalNetworkType === BridgeNetworkType.Sub && !this.isSubEvm) return false;
-    return true;
-  }
+const assetSymbol = computed(() => asset.value?.symbol ?? '');
 
-  get addTokenBtnVisibility(): boolean {
-    if (!this.isEvmNetwork) return false;
+const bridgeTransaction = useBridgeTransaction(notificationData);
 
-    const address = this.asset?.externalAddress;
+const isSubEvm = computed(() => subBridgeApi.isEvmAccount(notificationData.value?.externalNetwork as SubNetwork));
 
-    return !!address && !ethersUtil.isNativeEvmTokenAddress(address) && isOutgoingTransaction(this.tx);
-  }
+const isEvmNetwork = computed(() => {
+  const type = notificationData.value?.externalNetworkType;
+  if (!type) return false;
+  if (type === BridgeNetworkType.Sub && !isSubEvm.value) return false;
+  return true;
+});
 
-  get txLink() {
-    const link = this.isOutgoing ? this.externalExplorerLinks[0] : this.internalExplorerLinks[0];
-    const network = this.isOutgoing ? this.externalNetworkId : undefined;
+const addTokenBtnVisibility = computed(() => {
+  if (!isEvmNetwork.value) return false;
 
-    return this.prepareLink(link, network);
-  }
+  const address = asset.value?.externalAddress;
+  return !!address && !ethersUtil.isNativeEvmTokenAddress(address) && bridgeTransaction.isOutgoing.value;
+});
 
-  get txAccountLink() {
-    const link = this.isOutgoing ? this.externalAccountLinks[0] : this.internalAccountLinks[0];
-    const network = this.isOutgoing ? this.externalNetworkId : undefined;
+const selectPrimaryLink = <T,>(links: T[], fallback: T[]): T | undefined =>
+  bridgeTransaction.isOutgoing.value ? links[0] : fallback[0];
 
-    return this.prepareLink(link, network, false);
-  }
+const prepareLink = (
+  link: WALLET_CONSTS.ExplorerLink | undefined,
+  externalNetworkId?: Nullable<BridgeNetworkId>,
+  isTxLink = true
+): { href: string; title: string } | null => {
+  if (!link) return null;
 
-  private prepareLink(
-    link: WALLET_CONSTS.ExplorerLink,
-    externalNetworkId?: Nullable<BridgeNetworkId>,
-    isTxLink = true
-  ): { href: string; title: string } | null {
-    if (!link) return null;
+  const linkText = isTxLink ? tc('transactionText', 1) : tc('accountText', 1);
+  return {
+    href: link.value,
+    title: bridgeTransaction.getNetworkText(linkText, externalNetworkId),
+  };
+};
 
-    const linkText = isTxLink ? this.tc('transactionText', 1) : this.tc('accountText', 1);
+const txLink = computed(() =>
+  prepareLink(
+    selectPrimaryLink(bridgeTransaction.externalExplorerLinks.value, bridgeTransaction.internalExplorerLinks.value),
+    bridgeTransaction.isOutgoing.value ? bridgeTransaction.externalNetworkId.value : undefined
+  )
+);
 
-    return {
-      href: link.value,
-      title: this.getNetworkText(linkText, externalNetworkId),
-    };
-  }
+const txAccountLink = computed(() =>
+  prepareLink(
+    selectPrimaryLink(bridgeTransaction.externalAccountLinks.value, bridgeTransaction.internalAccountLinks.value),
+    bridgeTransaction.isOutgoing.value ? bridgeTransaction.externalNetworkId.value : undefined,
+    false
+  )
+);
 
-  close(): void {
-    this.visibility = false;
-  }
+function close(): void {
+  visible.value = false;
+  store.commit.bridge.setNotificationData();
+}
 
-  async addToken(): Promise<void> {
-    if (!this.asset) return;
+async function addToken(): Promise<void> {
+  if (!asset.value) return;
 
-    try {
-      const { externalAddress, externalDecimals, symbol, address } = this.asset;
-      const image = this.whitelist[address]?.icon;
+  try {
+    const { externalAddress, externalDecimals, symbol, address } = asset.value;
+    const image = whitelist.value[address]?.icon;
 
-      let tokenAddress = externalAddress;
-      let tokenSymbol = symbol;
-      let tokenDecimals = +externalDecimals;
+    let tokenAddress = externalAddress;
+    let tokenSymbol = symbol;
+    let tokenDecimals = Number(externalDecimals);
 
-      if (this.isSubEvm) {
-        const adapter = this.subBridgeConnector.parachain;
-        if (!adapter) throw new Error('Adapter not found');
-        const assetMeta = adapter.getAssetMeta(this.asset);
-        if (!assetMeta) throw new Error('Asset metadata not found');
-        tokenAddress = adapter.assetIdToEvmContractAddress(externalAddress);
-        tokenSymbol = assetMeta.symbol;
-        tokenDecimals = assetMeta.decimals;
-      }
-
-      await ethersUtil.addToken(tokenAddress, tokenSymbol, tokenDecimals, image);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      this.visibility = false;
+    if (isSubEvm.value) {
+      const adapter = subBridgeConnector.value.parachain;
+      if (!adapter) throw new Error('Adapter not found');
+      const assetMeta = adapter.getAssetMeta(asset.value);
+      if (!assetMeta) throw new Error('Asset metadata not found');
+      tokenAddress = adapter.assetIdToEvmContractAddress(externalAddress);
+      tokenSymbol = assetMeta.symbol;
+      tokenDecimals = assetMeta.decimals;
     }
+
+    await ethersUtil.addToken(tokenAddress, tokenSymbol, tokenDecimals, image);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    close();
   }
 }
 </script>

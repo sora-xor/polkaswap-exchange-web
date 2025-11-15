@@ -1,0 +1,3 @@
+
+ËÃimport{dB as i}from"./index-DjB-Okl0.js";import{l as u,v as e,A as _,o as d,x as f,w as l}from"./polkadot-Bh6PX9YG.js";import"./wallet-stack-BuqMcUTa.js";import"./echarts-Cxkeyetf.js";import"./lodash-vOcFpjD8.js";const w=u({__name:"BackButton",props:{page:{}},emits:["back"],setup(n,{emit:s}){const a=s,o=n,r=i(),c=()=>{o.page&&r.push({name:o.page}),a("back")};return(k,t)=>{const p=e("s-icon"),m=e("s-button");return d(),_(m,{type:"action",size:"medium",onClick:t[0]||(t[0]=b=>c())},{default:f(()=>[l(p,{name:"arrows-chevron-left-rounded-24"})]),_:1})}}});export{w as default};
+Ã

@@ -1,7 +1,7 @@
 import { XSTUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { WALLET_TYPES, api } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_TYPES, api } from '@wallet';
 import { computed, ref } from 'vue';
-import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router/composables';
+import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 
 import { PageNames } from '@/consts';
 import store from '@/store';

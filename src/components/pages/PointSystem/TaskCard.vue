@@ -1,13 +1,13 @@
 <template>
   <div class="task-card">
     <div class="task-card__title-image">
-      <token-logo v-if="isTokenImage" :token="getImageSrc(imageName)" size="small" />
+      <token-logo v-if="isTokenImage" :token="getImageSrc(imageName)" size="small"></token-logo>
       <img v-else :src="getImageSrc(imageName)" :alt="imageName" />
       <p>{{ t(`points.${categoryName}.titleProgress`) }}</p>
     </div>
     <p class="task-card__description-task">{{ t(`points.${categoryName}.descriptionTask`) }}</p>
     <div>
-      <s-divider />
+      <s-divider></s-divider>
     </div>
     <div class="task-card__current-progress">
       <p v-if="categoryName != 'firstTxAccount'">
@@ -18,55 +18,47 @@
       </s-button>
     </div>
     <task-dialog
+      v-model:visible="isDialogVisible"
       :points-for-category="pointsForCategory"
-      :visible.sync="isDialogVisible"
       :category-name="categoryName"
-    />
+    ></task-dialog>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed, ref } from 'vue';
 
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
-import { getImageSrc, isTokenImage } from '@/consts/pointSystem';
+import { getImageSrc, isTokenImage as isTokenImageName } from '@/consts/pointSystem';
 import { lazyComponent } from '@/router';
-import { CalculateCategoryPointResult } from '@/types/pointSystem';
+import type { CalculateCategoryPointResult } from '@/types/pointSystem';
 
-@Component({
+defineOptions({
   components: {
     FormattedAmount: components.FormattedAmount,
     TokenLogo: components.TokenLogo,
     TaskDialog: lazyComponent(Components.TaskDialog),
   },
-})
-export default class TaskCard extends Mixins(mixins.TranslationMixin) {
-  @Prop({ required: true, type: Object })
-  readonly pointsForCategory!: CalculateCategoryPointResult;
+});
 
-  @Prop({ required: true, type: String })
-  readonly categoryName!: string;
+const props = defineProps<{
+  pointsForCategory: CalculateCategoryPointResult;
+  categoryName: string;
+}>();
 
-  public isDialogVisible = false;
-  public getImageSrc = getImageSrc;
+const { t, tc } = useTranslation();
 
-  get isTokenImage(): boolean {
-    return isTokenImage(this.imageName);
-  }
+const isDialogVisible = ref(false);
 
-  get imageName(): string {
-    return this.pointsForCategory.imageName;
-  }
+const imageName = computed(() => props.pointsForCategory.imageName);
+const isTokenImage = computed(() => isTokenImageName(imageName.value));
+const isCompleted = computed(() => !props.pointsForCategory.minimumAmountForNextLevel);
 
-  get isCompleted(): boolean {
-    return !this.pointsForCategory.minimumAmountForNextLevel;
-  }
-
-  handleButtonClick(): void {
-    if (!this.isCompleted) {
-      this.isDialogVisible = true;
-    }
+function handleButtonClick(): void {
+  if (!isCompleted.value) {
+    isDialogVisible.value = true;
   }
 }
 </script>

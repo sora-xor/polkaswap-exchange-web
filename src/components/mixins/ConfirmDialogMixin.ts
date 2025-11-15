@@ -1,10 +1,10 @@
-import { Component, Mixins } from 'vue-property-decorator';
+import { Options, mixins as vueMixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
 
-@Component
-export default class ConfirmDialogMixin extends Mixins(TranslationMixin) {
+@Options({})
+export default class ConfirmDialogMixin extends vueMixins(TranslationMixin) {
   @state.wallet.transactions.isConfirmTxDialogDisabled public isConfirmTxDisabled!: boolean;
 
   confirmDialogVisibility = false;

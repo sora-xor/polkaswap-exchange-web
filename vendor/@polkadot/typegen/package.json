@@ -1,0 +1,258 @@
+{
+  "author": "Jaco Greeff <jacogr@gmail.com>",
+  "bugs": "https://github.com/polkadot-js/api/issues",
+  "contributors": [],
+  "description": "Type generation scripts",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "homepage": "https://github.com/polkadot-js/api/tree/master/packages/typegen#readme",
+  "license": "Apache-2.0",
+  "maintainers": [],
+  "name": "@polkadot/typegen",
+  "repository": {
+    "directory": "packages/typegen",
+    "type": "git",
+    "url": "https://github.com/polkadot-js/api.git"
+  },
+  "sideEffects": [
+    "./detectPackage.js",
+    "./cjs/detectPackage.js"
+  ],
+  "type": "module",
+  "version": "9.14.2",
+  "bin": {
+    "polkadot-types-chain-info": "./scripts/polkadot-types-chain-info.cjs",
+    "polkadot-types-from-chain": "./scripts/polkadot-types-from-chain.cjs",
+    "polkadot-types-from-defs": "./scripts/polkadot-types-from-defs.cjs",
+    "polkadot-types-internal-interfaces": "./scripts/polkadot-types-internal-interfaces.cjs",
+    "polkadot-types-internal-metadata": "./scripts/polkadot-types-internal-metadata.cjs"
+  },
+  "main": "./cjs/index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    "./cjs/package.json": "./cjs/package.json",
+    "./cjs/*": "./cjs/*.js",
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./cjs/index.js",
+      "default": "./index.js"
+    },
+    "./augment": {
+      "types": "./augment.d.ts",
+      "require": "./cjs/augment.js",
+      "default": "./augment.js"
+    },
+    "./bundle": {
+      "types": "./bundle.d.ts",
+      "require": "./cjs/bundle.js",
+      "default": "./bundle.js"
+    },
+    "./detectOther": {
+      "types": "./detectOther.d.ts",
+      "require": "./cjs/detectOther.js",
+      "default": "./detectOther.js"
+    },
+    "./detectPackage": {
+      "types": "./detectPackage.d.ts",
+      "require": "./cjs/detectPackage.js",
+      "default": "./detectPackage.js"
+    },
+    "./extractChain": {
+      "types": "./extractChain.d.ts",
+      "require": "./cjs/extractChain.js",
+      "default": "./extractChain.js"
+    },
+    "./fromChain": {
+      "types": "./fromChain.d.ts",
+      "require": "./cjs/fromChain.js",
+      "default": "./fromChain.js"
+    },
+    "./fromDefs": {
+      "types": "./fromDefs.d.ts",
+      "require": "./cjs/fromDefs.js",
+      "default": "./fromDefs.js"
+    },
+    "./generate": {
+      "types": "./generate/index.d.ts",
+      "require": "./cjs/generate/index.js",
+      "default": "./generate/index.js"
+    },
+    "./generate/consts": {
+      "types": "./generate/consts.d.ts",
+      "require": "./cjs/generate/consts.js",
+      "default": "./generate/consts.js"
+    },
+    "./generate/errors": {
+      "types": "./generate/errors.d.ts",
+      "require": "./cjs/generate/errors.js",
+      "default": "./generate/errors.js"
+    },
+    "./generate/events": {
+      "types": "./generate/events.d.ts",
+      "require": "./cjs/generate/events.js",
+      "default": "./generate/events.js"
+    },
+    "./generate/interfaceRegistry": {
+      "types": "./generate/interfaceRegistry.d.ts",
+      "require": "./cjs/generate/interfaceRegistry.js",
+      "default": "./generate/interfaceRegistry.js"
+    },
+    "./generate/lookup": {
+      "types": "./generate/lookup.d.ts",
+      "require": "./cjs/generate/lookup.js",
+      "default": "./generate/lookup.js"
+    },
+    "./generate/query": {
+      "types": "./generate/query.d.ts",
+      "require": "./cjs/generate/query.js",
+      "default": "./generate/query.js"
+    },
+    "./generate/rpc": {
+      "types": "./generate/rpc.d.ts",
+      "require": "./cjs/generate/rpc.js",
+      "default": "./generate/rpc.js"
+    },
+    "./generate/runtime": {
+      "types": "./generate/runtime.d.ts",
+      "require": "./cjs/generate/runtime.js",
+      "default": "./generate/runtime.js"
+    },
+    "./generate/tsDef": {
+      "types": "./generate/tsDef.d.ts",
+      "require": "./cjs/generate/tsDef.js",
+      "default": "./generate/tsDef.js"
+    },
+    "./generate/tx": {
+      "types": "./generate/tx.d.ts",
+      "require": "./cjs/generate/tx.js",
+      "default": "./generate/tx.js"
+    },
+    "./generate/types": {
+      "types": "./generate/types.d.ts",
+      "require": "./cjs/generate/types.js",
+      "default": "./generate/types.js"
+    },
+    "./interfacesTs": {
+      "types": "./interfacesTs.d.ts",
+      "require": "./cjs/interfacesTs.js",
+      "default": "./interfacesTs.js"
+    },
+    "./metadataMd": {
+      "types": "./metadataMd.d.ts",
+      "require": "./cjs/metadataMd.js",
+      "default": "./metadataMd.js"
+    },
+    "./package.json": "./package.json",
+    "./packageInfo.js": {
+      "types": "./packageInfo.d.ts",
+      "require": "./cjs/packageInfo.js",
+      "default": "./packageInfo.js"
+    },
+    "./packageInfo": {
+      "types": "./packageInfo.d.ts",
+      "require": "./cjs/packageInfo.js",
+      "default": "./packageInfo.js"
+    },
+    "./scripts/execWithSrc.cjs": "./scripts/execWithSrc.cjs",
+    "./scripts/execWithSrc": "./scripts/execWithSrc.cjs",
+    "./scripts/polkadot-types-chain-info.cjs": "./scripts/polkadot-types-chain-info.cjs",
+    "./scripts/polkadot-types-chain-info": "./scripts/polkadot-types-chain-info.cjs",
+    "./scripts/polkadot-types-from-chain.cjs": "./scripts/polkadot-types-from-chain.cjs",
+    "./scripts/polkadot-types-from-chain": "./scripts/polkadot-types-from-chain.cjs",
+    "./scripts/polkadot-types-from-defs.cjs": "./scripts/polkadot-types-from-defs.cjs",
+    "./scripts/polkadot-types-from-defs": "./scripts/polkadot-types-from-defs.cjs",
+    "./scripts/polkadot-types-internal-interfaces.cjs": "./scripts/polkadot-types-internal-interfaces.cjs",
+    "./scripts/polkadot-types-internal-interfaces": "./scripts/polkadot-types-internal-interfaces.cjs",
+    "./scripts/polkadot-types-internal-metadata.cjs": "./scripts/polkadot-types-internal-metadata.cjs",
+    "./scripts/polkadot-types-internal-metadata": "./scripts/polkadot-types-internal-metadata.cjs",
+    "./templates/calls.hbs": "./templates/calls.hbs",
+    "./templates/consts.hbs": "./templates/consts.hbs",
+    "./templates/docs.hbs": "./templates/docs.hbs",
+    "./templates/errors.hbs": "./templates/errors.hbs",
+    "./templates/events.hbs": "./templates/events.hbs",
+    "./templates/header.hbs": "./templates/header.hbs",
+    "./templates/interfaceRegistry.hbs": "./templates/interfaceRegistry.hbs",
+    "./templates/lookup/defs-named.hbs": "./templates/lookup/defs-named.hbs",
+    "./templates/lookup/defs.hbs": "./templates/lookup/defs.hbs",
+    "./templates/lookup/index.hbs": "./templates/lookup/index.hbs",
+    "./templates/lookup/types.hbs": "./templates/lookup/types.hbs",
+    "./templates/query.hbs": "./templates/query.hbs",
+    "./templates/rpc.hbs": "./templates/rpc.hbs",
+    "./templates/tsDef/index.hbs": "./templates/tsDef/index.hbs",
+    "./templates/tsDef/moduleTypes.hbs": "./templates/tsDef/moduleTypes.hbs",
+    "./templates/tsDef/types.hbs": "./templates/tsDef/types.hbs",
+    "./templates/tx.hbs": "./templates/tx.hbs",
+    "./util": {
+      "types": "./util/index.d.ts",
+      "require": "./cjs/util/index.js",
+      "default": "./util/index.js"
+    },
+    "./util/assert": {
+      "types": "./util/assert.d.ts",
+      "require": "./cjs/util/assert.js",
+      "default": "./util/assert.js"
+    },
+    "./util/derived": {
+      "types": "./util/derived.d.ts",
+      "require": "./cjs/util/derived.js",
+      "default": "./util/derived.js"
+    },
+    "./util/docs": {
+      "types": "./util/docs.d.ts",
+      "require": "./cjs/util/docs.js",
+      "default": "./util/docs.js"
+    },
+    "./util/file": {
+      "types": "./util/file.d.ts",
+      "require": "./cjs/util/file.js",
+      "default": "./util/file.js"
+    },
+    "./util/formatting": {
+      "types": "./util/formatting.d.ts",
+      "require": "./cjs/util/formatting.js",
+      "default": "./util/formatting.js"
+    },
+    "./util/imports": {
+      "types": "./util/imports.d.ts",
+      "require": "./cjs/util/imports.js",
+      "default": "./util/imports.js"
+    },
+    "./util/initMeta": {
+      "types": "./util/initMeta.d.ts",
+      "require": "./cjs/util/initMeta.js",
+      "default": "./util/initMeta.js"
+    },
+    "./util/register": {
+      "types": "./util/register.d.ts",
+      "require": "./cjs/util/register.js",
+      "default": "./util/register.js"
+    },
+    "./util/wsMeta": {
+      "types": "./util/wsMeta.d.ts",
+      "require": "./cjs/util/wsMeta.js",
+      "default": "./util/wsMeta.js"
+    }
+  },
+  "dependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/register": "^7.18.9",
+    "@babel/runtime": "^7.20.13",
+    "@polkadot/api": "9.14.2",
+    "@polkadot/api-augment": "9.14.2",
+    "@polkadot/rpc-augment": "9.14.2",
+    "@polkadot/rpc-provider": "9.14.2",
+    "@polkadot/types": "9.14.2",
+    "@polkadot/types-augment": "9.14.2",
+    "@polkadot/types-codec": "9.14.2",
+    "@polkadot/types-create": "9.14.2",
+    "@polkadot/types-support": "9.14.2",
+    "@polkadot/util": "^10.4.2",
+    "@polkadot/util-crypto": "^10.4.2",
+    "@polkadot/x-ws": "^10.4.2",
+    "handlebars": "^4.7.7",
+    "websocket": "^1.0.34",
+    "yargs": "^17.6.2"
+  }
+}

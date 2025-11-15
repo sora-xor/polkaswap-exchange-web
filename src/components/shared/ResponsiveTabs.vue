@@ -38,45 +38,51 @@
       :value="selectedKey"
       @input="handleTabChange"
     >
-      <s-tab v-for="tab in tabs" :key="tab.name" :name="tab.name" :label="tab.label" :disabled="disabled" />
+      <s-tab v-for="tab in tabs" :key="tab.name" :name="tab.name" :label="tab.label" :disabled="disabled"></s-tab>
     </s-tabs>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Mixins, ModelSync } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { UiSize } from '@/consts/theme';
 import type { ResponsiveTab } from '@/types/tabs';
 
-@Component
-export default class ResponsiveTabs extends Mixins(TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly isHeader!: boolean;
-  @Prop({ default: true, type: Boolean }) readonly isMobile!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
-  @Prop({ default: UiSize.MEDIUM }) readonly size!: UiSize;
-  @Prop({ default: () => [], type: Array }) readonly tabs!: Array<ResponsiveTab>;
-
-  @ModelSync('value', 'input', { type: String })
-  readonly selectedKey!: string;
-
-  private get selected(): Nullable<ResponsiveTab> {
-    return this.tabs.find((tab) => tab.name === this.selectedKey);
+const props = withDefaults(
+  defineProps<{
+    isHeader?: boolean;
+    isMobile?: boolean;
+    disabled?: boolean;
+    size?: UiSize;
+    tabs?: Array<ResponsiveTab>;
+  }>(),
+  {
+    isHeader: false,
+    isMobile: true,
+    disabled: false,
+    size: UiSize.MEDIUM,
+    tabs: () => [],
   }
+);
 
-  get buttonType() {
-    return this.isHeader ? 'link' : 'tertiary';
-  }
+const emit = defineEmits<{
+  (event: 'input', value: string): void;
+}>();
 
-  get selectedName(): string {
-    return this.selected?.label ?? '';
-  }
+const selectedKeyModel = defineModel<string>('value', { default: '' });
 
-  handleTabChange(name: string): void {
-    this.$emit('input', name);
-  }
+const selected = computed(() => props.tabs.find((tab) => tab.name === selectedKeyModel.value));
+const selectedName = computed(() => selected.value?.label ?? '');
+
+function handleTabChange(name: string): void {
+  selectedKeyModel.value = name;
+  emit('input', name);
 }
+
+const selectedKey = computed(() => selectedKeyModel.value);
+
+const { isMobile, isHeader, size, tabs, disabled } = props;
 </script>
 
 <style lang="scss">

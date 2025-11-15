@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="visibility" :title="t('connectEthereumWalletText')" append-to-body>
+  <dialog-base v-model:visible="visible" :title="t('connectEthereumWalletText')" append-to-body>
     <extension-connection-list
       show-disclaimer
       :wallets="wallets"
@@ -8,16 +8,17 @@
       :selected-wallet="selectedWallet"
       :selected-wallet-loading="selectedWalletLoading"
       @select="handleSelectProvider"
-    />
+    ></extension-connection-list>
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
+import { computed, onScopeDispose, ref, watch } from 'vue';
 
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import { action, getter, state } from '@/store/decorators';
+import { useWeb3Connection } from '@/composables/useWeb3Connection';
+import { useTranslation } from '@/composables/useTranslation';
+import store from '@/store';
 import type { AppEIPProvider } from '@/types/evm/provider';
 import { PredefinedProvider } from '@/utils/connection/evm/providers';
 
@@ -32,77 +33,85 @@ type EvmWalletInfo = {
   installUrl?: string;
 };
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
     ExtensionConnectionList: components.ExtensionConnectionList,
   },
-})
-export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
-  @state.web3.selectProviderDialogVisibility private selectProviderDialogVisibility!: boolean;
-  @action.web3.subscribeOnEvmProviders private subscribeOnEvmProviders!: () => Promise<VoidFunction>;
-  @getter.web3.appEvmProviders private appEvmProviders!: AppEIPProvider[];
+});
 
-  private providersSubscription: Nullable<VoidFunction> = null;
+const { t } = useTranslation();
+const { connectEvmProvider, evmProvider, evmProviderLoading, subscribeOnEvmProviders } = useWeb3Connection();
 
-  readonly recommendedWallets = [PredefinedProvider.Fearless];
+const visible = defineModel<boolean>('visible', {
+  default: false,
+  get(value) {
+    return store.state.web3.selectProviderDialogVisibility;
+  },
+  set(value) {
+    store.commit.web3.setSelectProviderDialogVisibility(value);
+    return value;
+  },
+});
 
-  @Watch('visibility')
-  private async updateProviders(value: boolean): Promise<void> {
-    if (value) {
-      this.providersSubscription = await this.subscribeOnEvmProviders();
-    } else {
-      this.providersSubscription?.();
-      this.providersSubscription = null;
-    }
+const appEvmProviders = ref<AppEIPProvider[]>(store.getters.web3.appEvmProviders);
+const recommendedWallets = [PredefinedProvider.Fearless];
+
+let unsubscribeProviders: Nullable<VoidFunction> = null;
+
+const updateProviders = async (nextVisible: boolean) => {
+  if (nextVisible) {
+    unsubscribeProviders = await subscribeOnEvmProviders();
+  } else {
+    unsubscribeProviders?.();
+    unsubscribeProviders = null;
   }
+};
 
-  get visibility(): boolean {
-    return this.selectProviderDialogVisibility;
+watch(
+  () => store.getters.web3.appEvmProviders as AppEIPProvider[],
+  (providers) => {
+    appEvmProviders.value = providers;
   }
+);
 
-  set visibility(flag: boolean) {
-    this.setSelectProviderDialogVisibility(flag);
-  }
+watch(
+  visible,
+  (next) => {
+    void updateProviders(next);
+  },
+  { immediate: true }
+);
 
-  get wallets(): EvmWalletInfo[] {
-    return this.appEvmProviders.map((provider) => {
-      return {
-        extensionName: provider.uuid,
-        title: provider.name,
-        logo: {
-          src: provider.icon,
-          alt: provider.name,
-        },
-        installed: provider.installed,
-        installUrl: provider.installUrl,
-      };
-    });
-  }
+onScopeDispose(() => {
+  unsubscribeProviders?.();
+});
 
-  get connectedWallet(): Nullable<string> {
-    return this.evmProvider?.uuid ?? null;
-  }
+const wallets = computed<EvmWalletInfo[]>(() =>
+  appEvmProviders.value.map((provider) => ({
+    extensionName: provider.uuid,
+    title: provider.name,
+    logo: {
+      src: provider.icon,
+      alt: provider.name,
+    },
+    installed: provider.installed,
+    installUrl: provider.installUrl,
+  }))
+);
 
-  get loadingWallet(): Nullable<string> {
-    return this.evmProviderLoading?.uuid ?? null;
-  }
+const connectedWallet = computed(() => evmProvider.value?.uuid ?? null);
+const loadingWallet = computed(() => evmProviderLoading.value?.uuid ?? null);
+const selectedWallet = computed(() => loadingWallet.value ?? connectedWallet.value);
+const selectedWalletLoading = computed(
+  () => !!loadingWallet.value && !!selectedWallet.value && loadingWallet.value === selectedWallet.value
+);
 
-  get selectedWallet(): Nullable<string> {
-    return this.loadingWallet ?? this.connectedWallet;
-  }
+async function handleSelectProvider(wallet: EvmWalletInfo): Promise<void> {
+  const provider = appEvmProviders.value.find((item) => item.uuid === wallet.extensionName);
+  if (!provider) return;
 
-  get selectedWalletLoading(): boolean {
-    return !!this.loadingWallet && !!this.selectedWallet && this.loadingWallet === this.selectedWallet;
-  }
-
-  async handleSelectProvider(wallet: EvmWalletInfo): Promise<void> {
-    const uuid = wallet.extensionName;
-    const provider = this.appEvmProviders.find((provider) => provider.uuid === uuid);
-    if (!provider) return;
-
-    await this.connectEvmProvider(provider);
-    this.visibility = false;
-  }
+  await connectEvmProvider(provider);
+  visible.value = false;
 }
 </script>

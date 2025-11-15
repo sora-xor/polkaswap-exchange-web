@@ -1,206 +1,216 @@
 <template>
   <div class="sora-card-wrapper">
-    <confirmation-info v-if="step === Step.ConfirmationInfo" v-loading="loading" @confirm-apply="openKycPage" />
-    <sora-card-intro v-else-if="showIntro" :maintenance="isUnderMaintenance" @confirm-apply="openKycPage" />
+    <confirmation-info
+      v-if="step === Step.ConfirmationInfo"
+      v-loading="loading"
+      @confirm-apply="openKycPage"
+    ></confirmation-info>
+    <sora-card-intro
+      v-else-if="showIntro"
+      :maintenance="isUnderMaintenance"
+      @confirm-apply="openKycPage"
+    ></sora-card-intro>
     <sora-card-kyc
       v-else-if="step === Step.KYC"
       :get-ready-page="getReadyPage"
       @go-to-start="openStartPage"
       @go-to-kyc-result="openKycResultPage"
       @go-to-dashboard="openDashboard"
-    />
-    <dashboard v-else-if="step === Step.Dashboard" @logout="logout" />
+    ></sora-card-kyc>
+    <dashboard v-else-if="step === Step.Dashboard" @logout="logout"></dashboard>
   </div>
 </template>
 
-<script lang="ts">
-import { api, mixins, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { api, WALLET_CONSTS, WALLET_TYPES } from '@wallet';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from 'vue-router';
 
-import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import { Components } from '@/consts';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
-import { action, state, getter, mutation } from '@/store/decorators';
+import store from '@/store';
+import { useWalletStore } from '@/stores/wallet';
 import { AttemptCounter, VerificationStatus } from '@/types/card';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
-import type { NavigationGuardNext, Route } from 'vue-router';
+import type { Nullable } from '@/types/common';
 
-enum Step {
-  StartPage = 'StartPage',
-  KYC = 'KYC',
-  ConfirmationInfo = 'ConfirmationInfo',
-  Dashboard = 'Dashboard',
-  Maintenance = 'Maintenance',
-}
+const Step = {
+  StartPage: 'StartPage',
+  KYC: 'KYC',
+  ConfirmationInfo: 'ConfirmationInfo',
+  Dashboard: 'Dashboard',
+  Maintenance: 'Maintenance',
+} as const;
 
-@Component({
+type StepKey = (typeof Step)[keyof typeof Step];
+
+defineOptions({
   components: {
     SoraCardIntro: lazyComponent(Components.SoraCardIntroPage),
     SoraCardKyc: lazyComponent(Components.SoraCardKYC),
     ConfirmationInfo: lazyComponent(Components.ConfirmationInfo),
     Dashboard: lazyComponent(Components.Dashboard),
   },
-})
-export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
-  readonly Step = Step;
+});
 
-  @state.soraCard.attemptCounter private attemptCounter!: AttemptCounter;
-  @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
+const route = useRoute();
+const walletStore = useWalletStore();
+const { loading, withLoading, withParentLoading, withApi } = useLoading();
+const { t } = useTranslation();
 
-  @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
-  @getter.settings.soraCardEnabled private soraCardEnabled!: Nullable<boolean>;
+const step = ref<Nullable<StepKey>>(null);
+const getReadyPage = ref(false);
 
-  @mutation.soraCard.setWillToPassKycAgain private setWillToPassKycAgain!: (will: boolean) => void;
+const attemptCounter = computed(() => store.state.soraCard.attemptCounter as AttemptCounter);
+const wantsToPassKycAgain = computed(() => store.state.soraCard.wantsToPassKycAgain as boolean);
+const currentStatus = computed(() => store.getters.soraCard.currentStatus as VerificationStatus | undefined);
+const soraCardEnabled = computed(() => store.getters.settings.soraCardEnabled as Nullable<boolean>);
+const source = computed(() => store.state.wallet.account.source as WALLET_CONSTS.AppWallet | undefined);
 
-  @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
-  @action.soraCard.getUserKycAttempt private getUserKycAttempt!: AsyncFnWithoutArgs;
-  @action.soraCard.getUserIban private getUserIban!: AsyncFnWithoutArgs;
-  @action.soraCard.getFees private getFees!: AsyncFnWithoutArgs;
-  @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
-  @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncFnWithoutArgs;
-  @action.pool.subscribeOnAccountLiquidityList private subscribeOnList!: AsyncFnWithoutArgs;
-  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnUpdates!: AsyncFnWithoutArgs;
-  @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribe!: AsyncFnWithoutArgs;
-  @action.wallet.account.loginAccount private loginAccount!: (payload: WALLET_TYPES.PolkadotJsAccount) => Promise<void>;
-  @state.wallet.account.source private source!: WALLET_CONSTS.AppWallet;
+const hasFreeAttempts = computed(() => attemptCounter.value?.hasFreeAttempts ?? false);
 
-  step: Nullable<Step> = null;
-  getReadyPage = false;
-  isRedirectFromFearless = true;
+const isUnderMaintenance = computed(() => step.value === Step.Maintenance);
+const showIntro = computed(() => [Step.StartPage, Step.Maintenance].includes(step.value as StepKey));
 
-  get isUnderMaintenance(): boolean {
-    return this.step === Step.Maintenance;
+const hasTokens = computed(() => {
+  const accessToken = localStorage.getItem('PW-token');
+  const refreshToken = localStorage.getItem('PW-refresh-token');
+
+  if (refreshToken === 'undefined') return false;
+
+  return Boolean(accessToken && refreshToken);
+});
+
+const openKycPage = (openGetReadyPage = false) => {
+  getReadyPage.value = openGetReadyPage;
+  step.value = Step.KYC;
+};
+
+const openStartPage = () => {
+  step.value = Step.StartPage;
+};
+
+const openKycResultPage = () => {
+  step.value = Step.ConfirmationInfo;
+};
+
+const openDashboard = () => {
+  step.value = Step.Dashboard;
+};
+
+const logout = () => {
+  openStartPage();
+};
+
+const subscribeToLiquidity = async () => {
+  await Promise.all([
+    store.dispatch.pool.subscribeOnAccountLiquidityList(),
+    store.dispatch.pool.subscribeOnAccountLiquidityUpdates(),
+  ]);
+};
+
+const unsubscribeFromLiquidity = async () => {
+  await store.dispatch.pool.unsubscribeAccountLiquidityListAndUpdates();
+};
+
+const handleAccountChange = async () => {
+  const address = route.query?.fearless as Nullable<string>;
+  const name = route.query?.name as Nullable<string>;
+
+  if (address && name && api.validateAddress(address)) {
+    await walletStore.loginAccount({
+      address,
+      name,
+      source: WALLET_CONSTS.AppWallet.FearlessWallet,
+    } as WALLET_TYPES.PolkadotJsAccount);
   }
 
-  get showIntro(): boolean {
-    return [Step.StartPage, Step.Maintenance].includes(this.step as Step);
+  await store.dispatch.soraCard.subscribeToTotalXorBalance();
+};
+
+const checkKyc = async () => {
+  if (soraCardEnabled.value === undefined || soraCardEnabled.value === null) {
+    await waitForSoraNetworkFromEnv();
   }
 
-  get hasFreeAttempts() {
-    return this.attemptCounter.hasFreeAttempts;
+  if (!soraCardEnabled.value) {
+    step.value = Step.Maintenance;
+    return;
   }
 
-  get hasTokens(): boolean {
-    const accessToken = localStorage.getItem('PW-token');
-    const refreshToken = localStorage.getItem('PW-refresh-token');
+  await store.dispatch.soraCard.getUserStatus();
+  await store.dispatch.soraCard.getUserKycAttempt();
 
-    if (refreshToken === 'undefined') return false;
-
-    return !!accessToken && !!refreshToken;
+  if (currentStatus.value === VerificationStatus.Rejected && wantsToPassKycAgain.value && hasFreeAttempts.value) {
+    getReadyPage.value = true;
+    step.value = Step.KYC;
+    return;
   }
 
-  openKycPage(openGetReadyPage = false): void {
-    this.getReadyPage = openGetReadyPage;
-    this.step = Step.KYC;
+  if (currentStatus.value === VerificationStatus.Accepted) {
+    await store.dispatch.soraCard.getUserIban();
+    step.value = Step.Dashboard;
+    return;
   }
 
-  openStartPage(): void {
-    this.step = Step.StartPage;
+  if ([VerificationStatus.Pending, VerificationStatus.Rejected].includes(currentStatus.value as VerificationStatus)) {
+    step.value = Step.ConfirmationInfo;
+    return;
   }
 
-  openKycResultPage(): void {
-    this.step = Step.ConfirmationInfo;
-  }
+  step.value = Step.StartPage;
+};
 
-  openDashboard(): void {
-    this.step = Step.Dashboard;
-  }
-
-  logout(): void {
-    this.openStartPage();
-  }
-
-  async checkKyc(): Promise<void> {
-    // wait for the config to be loaded (for soraCardEnabled)
-    if (this.soraCardEnabled === undefined || this.soraCardEnabled === null) {
-      await waitForSoraNetworkFromEnv();
-    }
-    if (!this.soraCardEnabled) {
-      this.step = Step.Maintenance;
-      return;
-    }
-
-    await this.getUserStatus();
-    await this.getUserKycAttempt();
-
-    if (this.currentStatus === VerificationStatus.Rejected && this.wantsToPassKycAgain && this.hasFreeAttempts) {
-      this.getReadyPage = true;
-      this.step = Step.KYC;
-      return;
-    }
-
-    if (this.currentStatus === VerificationStatus.Accepted) {
-      await this.getUserIban();
-
-      this.step = Step.Dashboard;
-      return;
-    }
-
-    if ([VerificationStatus.Pending, VerificationStatus.Rejected].includes(this.currentStatus)) {
-      this.step = Step.ConfirmationInfo;
-      return;
-    }
-
-    this.step = Step.StartPage;
-  }
-
-  private async handleAccountChange(to?: Route): Promise<void> {
-    const address = (to ?? this.$route).query?.fearless as Nullable<string>;
-    const name = (to ?? this.$route).query?.name as Nullable<string>;
-
-    if (address && name) {
-      if (api.validateAddress(address)) {
-        await this.loginAccount({
-          address,
-          name,
-          source: WALLET_CONSTS.AppWallet.FearlessWallet,
-        });
-      }
-    }
-
-    this.subscribeToTotalXorBalance();
-  }
-
-  async created(): Promise<void> {
-    await this.withLoading(async () => {
-      // wait for node connection & wallet init (App.vue)
-      await this.withParentLoading(async () => {
-        await Promise.all([this.subscribeOnList, this.subscribeOnUpdates].map((fn) => fn?.()));
-      });
+onMounted(async () => {
+  await withLoading(async () => {
+    await withParentLoading(async () => {
+      await subscribeToLiquidity();
     });
+    await handleAccountChange();
+  });
 
-    // Fearless integration
-    await this.withApi(this.handleAccountChange);
+  const refreshToken = localStorage.getItem('PW-refresh-token');
 
-    const refreshToken = localStorage.getItem('PW-refresh-token');
-
-    if (this.source === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
-      (window as WindowInjectedWeb3).injectedWeb3?.['fearless-wallet']?.saveSoraCardToken?.(refreshToken);
-    }
+  if (source.value === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
+    (window as WindowInjectedWeb3).injectedWeb3?.['fearless-wallet']?.saveSoraCardToken?.(refreshToken);
   }
 
-  async beforeRouteLeave(to: Route, from: Route, next: NavigationGuardNext<Vue>): Promise<void> {
-    this.setWillToPassKycAgain(false);
-    await this.unsubscribe();
-    next();
-  }
+  await checkKyc();
+});
 
-  async beforeRouteUpdate(to: Route, from: Route, next: NavigationGuardNext<Vue>): Promise<void> {
-    await this.handleAccountChange(to);
-    next();
-  }
+onBeforeRouteUpdate(async (_to, _from, next) => {
+  await withApi(async () => {
+    await handleAccountChange();
+  });
+  next();
+});
 
-  async beforeDestroy(): Promise<void> {
-    await this.unsubscribeFromTotalXorBalance();
-  }
+onBeforeRouteLeave(async (_to, _from, next) => {
+  store.commit.soraCard.setWillToPassKycAgain(false);
+  await unsubscribeFromLiquidity();
+  await store.dispatch.soraCard.unsubscribeFromTotalXorBalance();
+  next();
+});
 
-  async mounted(): Promise<void> {
-    await this.$nextTick();
-    this.checkKyc();
-    this.getFees();
-  }
-}
+onBeforeUnmount(async () => {
+  await unsubscribeFromLiquidity();
+  await store.dispatch.soraCard.unsubscribeFromTotalXorBalance();
+});
+
+defineExpose({
+  Step,
+  step,
+  getReadyPage,
+  loading,
+  openKycPage,
+  openStartPage,
+  openKycResultPage,
+  openDashboard,
+  logout,
+});
 </script>
 
 <style lang="scss">

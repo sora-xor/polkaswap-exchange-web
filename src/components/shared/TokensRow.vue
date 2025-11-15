@@ -8,27 +8,35 @@
         :size="size"
         :style="{ zIndex: index }"
         :class="['tokens-row__item', { border }]"
-      />
+      ></token-logo>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Vue, Component, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components, WALLET_CONSTS } from '@wallet';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+defineOptions({
+  name: 'TokensRow',
   components: {
     TokenLogo: components.TokenLogo,
   },
-})
-export default class TokensRow extends Vue {
-  @Prop({ default: () => [], type: Array }) assets!: Array<Asset>;
-  @Prop({ default: WALLET_CONSTS.LogoSize.LARGE, type: String }) readonly size!: WALLET_CONSTS.LogoSize;
-  @Prop({ default: false, type: Boolean }) readonly border!: boolean;
-}
+});
+
+withDefaults(
+  defineProps<{
+    assets?: Array<Asset>;
+    size?: WALLET_CONSTS.LogoSize;
+    border?: boolean;
+  }>(),
+  {
+    assets: () => [],
+    size: WALLET_CONSTS.LogoSize.LARGE,
+    border: false,
+  }
+);
 </script>
 
 <style lang="scss" scoped>

@@ -5,33 +5,26 @@
       ...$attrs,
     }"
     v-on="$listeners"
-  />
+  ></router-view>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { useSubscriptions } from '@/composables/useSubscriptions';
+import store from '@/store';
 
-import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import { action } from '@/store/decorators';
+defineOptions({
+  inheritAttrs: false,
+});
 
-@Component
-export default class DemeterDataContainer extends Mixins(SubscriptionsMixin) {
-  @action.demeterFarming.subscribeOnPools private subscribeOnPools!: AsyncFnWithoutArgs;
-  @action.demeterFarming.subscribeOnTokens private subscribeOnTokens!: AsyncFnWithoutArgs;
-  @action.demeterFarming.subscribeOnAccountPools private subscribeOnAccountPools!: AsyncFnWithoutArgs;
-  @action.demeterFarming.unsubscribeUpdates private unsubscribeDemeter!: AsyncFnWithoutArgs;
-  @action.staking.getValidatorsInfo getValidatorsInfo!: AsyncFnWithoutArgs;
-  @action.staking.getStakingInfo getStakingInfo!: AsyncFnWithoutArgs;
+const subscribeOnPools = () => store.dispatch.demeterFarming.subscribeOnPools();
+const subscribeOnTokens = () => store.dispatch.demeterFarming.subscribeOnTokens();
+const subscribeOnAccountPools = () => store.dispatch.demeterFarming.subscribeOnAccountPools();
+const unsubscribeDemeter = () => store.dispatch.demeterFarming.unsubscribeUpdates();
+const getValidatorsInfo = () => store.dispatch.staking.getValidatorsInfo();
+const getStakingInfo = () => store.dispatch.staking.getStakingInfo();
 
-  created(): void {
-    this.setStartSubscriptions([
-      this.subscribeOnPools,
-      this.subscribeOnTokens,
-      this.subscribeOnAccountPools,
-      this.getValidatorsInfo,
-      this.getStakingInfo,
-    ]);
-    this.setResetSubscriptions([this.unsubscribeDemeter]);
-  }
-}
+const { subscriptionsDataLoading } = useSubscriptions({
+  startSubscriptions: [subscribeOnPools, subscribeOnTokens, subscribeOnAccountPools, getValidatorsInfo, getStakingInfo],
+  resetSubscriptions: [unsubscribeDemeter],
+});
 </script>

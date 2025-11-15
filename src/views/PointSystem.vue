@@ -48,12 +48,12 @@
                     :font-size-rate="FontSizeRate.MEDIUM"
                     :value="feesSpentFiat"
                     is-formatted
-                  />
+                  ></formatted-amount>
                 </div>
-                <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL" />
+                <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL"></token-logo>
               </div>
             </div>
-            <s-divider class="points__card-divider" />
+            <s-divider class="points__card-divider"></s-divider>
             <div class="item s-flex">
               <span class="item-title">{{ t('points.xorBurned') }}</span>
               <div class="item-value s-flex">
@@ -70,9 +70,9 @@
                     :font-size-rate="FontSizeRate.MEDIUM"
                     :value="xorBurnedFiat"
                     is-formatted
-                  />
+                  ></formatted-amount>
                 </div>
-                <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL" />
+                <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL"></token-logo>
               </div>
             </div>
           </div>
@@ -94,11 +94,11 @@
             <div class="points__card-header s-flex-column">
               <span class="points__card-title">{{ t('points.yourReferrals') }}</span>
               <span class="points__card-value s-flex">
-                <span class="account-icon" />
+                <span class="account-icon"></span>
                 {{ t('points.accountsText', { amount: totalReferrals }) }}
               </span>
             </div>
-            <s-divider class="points__card-divider" />
+            <s-divider class="points__card-divider"></s-divider>
             <div class="item s-flex">
               <span class="item-title">{{ t('points.yourRewards') }}</span>
               <div class="item-value s-flex">
@@ -115,9 +115,9 @@
                     :font-size-rate="FontSizeRate.MEDIUM"
                     :value="totalReferralRewardsFiat"
                     is-formatted
-                  />
+                  ></formatted-amount>
                 </div>
-                <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL" />
+                <token-logo class="item-value__icon" :token="xor" :size="LogoSize.SMALL"></token-logo>
               </div>
             </div>
           </div>
@@ -138,181 +138,176 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, mixins, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed, onMounted, ref, watch } from 'vue';
 
-import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { ZeroStringValue } from '@/consts';
 import { Theme } from '@/consts/theme';
 import { fetchData as fetchBurnXorData } from '@/indexer/queries/burnXor';
-import { type BridgeData, fetchBridgeData, fetchCount, CountType } from '@/indexer/queries/pointSystem';
+import { CountType, type BridgeData, fetchBridgeData, fetchCount } from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
-import { action, getter, state } from '@/store/decorators';
+import store from '@/store';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix } from '@/utils';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
 
-import type { NetworkFeesObject, FPNumber } from '@sora-substrate/sdk';
+import type { NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+type PolkadotJsAccount = {
+  address: string;
+};
+
+defineOptions({
   components: {
     FormattedAmount: components.FormattedAmount,
     TokenLogo: components.TokenLogo,
   },
-})
-export default class PointSystem extends Mixins(
-  mixins.LoadingMixin,
-  mixins.FormattedAmountMixin,
-  InternalConnectMixin
-) {
-  readonly LogoSize = WALLET_CONSTS.LogoSize;
+});
 
-  @state.referrals.referralRewards private referralRewards!: Nullable<ReferrerRewards>;
-  @state.wallet.settings.blockNumber private blockNumber!: number;
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+const LogoSize = WALLET_CONSTS.LogoSize;
+const FontWeightRate = WALLET_CONSTS.FontWeightRate;
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
-  @getter.libraryTheme private libraryTheme!: Theme;
-  @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
-  @getter.assets.xor xor!: Nullable<AccountAsset>;
-  @getter.wallet.settings.currencySymbol currencySymbol!: string;
+const { t } = useTranslation();
+const { loading, withApi, withLoading } = useLoading();
+const { Zero, getFPNumberFromCodec, getFiatAmountByFPNumber, getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
+const { connectSoraWallet, isLoggedIn } = useInternalConnect();
 
-  @action.referrals.getAccountReferralRewards private getAccountReferralRewards!: AsyncFnWithoutArgs;
+const referralRewards = computed(() => store.state.referrals.referralRewards as Nullable<ReferrerRewards>);
+const blockNumber = computed(() => store.state.wallet.settings.blockNumber as number);
+const networkFees = computed(() => store.state.wallet.settings.networkFees as Nullable<NetworkFeesObject>);
+const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+const account = computed(() => store.getters.wallet.account.account as Nullable<PolkadotJsAccount>);
+const xor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
+const currencySymbol = computed(() => store.getters.wallet.settings.currencySymbol as string);
 
-  private burnData: Nullable<FPNumber> = null;
-  private bridgeData: BridgeData[] = [];
-  private poolDepositCount = 0;
-  private poolWithdrawCount = 0;
-  totalSwapTxs = 0;
+const burnData = ref<Nullable<FPNumber>>(null);
+const bridgeData = ref<BridgeData[]>([]);
+const poolDepositCount = ref(0);
+const poolWithdrawCount = ref(0);
+const totalSwapTxs = ref(0);
 
-  @Watch('isLoggedIn')
-  private updateSubscriptions(value: boolean): void {
-    if (value) {
-      this.withLoading(this.initData);
-    } else {
-      this.burnData = null;
-      this.bridgeData = [];
-      this.poolDepositCount = 0;
-      this.poolWithdrawCount = 0;
-      this.totalSwapTxs = 0;
-    }
+const xorSymbol = XOR.symbol;
+
+const referralsCardStyles = computed(() => ({
+  backgroundImage: `url('/points/${libraryTheme.value}/referrals.png')`,
+}));
+
+const bridgeCardStyles = computed(() => ({
+  backgroundImage: `url('/points/${libraryTheme.value}/bridge.png')`,
+}));
+
+const totalReferrals = computed(() =>
+  referralRewards.value ? Object.keys(referralRewards.value.invitedUserRewards).length : 0
+);
+
+const bridgeVolume = computed(() =>
+  bridgeData.value.reduce((acc, { amount, assetId }) => {
+    const fiat = getFPNumberFiatAmountByFPNumber(amount, { address: assetId } as Asset);
+    return fiat ? acc.add(fiat) : acc;
+  }, Zero)
+);
+
+const totalBridgeVolume = computed<AmountWithSuffix>(() => formatAmountWithSuffix(bridgeVolume.value));
+
+const xorBurned = computed<AmountWithSuffix>(() => formatAmountWithSuffix(burnData.value ?? Zero));
+
+const xorBurnedFiat = computed(() =>
+  burnData.value ? getFiatAmountByFPNumber(burnData.value) || ZeroStringValue : ZeroStringValue
+);
+
+const totalBridgeTxs = computed(() => bridgeData.value.length);
+const totalPoolTxs = computed(() => poolDepositCount.value + poolWithdrawCount.value);
+const totalOutgoingBridgeTxs = computed(() => bridgeData.value.filter(({ type }) => type === 'outgoing').length);
+
+const totalFees = computed(() => {
+  let fees = Zero;
+  const currentFees = networkFees.value;
+  if (!currentFees) return fees;
+
+  if (totalSwapTxs.value && currentFees.Swap) {
+    fees = fees.add(getFPNumberFromCodec(currentFees.Swap).mul(totalSwapTxs.value));
+  }
+  if (totalOutgoingBridgeTxs.value && currentFees.EthBridgeOutgoing) {
+    fees = fees.add(getFPNumberFromCodec(currentFees.EthBridgeOutgoing).mul(totalOutgoingBridgeTxs.value));
+  }
+  if (poolDepositCount.value && currentFees.AddLiquidity) {
+    fees = fees.add(getFPNumberFromCodec(currentFees.AddLiquidity).mul(poolDepositCount.value));
+  }
+  if (poolWithdrawCount.value && currentFees.RemoveLiquidity) {
+    fees = fees.add(getFPNumberFromCodec(currentFees.RemoveLiquidity).mul(poolWithdrawCount.value));
+  }
+  return fees;
+});
+
+const feesSpent = computed<AmountWithSuffix>(() => formatAmountWithSuffix(totalFees.value));
+
+const feesSpentFiat = computed(() => getFiatAmountByFPNumber(totalFees.value) || ZeroStringValue);
+
+const totalReferralRewards = computed<AmountWithSuffix>(() =>
+  formatAmountWithSuffix(referralRewards.value?.rewards ?? Zero)
+);
+
+const totalReferralRewardsFiat = computed(() => {
+  const rewards = referralRewards.value?.rewards;
+  return rewards ? getFiatAmountByFPNumber(rewards) || ZeroStringValue : ZeroStringValue;
+});
+
+const resetStats = () => {
+  burnData.value = null;
+  bridgeData.value = [];
+  poolDepositCount.value = 0;
+  poolWithdrawCount.value = 0;
+  totalSwapTxs.value = 0;
+};
+
+/**
+ * Fetches the point system metrics for the connected wallet.
+ */
+const initData = async () => {
+  if (!isLoggedIn.value) {
+    resetStats();
+    return;
   }
 
-  get xorSymbol(): string {
-    return XOR.symbol;
+  await store.dispatch.referrals.getAccountReferralRewards();
+
+  const accountAddress = account.value?.address;
+  const endBlock = blockNumber.value;
+
+  if (!accountAddress || !endBlock) {
+    resetStats();
+    return;
   }
 
-  get referralsCardStyles() {
-    return { backgroundImage: `url('/points/${this.libraryTheme}/referrals.png')` };
+  const burnEntries = await fetchBurnXorData(0, endBlock, accountAddress);
+  burnData.value = burnEntries.reduce((acc, { amount }) => acc.add(amount), Zero);
+
+  bridgeData.value = await fetchBridgeData(0, endBlock, accountAddress);
+  totalSwapTxs.value = await fetchCount(0, endBlock, accountAddress, CountType.Swap);
+  poolDepositCount.value = await fetchCount(0, endBlock, accountAddress, CountType.PoolDeposit);
+  poolWithdrawCount.value = await fetchCount(0, endBlock, accountAddress, CountType.PoolWithdraw);
+};
+
+onMounted(() => {
+  void withApi(initData);
+});
+
+watch(isLoggedIn, async (value) => {
+  if (!value) {
+    resetStats();
+    return;
   }
 
-  get bridgeCardStyles() {
-    return { backgroundImage: `url('/points/${this.libraryTheme}/bridge.png')` };
-  }
-
-  get totalReferrals(): number {
-    if (!this.referralRewards) {
-      return 0;
-    }
-    return Object.keys(this.referralRewards.invitedUserRewards).length;
-  }
-
-  private get bridgeVolume(): FPNumber {
-    return this.bridgeData.reduce((acc, { amount, assetId }) => {
-      const fiat = this.getFPNumberFiatAmountByFPNumber(amount, { address: assetId } as Asset);
-      if (fiat) {
-        return acc.add(fiat);
-      }
-      return acc;
-    }, this.Zero);
-  }
-
-  get totalBridgeVolume(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.bridgeVolume);
-  }
-
-  get xorBurned(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.burnData ?? this.Zero);
-  }
-
-  get xorBurnedFiat(): string {
-    if (!this.burnData) return ZeroStringValue;
-    return this.getFiatAmountByFPNumber(this.burnData) || ZeroStringValue;
-  }
-
-  private get totalOutgoingBridgeTxs(): number {
-    return this.bridgeData.filter(({ type }) => type === 'outgoing').length;
-  }
-
-  get totalBridgeTxs(): number {
-    return this.bridgeData.length;
-  }
-
-  get totalPoolTxs(): number {
-    return this.poolDepositCount + this.poolWithdrawCount;
-  }
-
-  private get totalFees(): FPNumber {
-    let fees = this.Zero;
-    if (this.totalSwapTxs && this.networkFees.Swap) {
-      fees = fees.add(this.getFPNumberFromCodec(this.networkFees.Swap).mul(this.totalSwapTxs));
-    }
-    if (this.totalOutgoingBridgeTxs && this.networkFees.EthBridgeOutgoing) {
-      fees = fees.add(this.getFPNumberFromCodec(this.networkFees.EthBridgeOutgoing).mul(this.totalOutgoingBridgeTxs));
-    }
-    if (this.poolDepositCount && this.networkFees.AddLiquidity) {
-      fees = fees.add(this.getFPNumberFromCodec(this.networkFees.AddLiquidity).mul(this.poolDepositCount));
-    }
-    if (this.poolWithdrawCount && this.networkFees.RemoveLiquidity) {
-      fees = fees.add(this.getFPNumberFromCodec(this.networkFees.RemoveLiquidity).mul(this.poolWithdrawCount));
-    }
-    return fees;
-  }
-
-  get feesSpent(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.totalFees);
-  }
-
-  get feesSpentFiat(): string {
-    return this.getFiatAmountByFPNumber(this.totalFees) || ZeroStringValue;
-  }
-
-  get totalReferralRewards(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.referralRewards?.rewards ?? this.Zero);
-  }
-
-  get totalReferralRewardsFiat(): string {
-    if (!this.referralRewards?.rewards) return ZeroStringValue;
-
-    return this.getFiatAmountByFPNumber(this.referralRewards.rewards) || ZeroStringValue;
-  }
-
-  private async initData(): Promise<void> {
-    if (this.isLoggedIn) {
-      // Referral rewards
-      await this.getAccountReferralRewards();
-      const account = this.account.address;
-      const end = this.blockNumber;
-      if (!(account && end)) return;
-      // Burned XOR
-      const burnData = await fetchBurnXorData(0, end, account);
-      this.burnData = burnData.reduce((acc, { amount }) => acc.add(amount), this.Zero);
-      // Bridge data
-      this.bridgeData = await fetchBridgeData(0, end, account);
-      // Swap, pool deposit and withdraw txs count
-      this.totalSwapTxs = await fetchCount(0, end, account, CountType.Swap);
-      this.poolDepositCount = await fetchCount(0, end, account, CountType.PoolDeposit);
-      this.poolWithdrawCount = await fetchCount(0, end, account, CountType.PoolWithdraw);
-    }
-  }
-
-  created(): void {
-    this.withApi(async () => {
-      await this.initData();
-    });
-  }
-}
+  await withLoading(initData);
+});
 </script>
 
 <style lang="scss">

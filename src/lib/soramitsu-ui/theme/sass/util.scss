@@ -1,0 +1,121 @@
+@use 'sass:string';
+@use 'sass:map';
+@use 'sass:list';
+@use 'sass:meta';
+
+@function str-replace($source, $target, $replacement) {
+  $idx: string.index($source, $target);
+
+  @while $idx {
+    $source: string.slice($source, 0, $idx - 1) +
+      $replacement +
+      string.slice($source, $idx + string.length($replacement), -1);
+
+    $idx: string.index($source, $target);
+  }
+
+  @return $source;
+}
+
+@function give-names-to-tokens($map, $prefix) {
+  $acc: ();
+  @each $key in map.keys($map) {
+    $var-name: $prefix + str-replace($key, '.', '_');
+    $var-name: string.unquote($var-name);
+    $acc: map.set($acc, $key, $var-name);
+  }
+  @return $acc;
+}
+
+@function tree-flatten($tree) {
+  $acc: ();
+  $acc: flat-walk($acc, $tree, '');
+  @return $acc;
+}
+
+@function flat-walk($acc, $node, $current-path) {
+  @each $key, $value in $node {
+    $path: null;
+    @if $current-path == '' {
+      $path: $key;
+    } @else {
+      $path: $current-path + '.' + $key;
+    }
+
+    $ty: meta.type-of($value);
+    @if $ty == 'map' {
+      // go deeper
+      $acc: flat-walk($acc, $value, $path);
+    } @else {
+      // leaf found
+      $acc: map.set($acc, $path, $value);
+    }
+  }
+
+  @return $acc;
+}
+
+@function lists-diff($a, $b) {
+  $diff: ();
+
+  @each $item in $a {
+    @if list.index($b, $item) == null {
+      // @debug 'excess', $item;
+      $diff: list.append($diff, $item);
+    }
+  }
+
+  @return $diff;
+}
+
+@mixin eval-tokens($compiled, $values, $partial: false) {
+  $values-flatten: tree-flatten($values);
+
+  $compiled-keys: map.keys($compiled);
+  $given-keys: map.keys($values-flatten);
+
+  // check that there are no excessive tokens
+  $excessive: lists-diff($given-keys, $compiled-keys);
+
+  @if list.length($excessive) > 0 {
+    @error "Provided tokens data is invalid - there are some excessive keys: #{$excessive}";
+  }
+
+  @if not $partial {
+    // check that all tokens are presented
+    $missing: lists-diff($compiled-keys, $given-keys);
+    @if list.length($missing) > 0 {
+      @error "Provided tokens data is incomplete. Missing keys: #{$missing}";
+    }
+  }
+
+  // ok, let's compile CSS!
+
+  @each $id, $value in $values-flatten {
+    $var-name: map.get($compiled, $id);
+
+    #{$var-name}: $value;
+  }
+}
+
+@mixin typography-factory($size, $weight: 400, $height: 130%, $spacing: 0) {
+  font: {
+    family: Sora;
+    size: $size;
+    weight: $weight;
+  }
+  line-height: $height;
+  letter-spacing: $spacing;
+}
+
+@function map-filter-non-null-values($map) {
+  $acc: ();
+
+  @each $key, $value in $map {
+    @if $value == null {
+      $acc: map.set($acc, $key, $value);
+    }
+  }
+
+  @return $acc;
+}

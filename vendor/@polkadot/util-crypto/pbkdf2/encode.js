@@ -1,0 +1,23 @@
+import { pbkdf2 as pbkdf2Js } from '@noble/hashes/pbkdf2';
+import { sha512 } from '@noble/hashes/sha512';
+import { hasBigInt, u8aToU8a } from '@polkadot/util';
+import { isReady, pbkdf2 } from '@polkadot/wasm-crypto';
+import { randomAsU8a } from '../random/asU8a.js';
+export function pbkdf2Encode(passphrase, salt = randomAsU8a(), rounds = 210000, onlyJs) {
+  // When using the JS implementation (pbkdf2Js), large iteration counts can
+  // cause excessive computation time or memory usage. In that case, we cap
+  // the number of rounds to 2048 to ensure reliable performance.
+  if (onlyJs && rounds > 2048) {
+    rounds = 2048;
+  }
+  const u8aPass = u8aToU8a(passphrase);
+  const u8aSalt = u8aToU8a(salt);
+  return {
+    password:
+      !hasBigInt || (!onlyJs && isReady())
+        ? pbkdf2(u8aPass, u8aSalt, rounds)
+        : pbkdf2Js(sha512, u8aPass, u8aSalt, { c: rounds, dkLen: 64 }),
+    rounds,
+    salt,
+  };
+}

@@ -1,7 +1,8 @@
+import { existsSync } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 
-import vue from '@vitejs/plugin-vue2';
 import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 import dynamicImport from 'vite-plugin-dynamic-import';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import svgLoader from 'vite-svg-loader';
@@ -10,92 +11,191 @@ const isTest = !!process.env.VITEST;
 
 const stylesPath = fileURLToPath(new URL('./src/styles', import.meta.url));
 const nodeModulesPath = fileURLToPath(new URL('./node_modules', import.meta.url));
+const soramitsuUiLibPath = fileURLToPath(new URL('./src/lib/soramitsu-ui/lib.ts', import.meta.url));
+const soramitsuUiRootPath = fileURLToPath(new URL('./src/lib/soramitsu-ui', import.meta.url));
+const soramitsuUiStylesPath = fileURLToPath(new URL('./src/lib/soramitsu-ui/theme/style.css', import.meta.url));
+const soramitsuThemeRootPath = fileURLToPath(new URL('./src/lib/soramitsu-ui/theme', import.meta.url));
+const soramitsuUiStylesEntry = isTest
+  ? fileURLToPath(new URL('./tests/stubs/empty.css', import.meta.url))
+  : soramitsuUiStylesPath;
+const soramitsuIconsRootPath = fileURLToPath(new URL('./src/lib/soramitsu-ui/icons', import.meta.url));
+const soraSdkSrcPath = fileURLToPath(new URL('./src/lib/substrate/sdk', import.meta.url));
+const soraMathSrcPath = fileURLToPath(new URL('./src/lib/substrate/math', import.meta.url));
+const soraLiquidityProxySrcPath = fileURLToPath(new URL('./src/lib/substrate/liquidity-proxy', import.meta.url));
+const soraApiSrcPath = fileURLToPath(new URL('./src/lib/substrate/api', import.meta.url));
+const soraConnectionSrcPath = fileURLToPath(new URL('./src/lib/substrate/connection', import.meta.url));
+const soraTypesSrcPath = fileURLToPath(new URL('./src/lib/substrate/types', import.meta.url));
+const soraTypeDefsSrcPath = fileURLToPath(new URL('./src/lib/substrate/type-definitions', import.meta.url));
+const soraneoWalletSrcPath = fileURLToPath(new URL('./src/lib/soraneo-wallet/src', import.meta.url));
+const soraneoWalletLibPath = fileURLToPath(new URL('./src/lib/soraneo-wallet/lib', import.meta.url));
+const soraneoWalletCssPath = fileURLToPath(
+  new URL('./src/lib/soraneo-wallet/lib/soraneo-wallet-web.css', import.meta.url)
+);
+const soraneoWalletCssFallbackPath = fileURLToPath(
+  new URL('./src/styles/soraneo-wallet-web-fallback.css', import.meta.url)
+);
+const soraneoWalletCssEntry = existsSync(soraneoWalletCssPath) ? soraneoWalletCssPath : soraneoWalletCssFallbackPath;
+const walletShimPath = fileURLToPath(new URL('./src/shims/wallet.ts', import.meta.url));
 
-const muteSassWarnings = {
-  name: 'mute-sass-legacy-warnings',
-  configResolved() {
-    const originalWrite = process.stderr.write.bind(process.stderr);
-    process.stderr.write = (chunk, encoding, cb) => {
-      const message = typeof chunk === 'string' ? chunk : chunk.toString();
-      if (message.includes('legacy-js-api')) {
-        if (typeof cb === 'function') cb();
-        return true;
-      }
-      return originalWrite(chunk, encoding, cb);
-    };
+const alias = [
+  { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
+  { find: '~', replacement: nodeModulesPath },
+  { find: '@tests', replacement: fileURLToPath(new URL('./tests', import.meta.url)) },
+  { find: '@soramitsu-ui/theme/sass', replacement: `${soramitsuThemeRootPath}/sass/lib.scss` },
+  { find: '@soramitsu-ui/theme/fonts/Sora', replacement: `${soramitsuThemeRootPath}/fonts/Sora/index.css` },
+  { find: /^@soramitsu-ui\/theme\/(.*)$/, replacement: `${soramitsuThemeRootPath}/$1` },
+  { find: '@soramitsu-ui/theme/index.ts', replacement: `${soramitsuThemeRootPath}/index.ts` },
+  { find: '@soramitsu-ui/theme', replacement: `${soramitsuThemeRootPath}/_index.scss` },
+  { find: '@soramitsu-ui/ui/styles', replacement: soramitsuUiStylesEntry },
+  { find: /^@soramitsu-ui\/icons\/(.*)$/, replacement: `${soramitsuIconsRootPath}/$1` },
+  { find: '@soramitsu-ui/icons', replacement: soramitsuIconsRootPath },
+  { find: /^@soramitsu-ui\/ui\/(.*)$/, replacement: `${soramitsuUiRootPath}/$1` },
+  { find: '@soramitsu-ui/ui', replacement: soramitsuUiLibPath },
+  { find: 'virtual:windi.css', replacement: soramitsuUiStylesEntry },
+  { find: 'stream/web', replacement: 'web-streams-polyfill/dist/ponyfill.es2018.js' },
+  { find: 'node:stream/web', replacement: 'web-streams-polyfill/dist/ponyfill.es2018.js' },
+  {
+    find: 'vite-plugin-node-polyfills/shims/global',
+    replacement: fileURLToPath(
+      new URL('./node_modules/vite-plugin-node-polyfills/shims/global/dist/index.js', import.meta.url)
+    ),
   },
-};
+  {
+    find: 'vite-plugin-node-polyfills/shims/buffer',
+    replacement: fileURLToPath(
+      new URL('./node_modules/vite-plugin-node-polyfills/shims/buffer/dist/index.js', import.meta.url)
+    ),
+  },
+  {
+    find: 'vite-plugin-node-polyfills/shims/process',
+    replacement: fileURLToPath(
+      new URL('./node_modules/vite-plugin-node-polyfills/shims/process/dist/index.js', import.meta.url)
+    ),
+  },
+  { find: '@sora-substrate/sdk/build/index.js', replacement: `${soraSdkSrcPath}/index.ts` },
+  { find: '@sora-substrate/sdk/build/index', replacement: `${soraSdkSrcPath}/index.ts` },
+  { find: '@sora-substrate/sdk/build', replacement: soraSdkSrcPath },
+  { find: '@sora-substrate/sdk', replacement: `${soraSdkSrcPath}/index.ts` },
+  { find: '@sora-substrate/math/', replacement: `${soraMathSrcPath}/` },
+  { find: '@sora-substrate/math', replacement: `${soraMathSrcPath}/index.ts` },
+  { find: '@sora-substrate/liquidity-proxy/build', replacement: soraLiquidityProxySrcPath },
+  { find: '@sora-substrate/liquidity-proxy', replacement: `${soraLiquidityProxySrcPath}/index.ts` },
+  { find: '@sora-substrate/api', replacement: `${soraApiSrcPath}/index.ts` },
+  { find: '@sora-substrate/api/', replacement: `${soraApiSrcPath}/` },
+  { find: '@sora-substrate/connection', replacement: `${soraConnectionSrcPath}/index.ts` },
+  { find: '@sora-substrate/connection/', replacement: `${soraConnectionSrcPath}/` },
+  { find: '@sora-substrate/types/build', replacement: soraTypesSrcPath },
+  { find: '@sora-substrate/types', replacement: `${soraTypesSrcPath}/index.ts` },
+  { find: '@sora-substrate/type-definitions/build', replacement: soraTypeDefsSrcPath },
+  { find: '@sora-substrate/type-definitions', replacement: `${soraTypeDefsSrcPath}/index.ts` },
+  { find: '@wallet/lib/soraneo-wallet-web.css', replacement: soraneoWalletCssEntry },
+  { find: '@wallet/lib', replacement: soraneoWalletLibPath },
+  { find: '@wallet/core', replacement: `${soraneoWalletSrcPath}/core.ts` },
+  { find: '@wallet/internal', replacement: `${soraneoWalletSrcPath}/index.ts` },
+  { find: '@wallet/vuex', replacement: `${soraneoWalletSrcPath}/vuex.ts` },
+  { find: '@wallet/src', replacement: soraneoWalletSrcPath },
+  { find: '@wallet', replacement: walletShimPath },
+  {
+    find: '@vueuse/core',
+    replacement: fileURLToPath(new URL('./vendor/@vueuse/core', import.meta.url)),
+  },
+  {
+    find: '@vueuse/math',
+    replacement: fileURLToPath(new URL('./vendor/@vueuse/math', import.meta.url)),
+  },
+  {
+    find: '@vueuse/shared',
+    replacement: fileURLToPath(new URL('./vendor/@vueuse/shared', import.meta.url)),
+  },
+  {
+    find: '@vueuse/metadata',
+    replacement: fileURLToPath(new URL('./vendor/@vueuse/metadata', import.meta.url)),
+  },
+  {
+    find: /^focus-trap$/,
+    replacement: fileURLToPath(new URL('./vendor/focus-trap', import.meta.url)),
+  },
+  {
+    find: '@popperjs/core',
+    replacement: fileURLToPath(new URL('./vendor/@popperjs/core/dist/esm/index.js', import.meta.url)),
+  },
+  {
+    find: 'lodash-es',
+    replacement: fileURLToPath(new URL('./vendor/lodash-es', import.meta.url)),
+  },
+  {
+    find: /^tabbable$/,
+    replacement: fileURLToPath(new URL('./vendor/tabbable', import.meta.url)),
+  },
+  {
+    find: '@polkadot/vue-identicon',
+    replacement: fileURLToPath(new URL('./vendor/@polkadot/vue-identicon', import.meta.url)),
+  },
+  {
+    find: /^maska\/vue$/,
+    replacement: fileURLToPath(new URL('./vendor/maska/dist/vue.mjs', import.meta.url)),
+  },
+  {
+    find: /^maska$/,
+    replacement: fileURLToPath(new URL('./vendor/maska/dist/maska.mjs', import.meta.url)),
+  },
+  {
+    find: 'vue-virtual-scroller',
+    replacement: fileURLToPath(new URL('./vendor/vue-virtual-scroller', import.meta.url)),
+  },
+  {
+    find: 'vue-resize',
+    replacement: fileURLToPath(new URL('./vendor/vue-resize/dist/vue-resize.esm.js', import.meta.url)),
+  },
+  {
+    find: 'vue-class-component',
+    replacement: fileURLToPath(new URL('./src/stubs/vue-class-component.ts', import.meta.url)),
+  },
+  {
+    find: 'vue-property-decorator',
+    replacement: fileURLToPath(new URL('./src/stubs/vue-property-decorator.ts', import.meta.url)),
+  },
+];
+
+if (isTest) {
+  const walletStubRoot = fileURLToPath(new URL('./tests/stubs/@wallet', import.meta.url));
+  const emptyCssPath = fileURLToPath(new URL('./tests/stubs/empty.css', import.meta.url));
+  const soramitsuUiStubPath = fileURLToPath(new URL('./tests/stubs/soramitsu-ui/index.ts', import.meta.url));
+  alias.unshift(
+    { find: /^@wallet\/lib\/soraneo-wallet-web\.css$/, replacement: emptyCssPath },
+    { find: /^@wallet\/(.*)$/, replacement: `${walletStubRoot}/$1` },
+    { find: '@wallet', replacement: walletStubRoot },
+    { find: /^@soramitsu-ui\/ui(\/.*)?$/, replacement: soramitsuUiStubPath }
+  );
+}
+
+if (isTest) {
+  const ipfsStubPath = fileURLToPath(new URL('./tests/stubs/ipfs-unixfs-importer', import.meta.url));
+  const nftStorageStubPath = fileURLToPath(new URL('./tests/stubs/nft-storage.ts', import.meta.url));
+  const stubsPath = fileURLToPath(new URL('./tests/stubs', import.meta.url));
+
+  alias.unshift(
+    { find: '@stubs', replacement: stubsPath },
+    { find: 'nft.storage', replacement: nftStorageStubPath },
+    { find: /^ipfs-unixfs-importer/, replacement: ipfsStubPath }
+  );
+}
 
 export default defineConfig({
-  plugins: [muteSassWarnings, vue(), dynamicImport(), svgLoader(), nodePolyfills()],
+  base: './',
+  plugins: [vue(), dynamicImport(), svgLoader(), nodePolyfills()],
   resolve: {
-    alias: [
-      { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
-      { find: '~', replacement: nodeModulesPath },
-      {
-        find: /^vue-property-decorator$/,
-        replacement: fileURLToPath(new URL('./src/compat/vue-property-decorator.ts', import.meta.url)),
-      },
-      { find: 'unfetch', replacement: fileURLToPath(new URL('./src/compat/unfetch.ts', import.meta.url)) },
-      { find: 'stream/web', replacement: 'web-streams-polyfill/dist/ponyfill.es2018.js' },
-      { find: 'node:stream/web', replacement: 'web-streams-polyfill/dist/ponyfill.es2018.js' },
-      ...(isTest
-        ? [
-            {
-              find: '@sora-substrate/sdk',
-              replacement: fileURLToPath(new URL('./tests/stubs/sora-sdk.ts', import.meta.url)),
-            },
-            {
-              find: '@sora-substrate/sdk/build/assets/consts',
-              replacement: fileURLToPath(new URL('./tests/stubs/sora-consts.ts', import.meta.url)),
-            },
-            {
-              find: '@sora-substrate/sdk/build/assets',
-              replacement: fileURLToPath(new URL('./tests/stubs/sora-assets.ts', import.meta.url)),
-            },
-            {
-              find: '@sora-substrate/sdk/build/bridgeProxy/consts',
-              replacement: fileURLToPath(new URL('./tests/stubs/empty.ts', import.meta.url)),
-            },
-            {
-              find: '@sora-substrate/sdk/build/bridgeProxy/types',
-              replacement: fileURLToPath(new URL('./tests/stubs/empty.ts', import.meta.url)),
-            },
-            {
-              find: '@sora-substrate/sdk/build/bridgeProxy/sub/consts',
-              replacement: fileURLToPath(new URL('./tests/stubs/empty.ts', import.meta.url)),
-            },
-            {
-              find: '@sora-substrate/sdk/build/bridgeProxy/sub/types',
-              replacement: fileURLToPath(new URL('./tests/stubs/empty.ts', import.meta.url)),
-            },
-            {
-              find: '@sora-substrate/sdk/build/bridgeProxy/eth/types',
-              replacement: fileURLToPath(new URL('./tests/stubs/empty.ts', import.meta.url)),
-            },
-            {
-              find: '@sora-substrate/sdk/build/bridgeProxy/evm/types',
-              replacement: fileURLToPath(new URL('./tests/stubs/empty.ts', import.meta.url)),
-            },
-            {
-              find: '@sora-substrate/sdk/build/kensetsu/consts',
-              replacement: fileURLToPath(new URL('./tests/stubs/empty.ts', import.meta.url)),
-            },
-          ]
-        : []),
-    ],
+    alias,
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
   },
   css: {
     preprocessorOptions: {
       scss: {
-        includePaths: [stylesPath, nodeModulesPath],
+        api: 'modern',
+        includePaths: [stylesPath, nodeModulesPath, soramitsuThemeRootPath],
         quietDeps: true,
         additionalData: `
-          @use "@/styles/breakpoints" as *;
-          @use "@/styles/layout" as *;
-          @use "@/styles/mixins" as *;
-          @use "@/styles/typography" as *;
+          @use "@/lib/soraneo-wallet/src/styles/global-imports.scss" as *;
         `,
       },
     },
@@ -109,6 +209,9 @@ export default defineConfig({
     port: 8888,
     strictPort: true,
   },
+  ssr: {
+    noExternal: isTest ? ['@soramitsu-ui/ui', '@wallet'] : undefined,
+  },
   build: {
     chunkSizeWarningLimit: 6000,
     rollupOptions: {
@@ -117,7 +220,8 @@ export default defineConfig({
         if (
           message.includes('/*#__PURE__*/') ||
           warning.code === 'EVAL' ||
-          message.includes('dynamic import will not move module into another chunk')
+          message.includes('dynamic import will not move module into another chunk') ||
+          message.includes('"SignalArgs" is not exported by "node_modules/@interactjs/core/scope.js"')
         ) {
           return;
         }
@@ -126,12 +230,10 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
-          if (id.includes('vue')) return 'vendor-vue';
-          if (id.includes('@soramitsu/soraneo-wallet-web')) return 'soraneo-wallet';
-          if (id.includes('@walletconnect')) return 'walletconnect';
+          if (id.includes('@wallet') || id.includes('@walletconnect')) return 'wallet-stack';
           if (id.includes('@polkadot')) return 'polkadot';
-          if (id.includes('echarts')) return 'echarts';
-          if (id.includes('lodash')) return 'lodash';
+          if (id.includes('node_modules/echarts')) return 'echarts';
+          if (id.includes('node_modules/lodash')) return 'lodash';
         },
       },
     },

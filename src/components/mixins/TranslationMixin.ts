@@ -1,8 +1,8 @@
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { mixins as walletMixins } from '@wallet';
+import { Options, mixins as vueMixins } from 'vue-property-decorator';
 
 import { TranslationConsts } from '@/consts';
-import { state } from '@/store/decorators';
+import store from '@/store';
 
 const OrdinalRules = {
   en: (v) => {
@@ -20,13 +20,21 @@ const OrdinalRules = {
   },
 } as const;
 
-@Component
-export default class TranslationMixin extends Mixins(mixins.TranslationMixin) {
-  @state.settings.language language!: string;
+@Options({})
+export default class TranslationMixin extends vueMixins(walletMixins.TranslationMixin) {
+  get language(): string {
+    return (
+      (store.state?.settings as Record<string, any> | undefined)?.language ??
+      (store.getters?.settings as Record<string, any> | undefined)?.language ??
+      'en'
+    );
+  }
 
   readonly TranslationConsts = TranslationConsts;
 
   tOrdinal(n) {
-    return OrdinalRules[this.$i18n.locale]?.(n) ?? n;
+    const locale = this.$i18n?.locale ?? this.language;
+    const formatter = OrdinalRules[locale as keyof typeof OrdinalRules];
+    return formatter ? formatter(n) : n;
   }
 }

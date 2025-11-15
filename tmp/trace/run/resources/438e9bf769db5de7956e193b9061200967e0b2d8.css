@@ -1,0 +1,13 @@
+.browser-notification-dialog[data-v-019207a4] {
+  display: flex;
+  flex-direction: column;
+}
+.browser-notification-dialog__info[data-v-019207a4] {
+  font-size: 15px;
+  font-weight: 300;
+  margin: 16px 32px;
+  text-align: center;
+}
+.browser-notification-dialog__btn[data-v-019207a4] {
+  margin-bottom: 16px;
+}

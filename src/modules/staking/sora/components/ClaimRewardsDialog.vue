@@ -1,16 +1,16 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="title">
+  <DialogBase v-model:visible="isVisible" :title="title">
     <div class="claim-rewards-dialog">
       <div class="reward">
-        <formatted-amount-with-fiat-value
+        <FormattedAmountWithFiatValue
           class="reward-amount"
           symbol-as-decimal
           value-can-be-hidden
           :value="rewardedFundsFormatted"
           :fiat-value="rewardedFundsFiat"
-        />
+        ></FormattedAmountWithFiatValue>
         <template v-if="rewardAsset">
-          <token-logo class="reward-logo" :token-symbol="rewardAsset.symbol" />
+          <TokenLogo class="reward-logo" :token-symbol="rewardAsset.symbol"></TokenLogo>
           <span class="reward-symbol">
             {{ rewardAsset.symbol }}
           </span>
@@ -25,31 +25,29 @@
       ></s-input>
 
       <div class="info">
-        <info-line
+        <InfoLine
           :label="t('networkFeeText')"
           :label-tooltip="t('networkFeeTooltipText')"
           :value="networkFeeFormatted"
           :asset-symbol="xor?.symbol"
-          :fiat-value="getFiatAmountByCodecString(networkFee)"
+          :fiat-value="networkFeeFiat"
           is-formatted
-        />
+        ></InfoLine>
       </div>
 
       <s-button
         v-if="xor && rewardAsset"
         type="primary"
         class="s-typography-button--large action-button"
-        :loading="parentLoading || loading"
-        :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
+        :loading="buttonLoading"
+        :disabled="confirmDisabled"
         @click="handleConfirm"
       >
-        <template v-if="isInsufficientXorForFee || isInsufficientBalance">
-          <template v-if="isInsufficientBalance">
-            {{ t('insufficientBalanceText', { tokenSymbol: rewardAsset.symbol }) }}
-          </template>
-          <template v-if="isInsufficientXorForFee">
-            {{ t('insufficientBalanceText', { tokenSymbol: xor.symbol }) }}
-          </template>
+        <template v-if="isInsufficientBalance">
+          {{ t('insufficientBalanceText', { tokenSymbol: rewardAsset.symbol }) }}
+        </template>
+        <template v-else-if="isInsufficientXorForFee">
+          {{ t('insufficientBalanceText', { tokenSymbol: xor.symbol }) }}
         </template>
         <template v-else-if="valueFundsEmpty">
           {{ t('buttons.enterAmount') }}
@@ -59,134 +57,158 @@
         </template>
       </s-button>
       <div v-if="pendingRewards" v-button class="check-pending-rewards" @click="checkPendingRewards">
-        {{ t('soraStaking.claimRewardsDialog.checkRewards') }} ({{ pendingRewards.length ?? 0 }})
+        {{ t('soraStaking.claimRewardsDialog.checkRewards') }} ({{ pendingRewards?.length ?? 0 }})
       </div>
     </div>
-  </dialog-base>
+  </DialogBase>
 </template>
 
-<script lang="ts">
-import { FPNumber } from '@sora-substrate/sdk';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import StakingMixin from '../mixins/StakingMixin';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTransaction } from '@/composables/useTransaction';
+import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 
-import type { CodecString } from '@sora-substrate/sdk';
+const props = defineProps<{
+  visible: boolean;
+  parentLoading?: boolean;
+}>();
 
-@Component({
-  components: {
-    FormattedAmount: components.FormattedAmount,
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    TokenLogo: components.TokenLogo,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-  },
-})
-export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.TransactionMixin) {
-  @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+  (event: 'show-rewards'): void;
+}>();
 
-  rewardsDestination = '';
-  payoutNetworkFee: string | null = null;
+const { t } = useI18n();
+const { getFiatAmountByCodecString } = useFormattedAmount();
+const { isVisible, closeDialog } = useDialogModel(props, emit);
 
-  @Watch('visible', { immediate: true })
-  @Watch('payeeAddress', { immediate: true })
-  setRewardsDestination() {
-    if (this.visible) {
-      this.rewardsDestination = this.payeeAddress;
+const {
+  payee,
+  controller,
+  stash,
+  pendingRewards,
+  rewardedFunds,
+  rewardedFundsFiat,
+  rewardedFundsFormatted,
+  rewardAsset,
+  xor,
+  isInsufficientXorForFee,
+  payout,
+  getPayoutNetworkFee,
+  getPendingRewards,
+} = useSoraStaking();
+
+const { loading, withNotifications } = useTransaction({ parentLoading: () => Boolean(props.parentLoading) });
+
+const DialogBase = components.DialogBase;
+const InfoLine = components.InfoLine;
+const TokenLogo = components.TokenLogo;
+const FormattedAmountWithFiatValue = components.FormattedAmountWithFiatValue;
+
+const rewardsDestination = ref('');
+const payoutNetworkFee = ref<string | null>(null);
+
+const payeeAddress = computed(() => {
+  switch (payee.value) {
+    case 'Stash':
+      return stash.value ?? '';
+    case 'Controller':
+      return controller.value ?? '';
+    default:
+      return payee.value ?? '';
+  }
+});
+
+const title = computed(() => t('soraStaking.claimRewardsDialog.title'));
+
+const payouts = computed(() =>
+  (pendingRewards.value ?? []).map((reward) => ({
+    era: reward.era,
+    validators: reward.validators.map((validator) => validator.address),
+  }))
+);
+
+const payeeOverride = computed(() =>
+  rewardsDestination.value && rewardsDestination.value !== payeeAddress.value ? rewardsDestination.value : undefined
+);
+
+const networkFee = computed(() => payoutNetworkFee.value ?? '0');
+const networkFeeFormatted = computed(() => networkFee.value);
+const networkFeeFiat = computed(() =>
+  xor.value ? getFiatAmountByCodecString(networkFee.value as any, xor.value) : null
+);
+
+const valueFundsEmpty = computed(() => rewardedFunds.value.isZero());
+const isInsufficientBalance = computed(() => false);
+const confirmDisabled = computed(
+  () => isInsufficientXorForFee.value || valueFundsEmpty.value || isInsufficientBalance.value
+);
+const buttonLoading = computed(() => Boolean(props.parentLoading) || loading.value);
+
+const syncRewardsDestination = () => {
+  if (isVisible.value) {
+    rewardsDestination.value = payeeAddress.value;
+  }
+};
+
+watch([isVisible, payeeAddress], syncRewardsDestination, { immediate: true });
+
+let feeRequestId = 0;
+const updatePayoutFee = async () => {
+  if (!isVisible.value) return;
+
+  if (!payouts.value.length) {
+    payoutNetworkFee.value = '0';
+    return;
+  }
+
+  const currentId = ++feeRequestId;
+  try {
+    const fee = await getPayoutNetworkFee({
+      payouts: payouts.value,
+      payee: payeeOverride.value,
+    });
+    if (currentId === feeRequestId) {
+      payoutNetworkFee.value = fee;
+    }
+  } catch (error) {
+    console.error('Failed to fetch payout fee', error);
+    if (currentId === feeRequestId) {
+      payoutNetworkFee.value = null;
     }
   }
+};
 
-  get payeeAddress() {
-    switch (this.payee) {
-      case 'Stash':
-        return this.stash;
-      case 'Controller':
-        return this.controller;
-      default:
-        return this.payee;
-    }
-  }
+watch([payouts, payeeOverride, isVisible], updatePayoutFee, { immediate: true });
 
-  @Watch('pendingRewards', { immediate: true })
-  async handlePendingRewardsChange() {
-    this.payoutNetworkFee = await this.getPayoutNetworkFee({
-      payouts: this.pendingRewards
-        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
-        : [],
-      payee: this.rewardsDestination !== this.payeeAddress ? this.rewardsDestination : undefined,
+const handleConfirm = async () => {
+  if (confirmDisabled.value) return;
+
+  await withNotifications(async () => {
+    await payout({
+      payouts: payouts.value,
+      payee: payeeOverride.value,
     });
-  }
 
-  get networkFee() {
-    return this.payoutNetworkFee ?? '0';
-  }
+    await getPendingRewards();
+    closeDialog();
+  });
+};
 
-  get title(): string {
-    return this.t('soraStaking.claimRewardsDialog.title');
-  }
+const checkPendingRewards = () => emit('show-rewards');
 
-  get inputTitle(): string {
-    return this.title;
-  }
-
-  get rewardedFundsCodec(): CodecString {
-    return this.rewardedFunds.toCodecString();
-  }
-
-  get part(): FPNumber {
-    return this.rewardedFunds.div(FPNumber.HUNDRED);
-  }
-
-  get valueFundsEmpty(): boolean {
-    return this.rewardedFunds.isZero();
-  }
-
-  get stakingBalance(): FPNumber {
-    return this.availableFunds;
-  }
-
-  get stakingBalanceCodec(): CodecString {
-    return this.stakingBalance.toCodecString();
-  }
-
-  get isInsufficientBalance(): boolean {
-    return FPNumber.lt(this.rewardedFunds, this.rewardedFunds);
-  }
-
-  get selectedValidatorsFormatted(): string {
-    return this.t('soraStaking.selectedValidators', {
-      count: this.selectedValidators.length,
-      max: this.validators.length,
-    });
-  }
-
-  get payouts() {
-    if (!this.pendingRewards) return [];
-
-    return this.pendingRewards.map((r) => ({
-      era: r.era,
-      validators: r.validators.map((v) => v.address),
-    }));
-  }
-
-  async handleConfirm(): Promise<void> {
-    await this.withNotifications(async () => {
-      await this.payout({
-        payouts: this.payouts,
-        payee: this.rewardsDestination !== this.payeeAddress ? this.rewardsDestination : undefined,
-      });
-
-      await this.getPendingRewards();
-
-      this.closeDialog();
-    });
-  }
-
-  checkPendingRewards(): void {
-    this.$emit('show-rewards');
-  }
-}
+defineExpose({
+  rewardsDestination,
+  payoutNetworkFee,
+  handleConfirm,
+  checkPendingRewards,
+});
 </script>
 
 <style lang="scss">
@@ -198,66 +220,51 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   .reward {
     .formatted-amount {
       width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
-    .formatted-amount--fiat-value {
-      font-size: 14px !important;
-      font-weight: 600;
+
+    .formatted-amount__value {
+      font-size: 32px;
+      line-height: 36px;
+      letter-spacing: -2px;
+    }
+
+    .formatted-amount__fiat {
+      font-size: var(--s-font-size-mini);
+      font-weight: 300;
+      line-height: normal;
+      letter-spacing: -0.28px;
+      color: var(--s-color-text-secondary);
     }
   }
-}
-</style>
+  .reward {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-<style lang="scss" scoped>
-.claim-rewards-dialog {
-  @include full-width-button('action-button');
+    .reward-symbol {
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-left: var(--s-size-mini);
+    }
 
-  & > *:not(:first-child) {
-    margin-top: $inner-spacing-medium;
-  }
-}
-
-.reward {
-  display: flex;
-  width: 100%;
-  font-size: 32px;
-  font-weight: 700;
-
-  &-amount {
-    flex: 1;
-    flex-direction: column;
-    align-items: flex-start !important;
-    text-align: left !important;
-    overflow: hidden;
+    .reward-logo {
+      margin-left: var(--s-size-mini);
+    }
   }
 
-  &-logo {
-    margin-left: auto;
+  .action-button {
+    width: 100%;
+    margin-top: 24px;
   }
 
-  &-symbol {
-    margin-left: 15px;
+  .check-pending-rewards {
+    margin-top: 16px;
+    color: var(--s-color-theme-accent);
+    text-transform: uppercase;
+    text-align: center;
+    font-size: var(--s-font-size-extra-small);
+    font-weight: 300;
   }
-}
-
-.el-form--actions {
-  @include buttons;
-}
-
-.info {
-  margin-top: 16px;
-}
-
-.check-pending-rewards {
-  color: var(--s-color-theme-accent);
-  text-align: center;
-  font-size: 14px;
-  line-height: 20px;
-  font-style: normal;
-  font-weight: 700;
-  text-transform: uppercase;
-  cursor: pointer;
 }
 </style>

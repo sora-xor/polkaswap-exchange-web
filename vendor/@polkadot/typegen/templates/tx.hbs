@@ -1,0 +1,30 @@
+{{> header }}
+
+// import type lookup before we augment - in some environments
+// this is required to allow for ambient/previous definitions
+import '@polkadot/api-base/types/submittable';
+
+{{{ importsAll }}}
+
+export type __AugmentedSubmittable = AugmentedSubmittable<() => unknown>;
+export type __SubmittableExtrinsic<ApiType extends ApiTypes> = SubmittableExtrinsic<ApiType>;
+export type __SubmittableExtrinsicFunction<ApiType extends ApiTypes> = SubmittableExtrinsicFunction<ApiType>;
+
+declare module '@polkadot/api-base/types/submittable' {
+  interface AugmentedSubmittables<ApiType extends ApiTypes> {
+    {{#each modules}}
+    {{{name}}}: {
+      {{#each items}}
+      {{> docs}}
+      {{{name}}}: AugmentedSubmittable<({{{params}}}) => SubmittableExtrinsic<ApiType>, [{{{args}}}]>;
+      {{/each}}
+      {{#unless @root.isStrict}}
+      /**
+       * Generic tx
+       **/
+      [key: string]: SubmittableExtrinsicFunction<ApiType>;
+      {{/unless}}
+    };
+    {{/each}}
+  } // AugmentedSubmittables
+} // declare module

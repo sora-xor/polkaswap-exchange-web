@@ -1,11 +1,11 @@
-import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Ref } from 'vue-property-decorator';
+import { mixins as walletMixins, WALLET_CONSTS } from '@wallet';
+import { Options, Ref, mixins as vueMixins } from 'vue-property-decorator';
 
-@Component
-export default class ScrollableTableMixin extends Mixins(
-  mixins.LoadingMixin,
-  mixins.PaginationSearchMixin,
-  mixins.FormattedAmountMixin
+@Options({})
+export default class ScrollableTableMixin extends vueMixins(
+  walletMixins.LoadingMixin,
+  walletMixins.PaginationSearchMixin,
+  walletMixins.FormattedAmountMixin
 ) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;

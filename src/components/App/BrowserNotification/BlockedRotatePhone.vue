@@ -1,5 +1,5 @@
 <template>
-  <dialog-base class="browser-notification" :visible.sync="isVisible">
+  <dialog-base class="browser-notification" v-model:visible="isVisible">
     <div class="browser-notification-dialog">
       <img src="@/assets/img/mobile/rotate_phone.svg?inline" alt="mobile-rotate-phone" />
       <p class="notification-title">{{ t('browserNotificationDialog.rotatetitle') }}</p>
@@ -16,25 +16,37 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useTranslation } from '@/composables/useTranslation';
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
   },
-})
-export default class AppBrowserNotifsBlockedRotatePhone extends Mixins(
-  TranslationMixin,
-  mixins.DialogMixin,
-  mixins.LoadingMixin
-) {
-  agree(): void {
-    this.closeDialog();
-  }
+});
+
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits<{
+  (e: 'update:visible', value: boolean): void;
+  (e: 'close'): void;
+}>();
+
+const { t } = useTranslation();
+const { isVisible, closeDialog } = useDialogModel(props, emit);
+const loading = ref(false);
+
+function agree(): void {
+  closeDialog();
 }
 </script>
 

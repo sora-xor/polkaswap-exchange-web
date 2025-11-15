@@ -1,7 +1,7 @@
 <template>
   <div class="task-card">
     <p class="task-card__first-trx">{{ t('points.firstSoraNetworkTransaction') }}</p>
-    <s-divider direction="vertical" />
+    <s-divider direction="vertical"></s-divider>
 
     <div class="task-card__date">
       <p>{{ t('points.dated') }}</p>
@@ -10,23 +10,25 @@
   </div>
 </template>
 
-<script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-@Component({
-  components: {
-    FormattedAmount: components.FormattedAmount,
-  },
-})
-export default class FirstTxCard extends Mixins(mixins.TranslationMixin) {
-  @Prop({ required: true, type: Number })
-  readonly date!: number;
+import { useTranslation } from '@/composables/useTranslation';
 
-  get formattedDate(): string {
-    return this.formatDate(this.date, 'L');
-  }
-}
+/**
+ * Presents the details of the user's first transaction in the points dashboard.
+ */
+defineOptions({
+  name: 'FirstTxCard',
+});
+
+const props = defineProps<{
+  date: number;
+}>();
+
+const { t, formatDate } = useTranslation();
+
+const formattedDate = computed(() => formatDate(props.date, 'L'));
 </script>
 
 <style lang="scss" scoped>

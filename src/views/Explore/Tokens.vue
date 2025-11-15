@@ -1,6 +1,6 @@
 <template>
   <div>
-    <assets-filter class="token-filter-options" />
+    <assets-filter class="token-filter-options"></assets-filter>
     <s-table
       ref="table"
       v-loading="loadingState"
@@ -22,7 +22,7 @@
             </span>
           </div>
           <div class="explore-table-item-logo">
-            <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head" />
+            <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head"></s-icon>
           </div>
           <div class="explore-table-item-info explore-table-item-info--head">
             <span class="explore-table__primary">{{ t('nameText') }}</span>
@@ -31,7 +31,7 @@
         </template>
         <template v-slot="{ $index, row }">
           <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
-          <token-logo class="explore-table-item-logo" :token-symbol="row.symbol" />
+          <token-logo class="explore-table-item-logo" :token-symbol="row.symbol"></token-logo>
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.symbol }}</div>
             <div class="explore-table__secondary explore-table__token-name">{{ row.name }}</div>
@@ -42,7 +42,7 @@
                 :name="row.name"
                 :symbol="row.symbol"
                 :address="row.address"
-              />
+              ></token-address>
             </div>
           </div>
         </template>
@@ -61,7 +61,7 @@
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.priceFormatted"
             class="explore-table-item-price"
-          />
+          ></formatted-amount>
         </template>
       </s-table-column>
 
@@ -74,7 +74,7 @@
             </sort-button>
           </template>
           <template v-slot="{ row }">
-            <price-change :value="row.priceChangeDayFP" />
+            <price-change :value="row.priceChangeDayFP"></price-change>
           </template>
         </s-table-column>
         <!-- 7D Price Change -->
@@ -85,7 +85,7 @@
             </sort-button>
           </template>
           <template v-slot="{ row }">
-            <price-change :value="row.priceChangeWeekFP" />
+            <price-change :value="row.priceChangeWeekFP"></price-change>
           </template>
         </s-table-column>
         <!-- 1D Volume -->
@@ -112,7 +112,7 @@
             <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
               <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
               <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
-                <s-icon name="info-16" size="14px" />
+                <s-icon name="info-16" size="14px"></s-icon>
               </s-tooltip>
             </sort-button>
           </template>
@@ -133,7 +133,7 @@
             <sort-button name="velocity" :sort="{ order, property }" @change-sort="changeSort">
               <span class="explore-table__primary">VC.</span>
               <s-tooltip border-radius="mini">
-                <s-icon name="info-16" size="14px" />
+                <s-icon name="info-16" size="14px"></s-icon>
                 <template #content>
                   <div>{{ t('tooltips.velocity') }}</div>
                   <br />
@@ -147,7 +147,7 @@
               :font-weight-rate="FontWeightRate.MEDIUM"
               :value="row.velocityFormatted"
               class="explore-table-item-price explore-table-item-amount"
-            />
+            ></formatted-amount>
           </template>
         </s-table-column>
       </template>
@@ -161,14 +161,14 @@
       :last-page="lastPage"
       :loading="loadingState"
       @pagination-click="handlePaginationClick"
-    />
+    ></history-pagination>
   </div>
 </template>
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, WALLET_TYPES, getAssetsSubset } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { components, WALLET_TYPES, getAssetsSubset } from '@wallet';
+import { Options, mixins as vueMixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import { Components, ZeroStringValue } from '@/consts';
@@ -198,7 +198,7 @@ type TableItem = {
   velocityFormatted?: string;
 } & Asset;
 
-@Component({
+@Options({
   components: {
     AssetsFilter: components.AssetsFilter,
     PriceChange: lazyComponent(Components.PriceChange),
@@ -209,7 +209,7 @@ type TableItem = {
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class Tokens extends Mixins(ExplorePageMixin) {
+export default class Tokens extends vueMixins(ExplorePageMixin) {
   @state.wallet.settings.assetsFilter assetsFilter!: WALLET_TYPES.FilterOptions;
 
   private tokensData: Record<string, TokenData> = {};

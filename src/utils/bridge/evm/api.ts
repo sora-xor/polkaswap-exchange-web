@@ -1,3 +1,3 @@
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@wallet';
 
 export const evmBridgeApi = api.bridgeProxy.evm;

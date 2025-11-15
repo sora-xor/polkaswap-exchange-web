@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="visibility" :title="t('currencyDialog.currency')" class="select-currency-dialog">
+  <dialog-base v-model:visible="isVisible" :title="t('currencyDialog.currency')" class="select-currency-dialog">
     <search-input
       ref="search"
       v-model="query"
@@ -7,7 +7,7 @@
       autofocus
       :placeholder="t('currencyDialog.searchPlaceholder')"
       @clear="handleClearSearch"
-    />
+    ></search-input>
     <s-scrollbar class="select-currency-scrollbar">
       <s-radio-group v-model="selectedCurrency" class="select-currency-list s-flex">
         <s-radio
@@ -19,7 +19,7 @@
           size="medium"
           class="select-currency-list__item s-flex"
         >
-          <div :ref="currency.key === selectedCurrency ? 'selectedEl' : undefined" class="select-currency-item s-flex">
+          <div :ref="(el) => setSelectedEl(el, currency.key === selectedCurrency)" class="select-currency-item s-flex">
             <div class="select-currency-item__value">
               {{ currency.name }}
             </div>
@@ -33,123 +33,70 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Ref } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
+import { computed, nextTick, ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state, mutation } from '@/store/decorators';
+import { useTranslation } from '@/composables/useTranslation';
+import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
 
-import type { CurrencyFields, Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
+import type { CurrencyFields, Currency } from '@wallet/lib/types/currency';
 
-@Component({
+defineOptions({
+  name: 'SelectCurrencyDialog',
   components: {
     DialogBase: components.DialogBase,
     SearchInput: components.SearchInput,
   },
-})
-export default class SelectCurrencyDialog extends Mixins(TranslationMixin) {
-  @state.wallet.settings.currencies currencies!: Array<CurrencyFields>;
+});
 
-  query = '';
+const { t } = useTranslation();
+const settingsStore = useSettingsStore();
 
-  @Ref('selectedEl') selectedEl!: Nullable<[HTMLDivElement]>;
+const query = ref('');
+const selectedEl = ref<HTMLDivElement | null>(null);
 
-  @state.settings.selectCurrencyDialogVisibility private selectCurrencyDialogVisibility!: boolean;
-  @state.wallet.settings.currency private currency!: Currency;
-
-  @mutation.settings.setSelectCurrencyDialogVisibility private setDialogVisibility!: (flag: boolean) => void;
-  @mutation.wallet.settings.setFiatCurrency private setCurrency!: (currency: Currency) => Promise<void>;
-
-  get visibility(): boolean {
-    return this.selectCurrencyDialogVisibility;
-  }
-
-  set visibility(flag: boolean) {
-    this.setDialogVisibility(flag);
+const isVisible = computed({
+  get: () => settingsStore.selectCurrencyDialogVisibility,
+  set: (flag: boolean) => {
+    settingsStore.setSelectCurrencyDialogVisibility(flag);
     if (flag) {
-      this.$nextTick(() => {
-        this.selectedEl?.[0]?.scrollIntoView?.({ behavior: 'smooth' });
-      });
+      nextTick(() => selectedEl.value?.scrollIntoView({ behavior: 'smooth' }));
     }
-  }
+  },
+});
 
-  get selectedCurrency(): any {
-    return this.currency;
-  }
+const selectedCurrency = computed<Currency>({
+  get: () => store.state.wallet.settings.currency as Currency,
+  set: (value) => {
+    store.commit.wallet.settings.setFiatCurrency(value);
+  },
+});
 
-  set selectedCurrency(value: any) {
-    this.setCurrency(value);
-  }
+const currencies = computed(() => store.state.wallet.settings.currencies as CurrencyFields[]);
 
-  get filteredCurrencies() {
-    const currencies = this.currencies;
+const filteredCurrencies = computed(() => {
+  const rawQuery = query.value.toLowerCase().trim();
+  if (!rawQuery) return currencies.value;
 
-    if (this.query) {
-      const query = this.query.toLowerCase().trim();
-      return currencies.filter(
-        (item) =>
-          item.name.toLowerCase().includes(query) ||
-          item.symbol.toLowerCase().includes(query) ||
-          item.key.toLocaleLowerCase().includes(query)
-      );
-    }
+  return currencies.value.filter(
+    (item) =>
+      item.name.toLowerCase().includes(rawQuery) ||
+      item.symbol.toLowerCase().includes(rawQuery) ||
+      item.key.toLowerCase().includes(rawQuery)
+  );
+});
 
-    return currencies;
-  }
+function handleClearSearch(): void {
+  query.value = '';
+}
 
-  public handleClearSearch(): void {
-    this.query = '';
+function setSelectedEl(element: HTMLDivElement | null, isSelected: boolean): void {
+  if (isSelected) {
+    selectedEl.value = element;
+  } else if (selectedEl.value === element) {
+    selectedEl.value = null;
   }
 }
 </script>
-
-<style lang="scss">
-.dialog-wrapper.select-currency-dialog {
-  .el-radio {
-    margin-right: 0;
-  }
-}
-
-.select-currency-scrollbar {
-  @include scrollbar(-$inner-spacing-big);
-}
-</style>
-
-<style lang="scss" scoped>
-$item-height: 66px;
-$list-items: 7;
-
-.select-currency-list {
-  height: 600px;
-  flex-direction: column;
-  max-height: calc(#{$item-height} * #{$list-items});
-
-  &__item {
-    align-items: center;
-    height: $item-height;
-    padding: $inner-spacing-small $inner-spacing-big;
-    border-radius: var(--s-border-radius-mini);
-  }
-
-  .select-currency-item {
-    flex-direction: column;
-    &__value {
-      color: var(--s-color-base-content-primary);
-      font-size: var(--s-font-size-medium);
-      line-height: var(--s-line-height-medium);
-      font-weight: 600;
-    }
-    &__name {
-      color: var(--s-color-base-content-secondary);
-      font-size: var(--s-font-size-mini);
-      line-height: var(--s-line-height-medium);
-      font-weight: 300;
-    }
-  }
-}
-
-.select-currency__search {
-  margin-bottom: $basic-spacing;
-}
-</style>

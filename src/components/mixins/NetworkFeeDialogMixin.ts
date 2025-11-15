@@ -1,8 +1,8 @@
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 
 import { delay } from '@/utils';
 
-@Component
+@Options({})
 export default class NetworkFeeDialogMixin extends Vue {
   showWarningFeeDialog = false;
   isWarningFeeDialogConfirmed = false;

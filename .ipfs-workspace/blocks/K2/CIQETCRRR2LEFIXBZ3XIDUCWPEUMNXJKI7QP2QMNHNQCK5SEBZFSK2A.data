@@ -1,0 +1,3 @@
+
+óëimport{ab as d,ak as f}from"./vendor-vue-BU49LsTx.js";import{Q as p}from"./index-CLebdHLk.js";const o=(n=50)=>new Promise(e=>{setTimeout(()=>e(),n)});function L(n={}){const e=d(!1),l=f(()=>{var a,t;return!!((t=(a=p.state.wallet)==null?void 0:a.settings)!=null&&t.isWalletLoaded)}),r=n.parentLoading,w=()=>r?typeof r=="function"?r():r.value:!1,i=async a=>{e.value=!0;try{return await a()}catch(t){throw console.error(t),t}finally{e.value=!1}},s=async a=>(e.value=!0,l.value?await i(a):(await o(),await s(a))),u=async(a,t)=>(e.value=!0,a.api?(await a.api.isReady,await i(t)):(await o(),await u(a,t))),c=async a=>w()?(await o(),await c(a)):await a();return{loading:e,withLoading:i,withApi:s,withChainApi:u,withParentLoading:c}}export{o as d,L as u};
+ë

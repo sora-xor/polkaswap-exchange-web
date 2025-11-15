@@ -1,0 +1,4 @@
+storybook-static
+cypress/screenshots
+etc/api-temp
+.cypress-cache

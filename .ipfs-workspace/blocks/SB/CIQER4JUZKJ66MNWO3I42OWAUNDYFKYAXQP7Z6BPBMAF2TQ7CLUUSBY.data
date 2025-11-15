@@ -1,0 +1,53 @@
+
+‘$‰$import{a2 as X,$,a3 as M,F as d,z as G,b as H,dr as J,dq as tt,C as et}from"./index-DjB-Okl0.js";import"./echarts-Cxkeyetf.js";import"./lodash-vOcFpjD8.js";import{N as st,S as at}from"./snapshots-B8F7163b.js";import{l as nt,L as ot,j as I,t as x,E as rt,v as r,Q as it,A as ct,o as E,x as _,n as S,m as R,F as lt,X as ut,R as dt,w as l,D as u,y as pt,M as mt}from"./polkadot-Bh6PX9YG.js";import"./wallet-stack-BuqMcUTa.js";const{IndexerType:z}=$,gt=M`
+  query StatsQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
+    data: networkSnapshots(
+      after: $after
+      orderBy: TIMESTAMP_DESC
+      filter: {
+        and: [
+          { type: { equalTo: $type } }
+          { timestamp: { lessThanOrEqualTo: $from } }
+          { timestamp: { greaterThanOrEqualTo: $to } }
+        ]
+      }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          timestamp
+          accounts
+          transactions
+          bridgeIncomingTransactions
+          bridgeOutgoingTransactions
+        }
+      }
+    }
+  }
+`,_t=M`
+  query StatsQuery($after: String, $type: SnapshotType, $from: Int, $to: Int) {
+    data: networkSnapshotsConnection(
+      after: $after
+      orderBy: timestamp_DESC
+      where: { AND: [{ type_eq: $type }, { timestamp_lte: $from }, { timestamp_gte: $to }] }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          timestamp
+          accounts
+          transactions
+          bridgeIncomingTransactions
+          bridgeOutgoingTransactions
+        }
+      }
+    }
+  }
+`,B=n=>({timestamp:+n.timestamp*1e3,accounts:new d(n.accounts),transactions:new d(n.transactions),bridgeIncomingTransactions:new d(n.bridgeIncomingTransactions),bridgeOutgoingTransactions:new d(n.bridgeOutgoingTransactions)});async function L(n,f,v){const i=X();let p;switch(i.type){case z.SUBQUERY:{p=await i.services.explorer.fetchAllEntities(gt,{from:n,to:f,type:v},B);break}case z.SUBSQUID:{p=await i.services.explorer.fetchAllEntitiesConnection(_t,{from:n,to:f,type:v},B);break}}return p??[]}const ft={class:"stats-row"},vt={class:"stats-card-title"},ht={class:"stats-card-data"},Tt=nt({inheritAttrs:!1,__name:"NetworkStats",setup(n){const f=ot(),v=I(()=>!!f.parentLoading),{loading:i,withLoading:p,withParentLoading:y}=G({parentLoading:()=>v.value}),{t:c,tc:Q,TranslationConsts:U}=H(),C=st,b=x(C[0]),D=x(null),q=x(null),O=String.fromCodePoint(8594),j=$.FontSizeRate,W=$.FontWeightRate,N=I(()=>{const{Sora:t,Ethereum:e}=U;return[{title:Q("transactionText",2),tooltip:c("tooltips.transactions"),prop:"transactions"},{title:c("newAccountsText"),tooltip:c("tooltips.accounts"),prop:"accounts"},{title:[e,O,t].join(" "),tooltip:c("tooltips.bridgeTransactions",{from:e,to:t}),prop:"bridgeIncomingTransactions"},{title:[t,O,e].join(" "),tooltip:c("tooltips.bridgeTransactions",{from:t,to:e}),prop:"bridgeOutgoingTransactions"}]}),V=I(()=>N.value.map(({prop:t,title:e,tooltip:s})=>{const a=D.value?.[t]??d.ZERO,o=q.value?.[t]??d.ZERO,m=J(a,o),g=tt(a);return{title:e,tooltip:s,value:g,change:m}})),Y=t=>{b.value=t,A()},k=t=>t.reduce((e,s)=>{if(!e)return s;for(const{prop:a}of N.value)e[a]=e[a].add(s[a]);return e},null),A=async()=>{await p(async()=>{await y(async()=>{const{type:t,count:e}=b.value,s=at[t],a=Math.floor(Date.now()/(s*1e3))*s,o=a-s*e,m=o-s*e,[g,w]=await Promise.all([L(a,o,t),L(o,m,t)]),h=k(g),T=k(w);D.value=h?Object.freeze(h):null,q.value=T?Object.freeze(T):null})})};return rt(async()=>{await A()}),(t,e)=>{const s=r("stats-filter"),a=r("s-icon"),o=r("s-tooltip"),m=r("formatted-amount"),g=r("price-change"),w=r("s-card"),h=r("base-widget"),T=it("loading");return E(),ct(h,mt(t.$attrs,{title:u(c)("networkStatisticsText")}),{filters:_(()=>[l(s,{disabled:u(i),filters:u(C),value:b.value,onInput:Y},null,8,["disabled","filters","value"])]),default:_(()=>[S("div",ft,[(E(!0),R(lt,null,ut(V.value,({title:P,tooltip:Z,value:F,change:K})=>dt((E(),R("div",{key:P,class:"stats-column"},[l(w,{size:"small","border-radius":"mini"},{header:_(()=>[S("div",vt,[S("span",null,pt(P),1),l(o,{"border-radius":"mini",content:Z},{default:_(()=>[l(a,{name:"info-16",size:"14px"})]),_:1},8,["content"])])]),default:_(()=>[S("div",ht,[l(m,{class:"stats-card-value","font-weight-rate":u(W).MEDIUM,"font-size-rate":u(j).MEDIUM,value:F.amount,"asset-symbol":F.suffix,"symbol-as-decimal":""},null,8,["font-weight-rate","font-size-rate","value","asset-symbol"]),l(g,{value:K},null,8,["value"])])]),_:2},1024)])),[[T,u(i)]])),128))])]),_:1},16,["title"])}}}),Et=et(Tt,[["__scopeId","data-v-69941335"]]);export{Et as default};
+‰$

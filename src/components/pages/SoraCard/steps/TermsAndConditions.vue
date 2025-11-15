@@ -9,89 +9,109 @@
         {{ t('card.disclaimerCollectData') }}
       </p>
       <div class="tos__disclaimer-warning icon">
-        <s-icon name="notifications-alert-triangle-24" size="28px" />
+        <s-icon name="notifications-alert-triangle-24" size="28px"></s-icon>
       </div>
     </div>
     <div class="tos__section">
       <div v-button class="tos__section-block" @click="openDialog('t&c')">
         <span class="tos__section-point">{{ t(termsAndConditionsTitle) }}</span>
-        <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
+        <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon"></s-icon>
       </div>
-      <div class="line" />
+      <div class="line"></div>
       <div v-button class="tos__section-block" @click="openDialog('privacyPolicy')">
         <span class="tos__section-point">{{ t(privacyPolicyTitle) }}</span>
-        <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
+        <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon"></s-icon>
       </div>
-      <div class="line" />
+      <div class="line"></div>
       <div v-button class="tos__section-block" @click="openDialog('unsupported')">
         <span class="tos__section-point">{{ t(unsupportedCountriesTitle) }}</span>
-        <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
+        <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon"></s-icon>
       </div>
     </div>
     <p class="tos__continue-block">{{ t('card.termsAndConditionsWarning') }}</p>
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirmToS">
       <span class="text">{{ t('card.acceptAndContinue') }}</span>
     </s-button>
-    <tos-dialog :visible.sync="showDialog" :src-link="link" :title="t(dialogTitle)" :key="link" />
+    <tos-dialog v-model:visible="showDialog" :src-link="link" :title="t(dialogTitle)" :key="link"></tos-dialog>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, TosExternalLinks } from '@/consts';
 import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
-import { getter } from '@/store/decorators';
+import store from '@/store';
 import { delay } from '@/utils';
+import { useTranslation } from '@/composables/useTranslation';
 
 type TermsAndConditionsType = 't&c' | 'privacyPolicy' | 'unsupported';
 
-@Component({
+defineOptions({
+  inheritAttrs: false,
   components: {
     TosDialog: lazyComponent(Components.ToSDialog),
   },
-})
-export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  readonly termsAndConditionsTitle = 'card.termsAndConditions';
-  readonly privacyPolicyTitle = 'card.privacyPolicy';
-  readonly unsupportedCountriesTitle = 'card.unsupportedCountries';
+});
 
-  @getter.libraryTheme private libraryTheme!: Theme;
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+  }>(),
+  {
+    parentLoading: false,
+  }
+);
 
-  showDialog = false;
-  dialogTitle = this.termsAndConditionsTitle;
-  link = '';
+const emit = defineEmits<{
+  (event: 'confirm'): void;
+}>();
 
-  get termsLink(): string {
-    return TosExternalLinks.getLinks(this.libraryTheme).Terms;
+const { t } = useTranslation();
+
+const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+
+const termsAndConditionsTitle = 'card.termsAndConditions';
+const privacyPolicyTitle = 'card.privacyPolicy';
+const unsupportedCountriesTitle = 'card.unsupportedCountries';
+
+const showDialog = ref(false);
+const dialogTitle = ref(termsAndConditionsTitle);
+const link = ref('');
+
+const termsLink = computed(() => TosExternalLinks.getLinks(libraryTheme.value).Terms);
+const privacyLink = computed(() => TosExternalLinks.getLinks(libraryTheme.value).Privacy);
+
+const handleConfirmToS = () => {
+  emit('confirm');
+};
+
+const openDialog = async (policy: TermsAndConditionsType) => {
+  if (policy === 't&c') {
+    link.value = termsLink.value;
+    dialogTitle.value = termsAndConditionsTitle;
+  } else if (policy === 'privacyPolicy') {
+    link.value = privacyLink.value;
+    dialogTitle.value = privacyPolicyTitle;
+  } else {
+    link.value = '';
+    dialogTitle.value = unsupportedCountriesTitle;
   }
 
-  get privacyLink(): string {
-    return TosExternalLinks.getLinks(this.libraryTheme).Privacy;
-  }
+  await delay();
+  showDialog.value = true;
+};
 
-  handleConfirmToS(): void {
-    this.$emit('confirm');
-  }
+const parentLoading = computed(() => props.parentLoading);
 
-  async openDialog(policy: TermsAndConditionsType): Promise<void> {
-    if (policy === 't&c') {
-      this.link = this.termsLink;
-      this.dialogTitle = this.termsAndConditionsTitle;
-    } else if (policy === 'privacyPolicy') {
-      this.link = this.privacyLink;
-      this.dialogTitle = this.privacyPolicyTitle;
-    } else if (policy === 'unsupported') {
-      this.link = '';
-      this.dialogTitle = this.unsupportedCountriesTitle;
-    }
-    await delay(); // small delay is required for dialog re-rendering
-    this.showDialog = true;
-  }
-}
+defineExpose({
+  openDialog,
+  handleConfirmToS,
+  showDialog,
+  dialogTitle,
+  link,
+});
 </script>
 
 <style lang="scss" scoped>

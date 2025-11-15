@@ -17,33 +17,33 @@
           :class="{ disabled: ended[id] }"
           :show-message="false"
         >
-          <generic-page-header class="page-header--burn" :title="title" />
+          <generic-page-header class="page-header--burn" :title="title"></generic-page-header>
           <p class="description centered p4">
             {{ description }}
           </p>
-          <external-link class="p4 link" title="Read more" :href="link" />
+          <external-link class="p4 link" title="Read more" :href="link"></external-link>
           <info-line
             :label="`1 ${receivedAsset.symbol}`"
             :value="getFormattedXor(rate)"
             :asset-symbol="xor.symbol"
             :fiat-value="getFormattedXorFiat(rate)"
             is-formatted
-          />
-          <info-line label="Time left" :value="timeLeftFormatted[id]" />
+          ></info-line>
+          <info-line label="Time left" :value="timeLeftFormatted[id]"></info-line>
           <info-line
             :label="`Your reserved ${receivedAsset.symbol} tokens`"
             :value="getFormattedAccountReserved(id, rate)"
             :asset-symbol="receivedAsset.symbol"
             is-formatted
             value-can-be-hidden
-          />
+          ></info-line>
           <info-line
             label="Your burned XOR tokens"
             :value="getFormattedAccountXorBurned(id)"
             :asset-symbol="xor.symbol"
             is-formatted
             value-can-be-hidden
-          />
+          ></info-line>
           <div class="info-card-container s-flex">
             <div class="info-card-item s-flex-column">
               <span class="info-card-title">TOTAL XOR BURNED</span>
@@ -89,41 +89,45 @@
             of its community-driven nature.
           </p>
           <div class="burn-info__badge">
-            <s-icon class="burn-info__icon" name="notifications-alert-triangle-24" size="24" />
+            <s-icon class="burn-info__icon" name="notifications-alert-triangle-24" size="24"></s-icon>
           </div>
         </div>
       </div>
     </s-card>
     <burn-dialog
-      :visible.sync="burnDialogVisible"
+      v-model:visible="burnDialogVisible"
       :received-asset="selectedReceivedAsset"
-      :burned-asset="selectedBurnedAsset"
+      :burned-asset="xor"
       :rate="selectedRate"
       :max="selectedMax"
       :min="selectedMin"
       @confirm="handleBurnConfirm"
-    />
+    ></burn-dialog>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR, KEN } from '@sora-substrate/sdk/build/assets/consts';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_CONSTS } from '@wallet';
 import dayjs from 'dayjs/esm';
-import { Component, Mixins } from 'vue-property-decorator';
+import durationPlugin from 'dayjs/plugin/duration';
+import { computed, onBeforeUnmount, onMounted, reactive, ref, toRef } from 'vue';
 
-import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import BurnDialog from '@/components/pages/Burn/BurnDialog.vue';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
-import { fetchData } from '@/indexer/queries/burnXor';
+import { fetchData as fetchBurnData } from '@/indexer/queries/burnXor';
 import { lazyComponent } from '@/router';
-import { state } from '@/store/decorators';
+import store from '@/store';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
-const ZeroStr = '0';
+dayjs.extend(durationPlugin);
 
 type CampaignKey = 'chameleon' | 'kensetsu';
 
@@ -143,217 +147,244 @@ type Campaign = {
   toTimestamp: number;
 };
 
-@Component({
+defineOptions({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     InfoLine: components.InfoLine,
     ExternalLink: components.ExternalLink,
     BurnDialog,
   },
-})
-export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.FormattedAmountMixin, InternalConnectMixin) {
-  readonly xor = XOR;
-  private readonly blockDuration = 6_000; // 6 seconds
-  private readonly defaultBurned: Record<CampaignKey, FPNumber> = {
-    chameleon: FPNumber.ZERO,
-    kensetsu: FPNumber.ZERO,
-  };
+});
 
-  private readonly campaignsObj: Record<CampaignKey, Campaign> = {
-    chameleon: {
-      id: 'chameleon',
-      title: 'Reserve KARMA by burning your XOR',
-      description:
-        'Burn 100M XOR (permanently remove from your wallet) on SORA for KARMA in a fair launch; KARMA token is a reward token for LPs who provide liquidity to Chameleon liquidity pools. 22 days only (till Jun 6 2024).',
-      link: 'https://medium.com/@shibarimoto/earn-karma-with-a-sora-chameleon-01b25c12fd49',
-      receivedAsset: { symbol: 'KARMA', address: '', name: 'Chameleon', decimals: 18 } as Asset,
-      rate: 100_000_000,
-      max: 1000,
-      min: 0.1,
-      from: 15_739_737,
-      fromTimestamp: 1715791500000, // May 15 2024 16:45:00 GMT+0000
-      to: 16_056_666,
-      toTimestamp: 1717693074000, // Jun 06 2024 16:57:54 GMT+0000
-      disabledText: 'Already distributed',
-    },
-    kensetsu: {
-      id: 'kensetsu',
-      title: 'Reserve KEN by burning your XOR',
-      description:
-        'Burn 1M XOR (permanently remove from your wallet) on SORA for KEN in a fair launch of Kensetsu; KEN incentivizes liquidity and is deflationary token with a status symbol appeal. 30 days only (till Mar 20 2024).',
-      link: 'https://medium.com/@shibarimoto/kensetsu-ken-356077ebee78',
-      receivedAsset: KEN,
-      rate: 1_000_000,
-      max: 10_000,
-      min: 1,
-      from: 14_464_000,
-      fromTimestamp: 1708097280000, // Feb 16 2024 15:28:00 GMT+0000
-      to: 14_939_200,
-      toTimestamp: 1710949772883, // Mar 20 2024 15:49:32 GMT+0000
-      disabledText: 'Already distributed',
-    },
-  };
-
-  readonly campaigns = Object.values(this.campaignsObj);
-
-  private interval: Nullable<ReturnType<typeof setInterval>> = null;
-  private totalXorBurned: Record<CampaignKey, FPNumber> = { ...this.defaultBurned };
-  private accountXorBurned: Record<CampaignKey, FPNumber> = { ...this.defaultBurned };
-
-  timeLeftFormatted: Record<CampaignKey, string> = {
-    chameleon: '30D',
-    kensetsu: '30D',
-  };
-
-  ended: Record<CampaignKey, boolean> = {
-    chameleon: false,
-    kensetsu: false,
-  };
-
-  burnDialogVisible = false;
-
-  selectedReceivedAsset = this.campaigns[0].receivedAsset;
-  selectedBurnedAsset = XOR;
-  selectedRate = this.campaigns[0].rate;
-  selectedMax = this.campaigns[0].max;
-  selectedMin = this.campaigns[0].min;
-
-  @state.wallet.settings.blockNumber private blockNumber!: number;
-  @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-
-  get minBlock(): number {
-    return Math.min(...this.campaigns.map((c) => c.from));
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+  }>(),
+  {
+    parentLoading: false,
   }
+);
 
-  get maxBlock(): number {
-    return Math.max(...this.campaigns.map((c) => c.to));
-  }
+const parentLoadingRef = toRef(props, 'parentLoading');
 
-  getFormattedXor(rate: number): string {
-    return this.getFPNumber(rate).toLocaleString();
-  }
+const { loading, withLoading, withApi } = useLoading({ parentLoading: parentLoadingRef });
+const { t } = useTranslation();
+const { getFPNumber, getFiatAmountByString } = useFormattedAmount();
+const { isLoggedIn, connectSoraWallet, soraAddress } = useInternalConnect();
 
-  getFormattedXorFiat(rate: number): Nullable<string> {
-    return this.getFiatAmountByString(`${rate}`, this.xor);
-  }
+const xor = XOR;
+const zeroString = '0';
+const blockDuration = 6_000; // 6 seconds
 
-  getFormattedTotalXorBurned(id: CampaignKey): string {
-    return this.totalXorBurned[id]?.toLocaleString() ?? ZeroStr;
-  }
+const blockNumber = computed(() => store.state.wallet.settings.blockNumber as number);
+const soraNetwork = computed(() => store.state.wallet.settings.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>);
 
-  getFormattedTotalReserved(id: CampaignKey, rate: number): string {
-    return this.totalXorBurned[id]?.div(rate).toLocaleString(3) ?? ZeroStr;
-  }
+const campaignsObj = reactive<Record<CampaignKey, Campaign>>({
+  chameleon: {
+    id: 'chameleon',
+    title: 'Reserve KARMA by burning your XOR',
+    description:
+      'Burn 100M XOR (permanently remove from your wallet) on SORA for KARMA in a fair launch; KARMA token is a reward token for LPs who provide liquidity to Chameleon liquidity pools. 22 days only (till Jun 6 2024).',
+    link: 'https://medium.com/@shibarimoto/earn-karma-with-a-sora-chameleon-01b25c12fd49',
+    receivedAsset: { symbol: 'KARMA', address: '', name: 'Chameleon', decimals: 18 } as Asset,
+    rate: 100_000_000,
+    max: 1_000,
+    min: 0.1,
+    from: 15_739_737,
+    fromTimestamp: 1715791500000,
+    to: 16_056_666,
+    toTimestamp: 1717693074000,
+    disabledText: 'Already distributed',
+  },
+  kensetsu: {
+    id: 'kensetsu',
+    title: 'Reserve KEN by burning your XOR',
+    description:
+      'Burn 1M XOR (permanently remove from your wallet) on SORA for KEN in a fair launch of Kensetsu; KEN incentivizes liquidity and is deflationary token with a status symbol appeal. 30 days only (till Mar 20 2024).',
+    link: 'https://medium.com/@shibarimoto/kensetsu-ken-356077ebee78',
+    receivedAsset: KEN,
+    rate: 1_000_000,
+    max: 10_000,
+    min: 1,
+    from: 14_464_000,
+    fromTimestamp: 1708097280000,
+    to: 14_939_200,
+    toTimestamp: 1710949772883,
+    disabledText: 'Already distributed',
+  },
+});
 
-  getFormattedAccountXorBurned(id: CampaignKey): string {
-    return this.accountXorBurned[id]?.toLocaleString() ?? ZeroStr;
-  }
+const campaignOrder: CampaignKey[] = ['chameleon', 'kensetsu'];
+const campaigns = computed(() => campaignOrder.map((key) => campaignsObj[key]));
 
-  getFormattedAccountReserved(id: CampaignKey, rate: number): string {
-    return this.accountXorBurned[id]?.div(rate).toLocaleString(3) ?? ZeroStr;
-  }
+const createDefaultBurned = () => ({
+  chameleon: new FPNumber(0),
+  kensetsu: new FPNumber(0),
+});
 
-  /**
-   * Works only with less than 1 month (31 days) interval.
-   * If there will be some requirements for extending that period, you need to change
-   * D[D] HH[H] mm[M] -> M[M] D[D] HH[H] mm[mm]
-   */
-  private calcCountdown(): void {
-    for (const campaign of this.campaigns) {
-      const msLeft = (campaign.to - this.blockNumber) * this.blockDuration;
-      if (msLeft <= 0) {
-        this.timeLeftFormatted[campaign.id] = '0D 0H 0M';
-        this.ended[campaign.id] = true;
-        continue;
-      }
-      const expires = dayjs.duration(msLeft);
-      this.timeLeftFormatted[campaign.id] = expires.format('D[D] HH[H] mm[M]');
-    }
-  }
+const totalXorBurned = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
+const accountXorBurned = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
 
-  private async fetchData(): Promise<void> {
-    const start = this.minBlock;
-    const end = this.maxBlock;
-    const address = this.soraAddress;
+const timeLeftFormatted = reactive<Record<CampaignKey, string>>({
+  chameleon: '30D',
+  kensetsu: '30D',
+});
 
-    const burns = await fetchData(start, end);
+const ended = reactive<Record<CampaignKey, boolean>>({
+  chameleon: false,
+  kensetsu: false,
+});
 
-    const accountXorBurned = { ...this.defaultBurned };
-    const totalXorBurned = { ...this.defaultBurned };
+const burnDialogVisible = ref(false);
+const selectedReceivedAsset = ref<Asset>(campaignsObj.chameleon.receivedAsset);
+const selectedRate = ref<number>(campaignsObj.chameleon.rate);
+const selectedMax = ref<number>(campaignsObj.chameleon.max);
+const selectedMin = ref<number>(campaignsObj.chameleon.min);
 
-    for (const campaign of this.campaigns) {
-      const campaignBurns = burns.filter(
-        ({ blockHeight }) => blockHeight >= campaign.from && blockHeight <= campaign.to
-      );
+const intervalId = ref<Nullable<number>>(null);
 
-      const accountsBurned = campaignBurns.reduce<Record<string, FPNumber>>((acc, { address, amount }) => {
-        if (!acc[address]) {
-          acc[address] = FPNumber.ZERO;
-        }
-        acc[address] = acc[address].add(amount);
-        return acc;
-      }, {});
+const minBlock = computed(() => Math.min(...campaignOrder.map((key) => campaignsObj[key].from)));
+const maxBlock = computed(() => Math.max(...campaignOrder.map((key) => campaignsObj[key].to)));
 
-      const minBurned = new FPNumber(campaign.rate * campaign.min);
+function getFormattedXor(rate: number): string {
+  return getFPNumber(rate).toLocaleString();
+}
 
-      Object.entries(accountsBurned).forEach(([addr, amount]) => {
-        if (amount.gte(minBurned)) {
-          totalXorBurned[campaign.id] = totalXorBurned[campaign.id].add(amount);
-          if (address === addr) {
-            accountXorBurned[campaign.id] = accountXorBurned[campaign.id].add(amount);
-          }
-        }
-      });
+function getFormattedXorFiat(rate: number): Nullable<string> {
+  return getFiatAmountByString(`${rate}`, xor);
+}
+
+function getFormattedTotalXorBurned(id: CampaignKey): string {
+  return totalXorBurned[id]?.toLocaleString() ?? zeroString;
+}
+
+function getFormattedTotalReserved(id: CampaignKey, rate: number): string {
+  return totalXorBurned[id]?.div(rate).toLocaleString(3) ?? zeroString;
+}
+
+function getFormattedAccountXorBurned(id: CampaignKey): string {
+  return accountXorBurned[id]?.toLocaleString() ?? zeroString;
+}
+
+function getFormattedAccountReserved(id: CampaignKey, rate: number): string {
+  return accountXorBurned[id]?.div(rate).toLocaleString(3) ?? zeroString;
+}
+
+function calcCountdown(): void {
+  const currentBlock = blockNumber.value;
+
+  for (const campaign of campaigns.value) {
+    const msLeft = (campaign.to - currentBlock) * blockDuration;
+
+    if (msLeft <= 0) {
+      timeLeftFormatted[campaign.id] = '0D 0H 0M';
+      ended[campaign.id] = true;
+      continue;
     }
 
-    this.accountXorBurned = { ...accountXorBurned };
-    this.totalXorBurned = { ...totalXorBurned };
-  }
-
-  private async fetchDataAndCalcCountdown(): Promise<void> {
-    await this.withLoading(async () => {
-      this.calcCountdown();
-      await this.fetchData();
-    });
-  }
-
-  handleBurnClick(id: CampaignKey): void {
-    const campaign = this.campaignsObj[id];
-    this.selectedReceivedAsset = campaign.receivedAsset;
-    this.selectedRate = campaign.rate;
-    this.selectedMax = campaign.max;
-    this.selectedMin = campaign.min;
-    this.burnDialogVisible = true;
-  }
-
-  async mounted(): Promise<void> {
-    await this.withApi(async () => {
-      const soraNetwork = this.soraNetwork ?? (await waitForSoraNetworkFromEnv());
-
-      if (soraNetwork !== WALLET_CONSTS.SoraNetwork.Prod) {
-        this.campaignsObj.chameleon.from = 11_000;
-        this.campaignsObj.chameleon.to = 1_000_000;
-        this.campaignsObj.kensetsu.from = 0;
-        this.campaignsObj.kensetsu.to = 10_000;
-      }
-      await this.fetchDataAndCalcCountdown();
-
-      this.interval = setInterval(this.fetchDataAndCalcCountdown, 60_000);
-    });
-  }
-
-  handleBurnConfirm(done?: boolean): void {
-    if (done) {
-      this.loading = true;
-    }
-  }
-
-  beforeUnmount(): void {
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
+    ended[campaign.id] = false;
+    const expires = dayjs.duration(msLeft);
+    timeLeftFormatted[campaign.id] = expires.format('D[D] HH[H] mm[M]');
   }
 }
+
+async function fetchStatistics(): Promise<void> {
+  const burns = await fetchBurnData(minBlock.value, maxBlock.value);
+  const address = soraAddress.value;
+
+  const accountTotals = createDefaultBurned();
+  const overallTotals = createDefaultBurned();
+
+  for (const campaign of campaigns.value) {
+    const campaignBurns = burns.filter(({ blockHeight }) => blockHeight >= campaign.from && blockHeight <= campaign.to);
+
+    const accountsBurned = campaignBurns.reduce<Record<string, FPNumber>>((acc, { address: burnAddress, amount }) => {
+      const current = acc[burnAddress] ?? new FPNumber(0);
+      acc[burnAddress] = current.add(amount);
+      return acc;
+    }, {});
+
+    const minBurned = new FPNumber(campaign.rate * campaign.min);
+
+    Object.entries(accountsBurned).forEach(([burnAddress, amount]) => {
+      if (!amount.gte(minBurned)) return;
+
+      overallTotals[campaign.id] = overallTotals[campaign.id].add(amount);
+      if (address && burnAddress === address) {
+        accountTotals[campaign.id] = accountTotals[campaign.id].add(amount);
+      }
+    });
+  }
+
+  accountXorBurned.chameleon = accountTotals.chameleon;
+  accountXorBurned.kensetsu = accountTotals.kensetsu;
+  totalXorBurned.chameleon = overallTotals.chameleon;
+  totalXorBurned.kensetsu = overallTotals.kensetsu;
+}
+
+async function fetchDataAndCalcCountdown(): Promise<void> {
+  await withLoading(async () => {
+    calcCountdown();
+    await fetchStatistics();
+  });
+}
+
+function handleBurnClick(id: CampaignKey): void {
+  const campaign = campaignsObj[id];
+
+  selectedReceivedAsset.value = campaign.receivedAsset;
+  selectedRate.value = campaign.rate;
+  selectedMax.value = campaign.max;
+  selectedMin.value = campaign.min;
+  burnDialogVisible.value = true;
+}
+
+function handleBurnConfirm(done?: boolean): void {
+  if (done) {
+    loading.value = true;
+  }
+}
+
+defineExpose({
+  campaigns,
+  handleBurnClick,
+  burnDialogVisible,
+  selectedReceivedAsset,
+  selectedRate,
+  selectedMax,
+  selectedMin,
+  handleBurnConfirm,
+  loading,
+  timeLeftFormatted,
+  ended,
+  totalXorBurned,
+  accountXorBurned,
+});
+
+onMounted(async () => {
+  await withApi(async () => {
+    const network = soraNetwork.value ?? (await waitForSoraNetworkFromEnv());
+
+    if (network !== WALLET_CONSTS.SoraNetwork.Prod) {
+      campaignsObj.chameleon.from = 11_000;
+      campaignsObj.chameleon.to = 1_000_000;
+      campaignsObj.kensetsu.from = 0;
+      campaignsObj.kensetsu.to = 10_000;
+    }
+
+    await fetchDataAndCalcCountdown();
+
+    intervalId.value = window.setInterval(() => {
+      void fetchDataAndCalcCountdown();
+    }, 60_000);
+  });
+});
+
+onBeforeUnmount(() => {
+  if (intervalId.value) {
+    clearInterval(intervalId.value);
+  }
+});
 </script>
 
 <style lang="scss" scoped>

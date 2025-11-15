@@ -2,15 +2,21 @@
 
 This repository is a Node.js + Vue (Vite) project that compiles into a static site and is deployed via IPFS. There is no server runtime — all functionality must work from static assets produced by the build.
 
+## Task Handling
+
+- When a large task or request is given, break it down into smaller actionable tasks automatically and proceed with solid software engineering practices instead of rejecting the request.
+
 ## Project Basics
+
 - Runtime: Node 24 (see `.nvmrc` and `package.json` engines).
 - Package manager: Yarn 1.x (`yarn.lock`).
 - Build: `yarn build` produces static assets (dist/) suitable for IPFS hosting.
 - Dev: `yarn serve` for local development.
 
 ## Testing Requirements
+
 - Every new function or feature must include at least one unit test; add more for edge cases and critical paths.
-- Test runner: Vitest (workspace projects in `vitest.workspace.ts`).
+- Test runner: Vitest (projects defined in `vitest.config.mjs`).
 - Unit tests live under `tests/unit/**`, mirroring the source structure where possible.
 - Run tests:
   - `yarn test:unit` — unit tests
@@ -18,10 +24,12 @@ This repository is a Node.js + Vue (Vite) project that compiles into a static si
   - `yarn test:all` — convenience alias for unit tests
 - Guidelines:
   - Do not perform network calls or require external services. Mock SDKs, wallet APIs, and providers.
-  - Prefer lightweight mocking for `@soramitsu/soraneo-wallet-web` and `@/utils/ethers-util` when testing bridge flows.
+  - Prefer lightweight mocking for `@wallet` and `@/utils/ethers-util` when testing bridge flows.
+  - Follow the wallet mock pattern in `tests/README.md` (`createWalletMock` + shared stubs) so every suite sees the same baseline exports.
   - Cover redenomination math and token amount handling with precise expectations.
 
 ## Internationalization (i18n)
+
 - If you add or change user‑visible strings:
   - Update `src/lang/en.json` (authoritative keys).
   - Run `yarn lang:fix` (and/or `yarn lang:generate`) to propagate/fix translation keys.
@@ -31,13 +39,16 @@ This repository is a Node.js + Vue (Vite) project that compiles into a static si
 - Use existing message keys where possible; keep wording consistent across the app.
 
 ## Documentation
+
 - Document everything you add:
   - Use clear JSDoc/TSDoc comments on functions, classes, and modules.
   - If you introduce new components, modules, or flows, add brief usage notes (and update README or module‑level docs as appropriate).
   - Keep inline comments minimal and focused on non‑obvious logic.
 
 ## Security Expectations (Financial Application)
+
 This is a financial application — treat security as a first‑class concern.
+
 - Math & amounts:
   - Never use raw JavaScript floating‑point for token math.
   - Use `FPNumber` helpers consistently (e.g., `fromCodecValue`, `fromNatural`, `toCodecString`).
@@ -54,18 +65,21 @@ This is a financial application — treat security as a first‑class concern.
   - Keep version ranges conservative and align with repository conventions.
 
 ## Coding Conventions
+
 - Align with the existing codebase style and structure.
 - Keep changes minimal and focused; avoid broad refactors unless requested.
 - Use the `@/` alias for imports from `src`.
 - Follow TypeScript best practices and avoid `any` when possible.
 
 ## Build & IPFS Considerations
+
 - The site must work as static files served from IPFS:
   - Avoid absolute URLs for internal navigation/resources unless required.
   - Ensure assets and routes resolve under content‑addressed paths.
 - Verify that dynamic features degrade gracefully without server assistance.
 
 ## PR Checklist (must pass before merging)
+
 - [ ] Unit tests added/updated for all new/changed functions and critical paths.
 - [ ] `yarn test:unit` and `yarn test:translation` pass locally.
 - [ ] Translations regenerated/fixed for any new strings.

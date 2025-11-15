@@ -5,19 +5,20 @@
         :icon="selectTokenIcon"
         :token="selectedToken"
         :tabindex="tokenTabIndex"
+        :disabled="areActionsDisabled"
         @click.stop="handleSelectToken"
-      />
+      ></token-select-button>
       <select-token
         v-if="!predefinedToken"
         disabled-custom
-        :visible.sync="showSelectTokenDialog"
+        v-model:visible="showSelectTokenDialog"
         :asset="selectedToken"
         @select="changeToken"
-      />
+      ></select-token>
     </template>
 
     <s-table
-      ref="table"
+      ref="tableRef"
       v-loading="loading"
       :data="tableItems"
       :highlight-current-row="false"
@@ -45,7 +46,7 @@
             :font-size-rate="FontSizeRate.SMALL"
             :value="row.inputAmount"
             :fiat-value="row.inputAmountUSD"
-          />
+          ></formatted-amount-with-fiat-value>
         </template>
       </s-table-column>
       <s-table-column header-align="left" align="left">
@@ -58,7 +59,7 @@
             :font-size-rate="FontSizeRate.SMALL"
             :value="row.outputAmount"
             :fiat-value="row.outputAmountUSD"
-          />
+          ></formatted-amount-with-fiat-value>
         </template>
       </s-table-column>
       <s-table-column header-align="left" align="left">
@@ -71,7 +72,7 @@
               size="small"
               class="explore-table-item-logo explore-table-item-logo--plain"
               :token="row.inputAsset"
-            />
+            ></token-logo>
             <span class="explore-table-item-token">{{ row.inputAssetSymbol }}</span>
           </div>
         </template>
@@ -86,7 +87,7 @@
               size="small"
               class="explore-table-item-logo explore-table-item-logo--plain"
               :token="row.outputAsset"
-            />
+            ></token-logo>
             <span class="explore-table-item-token">{{ row.outputAssetSymbol }}</span>
           </div>
         </template>
@@ -96,15 +97,15 @@
           <span>{{ tc('accountText', 1) }}</span>
         </template>
         <template v-slot="{ row }">
-          <formatted-address :value="row.address" :symbols="8" />
+          <formatted-address :value="row.address" :symbols="8"></formatted-address>
         </template>
       </s-table-column>
       <s-table-column width="48" header-align="center">
         <template #header>
-          <s-icon name="basic-eye-no-24" size="16px" />
+          <s-icon name="basic-eye-no-24" size="16px"></s-icon>
         </template>
         <template v-slot="{ row }">
-          <links-dropdown v-if="row.links.length" :links="row.links" />
+          <links-dropdown v-if="row.links.length" :links="row.links"></links-dropdown>
         </template>
       </s-table-column>
     </s-table>
@@ -117,27 +118,28 @@
       :loading="loading"
       :last-page="lastPage"
       @pagination-click="handlePaginationClick"
-    />
+    ></history-pagination>
   </base-widget>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { getCurrentIndexer, components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { getCurrentIndexer, components, WALLET_CONSTS, WALLET_TYPES } from '@wallet';
 import dayjs from 'dayjs/esm';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { computed, watch, type Ref } from 'vue';
 
-import IndexerDataFetchMixin from '@/components/mixins/IndexerDataFetchMixin';
-import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
-import WithTokenSelectMixin from '@/components/mixins/Widget/WithTokenSelect';
+import { useIndexerDataFetch } from '@/composables/useIndexerDataFetch';
+import { useScrollableTable } from '@/composables/useScrollableTable';
+import { useWidgetTokenSelect } from '@/composables/useWidgetTokenSelect';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
 import { type FetchVariables } from '@/types/indexers';
 import { soraExplorerLinks, showMostFittingValue } from '@/utils';
 
 import type { HistoryItem } from '@sora-substrate/sdk';
-import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 type TableItem = {
   address: string;
@@ -156,143 +158,154 @@ type TableItem = {
   links: WALLET_CONSTS.ExplorerLink[];
 };
 
-@Component({
+defineOptions({
+  name: 'SwapTransactionsWidget',
   components: {
     BaseWidget: lazyComponent(Components.BaseWidget),
     LinksDropdown: lazyComponent(Components.LinksDropdown),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     SelectToken: lazyComponent(Components.SelectToken),
     TokenLogo: components.TokenLogo,
-    FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     FormattedAddress: components.FormattedAddress,
     HistoryPagination: components.HistoryPagination,
   },
-})
-export default class SwapTransactionsWidget extends Mixins(
-  WithTokenSelectMixin,
-  ScrollableTableMixin,
-  IndexerDataFetchMixin
-) {
-  @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+});
 
-  @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
-
-  @Watch('assetsAddresses', { immediate: true })
-  private resetData(curr: string[], prev: string[]): void {
-    this.checkTriggerUpdate(curr, prev);
+const props = withDefaults(
+  defineProps<{
+    predefinedToken?: Nullable<Asset>;
+  }>(),
+  {
+    predefinedToken: null,
   }
+);
 
-  fetchAmount = 100; // override IndexerDataFetchMixin
+const predefinedToken = computed<Nullable<Asset>>(() => props.predefinedToken);
+const { t, tc } = useTranslation();
+const soraNetwork = computed(() => store.state?.wallet?.settings?.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>);
+const assetsDataTable = computed(
+  () =>
+    (store.getters?.wallet?.account?.assetsDataTable as WALLET_TYPES.AssetsTable) ?? ({} as WALLET_TYPES.AssetsTable)
+);
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+const operations = [Operation.Swap];
+const fromTimestamp = dayjs().subtract(1, 'week').startOf('day').unix();
 
-  private readonly operations = [Operation.Swap];
-  private readonly fromTimestamp = dayjs().subtract(1, 'week').startOf('day').unix(); // week ago, start of the day
+let indexerLoadingRef: Nullable<Ref<boolean>> = null;
 
-  // override ScrollableTableMixin
-  get tableItems(): TableItem[] {
-    return this.visibleItems.map((item) => {
-      const txId = item.id ?? '';
-      const blockId = item.blockId ?? '';
-      const address = item.from ?? '';
-      const inputAsset = item.assetAddress ? this.assetsDataTable[item.assetAddress] : null;
-      const inputAssetSymbol = inputAsset?.symbol ?? '??';
-      const outputAsset = item.asset2Address ? this.assetsDataTable[item.asset2Address] : null;
-      const outputAssetSymbol = outputAsset?.symbol ?? '??';
-      const inputAmount = showMostFittingValue(new FPNumber(item.amount ?? 0));
-      const inputAmountUSD = new FPNumber(item.payload.amountUSD ?? 0).toLocaleString();
-      const outputAmount = showMostFittingValue(new FPNumber(item.amount2 ?? 0));
-      const outputAmountUSD = new FPNumber(item.payload.amount2USD ?? 0).toLocaleString();
-      const date = dayjs(item.startTime);
-      const links = soraExplorerLinks(this.soraNetwork, txId, blockId);
+const {
+  selectedToken,
+  areActionsDisabled,
+  selectTokenIcon,
+  tokenTabIndex,
+  showSelectTokenDialog,
+  handleSelectToken,
+  changeToken,
+} = useWidgetTokenSelect({
+  predefinedToken,
+  loading: () => indexerLoadingRef?.value ?? false,
+});
 
-      return {
-        address,
-        inputAsset,
-        inputAssetSymbol,
-        outputAsset,
-        outputAssetSymbol,
-        inputAmount,
-        inputAmountUSD,
-        outputAmount,
-        outputAmountUSD,
-        datetime: { date: date.format('M/DD'), time: date.format('HH:mm:ss') },
-        links,
-      };
-    });
-  }
+const createFilter = (timestamp?: number) => {
+  const indexer = getCurrentIndexer();
+  const assetAddress = selectedToken.value?.address;
 
-  get assetsAddresses(): string[] {
-    const filtered = [this.selectedToken].filter((token) => !!token) as AccountAsset[];
+  return indexer.historyElementsFilter({
+    operations,
+    assetAddress,
+    timestamp,
+  });
+};
 
-    return filtered
-      .map((token) => token.address)
-      .sort((a, b) => {
-        if (a < b) return -1;
-        if (a > b) return 1;
-        return 0;
-      });
-  }
+const requestHistoryData = async (variables: FetchVariables): Promise<{ items: HistoryItem[]; totalCount: number }> => {
+  const indexer = getCurrentIndexer();
+  const response = await indexer.services.explorer.account.getHistory(variables);
 
-  private createFilter(timestamp?: number) {
-    const indexer = getCurrentIndexer();
-    const { operations, selectedToken } = this;
-    const assetAddress = selectedToken?.address;
-    const filter = indexer.historyElementsFilter({
-      operations,
-      assetAddress,
-      timestamp,
-    });
-
-    return filter;
-  }
-
-  // override IndexerDataFetchMixin
-  get dataVariables(): FetchVariables {
+  if (!response)
     return {
-      filter: this.createFilter(this.fromTimestamp),
-      first: this.fetchAmount,
-      offset: this.fetchAmount * (this.fetchPage - 1),
+      items: [],
+      totalCount: 0,
     };
-  }
 
-  // override IndexerDataFetchMixin
-  get updateVariables(): FetchVariables {
-    return {
-      filter: this.createFilter(this.intervalTimestamp),
-    };
-  }
+  const { nodes, totalCount } = response;
+  const parsedItems: HistoryItem[] = [];
 
-  // override IndexerDataFetchMixin
-  getItemTimestamp(item: Nullable<HistoryItem>): number {
-    return item?.startTime ?? 0;
-  }
+  for (const node of nodes) {
+    const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(node);
 
-  // override IndexerDataFetchMixin
-  async requestData(variables: FetchVariables): Promise<{ items: HistoryItem[]; totalCount: number }> {
-    const indexer = getCurrentIndexer();
-    const response = await indexer.services.explorer.account.getHistory(variables);
-
-    if (!response)
-      return {
-        items: [],
-        totalCount: 0,
-      };
-
-    const { nodes, totalCount } = response;
-
-    const items: HistoryItem[] = [];
-
-    for (const node of nodes) {
-      const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(node);
-
-      if (historyItem) {
-        items.push(historyItem);
-      }
+    if (historyItem) {
+      parsedItems.push(historyItem);
     }
-
-    return { items, totalCount };
   }
-}
+
+  return { items: parsedItems, totalCount };
+};
+
+const { loading, pageAmount, currentPage, total, lastPage, visibleItems, handlePaginationClick, checkTriggerUpdate } =
+  useIndexerDataFetch<HistoryItem>({
+    fetchAmount: 100,
+    pageAmount: 5,
+    requestData: requestHistoryData,
+    getItemTimestamp: (item) => item?.startTime ?? 0,
+    buildDataVariables: ({ fetchAmount, fetchPage }) => ({
+      filter: createFilter(fromTimestamp),
+      first: fetchAmount,
+      offset: fetchAmount * (fetchPage - 1),
+    }),
+    buildUpdateVariables: ({ intervalTimestamp }) => ({
+      filter: createFilter(intervalTimestamp),
+    }),
+  });
+
+indexerLoadingRef = loading;
+
+const tableItems = computed<TableItem[]>(() =>
+  visibleItems.value.map((item) => {
+    const txId = item.id ?? '';
+    const blockId = item.blockId ?? '';
+    const address = item.from ?? '';
+    const inputAsset = item.assetAddress ? assetsDataTable.value[item.assetAddress] : null;
+    const inputAssetSymbol = inputAsset?.symbol ?? '??';
+    const outputAsset = item.asset2Address ? assetsDataTable.value[item.asset2Address] : null;
+    const outputAssetSymbol = outputAsset?.symbol ?? '??';
+    const inputAmount = showMostFittingValue(new FPNumber(item.amount ?? 0));
+    const inputAmountUSD = new FPNumber(item.payload.amountUSD ?? 0).toLocaleString();
+    const outputAmount = showMostFittingValue(new FPNumber(item.amount2 ?? 0));
+    const outputAmountUSD = new FPNumber(item.payload.amount2USD ?? 0).toLocaleString();
+    const date = dayjs(item.startTime);
+    const links = soraExplorerLinks(soraNetwork.value, txId, blockId);
+
+    return {
+      address,
+      inputAsset,
+      inputAssetSymbol,
+      outputAsset,
+      outputAssetSymbol,
+      inputAmount,
+      inputAmountUSD,
+      outputAmount,
+      outputAmountUSD,
+      datetime: { date: date.format('M/DD'), time: date.format('HH:mm:ss') },
+      links,
+    };
+  })
+);
+
+const { tableRef } = useScrollableTable({ tableItems });
+
+const assetsAddresses = computed(() => {
+  const token = selectedToken.value;
+  return token ? [token.address] : [];
+});
+
+watch(
+  assetsAddresses,
+  (current, previous) => {
+    checkTriggerUpdate(current, previous);
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss">

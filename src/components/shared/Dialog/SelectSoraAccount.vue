@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="visibility" :show-close-button="false" class="account-select-dialog">
+  <dialog-base v-model:visible="visible" :show-close-button="false" class="account-select-dialog">
     <connection-view
       :chain-api="chainApi"
       :account="soraAccount"
@@ -7,55 +7,50 @@
       :logout-account="logout"
       :rename-account="rename"
       :close-view="closeView"
-      :show-close="!soraAccount.address"
+      :show-close="!soraAccount?.address"
       shadow="never"
-    />
+    ></connection-view>
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { api, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { api, components, WALLET_TYPES } from '@wallet';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { action, getter, state, mutation } from '@/store/decorators';
+import store from '@/store';
+import { useWalletStore } from '@/stores/wallet';
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
     ConnectionView: components.ConnectionView,
   },
-})
-export default class SelectSoraAccountDialog extends Mixins(TranslationMixin) {
-  @state.web3.soraAccountDialogVisibility private soraAccountDialogVisibility!: boolean;
-  @mutation.web3.setSoraAccountDialogVisibility private setSoraAccountDialogVisibility!: (flag: boolean) => void;
+});
 
-  @getter.wallet.account.account public soraAccount!: Nullable<WALLET_TYPES.PolkadotJsAccount>;
+const visible = computed({
+  get: () => Boolean(store.state.web3.soraAccountDialogVisibility),
+  set: (flag: boolean) => {
+    store.commit.web3.setSoraAccountDialogVisibility(flag);
+  },
+});
 
-  @action.wallet.account.loginAccount public loginAccount!: (account: WALLET_TYPES.PolkadotJsAccount) => Promise<void>;
-  @action.wallet.account.logout public logout!: () => Promise<void>;
-  @action.wallet.account.renameAccount public rename!: (data: { address: string; name: string }) => Promise<void>;
+const walletStore = useWalletStore();
 
-  get chainApi() {
-    return api;
-  }
+const soraAccount = computed(() => walletStore.account as Nullable<WALLET_TYPES.PolkadotJsAccount>);
 
-  get visibility(): boolean {
-    return this.soraAccountDialogVisibility;
-  }
+const chainApi = api;
 
-  set visibility(flag: boolean) {
-    this.setSoraAccountDialogVisibility(flag);
-  }
+const loginAccount = walletStore.loginAccount;
+const logout = () => walletStore.logout();
+const rename = (data: { address: string; name: string }) => walletStore.renameAccount(data);
 
-  async login(account: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
-    await this.loginAccount(account);
-    this.closeView();
-  }
+async function login(account: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
+  await loginAccount(account);
+  closeView();
+}
 
-  closeView(): void {
-    this.visibility = false;
-  }
+function closeView(): void {
+  visible.value = false;
 }
 </script>
 
@@ -65,6 +60,7 @@ export default class SelectSoraAccountDialog extends Mixins(TranslationMixin) {
     .el-dialog__header {
       display: none;
     }
+
     .el-dialog__body {
       padding: 0;
 

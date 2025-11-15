@@ -1,0 +1,11 @@
+**/dist/**
+**/node_modules/**
+/packages/ui/etc
+/packages/ui/test/after-build/esm-tree-shaken-dist
+/packages/ui/cypress/screenshots
+/packages/ui/.cypress-cache
+**/.cypress-cache/**
+auto-imports.d.ts
+packages/ui/auto-imports.d.ts
+CHANGELOG.md
+storybook-static

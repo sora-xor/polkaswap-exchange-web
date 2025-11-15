@@ -3,22 +3,22 @@
     <template #template>
       <div v-loading="loading" class="charts-skeleton">
         <div class="charts-skeleton-header">
-          <s-skeleton-item element="rect" class="charts-skeleton-price" />
+          <s-skeleton-item element="rect" class="charts-skeleton-price"></s-skeleton-item>
           <div class="charts-skeleton-price-impact">
-            <s-skeleton-item element="circle" />
-            <s-skeleton-item element="rect" />
+            <s-skeleton-item element="circle"></s-skeleton-item>
+            <s-skeleton-item element="rect"></s-skeleton-item>
           </div>
         </div>
         <div class="charts-skeleton-container chart">
           <div v-for="i in yTick" :key="i" class="charts-skeleton-line">
-            <s-skeleton-item v-if="yLabel" element="rect" class="charts-skeleton-label" />
-            <s-skeleton-item element="rect" class="charts-skeleton-border" />
+            <s-skeleton-item v-if="yLabel" element="rect" class="charts-skeleton-label"></s-skeleton-item>
+            <s-skeleton-item element="rect" class="charts-skeleton-border"></s-skeleton-item>
           </div>
           <div v-if="xLabel" :class="['charts-skeleton-line', 'charts-skeleton-line--lables', { offset: yLabel }]">
-            <s-skeleton-item v-for="i in xTick" :key="i" element="rect" class="charts-skeleton-label" />
+            <s-skeleton-item v-for="i in xTick" :key="i" element="rect" class="charts-skeleton-label"></s-skeleton-item>
           </div>
           <div v-if="hasIssue" class="charts-skeleton-error">
-            <s-icon v-if="isError" name="clear-X-16" :size="'32px'" />
+            <s-icon v-if="isError" name="clear-X-16" :size="'32px'"></s-icon>
             <p class="charts-skeleton-error-message">
               <template v-if="isError">{{ t('swap.errorFetching') }}</template>
               <template v-else>{{ t('noDataText') }}</template>
@@ -30,39 +30,56 @@
         </div>
       </div>
     </template>
-    <slot />
+    <slot></slot>
   </s-skeleton>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-import { SSkeleton, SSkeletonItem } from '@/compat/soramitsu-ui';
+import { SSkeleton, SSkeletonItem } from '@soramitsu-ui/ui/components/Skeleton';
+import { useTranslation } from '@/composables/useTranslation';
 
-@Component({
+defineOptions({
+  name: 'ChartSkeleton',
   components: {
     SSkeleton,
     SSkeletonItem,
   },
-})
-export default class ChartSkeleton extends Mixins(mixins.TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isEmpty!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isError!: boolean;
-  @Prop({ default: true, type: Boolean }) readonly yLabel!: boolean;
-  @Prop({ default: true, type: Boolean }) readonly xLabel!: boolean;
-  @Prop({ default: 9, type: Number }) readonly yTick!: number;
-  @Prop({ default: 11, type: Number }) readonly xTick!: number;
+});
 
-  get hasIssue(): boolean {
-    return !this.loading && (this.isError || this.isEmpty);
+const props = withDefaults(
+  defineProps<{
+    loading?: boolean;
+    isEmpty?: boolean;
+    isError?: boolean;
+    yLabel?: boolean;
+    xLabel?: boolean;
+    yTick?: number;
+    xTick?: number;
+  }>(),
+  {
+    loading: false,
+    isEmpty: false,
+    isError: false,
+    yLabel: true,
+    xLabel: true,
+    yTick: 9,
+    xTick: 11,
   }
+);
 
-  handleRetry(): void {
-    this.$emit('retry');
-  }
-}
+const emit = defineEmits<{
+  (event: 'retry'): void;
+}>();
+
+const { t } = useTranslation();
+
+const hasIssue = computed(() => !props.loading && (props.isError || props.isEmpty));
+
+const handleRetry = (): void => {
+  emit('retry');
+};
 </script>
 
 <style lang="scss">

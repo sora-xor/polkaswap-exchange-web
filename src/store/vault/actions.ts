@@ -1,5 +1,5 @@
 import { XOR, KUSD } from '@sora-substrate/sdk/build/assets/consts';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@wallet';
 import { defineActions } from 'direct-vuex';
 
 import { fetchClosedVaults } from '@/indexer/queries/vault/vaults';

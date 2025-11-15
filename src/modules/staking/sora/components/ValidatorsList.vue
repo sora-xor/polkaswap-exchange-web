@@ -2,8 +2,8 @@
   <div class="validators">
     <div v-if="!isValidatorModeRecommended" class="search-container">
       <s-input
-        type="text"
         v-model="search"
+        type="text"
         :placeholder="t('soraStaking.validatorsList.search')"
         prefix="s-icon-basic-search-24"
       >
@@ -11,34 +11,36 @@
           <s-button class="filters-button" type="outline" size="mini" @click="openFilters">
             <div class="filters-button-content">
               <span>{{ t('soraStaking.validatorsFilterDialog.title') }}</span>
-              <s-icon name="basic-settings-24" size="14px" />
+              <s-icon name="basic-settings-24" size="14px"></s-icon>
             </div>
           </s-button>
         </template>
       </s-input>
     </div>
+
     <div class="table-header">
       <div class="table-header-avatar table-header-item">
-        <s-icon name="various-bone-24" size="14px" />
+        <s-icon name="various-bone-24" size="14px"></s-icon>
       </div>
       <div class="table-header-name table-header-item">{{ t('soraStaking.validatorsList.name') }}</div>
       <div class="table-header-info table-header-item">
         <div v-button :class="commissionHeaderClass" @click="setCommissionSort">
           <span>{{ t('soraStaking.validatorsList.commission') }}</span>
           <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
-            <s-icon name="info-16" size="14px" />
+            <s-icon name="info-16" size="14px"></s-icon>
           </s-tooltip>
-          <s-icon class="chevron" name="arrows-chevron-top-rounded-24" size="18" />
+          <s-icon class="chevron" name="arrows-chevron-top-rounded-24" size="18"></s-icon>
         </div>
         <div v-button :class="returnHeaderClass" @click="setReturnSort">
           <span>{{ t('soraStaking.validatorsList.return') }}</span>
           <s-tooltip border-radius="mini" :content="t('comingSoonText')">
-            <s-icon name="info-16" size="14px" />
+            <s-icon name="info-16" size="14px"></s-icon>
           </s-tooltip>
-          <s-icon class="chevron" name="arrows-chevron-top-rounded-24" size="18" />
+          <s-icon class="chevron" name="arrows-chevron-top-rounded-24" size="18"></s-icon>
         </div>
       </div>
     </div>
+
     <div class="list">
       <div v-if="!filteredValidators.length" class="empty">
         <span>{{ emptyText }}</span>
@@ -46,16 +48,18 @@
       <s-scrollbar v-else class="validators-list-scrollbar">
         <ul class="list">
           <li v-for="validator in filteredValidators" :key="validator.address" class="validator">
-            <validator-avatar class="avatar" :validator="validator">
-              <div v-if="isSelected(validator)" class="check" slot="icon">
-                <s-icon name="basic-check-mark-24" size="12px" />
-              </div>
-            </validator-avatar>
+            <ValidatorAvatar class="avatar" :validator="validator">
+              <template #icon>
+                <div v-if="isSelected(validator)" class="check">
+                  <s-icon name="basic-check-mark-24" size="12px"></s-icon>
+                </div>
+              </template>
+            </ValidatorAvatar>
             <div class="name-and-address">
               <div class="name">
                 {{ formatName(validator) }}
               </div>
-              <formatted-address :value="validator.address" :symbols="16" />
+              <FormattedAddress :value="validator.address" :symbols="16"></FormattedAddress>
             </div>
             <div class="info">
               <span :class="commissionClass">{{ formatCommission(validator.commission) }}%</span>
@@ -67,34 +71,39 @@
               v-button
               class="select-area"
               @click="toggleSelectValidator(validator)"
-            />
+            ></div>
           </li>
         </ul>
       </s-scrollbar>
     </div>
-    <div class="blackout" />
+    <div class="blackout"></div>
   </div>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-
-import { soraStakingLazyComponent } from '../../router';
+import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
+import { useValidatorsFormatting } from '@/modules/staking/sora/composables/useValidatorsFormatting';
 import {
   emptyValidatorsFilter,
   recommendedValidatorsFilter,
   SoraStakingComponents,
   ValidatorsListMode,
-} from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
-import ValidatorsMixin from '../mixins/ValidatorsMixin';
-import { ValidatorsFilter } from '../types';
+} from '@/modules/staking/sora/consts';
+import { soraStakingLazyComponent } from '@/modules/staking/router';
 
+import type { ValidatorsFilter } from '@/modules/staking/sora/types';
 import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+
+defineOptions({
+  inheritAttrs: false,
+  components: {
+    FormattedAddress: components.FormattedAddress,
+  },
+});
 
 enum Sort {
   COMMISSION_ASC = 'commission-asc',
@@ -103,176 +112,164 @@ enum Sort {
   RETURN_DESC = 'return-desc',
 }
 
-function calcSortClass(base: string, sort: Sort, sortAsc: Sort, sortDesc: Sort) {
-  return {
-    [base]: true,
-    [`${base}--active`]: sort === sortAsc || sort === sortDesc,
-    [`${base}--asc`]: sort === sortAsc,
-    [`${base}--desc`]: sort === sortDesc,
-  };
-}
+const props = defineProps<{
+  mode: ValidatorsListMode;
+  selectedValidators?: ValidatorInfoFull[];
+}>();
 
-@Component({
-  components: {
-    TokenInput: lazyComponent(Components.TokenInput),
-    InfoLine: components.InfoLine,
-    FormattedAddress: components.FormattedAddress,
-    StakingHeader: soraStakingLazyComponent(SoraStakingComponents.StakingHeader),
-    ValidatorAvatar: soraStakingLazyComponent(SoraStakingComponents.ValidatorAvatar),
-  },
-})
-export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin, mixins.LoadingMixin) {
-  @Prop({ required: true, type: String }) readonly mode!: ValidatorsListMode;
+const emit = defineEmits<{
+  (event: 'update:selected', value: ValidatorInfoFull[]): void;
+}>();
 
-  ValidatorsListMode = ValidatorsListMode;
+const { t } = useI18n();
+const {
+  validators,
+  validatorsFilter,
+  setShowValidatorsFilterDialog,
+  setValidatorsFilter,
+  maxNominations,
+  stakingInfo,
+} = useSoraStaking();
+const { formatName, decodeName, formatCommission, formatReturn } = useValidatorsFormatting();
 
-  search = '';
-  sort: Sort = Sort.RETURN_DESC;
+const ValidatorAvatar = soraStakingLazyComponent(SoraStakingComponents.ValidatorAvatar);
 
-  get isValidatorModeRecommended() {
-    return this.mode === ValidatorsListMode.RECOMMENDED;
-  }
+const search = ref('');
+const sort = ref<Sort>(Sort.RETURN_DESC);
 
-  get sortedValidators() {
-    return [...this.validators].sort((a, b) => {
-      switch (this.sort) {
-        case Sort.COMMISSION_ASC:
-          return Number(a.commission) - Number(b.commission);
-        case Sort.COMMISSION_DESC:
-          return Number(b.commission) - Number(a.commission);
-        case Sort.RETURN_ASC:
-          return Number(a.apy) - Number(b.apy);
-        case Sort.RETURN_DESC:
-          return Number(b.apy) - Number(a.apy);
-        default:
-          throw new Error('Invalid sort type');
-      }
-    });
-  }
+const isValidatorModeRecommended = computed(() => props.mode === ValidatorsListMode.RECOMMENDED);
+const selectedValidators = computed(() => props.selectedValidators ?? []);
 
-  get filteredValidators() {
-    const filtered = this.filterValidators(this.sortedValidators, this.validatorsFilter, this.search);
-    switch (this.mode) {
-      case ValidatorsListMode.RECOMMENDED:
-        return this.filterValidators(this.sortedValidators, recommendedValidatorsFilter, '').slice(
-          0,
-          this.maxNominations
-        );
-      case ValidatorsListMode.USER:
-        return filtered.filter((v) => this.stakingInfo?.myValidators.includes(v.address));
-      default:
-        return filtered;
-    }
-  }
+const calcSortClass = (base: string, value: Sort, asc: Sort, desc: Sort) => ({
+  [base]: true,
+  [`${base}--active`]: value === asc || value === desc,
+  [`${base}--asc`]: value === asc,
+  [`${base}--desc`]: value === desc,
+});
 
-  get emptyText() {
-    if (this.mode === ValidatorsListMode.USER && this.stakingInfo?.myValidators.length === 0) {
-      return this.t('soraStaking.validatorsList.noNominatedValidators');
-    }
-    return this.t('soraStaking.validatorsList.noValidators');
-  }
+const sortedValidators = computed(() => {
+  const list = [...(validators.value ?? [])];
 
-  get commissionHeaderClass() {
-    return calcSortClass('table-header-commission', this.sort, Sort.COMMISSION_ASC, Sort.COMMISSION_DESC);
-  }
-
-  get returnHeaderClass() {
-    return calcSortClass('table-header-return', this.sort, Sort.RETURN_ASC, Sort.RETURN_DESC);
-  }
-
-  get commissionClass() {
-    return calcSortClass('info-commission', this.sort, Sort.COMMISSION_ASC, Sort.COMMISSION_DESC);
-  }
-
-  get returnClass() {
-    return calcSortClass('info-return', this.sort, Sort.RETURN_ASC, Sort.RETURN_DESC);
-  }
-
-  filterValidators(validators: ValidatorInfoFull[], filter: ValidatorsFilter, search = '') {
-    return validators.filter((validator) => {
-      if (filter.hasIdentity && (!validator.identity || !Object.keys(validator.identity.info).length)) {
-        return false;
-      }
-      if (filter.notSlashed && validator.blocked) {
-        return false;
-      }
-      if (filter.notOversubscribed && validator.isOversubscribed) {
-        return false;
-      }
-      if (filter.twoValidatorsPerIdentity && validator.isOversubscribed) {
-        const validatorsWithSameIdentity = validators.filter(
-          (v) => v.identity?.info.display === validator.identity?.info.display
-        );
-        if (validatorsWithSameIdentity.length > 2) {
-          return false;
-        }
-      }
-      const name = this.decodeName(validator);
-      return name.toLowerCase().includes(search.toLowerCase());
-    });
-  }
-
-  setCommissionSort() {
-    switch (this.sort) {
+  return list.sort((a, b) => {
+    switch (sort.value) {
       case Sort.COMMISSION_ASC:
-        this.sort = Sort.COMMISSION_DESC;
-        break;
+        return Number(a.commission) - Number(b.commission);
       case Sort.COMMISSION_DESC:
-        this.sort = Sort.COMMISSION_ASC;
-        break;
-      default:
-        this.sort = Sort.COMMISSION_ASC;
-    }
-  }
-
-  setReturnSort() {
-    switch (this.sort) {
+        return Number(b.commission) - Number(a.commission);
       case Sort.RETURN_ASC:
-        this.sort = Sort.RETURN_DESC;
-        break;
+        return Number(a.apy) - Number(b.apy);
       case Sort.RETURN_DESC:
-        this.sort = Sort.RETURN_ASC;
-        break;
+        return Number(b.apy) - Number(a.apy);
       default:
-        this.sort = Sort.RETURN_ASC;
+        return 0;
     }
-  }
+  });
+});
 
-  toggleSelectValidator(validator: ValidatorInfoFull) {
-    if (this.isValidatorModeRecommended) {
-      return;
+const applyFilter = (list: ValidatorInfoFull[], filter: ValidatorsFilter, term = '') =>
+  list.filter((validator) => {
+    if (filter.hasIdentity && (!validator.identity || !Object.keys(validator.identity.info).length)) return false;
+    if (filter.notSlashed && validator.blocked) return false;
+    if (filter.notOversubscribed && validator.isOversubscribed) return false;
+    if (filter.twoValidatorsPerIdentity && validator.isOversubscribed) {
+      const sameIdentity = list.filter((item) => item.identity?.info.display === validator.identity?.info.display);
+      if (sameIdentity.length > 2) return false;
     }
-    const index = this.selectedValidators.findIndex((v) => v.address === validator.address);
-    const selected = [...this.selectedValidators];
-    if (index > -1) {
-      selected.splice(index, 1);
-    } else {
-      selected.push(validator);
+
+    const name = decodeName(validator);
+    return name.toLowerCase().includes(term.toLowerCase());
+  });
+
+const filteredValidators = computed(() => {
+  const currentList = sortedValidators.value;
+  const baseFilter = validatorsFilter.value ?? emptyValidatorsFilter;
+
+  switch (props.mode) {
+    case ValidatorsListMode.RECOMMENDED:
+      return applyFilter(currentList, recommendedValidatorsFilter).slice(0, maxNominations.value ?? currentList.length);
+    case ValidatorsListMode.USER:
+      return applyFilter(currentList, baseFilter, search.value).filter((validator) =>
+        stakingInfo.value?.myValidators.includes(validator.address)
+      );
+    default:
+      return applyFilter(currentList, baseFilter, search.value);
+  }
+});
+
+const emptyText = computed(() => {
+  if (props.mode === ValidatorsListMode.USER && (stakingInfo.value?.myValidators.length ?? 0) === 0) {
+    return t('soraStaking.validatorsList.noNominatedValidators');
+  }
+
+  return t('soraStaking.validatorsList.noValidators');
+});
+
+const commissionHeaderClass = computed(() =>
+  calcSortClass('table-header-commission', sort.value, Sort.COMMISSION_ASC, Sort.COMMISSION_DESC)
+);
+const returnHeaderClass = computed(() =>
+  calcSortClass('table-header-return', sort.value, Sort.RETURN_ASC, Sort.RETURN_DESC)
+);
+const commissionClass = computed(() =>
+  calcSortClass('info-commission', sort.value, Sort.COMMISSION_ASC, Sort.COMMISSION_DESC)
+);
+const returnClass = computed(() => calcSortClass('info-return', sort.value, Sort.RETURN_ASC, Sort.RETURN_DESC));
+
+const setCommissionSort = () => {
+  sort.value =
+    sort.value === Sort.COMMISSION_ASC
+      ? Sort.COMMISSION_DESC
+      : sort.value === Sort.COMMISSION_DESC
+        ? Sort.COMMISSION_ASC
+        : Sort.COMMISSION_ASC;
+};
+
+const setReturnSort = () => {
+  sort.value = sort.value === Sort.RETURN_ASC ? Sort.RETURN_DESC : Sort.RETURN_ASC;
+};
+
+const toggleSelectValidator = (validator: ValidatorInfoFull) => {
+  if (isValidatorModeRecommended.value) return;
+
+  const selected = [...selectedValidators.value];
+  const index = selected.findIndex((item) => item.address === validator.address);
+
+  if (index > -1) {
+    selected.splice(index, 1);
+  } else {
+    selected.push(validator);
+  }
+
+  emit('update:selected', selected);
+};
+
+const isSelected = (validator: ValidatorInfoFull) =>
+  selectedValidators.value.some((item) => item.address === validator.address);
+
+const openFilters = () => {
+  setShowValidatorsFilterDialog(true);
+};
+
+onMounted(() => {
+  setValidatorsFilter(emptyValidatorsFilter);
+});
+
+watch(
+  () => [filteredValidators.value, props.mode],
+  () => {
+    if (isValidatorModeRecommended.value) {
+      emit('update:selected', filteredValidators.value);
     }
-    this.$emit('update:selected', selected);
-  }
+  },
+  { immediate: true }
+);
 
-  isSelected(validator: ValidatorInfoFull) {
-    return this.selectedValidators.some((v) => v.address === validator.address);
-  }
-
-  getValidatorAvatar(validator: ValidatorInfoFull) {
-    return validator.identity?.info.image ? validator.identity?.info.image : '/staking/validator-avatar.svg';
-  }
-
-  @Watch('validators', { immediate: true })
-  onValidatorsChange() {
-    this.$emit('update:selected', this.isValidatorModeRecommended ? this.filteredValidators : []);
-  }
-
-  openFilters() {
-    this.setShowValidatorsFilterDialog(true);
-  }
-
-  created() {
-    this.setValidatorsFilter(emptyValidatorsFilter);
-  }
-}
+defineExpose({
+  toggleSelectValidator,
+  setCommissionSort,
+  setReturnSort,
+  openFilters,
+});
 </script>
 
 <style lang="scss">
@@ -286,7 +283,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 }
 </style>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .validators {
   overflow: hidden;
   position: relative;
@@ -398,120 +395,74 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
       color: var(--s-color-status-info);
     }
   }
-  &-return {
-    margin-top: 4px;
-  }
-  &-commission--desc .chevron {
-    transform: rotate(180deg);
-  }
-  &-return--desc .chevron {
+
+  &-commission--asc .chevron,
+  &-return--asc .chevron {
     transform: rotate(180deg);
   }
 
-  i {
+  .chevron {
     color: var(--s-color-base-content-tertiary);
     margin-left: 4px;
   }
 }
 
-.validators-list-scrollbar,
-.empty {
-  height: 380px;
-  padding-bottom: 64px;
+.list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
 }
 
-.validators-list-scrollbar {
-  @include scrollbar;
-  .list & {
-    margin: 0 -24px; // to override scrollbar mixin above
+.validator {
+  position: relative;
+  display: grid;
+  grid-template-columns: 38px auto fit-content(120px);
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--s-color-base-border-secondary);
+
+  &:last-child {
+    border-bottom: none;
   }
-
-  ul {
-    list-style-type: none;
-    padding: 0 24px;
-    padding-bottom: 64px;
-
-    li {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 100%;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--s-color-base-border-secondary);
-    }
-  }
-}
-
-.avatar,
-.name {
-  height: 100%;
 }
 
 .avatar {
-  margin-right: 10px;
+  position: relative;
+}
 
-  .check {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    background-color: var(--s-color-theme-accent);
-
-    i {
-      color: var(--s-color-base-on-accent);
-    }
-  }
+.check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--s-color-status-success);
+  color: var(--s-color-base-surface);
 }
 
 .name-and-address {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  font-weight: bold;
-  margin-right: 10px;
+  gap: 4px;
 }
 
 .info {
   text-align: right;
-  line-height: 150%;
-
-  span {
-    margin-right: 8px;
+  .info-commission {
+    color: var(--s-color-base-content-secondary);
   }
-
-  &-commission,
-  &-return {
-    height: 21px;
-    padding: 2px 6px;
-    font-weight: 600;
-  }
-
-  &-commission:not(&-commission--active),
-  &-return:not(&-return--active) {
-    font-size: 14px;
-    font-style: normal;
-    letter-spacing: -0.32px;
-  }
-
-  &-return--active,
-  &-commission--active {
-    border-radius: 8px;
-    font-size: 14px;
-    color: var(--s-color-status-info);
-    background: var(--s-color-utility-surface);
-    box-shadow: var(--s-shadow-element-pressed);
+  .info-return {
+    color: var(--s-color-status-success);
   }
 }
 
 .select-area {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: calc(100% - 20px);
-  height: 100%;
+  inset: 0;
   cursor: pointer;
 }
 
@@ -519,8 +470,8 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  color: var(--s-color-brand-day);
-  font-size: 16px;
+  padding: 48px 0;
+  color: var(--s-color-base-content-tertiary);
+  font-size: 14px;
 }
 </style>

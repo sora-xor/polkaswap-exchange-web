@@ -1,0 +1,3 @@
+
+Æ¾import{F as r,M as m}from"./index-DjB-Okl0.js";import"./echarts-Cxkeyetf.js";import"./lodash-vOcFpjD8.js";function F(){const e=(o,t)=>new r(o,t),n=(o,t)=>r.fromCodecValue(o,t),p=(o,t)=>n(o,t).toLocaleString(),s=(o,t)=>e(o,t).toLocaleString(),a=(o,t)=>n(o,t).toString(),i=(o,t)=>n(o,t).isZero(),g=(o,t)=>{const u=e(o,t),c=e(m,t);return r.gt(u,c)?c.toString():u.toString()};return{Zero:r.ZERO,Hundred:r.HUNDRED,MaxInputNumber:m,getFPNumber:e,getFPNumberFromCodec:n,formatCodecNumber:p,formatStringValue:s,getStringFromCodec:a,isCodecZero:i,getCorrectSupply:g}}export{F as u};
+¾

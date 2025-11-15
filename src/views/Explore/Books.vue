@@ -21,7 +21,7 @@
             </span>
           </div>
           <div class="explore-table-item-logo">
-            <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head" />
+            <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head"></s-icon>
           </div>
           <div class="explore-table-item-info explore-table-item-info--head">
             <span class="explore-table__primary">{{ t('nameText') }}</span>
@@ -34,7 +34,7 @@
             :second-token="row.targetAsset"
             size="small"
             class="explore-table-item-logo"
-          />
+          ></pair-token-logo>
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.baseAsset.symbol }}-{{ row.targetAsset.symbol }}</div>
           </div>
@@ -53,14 +53,14 @@
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.priceFormatted"
             class="explore-table-item-price"
-          />
+          ></formatted-amount>
           <formatted-amount
             is-fiat-value
             fiat-default-rounding
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.priceUSDFormatted"
             class="explore-table-item-price"
-          />
+          ></formatted-amount>
         </template>
       </s-table-column>
       <!-- 1D Price Change -->
@@ -71,7 +71,7 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <price-change :value="row.priceChangeDayFP" />
+          <price-change :value="row.priceChangeDayFP"></price-change>
         </template>
       </s-table-column>
       <!-- 1D Volume -->
@@ -98,7 +98,7 @@
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
             <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
-              <s-icon name="info-16" size="14px" />
+              <s-icon name="info-16" size="14px"></s-icon>
             </s-tooltip>
           </sort-button>
         </template>
@@ -123,14 +123,14 @@
       :last-page="lastPage"
       :loading="loadingState"
       @pagination-click="handlePaginationClick"
-    />
+    ></history-pagination>
   </div>
 </template>
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { components } from '@wallet';
+import { Options, mixins as vueMixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import { Components } from '@/consts';
@@ -157,7 +157,7 @@ type TableItem = {
   tvlFormatted: AmountWithSuffix;
 };
 
-@Component({
+@Options({
   components: {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PriceChange: lazyComponent(Components.PriceChange),
@@ -167,7 +167,7 @@ type TableItem = {
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class ExploreBooks extends Mixins(ExplorePageMixin) {
+export default class ExploreBooks extends vueMixins(ExplorePageMixin) {
   private orderBooks: readonly OrderBookWithStats[] = [];
 
   get prefilteredItems(): TableItem[] {

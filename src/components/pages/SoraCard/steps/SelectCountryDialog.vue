@@ -1,13 +1,13 @@
 <template>
-  <dialog-base :visible.sync="isVisible" class="select-country-dialog" :title="t('card.selectCountryText')">
+  <dialog-base v-model:visible="visibilityModel" class="select-country-dialog" :title="t('card.selectCountryText')">
     <search-input
-      ref="search"
+      ref="searchRef"
       v-model="query"
       class="select-country__search"
       autofocus
       :placeholder="t('card.filterCountries')"
       @clear="handleClearSearch"
-    />
+    ></search-input>
     <s-scrollbar class="select-country__scrollbar">
       <div class="select-country__list">
         <div
@@ -29,97 +29,116 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+<script setup lang="ts">
+import { components } from '@wallet';
 import { countryCodeEmoji } from 'country-code-emoji';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { computed, nextTick, onMounted, ref } from 'vue';
 
-import SearchInputMixin from '@/components/mixins/SearchInputMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state } from '@/store/decorators';
+import { useTranslation } from '@/composables/useTranslation';
+import { useSettingsStore } from '@/stores/settings';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import type { CountryInfo, PhoneCode } from '@/types/card';
 import { getPhoneCodes } from '@/utils/card';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    SearchInput: components.SearchInput,
-  },
-})
-export default class SelectCountryDialog extends Mixins(TranslationMixin, mixins.DialogMixin, SearchInputMixin) {
-  @state.settings.displayRegions private displayRegions!: Nullable<Intl.DisplayNames>;
-  private countriesObject: Record<string, PhoneCode> = {};
+const DialogBase = components.DialogBase;
+const SearchInput = components.SearchInput;
+const SelectCountryDialog = lazyComponent(Components.SelectCountryDialog);
 
-  private get countries(): Array<CountryInfo> {
-    return Object.entries(this.countriesObject)
-      .map(([key, value]) => {
-        const flag = this.getFlag(key);
-        const translatedName = this.formatCountryName(key, value.name);
-        return {
-          key,
-          name: value.name,
-          dialCode: value.dial_code,
-          flag,
-          translatedName,
-        };
-      })
-      .sort((a, b) => (a.translatedName < b.translatedName ? -1 : a.translatedName > b.translatedName ? 1 : 0));
-  }
-
-  get filteredCountries() {
-    const countries = this.countries;
-    if (this.query) {
-      const query = this.query.toLowerCase().trim();
-      return countries.filter(
-        (item) =>
-          item.dialCode.includes(query) ||
-          item.name.toLowerCase().includes(query) ||
-          item.translatedName.toLowerCase().includes(query)
-      );
-    }
-    return countries;
-  }
-
-  private getFlag(iso: string): string {
-    try {
-      return countryCodeEmoji(iso);
-    } catch {
-      return '';
-    }
-  }
-
-  private formatCountryName(key: string, defaultValue: string): string {
-    try {
-      const isoCode = key.toUpperCase();
-      if (!this.displayRegions) {
-        return defaultValue;
-      }
-      const name = this.displayRegions.of(isoCode);
-      return name ?? defaultValue;
-    } catch (error) {
-      console.warn('Unsupported format of SORA Card Phone Country', error);
-      return defaultValue;
-    }
-  }
-
-  async mounted(): Promise<void> {
-    this.countriesObject = await getPhoneCodes();
-  }
-
-  @Watch('visible')
-  private async handleVisibleChangeToFocusSearch(value: boolean): Promise<void> {
-    await this.$nextTick();
-
-    if (!value) return;
-    this.clearAndFocusSearch();
-  }
-
-  public selectCountry(country: CountryInfo): void {
-    this.handleClearSearch();
-    this.$emit('select', country);
-    this.closeDialog();
-  }
+interface SelectCountryProps {
+  visible: boolean;
 }
+
+const props = defineProps<SelectCountryProps>();
+
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'select', country: CountryInfo): void;
+}>();
+
+const { t } = useTranslation();
+const settingsStore = useSettingsStore();
+
+const query = ref('');
+const searchRef = ref<InstanceType<typeof SearchInput> | null>(null);
+const countriesObject = ref<Record<string, PhoneCode>>({});
+
+const visibilityModel = computed({
+  get: () => props.visible,
+  set: (flag: boolean) => {
+    emit('update:visible', flag);
+    if (flag) {
+      nextTick(() => {
+        query.value = '';
+        searchRef.value?.focus?.();
+      });
+    }
+  },
+});
+
+const displayRegions = computed(() => settingsStore.displayRegions);
+
+const formatCountryName = (key: string, defaultValue: string): string => {
+  try {
+    const isoCode = key.toUpperCase();
+    const regions = displayRegions.value;
+    if (!regions) return defaultValue;
+    return regions.of(isoCode) ?? defaultValue;
+  } catch (error) {
+    console.warn('Unsupported format of SORA Card Phone Country', error);
+    return defaultValue;
+  }
+};
+
+const countries = computed<Array<CountryInfo>>(() =>
+  Object.entries(countriesObject.value)
+    .map(([key, value]) => {
+      let flag = '';
+      try {
+        flag = countryCodeEmoji(key);
+      } catch {
+        flag = '';
+      }
+      return {
+        key,
+        name: value.name,
+        dialCode: value.dial_code,
+        flag,
+        translatedName: formatCountryName(key, value.name),
+      };
+    })
+    .sort((a, b) => a.translatedName.localeCompare(b.translatedName))
+);
+
+const filteredCountries = computed(() => {
+  const items = countries.value;
+  const text = query.value.trim().toLowerCase();
+  if (!text) return items;
+  return items.filter(
+    (item) =>
+      item.dialCode.includes(text) ||
+      item.name.toLowerCase().includes(text) ||
+      item.translatedName.toLowerCase().includes(text)
+  );
+});
+
+const handleClearSearch = () => {
+  query.value = '';
+};
+
+const selectCountry = (country: CountryInfo) => {
+  handleClearSearch();
+  emit('select', country);
+  emit('update:visible', false);
+};
+
+onMounted(async () => {
+  countriesObject.value = await getPhoneCodes();
+});
+
+defineExpose({
+  filteredCountries,
+});
 </script>
 
 <style lang="scss">

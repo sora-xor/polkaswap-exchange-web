@@ -64,23 +64,81 @@ vi.mock('@sora-substrate/sdk', () => {
     remove() {}
   }
 
-  return { FPNumber: MockFPNumber, Storage: MockStorage };
+  return {
+    FPNumber: MockFPNumber,
+    Storage: MockStorage,
+    api: {
+      setStorage: vi.fn(),
+      shouldPairBeLocked: false,
+      initKeyring: vi.fn(),
+    },
+    connection: {},
+    Operation: {
+      SwapAndSend: 'SwapAndSend',
+      Transfer: 'Transfer',
+      VestedTransfer: 'VestedTransfer',
+      SwapTransferBatch: 'SwapTransferBatch',
+      Mint: 'Mint',
+    },
+    TransactionStatus: {
+      Finalized: 'Finalized',
+      Pending: 'Pending',
+      Failed: 'Failed',
+    },
+  };
 });
 vi.mock('@sora-substrate/sdk/build/assets', () => ({ isNativeAsset: () => false }));
-vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({ XOR: { address: 'xor' } }));
-vi.mock('@soramitsu/soraneo-wallet-web', () => ({
-  api: { account: { assets: [] }, system: {} },
-  WALLET_CONSTS: { HiddenValue: '***' },
-  getExplorerLinks: () => ({ account: () => '' }),
-  storage: { set: () => {}, get: () => null, remove: () => {} },
-  settingsStorage: { set: () => {}, get: () => null, remove: () => {} },
-  vuex: { WalletModules: [] },
+vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({
+  XOR: { address: 'xor' },
+  XSTUSD: { address: 'xstusd' },
+  KUSD: { address: 'kusd' },
+  KGOLD: { address: 'kgold' },
+  KXOR: { address: 'kxor' },
+  VXOR: { address: 'vxor' },
+  KEN: { address: 'ken' },
+  TBCD: { address: 'tbcd' },
+  BalanceType: {
+    Transferable: 'Transferable',
+    Total: 'Total',
+    Locked: 'Locked',
+  },
 }));
-vi.mock('@/store', () => ({
-  default: {
+vi.mock('@wallet', async () => {
+  const walletStub = await vi.importActual<typeof import('@tests/stubs/@wallet')>('@tests/stubs/@wallet');
+  return {
+    ...walletStub,
+    WALLET_CONSTS: {
+      ...walletStub.WALLET_CONSTS,
+      ETH_BRIDGE_STATES: {
+        INITIAL: 0,
+      },
+    },
+    api: {
+      ...(walletStub.api ?? {}),
+      assets: {},
+    },
+    getExplorerLinks: () => ({ account: () => '' }),
+    default: {
+      ...(walletStub as { default?: Record<string, unknown> }).default,
+      WALLET_CONSTS: {
+        ...walletStub.WALLET_CONSTS,
+        ETH_BRIDGE_STATES: {
+          INITIAL: 0,
+        },
+      },
+      api: {
+        ...(walletStub.api ?? {}),
+        assets: {},
+      },
+      getExplorerLinks: () => ({ account: () => '' }),
+    },
+  };
+});
+vi.mock('@/store', () => {
+  const store = {
     state: {
       wallet: {
-        settings: { shouldBalanceBeHidden: false, soraNetwork: null },
+        settings: { shouldBalanceBeHidden: false, soraNetwork: 'test' },
         account: { assets: [], address: 'addr' },
       },
       web3: { denominator: { toCodecString: () => '1' } },
@@ -92,24 +150,50 @@ vi.mock('@/store', () => ({
     },
     commit: () => {},
     dispatch: () => {},
-    original: { watch: () => () => {} },
-  },
-}));
+  };
+
+  const watch = (selector: (state: typeof store.state) => unknown, callback: (value: unknown) => void) => {
+    try {
+      const value = selector(store.state);
+      if (value !== undefined && value !== null) {
+        callback(value);
+      }
+    } catch {
+      /* ignore */
+    }
+    return () => {};
+  };
+
+  return {
+    default: {
+      ...store,
+      original: { watch },
+    },
+  };
+});
 vi.mock('@/lang', () => ({ default: { t: () => '', tc: () => '', locale: 'en' } }));
-vi.mock('@/router', () => ({ default: { currentRoute: { name: '' }, push: () => Promise.resolve() } }));
-vi.mock('@/consts', () => ({ app: { name: 'Polkaswap' }, TranslationConsts: {}, ZeroStringValue: '0' }));
+vi.mock('@/router', () => ({
+  __esModule: true,
+  default: { currentRoute: { name: '' }, push: () => Promise.resolve() },
+  lazyComponent: () => ({ template: '<div class="router-lazy-component-stub"><slot /></div>' }),
+}));
 vi.mock('@/utils/storage', () => ({
   default: { set: () => {}, get: () => null, remove: () => {} },
   layoutsStorage: { set: () => {}, get: () => null },
   calculateStorageUsagePercentage: () => 0,
   clearLocalStorage: () => {},
 }));
-vi.mock('vue', () => ({
-  default: {
-    use: () => {},
-  },
-  reactive: (value: any) => value,
-}));
+vi.mock('vue', async () => {
+  const actual = await vi.importActual<typeof import('vue')>('vue');
+  const defaultExport = (actual as { default?: unknown }).default ?? actual;
+
+  return {
+    __esModule: true,
+    ...actual,
+    default: defaultExport,
+    reactive: (value: any) => value,
+  };
+});
 vi.mock('vue-i18n', () => ({
   default: class MockVueI18n {
     constructor(_: any) {}

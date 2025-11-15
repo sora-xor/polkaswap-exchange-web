@@ -1,7 +1,7 @@
 <template>
   <base-widget v-bind="$attrs" :title="t('networkStatisticsText')">
     <template #filters>
-      <stats-filter :disabled="loading" :filters="filters" :value="filter" @input="changeFilter" />
+      <stats-filter :disabled="loading" :filters="filters" :value="filter" @input="changeFilter"></stats-filter>
     </template>
 
     <div class="stats-row">
@@ -15,7 +15,7 @@
           <div slot="header" class="stats-card-title">
             <span>{{ title }}</span>
             <s-tooltip border-radius="mini" :content="tooltip">
-              <s-icon name="info-16" size="14px" />
+              <s-icon name="info-16" size="14px"></s-icon>
             </s-tooltip>
           </div>
           <div class="stats-card-data">
@@ -26,8 +26,8 @@
               :value="value.amount"
               :asset-symbol="value.suffix"
               symbol-as-decimal
-            />
-            <price-change :value="change" />
+            ></formatted-amount>
+            <price-change :value="change"></price-change>
           </div>
         </s-card>
       </div>
@@ -35,18 +35,20 @@
   </base-widget>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed, getCurrentScope, onMounted, onScopeDispose, ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
 import { fetchData } from '@/indexer/queries/network/stats';
 import { lazyComponent } from '@/router';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
+import type { Nullable } from '@/types/common';
 import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 
 type NetworkSnapshot = {
@@ -67,102 +69,115 @@ type NetworkStatsColumn = {
   tooltip: string;
 };
 
-@Component({
-  components: {
-    PriceChange: lazyComponent(Components.PriceChange),
-    BaseWidget: lazyComponent(Components.BaseWidget),
-    StatsFilter: lazyComponent(Components.StatsFilter),
-    FormattedAmount: components.FormattedAmount,
-  },
-})
-export default class NetworkStats extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
-  readonly filters = NETWORK_STATS_FILTERS;
-  readonly Arrow = String.fromCodePoint(0x2192);
+const BaseWidget = lazyComponent(Components.BaseWidget);
+const StatsFilter = lazyComponent(Components.StatsFilter);
+const PriceChange = lazyComponent(Components.PriceChange);
+const { FormattedAmount } = components;
 
-  filter = NETWORK_STATS_FILTERS[0];
-
-  currData: Nullable<NetworkSnapshot> = null;
-  prevData: Nullable<NetworkSnapshot> = null;
-
-  created(): void {
-    this.updateData();
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+  }>(),
+  {
+    parentLoading: false,
   }
+);
 
-  get columns() {
-    const { Sora, Ethereum } = this.TranslationConsts;
+const filters = NETWORK_STATS_FILTERS;
+const filter = ref<SnapshotFilter>(filters[0]);
 
-    return [
-      {
-        title: this.tc('transactionText', 2),
-        tooltip: this.t('tooltips.transactions'),
-        prop: 'transactions',
-      },
-      {
-        title: this.t('newAccountsText'),
-        tooltip: this.t('tooltips.accounts'),
-        prop: 'accounts',
-      },
-      {
-        title: [Ethereum, this.Arrow, Sora].join(' '),
-        tooltip: this.t('tooltips.bridgeTransactions', { from: Ethereum, to: Sora }),
-        prop: 'bridgeIncomingTransactions',
-      },
-      {
-        title: [Sora, this.Arrow, Ethereum].join(' '),
-        tooltip: this.t('tooltips.bridgeTransactions', { from: Sora, to: Ethereum }),
-        prop: 'bridgeOutgoingTransactions',
-      },
-    ];
-  }
+const currData = ref<Nullable<NetworkSnapshot>>(null);
+const prevData = ref<Nullable<NetworkSnapshot>>(null);
 
-  get statsColumns(): NetworkStatsColumn[] {
-    const { currData: curr, prevData: prev } = this;
+const parentLoading = computed(() => props.parentLoading);
+const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
+const { t, tc, TranslationConsts } = useTranslation();
 
-    return this.columns.map(({ prop, title, tooltip }) => {
-      const propCurr = curr?.[prop] ?? FPNumber.ZERO;
-      const propPrev = prev?.[prop] ?? FPNumber.ZERO;
-      const propChange = calcPriceChange(propCurr, propPrev);
-      const value = formatAmountWithSuffix(propCurr);
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+const FontWeightRate = WALLET_CONSTS.FontWeightRate;
+const arrow = String.fromCodePoint(0x2192);
 
-      return { title, tooltip, value, change: propChange };
+const columns = computed(() => {
+  const { Sora, Ethereum } = TranslationConsts;
+
+  return [
+    {
+      title: tc('transactionText', 2),
+      tooltip: t('tooltips.transactions'),
+      prop: 'transactions' as const,
+    },
+    {
+      title: t('newAccountsText'),
+      tooltip: t('tooltips.accounts'),
+      prop: 'accounts' as const,
+    },
+    {
+      title: [Ethereum, arrow, Sora].join(' '),
+      tooltip: t('tooltips.bridgeTransactions', { from: Ethereum, to: Sora }),
+      prop: 'bridgeIncomingTransactions' as const,
+    },
+    {
+      title: [Sora, arrow, Ethereum].join(' '),
+      tooltip: t('tooltips.bridgeTransactions', { from: Sora, to: Ethereum }),
+      prop: 'bridgeOutgoingTransactions' as const,
+    },
+  ];
+});
+
+const statsColumns = computed<NetworkStatsColumn[]>(() => {
+  return columns.value.map(({ prop, title, tooltip }) => {
+    const current = currData.value?.[prop] ?? FPNumber.ZERO;
+    const previous = prevData.value?.[prop] ?? FPNumber.ZERO;
+    return {
+      title,
+      tooltip,
+      value: formatAmountWithSuffix(current),
+      change: calcPriceChange(current, previous),
+    } satisfies NetworkStatsColumn;
+  });
+});
+
+const groupData = (data: NetworkSnapshotData[]): Nullable<NetworkSnapshot> => {
+  return data.reduce<Nullable<NetworkSnapshot>>((buffer, item) => {
+    if (!buffer) return item;
+
+    for (const { prop } of columns.value) {
+      buffer[prop] = (buffer[prop] as FPNumber).add(item[prop]);
+    }
+
+    return buffer;
+  }, null);
+};
+
+const updateData = async () => {
+  await withLoading(async () => {
+    await withParentLoading(async () => {
+      const { type, count } = filter.value;
+      const seconds = SECONDS_IN_TYPE[type];
+      const now = Math.floor(Date.now() / (seconds * 1000)) * seconds;
+      const aTime = now - seconds * count;
+      const bTime = aTime - seconds * count;
+
+      const [current, previous] = await Promise.all([fetchData(now, aTime, type), fetchData(aTime, bTime, type)]);
+
+      currData.value = Object.freeze(groupData(current));
+      prevData.value = Object.freeze(groupData(previous));
     });
-  }
+  });
+};
 
-  changeFilter(filter: SnapshotFilter): void {
-    this.filter = filter;
-    this.updateData();
-  }
+const changeFilter = (value: SnapshotFilter) => {
+  filter.value = value;
+  updateData();
+};
 
-  private groupData(data: NetworkSnapshotData[]): Nullable<NetworkSnapshot> {
-    return data.reduce<Nullable<NetworkSnapshot>>((buffer, item) => {
-      if (!buffer) return item;
+onMounted(updateData);
 
-      for (const { prop } of this.columns) {
-        (buffer[prop] as FPNumber) = (buffer[prop] as FPNumber).add(item[prop]);
-      }
-
-      return buffer;
-    }, null);
-  }
-
-  private async updateData(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        const { type, count } = this.filter;
-        const seconds = SECONDS_IN_TYPE[type];
-        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
-        const aTime = now - seconds * count;
-        const bTime = aTime - seconds * count;
-
-        const [curr, prev] = await Promise.all([fetchData(now, aTime, type), fetchData(aTime, bTime, type)]);
-
-        this.currData = Object.freeze(this.groupData(curr));
-        this.prevData = Object.freeze(this.groupData(prev));
-      });
-    });
-  }
+if (getCurrentScope()) {
+  onScopeDispose(() => {
+    currData.value = null;
+    prevData.value = null;
+  });
 }
 </script>
 

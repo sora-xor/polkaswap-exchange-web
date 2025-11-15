@@ -36,171 +36,172 @@
           {{ t(isBond ? 'referralProgram.action.bond' : 'referralProgram.action.unbond') }}
         </template>
       </s-button>
+
       <info-line
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="networkFeeFormatted"
         :asset-symbol="xorSymbol"
-        :fiat-value="getFiatAmountByCodecString(networkFee)"
+        :fiat-value="formattedNetworkFeeFiat"
         is-formatted
       />
-      <referrals-confirm-bonding :visible.sync="confirmDialogVisibility" @confirm="confirmBond" />
+
+      <referrals-confirm-bonding v-model:visible="confirmDialogVisible" @confirm="confirmBond" />
     </s-form>
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { api, components, WALLET_CONSTS } from '@wallet';
+import { computed, onBeforeUnmount, ref, toRef } from 'vue';
+import { useRoute } from 'vue-router';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTransaction } from '@/composables/useTransaction';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
-import { getter, mutation, state } from '@/store/decorators';
+import store from '@/store';
 import { getMaxValue, hasInsufficientBalance, asZeroValue, getAssetBalance } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset, AccountBalance } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+const props = withDefaults(defineProps<{ parentLoading?: boolean }>(), {
+  parentLoading: false,
+});
+const parentLoading = toRef(props, 'parentLoading');
+
+defineOptions({
+  name: 'ReferralBonding',
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenInput: lazyComponent(Components.TokenInput),
     ReferralsConfirmBonding: lazyComponent(Components.ReferralsConfirmBonding),
     InfoLine: components.InfoLine,
   },
-})
-export default class ReferralBonding extends Mixins(
-  mixins.FormattedAmountMixin,
-  mixins.TransactionMixin,
-  ConfirmDialogMixin
-) {
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @state.referrals.amount amount!: string;
+});
 
-  @getter.assets.xor xor!: Nullable<AccountAsset>;
+const { t } = useTranslation();
+const { formatCodecNumber, getFiatAmountByCodecString, getFPNumber, getFPNumberFromCodec } = useFormattedAmount();
+const { withNotifications, loading } = useTransaction();
+const route = useRoute();
 
-  @mutation.referrals.setAmount private setAmount!: (amount: string) => void;
-  @mutation.referrals.resetAmount private resetAmount!: FnWithoutArgs;
+const networkFees = computed<NetworkFeesObject>(
+  () => (store.state?.wallet?.settings?.networkFees as NetworkFeesObject | undefined) ?? ({} as NetworkFeesObject)
+);
+const amount = computed(() => (store.state?.referrals?.amount as string | undefined) ?? '');
+const xor = computed<Nullable<AccountAsset>>(() => store.getters?.assets?.xor as Nullable<AccountAsset>);
+const shouldBalanceBeHidden = computed(() => Boolean(store.state?.wallet?.settings?.shouldBalanceBeHidden));
 
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+const xorSymbol = computed(() => XOR.symbol);
+const xorDecimals = computed(() => xor.value?.decimals ?? XOR.decimals);
+const xorBalance = computed<Nullable<AccountBalance>>(() => xor.value?.balance ?? null);
 
-  get xorSymbol(): string {
-    return XOR.symbol;
+const isBond = computed(() => route.name === PageNames.ReferralBonding);
+const isBondedBalance = computed(() => !isBond.value);
+
+const balance = computed<CodecString>(() => getAssetBalance(xor.value, { isBondedBalance: isBondedBalance.value }));
+const hasZeroAmount = computed(() => asZeroValue(amount.value));
+
+const networkFee = computed<CodecString>(() => {
+  const fees = networkFees.value;
+  return fees[isBond.value ? Operation.ReferralReserveXor : Operation.ReferralUnreserveXor] ?? ZeroStringValue;
+});
+
+const fpNumberNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value, xorDecimals.value));
+const formattedNetworkFeeFiat = computed(() => getFiatAmountByCodecString(networkFee.value, XOR));
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value, xorDecimals.value));
+
+const isMaxButtonAvailable = computed(() => {
+  if (shouldBalanceBeHidden.value) return false;
+
+  const balanceValue = getFPNumberFromCodec(xorBalance.value?.transferable ?? ZeroStringValue, xorDecimals.value);
+  const amountValue = getFPNumber(amount.value || '0', xorDecimals.value);
+
+  if (fpNumberNetworkFee.value.isZero()) return false;
+
+  if (isBondedBalance.value) {
+    const bonded = xorBalance.value?.bonded ?? ZeroStringValue;
+    const isBondedZero = getFPNumberFromCodec(bonded, xorDecimals.value).isZero();
+    return !isBondedZero && FPNumber.gt(balanceValue, fpNumberNetworkFee.value);
   }
 
-  get xorDecimals(): number {
-    return XOR.decimals;
-  }
+  return (
+    !FPNumber.eq(fpNumberNetworkFee.value, balanceValue.sub(amountValue)) &&
+    FPNumber.gt(balanceValue, fpNumberNetworkFee.value)
+  );
+});
 
-  get xorBalance(): Nullable<AccountBalance> {
-    return this.xor?.balance;
-  }
+const isInsufficientBondedXor = computed(() => {
+  return (
+    !!xor.value &&
+    hasInsufficientBalance(xor.value, amount.value, networkFee.value, {
+      isBondedBalance: isBondedBalance.value,
+    })
+  );
+});
 
-  get balance(): CodecString {
-    return getAssetBalance(this.xor, { isBondedBalance: this.isBondedBalance });
-  }
-
-  get isBond(): boolean {
-    return this.$route.name === PageNames.ReferralBonding;
-  }
-
-  get isBondedBalance(): boolean {
-    return !this.isBond;
-  }
-
-  get hasZeroAmount(): boolean {
-    return asZeroValue(this.amount);
-  }
-
-  get isMaxButtonAvailable(): boolean {
-    if (this.shouldBalanceBeHidden) {
-      return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
-    }
-    const balance = this.getFPNumberFromCodec(this.xorBalance?.transferable ?? ZeroStringValue, this.xorDecimals);
-    const amount = this.getFPNumber(this.amount, this.xorDecimals);
-    if (this.fpNumberNetworkFee.isZero()) {
-      return false;
-    }
-    if (this.isBondedBalance) {
-      const bonded = this.xorBalance?.bonded ?? ZeroStringValue;
-      const isBondedZero = this.getFPNumberFromCodec(bonded, this.xorDecimals).isZero();
-      return !isBondedZero && FPNumber.gt(balance, this.fpNumberNetworkFee);
-    }
-    return !FPNumber.eq(this.fpNumberNetworkFee, balance.sub(amount)) && FPNumber.gt(balance, this.fpNumberNetworkFee);
-  }
-
-  get isInsufficientBondedXor(): boolean {
-    return (
-      !!this.xor &&
-      hasInsufficientBalance(this.xor, this.amount, this.networkFee, {
-        isBondedBalance: this.isBondedBalance,
-      })
+const isInsufficientXorForFee = computed(() => {
+  if (isBondedBalance.value) {
+    return FPNumber.gt(
+      fpNumberNetworkFee.value,
+      getFPNumberFromCodec(xorBalance.value?.transferable ?? ZeroStringValue, xorDecimals.value)
     );
   }
 
-  get isInsufficientXorForFee(): boolean {
-    if (this.isBondedBalance) {
-      return FPNumber.gt(
-        this.fpNumberNetworkFee,
-        this.getFPNumberFromCodec(this.xorBalance?.transferable ?? ZeroStringValue, this.xorDecimals)
-      );
-    }
-    return !!this.xor && hasInsufficientBalance(this.xor, this.amount, this.networkFee);
-  }
+  return !!xor.value && hasInsufficientBalance(xor.value, amount.value, networkFee.value);
+});
 
-  get networkFee(): CodecString {
-    return this.networkFees[this.isBond ? Operation.ReferralReserveXor : Operation.ReferralUnreserveXor];
-  }
+const isConfirmBondDisabled = computed(() => {
+  return hasZeroAmount.value || isInsufficientXorForFee.value || isInsufficientBondedXor.value;
+});
 
-  get fpNumberNetworkFee(): FPNumber {
-    return this.getFPNumberFromCodec(this.networkFee);
-  }
+const confirmDialogVisible = ref(false);
 
-  get networkFeeFormatted(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
+const setAmount = (value: string) => {
+  store.commit?.referrals?.setAmount?.(value);
+};
 
-  get isConfirmBondDisabled(): boolean {
-    return this.hasZeroAmount || this.isInsufficientXorForFee || this.isInsufficientBondedXor;
-  }
+const resetAmount = () => {
+  store.commit?.referrals?.resetAmount?.();
+};
 
-  handleInputXor(value: string): void {
-    if (value === this.amount) return;
-    this.setAmount(value);
-  }
+const handleInputXor = (value: string) => {
+  if (value === amount.value) return;
+  setAmount(value);
+};
 
-  handleMaxValue(): void {
-    const { xor, networkFee, isBondedBalance } = this;
+const handleMaxValue = () => {
+  if (!xor.value) return;
 
-    if (!xor) return;
+  const maxValue = getMaxValue(xor.value, networkFee.value, { isBondedBalance: isBondedBalance.value });
+  handleInputXor(maxValue);
+};
 
-    this.handleInputXor(getMaxValue(xor, networkFee, { isBondedBalance }));
-  }
+const confirmBond = async () => {
+  confirmDialogVisible.value = false;
+  await withNotifications(async () => {
+    const action = isBond.value ? api.referralSystem.reserveXor : api.referralSystem.unreserveXor;
+    await action(amount.value);
+    resetAmount();
+    handleBack();
+  });
+};
 
-  handleConfirmBond(): void {
-    this.confirmOrExecute(this.confirmBond);
-  }
+const handleConfirmBond = () => {
+  confirmDialogVisible.value = true;
+};
 
-  async confirmBond(): Promise<void> {
-    await this.withNotifications(async () => {
-      await (this.isBond ? api.referralSystem.reserveXor(this.amount) : api.referralSystem.unreserveXor(this.amount));
+const handleBack = () => {
+  router.push({ name: PageNames.ReferralProgram });
+};
 
-      this.resetAmount();
-      this.handleBack();
-    });
-  }
-
-  handleBack(): void {
-    router.push({ name: PageNames.ReferralProgram });
-  }
-
-  destroyed(): void {
-    this.resetAmount();
-  }
-}
+onBeforeUnmount(() => {
+  resetAmount();
+});
 </script>
 
 <style lang="scss">
@@ -209,6 +210,7 @@ export default class ReferralBonding extends Mixins(
   font-size: var(--s-font-size-extra-small);
   line-height: var(--s-line-height-medium);
   text-align: center;
+
   a {
     color: var(--s-color-theme-accent);
   }

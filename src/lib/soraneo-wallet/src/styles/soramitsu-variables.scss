@@ -1,0 +1,165 @@
+@use '@soramitsu-ui/theme/sass' as theme;
+@use '@soramitsu-ui/theme/fonts/Sora';
+
+$legacy-token-bridges: (
+  '--s-color-theme-accent': var(--sora_sys_color_primary),
+  '--s-color-theme-accent-hover': var(--sora_sys_color_primary-hover),
+  '--s-color-theme-accent-pressed': var(--sora_sys_color_primary-pressed),
+  '--s-color-theme-accent-focused': var(--sora_sys_color_primary-focused),
+  '--s-color-base-content-primary': var(--sora_sys_color_content-primary),
+  '--s-color-base-content-secondary': var(--sora_sys_color_content-secondary),
+  '--s-color-base-content-tertiary': var(--sora_sys_color_content-tertiary),
+  '--s-color-base-content-tetriary': var(--sora_sys_color_content-tertiary),
+  '--s-color-base-content-quaternary': var(--sora_sys_color_content-quaternary),
+  '--s-color-base-background': var(--sora_sys_color_background),
+  '--s-color-base-background-hover': var(--sora_sys_color_background-hover),
+  '--s-color-base-border-primary': var(--sora_sys_color_border-primary),
+  '--s-color-base-border-secondary': var(--sora_sys_color_border-secondary),
+  '--s-color-base-disabled': var(--sora_sys_color_disabled),
+  '--s-color-base-on-disabled': var(--sora_sys_color_on-disabled),
+  '--s-color-base-on-accent': var(--sora_sys_color_content-on-background-inverted),
+  '--s-color-utility-body': var(--sora_sys_color_util_body),
+  '--s-color-utility-surface': var(--sora_sys_color_util_surface),
+  '--s-color-utility-overlay': var(--sora_sys_color_util_overlay),
+  '--s-color-status-success': var(--sora_sys_color_status_success),
+  '--s-color-status-warning': var(--sora_sys_color_status_warning),
+  '--s-color-status-error': var(--sora_sys_color_status_error),
+  '--s-color-status-info': var(--sora_sys_color_status_info),
+  '--s-color-status-success-background': var(--sora_sys_color_status_success-background),
+  '--s-color-status-warning-background': var(--sora_sys_color_status_warning-background),
+  '--s-color-status-error-background': var(--sora_sys_color_status_error-background),
+  '--s-color-status-info-background': var(--sora_sys_color_status_info-background),
+  '--s-shadow-surface': var(--sora_sys_shadow_page-header),
+  '--s-shadow-tooltip': var(--sora_sys_shadow_dropdown),
+  '--s-shadow-element': var(--sora_sys_shadow_dropdown),
+  '--s-shadow-element-pressed': var(--sora_sys_shadow_active-tab),
+);
+
+$legacy-static-vars: (
+  '--s-color-brand-day': #a19a9d,
+  '--s-color-theme-secondary': #44e5b2,
+  '--s-color-theme-secondary-hover': #24daa0,
+  '--s-color-theme-secondary-pressed': #24daa0,
+  '--s-color-theme-secondary-focused': #24daa0,
+  '--s-color-base-on-disabled--dark': #c29ab7,
+  '--s-color-fiat-value': rgba(71, 154, 239, 1),
+  '--s-size-big': 58px,
+  '--s-size-medium': 42px,
+  '--s-size-small': 32px,
+  '--s-size-mini': 24px,
+  '--s-asset-item-height': 71px,
+  '--s-asset-item-height--fiat': 86px,
+  '--s-border-radius-base': 16px,
+  '--s-border-radius-mini': 16px,
+  '--s-border-radius-small': 24px,
+  '--s-border-radius-medium': 32px,
+  '--s-border-radius-big': 48px,
+  '--s-transition-default': all 0.125s ease-in-out,
+  '--s-font-family-default': 'Sora',
+  sans-serif,
+  '--s-small-medium': 40px,
+);
+
+$legacy-metrics: (
+  '--s-basic-spacing': 8px,
+  '--s-font-size-extra-mini': 10px,
+  '--s-font-size-mini': 12px,
+  '--s-font-size-small': 14px,
+  '--s-font-size-medium': 16px,
+  '--s-font-size-large': 18px,
+  '--s-font-size-big': 24px,
+  '--s-font-size-default': 16px,
+  '--s-font-size-extra-small': 13px,
+  '--s-heading2-font-size': 30px,
+  '--s-heading6-font-size': 16px,
+  '--s-line-height-reset': 1,
+  '--s-line-height-mini': 1.1,
+  '--s-line-height-small': 1.3,
+  '--s-line-height-medium': 1.5,
+  '--s-line-height-base': 1.6,
+  '--s-line-height-big': 1.8,
+  '--s-line-height-extra-small': 1.2,
+  '--s-letter-spacing-mini': 0,
+  '--s-letter-spacing-small': 0.02em,
+  '--s-letter-spacing-big': 0.08em,
+  '--s-icon-font-size-mini': 16px,
+  '--s-icon-font-size-small': 20px,
+  '--s-icon-font-size-medium': 28px,
+  '--s-shadow-color-dark': rgba(0, 0, 0, 0.2),
+  '--s-color-outline': rgba(83, 86, 90, 0.25),
+);
+
+$legacy-dark-overrides: (
+  '--s-color-theme-secondary': #30c4a0,
+  '--s-color-theme-secondary-hover': #1fb89c,
+  '--s-color-theme-secondary-pressed': #1ba88d,
+  '--s-color-theme-secondary-focused': #25bea4,
+  '--s-color-fiat-value': rgba(71, 154, 239, 0.84),
+  '--s-shadow-element': 0px 10px 24px rgba(0, 0, 0, 0.4),
+  '--s-shadow-element-pressed': 0px 6px 16px rgba(0, 0, 0, 0.5),
+  '--s-shadow-tooltip': 0px 16px 40px rgba(0, 0, 0, 0.5),
+);
+
+$wallet-dark-token-overrides: (
+  sys: (
+    color: (
+      background: #10121c,
+      background-hover: #181b26,
+      background-inverted: #f5f7f8,
+      content-primary: #f5f7f8,
+      content-secondary: #c7cadb,
+      content-tertiary: #979bb1,
+      content-quaternary: #6f7288,
+      border-primary: #2a2d3c,
+      border-secondary: #212333,
+      disabled: #1c1e2b,
+      on-disabled: #7a7d90,
+      util: (
+        body: #0c0d15,
+        surface: #151823,
+        surface-overlay: rgba(21, 24, 35, 0.72),
+        overlay: rgba(0, 0, 0, 0.55),
+      ),
+      status: (
+        success-background: rgba(0, 153, 0, 0.16),
+        success-background-hover: rgba(0, 153, 0, 0.28),
+        warning-background: rgba(255, 153, 0, 0.16),
+        warning-background-hover: rgba(255, 153, 0, 0.28),
+        error-background: rgba(255, 0, 0, 0.16),
+        error-background-hover: rgba(255, 0, 0, 0.28),
+        info-background: rgba(16, 112, 202, 0.16),
+        info-background-hover: rgba(16, 112, 202, 0.28),
+      ),
+    ),
+    shadow: (
+      dropdown: 0px 16px 40px rgba(3, 3, 8, 0.45),
+      floating-notification: 0px 68px 80px rgba(0, 0, 0, 0.6),
+      active-tab: 0px 1px 2px rgba(0, 0, 0, 0.6),
+      page-header: 0px 24px 80px rgba(0, 0, 0, 0.35),
+    ),
+  ),
+);
+
+@mixin apply-custom-properties($map) {
+  @each $name, $value in $map {
+    #{$name}: #{$value};
+  }
+}
+
+@include theme.typography-preset-default;
+
+.sora-theme-provider {
+  color-scheme: light;
+
+  @include theme.tokens-preset-light();
+  @include apply-custom-properties($legacy-token-bridges);
+  @include apply-custom-properties($legacy-static-vars);
+  @include apply-custom-properties($legacy-metrics);
+
+  &[data-theme='dark'] {
+    color-scheme: dark;
+
+    @include theme.eval-tokens-partial($wallet-dark-token-overrides);
+    @include apply-custom-properties($legacy-dark-overrides);
+  }
+}

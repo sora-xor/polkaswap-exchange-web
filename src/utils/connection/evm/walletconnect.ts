@@ -1,4 +1,3 @@
-import { WC } from '@soramitsu/soraneo-wallet-web';
 import { EthereumProvider } from '@walletconnect/ethereum-provider';
 
 import type {
@@ -7,6 +6,47 @@ import type {
   EthereumProviderOptions,
 } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
 import type { SessionTypes } from '@walletconnect/types';
+import type { AppKit } from '@reown/appkit';
+
+import { ensureAppKit } from './appkit';
+import {
+  getWalletConnectProjectId as resolveWalletConnectProjectId,
+  resetWalletConnectProjectIdCache,
+} from './walletconnectProject';
+
+const DEFAULT_CHAIN_ID = 1;
+const Z_INDEX_VARIABLE = '--wcm-z-index';
+
+const withDefaultChainProps = (chainProps?: ChainsProps): ChainsProps => {
+  if (chainProps && ('chains' in chainProps ? chainProps.chains?.length : chainProps.optionalChains?.length)) {
+    return chainProps;
+  }
+  return { chains: [DEFAULT_CHAIN_ID] };
+};
+
+const getProbeChainId = (chainProps: ChainsProps): number => {
+  if ('chains' in chainProps && Array.isArray(chainProps.chains) && chainProps.chains.length > 0) {
+    return chainProps.chains[0] ?? DEFAULT_CHAIN_ID;
+  }
+  if (
+    'optionalChains' in chainProps &&
+    Array.isArray(chainProps.optionalChains) &&
+    chainProps.optionalChains.length > 0
+  ) {
+    return chainProps.optionalChains[0] ?? DEFAULT_CHAIN_ID;
+  }
+  return DEFAULT_CHAIN_ID;
+};
+
+const attachModal = (provider: EthereumProvider, modal: AppKit): void => {
+  Object.assign(provider, { modal });
+};
+
+export { resetWalletConnectProjectIdCache };
+
+export const getWalletConnectProjectId = (): Promise<string> => {
+  return resolveWalletConnectProjectId();
+};
 
 export class WcEthereumProvider extends EthereumProvider {
   /**
@@ -103,8 +143,10 @@ export class WcEthereumProvider extends EthereumProvider {
 }
 
 export const checkWalletConnectAvailability = async (chainProps?: ChainsProps): Promise<void> => {
-  const chainIdCheck = chainProps?.chains?.[0] ?? 1;
-  const url = `https://rpc.walletconnect.com/v1/?chainId=eip155:${chainIdCheck}&projectId=${WC.WcProvider.projectId}`;
+  const resolvedProps = withDefaultChainProps(chainProps);
+  const projectId = await resolveWalletConnectProjectId();
+  const chainIdCheck = getProbeChainId(resolvedProps);
+  const url = `https://rpc.walletconnect.com/v1/?chainId=eip155:${chainIdCheck}&projectId=${projectId}`;
 
   await fetch(url, {
     method: 'POST',
@@ -116,20 +158,24 @@ export const getWcEthereumProvider = async (
   chainProps?: ChainsProps
 ): Promise<InstanceType<typeof EthereumProvider>> => {
   try {
-    const props = chainProps ?? { chains: [1] };
+    const resolvedProps = withDefaultChainProps(chainProps);
 
-    await checkWalletConnectAvailability(props);
+    await checkWalletConnectAvailability(resolvedProps);
+
+    const [projectId, appKit] = await Promise.all([resolveWalletConnectProjectId(), ensureAppKit(resolvedProps)]);
 
     const ethereumProvider = await WcEthereumProvider.init({
-      projectId: WC.WcProvider.projectId,
+      projectId,
       showQrModal: true,
       qrModalOptions: {
         themeVariables: {
-          '--wcm-z-index': '9999',
+          [Z_INDEX_VARIABLE]: '9999',
         },
       },
-      ...props,
+      ...resolvedProps,
     });
+
+    attachModal(ethereumProvider, appKit);
 
     return ethereumProvider;
   } catch (error) {

@@ -2,14 +2,13 @@
   <asset-list
     :assets="assets"
     v-bind="$attrs"
-    v-on="$listeners"
     :selectable="false"
     class="asset-select-list"
     data-test-name="selectToken"
   >
     <template #list-empty>
       <div class="asset-select-list__empty">
-        <span class="empty-results-icon" />
+        <span class="empty-results-icon"></span>
         {{ t('selectToken.emptyListMessage') }}
       </div>
     </template>
@@ -22,7 +21,7 @@
           class="pin-button"
           :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
         >
-          <pin-icon :is-pinned="isAssetPinned(token)" />
+          <pin-icon :is-pinned="isAssetPinned(token)"></pin-icon>
         </button>
 
         <formatted-amount-with-fiat-value
@@ -35,7 +34,7 @@
           :fiat-value="getFiatBalance(token)"
           :fiat-font-size-rate="FontSizeRate.MEDIUM"
           :fiat-font-weight-rate="FontWeightRate.MEDIUM"
-        />
+        ></formatted-amount-with-fiat-value>
 
         <span v-else class="asset__balance">
           <button
@@ -43,68 +42,85 @@
             class="pin-button"
             :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
           >
-            <pin-icon :is-pinned="isAssetPinned(token)" />
+            <pin-icon :is-pinned="isAssetPinned(token)"></pin-icon>
           </button>
         </span>
       </div>
-      <slot name="action" v-bind="token" />
+      <slot name="action" v-bind="token"></slot>
     </template>
   </asset-list>
 </template>
 
-<script lang="ts">
-import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { toRef } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { getter, mutation } from '@/store/decorators';
-import { formatAssetBalance } from '@/utils';
+import { components, WALLET_CONSTS } from '@wallet';
+import { useTranslation } from '@/composables/useTranslation';
+import { useAssetFormatting } from '@/composables/useAssetFormatting';
+import store from '@/store';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+defineOptions({
+  name: 'SelectAssetList',
   components: {
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     AssetList: components.AssetList,
     PinIcon: components.PinIcon,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
-})
-export default class SelectAssetList extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
-  @Prop({ default: () => [], type: Array }) readonly assets!: AccountAsset;
-  @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly shouldBalanceBeHidden!: boolean;
-  @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
+});
 
-  @getter.wallet.account.isAssetPinned isAssetPinned!: (asset: AccountAsset) => boolean;
-
-  @mutation.wallet.account.setPinnedAsset setPinnedAsset!: (asset: AccountAsset) => void;
-  @mutation.wallet.account.removePinnedAsset removePinnedAsset!: (asset: AccountAsset) => void;
-
-  readonly FormattedZeroSymbol = '-';
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
-  readonly HiddenValue = WALLET_CONSTS.HiddenValue;
-
-  togglePinnedAsset(asset: AccountAsset): void {
-    if (this.isAssetPinned(asset)) {
-      this.removePinnedAsset(asset);
-    } else {
-      this.setPinnedAsset(asset);
-    }
+const props = withDefaults(
+  defineProps<{
+    assets?: AccountAsset[];
+    connected?: boolean;
+    shouldBalanceBeHidden?: boolean;
+    isSoraToEvm?: boolean;
+  }>(),
+  {
+    assets: () => [],
+    connected: false,
+    shouldBalanceBeHidden: false,
+    isSoraToEvm: true,
   }
+);
 
-  formatBalance(token: AccountAsset): string {
-    return formatAssetBalance(token, {
-      internal: this.isSoraToEvm,
-      showZeroBalance: false,
-      formattedZero: this.FormattedZeroSymbol,
-    });
-  }
+const assets = toRef(props, 'assets');
+const connected = toRef(props, 'connected');
 
-  shouldFiatBeShown(asset: AccountAsset): boolean {
-    return !!this.isSoraToEvm && !!this.getAssetFiatPrice(asset);
-  }
-}
+const { t } = useTranslation();
+const { formatAssetBalance, getFiatBalance, getAssetFiatPrice } = useAssetFormatting();
+
+const FormattedZeroSymbol = '-';
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+const FontWeightRate = WALLET_CONSTS.FontWeightRate;
+
+const getPinnedAssetHandler = (type: 'add' | 'remove') => {
+  const accountMutations = store.commit?.wallet?.account;
+  return type === 'add' ? accountMutations?.setPinnedAsset : accountMutations?.removePinnedAsset;
+};
+
+const isAssetPinned = (asset: AccountAsset): boolean => {
+  const checker = store.getters?.wallet?.account?.isAssetPinned;
+  return typeof checker === 'function' ? checker(asset) : false;
+};
+
+const togglePinnedAsset = (asset: AccountAsset): void => {
+  const handler = isAssetPinned(asset) ? getPinnedAssetHandler('remove') : getPinnedAssetHandler('add');
+  handler?.(asset);
+};
+
+const formatBalance = (asset: AccountAsset): string => {
+  return formatAssetBalance(asset, {
+    internal: props.isSoraToEvm,
+    showZeroBalance: false,
+    formattedZero: FormattedZeroSymbol,
+  });
+};
+
+const shouldFiatBeShown = (asset: AccountAsset): boolean => {
+  return Boolean(props.isSoraToEvm && getAssetFiatPrice(asset));
+};
 </script>
 
 <style lang="scss">

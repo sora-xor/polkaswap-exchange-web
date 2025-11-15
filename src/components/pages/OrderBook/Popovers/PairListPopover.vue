@@ -2,14 +2,8 @@
   <div class="order-book-popover">
     <div class="order-book-popover__title">
       <span>{{ t('orderBook.tradingPair.choosePair') }}</span>
-      <s-tooltip
-        slot="suffix"
-        border-radius="mini"
-        :content="t('orderBook.tooltip.pairsList')"
-        placement="top"
-        tabindex="-1"
-      >
-        <s-icon name="info-16" size="14px" />
+      <s-tooltip border-radius="mini" :content="t('orderBook.tooltip.pairsList')" placement="top" tabindex="-1">
+        <s-icon name="info-16" size="14px"></s-icon>
       </s-tooltip>
     </div>
     <s-table
@@ -22,8 +16,8 @@
         <template #header>
           <span>{{ t('orderBook.tokenPair') }}</span>
         </template>
-        <template v-slot="{ row }">
-          <pair-token-logo :first-token="row.baseAsset" :second-token="row.targetAsset" size="small" />
+        <template #default="{ row }">
+          <pair-token-logo :first-token="row.baseAsset" :second-token="row.targetAsset" size="small"></pair-token-logo>
           <div class="book-pair">
             <div>{{ row.pair }}</div>
           </div>
@@ -33,41 +27,42 @@
         <template #header>
           <span>{{ t('priceText') }}</span>
         </template>
-        <template v-slot="{ row }">
-          <formatted-amount :value="row.price" fiat-sign="" />
+        <template #default="{ row }">
+          <formatted-amount :value="row.price" fiat-sign=""></formatted-amount>
         </template>
       </s-table-column>
       <s-table-column width="110">
         <template #header>
           <span>{{ t('orderBook.tradingPair.volume') }}</span>
         </template>
-        <template v-slot="{ row }">
-          <formatted-amount :value="row.volume" is-fiat-value />
+        <template #default="{ row }">
+          <formatted-amount :value="row.volume" is-fiat-value></formatted-amount>
         </template>
       </s-table-column>
       <s-table-column width="100">
         <template #header>
           <span>1D %</span>
         </template>
-        <template v-slot="{ row }">
-          <price-change :value="row.priceChange" />
+        <template #default="{ row }">
+          <price-change :value="row.priceChange"></price-change>
         </template>
       </s-table-column>
       <s-table-column width="176">
         <template #header>
           <span>{{ t('orderBook.tradingPair.status') }}</span>
         </template>
-        <template v-slot="{ row }">
+        <template #default="{ row }">
           <span :class="calculateColor(row.status)">{{ mapBookStatus(row.status) }}</span>
           <s-tooltip
-            slot="suffix"
             border-radius="mini"
             :content="getTooltipText(row.status)"
             placement="top"
             tabindex="-1"
             class="status-tooltip"
           >
-            <s-icon name="info-16" size="14px" @click.native="handleClickStatusTooltip" />
+            <button class="status-tooltip__trigger" type="button" @click="handleClickStatusTooltip">
+              <s-icon name="info-16" size="14px"></s-icon>
+            </button>
           </s-tooltip>
         </template>
       </s-table-column>
@@ -75,21 +70,22 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { components } from '@wallet';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { useOrderBookPairList } from '@/composables/useOrderBookPairList';
+import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
-import { state, getter, mutation } from '@/store/decorators';
-import type { OrderBookStats } from '@/types/orderBook';
+import { useAssetsStore } from '@/stores/assets';
 import { getBookDecimals } from '@/utils/orderBook';
 
-import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
+import type { OrderBookId } from '@sora-substrate/liquidity-proxy';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Nullable } from '@/types/common';
 
 interface BookFields {
   id: OrderBookId;
@@ -103,107 +99,126 @@ interface BookFields {
   status: string;
 }
 
-@Component({
+defineOptions({
   components: {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PriceChange: lazyComponent(Components.PriceChange),
-    TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
   },
-})
-export default class PairListPopover extends Mixins(
-  TranslationMixin,
-  mixins.LoadingMixin,
-  mixins.FormattedAmountMixin
-) {
-  @state.orderBook.orderBooks private orderBooks!: Record<string, OrderBook>;
-  @state.orderBook.orderBooksStats private orderBooksStats!: Record<string, OrderBookStats>;
+});
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
-  @mutation.orderBook.setCurrentOrderBook private setCurrentOrderBook!: (id: OrderBookId) => void;
+const emit = defineEmits<{ (event: 'close'): void }>();
 
-  getTooltipText(status: OrderBookStatus): string {
-    switch (status) {
-      case OrderBookStatus.Trade:
-        return this.t('orderBook.tooltip.bookStatus.active');
-      case OrderBookStatus.PlaceAndCancel:
-        return this.t('orderBook.tooltip.bookStatus.placeable');
-      case OrderBookStatus.OnlyCancel:
-        return this.t('orderBook.tooltip.bookStatus.cancelable');
-      case OrderBookStatus.Stop:
-        return this.t('orderBook.tooltip.bookStatus.inactive');
-      default:
-        return this.t('unknownErrorText');
+const { t } = useTranslation();
+const assetsStore = useAssetsStore();
+const { orderBooks, orderBooksStats, selectOrderBook } = useOrderBookPairList();
+
+const getTooltipText = (status: OrderBookStatus): string => {
+  switch (status) {
+    case OrderBookStatus.Trade:
+      return t('orderBook.tooltip.bookStatus.active');
+    case OrderBookStatus.PlaceAndCancel:
+      return t('orderBook.tooltip.bookStatus.placeable');
+    case OrderBookStatus.OnlyCancel:
+      return t('orderBook.tooltip.bookStatus.cancelable');
+    case OrderBookStatus.Stop:
+      return t('orderBook.tooltip.bookStatus.inactive');
+    default:
+      return t('unknownErrorText');
+  }
+};
+
+const mapBookStatus = (status: OrderBookStatus): string => {
+  switch (status) {
+    case OrderBookStatus.Trade:
+      return t('orderBook.bookStatus.active');
+    case OrderBookStatus.PlaceAndCancel:
+      return t('orderBook.bookStatus.placeable');
+    case OrderBookStatus.OnlyCancel:
+      return t('orderBook.bookStatus.cancelable');
+    case OrderBookStatus.Stop:
+      return t('orderBook.bookStatus.inactive');
+    default:
+      return t('unknownErrorText');
+  }
+};
+
+const calculateColor = (status: OrderBookStatus): string | undefined => {
+  if ([OrderBookStatus.Trade, OrderBookStatus.PlaceAndCancel].includes(status)) {
+    return 'status-live';
+  }
+
+  if ([OrderBookStatus.OnlyCancel, OrderBookStatus.Stop].includes(status)) {
+    return 'status-stop';
+  }
+
+  return undefined;
+};
+
+/**
+ * Builds the formatted list of trading pairs shown in the popover, sorted by status and volume.
+ */
+const tableItems = computed<BookFields[]>(() => {
+  return Object.entries(orderBooks.value).reduce<BookFields[]>((buffer, [orderBookKey, value]) => {
+    if (!orderBookKey) return buffer;
+
+    const { base, quote } = value.orderBookId;
+    const decimals = getBookDecimals(value);
+    const stats = orderBooksStats.value[orderBookKey];
+    const price = (stats?.price ?? FPNumber.ZERO).dp(decimals);
+    const priceChange = stats?.priceChange ?? FPNumber.ZERO;
+    const volume = stats?.volume ?? FPNumber.ZERO;
+    const baseAsset = assetsStore.assetDataByAddress(base);
+    const targetAsset = assetsStore.assetDataByAddress(quote);
+
+    const row: BookFields = {
+      id: value.orderBookId,
+      baseAsset,
+      targetAsset,
+      pair: `${baseAsset?.symbol}-${targetAsset?.symbol}`,
+      status: value.status,
+      price: price.toLocaleString(),
+      priceChange,
+      volumeNumber: volume.toNumber(),
+      volume: volume.toLocaleString(),
+    };
+
+    const insertIndex = buffer.findIndex(
+      (item) =>
+        row.status > item.status ||
+        (row.status === item.status && row.id.dexId > item.id.dexId) ||
+        (row.status === item.status && row.id.dexId === item.id.dexId && row.volumeNumber > item.volumeNumber)
+    );
+
+    if (insertIndex !== -1) {
+      buffer.splice(insertIndex, 0, row);
+    } else {
+      buffer.push(row);
     }
-  }
 
-  chooseBook(row: BookFields): void {
-    this.setCurrentOrderBook(row.id);
-    this.$emit('close');
-  }
+    return buffer;
+  }, []);
+});
 
-  get tableItems(): Array<BookFields> {
-    if (!this.orderBooks) return [];
+/**
+ * Selects the chosen order book and closes the popover.
+ */
+const chooseBook = (row: BookFields): void => {
+  selectOrderBook(row.id);
+  emit('close');
+};
 
-    return Object.entries(this.orderBooks).reduce<BookFields[]>((buffer, [orderBookId, value]) => {
-      if (!orderBookId) return buffer;
-      const { base, quote } = value.orderBookId;
-      const decimals = getBookDecimals(value);
-      const price = (this.orderBooksStats[orderBookId]?.price ?? FPNumber.ZERO).dp(decimals);
-      const priceChange = this.orderBooksStats[orderBookId]?.priceChange ?? FPNumber.ZERO;
-      const volume = this.orderBooksStats[orderBookId]?.volume ?? FPNumber.ZERO;
-      const baseAsset = this.getAsset(base);
-      const targetAsset = this.getAsset(quote);
-      const row: BookFields = {
-        id: value.orderBookId,
-        baseAsset,
-        targetAsset,
-        pair: `${baseAsset?.symbol}-${targetAsset?.symbol}`,
-        status: value.status,
-        price: price.toLocaleString(),
-        priceChange,
-        volumeNumber: volume.toNumber(),
-        volume: volume.toLocaleString(),
-      };
-      const index = buffer.findIndex(
-        (item) =>
-          row.status > item.status ||
-          (row.status === item.status && row.id.dexId > item.id.dexId) ||
-          (row.status === item.status && row.id.dexId === item.id.dexId && row.volumeNumber > item.volumeNumber)
-      );
-      if (index !== -1) {
-        buffer.splice(index, 0, row);
-      } else {
-        buffer.push(row);
-      }
-      return buffer;
-    }, []);
-  }
+const handleClickStatusTooltip = (event?: Event): void => {
+  event?.stopPropagation();
+};
 
-  calculateColor(status: OrderBookStatus): string | undefined {
-    if ([OrderBookStatus.Trade, OrderBookStatus.PlaceAndCancel].includes(status)) return 'status-live';
-    if ([OrderBookStatus.OnlyCancel, OrderBookStatus.Stop].includes(status)) return 'status-stop';
-  }
-
-  mapBookStatus(status: OrderBookStatus): string {
-    switch (status) {
-      case OrderBookStatus.Trade:
-        return this.t('orderBook.bookStatus.active');
-      case OrderBookStatus.PlaceAndCancel:
-        return this.t('orderBook.bookStatus.placeable');
-      case OrderBookStatus.OnlyCancel:
-        return this.t('orderBook.bookStatus.cancelable');
-      case OrderBookStatus.Stop:
-        return this.t('orderBook.bookStatus.inactive');
-      default:
-        return this.t('unknownErrorText');
-    }
-  }
-
-  handleClickStatusTooltip(e?: Event): void {
-    e?.stopPropagation();
-  }
-}
+defineExpose({
+  tableItems,
+  chooseBook,
+  getTooltipText,
+  mapBookStatus,
+  calculateColor,
+});
 </script>
 
 <style lang="scss">
@@ -277,6 +292,19 @@ export default class PairListPopover extends Mixins(
   .status-tooltip {
     margin-left: $inner-spacing-mini;
     margin-bottom: 3px;
+
+    &__trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: inherit;
+      cursor: pointer;
+
+      @include focus-outline;
+    }
   }
 
   &__title {

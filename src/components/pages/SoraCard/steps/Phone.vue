@@ -11,28 +11,33 @@
     >
       <span class="country-container__label s-flex">
         <span class="country-container__text s-flex">
-          <template v-if="selectedCountry">
+          <span v-if="selectedCountry" class="country-container__selection s-flex">
             <span class="country-container__flag">{{ selectedCountry.flag }}</span>
             <span>{{ selectedCountry.translatedName }}</span>
-          </template>
-          <template v-else>
-            <div class="country-container__flag country-container__flag--empty" />
+          </span>
+          <span v-else class="country-container__selection s-flex">
+            <span class="country-container__flag country-container__flag--empty"></span>
             <span>{{ t('card.selectCountryText') }}</span>
-          </template>
+          </span>
         </span>
-        <s-icon class="country-container__icon" name="arrows-circle-chevron-bottom-24" size="18" />
+        <s-icon class="country-container__icon" name="arrows-circle-chevron-bottom-24" size="18"></s-icon>
       </span>
     </s-button>
     <div class="sora-card__number-input">
       <div class="phone-container s-flex">
-        <s-input class="phone-code" disabled :placeholder="t('card.code')" :value="selectedCountry?.dialCode || ''" />
+        <s-input
+          class="phone-code"
+          disabled
+          :placeholder="t('card.code')"
+          :value="selectedCountry?.dialCode || ''"
+        ></s-input>
         <s-input
           class="phone-number"
           :placeholder="t('card.phonePlaceholder')"
           v-maska="'############'"
           v-model="phoneNumber"
           :disabled="phoneInputDisabled"
-        />
+        ></s-input>
       </div>
       <s-button
         type="secondary"
@@ -45,15 +50,15 @@
     </div>
     <div>
       <p class="sora-card__number-input-desc">{{ phoneInputDescription }}</p>
-      <s-icon v-if="smsSent" class="sora-card__icon" name="basic-check-mark-24" size="14px" />
+      <s-icon v-if="smsSent" class="sora-card__icon" name="basic-check-mark-24" size="14px"></s-icon>
     </div>
     <s-input
-      ref="otp"
+      ref="inputOtp"
       :placeholder="t('card.otpPlaceholder')"
       v-maska="'######'"
       v-model="verificationCode"
       :disabled="otpInputDisabled"
-    />
+    ></s-input>
     <s-button
       :disabled="buttonDisabled"
       type="primary"
@@ -61,238 +66,252 @@
       @click="verifyCode"
       :loading="sendOtpBtnLoading"
     >
-      <span class="text"> {{ buttonText }}</span>
+      <span class="text">{{ buttonText }}</span>
     </s-button>
-    <select-country-dialog :visible.sync="showSelectCountryDialog" @select="handleSelectCountry" />
+    <SelectCountryDialog v-model:visible="showSelectCountryDialog" @select="handleSelectCountry"></SelectCountryDialog>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch, Ref } from 'vue-property-decorator';
+<script setup lang="ts">
+import { nextTick, computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
+import { useNotification } from '@/composables/useNotification';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { action, getter, mutation, state } from '@/store/decorators';
-import { UserInfo, VerificationStatus, CardUIViews, AttemptCounter, CountryInfo } from '@/types/card';
+import store from '@/store';
+import type { Nullable } from '@/types/common';
+import { AttemptCounter, CardUIViews, CountryInfo, UserInfo, VerificationStatus } from '@/types/card';
 
 const MIN_PHONE_LENGTH_WITH_CODE = 8;
 const OTP_CODE_LENGTH = 6;
 const RESEND_INTERVAL = 59;
 
-@Component({
-  components: {
-    SelectCountryDialog: lazyComponent(Components.SelectCountryDialog),
-  },
-})
-export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.NotificationMixin) {
-  @state.soraCard.authLogin private authLogin!: any;
-  @state.soraCard.userInfo userInfo!: UserInfo;
-  @state.soraCard.attemptCounter private attemptCounter!: AttemptCounter;
-  @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
+const SelectCountryDialog = lazyComponent(Components.SelectCountryDialog);
 
-  @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
-  @getter.soraCard.isEuroBalanceEnough private isEuroBalanceEnough!: boolean;
+const emit = defineEmits<{
+  (event: 'confirm', view: CardUIViews): void;
+}>();
 
-  @mutation.soraCard.setWillToPassKycAgain private setWillToPassKycAgain!: (boolean) => void;
-  @mutation.soraCard.setReferenceNumber setReferenceNumber!: (refNumber: Nullable<string>) => void;
+const { t } = useTranslation();
+const { showAppNotification } = useNotification();
 
-  @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
-  @action.soraCard.getUserIban private getUserIban!: AsyncFnWithoutArgs;
-  @action.soraCard.initPayWingsAuthSdk private initPayWingsAuthSdk!: AsyncFnWithoutArgs;
-  @action.soraCard.getUserKycAttempt private getUserKycAttempt!: AsyncFnWithoutArgs;
+const authLogin = computed<any>(() => store.state.soraCard.authLogin);
+const userInfo = computed<UserInfo>(() => store.state.soraCard.userInfo as UserInfo);
+const attemptCounter = computed<AttemptCounter>(() => store.state.soraCard.attemptCounter as AttemptCounter);
+const wantsToPassKycAgain = computed<boolean>(() => store.state.soraCard.wantsToPassKycAgain as boolean);
+const currentStatus = computed<Nullable<VerificationStatus>>(
+  () => (store.getters.soraCard?.currentStatus as VerificationStatus) ?? null
+);
+const isEuroBalanceEnough = computed<boolean>(() => Boolean(store.getters.soraCard?.isEuroBalanceEnough));
 
-  @Ref('otp') private readonly inputOtp!: HTMLInputElement;
+const setWillToPassKycAgain = (value: boolean) => store.commit.soraCard.setWillToPassKycAgain(value);
+const setReferenceNumber = (value: Nullable<string>) => store.commit.soraCard.setReferenceNumber(value);
 
-  private smsCountDown = '';
-  private smsResendCount = RESEND_INTERVAL;
+const getUserStatus = () => store.dispatch.soraCard.getUserStatus();
+const getUserIban = () => store.dispatch.soraCard.getUserIban();
+const initPayWingsAuthSdk = () => store.dispatch.soraCard.initPayWingsAuthSdk();
+const getUserKycAttempt = () => store.dispatch.soraCard.getUserKycAttempt();
 
-  verificationCode = '';
-  smsSent = false;
-  sendOtpBtnLoading = false;
-  notFoundPhoneWhenApplied = false;
-  showSelectCountryDialog = false;
-  selectedCountry: Nullable<CountryInfo> = null;
-  phoneNumber = '';
+const verificationCode = ref('');
+const smsSent = ref(false);
+const sendOtpBtnLoading = ref(false);
+const showSelectCountryDialog = ref(false);
+const selectedCountry = ref<Nullable<CountryInfo>>(null);
+const phoneNumber = ref('');
+const smsResendCount = ref(RESEND_INTERVAL);
+const smsTimerId = ref<ReturnType<typeof setInterval> | null>(null);
+const inputOtp = ref<HTMLInputElement | null>(null);
+const listenersAttachedFor = ref<any>(null);
 
-  @Watch('smsResendCount', { immediate: true })
-  private handleSmsCountChange(value: number): void {
-    const digit = value.toString().length > 1 ? '' : '0';
-    this.smsCountDown = `0:${digit}${value}`;
+const hasFreeAttempts = computed(() => Boolean(attemptCounter.value?.hasFreeAttempts));
+
+const smsCountDown = computed(() => {
+  const value = smsResendCount.value;
+  const digit = value.toString().length > 1 ? '' : '0';
+  return `0:${digit}${value}`;
+});
+
+const isPhoneNumberValid = computed(() => {
+  const code = selectedCountry.value?.dialCode ?? '';
+  if (!code) return false;
+  let number = phoneNumber.value ?? '';
+  if (number.startsWith('0')) {
+    number = number.slice(1);
   }
+  const totalLength = `${code}${number}`.replace(/\D/g, '').length;
+  return totalLength >= MIN_PHONE_LENGTH_WITH_CODE;
+});
 
-  get hasFreeAttempts() {
-    return this.attemptCounter.hasFreeAttempts;
+const sendSmsButtonText = computed(() =>
+  smsSent.value ? t('card.resendInBtn', { value: smsCountDown.value }) : t('card.sendCodeBtn')
+);
+
+const buttonDisabled = computed(() => verificationCode.value.length !== OTP_CODE_LENGTH);
+const otpInputDisabled = computed(() => !smsSent.value || !isPhoneNumberValid.value);
+const sendSmsDisabled = computed(() => !isPhoneNumberValid.value || smsSent.value);
+const phoneInputDisabled = computed(() => smsSent.value);
+const phoneInputDescription = computed(() =>
+  smsSent.value ? t('card.phoneInputAfterSendDesc') : t('card.noSpamText')
+);
+
+const buttonText = computed(() => {
+  if (verificationCode.value.length !== OTP_CODE_LENGTH) {
+    return t('card.enterCodeBtn');
   }
+  return t('card.confirmCodeBtn');
+});
 
-  verifyCode(): void {
-    this.authLogin.PayWingsOtpCredentialVerification(this.verificationCode).catch((error) => {
-      this.sendOtpBtnLoading = false;
-      this.verificationCode = '';
+const openSelectCountryDialog = () => {
+  showSelectCountryDialog.value = true;
+};
 
-      this.showAppNotification(this.t('card.infoMessageWrongOtp'), 'error');
+const handleSelectCountry = (country: CountryInfo) => {
+  selectedCountry.value = country;
+};
+
+const startSmsCountDown = () => {
+  if (smsTimerId.value) clearInterval(smsTimerId.value);
+  smsResendCount.value = RESEND_INTERVAL;
+
+  smsTimerId.value = setInterval(() => {
+    smsResendCount.value -= 1;
+
+    if (smsResendCount.value < 0) {
+      smsSent.value = false;
+      verificationCode.value = '';
+      smsResendCount.value = RESEND_INTERVAL;
+      if (smsTimerId.value) {
+        clearInterval(smsTimerId.value);
+        smsTimerId.value = null;
+      }
+    }
+  }, 1000);
+};
+
+const sendSms = () => {
+  const login = authLogin.value;
+  if (!login) return;
+
+  let number = phoneNumber.value ?? '';
+  if (number.startsWith('0')) {
+    number = number.slice(1);
+  }
+  phoneNumber.value = number;
+
+  login
+    .PayWingsSendOtp(`${selectedCountry.value?.dialCode ?? ''}${number}`, 'Your verification code is: @Otp')
+    .catch((error: unknown) => {
       console.error('[SoraCard]: Auth', error);
     });
 
-    this.sendOtpBtnLoading = true;
-  }
+  startSmsCountDown();
+};
 
-  sendSms(): void {
-    if (this.phoneNumber[0] === '0') {
-      this.phoneNumber = this.phoneNumber.slice(1); // remove 1st zero
-    }
-    this.authLogin
-      .PayWingsSendOtp(`${this.selectedCountry?.dialCode}${this.phoneNumber}`, 'Your verification code is: @Otp')
-      .catch((error) => {
-        console.error('[SoraCard]: Auth', error);
+const verifyCode = () => {
+  const login = authLogin.value;
+  if (!login) return;
+
+  login.PayWingsOtpCredentialVerification(verificationCode.value).catch((error: unknown) => {
+    sendOtpBtnLoading.value = false;
+    verificationCode.value = '';
+    showAppNotification(t('card.infoMessageWrongOtp'), 'error');
+    console.error('[SoraCard]: Auth', error);
+  });
+
+  sendOtpBtnLoading.value = true;
+};
+
+const registerAuthListeners = (login: any) => {
+  if (!login?.on || listenersAttachedFor.value === login) return;
+  listenersAttachedFor.value = login;
+
+  login
+    .on('SendOtp-Success', () => {
+      smsSent.value = true;
+      nextTick(() => {
+        inputOtp.value?.focus();
       });
+    })
+    .on('MinimalRegistrationReq', () => {
+      setReferenceNumber(null);
+      sendOtpBtnLoading.value = false;
+      emit('confirm', CardUIViews.Email);
+    })
+    .on('Otp-Verification-Success', async () => {
+      sendOtpBtnLoading.value = false;
+      await getUserStatus();
 
-    this.startSmsCountDown();
-  }
+      if (currentStatus.value === VerificationStatus.Rejected) {
+        await getUserKycAttempt();
 
-  openSelectCountryDialog(): void {
-    this.showSelectCountryDialog = true;
-  }
+        if (wantsToPassKycAgain.value && hasFreeAttempts.value) {
+          emit('confirm', CardUIViews.Kyc);
+          setWillToPassKycAgain(false);
+          return;
+        }
 
-  handleSelectCountry(country: CountryInfo): void {
-    this.selectedCountry = country;
-  }
-
-  get buttonDisabled() {
-    return this.verificationCode.length !== OTP_CODE_LENGTH;
-  }
-
-  get otpInputDisabled(): boolean {
-    return !this.smsSent || !this.isPhoneNumberValid;
-  }
-
-  get buttonText(): string {
-    if (this.verificationCode.length !== OTP_CODE_LENGTH) {
-      return this.t('card.enterCodeBtn');
-    }
-
-    return this.t('card.confirmCodeBtn');
-  }
-
-  set buttonText(value) {
-    this.buttonText = value;
-  }
-
-  get sendSmsButtonText(): string {
-    if (this.smsSent) return this.t('card.resendInBtn', { value: this.smsCountDown });
-    return this.t('card.sendCodeBtn');
-  }
-
-  get isPhoneNumberValid(): boolean {
-    const code = this.selectedCountry?.dialCode;
-    return !!(code && this.phoneNumber && `${code}${this.phoneNumber}`.length >= MIN_PHONE_LENGTH_WITH_CODE);
-  }
-
-  get sendSmsDisabled(): boolean {
-    return !this.isPhoneNumberValid || this.smsSent;
-  }
-
-  get phoneInputDisabled(): boolean {
-    return this.smsSent;
-  }
-
-  get phoneInputDescription(): string {
-    if (this.smsSent) {
-      return this.t('card.phoneInputAfterSendDesc');
-    }
-    return this.t('card.noSpamText');
-  }
-
-  startSmsCountDown(): void {
-    const interval = setInterval(() => {
-      this.smsResendCount--;
-
-      if (this.smsResendCount < 0) {
-        this.smsSent = false;
-        this.verificationCode = '';
-        this.smsResendCount = RESEND_INTERVAL;
-        clearInterval(interval);
+        emit('confirm', CardUIViews.KycResult);
+        return;
       }
-    }, 1000);
+
+      if (currentStatus.value === VerificationStatus.Accepted) {
+        await getUserIban();
+
+        if (userInfo.value?.iban) {
+          emit('confirm', CardUIViews.Dashboard);
+        } else {
+          emit('confirm', CardUIViews.KycResult);
+        }
+        return;
+      }
+
+      if (currentStatus.value === VerificationStatus.Pending) {
+        emit('confirm', CardUIViews.KycResult);
+        return;
+      }
+
+      if (!currentStatus.value) {
+        if (isEuroBalanceEnough.value) {
+          emit('confirm', CardUIViews.Kyc);
+        } else {
+          emit('confirm', CardUIViews.Payment);
+        }
+      }
+    })
+    .on('Verification-Email-Sent-Success', () => {
+      sendOtpBtnLoading.value = false;
+      emit('confirm', CardUIViews.Email);
+    });
+};
+
+watch(
+  authLogin,
+  (login) => {
+    if (login) {
+      registerAuthListeners(login);
+    }
+  },
+  { immediate: true }
+);
+
+onMounted(async () => {
+  await nextTick();
+  localStorage.removeItem('PW-Email');
+  await initPayWingsAuthSdk();
+
+  if (authLogin.value) {
+    registerAuthListeners(authLogin.value);
   }
+});
 
-  async mounted(): Promise<void> {
-    await this.$nextTick();
-
-    localStorage.removeItem('PW-Email');
-
-    await this.initPayWingsAuthSdk();
-
-    if (!this.authLogin) return;
-
-    this.authLogin
-      .on('SendOtp-Success', () => {
-        this.smsSent = true;
-        this.$nextTick(() => {
-          this.inputOtp.focus();
-        });
-      })
-      .on('MinimalRegistrationReq', () => {
-        // 1. User does not have email attached.
-        // 2. User does not have KYC passed bound to the entered phone number.
-
-        this.setReferenceNumber(null);
-        this.sendOtpBtnLoading = false;
-        this.$emit('confirm', CardUIViews.Email);
-        this.sendOtpBtnLoading = false;
-      })
-      .on('Otp-Verification-Success', async () => {
-        // 1. User has email and phone attached.
-        // 2. KYC result is unknown, needs to be checked.
-
-        await this.getUserStatus();
-
-        if (this.currentStatus === VerificationStatus.Rejected) {
-          await this.getUserKycAttempt();
-
-          if (this.wantsToPassKycAgain && this.hasFreeAttempts) {
-            this.$emit('confirm', CardUIViews.Kyc);
-            this.setWillToPassKycAgain(false);
-            return;
-          }
-
-          this.$emit('confirm', CardUIViews.KycResult);
-          return;
-        }
-
-        if (this.currentStatus === VerificationStatus.Accepted) {
-          await this.getUserIban();
-
-          if (this.userInfo.iban) {
-            this.$emit('confirm', CardUIViews.Dashboard);
-          } else {
-            this.$emit('confirm', CardUIViews.KycResult);
-          }
-        }
-
-        if (this.currentStatus === VerificationStatus.Pending) {
-          this.$emit('confirm', CardUIViews.KycResult);
-          return;
-        }
-
-        if (!this.currentStatus) {
-          if (this.isEuroBalanceEnough) {
-            this.$emit('confirm', CardUIViews.Kyc);
-          } else {
-            this.$emit('confirm', CardUIViews.Payment);
-          }
-        }
-      })
-      .on('Verification-Email-Sent-Success', () => {
-        this.sendOtpBtnLoading = false;
-        this.$emit('confirm', CardUIViews.Email);
-        this.sendOtpBtnLoading = false;
-      });
+onBeforeUnmount(() => {
+  if (smsTimerId.value) {
+    clearInterval(smsTimerId.value);
+    smsTimerId.value = null;
   }
-}
+});
 </script>
-
 <style lang="scss" scoped>
 .sora-card {
   &__number-input {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="rootRef">
     <s-form class="el-form--actions" :show-message="false">
       <s-float-input
         ref="removePart"
@@ -35,15 +35,15 @@
             :disabled="liquidityLocked"
             :show-tooltip="false"
             @input="handleRemovePartChange"
-          />
+          ></s-slider>
           <div v-for="{ percent, lock } in locks" :key="lock" class="input-line input-line--footer locked-part">
             <span class="locked-part-percent">{{ percent }}</span> {{ t('removeLiquidity.locked', { lock }) }}
           </div>
         </div>
       </s-float-input>
-      <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
+      <s-icon class="icon-divider" name="arrows-arrow-bottom-24"></s-icon>
 
-      <token-input
+      <TokenInput
         :disabled="liquidityLocked"
         :max="getTokenMaxAmount(firstTokenBalance)"
         :title="t('removeLiquidity.output')"
@@ -54,11 +54,11 @@
         @blur="resetFocusedField"
       >
         <template #balance>-</template>
-      </token-input>
+      </TokenInput>
 
-      <s-icon class="icon-divider" name="plus-16" />
+      <s-icon class="icon-divider" name="plus-16"></s-icon>
 
-      <token-input
+      <TokenInput
         :disabled="liquidityLocked"
         :max="getTokenMaxAmount(secondTokenBalance)"
         :title="t('removeLiquidity.output')"
@@ -69,9 +69,9 @@
         @blur="resetFocusedField"
       >
         <template #balance>-</template>
-      </token-input>
+      </TokenInput>
 
-      <slippage-tolerance class="slippage-tolerance-settings" />
+      <SlippageTolerance class="slippage-tolerance-settings"></SlippageTolerance>
 
       <s-button
         type="primary"
@@ -95,278 +95,301 @@
         </template>
       </s-button>
 
-      <remove-liquidity-transaction-details
+      <RemoveLiquidityTransactionDetails
         class="info-line-container"
         v-if="price || priceReversed || networkFee || shareOfPool"
         :info-only="false"
-      />
+      ></RemoveLiquidityTransactionDetails>
     </s-form>
 
-    <remove-liquidity-confirm
-      :visible.sync="confirmDialogVisibility"
-      :parent-loading="parentLoading || loading"
+    <RemoveLiquidityConfirm
+      v-model:visible="confirmDialogVisible"
+      :parent-loading="combinedParentLoading"
       @confirm="withdrawLiquidity"
-    />
+    ></RemoveLiquidityConfirm>
 
-    <network-fee-warning-dialog
-      :visible.sync="showWarningFeeDialog"
+    <NetworkFeeWarningDialog
+      v-model:visible="showWarningFeeDialog"
       :fee="formattedFee"
       @confirm="confirmNetworkFeeWariningDialog"
-    />
+    ></NetworkFeeWarningDialog>
   </div>
 </template>
 
-<script lang="ts">
-import { FPNumber, CodecString, Operation } from '@sora-substrate/sdk';
+<script setup lang="ts">
+import { FPNumber, type CodecString, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { WALLET_CONSTS } from '@wallet';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
-import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
+import { useTranslation } from '@/composables/useTranslation';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTransaction } from '@/composables/useTransaction';
+import { useNetworkFeeWarning } from '@/composables/useNetworkFeeWarning';
+import { useNetworkFeeDialog } from '@/composables/useNetworkFeeDialog';
 import { Components } from '@/consts';
 import { PoolComponents } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
 import { lazyComponent } from '@/router';
-import { getter, state, mutation, action } from '@/store/decorators';
+import store from '@/store';
 import { FocusedField } from '@/store/removeLiquidity/types';
 import { hasInsufficientXorForFee, formatDecimalPlaces } from '@/utils';
 
 import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { Nullable } from '@/types/common';
 
-@Component({
-  components: {
-    RemoveLiquidityConfirm: poolLazyComponent(PoolComponents.RemoveLiquidityConfirm),
-    RemoveLiquidityTransactionDetails: poolLazyComponent(PoolComponents.RemoveLiquidityTransactionDetails),
-    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
-    TokenInput: lazyComponent(Components.TokenInput),
-    InfoLine: components.InfoLine,
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+  }>(),
+  {
+    parentLoading: false,
+  }
+);
+
+const emit = defineEmits<{ (event: 'back'): void }>();
+
+const rootRef = ref<HTMLElement | null>(null);
+const sliderInputRef = ref<HTMLInputElement | null>(null);
+const sliderDragButtonRef = ref<HTMLElement | null>(null);
+
+const { t } = useTranslation();
+const { formatCodecNumber, getFPNumber } = useFormattedAmount();
+const { loading, withNotifications } = useTransaction();
+const { allowFeePopup, isXorSufficientForNextTx, networkFees } = useNetworkFeeWarning();
+const {
+  showWarningFeeDialog,
+  isWarningFeeDialogConfirmed,
+  openWarningFeeDialog,
+  closeWarningFeeDialog,
+  confirmNetworkFeeWariningDialog,
+  waitOnFeeWarningConfirmation,
+} = useNetworkFeeDialog();
+
+const removePart = computed(() => store.state.removeLiquidity.removePart as string);
+const liquidityAmount = computed(() => store.state.removeLiquidity.liquidityAmount as string);
+const firstTokenAmount = computed(() => store.state.removeLiquidity.firstTokenAmount as string);
+const secondTokenAmount = computed(() => store.state.removeLiquidity.secondTokenAmount as string);
+const focusedField = computed(() => store.state.removeLiquidity.focusedField as FocusedField | null);
+
+const liquidity = computed(() => store.getters.removeLiquidity.liquidity as Nullable<AccountLiquidity>);
+const liquidityBalanceFull = computed(() => store.getters.removeLiquidity.liquidityBalanceFull as FPNumber);
+const liquidityBalance = computed(() => store.getters.removeLiquidity.liquidityBalance as FPNumber);
+const demeterLockedBalance = computed(() => store.getters.removeLiquidity.demeterLockedBalance as FPNumber);
+const ceresLockedBalance = computed(() => store.getters.removeLiquidity.ceresLockedBalance as FPNumber);
+const firstToken = computed(() => store.getters.removeLiquidity.firstToken as Nullable<Asset>);
+const secondToken = computed(() => store.getters.removeLiquidity.secondToken as Nullable<Asset>);
+const firstTokenBalance = computed(() => store.getters.removeLiquidity.firstTokenBalance as FPNumber);
+const secondTokenBalance = computed(() => store.getters.removeLiquidity.secondTokenBalance as FPNumber);
+const shareOfPool = computed(() => store.getters.removeLiquidity.shareOfPool as string);
+const price = computed(() => store.getters.removeLiquidity.price as string);
+const priceReversed = computed(() => store.getters.removeLiquidity.priceReversed as string);
+const xor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
+const isConfirmTxDisabled = computed(() => store.state.wallet.transactions.isConfirmTxDialogDisabled as boolean);
+const shouldBalanceBeHidden = computed(() => Boolean(store.state.wallet.settings.shouldBalanceBeHidden));
+const combinedParentLoading = computed(() => Boolean(props.parentLoading) || loading.value);
+
+const confirmDialogVisible = ref(false);
+
+const RemoveLiquidityConfirm = poolLazyComponent(PoolComponents.RemoveLiquidityConfirm);
+const RemoveLiquidityTransactionDetails = poolLazyComponent(PoolComponents.RemoveLiquidityTransactionDetails);
+const SlippageTolerance = lazyComponent(Components.SlippageTolerance);
+const NetworkFeeWarningDialog = lazyComponent(Components.NetworkFeeWarningDialog);
+const TokenInput = lazyComponent(Components.TokenInput);
+
+const XOR_SYMBOL = XOR.symbol;
+const MAX_PART = 100;
+
+const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.RemoveLiquidity] ?? '0');
+const formattedFee = computed(() => formatCodecNumber(networkFee.value));
+
+const sliderValue = computed<Nullable<number>>(() => {
+  const value = removePart.value;
+  return value ? Number(value) : undefined;
+});
+
+const isEmptyAmount = computed(() => {
+  return !Number(liquidityAmount.value) || !firstTokenAmount.value || !secondTokenAmount.value;
+});
+
+const liquidityLocked = computed(() => liquidityBalance.value.isZero());
+
+const locks = computed(() =>
+  [
+    { balance: demeterLockedBalance.value, lock: 'Demeter Farming' },
+    { balance: ceresLockedBalance.value, lock: 'Ceres Liquidity Locker' },
+  ].reduce<{ percent: string; lock: string }[]>((acc, { balance, lock }) => {
+    if (!balance.isZero()) {
+      acc.push({
+        lock,
+        percent: getLockedPercent(balance),
+      });
+    }
+    return acc;
+  }, [])
+);
+
+const isInsufficientBalance = computed(() => {
+  const liquidityAmountValue = getFPNumber(liquidityAmount.value || '0');
+  const firstAmountValue = getFPNumber(firstTokenAmount.value || '0');
+  const secondAmountValue = getFPNumber(secondTokenAmount.value || '0');
+
+  return (
+    FPNumber.gt(liquidityAmountValue, liquidityBalance.value) ||
+    FPNumber.gt(firstAmountValue, firstTokenBalance.value) ||
+    FPNumber.gt(secondAmountValue, secondTokenBalance.value)
+  );
+});
+
+const isInsufficientXorForFee = computed(
+  () => Boolean(xor.value) && hasInsufficientXorForFee(xor.value as AccountAsset, networkFee.value)
+);
+
+const removePartCharClass = computed(() => {
+  const length = removePart.value?.length ?? 0;
+  const charClassName = ({ 3: 'three', 2: 'two' } as Record<number, string>)[length] ?? 'one';
+  return `${charClassName}-char`;
+});
+
+const isMaxButtonAvailable = computed(() => {
+  if (shouldBalanceBeHidden.value) return false;
+  return !liquidityLocked.value && Number(removePart.value || 0) !== MAX_PART;
+});
+
+const setFocusedField = (field: FocusedField) => {
+  store.commit.removeLiquidity.setFocusedField(field);
+};
+
+const resetFocusedField = () => {
+  store.commit.removeLiquidity.resetFocusedField();
+};
+
+const setRemovePart = async (value: string) => {
+  await store.dispatch.removeLiquidity.setRemovePart(value);
+};
+
+const setFirstTokenAmount = async (value: string | number) => {
+  await store.dispatch.removeLiquidity.setFirstTokenAmount(String(value));
+};
+
+const setSecondTokenAmount = async (value: string | number) => {
+  await store.dispatch.removeLiquidity.setSecondTokenAmount(String(value));
+};
+
+const removeLiquidityAction = async () => {
+  await store.dispatch.removeLiquidity.removeLiquidity();
+};
+
+const getTokenMaxAmount = (tokenBalance: FPNumber): string => tokenBalance.toString();
+
+const getLockedPercent = (lockedBalance: FPNumber): string => {
+  if (liquidityBalanceFull.value.isZero()) return '0';
+
+  const percent = lockedBalance.div(liquidityBalanceFull.value).mul(FPNumber.HUNDRED);
+  return formatDecimalPlaces(percent, true);
+};
+
+const handleRemovePartChange = async (value: string | number) => {
+  if (Number(value) !== Number(removePart.value)) {
+    await setRemovePart(String(value));
+  }
+};
+
+const focusSliderInput = () => {
+  setFocusedField(FocusedField.Percent);
+  sliderInputRef.value?.focus();
+};
+
+const confirmOrExecute = async (handler: () => Promise<void> | void) => {
+  if (isConfirmTxDisabled.value) {
+    await handler();
+  } else {
+    confirmDialogVisible.value = true;
+  }
+};
+
+const isXorSufficientForNextOperation = () => {
+  const params: WALLET_CONSTS.NetworkFeeWarningOptions = { type: Operation.RemoveLiquidity };
+
+  if (firstToken.value?.address === XOR.address) {
+    params.amount = getFPNumber(firstTokenAmount.value || '0');
+    params.isXor = true;
+  }
+
+  return isXorSufficientForNextTx(params);
+};
+
+const withdrawLiquidity = async () => {
+  await withNotifications(async () => {
+    await removeLiquidityAction();
+    emit('back');
+  });
+  confirmDialogVisible.value = false;
+};
+
+const handleRemoveLiquidity = async () => {
+  if (allowFeePopup.value && !isXorSufficientForNextOperation()) {
+    openWarningFeeDialog();
+    await waitOnFeeWarningConfirmation();
+    if (!isWarningFeeDialogConfirmed.value) {
+      closeWarningFeeDialog();
+      return;
+    }
+    isWarningFeeDialogConfirmed.value = false;
+    closeWarningFeeDialog();
+  }
+
+  await confirmOrExecute(withdrawLiquidity);
+};
+
+const addListenerToSliderDragButton = async () => {
+  await nextTick();
+  const root = rootRef.value;
+  if (!root) return;
+
+  sliderDragButtonRef.value = root.querySelector('.slider-container .el-slider__button') as HTMLElement | null;
+  sliderInputRef.value = root.querySelector('.s-input--remove-part .el-input__inner') as HTMLInputElement | null;
+
+  sliderDragButtonRef.value?.addEventListener('mousedown', focusSliderInput);
+};
+
+const removeListenerFromSliderDragButton = () => {
+  sliderDragButtonRef.value?.removeEventListener('mousedown', focusSliderInput);
+};
+
+watch(
+  liquidity,
+  async () => {
+    const field = focusedField.value;
+    if (!field) {
+      await setRemovePart(removePart.value || '');
+      return;
+    }
+
+    if (field === FocusedField.First || field === FocusedField.Second) {
+      const isFirstToken = field === FocusedField.First;
+      const balance = Number(getTokenMaxAmount(isFirstToken ? firstTokenBalance.value : secondTokenBalance.value));
+      const amount = Number(isFirstToken ? firstTokenAmount.value : secondTokenAmount.value);
+      const setValue = isFirstToken ? setFirstTokenAmount : setSecondTokenAmount;
+      const value = String(Number.isFinite(balance) ? Math.min(balance, amount) : amount);
+      await setValue(value);
+      return;
+    }
+
+    await setRemovePart(removePart.value || '');
   },
-})
-export default class RemoveLiquidityForm extends Mixins(
-  mixins.NetworkFeeWarningMixin,
-  mixins.FormattedAmountMixin,
-  mixins.TransactionMixin,
-  ConfirmDialogMixin,
-  NetworkFeeDialogMixin
-) {
-  readonly XOR_SYMBOL = XOR.symbol;
-  readonly MAX_PART = 100;
-  readonly FocusedField = FocusedField;
+  { deep: true }
+);
 
-  @state.removeLiquidity.liquidityAmount private liquidityAmount!: string;
-  @state.removeLiquidity.focusedField private focusedField!: string;
-  @state.removeLiquidity.firstTokenAmount firstTokenAmount!: string;
-  @state.removeLiquidity.secondTokenAmount secondTokenAmount!: string;
-  @state.removeLiquidity.removePart removePart!: string;
+onMounted(addListenerToSliderDragButton);
+onBeforeUnmount(removeListenerFromSliderDragButton);
 
-  @getter.assets.xor private xor!: Nullable<AccountAsset>;
-  @getter.removeLiquidity.liquidityBalanceFull private liquidityBalanceFull!: FPNumber;
-  @getter.removeLiquidity.liquidityBalance private liquidityBalance!: FPNumber;
-  @getter.removeLiquidity.demeterLockedBalance private demeterLockedBalance!: FPNumber;
-  @getter.removeLiquidity.ceresLockedBalance private ceresLockedBalance!: FPNumber;
-  @getter.removeLiquidity.liquidity liquidity!: AccountLiquidity;
-  @getter.removeLiquidity.firstToken firstToken!: Asset;
-  @getter.removeLiquidity.secondToken secondToken!: Asset;
-  @getter.removeLiquidity.firstTokenBalance firstTokenBalance!: FPNumber;
-  @getter.removeLiquidity.secondTokenBalance secondTokenBalance!: FPNumber;
-  @getter.removeLiquidity.shareOfPool shareOfPool!: string;
-  @getter.removeLiquidity.price price!: string;
-  @getter.removeLiquidity.priceReversed priceReversed!: string;
-
-  @mutation.removeLiquidity.setFocusedField setFocusedField!: (field: FocusedField) => void;
-  @mutation.removeLiquidity.resetFocusedField resetFocusedField!: FnWithoutArgs;
-
-  @action.removeLiquidity.setRemovePart private setRemovePart!: (removePart: string) => Promise<void>;
-  @action.removeLiquidity.removeLiquidity private removeLiquidity!: AsyncFnWithoutArgs;
-  @action.removeLiquidity.setFirstTokenAmount setFirstTokenAmount!: (amount: string) => Promise<void>;
-  @action.removeLiquidity.setSecondTokenAmount setSecondTokenAmount!: (amount: string) => Promise<void>;
-
-  @Watch('liquidity', { deep: true })
-  private liquidityChange(): void {
-    switch (this.focusedField) {
-      case FocusedField.First:
-      case FocusedField.Second: {
-        const isFirstToken = this.focusedField === FocusedField.First;
-
-        const balance = Number(this.getTokenMaxAmount(isFirstToken ? this.firstTokenBalance : this.secondTokenBalance));
-        const amount = Number(isFirstToken ? this.firstTokenAmount : this.secondTokenAmount);
-
-        const setValue = isFirstToken ? this.setFirstTokenAmount : this.setSecondTokenAmount;
-        const value = String(Number.isFinite(balance) ? Math.min(balance, amount) : amount);
-
-        setValue(value);
-        break;
-      }
-      default: {
-        this.setRemovePart(this.removePart);
-        break;
-      }
-    }
-  }
-
-  sliderInput: any;
-  sliderDragButton: any;
-
-  mounted(): void {
-    this.addListenerToSliderDragButton();
-  }
-
-  beforeDestroy(): void {
-    this.removeListenerFromSliderDragButton();
-  }
-
-  get sliderValue(): Nullable<number> {
-    return this.removePart ? Number(this.removePart) : undefined;
-  }
-
-  get isEmptyAmount(): boolean {
-    // We don't check removePart for less than 1%
-    return !Number(this.liquidityAmount) || !this.firstTokenAmount || !this.secondTokenAmount;
-  }
-
-  get liquidityLocked(): boolean {
-    return this.liquidityBalance.isZero();
-  }
-
-  get locks(): { percent: string; lock: string }[] {
-    return [
-      {
-        balance: this.demeterLockedBalance,
-        lock: 'Demeter Farming',
-      },
-      {
-        balance: this.ceresLockedBalance,
-        lock: 'Ceres Liquidity Locker',
-      },
-    ].reduce<{ percent: string; lock: string }[]>((buffer, { balance, lock }) => {
-      if (!balance.isZero()) {
-        buffer.push({
-          lock,
-          percent: this.getLockedPercent(balance),
-        });
-      }
-
-      return buffer;
-    }, []);
-  }
-
-  get isInsufficientBalance(): boolean {
-    const { liquidityBalance, firstTokenBalance, secondTokenBalance } = this;
-    const amount = this.getFPNumber(this.liquidityAmount);
-    const firstTokenAmount = this.getFPNumber(this.firstTokenAmount);
-    const secondTokenAmount = this.getFPNumber(this.secondTokenAmount);
-    return (
-      FPNumber.gt(amount, liquidityBalance) ||
-      FPNumber.gt(firstTokenAmount, firstTokenBalance) ||
-      FPNumber.gt(secondTokenAmount, secondTokenBalance)
-    );
-  }
-
-  get isInsufficientXorForFee(): boolean {
-    return !!this.xor && hasInsufficientXorForFee(this.xor, this.networkFee);
-  }
-
-  get removePartCharClass(): string {
-    const charClassName =
-      {
-        3: 'three',
-        2: 'two',
-      }[this.removePart.length] ?? 'one';
-
-    return `${charClassName}-char`;
-  }
-
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.RemoveLiquidity];
-  }
-
-  get formattedFee(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
-
-  get isXorSufficientForNextOperation(): boolean {
-    const params: WALLET_CONSTS.NetworkFeeWarningOptions = { type: Operation.RemoveLiquidity };
-
-    if (this.firstToken?.address === XOR.address) {
-      params.amount = this.getFPNumber(this.firstTokenAmount);
-      params.isXor = true;
-    }
-    return this.isXorSufficientForNextTx(params);
-  }
-
-  get isMaxButtonAvailable(): boolean {
-    if (this.shouldBalanceBeHidden) {
-      return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
-    }
-    return !this.liquidityLocked && Number(this.removePart) !== this.MAX_PART;
-  }
-
-  handleRemovePartChange(value: string | number): void {
-    if (Number(value) !== Number(this.removePart)) {
-      this.setRemovePart(String(value));
-    }
-  }
-
-  focusSliderInput(): void {
-    this.setFocusedField(FocusedField.Percent);
-    if (this.sliderInput) {
-      this.sliderInput.focus();
-    }
-  }
-
-  getTokenMaxAmount(tokenBalance: FPNumber): string {
-    return tokenBalance.toString();
-  }
-
-  getLockedPercent(lockedBalance: FPNumber): string {
-    const percent = lockedBalance.div(this.liquidityBalanceFull).mul(FPNumber.HUNDRED);
-
-    return formatDecimalPlaces(percent, true);
-  }
-
-  async handleTokenChange(value: string, setValue: (v: any) => Promise<any>): Promise<any> {
-    await setValue(value);
-  }
-
-  async withdrawLiquidity(): Promise<void> {
-    await this.withNotifications(async () => {
-      await this.removeLiquidity();
-      // to close dialog that contains form
-      this.$emit('back');
-    });
-  }
-
-  async handleRemoveLiquidity(): Promise<void> {
-    if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
-      this.openWarningFeeDialog();
-      await this.waitOnFeeWarningConfirmation();
-      if (!this.isWarningFeeDialogConfirmed) {
-        return;
-      }
-      this.isWarningFeeDialogConfirmed = false;
-    }
-
-    this.confirmOrExecute(this.withdrawLiquidity);
-  }
-
-  private addListenerToSliderDragButton(): void {
-    this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button');
-    this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner');
-
-    if (this.sliderDragButton) {
-      this.sliderDragButton.addEventListener('mousedown', this.focusSliderInput);
-    }
-  }
-
-  private removeListenerFromSliderDragButton(): void {
-    if (this.sliderDragButton) {
-      this.$el.removeEventListener('mousedown', this.sliderDragButton);
-    }
-  }
-}
+defineExpose({
+  handleRemoveLiquidity,
+  confirmDialogVisible,
+  showWarningFeeDialog,
+});
 </script>
 
 <style lang="scss" scoped>

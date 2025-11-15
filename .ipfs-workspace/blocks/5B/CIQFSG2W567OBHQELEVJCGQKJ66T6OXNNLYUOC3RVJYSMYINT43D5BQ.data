@@ -1,0 +1,62 @@
+
+ß.×.import{l as le,K as ie,L as ce,j as s,t as b,E as ue,v as i,A as U,o as V,N as pe,x,D as v,w as y,J as de,z as me,C as fe,y as ve,M as ye}from"./polkadot-Bh6PX9YG.js";import{a2 as Se,$ as j,du as G,dv as W,a3 as Y,dw as he,F as I,c as ge,dx as _e,z as be,b as xe,X as ke,dq as z,dr as Te,cM as we}from"./index-DjB-Okl0.js";import{f as $e,l as Ae}from"./lodash-vOcFpjD8.js";import{u as Ie,a as Ce,c as Ne}from"./useChartSpec-Ds1Lt7oL.js";import{A as Pe,S as qe}from"./snapshots-B8F7163b.js";import"./echarts-Cxkeyetf.js";const{IndexerType:Q}=j,De={[G.address]:334496093779e-4,[W.address]:63450144206195e-4},Ee=()=>{try{return _e()?ge():null}catch{return null}},Le=async()=>{const a=Ee()?.soraNetwork;return a||await he()},Fe=Y`
+  query AssetSupplyQuery($after: Cursor, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
+    data: assetSnapshots(
+      after: $after
+      orderBy: TIMESTAMP_DESC
+      filter: {
+        and: [
+          { type: { equalTo: $type } }
+          { assetId: { equalTo: $id } }
+          { timestamp: { lessThanOrEqualTo: $from } }
+          { timestamp: { greaterThanOrEqualTo: $to } }
+        ]
+      }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          timestamp
+          supply
+          mint
+          burn
+        }
+      }
+    }
+  }
+`,Be=Y`
+  query AssetSupplyQuery($after: String, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
+    data: assetSnapshotsConnection(
+      after: $after
+      orderBy: timestamp_DESC
+      where: { AND: [{ type_eq: $type }, { asset: { id_eq: $id } }, { timestamp_lte: $from }, { timestamp_gte: $to }] }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          timestamp
+          supply
+          mint
+          burn
+        }
+      }
+    }
+  }
+`,D=e=>{const a=I.fromCodecValue(e);return a.isFinity()?a.toNumber():0},O=e=>({timestamp:+e.timestamp*1e3,value:D(e.supply),mint:D(e.mint),burn:D(e.burn)});async function Me(e,a,S,k){const c=Se();let h;switch(c.type){case Q.SUBQUERY:{h=await c.services.explorer.fetchAllEntities(Fe,{id:e,from:a,to:S,type:k},O);break}case Q.SUBSQUID:{h=await c.services.explorer.fetchAllEntitiesConnection(Be,{id:e,from:a,to:S,type:k},O);break}}const g=h??[];if(![G.address,W.address].includes(e)||await Le()!==j.SoraNetwork.Prod)return g;const T=De[e];return g.map(u=>({...u,value:u.value-T}))}const je=le({inheritAttrs:!1,__name:"SupplyChart",props:{predefinedToken:{default:void 0}},setup(e){const a=e,{predefinedToken:S}=ie(a),k=ce(),c=s(()=>!!k.parentLoading),{loading:h,withLoading:g,withParentLoading:E}=be({parentLoading:()=>c.value}),{t:T}=xe(),u=Ie(),{theme:H}=Ce(),L=Pe,C=b(L[0]),N=b(!1),_=b([]),F=b(a.predefinedToken??ke),P=b(!1),w=s(()=>a.predefinedToken??F.value),q=s(()=>c.value||h.value),X=s(()=>q.value?void 0:"chevron-down-rounded-16"),J=s(()=>q.value?-1:0),B=s(()=>new I($e(_.value)?.value??0)),K=s(()=>new I(Ae(_.value)?.value??0)),M=s(()=>z(B.value)),R=s(()=>Te(B.value,K.value)),Z=s(()=>H.value??Ne()),ee=s(()=>{const{gridSpec:t,xAxisSpec:r,yAxisSpec:p,tooltipSpec:l,lineSeriesSpec:d,seriesSpec:m}=u,f=Z.value,A=n=>{const o=new I(n),{amount:oe,suffix:re}=z(o);return`${oe} ${re}`};return{dataset:{source:_.value.map(n=>[n.timestamp,n.value,n.mint,n.burn]),dimensions:["timestamp","supply","mint","burn"]},grid:t({top:40,left:50,right:50}),xAxis:r(),yAxis:[p({name:`Remint
+Burn`,nameGap:12,nameTextStyle:{align:"right"},type:"log",min:1,axisLabel:{formatter:A},splitLine:!1}),p({name:"Supply",nameGap:22,nameTextStyle:{align:"left"},axisLabel:{formatter:A}})],tooltip:l({formatter:n=>`
+          <table>
+            ${n.map(o=>`
+              <tr>
+                <td>${o.marker} ${o.seriesName}</td>
+                <td align="right">${we(o.data[o.seriesIndex+1])}</td>
+              </tr>
+            `).join("")}
+          </table>
+        `}),series:[d({encode:{y:"value"},itemStyle:{color:f.color.status.info},name:"Supply",yAxisIndex:1,areaStyle:void 0}),m({type:"bar",encode:{y:"mint"},itemStyle:{color:f.color.status.success,opacity:.5},name:"Remint",yAxisIndex:0,areaStyle:void 0}),m({type:"bar",encode:{y:"burn"},itemStyle:{color:f.color.status.error,opacity:.5},name:"Burn",yAxisIndex:0,areaStyle:void 0})],legend:{orient:"horizontal",top:0,left:"center",icon:"circle",textStyle:{color:f.color.base.content.primary,fontSize:12,fontWeight:400,lineHeight:1.5},selectedMode:!1}}}),te=t=>{C.value=t,$()},ae=t=>{w.value.address!==t.address&&(F.value=t)},se=t=>{ae(t),$()},ne=()=>{P.value=!0},$=async()=>{await g(async()=>{await E(async()=>{try{const t=w.value.address,{type:r,count:p}=C.value,l=qe[r],d=Math.floor(Date.now()/(l*1e3))*l,m=d-l*p;_.value=Object.freeze(await Me(t,d,m,r)),N.value=!1}catch(t){console.error(t),N.value=!0}})})};return ue(async()=>{await $()}),(t,r)=>{const p=i("stats-filter"),l=i("token-select-button"),d=i("formatted-amount"),m=i("v-chart"),f=i("chart-skeleton"),A=i("select-token"),n=i("base-widget");return V(),U(n,ye(t.$attrs,{title:v(T)("createToken.tokenSupply.placeholder"),tooltip:v(T)("tooltips.supply")}),pe({filters:x(()=>[y(p,{"is-dropdown":"",filters:v(L),value:C.value,onInput:te},null,8,["filters","value"])]),default:x(()=>[y(f,{loading:q.value,"is-empty":_.value.length===0,"is-error":N.value,onRetry:$},{default:x(()=>[y(d,{class:"chart-price",value:M.value.amount},{default:x(()=>[fe(ve(M.value.suffix),1)]),_:1},8,["value"]),y(v(R),{value:R.value},null,8,["value"]),y(m,{ref:"chart",class:"chart",option:ee.value,autoresize:""},null,8,["option"])]),_:1},8,["loading","is-empty","is-error"]),v(S)?me("",!0):(V(),U(A,{key:0,"disabled-custom":"",visible:P.value,"onUpdate:visible":r[0]||(r[0]=o=>P.value=o),asset:w.value,onSelect:se},null,8,["visible","asset"]))]),_:2},[v(S)?void 0:{name:"types",fn:x(()=>[y(l,{icon:X.value,token:w.value,tabindex:J.value,onClick:de(ne,["stop"])},null,8,["icon","token","tabindex"])]),key:"0"}]),1040,["title","tooltip"])}}});export{je as _};
+×.

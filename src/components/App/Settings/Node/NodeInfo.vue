@@ -1,14 +1,14 @@
 <template>
   <s-form
+    ref="nodeForm"
     :model="nodeModel"
     :rules="validationRules"
-    ref="nodeForm"
     class="node-info s-flex"
-    @submit.native.prevent="submitForm"
+    @submit.prevent="submitForm"
   >
-    <generic-page-header class="node-info-title" has-button-back :title="title" @back.stop="handleBack">
+    <generic-page-header class="node-info-title" has-button-back :title="title" @back.stop="handleBackClick">
       <template v-if="existing && removable">
-        <s-button type="action" icon="basic-trash-24" @click="removeNode(nodeModel)" />
+        <s-button type="action" icon="basic-trash-24" @click="removeNodeHandler"></s-button>
       </template>
     </generic-page-header>
     <s-form-item prop="name">
@@ -19,7 +19,7 @@
         v-model="nodeModel.name"
         :maxlength="128"
         :disabled="inputDisabled"
-      />
+      ></s-input>
     </s-form-item>
     <s-form-item prop="address">
       <s-input
@@ -28,7 +28,7 @@
         v-model="nodeModel.address"
         :disabled="inputDisabled"
         @change="changeNodeAddress"
-      />
+      ></s-input>
     </s-form-item>
     <s-form-item v-if="formattedLocation" prop="location">
       <div class="node-info-input location-input s-typography-input-field">
@@ -62,11 +62,11 @@
   </s-form>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, Ref } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, nextTick, onMounted, reactive, ref, toRefs, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
+import { useTranslation } from '@/composables/useTranslation';
 import { Links } from '@/consts';
 import type { Node } from '@/types/nodes';
 import { wsRegexp, dnsPathRegexp, ipv4Regexp } from '@/utils/regexp';
@@ -74,13 +74,12 @@ import { wsRegexp, dnsPathRegexp, ipv4Regexp } from '@/utils/regexp';
 import { NodeModel } from './consts';
 import { formatLocation } from './utils';
 
-const checkAddress = (
-  translate: TranslationMixin['t']
-): ((rule: unknown, value: Nullable<string>, callback: (error?: Error) => void) => void) => {
-  return (rule, value, callback): void => {
-    if (!value) {
-      return callback(new Error(translate('selectNodeDialog.messages.emptyAddress')));
-    }
+const stripEndingSlash = (str: string): string => (str.endsWith('/') ? str.slice(0, -1) : str);
+
+const checkAddress =
+  (translate: (key: string) => string) =>
+  (_rule: unknown, value: Nullable<string>, callback: (error?: Error) => void) => {
+    if (!value) return callback(new Error(translate('selectNodeDialog.messages.emptyAddress')));
 
     if (!wsRegexp.test(value)) {
       return callback(new Error(translate('selectNodeDialog.messages.incorrectProtocol')));
@@ -94,192 +93,113 @@ const checkAddress = (
 
     callback();
   };
-};
 
-const stripEndingSlash = (str: string): string => (str.charAt(str.length - 1) === '/' ? str.slice(0, -1) : str);
+type NodeHandler = (node: Node, isNewNode: boolean) => void;
+type VoidHandler = () => void;
 
-@Component({
-  components: {
-    GenericPageHeader,
+const props = withDefaults(
+  defineProps<{
+    handleBack?: VoidHandler;
+    handleNode?: NodeHandler;
+    removeNode?: (node: Node) => void;
+    node?: Node;
+    existing?: boolean;
+    removable?: boolean;
+    connected?: boolean;
+    showTutorial?: boolean;
+    disabled?: boolean;
+    nodeAddressConnecting?: string;
+  }>(),
+  {
+    handleBack: undefined,
+    handleNode: undefined,
+    removeNode: undefined,
+    node: () => ({ ...NodeModel }),
+    existing: false,
+    removable: false,
+    connected: false,
+    showTutorial: false,
+    disabled: false,
+    nodeAddressConnecting: '',
+  }
+);
+
+const { t } = useTranslation();
+const { existing, removable, connected, showTutorial, disabled, nodeAddressConnecting } = toRefs(props);
+
+const nodeForm = ref<any>(null);
+const nodeNameInput = ref<HTMLInputElement | null>(null);
+const nodeModel = reactive<Node>({ ...NodeModel }) as Node;
+
+watch(
+  () => props.node,
+  (node) => {
+    Object.assign(nodeModel, NodeModel, node ?? {});
   },
-})
-export default class NodeInfo extends Mixins(TranslationMixin) {
-  @Prop({ default: () => {}, type: Function }) readonly handleBack!: FnWithoutArgs;
-  @Prop({ default: () => {}, type: Function }) readonly handleNode!: (node: any, isNewNode: boolean) => void;
-  @Prop({ default: () => {}, type: Function }) readonly removeNode!: (node: any) => void;
-  @Prop({ default: () => ({}), type: Object }) readonly node!: Node;
-  @Prop({ default: false, type: Boolean }) readonly existing!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly removable!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly showTutorial!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
-  @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
+  { immediate: true }
+);
 
-  @Ref('nodeNameInput') private readonly nodeNameInput!: HTMLInputElement;
+const validationRules = computed(() => ({
+  name: [{ required: true, message: t('selectNodeDialog.messages.emptyName'), trigger: 'blur' }],
+  address: [{ validator: checkAddress(t), trigger: 'blur' }],
+}));
 
-  readonly tutorialLink = Links.nodes.tutorial;
+const formattedLocation = computed(() => {
+  if (!(existing.value && props.node?.location)) return null;
+  return formatLocation(props.node.location);
+});
 
-  readonly validationRules = {
-    name: [{ required: true, message: this.t('selectNodeDialog.messages.emptyName'), trigger: 'blur' }],
-    address: [{ validator: checkAddress(this.t), trigger: 'blur' }],
-  };
+const inputDisabled = computed(() => existing.value && !removable.value);
 
-  nodeModel: Partial<Node> = { ...NodeModel };
+const nodeDataChanged = computed(
+  () => nodeModel.name !== props.node?.name || nodeModel.address !== props.node?.address
+);
 
-  created(): void {
-    this.nodeModel = Object.keys(NodeModel).reduce(
-      (result, key) => ({
-        ...result,
-        [key]: this.node[key] ?? NodeModel[key],
-      }),
-      {}
-    );
-  }
+const buttonText = computed(() => {
+  if (!existing.value) return t('selectNodeDialog.addNode');
+  if (nodeDataChanged.value) return t('selectNodeDialog.updateNode');
+  if (connected.value) return t('selectNodeDialog.connected');
+  return t('selectNodeDialog.select');
+});
 
-  async mounted(): Promise<void> {
-    // Focus first element if inputs are editable
-    if (!this.inputDisabled) {
-      this.nodeNameInput?.focus?.();
-    }
-  }
+const buttonDisabled = computed(() => disabled.value || (connected.value && !nodeDataChanged.value));
+const buttonType = computed(() => (nodeDataChanged.value || !existing.value ? 'primary' : 'tertiary'));
+const loading = computed(
+  () => Boolean(nodeAddressConnecting.value) && nodeModel.address === nodeAddressConnecting.value
+);
 
-  /** Will be shown only for default nodes */
-  get formattedLocation() {
-    if (!(this.existing && this.node?.location)) {
-      return null;
-    }
-    return formatLocation(this.node.location);
-  }
+const tutorialLink = Links.nodes.tutorial;
 
-  get inputDisabled(): boolean {
-    return this.existing && !this.removable;
-  }
+function changeNodeAddress(value: string): void {
+  nodeModel.address = value.trim().toLowerCase();
+}
 
-  get buttonText(): string {
-    if (!this.existing) return this.t('selectNodeDialog.addNode');
-    if (this.nodeDataChanged) return this.t('selectNodeDialog.updateNode');
-    if (this.connected) return this.t('selectNodeDialog.connected');
+function handleBackClick(): void {
+  props.handleBack?.();
+}
 
-    return this.t('selectNodeDialog.select');
-  }
+function removeNodeHandler(): void {
+  props.removeNode?.({ ...nodeModel });
+}
 
-  get buttonDisabled(): boolean {
-    return this.disabled || (this.connected && !this.nodeDataChanged);
-  }
+async function submitForm(): Promise<void> {
+  try {
+    await nodeForm.value?.validate?.();
 
-  get buttonType(): string {
-    return this.nodeDataChanged || !this.existing ? 'primary' : 'tertiary';
-  }
+    const preparedModel: Node = {
+      ...nodeModel,
+      address: stripEndingSlash((nodeModel.address ?? '').trim()),
+    };
 
-  get title(): string {
-    const customNodeText = this.t('selectNodeDialog.customNode');
-    if (!this.existing) return customNodeText;
-    return this.node.chain || this.node.name || customNodeText;
-  }
-
-  get loading(): boolean {
-    if (!this.nodeAddressConnecting) return false;
-
-    return this.nodeModel.address === this.nodeAddressConnecting;
-  }
-
-  get nodeDataChanged(): boolean {
-    return this.nodeModel.name !== this.node.name || this.nodeModel.address !== this.node.address;
-  }
-
-  changeNodeAddress(value: string): void {
-    this.nodeModel.address = value.trim().toLowerCase();
-  }
-
-  async submitForm(): Promise<void> {
-    try {
-      await (this.$refs.nodeForm as any).validate();
-
-      const preparedModel = {
-        ...this.nodeModel,
-        address: stripEndingSlash((this.nodeModel as Node).address),
-      };
-
-      this.handleNode(preparedModel, !this.existing || this.nodeDataChanged);
-    } catch (error) {
-      console.warn(error);
-    }
+    props.handleNode?.(preparedModel, !existing.value || nodeDataChanged.value);
+  } catch (error) {
+    console.warn(error);
   }
 }
+
+onMounted(() => {
+  if (!inputDisabled.value) {
+    nextTick(() => nodeNameInput.value?.focus?.());
+  }
+});
 </script>
-
-<style lang="scss">
-.node-info {
-  .el-form-item.is-error > .el-form-item__content {
-    & > [class^='s-input']:not(.s-disabled) {
-      &,
-      &:hover {
-        & .el-input > input {
-          background-color: inherit;
-        }
-      }
-
-      .s-placeholder {
-        background-color: inherit;
-      }
-    }
-
-    & > .el-form-item__error,
-    & > .s-icon-status-error {
-      color: var(--s-color-status-error) !important;
-    }
-
-    .s-icon-status-error:before {
-      content: '\ea29';
-    }
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-$min-s-input-height: 58px;
-
-.node-info {
-  flex-direction: column;
-  align-items: center;
-
-  &-title {
-    padding-top: calc(var(--s-basic-spacing) * 2);
-  }
-
-  & > *:not(:last-child) {
-    margin-bottom: $inner-spacing-medium;
-    width: 100%;
-  }
-
-  &-button,
-  &-tutorial-button {
-    width: 100%;
-  }
-}
-.location-input {
-  display: flex;
-  flex-direction: column;
-  border-color: var(--s-color-base-disabled);
-  color: var(--s-color-base-content-secondary);
-  box-shadow: var(--s-shadow-element);
-  background: var(--s-color-base-background);
-  border-width: 0;
-  padding: $inner-spacing-mini $inner-spacing-medium;
-  height: auto;
-  min-height: $min-s-input-height;
-  border-radius: var(--s-border-radius-small);
-  border-style: solid;
-  letter-spacing: var(--s-letter-spacing-small);
-  cursor: not-allowed;
-
-  &__value {
-    font-weight: 400;
-  }
-
-  &__placeholder {
-    font-size: var(--s-font-size-mini);
-    font-weight: 300;
-  }
-}
-</style>

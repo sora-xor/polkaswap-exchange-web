@@ -1,39 +1,46 @@
 <template>
-  <router-view
-    v-bind="{
-      parentLoading: subscriptionsDataLoading,
-      ...$attrs,
-    }"
-    v-on="$listeners"
-    v-loading="subscriptionsDataLoading"
-  />
+  <router-view v-bind="forwardedAttrs" v-loading="subscriptionsDataLoading"></router-view>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, watch, useAttrs } from 'vue';
 
-import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
+import { useSubscriptions } from '@/composables/useSubscriptions';
 import { PageNames } from '@/consts';
 import { goTo } from '@/router';
-import { action, getter } from '@/store/decorators';
+import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
 
-@Component
-export default class AssetOwnerContainer extends Mixins(SubscriptionsMixin) {
-  @action.dashboard.subscribeOnOwnedAssets private subscribeOnOwnedAssets!: AsyncFnWithoutArgs;
-  @action.dashboard.reset private reset!: AsyncFnWithoutArgs;
+const attrs = useAttrs();
 
-  @getter.settings.assetOwnerEnabled assetOwnerEnabled!: Nullable<boolean>;
+const subscribeOnOwnedAssets = async () => {
+  await store.dispatch.dashboard.subscribeOnOwnedAssets();
+};
 
-  @Watch('assetOwnerEnabled', { immediate: true })
-  private checkAvailability(value: Nullable<boolean>): void {
+const resetOwnedAssets = async () => {
+  await store.dispatch.dashboard.reset();
+};
+
+const { subscriptionsDataLoading } = useSubscriptions({
+  startSubscriptions: [subscribeOnOwnedAssets],
+  resetSubscriptions: [resetOwnedAssets],
+});
+
+const forwardedAttrs = computed(() => ({
+  parentLoading: subscriptionsDataLoading.value,
+  ...attrs,
+}));
+
+const settingsStore = useSettingsStore();
+const assetOwnerEnabled = computed(() => settingsStore.assetOwnerEnabled);
+
+watch(
+  assetOwnerEnabled,
+  (value) => {
     if (value === false) {
       goTo(PageNames.Swap);
     }
-  }
-
-  created(): void {
-    this.setStartSubscriptions([this.subscribeOnOwnedAssets]);
-    this.setResetSubscriptions([this.reset]);
-  }
-}
+  },
+  { immediate: true }
+);
 </script>

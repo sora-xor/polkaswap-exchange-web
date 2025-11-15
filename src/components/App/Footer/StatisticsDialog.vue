@@ -1,121 +1,87 @@
 <template>
-  <dialog-base :visible.sync="visibility" :title="t('footer.statistics.dialog.title')" class="select-indexer-dialog">
+  <dialog-base v-model:visible="visibility" :title="t('footer.statistics.dialog.title')" class="select-indexer-dialog">
     <select-indexer
-      :indexer.sync="selectedIndexerType"
-      :ceres.sync="useCeresApi"
+      v-model:indexer="selectedIndexerType"
+      v-model:ceres="useCeresApi"
       :indexers="indexers"
       :environment="soraNetwork"
-    />
+    ></select-indexer>
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { components, WALLET_CONSTS, WALLET_TYPES } from '@wallet';
+
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { action, state, mutation } from '@/store/decorators';
-import { Indexer } from '@/types/indexers';
+import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
+import type { Indexer } from '@/types/indexers';
+import type { Nullable } from '@/types/common';
 import { capitalize } from '@/utils';
 
-const IndexerListView = 'IndexerListView';
-const IndexerInfoView = 'IndexerInfoView';
+defineOptions({ name: 'SelectIndexerDialog' });
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    SelectIndexer: lazyComponent(Components.SelectIndexer),
-    IndexerInfo: lazyComponent(Components.IndexerInfo),
+const DialogBase = components.DialogBase;
+const SelectIndexer = lazyComponent(Components.SelectIndexer);
+
+const { t } = useTranslation();
+const settingsStore = useSettingsStore();
+
+const walletSettingsState = computed(() => (store.state.wallet?.settings ?? {}) as Record<string, unknown>);
+const walletAccountState = computed(() => (store.state.wallet?.account ?? {}) as Record<string, unknown>);
+
+const visibility = computed({
+  get: () => Boolean(settingsStore.selectIndexerDialogVisibility),
+  set: (flag: boolean) => {
+    settingsStore.setSelectIndexerDialogVisibility(flag);
   },
-})
-export default class SelectIndexerDialog extends Mixins(TranslationMixin, mixins.NotificationMixin) {
-  @state.settings.selectIndexerDialogVisibility private selectIndexerDialogVisibility!: boolean;
-  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @state.wallet.settings.indexers private indexersData!: Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>;
-  @state.wallet.settings.indexerType indexerType!: Indexer['type'];
-  @state.wallet.account.ceresFiatValuesUsage private ceresFiatValuesUsage!: boolean;
+});
 
-  @mutation.settings.setSelectIndexerDialogVisibility setSelectIndexerDialogVisibility!: (flag: boolean) => void;
-  @action.wallet.settings.selectIndexer private selectIndexer!: (type: WALLET_CONSTS.IndexerType) => Promise<void>;
-  @action.wallet.account.useCeresApiForFiatValues private useCeresApiForFiatValues!: (flag: boolean) => Promise<void>;
+const soraNetwork = computed<Nullable<WALLET_CONSTS.SoraNetwork>>(
+  () => walletSettingsState.value.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>
+);
 
-  currentView = IndexerListView;
+const indexers = computed<Indexer[]>(() => {
+  const indexersData = walletSettingsState.value.indexers as
+    | Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>
+    | undefined;
 
-  get indexers(): Indexer[] {
-    return Object.keys(WALLET_CONSTS.IndexerType).map((key) => {
-      const type = WALLET_CONSTS.IndexerType[key];
-      return {
-        name: capitalize(type),
-        type,
-        endpoint: this.indexersData[type].endpoint,
-        online: this.indexersData[type].status === WALLET_TYPES.ConnectionStatus.Available,
-      };
-    });
-  }
+  return Object.values(WALLET_CONSTS.IndexerType).map((type) => {
+    const data = indexersData?.[type] ?? {};
+    return {
+      name: capitalize(type),
+      type,
+      endpoint: data.endpoint ?? '',
+      online: data.status === WALLET_TYPES.ConnectionStatus.Available,
+    };
+  });
+});
 
-  get indexer(): Indexer {
-    const indexer = this.indexers.find((indexer) => indexer.type === this.indexerType);
-    if (!indexer) throw new Error('Unknown indexer type');
-    return indexer;
-  }
+const selectedIndexerType = computed<WALLET_CONSTS.IndexerType>({
+  get: () => (walletSettingsState.value.indexerType as WALLET_CONSTS.IndexerType) ?? '',
+  set: async (type: WALLET_CONSTS.IndexerType) => {
+    if (!type || type === walletSettingsState.value.indexerType) return;
 
-  get visibility(): boolean {
-    return this.selectIndexerDialogVisibility;
-  }
-
-  set visibility(flag: boolean) {
-    this.setSelectIndexerDialogVisibility(flag);
-    if (!flag) {
-      this.handleBack();
+    const selectIndexer = store.dispatch?.wallet?.settings?.selectIndexer;
+    if (typeof selectIndexer === 'function') {
+      await selectIndexer(type);
     }
-  }
+  },
+});
 
-  get useCeresApi(): boolean {
-    return this.ceresFiatValuesUsage;
-  }
-
-  set useCeresApi(flag: boolean) {
-    this.useCeresApiForFiatValues(flag);
-  }
-
-  get selectedIndexerType(): WALLET_CONSTS.IndexerType {
-    return this.indexerType ?? '';
-  }
-
-  set selectedIndexerType(type: WALLET_CONSTS.IndexerType) {
-    if (type === this.indexerType) return;
-
-    const indexer = this.findIndexerInListByType(type);
-
-    this.handleIndexer(indexer);
-  }
-
-  async handleIndexer(indexer: Indexer): Promise<void> {
-    await this.selectIndexer(indexer.type);
-
-    if (this.indexer.type === indexer.type && this.currentView === IndexerInfoView) {
-      this.handleBack();
+const useCeresApi = computed<boolean>({
+  get: () => Boolean(walletAccountState.value.ceresFiatValuesUsage),
+  set: async (flag: boolean) => {
+    const toggleCeres = store.dispatch?.wallet?.account?.useCeresApiForFiatValues;
+    if (typeof toggleCeres === 'function') {
+      await toggleCeres(flag);
     }
-  }
-
-  handleBack(): void {
-    this.changeView(IndexerListView);
-  }
-
-  private changeView(view: string): void {
-    this.currentView = view;
-  }
-
-  private findInList(list: Indexer[], type: string): any {
-    return list.find((item) => item.type === type);
-  }
-
-  private findIndexerInListByType(type: WALLET_CONSTS.IndexerType): any {
-    return this.findInList(this.indexers, type);
-  }
-}
+  },
+});
 </script>
 
 <style lang="scss">

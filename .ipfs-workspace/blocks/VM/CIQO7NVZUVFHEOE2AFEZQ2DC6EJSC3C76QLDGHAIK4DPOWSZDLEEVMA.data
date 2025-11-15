@@ -1,0 +1,3 @@
+
+»³.amount-header .formatted-amount__container{justify-content:center;text-align:center}.amount-block .formatted-amount--fiat-value,.amount-block__amount{font-weight:700}.amount-block .formatted-amount--fiat-value{font-size:.875em}.amount-header[data-v-5863c53c]{align-items:center;flex-direction:column}.amount-block[data-v-5863c53c],.amount-header[data-v-5863c53c]{display:flex;justify-content:center}.amount-block[data-v-5863c53c]{align-items:baseline;flex-wrap:wrap;font-size:var(--s-font-size-large);line-height:20px;text-align:center}.amount-block[data-v-5863c53c]:first-child:not(:last-child){text-align:right}.amount-block[data-v-5863c53c]:last-child:not(:first-child){text-align:left}
+³

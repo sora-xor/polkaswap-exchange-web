@@ -1,0 +1,104 @@
+import { Operation } from '@sora-substrate/sdk';
+import { mount } from '@vue/test-utils';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/store', () => ({
+  __esModule: true,
+  default: {
+    state: {
+      wallet: {
+        settings: {
+          networkFees: {
+            [Operation.RemoveLiquidity]: '25',
+          },
+        },
+      },
+    },
+    getters: {
+      removeLiquidity: {
+        shareOfPool: '12.5',
+        firstToken: { symbol: 'DEMO1' },
+        secondToken: { symbol: 'DEMO2' },
+        priceReversed: '0.25',
+        price: '4',
+      },
+    },
+  },
+}));
+
+vi.mock('@/composables/useFormattedAmount', () => ({
+  __esModule: true,
+  useFormattedAmount: () => ({
+    Zero: { isZero: () => false },
+    formatStringValue: (value: string) => `formatted-${value}`,
+    formatCodecNumber: (value: string) => `formatted-${value}`,
+    getFiatAmountByCodecString: (value: string) => `fiat-${value}`,
+  }),
+}));
+
+vi.mock('@/router', () => ({
+  __esModule: true,
+  lazyComponent: () => ({ template: '<div class="transaction-details-stub"><slot /></div>' }),
+}));
+
+vi.mock('vue-i18n', async () => {
+  const actual = await vi.importActual<typeof import('vue-i18n')>('vue-i18n');
+  return {
+    __esModule: true,
+    ...actual,
+    useI18n: () => ({
+      t: (key: string) => key,
+    }),
+  };
+});
+
+vi.mock('@wallet', async () => {
+  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
+  return createWalletMock({
+    components: {
+      InfoLine: {
+        name: 'InfoLineStub',
+        props: ['label', 'value', 'assetSymbol', 'fiatValue', 'labelTooltip'],
+        template: '<div class="info-line-stub"><span>{{ label }}</span><span>{{ value }}</span><slot /></div>',
+      },
+    },
+  });
+});
+
+import RemoveLiquidityTransactionDetails from '@/modules/pool/components/RemoveLiquidity/TransactionDetails.vue';
+
+describe('RemoveLiquidityTransactionDetails.vue', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  const mountComponent = () =>
+    mount(RemoveLiquidityTransactionDetails, {
+      props: {
+        infoOnly: false,
+      },
+      global: {
+        stubs: {
+          InfoLine: {
+            props: ['label', 'value', 'assetSymbol', 'fiatValue'],
+            template:
+              '<div class="info-line"><span class="label">{{ label }}</span><span class="value">{{ value }}</span><span class="asset">{{ assetSymbol }}</span><span class="fiat">{{ fiatValue }}</span><slot /></div>',
+          },
+        },
+      },
+    });
+
+  it('renders share, prices, and fees derived from store state', () => {
+    const wrapper = mountComponent();
+
+    const text = wrapper.text();
+    expect(text).toContain('removeLiquidity.shareOfPool');
+    expect(text).toContain('12.5%');
+    expect(text).toContain('formatted-0.25');
+    expect(text).toContain('formatted-4');
+    expect(text).toContain('formatted-25');
+    expect(text).toContain('fiat-25');
+
+    wrapper.unmount();
+  });
+});

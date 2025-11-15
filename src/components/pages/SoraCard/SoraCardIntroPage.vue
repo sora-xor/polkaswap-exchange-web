@@ -1,6 +1,12 @@
 <template>
   <div class="container sora-card">
-    <s-image src="card/sora-card.png" lazy fit="cover" draggable="false" class="unselectable sora-card__image" />
+    <s-image
+      src="card/sora-card.png"
+      lazy
+      fit="cover"
+      draggable="false"
+      class="unselectable sora-card__image"
+    ></s-image>
 
     <template v-if="maintenance">
       <div class="sora-card__intro">
@@ -34,7 +40,7 @@
         </span>
       </div>
       <div v-if="isLoggedIn" class="sora-card__info">
-        <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
+        <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px"></s-icon>
         <p class="sora-card__info-text">
           <span class="sora-card__info-text">{{ t('card.reIssuanceFee') }}</span>
         </p>
@@ -42,18 +48,18 @@
       <div v-if="wasEuroBalanceLoaded && isLoggedIn" class="sora-card__balance-indicator">
         <div v-if="isEuroBalanceEnough" class="sora-card__info">
           <div class="sora-card__balance-section">
-            <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
+            <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px"></s-icon>
             <div>
               <p class="sora-card__info-text">{{ t('card.freeCardIssuance') }}</p>
               <p class="sora-card__info-text-details sora-card__info-text-details--secondary">
                 {{ t('card.holdSufficientXor') }}
               </p>
-              <span class="progress-bar progress-bar--complete" />
+              <span class="progress-bar progress-bar--complete"></span>
               <p class="sora-card__info-text-details">{{ t('card.gettingCardForFree') }}</p>
             </div>
           </div>
         </div>
-        <balance-indicator v-else />
+        <balance-indicator v-else></balance-indicator>
       </div>
       <div class="sora-card__unsupported-countries-disclaimer">
         {{ t('card.unsupportedCountriesDisclaimer') }}
@@ -72,81 +78,83 @@
         </s-button>
       </div>
 
-      <tos-dialog :visible.sync="showListDialog" :title="t('card.unsupportedCountries')" />
+      <tos-dialog v-model:visible="showListDialog" :title="t('card.unsupportedCountries')"></tos-dialog>
     </template>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue';
 
-import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { Components, StoreLinks } from '@/consts';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 
-enum BuyButtonType {
-  Bridge,
-}
-type BuyButton = { type: BuyButtonType; text: string; button: 'primary' | 'secondary' | 'tertiary' };
-
-@Component({
+defineOptions({
+  inheritAttrs: false,
   components: {
     TosDialog: lazyComponent(Components.ToSDialog),
     BalanceIndicator: lazyComponent(Components.BalanceIndicator),
   },
-})
-export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, InternalConnectMixin) {
-  readonly MaintenanceStoreLinks = StoreLinks;
-  readonly MaintenanceTitle = 'Web applications are under maintenance';
-  readonly MaintenanceDesc = 'SORA Card is currently available in the SORA Wallet. Download to apply.';
-  readonly buyOptions: Array<BuyButton> = [
-    { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'secondary' },
-  ];
+});
 
-  @Prop({ type: Boolean, default: false }) maintenance!: boolean;
+const props = withDefaults(
+  defineProps<{
+    maintenance?: boolean;
+  }>(),
+  {
+    maintenance: false,
+  }
+);
 
-  @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
+const emit = defineEmits<{
+  (event: 'confirm-apply'): void;
+}>();
 
-  @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
+const { t } = useTranslation();
+const { connectSoraWallet, isLoggedIn } = useInternalConnect();
 
-  showListDialog = false;
+const MaintenanceStoreLinks = StoreLinks;
+const MaintenanceTitle = 'Web applications are under maintenance';
+const MaintenanceDesc = 'SORA Card is currently available in the SORA Wallet. Download to apply.';
 
-  get buttonText(): string {
-    if (!this.isLoggedIn) {
-      return this.t('connectWalletText');
-    }
+const showListDialog = ref(false);
 
-    return this.t('card.loginBtn');
+const wasEuroBalanceLoaded = computed(() => store.state.soraCard.wasEuroBalanceLoaded as boolean);
+const isEuroBalanceEnough = computed(() => store.getters.soraCard.isEuroBalanceEnough as boolean);
+
+const loading = ref(false);
+
+const buttonText = computed(() => (isLoggedIn.value ? t('card.loginBtn') : t('connectWalletText')));
+const btnLoading = computed(() => (!isLoggedIn.value ? loading.value : false));
+
+const openList = () => {
+  showListDialog.value = true;
+};
+
+const handleClick = () => {
+  if (!isLoggedIn.value) {
+    connectSoraWallet();
+    return;
   }
 
-  get btnLoading(): boolean {
-    if (!this.isLoggedIn) {
-      return this.loading;
-    }
+  emit('confirm-apply');
+};
 
-    return false;
-  }
+onMounted(() => {
+  clearPayWingsKeysFromLocalStorage();
+});
 
-  openList(): void {
-    this.showListDialog = true;
-  }
+const maintenance = computed(() => props.maintenance);
 
-  handleClick(): void {
-    if (!this.isLoggedIn) {
-      this.connectSoraWallet();
-      return;
-    }
-
-    this.$emit('confirm-apply');
-  }
-
-  mounted(): void {
-    clearPayWingsKeysFromLocalStorage();
-  }
-}
+defineExpose({
+  openList,
+  handleClick,
+  showListDialog,
+});
 </script>
 
 <style lang="scss">

@@ -7,7 +7,7 @@
       :disabled="loading"
       v-maska="tokenSymbolMask"
       v-model="tokenSymbol"
-    />
+    ></s-input>
     <p class="wallet-settings-create-token_desc">{{ t('createToken.tokenSymbol.desc') }}</p>
     <s-input
       :placeholder="t('createToken.tokenName.placeholder')"
@@ -16,7 +16,7 @@
       :disabled="loading"
       v-maska="tokenNameMask"
       v-model="tokenName"
-    />
+    ></s-input>
     <p class="wallet-settings-create-token_desc">{{ t('createToken.tokenName.desc') }}</p>
     <s-float-input
       v-model="tokenSupply"
@@ -26,52 +26,60 @@
       :delimiters="delimiters"
       :max="maxTotalSupply"
       :disabled="loading"
-    />
+    ></s-float-input>
     <p class="wallet-settings-create-token_desc">{{ t('createToken.tokenSupply.desc') }}</p>
     <div class="wallet-settings-create-token_supply-block">
-      <s-switch v-model="extensibleSupply" :disabled="loading" />
+      <s-switch v-model="extensibleSupply" :disabled="loading"></s-switch>
       <span>{{ t('createToken.extensibleSupply.placeholder') }}</span>
     </div>
     <p class="wallet-settings-create-token_desc">{{ t('createToken.extensibleSupply.desc') }}</p>
   </div>
 </template>
 
-<script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { MaxTotalSupply, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { FPNumber } from '@sora-substrate/sdk';
+import { MaxTotalSupply } from '@sora-substrate/sdk/build/assets/consts';
+import { computed, ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
+import { useNumberFormatter } from '@/composables/useNumberFormatter';
 
-@Component({
-  components: {
-    InfoLine: components.InfoLine,
-  },
-})
-export default class CreateNftToken extends Mixins(TranslationMixin, mixins.NumberFormatterMixin) {
-  readonly XOR = XOR.symbol;
-  readonly decimals = FPNumber.DEFAULT_PRECISION;
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-  readonly maxTotalSupply = MaxTotalSupply;
-  readonly tokenSymbolMask = 'AAAAAAA';
-  readonly tokenNameMask = { mask: 'Z*', tokens: { Z: { pattern: /[0-9a-zA-Z ]/ } } };
+const { t } = useTranslation();
+const { formatStringValue } = useNumberFormatter();
 
-  tokenSymbol = '';
-  tokenName = '';
-  tokenSupply = '';
-  extensibleSupply = false;
+const decimals = FPNumber.DEFAULT_PRECISION;
+const delimiters = FPNumber.DELIMITERS_CONFIG;
+const maxTotalSupply = MaxTotalSupply;
+const tokenSymbolMask = 'AAAAAAA';
+const tokenNameMask = { mask: 'Z*', tokens: { Z: { pattern: /[0-9a-zA-Z ]/ } } };
 
-  loading = false; //
+const tokenSymbol = ref('');
+const tokenName = ref('');
+const tokenSupply = ref('');
+const extensibleSupply = ref(false);
+const loading = ref(false);
 
-  get isCreateDisabled(): boolean {
-    return !(this.tokenSymbol && this.tokenName.trim() && +this.tokenSupply);
-  }
+const isCreateDisabled = computed(() => {
+  return !(tokenSymbol.value && tokenName.value.trim() && Number(tokenSupply.value));
+});
 
-  get formattedTokenSupply(): string {
-    return this.formatStringValue(this.tokenSupply, this.decimals);
-  }
-}
+const formattedTokenSupply = computed(() => formatStringValue(tokenSupply.value, decimals));
+
+defineExpose({
+  tokenSymbol,
+  tokenName,
+  tokenSupply,
+  extensibleSupply,
+  loading,
+  isCreateDisabled,
+  formattedTokenSupply,
+  decimals,
+  delimiters,
+  maxTotalSupply,
+  tokenSymbolMask,
+  tokenNameMask,
+  t,
+});
 </script>
 
 <style scoped lang="scss">

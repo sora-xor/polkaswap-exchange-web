@@ -1,19 +1,19 @@
 <template>
   <dialog-base
-    :visible.sync="isVisible"
+    v-model:visible="isVisible"
     :title="t('confirmSupply.title')"
     v-if="firstToken && secondToken"
     append-to-body
   >
     <div class="pool-tokens-amount">{{ shareOfPool }}%</div>
     <s-row v-if="firstToken && secondToken" flex align="middle" class="pool-tokens">
-      <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="small" />
+      <pair-token-logo :first-token="firstToken" :second-token="secondToken" size="small"></pair-token-logo>
       {{ t('createPair.firstSecondPoolTokens', { first: firstToken.symbol, second: secondToken.symbol }) }}
     </s-row>
     <div class="output-description">
       {{ t('confirmSupply.outputDescription', { slippageTolerance: formattedSlippageTolerance }) }}
     </div>
-    <s-divider />
+    <s-divider></s-divider>
     <info-line
       :label="`${firstToken.symbol} ${t('createPair.deposit')}`"
       :value="formattedFirstTokenValue"
@@ -21,7 +21,7 @@
       is-formatted
     >
       <template #info-line-prefix>
-        <token-logo class="token-logo" :token="firstToken" size="small" />
+        <token-logo class="token-logo" :token="firstToken" size="small"></token-logo>
       </template>
     </info-line>
     <info-line
@@ -31,18 +31,18 @@
       is-formatted
     >
       <template #info-line-prefix>
-        <token-logo class="token-logo" :token="secondToken" size="small" />
+        <token-logo class="token-logo" :token="secondToken" size="small"></token-logo>
       </template>
     </info-line>
     <info-line
       :label="t('priceText')"
       :value="`1 ${firstToken.symbol} = ${formattedPriceReversed}`"
       :asset-symbol="secondToken.symbol"
-    />
-    <info-line :value="`1 ${secondToken.symbol} = ${formattedPrice}`" :asset-symbol="firstToken.symbol" />
-    <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
+    ></info-line>
+    <info-line :value="`1 ${secondToken.symbol} = ${formattedPrice}`" :asset-symbol="firstToken.symbol"></info-line>
+    <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy"></info-line>
     <template #footer>
-      <account-confirmation-option with-hint class="confirmation-option" />
+      <account-confirmation-option with-hint class="confirmation-option"></account-confirmation-option>
       <s-button
         type="primary"
         class="s-typography-button--large"
@@ -61,88 +61,103 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed, toRef } from 'vue';
+import { components } from '@wallet';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
-import PoolApyMixin from '@/modules/pool/mixins/PoolApy';
+import { usePoolApy } from '@/modules/pool/composables/usePoolApy';
 import { lazyComponent } from '@/router';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    TokenLogo: components.TokenLogo,
-    InfoLine: components.InfoLine,
-    AccountConfirmationOption: components.AccountConfirmationOption,
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-  },
-})
-export default class AddLiquidityConfirm extends Mixins(
-  mixins.FormattedAmountMixin,
-  mixins.LoadingMixin,
-  mixins.DialogMixin,
-  TranslationMixin,
-  PoolApyMixin
-) {
-  @Prop({ type: String, default: '100' }) readonly shareOfPool!: string;
-  @Prop({ type: Object }) readonly firstToken!: Nullable<AccountAsset>;
-  @Prop({ type: Object }) readonly secondToken!: Nullable<AccountAsset>;
-  @Prop({ type: String }) readonly firstTokenValue!: string;
-  @Prop({ type: String }) readonly secondTokenValue!: string;
-  @Prop({ type: String }) readonly price!: string;
-  @Prop({ type: String }) readonly priceReversed!: string;
-  @Prop({ type: String }) readonly slippageTolerance!: string;
-  @Prop({ type: String }) readonly insufficientBalanceTokenSymbol!: string;
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-  get formattedFirstTokenValue(): string {
-    return this.formatStringValue(this.firstTokenValue, this.firstToken?.decimals);
-  }
+type Props = {
+  visible?: boolean;
+  shareOfPool?: string;
+  firstToken: Nullable<AccountAsset>;
+  secondToken: Nullable<AccountAsset>;
+  firstTokenValue?: string;
+  secondTokenValue?: string;
+  price?: string;
+  priceReversed?: string;
+  slippageTolerance?: string;
+  insufficientBalanceTokenSymbol?: string;
+  parentLoading?: boolean;
+};
 
-  get formattedSecondTokenValue(): string {
-    return this.formatStringValue(this.secondTokenValue, this.secondToken?.decimals);
-  }
+const props = withDefaults(defineProps<Props>(), {
+  visible: false,
+  shareOfPool: '100',
+  firstTokenValue: '',
+  secondTokenValue: '',
+  price: '0',
+  priceReversed: '0',
+  slippageTolerance: '0',
+  insufficientBalanceTokenSymbol: '',
+  parentLoading: false,
+});
 
-  get fiatFirstAmount(): Nullable<string> {
-    if (!this.firstToken) return null;
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'confirm'): void;
+  (event: 'close'): void;
+}>();
 
-    return this.getFiatAmount(this.firstTokenValue, this.firstToken);
-  }
+const { isVisible, closeDialog } = useDialogModel(props, emit);
+const { t } = useTranslation();
+const { formatStringValue, getFiatAmount, getFPNumberFromCodec, Hundred } = useFormattedAmount();
+const { getPoolApy } = usePoolApy();
 
-  get fiatSecondAmount(): Nullable<string> {
-    if (!this.secondToken) return null;
+const shareOfPool = toRef(props, 'shareOfPool');
+const firstToken = toRef(props, 'firstToken');
+const secondToken = toRef(props, 'secondToken');
+const firstTokenValue = toRef(props, 'firstTokenValue');
+const secondTokenValue = toRef(props, 'secondTokenValue');
+const price = toRef(props, 'price');
+const priceReversed = toRef(props, 'priceReversed');
+const slippageTolerance = toRef(props, 'slippageTolerance');
+const insufficientBalanceTokenSymbol = toRef(props, 'insufficientBalanceTokenSymbol');
+const parentLoading = toRef(props, 'parentLoading');
 
-    return this.getFiatAmount(this.secondTokenValue, this.secondToken);
-  }
+const formattedFirstTokenValue = computed(() =>
+  firstToken.value ? formatStringValue(firstTokenValue.value, firstToken.value.decimals) : '0'
+);
 
-  get formattedPrice(): string {
-    return this.formatStringValue(this.price);
-  }
+const formattedSecondTokenValue = computed(() =>
+  secondToken.value ? formatStringValue(secondTokenValue.value, secondToken.value.decimals) : '0'
+);
 
-  get formattedPriceReversed(): string {
-    return this.formatStringValue(this.priceReversed);
-  }
+const fiatFirstAmount = computed(() =>
+  firstToken.value ? getFiatAmount(firstTokenValue.value, firstToken.value) : null
+);
 
-  get formattedSlippageTolerance(): string {
-    return this.formatStringValue(this.slippageTolerance);
-  }
+const fiatSecondAmount = computed(() =>
+  secondToken.value ? getFiatAmount(secondTokenValue.value, secondToken.value) : null
+);
 
-  get strategicBonusApy(): Nullable<string> {
-    // It won't be in template when not defined
-    const strategicBonusApy = this.getPoolApy(this.firstToken?.address, this.secondToken?.address);
-    if (!strategicBonusApy) {
-      return null;
-    }
-    return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`;
-  }
+const formattedPrice = computed(() => formatStringValue(price.value));
+const formattedPriceReversed = computed(() => formatStringValue(priceReversed.value));
+const formattedSlippageTolerance = computed(() => formatStringValue(slippageTolerance.value));
 
-  handleConfirm(): void {
-    this.$emit('confirm');
-    this.closeDialog();
-  }
-}
+const strategicBonusApy = computed(() => {
+  const apy = getPoolApy(firstToken.value?.address ?? null, secondToken.value?.address ?? null);
+  if (!apy) return null;
+  return `${getFPNumberFromCodec(apy).mul(Hundred).toLocaleString()}%`;
+});
+
+const handleConfirm = () => {
+  emit('confirm');
+  closeDialog();
+};
+
+const DialogBase = components.DialogBase;
+const TokenLogo = components.TokenLogo;
+const InfoLine = components.InfoLine;
+const AccountConfirmationOption = components.AccountConfirmationOption;
+const PairTokenLogo = lazyComponent(Components.PairTokenLogo);
 </script>
 
 <style lang="scss" scoped>
@@ -198,21 +213,17 @@ export default class AddLiquidityConfirm extends Mixins(
 
 .pool-tokens-amount {
   font-size: var(--s-heading1-font-size);
-  line-height: var(--s-line-height-mini);
-  letter-spacing: var(--s-letter-spacing-mini);
-  font-weight: 700;
+  font-weight: var(--s-heading1-font-weight);
   text-align: center;
+  margin-bottom: $inner-spacing-mini;
 }
 
 .pool-tokens {
-  margin: $inner-spacing-mini 0;
-  font-size: var(--s-heading4-font-size);
-  font-weight: 800;
-  line-height: var(--s-line-height-medium);
   justify-content: center;
+  margin-bottom: $inner-spacing-big;
 }
 
 .confirmation-option {
-  margin-bottom: $inner-spacing-medium;
+  margin-bottom: $inner-spacing-mini;
 }
 </style>

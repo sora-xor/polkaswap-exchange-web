@@ -6,102 +6,99 @@
     @swap="handleSwap"
     @liquidity="handleLiquidity"
     @bridge="handleBridge"
-  />
+  ></sora-wallet>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import { computed, onMounted, ref } from 'vue';
+import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
+
 import { FPNumber } from '@sora-substrate/math';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, WALLET_CONSTS, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { api, WALLET_CONSTS } from '@wallet';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { PageNames } from '@/consts';
-import router from '@/router';
-import { action, getter, mutation } from '@/store/decorators';
+import store from '@/store';
+import { useRouterStore } from '@/stores/router';
+import { useWalletStore } from '@/stores/wallet';
 
-import type { AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
-import type { NavigationGuardNext, Route } from 'vue-router';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component
-export default class Wallet extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
-  @getter.wallet.account.whitelist private whitelist!: Whitelist;
-  @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: Record<string, string>;
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => AccountAsset;
+const routerStore = useRouterStore();
+const walletStore = useWalletStore();
+const vueRouter = useRouter();
+const route = useRoute();
 
-  @action.swap.setTokenFromAddress private setSwapFromAsset!: (address?: string) => Promise<void>;
-  @action.swap.setTokenToAddress private setSwapToAsset!: (address?: string) => Promise<void>;
-  @action.addLiquidity.setFirstTokenAddress private setAddliquidityAssetA!: (address: string) => Promise<void>;
-  @mutation.wallet.router.navigate private navigate!: (route: {
-    name: WALLET_CONSTS.RouteNames;
-    params?: Record<string, unknown>;
-  }) => void;
+const parentLoading = ref(false);
 
-  private tryNavigate(): void {
-    this.withApi(() => {
-      try {
-        if (!this.isLoggedIn) return;
-        const query = this.$route.query;
-        const page = query.page;
-        // /#/wallet?page=send&asset=kusd&to=any_address&amount=1000
-        // where `asset` is required, `to` and `amount` are optional
-        if (!page || page !== 'send') return;
-        const to = query.to;
-        const amount = typeof query.amount === 'string' ? new FPNumber(query.amount || 0).toString() : undefined;
-        const assetId = this.whitelistIdsBySymbol[(query.asset as string).toUpperCase()];
-        if (!assetId) return;
-        const asset = this.getAsset(assetId);
-        this.navigate({
-          name: WALLET_CONSTS.RouteNames.WalletSend,
-          params: { address: to, amount, asset },
-        });
-      } catch (error) {
-        console.warn('[WALLET] Navigate issue:', error);
-      }
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
+const whitelist = computed(() => walletStore.whitelist);
+const whitelistIdsBySymbol = computed(() => walletStore.whitelistIdsBySymbol);
+const getAsset = (address?: string) => store.getters.assets.assetDataByAddress(address) as AccountAsset;
+
+const setSwapFromAsset = (address?: string) => store.dispatch.swap.setTokenFromAddress(address);
+const setSwapToAsset = () => store.dispatch.swap.setTokenToAddress();
+const setAddliquidityAssetA = (address: string) => store.dispatch.addLiquidity.setFirstTokenAddress(address);
+
+const tryNavigate = () => {
+  try {
+    if (!isLoggedIn.value) return;
+    const page = route.query.page;
+    if (page !== 'send') return;
+    const to = route.query.to as string | undefined;
+    const amountQuery = route.query.amount;
+    const amount = typeof amountQuery === 'string' ? new FPNumber(amountQuery || 0).toString() : undefined;
+    const assetId = whitelistIdsBySymbol.value[(route.query.asset as string)?.toUpperCase()];
+    if (!assetId) return;
+    const asset = getAsset(assetId);
+    routerStore.navigate({
+      name: WALLET_CONSTS.RouteNames.WalletSend,
+      params: { address: to, amount, asset },
     });
+  } catch (error) {
+    console.warn('[WALLET] Navigate issue:', error);
+  }
+};
+
+onMounted(() => {
+  tryNavigate();
+});
+
+onBeforeRouteUpdate((to, from, next) => {
+  next();
+  tryNavigate();
+});
+
+const handleClose = () => {
+  vueRouter.back();
+};
+
+const handleSwap = async (asset: AccountAsset) => {
+  await setSwapFromAsset(asset.address);
+  await setSwapToAsset();
+  vueRouter.push({ name: PageNames.Swap });
+};
+
+const handleLiquidity = async (asset: AccountAsset) => {
+  if (api.dex.baseAssetsIds.includes(asset.address)) {
+    setAddliquidityAssetA(asset.address);
+    vueRouter.push({ name: PageNames.AddLiquidity });
+    return;
   }
 
-  created(): void {
-    this.tryNavigate();
-  }
+  const assetAAddress = XOR.address;
+  const assetBAddress = asset.address;
 
-  beforeRouteUpdate(to: Route, from: Route, next: NavigationGuardNext<Vue>): void {
-    next();
-    this.tryNavigate();
-  }
+  const first = whitelist.value[assetAAddress]?.symbol ?? assetAAddress;
+  const second = whitelist.value[assetBAddress]?.symbol ?? assetBAddress;
+  const params = { first, second };
 
-  handleClose(): void {
-    router.back();
-  }
+  vueRouter.push({ name: PageNames.AddLiquidity, params });
+};
 
-  async handleSwap(asset: AccountAsset): Promise<void> {
-    await this.setSwapFromAsset(asset.address);
-    await this.setSwapToAsset();
-    router.push({ name: PageNames.Swap });
-  }
-
-  async handleLiquidity(asset: AccountAsset): Promise<void> {
-    if (api.dex.baseAssetsIds.includes(asset.address)) {
-      this.setAddliquidityAssetA(asset.address);
-      router.push({ name: PageNames.AddLiquidity });
-      return;
-    }
-
-    const assetAAddress = XOR.address;
-    const assetBAddress = asset.address;
-
-    const first = this.whitelist[assetAAddress]?.symbol ?? assetAAddress;
-    const second = this.whitelist[assetBAddress]?.symbol ?? assetBAddress;
-    const params = { first, second };
-
-    router.push({ name: PageNames.AddLiquidity, params });
-  }
-
-  handleBridge(asset: AccountAsset): void {
-    router.push({ name: PageNames.Bridge, params: { address: asset.address } });
-  }
-}
+const handleBridge = (asset: AccountAsset) => {
+  vueRouter.push({ name: PageNames.Bridge, params: { address: asset.address } });
+};
 </script>
 
 <style lang="scss">

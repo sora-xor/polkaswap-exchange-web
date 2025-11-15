@@ -1,23 +1,49 @@
 <template>
-  <s-button :class="['app-logo', { responsive }]" type="link" size="large" v-on="$listeners">
-    <polkaswap-logo :theme="theme" class="app-logo__image" />
+  <s-button :class="['app-logo', { responsive }]" type="link" size="large" @click="onClick">
+    <polkaswap-logo :theme="theme" class="app-logo__image"></polkaswap-logo>
   </s-button>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { toRefs } from 'vue';
 
 import PolkaswapLogo from '@/components/shared/Logo/Polkaswap.vue';
 import { Theme } from '@/consts/theme';
 
-@Component({
+defineOptions({
   components: {
     PolkaswapLogo,
   },
-})
-export default class AppLogoButton extends Vue {
-  @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme;
-  @Prop({ default: false, type: Boolean }) responsive!: boolean;
+});
+
+const props = withDefaults(
+  defineProps<{
+    /**
+     * Theme applied to the Polkaswap logo.
+     */
+    theme?: Theme;
+    /**
+     * When true the logo shrinks on smaller layouts and switches image at breakpoints.
+     */
+    responsive?: boolean;
+  }>(),
+  {
+    theme: Theme.LIGHT,
+    responsive: false,
+  }
+);
+
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void;
+}>();
+
+const { theme, responsive } = toRefs(props);
+
+/**
+ * Re-emit click events so consumers can handle interactions without relying on compat listeners.
+ */
+function onClick(event: MouseEvent): void {
+  emit('click', event);
 }
 </script>
 

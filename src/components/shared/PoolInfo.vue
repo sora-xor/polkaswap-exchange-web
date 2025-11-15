@@ -1,16 +1,16 @@
 <template>
   <div class="pool-info">
-    <slot name="prepend" />
+    <slot name="prepend"></slot>
 
     <div class="pool-info-content">
-      <slot />
+      <slot></slot>
     </div>
 
     <div v-if="$slots.buttons" class="pool-info-buttons">
-      <slot name="buttons" />
+      <slot name="buttons"></slot>
     </div>
 
-    <slot name="append" />
+    <slot name="append"></slot>
   </div>
 </template>
 

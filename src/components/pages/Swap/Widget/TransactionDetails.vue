@@ -1,7 +1,7 @@
 <template>
   <base-widget v-bind="$attrs" :title="t('transaction.title')">
     <div v-if="previewText" class="transaction-details-preview">{{ previewText }}</div>
-    <swap-transaction-details v-else expanded />
+    <swap-transaction-details v-else expanded></swap-transaction-details>
   </base-widget>
 </template>
 

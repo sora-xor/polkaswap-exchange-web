@@ -1,31 +1,37 @@
 <template>
   <div>
     <dialog-base
+      v-model:visible="showAlertsPopup"
       :title="title"
-      :visible.sync="showAlertsPopup"
       :show-back="showBack"
-      @back="handleBack"
       :tooltip="t('alerts.alertsTooltip')"
+      @back="handleBack"
     >
-      <alert-list v-if="step === AlertPages.AlertList" @create="handleCreate" @edit-alert="handleEdit" />
+      <alert-list v-if="step === AlertPages.AlertList" @create="handleCreate" @edit-alert="handleEdit"></alert-list>
       <create-alert
-        v-else-if="step === AlertPages.CreateAlert"
+        v-else
         @back="handleBack"
         @open-select-token="openSelectTokenDialog"
         :alert-to-edit="alertToEdit"
-      />
+        @select-asset="selectAsset"
+      ></create-alert>
     </dialog-base>
-    <alerts-select-asset :visible.sync="showAlertSelectTokenDialog" disabled-custom @select="selectAsset" />
+    <alerts-select-asset
+      v-model:visible="showAlertSelectTokenDialog"
+      disabled-custom
+      @select="selectAsset"
+    ></alerts-select-asset>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
+import { computed, ref } from 'vue';
 
-import { Components, NumberedAlert } from '@/consts';
+import { useTranslation } from '@/composables/useTranslation';
+import { Components, type NumberedAlert } from '@/consts';
 import { lazyComponent } from '@/router';
-import { mutation, state } from '@/store/decorators';
+import { useSettingsStore } from '@/stores/settings';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -34,63 +40,52 @@ enum AlertPages {
   CreateAlert,
 }
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    AlertList: lazyComponent(Components.AlertList),
-    CreateAlert: lazyComponent(Components.CreateAlert),
-    AlertsSelectAsset: lazyComponent(Components.SelectToken),
-  },
-})
-export default class Alerts extends Mixins(mixins.TransactionMixin) {
-  readonly AlertPages = AlertPages;
+const DialogBase = components.DialogBase;
+const AlertList = lazyComponent(Components.AlertList);
+const CreateAlert = lazyComponent(Components.CreateAlert);
+const AlertsSelectAsset = lazyComponent(Components.SelectToken);
 
-  @state.settings.alertSettingsVisibility private alertSettingsVisibility!: boolean;
-  @mutation.settings.setAlertSettingsPopup private setAlertSettingsPopup!: (flag: boolean) => void;
+const settingsStore = useSettingsStore();
 
-  alertToEdit: Nullable<NumberedAlert> = null;
-  showAlertSelectTokenDialog = false;
-  step = AlertPages.AlertList;
+const { t } = useTranslation();
 
-  get showAlertsPopup(): boolean {
-    return this.alertSettingsVisibility;
-  }
+const step = ref(AlertPages.AlertList);
+const alertToEdit = ref<Nullable<NumberedAlert>>(null);
+const showAlertSelectTokenDialog = ref(false);
+const pendingAsset = ref<AccountAsset | null>(null);
 
-  set showAlertsPopup(value) {
-    this.setAlertSettingsPopup(value);
-  }
+const showAlertsPopup = computed({
+  get: () => settingsStore.alertSettingsVisibility,
+  set: (flag: boolean) => settingsStore.setAlertSettingsPopup(flag),
+});
 
-  get title(): string {
-    if (this.step === AlertPages.CreateAlert) return this.t('alerts.alertsCreateTitle');
-    return this.t('alerts.alertsTitle');
-  }
+const title = computed(() =>
+  step.value === AlertPages.CreateAlert ? t('alerts.alertsCreateTitle') : t('alerts.alertsTitle')
+);
 
-  get showBack(): boolean {
-    return this.step === AlertPages.CreateAlert;
-  }
+const showBack = computed(() => step.value === AlertPages.CreateAlert);
 
-  openSelectTokenDialog() {
-    this.showAlertSelectTokenDialog = true;
-  }
+function openSelectTokenDialog(): void {
+  showAlertSelectTokenDialog.value = true;
+}
 
-  handleCreate(): void {
-    this.alertToEdit = null;
-    this.step = AlertPages.CreateAlert;
-  }
+function handleCreate(): void {
+  alertToEdit.value = null;
+  step.value = AlertPages.CreateAlert;
+}
 
-  handleEdit(alert: NumberedAlert): void {
-    this.alertToEdit = alert;
-    this.step = AlertPages.CreateAlert;
-  }
+function handleEdit(alert: NumberedAlert): void {
+  alertToEdit.value = alert;
+  step.value = AlertPages.CreateAlert;
+}
 
-  handleBack(): void {
-    this.step = AlertPages.AlertList;
-  }
+function handleBack(): void {
+  step.value = AlertPages.AlertList;
+}
 
-  selectAsset(selectedAsset?: AccountAsset): void {
-    // disallow XSTUSD asset to choose in asset list
-    if (!selectedAsset) return;
-    this.$root.$emit('selectAlertAsset', selectedAsset);
-  }
+function selectAsset(selectedAsset?: AccountAsset): void {
+  if (!selectedAsset) return;
+  pendingAsset.value = selectedAsset;
+  showAlertSelectTokenDialog.value = false;
 }
 </script>

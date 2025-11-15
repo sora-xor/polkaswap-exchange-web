@@ -51,21 +51,53 @@ vi.mock('@sora-substrate/sdk', () => {
     remove() {}
   }
 
-  return { FPNumber: MockFPNumber, Storage: MockStorage };
+  return {
+    FPNumber: MockFPNumber,
+    Storage: MockStorage,
+    api: {
+      setStorage: vi.fn(),
+      shouldPairBeLocked: false,
+      initKeyring: vi.fn(),
+    },
+    connection: {},
+    Operation: {
+      SwapAndSend: 'SwapAndSend',
+      Transfer: 'Transfer',
+      VestedTransfer: 'VestedTransfer',
+      SwapTransferBatch: 'SwapTransferBatch',
+      Mint: 'Mint',
+    },
+    TransactionStatus: {
+      Finalized: 'Finalized',
+      Pending: 'Pending',
+      Failed: 'Failed',
+    },
+  };
 });
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
-  BridgeTxStatus: { Ready: 'Ready' },
-  BridgeNetworkType: { Eth: 'Eth' },
+  BridgeTxStatus: { Ready: 'Ready', Pending: 'Pending', Failed: 'Failed' },
+  BridgeNetworkType: { Eth: 'Eth', Evm: 'Evm', Sub: 'Sub' },
+  BridgeTxDirection: { Outgoing: 'Outgoing', Incoming: 'Incoming' },
   EthCurrencyType: { TokenAddress: 'tokenAddress' },
 }));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/eth/consts', () => ({
   EthAssetKind: { SidechainOwned: 'SidechainOwned', Thischain: 'Thischain', Sidechain: 'Sidechain' },
 }));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/evm/consts', () => ({ EvmNetworkId: { EthereumMainnet: 1 } }));
-vi.mock('@soramitsu/soraneo-wallet-web', () => ({
-  WALLET_CONSTS: { ETH_BRIDGE_STATES: { INITIAL: 0 } },
-  api: { bridgeProxy: { eth: {} } },
-}));
+vi.mock('@wallet', async () => {
+  const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
+  const wallet = createWalletMock();
+
+  return withWalletMock(wallet, {
+    WALLET_CONSTS: {
+      ...wallet.WALLET_CONSTS,
+      ETH_BRIDGE_STATES: {
+        ...(wallet.WALLET_CONSTS?.ETH_BRIDGE_STATES ?? {}),
+        INITIAL: 0,
+      },
+    },
+  });
+});
 vi.mock('@/utils/bridge/eth/api', () => ({ ethBridgeApi: {} }));
 vi.mock('@/utils', () => ({ asZeroValue: (value: string) => Number(value) === 0 }));
 vi.mock('@/utils/ethers-util', () => ({

@@ -1,7 +1,7 @@
 <template>
   <div>
     <s-table
-      ref="table"
+      ref="tableRef"
       v-loading="loadingState"
       :data="tableItems"
       :highlight-current-row="false"
@@ -21,7 +21,7 @@
             </span>
           </div>
           <div class="explore-table-item-logo">
-            <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head" />
+            <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head"></s-icon>
           </div>
           <div class="explore-table-item-info explore-table-item-info--head">
             <span class="explore-table__primary">{{ t('nameText') }}</span>
@@ -34,7 +34,7 @@
             key="token"
             class="explore-table-item-logo"
             :token="row.assets[0]"
-          />
+          ></token-logo>
           <pair-token-logo
             v-else
             key="pair"
@@ -42,7 +42,7 @@
             :second-token="row.assets[1]"
             size="small"
             class="explore-table-item-logo"
-          />
+          ></pair-token-logo>
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.name }}</div>
             <div v-if="row.description" key="description" class="explore-table__secondary">{{ row.description }}</div>
@@ -62,7 +62,7 @@
               size="small"
               class="explore-table-item-logo explore-table-item-logo--plain"
               :token-symbol="row.rewardAsset.symbol"
-            />
+            ></token-logo>
             <div class="explore-table-item-name">{{ row.rewardAsset.symbol }}</div>
           </div>
         </template>
@@ -78,7 +78,7 @@
           <data-row-skeleton :loading="!hasAprColumnData" rect circle>
             <span class="explore-table__accent">{{ row.aprFormatted }}</span>
             <calculator-button
-              @click.native="
+              @click="
                 showPoolCalculator({
                   baseAsset: row.baseAsset.address,
                   poolAsset: row.poolAsset.address,
@@ -86,7 +86,7 @@
                   liquidity: row.liquidity,
                 })
               "
-            />
+            ></calculator-button>
           </data-row-skeleton>
         </template>
       </s-table-column>
@@ -116,7 +116,11 @@
                 class="explore-table-item-token"
               >
               </formatted-amount>
-              <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
+              <token-logo
+                size="small"
+                class="explore-table-item-logo explore-table-item-logo--plain"
+                :token="asset"
+              ></token-logo>
             </div>
           </div>
         </template>
@@ -127,7 +131,7 @@
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
             <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
-              <s-icon name="info-16" size="14px" />
+              <s-icon name="info-16" size="14px"></s-icon>
             </s-tooltip>
           </sort-button>
         </template>
@@ -154,25 +158,33 @@
       :last-page="lastPage"
       :loading="loadingState"
       @pagination-click="handlePaginationClick"
-    />
+    ></history-pagination>
 
-    <calculator-dialog :visible.sync="showCalculatorDialog" v-bind="selectedDerivedPool" :liquidity="liquidity" />
+    <calculator-dialog
+      v-model:visible="showCalculatorDialog"
+      v-bind="selectedDerivedPool"
+      :liquidity="liquidity"
+    ></calculator-dialog>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { api, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { api, components, WALLET_CONSTS } from '@wallet';
+import { computed, onMounted, ref, watch } from 'vue';
 
-import { SortDirection } from '@/compat/soramitsu-ui';
-import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import { Components } from '@/consts';
+import { SortDirection } from '@soramitsu-ui/ui/types';
+import { useExploreTable } from '@/composables/useExploreTable';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
+import { Components, TranslationConsts } from '@/consts';
 import { DemeterStakingComponents } from '@/modules/staking/demeter/consts';
-import DemeterBasePageMixin from '@/modules/staking/demeter/mixins/BasePageMixin';
+import { useDemeterBasePage } from '@/modules/staking/demeter/composables/useDemeterBasePage';
+import { useDemeterPage } from '@/modules/staking/demeter/composables/useDemeterPage';
 import type { DemeterPoolDerivedData } from '@/modules/staking/demeter/types';
 import { demeterStakingLazyComponent } from '@/modules/staking/router';
 import { lazyComponent } from '@/router';
+import store from '@/store';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
 
@@ -205,11 +217,9 @@ type TableItem = {
   liquidity: Nullable<AccountLiquidity>;
 };
 
-const lpKey = (baseAsset: string, poolAsset: string): string => {
-  return [baseAsset, poolAsset].join(';');
-};
+const lpKey = (baseAsset: string, poolAsset: string): string => [baseAsset, poolAsset].join(';');
 
-@Component({
+defineOptions({
   components: {
     CalculatorButton: demeterStakingLazyComponent(DemeterStakingComponents.CalculatorButton),
     CalculatorDialog: demeterStakingLazyComponent(DemeterStakingComponents.CalculatorDialog),
@@ -220,185 +230,261 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
   },
-})
-export default class ExploreDemeter extends Mixins(DemeterBasePageMixin, ExplorePageMixin) {
-  @Watch('pools', { deep: true })
-  private async updatePoolsData() {
-    await this.updateExploreData();
-  }
+});
 
-  // override ExplorePageMixin
-  property = 'apr';
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+const FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
-  poolsData: Record<string, PoolData> = {};
+const props = defineProps({
+  parentLoading: { type: Boolean, default: false },
+  exploreQuery: { type: String, default: '' },
+  isAccountItemsOnly: { type: Boolean, default: false },
+  isFarmingPage: { type: Boolean, default: true },
+});
 
-  get list(): DemeterPool[] {
-    return Object.values(this.pools)
-      .map((poolMap) => Object.values(poolMap))
-      .flat(2)
-      .filter((pool) => !pool.isRemoved);
-  }
+const { t } = useTranslation();
+const parentLoading = computed(() => props.parentLoading);
+const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
+const loadingState = computed(() => loading.value || parentLoading.value);
 
-  get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {
-    if (!this.selectedPool) return null;
+const base = useDemeterBasePage({ isFarmingPage: computed(() => props.isFarmingPage) });
+const page = useDemeterPage(base, { parentLoading });
 
-    return this.prepareDerivedPoolData(this.selectedPool, this.selectedAccountPool, this.liquidity);
-  }
+const poolsData = ref<Record<string, PoolData>>({});
 
-  get items(): TableItem[] {
-    const items = this.list.map((pool) => {
-      const baseAsset = this.demeterAssetsData[pool.baseAsset] as Asset;
-      const poolAsset = this.demeterAssetsData[pool.poolAsset] as Asset;
-      const rewardAsset = this.demeterAssetsData[pool.rewardAsset] as Asset;
-      const rewardAssetSymbol = rewardAsset?.symbol ?? '';
-      const rewardAssetPrice = FPNumber.fromCodecValue(
-        this.getAssetFiatPrice({ address: pool.rewardAsset } as Asset) ?? 0
-      );
-      const tokenInfo = this.tokenInfos[pool.rewardAsset];
-      const accountPool = this.getAccountPool(pool);
-      const isAccountItem = !!accountPool && this.isActiveAccountPool(accountPool);
-      const poolData = this.poolsData[lpKey(pool.baseAsset, pool.poolAsset)];
-      const poolTokenPriceCoefficient = poolData?.priceCoefficient ?? FPNumber.ZERO;
-      const poolAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(poolAsset) ?? 0);
-      const poolTokenPrice = poolAssetPrice.mul(poolTokenPriceCoefficient);
-      const poolBaseReserves = poolData?.reserves?.[0] ?? FPNumber.ZERO;
-      const poolTargetReserves = poolData?.reserves?.[1] ?? FPNumber.ZERO;
-      const poolSupply = poolData?.supply ?? FPNumber.ZERO;
-      const accountPooledTokens = accountPool?.pooledTokens ?? FPNumber.ZERO;
-      const liquidity: Nullable<AccountLiquidity> = pool.isFarm
-        ? {
-            address: poolData?.address ?? '',
-            balance: poolSupply.toCodecString(),
-            firstAddress: baseAsset.address ?? '',
-            firstBalance: poolBaseReserves.toCodecString(),
-            secondAddress: poolAsset?.address ?? '',
-            secondBalance: poolTargetReserves.toCodecString(),
-            poolShare: '1',
-            reserveA: '1',
-            reserveB: '1',
-            totalSupply: '1',
-          }
-        : null;
+const poolsList = computed(() => {
+  const pools = base.pools.value ?? {};
+  return Object.values(pools)
+    .map((poolMap) => Object.values(poolMap ?? {}))
+    .flat(2)
+    .filter((pool): pool is DemeterPool => Boolean(pool && !pool.isRemoved));
+});
 
-      const assets = pool.isFarm ? [baseAsset, poolAsset] : [poolAsset];
-      const name = assets.map((asset) => asset?.symbol ?? '').join('-');
-      const description = pool.isFarm ? '' : (poolAsset?.name ?? '');
-      const depositFee = new FPNumber(pool.depositFee ?? 0).mul(FPNumber.HUNDRED);
-      const tvl = poolTokenPrice.mul(pool.totalTokensInPool);
-      const emission = this.getEmission(pool, tokenInfo);
-      const apr = this.getApr(emission, tvl, rewardAssetPrice);
-      const accountTokens = (
-        pool.isFarm
-          ? [
-              {
-                asset: baseAsset,
-                balance: !poolSupply.isZero()
-                  ? poolBaseReserves.mul(accountPooledTokens).div(poolSupply)
-                  : FPNumber.ZERO,
-              },
-              {
-                asset: poolAsset,
-                balance: !poolSupply.isZero()
-                  ? poolTargetReserves.mul(accountPooledTokens).div(poolSupply)
-                  : FPNumber.ZERO,
-              },
-            ]
-          : [{ asset: poolAsset, balance: accountPooledTokens }]
-      ).map((item) => ({
-        ...item,
-        balance: formatDecimalPlaces(item.balance),
-      }));
+const items = computed<TableItem[]>(() => {
+  const assetsData = base.demeterAssetsData.value ?? {};
+  const tokenInfos = base.tokenInfos.value ?? {};
 
-      return {
-        assets,
-        name,
-        description,
-        baseAsset,
-        poolAsset,
-        rewardAsset,
-        rewardAssetSymbol,
-        depositFee: depositFee.toNumber(),
-        depositFeeFormatted: formatDecimalPlaces(depositFee, true),
-        tvl: tvl.toNumber(),
-        tvlFormatted: formatAmountWithSuffix(tvl),
-        apr: apr.toNumber(),
-        aprFormatted: formatDecimalPlaces(apr, true),
-        isAccountItem,
-        accountTokens,
-        liquidity,
-      };
-    });
+  const mapped = poolsList.value.map((pool) => {
+    const baseAsset = assetsData[pool.baseAsset] as Asset;
+    const poolAsset = assetsData[pool.poolAsset] as Asset;
+    const rewardAsset = assetsData[pool.rewardAsset] as Asset;
+    const rewardAssetSymbol = rewardAsset?.symbol ?? '';
+    const rewardAssetPrice = FPNumber.fromCodecValue(base.getAssetFiatPrice(rewardAsset as Asset) ?? 0);
+    const tokenInfo = tokenInfos[pool.rewardAsset];
+    const accountPool = base.getAccountPool(pool);
+    const isAccountItem = !!accountPool && base.isActiveAccountPool(accountPool);
+    const poolData = poolsData.value[lpKey(pool.baseAsset, pool.poolAsset)];
+    const poolTokenPriceCoefficient = poolData?.priceCoefficient ?? FPNumber.ZERO;
+    const poolAssetPrice = FPNumber.fromCodecValue(base.getAssetFiatPrice(poolAsset as Asset) ?? 0);
+    const poolTokenPrice = poolAssetPrice.mul(poolTokenPriceCoefficient);
+    const poolBaseReserves = poolData?.reserves?.[0] ?? FPNumber.ZERO;
+    const poolTargetReserves = poolData?.reserves?.[1] ?? FPNumber.ZERO;
+    const poolSupply = poolData?.supply ?? FPNumber.ZERO;
+    const accountPooledTokens = accountPool?.pooledTokens ?? FPNumber.ZERO;
+    const liquidity: Nullable<AccountLiquidity> = pool.isFarm
+      ? {
+          address: poolData?.address ?? '',
+          balance: poolSupply.toCodecString(),
+          firstAddress: baseAsset?.address ?? '',
+          firstBalance: poolBaseReserves.toCodecString(),
+          secondAddress: poolAsset?.address ?? '',
+          secondBalance: poolTargetReserves.toCodecString(),
+          poolShare: '1',
+          reserveA: '1',
+          reserveB: '1',
+          totalSupply: '1',
+        }
+      : null;
 
-    const defaultSorted = [...items].sort((a, b) =>
-      sortPools(
-        { baseAsset: a.poolAsset, poolAsset: a.rewardAsset },
-        { baseAsset: b.poolAsset, poolAsset: b.rewardAsset }
-      )
+    const assets = pool.isFarm ? [baseAsset, poolAsset] : [poolAsset];
+    const name = assets.map((asset) => asset?.symbol ?? '').join('-');
+    const description = pool.isFarm ? '' : (poolAsset?.name ?? '');
+    const depositFee = new FPNumber(pool.depositFee ?? 0).mul(FPNumber.HUNDRED);
+    const tvl = poolTokenPrice.mul(pool.totalTokensInPool);
+    const emission = base.getEmission(pool, tokenInfo);
+    const apr = base.getApr(emission, tvl, rewardAssetPrice);
+    const accountTokens = (
+      pool.isFarm
+        ? [
+            {
+              asset: baseAsset,
+              balance: !poolSupply.isZero() ? poolBaseReserves.mul(accountPooledTokens).div(poolSupply) : FPNumber.ZERO,
+            },
+            {
+              asset: poolAsset,
+              balance: !poolSupply.isZero()
+                ? poolTargetReserves.mul(accountPooledTokens).div(poolSupply)
+                : FPNumber.ZERO,
+            },
+          ]
+        : [{ asset: poolAsset, balance: accountPooledTokens }]
+    ).map((item) => ({
+      ...item,
+      balance: formatDecimalPlaces(item.balance),
+    }));
+
+    return {
+      assets,
+      name,
+      description,
+      baseAsset,
+      poolAsset,
+      rewardAsset,
+      rewardAssetSymbol,
+      depositFee: depositFee.toNumber(),
+      depositFeeFormatted: formatDecimalPlaces(depositFee, true),
+      tvl: tvl.toNumber(),
+      tvlFormatted: formatAmountWithSuffix(tvl),
+      apr: apr.toNumber(),
+      aprFormatted: formatDecimalPlaces(apr, true),
+      isAccountItem,
+      accountTokens,
+      liquidity,
+    };
+  });
+
+  return [...mapped].sort((a, b) =>
+    sortPools(
+      { baseAsset: a.poolAsset, poolAsset: a.rewardAsset },
+      { baseAsset: b.poolAsset, poolAsset: b.rewardAsset }
+    )
+  );
+});
+
+const prefilteredItems = computed(() => {
+  return props.isAccountItemsOnly ? items.value.filter((item) => item.isAccountItem) : items.value;
+});
+
+const filterItems = (list: readonly TableItem[], search: string): TableItem[] => {
+  const filterAsset = (asset?: Asset | null): boolean =>
+    asset?.name?.toLowerCase?.().includes(search) ||
+    asset?.symbol?.toLowerCase?.().includes(search) ||
+    asset?.address?.toLowerCase?.() === search;
+
+  return list.filter((item) => {
+    return (
+      item.name.toLowerCase().includes(search) ||
+      filterAsset(item.poolAsset) ||
+      filterAsset(item.baseAsset) ||
+      filterAsset(item.rewardAsset) ||
+      item.assets.some((asset) => filterAsset(asset))
     );
+  });
+};
 
-    return defaultSorted;
-  }
+const exploreQuery = computed(() => props.exploreQuery ?? '');
 
-  get prefilteredItems(): TableItem[] {
-    return this.isAccountItemsOnly ? this.items.filter((item) => item.isAccountItem) : this.items;
-  }
+const table = useExploreTable<TableItem>({
+  items: prefilteredItems,
+  query: exploreQuery,
+  filter: filterItems,
+  defaultOrder: SortDirection.DESC,
+  defaultProperty: 'apr',
+});
 
-  get hasAprColumnData(): boolean {
-    return this.items.some((item) => item.apr !== 0);
-  }
+const {
+  tableItems,
+  order,
+  property,
+  isDefaultSort,
+  handlePaginationClick,
+  changeSort,
+  handleResetSort,
+  currentPage,
+  pageAmount,
+  total,
+  lastPage,
+  startIndex,
+  tableRef,
+} = table;
 
-  // ExplorePageMixin method implementation
-  async updateExploreData(): Promise<void> {
-    // return if method is already called by "watch" or "mounted"
-    if (this.loading) return;
+const pricesAvailable = computed(() => {
+  const fiatObject = store.state.wallet.account.fiatPriceObject ?? {};
+  return Object.keys(fiatObject).length > 0;
+});
 
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        const buffer = {};
-        const isFarm = this.isFarmingPage;
-        const keys = this.list.map((item) => lpKey(item.baseAsset, item.poolAsset));
-        const poolKeys = [...new Set(keys)];
+const isLoggedIn = computed(() => store.getters.wallet.account.isLoggedIn as boolean);
+const hasAprColumnData = computed(() => items.value.some((item) => item.apr !== 0));
+const showCalculatorDialog = computed({
+  get: () => base.showCalculatorDialog.value,
+  set: (value: boolean) => {
+    base.showCalculatorDialog.value = value;
+  },
+});
+const liquidity = computed(() => base.liquidity.value);
+const selectedDerivedPool = computed<Nullable<DemeterPoolDerivedData>>(() => page.selectedDerivedPool.value ?? null);
 
-        await Promise.allSettled(
-          poolKeys.map(async (key) => {
-            if (!buffer[key]) {
-              const poolData = await this.getPoolData(key, isFarm);
+const showPoolCalculator = base.showPoolCalculator;
 
-              if (poolData) {
-                buffer[key] = poolData;
-              }
-            }
-          })
-        );
+/**
+ * Hydrates cached pool coefficients so APR/TVL rows render with fiat data.
+ */
+const updateExploreData = async (): Promise<void> => {
+  if (loading.value) return;
 
-        this.poolsData = Object.freeze(buffer);
-      });
-    });
-  }
+  await withLoading(async () => {
+    await withParentLoading(async () => {
+      const buffer: Record<string, PoolData> = {};
+      const isFarm = base.isFarmingPage.value;
+      const keys = poolsList.value.map((pool) => lpKey(pool.baseAsset, pool.poolAsset));
+      const poolKeys = [...new Set(keys)];
 
-  private async getPoolData(key: string, isFarm: boolean): Promise<Nullable<PoolData>> {
-    const [baseAsset, poolAsset] = key.split(';');
-
-    if (isFarm) {
-      const poolInfo = api.poolXyk.getInfo(baseAsset, poolAsset);
-
-      if (!poolInfo) return null;
-
-      const address = poolInfo.address;
-      const totalIssuance = await api.api.query.poolXYK.totalIssuances(poolInfo.address);
-      const supply = totalIssuance.isEmpty ? FPNumber.ZERO : new FPNumber(totalIssuance);
-      const reserves = (await api.poolXyk.getReserves(baseAsset, poolAsset)).map((reserve) =>
-        FPNumber.fromCodecValue(reserve)
+      await Promise.allSettled(
+        poolKeys.map(async (key) => {
+          if (buffer[key]) return;
+          const data = await getPoolData(key, isFarm);
+          if (data) buffer[key] = data;
+        })
       );
-      const poolAssetReserves = reserves[1];
-      const priceCoefficient = supply.isZero() ? FPNumber.ZERO : poolAssetReserves.mul(new FPNumber(2)).div(supply);
 
-      return { priceCoefficient, supply, reserves, address };
-    } else {
-      return { priceCoefficient: FPNumber.ONE };
-    }
+      poolsData.value = Object.freeze(buffer);
+    });
+  });
+};
+
+/**
+ * Fetches reserves/supply data for a Demeter pair (farms need pool math for APR).
+ */
+const getPoolData = async (key: string, isFarm: boolean): Promise<Nullable<PoolData>> => {
+  const [baseAsset, poolAsset] = key.split(';');
+
+  if (isFarm) {
+    const poolInfo = api.poolXyk.getInfo(baseAsset, poolAsset);
+    if (!poolInfo) return null;
+
+    const address = poolInfo.address;
+    const totalIssuance = await api.api.query.poolXYK.totalIssuances(poolInfo.address);
+    const supply = totalIssuance.isEmpty ? FPNumber.ZERO : new FPNumber(totalIssuance);
+    const reserves = (await api.poolXyk.getReserves(baseAsset, poolAsset)).map((reserve) =>
+      FPNumber.fromCodecValue(reserve)
+    );
+    const poolAssetReserves = reserves[1];
+    const priceCoefficient = supply.isZero() ? FPNumber.ZERO : poolAssetReserves.mul(new FPNumber(2)).div(supply);
+
+    return { priceCoefficient, supply, reserves, address };
   }
-}
+
+  return { priceCoefficient: FPNumber.ONE };
+};
+
+watch(
+  () => base.pools.value,
+  () => {
+    updateExploreData();
+  },
+  { deep: true }
+);
+
+watch(
+  () => base.isFarmingPage.value,
+  () => {
+    updateExploreData();
+  }
+);
+
+onMounted(() => {
+  updateExploreData();
+});
 </script>
 
 <style lang="scss">

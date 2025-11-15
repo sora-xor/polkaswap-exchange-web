@@ -1,35 +1,39 @@
 <template>
-  <dialog-base :visible.sync="isVisible">
+  <dialog-base v-model:visible="visible">
     <div class="order-book-cancel-dialog">
-      <s-icon name="notifications-alert-triangle-24" size="64" />
+      <s-icon name="notifications-alert-triangle-24" size="64"></s-icon>
       <h4>{{ t('orderBook.dialog.askCancel') }}</h4>
-      <account-confirmation-option with-hint class="confirmation-option" />
-      <s-button type="primary" class="btn s-typography-button--medium" :disabled="!isVisible" @click="handleCancel">
-        <span> {{ t('orderBook.dialog.cancelAll') }}</span>
+      <account-confirmation-option with-hint class="confirmation-option"></account-confirmation-option>
+      <s-button type="primary" class="btn s-typography-button--medium" :disabled="!visible" @click="handleCancel">
+        <span>{{ t('orderBook.dialog.cancelAll') }}</span>
       </s-button>
     </div>
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import { Cancel } from '@/types/orderBook';
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
-    NetworkFeeWarning: components.NetworkFeeWarning,
     AccountConfirmationOption: components.AccountConfirmationOption,
   },
-})
-export default class CancelOrders extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  handleCancel(): void {
-    this.isVisible = false;
-    this.$emit('confirm', Cancel.all);
-  }
+});
+
+const emit = defineEmits<{
+  (e: 'confirm', value: Cancel): void;
+}>();
+
+const visible = defineModel<boolean>('visible', { default: false });
+const { t } = useTranslation();
+
+function handleCancel(): void {
+  visible.value = false;
+  emit('confirm', Cancel.all);
 }
 </script>
 

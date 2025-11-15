@@ -6,33 +6,41 @@
       :first-token="baseAsset"
       :second-token="poolAsset"
       class="dialog-title-logo"
-    />
-    <token-logo v-else key="token" :token="poolAsset" class="dialog-title-logo" />
+    ></pair-token-logo>
+    <token-logo v-else key="token" :token="poolAsset" class="dialog-title-logo"></token-logo>
     <span class="dialog-title-text">
       <template v-if="isFarm">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
     </span>
   </s-row>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
+import { computed } from 'vue';
 
 import { Components } from '@/consts';
 import type { DemeterAsset } from '@/modules/staking/demeter/types';
 import { lazyComponent } from '@/router';
 
-@Component({
-  components: {
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    TokenLogo: components.TokenLogo,
-  },
-})
-export default class DialogTitle extends Mixins() {
-  @Prop({ default: () => null, type: Object }) readonly baseAsset!: DemeterAsset;
-  @Prop({ default: () => null, type: Object }) readonly poolAsset!: DemeterAsset;
-  @Prop({ default: false, type: Boolean }) readonly isFarm!: DemeterAsset;
-}
+const PairTokenLogo = lazyComponent(Components.PairTokenLogo);
+const TokenLogo = components.TokenLogo;
+
+const props = withDefaults(
+  defineProps<{
+    baseAsset?: DemeterAsset | null;
+    poolAsset?: DemeterAsset | null;
+    isFarm?: boolean;
+  }>(),
+  {
+    baseAsset: null,
+    poolAsset: null,
+    isFarm: false,
+  }
+);
+
+const baseAsset = computed(() => props.baseAsset);
+const poolAsset = computed(() => props.poolAsset);
+const isFarm = computed(() => props.isFarm);
 </script>
 
 <style lang="scss" scoped>

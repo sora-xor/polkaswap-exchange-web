@@ -1,54 +1,62 @@
 <template>
-  <order-table :orders="filtered" :parent-loading="loading" />
+  <order-table :orders="filtered" :parent-loading="loading"></order-table>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { fetchOrderBookAccountOrders } from '@/indexer/queries/orderBook/orders';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
+import { useLoading } from '@/composables/useLoading';
+import { useWalletStore } from '@/stores/wallet';
 import { Filter, OrderStatus } from '@/types/orderBook';
-import type { OrderData } from '@/types/orderBook';
 
 import OrderTable from './OrderTable.vue';
 
+import type { OrderData } from '@/types/orderBook';
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Nullable } from '@/types/common';
 
-@Component({
-  components: {
-    OrderTable,
-  },
-})
-export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
-  @Prop({ default: '', type: String }) filter!: string;
+const props = withDefaults(
+  defineProps<{
+    filter?: string;
+  }>(),
+  { filter: '' }
+);
 
-  @state.wallet.account.address accountAddress!: string;
+const { loading, withLoading } = useLoading();
+const walletStore = useWalletStore();
 
-  @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
-  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+const orders = ref<OrderData[]>([]);
 
-  public orders: OrderData[] = [];
+const accountAddress = computed(() => walletStore.address);
+const currentOrderBook = computed<Nullable<OrderBook>>(
+  () => (store.getters?.orderBook?.currentOrderBook as Nullable<OrderBook>) ?? null
+);
 
-  mounted(): void {
-    this.fetchData();
+/**
+ * Fetches account orders for the currently selected order book.
+ */
+const fetchOrders = async () => {
+  const address = accountAddress.value;
+  if (!address) {
+    orders.value = [];
+    return;
   }
 
-  get filtered(): OrderData[] {
-    if (this.filter !== Filter.executed) return this.orders;
+  await withLoading(async () => {
+    const data = await fetchOrderBookAccountOrders(address, currentOrderBook.value?.orderBookId);
+    orders.value = data ?? [];
+  });
+};
 
-    return this.orders.filter((item) => item.status === OrderStatus.Filled);
+const filtered = computed(() => {
+  if (props.filter !== Filter.executed) {
+    return orders.value;
   }
 
-  private async fetchData(): Promise<void> {
-    if (!this.accountAddress) return;
+  return orders.value.filter((item) => item.status === OrderStatus.Filled);
+});
 
-    await this.withLoading(async () => {
-      const data = await fetchOrderBookAccountOrders(this.accountAddress, this.currentOrderBook?.orderBookId);
-      this.orders = data ?? [];
-    });
-  }
-}
+onMounted(fetchOrders);
 </script>

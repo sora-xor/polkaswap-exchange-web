@@ -6,27 +6,33 @@
         <div class="limit-card-text">{{ t('bridge.limitMessage', { type, amount, symbol }) }}</div>
       </div>
       <div class="limit-card-badge">
-        <s-icon class="limit-card-badge-icon" name="notifications-alert-triangle-24" size="24" />
+        <s-icon class="limit-card-badge-icon" name="notifications-alert-triangle-24" size="24"></s-icon>
       </div>
     </div>
   </s-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 
-@Component
-export default class BridgeLimitCard extends Mixins(TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly max!: boolean;
-  @Prop({ default: '', type: String }) readonly amount!: string;
-  @Prop({ default: '', type: String }) readonly symbol!: string;
-
-  get type(): string {
-    return this.max ? this.t('maxAmountText') : this.t('minAmountText');
+const props = withDefaults(
+  defineProps<{
+    max?: boolean;
+    amount?: string;
+    symbol?: string;
+  }>(),
+  {
+    max: false,
+    amount: '',
+    symbol: '',
   }
-}
+);
+
+const { t } = useTranslation();
+
+const type = computed(() => (props.max ? t('maxAmountText') : t('minAmountText')));
 </script>
 
 <style lang="scss" scoped>

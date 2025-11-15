@@ -2,13 +2,13 @@
   <div class="container">
     <div class="pay-options">
       <div class="pay-options__option pay-options-moonpay">
-        <moonpay-logo :theme="libraryTheme" />
+        <MoonpayLogo :theme="libraryTheme"></MoonpayLogo>
         <h4>{{ t('fiatPayment.moonpayTitle') }}</h4>
         <span>{{ t('fiatPayment.moonpayDesc') }}</span>
         <s-button type="primary" @click="openMoonpayDialog">{{ moonpayTextBtn }}</s-button>
       </div>
       <div class="pay-options__option pay-options-cede">
-        <cede-store-logo :theme="libraryTheme" />
+        <CedeStoreLogo :theme="libraryTheme"></CedeStoreLogo>
         <h4>{{ t('fiatPayment.cedeStoreTitle', { value: TranslationConsts.CEX }) }}</h4>
         <span>{{
           t('fiatPayment.cedeStoreDesc', {
@@ -22,119 +22,117 @@
       <div v-if="isLoggedIn" class="pay-options__history-btn" @click="openDepositTxHistory">
         <span>{{ t('fiatPayment.historyBtn') }}</span>
         <div>
-          <span :class="computedCounterClass">{{ +hasPendingTx }}</span>
-          <s-icon name="arrows-chevron-right-rounded-24" size="18" />
+          <span :class="computedCounterClass">{{ pendingTxCount }}</span>
+          <s-icon name="arrows-chevron-right-rounded-24" size="18"></s-icon>
         </div>
       </div>
     </div>
     <template v-if="moonpayEnabled">
-      <moonpay />
-      <moonpay-notification />
-      <moonpay-confirmation />
-      <select-provider-dialog />
+      <Moonpay></Moonpay>
+      <MoonpayNotification></MoonpayNotification>
+      <MoonpayConfirmation></MoonpayConfirmation>
+      <SelectProviderDialog></SelectProviderDialog>
     </template>
-    <payment-error :visible.sync="showErrorInfoBanner" />
+    <PaymentError v-model:visible="showErrorInfoBanner"></PaymentError>
   </div>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, computed, onBeforeUnmount } from 'vue';
 
+import CedeStoreLogo from '@/components/shared/Logo/CedeStore.vue';
+import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useTranslation } from '@/composables/useTranslation';
+import { useWeb3Connection } from '@/composables/useWeb3Connection';
+import { Components, PageNames, TranslationConsts } from '@/consts';
 import { Theme } from '@/consts/theme';
-
-import WalletConnectMixin from '../components/mixins/WalletConnectMixin';
-import CedeStoreLogo from '../components/shared/Logo/CedeStore.vue';
-import MoonpayLogo from '../components/shared/Logo/Moonpay.vue';
-import { Components, PageNames } from '../consts';
-import { goTo, lazyComponent } from '../router';
-import { mutation, state, getter } from '../store/decorators';
+import { goTo, lazyComponent } from '@/router';
+import store from '@/store';
 
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { Nullable } from '@/types/common';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    Moonpay: lazyComponent(Components.Moonpay),
-    MoonpayNotification: lazyComponent(Components.MoonpayNotification),
-    MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
-    PaymentError: lazyComponent(Components.PaymentErrorDialog),
-    SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
-    MoonpayLogo,
-    CedeStoreLogo,
-  },
-})
-export default class DepositOptions extends Mixins(WalletConnectMixin) {
-  @state.moonpay.bridgeTransactionData private bridgeTransactionData!: Nullable<EthHistory>;
-  @state.moonpay.startBridgeButtonVisibility private startBridgeButtonVisibility!: boolean;
+const Moonpay = lazyComponent(Components.Moonpay);
+const MoonpayNotification = lazyComponent(Components.MoonpayNotification);
+const MoonpayConfirmation = lazyComponent(Components.MoonpayConfirmation);
+const PaymentError = lazyComponent(Components.PaymentErrorDialog);
+const SelectProviderDialog = lazyComponent(Components.SelectProviderDialog);
 
-  @getter.libraryTheme libraryTheme!: Theme;
-  @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
+const showErrorInfoBanner = ref(false);
 
-  @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
+const { t } = useTranslation();
+const { isLoggedIn, connectSoraWallet } = useInternalConnect();
+const { connectEvmWallet, evmAddress, disconnectExternalNetwork } = useWeb3Connection();
 
-  showCedeDialog = false;
-  showErrorInfoBanner = false;
-
-  get hasPendingTx(): boolean {
-    return this.startBridgeButtonVisibility && !!this.bridgeTransactionData;
+const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+const moonpayEnabled = computed(() => Boolean(store.getters.settings.moonpayEnabled));
+const startBridgeButtonVisibility = computed(() => Boolean(store.state.moonpay.startBridgeButtonVisibility));
+const bridgeTransactionData = computed(() => store.state.moonpay.bridgeTransactionData as Nullable<EthHistory>);
+const pendingTxCount = computed(() => (startBridgeButtonVisibility.value && bridgeTransactionData.value ? 1 : 0));
+const hasPendingTx = computed(() => pendingTxCount.value > 0);
+const computedCounterClass = computed(() => {
+  const classes = ['pay-options__purchase-count'];
+  if (hasPendingTx.value) {
+    classes.push('pay-options__purchase-count--pending');
   }
+  return classes.join(' ');
+});
 
-  get computedCounterClass(): string {
-    const baseClass = ['pay-options__purchase-count'];
-    if (this.hasPendingTx) baseClass.push('pay-options__purchase-count--pending');
-    return baseClass.join(' ');
-  }
+const moonpayTextBtn = computed(() => (isLoggedIn.value ? t('fiatPayment.moonpayTitle') : t('connectWalletText')));
+const cedeTextBtn = computed(() =>
+  isLoggedIn.value
+    ? t('fiatPayment.cedeStoreBtn', {
+        value1: TranslationConsts.CEX,
+        value2: TranslationConsts.CedeStore,
+      })
+    : t('connectWalletText')
+);
 
-  get moonpayTextBtn(): string {
-    return !this.isLoggedIn ? this.t('connectWalletText') : this.t('fiatPayment.moonpayTitle');
-  }
+const setMoonpayVisibility = store.commit.moonpay.setDialogVisibility;
 
-  get cedeTextBtn(): string {
-    return !this.isLoggedIn
-      ? this.t('connectWalletText')
-      : this.t('fiatPayment.cedeStoreBtn', {
-          value1: this.TranslationConsts.CEX,
-          value2: this.TranslationConsts.CedeStore,
-        });
-  }
-
-  openDepositTxHistory(): void {
-    goTo(PageNames.DepositTxHistory);
-  }
-
-  openCedeWidget(): void {
-    if (!this.isLoggedIn) {
-      return this.connectSoraWallet();
-    }
-
-    goTo(PageNames.CedeStore);
-  }
-
-  showErrorMessage(): void {
-    this.showErrorInfoBanner = true;
-  }
-
-  openMoonpayDialog(): void {
-    if (!this.moonpayEnabled) {
-      return this.showErrorMessage();
-    }
-
-    if (!this.isLoggedIn) {
-      return this.connectSoraWallet();
-    }
-
-    if (!this.evmAddress) {
-      return this.connectEvmWallet();
-    }
-
-    this.setMoonpayVisibility(true);
-  }
-
-  beforeDestroy(): void {
-    this.disconnectExternalNetwork();
-  }
+function openDepositTxHistory(): void {
+  goTo(PageNames.DepositTxHistory);
 }
+
+function openCedeWidget(): void {
+  if (!isLoggedIn.value) {
+    connectSoraWallet();
+    return;
+  }
+  goTo(PageNames.CedeStore);
+}
+
+function showErrorMessage(): void {
+  showErrorInfoBanner.value = true;
+}
+
+async function openMoonpayDialog(): Promise<void> {
+  if (!moonpayEnabled.value) {
+    showErrorMessage();
+    return;
+  }
+
+  if (!isLoggedIn.value) {
+    connectSoraWallet();
+    return;
+  }
+
+  if (!evmAddress.value) {
+    try {
+      await connectEvmWallet();
+    } catch {
+      return;
+    }
+    if (!evmAddress.value) return;
+  }
+
+  setMoonpayVisibility(true);
+}
+
+onBeforeUnmount(() => {
+  disconnectExternalNetwork();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -161,7 +159,11 @@ export default class DepositOptions extends Mixins(WalletConnectMixin) {
     }
 
     button {
-      width: 85%;
+      width: 50%;
+    }
+
+    &:hover {
+      box-shadow: var(--s-shadow-element);
     }
   }
 
@@ -169,41 +171,50 @@ export default class DepositOptions extends Mixins(WalletConnectMixin) {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--s-color-utility-body);
-    font-size: var(--s-font-size-medium);
-    border-radius: var(--s-border-radius-small);
-    padding: 18px $basic-spacing;
-    color: var(--s-color-base-content-secondary);
-    width: 102%;
-    i {
-      color: var(--s-color-base-content-tertiary);
+    padding: var(--s-size-mini);
+    color: var(--s-color-base-content-primary);
+    font-weight: 500;
+    width: 100%;
+    cursor: pointer;
+    border-radius: var(--s-border-radius-medium);
+    box-shadow: var(--s-shadow-element-flat), var(--s-shadow-element-flat-reverse);
+
+    span {
+      font-size: var(--s-font-size-medium);
     }
 
     &:hover {
-      cursor: pointer;
-    }
-
-    &:hover i {
-      color: var(--s-color-base-content-secondary);
+      span {
+        color: var(--s-color-theme-accent);
+      }
     }
   }
+
   &__purchase-count {
-    background: var(--s-color-utility-surface);
-    box-shadow: var(--s-shadow-element);
-    border-radius: 30px;
-    padding: 1px 12px;
-    margin-right: $inner-spacing-mini;
+    font-size: var(--s-font-size-medium);
+    color: var(--s-color-theme-accent);
+    font-weight: 700;
+    margin-right: 5px;
+    transition: color 0.5s ease;
 
     &--pending {
-      background: var(--s-color-base-content-secondary);
-      color: var(--s-color-base-on-accent);
-      box-shadow: none;
+      color: var(--s-color-status-warning);
     }
   }
 }
 
-.s-icon-arrows-chevron-right-rounded-24::before {
-  position: relative;
-  top: 2px;
+@media screen and (max-width: 720px) {
+  .pay-options {
+    &__option {
+      height: 280px;
+    }
+  }
+}
+
+.pay-options-moonpay {
+  background-image: linear-gradient(135deg, #0b132b 0%, #1c2541 100%);
+  color: #fff;
+  background-size: cover;
+  background-position: center;
 }
 </style>

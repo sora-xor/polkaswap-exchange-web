@@ -1,6 +1,6 @@
 import { XSTUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { WALLET_TYPES, api } from '@soramitsu/soraneo-wallet-web';
-import { Component, Vue } from 'vue-property-decorator';
+import { WALLET_TYPES, api } from '@wallet';
+import { Options, Vue } from 'vue-property-decorator';
 
 import { PageNames } from '@/consts';
 import { getter } from '@/store/decorators';
@@ -10,7 +10,7 @@ import type { NavigationGuardNext, Route } from 'vue-router';
 
 const MAX_SYMBOL_LENGTH = 7;
 
-@Component
+@Options({})
 export default class SelectedTokenRouteMixin extends Vue {
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;

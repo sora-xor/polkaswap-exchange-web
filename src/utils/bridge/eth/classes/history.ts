@@ -1,6 +1,6 @@
 import { Operation } from '@sora-substrate/sdk';
 import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { api, SUBQUERY_TYPES, WALLET_CONSTS, getCurrentIndexer } from '@soramitsu/soraneo-wallet-web';
+import { api, SUBQUERY_TYPES, WALLET_CONSTS, getCurrentIndexer } from '@wallet';
 import { ethers, EtherscanProvider } from 'ethers';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';

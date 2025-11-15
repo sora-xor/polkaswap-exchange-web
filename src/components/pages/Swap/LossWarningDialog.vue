@@ -1,11 +1,11 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :append-to-body="appendToBody" :modal-append-to-body="appendToBody">
+  <dialog-base v-model:visible="isVisible" :append-to-body="appendToBody" :modal-append-to-body="appendToBody">
     <simple-notification
       optional
       modal-content
       v-model="hidePopup"
       :button-text="t('confirmNextTxFailure.button')"
-      @submit.native.prevent="handleConfirm"
+      @submit="handleConfirm"
     >
       <template #title>{{ t('confirmNextTxFailure.header') }}</template>
       <template #text>{{ t('exchange.lossWarning', { value }) }}</template>
@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@wallet';
 import { ref, watch, computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';

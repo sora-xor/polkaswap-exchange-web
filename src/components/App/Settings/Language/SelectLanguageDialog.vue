@@ -1,16 +1,16 @@
 <template>
-  <dialog-base :visible.sync="visibility" :title="t('selectLanguageDialog.title')" class="select-language-dialog">
+  <dialog-base v-model:visible="isVisible" :title="t('selectLanguageDialog.title')" class="select-language-dialog">
     <s-scrollbar class="select-language-scrollbar">
       <s-radio-group v-model="selectedLang" class="select-language-list s-flex">
         <s-radio
-          v-for="lang in languages"
+          v-for="lang in entries"
           :key="lang.key"
           :label="lang.key"
           :value="lang.key"
           size="medium"
           class="select-language-list__item s-flex"
         >
-          <div :ref="lang.key === selectedLang ? 'selectedEl' : undefined" class="select-language-item s-flex">
+          <div :ref="(el) => setSelectedEl(el, lang.key === selectedLang)" class="select-language-item s-flex">
             <div class="select-language-item__value">
               {{ lang.value }}
             </div>
@@ -24,93 +24,54 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Ref } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
+import { computed, nextTick, ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import { Language, Languages } from '@/consts';
-import { state, action, mutation } from '@/store/decorators';
+import { useSettingsStore } from '@/stores/settings';
 
-@Component({
+defineOptions({
+  name: 'SelectLanguageDialog',
   components: {
     DialogBase: components.DialogBase,
   },
-})
-export default class SelectLanguageDialog extends Mixins(TranslationMixin) {
-  readonly languages = Languages;
+});
 
-  @Ref('selectedEl') selectedEl!: Nullable<[HTMLDivElement]>;
+const { t } = useTranslation();
+const settingsStore = useSettingsStore();
 
-  @state.settings.selectLanguageDialogVisibility private selectLanguageDialogVisibility!: boolean;
+const selectedEl = ref<HTMLDivElement | null>(null);
 
-  @mutation.settings.setSelectLanguageDialogVisibility private setDialogVisibility!: (flag: boolean) => void;
-  @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
-
-  get visibility(): boolean {
-    return this.selectLanguageDialogVisibility;
-  }
-
-  set visibility(flag: boolean) {
-    this.setDialogVisibility(flag);
+const isVisible = computed({
+  get: () => settingsStore.selectLanguageDialogVisibility,
+  set: (flag: boolean) => {
+    settingsStore.setSelectLanguageDialogVisibility(flag);
     if (flag) {
-      this.$nextTick(() => {
-        this.selectedEl?.[0]?.scrollIntoView?.({ behavior: 'smooth' });
-      });
+      nextTick(() => selectedEl.value?.scrollIntoView({ behavior: 'smooth' }));
     }
-  }
+  },
+});
 
-  get selectedLang(): Language {
-    return this.language as Language;
-  }
+const selectedLang = computed<Language>({
+  get: () => settingsStore.language as Language,
+  set: (value) => {
+    void settingsStore.setLanguage(value);
+  },
+});
 
-  set selectedLang(value: Language) {
-    this.setLanguage(value);
+const entries = Object.entries(Languages).map(([key, value]) => ({
+  key: key as Language,
+  value,
+  name: t(`languages.${key}`),
+}));
+
+function setSelectedEl(element: HTMLDivElement | null, isSelected: boolean): void {
+  if (isSelected) {
+    selectedEl.value = element;
+  } else if (selectedEl.value === element) {
+    selectedEl.value = null;
   }
 }
 </script>
-
-<style lang="scss">
-.dialog-wrapper.select-language-dialog {
-  .el-radio {
-    margin-right: 0;
-  }
-}
-.select-language-scrollbar {
-  @include scrollbar(-$inner-spacing-big);
-}
-</style>
-
-<style lang="scss" scoped>
-$item-height: 66px;
-$list-items: 7;
-
-.select-language-list,
-.select-language-item {
-  flex-direction: column;
-}
-.select-language-list {
-  max-height: calc(#{$item-height} * #{$list-items});
-
-  &__item {
-    align-items: center;
-    height: $item-height;
-    padding: $inner-spacing-small $inner-spacing-big;
-    border-radius: var(--s-border-radius-mini);
-  }
-}
-.select-language-item {
-  &__value {
-    color: var(--s-color-base-content-primary);
-    font-size: var(--s-font-size-medium);
-    line-height: var(--s-line-height-medium);
-    font-weight: 600;
-  }
-  &__name {
-    color: var(--s-color-base-content-secondary);
-    font-size: var(--s-font-size-mini);
-    line-height: var(--s-line-height-medium);
-    font-weight: 300;
-  }
-}
-</style>

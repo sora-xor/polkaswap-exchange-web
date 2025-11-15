@@ -1,0 +1,40 @@
+
+Æ¾import{a2 as m,$ as h,a3 as p,s as d,e2 as q}from"./index-DjB-Okl0.js";import"./echarts-Cxkeyetf.js";import"./lodash-vOcFpjD8.js";import{l as B,j as c,v as k,A as b,o as v,M as S,D as y}from"./polkadot-Bh6PX9YG.js";import"./wallet-stack-BuqMcUTa.js";const{IndexerType:l}=h,g=r=>{const{open:e,close:t,low:o,high:s}=r.price;return[+e,+t,+o,+s]},_=r=>{const e=+r.timestamp*1e3,t=g(r),o=+r.volumeUSD;return{timestamp:e,price:t,volume:o}},$=(r,e)=>({orderBookId:{equalTo:r},type:{equalTo:e}}),w=(r,e)=>({orderBook:{id_eq:r},type_eq:e}),I=p`
+  query SubqueryOrderBookPriceQuery($after: Cursor, $filter: OrderBookSnapshotFilter, $first: Int = 100) {
+    data: orderBookSnapshots(after: $after, first: $first, filter: $filter, orderBy: [TIMESTAMP_DESC]) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          price
+          timestamp
+          volumeUSD
+        }
+      }
+    }
+  }
+`,P=p`
+  query SubsquidOrderBookPriceQuery($after: String, $where: OrderBookSnapshotWhereInput, $first: Int = 100) {
+    data: orderBookSnapshotsConnection(after: $after, first: $first, where: $where, orderBy: timestamp_DESC) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          price {
+            close
+            high
+            low
+            open
+          }
+          timestamp
+          volumeUSD
+        }
+      }
+    }
+  }
+`;async function x(r,e,t,o){const s=m();let n;switch(s.type){case l.SUBQUERY:{const a=s,u={filter:$(r,e),first:t,after:o};n=await a.services.explorer.fetchEntities(I,u);break}case l.SUBSQUID:{const a=s,u={where:w(r,e),first:t,after:o};n=await a.services.explorer.fetchEntitiesConnection(P,u);break}}return n?{...n,edges:n.edges.map(a=>({...a,node:_(a.node)}))}:null}const E=B({name:"BookChartsWidget",__name:"BookChartsWidget",setup(r){const e=c(()=>d.getters.orderBook.baseAsset),t=c(()=>d.getters.orderBook.quoteAsset),o=c(()=>d.state.orderBook.dexId),s=c(()=>e.value&&t.value?[o.value,e.value.address,t.value.address].join("-"):null),n=x,a=c(()=>{const i=s.value;return i?async u=>await q(i,u,console.error):null});return(i,u)=>{const f=k("price-chart-widget");return v(),b(f,S(i.$attrs,{"base-asset":e.value,"quote-asset":t.value,"request-entity-id":s.value,"request-method":y(n),"request-subscription":a.value,"is-available":"",class:"order-book-chart"}),null,16,["base-asset","quote-asset","request-entity-id","request-method","request-subscription"])}}});export{E as default};
+¾

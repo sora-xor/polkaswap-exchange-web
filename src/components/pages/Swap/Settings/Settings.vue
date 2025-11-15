@@ -1,26 +1,29 @@
 <template>
   <dialog-base
-    :visible.sync="isVisible"
+    v-model:visible="isVisible"
     :title="t('dexSettings.title')"
     :append-to-body="appendToBody"
     :modal-append-to-body="appendToBody"
     custom-class="settings"
   >
-    <swap-market-algorithm />
+    <swap-market-algorithm></swap-market-algorithm>
   </dialog-base>
 </template>
 
 <script setup lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@wallet';
 import { computed, ref, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 
 import SwapMarketAlgorithm from './MarketAlgorithm/MarketAlgorithm.vue';
 
-const DialogBase = components.DialogBase;
-
-defineOptions({ name: 'SwapSettingsDialog' });
+defineOptions({
+  name: 'SwapSettingsDialog',
+  components: {
+    DialogBase: components.DialogBase,
+  },
+});
 
 const props = withDefaults(
   defineProps<{

@@ -1,0 +1,70 @@
+
+ˆ€import{bQ as l,bR as p,bS as v,by as g,bB as b}from"./index-DjB-Okl0.js";import{s as i,a as m}from"./index-D1vJKCDW-BtS_4qC4.js";const f=l`
+  button {
+    border: none;
+    background: transparent;
+    height: 20px;
+    padding: ${({spacing:t})=>t[2]};
+    column-gap: ${({spacing:t})=>t[1]};
+    border-radius: ${({borderRadius:t})=>t[1]};
+    padding: 0 ${({spacing:t})=>t[1]};
+    border-radius: ${({spacing:t})=>t[1]};
+  }
+
+  /* -- Variants --------------------------------------------------------- */
+  button[data-variant='accent'] {
+    color: ${({tokens:t})=>t.core.textAccentPrimary};
+  }
+
+  button[data-variant='secondary'] {
+    color: ${({tokens:t})=>t.theme.textSecondary};
+  }
+
+  /* -- Focus states --------------------------------------------------- */
+  button:focus-visible:enabled {
+    box-shadow: 0px 0px 0px 4px rgba(9, 136, 240, 0.2);
+  }
+
+  button[data-variant='accent']:focus-visible:enabled {
+    background-color: ${({tokens:t})=>t.core.foregroundAccent010};
+  }
+
+  button[data-variant='secondary']:focus-visible:enabled {
+    background-color: ${({tokens:t})=>t.theme.foregroundSecondary};
+  }
+
+  /* -- Hover & Active states ----------------------------------------------------------- */
+  button[data-variant='accent']:hover:enabled {
+    background-color: ${({tokens:t})=>t.core.foregroundAccent010};
+  }
+
+  button[data-variant='secondary']:hover:enabled {
+    background-color: ${({tokens:t})=>t.theme.foregroundSecondary};
+  }
+
+  button[data-variant='accent']:focus-visible {
+    background-color: ${({tokens:t})=>t.core.foregroundAccent010};
+  }
+
+  button[data-variant='secondary']:focus-visible {
+    background-color: ${({tokens:t})=>t.theme.foregroundSecondary};
+    box-shadow: 0px 0px 0px 4px rgba(9, 136, 240, 0.2);
+  }
+
+  button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;var n=function(t,a,r,u){var c=arguments.length,o=c<3?a:u,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")o=Reflect.decorate(t,a,r,u);else for(var d=t.length-1;d>=0;d--)(s=t[d])&&(o=(c<3?s(o):c>3?s(a,r,o):s(a,r))||o);return c>3&&o&&Object.defineProperty(a,r,o),o};const h={sm:"sm-medium",md:"md-medium"},y={accent:"accent-primary",secondary:"secondary"};let e=class extends g{constructor(){super(...arguments),this.size="md",this.disabled=!1,this.variant="accent",this.icon=void 0}render(){return b`
+      <button ?disabled=${this.disabled} data-variant=${this.variant}>
+        <slot name="iconLeft"></slot>
+        <wui-text
+          color=${y[this.variant]}
+          variant=${h[this.size]}
+        >
+          <slot></slot>
+        </wui-text>
+        ${this.iconTemplate()}
+      </button>
+    `}iconTemplate(){return this.icon?b`<wui-icon name=${this.icon} size="sm"></wui-icon>`:null}};e.styles=[p,v,f];n([i()],e.prototype,"size",void 0);n([i({type:Boolean})],e.prototype,"disabled",void 0);n([i()],e.prototype,"variant",void 0);n([i()],e.prototype,"icon",void 0);e=n([m("wui-link")],e);
+€

@@ -7,14 +7,14 @@
         fit="cover"
         draggable="false"
         class="unselectable sora-card__card-image"
-      />
+      ></s-image>
       <div class="sora-card__card-icon" :class="computedIconClass">
-        <s-icon class="sora-card__card-icon-element" :name="icon" />
+        <s-icon class="sora-card__card-icon-element" :name="icon"></s-icon>
       </div>
     </div>
 
     <div class="sora-card__header">{{ t(titleKey) }}</div>
-    <div class="sora-card__status-info" v-html="safeText" />
+    <div class="sora-card__status-info" v-html="safeText"></div>
 
     <div v-if="isRejected" class="sora-card__rejection">
       <div v-if="freeAttemptsLeft" class="tos__disclaimer">
@@ -25,7 +25,7 @@
           {{ t('card.rejectionPriceAttemptDisclaimer', { 0: retryFee }) }}
         </p>
         <div class="tos__disclaimer-warning icon">
-          <s-icon name="notifications-alert-triangle-24" size="28px" />
+          <s-icon name="notifications-alert-triangle-24" size="28px"></s-icon>
         </div>
       </div>
       <s-button
@@ -51,13 +51,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed, onMounted } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
 import { Links } from '@/consts';
-import { action, getter, mutation, state } from '@/store/decorators';
+import store from '@/store';
 import { AttemptCounter, Fees, VerificationStatus } from '@/types/card';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
@@ -66,153 +67,159 @@ const pendingTitle = 'card.statusPendingTitle';
 const pendingText = 'card.statusPendingText';
 const pendingIcon = 'time-time-24';
 
-@Component
-export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  @state.soraCard.fees fees!: Fees;
-  @state.soraCard.attemptCounter attemptCounter!: AttemptCounter;
-  @state.soraCard.rejectReasons rejectReasons!: Array<string>;
+defineOptions({
+  components: {
+    SImage: components.SImage,
+  },
+});
 
-  @getter.soraCard.currentStatus currentStatus!: VerificationStatus;
+const emit = defineEmits<{
+  (event: 'confirm-apply', openGetReadyPage: boolean): void;
+}>();
 
-  @mutation.soraCard.setWillToPassKycAgain setWillToPassKycAgain!: (boolean) => void;
+const { t, tc } = useTranslation();
+const { loading, withApi } = useLoading();
 
-  @action.soraCard.getUserKycAttempt getUserKycAttempt!: AsyncFnWithoutArgs;
-  @action.soraCard.getUserStatus getUserStatus!: AsyncFnWithoutArgs;
+const fees = computed(() => store.state.soraCard.fees as Fees);
+const attemptCounter = computed(() => store.state.soraCard.attemptCounter as AttemptCounter);
+const rejectReasons = computed(() => store.state.soraCard.rejectReasons as string[]);
+const currentStatus = computed(() => store.getters.soraCard.currentStatus as VerificationStatus | undefined);
 
-  VerificationStatus = VerificationStatus;
+const sanitizedRejectReasons = computed(() =>
+  rejectReasons.value.map((reason) => escapeHtml(reason)).filter((reason) => Boolean(reason))
+);
 
-  private get sanitizedRejectReasons(): Array<string> {
-    return this.rejectReasons.map((reason) => escapeHtml(reason)).filter((reason) => !!reason);
-  }
+const isMultipleReasons = computed(() => sanitizedRejectReasons.value.length > 1);
 
-  private get rejectedText(): string {
-    if (this.currentStatus === VerificationStatus.Rejected && this.sanitizedRejectReasons.length) {
-      if (this.isMultipleReasons) {
-        const rejectionList = this.sanitizedRejectReasons.map((reason) => `<li>${reason}</li>`).join('');
+const rejectedText = computed(() => {
+  if (currentStatus.value === VerificationStatus.Rejected && sanitizedRejectReasons.value.length) {
+    if (isMultipleReasons.value) {
+      const rejectionList = sanitizedRejectReasons.value.map((reason) => `<li>${reason}</li>`).join('');
 
-        return `${this.t('card.statusRejectReasonMultiple')} <ul class="sora-card__reject-reasons">${rejectionList}</ul>`;
-      }
-
-      return `${this.t('card.statusRejectReason')}: ${this.sanitizedRejectReasons[0]}`;
+      return `${t('card.statusRejectReasonMultiple')} <ul class="sora-card__reject-reasons">${rejectionList}</ul>`;
     }
-    return this.t('card.statusRejectText');
+
+    return `${t('card.statusRejectReason')}: ${sanitizedRejectReasons.value[0]}`;
   }
 
-  get isMultipleReasons(): boolean {
-    return this.sanitizedRejectReasons.length > 1;
+  return t('card.statusRejectText');
+});
+
+const retryFee = computed(() => fees.value?.retry ?? null);
+const freeAttemptsLeft = computed(() => Number(attemptCounter.value?.freeAttemptsLeft ?? 0));
+const hasFreeAttempts = computed(() => Boolean(attemptCounter.value?.hasFreeAttempts));
+
+const isRejected = computed(() => currentStatus.value === VerificationStatus.Rejected);
+const isRejectedOrPending = computed(() =>
+  [VerificationStatus.Pending, VerificationStatus.Rejected].includes(currentStatus.value as VerificationStatus)
+);
+
+const titleKey = computed(() => {
+  if (!currentStatus.value) return pendingTitle;
+
+  switch (currentStatus.value) {
+    case VerificationStatus.Pending:
+      return pendingTitle;
+    case VerificationStatus.Accepted:
+      return 'card.statusAcceptTitle';
+    case VerificationStatus.Rejected:
+      return 'card.statusRejectTitle';
+    default:
+      return pendingTitle;
   }
+});
 
-  get retryFee(): Nullable<string> {
-    return this.fees.retry;
+const text = computed(() => {
+  if (!currentStatus.value) return t(pendingText);
+
+  switch (currentStatus.value) {
+    case VerificationStatus.Pending:
+      return t(pendingText);
+    case VerificationStatus.Accepted:
+      return t('card.statusAcceptText');
+    case VerificationStatus.Rejected:
+      return rejectedText.value;
+    default:
+      return t(pendingText);
   }
+});
 
-  get freeAttemptsLeft() {
-    return Number(this.attemptCounter.freeAttemptsLeft);
+const safeText = computed(() =>
+  sanitizeHtml(text.value, {
+    allowedTags: ['ul', 'li', 'span', 'strong', 'em', 'p', 'br'],
+    allowedAttributes: {
+      '*': ['class'],
+    },
+  })
+);
+
+const icon = computed(() => {
+  if (currentStatus.value === VerificationStatus.Rejected && !hasFreeAttempts.value) return 'time-time-24';
+
+  switch (currentStatus.value) {
+    case VerificationStatus.Pending:
+      return pendingIcon;
+    case VerificationStatus.Accepted:
+      return 'basic-check-marks-24';
+    case VerificationStatus.Rejected:
+      return 'basic-close-24';
+    default:
+      return pendingIcon;
   }
+});
 
-  get hasFreeAttempts() {
-    return this.attemptCounter.hasFreeAttempts;
+const computedIconClass = computed(() => {
+  const base = 'sora-card__card-icon';
+
+  if (currentStatus.value === VerificationStatus.Rejected && !hasFreeAttempts.value) return `${base}--waiting`;
+
+  switch (currentStatus.value) {
+    case VerificationStatus.Pending:
+      return `${base}--waiting`;
+    case VerificationStatus.Accepted:
+      return `${base}--success`;
+    case VerificationStatus.Rejected:
+      return `${base}--reject`;
+    default:
+      return `${base}--waiting`;
   }
+});
 
-  get isRejected(): boolean {
-    return this.currentStatus === VerificationStatus.Rejected;
-  }
+const openSupportChannel = () => {
+  window.open(Links.soraCardSupportChannel, '_blank');
+};
 
-  get isRejectedOrPending(): boolean {
-    return [VerificationStatus.Pending, VerificationStatus.Rejected].includes(this.currentStatus);
-  }
+const handleKycRetry = () => {
+  store.commit.soraCard.setWillToPassKycAgain(true);
+  emit('confirm-apply', true);
+};
 
-  get titleKey(): string {
-    if (!this.currentStatus) return pendingTitle;
+onMounted(async () => {
+  await withApi(async () => {
+    await store.dispatch.soraCard.getUserStatus();
 
-    switch (this.currentStatus) {
-      case VerificationStatus.Pending:
-        return pendingTitle;
-      case VerificationStatus.Accepted:
-        return 'card.statusAcceptTitle';
-      case VerificationStatus.Rejected:
-        return 'card.statusRejectTitle';
-      default:
-        return pendingTitle;
-    }
-  }
-
-  get text(): string {
-    if (!this.currentStatus) return this.t(pendingText);
-
-    switch (this.currentStatus) {
-      case VerificationStatus.Pending:
-        return this.t(pendingText);
-      case VerificationStatus.Accepted:
-        return this.t('card.statusAcceptText');
-      case VerificationStatus.Rejected:
-        return this.rejectedText;
-      default:
-        return this.t(pendingText);
-    }
-  }
-
-  get safeText(): string {
-    return sanitizeHtml(this.text, {
-      allowedTags: ['ul', 'li', 'span', 'strong', 'em', 'p', 'br'],
-      allowedAttributes: {
-        '*': ['class'],
-      },
-    });
-  }
-
-  get icon(): string {
-    if (this.currentStatus === VerificationStatus.Rejected && !this.hasFreeAttempts) return 'time-time-24';
-
-    switch (this.currentStatus) {
-      case VerificationStatus.Pending:
-        return pendingIcon;
-      case VerificationStatus.Accepted:
-        return 'basic-check-marks-24';
-      case VerificationStatus.Rejected:
-        return 'basic-close-24';
-      default:
-        return pendingIcon;
-    }
-  }
-
-  get computedIconClass(): string {
-    const base = 'sora-card__card-icon';
-
-    if (this.currentStatus === VerificationStatus.Rejected && !this.hasFreeAttempts) return `${base}--waiting`;
-
-    switch (this.currentStatus) {
-      case VerificationStatus.Pending:
-        return `${base}--waiting`;
-      case VerificationStatus.Accepted:
-        return `${base}--success`;
-      case VerificationStatus.Rejected:
-        return `${base}--reject`;
-      default:
-        return `${base}--waiting`;
-    }
-  }
-
-  openSupportChannel(): void {
-    window.open(Links.soraCardSupportChannel, '_blank');
-  }
-
-  handleKycRetry(): void {
-    this.setWillToPassKycAgain(true);
-    const openGetReadyPage = true;
-    this.$emit('confirm-apply', openGetReadyPage);
-  }
-
-  async mounted(): Promise<void> {
-    await this.getUserStatus();
-
-    if (this.currentStatus === VerificationStatus.Rejected) {
-      await this.getUserKycAttempt();
+    if (currentStatus.value === VerificationStatus.Rejected) {
+      await store.dispatch.soraCard.getUserKycAttempt();
     }
 
     clearPayWingsKeysFromLocalStorage();
-  }
-}
+  });
+});
+
+defineExpose({
+  loading,
+  titleKey,
+  safeText,
+  icon,
+  computedIconClass,
+  freeAttemptsLeft,
+  hasFreeAttempts,
+  retryFee,
+  isRejected,
+  isRejectedOrPending,
+  openSupportChannel,
+  handleKycRetry,
+});
 </script>
 
 <style lang="scss" scoped>

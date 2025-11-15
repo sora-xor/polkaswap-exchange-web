@@ -2,30 +2,37 @@
   <s-skeleton :loading="loading" animated>
     <template #template>
       <div class="data-row-skeleton">
-        <s-skeleton-item v-if="rect" element="rect" />
-        <s-skeleton-item v-if="circle" element="circle" />
+        <s-skeleton-item v-if="rect" element="rect"></s-skeleton-item>
+        <s-skeleton-item v-if="circle" element="circle"></s-skeleton-item>
       </div>
     </template>
-    <slot />
+    <slot></slot>
   </s-skeleton>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { SSkeleton, SSkeletonItem } from '@soramitsu-ui/ui/components/Skeleton';
 
-import { SSkeleton, SSkeletonItem } from '@/compat/soramitsu-ui';
-
-@Component({
+defineOptions({
+  name: 'DataRowSkeleton',
   components: {
     SSkeleton,
     SSkeletonItem,
   },
-})
-export default class DataRowSkeleton extends Vue {
-  @Prop({ default: true, type: Boolean }) readonly loading!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly rect!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly circle!: boolean;
-}
+});
+
+withDefaults(
+  defineProps<{
+    loading?: boolean;
+    rect?: boolean;
+    circle?: boolean;
+  }>(),
+  {
+    loading: true,
+    rect: false,
+    circle: false,
+  }
+);
 </script>
 
 <style lang="scss">

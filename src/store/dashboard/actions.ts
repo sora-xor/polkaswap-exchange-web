@@ -1,4 +1,4 @@
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@wallet';
 import { defineActions } from 'direct-vuex';
 
 import { dashboardActionContext } from '@/store/dashboard';

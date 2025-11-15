@@ -1,10 +1,10 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-property-decorator';
 
 import { Theme } from '@/consts/theme';
 import { getter } from '@/store/decorators';
 import { getCssVariableValue as css } from '@/utils';
 
-@Component
+@Options({})
 export default class ThemePaletteMixin extends Vue {
   @getter.libraryTheme libraryTheme!: Theme;
 

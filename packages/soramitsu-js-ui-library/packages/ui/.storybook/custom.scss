@@ -1,0 +1,8 @@
+@use '@/theme';
+@use '@soramitsu-ui/theme/fonts/Sora';
+
+@include theme.typography-preset-default;
+
+:root {
+  @include theme.tokens-preset-light;
+}

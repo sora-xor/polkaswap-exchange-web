@@ -1,0 +1,62 @@
+
+Ò5Ê5var C=Object.defineProperty;var w=(s,t,e)=>t in s?C(s,t,{enumerable:!0,configurable:!0,writable:!0,value:e}):s[t]=e;var o=(s,t,e)=>w(s,typeof t!="symbol"?t+"":t,e);import{k as $,f as m,a3 as _,a4 as T,t as k,F as d,A}from"./wallet-stack-LOAEjQjN.js";import{w as I,l as F}from"./lodash-DKukXVb-.js";import{M as D,O as P}from"./vendor-vue-BU49LsTx.js";import{C as E}from"./ChartSpecMixin-C5UHTU6J.js";import{W as q}from"./WithTokenSelect-dtJFFsYS.js";import{Q as N,an as W,aa as S,c as B,ab as R,l,C as c,n as M}from"./index-CLebdHLk.js";import{A as g,S as L}from"./snapshots-Zdw8lqA8.js";import"./echarts-CDPJekDq.js";import"./polkadot-tm1sXUWB.js";const{IndexerType:x}=m,O={[_.address]:334496093779e-4,[T.address]:63450144206195e-4},z=k`
+  query AssetSupplyQuery($after: Cursor, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
+    data: assetSnapshots(
+      after: $after
+      orderBy: TIMESTAMP_DESC
+      filter: {
+        and: [
+          { type: { equalTo: $type } }
+          { assetId: { equalTo: $id } }
+          { timestamp: { lessThanOrEqualTo: $from } }
+          { timestamp: { greaterThanOrEqualTo: $to } }
+        ]
+      }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          timestamp
+          supply
+          mint
+          burn
+        }
+      }
+    }
+  }
+`,Q=k`
+  query AssetSupplyQuery($after: String, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
+    data: assetSnapshotsConnection(
+      after: $after
+      orderBy: timestamp_DESC
+      where: { AND: [{ type_eq: $type }, { asset: { id_eq: $id } }, { timestamp_lte: $from }, { timestamp_gte: $to }] }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          timestamp
+          supply
+          mint
+          burn
+        }
+      }
+    }
+  }
+`,h=s=>{const t=d.fromCodecValue(s);return t.isFinity()?t.toNumber():0},b=s=>({timestamp:+s.timestamp*1e3,value:h(s.supply),mint:h(s.mint),burn:h(s.burn)});async function V(s,t,e,a){const r=$();let n;switch(r.type){case x.SUBQUERY:{n=await r.services.explorer.fetchAllEntities(z,{id:s,from:t,to:e,type:a},b);break}case x.SUBSQUID:{n=await r.services.explorer.fetchAllEntitiesConnection(Q,{id:s,from:t,to:e,type:a},b);break}}const i=n??[];if(![_.address,T.address].includes(s)||(N.state.wallet.settings.soraNetwork??await W())!==m.SoraNetwork.Prod)return i;const v=O[s];return i.map(u=>({...u,value:u.value-v}))}var U=Object.getOwnPropertyDescriptor,j=(s,t,e,a)=>{for(var r=a>1?void 0:a?U(t,e):t,n=s.length-1,i;n>=0;n--)(i=s[n])&&(r=i(r)||r);return r};const p=(s,t,e=!1)=>s.reduce((a,r)=>Math[e?"min":"max"](a,r[t]),e?1/0:0);let f=class extends D(q,E){constructor(){super(...arguments);o(this,"FontSizeRate",m.FontSizeRate);o(this,"FontWeightRate",m.FontWeightRate);o(this,"filters",g);o(this,"filter",g[0]);o(this,"isFetchingError",!1);o(this,"data",[])}get firstValue(){var e;return new d(((e=I(this.data))==null?void 0:e.value)??0)}get lastValue(){var e;return new d(((e=F(this.data))==null?void 0:e.value)??0)}get amount(){return S(this.firstValue)}get priceChange(){return B(this.firstValue,this.lastValue)}get mintBurnRange(){const e=Math.max(p(this.data,"mint"),p(this.data,"burn")),a=Math.min(p(this.data,"mint",!0),p(this.data,"burn",!0)),r=(e-a)*1.05;return[e+r,a]}created(){this.updateData()}get chartSpec(){const e=a=>{const r=new d(a),{amount:n,suffix:i}=S(r);return`${n} ${i}`};return{dataset:{source:this.data.map(a=>[a.timestamp,a.value,a.mint,a.burn]),dimensions:["timestamp","supply","mint","burn"]},grid:this.gridSpec({top:40,left:50,right:50}),xAxis:this.xAxisSpec(),yAxis:[this.yAxisSpec({name:`Remint
+Burn`,nameGap:12,nameTextStyle:{align:"right"},type:"log",min:1,axisLabel:{formatter:e},splitLine:!1}),this.yAxisSpec({name:"Supply",nameGap:22,nameTextStyle:{align:"left"},axisLabel:{formatter:e}})],tooltip:this.tooltipSpec({formatter:a=>`
+              <table>
+                ${a.map(r=>`
+                  <tr>
+                    <td>${r.marker} ${r.seriesName}</td>
+                    <td align="right">${R(r.data[r.seriesIndex+1])}</td>
+                  </tr>
+                `).join("")}
+              </table>
+            `}),series:[this.lineSeriesSpec({encode:{y:"value"},itemStyle:{color:this.theme.color.status.info},name:"Supply",yAxisIndex:1,areaStyle:void 0}),this.seriesSpec({type:"bar",encode:{y:"mint"},itemStyle:{color:this.theme.color.status.success,opacity:.5},name:"Remint",yAxisIndex:0,areaStyle:void 0}),this.seriesSpec({type:"bar",encode:{y:"burn"},itemStyle:{color:this.theme.color.status.error,opacity:.5},name:"Burn",yAxisIndex:0,areaStyle:void 0})],legend:{orient:"horizontal",top:0,left:"center",icon:"circle",textStyle:{color:this.theme.color.base.content.primary,fontSize:12,fontWeight:400,lineHeight:1.5},selectedMode:!1}}}changeFilter(e){this.filter=e,this.updateData()}onTokenChange(e){this.changeToken(e),this.updateData()}async updateData(){await this.withLoading(async()=>{await this.withParentLoading(async()=>{try{const e=this.selectedToken.address,{type:a,count:r}=this.filter,n=L[a],i=Math.floor(Date.now()/(n*1e3))*n,y=i-n*r;this.data=Object.freeze(await V(e,i,y,a)),this.isFetchingError=!1}catch(e){console.error(e),this.isFetchingError=!0}})})}};f=j([P({components:{ChartSkeleton:l(c.ChartSkeleton),PriceChange:l(c.PriceChange),BaseWidget:l(c.BaseWidget),StatsFilter:l(c.StatsFilter),TokenSelectButton:l(c.TokenSelectButton),SelectToken:l(c.SelectToken),FormattedAmount:A.FormattedAmount}})],f);var G=function(){var t=this,e=t._self._c;return t._self._setupProxy,e("base-widget",t._b({attrs:{title:t.t("createToken.tokenSupply.placeholder"),tooltip:t.t("tooltips.supply")},scopedSlots:t._u([{key:"filters",fn:function(){return[e("stats-filter",{attrs:{"is-dropdown":"",filters:t.filters,value:t.filter},on:{input:t.changeFilter}})]},proxy:!0},t.predefinedToken?null:{key:"types",fn:function(){return[e("token-select-button",{attrs:{icon:t.selectTokenIcon,token:t.selectedToken,tabindex:t.tokenTabIndex},on:{click:function(a){return a.stopPropagation(),t.handleSelectToken.apply(null,arguments)}}})]},proxy:!0}],null,!0)},"base-widget",t.$attrs,!1),[e("chart-skeleton",{attrs:{loading:t.areActionsDisabled,"is-empty":t.data.length===0,"is-error":t.isFetchingError},on:{retry:t.updateData}},[e("formatted-amount",{staticClass:"chart-price",attrs:{value:t.amount.amount}},[t._v(" "+t._s(t.amount.suffix)+" ")]),e("price-change",{attrs:{value:t.priceChange}}),e("v-chart",{ref:"chart",staticClass:"chart",attrs:{option:t.chartSpec,autoresize:""}})],1),t.predefinedToken?t._e():e("select-token",{attrs:{"disabled-custom":"",visible:t.showSelectTokenDialog,asset:t.selectedToken},on:{"update:visible":function(a){t.showSelectTokenDialog=a},select:t.onTokenChange}})],1)},Y=[],H=M(f,G,Y,!1,null,null);const ot=H.exports;export{ot as default};
+Ê5

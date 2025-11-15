@@ -1,24 +1,36 @@
 import { FPNumber, CodecString } from '@sora-substrate/sdk';
-import { isNativeAsset } from '@sora-substrate/sdk/build/assets';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_CONSTS, getExplorerLinks } from '@wallet';
 import debounce from 'lodash/debounce';
 
-import { app, TranslationConsts, ZeroStringValue } from '@/consts';
-import i18n from '@/lang';
-import router from '@/router';
-import store from '@/store';
-import getScrollbarWidth from '@/utils/scrollbar-width';
-
-import type { AmountWithSuffix } from '../types/formats';
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
-import type { Currency, CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
+import type { Currency, CurrencyFields } from '@wallet/lib/types/currency';
 import type { Route } from 'vue-router';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
 
-type PoolAssets<T extends Asset> = { baseAsset: T; poolAsset: T };
+import { app, TranslationConsts } from '@/consts';
+import i18n from '@/lang';
+import router from '@/router';
+import store from '@/store';
+import getScrollbarWidth from '@/utils/scrollbar-width';
+import {
+  asZeroValue,
+  getAssetBalance,
+  getAssetDecimals,
+  formatAssetBalance as formatAssetBalanceInternal,
+  formatAmountWithSuffix as formatAmountWithSuffixInternal,
+} from './asset-formatting';
+import { sortAssets as sortAssetsInternal, sortPools as sortPoolsInternal } from './asset-sort';
+import { toPrecision as toPrecisionInternal } from './fp';
+
+export { asZeroValue, getAssetBalance, getAssetDecimals };
+export const formatAssetBalance = formatAssetBalanceInternal;
+export const formatAmountWithSuffix = formatAmountWithSuffixInternal;
+export const sortAssets = sortAssetsInternal;
+export const sortPools = sortPoolsInternal;
+export const toPrecision = toPrecisionInternal;
 
 export async function waitUntil(condition: () => boolean): Promise<void> {
   if (condition()) return;
@@ -50,9 +62,7 @@ export const copyToClipboard = async (text: string): Promise<void> => {
 
 export const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
-export const formatAddress = (address: string, length = address.length / 2): string => {
-  return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`;
-};
+export { formatAddress } from './formatAddress';
 
 export const areEqual = <T>(prev: T, curr: T): boolean => JSON.stringify(prev) === JSON.stringify(curr);
 
@@ -111,11 +121,6 @@ export const getMaxValue = (
   { isExternalBalance = false, isExternalNative = false, isBondedBalance = false } = {}
 ): string => {
   return getMaxBalance(asset, fee, { isExternalBalance, isExternalNative, isBondedBalance }).toString();
-};
-
-/** Change FPNumber precision (`FPNumber.dp()` has issues) */
-export const toPrecision = (value: FPNumber, precision: number): FPNumber => {
-  return new FPNumber(value.toFixed(precision), precision);
 };
 
 /**
@@ -190,50 +195,8 @@ export async function conditionalAwait(func: AsyncFnWithoutArgs, wait: boolean):
   }
 }
 
-export const asZeroValue = (value: any): boolean => {
-  return !Number.isFinite(+value) || +value === 0;
-};
-
-export const getAssetBalance = (
-  asset: Nullable<AssetWithBalance>,
-  { internal = true, isBondedBalance = false } = {}
-) => {
-  if (!asset) return ZeroStringValue;
-
-  if (!internal) {
-    return (asset as RegisteredAccountAsset)?.externalBalance;
-  }
-
-  if (isBondedBalance) {
-    return (asset as AccountAsset)?.balance?.bonded;
-  }
-
-  return (asset as AccountAsset)?.balance?.transferable;
-};
-
 export const getLiquidityBalance = (liquidity: Nullable<AccountLiquidity>): CodecString | undefined => {
   return liquidity?.balance;
-};
-
-export const getAssetDecimals = (asset: any, { internal = true } = {}): number | undefined => {
-  if (!asset) return undefined;
-
-  return internal ? asset.decimals : asset.externalDecimals;
-};
-
-export const formatAssetBalance = (
-  asset: any,
-  { internal = true, formattedZero = '', showZeroBalance = true, isBondedBalance = false } = {}
-): string => {
-  if (!asset) return formattedZero;
-
-  const balance = getAssetBalance(asset, { internal, isBondedBalance });
-
-  if (!balance || (!showZeroBalance && asZeroValue(balance))) return formattedZero;
-
-  const decimals = getAssetDecimals(asset, { internal });
-
-  return FPNumber.fromCodecValue(balance, decimals).toLocaleString();
 };
 
 export const debouncedInputHandler = (fn: any, timeout = 500, options = { leading: true }) =>
@@ -325,38 +288,6 @@ export const calcPriceChange = (current: FPNumber, prev: FPNumber): FPNumber => 
   return current.sub(prev).div(prev).mul(FPNumber.HUNDRED);
 };
 
-// [TODO]: move to FPNumber
-export const formatAmountWithSuffix = (value: FPNumber, precision = 2): AmountWithSuffix => {
-  const val = value.toNumber();
-  const entries: [number, string][] = [
-    [3, 'K'], // Thousand (Kilo)
-    [6, 'M'], // Million
-    [9, 'B'], // Billion
-    [12, 't'], // trillion
-    [15, 'q'], // quadrillion
-    [18, 'Q'], // Quintillion
-  ];
-
-  let suffix = '';
-  let result = val;
-
-  for (const [pow, symbol] of entries) {
-    const res = val / Math.pow(10, pow);
-
-    if (Math.trunc(res) > 0) {
-      suffix = symbol;
-      result = res;
-    } else {
-      break;
-    }
-  }
-
-  return {
-    amount: new FPNumber(result.toFixed(precision)).toLocaleString(),
-    suffix,
-  };
-};
-
 export const convertFPNumberToNumber = (fpValue: Nullable<FPNumber>, precision = 2): number => {
   return parseFloat((fpValue ?? FPNumber.ZERO).toFixed(precision));
 };
@@ -366,35 +297,6 @@ export const formatDecimalPlaces = (value: FPNumber | number, asPercent = false)
   const postfix = asPercent ? '%' : '';
 
   return `${formatted}${postfix}`;
-};
-
-const sortAssetsByProp = <T extends Asset>(a: T, b: T, prop: 'address' | 'symbol' | 'name') => {
-  if (a[prop] < b[prop]) return -1;
-  if (a[prop] > b[prop]) return 1;
-  return 0;
-};
-
-export const sortAssets = <T extends Asset>(a: T, b: T) => {
-  const isNativeA = isNativeAsset(a);
-  const isNativeB = isNativeAsset(b);
-  // sort native assets by address
-  if (isNativeA && isNativeB) {
-    return sortAssetsByProp(a, b, 'address');
-  }
-  if (isNativeA && !isNativeB) {
-    return -1;
-  }
-  if (!isNativeA && isNativeB) {
-    return 1;
-  }
-  // sort non native assets by symbol
-  return sortAssetsByProp(a, b, 'symbol');
-};
-
-export const sortPools = <T extends Asset>(a: PoolAssets<T>, b: PoolAssets<T>) => {
-  const byBaseAsset = sortAssets(a.baseAsset, b.baseAsset);
-
-  return byBaseAsset === 0 ? sortAssets(a.poolAsset, b.poolAsset) : byBaseAsset;
 };
 
 export const calcElScrollGutter: () => number = getScrollbarWidth;

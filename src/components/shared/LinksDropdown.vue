@@ -6,7 +6,7 @@
     icon="basic-more-vertical-24"
     placement="bottom-end"
   >
-    <template slot="menu">
+    <template #menu>
       <a
         v-for="link in links"
         :key="link.type"
@@ -23,16 +23,28 @@
   </s-dropdown>
 </template>
 
-<script lang="ts">
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
+import { WALLET_CONSTS } from '@wallet';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 
-@Component
-export default class LinksDropdown extends Mixins(TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) readonly links!: Array<WALLET_CONSTS.ExplorerLink>;
-}
+const props = withDefaults(
+  defineProps<{
+    links?: Array<WALLET_CONSTS.ExplorerLink>;
+  }>(),
+  {
+    links: () => [],
+  }
+);
+
+const { t } = useTranslation();
+
+const links = computed(() => props.links);
+
+defineExpose({
+  links,
+});
 </script>
 
 <style lang="scss">

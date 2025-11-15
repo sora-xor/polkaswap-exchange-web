@@ -1,0 +1,10 @@
+
+øðimport{m as o}from"./core-D25obiEO.js";import"./wallet-stack-LOAEjQjN.js";import"./echarts-CDPJekDq.js";import"./polkadot-tm1sXUWB.js";import"./lodash-DKukXVb-.js";import"./vendor-vue-BU49LsTx.js";const m=o`<svg fill="none" viewBox="0 0 16 16">
+  <path
+    fill="currentColor"
+    fill-rule="evenodd"
+    d="M11.04 1.46a1 1 0 0 1 0 1.41L5.91 8l5.13 5.13a1 1 0 1 1-1.41 1.41L3.79 8.71a1 1 0 0 1 0-1.42l5.84-5.83a1 1 0 0 1 1.41 0Z"
+    clip-rule="evenodd"
+  />
+</svg>`;export{m as chevronLeftSvg};
+ð

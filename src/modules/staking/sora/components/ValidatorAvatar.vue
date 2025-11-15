@@ -1,43 +1,33 @@
 <template>
   <div class="validator-avatar">
     <img v-if="avatar" alt="avatar" :src="avatar" />
-    <wallet-avatar v-else :address="validator.address" :size="14" class="account-gravatar" />
+    <WalletAvatar v-else :address="validator.address" :size="14" class="account-gravatar"></WalletAvatar>
     <div class="icon">
-      <slot name="icon" />
+      <slot name="icon"></slot>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
+import { computed } from 'vue';
 
-import { toDwebLink } from '@/utils/ipfs';
-
-import StakingMixin from '../mixins/StakingMixin';
+import { resolveValidatorAvatarUrl } from '@/modules/staking/sora/utils/validatorAvatar';
 
 import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
 
-@Component({
-  components: {
-    WalletAvatar: components.WalletAvatar,
-  },
-})
-export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingMixin) {
-  @Prop({ required: true, type: Object }) readonly validator!: ValidatorInfoFull;
+const props = defineProps<{
+  validator: ValidatorInfoFull;
+}>();
 
-  get avatar() {
-    const url = this.validator.identity?.info.image;
-    try {
-      return toDwebLink(url);
-    } catch (e) {
-      return url;
-    }
-  }
-}
+const WalletAvatar = components.WalletAvatar;
+
+const avatar = computed(() => resolveValidatorAvatarUrl(props.validator));
+
+defineExpose({ avatar });
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .validator-avatar {
   position: relative;
   border-radius: 50%;

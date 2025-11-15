@@ -1,6 +1,6 @@
 import type store from '@/store';
 
-import type { VUEX_TYPES } from '@soramitsu/soraneo-wallet-web';
+import type { VUEX_TYPES } from '@wallet';
 import type { VueDecorator } from 'vue-class-component';
 
 type BaseModuleDecorator<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> = {

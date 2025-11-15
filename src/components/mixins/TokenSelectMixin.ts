@@ -1,6 +1,6 @@
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 
-@Component
+@Options({})
 export default class TokenSelectMixin extends Vue {
   isSelectAssetLoading = false;
 

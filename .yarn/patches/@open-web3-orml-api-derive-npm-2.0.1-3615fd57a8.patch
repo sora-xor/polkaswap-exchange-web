@@ -1,0 +1,13 @@
+diff --git a/package.json b/package.json
+index c4cfe3f0a9008af052138446ad6da8b45499b25c..c5ee55a3c41d5be5ec77186a04edb964e289da2b 100644
+--- a/package.json
++++ b/package.json
+@@ -19,7 +19,7 @@
+     "rxjs": "^7.5.5"
+   },
+   "peerDependencies": {
+-    "@polkadot/api": "^8.12.2"
++    "@polkadot/api": ">=8.12.2"
+   },
+   "devDependencies": {
+     "@types/memoizee": "^0.4.8"

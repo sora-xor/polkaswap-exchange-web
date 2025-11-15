@@ -1,5 +1,9 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import {
+  IndexerType as WalletIndexerEnum,
+  LogoSize as WalletLogoSizeEnum,
+  TranslationConsts as WalletTranslationConsts,
+} from '@wallet/src/consts';
 import invert from 'lodash/fp/invert';
 
 import { DashboardPageNames } from '@/modules/dashboard/consts';
@@ -9,7 +13,23 @@ import { VaultPageNames } from '@/modules/vault/consts';
 
 import pkg from '../../package.json';
 
-import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
+export {
+  AddAssetTabs,
+  RouteNames,
+  AccountActionTypes,
+  PassphraseTimeout,
+  PassphraseTimeoutDuration,
+  DefaultPassphraseTimeout,
+  WalletFilteringOptions,
+  type WalletAssetFilters,
+  PaginationButton,
+  SoraNetwork,
+  HashType,
+  ExplorerType,
+  type ExplorerLink,
+} from '@wallet/src/consts';
+
+import type { Alert } from '@wallet/lib/types/common';
 
 export const app = {
   version: pkg.version,
@@ -22,6 +42,9 @@ export const WalletPermissions = {
   sendAssets: true, // enable 'send' button in assets list
   swapAssets: true, // enable 'swap' button in assets list
 };
+
+export const IndexerType = WalletIndexerEnum;
+export const LogoSize = WalletLogoSizeEnum;
 
 /**
  * `navigator.language` values, f.e. ('es', 'eu-ES')
@@ -147,6 +170,11 @@ export const LiquiditySourceForMarketAlgorithm = {
 };
 
 export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm);
+
+export enum Theme {
+  Light = 'light',
+  Dark = 'dark',
+}
 
 export enum PageNames {
   Swap = 'Swap',
@@ -536,9 +564,11 @@ export const AboutTopics = [
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
 
+const TRANSLATION_CONSTS_BASE = WalletTranslationConsts;
+
 export const TranslationConsts = {
   // extending consts
-  ...WALLET_CONSTS.TranslationConsts,
+  ...TRANSLATION_CONSTS_BASE,
   AppName: app.name,
   Ceres: 'Ceres',
   APR: 'APR', // Annual percentage rate

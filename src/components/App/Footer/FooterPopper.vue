@@ -4,99 +4,102 @@
     placement="top"
     trigger="click"
     :popper-class="computedPopperClass"
-    :tabindex="tabindex"
+    :tabindex="tabIndex"
     @show="handleShow"
   >
-    <div
-      v-button
-      slot="reference"
-      class="app-status__item s-flex"
-      :class="computedClass"
-      @keypress.enter="handleEnterClick"
-      @blur="handleBlur"
-    >
-      <span v-if="loading" class="app-status__loading" />
-      <s-icon v-else :name="icon" size="16" />
-      <span class="app-status__text">{{ panelText }}</span>
-    </div>
+    <template #reference>
+      <div
+        v-button
+        class="app-status__item s-flex"
+        :class="computedClass"
+        @keypress.enter="handleEnterClick"
+        @blur="handleBlur"
+      >
+        <span v-if="isLoading" class="app-status__loading"></span>
+        <s-icon v-else :name="icon" size="16"></s-icon>
+        <span class="app-status__text">{{ panelText }}</span>
+      </div>
+    </template>
     <div class="item s-flex">
       <div class="item__title s-flex">
         <div class="item__label s-flex">
-          <slot name="label" />
+          <slot name="label"></slot>
         </div>
         <s-button v-if="actionText" class="item__action" size="small" type="secondary" @click="handleActionClick">
           {{ actionText }}
         </s-button>
       </div>
       <div class="item__desc s-flex">
-        <slot />
+        <slot></slot>
       </div>
     </div>
   </el-popover>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, ref } from 'vue';
 
-import { Status } from '@/compat/soramitsu-ui';
+import { Status } from '@soramitsu-ui/ui/types';
 import { delay } from '@/utils';
 
 const cssPopperClass = 'app-status__tooltip';
 
-@Component
-export default class FooterPopper extends Vue {
-  @Prop({ required: true, type: String }) readonly status!: Status;
-  @Prop({ required: true, type: String }) readonly icon!: string;
-  @Prop({ type: String, default: '' }) readonly panelClass!: Nullable<string>;
-  @Prop({ type: String, default: '' }) readonly actionText!: Nullable<string>;
-  @Prop({ required: true, type: String }) readonly panelText!: string;
+const props = defineProps({
+  status: {
+    type: String as () => Status,
+    required: true,
+  },
+  icon: {
+    type: String,
+    required: true,
+  },
+  panelClass: {
+    type: String,
+    default: '',
+  },
+  actionText: {
+    type: String,
+    default: '',
+  },
+  panelText: {
+    type: String,
+    required: true,
+  },
+});
 
-  @Ref('popover') popover!: any;
+const emit = defineEmits<{
+  (e: 'action'): void;
+}>();
 
-  /** Fix issue with negative left values */
-  async handleShow(): Promise<void> {
-    await delay(100);
-    const left = (this.popover?.popperElm as Nullable<HTMLElement>)?.style?.getPropertyValue('left');
-    if (!left) return;
-    if (left.includes('-')) {
-      (this.popover?.popperElm as HTMLElement).style.setProperty('left', '0');
-    }
+const popover = ref<any>();
+
+const computedPopperClass = computed(() => [cssPopperClass, props.status].filter(Boolean).join(' '));
+const computedClass = computed(() => [props.panelClass, props.status].filter(Boolean).join(' '));
+const isLoading = computed(() => props.status === Status.INFO);
+const tabIndex = computed(() => (isLoading.value ? -1 : 0));
+
+async function handleShow(): Promise<void> {
+  await delay(100);
+  const left = popover.value?.popperElm?.style?.getPropertyValue('left');
+  if (left && left.includes('-')) {
+    popover.value.popperElm.style.setProperty('left', '0');
   }
+}
 
-  get computedPopperClass(): string {
-    const css = [cssPopperClass, this.status].filter((item) => !!item);
-    return css.join(' ');
-  }
+function handleActionClick(): void {
+  emit('action');
+}
 
-  get computedClass(): string {
-    const css = [this.panelClass, this.status].filter((item) => !!item);
-    return css.join(' ');
-  }
+function handleEnterClick(): void {
+  popover.value?.doToggle();
+}
 
-  get loading(): boolean {
-    return this.status === Status.INFO;
-  }
-
-  get tabindex(): number {
-    return this.loading ? -1 : 0;
-  }
-
-  handleActionClick(): void {
-    this.$emit('action');
-  }
-
-  handleEnterClick(): void {
-    this.popover?.doToggle();
-  }
-
-  /** Click outside or tab event on another popper */
-  handleBlur(event: FocusEvent): void {
-    const el: Nullable<HTMLElement> = this.popover.popperElm;
-    const eventEl = event.relatedTarget as Nullable<HTMLElement>;
-    if (!(el && eventEl)) return;
-    if (!(el === eventEl || el.contains(eventEl))) {
-      this.popover?.doClose();
-    }
+function handleBlur(event: FocusEvent): void {
+  const popperEl: Nullable<HTMLElement> = popover.value?.popperElm;
+  const related = event.relatedTarget as Nullable<HTMLElement>;
+  if (!popperEl || !related) return;
+  if (!(popperEl === related || popperEl.contains(related))) {
+    popover.value?.doClose();
   }
 }
 </script>
@@ -200,7 +203,7 @@ $status-classes: 'error', 'warning', 'success';
     @include loading;
   }
   &__text {
-    margin-left: 6px;
+    margin-left: $inner-spacing-mini;
   }
 }
 </style>

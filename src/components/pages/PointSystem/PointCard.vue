@@ -1,7 +1,7 @@
 <template>
   <div class="point-card">
     <div class="point-card__progress">
-      <progress-card :image-name="imageName" :progress-percentage="progressPercentage" />
+      <progress-card :image-name="imageName" :progress-percentage="progressPercentage"></progress-card>
       <p>
         {{ t('points.lvl').toUpperCase() }} {{ levelCurrent }}
         <span>/ {{ t('points.lvl').toUpperCase() }} {{ maxLevel }}</span>
@@ -9,13 +9,13 @@
     </div>
     <div class="point-card__name" :class="{ disabled: noNextLevel }" @click="handleClick">
       <p>{{ t(`points.${categoryName}.titleProgress`) }}</p>
-      <i v-if="!noNextLevel" class="icontype s-icon-arrows-chevron-right-rounded-24" />
+      <i v-if="!noNextLevel" class="icontype s-icon-arrows-chevron-right-rounded-24"></i>
     </div>
     <div class="point-card__currently-amount">
       <p>{{ t('points.currently') }}</p>
       <p>${{ pointsForCategory.currentProgress.toFixed(2) }}</p>
     </div>
-    <s-divider />
+    <s-divider></s-divider>
     <div class="point-card__amount-of-points">
       <template v-if="!noNextLevel">
         <p>{{ t('points.nextLvl').toUpperCase() }}</p>
@@ -26,70 +26,58 @@
       </template>
     </div>
     <task-dialog
+      v-model:visible="isDialogVisible"
       :points-for-category="pointsForCategory"
-      :visible.sync="isDialogVisible"
       :category-name="categoryName"
-    />
+    ></task-dialog>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, ref } from 'vue';
 
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { MAX_LEVEL } from '@/consts/pointSystem';
 import { lazyComponent } from '@/router';
-import { CalculateCategoryPointResult } from '@/types/pointSystem';
+import type { CalculateCategoryPointResult } from '@/types/pointSystem';
 
 import ProgressCard from './ProgressCard.vue';
 
-@Component({
+defineOptions({
   components: {
-    FormattedAmount: components.FormattedAmount,
     TaskDialog: lazyComponent(Components.TaskDialog),
     ProgressCard,
   },
-})
-export default class PointCard extends Mixins(mixins.TranslationMixin) {
-  @Prop({ required: true, type: Object })
-  readonly pointsForCategory!: CalculateCategoryPointResult;
+});
 
-  @Prop({ required: true, type: String })
-  readonly categoryName!: string;
+const props = defineProps<{
+  pointsForCategory: CalculateCategoryPointResult;
+  categoryName: string;
+}>();
 
-  public isDialogVisible = false;
-  public readonly maxLevel = MAX_LEVEL;
+const { t } = useTranslation();
 
-  get levelCurrent(): number {
-    return this.pointsForCategory.levelCurrent;
+const isDialogVisible = ref(false);
+const maxLevel = MAX_LEVEL;
+
+const points = computed(() => props.pointsForCategory);
+
+const levelCurrent = computed(() => points.value.levelCurrent);
+const minimumAmountForNextLevel = computed(() => points.value.minimumAmountForNextLevel);
+const imageName = computed(() => points.value.imageName);
+const noNextLevel = computed(() => points.value.nextLevelRewardPoints === null);
+const progressPercentage = computed(() => {
+  const minimum = minimumAmountForNextLevel.value;
+  if (!minimum || minimum === 0) {
+    return 0;
   }
+  return Math.min((points.value.currentProgress / minimum) * 100, 100);
+});
 
-  get currentProgress(): number {
-    return this.pointsForCategory.currentProgress;
-  }
-
-  get minimumAmountForNextLevel(): number | null {
-    return this.pointsForCategory.minimumAmountForNextLevel;
-  }
-
-  get imageName(): string {
-    return this.pointsForCategory.imageName;
-  }
-
-  get noNextLevel(): boolean {
-    return this.pointsForCategory.nextLevelRewardPoints === null;
-  }
-
-  get progressPercentage(): number {
-    if (!this.minimumAmountForNextLevel || this.minimumAmountForNextLevel === 0) return 0;
-    return Math.min((this.currentProgress / this.minimumAmountForNextLevel) * 100, 100);
-  }
-
-  handleClick(): void {
-    if (this.minimumAmountForNextLevel) {
-      this.isDialogVisible = true;
-    }
+function handleClick(): void {
+  if (minimumAmountForNextLevel.value) {
+    isDialogVisible.value = true;
   }
 }
 </script>

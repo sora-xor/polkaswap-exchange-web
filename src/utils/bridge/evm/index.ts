@@ -1,8 +1,10 @@
 import { Operation } from '@sora-substrate/sdk';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { beforeTransactionSign } from '@soramitsu/soraneo-wallet-web';
+import { beforeTransactionSign } from '@wallet';
 
 import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useWalletStore } from '@/stores/wallet';
 import { Bridge } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeConstructorOptions } from '@/utils/bridge/common/types';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
@@ -17,6 +19,8 @@ interface EvmBridgeConstructorOptions extends IBridgeConstructorOptions<EvmHisto
 }
 
 type EvmBridge = Bridge<EvmHistory, EvmBridgeReducer, EvmBridgeConstructorOptions>;
+
+const resolveWalletStore = () => useWalletStore();
 
 const evmBridge: EvmBridge = new Bridge({
   reducers: {
@@ -35,8 +39,8 @@ const evmBridge: EvmBridge = new Bridge({
     },
   },
   // assets
-  addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
-  getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
+  addAsset: (assetAddress: string) => resolveWalletStore().addAsset(assetAddress),
+  getAssetByAddress: (address: string) => useAssetsStore().assetDataByAddress(address),
   // transaction
   getTransaction: (id: string) => (store.getters.bridge.history[id] || evmBridgeApi.getHistory(id)) as EvmHistory,
   updateTransaction,

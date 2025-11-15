@@ -1,0 +1,536 @@
+#!/usr/bin/env node
+const { spawn } = require('child_process');
+const fs = global.__IPFS_CHECK_FS__ || require('fs');
+const { setTimeout: delay } = require('node:timers/promises');
+const path = require('path');
+
+const { chromium, firefox, webkit } = require('playwright');
+
+const DEFAULT_GATEWAY = 'http://127.0.0.1:8080/ipfs';
+const DEFAULT_ROUTE = '#/swap';
+const DEFAULT_SELECTOR = '#app';
+const LOAD_TIMEOUT = Number(process.env.IPFS_CHECK_TIMEOUT || 60000);
+const WAIT_DELAY_MS = 500;
+const DEFAULT_BROWSER_ORDER = ['chromium', 'webkit', 'firefox'];
+const IPFS_BOOT_TIMEOUT = Number(process.env.IPFS_CHECK_IPFS_TIMEOUT || 15000);
+
+const IGNORED_CONSOLE_PATTERNS = [
+  /Electron Security Warning/i,
+  /Cannot redefine property: \$route/i,
+  /Cannot set property .*\$router/i,
+  /\[createApp\] Failed to install plugin/i,
+  /\[OfflineShell\] active/i,
+  /Failed to execute 'querySelector'.*\[object Object\]/i,
+];
+
+function parseArgs(argv) {
+  const args = {};
+  argv.forEach((arg, idx) => {
+    if (!arg.startsWith('--')) return;
+    const [key, rawValue] = arg.includes('=') ? arg.split('=') : [arg, argv[idx + 1]];
+    const normalized = key.slice(2);
+    if (rawValue && !rawValue.startsWith('--')) {
+      args[normalized] = rawValue;
+    } else if (key.includes('=')) {
+      args[normalized] = rawValue;
+    } else {
+      args[normalized] = true;
+    }
+  });
+  return args;
+}
+
+function buildTargetUrl(opts) {
+  if (opts.url) return opts.url;
+
+  const cid = opts.cid;
+  if (!cid) throw new Error('Either `--cid` or `--url` must be provided.');
+
+  const gateway = (opts.gateway || DEFAULT_GATEWAY).replace(/\/?$/, '');
+  const route = opts.route || DEFAULT_ROUTE;
+  const normalizedCid = cid.replace(/^\/+/, '');
+  const suffix = route.startsWith('#') || route.startsWith('?') ? `/index.html${route}` : `/index.html#${route}`;
+
+  let url = `${gateway}/${normalizedCid}${suffix}`;
+  if (url.includes('/index.html?')) {
+    url = url.replace('/index.html?', '/index.html?ipfs-check=1&');
+  } else {
+    url = url.replace('/index.html', '/index.html?ipfs-check=1');
+  }
+  return url;
+}
+
+function pickBrowsers(arg) {
+  if (!arg) return [...DEFAULT_BROWSER_ORDER];
+  return arg
+    .split(',')
+    .map((name) => name.trim().toLowerCase())
+    .filter((name) => DEFAULT_BROWSER_ORDER.includes(name));
+}
+
+function multiaddrToGatewayUrl(multiaddr) {
+  if (!multiaddr) return null;
+  const parts = multiaddr.split('/').filter(Boolean);
+  const ip4Index = parts.indexOf('ip4');
+  const ip6Index = parts.indexOf('ip6');
+  const tcpIndex = parts.indexOf('tcp');
+  let host = '127.0.0.1';
+  if (ip4Index !== -1 && parts[ip4Index + 1]) {
+    host = parts[ip4Index + 1];
+  } else if (ip6Index !== -1 && parts[ip6Index + 1]) {
+    host = `[${parts[ip6Index + 1]}]`;
+  }
+  const port = tcpIndex !== -1 && parts[tcpIndex + 1] ? parts[tcpIndex + 1] : '8080';
+  return `http://${host}:${port}/ipfs`;
+}
+
+function resolveIpfsPath(explicitPath) {
+  const home = process.env.HOME || process.env.USERPROFILE;
+  const candidates = [
+    explicitPath,
+    process.env.IPFS_PATH,
+    path.join(process.cwd(), '.ipfs-workspace'),
+    home ? path.join(home, '.ipfs') : null,
+  ].filter(Boolean);
+
+  for (const candidate of candidates) {
+    try {
+      const configPath = path.join(candidate, 'config');
+      if (fs.existsSync(configPath)) {
+        return candidate;
+      }
+    } catch {
+      // ignore access issues
+    }
+  }
+
+  return null;
+}
+
+async function spawnIpfsGateway({ ipfsPath, enableGateway }) {
+  if (!enableGateway) {
+    return { stop: async () => {}, spawned: false };
+  }
+
+  if (!ipfsPath) {
+    throw new Error(
+      'Cannot spawn IPFS gateway automatically because no IPFS repository path was found. Specify one with `--ipfs-path` or set IPFS_PATH.'
+    );
+  }
+
+  return new Promise((resolve, reject) => {
+    const env = { ...process.env, IPFS_PATH: ipfsPath };
+    const configPath = path.join(ipfsPath, 'config');
+    try {
+      const rawConfig = fs.readFileSync(configPath, 'utf8');
+      const updatedConfig = JSON.parse(rawConfig);
+      updatedConfig.Addresses = updatedConfig.Addresses || {};
+      if (
+        updatedConfig.Addresses.API !== '/ip4/127.0.0.1/tcp/0' ||
+        updatedConfig.Addresses.Gateway !== '/ip4/127.0.0.1/tcp/0'
+      ) {
+        updatedConfig.Addresses.API = '/ip4/127.0.0.1/tcp/0';
+        updatedConfig.Addresses.Gateway = '/ip4/127.0.0.1/tcp/0';
+        fs.writeFileSync(configPath, JSON.stringify(updatedConfig, null, 2));
+      }
+    } catch (configError) {
+      console.warn(
+        '[ipfs:check] Unable to adjust IPFS config for dynamic ports:',
+        configError.message || String(configError)
+      );
+    }
+
+    const daemonArgs = [
+      'daemon',
+      '--offline',
+      '--enable-gc=false',
+      '--routing=none',
+      '--migrate=true',
+      '--api=/ip4/127.0.0.1/tcp/0',
+    ];
+
+    const daemon = spawn('ipfs', daemonArgs, {
+      env,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+
+    let settled = false;
+    const logs = [];
+    let gatewayAddress = null;
+
+    const onData = (data) => {
+      const text = data.toString();
+      logs.push(text);
+      const gatewayMatch = text.match(/Gateway(?: \(readonly\))? server listening on ([^\n]+)/);
+      if (!gatewayAddress && gatewayMatch) {
+        gatewayAddress = gatewayMatch[1]?.trim();
+      }
+      if (/Daemon is ready/.test(text) || /Daemon is running/.test(text)) {
+        settled = true;
+        resolve({
+          spawned: true,
+          gatewayAddress,
+          stop: async () => {
+            daemon.removeAllListeners();
+            daemon.kill('SIGINT');
+            await delay(500);
+            if (!daemon.killed) {
+              daemon.kill('SIGKILL');
+            }
+          },
+        });
+      }
+    };
+
+    daemon.stdout.on('data', onData);
+    daemon.stderr.on('data', onData);
+
+    daemon.once('error', (error) => {
+      if (settled) return;
+      settled = true;
+      reject(new Error(`Failed to start IPFS daemon: ${error.message}`));
+    });
+
+    daemon.once('exit', (code, signal) => {
+      if (settled) return;
+      settled = true;
+      reject(
+        new Error(
+          `IPFS daemon exited prematurely (code=${code ?? 'null'}, signal=${signal ?? 'null'}). Logs:\n${logs.join('')}`
+        )
+      );
+    });
+
+    setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      daemon.kill('SIGKILL');
+      reject(new Error(`Timed out after ${IPFS_BOOT_TIMEOUT}ms while waiting for IPFS daemon to start.`));
+    }, IPFS_BOOT_TIMEOUT);
+  });
+}
+
+async function waitForContent(page, selector) {
+  try {
+    const handle = await page.waitForFunction(
+      (sel) => {
+        const el = document.querySelector(sel);
+        if (!el) return null;
+        const htmlLength = el.innerHTML.trim().length;
+        const hasChildren = el.children && el.children.length > 0;
+        if (hasChildren || htmlLength > 0) {
+          return {
+            textLength: (el.textContent || '').trim().length,
+            htmlLength,
+          };
+        }
+        return null;
+      },
+      { timeout: LOAD_TIMEOUT },
+      selector
+    );
+    const metrics = await handle.jsonValue();
+    await handle.dispose();
+    return metrics;
+  } catch (error) {
+    return null;
+  }
+}
+
+async function captureOfflineShell(page, selector) {
+  return page.evaluate((sel) => {
+    const offlineEl = document.querySelector('.offline-shell');
+    if (!offlineEl) return null;
+    const host = document.querySelector(sel);
+    const text = (offlineEl.textContent || '').trim();
+    const html = (offlineEl.innerHTML || '').trim();
+    return {
+      metrics: {
+        textLength: text.length,
+        htmlLength: html.length,
+      },
+      snapshot: offlineEl.outerHTML || null,
+      hostSnapshot: host ? host.outerHTML || null : null,
+    };
+  }, selector);
+}
+
+function filterConsoleMessages(messages) {
+  return messages.filter((msg) => {
+    if (msg.level === 'log' || msg.level === 'info') return false;
+    return !IGNORED_CONSOLE_PATTERNS.some((pattern) => pattern.test(msg.message));
+  });
+}
+
+async function ensureDirectory(filePath) {
+  if (!filePath) return;
+  const dir = path.dirname(filePath);
+  await fs.promises.mkdir(dir, { recursive: true });
+}
+
+function resolveScreenshotPath(args) {
+  if (args.screenshot) {
+    return path.resolve(process.cwd(), args.screenshot);
+  }
+  if (args['screenshot-base64']) {
+    return null;
+  }
+  if (process.env.IPFS_CHECK_SCREENSHOT) {
+    return path.resolve(process.cwd(), process.env.IPFS_CHECK_SCREENSHOT);
+  }
+  return null;
+}
+
+const BROWSER_LAUNCHERS = {
+  chromium: async () =>
+    chromium.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-gpu',
+        '--disable-crashpad',
+        '--disable-dev-shm-usage',
+      ],
+    }),
+  webkit: async () => webkit.launch({ headless: true }),
+  firefox: async () => firefox.launch({ headless: true }),
+};
+
+async function run() {
+  const args = parseArgs(process.argv.slice(2));
+  let targetUrl;
+  try {
+    targetUrl = buildTargetUrl(args);
+  } catch (error) {
+    console.error(error.message);
+    process.exitCode = 1;
+    return;
+  }
+
+  const selector = args.selector || DEFAULT_SELECTOR;
+  const browserOrder = pickBrowsers(args.browser);
+  const spawnGateway = args['no-spawn-gateway'] ? false : true;
+  const ipfsPath = resolveIpfsPath(args['ipfs-path']);
+
+  const status = {
+    targetUrl,
+    selector,
+    browser: null,
+    console: [],
+    failedRequests: [],
+    content: null,
+    offlineShell: null,
+    domSnapshot: null,
+    screenshotPath: null,
+    screenshot: null,
+    launchErrors: [],
+    gateway: {
+      attempted: spawnGateway,
+      ipfsPath,
+      spawned: false,
+      url: args.gateway || DEFAULT_GATEWAY,
+    },
+  };
+
+  const consoleMessages = [];
+  const failedRequests = [];
+
+  let browser;
+  let context;
+  let page;
+  let gatewayController = { stop: async () => {}, spawned: false };
+
+  try {
+    if (spawnGateway) {
+      gatewayController = await spawnIpfsGateway({ ipfsPath, enableGateway: spawnGateway });
+      status.gateway.spawned = gatewayController.spawned;
+      status.gateway.address = gatewayController.gatewayAddress || null;
+      if (!args.gateway && gatewayController.gatewayAddress) {
+        const computedGateway = multiaddrToGatewayUrl(gatewayController.gatewayAddress);
+        if (computedGateway) {
+          targetUrl = buildTargetUrl({ ...args, gateway: computedGateway });
+          status.targetUrl = targetUrl;
+          status.gateway.url = computedGateway;
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Failed to start local IPFS gateway:', error.message || String(error));
+    status.gateway.error = error.message || String(error);
+  }
+
+  for (const name of browserOrder) {
+    const launchBrowser = BROWSER_LAUNCHERS[name];
+    if (!launchBrowser) continue;
+    try {
+      browser = await launchBrowser();
+      status.browser = { name, version: browser.version() };
+      break;
+    } catch (error) {
+      status.launchErrors.push({ name, message: error.message || String(error) });
+    }
+  }
+
+  if (!browser) {
+    console.error('IPFS check failed: unable to launch any browser.');
+    console.error(JSON.stringify(status, null, 2));
+    process.exitCode = 1;
+    return;
+  }
+
+  try {
+    context = await browser.newContext();
+    page = await context.newPage();
+
+    page.on('console', (msg) => {
+      consoleMessages.push({
+        level: msg.type(),
+        message: msg.text(),
+        location: msg.location(),
+      });
+    });
+
+    page.on('pageerror', (error) => {
+      consoleMessages.push({ level: 'error', message: error.message || String(error) });
+    });
+
+    page.on('requestfailed', (request) => {
+      const failure = request.failure();
+      if (failure?.errorText === 'net::ERR_ABORTED') {
+        return;
+      }
+      failedRequests.push({
+        url: request.url(),
+        method: request.method(),
+        errorText: failure?.errorText,
+      });
+    });
+
+    page.on('response', (response) => {
+      if (response.status() >= 400) {
+        failedRequests.push({
+          url: response.url(),
+          method: response.request().method(),
+          status: response.status(),
+        });
+      }
+    });
+
+    await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: LOAD_TIMEOUT });
+
+    status.content = await waitForContent(page, selector);
+
+    try {
+      status.domSnapshot = await page.$eval(selector, (el) => el.outerHTML);
+    } catch (error) {
+      status.domSnapshot = null;
+      status.error = status.error || (error && error.message);
+    }
+
+    if (!status.content || (status.content.textLength === 0 && status.content.htmlLength === 0)) {
+      const offline = await captureOfflineShell(page, selector);
+      if (offline) {
+        status.content = status.content || offline.metrics;
+        status.offlineShell = offline.snapshot;
+        if (!status.domSnapshot) {
+          status.domSnapshot = offline.hostSnapshot || offline.snapshot;
+        }
+      }
+    }
+
+    const resolvedScreenshotPath = resolveScreenshotPath(args);
+    if (resolvedScreenshotPath) {
+      await ensureDirectory(resolvedScreenshotPath);
+      await page.screenshot({ path: resolvedScreenshotPath, fullPage: true });
+      status.screenshotPath = resolvedScreenshotPath;
+    } else if (args['screenshot-base64']) {
+      status.screenshot = await page.screenshot({ encoding: 'base64', fullPage: true });
+    }
+
+    await page.waitForTimeout(WAIT_DELAY_MS);
+  } catch (error) {
+    status.error = status.error || error.message || String(error);
+  } finally {
+    status.console = consoleMessages;
+    status.failedRequests = failedRequests;
+    if (page) {
+      await page.close().catch(() => undefined);
+    }
+    if (context) {
+      await context.close().catch(() => undefined);
+    }
+    if (browser) {
+      await browser.close().catch(() => undefined);
+    }
+    await gatewayController.stop().catch(() => undefined);
+  }
+
+  const consoleErrors = filterConsoleMessages(status.console);
+  const failed = status.failedRequests;
+  const issues = [];
+
+  if (status.error) {
+    issues.push(status.error);
+  }
+
+  if (!status.content || (status.content.textLength === 0 && status.content.htmlLength === 0)) {
+    issues.push('App content did not render anything under the target selector.');
+  }
+
+  if (consoleErrors.length) {
+    issues.push(`${consoleErrors.length} console error(s) detected.`);
+  }
+
+  if (failed.length) {
+    issues.push(`${failed.length} failed network request(s).`);
+  }
+
+  const summary = {
+    targetUrl: status.targetUrl,
+    selector: status.selector,
+    browser: status.browser,
+    launchErrors: status.launchErrors,
+    gateway: status.gateway,
+    content: status.content,
+    offlineShell: status.offlineShell,
+    consoleErrors,
+    failedRequests: failed,
+    domSnapshot: status.domSnapshot,
+    screenshotPath: status.screenshotPath,
+    screenshot: status.screenshot,
+  };
+
+  if (issues.length) {
+    console.error('IPFS check failed:', issues.join(' '));
+    console.error(JSON.stringify(summary, null, 2));
+    process.exitCode = 1;
+  } else {
+    console.log('IPFS check passed.');
+    console.log(JSON.stringify(summary, null, 2));
+  }
+}
+
+if (require.main === module) {
+  run().catch((error) => {
+    console.error('Unexpected failure while running IPFS check.');
+    console.error(error && error.stack ? error.stack : error);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = {
+  parseArgs,
+  buildTargetUrl,
+  pickBrowsers,
+  multiaddrToGatewayUrl,
+  resolveIpfsPath,
+  spawnIpfsGateway,
+  waitForContent,
+  captureOfflineShell,
+  filterConsoleMessages,
+  ensureDirectory,
+  resolveScreenshotPath,
+  BROWSER_LAUNCHERS,
+  run,
+};

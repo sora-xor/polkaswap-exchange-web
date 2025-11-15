@@ -19,20 +19,64 @@ vi.mock('@/utils/ethers-util', () => ({
 }));
 
 // Minimal mocks for heavy deps that are not used in these tests
-vi.mock('@soramitsu/soraneo-wallet-web', () => ({
-  api: { system: {}, bridgeProxy: { sub: {}, evm: {}, eth: {} } },
-  vuex: { WalletModules: [] },
-  WALLET_CONSTS: { ETH_BRIDGE_STATES: { INITIAL: 0 } },
-}));
+vi.mock('@wallet', async () => {
+  const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
+  const wallet = createWalletMock();
+
+  return withWalletMock(wallet, {
+    api: {
+      ...wallet.api,
+      bridgeProxy: {
+        eth: {},
+        evm: {},
+        sub: {},
+      },
+      system: {
+        getBlockEvents: vi.fn(),
+        getExtrinsicsFromBlock: vi.fn(),
+      },
+    },
+    WALLET_CONSTS: {
+      ...wallet.WALLET_CONSTS,
+      ETH_BRIDGE_STATES: {
+        ...(wallet.WALLET_CONSTS?.ETH_BRIDGE_STATES ?? {}),
+        INITIAL: 0,
+        SORA_REJECTED: 1,
+        SORA_COMMITED: 2,
+        EVM_REJECTED: 3,
+      },
+    },
+  });
+});
 
 // Avoid pulling in the SDK and its polkadot deps in tests
 vi.mock('@sora-substrate/sdk', () => ({
   isEthOperation: () => false,
   isEvmOperation: () => false,
   isSubstrateOperation: () => false,
+  api: {
+    setStorage: vi.fn(),
+    shouldPairBeLocked: false,
+    initKeyring: vi.fn(),
+  },
+  connection: {},
+  Operation: {
+    SwapAndSend: 'SwapAndSend',
+    Transfer: 'Transfer',
+    VestedTransfer: 'VestedTransfer',
+    SwapTransferBatch: 'SwapTransferBatch',
+    Mint: 'Mint',
+  },
+  TransactionStatus: {
+    Finalized: 'Finalized',
+    Pending: 'Pending',
+    Failed: 'Failed',
+  },
 }));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
   BridgeNetworkType: { Eth: 'Eth', Evm: 'Evm', Sub: 'Sub' },
+  BridgeTxDirection: { Outgoing: 'Outgoing', Incoming: 'Incoming' },
+  BridgeTxStatus: { Pending: 'Pending', Ready: 'Ready', Failed: 'Failed' },
 }));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/evm/consts', () => ({ EvmNetworkId: { EthereumMainnet: 1 } }));
 vi.mock('@/consts/evm', () => ({
@@ -45,6 +89,13 @@ vi.mock('@sora-substrate/sdk/build/bridgeProxy/eth/consts', () => ({}));
 vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({
   XOR: { address: XOR_ADDRESS },
   TBCD: { address: TBCD_ADDRESS },
+  XSTUSD: { address: 'xstusd' },
+  VXOR: { address: 'vxor' },
+  BalanceType: {
+    Transferable: 'Transferable',
+    Total: 'Total',
+    Locked: 'Locked',
+  },
 }));
 
 vi.mock('ethers', () => ({

@@ -1,35 +1,37 @@
 <template>
   <div class="stats-container">
-    <stats-network-stats class="grid-item" :parent-loading="parentLoading" pip-disabled />
+    <stats-network-stats class="grid-item" :parent-loading="parentLoading" pip-disabled></stats-network-stats>
 
-    <stats-tvl-chart class="grid-item grid-item--50" :parent-loading="parentLoading" pip-disabled />
+    <stats-tvl-chart class="grid-item grid-item--50" :parent-loading="parentLoading" pip-disabled></stats-tvl-chart>
 
-    <stats-bar-chart class="grid-item grid-item--50" :parent-loading="parentLoading" pip-disabled />
+    <stats-bar-chart class="grid-item grid-item--50" :parent-loading="parentLoading" pip-disabled></stats-bar-chart>
 
-    <stats-bar-chart class="grid-item grid-item--50" fees :parent-loading="parentLoading" pip-disabled />
+    <stats-bar-chart
+      class="grid-item grid-item--50"
+      fees
+      :parent-loading="parentLoading"
+      pip-disabled
+    ></stats-bar-chart>
 
-    <supply-chart-widget class="grid-item grid-item--50" :parent-loading="parentLoading" pip-disabled />
+    <supply-chart-widget
+      class="grid-item grid-item--50"
+      :parent-loading="parentLoading"
+      pip-disabled
+    ></supply-chart-widget>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
 import StatsBarChart from '@/components/pages/Stats/BarChart.vue';
 import StatsNetworkStats from '@/components/pages/Stats/NetworkStats.vue';
 import StatsTvlChart from '@/components/pages/Stats/TvlChart.vue';
 import SupplyChartWidget from '@/components/shared/Widget/SupplyChart.vue';
 
-@Component({
-  components: {
-    StatsNetworkStats,
-    StatsTvlChart,
-    StatsBarChart,
-    SupplyChartWidget,
-  },
-})
-export default class Stats extends Mixins(mixins.LoadingMixin) {}
+const props = withDefaults(defineProps<{ parentLoading?: boolean }>(), { parentLoading: false });
+
+const parentLoading = computed(() => props.parentLoading);
 </script>
 
 <style lang="scss" scoped>

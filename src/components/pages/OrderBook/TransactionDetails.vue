@@ -5,21 +5,21 @@
       :label-tooltip="t('orderBook.tooltip.txDetails.orderType')"
       :value="sideText"
       :class="computedClass"
-    />
+    ></info-line>
     <info-line
       :label="t('orderBook.txDetails.limitPrice')"
       :label-tooltip="t('orderBook.tooltip.txDetails.limit')"
       :asset-symbol="quoteSymbol"
       :value="quoteValue || toValue || '0'"
       is-formatted
-    />
+    ></info-line>
     <info-line
       :label="t('orderBook.amount')"
       :label-tooltip="t('orderBook.tooltip.txDetails.amount')"
       :asset-symbol="baseSymbol"
       :value="baseValue || '0'"
       is-formatted
-    />
+    ></info-line>
     <info-line
       :label="t(`assets.balance.locked`)"
       :label-tooltip="t('orderBook.tooltip.txDetails.locked')"
@@ -27,13 +27,13 @@
       :asset-symbol="lockedAssetSymbol"
       :fiat-value="getFiatAmountByCodecString(lockedCodec, lockedAsset)"
       is-formatted
-    />
+    ></info-line>
     <info-line
       v-if="!isMarketType"
       :label="t('orderBook.txDetails.expiryDate')"
       :label-tooltip="t('orderBook.tooltip.txDetails.expiryDate')"
       :value="limitOrderExpiryDate"
-    />
+    ></info-line>
     <info-line
       :label="t('networkFeeText')"
       :label-tooltip="t('networkFeeTooltipText')"
@@ -41,7 +41,7 @@
       :asset-symbol="xorSymbol"
       :fiat-value="getFiatAmountByCodecString(networkFee)"
       is-formatted
-    />
+    ></info-line>
   </transaction-details>
 </template>
 
@@ -49,7 +49,7 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { Operation, type CodecString, type FPNumber, type NetworkFeesObject } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@wallet';
 import dayjs from 'dayjs/esm';
 import { computed } from 'vue';
 

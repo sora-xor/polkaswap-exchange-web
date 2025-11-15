@@ -1,80 +1,98 @@
 <template>
-  <base-widget
-    v-bind="$attrs"
-    :title="t('customisePageText')"
-    class="customise-widget"
-    @click.native.stop="toggleVisibility"
-  >
-    <template #filters>
-      <el-popover popper-class="customise-widget-popper" trigger="click" v-model="visible" :visible-arrow="false">
-        <template #reference>
-          <s-button id="customise-button" type="action" alternative size="small" icon="basic-settings-24" />
-        </template>
+  <div class="customise-widget-wrapper" @click.stop="toggleVisibility">
+    <base-widget v-bind="$attrs" :title="t('customisePageText')" class="customise-widget">
+      <template #filters>
+        <el-popover popper-class="customise-widget-popper" trigger="click" v-model="visible" :visible-arrow="false">
+          <template #reference>
+            <s-button id="customise-button" type="action" alternative size="small" icon="basic-settings-24"></s-button>
+          </template>
 
-        <div class="customise">
-          <div class="customise-title">{{ t('customisePageText') }}</div>
+          <div class="customise">
+            <div class="customise-title">{{ t('customisePageText') }}</div>
 
-          <div v-for="(model, name) in models" :key="name" class="customise-options">
-            <s-divider />
-            <label v-for="(value, key) in model" :key="key" class="customise-option">
-              <s-switch :value="value" @input="toggle(name, model, key, $event)" />
-              <span>{{ getLabel(key, name) }}</span>
-            </label>
+            <div v-for="entry in modelEntries" :key="entry.name" class="customise-options">
+              <s-divider></s-divider>
+              <label v-for="(value, key) in entry.model" :key="key" class="customise-option">
+                <s-switch :model-value="value" @update:model-value="(val) => toggle(entry.name, key, val)" />
+                <span>{{ getLabel(key) }}</span>
+              </label>
+            </div>
+
+            <slot></slot>
           </div>
-
-          <slot />
-        </div>
-      </el-popover>
-    </template>
-  </base-widget>
+        </el-popover>
+      </template>
+    </base-widget>
+  </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import isEmpty from 'lodash/fp/isEmpty';
-import { Component, Mixins, ModelSync, PropSync, Prop } from 'vue-property-decorator';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, ObjectInit } from '@/consts';
-import { lazyComponent } from '@/router';
+import BaseWidget from '@/components/shared/Widget/Base.vue';
+import { useTranslation } from '@/composables/useTranslation';
+import { ObjectInit } from '@/consts';
 import type { WidgetsVisibilityModel } from '@/types/layout';
 import { capitalize } from '@/utils';
 
-@Component({
-  components: {
-    BaseWidget: lazyComponent(Components.BaseWidget),
-  },
-})
-export default class CustomiseWidget extends Mixins(TranslationMixin) {
-  @PropSync('widgetsModel', { default: ObjectInit, type: Object }) readonly widgets!: WidgetsVisibilityModel;
-  @PropSync('optionsModel', { default: ObjectInit, type: Object }) readonly options!: WidgetsVisibilityModel;
-  @Prop({ default: ObjectInit, type: Object }) readonly labels!: Record<string, string>;
+type ModelKey = 'widgets' | 'options';
 
-  @ModelSync('value', 'input', { type: Boolean }) visible!: boolean;
+const visible = defineModel<boolean>({ default: false });
+const widgetsModel = defineModel<WidgetsVisibilityModel>('widgets', {
+  default: () => (ObjectInit() ?? {}) as WidgetsVisibilityModel,
+});
+const optionsModel = defineModel<WidgetsVisibilityModel>('options', {
+  default: () => (ObjectInit() ?? {}) as WidgetsVisibilityModel,
+});
 
-  get models(): Record<string, WidgetsVisibilityModel> {
-    const { widgets, options } = this;
-    return Object.entries({ widgets, options }).reduce((acc, [name, model]) => {
-      if (isEmpty(model)) return acc;
-      return { ...acc, [name]: model };
-    }, {});
+const props = withDefaults(
+  defineProps<{
+    labels?: Record<string, string>;
+  }>(),
+  {
+    labels: () => (ObjectInit() ?? {}) as Record<string, string>,
   }
+);
 
-  toggle(name: string, model: WidgetsVisibilityModel, key: string, value: boolean): void {
-    this[name] = { ...model, [key]: value };
-  }
+const { t } = useTranslation();
 
-  getLabel(key: string, name: string): string {
-    const label = key in this.labels ? this.labels[key] : '';
+const modelEntries = computed(() => {
+  const entries: Array<{ name: ModelKey; model: WidgetsVisibilityModel }> = [];
+  const sources: Record<ModelKey, WidgetsVisibilityModel | null | undefined> = {
+    widgets: widgetsModel.value,
+    options: optionsModel.value,
+  };
 
-    return capitalize(label);
-  }
+  (Object.keys(sources) as ModelKey[]).forEach((name) => {
+    const model = sources[name];
+    if (model && !isEmpty(model)) {
+      entries.push({ name, model });
+    }
+  });
 
-  toggleVisibility(event: PointerEvent): void {
-    const target = event.target as HTMLElement;
-    if (target.closest('#customise-button')) return;
+  return entries;
+});
 
-    this.visible = !this.visible;
-  }
+function toggle(name: ModelKey, key: string, value: boolean): void {
+  const target = name === 'widgets' ? widgetsModel : optionsModel;
+  const nextValue: WidgetsVisibilityModel = {
+    ...(target.value ?? ((ObjectInit() ?? {}) as WidgetsVisibilityModel)),
+    [key]: value,
+  };
+  target.value = nextValue;
+}
+
+function getLabel(key: string): string {
+  const label = props.labels?.[key] ?? '';
+  return capitalize(label);
+}
+
+function toggleVisibility(event: PointerEvent): void {
+  const target = event.target as HTMLElement | null;
+  if (target?.closest('#customise-button')) return;
+
+  visible.value = !visible.value;
 }
 </script>
 
@@ -85,6 +103,10 @@ export default class CustomiseWidget extends Mixins(TranslationMixin) {
 </style>
 
 <style lang="scss" scoped>
+.customise-widget-wrapper {
+  cursor: pointer;
+}
+
 .customise-widget {
   cursor: pointer;
 

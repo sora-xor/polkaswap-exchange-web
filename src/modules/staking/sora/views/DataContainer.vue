@@ -1,99 +1,137 @@
 <template>
   <div>
-    <router-view
-      class="sora-staking-container"
-      v-bind="{
-        parentLoading: subscriptionsDataLoading,
-        ...$attrs,
-      }"
-      v-on="$listeners"
-    />
-    <validators-filter-dialog
-      :visible.sync="showFilterDialog"
-      :parent-loading="parentLoading || loading"
+    <router-view class="sora-staking-container" v-bind="routerViewBindings"></router-view>
+    <ValidatorsFilterDialog
+      v-model:visible="showFilterDialog"
+      :parent-loading="dialogParentLoading"
       :filter="validatorsFilter"
       @save="handleChangeFilter"
-    />
+    ></ValidatorsFilterDialog>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed, onMounted, watch, useAttrs } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import router from '@/router';
-import { action } from '@/store/decorators';
+import { useSubscriptions } from '@/composables/useSubscriptions';
+import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
+import { SoraStakingComponents, SoraStakingPageNames } from '@/modules/staking/sora/consts';
+import { soraStakingLazyComponent } from '@/modules/staking/router';
+import store from '@/store';
 
-import { soraStakingLazyComponent } from '../../router';
-import { SoraStakingComponents, SoraStakingPageNames } from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
-import { ValidatorsFilter } from '../types';
+import type { AsyncFnWithoutArgs } from '@/types/common';
+import type { ValidatorsFilter } from '../types';
 
-@Component({
-  components: {
-    ValidatorsFilterDialog: soraStakingLazyComponent(SoraStakingComponents.ValidatorsFilterDialog),
-  },
-})
-export default class SoraStakingContainer extends Mixins(StakingMixin, SubscriptionsMixin) {
-  @action.staking.getStakingInfo getStakingInfo!: AsyncFnWithoutArgs;
-  @action.staking.getValidatorsInfo getValidatorsInfo!: AsyncFnWithoutArgs;
-  @action.staking.getMinNominatorBond getMinNominatorBond!: AsyncFnWithoutArgs;
-  @action.staking.getUnbondPeriod getUnbondPeriod!: AsyncFnWithoutArgs;
-  @action.staking.getMaxNominations getMaxNominations!: AsyncFnWithoutArgs;
-  @action.staking.getHistoryDepth getHistoryDepth!: AsyncFnWithoutArgs;
-  @action.staking.subscribeOnActiveEra subscribeOnActiveEra!: AsyncFnWithoutArgs;
-  @action.staking.subscribeOnCurrentEra subscribeOnCurrentEra!: AsyncFnWithoutArgs;
-  @action.staking.subscribeOnCurrentEraTotalStake subscribeOnCurrentEraTotalStake!: AsyncFnWithoutArgs;
-  @action.staking.subscribeOnController subscribeOnController!: AsyncFnWithoutArgs;
-  @action.staking.subscribeOnPayee subscribeOnPayee!: AsyncFnWithoutArgs;
-  @action.staking.subscribeOnNominations subscribeOnNominations!: AsyncFnWithoutArgs;
-  @action.staking.subscribeOnAccountLedger subscribeOnAccountLedger!: AsyncFnWithoutArgs;
+defineOptions({ inheritAttrs: false });
 
-  get showFilterDialog() {
-    return this.showValidatorsFilterDialog;
+const props = defineProps<{
+  parentLoading?: boolean;
+}>();
+
+const attrs = useAttrs();
+const router = useRouter();
+const route = useRoute();
+
+const {
+  validatorsFilter,
+  showValidatorsFilterDialog,
+  setValidatorsFilter,
+  setShowValidatorsFilterDialog,
+  newStakeValidatorsMode,
+  currentEra,
+} = useSoraStaking();
+
+const ValidatorsFilterDialog = soraStakingLazyComponent(SoraStakingComponents.ValidatorsFilterDialog);
+
+const parentLoadingFlag = computed(() => Boolean(props.parentLoading));
+
+const stakingDispatch = store.dispatch.staking;
+const stakingCommit = store.commit.staking;
+
+const getStakingInfo = () => stakingDispatch.getStakingInfo();
+const getValidatorsInfo = () => stakingDispatch.getValidatorsInfo();
+const getMinNominatorBond = () => stakingDispatch.getMinNominatorBond();
+const getUnbondPeriod = () => stakingDispatch.getUnbondPeriod();
+const getMaxNominations = () => stakingDispatch.getMaxNominations();
+const getHistoryDepth = () => stakingDispatch.getHistoryDepth();
+const getPendingRewards = () => stakingDispatch.getPendingRewards();
+const subscribeOnActiveEra = () => stakingDispatch.subscribeOnActiveEra();
+const subscribeOnCurrentEra = () => stakingDispatch.subscribeOnCurrentEra();
+const subscribeOnController = () => stakingDispatch.subscribeOnController();
+const subscribeOnPayee = () => stakingDispatch.subscribeOnPayee();
+const subscribeOnNominations = () => stakingDispatch.subscribeOnNominations();
+const subscribeOnAccountLedger = () => stakingDispatch.subscribeOnAccountLedger();
+const subscribeOnCurrentEraTotalStake = () => stakingDispatch.subscribeOnCurrentEraTotalStake();
+
+const startStakingSubscriptions: AsyncFnWithoutArgs = async () => {
+  await Promise.all([
+    getStakingInfo(),
+    getValidatorsInfo(),
+    getMinNominatorBond(),
+    getUnbondPeriod(),
+    getMaxNominations(),
+    getHistoryDepth(),
+    getPendingRewards(),
+    subscribeOnActiveEra(),
+    subscribeOnCurrentEra(),
+    subscribeOnController(),
+    subscribeOnPayee(),
+    subscribeOnNominations(),
+    subscribeOnAccountLedger(),
+  ]);
+  await subscribeOnCurrentEraTotalStake();
+};
+
+const resetStakingSubscriptions = async () => {
+  stakingCommit.resetActiveEraUpdates();
+  stakingCommit.resetCurrentEraUpdates();
+  stakingCommit.resetCurrentEraTotalStakeUpdates();
+  stakingCommit.resetControllerUpdates();
+  stakingCommit.resetPayeeUpdates();
+  stakingCommit.resetNominationsUpdates();
+  stakingCommit.resetAccountLedgerUpdates();
+};
+
+const { loading, subscriptionsDataLoading, updateSubscriptions } = useSubscriptions({
+  parentLoading: parentLoadingFlag,
+  startSubscriptions: [startStakingSubscriptions],
+  resetSubscriptions: [resetStakingSubscriptions],
+  autoStart: false,
+});
+
+const showFilterDialog = computed({
+  get: () => showValidatorsFilterDialog.value,
+  set: (value: boolean) => setShowValidatorsFilterDialog(value),
+});
+
+const dialogParentLoading = computed(() => parentLoadingFlag.value || loading.value);
+
+const routerViewBindings = computed(() => ({
+  ...attrs,
+  parentLoading: subscriptionsDataLoading.value,
+}));
+
+const handleChangeFilter = (filter: ValidatorsFilter): void => {
+  setShowValidatorsFilterDialog(false);
+  setValidatorsFilter(filter);
+};
+
+watch(
+  () => currentEra.value,
+  (era, previous) => {
+    if (era === previous || era === undefined || era === null) return;
+    void subscribeOnCurrentEraTotalStake();
+  }
+);
+
+onMounted(async () => {
+  if (!newStakeValidatorsMode.value && route.name !== SoraStakingPageNames.Overview) {
+    router.push({ name: SoraStakingPageNames.Overview });
   }
 
-  set showFilterDialog(show: boolean) {
-    this.setShowValidatorsFilterDialog(show);
-  }
-
-  handleChangeFilter(filter: ValidatorsFilter): void {
-    this.setShowValidatorsFilterDialog(false);
-    this.setValidatorsFilter(filter);
-  }
-
-  async created(): Promise<void> {
-    if (!this.newStakeValidatorsMode) {
-      if (router.currentRoute.name !== SoraStakingPageNames.Overview) {
-        router.push({ name: SoraStakingPageNames.Overview });
-      }
-    }
-
-    await this.withParentLoading(async () => {
-      await Promise.all([
-        this.getStakingInfo(),
-        this.getValidatorsInfo(),
-        this.getMinNominatorBond(),
-        this.getUnbondPeriod(),
-        this.getMaxNominations(),
-        this.getHistoryDepth(),
-        this.getPendingRewards(),
-        this.subscribeOnActiveEra(),
-        this.subscribeOnCurrentEra(),
-        this.subscribeOnController(),
-        this.subscribeOnPayee(),
-        this.subscribeOnNominations(),
-        this.subscribeOnAccountLedger(),
-      ]);
-      await this.subscribeOnCurrentEraTotalStake();
-    });
-  }
-
-  @Watch('currentEra')
-  handleCurrentEraChange(): void {
-    this.subscribeOnCurrentEraTotalStake();
-  }
-}
+  await updateSubscriptions();
+});
 </script>
 
 <style lang="scss">

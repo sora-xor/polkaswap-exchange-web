@@ -1,0 +1,49 @@
+
+‘/‰/var P=Object.defineProperty;var I=(a,t,e)=>t in a?P(a,t,{enumerable:!0,configurable:!0,writable:!0,value:e}):a[t]=e;var i=(a,t,e)=>I(a,typeof t!="symbol"?t+"":t,e);import{k as O,f as y,t as C,F as l,$ as k,X as f,A as g}from"./wallet-stack-LOAEjQjN.js";import{w as A,l as D}from"./lodash-DKukXVb-.js";import{M as q,P as N,O as B}from"./vendor-vue-BU49LsTx.js";import{C as z}from"./ChartSpecMixin-C5UHTU6J.js";import{aa as d,c as V,ab as S,g as F,l as p,C as m,n as L}from"./index-CLebdHLk.js";import{N as v,S as M}from"./snapshots-Zdw8lqA8.js";import"./echarts-CDPJekDq.js";import"./polkadot-tm1sXUWB.js";const{IndexerType:_}=y,U=C`
+  query NetworkVolumeQuery($after: Cursor, $fees: Boolean!, $type: SnapshotType, $from: Int, $to: Int) {
+    data: networkSnapshots(
+      after: $after
+      orderBy: TIMESTAMP_DESC
+      filter: {
+        and: [
+          { type: { equalTo: $type } }
+          { timestamp: { lessThanOrEqualTo: $from } }
+          { timestamp: { greaterThanOrEqualTo: $to } }
+        ]
+      }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          timestamp
+          volumeUSD @skip(if: $fees)
+          fees @include(if: $fees)
+        }
+      }
+    }
+  }
+`,Q=C`
+  query NetworkVolumeQuery($after: String, $fees: Boolean!, $type: SnapshotType, $from: Int, $to: Int) {
+    data: networkSnapshotsConnection(
+      after: $after
+      orderBy: timestamp_DESC
+      where: { AND: [{ type_eq: $type }, { timestamp_lte: $from }, { timestamp_gte: $to }] }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          timestamp
+          volumeUSD @skip(if: $fees)
+          fees @include(if: $fees)
+        }
+      }
+    }
+  }
+`,x=a=>t=>{const e=a?l.fromCodecValue(t.fees):new l(t.volumeUSD);return{timestamp:+t.timestamp*1e3,value:e.isFinity()?e:l.ZERO}};async function b(a,t,e,s){const r=O();let o;switch(r.type){case _.SUBQUERY:{o=await r.services.explorer.fetchAllEntities(U,{fees:a,from:t,to:e,type:s},x(a));break}case _.SUBSQUID:{o=await r.services.explorer.fetchAllEntitiesConnection(Q,{fees:a,from:t,to:e,type:s},x(a));break}}return o??[]}var W=Object.defineProperty,j=Object.getOwnPropertyDescriptor,h=(a,t,e,s)=>{for(var r=s>1?void 0:s?j(t,e):t,o=a.length-1,n;o>=0;o--)(n=a[o])&&(r=(s?n(t,e,r):n(r))||r);return s&&r&&W(t,e,r),r};const $=a=>a.reduce((t,e)=>t.add(e.value),l.ZERO),K=(a,t,e)=>{const s=[];for(;(t+=e)<a;)s.push({timestamp:t,value:l.ZERO});return s.reverse()},w=(a,t,e,s)=>{var n;const r=((n=D(a))==null?void 0:n.timestamp)??e,o=K(r,s,t);a.push(...o)};let u=class extends q(k.LoadingMixin,z){constructor(){super(...arguments);i(this,"exchangeRate");i(this,"currencySymbol");i(this,"fees");i(this,"FontSizeRate",y.FontSizeRate);i(this,"FontWeightRate",y.FontWeightRate);i(this,"filters",v);i(this,"XOR",f);i(this,"filter",v[0]);i(this,"data",[]);i(this,"prevData",[]);i(this,"isFetchingError",!1)}created(){this.updateData()}get chartKey(){if(!this.fees)return`bar-chart-${this.currencySymbol}-rate-${this.exchangeRate}`}get symbol(){return this.fees?f.symbol:this.currencySymbol}get title(){return this.fees?"Fees":"Volume"}get tooltip(){return this.t(this.fees?"tooltips.fees":"tooltips.volume")}get firstValue(){var e;return new l(((e=A(this.data))==null?void 0:e.value)??0)}get lastValue(){var e;return new l(((e=D(this.data))==null?void 0:e.value)??0)}get total(){return $(this.data)}get amount(){return this.fees?d(this.total):d(this.total.mul(this.exchangeRate))}get priceChange(){const e=$(this.prevData);return V(this.total,e)}get chartSpec(){return{dataset:{source:this.data.map(e=>[e.timestamp,e.value.toNumber()]),dimensions:["timestamp","value"]},grid:this.gridSpec({top:20,left:45}),xAxis:this.xAxisSpec(),yAxis:this.yAxisSpec({axisLabel:{formatter:e=>{const s=new l(e).mul(this.exchangeRate),{amount:r,suffix:o}=d(s);return`${r} ${o}`}}}),tooltip:this.tooltipSpec({formatter:e=>{const{data:s}=e[0],[,r]=s;if(this.fees)return`${S(r)} ${f.symbol}`;const o=new l(r).mul(this.exchangeRate);return`${this.currencySymbol} ${S(o)}`}}),series:[this.barSeriesSpec({itemStyle:{color:"#C86FFF"}})]}}changeFilter(e){this.filter=e,this.updateData()}normalizeData(e,s,r,o){const n=[];for(const c of e)w(n,s,r,c.timestamp),n.push(c);return w(n,s,r,o),n}async updateData(){await this.withLoading(async()=>{await this.withParentLoading(async()=>{try{const{fees:e}=this,{type:s,count:r}=this.filter,o=M[s],n=Math.floor(Date.now()/(o*1e3))*o,c=n-o*r,T=c-o*r,[R,E]=await Promise.all([b(e,n,c,s),b(e,c,T,s)]);this.data=Object.freeze(this.normalizeData(R,o*1e3,n*1e3,c*1e3)),this.prevData=Object.freeze(E),this.isFetchingError=!1}catch(e){console.error(e),this.isFetchingError=!0}})})}};h([F.wallet.settings.exchangeRate],u.prototype,"exchangeRate",2);h([F.wallet.settings.currencySymbol],u.prototype,"currencySymbol",2);h([N({default:!1,type:Boolean})],u.prototype,"fees",2);u=h([B({components:{BaseWidget:p(m.BaseWidget),ChartSkeleton:p(m.ChartSkeleton),PriceChange:p(m.PriceChange),StatsFilter:p(m.StatsFilter),FormattedAmount:g.FormattedAmount,TokenLogo:g.TokenLogo}})],u);var X=function(){var t=this,e=t._self._c;return t._self._setupProxy,e("base-widget",t._b({attrs:{title:t.title,tooltip:t.tooltip},scopedSlots:t._u([{key:"filters",fn:function(){return[e("stats-filter",{attrs:{"is-dropdown":"",filters:t.filters,value:t.filter},on:{input:t.changeFilter}})]},proxy:!0}])},"base-widget",t.$attrs,!1),[e("chart-skeleton",{attrs:{loading:t.parentLoading||t.loading,"is-empty":t.data.length===0,"is-error":t.isFetchingError},on:{retry:t.updateData}},[e("formatted-amount",{staticClass:"chart-price",attrs:{value:t.amount.amount},scopedSlots:t._u([{key:"prefix",fn:function(){return[t._v(t._s(t.symbol))]},proxy:!0}])},[t._v(" "+t._s(t.amount.suffix)+" ")]),e("price-change",{attrs:{value:t.priceChange}}),e("v-chart",{key:t.chartKey,ref:"chart",staticClass:"chart",attrs:{option:t.chartSpec,autoresize:""}})],1)],1)},Z=[],Y=L(u,X,Z,!1,null,null);const it=Y.exports;export{it as default};
+‰/

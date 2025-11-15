@@ -1,6 +1,6 @@
 <template>
   <div v-if="infoOnly">
-    <slot />
+    <slot></slot>
   </div>
   <el-popover
     v-else
@@ -16,29 +16,47 @@
         <slot name="reference">
           <span>{{ t('transactionDetailsText') }}</span>
         </slot>
-        <s-icon :name="icon" size="16px" class="transaction-details-icon" />
+        <s-icon :name="icon" size="16px" class="transaction-details-icon"></s-icon>
       </div>
     </template>
-    <slot />
+    <slot></slot>
   </el-popover>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, ref, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 
-@Component
-export default class TransactionDetails extends Mixins(TranslationMixin) {
-  @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
-
-  visible = false;
-
-  get icon(): string {
-    return this.visible ? 'arrows-chevron-top-24' : 'arrows-chevron-bottom-24';
+const props = withDefaults(
+  defineProps<{
+    infoOnly?: boolean;
+    disabled?: boolean;
+  }>(),
+  {
+    infoOnly: true,
+    disabled: false,
   }
-}
+);
+
+const visible = ref(false);
+
+watch(
+  () => props.disabled,
+  (isDisabled) => {
+    if (isDisabled) {
+      visible.value = false;
+    }
+  }
+);
+
+const icon = computed(() => (visible.value ? 'arrows-chevron-top-24' : 'arrows-chevron-bottom-24'));
+
+const { t } = useTranslation();
+
+defineExpose({
+  visible,
+});
 </script>
 
 <style lang="scss">

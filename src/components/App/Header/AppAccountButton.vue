@@ -4,47 +4,53 @@
     size="medium"
     :class="['account-control', { 's-pressed': isLoggedIn }]"
     :tooltip="accountTooltip"
-    v-bind="$attrs"
-    v-on="$listeners"
+    v-bind="attrs"
+    @click="handleClick"
   >
     <div class="account-control-icon">
-      <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28" />
-      <WalletAvatar v-else :address="account.address" />
+      <s-icon v-if="!isLoggedIn" name="finance-wallet-24" size="28"></s-icon>
+      <wallet-avatar v-else :address="account?.address"></wallet-avatar>
     </div>
     <div :class="['account-control-title', { name: isLoggedIn }]">{{ accountInfo }}</div>
   </s-button>
 </template>
 
-<script lang="ts">
-import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components, type WALLET_TYPES } from '@wallet';
+import { computed, useAttrs } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { getter } from '@/store/decorators';
+import { useTranslation } from '@/composables/useTranslation';
+import { useWalletStore } from '@/stores/wallet';
 import { formatAddress } from '@/utils';
 
-@Component({
+defineOptions({
   components: {
     WalletAvatar: components.WalletAvatar,
   },
-})
-export default class AppAccountButton extends Mixins(TranslationMixin) {
-  @getter.wallet.account.account account!: WALLET_TYPES.PolkadotJsAccount;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+});
 
-  get accountTooltip(): string {
-    if (this.isLoggedIn) {
-      return this.t('connectedAccount');
-    }
-    return this.t('connectWalletTextTooltip');
-  }
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void;
+}>();
 
-  get accountInfo(): string {
-    if (!this.isLoggedIn) {
-      return this.t('connectWalletText');
-    }
-    return this.account.name || formatAddress(this.account.address, 8);
-  }
+const attrs = useAttrs();
+const { t } = useTranslation();
+const walletStore = useWalletStore();
+
+const account = computed(() => walletStore.account as WALLET_TYPES.PolkadotJsAccount | undefined);
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
+
+const accountTooltip = computed(() => (isLoggedIn.value ? t('connectedAccount') : t('connectWalletTextTooltip')));
+
+const accountInfo = computed(() => {
+  if (!isLoggedIn.value) return t('connectWalletText');
+  const current = account.value;
+  if (!current) return '';
+  return current.name || formatAddress(current.address, 8);
+});
+
+function handleClick(event: MouseEvent): void {
+  emit('click', event);
 }
 </script>
 

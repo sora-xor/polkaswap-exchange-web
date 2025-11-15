@@ -1,76 +1,84 @@
 <template>
-  <div v-loading="parentLoading" class="container">
+  <div v-loading="containerLoading" class="container">
     <generic-page-header
       has-button-back
       :title="t('addLiquidity.title')"
       :tooltip="t('pool.description')"
       @back="handleBack"
-    />
-    <add-liquidity-form @back="handleBack" />
+    ></generic-page-header>
+    <add-liquidity-form @back="handleBack"></add-liquidity-form>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { computed, onBeforeUnmount, onMounted, watch } from 'vue';
 
-import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { useLoading } from '@/composables/useLoading';
+import { useSelectedTokensRoute } from '@/composables/useSelectedTokensRoute';
+import { useTranslation } from '@/composables/useTranslation';
 import { PoolComponents, PoolPageNames } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
 import router, { lazyComponent } from '@/router';
-import { getter, action } from '@/store/decorators';
-import type { LiquidityParams } from '@/store/pool/types';
+import store from '@/store';
 
+import type { Nullable } from '@/types/common';
+import type { LiquidityParams } from '@/store/pool/types';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+defineOptions({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     AddLiquidityForm: poolLazyComponent(PoolComponents.AddLiquidityForm),
   },
-})
-export default class AddLiquidity extends Mixins(SelectedTokenRouteMixin, TranslationMixin, mixins.LoadingMixin) {
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+});
 
-  @getter.addLiquidity.firstToken private firstToken!: Nullable<AccountAsset>;
-  @getter.addLiquidity.secondToken private secondToken!: Nullable<AccountAsset>;
+const props = withDefaults(defineProps<{ parentLoading?: boolean }>(), { parentLoading: false });
 
-  @action.addLiquidity.resetData private resetData!: AsyncFnWithoutArgs;
-  @action.addLiquidity.setDataFromLiquidity setData!: (args: LiquidityParams) => Promise<void>; // Overrides SelectedTokenRouteMixin
+const { t } = useTranslation();
+const { loading, withParentLoading } = useLoading({ parentLoading: () => props.parentLoading });
 
-  @Watch('isLoggedIn')
-  private handleLoggedInStateChange(isLoggedIn: boolean, wasLoggedIn: boolean): void {
-    if (wasLoggedIn && !isLoggedIn) {
-      this.handleBack();
-    }
+const isLoggedIn = computed(() => store.getters.wallet.account.isLoggedIn as boolean);
+const firstToken = computed(() => store.getters.addLiquidity.firstToken as Nullable<AccountAsset>);
+const secondToken = computed(() => store.getters.addLiquidity.secondToken as Nullable<AccountAsset>);
+
+const setDataFromLiquidity = (params: LiquidityParams) => store.dispatch.addLiquidity.setDataFromLiquidity(params);
+const resetData = () => store.dispatch.addLiquidity.resetData();
+
+const { firstRouteAddress, secondRouteAddress, isValidRoute, parseCurrentRoute, updateRouteAfterSelectTokens } =
+  useSelectedTokensRoute(async ({ firstAddress, secondAddress }) => {
+    await setDataFromLiquidity({ firstAddress, secondAddress });
+  });
+
+const containerLoading = computed(() => props.parentLoading || loading.value);
+
+const handleBack = () => {
+  router.push({ name: PoolPageNames.Pool });
+};
+
+watch(isLoggedIn, (current, previous) => {
+  if (previous && !current) {
+    handleBack();
   }
+});
 
-  @Watch('firstToken')
-  @Watch('secondToken')
-  private afterTokenChange() {
-    this.updateRouteAfterSelectTokens(this.firstToken, this.secondToken);
-  }
+watch([firstToken, secondToken], ([first, second]) => {
+  updateRouteAfterSelectTokens(first, second);
+});
 
-  async mounted(): Promise<void> {
-    await this.withParentLoading(async () => {
-      this.parseCurrentRoute();
+onMounted(async () => {
+  await withParentLoading(async () => {
+    parseCurrentRoute();
 
-      const firstAddress = this.isValidRoute && this.firstRouteAddress ? this.firstRouteAddress : XOR.address;
-      const secondAddress = this.isValidRoute && this.secondRouteAddress ? this.secondRouteAddress : '';
+    const firstAddress = isValidRoute.value && firstRouteAddress.value ? firstRouteAddress.value : XOR.address;
+    const secondAddress = isValidRoute.value && secondRouteAddress.value ? secondRouteAddress.value : '';
 
-      await this.setData({ firstAddress, secondAddress });
-    });
-  }
+    await setDataFromLiquidity({ firstAddress, secondAddress });
+  });
+});
 
-  destroyed(): void {
-    this.resetData();
-  }
-
-  handleBack(): void {
-    router.push({ name: PoolPageNames.Pool });
-  }
-}
+onBeforeUnmount(() => {
+  void resetData();
+});
 </script>

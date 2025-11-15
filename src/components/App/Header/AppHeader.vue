@@ -1,42 +1,58 @@
 <template>
   <header class="header">
-    <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
-    <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
+    <s-button
+      class="app-menu-button"
+      type="action"
+      primary
+      icon="basic-more-horizontal-24"
+      @click="toggleMenu"
+    ></s-button>
+    <app-logo-button
+      class="app-logo--header"
+      responsive
+      :theme="libraryTheme"
+      @click="goTo(PageNames.Swap)"
+    ></app-logo-button>
     <div class="app-controls app-controls--middle s-flex">
-      <app-marketing v-show="!isMobile" />
+      <app-marketing v-show="!isMobile"></app-marketing>
       <s-button :class="fiatBtnClass" :type="fiatBtnType" size="medium" @click="goTo(PageNames.DepositOptions)">
-        <pair-token-logo class="payment-icon" :first-token="xor" :second-token="eth" :size="fiatBtnSize" />
+        <pair-token-logo
+          class="payment-icon"
+          :first-token="xor"
+          :second-token="eth"
+          :size="fiatBtnSize"
+        ></pair-token-logo>
         <span v-if="!isAnyMobile">{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
     </div>
     <div class="app-controls s-flex">
-      <app-account-button :disabled="loading" @click="navigateToWallet" />
-      <app-header-menu />
+      <app-account-button :disabled="loading" @click="navigateToWallet"></app-account-button>
+      <app-header-menu></app-header-menu>
     </div>
-    <rotate-phone-dialog />
-    <acceleration-access-dialog />
-    <select-language-dialog />
-    <select-currency-dialog />
+    <rotate-phone-dialog></rotate-phone-dialog>
+    <acceleration-access-dialog></acceleration-access-dialog>
+    <select-language-dialog></select-language-dialog>
+    <select-currency-dialog></select-currency-dialog>
   </header>
 </template>
 
-<script lang="ts">
-import { XOR, ETH } from '@sora-substrate/sdk/build/assets/consts';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useTranslation } from '@/composables/useTranslation';
+import { Components, PageNames } from '@/consts';
+import { BreakpointClass } from '@/consts/layout';
 import { Theme } from '@/consts/theme';
-
-import InternalConnectMixin from '../../../components/mixins/InternalConnectMixin';
-import { PageNames, Components } from '../../../consts';
-import { BreakpointClass } from '../../../consts/layout';
-import { lazyComponent, goTo } from '../../../router';
-import { state, getter } from '../../../store/decorators';
+import { goTo, lazyComponent } from '@/router';
+import store from '@/store';
 
 import AppAccountButton from './AppAccountButton.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
 
-@Component({
+defineOptions({
   components: {
     AppAccountButton,
     AppHeaderMenu,
@@ -48,55 +64,45 @@ import AppHeaderMenu from './AppHeaderMenu.vue';
     AccelerationAccessDialog: lazyComponent(Components.AccelerationAccessDialog),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
   },
-})
-export default class AppHeader extends Mixins(InternalConnectMixin) {
-  readonly PageNames = PageNames;
-  readonly xor = XOR;
-  readonly eth = ETH;
+});
 
-  @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
+const props = defineProps<{ loading?: boolean }>();
+const loading = computed(() => props.loading ?? false);
 
-  @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
+const emit = defineEmits<{
+  (e: 'toggle-menu'): void;
+}>();
 
-  @getter.libraryTheme libraryTheme!: Theme;
+const { t } = useTranslation();
+const { navigateToWallet } = useInternalConnect();
+const route = useRoute();
 
-  goTo = goTo;
+const xor = XOR;
+const eth = ETH;
 
-  get isMobile(): boolean {
-    return this.screenBreakpointClass === BreakpointClass.Mobile;
+const screenBreakpointClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
+const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+
+const isMobile = computed(() => screenBreakpointClass.value === BreakpointClass.Mobile);
+const isAnyMobile = computed(
+  () =>
+    screenBreakpointClass.value === BreakpointClass.Mobile ||
+    screenBreakpointClass.value === BreakpointClass.LargeMobile
+);
+
+const fiatBtnClass = computed(() => {
+  const classes = ['app-controls-fiat-btn', 'active'];
+  if ([PageNames.DepositOptions, PageNames.CedeStore].includes(route.name as PageNames)) {
+    classes.push('app-controls-fiat-btn--active', 's-pressed');
   }
+  return classes;
+});
 
-  get isAnyMobile(): boolean {
-    return this.isMobile || this.screenBreakpointClass === BreakpointClass.LargeMobile;
-  }
+const fiatBtnType = computed(() => (isAnyMobile.value ? 'action' : 'tertiary'));
+const fiatBtnSize = computed(() => (isAnyMobile.value ? 'mini' : 'small'));
 
-  get nodeLogo() {
-    return {
-      size: WALLET_CONSTS.LogoSize.MEDIUM,
-      tokenSymbol: XOR.symbol,
-    };
-  }
-
-  get fiatBtnClass(): string[] {
-    const base = ['app-controls-fiat-btn', 'active'];
-
-    if ([PageNames.DepositOptions, PageNames.CedeStore].includes(this.$route.name as PageNames))
-      base.push('app-controls-fiat-btn--active', 's-pressed');
-
-    return base;
-  }
-
-  get fiatBtnType(): string {
-    return this.isAnyMobile ? 'action' : 'tertiary';
-  }
-
-  get fiatBtnSize(): string {
-    return this.isAnyMobile ? 'mini' : 'small';
-  }
-
-  toggleMenu(): void {
-    this.$emit('toggle-menu');
-  }
+function toggleMenu(): void {
+  emit('toggle-menu');
 }
 </script>
 
@@ -158,46 +164,28 @@ export default class AppHeader extends Mixins(InternalConnectMixin) {
 
   &-fiat-btn.s-action .payment-icon {
     margin: auto;
-    margin-top: 2px; // Only for action button
   }
-
-  .el-button {
-    + .el-button {
-      margin-left: 0;
-    }
+  &-fiat-btn:hover {
+    background-color: var(--s-color-base-surface-popover);
   }
+}
 
-  @include desktop {
-    margin-left: auto;
-  }
+.app-controls--middle {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
 
-  &--middle {
-    margin-left: auto;
-
-    @include desktop {
-      position: absolute;
-      top: 50%;
-      left: 42.5%; // Because of marketing banner
-      transform: translate(-50%, -50%);
-      margin-right: 0;
-    }
-
-    @media (minmax(1220px, false)) {
-      left: 50%;
-    }
-  }
+.payment-icon {
+  margin-right: $inner-spacing-mini;
 }
 
 .app-menu-button {
-  flex-shrink: 0;
-
-  @include large-mobile {
-    display: none;
-  }
+  margin-right: $inner-spacing-mini;
 }
 
-.app-logo--header {
-  @include large-mobile(true) {
+@include desktop(true) {
+  .app-menu-button {
     display: none;
   }
 }

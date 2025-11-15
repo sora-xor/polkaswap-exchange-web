@@ -1,11 +1,11 @@
 <template>
   <transaction-details :info-only="expanded" :disabled="disabled">
     <template #reference>
-      <slot name="reference" />
+      <slot name="reference"></slot>
     </template>
 
     <div class="swap-info-container">
-      <info-line v-for="{ id, label, value } in priceValues" :key="id" :label="label" :value="value" />
+      <info-line v-for="{ id, label, value } in priceValues" :key="id" :label="label" :value="value"></info-line>
       <info-line
         :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
         :label-tooltip="t('swap.minReceivedTooltip')"
@@ -13,8 +13,8 @@
         :asset-symbol="assetSymbol"
         :fiat-value="getFiatAmountByCodecString(minMaxReceived, isExchangeB ? tokenFrom : tokenTo)"
         is-formatted
-      />
-      <info-line v-for="(reward, index) in rewardsValues" :key="index" v-bind="reward" />
+      ></info-line>
+      <info-line v-for="(reward, index) in rewardsValues" :key="index" v-bind="reward"></info-line>
       <info-line :label="t('swap.priceImpact')" :label-tooltip="t('swap.priceImpactTooltip')">
         <value-status-wrapper :value="priceImpact">
           <formatted-amount class="swap-value" :value="priceImpactFormatted">%</formatted-amount>
@@ -25,7 +25,7 @@
           <div class="swap-route-paths s-flex">
             <div v-for="(token, index) in swapRoute" class="swap-route-value" :key="token">
               <span>{{ token }}</span>
-              <s-icon v-if="index !== swapRoute.length - 1" name="el-icon el-icon-arrow-right swap-route-icon" />
+              <s-icon v-if="index !== swapRoute.length - 1" name="el-icon el-icon-arrow-right swap-route-icon"></s-icon>
             </div>
           </div>
         </div>
@@ -36,7 +36,7 @@
         :value="formattedLiquidityProviderFee"
         :asset-symbol="xorSymbol"
         is-formatted
-      />
+      ></info-line>
       <info-line
         v-if="full"
         :label="t('networkFeeText')"
@@ -45,7 +45,7 @@
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
-      />
+      ></info-line>
     </div>
   </transaction-details>
 </template>
@@ -53,15 +53,16 @@
 <script setup lang="ts">
 import { Operation, type CodecString, type NetworkFeesObject } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@wallet';
 import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
+import { useSwapStore } from '@/stores/swap';
 import { lazyComponent } from '@/router';
 import store from '@/store';
-import { useSwapStore } from '@/stores/swap';
+import { useAssetsStore } from '@/stores/assets';
 
 import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -84,6 +85,7 @@ const props = withDefaults(
 );
 
 const swapStore = useSwapStore();
+const assetsStore = useAssetsStore();
 const { t } = useTranslation();
 const { formatCodecNumber, formatStringValue, getFiatAmountByString, getFiatAmountByCodecString } =
   useFormattedAmount();
@@ -102,7 +104,7 @@ const priceImpact = computed(() => swapStore.priceImpact);
 const price = computed(() => swapStore.price);
 const priceReversed = computed(() => swapStore.priceReversed);
 
-const getAsset = (addr?: string) => store.getters.assets.assetDataByAddress(addr) as Nullable<AccountAsset>;
+const getAsset = (addr?: string) => assetsStore.assetDataByAddress(addr) as Nullable<AccountAsset>;
 
 const priceValues = computed(() => {
   const fromSymbol = tokenFrom.value?.symbol ?? '';

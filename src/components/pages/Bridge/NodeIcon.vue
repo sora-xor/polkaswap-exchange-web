@@ -7,42 +7,43 @@
     @click="handleClick"
     class="status-button"
   >
-    <s-icon :class="`status--${status}`" :name="icon" size="16" />
+    <s-icon :class="`status--${status}`" :name="icon" size="16"></s-icon>
   </s-button>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-import { Status } from '@/compat/soramitsu-ui';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Status } from '@soramitsu-ui/ui/types';
+import { useTranslation } from '@/composables/useTranslation';
 import type { NodesConnection } from '@/utils/connection';
 
-@Component
-export default class BridgeNodeIcon extends Mixins(TranslationMixin) {
-  @Prop({ default: () => null, type: Object }) readonly connection!: NodesConnection | null;
+const emit = defineEmits<{
+  (e: 'click'): void;
+}>();
 
-  get icon(): string {
-    return this.loading ? 'el-icon-loading' : 'globe-16';
+const props = withDefaults(
+  defineProps<{
+    connection?: NodesConnection | null;
+  }>(),
+  {
+    connection: null,
   }
+);
 
-  get loading(): boolean {
-    return !!this.connection?.nodeAddressConnecting;
-  }
+const { t } = useTranslation();
 
-  get connected(): boolean {
-    return !!this.connection?.nodeIsConnected;
-  }
+const loading = computed(() => Boolean(props.connection?.nodeAddressConnecting));
+const connected = computed(() => Boolean(props.connection?.nodeIsConnected));
+const icon = computed(() => (loading.value ? 'el-icon-loading' : 'globe-16'));
+const status = computed(() => {
+  if (connected.value) return Status.SUCCESS;
+  if (loading.value) return Status.INFO;
+  return Status.ERROR;
+});
 
-  get status() {
-    if (this.connected) return Status.SUCCESS;
-    if (this.loading) return Status.INFO;
-    return Status.ERROR;
-  }
-
-  handleClick(): void {
-    this.$emit('click');
-  }
+function handleClick(): void {
+  emit('click');
 }
 </script>
 

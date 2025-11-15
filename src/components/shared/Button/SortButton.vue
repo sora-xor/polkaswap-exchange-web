@@ -1,55 +1,68 @@
 <template>
-  <div v-button class="sort-button" @click="onClick">
-    <slot />
-    <s-icon name="arrows-chevron-top-rounded-24" :class="computedClasses" />
+  <div v-button class="sort-button" @click="handleClick">
+    <slot></slot>
+    <s-icon name="arrows-chevron-top-rounded-24" :class="computedClasses"></s-icon>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-import { SortDirection } from '@/compat/soramitsu-ui';
+import { SortDirection } from '@soramitsu-ui/ui/types';
 
-interface SortData {
-  order: string;
+type SortData = {
   property: string;
+  order: SortDirection | string;
+};
+
+type SortPayload = {
+  property: string;
+  order: SortDirection;
+};
+
+/**
+ * Sort button that toggles sort order for a given column.
+ */
+const props = withDefaults(
+  defineProps<{
+    name?: string;
+    sort?: SortData;
+    defaultSort?: SortDirection;
+  }>(),
+  {
+    name: '',
+    sort: () =>
+      ({
+        property: '',
+        order: SortDirection.DESC,
+      }) as SortData,
+    defaultSort: SortDirection.DESC,
+  }
+);
+
+const emit = defineEmits<{
+  (event: 'change-sort', payload: SortPayload): void;
+}>();
+
+const isActive = computed(() => props.name === props.sort.property);
+const computedClasses = computed(() => {
+  const base = 'sort-icon';
+  return isActive.value ? [base, `${base}--active`, `${base}--${props.sort.order}`] : [base];
+});
+
+function toggleSort(): SortDirection {
+  if (!isActive.value) {
+    return props.defaultSort;
+  }
+
+  return props.sort.order === SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC;
 }
 
-@Component
-export default class SortButton extends Vue {
-  @Prop({ default: '', type: String }) readonly name!: string;
-  @Prop({ default: () => ({}), type: Object }) readonly sort!: SortData;
-  @Prop({ default: SortDirection.DESC, type: String }) readonly defaultSort!: SortDirection;
-
-  get active(): boolean {
-    return this.name === this.sort.property;
-  }
-
-  get computedClasses(): Array<string> {
-    const base = 'sort-icon';
-    const classes = [base];
-
-    if (this.active) {
-      classes.push(`${base}--active`);
-      classes.push(`${base}--${this.sort.order}`);
-    }
-
-    return classes;
-  }
-
-  onClick(): void {
-    const order =
-      this.name === this.sort.property
-        ? this.sort.order === SortDirection.ASC
-          ? SortDirection.DESC
-          : SortDirection.ASC
-        : this.defaultSort;
-
-    this.$emit('change-sort', {
-      property: this.name,
-      order,
-    });
-  }
+function handleClick(): void {
+  emit('change-sort', {
+    property: props.name,
+    order: toggleSort(),
+  });
 }
 </script>
 

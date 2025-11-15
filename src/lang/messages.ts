@@ -1,5 +1,5 @@
 import { RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
-import { en as walletEn } from '@soramitsu/soraneo-wallet-web';
+import * as walletModule from '@wallet';
 
 import { Theme } from '@/consts/theme';
 
@@ -11,6 +11,8 @@ import { StakingPageNames } from '../modules/staking/consts';
 import { ValidatorsFilterType, ValidatorsListMode } from '../modules/staking/sora/consts';
 import { VaultPageNames } from '../modules/vault/consts';
 import { AlertFrequencyTabs, AlertTypeTabs } from '../types/tabs';
+
+const walletEn = (walletModule as { en?: Record<string, unknown> }).en ?? {};
 
 export default {
   // Wallet project keys

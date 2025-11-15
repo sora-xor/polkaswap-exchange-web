@@ -1,0 +1,80 @@
+@use '@/theme';
+
+$primary: theme.token-as-var('sys.color.primary');
+$on-disabled: theme.token-as-var('sys.color.on-disabled');
+$border-primary: theme.token-as-var('sys.color.border-primary');
+
+$dur-easing: 0.2s ease;
+
+.s-radio-body {
+  @apply select-none cursor-pointer rounded;
+  transition: all $dur-easing;
+
+  $root: &;
+
+  // Should be enabled externally
+
+  // &[aria-disabled='true'] {
+  //   pointer-events: none;
+
+  //   label,
+  //   #{$root}__description {
+  //     color: $on-disabled;
+  //   }
+  // }
+
+  &:focus {
+    outline: none;
+  }
+
+  label {
+    color: theme.token-as-var('sys.color.content-primary');
+    @apply cursor-pointer;
+  }
+
+  &__description {
+    color: theme.token-as-var('sys.color.content-secondary');
+    margin-top: 4px;
+  }
+
+  label,
+  &__description {
+    transition: color $dur-easing;
+  }
+
+  &[aria-disabled='true'] {
+    pointer-events: none;
+
+    label,
+    .s-radio-body__description {
+      color: theme.token-as-var('sys.color.on-disabled');
+    }
+  }
+
+  &[data-type^='bordered'] {
+    border: 1px solid $border-primary;
+
+    &:hover,
+    &[aria-checked='true']:not([aria-disabled='true']) {
+      border-color: $primary;
+    }
+  }
+
+  @mixin padding($type, $size, $px, $py) {
+    &[data-size='#{$size}'][data-type='#{$type}'] {
+      padding: $py $px;
+    }
+  }
+
+  @include padding('bordered', 'md', 8px, 6px);
+  @include padding('bordered', 'lg', 10px, 8px);
+  @include padding('bordered', 'xl', 10px, 10px);
+
+  @include padding('bordered-with-description', 'md', 10px, 8px);
+  @include padding('bordered-with-description', 'lg', 12px, 10px);
+  @include padding('bordered-with-description', 'xl', 16px, 16px);
+
+  &:focus {
+    @apply ring ring-opacity-25 ring-blue-500 ring-offset-2;
+  }
+}

@@ -3,7 +3,7 @@
     <template v-if="isLoggedIn">
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
-        <token-logo :token="xor" :size="WALLET_CONSTS.LogoSize.BIGGER" />
+        <token-logo :token="xor" :size="WALLET_CONSTS.LogoSize.BIGGER"></token-logo>
         <formatted-amount
           class="rewards-value"
           value-can-be-hidden
@@ -11,7 +11,7 @@
           symbol-as-decimal
           :value="formattedRewards"
           :asset-symbol="xorSymbol"
-        />
+        ></formatted-amount>
         <formatted-amount
           v-if="formattedRewardsFiatValue"
           is-fiat-value
@@ -20,7 +20,7 @@
           :font-size-rate="FontSizeRate.MEDIUM"
           :value="formattedRewardsFiatValue"
           is-formatted
-        />
+        ></formatted-amount>
       </div>
       <template v-if="hasAccountWithBondedXor">
         <div v-if="isInsufficientBondedAmount" class="referral-insufficient-bonded-amount">
@@ -29,7 +29,7 @@
         <s-card v-else class="referral-link-container" shadow="always" size="small" border-radius="medium">
           <div class="referral-link-details with-text">
             <div class="referral-link-label">{{ t('referralProgram.invitationLink') }}</div>
-            <div class="referral-link" v-html="referralLink.label" />
+            <div class="referral-link" v-html="referralLink.label"></div>
           </div>
           <s-button
             class="s-typography-button--mini"
@@ -39,19 +39,19 @@
             @click="handleClickRefLink($event)"
           >
             {{ refLinkText }}
-            <s-icon name="copy-16" size="16" />
+            <s-icon name="copy-16" size="16"></s-icon>
           </s-button>
         </s-card>
       </template>
       <s-collapse :borders="true">
         <s-collapse-item :class="bondedContainerClasses" :disabled="!hasAccountWithBondedXor" name="bondedXOR">
           <template v-if="hasAccountWithBondedXor" #title>
-            <token-logo :token="xor" />
+            <token-logo :token="xor"></token-logo>
             <h3 class="bonded-collapse-title">{{ t('referralProgram.bondedXOR') }}</h3>
           </template>
           <div v-if="!hasAccountWithBondedXor" class="unbonded-info">
-            <token-logo :token="xor" />
-            <p class="referral-program-hint referral-program-hint--connected" v-html="startInvitingHtml" />
+            <token-logo :token="xor"></token-logo>
+            <p class="referral-program-hint referral-program-hint--connected" v-html="startInvitingHtml"></p>
           </div>
           <info-line
             is-formatted
@@ -59,7 +59,7 @@
             :label="t('referralProgram.bondedXOR')"
             :value="formattedBondedXorBalance"
             :fiat-value="formattedBondedXorFiatValue"
-          />
+          ></info-line>
           <div class="bonded--buttons">
             <s-button :type="bondButtonType" class="s-typography-button--medium" @click="handleBonding(true)">
               {{ t('referralProgram.action.bondMore') }}
@@ -76,7 +76,7 @@
         </s-collapse-item>
         <s-collapse-item v-if="invitedUsersCount" class="invited-users-container" name="invitedUsers">
           <template #title>
-            <span class="invited-users-icon" />
+            <span class="invited-users-icon"></span>
             <h3 class="invited-users-collapse-title">
               {{ t('referralProgram.referralsNumber', { number: invitedUsersCount }) }}
             </h3>
@@ -92,31 +92,31 @@
                 is-formatted
               >
                 <template #info-line-prefix>
-                  <formatted-address :value="invitedUser" :tooltip-text="t('transaction.referral')" />
+                  <formatted-address :value="invitedUser" :tooltip-text="t('transaction.referral')"></formatted-address>
                 </template>
               </info-line>
             </div>
             <s-pagination
               v-if="hasMultipleInvitedUsersPages"
               layout="total, prev, next"
-              :current-page.sync="currentPage"
+              v-model:current-page="currentPage"
               :page-size="pageAmount"
               :total="invitedUsersCount"
               @prev-click="handlePrevClick"
               @next-click="handleNextClick"
-            />
+            ></s-pagination>
           </template>
         </s-collapse-item>
         <s-collapse-item class="referrer-link-container" name="referrer">
           <template #title>
-            <WalletAvatar v-if="referrer" class="referrer-icon" :size="32" :address="referrer" />
+            <WalletAvatar v-if="referrer" class="referrer-icon" :size="32" :address="referrer"></WalletAvatar>
             <h3 class="referrer-collapse-title">
               {{ t(`referralProgram.referrer.${referrer ? 'titleReferrer' : 'title'}`) }}
             </h3>
           </template>
           <template v-if="referrer">
             <h5>{{ t('referralProgram.referrer.referredBy', { referrer: referrerFormatted }) }}</h5>
-            <p class="referrer-description" v-html="referrerInfoHtml" />
+            <p class="referrer-description" v-html="referrerInfoHtml"></p>
           </template>
           <template v-else>
             <div class="referrer-link-details">
@@ -139,19 +139,19 @@
                 </template>
               </s-input>
             </div>
-            <p class="referrer-description" v-html="referrerDescriptionHtml" />
+            <p class="referrer-description" v-html="referrerDescriptionHtml"></p>
           </template>
           <s-card v-if="referrer" shadow="always" size="small" border-radius="medium">
             <div class="referrer-link-details with-text">
               <div class="referral-link-label">{{ t('referralProgram.referrer.referredLablel') }}</div>
-              <div class="referral-link" v-html="referrerLink.label" />
+              <div class="referral-link" v-html="referrerLink.label"></div>
             </div>
           </s-card>
         </s-collapse-item>
       </s-collapse>
     </template>
     <template v-else>
-      <p class="referral-program-hint" v-html="connectAccountHtml" />
+      <p class="referral-program-hint" v-html="connectAccountHtml"></p>
       <s-button
         v-if="!isLoggedIn"
         class="connect-button s-typography-button--large"
@@ -164,19 +164,24 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, mixins, api, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { components, api, WALLET_TYPES, WALLET_CONSTS as WALLET_CONSTS_LIB } from '@wallet';
 import last from 'lodash/fp/last';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { getFullBaseUrl, getRouterMode } from '@/api';
-import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { PageNames, ZeroStringValue } from '@/consts';
+import { useCopyAddress } from '@/composables/useCopyAddress';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import router, { lazyView } from '@/router';
-import { action, getter, mutation, state } from '@/store/decorators';
+import store from '@/store';
+import type { Nullable } from '@/types/common';
 import { formatAddress } from '@/utils';
 import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
 import { tmaSdkService } from '@/utils/telegram';
@@ -184,7 +189,7 @@ import { tmaSdkService } from '@/utils/telegram';
 import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+defineOptions({
   components: {
     FormattedAmount: components.FormattedAmount,
     FormattedAddress: components.FormattedAddress,
@@ -193,308 +198,285 @@ import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
     WalletAvatar: components.WalletAvatar,
     TokenLogo: components.TokenLogo,
   },
-})
-export default class ReferralProgram extends Mixins(
-  mixins.LoadingMixin,
-  mixins.FormattedAmountMixin,
-  mixins.PaginationSearchMixin,
-  mixins.NetworkFeeWarningMixin,
-  mixins.CopyAddressMixin,
-  InternalConnectMixin
-) {
-  readonly WALLET_CONSTS = WALLET_CONSTS;
+});
 
-  referrerLinkOrCode = '';
-  referrerHasApproved = false;
-  pageAmount = 5; // override PaginationSearchMixin
+const WALLET_CONSTS = WALLET_CONSTS_LIB;
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+const FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
-  @state.referrals.referralRewards referralRewards!: Nullable<ReferrerRewards>;
-  @state.referrals.invitedUsers invitedUsers!: Array<string>;
-  @state.referrals.referrer referrer!: string;
-  @state.referrals.isReferrerApproved isReferrerApproved!: boolean;
-  @state.settings.isTMA private isTMA!: boolean;
-  @state.settings.telegramBotUrl private telegramBotUrl!: Nullable<string>;
-  @getter.assets.xor xor!: Nullable<AccountAsset>;
-  @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
+const { t } = useTranslation();
+const { loading, withApi } = useLoading();
+const { connectSoraWallet, isLoggedIn } = useInternalConnect();
+const { handleCopyAddress, copyTooltip } = useCopyAddress();
+const {
+  Zero,
+  formatCodecNumber,
+  getAssetFiatPrice,
+  getFiatAmountByFPNumber,
+  getFiatAmountByCodecString,
+  getFPNumberFromCodec,
+} = useFormattedAmount();
 
-  @mutation.referrals.reset private reset!: FnWithoutArgs;
-  @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
-  @mutation.referrals.resetReferrerSubscription private resetReferrerSubscription!: FnWithoutArgs;
-  @mutation.referrals.setStorageReferrer private setStorageReferrer!: (value: string) => void;
-  @action.referrals.subscribeOnInvitedUsers private subscribeOnInvitedUsers!: AsyncFnWithoutArgs;
-  @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
-  @action.referrals.getAccountReferralRewards private getAccountReferralRewards!: AsyncFnWithoutArgs;
-  @action.referrals.subscribeOnReferrer private subscribeOnReferrer!: AsyncFnWithoutArgs;
+const referralRewards = computed(() => store.state.referrals.referralRewards as Nullable<ReferrerRewards>);
+const invitedUsers = computed(() => (store.state.referrals.invitedUsers as Array<string>) ?? []);
+const referrer = computed(() => store.state.referrals.referrer as string);
+const isReferrerApproved = computed(() => Boolean(store.state.referrals.isReferrerApproved));
+const isTMA = computed(() => Boolean(store.state.settings.isTMA));
+const telegramBotUrl = computed(() => store.state.settings.telegramBotUrl as Nullable<string>);
+const xor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
+const account = computed(() => store.getters.wallet.account.account as Nullable<WALLET_TYPES.PolkadotJsAccount>);
+const networkFees = computed(
+  () => (store.state.wallet.settings.networkFees as Nullable<Record<string, CodecString>>) ?? {}
+);
 
-  @Watch('isLoggedIn')
-  private updateSubscriptions(value: boolean): void {
-    if (value) {
-      this.initData();
-    } else {
-      this.unsubscribeFromInvitedUsers();
-      this.resetReferrerSubscription();
-    }
+const referrerLinkOrCode = ref('');
+const pageAmount = 5;
+const currentPage = ref(1);
+
+const startIndex = computed(() => (currentPage.value - 1) * pageAmount);
+const endIndex = computed(() => currentPage.value * pageAmount);
+
+const invitedUsersCount = computed(() => invitedUsers.value.length);
+const hasMultipleInvitedUsersPages = computed(() => invitedUsersCount.value > pageAmount);
+const filteredInvitedUsers = computed(() => invitedUsers.value.slice(startIndex.value, endIndex.value));
+
+const bondedXorCodecBalance = computed<CodecString>(() => xor.value?.balance?.bonded ?? '');
+const inviteUserFee = computed(() => {
+  const fee = networkFees.value?.ReferralSetInvitedUser;
+  return fee ? formatCodecNumber(fee) : ZeroStringValue;
+});
+
+const isInsufficientBondedAmount = computed(() => {
+  const fee = networkFees.value?.ReferralSetInvitedUser;
+  if (!bondedXorCodecBalance.value || !fee) return false;
+
+  return FPNumber.gt(getFPNumberFromCodec(fee), getFPNumberFromCodec(bondedXorCodecBalance.value));
+});
+
+const formattedBondedXorBalance = computed(() =>
+  bondedXorCodecBalance.value ? formatCodecNumber(bondedXorCodecBalance.value) : ZeroStringValue
+);
+
+const formattedBondedXorFiatValue = computed(() =>
+  bondedXorCodecBalance.value ? getFiatAmountByCodecString(bondedXorCodecBalance.value) : null
+);
+
+const hasAccountWithBondedXor = computed(() => {
+  const bonded = bondedXorCodecBalance.value;
+  return Boolean(account.value && bonded && !FPNumber.fromCodecValue(bonded).isZero());
+});
+
+const bondedContainerClasses = computed(() => {
+  const baseClass = 'bonded-container';
+  const classes = [baseClass];
+
+  if (!hasAccountWithBondedXor.value) {
+    classes.push('is-active', `${baseClass}--visible-content`);
   }
 
-  private async initData(): Promise<void> {
-    if (this.isLoggedIn) {
-      await this.subscribeOnInvitedUsers();
-      await this.getAccountReferralRewards();
-      await this.getReferrer();
-      await this.subscribeOnReferrer();
-    }
+  return classes;
+});
+
+const invitedUserRewards = computed<Record<string, FPNumber>>(() => referralRewards.value?.invitedUserRewards ?? {});
+
+const formattedRewards = computed(() => referralRewards.value?.rewards.toLocaleString() ?? ZeroStringValue);
+
+const formattedRewardsFiatValue = computed(() =>
+  referralRewards.value?.rewards ? getFiatAmountByFPNumber(referralRewards.value.rewards) : null
+);
+
+const isPriceAvailable = computed(() => Boolean(getAssetFiatPrice(XOR)));
+const xorSymbol = XOR.symbol;
+
+const linkHrefBase = computed(() => `${getFullBaseUrl(router)}referral/`);
+
+const referrerFormatted = computed(() => (referrer.value ? formatAddress(referrer.value, 8) : ''));
+
+const isReferrerLinkEmpty = computed(() => referrerLinkOrCode.value.trim().length === 0);
+
+const referrerAddress = computed(() => {
+  if (referrer.value) return referrer.value;
+  return last(referrerLinkOrCode.value.split('/')) ?? '';
+});
+
+const hasTMALink = computed(() => isTMA.value && Boolean(telegramBotUrl.value));
+
+const refLinkTooltip = computed(() =>
+  hasTMALink.value ? t('referralProgram.inviteViaTelegram') : copyTooltip(t('referralProgram.invitationLink'))
+);
+
+const connectAccountHtml = computed(() =>
+  sanitizeHtml(t('referralProgram.connectAccount'), {
+    allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br'],
+    allowedAttributes: {
+      '*': ['class'],
+      a: ['href', 'rel', 'target', 'title'],
+    },
+  })
+);
+
+const startInvitingHtml = computed(() =>
+  sanitizeHtml(t('referralProgram.startInviting'), {
+    allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br'],
+    allowedAttributes: {
+      '*': ['class'],
+      a: ['href', 'rel', 'target', 'title'],
+    },
+  })
+);
+
+const referrerInfoHtml = computed(() =>
+  sanitizeHtml(t('referralProgram.referrer.info'), {
+    allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br', 'ul', 'li'],
+    allowedAttributes: {
+      '*': ['class'],
+      a: ['href', 'rel', 'target', 'title'],
+    },
+  })
+);
+
+const referrerDescriptionHtml = computed(() =>
+  sanitizeHtml(t('referralProgram.referrer.description'), {
+    allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br', 'ul', 'li'],
+    allowedAttributes: {
+      '*': ['class'],
+      a: ['href', 'rel', 'target', 'title'],
+    },
+  })
+);
+
+const referralLink = computed(() => {
+  const address = account.value?.address ?? '';
+  const href = getSafeReferralLinkHref(address);
+  const label = getLinkLabel(address);
+  return { href, label };
+});
+
+const referrerLink = computed(() => {
+  const address = referrerAddress.value;
+  return {
+    href: getSafeReferralLinkHref(address),
+    label: getLinkLabel(address),
+  };
+});
+
+const refLinkText = computed(() =>
+  hasTMALink.value ? t('referralProgram.action.shareLink') : t('referralProgram.action.copyLink')
+);
+
+const invitedUsersClasses = computed(() => {
+  const baseClass = 'invited-users-list';
+  return hasMultipleInvitedUsersPages.value ? [baseClass, `${baseClass}--multiple-pages`] : [baseClass];
+});
+
+const bondButtonType = computed(() => (hasAccountWithBondedXor.value ? 'secondary' : 'primary'));
+
+const handlePrevClick = (page: number) => {
+  currentPage.value = page;
+};
+
+const handleNextClick = (page: number) => {
+  currentPage.value = page;
+};
+
+const isValidReferrerLink = computed(() => {
+  if (isReferrerLinkEmpty.value) return false;
+  const address = referrerAddress.value;
+
+  if (!api.validateAddress(address)) return false;
+  if (api.formatAddress(address) === account.value?.address) return false;
+  if (referrerLinkOrCode.value === address) return true;
+
+  return referrerLinkOrCode.value === referrerLink.value.href;
+});
+
+const tmaShareLink = () => {
+  if (!telegramBotUrl.value || !account.value?.address) return;
+
+  const botUrl = `${telegramBotUrl.value}/app?startapp=${account.value.address}`;
+  tmaSdkService.shareLink(botUrl, t('referralProgram.welcomeMessage'));
+};
+
+const handleClickRefLink = (event?: MouseEvent) => {
+  if (!hasTMALink.value) {
+    void handleCopyAddress(referralLink.value.href, event);
+    return;
   }
 
-  get isPriceAvailable(): boolean {
-    return !!this.getAssetFiatPrice(XOR);
+  tmaShareLink();
+};
+
+const getLinkLabel = (address: string): string => {
+  const routerMode = getRouterMode(router);
+  const safeAddress = escapeHtml(address);
+  const raw = `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${safeAddress}`;
+
+  return sanitizeHtml(raw, {
+    allowedTags: ['span'],
+    allowedAttributes: {
+      span: ['class'],
+    },
+  });
+};
+
+const getSafeReferralLinkHref = (address: string): string => {
+  const safeAddress = escapeHtml(address);
+  return `${linkHrefBase.value}${safeAddress}`;
+};
+
+const getInvitedUserReward = (invitedUser: string): string => {
+  const rewards = invitedUserRewards.value[invitedUser];
+  if (typeof invitedUser === 'string' && rewards) {
+    return formatCodecNumber(rewards.toCodecString());
   }
+  return ZeroStringValue;
+};
 
-  get xorSymbol(): string {
-    return XOR.symbol;
+const handleBonding = (isBond = false) => {
+  router.push({ name: isBond ? PageNames.ReferralBonding : PageNames.ReferralUnbonding });
+};
+
+const handleSetReferrer = () => {
+  if (!isValidReferrerLink.value) return;
+  store.commit.referrals.setStorageReferrer(referrerAddress.value);
+};
+
+const resetSubscriptions = () => {
+  store.commit.referrals.unsubscribeFromInvitedUsers();
+  store.commit.referrals.resetReferrerSubscription();
+};
+
+const resetState = () => {
+  store.commit.referrals.reset();
+};
+
+const initData = async () => {
+  if (!isLoggedIn.value) return;
+
+  await store.dispatch.referrals.subscribeOnInvitedUsers();
+  await store.dispatch.referrals.getAccountReferralRewards();
+  await store.dispatch.referrals.getReferrer();
+  await store.dispatch.referrals.subscribeOnReferrer();
+};
+
+watch(isLoggedIn, async (value) => {
+  if (value) {
+    await initData();
+  } else {
+    resetSubscriptions();
   }
+});
 
-  get formattedRewards(): string {
-    return this.referralRewards?.rewards.toLocaleString() ?? ZeroStringValue;
-  }
+onMounted(() => {
+  void withApi(async () => {
+    await initData();
+  });
+});
 
-  get formattedRewardsFiatValue(): Nullable<string> {
-    if (!this.referralRewards?.rewards) return null;
-
-    return this.getFiatAmountByFPNumber(this.referralRewards.rewards);
-  }
-
-  get invitedUserRewards(): Record<string, FPNumber> {
-    return this.referralRewards?.invitedUserRewards ?? {};
-  }
-
-  get bondedXorCodecBalance(): CodecString {
-    return this.xor?.balance?.bonded ?? '';
-  }
-
-  get inviteUserFee(): string {
-    return this.formatCodecNumber(this.networkFees.ReferralSetInvitedUser);
-  }
-
-  get isInsufficientBondedAmount(): boolean {
-    return this.bondedXorCodecBalance
-      ? FPNumber.gt(
-          this.getFPNumberFromCodec(this.networkFees.ReferralSetInvitedUser),
-          this.getFPNumberFromCodec(this.bondedXorCodecBalance)
-        )
-      : false;
-  }
-
-  get formattedBondedXorBalance(): string {
-    if (!this.bondedXorCodecBalance) return ZeroStringValue;
-
-    return this.formatCodecNumber(this.bondedXorCodecBalance);
-  }
-
-  get formattedBondedXorFiatValue(): Nullable<string> {
-    if (!this.bondedXorCodecBalance) return null;
-
-    return this.getFiatAmountByCodecString(this.bondedXorCodecBalance);
-  }
-
-  get invitedUsersCount(): number {
-    return this.invitedUsers.length;
-  }
-
-  get invitedUsersClasses(): Array<string> {
-    const baseClass = 'invited-users-list';
-    const cssClasses: Array<string> = [baseClass];
-
-    if (this.hasMultipleInvitedUsersPages) {
-      cssClasses.push(`${baseClass}--multiple-pages`);
-    }
-
-    return cssClasses;
-  }
-
-  get linkHrefBase(): string {
-    return `${getFullBaseUrl(router)}referral/`;
-  }
-
-  get referralLink() {
-    return {
-      href: this.getSafeReferralLinkHref(this.account.address),
-      label: this.getLinkLabel(this.account.address),
-    };
-  }
-
-  get hasAccountWithBondedXor(): boolean {
-    return this.account && +this.bondedXorCodecBalance > 0;
-  }
-
-  get bondedContainerClasses(): Array<string> {
-    const baseClass = 'bonded-container';
-    const cssClasses: Array<string> = [baseClass];
-
-    if (!this.hasAccountWithBondedXor) {
-      cssClasses.push('is-active');
-      cssClasses.push(`${baseClass}--visible-content`);
-    }
-
-    return cssClasses;
-  }
-
-  get isReferrerLinkEmpty(): boolean {
-    return !this.referrerLinkOrCode.trim();
-  }
-
-  get referrerFormatted(): string {
-    return this.referrer ? formatAddress(this.referrer, 8) : '';
-  }
-
-  get referrerAddress(): string {
-    if (this.referrer) return this.referrer;
-
-    return last(this.referrerLinkOrCode.split('/')) ?? '';
-  }
-
-  get startInvitingHtml(): string {
-    return sanitizeHtml(this.t('referralProgram.startInviting'), {
-      allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br'],
-      allowedAttributes: {
-        '*': ['class'],
-        a: ['href', 'rel', 'target', 'title'],
-      },
-    });
-  }
-
-  get isValidReferrerLink(): boolean {
-    if (this.isReferrerLinkEmpty) {
-      return false;
-    }
-    if (!api.validateAddress(this.referrerAddress)) {
-      return false;
-    }
-    if (api.formatAddress(this.referrerAddress) === this.account?.address) {
-      return false;
-    }
-    if (this.referrerLinkOrCode === this.referrerAddress) {
-      return true;
-    }
-    return this.referrerLinkOrCode === this.referrerLink.href;
-  }
-
-  get filteredInvitedUsers(): Array<string> {
-    return this.getPageItems(this.invitedUsers);
-  }
-
-  get hasMultipleInvitedUsersPages(): boolean {
-    return this.invitedUsers.length > this.pageAmount;
-  }
-
-  get referrerLink() {
-    return {
-      href: this.getSafeReferralLinkHref(this.referrerAddress),
-      label: this.getLinkLabel(this.referrerAddress),
-    };
-  }
-
-  get bondButtonType(): string {
-    return this.hasAccountWithBondedXor ? 'secondary' : 'primary';
-  }
-
-  get referrerInfoHtml(): string {
-    return sanitizeHtml(this.t('referralProgram.referrer.info'), {
-      allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br', 'ul', 'li'],
-      allowedAttributes: {
-        '*': ['class'],
-        a: ['href', 'rel', 'target', 'title'],
-      },
-    });
-  }
-
-  get referrerDescriptionHtml(): string {
-    return sanitizeHtml(this.t('referralProgram.referrer.description'), {
-      allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br', 'ul', 'li'],
-      allowedAttributes: {
-        '*': ['class'],
-        a: ['href', 'rel', 'target', 'title'],
-      },
-    });
-  }
-
-  private get hasTMALink(): boolean {
-    return this.isTMA && !!this.telegramBotUrl;
-  }
-
-  get refLinkTooltip(): string {
-    return this.hasTMALink
-      ? this.t('referralProgram.inviteViaTelegram')
-      : this.copyTooltip(this.t('referralProgram.invitationLink'));
-  }
-
-  get connectAccountHtml(): string {
-    return sanitizeHtml(this.t('referralProgram.connectAccount'), {
-      allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br'],
-      allowedAttributes: {
-        '*': ['class'],
-        a: ['href', 'rel', 'target', 'title'],
-      },
-    });
-  }
-
-  get refLinkText(): string {
-    return this.hasTMALink ? this.t('referralProgram.action.shareLink') : this.t('referralProgram.action.copyLink');
-  }
-
-  handleClickRefLink(event?: MouseEvent): void {
-    if (!this.hasTMALink) {
-      this.handleCopyAddress(this.referralLink.href, event);
-      return;
-    }
-
-    const botUrl = `${this.telegramBotUrl}/app?startapp=${this.account.address}`;
-    tmaSdkService.shareLink(botUrl, this.t('referralProgram.welcomeMessage'));
-  }
-
-  destroyed(): void {
-    this.reset();
-  }
-
-  created(): void {
-    this.withApi(async () => {
-      await this.initData();
-    });
-  }
-
-  private getLinkLabel(address: string): string {
-    const routerMode = getRouterMode(router);
-    const safeAddress = escapeHtml(address);
-    const raw = `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${safeAddress}`;
-
-    return sanitizeHtml(raw, {
-      allowedTags: ['span'],
-      allowedAttributes: {
-        span: ['class'],
-      },
-    });
-  }
-
-  private getSafeReferralLinkHref(address: string): string {
-    const safeAddress = escapeHtml(address);
-    return `${this.linkHrefBase}${safeAddress}`;
-  }
-
-  getInvitedUserReward(invitedUser: string): string {
-    const rewards = this.invitedUserRewards[invitedUser];
-    if (typeof invitedUser === 'string' && rewards) {
-      return this.formatCodecNumber(rewards.toCodecString());
-    }
-    return ZeroStringValue;
-  }
-
-  handleBonding(isBond = false): void {
-    router.push({ name: isBond ? PageNames.ReferralBonding : PageNames.ReferralUnbonding });
-  }
-
-  handleSetReferrer(): void {
-    this.setStorageReferrer(this.referrerAddress);
-  }
-}
+onBeforeUnmount(() => {
+  resetSubscriptions();
+  resetState();
+});
 </script>
 
 <style lang="scss">

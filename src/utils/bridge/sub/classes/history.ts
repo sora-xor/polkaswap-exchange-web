@@ -1,7 +1,7 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@wallet';
 
 import { ZeroStringValue } from '@/consts';
 import { rootActionContext } from '@/store';

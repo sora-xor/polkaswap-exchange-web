@@ -1,6 +1,6 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
+import * as walletModule from '@wallet';
+import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import { AccountPointSystems, AccountPointsVersioned, AccountPointsCalculation } from '@/types/pointSystem';
@@ -11,9 +11,40 @@ import type {
   HistoryElement,
   HistoryElementEthBridgeIncoming,
   HistoryElementEthBridgeOutgoing,
-} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+} from '@wallet/lib/services/indexer/types';
 
-const { IndexerType } = WALLET_CONSTS;
+type ExplorerLike = {
+  request: (...args: any[]) => Promise<any>;
+  fetchEntities: (...args: any[]) => Promise<any>;
+  fetchEntitiesConnection: (...args: any[]) => Promise<any>;
+  createEntitySubscription?: (...args: any[]) => () => void;
+};
+
+const createFallbackIndexer = (): { type: string; services: { explorer: ExplorerLike } } => ({
+  type: 'subquery',
+  services: {
+    explorer: {
+      request: async () => null,
+      fetchEntities: async () => ({ totalCount: 0 }),
+      fetchEntitiesConnection: async () => ({ totalCount: 0 }),
+      createEntitySubscription: () => () => undefined,
+    },
+  },
+});
+
+const getCurrentIndexer =
+  (walletModule as { getCurrentIndexer?: () => ReturnType<typeof createFallbackIndexer> }).getCurrentIndexer ??
+  createFallbackIndexer;
+
+const walletConsts = (walletModule as { WALLET_CONSTS?: { IndexerType?: { SUBQUERY: string; SUBSQUID: string } } })
+  .WALLET_CONSTS ?? {
+  IndexerType: {
+    SUBQUERY: 'subquery',
+    SUBSQUID: 'subsquid',
+  },
+};
+
+const { IndexerType } = walletConsts;
 
 type BridgeHistoryElement = HistoryElementEthBridgeIncoming | HistoryElementEthBridgeOutgoing;
 type CountResponse = {

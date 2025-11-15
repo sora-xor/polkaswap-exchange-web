@@ -1,18 +1,17 @@
 <template>
-  <dialog-base :visible.sync="isVisible">CustomisePage</dialog-base>
+  <dialog-base v-model:visible="visible">
+    <slot></slot>
+  </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+const visible = defineModel<boolean>('visible', { default: false });
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
-    NetworkFeeWarning: components.NetworkFeeWarning,
   },
-})
-export default class CustomisePage extends Mixins(mixins.DialogMixin, TranslationMixin) {}
+});
 </script>

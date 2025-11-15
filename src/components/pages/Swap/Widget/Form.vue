@@ -5,7 +5,12 @@
         <template #label>{{ t('marketText') }}:</template>
         <template #value>{{ swapMarketAlgorithm }}</template>
         <template #action>
-          <s-button class="el-button--settings" type="action" icon="basic-settings-24" @click="openSettingsDialog" />
+          <s-button
+            class="el-button--settings"
+            type="action"
+            icon="basic-settings-24"
+            @click="openSettingsDialog"
+          ></s-button>
         </template>
       </swap-status-action-badge>
     </template>
@@ -23,7 +28,7 @@
         @focus="handleFocusField(false)"
         @max="handleMaxValue"
         @select="openSelectTokenDialog(true)"
-      />
+      ></token-input>
 
       <s-button
         class="el-button--switch-tokens"
@@ -32,7 +37,7 @@
         icon="arrows-swap-90-24"
         :disabled="!areTokensSelected"
         @click="handleSwitchTokens"
-      />
+      ></s-button>
 
       <token-input
         data-test-name="swapTo"
@@ -52,7 +57,7 @@
         </template>
       </token-input>
 
-      <slippage-tolerance class="slippage-tolerance-settings" />
+      <slippage-tolerance class="slippage-tolerance-settings"></slippage-tolerance>
 
       <s-button
         v-if="!isLoggedIn"
@@ -95,7 +100,7 @@
             name="notifications-alert-triangle-24"
             size="18"
             class="action-button-icon"
-          />
+          ></s-icon>
           {{ t('exchange.Swap') }}
         </template>
       </s-button>
@@ -110,27 +115,27 @@
             :fiat-value="getFiatAmountByCodecString(networkFee)"
             is-formatted
             class="swap-details-info-line"
-          />
+          ></info-line>
         </template>
       </swap-transaction-details>
 
       <select-token
-        :visible.sync="showSelectTokenDialog"
+        v-model:visible="showSelectTokenDialog"
         :connected="isLoggedIn"
         :asset="isTokenFromSelected ? tokenTo : tokenFrom"
         @select="handleSelectToken"
-      />
+      ></select-token>
       <swap-loss-warning-dialog
-        :visible.sync="lossWarningVisibility"
+        v-model:visible="lossWarningVisibility"
         :value="fiatDifferenceFormatted"
         @confirm="handleConfirm"
-      />
+      ></swap-loss-warning-dialog>
       <swap-confirm
-        :visible.sync="confirmDialogVisible"
+        v-model:visible="confirmDialogVisible"
         :is-insufficient-balance="isInsufficientBalance"
         @confirm="exchangeTokens"
-      />
-      <swap-settings :visible.sync="showSettings" />
+      ></swap-confirm>
+      <swap-settings v-model:visible="showSettings"></swap-settings>
     </div>
   </base-widget>
 </template>
@@ -138,7 +143,7 @@
 <script setup lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { KnownSymbols, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, components } from '@soramitsu/soraneo-wallet-web';
+import { api, components } from '@wallet';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { useConfirmDialog } from '@/composables/useConfirmDialog';
@@ -149,9 +154,10 @@ import { useTokenSelect } from '@/composables/useTokenSelect';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components, MarketAlgorithms } from '@/consts';
+import { useSwapStore } from '@/stores/swap';
 import { lazyComponent } from '@/router';
 import store from '@/store';
-import { useSwapStore } from '@/stores/swap';
+import { useAssetsStore } from '@/stores/assets';
 import {
   asZeroValue,
   debouncedInputHandler,
@@ -181,10 +187,14 @@ const SlippageTolerance = lazyComponent(Components.SlippageTolerance);
 const SelectToken = lazyComponent(Components.SelectToken);
 const TokenInput = lazyComponent(Components.TokenInput);
 const ValueStatusWrapper = lazyComponent(Components.ValueStatusWrapper);
-const FormattedAmount = components.FormattedAmount;
-const InfoLine = components.InfoLine;
 
-defineOptions({ name: 'SwapFormWidget' });
+defineOptions({
+  name: 'SwapFormWidget',
+  components: {
+    FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine,
+  },
+});
 
 const props = withDefaults(
   defineProps<{
@@ -197,6 +207,7 @@ const props = withDefaults(
 
 const { t } = useTranslation();
 const swapStore = useSwapStore();
+const assetsStore = useAssetsStore();
 const {
   tokenFrom,
   tokenTo,
@@ -230,7 +241,7 @@ const {
 const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject);
 const networkFee = computed(() => networkFees.value[Operation.Swap]);
 const slippageTolerance = computed(() => store.state.settings.slippageTolerance);
-const xor = computed(() => store.getters.assets.xor as AccountAsset);
+const xor = computed(() => assetsStore.assetDataByAddress(XOR.address) as AccountAsset);
 const liquiditySource = computed(() => swapStore.swapLiquiditySource);
 const debugEnabled = computed(() => store.getters.settings.debugEnabled);
 const nodeIsConnected = computed(() => store.getters.settings.nodeIsConnected);

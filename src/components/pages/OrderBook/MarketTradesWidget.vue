@@ -9,70 +9,50 @@
     <s-table class="market-trades-table" :data="completedOrders">
       <s-table-column>
         <template #header>
-          <span class="market-trades__header">{{ t('priceText') }}</span>
+          <span class="market-trades__header">{{ t('orderBook.time') }}</span>
         </template>
-        <template v-slot="{ row }">
-          <span class="order-info price" :class="{ buy: row.isBuy }">{{ row.price }}</span>
+        <template #default="scope">
+          <span class="order-info time">{{ scope?.row?.time }}</span>
         </template>
       </s-table-column>
       <s-table-column>
         <template #header>
-          <span class="market-trades__header">{{ t('orderBook.time') }}</span>
+          <span class="market-trades__header">{{ t('orderBook.amount') }}</span>
         </template>
-        <template v-slot="{ row }">
-          <span class="order-info time">{{ row.time }}</span>
+        <template #default="scope">
+          <span class="order-info">{{ scope?.row?.amount }}</span>
         </template>
       </s-table-column>
       <s-table-column header-align="right" align="right">
         <template #header>
-          <span class="market-trades__header">{{ t('orderBook.amount') }}</span>
+          <span class="market-trades__header">{{ t('priceText') }}</span>
         </template>
-        <template v-slot="{ row }">
-          <span class="order-info">{{ row.amount }}</span>
+        <template #default="scope">
+          <span class="order-info price" :class="{ buy: scope?.row?.isBuy }">
+            {{ scope?.row?.price }}
+          </span>
         </template>
       </s-table-column>
     </s-table>
   </base-widget>
 </template>
 
-<script lang="ts">
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import dayjs from 'dayjs/esm';
-import { Component, Mixins } from 'vue-property-decorator';
-
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+<script setup lang="ts">
 import { Components } from '@/consts';
+import { useOrderBook } from '@/composables/useOrderBook';
+import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
-import type { OrderBookDealData } from '@/types/orderBook';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-
-@Component({
+defineOptions({
   components: {
     BaseWidget: lazyComponent(Components.BaseWidget),
   },
-})
-export default class MarketTradesWidget extends Mixins(TranslationMixin) {
-  readonly PriceVariant = PriceVariant;
+});
 
-  @state.orderBook.deals deals!: OrderBookDealData[];
+const { t } = useTranslation();
+const { completedOrders } = useOrderBook();
 
-  @getter.orderBook.baseAsset baseAsset!: AccountAsset;
-  @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
-
-  get completedOrders() {
-    return this.deals.map((deal) => {
-      const date = dayjs(deal.timestamp);
-      const time = date.format('M/DD HH:mm:ss');
-      const amount = `${deal.amount.toLocaleString()} ${this.baseAsset.symbol}`;
-      const price = `${deal.price.toLocaleString()} ${this.quoteAsset.symbol}`;
-      const isBuy = deal.side === PriceVariant.Buy;
-
-      return { time, amount, price, isBuy };
-    });
-  }
-}
+defineExpose({ completedOrders });
 </script>
 
 <style lang="scss">

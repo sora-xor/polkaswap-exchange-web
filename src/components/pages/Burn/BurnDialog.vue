@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="title" custom-class="dialog--confirm-burn">
+  <dialog-base v-model:visible="isVisible" :title="title" custom-class="dialog--confirm-burn">
     <token-input
       class="token-input"
       :max="max"
@@ -8,7 +8,7 @@
       :token="receivedAsset"
       :value="value"
       @input="handleInputField"
-    />
+    ></token-input>
     <info-line
       :label="toBeBurnedLabel"
       :key="toBeBurnedKey"
@@ -16,7 +16,7 @@
       :asset-symbol="burnedAsset.symbol"
       :fiat-value="formattedFiatWillBeBurned"
       is-formatted
-    />
+    ></info-line>
     <info-line
       :label="yourBalanceLeftLabel"
       :key="yourBalanceLeftKey"
@@ -25,7 +25,7 @@
       :fiat-value="formattedFiatTokensLeft"
       is-formatted
       value-can-be-hidden
-    />
+    ></info-line>
     <info-line
       v-if="isLoggedIn"
       :label="t('networkFeeText')"
@@ -34,7 +34,7 @@
       :asset-symbol="xor.symbol"
       :fiat-value="getFiatAmountByCodecString(networkFee)"
       is-formatted
-    />
+    ></info-line>
     <div class="disclaimer s-flex">
       <p class="disclaimer__text p3">
         Disclaimer: Burning your {{ burnedAsset.symbol }} tokens is an irreversible action that permanently removes them
@@ -42,7 +42,7 @@
         transaction
       </p>
       <div class="disclaimer__badge s-flex">
-        <s-icon class="disclaimer__icon" name="notifications-alert-triangle-24" size="24" />
+        <s-icon class="disclaimer__icon" name="notifications-alert-triangle-24" size="24"></s-icon>
       </div>
     </div>
     <template #footer>
@@ -60,164 +60,149 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
+import { api, components } from '@wallet';
+import { computed, getCurrentInstance, nextTick, ref, toRefs, watch } from 'vue';
 
-import { Components } from '@/consts';
+import { Components, ZeroStringValue } from '@/consts';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTransaction } from '@/composables/useTransaction';
+import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
+import store from '@/store';
 import { asZeroValue } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
-    TokenLogo: components.TokenLogo,
     InfoLine: components.InfoLine,
     TokenInput: lazyComponent(Components.TokenInput),
   },
-})
-export default class BurnDialog extends Mixins(
-  mixins.TransactionMixin,
-  mixins.DialogMixin,
-  mixins.FormattedAmountMixin
-) {
-  readonly xor = XOR;
+});
 
-  @Prop({ type: Object, required: true }) readonly receivedAsset!: Asset;
-  @Prop({ type: Object, required: true }) readonly burnedAsset!: Asset;
-  @Prop({ type: Number, default: 1_000_000 }) readonly rate!: number;
-  @Prop({ type: Number, default: 10_000 }) readonly max!: number;
-  @Prop({ type: Number, default: 1 }) readonly min!: number;
-
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-
-  value = '';
-
-  @Watch('visible')
-  private async handleDialogVisibility(value: boolean): Promise<void> {
-    await this.$nextTick();
-
-    if (!value) return;
-    this.value = '';
+const props = withDefaults(
+  defineProps<{
+    visible?: boolean;
+    receivedAsset: Asset;
+    burnedAsset: Asset;
+    rate?: number;
+    max?: number;
+    min?: number;
+  }>(),
+  {
+    visible: false,
+    rate: 1_000_000,
+    max: 10_000,
+    min: 1,
   }
+);
 
-  /** We need to force re-render InfoLine components with dynamic content */
-  getKey(key: string): string {
-    return this.isVisible ? `${key}-opened` : `${key}-closed`;
-  }
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+  (event: 'confirm', success?: boolean): void;
+}>();
 
-  private get willBeBurned() {
-    return this.getFPNumber(+(this.value || '0') * this.rate);
-  }
+const { t } = useTranslation();
+const { loading, withNotifications } = useTransaction();
+const {
+  Zero,
+  getFPNumber,
+  getFPNumberFromCodec,
+  formatCodecNumber,
+  getFiatAmountByFPNumber,
+  getFiatAmountByCodecString,
+} = useFormattedAmount();
+const { isVisible } = useDialogModel(props, emit);
 
-  get title(): string {
-    return `Reserve ${this.receivedAsset.symbol} token`;
-  }
+const { visible, max, min, receivedAsset, burnedAsset, rate } = toRefs(props);
 
-  get receivedPlaceholder(): string {
-    return `HOW MUCH ${this.receivedAsset.symbol} DO YOU WANT?`;
-  }
+const value = ref('');
+const xor = XOR;
 
-  get toBeBurnedLabel(): string {
-    return `${this.burnedAsset.symbol} TO BE BURNED`;
-  }
+const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject | undefined);
+const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
+const isLoggedIn = computed(() => Boolean(store.getters.wallet.account.isLoggedIn));
 
-  get toBeBurnedKey(): string {
-    return this.getKey(`${this.burnedAsset.symbol}-burned`);
-  }
+const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.Burn] ?? ZeroStringValue);
+const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value, burnedAsset.value.decimals));
+const xorBalance = computed(() =>
+  getFPNumberFromCodec(accountXor.value?.balance?.transferable ?? ZeroStringValue, burnedAsset.value.decimals)
+);
 
-  get yourBalanceLeftLabel(): string {
-    return `YOUR ${this.burnedAsset.symbol} BALANCE LEFT`;
-  }
+const willBeBurned = computed(() => getFPNumber((Number(value.value || ZeroStringValue) || 0) * rate.value));
+const tokensLeft = computed(() => {
+  const diff = xorBalance.value.sub(willBeBurned.value);
+  return diff.isLtZero() ? Zero : diff;
+});
 
-  get yourBalanceLeftKey(): string {
-    return this.getKey(`${this.burnedAsset.symbol}-left`);
-  }
+const title = computed(() => `Reserve ${receivedAsset.value.symbol} token`);
+const receivedPlaceholder = computed(() => `HOW MUCH ${receivedAsset.value.symbol} DO YOU WANT?`);
 
-  get isAmountLessThanMin(): boolean {
-    return +(this.value || '0') < this.min;
-  }
+const getKey = (key: string) => (isVisible.value ? `${key}-opened` : `${key}-closed`);
 
-  get formattedWillBeBurned(): string {
-    return this.willBeBurned.toLocaleString();
-  }
+const toBeBurnedLabel = computed(() => `${burnedAsset.value.symbol} TO BE BURNED`);
+const toBeBurnedKey = computed(() => getKey(`${burnedAsset.value.symbol}-burned`));
+const yourBalanceLeftLabel = computed(() => `YOUR ${burnedAsset.value.symbol} BALANCE LEFT`);
+const yourBalanceLeftKey = computed(() => getKey(`${burnedAsset.value.symbol}-left`));
 
-  get formattedFiatWillBeBurned(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.willBeBurned, this.burnedAsset);
-  }
+const formattedWillBeBurned = computed(() => willBeBurned.value.toLocaleString());
+const formattedFiatWillBeBurned = computed(() => getFiatAmountByFPNumber(willBeBurned.value, burnedAsset.value));
 
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.Burn];
-  }
+const formattedTokensLeft = computed(() => tokensLeft.value.toLocaleString());
+const formattedFiatTokensLeft = computed(() => getFiatAmountByFPNumber(tokensLeft.value, burnedAsset.value));
 
-  get networkFeeFormatted(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value, burnedAsset.value.decimals));
 
-  private get xorBalance() {
-    // Replace with burnedAsset if needed
-    return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? '0');
-  }
+const isZeroAmount = computed(() => asZeroValue(value.value));
+const isAmountLessThanMin = computed(() => Number(value.value || ZeroStringValue) < min.value);
+const isInsufficientBalance = computed(() =>
+  xorBalance.value.sub(willBeBurned.value).sub(fpNetworkFee.value).isLtZero()
+);
+const isBurnDisabled = computed(
+  () => loading.value || isZeroAmount.value || isAmountLessThanMin.value || isInsufficientBalance.value
+);
 
-  private get tokensLeft() {
-    return this.xorBalance.gte(this.willBeBurned) ? this.xorBalance.sub(this.willBeBurned) : this.Zero;
-  }
+const instance = getCurrentInstance();
 
-  get formattedTokensLeft(): string {
-    return this.tokensLeft.toLocaleString();
-  }
-
-  get formattedFiatTokensLeft(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.tokensLeft, this.burnedAsset);
-  }
-
-  get isZeroAmount(): boolean {
-    return asZeroValue(this.value);
-  }
-
-  get isInsufficientBalance(): boolean {
-    // Replace with burnedAsset and add networkFee check with xor balance if needed
-    const left = this.xorBalance.sub(this.willBeBurned).sub(this.getFPNumberFromCodec(this.networkFee));
-    return left.isLtZero();
-  }
-
-  get isBurnDisabled(): boolean {
-    return this.loading || this.isZeroAmount || this.isAmountLessThanMin || this.isInsufficientBalance;
-  }
-
-  handleInputField(value: string): void {
-    if (this.value === value) return;
-
-    this.value = value;
-  }
-
-  async handleConfirmBurn(): Promise<void> {
-    if (this.isInsufficientBalance) {
-      this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.burnedAsset.symbol }), {
-        title: this.t('errorText'),
-      });
-      this.$emit('confirm');
-    } else {
-      try {
-        await this.withNotifications(async () => {
-          await api.assets.burn(this.burnedAsset, this.willBeBurned.toString());
-        });
-        this.$emit('confirm', true);
-      } catch (error) {
-        this.$emit('confirm');
-      }
-    }
-    this.isVisible = false;
-  }
+function handleInputField(newValue: string): void {
+  if (value.value === newValue) return;
+  value.value = newValue;
 }
+
+async function handleConfirmBurn(): Promise<void> {
+  if (isInsufficientBalance.value) {
+    instance?.proxy?.$alert?.(t('insufficientBalanceText', { tokenSymbol: burnedAsset.value.symbol }), {
+      title: t('errorText'),
+    });
+    emit('confirm');
+  } else {
+    try {
+      await withNotifications(async () => {
+        await api.assets.burn(burnedAsset.value, willBeBurned.value.toString());
+      });
+      emit('confirm', true);
+    } catch (error) {
+      console.error(error);
+      emit('confirm');
+    }
+  }
+
+  isVisible.value = false;
+}
+
+watch(visible, async (dialogVisible) => {
+  await nextTick();
+  if (dialogVisible) {
+    value.value = '';
+  }
+});
 </script>
 
 <style lang="scss" scoped>

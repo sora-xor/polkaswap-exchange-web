@@ -6,7 +6,7 @@
       :asset-symbol="firstSymbol"
       :font-size-rate="fontSize"
       :font-weight-rate="fontWeight"
-    />
+    ></formatted-amount>
     <span class="divider">→</span>
     <formatted-amount
       class="next"
@@ -14,40 +14,41 @@
       :asset-symbol="symbol"
       :font-size-rate="fontSize"
       :font-weight-rate="fontWeight"
-    />
-    <slot />
+    ></formatted-amount>
+    <slot></slot>
   </info-line>
 </template>
 
-<script lang="ts">
-import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-@Component({
-  components: {
-    FormattedAmount: components.FormattedAmount,
-    InfoLine: components.InfoLine,
-  },
-})
-export default class PrevNextInfoLine extends Vue {
-  readonly fontSize = WALLET_CONSTS.FontSizeRate.MEDIUM;
-  readonly fontWeight = WALLET_CONSTS.FontWeightRate.SMALL;
+import { components, WALLET_CONSTS } from '@wallet';
 
-  @Prop({ default: '0', type: String }) readonly prev!: string;
-  @Prop({ default: '0', type: String }) readonly next!: string;
-  @Prop({ default: '', type: String }) readonly symbol!: string;
-  @Prop({ default: '', type: String }) readonly label!: string;
-  @Prop({ default: '', type: String }) readonly tooltip!: string;
+const FormattedAmount = components.FormattedAmount;
+const InfoLine = components.InfoLine;
 
-  get isPercentSymbol(): boolean {
-    return this.symbol === '%';
+const props = withDefaults(
+  defineProps<{
+    prev?: string;
+    next?: string;
+    symbol?: string;
+    label?: string;
+    tooltip?: string;
+  }>(),
+  {
+    prev: '0',
+    next: '0',
+    symbol: '',
+    label: '',
+    tooltip: '',
   }
+);
 
-  get firstSymbol(): string {
-    if (this.isPercentSymbol) return this.symbol;
-    return '';
-  }
-}
+const fontSize = WALLET_CONSTS.FontSizeRate.MEDIUM;
+const fontWeight = WALLET_CONSTS.FontWeightRate.SMALL;
+
+const isPercentSymbol = computed(() => props.symbol === '%');
+const firstSymbol = computed(() => (isPercentSymbol.value ? props.symbol : ''));
 </script>
 
 <style lang="scss" scoped>

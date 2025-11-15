@@ -1,7 +1,7 @@
 <template>
   <base-widget v-bind="$attrs" :title="title" :tooltip="tooltip">
     <template #filters>
-      <stats-filter is-dropdown :filters="filters" :value="filter" @input="changeFilter" />
+      <stats-filter is-dropdown :filters="filters" :value="filter" @input="changeFilter"></stats-filter>
     </template>
 
     <chart-skeleton
@@ -14,28 +14,32 @@
         <template #prefix>{{ symbol }}</template>
         {{ amount.suffix }}
       </formatted-amount>
-      <price-change :value="priceChange" />
-      <v-chart ref="chart" class="chart" :key="chartKey" :option="chartSpec" autoresize />
+      <price-change :value="priceChange"></price-change>
+      <v-chart ref="chart" class="chart" :key="chartKey" :option="chartSpec" autoresize></v-chart>
     </chart-skeleton>
   </base-widget>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@wallet';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { computed, getCurrentScope, onMounted, onScopeDispose, ref } from 'vue';
+import { storeToRefs } from 'pinia';
 
-import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
+import { useChartSpec } from '@/composables/useChartSpec';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
 import { fetchData } from '@/indexer/queries/network/volume';
 import { lazyComponent } from '@/router';
-import { getter } from '@/store/decorators';
+import { useSettingsStore } from '@/stores/settings';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
+import type { Nullable } from '@/types/common';
 import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
 type ChartData = {
@@ -43,9 +47,8 @@ type ChartData = {
   value: FPNumber;
 };
 
-const getTotalValue = (data: readonly ChartData[]): FPNumber => {
-  return data.reduce((acc, item) => acc.add(item.value), FPNumber.ZERO);
-};
+const getTotalValue = (data: readonly ChartData[]): FPNumber =>
+  data.reduce((acc, item) => acc.add(item.value), FPNumber.ZERO);
 
 const iterate = (prevTimestamp: number, currentTimestamp: number, difference: number): ChartData[] => {
   const buffer: ChartData[] = [];
@@ -67,165 +70,147 @@ const normalizeTo = (sample: ChartData[], difference: number, from: number, to: 
   sample.push(...buffer);
 };
 
-@Component({
-  components: {
-    BaseWidget: lazyComponent(Components.BaseWidget),
-    ChartSkeleton: lazyComponent(Components.ChartSkeleton),
-    PriceChange: lazyComponent(Components.PriceChange),
-    StatsFilter: lazyComponent(Components.StatsFilter),
-    FormattedAmount: components.FormattedAmount,
-    TokenLogo: components.TokenLogo,
+const normalizeData = (collection: ChartData[], difference: number, from: number, to: number): ChartData[] => {
+  const sample: ChartData[] = [];
+
+  for (const item of collection) {
+    normalizeTo(sample, difference, from, item.timestamp);
+    sample.push(item);
+  }
+
+  normalizeTo(sample, difference, from, to);
+
+  return sample;
+};
+
+const props = withDefaults(
+  defineProps<{
+    fees?: boolean;
+    parentLoading?: boolean;
+  }>(),
+  {
+    fees: false,
+    parentLoading: false,
+  }
+);
+
+const BaseWidget = lazyComponent(Components.BaseWidget);
+const ChartSkeleton = lazyComponent(Components.ChartSkeleton);
+const PriceChange = lazyComponent(Components.PriceChange);
+const StatsFilter = lazyComponent(Components.StatsFilter);
+const { FormattedAmount } = components;
+
+const chart = ref<Nullable<unknown>>(null);
+
+const filters = NETWORK_STATS_FILTERS;
+const filter = ref<SnapshotFilter>(filters[0]);
+
+const settingsStore = useSettingsStore();
+const { exchangeRate, currencySymbol } = storeToRefs(settingsStore);
+
+const parentLoading = computed(() => props.parentLoading);
+const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
+const { t } = useTranslation();
+const { gridSpec, xAxisSpec, yAxisSpec, tooltipSpec, barSeriesSpec } = useChartSpec();
+
+const data = ref<readonly ChartData[]>([]);
+const prevData = ref<readonly ChartData[]>([]);
+const isFetchingError = ref(false);
+
+const chartKey = computed(() =>
+  props.fees ? undefined : `bar-chart-${currencySymbol.value}-rate-${exchangeRate.value}`
+);
+
+const symbol = computed(() => (props.fees ? XOR.symbol : currencySymbol.value));
+const title = computed(() => (props.fees ? 'Fees' : 'Volume'));
+const tooltip = computed(() => t(props.fees ? 'tooltips.fees' : 'tooltips.volume'));
+
+const total = computed(() => getTotalValue(data.value));
+
+const amount = computed<AmountWithSuffix>(() =>
+  props.fees ? formatAmountWithSuffix(total.value) : formatAmountWithSuffix(total.value.mul(exchangeRate.value))
+);
+
+const priceChange = computed(() => calcPriceChange(total.value, getTotalValue(prevData.value)));
+
+const chartSpec = computed(() => ({
+  dataset: {
+    source: data.value.map((item) => [item.timestamp, item.value.toNumber()]),
+    dimensions: ['timestamp', 'value'],
   },
-})
-export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin) {
-  @getter.wallet.settings.exchangeRate private exchangeRate!: number;
-  @getter.wallet.settings.currencySymbol private currencySymbol!: string;
-
-  @Prop({ default: false, type: Boolean }) readonly fees!: boolean;
-
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
-  readonly filters = NETWORK_STATS_FILTERS;
-  readonly XOR = XOR;
-
-  filter: SnapshotFilter = NETWORK_STATS_FILTERS[0];
-
-  data: readonly ChartData[] = [];
-  prevData: readonly ChartData[] = [];
-
-  isFetchingError = false;
-
-  created(): void {
-    this.updateData();
-  }
-
-  get chartKey(): string | undefined {
-    if (this.fees) return undefined;
-    return `bar-chart-${this.currencySymbol}-rate-${this.exchangeRate}`;
-  }
-
-  get symbol(): string {
-    return this.fees ? XOR.symbol : this.currencySymbol;
-  }
-
-  get title(): string {
-    return this.fees ? 'Fees' : 'Volume';
-  }
-
-  get tooltip(): string {
-    return this.t(this.fees ? 'tooltips.fees' : 'tooltips.volume');
-  }
-
-  get firstValue(): FPNumber {
-    return new FPNumber(first(this.data)?.value ?? 0);
-  }
-
-  get lastValue(): FPNumber {
-    return new FPNumber(last(this.data)?.value ?? 0);
-  }
-
-  get total() {
-    return getTotalValue(this.data);
-  }
-
-  get amount(): AmountWithSuffix {
-    return this.fees
-      ? formatAmountWithSuffix(this.total) // fees are always in XOR
-      : formatAmountWithSuffix(this.total.mul(this.exchangeRate)); // amount is in currency
-  }
-
-  get priceChange(): FPNumber {
-    const prev = getTotalValue(this.prevData);
-
-    return calcPriceChange(this.total, prev);
-  }
-
-  get chartSpec() {
-    return {
-      dataset: {
-        source: this.data.map((item) => [item.timestamp, item.value.toNumber()]),
-        dimensions: ['timestamp', 'value'],
+  grid: gridSpec({
+    top: 20,
+    left: 45,
+  }),
+  xAxis: xAxisSpec(),
+  yAxis: yAxisSpec({
+    axisLabel: {
+      formatter: (value: number) => {
+        const val = new FPNumber(value).mul(exchangeRate.value);
+        const formatted = formatAmountWithSuffix(val);
+        return `${formatted.amount} ${formatted.suffix}`;
       },
-      grid: this.gridSpec({
-        top: 20,
-        left: 45,
-      }),
-      xAxis: this.xAxisSpec(),
-      yAxis: this.yAxisSpec({
-        axisLabel: {
-          formatter: (value) => {
-            const val = new FPNumber(value).mul(this.exchangeRate);
-            const { amount, suffix } = formatAmountWithSuffix(val);
-            return `${amount} ${suffix}`;
-          },
-        },
-      }),
-      tooltip: this.tooltipSpec({
-        formatter: (params) => {
-          const { data } = params[0];
-          const [, value] = data; // [timestamp, value]
+    },
+  }),
+  tooltip: tooltipSpec({
+    formatter: (params: Array<{ data: [number, number] }>) => {
+      const { data: datum } = params[0];
+      const [, value] = datum;
 
-          if (this.fees) {
-            return `${formatDecimalPlaces(value)} ${XOR.symbol}`; // fees are always in XOR
-          }
-          const currencyAmount = new FPNumber(value).mul(this.exchangeRate);
-          return `${this.currencySymbol} ${formatDecimalPlaces(currencyAmount)}`; // amount is in currency
-        },
-      }),
-      series: [
-        this.barSeriesSpec({
-          itemStyle: {
-            color: '#C86FFF', // new purple color
-          },
-        }),
-      ],
-    };
-  }
+      if (props.fees) {
+        return `${formatDecimalPlaces(value)} ${XOR.symbol}`;
+      }
 
-  changeFilter(filter: SnapshotFilter): void {
-    this.filter = filter;
-    this.updateData();
-  }
+      const currencyAmount = new FPNumber(value).mul(exchangeRate.value);
+      return `${currencySymbol.value} ${formatDecimalPlaces(currencyAmount)}`;
+    },
+  }),
+  series: [
+    barSeriesSpec({
+      itemStyle: {
+        color: '#C86FFF',
+      },
+    }),
+  ],
+}));
 
-  private normalizeData(collection: ChartData[], difference: number, from: number, to: number) {
-    const sample: ChartData[] = [];
+const changeFilter = (next: SnapshotFilter) => {
+  filter.value = next;
+  updateData();
+};
 
-    for (const item of collection) {
-      normalizeTo(sample, difference, from, item.timestamp);
-      sample.push(item);
-    }
+const updateData = async () => {
+  await withLoading(async () => {
+    await withParentLoading(async () => {
+      try {
+        const { type, count } = filter.value;
+        const seconds = SECONDS_IN_TYPE[type];
+        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds;
+        const aTime = now - seconds * count;
+        const bTime = aTime - seconds * count;
 
-    normalizeTo(sample, difference, from, to);
+        const [curr, prev] = await Promise.all([
+          fetchData(props.fees, now, aTime, type),
+          fetchData(props.fees, aTime, bTime, type),
+        ]);
 
-    return sample;
-  }
+        data.value = Object.freeze(normalizeData(curr, seconds * 1000, now * 1000, aTime * 1000));
+        prevData.value = Object.freeze(prev);
 
-  async updateData(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        try {
-          const { fees } = this;
-          const { type, count } = this.filter;
-          const seconds = SECONDS_IN_TYPE[type];
-          const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
-          const aTime = now - seconds * count;
-          const bTime = aTime - seconds * count;
-
-          const [curr, prev] = await Promise.all([
-            fetchData(fees, now, aTime, type),
-            fetchData(fees, aTime, bTime, type),
-          ]);
-
-          this.data = Object.freeze(this.normalizeData(curr, seconds * 1000, now * 1000, aTime * 1000));
-          this.prevData = Object.freeze(prev);
-
-          this.isFetchingError = false;
-        } catch (error) {
-          console.error(error);
-          this.isFetchingError = true;
-        }
-      });
+        isFetchingError.value = false;
+      } catch (error) {
+        console.error(error);
+        isFetchingError.value = true;
+      }
     });
-  }
+  });
+};
+
+onMounted(updateData);
+
+if (getCurrentScope()) {
+  onScopeDispose(() => {
+    chart.value = null;
+  });
 }
 </script>

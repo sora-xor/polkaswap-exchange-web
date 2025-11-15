@@ -1,0 +1,3 @@
+
+ÕÍ.task-card .el-divider[data-v-3ed4b41e]{background-color:var(--s-color-base-content-tertiary);height:100%}.task-card[data-v-3ed4b41e]{display:flex;flex-direction:row;flex-wrap:wrap}.task-card__first-trx[data-v-3ed4b41e]{font-size:15px;font-weight:300;max-width:180px}.task-card__date[data-v-3ed4b41e]{color:var(--s-color-base-content-secondary);display:flex;flex-direction:column;font-size:11px;font-weight:800;gap:4px;margin-left:24px}.task-card__date p[data-v-3ed4b41e]:last-of-type{color:var(--s-color-status-info)}@media (max-width:463px){.task-card .el-divider[data-v-3ed4b41e]{display:none}.task-card__date[data-v-3ed4b41e]{gap:unset;margin-left:unset}.task-card__first-trx[data-v-3ed4b41e]{margin-right:16px}}
+Í

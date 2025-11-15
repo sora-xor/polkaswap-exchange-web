@@ -1,7 +1,12 @@
 <template>
   <div :class="headerClasses">
     <slot name="back">
-      <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack($event)" />
+      <s-button
+        v-if="hasButtonBack"
+        type="action"
+        icon="arrows-chevron-left-rounded-24"
+        @click="handleBack($event)"
+      ></s-button>
     </slot>
 
     <h3 class="page-header-title" :class="{ bold }">
@@ -17,41 +22,45 @@
         :placement="tooltipPlacement"
         tabindex="-1"
       >
-        <s-icon name="info-16" size="18px" />
+        <s-icon name="info-16" size="18px"></s-icon>
       </s-tooltip>
     </h3>
-    <slot />
+    <slot></slot>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-@Component
-export default class GenericPageHeader extends Mixins(TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly hasButtonBack!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly bold!: boolean;
-  @Prop({ default: '', type: String }) readonly title!: string;
-  @Prop({ default: '', type: String }) readonly tooltip?: string;
-  @Prop({ default: 'right-start', type: String }) readonly tooltipPlacement?: string;
-
-  get headerClasses(): string {
-    const baseClass = 'page-header';
-    const classes = [baseClass];
-
-    if (this.hasButtonBack) {
-      classes.push(`${baseClass}--center`);
-    }
-
-    return classes.join(' ');
+const props = withDefaults(
+  defineProps<{
+    hasButtonBack?: boolean;
+    bold?: boolean;
+    title?: string;
+    tooltip?: string;
+    tooltipPlacement?: string;
+  }>(),
+  {
+    hasButtonBack: false,
+    bold: false,
+    title: '',
+    tooltip: '',
+    tooltipPlacement: 'right-start',
   }
+);
 
-  handleBack(event?: Event): void {
-    this.$emit('back', event);
-  }
-}
+const emit = defineEmits<{
+  (event: 'back', value?: Event): void;
+}>();
+
+const headerClasses = computed(() => {
+  const baseClass = 'page-header';
+  return props.hasButtonBack ? `${baseClass} ${baseClass}--center` : baseClass;
+});
+
+const handleBack = (event?: Event): void => {
+  emit('back', event);
+};
 </script>
 
 <style lang="scss">

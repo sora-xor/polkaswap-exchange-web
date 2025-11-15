@@ -1,7 +1,7 @@
 <template>
-  <dialog-base class="browser-notification" :title="t('browserNotificationDialog.title')" :visible.sync="isVisible">
+  <dialog-base class="browser-notification" :title="t('browserNotificationDialog.title')" v-model:visible="isVisible">
     <div class="browser-notification-dialog">
-      <s-image src="browser-notification/chrome.png" lazy fit="cover" draggable="false" class="unselectable" />
+      <s-image src="browser-notification/chrome.png" lazy fit="cover" draggable="false" class="unselectable"></s-image>
       <p class="browser-notification-dialog__info">
         {{ t('browserNotificationDialog.info') }}
       </p>
@@ -17,34 +17,53 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state, mutation } from '@/store/decorators';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useTranslation } from '@/composables/useTranslation';
+import { useSettingsStore } from '@/stores/settings';
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
   },
-})
-export default class AppBrowserNotifsEnableDialog extends Mixins(
-  TranslationMixin,
-  mixins.LoadingMixin,
-  mixins.DialogMixin
-) {
-  @state.settings.isBrowserNotificationApiAvailable private isAvailable!: boolean;
-  @mutation.settings.setBrowserNotifsAgreement private setNotifsAgreement!: (value: NotificationPermission) => void;
+});
 
-  async handleConfirm(): Promise<void> {
-    if (this.isAvailable) {
-      this.closeDialog();
-      this.$emit('set-dark-page', true);
-      const permission = await Notification.requestPermission();
-      this.setNotifsAgreement(permission);
-      this.$emit('set-dark-page', false);
-    }
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits<{
+  (e: 'update:visible', value: boolean): void;
+  (e: 'close'): void;
+  (e: 'set-dark-page', value: boolean): void;
+}>();
+
+const settingsStore = useSettingsStore();
+const { isBrowserNotificationApiAvailable: isAvailable } = storeToRefs(settingsStore);
+
+const { t } = useTranslation();
+const { isVisible, closeDialog } = useDialogModel(props, emit);
+const loading = ref(false);
+
+async function handleConfirm(): Promise<void> {
+  if (!isAvailable.value) return;
+
+  loading.value = true;
+  try {
+    closeDialog();
+    emit('set-dark-page', true);
+    const permission = await Notification.requestPermission();
+    settingsStore.setBrowserNotifsAgreement(permission);
+  } finally {
+    emit('set-dark-page', false);
+    loading.value = false;
   }
 }
 </script>

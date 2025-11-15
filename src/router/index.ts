@@ -1,8 +1,13 @@
-import { WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
-import { Component } from 'vue-property-decorator';
-import { createRouter, createWebHashHistory } from 'vue-router'; // eslint-disable-line import/named
+import { WALLET_CONSTS } from '@wallet';
+import { defineAsyncComponent } from 'vue';
+import { Vue as VueComponent } from 'vue-property-decorator';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
-import { PageNames, BridgeChildPages } from '@/consts';
+import { setLegacyRouterLoading, syncLegacyRoute } from '@/adapters/router/navigation';
+import { isValidWalletAddress } from '@/adapters/wallet/addresses';
+import { persistReferralAddress } from '@/adapters/wallet/referrals';
+import { PageNames } from '@/consts';
+import { resolveAuthRedirect, resolveInvitationDecision, shouldResetBridgeHistory } from '@/router/guards/decisions';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { dashboardLazyView } from '@/modules/dashboard/router';
 import { PoolPageNames } from '@/modules/pool/consts';
@@ -13,43 +18,26 @@ import { demeterStakingLazyView, soraStakingLazyView, stakingLazyView } from '@/
 import { SoraStakingPageNames } from '@/modules/staking/sora/consts';
 import { VaultPageNames } from '@/modules/vault/consts';
 import { vaultLazyView } from '@/modules/vault/router';
-import store from '@/store';
+import { useBridgeHistoryStore } from '@/stores/bridge/history';
+import { useRouterStore } from '@/stores/router';
+import { useWalletStore } from '@/stores/wallet';
 import { updateDocumentTitle } from '@/utils';
 
 import type { RouteLocationNormalized, RouteRecordRaw } from 'vue-router';
 
-Component.registerHooks(['beforeRouteEnter', 'beforeRouteUpdate', 'beforeRouteLeave']);
-
-const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet;
-
-const lazyComponent = (name: string) => () => import(`@/components/${name}.vue`);
-const lazyView = (name: string) => () => import(`@/views/${name}.vue`);
-
-/**
- * Use this function instead just `router.push` when page loading is required.
- *
- * It checks wallet routing, page loading and the current route.
- * if the current route isn't the same as param, then it will wait for `router.push`
- */
-async function goTo(name: PageNames): Promise<void> {
-  const current = router.currentRoute.value?.name as PageNames | undefined;
-  if (name === PageNames.Wallet) {
-    if (!store.getters.wallet.account.isLoggedIn) {
-      store.commit.wallet.router.navigate({ name: WALLET_CONSTS.RouteNames.WalletConnection });
-    } else if (store.state.wallet.router.currentRoute !== WALLET_DEFAULT_ROUTE) {
-      store.commit.wallet.router.navigate({ name: WALLET_DEFAULT_ROUTE });
-    }
-  }
-  if (current === name) {
-    return;
-  }
-  try {
-    store.commit.router.setLoading(true);
-    await router.push({ name });
-  } finally {
-    store.commit.router.setLoading(false);
-  }
+if (typeof (VueComponent as { registerHooks?: (hooks: string[]) => void }).registerHooks === 'function') {
+  VueComponent.registerHooks(['beforeRouteEnter', 'beforeRouteUpdate', 'beforeRouteLeave']);
 }
+
+const createAsyncComponent = <T>(loader: () => Promise<T>) =>
+  defineAsyncComponent({
+    loader,
+    delay: 0,
+    suspensible: false,
+  });
+
+const lazyComponent = (name: string) => createAsyncComponent(() => import(`@/components/${name}.vue`));
+const lazyView = (name: string) => () => import(`@/views/${name}.vue`);
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -321,6 +309,8 @@ const routes: Array<RouteRecordRaw> = [
   },
 ];
 
+const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet;
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
@@ -329,39 +319,82 @@ const router = createRouter({
 router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next) => {
   const prev = from.name as Nullable<PageNames>;
   const current = to.name as PageNames;
+  const routerStore = useRouterStore();
+  const walletStore = useWalletStore();
+  const bridgeHistoryStore = useBridgeHistoryStore();
   const setRoute = (name: PageNames, withNext = true) => {
-    store.commit.router.setRoute({ prev, current: name });
+    const params = { prev, current: name };
+    routerStore.setRoute(params);
+    syncLegacyRoute(params);
     next(withNext ? { name } : undefined);
     updateDocumentTitle(to);
   };
-  const isLoggedIn = store.getters.wallet.account.isLoggedIn;
+  const isLoggedIn = walletStore.isLoggedIn;
   const isInvitationRoute = to.matched.some((record) => record.meta.isInvitationRoute);
   const isRequiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
-  if (prev !== PageNames.BridgeTransaction && current === PageNames.BridgeTransactionsHistory) {
-    store.commit.bridge.setHistoryPage(1);
+  if (shouldResetBridgeHistory(prev, current)) {
+    bridgeHistoryStore.resetHistoryPage();
   }
-  if (isInvitationRoute) {
-    const referrerAddress = to.params.referrerAddress;
 
-    if (referrerAddress && api.validateAddress(referrerAddress)) {
-      store.commit.referrals.setStorageReferrer(referrerAddress);
-    }
-    if (isLoggedIn) {
-      setRoute(PageNames.ReferralProgram, false); // `false` is set to avoid infinite loop
-      return;
-    }
+  const invitationDecision = resolveInvitationDecision({
+    isInvitationRoute,
+    referrerParam: to.params.referrerAddress,
+    isLoggedIn,
+    validateAddress: isValidWalletAddress,
+  });
+
+  if (invitationDecision.persistReferral) {
+    persistReferralAddress(invitationDecision.persistReferral);
   }
-  if (isRequiresAuth && !isLoggedIn) {
-    if (BridgeChildPages.includes(current)) {
-      setRoute(PageNames.Bridge);
-    } else {
-      setRoute(PageNames.Wallet);
-    }
+
+  if (invitationDecision.redirect) {
+    setRoute(invitationDecision.redirect.name, invitationDecision.redirect.callNext);
+    return;
+  }
+
+  const authRedirect = resolveAuthRedirect({
+    requiresAuth: isRequiresAuth,
+    current,
+    isLoggedIn,
+  });
+
+  if (authRedirect) {
+    setRoute(authRedirect.name, authRedirect.callNext);
     return;
   }
   setRoute(current, false);
 });
+
+/**
+ * Use this function instead just `router.push` when page loading is required.
+ *
+ * It checks wallet routing, page loading and the current route.
+ * if the current route isn't the same as param, then it will wait for `router.push`
+ */
+const goTo = async (name: PageNames): Promise<void> => {
+  const current = router.currentRoute.value?.name as PageNames | undefined;
+  const routerStore = useRouterStore();
+  const walletStore = useWalletStore();
+  if (name === PageNames.Wallet) {
+    if (!walletStore.isLoggedIn) {
+      routerStore.navigate({ name: WALLET_CONSTS.RouteNames.WalletConnection });
+    } else if (routerStore.current !== WALLET_DEFAULT_ROUTE) {
+      routerStore.navigate({ name: WALLET_DEFAULT_ROUTE });
+    }
+  }
+  if (current === name) {
+    return;
+  }
+  try {
+    routerStore.setLoading(true);
+    setLegacyRouterLoading(true);
+    await router.push({ name });
+  } finally {
+    routerStore.setLoading(false);
+    setLegacyRouterLoading(false);
+  }
+};
 
 export { lazyComponent, lazyView, goTo };
 export default router;

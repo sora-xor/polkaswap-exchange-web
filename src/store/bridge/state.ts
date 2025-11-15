@@ -5,7 +5,7 @@ import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 
 import type { BridgeState } from './types';
 
-function initialState(): BridgeState {
+export function initialState(): BridgeState {
   return {
     // form
     isSoraToEvm: true,

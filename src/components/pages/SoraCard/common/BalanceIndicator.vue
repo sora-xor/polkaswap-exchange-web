@@ -1,14 +1,14 @@
 <template>
   <div class="sora-card__info">
     <div class="sora-card__balance-section">
-      <s-icon class="sora-card__icon--closed" name="basic-close-24" size="16px" />
+      <s-icon class="sora-card__icon--closed" name="basic-close-24" size="16px"></s-icon>
       <div>
         <p class="sora-card__info-text">{{ t('card.freeCardIssuance') }}</p>
         <p class="sora-card__info-text-details sora-card__info-text-details--secondary">
           {{ t('card.holdNotSufficientXor') }}
         </p>
         <span class="progress-bar">
-          <span class="progress-bar--in-progress" ref="progress" />
+          <span class="progress-bar--in-progress" ref="progressBar"></span>
         </span>
         <span class="sora-card__balance-indicator">{{ balanceIndicatorAmount }}</span>
       </div>
@@ -16,50 +16,58 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch, Ref } from 'vue-property-decorator';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state } from '@/store/decorators';
+import { useTranslation } from '@/composables/useTranslation';
+import store from '@/store';
 import { delay } from '@/utils';
 
-@Component
-export default class BalanceIndicator extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
-  @state.soraCard.euroBalance private euroBalance!: string;
+defineOptions({ name: 'BalanceIndicator' });
 
-  @Ref('progress') private readonly progressBar!: Nullable<HTMLInputElement>;
+const progressBar = ref<HTMLElement | null>(null);
+const { t } = useTranslation();
 
-  @Watch('euroBalance')
-  private handleEuroBalanceChange() {
-    this.runProgressBarAnimation();
+const euroBalance = computed(() => store.state?.soraCard?.euroBalance ?? '0');
+const xorToDeposit = computed<FPNumber>(() => store.state?.soraCard?.xorToDeposit ?? FPNumber.ZERO);
+
+const balanceIndicatorAmount = computed(() => {
+  const euroValue = FPNumber.fromNatural(euroBalance.value);
+  const remaining = FPNumber.HUNDRED.sub(euroValue);
+
+  return t('card.xorAmountNeeded', {
+    xor: xorToDeposit.value.format(3),
+    euro: remaining.toFixed(2),
+  });
+});
+
+const runProgressBarAnimation = async (): Promise<void> => {
+  const bar = progressBar.value;
+  if (!bar) return;
+
+  const balanceInteger = Math.round(Number(euroBalance.value));
+  for (let i = 0; i < balanceInteger; i += 0.12) {
+    await delay(1);
+    bar.style.setProperty('width', `${i}%`);
   }
+};
 
-  get balanceIndicatorAmount(): string {
-    const euroBalance = FPNumber.fromNatural(this.euroBalance);
-    const remaining = FPNumber.HUNDRED.sub(euroBalance);
+watch(euroBalance, () => {
+  void runProgressBarAnimation();
+});
 
-    return this.t('card.xorAmountNeeded', { xor: this.xorToDeposit.format(3), euro: remaining.toFixed(2) });
-  }
+onMounted(() => {
+  nextTick(() => {
+    setTimeout(() => {
+      void runProgressBarAnimation();
+    }, 2_500);
+  });
+});
 
-  async runProgressBarAnimation(): Promise<void> {
-    if (!this.progressBar) return;
-
-    const balanceInteger = Math.round(Number(this.euroBalance));
-    for (let i = 0; i < balanceInteger; i = i + 0.12) {
-      await delay(1);
-      this.progressBar?.style?.setProperty?.('width', `${i}%`);
-    }
-  }
-
-  mounted(): void {
-    this.$nextTick().then(() => {
-      setTimeout(this.runProgressBarAnimation, 2_500);
-    });
-  }
-}
+defineExpose({
+  runProgressBarAnimation,
+});
 </script>
 
 <style lang="scss" scoped>

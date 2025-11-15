@@ -1,0 +1,6 @@
+@forward '../../../../styles/global-imports.scss' hide custom-tabs, columns, element-size, svg-icon, loading,
+  focus-outline, scrollbar;
+@forward './_variables.scss';
+@forward './_layout.scss';
+@forward './_icons.scss';
+@forward './_mixins.scss';

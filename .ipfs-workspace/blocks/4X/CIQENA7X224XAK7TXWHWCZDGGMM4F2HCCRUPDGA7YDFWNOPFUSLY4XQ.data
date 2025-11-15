@@ -1,0 +1,3 @@
+
+ðèimport{u as s}from"./index-DjB-Okl0.js";import{j as t,t as n}from"./polkadot-Bh6PX9YG.js";function u(){const r=s(),e=t(()=>r.isConfirmTxDialogDisabled),o=n(!1),i=()=>{o.value=!0};return{isConfirmTxDisabled:e,confirmDialogVisible:o,openConfirmDialog:i,closeConfirmDialog:()=>{o.value=!1},confirmOrExecute:async a=>{if(e.value){await a();return}i()}}}export{u};
+è

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs/esm';
 import merge from 'lodash/fp/merge';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Options, mixins as vueMixins } from 'vue-property-decorator';
 
 import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -15,8 +15,8 @@ const AXIS_LABEL_CSS = {
   lineHeigth: 1.5,
 };
 
-@Component
-export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, TranslationMixin) {
+@Options({})
+export default class ChartSpecMixin extends vueMixins(ThemePaletteMixin, TranslationMixin) {
   gridSpec(options: any = {}) {
     return merge({
       left: 0,

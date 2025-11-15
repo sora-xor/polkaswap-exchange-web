@@ -1,4 +1,4 @@
-import { Component, Mixins } from 'vue-property-decorator';
+import { Options, mixins as vueMixins } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import router from '@/router';
@@ -9,8 +9,8 @@ import { installExtensionKey, handleRpcProviderError } from '@/utils/ethers-util
 import type { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
-@Component
-export default class WalletConnectMixin extends Mixins(InternalConnectMixin) {
+@Options({})
+export default class WalletConnectMixin extends vueMixins(InternalConnectMixin) {
   @state.web3.evmProvider evmProvider!: Nullable<AppEIPProvider>;
   @state.web3.evmProviderLoading evmProviderLoading!: Nullable<AppEIPProvider>;
   @state.web3.evmAddress evmAddress!: string;

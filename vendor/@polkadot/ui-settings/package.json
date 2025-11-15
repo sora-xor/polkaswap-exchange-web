@@ -1,0 +1,120 @@
+{
+  "author": "Jaco Greeff <jacogr@gmail.com>",
+  "bugs": "https://github.com/polkadot-js/ui/issues",
+  "contributors": [],
+  "description": "Manages app settings",
+  "homepage": "https://github.com/polkadot-js/ui/tree/master/packages/ui-settings#readme",
+  "license": "Apache-2.0",
+  "maintainers": [],
+  "name": "@polkadot/ui-settings",
+  "repository": {
+    "directory": "packages/ui-settings",
+    "type": "git",
+    "url": "https://github.com/polkadot-js/ui.git"
+  },
+  "sideEffects": [
+    "./detectPackage.js",
+    "./cjs/detectPackage.js"
+  ],
+  "type": "module",
+  "version": "2.12.1",
+  "main": "./cjs/index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    "./cjs/package.json": "./cjs/package.json",
+    "./cjs/*": "./cjs/*.js",
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./cjs/index.js",
+      "default": "./index.js"
+    },
+    "./bundle": {
+      "types": "./bundle.d.ts",
+      "require": "./cjs/bundle.js",
+      "default": "./bundle.js"
+    },
+    "./defaults": {
+      "types": "./defaults/index.d.ts",
+      "require": "./cjs/defaults/index.js",
+      "default": "./defaults/index.js"
+    },
+    "./defaults/chains": {
+      "types": "./defaults/chains.d.ts",
+      "require": "./cjs/defaults/chains.js",
+      "default": "./defaults/chains.js"
+    },
+    "./defaults/crypto": {
+      "types": "./defaults/crypto.d.ts",
+      "require": "./cjs/defaults/crypto.js",
+      "default": "./defaults/crypto.js"
+    },
+    "./defaults/endpoints": {
+      "types": "./defaults/endpoints.d.ts",
+      "require": "./cjs/defaults/endpoints.js",
+      "default": "./defaults/endpoints.js"
+    },
+    "./defaults/ledger": {
+      "types": "./defaults/ledger.d.ts",
+      "require": "./cjs/defaults/ledger.js",
+      "default": "./defaults/ledger.js"
+    },
+    "./defaults/ss58": {
+      "types": "./defaults/ss58.d.ts",
+      "require": "./cjs/defaults/ss58.js",
+      "default": "./defaults/ss58.js"
+    },
+    "./defaults/type": {
+      "types": "./defaults/type.d.ts",
+      "require": "./cjs/defaults/type.js",
+      "default": "./defaults/type.js"
+    },
+    "./defaults/ui": {
+      "types": "./defaults/ui.d.ts",
+      "require": "./cjs/defaults/ui.js",
+      "default": "./defaults/ui.js"
+    },
+    "./detectOther": {
+      "types": "./detectOther.d.ts",
+      "require": "./cjs/detectOther.js",
+      "default": "./detectOther.js"
+    },
+    "./detectPackage": {
+      "types": "./detectPackage.d.ts",
+      "require": "./cjs/detectPackage.js",
+      "default": "./detectPackage.js"
+    },
+    "./package.json": "./package.json",
+    "./packageInfo.js": {
+      "types": "./packageInfo.d.ts",
+      "require": "./cjs/packageInfo.js",
+      "default": "./packageInfo.js"
+    },
+    "./packageInfo": {
+      "types": "./packageInfo.d.ts",
+      "require": "./cjs/packageInfo.js",
+      "default": "./packageInfo.js"
+    },
+    "./Settings": {
+      "types": "./Settings.d.ts",
+      "require": "./cjs/Settings.js",
+      "default": "./Settings.js"
+    },
+    "./types": {
+      "types": "./types.d.ts",
+      "require": "./cjs/types.js",
+      "default": "./types.js"
+    }
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.20.13",
+    "@polkadot/networks": "^10.4.2",
+    "@polkadot/util": "^10.4.2",
+    "eventemitter3": "^4.0.7",
+    "store": "^2.0.12"
+  },
+  "peerDependencies": {
+    "@polkadot/networks": "*",
+    "@polkadot/util": "*"
+  }
+}

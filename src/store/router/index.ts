@@ -1,12 +1,2 @@
-import { defineModule } from 'direct-vuex';
-
-import mutations from './mutations';
-import state from './state';
-
-const router = defineModule({
-  namespaced: true,
-  state,
-  mutations,
-});
-
-export default router;
+export { default } from '@wallet/src/store/router';
+export * from '@wallet/src/store/router';

@@ -4,22 +4,22 @@
       <div class="order-history-buttons order-history-buttons--filter-buttons">
         <span
           v-button
-          :class="['order-history-button', { active: currentFilter === Filter.open }]"
-          @click="switchFilter(Filter.open)"
+          :class="['order-history-button', { active: currentFilter === FilterEnum.open }]"
+          @click="switchFilter(FilterEnum.open)"
         >
           {{ openOrdersText }}
         </span>
         <span
           v-button
-          :class="['order-history-button', { active: currentFilter === Filter.all }]"
-          @click="switchFilter(Filter.all)"
+          :class="['order-history-button', { active: currentFilter === FilterEnum.all }]"
+          @click="switchFilter(FilterEnum.all)"
         >
           {{ t('orderBook.history.orderHistory') }}
         </span>
         <span
           v-button
-          :class="['order-history-button', { active: currentFilter === Filter.executed }]"
-          @click="switchFilter(Filter.executed)"
+          :class="['order-history-button', { active: currentFilter === FilterEnum.executed }]"
+          @click="switchFilter(FilterEnum.executed)"
         >
           {{ t('orderBook.history.tradeHistory') }}
         </span>
@@ -28,7 +28,7 @@
         <span
           v-button
           :class="['order-history-button', 'order-history-button--cancel', { inactive: isCancelMultipleInactive }]"
-          @click="cancelOrders(Cancel.multiple)"
+          @click="cancelOrders(CancelEnum.multiple)"
         >
           {{ cancelText }}
         </span>
@@ -43,8 +43,8 @@
     </template>
 
     <div class="order-history-main s-flex-column" v-if="isLoggedIn">
-      <open-orders v-if="currentFilter === Filter.open" :parent-loading="openOrdersLoading" />
-      <all-orders v-else :filter="currentFilter" />
+      <open-orders v-if="currentFilter === FilterEnum.open" :parent-loading="openOrdersLoading"></open-orders>
+      <all-orders v-else :filter="currentFilter"></all-orders>
     </div>
     <div v-else class="order-history-connect-account">
       <div class="order-history-connect-account-button">
@@ -54,144 +54,130 @@
         </s-button>
       </div>
     </div>
-    <cancel-confirm :visible.sync="confirmDialogVisibility" @confirm="cancelOrders" />
+    <cancel-confirm v-model:visible="confirmDialogVisible" @confirm="cancelOrders"></cancel-confirm>
   </base-widget>
 </template>
-
-<script lang="ts">
+<script setup lang="ts">
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import { api, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { api } from '@wallet';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
-import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { Components } from '@/consts';
+import { useConfirmDialog } from '@/composables/useConfirmDialog';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useTransaction } from '@/composables/useTransaction';
+import { useTranslation } from '@/composables/useTranslation';
+import { useOrderBook } from '@/composables/useOrderBook';
 import { lazyComponent } from '@/router';
-import { state, getter, mutation, action } from '@/store/decorators';
+import store from '@/store';
 import { Filter, Cancel } from '@/types/orderBook';
 import { delay } from '@/utils';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 
-@Component({
+defineOptions({
   components: {
     BaseWidget: lazyComponent(Components.BaseWidget),
     AllOrders: lazyComponent(Components.AllOrders),
     OpenOrders: lazyComponent(Components.OpenOrders),
     CancelConfirm: lazyComponent(Components.CancelOrders),
   },
-})
-export default class OrderHistoryWidget extends Mixins(
-  ConfirmDialogMixin,
-  InternalConnectMixin,
-  mixins.LoadingMixin,
-  mixins.TransactionMixin
-) {
-  readonly Filter = Filter;
-  readonly Cancel = Cancel;
+});
 
-  // Open Orders utils
-  @state.orderBook.userLimitOrders private userLimitOrders!: Array<LimitOrder>;
-  @getter.orderBook.orderBookId orderBookId!: string;
-  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
-  @action.orderBook.subscribeToUserLimitOrders private subscribeToUserLimitOrders!: AsyncFnWithoutArgs;
-  @action.orderBook.unsubscribeFromUserLimitOrders private unsubscribeFromUserLimitOrders!: AsyncFnWithoutArgs;
-  // Cancel Orders utils
-  @state.orderBook.ordersToBeCancelled private ordersToBeCancelled!: Array<LimitOrder>;
-  @mutation.orderBook.setOrdersToBeCancelled private setOrdersToBeCancelled!: (orders: LimitOrder[]) => void;
-  // Additional utils
-  @getter.orderBook.currentOrderBook private currentOrderBook!: Nullable<OrderBook>;
+const FilterEnum = Filter;
+const CancelEnum = Cancel;
 
-  currentFilter = Filter.open;
-  openOrdersLoading = false;
+const { t } = useTranslation();
+const { isLoggedIn, connectSoraWallet, soraAddress } = useInternalConnect();
+const { loading, withNotifications } = useTransaction();
+const { confirmDialogVisible, confirmOrExecute } = useConfirmDialog();
+const { orderBookId } = useOrderBook();
 
-  // Widget subscription for user limit orders
-  @Watch('orderBookId', { immediate: true })
-  @Watch('soraAddress')
-  @Watch('nodeIsConnected')
-  private async updateSubscription(): Promise<void> {
-    this.openOrdersLoading = true;
-    await this.subscribeToUserLimitOrders();
-    await delay(2_000); // Waiting for selectable logic init
-    this.openOrdersLoading = false;
-  }
+const userLimitOrders = computed(() => store.state.orderBook.userLimitOrders as LimitOrder[]);
+const ordersToBeCancelled = computed(() => store.state.orderBook.ordersToBeCancelled as LimitOrder[]);
+const nodeIsConnected = computed(() => store.getters.settings.nodeIsConnected as boolean);
+const currentOrderBook = computed(() => store.getters.orderBook.currentOrderBook as Nullable<OrderBook>);
 
-  get openOrdersText(): string {
-    return this.t('orderBook.history.openOrders', { value: this.openOrdersCount });
-  }
+const subscribeToUserLimitOrders = store.dispatch.orderBook.subscribeToUserLimitOrders;
+const unsubscribeFromUserLimitOrders = store.dispatch.orderBook.unsubscribeFromUserLimitOrders;
+const setOrdersToBeCancelled = store.commit.orderBook.setOrdersToBeCancelled;
 
-  get cancelText(): string {
-    return this.hasSelectedForCancellation
-      ? this.t('orderBook.history.cancel', { value: `(${this.ordersToBeCancelled.length})` })
-      : this.t('orderBook.history.cancel');
-  }
+const currentFilter = ref(FilterEnum.open);
+const openOrdersLoading = ref(false);
 
-  get cancelAllText(): string {
-    return this.t('orderBook.history.cancelAll');
-  }
+const subscribe = async () => {
+  openOrdersLoading.value = true;
+  await unsubscribeFromUserLimitOrders();
+  await subscribeToUserLimitOrders();
+  await delay(2_000);
+  openOrdersLoading.value = false;
+};
 
-  get hasSelectedForCancellation(): boolean {
-    return this.ordersToBeCancelled.length > 0;
-  }
+watch([orderBookId, soraAddress, nodeIsConnected], subscribe, { immediate: true });
 
-  get isBookStopped(): boolean {
-    return !this.currentOrderBook || this.currentOrderBook.status === OrderBookStatus.Stop;
-  }
+onBeforeUnmount(() => {
+  unsubscribeFromUserLimitOrders();
+});
 
-  get openOrdersCount(): string {
-    if (!this.isLoggedIn) return '';
+const openOrdersCount = computed(() => {
+  if (!isLoggedIn.value) return '';
+  const count = userLimitOrders.value.length;
+  return count > 0 ? `(${count})` : '';
+});
 
-    const count = this.userLimitOrders.length;
+const openOrdersText = computed(() => t('orderBook.history.openOrders', { value: openOrdersCount.value }));
+const hasSelectedForCancellation = computed(() => ordersToBeCancelled.value.length > 0);
+const cancelText = computed(() =>
+  hasSelectedForCancellation.value
+    ? t('orderBook.history.cancel', { value: `(${ordersToBeCancelled.value.length})` })
+    : t('orderBook.history.cancel')
+);
+const cancelAllText = computed(() => t('orderBook.history.cancelAll'));
 
-    return count > 0 ? `(${count})` : ``;
-  }
+const isBookStopped = computed(() => !currentOrderBook.value || currentOrderBook.value.status === OrderBookStatus.Stop);
+const isCancelAllInactive = computed(() => loading.value || isBookStopped.value || userLimitOrders.value.length === 0);
+const isCancelMultipleInactive = computed(
+  () => loading.value || isBookStopped.value || !hasSelectedForCancellation.value
+);
 
-  get isCancelAllInactive(): boolean {
-    return this.loading || this.isBookStopped || !this.userLimitOrders.length;
-  }
+const switchFilter = (filter: Filter) => {
+  currentFilter.value = filter;
+};
 
-  get isCancelMultipleInactive(): boolean {
-    return this.loading || this.isBookStopped || !this.hasSelectedForCancellation;
-  }
+const cancelOrders = async (cancel: Cancel = CancelEnum.all) => {
+  if (loading.value || isBookStopped.value || userLimitOrders.value.length === 0) return;
 
-  switchFilter(filter: Filter): void {
-    this.currentFilter = filter;
-  }
+  const orders = cancel === CancelEnum.multiple ? ordersToBeCancelled.value : userLimitOrders.value;
+  if (!orders.length) return;
 
-  openConfirmCancelDialog(): void {
-    if (this.isBookStopped) return;
-    if (!this.userLimitOrders.length) return;
+  await withNotifications(async () => {
+    const {
+      orderBookId: { base, quote },
+    } = orders[0];
+    const ids = orders.map((order: LimitOrder) => order.id);
 
-    this.confirmOrExecute(this.cancelOrders);
-  }
+    if (ids.length > 1) {
+      await api.orderBook.cancelLimitOrderBatch(base, quote, ids);
+    } else {
+      await api.orderBook.cancelLimitOrder(base, quote, ids[0]);
+    }
+    setOrdersToBeCancelled([]);
+  });
+};
 
-  async cancelOrders(cancel = Cancel.all): Promise<void> {
-    if (this.loading || this.isBookStopped || !this.userLimitOrders.length) return;
+const openConfirmCancelDialog = async () => {
+  if (isBookStopped.value || userLimitOrders.value.length === 0) return;
+  await confirmOrExecute(() => cancelOrders());
+};
 
-    const orders = cancel === Cancel.multiple ? this.ordersToBeCancelled : this.userLimitOrders;
-
-    if (!orders.length) return;
-
-    await this.withNotifications(async () => {
-      const {
-        orderBookId: { base, quote },
-      } = orders[0]; // TODO: [STEFAN] issue with ordersToBeCancelled -> orderToBeCancelledIds
-      const ids = orders.map((order: LimitOrder) => order.id);
-
-      if (ids.length > 1) {
-        await api.orderBook.cancelLimitOrderBatch(base, quote, ids);
-      } else {
-        await api.orderBook.cancelLimitOrder(base, quote, ids[0]);
-      }
-      this.setOrdersToBeCancelled([]);
-    });
-  }
-
-  beforeDestroy(): void {
-    this.unsubscribeFromUserLimitOrders();
-  }
-}
+defineExpose({
+  cancelOrders,
+  switchFilter,
+  openConfirmCancelDialog,
+  currentFilter,
+  openOrdersLoading,
+});
 </script>
 
 <style lang="scss">

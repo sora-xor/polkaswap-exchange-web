@@ -1,7 +1,7 @@
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { EthCurrencyType, EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS } from '@wallet';
 
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
 import { asZeroValue } from '@/utils';

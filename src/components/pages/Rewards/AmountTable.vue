@@ -3,7 +3,7 @@
     <div class="amount-table-title">{{ title }}</div>
     <el-checkbox-group v-if="showTable" v-model="innerModel">
       <div v-for="(formatted, index) in formattedItems" :key="index" class="amount-table-item">
-        <s-divider v-if="index !== 0" :class="['amount-table-divider', theme]" />
+        <s-divider v-if="index !== 0" :class="['amount-table-divider', theme]"></s-divider>
         <div v-if="formatted.subtitle" class="amount-table-item__subtitle">{{ formatted.subtitle }}</div>
         <el-checkbox
           :label="formatted.type[1]"
@@ -33,17 +33,23 @@
                   :fiat-font-size-rate="FontSizeRate.MEDIUM"
                 >
                   <template v-if="formatted.total && index === 0">
-                    <rewards-item-tooltip :value="formatted.total.amount" :asset="formatted.total.asset" />
+                    <rewards-item-tooltip
+                      :value="formatted.total.amount"
+                      :asset="formatted.total.asset"
+                    ></rewards-item-tooltip>
                   </template>
                   <template v-else-if="limitItem.total">
-                    <rewards-item-tooltip :value="limitItem.total.amount" :asset="limitItem.total.asset" />
+                    <rewards-item-tooltip
+                      :value="limitItem.total.amount"
+                      :asset="limitItem.total.asset"
+                    ></rewards-item-tooltip>
                   </template>
                 </formatted-amount-with-fiat-value>
               </div>
             </div>
             <div v-if="formatted.rewards && formatted.rewards.length !== 0" class="amount-table-item-content__body">
               <div v-for="(rewardItem, index) in formatted.rewards" :key="index" class="amount-table-subitem">
-                <s-divider v-if="!simpleGroup || index === 0" :class="['amount-table-divider', theme]" />
+                <s-divider v-if="!simpleGroup || index === 0" :class="['amount-table-divider', theme]"></s-divider>
                 <div class="amount-table-subitem__title">
                   <template v-if="simpleGroup">—</template>
                   <template v-else-if="formatted.total">
@@ -63,7 +69,11 @@
                       :fiat-value="getFiatAmountByCodecString(limitItem.amount, limitItem.asset)"
                       :fiat-font-size-rate="FontSizeRate.MEDIUM"
                     >
-                      <rewards-item-tooltip v-if="limitItem.total" :value="limitItem.total" :asset="limitItem.asset" />
+                      <rewards-item-tooltip
+                        v-if="limitItem.total"
+                        :value="limitItem.total"
+                        :asset="limitItem.asset"
+                      ></rewards-item-tooltip>
                     </formatted-amount-with-fiat-value>
                   </div>
                 </template>
@@ -73,15 +83,17 @@
         </el-checkbox>
       </div>
     </el-checkbox-group>
-    <slot />
+    <slot></slot>
   </div>
 </template>
 
-<script lang="ts">
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Prop, Mixins, ModelSync } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed, toRefs } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useNumberFormatter } from '@/composables/useNumberFormatter';
+import { useTranslation } from '@/composables/useTranslation';
 import { Theme } from '@/consts/theme';
 import type { RewardInfoGroup, RewardsAmountHeaderItem } from '@/types/rewards';
 import { asZeroValue } from '@/utils';
@@ -106,58 +118,94 @@ const toLimit = (asset: Asset, amount: string, total?: string): { asset: Asset; 
   total,
 });
 
-@Component({
+defineOptions({
+  name: 'RewardsAmountTable',
   components: {
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     RewardsItemTooltip,
   },
-})
-export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
+});
 
-  @Prop({ default: () => [], type: Array }) items!: Array<RewardInfoGroup | RewardInfo>;
-  @Prop({ default: '', type: String }) title!: string;
-  @Prop({ default: true, type: Boolean }) showTable!: boolean;
-  @Prop({ default: false, type: Boolean }) simpleGroup!: boolean;
-  @Prop({ default: false, type: [Boolean, Array] }) value!: boolean | string[];
-  @Prop({ default: false, type: Boolean }) isCodecString!: boolean;
-  @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme;
-
-  @ModelSync('value', 'input', { type: [Boolean, Array] })
-  readonly innerModel!: boolean | string[];
-
-  get formattedItems(): RewardsAmountTableItem[] {
-    return this.items.map(this.formatItem);
+const props = withDefaults(
+  defineProps<{
+    items?: Array<RewardInfoGroup | RewardInfo>;
+    title?: string;
+    showTable?: boolean;
+    simpleGroup?: boolean;
+    value?: boolean | string[];
+    isCodecString?: boolean;
+    theme?: Theme;
+  }>(),
+  {
+    items: () => [],
+    title: '',
+    showTable: true,
+    simpleGroup: false,
+    value: false,
+    isCodecString: false,
+    theme: Theme.LIGHT,
   }
+);
 
-  formatItem(item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
-    const isGroup = 'limit' in item && Array.isArray(item.limit);
-    const [rewardType, rewardEvent] = item.type;
-    const key = `rewards.events.${rewardEvent}`;
-    const title = this.te(key) ? this.t(key) : '';
-    const subtitle = 'title' in item ? item.title : '';
-    const total = 'total' in item ? item.total : undefined;
-    const rewards = isGroup ? item.rewards?.map(this.formatItem) : [];
-    const limit =
-      'limit' in item
-        ? (item as RewardInfoGroup).limit
-        : [toLimit((item as RewardInfo).asset, (item as RewardInfo).amount, (item as RewardInfo).total)];
+const emit = defineEmits<{
+  (event: 'input', value: boolean | string[]): void;
+}>();
 
-    return {
-      type: item.type,
-      title,
-      subtitle,
-      limit,
-      total,
-      rewards,
-    };
-  }
+const { items, showTable, simpleGroup, value, isCodecString, theme } = toRefs(props);
 
-  isDisabledRewardItem(item: RewardsAmountTableItem): boolean {
-    return asZeroValue(item.limit?.[0]?.amount ?? 0);
-  }
+const innerModel = computed({
+  get: () => value.value,
+  set: (val: boolean | string[]) => emit('input', val),
+});
+
+const { t, te } = useTranslation();
+const { formatCodecNumber, getFPNumberFromCodec, getFiatAmountByCodecString, getFiatAmountByString, getFPNumber } =
+  useFormattedAmount();
+const { formatStringValue } = useNumberFormatter();
+
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+
+const formattedItems = computed<RewardsAmountTableItem[]>(() => items.value.map((item) => formatItem(item)));
+
+function formatItem(item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
+  const isGroup = 'limit' in item && Array.isArray(item.limit);
+  const [, rewardEvent] = item.type;
+  const key = `rewards.events.${rewardEvent}`;
+  const title = te(key) ? t(key) : '';
+  const subtitle = 'title' in item ? (item.title ?? '') : '';
+  const total = 'total' in item ? item.total : undefined;
+  const rewards = isGroup ? item.rewards?.map(formatItem) : [];
+  const limit =
+    'limit' in item && Array.isArray((item as RewardInfoGroup).limit)
+      ? (item as RewardInfoGroup).limit
+      : [
+          toLimit(
+            (item as RewardInfo).asset,
+            (item as RewardInfo).amount,
+            (item as RewardInfo).total as string | undefined
+          ),
+        ];
+
+  return {
+    type: item.type,
+    title,
+    subtitle,
+    limit,
+    total,
+    rewards,
+  };
 }
+
+function isDisabledRewardItem(item: RewardsAmountTableItem): boolean {
+  return asZeroValue(item.limit?.[0]?.amount ?? 0);
+}
+
+defineExpose({
+  formattedItems,
+  innerModel,
+  isDisabledRewardItem,
+});
 </script>
 
 <style lang="scss">

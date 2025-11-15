@@ -1,36 +1,48 @@
 <template>
-  <dialog-base
-    :visible.sync="isVisible"
+  <DialogBase
+    v-model:visible="isVisible"
     :title="t('removeLiquidity.title')"
     :tooltip="t('removeLiquidity.description')"
   >
-    <remove-liquidity-form @back="closeDialog" />
-  </dialog-base>
+    <RemoveLiquidityForm @back="closeDialog"></RemoveLiquidityForm>
+  </DialogBase>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
+import { computed, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import { PoolComponents } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
-import { action } from '@/store/decorators';
+import store from '@/store';
 
-@Component({
-  components: {
-    RemoveLiquidityForm: poolLazyComponent(PoolComponents.RemoveLiquidityForm),
-    DialogBase: components.DialogBase,
-  },
-})
-export default class AddLiquidityDialog extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  @action.removeLiquidity.resetData private resetData!: AsyncFnWithoutArgs;
+const props = defineProps<{
+  visible: boolean;
+}>();
 
-  @Watch('visible')
-  private async handleDialogVisibility(value: boolean): Promise<void> {
-    if (!value) {
-      this.resetData();
-    }
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+}>();
+
+const { t } = useTranslation();
+const DialogBase = components.DialogBase;
+const RemoveLiquidityForm = poolLazyComponent(PoolComponents.RemoveLiquidityForm);
+
+const isVisible = computed({
+  get: () => props.visible,
+  set: (value: boolean) => emit('update:visible', value),
+});
+
+const closeDialog = () => {
+  emit('close');
+  isVisible.value = false;
+};
+
+watch(isVisible, (value) => {
+  if (!value) {
+    store.dispatch.removeLiquidity.resetData();
   }
-}
+});
 </script>

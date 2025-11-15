@@ -1,4 +1,4 @@
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS } from '@wallet';
 import { jwtDecode } from 'jwt-decode';
 
 import store from '@/store';

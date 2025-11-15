@@ -1,7 +1,7 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :show-close-button="false" custom-class="dialog--confirm-invite-user">
+  <dialog-base v-model:visible="isVisible" :show-close-button="false" custom-class="dialog--confirm-invite-user">
     <div class="invite-user-icon" :class="{ 'invite-user-icon--error': hasReferrer }">
-      <s-icon :name="iconName" :size="iconSize" />
+      <s-icon :name="iconName" :size="iconSize"></s-icon>
     </div>
     <p class="invite-user-title">
       {{ t(`referralProgram.confirm.${hasReferrer ? 'hasReferrer' : 'invite'}Title`) }}
@@ -19,63 +19,84 @@
         {{ t(`referralProgram.confirm.${hasReferrer ? 'ok' : 'signInvitation'}`) }}
       </s-button>
       <div v-if="!hasReferrer" class="invite-user-free-charge">
-        <s-icon class="invite-user-info" name="basic-check-mark-24" size="10px" />
+        <s-icon class="invite-user-info" name="basic-check-mark-24" size="10px"></s-icon>
         <span>{{ t('referralProgram.confirm.freeOfCharge') }}</span>
       </div>
     </template>
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import { api, components } from '@wallet';
+import { computed, watchEffect } from 'vue';
 
-import { state, mutation } from '@/store/decorators';
+import { useTransaction } from '@/composables/useTransaction';
+import store from '@/store';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { useTranslation } from '@/composables/useTranslation';
 
-// TODO: [Rustem] remove hasReferrer logic (localise)
-@Component({
-  components: { DialogBase: components.DialogBase },
-})
-export default class ReferralsConfirmInviteUser extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
-  @state.referrals.referrer private referrer!: string;
-  @state.referrals.storageReferrer private storageReferrer!: string;
+defineOptions({
+  components: {
+    DialogBase: components.DialogBase,
+  },
+});
 
-  @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
-  @mutation.referrals.approveReferrer private approveReferrer!: (value: boolean) => void;
+const props = defineProps<{
+  visible: boolean;
+}>();
 
-  get hasReferrer(): boolean {
-    return !!this.referrer;
-  }
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+  (event: 'confirm', value?: boolean): void;
+}>();
 
-  get iconName(): string {
-    return this.hasReferrer ? 'notifications-alert-triangle-24' : 'finance-PSWAP-24';
-  }
+const { loading, withNotifications } = useTransaction();
+const { isVisible } = useDialogModel(props, emit);
+const { t } = useTranslation();
 
-  get iconSize(): number {
-    return this.hasReferrer ? 64 : 40;
-  }
+const referrer = computed(() => store.state.referrals.referrer);
+const storageReferrer = computed(() => store.state.referrals.storageReferrer);
 
-  async handleConfirmInviteUser(): Promise<void> {
-    if (!this.hasReferrer) {
-      this.approveReferrer(true);
-      try {
-        await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferrer));
-        this.$emit('confirm', true);
-      } catch (error) {
-        this.approveReferrer(false);
-        this.$emit('confirm');
-      }
+const approveReferrer = store.commit.referrals.approveReferrer;
+const resetStorageReferrer = store.commit.referrals.resetStorageReferrer;
+
+const hasReferrer = computed(() => Boolean(referrer.value));
+const iconName = computed(() => (hasReferrer.value ? 'notifications-alert-triangle-24' : 'finance-PSWAP-24'));
+const iconSize = computed(() => (hasReferrer.value ? 64 : 40));
+
+const handleConfirmInviteUser = async () => {
+  if (!hasReferrer.value) {
+    approveReferrer(true);
+    try {
+      await withNotifications(async () => {
+        await api.referralSystem.setInvitedUser(storageReferrer.value);
+      });
+      emit('confirm', true);
+    } catch (error) {
+      approveReferrer(false);
+      emit('confirm');
     }
-    this.isVisible = false;
+  } else {
+    emit('confirm');
   }
 
-  @Watch('isVisible')
-  private isDialogVisible(isVisible: boolean): void {
-    if (!isVisible && this.storageReferrer) {
-      this.resetStorageReferrer();
-    }
+  isVisible.value = false;
+  if (storageReferrer.value) {
+    resetStorageReferrer();
   }
-}
+};
+
+watchEffect(() => {
+  if (!props.visible && storageReferrer.value) {
+    resetStorageReferrer();
+  }
+});
+
+defineExpose({
+  handleConfirmInviteUser,
+  isVisible,
+});
 </script>
 
 <style lang="scss" scoped>

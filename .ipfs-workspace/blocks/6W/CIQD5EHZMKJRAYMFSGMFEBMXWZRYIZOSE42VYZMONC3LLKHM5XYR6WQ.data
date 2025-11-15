@@ -1,0 +1,3 @@
+
+“‹import{l as r,j as a,m as n,o as l,W as m,B as p}from"./polkadot-Bh6PX9YG.js";import{C as c}from"./index-DjB-Okl0.js";import"./echarts-Cxkeyetf.js";import"./wallet-stack-BuqMcUTa.js";import"./lodash-vOcFpjD8.js";const i=r({__name:"GradientBox",props:{symbol:{default:""}},setup(e){const o=e,t=a(()=>o.symbol?`gradient-box--${o.symbol.toLowerCase()}`:"");return(s,d)=>(l(),n("div",{class:p(["gradient-box",t.value])},[m(s.$slots,"default",{},void 0,!0)],2))}}),B=c(i,[["__scopeId","data-v-43b1c9ef"]]);export{B as default};
+‹

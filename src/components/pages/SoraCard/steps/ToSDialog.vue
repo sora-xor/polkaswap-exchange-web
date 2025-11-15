@@ -1,6 +1,6 @@
 <template>
-  <dialog-base :visible.sync="isVisible" class="terms-of-service-dialog" :title="title">
-    <i-frame-widget v-if="srcLink" class="tos__section" with-border :src="srcLink" />
+  <dialog-base v-model:visible="isVisible" class="terms-of-service-dialog" :title="title">
+    <i-frame-widget v-if="srcLink" class="tos__section" with-border :src="srcLink"></i-frame-widget>
     <template v-else>
       <div class="sora-card__excuse">
         {{ t('card.blacklistedCountriesExcuse') }}
@@ -16,65 +16,82 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+<script setup lang="ts">
+import { components } from '@wallet';
 import { countryCodeEmoji } from 'country-code-emoji';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { computed, onMounted, ref, toRefs } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state } from '@/store/decorators';
+import store from '@/store';
 
 const BLACKLIST_URL = 'https://whitelist.polkaswap2.io/card/blacklist.json';
 
-@Component({
+defineOptions({
+  inheritAttrs: false,
   components: {
     DialogBase: components.DialogBase,
     IFrameWidget: lazyComponent(Components.IFrameWidget),
   },
-})
-export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {
-  @Prop({ default: '', type: String }) readonly srcLink!: string;
-  @Prop({ default: '', type: String }) readonly title!: string;
+});
 
-  @state.settings.displayRegions private displayRegions!: Nullable<Intl.DisplayNames>;
-  private blacklistedCountries: Record<string, string> = {};
-
-  countryCodeEmoji = countryCodeEmoji;
-
-  formatCountryName(key: string, defaultValue: string): string {
-    try {
-      const isoCode = key.toUpperCase();
-      if (!this.displayRegions) {
-        return defaultValue;
-      }
-      const name = this.displayRegions.of(isoCode);
-      return name ?? defaultValue;
-    } catch (error) {
-      console.warn('Unsupported format of SORA Card Blacklisted Country', error);
-      return defaultValue;
-    }
+const props = withDefaults(
+  defineProps<{
+    srcLink?: string;
+    title?: string;
+    visible?: boolean;
+  }>(),
+  {
+    srcLink: '',
+    title: '',
+    visible: false,
   }
+);
 
-  get unsupportedCountries(): Array<string>[] {
-    return Object.entries(this.blacklistedCountries);
-  }
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+}>();
 
-  async getBlacklistedCountries(): Promise<void> {
-    try {
-      const response = await fetch(BLACKLIST_URL, { cache: 'no-cache' });
-      const data = await response.json();
-      this.blacklistedCountries = data;
-    } catch (error) {
-      this.blacklistedCountries = {};
-    }
-  }
+const { srcLink, title, visible } = toRefs(props);
 
-  mounted(): void {
-    this.getBlacklistedCountries();
+const isVisible = computed({
+  get: () => visible.value,
+  set: (value: boolean) => emit('update:visible', value),
+});
+
+const displayRegions = computed(() => store.state.settings.displayRegions as Nullable<Intl.DisplayNames>);
+
+const blacklistedCountries = ref<Record<string, string>>({});
+
+const unsupportedCountries = computed(() => Object.entries(blacklistedCountries.value));
+
+const formatCountryName = (key: string, defaultValue: string): string => {
+  try {
+    const isoCode = key.toUpperCase();
+    const regions = displayRegions.value;
+    if (!regions) return defaultValue;
+    return regions.of(isoCode) ?? defaultValue;
+  } catch (error) {
+    console.warn('Unsupported format of SORA Card Blacklisted Country', error);
+    return defaultValue;
   }
-}
+};
+
+const getBlacklistedCountries = async () => {
+  try {
+    const response = await fetch(BLACKLIST_URL, { cache: 'no-cache' });
+    const data = await response.json();
+    blacklistedCountries.value = data;
+  } catch (error) {
+    blacklistedCountries.value = {};
+  }
+};
+
+onMounted(async () => {
+  if (!srcLink.value) {
+    await getBlacklistedCountries();
+  }
+});
 </script>
 
 <style lang="scss">

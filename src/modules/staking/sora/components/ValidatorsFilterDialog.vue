@@ -1,5 +1,5 @@
 <template>
-  <dialog-base class="validators-filter-dialog" :visible.sync="isVisible">
+  <dialog-base class="validators-filter-dialog" v-model:visible="isVisible">
     <div class="filter-container">
       <h1 class="title">
         {{ t('soraStaking.validatorsFilterDialog.title') }}
@@ -12,7 +12,7 @@
               class="filter-item-switch"
               :class="{ 'is-active': localFilter[key] }"
               v-model="localFilter[key]"
-            />
+            ></s-switch>
           </div>
           <div class="filter-item-description">{{ item.description }}</div>
         </div>
@@ -27,51 +27,68 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed, reactive, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
+import { useDialogModel } from '@/composables/useDialogModel';
+import { emptyValidatorsFilter, ValidatorsFilterType } from '@/modules/staking/sora/consts';
 
-import { DemeterStakingComponents } from '../../demeter/consts';
-import { soraStakingLazyComponent } from '../../router';
-import { emptyValidatorsFilter, ValidatorsFilterType } from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
-import { ValidatorsFilter } from '../types';
+import type { ValidatorsFilter } from '@/modules/staking/sora/types';
 
-@Component({
-  components: {
-    DialogTitle: soraStakingLazyComponent(DemeterStakingComponents.DialogTitle),
-    TokenInput: lazyComponent(Components.TokenInput),
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
+const props = defineProps<{
+  visible: boolean;
+  filter: ValidatorsFilter;
+}>();
+
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'close'): void;
+  (event: 'save', value: ValidatorsFilter): void;
+}>();
+
+const { t } = useI18n();
+const { isVisible } = useDialogModel(props, emit);
+
+const localFilter = reactive<ValidatorsFilter>({ ...emptyValidatorsFilter, ...props.filter });
+
+const filterData = computed(
+  () =>
+    t('soraStaking.validatorsFilterDialog.filters') as Record<
+      ValidatorsFilterType,
+      { name: string; description: string }
+    >
+);
+
+const syncLocalFilter = () => {
+  Object.assign(localFilter, emptyValidatorsFilter, props.filter);
+};
+
+watch(
+  () => props.visible,
+  (visible) => {
+    if (visible) syncLocalFilter();
   },
-})
-export default class ValidatorsFilterDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
-  @Prop({ type: Object, required: true }) filter!: ValidatorsFilter;
+  { immediate: true }
+);
 
-  localFilter: ValidatorsFilter = { ...emptyValidatorsFilter };
+watch(
+  () => props.filter,
+  () => {
+    if (props.visible) syncLocalFilter();
+  },
+  { deep: true }
+);
 
-  get filterData(): Record<ValidatorsFilterType, { name: string; description: string }> {
-    return this.t('soraStaking.validatorsFilterDialog.filters') as any;
-  }
+const save = () => {
+  emit('save', { ...localFilter });
+};
 
-  @Watch('isVisible', { deep: true })
-  onVisibleChange() {
-    if (this.isVisible) {
-      this.localFilter = { ...this.filter };
-    }
-  }
+const resetAll = () => {
+  Object.assign(localFilter, emptyValidatorsFilter);
+};
 
-  save() {
-    this.$emit('save', this.localFilter);
-  }
-
-  resetAll() {
-    this.localFilter = { ...emptyValidatorsFilter };
-  }
-}
+defineExpose({ localFilter, save, resetAll, filterData });
 </script>
 
 <style lang="scss">

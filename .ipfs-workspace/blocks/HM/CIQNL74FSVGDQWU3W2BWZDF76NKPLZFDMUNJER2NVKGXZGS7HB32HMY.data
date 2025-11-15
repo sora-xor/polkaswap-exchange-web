@@ -1,0 +1,5 @@
+
+îæimport{m as o}from"./core-D25obiEO.js";import"./wallet-stack-LOAEjQjN.js";import"./echarts-CDPJekDq.js";import"./polkadot-tm1sXUWB.js";import"./lodash-DKukXVb-.js";import"./vendor-vue-BU49LsTx.js";const s=o` <svg fill="none" viewBox="0 0 13 4">
+  <path fill="currentColor" d="M.5 0h12L8.9 3.13a3.76 3.76 0 0 1-4.8 0L.5 0Z" />
+</svg>`;export{s as cursorSvg};
+æ

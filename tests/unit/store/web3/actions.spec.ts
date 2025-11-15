@@ -1,18 +1,29 @@
 import { FPNumber } from '@sora-substrate/math';
-import { api as walletApi } from '@soramitsu/soraneo-wallet-web';
+import { api as walletApi } from '@wallet';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock soraneo wallet api to control getDenominator (avoid hoisting issues)
-vi.mock('@soramitsu/soraneo-wallet-web', () => ({
-  api: { system: { getDenominator: vi.fn() }, bridgeProxy: { sub: {}, evm: {}, eth: {} } },
-  accountUtils: {},
-  WALLET_TYPES: {},
-  vuex: { WalletModules: [] },
-  WALLET_CONSTS: { IndexerType: { SUBQUERY: 'SUBQUERY', SUBSQUID: 'SUBSQUID' } },
-}));
+vi.mock('@wallet', async () => {
+  const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
+  const wallet = createWalletMock();
+
+  return withWalletMock(wallet, {
+    api: {
+      ...wallet.api,
+      system: {
+        ...(wallet.api.system ?? {}),
+        getDenominator: vi.fn(),
+      },
+    },
+    accountUtils: wallet.accountUtils ?? {},
+    WALLET_TYPES: wallet.WALLET_TYPES ?? {},
+  });
+});
 // Stub heavy SDK subpaths referenced by web3 actions module
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
   BridgeNetworkType: { Eth: 'Eth', Evm: 'Evm', Sub: 'Sub' },
+  BridgeTxDirection: { Outgoing: 'Outgoing', Incoming: 'Incoming' },
+  BridgeTxStatus: { Pending: 'Pending', Ready: 'Ready', Failed: 'Failed' },
 }));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/types', () => ({ BridgeNetworkId: {} }));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/sub/consts', () => ({ SubNetworkId: {} }));
@@ -80,6 +91,7 @@ describe('web3 actions - fetchDenominatorCoefficient', () => {
     await (actions as any).fetchDenominatorCoefficient(ctx);
 
     const calledWith = (ctx.commit.setDenominator as any).mock.calls[0][0];
+    expect(calledWith).toBeInstanceOf(FPNumber);
     expect(calledWith.toString()).toBe('1000000');
   });
 

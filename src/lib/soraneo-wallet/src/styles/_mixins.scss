@@ -1,0 +1,387 @@
+@use 'sass:selector';
+@use '../../../../styles/_layout.scss' as *;
+
+@mixin value-prefix($prop, $value) {
+  @each $prefix in ('-webkit-', '-moz-', '') {
+    #{$prop}: #{$prefix}#{$value};
+  }
+}
+
+@mixin asset-logo-styles {
+  display: flex;
+  justify-content: center;
+  background-color: var(--s-color-base-on-accent);
+  color: var(--s-color-base-content-tertiary);
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  border-radius: 50%;
+  text-align: center;
+}
+
+@mixin three-dashes($topValue) {
+  width: 10px;
+  height: 2px;
+  top: $topValue;
+  position: absolute;
+  background-color: var(--s-color-base-content-tertiary);
+  border-radius: 1px;
+}
+
+@mixin custom-tabs {
+  $tabs-class: '.el-tabs';
+
+  .s-tabs {
+    &#{$tabs-class} {
+      #{$tabs-class}__header {
+        width: 100%;
+        #{$tabs-class}__item {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+  #{$tabs-class} {
+    &__header {
+      margin-bottom: 0;
+    }
+    &__nav {
+      width: 100%;
+    }
+    &__item {
+      width: 50%;
+      text-align: center;
+      font-size: var(--s-font-size-medium);
+    }
+  }
+}
+
+@mixin hint-text($lineHeight: var(--s-line-height-medium)) {
+  color: var(--s-color-base-content-secondary);
+  font-size: var(--s-font-size-mini);
+  font-weight: 300;
+  line-height: $lineHeight;
+}
+
+@mixin heading3-text {
+  font-family: var(--s-font-family-default);
+  font-size: var(--s-font-size-large);
+  font-weight: 600;
+  line-height: var(--s-line-height-large);
+  letter-spacing: var(--s-letter-spacing-small);
+}
+
+@mixin switch-block($fontSize: var(--s-font-size-medium)) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: #{$basic-spacing-medium};
+  cursor: pointer;
+
+  & > span {
+    margin-left: #{$basic-spacing-small};
+    font-size: $fontSize;
+    font-weight: 300;
+    letter-spacing: var(--s-letter-spacing-small);
+    line-height: var(--s-line-height-medium);
+  }
+}
+
+@mixin svg-icon($url: '', $width: var(--s-icon-font-size-mini), $height: $width) {
+  display: block;
+  width: $width;
+  height: $height;
+  @if $url != '' {
+    background-image: $url;
+  }
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+@mixin loading {
+  animation: rotation 2s infinite linear;
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+}
+
+@mixin shake {
+  animation: shake 0.5s 1;
+  @keyframes shake {
+    from {
+      transform: translate(-2px);
+    }
+    20% {
+      transform: translate(4px);
+    }
+    40% {
+      transform: translate(-2px);
+    }
+    60% {
+      transform: translate(4px);
+    }
+    80% {
+      transform: translate(-2px);
+    }
+    to {
+      transform: translate(0px);
+    }
+  }
+}
+
+@mixin select-icon($containerClass) {
+  .#{$containerClass} .s-select .el-select {
+    .el-input__icon {
+      margin-right: 10px;
+    }
+    i.el-icon-arrow-up:before {
+      position: relative;
+      top: 5px;
+      content: '\e9e4'; // TODO: change it asap
+      color: var(--s-color-base-content-primary);
+      font-size: var(--s-icon-font-size-medium);
+    }
+    .el-input .el-select__caret {
+      transform: rotateZ(0deg);
+      &.is-reverse {
+        transform: rotateZ(180deg);
+      }
+    }
+  }
+}
+
+@mixin scrollbar(
+  $marginOffset: 0,
+  $verticalRight: 2px,
+  $height: '',
+  $withHorizontalScroll: false,
+  $hideVerticalScroll: false
+) {
+  $host: &;
+  $scrollbar: selector.append($host, '.el-scrollbar');
+
+  @at-root #{ $scrollbar } {
+    margin-left: calc(#{$marginOffset} * -1);
+    margin-right: calc(#{$marginOffset} * -1);
+  }
+
+  @at-root #{ selector.nest($scrollbar, '.el-scrollbar__wrap') } {
+    overflow-x: hidden;
+    margin-bottom: 0px !important; // to disable element-ui negative margin
+    @if $height != '' {
+      height: $height;
+    }
+  }
+
+  @at-root #{ selector.nest($scrollbar, '.el-scrollbar__wrap, .el-scrollbar__view') } {
+    display: flex;
+    flex: 1;
+    flex-flow: column nowrap;
+  }
+
+  @at-root #{ selector.nest($scrollbar, '.el-scrollbar__view') } {
+    padding-left: $marginOffset;
+    padding-right: $marginOffset;
+  }
+
+  @at-root #{ selector.nest($scrollbar, '.el-scrollbar__bar.is-vertical') } {
+    right: $verticalRight;
+  }
+}
+
+@mixin asset-list($margin: 0px, $padding: 0px) {
+  &.asset-list {
+    margin-left: calc(#{$margin} * -1);
+    margin-right: calc(#{$margin} * -1);
+
+    .asset-list-inner {
+      padding-left: $padding;
+      padding-right: $padding;
+    }
+  }
+}
+
+@mixin formatted-amount-tooltip() {
+  $padding-left: 8px;
+  $padding-top: 4px;
+  $border-width: 1px;
+  $border-radius: 8px;
+
+  & {
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &.formatted-amount--value-wider {
+    &:active,
+    &:hover {
+      overflow: visible;
+
+      & > span {
+        display: inline-table;
+        position: absolute;
+        z-index: 1;
+        white-space: break-spaces;
+        background: var(--s-color-utility-body);
+        border: $border-width solid var(--s-color-base-border-secondary);
+        border-radius: $border-radius;
+        padding: $padding-top $padding-left;
+        top: -#{$border-width + $padding-top};
+        left: -#{$border-width + $padding-left};
+      }
+    }
+  }
+}
+
+@mixin fadeHeight($max-height: 200px, $seconds: 0.3s) {
+  .fadeHeight-enter-active,
+  .fadeHeight-leave-active {
+    transition: all $seconds;
+    max-height: $max-height;
+  }
+  .fadeHeight-enter,
+  .fadeHeight-leave-to {
+    opacity: 0;
+    max-height: 0px;
+  }
+}
+
+@mixin element-size($className: '', $width: 40px, $height: $width) {
+  .#{$className} {
+    height: $height;
+    width: $width;
+  }
+}
+
+@mixin focus-outline($inner: false, $focusWithin: false, $borderRadius: '', $withOffset: false) {
+  $outline: 1px solid var(--s-color-outline);
+  @if $inner == true {
+    outline: $outline;
+    @if $borderRadius != '' {
+      border-radius: $borderRadius;
+    }
+  } @else {
+    @if $focusWithin == true {
+      &:focus-within {
+        outline: $outline;
+      }
+    } @else {
+      @if $withOffset == true {
+        & {
+          outline-offset: -1px;
+        }
+      }
+      &:focus:not(:active) {
+        outline: $outline;
+        @if $borderRadius != '' {
+          border-radius: $borderRadius;
+        }
+      }
+    }
+  }
+}
+
+@mixin login-view {
+  .login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $basic-spacing-medium;
+
+    &-btn {
+      width: 100%;
+      &.el-button {
+        & + & {
+          margin-left: 0;
+        }
+      }
+    }
+
+    &__inputs {
+      display: flex;
+      flex-direction: column;
+      gap: $basic-spacing-medium;
+      width: 100%;
+    }
+
+    &__text {
+      color: var(--s-color-base-content-primary);
+      font-size: var(--s-font-size-extra-small);
+      font-weight: 300;
+      line-height: var(--s-line-height-base);
+    }
+
+    &__step-count {
+      color: var(--s-color-base-content-secondary);
+      font-size: 14px;
+    }
+
+    &__create-account-desc {
+      color: var(--s-color-base-content-primary);
+      font-size: var(--s-font-size-extra-small);
+      font-weight: 300;
+      line-height: var(--s-line-height-base);
+      padding: 0 #{$basic-spacing-small};
+
+      @include status-color;
+    }
+
+    .el-textarea {
+      &__inner {
+        resize: none;
+      }
+    }
+  }
+}
+
+@mixin drag-drop-content {
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__icon {
+    color: var(--s-color-base-content-tertiary);
+    margin-bottom: calc(var(--s-size-small) / 2);
+
+    &.icon--error {
+      color: var(--s-color-theme-accent);
+    }
+  }
+
+  &__btn {
+    margin-top: calc(var(--s-size-small) / 2);
+    height: 32px !important;
+  }
+
+  &__placeholder {
+    letter-spacing: var(--s-letter-spacing-small);
+    color: var(--s-color-base-content-primary);
+    font-size: calc(var(--s-size-small) / 2);
+    text-align: center;
+    padding: 0 50px;
+  }
+}
+
+@mixin status-color($prop: 'color') {
+  @each $status in ('success', 'info', 'warning', 'error') {
+    &.#{$status} {
+      #{$prop}: var(--s-color-status-#{$status});
+    }
+  }
+}
+
+@mixin columns($columns, $gap) {
+  & {
+    width: calc((100% / $columns) - ((#{$gap} * (#{$columns} - 1)) / $columns));
+  }
+}

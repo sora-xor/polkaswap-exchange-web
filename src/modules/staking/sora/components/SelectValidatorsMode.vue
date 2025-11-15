@@ -1,18 +1,18 @@
 <template>
-  <div v-loading="parentLoading">
+  <div v-loading="Boolean(parentLoading)">
     <div class="content">
       <div class="card">
         <h4>{{ t('soraStaking.selectValidatorsMode.title') }}</h4>
         <p>{{ t('soraStaking.selectValidatorsMode.description') }}</p>
         <ul class="criteria">
           <li v-for="item in criteria" :key="item">
-            <s-icon name="basic-check-mark-24" size="16px" />
+            <s-icon name="basic-check-mark-24" size="16px"></s-icon>
             <span>{{ item }}</span>
           </li>
         </ul>
-        <s-button type="primary" @click="stakeWithSuggested">{{
-          t('soraStaking.selectValidatorsMode.confirm.suggested')
-        }}</s-button>
+        <s-button type="primary" @click="stakeWithSuggested">
+          {{ t('soraStaking.selectValidatorsMode.confirm.suggested') }}
+        </s-button>
       </div>
       <div v-button class="manual-select" @click="stakeWithSelected">
         {{ t('soraStaking.selectValidatorsMode.confirm.manual') }}
@@ -21,34 +21,38 @@
   </div>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { soraStakingLazyComponent } from '../../router';
-import { SoraStakingComponents } from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
+const props = defineProps<{
+  parentLoading?: boolean;
+}>();
 
-@Component({
-  components: {
-    ValidatorsAttentionDialog: soraStakingLazyComponent(SoraStakingComponents.ValidatorsAttentionDialog),
-  },
-})
-export default class SelectValidatorsMode extends Mixins(StakingMixin, mixins.LoadingMixin) {
-  showValidatorsAttentionDialog = false;
+const emit = defineEmits<{
+  (event: 'recommended'): void;
+  (event: 'selected'): void;
+}>();
 
-  get criteria() {
-    return this.t('soraStaking.selectValidatorsMode.criteria'); // iterable keys
-  }
+const { t } = useI18n();
 
-  stakeWithSuggested(): void {
-    this.$emit('recommended');
-  }
+const criteria = computed(() => {
+  const value = t('soraStaking.selectValidatorsMode.criteria');
+  return Array.isArray(value) ? value : [];
+});
 
-  stakeWithSelected(): void {
-    this.$emit('selected');
-  }
-}
+const stakeWithSuggested = (): void => {
+  emit('recommended');
+};
+
+const stakeWithSelected = (): void => {
+  emit('selected');
+};
+
+defineExpose({
+  stakeWithSuggested,
+  stakeWithSelected,
+});
 </script>
 
 <style lang="scss" scoped>

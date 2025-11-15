@@ -1,27 +1,26 @@
 <template>
   <div class="progress-bar-container">
     <div class="progress-bar">
-      <div class="success" />
-      <div class="warning" />
-      <div class="error" />
-      <div class="pointer" :style="{ left }" />
+      <div class="success"></div>
+      <div class="warning"></div>
+      <div class="error"></div>
+      <div class="pointer" :style="{ left }"></div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-@Component
-export default class LtvProgressBar extends Vue {
-  @Prop({ default: 0, type: Number, required: true }) readonly percentage!: number;
+const props = withDefaults(defineProps<{ percentage?: number }>(), {
+  percentage: 0,
+});
 
-  get left(): string {
-    if (this.percentage >= 100) return 'calc(100% - 8px)'; // $progress-bar-pointer-width: 8px
-    if (this.percentage < 0) return '0%';
-    return `${this.percentage}%`;
-  }
-}
+const left = computed(() => {
+  if (props.percentage >= 100) return 'calc(100% - 8px)'; // $progress-bar-pointer-width: 8px
+  if (props.percentage < 0) return '0%';
+  return `${props.percentage}%`;
+});
 </script>
 
 <style lang="scss" scoped>

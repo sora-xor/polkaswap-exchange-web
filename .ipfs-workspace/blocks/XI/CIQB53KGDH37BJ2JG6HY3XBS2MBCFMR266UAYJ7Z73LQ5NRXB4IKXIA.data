@@ -1,0 +1,3 @@
+
+éáimport{dG as u,F as r}from"./index-DjB-Okl0.js";import"./echarts-Cxkeyetf.js";import"./lodash-vOcFpjD8.js";function L(t){let e=u.Success;return t>30&&t<=50?e=u.Warning:t>50&&(e=u.Error),e}function g({vault:t,collateral:e,averageCollateralPrice:f,borrowTax:c}){const l=r.ZERO,m=e?.riskParams,p=f.mul(t.lockedAmount),d=m?.liquidationRatioReversed??0,s=p.mul(d).div(r.HUNDRED),v=s.sub(s.mul(c)),o=s.isZero()?null:t.debt.div(s),n=!!o?.isFinity(),D=n?o.mul(r.HUNDRED):null,S=n?o.mul(d):null,C=m?.hardCap??l,F=e?.debtSupply??l;let i=C.sub(F);i=i.sub(i.mul(c));const b=v.sub(t.debt);let a=i.lt(b)?i:b;return a=!a.isFinity()||a.isLteZero()?l:a.dp(2),{maxSafeDebt:s,ltvCoefficient:n?o:null,ltv:D,adjustedLtv:S,available:a}}export{g as c,L as g};
+á

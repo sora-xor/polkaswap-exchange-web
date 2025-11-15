@@ -1,0 +1,37 @@
+.browser-notification-dialog[data-v-20e5970c] {
+  display: flex;
+  flex-direction: column;
+}
+.browser-notification-dialog__info[data-v-20e5970c] {
+  font-size: 15px;
+  font-weight: 300;
+  margin: 16px 32px;
+  text-align: center;
+}
+.browser-notification-dialog__btn[data-v-20e5970c] {
+  margin-bottom: 16px;
+}
+.browser-notification-dialog[data-v-20e5970c] {
+  align-items: center;
+  justify-content: center;
+  max-height: 230px;
+}
+img[data-v-20e5970c] {
+  height: 113px;
+  width: 113px;
+}
+.notification-title[data-v-20e5970c] {
+  color: var(--s-color-base-content-primary);
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  margin-top: 33px;
+}
+.notification-message[data-v-20e5970c] {
+  color: var(--s-color-base-content-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 14px;
+  max-width: 200px;
+  text-align: center;
+}

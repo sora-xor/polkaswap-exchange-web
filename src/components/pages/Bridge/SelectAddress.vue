@@ -1,6 +1,11 @@
 <template>
   <div class="select-address">
-    <address-book-input ref="input" v-model="address" :is-valid="validAddress" @update-name="updateName" />
+    <address-book-input
+      ref="input"
+      v-model="address"
+      :is-valid="validAddress"
+      @update-name="updateName"
+    ></address-book-input>
 
     <s-button
       class="s-typography-button--large select-address-button"
@@ -13,35 +18,35 @@
   </div>
 </template>
 
-<script lang="ts">
-import { api, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, ModelSync } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { api, components } from '@wallet';
+import { computed, ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 
-// This component is not used for now, but kept for future
-@Component({
+defineOptions({
   components: {
     AddressBookInput: components.AddressBookInput,
   },
-})
-export default class BridgeSelectAddress extends Mixins(TranslationMixin) {
-  @ModelSync('value', 'input', { type: String })
-  readonly address!: string;
+});
 
-  private name = '';
+const emit = defineEmits<{
+  (e: 'select', payload: { address: string; name: string }): void;
+}>();
 
-  get validAddress(): boolean {
-    return api.validateAddress(this.address);
-  }
+const address = defineModel<string>('value', { default: '' });
 
-  handleSelectAddress(): void {
-    this.$emit('select', { address: this.address, name: this.name });
-  }
+const { t } = useTranslation();
+const name = ref('');
 
-  updateName(name: string): void {
-    this.name = name;
-  }
+const validAddress = computed(() => api.validateAddress(address.value));
+
+function handleSelectAddress(): void {
+  emit('select', { address: address.value, name: name.value });
+}
+
+function updateName(newName: string): void {
+  name.value = newName;
 }
 </script>
 

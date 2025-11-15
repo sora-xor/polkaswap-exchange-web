@@ -1,7 +1,7 @@
 <template>
   <base-widget v-bind="$attrs" :title="t('createToken.tokenSupply.placeholder')" :tooltip="t('tooltips.supply')">
     <template #filters>
-      <stats-filter is-dropdown :filters="filters" :value="filter" @input="changeFilter" />
+      <stats-filter is-dropdown :filters="filters" :value="filter" @input="changeFilter"></stats-filter>
     </template>
 
     <template v-if="!predefinedToken" #types>
@@ -10,7 +10,7 @@
         :token="selectedToken"
         :tabindex="tokenTabIndex"
         @click.stop="handleSelectToken"
-      />
+      ></token-select-button>
     </template>
 
     <chart-skeleton
@@ -22,34 +22,40 @@
       <formatted-amount class="chart-price" :value="amount.amount">
         {{ amount.suffix }}
       </formatted-amount>
-      <price-change :value="priceChange" />
-      <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
+      <price-change :value="priceChange"></price-change>
+      <v-chart ref="chart" class="chart" :option="chartSpec" autoresize></v-chart>
     </chart-skeleton>
     <select-token
       v-if="!predefinedToken"
       disabled-custom
-      :visible.sync="showSelectTokenDialog"
+      v-model:visible="showSelectTokenDialog"
       :asset="selectedToken"
       @select="onTokenChange"
-    />
+    ></select-token>
   </base-widget>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_CONSTS } from '@wallet';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
-import { Component, Mixins } from 'vue-property-decorator';
+import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 
-import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
-import WithTokenSelectMixin from '@/components/mixins/Widget/WithTokenSelect';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, ASSET_SUPPLY_FILTERS } from '@/consts/snapshots';
+import { useChartSpec } from '@/composables/useChartSpec';
+import { useLoading } from '@/composables/useLoading';
+import { useThemePalette, createThemePalette } from '@/composables/useThemePalette';
+import { useTranslation } from '@/composables/useTranslation';
+import { useWidgetTokenSelect } from '@/composables/useWidgetTokenSelect';
 import { fetchAssetSupplyData } from '@/indexer/queries/asset/supply';
 import { lazyComponent } from '@/router';
+import { useSettingsStore } from '@/stores/settings';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
+import type { Nullable } from '@/types/common';
 import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
@@ -61,195 +67,222 @@ type ChartData = {
   burn: number;
 };
 
-const getExtremum = (data: readonly ChartData[], prop: string, min = false) => {
-  return data.reduce((acc, item) => Math[min ? 'min' : 'max'](acc, item[prop]), min ? Infinity : 0);
+const ChartSkeleton = lazyComponent(Components.ChartSkeleton);
+const PriceChange = lazyComponent(Components.PriceChange);
+const BaseWidget = lazyComponent(Components.BaseWidget);
+const StatsFilter = lazyComponent(Components.StatsFilter);
+const TokenSelectButton = lazyComponent(Components.TokenSelectButton);
+const SelectToken = lazyComponent(Components.SelectToken);
+const { FormattedAmount } = components;
+
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+    predefinedToken?: Nullable<Asset>;
+    defaultAsset?: Asset;
+  }>(),
+  {
+    parentLoading: false,
+    predefinedToken: null,
+    defaultAsset: undefined,
+  }
+);
+
+const predefinedToken = computed<Nullable<Asset>>(() => props.predefinedToken);
+const filters = ASSET_SUPPLY_FILTERS;
+const filter = ref<SnapshotFilter>(filters[0]);
+const data = ref<readonly ChartData[]>([]);
+const isFetchingError = ref(false);
+
+const settingsStore = useSettingsStore();
+const { exchangeRate } = storeToRefs(settingsStore);
+
+const parentLoading = computed(() => props.parentLoading);
+const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
+const { t } = useTranslation();
+const { theme } = useThemePalette();
+const { gridSpec, xAxisSpec, yAxisSpec, tooltipSpec, seriesSpec, lineSeriesSpec } = useChartSpec();
+
+const {
+  selectedToken,
+  areActionsDisabled,
+  selectTokenIcon,
+  tokenTabIndex,
+  showSelectTokenDialog,
+  handleSelectToken,
+  changeToken,
+  closeTokenDialog,
+} = useWidgetTokenSelect({
+  defaultAsset: props.defaultAsset,
+  predefinedToken,
+  parentLoading: () => parentLoading.value,
+  loading: () => loading.value,
+});
+
+const chart = ref<Nullable<unknown>>(null);
+
+const palette = computed(() => theme.value ?? createThemePalette());
+const chartKey = computed(() => `supply-chart-${selectedToken.value.address}`);
+
+const firstValue = computed(() => new FPNumber(first(data.value)?.value ?? 0));
+const lastValue = computed(() => new FPNumber(last(data.value)?.value ?? 0));
+
+const amount = computed<AmountWithSuffix>(() => formatAmountWithSuffix(firstValue.value));
+const priceChange = computed(() => calcPriceChange(firstValue.value, lastValue.value));
+
+const chartSpec = computed(() => {
+  const formatter = (value: number | string): string => {
+    const val = new FPNumber(value);
+    const formatted = formatAmountWithSuffix(val);
+    return `${formatted.amount} ${formatted.suffix}`;
+  };
+
+  const paletteValue = palette.value;
+
+  return {
+    dataset: {
+      source: data.value.map((item) => [item.timestamp, item.value, item.mint, item.burn]),
+      dimensions: ['timestamp', 'supply', 'mint', 'burn'],
+    },
+    grid: gridSpec({
+      top: 40,
+      left: 50,
+      right: 50,
+    }),
+    xAxis: xAxisSpec(),
+    yAxis: [
+      yAxisSpec({
+        name: 'Remint\nBurn',
+        nameGap: 12,
+        nameTextStyle: {
+          align: 'right',
+        },
+        type: 'log',
+        min: 1,
+        axisLabel: {
+          formatter,
+        },
+        splitLine: false,
+      }),
+      yAxisSpec({
+        name: 'Supply',
+        nameGap: 22,
+        nameTextStyle: {
+          align: 'left',
+        },
+        axisLabel: {
+          formatter,
+        },
+      }),
+    ],
+    tooltip: tooltipSpec({
+      formatter: (params: Array<{ marker: string; seriesName: string; seriesIndex: number; data: number[] }>) => `
+          <table>
+            ${params
+              .map(
+                (param) => `
+              <tr>
+                <td>${param.marker} ${param.seriesName}</td>
+                <td align="right">${formatDecimalPlaces(param.data[param.seriesIndex + 1])}</td>
+              </tr>
+            `
+              )
+              .join('')}
+          </table>
+        `,
+    }),
+    series: [
+      lineSeriesSpec({
+        encode: { y: 'value' },
+        itemStyle: {
+          color: paletteValue.color.status.info,
+        },
+        name: 'Supply',
+        yAxisIndex: 1,
+        areaStyle: undefined,
+      }),
+      seriesSpec({
+        type: 'bar',
+        encode: { y: 'mint' },
+        itemStyle: {
+          color: paletteValue.color.status.success,
+          opacity: 0.5,
+        },
+        name: 'Remint',
+        yAxisIndex: 0,
+        areaStyle: undefined,
+      }),
+      seriesSpec({
+        type: 'bar',
+        encode: { y: 'burn' },
+        itemStyle: {
+          color: paletteValue.color.status.error,
+          opacity: 0.5,
+        },
+        name: 'Burn',
+        yAxisIndex: 0,
+        areaStyle: undefined,
+      }),
+    ],
+    legend: {
+      orient: 'horizontal' as const,
+      top: 0,
+      left: 'center',
+      icon: 'circle',
+      textStyle: {
+        color: paletteValue.color.base.content.primary,
+        fontSize: 12,
+        fontWeight: 400,
+        lineHeight: 1.5,
+      },
+      selectedMode: false,
+    },
+  };
+});
+
+const changeFilter = (next: SnapshotFilter) => {
+  filter.value = next;
+  updateData();
 };
 
-@Component({
-  components: {
-    ChartSkeleton: lazyComponent(Components.ChartSkeleton),
-    PriceChange: lazyComponent(Components.PriceChange),
-    BaseWidget: lazyComponent(Components.BaseWidget),
-    StatsFilter: lazyComponent(Components.StatsFilter),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    SelectToken: lazyComponent(Components.SelectToken),
-    FormattedAmount: components.FormattedAmount,
-  },
-})
-export default class SupplyChartWidget extends Mixins(WithTokenSelectMixin, ChartSpecMixin) {
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
-  readonly filters = ASSET_SUPPLY_FILTERS;
+const onTokenChange = (token: Asset) => {
+  changeToken(token);
+  closeTokenDialog();
+};
 
-  filter: SnapshotFilter = ASSET_SUPPLY_FILTERS[0];
-  isFetchingError = false;
-  data: readonly ChartData[] = [];
+const updateData = async () => {
+  await withLoading(async () => {
+    await withParentLoading(async () => {
+      try {
+        const id = selectedToken.value.address;
+        const { type, count } = filter.value;
+        const seconds = SECONDS_IN_TYPE[type];
+        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds;
+        const aTime = now - seconds * count;
 
-  get firstValue(): FPNumber {
-    return new FPNumber(first(this.data)?.value ?? 0);
-  }
-
-  get lastValue(): FPNumber {
-    return new FPNumber(last(this.data)?.value ?? 0);
-  }
-
-  get amount(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.firstValue);
-  }
-
-  get priceChange(): FPNumber {
-    return calcPriceChange(this.firstValue, this.lastValue);
-  }
-
-  get mintBurnRange(): [number, number] {
-    const max = Math.max(getExtremum(this.data, 'mint'), getExtremum(this.data, 'burn'));
-    const min = Math.min(getExtremum(this.data, 'mint', true), getExtremum(this.data, 'burn', true));
-    const diff = (max - min) * 1.05; // boundary
-    return [max + diff, min];
-  }
-
-  created(): void {
-    this.updateData();
-  }
-
-  get chartSpec() {
-    const formatter = (value: number | string): string => {
-      const val = new FPNumber(value);
-      const { amount, suffix } = formatAmountWithSuffix(val);
-      return `${amount} ${suffix}`;
-    };
-
-    return {
-      dataset: {
-        source: this.data.map((item) => [item.timestamp, item.value, item.mint, item.burn]),
-        dimensions: ['timestamp', 'supply', 'mint', 'burn'],
-      },
-      grid: this.gridSpec({
-        top: 40,
-        left: 50,
-        right: 50,
-      }),
-      xAxis: this.xAxisSpec(),
-      yAxis: [
-        this.yAxisSpec({
-          name: 'Remint\nBurn',
-          nameGap: 12,
-          nameTextStyle: {
-            align: 'right',
-          },
-          type: 'log',
-          min: 1,
-          axisLabel: {
-            formatter,
-          },
-          splitLine: false,
-        }),
-        this.yAxisSpec({
-          name: 'Supply',
-          nameGap: 22,
-          nameTextStyle: {
-            align: 'left',
-          },
-          axisLabel: {
-            formatter,
-          },
-        }),
-      ],
-      tooltip: this.tooltipSpec({
-        formatter: (params) => {
-          return `
-              <table>
-                ${params
-                  .map(
-                    (param) => `
-                  <tr>
-                    <td>${param.marker} ${param.seriesName}</td>
-                    <td align="right">${formatDecimalPlaces(param.data[param.seriesIndex + 1])}</td>
-                  </tr>
-                `
-                  )
-                  .join('')}
-              </table>
-            `;
-        },
-      }),
-      series: [
-        this.lineSeriesSpec({
-          encode: { y: 'value' },
-          itemStyle: {
-            color: this.theme.color.status.info,
-          },
-          name: 'Supply',
-          yAxisIndex: 1,
-          areaStyle: undefined,
-        }),
-        this.seriesSpec({
-          type: 'bar',
-          encode: { y: 'mint' },
-          itemStyle: {
-            color: this.theme.color.status.success,
-            opacity: 0.5,
-          },
-          name: 'Remint',
-          yAxisIndex: 0,
-          areaStyle: undefined,
-        }),
-        this.seriesSpec({
-          type: 'bar',
-          encode: { y: 'burn' },
-          itemStyle: {
-            color: this.theme.color.status.error,
-            opacity: 0.5,
-          },
-          name: 'Burn',
-          yAxisIndex: 0,
-          areaStyle: undefined,
-        }),
-      ],
-      legend: {
-        orient: 'horizontal',
-        top: 0,
-        left: 'center',
-        icon: 'circle',
-        textStyle: {
-          color: this.theme.color.base.content.primary,
-          fontSize: 12,
-          fontWeight: 400,
-          lineHeight: 1.5,
-        },
-        selectedMode: false,
-      },
-    };
-  }
-
-  changeFilter(filter: SnapshotFilter): void {
-    this.filter = filter;
-    this.updateData();
-  }
-
-  onTokenChange(token: Asset): void {
-    this.changeToken(token);
-    this.updateData();
-  }
-
-  async updateData(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        try {
-          const id = this.selectedToken.address;
-          const { type, count } = this.filter;
-          const seconds = SECONDS_IN_TYPE[type];
-          const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
-          const aTime = now - seconds * count;
-
-          this.data = Object.freeze(await fetchAssetSupplyData(id, now, aTime, type));
-          this.isFetchingError = false;
-        } catch (error) {
-          console.error(error);
-          this.isFetchingError = true;
-        }
-      });
+        data.value = Object.freeze(await fetchAssetSupplyData(id, now, aTime, type));
+        isFetchingError.value = false;
+      } catch (error) {
+        console.error(error);
+        isFetchingError.value = true;
+      }
     });
+  });
+};
+
+onMounted(updateData);
+
+watch(
+  () => selectedToken.value.address,
+  (current, previous) => {
+    if (!previous || current === previous) return;
+    updateData();
   }
+);
+
+if (getCurrentScope()) {
+  onScopeDispose(() => {
+    chart.value = null;
+  });
 }
 </script>

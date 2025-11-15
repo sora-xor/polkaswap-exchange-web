@@ -1,7 +1,7 @@
 <template>
-  <dialog-base :title="title" :visible.sync="isVisible" :tooltip="t('kensetsu.borrowMoreDescription')">
+  <DialogBase :title="title" v-model:visible="isVisible" :tooltip="t('kensetsu.borrowMoreDescription')">
     <div class="borrow-more">
-      <token-input
+      <TokenInput
         ref="debtInput"
         class="borrow-more__debt-input borrow-more__token-input"
         with-slider
@@ -16,26 +16,26 @@
         :disabled="loading"
         @max="handleMaxBorrowValue"
         @slide="handleBorrowPercentChange"
-      />
-      <slippage-tolerance class="slippage-tolerance-settings borrow-more__slippage" />
-      <prev-next-info-line
+      ></TokenInput>
+      <SlippageTolerance class="slippage-tolerance-settings borrow-more__slippage"></SlippageTolerance>
+      <PrevNextInfoLine
         :label="t('kensetsu.outstandingDebt')"
         :tooltip="t('kensetsu.outstandingDebtDescription')"
         :symbol="debtSymbol"
         :prev="formattedPrevBorrow"
         :next="formattedNextBorrow"
-      />
-      <prev-next-info-line
+      ></PrevNextInfoLine>
+      <PrevNextInfoLine
         symbol="%"
         :label="t('kensetsu.ltv')"
         :tooltip="t('kensetsu.ltvDescription')"
         :prev="formattedPrevLtv"
         :next="formattedLtv"
       >
-        <value-status v-if="ltv" class="ltv-badge-status" badge :value="ltvNumber" :get-status="getLtvStatus">
+        <ValueStatus v-if="ltv" class="ltv-badge-status" badge :value="ltvNumber" :get-status="resolveLtvStatus">
           {{ ltvText }}
-        </value-status>
-      </prev-next-info-line>
+        </ValueStatus>
+      </PrevNextInfoLine>
       <s-button
         class="s-typography-button--large action-button borrow-more__button"
         type="primary"
@@ -45,247 +45,229 @@
         <template v-if="disabled">{{ errorMessage }}</template>
         <template v-else>{{ title }}</template>
       </s-button>
-      <info-line
+      <InfoLine
         :label="t('kensetsu.borrowTax')"
         :label-tooltip="t('kensetsu.borrowTaxDescription', { value: borrowTaxPercent })"
         :value="formattedBorrowTax"
         :asset-symbol="debtSymbol"
         is-formatted
-      />
-      <info-line
+      ></InfoLine>
+      <InfoLine
         is-formatted
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="networkFeeFormatted"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
-      />
+      ></InfoLine>
     </div>
-  </dialog-base>
+  </DialogBase>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
+import { components, api } from '@wallet';
+import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue';
 
-import type TokenInput from '@/components/shared/Input/TokenInput.vue';
 import { Components, HundredNumber, ObjectInit, ZeroStringValue } from '@/consts';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTransaction } from '@/composables/useTransaction';
+import { useTranslation } from '@/composables/useTranslation';
 import { LtvTranslations, VaultComponents } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
-import { getLtvStatus } from '@/modules/vault/util';
+import { getLtvStatus as resolveLtvStatus } from '@/modules/vault/util';
 import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
 import { asZeroValue } from '@/utils';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
+import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
+import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/sdk/build/kensetsu/types';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    TokenInput: lazyComponent(Components.TokenInput),
-    ValueStatus: lazyComponent(Components.ValueStatusWrapper),
-    PrevNextInfoLine: vaultLazyComponent(VaultComponents.PrevNextInfoLine),
-    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
+const DialogBase = components.DialogBase;
+const InfoLine = components.InfoLine;
+const TokenInput = lazyComponent(Components.TokenInput);
+const ValueStatus = lazyComponent(Components.ValueStatusWrapper);
+const PrevNextInfoLine = vaultLazyComponent(VaultComponents.PrevNextInfoLine);
+const SlippageTolerance = lazyComponent(Components.SlippageTolerance);
+
+const props = withDefaults(
+  defineProps<{
+    visible?: boolean;
+    vault?: Nullable<Vault>;
+    debtAsset?: Nullable<RegisteredAccountAsset>;
+    collateral?: Nullable<Collateral>;
+    prevLtv?: Nullable<FPNumber>;
+    available?: FPNumber;
+    maxSafeDebt?: FPNumber;
+    maxLtv?: number;
+    borrowTax?: number;
+  }>(),
+  {
+    visible: false,
+    vault: ObjectInit,
+    debtAsset: ObjectInit,
+    collateral: ObjectInit,
+    prevLtv: () => FPNumber.ZERO,
+    available: () => FPNumber.ZERO,
+    maxSafeDebt: () => FPNumber.ZERO,
+    maxLtv: HundredNumber,
+    borrowTax: 0,
+  }
+);
+
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'confirm'): void;
+}>();
+
+const { t } = useTranslation();
+const { loading, withNotifications } = useTransaction();
+const { Zero, getFPNumber, getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
+
+const isVisible = ref(props.visible);
+const borrowValue = ref('');
+const debtInput = ref<InstanceType<typeof TokenInputComponent> | null>(null);
+
+const xorSymbol = XOR.symbol;
+
+const percentFormat = computed(() => store.state.settings.percentFormat as Nullable<Intl.NumberFormat>);
+const networkFees = computed(() => store.state.wallet.settings.networkFees as Record<string, CodecString>);
+const slippageTolerance = computed(() => store.state.settings.slippageTolerance as string);
+const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
+const shouldBalanceBeHidden = computed(() => store.state.wallet.settings.shouldBalanceBeHidden ?? false);
+
+const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.CreateVault] ?? ZeroStringValue);
+const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));
+const xorBalance = computed(() => getFPNumberFromCodec(accountXor.value?.balance?.transferable ?? ZeroStringValue));
+
+const isBorrowZero = computed(() => asZeroValue(borrowValue.value));
+const borrowFp = computed(() =>
+  isBorrowZero.value ? Zero : getFPNumber(borrowValue.value, props.debtAsset?.decimals)
+);
+
+const debtAvailable = computed(() => props.collateral?.riskParams.hardCap.sub(props.collateral.debtSupply) ?? Zero);
+const availableOrTotal = computed(() =>
+  props.available.gt(debtAvailable.value) ? debtAvailable.value : props.available
+);
+
+const isInsufficientXorForFee = computed(() => xorBalance.value.sub(fpNetworkFee.value).isLtZero());
+const isBorrowMoreThanAvailable = computed(() => borrowFp.value.gt(availableOrTotal.value));
+
+const disabled = computed(
+  () => loading.value || isInsufficientXorForFee.value || isBorrowZero.value || isBorrowMoreThanAvailable.value
+);
+
+const availableCodec = computed(() => availableOrTotal.value.dp(FPNumber.DEFAULT_PRECISION).codec);
+
+const isMaxBorrowAvailable = computed(() => {
+  if (shouldBalanceBeHidden.value || isBorrowZero.value) return true;
+  if (!availableOrTotal.value.isFinity() || availableOrTotal.value.isLteZero()) return false;
+  return !borrowFp.value.isEqualTo(availableOrTotal.value);
+});
+
+const debtSymbol = computed(() => props.debtAsset?.symbol ?? '');
+
+const formattedPrevBorrow = computed(() => props.vault?.debt.toLocaleString() ?? ZeroStringValue);
+const nextBorrow = computed(() => {
+  const debt = props.vault?.debt;
+  if (isBorrowZero.value) return debt ?? null;
+  return debt?.add(borrowFp.value);
+});
+const formattedNextBorrow = computed(() => nextBorrow.value?.toLocaleString() ?? ZeroStringValue);
+
+const formattedPrevLtv = computed(() => props.prevLtv?.toLocaleString(2) ?? ZeroStringValue);
+const ltvCoeff = computed(() => {
+  if (!nextBorrow.value || props.maxSafeDebt.isZero()) return null;
+  return nextBorrow.value.div(props.maxSafeDebt);
+});
+const ltv = computed(() => (ltvCoeff.value?.isFinity() ? ltvCoeff.value.mul(HundredNumber) : null));
+const ltvNumber = computed(() => ltv.value?.toNumber() ?? 0);
+const formattedLtv = computed(() =>
+  ltvCoeff.value ? ltvCoeff.value.mul(props.maxLtv).toLocaleString(2) : ZeroStringValue
+);
+const ltvText = computed(() => LtvTranslations[resolveLtvStatus(ltvNumber.value)]);
+
+const borrowTaxPercent = computed(
+  () => percentFormat.value?.format?.(props.borrowTax) ?? `${props.borrowTax * HundredNumber}%`
+);
+const formattedBorrowTax = computed(() => borrowFp.value.mul(props.borrowTax ?? 0).toLocaleString() ?? ZeroStringValue);
+
+const borrowValuePercent = computed(() => {
+  if (!borrowValue.value) return 0;
+  if (availableOrTotal.value.isZero()) return 0;
+  const percent = borrowFp.value.div(availableOrTotal.value).mul(HundredNumber).toNumber(0);
+  return percent > HundredNumber ? HundredNumber : percent;
+});
+
+const title = computed(() => t('kensetsu.borrowMore'));
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
+
+const errorMessage = computed(() => {
+  if (isInsufficientXorForFee.value) {
+    return t('insufficientBalanceText', { tokenSymbol: xorSymbol });
+  }
+  if (isBorrowZero.value) {
+    return t('kensetsu.error.enterBorrow');
+  }
+  if (isBorrowMoreThanAvailable.value) {
+    return t('kensetsu.error.borrowMoreThanAvailable');
+  }
+  return '';
+});
+
+const handleMaxBorrowValue = () => {
+  borrowValue.value = availableOrTotal.value.toString();
+};
+
+const handleBorrowPercentChange = (percent: number) => {
+  borrowValue.value = availableOrTotal.value.mul(percent / HundredNumber).toString();
+};
+
+const instance = getCurrentInstance();
+const alert = instance?.proxy?.$alert as ((message: string, options: { title?: string }) => void) | undefined;
+
+const handleBorrowMore = async () => {
+  if (disabled.value) {
+    if (errorMessage.value) {
+      alert?.(errorMessage.value, { title: t('errorText') });
+    }
+    return;
+  }
+
+  try {
+    await withNotifications(async () => {
+      if (!(props.vault && props.debtAsset)) {
+        throw new Error('[api.kensetsu.borrow]: vault is null');
+      }
+      await api.kensetsu.borrow(props.vault, borrowValue.value, props.debtAsset, slippageTolerance.value);
+    });
+    emit('confirm');
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isVisible.value = false;
+  }
+};
+
+watch(
+  () => props.visible,
+  async (value) => {
+    isVisible.value = value;
+    if (value) {
+      await nextTick();
+      borrowValue.value = '';
+      debtInput.value?.focus();
+    }
   },
-})
-export default class BorrowMoreDialog extends Mixins(
-  mixins.TransactionMixin,
-  mixins.DialogMixin,
-  mixins.FormattedAmountMixin
-) {
-  readonly xorSymbol = XOR.symbol;
-  readonly getLtvStatus = getLtvStatus;
+  { immediate: true }
+);
 
-  @Ref('debtInput') debtInput!: Nullable<TokenInput>;
-
-  @Prop({ type: Object, default: ObjectInit }) readonly vault!: Nullable<Vault>;
-  @Prop({ type: Object, default: ObjectInit }) readonly debtAsset!: Nullable<RegisteredAccountAsset>;
-  @Prop({ type: Object, default: ObjectInit }) readonly collateral!: Nullable<Collateral>;
-  @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
-  @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly available!: FPNumber;
-  @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly maxSafeDebt!: FPNumber;
-  @Prop({ type: Number, default: HundredNumber }) readonly maxLtv!: number;
-  @Prop({ type: Number, default: 0 }) readonly borrowTax!: number;
-
-  @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @state.settings.slippageTolerance private slippageTolerance!: string;
-  @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
-
-  borrowValue = '';
-
-  @Watch('visible')
-  private async handleDialogVisibility(value: boolean): Promise<void> {
-    await this.$nextTick();
-    this.borrowValue = '';
-    this.debtInput?.focus();
-  }
-
-  private get xorBalance(): FPNumber {
-    return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
-  }
-
-  get title(): string {
-    return this.t('kensetsu.borrowMore');
-  }
-
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.CreateVault];
-  }
-
-  private get fpNetworkFee(): FPNumber {
-    return this.getFPNumberFromCodec(this.networkFee);
-  }
-
-  get networkFeeFormatted(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
-
-  get isInsufficientXorForFee(): boolean {
-    return this.xorBalance.sub(this.fpNetworkFee).isLtZero();
-  }
-
-  get isBorrowZero(): boolean {
-    return asZeroValue(this.borrowValue);
-  }
-
-  private get borrowFp(): FPNumber {
-    if (this.isBorrowZero) return this.Zero;
-    return this.getFPNumber(this.borrowValue, this.debtAsset?.decimals);
-  }
-
-  private get debtAvailable(): FPNumber {
-    return this.collateral?.riskParams.hardCap.sub(this.collateral.debtSupply) ?? this.Zero;
-  }
-
-  private get availableOrTotal(): FPNumber {
-    return this.available.gt(this.debtAvailable) ? this.debtAvailable : this.available;
-  }
-
-  get isBorrowMoreThanAvailable(): boolean {
-    return this.borrowFp.gt(this.availableOrTotal);
-  }
-
-  get disabled(): boolean {
-    return this.loading || this.isInsufficientXorForFee || this.isBorrowZero || this.isBorrowMoreThanAvailable;
-  }
-
-  get availableCodec(): CodecString {
-    return this.availableOrTotal.dp(FPNumber.DEFAULT_PRECISION).codec;
-  }
-
-  get isMaxBorrowAvailable(): boolean {
-    if (this.shouldBalanceBeHidden || this.isBorrowZero) return true;
-    if (!this.availableOrTotal.isFinity() || this.availableOrTotal.isLteZero()) return false;
-    return !this.borrowFp.isEqualTo(this.availableOrTotal);
-  }
-
-  get debtSymbol(): string {
-    return this.debtAsset?.symbol ?? '';
-  }
-
-  get formattedPrevBorrow(): string {
-    return this.vault?.debt.toLocaleString() ?? ZeroStringValue;
-  }
-
-  private get nextBorrow(): Nullable<FPNumber> {
-    const debt = this.vault?.debt;
-    if (this.isBorrowZero) return debt;
-    return debt?.add(this.borrowValue);
-  }
-
-  get formattedNextBorrow(): string {
-    return this.nextBorrow?.toLocaleString() ?? ZeroStringValue;
-  }
-
-  get formattedPrevLtv(): string {
-    return this.prevLtv?.toLocaleString(2) ?? ZeroStringValue;
-  }
-
-  private get ltvCoeff(): Nullable<FPNumber> {
-    if (!this.nextBorrow) return null;
-    return this.nextBorrow.div(this.maxSafeDebt);
-  }
-
-  get ltv(): Nullable<FPNumber> {
-    return this.ltvCoeff?.isFinity() ? this.ltvCoeff.mul(HundredNumber) : null;
-  }
-
-  get ltvNumber(): number {
-    if (!this.ltv) return 0;
-    return this.ltv.toNumber();
-  }
-
-  get formattedLtv(): string {
-    if (!this.ltvCoeff) return ZeroStringValue;
-    return this.ltvCoeff.mul(this.maxLtv).toLocaleString(2);
-  }
-
-  get ltvText(): string {
-    return LtvTranslations[getLtvStatus(this.ltvNumber)];
-  }
-
-  get borrowTaxPercent(): string {
-    return this.percentFormat?.format?.(this.borrowTax) ?? `${this.borrowTax * HundredNumber}%`;
-  }
-
-  get formattedBorrowTax(): string {
-    return this.borrowFp?.mul(this.borrowTax ?? 0).toLocaleString() ?? ZeroStringValue;
-  }
-
-  get borrowValuePercent(): number {
-    if (!this.borrowValue) return 0;
-
-    const percent = this.borrowFp.div(this.availableOrTotal).mul(HundredNumber).toNumber(0);
-    return percent > HundredNumber ? HundredNumber : percent;
-  }
-
-  handleMaxBorrowValue(): void {
-    this.borrowValue = this.availableOrTotal.toString();
-  }
-
-  handleBorrowPercentChange(percent: number): void {
-    this.borrowValue = this.availableOrTotal.mul(percent / HundredNumber).toString();
-  }
-
-  get errorMessage(): string {
-    let error = '';
-    if (this.isInsufficientXorForFee) {
-      error = this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol });
-    } else if (this.isBorrowZero) {
-      error = this.t('kensetsu.error.enterBorrow');
-    } else if (this.isBorrowMoreThanAvailable) {
-      error = this.t('kensetsu.error.borrowMoreThanAvailable');
-    }
-    return error;
-  }
-
-  async handleBorrowMore(): Promise<void> {
-    if (this.disabled) {
-      if (this.errorMessage) {
-        this.$alert(this.errorMessage, { title: this.t('errorText') });
-      }
-    } else {
-      try {
-        await this.withNotifications(async () => {
-          if (!(this.vault && this.debtAsset)) {
-            throw new Error('[api.kensetsu.borrow]: vault is null');
-          }
-          await api.kensetsu.borrow(this.vault, this.borrowValue, this.debtAsset, this.slippageTolerance);
-        });
-        this.$emit('confirm');
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    this.isVisible = false;
-  }
-}
+watch(isVisible, (value) => {
+  emit('update:visible', value);
+});
 </script>
 
 <style lang="scss" scoped>

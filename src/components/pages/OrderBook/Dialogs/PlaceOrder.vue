@@ -1,19 +1,19 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="title" custom-class="dialog--confirm-swap">
+  <dialog-base v-model:visible="isVisible" :title="title" custom-class="dialog--confirm-swap">
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ upperText }}</span>
-        <token-logo class="token-logo" :token="baseAsset" />
+        <token-logo class="token-logo" :token="baseAsset"></token-logo>
       </div>
       <div class="tokens-info-container">
         <span class="token-value">{{ lowerText }}</span>
-        <token-logo class="token-logo" :token="quoteAsset" />
+        <token-logo class="token-logo" :token="quoteAsset"></token-logo>
       </div>
     </div>
 
-    <place-transaction-details class="transaction-details" :is-market-type="isMarketType" />
+    <place-transaction-details class="transaction-details" :is-market-type="isMarketType"></place-transaction-details>
     <template #footer>
-      <account-confirmation-option with-hint class="confirmation-option" />
+      <account-confirmation-option with-hint class="confirmation-option"></account-confirmation-option>
       <s-button
         type="primary"
         class="s-typography-button--large"
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@wallet';
 import { computed } from 'vue';
 
 import { useSwapAmounts } from '@/composables/useSwapAmounts';

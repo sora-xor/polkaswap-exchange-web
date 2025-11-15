@@ -1,26 +1,35 @@
 <template>
   <div class="header">
-    <back-button v-if="hasBackButton" class="back-button" :page="previousPage" @back="$emit('back')" />
-    <h3 class="title"><slot /></h3>
+    <BackButton
+      v-if="props.hasBackButton"
+      class="back-button"
+      :page="props.previousPage"
+      @back="emit('back')"
+    ></BackButton>
+    <h3 class="title"><slot></slot></h3>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
-
+<script setup lang="ts">
 import { StakingPageNames } from '../../consts';
 import { soraStakingLazyComponent } from '../../router';
 import { SoraStakingComponents } from '../consts';
 
-@Component({
-  components: {
-    BackButton: soraStakingLazyComponent(SoraStakingComponents.BackButton),
-  },
-})
-export default class SoraStaking extends Mixins() {
-  @Prop({ type: String }) readonly previousPage?: StakingPageNames;
-  @Prop({ type: Boolean, default: true }) readonly hasBackButton!: boolean;
-}
+const props = withDefaults(
+  defineProps<{
+    previousPage?: StakingPageNames;
+    hasBackButton?: boolean;
+  }>(),
+  {
+    hasBackButton: true,
+  }
+);
+
+const emit = defineEmits<{
+  (event: 'back'): void;
+}>();
+
+const BackButton = soraStakingLazyComponent(SoraStakingComponents.BackButton);
 </script>
 
 <style lang="scss" scoped>

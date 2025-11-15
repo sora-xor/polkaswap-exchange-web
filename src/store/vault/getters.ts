@@ -1,4 +1,4 @@
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@wallet';
 import { defineGetters } from 'direct-vuex';
 
 import { vaultGetterContext } from '@/store/vault';

@@ -1,13 +1,13 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
+import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { SubqueryPoolXYKEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
-import type { SubsquidPoolXYKEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
-import type { ConnectionQueryResponse, PoolXYKEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { SubqueryPoolXYKEntity } from '@wallet/lib/services/indexer/subquery/types';
+import type { SubsquidPoolXYKEntity } from '@wallet/lib/services/indexer/subsquid/types';
+import type { ConnectionQueryResponse, PoolXYKEntity } from '@wallet/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
 

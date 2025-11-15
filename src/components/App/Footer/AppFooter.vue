@@ -1,15 +1,15 @@
 <template>
   <div class="app-status s-flex">
     <a v-if="blockNumber" class="block-number s-flex" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
-      <span class="block-number-icon" /><span>{{ blockNumberFormatted }}</span>
+      <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
     </a>
     <footer-popper
       icon="globe-16"
       panel-class="node"
       :panel-text="nodeConnectionText"
-      :status="nodeConnectionClass"
+      :status="nodeConnectionStatus"
       :action-text="t('selectNodeText')"
-      @action="openNodeSelectionDialog"
+      @action="setSelectNodeDialogVisibility(true)"
     >
       <template #label>
         <span>{{ t('selectNodeConnected') }}</span>
@@ -43,7 +43,7 @@
       icon="wi-fi-16"
       panel-class="internet"
       :panel-text="internetConnectionText"
-      :status="internetConnectionClass"
+      :status="internetConnectionStatus"
       :action-text="t('footer.internet.action')"
       @action="refreshPage"
     >
@@ -59,9 +59,9 @@
       icon="software-cloud-24"
       panel-class="statistics"
       :panel-text="statisticsConnectionText"
-      :status="statisticsConnectionClass"
+      :status="statisticsConnectionStatus"
       :action-text="t('footer.statistics.action')"
-      @action="openIndexerSelectionDialog"
+      @action="setSelectIndexerDialogVisibility(true)"
     >
       <template #label>
         <span>{{ t('footer.statistics.label') }}</span>
@@ -71,37 +71,36 @@
     <div class="sora-logo">
       <span class="sora-logo__title">{{ t('poweredBy') }}</span>
       <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
-        <sora-logo :theme="libraryTheme" />
+        <sora-logo :theme="libraryTheme"></sora-logo>
       </a>
     </div>
     <select-node-dialog
       :connection="appConnection"
       :visibility="selectNodeDialogVisibility"
       :set-visibility="setSelectNodeDialogVisibility"
-    />
-    <statistics-dialog />
-    <no-internet-dialog />
+    ></select-node-dialog>
+    <statistics-dialog></statistics-dialog>
+    <no-internet-dialog></no-internet-dialog>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { getExplorerLinks, WALLET_CONSTS, WALLET_TYPES, connection } from '@wallet';
+import { computed, markRaw, onBeforeUnmount, onMounted } from 'vue';
 
-import { Status } from '@/compat/soramitsu-ui';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Status } from '@soramitsu-ui/ui/types';
+import { useTranslation } from '@/composables/useTranslation';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
 import { Components } from '@/consts';
 import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
-import { state, getter, mutation } from '@/store/decorators';
-import type { FeatureFlags } from '@/store/settings/types';
+import store from '@/store';
+import type { FeatureFlags, SettingsState } from '@/store/settings/types';
 import type { Node } from '@/types/nodes';
-import type { NodesConnection } from '@/utils/connection';
-import { NodesConnection as NodesConnectionClass } from '@/utils/connection';
-
-import { formatLocation } from '../Settings/Node/utils';
+import { NodesConnection } from '@/utils/connection';
+import { settingsStorage } from '@/utils/storage';
+import { formatLocation } from '@/components/App/Settings/Node/utils';
 
 import FooterPopper from './FooterPopper.vue';
 import NoInternetDialog from './NoInternetDialog.vue';
@@ -109,7 +108,7 @@ import NoInternetDialog from './NoInternetDialog.vue';
 /** Max limit provided by navigator.connection.downlink */
 const MAX_INTERNET_CONNECTION_LIMIT = 10;
 
-@Component({
+defineOptions({
   components: {
     SoraLogo,
     FooterPopper,
@@ -117,209 +116,179 @@ const MAX_INTERNET_CONNECTION_LIMIT = 10;
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     StatisticsDialog: lazyComponent(Components.StatisticsDialog),
   },
-})
-export default class AppFooter extends Mixins(TranslationMixin) {
-  // Block explorer
-  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @state.wallet.settings.indexerType private indexerType!: WALLET_CONSTS.IndexerType;
-  @state.wallet.settings.blockNumber blockNumber!: number;
-  @getter.libraryTheme libraryTheme!: Theme;
+});
 
-  get blockExplorerLink(): string | undefined {
-    const links = getExplorerLinks(this.soraNetwork);
-    if (!links.length) {
-      return undefined;
-    }
-    return links[0].value;
+const { t, TranslationConsts } = useTranslation();
+
+const settingsState = computed<Partial<SettingsState>>(() => store.state.settings ?? {});
+const walletSettings = computed(() => store.state.wallet?.settings ?? ({} as Record<string, unknown>));
+
+const soraNetwork = computed(() => walletSettings.value.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>);
+const blockNumber = computed(() => (walletSettings.value.blockNumber as number) ?? 0);
+const indexerType = computed(
+  () => (walletSettings.value.indexerType as WALLET_CONSTS.IndexerType) ?? WALLET_CONSTS.IndexerType.SUBQUERY
+);
+const libraryTheme = computed(() => store.getters?.libraryTheme as Theme);
+
+const fallbackAppConnection = markRaw(new NodesConnection(settingsStorage, markRaw(connection)));
+const appConnection = computed<NodesConnection>(() => {
+  const connectionInstance = settingsState.value.appConnection as NodesConnection | undefined;
+  return connectionInstance ?? fallbackAppConnection;
+});
+const selectNodeDialogVisibility = computed(() => Boolean(settingsState.value.selectNodeDialogVisibility));
+
+const featureFlags = computed(() => (settingsState.value.featureFlags as FeatureFlags) ?? ({} as FeatureFlags));
+
+const indexersData = computed(
+  () =>
+    (walletSettings.value.indexers as Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>) ??
+    ({} as Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>)
+);
+
+const isBrowserOnline = computed(() => Boolean(store.getters?.settings?.isInternetConnectionEnabled));
+const isConnectionStable = computed(() => Boolean(store.getters?.settings?.isInternetConnectionStable));
+const connectionSpeedMb = computed(() => store.getters?.settings?.internetConnectionSpeedMb as number);
+
+const blockExplorerLink = computed(() => getExplorerLinks(soraNetwork.value)?.[0]?.value);
+const blockNumberFormatted = computed(() => new FPNumber(blockNumber.value).toLocaleString());
+
+const connectingNode = computed(() => {
+  const { nodeAddressConnecting, nodeList } = appConnection.value;
+  if (!nodeAddressConnecting) return null;
+  return nodeList.find((node) => node.address === nodeAddressConnecting) ?? null;
+});
+
+const node = computed<Node | null>(() => connectingNode.value ?? appConnection.value.node ?? null);
+
+const isNodeConnected = computed(() => appConnection.value.nodeIsConnected);
+const isNodeConnecting = computed(() => Boolean(connectingNode.value));
+
+const nodeConnectionStatus = computed(() => {
+  if (isNodeConnected.value) return Status.SUCCESS;
+  if (isNodeConnecting.value) return Status.INFO;
+  return Status.ERROR;
+});
+
+const nodeConnectionText = computed(() => {
+  const key = isNodeConnected.value ? 'connected' : isNodeConnecting.value ? 'loading' : 'disconnected';
+  return t(`footer.node.title.${key}`);
+});
+
+const formattedNodeLocation = computed(() => (node.value?.location ? formatLocation(node.value.location) : null));
+
+const nodeLatencyText = computed(() => {
+  const addr = node.value?.address;
+  if (!addr) return '';
+  const latency = appConnection.value.getNodeLatency(addr);
+  return latency != null && isFinite(latency as number) ? `${latency} ms` : '';
+});
+
+const backoffEnabledText = computed(() => (NodesConnection.enableBackoff ? t('connectedText') : t('disabled')));
+const parallelDialEnabledText = computed(() =>
+  NodesConnection.enableParallelDial ? t('connectedText') : t('disabled')
+);
+
+const backoffNextText = computed(() => {
+  if (!NodesConnection.enableBackoff) return '';
+  const ms = appConnection.value.lastReconnectDelayMs;
+  if (!ms) return '';
+  const s = Math.ceil(ms / 1000);
+  return `${s}s (attempt ${appConnection.value.reconnectAttempt})`;
+});
+
+const isDebug = computed(() => Boolean(featureFlags.value?.debug));
+
+const internetConnectionStatus = computed(() => {
+  if (!isBrowserOnline.value) return Status.ERROR;
+  if (!isConnectionStable.value) return Status.WARNING;
+  return Status.SUCCESS;
+});
+
+const internetConnectionText = computed(() => {
+  const key = !isBrowserOnline.value ? 'disabled' : !isConnectionStable.value ? 'unstable' : 'stable';
+  return t(`footer.internet.title.${key}`);
+});
+
+const internetConnectionDesc = computed(() => {
+  const key = !isBrowserOnline.value ? 'disabled' : !isConnectionStable.value ? 'unstable' : 'stable';
+  return t(`footer.internet.desc.${key}`);
+});
+
+const internetConnectionSpeedMbText = computed(() => {
+  if (!connectionSpeedMb.value) return '';
+  const suffix = connectionSpeedMb.value === MAX_INTERNET_CONNECTION_LIMIT ? '≥ ' : '';
+  return `${suffix}${connectionSpeedMb.value} ${TranslationConsts.mbps}`;
+});
+
+const indexerStatus = computed(() => {
+  const currentType = indexerType.value;
+  const statusEntry = indexersData.value?.[currentType];
+  return statusEntry?.status ?? WALLET_TYPES.ConnectionStatus.Loading;
+});
+
+const statisticsConnectionStatus = computed(() => {
+  switch (indexerStatus.value) {
+    case WALLET_TYPES.ConnectionStatus.Unavailable:
+      return Status.ERROR;
+    case WALLET_TYPES.ConnectionStatus.Loading:
+      return Status.INFO;
+    case WALLET_TYPES.ConnectionStatus.Available:
+      return Status.SUCCESS;
+    default:
+      return Status.INFO;
   }
+});
 
-  get blockNumberFormatted(): string {
-    return new FPNumber(this.blockNumber).toLocaleString();
-  }
+const statisticsConnectionText = computed(() => t(`footer.statistics.title.${indexerStatus.value}`));
+const statisticsConnectionDesc = computed(() => t(`footer.statistics.desc.${indexerStatus.value}`));
 
-  // Node connection
-  @state.settings.appConnection appConnection!: NodesConnection;
-  @state.settings.selectNodeDialogVisibility selectNodeDialogVisibility!: boolean;
-  @mutation.settings.setSelectNodeDialogVisibility setSelectNodeDialogVisibility!: (flag: boolean) => void;
-
-  private get connectingNode(): Nullable<Node> {
-    const { nodeAddressConnecting, nodeList } = this.appConnection;
-
-    if (!nodeAddressConnecting) return null;
-
-    return nodeList.find((node) => node.address === nodeAddressConnecting);
-  }
-
-  get isNodeConnected(): boolean {
-    return this.appConnection.nodeIsConnected;
-  }
-
-  private get isNodeConnecting(): boolean {
-    return !!this.connectingNode;
-  }
-
-  private get nodeConnectionStatusKey(): string {
-    if (this.isNodeConnected) return 'connected';
-    if (this.isNodeConnecting) return 'loading';
-    return 'disconnected';
-  }
-
-  get nodeConnectionClass(): Status {
-    if (this.isNodeConnected) return Status.SUCCESS;
-    if (this.isNodeConnecting) return Status.INFO;
-    return Status.ERROR;
-  }
-
-  get nodeConnectionText(): string {
-    return this.t(`footer.node.title.${this.nodeConnectionStatusKey}`);
-  }
-
-  get node(): Nullable<Node> {
-    return this.connectingNode ?? this.appConnection.node;
-  }
-
-  get formattedNodeLocation() {
-    if (!this.node?.location) {
-      return null;
-    }
-    return formatLocation(this.node.location);
-  }
-
-  get nodeLatencyText(): string {
-    const addr = this.node?.address;
-    if (!addr) return '';
-    const t = this.appConnection.getNodeLatency(addr);
-    return t != null && isFinite(t as number) ? `${t} ms` : '';
-  }
-
-  get backoffEnabledText(): string {
-    return NodesConnectionClass.enableBackoff ? this.t('connectedText') : this.t('disabled');
-  }
-
-  get parallelDialEnabledText(): string {
-    return NodesConnectionClass.enableParallelDial ? this.t('connectedText') : this.t('disabled');
-  }
-
-  get backoffNextText(): string {
-    if (!NodesConnectionClass.enableBackoff) return '';
-    const ms = this.appConnection.lastReconnectDelayMs;
-    if (!ms) return '';
-    const s = Math.ceil(ms / 1000);
-    return `${s}s (attempt ${this.appConnection.reconnectAttempt})`;
-  }
-
-  @state.settings.featureFlags private featureFlags!: FeatureFlags;
-  get isDebug(): boolean {
-    return !!this.featureFlags?.debug;
-  }
-
-  async runLatencyProbe(): Promise<void> {
-    await this.appConnection.testLatency();
-  }
-
-  toggleBackoff(): void {
-    NodesConnectionClass.enableBackoff = !NodesConnectionClass.enableBackoff;
-  }
-
-  toggleParallel(): void {
-    NodesConnectionClass.enableParallelDial = !NodesConnectionClass.enableParallelDial;
-  }
-
-  openNodeSelectionDialog(): void {
-    this.setSelectNodeDialogVisibility(true);
-  }
-
-  openIndexerSelectionDialog(): void {
-    this.setSelectIndexerDialogVisibility(true);
-  }
-
-  // Internet connection
-  @mutation.settings.setInternetConnectionEnabled private setEnabled!: VoidFunction;
-  @mutation.settings.setInternetConnectionDisabled private setDisabled!: VoidFunction;
-  @mutation.settings.setInternetConnectionSpeed private setSpeedMb!: VoidFunction;
-  @getter.settings.isInternetConnectionEnabled private isInternetConnectionEnabled!: boolean;
-  @getter.settings.isInternetConnectionStable private isInternetConnectionStable!: boolean;
-  @getter.settings.internetConnectionSpeedMb internetConnectionSpeedMb!: number;
-
-  private get internetStatusKey(): string {
-    if (!this.isInternetConnectionEnabled) return 'disabled';
-    if (!this.isInternetConnectionStable) return 'unstable';
-    return 'stable';
-  }
-
-  get internetConnectionClass(): Status {
-    if (!this.isInternetConnectionEnabled) return Status.ERROR;
-    if (!this.isInternetConnectionStable) return Status.WARNING;
-    return Status.SUCCESS;
-  }
-
-  get internetConnectionText(): string {
-    return this.t(`footer.internet.title.${this.internetStatusKey}`);
-  }
-
-  get internetConnectionDesc(): string {
-    return this.t(`footer.internet.desc.${this.internetStatusKey}`);
-  }
-
-  get internetConnectionSpeedMbText(): string {
-    if (!this.internetConnectionSpeedMb) return '';
-    const suffix = this.internetConnectionSpeedMb === MAX_INTERNET_CONNECTION_LIMIT ? '≥ ' : '';
-    return `${suffix}${this.internetConnectionSpeedMb} ${this.TranslationConsts.mbps}`;
-  }
-
-  refreshPage(): void {
-    window.location.reload();
-  }
-
-  // Statistics connection
-  @state.wallet.settings.indexers private indexersData!: Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>;
-  @mutation.settings.setSelectIndexerDialogVisibility private setSelectIndexerDialogVisibility!: (
-    flag: boolean
-  ) => void;
-
-  showStatisticsDialog = false;
-
-  get indexerStatus(): WALLET_TYPES.ConnectionStatus {
-    return this.indexersData[this.indexerType].status;
-  }
-
-  get statisticsConnectionClass(): Status {
-    switch (this.indexerStatus) {
-      case WALLET_TYPES.ConnectionStatus.Unavailable:
-        return Status.ERROR;
-      case WALLET_TYPES.ConnectionStatus.Loading:
-        return Status.INFO;
-      case WALLET_TYPES.ConnectionStatus.Available:
-        return Status.SUCCESS;
-      default:
-        return Status.INFO;
-    }
-  }
-
-  get statisticsConnectionText(): string {
-    return this.t(`footer.statistics.title.${this.indexerStatus}`);
-  }
-
-  get statisticsConnectionDesc(): string {
-    return this.t(`footer.statistics.desc.${this.indexerStatus}`);
-  }
-
-  openStatisticsDialog(): void {
-    this.showStatisticsDialog = true;
-  }
-
-  created(): void {
-    window.addEventListener('offline', this.setDisabled);
-    window.addEventListener('online', this.setEnabled);
-    (navigator as any)?.connection?.addEventListener('change', this.setSpeedMb);
-  }
-
-  beforeDestroy(): void {
-    window.removeEventListener('offline', this.setDisabled);
-    window.removeEventListener('online', this.setEnabled);
-    (navigator as any)?.connection?.removeEventListener('change', this.setSpeedMb);
-  }
+function setSelectNodeDialogVisibility(flag: boolean): void {
+  store.commit?.settings?.setSelectNodeDialogVisibility?.(flag);
 }
+
+function setSelectIndexerDialogVisibility(flag: boolean): void {
+  store.commit?.settings?.setSelectIndexerDialogVisibility?.(flag);
+}
+
+async function runLatencyProbe(): Promise<void> {
+  await appConnection.value.testLatency();
+}
+
+function toggleBackoff(): void {
+  NodesConnection.enableBackoff = !NodesConnection.enableBackoff;
+}
+
+function toggleParallel(): void {
+  NodesConnection.enableParallelDial = !NodesConnection.enableParallelDial;
+}
+
+function refreshPage(): void {
+  window.location.reload();
+}
+
+function handleOffline(): void {
+  store.commit?.settings?.setInternetConnectionDisabled?.();
+}
+
+function handleOnline(): void {
+  store.commit?.settings?.setInternetConnectionEnabled?.();
+}
+
+function handleConnectionChange(): void {
+  store.commit?.settings?.setInternetConnectionSpeed?.();
+}
+
+onMounted(() => {
+  window.addEventListener('offline', handleOffline);
+  window.addEventListener('online', handleOnline);
+  (navigator as any)?.connection?.addEventListener('change', handleConnectionChange);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('offline', handleOffline);
+  window.removeEventListener('online', handleOnline);
+  (navigator as any)?.connection?.removeEventListener('change', handleConnectionChange);
+});
 </script>
 
 <style lang="scss" scoped>

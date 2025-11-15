@@ -1,26 +1,50 @@
 <template>
-  <s-button :class="['svg-icon-button', { 's-pressed': active }]" type="action" v-bind="$attrs" v-on="$listeners">
-    <component :is="icon" />
+  <s-button :class="classes" type="action" v-bind="attrs">
+    <component :is="iconComponent"></component>
   </s-button>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, defineAsyncComponent, useAttrs } from 'vue';
 
 import { SvgIcons } from './icons';
 
-const components = {
-  [SvgIcons.LineIcon]: () => import('./Icons/Line.vue'),
-  [SvgIcons.CandleIcon]: () => import('./Icons/Candle.vue'),
-};
+const createIconLoader = (loader: () => Promise<unknown>) =>
+  defineAsyncComponent({
+    loader,
+    suspensible: false,
+  });
 
-@Component({
-  components,
-})
-export default class SvgIconButton extends Vue {
-  @Prop({ default: false, type: Boolean }) readonly active!: boolean;
-  @Prop({ default: '', type: String }) readonly icon!: SvgIcons;
-}
+const iconComponents = {
+  [SvgIcons.LineIcon]: createIconLoader(() => import('@/components/shared/Button/SvgIconButton/Icons/Line.vue')),
+  [SvgIcons.CandleIcon]: createIconLoader(() => import('@/components/shared/Button/SvgIconButton/Icons/Candle.vue')),
+} as const;
+
+defineOptions({
+  name: 'SvgIconButton',
+  inheritAttrs: false,
+});
+
+const props = withDefaults(
+  defineProps<{
+    active?: boolean;
+    icon?: SvgIcons;
+  }>(),
+  {
+    active: false,
+    icon: undefined,
+  }
+);
+
+const attrs = useAttrs();
+
+const classes = computed(() => ['svg-icon-button', { 's-pressed': props.active }]);
+const iconComponent = computed(() => (props.icon ? (iconComponents[props.icon] ?? null) : null));
+
+defineExpose({
+  classes,
+  iconComponent,
+});
 </script>
 
 <style lang="scss">

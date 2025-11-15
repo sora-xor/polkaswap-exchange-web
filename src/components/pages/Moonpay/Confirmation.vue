@@ -1,18 +1,12 @@
 <template>
   <confirm-bridge-transaction-dialog
-    :visible.sync="visibility"
+    v-bind="{ ...forwardedAttrs, ...modalData }"
+    v-model:visible="visibility"
     :confirm-button-text="t('moonpay.buttons.transfer')"
-    v-bind="{
-      ...modalData,
-      ...$attrs,
-    }"
-    v-on="{
-      confirm: startBridgeForMoonpayTransaction,
-      ...$listeners,
-    }"
+    @confirm="handleConfirm"
   >
     <template #title>
-      <moonpay-logo :theme="libraryTheme" />
+      <moonpay-logo :theme="libraryTheme"></moonpay-logo>
     </template>
     <template #content-title>
       <div class="moonpay-confirmation__title">
@@ -22,52 +16,94 @@
   </confirm-bridge-transaction-dialog>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ETH } from '@sora-substrate/sdk/build/assets/consts';
-import { Component, Mixins } from 'vue-property-decorator';
+import { computed, useAttrs } from 'vue';
 
-import MoonpayBridgeInitMixin from '@/components/pages/Moonpay/BridgeInitMixin';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
+import { useMoonpayBridge } from '@/composables/useMoonpayBridge';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
-import { Theme } from '@/consts/theme';
+import type { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
 
-@Component({
+import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+
+defineOptions({
   components: {
     MoonpayLogo,
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
   },
-})
-export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) {
-  @state.moonpay.confirmationVisibility private confirmationVisibility!: boolean;
+});
 
-  @getter.libraryTheme libraryTheme!: Theme;
+const attrs = useAttrs();
+const emit = defineEmits<{
+  (event: 'confirm'): void;
+}>();
 
-  get visibility(): boolean {
-    return this.confirmationVisibility;
-  }
+const { t } = useTranslation();
+const { bridgeTransactionData, getAsset, startBridgeForMoonpayTransaction, setConfirmationVisibility } =
+  useMoonpayBridge();
 
-  set visibility(flag: boolean) {
-    this.setConfirmationVisibility(flag);
-  }
+const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
 
-  get modalData(): any {
-    if (!this.bridgeTransactionData) return {};
+const visibility = computed({
+  get: () => Boolean(store.state.moonpay.confirmationVisibility),
+  set: (flag: boolean) => {
+    setConfirmationVisibility(flag);
+  },
+});
 
-    return {
-      isSoraToEvm: false,
-      amount: this.bridgeTransactionData.amount,
-      amount2: this.bridgeTransactionData.amount2,
-      asset: this.getAsset[this.bridgeTransactionData.assetAddress as string],
-      nativeAsset: this.getAsset[ETH.address],
-      network: this.bridgeTransactionData.externalNetwork,
-      networkType: this.bridgeTransactionData.externalNetworkType,
-      externalNetworkFee: this.bridgeTransactionData.externalNetworkFee,
-      soraNetworkFee: this.bridgeTransactionData.soraNetworkFee,
-    };
-  }
-}
+const modalData = computed(() => {
+  const data = bridgeTransactionData.value as EthHistory | null;
+
+  if (!data) return {};
+
+  const asset = getAsset(data.assetAddress as string) as RegisteredAccountAsset | undefined;
+  const nativeAsset = getAsset(ETH.address) as RegisteredAccountAsset | undefined;
+
+  return {
+    isSoraToEvm: false,
+    amount: data.amount,
+    amount2: data.amount2,
+    asset,
+    nativeAsset,
+    network: data.externalNetwork,
+    networkType: data.externalNetworkType,
+    externalNetworkFee: data.externalNetworkFee,
+    soraNetworkFee: data.soraNetworkFee,
+  };
+});
+
+const forwardedAttrs = computed<Record<string, unknown>>(() => {
+  const entries = Object.entries(attrs as Record<string, unknown>);
+  return entries.reduce<Record<string, unknown>>((acc, [key, value]) => {
+    if (key !== 'onConfirm') {
+      acc[key] = value;
+    }
+    return acc;
+  }, {});
+});
+
+const handleConfirm = async () => {
+  await startBridgeForMoonpayTransaction();
+  emit('confirm');
+};
+
+defineExpose({
+  get visibility() {
+    return visibility.value;
+  },
+  set visibility(value: boolean) {
+    visibility.value = value;
+  },
+  get modalData() {
+    return modalData.value;
+  },
+  handleConfirm,
+});
 </script>
 
 <style lang="scss" scoped>

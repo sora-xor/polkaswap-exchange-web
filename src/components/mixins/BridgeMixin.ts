@@ -1,6 +1,6 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { mixins as walletMixins } from '@wallet';
+import { Options, mixins as vueMixins } from 'vue-property-decorator';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { PageNames } from '@/consts';
@@ -10,8 +10,8 @@ import { getter, state } from '@/store/decorators';
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component
-export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
+@Options({})
+export default class BridgeMixin extends vueMixins(walletMixins.LoadingMixin, WalletConnectMixin) {
   @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
   @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<FPNumber>;
   @state.bridge.assetExternalMinBalance assetExternalMinBalance!: CodecString;

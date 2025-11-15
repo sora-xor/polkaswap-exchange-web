@@ -1,5 +1,5 @@
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS, WALLET_TYPES } from '@wallet';
 import { defineGetters } from 'direct-vuex';
 
 import { EVM_NETWORKS } from '@/consts/evm';

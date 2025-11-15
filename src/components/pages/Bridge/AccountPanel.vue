@@ -1,16 +1,16 @@
 <template>
   <div v-if="address" class="account-panel">
-    <s-divider type="tertiary" />
+    <s-divider type="tertiary"></s-divider>
 
     <div class="account-group">
       <slot name="icon">
         <img v-if="icon" :src="icon" alt="provider icon" class="account-group-logo" />
-        <wallet-avatar v-else :address="address" :size="18" class="account-gravatar" />
+        <wallet-avatar v-else :address="address" :size="18" class="account-gravatar"></wallet-avatar>
       </slot>
       <span v-if="name" class="account-group-name">
         {{ name }}
       </span>
-      <formatted-address :value="address" :symbols="12" :tooltip-text="tooltip" />
+      <formatted-address :value="address" :symbols="12" :tooltip-text="tooltip"></formatted-address>
     </div>
 
     <div class="account-group">
@@ -34,31 +34,46 @@
   </s-button>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 
-@Component({
+defineOptions({
   components: {
     WalletAvatar: components.WalletAvatar,
     FormattedAddress: components.FormattedAddress,
   },
-})
-export default class BridgeAccountPanel extends Mixins(mixins.CopyAddressMixin, TranslationMixin) {
-  @Prop({ default: '', type: String }) readonly address!: string;
-  @Prop({ default: '', type: String }) readonly name!: string;
-  @Prop({ default: '', type: String }) readonly tooltip!: string;
-  @Prop({ default: '', type: String }) readonly icon!: string;
+});
 
-  handleConnect(): void {
-    this.$emit('connect');
+const props = withDefaults(
+  defineProps<{
+    address?: string;
+    name?: string;
+    tooltip?: string;
+    icon?: string;
+  }>(),
+  {
+    address: '',
+    name: '',
+    tooltip: '',
+    icon: '',
   }
+);
 
-  handleDisconnect(): void {
-    this.$emit('disconnect');
-  }
+const emit = defineEmits<{
+  (e: 'connect'): void;
+  (e: 'disconnect'): void;
+}>();
+
+const { t } = useTranslation();
+
+function handleConnect(): void {
+  emit('connect');
+}
+
+function handleDisconnect(): void {
+  emit('disconnect');
 }
 </script>
 

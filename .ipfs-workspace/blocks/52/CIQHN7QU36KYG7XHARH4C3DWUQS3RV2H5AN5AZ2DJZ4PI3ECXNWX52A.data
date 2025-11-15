@@ -1,0 +1,3 @@
+
+¾¶.asset-owner-details-container[data-v-4deb0e1f]{display:flex;gap:16px}.asset-owner-details-container.empty[data-v-4deb0e1f]{height:calc(100dvh - 96px)}.asset-owner-details-container .details-card[data-v-4deb0e1f]{margin-bottom:24px}.asset-balance[data-v-4deb0e1f],.asset-supply[data-v-4deb0e1f],.asset-title[data-v-4deb0e1f]{align-items:center}.asset-balance__info[data-v-4deb0e1f],.asset-supply__info[data-v-4deb0e1f],.asset-title__text[data-v-4deb0e1f]{flex:1}.asset__value[data-v-4deb0e1f]{font-size:20px}.asset-supply-actions[data-v-4deb0e1f]{margin-bottom:8px}
+¶

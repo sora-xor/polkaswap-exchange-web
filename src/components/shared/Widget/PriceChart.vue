@@ -2,7 +2,7 @@
   <base-widget v-bind="$attrs">
     <template #title>
       <slot name="title">
-        <tokens-row border :assets="tokens" size="medium" />
+        <tokens-row border :assets="tokens" size="medium"></tokens-row>
         <div v-if="tokenA" class="token-title">
           <span>{{ tokenA.symbol }}</span>
           <span v-if="tokenB">/{{ tokenB.symbol }}</span>
@@ -16,7 +16,7 @@
           alternative
           icon="arrows-swap-90-24"
           @click="revertChart"
-        />
+        ></s-button>
       </slot>
     </template>
 
@@ -27,7 +27,7 @@
         :value="selectedFilter"
         :disabled="chartIsLoading"
         @input="changeFilter"
-      />
+      ></stats-filter>
       <svg-icon-button
         v-for="{ type, icon, active } in chartTypeButtons"
         :key="type"
@@ -36,11 +36,11 @@
         :disabled="chartIsLoading"
         size="small"
         @click="selectChartType(type)"
-      />
+      ></svg-icon-button>
     </template>
 
     <template #types>
-      <slot name="types" />
+      <slot name="types"></slot>
     </template>
 
     <chart-skeleton
@@ -56,8 +56,8 @@
         :font-size-rate="FontWeightRate.MEDIUM"
         :asset-symbol="symbol"
         symbol-as-decimal
-      />
-      <price-change v-if="!isFetchingError" :value="priceChange" />
+      ></formatted-amount>
+      <price-change v-if="!isFetchingError" :value="priceChange"></price-change>
       <v-chart
         ref="chart"
         class="chart"
@@ -66,50 +66,51 @@
         autoresize
         @zr:mousewheel="handleZoom"
         @datazoom="changeZoomLevel"
-      />
+      ></v-chart>
     </chart-skeleton>
   </base-widget>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, mixins, WALLET_CONSTS, SUBQUERY_TYPES, getCurrentIndexer } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_CONSTS, SUBQUERY_TYPES, getCurrentIndexer } from '@wallet';
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
 import pick from 'lodash/fp/pick';
-import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 
-import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
+import { useChartSpec } from '@/composables/useChartSpec';
+import { useLoading } from '@/composables/useLoading';
+import { createThemePalette, useThemePalette } from '@/composables/useThemePalette';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
 import { fetchAssetPriceData } from '@/indexer/queries/asset/price';
 import { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
-import type { OCLH, SnapshotItem, RequestMethod, RequestSubscription } from '@/types/chart';
-import { Timeframes } from '@/types/filters';
-import type { SnapshotFilter } from '@/types/filters';
+import store from '@/store';
 import {
-  debouncedInputHandler,
-  getTextWidth,
   calcPriceChange,
-  formatDecimalPlaces,
+  debouncedInputHandler,
   formatAmountWithSuffix,
+  formatDecimalPlaces,
   getCurrency,
+  getTextWidth,
 } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { PageInfo } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
-import type { Currency, CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
+import type { PageInfo } from '@wallet/lib/services/indexer/types';
+import type { Currency, CurrencyFields } from '@wallet/lib/types/currency';
+import type { OCLH, RequestMethod, RequestSubscription, SnapshotItem } from '@/types/chart';
+import { Timeframes } from '@/types/filters';
+import type { SnapshotFilter } from '@/types/filters';
+import type { FnWithoutArgs, Nullable } from '@/types/common';
 
 const USD_SYMBOL = 'USD';
 
-/** "timestamp", "open", "close", "low", "high", "volume" data */
 type ChartDataItem = [number, ...OCLH, number];
-
 type LastUpdates = Record<string, SnapshotItem>;
-
 type Snapshot = {
   nodes: SnapshotItem[];
   hasNextPage: boolean;
@@ -119,7 +120,6 @@ type Snapshot = {
 enum CHART_TYPES {
   LINE = 'line',
   CANDLE = 'candlestick',
-  BAR = 'bar',
 }
 
 const CHART_TYPE_ICONS = {
@@ -128,57 +128,26 @@ const CHART_TYPE_ICONS = {
 };
 
 const LINE_CHART_FILTERS: SnapshotFilter[] = [
-  {
-    name: Timeframes.FIVE_MINUTES,
-    label: '5m',
-    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
-    count: 48, // 5 mins in 4 hours
-  },
+  { name: Timeframes.FIVE_MINUTES, label: '5m', type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT, count: 48 },
   {
     name: Timeframes.FIFTEEN_MINUTES,
     label: '15m',
     type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
-    count: 48 * 3, // 5 mins in 12 hours,
-    group: 3, // 5 min in 15 min
+    count: 48 * 3,
+    group: 3,
   },
   {
     name: Timeframes.THIRTY_MINUTES,
     label: '30m',
     type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
-    count: 48 * 6, // 5 mins in 24 hours,
-    group: 6, // 5 min in 30 min
+    count: 48 * 6,
+    group: 6,
   },
-  {
-    name: Timeframes.HOUR,
-    label: '1H',
-    type: SUBQUERY_TYPES.SnapshotTypes.HOUR,
-    count: 48, // hours in 2 days,
-  },
-  {
-    name: Timeframes.FOUR_HOURS,
-    label: '4H',
-    type: SUBQUERY_TYPES.SnapshotTypes.HOUR,
-    count: 48 * 4, // hours in 4 days,
-    group: 4, // 1 hour in 4 hours
-  },
-  {
-    name: Timeframes.DAY,
-    label: '1D',
-    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
-    count: 90, // days in 1 month
-  },
-  {
-    name: Timeframes.YEAR,
-    label: '1Y',
-    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
-    count: 365, // days in year
-  },
-  {
-    name: Timeframes.ALL,
-    label: 'ALL',
-    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
-    count: Infinity,
-  },
+  { name: Timeframes.HOUR, label: '1H', type: SUBQUERY_TYPES.SnapshotTypes.HOUR, count: 48 },
+  { name: Timeframes.FOUR_HOURS, label: '4H', type: SUBQUERY_TYPES.SnapshotTypes.HOUR, count: 48 * 4, group: 4 },
+  { name: Timeframes.DAY, label: '1D', type: SUBQUERY_TYPES.SnapshotTypes.DAY, count: 90 },
+  { name: Timeframes.YEAR, label: '1Y', type: SUBQUERY_TYPES.SnapshotTypes.DAY, count: 365 },
+  { name: Timeframes.ALL, label: 'ALL', type: SUBQUERY_TYPES.SnapshotTypes.DAY, count: Infinity },
 ];
 
 const LABEL_PADDING = 4;
@@ -191,52 +160,36 @@ const AXIS_LABEL_CSS = {
 };
 
 const SYNC_INTERVAL = 6 * 1000;
-
 const ZOOM_ID = 'chartZoom';
 
-const requestSubscription = (callback: VoidFunction): VoidFunction => {
+const defaultRequestSubscription = (callback: VoidFunction): VoidFunction => {
   const sub = setInterval(callback, SYNC_INTERVAL * 5);
   const unsub = () => clearInterval(sub);
-
   return unsub;
 };
 
 const signific =
   (value: FPNumber) =>
-  (positive: string, negative: string, zero: string): string => {
-    if (FPNumber.gt(value, FPNumber.ZERO)) return positive;
-
-    return FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
-  };
+  (positive: string, negative: string, zero: string): string =>
+    FPNumber.gt(value, FPNumber.ZERO) ? positive : FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
 
 const formatChange = (value: FPNumber): string => {
   const sign = signific(value)('+', '', '');
   const priceChange = formatDecimalPlaces(value, true);
-
   return `${sign}${priceChange}`;
 };
 
-const formatAmount = (value: FPNumber, precision: number) => {
-  return value.toLocaleString(precision);
-};
-
-const formatPrice = (value: FPNumber, precision: number, symbol: string) => {
-  return `${formatAmount(value, precision)} ${symbol}`;
-};
-
-const dividePrice = (priceA: number, priceB: number): number => {
-  return priceB !== 0 ? priceA / priceB : 0;
-};
-
-const dividePrices = (priceA: OCLH, priceB: OCLH): OCLH => {
-  return priceA.map((price, index) => dividePrice(price, priceB[index])) as OCLH;
-};
+const formatAmount = (value: FPNumber, precision: number) => value.toLocaleString(precision);
+const formatPrice = (value: FPNumber, precision: number, symbol: string) =>
+  `${formatAmount(value, precision)} ${symbol}`;
+const dividePrice = (priceA: number, priceB: number): number => (priceB !== 0 ? priceA / priceB : 0);
+const dividePrices = (priceA: OCLH, priceB: OCLH): OCLH =>
+  priceA.map((price, index) => dividePrice(price, priceB[index])) as OCLH;
 
 const mergeSnapshots = (a: Nullable<SnapshotItem>, b: Nullable<SnapshotItem>): SnapshotItem => {
   const timestamp = (a?.timestamp ?? b?.timestamp) as number;
   const price = b?.price && a?.price ? dividePrices(a.price, b.price) : (a?.price ?? [0, 0, 0, 0]);
   const volume = b?.volume && a?.volume ? Math.min(b.volume, a.volume) : (a?.volume ?? 0);
-
   return { timestamp, price, volume };
 };
 
@@ -267,20 +220,17 @@ const normalizeSnapshots = (
 
 const getPrecision = (value: number): number => {
   let precision = 2;
-
   if (value === 0 || !Number.isFinite(value)) return precision;
-
   let abs = Math.abs(value);
-
   while (Math.floor(abs) <= 0) {
-    abs = abs * 10;
+    abs *= 10;
     precision++;
   }
-
   return precision;
 };
 
-@Component({
+defineOptions({
+  name: 'PriceChartWidget',
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
@@ -291,763 +241,656 @@ const getPrecision = (value: number): number => {
     StatsFilter: lazyComponent(Components.StatsFilter),
     ChartSkeleton: lazyComponent(Components.ChartSkeleton),
   },
-})
-export default class PriceChartWidget extends Mixins(
-  ChartSpecMixin,
-  mixins.LoadingMixin,
-  mixins.NumberFormatterMixin,
-  mixins.FormattedAmountMixin
-) {
-  @state.wallet.settings.currency private currency!: Currency;
-  @state.wallet.settings.currencies private currencies!: Array<CurrencyFields>;
-  @getter.wallet.settings.exchangeRate private exchangeRate!: number;
-  @getter.wallet.settings.currencySymbol private currencySymbol!: string;
+});
 
-  @Prop({ default: () => null, type: Object }) readonly baseAsset!: Nullable<AccountAsset>;
-  @Prop({ default: () => null, type: Object }) readonly quoteAsset!: Nullable<AccountAsset>;
-  @Prop({ default: () => null, type: String }) readonly requestEntityId!: Nullable<string>;
-  @Prop({ default: fetchAssetPriceData, type: Function }) readonly requestMethod!: RequestMethod;
-  @Prop({ default: requestSubscription, type: Function }) readonly requestSubscription!: RequestSubscription;
-  @Prop({ default: false, type: Boolean }) readonly isAvailable!: boolean;
+const props = withDefaults(
+  defineProps<{
+    baseAsset?: Nullable<AccountAsset>;
+    quoteAsset?: Nullable<AccountAsset>;
+    requestEntityId?: Nullable<string>;
+    requestMethod?: RequestMethod;
+    requestSubscription?: RequestSubscription;
+    isAvailable?: boolean;
+    parentLoading?: boolean;
+  }>(),
+  {
+    baseAsset: null,
+    quoteAsset: null,
+    requestEntityId: null,
+    requestMethod: fetchAssetPriceData,
+    requestSubscription: defaultRequestSubscription,
+    isAvailable: false,
+    parentLoading: false,
+  }
+);
 
-  @Watch('inputTokensAddresses')
-  private handleTokensChange(current: string[], prev: string[]): void {
-    if (!isEqual(current)(prev)) {
-      const currentChartPair = this.isReversedChart ? [...prev].reverse() : prev;
+const parentLoading = computed(() => props.parentLoading ?? false);
+const { loading, withApi } = useLoading({ parentLoading });
+const { t } = useTranslation();
+const { theme } = useThemePalette();
+const palette = computed(() => theme.value ?? createThemePalette());
+const { gridSpec, xAxisSpec, yAxisSpec, tooltipSpec, lineSeriesSpec, barSeriesSpec, candlestickSeriesSpec } =
+  useChartSpec();
 
-      this.isReversedChart = false;
+const FontWeightRate = WALLET_CONSTS.FontWeightRate;
+const currency = computed<Nullable<Currency>>(() => store.state.wallet?.settings?.currency);
+const currencies = computed<CurrencyFields[]>(() => store.state.wallet?.settings?.currencies ?? []);
+const exchangeRate = computed(() => store.state.wallet?.settings?.exchangeRate ?? 1);
+const currencySymbol = computed(() => store.state.wallet?.settings?.currencySymbol ?? USD_SYMBOL);
 
-      if (!isEqual(current)(currentChartPair)) {
-        this.forceUpdatePrices();
+const chart = ref<any>(null);
+const isFetchingError = ref(false);
+const dataset = ref<readonly SnapshotItem[]>(Object.freeze([]));
+const zoomStart = ref(0);
+const zoomEnd = ref(100);
+const precision = ref(2);
+const limits = reactive({ min: Infinity, max: 0 });
+const chartType = ref<CHART_TYPES>(CHART_TYPES.LINE);
+const selectedFilter = ref<SnapshotFilter>(LINE_CHART_FILTERS[0]);
+const isReversedChart = ref(false);
+
+let snapshotBuffer: Record<string, readonly SnapshotItem[]> = {};
+let pageInfos: Record<string, Partial<PageInfo>> = {};
+const priceUpdateRequestId = ref(0);
+let priceUpdateSubscription: Nullable<FnWithoutArgs> = null;
+let priceUpdateTimestampSync: Nullable<ReturnType<typeof setInterval>> = null;
+
+const baseAsset = computed(() => props.baseAsset ?? null);
+const quoteAsset = computed(() => props.quoteAsset ?? null);
+
+const inputTokensAddresses = computed(() => {
+  const filtered = [baseAsset.value, quoteAsset.value].filter((token): token is AccountAsset => Boolean(token));
+  return filtered.map((token) => token.address);
+});
+
+const tokenA = computed(() => (isReversedChart.value ? quoteAsset.value : baseAsset.value));
+const tokenB = computed(() => (isReversedChart.value ? baseAsset.value : quoteAsset.value));
+const tokens = computed(() => [tokenA.value, tokenB.value].filter((token): token is AccountAsset => Boolean(token)));
+const tokensAddresses = computed(() => tokens.value.map((token) => token.address));
+const isTokensPair = computed(() => tokensAddresses.value.length === 2);
+const reversible = computed(() => isTokensPair.value && !props.requestEntityId);
+const entities = computed(() => (props.requestEntityId ? [props.requestEntityId] : tokensAddresses.value));
+
+const fallbackFiatSymbol = computed(
+  () => getCurrency(currency.value as Currency, currencies.value)?.key.toUpperCase() ?? USD_SYMBOL
+);
+const symbol = computed(() => tokenB.value?.symbol ?? fallbackFiatSymbol.value);
+
+const chartTypeButtons = computed(() =>
+  [CHART_TYPES.LINE, CHART_TYPES.CANDLE].map((type) => ({
+    type,
+    icon: CHART_TYPE_ICONS[type],
+    active: chartType.value === type,
+  }))
+);
+
+const filters = LINE_CHART_FILTERS;
+const chartIsLoading = computed(() => parentLoading.value || loading.value);
+const currentPrice = computed(() => new FPNumber(dataset.value[0]?.price[1] ?? 0));
+const currentPriceFormatted = computed(() => toAmount(currentPrice.value, precision.value));
+
+const timeDifference = computed(() => SECONDS_IN_TYPE[selectedFilter.value.type] * 1000);
+
+const chartData = computed<readonly ChartDataItem[]>(() => {
+  const ordered = dataset.value.slice().reverse();
+  const group = selectedFilter.value.group;
+  const groups: ChartDataItem[] = [];
+
+  for (let i = 0; i < ordered.length; i++) {
+    if (!group || i % group === 0) {
+      groups.push([ordered[i].timestamp, ...ordered[i].price, ordered[i].volume]);
+    } else {
+      const lastGroup = last(groups);
+      if (lastGroup) {
+        lastGroup[2] = ordered[i].price[1];
+        lastGroup[3] = Math.min(lastGroup[3], ordered[i].price[2]);
+        lastGroup[4] = Math.max(lastGroup[4], ordered[i].price[3]);
+        lastGroup[5] = lastGroup[5] + (ordered[i].volume ?? 0);
       }
     }
   }
 
-  isFetchingError = false;
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
+  return Object.freeze(groups);
+});
 
-  // ordered by timestamp DESC
-  private snapshotBuffer: Record<string, readonly SnapshotItem[]> = {};
-  private pageInfos: Record<string, Partial<PageInfo>> = {};
-  private dataset: readonly SnapshotItem[] = [];
-  private zoomStart = 0; // percentage of zoom start position
-  private zoomEnd = 100; // percentage of zoom end position
-  private precision = 2;
-  private limits = {
-    min: Infinity,
-    max: 0,
+const chartKey = computed(() =>
+  isTokensPair.value ? undefined : `price-chart-${symbol.value}-rate-${exchangeRate.value}`
+);
+
+const visibleChartItemsRange = computed<[number, number]>(() => {
+  const itemsCount = chartData.value.length;
+  if (!itemsCount) return [0, 0];
+
+  const startIndex = Math.floor((itemsCount * zoomStart.value) / 100);
+  const endIndex = Math.max(Math.ceil((itemsCount * zoomEnd.value) / 100) - 1, startIndex);
+
+  return [startIndex, endIndex];
+});
+
+const priceChange = computed(() => {
+  const [startIndex, endIndex] = visibleChartItemsRange.value;
+  const rangeStartPrice = new FPNumber(chartData.value[startIndex]?.[2] ?? 0);
+  const rangeClosePrice = new FPNumber(chartData.value[endIndex]?.[2] ?? 0);
+  return calcPriceChange(rangeClosePrice, rangeStartPrice);
+});
+
+const gridLeftOffset = computed(() => {
+  const maxLabel = limits.max * 10;
+  const axisLabelWidth = getTextWidth(
+    new FPNumber(maxLabel).toLocaleString(precision.value),
+    AXIS_LABEL_CSS.fontFamily,
+    AXIS_LABEL_CSS.fontSize
+  );
+
+  return AXIS_OFFSET + 2 * LABEL_PADDING + axisLabelWidth;
+});
+
+const chartSpec = computed(() => {
+  const withVolume = entities.value.length === 1;
+  const priceGrid = gridSpec({ top: 20, left: gridLeftOffset.value });
+  const volumeGrid = gridSpec({ height: 72, left: gridLeftOffset.value });
+
+  const priceXAxis = xAxisSpec({
+    boundaryGap: chartType.value === CHART_TYPES.LINE ? false : [0.005, 0.005],
+    axisLabel: { show: true },
+    axisLine: {
+      show: true,
+      lineStyle: { color: palette.value.color.base.content.tertiary },
+    },
+    axisPointer: { label: { show: true } },
+  });
+
+  const volumeXAxis = xAxisSpec({
+    gridIndex: 1,
+    boundaryGap: false,
+    axisLabel: { show: true },
+    axisPointer: { type: 'none' },
+  });
+
+  const priceYAxis = yAxisSpec({
+    axisLabel: {
+      formatter: (value: number) => toAmount(value, precision.value),
+      showMaxLabel: false,
+      showMinLabel: false,
+    },
+    axisPointer: {
+      label: {
+        precision: precision.value,
+        formatter: ({ value }: { value: number }) => toAmount(value, precision.value),
+      },
+    },
+    min: 'dataMin',
+    max: 'dataMax',
+  });
+
+  const volumeYAxis = yAxisSpec({
+    gridIndex: 1,
+    splitNumber: 2,
+    axisLabel: {
+      formatter: (value: number) => {
+        const val = new FPNumber(value).mul(exchangeRate.value);
+        const { amount, suffix } = formatAmountWithSuffix(val);
+        return `${amount} ${suffix}`;
+      },
+      showMaxLabel: true,
+    },
+  });
+
+  const dataZoom = {
+    id: ZOOM_ID,
+    type: 'inside',
+    xAxisIndex: [0, 1],
+    start: 0,
+    end: 100,
+    minValueSpan: timeDifference.value * 11,
   };
 
-  updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
-  private forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
-  private priceUpdateRequestId = 0;
-  private priceUpdateSubscription: Nullable<FnWithoutArgs> = null;
-  private priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
+  const tooltip = tooltipSpec({
+    axisPointer: { type: 'cross' },
+    formatter: (params: any[]) => {
+      const { data, seriesType } = params[0];
+      const [, open, close, low, high, volume] = data;
+      const rows: Array<{ title: string; data: string; color?: string }> = [];
+      const closeFp = new FPNumber(close);
 
-  chartType: CHART_TYPES = CHART_TYPES.LINE;
-  selectedFilter: SnapshotFilter = LINE_CHART_FILTERS[0];
-  isReversedChart = false;
+      if (seriesType === CHART_TYPES.CANDLE) {
+        const openFp = new FPNumber(open);
+        const change = calcPriceChange(closeFp, openFp);
+        const changeColor = signific(change)(
+          palette.value.color.status.success,
+          palette.value.color.status.error,
+          palette.value.color.base.content.primary
+        );
 
-  /**
-   * Works the same like `formatAmount` if `isTokensPair === true`.
-   * Otherwise, it converts amount to fiat amount according to the selected fiat + `formatAmount`.
-   */
-  private toAmount(amount: FPNumber | number, precision: number): string {
-    const fp = amount instanceof FPNumber ? amount : new FPNumber(amount);
-    const value = this.isTokensPair ? fp : fp.mul(this.exchangeRate);
-    return formatAmount(value, precision);
-  }
-
-  /**
-   * Works the same like `formatPrice` if `isTokensPair === true`.
-   * Otherwise, it converts amount to fiat amount according to the selected fiat + `formatPrice`.
-   */
-  private toPrice(price: FPNumber | number, precision: number): string {
-    const fp = price instanceof FPNumber ? price : new FPNumber(price);
-    const value = this.isTokensPair ? fp : fp.mul(this.exchangeRate);
-    return formatPrice(value, precision, this.symbol);
-  }
-
-  get chartKey(): string | undefined {
-    if (this.isTokensPair) return undefined;
-    return `price-chart-${this.symbol}-rate-${this.exchangeRate}`;
-  }
-
-  get isLineChart(): boolean {
-    return this.chartType === CHART_TYPES.LINE;
-  }
-
-  get inputTokensAddresses(): string[] {
-    const filtered = [this.baseAsset, this.quoteAsset].filter((token) => !!token) as AccountAsset[];
-
-    return filtered.map((token) => token.address);
-  }
-
-  get tokenA() {
-    return this.isReversedChart ? this.quoteAsset : this.baseAsset;
-  }
-
-  get tokenB() {
-    return this.isReversedChart ? this.baseAsset : this.quoteAsset;
-  }
-
-  get tokens(): AccountAsset[] {
-    return [this.tokenA, this.tokenB].filter((token) => !!token) as AccountAsset[];
-  }
-
-  get tokensAddresses(): string[] {
-    return this.tokens.map((token) => token.address);
-  }
-
-  get isTokensPair(): boolean {
-    return this.tokensAddresses.length === 2;
-  }
-
-  get reversible(): boolean {
-    return this.isTokensPair && !this.requestEntityId;
-  }
-
-  get entities(): string[] {
-    return this.requestEntityId ? [this.requestEntityId] : this.tokensAddresses;
-  }
-
-  get chartTypeButtons(): { type: CHART_TYPES; icon: any; active: boolean }[] {
-    return [CHART_TYPES.LINE, CHART_TYPES.CANDLE].map((type) => ({
-      type,
-      icon: CHART_TYPE_ICONS[type],
-      active: this.chartType === type,
-    }));
-  }
-
-  get filters(): SnapshotFilter[] {
-    return LINE_CHART_FILTERS;
-  }
-
-  get chartIsLoading(): boolean {
-    return this.parentLoading || this.loading;
-  }
-
-  get symbol(): string {
-    return this.tokenB?.symbol ?? (getCurrency(this.currency, this.currencies)?.key.toUpperCase() || USD_SYMBOL);
-  }
-
-  get currentPrice(): FPNumber {
-    return new FPNumber(this.dataset[0]?.price[1] ?? 0); // "close" price
-  }
-
-  get currentPriceFormatted(): string {
-    return this.toAmount(this.currentPrice, this.precision);
-  }
-
-  get isAllHistoricalPricesFetched(): boolean {
-    return Object.entries(this.pageInfos).some(([address, pageInfo]) => {
-      const bufferIsFilled = this.snapshotBuffer[address]?.length === this.dataset.length;
-      return !pageInfo.hasNextPage && bufferIsFilled;
-    });
-  }
-
-  get timeDifference(): number {
-    return SECONDS_IN_TYPE[this.selectedFilter.type] * 1000;
-  }
-
-  get visibleChartItemsRange(): [number, number] {
-    const itemsCount = this.chartData.length;
-    const startIndex = Math.floor((itemsCount * this.zoomStart) / 100);
-    const endIndex = Math.ceil((itemsCount * this.zoomEnd) / 100) - 1;
-
-    return [startIndex, endIndex];
-  }
-
-  /**
-   * Price change in visible range
-   */
-  get priceChange(): FPNumber {
-    const [startIndex, endIndex] = this.visibleChartItemsRange;
-    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.[2] ?? 0); // "close" price
-    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.[2] ?? 0); // "close" price
-
-    return calcPriceChange(rangeClosePrice, rangeStartPrice);
-  }
-
-  get gridLeftOffset(): number {
-    const maxLabel = this.limits.max * 10;
-    const axisLabelWidth = getTextWidth(
-      new FPNumber(maxLabel).toLocaleString(this.precision),
-      AXIS_LABEL_CSS.fontFamily,
-      AXIS_LABEL_CSS.fontSize
-    );
-
-    return AXIS_OFFSET + 2 * LABEL_PADDING + axisLabelWidth;
-  }
-
-  get chartData(): readonly ChartDataItem[] {
-    const groups: ChartDataItem[] = [];
-    const {
-      dataset,
-      selectedFilter: { group },
-    } = this;
-    // ordered by timestamp ASC
-    const ordered = dataset.slice().reverse();
-
-    for (let i = 0; i < ordered.length; i++) {
-      if (!group || i % group === 0) {
-        groups.push([ordered[i].timestamp, ...ordered[i].price, ordered[i].volume]);
+        rows.push(
+          { title: 'Open', data: toPrice(openFp, precision.value) },
+          { title: 'High', data: toPrice(high, precision.value) },
+          { title: 'Low', data: toPrice(low, precision.value) },
+          { title: 'Close', data: toPrice(closeFp, precision.value) },
+          { title: 'Change', data: formatChange(change), color: changeColor }
+        );
       } else {
-        const lastGroup = last(groups);
-
-        if (lastGroup) {
-          lastGroup[2] = ordered[i].price[1]; // close
-          lastGroup[3] = Math.min(lastGroup[3], ordered[i].price[2]); // low
-          lastGroup[4] = Math.max(lastGroup[4], ordered[i].price[3]); // high
-          lastGroup[5] = lastGroup[5] + (ordered[i].volume ?? 0); // volume
-        }
+        rows.push({ title: 'Price', data: toPrice(closeFp, precision.value) });
       }
-    }
 
-    return Object.freeze(groups);
-  }
+      if (withVolume) {
+        rows.push({ title: 'Volume', data: `${currencySymbol.value} ${toAmount(volume, 2)}` });
+      }
 
-  get chartSpec() {
-    // [TODO]: until we haven't two tokens volume
-    const withVolume = this.entities.length === 1;
+      return `
+        <table>
+          ${rows
+            .map(
+              (row) => `
+            <tr>
+              <td align="right" style="color:${palette.value.color.base.content.secondary}">${row.title}</td>
+              <td style="color:${row.color ?? palette.value.color.base.content.primary}">${row.data}</td>
+            </tr>
+          `
+            )
+            .join('')}
+        </table>
+      `;
+    },
+  });
 
-    const priceGrid = this.gridSpec({
-      top: 20,
-      left: this.gridLeftOffset,
-    });
-
-    const volumeGrid = this.gridSpec({
-      height: 72,
-      left: this.gridLeftOffset,
-    });
-
-    const priceXAxis = this.xAxisSpec({
-      boundaryGap: this.isLineChart ? false : [0.005, 0.005],
-      axisLabel: {
-        show: true,
-      },
-      axisLine: {
-        show: true,
-        lineStyle: {
-          color: this.theme.color.base.content.tertiary,
-        },
-      },
-      axisPointer: {
-        label: {
-          show: true,
-        },
-      },
-    });
-
-    const volumeXAxis = this.xAxisSpec({
-      gridIndex: 1,
-      boundaryGap: false,
-      axisLabel: {
-        show: true,
-      },
-      axisPointer: {
-        type: 'none',
-      },
-    });
-
-    const priceYAxis = this.yAxisSpec({
-      axisLabel: {
-        formatter: (value: number) => {
-          return this.toAmount(value, this.precision);
-        },
-        showMaxLabel: false,
-        showMinLabel: false,
-      },
-      axisPointer: {
-        label: {
-          precision: this.precision,
-          formatter: ({ value }) => {
-            return this.toAmount(value, this.precision);
-          },
-        },
-      },
-      min: 'dataMin',
-      max: 'dataMax',
-    });
-
-    const volumeYAxis = this.yAxisSpec({
-      gridIndex: 1,
-      splitNumber: 2,
-      axisLabel: {
-        formatter: (value) => {
-          const val = new FPNumber(value).mul(this.exchangeRate);
-          const { amount, suffix } = formatAmountWithSuffix(val);
-          return `${amount} ${suffix}`;
-        },
-        showMaxLabel: true,
-      },
-    });
-
-    const dataZoom = {
-      id: ZOOM_ID,
-      type: 'inside',
-      xAxisIndex: [0, 1],
-      start: 0,
-      end: 100,
-      minValueSpan: this.timeDifference * 11, // minimum 11 elements like on skeleton
-    };
-
-    const tooltip = this.tooltipSpec({
-      axisPointer: {
-        type: 'cross',
-      },
-      formatter: (params) => {
-        const { data, seriesType } = params[0];
-        const [, open, close, low, high, volume] = data; // [timestamp, open, close, low, high, volume]
-        const rows: any[] = [];
-
-        const closeFp = new FPNumber(close);
-        if (seriesType === CHART_TYPES.CANDLE) {
-          const openFp = new FPNumber(open);
-          const change = calcPriceChange(closeFp, openFp);
-          const changeColor = signific(change)(
-            this.theme.color.status.success,
-            this.theme.color.status.error,
-            this.theme.color.base.content.primary
-          );
-
-          rows.push(
-            { title: 'Open', data: this.toPrice(openFp, this.precision) },
-            { title: 'High', data: this.toPrice(high, this.precision) },
-            { title: 'Low', data: this.toPrice(low, this.precision) },
-            { title: 'Close', data: this.toPrice(closeFp, this.precision) },
-            { title: 'Change', data: formatChange(change), color: changeColor }
-          );
-        } else {
-          rows.push({
-            title: 'Price',
-            data: this.toPrice(closeFp, this.precision),
-          });
-        }
-
-        if (withVolume) {
-          // `volume` is in $ value here
-          rows.push({ title: 'Volume', data: `${this.currencySymbol} ${this.toAmount(volume, 2)}` });
-        }
-
-        return `
-          <table>
-            ${rows
-              .map(
-                (row) => `
-              <tr>
-                <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
-                <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
-              </tr>
-            `
-              )
-              .join('')}
-          </table>
-        `;
-      },
-    });
-
-    const priceSeria = this.isLineChart
-      ? this.lineSeriesSpec({
+  const priceSeries =
+    chartType.value === CHART_TYPES.LINE
+      ? lineSeriesSpec({
           encode: { y: 'close' },
           areaStyle: {
             opacity: 0.8,
             color: new graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: 'rgba(248, 8, 123, 0.25)',
-              },
-              {
-                offset: 1,
-                color: 'rgba(255, 49, 148, 0.03)',
-              },
+              { offset: 0, color: 'rgba(248, 8, 123, 0.25)' },
+              { offset: 1, color: 'rgba(255, 49, 148, 0.03)' },
             ]),
           },
         })
-      : this.candlestickSeriesSpec();
+      : candlestickSeriesSpec();
 
-    const volumeSeria = {
-      type: 'bar',
-      barMaxWidth: 10,
-      xAxisIndex: 1,
-      yAxisIndex: 1,
-      itemStyle: {
-        color: ({ data }) => {
-          const [_timestamp, open, close] = data;
-          if (open > close) return this.theme.color.status.error;
-          if (open < close) return this.theme.color.status.success;
-          return this.theme.color.base.content.secondary;
-        },
-        opacity: 0.7,
+  const volumeSeries = {
+    ...barSeriesSpec({}),
+    barMaxWidth: 10,
+    xAxisIndex: 1,
+    yAxisIndex: 1,
+    itemStyle: {
+      color: ({ data }: { data: [number, number, number] }) => {
+        const [, open, close] = data;
+        if (open > close) return palette.value.color.status.error;
+        if (open < close) return palette.value.color.status.success;
+        return palette.value.color.base.content.secondary;
       },
-      encode: { y: 'volume' },
-    };
+      opacity: 0.7,
+    },
+    encode: { y: 'volume' },
+  };
 
-    const spec = {
-      animation: false,
-      axisPointer: {
-        link: [
-          {
-            xAxisIndex: 'all',
-          },
-        ],
-      },
-      color: [this.theme.color.theme.accent, this.theme.color.status.success],
-      dataset: {
-        source: this.chartData,
-        dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],
-      },
-      dataZoom: [dataZoom],
-      grid: [priceGrid],
-      xAxis: [priceXAxis],
-      yAxis: [priceYAxis],
-      tooltip,
-      series: [priceSeria],
-    };
+  const spec: Record<string, unknown> = {
+    animation: false,
+    axisPointer: { link: [{ xAxisIndex: 'all' }] },
+    color: [palette.value.color.theme.accent, palette.value.color.status.success],
+    dataset: {
+      source: chartData.value,
+      dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],
+    },
+    dataZoom: [dataZoom],
+    grid: [priceGrid],
+    xAxis: [priceXAxis],
+    yAxis: [priceYAxis],
+    tooltip,
+    series: [priceSeries],
+  };
 
-    if (withVolume) {
-      priceGrid.bottom = 120;
-      priceXAxis.axisLabel.show = false;
-      priceXAxis.axisPointer.label.show = false;
-
-      spec.grid.push(volumeGrid);
-      spec.xAxis.push(volumeXAxis);
-      spec.yAxis.push(volumeYAxis);
-      spec.series.push(volumeSeria);
-    }
-
-    return spec;
+  if (withVolume) {
+    priceGrid.bottom = 120;
+    priceXAxis.axisLabel.show = false;
+    priceXAxis.axisPointer.label.show = false;
+    (spec.grid as any[]).push(volumeGrid);
+    (spec.xAxis as any[]).push(volumeXAxis);
+    (spec.yAxis as any[]).push(volumeYAxis);
+    (spec.series as any[]).push(volumeSeries);
   }
 
-  created(): void {
-    this.forceUpdatePrices();
+  return spec;
+});
+
+const toAmount = (amount: FPNumber | number, digits: number): string => {
+  const fp = amount instanceof FPNumber ? amount : new FPNumber(amount);
+  const value = isTokensPair.value ? fp : fp.mul(exchangeRate.value);
+  return formatAmount(value, digits);
+};
+
+const toPrice = (price: FPNumber | number, digits: number): string => {
+  const fp = price instanceof FPNumber ? price : new FPNumber(price);
+  const value = isTokensPair.value ? fp : fp.mul(exchangeRate.value);
+  return formatPrice(value, digits, symbol.value);
+};
+
+const isAllHistoricalPricesFetched = () => {
+  return Object.entries(pageInfos).some(([address, pageInfo]) => {
+    const bufferIsFilled = (snapshotBuffer[address] ?? []).length === dataset.value.length;
+    return !pageInfo.hasNextPage && bufferIsFilled;
+  });
+};
+
+const requestIsAllowed = (entitiesSnapshot: string[]): boolean => {
+  if (isTokensPair.value && !props.isAvailable) return false;
+  return isEqual(entitiesSnapshot)(entities.value);
+};
+
+const fillSnapshotBuffer = (entityId: string, normalized: SnapshotItem[]): void => {
+  const existingNodes = snapshotBuffer[entityId] ?? [];
+  snapshotBuffer = {
+    ...snapshotBuffer,
+    [entityId]: Object.freeze([...existingNodes, ...normalized]),
+  };
+};
+
+const updateDataset = (items: SnapshotItem[]): void => {
+  dataset.value = Object.freeze(items);
+};
+
+const clearData = (saveReversedState = false, clearBuffer = false): void => {
+  snapshotBuffer = clearBuffer ? {} : (pick(entities.value, snapshotBuffer) as typeof snapshotBuffer);
+  pageInfos = clearBuffer ? {} : (pick(entities.value, pageInfos) as typeof pageInfos);
+
+  dataset.value = Object.freeze([]);
+  zoomStart.value = 0;
+  zoomEnd.value = 100;
+  limits.min = Infinity;
+  limits.max = 0;
+  precision.value = 2;
+
+  if (!saveReversedState) {
+    isReversedChart.value = false;
+  }
+};
+
+const requestData = async (
+  entityId: string,
+  type: SUBQUERY_TYPES.SnapshotTypes,
+  count: number,
+  hasNextPage = true,
+  endCursor?: string
+): Promise<Snapshot> => {
+  const nodes: SnapshotItem[] = [];
+  let cursor = endCursor;
+  let remaining = count;
+  let nextPage = hasNextPage;
+
+  do {
+    const maxCount = getCurrentIndexer().type === WALLET_CONSTS.IndexerType.SUBSQUID ? 1000 : 100;
+    const first = Math.min(remaining, maxCount);
+    const response = await props.requestMethod(entityId, type, first, cursor);
+
+    if (!response) throw new Error('Chart data fetch error');
+
+    nextPage = response.pageInfo.hasNextPage;
+    cursor = response.pageInfo.endCursor;
+    nodes.push(...response.edges.map((edge) => edge.node));
+    remaining -= response.edges.length;
+  } while (nextPage && remaining > 0);
+
+  return { nodes, hasNextPage: nextPage, endCursor: cursor };
+};
+
+const fetchData = async (entityId: string): Promise<SnapshotItem[]> => {
+  const { type, count } = selectedFilter.value;
+
+  const pageInfoBuffer = pageInfos[entityId];
+  const hasNextPage = pageInfoBuffer?.hasNextPage ?? true;
+  const endCursor = pageInfoBuffer?.endCursor;
+  const snapshotsBuffer = snapshotBuffer[entityId] ?? [];
+  const snapshotsUsedCount = dataset.value.length;
+  const snapshotsUnused = snapshotsBuffer.slice(snapshotsUsedCount);
+
+  if (snapshotsUnused.length >= count || !hasNextPage) {
+    return snapshotsUnused;
   }
 
-  beforeDestroy(): void {
-    this.unsubscribeFromPriceUpdates();
-  }
+  const { nodes, ...pageInfo } = await requestData(entityId, type, count, hasNextPage, endCursor);
+  const lastTimestamp = last(snapshotsUnused)?.timestamp ?? last(dataset.value)?.timestamp ?? Date.now();
+  const snapshotsNormalized = normalizeSnapshots(nodes, timeDifference.value, lastTimestamp);
 
-  private async requestData(
-    entityId: string,
-    type: SUBQUERY_TYPES.SnapshotTypes,
-    count: number,
-    hasNextPage = true,
-    endCursor?: string
-  ): Promise<Snapshot> {
-    const nodes: SnapshotItem[] = [];
+  fillSnapshotBuffer(entityId, snapshotsNormalized);
+  pageInfos = { ...pageInfos, [entityId]: pageInfo };
 
-    do {
-      // We use 1000 for subsquid because it works faster
-      const maxCount = getCurrentIndexer().type === WALLET_CONSTS.IndexerType.SUBSQUID ? 1000 : 100;
-      const first = Math.min(count, maxCount); // how many items should be fetched by request
+  return [...snapshotsUnused, ...snapshotsNormalized];
+};
 
-      const response = await this.requestMethod(entityId, type, first, endCursor);
-
-      if (!response) throw new Error('Chart data fetch error');
-
-      hasNextPage = response.pageInfo.hasNextPage;
-      endCursor = response.pageInfo.endCursor;
-      nodes.push(...response.edges.map((edge) => edge.node));
-      count -= response.edges.length;
-    } while (hasNextPage && count > 0);
-
-    return { nodes, hasNextPage, endCursor };
-  }
-
-  // ordered ty timestamp DESC
-  private async fetchData(entityId: string): Promise<SnapshotItem[]> {
-    const { type, count } = this.selectedFilter;
-
-    const pageInfoBuffer = this.pageInfos[entityId];
-    const hasNextPage = pageInfoBuffer?.hasNextPage ?? true;
-    const endCursor = pageInfoBuffer?.endCursor ?? undefined;
-
-    const snapshotsBuffer = this.snapshotBuffer[entityId] ?? [];
-    const snapshotsUsedCount = this.dataset.length;
-    const snapshotsUnused = snapshotsBuffer.slice(snapshotsUsedCount);
-
-    if (snapshotsUnused.length >= count || !hasNextPage) {
-      return snapshotsUnused;
-    }
-
-    const { nodes, ...pageInfo } = await this.requestData(entityId, type, count, hasNextPage, endCursor);
-    const lastTimestamp = last(snapshotsUnused)?.timestamp ?? last(this.dataset)?.timestamp ?? Date.now();
-    const snapshotsNormalized = normalizeSnapshots(nodes, this.timeDifference, lastTimestamp);
-
-    this.fillSnapshotBuffer(entityId, snapshotsNormalized);
-    this.pageInfos[entityId] = pageInfo;
-
-    return [...snapshotsUnused, ...snapshotsNormalized];
-  }
-
-  private async fetchDataLastUpdates(entities: string[]): Promise<Nullable<LastUpdates>> {
-    const lastUpdates: LastUpdates = {};
-    await Promise.all(
-      entities.map(async (entityId) => {
-        try {
-          const update = await this.requestData(entityId, this.selectedFilter.type, 1);
-          const snapshot = update.nodes[0];
-
-          lastUpdates[entityId] = snapshot;
-        } catch {
-          return null;
-        }
-      })
-    );
-
-    return lastUpdates;
-  }
-
-  private getUpdatedPrecision(min: number, max: number): number {
-    const boundaries = [max, min, max - min].map((v) => getPrecision(v));
-    return Math.max(...boundaries);
-  }
-
-  private async getHistoricalPrices(): Promise<void> {
-    if (this.loading || this.isAllHistoricalPricesFetched) {
-      return;
-    }
-
-    const addresses = [...this.entities];
-    const requestId = Date.now();
-
-    this.priceUpdateRequestId = requestId;
-    await this.withApi(async () => {
+const fetchDataLastUpdates = async (entitiesSnapshot: string[]): Promise<Nullable<LastUpdates>> => {
+  const lastUpdates: LastUpdates = {};
+  await Promise.all(
+    entitiesSnapshot.map(async (entityId) => {
       try {
-        const snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
-
-        if (!(this.requestIsAllowed(addresses) && isEqual(requestId)(this.priceUpdateRequestId))) return;
-
-        const dataset: SnapshotItem[] = [];
-        const size = Math.min(
-          snapshots[0]?.length ?? Infinity,
-          snapshots[1]?.length ?? Infinity,
-          this.selectedFilter.count
-        );
-
-        let { min, max } = this.limits;
-
-        for (let i = 0; i < size; i++) {
-          const a = snapshots[0]?.[i];
-          const b = snapshots[1]?.[i];
-
-          const { timestamp, price, volume } = mergeSnapshots(a, b);
-          // skip item, if one of the prices is incorrect
-          if (price.some((part) => !Number.isFinite(part))) continue;
-          // if "open" & "close" prices are zero, we are going to time, where pool is not created
-          if (price[0] === 0 && price[1] === 0) break;
-
-          dataset.push({ timestamp, price, volume });
-
-          min = Math.min(min, ...price);
-          max = Math.max(max, ...price);
-        }
-
-        this.limits = { min, max };
-        this.precision = this.getUpdatedPrecision(min, max);
-        this.updateDataset([...this.dataset, ...dataset]);
-        this.isFetchingError = false;
-      } catch (error) {
-        this.isFetchingError = true;
-        console.error(error);
+        const update = await requestData(entityId, selectedFilter.value.type, 1);
+        const snapshot = update.nodes[0];
+        lastUpdates[entityId] = snapshot;
+      } catch {
+        return null;
       }
-    });
+    })
+  );
+
+  return lastUpdates;
+};
+
+const getUpdatedPrecision = (min: number, max: number): number => {
+  const boundaries = [max, min, max - min].map((value) => getPrecision(value));
+  return Math.max(...boundaries);
+};
+
+const getHistoricalPrices = async (): Promise<void> => {
+  if (loading.value || isAllHistoricalPricesFetched()) {
+    return;
   }
 
-  private fillSnapshotBuffer(entityId: string, normalized: SnapshotItem[]): void {
-    const existingNodes = this.snapshotBuffer[entityId] ?? [];
-    this.snapshotBuffer[entityId] = Object.freeze([...existingNodes, ...normalized]);
-  }
+  const addresses = [...entities.value];
+  const requestId = Date.now();
 
-  // common
-  private async subscribeToPriceUpdates(): Promise<void> {
-    this.unsubscribeFromPriceUpdates();
+  priceUpdateRequestId.value = requestId;
+  await withApi(async () => {
+    try {
+      const snapshots = await Promise.all(addresses.map((address) => fetchData(address)));
 
-    if (!this.entities.length) return;
+      if (!(requestIsAllowed(addresses) && priceUpdateRequestId.value === requestId)) return;
 
-    const entities = [...this.entities];
+      const datasetChunk: SnapshotItem[] = [];
+      const size = Math.min(
+        snapshots[0]?.length ?? Infinity,
+        snapshots[1]?.length ?? Infinity,
+        selectedFilter.value.count
+      );
+      let { min, max } = limits;
 
-    this.priceUpdateSubscription = await this.getPriceUpdatesSubscription(entities);
-    this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(entities), SYNC_INTERVAL);
-  }
+      for (let i = 0; i < size; i++) {
+        const a = snapshots[0]?.[i];
+        const b = snapshots[1]?.[i];
+        const { timestamp, price, volume } = mergeSnapshots(a, b);
 
-  // common
-  private unsubscribeFromPriceUpdates(): void {
-    if (this.priceUpdateSubscription) {
-      this.priceUpdateSubscription();
+        if (price.some((part) => !Number.isFinite(part))) continue;
+        if (price[0] === 0 && price[1] === 0) break;
+
+        datasetChunk.push({ timestamp, price, volume });
+        min = Math.min(min, ...price);
+        max = Math.max(max, ...price);
+      }
+
+      limits.min = min;
+      limits.max = max;
+      precision.value = getUpdatedPrecision(min, max);
+      updateDataset([...dataset.value, ...datasetChunk]);
+      isFetchingError.value = false;
+    } catch (error) {
+      isFetchingError.value = true;
+      console.error(error);
     }
-    if (this.priceUpdateTimestampSync) {
-      clearInterval(this.priceUpdateTimestampSync as number);
+  });
+};
+
+const getCurrentSnapshotTimestamp = (): number => {
+  const now = Math.floor(Date.now() / 1000);
+  const seconds = timeDifference.value / 1000;
+  const index = Math.floor(now / seconds);
+  return seconds * index * 1000;
+};
+
+const handlePriceTimestampSync = (entitiesSnapshot: string[]): void => {
+  if (!requestIsAllowed(entitiesSnapshot)) return;
+
+  const timestamp = getCurrentSnapshotTimestamp();
+  const lastItem = dataset.value[0];
+
+  if (!lastItem || timestamp === lastItem.timestamp) return;
+
+  const close = lastItem.price[1];
+  const price: OCLH = [close, close, close, close];
+  const volume = 0;
+  const item: SnapshotItem = { timestamp, price, volume };
+
+  updateDataset([item, ...dataset.value]);
+};
+
+const fetchAndHandleUpdate = async (entitiesSnapshot: string[]): Promise<void> => {
+  if (!requestIsAllowed(entitiesSnapshot)) return;
+
+  const lastUpdates = await fetchDataLastUpdates(entitiesSnapshot);
+  if (!lastUpdates) return;
+
+  const datasetClone = [...dataset.value];
+  const lastItem = datasetClone[0];
+  const [a, b] = entitiesSnapshot.map((entityId) => lastUpdates[entityId]);
+  const item = mergeSnapshots(a, b);
+
+  if (item.price.some((part) => !Number.isFinite(part))) return;
+  if (lastItem?.timestamp > item.timestamp) return;
+
+  if (lastItem?.timestamp === item.timestamp) {
+    datasetClone.shift();
+  }
+
+  datasetClone.unshift(item);
+
+  const min = Math.min(limits.min, ...item.price);
+  const max = Math.max(limits.max, ...item.price);
+
+  precision.value = getUpdatedPrecision(min, max);
+  limits.min = min;
+  limits.max = max;
+  updateDataset(datasetClone);
+};
+
+const getPriceUpdatesSubscription = async (entitiesSnapshot: string[]): Promise<Nullable<FnWithoutArgs>> => {
+  const callback = () => fetchAndHandleUpdate(entitiesSnapshot);
+  return await props.requestSubscription(callback);
+};
+
+const subscribeToPriceUpdates = async (): Promise<void> => {
+  unsubscribeFromPriceUpdates();
+  if (!entities.value.length) return;
+
+  const entitiesSnapshot = [...entities.value];
+  priceUpdateSubscription = await getPriceUpdatesSubscription(entitiesSnapshot);
+  priceUpdateTimestampSync = setInterval(() => handlePriceTimestampSync(entitiesSnapshot), SYNC_INTERVAL);
+};
+
+const unsubscribeFromPriceUpdates = (): void => {
+  if (priceUpdateSubscription) {
+    priceUpdateSubscription();
+  }
+  if (priceUpdateTimestampSync) {
+    clearInterval(priceUpdateTimestampSync);
+  }
+  priceUpdateSubscription = null;
+  priceUpdateTimestampSync = null;
+};
+
+const updatePrices = debouncedInputHandler(getHistoricalPrices, 250, { leading: false });
+const resetAndUpdatePrices = async (saveReversedState = false, clearBuffer = false): Promise<void> => {
+  clearData(saveReversedState, clearBuffer);
+  await updatePrices();
+  await subscribeToPriceUpdates();
+};
+const forceUpdatePrices = debouncedInputHandler(resetAndUpdatePrices, 250, { leading: false });
+
+const changeFilter = async (filter: SnapshotFilter): Promise<void> => {
+  const prevType = selectedFilter.value.type;
+  const { count, type } = filter;
+  selectedFilter.value = filter;
+
+  if (prevType !== type) {
+    await forceUpdatePrices(true, true);
+  } else if (dataset.value.length < count) {
+    await updatePrices();
+  } else {
+    await resetChartTypeZoom();
+  }
+};
+
+const resetChartTypeZoom = async (): Promise<void> => {
+  const { count, group } = selectedFilter.value;
+  const items = chartData.value.length;
+  const visible = count / (group ?? 1);
+  const start = items > visible ? ((items - visible) * 100) / items : 0;
+  await setChartZoomLevel(start, 100);
+};
+
+const selectChartType = async (type: CHART_TYPES): Promise<void> => {
+  chartType.value = type;
+  await setChartZoomLevel(zoomStart.value, zoomEnd.value);
+};
+
+const handleZoom = (event: any): void => {
+  event?.stop?.();
+  if (event?.wheelDelta < 0 && zoomStart.value === 0 && zoomEnd.value === 100) {
+    updatePrices();
+  }
+};
+
+const changeZoomLevel = (event: any): void => {
+  const data = event?.batch?.[0];
+  zoomStart.value = data?.start ?? 0;
+  zoomEnd.value = data?.end ?? 0;
+};
+
+const setChartZoomLevel = async (start: number, end: number): Promise<void> => {
+  await nextTick();
+  const chartInstance: any = chart.value;
+  chartInstance?.dispatchAction?.({
+    type: 'dataZoom',
+    batch: [
+      {
+        dataZoomId: ZOOM_ID,
+        start,
+        end,
+      },
+    ],
+  });
+};
+
+const revertChart = (): void => {
+  isReversedChart.value = !isReversedChart.value;
+  forceUpdatePrices(true, false);
+};
+
+watch(inputTokensAddresses, (current, prev) => {
+  if (!prev) return;
+  if (!isEqual(current)(prev)) {
+    const currentChartPair = isReversedChart.value ? [...prev].reverse() : prev;
+    isReversedChart.value = false;
+    if (!isEqual(current)(currentChartPair)) {
+      forceUpdatePrices();
     }
-    this.priceUpdateSubscription = null;
-    this.priceUpdateTimestampSync = null;
   }
+});
 
-  private async getPriceUpdatesSubscription(entities: string[]): Promise<Nullable<FnWithoutArgs>> {
-    const callback = () => this.fetchAndHandleUpdate(entities);
-    const subscription = await this.requestSubscription(callback);
+onMounted(() => {
+  forceUpdatePrices();
+});
 
-    return subscription;
-  }
-
-  private getCurrentSnapshotTimestamp(): number {
-    const now = Math.floor(Date.now() / 1000);
-    const seconds = this.timeDifference / 1000;
-    const index = Math.floor(now / seconds);
-    const timestamp = seconds * index * 1000;
-
-    return timestamp;
-  }
-
-  /**
-   * Creates new price item snapshot
-   */
-  private handlePriceTimestampSync(entities: string[]): void {
-    if (!this.requestIsAllowed(entities)) return;
-
-    const timestamp = this.getCurrentSnapshotTimestamp();
-    const lastItem = this.dataset[0];
-
-    if (!lastItem || timestamp === lastItem.timestamp) return;
-
-    const close = lastItem.price[1];
-    const price: OCLH = [close, close, close, close];
-    const volume = 0; // we don't know volume
-    const item: SnapshotItem = { timestamp, price, volume };
-
-    this.updateDataset([item, ...this.dataset]);
-  }
-
-  private async fetchAndHandleUpdate(entities: string[]): Promise<void> {
-    if (!this.requestIsAllowed(entities)) return;
-
-    const lastUpdates = await this.fetchDataLastUpdates(entities);
-
-    if (!lastUpdates) return;
-
-    const dataset = [...this.dataset];
-    const lastItem = dataset[0];
-    const [a, b] = entities.map((entityId) => lastUpdates[entityId]);
-    const item = mergeSnapshots(a, b);
-    // skip item, if one of the prices is incorrect
-    if (item.price.some((part) => !Number.isFinite(part))) return;
-    // skip item, if snapshot is outdated
-    if (lastItem?.timestamp > item.timestamp) return;
-
-    if (lastItem?.timestamp === item.timestamp) {
-      dataset.shift();
-    }
-
-    dataset.unshift(item);
-
-    const min = Math.min(this.limits.min, ...item.price);
-    const max = Math.max(this.limits.max, ...item.price);
-
-    this.precision = this.getUpdatedPrecision(min, max);
-    this.limits = { min, max };
-    this.updateDataset(dataset);
-  }
-
-  private requestIsAllowed(entities: string[]): boolean {
-    if (this.isTokensPair && !this.isAvailable) return false;
-
-    return isEqual(entities)(this.entities);
-  }
-
-  private clearData(saveReversedState = false, clearBuffer = false): void {
-    this.snapshotBuffer = clearBuffer ? {} : pick(this.entities, this.snapshotBuffer);
-    this.pageInfos = clearBuffer ? {} : pick(this.entities, this.pageInfos);
-
-    this.dataset = [];
-    this.zoomStart = 0;
-    this.zoomEnd = 100;
-    this.limits = {
-      min: Infinity,
-      max: 0,
-    };
-    this.precision = 2;
-
-    if (!saveReversedState) {
-      this.isReversedChart = false;
-    }
-  }
-
-  private updateDataset(items: SnapshotItem[]): void {
-    this.dataset = Object.freeze(items);
-  }
-
-  async changeFilter(filter: SnapshotFilter): Promise<void> {
-    const prevType = this.selectedFilter.type;
-    const { count, type } = filter;
-
-    this.selectedFilter = filter;
-
-    if (prevType !== type) {
-      await this.forceUpdatePrices(true, true);
-    } else if (this.dataset.length < count) {
-      await this.updatePrices();
-    } else {
-      await this.resetChartTypeZoom();
-    }
-  }
-
-  private async resetChartTypeZoom(): Promise<void> {
-    const { count, group } = this.selectedFilter;
-    const items = this.chartData.length;
-    const visible = count / (group ?? 1);
-    const start = items > visible ? ((items - visible) * 100) / items : 0;
-    const end = 100;
-
-    await this.setChartZoomLevel(start, end);
-  }
-
-  private async resetAndUpdatePrices(saveReversedState = false, clearBuffer = false): Promise<void> {
-    this.clearData(saveReversedState, clearBuffer);
-    await this.updatePrices();
-    await this.subscribeToPriceUpdates();
-  }
-
-  async selectChartType(type: CHART_TYPES): Promise<void> {
-    this.chartType = type;
-
-    await this.setChartZoomLevel(this.zoomStart, this.zoomEnd);
-  }
-
-  handleZoom(event: any): void {
-    event?.stop?.();
-    if (event?.wheelDelta < 0 && this.zoomStart === 0 && this.zoomEnd === 100) {
-      this.updatePrices();
-    }
-  }
-
-  changeZoomLevel(event: any): void {
-    const data = event?.batch?.[0];
-    this.zoomStart = data?.start ?? 0;
-    this.zoomEnd = data?.end ?? 0;
-  }
-
-  private async setChartZoomLevel(start: number, end: number): Promise<void> {
-    await this.$nextTick();
-
-    const chart = this.$refs.chart as any;
-
-    chart.dispatchAction({
-      type: 'dataZoom',
-      batch: [
-        {
-          dataZoomId: ZOOM_ID,
-          start,
-          end,
-        },
-      ],
-    });
-  }
-
-  revertChart(): void {
-    this.isReversedChart = !this.isReversedChart;
-    this.forceUpdatePrices(true, false);
-  }
-}
+onBeforeUnmount(() => {
+  unsubscribeFromPriceUpdates();
+});
 </script>
 
 <style lang="scss">

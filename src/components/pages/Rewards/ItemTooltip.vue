@@ -9,31 +9,38 @@
         :value="value"
         :font-size-rate="FontSizeRate.MEDIUM"
         :asset-symbol="asset.symbol"
-      />
+      ></formatted-amount>
     </div>
-    <s-icon slot="reference" name="info-16" size="14px" class="reward-item-tooltip-value-icon" tabindex="-1" />
+    <template #reference>
+      <s-icon name="info-16" size="14px" class="reward-item-tooltip-value-icon" tabindex="-1"></s-icon>
+    </template>
   </el-popover>
 </template>
 
-<script lang="ts">
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Prop, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components, WALLET_CONSTS } from '@wallet';
+import { toRefs } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+defineOptions({
+  name: 'RewardsItemTooltip',
   components: {
     FormattedAmount: components.FormattedAmount,
   },
-})
-export default class RewardsItemTooltip extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
+});
 
-  @Prop({ required: true, type: String }) readonly value!: string;
-  @Prop({ required: true, type: Object }) readonly asset!: Asset;
-}
+const props = defineProps<{
+  value: string;
+  asset: Asset;
+}>();
+
+const { t } = useTranslation();
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+
+const { value, asset } = toRefs(props);
 </script>
 
 <style lang="scss">

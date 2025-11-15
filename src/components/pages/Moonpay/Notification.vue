@@ -1,75 +1,73 @@
 <template>
-  <dialog-base :visible.sync="visibility" class="moonpay-dialog">
+  <dialog-base v-model:visible="visibility" class="moonpay-dialog">
     <template #title>
-      <moonpay-logo :theme="libraryTheme" />
+      <moonpay-logo :theme="libraryTheme"></moonpay-logo>
     </template>
-    <simple-notification :success="success" @submit.native.prevent="close">
+    <simple-notification :success="success" @submit.prevent="close">
       <template #title>{{ title }}</template>
-      <template #text><div v-html="sanitizedText" /></template>
+      <template #text>
+        <div v-html="sanitizedText"></div>
+      </template>
     </simple-notification>
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
-import { Theme } from '@/consts/theme';
-import { mutation, state, getter } from '@/store/decorators';
+import { useTranslation } from '@/composables/useTranslation';
 import { sanitizeHtml } from '@/utils/sanitize';
+import store from '@/store';
 
 import { MoonpayNotifications } from './consts';
 
-@Component({
+import type { Theme } from '@/consts/theme';
+
+defineOptions({
   components: {
     MoonpayLogo,
     DialogBase: components.DialogBase,
     SimpleNotification: components.SimpleNotification,
   },
-})
-export default class MoonpayNotification extends Mixins(TranslationMixin) {
-  @state.moonpay.notificationKey private notificationKey!: MoonpayNotifications;
-  @state.moonpay.notificationVisibility private notificationVisibility!: boolean;
-  @getter.libraryTheme libraryTheme!: Theme;
+});
 
-  @mutation.moonpay.setNotificationVisibility private setNotificationVisibility!: (flag: boolean) => void;
+const { t } = useTranslation();
 
-  get visibility(): boolean {
-    return this.notificationVisibility;
-  }
+const visibility = computed({
+  get: () => Boolean(store.state.moonpay.notificationVisibility),
+  set: (flag: boolean) => {
+    store.commit.moonpay.setNotificationVisibility(flag);
+  },
+});
 
-  set visibility(flag: boolean) {
-    this.setNotificationVisibility(flag);
-  }
+const notificationKey = computed(() => store.state.moonpay.notificationKey as MoonpayNotifications | '');
+const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
 
-  get success(): boolean {
-    return this.notificationKey === MoonpayNotifications.Success;
-  }
+const success = computed(() => notificationKey.value === MoonpayNotifications.Success);
 
-  get title(): string {
-    if (!this.notificationKey) return '';
-    return this.t(`moonpay.notifications.${this.notificationKey}.title`);
-  }
+const title = computed(() => {
+  if (!notificationKey.value) return '';
+  return t(`moonpay.notifications.${notificationKey.value}.title`);
+});
 
-  get text(): string {
-    if (!this.notificationKey) return '';
-    return this.t(`moonpay.notifications.${this.notificationKey}.text`);
-  }
+const text = computed(() => {
+  if (!notificationKey.value) return '';
+  return t(`moonpay.notifications.${notificationKey.value}.text`);
+});
 
-  get sanitizedText(): string {
-    return sanitizeHtml(this.text, {
-      allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br'],
-      allowedAttributes: {
-        '*': ['class'],
-        a: ['href', 'rel', 'target', 'title', 'class'],
-      },
-    });
-  }
+const sanitizedText = computed(() =>
+  sanitizeHtml(text.value, {
+    allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br'],
+    allowedAttributes: {
+      '*': ['class'],
+      a: ['href', 'rel', 'target', 'title', 'class'],
+    },
+  })
+);
 
-  close(): void {
-    this.visibility = false;
-  }
-}
+const close = () => {
+  visibility.value = false;
+};
 </script>

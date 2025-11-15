@@ -1,10 +1,10 @@
 <template>
   <div>
-    <pool-base v-bind="{ parentLoading, ...$attrs }" v-on="$listeners">
+    <pool-base v-bind="attrs" :parent-loading="parentLoading">
       <template #title-append="{ liquidity, activeCollapseItems }">
         <div v-show="!isActiveCollapseItem(liquidity.address, activeCollapseItems)" class="s-flex farming-pool-badges">
           <status-badge
-            v-for="(item, index) in getLiquidityFarmingPools(liquidity)"
+            v-for="(item, index) in page.getLiquidityFarmingPools(liquidity)"
             :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}-${index}`"
             :liquidity="liquidity"
             :pool="item.pool"
@@ -12,15 +12,15 @@
             :pool-asset="item.poolAsset"
             :reward-asset="item.rewardAsset"
             :apr="item.apr"
-            @add="changePoolStake($event, true)"
+            @add="page.changePoolStake($event, true)"
             class="farming-pool-badge"
-          />
+          ></status-badge>
         </div>
       </template>
       <template #append="{ liquidity, activeCollapseItems }">
-        <template v-if="isActiveCollapseItem(liquidity.address, activeCollapseItems)">
+        <template v-if="page.isActiveCollapseItem(liquidity.address, activeCollapseItems)">
           <pool-card
-            v-for="(item, index) in getLiquidityFarmingPools(liquidity)"
+            v-for="(item, index) in page.getLiquidityFarmingPools(liquidity)"
             :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}-${index}`"
             :liquidity="liquidity"
             :pool="item.pool"
@@ -30,58 +30,58 @@
             :reward-asset="item.rewardAsset"
             :apr="item.apr"
             :tvl="item.tvl"
-            @add="changePoolStake($event, true)"
-            @remove="changePoolStake($event, false)"
-            @claim="claimPoolRewards"
-            @calculator="showPoolCalculator"
+            @add="page.changePoolStake($event, true)"
+            @remove="page.changePoolStake($event, false)"
+            @claim="page.claimPoolRewards"
+            @calculator="base.showCalculatorDialog($event)"
             border
             class="demeter-pool"
-          />
+          ></pool-card>
         </template>
       </template>
     </pool-base>
 
     <stake-dialog
-      :visible.sync="showStakeDialog"
-      :is-adding="isAddingStake"
-      :liquidity="selectedAccountLiquidity"
-      :parent-loading="parentLoading || loading"
-      v-bind="selectedDerivedPool"
-      @add="handleStakeAction($event, deposit)"
-      @remove="handleStakeAction($event, withdraw)"
-    />
+      v-model:visible="page.showStakeDialog"
+      :is-adding="page.isAddingStake"
+      :liquidity="base.selectedAccountLiquidity"
+      :parent-loading="parentLoading || page.loading"
+      v-bind="page.selectedDerivedPool"
+      @add="page.handleStakeAction($event, page.deposit)"
+      @remove="page.handleStakeAction($event, page.withdraw)"
+    ></stake-dialog>
 
     <claim-dialog
-      :visible.sync="showClaimDialog"
-      :parent-loading="parentLoading || loading"
-      v-bind="selectedDerivedPool"
-      @confirm="handleClaimRewards"
-    />
+      v-model:visible="page.showClaimDialog"
+      :parent-loading="parentLoading || page.loading"
+      v-bind="page.selectedDerivedPool"
+      @confirm="page.handleClaimRewards"
+    ></claim-dialog>
 
     <calculator-dialog
-      :visible.sync="showCalculatorDialog"
-      :liquidity="selectedAccountLiquidity"
-      v-bind="selectedDerivedPool"
-    />
+      v-model:visible="base.showCalculatorDialog"
+      :liquidity="base.selectedAccountLiquidity"
+      v-bind="page.selectedDerivedPool"
+    ></calculator-dialog>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, useAttrs } from 'vue';
 
 import { PoolPageNames } from '@/modules/pool/consts';
 import { poolLazyView } from '@/modules/pool/router';
-import type { DemeterPoolDerivedData } from '@/modules/staking/demeter/types';
-import { state } from '@/store/decorators';
 
 import { demeterStakingLazyComponent } from '../../router';
 import { DemeterStakingComponents } from '../consts';
-import PageMixin from '../mixins/PageMixin';
+import { useDemeterBasePage } from '../composables/useDemeterBasePage';
+import { useDemeterPage } from '../composables/useDemeterPage';
 
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+const props = defineProps({
+  parentLoading: { type: Boolean, default: false },
+});
 
-@Component({
+defineOptions({
   inheritAttrs: false,
   components: {
     PoolBase: poolLazyView(PoolPageNames.Pool),
@@ -91,45 +91,13 @@ import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
     ClaimDialog: demeterStakingLazyComponent(DemeterStakingComponents.ClaimDialog),
     CalculatorDialog: demeterStakingLazyComponent(DemeterStakingComponents.CalculatorDialog),
   },
-})
-export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMixin) {
-  @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
+});
 
-  get selectedAccountLiquidity(): Nullable<AccountLiquidity> {
-    return (
-      this.accountLiquidity.find(
-        (liquidity) => liquidity.firstAddress === this.baseAsset && liquidity.secondAddress === this.poolAsset
-      ) ?? null
-    );
-  }
+const attrs = useAttrs();
+const parentLoading = computed(() => props.parentLoading);
 
-  get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {
-    if (!this.selectedPool) return null;
-
-    return this.prepareDerivedPoolData(this.selectedPool, this.selectedAccountPool, this.selectedAccountLiquidity);
-  }
-
-  get farmingPoolsByLiquidities(): Record<string, DemeterPoolDerivedData[]> {
-    return this.accountLiquidity.reduce((buffer, liquidity) => {
-      const key = this.getLiquidityKey(liquidity);
-      const derivedPools = this.getDerivedPools(this.pools[liquidity.firstAddress]?.[liquidity.secondAddress]);
-
-      buffer[key] = derivedPools.map((derived) =>
-        this.prepareDerivedPoolData(derived.pool, derived.accountPool, liquidity)
-      );
-
-      return buffer;
-    }, {});
-  }
-
-  getLiquidityFarmingPools(liquidity: AccountLiquidity) {
-    return this.farmingPoolsByLiquidities[this.getLiquidityKey(liquidity)] ?? [];
-  }
-
-  private getLiquidityKey(liquidity: AccountLiquidity): string {
-    return [liquidity.firstAddress, liquidity.secondAddress].join(';');
-  }
-}
+const base = useDemeterBasePage();
+const page = useDemeterPage(base, { parentLoading });
 </script>
 
 <style lang="scss" scoped>

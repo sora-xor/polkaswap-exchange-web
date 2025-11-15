@@ -1,0 +1,48 @@
+
+ÞÖimport{a2 as Y,$ as D,a3 as Q,z as G,b as H,c as J,F as h,dq as L,dr as X,cM as Z}from"./index-DjB-Okl0.js";import{L as ee}from"./echarts-Cxkeyetf.js";import{f as te,l as ae}from"./lodash-vOcFpjD8.js";import{u as oe}from"./useChartSpec-Ds1Lt7oL.js";import{N as se,S as re}from"./snapshots-B8F7163b.js";import{l as ne,L as ie,j as t,t as C,E as le,v as f,A as P,o as U,x as d,w as S,D as g,C as F,y as R,M as ce}from"./polkadot-Bh6PX9YG.js";const{IndexerType:B}=D,ue=Q`
+  query NetworkTvlQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
+    data: networkSnapshots(
+      after: $after
+      orderBy: TIMESTAMP_DESC
+      filter: {
+        and: [
+          { type: { equalTo: $type } }
+          { timestamp: { lessThanOrEqualTo: $from } }
+          { timestamp: { greaterThanOrEqualTo: $to } }
+          { liquidityUSD: { greaterThan: "0" } }
+        ]
+      }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          timestamp
+          liquidityUSD
+        }
+      }
+    }
+  }
+`,pe=Q`
+  query NetworkTvlQuery($after: String, $type: SnapshotType, $from: Int, $to: Int) {
+    data: networkSnapshotsConnection(
+      after: $after
+      orderBy: timestamp_DESC
+      where: { AND: [{ type_eq: $type }, { timestamp_lte: $from }, { timestamp_gte: $to }, { liquidityUSD_gt: "0" }] }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          timestamp
+          liquidityUSD
+        }
+      }
+    }
+  }
+`,M=r=>{const o=+r.liquidityUSD;return{timestamp:+r.timestamp*1e3,value:Number.isFinite(o)?o:0}};async function me(r,o,i){const l=Y();let c;switch(l.type){case B.SUBQUERY:{c=await l.services.explorer.fetchAllEntities(ue,{from:r,to:o,type:i},M);break}case B.SUBSQUID:{c=await l.services.explorer.fetchAllEntitiesConnection(pe,{from:r,to:o,type:i},M);break}}return c??[]}const ge=ne({inheritAttrs:!1,__name:"TvlChart",setup(r){const o=ie(),i=t(()=>!!o.parentLoading),{loading:l,withLoading:c,withParentLoading:_}=G({parentLoading:()=>i.value}),{t:V}=H(),O=oe(),I=se,w=C(I[0]),u=C([]),x=C(!1),N=J(),v=t(()=>N.exchangeRate??0),T=t(()=>N.currencySymbol??""),E=t(()=>new h(te(u.value)?.value??0)),z=t(()=>new h(ae(u.value)?.value??0)),W=t(()=>`tvl-chart-${T.value}-rate-${v.value}`),k=t(()=>L(E.value.mul(v.value))),A=t(()=>X(E.value,z.value)),j=t(()=>{const{gridSpec:e,xAxisSpec:y,yAxisSpec:s,tooltipSpec:n,lineSeriesSpec:p}=O;return{dataset:{source:u.value.map(a=>[a.timestamp,a.value]),dimensions:["timestamp","value"]},grid:e({top:20,left:45}),xAxis:y(),yAxis:s({axisLabel:{formatter:a=>{const m=new h(a).mul(v.value),{amount:b,suffix:q}=L(m);return`${b} ${q}`}}}),tooltip:n({formatter:a=>{const{data:m}=a[0],[,b]=m,q=new h(b).mul(v.value);return`${T.value} ${Z(q)}`}}),series:[p({areaStyle:{opacity:.8,color:new ee(0,0,0,1,[{offset:0,color:"rgba(248, 8, 123, 0.25)"},{offset:1,color:"rgba(255, 49, 148, 0.03)"}])}})]}}),K=e=>{w.value=e,$()},$=async()=>{await c(async()=>{await _(async()=>{try{const{type:e,count:y}=w.value,s=re[e],n=Math.floor(Date.now()/(s*1e3))*s,p=n-s*y;u.value=Object.freeze(await me(n,p,e)),x.value=!1}catch(e){console.error(e),x.value=!0}})})};return le(async()=>{await $()}),D.FontSizeRate,D.FontWeightRate,(e,y)=>{const s=f("stats-filter"),n=f("formatted-amount"),p=f("v-chart"),a=f("chart-skeleton"),m=f("base-widget");return U(),P(m,ce(e.$attrs,{title:e.TranslationConsts.TVL,tooltip:g(V)("tooltips.tvl")}),{filters:d(()=>[S(s,{"is-dropdown":"",filters:g(I),value:w.value,onInput:K},null,8,["filters","value"])]),default:d(()=>[S(a,{loading:i.value||g(l),"is-empty":u.value.length===0,"is-error":x.value,onRetry:$},{default:d(()=>[S(n,{class:"chart-price",value:k.value.amount},{prefix:d(()=>[F(R(T.value),1)]),default:d(()=>[F(" "+R(k.value.suffix),1)]),_:1},8,["value"]),S(g(A),{value:A.value},null,8,["value"]),(U(),P(p,{ref:"chart",class:"chart",key:W.value,option:j.value,autoresize:""},null,8,["option"]))]),_:1},8,["loading","is-empty","is-error"])]),_:1},16,["title","tooltip"])}}});export{ge as _};
+Ö

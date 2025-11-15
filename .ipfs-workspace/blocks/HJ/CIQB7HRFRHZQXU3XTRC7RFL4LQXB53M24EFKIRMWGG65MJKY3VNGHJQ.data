@@ -1,0 +1,3 @@
+
+†þimport{u as d}from"./swap-DsEcsya5.js";import{G as m}from"./index-DjB-Okl0.js";import{j as o}from"./polkadot-Bh6PX9YG.js";function p(){const e=d(),r=o(()=>e.tokenFrom),u=o(()=>e.tokenTo),a=o(()=>e.fromValue),n=o(()=>e.toValue),l=o(()=>!!(r.value&&u.value)),s=o(()=>m(a.value)),t=o(()=>m(n.value)),c=o(()=>s.value||t.value),T=o(()=>s.value&&t.value);return{tokenFrom:r,tokenTo:u,fromValue:a,toValue:n,areTokensSelected:l,isZeroFromAmount:s,isZeroToAmount:t,hasZeroAmount:c,areZeroAmounts:T,setTokenFromAddress:e.setTokenFromAddress,setTokenToAddress:e.setTokenToAddress,setFromValue:e.setFromValue,setToValue:e.setToValue}}export{p as u};
+þ

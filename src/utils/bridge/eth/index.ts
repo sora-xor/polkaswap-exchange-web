@@ -1,7 +1,9 @@
 import { Operation } from '@sora-substrate/sdk';
-import { beforeTransactionSign, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { beforeTransactionSign, WALLET_CONSTS } from '@wallet';
 
 import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useWalletStore } from '@/stores/wallet';
 import { Bridge } from '@/utils/bridge/common/classes';
 import type { GetBridgeHistoryInstance, IBridgeConstructorOptions, SignExternal } from '@/utils/bridge/common/types';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
@@ -22,6 +24,8 @@ type EthBridge = Bridge<EthHistory, EthBridgeReducer, EthBridgeConstructorOption
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
+const resolveWalletStore = () => useWalletStore();
+
 const ethBridge: EthBridge = new Bridge({
   reducers: {
     [Operation.EthBridgeIncoming]: EthBridgeIncomingReducer,
@@ -38,8 +42,8 @@ const ethBridge: EthBridge = new Bridge({
     },
   },
   // assets
-  addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
-  getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
+  addAsset: (assetAddress: string) => resolveWalletStore().addAsset(assetAddress),
+  getAssetByAddress: (address: string) => useAssetsStore().assetDataByAddress(address),
   // transaction
   getTransaction,
   updateTransaction,

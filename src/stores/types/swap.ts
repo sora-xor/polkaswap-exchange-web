@@ -1,13 +1,15 @@
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { LPRewardsInfo, SwapQuote, Distribution } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString } from '@sora-substrate/sdk';
-import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountBalance, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 export type SwapState = {
   tokenFromAddress: Nullable<string>;
   tokenFromBalance: Nullable<AccountBalance>;
+  tokenFromCache: Nullable<RegisteredAccountAsset>;
   tokenToAddress: Nullable<string>;
   tokenToBalance: Nullable<AccountBalance>;
+  tokenToCache: Nullable<RegisteredAccountAsset>;
   fromValue: string;
   toValue: string;
   amountWithoutImpact: CodecString;

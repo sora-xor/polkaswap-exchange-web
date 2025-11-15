@@ -1,9 +1,33 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
+const { walletOverrides } = vi.hoisted(() => ({
+  walletOverrides: {
+    WALLET_CONSTS: {
+      ETH_BRIDGE_STATES: {
+        INITIAL: 0,
+      },
+    },
+    api: {
+      assets: {},
+    },
+    storage: {
+      set: vi.fn(),
+      get: vi.fn(),
+      remove: vi.fn(),
+    },
+    settingsStorage: {
+      set: vi.fn(),
+      get: vi.fn(() => null),
+      remove: vi.fn(),
+    },
+  },
+}));
+
 // Mock polkadot util-crypto to avoid environment-specific imports during tests
 vi.mock('@polkadot/util-crypto', () => ({
   decodeAddress: (_: string) => new Uint8Array(0),
 }));
+
 vi.mock('@sora-substrate/sdk', () => ({
   FPNumber: { DEFAULT_PRECISION: 18, fromCodecValue: (v: string, _d: number) => ({ toString: () => v }) },
   Storage: class Storage {
@@ -17,24 +41,46 @@ vi.mock('@sora-substrate/sdk', () => ({
     }
     remove() {}
   },
+  api: {
+    setStorage: vi.fn(),
+    shouldPairBeLocked: false,
+    initKeyring: vi.fn(),
+  },
+  connection: {},
+  Operation: {
+    SwapAndSend: 'SwapAndSend',
+    Transfer: 'Transfer',
+    VestedTransfer: 'VestedTransfer',
+    SwapTransferBatch: 'SwapTransferBatch',
+    Mint: 'Mint',
+  },
+  TransactionStatus: {
+    Finalized: 'Finalized',
+    Pending: 'Pending',
+    Failed: 'Failed',
+  },
 }));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
   BridgeNetworkType: { Eth: 'Eth', Evm: 'Evm', Sub: 'Sub' },
+  BridgeTxDirection: { Outgoing: 'Outgoing', Incoming: 'Incoming' },
+  BridgeTxStatus: { Pending: 'Pending', Ready: 'Ready', Failed: 'Failed' },
 }));
 vi.mock('@/utils/connection/evm/providers', () => ({ PredefinedProvider: { WalletConnect: 'WalletConnect' } }));
 vi.mock('@/consts/evm', () => ({
   SmartContractType: { EthBridge: 'ETH_BRIDGE', ERC20: 'ERC20' },
   SmartContracts: { ETH_BRIDGE: {}, ERC20: [] },
 }));
-vi.mock('@soramitsu/soraneo-wallet-web', () => ({
-  storage: { set: () => {}, get: () => null, remove: () => {} },
-  settingsStorage: { set: () => {}, get: () => null, remove: () => {} },
-  api: { system: {} },
-  vuex: { WalletModules: [] },
-  WALLET_CONSTS: { ETH_BRIDGE_STATES: { INITIAL: 0 } },
-  components: {},
-  mixins: {},
-}));
+vi.mock('@wallet', async () => {
+  const walletStub = await vi.importActual<typeof import('@tests/stubs/@wallet')>('@tests/stubs/@wallet');
+  return {
+    ...walletStub,
+    ...walletOverrides,
+    default: {
+      ...(walletStub as { default?: Record<string, unknown> }).default,
+      ...walletOverrides,
+    },
+  };
+});
 
 import ethersUtil from '@/utils/ethers-util';
 

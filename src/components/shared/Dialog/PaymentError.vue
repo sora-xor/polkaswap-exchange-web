@@ -1,7 +1,7 @@
 <template>
-  <dialog-base :visible.sync="isVisible">
+  <dialog-base v-model:visible="dialogVisible">
     <div class="error-info-banner">
-      <s-icon class="error-info-banner__icon" name="basic-clear-X-24" size="64px" />
+      <s-icon class="error-info-banner__icon" name="basic-clear-X-24" size="64px"></s-icon>
       <h4 class="error-info-banner__header">The payment widget is currently unavailable</h4>
       <p class="error-info-banner__text">
         {{ t('fiatPayment.errorMessage') }}
@@ -18,16 +18,43 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { components } from '@wallet';
+import { ref, watch } from 'vue';
 
-@Component({
+import { useTranslation } from '@/composables/useTranslation';
+
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
   },
-})
-export default class PaymentError extends Mixins(mixins.DialogMixin, mixins.LoadingMixin, mixins.TranslationMixin) {}
+});
+
+const visible = defineModel<boolean>('visible', { default: false });
+
+const emit = defineEmits<{
+  (e: 'close'): void;
+}>();
+
+const { t } = useTranslation();
+const loading = ref(false);
+const dialogVisible = ref(visible.value);
+
+watch(
+  () => visible.value,
+  (value) => {
+    dialogVisible.value = value;
+  }
+);
+
+watch(dialogVisible, (value) => {
+  visible.value = value;
+});
+
+function closeDialog(): void {
+  emit('close');
+  dialogVisible.value = false;
+}
 </script>
 
 <style lang="scss">

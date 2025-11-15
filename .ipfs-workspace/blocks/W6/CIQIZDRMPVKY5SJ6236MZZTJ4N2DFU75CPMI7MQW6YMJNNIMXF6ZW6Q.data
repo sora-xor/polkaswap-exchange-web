@@ -1,0 +1,3 @@
+
+´¬import{cO as i,cP as t,cQ as a,cR as o}from"./index-DjB-Okl0.js";const u={getTabsByNamespace(e){return!!e&&e===o.CHAIN.EVM?a.state.remoteFeatures?.activity===!1?t.ACCOUNT_TABS.filter(r=>r.label!=="Activity"):t.ACCOUNT_TABS:[]},isValidReownName(e){return/^[a-zA-Z0-9]+$/gu.test(e)},isValidEmail(e){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/gu.test(e)},validateReownName(e){return e.replace(/\^/gu,"").toLowerCase().replace(/[^a-zA-Z0-9]/gu,"")},hasFooter(){const e=i.state.view;if(t.VIEWS_WITH_LEGAL_FOOTER.includes(e)){const{termsConditionsUrl:s,privacyPolicyUrl:r}=a.state,n=a.state.features?.legalCheckbox;return!(!s&&!r||n)}return t.VIEWS_WITH_DEFAULT_FOOTER.includes(e)}};export{u as H};
+¬

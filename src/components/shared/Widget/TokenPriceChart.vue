@@ -6,30 +6,65 @@
         :token="selectedToken"
         :tabindex="tokenTabIndex"
         @click.stop="handleSelectToken"
-      />
+      ></token-select-button>
       <select-token
         disabled-custom
-        :visible.sync="showSelectTokenDialog"
+        v-model:visible="showSelectTokenDialog"
         :asset="selectedToken"
-        @select="changeToken"
-      />
+        @select="onTokenSelect"
+      ></select-token>
     </template>
   </price-chart-widget>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed } from 'vue';
 
-import WithTokenSelectMixin from '@/components/mixins/Widget/WithTokenSelect';
 import { Components } from '@/consts';
+import { useWidgetTokenSelect } from '@/composables/useWidgetTokenSelect';
 import { lazyComponent } from '@/router';
 
-@Component({
-  components: {
-    PriceChartWidget: lazyComponent(Components.PriceChartWidget),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    SelectToken: lazyComponent(Components.SelectToken),
-  },
-})
-export default class TokenPriceChartWidget extends Mixins(WithTokenSelectMixin) {}
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Nullable } from '@/types/common';
+
+const PriceChartWidget = lazyComponent(Components.PriceChartWidget);
+const TokenSelectButton = lazyComponent(Components.TokenSelectButton);
+const SelectToken = lazyComponent(Components.SelectToken);
+
+const props = withDefaults(
+  defineProps<{
+    predefinedToken?: Nullable<Asset>;
+    defaultAsset?: Asset;
+    parentLoading?: (() => boolean | undefined) | undefined;
+    loading?: (() => boolean | undefined) | undefined;
+  }>(),
+  {
+    predefinedToken: null,
+    defaultAsset: undefined,
+    parentLoading: undefined,
+    loading: undefined,
+  }
+);
+
+const predefinedToken = computed(() => props.predefinedToken);
+
+const {
+  selectedToken,
+  selectTokenIcon,
+  tokenTabIndex,
+  showSelectTokenDialog,
+  handleSelectToken,
+  changeToken,
+  closeTokenDialog,
+} = useWidgetTokenSelect({
+  defaultAsset: props.defaultAsset,
+  predefinedToken,
+  parentLoading: props.parentLoading,
+  loading: props.loading,
+});
+
+const onTokenSelect = (asset: Asset) => {
+  changeToken(asset);
+  closeTokenDialog();
+};
 </script>

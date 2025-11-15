@@ -1,21 +1,34 @@
-<template>
-  <button class="calculator-button">
-    <slot />
-    <calculator-icon class="calculator-button-icon" />
-  </button>
-</template>
-
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent, h } from 'vue';
 
 import CalculatorIcon from './CalculatorIcon.vue';
 
-@Component({
-  components: {
-    CalculatorIcon,
+export default defineComponent({
+  name: 'CalculatorButton',
+  compatConfig: {
+    MODE: 3,
+    COMPONENT_ASYNC: false,
   },
-})
-export default class CalculatorButton extends Vue {}
+  emits: ['click'],
+  methods: {
+    handleClick(event: MouseEvent): void {
+      this.$emit('click', event);
+    },
+  },
+  render() {
+    const slotContent = this.$slots.default?.();
+
+    return h(
+      'button',
+      {
+        type: 'button',
+        class: 'calculator-button',
+        onClick: this.handleClick,
+      },
+      [slotContent ?? null, h(CalculatorIcon, { class: 'calculator-button-icon' })]
+    );
+  },
+});
 </script>
 
 <style lang="scss" scoped>

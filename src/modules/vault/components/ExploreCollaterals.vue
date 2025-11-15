@@ -8,7 +8,7 @@
         :placeholder="t('searchText')"
         @input="updateSearch"
         @clear="resetSearch"
-      />
+      ></search-input>
     </div>
     <s-table
       ref="table"
@@ -35,26 +35,26 @@
           </div>
         </template>
         <template v-slot="{ $index, row }">
-          <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
+          <span class="explore-table-item-index explore-table-item-index--body">{{ $index + sliceStart + 1 }}</span>
           <pair-token-logo
             class="explore-table-item-logo"
             size="small"
             :first-token="row.debtAsset"
             :second-token="row.lockedAsset"
-          />
+          ></pair-token-logo>
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.debtAsset.symbol }} / {{ row.lockedAsset.symbol }}</div>
           </div>
-          <s-icon v-if="isLoggedIn && row.isAvailable" name="plus-16" size="12" />
+          <s-icon v-if="isLoggedIn && row.isAvailable" name="plus-16" size="12"></s-icon>
         </template>
       </s-table-column>
       <!-- Interest -->
       <s-table-column width="140" header-align="right" align="right">
         <template #header>
-          <sort-button name="stabilityFeeValue" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="stabilityFeeValue" :sort="sortState" @change-sort="changeSort">
             <span class="explore-table__primary">{{ t('kensetsu.interest') }}</span>
             <s-tooltip border-radius="mini" :content="t('kensetsu.interestDescription')">
-              <s-icon name="info-16" size="14px" />
+              <s-icon name="info-16" size="14px"></s-icon>
             </s-tooltip>
           </sort-button>
         </template>
@@ -65,7 +65,7 @@
       <!-- Max LTV -->
       <s-table-column width="120" header-align="right" align="right">
         <template #header>
-          <sort-button name="maxLtvValue" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="maxLtvValue" :sort="sortState" @change-sort="changeSort">
             <span class="explore-table__primary">MAX LTV</span>
           </sort-button>
         </template>
@@ -76,7 +76,7 @@
       <!-- Total locked -->
       <s-table-column min-width="180" header-align="right" align="right">
         <template #header>
-          <sort-button name="totalLockedValue" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="totalLockedValue" :sort="sortState" @change-sort="changeSort">
             <span class="explore-table__primary">Total locked</span>
           </sort-button>
         </template>
@@ -87,12 +87,12 @@
                 class="explore-table-item-token"
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="row.totalLocked"
-              />
+              ></formatted-amount>
               <token-logo
                 class="explore-table-item-logo explore-table-item-logo--plain"
                 size="small"
                 :token="row.lockedAsset"
-              />
+              ></token-logo>
             </div>
             <div v-if="row.totalLockedFiat" class="explore-table-cell">
               <formatted-amount
@@ -100,7 +100,7 @@
                 is-fiat-value
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="row.totalLockedFiat"
-              />
+              ></formatted-amount>
             </div>
           </div>
         </template>
@@ -108,7 +108,7 @@
       <!-- Total debt -->
       <s-table-column min-width="180" header-align="right" align="right">
         <template #header>
-          <sort-button name="totalDebtValue" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="totalDebtValue" :sort="sortState" @change-sort="changeSort">
             <span class="explore-table__primary">Total debt</span>
           </sort-button>
         </template>
@@ -119,12 +119,12 @@
                 class="explore-table-item-token"
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="row.totalDebt"
-              />
+              ></formatted-amount>
               <token-logo
                 class="explore-table-item-logo explore-table-item-logo--plain"
                 size="small"
                 :token="row.debtAsset"
-              />
+              ></token-logo>
             </div>
             <div v-if="row.totalDebtFiat" class="explore-table-cell">
               <formatted-amount
@@ -132,7 +132,7 @@
                 is-fiat-value
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="row.totalDebtFiat"
-              />
+              ></formatted-amount>
             </div>
           </div>
         </template>
@@ -140,7 +140,7 @@
       <!-- Available -->
       <s-table-column min-width="180" header-align="right" align="right">
         <template #header>
-          <sort-button name="availableToBorrowValue" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="availableToBorrowValue" :sort="sortState" @change-sort="changeSort">
             <span class="explore-table__primary">Available</span>
           </sort-button>
         </template>
@@ -151,12 +151,12 @@
                 class="explore-table-item-token"
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="row.availableToBorrow"
-              />
+              ></formatted-amount>
               <token-logo
                 class="explore-table-item-logo explore-table-item-logo--plain"
                 size="small"
                 :token="row.debtAsset"
-              />
+              ></token-logo>
             </div>
             <div v-if="row.availableToBorrowFiat" class="explore-table-cell">
               <formatted-amount
@@ -164,7 +164,7 @@
                 is-fiat-value
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="row.availableToBorrowFiat"
-              />
+              ></formatted-amount>
             </div>
           </div>
         </template>
@@ -179,18 +179,21 @@
       :last-page="lastPage"
       :loading="loadingState"
       @pagination-click="handlePaginationClick"
-    />
+    ></history-pagination>
   </div>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { FPNumber } from '@sora-substrate/math';
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
+import { SortDirection } from '@soramitsu-ui/ui/types';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components, HundredNumber } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state } from '@/store/decorators';
+import store from '@/store';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral } from '@sora-substrate/sdk/build/kensetsu/types';
@@ -215,108 +218,252 @@ type TableItem = {
   maxLtvValue: number;
 };
 
-@Component({
-  components: {
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    SortButton: lazyComponent(Components.SortButton),
-    DataRowSkeleton: lazyComponent(Components.DataRowSkeleton),
-    TokenLogo: components.TokenLogo,
-    FormattedAmount: components.FormattedAmount,
-    HistoryPagination: components.HistoryPagination,
-    SearchInput: components.SearchInput,
-  },
-})
-export default class ExplorePools extends Mixins(ExplorePageMixin) {
-  @state.vault.collaterals private collaterals!: Record<string, Collateral>;
-  @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
-  @state.settings.menuCollapsed collapsed!: boolean;
+const PairTokenLogo = lazyComponent(Components.PairTokenLogo);
+const SortButton = lazyComponent(Components.SortButton);
+const DataRowSkeleton = lazyComponent(Components.DataRowSkeleton);
+const TokenLogo = components.TokenLogo;
+const FormattedAmount = components.FormattedAmount;
+const HistoryPagination = components.HistoryPagination;
+const SearchInput = components.SearchInput;
 
-  property = 'totalDebtValue';
+const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+const FontWeightRate = WALLET_CONSTS.FontWeightRate;
+const ZERO = FPNumber.ZERO;
 
-  formatPercent(value: number): string {
-    const percent = value / HundredNumber;
-    return this.percentFormat?.format?.(percent) ?? `${percent * HundredNumber}%`;
+const props = defineProps<{
+  exploreQuery: string;
+}>();
+
+const emit = defineEmits<{
+  (event: 'open', locked: RegisteredAccountAsset, debt: RegisteredAccountAsset): void;
+  (event: 'update-search', value: string): void;
+}>();
+
+const tableRef = ref<any>(null);
+const teardownScrollSync = ref<Nullable<FnWithoutArgs>>(null);
+
+const { getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
+const { t } = useTranslation();
+
+const collaterals = computed(() => store.state.vault.collaterals as Record<string, Collateral>);
+const percentFormat = computed(() => store.state.settings.percentFormat as Nullable<Intl.NumberFormat>);
+const collapsed = computed(() => store.state.settings.menuCollapsed ?? false);
+const isLoggedIn = computed(() => store.getters.wallet.account.isLoggedIn as boolean);
+const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
+
+const order = ref<SortDirection | ''>(SortDirection.DESC);
+const property = ref<string>('totalDebtValue');
+const currentPage = ref(1);
+const pageAmount = ref(10);
+
+const loadingState = ref(false);
+
+const formatPercent = (value: number): string => {
+  const percent = value / HundredNumber;
+  return percentFormat.value?.format?.(percent) ?? `${percent * HundredNumber}%`;
+};
+
+const prefilteredItems = computed<TableItem[]>(() =>
+  Object.values(collaterals.value).reduce<TableItem[]>((acc, collateral) => {
+    const lockedAsset = getAsset(collateral.lockedAssetId);
+    const debtAsset = getAsset(collateral.debtAssetId);
+    if (!(lockedAsset && debtAsset)) return acc;
+
+    const stabilityFeeValue = collateral.riskParams.stabilityFeeAnnual.toNumber();
+    const stabilityFee = formatPercent(stabilityFeeValue);
+
+    const maxLtvValue = collateral.riskParams.liquidationRatioReversed;
+    const maxLtv = formatPercent(maxLtvValue);
+
+    const totalLocked = collateral.totalLocked.toLocaleString(2);
+    const totalLockedFiatFp = getFPNumberFiatAmountByFPNumber(collateral.totalLocked, lockedAsset) ?? ZERO;
+    const totalLockedValue = totalLockedFiatFp.toNumber();
+    const totalLockedFiat = totalLockedFiatFp.toLocaleString(2);
+
+    const totalDebt = collateral.debtSupply.toLocaleString(2);
+    const totalDebtFiatFp = getFPNumberFiatAmountByFPNumber(collateral.debtSupply, debtAsset) ?? ZERO;
+    const totalDebtValue = totalDebtFiatFp.toNumber();
+    const totalDebtFiat = totalDebtFiatFp.toLocaleString(2);
+
+    let availableToBorrowValue = 0;
+    let availableToBorrow = '0';
+    let availableToBorrowFiat: Nullable<string> = '0';
+    let isAvailable = false;
+    const availableToBorrowFp = collateral.riskParams.hardCap.sub(collateral.debtSupply).dp(2);
+    if (availableToBorrowFp.isGtZero()) {
+      isAvailable = true;
+      availableToBorrow = availableToBorrowFp.toLocaleString(2);
+      const availableToBorrowFiatFp = getFPNumberFiatAmountByFPNumber(availableToBorrowFp, debtAsset) ?? ZERO;
+      availableToBorrowValue = availableToBorrowFiatFp.toNumber();
+      availableToBorrowFiat = availableToBorrowFiatFp.toLocaleString(2);
+    }
+
+    acc.push({
+      name: `${debtAsset.symbol}/${lockedAsset.symbol}`,
+      lockedAsset,
+      debtAsset,
+      stabilityFeeValue,
+      stabilityFee,
+      totalLockedValue,
+      totalLocked,
+      totalLockedFiat,
+      totalDebtValue,
+      totalDebt,
+      totalDebtFiat,
+      availableToBorrowValue,
+      availableToBorrow,
+      availableToBorrowFiat,
+      isAvailable,
+      maxLtv,
+      maxLtvValue,
+    });
+    return acc;
+  }, [])
+);
+
+const filteredItems = computed(() => {
+  const search = props.exploreQuery.toLowerCase().trim();
+  if (!search) return prefilteredItems.value;
+
+  const filterAsset = (asset?: { name?: string; symbol?: string; address?: string }) =>
+    asset?.name?.toLowerCase?.().includes(search) ||
+    asset?.symbol?.toLowerCase?.().includes(search) ||
+    asset?.address?.toLowerCase?.() === search;
+
+  return prefilteredItems.value.filter((item) => {
+    return item.name.toLowerCase().includes(search) || filterAsset(item.lockedAsset) || filterAsset(item.debtAsset);
+  });
+});
+
+const isDefaultSort = computed(() => !property.value);
+
+const preparedItems = computed(() => {
+  if (isDefaultSort.value) return filteredItems.value;
+
+  const isAscending = order.value === SortDirection.ASC;
+  const prop = property.value as keyof TableItem;
+
+  return [...filteredItems.value].sort((a, b) => {
+    const aValue = a[prop];
+    const bValue = b[prop];
+
+    if (aValue === bValue) return 0;
+
+    return (isAscending ? aValue > bValue : aValue < bValue) ? 1 : -1;
+  });
+});
+
+const total = computed(() => preparedItems.value.length);
+const lastPage = computed(() => (total.value ? Math.ceil(total.value / pageAmount.value) : 1));
+const startIndex = computed(() => (currentPage.value - 1) * pageAmount.value);
+const sliceStart = computed(() => {
+  if (!total.value) return 0;
+  const start = startIndex.value;
+  if (start >= total.value) {
+    return Math.max(total.value - pageAmount.value, 0);
   }
+  return start;
+});
 
-  get prefilteredItems(): TableItem[] {
-    return Object.values(this.collaterals).reduce<TableItem[]>((acc, collateral) => {
-      const lockedAsset = this.getAsset(collateral.lockedAssetId);
-      const debtAsset = this.getAsset(collateral.debtAssetId);
-      if (!(lockedAsset && debtAsset)) return acc;
+const tableItems = computed(() => {
+  const start = sliceStart.value;
+  const end = start + pageAmount.value;
+  return preparedItems.value.slice(start, end);
+});
 
-      const stabilityFeeValue = collateral.riskParams.stabilityFeeAnnual.toNumber();
-      const stabilityFee = this.formatPercent(stabilityFeeValue);
-
-      const maxLtvValue = collateral.riskParams.liquidationRatioReversed;
-      const maxLtv = this.formatPercent(maxLtvValue);
-
-      const totalLocked = collateral.totalLocked.toLocaleString(2);
-      const totalLockedFiatFp = this.getFPNumberFiatAmountByFPNumber(collateral.totalLocked, lockedAsset) ?? this.Zero;
-      const totalLockedValue = totalLockedFiatFp.toNumber();
-      const totalLockedFiat = totalLockedFiatFp.toLocaleString(2);
-
-      const totalDebt = collateral.debtSupply.toLocaleString(2);
-      const totalDebtFiatFp = this.getFPNumberFiatAmountByFPNumber(collateral.debtSupply, debtAsset) ?? this.Zero;
-      const totalDebtValue = totalDebtFiatFp.toNumber();
-      const totalDebtFiat = totalDebtFiatFp.toLocaleString(2);
-
-      let availableToBorrowValue = 0;
-      let availableToBorrow = '0';
-      let availableToBorrowFiat: Nullable<string> = '0';
-      let isAvailable = false;
-      const availableToBorrowFp = collateral.riskParams.hardCap.sub(collateral.debtSupply).dp(2);
-      if (availableToBorrowFp.isGtZero()) {
-        isAvailable = true;
-        availableToBorrow = availableToBorrowFp.toLocaleString(2);
-        const availableToBorrowFiatFp =
-          this.getFPNumberFiatAmountByFPNumber(availableToBorrowFp, debtAsset) ?? this.Zero;
-        availableToBorrowValue = availableToBorrowFiatFp.toNumber();
-        availableToBorrowFiat = availableToBorrowFiatFp.toLocaleString(2);
-      }
-
-      const name = `${debtAsset.symbol}/${lockedAsset.symbol}`; // For search
-
-      acc.push({
-        name,
-        lockedAsset,
-        debtAsset,
-        stabilityFeeValue,
-        stabilityFee,
-        totalLockedValue,
-        totalLocked,
-        totalLockedFiat,
-        totalDebtValue,
-        totalDebt,
-        totalDebtFiat,
-        availableToBorrowValue,
-        availableToBorrow,
-        availableToBorrowFiat,
-        isAvailable,
-        maxLtv,
-        maxLtvValue,
-      });
-      return acc;
-    }, []);
+watch(
+  () => props.exploreQuery,
+  () => {
+    currentPage.value = 1;
   }
+);
 
-  // ExplorePageMixin method implementation
-  async updateExploreData(): Promise<void> {
-    // Do nothing
+watch(total, () => {
+  if (currentPage.value > lastPage.value) {
+    currentPage.value = lastPage.value;
   }
+});
 
-  openSelectedPosition(row: TableItem): void {
-    if (!(this.isLoggedIn && row.isAvailable)) return;
-    this.$emit('open', row.lockedAsset, row.debtAsset);
-  }
+const changeSort = ({ order: newOrder = SortDirection.DESC, property: newProperty = '' } = {}) => {
+  order.value = newOrder;
+  property.value = newProperty;
+};
 
-  updateSearch(value: string): void {
-    this.$emit('update-search', value);
-  }
+const handleResetSort = () => {
+  changeSort();
+};
 
-  resetSearch(): void {
-    this.$emit('update-search', '');
+const sortState = computed(() => ({
+  order: order.value,
+  property: property.value,
+}));
+
+const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
+  switch (button) {
+    case WALLET_CONSTS.PaginationButton.Prev:
+      currentPage.value = Math.max(currentPage.value - 1, 1);
+      break;
+    case WALLET_CONSTS.PaginationButton.Next:
+      currentPage.value = Math.min(currentPage.value + 1, lastPage.value);
+      break;
+    case WALLET_CONSTS.PaginationButton.Last:
+      currentPage.value = lastPage.value;
+      break;
+    default:
+      currentPage.value = 1;
   }
-}
+};
+
+const openSelectedPosition = (row: TableItem) => {
+  if (!(isLoggedIn.value && row.isAvailable)) return;
+  emit('open', row.lockedAsset, row.debtAsset);
+};
+
+const updateSearch = (value: string) => {
+  emit('update-search', value);
+};
+
+const resetSearch = () => {
+  emit('update-search', '');
+};
+
+const initScrollbarSync = () => {
+  teardownScrollSync.value?.();
+
+  const tableComponent = tableRef.value;
+  const elTable = tableComponent?.$refs?.table;
+  const bodyWrapper = elTable?.$refs?.bodyWrapper as HTMLElement | undefined;
+  const headerWrapper = elTable?.$refs?.headerWrapper as HTMLElement | undefined;
+
+  if (!bodyWrapper || !headerWrapper) return;
+
+  const syncScroll = () => {
+    const scrollLeft = bodyWrapper.scrollLeft;
+    headerWrapper.scrollLeft = scrollLeft;
+    elTable.scrollPosition = scrollLeft === 0 ? 'left' : 'right';
+  };
+
+  bodyWrapper.addEventListener('scroll', syncScroll, { passive: true });
+  syncScroll();
+
+  teardownScrollSync.value = () => {
+    bodyWrapper.removeEventListener('scroll', syncScroll);
+  };
+};
+
+onMounted(async () => {
+  await nextTick();
+  initScrollbarSync();
+});
+
+watch(tableItems, () => {
+  nextTick().then(() => initScrollbarSync());
+});
+
+onBeforeUnmount(() => {
+  teardownScrollSync.value?.();
+  teardownScrollSync.value = null;
+});
 </script>
 
 <style lang="scss">

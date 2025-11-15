@@ -1,4 +1,4 @@
-import { Component, Mixins } from 'vue-property-decorator';
+import { Options, mixins as vueMixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { PageNames } from '@/consts';
@@ -6,8 +6,8 @@ import { goTo } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
 
-@Component
-export default class InternalConnectMixin extends Mixins(TranslationMixin) {
+@Options({})
+export default class InternalConnectMixin extends vueMixins(TranslationMixin) {
   @action.wallet.account.logout public logout!: () => Promise<void>;
 
   @state.wallet.account.address public soraAddress!: string;

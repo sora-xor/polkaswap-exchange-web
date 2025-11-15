@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :title="title" :visible.sync="isVisible" :tooltip="t('kensetsu.addCollateralDescription')">
+  <dialog-base :title="title" v-model:visible="isVisible" :tooltip="t('kensetsu.addCollateralDescription')">
     <div class="add-collateral">
       <token-input
         ref="collateralInput"
@@ -15,21 +15,21 @@
         :disabled="loading"
         @max="handleMaxCollateralValue"
         @slide="handleCollateralPercentChange"
-      />
+      ></token-input>
       <prev-next-info-line
         :label="t('kensetsu.totalCollateral')"
         :tooltip="t('kensetsu.totalCollateralDescription')"
         :symbol="lockedSymbol"
         :prev="formattedPrevDeposit"
         :next="formattedNextDeposit"
-      />
+      ></prev-next-info-line>
       <prev-next-info-line
         :label="t('kensetsu.debtAvailable')"
         :tooltip="t('kensetsu.debtAvailableDescription')"
         :symbol="debtSymbol"
         :prev="formattedPrevAvailable"
         :next="formattedNextAvailable"
-      />
+      ></prev-next-info-line>
       <prev-next-info-line
         :label="t('kensetsu.ltv')"
         :tooltip="t('kensetsu.ltvDescription')"
@@ -57,267 +57,259 @@
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
-      />
+      ></info-line>
     </div>
   </dialog-base>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
+import { components, api } from '@wallet';
+import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue';
 
-import type TokenInput from '@/components/shared/Input/TokenInput.vue';
 import { Components, HundredNumber, ObjectInit, ZeroStringValue } from '@/consts';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTransaction } from '@/composables/useTransaction';
+import { useTranslation } from '@/composables/useTranslation';
 import { LtvTranslations, VaultComponents } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
 import { getLtvStatus } from '@/modules/vault/util';
 import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
 import { asZeroValue, getAssetBalance, hasInsufficientBalance } from '@/utils';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
+import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
+import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/sdk/build/kensetsu/types';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    TokenInput: lazyComponent(Components.TokenInput),
-    ValueStatus: lazyComponent(Components.ValueStatusWrapper),
-    PrevNextInfoLine: vaultLazyComponent(VaultComponents.PrevNextInfoLine),
+const DialogBase = components.DialogBase;
+const InfoLine = components.InfoLine;
+const TokenInput = lazyComponent(Components.TokenInput);
+const ValueStatus = lazyComponent(Components.ValueStatusWrapper);
+const PrevNextInfoLine = vaultLazyComponent(VaultComponents.PrevNextInfoLine);
+
+const props = withDefaults(
+  defineProps<{
+    visible?: boolean;
+    collateral?: Nullable<Collateral>;
+    vault?: Nullable<Vault>;
+    lockedAsset?: Nullable<RegisteredAccountAsset>;
+    debtAsset?: Nullable<RegisteredAccountAsset>;
+    prevLtv?: Nullable<FPNumber>;
+    prevAvailable?: FPNumber;
+    averageCollateralPrice?: FPNumber;
+    maxLtv?: number;
+    borrowTax?: number;
+  }>(),
+  {
+    visible: false,
+    collateral: ObjectInit,
+    vault: ObjectInit,
+    lockedAsset: ObjectInit,
+    debtAsset: ObjectInit,
+    prevLtv: () => FPNumber.ZERO,
+    prevAvailable: () => FPNumber.ZERO,
+    averageCollateralPrice: () => FPNumber.ZERO,
+    maxLtv: HundredNumber,
+    borrowTax: 0,
+  }
+);
+
+const emit = defineEmits<{
+  (event: 'update:visible', value: boolean): void;
+  (event: 'confirm'): void;
+}>();
+
+const { t, formatDate } = useTranslation();
+const { loading, withNotifications, withLoading, withApi, withChainApi, withParentLoading } = useTransaction();
+const {
+  Zero,
+  getFPNumber,
+  getFPNumberFromCodec,
+  formatCodecNumber,
+  getFiatAmountByCodecString,
+  getFPNumberFiatAmountByFPNumber,
+} = useFormattedAmount();
+
+const isVisible = ref(props.visible);
+const collateralValue = ref('');
+const collateralInput = ref<InstanceType<typeof TokenInputComponent> | null>(null);
+
+const xorSymbol = XOR.symbol;
+const shouldBalanceBeHidden = computed(() => store.state.wallet.settings.shouldBalanceBeHidden ?? false);
+const networkFees = computed(() => store.state.wallet.settings.networkFees as Record<string, CodecString>);
+const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
+
+const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.DepositCollateral] ?? ZeroStringValue);
+const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));
+const xorBalance = computed(() => getFPNumberFromCodec(accountXor.value?.balance?.transferable ?? ZeroStringValue));
+
+const isCollateralZero = computed(() => asZeroValue(collateralValue.value));
+const collateralFp = computed(() => {
+  if (isCollateralZero.value) return Zero;
+  return getFPNumber(collateralValue.value, props.lockedAsset?.decimals);
+});
+
+const collateralAssetBalance = computed<CodecString>(() =>
+  props.lockedAsset ? getAssetBalance(props.lockedAsset) : ZeroStringValue
+);
+
+const availableCollateralBalanceFp = computed(() => {
+  let available = getFPNumberFromCodec(collateralAssetBalance.value);
+  if (props.lockedAsset?.address === XOR.address) {
+    available = available.sub(fpNetworkFee.value);
+    if (available.isLtZero()) {
+      available = Zero;
+    }
+  }
+  return available;
+});
+
+const collateralValuePercent = computed(() => {
+  if (!collateralValue.value) return 0;
+  const denominator = availableCollateralBalanceFp.value;
+  if (denominator.isZero()) return 0;
+  const percent = collateralFp.value.div(denominator).mul(HundredNumber).toNumber(0);
+  return percent > HundredNumber ? HundredNumber : percent;
+});
+
+const debtSymbol = computed(() => props.debtAsset?.symbol ?? '');
+const lockedSymbol = computed(() => props.lockedAsset?.symbol ?? '');
+
+const isInsufficientXorForFee = computed(() => xorBalance.value.sub(fpNetworkFee.value).isLtZero());
+const isInsufficientBalance = computed(() => {
+  if (!props.lockedAsset) return true;
+  return hasInsufficientBalance(props.lockedAsset, collateralValue.value, networkFee.value);
+});
+
+const disabled = computed(
+  () => loading.value || isInsufficientXorForFee.value || isCollateralZero.value || isInsufficientBalance.value
+);
+
+const title = computed(() => t('kensetsu.addCollateral'));
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
+
+const totalCollateralValue = computed(() => {
+  if (!props.vault) return null;
+  return props.vault.lockedAmount.add(collateralFp.value);
+});
+
+const formattedPrevDeposit = computed(() =>
+  props.vault ? props.vault.lockedAmount.toLocaleString() : ZeroStringValue
+);
+const formattedNextDeposit = computed(() => totalCollateralValue.value?.toLocaleString() ?? ZeroStringValue);
+const formattedPrevLtv = computed(() => props.prevLtv?.toLocaleString(2) ?? ZeroStringValue);
+
+const maxBorrowPerCollateralValue = computed(() => {
+  if (isCollateralZero.value) return Zero;
+  const collateralVolume = props.averageCollateralPrice.mul(collateralFp.value);
+  const maxSafeDebt = collateralVolume
+    .mul(props.collateral?.riskParams.liquidationRatioReversed ?? 0)
+    .div(HundredNumber);
+
+  let available = maxSafeDebt.sub(maxSafeDebt.mul(props.borrowTax));
+
+  let totalAvailable = props.collateral?.riskParams.hardCap.sub(props.collateral.debtSupply) ?? Zero;
+  totalAvailable = totalAvailable.sub(totalAvailable.mul(props.borrowTax));
+
+  available = available.gt(totalAvailable) ? totalAvailable : available;
+  return !available.isFinity() || available.isLteZero() ? Zero : available;
+});
+
+const formattedPrevAvailable = computed(() => props.prevAvailable.toLocaleString());
+const nextAvailable = computed(() => props.prevAvailable.add(maxBorrowPerCollateralValue.value));
+const formattedNextAvailable = computed(() => nextAvailable.value.toLocaleString());
+
+const maxSafeDebt = computed(() => {
+  if (!totalCollateralValue.value) return null;
+  const collateralVolume = props.averageCollateralPrice.mul(totalCollateralValue.value);
+  return collateralVolume.mul(props.collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
+});
+
+const ltvCoeff = computed(() => {
+  if (!(maxSafeDebt.value && props.vault)) return null;
+  return props.vault.debt.div(maxSafeDebt.value);
+});
+
+const ltv = computed(() => (ltvCoeff.value?.isFinity() ? ltvCoeff.value.mul(HundredNumber) : null));
+const ltvNumber = computed(() => ltv.value?.toNumber() ?? 0);
+const formattedLtv = computed(() =>
+  ltvCoeff.value ? ltvCoeff.value.mul(props.maxLtv).toLocaleString(2) : ZeroStringValue
+);
+const ltvText = computed(() => LtvTranslations[getLtvStatus(ltvNumber.value)]);
+
+const isMaxCollateralAvailable = computed(() => {
+  if (shouldBalanceBeHidden.value || isCollateralZero.value) return true;
+  if (availableCollateralBalanceFp.value.isLteZero()) return false;
+  return !collateralFp.value.isEqualTo(availableCollateralBalanceFp.value);
+});
+
+const errorMessage = computed(() => {
+  if (isInsufficientXorForFee.value) {
+    return t('insufficientBalanceText', { tokenSymbol: xorSymbol });
+  }
+  if (isCollateralZero.value) {
+    return t('kensetsu.error.enterCollateral');
+  }
+  if (isInsufficientBalance.value) {
+    return t('insufficientBalanceText', { tokenSymbol: lockedSymbol.value });
+  }
+  return '';
+});
+
+const instance = getCurrentInstance();
+const alert = instance?.proxy?.$alert as ((message: string, options: { title?: string }) => void) | undefined;
+
+const handleCollateralPercentChange = (percent: number) => {
+  const amount = availableCollateralBalanceFp.value.mul(percent / HundredNumber);
+  collateralValue.value = amount.toString();
+};
+
+const handleMaxCollateralValue = () => {
+  collateralValue.value = availableCollateralBalanceFp.value.toString();
+};
+
+const handleAddCollateral = async () => {
+  if (disabled.value) {
+    if (errorMessage.value) {
+      alert?.(errorMessage.value, { title: t('errorText') });
+    }
+    return;
+  }
+
+  try {
+    await withNotifications(async () => {
+      if (!(props.vault && props.lockedAsset)) {
+        throw new Error('[api.kensetsu.depositCollateral]: vault or asset is null');
+      }
+      await api.kensetsu.depositCollateral(props.vault, collateralValue.value, props.lockedAsset);
+    });
+    emit('confirm');
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isVisible.value = false;
+  }
+};
+
+watch(
+  () => props.visible,
+  async (value) => {
+    isVisible.value = value;
+    if (value) {
+      await nextTick();
+      collateralValue.value = '';
+      collateralInput.value?.focus();
+    }
   },
-})
-export default class AddCollateralDialog extends Mixins(
-  mixins.TransactionMixin,
-  mixins.DialogMixin,
-  mixins.FormattedAmountMixin
-) {
-  readonly xorSymbol = XOR.symbol;
-  readonly getLtvStatus = getLtvStatus;
+  { immediate: true }
+);
 
-  @Ref('collateralInput') collateralInput!: Nullable<TokenInput>;
-
-  @Prop({ type: Object, default: ObjectInit }) readonly collateral!: Nullable<Collateral>;
-  @Prop({ type: Object, default: ObjectInit }) readonly vault!: Nullable<Vault>;
-  @Prop({ type: Object, default: ObjectInit }) readonly lockedAsset!: Nullable<RegisteredAccountAsset>;
-  @Prop({ type: Object, default: ObjectInit }) readonly debtAsset!: Nullable<RegisteredAccountAsset>;
-  @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
-  @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevAvailable!: FPNumber;
-  @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly averageCollateralPrice!: FPNumber;
-  @Prop({ type: Number, default: HundredNumber }) readonly maxLtv!: number;
-  @Prop({ type: Number, default: 0 }) readonly borrowTax!: number;
-
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
-
-  collateralValue = '';
-
-  @Watch('visible')
-  private async handleDialogVisibility(value: boolean): Promise<void> {
-    await this.$nextTick();
-    this.collateralValue = '';
-    this.collateralInput?.focus();
-  }
-
-  private get xorBalance(): FPNumber {
-    return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
-  }
-
-  get title(): string {
-    return this.t('kensetsu.addCollateral');
-  }
-
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.DepositCollateral];
-  }
-
-  private get fpNetworkFee(): FPNumber {
-    return this.getFPNumberFromCodec(this.networkFee);
-  }
-
-  get networkFeeFormatted(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
-
-  get isInsufficientXorForFee(): boolean {
-    return this.xorBalance.sub(this.fpNetworkFee).isLtZero();
-  }
-
-  get isCollateralZero(): boolean {
-    return asZeroValue(this.collateralValue);
-  }
-
-  private get collateralFp(): FPNumber {
-    if (this.isCollateralZero) return this.Zero;
-    return this.getFPNumber(this.collateralValue, this.lockedAsset?.decimals);
-  }
-
-  get isInsufficientBalance(): boolean {
-    if (!this.lockedAsset) return true;
-    return hasInsufficientBalance(this.lockedAsset, this.collateralValue, this.networkFee);
-  }
-
-  get disabled(): boolean {
-    return this.loading || this.isInsufficientXorForFee || this.isCollateralZero || this.isInsufficientBalance;
-  }
-
-  get collateralAssetBalance(): CodecString {
-    return getAssetBalance(this.lockedAsset);
-  }
-
-  /** If collateral is XOR then we subtract the network fee */
-  private get availableCollateralBalanceFp(): FPNumber {
-    let availableCollateralBalance = this.getFPNumberFromCodec(this.collateralAssetBalance);
-    if (this.lockedAsset?.address === XOR.address) {
-      availableCollateralBalance = availableCollateralBalance.sub(this.fpNetworkFee);
-      if (availableCollateralBalance.isLtZero()) {
-        availableCollateralBalance = this.Zero;
-      }
-    }
-    return availableCollateralBalance;
-  }
-
-  get isMaxCollateralAvailable(): boolean {
-    if (this.shouldBalanceBeHidden || this.isCollateralZero) return true;
-    if (this.availableCollateralBalanceFp.isLteZero()) return false;
-    return !this.collateralFp.isEqualTo(this.availableCollateralBalanceFp);
-  }
-
-  get collateralValuePercent(): number {
-    if (!this.collateralValue) return 0;
-
-    const percent = this.collateralFp.div(this.availableCollateralBalanceFp).mul(HundredNumber).toNumber(0);
-    return percent > HundredNumber ? HundredNumber : percent;
-  }
-
-  get debtSymbol(): string {
-    return this.debtAsset?.symbol ?? '';
-  }
-
-  get lockedSymbol(): string {
-    return this.lockedAsset?.symbol ?? '';
-  }
-
-  private get totalCollateralValue(): Nullable<FPNumber> {
-    if (!this.vault) return null;
-    return this.vault.lockedAmount.add(this.collateralValue || 0);
-  }
-
-  get formattedPrevDeposit(): string {
-    if (!this.vault) return ZeroStringValue;
-    return this.vault.lockedAmount.toLocaleString();
-  }
-
-  get formattedNextDeposit(): string {
-    return this.totalCollateralValue?.toLocaleString() ?? ZeroStringValue;
-  }
-
-  get formattedPrevLtv(): string {
-    return this.prevLtv?.toLocaleString(2) ?? ZeroStringValue;
-  }
-
-  private get maxBorrowPerCollateralValue(): FPNumber {
-    if (this.isCollateralZero) return this.Zero;
-
-    const collateralVolume = this.averageCollateralPrice.mul(this.collateralValue);
-    const maxSafeDebt = collateralVolume
-      .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
-      .div(HundredNumber);
-
-    let available = maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
-
-    let totalAvailable = this.collateral?.riskParams.hardCap.sub(this.collateral.debtSupply) ?? this.Zero;
-    totalAvailable = totalAvailable.sub(totalAvailable.mul(this.borrowTax));
-
-    available = available.gt(totalAvailable) ? totalAvailable : available;
-    return !available.isFinity() || available.isLteZero() ? this.Zero : available;
-  }
-
-  get formattedPrevAvailable(): string {
-    return this.prevAvailable.toLocaleString();
-  }
-
-  private get nextAvailable(): FPNumber {
-    return this.prevAvailable.add(this.maxBorrowPerCollateralValue);
-  }
-
-  get formattedNextAvailable(): string {
-    return this.nextAvailable.toLocaleString();
-  }
-
-  private get maxSafeDebt(): Nullable<FPNumber> {
-    if (!this.totalCollateralValue) return null;
-    const collateralVolume = this.averageCollateralPrice.mul(this.totalCollateralValue);
-    return collateralVolume.mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
-  }
-
-  private get ltvCoeff(): Nullable<FPNumber> {
-    if (!(this.maxSafeDebt && this.vault)) return null;
-    return this.vault.debt.div(this.maxSafeDebt);
-  }
-
-  get ltv(): Nullable<FPNumber> {
-    return this.ltvCoeff?.isFinity() ? this.ltvCoeff.mul(HundredNumber) : null;
-  }
-
-  get ltvNumber(): number {
-    if (!this.ltv) return 0;
-    return this.ltv.toNumber();
-  }
-
-  get formattedLtv(): string {
-    if (!this.ltvCoeff) return ZeroStringValue;
-    return this.ltvCoeff.mul(this.maxLtv).toLocaleString(2);
-  }
-
-  get ltvText(): string {
-    return LtvTranslations[getLtvStatus(this.ltvNumber)];
-  }
-
-  handleCollateralPercentChange(percent: number): void {
-    this.collateralValue = this.availableCollateralBalanceFp.mul(percent / HundredNumber).toString();
-  }
-
-  handleMaxCollateralValue(): void {
-    this.collateralValue = this.availableCollateralBalanceFp.toString();
-  }
-
-  get errorMessage(): string {
-    let error = '';
-    if (this.isInsufficientXorForFee) {
-      error = this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol });
-    } else if (this.isCollateralZero) {
-      error = this.t('kensetsu.error.enterCollateral');
-    } else if (this.isInsufficientBalance) {
-      error = this.t('insufficientBalanceText', { tokenSymbol: this.lockedSymbol });
-    }
-    return error;
-  }
-
-  async handleAddCollateral(): Promise<void> {
-    if (this.disabled) {
-      if (this.errorMessage) {
-        this.$alert(this.errorMessage, { title: this.t('errorText') });
-      }
-    } else {
-      try {
-        await this.withNotifications(async () => {
-          if (!(this.vault && this.lockedAsset)) {
-            throw new Error('[api.kensetsu.depositCollateral]: vault or asset is null');
-          }
-          await api.kensetsu.depositCollateral(this.vault, this.collateralValue, this.lockedAsset);
-        });
-        this.$emit('confirm');
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    this.isVisible = false;
-  }
-}
+watch(isVisible, (value) => {
+  emit('update:visible', value);
+});
 </script>
 
 <style lang="scss" scoped>

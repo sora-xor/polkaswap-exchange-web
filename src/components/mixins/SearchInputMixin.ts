@@ -1,7 +1,7 @@
-import { Component, Mixins, Ref } from 'vue-property-decorator';
+import { Options, Ref, Vue } from 'vue-property-decorator';
 
-@Component
-export default class SearchInputMixin extends Mixins() {
+@Options({})
+export default class SearchInputMixin extends Vue {
   @Ref('search') readonly search!: any;
 
   query = '';

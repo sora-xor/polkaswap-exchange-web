@@ -2,158 +2,168 @@
   <div>
     <div v-if="isScreenHuge" class="order-book-widgets--huge">
       <div class="column-1">
-        <set-limit-order-widget class="set-widget" />
-        <customise-page-widget :visible.sync="settingsVisibility" class="setting-widget" />
+        <SetLimitOrderWidget class="set-widget"></SetLimitOrderWidget>
+        <CustomisePageWidget v-model:visible="settingsVisibility" class="setting-widget"></CustomisePageWidget>
       </div>
       <div class="column-2">
-        <book-charts-widget class="chart-widget" pip-disabled />
-        <history-order-widget class="history-widget" pip-disabled />
+        <BookChartsWidget class="chart-widget" pip-disabled></BookChartsWidget>
+        <HistoryOrderWidget class="history-widget" pip-disabled></HistoryOrderWidget>
       </div>
       <div class="column-3">
-        <book-widget class="book-widget" pip-disabled />
-        <market-trades-widget class="trades-widget" pip-disabled />
+        <BookWidget class="book-widget" pip-disabled></BookWidget>
+        <MarketTradesWidget class="trades-widget" pip-disabled></MarketTradesWidget>
       </div>
     </div>
     <div v-else class="order-book-widgets">
       <div class="column-2">
-        <set-limit-order-widget class="set-widget" />
-        <book-widget class="book-widget" pip-disabled />
+        <SetLimitOrderWidget class="set-widget"></SetLimitOrderWidget>
+        <BookWidget class="book-widget" pip-disabled></BookWidget>
       </div>
       <div class="column-3">
-        <history-order-widget class="history-widget" pip-disabled />
-        <market-trades-widget class="trades-widget" pip-disabled />
+        <HistoryOrderWidget class="history-widget" pip-disabled></HistoryOrderWidget>
+        <MarketTradesWidget class="trades-widget" pip-disabled></MarketTradesWidget>
       </div>
       <div class="column-1">
-        <book-charts-widget class="chart-widget" pip-disabled />
+        <BookChartsWidget class="chart-widget" pip-disabled></BookChartsWidget>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+<script setup lang="ts">
 import isEmpty from 'lodash/fp/isEmpty';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useLoading } from '@/composables/useLoading';
+import { useSelectedTokensRoute } from '@/composables/useSelectedTokensRoute';
 import { Components, PageNames } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { goTo, lazyComponent } from '@/router';
-import { action, getter, mutation, state } from '@/store/decorators';
+import store from '@/store';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Nullable } from '@/types/common';
 
-@Component({
-  components: {
-    BookWidget: lazyComponent(Components.BookWidget),
-    SetLimitOrderWidget: lazyComponent(Components.SetLimitOrderWidget),
-    HistoryOrderWidget: lazyComponent(Components.HistoryOrderWidget),
-    BookChartsWidget: lazyComponent(Components.BookChartsWidget),
-    MarketTradesWidget: lazyComponent(Components.MarketTradesWidget),
-    CustomisePageWidget: lazyComponent(Components.CustomisePage),
-  },
-})
-export default class OrderBookView extends Mixins(TranslationMixin, mixins.LoadingMixin, SelectedTokenRouteMixin) {
-  @state.orderBook.orderBooks private orderBooks!: Record<string, OrderBook>;
-  @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
+const BookWidget = lazyComponent(Components.BookWidget);
+const SetLimitOrderWidget = lazyComponent(Components.SetLimitOrderWidget);
+const HistoryOrderWidget = lazyComponent(Components.HistoryOrderWidget);
+const BookChartsWidget = lazyComponent(Components.BookChartsWidget);
+const MarketTradesWidget = lazyComponent(Components.MarketTradesWidget);
+const CustomisePageWidget = lazyComponent(Components.CustomisePage);
 
-  @getter.settings.orderBookEnabled orderBookEnabled!: Nullable<boolean>;
-  @getter.orderBook.orderBookId orderBookId!: string;
-  @getter.orderBook.baseAsset private baseAsset!: Nullable<RegisteredAccountAsset>;
-  @getter.orderBook.quoteAsset private quoteAsset!: Nullable<RegisteredAccountAsset>;
+defineOptions({ name: 'OrderBookView' });
 
-  @mutation.orderBook.setCurrentOrderBook private setCurrentOrderBook!: (orderBookId: OrderBookId) => void;
+const settingsVisibility = ref(false);
 
-  @action.orderBook.getOrderBooksInfo private getOrderBooksInfo!: AsyncFnWithoutArgs;
-  @action.orderBook.subscribeToOrderBookStats private subscribeToOrderBookStats!: AsyncFnWithoutArgs;
-  @action.orderBook.unsubscribeFromOrderBookStats private unsubscribeFromOrderBookStats!: FnWithoutArgs;
-  @action.orderBook.unsubscribeFromBidsAndAsks private unsubscribeFromBidsAndAsks!: FnWithoutArgs;
+const orderBooks = computed(() => store.state.orderBook.orderBooks as Record<string, OrderBook>);
+const responsiveClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
+const orderBookEnabled = computed(() => store.getters.settings.orderBookEnabled as Nullable<boolean>);
+const orderBookId = computed(() => store.getters.orderBook.orderBookId as string);
+const baseAsset = computed(() => store.getters.orderBook.baseAsset as Nullable<RegisteredAccountAsset>);
+const quoteAsset = computed(() => store.getters.orderBook.quoteAsset as Nullable<RegisteredAccountAsset>);
 
-  settingsVisibility = false;
+const setCurrentOrderBook = store.commit.orderBook.setCurrentOrderBook;
+const getOrderBooksInfo = store.dispatch.orderBook.getOrderBooksInfo;
+const subscribeToOrderBookStats = store.dispatch.orderBook.subscribeToOrderBookStats;
+const unsubscribeFromOrderBookStats = store.dispatch.orderBook.unsubscribeFromOrderBookStats;
+const unsubscribeFromBidsAndAsks = store.dispatch.orderBook.unsubscribeFromBidsAndAsks;
 
-  @Watch('orderBookId', { immediate: true })
-  private updateSubscription(): void {
-    this.subscribeToOrderBookStats();
-    if (!(this.firstRouteAddress && this.secondRouteAddress)) {
-      return;
-    }
-    // We need to check only base asset cuz quote might be only XOR for now
-    if (this.baseAsset?.address !== this.firstRouteAddress) {
-      this.updateRouteAfterSelectTokens(this.baseAsset, this.quoteAsset);
-    }
+const { withApi } = useLoading();
+
+const selectOrderBookByAddresses = async (firstAddress?: string, secondAddress?: string): Promise<void> => {
+  if (!firstAddress || !secondAddress) return;
+
+  if (isEmpty(orderBooks.value)) {
+    await getOrderBooksInfo();
   }
 
-  @Watch('orderBookEnabled', { immediate: true })
-  private checkAvailability(value: Nullable<boolean>): void {
+  const orderbook = Object.values(orderBooks.value).find(
+    ({ orderBookId: id }) => id.base === firstAddress && id.quote === secondAddress
+  );
+
+  if (orderbook) {
+    setCurrentOrderBook(orderbook.orderBookId as OrderBookId);
+    await nextTick();
+  }
+};
+
+const { firstRouteAddress, secondRouteAddress, parseCurrentRoute, updateRouteAfterSelectTokens } =
+  useSelectedTokensRoute(async ({ firstAddress, secondAddress }) => {
+    await selectOrderBookByAddresses(firstAddress, secondAddress);
+  });
+
+const isScreenHuge = computed(() => responsiveClass.value === BreakpointClass.HugeDesktop);
+
+watch(
+  orderBookId,
+  (id) => {
+    if (id) {
+      void subscribeToOrderBookStats();
+      const base = baseAsset.value;
+      const quote = quoteAsset.value;
+      if (base?.address && quote?.address && firstRouteAddress.value && base.address !== firstRouteAddress.value) {
+        updateRouteAfterSelectTokens(base, quote);
+      }
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  orderBookEnabled,
+  (value) => {
     if (value === false) {
       goTo(PageNames.Swap);
     }
-  }
+  },
+  { immediate: true }
+);
 
-  get isScreenHuge(): boolean {
-    return this.responsiveClass === BreakpointClass.HugeDesktop;
-  }
+onMounted(() => {
+  void withApi(async () => {
+    await getOrderBooksInfo();
 
-  /** Overrides SelectedTokenRouteMixin */
-  async setData(params: { firstAddress: string; secondAddress: string }): Promise<void> {
-    if (isEmpty(this.orderBooks)) {
-      await this.getOrderBooksInfo();
-    }
-    const orderbooks = Object.values(this.orderBooks);
-
-    const orderbook = orderbooks.find(
-      ({ orderBookId }) => orderBookId.base === params.firstAddress && orderBookId.quote === params.secondAddress
-    );
-    if (orderbook) {
-      this.setCurrentOrderBook(orderbook.orderBookId);
-    }
-  }
-
-  created(): void {
-    this.withApi(async () => {
-      await this.getOrderBooksInfo();
-      if (this.orderBookId) {
-        this.updateRouteAfterSelectTokens(this.baseAsset, this.quoteAsset);
-        return;
+    if (orderBookId.value) {
+      const base = baseAsset.value;
+      const quote = quoteAsset.value;
+      if (base && quote) {
+        updateRouteAfterSelectTokens(base, quote);
       }
+      return;
+    }
+    const orderbookList = Object.values(orderBooks.value);
+    parseCurrentRoute();
 
-      const orderbooks = Object.values(this.orderBooks);
-      this.parseCurrentRoute();
-      if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
-        const orderbook = orderbooks.find(
-          ({ orderBookId }) =>
-            orderBookId.base === this.firstRouteAddress && orderBookId.quote === this.secondRouteAddress
-        );
-        if (orderbook) {
-          this.setCurrentOrderBook(orderbook.orderBookId);
+    if (firstRouteAddress.value && secondRouteAddress.value) {
+      await selectOrderBookByAddresses(firstRouteAddress.value, secondRouteAddress.value);
+    }
+
+    if (!orderBookId.value) {
+      const fallback = [...orderbookList].sort((a, b) => {
+        if (a.status !== b.status) {
+          return b.status > a.status ? 1 : -1;
+        }
+        return b.orderBookId.dexId - a.orderBookId.dexId;
+      })[0];
+
+      if (fallback) {
+        setCurrentOrderBook(fallback.orderBookId as OrderBookId);
+        await nextTick();
+        const base = baseAsset.value;
+        const quote = quoteAsset.value;
+        if (base && quote) {
+          updateRouteAfterSelectTokens(base, quote);
         }
       }
+    }
+  });
+});
 
-      // If it's still not set, we need to select 1st from the list
-      if (!this.orderBookId) {
-        const orderbook = orderbooks.sort((a, b) => {
-          // Compare `status`
-          if (a.status !== b.status) {
-            return b.status > a.status ? 1 : -1; // Sort by status in descending order
-          }
-          // Compare `dexId` if `status` is equal
-          return b.orderBookId.dexId - a.orderBookId.dexId;
-        })[0];
-        if (orderbook) {
-          this.setCurrentOrderBook(orderbook.orderBookId);
-          this.updateRouteAfterSelectTokens(this.baseAsset, this.quoteAsset);
-        }
-      }
-    });
-  }
-
-  beforeDestroy(): void {
-    this.unsubscribeFromOrderBookStats();
-    this.unsubscribeFromBidsAndAsks();
-  }
-}
+onBeforeUnmount(() => {
+  unsubscribeFromOrderBookStats();
+  unsubscribeFromBidsAndAsks();
+});
 </script>
 
 <style lang="scss">
@@ -249,6 +259,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
         }
       }
     }
+
     .column-1 {
       margin-top: $inner-spacing-mini;
       @include large-desktop {
@@ -271,6 +282,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
     .column-2 {
       width: 1010px;
+
       .history-widget {
         margin-top: $inner-spacing-mini;
       }
@@ -288,7 +300,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
     & + span {
       @include large-mobile {
         @include desktop(true) {
-          display: none; // AppMenu - Disable menu titles between large-mobile and desktop
+          display: none;
         }
       }
     }

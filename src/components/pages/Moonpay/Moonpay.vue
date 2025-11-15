@@ -1,148 +1,156 @@
 <template>
-  <dialog-base :visible.sync="visibility" class="moonpay-dialog">
+  <dialog-base v-model:visible="visibility" class="moonpay-dialog">
     <template #title>
-      <moonpay-logo :theme="libraryTheme" />
+      <moonpay-logo :theme="libraryTheme"></moonpay-logo>
     </template>
-    <i-frame-widget :src="widgetUrl" />
+    <i-frame-widget :src="widgetUrl"></i-frame-widget>
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 import { Components } from '@/consts';
-import { Theme } from '@/consts/theme';
+import type { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
-import { getter, state, mutation, action } from '@/store/decorators';
+import store from '@/store';
+import { useMoonpayBridge } from '@/composables/useMoonpayBridge';
+import { useTranslation } from '@/composables/useTranslation';
 import { getCssVariableValue } from '@/utils';
+
 import type { MoonpayTransaction } from '@/utils/moonpay';
+import type { FnWithoutArgs } from '@/types/common';
+import type { WALLET_TYPES } from '@wallet';
 
-import MoonpayBridgeInitMixin from './BridgeInitMixin';
-
-import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
     MoonpayLogo,
     IFrameWidget: lazyComponent(Components.IFrameWidget),
   },
-})
-export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
-  widgetUrl = '';
-  transactionsPolling!: FnWithoutArgs;
+});
 
-  @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
-  @getter.libraryTheme libraryTheme!: Theme;
+const widgetUrl = ref('');
+const transactionsPolling = ref<Nullable<FnWithoutArgs>>(null);
 
-  @state.moonpay.transactions private transactions!: Array<MoonpayTransaction>;
-  @state.moonpay.pollingTimestamp private pollingTimestamp!: number;
-  @state.moonpay.dialogVisibility private dialogVisibility!: boolean;
+const {
+  internalWallet,
+  moonpayApi,
+  withApi,
+  initMoonpayApi,
+  showNotification,
+  prepareMoonpayTxForBridgeTransfer,
+  setDialogVisibility,
+  createTransactionsPolling,
+} = useMoonpayBridge();
 
-  @mutation.moonpay.setDialogVisibility private setDialogVisibility!: (flag: boolean) => void;
-  @action.moonpay.createTransactionsPolling private createTransactionsPolling!: () => Promise<FnWithoutArgs>;
+const { t, language } = useTranslation();
 
-  @Watch('isLoggedIn', { immediate: true })
-  private handleLoggedInStateChange(isLoggedIn: boolean): void {
-    if (!isLoggedIn) {
-      this.stopPollingMoonpay();
+const transactions = computed(() => store.state.moonpay.transactions as MoonpayTransaction[]);
+const pollingTimestamp = computed(() => store.state.moonpay.pollingTimestamp as number);
+const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+
+const account = computed(() => store.getters.wallet.account.account as Nullable<WALLET_TYPES.PolkadotJsAccount>);
+
+const visibility = computed({
+  get: () => Boolean(store.state.moonpay.dialogVisibility),
+  set: (flag: boolean) => setDialogVisibility(flag),
+});
+
+const lastCompletedTransaction = computed<Nullable<MoonpayTransaction>>(() => {
+  if (!pollingTimestamp.value) return undefined;
+
+  return transactions.value.find(
+    (item) => Date.parse(item.createdAt) >= pollingTimestamp.value && item.status === 'completed'
+  );
+});
+
+const createMoonpayWidgetUrl = (): string => {
+  const currentAccount = account.value;
+  if (!currentAccount) return '';
+
+  return moonpayApi.value.createWidgetUrl({
+    colorCode: getCssVariableValue('--s-color-theme-accent'),
+    externalTransactionId: currentAccount.address,
+    language: language.value,
+  });
+};
+
+const updateWidgetUrl = () => {
+  widgetUrl.value = '';
+
+  const url = createMoonpayWidgetUrl();
+
+  setTimeout(() => {
+    widgetUrl.value = url;
+  });
+};
+
+const startPollingMoonpay = async () => {
+  console.info('Moonpay: start polling to get user transactions');
+  transactionsPolling.value = await createTransactionsPolling();
+};
+
+const stopPollingMoonpay = () => {
+  console.info('Moonpay: stop polling');
+  transactionsPolling.value?.();
+  transactionsPolling.value = null;
+};
+
+const prepareBridgeForTransfer = async (transaction: MoonpayTransaction) => {
+  setDialogVisibility(false);
+  stopPollingMoonpay();
+  updateWidgetUrl();
+
+  await showNotification(MoonpayNotifications.Success);
+  await prepareMoonpayTxForBridgeTransfer(transaction, true);
+};
+
+watch(
+  () => internalWallet.isLoggedIn.value,
+  (isLoggedIn) => {
+    if (!isLoggedIn) stopPollingMoonpay();
+  },
+  { immediate: true }
+);
+
+watch(
+  visibility,
+  (isVisible) => {
+    if (isVisible && !pollingTimestamp.value) {
+      void startPollingMoonpay();
     }
+  },
+  { immediate: true }
+);
+
+watch([language, libraryTheme], () => {
+  if (!pollingTimestamp.value) {
+    updateWidgetUrl();
   }
+});
 
-  @Watch('visibility', { immediate: true })
-  private handleVisibleStateChange(visible: boolean): void {
-    if (visible && !this.pollingTimestamp) {
-      this.startPollingMoonpay();
-    }
-  }
+watch(lastCompletedTransaction, async (transaction, previous) => {
+  if (!transaction || (previous && previous.id === transaction.id)) return;
 
-  @Watch('language')
-  @Watch('libraryTheme')
-  private handleLanguageChange(): void {
-    if (!this.pollingTimestamp) {
-      this.updateWidgetUrl();
-    }
-  }
+  await prepareBridgeForTransfer(transaction);
+});
 
-  @Watch('lastCompletedTransaction')
-  private async handleLastTransaction(
-    transaction: MoonpayTransaction,
-    prevTransaction: MoonpayTransaction
-  ): Promise<void> {
-    if (!transaction || (prevTransaction && prevTransaction.id === transaction.id)) return;
+onMounted(() => {
+  void withApi(async () => {
+    initMoonpayApi();
+    updateWidgetUrl();
+  });
+});
 
-    await this.prepareBridgeForTransfer(transaction);
-  }
+onBeforeUnmount(() => {
+  stopPollingMoonpay();
+});
 
-  get lastCompletedTransaction(): Nullable<MoonpayTransaction> {
-    if (this.pollingTimestamp === 0) return undefined;
-
-    return this.transactions.find(
-      (tx) => Date.parse(tx.createdAt) >= this.pollingTimestamp && tx.status === 'completed'
-    );
-  }
-
-  get visibility(): boolean {
-    return this.dialogVisibility;
-  }
-
-  set visibility(flag: boolean) {
-    this.setDialogVisibility(flag);
-  }
-
-  async created(): Promise<void> {
-    this.withApi(() => {
-      this.initMoonpayApi(); // MoonpayBridgeInitMixin
-      this.updateWidgetUrl();
-    });
-  }
-
-  beforeDestroy(): void {
-    this.stopPollingMoonpay();
-  }
-
-  private createMoonpayWidgetUrl(): string {
-    return this.moonpayApi.createWidgetUrl({
-      colorCode: getCssVariableValue('--s-color-theme-accent'),
-      externalTransactionId: this.account.address,
-      language: this.language,
-    });
-  }
-
-  private updateWidgetUrl(): void {
-    this.widgetUrl = '';
-
-    const url = this.createMoonpayWidgetUrl();
-
-    // to force rerender iframe between vdom updates
-    setTimeout(() => {
-      this.widgetUrl = url;
-    });
-  }
-
-  private async startPollingMoonpay(): Promise<void> {
-    console.info('Moonpay: start polling to get user transactions');
-    this.transactionsPolling = await this.createTransactionsPolling();
-  }
-
-  private stopPollingMoonpay(): void {
-    console.info('Moonpay: stop polling');
-    if (typeof this.transactionsPolling === 'function') {
-      this.transactionsPolling();
-    }
-  }
-
-  private async prepareBridgeForTransfer(transaction: MoonpayTransaction): Promise<void> {
-    this.setDialogVisibility(false);
-    this.stopPollingMoonpay();
-    this.updateWidgetUrl();
-
-    // show notification what tokens are purchased
-    await this.showNotification(MoonpayNotifications.Success);
-    await this.prepareMoonpayTxForBridgeTransfer(transaction, true);
-  }
-}
+defineExpose({
+  widgetUrl,
+});
 </script>

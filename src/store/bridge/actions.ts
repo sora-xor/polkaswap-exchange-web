@@ -4,7 +4,7 @@ import { getAssetBalance } from '@sora-substrate/sdk/build/assets';
 import { DAI } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { DexId } from '@sora-substrate/sdk/build/dex/consts';
-import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_CONSTS } from '@wallet';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 import { combineLatest } from 'rxjs';
@@ -13,6 +13,7 @@ import { MaxUint256, ZeroStringValue } from '@/consts';
 import { KnownEthBridgeAsset } from '@/consts/evm';
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
+import { resolveAssetLookup, resolveRegisteredAssets } from '@/store/bridge/utils';
 import { FocusedField } from '@/store/bridge/types';
 import { isDenominatedAsset, waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import ethBridge from '@/utils/bridge/eth';
@@ -41,6 +42,13 @@ import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
+
+const Direction =
+  BridgeTxDirection ??
+  ({
+    Outgoing: 'Outgoing',
+    Incoming: 'Incoming',
+  } as Record<'Outgoing' | 'Incoming', string>);
 
 const getSoraBalance = async (accountAddress: string, asset: RegisteredAccountAsset): Promise<CodecString> => {
   const accountBalance = await getAssetBalance(api.api, accountAddress, asset.address, asset.decimals);
@@ -164,7 +172,8 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
   let fee = ZeroStringValue;
 
   if (asset && isRegisteredAsset && isValidNetwork && evmAccount && soraAccount) {
-    const bridgeRegisteredAsset = rootState.assets.registeredAssets[asset.address];
+    const registeredAssets = resolveRegisteredAssets(rootState.assets);
+    const bridgeRegisteredAsset = registeredAssets[asset.address];
     const decimals = state.isSoraToEvm ? asset.decimals : asset.externalDecimals;
     // using max balance to not overflow contract calculation
     const maxAmount = FPNumber.fromCodecValue(state.assetSenderBalance ?? 0, decimals);
@@ -335,7 +344,7 @@ async function updateExternalTransferFee(context: ActionContext<any, any>): Prom
 
   if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
     const externalNetwork = rootState.web3.networkSelected as SubNetwork;
-    const direction = state.isSoraToEvm ? BridgeTxDirection.Outgoing : BridgeTxDirection.Incoming;
+    const direction = state.isSoraToEvm ? Direction.Outgoing : Direction.Incoming;
     const symbol = getters.asset.symbol;
 
     fee = SUB_TRANSFER_FEES[externalNetwork]?.[symbol]?.[direction] ?? ZeroStringValue;
@@ -768,7 +777,8 @@ const actions = defineActions({
     if (!tx.assetAddress) throw new Error('TX assetAddress cannot be empty!');
     if (!tx.to) throw new Error('TX to cannot be empty!');
 
-    const asset = rootGetters.assets.assetDataByAddress(tx.assetAddress);
+    const assetLookup = resolveAssetLookup(rootGetters);
+    const asset = assetLookup(tx.assetAddress);
 
     if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
 
@@ -805,7 +815,8 @@ const actions = defineActions({
     if (!tx.assetAddress) throw new Error('TX assetAddress cannot be empty!');
     if (!tx.to) throw new Error('TX to cannot be empty!');
 
-    const asset = rootGetters.assets.assetDataByAddress(tx.assetAddress);
+    const assetLookup = resolveAssetLookup(rootGetters);
+    const asset = assetLookup(tx.assetAddress);
 
     if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
 

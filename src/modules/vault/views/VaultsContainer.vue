@@ -3,52 +3,56 @@
     class="vaults-view-container"
     v-bind="{
       parentLoading: subscriptionsDataLoading,
-      ...$attrs,
+      ...attrs,
     }"
-    v-on="$listeners"
     v-loading="subscriptionsDataLoading"
-  />
+  ></router-view>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, useAttrs, watch } from 'vue';
 
-import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
+import { useSubscriptions } from '@/composables/useSubscriptions';
 import { PageNames } from '@/consts';
 import { goTo } from '@/router';
-import { action, getter } from '@/store/decorators';
+import store from '@/store';
 
-@Component
-export default class VaultsContainer extends Mixins(SubscriptionsMixin) {
-  @action.vault.subscribeOnCollaterals private subscribeOnCollaterals!: AsyncFnWithoutArgs;
-  @action.vault.subscribeOnAccountVaults private subscribeOnAccountVaults!: AsyncFnWithoutArgs;
-  @action.vault.updateBalanceSubscriptions private updateBalanceSubscriptions!: AsyncFnWithoutArgs;
-  @action.vault.getLiquidationPenalty private getLiquidationPenalty!: AsyncFnWithoutArgs;
-  @action.vault.subscribeOnBorrowTaxes private subscribeOnBorrowTaxes!: AsyncFnWithoutArgs;
-  @action.vault.subscribeOnDebtCalculation private subscribeOnDebtCalculation!: AsyncFnWithoutArgs;
-  @action.vault.reset private reset!: AsyncFnWithoutArgs;
+defineOptions({
+  inheritAttrs: false,
+});
 
-  @getter.settings.kensetsuEnabled kensetsuEnabled!: Nullable<boolean>;
+const subscribeOnCollaterals = () => store.dispatch.vault.subscribeOnCollaterals();
+const subscribeOnAccountVaults = () => store.dispatch.vault.subscribeOnAccountVaults();
+const updateBalanceSubscriptions = () => store.dispatch.vault.updateBalanceSubscriptions();
+const getLiquidationPenalty = () => store.dispatch.vault.getLiquidationPenalty();
+const subscribeOnBorrowTaxes = () => store.dispatch.vault.subscribeOnBorrowTaxes();
+const subscribeOnDebtCalculation = () => store.dispatch.vault.subscribeOnDebtCalculation();
+const resetVaults = () => store.dispatch.vault.reset();
+const attrs = useAttrs();
 
-  @Watch('kensetsuEnabled', { immediate: true })
-  private checkAvailability(value: Nullable<boolean>): void {
+const { subscriptionsDataLoading } = useSubscriptions({
+  startSubscriptions: [
+    subscribeOnCollaterals,
+    subscribeOnAccountVaults,
+    updateBalanceSubscriptions,
+    getLiquidationPenalty,
+    subscribeOnBorrowTaxes,
+    subscribeOnDebtCalculation,
+  ],
+  resetSubscriptions: [resetVaults],
+});
+
+const kensetsuEnabled = computed(() => store.getters.settings.kensetsuEnabled as Nullable<boolean>);
+
+watch(
+  kensetsuEnabled,
+  (value) => {
     if (value === false) {
       goTo(PageNames.Swap);
     }
-  }
-
-  created(): void {
-    this.setStartSubscriptions([
-      this.subscribeOnCollaterals,
-      this.subscribeOnAccountVaults,
-      this.updateBalanceSubscriptions,
-      this.getLiquidationPenalty,
-      this.subscribeOnBorrowTaxes,
-      this.subscribeOnDebtCalculation,
-    ]);
-    this.setResetSubscriptions([this.reset]);
-  }
-}
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss">

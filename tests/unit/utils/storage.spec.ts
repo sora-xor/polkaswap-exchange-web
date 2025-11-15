@@ -6,14 +6,56 @@ vi.mock('@sora-substrate/sdk', () => ({
     constructor(namespace: string) {
       this.namespace = namespace;
     }
+    set() {}
+    get() {
+      return null;
+    }
+    remove() {}
+  },
+  api: {
+    setStorage: vi.fn(),
+    shouldPairBeLocked: false,
+    initKeyring: vi.fn(),
+  },
+  connection: {},
+  Operation: {
+    SwapAndSend: 'SwapAndSend',
+    Transfer: 'Transfer',
+    VestedTransfer: 'VestedTransfer',
+    SwapTransferBatch: 'SwapTransferBatch',
+    Mint: 'Mint',
+  },
+  TransactionStatus: {
+    Finalized: 'Finalized',
+    Pending: 'Pending',
+    Failed: 'Failed',
   },
 }));
 
-vi.mock('@soramitsu/soraneo-wallet-web', () => ({
-  WALLET_CONSTS: { TranslationConsts: {} },
-  storage: {},
-  settingsStorage: {},
+const walletOverrides = vi.hoisted(() => ({
+  storage: {
+    set: vi.fn(),
+    get: vi.fn(),
+    remove: vi.fn(),
+  },
+  settingsStorage: {
+    set: vi.fn(),
+    get: vi.fn(() => null),
+    remove: vi.fn(),
+  },
 }));
+
+vi.mock('@wallet', async () => {
+  const walletStub = await vi.importActual<typeof import('@tests/stubs/@wallet')>('@tests/stubs/@wallet');
+  return {
+    ...walletStub,
+    ...walletOverrides,
+    default: {
+      ...(walletStub as { default?: Record<string, unknown> }).default,
+      ...walletOverrides,
+    },
+  };
+});
 
 import { LOCAL_STORAGE_MAX_SIZE, listOfRemoveForLocalStorage } from '@/consts/index';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
@@ -66,14 +108,16 @@ describe('storage utilities', () => {
     }
   }
 
+  let originalLocalStorage: Storage;
+
   beforeEach(() => {
-    vi.unstubAllGlobals();
+    originalLocalStorage = globalThis.localStorage;
     vi.stubGlobal('localStorage', new LocalStorageMock());
-    localStorage.clear();
+    globalThis.localStorage.clear();
   });
 
   afterEach(() => {
-    vi.unstubAllGlobals();
+    vi.stubGlobal('localStorage', originalLocalStorage);
   });
 
   it('calculateStorageUsagePercentage returns zero for empty storage', () => {

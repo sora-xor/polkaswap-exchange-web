@@ -1,0 +1,1042 @@
+
+ã±Å±import{dL as _,dM as z,dN as Y,dO as g,dP as a,dQ as Ie,f2 as N,cW as C,cO as u,fu as f,cQ as x,cX as p,fP as ve,dI as E,cY as oe,dJ as h,cR as de,fp as Ee,fM as M,fO as Fe,f3 as $e,eq as Le,fr as je,fs as Pe,d0 as Ae,cV as U,hn as Ke,f9 as He}from"./index-DjB-Okl0.js";import{n as d,c as w,r as c,U as A}from"./index-C3erWJ3v.js";import{o as b}from"./if-defined-f17jwy2o.js";import"./index-QHPW5f3x.js";import"./index-Dj4u3HYC.js";import"./index-ByyXIzWo.js";import"./index-BGZYq-yP.js";import"./index-hfbrXiJD.js";import"./index-5OFdO_WA.js";import"./index-yIRWnq1h.js";import"./index-BNxRm_YP.js";import"./index-DICTX30a.js";import{e as Be,n as De}from"./ref-BMX9uchL.js";import"./index-CEg9KusQ.js";import{n as Qe}from"./networkMd-CjqPfcyN.js";import"./index-UR_nkjj6.js";import"./index-CsAnDftN.js";const Ge=_`
+  :host {
+    flex: 1;
+    height: 100%;
+  }
+
+  button {
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    padding: ${({spacing:t})=>t[1]} ${({spacing:t})=>t[2]};
+    column-gap: ${({spacing:t})=>t[1]};
+    color: ${({tokens:t})=>t.theme.textSecondary};
+    border-radius: ${({borderRadius:t})=>t[20]};
+    background-color: transparent;
+    transition: background-color ${({durations:t})=>t.lg}
+      ${({easings:t})=>t["ease-out-power-2"]};
+    will-change: background-color;
+  }
+
+  /* -- Hover & Active states ----------------------------------------------------------- */
+  button[data-active='true'] {
+    color: ${({tokens:t})=>t.theme.textPrimary};
+    background-color: ${({tokens:t})=>t.theme.foregroundTertiary};
+  }
+
+  button:hover:enabled:not([data-active='true']),
+  button:active:enabled:not([data-active='true']) {
+    wui-text,
+    wui-icon {
+      color: ${({tokens:t})=>t.theme.textPrimary};
+    }
+  }
+`;var le=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};const Xe={lg:"lg-regular",md:"md-regular",sm:"sm-regular"},Je={lg:"md",md:"sm",sm:"sm"};let V=class extends g{constructor(){super(...arguments),this.icon="mobile",this.size="md",this.label="",this.active=!1}render(){return a`
+      <button data-active=${this.active}>
+        ${this.icon?a`<wui-icon size=${Je[this.size]} name=${this.icon}></wui-icon>`:""}
+        <wui-text variant=${Xe[this.size]}> ${this.label} </wui-text>
+      </button>
+    `}};V.styles=[z,Y,Ge];le([d()],V.prototype,"icon",void 0);le([d()],V.prototype,"size",void 0);le([d()],V.prototype,"label",void 0);le([d({type:Boolean})],V.prototype,"active",void 0);V=le([w("wui-tab-item")],V);const Ye=_`
+  :host {
+    display: inline-flex;
+    align-items: center;
+    background-color: ${({tokens:t})=>t.theme.foregroundSecondary};
+    border-radius: ${({borderRadius:t})=>t[32]};
+    padding: ${({spacing:t})=>t["01"]};
+    box-sizing: border-box;
+  }
+
+  :host([data-size='sm']) {
+    height: 26px;
+  }
+
+  :host([data-size='md']) {
+    height: 36px;
+  }
+`;var ae=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let F=class extends g{constructor(){super(...arguments),this.tabs=[],this.onTabChange=()=>null,this.size="md",this.activeTab=0}render(){return this.dataset.size=this.size,this.tabs.map((e,i)=>{const o=i===this.activeTab;return a`
+        <wui-tab-item
+          @click=${()=>this.onTabClick(i)}
+          icon=${e.icon}
+          size=${this.size}
+          label=${e.label}
+          ?active=${o}
+          data-active=${o}
+          data-testid="tab-${e.label?.toLowerCase()}"
+        ></wui-tab-item>
+      `})}onTabClick(e){this.activeTab=e,this.onTabChange(e)}};F.styles=[z,Y,Ye];ae([d({type:Array})],F.prototype,"tabs",void 0);ae([d()],F.prototype,"onTabChange",void 0);ae([d()],F.prototype,"size",void 0);ae([c()],F.prototype,"activeTab",void 0);F=ae([w("wui-tabs")],F);const Ze=_`
+  :host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  label {
+    position: relative;
+    display: inline-block;
+    user-select: none;
+    transition:
+      background-color ${({durations:t})=>t.lg}
+        ${({easings:t})=>t["ease-out-power-2"]},
+      color ${({durations:t})=>t.lg} ${({easings:t})=>t["ease-out-power-2"]},
+      border ${({durations:t})=>t.lg} ${({easings:t})=>t["ease-out-power-2"]},
+      box-shadow ${({durations:t})=>t.lg}
+        ${({easings:t})=>t["ease-out-power-2"]},
+      width ${({durations:t})=>t.lg} ${({easings:t})=>t["ease-out-power-2"]},
+      height ${({durations:t})=>t.lg} ${({easings:t})=>t["ease-out-power-2"]},
+      transform ${({durations:t})=>t.lg}
+        ${({easings:t})=>t["ease-out-power-2"]},
+      opacity ${({durations:t})=>t.lg} ${({easings:t})=>t["ease-out-power-2"]};
+    will-change: background-color, color, border, box-shadow, width, height, transform, opacity;
+  }
+
+  input {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  span {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: ${({colors:t})=>t.neutrals300};
+    border-radius: ${({borderRadius:t})=>t.round};
+    border: 1px solid transparent;
+    will-change: border;
+    transition:
+      background-color ${({durations:t})=>t.lg}
+        ${({easings:t})=>t["ease-out-power-2"]},
+      color ${({durations:t})=>t.lg} ${({easings:t})=>t["ease-out-power-2"]},
+      border ${({durations:t})=>t.lg} ${({easings:t})=>t["ease-out-power-2"]},
+      box-shadow ${({durations:t})=>t.lg}
+        ${({easings:t})=>t["ease-out-power-2"]},
+      width ${({durations:t})=>t.lg} ${({easings:t})=>t["ease-out-power-2"]},
+      height ${({durations:t})=>t.lg} ${({easings:t})=>t["ease-out-power-2"]},
+      transform ${({durations:t})=>t.lg}
+        ${({easings:t})=>t["ease-out-power-2"]},
+      opacity ${({durations:t})=>t.lg} ${({easings:t})=>t["ease-out-power-2"]};
+    will-change: background-color, color, border, box-shadow, width, height, transform, opacity;
+  }
+
+  span:before {
+    content: '';
+    position: absolute;
+    background-color: ${({colors:t})=>t.white};
+    border-radius: 50%;
+  }
+
+  /* -- Sizes --------------------------------------------------------- */
+  label[data-size='lg'] {
+    width: 48px;
+    height: 32px;
+  }
+
+  label[data-size='md'] {
+    width: 40px;
+    height: 28px;
+  }
+
+  label[data-size='sm'] {
+    width: 32px;
+    height: 22px;
+  }
+
+  label[data-size='lg'] > span:before {
+    height: 24px;
+    width: 24px;
+    left: 4px;
+    top: 3px;
+  }
+
+  label[data-size='md'] > span:before {
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    top: 3px;
+  }
+
+  label[data-size='sm'] > span:before {
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    top: 2px;
+  }
+
+  /* -- Focus states --------------------------------------------------- */
+  input:focus-visible:not(:checked) + span,
+  input:focus:not(:checked) + span {
+    border: 1px solid ${({tokens:t})=>t.core.iconAccentPrimary};
+    background-color: ${({tokens:t})=>t.theme.textTertiary};
+    box-shadow: 0px 0px 0px 4px rgba(9, 136, 240, 0.2);
+  }
+
+  input:focus-visible:checked + span,
+  input:focus:checked + span {
+    border: 1px solid ${({tokens:t})=>t.core.iconAccentPrimary};
+    box-shadow: 0px 0px 0px 4px rgba(9, 136, 240, 0.2);
+  }
+
+  /* -- Checked states --------------------------------------------------- */
+  input:checked + span {
+    background-color: ${({tokens:t})=>t.core.iconAccentPrimary};
+  }
+
+  label[data-size='lg'] > input:checked + span:before {
+    transform: translateX(calc(100% - 9px));
+  }
+
+  label[data-size='md'] > input:checked + span:before {
+    transform: translateX(calc(100% - 9px));
+  }
+
+  label[data-size='sm'] > input:checked + span:before {
+    transform: translateX(calc(100% - 7px));
+  }
+
+  /* -- Hover states ------------------------------------------------------- */
+  label:hover > input:not(:checked):not(:disabled) + span {
+    background-color: ${({colors:t})=>t.neutrals400};
+  }
+
+  label:hover > input:checked:not(:disabled) + span {
+    background-color: ${({colors:t})=>t.accent080};
+  }
+
+  /* -- Disabled state --------------------------------------------------- */
+  label:has(input:disabled) {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  input:not(:checked):disabled + span {
+    background-color: ${({colors:t})=>t.neutrals700};
+  }
+
+  input:checked:disabled + span {
+    background-color: ${({colors:t})=>t.neutrals700};
+  }
+
+  input:not(:checked):disabled + span::before {
+    background-color: ${({colors:t})=>t.neutrals400};
+  }
+
+  input:checked:disabled + span::before {
+    background-color: ${({tokens:t})=>t.theme.textTertiary};
+  }
+`;var be=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let X=class extends g{constructor(){super(...arguments),this.inputElementRef=Be(),this.checked=!1,this.disabled=!1,this.size="md"}render(){return a`
+      <label data-size=${this.size}>
+        <input
+          ${De(this.inputElementRef)}
+          type="checkbox"
+          ?checked=${this.checked}
+          ?disabled=${this.disabled}
+          @change=${this.dispatchChangeEvent.bind(this)}
+        />
+        <span></span>
+      </label>
+    `}dispatchChangeEvent(){this.dispatchEvent(new CustomEvent("switchChange",{detail:this.inputElementRef.value?.checked,bubbles:!0,composed:!0}))}};X.styles=[z,Y,Ze];be([d({type:Boolean})],X.prototype,"checked",void 0);be([d({type:Boolean})],X.prototype,"disabled",void 0);be([d()],X.prototype,"size",void 0);X=be([w("wui-toggle")],X);const et=_`
+  :host {
+    height: auto;
+  }
+
+  :host > wui-flex {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: ${({spacing:t})=>t[2]};
+    padding: ${({spacing:t})=>t[2]} ${({spacing:t})=>t[3]};
+    background-color: ${({tokens:t})=>t.theme.foregroundPrimary};
+    border-radius: ${({borderRadius:t})=>t[4]};
+    box-shadow: inset 0 0 0 1px ${({tokens:t})=>t.theme.foregroundPrimary};
+    transition: background-color ${({durations:t})=>t.lg}
+      ${({easings:t})=>t["ease-out-power-2"]};
+    will-change: background-color;
+    cursor: pointer;
+  }
+
+  wui-switch {
+    pointer-events: none;
+  }
+`;var Ue=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let ue=class extends g{constructor(){super(...arguments),this.checked=!1}render(){return a`
+      <wui-flex>
+        <wui-icon size="xl" name="walletConnectBrown"></wui-icon>
+        <wui-toggle
+          ?checked=${this.checked}
+          size="sm"
+          @switchChange=${this.handleToggleChange.bind(this)}
+        ></wui-toggle>
+      </wui-flex>
+    `}handleToggleChange(e){e.stopPropagation(),this.checked=e.detail,this.dispatchSwitchEvent()}dispatchSwitchEvent(){this.dispatchEvent(new CustomEvent("certifiedSwitchChange",{detail:this.checked,bubbles:!0,composed:!0}))}};ue.styles=[z,Y,et];Ue([d({type:Boolean})],ue.prototype,"checked",void 0);ue=Ue([w("wui-certified-switch")],ue);const tt=_`
+  :host {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+
+  wui-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: ${({spacing:t})=>t[3]};
+    color: ${({tokens:t})=>t.theme.iconDefault};
+    cursor: pointer;
+    padding: ${({spacing:t})=>t[2]};
+    background-color: transparent;
+    border-radius: ${({borderRadius:t})=>t[4]};
+    transition: background-color ${({durations:t})=>t.lg}
+      ${({easings:t})=>t["ease-out-power-2"]};
+  }
+
+  @media (hover: hover) {
+    wui-icon:hover {
+      background-color: ${({tokens:t})=>t.theme.foregroundSecondary};
+    }
+  }
+`;var Ne=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let pe=class extends g{constructor(){super(...arguments),this.inputComponentRef=Be(),this.inputValue=""}render(){return a`
+      <wui-input-text
+        ${De(this.inputComponentRef)}
+        placeholder="Search wallet"
+        icon="search"
+        type="search"
+        enterKeyHint="search"
+        size="sm"
+        @inputChange=${this.onInputChange}
+      >
+        ${this.inputValue?a`<wui-icon
+              @click=${this.clearValue}
+              color="inherit"
+              size="sm"
+              name="close"
+            ></wui-icon>`:null}
+      </wui-input-text>
+    `}onInputChange(e){this.inputValue=e.detail||""}clearValue(){const i=this.inputComponentRef.value?.inputElementRef.value;i&&(i.value="",this.inputValue="",i.focus(),i.dispatchEvent(new Event("input")))}};pe.styles=[z,tt];Ne([d()],pe.prototype,"inputValue",void 0);pe=Ne([w("wui-search-bar")],pe);const it=_`
+  :host {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 104px;
+    width: 104px;
+    row-gap: ${({spacing:t})=>t[2]};
+    background-color: ${({tokens:t})=>t.theme.foregroundPrimary};
+    border-radius: ${({borderRadius:t})=>t[5]};
+    position: relative;
+  }
+
+  wui-shimmer[data-type='network'] {
+    border: none;
+    -webkit-clip-path: var(--apkt-path-network);
+    clip-path: var(--apkt-path-network);
+  }
+
+  svg {
+    position: absolute;
+    width: 48px;
+    height: 54px;
+    z-index: 1;
+  }
+
+  svg > path {
+    stroke: ${({tokens:t})=>t.theme.foregroundSecondary};
+    stroke-width: 1px;
+  }
+
+  @media (max-width: 350px) {
+    :host {
+      width: 100%;
+    }
+  }
+`;var ze=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let he=class extends g{constructor(){super(...arguments),this.type="wallet"}render(){return a`
+      ${this.shimmerTemplate()}
+      <wui-shimmer width="80px" height="20px"></wui-shimmer>
+    `}shimmerTemplate(){return this.type==="network"?a` <wui-shimmer data-type=${this.type} width="48px" height="54px"></wui-shimmer>
+        ${Qe}`:a`<wui-shimmer width="56px" height="56px"></wui-shimmer>`}};he.styles=[z,Y,it];ze([d()],he.prototype,"type",void 0);he=ze([w("wui-card-select-loader")],he);const nt=Ie`
+  :host {
+    display: grid;
+    width: inherit;
+    height: inherit;
+  }
+`;var S=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let R=class extends g{render(){return this.style.cssText=`
+      grid-template-rows: ${this.gridTemplateRows};
+      grid-template-columns: ${this.gridTemplateColumns};
+      justify-items: ${this.justifyItems};
+      align-items: ${this.alignItems};
+      justify-content: ${this.justifyContent};
+      align-content: ${this.alignContent};
+      column-gap: ${this.columnGap&&`var(--apkt-spacing-${this.columnGap})`};
+      row-gap: ${this.rowGap&&`var(--apkt-spacing-${this.rowGap})`};
+      gap: ${this.gap&&`var(--apkt-spacing-${this.gap})`};
+      padding-top: ${this.padding&&A.getSpacingStyles(this.padding,0)};
+      padding-right: ${this.padding&&A.getSpacingStyles(this.padding,1)};
+      padding-bottom: ${this.padding&&A.getSpacingStyles(this.padding,2)};
+      padding-left: ${this.padding&&A.getSpacingStyles(this.padding,3)};
+      margin-top: ${this.margin&&A.getSpacingStyles(this.margin,0)};
+      margin-right: ${this.margin&&A.getSpacingStyles(this.margin,1)};
+      margin-bottom: ${this.margin&&A.getSpacingStyles(this.margin,2)};
+      margin-left: ${this.margin&&A.getSpacingStyles(this.margin,3)};
+    `,a`<slot></slot>`}};R.styles=[z,nt];S([d()],R.prototype,"gridTemplateRows",void 0);S([d()],R.prototype,"gridTemplateColumns",void 0);S([d()],R.prototype,"justifyItems",void 0);S([d()],R.prototype,"alignItems",void 0);S([d()],R.prototype,"justifyContent",void 0);S([d()],R.prototype,"alignContent",void 0);S([d()],R.prototype,"columnGap",void 0);S([d()],R.prototype,"rowGap",void 0);S([d()],R.prototype,"gap",void 0);S([d()],R.prototype,"padding",void 0);S([d()],R.prototype,"margin",void 0);R=S([w("wui-grid")],R);const ot=_`
+  button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 104px;
+    row-gap: ${({spacing:t})=>t[2]};
+    padding: ${({spacing:t})=>t[3]} ${({spacing:t})=>t[0]};
+    background-color: ${({tokens:t})=>t.theme.foregroundPrimary};
+    border-radius: clamp(0px, ${({borderRadius:t})=>t[4]}, 20px);
+    transition:
+      color ${({durations:t})=>t.lg} ${({easings:t})=>t["ease-out-power-1"]},
+      background-color ${({durations:t})=>t.lg}
+        ${({easings:t})=>t["ease-out-power-1"]},
+      border-radius ${({durations:t})=>t.lg}
+        ${({easings:t})=>t["ease-out-power-1"]};
+    will-change: background-color, color, border-radius;
+    outline: none;
+    border: none;
+  }
+
+  button > wui-flex > wui-text {
+    color: ${({tokens:t})=>t.theme.textPrimary};
+    max-width: 86px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    justify-content: center;
+  }
+
+  button > wui-flex > wui-text.certified {
+    max-width: 66px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    button:hover:enabled {
+      background-color: ${({tokens:t})=>t.theme.foregroundSecondary};
+    }
+  }
+
+  button:disabled > wui-flex > wui-text {
+    color: ${({tokens:t})=>t.core.glass010};
+  }
+
+  [data-selected='true'] {
+    background-color: ${({colors:t})=>t.accent020};
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    [data-selected='true']:hover:enabled {
+      background-color: ${({colors:t})=>t.accent010};
+    }
+  }
+
+  [data-selected='true']:active:enabled {
+    background-color: ${({colors:t})=>t.accent010};
+  }
+
+  @media (max-width: 350px) {
+    button {
+      width: 100%;
+    }
+  }
+`;var P=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let T=class extends g{constructor(){super(),this.observer=new IntersectionObserver(()=>{}),this.visible=!1,this.imageSrc=void 0,this.imageLoading=!1,this.isImpressed=!1,this.explorerId="",this.walletQuery="",this.certified=!1,this.displayIndex=0,this.wallet=void 0,this.observer=new IntersectionObserver(e=>{e.forEach(i=>{i.isIntersecting?(this.visible=!0,this.fetchImageSrc(),this.sendImpressionEvent()):this.visible=!1})},{threshold:.01})}firstUpdated(){this.observer.observe(this)}disconnectedCallback(){this.observer.disconnect()}render(){const e=this.wallet?.badge_type==="certified";return a`
+      <button>
+        ${this.imageTemplate()}
+        <wui-flex flexDirection="row" alignItems="center" justifyContent="center" gap="1">
+          <wui-text
+            variant="md-regular"
+            color="inherit"
+            class=${b(e?"certified":void 0)}
+            >${this.wallet?.name}</wui-text
+          >
+          ${e?a`<wui-icon size="sm" name="walletConnectBrown"></wui-icon>`:null}
+        </wui-flex>
+      </button>
+    `}imageTemplate(){return!this.visible&&!this.imageSrc||this.imageLoading?this.shimmerTemplate():a`
+      <wui-wallet-image
+        size="lg"
+        imageSrc=${b(this.imageSrc)}
+        name=${b(this.wallet?.name)}
+        .installed=${this.wallet?.installed??!1}
+        badgeSize="sm"
+      >
+      </wui-wallet-image>
+    `}shimmerTemplate(){return a`<wui-shimmer width="56px" height="56px"></wui-shimmer>`}async fetchImageSrc(){this.wallet&&(this.imageSrc=N.getWalletImage(this.wallet),!this.imageSrc&&(this.imageLoading=!0,this.imageSrc=await N.fetchWalletImage(this.wallet.image_id),this.imageLoading=!1))}sendImpressionEvent(){!this.wallet||this.isImpressed||(this.isImpressed=!0,C.sendWalletImpressionEvent({name:this.wallet.name,walletRank:this.wallet.order,explorerId:this.explorerId,view:u.state.view,query:this.walletQuery,certified:this.certified,displayIndex:this.displayIndex}))}};T.styles=ot;P([c()],T.prototype,"visible",void 0);P([c()],T.prototype,"imageSrc",void 0);P([c()],T.prototype,"imageLoading",void 0);P([c()],T.prototype,"isImpressed",void 0);P([d()],T.prototype,"explorerId",void 0);P([d()],T.prototype,"walletQuery",void 0);P([d()],T.prototype,"certified",void 0);P([d()],T.prototype,"displayIndex",void 0);P([d({type:Object})],T.prototype,"wallet",void 0);T=P([w("w3m-all-wallets-list-item")],T);const rt=_`
+  wui-grid {
+    max-height: clamp(360px, 400px, 80vh);
+    overflow: scroll;
+    scrollbar-width: none;
+    grid-auto-rows: min-content;
+    grid-template-columns: repeat(auto-fill, 104px);
+  }
+
+  :host([data-mobile-fullscreen='true']) wui-grid {
+    max-height: none;
+  }
+
+  @media (max-width: 350px) {
+    wui-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  wui-grid[data-scroll='false'] {
+    overflow: hidden;
+  }
+
+  wui-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  w3m-all-wallets-list-item {
+    opacity: 0;
+    animation-duration: ${({durations:t})=>t.xl};
+    animation-timing-function: ${({easings:t})=>t["ease-inout-power-2"]};
+    animation-name: fade-in;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  wui-loading-spinner {
+    padding-top: ${({spacing:t})=>t[4]};
+    padding-bottom: ${({spacing:t})=>t[4]};
+    justify-content: center;
+    grid-column: 1 / span 4;
+  }
+`;var q=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};const ke="local-paginator";let j=class extends g{constructor(){super(),this.unsubscribe=[],this.paginationObserver=void 0,this.loading=!f.state.wallets.length,this.wallets=f.state.wallets,this.recommended=f.state.recommended,this.featured=f.state.featured,this.filteredWallets=f.state.filteredWallets,this.mobileFullScreen=x.state.enableMobileFullScreen,this.unsubscribe.push(f.subscribeKey("wallets",e=>this.wallets=e),f.subscribeKey("recommended",e=>this.recommended=e),f.subscribeKey("featured",e=>this.featured=e),f.subscribeKey("filteredWallets",e=>this.filteredWallets=e))}firstUpdated(){this.initialFetch(),this.createPaginationObserver()}disconnectedCallback(){this.unsubscribe.forEach(e=>e()),this.paginationObserver?.disconnect()}render(){return this.mobileFullScreen&&this.setAttribute("data-mobile-fullscreen","true"),a`
+      <wui-grid
+        data-scroll=${!this.loading}
+        .padding=${["0","3","3","3"]}
+        gap="2"
+        justifyContent="space-between"
+      >
+        ${this.loading?this.shimmerTemplate(16):this.walletsTemplate()}
+        ${this.paginationLoaderTemplate()}
+      </wui-grid>
+    `}async initialFetch(){this.loading=!0;const e=this.shadowRoot?.querySelector("wui-grid");e&&(await f.fetchWalletsByPage({page:1}),await e.animate([{opacity:1},{opacity:0}],{duration:200,fill:"forwards",easing:"ease"}).finished,this.loading=!1,e.animate([{opacity:0},{opacity:1}],{duration:200,fill:"forwards",easing:"ease"}))}shimmerTemplate(e,i){return[...Array(e)].map(()=>a`
+        <wui-card-select-loader type="wallet" id=${b(i)}></wui-card-select-loader>
+      `)}getWallets(){const e=[...this.featured,...this.recommended];this.filteredWallets?.length>0?e.push(...this.filteredWallets):e.push(...this.wallets);const i=p.uniqueBy(e,"id"),o=ve.markWalletsAsInstalled(i);return ve.markWalletsWithDisplayIndex(o)}walletsTemplate(){return this.getWallets().map((i,o)=>a`
+        <w3m-all-wallets-list-item
+          data-testid="wallet-search-item-${i.id}"
+          @click=${()=>this.onConnectWallet(i)}
+          .wallet=${i}
+          explorerId=${i.id}
+          certified=${this.badge==="certified"}
+          displayIndex=${o}
+        ></w3m-all-wallets-list-item>
+      `)}paginationLoaderTemplate(){const{wallets:e,recommended:i,featured:o,count:r,mobileFilteredOutWalletsLength:n}=f.state,s=window.innerWidth<352?3:4,l=e.length+i.length;let m=Math.ceil(l/s)*s-l+s;return m-=e.length?o.length%s:0,r===0&&o.length>0?null:r===0||[...o,...e,...i].length<r-(n??0)?this.shimmerTemplate(m,ke):null}createPaginationObserver(){const e=this.shadowRoot?.querySelector(`#${ke}`);e&&(this.paginationObserver=new IntersectionObserver(([i])=>{if(i?.isIntersecting&&!this.loading){const{page:o,count:r,wallets:n}=f.state;n.length<r&&f.fetchWalletsByPage({page:o+1})}}),this.paginationObserver.observe(e))}onConnectWallet(e){E.selectWalletConnector(e)}};j.styles=rt;q([c()],j.prototype,"loading",void 0);q([c()],j.prototype,"wallets",void 0);q([c()],j.prototype,"recommended",void 0);q([c()],j.prototype,"featured",void 0);q([c()],j.prototype,"filteredWallets",void 0);q([c()],j.prototype,"badge",void 0);q([c()],j.prototype,"mobileFullScreen",void 0);j=q([w("w3m-all-wallets-list")],j);const st=Ie`
+  wui-grid,
+  wui-loading-spinner,
+  wui-flex {
+    height: 360px;
+  }
+
+  wui-grid {
+    overflow: scroll;
+    scrollbar-width: none;
+    grid-auto-rows: min-content;
+    grid-template-columns: repeat(auto-fill, 104px);
+  }
+
+  :host([data-mobile-fullscreen='true']) wui-grid {
+    max-height: none;
+    height: auto;
+  }
+
+  wui-grid[data-scroll='false'] {
+    overflow: hidden;
+  }
+
+  wui-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  wui-loading-spinner {
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (max-width: 350px) {
+    wui-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+`;var ce=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let K=class extends g{constructor(){super(...arguments),this.prevQuery="",this.prevBadge=void 0,this.loading=!0,this.mobileFullScreen=x.state.enableMobileFullScreen,this.query=""}render(){return this.mobileFullScreen&&this.setAttribute("data-mobile-fullscreen","true"),this.onSearch(),this.loading?a`<wui-loading-spinner color="accent-primary"></wui-loading-spinner>`:this.walletsTemplate()}async onSearch(){(this.query.trim()!==this.prevQuery.trim()||this.badge!==this.prevBadge)&&(this.prevQuery=this.query,this.prevBadge=this.badge,this.loading=!0,await f.searchWallet({search:this.query,badge:this.badge}),this.loading=!1)}walletsTemplate(){const{search:e}=f.state,i=ve.markWalletsAsInstalled(e);return e.length?a`
+      <wui-grid
+        data-testid="wallet-list"
+        .padding=${["0","3","3","3"]}
+        rowGap="4"
+        columngap="2"
+        justifyContent="space-between"
+      >
+        ${i.map((o,r)=>a`
+            <w3m-all-wallets-list-item
+              @click=${()=>this.onConnectWallet(o)}
+              .wallet=${o}
+              data-testid="wallet-search-item-${o.id}"
+              explorerId=${o.id}
+              certified=${this.badge==="certified"}
+              walletQuery=${this.query}
+              displayIndex=${r}
+            ></w3m-all-wallets-list-item>
+          `)}
+      </wui-grid>
+    `:a`
+        <wui-flex
+          data-testid="no-wallet-found"
+          justifyContent="center"
+          alignItems="center"
+          gap="3"
+          flexDirection="column"
+        >
+          <wui-icon-box size="lg" color="default" icon="wallet"></wui-icon-box>
+          <wui-text data-testid="no-wallet-found-text" color="secondary" variant="md-medium">
+            No Wallet found
+          </wui-text>
+        </wui-flex>
+      `}onConnectWallet(e){E.selectWalletConnector(e)}};K.styles=st;ce([c()],K.prototype,"loading",void 0);ce([c()],K.prototype,"mobileFullScreen",void 0);ce([d()],K.prototype,"query",void 0);ce([d()],K.prototype,"badge",void 0);K=ce([w("w3m-all-wallets-search")],K);var We=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let re=class extends g{constructor(){super(...arguments),this.search="",this.badge=void 0,this.onDebouncedSearch=p.debounce(e=>{this.search=e})}render(){const e=this.search.length>=2;return a`
+      <wui-flex .padding=${["1","3","3","3"]} gap="2" alignItems="center">
+        <wui-search-bar @inputChange=${this.onInputChange.bind(this)}></wui-search-bar>
+        <wui-certified-switch
+          ?checked=${this.badge==="certified"}
+          @certifiedSwitchChange=${this.onCertifiedSwitchChange.bind(this)}
+          data-testid="wui-certified-switch"
+        ></wui-certified-switch>
+        ${this.qrButtonTemplate()}
+      </wui-flex>
+      ${e||this.badge?a`<w3m-all-wallets-search
+            query=${this.search}
+            .badge=${this.badge}
+          ></w3m-all-wallets-search>`:a`<w3m-all-wallets-list .badge=${this.badge}></w3m-all-wallets-list>`}
+    `}onInputChange(e){this.onDebouncedSearch(e.detail)}onCertifiedSwitchChange(e){e.detail?(this.badge="certified",oe.showSvg("Only WalletConnect certified",{icon:"walletConnectBrown",iconColor:"accent-100"})):this.badge=void 0}qrButtonTemplate(){return p.isMobile()?a`
+        <wui-icon-box
+          size="xl"
+          iconSize="xl"
+          color="accent-primary"
+          icon="qrCode"
+          border
+          borderColor="wui-accent-glass-010"
+          @click=${this.onWalletConnectQr.bind(this)}
+        ></wui-icon-box>
+      `:null}onWalletConnectQr(){u.push("ConnectingWalletConnect")}};We([c()],re.prototype,"search",void 0);We([c()],re.prototype,"badge",void 0);re=We([w("w3m-all-wallets-view")],re);var Z=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let H=class extends g{constructor(){super(),this.unsubscribe=[],this.tabIdx=void 0,this.connectors=E.state.connectors,this.count=f.state.count,this.filteredCount=f.state.filteredWallets.length,this.isFetchingRecommendedWallets=f.state.isFetchingRecommendedWallets,this.unsubscribe.push(E.subscribeKey("connectors",e=>this.connectors=e),f.subscribeKey("count",e=>this.count=e),f.subscribeKey("filteredWallets",e=>this.filteredCount=e.length),f.subscribeKey("isFetchingRecommendedWallets",e=>this.isFetchingRecommendedWallets=e))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){const e=this.connectors.find(m=>m.id==="walletConnect"),{allWallets:i}=x.state;if(!e||i==="HIDE"||i==="ONLY_MOBILE"&&!p.isMobile())return null;const o=f.state.featured.length,r=this.count+o,n=r<10?r:Math.floor(r/10)*10,s=this.filteredCount>0?this.filteredCount:n;let l=`${s}`;this.filteredCount>0?l=`${this.filteredCount}`:s<r&&(l=`${s}+`);const y=h.hasAnyConnection(de.CONNECTOR_ID.WALLET_CONNECT);return a`
+      <wui-list-wallet
+        name="Search Wallet"
+        walletIcon="search"
+        showAllWallets
+        @click=${this.onAllWallets.bind(this)}
+        tagLabel=${l}
+        tagVariant="info"
+        data-testid="all-wallets"
+        tabIdx=${b(this.tabIdx)}
+        .loading=${this.isFetchingRecommendedWallets}
+        ?disabled=${y}
+        size="sm"
+      ></wui-list-wallet>
+    `}onAllWallets(){C.sendEvent({type:"track",event:"CLICK_ALL_WALLETS"}),u.push("AllWallets",{redirectView:u.state.data?.redirectView})}};Z([d()],H.prototype,"tabIdx",void 0);Z([c()],H.prototype,"connectors",void 0);Z([c()],H.prototype,"count",void 0);Z([c()],H.prototype,"filteredCount",void 0);Z([c()],H.prototype,"isFetchingRecommendedWallets",void 0);H=Z([w("w3m-all-wallets-widget")],H);const lt=_`
+  :host {
+    margin-top: ${({spacing:t})=>t[1]};
+  }
+  wui-separator {
+    margin: ${({spacing:t})=>t[3]} calc(${({spacing:t})=>t[3]} * -1)
+      ${({spacing:t})=>t[2]} calc(${({spacing:t})=>t[3]} * -1);
+    width: calc(100% + ${({spacing:t})=>t[3]} * 2);
+  }
+`;var D=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let I=class extends g{constructor(){super(),this.unsubscribe=[],this.connectors=E.state.connectors,this.recommended=f.state.recommended,this.featured=f.state.featured,this.explorerWallets=f.state.explorerWallets,this.connections=h.state.connections,this.connectorImages=Ee.state.connectorImages,this.loadingTelegram=!1,this.unsubscribe.push(E.subscribeKey("connectors",e=>this.connectors=e),h.subscribeKey("connections",e=>this.connections=e),Ee.subscribeKey("connectorImages",e=>this.connectorImages=e),f.subscribeKey("recommended",e=>this.recommended=e),f.subscribeKey("featured",e=>this.featured=e),f.subscribeKey("explorerFilteredWallets",e=>{this.explorerWallets=e?.length?e:f.state.explorerWallets}),f.subscribeKey("explorerWallets",e=>{this.explorerWallets?.length||(this.explorerWallets=e)})),p.isTelegram()&&p.isIos()&&(this.loadingTelegram=!h.state.wcUri,this.unsubscribe.push(h.subscribeKey("wcUri",e=>this.loadingTelegram=!e)))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){return a`
+      <wui-flex flexDirection="column" gap="2"> ${this.connectorListTemplate()} </wui-flex>
+    `}mapConnectorsToExplorerWallets(e,i){return e.map(o=>{if(o.type==="MULTI_CHAIN"&&o.connectors){const n=o.connectors.map(m=>m.id),s=o.connectors.map(m=>m.name),l=o.connectors.map(m=>m.info?.rdns),y=i?.find(m=>n.includes(m.id)||s.includes(m.name)||m.rdns&&(l.includes(m.rdns)||n.includes(m.rdns)));return o.explorerWallet=y??o.explorerWallet,o}const r=i?.find(n=>n.id===o.id||n.rdns===o.info?.rdns||n.name===o.name);return o.explorerWallet=r??o.explorerWallet,o})}processConnectorsByType(e,i=!0){const o=M.sortConnectorsByExplorerWallet([...e]);return i?o.filter(M.showConnector):o}connectorListTemplate(){const e=this.mapConnectorsToExplorerWallets(this.connectors,this.explorerWallets??[]),i=M.getConnectorsByType(e,this.recommended,this.featured),o=this.processConnectorsByType(i.announced.filter(W=>W.id!=="walletConnect")),r=this.processConnectorsByType(i.injected),n=this.processConnectorsByType(i.multiChain.filter(W=>W.name!=="WalletConnect"),!1),s=i.custom,l=i.recent,y=this.processConnectorsByType(i.external.filter(W=>W.id!==de.CONNECTOR_ID.COINBASE_SDK)),m=i.recommended,O=i.featured,te=M.getConnectorTypeOrder({custom:s,recent:l,announced:o,injected:r,multiChain:n,recommended:m,featured:O,external:y}),ie=this.connectors.find(W=>W.id==="walletConnect"),ye=p.isMobile(),k=[];for(const W of te)switch(W){case"walletConnect":{!ye&&ie&&k.push({kind:"connector",subtype:"walletConnect",connector:ie});break}case"recent":{M.getFilteredRecentWallets().forEach(ne=>k.push({kind:"wallet",subtype:"recent",wallet:ne}));break}case"injected":{n.forEach($=>k.push({kind:"connector",subtype:"multiChain",connector:$})),o.forEach($=>k.push({kind:"connector",subtype:"announced",connector:$})),r.forEach($=>k.push({kind:"connector",subtype:"injected",connector:$}));break}case"featured":{O.forEach($=>k.push({kind:"wallet",subtype:"featured",wallet:$}));break}case"custom":{M.getFilteredCustomWallets(s??[]).forEach(ne=>k.push({kind:"wallet",subtype:"custom",wallet:ne}));break}case"external":{y.forEach($=>k.push({kind:"connector",subtype:"external",connector:$}));break}case"recommended":{M.getCappedRecommendedWallets(m).forEach(ne=>k.push({kind:"wallet",subtype:"recommended",wallet:ne}));break}default:console.warn(`Unknown connector type: ${W}`)}return k.map((W,$)=>W.kind==="connector"?this.renderConnector(W,$):this.renderWallet(W,$))}renderConnector(e,i){const o=e.connector,r=N.getConnectorImage(o)||this.connectorImages[o?.imageId??""],s=(this.connections.get(o.chain)??[]).some(te=>Fe.isLowerCaseMatch(te.connectorId,o.id));let l,y;e.subtype==="multiChain"?(l="multichain",y="info"):e.subtype==="walletConnect"?(l="qr code",y="accent"):e.subtype==="injected"||e.subtype==="announced"?(l=s?"connected":"installed",y=s?"info":"success"):(l=void 0,y=void 0);const m=h.hasAnyConnection(de.CONNECTOR_ID.WALLET_CONNECT),O=e.subtype==="walletConnect"||e.subtype==="external"?m:!1;return a`
+      <w3m-list-wallet
+        displayIndex=${i}
+        imageSrc=${b(r)}
+        .installed=${!0}
+        name=${o.name??"Unknown"}
+        .tagVariant=${y}
+        tagLabel=${b(l)}
+        data-testid=${`wallet-selector-${o.id.toLowerCase()}`}
+        size="sm"
+        @click=${()=>this.onClickConnector(e)}
+        tabIdx=${b(this.tabIdx)}
+        ?disabled=${O}
+        rdnsId=${b(o.explorerWallet?.rdns||void 0)}
+        walletRank=${b(o.explorerWallet?.order)}
+      >
+      </w3m-list-wallet>
+    `}onClickConnector(e){const i=u.state.data?.redirectView;if(e.subtype==="walletConnect"){E.setActiveConnector(e.connector),p.isMobile()?u.push("AllWallets"):u.push("ConnectingWalletConnect",{redirectView:i});return}if(e.subtype==="multiChain"){E.setActiveConnector(e.connector),u.push("ConnectingMultiChain",{redirectView:i});return}if(e.subtype==="injected"){E.setActiveConnector(e.connector),u.push("ConnectingExternal",{connector:e.connector,redirectView:i,wallet:e.connector.explorerWallet});return}if(e.subtype==="announced"){if(e.connector.id==="walletConnect"){p.isMobile()?u.push("AllWallets"):u.push("ConnectingWalletConnect",{redirectView:i});return}u.push("ConnectingExternal",{connector:e.connector,redirectView:i,wallet:e.connector.explorerWallet});return}u.push("ConnectingExternal",{connector:e.connector,redirectView:i})}renderWallet(e,i){const o=e.wallet,r=N.getWalletImage(o),s=h.hasAnyConnection(de.CONNECTOR_ID.WALLET_CONNECT),l=this.loadingTelegram,y=e.subtype==="recent"?"recent":void 0,m=e.subtype==="recent"?"info":void 0;return a`
+      <w3m-list-wallet
+        displayIndex=${i}
+        imageSrc=${b(r)}
+        name=${o.name??"Unknown"}
+        @click=${()=>this.onClickWallet(e)}
+        size="sm"
+        data-testid=${`wallet-selector-${o.id}`}
+        tabIdx=${b(this.tabIdx)}
+        ?loading=${l}
+        ?disabled=${s}
+        rdnsId=${b(o.rdns||void 0)}
+        walletRank=${b(o.order)}
+        tagLabel=${b(y)}
+        .tagVariant=${m}
+      >
+      </w3m-list-wallet>
+    `}onClickWallet(e){const i=u.state.data?.redirectView;if(e.subtype==="featured"){E.selectWalletConnector(e.wallet);return}if(e.subtype==="recent"){if(this.loadingTelegram)return;E.selectWalletConnector(e.wallet);return}if(e.subtype==="custom"){if(this.loadingTelegram)return;u.push("ConnectingWalletConnect",{wallet:e.wallet,redirectView:i});return}if(this.loadingTelegram)return;const o=E.getConnector({id:e.wallet.id,rdns:e.wallet.rdns});o?u.push("ConnectingExternal",{connector:o,redirectView:i}):u.push("ConnectingWalletConnect",{wallet:e.wallet,redirectView:i})}};I.styles=lt;D([d({type:Number})],I.prototype,"tabIdx",void 0);D([c()],I.prototype,"connectors",void 0);D([c()],I.prototype,"recommended",void 0);D([c()],I.prototype,"featured",void 0);D([c()],I.prototype,"explorerWallets",void 0);D([c()],I.prototype,"connections",void 0);D([c()],I.prototype,"connectorImages",void 0);D([c()],I.prototype,"loadingTelegram",void 0);I=D([w("w3m-connector-list")],I);const at=_`
+  wui-flex {
+    width: 100%;
+    height: 52px;
+    box-sizing: border-box;
+    background-color: ${({tokens:t})=>t.theme.foregroundPrimary};
+    border-radius: ${({borderRadius:t})=>t[5]};
+    padding-left: ${({spacing:t})=>t[3]};
+    padding-right: ${({spacing:t})=>t[3]};
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: ${({spacing:t})=>t[6]};
+  }
+
+  wui-text {
+    color: ${({tokens:t})=>t.theme.textSecondary};
+  }
+
+  wui-icon {
+    width: 12px;
+    height: 12px;
+  }
+`;var ge=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let J=class extends g{constructor(){super(...arguments),this.disabled=!1,this.label="",this.buttonLabel=""}render(){return a`
+      <wui-flex justifyContent="space-between" alignItems="center">
+        <wui-text variant="lg-regular" color="inherit">${this.label}</wui-text>
+        <wui-button variant="accent-secondary" size="sm">
+          ${this.buttonLabel}
+          <wui-icon name="chevronRight" color="inherit" size="inherit" slot="iconRight"></wui-icon>
+        </wui-button>
+      </wui-flex>
+    `}};J.styles=[z,Y,at];ge([d({type:Boolean})],J.prototype,"disabled",void 0);ge([d()],J.prototype,"label",void 0);ge([d()],J.prototype,"buttonLabel",void 0);J=ge([w("wui-cta-button")],J);const ct=_`
+  :host {
+    display: block;
+    padding: 0 ${({spacing:t})=>t[5]} ${({spacing:t})=>t[5]};
+  }
+`;var qe=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let fe=class extends g{constructor(){super(...arguments),this.wallet=void 0}render(){if(!this.wallet)return this.style.display="none",null;const{name:e,app_store:i,play_store:o,chrome_store:r,homepage:n}=this.wallet,s=p.isMobile(),l=p.isIos(),y=p.isAndroid(),m=[i,o,n,r].filter(Boolean).length>1,O=A.getTruncateString({string:e,charsStart:12,charsEnd:0,truncate:"end"});return m&&!s?a`
+        <wui-cta-button
+          label=${`Don't have ${O}?`}
+          buttonLabel="Get"
+          @click=${()=>u.push("Downloads",{wallet:this.wallet})}
+        ></wui-cta-button>
+      `:!m&&n?a`
+        <wui-cta-button
+          label=${`Don't have ${O}?`}
+          buttonLabel="Get"
+          @click=${this.onHomePage.bind(this)}
+        ></wui-cta-button>
+      `:i&&l?a`
+        <wui-cta-button
+          label=${`Don't have ${O}?`}
+          buttonLabel="Get"
+          @click=${this.onAppStore.bind(this)}
+        ></wui-cta-button>
+      `:o&&y?a`
+        <wui-cta-button
+          label=${`Don't have ${O}?`}
+          buttonLabel="Get"
+          @click=${this.onPlayStore.bind(this)}
+        ></wui-cta-button>
+      `:(this.style.display="none",null)}onAppStore(){this.wallet?.app_store&&p.openHref(this.wallet.app_store,"_blank")}onPlayStore(){this.wallet?.play_store&&p.openHref(this.wallet.play_store,"_blank")}onHomePage(){this.wallet?.homepage&&p.openHref(this.wallet.homepage,"_blank")}};fe.styles=[ct];qe([d({type:Object})],fe.prototype,"wallet",void 0);fe=qe([w("w3m-mobile-download-links")],fe);const dt=_`
+  @keyframes shake {
+    0% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(3px);
+    }
+    50% {
+      transform: translateX(-3px);
+    }
+    75% {
+      transform: translateX(3px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  wui-flex:first-child:not(:only-child) {
+    position: relative;
+  }
+
+  wui-wallet-image {
+    width: 56px;
+    height: 56px;
+  }
+
+  wui-loading-thumbnail {
+    position: absolute;
+  }
+
+  wui-icon-box {
+    position: absolute;
+    right: calc(${({spacing:t})=>t[1]} * -1);
+    bottom: calc(${({spacing:t})=>t[1]} * -1);
+    opacity: 0;
+    transform: scale(0.5);
+    transition-property: opacity, transform;
+    transition-duration: ${({durations:t})=>t.lg};
+    transition-timing-function: ${({easings:t})=>t["ease-out-power-2"]};
+    will-change: opacity, transform;
+  }
+
+  wui-text[align='center'] {
+    width: 100%;
+    padding: 0px ${({spacing:t})=>t[4]};
+  }
+
+  [data-error='true'] wui-icon-box {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  [data-error='true'] > wui-flex:first-child {
+    animation: shake 250ms ${({easings:t})=>t["ease-out-power-2"]} both;
+  }
+
+  [data-retry='false'] wui-link {
+    display: none;
+  }
+
+  [data-retry='true'] wui-link {
+    display: block;
+    opacity: 1;
+  }
+
+  w3m-mobile-download-links {
+    padding: 0px;
+    width: 100%;
+  }
+`;var L=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};class v extends g{constructor(){super(),this.wallet=u.state.data?.wallet,this.connector=u.state.data?.connector,this.timeout=void 0,this.secondaryBtnIcon="refresh",this.onConnect=void 0,this.onRender=void 0,this.onAutoConnect=void 0,this.isWalletConnect=!0,this.unsubscribe=[],this.imageSrc=N.getConnectorImage(this.connector)??N.getWalletImage(this.wallet),this.name=this.wallet?.name??this.connector?.name??"Wallet",this.isRetrying=!1,this.uri=h.state.wcUri,this.error=h.state.wcError,this.ready=!1,this.showRetry=!1,this.label=void 0,this.secondaryBtnLabel="Try again",this.secondaryLabel="Accept connection request in the wallet",this.isLoading=!1,this.isMobile=!1,this.onRetry=void 0,this.unsubscribe.push(h.subscribeKey("wcUri",e=>{this.uri=e,this.isRetrying&&this.onRetry&&(this.isRetrying=!1,this.onConnect?.())}),h.subscribeKey("wcError",e=>this.error=e)),(p.isTelegram()||p.isSafari())&&p.isIos()&&h.state.wcUri&&this.onConnect?.()}firstUpdated(){this.onAutoConnect?.(),this.showRetry=!this.onAutoConnect}disconnectedCallback(){this.unsubscribe.forEach(e=>e()),h.setWcError(!1),clearTimeout(this.timeout)}render(){this.onRender?.(),this.onShowRetry();const e=this.error?"Connection can be declined if a previous request is still active":this.secondaryLabel;let i="";return this.label?i=this.label:(i=`Continue in ${this.name}`,this.error&&(i="Connection declined")),a`
+      <wui-flex
+        data-error=${b(this.error)}
+        data-retry=${this.showRetry}
+        flexDirection="column"
+        alignItems="center"
+        .padding=${["10","5","5","5"]}
+        gap="6"
+      >
+        <wui-flex gap="2" justifyContent="center" alignItems="center">
+          <wui-wallet-image size="lg" imageSrc=${b(this.imageSrc)}></wui-wallet-image>
+
+          ${this.error?null:this.loaderTemplate()}
+
+          <wui-icon-box
+            color="error"
+            icon="close"
+            size="sm"
+            border
+            borderColor="wui-color-bg-125"
+          ></wui-icon-box>
+        </wui-flex>
+
+        <wui-flex flexDirection="column" alignItems="center" gap="6"> <wui-flex
+          flexDirection="column"
+          alignItems="center"
+          gap="2"
+          .padding=${["2","0","0","0"]}
+        >
+          <wui-text align="center" variant="lg-medium" color=${this.error?"error":"primary"}>
+            ${i}
+          </wui-text>
+          <wui-text align="center" variant="lg-regular" color="secondary">${e}</wui-text>
+        </wui-flex>
+
+        ${this.secondaryBtnLabel?a`
+                <wui-button
+                  variant="neutral-secondary"
+                  size="md"
+                  ?disabled=${this.isRetrying||this.isLoading}
+                  @click=${this.onTryAgain.bind(this)}
+                  data-testid="w3m-connecting-widget-secondary-button"
+                >
+                  <wui-icon
+                    color="inherit"
+                    slot="iconLeft"
+                    name=${this.secondaryBtnIcon}
+                  ></wui-icon>
+                  ${this.secondaryBtnLabel}
+                </wui-button>
+              `:null}
+      </wui-flex>
+
+      ${this.isWalletConnect?a`
+              <wui-flex .padding=${["0","5","5","5"]} justifyContent="center">
+                <wui-link
+                  @click=${this.onCopyUri}
+                  variant="secondary"
+                  icon="copy"
+                  data-testid="wui-link-copy"
+                >
+                  Copy link
+                </wui-link>
+              </wui-flex>
+            `:null}
+
+      <w3m-mobile-download-links .wallet=${this.wallet}></w3m-mobile-download-links></wui-flex>
+      </wui-flex>
+    `}onShowRetry(){this.error&&!this.showRetry&&(this.showRetry=!0,this.shadowRoot?.querySelector("wui-button")?.animate([{opacity:0},{opacity:1}],{fill:"forwards",easing:"ease"}))}onTryAgain(){h.setWcError(!1),this.onRetry?(this.isRetrying=!0,this.onRetry?.()):this.onConnect?.()}loaderTemplate(){const e=$e.state.themeVariables["--w3m-border-radius-master"],i=e?parseInt(e.replace("px",""),10):4;return a`<wui-loading-thumbnail radius=${i*9}></wui-loading-thumbnail>`}onCopyUri(){try{this.uri&&(p.copyToClopboard(this.uri),oe.showSuccess("Link copied"))}catch{oe.showError("Failed to copy")}}}v.styles=dt;L([c()],v.prototype,"isRetrying",void 0);L([c()],v.prototype,"uri",void 0);L([c()],v.prototype,"error",void 0);L([c()],v.prototype,"ready",void 0);L([c()],v.prototype,"showRetry",void 0);L([c()],v.prototype,"label",void 0);L([c()],v.prototype,"secondaryBtnLabel",void 0);L([c()],v.prototype,"secondaryLabel",void 0);L([c()],v.prototype,"isLoading",void 0);L([d({type:Boolean})],v.prototype,"isMobile",void 0);L([d()],v.prototype,"onRetry",void 0);var Re=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let me=class extends g{constructor(){super(...arguments),this.platformTabs=[],this.unsubscribe=[],this.platforms=[],this.onSelectPlatfrom=void 0}disconnectCallback(){this.unsubscribe.forEach(e=>e())}render(){const e=this.generateTabs();return a`
+      <wui-flex justifyContent="center" .padding=${["0","0","4","0"]}>
+        <wui-tabs .tabs=${e} .onTabChange=${this.onTabChange.bind(this)}></wui-tabs>
+      </wui-flex>
+    `}generateTabs(){const e=this.platforms.map(i=>i==="browser"?{label:"Browser",icon:"extension",platform:"browser"}:i==="mobile"?{label:"Mobile",icon:"mobile",platform:"mobile"}:i==="qrcode"?{label:"Mobile",icon:"mobile",platform:"qrcode"}:i==="web"?{label:"Webapp",icon:"browser",platform:"web"}:i==="desktop"?{label:"Desktop",icon:"desktop",platform:"desktop"}:{label:"Browser",icon:"extension",platform:"unsupported"});return this.platformTabs=e.map(({platform:i})=>i),e}onTabChange(e){const i=this.platformTabs[e];i&&this.onSelectPlatfrom?.(i)}};Re([d({type:Array})],me.prototype,"platforms",void 0);Re([d()],me.prototype,"onSelectPlatfrom",void 0);me=Re([w("w3m-connecting-header")],me);var ut=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let Te=class extends v{constructor(){if(super(),!this.wallet)throw new Error("w3m-connecting-wc-browser: No wallet provided");this.onConnect=this.onConnectProxy.bind(this),this.onAutoConnect=this.onConnectProxy.bind(this),C.sendEvent({type:"track",event:"SELECT_WALLET",properties:{name:this.wallet.name,platform:"browser",displayIndex:this.wallet?.display_index,walletRank:this.wallet.order,view:u.state.view}})}async onConnectProxy(){try{this.error=!1;const{connectors:e}=E.state,i=e.find(o=>o.type==="ANNOUNCED"&&o.info?.rdns===this.wallet?.rdns||o.type==="INJECTED"||o.name===this.wallet?.name);if(i)await h.connectExternal(i,i.chain);else throw new Error("w3m-connecting-wc-browser: No connector found");Le.close(),C.sendEvent({type:"track",event:"CONNECT_SUCCESS",properties:{method:"browser",name:this.wallet?.name||"Unknown",view:u.state.view,walletRank:this.wallet?.order}})}catch(e){e instanceof je&&e.originalName===Pe.PROVIDER_RPC_ERROR_NAME.USER_REJECTED_REQUEST?C.sendEvent({type:"track",event:"USER_REJECTED",properties:{message:e.message}}):C.sendEvent({type:"track",event:"CONNECT_ERROR",properties:{message:e?.message??"Unknown"}}),this.error=!0}}};Te=ut([w("w3m-connecting-wc-browser")],Te);var pt=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let Se=class extends v{constructor(){if(super(),!this.wallet)throw new Error("w3m-connecting-wc-desktop: No wallet provided");this.onConnect=this.onConnectProxy.bind(this),this.onRender=this.onRenderProxy.bind(this),C.sendEvent({type:"track",event:"SELECT_WALLET",properties:{name:this.wallet.name,platform:"desktop",displayIndex:this.wallet?.display_index,walletRank:this.wallet.order,view:u.state.view}})}onRenderProxy(){!this.ready&&this.uri&&(this.ready=!0,this.onConnect?.())}onConnectProxy(){if(this.wallet?.desktop_link&&this.uri)try{this.error=!1;const{desktop_link:e,name:i}=this.wallet,{redirect:o,href:r}=p.formatNativeUrl(e,this.uri);h.setWcLinking({name:i,href:r}),h.setRecentWallet(this.wallet),p.openHref(o,"_blank")}catch{this.error=!0}}};Se=pt([w("w3m-connecting-wc-desktop")],Se);var ee=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let Q=class extends v{constructor(){if(super(),this.btnLabelTimeout=void 0,this.redirectDeeplink=void 0,this.redirectUniversalLink=void 0,this.target=void 0,this.preferUniversalLinks=x.state.experimental_preferUniversalLinks,this.isLoading=!0,this.onConnect=()=>{if(this.wallet?.mobile_link&&this.uri)try{this.error=!1;const{mobile_link:e,link_mode:i,name:o}=this.wallet,{redirect:r,redirectUniversalLink:n,href:s}=p.formatNativeUrl(e,this.uri,i);this.redirectDeeplink=r,this.redirectUniversalLink=n,this.target=p.isIframe()?"_top":"_self",h.setWcLinking({name:o,href:s}),h.setRecentWallet(this.wallet),this.preferUniversalLinks&&this.redirectUniversalLink?p.openHref(this.redirectUniversalLink,this.target):p.openHref(this.redirectDeeplink,this.target)}catch(e){C.sendEvent({type:"track",event:"CONNECT_PROXY_ERROR",properties:{message:e instanceof Error?e.message:"Error parsing the deeplink",uri:this.uri,mobile_link:this.wallet.mobile_link,name:this.wallet.name}}),this.error=!0}},!this.wallet)throw new Error("w3m-connecting-wc-mobile: No wallet provided");this.secondaryBtnLabel="Open",this.secondaryLabel=Ae.CONNECT_LABELS.MOBILE,this.secondaryBtnIcon="externalLink",this.onHandleURI(),this.unsubscribe.push(h.subscribeKey("wcUri",()=>{this.onHandleURI()})),C.sendEvent({type:"track",event:"SELECT_WALLET",properties:{name:this.wallet.name,platform:"mobile",displayIndex:this.wallet?.display_index,walletRank:this.wallet.order,view:u.state.view}})}disconnectedCallback(){super.disconnectedCallback(),clearTimeout(this.btnLabelTimeout)}onHandleURI(){this.isLoading=!this.uri,!this.ready&&this.uri&&(this.ready=!0,this.onConnect?.())}onTryAgain(){h.setWcError(!1),this.onConnect?.()}};ee([c()],Q.prototype,"redirectDeeplink",void 0);ee([c()],Q.prototype,"redirectUniversalLink",void 0);ee([c()],Q.prototype,"target",void 0);ee([c()],Q.prototype,"preferUniversalLinks",void 0);ee([c()],Q.prototype,"isLoading",void 0);Q=ee([w("w3m-connecting-wc-mobile")],Q);const ht=_`
+  wui-shimmer {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: ${({borderRadius:t})=>t[4]};
+  }
+
+  wui-qr-code {
+    opacity: 0;
+    animation-duration: ${({durations:t})=>t.xl};
+    animation-timing-function: ${({easings:t})=>t["ease-out-power-2"]};
+    animation-name: fade-in;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`;var Me=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let we=class extends v{constructor(){super(),this.basic=!1,this.forceUpdate=()=>{this.requestUpdate()},window.addEventListener("resize",this.forceUpdate)}firstUpdated(){this.basic||C.sendEvent({type:"track",event:"SELECT_WALLET",properties:{name:this.wallet?.name??"WalletConnect",platform:"qrcode",displayIndex:this.wallet?.display_index,walletRank:this.wallet?.order,view:u.state.view}})}disconnectedCallback(){super.disconnectedCallback(),this.unsubscribe?.forEach(e=>e()),window.removeEventListener("resize",this.forceUpdate)}render(){return this.onRenderProxy(),a`
+      <wui-flex
+        flexDirection="column"
+        alignItems="center"
+        .padding=${["0","5","5","5"]}
+        gap="5"
+      >
+        <wui-shimmer width="100%"> ${this.qrCodeTemplate()} </wui-shimmer>
+        <wui-text variant="lg-medium" color="primary"> Scan this QR Code with your phone </wui-text>
+        ${this.copyTemplate()}
+      </wui-flex>
+      <w3m-mobile-download-links .wallet=${this.wallet}></w3m-mobile-download-links>
+    `}onRenderProxy(){!this.ready&&this.uri&&(this.timeout=setTimeout(()=>{this.ready=!0},200))}qrCodeTemplate(){if(!this.uri||!this.ready)return null;const e=this.getBoundingClientRect().width-40,i=this.wallet?this.wallet.name:void 0;h.setWcLinking(void 0),h.setRecentWallet(this.wallet);let o=this.uri;if(this.wallet?.mobile_link){const{redirect:r}=p.formatNativeUrl(this.wallet?.mobile_link,this.uri,null);o=r}return a` <wui-qr-code
+      size=${e}
+      theme=${$e.state.themeMode}
+      uri=${o}
+      imageSrc=${b(N.getWalletImage(this.wallet))}
+      color=${b($e.state.themeVariables["--w3m-qr-color"])}
+      alt=${b(i)}
+      data-testid="wui-qr-code"
+    ></wui-qr-code>`}copyTemplate(){const e=!this.uri||!this.ready;return a`<wui-button
+      .disabled=${e}
+      @click=${this.onCopyUri}
+      variant="neutral-secondary"
+      size="sm"
+      data-testid="copy-wc2-uri"
+    >
+      Copy link
+      <wui-icon size="sm" color="inherit" name="copy" slot="iconRight"></wui-icon>
+    </wui-button>`}};we.styles=ht;Me([d({type:Boolean})],we.prototype,"basic",void 0);we=Me([w("w3m-connecting-wc-qrcode")],we);var ft=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let Oe=class extends g{constructor(){if(super(),this.wallet=u.state.data?.wallet,!this.wallet)throw new Error("w3m-connecting-wc-unsupported: No wallet provided");C.sendEvent({type:"track",event:"SELECT_WALLET",properties:{name:this.wallet.name,platform:"browser",displayIndex:this.wallet?.display_index,walletRank:this.wallet?.order,view:u.state.view}})}render(){return a`
+      <wui-flex
+        flexDirection="column"
+        alignItems="center"
+        .padding=${["10","5","5","5"]}
+        gap="5"
+      >
+        <wui-wallet-image
+          size="lg"
+          imageSrc=${b(N.getWalletImage(this.wallet))}
+        ></wui-wallet-image>
+
+        <wui-text variant="md-regular" color="primary">Not Detected</wui-text>
+      </wui-flex>
+
+      <w3m-mobile-download-links .wallet=${this.wallet}></w3m-mobile-download-links>
+    `}};Oe=ft([w("w3m-connecting-wc-unsupported")],Oe);var Ve=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let xe=class extends v{constructor(){if(super(),this.isLoading=!0,!this.wallet)throw new Error("w3m-connecting-wc-web: No wallet provided");this.onConnect=this.onConnectProxy.bind(this),this.secondaryBtnLabel="Open",this.secondaryLabel=Ae.CONNECT_LABELS.MOBILE,this.secondaryBtnIcon="externalLink",this.updateLoadingState(),this.unsubscribe.push(h.subscribeKey("wcUri",()=>{this.updateLoadingState()})),C.sendEvent({type:"track",event:"SELECT_WALLET",properties:{name:this.wallet.name,platform:"web",displayIndex:this.wallet?.display_index,walletRank:this.wallet?.order,view:u.state.view}})}updateLoadingState(){this.isLoading=!this.uri}onConnectProxy(){if(this.wallet?.webapp_link&&this.uri)try{this.error=!1;const{webapp_link:e,name:i}=this.wallet,{redirect:o,href:r}=p.formatUniversalUrl(e,this.uri);h.setWcLinking({name:i,href:r}),h.setRecentWallet(this.wallet),p.openHref(o,"_blank")}catch{this.error=!0}}};Ve([c()],xe.prototype,"isLoading",void 0);xe=Ve([w("w3m-connecting-wc-web")],xe);const mt=_`
+  :host([data-mobile-fullscreen='true']) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  :host([data-mobile-fullscreen='true']) wui-ux-by-reown {
+    margin-top: auto;
+  }
+`;var G=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let B=class extends g{constructor(){super(),this.wallet=u.state.data?.wallet,this.unsubscribe=[],this.platform=void 0,this.platforms=[],this.isSiwxEnabled=!!x.state.siwx,this.remoteFeatures=x.state.remoteFeatures,this.displayBranding=!0,this.basic=!1,this.determinePlatforms(),this.initializeConnection(),this.unsubscribe.push(x.subscribeKey("remoteFeatures",e=>this.remoteFeatures=e))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){return x.state.enableMobileFullScreen&&this.setAttribute("data-mobile-fullscreen","true"),a`
+      ${this.headerTemplate()}
+      <div class="platform-container">${this.platformTemplate()}</div>
+      ${this.reownBrandingTemplate()}
+    `}reownBrandingTemplate(){return!this.remoteFeatures?.reownBranding||!this.displayBranding?null:a`<wui-ux-by-reown></wui-ux-by-reown>`}async initializeConnection(e=!1){if(!(this.platform==="browser"||x.state.manualWCControl&&!e))try{const{wcPairingExpiry:i,status:o}=h.state,{redirectView:r}=u.state.data??{};if(e||x.state.enableEmbedded||p.isPairingExpired(i)||o==="connecting"){const n=h.getConnections(U.state.activeChain),s=this.remoteFeatures?.multiWallet,l=n.length>0;await h.connectWalletConnect({cache:"never"}),this.isSiwxEnabled||(l&&s?(u.replace("ProfileWallets"),oe.showSuccess("New Wallet Added")):r?u.replace(r):Le.close())}}catch(i){if(i instanceof Error&&i.message.includes("An error occurred when attempting to switch chain")&&!x.state.enableNetworkSwitch&&U.state.activeChain){U.setActiveCaipNetwork(Ke.getUnsupportedNetwork(`${U.state.activeChain}:${U.state.activeCaipNetwork?.id}`)),U.showUnsupportedChainUI();return}i instanceof je&&i.originalName===Pe.PROVIDER_RPC_ERROR_NAME.USER_REJECTED_REQUEST?C.sendEvent({type:"track",event:"USER_REJECTED",properties:{message:i.message}}):C.sendEvent({type:"track",event:"CONNECT_ERROR",properties:{message:i?.message??"Unknown"}}),h.setWcError(!0),oe.showError(i.message??"Connection error"),h.resetWcConnection(),u.goBack()}}determinePlatforms(){if(!this.wallet){this.platforms.push("qrcode"),this.platform="qrcode";return}if(this.platform)return;const{mobile_link:e,desktop_link:i,webapp_link:o,injected:r,rdns:n}=this.wallet,s=r?.map(({injected_id:k})=>k).filter(Boolean),l=[...n?[n]:s??[]],y=x.state.isUniversalProvider?!1:l.length,m=e,O=o,te=h.checkInstalled(l),ie=y&&te,ye=i&&!p.isMobile();ie&&!U.state.noAdapters&&this.platforms.push("browser"),m&&this.platforms.push(p.isMobile()?"mobile":"qrcode"),O&&this.platforms.push("web"),ye&&this.platforms.push("desktop"),!ie&&y&&!U.state.noAdapters&&this.platforms.push("unsupported"),this.platform=this.platforms[0]}platformTemplate(){switch(this.platform){case"browser":return a`<w3m-connecting-wc-browser></w3m-connecting-wc-browser>`;case"web":return a`<w3m-connecting-wc-web></w3m-connecting-wc-web>`;case"desktop":return a`
+          <w3m-connecting-wc-desktop .onRetry=${()=>this.initializeConnection(!0)}>
+          </w3m-connecting-wc-desktop>
+        `;case"mobile":return a`
+          <w3m-connecting-wc-mobile isMobile .onRetry=${()=>this.initializeConnection(!0)}>
+          </w3m-connecting-wc-mobile>
+        `;case"qrcode":return a`<w3m-connecting-wc-qrcode ?basic=${this.basic}></w3m-connecting-wc-qrcode>`;default:return a`<w3m-connecting-wc-unsupported></w3m-connecting-wc-unsupported>`}}headerTemplate(){return this.platforms.length>1?a`
+      <w3m-connecting-header
+        .platforms=${this.platforms}
+        .onSelectPlatfrom=${this.onSelectPlatform.bind(this)}
+      >
+      </w3m-connecting-header>
+    `:null}async onSelectPlatform(e){const i=this.shadowRoot?.querySelector("div");i&&(await i.animate([{opacity:1},{opacity:0}],{duration:200,fill:"forwards",easing:"ease"}).finished,this.platform=e,i.animate([{opacity:0},{opacity:1}],{duration:200,fill:"forwards",easing:"ease"}))}};B.styles=mt;G([c()],B.prototype,"platform",void 0);G([c()],B.prototype,"platforms",void 0);G([c()],B.prototype,"isSiwxEnabled",void 0);G([c()],B.prototype,"remoteFeatures",void 0);G([d({type:Boolean})],B.prototype,"displayBranding",void 0);G([d({type:Boolean})],B.prototype,"basic",void 0);B=G([w("w3m-connecting-wc-view")],B);var _e=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let se=class extends g{constructor(){super(),this.unsubscribe=[],this.isMobile=p.isMobile(),this.remoteFeatures=x.state.remoteFeatures,this.unsubscribe.push(x.subscribeKey("remoteFeatures",e=>this.remoteFeatures=e))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){if(this.isMobile){const{featured:e,recommended:i}=f.state,{customWallets:o}=x.state,r=He.getRecentWallets(),n=e.length||i.length||o?.length||r.length;return a`<wui-flex flexDirection="column" gap="2" .margin=${["1","3","3","3"]}>
+        ${n?a`<w3m-connector-list></w3m-connector-list>`:null}
+        <w3m-all-wallets-widget></w3m-all-wallets-widget>
+      </wui-flex>`}return a`<wui-flex flexDirection="column" .padding=${["0","0","4","0"]}>
+        <w3m-connecting-wc-view ?basic=${!0} .displayBranding=${!1}></w3m-connecting-wc-view>
+        <wui-flex flexDirection="column" .padding=${["0","3","0","3"]}>
+          <w3m-all-wallets-widget></w3m-all-wallets-widget>
+        </wui-flex>
+      </wui-flex>
+      ${this.reownBrandingTemplate()} `}reownBrandingTemplate(){return this.remoteFeatures?.reownBranding?a` <wui-flex flexDirection="column" .padding=${["1","0","1","0"]}>
+      <wui-ux-by-reown></wui-ux-by-reown>
+    </wui-flex>`:null}};_e([c()],se.prototype,"isMobile",void 0);_e([c()],se.prototype,"remoteFeatures",void 0);se=_e([w("w3m-connecting-wc-basic-view")],se);var wt=function(t,e,i,o){var r=arguments.length,n=r<3?e:o===null?o=Object.getOwnPropertyDescriptor(e,i):o,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")n=Reflect.decorate(t,e,i,o);else for(var l=t.length-1;l>=0;l--)(s=t[l])&&(n=(r<3?s(n):r>3?s(e,i,n):s(e,i))||n);return r>3&&n&&Object.defineProperty(e,i,n),n};let Ce=class extends g{constructor(){super(...arguments),this.wallet=u.state.data?.wallet}render(){if(!this.wallet)throw new Error("w3m-downloads-view");return a`
+      <wui-flex gap="2" flexDirection="column" .padding=${["3","3","4","3"]}>
+        ${this.chromeTemplate()} ${this.iosTemplate()} ${this.androidTemplate()}
+        ${this.homepageTemplate()}
+      </wui-flex>
+    `}chromeTemplate(){return this.wallet?.chrome_store?a`<wui-list-item
+      variant="icon"
+      icon="chromeStore"
+      iconVariant="square"
+      @click=${this.onChromeStore.bind(this)}
+      chevron
+    >
+      <wui-text variant="md-medium" color="primary">Chrome Extension</wui-text>
+    </wui-list-item>`:null}iosTemplate(){return this.wallet?.app_store?a`<wui-list-item
+      variant="icon"
+      icon="appStore"
+      iconVariant="square"
+      @click=${this.onAppStore.bind(this)}
+      chevron
+    >
+      <wui-text variant="md-medium" color="primary">iOS App</wui-text>
+    </wui-list-item>`:null}androidTemplate(){return this.wallet?.play_store?a`<wui-list-item
+      variant="icon"
+      icon="playStore"
+      iconVariant="square"
+      @click=${this.onPlayStore.bind(this)}
+      chevron
+    >
+      <wui-text variant="md-medium" color="primary">Android App</wui-text>
+    </wui-list-item>`:null}homepageTemplate(){return this.wallet?.homepage?a`
+      <wui-list-item
+        variant="icon"
+        icon="browser"
+        iconVariant="square-blue"
+        @click=${this.onHomePage.bind(this)}
+        chevron
+      >
+        <wui-text variant="md-medium" color="primary">Website</wui-text>
+      </wui-list-item>
+    `:null}openStore(e){e.href&&this.wallet&&(C.sendEvent({type:"track",event:"GET_WALLET",properties:{name:this.wallet.name,walletRank:this.wallet.order,explorerId:this.wallet.id,type:e.type}}),p.openHref(e.href,"_blank"))}onChromeStore(){this.wallet?.chrome_store&&this.openStore({href:this.wallet.chrome_store,type:"chrome_store"})}onAppStore(){this.wallet?.app_store&&this.openStore({href:this.wallet.app_store,type:"app_store"})}onPlayStore(){this.wallet?.play_store&&this.openStore({href:this.wallet.play_store,type:"play_store"})}onHomePage(){this.wallet?.homepage&&this.openStore({href:this.wallet.homepage,type:"homepage"})}};Ce=wt([w("w3m-downloads-view")],Ce);const ri=Object.freeze(Object.defineProperty({__proto__:null,get W3mAllWalletsView(){return re},get W3mConnectingWcBasicView(){return se},get W3mDownloadsView(){return Ce}},Symbol.toStringTag,{value:"Module"}));export{v as W,re as a,B as b,se as c,Ce as d,ri as e};
+Å±

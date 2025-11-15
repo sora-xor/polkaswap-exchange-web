@@ -1,96 +1,114 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="app" :class="dsProviderClasses">
-    <app-header :loading="loading" @toggle-menu="toggleMenu" />
+    <app-header :loading="loading" @toggle-menu="toggleMenu"></app-header>
     <div :class="appClasses">
       <app-menu
         :visible="menuVisibility"
         :on-select="goTo"
         @open-product-dialog="openProductDialog"
-        @click.native="handleAppMenuClick"
+        @click="handleAppMenuClick"
       >
-        <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap" />
+        <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap"></app-logo-button>
       </app-menu>
       <div class="app-body">
         <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div class="app-content">
-            <router-view :parent-loading="loading || !nodeIsConnected" />
-            <app-disclaimer v-if="disclaimerVisibility" />
+            <router-view :parent-loading="loading || !nodeIsConnected"></router-view>
+            <app-disclaimer v-if="disclaimerVisibility"></app-disclaimer>
           </div>
         </s-scrollbar>
       </div>
     </div>
-    <app-footer />
-    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
-    <bridge-transfer-notification />
-    <app-mobile-popup :visible.sync="showSoraMobilePopup" />
-    <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
-    <app-browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
-    <app-browser-notifs-blocked-rotate-phone :visible.sync="orientationWarningVisible" />
-    <app-browser-mst-notification-trxs :visible.sync="showNotificationMST" />
+    <app-footer></app-footer>
+    <referrals-confirm-invite-user
+      v-if="showWalletOverlays"
+      v-model:visible="showConfirmInviteUser"
+    ></referrals-confirm-invite-user>
+    <bridge-transfer-notification v-if="showWalletOverlays"></bridge-transfer-notification>
+    <app-mobile-popup v-model:visible="showSoraMobilePopup"></app-mobile-popup>
+    <app-browser-notifs-enable-dialog
+      v-if="showWalletOverlays"
+      v-model:visible="showBrowserNotifPopup"
+      @set-dark-page="setDarkPage"
+    ></app-browser-notifs-enable-dialog>
+    <app-browser-notifs-blocked-dialog
+      v-if="showWalletOverlays"
+      v-model:visible="showBrowserNotifBlockedPopup"
+    ></app-browser-notifs-blocked-dialog>
+    <app-browser-notifs-blocked-rotate-phone
+      v-if="showWalletOverlays"
+      v-model:visible="orientationWarningVisible"
+    ></app-browser-notifs-blocked-rotate-phone>
+    <app-browser-mst-notification-trxs
+      v-if="showWalletOverlays"
+      v-model:visible="showNotificationMST"
+    ></app-browser-mst-notification-trxs>
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
-    <alerts />
+    <alerts></alerts>
     <confirm-dialog
       :chain-api="chainApi"
       :account="account"
       :visibility="isSignTxDialogVisible"
       :set-visibility="setSignTxDialogVisibility"
-    />
-    <select-sora-account-dialog />
+    ></confirm-dialog>
+    <select-sora-account-dialog></select-sora-account-dialog>
     <app-browser-notifs-local-storage-override
-      :visible.sync="showErrorLocalStorageExceed"
+      v-if="showWalletOverlays"
+      v-model:visible="showErrorLocalStorageExceed"
       @delete-data-local-storage="clearLocalStorage"
     >
     </app-browser-notifs-local-storage-override>
   </s-design-system-provider>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {
   api,
   connection,
   components,
-  mixins,
   settingsStorage,
   WALLET_CONSTS,
-  WALLET_TYPES,
   AlertsApiService,
   initWallet,
   waitForCore,
-} from '@soramitsu/soraneo-wallet-web';
+} from '@wallet';
 import debounce from 'lodash/debounce';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { computed, onBeforeMount, onMounted, onBeforeUnmount, ref, watch, type Ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 import axiosInstance, { updateBaseUrl, getFullBaseUrl } from '@/api';
 import AppFooter from '@/components/App/Footer/AppFooter.vue';
 import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
-import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
-import SoraLogo from '@/components/shared/Logo/Sora.vue';
+import { useNodeNotifications } from '@/composables/useNodeNotifications';
+import { useTransaction } from '@/composables/useTransaction';
+import { useTranslation } from '@/composables/useTranslation';
 import { PageNames, Components, Language, WalletPermissions, LOCAL_STORAGE_LIMIT_PERCENTAGE } from '@/consts';
 import { BreakpointClass, Breakpoint } from '@/consts/layout';
-import { Theme } from '@/consts/theme';
-import type { DesignSystem } from '@/consts/theme';
+import { Theme, type DesignSystem } from '@/consts/theme';
 import { getLocale } from '@/lang';
-import router, { goTo, lazyComponent } from '@/router';
-import { action, getter, mutation, state } from '@/store/decorators';
+import router, { goTo as navigateTo, lazyComponent } from '@/router';
+import store from '@/store';
+import { useWalletStore } from '@/stores/wallet';
 import { getMobileCssClasses } from '@/utils';
 import { NodesConnection } from '@/utils/connection';
 import { toDwebLink } from '@/utils/ipfs';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
+import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
-import type { History, HistoryItem } from '@sora-substrate/sdk';
+import type { HistoryItem } from '@sora-substrate/sdk';
 import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
+import type { Nullable } from '@/types/common';
 
-@Component({
+defineOptions({
   components: {
-    SoraLogo,
     AppHeader,
     AppFooter,
     AppMenu,
@@ -109,438 +127,503 @@ import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types
     NotificationEnablingPage: components.NotificationEnablingPage,
     ConfirmDialog: components.ConfirmDialog,
   },
-})
-export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
-  /** Product-based class fields should be like show${product}Popup */
-  showSoraMobilePopup = false;
-  menuVisibility = false;
-  showConfirmInviteUser = false;
-  showNotifsDarkPage = false;
-  showErrorLocalStorageExceed = false;
-  showNotificationMST = false;
+});
 
-  @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
-  @state.settings.appConnection private appConnection!: NodesConnection;
-  @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
-  @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
-  @state.settings.isOrientationWarningVisible private orientationWarningVisible!: boolean;
-  @state.settings.isThemePreference isThemePreference!: boolean;
-  @state.settings.isTMA isTMA!: boolean;
-  @state.wallet.settings.isMSTAvailable isMSTAvailable!: boolean;
-  @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
-  @state.wallet.account.address private accountAddress!: string;
-  @state.wallet.transactions.pendingMstTransactions pendingMstTransactions!: Array<HistoryItem>;
-  @state.referrals.storageReferrer private storageReferrer!: string;
-  @state.referrals.referrer private referrer!: string;
-  @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
-  @state.router.loading pageLoading!: boolean;
+const { t } = useTranslation();
+const { loading, withLoading, withApi, handleChangeTransaction } = useTransaction();
+const { handleNodeError, handleNodeDisconnect, handleNodeConnect } = useNodeNotifications();
 
-  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
-  @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.libraryTheme libraryTheme!: Theme;
-  @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;
+const route = useRoute();
+const walletStore = useWalletStore();
 
-  @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
-  @mutation.wallet.settings.setIndexerEndpoint private setIndexerEndpoint!: (options: {
-    indexer: WALLET_CONSTS.IndexerType;
-    endpoint: string;
-  }) => void;
+const showSoraMobilePopup = ref(false);
+const menuVisibility = ref(false);
+const showConfirmInviteUser = ref(false);
+const showNotifsDarkPage = ref(false);
+const showErrorLocalStorageExceed = ref(false);
+const showNotificationMST = ref(false);
+const isTearingDown = ref(false);
 
-  @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
-  @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
-  @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
-  @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
-  @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
-  @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (windowWidth: number) => void;
-  @mutation.settings.showOrientationWarning private showOrientationWarning!: FnWithoutArgs;
-  @mutation.settings.hideOrientationWarning private hideOrientationWarning!: FnWithoutArgs;
-
-  @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
-  @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
-  @mutation.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
-  @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => void;
-  @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
-
-  @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
-  @action.wallet.settings.subscribeOnExchangeRatesApi subscribeOnExchangeRatesApi!: AsyncFnWithoutArgs;
-  @action.wallet.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncFnWithoutArgs;
-  @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncFnWithoutArgs;
-  @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncFnWithoutArgs;
-  @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
-  @action.settings.fetchAdsArray private fetchAdsArray!: AsyncFnWithoutArgs;
-  @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
-  @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
-    asset: WhitelistArrayItem;
-    message: string;
-  }) => Promise<void>;
-
-  @state.wallet.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
-  @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
-
-  @Watch('assetsToNotifyQueue')
-  private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
-    if (!whitelistAssetArray.length) return;
-    this.notifyOnDeposit({ asset: whitelistAssetArray[0], message: this.t('assetDeposit') });
-  }
-
-  @Watch('firstReadyTransaction', { deep: true })
-  private handleNotifyAboutTransaction(value: History, oldValue: History): void {
-    this.handleChangeTransaction(value, oldValue);
-  }
-
-  @Watch('nodeIsConnected')
-  private updateConnectionSubsriptions(nodeConnected: boolean): void {
-    if (nodeConnected) {
-      // after app load, the first connection to the node occurs before the wallet is loaded
-      if (this.isWalletLoaded) {
-        this.activateNetwokSubscriptions();
-      }
+const responsiveClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
+const appConnection = computed(() => store.state.settings.appConnection as NodesConnection);
+const browserNotifPopup = computed(() => store.state.settings.browserNotifPopupVisibility as boolean);
+const browserNotifPopupBlocked = computed(() => store.state.settings.browserNotifPopupBlockedVisibility as boolean);
+const isThemePreference = computed(() => Boolean(store.state.settings.isThemePreference));
+const isTMA = computed(() => Boolean(store.state.settings.isTMA));
+const isMSTAvailable = computed(() => Boolean(store.state.wallet.settings.isMSTAvailable));
+const assetsToNotifyQueue = computed(() => store.state.wallet.account.assetsToNotifyQueue as WhitelistArrayItem[]);
+const accountAddress = computed(() => store.state.wallet.account.address as string);
+const pendingMstTransactions = computed(() => {
+  const list = store.state.wallet.transactions?.pendingMstTransactions as Nullable<HistoryItem[]>;
+  return Array.isArray(list) ? list : [];
+});
+const storageReferrer = computed(() => store.state.referrals.storageReferrer as string);
+const referrer = computed(() => store.state.referrals.referrer as string);
+const disclaimerVisibility = computed(() => Boolean(store.state.settings.disclaimerVisibility));
+const pageLoading = computed(() => Boolean(store.state.router.loading));
+const nodeIsConnected = computed(() => Boolean(store.getters.settings.nodeIsConnected));
+const firstReadyTransaction = computed(() => store.getters.wallet.transactions.firstReadyTx as Nullable<HistoryItem>);
+const isLoggedIn = computed(() => Boolean(store.getters.wallet.account.isLoggedIn));
+const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+const libraryDesignSystem = computed(() => store.getters.libraryDesignSystem as DesignSystem);
+const account = computed(() => store.getters.wallet.account.account);
+const isSignTxDialogVisible = computed(() => Boolean(store.state.wallet.transactions.isSignTxDialogVisible));
+const isWalletLoaded = computed(() => Boolean(store.state.settings.isWalletLoaded));
+const orientationWarningVisible = computed({
+  get: () => Boolean(store.state.settings.isOrientationWarningVisible),
+  set: (flag: boolean) => {
+    if (flag) {
+      store.commit.settings.showOrientationWarning();
     } else {
-      this.resetNetworkSubscriptions();
+      store.commit.settings.hideOrientationWarning();
     }
-  }
+  },
+});
 
-  @Watch('isLoggedIn')
-  private async confirmInviteUserIfConnected(isSoraConnected: boolean): Promise<void> {
-    if (isSoraConnected) {
-      await this.confirmInvititation();
+const showBrowserNotifPopup = computed({
+  get: () => Boolean(browserNotifPopup.value),
+  set: (flag: boolean) => {
+    store.commit?.settings?.setBrowserNotifsPopupEnabled?.(flag);
+  },
+});
+
+const showBrowserNotifBlockedPopup = computed({
+  get: () => Boolean(browserNotifPopupBlocked.value),
+  set: (flag: boolean) => {
+    store.commit?.settings?.setBrowserNotifsPopupBlocked?.(flag);
+  },
+});
+
+const mobileCssClasses = computed(() => getMobileCssClasses());
+const dsProviderClasses = computed(() => {
+  const classes = mobileCssClasses.value;
+  return classes?.length ? [...classes, responsiveClass.value] : responsiveClass.value;
+});
+const appClasses = computed(() => {
+  const baseClass = 'app-main';
+  const classes: string[] = [baseClass];
+  if (route.name) {
+    classes.push(`${baseClass}--${String(route.name).toLowerCase()}`);
+  }
+  return classes;
+});
+
+const chainApi = api;
+
+const setSoraNetwork = store.commit.wallet.settings.setSoraNetwork;
+const setIndexerEndpoint = store.commit.wallet.settings.setIndexerEndpoint;
+const setFaucetUrl = store.commit.settings.setFaucetUrl;
+const setFeatureFlags = store.commit.settings.setFeatureFlags;
+const setScreenBreakpointClass = store.commit.settings.setScreenBreakpointClass;
+const showOrientationWarning = store.commit.settings.showOrientationWarning;
+const hideOrientationWarning = store.commit.settings.hideOrientationWarning;
+const unsubscribeFromInvitedUsers = store.commit.referrals.unsubscribeFromInvitedUsers;
+const setEvmNetworksApp = store.commit.web3.setEvmNetworksApp;
+const setSubNetworkApps = store.commit.web3.setSubNetworkApps;
+const setEthBridgeSettings = store.commit.web3.setEthBridgeSettings;
+const resetStorageReferrer = store.commit.referrals.resetStorageReferrer;
+const setSignTxDialogVisibility = store.commit.wallet.transactions.setSignTxDialogVisibility;
+
+const setApiKeys = walletStore.setApiKeys;
+const subscribeOnExchangeRatesApi = walletStore.subscribeOnExchangeRatesApi;
+const resetNetworkSubscriptions = walletStore.resetNetworkSubscriptions;
+const resetInternalSubscriptions = walletStore.resetInternalSubscriptions;
+const activateNetworkSubscriptions = walletStore.activateNetworkSubscriptions;
+const setLanguage = store.dispatch.settings.setLanguage;
+const fetchAdsArray = store.dispatch.settings.fetchAdsArray;
+const getReferrer = store.dispatch.referrals.getReferrer;
+const notifyOnDeposit = walletStore.notifyOnDeposit;
+
+const productPopupRefs: Record<string, Ref<boolean>> = {
+  showSoraMobilePopup,
+};
+
+let ipfsObserver: MutationObserver | undefined;
+
+function setDarkPage(value: boolean): void {
+  showNotifsDarkPage.value = value;
+}
+
+function goToSwap(): void {
+  navigateTo(PageNames.Swap);
+}
+
+function goTo(name: PageNames): void {
+  if (name === PageNames.Rewards) {
+    navigateTo(PageNames.PointSystemWrapper);
+  } else {
+    navigateTo(name);
+  }
+  closeMenu();
+}
+
+function toggleMenu(): void {
+  menuVisibility.value = !menuVisibility.value;
+}
+
+function closeMenu(): void {
+  menuVisibility.value = false;
+}
+
+function handleAppMenuClick(event: Event): void {
+  const target = event.target as HTMLElement | null;
+  const insideSidebar = target?.closest('.app-sidebar');
+  if (!insideSidebar) {
+    closeMenu();
+  }
+}
+
+function openProductDialog(product: string): void {
+  const key = `show${product.charAt(0).toUpperCase()}${product.slice(1)}Popup`;
+  const popup = productPopupRefs[key];
+  if (popup) {
+    popup.value = true;
+  }
+}
+
+function showDisclaimer(): void {
+  const disclaimerApprove = settingsStorage.get('disclaimerApprove');
+  if (!disclaimerApprove) {
+    setTimeout(() => store.commit.settings.toggleDisclaimerDialogVisibility(), 5_000);
+  }
+}
+
+function normalizeImage(el: HTMLImageElement): void {
+  try {
+    const current = el.getAttribute('src') || '';
+    const normalized = toDwebLink(current);
+    if (normalized && normalized !== current) {
+      el.setAttribute('src', normalized);
     }
+  } catch {
+    // noop
   }
+}
 
-  @Watch('storageReferrer', { immediate: true })
-  private async confirmInviteUserIfHasStorage(storageReferrerValue: string): Promise<void> {
-    if (this.isLoggedIn && !!storageReferrerValue) {
-      await this.confirmInvititation();
-    }
+function scanAndNormalizeImages(root: ParentNode | Document = document): void {
+  try {
+    const images = root.querySelectorAll ? root.querySelectorAll('img[src]') : [];
+    images.forEach((img) => normalizeImage(img as HTMLImageElement));
+  } catch {
+    // noop
   }
+}
 
-  @Watch('isThemePreference', { immediate: true })
-  private onIsThemePreferenceChange(newVal: boolean) {
-    if (newVal) {
-      detectSystemTheme(this.isTMA);
-    } else {
-      removeThemeListeners(this.isTMA);
-    }
-  }
-
-  @Watch('pendingMstTransactions.length', { immediate: true })
-  onPendingMstTransactionsChange(newLength: number): void {
-    if (newLength > 0 && this.isMSTAvailable) {
-      this.showNotificationMST = true;
-    }
-  }
-
-  @Watch('accountAddress')
-  private onAccountAddressChange(newAddress: string, oldAddress: string): void {
-    if (newAddress !== oldAddress) {
-      this.showNotificationMST = false;
-    }
-  }
-
-  private async confirmInvititation(): Promise<void> {
-    await this.withApi(async () => {
-      await this.getReferrer();
-      if (!this.storageReferrer) {
-        return;
-      }
-      if (this.storageReferrer === this.account.address) {
-        this.resetStorageReferrer();
-      } else if (!this.referrer) {
-        this.showConfirmInviteUser = true;
-      }
-    });
-  }
-
-  private setResponsiveClass(): void {
-    this.setScreenBreakpointClass(window.innerWidth);
-  }
-
-  private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
-
-  public clearLocalStorage = clearLocalStorage;
-
-  private handleLocalStorageChange(): void {
-    const usagePercentage = calculateStorageUsagePercentage();
-    if (usagePercentage >= LOCAL_STORAGE_LIMIT_PERCENTAGE) {
-      this.showErrorLocalStorageExceed = true;
-    }
-  }
-
-  private subscribeOnLocalStorage(): void {
-    window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
-  }
-
-  private unsubscribeFromLocalStorage(): void {
-    window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
-  }
-
-  private handleOrientationChange(): void {
-    const isLandscape = screen.orientation
-      ? screen.orientation.type.startsWith('landscape')
-      : window.innerHeight < window.innerWidth;
-    if (isLandscape) {
-      this.showOrientationWarning();
-    } else {
-      this.hideOrientationWarning();
-    }
-  }
-
-  private subscribeOnScreenOrientation(): void {
-    if (window.innerWidth <= Breakpoint.LargeMobile) {
-      if (screen.orientation) {
-        screen.orientation.addEventListener('change', this.handleOrientationChange);
-      } else {
-        window.addEventListener('resize', this.handleOrientationChange);
-      }
-    }
-  }
-
-  private unsubscribeFromScreenOrientation(): void {
-    if (screen.orientation) {
-      screen.orientation.removeEventListener('change', this.handleOrientationChange);
-    } else {
-      window.removeEventListener('resize', this.handleOrientationChange);
-    }
-  }
-
-  private subscribeOnScreenSize(): void {
-    window.addEventListener('resize', this.setResponsiveClassDebounced);
-  }
-
-  private unsubscribeFromScreenSize(): void {
-    window.removeEventListener('resize', this.setResponsiveClassDebounced);
-  }
-
-  // Normalize IPFS/IPNS <img src> to dweb.link (helps NFT images behind gateways)
-  private ipfsObserver?: MutationObserver;
-  private normalizeImage(el: HTMLImageElement): void {
-    try {
-      const current = el.getAttribute('src') || '';
-      const normalized = toDwebLink(current);
-      if (normalized && normalized !== current) el.setAttribute('src', normalized);
-    } catch {}
-  }
-  private scanAndNormalizeImages(root: ParentNode | Document = document): void {
-    try {
-      const imgs = root.querySelectorAll ? root.querySelectorAll('img[src]') : [];
-      imgs.forEach((img) => this.normalizeImage(img as HTMLImageElement));
-    } catch {}
-  }
-  private startIpfsObserver(): void {
-    try {
-      this.scanAndNormalizeImages();
-      this.ipfsObserver = new MutationObserver((mutations) => {
-        for (const m of mutations) {
-          if (m.type === 'attributes' && m.target instanceof HTMLImageElement && m.attributeName === 'src') {
-            this.normalizeImage(m.target);
-          } else if (m.type === 'childList') {
-            m.addedNodes.forEach((n) => {
-              if (n instanceof HTMLImageElement) this.normalizeImage(n);
-              else if ((n as ParentNode).querySelectorAll) this.scanAndNormalizeImages(n as ParentNode);
-            });
-          }
+function startIpfsObserver(): void {
+  try {
+    scanAndNormalizeImages();
+    ipfsObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.target instanceof HTMLImageElement &&
+          mutation.attributeName === 'src'
+        ) {
+          normalizeImage(mutation.target);
+        } else if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach((node) => {
+            if (node instanceof HTMLImageElement) {
+              normalizeImage(node);
+            } else if ((node as ParentNode).querySelectorAll) {
+              scanAndNormalizeImages(node as ParentNode);
+            }
+          });
         }
-      });
-      this.ipfsObserver.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['src'],
-        childList: true,
-        subtree: true,
-      });
-    } catch {}
-  }
-  private stopIpfsObserver(): void {
-    try {
-      this.ipfsObserver?.disconnect();
-      this.ipfsObserver = undefined;
-    } catch {}
-  }
-
-  async created() {
-    this.setResponsiveClass();
-    this.setLanguage(getLocale() as Language);
-    updateBaseUrl(router);
-    AlertsApiService.baseRoute = getFullBaseUrl(router);
-
-    await this.withLoading(async () => {
-      const { data } = await axiosInstance.get('/env.json');
-
-      if (!data.NETWORK_TYPE) {
-        throw new Error('NETWORK_TYPE is not set');
       }
-
-      // To start running as Telegram Web App (desktop capabilities)
-      tmaSdkService.init(data?.TG_BOT_URL);
-
-      await this.setApiKeys(data?.API_KEYS);
-      this.setEthBridgeSettings(data.ETH_BRIDGE);
-      this.setFeatureFlags(data?.FEATURE_FLAGS);
-      // Feature flag to enable WS backoff scheduling if provided in env
-      // Safe default is disabled
-      try {
-        NodesConnection.enableBackoff = !!data?.FEATURE_FLAGS?.wsBackoff;
-        NodesConnection.enableParallelDial = !!data?.FEATURE_FLAGS?.wsParallelDial;
-      } catch (e) {}
-      this.setSoraNetwork(data.NETWORK_TYPE);
-      this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
-      this.setSubNetworkApps(data.SUB_NETWORKS);
-      this.setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBQUERY, endpoint: data.SUBQUERY_ENDPOINT });
-      this.setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBSQUID, endpoint: data.SUBSQUID_ENDPOINT });
-
-      if (data.FAUCET_URL) {
-        this.setFaucetUrl(data.FAUCET_URL);
-      }
-
-      this.appConnection.setDefaultNodes(data?.DEFAULT_NETWORKS);
-      this.appConnection.setNetworkChainGenesisHash(data?.CHAIN_GENESIS_HASH);
-
-      // connection to node
-      await this.runAppConnectionToNode();
     });
-
-    this.subscribeOnExchangeRatesApi();
-    this.showDisclaimer();
-    this.fetchAdsArray();
-    this.onIsThemePreferenceChange(this.isThemePreference);
+    ipfsObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['src'],
+      childList: true,
+      subtree: true,
+    });
+  } catch {
+    // noop
   }
+}
 
-  mounted(): void {
-    this.startIpfsObserver();
-    this.subscribeOnLocalStorage();
-    this.subscribeOnScreenSize();
-    this.subscribeOnScreenOrientation();
+function stopIpfsObserver(): void {
+  try {
+    ipfsObserver?.disconnect();
+    ipfsObserver = undefined;
+  } catch {
+    // noop
   }
+}
 
-  private get mobileCssClasses(): string[] | undefined {
-    return getMobileCssClasses();
+function handleLocalStorageChange(): void {
+  const usagePercentage = calculateStorageUsagePercentage();
+  if (usagePercentage >= LOCAL_STORAGE_LIMIT_PERCENTAGE) {
+    showErrorLocalStorageExceed.value = true;
   }
+}
 
-  get dsProviderClasses(): string[] | BreakpointClass {
-    return this.mobileCssClasses?.length ? [...this.mobileCssClasses, this.responsiveClass] : this.responsiveClass;
+function subscribeOnLocalStorage(): void {
+  window.addEventListener('localStorageUpdated', handleLocalStorageChange);
+}
+
+function unsubscribeFromLocalStorage(): void {
+  window.removeEventListener('localStorageUpdated', handleLocalStorageChange);
+}
+
+function setResponsiveClass(): void {
+  if (typeof setScreenBreakpointClass === 'function') {
+    setScreenBreakpointClass(window.innerWidth);
   }
+}
 
-  get appClasses(): Array<string> {
-    const baseClass = 'app-main';
-    const cssClasses: Array<string> = [baseClass];
-    if (this.$route.name) {
-      cssClasses.push(`${baseClass}--${this.$route.name.toLowerCase()}`);
-    }
-    return cssClasses;
+const setResponsiveClassDebounced = debounce(setResponsiveClass, 250);
+
+function subscribeOnScreenSize(): void {
+  window.addEventListener('resize', setResponsiveClassDebounced);
+}
+
+function unsubscribeFromScreenSize(): void {
+  window.removeEventListener('resize', setResponsiveClassDebounced);
+}
+
+function handleOrientationChange(): void {
+  const isLandscape = screen.orientation
+    ? screen.orientation.type.startsWith('landscape')
+    : window.innerHeight < window.innerWidth;
+  if (isLandscape) {
+    showOrientationWarning();
+  } else {
+    hideOrientationWarning();
   }
+}
 
-  get showBrowserNotifPopup(): boolean {
-    return this.browserNotifPopup;
-  }
-
-  set showBrowserNotifPopup(value) {
-    this.setBrowserNotifsPopup(value);
-  }
-
-  get showBrowserNotifBlockedPopup(): boolean {
-    return this.browserNotifPopupBlocked;
-  }
-
-  set showBrowserNotifBlockedPopup(value) {
-    this.setBrowserNotifsPopupBlocked(value);
-  }
-
-  get chainApi() {
-    return api;
-  }
-
-  goTo(name: PageNames): void {
-    if (name === PageNames.Rewards) {
-      // Rewards is a menu route but we need to show PointSystem by default
-      goTo(PageNames.PointSystemWrapper);
+function subscribeOnScreenOrientation(): void {
+  if (window.innerWidth <= Breakpoint.LargeMobile) {
+    if (screen.orientation) {
+      screen.orientation.addEventListener('change', handleOrientationChange);
     } else {
-      goTo(name);
-    }
-    this.closeMenu();
-  }
-
-  goToSwap(): void {
-    this.goTo(PageNames.Swap);
-  }
-
-  toggleMenu(): void {
-    this.menuVisibility = !this.menuVisibility;
-  }
-
-  closeMenu(): void {
-    this.menuVisibility = false;
-  }
-
-  setDarkPage(value: boolean) {
-    this.showNotifsDarkPage = value;
-  }
-
-  showDisclaimer(): void {
-    const disclaimerApprove = settingsStorage.get('disclaimerApprove');
-
-    if (!disclaimerApprove) {
-      setTimeout(() => this.toggleDisclaimerDialogVisibility(), 5_000);
-    }
-  }
-
-  handleAppMenuClick(e: Event): void {
-    const target = e.target as any;
-    const sidebar = !!target.closest('.app-sidebar');
-
-    if (!sidebar) {
-      this.closeMenu();
-    }
-  }
-
-  openProductDialog(product: string): void {
-    // Product-based class fields should be like show${product}Popup (like showSoraMobilePopup)
-    const fieldName = `show${product[0].toUpperCase() + product.slice(1)}Popup`;
-    if (typeof this[fieldName] === 'boolean') {
-      this[fieldName] = true;
-    }
-  }
-
-  async beforeDestroy(): Promise<void> {
-    this.stopIpfsObserver();
-    this.unsubscribeFromLocalStorage();
-    this.unsubscribeFromScreenSize();
-    this.unsubscribeFromScreenOrientation();
-    removeThemeListeners(this.isTMA);
-    tmaSdkService.destroy();
-    await this.resetInternalSubscriptions();
-    await this.resetNetworkSubscriptions();
-    this.unsubscribeFromInvitedUsers();
-    await connection.close();
-  }
-
-  private async runAppConnectionToNode() {
-    const walletOptions = {
-      permissions: WalletPermissions,
-      appName: WALLET_CONSTS.TranslationConsts.Polkaswap,
-    };
-
-    try {
-      // Run in parallel
-      // 1) Wallet core initialization (node connection independent)
-      // 2) Connection to node
-      await Promise.all([
-        waitForCore(walletOptions),
-        this.appConnection.connect({
-          onError: this.handleNodeError,
-          onDisconnect: this.handleNodeDisconnect,
-          onReconnect: this.handleNodeConnect,
-        }),
-      ]);
-    } catch (error) {
-      // we handled error using callback, do nothing
-    } finally {
-      // Wallet node connection dependent logic
-      if (!this.isWalletLoaded) {
-        await initWallet(walletOptions);
-      }
+      window.addEventListener('resize', handleOrientationChange);
     }
   }
 }
+
+function unsubscribeFromScreenOrientation(): void {
+  if (screen.orientation) {
+    screen.orientation.removeEventListener('change', handleOrientationChange);
+  } else {
+    window.removeEventListener('resize', handleOrientationChange);
+  }
+}
+
+async function runAppConnectionToNode(): Promise<void> {
+  const walletOptions = {
+    permissions: WalletPermissions,
+    appName: WALLET_CONSTS.TranslationConsts.Polkaswap,
+  };
+
+  try {
+    const connectionInstance = appConnection.value;
+    await Promise.all([
+      waitForCore(walletOptions),
+      connectionInstance.connect({
+        onError: handleNodeError,
+        onDisconnect: handleNodeDisconnect,
+        onReconnect: handleNodeConnect,
+      }),
+    ]);
+  } catch {
+    // handled via callbacks
+  } finally {
+    if (!isWalletLoaded.value) {
+      await initWallet(walletOptions);
+    }
+  }
+}
+
+async function confirmInvitation(): Promise<void> {
+  await withApi(async () => {
+    await getReferrer();
+    if (!storageReferrer.value) return;
+
+    const accountValue = account.value;
+    if (accountValue && storageReferrer.value === accountValue.address) {
+      resetStorageReferrer();
+    } else if (!referrer.value) {
+      showConfirmInviteUser.value = true;
+    }
+  });
+}
+
+async function teardown(): Promise<void> {
+  if (isTearingDown.value) return;
+  isTearingDown.value = true;
+
+  stopIpfsObserver();
+  unsubscribeFromLocalStorage();
+  unsubscribeFromScreenSize();
+  unsubscribeFromScreenOrientation();
+  removeThemeListeners(isTMA.value);
+  tmaSdkService.destroy();
+  await resetInternalSubscriptions();
+  await resetNetworkSubscriptions();
+  unsubscribeFromInvitedUsers();
+  await connection.close();
+}
+
+watch(assetsToNotifyQueue, (queue) => {
+  if (!queue?.length) return;
+  void notifyOnDeposit({ asset: queue[0], message: t('assetDeposit') });
+});
+
+watch(
+  firstReadyTransaction,
+  (value, oldValue) => {
+    handleChangeTransaction(value, oldValue);
+  },
+  { deep: true }
+);
+
+watch(nodeIsConnected, (connected) => {
+  if (connected) {
+    if (isWalletLoaded.value) {
+      void activateNetworkSubscriptions();
+    }
+  } else {
+    void resetNetworkSubscriptions();
+  }
+});
+
+watch(isLoggedIn, (loggedIn) => {
+  if (loggedIn) {
+    void confirmInvitation();
+  }
+});
+
+watch(
+  storageReferrer,
+  (value) => {
+    if (isLoggedIn.value && value) {
+      void confirmInvitation();
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  isThemePreference,
+  (preference) => {
+    if (preference) {
+      detectSystemTheme(isTMA.value);
+    } else {
+      removeThemeListeners(isTMA.value);
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  () => pendingMstTransactions.value.length,
+  (length) => {
+    if (length > 0 && isMSTAvailable.value) {
+      showNotificationMST.value = true;
+    }
+  },
+  { immediate: true }
+);
+
+watch(accountAddress, (newAddress, oldAddress) => {
+  if (newAddress !== oldAddress) {
+    showNotificationMST.value = false;
+  }
+});
+
+onBeforeMount(async () => {
+  setResponsiveClass();
+  if (typeof setLanguage === 'function') {
+    await setLanguage(getLocale() as Language);
+  }
+  updateBaseUrl(router);
+  AlertsApiService.baseRoute = getFullBaseUrl(router);
+
+  await withLoading(async () => {
+    const envConfigUrl = resolveStaticAssetUrl('env.json');
+    const { data } = await axiosInstance.get(envConfigUrl);
+
+    if (!data.NETWORK_TYPE) {
+      throw new Error('NETWORK_TYPE is not set');
+    }
+
+    tmaSdkService.init(data?.TG_BOT_URL);
+
+    if (typeof setApiKeys === 'function') {
+      try {
+        await setApiKeys(data?.API_KEYS);
+      } catch (error) {
+        console.warn('[bootstrap] failed to set API keys', error);
+      }
+    }
+    if (typeof setEthBridgeSettings === 'function') {
+      setEthBridgeSettings(data.ETH_BRIDGE as EthBridgeSettings);
+    }
+    if (typeof setFeatureFlags === 'function') {
+      setFeatureFlags((data?.FEATURE_FLAGS ?? {}) as FeatureFlags);
+    }
+
+    try {
+      NodesConnection.enableBackoff = Boolean(data?.FEATURE_FLAGS?.wsBackoff);
+      NodesConnection.enableParallelDial = Boolean(data?.FEATURE_FLAGS?.wsParallelDial);
+    } catch {
+      // noop
+    }
+
+    if (typeof setSoraNetwork === 'function') {
+      setSoraNetwork(data.NETWORK_TYPE);
+    }
+    if (typeof setEvmNetworksApp === 'function') {
+      setEvmNetworksApp(data.EVM_NETWORKS_IDS as EvmNetwork[]);
+    }
+    if (typeof setSubNetworkApps === 'function') {
+      setSubNetworkApps(data.SUB_NETWORKS as SubNetworkApps);
+    }
+    if (typeof setIndexerEndpoint === 'function') {
+      setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBQUERY, endpoint: data.SUBQUERY_ENDPOINT });
+      setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBSQUID, endpoint: data.SUBSQUID_ENDPOINT });
+    }
+
+    if (data.FAUCET_URL && typeof setFaucetUrl === 'function') {
+      setFaucetUrl(data.FAUCET_URL);
+    }
+
+    const connectionInstance = appConnection.value;
+    if (connectionInstance && typeof connectionInstance.setDefaultNodes === 'function') {
+      connectionInstance.setDefaultNodes(data?.DEFAULT_NETWORKS);
+    }
+    if (connectionInstance && typeof connectionInstance.setNetworkChainGenesisHash === 'function') {
+      connectionInstance.setNetworkChainGenesisHash(data?.CHAIN_GENESIS_HASH);
+    }
+
+    if (typeof runAppConnectionToNode === 'function') {
+      await runAppConnectionToNode();
+    }
+  });
+
+  if (typeof subscribeOnExchangeRatesApi === 'function') {
+    try {
+      await subscribeOnExchangeRatesApi();
+    } catch (error) {
+      console.warn('[bootstrap] subscribeOnExchangeRatesApi skipped', error);
+    }
+  }
+  showDisclaimer();
+  void fetchAdsArray();
+});
+
+onMounted(() => {
+  startIpfsObserver();
+  subscribeOnLocalStorage();
+  subscribeOnScreenSize();
+  subscribeOnScreenOrientation();
+});
+
+onBeforeUnmount(() => {
+  void teardown();
+});
 </script>
 
 <style lang="scss">

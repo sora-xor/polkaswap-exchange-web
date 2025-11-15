@@ -9,8 +9,8 @@
       border-radius="mini"
       tabindex="-1"
     >
-      <slot slot="content" :name="tooltipScopedSlot" />
-      <s-icon class="settings-header-hint" name="info-16" size="14px" />
+      <slot slot="content" :name="tooltipScopedSlot"></slot>
+      <s-icon class="settings-header-hint" name="info-16" size="14px"></s-icon>
     </s-tooltip>
   </div>
 </template>

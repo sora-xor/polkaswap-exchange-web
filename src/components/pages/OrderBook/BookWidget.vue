@@ -17,7 +17,7 @@
       >
         {{ selectedStep }}
         <template slot="menu">
-          <s-dropdown-item v-for="value in steps" :key="value" @click.native="handleSelectStep(value)">{{
+          <s-dropdown-item v-for="value in steps" :key="value" @click="handleSelectStep(value)">{{
             value
           }}</s-dropdown-item>
         </template>
@@ -30,7 +30,7 @@
       <div>{{ t('orderBook.total') }}</div>
     </div>
     <div v-if="asksFormatted.length" class="stock-book-sell" :class="{ unclickable: isMarketOrder }">
-      <div class="margin" :style="getHeight()" />
+      <div class="margin" :style="sellMarginStyle"></div>
       <div
         v-for="order in sellOrders"
         :key="order.price"
@@ -40,14 +40,14 @@
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
         <span class="order-info price">{{ order.price }}</span>
-        <div class="bar" :style="getStyles(order.filled)" />
+        <div class="bar" :style="barStyle(order.filled)"></div>
       </div>
     </div>
     <div v-else class="stock-book-sell--no-asks">{{ t('orderBook.book.noAsks') }}</div>
-    <div :class="getComputedClassTrend()">
+    <div :class="trendClass">
       <div>
         <span class="mark-price">{{ lastPriceFormatted }}</span>
-        <s-icon class="trend-icon" :name="iconTrend" size="18" />
+        <s-icon class="trend-icon" :name="trendIcon" size="18"></s-icon>
         <span class="last-traded-price">{{ fiatValue }}</span>
       </div>
     </div>
@@ -56,287 +56,67 @@
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
         <span class="order-info price">{{ order.price }}</span>
-        <div class="bar" :style="getStyles(order.filled)" />
+        <div class="bar" :style="barStyle(order.filled)"></div>
       </div>
     </div>
     <div v-else class="stock-book-buy--no-bids">{{ t('orderBook.book.noBids') }}</div>
   </base-widget>
 </template>
 
-<script lang="ts">
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/sdk';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import { onBeforeUnmount } from 'vue';
+import { PriceVariant as LiquidityPriceVariant } from '@sora-substrate/liquidity-proxy';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, LimitOrderType, ZeroStringValue } from '@/consts';
+import { Components } from '@/consts';
+import { useOrderBook } from '@/composables/useOrderBook';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
-import { action, getter, mutation, state } from '@/store/decorators';
-import type { OrderBookDealData } from '@/types/orderBook';
 
-import type { OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-
-interface LimitOrderForm {
-  price: string;
-  amount: string;
-  total: string;
-  filled?: number;
-}
-
-type OrderBookPriceVolumeAggregated = [FPNumber, FPNumber, FPNumber];
-
-@Component({
+defineOptions({
+  inheritAttrs: false,
   components: {
     BaseWidget: lazyComponent(Components.BaseWidget),
   },
-})
-export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
-  @state.orderBook.limitOrderType private limitOrderType!: LimitOrderType;
-  @state.orderBook.asks asks!: OrderBookPriceVolume[];
-  @state.orderBook.bids bids!: OrderBookPriceVolume[];
+});
 
-  @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
-  @getter.orderBook.orderBookLastDeal orderBookLastDeal!: Nullable<OrderBookDealData>;
-  @getter.orderBook.currentOrderBook currentOrderBook!: OrderBook;
-  @getter.orderBook.orderBookId orderBookId!: string;
-  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
-  @getter.wallet.settings.exchangeRate private exchangeRate!: number;
-  @getter.wallet.settings.currencySymbol private currencySymbol!: string;
+const { t } = useTranslation();
+const { loading, withLoading, withParentLoading } = useLoading();
 
-  @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
-  @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
+const {
+  asksFormatted,
+  bidsFormatted,
+  sellOrders,
+  buyOrders,
+  sellMarginStyle,
+  barStyle,
+  showAggregationOptions,
+  isMarketOrder,
+  steps,
+  selectedStep,
+  setSelectedStep,
+  lastDealTrendsUp,
+  trendIcon,
+  trendClass,
+  lastPriceFormatted,
+  fiatValue,
+  fillPrice,
+  watchOrderBookSubscription,
+  unsubscribeFromOrderBook,
+  PriceVariant: orderBookPriceVariant,
+} = useOrderBook({ maxRows: 11 });
 
-  @action.orderBook.subscribeToBidsAndAsks private subscribeToBidsAndAsks!: AsyncFnWithoutArgs;
+const handleSelectStep = (value: string) => setSelectedStep(value);
 
-  readonly PriceVariant = PriceVariant;
-  readonly maxRowsNumber = 11; // TODO: [Rustem] if I change it to 12 it should be re-rendered correctly
+const stopSubscription = watchOrderBookSubscription({ withLoading, withParentLoading });
 
-  selectedStep = '';
-  scalerOpen = false;
+onBeforeUnmount(() => {
+  stopSubscription?.();
+  unsubscribeFromOrderBook();
+});
 
-  @Watch('currentOrderBook', { immediate: true })
-  private setSteps() {
-    this.selectedStep = this.currentOrderBook?.tickSize.toString();
-  }
-
-  // Widget subscription creation
-  @Watch('orderBookId', { immediate: true })
-  @Watch('nodeIsConnected')
-  private async updateSubscription(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        await this.subscribeToBidsAndAsks();
-      });
-    });
-  }
-
-  handleSelectStep(value: string): void {
-    this.selectedStep = value;
-  }
-
-  fillPrice(price: string, side: PriceVariant): void {
-    if (this.isMarketOrder) {
-      return;
-    }
-    this.setSide(side);
-    this.setQuoteValue(Number(price).toString()); // TODO: [Rustem] string->number->string -- WHY?
-  }
-
-  get isMarketOrder(): boolean {
-    return this.limitOrderType === LimitOrderType.market;
-  }
-
-  get averagePrice(): FPNumber | undefined {
-    return (this.asks?.[0] ?? this.bids?.[0])?.[0];
-  }
-
-  get averagePricePrecision(): number | undefined {
-    if (!this.averagePrice) return undefined;
-
-    const price = this.averagePrice;
-
-    let result = price;
-    let max = FPNumber.ONE;
-
-    if (price.isLessThan(FPNumber.ONE)) {
-      const order = new FPNumber(0.1);
-      max = order;
-      while (result.isLessThan(FPNumber.ONE)) {
-        result = price.div(max);
-        if (result.isGreaterThanOrEqualTo(FPNumber.ONE)) break;
-        max = max.mul(order);
-      }
-    } else if (price.isGreaterThan(FPNumber.TEN)) {
-      const order = FPNumber.TEN;
-      max = order;
-      while (result.isGreaterThan(FPNumber.ONE)) {
-        result = price.div(max);
-        if (result.isLessThan(FPNumber.TEN)) break;
-        max = max.mul(order);
-      }
-    }
-
-    return max.toNumber();
-  }
-
-  get steps(): string[] {
-    const steps: string[] = [];
-    const min = this.currentOrderBook?.tickSize;
-
-    if (!(this.averagePricePrecision && min)) return steps;
-
-    const max = new FPNumber(this.averagePricePrecision ?? 1);
-
-    for (let inBetweenStep = max; inBetweenStep.isGreaterThanOrEqualTo(min); ) {
-      steps.push(inBetweenStep.toString());
-      inBetweenStep = inBetweenStep.div(FPNumber.TEN);
-    }
-
-    // Remove this line if supporting all precisions
-    // steps.splice(steps.indexOf('1') + 1, Infinity, min.toString());
-
-    // [NOTE]: as there is no corridor check, return only useful step distribution
-    return steps.slice(-6);
-  }
-
-  get showAggregationOptions(): boolean {
-    return !!(this.asks?.length && this.bids?.length);
-  }
-
-  get lastDealTrendsUp(): boolean {
-    return this.orderBookLastDeal?.side === PriceVariant.Buy;
-  }
-
-  get iconTrend(): string {
-    return this.lastDealTrendsUp ? 'arrows-arrow-bold-top-24' : 'arrows-arrow-bold-bottom-24';
-  }
-
-  get lastDealPrice(): FPNumber {
-    return this.orderBookLastDeal?.price ?? FPNumber.ZERO;
-  }
-
-  get lastPriceFormatted(): string {
-    return this.lastDealPrice.toLocaleString();
-  }
-
-  get fiatValue(): string {
-    if (!this.quoteAsset) return ZeroStringValue;
-
-    const fiatUsd = this.getFiatAmount(this.lastDealPrice.toString(), this.quoteAsset) || '0';
-
-    const currentFiat = new FPNumber(fiatUsd).mul(this.exchangeRate).toLocaleString();
-
-    return currentFiat ? `${this.currencySymbol}${currentFiat}` : '';
-  }
-
-  getComputedClassTrend(): string {
-    const base = ['stock-book-delimiter'];
-
-    if (this.lastDealTrendsUp) {
-      base.push('stock-book-delimiter--up');
-    } else {
-      base.push('stock-book-delimiter--down');
-    }
-
-    return base.join(' ');
-  }
-
-  get asksFormatted() {
-    return this.formatPriceVolumes(this.asks);
-  }
-
-  get bidsFormatted() {
-    return this.formatPriceVolumes(this.bids);
-  }
-
-  get sellOrders() {
-    return this.asksFormatted.slice(-this.maxRowsNumber);
-  }
-
-  get buyOrders() {
-    return this.bidsFormatted.slice(0, this.maxRowsNumber);
-  }
-
-  getHeight() {
-    const margin = this.asksFormatted.length < this.maxRowsNumber ? this.maxRowsNumber - this.asksFormatted.length : 0;
-    return `height: ${24 * margin}px`;
-  }
-
-  getStyles(filled: number | undefined): string {
-    return `width: ${filled}%`;
-  }
-
-  isBookPrecisionEqual(precision: string): boolean {
-    return precision === this.currentOrderBook?.tickSize?.toString();
-  }
-
-  private recalcFilledValue(orders: LimitOrderForm[]): LimitOrderForm[] {
-    if (!orders.length) return [];
-
-    const fpAmounts = orders.map((order) => new FPNumber(order.amount));
-    const maxAmount = FPNumber.max(...fpAmounts) as FPNumber;
-
-    return orders.map((record: LimitOrderForm) => ({
-      ...record,
-      filled: this.getAmountProportion(new FPNumber(record.amount), maxAmount),
-    }));
-  }
-
-  /**
-   * // TODO: [Rustem] add missed type, add missed docs, it's unclear how this method works
-   */
-  private calculateStepsDistribution(orders, precision = 10): OrderBookPriceVolumeAggregated[] {
-    return orders;
-  }
-
-  get bookPrecision(): number {
-    return this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length || 0;
-  }
-
-  get amountPrecision(): number {
-    return (
-      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length || 0
-    );
-  }
-
-  private getAmountProportion(currentAmount: FPNumber, maxAmount: FPNumber): number {
-    return currentAmount.div(maxAmount).mul(FPNumber.HUNDRED).toNumber();
-  }
-
-  private toBookPrecision(cell: FPNumber): string {
-    return cell.toNumber().toFixed(this.bookPrecision);
-  }
-
-  private toAmountPrecision(cell: FPNumber): string {
-    return cell.toNumber().toFixed(this.amountPrecision);
-  }
-
-  private formatPriceVolumes(items: OrderBookPriceVolume[]): LimitOrderForm[] {
-    if (!this.selectedStep) return [];
-    const aggregated = this.calculateStepsDistribution(items, Number(this.selectedStep));
-    const maxAmount = FPNumber.max(...aggregated.map((order) => order[1])) as FPNumber;
-    const result: LimitOrderForm[] = [];
-
-    aggregated.forEach((row: OrderBookPriceVolumeAggregated) => {
-      const [price, amount, acc] = row;
-
-      if (amount.isZero()) return;
-
-      const total = this.isBookPrecisionEqual(this.selectedStep) ? price.mul(amount) : acc;
-
-      result.push({
-        price: this.toBookPrecision(price),
-        amount: this.toAmountPrecision(amount),
-        total: this.toBookPrecision(total),
-        filled: this.getAmountProportion(amount, maxAmount),
-      });
-    });
-
-    return result;
-  }
-}
+// expose enum for template usage
+const PriceVariant = orderBookPriceVariant ?? LiquidityPriceVariant;
 </script>
 
 <style lang="scss">

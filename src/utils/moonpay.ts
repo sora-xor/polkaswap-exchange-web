@@ -1,4 +1,4 @@
-import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_CONSTS } from '@wallet';
 
 import axios from '@/api';
 import { toQueryString } from '@/utils';

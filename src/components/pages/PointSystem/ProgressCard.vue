@@ -1,7 +1,13 @@
 <template>
   <div class="progress-circle">
     <svg :width="svgSize" :height="svgSize">
-      <circle class="progress-circle__background" :cx="center" :cy="center" :r="radius" :stroke-width="strokeWidth" />
+      <circle
+        class="progress-circle__background"
+        :cx="center"
+        :cy="center"
+        :r="radius"
+        :stroke-width="strokeWidth"
+      ></circle>
       <circle
         class="progress-circle__bar"
         :cx="center"
@@ -12,19 +18,19 @@
         :stroke-dashoffset="progressDashOffset"
         stroke-linecap="round"
         :transform="'rotate(-90 ' + center + ' ' + center + ')'"
-      />
+      ></circle>
     </svg>
     <token-logo
-      v-if="isTokenImage"
+      v-if="tokenImage"
       class="progress-circle__image"
-      :token="getImageSrc(imageName)"
+      :token="imageSrc"
       :width="imageSize"
       :height="imageSize"
-    />
+    ></token-logo>
     <img
       v-else
       class="progress-circle__image"
-      :src="getImageSrc(imageName)"
+      :src="imageSrc"
       :alt="imageName"
       :width="imageSize"
       :height="imageSize"
@@ -32,49 +38,39 @@
   </div>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed, toRefs } from 'vue';
 
 import { getImageSrc, isTokenImage } from '@/consts/pointSystem';
 
-@Component({
+/**
+ * Displays a circular progress bar with the token or badge icon used in the points dashboard.
+ */
+defineOptions({
+  name: 'ProgressCard',
   components: {
     TokenLogo: components.TokenLogo,
   },
-})
-export default class ProgressCard extends Vue {
-  public svgSize = 72;
-  public strokeWidth = 3;
-  public imageSize = 27;
-  public getImageSrc = getImageSrc;
+});
 
-  @Prop({ required: true, type: String })
-  readonly imageName!: string;
+const props = defineProps<{
+  imageName: string;
+  progressPercentage: number;
+}>();
 
-  @Prop({ required: true, type: Number })
-  readonly progressPercentage!: number;
+const { imageName } = toRefs(props);
 
-  get center(): number {
-    return this.svgSize / 2;
-  }
+const svgSize = 72;
+const strokeWidth = 3;
+const imageSize = 27;
+const center = svgSize / 2;
 
-  get radius(): number {
-    return (this.svgSize - this.strokeWidth) / 2;
-  }
-
-  get circumference(): number {
-    return 2 * Math.PI * this.radius;
-  }
-
-  get progressDashOffset(): number {
-    return this.circumference * (1 - this.progressPercentage / 100);
-  }
-
-  get isTokenImage(): boolean {
-    return isTokenImage(this.imageName);
-  }
-}
+const radius = computed(() => (svgSize - strokeWidth) / 2);
+const circumference = computed(() => 2 * Math.PI * radius.value);
+const progressDashOffset = computed(() => circumference.value * (1 - props.progressPercentage / 100));
+const tokenImage = computed(() => isTokenImage(imageName.value));
+const imageSrc = computed(() => getImageSrc(imageName.value));
 </script>
 
 <style lang="scss" scoped>

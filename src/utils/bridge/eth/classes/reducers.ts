@@ -1,4 +1,4 @@
-import { SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { SUBQUERY_TYPES, WALLET_CONSTS } from '@wallet';
 import first from 'lodash/fp/first';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';

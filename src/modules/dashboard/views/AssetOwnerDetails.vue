@@ -8,7 +8,7 @@
       :tooltip="t('assets.details')"
       @click="handleBack"
     >
-      <s-icon name="arrows-chevron-left-rounded-24" size="24" />
+      <s-icon name="arrows-chevron-left-rounded-24" size="24"></s-icon>
     </s-button>
     <s-row class="asset-owner-details-main" :gutter="20">
       <s-col :xs="12" :sm="12" :md="5" :lg="5">
@@ -17,11 +17,11 @@
           <div class="asset-title s-flex">
             <div class="asset-title__text s-flex-column">
               <h3 class="asset-title__name">{{ asset.name }}</h3>
-              <token-address :address="asset.address" :symbol="asset.symbol" />
+              <token-address :address="asset.address" :symbol="asset.symbol"></token-address>
             </div>
-            <token-logo class="asset-title__icon" size="big" :token="asset" />
+            <token-logo class="asset-title__icon" size="big" :token="asset"></token-logo>
           </div>
-          <s-divider />
+          <s-divider></s-divider>
           <div class="asset-balance s-flex">
             <div class="asset-balance__info">
               <p class="p3">Your balance</p>
@@ -31,11 +31,16 @@
                 :value="formattedBalance"
                 :font-size-rate="FontSizeRate.MEDIUM"
                 :font-weight-rate="FontWeightRate.MEDIUM"
-              />
-              <formatted-amount v-if="fiatBalance" is-fiat-value value-can-be-hidden :value="fiatBalance" />
+              ></formatted-amount>
+              <formatted-amount
+                v-if="fiatBalance"
+                is-fiat-value
+                value-can-be-hidden
+                :value="fiatBalance"
+              ></formatted-amount>
             </div>
             <s-button class="s-typography-button--small" size="small" @click="openSendDialog">
-              <s-icon name="finance-send-24" size="16" />
+              <s-icon name="finance-send-24" size="16"></s-icon>
               Send
             </s-button>
           </div>
@@ -49,8 +54,8 @@
                 :value="formattedSupply"
                 :font-size-rate="FontSizeRate.MEDIUM"
                 :font-weight-rate="FontWeightRate.MEDIUM"
-              />
-              <formatted-amount v-if="fiatSupply" is-fiat-value :value="fiatSupply" />
+              ></formatted-amount>
+              <formatted-amount v-if="fiatSupply" is-fiat-value :value="fiatSupply"></formatted-amount>
             </div>
             <s-button
               class="s-typography-button--small"
@@ -59,11 +64,11 @@
               :disabled="isAddLiquidityDisabled"
               @click="goToAddLiquidity"
             >
-              <s-icon name="basic-drop-24" size="16" />
+              <s-icon name="basic-drop-24" size="16"></s-icon>
               Add liquidity
             </s-button>
           </div>
-          <s-divider />
+          <s-divider></s-divider>
           <div class="asset-supply-actions">
             <s-button
               class="s-typography-button--small"
@@ -71,11 +76,11 @@
               :disabled="hasFixedSupply"
               @click="openMintDialog"
             >
-              <s-icon name="printer-16" size="16" />
+              <s-icon name="printer-16" size="16"></s-icon>
               Mint more
             </s-button>
             <s-button class="s-typography-button--small" size="small" @click="openBurnDialog">
-              <s-icon name="basic-flame-24" size="16" />
+              <s-icon name="basic-flame-24" size="16"></s-icon>
               Burn
             </s-button>
           </div>
@@ -88,7 +93,7 @@
           :key="getForceRerenderKey('dashboard-supply-chart')"
           class="details-card"
           :predefined-token="asset"
-        />
+        ></stats-supply-chart>
       </s-col>
       <s-col :xs="12" :sm="12" :md="7" :lg="7">
         <price-chart-widget
@@ -96,14 +101,14 @@
           class="details-card"
           :base-asset="asset"
           :is-available="hasFiat"
-        />
+        ></price-chart-widget>
         <s-row :gutter="20">
           <s-col :xs="6" :sm="6" :md="6" :lg="4">
             <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
               <p class="p3 asset-stats-card__title">
                 HOLDERS
                 <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
+                  <s-icon name="info-16" size="14px"></s-icon>
                 </s-tooltip>
               </p>
               <div class="asset-stats-card__value">N/A</div>
@@ -114,7 +119,7 @@
               <p class="p3 asset-stats-card__title">
                 TOTAL TXNS
                 <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
+                  <s-icon name="info-16" size="14px"></s-icon>
                 </s-tooltip>
               </p>
               <div class="asset-stats-card__value">N/A</div>
@@ -125,7 +130,7 @@
               <p class="p3 asset-stats-card__title">
                 MINTED
                 <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
+                  <s-icon name="info-16" size="14px"></s-icon>
                 </s-tooltip>
               </p>
               <div class="asset-stats-card__value">N/A</div>
@@ -136,7 +141,7 @@
               <p class="p3 asset-stats-card__title">
                 MINT TXNS
                 <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
+                  <s-icon name="info-16" size="14px"></s-icon>
                 </s-tooltip>
               </p>
               <div class="asset-stats-card__value">N/A</div>
@@ -147,7 +152,7 @@
               <p class="p3 asset-stats-card__title">
                 BURNED
                 <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
+                  <s-icon name="info-16" size="14px"></s-icon>
                 </s-tooltip>
               </p>
               <div class="asset-stats-card__value">N/A</div>
@@ -158,7 +163,7 @@
               <p class="p3 asset-stats-card__title">
                 BURN TXNS
                 <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
+                  <s-icon name="info-16" size="14px"></s-icon>
                 </s-tooltip>
               </p>
               <div class="asset-stats-card__value">N/A</div>
@@ -167,33 +172,52 @@
         </s-row>
       </s-col>
     </s-row>
-    <mint-dialog :visible.sync="showMintDialog" :asset="asset" :editable-fiat="hasFiat" />
-    <burn-dialog :visible.sync="showBurnDialog" :asset="asset" :balance="balance" :editable-fiat="hasFiat" />
-    <send-dialog :visible.sync="showSendDialog" :asset="asset" :balance="balance" :editable-fiat="hasFiat" />
+    <mint-dialog v-model:visible="showMintDialog" :asset="asset" :editable-fiat="hasFiat"></mint-dialog>
+    <burn-dialog
+      v-model:visible="showBurnDialog"
+      :asset="asset"
+      :balance="balance"
+      :editable-fiat="hasFiat"
+    ></burn-dialog>
+    <send-dialog
+      v-model:visible="showSendDialog"
+      :asset="asset"
+      :balance="balance"
+      :editable-fiat="hasFiat"
+    ></send-dialog>
   </div>
-  <div v-else class="asset-owner-details-container empty" />
+  <div v-else class="asset-owner-details-container empty"></div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { api, components } from '@wallet';
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import StatsSupplyChart from '@/components/shared/Widget/SupplyChart.vue';
-import { PageNames, Components, ZeroStringValue } from '@/consts';
+import { Components, PageNames, ZeroStringValue } from '@/consts';
+import { FontSizeRate as WalletFontSizeRate, FontWeightRate as WalletFontWeightRate } from '@wallet/src/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import router, { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
 import { waitUntil } from '@/utils';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useSubscriptions } from '@/composables/useSubscriptions';
+import { useTranslation } from '@/composables/useTranslation';
+import { useSettingsStore } from '@/stores/settings';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { Subscription } from 'rxjs';
 
-@Component({
+const FontSizeRate = WalletFontSizeRate;
+const FontWeightRate = WalletFontWeightRate;
+
+defineOptions({
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
@@ -204,115 +228,194 @@ import type { Subscription } from 'rxjs';
     BurnDialog: dashboardLazyComponent(DashboardComponents.BurnDialog),
     SendDialog: dashboardLazyComponent(DashboardComponents.SendTokenDialog),
   },
-})
-export default class AssetOwnerDetails extends Mixins(
-  TranslationMixin,
-  mixins.LoadingMixin,
-  mixins.FormattedAmountMixin
-) {
-  @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
-  @getter.dashboard.ownedAssets private assets!: OwnedAsset[];
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+});
 
-  private supply: CodecString = ZeroStringValue;
-  private supplySubscription: Nullable<Subscription> = null;
-  private balanceSubscription: Nullable<Subscription> = null;
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+  }>(),
+  {
+    parentLoading: false,
+  }
+);
 
-  balance: CodecString = ZeroStringValue;
-  showSendDialog = false;
-  showBurnDialog = false;
-  showMintDialog = false;
+const parentLoading = toRef(props, 'parentLoading');
 
-  /** To force re-render component(s). Currently, it should be applied to charts */
-  getForceRerenderKey(name: string): string {
-    return `${name}-${this.responsiveClass}`;
+const route = useRoute();
+const { t } = useTranslation();
+const { formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
+const { isLoggedIn } = useInternalConnect();
+const settingsStore = useSettingsStore();
+
+const responsiveClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
+const assets = computed(() => store.getters.dashboard.ownedAssets as OwnedAsset[]);
+
+const balance = ref<CodecString>(ZeroStringValue);
+const supply = ref<CodecString>(ZeroStringValue);
+const showSendDialog = ref(false);
+const showBurnDialog = ref(false);
+const showMintDialog = ref(false);
+
+const balanceSubscription = ref<Nullable<Subscription>>(null);
+const supplySubscription = ref<Nullable<Subscription>>(null);
+
+const asset = computed<Nullable<OwnedAsset>>(() => {
+  const assetId = route.params.asset as string | undefined;
+  if (!assetId) return null;
+  return assets.value.find(({ address }) => address === assetId) ?? null;
+});
+
+const formattedBalance = computed(() =>
+  balance.value ? formatCodecNumber(balance.value, asset.value?.decimals) : '0'
+);
+const fiatBalance = computed(() =>
+  asset.value && balance.value ? getFiatAmountByCodecString(balance.value, asset.value) : ZeroStringValue
+);
+const hasFiat = computed(() => Boolean(fiatBalance.value));
+
+const formattedSupply = computed(() =>
+  supply.value ? formatCodecNumber(supply.value, asset.value?.decimals) : ZeroStringValue
+);
+const fiatSupply = computed(() =>
+  asset.value && supply.value ? getFiatAmountByCodecString(supply.value, asset.value) : ZeroStringValue
+);
+
+const isAddLiquidityDisabled = computed(() => !asset.value?.decimals);
+const hasFixedSupply = computed(() => !asset.value?.isMintable);
+
+function getForceRerenderKey(name: string): string {
+  return `${name}-${responsiveClass.value}`;
+}
+
+function handleBack(): void {
+  router.back();
+}
+
+function openSendDialog(): void {
+  showSendDialog.value = true;
+}
+
+function openMintDialog(): void {
+  showMintDialog.value = true;
+}
+
+function openBurnDialog(): void {
+  showBurnDialog.value = true;
+}
+
+function goToAddLiquidity(): void {
+  if (!asset.value) return;
+  router.push({ name: PageNames.AddLiquidity, params: { first: XOR.symbol, second: asset.value.address } });
+}
+
+function stopAssetSubscriptions(): void {
+  balanceSubscription.value?.unsubscribe?.();
+  supplySubscription.value?.unsubscribe?.();
+  balanceSubscription.value = null;
+  supplySubscription.value = null;
+}
+
+async function subscribeToCurrentAsset(): Promise<void> {
+  stopAssetSubscriptions();
+
+  const target = asset.value;
+  if (!target) return;
+
+  balanceSubscription.value = api.assets.getAssetBalanceObservable(target).subscribe((result) => {
+    balance.value = result.transferable;
+  });
+
+  supplySubscription.value = api.apiRx.query.tokens.totalIssuance(target.address).subscribe((result) => {
+    supply.value = result.toString();
+  });
+}
+
+const {
+  withApi,
+  updateSubscriptions,
+  resetSubscriptions: resetTrackedSubscriptions,
+} = useSubscriptions({
+  parentLoading,
+  loginSource: isLoggedIn,
+  trackConnection: false,
+  startSubscriptions: [subscribeToCurrentAsset],
+  resetSubscriptions: [stopAssetSubscriptions],
+});
+
+watch(asset, async (next, previous) => {
+  if (next === previous) return;
+  if (!next) {
+    stopAssetSubscriptions();
+    return;
   }
 
-  get asset(): Nullable<OwnedAsset> {
-    const assetId = this.$route.params.asset;
-    if (!assetId) return null;
-    return this.assets.find(({ address }) => address === assetId);
-  }
+  await updateSubscriptions();
+});
 
-  get formattedBalance(): string {
-    if (!this.balance) return '0';
-    return this.formatCodecNumber(this.balance, this.asset?.decimals);
-  }
+onMounted(async () => {
+  await withApi(async () => {
+    if (!isLoggedIn.value) {
+      router.push({ name: DashboardPageNames.AssetOwner });
+      return;
+    }
 
-  get fiatBalance(): Nullable<string> {
-    if (!(this.asset && this.balance)) return ZeroStringValue;
-    return this.getFiatAmountByCodecString(this.balance, this.asset);
-  }
+    await waitUntil(() => !parentLoading.value);
 
-  get hasFiat(): boolean {
-    return !!this.fiatBalance;
-  }
+    if (!asset.value) {
+      router.push({ name: DashboardPageNames.AssetOwner });
+      return;
+    }
 
-  get formattedSupply(): string {
-    if (!this.supply) return ZeroStringValue;
-    return this.formatCodecNumber(this.supply, this.asset?.decimals);
-  }
+    await updateSubscriptions();
+  });
+});
 
-  get fiatSupply(): Nullable<string> {
-    if (!(this.asset && this.supply)) return ZeroStringValue;
-    return this.getFiatAmountByCodecString(this.supply, this.asset);
-  }
+onBeforeUnmount(() => {
+  stopAssetSubscriptions();
+  resetTrackedSubscriptions();
+});
 
-  get isAddLiquidityDisabled(): boolean {
-    return !this.asset?.decimals;
-  }
+defineExpose({
+  asset,
+  formattedBalance,
+  fiatBalance,
+  formattedSupply,
+  fiatSupply,
+  hasFiat,
+  isAddLiquidityDisabled,
+  hasFixedSupply,
+  showSendDialog,
+  showBurnDialog,
+  showMintDialog,
+  handleBack,
+  openSendDialog,
+  openMintDialog,
+  openBurnDialog,
+  goToAddLiquidity,
+  getForceRerenderKey,
+});
 
-  get hasFixedSupply(): boolean {
-    return !this.asset?.isMintable;
-  }
-
-  mounted(): void {
-    this.withApi(async () => {
-      if (!this.isLoggedIn) {
-        router.push({ name: DashboardPageNames.AssetOwner });
-        return;
-      }
-
-      await waitUntil(() => !this.parentLoading);
-      if (!this.asset) {
-        router.push({ name: DashboardPageNames.AssetOwner });
-        return;
-      }
-
-      this.balanceSubscription = api.assets.getAssetBalanceObservable(this.asset).subscribe((balance) => {
-        this.balance = balance.transferable;
-      });
-      this.supplySubscription = api.apiRx.query.tokens.totalIssuance(this.asset.address).subscribe((supply) => {
-        this.supply = supply.toString();
-      });
-    });
-  }
-
-  handleBack(): void {
-    router.back();
-  }
-
-  openSendDialog(): void {
-    this.showSendDialog = true;
-  }
-
-  openMintDialog(): void {
-    this.showMintDialog = true;
-  }
-
-  openBurnDialog(): void {
-    this.showBurnDialog = true;
-  }
-
-  goToAddLiquidity(): void {
-    if (!this.asset) return;
-    router.push({ name: PageNames.AddLiquidity, params: { first: XOR.symbol, second: this.asset.address } });
-  }
-
-  beforeDestroy(): void {
-    this.balanceSubscription?.unsubscribe?.();
-    this.supplySubscription?.unsubscribe?.();
-  }
+const instance = getCurrentInstance();
+if (instance?.proxy) {
+  Object.defineProperties(instance.proxy, {
+    asset: { get: () => asset.value },
+    formattedBalance: { get: () => formattedBalance.value },
+    fiatBalance: { get: () => fiatBalance.value },
+    formattedSupply: { get: () => formattedSupply.value },
+    fiatSupply: { get: () => fiatSupply.value },
+    hasFiat: { get: () => hasFiat.value },
+    isAddLiquidityDisabled: { get: () => isAddLiquidityDisabled.value },
+    hasFixedSupply: { get: () => hasFixedSupply.value },
+    showSendDialog: { get: () => showSendDialog.value },
+    showBurnDialog: { get: () => showBurnDialog.value },
+    showMintDialog: { get: () => showMintDialog.value },
+    handleBack: { value: handleBack },
+    openSendDialog: { value: openSendDialog },
+    openMintDialog: { value: openMintDialog },
+    openBurnDialog: { value: openBurnDialog },
+    goToAddLiquidity: { value: goToAddLiquidity },
+    getForceRerenderKey: { value: getForceRerenderKey },
+  });
 }
 </script>
 

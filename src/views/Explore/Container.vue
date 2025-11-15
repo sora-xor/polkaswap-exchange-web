@@ -2,18 +2,24 @@
   <div class="explore-container">
     <div v-loading="parentLoading" class="container container--explore" :class="{ 'menu-collapsed': collapsed }">
       <div class="explore-container-dropdown s-flex">
-        <responsive-tabs is-header :is-mobile="showDropdown" :tabs="tabs" :value="pageName" @input="handleTabChange" />
+        <responsive-tabs
+          is-header
+          :is-mobile="showDropdown"
+          :tabs="tabs"
+          :value="pageName"
+          @input="handleTabChange"
+        ></responsive-tabs>
         <search-input
           autofocus
           class="explore-search"
           v-model="exploreQuery"
           :placeholder="t('searchText')"
           @clear="resetSearch"
-        />
+        ></search-input>
       </div>
 
       <div v-if="switcherAvailable" class="switcher">
-        <s-switch v-model="isAccountItemsOnly" />
+        <s-switch v-model="isAccountItemsOnly"></s-switch>
         <span>{{ t('explore.showOnly', { entities: t('explore.myPositions') }) }}</span>
       </div>
 
@@ -25,107 +31,105 @@
           ...$attrs,
         }"
         v-on="$listeners"
-      />
+      ></router-view>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed, ref, toRef } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import { PageNames, Components } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
-import router, { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import store from '@/store';
 import type { ResponsiveTab } from '@/types/tabs';
 import storage from '@/utils/storage';
+import { lazyComponent } from '@/router';
 
-const storageKey = 'exploreAccountItems';
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+  }>(),
+  {
+    parentLoading: false,
+  }
+);
 
-@Component({
+defineOptions({
+  name: 'ExploreContainer',
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ResponsiveTabs: lazyComponent(Components.ResponsiveTabs),
     SearchInput: components.SearchInput,
   },
-})
-export default class ExploreContainer extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
-  @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
-  @state.settings.menuCollapsed collapsed!: boolean;
+});
 
-  exploreQuery = '';
-  private isAccountItems = storage.get(storageKey) ? JSON.parse(storage.get(storageKey)) : false;
+const parentLoading = toRef(props, 'parentLoading');
+const storageKey = 'exploreAccountItems';
+const routerInstance = useRouter();
+const route = useRoute();
+const { t } = useTranslation();
 
-  get showDropdown(): boolean {
-    return ![BreakpointClass.LargeDesktop, BreakpointClass.HugeDesktop].includes(this.screenBreakpointClass);
-  }
+const collapsed = computed(() => Boolean(store.state?.settings?.menuCollapsed));
+const screenBreakpointClass = computed(
+  () => (store.state?.settings?.screenBreakpointClass as BreakpointClass | undefined) ?? BreakpointClass.Desktop
+);
+const isLoggedIn = computed(() => Boolean(store.getters?.wallet?.account?.isLoggedIn));
 
-  get isAccountItemsOnly(): boolean {
-    return this.isAccountItems;
-  }
+const exploreQuery = ref('');
+const accountItems = ref<boolean>(
+  (() => {
+    const stored = storage.get(storageKey);
+    return stored ? JSON.parse(stored) : false;
+  })()
+);
 
-  set isAccountItemsOnly(value: boolean) {
+const showDropdown = computed(() => {
+  return ![BreakpointClass.LargeDesktop, BreakpointClass.HugeDesktop].includes(screenBreakpointClass.value);
+});
+
+const isAccountItemsOnly = computed({
+  get: () => accountItems.value,
+  set: (value: boolean) => {
     storage.set(storageKey, value);
-    this.isAccountItems = value;
-  }
+    accountItems.value = value;
+  },
+});
 
-  get tabs(): Array<ResponsiveTab> {
-    return [
-      {
-        name: PageNames.ExploreTokens,
-        icon: 'finance-PSWAP-24',
-      },
-      {
-        name: PageNames.ExploreFarming,
-        icon: 'various-toy-horse-24',
-      },
-      {
-        name: PageNames.ExplorePools,
-        icon: 'basic-drop-24',
-      },
-      {
-        name: PageNames.ExploreStaking,
-        icon: 'basic-layers-24',
-      },
-      {
-        name: PageNames.ExploreBooks,
-        icon: 'music-CD-24',
-      },
-    ].map((el) => ({
-      ...el,
-      label: this.t(`pageTitle.${el.name}`),
-    }));
-  }
+const pageName = computed(() => route.name as string);
 
-  get pageName(): string {
-    return this.$route.name as string;
-  }
+const tabs = computed<ResponsiveTab[]>(() => {
+  return [
+    { name: PageNames.ExploreTokens, icon: 'finance-PSWAP-24' },
+    { name: PageNames.ExploreFarming, icon: 'various-toy-horse-24' },
+    { name: PageNames.ExplorePools, icon: 'basic-drop-24' },
+    { name: PageNames.ExploreStaking, icon: 'basic-layers-24' },
+    { name: PageNames.ExploreBooks, icon: 'music-CD-24' },
+  ].map((tab) => ({
+    ...tab,
+    label: t(`pageTitle.${tab.name}`),
+  }));
+});
 
-  get pageTitle(): string {
-    return this.t(`pageTitle.${this.pageName}`);
-  }
+const switcherAvailable = computed(() => {
+  if (!isLoggedIn.value) return false;
 
-  /** Shown only for logged in users and for any tab on page except Tokens */
-  get switcherAvailable(): boolean {
-    if (!this.isLoggedIn) return false;
+  return [PageNames.ExploreFarming, PageNames.ExplorePools, PageNames.ExploreStaking].includes(
+    pageName.value as PageNames
+  );
+});
 
-    return [PageNames.ExploreFarming, PageNames.ExplorePools, PageNames.ExploreStaking].includes(
-      this.pageName as PageNames
-    );
-  }
+const handleTabChange = (name: string) => {
+  if (pageName.value === name) return;
+  routerInstance.push({ name });
+};
 
-  handleTabChange(name: string): void {
-    if (this.pageName === name) return;
-    router.push({ name });
-  }
-
-  resetSearch(): void {
-    this.exploreQuery = '';
-  }
-}
+const resetSearch = () => {
+  exploreQuery.value = '';
+};
 </script>
 
 <style lang="scss" scoped>

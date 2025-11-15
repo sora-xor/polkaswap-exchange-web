@@ -3,21 +3,21 @@
     <s-row v-if="isNotLoggedInOrEmptyAssets">
       <s-col class="no-assets__first-col" :xs="12" :sm="12" :md="6" :lg="6">
         <s-card class="no-assets" border-radius="small" shadow="always" size="big" primary>
-          <s-image lazy fit="cover" draggable="false" :src="noAssetsImg" />
+          <s-image lazy fit="cover" draggable="false" :src="noAssetsImg"></s-image>
           <h2 class="no-assets-text negative-margin--top">Create & launch your token on SORA Network in seconds!</h2>
           <p class="p1 no-assets-text">
             Launch your unique token efficiently and securely using the established infrastructure of the SORA Network.
           </p>
           <p class="p1">
-            <s-icon class="item-icon" name="basic-check-mark-24" size="14" />
+            <s-icon class="item-icon" name="basic-check-mark-24" size="14"></s-icon>
             Full token ownership
           </p>
           <p class="p1">
-            <s-icon class="item-icon" name="basic-check-mark-24" size="14" />
+            <s-icon class="item-icon" name="basic-check-mark-24" size="14"></s-icon>
             Management dashboard with charts
           </p>
           <p class="p1">
-            <s-icon class="item-icon" name="basic-check-mark-24" size="14" />
+            <s-icon class="item-icon" name="basic-check-mark-24" size="14"></s-icon>
             Enable decentralization
           </p>
           <s-button
@@ -41,22 +41,22 @@
       </s-col>
       <s-col :xs="12" :sm="12" :md="6" :lg="6">
         <s-card class="no-assets-demo" border-radius="small" shadow="always" size="big" primary>
-          <s-image class="negative-margin--left" lazy fit="cover" draggable="false" :src="noAssetsImgDemo" />
+          <s-image class="negative-margin--left" lazy fit="cover" draggable="false" :src="noAssetsImgDemo"></s-image>
           <h2 class="no-assets-text">Dashboard preview</h2>
           <p class="p1">
-            <s-icon class="item-icon" name="basic-check-mark-24" size="14" />
+            <s-icon class="item-icon" name="basic-check-mark-24" size="14"></s-icon>
             Burn & mint supply
           </p>
           <p class="p1">
-            <s-icon class="item-icon" name="basic-check-mark-24" size="14" />
+            <s-icon class="item-icon" name="basic-check-mark-24" size="14"></s-icon>
             Provide liquidity
           </p>
           <p class="p1">
-            <s-icon class="item-icon" name="basic-check-mark-24" size="14" />
+            <s-icon class="item-icon" name="basic-check-mark-24" size="14"></s-icon>
             Send token
           </p>
           <p class="p1">
-            <s-icon class="item-icon" name="basic-check-mark-24" size="14" />
+            <s-icon class="item-icon" name="basic-check-mark-24" size="14"></s-icon>
             See statistics
           </p>
         </s-card>
@@ -90,21 +90,21 @@
             @click="handleOpenAssetDetails(asset)"
           >
             <div class="asset-title s-flex">
-              <token-logo class="asset-title__icon" size="big" :token="asset" />
+              <token-logo class="asset-title__icon" size="big" :token="asset"></token-logo>
               <div class="asset-title__text s-flex-column">
                 <h3 class="asset-title__name">{{ asset.name }}</h3>
                 <p class="p3 asset-title__symbol asset__label">{{ asset.symbol }}</p>
               </div>
               <s-button type="action" size="small" alternative :tooltip="t('assets.details')">
-                <s-icon name="arrows-chevron-right-rounded-24" size="24" />
+                <s-icon name="arrows-chevron-right-rounded-24" size="24"></s-icon>
               </s-button>
             </div>
             <p class="p3 asset-text asset__label">Mint & burn, send the token in the details page</p>
-            <s-divider />
+            <s-divider></s-divider>
             <div class="asset-details s-flex">
               <div class="asset-details__item s-flex-column">
                 <p class="p3 asset__label">Price</p>
-                <formatted-amount v-if="asset.fiat" is-fiat-value :value="asset.fiat" />
+                <formatted-amount v-if="asset.fiat" is-fiat-value :value="asset.fiat"></formatted-amount>
                 <p v-else class="p3 asset-details__fiat">n/a</p>
               </div>
               <div class="asset-details__item s-flex-column">
@@ -120,54 +120,71 @@
         </s-col>
       </s-row>
     </template>
-    <create-token-dialog :visible.sync="showCreateTokenDialog" />
+    <create-token-dialog v-model:visible="showCreateTokenDialog"></create-token-dialog>
   </div>
 </template>
 
-<script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed, getCurrentInstance, ref } from 'vue';
 
-import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useTranslation } from '@/composables/useTranslation';
 import { Theme } from '@/consts/theme';
 import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import router from '@/router';
-import { getter } from '@/store/decorators';
+import store from '@/store';
 
-@Component({
+defineOptions({
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     CreateTokenDialog: dashboardLazyComponent(DashboardComponents.CreateTokenDialog),
   },
-})
-export default class AssetOwner extends Mixins(InternalConnectMixin, mixins.FormattedAmountMixin) {
-  @getter.libraryTheme private libraryTheme!: Theme;
-  @getter.dashboard.ownedAssets assets!: OwnedAsset[];
+});
 
-  showCreateTokenDialog = false;
+const { isLoggedIn, connectSoraWallet } = useInternalConnect();
+const { t } = useTranslation();
 
-  get isNotLoggedInOrEmptyAssets(): boolean {
-    return !(this.isLoggedIn && this.assets.length);
-  }
+const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+const assets = computed(() => store.getters.dashboard.ownedAssets as OwnedAsset[]);
 
-  handleCreateAsset(): void {
-    this.showCreateTokenDialog = true;
-  }
+const showCreateTokenDialog = ref(false);
 
-  handleOpenAssetDetails(asset: OwnedAsset): void {
-    router.push({ name: DashboardPageNames.AssetOwnerDetails, params: { asset: asset.address } });
-  }
+const isNotLoggedInOrEmptyAssets = computed(() => !(isLoggedIn.value && assets.value.length));
 
-  get noAssetsImg(): string {
-    return `/asset-owner/${this.libraryTheme}-hero.png`;
-  }
+const noAssetsImg = computed(() => `/asset-owner/${libraryTheme.value}-hero.png`);
+const noAssetsImgDemo = computed(() => `/asset-owner/${libraryTheme.value}.png`);
 
-  get noAssetsImgDemo(): string {
-    return `/asset-owner/${this.libraryTheme}.png`;
-  }
+function handleCreateAsset(): void {
+  showCreateTokenDialog.value = true;
+}
+
+function handleOpenAssetDetails(asset: OwnedAsset): void {
+  router.push({ name: DashboardPageNames.AssetOwnerDetails, params: { asset: asset.address } });
+}
+
+defineExpose({
+  showCreateTokenDialog,
+  handleCreateAsset,
+  isNotLoggedInOrEmptyAssets,
+  assets,
+  isLoggedIn,
+  handleOpenAssetDetails,
+});
+
+const instance = getCurrentInstance();
+if (instance?.proxy) {
+  Object.defineProperties(instance.proxy, {
+    showCreateTokenDialog: { value: showCreateTokenDialog },
+    handleCreateAsset: { value: handleCreateAsset },
+    isNotLoggedInOrEmptyAssets: { value: isNotLoggedInOrEmptyAssets },
+    assets: { value: assets },
+    isLoggedIn: { value: isLoggedIn },
+    handleOpenAssetDetails: { value: handleOpenAssetDetails },
+  });
 }
 </script>
 

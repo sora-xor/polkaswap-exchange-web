@@ -57,7 +57,7 @@
                   :points-for-category="pointsForCategory"
                   :category-name="categoryName"
                   class="points__card-task"
-                />
+                ></task-card>
               </s-scrollbar>
             </s-tab>
             <s-tab :label="t('points.progress').toUpperCase()" name="progress">
@@ -72,11 +72,11 @@
                     :points-for-category="pointsForCategory"
                     :category-name="categoryName"
                     class="points__card"
-                  />
+                  ></point-card>
                   <first-tx-card
                     class="points__first-tx-card"
                     :date="pointsForCards?.firstTxAccount?.currentProgress ?? 0"
-                  />
+                  ></first-tx-card>
                 </div>
               </s-scrollbar>
             </s-tab>
@@ -87,174 +87,183 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { XOR, KUSD, VXOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, mixins, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { components, WALLET_CONSTS } from '@wallet';
+import { computed, onMounted, ref, watch } from 'vue';
 
-import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { Components } from '@/consts';
 import { pointSystemCategory } from '@/consts/pointSystem';
 import { fetchAccountMeta } from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import { lazyComponent } from '@/router';
-import { action, getter, state } from '@/store/decorators';
+import store from '@/store';
+import type { Nullable } from '@/types/common';
 import { AccountPointSystems, CalculateCategoryPointResult, CategoryPoints } from '@/types/pointSystem';
 import { convertFPNumberToNumber } from '@/utils';
 import { pointsService } from '@/utils/pointSystem';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
-@Component({
+type PolkadotJsAccount = {
+  address: string;
+};
+
+defineOptions({
   components: {
     FormattedAmount: components.FormattedAmount,
     TokenLogo: components.TokenLogo,
     PointCard: lazyComponent(Components.PointCard),
     TaskCard: lazyComponent(Components.TaskCard),
     FirstTxCard: lazyComponent(Components.FirstTxCard),
-    SettingsTabs: lazyComponent(Components.SettingsTabs),
   },
-})
-export default class PointSystemV2 extends Mixins(
-  mixins.LoadingMixin,
-  mixins.FormattedAmountMixin,
-  InternalConnectMixin
-) {
-  readonly LogoSize = WALLET_CONSTS.LogoSize;
+});
 
-  @state.referrals.referralRewards private referralRewards!: Nullable<ReferrerRewards>;
-  @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
-  @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
+const LogoSize = WALLET_CONSTS.LogoSize;
+const categoryPoints = ref(pointSystemCategory.tasks);
+const pointsForCards = ref<Record<string, CalculateCategoryPointResult> | null>(null);
 
-  @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
+const { t } = useTranslation();
+const { loading, withApi, withLoading } = useLoading();
+const { getFiatAmountByCodecString, getFiatBalance } = useFormattedAmount();
+const { connectSoraWallet, isLoggedIn } = useInternalConnect();
 
-  @action.referrals.getAccountReferralRewards private getAccountReferralRewards!: AsyncFnWithoutArgs;
-  @action.pool.subscribeOnAccountLiquidityList private subscribeOnList!: AsyncFnWithoutArgs;
-  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnUpdates!: AsyncFnWithoutArgs;
+const referralRewards = computed(() => store.state.referrals.referralRewards as Nullable<ReferrerRewards>);
+const accountAssets = computed(() => (store.state.wallet.account.accountAssets as Array<AccountAsset>) ?? []);
+const accountLiquidity = computed(() => (store.state.pool.accountLiquidity as Array<AccountLiquidity>) ?? []);
+const account = computed(() => store.getters.wallet.account.account as Nullable<PolkadotJsAccount>);
+const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<AccountAsset>;
 
-  readonly pointSystemCategory = pointSystemCategory;
+const totalPoints = computed(() => {
+  if (!pointsForCards.value) return 0;
+  return Object.values(pointsForCards.value).reduce((sum, category) => sum + (category.points || 0), 0);
+});
 
-  categoryPoints: string = this.pointSystemCategory.tasks;
+const parseFiat = (value: Nullable<string>): number => {
+  if (!value) return 0;
+  return parseFloat(value.replace(',', '.'));
+};
 
-  pointsForCards: { [key: string]: CalculateCategoryPointResult } | null = null;
-  @Watch('isLoggedIn')
-  private updateSubscriptions(value: boolean): void {
-    if (value) {
-      this.withLoading(this.initData);
+const getTotalLiquidityFiatValue = (): number =>
+  accountLiquidity.value.reduce((total, liquidity) => {
+    const firstAsset = getAsset(liquidity.firstAddress);
+    const secondAsset = getAsset(liquidity.secondAddress);
+
+    const firstValue =
+      firstAsset != null ? parseFiat(getFiatAmountByCodecString(liquidity.firstBalance, firstAsset)) : 0;
+    const secondValue =
+      secondAsset != null ? parseFiat(getFiatAmountByCodecString(liquidity.secondBalance, secondAsset)) : 0;
+
+    return total + firstValue + secondValue;
+  }, 0);
+
+const getCurrentFiatBalanceForToken = (assetSymbol: string): number => {
+  const asset = accountAssets.value.find((value) => value.symbol === assetSymbol);
+  return parseFiat(getFiatBalance(asset));
+};
+
+/**
+ * Builds the numeric snapshot used to calculate category points.
+ */
+const getPointsForCategories = (pointSystems: AccountPointSystems): CategoryPoints => {
+  const firstTxAccount = pointSystems.createdAt.timestamp ?? 0;
+
+  const liquidityProvision = getTotalLiquidityFiatValue();
+  const XORHoldings = getCurrentFiatBalanceForToken(XOR.symbol);
+  const VXORHoldings = getCurrentFiatBalanceForToken(VXOR.symbol);
+  const KUSDHoldings = getCurrentFiatBalanceForToken(KUSD.symbol);
+  const referralRewardsValue = convertFPNumberToNumber(referralRewards.value?.rewards);
+
+  const points = pointSystems.points.reduce(
+    (acc, era) => {
+      const eraCoefficient = pointsService.getEraCoefficient(era.version);
+
+      const depositVolumeBridges =
+        convertFPNumberToNumber(era.bridge.incomingUSD) + convertFPNumberToNumber(era.bridge.outgoingUSD);
+      const networkFeeSpent = convertFPNumberToNumber(era.fees.amountUSD);
+      const XORBurned = convertFPNumberToNumber(era.burned.amountUSD);
+      const kensetsuVolumeRepaid = convertFPNumberToNumber(era.kensetsu.amountUSD);
+      const orderbookVolume = convertFPNumberToNumber(era.orderBook.amountUSD);
+      const governanceLockedXOR = convertFPNumberToNumber(era.governance.amountUSD);
+      const nativeXorStaking = convertFPNumberToNumber(era.staking.amountUSD);
+
+      acc.depositVolumeBridges += depositVolumeBridges * eraCoefficient;
+      acc.networkFeeSpent += networkFeeSpent * eraCoefficient;
+      acc.XORBurned += XORBurned * eraCoefficient;
+      acc.kensetsuVolumeRepaid += kensetsuVolumeRepaid * eraCoefficient;
+      acc.orderbookVolume += orderbookVolume * eraCoefficient;
+      acc.governanceLockedXOR += governanceLockedXOR * eraCoefficient;
+      acc.nativeXorStaking += nativeXorStaking * eraCoefficient;
+
+      return acc;
+    },
+    {
+      depositVolumeBridges: 0,
+      networkFeeSpent: 0,
+      XORBurned: 0,
+      kensetsuVolumeRepaid: 0,
+      orderbookVolume: 0,
+      governanceLockedXOR: 0,
+      nativeXorStaking: 0,
     }
+  );
+
+  return {
+    firstTxAccount,
+    liquidityProvision,
+    XORHoldings,
+    VXORHoldings,
+    KUSDHoldings,
+    referralRewards: referralRewardsValue,
+    ...points,
+  };
+};
+
+/**
+ * Loads the point system snapshot for the active account.
+ */
+const initData = async (): Promise<void> => {
+  if (!isLoggedIn.value) {
+    pointsForCards.value = null;
+    return;
   }
 
-  get totalPoints(): number {
-    if (!this.pointsForCards) {
-      return 0;
-    }
-    return Object.values(this.pointsForCards).reduce((sum, category) => {
-      return sum + (category.points || 0);
-    }, 0);
+  await store.dispatch.referrals.getAccountReferralRewards();
+
+  const accountAddress = account.value?.address;
+  if (!accountAddress) {
+    pointsForCards.value = null;
+    return;
   }
 
-  getTotalLiquidityFiatValue(): number {
-    let totalFiatValue = 0;
-    this.accountLiquidity.forEach((liquidity) => {
-      const firstAsset = this.getAsset(liquidity.firstAddress) as AccountAsset;
-      const secondAsset = this.getAsset(liquidity.secondAddress) as AccountAsset;
-      const firstAssetFiatValue = parseFloat(
-        this.getFiatAmountByCodecString(liquidity.firstBalance, firstAsset)?.replace(',', '.') || '0'
-      );
-      const secondAssetFiatValue = parseFloat(
-        this.getFiatAmountByCodecString(liquidity.secondBalance, secondAsset)?.replace(',', '.') || '0'
-      );
-      totalFiatValue += firstAssetFiatValue + secondAssetFiatValue;
-    });
-    return totalFiatValue;
+  const accountMeta = await fetchAccountMeta(accountAddress);
+
+  pointsForCards.value = accountMeta
+    ? pointsService.calculateCategoryPoints(getPointsForCategories(accountMeta))
+    : null;
+};
+
+onMounted(() => {
+  void withApi(async () => {
+    await store.dispatch.pool.subscribeOnAccountLiquidityList();
+    await store.dispatch.pool.subscribeOnAccountLiquidityUpdates();
+    await initData();
+  });
+});
+
+watch(isLoggedIn, async (value) => {
+  if (!value) {
+    pointsForCards.value = null;
+    return;
   }
 
-  getCurrentFiatBalanceForToken(assetSymbol: string): number {
-    const fiatBalanceString =
-      this.getFiatBalance(this.accountAssets.find((asset) => asset.symbol === assetSymbol)) ?? '0';
-    const fiatBalanceFloat = parseFloat(fiatBalanceString.replace(',', '.'));
-    return fiatBalanceFloat;
-  }
-
-  private getPointsForCategories(pointSystems: AccountPointSystems): CategoryPoints {
-    const firstTxAccount = pointSystems.createdAt.timestamp ?? 0;
-
-    const liquidityProvision = this.getTotalLiquidityFiatValue();
-    const XORHoldings = this.getCurrentFiatBalanceForToken(XOR.symbol);
-    const VXORHoldings = this.getCurrentFiatBalanceForToken(VXOR.symbol);
-    const KUSDHoldings = this.getCurrentFiatBalanceForToken(KUSD.symbol);
-    const referralRewards = convertFPNumberToNumber(this.referralRewards?.rewards);
-
-    const points = pointSystems.points.reduce(
-      (acc, era) => {
-        const eraCoefficient = pointsService.getEraCoefficient(era.version);
-
-        const depositVolumeBridges =
-          convertFPNumberToNumber(era.bridge.incomingUSD) + convertFPNumberToNumber(era.bridge.outgoingUSD);
-        const networkFeeSpent = convertFPNumberToNumber(era.fees.amountUSD);
-        const XORBurned = convertFPNumberToNumber(era.burned.amountUSD);
-        const kensetsuVolumeRepaid = convertFPNumberToNumber(era.kensetsu.amountUSD);
-        const orderbookVolume = convertFPNumberToNumber(era.orderBook.amountUSD);
-        const governanceLockedXOR = convertFPNumberToNumber(era.governance.amountUSD);
-        const nativeXorStaking = convertFPNumberToNumber(era.staking.amountUSD);
-
-        acc.depositVolumeBridges += depositVolumeBridges * eraCoefficient;
-        acc.networkFeeSpent += networkFeeSpent * eraCoefficient;
-        acc.XORBurned += XORBurned * eraCoefficient;
-        acc.kensetsuVolumeRepaid += kensetsuVolumeRepaid * eraCoefficient;
-        acc.orderbookVolume += orderbookVolume * eraCoefficient;
-        acc.governanceLockedXOR += governanceLockedXOR * eraCoefficient;
-        acc.nativeXorStaking += nativeXorStaking * eraCoefficient;
-
-        return acc;
-      },
-      {
-        depositVolumeBridges: 0,
-        networkFeeSpent: 0,
-        XORBurned: 0,
-        kensetsuVolumeRepaid: 0,
-        orderbookVolume: 0,
-        governanceLockedXOR: 0,
-        nativeXorStaking: 0,
-      }
-    );
-
-    const pointsForCategories = {
-      firstTxAccount,
-      liquidityProvision,
-      XORHoldings,
-      VXORHoldings,
-      KUSDHoldings,
-      referralRewards,
-      ...points,
-    };
-    return pointsForCategories;
-  }
-
-  private async initData(): Promise<void> {
-    if (this.isLoggedIn) {
-      // Referral rewards
-      await this.getAccountReferralRewards();
-
-      const account = this.account.address;
-      const accountMeta = await fetchAccountMeta(account);
-
-      if (accountMeta) {
-        this.pointsForCards = pointsService.calculateCategoryPoints(this.getPointsForCategories(accountMeta));
-      }
-    }
-  }
-
-  created(): void {
-    this.withApi(async () => {
-      this.subscribeOnList();
-      this.subscribeOnUpdates();
-      await this.initData();
-    });
-  }
-}
+  await withLoading(initData);
+});
 </script>
 
 <style lang="scss">

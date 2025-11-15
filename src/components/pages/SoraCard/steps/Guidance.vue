@@ -6,7 +6,7 @@
         {{ t('card.guideline.paidAttemptDisclaimer', { count: total, cost: retryFee }) }}
       </p>
       <div class="tos__disclaimer-warning icon">
-        <s-icon name="notifications-alert-triangle-24" size="28px" />
+        <s-icon name="notifications-alert-triangle-24" size="28px"></s-icon>
       </div>
     </div>
     <div class="kyc-instructions">
@@ -16,7 +16,7 @@
           <div class="text">
             <h4 class="kyc-instructions__point">{{ t('card.guideline.photoTitle') }}</h4>
             <span class="kyc-instructions__point-desc">{{ t('card.guideline.photoDesc') }}</span>
-            <div class="line" />
+            <div class="line"></div>
           </div>
         </div>
         <div class="kyc-instructions__section">
@@ -24,7 +24,7 @@
           <div class="text">
             <h4 class="kyc-instructions__point">{{ t('card.guideline.selfieTitle') }}</h4>
             <span class="kyc-instructions__point-desc">{{ t('card.guideline.selfieDesc') }}</span>
-            <div class="line" />
+            <div class="line"></div>
           </div>
         </div>
         <div class="kyc-instructions__section">
@@ -33,7 +33,7 @@
             <h4 class="kyc-instructions__point">{{ t('card.guideline.proofAddressTitle') }}</h4>
             <span class="kyc-instructions__point-desc">{{ t('card.guideline.proofAddressDesc') }}</span>
             <p class="kyc-instructions__point-note">{{ t('card.guideline.proofAddressNote') }}</p>
-            <div class="line" />
+            <div class="line"></div>
           </div>
         </div>
         <div class="kyc-instructions__section">
@@ -41,7 +41,7 @@
           <div class="text">
             <h4 class="kyc-instructions__point">{{ t('card.guideline.personalTitle') }}</h4>
             <span class="kyc-instructions__point-desc">{{ t('card.guideline.personalDesc') }}</span>
-            <div class="line line--last" />
+            <div class="line line--last"></div>
           </div>
         </div>
       </div>
@@ -52,45 +52,58 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { computed, onMounted } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { action, state } from '@/store/decorators';
+import { useTranslation } from '@/composables/useTranslation';
+import store from '@/store';
 import { AttemptCounter, Fees } from '@/types/card';
 
-@Component({
-  components: {},
-})
-export default class Guidance extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.soraCard.fees fees!: Fees;
-  @state.soraCard.attemptCounter attemptCounter!: AttemptCounter;
-
-  @action.soraCard.getUserKycAttempt private getUserKycAttempt!: AsyncFnWithoutArgs;
-
-  get total(): string {
-    return this.attemptCounter.totalFreeAttempts || '4';
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+  }>(),
+  {
+    parentLoading: false,
   }
+);
 
-  get retryFee(): string {
-    const delimiter = FPNumber.DELIMITERS_CONFIG.decimal;
-    if (this.fees.retry) {
-      const [integer, decimal] = this.fees.retry.split('.');
-      return `${integer}${delimiter}${decimal}`;
-    }
-    return '';
-  }
+const emit = defineEmits<{
+  (event: 'confirm'): void;
+}>();
 
-  async handleConfirm(): Promise<void> {
-    this.$emit('confirm');
-  }
+const { t } = useTranslation();
 
-  mounted(): void {
-    this.getUserKycAttempt();
-  }
-}
+const fees = computed(() => store.state.soraCard.fees as Fees);
+const attemptCounter = computed(() => store.state.soraCard.attemptCounter as AttemptCounter);
+
+const total = computed(() => attemptCounter.value?.totalFreeAttempts || '4');
+
+const retryFee = computed(() => {
+  const fee = fees.value?.retry;
+  const delimiter = FPNumber.DELIMITERS_CONFIG.decimal;
+
+  if (!fee) return '';
+
+  const [integer, decimal = '00'] = fee.split('.');
+  return `${integer}${delimiter}${decimal}`;
+});
+
+const handleConfirm = () => {
+  emit('confirm');
+};
+
+onMounted(async () => {
+  await store.dispatch.soraCard.getUserKycAttempt();
+});
+
+defineExpose({
+  total,
+  retryFee,
+  parentLoading: props.parentLoading,
+  handleConfirm,
+});
 </script>
 
 <style lang="scss" scoped>

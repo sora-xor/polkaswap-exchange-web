@@ -7,54 +7,54 @@
           :key="bookTab"
           :label="t(`orderBook.${bookTab}`)"
           :name="bookTab"
-        />
+        ></s-tab>
       </s-tabs>
     </div>
     <div>
-      <buy-sell />
+      <buy-sell></buy-sell>
     </div>
   </base-widget>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { computed, ref, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { useOrderBook } from '@/composables/useOrderBook';
+import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
-import { mutation, state } from '@/store/decorators';
 
-@Component({
+defineOptions({
   components: {
     BaseWidget: lazyComponent(Components.BaseWidget),
     BuySell: lazyComponent(Components.BuySell),
   },
-})
-export default class SetLimitOrderWidget extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.orderBook.side side!: PriceVariant;
+});
 
-  @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
+const { t } = useTranslation();
+const { PriceVariant: orderBookPriceVariant, side, setSide } = useOrderBook();
 
-  readonly LimitOrderTabsItems = PriceVariant;
+const LimitOrderTabsItems = orderBookPriceVariant ?? PriceVariant;
 
-  currentTab = PriceVariant.Buy;
+const currentTab = ref(side.value ?? PriceVariant.Buy);
 
-  @Watch('side')
-  private handleSideChange(side: PriceVariant): void {
-    this.handleChangeTab(side);
-  }
+watch(
+  side,
+  (side) => {
+    if (side && side !== currentTab.value) {
+      currentTab.value = side;
+    }
+  },
+  { immediate: true }
+);
 
-  get loadingState(): boolean {
-    return this.parentLoading || this.loading;
-  }
+const loadingState = computed(() => false);
 
-  handleChangeTab(side: PriceVariant): void {
-    this.currentTab = side;
-    this.setSide(side);
-  }
-}
+const handleChangeTab = (side: PriceVariant) => {
+  currentTab.value = side;
+  setSide(side);
+};
 </script>
 
 <style lang="scss">

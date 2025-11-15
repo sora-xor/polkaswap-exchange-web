@@ -1,17 +1,21 @@
 <template>
   <span>
     <span> {{ t('orderBook.cantPlaceOrder') }}</span>
-    <s-icon name="info-16" class="book-inform-icon-btn" />
+    <s-icon name="info-16" class="book-inform-icon-btn"></s-icon>
   </span>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { useTranslation } from '@/composables/useTranslation';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+withDefaults(
+  defineProps<{
+    error?: string;
+  }>(),
+  {
+    error: '',
+  }
+);
 
-@Component
-export default class ErrorButton extends Mixins(TranslationMixin) {
-  @Prop({ default: '', type: String }) readonly error!: string;
-}
+const { t } = useTranslation();
 </script>

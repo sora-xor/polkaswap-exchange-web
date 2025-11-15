@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('selectRegisteredAsset.title')" custom-class="asset-select">
+  <dialog-base v-model:visible="isVisible" :title="t('selectRegisteredAsset.title')" custom-class="asset-select">
     <search-input
       ref="search"
       v-model="query"
@@ -7,7 +7,7 @@
       autofocus
       @clear="handleClearSearch"
       class="asset-search"
-    />
+    ></search-input>
 
     <div class="asset-lists-container">
       <h3 v-if="hasFilteredAssets" class="network-label">
@@ -20,68 +20,99 @@
         :is-sora-to-evm="isSoraToEvm"
         connected
         @click="selectAsset"
-      />
+      ></select-asset-list>
     </div>
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed, watch } from 'vue';
 
-import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useSearchInput } from '@/composables/useSearchInput';
+import { filterAssetsByQuery } from '@/composables/useAssetSearch';
+import { useSelectAssetTools } from '@/composables/useSelectAssetTools';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-import type { BridgeRegisteredAsset } from '@/store/assets/types';
-import { state, getter } from '@/store/decorators';
-import type { NetworkData } from '@/types/bridge';
+import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
 
+import type { BridgeRegisteredAsset } from '@/store/assets/types';
+import type { NetworkData } from '@/types/bridge';
+import type { Nullable } from '@/types/common';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+defineOptions({
   components: {
     DialogBase: components.DialogBase,
     SelectAssetList: lazyComponent(Components.SelectAssetList),
     SearchInput: components.SearchInput,
   },
-})
-export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
-  @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
+});
 
-  @getter.web3.selectedNetwork private selectedNetwork!: Nullable<NetworkData>;
-  @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeRegisteredAsset>;
-  @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
-  @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
-
-  get label(): string {
-    if (this.isSoraToEvm) return this.t('selectRegisteredAsset.search.networkLabelSora');
-
-    const network = this.selectedNetwork?.shortName ?? '';
-
-    return this.t('selectRegisteredAsset.search.networkLabelEthereum', { network });
+const props = withDefaults(
+  defineProps<{
+    asset?: AccountAsset;
+  }>(),
+  {
+    asset: ObjectInit as AccountAsset,
   }
+);
 
-  get assetsList(): Array<RegisteredAccountAsset> {
-    const assetsAddresses = Object.keys(this.registeredAssets);
-    const excludeAddress = this.asset?.address;
-    const list = this.getAssetsWithBalances(assetsAddresses, excludeAddress);
-    const orderedList = [...list].sort(this.sortByBalance);
+const emit = defineEmits<{
+  (e: 'select', asset?: RegisteredAccountAsset): void;
+}>();
 
-    return orderedList;
+const { t } = useTranslation();
+const { search, query, handleClearSearch, focusSearchInput } = useSearchInput();
+const { sortByBalance, getAssetsWithBalances } = useSelectAssetTools();
+const assetsStore = useAssetsStore();
+
+const isVisible = defineModel<boolean>('visible', { default: false });
+
+const selectedNetwork = computed(() => store.getters.web3.selectedNetwork as Nullable<NetworkData>);
+const registeredAssets = computed(() => assetsStore.registeredAssets as Record<string, BridgeRegisteredAsset>);
+const isSoraToEvm = computed(() => Boolean(store.state.bridge.isSoraToEvm));
+const shouldBalanceBeHidden = computed(() => Boolean(store.state.wallet.settings.shouldBalanceBeHidden));
+
+const assetsList = computed<RegisteredAccountAsset[]>(() => {
+  const assetsAddresses = Object.keys(registeredAssets.value ?? {});
+  const excludeAddress = props.asset?.address;
+  const list = getAssetsWithBalances(assetsAddresses, excludeAddress);
+  return [...list].sort(sortByBalance);
+});
+
+const filteredAssets = computed<RegisteredAccountAsset[]>(() =>
+  filterAssetsByQuery(assetsList.value, query.value, { useExternalAddress: !isSoraToEvm.value })
+);
+
+const hasFilteredAssets = computed(() => filteredAssets.value.length > 0);
+
+const label = computed(() => {
+  if (isSoraToEvm.value) {
+    return t('selectRegisteredAsset.search.networkLabelSora');
   }
+  const network = selectedNetwork.value?.shortName ?? '';
+  return t('selectRegisteredAsset.search.networkLabelEthereum', { network });
+});
 
-  get filteredAssets(): Array<RegisteredAccountAsset> {
-    return this.filterAssetsByQuery(
-      this.assetsList,
-      !this.isSoraToEvm
-    )(this.searchQuery) as Array<RegisteredAccountAsset>;
-  }
-
-  get hasFilteredAssets(): boolean {
-    return Array.isArray(this.filteredAssets) && this.filteredAssets.length > 0;
-  }
+function selectAsset(asset?: RegisteredAccountAsset): void {
+  emit('select', asset);
+  isVisible.value = false;
 }
+
+watch(
+  isVisible,
+  (visible) => {
+    if (visible) {
+      void focusSearchInput();
+    } else {
+      handleClearSearch();
+    }
+  },
+  { immediate: false }
+);
 </script>
 
 <style lang="scss">

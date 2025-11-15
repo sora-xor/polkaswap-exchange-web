@@ -1,13 +1,13 @@
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { mixins as walletMixins } from '@wallet';
+import { Options, mixins as vueMixins } from 'vue-property-decorator';
 
 import type { Node } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
 
 import TranslationMixin from './TranslationMixin';
 
-@Component
-export default class NodeErrorMixin extends Mixins(TranslationMixin, mixins.NotificationMixin) {
+@Options({})
+export default class NodeErrorMixin extends vueMixins(TranslationMixin, walletMixins.NotificationMixin) {
   protected handleNodeError(error, node: Node): void {
     const errorKey = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection';
     const errorPayload = error instanceof AppHandledError ? error.translationPayload : {};

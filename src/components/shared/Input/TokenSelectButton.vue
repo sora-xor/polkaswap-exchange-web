@@ -6,7 +6,6 @@
     :disabled="disabled"
     size="small"
     border-radius="mini"
-    v-on="$listeners"
   >
     <component
       v-if="hasToken"
@@ -16,76 +15,78 @@
       :second-token="tokens[1]"
       :size="tokenComponentSize"
       class="token-select-button__logo"
-    />
+    ></component>
     <span class="token-select-button__text">{{ buttonText }}</span>
-    <s-icon v-if="icon && !disabled" class="token-select-button__icon" :name="icon" size="18" />
-    <slot />
+    <s-icon v-if="icon && !disabled" class="token-select-button__icon" :name="icon" size="18"></s-icon>
   </s-button>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { components } from '@wallet';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 
-import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
+/**
+ * Token selector button that adapts its visuals based on the provided assets.
+ */
+defineOptions({
+  name: 'TokenSelectButton',
   components: {
     TokenLogo: components.TokenLogo,
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
   },
-})
-export default class TokenSelectButton extends Mixins(TranslationMixin) {
-  @Prop({ type: Object, default: ObjectInit }) readonly token!: AccountAsset | Asset;
-  @Prop({ type: Array, default: () => [] }) readonly tokens!: Array<AccountAsset | Asset>;
-  @Prop({ type: String, default: '' }) readonly icon!: string;
-  @Prop({ type: [Number, String], default: 0 }) readonly tabindex!: number | string;
-  @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
+});
 
-  get hasToken(): boolean {
-    return this.tokens.length !== 0 || !!this.token;
+const props = withDefaults(
+  defineProps<{
+    token?: AccountAsset | Asset | null;
+    tokens?: Array<AccountAsset | Asset>;
+    icon?: string;
+    tabindex?: number | string;
+    disabled?: boolean;
+  }>(),
+  {
+    token: ObjectInit,
+    tokens: () => [],
+    icon: '',
+    tabindex: 0,
+    disabled: false,
   }
+);
 
-  get computedClasses(): Array<string> {
-    const baseClass = 'token-select-button';
-    const classes = [baseClass];
-    if (this.hasToken) {
-      classes.push(`${baseClass}--token`);
-    }
-    return classes;
+const { t } = useTranslation();
+
+const hasToken = computed(() => props.tokens.length !== 0 || !!props.token);
+const computedClasses = computed(() => {
+  const baseClass = 'token-select-button';
+  return hasToken.value ? [baseClass, `${baseClass}--token`] : [baseClass];
+});
+const buttonTabindex = computed(() => (props.disabled ? -1 : props.tabindex));
+const tokenLogoComponent = computed(() => (props.tokens.length !== 0 ? 'pair-token-logo' : 'token-logo'));
+const tokenComponentSize = computed(() => (props.tokens.length !== 0 ? 'mini' : 'small'));
+const buttonType = computed(() => (hasToken.value ? 'tertiary' : 'secondary'));
+const buttonText = computed(() => {
+  if (!hasToken.value) return t('buttons.chooseToken');
+  if (props.tokens.length !== 0) {
+    return props.tokens.map((item) => item.symbol).join('-');
   }
+  return props.token?.symbol ?? '';
+});
 
-  get buttonTabindex(): number | string {
-    if (this.disabled) return -1;
-    return this.tabindex;
-  }
-
-  get tokenLogoComponent(): string {
-    return this.tokens.length !== 0 ? 'pair-token-logo' : 'token-logo';
-  }
-
-  get tokenComponentSize(): string {
-    return this.tokens.length !== 0 ? 'mini' : 'small';
-  }
-
-  get buttonType(): string {
-    return this.hasToken ? 'tertiary' : 'secondary';
-  }
-
-  get buttonText(): string {
-    if (!this.hasToken) return this.t('buttons.chooseToken');
-
-    if (this.tokens.length !== 0) {
-      return this.tokens.map((item) => item.symbol).join('-');
-    }
-
-    return this.token?.symbol ?? '';
-  }
-}
+defineExpose({
+  hasToken,
+  computedClasses,
+  buttonTabindex,
+  tokenLogoComponent,
+  tokenComponentSize,
+  buttonType,
+  buttonText,
+});
 </script>
 
 <style lang="scss">

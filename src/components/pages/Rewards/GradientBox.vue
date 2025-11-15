@@ -1,24 +1,39 @@
-<template>
-  <div :class="['gradient-box', symbolClass]">
-    <slot />
-  </div>
-</template>
-
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { computed, defineComponent, h } from 'vue';
 
+import type { PropType } from 'vue';
 import type { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
 
-@Component
-export default class RewardsGradientBox extends Vue {
-  @Prop({ default: '', type: String }) symbol!: KnownSymbols;
+/**
+ * Gradient container that adapts the background based on the reward token symbol.
+ */
+export default defineComponent({
+  name: 'RewardsGradientBox',
+  compatConfig: {
+    MODE: 3,
+  },
+  props: {
+    symbol: {
+      type: String as PropType<KnownSymbols | ''>,
+      default: '',
+    },
+  },
+  setup(props, { slots }) {
+    const symbolClass = computed(() => {
+      if (!props.symbol) return '';
+      return `gradient-box--${props.symbol.toLowerCase()}`;
+    });
 
-  get symbolClass(): string {
-    if (!this.symbol) return '';
-
-    return `gradient-box--${this.symbol.toLowerCase()}`;
-  }
-}
+    return () =>
+      h(
+        'div',
+        {
+          class: ['gradient-box', symbolClass.value],
+        },
+        slots.default?.()
+      );
+  },
+});
 </script>
 
 <style lang="scss" scoped>

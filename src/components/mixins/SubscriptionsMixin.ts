@@ -1,12 +1,12 @@
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { mixins as walletMixins } from '@wallet';
+import { Options, mixins as vueMixins } from 'vue-property-decorator';
 
 import { getter } from '@/store/decorators';
 
 import type { NavigationGuardNext, Route } from 'vue-router';
 
-@Component
-export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
+@Options({})
+export default class SubscriptionsMixin extends vueMixins(walletMixins.LoadingMixin) {
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 

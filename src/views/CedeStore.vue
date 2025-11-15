@@ -3,74 +3,77 @@
     <generic-page-header has-button-back @back="goTo(PageNames.DepositOptions)">
       <template #title="">{{ brandName }}</template>
     </generic-page-header>
-    <div id="cede-widget" />
+    <div id="cede-widget"></div>
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { renderSendWidget } from '@cedelabs/widgets-universal';
-import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { computed, nextTick, onMounted, toRef } from 'vue';
 
+import { useTranslation } from '@/composables/useTranslation';
 import { Theme } from '@/consts/theme';
+import store from '@/store';
 import { capitalize } from '@/utils';
 
 import { Components, PageNames } from '../consts';
 import { goTo, lazyComponent } from '../router';
-import { getter, state } from '../store/decorators';
 
-@Component({
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+  }>(),
+  {
+    parentLoading: false,
+  }
+);
+
+defineOptions({
+  name: 'CedeStore',
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
   },
-})
-export default class CedeStore extends Mixins(mixins.TranslationMixin, mixins.LoadingMixin) {
-  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @state.wallet.account.address accountAddress!: string;
+});
 
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.libraryTheme libraryTheme!: Theme;
+const parentLoading = toRef(props, 'parentLoading');
 
-  goTo = goTo;
-  PageNames = PageNames;
+const { TranslationConsts } = useTranslation();
+const brandName = computed(() => capitalize(TranslationConsts.CedeStore));
 
-  get brandName(): string {
-    return capitalize(this.TranslationConsts.CedeStore);
+const accountAddress = computed(() => store.state?.wallet?.account?.address ?? '');
+const libraryTheme = computed(() => (store.getters?.libraryTheme as Theme | undefined) ?? Theme.Light);
+
+const rootSelector = '#cede-widget';
+
+const loadCedeWidget = async () => {
+  try {
+    await nextTick();
+    renderSendWidget(rootSelector, {
+      config: {
+        tokenSymbol: 'XOR',
+        network: 'sora',
+        address: accountAddress.value,
+        lockNetwork: true,
+      },
+      theme: {
+        mode: libraryTheme.value,
+        logoTheme: libraryTheme.value,
+        fontFamily: 'Sora',
+        width: '420px',
+        accentColor: '#f8087b',
+        logoBorderColor: '#f8087b',
+        warningColor: '#eba332',
+        errorColor: '#f754a3',
+      },
+    });
+  } catch (error) {
+    console.error("[CEDE STORE] wasn't loaded.", error);
   }
+};
 
-  rootSelector = '#cede-widget';
-
-  private loadCedeWidget(): void {
-    try {
-      this.$nextTick(() => {
-        renderSendWidget(this.rootSelector, {
-          config: {
-            tokenSymbol: 'XOR',
-            network: 'sora',
-            address: this.accountAddress,
-            lockNetwork: true,
-          },
-          theme: {
-            mode: this.libraryTheme,
-            logoTheme: this.libraryTheme,
-            fontFamily: 'Sora',
-            width: '420px',
-            accentColor: '#f8087b',
-            logoBorderColor: '#f8087b',
-            warningColor: '#eba332',
-            errorColor: '#f754a3',
-          },
-        });
-      });
-    } catch (error) {
-      console.error("[CEDE STORE] wasn't loaded.", error);
-    }
-  }
-
-  mounted(): void {
-    this.loadCedeWidget();
-  }
-}
+onMounted(() => {
+  void loadCedeWidget();
+});
 </script>
 
 <style lang="scss">
