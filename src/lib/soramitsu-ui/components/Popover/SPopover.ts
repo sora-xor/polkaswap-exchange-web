@@ -1,8 +1,20 @@
 import type { Ref, PropType } from 'vue';
-import { cloneVNode, nextTick } from 'vue';
+import {
+  cloneVNode,
+  nextTick,
+  defineComponent,
+  computed,
+  ref,
+  reactive,
+  readonly,
+  watch,
+  shallowReactive,
+  provide,
+} from 'vue';
 import type { Placement, Instance, State } from '@popperjs/core';
 import { placements } from '@popperjs/core';
 import type { MaybeElementRef } from '@vueuse/core';
+import { debouncedWatch, eagerComputed, onClickOutside, unrefElement, useResizeObserver } from '@vueuse/core';
 import { not, or } from '@vueuse/math';
 import { usePopper } from '@soramitsu-ui/ui/composables/popper';
 import type { PopoverApi } from './api';
@@ -277,15 +289,27 @@ export default /* @__PURE__ */ defineComponent({
     provide(POPOVER_API_KEY, api);
 
     return () => {
+      const triggerSlot = slots.trigger;
+      if (!triggerSlot) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.debug('[SPopover] "trigger" slot is required; skipping render');
+        }
+        return null;
+      }
+
       let trigger;
       {
-        if (!slots.trigger) {
-          throw new Error('"trigger" slot is required');
+        const nodes = triggerSlot();
+        if (!nodes || nodes.length === 0) {
+          if (process.env.NODE_ENV !== 'production') {
+            console.debug('[SPopover] "trigger" slot rendered nothing; skipping render');
+          }
+          return null;
         }
-
-        const nodes = slots.trigger();
         if (nodes.length !== 1) {
-          throw new Error('"trigger" slot should render exact 1 element');
+          if (process.env.NODE_ENV !== 'production') {
+            console.debug('[SPopover] "trigger" slot should render exactly 1 element; using the first node');
+          }
         }
         [trigger] = nodes;
       }
@@ -296,12 +320,15 @@ export default /* @__PURE__ */ defineComponent({
         popper = null;
       } else {
         const nodes = slots.popper(api);
-        if (!nodes.length) {
+        if (!nodes?.length) {
           popper = null;
-        } else if (nodes.length === 1) {
-          [popper] = nodes;
         } else {
-          throw new Error('"popper" slot should return either nothing or the only 1 element');
+          [popper] = nodes;
+          if (nodes.length > 1) {
+            if (process.env.NODE_ENV !== 'production') {
+              console.debug('[SPopover] "popper" slot should return a single element; using the first node');
+            }
+          }
         }
       }
 

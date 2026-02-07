@@ -2,6 +2,8 @@ import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { createWalletMock } from '@tests/stubs/createWalletMock';
+
 let SelectAddress: typeof import('@/components/pages/Bridge/SelectAddress.vue').default;
 let walletModule: typeof import('@wallet');
 let originalValidate: (value: string) => boolean;
@@ -14,16 +16,16 @@ const addressBookInputStub = {
   template: '<div><slot /></div>',
 };
 
-const walletMock = createWalletMock({
-  components: {
-    AddressBookInput: addressBookInputStub,
-  },
-  api: {
-    validateAddress: (value: string) => value.startsWith('5'),
-  },
+vi.mock('@wallet', async () => {
+  return await createWalletMock({
+    components: {
+      AddressBookInput: addressBookInputStub,
+    },
+    api: {
+      validateAddress: (value: string) => value.startsWith('5'),
+    },
+  });
 });
-
-vi.mock('@wallet', () => walletMock);
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({

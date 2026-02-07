@@ -19,6 +19,8 @@ import { components, WALLET_TYPES } from '@wallet';
 import { computed } from 'vue';
 
 import store from '@/store';
+import { useBridgeStore } from '@/stores/bridge';
+import { useWeb3Store } from '@/stores/web3';
 
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 
@@ -29,13 +31,25 @@ defineOptions({
   },
 });
 
+const bridgeStore = useBridgeStore();
+const web3Store = useWeb3Store();
+
 const visibility = computed({
-  get: () => Boolean(store.state.web3.subAccountDialogVisibility),
+  get: () => web3Store.subAccountDialogVisibility,
   set: (flag: boolean) => store.commit.web3.setSubAccountDialogVisibility(flag),
 });
 
-const subBridgeConnector = computed<SubNetworksConnector>(() => store.state.bridge.subBridgeConnector);
-const subAccount = computed<WALLET_TYPES.PolkadotJsAccount>(() => store.getters.web3.subAccount);
+const subBridgeConnector = computed<SubNetworksConnector>(() => bridgeStore.connector);
+const subAccount = computed<WALLET_TYPES.PolkadotJsAccount>(() => {
+  return (
+    web3Store.subAccount ??
+    ({
+      address: '',
+      name: '',
+      source: '' as WALLET_TYPES.AppWallet,
+    } as WALLET_TYPES.PolkadotJsAccount)
+  );
+});
 
 const chainApi = computed(() => subBridgeConnector.value.accountApi);
 

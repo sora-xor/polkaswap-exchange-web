@@ -53,7 +53,7 @@ import { ScriptLoader } from './util/scriptLoader';
 import internalStore from './store'; // `internalStore` is required for local usage
 
 import type { WithKeyring } from '@sora-substrate/sdk';
-import type { App, Plugin, defineAsyncComponent, type AsyncComponentLoader } from 'vue';
+import { defineAsyncComponent, type App, type Plugin, type AsyncComponentLoader } from 'vue';
 
 type Store = typeof internalStore;
 type PluginOptions = {
@@ -106,6 +106,20 @@ const PinIcon = lazyComponent(() => import('./components/PinIcon.vue'));
 let store: Store;
 let piniaInstance: Pinia | undefined;
 
+const attachExternalStoreIfAvailable = (): void => {
+  const maybeStore = (globalThis as Record<string, unknown> | undefined)?.__PS_APP_STORE__ as
+    | { original?: Store }
+    | Store
+    | undefined;
+
+  if (!store && maybeStore) {
+    const candidate = (maybeStore as any).commit ? maybeStore : (maybeStore as any).original;
+    if (candidate) {
+      store = candidate as Store;
+    }
+  }
+};
+
 export const getWalletPinia = (): Pinia | undefined => piniaInstance;
 
 /**
@@ -144,13 +158,13 @@ const initAppWallets = (api: WithKeyring, isDesktop = false, appName?: string) =
   }
 
   addWcSubWalletLocally(api, (source) => {
-    store.dispatch.wallet.account.checkConnectedAccountSource(source);
-    store.dispatch.wallet.account.updateAvailableWallets();
+    store?.dispatch?.wallet?.account?.checkConnectedAccountSource?.(source);
+    store?.dispatch?.wallet?.account?.updateAvailableWallets?.();
   });
 
   initializeWallets(dAppName);
 
-  store.dispatch.wallet.account.updateAvailableWallets();
+  store?.dispatch?.wallet?.account?.updateAvailableWallets?.();
 };
 
 /**
@@ -159,6 +173,8 @@ const initAppWallets = (api: WithKeyring, isDesktop = false, appName?: string) =
  * internal store used by standalone mode, so we wait until one is available.
  */
 const waitForStore = async (withoutStore = false): Promise<void> => {
+  attachExternalStoreIfAvailable();
+
   if (!store) {
     if (withoutStore) {
       store = internalStore;
@@ -183,12 +199,14 @@ const waitForCore = async ({
   if (!walletCoreLoaded) {
     await Promise.all([waitForStore(withoutStore), api.initKeyring(true)]);
 
-    if (permissions) {
-      store.commit.wallet.settings.setPermissions(permissions);
+    const setPermissions = store?.commit?.wallet?.settings?.setPermissions ?? store?.commit?.settings?.setPermissions;
+
+    if (permissions && typeof setPermissions === 'function') {
+      setPermissions(permissions);
     }
 
-    store.dispatch.wallet.account.getWhitelist();
-    store.dispatch.wallet.account.getNftBlacklist();
+    store?.dispatch?.wallet?.account?.getWhitelist?.();
+    store?.dispatch?.wallet?.account?.getNftBlacklist?.();
 
     walletCoreLoaded = true;
   }
@@ -200,12 +218,29 @@ const waitForCore = async ({
  * written without defensive checks at every stage.
  */
 const waitForConnection = async (): Promise<void> => {
+  const isIpfsContext =
+    typeof window !== 'undefined' &&
+    typeof window.location?.pathname === 'string' &&
+    window.location.pathname.includes('/ipfs/');
+
+  if (isIpfsContext) {
+    console.info('[wallet] skipping chain connection in IPFS context');
+    return;
+  }
+
   if (connection.loading) {
     await delay(100);
     await waitForConnection();
   } else if (!connection.api) {
-    await connection.open();
-    console.info('Connected to blockchain', connection.endpoint);
+    const endpoint = (connection as Record<string, unknown>).endpoint;
+    if (!endpoint) return;
+
+    try {
+      await connection.open();
+      console.info('Connected to blockchain', connection.endpoint);
+    } catch (error) {
+      console.warn('[wallet] connection.open skipped', error);
+    }
   }
 };
 
@@ -214,9 +249,9 @@ const waitForConnection = async (): Promise<void> => {
  * depends on it. This includes route guards and wallet availability checks.
  */
 const checkActiveAccount = async (): Promise<void> => {
-  await api.restoreActiveAccount();
-  await store.dispatch.wallet.account.checkWalletAvailability();
-  await store.dispatch.wallet.router.checkCurrentRoute();
+  await api.restoreActiveAccount?.();
+  await store?.dispatch?.wallet?.account?.checkWalletAvailability?.();
+  await store?.dispatch?.wallet?.router?.checkCurrentRoute?.();
 };
 
 /**
@@ -226,19 +261,25 @@ const checkActiveAccount = async (): Promise<void> => {
 async function initWallet(options: WALLET_CONSTS.WalletInitOptions = {}): Promise<void> {
   await Promise.all([waitForCore(options), waitForConnection()]);
 
-  initAppWallets(api, store.state.wallet.account.isDesktop, options.appName);
+  const walletState = (store as any)?.state?.wallet?.account ?? {};
+
+  initAppWallets(api, Boolean(walletState.isDesktop), options.appName);
   await checkActiveAccount();
 
   // don't wait for finalization of internal & external services subscriptions
-  store.dispatch.wallet.subscriptions.activateInternalSubscriptions();
-  store.dispatch.wallet.settings.selectIndexer();
+  store?.dispatch?.wallet?.subscriptions?.activateInternalSubscriptions?.();
+  store?.dispatch?.wallet?.settings?.selectIndexer?.();
   // wait for finalization of network subscriptions
-  await Promise.all([api.initialize(false), store.dispatch.wallet.subscriptions.activateNetwokSubscriptions()]);
-  store.commit.wallet.settings.setIsMstAvailable(
-    store.state.wallet.account.source === WALLET_CONSTS.AppWallet.FearlessWallet
+  await Promise.all(
+    [
+      typeof api.initialize === 'function' ? api.initialize(false) : undefined,
+      store?.dispatch?.wallet?.subscriptions?.activateNetwokSubscriptions?.(),
+    ].filter(Boolean) as Array<Promise<unknown>>
   );
-  store.dispatch.wallet.account.initMultisigAddress();
-  store.commit.wallet.settings.setWalletLoaded(true);
+  const walletCommit = store?.commit?.wallet;
+  walletCommit?.settings?.setIsMstAvailable?.(walletState?.account?.source === WALLET_CONSTS.AppWallet.FearlessWallet);
+  store?.dispatch?.wallet?.account?.initMultisigAddress?.();
+  walletCommit?.settings?.setWalletLoaded?.(true);
 }
 
 /**

@@ -107,4 +107,22 @@ describe('store/bridge/getters', () => {
     expect(assetLookup).toHaveBeenCalledWith('0x2');
     expect(useAssetsStoreMock).not.toHaveBeenCalled();
   });
+
+  it('handles missing history gracefully in hasWaitingForActionTx', () => {
+    bridgeGetterContextMock.mockReturnValue({
+      state: { historyInternal: {} },
+      getters: { history: undefined },
+      rootState: {
+        assets: {},
+        wallet: { account: { assets: [] } },
+        web3: { networkType: null, networkSelected: null },
+      },
+      rootGetters: {
+        web3: { selectedNetwork: null },
+        assets: { assetDataByAddress: vi.fn() },
+      },
+    } as any);
+
+    expect(getters.hasWaitingForActionTx({} as any)).toBe(false);
+  });
 });

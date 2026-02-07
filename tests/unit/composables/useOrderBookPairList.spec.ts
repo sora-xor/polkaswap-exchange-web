@@ -13,25 +13,12 @@ const storeMocks = vi.hoisted(() => ({
   setCurrentOrderBook: vi.fn<(id: OrderBookId) => void>(),
 }));
 
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: {
-    state: {
-      orderBook: {
-        get orderBooks() {
-          return storeMocks.orderBooks;
-        },
-        get orderBooksStats() {
-          return storeMocks.orderBooksStats;
-        },
-      },
-    },
-    commit: {
-      orderBook: {
-        setCurrentOrderBook: (id: OrderBookId) => storeMocks.setCurrentOrderBook(id),
-      },
-    },
-  },
+vi.mock('@/stores/orderBook', () => ({
+  useOrderBookStore: () => ({
+    orderBooks: storeMocks.orderBooks,
+    orderBooksStats: storeMocks.orderBooksStats,
+    setCurrentOrderBook: (id: OrderBookId) => storeMocks.setCurrentOrderBook(id),
+  }),
 }));
 
 describe('useOrderBookPairList', () => {

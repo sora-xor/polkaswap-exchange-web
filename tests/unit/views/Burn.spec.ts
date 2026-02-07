@@ -78,7 +78,7 @@ vi.mock('@/store', () => {
       wallet: {
         settings: {
           blockNumber: 15_739_737,
-          soraNetwork: 'prod',
+          soraNetwork: 'Prod',
         },
         account: {
           fiatPriceObject: {},
@@ -124,7 +124,7 @@ describe('Burn.vue', () => {
   beforeEach(async () => {
     store = (await import('@/store')).default;
     store.state.wallet.settings.blockNumber = 15_739_737;
-    store.state.wallet.settings.soraNetwork = 'prod';
+    store.state.wallet.settings.soraNetwork = 'Prod';
     store.state.wallet.account.fiatPriceObject = {};
     loadingRef.value = false;
     fetchBurnDataMock.mockResolvedValue([]);

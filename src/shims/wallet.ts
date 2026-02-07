@@ -23,8 +23,8 @@ const defaultIndexerType = {
   SUBSQUID: 'subsquid',
 };
 
-export const WALLET_CONSTS = {
-  ...moduleWithFallback.WALLET_CONSTS,
+export let WALLET_CONSTS = {
+  ...(moduleWithFallback.WALLET_CONSTS ?? {}),
   IndexerType: {
     ...defaultIndexerType,
     ...(moduleWithFallback.WALLET_CONSTS?.IndexerType ?? {}),

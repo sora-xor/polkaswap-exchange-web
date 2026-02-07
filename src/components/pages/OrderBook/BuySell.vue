@@ -86,7 +86,7 @@
       :title="t('orderBook.amount')"
       :token="baseAsset"
       :value="baseValue"
-      :slider-value="sliderValue"
+      :slider-value="amountSliderValue"
       @slide="handleSlideInputChange"
       @input="handleInputFieldBase"
       @max="handleMaxValue"
@@ -208,12 +208,17 @@ import { Components, LimitOrderType, PageNames } from '@/consts';
 import { useConfirmDialog } from '@/composables/useConfirmDialog';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useOrderBook } from '@/composables/useOrderBook';
+import { useOrderBookUserOrders } from '@/composables/useOrderBookUserOrders';
+import { useOrderBookManagement } from '@/composables/useOrderBookManagement';
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useRouterStore } from '@/stores/router';
+import { useSettingsStore } from '@/stores/settings';
 import { useSwapStore } from '@/stores/swap';
+import { useAssetsStore } from '@/stores/assets';
 import type { OrderBookStats } from '@/types/orderBook';
 import {
   asZeroValue,
@@ -259,47 +264,38 @@ const {
 } = useSwapAmounts();
 
 const swapStore = useSwapStore();
+const routerStore = useRouterStore();
+const assetsStore = useAssetsStore();
 const { t } = useTranslation();
 const { confirmDialogVisible, confirmOrExecute } = useConfirmDialog();
 const { isLoggedIn, connectSoraWallet } = useInternalConnect();
 const { getFPNumber, getFPNumberFromCodec, formatCodecNumber, formatStringValue, getStringFromCodec } =
   useFormattedAmount();
 const { withNotifications } = useTransaction();
+const {
+  baseAsset,
+  quoteAsset,
+  asks,
+  bids,
+  dexId,
+  baseValue,
+  quoteValue,
+  limitOrderType,
+  side,
+  amountSliderValue,
+  baseAssetAddress,
+  currentOrderBook,
+  orderBookStats,
+} = useOrderBook();
+const { userLimitOrders } = useOrderBookUserOrders();
+const { updateBalanceSubscription, updateOrderBooksStats } = useOrderBookManagement();
 
 const vm = getCurrentInstance();
-const prevRoute = computed(() => store.state.router.prev as Nullable<PageNames>);
-const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject);
-const slippageTolerance = computed(() => store.state.settings.slippageTolerance);
-const xor = computed(() => store.getters.assets.xor as AccountAsset);
-const baseAsset = computed(() => store.getters.orderBook.baseAsset as AccountAsset);
-const quoteAsset = computed(() => store.getters.orderBook.quoteAsset as AccountAsset);
-const currentOrderBook = computed(() => store.getters.orderBook.currentOrderBook as Nullable<OrderBook>);
-const orderBookStats = computed(() => store.getters.orderBook.orderBookStats as Nullable<OrderBookStats>);
-const asks = computed(() => store.state.orderBook.asks as OrderBookPriceVolume[]);
-const bids = computed(() => store.state.orderBook.bids as OrderBookPriceVolume[]);
-const baseAssetAddress = computed(() => store.state.orderBook.baseAssetAddress);
-const sliderValue = computed({
-  get: () => store.state.orderBook.amountSliderValue,
-  set: (value: number) => store.commit.orderBook.setAmountSliderValue(value),
-});
-const userLimitOrders = computed(() => store.state.orderBook.userLimitOrders as Array<LimitOrder>);
-const dexId = computed(() => store.state.orderBook.dexId as DexId);
-const limitOrderType = computed({
-  get: () => store.state.orderBook.limitOrderType as LimitOrderType,
-  set: (value: LimitOrderType) => store.commit.orderBook.setLimitOrderType(value),
-});
-const baseValue = computed({
-  get: () => store.state.orderBook.baseValue,
-  set: (value: string) => store.commit.orderBook.setBaseValue(value),
-});
-const quoteValue = computed({
-  get: () => store.state.orderBook.quoteValue,
-  set: (value: string) => store.commit.orderBook.setQuoteValue(value),
-});
-const side = computed({
-  get: () => store.state.orderBook.side as PriceVariant,
-  set: (value: PriceVariant) => store.commit.orderBook.setSide(value),
-});
+const prevRoute = computed(() => routerStore.prev as Nullable<PageNames>);
+const settingsStore = useSettingsStore();
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
+const slippageTolerance = computed(() => settingsStore.slippageTolerance);
+const xor = computed(() => assetsStore.xor as AccountAsset);
 
 const visibleBookList = ref(false);
 const limitForSinglePriceReached = ref(false);
@@ -461,8 +457,6 @@ const priceExceedsSpread = computed(() => {
   const price = new FPNumber(quoteValue.value);
   return FPNumber.lte(price, bestBid);
 });
-const updateBalanceSubscription = (reset = false) => store.dispatch.orderBook.updateBalanceSubscription(reset);
-const updateOrderBooksStats = () => store.dispatch.orderBook.updateOrderBooksStats();
 const setLiquiditySource = (source: string) => swapStore.setLiquiditySource(source as LiquiditySourceTypes);
 const selectSwapDexId = (dex: DexId) => swapStore.selectDexId(dex);
 const resetTokenToAddress = () => setTokenToAddress('');
@@ -530,7 +524,7 @@ const getPercent = (value: string) => {
   return new FPNumber(value).div(maxPossibleAmount.value).mul(FPNumber.HUNDRED).toNumber();
 };
 const handleSlideInputChange = (percent: string) => {
-  sliderValue.value = Number(percent);
+  amountSliderValue.value = Number(percent);
 
   const value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(maxPossibleAmount.value).dp(amountPrecision.value);
 
@@ -599,7 +593,7 @@ const subscribeOnBookQuote = () => {
 const handleInputFieldBase = (preciseValue: string) => {
   const value = formatInputValue(preciseValue, amountPrecision.value);
   baseValue.value = value;
-  sliderValue.value = getPercent(value);
+  amountSliderValue.value = getPercent(value);
   void checkInputValidation();
 
   if (!value) {
@@ -819,7 +813,7 @@ const handleSideChange = (oldValue: string, newValue: string) => {
   handleTabClick();
 
   if (oldValue?.startsWith('0x') && oldValue !== newValue) {
-    sliderValue.value = 0;
+    amountSliderValue.value = 0;
   } else if (['Buy', 'Sell'].includes(oldValue) && oldValue !== newValue) {
     const orderBook = currentOrderBook.value;
     if (!orderBook) return;
@@ -830,7 +824,7 @@ const handleSideChange = (oldValue: string, newValue: string) => {
 
     if (hasLessBalance) {
       handleInputFieldBase('');
-      sliderValue.value = 0;
+      amountSliderValue.value = 0;
     }
   }
 };
@@ -892,7 +886,7 @@ onBeforeUnmount(() => {
   setLiquiditySource(LiquiditySourceTypes.Default);
   selectSwapDexId(DexId.XOR);
   side.value = PriceVariant.Buy;
-  sliderValue.value = 0;
+  amountSliderValue.value = 0;
   limitOrderType.value = LimitOrderType.limit;
 });
 const buttonDisabled = computed(() => {

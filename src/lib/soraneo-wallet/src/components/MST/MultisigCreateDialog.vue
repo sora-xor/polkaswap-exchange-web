@@ -51,7 +51,7 @@ import { useDialogVisibility } from '@/composables/useDialog';
 import { useNotification } from '@/composables/useNotification';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
-import store from '@/store';
+import { getLegacyStore } from '@/utils/legacy-store';
 import type { Route } from '@/store/router/types';
 import type { MSTData } from '@/types/mst';
 
@@ -87,6 +87,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
+const store = computed(() => getLegacyStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any));
 const { showAppNotification } = useNotification();
 
 const { isVisible, closeDialog } = useDialogVisibility(toRef(props, 'visible'), {
@@ -95,13 +96,13 @@ const { isVisible, closeDialog } = useDialogVisibility(toRef(props, 'visible'), 
 });
 
 const navigate = (route: Route) => {
-  store.original.commit('router/navigate', route);
+  store.value.original.commit('router/navigate', route);
 };
-const setIsMstAddressExist = store.commit.wallet.account.setIsMstAddressExist;
-const setIsMST = store.commit.wallet.account.setIsMST;
-const syncWithStorage = store.commit.wallet.account.syncWithStorage;
-const afterLogin = store.dispatch.wallet.account.afterLogin;
-const trackPendingMstTxs = store.dispatch.wallet.transactions.trackPendingMstTxs;
+const setIsMstAddressExist = store.value.commit.wallet.account.setIsMstAddressExist;
+const setIsMST = store.value.commit.wallet.account.setIsMST;
+const syncWithStorage = store.value.commit.wallet.account.syncWithStorage;
+const afterLogin = store.value.dispatch.wallet.account.afterLogin;
+const trackPendingMstTxs = store.value.dispatch.wallet.transactions.trackPendingMstTxs;
 
 const cardMessages = computed(() => [t('mst.cardMessageFirst'), t('mst.cardMessageSecond')]);
 

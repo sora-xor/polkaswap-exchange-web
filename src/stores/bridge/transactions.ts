@@ -74,6 +74,9 @@ export const useBridgeTransactionsStore = defineStore('bridgeTransactions', {
         leaveLegacySync();
       }
     },
+    setNotificationData(tx?: Nullable<IBridgeTransaction>): void {
+      this.notificationData = tx ?? null;
+    },
     syncSignDialogVisibilityFromLegacy(visible: boolean): void {
       enterLegacySync();
       try {

@@ -20,7 +20,7 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
-import store from '@/store';
+import { useOrderBookUserOrders } from '@/composables/useOrderBookUserOrders';
 import { delay, waitUntil } from '@/utils';
 
 import OrderTable from './OrderTable.vue';
@@ -47,11 +47,14 @@ const { loading, withLoading } = useLoading({ parentLoading: () => props.parentL
 
 const orderTable = ref<InstanceType<typeof OrderTable>>();
 
-const userLimitOrders = computed<LimitOrder[]>(() => store.state.orderBook.userLimitOrders as LimitOrder[]);
-const currentOrderBook = computed<Nullable<OrderBook>>(
-  () => (store.getters.orderBook?.currentOrderBook as Nullable<OrderBook>) ?? null
-);
-const ordersToBeCancelled = computed<LimitOrder[]>(() => store.state.orderBook.ordersToBeCancelled as LimitOrder[]);
+const {
+  userLimitOrders,
+  currentOrderBook,
+  ordersToBeCancelled,
+  subscribeOnLimitOrders,
+  resetPagedUserLimitOrdersSubscription,
+  setOrdersToBeCancelled,
+} = useOrderBookUserOrders();
 
 const loadingState = computed(() => Boolean(props.parentLoading) || loading.value);
 const isSelectionAllowed = computed(
@@ -66,10 +69,6 @@ const needToUpdateSelection = ref(false);
 const syncTableItemsRefreshing = ref(false);
 
 const ordersToBeCancelledIds = computed(() => ordersToBeCancelled.value.map(({ id }) => id));
-
-const subscribeOnLimitOrders = async (ids: number[]) => await store.dispatch.orderBook?.subscribeOnLimitOrders?.(ids);
-const resetLimitOrdersSubscription = () => store.commit.orderBook?.resetPagedUserLimitOrdersSubscription?.();
-const setOrdersToBeCancelled = (orders: LimitOrder[]) => store.commit.orderBook?.setOrdersToBeCancelled?.(orders);
 
 const restoreSelectedData = () => {
   const pageItems = tableItems.value.filter(({ id }) => ordersToBeCancelledIds.value.includes(id));
@@ -86,7 +85,7 @@ const handlePagination = async (page: number, items?: LimitOrder[]) => {
     const list = items ?? tableItems.value;
     currentPage.value = page;
 
-    resetLimitOrdersSubscription();
+    resetPagedUserLimitOrdersSubscription();
     if (list.length) {
       await subscribeOnLimitOrders(list.map(({ id }) => id));
     }
@@ -156,7 +155,7 @@ onBeforeUnmount(() => {
   if (isSelectionAllowed.value) {
     setOrdersToBeCancelled([]);
   }
-  resetLimitOrdersSubscription();
+  resetPagedUserLimitOrdersSubscription();
 });
 
 defineExpose({

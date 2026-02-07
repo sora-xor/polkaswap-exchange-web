@@ -1,7 +1,7 @@
 import { timer } from 'rxjs';
 
 import notificationService from '@/services/notification';
-import store from '@/store';
+import { requireLegacyStore } from '@/utils/legacy-store';
 import { settingsStorage } from '@/utils/storage';
 
 import { API_ENDPOINT } from '@wallet/src/consts/currencies';
@@ -11,6 +11,11 @@ import type { FiatExchangeRateObject } from '@wallet/src/types/currency';
 const INTERVAL = 15; // minutes between refreshes
 const ONE_MINUTE = 60_000;
 const exchangeRateUpdateInterval = timer(0, ONE_MINUTE * 0.25); // polling interval (15s)
+
+const getLegacyWalletSettings = () => {
+  const store = requireLegacyStore() as any;
+  return store?.commit?.wallet?.settings;
+};
 
 export class CurrencyExchangeRateService {
   public static readonly apiEndpoint = API_ENDPOINT;
@@ -26,7 +31,7 @@ export class CurrencyExchangeRateService {
       }
     }
 
-    store.commit.wallet.settings.updateFiatExchangeRates({ timestamp: Date.now() });
+    getLegacyWalletSettings()?.updateFiatExchangeRates({ timestamp: Date.now() });
 
     try {
       const exchangeRatesApi = await fetch(CurrencyExchangeRateService.apiEndpoint, { cache: 'no-store' });
@@ -72,8 +77,9 @@ export class CurrencyExchangeRateService {
       severity: 'error',
       timeout: 4500,
     });
-    store.commit.wallet.settings.updateFiatExchangeRates();
-    store.commit.wallet.settings.setFiatCurrency();
+    const walletSettings = getLegacyWalletSettings();
+    walletSettings?.updateFiatExchangeRates();
+    walletSettings?.setFiatCurrency();
   }
 }
 

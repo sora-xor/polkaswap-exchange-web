@@ -1,7 +1,6 @@
 import { Operation } from '@sora-substrate/sdk';
-import { beforeTransactionSign, WALLET_CONSTS } from '@wallet';
+import { beforeTransactionSign } from '@wallet';
 
-import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
 import { useWalletStore } from '@/stores/wallet';
 import { Bridge } from '@/utils/bridge/common/classes';
@@ -10,7 +9,9 @@ import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
 import { EthBridgeOutgoingReducer, EthBridgeIncomingReducer } from '@/utils/bridge/eth/classes/reducers';
 import type { EthBridgeReducer } from '@/utils/bridge/eth/classes/reducers';
+import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 import { getTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
+import { requireLegacyStore } from '@/utils/legacy-store';
 
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 
@@ -22,9 +23,8 @@ interface EthBridgeConstructorOptions extends IBridgeConstructorOptions<EthHisto
 
 type EthBridge = Bridge<EthHistory, EthBridgeReducer, EthBridgeConstructorOptions>;
 
-const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
-
 const resolveWalletStore = () => useWalletStore();
+const resolveLegacyStore = () => requireLegacyStore() as any;
 
 const ethBridge: EthBridge = new Bridge({
   reducers: {
@@ -48,17 +48,18 @@ const ethBridge: EthBridge = new Bridge({
   getTransaction,
   updateTransaction,
   // ui integration
-  showNotification: (tx: EthHistory) => store.commit.bridge.setNotificationData(tx as any),
-  addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
-  removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
-  updateHistory: () => store.dispatch.bridge.updateInternalHistory(),
-  getActiveTransaction: () => store.getters.bridge.historyItem as EthHistory,
+  showNotification: (tx: EthHistory) => resolveLegacyStore().commit?.bridge?.setNotificationData?.(tx as any),
+  addTransactionToProgress: (id: string) => resolveLegacyStore().commit?.bridge?.addTxIdInProgress?.(id),
+  removeTransactionFromProgress: (id: string) => resolveLegacyStore().commit?.bridge?.removeTxIdFromProgress?.(id),
+  updateHistory: () => resolveLegacyStore().dispatch?.bridge?.updateInternalHistory?.(),
+  getActiveTransaction: () => resolveLegacyStore().getters?.bridge?.historyItem as EthHistory,
   // transaction signing
-  beforeTransactionSign: (...args: any[]) => beforeTransactionSign(store.original, ethBridgeApi, ...args),
+  beforeTransactionSign: (...args: any[]) =>
+    beforeTransactionSign(resolveLegacyStore().original, ethBridgeApi, ...args),
   // custom
-  getBridgeHistoryInstance: () => store.dispatch.bridge.getEthBridgeHistoryInstance(),
-  signExternalOutgoing: (id: string) => store.dispatch.bridge.signEthBridgeOutgoingEvm(id),
-  signExternalIncoming: (id: string) => store.dispatch.bridge.signEthBridgeIncomingEvm(id),
+  getBridgeHistoryInstance: () => resolveLegacyStore().dispatch?.bridge?.getEthBridgeHistoryInstance?.(),
+  signExternalOutgoing: (id: string) => resolveLegacyStore().dispatch?.bridge?.signEthBridgeOutgoingEvm?.(id),
+  signExternalIncoming: (id: string) => resolveLegacyStore().dispatch?.bridge?.signEthBridgeIncomingEvm?.(id),
 });
 
 export default ethBridge;

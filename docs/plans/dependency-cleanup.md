@@ -26,18 +26,19 @@ This document flags the remaining Vue 2 era dependencies that must be removed be
 **Current usage**
 
 - Frontend components that still ship Options API/class mixins (e.g., `src/views/Explore/*`, `src/views/StakingContainer.vue`, `src/components/pages/SoraCard/**`) import `Component`/`Mixins` from `vue-property-decorator`.
-- The embedded wallet package (`src/lib/soraneo-wallet`) and the compat shim (`src/compat/vue-property-decorator.ts`) re-export the decorator for wallet widgets that have not yet been ported.
+- The embedded wallet package (`src/lib/soraneo-wallet`) continues to expose decorator-based components until the upstream Vue 3 builds land.
+- The compat shim and stub aliases have been removed; imports now target the upstream `vue-property-decorator` package directly.
 
 **Risks / blockers**
 
 - Some wallet components are sourced from upstream packages and still require class decorators.
-- The compat shim (`src/compat/vue-property-decorator.ts`) keeps the package in the bundle even when using `<script setup>`.
+- Class components keep the decorator dependency in the bundle until all callers migrate.
 
 **Actions**
 
 1. Continue the component conversion wave (see roadmap Component Refactors). Each converted component should drop `vue-property-decorator` imports in favor of `<script setup>` or `defineComponent`.
-2. Coordinate with the wallet team to deliver Vue 3 builds that no longer depend on decorators. Once they land, remove the `src/lib/soraneo-wallet` copies of the mixins and delete `src/compat/vue-property-decorator.ts`.
-3. When no files import `vue-property-decorator`, remove the dependency from `package.json` and update the ESLint/tsconfig excludes.
+2. Coordinate with the wallet team to deliver Vue 3 builds that no longer depend on decorators. Once they land, remove the `src/lib/soraneo-wallet` class mixins and rely on Composition API wrappers.
+3. When no files import `vue-property-decorator`, remove the dependency from `package.json`/`yarn.lock` and clean up any lingering decorator mocks in tests or setup files.
 
 ## Legacy compat shims / UI helpers
 

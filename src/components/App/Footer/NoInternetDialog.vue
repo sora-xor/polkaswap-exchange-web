@@ -26,7 +26,7 @@ import store from '@/store';
 
 const { t } = useTranslation();
 
-const isInternetConnectionEnabled = computed(() => store.getters.settings.isInternetConnectionEnabled as boolean);
+const isInternetConnectionEnabled = computed(() => Boolean(store.getters?.settings?.isInternetConnectionEnabled));
 
 function refreshPage(): void {
   window.location.reload();

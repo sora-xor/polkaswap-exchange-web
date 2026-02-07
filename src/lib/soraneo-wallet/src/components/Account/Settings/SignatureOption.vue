@@ -37,7 +37,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { PassphraseTimeout, PassphraseTimeoutDuration, DefaultPassphraseTimeout } from '@/consts';
-import store from '@/store';
+import { requireLegacyStore } from '@/utils/legacy-store';
 
 import AccountSettingsOption from './Option.vue';
 
@@ -53,6 +53,8 @@ const props = withDefaults(
     disabled: false,
   }
 );
+
+const store = requireLegacyStore();
 
 const { t, dayjsLocale } = useTranslation();
 

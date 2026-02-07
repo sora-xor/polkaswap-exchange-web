@@ -1,6 +1,6 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { getCurrentIndexer } from '@wallet';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -22,7 +22,10 @@ type OrderBookEntityMutation = {
   last_deals: string;
 };
 
-const { IndexerType } = WALLET_CONSTS;
+const IndexerType = {
+  SUBQUERY: 'subquery',
+  SUBSQUID: 'subsquid',
+} as const;
 
 const parseSide = (isBuy: boolean): PriceVariant => {
   return isBuy ? PriceVariant.Buy : PriceVariant.Sell;

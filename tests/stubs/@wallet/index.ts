@@ -554,6 +554,14 @@ export const initializeWallets = asyncNoop;
 export const addSoraWalletLocally = asyncNoop;
 export const addGDriveWalletLocally = asyncNoop;
 export const addWcSubWalletLocally = asyncNoop;
+export const loadWalletCore = async () => ({
+  api,
+  connection,
+  WALLET_CONSTS,
+  WALLET_TYPES,
+  storage,
+  settingsStorage,
+});
 export const initWallet = createMockFn(asyncNoop);
 export const waitForCore = createMockFn(asyncNoop);
 export const en = {};

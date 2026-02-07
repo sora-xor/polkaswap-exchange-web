@@ -1,11 +1,11 @@
 import { Theme } from '@/consts/theme';
-import store from '@/store';
-
+import { requireLegacyStore } from '@/utils/legacy-store';
 import { tmaSdkService } from './telegram';
-
 import { updatePipTheme } from '.';
 
 let prefersDarkScheme: MediaQueryList | null = null;
+
+const getLegacyStore = () => requireLegacyStore() as any;
 
 const handleThemeChange = (e: MediaQueryListEvent): void => {
   applyTheme(e.matches);
@@ -13,7 +13,8 @@ const handleThemeChange = (e: MediaQueryListEvent): void => {
 
 export const applyTheme = (isDark: boolean): void => {
   const nextTheme = isDark ? Theme.DARK : Theme.LIGHT;
-  store.commit.wallet.settings.setTheme(nextTheme);
+  const store = getLegacyStore();
+  store?.commit?.wallet?.settings?.setTheme?.(nextTheme);
   updatePipTheme();
   tmaSdkService.updateTheme();
 };

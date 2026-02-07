@@ -1,4 +1,5 @@
-import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { getCurrentIndexer } from '@wallet';
+import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -10,8 +11,6 @@ import type {
   ConnectionQueryResponseData,
   SnapshotTypes,
 } from '@wallet/lib/services/indexer/types';
-
-const { IndexerType } = WALLET_CONSTS;
 
 const preparePriceData = (item: OrderBookSnapshotEntity): OCLH => {
   const { open, close, low, high } = item.price;

@@ -1,5 +1,6 @@
 import { FPNumber } from '@sora-substrate/math';
-import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { getCurrentIndexer } from '@wallet';
+import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { SubqueryIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -9,8 +10,6 @@ import type {
   ConnectionQueryResponseData,
   SnapshotTypes,
 } from '@wallet/lib/services/indexer/types';
-
-const { IndexerType } = WALLET_CONSTS;
 
 export type PoolTvlData = {
   timestamp: number;

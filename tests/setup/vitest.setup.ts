@@ -133,6 +133,16 @@ Object.entries(eventDomTypes).forEach(([name, domType]) => {
 
 g.Notification = g.Notification ?? (function () {} as any);
 
+// Suppress noisy polkadot duplicate-version warnings that do not affect test results.
+const originalWarn = console.warn;
+console.warn = (...args: unknown[]) => {
+  const first = args[0];
+  if (typeof first === 'string' && first.includes('@polkadot/') && first.includes('has multiple versions')) {
+    return;
+  }
+  originalWarn(...args);
+};
+
 if (!g.navigator) {
   Object.defineProperty(g, 'navigator', { value: { userAgent: 'vitest' }, configurable: true });
 }

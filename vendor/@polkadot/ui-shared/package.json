@@ -18,7 +18,7 @@
     "./cjs/packageDetect.js"
   ],
   "type": "module",
-  "version": "3.16.1",
+  "version": "4.0.0",
   "main": "./cjs/index.js",
   "module": "./index.js",
   "types": "./index.d.ts",

@@ -7769,7 +7769,6 @@
     "usedDeprecatedRules": []
   },
   {
-    "filePath": "/Users/mtakemiya/dev/polkaswap-exchange-web/src/components/mixins/BridgeHistoryMixin.ts",
     "messages": [],
     "suppressedMessages": [],
     "errorCount": 0,

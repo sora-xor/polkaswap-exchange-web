@@ -19,7 +19,7 @@ Goal: audit locale keys touched by recent dialog and flow updates, regenerate la
 
 | Step                          | Command / Action                                                                           | Owner             | Status |
 | ----------------------------- | ------------------------------------------------------------------------------------------ | ----------------- | ------ |
-| Extract changed English keys  | `git diff origin/main -- src/lang/en.json src/lang/card/en.json` (or use `yarn lang:diff`) | Localization lead | ☐      |
+| Extract changed English keys  | `git diff origin/main -- src/lang/en.json src/lang/card/en.json` (or `yarn lang:diff --base origin/main`) | Localization lead | ☐      |
 | Regenerate locale files       | `yarn lang:fix` (ensures key parity)                                                       | Localization lead | ☐      |
 | Enforce special locale rules  | `yarn test:translation` <br>`tsx scripts/lang/enforce-cuneiform.ts --locales=akk`          | Localization lead | ☐      |
 | Manual QA of critical locales | Spot-check RU, DE, JP (if applicable) for layout issues in updated dialogs                 | QA + Localization | ☐      |

@@ -2,6 +2,7 @@ import { computed } from 'vue';
 
 import { useWalletConnect } from '@/composables/useWalletConnect';
 import store from '@/store';
+import { useWeb3Store } from '@/stores/web3';
 import type { AppEIPProvider } from '@/types/evm/provider';
 import type { NetworkData } from '@/types/bridge';
 import type { Nullable } from '@/types/common';
@@ -13,19 +14,20 @@ import type { WALLET_TYPES } from '@wallet';
  */
 export function useWeb3Connection() {
   const walletConnect = useWalletConnect();
+  const web3Store = useWeb3Store();
 
   const evmProviders = computed<AppEIPProvider[]>(() => store.getters.web3.appEvmProviders as AppEIPProvider[]);
-  const evmProvider = computed<Nullable<AppEIPProvider>>(() => store.state.web3.evmProvider ?? null);
+  const evmProvider = computed<Nullable<AppEIPProvider>>(() => web3Store.evmProvider as Nullable<AppEIPProvider>);
   const evmAddress = walletConnect.evmAddress;
   const evmProviderLoading = walletConnect.evmProviderLoading;
-  const selectedNetwork = computed<Nullable<NetworkData>>(
-    () => store.getters.web3.selectedNetwork as Nullable<NetworkData>
-  );
+  const selectedNetwork = computed<Nullable<NetworkData>>(() => web3Store.selectedNetworkData as Nullable<NetworkData>);
   const networkType = walletConnect.networkType;
   const networkSelected = walletConnect.networkSelected;
   const isValidNetwork = computed<boolean>(() => store.getters.web3.isValidNetwork as boolean);
 
-  const subAccount = computed<WALLET_TYPES.PolkadotJsAccount>(() => store.getters.web3.subAccount);
+  const subAccount = computed<WALLET_TYPES.PolkadotJsAccount>(
+    () => web3Store.subAccount as WALLET_TYPES.PolkadotJsAccount
+  );
   const isEvmConnected = computed(() => Boolean(evmAddress.value));
   const isSubConnected = computed(() => Boolean(subAccount.value?.address));
   const isConnected = computed(() => isEvmConnected.value || isSubConnected.value);

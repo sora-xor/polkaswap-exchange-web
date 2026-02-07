@@ -19,29 +19,31 @@ const settingsStorageStub = vi.hoisted(() => ({
   set: vi.fn(),
   remove: vi.fn(),
 }));
-const walletConstsStub = {
+const walletConstsStub = vi.hoisted(() => ({
   IndexerType: { SUBQUERY: 'subquery', SUBSQUID: 'subsquid' },
   SoraNetwork: { Test: 'test', Prod: 'prod' },
-};
-const walletTypesStub = {};
+}));
+const walletTypesStub = vi.hoisted(() => ({}));
 
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
+  const walletMock = await createWalletMock({
     api: walletApiStub,
     storage: storageStub,
     settingsStorage: settingsStorageStub,
     WALLET_CONSTS: walletConstsStub,
     WALLET_TYPES: walletTypesStub,
   });
+  return walletMock;
 });
-vi.mock('@wallet/core', () =>
-  createWalletMock({
+vi.mock('@wallet/core', async () => {
+  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
+  return createWalletMock({
     api: walletApiStub,
     WALLET_CONSTS: walletConstsStub,
     WALLET_TYPES: walletTypesStub,
-  })
-);
+  });
+});
 vi.mock('@/utils/walletCore', () => ({
   loadWalletCore: vi.fn(async () => ({
     api: walletApiStub,

@@ -1,5 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Theme } from '@/consts/theme';
 
@@ -110,6 +110,7 @@ vi.mock('@/composables/useTranslation', () => ({
 }));
 
 let CedeStoreView: typeof import('@/views/CedeStore.vue').default;
+const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
 const mountComponent = async () => {
   if (!CedeStoreView) {
@@ -161,4 +162,8 @@ describe('CedeStore view', () => {
       }),
     });
   });
+});
+
+afterAll(() => {
+  warnSpy.mockRestore();
 });

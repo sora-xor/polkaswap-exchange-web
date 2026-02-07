@@ -48,13 +48,21 @@ const shared = (() => {
   const updateExternalHistoryMock = vi.fn(async () => undefined);
   const showHistoryMock = vi.fn();
   const setHistoryPageMock = vi.fn();
+  const networkHistoryId = ref('network-1');
 
   const registeredAssets = reactive<Record<string, RegisteredAsset>>({});
   const assetsStore = reactive({
     registeredAssets,
     registeredAssetsFetching: false,
   });
-  const updateBridgeHistoryMock = vi.fn(async () => undefined);
+  const bridgeHistoryStore = reactive({ historyPage: 1, $id: 'bridgeHistoryStoreMock' });
+  const bridgeTransactionsStore = reactive({ $id: 'bridgeTransactionsStoreMock' });
+  const bridgeStoreMock = reactive({
+    updateBridgeHistory: vi.fn(),
+    get networkHistoryId() {
+      return networkHistoryId.value;
+    },
+  });
   const navigateToBridgeMock = vi.fn();
 
   const getNetworkIconMock = vi.fn((network: unknown) => `icon-${network ?? 'default'}`);
@@ -63,25 +71,6 @@ const shared = (() => {
   const isSuccessStateMock = vi.fn(() => false);
   const isWaitingForActionStateMock = vi.fn((item: any) => Boolean(item.waiting));
   const formatDatetimeMock = vi.fn(() => 'formatted-date');
-
-  const store = {
-    state: reactive({
-      assets: {
-        registeredAssets,
-      },
-      bridge: {
-        historyPage: 1,
-      },
-      web3: {
-        networkSelected: 'network-1',
-      },
-    }),
-    dispatch: {
-      bridge: {
-        updateBridgeHistory: updateBridgeHistoryMock,
-      },
-    },
-  };
 
   return {
     parentLoading,
@@ -93,7 +82,9 @@ const shared = (() => {
     setHistoryPageMock,
     registeredAssets,
     assetsStore,
-    updateBridgeHistoryMock,
+    bridgeHistoryStore,
+    bridgeStoreMock,
+    networkHistoryId,
     navigateToBridgeMock,
     getNetworkIconMock,
     isOutgoingTxMock,
@@ -101,7 +92,6 @@ const shared = (() => {
     isSuccessStateMock,
     isWaitingForActionStateMock,
     formatDatetimeMock,
-    store,
   };
 })();
 
@@ -147,11 +137,23 @@ beforeAll(async () => {
       formatDatetime: shared.formatDatetimeMock,
     }),
   }));
+  vi.doMock('@/stores/bridge/history', () => ({
+    useBridgeHistoryStore: () => shared.bridgeHistoryStore,
+  }));
+  vi.doMock('@/stores/bridge/transactions', () => ({
+    useBridgeTransactionsStore: () => ({ $id: 'bridgeTransactionsStoreMock' }),
+  }));
+  vi.doMock('@/stores/bridge/form', () => ({
+    useBridgeFormStore: () => ({ $id: 'bridgeFormStoreMock' }),
+  }));
+  vi.doMock('@/stores/bridge', () => ({
+    useBridgeStore: () => shared.bridgeStoreMock,
+  }));
   vi.doMock('@/stores/assets', () => ({
     useAssetsStore: () => shared.assetsStore,
   }));
   vi.doMock('@/store', () => ({
-    default: shared.store,
+    default: {},
   }));
 
   const walletModule = await import('@wallet');
@@ -239,14 +241,15 @@ const resetEnvironment = () => {
     decimals: 12,
   };
 
-  shared.updateBridgeHistoryMock.mockClear();
+  shared.bridgeStoreMock.updateBridgeHistory.mockClear();
   shared.updateExternalHistoryMock.mockClear();
   shared.withParentLoadingMock.mockClear();
   shared.navigateToBridgeMock.mockClear();
   shared.setHistoryPageMock.mockClear();
   shared.showHistoryMock.mockClear();
   shared.parentLoading.value = false;
-  shared.store.state.bridge.historyPage = 1;
+  shared.bridgeHistoryStore.historyPage = 1;
+  shared.networkHistoryId.value = 'network-1';
 };
 
 describe('BridgeTransactionsHistory.vue', () => {

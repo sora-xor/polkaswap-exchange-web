@@ -5,10 +5,12 @@ import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
 import type { OrderBookStats } from '@/types/orderBook';
 import { flushPromises, mount } from '@vue/test-utils';
+import { createPinia, setActivePinia } from 'pinia';
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { computed, defineComponent, h, reactive, ref } from 'vue';
 
 import { LimitOrderType } from '@/consts';
+import { setLegacyStoreOverride } from '@/utils/legacy-store';
 
 const storeRef = vi.hoisted(() => ({ value: null as any }));
 const storeProxy = vi.hoisted(
@@ -58,6 +60,44 @@ const swapStore = vi.hoisted(() => ({
 
 vi.mock('@/stores/swap', () => ({
   useSwapStore: () => swapStore,
+}));
+
+const routerStoreStub = vi.hoisted(() => ({
+  prev: null as string | null,
+  navigate: vi.fn(),
+}));
+
+vi.mock('@/stores/router', () => ({
+  useRouterStore: () => routerStoreStub,
+}));
+
+const assetsStoreStub = vi.hoisted(() => ({
+  xor: { symbol: 'XOR', balance: { transferable: '0' } } as AccountAsset,
+}));
+
+vi.mock('@/stores/assets', () => ({
+  useAssetsStore: () => assetsStoreStub,
+}));
+
+const settingsStoreStub = vi.hoisted(() => ({
+  networkFees: {
+    OrderBookPlaceLimitOrder: '1',
+  } as Record<string, string>,
+  slippageTolerance: '0.01',
+}));
+
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => settingsStoreStub,
+}));
+
+const walletStoreStub = vi.hoisted(() => ({
+  currencySymbol: '$',
+  exchangeRate: 1,
+  currency: null,
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => walletStoreStub,
 }));
 
 const swapInternals: Record<string, any> = {};
@@ -378,6 +418,8 @@ const createStoreMock = (overrides: StoreOverrides = {}) => {
     },
   };
 
+  setLegacyStoreOverride(store as any);
+
   return { store, orderBookState };
 };
 
@@ -460,6 +502,7 @@ const mountComponent = async (overrides: StoreOverrides = {}) => {
 };
 
 beforeEach(() => {
+  setActivePinia(createPinia());
   resetSwapState();
   resetInternalConnect();
   resetConfirmDialog();
@@ -473,6 +516,7 @@ afterEach(() => {
   walletRestore?.();
   walletRestore = null;
   storeRef.value = null;
+  setLegacyStoreOverride(null);
 });
 
 describe('BuySell.vue', () => {

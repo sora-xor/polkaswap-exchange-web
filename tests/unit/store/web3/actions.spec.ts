@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 // Mock soraneo wallet api to control getDenominator (avoid hoisting issues)
 vi.mock('@wallet', async () => {
   const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
-  const wallet = createWalletMock();
+  const wallet = await createWalletMock();
 
   return withWalletMock(wallet, {
     api: {

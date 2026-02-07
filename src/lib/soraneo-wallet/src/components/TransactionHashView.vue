@@ -50,7 +50,7 @@ import { computed } from 'vue';
 import { useCopyAddress } from '@/composables/useCopyAddress';
 import { useTranslation } from '@/composables/useTranslation';
 import { HashType, ExplorerType, SoraNetwork, type ExplorerLink } from '@/consts';
-import store from '@/store';
+import { requireLegacyStore } from '@/utils/legacy-store';
 import { formatAddress, formatAccountAddress, getExplorerLinks } from '@/util';
 
 const props = withDefaults(
@@ -68,6 +68,7 @@ const props = withDefaults(
 );
 
 const { t, TranslationConsts } = useTranslation();
+const store = requireLegacyStore();
 const { copyTooltip, handleCopyAddress } = useCopyAddress();
 
 const soraNetwork = computed<SoraNetwork>(() => store.state.wallet.settings.soraNetwork ?? SoraNetwork.Dev);

@@ -5,5 +5,5 @@ exports.packageInfo = {
   name: '@polkadot/ui-shared',
   path: typeof __dirname === 'string' ? __dirname : 'auto',
   type: 'cjs',
-  version: '3.16.1',
+  version: '4.0.0',
 };

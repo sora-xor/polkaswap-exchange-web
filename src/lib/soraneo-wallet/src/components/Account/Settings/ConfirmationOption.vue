@@ -13,7 +13,7 @@
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
-import store from '@/store';
+import { requireLegacyStore } from '@/utils/legacy-store';
 
 import AccountSettingsOption from './Option.vue';
 
@@ -27,6 +27,7 @@ const props = withDefaults(
 );
 
 const { t } = useTranslation();
+const store = requireLegacyStore();
 
 const model = computed({
   get: () => store.state.wallet.transactions.isConfirmTxDialogDisabled,

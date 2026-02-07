@@ -12,7 +12,9 @@ import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 const getters = defineGetters<AddLiquidityState>()({
   firstToken(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = addLiquidityGetterContext(args);
-    const token = rootGetters.assets.assetDataByAddress(state.firstTokenAddress);
+    const assetByAddress =
+      typeof rootGetters.assets?.assetDataByAddress === 'function' ? rootGetters.assets.assetDataByAddress : () => null;
+    const token = assetByAddress(state.firstTokenAddress);
     const balance = state.firstTokenBalance;
     if (balance) {
       return { ...token, balance } as RegisteredAccountAsset;
@@ -21,7 +23,9 @@ const getters = defineGetters<AddLiquidityState>()({
   },
   secondToken(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = addLiquidityGetterContext(args);
-    const token = rootGetters.assets.assetDataByAddress(state.secondTokenAddress);
+    const assetByAddress =
+      typeof rootGetters.assets?.assetDataByAddress === 'function' ? rootGetters.assets.assetDataByAddress : () => null;
+    const token = assetByAddress(state.secondTokenAddress);
     const balance = state.secondTokenBalance;
     if (balance) {
       return { ...token, balance } as RegisteredAccountAsset;

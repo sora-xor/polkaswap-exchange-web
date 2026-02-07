@@ -4,7 +4,6 @@ import dayjs from 'dayjs/esm';
 import { computed, nextTick, ref, watch } from 'vue';
 
 import { LimitOrderType, ZeroStringValue } from '@/consts';
-import store from '@/store';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import {
   createFillPriceHandler,
@@ -13,10 +12,12 @@ import {
   type LimitOrderForm,
   type OrderBookPriceVolumeAggregated,
 } from '@/composables/useOrderBook.utils';
+import { useOrderBookStore } from '@/stores/orderBook';
+import { useSettingsStore } from '@/stores/settings';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { OrderBookDealData } from '@/types/orderBook';
+import type { OrderBookDealData, OrderBookStats } from '@/types/orderBook';
 import type { AsyncFnWithoutArgs, Nullable } from '@/types/common';
 
 const ROW_HEIGHT = 24;
@@ -34,69 +35,81 @@ const toBookPrecision = (value: Nullable<number>): number => {
   return value?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length ?? 0;
 };
 
-const resolveNodeConnection = (): boolean => {
-  const connection = (store.getters?.settings as Record<string, unknown> | undefined)?.nodeIsConnected;
-
-  if (typeof connection === 'boolean') return connection;
-  if (connection && typeof (connection as { value?: unknown }).value === 'boolean') {
-    return Boolean((connection as { value?: boolean }).value);
-  }
-
-  return true;
-};
-
 export function useOrderBook(options: { maxRows?: number } = {}) {
   const maxRows = options.maxRows ?? 11;
   const formattedAmount = useFormattedAmount();
+  const orderBookStore = useOrderBookStore();
+  const settingsStore = useSettingsStore();
 
-  const orderBookState = store.state.orderBook;
+  const dexId = computed(() => orderBookStore.dexId);
+  const baseValue = computed({
+    get: () => orderBookStore.baseValue ?? '',
+    set: (value: string) => {
+      orderBookStore.setBaseValue(value);
+    },
+  });
+  const quoteValue = computed({
+    get: () => orderBookStore.quoteValue ?? '',
+    set: (value: string) => {
+      orderBookStore.setQuoteValue(value);
+    },
+  });
+  const amountSliderValue = computed<number>({
+    get: () => orderBookStore.amountSliderValue ?? 0,
+    set: (value: number) => {
+      orderBookStore.setAmountSliderValue(value);
+    },
+  });
 
-  const limitOrderType = computed<LimitOrderType>(() => orderBookState.limitOrderType as LimitOrderType);
+  const limitOrderType = computed<LimitOrderType>({
+    get: () => orderBookStore.limitOrderType ?? LimitOrderType.limit,
+    set: (value: LimitOrderType) => {
+      orderBookStore.setLimitOrderType(value);
+    },
+  });
   const asks = computed<OrderBookPriceVolumeAggregated[]>(
-    () => (orderBookState.asks as OrderBookPriceVolumeAggregated[]) ?? []
+    () => (orderBookStore.asks as OrderBookPriceVolumeAggregated[]) ?? []
   );
   const bids = computed<OrderBookPriceVolumeAggregated[]>(
-    () => (orderBookState.bids as OrderBookPriceVolumeAggregated[]) ?? []
+    () => (orderBookStore.bids as OrderBookPriceVolumeAggregated[]) ?? []
   );
-
-  const orderBookGetters = store.getters?.orderBook as Record<string, unknown>;
-  const walletGetter = store.getters?.wallet as Record<string, any> | undefined;
 
   const currentOrderBook = computed<Nullable<OrderBook>>(
-    () => (orderBookGetters?.currentOrderBook as Nullable<OrderBook>) ?? null
+    () => (orderBookStore.currentOrderBook as Nullable<OrderBook>) ?? null
   );
   const baseAsset = computed<Nullable<AccountAsset>>(
-    () => (orderBookGetters?.baseAsset as Nullable<AccountAsset>) ?? null
+    () => (orderBookStore.baseAsset as Nullable<AccountAsset>) ?? null
   );
   const quoteAsset = computed<Nullable<AccountAsset>>(
-    () => (orderBookGetters?.quoteAsset as Nullable<AccountAsset>) ?? null
+    () => (orderBookStore.quoteAsset as Nullable<AccountAsset>) ?? null
   );
   const orderBookLastDeal = computed<Nullable<OrderBookDealData>>(
-    () => (orderBookGetters?.orderBookLastDeal as Nullable<OrderBookDealData>) ?? null
+    () => (orderBookStore.lastDeal as Nullable<OrderBookDealData>) ?? null
   );
-  const orderBookId = computed(() => (orderBookGetters?.orderBookId as string) ?? '');
-  const deals = computed<OrderBookDealData[]>(() => (store.state.orderBook?.deals as OrderBookDealData[]) ?? []);
-  const side = computed<PriceVariant>(() => store.state.orderBook?.side ?? PriceVariant.Buy);
-
-  const setSide = (next: PriceVariant) => {
-    store.commit.orderBook?.setSide?.(next);
+  const orderBookId = computed(() => orderBookStore.orderBookId ?? '');
+  const orderBookStats = computed<Nullable<OrderBookStats>>(
+    () => (orderBookStore.orderBookStats as Nullable<OrderBookStats>) ?? null
+  );
+  const deals = computed<OrderBookDealData[]>(() => (orderBookStore.deals as OrderBookDealData[]) ?? []);
+  const side = computed<PriceVariant>({
+    get: () => orderBookStore.side ?? PriceVariant.Buy,
+    set: (value: PriceVariant) => {
+      orderBookStore.setSide(value);
+    },
+  });
+  const setSideValue = (next: PriceVariant) => {
+    orderBookStore.setSide(next);
   };
+  const baseAssetAddress = computed(() => orderBookStore.baseAssetAddress ?? null);
 
   const exchangeRate = computed<number>(() => {
-    const fromGetter = walletGetter?.settings?.exchangeRate;
-    if (typeof fromGetter === 'number') return fromGetter;
-    const fromState = store.state.wallet?.settings?.exchangeRate;
-    return typeof fromState === 'number' ? fromState : 1;
+    const value = settingsStore.exchangeRate;
+    return typeof value === 'number' && value > 0 ? value : 1;
   });
 
-  const currencySymbol = computed<string>(() => {
-    const fromGetter = walletGetter?.settings?.currencySymbol;
-    if (typeof fromGetter === 'string') return fromGetter;
-    const fromState = store.state.wallet?.settings?.currencySymbol;
-    return typeof fromState === 'string' ? fromState : '';
-  });
+  const currencySymbol = computed<string>(() => settingsStore.currencySymbol ?? '');
 
-  const nodeIsConnected = ref(resolveNodeConnection());
+  const nodeIsConnected = computed(() => settingsStore.nodeIsConnected);
 
   const averagePrice = computed<Nullable<FPNumber>>(() => {
     const firstAsk = asks.value?.[0]?.[0];
@@ -221,8 +234,8 @@ export function useOrderBook(options: { maxRows?: number } = {}) {
 
   const fillPriceHandler = computed(() =>
     createFillPriceHandler(limitOrderType.value, {
-      setSide: (side) => store.commit.orderBook?.setSide?.(side),
-      setQuoteValue: (value) => store.commit.orderBook?.setQuoteValue?.(value),
+      setSide: (value) => orderBookStore.setSide(value),
+      setQuoteValue: (value) => orderBookStore.setQuoteValue(value),
     })
   );
 
@@ -240,13 +253,13 @@ export function useOrderBook(options: { maxRows?: number } = {}) {
       withLoading,
       withParentLoading,
       subscribe: async () => {
-        await store.dispatch.orderBook?.subscribeToBidsAndAsks?.();
+        await orderBookStore.subscribeToBidsAndAsks();
       },
     });
   };
 
   const unsubscribeFromOrderBook = async (): Promise<void> => {
-    await store.dispatch.orderBook?.unsubscribeFromBidsAndAsks?.();
+    await orderBookStore.unsubscribeFromBidsAndAsks();
   };
 
   const watchOrderBookSubscription = (loaders: SubscriptionLoaders = {}) => {
@@ -263,14 +276,6 @@ export function useOrderBook(options: { maxRows?: number } = {}) {
       { immediate: true }
     );
   };
-
-  watch(
-    () => (store.getters?.settings as Record<string, unknown> | undefined)?.nodeIsConnected,
-    async () => {
-      nodeIsConnected.value = resolveNodeConnection();
-      await nextTick();
-    }
-  );
 
   const isBookPrecisionEqual = (precision: string): boolean => {
     return precision === (currentOrderBook.value?.tickSize?.toString() ?? '');
@@ -299,6 +304,7 @@ export function useOrderBook(options: { maxRows?: number } = {}) {
   return {
     baseAsset,
     quoteAsset,
+    currentOrderBook,
     asks,
     bids,
     asksFormatted,
@@ -324,10 +330,16 @@ export function useOrderBook(options: { maxRows?: number } = {}) {
     unsubscribeFromOrderBook,
     watchOrderBookSubscription,
     orderBookId,
+    orderBookStats,
     limitOrderType,
     side,
-    setSide,
+    setSide: setSideValue,
     completedOrders,
+    dexId,
+    baseValue,
+    quoteValue,
+    amountSliderValue,
+    baseAssetAddress,
     PriceVariant,
   };
 }

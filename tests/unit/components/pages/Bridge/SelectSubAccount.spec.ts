@@ -46,6 +46,23 @@ vi.mock('@/store', () => ({
   default: storeMock,
 }));
 
+const bridgeStorePiniaMock = {
+  connector: storeMock.state.bridge.subBridgeConnector,
+};
+
+const web3StorePiniaMock = {
+  subAccountDialogVisibility: true,
+  subAccount: mockAccount,
+};
+
+vi.mock('@/stores/bridge', () => ({
+  useBridgeStore: () => bridgeStorePiniaMock,
+}));
+
+vi.mock('@/stores/web3', () => ({
+  useWeb3Store: () => web3StorePiniaMock,
+}));
+
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
@@ -85,6 +102,8 @@ describe('BridgeSelectSubAccount', () => {
     storeMock.dispatch.web3.resetSubAccount = logoutSpy;
     storeMock.dispatch.web3.selectSubAccount = selectSpy;
     storeMock.commit.web3.setSubAccountDialogVisibility = vi.fn();
+    web3StorePiniaMock.subAccount = mockAccount;
+    web3StorePiniaMock.subAccountDialogVisibility = true;
 
     ({ default: SelectSubAccount } = await import('@/components/pages/Bridge/SelectSubAccount.vue'));
   });

@@ -182,6 +182,7 @@ import { KnownSymbols as KnownSymbolsEnum } from '@sora-substrate/sdk/build/asse
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { components, WALLET_CONSTS } from '@wallet';
 import { computed, onBeforeUnmount, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
 
 import { useBridgeCore } from '@/composables/useBridgeCore';
 import { useBridgeTransaction } from '@/composables/useBridgeTransaction';
@@ -192,7 +193,9 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useWeb3Connection } from '@/composables/useWeb3Connection';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
-import store from '@/store';
+import { useBridgeStore } from '@/stores/bridge';
+import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
+import { useRouterStore } from '@/stores/router';
 import {
   formatAddress,
   hasInsufficientBalance,
@@ -235,7 +238,11 @@ const { formatStringValue, formatCodecNumber, getFiatAmountByString, getFiatAmou
   useFormattedAmount();
 const { withParentLoading } = useLoading();
 const { connectEvmWallet } = useWeb3Connection();
+const bridgeStore = useBridgeStore();
+const bridgeTransactionsStore = useBridgeTransactionsStore();
+const { waitingForApprove, inProgressIds, historyInternal } = storeToRefs(bridgeTransactionsStore);
 const bridgeCore = useBridgeCore();
+const routerStore = useRouterStore();
 const {
   handleViewTransactionsHistory,
   navigateToBridge,
@@ -251,18 +258,21 @@ const {
   soraNetworkFee,
 } = bridgeCore;
 
-const tx = computed(() => store.getters.bridge.historyItem as Nullable<IBridgeTransaction>);
+const historyId = computed(() => bridgeStore.history.id);
+const tx = computed(() => {
+  const id = historyId.value;
+  if (!id) return null;
+  return (historyInternal.value as Record<string, IBridgeTransaction>)[id] ?? null;
+});
 const bridgeTransaction = useBridgeTransaction(tx);
 const getNetworkIcon = bridgeTransaction.formatter.getNetworkIcon;
 const getNetworkText = bridgeTransaction.getNetworkText;
 const isOutgoing = bridgeTransaction.isOutgoing;
 const externalNetworkId = bridgeTransaction.externalNetworkId;
 
-const externalBlockNumber = computed(() => store.state.bridge.externalBlockNumber as number);
-const waitingForApprove = computed(() => store.state.bridge.waitingForApprove as Record<string, boolean>);
-const inProgressIds = computed(() => store.state.bridge.inProgressIds as Record<string, boolean>);
-const prevRoute = computed(() => store.state.router.prev as Nullable<PageNames>);
-const externalAccount = computed(() => store.getters.bridge.externalAccount as string);
+const externalBlockNumber = computed(() => bridgeStore.fees.externalBlockNumber);
+const externalAccount = bridgeTransaction.txExternalAccount;
+const prevRoute = computed(() => routerStore.prev as Nullable<PageNames>);
 
 const txIsUnsigned = computed(() => (tx.value?.id ? isUnsignedTx(tx.value) : false));
 const txInProcess = computed(() => {
@@ -532,7 +542,7 @@ function getLinkData(
 
 async function handleTransaction(withAutoStart = true): Promise<void> {
   if (withAutoStart && tx.value?.id) {
-    await store.dispatch.bridge.handleBridgeTransaction(tx.value.id);
+    await bridgeStore.handleBridgeTransaction(tx.value.id);
   }
 }
 
@@ -594,10 +604,10 @@ onBeforeUnmount(async () => {
 
   if (!txInProcess.value && txIsUnsigned.value) {
     const historyCopy = { ...tx.value };
-    await store.dispatch.bridge.removeHistory({ tx: historyCopy, force: true });
+    await bridgeStore.removeHistory({ tx: historyCopy, force: true });
   }
 
-  store.commit.bridge.setHistoryId();
+  bridgeStore.setHistoryId();
 });
 </script>
 

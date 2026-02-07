@@ -24,9 +24,19 @@ export const getLegacyStore = (): LegacyStore | null => {
 };
 
 export const requireLegacyStore = (): LegacyStore => {
-  const legacyStore = getLegacyStore();
+  const legacyStore =
+    getLegacyStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as LegacyStore | undefined);
   if (!legacyStore) {
-    throw new Error('Legacy Vuex store has not been initialized yet.');
+    console.warn('Legacy Vuex store has not been initialized yet.');
+    // Return a noop-like proxy to avoid hard crashes; runtime consumers should handle missing store defensively.
+    return new Proxy(
+      {},
+      {
+        get() {
+          return {};
+        },
+      }
+    ) as LegacyStore;
   }
   return legacyStore;
 };

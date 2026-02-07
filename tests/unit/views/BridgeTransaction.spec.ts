@@ -1,6 +1,10 @@
 import { computed, defineComponent, nextTick, onMounted, reactive, ref } from 'vue';
 import { shallowMount } from '@vue/test-utils';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+import { createPinia, setActivePinia } from 'pinia';
+
+import { useBridgeStore } from '@/stores/bridge';
+import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
 
 const createMocks = () => {
   const historyItem = ref<any | null>(null);
@@ -118,7 +122,9 @@ const createMocks = () => {
   };
 };
 
-const mocks = createMocks();
+let mocks: ReturnType<typeof createMocks>;
+let bridgeStore: ReturnType<typeof useBridgeStore>;
+let bridgeTransactionsStore: ReturnType<typeof useBridgeTransactionsStore>;
 
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
@@ -133,6 +139,10 @@ vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
     Ready: 'ApprovalsReady',
     Frozen: 'Frozen',
     Broken: 'Broken',
+  },
+  BridgeTxDirection: {
+    Outgoing: 'Outgoing',
+    Incoming: 'Incoming',
   },
 }));
 
@@ -153,7 +163,9 @@ vi.mock('@/router', () => {
 });
 
 vi.mock('@/store', () => ({
-  default: mocks.store,
+  get default() {
+    return mocks.store;
+  },
 }));
 
 vi.mock('@/composables/useBridgeCore', () => ({
@@ -194,7 +206,6 @@ vi.mock('@/composables/useBridgeTransaction', () => ({
     externalNetworkId: mocks.externalNetworkId,
     externalNetworkType: ref(1),
     txInternalAccount: computed(() => mocks.historyItem.value?.from ?? ''),
-    txExternalAccount: computed(() => mocks.historyItem.value?.to ?? ''),
     txSoraId: computed(() => mocks.historyItem.value?.txId ?? ''),
     txSoraHash: computed(() => mocks.historyItem.value?.hash ?? ''),
     txInternalBlockId: computed(() => 'block-1'),
@@ -209,6 +220,7 @@ vi.mock('@/composables/useBridgeTransaction', () => ({
     internalAccountLinks: computed(() => [{ value: 'internal-account' }]),
     externalAccountLinks: computed(() => [{ value: 'external-account' }]),
     getNetworkText: (text: string) => text,
+    txExternalAccount: computed(() => mocks.historyItem.value?.to ?? ''),
   }),
 }));
 
@@ -382,6 +394,11 @@ const mountView = async () => {
 };
 
 beforeEach(() => {
+  setActivePinia(createPinia());
+  bridgeStore = useBridgeStore();
+  bridgeTransactionsStore = useBridgeTransactionsStore();
+
+  mocks = createMocks();
   mocks.historyItem.value = createTransaction();
   mocks.externalAccount.value = '0xrecipient';
   mocks.asset.value = { ...mocks.asset.value };
@@ -410,8 +427,10 @@ beforeEach(() => {
   mocks.connectEvmWallet.mockClear();
   mocks.withParentLoading.mockClear();
   mocks.routerPush.mockClear();
-  mocks.store.dispatch.bridge.handleBridgeTransaction.mockClear();
-  mocks.store.dispatch.bridge.removeHistory.mockClear();
+  bridgeTransactionsStore.syncHistoryInternalFromLegacy({ [mocks.historyItem.value.id]: mocks.historyItem.value });
+  bridgeStore.history.id = mocks.historyItem.value.id;
+  bridgeStore.handleBridgeTransaction = vi.fn().mockResolvedValue(undefined) as any;
+  bridgeStore.removeHistory = vi.fn().mockResolvedValue(undefined) as any;
 });
 
 afterEach(() => {

@@ -1,103 +1,108 @@
 # polkaswap-exchange-web
 
-## Project deploy info
+Polkaswap Exchange Web is the Vue 3 + TypeScript client for the SORA network. It runs on Vite, uses Pinia for state, and emits a static bundle that is served over IPFS—there is no server runtime. Every feature must therefore work from assets in `dist/`.
 
-There is `public/env.json` file which contains `BASE_API_URL` and `DEFAULT_NETWORKS` variables.
+## Requirements
 
-`BASE_API_URL` will be used for the address of the current stand.
+- Node 24.x (see `.nvmrc` and the `package.json` engine field). Use `nvm`, `fnm`, or another version manager to match the toolchain before installing dependencies.
+- Yarn 4.x (Berry). The repo pins the exact release via `.yarn/releases` and `.yarnrc.yml` (`yarnPath`); use `corepack` (bundled with Node) if needed.
+- `npm install` is not supported (the repo uses Yarn's `patch:` protocol for dependencies).
+- Modern browsers with WebAssembly enabled for runtime usage.
 
-`DEFAULT_NETWORKS` variable has the following format:
+## Environment configuration
 
-```
-"DEFAULT_NETWORKS": [
+The IPFS bundle reads runtime configuration from `public/env.json`. Two keys are required:
+
+- `BASE_API_URL` — points to the target runtime (production, staging, etc.).
+- `DEFAULT_NETWORKS` — array of nodes that appear in the network selector. The first entry must be a trusted SORAMITSU node because its `genesisHash` is used to validate custom connections.
+
+```json
+{
+  "BASE_API_URL": "https://example.api",
+  "DEFAULT_NETWORKS": [
     {
-        "chain": "SORA-staging Testnet",
-        "name": "SORA",
-        "address": "wss://ws.stage.sora2.soramitsu.co.jp"
+      "chain": "SORA-staging Testnet",
+      "name": "SORA",
+      "address": "wss://ws.stage.sora2.soramitsu.co.jp"
     }
-]
+  ],
+  "CHAIN_GENESIS_HASH": "0x..."
+}
 ```
 
-`"chain"` is used as the chain name.
-`"name"` is used as the node name.
-`"address"` is used for the address of the node to which the frontend project will be connected.
+For IPFS publish guidance (pre-flight checklist, `yarn ipfs:publish`, verification scripts) see `docs/ipfs.md`.
 
-`DEFAULT_NETWORKS[0]` must be a Soramitsu trusted node. App used it's `genesisHash` to check custom user node for connection
+## Installation
 
-`CHAIN_GENESIS_HASH` should be defined for 'prod' & 'stage' environments, to not polling nodes for getting it (because genesis hash for these env's not changing).
-
-For IPFS-specific guidance (pre-flight checklist, `yarn ipfs:publish`, and the verification scripts), see [docs/ipfs.md](docs/ipfs.md).
-
-## Project setup
-
-```
+```sh
+nvm use
+corepack enable
 yarn install
 ```
 
 ### Known install warnings
 
-- `@open-web3/api-mobx` and the `@polkadot/*` stack are patched via `scripts/postinstall/fix-peer-deps.js` to accept the modern `@polkadot/api` version we ship with. Yarn will still print a peer-range warning during `yarn install`; this is expected.
-- `vue-class-component@7` declares a Vue 2 peer dependency. We intentionally keep it in compat mode while the wallet is migrated to Vue 3, so Yarn will report the mismatch until that work lands.
-- The vendored Soraneo wallet and UI bundles now pull in their upstream runtime helpers (`vue-plugin-load-script`, `@urql/core`, `nft.storage`, `file-saver`, `base-64`, `jdenticon`, `subscriptions-transport-ws`, `graphql`, `graphql-ws`, `crypto-random-string`, `vue-observe-visibility`, `vuedraggable`, `@zxing/browser`, `@zxing/library`, `date-fns`, `react`, and `react-dom`). Make sure these stay in `package.json`, otherwise `yarn build` cannot resolve the wallet sources.
+- `@open-web3/api-mobx` and the `@polkadot/*` stack are patched via `scripts/postinstall/fix-peer-deps.js` to accept the shipped `@polkadot/api` version. Yarn still prints the peer-range warning; this is expected.
+- `vue-class-component@7` declares a Vue 2 peer dependency. It remains while the wallet bundle finishes the Vue 3 migration, so Yarn warns about the mismatch until that lands.
+- The vendored Soraneo wallet/UI bundles rely on browser helpers such as `vue-plugin-load-script`, `@urql/core`, `nft.storage`, `subscriptions-transport-ws`, `graphql`, `@zxing/browser`, etc. Keep these dependencies in `package.json` or `yarn build` will fail to resolve the wallet sources.
 
-### Compiles and hot-reloads for development
+## Scripts
 
-```
-yarn serve
-```
+| Command | Description |
+| --- | --- |
+| `yarn serve` | Start the Vite dev server with the compat shim enabled. |
+| `yarn build` | Build the production bundle (`dist/`) with the compat flag (default deployment target). |
+| `yarn build:vue3` | Build without compat/Vue 2 shims. Run this before release and during sprint checkpoints. |
+| `yarn preview` | Serve the last build locally to mirror the IPFS bundle. |
+| `yarn ci:nightly` | Convenience alias for `yarn test:translation && yarn build:vue3`; used by nightly jobs. |
+| `yarn lint` | Run ESLint across the repo. |
+| `yarn analyze:store` | Produce the Vuex-to-Pinia usage audit (`docs/reports/store-access-audit.*`). |
+| `yarn test:unit` | Execute the Vitest unit suites (`tests/unit/**`). |
+| `yarn test:ipfs` | Serve the built `dist/` under an IPFS-style path and run a Playwright smoke check for runtime errors/blank pages. |
+| `yarn test:translation` | Ensure locale catalogs mirror `en.json` and detect missing keys. |
+| `yarn test:e2e` | Run the Playwright bridge/MoonPay smokes. |
+| `yarn test:all` | Alias for `yarn test:unit`. |
+| `yarn lang:generate` | Build `src/lang/en.json` from `src/lang/messages.ts` (keeps wallet bundles in sync). |
+| `yarn lang:fix` | Alphabetize and format `src/lang/en.json`. |
+| `yarn lang:diff` | Show translation key/value changes vs. a Git ref (defaults to `origin/main`). |
+| `yarn lang:mt` | Machine-translate missing locales; see `scripts/lang/mt.ts` flags. |
+| `yarn kpi:report` | Generate the nightly KPI snapshot (`tmp/kpi-report.json` + `docs/status/kpi-history.md`). |
+| `yarn ipfs:publish` | Publish the static bundle to IPFS. Use together with `yarn ipfs:check` or `yarn ipfs:check:electron` for verification. |
 
-### Compiles and minifies for production
+## Testing
 
-```
-yarn build
-```
+Vitest is configured via `vitest.config.mjs` with projects for unit suites and i18n checks. Add or update unit tests under `tests/unit/**` whenever you introduce a new function, composable, or store action. Useful commands:
 
-### Run your unit tests
+- `yarn test:unit` — runs every unit suite. Target a single file via `vitest run --config vitest.config.mjs --project unit path/to/spec`.
+- `yarn test:translation` — validates that every locale mirrors the English catalog and that special locales (for example Akkadian) respect their constraints.
+- `yarn test:e2e` — executes the Playwright smoke tests covering bridge/MoonPay flows.
+- `yarn test:all` — alias for unit tests, handy for CI hooks.
 
-```
-yarn test:unit
-```
+Always keep `yarn test:unit` and `yarn test:translation` green locally before opening a PR. They are also part of `yarn ci:nightly`, so failures break the nightly Pinia/compat streak.
 
-### Run your end-to-end tests
+## Build & IPFS
 
-```
-yarn test:e2e
-```
+- `yarn build` produces a production-ready bundle with compat enabled.
+- `yarn build:vue3` disables compat imports to simulate the final Vue 3-only runtime; use it for nightly smoke tests and before toggling compat flags.
+- `yarn preview` serves the generated bundle so you can smoke-test the IPFS artifacts locally.
+- `yarn ipfs:publish` runs the publish workflow described in `docs/ipfs.md` (publishes to the configured gateway/IPFS node and logs the CID in `ipfs_publish.log`). `yarn ipfs:check` and `yarn ipfs:check:electron` verify the browser/electron bundles after a publish.
 
-### Run all tests
-
-```
-yarn test:all
-```
-
-### Build verification
-
-```
-yarn build
-```
-
-Building the IPFS bundle is the quickest way to surface missing-runtime issues outside of Vitest. The current build completes successfully (Vite will emit a handful of warnings from the Soramitsu UI Tailwind shorthand, which are cosmetic).
-
-### Lints and fixes files
-
-```
-yarn lint
-```
+Vite currently emits a few warnings from Soramitsu UI Tailwind shorthand classes during `yarn build`; they are cosmetic but still reviewed during release readiness.
 
 ## State management workflow
 
-The application is migrating from Vuex modules to Pinia stores. New code should always use the Pinia stores located under `src/stores/**` via the `use…Store` helpers:
+The app is mid-migration from legacy Vuex (via `direct-vuex` decorators) to Pinia. New code must import Pinia stores from `src/stores/**` and avoid referencing the Vuex facades directly. Key stores include:
 
-- `import { useAssetsStore } from '@/stores/assets'` to resolve asset metadata, registered bridge assets, and balances.
-- `import { useWalletStore } from '@/stores/wallet'` for account state, login helpers, and transaction dialogs.
-- `import { useSwapStore } from '@/stores/swap'` for swap form state and quote helpers.
-- Additional stores (`settings`, `notification`, `router`) live in the same directory.
+- `useAssetsStore` (`src/stores/assets`) — asset metadata, registered bridge assets, balances.
+- `useWalletStore` (`src/stores/wallet`) — account state, login helpers, transaction dialogs.
+- `useSwapStore` (`src/stores/swap`) — swap form state and quote helpers.
+- `useSettingsStore`, `useNotificationsStore`, `useRouterStore`, `useBridgeStore`, and the staking/pools stores under `src/stores/**`.
 
-Legacy Vuex modules still exist under `src/store/**` and are kept as thin facades that forward to the Pinia stores while older components are migrated. Avoid adding new dependencies on `direct-vuex` decorators—prefer composables such as `useInternalConnect`, `useWalletConnect`, or the stores above. The Pinia/Vuex parity checklist lives in `docs/plans/vue3-migration.md` and the wallet library contract is documented in `docs/plans/soraneo-wallet-migration-contract.md`.
+Legacy Vuex modules remain in `src/store/**` simply as facades while Options API components are migrated. Avoid adding new decorator usage; instead, expose the needed Pinia action/getter through the facade until the component is converted. Progress and owners are tracked in `docs/plans/state-layer-migration.md`.
 
-### Developing with Pinia
+## Developing with Pinia
 
-- Initialise stores in Composition API code using the dedicated hooks and derive reactive values with `storeToRefs` when exposing state to templates:
+- Initialise stores in Composition API code via their `use…Store` helpers and expose reactive state with `storeToRefs`:
 
   ```ts
   import { storeToRefs } from 'pinia';
@@ -108,47 +113,31 @@ Legacy Vuex modules still exist under `src/store/**` and are kept as thin facade
   const { setFromValue } = swapStore;
   ```
 
-- Compose logic in standalone composables whenever a workflow touches more than one store (for example, see `src/composables/useBridgeCore.ts`). This keeps stores slim and reusable while avoiding circular imports.
-- When you extend a store, add or update unit tests under `tests/unit/stores/<store>.spec.ts` (or a matching folder) to cover precision math, error states, and emitted side-effects. Store changes should not land without test coverage.
-- Options API holdouts should read through the Vuex facades in `src/store/**`; do not create new decorator-driven modules. Instead, expose the Pinia action/getter through the facade until the component is migrated.
-- Remember to run `yarn test:unit --project unit tests/unit/stores/<name>.spec.ts` (or `yarn test:unit`) before sending a PR so the Pinia/Vuex parity checklist remains trustworthy.
+- Compose shared workflows inside `src/composables/**` when multiple stores are involved (for example see `useBridgeCore`, `useInternalConnect`, `useOrderBook`).
+- Update or create tests under `tests/unit/stores/<store>.spec.ts` whenever you extend store logic; cover precision math, error states, and emitted side-effects.
+- For Options API holdouts, route through the existing facades in `src/store/**` rather than creating new decorator-based stores.
+- Run `yarn test:unit --project unit tests/unit/stores/<store>.spec.ts` (or the full suite) before sending PRs so the Pinia/Vuex parity checklist remains reliable.
 
-## Desktop scripts
+## Desktop (Electron) scripts
 
-### Compiles and hot-reloads for development
+Electron builds live under `electron/` and share the same Vite-based toolchain:
 
-```
-yarn electron:serve
-```
-
-### Compiles and minifies for production
-
-```
-yarn electron:build
-```
-
-### Build for all platforms
-
-```
+```sh
+yarn electron:serve        # dev/watch mode
+yarn electron:build        # production bundle
 yarn electron:build --linux --mac zip dmg --win portable --x64 --ia32
 ```
 
-Executable files (`.exe`, `.dmg` or `.snap`) will be located in `dist_electron` folder.
+Built artifacts are emitted to `dist_electron/`. Use `yarn ipfs:check:electron` to smoke-test the IPFS bundle in the Electron shell.
 
-## How to add translations?
+## Internationalization
 
-1. Add your translations to `src/lang/messages.ts`.
-2. Run script to generate `en.json` file from `src/lang/messages.ts`. This will update `en.json` file with new translations, arranged in alphabetical order.
+Locale catalogs live under `src/lang/*.json` (SPA) and `src/lang/card/*.json` (embedded Sora Card widgets). Runtime English strings originate from `src/lang/messages.ts`, which merges wallet bundle strings with Polkaswap-specific keys, and `yarn lang:generate` keeps `src/lang/en.json` aligned with that source. Follow this workflow when editing copy:
 
-```
-yarn lang:generate
-```
+1. Update or add the string in `src/lang/messages.ts`. Reuse existing keys whenever possible.
+2. Run `yarn lang:generate` to rebuild `src/lang/en.json` from the TypeScript definitions.
+3. Run `yarn lang:fix` so the English catalog stays alphabetized and normalized.
+4. Update every locale JSON file (mirror `en.json` in `src/lang/*.json` and `src/lang/card/*.json`). Use Lokalise exports, `yarn lang:diff` to preview the changed keys, or `yarn lang:mt --languages=…` for placeholders, but do not leave missing keys.
+5. Run `yarn test:translation` to ensure catalogs stay in sync and special locales (for example Akkadian via `tsx scripts/lang/enforce-cuneiform.ts --locales=akk`) respect their requirements.
 
-3. Load updated `en.json` file to `Lokalise`.
-4. Add translations for other languages in `Localise`.
-5. Download translations from `Localise`, update these files in project.
-6. Run script to order translations alphabetical in `en.json` file (Localise has it's own translations order).
-
-```
-yarn lang:fix
-```
+All translation changes must land with regenerated locale files and passing `yarn test:translation`.

@@ -10,7 +10,7 @@ import { computed, type CSSProperties } from 'vue';
 
 import { api } from '@/api';
 import { LogoSize } from '@/consts';
-import store from '@/store';
+import { requireLegacyStore } from '@/utils/legacy-store';
 import type { WhitelistIdsBySymbol } from '@/types/common';
 import { buildCssUrl, sanitizeIconSource } from '@/util/image';
 
@@ -33,6 +33,8 @@ const props = withDefaults(
   }
 );
 
+const store = requireLegacyStore();
+
 const whitelist = computed<Whitelist>(() => {
   const value = store.getters['wallet/account/whitelist'] as Nullable<Whitelist>;
   return value ?? {};
@@ -43,7 +45,14 @@ const whitelistIdsBySymbol = computed<WhitelistIdsBySymbol>(() => {
   return value ?? {};
 });
 
-const isNft = computed(() => Boolean(props.token) && api.assets.isNft(props.token as AccountAsset | Asset));
+const isNft = computed(() => {
+  const maybeAsset = props.token as AccountAsset | Asset | null;
+  if (!maybeAsset) return false;
+
+  const isNftChecker = api?.assets?.isNft;
+
+  return typeof isNftChecker === 'function' ? isNftChecker(maybeAsset) : false;
+});
 
 const assetAddress = computed<Nullable<string>>(() => {
   return props.tokenSymbol ? whitelistIdsBySymbol.value[props.tokenSymbol] : (props.token?.address ?? null);

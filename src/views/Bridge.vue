@@ -256,7 +256,9 @@ import { useLoading } from '@/composables/useLoading';
 import { lazyComponent } from '@/router';
 import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
+import { useBridgeStore } from '@/stores/bridge';
 import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
+import { useWeb3Store } from '@/stores/web3';
 import { useWalletStore } from '@/stores/wallet';
 import {
   asZeroValue,
@@ -371,31 +373,33 @@ const { isSelectAssetLoading, withSelectAssetLoading } = useTokenSelect();
 const { loading: parentLoading, withLoading } = useLoading();
 const assetsStore = useAssetsStore();
 const walletStore = useWalletStore();
+const bridgeStore = useBridgeStore();
 const bridgeTransactionsStore = useBridgeTransactionsStore();
+const web3Store = useWeb3Store();
 
 const showSelectTokenDialog = ref(false);
 const showMSTWarning = ref(false);
 const showWarningExternalFeeDialog = ref(false);
 const isWarningExternalFeeDialogConfirmed = ref(false);
 
-const subBridgeConnector = computed(() => store.state.bridge.subBridgeConnector as SubNetworksConnector);
-const isSubBridge = computed(() => store.getters.bridge.isSubBridge as boolean);
-const isSubAccountType = computed(() => store.getters.bridge.isSubAccountType as boolean);
-const networkSelected = computed(() => store.state.web3.networkSelected as Nullable<number | string>);
-const networkType = computed(() => store.state.web3.networkType as Nullable<number>);
-const selectSubNodeDialogVisibility = computed(() => store.state.web3.selectSubNodeDialogVisibility as boolean);
-const senderName = computed(() => store.getters.bridge.senderName as string);
-const recipientName = computed(() => store.getters.bridge.recipientName as string);
-const isRegisteredAsset = computed(() => Boolean(store.getters.bridge.isRegisteredAsset));
-const autoselectedAssetAddress = computed(() => store.getters.bridge.autoselectedAssetAddress as Nullable<string>);
-const hasWaitingForActionTx = computed(() => Boolean(store.getters.bridge.hasWaitingForActionTx));
-const balancesFetching = computed(() => Boolean(store.state.bridge.balancesFetching));
-const feesAndLockedFundsFetching = computed(() => Boolean(store.state.bridge.feesAndLockedFundsFetching));
+const subBridgeConnector = computed(() => bridgeStore.connector as SubNetworksConnector);
+const isSubBridge = computed(() => bridgeStore.isSubBridge);
+const isSubAccountType = computed(() => bridgeStore.isSubAccountType);
+const networkSelected = computed(() => web3Store.networkSelected);
+const networkType = computed(() => web3Store.networkType);
+const selectSubNodeDialogVisibility = computed(() => web3Store.selectSubNodeDialogVisibility);
+const senderName = computed(() => bridgeStore.senderName);
+const recipientName = computed(() => bridgeStore.recipientName);
+const isRegisteredAsset = computed(() => bridgeStore.isRegisteredAsset);
+const autoselectedAssetAddress = computed(() => bridgeStore.autoselectedAssetAddress);
+const hasWaitingForActionTx = computed(() => bridgeStore.hasWaitingForActionTx);
+const balancesFetching = computed(() => bridgeStore.flags.balancesFetching);
+const feesAndLockedFundsFetching = computed(() => bridgeStore.flags.feesAndLockedFundsFetching);
 const registeredAssetsFetching = computed(() => assetsStore.registeredAssetsFetching);
-const amountSend = computed(() => store.state.bridge.amountSend as string);
-const amountReceived = computed(() => store.state.bridge.amountReceived as string);
+const amountSend = computed(() => bridgeStore.form.amountSend);
+const amountReceived = computed(() => bridgeStore.form.amountReceived);
 const isMST = computed(() => Boolean(store.state.wallet.account.isMST));
-const operation = computed(() => store.getters.bridge.operation as Operation);
+const operation = computed(() => bridgeStore.operation);
 const selectedNetworkName = computed(() => selectedNetworkNameComputed.value);
 const accountAssetsAddressTableMap = computed(() => accountAssetsAddressTable.value ?? ({} as Record<string, unknown>));
 
@@ -567,7 +571,7 @@ const isConfirmTxLoading = computed(
 );
 
 const setFocusedField = (field: FocusedFieldEnum) => {
-  store.commit.bridge.setFocusedField(field);
+  bridgeStore.setFocusedField(field);
 };
 
 const setSelectSubNodeDialogVisibility = (flag: boolean) => {
@@ -575,23 +579,23 @@ const setSelectSubNodeDialogVisibility = (flag: boolean) => {
 };
 
 const setSendedAmount = async (value?: string) => {
-  await store.dispatch.bridge.setSendedAmount(value);
+  await bridgeStore.setSendedAmount(value);
 };
 
 const setReceivedAmount = async (value?: string) => {
-  await store.dispatch.bridge.setReceivedAmount(value);
+  await bridgeStore.setReceivedAmount(value);
 };
 
 const switchDirection = async () => {
-  await store.dispatch.bridge.switchDirection();
+  await bridgeStore.switchDirection();
 };
 
-const setAssetAddressAction = (value?: string) => store.dispatch.bridge.setAssetAddress(value);
-const generateHistoryItemAction = (history?: unknown) => store.dispatch.bridge.generateHistoryItem(history);
+const setAssetAddressAction = (value?: string) => bridgeStore.setAssetAddress(value);
+const generateHistoryItemAction = (history?: unknown) => bridgeStore.generateHistoryItem(history);
 const addAssetToAccountAssets = (address?: string) => walletStore.addAsset(address);
-const updateBridgeHistoryAction = () => store.dispatch.bridge.updateBridgeHistory();
-const setHistoryId = (id?: string) => store.commit.bridge.setHistoryId(id);
-const setSoraToEvmDirection = (value: boolean) => store.commit.bridge.setSoraToEvm(value);
+const updateBridgeHistoryAction = () => bridgeStore.updateBridgeHistory();
+const setHistoryId = (id?: string) => bridgeStore.setHistoryId(id);
+const setSoraToEvmDirection = (value: boolean) => bridgeStore.updateForm({ isSoraToEvm: value });
 
 const getCopyTooltip = (isSoraNetwork = false) => `${formatNetworkShortName(isSoraNetwork)} ${t('addressText')}`;
 

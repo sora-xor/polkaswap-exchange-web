@@ -1,5 +1,6 @@
 import { FPNumber } from '@sora-substrate/math';
 import { vi } from 'vitest';
+export { WithConnectionApi, WithKeyring } from '@/lib/substrate/sdk/apiAccount';
 
 type StorageValue = string;
 

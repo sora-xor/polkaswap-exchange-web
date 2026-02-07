@@ -5,49 +5,33 @@ import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts'
 
 type DispatchFn = (payload: { id: number | string; type: BridgeNetworkType }) => void;
 
-const commitSpy = vi.fn();
-const dispatchSpy = vi.fn<Parameters<DispatchFn>, void>();
+const setDialogVisibilitySpy = vi.fn();
+const selectExternalNetworkSpy = vi.fn<Parameters<DispatchFn>, void>();
 
-const storeMock = {
-  state: {
-    web3: {
-      selectNetworkDialogVisibility: true,
-      networkType: BridgeNetworkType.Eth,
-      networkSelected: 1,
+const web3StorePiniaMock = {
+  selectNetworkDialogVisibility: true,
+  networkType: BridgeNetworkType.Eth,
+  networkSelected: 1,
+  availableNetworks: {
+    [BridgeNetworkType.Eth]: {
+      1: {
+        disabled: false,
+        data: { id: 1, name: 'Ethereum' },
+      },
     },
-  },
-  getters: {
-    web3: {
-      availableNetworks: {
-        [BridgeNetworkType.Eth]: {
-          1: {
-            disabled: false,
-            data: { id: 1, name: 'Ethereum' },
-          },
-        },
-        [BridgeNetworkType.Sub]: {
-          sora: {
-            disabled: true,
-            data: { id: 'sora', name: 'SORA' },
-          },
-        },
+    [BridgeNetworkType.Sub]: {
+      sora: {
+        disabled: true,
+        data: { id: 'sora', name: 'SORA' },
       },
     },
   },
-  commit: {
-    web3: {
-      setSelectNetworkDialogVisibility: commitSpy,
-    },
-  },
-  dispatch: {
-    web3: {
-      selectExternalNetwork: dispatchSpy,
-    },
-  },
+  setSelectNetworkDialogVisibility: setDialogVisibilitySpy,
+  selectExternalNetwork: selectExternalNetworkSpy,
 };
 
-vi.mock('@/store', () => ({
-  default: storeMock,
+vi.mock('@/stores/web3', () => ({
+  useWeb3Store: () => web3StorePiniaMock,
 }));
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -107,9 +91,11 @@ const factory = () => mount(SelectNetwork);
 describe('BridgeSelectNetwork', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
-    storeMock.state.web3.selectNetworkDialogVisibility = true;
-    storeMock.state.web3.networkType = BridgeNetworkType.Eth;
-    storeMock.state.web3.networkSelected = 1;
+    web3StorePiniaMock.selectNetworkDialogVisibility = true;
+    web3StorePiniaMock.networkType = BridgeNetworkType.Eth;
+    web3StorePiniaMock.networkSelected = 1;
+    web3StorePiniaMock.setSelectNetworkDialogVisibility = setDialogVisibilitySpy;
+    web3StorePiniaMock.selectExternalNetwork = selectExternalNetworkSpy;
 
     ({ default: SelectNetwork } = await import('@/components/pages/Bridge/SelectNetwork.vue'));
   });
@@ -136,7 +122,7 @@ describe('BridgeSelectNetwork', () => {
 
     wrapper.vm.selectedNetworkTuple = `${BridgeNetworkType.Sub}-sora`;
 
-    expect(dispatchSpy).toHaveBeenCalledWith({ id: 'sora', type: BridgeNetworkType.Sub });
-    expect(commitSpy).toHaveBeenCalledWith(false);
+    expect(selectExternalNetworkSpy).toHaveBeenCalledWith({ id: 'sora', type: BridgeNetworkType.Sub });
+    expect(setDialogVisibilitySpy).toHaveBeenCalledWith(false);
   });
 });

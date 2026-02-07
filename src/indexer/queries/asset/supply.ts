@@ -1,15 +1,14 @@
 import { FPNumber } from '@sora-substrate/math';
 import { VAL, PSWAP } from '@sora-substrate/sdk/build/assets/consts';
-import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { getCurrentIndexer } from '@wallet';
+import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
-import store from '@/store';
 import { waitForSoraNetworkFromEnv } from '@/utils';
+import { requireLegacyStore } from '@/utils/legacy-store';
 
 import type { SnapshotTypes, AssetSnapshotEntity, ConnectionQueryResponse } from '@wallet/lib/services/indexer/types';
-
-const { IndexerType } = WALLET_CONSTS;
 
 const CIRCULATING_DIFF = {
   [VAL.address]: 33449609.3779,
@@ -126,8 +125,9 @@ export async function fetchAssetSupplyData(
     return chartData;
   }
   // VAL & PSWAP have huge difference between circulating & total supply on prod env
-  const env = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
-  if (env !== WALLET_CONSTS.SoraNetwork.Prod) return chartData;
+  const env =
+    (requireLegacyStore() as any)?.state?.wallet?.settings?.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+  if (env !== 'Prod') return chartData;
 
   const diff = CIRCULATING_DIFF[id];
   return chartData.map((item) => ({ ...item, value: item.value - diff }));

@@ -6,16 +6,14 @@
 import { computed, onMounted, ref } from 'vue';
 
 import { fetchOrderBookAccountOrders } from '@/indexer/queries/orderBook/orders';
-import store from '@/store';
 import { useLoading } from '@/composables/useLoading';
+import { useOrderBookUserOrders } from '@/composables/useOrderBookUserOrders';
 import { useWalletStore } from '@/stores/wallet';
 import { Filter, OrderStatus } from '@/types/orderBook';
 
 import OrderTable from './OrderTable.vue';
 
 import type { OrderData } from '@/types/orderBook';
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { Nullable } from '@/types/common';
 
 const props = withDefaults(
   defineProps<{
@@ -26,13 +24,11 @@ const props = withDefaults(
 
 const { loading, withLoading } = useLoading();
 const walletStore = useWalletStore();
+const { currentOrderBook } = useOrderBookUserOrders();
 
 const orders = ref<OrderData[]>([]);
 
 const accountAddress = computed(() => walletStore.address);
-const currentOrderBook = computed<Nullable<OrderBook>>(
-  () => (store.getters?.orderBook?.currentOrderBook as Nullable<OrderBook>) ?? null
-);
 
 /**
  * Fetches account orders for the currently selected order book.

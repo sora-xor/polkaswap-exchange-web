@@ -3,12 +3,10 @@ import { attachDecorator, createDecoratorsObject, VuexOperation } from './store/
 
 const walletModuleNames = ['account', 'router', 'settings', 'subscriptions', 'transactions'] as const;
 
-const walletModules: Record<string, unknown> = {};
+const walletModuleRef = wallet;
 
-Object.defineProperty(walletModules, 'wallet', {
-  enumerable: true,
-  get: () => wallet,
-});
+const walletModules: Record<string, unknown> = {};
+walletModules.wallet = walletModuleRef;
 
 const WalletModules = walletModuleNames.map((submodule) => `wallet/${submodule}`);
 

@@ -6,6 +6,7 @@ import { defineStore } from 'pinia';
 import { ZeroStringValue } from '@/consts';
 import type { AssetsState, BridgeRegisteredAsset } from '@/stores/assets/types';
 import { useWalletStore } from '@/stores/wallet';
+import { useWeb3Store } from '@/stores/web3';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
@@ -109,11 +110,11 @@ const updateEthAssetsData = async (
 };
 
 const updateSubAssetsData = async (
-  assets: Record<string, BridgeRegisteredAsset>
+  assets: Record<string, BridgeRegisteredAsset>,
+  network: Nullable<SubNetwork>
 ): Promise<Record<string, BridgeRegisteredAsset>> => {
   const store = requireLegacyStore();
   const { destinationNetwork, soraParachain, parachain } = store.state.bridge.subBridgeConnector;
-  const network = store.state.web3.networkSelected;
 
   const hasParachainApi =
     Boolean(subBridgeApi?.soraParachainApi?.getAssetMulilocation) &&
@@ -210,14 +211,14 @@ export const useAssetsStore = defineStore('assets', {
       }
     },
     async fetchRegisteredAssetsFromNetwork(): Promise<Record<string, BridgeRegisteredAsset>[]> {
-      const store = requireLegacyStore();
-      switch (store.state.web3.networkType) {
+      const web3Store = useWeb3Store();
+      switch (web3Store.networkType) {
         case BridgeNetworkType.Eth:
           return await fetchEthRegisteredAssets();
         case BridgeNetworkType.Evm:
-          return await fetchEvmRegisteredAssets(store.state.web3.networkSelected as Nullable<EvmNetwork>);
+          return await fetchEvmRegisteredAssets(web3Store.networkSelected as Nullable<EvmNetwork>);
         case BridgeNetworkType.Sub:
-          return await fetchSubRegisteredAssets(store.state.web3.networkSelected as Nullable<SubNetwork>);
+          return await fetchSubRegisteredAssets(web3Store.networkSelected as Nullable<SubNetwork>);
         default:
           return [];
       }
@@ -226,12 +227,12 @@ export const useAssetsStore = defineStore('assets', {
       this.setRegisteredAssetsFetching(true);
 
       try {
-        const store = requireLegacyStore();
+        const web3Store = useWeb3Store();
         const assets = this.registeredAssets;
         let updated = assets;
 
-        if (store.state.web3.networkType === BridgeNetworkType.Sub) {
-          updated = await updateSubAssetsData(assets);
+        if (web3Store.networkType === BridgeNetworkType.Sub) {
+          updated = await updateSubAssetsData(assets, web3Store.networkSelected as Nullable<SubNetwork>);
         } else {
           updated = await updateEthAssetsData(assets);
         }

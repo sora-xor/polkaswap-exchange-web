@@ -1,6 +1,6 @@
 import { onMounted } from 'vue';
 
-import { trackEvent } from '@/utils/telemetry';
+import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 
 type StoreTarget = {
   store: unknown;
@@ -14,17 +14,6 @@ type UsePiniaTelemetryOptions = {
 
 const isPiniaStore = (store: unknown): boolean => {
   return Boolean(store && typeof (store as Record<string, unknown>).$id === 'string');
-};
-
-const getBuildVariant = (): string => {
-  if (typeof window !== 'undefined') {
-    const variant = (window as Record<string, unknown>).__PS_BUILD_VARIANT__;
-    if (typeof variant === 'string' && variant.length > 0) {
-      return variant;
-    }
-  }
-
-  return 'unknown';
 };
 
 export const usePiniaTelemetry = (

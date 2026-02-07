@@ -6,12 +6,25 @@ const ordersMock = [
   { time: 'formatted-20', amount: '42 XOR', price: '1.234 VAL', isBuy: false },
 ];
 
+const usePiniaTelemetryMock = vi.fn();
+const orderBookStoreStub = { $id: 'order-book-store' };
+
 vi.mock('@/composables/useOrderBook', () => ({
   useOrderBook: () => ({
     completedOrders: ordersMock,
+    orderBookId: { value: 'order-book-1' },
+    baseAsset: { value: { symbol: 'AAA' } },
+    quoteAsset: { value: { symbol: 'BBB' } },
   }),
 }));
 
+vi.mock('@/composables/usePiniaTelemetry', () => ({
+  usePiniaTelemetry: (...args: unknown[]) => usePiniaTelemetryMock(...args),
+}));
+
+vi.mock('@/stores/orderBook', () => ({
+  useOrderBookStore: () => orderBookStoreStub,
+}));
 vi.mock('@/router', () => ({
   lazyComponent: () => ({ template: '<div><slot /></div>' }),
 }));
@@ -64,5 +77,14 @@ describe('MarketTradesWidget.vue', () => {
 
     const exposed = wrapper.vm as { completedOrders: typeof ordersMock };
     expect(exposed.completedOrders).toEqual(ordersMock);
+    expect(usePiniaTelemetryMock).toHaveBeenCalledTimes(1);
+    const [, targets, options] = usePiniaTelemetryMock.mock.calls[0];
+    expect(targets).toEqual([{ store: orderBookStoreStub, storeId: 'orderBook' }]);
+    expect(options?.metadata?.()).toEqual({
+      widget: 'market-trades',
+      orderBookId: 'order-book-1',
+      baseAsset: 'AAA',
+      quoteAsset: 'BBB',
+    });
   });
 });

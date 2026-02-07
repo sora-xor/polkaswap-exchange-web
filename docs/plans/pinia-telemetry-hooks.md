@@ -48,14 +48,16 @@ See the implementation checklist for additional fields (e.g., correlation IDs) r
    - Register a global Vue warning handler via `app.config.warnHandler`.
    - Emit `compat_warning` when the warning message contains `"@vue/compat"` or known compat shim markers.
    - Include stack traces only in non-production environments to avoid leaking sensitive details.
+   - Implemented via `src/plugins/compatWarnings.ts` and installed in `src/main.ts`; trace capture disabled in production.
 
 5. **Translation missing handler**
-   - Extend the i18n plugin (`src/lang/index.ts`) with a `missing` handler that calls `trackEvent('translation_missing', payload)`.
+   - Extend the i18n plugin (`src/lang/index.ts`) with a `missing` handler that calls `trackEvent('translation_missing', payload)`. **Status:** Implemented with a 30s per key/locale throttle and component name capture.
    - Throttle repeated emissions per key/locale pair to reduce noise.
 
 6. **Pilot feedback integration**
    - Update pilot feedback form (support portal) to emit `pilot_feedback`.
    - Ensure feedback is linked to cohorts defined in the Pilot Rollout Tracker.
+   - Use the shared `submitPilotFeedback` helper (`src/utils/telemetry.ts`) to enforce sanitized payloads and build variant tagging; `registerPilotFeedbackBridge` exposes `window.__PS_SUBMIT_PILOT_FEEDBACK__` and auto-binds any `<form data-pilot-feedback>` (fields `cohort`, `sentiment`, `category`, `notes`, `source`) for support/pilot portals.
 
 7. **Analytics routing**
    - Map telemetry events to Amplitude/DataDog dashboards:

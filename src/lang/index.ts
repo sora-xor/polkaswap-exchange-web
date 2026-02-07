@@ -1,12 +1,53 @@
 import dayjs from 'dayjs';
 import first from 'lodash/fp/first';
-import { createI18n } from 'vue-i18n';
+import type { ComponentInternalInstance } from 'vue';
+import { createI18n, type MissingHandler } from 'vue-i18n';
 
 import { Language, TranslationConsts } from '@/consts';
+import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 import { settingsStorage } from '@/utils/storage';
 
 import enCard from './card/en.json';
 import en from './en.json';
+
+export const TRANSLATION_MISSING_THROTTLE_MS = 30_000;
+
+const recentMissingTranslations = new Map<string, number>();
+
+/**
+ * Clears the duplicate-suppression cache for translation missing events (primarily for tests).
+ */
+export const resetTranslationMissingThrottle = (): void => {
+  recentMissingTranslations.clear();
+};
+
+const getComponentName = (instance?: ComponentInternalInstance | null): string => {
+  const type = instance?.type as Record<string, unknown> | undefined;
+  const name = (type?.name ?? (type as Record<string, unknown> | undefined)?.__name) as string | undefined;
+  return typeof name === 'string' && name.length > 0 ? name : 'unknown';
+};
+
+/**
+ * Handles missing translation keys by emitting a telemetry event with minimal, non-PII context.
+ */
+export const translationMissingHandler: MissingHandler = (locale, key, instance) => {
+  const cacheKey = `${locale}:${key}`;
+  const now = Date.now();
+  const lastSeenAt = recentMissingTranslations.get(cacheKey) ?? 0;
+
+  if (now - lastSeenAt < TRANSLATION_MISSING_THROTTLE_MS) {
+    return;
+  }
+
+  recentMissingTranslations.set(cacheKey, now);
+
+  trackEvent('translation_missing', {
+    key,
+    locale,
+    component: getComponentName(instance),
+    buildVariant: getBuildVariant(),
+  });
+};
 
 const i18n = createI18n({
   legacy: false,
@@ -17,6 +58,7 @@ const i18n = createI18n({
     [Language.EN]: { ...en, ...enCard },
   },
   warnHtmlMessage: false,
+  missing: translationMissingHandler,
 });
 
 const i18nGlobal = i18n.global;

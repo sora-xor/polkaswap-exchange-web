@@ -1,5 +1,6 @@
 const PROD_ENV_CONFIG_FILENAME = 'env.json';
 const DEV_ENV_CONFIG_FILENAME = 'env.dev.json';
+const INDEX_DOCUMENT_PATTERN = /index\.html?$/i;
 
 /**
  * Picks which static environment configuration file should be requested
@@ -36,6 +37,22 @@ export function ensureRelativeAssetPath(assetPath: string): string {
   return assetPath.replace(/^\/+/g, '');
 }
 
+const stripFragment = (href: string): string => {
+  const hashIndex = href.indexOf('#');
+  return hashIndex >= 0 ? href.slice(0, hashIndex) : href;
+};
+
+const stripQuery = (href: string): string => {
+  const queryIndex = href.indexOf('?');
+  return queryIndex >= 0 ? href.slice(0, queryIndex) : href;
+};
+
+const normalizeDirectoryHref = (href: string): string => {
+  const trimmed = href.replace(INDEX_DOCUMENT_PATTERN, '');
+  if (!trimmed) return '/';
+  return trimmed.endsWith('/') ? trimmed : `${trimmed}/`;
+};
+
 /**
  * Resolves a static asset path against the current location so requests do not
  * fall back to the origin root (which breaks when the app is hosted under a
@@ -48,8 +65,14 @@ export function resolveStaticAssetUrl(assetPath: string): string {
     return relativePath;
   }
 
+  const href = window.location.href;
+  if (typeof href !== 'string' || href.length === 0) {
+    return relativePath;
+  }
+
   try {
-    return new URL(relativePath, window.location.href).toString();
+    const baseHref = normalizeDirectoryHref(stripQuery(stripFragment(href)));
+    return new URL(relativePath, baseHref).toString();
   } catch {
     return relativePath;
   }

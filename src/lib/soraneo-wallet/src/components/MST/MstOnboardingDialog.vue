@@ -61,7 +61,7 @@ import MSTWallet from '@/assets/img/MSTWallet.svg';
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
-import store from '@/store';
+import { getLegacyStore } from '@/utils/legacy-store';
 import type { Route } from '@/store/router/types';
 
 import DialogBase from '../DialogBase.vue';
@@ -85,14 +85,15 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
+const store = computed(() => getLegacyStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any));
 const { isVisible, closeDialog } = useDialogVisibility(toRef(props, 'visible'), {
   emit: (value) => emit('update:visible', value),
   onClose: () => emit('close'),
 });
 
-const isMSTAvailable = computed(() => store.state.wallet.settings.isMSTAvailable);
+const isMSTAvailable = computed(() => store.value.state.wallet.settings.isMSTAvailable);
 const navigate = (route: Route) => {
-  store.original.commit('router/navigate', route);
+  store.value.original.commit('router/navigate', route);
 };
 
 const sectionsAbout = computed(() => [

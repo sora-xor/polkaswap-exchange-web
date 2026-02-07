@@ -1,18 +1,17 @@
-import { SUBQUERY_TYPES, WALLET_CONSTS } from '@wallet';
+import { SUBQUERY_TYPES } from '@wallet';
 import first from 'lodash/fp/first';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { IBridgeReducerOptions, GetBridgeHistoryInstance, SignExternal } from '@/utils/bridge/common/types';
 import { getTransactionEvents, getEvmTransactionFee, onEvmTransactionPending } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
 import { getTransaction, waitForApprovedRequest, waitForIncomingRequest } from '@/utils/bridge/eth/utils';
 
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
-
-const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 type EthBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeReducerOptions<T> & {
   getBridgeHistoryInstance: GetBridgeHistoryInstance<EthBridgeHistory>;

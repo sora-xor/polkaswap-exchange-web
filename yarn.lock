@@ -2239,7 +2239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/wasm-crypto@npm:^7.5.2":
+"@polkadot/wasm-crypto@npm:7.5.2":
   version: 7.5.2
   resolution: "@polkadot/wasm-crypto@npm:7.5.2"
   dependencies:
@@ -2256,7 +2256,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/wasm-util@npm:7.5.2, @polkadot/wasm-util@npm:^7.5.2":
+"@polkadot/wasm-util@npm:7.5.2":
   version: 7.5.2
   resolution: "@polkadot/wasm-util@npm:7.5.2"
   dependencies:
@@ -10366,7 +10366,7 @@ __metadata:
     "@interactjs/modifiers": "npm:1.10.27"
     "@interactjs/utils": "npm:1.10.27"
     "@metamask/detect-provider": "npm:^2.0.0"
-    "@open-web3/api-mobx": "patch:@open-web3/api-mobx@npm%3A0.9.4-26#~/.yarn/patches/@open-web3-api-mobx-npm-0.9.4-26-8b418ea100.patch"
+    "@open-web3/api-mobx": "patch:@open-web3/api-mobx@npm:0.9.4-26#./.yarn/patches/@open-web3-api-mobx-npm-0.9.4-26-8b418ea100.patch"
     "@open-web3/orml-api-derive": "npm:1.1.4"
     "@open-web3/orml-type-definitions": "npm:1.1.4"
     "@open-web3/orml-types": "npm:1.1.4"

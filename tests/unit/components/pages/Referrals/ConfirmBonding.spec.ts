@@ -4,36 +4,12 @@ import { ref } from 'vue';
 
 import { Operation, XOR } from '@sora-substrate/sdk';
 
-const bondingMocks = vi.hoisted(() => {
-  const formatStringValue = vi.fn(() => 'formatted-amount');
-  const formatCodecNumber = vi.fn(() => 'formatted-fee');
-  const getFiatAmountByCodecString = vi.fn(() => 'fee-fiat');
-  const toggleVisibility = vi.fn();
-
-  return {
-    formatStringValue,
-    formatCodecNumber,
-    getFiatAmountByCodecString,
-    toggleVisibility,
-    routeName: ref(''),
-    storeMock: {
-      state: {
-        referrals: { amount: '1000000000000' },
-        wallet: {
-          settings: {
-            networkFees: {
-              [Operation.ReferralReserveXor]: '5000000000',
-              [Operation.ReferralUnreserveXor]: '1000000000',
-            },
-          },
-        },
-      },
-    },
-  };
-});
-
-const { formatStringValue, formatCodecNumber, getFiatAmountByCodecString, toggleVisibility, routeName, storeMock } =
-  bondingMocks;
+const formatStringValue = vi.hoisted(() => vi.fn(() => 'formatted-amount'));
+const formatCodecNumber = vi.hoisted(() => vi.fn(() => 'formatted-fee'));
+const getFiatAmountByCodecString = vi.hoisted(() => vi.fn(() => 'fee-fiat'));
+const toggleVisibility = vi.hoisted(() => vi.fn());
+const routeName = vi.hoisted(() => ({ value: '' }));
+let storeMock: { state: any };
 
 vi.mock('@/composables/useFormattedAmount', () => ({
   useFormattedAmount: () => ({
@@ -64,9 +40,24 @@ vi.mock('@/composables/useDialogModel', () => ({
   }),
 }));
 
-vi.mock('@/store', () => ({
-  default: storeMock,
-}));
+vi.mock('@/store', async () => {
+  const { Operation } = await import('@sora-substrate/sdk');
+  storeMock = {
+    state: {
+      referrals: { amount: '1000000000000' },
+      wallet: {
+        settings: {
+          networkFees: {
+            [Operation.ReferralReserveXor]: '5000000000',
+            [Operation.ReferralUnreserveXor]: '1000000000',
+          },
+        },
+      },
+    },
+  };
+
+  return { default: storeMock };
+});
 
 const mountComponent = async () => {
   const module = await import('@/components/pages/Referrals/ConfirmBonding.vue');

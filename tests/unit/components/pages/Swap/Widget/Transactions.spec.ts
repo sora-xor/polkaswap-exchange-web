@@ -165,6 +165,11 @@ const STableStub = defineComponent({
 
 const STableColumnStub = defineComponent({
   name: 'STableColumnStub',
+  props: {
+    width: [String, Number],
+    headerAlign: String,
+    align: String,
+  },
   setup(_, { slots }) {
     const getRows = inject<() => any[]>(TABLE_INJECTION_KEY, () => []);
     return () => {

@@ -1,6 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick, onBeforeUpdate, ref, type Ref } from 'vue';
+import { createPinia, setActivePinia } from 'pinia';
 
 import type { Nullable } from '@/types/common';
 import type { NetworkData } from '@/types/bridge';
@@ -13,13 +14,22 @@ const isSignTxDialogVisibleRef = ref(false);
 
 const getSupportedAppsSpy = vi.fn();
 const restoreSelectedNetworkSpy = vi.fn();
-const updateExternalBalanceSpy = vi.fn();
-const subscribeOnBlockUpdatesSpy = vi.fn();
-const updateOutgoingMaxLimitSpy = vi.fn();
-const resetBridgeFormSpy = vi.fn();
-const resetBlockUpdatesSubscriptionSpy = vi.fn();
-const resetOutgoingMaxLimitSubscriptionSpy = vi.fn();
-const setSignTxDialogVisibilitySpy = vi.fn();
+const bridgeStoreMock = {
+  resetBlockUpdatesSubscription: vi.fn(),
+  resetOutgoingMaxLimitSubscription: vi.fn(),
+  setSignTxDialogVisibility: vi.fn(),
+  updateExternalBalance: vi.fn(),
+  subscribeOnBlockUpdates: vi.fn(),
+  updateOutgoingMaxLimit: vi.fn(),
+  resetBridgeForm: vi.fn(),
+  get externalAccount() {
+    return externalAccountRef.value;
+  },
+};
+const updateExternalBalanceSpy = bridgeStoreMock.updateExternalBalance;
+const subscribeOnBlockUpdatesSpy = bridgeStoreMock.subscribeOnBlockUpdates;
+const updateOutgoingMaxLimitSpy = bridgeStoreMock.updateOutgoingMaxLimit;
+const resetBridgeFormSpy = bridgeStoreMock.resetBridgeForm;
 const disconnectExternalNetworkSpy = vi.fn();
 
 let soraAddressRef: Ref<string | null>;
@@ -34,16 +44,15 @@ const useInternalConnectMock = vi.fn();
 const useWeb3ConnectionMock = vi.fn();
 const useSubscriptionsMock = vi.fn();
 
-const WalletConfirmDialogStub = defineComponent({
-  name: 'WalletConfirmDialogStub',
-  setup(_props, { slots }) {
-    return () => h('div', { class: 'wallet-confirm-dialog-stub' }, slots.default?.());
-  },
-});
-
 vi.mock('@wallet', async () => {
   const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
   const wallet = createWalletMock();
+  const WalletConfirmDialogStub = defineComponent({
+    name: 'WalletConfirmDialogStub',
+    setup(_props, { slots }) {
+      return () => h('div', { class: 'wallet-confirm-dialog-stub' }, slots.default?.());
+    },
+  });
 
   return withWalletMock(wallet, {
     components: {
@@ -66,6 +75,23 @@ vi.mock('@/router', () => ({
       },
     })
   ),
+}));
+
+vi.mock('@/utils/legacy-store', () => ({
+  requireLegacyStore: () => ({
+    getters: {
+      bridge: {
+        get externalAccount() {
+          return externalAccountRef.value;
+        },
+      },
+      web3: {
+        get isValidNetwork() {
+          return true;
+        },
+      },
+    },
+  }),
 }));
 
 vi.mock('@/store', () => ({
@@ -109,13 +135,33 @@ vi.mock('@/store', () => ({
       },
     },
     commit: {
-      bridge: {
-        setSignTxDialogVisibility: (...args: unknown[]) => setSignTxDialogVisibilitySpy(...args),
-        resetBlockUpdatesSubscription: (...args: unknown[]) => resetBlockUpdatesSubscriptionSpy(...args),
-        resetOutgoingMaxLimitSubscription: (...args: unknown[]) => resetOutgoingMaxLimitSubscriptionSpy(...args),
-      },
+      bridge: {},
     },
   },
+}));
+
+vi.mock('@/stores/bridge', () => ({
+  useBridgeStore: () => bridgeStoreMock,
+}));
+
+vi.mock('@/stores/web3', () => ({
+  useWeb3Store: () => ({
+    get selectedNetworkData() {
+      return selectedNetworkRef.value;
+    },
+    get subAccount() {
+      return subAccountRef.value;
+    },
+    get networkSelected() {
+      return selectedNetworkRef.value?.id ?? null;
+    },
+    get networkType() {
+      return selectedNetworkRef.value?.type ?? null;
+    },
+    get selectSubNodeDialogVisibility() {
+      return false;
+    },
+  }),
 }));
 
 vi.mock('@/composables/useInternalConnect', () => ({
@@ -189,6 +235,7 @@ describe('BridgeContainer.vue', () => {
   });
 
   beforeEach(() => {
+    setActivePinia(createPinia());
     selectedNetworkRef.value = null;
     externalAccountRef.value = '';
     subAccountRef.value = null;
@@ -201,9 +248,13 @@ describe('BridgeContainer.vue', () => {
     subscribeOnBlockUpdatesSpy.mockReset().mockResolvedValue(undefined);
     updateOutgoingMaxLimitSpy.mockReset().mockResolvedValue(undefined);
     resetBridgeFormSpy.mockReset().mockResolvedValue(undefined);
-    resetBlockUpdatesSubscriptionSpy.mockReset().mockResolvedValue(undefined);
-    resetOutgoingMaxLimitSubscriptionSpy.mockReset().mockResolvedValue(undefined);
-    setSignTxDialogVisibilitySpy.mockReset().mockResolvedValue(undefined);
+    bridgeStoreMock.resetBlockUpdatesSubscription.mockReset();
+    bridgeStoreMock.resetOutgoingMaxLimitSubscription.mockReset();
+    bridgeStoreMock.setSignTxDialogVisibility.mockReset();
+    bridgeStoreMock.updateExternalBalance.mockReset();
+    bridgeStoreMock.subscribeOnBlockUpdates.mockReset();
+    bridgeStoreMock.updateOutgoingMaxLimit.mockReset();
+    bridgeStoreMock.resetBridgeForm.mockReset();
     disconnectExternalNetworkSpy.mockReset().mockResolvedValue(undefined);
 
     soraAddressRef = ref(null);
@@ -241,10 +292,10 @@ describe('BridgeContainer.vue', () => {
     expect(restoreSelectedNetworkSpy).toHaveBeenCalledTimes(1);
 
     await subscriptionsArgs.resetSubscriptions[0]!();
-    expect(resetBlockUpdatesSubscriptionSpy).toHaveBeenCalledTimes(1);
+    expect(bridgeStoreMock.resetBlockUpdatesSubscription).toHaveBeenCalledTimes(1);
 
     await subscriptionsArgs.resetSubscriptions[1]!();
-    expect(resetOutgoingMaxLimitSubscriptionSpy).toHaveBeenCalledTimes(1);
+    expect(bridgeStoreMock.resetOutgoingMaxLimitSubscription).toHaveBeenCalledTimes(1);
 
     wrapper.unmount();
   });

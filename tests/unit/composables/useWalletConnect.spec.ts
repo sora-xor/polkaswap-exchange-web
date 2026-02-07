@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, nextTick } from 'vue';
+import { createPinia, setActivePinia } from 'pinia';
 
 import { useWalletConnect } from '@/composables/useWalletConnect';
 import type { AppEIPProvider } from '@/types/evm/provider';
@@ -125,6 +126,27 @@ vi.mock('@/store', () => ({
   default: mockStore,
 }));
 
+const bridgeStorePiniaMock = vi.hoisted(() => ({
+  isSubBridge: false,
+  isSubAccountType: true,
+}));
+
+const web3StorePiniaMock = vi.hoisted(() => ({
+  evmProvider: mockStore.state.web3.evmProvider,
+  evmProviderLoading: null,
+  evmAddress: '0x123',
+  networkSelected: 'network',
+  networkType: 'type',
+}));
+
+vi.mock('@/stores/bridge', () => ({
+  useBridgeStore: () => bridgeStorePiniaMock,
+}));
+
+vi.mock('@/stores/web3', () => ({
+  useWeb3Store: () => web3StorePiniaMock,
+}));
+
 const { localStorageMock } = vi.hoisted(() => {
   const storage = {
     getItem: vi.fn(() => null),
@@ -146,6 +168,7 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
+  setActivePinia(createPinia());
   alertMock.mockReset();
   routerGo.mockReset();
   selectProviderMock.mockReset();
@@ -164,6 +187,13 @@ beforeEach(() => {
   walletStorageMock.set.mockClear();
   walletStorageMock.get.mockClear();
   walletStorageMock.remove.mockClear();
+  bridgeStorePiniaMock.isSubBridge = false;
+  bridgeStorePiniaMock.isSubAccountType = true;
+  web3StorePiniaMock.evmProvider = mockStore.state.web3.evmProvider;
+  web3StorePiniaMock.evmProviderLoading = null;
+  web3StorePiniaMock.evmAddress = '0x123';
+  web3StorePiniaMock.networkSelected = 'network';
+  web3StorePiniaMock.networkType = 'type';
 });
 
 afterAll(() => {

@@ -80,4 +80,15 @@ describe('useBridgeTransactionsStore', () => {
       expect.objectContaining({ direction: 'soraToExternal', asset: 'XOR', amount: '10' })
     );
   });
+
+  it('sets notification data via Pinia action', () => {
+    const store = useBridgeTransactionsStore();
+    const tx = sampleTx('pinia');
+
+    store.setNotificationData(tx);
+    expect(store.notificationData).toEqual(tx);
+
+    store.setNotificationData();
+    expect(store.notificationData).toBeNull();
+  });
 });

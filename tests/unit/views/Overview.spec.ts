@@ -178,33 +178,25 @@ vi.mock('@/composables/useInternalConnect', () => ({
   }),
 }));
 
-const TokenLogoStub = defineComponent({
-  name: 'TokenLogoStub',
-  props: ['token', 'size', 'class'],
-  setup(props) {
-    return () => h('div', { class: 'token-logo-stub' }, props.token?.symbol ?? '');
-  },
-});
-
-const InfoLineStub = defineComponent({
-  name: 'InfoLineStub',
-  props: ['label', 'value'],
-  setup(props) {
-    return () => h('div', { class: 'info-line-stub' }, `${props.label}:${props.value}`);
-  },
-});
-
-const FormattedAmountWithFiatValueStub = defineComponent({
-  name: 'FormattedAmountWithFiatValueStub',
-  props: ['value', 'fiatValue'],
-  setup(props) {
-    return () => h('div', { class: 'formatted-amount-fiat-stub' }, `${props.value}:${props.fiatValue}`);
-  },
-});
-
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
+  const TokenLogoStub = {
+    name: 'TokenLogoStub',
+    props: ['token', 'size', 'class'],
+    template: '<div class="token-logo-stub"></div>',
+  };
+  const InfoLineStub = {
+    name: 'InfoLineStub',
+    props: ['label', 'value'],
+    template: '<div class="info-line-stub"></div>',
+  };
+  const FormattedAmountWithFiatValueStub = {
+    name: 'FormattedAmountWithFiatValueStub',
+    props: ['value', 'fiatValue'],
+    template: '<div class="formatted-amount-fiat-stub"></div>',
+  };
+
+  return await createWalletMock({
     components: {
       TokenLogo: TokenLogoStub,
       InfoLine: InfoLineStub,

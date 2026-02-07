@@ -78,9 +78,15 @@ const getters = defineGetters<RemoveLiquidityState>()({
     const { getters } = removeLiquidityGetterContext(args);
 
     const balance = getters.liquidityBalanceFull;
-    const demeterLockedBalance = getters.demeterLockedBalance as FPNumber;
-    const ceresLockedBalance = getters.ceresLockedBalance as FPNumber;
-    const maxLocked = FPNumber.max(demeterLockedBalance, ceresLockedBalance) as FPNumber;
+    if (!(balance instanceof FPNumber)) {
+      return FPNumber.ZERO;
+    }
+
+    const demeterLockedBalance =
+      getters.demeterLockedBalance instanceof FPNumber ? getters.demeterLockedBalance : FPNumber.ZERO;
+    const ceresLockedBalance =
+      getters.ceresLockedBalance instanceof FPNumber ? getters.ceresLockedBalance : FPNumber.ZERO;
+    const maxLocked = FPNumber.max(demeterLockedBalance, ceresLockedBalance);
 
     return balance.sub(maxLocked);
   },
@@ -90,7 +96,9 @@ const getters = defineGetters<RemoveLiquidityState>()({
     if (!firstAddress) {
       return null;
     }
-    return rootGetters.assets.assetDataByAddress(firstAddress);
+    const byAddress =
+      typeof rootGetters.assets?.assetDataByAddress === 'function' ? rootGetters.assets.assetDataByAddress : () => null;
+    return byAddress(firstAddress);
   },
   secondToken(...args): Nullable<RegisteredAccountAsset> {
     const { getters, rootGetters } = removeLiquidityGetterContext(args);
@@ -98,7 +106,9 @@ const getters = defineGetters<RemoveLiquidityState>()({
     if (!secondAddress) {
       return null;
     }
-    return rootGetters.assets.assetDataByAddress(secondAddress);
+    const byAddress =
+      typeof rootGetters.assets?.assetDataByAddress === 'function' ? rootGetters.assets.assetDataByAddress : () => null;
+    return byAddress(secondAddress);
   },
   // First token free balance
   firstTokenBalance(...args): FPNumber {
@@ -123,7 +133,7 @@ const getters = defineGetters<RemoveLiquidityState>()({
   shareOfPool(...args): string {
     const { state, getters } = removeLiquidityGetterContext(args);
 
-    const balance = getters.liquidityBalanceFull;
+    const balance = getters.liquidityBalanceFull instanceof FPNumber ? getters.liquidityBalanceFull : FPNumber.ZERO;
     const removed = new FPNumber(state.liquidityAmount ?? 0);
     const totalSupply = FPNumber.fromCodecValue(getters.totalSupply);
     const totalSupplyAfter = totalSupply.sub(removed);

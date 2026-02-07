@@ -69,7 +69,7 @@ import { computed, onMounted, ref, toRef, watch } from 'vue';
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
 import { mstTrxDeadline } from '@/consts/mst';
-import store from '@/store';
+import { requireLegacyStore } from '@/utils/legacy-store';
 import type { MSTData } from '@/types/mst';
 import { validateAddress } from '@/util';
 
@@ -98,6 +98,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
+const store = requireLegacyStore();
 const { isVisible, setVisible, closeDialog } = useDialogVisibility(toRef(props, 'visible'), {
   emit: (value) => emit('update:visible', value),
   onClose: () => emit('close'),

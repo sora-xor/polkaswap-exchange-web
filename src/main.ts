@@ -1,29 +1,30 @@
 import { createApp, type App as VueApp } from 'vue';
-import { createPinia } from 'pinia';
 
 import '@/compat/runtime-helpers';
+import { installCompatWarningHandler } from '@/plugins/compatWarnings';
+import pinia from '@/plugins/pinia';
+import store from './store';
 import App from './App.vue';
 import i18n from './lang';
 import installPlugins from './plugins';
 import router from './router';
-import store from './store';
 import { isHeadlessOrOfflineEnv } from '@/utils/env';
 import { renderOfflineShell } from '@/utils/offlineShell';
-import { trackEvent } from '@/utils/telemetry';
+import { registerPilotFeedbackBridge, registerTelemetryStub, trackEvent } from '@/utils/telemetry';
 
 import './store/decorators';
 import './styles';
 
-function bootstrapApp(): VueApp {
+async function bootstrapApp(): Promise<VueApp> {
   const app = createApp(App);
-  const pinia = createPinia();
 
+  installCompatWarningHandler(app);
   app.use(store.original);
   app.use(pinia);
   app.use(router);
   app.use(i18n);
 
-  installPlugins(app, { pinia });
+  await installPlugins(app, { pinia });
 
   return app;
 }
@@ -39,6 +40,8 @@ const resolveBuildVariant = (): string => {
 const buildVariant = resolveBuildVariant();
 
 if (typeof window !== 'undefined') {
+  registerTelemetryStub(window.location?.search);
+  registerPilotFeedbackBridge();
   window.__PS_BUILD_VARIANT__ = buildVariant;
   if (window.location?.search?.includes('ipfs-check')) {
     window.__PS_IPFS_CHECK__ = true;
@@ -60,6 +63,11 @@ if (isHeadlessOrOfflineEnv()) {
     console.warn('[OfflineShell] skipped: #app container missing');
   }
 } else {
-  const app = bootstrapApp();
-  app.mount('#app');
+  bootstrapApp()
+    .then((app) => {
+      app.mount('#app');
+    })
+    .catch((error) => {
+      console.error('[bootstrap] Failed to mount application', error);
+    });
 }

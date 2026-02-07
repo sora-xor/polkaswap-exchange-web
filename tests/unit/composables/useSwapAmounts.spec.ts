@@ -24,6 +24,7 @@ vi.mock('@wallet', () => ({
   __esModule: true,
   default: walletModuleMock,
   ...walletModuleMock,
+  WALLET_CONSTS: {},
 }));
 
 const assetDataByAddress = vi.hoisted(() =>

@@ -25,6 +25,7 @@ import { computed } from 'vue';
 import { useBridgeTransaction } from '@/composables/useBridgeTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { useAssetsStore } from '@/stores/assets';
+import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
 import store from '@/store';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -44,11 +45,13 @@ defineOptions({
   },
 });
 
+const bridgeTransactionsStore = useBridgeTransactionsStore();
+
 const visible = defineModel<boolean>('visible', {
   default: false,
   set(value) {
     if (!value) {
-      store.commit.bridge.setNotificationData();
+      bridgeTransactionsStore.setNotificationData();
     }
     return value;
   },
@@ -56,7 +59,7 @@ const visible = defineModel<boolean>('visible', {
 
 const { t, tc } = useTranslation();
 
-const notificationData = computed(() => store.state.bridge.notificationData as Nullable<IBridgeTransaction>);
+const notificationData = computed(() => bridgeTransactionsStore.notificationData as Nullable<IBridgeTransaction>);
 const subBridgeConnector = computed<SubNetworksConnector>(() => store.state.bridge.subBridgeConnector);
 const whitelist = computed(() => store.getters.wallet.account.whitelist as Whitelist);
 
@@ -122,7 +125,7 @@ const txAccountLink = computed(() =>
 
 function close(): void {
   visible.value = false;
-  store.commit.bridge.setNotificationData();
+  bridgeTransactionsStore.setNotificationData();
 }
 
 async function addToken(): Promise<void> {

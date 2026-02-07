@@ -254,12 +254,13 @@ describe('swap store', () => {
 
   it('persists the loss warning flag', () => {
     const store = useSwapStore();
-    const setSpy = settingsStorage.set as unknown as ReturnType<typeof vi.fn>;
+    const setSpy = vi.spyOn(settingsStorage, 'set');
 
     store.setAllowLossPopup(false);
 
     expect(store.allowLossPopup).toBe(false);
     expect(setSpy).toHaveBeenCalledWith('allowSwapLossPopup', false);
+    setSpy.mockRestore();
   });
 
   it('derives price, reversed price, price impact, and min/max received with FPNumber precision', async () => {

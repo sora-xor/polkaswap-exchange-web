@@ -117,7 +117,7 @@ import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useWalletStore } from '@/stores/wallet';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -192,9 +192,10 @@ const delimiters = FPNumber.DELIMITERS_CONFIG;
 const { t } = useTranslation();
 const formattedAmount = useFormattedAmount();
 
-const currencySymbol = computed(() => (store.getters.wallet.settings.currencySymbol as string) ?? '');
-const exchangeRate = computed(() => (store.getters.wallet.settings.exchangeRate as number) ?? 1);
-const currency = computed(() => store.state.wallet.settings.currency ?? null);
+const walletStore = useWalletStore();
+const currencySymbol = computed(() => walletStore.currencySymbol ?? '');
+const exchangeRate = computed(() => walletStore.exchangeRate ?? 1);
+const currency = computed(() => walletStore.currency ?? null);
 
 const decimals = computed(() => {
   const token = props.token;
@@ -253,12 +254,7 @@ const maxFiatValueFormatted = computed(() => maxFiatValue.value.toString());
 
 const fiatAmount = computed(() => calcFiatAmount(props.value ?? ''));
 
-const slideValue = computed({
-  get: () => props.sliderValue,
-  set: (value: number) => {
-    store.commit.orderBook.setAmountSliderValue(value);
-  },
-});
+const slideValue = computed(() => props.sliderValue);
 
 const setFiatValue = (value: string): void => {
   fiatValue.value = value === maxFiatValueFormatted.value ? maxFiatValue.value.toFixed(props.fiatDecimals) : value;

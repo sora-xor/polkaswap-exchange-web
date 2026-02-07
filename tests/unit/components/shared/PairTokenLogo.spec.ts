@@ -13,15 +13,15 @@ const LogoSize = vi.hoisted(
     }) as const
 );
 
-const TokenLogoStub = {
-  name: 'TokenLogoStub',
-  props: ['token', 'size'],
-  template: '<div class="token-logo-stub" :data-size="size"></div>',
-};
-
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
+  const TokenLogoStub = {
+    name: 'TokenLogoStub',
+    props: ['token', 'size'],
+    template: '<div class="token-logo-stub" :data-size="size"></div>',
+  };
+
+  return await createWalletMock({
     components: {
       TokenLogo: TokenLogoStub,
     },

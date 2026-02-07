@@ -1,6 +1,6 @@
 import { defineModule } from 'direct-vuex';
 
-import { localActionContext } from '@/store';
+import { localActionContext } from '@/store/context';
 import { Module } from '@/store/consts';
 
 import actions from './actions';

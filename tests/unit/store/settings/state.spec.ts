@@ -12,6 +12,10 @@ vi.doMock('@wallet', () => ({
     set: vi.fn(),
     remove: vi.fn(),
   },
+  WALLET_CONSTS: {
+    IndexerType: { SUBQUERY: 'subquery', SUBSQUID: 'subsquid' },
+    SoraNetwork: { Test: 'Test' },
+  },
 }));
 
 vi.mock('@/lang', () => ({

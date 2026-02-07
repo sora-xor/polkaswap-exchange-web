@@ -25,11 +25,11 @@ export function useTransaction(options?: Parameters<typeof useLoading>[0]) {
   const notification = useNotification();
   const { getOperationMessage } = useOperations();
 
-  const shouldBalanceBeHidden = computed(() => Boolean(store.state.wallet.settings.shouldBalanceBeHidden));
   const walletStore = useWalletStore();
+  const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
   const addAsset = walletStore.addAsset;
-  const addActiveTransaction = store.commit.wallet.transactions.addActiveTx;
-  const removeActiveTxs = store.commit.wallet.transactions.removeActiveTxs;
+  const addActiveTransaction = walletStore.addActiveTransaction;
+  const removeActiveTransactions = walletStore.removeActiveTransactions;
 
   const getLastTransaction = async (time: number): Promise<HistoryItem> => {
     const tx = findLast((item: HistoryItem) => Number(item.startTime) > time, api.historyList);
@@ -78,7 +78,7 @@ export function useTransaction(options?: Parameters<typeof useLoading>[0]) {
       }
     }
 
-    removeActiveTxs([value.id as string]);
+    removeActiveTransactions([value.id as string]);
   };
 
   const withNotifications = async (handler: AsyncFnWithoutArgs): Promise<void> => {

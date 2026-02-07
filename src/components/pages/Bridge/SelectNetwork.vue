@@ -30,7 +30,7 @@ import { components } from '@wallet';
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
-import store from '@/store';
+import { useWeb3Store } from '@/stores/web3';
 
 import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
 
@@ -65,23 +65,22 @@ defineOptions({
 const { t } = useTranslation();
 const { getNetworkIcon } = useNetworkFormatter();
 
+const web3Store = useWeb3Store();
+
 const visibility = computed({
-  get: () => Boolean(store.state.web3.selectNetworkDialogVisibility),
+  get: () => web3Store.selectNetworkDialogVisibility,
   set: (flag: boolean) => {
-    store.commit.web3.setSelectNetworkDialogVisibility(flag);
+    web3Store.setSelectNetworkDialogVisibility(flag);
   },
 });
 
 const availableNetworks = computed(
   () =>
-    (store.getters.web3.availableNetworks as Record<
-      BridgeNetworkType,
-      Partial<Record<BridgeNetworkId, AvailableNetwork>>
-    >) ?? {}
+    (web3Store.availableNetworks as Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>>) ?? {}
 );
 
-const networkType = computed<Nullable<BridgeNetworkType>>(() => store.state.web3.networkType);
-const networkSelected = computed<Nullable<BridgeNetworkId>>(() => store.state.web3.networkSelected);
+const networkType = computed<Nullable<BridgeNetworkType>>(() => web3Store.networkType);
+const networkSelected = computed<Nullable<BridgeNetworkId>>(() => web3Store.networkSelected);
 
 const networks = computed<NetworkItem[]>(() =>
   Object.entries(availableNetworks.value)
@@ -122,7 +121,7 @@ const selectedNetworkTuple = computed({
     const type = typeRaw as BridgeNetworkType;
     const id = type === BridgeNetworkType.Sub ? (idRaw as SubNetwork) : (Number(idRaw) as BridgeNetworkId);
 
-    store.dispatch.web3.selectExternalNetwork({ id, type });
+    web3Store.selectExternalNetwork({ id, type });
     visibility.value = false;
   },
 });

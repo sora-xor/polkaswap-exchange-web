@@ -40,8 +40,10 @@
 <script setup lang="ts">
 import { Components } from '@/consts';
 import { useOrderBook } from '@/composables/useOrderBook';
+import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
+import { useOrderBookStore } from '@/stores/orderBook';
 
 defineOptions({
   components: {
@@ -50,7 +52,17 @@ defineOptions({
 });
 
 const { t } = useTranslation();
-const { completedOrders } = useOrderBook();
+const { completedOrders, orderBookId, baseAsset, quoteAsset } = useOrderBook();
+const orderBookStore = useOrderBookStore();
+
+usePiniaTelemetry('order-book', [{ store: orderBookStore, storeId: 'orderBook' }], {
+  metadata: () => ({
+    widget: 'market-trades',
+    orderBookId: orderBookId.value || null,
+    baseAsset: baseAsset.value?.symbol ?? null,
+    quoteAsset: quoteAsset.value?.symbol ?? null,
+  }),
+});
 
 defineExpose({ completedOrders });
 </script>

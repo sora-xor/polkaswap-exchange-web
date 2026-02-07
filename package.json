@@ -12,10 +12,12 @@
   "private": true,
   "author": "jihoon@tutanota.de <jihoon@tutanota.de>",
   "main": "index.js",
+  "packageManager": "yarn@4.10.3",
   "scripts": {
     "serve": "vite",
     "build": "vite build",
     "build:vue3": "VITE_DISABLE_COMPAT=true vite build",
+    "analyze:store": "tsx ./scripts/analyze/store-usage.ts",
     "analyze:compat": "tsx ./scripts/analyze/compat-alias.ts",
     "compat:smoke": "tsx ./scripts/analyze/compat-smoke.ts",
     "preview": "vite preview",
@@ -30,8 +32,11 @@
     "lint": "eslint",
     "lang:generate": "tsx ./scripts/lang/generate.ts",
     "lang:fix": "tsx ./scripts/lang/fix.ts",
+    "lang:diff": "tsx ./scripts/lang/diff-runner.ts",
     "lang:mt": "tsx ./scripts/lang/mt.ts",
+    "kpi:report": "tsx ./scripts/kpi/report.ts",
     "test:unit": "node ./scripts/testing/run-vitest-unit.mjs",
+    "test:ipfs": "node ./scripts/ipfs-smoke.mjs",
     "test:translation": "vitest run --config vitest.config.mjs --project translation --pass-with-no-tests",
     "test:e2e": "playwright test",
     "test:all": "yarn test:unit"
@@ -48,7 +53,7 @@
     "@interactjs/modifiers": "1.10.27",
     "@interactjs/utils": "1.10.27",
     "@metamask/detect-provider": "^2.0.0",
-    "@open-web3/api-mobx": "patch:@open-web3/api-mobx@npm%3A0.9.4-26#~/.yarn/patches/@open-web3-api-mobx-npm-0.9.4-26-8b418ea100.patch",
+    "@open-web3/api-mobx": "patch:@open-web3/api-mobx@npm:0.9.4-26#./.yarn/patches/@open-web3-api-mobx-npm-0.9.4-26-8b418ea100.patch",
     "@open-web3/orml-api-derive": "1.1.4",
     "@open-web3/orml-type-definitions": "1.1.4",
     "@open-web3/orml-types": "1.1.4",
@@ -165,7 +170,11 @@
     "ipfs-unixfs": "6.0.9",
     "ipfs-unixfs-exporter": "7.0.11",
     "ipfs-unixfs-importer": "9.0.10",
-    "@open-web3/api-mobx": "patch:@open-web3/api-mobx@npm:0.9.4-26#./.yarn/patches/@open-web3-api-mobx-npm-0.9.4-26-8b418ea100.patch"
+    "@open-web3/api-mobx": "patch:@open-web3/api-mobx@npm:0.9.4-26#./.yarn/patches/@open-web3-api-mobx-npm-0.9.4-26-8b418ea100.patch",
+    "@polkadot/wasm-crypto": "7.5.2",
+    "@polkadot/wasm-bridge": "7.5.2",
+    "@polkadot/wasm-crypto-wasm": "7.5.2",
+    "@polkadot/wasm-util": "7.5.2"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

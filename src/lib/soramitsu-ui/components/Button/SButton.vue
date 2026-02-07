@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { SSpinner } from '../Spinner';
 import { usePropTypeFilter } from '@soramitsu-ui/ui/composables/prop-type-filter';
 import {

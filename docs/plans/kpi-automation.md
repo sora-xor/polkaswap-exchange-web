@@ -41,23 +41,11 @@ The script will also render a Markdown summary appended to `docs/status/kpi-hist
 
 ## Implementation Tasks
 
-1. **Script scaffolding**
-   - Add `scripts/kpi/report.ts` using `tsx` runner.
-   - Accept optional flags (`--since`, `--output=json|md`).
-2. **Data adapters**
-   - Git metrics: use `simple-git` or spawn shell commands.
-   - CI metrics: DevOps exposes endpoint (or use GitHub Actions API) with PAT stored in CI secrets.
-   - Bundle delta: read JSON files and compute size totals.
-3. **Output & validation**
-   - Write JSON to `tmp/kpi-report.json`.
-   - Generate Markdown summary and update `docs/status/kpi-history.md` with new entry (include date, metrics, status).
-   - Validate script with unit tests under `tests/unit/scripts/kpi/report.spec.ts` (mock adapters).
-4. **CI integration**
-   - DevOps adds nightly workflow (`kpi-report.yml`) to run `yarn kpi:report --output=json`.
-   - Publish artifact and post summary to Slack (via existing tooling or new webhook).
-5. **Documentation**
-   - Update `README.md` (developer section) with instructions for running KPI report locally.
-   - Add status link to `roadmap.md` KPI section.
+- [x] **Script scaffolding** — `scripts/kpi/report.ts` (run via `yarn kpi:report`) supports `--root`, `--ci`, `--parity`, `--bundle-baseline`, and `--bundle-current`, defaulting to repo paths.
+- [x] **Data adapters** — class-component scan, Pinia parity table parser, bundle delta calculator, and CI status loader from a JSON artifact (`compatBuilds`/`translationTests`).
+- [x] **Output & validation** — writes JSON to `tmp/kpi-report.json`, appends Markdown rows to `docs/status/kpi-history.md`, and renders Markdown when `--output=md`.
+- [ ] **CI integration** — DevOps to wire the nightly workflow to emit the CI status JSON and call `yarn kpi:report` (Slack/webhook posting unchanged for now).
+- [x] **Documentation** — README + this plan updated; unit coverage lives in `tests/unit/scripts/kpi/report.spec.ts`.
 
 ## Success Criteria
 
@@ -74,9 +62,9 @@ The script will also render a Markdown summary appended to `docs/status/kpi-hist
 
 ## Next Steps
 
-- [ ] Platform engineer: scaffold script and git metrics adapter (due Sprint 2 Week 1).
-- [ ] DevOps: expose CI endpoints / workflow outputs (due Sprint 2 Week 1).
-- [ ] Migration lead: define parity checklist export format in `docs/plans/vue3-migration.md` (due Sprint 2 Week 1).
-- [ ] QA automation: add smoke test verifying script output format (due Sprint 2 Week 2).
+- [x] Platform engineer: scaffold script and git metrics adapter (see `scripts/kpi/report.ts`).
+- [ ] DevOps: expose CI endpoints / workflow outputs (due Sprint 2 Week 1) — pipeline should write a `ci-status.json` artifact consumable by `--ci`.
+- [x] Migration lead: define parity checklist export format in `docs/plans/vue3-migration.md` (now tracked in `docs/plans/pinia-store-parity.md`).
+- [x] QA automation: add smoke test verifying script output format (see `tests/unit/scripts/kpi/report.spec.ts`).
 
 Update this plan as tasks complete; move action items to the migration board.

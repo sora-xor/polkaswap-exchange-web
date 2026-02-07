@@ -55,7 +55,9 @@ export default class ConfirmDialog extends mixins(NotificationMixin, LoadingMixi
   }
 
   get passphrase(): Nullable<string> {
-    return this.getPassword(this.account.address);
+    const address = this.account?.address;
+
+    return address ? this.getPassword(address) : null;
   }
 
   async handleConfirm(password: string): Promise<void> {
@@ -65,12 +67,19 @@ export default class ConfirmDialog extends mixins(NotificationMixin, LoadingMixi
       await delay(250);
 
       await this.withAppNotification(async () => {
+        const address = this.account?.address;
+
+        if (!address) {
+          this.setVisibility(false);
+          return;
+        }
+
         unlockAccountPair(this.chainApi, password);
 
         if (this.isSignTxDialogDisabled) {
-          this.setAccountPassphrase({ address: this.account.address, password });
+          this.setAccountPassphrase({ address, password });
         } else {
-          this.resetAccountPassphrase(this.account.address);
+          this.resetAccountPassphrase(address);
         }
 
         this.setVisibility(false);

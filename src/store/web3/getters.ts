@@ -118,7 +118,7 @@ const getters = defineGetters<Web3State>()({
   appEvmProviders(...args): AppEIPProvider[] {
     const { state, rootState } = web3GetterContext(args);
 
-    const isDesktop = rootState.wallet.account.isDesktop;
+    const isDesktop = Boolean(rootState?.wallet?.account?.isDesktop);
 
     if (isDesktop) return [WalletConnectProvider];
 

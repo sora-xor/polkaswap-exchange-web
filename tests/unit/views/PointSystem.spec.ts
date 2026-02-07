@@ -82,7 +82,13 @@ vi.mock('@/store', () => ({
 
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock();
+  return createWalletMock({
+    WALLET_CONSTS: {
+      FontSizeRate: { MEDIUM: 'MEDIUM' },
+      FontWeightRate: { MEDIUM: 'MEDIUM' },
+      LogoSize: { SMALL: 'SMALL' },
+    },
+  });
 });
 
 vi.mock('@wallet/src/util', () => ({

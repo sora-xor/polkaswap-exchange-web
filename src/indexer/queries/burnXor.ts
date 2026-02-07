@@ -1,5 +1,6 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { getCurrentIndexer } from '@wallet';
+import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -8,8 +9,6 @@ import type {
   HistoryElement,
   HistoryElementAssetBurn,
 } from '@wallet/lib/services/indexer/types';
-
-const { IndexerType } = WALLET_CONSTS;
 
 type XorBurn = {
   address: string;

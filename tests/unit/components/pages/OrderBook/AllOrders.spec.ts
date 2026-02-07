@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 
 import { Filter, OrderStatus } from '@/types/orderBook';
 
@@ -9,9 +9,11 @@ import type { OrderData } from '@/types/orderBook';
 
 const fetchOrdersMock = vi.fn();
 const walletStoreMock = { address: '5F6...' };
-const currentOrderBook = {
-  orderBookId: { base: 'base-asset', quote: 'quote-asset', dexId: 0 },
-} as unknown as OrderBook;
+const currentOrderBookRef = {
+  value: {
+    orderBookId: { base: 'base-asset', quote: 'quote-asset', dexId: 0 },
+  } as OrderBook | null,
+};
 
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
@@ -25,6 +27,13 @@ vi.mock('@/indexer/queries/orderBook/orders', () => ({
 vi.mock('@/stores/wallet', () => ({
   __esModule: true,
   useWalletStore: () => walletStoreMock,
+}));
+
+vi.mock('@/composables/useOrderBookUserOrders', () => ({
+  __esModule: true,
+  useOrderBookUserOrders: () => ({
+    currentOrderBook: computed(() => currentOrderBookRef.value),
+  }),
 }));
 
 vi.mock('@/composables/useLoading', () => ({
@@ -55,17 +64,6 @@ vi.mock('@/components/pages/OrderBook/Tables/OrderTable.vue', () => ({
   }),
 }));
 
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: {
-    getters: {
-      orderBook: {
-        currentOrderBook,
-      },
-    },
-  },
-}));
-
 describe('AllOrders.vue', () => {
   beforeEach(() => {
     fetchOrdersMock.mockReset();
@@ -93,7 +91,7 @@ describe('AllOrders.vue', () => {
     await flushPromises();
 
     expect(fetchOrdersMock).toHaveBeenCalledTimes(1);
-    expect(fetchOrdersMock).toHaveBeenCalledWith(walletStoreMock.address, currentOrderBook.orderBookId);
+    expect(fetchOrdersMock).toHaveBeenCalledWith(walletStoreMock.address, currentOrderBookRef.value?.orderBookId);
 
     const ordersLength = wrapper.find('.order-table-stub').attributes('data-orders');
     expect(ordersLength).toBe(String(dataset.length));

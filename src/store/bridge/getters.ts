@@ -10,6 +10,7 @@ import { resolveAssetLookup, resolveRegisteredAssets } from '@/store/bridge/util
 import { isWaitingForAction } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
+import { requireLegacyStore } from '@/utils/legacy-store';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/sdk';
@@ -19,6 +20,24 @@ import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/type
 
 const chainAddress = (address: string, connector: SubNetworksConnector) => {
   return connector.network?.subNetworkConnection.nodeIsConnected ? connector.network.formatAddress(address) : address;
+};
+
+const resolveWalletAccount = (rootState: any) => {
+  const account = rootState?.wallet?.account;
+  if (account) return account;
+
+  const legacyStore = requireLegacyStore();
+
+  return legacyStore?.state?.wallet?.account;
+};
+
+const resolveAssetsRegistry = (rootState: any) => {
+  const assetsState = rootState?.assets ?? requireLegacyStore()?.state?.assets ?? {};
+  return resolveRegisteredAssets(assetsState);
+};
+
+const resolveWeb3State = (rootState: any) => {
+  return rootState?.web3 ?? requireLegacyStore()?.state?.web3 ?? {};
 };
 
 const getters = defineGetters<BridgeState>()({
@@ -43,11 +62,7 @@ const getters = defineGetters<BridgeState>()({
   nativeToken(...args): Nullable<RegisteredAccountAsset> {
     const { rootGetters, rootState } = bridgeGetterContext(args);
     const assetLookup = resolveAssetLookup(rootGetters);
-    const {
-      wallet: {
-        account: { assets },
-      },
-    } = rootState;
+    const assets = resolveWalletAccount(rootState)?.assets ?? [];
     const {
       web3: { selectedNetwork },
     } = rootGetters;
@@ -60,7 +75,7 @@ const getters = defineGetters<BridgeState>()({
 
     const filteredBySymbol = assets.filter((asset) => asset.symbol === symbol);
 
-    const registry = resolveRegisteredAssets(rootState.assets);
+    const registry = resolveAssetsRegistry(rootState);
 
     const registered = filteredBySymbol.find((asset) => asset.address in registry);
 
@@ -80,7 +95,7 @@ const getters = defineGetters<BridgeState>()({
     const { getters, rootState } = bridgeGetterContext(args);
 
     const { asset, isSubBridge } = getters;
-    const registeredAssets = resolveRegisteredAssets(rootState.assets);
+    const registeredAssets = resolveAssetsRegistry(rootState);
 
     if (!asset) return false;
     if (!(asset.address in registeredAssets)) return false;
@@ -94,7 +109,7 @@ const getters = defineGetters<BridgeState>()({
   isSidechainAsset(...args): boolean {
     const { getters, rootState } = bridgeGetterContext(args);
     const { asset, isSubBridge } = getters;
-    const registeredAssets = resolveRegisteredAssets(rootState.assets);
+    const registeredAssets = resolveAssetsRegistry(rootState);
 
     if (!asset) return false;
     if (!(asset.address in registeredAssets)) return false;
@@ -108,7 +123,7 @@ const getters = defineGetters<BridgeState>()({
 
   autoselectedAssetAddress(...args): Nullable<string> {
     const { rootState } = bridgeGetterContext(args);
-    const registeredAssets = resolveRegisteredAssets(rootState.assets);
+    const registeredAssets = resolveAssetsRegistry(rootState);
     const assetIds = Object.keys(registeredAssets);
 
     if (assetIds.length !== 1) return null;
@@ -118,7 +133,7 @@ const getters = defineGetters<BridgeState>()({
 
   isSubAccountType(...args): boolean {
     const { rootState } = bridgeGetterContext(args);
-    const { networkSelected, networkType } = rootState.web3;
+    const { networkSelected, networkType } = resolveWeb3State(rootState);
 
     if (networkType === BridgeNetworkType.Sub) {
       return !subBridgeApi.isEvmAccount(networkSelected as SubNetwork);
@@ -129,7 +144,7 @@ const getters = defineGetters<BridgeState>()({
 
   externalAccount(...args): string {
     const { getters, rootState } = bridgeGetterContext(args);
-    const { evmAddress, subAddress } = rootState.web3;
+    const { evmAddress, subAddress } = resolveWeb3State(rootState);
 
     if (getters.isSubAccountType) {
       return subAddress;
@@ -140,8 +155,8 @@ const getters = defineGetters<BridgeState>()({
 
   sender(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
-    const { address: soraAddress } = rootState.wallet.account;
-    const { evmAddress, subAddress } = rootState.web3;
+    const soraAddress = resolveWalletAccount(rootState)?.address ?? '';
+    const { evmAddress, subAddress } = resolveWeb3State(rootState);
 
     if (state.isSoraToEvm) return soraAddress;
 
@@ -150,8 +165,8 @@ const getters = defineGetters<BridgeState>()({
 
   senderName(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
-    const { name: soraName } = rootState.wallet.account;
-    const { subAddressName } = rootState.web3;
+    const soraName = resolveWalletAccount(rootState)?.name ?? '';
+    const { subAddressName } = resolveWeb3State(rootState);
 
     if (state.isSoraToEvm) return soraName;
 
@@ -160,8 +175,8 @@ const getters = defineGetters<BridgeState>()({
 
   recipient(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
-    const { address: soraAddress } = rootState.wallet.account;
-    const { evmAddress, subAddress } = rootState.web3;
+    const soraAddress = resolveWalletAccount(rootState)?.address ?? '';
+    const { evmAddress, subAddress } = resolveWeb3State(rootState);
 
     if (!state.isSoraToEvm) return soraAddress;
 
@@ -170,8 +185,8 @@ const getters = defineGetters<BridgeState>()({
 
   recipientName(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
-    const { name: soraName } = rootState.wallet.account;
-    const { subAddressName } = rootState.web3;
+    const soraName = resolveWalletAccount(rootState)?.name ?? '';
+    const { subAddressName } = resolveWeb3State(rootState);
 
     if (!state.isSoraToEvm) return soraName;
 
@@ -180,18 +195,15 @@ const getters = defineGetters<BridgeState>()({
 
   isEthBridge(...args): boolean {
     const { rootState } = bridgeGetterContext(args);
-
-    return rootState.web3.networkType === BridgeNetworkType.Eth;
+    return resolveWeb3State(rootState).networkType === BridgeNetworkType.Eth;
   },
   isEvmBridge(...args): boolean {
     const { rootState } = bridgeGetterContext(args);
-
-    return rootState.web3.networkType === BridgeNetworkType.Evm;
+    return resolveWeb3State(rootState).networkType === BridgeNetworkType.Evm;
   },
   isSubBridge(...args): boolean {
     const { rootState } = bridgeGetterContext(args);
-
-    return rootState.web3.networkType === BridgeNetworkType.Sub;
+    return resolveWeb3State(rootState).networkType === BridgeNetworkType.Sub;
   },
   operation(...args): Operation {
     const { state, getters } = bridgeGetterContext(args);
@@ -232,7 +244,7 @@ const getters = defineGetters<BridgeState>()({
   },
   networkHistoryId(...args): Nullable<BridgeNetworkId> {
     const { getters, rootState } = bridgeGetterContext(args);
-    const { networkSelected } = rootState.web3;
+    const { networkSelected } = resolveWeb3State(rootState);
 
     if (!networkSelected) return null;
     if (!getters.isSubBridge) return networkSelected;
@@ -253,7 +265,11 @@ const getters = defineGetters<BridgeState>()({
   hasWaitingForActionTx(...args): boolean {
     const { getters } = bridgeGetterContext(args);
 
-    return Object.values(getters.history).some((item) => isWaitingForAction(item));
+    const history = getters.history || {};
+
+    if (!history || typeof history !== 'object') return false;
+
+    return Object.values(history).some((item) => isWaitingForAction(item));
   },
 });
 

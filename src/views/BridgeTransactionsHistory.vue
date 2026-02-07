@@ -98,11 +98,11 @@ import { useNumberFormatter } from '@/composables/useNumberFormatter';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
 import { useBridgeFormStore } from '@/stores/bridge/form';
 import { useBridgeHistoryStore } from '@/stores/bridge/history';
 import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
+import { useBridgeStore } from '@/stores/bridge';
 
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
@@ -139,6 +139,7 @@ const { loading: parentLoading, withParentLoading } = useLoading();
 const bridgeHistory = useBridgeHistory({ parentLoading });
 const bridgeHistoryStore = useBridgeHistoryStore();
 const bridgeTransactionsStore = useBridgeTransactionsStore();
+const bridgeStore = useBridgeStore();
 const bridgeFormStore = useBridgeFormStore();
 usePiniaTelemetry('bridge-history', [
   { store: bridgeHistoryStore, storeId: 'bridgeHistory' },
@@ -153,8 +154,8 @@ const { history, networkHistoryLoading, updateExternalHistory, showHistory, setH
 const { navigateToBridge } = bridgeCore;
 
 const registeredAssets = computed(() => assetsStore.registeredAssets as Record<string, BridgeRegisteredAsset>);
-const historyPage = computed(() => store.state.bridge.historyPage as number);
-const networkSelected = computed(() => store.state.web3.networkSelected);
+const historyPage = computed(() => bridgeHistoryStore.historyPage);
+const networkHistoryId = computed(() => bridgeStore.networkHistoryId);
 
 const query = ref('');
 const currentPage = ref(historyPage.value || 1);
@@ -253,7 +254,7 @@ const handleResetSearch = () => {
   resetSearch();
 };
 
-const updateBridgeHistoryAction = () => store.dispatch.bridge.updateBridgeHistory();
+const updateBridgeHistoryAction = () => bridgeStore.updateBridgeHistory();
 
 const fetchNetworkHistory = async () => {
   await withParentLoading(async () => {
@@ -271,7 +272,7 @@ const fetchNetworkHistory = async () => {
   });
 };
 
-watch(networkSelected, fetchNetworkHistory, { immediate: true });
+watch(networkHistoryId, fetchNetworkHistory, { immediate: true });
 
 const formatAmount = (item: IBridgeTransaction, received = false): string => {
   const amount = received ? (item.amount2 ?? item.amount) : item.amount;

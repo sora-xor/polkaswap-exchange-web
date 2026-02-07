@@ -22,7 +22,7 @@ import { computed, ref, watch } from 'vue';
 import { api } from '@/api';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
-import store from '@/store';
+import { getLegacyStore } from '@/utils/legacy-store';
 import type { AccountIdentity, PolkadotJsAccount } from '@/types/common';
 import { formatAccountAddress, getAccountIdentity } from '@/util';
 
@@ -35,6 +35,7 @@ import WalletAvatar from './WalletAvatar.vue';
 import type { WithConnectionApi } from '@sora-substrate/sdk';
 
 const DEFAULT_NAME = '<unknown>';
+const resolveStore = () => getLegacyStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any);
 
 const props = withDefaults(
   defineProps<{
@@ -54,13 +55,14 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
+const store = requireLegacyStore();
 
-const isWalletLoaded = computed(() => store.state.wallet.settings.isWalletLoaded);
+const isWalletLoaded = computed(() => resolveStore()?.state?.wallet?.settings?.isWalletLoaded ?? false);
 const { withApi } = useLoading({ isWalletLoaded });
 
 const resolvedChainApi = computed<WithConnectionApi>(() => props.chainApi ?? api);
 
-const connected = computed(() => store.getters['wallet/account/account'] as Nullable<PolkadotJsAccount>);
+const connected = computed(() => resolveStore()?.getters?.['wallet/account/account'] as Nullable<PolkadotJsAccount>);
 
 const account = computed<Nullable<PolkadotJsAccount>>(() => props.polkadotAccount ?? connected.value ?? null);
 

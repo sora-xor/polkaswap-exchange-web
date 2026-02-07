@@ -45,7 +45,7 @@ import { computed, ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { WalletFilteringOptions, type WalletAssetFilters } from '@/consts';
-import store from '@/store';
+import { requireLegacyStore } from '@/utils/legacy-store';
 
 import FormattedAmount from './FormattedAmount.vue';
 
@@ -63,6 +63,7 @@ const emit = defineEmits<{
 }>();
 
 const { t, TranslationConsts } = useTranslation();
+const store = requireLegacyStore();
 
 const filters = computed<WalletAssetFilters>(() => store.state.wallet.settings.filters);
 

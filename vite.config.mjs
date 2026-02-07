@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
+import './scripts/suppress-baseline-warning.js';
 
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
@@ -8,6 +9,9 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import svgLoader from 'vite-svg-loader';
 
 const isTest = !!process.env.VITEST;
+const projectArgIndex = process.argv.findIndex((arg) => arg === '--project');
+const vitestProject = projectArgIndex >= 0 ? process.argv[projectArgIndex + 1] : undefined;
+const disableNodePolyfills = vitestProject === 'unit-scripts' || process.env.DISABLE_VITE_NODE_POLYFILLS === '1';
 
 const stylesPath = fileURLToPath(new URL('./src/styles', import.meta.url));
 const nodeModulesPath = fileURLToPath(new URL('./node_modules', import.meta.url));
@@ -36,6 +40,7 @@ const soraneoWalletCssFallbackPath = fileURLToPath(
 );
 const soraneoWalletCssEntry = existsSync(soraneoWalletCssPath) ? soraneoWalletCssPath : soraneoWalletCssFallbackPath;
 const walletShimPath = fileURLToPath(new URL('./src/shims/wallet.ts', import.meta.url));
+const polkadotUiSharedPath = fileURLToPath(new URL('./vendor/@polkadot/ui-shared', import.meta.url));
 
 const alias = [
   { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
@@ -128,6 +133,10 @@ const alias = [
     replacement: fileURLToPath(new URL('./vendor/tabbable', import.meta.url)),
   },
   {
+    find: '@polkadot/ui-shared',
+    replacement: polkadotUiSharedPath,
+  },
+  {
     find: '@polkadot/vue-identicon',
     replacement: fileURLToPath(new URL('./vendor/@polkadot/vue-identicon', import.meta.url)),
   },
@@ -147,14 +156,6 @@ const alias = [
     find: 'vue-resize',
     replacement: fileURLToPath(new URL('./vendor/vue-resize/dist/vue-resize.esm.js', import.meta.url)),
   },
-  {
-    find: 'vue-class-component',
-    replacement: fileURLToPath(new URL('./src/stubs/vue-class-component.ts', import.meta.url)),
-  },
-  {
-    find: 'vue-property-decorator',
-    replacement: fileURLToPath(new URL('./src/stubs/vue-property-decorator.ts', import.meta.url)),
-  },
 ];
 
 if (isTest) {
@@ -173,8 +174,11 @@ if (isTest) {
   const ipfsStubPath = fileURLToPath(new URL('./tests/stubs/ipfs-unixfs-importer', import.meta.url));
   const nftStorageStubPath = fileURLToPath(new URL('./tests/stubs/nft-storage.ts', import.meta.url));
   const stubsPath = fileURLToPath(new URL('./tests/stubs', import.meta.url));
+  const punycodePath = fileURLToPath(new URL('./node_modules/punycode/punycode.js', import.meta.url));
 
   alias.unshift(
+    { find: /node-stdlib-browser\/node_modules\/punycode\/?$/, replacement: punycodePath },
+    { find: /^punycode\/?$/, replacement: punycodePath },
     { find: '@stubs', replacement: stubsPath },
     { find: 'nft.storage', replacement: nftStorageStubPath },
     { find: /^ipfs-unixfs-importer/, replacement: ipfsStubPath }
@@ -183,7 +187,7 @@ if (isTest) {
 
 export default defineConfig({
   base: './',
-  plugins: [vue(), dynamicImport(), svgLoader(), nodePolyfills()],
+  plugins: [vue(), dynamicImport(), svgLoader(), ...(disableNodePolyfills ? [] : [nodePolyfills()])],
   resolve: {
     alias,
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],

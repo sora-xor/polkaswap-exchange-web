@@ -1,9 +1,14 @@
 #!/usr/bin/env node
 import { spawn } from 'node:child_process';
 import { join } from 'node:path';
+import { existsSync, writeFileSync } from 'node:fs';
 
 const LOCALSTORAGE_FILENAME = '.vitest-localstorage.sqlite';
 const localStoragePath = join(process.cwd(), LOCALSTORAGE_FILENAME);
+
+if (!existsSync(localStoragePath)) {
+  writeFileSync(localStoragePath, '');
+}
 
 const existingNodeOptions = process.env.NODE_OPTIONS ? process.env.NODE_OPTIONS.split(/\s+/).filter(Boolean) : [];
 const sanitizedOptions = existingNodeOptions.filter((flag) => !flag.startsWith('--localstorage-file'));

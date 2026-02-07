@@ -70,8 +70,10 @@ import { PriceVariant as LiquidityPriceVariant } from '@sora-substrate/liquidity
 import { Components } from '@/consts';
 import { useOrderBook } from '@/composables/useOrderBook';
 import { useLoading } from '@/composables/useLoading';
+import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
+import { useOrderBookStore } from '@/stores/orderBook';
 
 defineOptions({
   inheritAttrs: false,
@@ -84,6 +86,9 @@ const { t } = useTranslation();
 const { loading, withLoading, withParentLoading } = useLoading();
 
 const {
+  orderBookId,
+  baseAsset,
+  quoteAsset,
   asksFormatted,
   bidsFormatted,
   sellOrders,
@@ -105,6 +110,16 @@ const {
   unsubscribeFromOrderBook,
   PriceVariant: orderBookPriceVariant,
 } = useOrderBook({ maxRows: 11 });
+const orderBookStore = useOrderBookStore();
+
+usePiniaTelemetry('order-book', [{ store: orderBookStore, storeId: 'orderBook' }], {
+  metadata: () => ({
+    widget: 'book',
+    orderBookId: orderBookId.value || null,
+    baseAsset: baseAsset.value?.symbol ?? null,
+    quoteAsset: quoteAsset.value?.symbol ?? null,
+  }),
+});
 
 const handleSelectStep = (value: string) => setSelectedStep(value);
 

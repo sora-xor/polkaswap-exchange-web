@@ -22,7 +22,7 @@ const closeVaultMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  const actual = createWalletMock();
+  const actual = await createWalletMock();
   return {
     ...actual,
     components: {

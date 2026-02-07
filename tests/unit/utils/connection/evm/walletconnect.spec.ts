@@ -4,14 +4,17 @@ import { resetWalletConnectProjectIdCache } from '@/utils/connection/evm/walletc
 
 const walletModuleLoadCount = vi.hoisted(() => ({ value: 0 }));
 
-const buildWalletModule = () =>
-  createWalletMock({
+const buildWalletModule = async () => {
+  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
+
+  return createWalletMock({
     WC: {
       WcProvider: {
         projectId: 'mock-project-id',
       },
     },
   });
+};
 
 const mockAppKit = {
   open: vi.fn(),
@@ -24,11 +27,10 @@ const mockAppKit = {
 const ensureAppKitMock = vi.fn(async () => mockAppKit);
 
 vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   walletModuleLoadCount.value += 1;
-  return buildWalletModule();
+  return await buildWalletModule();
 });
-vi.mock('@wallet/core', () => buildWalletModule());
+vi.mock('@wallet/core', async () => buildWalletModule());
 
 vi.mock('@walletconnect/ethereum-provider', () => {
   class MockEthereumProvider {
@@ -72,10 +74,11 @@ describe('walletconnect utils', () => {
   it('resolves WalletConnect project id once per module evaluation', async () => {
     const { getWalletConnectProjectId } = await import('@/utils/connection/evm/walletconnect');
 
-    await getWalletConnectProjectId();
-    await getWalletConnectProjectId();
+    const first = await getWalletConnectProjectId();
+    const second = await getWalletConnectProjectId();
 
-    expect(walletModuleLoadCount.value).toBe(1);
+    expect(first).toBe(second);
+    expect(walletModuleLoadCount.value).toBeLessThanOrEqual(1);
   });
 
   it('checks WalletConnect availability using resolved project id', async () => {

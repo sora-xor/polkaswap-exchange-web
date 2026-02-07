@@ -2,10 +2,17 @@ import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock();
-});
+vi.mock('@wallet', () => ({
+  components: {
+    DialogBase: {
+      name: 'DialogBaseStub',
+      props: ['visible'],
+      emits: ['update:visible'],
+      template: '<div><slot /></div>',
+    },
+  },
+  WALLET_CONSTS: {},
+}));
 
 import TaskDialog from '@/components/pages/PointSystem/TaskDialog.vue';
 import type { CalculateCategoryPointResult } from '@/types/pointSystem';

@@ -3,6 +3,8 @@ import { computed, getCurrentInstance } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 import router from '@/router';
 import store from '@/store';
+import { useBridgeStore } from '@/stores/bridge';
+import { useWeb3Store } from '@/stores/web3';
 import type { AppEIPProvider } from '@/types/evm/provider';
 import { PredefinedProvider, WalletConnectProvider } from '@/utils/connection/evm/providers';
 import { handleRpcProviderError, installExtensionKey } from '@/utils/ethers-util';
@@ -21,15 +23,18 @@ export function useWalletConnect() {
       ) => void)
     | undefined;
 
-  const evmProvider = computed(() => store.state.web3.evmProvider ?? null);
-  const evmProviderLoading = computed(() => store.state.web3.evmProviderLoading ?? null);
-  const evmAddress = computed(() => store.state.web3.evmAddress ?? '');
-  const networkSelected = computed(() => store.state.web3.networkSelected);
-  const networkType = computed(() => store.state.web3.networkType);
+  const bridgeStore = useBridgeStore();
+  const web3Store = useWeb3Store();
+
+  const evmProvider = computed(() => web3Store.evmProvider ?? null);
+  const evmProviderLoading = computed(() => web3Store.evmProviderLoading ?? null);
+  const evmAddress = computed(() => web3Store.evmAddress ?? '');
+  const networkSelected = computed(() => web3Store.networkSelected);
+  const networkType = computed(() => web3Store.networkType);
   const appEvmProviders = computed<AppEIPProvider[]>(() => store.getters.web3.appEvmProviders as AppEIPProvider[]);
 
-  const isSubBridge = computed(() => store.getters.bridge.isSubBridge as boolean);
-  const isSubAccountType = computed(() => store.getters.bridge.isSubAccountType as boolean);
+  const isSubBridge = computed(() => bridgeStore.isSubBridge);
+  const isSubAccountType = computed(() => bridgeStore.isSubAccountType);
 
   const connectSubWallet = () => {
     store.commit.web3.setSubAccountDialogVisibility(true);

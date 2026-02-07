@@ -100,7 +100,10 @@ const initializeWalletsByKeys = (extensionNames: string[], dAppName: string): vo
  * preserving existing instances for already-registered extensions.
  */
 export const initializeWallets = (dAppName: string): void => {
-  const extensionNames = [...PredefinedWallets, ...Object.keys(window.injectedWeb3)];
+  const injected = window.injectedWeb3 || {};
+  window.injectedWeb3 = injected;
+
+  const extensionNames = [...PredefinedWallets, ...Object.keys(injected)];
 
   initializeWalletsByKeys(extensionNames, dAppName);
 };

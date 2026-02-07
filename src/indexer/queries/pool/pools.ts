@@ -1,5 +1,6 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { getCurrentIndexer } from '@wallet';
+import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -8,8 +9,6 @@ import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { SubqueryPoolXYKEntity } from '@wallet/lib/services/indexer/subquery/types';
 import type { SubsquidPoolXYKEntity } from '@wallet/lib/services/indexer/subsquid/types';
 import type { ConnectionQueryResponse, PoolXYKEntity } from '@wallet/lib/services/indexer/types';
-
-const { IndexerType } = WALLET_CONSTS;
 
 export type PoolData = {
   baseAssetId: string;

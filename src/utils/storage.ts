@@ -1,17 +1,10 @@
 import { Storage } from '@sora-substrate/sdk';
-import * as walletModule from '@wallet';
 
 import { LOCAL_STORAGE_MAX_SIZE, listOfRemoveForLocalStorage } from '@/consts/index';
 
-type WalletModule = {
-  storage?: Storage;
-  settingsStorage?: Storage;
-};
-
-const wallet = walletModule as WalletModule;
-
-export const settingsStorage = wallet.settingsStorage ?? new Storage('settings');
-const soraStorage = wallet.storage ?? new Storage('wallet');
+// Keep storage self contained to avoid circular imports with the wallet bundle.
+export const settingsStorage = new Storage('dexSettings');
+const soraStorage = new Storage('wallet');
 
 export default soraStorage;
 

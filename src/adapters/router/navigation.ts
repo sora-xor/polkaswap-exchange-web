@@ -4,8 +4,11 @@ import type { RouterParams } from '@/stores/router/types';
 import type { Nullable } from '@/types/common';
 import type { LegacyStore } from '@/utils/legacy-store';
 
+const warnedMessages = new Set<string>();
 const warn = (message: string): void => {
-  console.warn(`[router-adapter] ${message}`);
+  if (warnedMessages.has(message)) return;
+  warnedMessages.add(message);
+  console.debug(`[router-adapter] ${message}`);
 };
 
 const withRouterCommit = <T extends (...args: any[]) => unknown>(

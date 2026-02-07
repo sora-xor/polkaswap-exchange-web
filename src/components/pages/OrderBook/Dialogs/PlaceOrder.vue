@@ -34,7 +34,7 @@ import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useOrderBook } from '@/composables/useOrderBook';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -61,11 +61,7 @@ const emit = defineEmits<{ (e: 'confirm'): void }>();
 
 const { t } = useTranslation();
 const { toValue } = useSwapAmounts();
-
-const baseValue = computed(() => store.state.orderBook.baseValue);
-const quoteValue = computed(() => store.state.orderBook.quoteValue);
-const baseAsset = computed(() => store.getters.orderBook.baseAsset as Nullable<AccountAsset>);
-const quoteAsset = computed(() => store.getters.orderBook.quoteAsset as Nullable<AccountAsset>);
+const { baseValue, quoteValue, baseAsset, quoteAsset } = useOrderBook();
 
 const title = computed(() =>
   props.isMarketType ? t('orderBook.dialog.placeMarket') : t('orderBook.dialog.placeLimit')

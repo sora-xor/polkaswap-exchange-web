@@ -1,12 +1,11 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { getCurrentIndexer } from '@wallet';
+import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { AssetEntity, ConnectionQueryResponse } from '@wallet/lib/services/indexer/subsquid/types';
-
-const { IndexerType } = WALLET_CONSTS;
 
 export type TokenData = {
   priceUSD: FPNumber;

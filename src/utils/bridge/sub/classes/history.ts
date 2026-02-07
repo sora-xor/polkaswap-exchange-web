@@ -4,7 +4,6 @@ import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { api } from '@wallet';
 
 import { ZeroStringValue } from '@/consts';
-import { rootActionContext } from '@/store';
 import { getBlockEventsByTxIndex } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -668,7 +667,7 @@ export const updateSubBridgeHistory =
   (context: ActionContext<any, any>) =>
   async (clearHistory = false, updateCallback?: VoidFunction): Promise<void> => {
     try {
-      const { rootState, rootGetters } = rootActionContext(context);
+      const { rootState, rootGetters } = context;
       const {
         wallet: {
           account: { address },

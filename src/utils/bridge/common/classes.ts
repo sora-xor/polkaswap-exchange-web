@@ -1,4 +1,4 @@
-import { WALLET_CONSTS } from '@wallet';
+import { BLOCK_PRODUCE_TIME_MS } from '@/utils/bridge/eth/constants';
 
 import { delay } from '@/utils';
 import type {
@@ -21,8 +21,6 @@ import type {
 import { isUnsignedTx } from '@/utils/bridge/common/utils';
 
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
-
-const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS;
 
 export class BridgeReducer<Transaction extends IBridgeTransaction> implements IBridgeReducer<Transaction> {
   // asset
@@ -201,7 +199,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     try {
       await Promise.race([
         this.checkTransactionBlockId(id),
-        delay(BLOCK_PRODUCE_TIME * 10, false), // 60s
+        delay(BLOCK_PRODUCE_TIME_MS * 10, false), // 60s
       ]);
     } catch (error) {
       console.info(`[${this.constructor.name}]: Implement "blockId" restoration by "txId"`);

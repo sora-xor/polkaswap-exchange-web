@@ -5,5 +5,5 @@ export const packageInfo = {
       ? new URL(import.meta.url).pathname.substring(0, new URL(import.meta.url).pathname.lastIndexOf('/') + 1)
       : 'auto',
   type: 'esm',
-  version: '3.16.1',
+  version: '4.0.0',
 };

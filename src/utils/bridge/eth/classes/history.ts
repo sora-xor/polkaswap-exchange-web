@@ -1,16 +1,16 @@
 import { Operation } from '@sora-substrate/sdk';
 import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { api, SUBQUERY_TYPES, WALLET_CONSTS, getCurrentIndexer } from '@wallet';
+import { api, SUBQUERY_TYPES, getCurrentIndexer } from '@wallet';
 import { ethers, EtherscanProvider } from 'ethers';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 
 import { ZeroStringValue } from '@/consts';
 import { SmartContracts, SmartContractType, KnownEthBridgeAsset } from '@/consts/evm';
-import { rootActionContext } from '@/store';
 import type { EthBridgeContractsAddresses } from '@/store/web3/types';
 import { getEvmTransactionReceiptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -36,8 +36,6 @@ const BRIDGE_INTERFACE = new ethers.Interface([
   ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.XOR], // XOR or VAL
   ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other], // Other
 ]);
-
-const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 const isLocalHistoryItem = (item: EthHistory, txId: string, isOutgoing: boolean, requestHash: string) => {
   if (item.txId === txId) return true;
@@ -391,7 +389,7 @@ export class EthBridgeHistory {
 }
 
 export const getEthBridgeHistoryInstance = async (context: ActionContext<any, any>): Promise<EthBridgeHistory> => {
-  const { rootState } = rootActionContext(context);
+  const { rootState } = context;
 
   const {
     wallet: {
@@ -417,7 +415,7 @@ export const updateEthBridgeHistory =
   (context: ActionContext<any, any>) =>
   async (clearHistory = false, updateCallback?: VoidFunction): Promise<void> => {
     try {
-      const { rootState, rootGetters } = rootActionContext(context);
+      const { rootState, rootGetters } = context;
 
       const {
         wallet: {

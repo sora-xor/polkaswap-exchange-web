@@ -1,6 +1,7 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { getCurrentIndexer } from '@wallet';
+import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -12,8 +13,6 @@ export type ReferrerRewards = {
     [key: string]: FPNumber;
   };
 };
-
-const { IndexerType } = WALLET_CONSTS;
 
 const SubqueryReferrerRewardsQuery = gql<ConnectionQueryResponse<ReferrerRewardEntity>>`
   query SubqueryReferrerRewardsQuery($first: Int = 100, $filter: ReferrerRewardFilter, $after: Cursor = "") {

@@ -25,11 +25,10 @@
       "@wallet/lib/*": ["src/lib/soraneo-wallet/lib/*"],
       "@wallet/core": ["src/lib/soraneo-wallet/src/core.ts"],
       "@wallet/internal": ["src/lib/soraneo-wallet/src/index.ts"],
-      "@wallet/vuex": ["src/lib/soraneo-wallet/src/vuex.ts"],
-      "vue-property-decorator": ["src/compat/vue-property-decorator.ts"]
+      "@wallet/vuex": ["src/lib/soraneo-wallet/src/vuex.ts"]
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx", "electron/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx", "electron/**/*.ts", "scripts/**/*.ts"],
   "exclude": ["node_modules"]
 }

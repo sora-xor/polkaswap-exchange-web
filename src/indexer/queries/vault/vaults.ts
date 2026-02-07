@@ -1,6 +1,7 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
-import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { getCurrentIndexer } from '@wallet';
+import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -9,8 +10,6 @@ import type { ClosedVault } from '@/modules/vault/types';
 import type { SubqueryVaultEntity } from '@wallet/lib/services/indexer/subquery/types';
 import type { SubsquidVaultEntity } from '@wallet/lib/services/indexer/subsquid/types';
 import type { ConnectionQueryResponse } from '@wallet/lib/services/indexer/types';
-
-const { IndexerType } = WALLET_CONSTS;
 
 const SubqueryClosedVaultsQuery = gql<ConnectionQueryResponse<SubqueryVaultEntity>>`
   query ClosedVaultsQuery($account: String, $after: Cursor = "", $first: Int = 100) {

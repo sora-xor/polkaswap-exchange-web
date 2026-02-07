@@ -13,17 +13,12 @@ const tokenLogoStub = vi.hoisted(() => ({
   template: '<div class="token-logo-stub"></div>',
 }));
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
-  const wallet = createWalletMock();
-
-  return withWalletMock(wallet, {
-    components: {
-      ...wallet.components,
-      TokenLogo: tokenLogoStub,
-    },
-  });
-});
+vi.mock('@wallet', () => ({
+  components: {
+    TokenLogo: tokenLogoStub,
+  },
+  WALLET_CONSTS: {},
+}));
 
 vi.mock('@/router', () => ({
   __esModule: true,

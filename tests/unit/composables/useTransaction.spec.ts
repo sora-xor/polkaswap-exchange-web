@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useTransaction } from '@/composables/useTransaction';
 
 const addActiveTx = vi.hoisted(() => vi.fn());
-const removeActiveTxs = vi.hoisted(() => vi.fn());
+const removeActiveTransactions = vi.hoisted(() => vi.fn());
 const addAsset = vi.hoisted(() => vi.fn(async () => undefined));
 const notificationStubs = vi.hoisted(() => {
   const withAppNotification = vi.fn(async (handler: () => Promise<void> | void) => {
@@ -35,18 +35,14 @@ vi.mock('@/composables/useTranslation', () => ({
 type HistoryEntry = { id: string; startTime: string };
 const historyList = vi.hoisted(() => [] as HistoryEntry[]);
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
-  const wallet = createWalletMock();
-
-  return withWalletMock(wallet, {
-    api: {
-      ...wallet.api,
-      historyList,
-    },
-    useNotification: () => notificationMock,
-  });
-});
+vi.mock('@wallet', () => ({
+  api: {
+    historyList,
+    swap: { isALT: false },
+  },
+  useNotification: () => notificationMock,
+  WALLET_CONSTS: {},
+}));
 
 vi.mock('@wallet/src/util', async () => {
   const actual = await vi.importActual<typeof import('@wallet/src/util')>('@wallet/src/util');
@@ -66,6 +62,9 @@ vi.mock('@/composables/useOperations', () => ({
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
     addAsset,
+    addActiveTransaction: addActiveTx,
+    removeActiveTransactions,
+    shouldBalanceBeHidden: false,
   }),
 }));
 
@@ -102,14 +101,6 @@ vi.mock('@/store', () => ({
         account: {
           isLoggedIn: true,
           accountAssetsAddressTable: {},
-        },
-      },
-    },
-    commit: {
-      wallet: {
-        transactions: {
-          addActiveTx,
-          removeActiveTxs,
         },
       },
     },
@@ -155,7 +146,7 @@ describe('useTransaction', () => {
 
     expect(getOperationMessage).toHaveBeenCalledWith(tx, false);
     expect(showAppNotification).toHaveBeenCalledWith('operation-message', 'error');
-    expect(removeActiveTxs).toHaveBeenCalledWith(['tx-error']);
+    expect(removeActiveTransactions).toHaveBeenCalledWith(['tx-error']);
   });
 
   it('shows success notification for new finalized transactions', () => {
@@ -166,7 +157,7 @@ describe('useTransaction', () => {
     handleChangeTransaction(tx, previous);
 
     expect(showAppNotification).toHaveBeenCalledWith('operation-message', 'success');
-    expect(removeActiveTxs).toHaveBeenCalledWith(['tx-final']);
+    expect(removeActiveTransactions).toHaveBeenCalledWith(['tx-final']);
   });
 
   it('adds registered asset notifications when asset is missing', async () => {
@@ -184,6 +175,6 @@ describe('useTransaction', () => {
     expect(addAsset).toHaveBeenCalledWith('0x987');
     await Promise.resolve();
     expect(showAppNotification).toHaveBeenLastCalledWith('addAsset.success', 'success');
-    expect(removeActiveTxs).toHaveBeenCalledWith(['tx-reg']);
+    expect(removeActiveTransactions).toHaveBeenCalledWith(['tx-reg']);
   });
 });

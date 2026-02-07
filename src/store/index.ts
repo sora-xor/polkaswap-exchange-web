@@ -1,5 +1,6 @@
 import { createDirectStore } from 'direct-vuex';
 import { vuex } from '@wallet/vuex';
+import walletModule from '@wallet/src/store/wallet';
 
 import addLiquidity from './addLiquidity';
 import assets from './assets';
@@ -18,17 +19,13 @@ import soraCard from './soraCard';
 import staking from './staking';
 import vault from './vault';
 import web3 from './web3';
+import { localActionContext, localGetterContext, setStoreContext } from './context';
 import { setLegacyStore } from '@/utils/legacy-store';
 
-import type { StoreOrModuleOptions } from 'direct-vuex';
-import type { DirectActions, DirectGetters, DirectMutations, DirectState } from 'direct-vuex/types/direct-types';
-
 const modules = {
-  wallet: vuex.walletModules.wallet,
   router,
   web3,
   assets,
-  settings,
   referrals,
   pool,
   moonpay,
@@ -49,44 +46,23 @@ const { store, rootGetterContext, rootActionContext } = createDirectStore({
   strict: false,
 });
 
+// Register wallet module after the store instance exists to avoid circular init issues.
+store.original.registerModule('wallet', walletModule as any);
+store.original.registerModule('settings', settings as any);
+
+setStoreContext(rootActionContext, rootGetterContext);
 setLegacyStore(store);
 
 if (typeof globalThis !== 'undefined') {
   (globalThis as Record<string, unknown>).__PS_APP_STORE__ = store;
 }
 
-// To enable types in the injected store '$store'.
 export type AppStore = typeof store;
 declare module 'vuex' {
   interface Store<S> {
     direct: AppStore;
   }
 }
-
-const localActionContext = <O extends StoreOrModuleOptions>(context: any, moduleName: string, module: O) => {
-  const { rootCommit, rootDispatch, rootGetters, rootState } = rootActionContext(context);
-  return {
-    state: rootState[moduleName] as DirectState<O>,
-    getters: rootGetters[moduleName] as DirectGetters<O>,
-    commit: rootCommit[moduleName] as DirectMutations<O>,
-    dispatch: rootDispatch[moduleName] as DirectActions<O>,
-    rootState,
-    rootGetters,
-    rootCommit,
-    rootDispatch,
-  };
-};
-
-const localGetterContext = <O extends StoreOrModuleOptions>(args: any, moduleName: string, module: O) => {
-  const [, , rsArgs, rgArgs] = args;
-  const { rootGetters, rootState } = rootGetterContext([rsArgs, rgArgs]);
-  return {
-    state: rootState[moduleName] as DirectState<O>,
-    getters: rootGetters[moduleName] as DirectGetters<O>,
-    rootState,
-    rootGetters,
-  };
-};
 
 export { modules, localGetterContext, localActionContext, rootGetterContext, rootActionContext };
 

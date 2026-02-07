@@ -55,10 +55,11 @@ import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
+import { useOrderBook } from '@/composables/useOrderBook';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useWalletStore } from '@/stores/wallet';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -79,13 +80,9 @@ const props = withDefaults(
 const { t } = useTranslation();
 const { getFPNumber, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
 const { toValue } = useSwapAmounts();
-
-const baseValue = computed(() => store.state.orderBook.baseValue);
-const quoteValue = computed(() => store.state.orderBook.quoteValue);
-const side = computed(() => store.state.orderBook.side as PriceVariant);
-const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject);
-const baseAsset = computed(() => store.getters.orderBook.baseAsset as AccountAsset);
-const quoteAsset = computed(() => store.getters.orderBook.quoteAsset as AccountAsset);
+const walletStore = useWalletStore();
+const { baseValue, quoteValue, side, baseAsset, quoteAsset } = useOrderBook();
+const networkFees = computed(() => (walletStore.networkFees as NetworkFeesObject) ?? ({} as NetworkFeesObject));
 
 const xorSymbol = XOR.symbol;
 const networkFee = computed<CodecString>(

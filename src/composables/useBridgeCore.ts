@@ -1,13 +1,11 @@
 import { FPNumber, type CodecString } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
 
 import { PageNames } from '@/consts';
 import router from '@/router';
-import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
-import { useBridgeFormStore } from '@/stores/bridge/form';
+import { useBridgeStore } from '@/stores/bridge';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Nullable } from '@/types/common';
@@ -17,26 +15,24 @@ import type { Nullable } from '@/types/common';
  */
 export function useBridgeCore() {
   const assetsStore = useAssetsStore();
-  const bridgeFormStore = useBridgeFormStore();
-  const {
-    externalNativeBalance,
-    assetLockedBalance,
-    assetExternalMinBalance,
-    outgoingMinLimit,
-    outgoingMaxLimit,
-    incomingMinLimit,
-    soraNetworkFee,
-    externalTransferFee,
-  } = storeToRefs(bridgeFormStore);
-  const isSoraToEvm = computed(() => store.state.bridge.isSoraToEvm);
-  const asset = computed(() => store.getters.bridge.asset as Nullable<RegisteredAccountAsset>);
-  const nativeToken = computed(() => store.getters.bridge.nativeToken as Nullable<RegisteredAccountAsset>);
-  const sender = computed(() => store.getters.bridge.sender as string);
-  const recipient = computed(() => store.getters.bridge.recipient as string);
-  const isValidNetwork = computed(() => Boolean(store.getters.web3.isValidNetwork));
-  const externalNetworkFee = computed(() => store.getters.bridge.externalNetworkFee as CodecString);
-  const isNativeTokenSelected = computed(() => Boolean(store.getters.bridge.isNativeTokenSelected));
-  const isSidechainAsset = computed(() => Boolean(store.getters.bridge.isSidechainAsset));
+  const bridgeStore = useBridgeStore();
+  const isSoraToEvm = computed(() => bridgeStore.isSoraToEvm);
+  const asset = computed(() => bridgeStore.asset as Nullable<RegisteredAccountAsset>);
+  const externalNativeBalance = computed(() => bridgeStore.fees.externalNativeBalance);
+  const assetLockedBalance = computed(() => bridgeStore.balances.assetLockedBalance);
+  const assetExternalMinBalance = computed(() => bridgeStore.balances.assetExternalMinBalance);
+  const outgoingMinLimit = computed(() => bridgeStore.balances.outgoingMinLimit);
+  const outgoingMaxLimit = computed(() => bridgeStore.balances.outgoingMaxLimit);
+  const incomingMinLimit = computed(() => bridgeStore.balances.incomingMinLimit);
+  const soraNetworkFee = computed(() => bridgeStore.fees.soraNetworkFee);
+  const externalTransferFee = computed(() => bridgeStore.fees.externalTransferFee);
+  const externalNetworkFee = computed(() => bridgeStore.fees.externalNetworkFee);
+  const nativeToken = computed(() => bridgeStore.nativeToken as Nullable<RegisteredAccountAsset>);
+  const sender = computed(() => bridgeStore.sender);
+  const recipient = computed(() => bridgeStore.recipient);
+  const isValidNetwork = computed(() => bridgeStore.isValidNetwork);
+  const isNativeTokenSelected = computed(() => bridgeStore.isNativeTokenSelected);
+  const isSidechainAsset = computed(() => bridgeStore.isSidechainAsset);
   const xor = computed(() => assetsStore.assetDataByAddress(XOR.address) as RegisteredAccountAsset);
 
   const externalTransferFeeFP = computed(() =>

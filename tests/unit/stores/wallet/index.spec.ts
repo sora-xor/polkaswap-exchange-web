@@ -3,9 +3,27 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const piniaStub = vi.hoisted(() => ({
   createPinia: vi.fn(() => ({})),
   setActivePinia: vi.fn(),
-  defineStore: (id: string, options: any) => {
-    const actions = options.actions ?? {};
-    return () => ({ ...actions });
+  defineStore: (_id: string, options: any) => {
+    return () => {
+      const store: Record<string, any> = {};
+
+      if (options.getters) {
+        Object.entries(options.getters).forEach(([name, getter]) => {
+          Object.defineProperty(store, name, {
+            enumerable: true,
+            get: () => getter.call(store),
+          });
+        });
+      }
+
+      if (options.actions) {
+        Object.entries(options.actions).forEach(([name, action]) => {
+          store[name] = (...args: unknown[]) => action.apply(store, args);
+        });
+      }
+
+      return store;
+    };
   },
 }));
 
@@ -30,6 +48,8 @@ const resetNetworkSubscriptionsMock = vi.hoisted(() => vi.fn());
 const resetInternalSubscriptionsMock = vi.hoisted(() => vi.fn());
 const activateNetworkSubscriptionsMock = vi.hoisted(() => vi.fn());
 const setThemeMock = vi.hoisted(() => vi.fn());
+const addActiveTxMock = vi.hoisted(() => vi.fn());
+const removeActiveTxsMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/store', () => ({
   __esModule: true,
@@ -94,6 +114,8 @@ vi.mock('@/store', () => ({
         },
         transactions: {
           setSignTxDialogVisibility: vi.fn(),
+          addActiveTx: addActiveTxMock,
+          removeActiveTxs: removeActiveTxsMock,
         },
       },
     },
@@ -130,6 +152,22 @@ describe('wallet store actions', () => {
     vi.clearAllMocks();
     const legacyStore = (await import('@/store')).default;
     setLegacyStoreOverride(legacyStore as any);
+  });
+
+  it('exposes wallet visibility flag and transaction helpers', async () => {
+    const walletStore = useWalletStore();
+    expect(walletStore.shouldBalanceBeHidden).toBe(false);
+
+    const legacyStore = (await import('@/store')).default;
+    legacyStore.state.wallet.settings.shouldBalanceBeHidden = true;
+    expect(useWalletStore().shouldBalanceBeHidden).toBe(true);
+    legacyStore.state.wallet.settings.shouldBalanceBeHidden = false;
+
+    walletStore.addActiveTransaction('tx-1');
+    expect(addActiveTxMock).toHaveBeenCalledWith('tx-1');
+
+    walletStore.removeActiveTransactions(['tx-1']);
+    expect(removeActiveTxsMock).toHaveBeenCalledWith(['tx-1']);
   });
 
   it('wraps account connection helpers', async () => {

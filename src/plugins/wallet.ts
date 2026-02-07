@@ -34,7 +34,8 @@ export async function install(app: App, context: WalletInstallContext = {}): Pro
     walletStylesLoaded = true;
   }
 
-  const resolvedStore = context.store ?? (store as any)?.original ?? store;
+  const defaultStore = (store as any)?.commit?.wallet ? (store as any) : ((store as any)?.original ?? store);
+  const resolvedStore = context.store ?? defaultStore;
   const pluginOptions = { ...context, store: resolvedStore };
 
   app.use(walletModule.default, pluginOptions);

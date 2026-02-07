@@ -9,6 +9,7 @@ const telemetry = vi.hoisted(() => ({
 
 vi.mock('@/utils/telemetry', () => ({
   trackEvent: telemetry.trackEventMock,
+  getBuildVariant: () => 'test',
 }));
 
 import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';

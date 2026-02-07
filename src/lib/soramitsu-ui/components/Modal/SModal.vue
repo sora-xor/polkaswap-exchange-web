@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Ref, StyleValue } from 'vue';
+import { computed, provide, readonly, shallowRef, unref, watch, type Ref, type StyleValue } from 'vue';
 import { normalizeTransitionAttrs, useCloseOnEsc, useModalVisibility } from './util';
 import type { ModalApi } from './api';
 import { MODAL_API_KEY } from './api';
@@ -7,6 +7,7 @@ import { useFocusTrap } from '@soramitsu-ui/ui/composables/focus-trap';
 import type { FocusTrap, Options as FocusTrapOptions } from 'focus-trap';
 import { uniqueElementId } from '@soramitsu-ui/ui/util';
 import { useBodyScrollLockIfPossible } from '../BodyScrollLockProvider';
+import { templateRef } from '@vueuse/core';
 
 type ClassType = object | string | string[];
 type StyleType = StyleValue;

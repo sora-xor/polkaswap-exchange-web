@@ -16,10 +16,11 @@ import { computed } from 'vue';
 
 import { Components } from '@/consts';
 import { useOrderBook } from '@/composables/useOrderBook';
+import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook/orderBook';
 import { fetchOrderBookPriceData } from '@/indexer/queries/orderBook/price';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useOrderBookStore } from '@/stores/orderBook';
 
 import type { RequestMethod, RequestSubscription, RequestSubscriptionCallback } from '@/types/chart';
 
@@ -29,11 +30,11 @@ defineOptions({
   },
 });
 
-const { baseAsset, quoteAsset } = useOrderBook();
-const dexId = computed(() => store.state.orderBook.dexId as string);
+const { baseAsset, quoteAsset, dexId, orderBookId: storeOrderBookId } = useOrderBook();
+const orderBookStore = useOrderBookStore();
 
 const orderBookId = computed<Nullable<string>>(() => {
-  if (!(baseAsset.value && quoteAsset.value)) return null;
+  if (!(baseAsset.value && quoteAsset.value && dexId.value)) return null;
   return [dexId.value, baseAsset.value.address, quoteAsset.value.address].join('-');
 });
 
@@ -43,5 +44,14 @@ const requestSubscription = computed<Nullable<RequestSubscription>>(() => {
   if (!orderBookId.value) return null;
   return async (callback: RequestSubscriptionCallback) =>
     await subscribeOnOrderBookUpdates(orderBookId.value as string, callback, console.error);
+});
+
+usePiniaTelemetry('order-book', [{ store: orderBookStore, storeId: 'orderBook' }], {
+  metadata: () => ({
+    widget: 'book-charts',
+    orderBookId: storeOrderBookId.value || orderBookId.value,
+    baseAsset: baseAsset.value?.symbol ?? null,
+    quoteAsset: quoteAsset.value?.symbol ?? null,
+  }),
 });
 </script>

@@ -26,6 +26,15 @@ vi.doMock('@wallet', () => ({
   components: {
     FormattedAmount: { template: '<span class="formatted-amount"><slot /></span>' },
   },
+  WALLET_CONSTS: {},
+}));
+vi.doMock('@/stores/assets', () => ({
+  useAssetsStore: () => ({
+    assetDataByAddress: (address?: string) => {
+      if (!address) return null;
+      return (globalThis as Record<string, any>).__ASSETS_STORE_OVERRIDE?.assetDataByAddress?.(address) ?? null;
+    },
+  }),
 }));
 
 vi.mock('@/router', () => ({

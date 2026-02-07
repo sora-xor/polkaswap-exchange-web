@@ -2,12 +2,10 @@ import { createPinia, setActivePinia } from 'pinia';
 import { nextTick } from 'vue';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import * as walletModuleExports from '@wallet';
-
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useSwapStore } from '@/stores/swap';
 
-const walletModule = (walletModuleExports as { default?: any }).default ?? walletModuleExports;
+let walletModule: Awaited<ReturnType<typeof import('@wallet')>>;
 
 const { localStorageMock } = vi.hoisted(() => {
   const storage = {
@@ -39,7 +37,7 @@ vi.mock('@sora-substrate/sdk/build/dex/consts', () => ({
 
 vi.mock('@wallet', async () => {
   const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
-  const wallet = createWalletMock();
+  const wallet = await createWalletMock();
 
   return withWalletMock(wallet, {
     api: {
@@ -129,7 +127,7 @@ vi.mock('@/store', () => ({
 }));
 
 describe('swap workflow', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     setActivePinia(createPinia());
     vi.clearAllMocks();
     assetDataByAddress.mockClear();
@@ -137,6 +135,7 @@ describe('swap workflow', () => {
     localStorageMock.setItem.mockClear();
     localStorageMock.removeItem.mockClear();
     localStorageMock.clear.mockClear();
+    walletModule = await import('@wallet');
     const walletApi = vi.mocked(walletModule.api);
     walletApi.divideAssets.mockReturnValue('0');
     walletApi.swap.getDexesSwapQuoteObservable.mockReturnValue(undefined as any);

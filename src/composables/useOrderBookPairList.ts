@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 
-import store from '@/store';
+import { useOrderBookStore } from '@/stores/orderBook';
 import type { OrderBookStats } from '@/types/orderBook';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
@@ -11,16 +11,18 @@ import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
  * coupling directly to the Vuex store.
  */
 export function useOrderBookPairList() {
+  const orderBookStore = useOrderBookStore();
+
   const orderBooks = computed<Record<string, OrderBook>>(
-    () => (store.state.orderBook?.orderBooks as Record<string, OrderBook>) ?? {}
+    () => (orderBookStore.orderBooks as Record<string, OrderBook>) ?? {}
   );
 
   const orderBooksStats = computed<Record<string, OrderBookStats>>(
-    () => (store.state.orderBook?.orderBooksStats as Record<string, OrderBookStats>) ?? {}
+    () => (orderBookStore.orderBooksStats as Record<string, OrderBookStats>) ?? {}
   );
 
   const selectOrderBook = (id: OrderBookId): void => {
-    store.commit.orderBook?.setCurrentOrderBook?.(id);
+    orderBookStore.setCurrentOrderBook(id);
   };
 
   return {

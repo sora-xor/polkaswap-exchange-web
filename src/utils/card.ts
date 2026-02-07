@@ -1,18 +1,19 @@
-import { WALLET_CONSTS } from '@wallet';
 import { jwtDecode } from 'jwt-decode';
 
-import store from '@/store';
 import { waitForSoraNetworkFromEnv } from '@/utils';
+import { requireLegacyStore } from '@/utils/legacy-store';
 
 import { KycStatus, VerificationStatus } from '../types/card';
 
 import type { AttemptCounter, Fees, PhoneCode, Status, UserInfo } from '../types/card';
 import type { JwtPayload } from 'jwt-decode';
 
+const SoraNetwork = { Test: 'Test', Prod: 'Prod' } as const;
+
 const soraCardTestBaseEndpoint = 'https://backend.dev.sora-card.tachi.soramitsu.co.jp';
 const soraCardProdBaseEndpoint = 'https://backend.sora-card.odachi.soramitsu.co.jp';
 const SoraProxyEndpoints = {
-  [WALLET_CONSTS.SoraNetwork.Test]: {
+  [SoraNetwork.Test]: {
     referenceNumberEndpoint: `${soraCardTestBaseEndpoint}/get-reference-number`,
     lastKycStatusEndpoint: `${soraCardTestBaseEndpoint}/kyc-last-status`,
     kycAttemptCountEndpoint: `${soraCardTestBaseEndpoint}/kyc-attempt-count`,
@@ -22,7 +23,7 @@ const SoraProxyEndpoints = {
     countries: `${soraCardTestBaseEndpoint}/country-codes`,
     newAccessTokenEndpoint: 'https://api-auth-test.soracard.com/RequestNewAccessToken',
   },
-  [WALLET_CONSTS.SoraNetwork.Prod]: {
+  [SoraNetwork.Prod]: {
     referenceNumberEndpoint: `${soraCardProdBaseEndpoint}/get-reference-number`,
     lastKycStatusEndpoint: `${soraCardProdBaseEndpoint}/kyc-last-status`,
     kycAttemptCountEndpoint: `${soraCardProdBaseEndpoint}/kyc-attempt-count`,
@@ -34,50 +35,55 @@ const SoraProxyEndpoints = {
   },
 };
 const AuthServiceData = {
-  [WALLET_CONSTS.SoraNetwork.Test]: {
+  [SoraNetwork.Test]: {
     sdkURL: 'https://auth-test.soracard.com/WebSDK/WebSDK.js',
     apiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
-    env: WALLET_CONSTS.SoraNetwork.Test,
+    env: SoraNetwork.Test,
   },
-  [WALLET_CONSTS.SoraNetwork.Prod]: {
+  [SoraNetwork.Prod]: {
     sdkURL: 'https://auth.soracard.com/WebSDK/WebSDK.js',
     apiKey: '7d841274-8fa3-4038-bacd-a4264912ea58',
-    env: WALLET_CONSTS.SoraNetwork.Prod,
+    env: SoraNetwork.Prod,
   },
 };
 const KycServiceData = {
-  [WALLET_CONSTS.SoraNetwork.Test]: {
+  [SoraNetwork.Test]: {
     sdkURL: 'https://kyc-test.soracard.com/web/v2/webkyc.js',
     username: 'E7A6CB83-630E-4D24-88C5-18AAF96032A4',
     pass: '75A55B7E-A18F-4498-9092-58C7D6BDB333',
-    env: WALLET_CONSTS.SoraNetwork.Test,
+    env: SoraNetwork.Test,
     unifiedApiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
   },
-  [WALLET_CONSTS.SoraNetwork.Prod]: {
+  [SoraNetwork.Prod]: {
     sdkURL: 'https://kyc.soracard.com/web/v2/webkyc.js',
     username: '880b1171-9008-48b0-8a29-b46bbe2af0be',
     pass: '1b6c4482-a200-4f53-895a-a71245f119cb',
-    env: WALLET_CONSTS.SoraNetwork.Prod,
+    env: SoraNetwork.Prod,
     unifiedApiKey: '7d841274-8fa3-4038-bacd-a4264912ea58',
   },
 };
 
+const getLegacyStore = () => requireLegacyStore() as any;
+const getSoraNetwork = async (): Promise<WALLET_CONSTS.SoraNetwork> => {
+  return getLegacyStore().state?.wallet?.settings?.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+};
+
 function getSoraProxyEndpoints(soraNetwork: WALLET_CONSTS.SoraNetwork) {
-  if (soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
+  if (soraNetwork === SoraNetwork.Prod) {
     return SoraProxyEndpoints.Prod;
   }
   return SoraProxyEndpoints.Test;
 }
 
 function getAuthServiceData(soraNetwork: WALLET_CONSTS.SoraNetwork) {
-  if (soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
+  if (soraNetwork === SoraNetwork.Prod) {
     return AuthServiceData.Prod;
   }
   return AuthServiceData.Test;
 }
 
 function getKycServiceData(soraNetwork: WALLET_CONSTS.SoraNetwork) {
-  if (soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
+  if (soraNetwork === SoraNetwork.Prod) {
     return KycServiceData.Prod;
   }
   return KycServiceData.Test;
@@ -110,7 +116,7 @@ export async function defineUserStatus(): Promise<Status> {
 }
 
 export async function getUpdatedJwtPair(refreshToken: string): Promise<string | null> {
-  const soraNetwork = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+  const soraNetwork = await getSoraNetwork();
   const { apiKey } = getAuthServiceData(soraNetwork);
   const buffer = Buffer.from(apiKey);
 
@@ -141,7 +147,7 @@ export async function getUpdatedJwtPair(refreshToken: string): Promise<string | 
 async function getUserStatus(accessToken: string): Promise<Status> {
   if (!accessToken) return emptyStatusFields();
 
-  const soraNetwork = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+  const soraNetwork = await getSoraNetwork();
 
   try {
     const result = await fetch(getSoraProxyEndpoints(soraNetwork).lastKycStatusEndpoint, {
@@ -196,7 +202,7 @@ const isAccessTokenExpired = (accessToken: string): boolean => {
 };
 
 export const getXorPerEuroRatio = async () => {
-  const soraNetwork = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+  const soraNetwork = await getSoraNetwork();
 
   try {
     const priceResult = await fetch(getSoraProxyEndpoints(soraNetwork).priceOracleEndpoint);
@@ -209,7 +215,7 @@ export const getXorPerEuroRatio = async () => {
 };
 
 export const getFees = async (): Promise<Fees> => {
-  const soraNetwork = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+  const soraNetwork = await getSoraNetwork();
 
   try {
     const data = await fetch(getSoraProxyEndpoints(soraNetwork).fees);
@@ -223,7 +229,7 @@ export const getFees = async (): Promise<Fees> => {
 };
 
 export const getPhoneCodes = async (): Promise<Record<string, PhoneCode>> => {
-  const soraNetwork = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+  const soraNetwork = await getSoraNetwork();
 
   try {
     const data = await fetch(getSoraProxyEndpoints(soraNetwork).countries);
@@ -252,7 +258,7 @@ export const getUserIbanInfo = async (): Promise<UserInfo> => {
     }
   }
 
-  const soraNetwork = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+  const soraNetwork = await getSoraNetwork();
 
   try {
     const result = await fetch(getSoraProxyEndpoints(soraNetwork).ibanEndpoint, {
@@ -296,7 +302,7 @@ export const getFreeKycAttemptCount = async (): Promise<AttemptCounter> => {
     }
   }
 
-  const soraNetwork = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+  const soraNetwork = await getSoraNetwork();
 
   try {
     const result = await fetch(getSoraProxyEndpoints(soraNetwork).kycAttemptCountEndpoint, {

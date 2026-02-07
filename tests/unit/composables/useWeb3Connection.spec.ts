@@ -1,5 +1,6 @@
 import { computed, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { createPinia, setActivePinia } from 'pinia';
 
 const connectEvmWallet = vi.hoisted(() => vi.fn());
 const connectEvmProvider = vi.hoisted(() => vi.fn());
@@ -38,22 +39,10 @@ const setSelectNetworkDialogVisibility = vi.hoisted(() => vi.fn());
 
 vi.mock('@/store', () => ({
   default: {
-    state: {
-      web3: {
-        evmProvider: null,
-        selectProviderDialogVisibility: false,
-      },
-    },
     getters: {
       web3: {
         appEvmProviders: [],
-        selectedNetwork: null,
         isValidNetwork: true,
-        subAccount: {
-          address: '',
-          name: '',
-          source: '',
-        },
       },
     },
     dispatch: {
@@ -70,12 +59,43 @@ vi.mock('@/store', () => ({
   },
 }));
 
+const web3StorePiniaMock = vi.hoisted(() => ({
+  evmProvider: null,
+  evmProviderLoading: null,
+  evmAddress: '0x0',
+  networkSelected: null,
+  networkType: null,
+  selectedNetworkData: null,
+  subAccount: {
+    address: '',
+    name: '',
+    source: '',
+  },
+  selectProviderDialogVisibility: false,
+}));
+
+vi.mock('@/stores/web3', () => ({
+  useWeb3Store: () => web3StorePiniaMock,
+}));
+
 import { useWeb3Connection } from '@/composables/useWeb3Connection';
 
 describe('useWeb3Connection', () => {
   beforeEach(() => {
+    setActivePinia(createPinia());
     vi.clearAllMocks();
     walletConnectMock.evmAddress.value = '';
+    web3StorePiniaMock.evmProvider = null;
+    web3StorePiniaMock.evmProviderLoading = null;
+    web3StorePiniaMock.evmAddress = '';
+    web3StorePiniaMock.networkSelected = null;
+    web3StorePiniaMock.networkType = null;
+    web3StorePiniaMock.selectedNetworkData = null;
+    web3StorePiniaMock.subAccount = {
+      address: '',
+      name: '',
+      source: '',
+    };
   });
 
   it('exposes connection status helpers', () => {

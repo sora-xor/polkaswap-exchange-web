@@ -68,8 +68,10 @@ import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { useOrderBook } from '@/composables/useOrderBook';
+import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
+import { useOrderBookUserOrders } from '@/composables/useOrderBookUserOrders';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useOrderBookStore } from '@/stores/orderBook';
 import { Filter, Cancel } from '@/types/orderBook';
 import { delay } from '@/utils';
 
@@ -92,16 +94,28 @@ const { t } = useTranslation();
 const { isLoggedIn, connectSoraWallet, soraAddress } = useInternalConnect();
 const { loading, withNotifications } = useTransaction();
 const { confirmDialogVisible, confirmOrExecute } = useConfirmDialog();
-const { orderBookId } = useOrderBook();
+const { orderBookId, baseAsset, quoteAsset } = useOrderBook();
+const orderBookStore = useOrderBookStore();
 
-const userLimitOrders = computed(() => store.state.orderBook.userLimitOrders as LimitOrder[]);
-const ordersToBeCancelled = computed(() => store.state.orderBook.ordersToBeCancelled as LimitOrder[]);
-const nodeIsConnected = computed(() => store.getters.settings.nodeIsConnected as boolean);
-const currentOrderBook = computed(() => store.getters.orderBook.currentOrderBook as Nullable<OrderBook>);
+usePiniaTelemetry('order-book', [{ store: orderBookStore, storeId: 'orderBook' }], {
+  metadata: () => ({
+    widget: 'history',
+    orderBookId: orderBookId.value || null,
+    baseAsset: baseAsset.value?.symbol ?? null,
+    quoteAsset: quoteAsset.value?.symbol ?? null,
+  }),
+});
 
-const subscribeToUserLimitOrders = store.dispatch.orderBook.subscribeToUserLimitOrders;
-const unsubscribeFromUserLimitOrders = store.dispatch.orderBook.unsubscribeFromUserLimitOrders;
-const setOrdersToBeCancelled = store.commit.orderBook.setOrdersToBeCancelled;
+const {
+  userLimitOrders,
+  ordersToBeCancelled,
+  nodeIsConnected,
+  currentOrderBook,
+  isBookStopped,
+  subscribeToUserLimitOrders,
+  unsubscribeFromUserLimitOrders,
+  setOrdersToBeCancelled,
+} = useOrderBookUserOrders();
 
 const currentFilter = ref(FilterEnum.open);
 const openOrdersLoading = ref(false);
@@ -135,7 +149,6 @@ const cancelText = computed(() =>
 );
 const cancelAllText = computed(() => t('orderBook.history.cancelAll'));
 
-const isBookStopped = computed(() => !currentOrderBook.value || currentOrderBook.value.status === OrderBookStatus.Stop);
 const isCancelAllInactive = computed(() => loading.value || isBookStopped.value || userLimitOrders.value.length === 0);
 const isCancelMultipleInactive = computed(
   () => loading.value || isBookStopped.value || !hasSelectedForCancellation.value

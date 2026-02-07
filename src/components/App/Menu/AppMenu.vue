@@ -118,17 +118,17 @@ const emit = defineEmits<{
 
 const { t } = useTranslation();
 
-const pageLoading = computed(() => store.state.router.loading as boolean);
-const collapsed = computed(() => store.state.settings.menuCollapsed as boolean);
-const faucetUrl = computed(() => store.state.settings.faucetUrl as string);
-const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
-const orderBookEnabled = computed(() => store.getters.settings.orderBookEnabled as boolean);
-const kensetsuEnabled = computed(() => store.getters.settings.kensetsuEnabled as boolean);
-const assetOwnerEnabled = computed(() => store.getters.settings.assetOwnerEnabled as boolean);
+const pageLoading = computed(() => Boolean(store.state.router?.loading));
+const collapsed = computed(() => Boolean(store.state.settings?.menuCollapsed));
+const faucetUrl = computed(() => (store.state.settings?.faucetUrl as string) ?? '');
+const libraryTheme = computed(() => store.getters?.libraryTheme as Theme);
+const orderBookEnabled = computed(() => Boolean(store.getters?.settings?.orderBookEnabled));
+const kensetsuEnabled = computed(() => Boolean(store.getters?.settings?.kensetsuEnabled));
+const assetOwnerEnabled = computed(() => Boolean(store.getters?.settings?.assetOwnerEnabled));
 
 const menuElement = ref<HTMLElement | null>(null);
 
-const currentPath = computed(() => store.state.router.currentRoute as string);
+const currentPath = computed(() => (store.state.router?.currentRoute as string) ?? '');
 
 const sidebarMenuItems = computed(() => {
   let menuItems: SidebarMenuItemLink[] = SidebarMenuGroups.slice();

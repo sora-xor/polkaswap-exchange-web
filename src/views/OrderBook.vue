@@ -35,11 +35,15 @@ import isEmpty from 'lodash/fp/isEmpty';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { useLoading } from '@/composables/useLoading';
+import { useOrderBook } from '@/composables/useOrderBook';
+import { useOrderBookManagement } from '@/composables/useOrderBookManagement';
+import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useSelectedTokensRoute } from '@/composables/useSelectedTokensRoute';
 import { Components, PageNames } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { goTo, lazyComponent } from '@/router';
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
+import { useOrderBookStore } from '@/stores/orderBook';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -56,18 +60,33 @@ defineOptions({ name: 'OrderBookView' });
 
 const settingsVisibility = ref(false);
 
-const orderBooks = computed(() => store.state.orderBook.orderBooks as Record<string, OrderBook>);
-const responsiveClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
-const orderBookEnabled = computed(() => store.getters.settings.orderBookEnabled as Nullable<boolean>);
-const orderBookId = computed(() => store.getters.orderBook.orderBookId as string);
-const baseAsset = computed(() => store.getters.orderBook.baseAsset as Nullable<RegisteredAccountAsset>);
-const quoteAsset = computed(() => store.getters.orderBook.quoteAsset as Nullable<RegisteredAccountAsset>);
-
-const setCurrentOrderBook = store.commit.orderBook.setCurrentOrderBook;
-const getOrderBooksInfo = store.dispatch.orderBook.getOrderBooksInfo;
-const subscribeToOrderBookStats = store.dispatch.orderBook.subscribeToOrderBookStats;
-const unsubscribeFromOrderBookStats = store.dispatch.orderBook.unsubscribeFromOrderBookStats;
-const unsubscribeFromBidsAndAsks = store.dispatch.orderBook.unsubscribeFromBidsAndAsks;
+const settingsStore = useSettingsStore();
+const responsiveClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
+const orderBookEnabled = computed(() => settingsStore.orderBookEnabled as Nullable<boolean>);
+const { orderBookId, baseAsset, quoteAsset } = useOrderBook();
+const orderBookStore = useOrderBookStore();
+usePiniaTelemetry(
+  'order-book',
+  [
+    { store: settingsStore, storeId: 'settings' },
+    { store: orderBookStore, storeId: 'orderBook' },
+  ],
+  {
+    metadata: () => ({
+      orderBookId: orderBookId.value || null,
+      baseAsset: baseAsset.value?.symbol ?? null,
+      quoteAsset: quoteAsset.value?.symbol ?? null,
+    }),
+  }
+);
+const {
+  orderBooks,
+  setCurrentOrderBook,
+  getOrderBooksInfo,
+  subscribeToOrderBookStats,
+  unsubscribeFromOrderBookStats,
+  unsubscribeFromBidsAndAsks,
+} = useOrderBookManagement();
 
 const { withApi } = useLoading();
 

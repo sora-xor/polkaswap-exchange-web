@@ -2,7 +2,6 @@ import { Operation } from '@sora-substrate/sdk';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { beforeTransactionSign } from '@wallet';
 
-import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
 import { useWalletStore } from '@/stores/wallet';
 import { Bridge } from '@/utils/bridge/common/classes';
@@ -11,6 +10,7 @@ import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import { SubBridgeOutgoingReducer, SubBridgeIncomingReducer } from '@/utils/bridge/sub/classes/reducers';
 import type { SubBridgeReducer } from '@/utils/bridge/sub/classes/reducers';
 import { getTransaction, updateTransaction } from '@/utils/bridge/sub/utils';
+import { requireLegacyStore } from '@/utils/legacy-store';
 
 import type { SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 
@@ -21,6 +21,7 @@ interface SubBridgeConstructorOptions extends IBridgeConstructorOptions<SubHisto
 type SubBridge = Bridge<SubHistory, SubBridgeReducer, SubBridgeConstructorOptions>;
 
 const resolveWalletStore = () => useWalletStore();
+const resolveLegacyStore = () => requireLegacyStore() as any;
 
 const subBridge: SubBridge = new Bridge({
   reducers: {
@@ -42,18 +43,19 @@ const subBridge: SubBridge = new Bridge({
   addAsset: (assetAddress: string) => resolveWalletStore().addAsset(assetAddress),
   getAssetByAddress: (address: string) => useAssetsStore().assetDataByAddress(address),
   // transaction
-  getTransaction: (id: string) => (getTransaction(id) || store.getters.bridge.history[id]) as SubHistory,
+  getTransaction: (id: string) =>
+    (getTransaction(id) || resolveLegacyStore().getters?.bridge?.history?.[id]) as SubHistory,
   updateTransaction,
   // ui integration
-  showNotification: (tx: SubHistory) => store.commit.bridge.setNotificationData(tx),
-  updateHistory: () => store.dispatch.bridge.updateInternalHistory(),
-  getActiveTransaction: () => store.getters.bridge.historyItem as SubHistory,
-  addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
-  removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
+  showNotification: (tx: SubHistory) => resolveLegacyStore().commit?.bridge?.setNotificationData?.(tx),
+  updateHistory: () => resolveLegacyStore().dispatch?.bridge?.updateInternalHistory?.(),
+  getActiveTransaction: () => resolveLegacyStore().getters?.bridge?.historyItem as SubHistory,
+  addTransactionToProgress: (id: string) => resolveLegacyStore().commit?.bridge?.addTxIdInProgress?.(id),
+  removeTransactionFromProgress: (id: string) => resolveLegacyStore().commit?.bridge?.removeTxIdFromProgress?.(id),
   // transaction signing
-  beforeTransactionSign: (api, ...args: any[]) => beforeTransactionSign(store.original, api, ...args),
+  beforeTransactionSign: (api, ...args: any[]) => beforeTransactionSign(resolveLegacyStore().original, api, ...args),
   // custom
-  getSubBridgeConnector: () => store.state.bridge.subBridgeConnector,
+  getSubBridgeConnector: () => resolveLegacyStore().state?.bridge?.subBridgeConnector,
 });
 
 export default subBridge;

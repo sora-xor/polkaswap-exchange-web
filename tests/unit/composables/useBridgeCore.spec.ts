@@ -5,7 +5,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { PageNames } from '@/consts';
 import router from '@/router';
-import { useBridgeFormStore } from '@/stores/bridge/form';
+import { useBridgeStore } from '@/stores/bridge';
+
+const walletStoreMock = {
+  assetsDataTable: {} as Record<string, RegisteredAssetMock>,
+};
+
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => walletStoreMock,
+}));
+
+vi.mock('@/utils/legacy-store', () => ({
+  requireLegacyStore: () => storeStub?.store ?? { getters: { bridge: {}, web3: {} }, state: {} },
+}));
 
 vi.mock('@/stores/assets', () => ({
   useAssetsStore: () => ({
@@ -129,21 +141,34 @@ const createStoreStub = (): StoreStub => {
 let storeStub: StoreStub;
 let useBridgeCore: () => ReturnType<(typeof import('@/composables/useBridgeCore'))['useBridgeCore']>;
 let routerPush: ReturnType<typeof vi.spyOn>;
-let bridgeFormStore: ReturnType<typeof useBridgeFormStore>;
+let bridgeStore: ReturnType<typeof useBridgeStore>;
 
-const syncBridgeFormStore = () => {
-  if (!bridgeFormStore) return;
+const syncBridgeStore = () => {
+  if (!bridgeStore) return;
 
-  bridgeFormStore.$patch({
-    externalNativeBalance: storeStub.state.bridge.externalNativeBalance,
-    assetLockedBalance: storeStub.state.bridge.assetLockedBalance,
-    assetExternalMinBalance: storeStub.state.bridge.assetExternalMinBalance,
-    outgoingMinLimit: storeStub.state.bridge.outgoingMinLimit,
-    outgoingMaxLimit: storeStub.state.bridge.outgoingMaxLimit,
-    incomingMinLimit: storeStub.state.bridge.incomingMinLimit,
-    soraNetworkFee: storeStub.state.bridge.soraNetworkFee,
-    externalTransferFee: storeStub.state.bridge.externalTransferFee,
-    externalNetworkFee: storeStub.getters.bridge.externalNetworkFee,
+  bridgeStore.$patch({
+    form: {
+      ...bridgeStore.form,
+      isSoraToEvm: storeStub.state.bridge.isSoraToEvm,
+      assetAddress: storeStub.getters.bridge.asset.address,
+    },
+    balances: {
+      ...bridgeStore.balances,
+      assetSenderBalance: null,
+      assetRecipientBalance: null,
+      assetLockedBalance: storeStub.state.bridge.assetLockedBalance,
+      assetExternalMinBalance: storeStub.state.bridge.assetExternalMinBalance,
+      incomingMinLimit: storeStub.state.bridge.incomingMinLimit,
+      outgoingMinLimit: storeStub.state.bridge.outgoingMinLimit,
+      outgoingMaxLimit: storeStub.state.bridge.outgoingMaxLimit,
+    },
+    fees: {
+      ...bridgeStore.fees,
+      externalNativeBalance: storeStub.state.bridge.externalNativeBalance,
+      soraNetworkFee: storeStub.state.bridge.soraNetworkFee,
+      externalTransferFee: storeStub.state.bridge.externalTransferFee,
+      externalNetworkFee: storeStub.getters.bridge.externalNetworkFee,
+    },
   });
 };
 
@@ -174,7 +199,11 @@ const resetStore = () => {
     externalNetworkFee: '300000000000000000',
   });
 
-  syncBridgeFormStore();
+  walletStoreMock.assetsDataTable = {
+    [storeStub.getters.bridge.asset.address]: storeStub.getters.bridge.asset as RegisteredAssetMock,
+    [storeStub.getters.bridge.nativeToken.address]: storeStub.getters.bridge.nativeToken as RegisteredAssetMock,
+  };
+  syncBridgeStore();
   routerPush.mockClear();
 };
 
@@ -184,7 +213,7 @@ beforeEach(async () => {
     default: storeStub.store,
   }));
   setActivePinia(createPinia());
-  bridgeFormStore = useBridgeFormStore();
+  bridgeStore = useBridgeStore();
   const module = await import('@/composables/useBridgeCore');
   useBridgeCore = module.useBridgeCore;
   routerPush = vi.spyOn(router, 'push').mockResolvedValue();
@@ -195,7 +224,7 @@ afterEach(() => {
   vi.doUnmock('@/store');
   vi.resetModules();
   routerPush.mockRestore();
-  bridgeFormStore.$reset();
+  bridgeStore.$reset();
 });
 
 describe('useBridgeCore', () => {
@@ -243,7 +272,7 @@ describe('useBridgeCore', () => {
     });
     storeStub.getters.bridge.isSidechainAsset = true;
 
-    syncBridgeFormStore();
+    syncBridgeStore();
 
     const core = useBridgeCore();
 

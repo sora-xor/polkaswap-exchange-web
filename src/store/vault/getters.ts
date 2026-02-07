@@ -11,7 +11,9 @@ const getters = defineGetters<VaultState>()({
   /** Selected debt token during the position creation */
   debtToken(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = vaultGetterContext(args);
-    const token = rootGetters.assets.assetDataByAddress(state.debtAddress);
+    const assetByAddress =
+      typeof rootGetters.assets?.assetDataByAddress === 'function' ? rootGetters.assets.assetDataByAddress : () => null;
+    const token = assetByAddress(state.debtAddress);
     const balance = state.debtTokenBalance;
     if (balance) {
       return { ...token, balance } as RegisteredAccountAsset;
@@ -21,7 +23,9 @@ const getters = defineGetters<VaultState>()({
   /** Selected locked token during the position creation */
   collateralToken(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = vaultGetterContext(args);
-    const token = rootGetters.assets.assetDataByAddress(state.collateralAddress);
+    const assetByAddress =
+      typeof rootGetters.assets?.assetDataByAddress === 'function' ? rootGetters.assets.assetDataByAddress : () => null;
+    const token = assetByAddress(state.collateralAddress);
     const balance = state.collateralTokenBalance;
     if (balance) {
       return { ...token, balance } as RegisteredAccountAsset;

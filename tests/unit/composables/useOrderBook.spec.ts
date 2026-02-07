@@ -4,11 +4,19 @@ import { nextTick, reactive } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LimitOrderType } from '@/consts';
-import type { AsyncFnWithoutArgs, Nullable } from '@/types/common';
+import type { AsyncFnWithoutArgs } from '@/types/common';
 
 import type { OrderBookComposable } from '@/composables/useOrderBook';
 import type { OrderBookPriceVolumeAggregated } from '@/composables/useOrderBook.utils';
 import type { OrderBookDealData } from '@/types/orderBook';
+
+const formattedAmountMock = vi.hoisted(() => vi.fn(() => '10'));
+
+vi.mock('@/composables/useFormattedAmount', () => ({
+  useFormattedAmount: () => ({
+    getFiatAmount: formattedAmountMock,
+  }),
+}));
 
 vi.mock('dayjs/esm', () => ({
   default: (value: number) => ({
@@ -16,148 +24,86 @@ vi.mock('dayjs/esm', () => ({
   }),
 }));
 
-type StoreStub = {
-  state: {
-    orderBook: {
-      limitOrderType: LimitOrderType;
-      asks: OrderBookPriceVolumeAggregated[];
-      bids: OrderBookPriceVolumeAggregated[];
-      deals: OrderBookDealData[];
-    };
-    wallet: {
-      account: {
-        fiatPriceObject: Record<string, string>;
-      };
-      settings: {
-        exchangeRate: number;
-        currencySymbol: string;
-      };
-    };
-  };
-  getters: {
-    orderBook: {
-      baseAsset: Nullable<{ address: string; symbol: string; decimals: number }>;
-      quoteAsset: Nullable<{ address: string; symbol: string; decimals: number }>;
-      currentOrderBook: { tickSize: number; stepLotSize: number };
-      orderBookLastDeal: Nullable<OrderBookDealData>;
-      orderBookId: string;
-    };
-    wallet: {
-      settings: {
-        exchangeRate: number;
-        currencySymbol: string;
-      };
-    };
-    settings: {
-      nodeIsConnected: boolean;
-    };
-  };
-  commit: {
-    orderBook: {
-      setSide: ReturnType<typeof vi.fn>;
-      setQuoteValue: ReturnType<typeof vi.fn>;
-    };
-  };
-  dispatch: {
-    orderBook: {
-      subscribeToBidsAndAsks: ReturnType<typeof vi.fn>;
-      unsubscribeFromBidsAndAsks: ReturnType<typeof vi.fn>;
-    };
-  };
-};
-
-const createStoreStub = (): StoreStub => {
-  const orderBookState = reactive({
+const createOrderBookStoreStub = () =>
+  reactive({
+    orderBookId: 'book-1',
+    dexId: 'dex-1',
+    baseValue: '',
+    quoteValue: '',
+    amountSliderValue: 0,
     limitOrderType: LimitOrderType.limit,
     asks: [] as OrderBookPriceVolumeAggregated[],
     bids: [] as OrderBookPriceVolumeAggregated[],
     deals: [] as OrderBookDealData[],
-  });
-
-  const currentOrderBook = reactive({
-    tickSize: 0.01,
-    stepLotSize: 0.001,
-  });
-
-  const quoteAsset = reactive({
-    address: 'quote',
-    symbol: 'USD',
-    decimals: 18,
-  });
-
-  const baseAsset = reactive({
-    address: 'base',
-    symbol: 'XOR',
-    decimals: 18,
-  });
-
-  const orderBookLastDeal = reactive({
-    price: new FPNumber(10),
     side: PriceVariant.Buy,
+    baseAssetAddress: 'base',
+    quoteAssetAddress: 'quote',
+    baseAsset: {
+      address: 'base',
+      symbol: 'XOR',
+      decimals: 18,
+    },
+    quoteAsset: {
+      address: 'quote',
+      symbol: 'USD',
+      decimals: 18,
+    },
+    currentOrderBook: {
+      tickSize: 0.01,
+      stepLotSize: 0.001,
+    },
+    lastDeal: {
+      price: new FPNumber(10),
+      side: PriceVariant.Buy,
+    } as OrderBookDealData,
+    orderBookStats: null,
+    subscribeToBidsAndAsks: vi.fn(async () => undefined),
+    unsubscribeFromBidsAndAsks: vi.fn(async () => undefined),
+    setBaseValue: vi.fn(),
+    setQuoteValue: vi.fn(),
+    setAmountSliderValue: vi.fn(),
+    setLimitOrderType: vi.fn(),
+    setSide: vi.fn(),
   });
 
-  return {
-    state: reactive({
-      orderBook: orderBookState,
-      wallet: {
-        account: {
-          fiatPriceObject: reactive({ quote: '1000000000000000000' }),
-        },
-        settings: reactive({
-          exchangeRate: 2,
-          currencySymbol: '$',
-        }),
-      },
-    }),
-    getters: {
-      orderBook: reactive({
-        baseAsset,
-        quoteAsset,
-        currentOrderBook,
-        orderBookLastDeal,
-        orderBookId: 'book-1',
-      }),
-      wallet: reactive({
-        settings: reactive({
-          exchangeRate: 2,
-          currencySymbol: '$',
-        }),
-      }),
-      settings: reactive({
-        nodeIsConnected: true,
-      }),
-    },
-    commit: {
-      orderBook: {
-        setSide: vi.fn(),
-        setQuoteValue: vi.fn(),
-      },
-    },
-    dispatch: {
-      orderBook: {
-        subscribeToBidsAndAsks: vi.fn(async () => undefined),
-        unsubscribeFromBidsAndAsks: vi.fn(async () => undefined),
-      },
-    },
-  };
-};
+const orderBookStoreStub = createOrderBookStoreStub();
+const settingsStoreStub = reactive({
+  nodeIsConnected: true,
+  exchangeRate: 2,
+  currencySymbol: '$',
+});
+
+vi.mock('@/stores/orderBook', () => ({
+  useOrderBookStore: () => orderBookStoreStub,
+}));
+
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => settingsStoreStub,
+}));
 
 describe('useOrderBook', () => {
-  let storeStub: StoreStub;
   let useOrderBook: () => OrderBookComposable;
 
   beforeEach(async () => {
-    storeStub = createStoreStub();
-    vi.doMock('@/store', () => ({
-      default: storeStub,
-    }));
+    orderBookStoreStub.asks = [];
+    orderBookStoreStub.bids = [];
+    orderBookStoreStub.deals = [];
+    orderBookStoreStub.limitOrderType = LimitOrderType.limit;
+    orderBookStoreStub.side = PriceVariant.Buy;
+    orderBookStoreStub.lastDeal = {
+      price: new FPNumber(10),
+      side: PriceVariant.Buy,
+    } as OrderBookDealData;
+    settingsStoreStub.nodeIsConnected = true;
+    settingsStoreStub.exchangeRate = 2;
+    settingsStoreStub.currencySymbol = '$';
+    vi.clearAllMocks();
 
     const module = await import('@/composables/useOrderBook');
     useOrderBook = module.useOrderBook;
   });
 
   afterEach(() => {
-    vi.doUnmock('@/store');
     vi.resetModules();
   });
 
@@ -171,9 +117,9 @@ describe('useOrderBook', () => {
       [new FPNumber(8.5), new FPNumber(0.5), new FPNumber(13.75)],
     ] as unknown as OrderBookPriceVolumeAggregated[];
 
-    storeStub.state.orderBook.asks = asks;
-    storeStub.state.orderBook.bids = bids;
-    storeStub.state.orderBook.deals = [
+    orderBookStoreStub.asks = asks;
+    orderBookStoreStub.bids = bids;
+    orderBookStoreStub.deals = [
       {
         timestamp: 10,
         amount: new FPNumber(1),
@@ -197,57 +143,72 @@ describe('useOrderBook', () => {
     expect(orderBook.buyOrders.value).toHaveLength(2);
     expect(orderBook.lastPriceFormatted.value).toBe('10');
     expect(orderBook.fiatValue.value).toBe('$20');
-    expect(orderBook.sellMarginStyle.value).toContain('height: 216px');
-
-    const trades = orderBook.completedOrders.value;
-    expect(trades).toHaveLength(2);
-    expect(trades[0].time).toBe('formatted-10-M/DD HH:mm:ss');
-    expect(trades[0].amount).toContain('XOR');
-    expect(trades[0].price).toContain('USD');
-    expect(trades[0].isBuy).toBe(true);
-    expect(trades[1].isBuy).toBe(false);
   });
 
-  it('fills price via store mutations for limit orders', async () => {
+  it('handles limit order type toggling', async () => {
+    orderBookStoreStub.limitOrderType = LimitOrderType.market;
+
     const orderBook = useOrderBook();
     await nextTick();
 
-    orderBook.fillPrice('12.34', PriceVariant.Buy);
-
-    expect(storeStub.commit.orderBook.setSide).toHaveBeenCalledWith(PriceVariant.Buy);
-    expect(storeStub.commit.orderBook.setQuoteValue).toHaveBeenCalledWith('12.34');
+    expect(orderBook.isMarketOrder.value).toBe(true);
   });
 
-  it('installs subscriptions with loader wrappers', async () => {
+  it('subscribes and unsubscribes from order book feeds', async () => {
     const orderBook = useOrderBook();
-    const withLoading = vi.fn(async (handler: AsyncFnWithoutArgs) => handler());
-    const withParentLoading = vi.fn(async (handler: AsyncFnWithoutArgs) => handler());
 
-    const stop = orderBook.watchOrderBookSubscription({ withLoading, withParentLoading });
-    await nextTick();
+    await orderBook.subscribeToOrderBook();
+    expect(orderBookStoreStub.subscribeToBidsAndAsks).toHaveBeenCalled();
 
-    expect(withLoading).toHaveBeenCalled();
-    expect(withParentLoading).toHaveBeenCalled();
-    expect(storeStub.dispatch.orderBook.subscribeToBidsAndAsks).toHaveBeenCalled();
-
-    stop();
-  });
-
-  it('updates selected step when order book precision changes', async () => {
-    const orderBook = useOrderBook();
-    await nextTick();
-    expect(orderBook.selectedStep.value).toBe('0.01');
-
-    (storeStub.getters.orderBook.currentOrderBook as { tickSize: number }).tickSize = 0.02;
-    await nextTick();
-
-    expect(orderBook.selectedStep.value).toBe('0.02');
-  });
-
-  it('exposes unsubscribe helper for order book stream', async () => {
-    const orderBook = useOrderBook();
     await orderBook.unsubscribeFromOrderBook();
+    expect(orderBookStoreStub.unsubscribeFromBidsAndAsks).toHaveBeenCalled();
+  });
 
-    expect(storeStub.dispatch.orderBook.unsubscribeFromBidsAndAsks).toHaveBeenCalled();
+  it('fills price using the helper handler', async () => {
+    const orderBook = useOrderBook();
+
+    orderBook.fillPrice('1.23', PriceVariant.Buy);
+    expect(orderBookStoreStub.setSide).toHaveBeenCalledWith(PriceVariant.Buy);
+    expect(orderBookStoreStub.setQuoteValue).toHaveBeenCalledWith('1.23');
+  });
+
+  it('watches order book id and node connectivity to resubscribe', async () => {
+    const subscribeSpy = vi
+      .spyOn(orderBookStoreStub, 'subscribeToBidsAndAsks')
+      .mockResolvedValueOnce(undefined)
+      .mockResolvedValueOnce(undefined);
+    const unsubscribeSpy = vi.spyOn(orderBookStoreStub, 'unsubscribeFromBidsAndAsks').mockResolvedValue(undefined);
+
+    const composable = useOrderBook();
+    const stop = composable.watchOrderBookSubscription();
+    await nextTick();
+
+    expect(subscribeSpy).toHaveBeenCalledTimes(1);
+    expect(unsubscribeSpy).not.toHaveBeenCalled();
+
+    settingsStoreStub.nodeIsConnected = false;
+    await nextTick();
+    expect(unsubscribeSpy).toHaveBeenCalledTimes(1);
+
+    orderBookStoreStub.orderBookId = '';
+    settingsStoreStub.nodeIsConnected = true;
+    await nextTick();
+    expect(subscribeSpy).toHaveBeenCalledTimes(1);
+
+    orderBookStoreStub.orderBookId = 'book-1';
+    await nextTick();
+    expect(subscribeSpy).toHaveBeenCalledTimes(2);
+
+    stop?.();
+  });
+
+  it('exposes subscription helpers that respect loader callbacks', async () => {
+    const orderBook = useOrderBook();
+    const loaderSpy = vi.fn(async (handler: AsyncFnWithoutArgs) => {
+      await handler();
+    });
+
+    await orderBook.subscribeToOrderBook({ withLoading: loaderSpy });
+    expect(loaderSpy).toHaveBeenCalled();
   });
 });

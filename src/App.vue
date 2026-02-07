@@ -146,36 +146,40 @@ const isTearingDown = ref(false);
 
 const responsiveClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
 const appConnection = computed(() => store.state.settings.appConnection as NodesConnection);
-const browserNotifPopup = computed(() => store.state.settings.browserNotifPopupVisibility as boolean);
-const browserNotifPopupBlocked = computed(() => store.state.settings.browserNotifPopupBlockedVisibility as boolean);
-const isThemePreference = computed(() => Boolean(store.state.settings.isThemePreference));
-const isTMA = computed(() => Boolean(store.state.settings.isTMA));
-const isMSTAvailable = computed(() => Boolean(store.state.wallet.settings.isMSTAvailable));
-const assetsToNotifyQueue = computed(() => store.state.wallet.account.assetsToNotifyQueue as WhitelistArrayItem[]);
-const accountAddress = computed(() => store.state.wallet.account.address as string);
+const browserNotifPopup = computed(() => Boolean(store.state.settings?.browserNotifPopupVisibility));
+const browserNotifPopupBlocked = computed(() => store.state.settings?.browserNotifPopupBlockedVisibility as boolean);
+const isThemePreference = computed(() => Boolean(store.state.settings?.isThemePreference));
+const isTMA = computed(() => Boolean(store.state.settings?.isTMA));
+const isMSTAvailable = computed(() => Boolean(store.state.wallet?.settings?.isMSTAvailable));
+const assetsToNotifyQueue = computed(
+  () => (store.state.wallet?.account?.assetsToNotifyQueue as WhitelistArrayItem[]) ?? []
+);
+const accountAddress = computed(() => (store.state.wallet?.account?.address as string) ?? '');
 const pendingMstTransactions = computed(() => {
-  const list = store.state.wallet.transactions?.pendingMstTransactions as Nullable<HistoryItem[]>;
+  const list = store.state.wallet?.transactions?.pendingMstTransactions as Nullable<HistoryItem[]>;
   return Array.isArray(list) ? list : [];
 });
-const storageReferrer = computed(() => store.state.referrals.storageReferrer as string);
-const referrer = computed(() => store.state.referrals.referrer as string);
-const disclaimerVisibility = computed(() => Boolean(store.state.settings.disclaimerVisibility));
-const pageLoading = computed(() => Boolean(store.state.router.loading));
-const nodeIsConnected = computed(() => Boolean(store.getters.settings.nodeIsConnected));
-const firstReadyTransaction = computed(() => store.getters.wallet.transactions.firstReadyTx as Nullable<HistoryItem>);
-const isLoggedIn = computed(() => Boolean(store.getters.wallet.account.isLoggedIn));
-const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
-const libraryDesignSystem = computed(() => store.getters.libraryDesignSystem as DesignSystem);
-const account = computed(() => store.getters.wallet.account.account);
-const isSignTxDialogVisible = computed(() => Boolean(store.state.wallet.transactions.isSignTxDialogVisible));
-const isWalletLoaded = computed(() => Boolean(store.state.settings.isWalletLoaded));
+const storageReferrer = computed(() => (store.state.referrals?.storageReferrer as string) ?? '');
+const referrer = computed(() => (store.state.referrals?.referrer as string) ?? '');
+const disclaimerVisibility = computed(() => Boolean(store.state.settings?.disclaimerVisibility));
+const pageLoading = computed(() => Boolean(store.state.router?.loading));
+const nodeIsConnected = computed(() => Boolean(store.getters?.settings?.nodeIsConnected));
+const firstReadyTransaction = computed(
+  () => store.getters?.wallet?.transactions?.firstReadyTx as Nullable<HistoryItem>
+);
+const isLoggedIn = computed(() => Boolean(store.getters?.wallet?.account?.isLoggedIn));
+const libraryTheme = computed(() => store.getters?.libraryTheme as Theme);
+const libraryDesignSystem = computed(() => store.getters?.libraryDesignSystem as DesignSystem);
+const account = computed(() => store.getters?.wallet?.account?.account);
+const isSignTxDialogVisible = computed(() => Boolean(store.state.wallet?.transactions?.isSignTxDialogVisible));
+const isWalletLoaded = computed(() => Boolean(store.state.settings?.isWalletLoaded));
 const orientationWarningVisible = computed({
   get: () => Boolean(store.state.settings.isOrientationWarningVisible),
   set: (flag: boolean) => {
     if (flag) {
-      store.commit.settings.showOrientationWarning();
+      showOrientationWarning();
     } else {
-      store.commit.settings.hideOrientationWarning();
+      hideOrientationWarning();
     }
   },
 });
@@ -210,28 +214,67 @@ const appClasses = computed(() => {
 
 const chainApi = api;
 
-const setSoraNetwork = store.commit.wallet.settings.setSoraNetwork;
-const setIndexerEndpoint = store.commit.wallet.settings.setIndexerEndpoint;
-const setFaucetUrl = store.commit.settings.setFaucetUrl;
-const setFeatureFlags = store.commit.settings.setFeatureFlags;
-const setScreenBreakpointClass = store.commit.settings.setScreenBreakpointClass;
-const showOrientationWarning = store.commit.settings.showOrientationWarning;
-const hideOrientationWarning = store.commit.settings.hideOrientationWarning;
-const unsubscribeFromInvitedUsers = store.commit.referrals.unsubscribeFromInvitedUsers;
-const setEvmNetworksApp = store.commit.web3.setEvmNetworksApp;
-const setSubNetworkApps = store.commit.web3.setSubNetworkApps;
-const setEthBridgeSettings = store.commit.web3.setEthBridgeSettings;
-const resetStorageReferrer = store.commit.referrals.resetStorageReferrer;
-const setSignTxDialogVisibility = store.commit.wallet.transactions.setSignTxDialogVisibility;
+const resolveCommit = (fn: unknown, type: string) => {
+  if (typeof fn === 'function') {
+    return fn as (...args: any[]) => unknown;
+  }
+  if (typeof store.original?.commit === 'function') {
+    return (...args: any[]) => store.original.commit(type, ...args);
+  }
+  return undefined;
+};
+
+const resolveDispatch = (fn: unknown, type: string) => {
+  if (typeof fn === 'function') {
+    return fn as (...args: any[]) => unknown;
+  }
+  if (typeof store.original?.dispatch === 'function') {
+    return (...args: any[]) => store.original.dispatch(type, ...args);
+  }
+  return undefined;
+};
+
+const setSoraNetwork = resolveCommit(store.commit?.wallet?.settings?.setSoraNetwork, 'wallet/settings/setSoraNetwork');
+const setIndexerEndpoint = resolveCommit(
+  store.commit?.wallet?.settings?.setIndexerEndpoint,
+  'wallet/settings/setIndexerEndpoint'
+);
+const setFaucetUrl = resolveCommit(store.commit?.settings?.setFaucetUrl, 'settings/setFaucetUrl');
+const setFeatureFlags = resolveCommit(store.commit?.settings?.setFeatureFlags, 'settings/setFeatureFlags');
+const setScreenBreakpointClass = resolveCommit(
+  store.commit?.settings?.setScreenBreakpointClass,
+  'settings/setScreenBreakpointClass'
+);
+const showOrientationWarning =
+  resolveCommit(store.commit?.settings?.showOrientationWarning, 'settings/showOrientationWarning') ?? (() => {});
+const hideOrientationWarning =
+  resolveCommit(store.commit?.settings?.hideOrientationWarning, 'settings/hideOrientationWarning') ?? (() => {});
+const unsubscribeFromInvitedUsers =
+  resolveCommit(store.commit?.referrals?.unsubscribeFromInvitedUsers, 'referrals/unsubscribeFromInvitedUsers') ??
+  (() => {});
+const setEvmNetworksApp = resolveCommit(store.commit?.web3?.setEvmNetworksApp, 'web3/setEvmNetworksApp');
+const setSubNetworkApps = resolveCommit(store.commit?.web3?.setSubNetworkApps, 'web3/setSubNetworkApps');
+const setEthBridgeSettings = resolveCommit(store.commit?.web3?.setEthBridgeSettings, 'web3/setEthBridgeSettings');
+const resetStorageReferrer =
+  resolveCommit(store.commit?.referrals?.resetStorageReferrer, 'referrals/resetStorageReferrer') ?? (() => {});
+const setSignTxDialogVisibility =
+  resolveCommit(
+    store.commit?.wallet?.transactions?.setSignTxDialogVisibility,
+    'wallet/transactions/setSignTxDialogVisibility'
+  ) ?? (() => {});
+const toggleDisclaimerDialogVisibility = resolveCommit(
+  store.commit?.settings?.toggleDisclaimerDialogVisibility,
+  'settings/toggleDisclaimerDialogVisibility'
+);
 
 const setApiKeys = walletStore.setApiKeys;
 const subscribeOnExchangeRatesApi = walletStore.subscribeOnExchangeRatesApi;
 const resetNetworkSubscriptions = walletStore.resetNetworkSubscriptions;
 const resetInternalSubscriptions = walletStore.resetInternalSubscriptions;
 const activateNetworkSubscriptions = walletStore.activateNetworkSubscriptions;
-const setLanguage = store.dispatch.settings.setLanguage;
-const fetchAdsArray = store.dispatch.settings.fetchAdsArray;
-const getReferrer = store.dispatch.referrals.getReferrer;
+const setLanguage = resolveDispatch(store.dispatch?.settings?.setLanguage, 'settings/setLanguage');
+const fetchAdsArray = resolveDispatch(store.dispatch?.settings?.fetchAdsArray, 'settings/fetchAdsArray');
+const getReferrer = resolveDispatch(store.dispatch?.referrals?.getReferrer, 'referrals/getReferrer');
 const notifyOnDeposit = walletStore.notifyOnDeposit;
 
 const productPopupRefs: Record<string, Ref<boolean>> = {
@@ -283,8 +326,8 @@ function openProductDialog(product: string): void {
 
 function showDisclaimer(): void {
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
-  if (!disclaimerApprove) {
-    setTimeout(() => store.commit.settings.toggleDisclaimerDialogVisibility(), 5_000);
+  if (!disclaimerApprove && typeof toggleDisclaimerDialogVisibility === 'function') {
+    setTimeout(() => toggleDisclaimerDialogVisibility(), 5_000);
   }
 }
 

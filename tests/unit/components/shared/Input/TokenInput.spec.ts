@@ -47,6 +47,14 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   }),
 }));
 
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => ({
+    currencySymbol: '$',
+    exchangeRate: 2,
+    currency: 'usd',
+  }),
+}));
+
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({

@@ -13,10 +13,10 @@ const getters = defineGetters<RewardsState>()({
   claimableRewards(...args): Array<RewardInfo | RewardsInfo> {
     const { state } = rewardsGetterContext(args);
 
-    const buffer: Array<RewardInfo | RewardsInfo> = [
-      ...state.selectedExternal,
-      ...Object.values(state.selectedCrowdloan).flat(1),
-    ];
+    const selectedExternal = Array.isArray(state.selectedExternal) ? state.selectedExternal : [];
+    const selectedCrowdloan = state.selectedCrowdloan ? Object.values(state.selectedCrowdloan).flat(1) : [];
+
+    const buffer: Array<RewardInfo | RewardsInfo> = [...selectedExternal, ...selectedCrowdloan];
 
     if (state.selectedInternal) {
       buffer.push(state.selectedInternal);
@@ -30,7 +30,7 @@ const getters = defineGetters<RewardsState>()({
   },
   rewardsAvailable(...args): boolean {
     const { getters } = rewardsGetterContext(args);
-    return getters.claimableRewards.length !== 0;
+    return (getters.claimableRewards?.length ?? 0) !== 0;
   },
   internalRewardsAvailable(...args): boolean {
     const { state } = rewardsGetterContext(args);
@@ -42,11 +42,12 @@ const getters = defineGetters<RewardsState>()({
   },
   externalRewardsAvailable(...args): boolean {
     const { state } = rewardsGetterContext(args);
-    return state.externalRewards.length !== 0;
+    return Array.isArray(state.externalRewards) && state.externalRewards.length !== 0;
   },
   crowdloanRewardsAvailable(...args): string[] {
     const { state } = rewardsGetterContext(args);
-    return Object.entries(state.crowdloanRewards).reduce<string[]>((buffer, [tag, rewards]) => {
+    const rewardsEntries = state.crowdloanRewards ? Object.entries(state.crowdloanRewards) : [];
+    return rewardsEntries.reduce<string[]>((buffer, [tag, rewards]) => {
       if (rewards.some((reward) => !asZeroValue(reward.amount))) {
         buffer.push(tag);
       }
@@ -55,7 +56,7 @@ const getters = defineGetters<RewardsState>()({
   },
   externalRewardsSelected(...args): boolean {
     const { state } = rewardsGetterContext(args);
-    return state.selectedExternal.length !== 0;
+    return Array.isArray(state.selectedExternal) && state.selectedExternal.length !== 0;
   },
   rewardsByAssetsList(...args): Array<RewardsAmountHeaderItem> {
     const { getters } = rewardsGetterContext(args);

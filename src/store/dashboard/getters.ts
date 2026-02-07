@@ -3,18 +3,39 @@ import { defineGetters } from 'direct-vuex';
 
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import { dashboardGetterContext } from '@/store/dashboard';
+import { requireLegacyStore } from '@/utils/legacy-store';
 
 import type { DashboardState } from './types';
+
+const resolveWalletAccount = (rootState: any, rootGetters: any) => {
+  const account = rootState?.wallet?.account;
+  if (account) return account;
+
+  const legacyStore = requireLegacyStore();
+
+  return legacyStore?.state?.wallet?.account ?? legacyStore?.getters?.wallet?.account;
+};
+
+const resolveAssetsTable = (rootGetters: any) => {
+  const table = rootGetters?.wallet?.account?.assetsDataTable;
+  if (table) return table;
+
+  const legacyStore = requireLegacyStore();
+
+  return legacyStore?.getters?.wallet?.account?.assetsDataTable ?? {};
+};
 
 const getters = defineGetters<DashboardState>()({
   ownedAssets(...args): Array<OwnedAsset> {
     const { state, rootState, rootGetters } = dashboardGetterContext(args);
+    const walletAccount = resolveWalletAccount(rootState, rootGetters);
+    const assetsTable = resolveAssetsTable(rootGetters);
 
     return state.ownedAssetIds.reduce<Array<OwnedAsset>>((assets, id) => {
-      const asset = rootGetters.wallet.account.assetsDataTable[id];
+      const asset = assetsTable[id];
       if (!asset) return assets;
 
-      const fiatObj = rootState.wallet.account.fiatPriceObject[id];
+      const fiatObj = walletAccount?.fiatPriceObject?.[id];
       const fiat = fiatObj ? FPNumber.fromCodecValue(fiatObj).toString() : fiatObj;
 
       assets.push({ ...asset, fiat });

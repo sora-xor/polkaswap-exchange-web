@@ -16,6 +16,7 @@
 import { components, WALLET_TYPES } from '@wallet';
 import isEqual from 'lodash/fp/isEqual';
 import { computed, onBeforeUnmount, useAttrs, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useSubscriptions } from '@/composables/useSubscriptions';
@@ -23,6 +24,9 @@ import { useWeb3Connection } from '@/composables/useWeb3Connection';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import store from '@/store';
+import { useBridgeStore } from '@/stores/bridge';
+import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
+import { useWeb3Store } from '@/stores/web3';
 
 import type { Nullable } from '@/types/common';
 import type { NetworkData } from '@/types/bridge';
@@ -40,26 +44,29 @@ const attrs = useAttrs();
 
 const { disconnectExternalNetwork } = useWeb3Connection();
 const { soraAddress } = useInternalConnect();
+const bridgeStore = useBridgeStore();
+const bridgeTransactionsStore = useBridgeTransactionsStore();
+const web3Store = useWeb3Store();
+const { isSignTxDialogVisible } = storeToRefs(bridgeTransactionsStore);
 
-const selectedNetwork = computed(() => store.getters.web3.selectedNetwork as Nullable<NetworkData>);
-const externalAccount = computed(() => store.getters.bridge.externalAccount as string);
-const subAccount = computed(() => store.getters.web3.subAccount as WALLET_TYPES.PolkadotJsAccount);
-const subBridgeConnector = computed(() => store.state.bridge.subBridgeConnector as SubNetworksConnector);
+const selectedNetwork = computed(() => web3Store.selectedNetworkData as Nullable<NetworkData>);
+const externalAccount = computed(() => bridgeStore.externalAccount);
+const subAccount = computed(() => web3Store.subAccount as WALLET_TYPES.PolkadotJsAccount);
+const subBridgeConnector = computed(() => bridgeStore.connector as SubNetworksConnector);
 const chainApi = computed(() => subBridgeConnector.value?.accountApi);
-const isSignTxDialogVisible = computed(() => Boolean(store.state.bridge.isSignTxDialogVisible));
 
 const setSignTxDialogVisibility = (flag: boolean) => {
-  store.commit.bridge.setSignTxDialogVisibility(flag);
+  bridgeStore.setSignTxDialogVisibility(flag);
 };
 
 const getSupportedApps = () => store.dispatch.web3.getSupportedApps();
 const restoreSelectedNetwork = () => store.dispatch.web3.restoreSelectedNetwork();
-const updateExternalBalance = () => store.dispatch.bridge.updateExternalBalance();
-const subscribeOnBlockUpdates = () => store.dispatch.bridge.subscribeOnBlockUpdates();
-const updateOutgoingMaxLimit = () => store.dispatch.bridge.updateOutgoingMaxLimit();
-const resetBridgeForm = () => store.dispatch.bridge.resetBridgeForm();
-const resetBlockUpdatesSubscription = () => store.commit.bridge.resetBlockUpdatesSubscription();
-const resetOutgoingMaxLimitSubscription = () => store.commit.bridge.resetOutgoingMaxLimitSubscription();
+const updateExternalBalance = () => bridgeStore.updateExternalBalance();
+const subscribeOnBlockUpdates = () => bridgeStore.subscribeOnBlockUpdates();
+const updateOutgoingMaxLimit = () => bridgeStore.updateOutgoingMaxLimit();
+const resetBridgeForm = () => bridgeStore.resetBridgeForm();
+const resetBlockUpdatesSubscription = () => bridgeStore.resetBlockUpdatesSubscription();
+const resetOutgoingMaxLimitSubscription = () => bridgeStore.resetOutgoingMaxLimitSubscription();
 
 const updateBridgeApps = async () => {
   await getSupportedApps();

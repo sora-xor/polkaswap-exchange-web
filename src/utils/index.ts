@@ -6,15 +6,14 @@ import debounce from 'lodash/debounce';
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type { Currency, CurrencyFields } from '@wallet/lib/types/currency';
-import type { Route } from 'vue-router';
+import type { Route, RouteLocationNormalizedLoaded } from 'vue-router';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
 
 import { app, TranslationConsts } from '@/consts';
 import i18n from '@/lang';
-import router from '@/router';
-import store from '@/store';
 import getScrollbarWidth from '@/utils/scrollbar-width';
+import { requireLegacyStore } from '@/utils/legacy-store';
 import {
   asZeroValue,
   getAssetBalance,
@@ -39,16 +38,30 @@ export async function waitUntil(condition: () => boolean): Promise<void> {
 }
 
 export async function waitForSoraNetworkFromEnv(): Promise<WALLET_CONSTS.SoraNetwork> {
+  const legacyStore = requireLegacyStore() as any;
+  const watch = legacyStore?.original?.watch;
+
+  if (typeof watch !== 'function') {
+    console.warn('[waitForSoraNetworkFromEnv] Legacy store not ready, returning default network');
+    return WALLET_CONSTS.SoraNetwork.Prod;
+  }
+
   return new Promise<WALLET_CONSTS.SoraNetwork>((resolve) => {
-    const unsubscribe = store.original.watch(
-      (state) => state.wallet.settings.soraNetwork,
+    let unsubscribe: VoidFunction | undefined;
+    const stop = watch(
+      (state: any) => state?.wallet?.settings?.soraNetwork,
       (value) => {
         if (value) {
-          unsubscribe();
+          if (unsubscribe) {
+            unsubscribe();
+          } else {
+            queueMicrotask(() => unsubscribe?.());
+          }
           resolve(value);
         }
       }
     );
+    unsubscribe = typeof stop === 'function' ? stop : undefined;
   });
 }
 
@@ -77,7 +90,10 @@ export const isMaxButtonAvailable = (
   xorAsset: AccountAsset | RegisteredAccountAsset,
   isXorOutputSwap = false
 ): boolean => {
-  if (store.state.wallet.settings.shouldBalanceBeHidden) {
+  const legacyStore = requireLegacyStore() as any;
+  const shouldHideBalance = legacyStore?.state?.wallet?.settings?.shouldBalanceBeHidden;
+
+  if (shouldHideBalance) {
     return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
   }
 
@@ -235,9 +251,25 @@ export const getMobileCssClasses = () => {
   return undefined;
 };
 
-export const updateDocumentTitle = (to?: Route) => {
-  const page = to ?? router.currentRoute;
-  const pageName = page?.name;
+type RouteLike = Pick<Route | RouteLocationNormalizedLoaded, 'name'>;
+
+let documentTitleRouteResolver: (() => RouteLike | undefined) | null = null;
+
+/**
+ * Allows consumers (router) to supply a lazy route resolver so title updates
+ * keep working even when `updateDocumentTitle` is invoked without a route arg.
+ */
+export const registerDocumentTitleResolver = (resolver?: (() => RouteLike | undefined) | null): void => {
+  documentTitleRouteResolver = resolver ?? null;
+};
+
+/**
+ * Updates the document title based on the current or provided route name.
+ * Falls back to the default app title when no translation is available.
+ */
+export const updateDocumentTitle = (to?: RouteLike) => {
+  const page = to ?? documentTitleRouteResolver?.();
+  const pageName = typeof page?.name === 'string' ? page.name : undefined;
   const pageTitleKey = `pageTitle.${pageName}`;
   // TODO: update pageTitle list: remove duplicates, add missed / change logic
   if (pageName && i18n.te(pageTitleKey)) {

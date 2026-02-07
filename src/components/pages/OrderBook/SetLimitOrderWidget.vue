@@ -22,8 +22,10 @@ import { computed, ref, watch } from 'vue';
 
 import { Components } from '@/consts';
 import { useOrderBook } from '@/composables/useOrderBook';
+import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
+import { useOrderBookStore } from '@/stores/orderBook';
 
 defineOptions({
   components: {
@@ -33,11 +35,21 @@ defineOptions({
 });
 
 const { t } = useTranslation();
-const { PriceVariant: orderBookPriceVariant, side, setSide } = useOrderBook();
+const { PriceVariant: orderBookPriceVariant, side, setSide, orderBookId, baseAsset, quoteAsset } = useOrderBook();
+const orderBookStore = useOrderBookStore();
 
 const LimitOrderTabsItems = orderBookPriceVariant ?? PriceVariant;
 
 const currentTab = ref(side.value ?? PriceVariant.Buy);
+
+usePiniaTelemetry('order-book', [{ store: orderBookStore, storeId: 'orderBook' }], {
+  metadata: () => ({
+    widget: 'set-limit-order',
+    orderBookId: orderBookId.value || null,
+    baseAsset: baseAsset.value?.symbol ?? null,
+    quoteAsset: quoteAsset.value?.symbol ?? null,
+  }),
+});
 
 watch(
   side,

@@ -1,6 +1,6 @@
 import { api } from '@wallet';
 
-import store from '@/store';
+import { requireLegacyStore } from '@/utils/legacy-store';
 
 enum HapticStatusValue {
   success = 'success',
@@ -38,6 +38,8 @@ function useHaptic(type: HapticFeedbackBinding): void {
   }
 }
 
+const getLegacyStore = () => requireLegacyStore() as any;
+
 class TmaSdk {
   private deviceOrientationHandler: ((event: DeviceOrientationEvent) => void) | null = null;
   private themeChangeListener: ((eventType: string, eventData: any) => void) | null = null;
@@ -55,8 +57,9 @@ class TmaSdk {
       WebApp?.expand?.();
       // Disable vertical swipe if possible
       WebApp?.disableVerticalSwipes?.();
-      store.commit.settings.enableTMA();
-      store.commit.wallet.account.setIsDesktop(true);
+      const store = getLegacyStore();
+      store?.commit?.settings?.enableTMA?.();
+      store?.commit?.wallet?.account?.setIsDesktop?.(true);
       console.info('[TMA]: Mini app was initialized');
       // Set theme
       this.updateTheme();
@@ -64,32 +67,28 @@ class TmaSdk {
       this.setReferrer(WebApp?.initDataUnsafe?.start_param);
       // Set the Telegram bot URL
       if (botUrl) {
-        store.commit.settings.setTelegramBotUrl(botUrl);
+        store?.commit?.settings?.setTelegramBotUrl?.(botUrl);
       }
       // Init haptic feedback
       this.addHapticListener();
 
-      if (
-        store.state.settings.isRotatePhoneHideBalanceFeatureEnabled &&
-        store.state.settings.isAccessRotationListener
-      ) {
+      const settings = store?.state?.settings;
+      if (settings?.isRotatePhoneHideBalanceFeatureEnabled && settings?.isAccessRotationListener) {
         this.listenForDeviceRotation();
-      } else if (
-        !store.state.settings.isAccessRotationListener &&
-        store.state.settings.isAccessAccelerometrEventDeclined
-      ) {
+      } else if (!settings?.isAccessRotationListener && settings?.isAccessAccelerometrEventDeclined) {
         const accessGranted = await this.checkAccelerometerAccess();
         if (accessGranted) {
           this.listenForDeviceRotation();
-          store.commit.settings.setIsRotatePhoneHideBalanceFeatureEnabled(true);
-          store.commit.settings.setAccessGranted(true);
-          store.commit.settings.setIsAccessAccelerometrEventDeclined(false);
+          store?.commit?.settings?.setIsRotatePhoneHideBalanceFeatureEnabled?.(true);
+          store?.commit?.settings?.setAccessGranted?.(true);
+          store?.commit?.settings?.setIsAccessAccelerometrEventDeclined?.(false);
         }
       }
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
-      store.commit.settings.disableTMA();
-      store.commit.wallet.account.setIsDesktop(false);
+      const store = getLegacyStore();
+      store?.commit?.settings?.disableTMA?.();
+      store?.commit?.wallet?.account?.setIsDesktop?.(false);
     }
   }
 
@@ -164,8 +163,9 @@ class TmaSdk {
 
         if (wasRotatedTo180 && Math.abs(beta) < 30) {
           useHaptic('soft');
-          store.commit.wallet.settings.toggleHideBalance();
-          store.commit.wallet.account.syncWithStorage();
+          const store = getLegacyStore();
+          store?.commit?.wallet?.settings?.toggleHideBalance?.();
+          store?.commit?.wallet?.account?.syncWithStorage?.();
           wasRotatedTo180 = false;
         }
       }
@@ -249,7 +249,8 @@ class TmaSdk {
 
   private setReferrer(referrerAddress?: string): void {
     if (referrerAddress && api.validateAddress(referrerAddress)) {
-      store.commit.referrals.setStorageReferrer(referrerAddress);
+      const store = getLegacyStore();
+      store?.commit?.referrals?.setStorageReferrer?.(referrerAddress);
       console.info('[TMA]: Referrer was set', referrerAddress);
     }
   }

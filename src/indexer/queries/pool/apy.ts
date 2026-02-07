@@ -1,5 +1,6 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { getCurrentIndexer } from '@wallet';
+import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -11,8 +12,6 @@ import type {
   SubscriptionPayload,
   UpdatesStream,
 } from '@wallet/lib/services/indexer/types';
-
-const { IndexerType } = WALLET_CONSTS;
 
 const SubqueryApyQuery = gql<ConnectionQueryResponse<SubqueryPoolXYKEntity>>`
   query SubqueryApyQuery($after: Cursor = "", $first: Int = 100) {

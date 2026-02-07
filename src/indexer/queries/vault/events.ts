@@ -1,5 +1,6 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, WALLET_CONSTS } from '@wallet';
+import { getCurrentIndexer } from '@wallet';
+import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -8,8 +9,6 @@ import type { FetchVariables } from '@/types/indexers';
 
 import type { SubsquidQueryResponse } from '@wallet/lib/services/indexer/subsquid/types';
 import type { ConnectionQueryResponse, VaultEventBaseEntity } from '@wallet/lib/services/indexer/types';
-
-const { IndexerType } = WALLET_CONSTS;
 
 const SubqueryVaultDetailsQuery = gql<ConnectionQueryResponse<VaultEventBaseEntity>>`
   query VaultDetailsQuery($first: Int = null, $offset: Int = null, $filter: VaultEventFilter) {

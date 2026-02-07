@@ -243,26 +243,15 @@ defineOptions({
   },
 });
 
-const props = withDefaults(
-  defineProps<{
-    baseAsset?: Nullable<AccountAsset>;
-    quoteAsset?: Nullable<AccountAsset>;
-    requestEntityId?: Nullable<string>;
-    requestMethod?: RequestMethod;
-    requestSubscription?: RequestSubscription;
-    isAvailable?: boolean;
-    parentLoading?: boolean;
-  }>(),
-  {
-    baseAsset: null,
-    quoteAsset: null,
-    requestEntityId: null,
-    requestMethod: fetchAssetPriceData,
-    requestSubscription: defaultRequestSubscription,
-    isAvailable: false,
-    parentLoading: false,
-  }
-);
+const props = defineProps<{
+  baseAsset?: Nullable<AccountAsset>;
+  quoteAsset?: Nullable<AccountAsset>;
+  requestEntityId?: Nullable<string>;
+  requestMethod?: RequestMethod;
+  requestSubscription?: RequestSubscription;
+  isAvailable?: boolean;
+  parentLoading?: boolean;
+}>();
 
 const parentLoading = computed(() => props.parentLoading ?? false);
 const { loading, withApi } = useLoading({ parentLoading });
@@ -574,7 +563,7 @@ const isAllHistoricalPricesFetched = () => {
 };
 
 const requestIsAllowed = (entitiesSnapshot: string[]): boolean => {
-  if (isTokensPair.value && !props.isAvailable) return false;
+  if (isTokensPair.value && !(props.isAvailable ?? false)) return false;
   return isEqual(entitiesSnapshot)(entities.value);
 };
 
@@ -621,7 +610,8 @@ const requestData = async (
   do {
     const maxCount = getCurrentIndexer().type === WALLET_CONSTS.IndexerType.SUBSQUID ? 1000 : 100;
     const first = Math.min(remaining, maxCount);
-    const response = await props.requestMethod(entityId, type, first, cursor);
+    const requestMethod = props.requestMethod ?? fetchAssetPriceData;
+    const response = await requestMethod(entityId, type, first, cursor);
 
     if (!response) throw new Error('Chart data fetch error');
 
@@ -782,7 +772,8 @@ const fetchAndHandleUpdate = async (entitiesSnapshot: string[]): Promise<void> =
 
 const getPriceUpdatesSubscription = async (entitiesSnapshot: string[]): Promise<Nullable<FnWithoutArgs>> => {
   const callback = () => fetchAndHandleUpdate(entitiesSnapshot);
-  return await props.requestSubscription(callback);
+  const requestSubscription = props.requestSubscription ?? defaultRequestSubscription;
+  return await requestSubscription(callback);
 };
 
 const subscribeToPriceUpdates = async (): Promise<void> => {

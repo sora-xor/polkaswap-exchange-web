@@ -9,7 +9,7 @@ const getters = defineGetters<StakingState>()({
   stash(...args): string {
     const { rootGetters } = stakingGetterContext(args);
 
-    return rootGetters.wallet.account.account.address;
+    return rootGetters.wallet?.account?.account?.address ?? '';
   },
 });
 

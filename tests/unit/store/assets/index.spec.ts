@@ -5,6 +5,12 @@ import type { AssetsState, BridgeRegisteredAsset } from '@/store/assets/types';
 
 type AssetsModule = typeof import('@/store/assets/index').default;
 
+const piniaStub = {};
+
+vi.mock('pinia', () => ({
+  getActivePinia: () => piniaStub,
+}));
+
 const assetsStoreMock = {
   registeredAssets: {} as Record<string, BridgeRegisteredAsset>,
   registeredAssetsFetching: false,
@@ -30,7 +36,7 @@ vi.mock('@/stores/assets', () => ({
   useAssetsStore: () => assetsStoreMock,
 }));
 
-vi.mock('@/store', () => ({
+vi.mock('@/store/context', () => ({
   __esModule: true,
   localActionContext: localActionContextMock,
   localGetterContext: vi.fn(),
