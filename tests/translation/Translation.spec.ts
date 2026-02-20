@@ -8,29 +8,6 @@ import {
 
 import * as arJson from '../../src/lang/ar.json';
 import * as baJson from '../../src/lang/ba.json';
-import * as cardArJson from '../../src/lang/card/ar.json';
-import * as cardBaJson from '../../src/lang/card/ba.json';
-import * as cardCsJson from '../../src/lang/card/cs.json';
-import * as cardDeJson from '../../src/lang/card/de.json';
-import * as cardEnJson from '../../src/lang/card/en.json';
-import * as cardEsJson from '../../src/lang/card/es.json';
-import * as cardFrJson from '../../src/lang/card/fr.json';
-import * as cardHeJson from '../../src/lang/card/he.json';
-import * as cardIdJson from '../../src/lang/card/id.json';
-import * as cardItJson from '../../src/lang/card/it.json';
-import * as cardKmJson from '../../src/lang/card/km.json';
-import * as cardMyJson from '../../src/lang/card/my.json';
-import * as cardNlJson from '../../src/lang/card/nl.json';
-import * as cardPisJson from '../../src/lang/card/pis.json';
-import * as cardPlJson from '../../src/lang/card/pl.json';
-import * as cardRuJson from '../../src/lang/card/ru.json';
-import * as cardSrJson from '../../src/lang/card/sr.json';
-import * as cardThJson from '../../src/lang/card/th.json';
-import * as cardUkJson from '../../src/lang/card/uk.json';
-import * as cardUrJson from '../../src/lang/card/ur.json';
-import * as cardViJson from '../../src/lang/card/vi.json';
-import * as cardZhCnJson from '../../src/lang/card/zh_CN.json';
-import * as cardZhTwJson from '../../src/lang/card/zh_TW.json';
 import * as csJson from '../../src/lang/cs.json';
 import * as deJson from '../../src/lang/de.json';
 import * as enJson from '../../src/lang/en.json';
@@ -209,37 +186,6 @@ test('Translation catalogs mirror English keys', () => {
 
   mainLocales.forEach(({ data }) => {
     expect(flattenTranslationKeys(data).sort()).toEqual(expectedKeys);
-  });
-
-  const cardLocales = [
-    { lang: 'ba', data: getDefault(cardBaJson) },
-    { lang: 'uk', data: getDefault(cardUkJson) },
-    { lang: 'cs', data: getDefault(cardCsJson) },
-    { lang: 'de', data: getDefault(cardDeJson) },
-    { lang: 'es', data: getDefault(cardEsJson) },
-    { lang: 'fr', data: getDefault(cardFrJson) },
-    { lang: 'id', data: getDefault(cardIdJson) },
-    { lang: 'it', data: getDefault(cardItJson) },
-    { lang: 'nl', data: getDefault(cardNlJson) },
-    { lang: 'pl', data: getDefault(cardPlJson) },
-    { lang: 'ru', data: getDefault(cardRuJson) },
-    { lang: 'sr', data: getDefault(cardSrJson) },
-    { lang: 'vi', data: getDefault(cardViJson) },
-    { lang: 'zh-CN', data: getDefault(cardZhCnJson) },
-    { lang: 'zh-TW', data: getDefault(cardZhTwJson) },
-    { lang: 'he', data: getDefault(cardHeJson) },
-    { lang: 'ar', data: getDefault(cardArJson) },
-    { lang: 'ur', data: getDefault(cardUrJson) },
-    { lang: 'km', data: getDefault(cardKmJson) },
-    { lang: 'th', data: getDefault(cardThJson) },
-    { lang: 'pis', data: getDefault(cardPisJson) },
-    { lang: 'my', data: getDefault(cardMyJson) },
-  ];
-
-  const expectedCardKeys = flattenTranslationKeys(getDefault(cardEnJson)).sort();
-
-  cardLocales.forEach(({ data }) => {
-    expect(flattenTranslationKeys(data).sort()).toEqual(expectedCardKeys);
   });
 });
 

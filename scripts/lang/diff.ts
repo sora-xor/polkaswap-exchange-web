@@ -21,7 +21,7 @@ type CliOptions = {
   output: 'human' | 'json';
 };
 
-const DEFAULT_FILES = ['src/lang/en.json', 'src/lang/card/en.json'];
+const DEFAULT_FILES = ['src/lang/en.json'];
 
 /**
  * Converts a deeply nested locale object into dot-notation entries.

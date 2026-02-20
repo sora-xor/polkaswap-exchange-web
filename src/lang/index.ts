@@ -7,7 +7,6 @@ import { Language, TranslationConsts } from '@/consts';
 import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 import { settingsStorage } from '@/utils/storage';
 
-import enCard from './card/en.json';
 import en from './en.json';
 
 export const TRANSLATION_MISSING_THROTTLE_MS = 30_000;
@@ -55,7 +54,7 @@ const i18n = createI18n({
   locale: Language.EN,
   fallbackLocale: Language.EN,
   messages: {
-    [Language.EN]: { ...en, ...enCard },
+    [Language.EN]: { ...en },
   },
   warnHtmlMessage: false,
   missing: translationMissingHandler,
@@ -129,9 +128,8 @@ export async function setI18nLocale(lang: Language): Promise<void> {
     // transform locale string 'eu-ES' to filename 'eu_ES' like in localise
     const filename = locale.replace('-', '_');
     const messagesModule = await import(`@/lang/${filename}.json`);
-    const cardMessagesModule = await import(`@/lang/card/${filename}.json`);
 
-    i18nGlobal.setLocaleMessage(locale, { ...messagesModule.default, ...cardMessagesModule.default });
+    i18nGlobal.setLocaleMessage(locale, { ...messagesModule.default });
     loadedLanguages.push(locale);
   }
 

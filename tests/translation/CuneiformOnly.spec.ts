@@ -1,7 +1,6 @@
 import { test, expect } from 'vitest';
 
 import * as akkMain from '../../src/lang/akk.json';
-import * as akkCard from '../../src/lang/card/akk.json';
 
 const getDefault = (mod: Record<string, any>) => (mod as any).default ?? mod;
 
@@ -25,10 +24,7 @@ function hasLatinOutsidePlaceholders(s: string): boolean {
 }
 
 test('Akkadian catalogs contain no Latin letters', () => {
-  const locales = [
-    { name: 'akk (main)', data: getDefault(akkMain) },
-    { name: 'akk (card)', data: getDefault(akkCard) },
-  ];
+  const locales = [{ name: 'akk (main)', data: getDefault(akkMain) }];
 
   const violations: Array<{ locale: string; key: string; value: string }> = [];
 
