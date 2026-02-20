@@ -9,6 +9,57 @@ type ActionFactory = (context: ActionContext<any, any>, module: Module, definiti
 let rootGetterFactory: GetterFactory | null = null;
 let rootActionFactory: ActionFactory | null = null;
 
+type AnyRecord = Record<string, unknown>;
+
+const isRecord = (value: unknown): value is AnyRecord => {
+  return Boolean(value) && typeof value === 'object';
+};
+
+const ensureLegacyDirectContext = (
+  context: AnyRecord,
+  base: ActionContext<any, any>,
+  definition: unknown
+): AnyRecord => {
+  if (!isRecord(context)) return context;
+
+  const commitFn = base?.commit;
+  const dispatchFn = base?.dispatch;
+
+  const moduleDef = definition as AnyRecord;
+  const mutations = moduleDef?.mutations;
+  const actions = moduleDef?.actions;
+
+  if (typeof commitFn === 'function' && isRecord(mutations)) {
+    const commitTarget = (context as AnyRecord).commit as unknown;
+    if ((typeof commitTarget === 'function' || isRecord(commitTarget)) && commitTarget) {
+      for (const type of Object.keys(mutations)) {
+        if (typeof (commitTarget as AnyRecord)[type] === 'function') continue;
+        try {
+          (commitTarget as AnyRecord)[type] = (payload?: unknown) => commitFn(type, payload as never);
+        } catch {
+          // Ignore frozen/proxied commit targets; callers may still use Vuex commit directly.
+        }
+      }
+    }
+  }
+
+  if (typeof dispatchFn === 'function' && isRecord(actions)) {
+    const dispatchTarget = (context as AnyRecord).dispatch as unknown;
+    if ((typeof dispatchTarget === 'function' || isRecord(dispatchTarget)) && dispatchTarget) {
+      for (const type of Object.keys(actions)) {
+        if (typeof (dispatchTarget as AnyRecord)[type] === 'function') continue;
+        try {
+          (dispatchTarget as AnyRecord)[type] = (payload?: unknown) => dispatchFn(type, payload as never);
+        } catch {
+          // Ignore frozen/proxied dispatch targets; callers may still use Vuex dispatch directly.
+        }
+      }
+    }
+  }
+
+  return context;
+};
+
 /**
  * Ensure Vuex root state always exposes wallet/web3 data even when only the legacy
  * store has them (e.g., Pinia-first boot where Vuex modules aren't initialised).
@@ -65,5 +116,6 @@ export const localActionContext = (context: ActionContext<any, any>, module: Mod
   const patchedContext =
     rootState !== context.rootState ? ({ ...context, rootState } as ActionContext<any, any>) : context;
 
-  return rootActionFactory(patchedContext, module, definition);
+  const resolved = rootActionFactory(patchedContext, module, definition) as AnyRecord;
+  return ensureLegacyDirectContext(resolved, patchedContext, definition);
 };

@@ -221,14 +221,19 @@ async function openPip(): Promise<void> {
     const originalParent = rootElement.parentNode as HTMLElement | null;
 
     const allStyles = Array.from(document.styleSheets)
-      .map((styleSheet) =>
-        Array.from(styleSheet.cssRules ?? [])
-          .map((rule) => rule.cssText)
-          .join('\n')
-      )
+      .map((styleSheet) => {
+        try {
+          return Array.from(styleSheet.cssRules ?? [])
+            .map((rule) => rule.cssText)
+            .join('\n');
+        } catch {
+          // Accessing cssRules can throw a SecurityError for cross-origin stylesheets.
+          return '';
+        }
+      })
       .join('\n');
     const style = pip.document.createElement('style');
-    style.innerHTML = allStyles;
+    style.textContent = allStyles;
     pip.document.head.appendChild(style);
 
     const pipHtml = pip.document.documentElement;

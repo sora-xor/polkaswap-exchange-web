@@ -77,7 +77,10 @@ const getters = defineGetters<Web3State>()({
 
     if (!(networkType && networkSelected)) return null;
 
-    return getters.availableNetworks[networkType][networkSelected]?.data ?? null;
+    const networks = getters.availableNetworks?.[networkType];
+    if (!networks) return null;
+
+    return networks[networkSelected]?.data ?? null;
   },
 
   isValidNetwork(...args): boolean {

@@ -105,4 +105,17 @@ describe('NodesConnection backoff scheduling', () => {
     expect(unhandled).toHaveLength(0);
     expect(nodesConnection.connectNodeCalls).toBe(2);
   });
+
+  it('normalizes invalid default nodes payload to empty list', () => {
+    const storage = createStorage() as unknown as import('@sora-substrate/sdk').Storage;
+    const connection = {
+      endpoint: '',
+      api: undefined,
+      ...createConnection(),
+    } as unknown as import('@sora-substrate/connection').Connection;
+    const nodesConnection = new TestNodesConnection(storage, connection);
+
+    expect(() => nodesConnection.setDefaultNodes(undefined as any)).not.toThrow();
+    expect(nodesConnection.defaultNodes).toEqual([]);
+  });
 });

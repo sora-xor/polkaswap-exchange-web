@@ -29,26 +29,19 @@ const hasMetaFlag = (to: RouteLocationNormalized, key: string): boolean => {
   return to.matched.some((record) => Boolean(record.meta?.[key]));
 };
 
+const normalizeRouteName = (value: unknown): Nullable<PageNames> => {
+  return typeof value === 'string' && value.length > 0 ? (value as PageNames) : null;
+};
+
 /**
  * Factory for the global beforeEach guard so navigation logic stays testable and store-agnostic.
  */
 export const createBeforeEachGuard = (services: NavigationGuardServices): NavigationGuardWithThis<undefined> => {
   return (to, from, next) => {
-    const prev = from.name as Nullable<PageNames>;
-    const current = to.name as PageNames;
+    const prev = normalizeRouteName(from.name);
+    const current = normalizeRouteName(to.name);
     const isInvitationRoute = hasMetaFlag(to, 'isInvitationRoute');
     const requiresAuth = hasMetaFlag(to, 'requiresAuth');
-
-    if (shouldResetBridgeHistory(prev, current)) {
-      services.bridgeHistoryStore.resetHistoryPage();
-    }
-
-    const invitationDecision = resolveInvitationDecision({
-      isInvitationRoute,
-      referrerParam: to.params.referrerAddress,
-      isLoggedIn: services.walletStore.isLoggedIn,
-      validateAddress: services.validateAddress,
-    });
 
     const setRoute = (name: PageNames, shouldNavigate = true) => {
       const params = { prev, current: name };
@@ -61,6 +54,22 @@ export const createBeforeEachGuard = (services: NavigationGuardServices): Naviga
       }
       services.updateDocumentTitle(to);
     };
+
+    if (!current) {
+      setRoute(PageNames.Swap, true);
+      return;
+    }
+
+    if (shouldResetBridgeHistory(prev, current)) {
+      services.bridgeHistoryStore.resetHistoryPage();
+    }
+
+    const invitationDecision = resolveInvitationDecision({
+      isInvitationRoute,
+      referrerParam: to.params.referrerAddress,
+      isLoggedIn: services.walletStore.isLoggedIn,
+      validateAddress: services.validateAddress,
+    });
 
     if (invitationDecision.persistReferral) {
       services.persistReferral(invitationDecision.persistReferral);

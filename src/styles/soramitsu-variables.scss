@@ -116,7 +116,12 @@ $legacy-metrics: (
   '--s-icon-font-size-mini': 16px,
   '--s-icon-font-size-small': 20px,
   '--s-icon-font-size-medium': 28px,
-  '--s-shadow-color-dark': rgba(0, 0, 0, 0.2),
+  // Shadow palette used by neumorphic UI elements (e.g., sidebar icon buttons).
+  // Keep in sync with production `polkaswap.io` values for visual parity.
+  '--s-shadow-color-dark-light': rgba(0, 0, 0, 0.02),
+  '--s-shadow-color-dark': rgba(0, 0, 0, 0.1),
+  '--s-shadow-color-light-dark': hsla(0, 0%, 100%, 0.8),
+  '--s-shadow-color-light': #fff,
   '--s-color-outline': rgba(83, 86, 90, 0.25),
 );
 
@@ -134,6 +139,7 @@ $legacy-dark-overrides: (
 $polkaswap-light-token-overrides: (
   sys: (
     color: (
+      background: #faf4f8,
       primary: $accent,
       primary-hover: $accent-hover,
       primary-pressed: $accent-pressed,
@@ -142,6 +148,10 @@ $polkaswap-light-token-overrides: (
       primary-hover-background: $accent-hover-background,
       primary-pressed-background: $accent-pressed-background,
       primary-focused-background: $accent-focused-background,
+      util: (
+        body: #f7f3f4,
+        surface: #fdf7fb,
+      ),
     ),
   ),
 );

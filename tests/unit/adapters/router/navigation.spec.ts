@@ -43,6 +43,22 @@ describe('router legacy adapter', () => {
     expect(warnSpy).toHaveBeenCalledWith('[router-adapter] router.setRoute missing');
   });
 
+  it('syncLegacyRoute falls back to legacy navigate mutation', () => {
+    const navigate = vi.fn();
+    storeShape = {
+      commit: {
+        router: {
+          navigate,
+        },
+      },
+    };
+
+    syncLegacyRoute({ prev: null, current: 'swap', currentParams: { a: 1 }, prevParams: {} });
+
+    expect(navigate).toHaveBeenCalledWith({ name: 'swap', params: { a: 1 } });
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
   it('setLegacyRouterLoading updates loading flag', () => {
     const setLoading = vi.fn();
     storeShape = {

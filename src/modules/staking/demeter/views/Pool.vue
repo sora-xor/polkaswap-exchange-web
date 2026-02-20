@@ -70,7 +70,7 @@
 import { computed, useAttrs } from 'vue';
 
 import { PoolPageNames } from '@/modules/pool/consts';
-import { poolLazyView } from '@/modules/pool/router';
+import { poolLazyViewComponent } from '@/modules/pool/router';
 
 import { demeterStakingLazyComponent } from '../../router';
 import { DemeterStakingComponents } from '../consts';
@@ -84,7 +84,7 @@ const props = defineProps({
 defineOptions({
   inheritAttrs: false,
   components: {
-    PoolBase: poolLazyView(PoolPageNames.Pool),
+    PoolBase: poolLazyViewComponent(PoolPageNames.Pool),
     PoolCard: demeterStakingLazyComponent(DemeterStakingComponents.PoolCard),
     StatusBadge: demeterStakingLazyComponent(DemeterStakingComponents.StatusBadge),
     StakeDialog: demeterStakingLazyComponent(DemeterStakingComponents.StakeDialog),

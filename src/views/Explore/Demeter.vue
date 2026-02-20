@@ -27,8 +27,10 @@
             <span class="explore-table__primary">{{ t('nameText') }}</span>
           </div>
         </template>
-        <template v-slot="{ $index, row }">
-          <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
+        <template v-slot="{ $index, index, row }">
+          <span class="explore-table-item-index explore-table-item-index--body">
+            {{ ($index ?? index ?? 0) + startIndex + 1 }}
+          </span>
           <token-logo
             v-if="row.assets.length === 1"
             key="token"

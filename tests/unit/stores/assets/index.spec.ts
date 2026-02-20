@@ -71,7 +71,7 @@ vi.mock('pinia', () => ({
 
 type WalletStoreStub = {
   assets: Array<Record<string, unknown>>;
-  whitelist: Array<string>;
+  whitelist: Array<string> | Record<string, unknown>;
   assetsDataTable: Record<string, Record<string, unknown>>;
   accountAssetsAddressTable: Record<string, { balance: string }>;
 };
@@ -207,6 +207,20 @@ describe('useAssetsStore getters', () => {
       { address: '0x02', symbol: 'BBB' },
     ];
     walletStoreStub.whitelist = ['0x02'];
+
+    const store = useAssetsStore();
+
+    expect(store.whitelistAssets).toEqual([walletStoreStub.assets[1]]);
+  });
+
+  it('supports legacy whitelist map format', () => {
+    walletStoreStub.assets = [
+      { address: '0x01', symbol: 'AAA' },
+      { address: '0x02', symbol: 'BBB' },
+    ];
+    walletStoreStub.whitelist = {
+      '0x02': { symbol: 'BBB', name: 'B', decimals: 18, icon: '' },
+    };
 
     const store = useAssetsStore();
 
@@ -387,7 +401,7 @@ describe('useAssetsStore actions', () => {
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     expect(store.registeredAssets).toEqual({});
     expect(store.registeredAssetsFetching).toBe(false);
-    expect(consoleErrorSpy).toHaveBeenCalled();
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
   it('enriches missing EVM asset metadata when updating registered assets', async () => {
@@ -452,6 +466,45 @@ describe('useAssetsStore actions', () => {
     expect(parachain.getAssetIdByMultilocation).toHaveBeenCalledWith(walletStoreStub.assetsDataTable['0xSub'], 'multi');
     expect(store.registeredAssets['0xSub']).toMatchObject({
       address: 'para-asset',
+      decimals: 12,
+    });
+    expect(store.registeredAssetsFetching).toBe(false);
+  });
+
+  it('does not crash when wallet assets table is missing while resolving Sub parachain assets', async () => {
+    const store = useAssetsStore();
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = SubNetworkId.Liberland;
+    walletStoreStub.assetsDataTable = undefined as any;
+
+    const soraParachain = { connect: vi.fn(), api: {} };
+    const parachain = {
+      connect: vi.fn(),
+      getAssetIdByMultilocation: vi.fn().mockResolvedValue('para-asset'),
+    };
+    legacyStoreStub.state.bridge.subBridgeConnector = {
+      destinationNetwork: SubNetworkId.Liberland,
+      soraParachain,
+      parachain,
+    };
+    subIsParachainMock.mockReturnValue(true);
+    subGetAssetMulilocationMock.mockResolvedValue('multi');
+    store.setRegisteredAssets({
+      '0xSub': {
+        address: '',
+        decimals: 12,
+        kind: 'sub',
+      },
+    });
+
+    await expect(store.updateRegisteredAssets()).resolves.toBeUndefined();
+
+    expect(soraParachain.connect).toHaveBeenCalled();
+    expect(parachain.connect).toHaveBeenCalled();
+    expect(subGetAssetMulilocationMock).not.toHaveBeenCalled();
+    expect(parachain.getAssetIdByMultilocation).not.toHaveBeenCalled();
+    expect(store.registeredAssets['0xSub']).toMatchObject({
+      address: '',
       decimals: 12,
     });
     expect(store.registeredAssetsFetching).toBe(false);

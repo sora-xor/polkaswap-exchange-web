@@ -45,12 +45,6 @@
                     <span class="points__soratopia-text">{{ t('points.toEarnPoints') }}</span>
                   </div>
                 </a>
-                <a class="points__sora-card s-flex" rel="nofollow noopener" target="_blank" href="https://soracard.com">
-                  <div class="points__sora-card-container s-flex">
-                    <button class="points__sora-card-action">{{ t('points.soraCard') }}</button>
-                    <span class="points__sora-card-text">{{ t('points.toEarnPoints') }}</span>
-                  </div>
-                </a>
                 <task-card
                   v-for="(pointsForCategory, categoryName) in pointsForCards"
                   :key="categoryName"
@@ -438,7 +432,7 @@ $max-asset-size: calc($select-asset-item-height * 2);
   }
 
   &__soratopia,
-  &__sora-card {
+  &__soratopia {
     min-height: 102px;
     background-image: url('@/assets/img/points/soratopia.png');
     background-repeat: no-repeat;
@@ -481,14 +475,6 @@ $max-asset-size: calc($select-asset-item-height * 2);
       &-action {
         font-size: var(--s-font-size-mini);
       }
-    }
-  }
-  &__sora-card {
-    background-image: url('@/assets/img/points/sora-card.png');
-    &-action {
-      background-color: white;
-      color: #ee2233;
-      border: unset;
     }
   }
 }

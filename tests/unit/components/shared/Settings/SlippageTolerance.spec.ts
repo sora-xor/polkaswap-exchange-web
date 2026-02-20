@@ -63,7 +63,7 @@ const SettingsTabsStub = {
   name: 'SettingsTabsStub',
   props: ['tabs', 'value'],
   emits: ['input'],
-  template: '<div class="settings-tabs-stub" @click="$emit(\'input\', \'1\')"></div>',
+  template: '<div class="settings-tabs-stub" @click="$emit(\'input\', \'slippage-1\')"></div>',
 };
 
 const CollapseStub = {
@@ -136,7 +136,11 @@ describe('SlippageTolerance', () => {
 
     const tabsStub = wrapper.findComponent(SettingsTabsStub);
     expect(tabsStub.exists()).toBe(true);
-    tabsStub.vm.$emit('input', '1');
+    expect(tabsStub.props('value')).toBe('slippage-0-5');
+    const tabs = tabsStub.props('tabs') as Array<{ name: string }>;
+    expect(tabs.map((t) => t.name)).toEqual(['slippage-0-1', 'slippage-0-5', 'slippage-1']);
+
+    tabsStub.vm.$emit('input', 'slippage-1');
     await wrapper.vm.$nextTick();
 
     expect(setSlippageMock).toHaveBeenCalledWith('1');

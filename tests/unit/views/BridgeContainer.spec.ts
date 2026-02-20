@@ -300,6 +300,33 @@ describe('BridgeContainer.vue', () => {
     wrapper.unmount();
   });
 
+  it('deduplicates in-flight network restore requests', async () => {
+    const wrapper = await mountBridgeContainer();
+
+    let resolveRestore: (() => void) | undefined;
+    restoreSelectedNetworkSpy.mockImplementation(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveRestore = resolve;
+        })
+    );
+
+    await subscriptionsArgs.startSubscriptions[2]!();
+    await subscriptionsArgs.startSubscriptions[2]!();
+
+    expect(restoreSelectedNetworkSpy).toHaveBeenCalledTimes(1);
+
+    resolveRestore?.();
+    await flushPromises();
+
+    restoreSelectedNetworkSpy.mockResolvedValue(undefined);
+    await subscriptionsArgs.startSubscriptions[2]!();
+
+    expect(restoreSelectedNetworkSpy).toHaveBeenCalledTimes(2);
+
+    wrapper.unmount();
+  });
+
   it('disables login tracking on mount', async () => {
     const wrapper = await mountBridgeContainer();
 

@@ -34,8 +34,10 @@
             <span class="explore-table__primary">DEBT / COLLATERAL</span>
           </div>
         </template>
-        <template v-slot="{ $index, row }">
-          <span class="explore-table-item-index explore-table-item-index--body">{{ $index + sliceStart + 1 }}</span>
+        <template v-slot="{ $index, index, row }">
+          <span class="explore-table-item-index explore-table-item-index--body">
+            {{ ($index ?? index ?? 0) + sliceStart + 1 }}
+          </span>
           <pair-token-logo
             class="explore-table-item-logo"
             size="small"

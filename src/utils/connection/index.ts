@@ -104,8 +104,9 @@ export class NodesConnection {
     this.addCustomNode(node);
   }
 
-  setDefaultNodes(nodes: Array<Node>): void {
-    this.defaultNodes = Object.freeze([...nodes]);
+  setDefaultNodes(nodes: Nullable<Array<Node>> = []): void {
+    const normalizedNodes = Array.isArray(nodes) ? nodes : [];
+    this.defaultNodes = Object.freeze([...normalizedNodes]);
 
     const { node, defaultNodes } = this;
 

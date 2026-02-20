@@ -129,9 +129,6 @@ export const useSettingsStore = defineStore('settings', {
     moonpayEnabled(): boolean {
       return Boolean(this.moonpayApiKey) && Boolean(this.featureFlags.moonpay);
     },
-    soraCardEnabled(state): Nullable<boolean> {
-      return state.featureFlags.soraCard;
-    },
     orderBookEnabled(state): Nullable<boolean> {
       return state.featureFlags.orderBook;
     },

@@ -29,8 +29,10 @@
             <span class="explore-table__secondary">({{ t('tokens.assetId') }})</span>
           </div>
         </template>
-        <template v-slot="{ $index, row }">
-          <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
+        <template v-slot="{ $index, index, row }">
+          <span class="explore-table-item-index explore-table-item-index--body">
+            {{ ($index ?? index ?? 0) + startIndex + 1 }}
+          </span>
           <token-logo class="explore-table-item-logo" :token-symbol="row.symbol"></token-logo>
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.symbol }}</div>

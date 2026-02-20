@@ -15,18 +15,21 @@ type TokensChangeHandler = (params: { firstAddress: string; secondAddress: strin
 
 type Params = { first?: string; second?: string };
 
-const resolveRouteAddress = (
+export const resolveRouteAddress = (
   param: Nullable<string>,
-  assetsDataTable: WALLET_TYPES.AssetsTable,
-  whitelistIdsBySymbol: WALLET_TYPES.WhitelistIdsBySymbol
+  assetsDataTable: Nullable<WALLET_TYPES.AssetsTable>,
+  whitelistIdsBySymbol: Nullable<WALLET_TYPES.WhitelistIdsBySymbol>
 ): string => {
   if (!param) return '';
 
+  const assetsTable = assetsDataTable ?? {};
+  const whitelistBySymbol = whitelistIdsBySymbol ?? {};
+
   if (param.length > MAX_SYMBOL_LENGTH) {
-    return assetsDataTable[param] ? param : '';
+    return assetsTable[param] ? param : '';
   }
 
-  return whitelistIdsBySymbol[param.toUpperCase()] ?? '';
+  return whitelistBySymbol[param.toUpperCase()] ?? '';
 };
 
 const routeIsValid = (params: Params, routeName: string, firstAddress: string, secondAddress: string): boolean => {
@@ -66,11 +69,13 @@ export function useSelectedTokensRoute(onTokensChange: TokensChangeHandler) {
   const route = useRoute();
   const router = useRouter();
 
-  const whitelist = computed(() => store.getters.wallet.account.whitelist as WALLET_TYPES.Whitelist);
+  const whitelist = computed(() => (store.getters?.wallet?.account?.whitelist as WALLET_TYPES.Whitelist) ?? {});
   const whitelistIdsBySymbol = computed(
-    () => store.getters.wallet.account.whitelistIdsBySymbol as WALLET_TYPES.WhitelistIdsBySymbol
+    () => (store.getters?.wallet?.account?.whitelistIdsBySymbol as Nullable<WALLET_TYPES.WhitelistIdsBySymbol>) ?? {}
   );
-  const assetsDataTable = computed(() => store.getters.wallet.account.assetsDataTable as WALLET_TYPES.AssetsTable);
+  const assetsDataTable = computed(
+    () => (store.getters?.wallet?.account?.assetsDataTable as Nullable<WALLET_TYPES.AssetsTable>) ?? {}
+  );
 
   const wasRedirected = ref(false);
 

@@ -1,31 +1,64 @@
 <template>
   <div class="widget-container" :class="{ 'widget-container--bordered': withBorder }" v-loading="widgetLoading">
-    <iframe v-if="src" class="widget" :src="src" @load="onLoadWidget"></iframe>
+    <iframe
+      v-if="safeSrc"
+      class="widget"
+      :src="safeSrc"
+      :sandbox="sandbox"
+      referrerpolicy="no-referrer"
+      loading="lazy"
+      @load="onLoadWidget"
+    ></iframe>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const props = withDefaults(
   defineProps<{
     src?: string;
     withBorder?: boolean;
+    allowedOrigins?: string[];
+    sandbox?: string;
   }>(),
   {
     src: '',
     withBorder: false,
+    allowedOrigins: () => [],
+    // Needed for embedded purchase flows.
+    // Note: kept inline because `defineProps()` defaults are hoisted out of `<script setup>`.
+    sandbox:
+      'allow-forms allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin allow-top-navigation-by-user-activation',
   }
 );
 
 const widgetLoading = ref(false);
 
+const safeSrc = computed(() => {
+  const raw = props.src?.trim();
+  if (!raw) return '';
+
+  if (typeof window === 'undefined') return raw;
+
+  try {
+    const url = new URL(raw, window.location.origin);
+    const isSameOrigin = url.origin === window.location.origin;
+
+    if (isSameOrigin) return url.toString();
+    if (url.protocol !== 'https:') return '';
+
+    const allowed = new Set(props.allowedOrigins.map((origin) => origin.toLowerCase()));
+    return allowed.has(url.origin.toLowerCase()) ? url.toString() : '';
+  } catch {
+    return '';
+  }
+});
+
 watch(
-  () => props.src,
+  safeSrc,
   (value) => {
-    if (value) {
-      widgetLoading.value = true;
-    }
+    widgetLoading.value = Boolean(value);
   },
   { immediate: true }
 );

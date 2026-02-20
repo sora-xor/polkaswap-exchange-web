@@ -1,7 +1,10 @@
 <template>
-  <router-view v-bind="$attrs" v-on="$listeners"></router-view>
+  <router-view v-bind="$attrs"></router-view>
 </template>
 
 <script lang="ts" setup>
-defineOptions({ name: 'StakingContainer' });
+defineOptions({
+  name: 'StakingContainer',
+  inheritAttrs: false,
+});
 </script>

@@ -38,6 +38,46 @@ const getProbeChainId = (chainProps: ChainsProps): number => {
   return DEFAULT_CHAIN_ID;
 };
 
+type ModalState = { open: boolean };
+
+const isPromiseLike = (value: unknown): value is PromiseLike<unknown> => {
+  return typeof (value as PromiseLike<unknown> | undefined)?.then === 'function';
+};
+
+/**
+ * Guard signer disconnect calls against SDK implementations that throw when
+ * no session has been established yet.
+ */
+export const safeDisconnectSigner = async (signer: unknown): Promise<void> => {
+  const disconnect = (signer as { disconnect?: unknown } | undefined)?.disconnect;
+
+  if (typeof disconnect !== 'function') return;
+
+  try {
+    const result = disconnect.call(signer);
+    if (isPromiseLike(result)) {
+      await result.catch(() => undefined);
+    }
+  } catch {
+    // Ignore best-effort disconnect failures.
+  }
+};
+
+/**
+ * WalletConnect modal integrations can expose incompatible shapes in certain
+ * runtimes. Guard subscription wiring so connection flow does not hard-crash.
+ */
+export const safeSubscribeModal = (modal: unknown, callback: (state: ModalState) => void): (() => void) => {
+  const subscribeModal = (modal as { subscribeModal?: unknown } | undefined)?.subscribeModal;
+
+  if (typeof subscribeModal !== 'function') {
+    return () => undefined;
+  }
+
+  const unsub = subscribeModal.call(modal, callback);
+  return typeof unsub === 'function' ? unsub : () => undefined;
+};
+
 const attachModal = (provider: EthereumProvider, modal: AppKit): void => {
   Object.assign(provider, { modal });
 };
@@ -98,13 +138,21 @@ export class WcEthereumProvider extends EthereumProvider {
         console.info(
           `[${this.constructor.name}]: pairing not active: "${pairingTopic}". Session "${session.topic}" deleted.`
         );
-        this.signer.client.disconnect({
-          topic: session.topic,
-          reason: {
-            code: 6000, // https://specs.walletconnect.com/2.0/specs/clients/sign/error-codes#reason
-            message: 'Disconnected by dApp',
-          },
-        });
+        try {
+          const result = this.signer.client.disconnect({
+            topic: session.topic,
+            reason: {
+              code: 6000, // https://specs.walletconnect.com/2.0/specs/clients/sign/error-codes#reason
+              message: 'Disconnected by dApp',
+            },
+          });
+
+          if (isPromiseLike(result)) {
+            void result.catch(() => undefined);
+          }
+        } catch {
+          // Ignore best-effort disconnect failures.
+        }
       }
     }
   }
@@ -112,7 +160,7 @@ export class WcEthereumProvider extends EthereumProvider {
   public override async connect(opts?: ConnectOps): Promise<void> {
     // eslint-disable-next-line
     await new Promise<void>(async (resolve, reject) => {
-      const unsub = this.modal?.subscribeModal((state: { open: boolean }) => {
+      const unsub = safeSubscribeModal(this.modal, (state: ModalState) => {
         // This is the fix of modal close handler to check only ethereum session
         if (
           !state.open &&
@@ -135,7 +183,7 @@ export class WcEthereumProvider extends EthereumProvider {
 
         resolve();
       } catch (error) {
-        await this.signer.disconnect();
+        await safeDisconnectSigner(this.signer);
         reject(error);
       }
     });

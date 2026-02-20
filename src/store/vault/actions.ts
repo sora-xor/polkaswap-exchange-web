@@ -107,7 +107,6 @@ const actions = defineActions({
       const closedVaults = await fetchClosedVaults(account);
       commit.setClosedAccountVaults(closedVaults);
     } catch (error) {
-      console.error(error);
       commit.resetClosedAccountVaults();
     }
   },
@@ -177,7 +176,6 @@ const actions = defineActions({
       commit.setCollaterals(newCollaterals);
       await dispatch.subscribeOnAverageCollateralPrices();
     } catch (error) {
-      console.error(error);
       commit.resetCollaterals();
     }
   },
@@ -190,11 +188,16 @@ const actions = defineActions({
     // The average price is used to calculate the debt in the vaults.
     await dispatch.subscribeOnStablecoinInfos();
 
-    const subscription = api.system.getBlockNumberObservable().subscribe(() => {
-      dispatch.requestCollaterals();
-    });
+    try {
+      const subscription = api.system.getBlockNumberObservable().subscribe(() => {
+        dispatch.requestCollaterals();
+      });
 
-    commit.setCollateralsSubscription(subscription);
+      commit.setCollateralsSubscription(subscription);
+    } catch {
+      // The chain API may be unavailable during boot (or in E2E stubs).
+      // Skip subscriptions silently so the UI can still render.
+    }
   },
   async subscribeOnBorrowTaxes(context): Promise<void> {
     const { commit } = vaultActionContext(context);
@@ -204,8 +207,8 @@ const actions = defineActions({
         commit.setBorrowTaxes(taxes);
       });
       commit.setBorrowTaxesSubscription(subscription);
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // Ignore when the Kensetsu API is not ready yet.
     }
   },
   async getLiquidationPenalty(context): Promise<void> {
@@ -213,8 +216,8 @@ const actions = defineActions({
     try {
       const penalty = await api.kensetsu.getLiquidationPenalty();
       commit.setLiquidationPenalty(penalty);
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // Ignore when the Kensetsu API is not ready yet.
     }
   },
   async subscribeOnStablecoinInfos(context): Promise<void> {
@@ -231,8 +234,8 @@ const actions = defineActions({
         });
       });
       commit.setStablecoinInfosSubscription(subscription);
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // Ignore when the Kensetsu API is not ready yet.
     }
   },
   async reset(context): Promise<void> {

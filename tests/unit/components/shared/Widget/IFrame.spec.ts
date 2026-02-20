@@ -10,7 +10,7 @@ import IFrameWidget from '@/components/shared/Widget/IFrame.vue';
 describe('IFrameWidget', () => {
   it('shows loading initially when src provided and hides after load', async () => {
     const wrapper = mount(IFrameWidget, {
-      props: { src: 'https://example.com/frame' },
+      props: { src: 'https://example.com/frame', allowedOrigins: ['https://example.com'] },
       global: {
         directives: {
           loading: LoadingDirective,
@@ -28,6 +28,19 @@ describe('IFrameWidget', () => {
       .onLoadWidget;
     onLoadWidget?.();
     expect(widgetLoading?.value).toBe(false);
+  });
+
+  it('blocks unapproved iframe origins by default', () => {
+    const wrapper = mount(IFrameWidget, {
+      props: { src: 'https://evil.example/frame' },
+      global: {
+        directives: {
+          loading: LoadingDirective,
+        },
+      },
+    });
+
+    expect(wrapper.find('iframe').exists()).toBe(false);
   });
 
   it('applies bordered styling when requested', () => {

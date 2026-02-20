@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { Layout, LayoutWidget, ResponsiveLayouts } from '@/types/layout';
 
@@ -82,6 +82,10 @@ afterAll(() => {
   if (originalInnerWidth) {
     Object.defineProperty(window, 'innerWidth', originalInnerWidth);
   }
+});
+
+afterEach(() => {
+  window.history.replaceState({}, '', '/');
 });
 
 const defaultLayouts: ResponsiveLayouts = {
@@ -166,5 +170,62 @@ describe('WidgetsGrid', () => {
 
     wrapper.vm.onLayoutUpdate(updatedLayout);
     expect(layoutsStorageMock.set).toHaveBeenCalledWith('test-grid', expect.stringContaining('"widget-1"'));
+  });
+
+  it('stores layouts under CID-scoped key on IPFS paths', async () => {
+    window.history.replaceState({}, '', '/ipfs/QmUnitTestCid/index.html');
+    const wrapper = await mountGrid();
+
+    const updatedLayout = [
+      {
+        i: 'widget-1',
+        x: 0,
+        y: 0,
+        w: 4,
+        h: 2,
+        moved: true,
+      },
+    ] as unknown as Layout;
+
+    wrapper.vm.onLayoutUpdate(updatedLayout);
+
+    expect(layoutsStorageMock.set).toHaveBeenCalledWith(
+      'QmUnitTestCid::test-grid',
+      expect.stringContaining('"widget-1"')
+    );
+  });
+
+  it('ignores layout updates that exceed current breakpoint column bounds', async () => {
+    const wrapper = await mountGrid();
+
+    // Force a smaller breakpoint so the next layout would be invalid.
+    wrapper.vm.breakpoint = 'sm';
+    layoutsStorageMock.set.mockClear();
+
+    const invalidLayout = [
+      {
+        i: 'widget-1',
+        x: 11,
+        y: 0,
+        w: 8,
+        h: 2,
+        moved: true,
+      },
+    ] as unknown as Layout;
+
+    wrapper.vm.onLayoutUpdate(invalidLayout);
+
+    expect(layoutsStorageMock.set).not.toHaveBeenCalled();
+  });
+
+  it('falls back to defaults when stored layouts payload is invalid', async () => {
+    window.history.replaceState({}, '', '/ipfs/QmBrokenCid/index.html');
+    layoutsStorageMock.get.mockReturnValueOnce('{"not-valid-json"');
+
+    const wrapper = await mountGrid();
+
+    expect(layoutsStorageMock.remove).toHaveBeenCalledWith('QmBrokenCid::test-grid');
+    const emitted = wrapper.emitted('input') ?? [];
+    expect(emitted.length).toBeGreaterThan(0);
   });
 });

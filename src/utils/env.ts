@@ -1,12 +1,18 @@
-export function isHeadlessOrOfflineEnv(): boolean {
-  const metaEnv = typeof import.meta !== 'undefined' ? (import.meta as ImportMeta).env : undefined;
-  if (metaEnv?.PS_IPFS_CHECK_FORCE_ONLINE === 'true') {
-    return false;
-  }
+/**
+ * Determines whether the application should short-circuit Vue bootstrapping
+ * and render the minimal offline shell instead.
+ *
+ * This is intended for explicit IPFS smoke checks (query param `ipfs-check`)
+ * and truly offline environments. It must NOT be triggered just because the
+ * browser is automated/headless, otherwise UI checks would never exercise the
+ * real application.
+ */
+export function shouldRenderOfflineShell(): boolean {
   if (typeof window !== 'undefined') {
     if ((window as Record<string, unknown>).__PS_FORCE_ONLINE__ === true) {
       return false;
     }
+
     try {
       if ((window as Window).__PS_IPFS_CHECK__) {
         return true;
@@ -27,15 +33,6 @@ export function isHeadlessOrOfflineEnv(): boolean {
       if ('onLine' in navigator && navigator.onLine === false) {
         return true;
       }
-
-      if ((navigator as Record<string, unknown>).webdriver === true) {
-        return true;
-      }
-
-      const userAgent = navigator.userAgent || '';
-      if (/HeadlessChrome/i.test(userAgent) || /Electron\//i.test(userAgent)) {
-        return true;
-      }
     } catch {
       // ignore navigator access issues and fall through to false
     }
@@ -43,3 +40,8 @@ export function isHeadlessOrOfflineEnv(): boolean {
 
   return false;
 }
+
+/**
+ * @deprecated Use `shouldRenderOfflineShell` instead.
+ */
+export const isHeadlessOrOfflineEnv = shouldRenderOfflineShell;

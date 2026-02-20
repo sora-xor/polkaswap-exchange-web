@@ -84,6 +84,29 @@ function getBreakpointFromWidth(breakpoints: LayoutConfig, width: number): Break
   return matching;
 }
 
+function getGridStorageKey(gridId: string): string {
+  if (!gridId) return '';
+  if (typeof window === 'undefined') return gridId;
+
+  const pathname = window.location?.pathname ?? '';
+  const cidMatch = pathname.match(/\/ipfs\/([^/?#]+)/i);
+  const cid = cidMatch?.[1];
+
+  if (!cid) return gridId;
+
+  return `${cid}::${gridId}`;
+}
+
+function parseLayoutsValue(value: string): ResponsiveLayouts | null {
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+    return parsed as ResponsiveLayouts;
+  } catch {
+    return null;
+  }
+}
+
 defineOptions({
   name: 'WidgetsGrid',
   components: {
@@ -141,11 +164,12 @@ const emit = defineEmits<{
   (event: 'input', value: WidgetsVisibilityModel): void;
 }>();
 
-const widgetsGrid = ref<ComponentPublicInstance | null>(null);
+const grid = ref<ComponentPublicInstance | null>(null);
 const breakpoint = ref<BreakpointKey>(BreakpointKey.lg);
 const layouts = ref<ResponsiveLayouts>(cloneDeep(toRaw(props.defaultLayouts)));
 const layout = ref<Layout>((cloneDeep(layouts.value[breakpoint.value]) as Layout) ?? []);
 const defaultValue = ref<WidgetsVisibilityModel>(cloneDeep(props.value));
+const storageKey = computed(() => getGridStorageKey(props.gridId));
 
 const responsiveLayout = computed(() => layouts.value[breakpoint.value]);
 
@@ -163,13 +187,13 @@ const gridLinesStyle = computed(() => {
 });
 
 const saveLayoutsToStorage = () => {
-  if (!props.gridId) return;
-  layoutsStorage.set(props.gridId, JSON.stringify(layouts.value));
+  if (!storageKey.value) return;
+  layoutsStorage.set(storageKey.value, JSON.stringify(layouts.value));
 };
 
 const clearLayoutsFromStorage = () => {
-  if (!props.gridId) return;
-  layoutsStorage.remove(props.gridId);
+  if (!storageKey.value) return;
+  layoutsStorage.remove(storageKey.value);
 };
 
 const updateLayout = () => {
@@ -246,10 +270,17 @@ const updateLayoutWidgetsByModel = (curr: WidgetsVisibilityModel, prev: WidgetsV
 };
 
 const init = async () => {
-  const storedLayouts = props.gridId ? layoutsStorage.get(props.gridId) : null;
+  const storedLayouts = storageKey.value ? layoutsStorage.get(storageKey.value) : null;
 
   if (storedLayouts) {
-    saveLayouts(JSON.parse(storedLayouts), false);
+    const parsedLayouts = parseLayoutsValue(storedLayouts);
+
+    if (parsedLayouts) {
+      saveLayouts(parsedLayouts, false);
+    } else {
+      clearLayoutsFromStorage();
+      updateLayoutsByWidgetsModel(props.defaultLayouts, defaultValue.value, false);
+    }
   } else {
     updateLayoutsByWidgetsModel(props.defaultLayouts, defaultValue.value, false);
   }
@@ -268,9 +299,26 @@ const onBreakpointChanged = (newBreakpoint: BreakpointKey) => {
 };
 
 const onLayoutUpdate = (updated: Layout) => {
-  layout.value = updated;
+  const prepared = updated.map((widget) => omit('moved')(widget)) as Layout;
 
-  const prepared = layout.value.map((widget) => omit('moved')(widget)) as Layout;
+  // GridLayout emits `layout-updated` during mount while it is still settling responsive breakpoints.
+  // In that phase, `breakpoint.value` may already be updated, but the emitted layout can still be from
+  // a previous breakpoint. Persisting such a layout corrupts storage and causes widgets to overlap.
+  const colsForBreakpoint = props.cols[breakpoint.value] ?? 0;
+  const exceedsBreakpointCols = prepared.some((widget) => {
+    const x = widget.x ?? 0;
+    const w = widget.w ?? 0;
+    return x + w > colsForBreakpoint;
+  });
+
+  if (exceedsBreakpointCols) {
+    // Keep current layout and force-sync from the responsive layouts for the active breakpoint.
+    updateLayout();
+    return;
+  }
+
+  // Keep the layout reference emitted by GridLayout to avoid triggering extra prop-change cycles.
+  layout.value = updated;
 
   if (isEqual(prepared)(responsiveLayout.value)) return;
 
@@ -312,7 +360,7 @@ watch(
 onMounted(() => {
   nextTick(() => {
     const width =
-      (widgetsGrid.value?.$el as HTMLElement | undefined)?.clientWidth ?? window?.innerWidth ?? Breakpoint.HugeDesktop;
+      (grid.value?.$el as HTMLElement | undefined)?.clientWidth ?? window?.innerWidth ?? Breakpoint.HugeDesktop;
     breakpoint.value = getBreakpointFromWidth(props.breakpoints, width);
     void init();
   });

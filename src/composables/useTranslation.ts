@@ -35,15 +35,27 @@ const OrdinalRules = {
  */
 export function useTranslation() {
   const base = useWalletTranslation();
+  const asyncWarnings = new Set<string>();
+
+  const coerceAsyncTranslateResult = (value: unknown, key: unknown): string | null => {
+    if (!(value instanceof Promise)) return null;
+
+    const resolvedKey = typeof key === 'string' && key.length ? key : String(key ?? '');
+
+    if (!asyncWarnings.has(resolvedKey)) {
+      asyncWarnings.add(resolvedKey);
+      console.warn(`[i18n] async translation result detected for key "${resolvedKey}". Falling back to key text.`);
+    }
+
+    return resolvedKey;
+  };
 
   const wrapTranslate = <T extends (...args: any[]) => any>(fn: T): T => {
     return ((...args: Parameters<T>): ReturnType<T> => {
       const result = fn(...args);
-      if (result instanceof Promise) {
-        if (typeof window !== 'undefined') {
-          const scope = window as unknown as { __ASYNC_TRANSLATIONS__?: Array<unknown> };
-          (scope.__ASYNC_TRANSLATIONS__ ||= []).push(args[0]);
-        }
+      const fallback = coerceAsyncTranslateResult(result, args[0]);
+      if (fallback !== null) {
+        return fallback as ReturnType<T>;
       }
       return result;
     }) as T;

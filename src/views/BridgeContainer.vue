@@ -68,10 +68,21 @@ const resetBridgeForm = () => bridgeStore.resetBridgeForm();
 const resetBlockUpdatesSubscription = () => bridgeStore.resetBlockUpdatesSubscription();
 const resetOutgoingMaxLimitSubscription = () => bridgeStore.resetOutgoingMaxLimitSubscription();
 
+let restoreSelectedNetworkTask: Promise<void> | null = null;
+const scheduleRestoreSelectedNetwork = (): Promise<void> => {
+  if (!restoreSelectedNetworkTask) {
+    restoreSelectedNetworkTask = restoreSelectedNetwork().finally(() => {
+      restoreSelectedNetworkTask = null;
+    });
+  }
+
+  return restoreSelectedNetworkTask;
+};
+
 const updateBridgeApps = async () => {
   await getSupportedApps();
   // don't block UI while connecting to an external network
-  void restoreSelectedNetwork();
+  void scheduleRestoreSelectedNetwork();
 };
 
 const { subscriptionsDataLoading, trackLogin } = useSubscriptions({

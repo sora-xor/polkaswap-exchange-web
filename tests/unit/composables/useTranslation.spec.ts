@@ -28,6 +28,12 @@ const i18nStub = {
   },
 };
 
+const translationMockFns = {
+  t: vi.fn((key: string) => key),
+  tc: vi.fn((key: string) => key),
+  te: vi.fn(() => true),
+};
+
 vi.mock('@/lang', () => ({
   __esModule: true,
   default: i18nStub,
@@ -44,16 +50,16 @@ vi.mock('@wallet/src/composables/useTranslation', () => {
 
       return {
         dayjsLocale,
-        t: (key: string) => key,
-        tc: (key: string) => key,
-        te: () => true,
+        t: (...args: Parameters<typeof translationMockFns.t>) => translationMockFns.t(...args),
+        tc: (...args: Parameters<typeof translationMockFns.tc>) => translationMockFns.tc(...args),
+        te: (...args: Parameters<typeof translationMockFns.te>) => translationMockFns.te(...args),
       };
     },
     translationUtils: {
       TranslationConsts: {},
-      t: (key: string) => key,
-      tc: (key: string) => key,
-      te: () => true,
+      t: (...args: Parameters<typeof translationMockFns.t>) => translationMockFns.t(...args),
+      tc: (...args: Parameters<typeof translationMockFns.tc>) => translationMockFns.tc(...args),
+      te: (...args: Parameters<typeof translationMockFns.te>) => translationMockFns.te(...args),
       formatDate: (value?: number | string) => String(value ?? ''),
       getDayjsLocale: () => {
         const i18nInstance = (globalThis as Record<string, any>).__TEST_I18N__;
@@ -119,6 +125,12 @@ describe('useTranslation', () => {
     localStorageMock.setItem.mockClear();
     localStorageMock.removeItem.mockClear();
     localStorageMock.clear.mockClear();
+    translationMockFns.t.mockReset();
+    translationMockFns.t.mockImplementation((key: string) => key);
+    translationMockFns.tc.mockReset();
+    translationMockFns.tc.mockImplementation((key: string) => key);
+    translationMockFns.te.mockReset();
+    translationMockFns.te.mockImplementation(() => true);
   });
 
   afterEach(() => {
@@ -160,5 +172,21 @@ describe('useTranslation', () => {
     await nextTick();
 
     expect(translation.dayjsLocale.value).toBe('hy-am');
+  });
+
+  it('coerces async translation results to key strings', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const translation = useTranslation();
+
+    translationMockFns.t.mockImplementation(() => Promise.resolve('translated'));
+
+    expect(translation.t('staking.title')).toBe('staking.title');
+    expect(translation.t('staking.title')).toBe('staking.title');
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(warnSpy).toHaveBeenCalledWith(
+      '[i18n] async translation result detected for key "staking.title". Falling back to key text.'
+    );
+
+    warnSpy.mockRestore();
   });
 });

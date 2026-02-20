@@ -114,6 +114,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'click', event: Event): void;
+  (e: 'open-product-dialog'): void;
 }>();
 
 const { t } = useTranslation();
@@ -159,7 +160,7 @@ function preventAnchorNavigation(event: Event): void {
 }
 
 function openProductDialog(): void {
-  store.commit.settings.setProductDialogVisibility(true);
+  emit('open-product-dialog');
 }
 
 function handleSelect(item: any): void {
@@ -182,3 +183,305 @@ onBeforeUnmount(() => {
   document.documentElement.style.removeProperty('--sidebar-width');
 });
 </script>
+
+<style lang="scss">
+.app-sidebar-scrollbar {
+  @include scrollbar(0, 100%, true);
+}
+
+.app-menu {
+  background: var(--s-color-utility-body);
+}
+
+.app-menu.collapsed {
+  @include tablet {
+    background: transparent;
+
+    .sidebar-item-content {
+      & > .icon-container + span {
+        display: none;
+      }
+    }
+
+    .collapse-button {
+      pointer-events: none;
+    }
+
+    &:hover,
+    &:focus {
+      background: var(--s-color-utility-body);
+      box-shadow: 20px 20px 60px 0px #0000001a;
+
+      .sidebar-item-content {
+        & > .icon-container + span {
+          display: initial;
+        }
+      }
+
+      .collapse-button {
+        pointer-events: all;
+      }
+    }
+  }
+}
+
+.menu.el-menu {
+  .el-menu-item-group__title {
+    display: none;
+  }
+
+  &:not(.el-menu--horizontal) > :not(:last-child) {
+    margin-bottom: 0;
+  }
+
+  .el-menu-item {
+    .icon-container {
+      box-shadow: var(--s-shadow-element-pressed);
+    }
+
+    &.menu-item--small {
+      .icon-container {
+        box-shadow: none;
+        margin: 0;
+        background-color: unset;
+
+        & + span {
+          margin-left: 0;
+        }
+      }
+    }
+
+    &.marketing .icon-container > i {
+      color: var(--s-color-theme-accent);
+    }
+
+    &.is-disabled {
+      opacity: 1;
+      color: var(--s-color-base-content-secondary) !important;
+
+      i {
+        color: var(--s-color-base-content-tertiary);
+      }
+    }
+    &:not(.is-active):not(.is-disabled) {
+      &:hover,
+      &:focus {
+        i {
+          color: var(--s-color-base-content-secondary) !important;
+        }
+        &.marketing i {
+          color: var(--s-color-theme-accent-focused) !important;
+        }
+      }
+    }
+    &:active,
+    &.is-disabled,
+    &.is-active {
+      &:not(.menu-item--small) {
+        .icon-container {
+          box-shadow: var(--s-shadow-element);
+        }
+      }
+    }
+    &.is-active {
+      i {
+        color: var(--s-color-theme-accent) !important;
+      }
+      span {
+        font-weight: 400;
+      }
+    }
+    &:focus {
+      background-color: unset !important;
+    }
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+.collapse-button {
+  position: absolute;
+  top: 100%;
+  left: calc(100% - var(--s-size-small) / 2);
+  bottom: 0;
+  margin: auto;
+  transition-duration: 0.2s;
+  z-index: #{$app-sidebar-layer} + 1;
+
+  &:hover,
+  &:focus,
+  &.focusing {
+    background: var(--s-color-theme-accent-hover) !important;
+    border-color: var(--s-color-utility-surface) !important;
+    color: var(--s-color-base-on-accent) !important;
+  }
+}
+.app {
+  &-sidebar-scrollbar {
+    height: 100%;
+  }
+  &-menu {
+    flex-shrink: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $app-sidebar-layer;
+    visibility: hidden;
+
+    .collapse-button {
+      opacity: 0;
+
+      @include tablet {
+        &:not(.collapsed) {
+          opacity: 0;
+        }
+      }
+    }
+
+    @include tablet {
+      &:hover,
+      &:focus,
+      &:focus-within {
+        .collapse-button {
+          opacity: 1;
+        }
+      }
+    }
+
+    @include large-mobile(true) {
+      position: fixed;
+      right: 0;
+      z-index: $app-above-loader-layer;
+
+      &.visible {
+        visibility: visible;
+        background-color: rgba(42, 23, 31, 0.1);
+        backdrop-filter: blur(4px);
+
+        .app-sidebar {
+          transform: translateX(0);
+          transition-duration: 0.2s;
+        }
+      }
+
+      .app-sidebar {
+        width: 50%;
+        min-width: calc(#{$breakpoint_mobile} / 2);
+        background-color: var(--s-color-utility-body);
+        padding: $inner-spacing-mini $inner-spacing-medium;
+        filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));
+        transform: translateX(-100%);
+      }
+    }
+
+    @include large-mobile {
+      visibility: visible;
+      position: relative;
+    }
+
+    @include desktop {
+      position: absolute;
+
+      &:not(.collapsed) {
+        position: relative;
+      }
+    }
+
+    @include large-desktop {
+      &:not(.collapsed) {
+        position: absolute;
+      }
+    }
+
+    &__loading {
+      z-index: $app-above-loader-layer;
+    }
+  }
+
+  &-sidebar {
+    overflow-x: hidden;
+    display: flex;
+    flex: 1;
+    flex-flow: column nowrap;
+    padding: $inner-spacing-mini 0;
+    border-right: none;
+
+    &-menu {
+      display: flex;
+      flex: 1;
+      flex-flow: column nowrap;
+      justify-content: space-between;
+      max-width: $sidebar-max-width;
+      padding-right: $inner-spacing-mini; // for shadow
+    }
+  }
+}
+
+.menu {
+  padding: 0;
+  border-right: none;
+
+  & + .menu {
+    margin-top: $inner-spacing-small;
+  }
+
+  &.s-menu {
+    border-bottom: none;
+
+    .el-menu-item {
+      margin-right: 0;
+      margin-bottom: 0;
+      border: none;
+      border-radius: 0;
+    }
+  }
+
+  .el-menu-item {
+    padding-top: $inner-spacing-mini;
+    padding-bottom: $inner-spacing-mini;
+
+    height: initial;
+    font-size: var(--s-font-size-medium);
+    font-weight: 300;
+    line-height: var(--s-line-height-medium);
+
+    &:not(.menu-item--small) {
+      padding-left: 0 !important;
+      padding-right: 0;
+
+      @include large-mobile {
+        padding-left: $inner-spacing-mini !important;
+        padding-right: $inner-spacing-mini;
+      }
+
+      @include tablet {
+        padding-left: $inner-spacing-mini * 2 !important;
+        padding-right: $inner-spacing-mini * 2;
+      }
+    }
+
+    &.menu-item--small {
+      font-size: var(--s-font-size-extra-mini);
+      font-weight: 300;
+      padding: 0;
+      line-height: var(--s-line-height-medium);
+      color: var(--s-color-base-content-secondary);
+
+      @include large-mobile {
+        padding: 0 $inner-spacing-mini;
+      }
+      @include tablet {
+        padding: 0 $inner-spacing-small;
+      }
+    }
+
+    &.marketing {
+      color: var(--s-color-theme-accent);
+      &:hover {
+        color: var(--s-color-theme-accent-focused);
+      }
+    }
+  }
+}
+</style>

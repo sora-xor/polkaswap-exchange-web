@@ -2,6 +2,11 @@ import { FPNumber } from '@sora-substrate/math';
 import { api as walletApi } from '@wallet';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+const ethersUtilMock = vi.hoisted(() => ({
+  getSelectedBridgeType: vi.fn(),
+  getSelectedNetwork: vi.fn(),
+}));
+
 // Mock soraneo wallet api to control getDenominator (avoid hoisting issues)
 vi.mock('@wallet', async () => {
   const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
@@ -58,7 +63,10 @@ vi.mock('@sora-substrate/sdk/build/bridgeProxy/evm/consts', () => ({
 vi.mock('@/utils', () => ({}));
 vi.mock('@/utils/bridge/sub/classes/adapter', () => ({ SubNetworksConnector: class {} }));
 vi.mock('@/utils/connection/evm/providers', () => ({ getProvidersList: () => () => {} }));
-vi.mock('@/utils/ethers-util', () => ({ default: {} }));
+vi.mock('@/utils/ethers-util', () => ({
+  default: ethersUtilMock,
+  PROVIDER_ERROR: { DisconnectedFromChain: 4901 },
+}));
 vi.mock('@/consts/evm', () => ({
   KnownEthBridgeAsset: { Other: 'Other', XOR: 'XOR', VAL: 'VAL' },
   SmartContractType: { EthBridge: 'ETH_BRIDGE', ERC20: 'ERC20' },
@@ -75,6 +83,8 @@ import actions from '@/store/web3/actions';
 describe('web3 actions - fetchDenominatorCoefficient', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    ethersUtilMock.getSelectedBridgeType.mockReset();
+    ethersUtilMock.getSelectedNetwork.mockReset();
   });
 
   const makeCtx = () => ({
@@ -115,5 +125,66 @@ describe('web3 actions - fetchDenominatorCoefficient', () => {
 
     const calledWith = (ctx.commit.setDenominator as any).mock.calls[0][0];
     expect(calledWith.eq(FPNumber.ONE)).toBe(true);
+  });
+});
+
+describe('web3 actions - restoreSelectedNetwork', () => {
+  const makeCtx = () => ({
+    state: {
+      ethBridgeEvmNetwork: 11155111,
+    },
+    getters: {
+      availableNetworks: {
+        Eth: {
+          11155111: { disabled: false },
+          1: { disabled: true },
+        },
+        Evm: {},
+        Sub: {},
+      },
+    },
+    dispatch: {
+      selectExternalNetwork: vi.fn(),
+    },
+  });
+
+  it('uses persisted bridge selection when the network is enabled', async () => {
+    const ctx = makeCtx();
+    ethersUtilMock.getSelectedBridgeType.mockReturnValue('Eth');
+    ethersUtilMock.getSelectedNetwork.mockReturnValue(11155111);
+
+    await (actions as any).restoreSelectedNetwork(ctx);
+
+    expect(ctx.dispatch.selectExternalNetwork).toHaveBeenCalledTimes(1);
+    expect(ctx.dispatch.selectExternalNetwork).toHaveBeenCalledWith({
+      id: 11155111,
+      type: 'Eth',
+    });
+  });
+
+  it('falls back to default ETH bridge when persisted selection is unavailable', async () => {
+    const ctx = makeCtx();
+    ethersUtilMock.getSelectedBridgeType.mockReturnValue('Eth');
+    ethersUtilMock.getSelectedNetwork.mockReturnValue(1);
+
+    await (actions as any).restoreSelectedNetwork(ctx);
+
+    expect(ctx.dispatch.selectExternalNetwork).toHaveBeenCalledWith({
+      id: 11155111,
+      type: 'Eth',
+    });
+  });
+
+  it('falls back to default ETH bridge when stored bridge type is invalid or getters are incomplete', async () => {
+    const ctx = makeCtx();
+    ctx.getters = {} as any;
+    ethersUtilMock.getSelectedBridgeType.mockReturnValue('EVMLegacy');
+    ethersUtilMock.getSelectedNetwork.mockReturnValue(1);
+
+    await expect((actions as any).restoreSelectedNetwork(ctx)).resolves.toBeUndefined();
+    expect(ctx.dispatch.selectExternalNetwork).toHaveBeenCalledWith({
+      id: 11155111,
+      type: 'Eth',
+    });
   });
 });

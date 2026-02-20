@@ -1,1 +1,1 @@
-export * from '@wallet/src/store/settings/types';
+export * from '@/stores/settings/types';

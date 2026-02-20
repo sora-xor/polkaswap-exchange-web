@@ -25,11 +25,11 @@ const mutations = defineMutations<Web3State>()({
     state.subAddressSource = source;
   },
 
-  setEvmNetworksApp(state, networksIds: EvmNetwork[]): void {
-    state.evmNetworkApps = Object.freeze([...networksIds]);
+  setEvmNetworksApp(state, networksIds: Nullable<EvmNetwork[]> = []): void {
+    state.evmNetworkApps = Object.freeze(Array.isArray(networksIds) ? [...networksIds] : []);
   },
-  setSubNetworkApps(state, apps: SubNetworkApps): void {
-    state.subNetworkApps = Object.freeze({ ...apps });
+  setSubNetworkApps(state, apps: Nullable<SubNetworkApps> = {}): void {
+    state.subNetworkApps = Object.freeze(apps && typeof apps === 'object' ? { ...apps } : {});
   },
   setSupportedApps(state, supportedApps: SupportedApps): void {
     state.supportedApps = Object.freeze({ ...supportedApps });
@@ -95,12 +95,19 @@ const mutations = defineMutations<Web3State>()({
   },
 
   // for hashi bridge
-  setEthBridgeSettings(state, { evmNetwork, address }: EthBridgeSettings): void {
-    state.ethBridgeEvmNetwork = evmNetwork;
+  setEthBridgeSettings(state, settings?: Nullable<Partial<EthBridgeSettings>>): void {
+    if (!settings) return;
+
+    const currentAddress = state.ethBridgeContractAddress;
+
+    if (settings.evmNetwork != null) {
+      state.ethBridgeEvmNetwork = settings.evmNetwork;
+    }
+
     state.ethBridgeContractAddress = Object.freeze({
-      XOR: address.XOR,
-      VAL: address.VAL,
-      OTHER: address.OTHER,
+      XOR: settings.address?.XOR ?? currentAddress.XOR,
+      VAL: settings.address?.VAL ?? currentAddress.VAL,
+      OTHER: settings.address?.OTHER ?? currentAddress.OTHER,
     });
   },
 

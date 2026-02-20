@@ -1,5 +1,10 @@
 <template>
-  <s-design-system-provider :value="libraryDesignSystem" id="app" class="app" :class="dsProviderClasses">
+  <s-design-system-provider
+    :value="libraryDesignSystem"
+    class="app sora-theme-provider"
+    :class="dsProviderClasses"
+    :data-theme="libraryTheme"
+  >
     <app-header :loading="loading" @toggle-menu="toggleMenu"></app-header>
     <div :class="appClasses">
       <app-menu
@@ -91,12 +96,13 @@ import { Theme, type DesignSystem } from '@/consts/theme';
 import { getLocale } from '@/lang';
 import router, { goTo as navigateTo, lazyComponent } from '@/router';
 import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 import { getMobileCssClasses } from '@/utils';
 import { NodesConnection } from '@/utils/connection';
 import { toDwebLink } from '@/utils/ipfs';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
-import { resolveStaticAssetUrl } from '@/utils/staticAssets';
+import { getEnvConfigCandidates, resolveStaticAssetUrl } from '@/utils/staticAssets';
 import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
@@ -134,6 +140,7 @@ const { loading, withLoading, withApi, handleChangeTransaction } = useTransactio
 const { handleNodeError, handleNodeDisconnect, handleNodeConnect } = useNodeNotifications();
 
 const route = useRoute();
+const settingsStore = useSettingsStore();
 const walletStore = useWalletStore();
 
 const showSoraMobilePopup = ref(false);
@@ -161,7 +168,7 @@ const pendingMstTransactions = computed(() => {
 });
 const storageReferrer = computed(() => (store.state.referrals?.storageReferrer as string) ?? '');
 const referrer = computed(() => (store.state.referrals?.referrer as string) ?? '');
-const disclaimerVisibility = computed(() => Boolean(store.state.settings?.disclaimerVisibility));
+const disclaimerVisibility = computed(() => Boolean(settingsStore.disclaimerVisibility));
 const pageLoading = computed(() => Boolean(store.state.router?.loading));
 const nodeIsConnected = computed(() => Boolean(store.getters?.settings?.nodeIsConnected));
 const firstReadyTransaction = computed(
@@ -172,7 +179,7 @@ const libraryTheme = computed(() => store.getters?.libraryTheme as Theme);
 const libraryDesignSystem = computed(() => store.getters?.libraryDesignSystem as DesignSystem);
 const account = computed(() => store.getters?.wallet?.account?.account);
 const isSignTxDialogVisible = computed(() => Boolean(store.state.wallet?.transactions?.isSignTxDialogVisible));
-const isWalletLoaded = computed(() => Boolean(store.state.settings?.isWalletLoaded));
+const isWalletLoaded = computed(() => Boolean(store.state.wallet?.settings?.isWalletLoaded));
 const orientationWarningVisible = computed({
   get: () => Boolean(store.state.settings.isOrientationWarningVisible),
   set: (flag: boolean) => {
@@ -462,6 +469,11 @@ async function runAppConnectionToNode(): Promise<void> {
 
   try {
     const connectionInstance = appConnection.value;
+    if (!Array.isArray(connectionInstance.nodeList) || connectionInstance.nodeList.length === 0) {
+      console.warn('[bootstrap] No node endpoints configured. Initial node connection skipped.');
+      return;
+    }
+
     await Promise.all([
       waitForCore(walletOptions),
       connectionInstance.connect({
@@ -477,6 +489,43 @@ async function runAppConnectionToNode(): Promise<void> {
       await initWallet(walletOptions);
     }
   }
+}
+
+type RuntimeEnvConfig = Partial<{
+  NETWORK_TYPE: string;
+  TG_BOT_URL: string;
+  API_KEYS: Record<string, string>;
+  ETH_BRIDGE: EthBridgeSettings;
+  FEATURE_FLAGS: FeatureFlags;
+  EVM_NETWORKS_IDS: EvmNetwork[];
+  SUB_NETWORKS: SubNetworkApps;
+  SUBQUERY_ENDPOINT: string;
+  SUBSQUID_ENDPOINT: string;
+  FAUCET_URL: string;
+  DEFAULT_NETWORKS: any;
+  CHAIN_GENESIS_HASH: string;
+}>;
+
+async function loadRuntimeEnvConfig(): Promise<RuntimeEnvConfig> {
+  const candidates = getEnvConfigCandidates();
+
+  for (const candidate of candidates) {
+    const envConfigUrl = resolveStaticAssetUrl(candidate);
+
+    try {
+      const { data } = await axiosInstance.get(envConfigUrl);
+
+      if (data && typeof data === 'object' && !Array.isArray(data)) {
+        return data as RuntimeEnvConfig;
+      }
+
+      console.warn('[bootstrap] Invalid env config payload:', candidate, data);
+    } catch (error) {
+      console.warn('[bootstrap] Failed to load env config:', candidate, error);
+    }
+  }
+
+  return {};
 }
 
 async function confirmInvitation(): Promise<void> {
@@ -583,13 +632,17 @@ onBeforeMount(async () => {
   }
   updateBaseUrl(router);
   AlertsApiService.baseRoute = getFullBaseUrl(router);
+  let hasIndexerEndpoint = false;
 
   await withLoading(async () => {
-    const envConfigUrl = resolveStaticAssetUrl('env.json');
-    const { data } = await axiosInstance.get(envConfigUrl);
+    const data = await loadRuntimeEnvConfig();
+    const networkType =
+      typeof data.NETWORK_TYPE === 'string' && data.NETWORK_TYPE.length > 0
+        ? data.NETWORK_TYPE
+        : WALLET_CONSTS.SoraNetwork.Prod;
 
     if (!data.NETWORK_TYPE) {
-      throw new Error('NETWORK_TYPE is not set');
+      console.warn('[bootstrap] NETWORK_TYPE is not set. Falling back to default network:', networkType);
     }
 
     tmaSdkService.init(data?.TG_BOT_URL);
@@ -601,7 +654,7 @@ onBeforeMount(async () => {
         console.warn('[bootstrap] failed to set API keys', error);
       }
     }
-    if (typeof setEthBridgeSettings === 'function') {
+    if (typeof setEthBridgeSettings === 'function' && data.ETH_BRIDGE) {
       setEthBridgeSettings(data.ETH_BRIDGE as EthBridgeSettings);
     }
     if (typeof setFeatureFlags === 'function') {
@@ -616,17 +669,28 @@ onBeforeMount(async () => {
     }
 
     if (typeof setSoraNetwork === 'function') {
-      setSoraNetwork(data.NETWORK_TYPE);
+      setSoraNetwork(networkType);
     }
     if (typeof setEvmNetworksApp === 'function') {
-      setEvmNetworksApp(data.EVM_NETWORKS_IDS as EvmNetwork[]);
+      const evmNetworks = Array.isArray(data.EVM_NETWORKS_IDS) ? data.EVM_NETWORKS_IDS : [];
+      setEvmNetworksApp(evmNetworks as EvmNetwork[]);
     }
     if (typeof setSubNetworkApps === 'function') {
-      setSubNetworkApps(data.SUB_NETWORKS as SubNetworkApps);
+      const subNetworks = data.SUB_NETWORKS && typeof data.SUB_NETWORKS === 'object' ? data.SUB_NETWORKS : {};
+      setSubNetworkApps(subNetworks as SubNetworkApps);
     }
+
+    const hasSubqueryEndpoint = typeof data.SUBQUERY_ENDPOINT === 'string' && data.SUBQUERY_ENDPOINT.length > 0;
+    const hasSubsquidEndpoint = typeof data.SUBSQUID_ENDPOINT === 'string' && data.SUBSQUID_ENDPOINT.length > 0;
+    hasIndexerEndpoint = hasSubqueryEndpoint || hasSubsquidEndpoint;
+
     if (typeof setIndexerEndpoint === 'function') {
-      setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBQUERY, endpoint: data.SUBQUERY_ENDPOINT });
-      setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBSQUID, endpoint: data.SUBSQUID_ENDPOINT });
+      if (hasSubqueryEndpoint) {
+        setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBQUERY, endpoint: data.SUBQUERY_ENDPOINT });
+      }
+      if (hasSubsquidEndpoint) {
+        setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBSQUID, endpoint: data.SUBSQUID_ENDPOINT });
+      }
     }
 
     if (data.FAUCET_URL && typeof setFaucetUrl === 'function') {
@@ -635,7 +699,8 @@ onBeforeMount(async () => {
 
     const connectionInstance = appConnection.value;
     if (connectionInstance && typeof connectionInstance.setDefaultNodes === 'function') {
-      connectionInstance.setDefaultNodes(data?.DEFAULT_NETWORKS);
+      const defaultNetworks = Array.isArray(data.DEFAULT_NETWORKS) ? data.DEFAULT_NETWORKS : [];
+      connectionInstance.setDefaultNodes(defaultNetworks);
     }
     if (connectionInstance && typeof connectionInstance.setNetworkChainGenesisHash === 'function') {
       connectionInstance.setNetworkChainGenesisHash(data?.CHAIN_GENESIS_HASH);
@@ -646,12 +711,14 @@ onBeforeMount(async () => {
     }
   });
 
-  if (typeof subscribeOnExchangeRatesApi === 'function') {
+  if (typeof subscribeOnExchangeRatesApi === 'function' && hasIndexerEndpoint) {
     try {
       await subscribeOnExchangeRatesApi();
     } catch (error) {
       console.warn('[bootstrap] subscribeOnExchangeRatesApi skipped', error);
     }
+  } else if (!hasIndexerEndpoint) {
+    console.warn('[bootstrap] Indexer endpoints are not configured. Exchange-rate subscription skipped.');
   }
   showDisclaimer();
   void fetchAdsArray();

@@ -613,7 +613,9 @@ const requestData = async (
     const requestMethod = props.requestMethod ?? fetchAssetPriceData;
     const response = await requestMethod(entityId, type, first, cursor);
 
-    if (!response) throw new Error('Chart data fetch error');
+    if (!response) {
+      return { nodes, hasNextPage: false, endCursor: cursor };
+    }
 
     nextPage = response.pageInfo.hasNextPage;
     cursor = response.pageInfo.endCursor;

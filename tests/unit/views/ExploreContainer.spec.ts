@@ -129,7 +129,7 @@ vi.mock('@/store', () => ({
 
 let ExploreContainer: typeof import('@/views/Explore/Container.vue').default;
 
-const mountComponent = async (routeName = PageNames.ExploreTokens) => {
+const mountComponent = async (routeName = PageNames.ExploreTokens, attrs: Record<string, unknown> = {}) => {
   routeMock.name = routeName;
 
   if (!ExploreContainer) {
@@ -140,6 +140,7 @@ const mountComponent = async (routeName = PageNames.ExploreTokens) => {
     props: {
       parentLoading: false,
     },
+    attrs,
     global: {
       stubs: {
         ResponsiveTabs: {
@@ -161,7 +162,8 @@ const mountComponent = async (routeName = PageNames.ExploreTokens) => {
             '<input class="switch-stub" type="checkbox" :checked="modelValue" @change="$emit(\'update:modelValue\', $event.target.checked)" />',
         },
         'router-view': {
-          template: '<div class="router-view-stub"></div>',
+          emits: ['forwarded'],
+          template: '<button class="router-view-stub" @click="$emit(\'forwarded\')">route</button>',
         },
       },
       directives: {
@@ -197,5 +199,14 @@ describe('ExploreContainer', () => {
     await wrapper.find('.tabs-stub').trigger('click');
 
     expect(pushMock).toHaveBeenCalledWith({ name: PageNames.ExploreFarming });
+  });
+
+  it('forwards route-view listeners through attrs', async () => {
+    const onForwarded = vi.fn();
+    const wrapper = await mountComponent(PageNames.ExploreTokens, { onForwarded });
+
+    await wrapper.get('.router-view-stub').trigger('click');
+
+    expect(onForwarded).toHaveBeenCalledTimes(1);
   });
 });

@@ -4,7 +4,6 @@
       parentLoading: subscriptionsDataLoading,
       ...$attrs,
     }"
-    v-on="$listeners"
   ></router-view>
 </template>
 

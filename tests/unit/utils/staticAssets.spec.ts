@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { ensureRelativeAssetPath, getEnvConfigFilename, resolveStaticAssetUrl } from '@/utils/staticAssets';
+import {
+  ensureRelativeAssetPath,
+  getEnvConfigCandidates,
+  getEnvConfigFilename,
+  resolveStaticAssetUrl,
+} from '@/utils/staticAssets';
 
 describe('getEnvConfigFilename', () => {
   it('returns dev env file when override is true', () => {
@@ -9,6 +14,16 @@ describe('getEnvConfigFilename', () => {
 
   it('returns prod env file by default', () => {
     expect(getEnvConfigFilename(false)).toBe('env.json');
+  });
+});
+
+describe('getEnvConfigCandidates', () => {
+  it('returns dev and prod candidates in dev mode', () => {
+    expect(getEnvConfigCandidates(true)).toEqual(['env.dev.json', 'env.json']);
+  });
+
+  it('returns only prod candidate in non-dev mode', () => {
+    expect(getEnvConfigCandidates(false)).toEqual(['env.json']);
   });
 });
 

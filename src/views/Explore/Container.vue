@@ -30,7 +30,6 @@
           parentLoading,
           ...$attrs,
         }"
-        v-on="$listeners"
       ></router-view>
     </div>
   </div>
@@ -60,6 +59,7 @@ const props = withDefaults(
 
 defineOptions({
   name: 'ExploreContainer',
+  inheritAttrs: false,
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ResponsiveTabs: lazyComponent(Components.ResponsiveTabs),

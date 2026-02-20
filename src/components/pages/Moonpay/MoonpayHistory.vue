@@ -54,7 +54,7 @@
       ></history-pagination>
     </template>
     <template v-else>
-      <i-frame-widget :src="detailsWidgetUrl"></i-frame-widget>
+      <i-frame-widget :src="detailsWidgetUrl" :allowed-origins="MOONPAY_WIDGET_ORIGINS"></i-frame-widget>
       <s-button
         v-if="isCompletedTransaction"
         :type="actionButtonType"
@@ -80,8 +80,8 @@ import { lazyComponent } from '@/router';
 import store from '@/store';
 import { useMoonpayBridge } from '@/composables/useMoonpayBridge';
 import { useTranslation } from '@/composables/useTranslation';
-import { getCssVariableValue, toQueryString } from '@/utils';
-import { MoonpayTransactionStatus } from '@/utils/moonpay';
+import { getCssVariableValue } from '@/utils';
+import { MoonpayTransactionStatus, MOONPAY_WIDGET_ORIGINS, buildMoonpayTransactionDetailsUrl } from '@/utils/moonpay';
 
 import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '@/utils/moonpay';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
@@ -159,15 +159,15 @@ const formattedItems = computed(() => {
 
 const detailsWidgetUrl = computed(() => {
   const item = selectedItem.value;
-  if (!item?.id || !item.returnUrl) return '';
+  const transactionId = typeof item?.id === 'string' ? item.id : '';
+  const returnUrl = typeof item?.returnUrl === 'string' ? item.returnUrl : '';
 
-  const query = toQueryString({
-    colorCode: getCssVariableValue('--s-color-theme-accent'),
+  return buildMoonpayTransactionDetailsUrl({
+    returnUrl,
+    transactionId,
     language: language.value,
-    transactionId: item.id as string,
+    colorCode: getCssVariableValue('--s-color-theme-accent'),
   });
-
-  return `${item.returnUrl}?${query}`;
 });
 
 const bridgeTxToSora = computed<Nullable<EthHistory>>(() => {

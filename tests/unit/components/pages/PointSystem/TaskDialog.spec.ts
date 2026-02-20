@@ -10,6 +10,11 @@ vi.mock('@wallet', () => ({
       emits: ['update:visible'],
       template: '<div><slot /></div>',
     },
+    TokenLogo: {
+      name: 'TokenLogoStub',
+      props: ['token'],
+      template: '<div class="token-logo-stub">{{ token }}</div>',
+    },
   },
   WALLET_CONSTS: {},
 }));

@@ -11,7 +11,7 @@ const createRoute = ({
   meta = {},
   params = {},
 }: {
-  name: PageNames;
+  name?: PageNames;
   meta?: Record<string, unknown>;
   params?: Record<string, unknown>;
 }): RouteLocationNormalized =>
@@ -46,6 +46,24 @@ const createServices = (overrides: Partial<NavigationGuardServices> = {}): Navig
 });
 
 describe('router navigation guard', () => {
+  it('redirects unnamed routes to swap', () => {
+    const services = createServices();
+    const guard = createBeforeEachGuard(services);
+    const next = vi.fn();
+
+    guard(createRoute({ name: undefined }), createRoute({ name: PageNames.Wallet }), next);
+
+    expect(services.routerStore.setRoute).toHaveBeenCalledWith({
+      prev: PageNames.Wallet,
+      current: PageNames.Swap,
+    });
+    expect(services.syncRoute).toHaveBeenCalledWith({
+      prev: PageNames.Wallet,
+      current: PageNames.Swap,
+    });
+    expect(next).toHaveBeenCalledWith({ name: PageNames.Swap });
+  });
+
   it('redirects to bridge when auth is required and user is not logged in', () => {
     const services = createServices();
     const guard = createBeforeEachGuard(services);

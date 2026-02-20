@@ -130,4 +130,51 @@ describe('walletconnect utils', () => {
     await expect(module.getWcEthereumProvider()).rejects.toThrow('provider.messages.notAvailable');
     expect(consoleErrorSpy).toHaveBeenCalled();
   });
+
+  it('safeSubscribeModal returns a noop unsubscribe when modal subscription API is missing', async () => {
+    const { safeSubscribeModal } = await import('@/utils/connection/evm/walletconnect');
+
+    const callback = vi.fn();
+    const unsub = safeSubscribeModal({ subscribeModal: true }, callback);
+
+    expect(typeof unsub).toBe('function');
+    expect(callback).not.toHaveBeenCalled();
+    expect(() => unsub()).not.toThrow();
+  });
+
+  it('safeSubscribeModal normalizes invalid unsubscribe handlers', async () => {
+    const { safeSubscribeModal } = await import('@/utils/connection/evm/walletconnect');
+
+    const callback = vi.fn();
+    const subscribeModal = vi.fn().mockReturnValue('not-a-function');
+    const unsub = safeSubscribeModal({ subscribeModal }, callback);
+
+    expect(subscribeModal).toHaveBeenCalledWith(callback);
+    expect(typeof unsub).toBe('function');
+    expect(() => unsub()).not.toThrow();
+  });
+
+  it('safeDisconnectSigner swallows sync disconnect failures', async () => {
+    const { safeDisconnectSigner } = await import('@/utils/connection/evm/walletconnect');
+    const signer = {
+      disconnect: vi.fn(() => {
+        throw new Error('Please call connect() before enable()');
+      }),
+    };
+
+    await expect(safeDisconnectSigner(signer)).resolves.toBeUndefined();
+    expect(signer.disconnect).toHaveBeenCalled();
+  });
+
+  it('safeDisconnectSigner swallows rejected disconnect promises', async () => {
+    const { safeDisconnectSigner } = await import('@/utils/connection/evm/walletconnect');
+    const signer = {
+      disconnect: vi.fn(async () => {
+        throw new Error('Please call connect() before enable()');
+      }),
+    };
+
+    await expect(safeDisconnectSigner(signer)).resolves.toBeUndefined();
+    expect(signer.disconnect).toHaveBeenCalled();
+  });
 });

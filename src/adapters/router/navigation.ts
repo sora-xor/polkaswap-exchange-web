@@ -8,7 +8,7 @@ const warnedMessages = new Set<string>();
 const warn = (message: string): void => {
   if (warnedMessages.has(message)) return;
   warnedMessages.add(message);
-  console.debug(`[router-adapter] ${message}`);
+  console.warn(`[router-adapter] ${message}`);
 };
 
 const withRouterCommit = <T extends (...args: any[]) => unknown>(
@@ -28,9 +28,25 @@ const withRouterCommit = <T extends (...args: any[]) => unknown>(
 };
 
 export const syncLegacyRoute = (params: RouterParams): void => {
-  const setRoute = withRouterCommit((legacyStore) => legacyStore?.commit?.router?.setRoute, 'router.setRoute missing');
+  withLegacyStore((legacyStore) => {
+    const setRoute = legacyStore?.commit?.router?.setRoute as Nullable<(payload: RouterParams) => void>;
 
-  setRoute?.(params);
+    if (typeof setRoute === 'function') {
+      setRoute(params);
+      return;
+    }
+
+    const navigate = legacyStore?.commit?.router?.navigate as Nullable<
+      (payload: { name: string; params?: Record<string, unknown> }) => void
+    >;
+
+    if (typeof navigate === 'function' && params.current) {
+      navigate({ name: params.current, params: params.currentParams ?? {} });
+      return;
+    }
+
+    warn('router.setRoute missing');
+  });
 };
 
 export const setLegacyRouterLoading = (loading: boolean): void => {

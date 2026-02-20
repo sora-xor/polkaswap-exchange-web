@@ -8,8 +8,6 @@ type WalletInstallContext = {
   pinia?: unknown;
 };
 
-let walletStylesLoaded = false;
-
 const toKebabCase = (name: string): string => {
   return name
     .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
@@ -28,11 +26,6 @@ const registerWalletComponents = (app: App, components?: Record<string, Componen
 
 export async function install(app: App, context: WalletInstallContext = {}): Promise<void> {
   const walletModule = await loadWalletModule();
-
-  if (!walletStylesLoaded) {
-    await import('@wallet/lib/soraneo-wallet-web.css');
-    walletStylesLoaded = true;
-  }
 
   const defaultStore = (store as any)?.commit?.wallet ? (store as any) : ((store as any)?.original ?? store);
   const resolvedStore = context.store ?? defaultStore;

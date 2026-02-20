@@ -131,3 +131,84 @@ onBeforeUnmount(() => {
   observer = null;
 });
 </script>
+
+<style lang="scss">
+.disclaimer {
+  &__prefix {
+    color: var(--s-color-theme-accent);
+  }
+
+  .link {
+    @include focus-outline;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+.disclaimer {
+  background-color: var(--s-color-utility-surface);
+  border-radius: var(--s-border-radius-medium);
+  box-shadow: var(--s-shadow-dialog);
+  width: 24%;
+  min-width: 335px;
+  max-width: 550px;
+  position: absolute;
+  top: var(--s-size-mini);
+  right: var(--s-size-mini);
+  z-index: $app-above-loader-layer;
+  padding: $basic-spacing 6px 12px 20px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: $inner-spacing-mini;
+
+    &-title {
+      font-weight: 600;
+      font-size: var(--s-font-size-small);
+      display: flex;
+      align-items: center;
+    }
+
+    &-close-btn {
+      margin-right: $inner-spacing-small;
+      color: var(--s-color-base-content-tertiary);
+      transition: var(--s-transition-default);
+
+      &:hover {
+        color: var(--s-color-base-content-secondary);
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__text {
+    border-radius: var(--s-border-radius-medium);
+    padding: 0 $basic-spacing 10px 0;
+    font-size: var(--s-font-size-extra-mini);
+    font-weight: 300;
+    height: 260px;
+    line-height: var(--s-line-height-extra-small);
+    letter-spacing: var(--s-letter-spacing-small);
+    color: var(--s-color-base-content-secondary);
+    margin-bottom: -12px;
+
+    &-fiat {
+      margin-top: $basic-spacing;
+    }
+  }
+
+  &__accept-btn {
+    margin-top: $basic-spacing;
+    width: 100%;
+  }
+}
+</style>
+
+<style lang="scss">
+.disclaimer {
+  .el-scrollbar__bar.is-vertical {
+    opacity: 1;
+  }
+}
+</style>

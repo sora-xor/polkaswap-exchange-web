@@ -1,6 +1,6 @@
 import { assert } from '@polkadot/util';
 import { FPNumber } from '@sora-substrate/math';
-import { map } from 'rxjs';
+import { map, of } from 'rxjs';
 
 import { Messages } from '../logger';
 import { Operation } from '../types';
@@ -53,9 +53,60 @@ const COUNT_ERAS_IN_DAILY = 4;
 const COUNT_HOURS_IN_ERA = 6;
 
 const COUNT_DAYS_IN_YEAR = 365;
+const VALIDATOR_IDENTITY_CONCURRENCY = 8;
+
+/**
+ * Maps items with a fixed worker pool to avoid flooding the RPC node.
+ */
+export async function mapWithConcurrency<T, R>(
+  items: readonly T[],
+  concurrency: number,
+  mapper: (item: T, index: number) => Promise<R>
+): Promise<R[]> {
+  if (!items.length) return [];
+
+  const workerLimit = Math.max(1, Math.floor(concurrency));
+  const results = new Array<R>(items.length);
+  let nextIndex = 0;
+
+  const worker = async (): Promise<void> => {
+    while (true) {
+      const currentIndex = nextIndex;
+      nextIndex += 1;
+
+      if (currentIndex >= items.length) return;
+
+      results[currentIndex] = await mapper(items[currentIndex], currentIndex);
+    }
+  };
+
+  const workersCount = Math.min(workerLimit, items.length);
+  await Promise.all(Array.from({ length: workersCount }, () => worker()));
+
+  return results;
+}
 
 export class StakingModule<T> {
   constructor(private readonly root: Api<T>) {}
+
+  private isAddressValid(address?: string): address is string {
+    return !!address && this.root.validateAddress(address);
+  }
+
+  private getEmptyMyStakingInfo(): MyStakingInfo {
+    return {
+      myValidators: [],
+      payee: '',
+      controller: '',
+      redeemAmount: '0',
+      activeStake: '0',
+      totalStake: '0',
+      unbond: {
+        unlocking: [],
+        sum: '0',
+      },
+    };
+  }
 
   public getSignerPair(signerPair?: KeyringPair): KeyringPair {
     assert(this.root.account, Messages.connectWallet);
@@ -246,6 +297,10 @@ export class StakingModule<T> {
    * @param controllerAddress address of controller account
    */
   public getAccountLedgerObservable(controllerAddress: string): Observable<AccountStakingLedger | null> {
+    if (!this.isAddressValid(controllerAddress)) {
+      return of(null);
+    }
+
     return this.root.apiRx.query.staking.ledger(controllerAddress).pipe(
       map((codec) => {
         if (codec.isEmpty) return null;
@@ -269,6 +324,10 @@ export class StakingModule<T> {
    * @param controllerAddress address of controller account
    */
   public async getStashByController(controllerAddress: string): Promise<string> {
+    if (!this.isAddressValid(controllerAddress)) {
+      return '';
+    }
+
     const codec = await this.root.api.query.staking.ledger(controllerAddress);
 
     if (codec.isEmpty) return '';
@@ -285,6 +344,10 @@ export class StakingModule<T> {
    * @param stashAddress address of stash account
    */
   public getControllerObservable(stashAddress: string): Observable<string | null> {
+    if (!this.isAddressValid(stashAddress)) {
+      return of(null);
+    }
+
     return this.root.apiRx.query.staking.bonded(stashAddress).pipe(
       map((data) => {
         if (data.isEmpty) return null;
@@ -300,6 +363,10 @@ export class StakingModule<T> {
    * @returns rewards destination
    */
   public getPayeeObservable(stashAddress: string): Observable<StakingRewardsDestination | string> {
+    if (!this.isAddressValid(stashAddress)) {
+      return of(StakingRewardsDestination.None);
+    }
+
     return this.root.apiRx.query.staking.payee(stashAddress).pipe(
       map((data) => {
         if (data.isStaked) return StakingRewardsDestination.Staked;
@@ -318,6 +385,10 @@ export class StakingModule<T> {
    * @returns rewards destination
    */
   public async getPayee(stashAddress: string): Promise<StakingRewardsDestination | string> {
+    if (!this.isAddressValid(stashAddress)) {
+      return StakingRewardsDestination.None;
+    }
+
     const payee = await this.root.api.query.staking.payee(stashAddress);
     const payeeHuman = payee.toHuman();
 
@@ -329,7 +400,13 @@ export class StakingModule<T> {
    * @returns list of validators infos (address, commission, blocked)
    */
   public async getWannabeValidators(): Promise<ValidatorInfo[]> {
-    const validators = (await this.root.api.query.staking.validators.entries()).map(([key, codec]) => {
+    const validatorsStorage = this.root.connection?.api?.query?.staking?.validators;
+
+    if (!validatorsStorage?.entries) {
+      return [];
+    }
+
+    const validators = (await validatorsStorage.entries()).map(([key, codec]) => {
       const address = key.args[0].toString();
       const { commission, blocked } = codec;
 
@@ -404,88 +481,98 @@ export class StakingModule<T> {
    * @returns list of validators infos sorted by recommended
    */
   public async getValidatorsInfo(): Promise<ValidatorInfoFull[]> {
-    const [wannabeValidators, currentEra, eraAverageRewards] = await Promise.all([
-      this.getWannabeValidators(),
-      this.getCurrentEra(),
-      this.getAverageRewards(),
-    ]);
-    const [eraRewardPoints, electedValidators, eraTotalStake] = await Promise.all([
-      this.getEraRewardPoints(currentEra),
-      this.getElectedValidators(currentEra),
-      this.getEraTotalStake(currentEra),
-    ]);
+    if (!this.root.connection?.api) {
+      return [];
+    }
 
-    // TODO: use liquidity proxy quote; XOR based quote is used just for now
-    const { amount: rewardToStakeRatio } = await this.root.swap.getResultFromDexRpc(VAL.address, XOR.address, 1);
+    try {
+      const [wannabeValidators, currentEra, eraAverageRewards] = await Promise.all([
+        this.getWannabeValidators(),
+        this.getCurrentEra(),
+        this.getAverageRewards(),
+      ]);
+      const [eraRewardPoints, electedValidators, eraTotalStake] = await Promise.all([
+        this.getEraRewardPoints(currentEra),
+        this.getElectedValidators(currentEra),
+        this.getEraTotalStake(currentEra),
+      ]);
 
-    const validatorsPromises = wannabeValidators.map<Promise<ValidatorInfoFull>>(async ({ address, commission }) => {
-      const electedValidator = electedValidators.find(({ address: _address }) => _address === address);
-      const total = electedValidator?.total ?? '0';
-      const rewardPoints = eraRewardPoints[address];
+      // TODO: use liquidity proxy quote; XOR based quote is used just for now
+      const { amount: rewardToStakeRatio } = await this.root.swap.getResultFromDexRpc(VAL.address, XOR.address, 1);
 
-      const originalIdentity = (await this.root.getAccountOnChainIdentity(address))?.identity;
-      const identity: Identity | null =
-        originalIdentity !== null && originalIdentity !== undefined
-          ? {
-              ...originalIdentity,
-              info: Object.fromEntries(
-                Object.entries(originalIdentity?.info ?? {}).map(([key, value]) => {
-                  if (value === 'None') return [key, ''];
-
-                  if (!Array.isArray(value) && value?.Raw !== undefined) return [key, value?.Raw];
-
-                  return [key, value];
-                })
-              ),
-            }
-          : null;
-      const apy = await this.calculateApy(total, rewardToStakeRatio, eraTotalStake, eraAverageRewards, commission);
-
-      const nominators: Others = electedValidator?.others ?? [];
       const maxNominatorRewardedPerValidator = this.getMaxNominatorRewardedPerValidator();
-      const isOversubscribed = nominators.length > maxNominatorRewardedPerValidator;
-      const knownGoodIndex = originalIdentity?.judgements?.findIndex(([, type]) => type === 'KnownGood');
-      const isKnownGood = !!(knownGoodIndex && knownGoodIndex !== -1);
+      const validators = await mapWithConcurrency(
+        wannabeValidators,
+        VALIDATOR_IDENTITY_CONCURRENCY,
+        async ({ address, commission }): Promise<ValidatorInfoFull> => {
+          const electedValidator = electedValidators.find(({ address: _address }) => _address === address);
+          const total = electedValidator?.total ?? '0';
+          const rewardPoints = eraRewardPoints[address];
 
-      return {
-        address,
-        commission: commission ?? '',
-        rewardPoints,
-        nominators,
-        identity,
-        apy,
-        isOversubscribed,
-        isKnownGood,
-        stake: {
-          total,
-          own: electedValidator?.own ?? '0',
-        },
-      };
-    });
+          const originalIdentity = (await this.root.getAccountOnChainIdentity(address))?.identity;
+          const identity: Identity | null =
+            originalIdentity !== null && originalIdentity !== undefined
+              ? {
+                  ...originalIdentity,
+                  info: Object.fromEntries(
+                    Object.entries(originalIdentity?.info ?? {}).map(([key, value]) => {
+                      if (value === 'None') return [key, ''];
 
-    const validators = await Promise.all(validatorsPromises);
+                      if (!Array.isArray(value) && value?.Raw !== undefined) return [key, value?.Raw];
 
-    // step 1 - apy DESC
-    // step 2 - commission ASC
-    // step 3 - identity, array of judgements have KnownGood element
-    return validators.sort((validator1, validator2) => {
-      const { apy: apy1, commission: commission1, isKnownGood: isKnownGood1 } = validator1;
-      const { apy: apy2, commission: commission2, isKnownGood: isKnownGood2 } = validator2;
+                      return [key, value];
+                    })
+                  ),
+                }
+              : null;
+          const apy = await this.calculateApy(total, rewardToStakeRatio, eraTotalStake, eraAverageRewards, commission);
 
-      const subtractionApy = new FPNumber(apy2).sub(apy1);
+          const nominators: Others = electedValidator?.others ?? [];
+          const isOversubscribed = nominators.length > maxNominatorRewardedPerValidator;
+          const knownGoodIndex = originalIdentity?.judgements?.findIndex(([, type]) => type === 'KnownGood');
+          const isKnownGood = !!(knownGoodIndex && knownGoodIndex !== -1);
 
-      if (!subtractionApy.isZero()) return subtractionApy.toNumber();
+          return {
+            address,
+            commission: commission ?? '',
+            rewardPoints,
+            nominators,
+            identity,
+            apy,
+            isOversubscribed,
+            isKnownGood,
+            stake: {
+              total,
+              own: electedValidator?.own ?? '0',
+            },
+          };
+        }
+      );
 
-      const subtractionCommission = new FPNumber(commission1).sub(commission2);
+      // step 1 - apy DESC
+      // step 2 - commission ASC
+      // step 3 - identity, array of judgements have KnownGood element
+      return validators.sort((validator1, validator2) => {
+        const { apy: apy1, commission: commission1, isKnownGood: isKnownGood1 } = validator1;
+        const { apy: apy2, commission: commission2, isKnownGood: isKnownGood2 } = validator2;
 
-      if (!subtractionCommission.isZero()) return subtractionCommission.toNumber();
+        const subtractionApy = new FPNumber(apy2).sub(apy1);
 
-      if (isKnownGood1 && !isKnownGood2) return -1;
+        if (!subtractionApy.isZero()) return subtractionApy.toNumber();
 
-      if (!isKnownGood1 && isKnownGood2) return 1;
+        const subtractionCommission = new FPNumber(commission1).sub(commission2);
 
-      return 0;
-    });
+        if (!subtractionCommission.isZero()) return subtractionCommission.toNumber();
+
+        if (isKnownGood1 && !isKnownGood2) return -1;
+
+        if (!isKnownGood1 && isKnownGood2) return 1;
+
+        return 0;
+      });
+    } catch {
+      return [];
+    }
   }
 
   /**
@@ -493,6 +580,10 @@ export class StakingModule<T> {
    * @returns staking info
    */
   public async getMyStakingInfo(address: string): Promise<MyStakingInfo> {
+    if (!this.root.api || !this.isAddressValid(address)) {
+      return this.getEmptyMyStakingInfo();
+    }
+
     const stakingDerive = await this.root.api?.derive.staking.account(address);
 
     const unlocking =
@@ -538,6 +629,10 @@ export class StakingModule<T> {
    * @returns nominators reward
    */
   public async getNominatorsReward(address: string): Promise<NominatorReward> {
+    if (!this.isAddressValid(address)) {
+      return [];
+    }
+
     const stakerRewards = await this.root.api.derive.staking.stakerRewards(address);
 
     return stakerRewards.map(({ era, validators: _validators }) => {
@@ -610,6 +705,10 @@ export class StakingModule<T> {
    * @returns The structure with the list of validators, eraIndex
    */
   public async getNominations(stashAddress: string): Promise<StashNominatorsInfo | null> {
+    if (!this.isAddressValid(stashAddress)) {
+      return null;
+    }
+
     const codec = await this.root.api.query.staking.nominators(stashAddress);
 
     return formatNominations(codec);
@@ -622,6 +721,10 @@ export class StakingModule<T> {
    * @returns The structure with the list of validators, eraIndex
    */
   public getNominationsObservable(stashAddress: string): Observable<StashNominatorsInfo | null> {
+    if (!this.isAddressValid(stashAddress)) {
+      return of(null);
+    }
+
     return this.root.apiRx.query.staking.nominators(stashAddress).pipe(map(formatNominations));
   }
 

@@ -116,55 +116,52 @@
         </token-input>
 
         <s-button
-          v-if="!isValidNetwork && areAccountsConnected"
-          class="el-button--next s-typography-button--big"
+          class="el-button--next s-typography-button--large"
+          data-test-name="nextButton"
           type="primary"
-          @click="changeEvmNetworkProvided"
+          :disabled="!areAccountsConnected || (isValidNetwork && isTxConfirmDisabled)"
+          :loading="areAccountsConnected && isValidNetwork && isConfirmTxLoading"
+          @click="handleNextButtonClick"
         >
-          {{ t('changeNetworkText') }}
+          <template v-if="!areAccountsConnected">
+            {{ t('bridge.connectWallets') }}
+          </template>
+          <template v-else-if="!isValidNetwork">
+            {{ t('changeNetworkText') }}
+          </template>
+          <template v-else-if="!isAssetSelected">
+            {{ t('buttons.chooseAToken') }}
+          </template>
+          <template v-else-if="!isRegisteredAsset">
+            {{ t('bridge.notRegisteredAsset', { assetSymbol }) }}
+          </template>
+          <template v-else-if="isZeroAmountSend">
+            {{ t('buttons.enterAmount') }}
+          </template>
+          <template v-else-if="isZeroAmountReceived">
+            {{ t('swap.insufficientAmount', { tokenSymbol: assetSymbol }) }}
+          </template>
+          <template v-else-if="isInsufficientBalance">
+            {{ t('insufficientBalanceText', { tokenSymbol: assetSymbol }) }}
+          </template>
+          <template v-else-if="isInsufficientXorForFee">
+            {{ t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR }) }}
+          </template>
+          <template v-else-if="isInsufficientNativeTokenForFee">
+            {{ t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol }) }}
+          </template>
+          <template v-else-if="isGreaterThanMaxAmount">
+            {{ t('exceededAmountText', { amount: t('maxAmountText') }) }}
+          </template>
+          <template v-else-if="isLowerThanMinAmount">
+            {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
+          </template>
+          <template v-else>
+            {{ t('bridge.next') }}
+          </template>
         </s-button>
 
-        <template v-else-if="areAccountsConnected">
-          <s-button
-            class="el-button--next s-typography-button--large"
-            data-test-name="nextButton"
-            type="primary"
-            :disabled="isTxConfirmDisabled"
-            :loading="isConfirmTxLoading"
-            @click="handleConfirmButtonClick"
-          >
-            <template v-if="!isAssetSelected">
-              {{ t('buttons.chooseAToken') }}
-            </template>
-            <template v-else-if="!isRegisteredAsset">
-              {{ t('bridge.notRegisteredAsset', { assetSymbol }) }}
-            </template>
-            <template v-else-if="isZeroAmountSend">
-              {{ t('buttons.enterAmount') }}
-            </template>
-            <template v-else-if="isZeroAmountReceived">
-              {{ t('swap.insufficientAmount', { tokenSymbol: assetSymbol }) }}
-            </template>
-            <template v-else-if="isInsufficientBalance">
-              {{ t('insufficientBalanceText', { tokenSymbol: assetSymbol }) }}
-            </template>
-            <template v-else-if="isInsufficientXorForFee">
-              {{ t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR }) }}
-            </template>
-            <template v-else-if="isInsufficientNativeTokenForFee">
-              {{ t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol }) }}
-            </template>
-            <template v-else-if="isGreaterThanMaxAmount">
-              {{ t('exceededAmountText', { amount: t('maxAmountText') }) }}
-            </template>
-            <template v-else-if="isLowerThanMinAmount">
-              {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
-            </template>
-            <template v-else>
-              {{ t('bridge.next') }}
-            </template>
-          </s-button>
-
+        <template v-if="areAccountsConnected && isValidNetwork">
           <bridge-limit-card
             v-if="isLowerThanMinAmount || isGreaterThanMaxAmount"
             class="bridge-limit-card"
@@ -720,6 +717,17 @@ const handleConfirmButtonClick = async () => {
   }
 
   await confirmOrExecute(confirmTransaction);
+};
+
+const handleNextButtonClick = () => {
+  if (!areAccountsConnected.value) return;
+
+  if (!isValidNetwork.value) {
+    changeEvmNetworkProvided();
+    return;
+  }
+
+  void handleConfirmButtonClick();
 };
 
 const autoupdateRouteParams = async () => {

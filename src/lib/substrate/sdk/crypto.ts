@@ -13,6 +13,17 @@ const MASTER_KEY_STORAGE = 'sora.crypto.masterKey';
 const SECRET_LENGTH = 32;
 const ENCRYPTION_PREFIX = 'psk1:';
 
+/**
+ * IMPORTANT SECURITY NOTE
+ *
+ * The persisted "master key" is used for:
+ * - HMAC namespaces for localStorage keys (to avoid leaking raw account addresses in plain text)
+ * - encrypting non-critical local values (legacy support)
+ *
+ * Because the key is stored client-side (localStorage), it is NOT a security boundary:
+ * any JS running in this origin (XSS, compromised third-party script, malicious extension) can read/use it.
+ * Do not use this mechanism to protect private keys, seeds, or other high-value secrets.
+ */
 let cachedMasterKey: string | null = null;
 
 const isBrowserStorageAvailable = (): boolean => {

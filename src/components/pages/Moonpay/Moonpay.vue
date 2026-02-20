@@ -3,7 +3,7 @@
     <template #title>
       <moonpay-logo :theme="libraryTheme"></moonpay-logo>
     </template>
-    <i-frame-widget :src="widgetUrl"></i-frame-widget>
+    <i-frame-widget :src="widgetUrl" :allowed-origins="MOONPAY_WIDGET_ORIGINS"></i-frame-widget>
   </dialog-base>
 </template>
 
@@ -20,6 +20,7 @@ import store from '@/store';
 import { useMoonpayBridge } from '@/composables/useMoonpayBridge';
 import { useTranslation } from '@/composables/useTranslation';
 import { getCssVariableValue } from '@/utils';
+import { MOONPAY_WIDGET_ORIGINS } from '@/utils/moonpay';
 
 import type { MoonpayTransaction } from '@/utils/moonpay';
 import type { FnWithoutArgs } from '@/types/common';

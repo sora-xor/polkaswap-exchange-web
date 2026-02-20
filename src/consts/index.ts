@@ -129,7 +129,6 @@ export const Links = {
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
   demeterFarmingPlatform: 'https://farming.deotoken.io/',
-  soraCardSupportChannel: 'https://t.me/soracardofficial',
 };
 
 export const ObjectInit = () => null;
@@ -191,6 +190,7 @@ export enum PageNames {
   ReferralUnbonding = 'ReferralUnbonding',
   BridgeContainer = 'BridgeContainer',
   Bridge = 'Bridge',
+  Sccp = 'Sccp',
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
@@ -210,7 +210,6 @@ export enum PageNames {
   OrderBook = 'OrderBook',
   LimitOrderBuy = 'OrderBook/LimitOrderBuy',
   LimitOrderSell = 'OrderBook/LimitOrderSell',
-  SoraCard = 'SoraCard',
   AssetOwnerContainer = 'AssetOwnerContainer',
   VaultsContainer = 'VaultsContainer',
   Burn = 'Burn',
@@ -244,22 +243,6 @@ export enum Components {
   SelectNodeDialog = 'App/Settings/Node/SelectNodeDialog',
   SelectNode = 'App/Settings/Node/SelectNode',
   NodeInfo = 'App/Settings/Node/NodeInfo',
-  // SORA Card
-  Dashboard = 'pages/SoraCard/Dashboard/Dashboard',
-  BalanceIndicator = 'pages/SoraCard/common/BalanceIndicator',
-  SoraCardIntroPage = 'pages/SoraCard/SoraCardIntroPage',
-  SoraCardKYC = 'pages/SoraCard/SoraCardKYC',
-  ConfirmationInfo = 'pages/SoraCard/ConfirmationInfo',
-  TermsAndConditions = 'pages/SoraCard/steps/TermsAndConditions',
-  ToSDialog = 'pages/SoraCard/steps/ToSDialog',
-  SelectCountryDialog = 'pages/SoraCard/steps/SelectCountryDialog',
-  Phone = 'pages/SoraCard/steps/Phone',
-  Email = 'pages/SoraCard/steps/Email',
-  Payment = 'pages/SoraCard/steps/Payment',
-  Guidance = 'pages/SoraCard/steps/Guidance',
-  KycView = 'pages/SoraCard/steps/KycView',
-  // Paywings
-  PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
   // Bridge Page
   BridgeTransactionDetails = 'pages/Bridge/TransactionDetails',
   BridgeTransferNotification = 'pages/Bridge/TransferNotification',
@@ -398,43 +381,48 @@ const MainMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'arrows-swap-90-24',
     title: PageNames.Swap,
-    href: '/#/swap',
+    href: '#/swap',
   },
   {
     icon: 'music-CD-24',
     title: PageNames.OrderBook,
-    href: '/#/trade',
+    href: '#/trade',
   },
   {
     icon: 'basic-circle-star-24',
     title: PageNames.Rewards,
-    href: '/#/points',
+    href: '#/points',
   },
   {
     icon: 'basic-drop-24',
     title: PoolPageNames.Pool,
-    href: '/#/pool',
+    href: '#/pool',
   },
   {
     icon: 'basic-layers-24',
     title: PageNames.StakingContainer,
-    href: '/#/staking',
+    href: '#/staking',
     index: StakingPageNames.Staking,
   },
   {
     icon: 'grid-block-distribute-vertically-24',
     title: PageNames.Bridge,
-    href: '/#/bridge',
+    href: '#/bridge',
+  },
+  {
+    icon: 'various-planet-24',
+    title: PageNames.Sccp,
+    href: '#/bridge/sccp',
   },
   {
     icon: 'finance-wallet-24',
     title: PageNames.Wallet,
-    href: '/#/wallet',
+    href: '#/wallet',
   },
   {
     icon: 'call-phone-16',
     title: VaultPageNames.VaultsContainer,
-    href: '/#/kensetsu',
+    href: '#/kensetsu',
     index: VaultPageNames.Vaults,
   },
 ];
@@ -443,13 +431,13 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'various-items-24',
     title: PageNames.ExploreContainer,
-    href: '/#/explore',
+    href: '#/explore',
     index: PageNames.ExploreTokens,
   },
   {
     icon: 'various-planet-24',
     title: PageNames.Stats,
-    href: '/#/stats',
+    href: '#/stats',
   },
   // {
   //   icon: 'basic-flame-24',
@@ -464,7 +452,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'various-rocket-24',
     title: PageNames.AssetOwnerContainer,
-    href: '/#/dashboard/owner',
+    href: '#/dashboard/owner',
     index: DashboardPageNames.AssetOwner,
   },
 ];
@@ -507,22 +495,6 @@ export const StoreLinks = {
   GooglePlay: 'https://play.google.com/store/apps/details?id=jp.co.soramitsu.sora',
 };
 
-export const TosExternalLinks = {
-  Terms: `https://soracard.com/terms/en/polkaswap/`,
-  Privacy: `https://soracard.com/privacy/en/polkaswap/`,
-  getLinks: function (darkMode = 'light') {
-    return darkMode === 'dark'
-      ? {
-          Terms: this.Terms.concat('?dark'),
-          Privacy: this.Privacy.concat('?dark'),
-        }
-      : {
-          Terms: this.Terms,
-          Privacy: this.Privacy,
-        };
-  },
-};
-
 export const FaucetLink: SidebarMenuItemLink = {
   icon: 'software-terminal-24',
   title: 'faucet',
@@ -530,7 +502,12 @@ export const FaucetLink: SidebarMenuItemLink = {
 
 export const SidebarMenuGroups = [...MainMenu, ...OtherPagesMenu];
 
-export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
+export const BridgeChildPages = [
+  PageNames.Bridge,
+  PageNames.Sccp,
+  PageNames.BridgeTransaction,
+  PageNames.BridgeTransactionsHistory,
+];
 export const PoolChildPages = [PageNames.AddLiquidity];
 export const RewardsChildPages = [
   PageNames.PointSystemWrapper,

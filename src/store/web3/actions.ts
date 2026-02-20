@@ -15,6 +15,12 @@ import ethersUtil, { PROVIDER_ERROR } from '@/utils/ethers-util';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { ActionContext } from 'vuex';
 
+const BRIDGE_NETWORK_TYPES = new Set<BridgeNetworkType>(Object.values(BridgeNetworkType) as BridgeNetworkType[]);
+
+const isBridgeNetworkType = (value: unknown): value is BridgeNetworkType => {
+  return BRIDGE_NETWORK_TYPES.has(value as BridgeNetworkType);
+};
+
 async function connectNetworkType(context: ActionContext<any, any>): Promise<void> {
   const { state } = web3ActionContext(context);
 
@@ -223,13 +229,15 @@ const actions = defineActions({
 
     try {
       supportedApps = await soraApi.bridgeProxy.getListApps();
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // The bridge proxy API may be unavailable during app boot (or in E2E stubs).
+      // Fall back to the production mock without logging noisy errors.
     }
 
     commit.setSupportedApps(supportedApps as any);
 
-    const networks = getters.availableNetworks[BridgeNetworkType.Sub];
+    const networks = getters.availableNetworks?.[BridgeNetworkType.Sub];
+    if (!networks) return;
 
     const nodes = Object.entries(networks).reduce((acc, [key, value]) => {
       if (!value?.data?.nodes) return acc;
@@ -246,10 +254,16 @@ const actions = defineActions({
   async restoreSelectedNetwork(context): Promise<void> {
     const { dispatch, state, getters } = web3ActionContext(context);
 
-    const [type, id] = [ethersUtil.getSelectedBridgeType(), ethersUtil.getSelectedNetwork()];
+    const rawType = ethersUtil.getSelectedBridgeType();
+    const type = isBridgeNetworkType(rawType) ? rawType : null;
+    const id = ethersUtil.getSelectedNetwork();
+    const availableNetworks = (getters?.availableNetworks ?? {}) as Record<
+      BridgeNetworkType,
+      Record<string | number, { disabled?: boolean }>
+    >;
 
-    if (type && id) {
-      const networkData = getters.availableNetworks[type]?.[id];
+    if (type && id !== null && id !== undefined) {
+      const networkData = availableNetworks[type]?.[id];
 
       if (!!networkData && !networkData.disabled) {
         await dispatch.selectExternalNetwork({ id, type });

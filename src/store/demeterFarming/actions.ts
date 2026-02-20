@@ -14,20 +14,25 @@ const actions = defineActions({
 
     commit.resetPoolsUpdates();
 
-    const observable = await api.demeterFarming.getPoolsObservable();
+    try {
+      const observable = await api.demeterFarming.getPoolsObservable();
 
-    if (!observable) return;
+      if (!observable) return;
 
-    let subscription!: Subscription;
+      let subscription!: Subscription;
 
-    await new Promise<void>((resolve) => {
-      subscription = observable.subscribe((pools) => {
-        commit.setPools(pools);
-        resolve();
+      await new Promise<void>((resolve) => {
+        subscription = observable.subscribe((pools) => {
+          commit.setPools(pools);
+          resolve();
+        });
       });
-    });
 
-    commit.setPoolsUpdates(subscription);
+      commit.setPoolsUpdates(subscription);
+    } catch (error) {
+      console.warn('[demeterFarming] subscribeOnPools skipped', error);
+      commit.setPools([]);
+    }
   },
 
   async subscribeOnTokens(context): Promise<void> {
@@ -35,20 +40,25 @@ const actions = defineActions({
 
     commit.resetTokensUpdates();
 
-    const observable = await api.demeterFarming.getTokenInfosObservable();
+    try {
+      const observable = await api.demeterFarming.getTokenInfosObservable();
 
-    if (!observable) return;
+      if (!observable) return;
 
-    let subscription!: Subscription;
+      let subscription!: Subscription;
 
-    await new Promise<void>((resolve) => {
-      subscription = observable.subscribe((tokens) => {
-        commit.setTokens(tokens);
-        resolve();
+      await new Promise<void>((resolve) => {
+        subscription = observable.subscribe((tokens) => {
+          commit.setTokens(tokens);
+          resolve();
+        });
       });
-    });
 
-    commit.setTokensUpdates(subscription);
+      commit.setTokensUpdates(subscription);
+    } catch (error) {
+      console.warn('[demeterFarming] subscribeOnTokens skipped', error);
+      commit.setTokens([]);
+    }
   },
 
   async subscribeOnAccountPools(context): Promise<void> {
@@ -58,20 +68,25 @@ const actions = defineActions({
 
     if (!rootGetters.wallet.account.isLoggedIn) return;
 
-    await waitForAccountPair();
+    try {
+      await waitForAccountPair();
 
-    const observable = api.demeterFarming.getAccountPoolsObservable();
+      const observable = api.demeterFarming.getAccountPoolsObservable();
 
-    let subscription!: Subscription;
+      let subscription!: Subscription;
 
-    await new Promise<void>((resolve) => {
-      subscription = observable.subscribe((accountPools) => {
-        commit.setAccountPools(accountPools);
-        resolve();
+      await new Promise<void>((resolve) => {
+        subscription = observable.subscribe((accountPools) => {
+          commit.setAccountPools(accountPools);
+          resolve();
+        });
       });
-    });
 
-    commit.setAccountPoolsUpdates(subscription);
+      commit.setAccountPoolsUpdates(subscription);
+    } catch (error) {
+      console.warn('[demeterFarming] subscribeOnAccountPools skipped', error);
+      commit.setAccountPools([]);
+    }
   },
 
   unsubscribeUpdates(context): void {

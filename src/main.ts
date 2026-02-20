@@ -8,17 +8,22 @@ import App from './App.vue';
 import i18n from './lang';
 import installPlugins from './plugins';
 import router from './router';
-import { isHeadlessOrOfflineEnv } from '@/utils/env';
+import { shouldRenderOfflineShell } from '@/utils/env';
 import { renderOfflineShell } from '@/utils/offlineShell';
+import { registerW3mMessageGuard } from '@/security/w3mMessageGuard';
 import { registerPilotFeedbackBridge, registerTelemetryStub, trackEvent } from '@/utils/telemetry';
+import { installVueErrorHandler } from '@/utils/vueErrorHandler';
 
 import './store/decorators';
 import './styles';
+
+registerW3mMessageGuard();
 
 async function bootstrapApp(): Promise<VueApp> {
   const app = createApp(App);
 
   installCompatWarningHandler(app);
+  installVueErrorHandler(app);
   app.use(store.original);
   app.use(pinia);
   app.use(router);
@@ -54,7 +59,7 @@ trackEvent('build_variant_selected', {
   timestamp: Date.now(),
 });
 
-if (isHeadlessOrOfflineEnv()) {
+if (shouldRenderOfflineShell()) {
   const rendered = renderOfflineShell();
 
   if (rendered) {
@@ -64,7 +69,8 @@ if (isHeadlessOrOfflineEnv()) {
   }
 } else {
   bootstrapApp()
-    .then((app) => {
+    .then(async (app) => {
+      await router.isReady();
       app.mount('#app');
     })
     .catch((error) => {

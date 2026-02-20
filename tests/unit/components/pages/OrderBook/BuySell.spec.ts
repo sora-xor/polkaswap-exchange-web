@@ -563,4 +563,15 @@ describe('BuySell.vue', () => {
 
     expect(transaction.withNotifications).toHaveBeenCalledTimes(1);
   });
+
+  it('does not throw on unmount when XOR asset is unavailable', async () => {
+    const previousXor = assetsStoreStub.xor;
+    assetsStoreStub.xor = null as unknown as AccountAsset;
+
+    const { wrapper } = await mountComponent();
+
+    expect(() => wrapper.unmount()).not.toThrow();
+
+    assetsStoreStub.xor = previousXor;
+  });
 });

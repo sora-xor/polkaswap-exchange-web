@@ -171,4 +171,27 @@ describe('ethers-util memoization and TTL', () => {
     expect(d1).toBe(18);
     expect(d2).toBe(18);
   });
+
+  it('disconnectEvmProvider swallows synchronous provider disconnect errors', () => {
+    const disconnect = vi.fn(() => {
+      throw new Error('Please call connect() before enable()');
+    });
+    const rawProvider = { ...testProvider, disconnect } as any;
+    (ethersUtil as any).__setTestEthersProvider(testProvider, rawProvider);
+
+    expect(() => (ethersUtil as any).disconnectEvmProvider()).not.toThrow();
+    expect(disconnect).toHaveBeenCalledTimes(1);
+  });
+
+  it('disconnectEvmProvider swallows async provider disconnect rejections', async () => {
+    const disconnect = vi.fn(async () => {
+      throw new Error('Please call connect() before enable()');
+    });
+    const rawProvider = { ...testProvider, disconnect } as any;
+    (ethersUtil as any).__setTestEthersProvider(testProvider, rawProvider);
+
+    expect(() => (ethersUtil as any).disconnectEvmProvider()).not.toThrow();
+    await Promise.resolve();
+    expect(disconnect).toHaveBeenCalledTimes(1);
+  });
 });

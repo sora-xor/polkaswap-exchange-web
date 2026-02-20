@@ -104,7 +104,7 @@ import { computed, ref } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { PoolPageNames } from '@/modules/pool/consts';
-import { poolLazyView } from '@/modules/pool/router';
+import { poolLazyViewComponent } from '@/modules/pool/router';
 import { lazyComponent } from '@/router';
 import { sortAssets } from '@/utils';
 
@@ -128,7 +128,7 @@ const props = defineProps({
 defineOptions({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    PoolBase: poolLazyView(PoolPageNames.Pool),
+    PoolBase: poolLazyViewComponent(PoolPageNames.Pool),
     PoolCard: demeterStakingLazyComponent(DemeterStakingComponents.PoolCard),
     DemeterStatusBadge: demeterStakingLazyComponent(DemeterStakingComponents.StatusBadge),
     SoraStatusBadge: soraStakingLazyComponent(SoraStakingComponents.StatusBadge),

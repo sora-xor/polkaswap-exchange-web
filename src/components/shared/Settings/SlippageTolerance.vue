@@ -11,7 +11,11 @@
         </template>
         <div :class="slippageToleranceClasses">
           <div class="slippage-tolerance-default">
-            <settings-tabs :value="slippageTolerance" :tabs="slippageToleranceTabs" @input="selectTab"></settings-tabs>
+            <settings-tabs
+              :value="selectedSlippageTab"
+              :tabs="slippageToleranceTabs"
+              @input="selectTab"
+            ></settings-tabs>
           </div>
           <div class="slippage-tolerance-custom">
             <s-float-input
@@ -47,6 +51,8 @@ import store from '@/store';
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
 import { useTranslation } from '@/composables/useTranslation';
 import type { TabItem } from '@/types/tabs';
+
+import { DEFAULT_SLIPPAGE_TABS_LIST, getTabName } from './useSlippageToleranceModel';
 
 defineOptions({
   name: 'SlippageTolerance',
@@ -84,11 +90,16 @@ const transactionDeadline = computed({
 });
 
 const slippageToleranceTabs = computed<TabItem[]>(() =>
-  ['0.1', '0.5', '1'].map((name) => ({
-    name,
-    label: `${formatStringValue(name)}%`,
+  DEFAULT_SLIPPAGE_TABS_LIST.map((value) => ({
+    name: getTabName(value),
+    label: `${formatStringValue(value)}%`,
   }))
 );
+
+const selectedSlippageTab = computed(() => {
+  const match = DEFAULT_SLIPPAGE_TABS_LIST.find((value) => value === slippageTolerance.value);
+  return match ? getTabName(match) : '';
+});
 
 const localeFormattedSlippageTolerance = computed(() => `${formatStringValue(slippageTolerance.value)}%`);
 
@@ -141,7 +152,10 @@ const slippageToleranceClasses = computed(() => {
 const computedClasses = computed(() => (slippageToleranceOpened.value ? 'is-collapsed' : ''));
 
 function selectTab(name: string): void {
-  slippageTolerance.value = name;
+  const match = DEFAULT_SLIPPAGE_TABS_LIST.find((value) => getTabName(value) === name);
+  if (match) {
+    slippageTolerance.value = match;
+  }
 }
 
 function prepareInputValue(value: string): string {

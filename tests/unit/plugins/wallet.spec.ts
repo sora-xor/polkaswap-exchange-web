@@ -1,6 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@wallet/lib/soraneo-wallet-web.css', () => ({}), { virtual: true });
 vi.mock(
   'base-64',
   () => ({
@@ -78,5 +77,19 @@ describe('wallet plugin', () => {
     expect(app.use).toHaveBeenCalledWith(walletPlugin, expect.objectContaining({ store: expect.any(Object) }));
     expect(app.component).toHaveBeenCalledWith('DialogBase', dialogBaseComponent);
     expect(app.component).toHaveBeenCalledWith('dialog-base', dialogBaseComponent);
+  });
+
+  it('uses the provided store in plugin options', async () => {
+    const app: any = {
+      use: vi.fn(),
+      component: vi.fn(),
+    };
+    const explicitStore = { commit: { wallet: {} } };
+
+    const { install } = await import('@/plugins/wallet');
+
+    await install(app, { store: explicitStore, pinia: {} as any });
+
+    expect(app.use).toHaveBeenCalledWith(walletPlugin, expect.objectContaining({ store: explicitStore }));
   });
 });

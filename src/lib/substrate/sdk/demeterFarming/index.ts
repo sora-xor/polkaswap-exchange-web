@@ -1,4 +1,4 @@
-import { map, combineLatest } from 'rxjs';
+import { map, combineLatest, of } from 'rxjs';
 import { assert } from '@polkadot/util';
 import { FPNumber } from '@sora-substrate/math';
 import type { Observable } from '@polkadot/types/types';
@@ -25,7 +25,11 @@ export class DemeterFarmingModule<T> {
    * @returns Observable list of pools
    */
   public getPoolsByAssetsObservable(poolAsset: string, rewardAsset: string): Observable<DemeterPool[]> {
-    return this.root.apiRx.query.demeterFarmingPlatform.pools(poolAsset, rewardAsset).pipe(
+    const poolsQuery = this.root.connection?.api?.rx?.query?.demeterFarmingPlatform?.pools;
+
+    if (!poolsQuery) return of([]);
+
+    return poolsQuery(poolAsset, rewardAsset).pipe(
       map((poolDataVec) => {
         return poolDataVec.map((poolData) => ({
           baseAsset: toAssetId(poolData.baseAsset),
@@ -55,9 +59,13 @@ export class DemeterFarmingModule<T> {
     // entries, keys and keyPrefix methods should have the same params DoubleMap has minus last parameter.
     // But it's technically possible to use these methods without params.
     // Polkadot has done it mostly to avoid performance-based issues so we need to ignore that
-    const storageKeys: StorageKey<[CommonPrimitivesAssetId32, CommonPrimitivesAssetId32]>[] = await (
-      this.root.api.query.demeterFarmingPlatform.pools.keys as any
-    )();
+    const poolsKeysQuery = this.root.connection?.api?.query?.demeterFarmingPlatform?.pools?.keys as
+      | (() => Promise<StorageKey<[CommonPrimitivesAssetId32, CommonPrimitivesAssetId32]>[]>)
+      | undefined;
+
+    if (typeof poolsKeysQuery !== 'function') return null;
+
+    const storageKeys = await poolsKeysQuery();
 
     if (!storageKeys.length) return null;
 
@@ -83,7 +91,21 @@ export class DemeterFarmingModule<T> {
    * @returns Observable token info
    */
   public getTokenInfoObservable(assetId: string): Observable<DemeterRewardToken> {
-    return this.root.apiRx.query.demeterFarmingPlatform.tokenInfos(assetId).pipe(
+    const tokenInfosQuery = this.root.connection?.api?.rx?.query?.demeterFarmingPlatform?.tokenInfos;
+
+    if (!tokenInfosQuery) {
+      return of({
+        assetId,
+        tokenPerBlock: FPNumber.ZERO,
+        farmsTotalMultiplier: 0,
+        stakingTotalMultiplier: 0,
+        farmsAllocation: FPNumber.ZERO,
+        stakingAllocation: FPNumber.ZERO,
+        teamAllocation: FPNumber.ZERO,
+      });
+    }
+
+    return tokenInfosQuery(assetId).pipe(
       map((tokenInfo) => {
         const data = tokenInfo.unwrap();
 
@@ -105,7 +127,13 @@ export class DemeterFarmingModule<T> {
    * @returns Observable list of token infos
    */
   public async getTokenInfosObservable(): Promise<Observable<DemeterRewardToken[]> | null> {
-    const storageKeys = await this.root.api.query.demeterFarmingPlatform.tokenInfos.keys();
+    const tokenInfosKeysQuery = this.root.connection?.api?.query?.demeterFarmingPlatform?.tokenInfos?.keys as
+      | (() => Promise<StorageKey<[CommonPrimitivesAssetId32]>[]>)
+      | undefined;
+
+    if (typeof tokenInfosKeysQuery !== 'function') return null;
+
+    const storageKeys = await tokenInfosKeysQuery();
 
     if (!storageKeys.length) return null;
 

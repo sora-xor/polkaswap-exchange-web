@@ -39,7 +39,9 @@ const accessLegacyStore = <T>(getter: (store: ReturnType<typeof requireLegacySto
   }
 
   try {
-    return getter(legacyStore);
+    // Legacy Vuex getters may temporarily resolve to `undefined` during boot.
+    // Preserve explicit falsy values (false/0/'') while falling back on nullish.
+    return (getter(legacyStore) ?? fallback) as T;
   } catch (error) {
     return fallback;
   }

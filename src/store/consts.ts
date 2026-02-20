@@ -18,7 +18,6 @@ export enum Module {
   Rewards = 'rewards',
   Staking = 'staking',
   DemeterFarming = 'demeterFarming',
-  SoraCard = 'soraCard',
   OrderBook = 'orderBook',
   Dashboard = 'dashboard',
   Vault = 'vault',

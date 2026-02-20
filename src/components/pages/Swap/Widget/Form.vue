@@ -240,7 +240,8 @@ const {
 
 const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject);
 const networkFee = computed(() => networkFees.value[Operation.Swap]);
-const slippageTolerance = computed(() => store.state.settings.slippageTolerance);
+// Avoid name collision with the <slippage-tolerance> component tag in the template.
+const slippageToleranceValue = computed(() => store.state.settings.slippageTolerance);
 const xor = computed(() => assetsStore.assetDataByAddress(XOR.address) as AccountAsset);
 const liquiditySource = computed(() => swapStore.swapLiquiditySource);
 const debugEnabled = computed(() => store.getters.settings.debugEnabled);
@@ -494,7 +495,7 @@ async function exchangeTokens() {
       tokenTo.value as AccountAsset,
       fromValue.value,
       toValue.value,
-      slippageTolerance.value,
+      slippageToleranceValue.value,
       isExchangeB.value,
       liquiditySource.value as LiquiditySourceTypes,
       selectedDexId.value
@@ -555,7 +556,11 @@ watch(nodeIsConnected, (connected) => {
 
 onMounted(async () => {
   await withApi(async () => {
-    await api.swap.update();
+    try {
+      await api.swap.update();
+    } catch (error) {
+      console.warn('[swap] api.swap.update skipped', error);
+    }
     enableSwapSubscriptions();
   });
 });

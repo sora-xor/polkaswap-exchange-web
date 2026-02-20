@@ -229,7 +229,11 @@ const handleCloseVault = async () => {
 };
 
 const openSwap = () => {
-  window.open(swapLink, '_blank');
+  const win = window.open(swapLink, '_blank', 'noopener,noreferrer');
+  if (win) {
+    win.opener = null;
+    win.focus();
+  }
 };
 
 defineExpose({

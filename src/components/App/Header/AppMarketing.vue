@@ -11,7 +11,7 @@
             rel="nofollow noopener"
             :target="getTarget(ad.link)"
             :style="getStyles(ad)"
-            :href="ad.link"
+            :href="getHref(ad.link)"
           >
             <span class="marketing-text">
               {{ ad.title }}
@@ -33,6 +33,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import store from '@/store';
+import { isInternalHashHref, normalizeHashHref } from '@/utils/hashHref';
 
 import type { Ad } from '@/store/settings/types';
 
@@ -47,7 +48,11 @@ const transitionName = ref<'slide' | 'slideback'>('slide');
 let interval: Nullable<NodeJS.Timeout> = null;
 
 function getTarget(link: string): '_self' | '_blank' {
-  return link.startsWith('/#/') ? '_self' : '_blank';
+  return isInternalHashHref(link) ? '_self' : '_blank';
+}
+
+function getHref(link: string): string {
+  return normalizeHashHref(link);
 }
 
 function getStyles(ad: Ad): Record<string, string> {

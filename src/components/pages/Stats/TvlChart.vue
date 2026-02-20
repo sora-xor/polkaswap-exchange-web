@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@wallet';
 import { graphic } from 'echarts';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
@@ -66,7 +66,7 @@ const settingsStore = useSettingsStore();
 const { exchangeRate, currencySymbol } = storeToRefs(settingsStore);
 const parentLoading = computed(() => props.parentLoading);
 const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
-const { t } = useTranslation();
+const { t, TranslationConsts } = useTranslation();
 const { gridSpec, xAxisSpec, yAxisSpec, tooltipSpec, lineSeriesSpec } = useChartSpec();
 
 const chart = ref<Nullable<unknown>>(null);

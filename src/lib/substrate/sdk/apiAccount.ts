@@ -278,7 +278,13 @@ export class WithKeyring extends WithAccountPair {
   public async initKeyring(silent = false): Promise<void> {
     keyring = new Keyring();
 
-    await cryptoWaitReady();
+    try {
+      await cryptoWaitReady();
+    } catch (error) {
+      // Some gateways enforce CSP policies that block WASM initialization.
+      // Continue with JS crypto fallback instead of crashing wallet bootstrap.
+      console.warn('[wallet] WASM crypto initialization failed. Falling back to JS crypto.', error);
+    }
 
     try {
       // Restore accounts from keyring storage (localStorage)

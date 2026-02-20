@@ -16,6 +16,21 @@ export function getEnvConfigFilename(isDevMode: boolean = Boolean((import.meta a
 }
 
 /**
+ * Returns environment configuration candidates in lookup order.
+ *
+ * In development builds we first try `env.dev.json`, then gracefully fall back
+ * to `env.json` so local/testing contexts do not hard-fail when only the
+ * production config is present under an IPFS path.
+ */
+export function getEnvConfigCandidates(isDevMode: boolean = Boolean((import.meta as any)?.env?.DEV)): string[] {
+  const primary = getEnvConfigFilename(isDevMode);
+  if (primary === PROD_ENV_CONFIG_FILENAME) {
+    return [primary];
+  }
+  return [primary, PROD_ENV_CONFIG_FILENAME];
+}
+
+/**
  * Normalizes static asset paths so that they resolve correctly when the
  * application is hosted from a non-root base path (e.g. on IPFS gateways).
  *

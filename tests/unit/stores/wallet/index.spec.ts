@@ -154,6 +154,16 @@ describe('wallet store actions', () => {
     setLegacyStoreOverride(legacyStore as any);
   });
 
+  it('falls back when legacy getters return undefined during boot', async () => {
+    const legacyStore = (await import('@/store')).default as any;
+    const previous = legacyStore.getters.wallet.account.assetsDataTable;
+    legacyStore.getters.wallet.account.assetsDataTable = undefined;
+
+    expect(useWalletStore().assetsDataTable).toEqual({});
+
+    legacyStore.getters.wallet.account.assetsDataTable = previous;
+  });
+
   it('exposes wallet visibility flag and transaction helpers', async () => {
     const walletStore = useWalletStore();
     expect(walletStore.shouldBalanceBeHidden).toBe(false);

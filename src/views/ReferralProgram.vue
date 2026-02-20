@@ -179,7 +179,8 @@ import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
-import router, { lazyView } from '@/router';
+import router from '@/router';
+import { createAsyncComponent } from '@/router/lazy';
 import store from '@/store';
 import type { Nullable } from '@/types/common';
 import { formatAddress } from '@/utils';
@@ -194,7 +195,7 @@ defineOptions({
     FormattedAmount: components.FormattedAmount,
     FormattedAddress: components.FormattedAddress,
     InfoLine: components.InfoLine,
-    ReferralBonding: lazyView(PageNames.ReferralBonding),
+    ReferralBonding: createAsyncComponent(() => import('@/views/ReferralBonding.vue')),
     WalletAvatar: components.WalletAvatar,
     TokenLogo: components.TokenLogo,
   },

@@ -119,7 +119,15 @@ async function connectEvmProvider(appEvmProvider: AppEIPProvider, chainsProps: C
 function disconnectEvmProvider(appEvmProvider?: Nullable<AppEIPProvider>): void {
   // don't wait promise execution, that's for wallets lifecycle
   revokeWalletAccounts();
-  ethereumProvider?.disconnect?.();
+  try {
+    const result = ethereumProvider?.disconnect?.();
+
+    if (result && typeof result.then === 'function') {
+      void result.catch(() => undefined);
+    }
+  } catch {
+    // WalletConnect may throw when disconnect is called before session connect.
+  }
 }
 
 function createWeb3Instance(provider: any) {

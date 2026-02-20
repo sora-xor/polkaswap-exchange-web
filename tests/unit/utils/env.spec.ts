@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { isHeadlessOrOfflineEnv } from '@/utils/env';
+import { shouldRenderOfflineShell } from '@/utils/env';
 
 describe('utils/env', () => {
   const overrideNavigator = (patch: Partial<Navigator>) => {
@@ -22,7 +22,7 @@ describe('utils/env', () => {
   it('returns true when navigator reports offline', () => {
     const restore = overrideNavigator({ onLine: false } as Partial<Navigator>);
     try {
-      expect(isHeadlessOrOfflineEnv()).toBe(true);
+      expect(shouldRenderOfflineShell()).toBe(true);
     } finally {
       restore();
     }
@@ -35,7 +35,7 @@ describe('utils/env', () => {
     } as Window;
 
     try {
-      expect(isHeadlessOrOfflineEnv()).toBe(true);
+      expect(shouldRenderOfflineShell()).toBe(true);
     } finally {
       if (originalWindow) {
         (globalThis as Record<string, unknown>).window = originalWindow;
@@ -45,23 +45,23 @@ describe('utils/env', () => {
     }
   });
 
-  it('returns true for headless/electron user agents', () => {
+  it('returns false for headless/electron user agents', () => {
     const restore = overrideNavigator({ onLine: true, userAgent: 'Mozilla/5.0 Electron/28.0.0' } as Partial<Navigator>);
     try {
-      expect(isHeadlessOrOfflineEnv()).toBe(true);
+      expect(shouldRenderOfflineShell()).toBe(false);
     } finally {
       restore();
     }
   });
 
-  it('returns true when webdriver automation flag is present', () => {
+  it('returns false when webdriver automation flag is present', () => {
     const restore = overrideNavigator({
       onLine: true,
       userAgent: 'Mozilla/5.0 Chrome/123.0.0',
       webdriver: true,
     } as Partial<Navigator>);
     try {
-      expect(isHeadlessOrOfflineEnv()).toBe(true);
+      expect(shouldRenderOfflineShell()).toBe(false);
     } finally {
       restore();
     }
@@ -70,7 +70,7 @@ describe('utils/env', () => {
   it('returns false for regular online browsers', () => {
     const restore = overrideNavigator({ onLine: true, userAgent: 'Mozilla/5.0 Chrome/123.0.0' } as Partial<Navigator>);
     try {
-      expect(isHeadlessOrOfflineEnv()).toBe(false);
+      expect(shouldRenderOfflineShell()).toBe(false);
     } finally {
       restore();
     }

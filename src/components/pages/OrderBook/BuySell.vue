@@ -875,7 +875,7 @@ onBeforeUnmount(() => {
     setTokenFromAddress(prevSwapFromAddress.value);
     setTokenToAddress(prevSwapToAddress.value);
   } else {
-    setTokenFromAddress(xor.value.address);
+    setTokenFromAddress(xor.value?.address ?? '');
     resetTokenToAddress();
   }
 

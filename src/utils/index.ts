@@ -271,9 +271,13 @@ export const updateDocumentTitle = (to?: RouteLike) => {
   const page = to ?? documentTitleRouteResolver?.();
   const pageName = typeof page?.name === 'string' ? page.name : undefined;
   const pageTitleKey = `pageTitle.${pageName}`;
+  const composer = ((i18n as any)?.global ?? i18n) as any;
+  const te = typeof composer?.te === 'function' ? (composer.te as (key: string) => boolean).bind(composer) : null;
+  const t =
+    typeof composer?.t === 'function' ? (composer.t as (key: string, ...args: any[]) => unknown).bind(composer) : null;
   // TODO: update pageTitle list: remove duplicates, add missed / change logic
-  if (pageName && i18n.te(pageTitleKey)) {
-    const pageTitleValue = i18n.t(pageTitleKey, TranslationConsts) as string;
+  if (pageName && te?.(pageTitleKey) && t) {
+    const pageTitleValue = t(pageTitleKey, TranslationConsts) as string;
     document.title = `${pageTitleValue} - ${app.name}`;
   } else {
     document.title = app.title;

@@ -15,7 +15,6 @@ import removeLiquidity from './removeLiquidity';
 import rewards from './rewards';
 import router from './router';
 import settings from './settings';
-import soraCard from './soraCard';
 import staking from './staking';
 import vault from './vault';
 import web3 from './web3';
@@ -26,6 +25,8 @@ const modules = {
   router,
   web3,
   assets,
+  settings,
+  wallet: walletModule,
   referrals,
   pool,
   moonpay,
@@ -35,7 +36,6 @@ const modules = {
   rewards,
   staking,
   demeterFarming,
-  soraCard,
   orderBook,
   dashboard,
   vault,
@@ -45,10 +45,6 @@ const { store, rootGetterContext, rootActionContext } = createDirectStore({
   modules,
   strict: false,
 });
-
-// Register wallet module after the store instance exists to avoid circular init issues.
-store.original.registerModule('wallet', walletModule as any);
-store.original.registerModule('settings', settings as any);
 
 setStoreContext(rootActionContext, rootGetterContext);
 setLegacyStore(store);

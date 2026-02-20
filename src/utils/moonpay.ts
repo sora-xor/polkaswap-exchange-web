@@ -3,6 +3,48 @@ import { api, WALLET_CONSTS } from '@wallet';
 import axios from '@/api';
 import { toQueryString } from '@/utils';
 
+export const MOONPAY_WIDGET_ORIGINS = ['https://buy.moonpay.com', 'https://buy-staging.moonpay.com'] as const;
+
+type MoonpayWidgetOrigin = (typeof MOONPAY_WIDGET_ORIGINS)[number];
+
+const isMoonpayWidgetOrigin = (origin: string): origin is MoonpayWidgetOrigin => {
+  return (MOONPAY_WIDGET_ORIGINS as readonly string[]).includes(origin);
+};
+
+/**
+ * Builds a safe MoonPay transaction details widget URL by validating the `returnUrl`
+ * origin and protocol before adding query parameters.
+ *
+ * @returns A fully qualified URL string, or an empty string when `returnUrl` is invalid/untrusted.
+ */
+export function buildMoonpayTransactionDetailsUrl(args: {
+  returnUrl: string;
+  transactionId: string;
+  language: string;
+  colorCode: string;
+}): string {
+  const { returnUrl, transactionId, language, colorCode } = args;
+
+  if (!returnUrl || !transactionId) return '';
+
+  let url: URL;
+
+  try {
+    url = new URL(returnUrl);
+  } catch {
+    return '';
+  }
+
+  if (url.protocol !== 'https:') return '';
+  if (!isMoonpayWidgetOrigin(url.origin)) return '';
+
+  url.searchParams.set('colorCode', colorCode);
+  url.searchParams.set('language', language);
+  url.searchParams.set('transactionId', transactionId);
+
+  return url.toString();
+}
+
 export interface MoonpayEVMTransferAssetData {
   amount: string;
   address: string; // asset address
@@ -42,9 +84,9 @@ export class MoonpayApi {
 
   public static getWidgetBaseUrl(soraNetwork: string): string {
     if (soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
-      return 'https://buy.moonpay.com';
+      return MOONPAY_WIDGET_ORIGINS[0];
     }
-    return 'https://buy-staging.moonpay.com';
+    return MOONPAY_WIDGET_ORIGINS[1];
   }
 
   get requiredParams() {

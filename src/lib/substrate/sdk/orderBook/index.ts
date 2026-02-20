@@ -69,7 +69,13 @@ export class OrderBookModule<T> {
    * Get order books object `Record<serializedKey, OrderBook>`
    */
   public async getOrderBooks(): Promise<Record<string, OrderBook>> {
-    const entries = await this.root.api.query.orderBook.orderBooks.entries();
+    const orderBooksEntries = this.root.connection?.api?.query?.orderBook?.orderBooks?.entries;
+
+    if (typeof orderBooksEntries !== 'function') {
+      return {};
+    }
+
+    const entries = await orderBooksEntries();
 
     const orderBooks = entries.reduce<Record<string, OrderBook>>((buffer, [_, value]) => {
       const book = formatOrderBookOption(value);
@@ -91,7 +97,13 @@ export class OrderBookModule<T> {
    * @param account account address
    */
   public async getUserOrderBooks(account: string): Promise<string[]> {
-    const entries = await this.root.api.query.orderBook.userLimitOrders.entries(account);
+    const userLimitOrdersEntries = this.root.connection?.api?.query?.orderBook?.userLimitOrders?.entries;
+
+    if (typeof userLimitOrdersEntries !== 'function') {
+      return [];
+    }
+
+    const entries = await userLimitOrdersEntries(account);
 
     return entries.map(([key, _]) => {
       const { base, quote } = key.args[1];

@@ -193,6 +193,7 @@ const operations = [Operation.Swap];
 const fromTimestamp = dayjs().subtract(1, 'week').startOf('day').unix();
 
 let indexerLoadingRef: Nullable<Ref<boolean>> = null;
+let parseHistoryWarningShown = false;
 
 const {
   selectedToken,
@@ -232,7 +233,17 @@ const requestHistoryData = async (variables: FetchVariables): Promise<{ items: H
   const parsedItems: HistoryItem[] = [];
 
   for (const node of nodes) {
-    const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(node);
+    let historyItem: Nullable<HistoryItem> = null;
+
+    try {
+      historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(node);
+    } catch (error) {
+      if (!parseHistoryWarningShown) {
+        parseHistoryWarningShown = true;
+        console.warn('[swap-transactions] failed to parse one or more history items', error);
+      }
+      continue;
+    }
 
     if (historyItem) {
       parsedItems.push(historyItem);

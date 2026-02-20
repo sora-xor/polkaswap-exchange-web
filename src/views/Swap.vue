@@ -204,18 +204,24 @@ const labels = computed(() => {
 
 const pageLoading = computed(() => loading.value);
 
-await withApi(async () => {
-  parseCurrentRoute();
+const initializeSwapPage = async (): Promise<void> => {
+  await withApi(async () => {
+    parseCurrentRoute();
 
-  if (tokenFrom.value && tokenTo.value && prevRoute.value !== PageNames.OrderBook) {
-    updateRouteAfterSelectTokens(tokenFrom.value as AccountAsset, tokenTo.value as AccountAsset);
-  } else if (isValidRoute.value && firstRouteAddress.value && secondRouteAddress.value) {
-    await setTokenFromAddress(firstRouteAddress.value);
-    await setTokenToAddress(secondRouteAddress.value);
-  } else if (!tokenFrom.value) {
-    await setTokenFromAddress(XOR.address);
-    await setTokenToAddress('');
-  }
+    if (tokenFrom.value && tokenTo.value && prevRoute.value !== PageNames.OrderBook) {
+      updateRouteAfterSelectTokens(tokenFrom.value as AccountAsset, tokenTo.value as AccountAsset);
+    } else if (isValidRoute.value && firstRouteAddress.value && secondRouteAddress.value) {
+      await setTokenFromAddress(firstRouteAddress.value);
+      await setTokenToAddress(secondRouteAddress.value);
+    } else if (!tokenFrom.value) {
+      await setTokenFromAddress(XOR.address);
+      await setTokenToAddress('');
+    }
+  });
+};
+
+void initializeSwapPage().catch((error) => {
+  console.error('[swap] failed to initialize route tokens', error);
 });
 </script>
 
