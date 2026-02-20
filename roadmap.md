@@ -3,6 +3,7 @@
 ## Status Snapshot
 
 All migration workstreams are complete; the sections below capture completion outcomes and the post-release maintenance posture.
+Latest stabilization pass (2026-02-16) completed listener-forwarding cleanup, compat tooling hardening, translation parity fixes, and Vue 3 smoke verification.
 
 ## Migration Workstreams
 
@@ -501,3 +502,9 @@ Retrospective held in Week 9; notes and action items are published in Confluence
 - [x] Kick off pilot cohort planning meeting and populate Pilot Rollout Tracker with scope details and success metrics (`docs/plans/pilot-cohort-planning.md`).
 - [x] Schedule internal training sessions and publish agenda/materials per Change Management Activities (`docs/plans/vue3-internal-training.md`).
 - [x] Review stakeholder engagement effectiveness at next program manager sync and adjust strategies if needed (see Stakeholder Engagement Notes).
+- [x] Remove legacy `$listeners` forwarding from remaining container views (`src/views/Explore/Container.vue`, `src/views/StakingContainer.vue`, `src/modules/staking/demeter/views/DataContainer.vue`) to align with Vue 3 event forwarding semantics.
+- [x] Update compat smoke tooling for Vitest 4 CLI compatibility in `scripts/analyze/compat-smoke.ts` and add coverage for argument construction (`tests/unit/scripts/analyze/compat-smoke.spec.ts`).
+- [x] Tighten compat alias analysis in `scripts/analyze/compat-alias.ts` to suppress bootstrap false positives while still flagging migration regressions; covered by `tests/unit/scripts/analyze/compat-alias.spec.ts`.
+- [x] Expand regression coverage for migrated containers and dialog rendering (`tests/unit/views/StakingContainer.spec.ts`, `tests/unit/modules/staking/demeter/views/DataContainer.spec.ts`, `tests/unit/views/ExploreContainer.spec.ts`, `tests/unit/components/pages/PointSystem/TaskDialog.spec.ts`).
+- [x] Regenerate and sync locale catalogs after `sccp.*` key drift, then re-verify with `yarn test:translation` (`src/lang/en.json` plus mirrored locale catalogs).
+- [x] Re-run Vue 3 validation suite: `yarn build:vue3`, `yarn test:unit`, `yarn test:translation`, `yarn analyze:compat`, `yarn compat:smoke --skip-bundle-report`, and Playwright UI smoke (`tests/e2e/ui/app.spec.ts`, `tests/e2e/ui/navigation.spec.ts`).

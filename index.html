@@ -5,6 +5,10 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' https://telegram.org https://apis.google.com https://accounts.google.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: wss: ws:; frame-src 'self' https://buy.moonpay.com https://buy-staging.moonpay.com https://secure.walletconnect.org https://secure.walletconnect.com https://accounts.google.com https://www.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'"
+    />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <title>Polkaswap — The DEX for the Interoperable Future.</title>
     <meta name="title" property="title" content="Polkaswap — The DEX for the Interoperable Future." />
@@ -39,47 +43,6 @@
     <meta property="og:image:secure_url" content="https://polkaswap.io/polkaswap-share-image.jpg" />
     <meta property="og:image:width" content="1280" />
     <meta property="og:image:height" content="630" />
-    <script>
-      (function (global) {
-        if (typeof global._s !== 'function') {
-          global._s = function (value) {
-            return value == null ? '' : String(value);
-          };
-        }
-        if (typeof global._n !== 'function') {
-          global._n = function (value) {
-            var number = Number(value);
-            return Number.isNaN(number) ? 0 : number;
-          };
-        }
-        if (typeof global._q !== 'function') {
-          global._q = function (a, b) {
-            if (a === b) return true;
-            if (typeof a !== typeof b) return false;
-            if (typeof a === 'object' && a && b) {
-              var aKeys = Object.keys(a);
-              var bKeys = Object.keys(b);
-              if (aKeys.length !== bKeys.length) return false;
-              for (var i = 0; i < aKeys.length; i += 1) {
-                var key = aKeys[i];
-                if (!global._q(a[key], b[key])) return false;
-              }
-              return true;
-            }
-            return String(a) === String(b);
-          };
-        }
-        if (typeof global._i !== 'function') {
-          global._i = function (arr, value) {
-            if (!Array.isArray(arr)) return -1;
-            for (var i = 0; i < arr.length; i += 1) {
-              if (global._q(arr[i], value)) return i;
-            }
-            return -1;
-          };
-        }
-      })(typeof window !== 'undefined' ? window : globalThis);
-    </script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
   </head>
   <body>

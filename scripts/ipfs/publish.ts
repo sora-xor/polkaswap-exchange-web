@@ -339,6 +339,25 @@ export function swapEnvConfigForTestnet(
   fsDeps.writeFileSync(prodConfigPath, testnetConfig);
 }
 
+/**
+ * Replaces the production environment configuration in a built asset directory
+ * with the canonical root-level production config file.
+ */
+export function swapEnvConfigForProduction(
+  distPath: string,
+  sourceConfigPath: string = join(process.cwd(), PROD_ENV_CONFIG_FILENAME),
+  fsDeps: SwapEnvFsDeps = { existsSync, readFileSync, writeFileSync }
+): void {
+  const prodConfigPath = join(distPath, PROD_ENV_CONFIG_FILENAME);
+
+  if (!fsDeps.existsSync(sourceConfigPath)) {
+    throw new Error(`Missing production environment configuration at ${sourceConfigPath}`);
+  }
+
+  const prodConfig = fsDeps.readFileSync(sourceConfigPath, 'utf-8');
+  fsDeps.writeFileSync(prodConfigPath, prodConfig);
+}
+
 function createTestnetDistClone(): { distPath: string; cleanup: () => void } {
   const tmpRoot = mkdtempSync(join(tmpdir(), 'polkaswap-ipfs-testnet-'));
   const targetDist = join(tmpRoot, 'dist');
@@ -388,6 +407,7 @@ function main(): void {
   runCommand('yarn', ['build', '--base', './']);
 
   ensureDistDirectory();
+  swapEnvConfigForProduction(DIST_DIR);
 
   console.log('Publishing production `dist/` to IPFS...');
   const productionCid = publishDirectoryToIpfs(DIST_DIR);

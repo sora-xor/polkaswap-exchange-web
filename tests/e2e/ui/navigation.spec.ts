@@ -3,6 +3,20 @@ import { expect, test, type Page } from '@playwright/test';
 import { ensureAppLoaded, expectHash, ipfsEntryUrl, preparePage, trackConsole } from './support/ipfs';
 
 const longTimeout = 15_000;
+const corruptionPatterns = [
+  /\[object Promise\]/i,
+  /\bNaN\b/,
+  /draggable element must have an item slot/i,
+  /Cannot read properties of undefined \(reading '\$refs'\)/i,
+  /Cannot read properties of null \(reading 'query'\)/i,
+];
+
+const expectNoCorruptedUiText = async (page: Page): Promise<void> => {
+  const bodyText = await page.locator('body').innerText();
+  for (const pattern of corruptionPatterns) {
+    expect(bodyText).not.toMatch(pattern);
+  }
+};
 
 const openSwap = async (page: Page): Promise<void> => {
   await page.goto(`${ipfsEntryUrl}#/swap`);
@@ -19,13 +33,25 @@ test('supports sidebar navigation across major routes', async ({ page }) => {
   await openSwap(page);
 
   const menu = page.locator('.app-menu');
-  const navTargets = ['Swap', 'Bridge', 'Account', 'Kensetsu', 'Explore', 'Statistics'];
+  const navTargets = [
+    'Swap',
+    'Trade',
+    'Rewards',
+    'Pool',
+    'Staking',
+    'Bridge',
+    'Account',
+    'Kensetsu',
+    'Explore',
+    'Statistics',
+  ];
 
   for (const label of navTargets) {
     const link = menu.getByRole('link', { name: label, exact: true }).first();
     await expect(link).toBeVisible();
     await link.click();
     await page.waitForTimeout(200);
+    await expectNoCorruptedUiText(page);
   }
 
   expect(consoleErrors).toEqual([]);

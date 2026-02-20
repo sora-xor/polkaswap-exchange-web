@@ -84,11 +84,61 @@ describe('check-browser helpers', () => {
   it('filters informational console noise', () => {
     const messages = [
       { level: 'log', message: 'info' },
+      { level: 'warning', message: 'just a warning' },
+      { level: 'debug', message: '[telemetry] build_variant_selected' },
       { level: 'error', message: 'Cannot redefine property: $route' },
       { level: 'error', message: 'Critical failure' },
     ];
     const filtered = checkBrowser.filterConsoleMessages(messages);
     expect(filtered).toEqual([{ level: 'error', message: 'Critical failure' }]);
+  });
+
+  it('ignores optional endpoint CORS/load console errors', () => {
+    const messages = [
+      {
+        level: 'error',
+        message:
+          "Access to fetch at 'https://api.coingecko.com/api/v3/simple/price?ids=dai' has been blocked by CORS policy",
+        location: { url: 'http://127.0.0.1:41733/ipfs/polkaswap-e2e/' },
+      },
+      {
+        level: 'error',
+        message: 'Failed to load resource: net::ERR_FAILED',
+        location: { url: 'https://api.coingecko.com/api/v3/simple/price?ids=dai' },
+      },
+      {
+        level: 'error',
+        message: 'Unexpected application error',
+        location: { url: 'http://127.0.0.1:41733/ipfs/polkaswap-e2e/' },
+      },
+    ];
+
+    const filtered = checkBrowser.filterConsoleMessages(messages);
+
+    expect(filtered).toEqual([
+      {
+        level: 'error',
+        message: 'Unexpected application error',
+        location: { url: 'http://127.0.0.1:41733/ipfs/polkaswap-e2e/' },
+      },
+    ]);
+  });
+
+  it('waits for content by polling selector metrics', async () => {
+    const page = {
+      $eval: vi
+        .fn()
+        .mockRejectedValueOnce(new Error('missing root'))
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce({ textLength: 10, htmlLength: 24 }),
+      waitForTimeout: vi.fn().mockResolvedValue(undefined),
+    };
+
+    const content = await checkBrowser.waitForContent(page, '#app');
+
+    expect(content).toEqual({ textLength: 10, htmlLength: 24 });
+    expect(page.$eval).toHaveBeenCalledTimes(3);
+    expect(page.waitForTimeout).toHaveBeenCalledTimes(2);
   });
 
   it('ensures screenshot directory is created recursively', async () => {
@@ -117,5 +167,75 @@ describe('check-browser helpers', () => {
     expect(checkBrowser.resolveScreenshotPath({})).toBe('/tmp/default.png');
 
     delete process.env.IPFS_CHECK_SCREENSHOT;
+  });
+
+  it('derives content metrics from DOM snapshot fallback', () => {
+    const metrics = checkBrowser.inferContentMetricsFromSnapshot(
+      '<div id="app"><span>Hello</span><button>Connect</button></div>'
+    );
+
+    expect(metrics).toMatchObject({
+      htmlLength: expect.any(Number),
+      textLength: expect.any(Number),
+    });
+    expect(metrics.textLength).toBeGreaterThan(0);
+  });
+
+  it('returns null metrics for empty snapshots', () => {
+    expect(checkBrowser.inferContentMetricsFromSnapshot('   ')).toBeNull();
+    expect(checkBrowser.inferContentMetricsFromSnapshot(null)).toBeNull();
+  });
+
+  it('detects invalid [object Object] resource attributes in DOM snapshots', () => {
+    const snapshot = '<div><img src="[object Object]" /><a href="#/ok"></a><img src="/x/[object Object]" /></div>';
+    const invalid = checkBrowser.findInvalidResourceAttributes(snapshot);
+
+    expect(invalid).toEqual(['src="[object Object]"', 'src="/x/[object Object]"']);
+  });
+
+  it('detects corrupted UI text patterns from runtime output', () => {
+    const bodyText = "0.0 [object Promise] NaN Cannot read properties of undefined (reading '$refs')";
+    const corrupted = checkBrowser.findCorruptedUiPatterns(bodyText);
+
+    expect(corrupted).toEqual([
+      '/\\[object Promise\\]/i',
+      '/\\bNaN\\b/',
+      "/Cannot read properties of undefined \\(reading '\\$refs'\\)/i",
+    ]);
+  });
+
+  it('returns no corruption matches for normal content', () => {
+    const corrupted = checkBrowser.findCorruptedUiPatterns('Swap page loaded. Connect account.');
+
+    expect(corrupted).toEqual([]);
+  });
+
+  it('parses non-negative integers with safe fallback', () => {
+    expect(checkBrowser.parseNonNegativeInteger('3000', 500)).toBe(3000);
+    expect(checkBrowser.parseNonNegativeInteger(42.9, 500)).toBe(42);
+    expect(checkBrowser.parseNonNegativeInteger('-1', 500)).toBe(500);
+    expect(checkBrowser.parseNonNegativeInteger('invalid', 500)).toBe(500);
+  });
+
+  it('collects unique corruption patterns across body samples', () => {
+    const samples = ['ok', '[object Promise] NaN', "Cannot read properties of undefined (reading '$refs')", 'NaN'];
+    const collected = checkBrowser.collectCorruptedUiPatterns(samples);
+
+    expect(collected).toEqual([
+      '/\\[object Promise\\]/i',
+      '/\\bNaN\\b/',
+      "/Cannot read properties of undefined \\(reading '\\$refs'\\)/i",
+    ]);
+  });
+
+  it('ignores optional endpoint failed requests', () => {
+    const failedRequests = [
+      { url: 'https://api.coingecko.com/api/v3/simple/price?ids=dai', errorText: 'net::ERR_FAILED' },
+      { url: 'https://example.com/api/critical', status: 500 },
+    ];
+
+    const filtered = checkBrowser.filterFailedRequests(failedRequests);
+
+    expect(filtered).toEqual([{ url: 'https://example.com/api/critical', status: 500 }]);
   });
 });

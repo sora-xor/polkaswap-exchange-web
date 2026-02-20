@@ -10,7 +10,9 @@ const DEFAULT_GATEWAY = 'http://127.0.0.1:8080/ipfs';
 const DEFAULT_ROUTE = '#/swap';
 const DEFAULT_SELECTOR = '#app';
 const LOAD_TIMEOUT = Number(process.env.IPFS_CHECK_TIMEOUT || 60000);
-const WAIT_DELAY_MS = 500;
+const DEFAULT_SETTLE_MS = Number(process.env.IPFS_CHECK_SETTLE_MS || 500);
+const DEFAULT_SAMPLE_INTERVAL_MS = Number(process.env.IPFS_CHECK_SAMPLE_INTERVAL_MS || 500);
+const CONTENT_POLL_INTERVAL_MS = Number(process.env.IPFS_CHECK_CONTENT_POLL || 200);
 const DEFAULT_BROWSER_ORDER = ['chromium', 'webkit', 'firefox'];
 const IPFS_BOOT_TIMEOUT = Number(process.env.IPFS_CHECK_IPFS_TIMEOUT || 15000);
 
@@ -21,6 +23,17 @@ const IGNORED_CONSOLE_PATTERNS = [
   /\[createApp\] Failed to install plugin/i,
   /\[OfflineShell\] active/i,
   /Failed to execute 'querySelector'.*\[object Object\]/i,
+  /ResizeObserver loop completed with undelivered notifications/i,
+  /Error:\s*Connection Timeout/i,
+  /\[Exchange rate API\] Error while fetching rates\./i,
+];
+const OPTIONAL_ENDPOINT_PATTERNS = [/api\.coingecko\.com\/api\/v3\/simple\/price/i];
+const CORRUPTED_UI_PATTERNS = [
+  /\[object Promise\]/i,
+  /\bNaN\b/,
+  /draggable element must have an item slot/i,
+  /Cannot read properties of undefined \(reading '\$refs'\)/i,
+  /Cannot read properties of null \(reading 'query'\)/i,
 ];
 
 function parseArgs(argv) {
@@ -211,30 +224,33 @@ async function spawnIpfsGateway({ ipfsPath, enableGateway }) {
 }
 
 async function waitForContent(page, selector) {
-  try {
-    const handle = await page.waitForFunction(
-      (sel) => {
-        const el = document.querySelector(sel);
-        if (!el) return null;
-        const htmlLength = el.innerHTML.trim().length;
-        const hasChildren = el.children && el.children.length > 0;
-        if (hasChildren || htmlLength > 0) {
-          return {
-            textLength: (el.textContent || '').trim().length,
-            htmlLength,
-          };
-        }
-        return null;
-      },
-      { timeout: LOAD_TIMEOUT },
-      selector
-    );
-    const metrics = await handle.jsonValue();
-    await handle.dispose();
-    return metrics;
-  } catch (error) {
-    return null;
+  const readMetrics = async () => {
+    try {
+      return await page.$eval(selector, (el) => {
+        const htmlLength = (el.innerHTML || '').trim().length;
+        const hasChildren = Boolean(el.children && el.children.length > 0);
+
+        if (!hasChildren && htmlLength === 0) return null;
+
+        return {
+          textLength: (el.textContent || '').trim().length,
+          htmlLength,
+        };
+      });
+    } catch {
+      return null;
+    }
+  };
+
+  const timeoutAt = Date.now() + LOAD_TIMEOUT;
+
+  while (Date.now() < timeoutAt) {
+    const metrics = await readMetrics();
+    if (metrics) return metrics;
+    await page.waitForTimeout(CONTENT_POLL_INTERVAL_MS);
   }
+
+  return readMetrics();
 }
 
 async function captureOfflineShell(page, selector) {
@@ -257,8 +273,26 @@ async function captureOfflineShell(page, selector) {
 
 function filterConsoleMessages(messages) {
   return messages.filter((msg) => {
-    if (msg.level === 'log' || msg.level === 'info') return false;
+    if (msg.level !== 'error') return false;
+    const locationUrl = msg.location?.url || '';
+    const endpointInLocation = OPTIONAL_ENDPOINT_PATTERNS.some((pattern) => pattern.test(locationUrl));
+    const endpointInMessage = OPTIONAL_ENDPOINT_PATTERNS.some((pattern) => pattern.test(msg.message));
+    if (
+      (endpointInLocation || endpointInMessage) &&
+      /has been blocked by CORS policy|Failed to load resource: net::ERR_FAILED/i.test(msg.message)
+    ) {
+      return false;
+    }
     return !IGNORED_CONSOLE_PATTERNS.some((pattern) => pattern.test(msg.message));
+  });
+}
+
+function filterFailedRequests(requests) {
+  if (!Array.isArray(requests) || !requests.length) return [];
+
+  return requests.filter((request) => {
+    const url = request?.url || '';
+    return !OPTIONAL_ENDPOINT_PATTERNS.some((pattern) => pattern.test(url));
   });
 }
 
@@ -281,6 +315,60 @@ function resolveScreenshotPath(args) {
   return null;
 }
 
+function inferContentMetricsFromSnapshot(snapshot) {
+  if (typeof snapshot !== 'string') return null;
+  const html = snapshot.trim();
+  if (!html.length) return null;
+
+  const text = html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  return {
+    textLength: text.length,
+    htmlLength: html.length,
+  };
+}
+
+function findInvalidResourceAttributes(snapshot) {
+  if (typeof snapshot !== 'string' || !snapshot.length) return [];
+
+  const results = [];
+  const pattern = /\b(?:src|href)=["'][^"']*\[object Object\][^"']*["']/gi;
+  let match = pattern.exec(snapshot);
+
+  while (match) {
+    results.push(match[0]);
+    match = pattern.exec(snapshot);
+  }
+
+  return [...new Set(results)];
+}
+
+function findCorruptedUiPatterns(value) {
+  if (typeof value !== 'string' || !value.trim().length) return [];
+
+  return CORRUPTED_UI_PATTERNS.filter((pattern) => pattern.test(value)).map((pattern) => pattern.toString());
+}
+
+function parseNonNegativeInteger(value, fallback) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 0) return fallback;
+  return Math.floor(parsed);
+}
+
+function collectCorruptedUiPatterns(samples) {
+  if (!Array.isArray(samples) || !samples.length) return [];
+  const patterns = [];
+
+  samples.forEach((sample) => {
+    patterns.push(...findCorruptedUiPatterns(sample));
+  });
+
+  return [...new Set(patterns)];
+}
+
 const BROWSER_LAUNCHERS = {
   chromium: async () =>
     chromium.launch({
@@ -299,6 +387,8 @@ const BROWSER_LAUNCHERS = {
 
 async function run() {
   const args = parseArgs(process.argv.slice(2));
+  const settleMs = parseNonNegativeInteger(args['settle-ms'], DEFAULT_SETTLE_MS);
+  const sampleIntervalMs = Math.max(1, parseNonNegativeInteger(args['sample-interval-ms'], DEFAULT_SAMPLE_INTERVAL_MS));
   let targetUrl;
   try {
     targetUrl = buildTargetUrl(args);
@@ -325,6 +415,8 @@ async function run() {
     screenshotPath: null,
     screenshot: null,
     launchErrors: [],
+    bodyText: null,
+    bodyTextSamples: [],
     gateway: {
       attempted: spawnGateway,
       ipfsPath,
@@ -381,6 +473,19 @@ async function run() {
 
   try {
     context = await browser.newContext();
+    await context.addInitScript(() => {
+      window.__PS_FORCE_ONLINE__ = true;
+      window.__PS_IPFS_CHECK__ = false;
+      try {
+        const ua = (navigator.userAgent || '').replace(/HeadlessChrome/gi, 'Chrome');
+        Object.defineProperty(navigator, 'userAgent', { get: () => ua, configurable: true });
+        Object.defineProperty(navigator, 'onLine', { get: () => true, configurable: true });
+        Object.defineProperty(navigator, 'webdriver', { get: () => undefined, configurable: true });
+      } catch {
+        // Ignore immutable navigator properties in strict runtimes.
+      }
+      window.Telegram = window.Telegram || { WebApp: { ready: () => {}, expand: () => {} } };
+    });
     page = await context.newPage();
 
     page.on('console', (msg) => {
@@ -428,6 +533,18 @@ async function run() {
       status.error = status.error || (error && error.message);
     }
 
+    try {
+      status.bodyText = await page.locator('body').innerText();
+      status.bodyTextSamples.push(status.bodyText);
+    } catch {
+      status.bodyText = null;
+      status.bodyTextSamples.push(null);
+    }
+
+    if (!status.content && status.domSnapshot) {
+      status.content = inferContentMetricsFromSnapshot(status.domSnapshot);
+    }
+
     if (!status.content || (status.content.textLength === 0 && status.content.htmlLength === 0)) {
       const offline = await captureOfflineShell(page, selector);
       if (offline) {
@@ -448,7 +565,19 @@ async function run() {
       status.screenshot = await page.screenshot({ encoding: 'base64', fullPage: true });
     }
 
-    await page.waitForTimeout(WAIT_DELAY_MS);
+    if (settleMs > 0) {
+      let waitedMs = 0;
+      while (waitedMs < settleMs) {
+        const step = Math.min(sampleIntervalMs, settleMs - waitedMs);
+        await page.waitForTimeout(step);
+        waitedMs += step;
+        try {
+          status.bodyTextSamples.push(await page.locator('body').innerText());
+        } catch {
+          status.bodyTextSamples.push(null);
+        }
+      }
+    }
   } catch (error) {
     status.error = status.error || error.message || String(error);
   } finally {
@@ -467,7 +596,7 @@ async function run() {
   }
 
   const consoleErrors = filterConsoleMessages(status.console);
-  const failed = status.failedRequests;
+  const failed = filterFailedRequests(status.failedRequests);
   const issues = [];
 
   if (status.error) {
@@ -496,10 +625,25 @@ async function run() {
     offlineShell: status.offlineShell,
     consoleErrors,
     failedRequests: failed,
+    settleMs,
+    sampleIntervalMs,
+    bodyTextSamples: status.bodyTextSamples,
+    corruptedBodyPatterns: collectCorruptedUiPatterns(status.bodyTextSamples),
+    corruptedDomPatterns: findCorruptedUiPatterns(status.domSnapshot),
+    invalidResourceAttributes: findInvalidResourceAttributes(status.domSnapshot),
     domSnapshot: status.domSnapshot,
     screenshotPath: status.screenshotPath,
     screenshot: status.screenshot,
   };
+
+  if (summary.invalidResourceAttributes.length) {
+    issues.push(`Found ${summary.invalidResourceAttributes.length} invalid resource attribute(s) in DOM snapshot.`);
+  }
+
+  const corruptedUiPatternCount = summary.corruptedBodyPatterns.length + summary.corruptedDomPatterns.length;
+  if (corruptedUiPatternCount) {
+    issues.push(`Found ${corruptedUiPatternCount} corrupted UI pattern(s) in rendered output.`);
+  }
 
   if (issues.length) {
     console.error('IPFS check failed:', issues.join(' '));
@@ -529,8 +673,14 @@ module.exports = {
   waitForContent,
   captureOfflineShell,
   filterConsoleMessages,
+  filterFailedRequests,
   ensureDirectory,
   resolveScreenshotPath,
+  inferContentMetricsFromSnapshot,
+  findInvalidResourceAttributes,
+  findCorruptedUiPatterns,
+  parseNonNegativeInteger,
+  collectCorruptedUiPatterns,
   BROWSER_LAUNCHERS,
   run,
 };

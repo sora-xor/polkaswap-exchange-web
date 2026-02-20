@@ -175,6 +175,26 @@ const run = async () => {
       );
     }
 
+    const originRootHashLinks = await page.evaluate(() => {
+      const selectors = ['.app-menu a[href^="/#"]', '.marketing a[href^="/#"]'];
+      const links = [];
+
+      for (const selector of selectors) {
+        for (const anchor of Array.from(document.querySelectorAll(selector))) {
+          const href = anchor.getAttribute('href');
+          if (href) links.push(href);
+        }
+      }
+
+      return Array.from(new Set(links));
+    });
+
+    if (originRootHashLinks.length > 0) {
+      throw new Error(
+        `Origin-root hash hrefs detected (breaks IPFS base paths): ${originRootHashLinks.join(', ')}`
+      );
+    }
+
     console.log('[ipfs-smoke] PASS', appState.title);
   } finally {
     await serveDist.close();

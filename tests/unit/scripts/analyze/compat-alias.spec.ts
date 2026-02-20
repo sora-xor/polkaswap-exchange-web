@@ -62,4 +62,31 @@ describe('compat alias analyzer', () => {
     expect(matcher(createUsage({ file: 'src/components/Widget.vue', module: '@/compat/something' }))).toBe(true);
     expect(matcher(createUsage({ file: 'scripts/tool.ts' }))).toBe(false);
   });
+
+  test('findCompatUsage ignores json files to avoid noisy reports', async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), 'compat-json-ignore-'));
+    const jsonFile = path.join(root, 'lint-report.json');
+    const sourceFile = path.join(root, 'src', 'feature.ts');
+    await mkdir(path.dirname(sourceFile), { recursive: true });
+    await writeFile(jsonFile, '{"source":"import foo from \\"@/compat/example\\";"}', 'utf8');
+    await writeFile(sourceFile, "import foo from '@/compat/example';\n", 'utf8');
+
+    const usages = await findCompatUsage(root);
+
+    expect(usages).toHaveLength(1);
+    expect(usages[0]).toMatchObject({ file: 'src/feature.ts', module: '@/compat/example' });
+  });
+
+  test('default allow-list permits runtime helper bootstrap imports', () => {
+    const { allowed, violations } = partitionCompatUsage([
+      createUsage({
+        file: 'src/main.ts',
+        module: '@/compat/runtime-helpers',
+        lineText: "import '@/compat/runtime-helpers';",
+      }),
+    ]);
+
+    expect(allowed).toHaveLength(1);
+    expect(violations).toHaveLength(0);
+  });
 });

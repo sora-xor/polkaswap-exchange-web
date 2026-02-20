@@ -53,7 +53,10 @@ describe('compat smoke CLI', () => {
 
     expect(vitest.command).toBe('yarn');
     expect(vitest.args).toContain('vitest');
-    expect(vitest.args).toContain('--namePattern');
+    expect(vitest.args).toContain('--testNamePattern');
+    expect(vitest.args).toContain('--no-file-parallelism');
+    expect(vitest.args).toContain('--maxWorkers');
+    expect(vitest.args).toContain('1');
     expect(vitest.args).toContain('Smoke');
 
     expect(bundle.command).toBe('yarn');

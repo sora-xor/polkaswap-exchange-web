@@ -1,10 +1,16 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 import { ensureAppLoaded, expectHash, ipfsBasePath, ipfsEntryUrl, preparePage, trackConsole } from './support/ipfs';
 
 test.beforeEach(async ({ page }) => {
   await preparePage(page);
 });
+
+const expectNoCorruptedUiText = async (page: Page): Promise<void> => {
+  const bodyText = await page.locator('body').innerText();
+  expect(bodyText).not.toContain('[object Promise]');
+  expect(bodyText).not.toMatch(/\bNaN\b/);
+};
 
 test('renders the swap page shell', async ({ page }) => {
   const consoleErrors = trackConsole(page);
@@ -18,7 +24,57 @@ test('renders the swap page shell', async ({ page }) => {
   await expect(page.locator('.header')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Swap' })).toBeVisible();
   await expect(page.locator('.app-main')).toHaveClass(/app-main--swap/, { timeout: 15_000 });
-  await expect(page.getByRole('button', { name: 'Connect account' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Connect account' }).first()).toBeVisible();
+  await expectNoCorruptedUiText(page);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('loads the full app from a direct ipfs index file URL', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await page.goto(`${ipfsBasePath}/index.html`);
+  await page.waitForTimeout(500);
+
+  const checks = await page.evaluate(() => ({
+    isOfflineShell: window.__PS_IPFS_CHECK__ === true,
+    hasHeader: !!document.querySelector('.header'),
+    hasMenu: !!document.querySelector('.app-menu'),
+    pathname: window.location.pathname,
+    appMainClass: document.querySelector('.app-main')?.className ?? '',
+  }));
+
+  expect(checks.isOfflineShell).toBe(false);
+  expect(checks.pathname).toBe(`${ipfsBasePath}/index.html`);
+  expect(checks.hasHeader).toBe(true);
+  expect(checks.hasMenu).toBe(true);
+  expect(checks.appMainClass).toContain('app-main');
+
+  await expectNoCorruptedUiText(page);
+  expect(consoleErrors).toEqual([]);
+});
+
+test('renders offline preview on ipfs-check URL as expected', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await page.addInitScript(() => {
+    window.__PS_FORCE_ONLINE__ = false;
+  });
+
+  await page.goto(`${ipfsBasePath}/index.html?ipfs-check=1`);
+  await page.waitForTimeout(500);
+
+  const checks = await page.evaluate(() => ({
+    isOfflineShell: window.__PS_IPFS_CHECK__ === true,
+    hasHeader: !!document.querySelector('.header'),
+    hasMenu: !!document.querySelector('.app-menu'),
+    pathText: document.body.innerText,
+  }));
+
+  expect(checks.isOfflineShell).toBe(true);
+  expect(checks.hasHeader).toBe(false);
+  expect(checks.hasMenu).toBe(false);
+  expect(checks.pathText).toContain('Offline preview');
 
   expect(consoleErrors).toEqual([]);
 });
@@ -32,6 +88,7 @@ test('navigates to the bridge form from the main menu', async ({ page }) => {
 
   await page.getByRole('link', { name: 'Bridge' }).click();
   await page.waitForTimeout(200);
+  await expectNoCorruptedUiText(page);
 
   expect(consoleErrors).toEqual([]);
 });
@@ -71,6 +128,7 @@ test.describe('loads primary routes directly', () => {
 
       const appMainClasses = await page.evaluate(() => document.querySelector('.app-main')?.className ?? '');
       expect(appMainClasses.split(/\s+/)).toContain(route.appClass);
+      await expectNoCorruptedUiText(page);
 
       expect(consoleErrors).toEqual([]);
     });

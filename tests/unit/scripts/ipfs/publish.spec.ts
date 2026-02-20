@@ -7,6 +7,7 @@ import {
   hasVueMajorVersion,
   isPermissionError,
   resolveVue3BuildArgs,
+  swapEnvConfigForProduction,
   swapEnvConfigForTestnet,
 } from '../../../../scripts/ipfs/publish';
 
@@ -173,5 +174,45 @@ describe('swapEnvConfigForTestnet', () => {
     };
 
     expect(() => swapEnvConfigForTestnet(distPath, fsDeps)).toThrowError(/Missing testnet environment configuration/);
+  });
+});
+
+describe('swapEnvConfigForProduction', () => {
+  it('replaces dist env config with the provided production settings file', () => {
+    const writes: Record<string, string> = {};
+    const distPath = '/dist';
+    const sourceConfigPath = '/workspace/env.json';
+    const prodConfig = '{"NETWORK_TYPE":"Prod"}';
+    const fsDeps = {
+      existsSync: (target: string) => target === sourceConfigPath,
+      readFileSync: (target: string) => {
+        if (target === sourceConfigPath) {
+          return prodConfig;
+        }
+
+        throw new Error(`Unexpected read for ${target}`);
+      },
+      writeFileSync: (target: string, data: string | NodeJS.ArrayBufferView) => {
+        writes[target] = data.toString();
+      },
+    };
+
+    swapEnvConfigForProduction(distPath, sourceConfigPath, fsDeps);
+
+    expect(writes[join(distPath, 'env.json')]).toBe(prodConfig);
+  });
+
+  it('throws when the production config source is missing', () => {
+    const distPath = '/dist';
+    const sourceConfigPath = '/workspace/env.json';
+    const fsDeps = {
+      existsSync: () => false,
+      readFileSync: () => '',
+      writeFileSync: () => {},
+    };
+
+    expect(() => swapEnvConfigForProduction(distPath, sourceConfigPath, fsDeps)).toThrowError(
+      /Missing production environment configuration/
+    );
   });
 });

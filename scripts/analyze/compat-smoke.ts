@@ -137,9 +137,18 @@ export const createBuildCommand = (): CommandSpec => ({
 });
 
 export const createVitestCommand = (pattern: string): CommandSpec => {
-  const args = ['vitest', 'run', '--project', 'unit', '--runInBand', '--pass-with-no-tests'];
+  const args = [
+    'vitest',
+    'run',
+    '--project',
+    'unit',
+    '--no-file-parallelism',
+    '--maxWorkers',
+    '1',
+    '--passWithNoTests',
+  ];
   if (pattern) {
-    args.push('--namePattern', pattern);
+    args.push('--testNamePattern', pattern);
   }
   return {
     command: 'yarn',

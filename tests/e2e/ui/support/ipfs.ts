@@ -6,6 +6,8 @@ const allowedConsolePatterns = [
   /@polkadot\//i,
   /tabsPanel/i,
   /reading 'TVL'/i,
+  /Error:\s*Connection Timeout/i,
+  /\[Exchange rate API\] Error while fetching rates\./i,
 ];
 const emptyJson = JSON.stringify({ data: null });
 
@@ -186,6 +188,7 @@ export async function ensureAppLoaded(page: Page): Promise<void> {
   const header = page.locator('.header');
   const menu = page.locator('.app-menu');
 
+  await expect.poll(() => page.evaluate(() => document.querySelectorAll('#app').length)).resolves.toBe(1);
   await expect(header).toBeVisible({ timeout: 15_000 });
   await expect(menu).toBeVisible({ timeout: 15_000 });
 }

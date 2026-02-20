@@ -1,7 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const serverHost = '127.0.0.1';
-const serverPort = 4173;
+const serverPort = Number(process.env.PS_IPFS_TEST_PORT ?? 41733);
+const shouldReuseExistingServer = process.env.PS_PLAYWRIGHT_REUSE_SERVER === '1' && !process.env.CI;
 const ipfsPrefix = (() => {
   const raw = process.env.PS_IPFS_TEST_PREFIX ?? '/ipfs/polkaswap-e2e';
   const trimmed = raw.trim();
@@ -40,12 +41,13 @@ export default defineConfig({
   webServer: {
     command: `yarn build && node ./scripts/testing/ipfs-preview-server.mjs --host ${serverHost} --port ${serverPort} --prefix ${ipfsPrefix}`,
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: shouldReuseExistingServer,
     stdout: 'pipe',
     stderr: 'pipe',
     env: {
       PS_IPFS_CHECK_FORCE_ONLINE: 'true',
       PS_IPFS_TEST_PREFIX: ipfsPrefix,
+      PS_IPFS_TEST_PORT: String(serverPort),
     },
   },
 });
