@@ -13,15 +13,21 @@ import '@soramitsu-ui/ui/styles';
 export function install(app: App): void {
   app.use(soramitsuUIPlugin());
   app.component('ElPopover', ElPopoverCompat);
-  app.component('ElPopover', ElPopoverCompat);
+  // eslint-disable-next-line vue/component-definition-name-casing -- Preserve Vue 2 legacy kebab-case global alias.
+  app.component('el-popover', ElPopoverCompat);
   app.component('SCollapse', SCollapseCompat);
-  app.component('SCollapse', SCollapseCompat);
+  // eslint-disable-next-line vue/component-definition-name-casing -- Preserve Vue 2 legacy kebab-case global alias.
+  app.component('s-collapse', SCollapseCompat);
   app.component('SCollapseItem', SCollapseItemCompat);
-  app.component('SCollapseItem', SCollapseItemCompat);
+  // eslint-disable-next-line vue/component-definition-name-casing -- Preserve Vue 2 legacy kebab-case global alias.
+  app.component('s-collapse-item', SCollapseItemCompat);
   app.component('SDropdown', SDropdownCompat);
-  app.component('SDropdown', SDropdownCompat);
+  // eslint-disable-next-line vue/component-definition-name-casing -- Preserve Vue 2 legacy kebab-case global alias.
+  app.component('s-dropdown', SDropdownCompat);
   app.component('SDropdownItem', SDropdownItemCompat);
-  app.component('SDropdownItem', SDropdownItemCompat);
+  // eslint-disable-next-line vue/component-definition-name-casing -- Preserve Vue 2 legacy kebab-case global alias.
+  app.component('s-dropdown-item', SDropdownItemCompat);
   app.component('SFloatInput', SFloatInputCompat);
-  app.component('SFloatInput', SFloatInputCompat);
+  // eslint-disable-next-line vue/component-definition-name-casing -- Preserve Vue 2 legacy kebab-case global alias.
+  app.component('s-float-input', SFloatInputCompat);
 }
