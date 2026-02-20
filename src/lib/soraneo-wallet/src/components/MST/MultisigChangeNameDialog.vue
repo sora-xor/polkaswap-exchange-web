@@ -69,15 +69,17 @@ const multisigNewName = ref('');
 const currentName = ref<string | null>(null);
 const isMSTLocal = ref(false);
 
+const mst = computed(() => api.mst);
+
 const resolveCurrentName = () => {
-  const name = api.mst.getMSTName();
+  const name = mst.value?.getMSTName?.() ?? '';
   currentName.value = name || null;
   return currentName.value;
 };
 
 const isMSTAccount = computed(() => {
   if (!isMST.value) return false;
-  const name = api.mst.getMSTName();
+  const name = mst.value?.getMSTName?.() ?? '';
   return name !== '';
 });
 
@@ -96,16 +98,18 @@ watch(isMSTAccount, (value) => {
 const isNoNameOrTheSame = computed(() => currentName.value === multisigNewName.value || multisigNewName.value === '');
 
 const switchToFromMST = () => {
-  api.mst.switchAccount(isMSTLocal.value);
+  mst.value?.switchAccount?.(isMSTLocal.value);
   setIsMST(isMSTLocal.value);
   syncWithStorage();
   afterLogin();
 };
 
 const updateName = async () => {
-  api.mst.updateMultisigName(multisigNewName.value);
-  const mstAddress = api.mst.getMstAddress();
-  await renameAccount({ address: mstAddress, name: multisigNewName.value });
+  mst.value?.updateMultisigName?.(multisigNewName.value);
+  const mstAddress = mst.value?.getMstAddress?.();
+  if (mstAddress) {
+    await renameAccount({ address: mstAddress, name: multisigNewName.value });
+  }
   multisigNewName.value = '';
   resolveCurrentName();
   closeDialog();

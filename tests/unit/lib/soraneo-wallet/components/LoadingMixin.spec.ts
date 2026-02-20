@@ -1,0 +1,48 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const delayMock = vi.hoisted(() => vi.fn(async () => undefined));
+
+vi.mock('@/lib/soraneo-wallet/src/util', () => ({
+  delay: delayMock,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/store/decorators', () => ({
+  state: {
+    settings: {
+      isWalletLoaded: () => () => undefined,
+    },
+  },
+}));
+
+import LoadingMixin from '@/lib/soraneo-wallet/src/components/mixins/LoadingMixin';
+
+describe('LoadingMixin', () => {
+  beforeEach(() => {
+    delayMock.mockClear();
+  });
+
+  it('retries withChainApi when chain api getter throws during connection setup', async () => {
+    let calls = 0;
+    const chainApi = {
+      get api() {
+        calls += 1;
+        if (calls === 1) {
+          throw new TypeError("Cannot read properties of undefined (reading 'api')");
+        }
+
+        return {
+          isReady: Promise.resolve(),
+        };
+      },
+    } as any;
+
+    const mixin = new (LoadingMixin as any)();
+    const handler = vi.fn(async () => undefined);
+
+    await mixin.withChainApi(chainApi, handler);
+
+    expect(handler).toHaveBeenCalledTimes(1);
+    expect(delayMock).toHaveBeenCalledTimes(1);
+    expect(calls).toBeGreaterThanOrEqual(2);
+  });
+});

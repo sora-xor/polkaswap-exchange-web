@@ -1,4 +1,44 @@
-import { toDisplayString, renderList, renderSlot, createCommentVNode, createTextVNode } from 'vue';
+import {
+  computed,
+  createCommentVNode,
+  createTextVNode,
+  getCurrentInstance,
+  h,
+  inject,
+  markRaw,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  onScopeDispose,
+  onUnmounted,
+  provide,
+  reactive,
+  readonly,
+  ref,
+  renderList,
+  renderSlot,
+  shallowReactive,
+  shallowRef,
+  toDisplayString,
+  toRef,
+  toRefs,
+  unref,
+  useAttrs,
+  useSlots,
+  watch,
+  watchEffect,
+} from 'vue';
+
+import {
+  eagerComputed,
+  templateRef,
+  unrefElement,
+  useFocus,
+  useResizeObserver,
+  useToggle,
+  watchOnce,
+  whenever,
+} from '@vueuse/core';
 
 type GlobalLike = Record<string, unknown>;
 
@@ -42,3 +82,38 @@ assignHelper('_l', renderList);
 assignHelper('_t', renderSlot);
 assignHelper('_e', createCommentVNode);
 assignHelper('_v', createTextVNode);
+
+// Vue composition API globals for compat-mode / legacy code that expects auto-imports.
+assignHelper('computed', computed);
+assignHelper('ref', ref);
+assignHelper('reactive', reactive);
+assignHelper('shallowReactive', shallowReactive);
+assignHelper('shallowRef', shallowRef);
+assignHelper('readonly', readonly);
+assignHelper('watch', watch);
+assignHelper('watchEffect', watchEffect);
+assignHelper('nextTick', nextTick);
+assignHelper('provide', provide);
+assignHelper('inject', inject);
+assignHelper('toRef', toRef);
+assignHelper('toRefs', toRefs);
+assignHelper('unref', unref);
+assignHelper('onMounted', onMounted);
+assignHelper('onBeforeUnmount', onBeforeUnmount);
+assignHelper('onUnmounted', onUnmounted);
+assignHelper('onScopeDispose', onScopeDispose);
+assignHelper('useAttrs', useAttrs);
+assignHelper('useSlots', useSlots);
+assignHelper('markRaw', markRaw);
+assignHelper('getCurrentInstance', getCurrentInstance);
+assignHelper('h', h);
+
+// VueUse helpers used widely across the embedded UI libraries.
+assignHelper('eagerComputed', eagerComputed);
+assignHelper('templateRef', templateRef);
+assignHelper('unrefElement', unrefElement);
+assignHelper('useToggle', useToggle);
+assignHelper('watchOnce', watchOnce);
+assignHelper('useFocus', useFocus);
+assignHelper('useResizeObserver', useResizeObserver);
+assignHelper('whenever', whenever);

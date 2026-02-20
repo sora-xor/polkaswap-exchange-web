@@ -19,12 +19,29 @@ const getRootState = (context: ActionContext<any, any>) => context.rootState as 
 const getRootGetters = (context: ActionContext<any, any>) => context.rootGetters as any;
 const commitRoot = (context: ActionContext<any, any>, type: string, payload?: unknown) =>
   context.commit(type, payload, { root: true });
+const getWalletAccountState = (context: ActionContext<any, any>) => getRootGetters(context)?.wallet?.account;
+const getWalletAccountAddress = (context: ActionContext<any, any>): string => {
+  const walletAccount = getWalletAccountState(context);
+  const nestedAddress = walletAccount?.account?.address;
+  if (typeof nestedAddress === 'string' && nestedAddress.length > 0) {
+    return nestedAddress;
+  }
+
+  const plainAddress = walletAccount?.address;
+  if (typeof plainAddress === 'string' && plainAddress.length > 0) {
+    return plainAddress;
+  }
+
+  return '';
+};
 
 async function parseHistoryUpdate(context: ActionContext<any, any>, transaction: HistoryElement): Promise<void> {
   const { commit, state } = transactionsActionContext(context);
   const rootState = getRootState(context);
   const rootGetters = getRootGetters(context);
-  const { account, whitelist } = rootGetters.wallet.account;
+  const walletAccount = rootGetters?.wallet?.account ?? {};
+  const account = walletAccount?.account;
+  const whitelist = walletAccount?.whitelist;
 
   const indexer = getCurrentIndexer();
   const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(transaction);
@@ -46,10 +63,13 @@ async function parseHistoryUpdate(context: ActionContext<any, any>, transaction:
   }
 
   // Handle incoming Transfer operations
-  if (accountIdBasedOperations.includes(historyItem.type) && historyItem.to === account.address) {
-    const asset = whitelist[historyItem.assetAddress as string];
+  if (accountIdBasedOperations.includes(historyItem.type) && historyItem.to === account?.address) {
+    const assetAddress = historyItem.assetAddress as string;
+    const asset = Array.isArray(whitelist)
+      ? whitelist.find((item) => (item as WhitelistArrayItem).address === assetAddress)
+      : whitelist?.[assetAddress];
 
-    if (asset && rootState.wallet.settings.allowTopUpAlert) {
+    if (asset && rootState?.wallet?.settings?.allowTopUpAlert) {
       commitRoot(context, 'wallet/account/setAssetToNotify', asset as WhitelistArrayItem);
     }
   }
@@ -58,16 +78,18 @@ async function parseHistoryUpdate(context: ActionContext<any, any>, transaction:
 const actions = defineActions({
   async subscribeOnExternalHistory(context): Promise<void> {
     const { commit } = transactionsActionContext(context);
-    const { isLoggedIn, account } = getRootGetters(context).wallet.account;
+    const walletAccount = getWalletAccountState(context);
+    const isLoggedIn = Boolean(walletAccount?.isLoggedIn);
+    const accountAddress = getWalletAccountAddress(context);
 
     commit.resetExternalHistorySubscription();
 
-    if (!isLoggedIn) return;
+    if (!isLoggedIn || !accountAddress) return;
 
     try {
       const indexer = getCurrentIndexer();
       const subscription = indexer.services.explorer.account.createHistorySubscription(
-        account.address,
+        accountAddress,
         async (transaction) => {
           await parseHistoryUpdate(context, transaction);
         }
@@ -168,27 +190,25 @@ const actions = defineActions({
   // transactions/actions.ts
   async trackPendingMstTxs(context): Promise<void> {
     const { commit } = transactionsActionContext(context);
-    const { account } = getRootGetters(context).wallet.account;
+    const walletAccount = getWalletAccountState(context);
+    const isLoggedIn = Boolean(walletAccount?.isLoggedIn);
+    const accountAddress = getWalletAccountAddress(context);
+
     commit.resetPendingMstTxsSubscription();
-    if (!api.mst.isMstAddressExist || !account.address) {
+    if (!isLoggedIn || !api.mst.isMstAddressExist || !accountAddress) {
       return;
     }
+
     try {
       const mstAddress = api.mst.getMstAddress();
       await api.mst.startPendingTxsSubscription(mstAddress);
-      console.info('we are in try');
       const subscription = api.mst.pendingTxsUpdated.subscribe((pendingTxs) => {
-        console.info('pending trxs are', pendingTxs);
         if (pendingTxs && pendingTxs.length > 0) {
-          let userAddress: string | undefined;
+          let userAddress: string | undefined = accountAddress;
           if (api.mst.isMST()) {
-            console.info('we are in mst');
             userAddress = api.formatAddress(api.mst.getPrevoiusAccount());
-          } else {
-            console.info('we are not in mst');
-            userAddress = account.address;
           }
-          console.info('here is userAddress', userAddress);
+
           // TODO fix later this as any
           const pendingApprovalTxs = pendingTxs.filter((tx) => {
             const multisig = (tx as { multisig: any }).multisig;
@@ -200,7 +220,6 @@ const actions = defineActions({
           });
 
           commit.setPendingMstTransactions(pendingApprovalTxs);
-          console.info('pendingApprovalTxs', pendingApprovalTxs);
         } else {
           commit.setPendingMstTransactions([]);
         }

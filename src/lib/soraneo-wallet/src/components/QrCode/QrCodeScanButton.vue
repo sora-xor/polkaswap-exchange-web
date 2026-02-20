@@ -130,10 +130,9 @@ export default class QrCodeScanButton extends mixins(TranslationMixin, CameraPer
   }
 
   handleButtonClick(): void {
-    // emulate click in el-dropdown
-    const dropdown = this.dropdown.$refs.dropdown as { handleClick: () => void } | undefined;
-
-    dropdown?.handleClick();
+    // `dropdown` can be unavailable during fast route changes.
+    const dropdown = this.dropdown as { $refs?: { dropdown?: { handleClick?: () => void } } } | undefined;
+    dropdown?.$refs?.dropdown?.handleClick?.();
   }
 
   handleSelect(value: SCAN_TYPES): void {

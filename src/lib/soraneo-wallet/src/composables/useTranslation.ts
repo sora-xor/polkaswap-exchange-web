@@ -32,6 +32,25 @@ function getValues(values?: ValuesMap): Record<string, unknown> {
   return { ...(values ?? {}), ...TranslationConsts };
 }
 
+const asyncWarnings = new Set<string>();
+
+function coerceAsyncTranslateResult(value: unknown, key: string): string | null {
+  if (!(value instanceof Promise)) return null;
+
+  if (!asyncWarnings.has(key)) {
+    asyncWarnings.add(key);
+    console.warn(`[i18n] async wallet translation result detected for key "${key}". Falling back to key text.`);
+  }
+
+  return key;
+}
+
+function toSafeTranslateResult(value: unknown, key: string): string {
+  const fallback = coerceAsyncTranslateResult(value, key);
+  if (fallback !== null) return fallback;
+  return String(value ?? '');
+}
+
 function resolveDayjsLocale(): string {
   const locale = i18n.global.locale.value.toLowerCase();
 
@@ -44,13 +63,13 @@ function resolveDayjsLocale(): string {
 }
 
 function buildTranslationHelpers(): TranslationHelpers {
-  const t: TranslateFn = (key, values) => i18n.global.t(key, getValues(values));
+  const t: TranslateFn = (key, values) => toSafeTranslateResult(i18n.global.t(key, getValues(values)), key);
   const tc: TranslateChoiceFn = (key, choice, values) => {
     const params = getValues(values);
     if (typeof choice === 'number') {
       params.count = choice;
     }
-    return i18n.global.t(key, params);
+    return toSafeTranslateResult(i18n.global.t(key, params), key);
   };
   const te: TranslateExistsFn = (key) => i18n.global.te(key);
   const formatDate: FormatDateFn = (date, format = 'll LTS') => dayjs(date).locale(resolveDayjsLocale()).format(format);

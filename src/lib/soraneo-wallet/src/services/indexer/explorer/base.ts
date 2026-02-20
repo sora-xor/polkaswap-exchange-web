@@ -46,18 +46,19 @@ export default class BaseExplorer {
   }
 
   public initClient() {
-    if (this.client) return;
+    if (this.client) return true;
     const url = this.getEndpoint();
     if (!url) {
       this.setStatus(ConnectionStatus.Unavailable);
-      throw new Error(`${this.type} endpoint is not set`);
+      return false;
     }
     this.setStatus(ConnectionStatus.Loading);
     this.client = this.createExplorerClient(url);
+    return true;
   }
 
   public async request<T>(query: TypedDocumentNode<T>, variables: AnyVariables = {}) {
-    this.initClient();
+    if (!this.initClient()) return null;
 
     const payload = await this.client.query(query, variables).toPromise();
 
@@ -68,7 +69,9 @@ export default class BaseExplorer {
 
   // https://formidable.com/open-source/urql/docs/advanced/subscriptions/#one-off-subscriptions
   public subscribe<T>(subscription: TypedDocumentNode<T>, variables: AnyVariables = {}) {
-    this.initClient();
+    if (!this.initClient()) {
+      return () => () => undefined;
+    }
 
     return (handler: (payload: OperationResult<T, any>) => void) => {
       const { unsubscribe } = pipe(

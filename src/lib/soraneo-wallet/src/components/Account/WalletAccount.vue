@@ -55,7 +55,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
-const store = requireLegacyStore();
 
 const isWalletLoaded = computed(() => resolveStore()?.state?.wallet?.settings?.isWalletLoaded ?? false);
 const { withApi } = useLoading({ isWalletLoaded });
@@ -88,26 +87,21 @@ watch(
 );
 
 const name = computed(() => {
-  try {
-    if (account.value?.name) {
-      return account.value.name;
-    }
+  if (account.value?.name) {
+    return account.value.name;
+  }
 
-    const mstAddress = api.mst.getMstAddress();
-    if (!mstAddress) {
-      return DEFAULT_NAME;
-    }
-
-    const mstAccount = api.mst.getMstAccount(mstAddress);
-    if (mstAccount?.meta?.name) {
-      return mstAccount.meta.name;
-    }
-
-    return DEFAULT_NAME;
-  } catch (error) {
-    console.error('Error fetching multisig account:', error);
+  const mstAddress = api.mst?.getMstAddress?.();
+  if (!mstAddress) {
     return DEFAULT_NAME;
   }
+
+  const mstAccount = api.mst?.getMstAccount?.(mstAddress);
+  if (mstAccount?.meta?.name) {
+    return mstAccount.meta.name;
+  }
+
+  return DEFAULT_NAME;
 });
 
 const identity = computed<Nullable<AccountIdentity>>(() => account.value?.identity ?? accountIdentity.value);

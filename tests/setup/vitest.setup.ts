@@ -248,9 +248,7 @@ vi.spyOn(console, 'warn').mockImplementation((...args: unknown[]) => {
   const message = args[0];
   if (
     typeof message === 'string' &&
-    (message.includes('[@vue/compiler-sfc] `withDefaults`') ||
-      message.includes('[SoraCard]: Paywings SDK is unavailable') ||
-      message.includes('Lit is in dev mode'))
+    (message.includes('[@vue/compiler-sfc] `withDefaults`') || message.includes('Lit is in dev mode'))
   ) {
     return;
   }

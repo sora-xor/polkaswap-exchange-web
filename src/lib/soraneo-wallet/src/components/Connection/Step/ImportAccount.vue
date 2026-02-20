@@ -107,9 +107,9 @@
 import { mnemonicValidate } from '@polkadot/util-crypto';
 import { mixins, Options, Prop, Ref } from 'vue-property-decorator';
 
-import FearlessLogo from '../../../assets/img/FearlessWalletLogo.svg';
-import PolkadotLogo from '../../../assets/img/PolkadotLogo.svg';
-import SubWalletLogo from '../../../assets/img/SubWalletLogo.svg';
+import FearlessLogo from '../../../assets/img/FearlessWalletLogo.svg?url';
+import PolkadotLogo from '../../../assets/img/PolkadotLogo.svg?url';
+import SubWalletLogo from '../../../assets/img/SubWalletLogo.svg?url';
 import { LoginStep } from '../../../consts';
 import { AppError } from '../../../util';
 import { parseAccountJson } from '../../../util/account';

@@ -5,6 +5,15 @@ import { delay } from '../../util';
 
 import type { WithConnectionApi } from '@sora-substrate/sdk';
 
+const resolveChainApi = (chainApi: WithConnectionApi): WithConnectionApi['api'] | null => {
+  try {
+    return chainApi.api;
+  } catch {
+    // Connection can be attached asynchronously; keep polling instead of throwing.
+    return null;
+  }
+};
+
 @Options({})
 export default class LoadingMixin extends Vue {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean;
@@ -47,11 +56,13 @@ export default class LoadingMixin extends Vue {
   ): Promise<T> {
     this.loading = true;
 
-    if (!chainApi.api) {
+    const api = resolveChainApi(chainApi);
+
+    if (!api) {
       await delay();
       return await this.withChainApi(chainApi, func);
     } else {
-      await chainApi.api.isReady;
+      await api.isReady;
       return await this.withLoading(func);
     }
   }

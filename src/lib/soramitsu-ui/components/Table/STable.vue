@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="DataType extends TableRow">
+import { toRaw } from 'vue';
 import type { CSSProperties, ShallowRef } from 'vue';
 import type { MaybeElementRef } from '@vueuse/core';
 import { not } from '@vueuse/math';

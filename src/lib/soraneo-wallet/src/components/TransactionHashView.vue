@@ -156,8 +156,11 @@ const getExplorerTranslation = (type: ExplorerType) => {
 };
 
 const handleOpenEtherscan = () => {
-  const win = window.open(etherscanLink.value, '_blank');
-  win?.focus();
+  const win = window.open(etherscanLink.value, '_blank', 'noopener,noreferrer');
+  if (win) {
+    win.opener = null;
+    win.focus();
+  }
 };
 
 defineExpose({

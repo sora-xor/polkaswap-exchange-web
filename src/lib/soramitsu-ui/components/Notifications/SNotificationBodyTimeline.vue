@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed, ref, toRefs, watch } from 'vue';
+import { useRafFn, useTimeoutFn } from '@vueuse/core';
+
 const props = defineProps<{
   /**
    * 0 to disable

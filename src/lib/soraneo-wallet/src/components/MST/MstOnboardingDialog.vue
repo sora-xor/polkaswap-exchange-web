@@ -53,11 +53,11 @@
 <script lang="ts" setup>
 import { computed, ref, toRef } from 'vue';
 
-import MSTFearless from '@/assets/img/MSTFearless.svg';
-import MSTIcon from '@/assets/img/MSTIcon.svg';
-import MSTKeys from '@/assets/img/MSTKeys.svg';
-import MSTSign from '@/assets/img/MSTSign.svg';
-import MSTWallet from '@/assets/img/MSTWallet.svg';
+import MSTFearless from '@/assets/img/MSTFearless.svg?url';
+import MSTIcon from '@/assets/img/MSTIcon.svg?url';
+import MSTKeys from '@/assets/img/MSTKeys.svg?url';
+import MSTSign from '@/assets/img/MSTSign.svg?url';
+import MSTWallet from '@/assets/img/MSTWallet.svg?url';
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';

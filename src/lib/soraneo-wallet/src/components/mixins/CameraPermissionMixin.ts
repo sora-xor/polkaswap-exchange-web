@@ -20,9 +20,6 @@ export default class CameraPermissionMixin extends mixins(NotificationMixin) {
 
       this.permissionDialogVisibility = cameraPermission !== 'granted';
 
-      if (context === 'SoraCard' && cameraPermission === 'granted') {
-        return true;
-      }
       // request to allow use camera
       await navigator.mediaDevices.getUserMedia({ video: true });
       return true;

@@ -180,12 +180,16 @@ export default class Wallet extends mixins(AccountActionsMixin, OperationsMixin,
     this.routerStore.navigate(options);
   }
 
+  private get mstName(): string {
+    return api.mst?.getMSTName?.() ?? '';
+  }
+
   get isMSTAccount(): boolean {
-    return this.isMST && api.mst.getMSTName() !== '';
+    return this.isMST && this.mstName !== '';
   }
 
   get hasMSTAccount(): boolean {
-    return !this.isMST && (this.isMstAddressExist || api.mst.getMSTName() !== '');
+    return !this.isMST && (this.isMstAddressExist || this.mstName !== '');
   }
 
   async mounted(): Promise<void> {

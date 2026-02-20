@@ -174,9 +174,7 @@ const formatted = computed(() => {
       decimal = formatFiatDecimal(integer, decimal);
     }
 
-    decimal = decimal
-      ? FPNumber.DELIMITERS_CONFIG.decimal + decimal
-      : `${FPNumber.DELIMITERS_CONFIG.decimal}${FPNumber.ZERO.toFormat()}`;
+    decimal = decimal ? FPNumber.DELIMITERS_CONFIG.decimal + decimal : `${FPNumber.DELIMITERS_CONFIG.decimal}0`;
   }
 
   return {

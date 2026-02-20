@@ -225,12 +225,19 @@ const getTransactionTimestamp = (tx: HistoryElement): number => {
 };
 
 const getErrorMessage = (historyElementError: HistoryElementError): Record<string, string> => {
+  const [error, index] = [new BN(historyElementError.moduleErrorId), new BN(historyElementError.moduleErrorIndex)];
+
+  // Indexer data can arrive before the chain API metadata is ready (or even without any connection).
+  // This helper must never throw, otherwise history parsing turns into a noisy console error storm on static/IPFS loads.
+  const registry = api.connection?.api?.registry;
+  if (!registry?.findMetaError) {
+    return { section: '', name: '' };
+  }
+
   try {
-    const [error, index] = [new BN(historyElementError.moduleErrorId), new BN(historyElementError.moduleErrorIndex)];
-    const { name, section } = api.api.registry.findMetaError({ error, index });
+    const { name, section } = registry.findMetaError({ error, index });
     return { name, section };
-  } catch (error) {
-    console.error(historyElementError, error);
+  } catch {
     return { section: '', name: '' };
   }
 };
@@ -253,11 +260,23 @@ const getTransactionNetworkFee = (tx: HistoryElement): string => {
 };
 
 const getAssetByAddress = async (address: string): Promise<Nullable<Asset>> => {
+  // Always treat asset lookups as best-effort: the wallet store and/or the chain API might not be ready yet.
+  // Returning null keeps the UI functional (it will render placeholders) and avoids console errors during bootstrap.
   try {
-    const asset = getWalletStore().getters.wallet.account.assetsDataTable[address];
-    return asset ?? (await api.assets.getAssetInfo(address));
-  } catch (error) {
-    console.error(error);
+    const walletAsset = getWalletStore().getters?.wallet?.account?.assetsDataTable?.[address] as Nullable<Asset>;
+    if (walletAsset) return walletAsset;
+  } catch {
+    // Ignore - store may not be initialised yet.
+  }
+
+  // Avoid triggering SDK asset lookups until the Polkadot API is ready enough to have the `assets` pallet decorated.
+  const chainApi = api.connection?.api;
+  const hasAssetsQuery = Boolean(chainApi?.query?.assets && (chainApi.query.assets as any).assetInfosV2);
+  if (!hasAssetsQuery) return null;
+
+  try {
+    return await api.assets.getAssetInfo(address);
+  } catch {
     return null;
   }
 };

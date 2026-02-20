@@ -1,10 +1,10 @@
-import FearlessWalletLogo from '../../assets/img/FearlessWalletLogo.svg';
-import GoogleLogo from '../../assets/img/GoogleLogo.svg';
-import PolkadotJsLogo from '../../assets/img/PolkadotLogo.svg';
-import SoraWalletLogo from '../../assets/img/Sora.svg';
-import SubWalletLogo from '../../assets/img/SubWalletLogo.svg';
-import TalismanLogo from '../../assets/img/TalismanLogo.svg';
-import WalletConnectLogo from '../../assets/img/WalletConnect.svg';
+import FearlessWalletLogo from '../../assets/img/FearlessWalletLogo.svg?url';
+import GoogleLogo from '../../assets/img/GoogleLogo.svg?url';
+import PolkadotJsLogo from '../../assets/img/PolkadotLogo.svg?url';
+import SoraWalletLogo from '../../assets/img/Sora.svg?url';
+import SubWalletLogo from '../../assets/img/SubWalletLogo.svg?url';
+import TalismanLogo from '../../assets/img/TalismanLogo.svg?url';
+import WalletConnectLogo from '../../assets/img/WalletConnect.svg?url';
 import { AppWallet } from '../../consts/index';
 
 import type { WalletInfo } from './types';

@@ -14,6 +14,7 @@ type LoadingOptions = {
 type MaybePromise<T> = T | Promise<T>;
 
 type AsyncOrSyncFn<T> = () => MaybePromise<T>;
+type ChainApiInstance = WithConnectionApi['api'];
 
 function resolveBoolean(source?: BooleanSource): boolean {
   if (!source) return false;
@@ -22,6 +23,15 @@ function resolveBoolean(source?: BooleanSource): boolean {
   }
   return Boolean(source.value);
 }
+
+const resolveChainApi = (chainApi: WithConnectionApi): ChainApiInstance | null => {
+  try {
+    return chainApi.api;
+  } catch {
+    // Connection object may still be initializing when the helper is first called.
+    return null;
+  }
+};
 
 export function useLoading(options: LoadingOptions = {}) {
   const loading = ref(false);
@@ -52,12 +62,14 @@ export function useLoading(options: LoadingOptions = {}) {
   const withChainApi = async <T>(chainApi: WithConnectionApi, fn: AsyncOrSyncFn<T>): Promise<T> => {
     loading.value = true;
 
-    if (!chainApi.api) {
+    const api = resolveChainApi(chainApi);
+
+    if (!api) {
       await delay();
       return withChainApi(chainApi, fn);
     }
 
-    await chainApi.api.isReady;
+    await api.isReady;
     return withLoading(fn);
   };
 

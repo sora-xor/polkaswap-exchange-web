@@ -1,0 +1,77 @@
+import { describe, expect, it } from 'vitest';
+import { h } from 'vue';
+import { mount } from '@vue/test-utils';
+
+import SCollapseCompat from '@/components/compat/SCollapseCompat.vue';
+import SCollapseItemCompat from '@/components/compat/SCollapseItemCompat.vue';
+
+describe('SCollapseCompat', () => {
+  it('toggles item visibility and emits active item names', async () => {
+    const wrapper = mount(SCollapseCompat, {
+      slots: {
+        default: () =>
+          h(
+            SCollapseItemCompat,
+            { name: 'first' },
+            {
+              title: () => 'First item',
+              default: () => h('div', { class: 'collapse-content' }, 'Body'),
+            }
+          ),
+      },
+    });
+
+    const header = wrapper.find('.el-collapse-item__header');
+
+    expect(wrapper.find('.el-collapse-item').classes()).not.toContain('is-active');
+
+    await header.trigger('click');
+
+    expect(wrapper.find('.el-collapse-item').classes()).toContain('is-active');
+    expect(wrapper.emitted('change')?.[0]).toEqual([['first']]);
+
+    await header.trigger('click');
+
+    expect(wrapper.find('.el-collapse-item').classes()).not.toContain('is-active');
+    expect(wrapper.emitted('change')?.[1]).toEqual([[]]);
+  });
+
+  it('keeps only one opened item in accordion mode', async () => {
+    const wrapper = mount(SCollapseCompat, {
+      props: {
+        accordion: true,
+      },
+      slots: {
+        default: () => [
+          h(
+            SCollapseItemCompat,
+            { name: 'one' },
+            {
+              title: () => 'One',
+              default: () => h('div', 'First'),
+            }
+          ),
+          h(
+            SCollapseItemCompat,
+            { name: 'two' },
+            {
+              title: () => 'Two',
+              default: () => h('div', 'Second'),
+            }
+          ),
+        ],
+      },
+    });
+
+    const headers = wrapper.findAll('.el-collapse-item__header');
+
+    await headers[0].trigger('click');
+    await headers[1].trigger('click');
+
+    const items = wrapper.findAll('.el-collapse-item');
+
+    expect(items[0].classes()).not.toContain('is-active');
+    expect(items[1].classes()).toContain('is-active');
+    expect(wrapper.emitted('input')?.[1]).toEqual(['two']);
+  });
+});

@@ -262,24 +262,47 @@ async function initWallet(options: WALLET_CONSTS.WalletInitOptions = {}): Promis
   await Promise.all([waitForCore(options), waitForConnection()]);
 
   const walletState = (store as any)?.state?.wallet?.account ?? {};
-
-  initAppWallets(api, Boolean(walletState.isDesktop), options.appName);
-  await checkActiveAccount();
-
-  // don't wait for finalization of internal & external services subscriptions
-  store?.dispatch?.wallet?.subscriptions?.activateInternalSubscriptions?.();
-  store?.dispatch?.wallet?.settings?.selectIndexer?.();
-  // wait for finalization of network subscriptions
-  await Promise.all(
-    [
-      typeof api.initialize === 'function' ? api.initialize(false) : undefined,
-      store?.dispatch?.wallet?.subscriptions?.activateNetwokSubscriptions?.(),
-    ].filter(Boolean) as Array<Promise<unknown>>
-  );
   const walletCommit = store?.commit?.wallet;
-  walletCommit?.settings?.setIsMstAvailable?.(walletState?.account?.source === WALLET_CONSTS.AppWallet.FearlessWallet);
-  store?.dispatch?.wallet?.account?.initMultisigAddress?.();
-  walletCommit?.settings?.setWalletLoaded?.(true);
+
+  try {
+    initAppWallets(api, Boolean(walletState.isDesktop), options.appName);
+    await checkActiveAccount();
+
+    // don't wait for finalization of internal & external services subscriptions
+    store?.dispatch?.wallet?.subscriptions?.activateInternalSubscriptions?.();
+    store?.dispatch?.wallet?.settings?.selectIndexer?.();
+    walletCommit?.settings?.setIsMstAvailable?.(
+      walletState?.account?.source === WALLET_CONSTS.AppWallet.FearlessWallet
+    );
+
+    // wait for finalization of network subscriptions (best effort).
+    // In some static/IPFS contexts the chain connection may be intentionally skipped,
+    // so `api.initialize` can fail. Do not block UI rendering in that case.
+    try {
+      await Promise.all(
+        [
+          typeof api.initialize === 'function' ? api.initialize(false) : undefined,
+          store?.dispatch?.wallet?.subscriptions?.activateNetwokSubscriptions?.(),
+        ].filter(Boolean) as Array<Promise<unknown>>
+      );
+    } catch (error) {
+      console.warn('[wallet] initWallet network subscriptions skipped', error);
+    }
+
+    try {
+      store?.dispatch?.wallet?.account?.initMultisigAddress?.();
+    } catch (error) {
+      console.warn('[wallet] initMultisigAddress skipped', error);
+    }
+  } catch (error) {
+    console.warn('[wallet] initWallet skipped', error);
+  } finally {
+    // Some host apps register the wallet settings module both at `wallet/settings`
+    // and at the root `settings` module for convenience. Keep both flags in sync
+    // so composables that gate on `settings.isWalletLoaded` don't suspend forever.
+    walletCommit?.settings?.setWalletLoaded?.(true);
+    store?.commit?.settings?.setWalletLoaded?.(true);
+  }
 }
 
 /**

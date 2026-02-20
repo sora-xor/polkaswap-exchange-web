@@ -59,7 +59,7 @@ import { useNotification } from '@/composables/useNotification';
 import { useTranslation } from '@/composables/useTranslation';
 
 import { api } from '../../api';
-import GoogleLogoAsset from '../../assets/img/GoogleLogo.svg';
+import GoogleLogoAsset from '../../assets/img/GoogleLogo.svg?url';
 import store from '../../store';
 import { delay } from '../../util';
 import { lockAccountPair, unlockAccountPair } from '../../util/account';

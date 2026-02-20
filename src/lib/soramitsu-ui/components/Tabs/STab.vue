@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed, toRefs, watch } from 'vue';
+
 import type { TabsPanelApi } from './api';
 import { useTabsPanelApi } from './api';
 

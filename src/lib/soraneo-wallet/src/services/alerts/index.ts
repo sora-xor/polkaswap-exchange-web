@@ -41,7 +41,10 @@ export class AlertsApiService {
 
         notification.onclick = (event) => {
           event.preventDefault(); // prevent the browser from focusing the Notification's tab
-          window.open(`${this.baseRoute}wallet`);
+          const win = window.open(`${this.baseRoute}wallet`, '_blank', 'noopener,noreferrer');
+          if (win) {
+            win.opener = null;
+          }
         };
       }
     } catch {
