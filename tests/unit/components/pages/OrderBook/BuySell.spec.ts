@@ -520,6 +520,13 @@ afterEach(() => {
 });
 
 describe('BuySell.vue', () => {
+  it('renders pair chooser and action button inside popover reference slots', async () => {
+    const { wrapper } = await mountComponent();
+
+    expect(wrapper.find('.order-book-choose-pair').exists()).toBe(true);
+    expect(wrapper.find('.s-button-stub').exists()).toBe(true);
+  });
+
   it('renders disabled action prompting to set price when limit order lacks a quote value', async () => {
     internalConnect.isLoggedIn.value = true;
     const { wrapper } = await mountComponent({

@@ -39,7 +39,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: `yarn build && node ./scripts/testing/ipfs-preview-server.mjs --host ${serverHost} --port ${serverPort} --prefix ${ipfsPrefix}`,
+    command: `yarn build --logLevel error && node ./scripts/testing/ipfs-preview-server.mjs --host ${serverHost} --port ${serverPort} --prefix ${ipfsPrefix}`,
     url: baseURL,
     reuseExistingServer: shouldReuseExistingServer,
     stdout: 'pipe',
@@ -48,6 +48,7 @@ export default defineConfig({
       PS_IPFS_CHECK_FORCE_ONLINE: 'true',
       PS_IPFS_TEST_PREFIX: ipfsPrefix,
       PS_IPFS_TEST_PORT: String(serverPort),
+      PS_IPFS_TEST_LOG_REQUESTS: process.env.PS_IPFS_TEST_LOG_REQUESTS ?? '0',
     },
   },
 });

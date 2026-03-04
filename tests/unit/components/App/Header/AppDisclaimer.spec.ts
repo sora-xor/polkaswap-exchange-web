@@ -105,6 +105,26 @@ describe('AppDisclaimer', () => {
     expect(toggleDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);
   });
 
+  it('falls back to timed activation when IntersectionObserver is unavailable', async () => {
+    vi.stubGlobal('IntersectionObserver', undefined);
+
+    const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
+    const wrapper = mount(component, {
+      global: {
+        stubs: {
+          's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
+        },
+      },
+    });
+
+    await vi.dynamicImportSettled();
+    await Promise.resolve();
+    await nextTick();
+
+    expect(observeMock).not.toHaveBeenCalled();
+    expect(wrapper.text()).toContain('Accept & Hide');
+  });
+
   it('shows close button when disclaimer already approved', async () => {
     settingsStoreMock.userDisclaimerApprove = true;
 

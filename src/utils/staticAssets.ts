@@ -1,6 +1,7 @@
 const PROD_ENV_CONFIG_FILENAME = 'env.json';
 const DEV_ENV_CONFIG_FILENAME = 'env.dev.json';
 const INDEX_DOCUMENT_PATTERN = /index\.html?$/i;
+const IPFS_SCOPE_PATTERN = /^\/(?:ipfs|ipns)\/[^/]+/i;
 
 /**
  * Picks which static environment configuration file should be requested
@@ -68,6 +69,23 @@ const normalizeDirectoryHref = (href: string): string => {
   return trimmed.endsWith('/') ? trimmed : `${trimmed}/`;
 };
 
+const resolveRuntimeBasePath = (pathname: string): string => {
+  const normalized = pathname || '/';
+  const ipfsScope = normalized.match(IPFS_SCOPE_PATTERN)?.[0];
+
+  if (ipfsScope) {
+    return normalizeDirectoryHref(ipfsScope);
+  }
+
+  if (INDEX_DOCUMENT_PATTERN.test(normalized)) {
+    return normalizeDirectoryHref(normalized);
+  }
+
+  // The app uses hash routing and should not scope static assets to route paths
+  // such as `/swap/` or `/wallet/` on direct deep links.
+  return '/';
+};
+
 /**
  * Resolves a static asset path against the current location so requests do not
  * fall back to the origin root (which breaks when the app is hosted under a
@@ -86,7 +104,10 @@ export function resolveStaticAssetUrl(assetPath: string): string {
   }
 
   try {
-    const baseHref = normalizeDirectoryHref(stripQuery(stripFragment(href)));
+    const url = new URL(href);
+    const pathname = stripQuery(stripFragment(url.pathname));
+    const basePath = resolveRuntimeBasePath(pathname);
+    const baseHref = new URL(basePath, url.origin).toString();
     return new URL(relativePath, baseHref).toString();
   } catch {
     return relativePath;

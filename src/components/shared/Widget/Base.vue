@@ -28,7 +28,9 @@
 
         <div v-if="isPipAvailable" class="base-widget-block base-widget-pip">
           <s-button type="action" size="small" alternative @click="openPip" tooltip="Open in top window">
-            <s-icon name="finance-receive-24" size="24"></s-icon>
+            <template #icon>
+              <s-icon name="finance-receive-24" size="24"></s-icon>
+            </template>
           </s-button>
         </div>
       </div>
@@ -287,6 +289,7 @@ defineExpose({
       display: flex;
       flex-flow: column nowrap;
       flex: 1;
+      padding: 0;
     }
   }
 
@@ -309,8 +312,8 @@ $left: $inner-spacing-medium;
 
   &.full {
     width: 100%;
-    min-height: 100%;
-
+    height: 100%;
+    min-height: 0;
     flex: 1;
   }
 
@@ -370,6 +373,17 @@ $left: $inner-spacing-medium;
     &.extensive {
       // 1px for visible container inner shadow
       padding: 0 1px;
+    }
+  }
+
+  &-pip {
+    :deep(.s-button) {
+      color: var(--s-color-base-content-tertiary);
+
+      &:hover,
+      &:focus {
+        color: var(--s-color-base-content-secondary);
+      }
     }
   }
 }

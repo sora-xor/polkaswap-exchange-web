@@ -1,0 +1,35 @@
+[    1501ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_RESET @ https://telegram.org/js/telegram-web-app.js:0
+[    1867ms] [WARNING] @polkadot/keyring requires direct dependencies exactly matching version 10.4.2.
+Either remove and explicitly install matching versions or dedupe using your package manager.
+The following conflicting packages were found:
+	12.6.2	@polkadot/util @ https://polkaswap.io/assets/index-BHqySXo4.js:7
+[    1867ms] [WARNING] @polkadot/util-crypto requires direct dependencies exactly matching version 10.4.2.
+Either remove and explicitly install matching versions or dedupe using your package manager.
+The following conflicting packages were found:
+	12.6.2	@polkadot/util @ https://polkaswap.io/assets/index-BHqySXo4.js:7
+[    1987ms] [WARNING] @polkadot/types-create has multiple versions, ensure that there is only one installed.
+Either remove and explicitly install matching versions or dedupe using your package manager.
+The following conflicting packages were found:
+	cjs 9.14.2	<unknown>
+	cjs 9.14.2	<unknown> @ https://polkaswap.io/assets/index-BHqySXo4.js:7
+[    1988ms] [WARNING] @polkadot/types-codec has multiple versions, ensure that there is only one installed.
+Either remove and explicitly install matching versions or dedupe using your package manager.
+The following conflicting packages were found:
+	cjs 9.14.2	<unknown>
+	cjs 9.14.2	<unknown> @ https://polkaswap.io/assets/index-BHqySXo4.js:7
+[    2697ms] [WARNING] [TMA]: disabling TMA mode because of the error: ReferenceError: Telegram is not defined
+    at TmaSdk.init (https://polkaswap.io/assets/index-BHqySXo4.js:4483:44879)
+    at https://polkaswap.io/assets/index-BHqySXo4.js:4483:80579
+    at async o0.withLoading (https://polkaswap.io/assets/index-BHqySXo4.js:613:1354)
+    at async o0.created (https://polkaswap.io/assets/index-BHqySXo4.js:4483:80417) @ https://polkaswap.io/assets/index-BHqySXo4.js:4482
+[    7100ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[    7575ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[    8158ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[    8974ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   10253ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   12327ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   16769ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   26615ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   36982ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   47330ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   57676ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126

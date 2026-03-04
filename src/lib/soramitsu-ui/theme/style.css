@@ -571,6 +571,13 @@ circle[data-v-055160cc] {
   left: 0px;
   z-index: 999;
 }
+.s-modal__root[data-open='false'] {
+  pointer-events: none;
+}
+.s-modal__root[data-open='false'] .s-modal__overlay,
+.s-modal__root[data-open='false'] .s-modal__modal {
+  pointer-events: none;
+}
 .s-modal__overlay {
   z-index: 999;
   position: absolute;

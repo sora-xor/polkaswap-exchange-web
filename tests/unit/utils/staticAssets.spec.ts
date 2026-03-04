@@ -97,6 +97,22 @@ describe('resolveStaticAssetUrl', () => {
     expect(resolveStaticAssetUrl('env.json')).toBe('http://127.0.0.1:8080/ipfs/QmHash/env.json');
   });
 
+  it('keeps static assets rooted at the IPFS scope for deep links', () => {
+    (global as any).window = {
+      location: { href: 'https://example.org/ipfs/QmHash/swap' },
+    } as Window;
+
+    expect(resolveStaticAssetUrl('env.json')).toBe('https://example.org/ipfs/QmHash/env.json');
+  });
+
+  it('does not scope static assets to non-IPFS route paths', () => {
+    (global as any).window = {
+      location: { href: 'https://example.org/swap' },
+    } as Window;
+
+    expect(resolveStaticAssetUrl('env.dev.json')).toBe('https://example.org/env.dev.json');
+  });
+
   it('normalizes bare origins without trailing slashes', () => {
     (global as any).window = {
       location: { href: 'https://example.org' },

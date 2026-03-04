@@ -82,14 +82,20 @@ describe('TokenSelectButton', () => {
       buttonType: string;
       computedClasses: string[];
       hasToken: boolean;
-      tokenLogoComponent: string;
     };
 
     expect(exposed.hasToken).toBe(true);
     expect(exposed.buttonText).toBe('XOR-VAL');
     expect(exposed.buttonType).toBe('tertiary');
     expect(exposed.computedClasses).toContain('token-select-button--token');
-    expect(exposed.tokenLogoComponent).toBe('pair-token-logo');
+  });
+
+  it('renders token logo when a single token is provided', () => {
+    const wrapper = mountComponent({
+      token: { symbol: 'XOR' },
+    });
+
+    expect(wrapper.find('.token-logo-stub').exists()).toBe(true);
   });
 
   it('hides the icon when button is disabled even if icon prop is passed', () => {

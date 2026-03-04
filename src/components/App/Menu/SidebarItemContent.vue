@@ -63,13 +63,6 @@ $icon-size: 42px;
   height: $icon-size;
   border-radius: 50%;
   background-color: var(--s-color-utility-body);
-  // Polkaswap uses a subtle neumorphic ring on every sidebar icon so the
-  // circular buttons remain visible even when the menu background matches
-  // `--s-color-utility-body`.
-  box-shadow:
-    1px 1px 5px 0px var(--s-shadow-color-light),
-    -5px -5px 5px 0px inset rgba(255, 255, 255, 0.5),
-    1px 1px 10px 0px inset var(--s-shadow-color-dark);
   transition: var(--s-transition-default);
   > i {
     margin: auto;
@@ -85,6 +78,12 @@ $icon-size: 42px;
     @include tablet {
       display: block;
     }
+  }
+  .el-menu-item.is-active & {
+    box-shadow:
+      -1px -1px 1px var(--s-shadow-color-dark-light),
+      1px 1px 3px var(--s-shadow-color-dark),
+      inset 1px 1px 2px var(--s-shadow-color-light-dark);
   }
   .menu-item--small & {
     margin-right: 0;

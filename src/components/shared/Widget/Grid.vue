@@ -46,6 +46,7 @@ import type { ComponentPublicInstance } from 'vue';
 
 import { GridLayout, GridItem } from '@/lib/grid';
 
+import { normalizeLayoutsWithDefaults } from '@/components/shared/Widget/grid.utils';
 import { Breakpoint, BreakpointKey } from '@/consts/layout';
 import type {
   Layout,
@@ -129,6 +130,7 @@ const props = withDefaults(
     breakpoints?: LayoutConfig;
     loading?: boolean;
     flat?: boolean;
+    modelValue?: WidgetsVisibilityModel;
     value?: WidgetsVisibilityModel;
   }>(),
   {
@@ -156,19 +158,22 @@ const props = withDefaults(
     }),
     loading: false,
     flat: false,
+    modelValue: undefined,
     value: () => ({}) as WidgetsVisibilityModel,
   }
 );
 
 const emit = defineEmits<{
   (event: 'input', value: WidgetsVisibilityModel): void;
+  (event: 'update:modelValue', value: WidgetsVisibilityModel): void;
 }>();
 
 const grid = ref<ComponentPublicInstance | null>(null);
 const breakpoint = ref<BreakpointKey>(BreakpointKey.lg);
 const layouts = ref<ResponsiveLayouts>(cloneDeep(toRaw(props.defaultLayouts)));
 const layout = ref<Layout>((cloneDeep(layouts.value[breakpoint.value]) as Layout) ?? []);
-const defaultValue = ref<WidgetsVisibilityModel>(cloneDeep(props.value));
+const widgetsModel = computed<WidgetsVisibilityModel>(() => props.modelValue ?? props.value);
+const defaultValue = ref<WidgetsVisibilityModel>(cloneDeep(widgetsModel.value));
 const storageKey = computed(() => getGridStorageKey(props.gridId));
 
 const responsiveLayout = computed(() => layouts.value[breakpoint.value]);
@@ -219,7 +224,7 @@ const saveLayouts = (layoutsToSave: ResponsiveLayouts, saveToStorage = true) => 
 };
 
 const updateWidgetsModelByLayout = () => {
-  const initialModel = Object.keys(props.value).reduce<WidgetsVisibilityModel>(
+  const initialModel = Object.keys(widgetsModel.value).reduce<WidgetsVisibilityModel>(
     (acc, key) => ({ ...acc, [key]: false }),
     {}
   );
@@ -232,6 +237,7 @@ const updateWidgetsModelByLayout = () => {
   }, initialModel);
 
   emit('input', model);
+  emit('update:modelValue', model);
 };
 
 const updateLayoutsByWidgetsModel = (
@@ -276,7 +282,10 @@ const init = async () => {
     const parsedLayouts = parseLayoutsValue(storedLayouts);
 
     if (parsedLayouts) {
-      saveLayouts(parsedLayouts, false);
+      const normalizedLayouts = normalizeLayoutsWithDefaults(parsedLayouts, props.defaultLayouts, props.cols);
+      const layoutsChanged = !isEqual(normalizedLayouts)(parsedLayouts);
+
+      saveLayouts(normalizedLayouts, layoutsChanged);
     } else {
       clearLayoutsFromStorage();
       updateLayoutsByWidgetsModel(props.defaultLayouts, defaultValue.value, false);
@@ -320,6 +329,8 @@ const onLayoutUpdate = (updated: Layout) => {
   // Keep the layout reference emitted by GridLayout to avoid triggering extra prop-change cycles.
   layout.value = updated;
 
+  if (!props.draggable && !props.resizable) return;
+
   if (isEqual(prepared)(responsiveLayout.value)) return;
 
   saveLayouts({ ...layouts.value, [breakpoint.value]: prepared });
@@ -335,6 +346,8 @@ const isResizable = (widget: LayoutWidget): boolean => {
 };
 
 const onResize = (widgetId: string, rect: Size): void => {
+  if (!props.resizable) return;
+
   const nextLayout = cloneDeep(layout.value);
   const widget = findWidgetInLayout(nextLayout, widgetId);
 
@@ -349,7 +362,7 @@ const onResize = (widgetId: string, rect: Size): void => {
 };
 
 watch(
-  () => props.value,
+  widgetsModel,
   (curr, prev) => {
     if (!curr || !prev) return;
     updateLayoutWidgetsByModel(curr, prev);

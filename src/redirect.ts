@@ -1,10 +1,11 @@
-type LocationLike = Pick<Location, 'protocol' | 'hostname' | 'pathname'> & {
+type LocationLike = Pick<Location, 'protocol' | 'hostname' | 'pathname' | 'hash'> & {
   [key: string]: any;
 };
 
 const HTTPS_PROTOCOL = 'https:';
 const HTTP_PROTOCOL = 'http:';
 const IPFS_PREFIX = /^\/(ipfs|ipns)\/[^/]+/i;
+const IPFS_DEEP_PATH = /^\/(ipfs|ipns)\/([^/]+)(\/.*)$/i;
 const INDEX_DOCUMENT = /index\.html?$/i;
 
 const PRIVATE_HOSTNAME = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i;
@@ -34,6 +35,29 @@ const normaliseIndexDocument = (pathname: string): string => {
   return trimmed.endsWith('/') ? trimmed : `${trimmed}/`;
 };
 
+const normaliseHashRoute = (pathname: string): string => {
+  const trimmed = pathname.replace(/\/+$/, '');
+  return trimmed.startsWith('/') ? `#${trimmed}` : `#/${trimmed}`;
+};
+
+export function ensureIpfsHashRoute(location: LocationLike): void {
+  if (!location?.pathname) return;
+
+  const matched = location.pathname.match(IPFS_DEEP_PATH);
+  if (!matched) return;
+
+  const [, namespace, cid, nestedPath] = matched;
+  const normalizedNestedPath = nestedPath.replace(/^\/+/, '');
+
+  if (!normalizedNestedPath || INDEX_DOCUMENT.test(normalizedNestedPath)) return;
+
+  if (!location.hash || location.hash === '#') {
+    location.hash = normaliseHashRoute(nestedPath);
+  }
+
+  location.pathname = `/${namespace}/${cid}/`;
+}
+
 export function ensureTrailingSlash(location: LocationLike): void {
   if (!location?.pathname) return;
 
@@ -61,6 +85,7 @@ export function ensureTrailingSlash(location: LocationLike): void {
 
 export function normalizeLocation(location: LocationLike): void {
   ensureHttps(location);
+  ensureIpfsHashRoute(location);
   ensureTrailingSlash(location);
 }
 

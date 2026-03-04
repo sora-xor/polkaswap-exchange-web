@@ -4,6 +4,7 @@ import {
   applyWidgetsDiffToLayouts,
   deriveVisibilityModelFromLayout,
   getBreakpointFromWidth,
+  normalizeLayoutsWithDefaults,
   shallowDiff,
   sortBreakpoints,
 } from '@/components/shared/Widget/grid.utils';
@@ -66,5 +67,55 @@ describe('grid utils', () => {
 
     expect(sortBreakpoints(breakpoints)).toEqual([BreakpointKey.sm, BreakpointKey.md, BreakpointKey.lg]);
     expect(getBreakpointFromWidth(breakpoints, Breakpoint.LargeDesktop + 10)).toBe(BreakpointKey.md);
+  });
+
+  it('normalizes stored layout dimensions and removes unknown or duplicate widgets', () => {
+    const defaultLayouts: ResponsiveLayouts = {
+      [BreakpointKey.lg]: [
+        { x: 0, y: 0, w: 4, h: 3, minW: 2, minH: 3, maxH: 3, i: 'customise' },
+        { x: 0, y: 4, w: 6, h: 20, minW: 4, minH: 20, i: 'swapForm' },
+      ],
+    };
+
+    const storedLayouts: ResponsiveLayouts = {
+      [BreakpointKey.lg]: [
+        { x: -4, y: -3, w: 99, h: 30, minW: 2, minH: 3, i: 'customise' },
+        { x: 8, y: 0, w: 5, h: 20, minW: 2, minH: 3, i: 'customise' },
+        { x: 30, y: 6, w: 6, h: 20, minW: 4, minH: 20, i: 'swapForm' },
+        { x: 0, y: 0, w: 2, h: 2, i: 'unknownWidget' },
+      ],
+    };
+
+    const cols = {
+      [BreakpointKey.lg]: 24,
+      [BreakpointKey.md]: 16,
+      [BreakpointKey.sm]: 12,
+      [BreakpointKey.xs]: 8,
+      [BreakpointKey.xss]: 4,
+    };
+
+    const normalized = normalizeLayoutsWithDefaults(storedLayouts, defaultLayouts, cols);
+
+    expect(normalized[BreakpointKey.lg]).toEqual([
+      {
+        x: 0,
+        y: 0,
+        w: 24,
+        h: 3,
+        minW: 2,
+        minH: 3,
+        maxH: 3,
+        i: 'customise',
+      },
+      {
+        x: 18,
+        y: 6,
+        w: 6,
+        h: 20,
+        minW: 4,
+        minH: 20,
+        i: 'swapForm',
+      },
+    ]);
   });
 });

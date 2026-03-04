@@ -326,6 +326,19 @@ watch(
 $el-input-class: '.el-input';
 
 .s-input.token-input {
+  // New soramitsu-ui input root became a flex column with `row-gap: 16px`,
+  // which inflates token input height (131px vs 99px on polkaswap.io mobile).
+  // Keep it gapless so top/content/bottom stack matches live proportions.
+  row-gap: 0;
+
+  // Keep swap token input compact even with the newer soramitsu-ui DOM that wraps
+  // footer content into `.s-input__bottom` and adds extra vertical space by default.
+  & > .s-input__bottom {
+    min-height: 0;
+    height: auto;
+    padding: 0;
+  }
+
   & > .s-input__content {
     #{$el-input-class} {
       #{$el-input-class}__inner {
@@ -350,8 +363,9 @@ $el-input-class: '.el-input';
   }
 
   &--fiat {
-    padding: 0;
-    min-height: initial;
+    padding: 0 !important;
+    min-height: auto !important;
+    height: 21px;
     box-shadow: none !important;
     border-radius: 0;
 

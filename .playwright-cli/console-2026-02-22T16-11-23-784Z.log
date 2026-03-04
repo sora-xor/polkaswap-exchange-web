@@ -1,0 +1,36 @@
+[    1019ms] [WARNING] @polkadot/keyring requires direct dependencies exactly matching version 10.4.2.
+Either remove and explicitly install matching versions or dedupe using your package manager.
+The following conflicting packages were found:
+	12.6.2	@polkadot/util @ https://polkaswap.io/assets/index-BHqySXo4.js:7
+[    1019ms] [WARNING] @polkadot/util-crypto requires direct dependencies exactly matching version 10.4.2.
+Either remove and explicitly install matching versions or dedupe using your package manager.
+The following conflicting packages were found:
+	12.6.2	@polkadot/util @ https://polkaswap.io/assets/index-BHqySXo4.js:7
+[    1136ms] [WARNING] @polkadot/types-create has multiple versions, ensure that there is only one installed.
+Either remove and explicitly install matching versions or dedupe using your package manager.
+The following conflicting packages were found:
+	cjs 9.14.2	<unknown>
+	cjs 9.14.2	<unknown> @ https://polkaswap.io/assets/index-BHqySXo4.js:7
+[    1136ms] [WARNING] @polkadot/types-codec has multiple versions, ensure that there is only one installed.
+Either remove and explicitly install matching versions or dedupe using your package manager.
+The following conflicting packages were found:
+	cjs 9.14.2	<unknown>
+	cjs 9.14.2	<unknown> @ https://polkaswap.io/assets/index-BHqySXo4.js:7
+[    2176ms] [ERROR] Failed to load resource: the server responded with a status of 502 () @ https://polkaswap.io/assets/SelectCurrencyDialog-yZpwiExb.js:0
+[    8115ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[    8621ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[    9223ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   10215ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   11079ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   13666ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   17778ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   23152ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   33543ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   43893ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   54302ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[23827244ms] [ERROR] Access to fetch at 'https://api.subquery.network/sq/sora-xor/sora-prod' from origin 'https://polkaswap.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://polkaswap.io/#/swap:0
+[23827245ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://api.subquery.network/sq/sora-xor/sora-prod:0
+[38227208ms] [ERROR] Access to fetch at 'https://api.subquery.network/sq/sora-xor/sora-prod' from origin 'https://polkaswap.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://polkaswap.io/#/swap:0
+[38227208ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://api.subquery.network/sq/sora-xor/sora-prod:0
+[63277171ms] [ERROR] Access to fetch at 'https://api.subquery.network/sq/sora-xor/sora-prod' from origin 'https://polkaswap.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://polkaswap.io/#/swap:0
+[63277171ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://api.subquery.network/sq/sora-xor/sora-prod:0

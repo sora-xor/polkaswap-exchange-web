@@ -1,13 +1,13 @@
 <template>
   <widgets-grid
-    grid-id="swapGrid"
+    :grid-id="SWAP_GRID_ID"
     class="swap-container"
     :draggable="options.edit"
     :resizable="options.edit"
     :lines="options.edit"
     :loading="pageLoading"
     :default-layouts="DefaultLayouts"
-    v-model="widgets.value"
+    v-model="widgets"
   >
     <template v-slot:[SwapWidgets.Form]="props">
       <swap-form-widget v-bind="props" primary-title full></swap-form-widget>
@@ -34,8 +34,8 @@
       <customise-widget
         v-bind="props"
         v-model="customizePopper"
-        v-model:widgets="widgets.value"
-        v-model:options="options.value"
+        v-model:widgets="widgets"
+        v-model:options="options"
         :labels="labels"
         pip-disabled
         full
@@ -66,6 +66,7 @@ import { lazyComponent } from '@/router';
 import store from '@/store';
 import { useSwapStore } from '@/stores/swap';
 import type { ResponsiveLayouts, WidgetsVisibilityModel } from '@/types/layout';
+import { normalizeSwapRouteTokens } from '@/views/utils/normalizeSwapRouteTokens';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -114,11 +115,12 @@ const widgets = ref<WidgetsVisibilityModel>({
   [SwapWidgets.TokenPriceChart]: false,
   [SwapWidgets.SupplyChart]: false,
 });
+const SWAP_GRID_ID = 'swapGrid:v2';
 
 const DefaultLayouts: ResponsiveLayouts = {
   lg: [
     { x: 5, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-    { x: 5, y: 20, w: 6, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
+    { x: 5, y: 20, w: 6, h: 3, minW: 2, minH: 3, maxH: 3, i: SwapWidgets.Customise },
     { x: 5, y: 24, w: 6, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
     { x: 5, y: 24, w: 6, h: 8, minW: 4, minH: 8, i: SwapWidgets.TransactionDetails },
     { x: 5, y: 24, w: 6, h: 16, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
@@ -128,7 +130,7 @@ const DefaultLayouts: ResponsiveLayouts = {
   ],
   md: [
     { x: 3, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-    { x: 3, y: 20, w: 4, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
+    { x: 3, y: 20, w: 4, h: 3, minW: 2, minH: 3, maxH: 3, i: SwapWidgets.Customise },
     { x: 3, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
     { x: 3, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.TransactionDetails },
     { x: 3, y: 24, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.SupplyChart },
@@ -138,7 +140,7 @@ const DefaultLayouts: ResponsiveLayouts = {
   ],
   sm: [
     { x: 1, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-    { x: 1, y: 20, w: 4, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
+    { x: 1, y: 20, w: 4, h: 3, minW: 2, minH: 3, maxH: 3, i: SwapWidgets.Customise },
     { x: 1, y: 24, w: 4, h: 9, minW: 4, minH: 9, i: SwapWidgets.Distribution },
     { x: 1, y: 24, w: 4, h: 9, minW: 4, minH: 9, i: SwapWidgets.TransactionDetails },
     { x: 1, y: 24, w: 4, h: 20, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
@@ -147,7 +149,7 @@ const DefaultLayouts: ResponsiveLayouts = {
     { x: 5, y: 40, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.TokenPriceChart },
   ],
   xs: [
-    { x: 0, y: 0, w: 4, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
+    { x: 0, y: 0, w: 4, h: 3, minW: 2, minH: 3, maxH: 3, i: SwapWidgets.Customise },
     { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
     { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
     { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.TransactionDetails },
@@ -157,7 +159,7 @@ const DefaultLayouts: ResponsiveLayouts = {
     { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
   ],
   xss: [
-    { x: 0, y: 0, w: 4, h: 3, minW: 2, minH: 3, i: SwapWidgets.Customise },
+    { x: 0, y: 0, w: 4, h: 3, minW: 2, minH: 3, maxH: 3, i: SwapWidgets.Customise },
     { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
     { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
     { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.TransactionDetails },
@@ -173,8 +175,10 @@ const prevRoute = computed(() => store.state.router.prev as Nullable<PageNames>)
 
 const { firstRouteAddress, secondRouteAddress, isValidRoute, parseCurrentRoute, updateRouteAfterSelectTokens } =
   useSelectedTokensRoute(async ({ firstAddress, secondAddress }) => {
-    await setTokenFromAddress(firstAddress);
-    await setTokenToAddress(secondAddress);
+    const normalizedPair = normalizeSwapRouteTokens(firstAddress, secondAddress);
+
+    await setTokenFromAddress(normalizedPair.firstAddress);
+    await setTokenToAddress(normalizedPair.secondAddress);
   });
 
 watch([tokenFrom, tokenTo], ([from, to]) => {

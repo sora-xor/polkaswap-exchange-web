@@ -248,6 +248,7 @@ useCloseOnEsc(
       :class="['s-modal__root', rootClass]"
       :style="rootStyle"
       :data-absolute="absolute"
+      :data-open="showModel ? 'true' : 'false'"
       data-testid="root"
     >
       <Transition appear v-bind="overlayTransitionAttrs" v-on="overlayTransitionListeners">

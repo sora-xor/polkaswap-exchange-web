@@ -1,0 +1,101 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button [ref=e5] [cursor=pointer]:
+      - img [ref=e8]
+    - button [ref=e10] [cursor=pointer]:
+      - img [ref=e12]
+    - button "Buy Tokens" [ref=e25] [cursor=pointer]:
+      - generic [ref=e26]: Buy Tokens
+    - generic [ref=e32]:
+      - button "Connect account" [disabled] [ref=e33]:
+        - generic [ref=e34]:
+          - img [ref=e37]
+          - generic [ref=e39]: Connect account
+      - button "Settings" [ref=e42] [cursor=pointer]:
+        - img [ref=e45]
+  - generic [ref=e47]:
+    - generic [ref=e48]:
+      - button [ref=e49] [cursor=pointer]:
+        - img [ref=e52]
+      - complementary [ref=e57]:
+        - generic [ref=e58]:
+          - menubar [ref=e59]:
+            - menuitem "Swap" [ref=e60] [cursor=pointer]:
+              - link "Swap" [ref=e61]:
+                - /url: "#/swap"
+                - img [ref=e64]
+                - generic [ref=e68]: Swap
+            - menuitem "Trade" [ref=e69] [cursor=pointer]:
+              - link "Trade" [ref=e70]:
+                - /url: "#/trade"
+                - img [ref=e73]
+                - generic [ref=e75]: Trade
+            - menuitem "Rewards" [ref=e76] [cursor=pointer]:
+              - link "Rewards" [ref=e77]:
+                - /url: "#/points"
+                - img [ref=e80]
+                - generic [ref=e82]: Rewards
+            - menuitem "Pool" [ref=e83] [cursor=pointer]:
+              - link "Pool" [ref=e84]:
+                - /url: "#/pool"
+                - img [ref=e87]
+                - generic [ref=e89]: Pool
+            - menuitem "Staking" [ref=e90] [cursor=pointer]:
+              - link "Staking" [ref=e91]:
+                - /url: "#/staking"
+                - img [ref=e94]
+                - generic [ref=e96]: Staking
+            - menuitem "Bridge" [ref=e97] [cursor=pointer]:
+              - link "Bridge" [ref=e98]:
+                - /url: "#/bridge"
+                - img [ref=e101]
+                - generic [ref=e103]: Bridge
+            - menuitem "SCCP" [ref=e104] [cursor=pointer]:
+              - link "SCCP" [ref=e105]:
+                - /url: "#/bridge/sccp"
+                - img [ref=e108]
+                - generic [ref=e110]: SCCP
+            - menuitem "Account" [ref=e111] [cursor=pointer]:
+              - link "Account" [ref=e112]:
+                - /url: "#/wallet"
+                - img [ref=e115]
+                - generic [ref=e117]: Account
+            - menuitem "Kensetsu" [ref=e118] [cursor=pointer]:
+              - link "Kensetsu" [ref=e119]:
+                - /url: "#/kensetsu"
+                - img [ref=e122]
+                - generic [ref=e124]: Kensetsu
+            - menuitem "Explore" [ref=e125] [cursor=pointer]:
+              - link "Explore" [ref=e126]:
+                - /url: "#/explore"
+                - img [ref=e129]
+                - generic [ref=e131]: Explore
+            - menuitem "Statistics" [ref=e132] [cursor=pointer]:
+              - link "Statistics" [ref=e133]:
+                - /url: "#/stats"
+                - img [ref=e136]
+                - generic [ref=e138]: Statistics
+            - link "About" [ref=e139] [cursor=pointer]:
+              - /url: https://about.polkaswap.io
+              - img [ref=e142]
+              - generic [ref=e144]: About
+          - menubar
+    - generic [ref=e160] [cursor=pointer]:
+      - generic [ref=e162]: Customize page
+      - button [ref=e164]:
+        - img [ref=e167]
+  - generic [ref=e180]:
+    - generic [ref=e181]:
+      - img [ref=e183]
+      - generic [ref=e185]: Node disconnected
+    - generic [ref=e186]:
+      - img [ref=e188]
+      - generic [ref=e190]: Internet stable
+    - generic [ref=e191]:
+      - img [ref=e193]
+      - generic [ref=e195]: Statistics available
+    - generic [ref=e196]:
+      - generic [ref=e197]: Powered by
+      - link "Sora" [ref=e198] [cursor=pointer]:
+        - /url: https://sora.org
+        - img [ref=e199]

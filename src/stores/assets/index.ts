@@ -1,4 +1,4 @@
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { KnownAssets, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { defineStore } from 'pinia';
@@ -173,7 +173,11 @@ export const useAssetsStore = defineStore('assets', {
         if (!address) return undefined;
 
         const walletStore = useWalletStore();
-        const asset = walletStore.assetsDataTable?.[address];
+        const asset =
+          walletStore.assetsDataTable?.[address] ??
+          (walletStore.assets?.find((item) => item.address === address) as Nullable<Asset>) ??
+          (KnownAssets.get(address) as Nullable<Asset>);
+
         if (!asset) return null;
 
         const registered = state.registeredAssets?.[asset.address] || {};

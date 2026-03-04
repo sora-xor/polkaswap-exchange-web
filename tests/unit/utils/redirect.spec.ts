@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-import { ensureHttps, ensureTrailingSlash, shouldForceHttps } from '@/redirect';
+import { ensureHttps, ensureIpfsHashRoute, ensureTrailingSlash, shouldForceHttps } from '@/redirect';
 
 type MockLocation = {
   protocol: string;
   hostname: string;
   pathname: string;
+  hash: string;
 };
 
 function createLocation(overrides: Partial<MockLocation> = {}): MockLocation {
@@ -13,6 +14,7 @@ function createLocation(overrides: Partial<MockLocation> = {}): MockLocation {
     protocol: 'http:',
     hostname: 'example.com',
     pathname: '/ipfs/QmHash/index.html',
+    hash: '',
     ...overrides,
   };
 }
@@ -65,5 +67,35 @@ describe('redirect helpers', () => {
 
     ensureTrailingSlash(location);
     expect(location.pathname).toBe('/ipfs/QmHash/');
+  });
+
+  it('rewrites deep IPFS paths to hash-based routes', () => {
+    const location = createLocation({ pathname: '/ipfs/QmHash/swap/XOR/DAI' });
+
+    ensureIpfsHashRoute(location);
+
+    expect(location.pathname).toBe('/ipfs/QmHash/');
+    expect(location.hash).toBe('#/swap/XOR/DAI');
+  });
+
+  it('does not override an existing hash while normalizing deep IPFS paths', () => {
+    const location = createLocation({
+      pathname: '/ipfs/QmHash/swap/XOR/DAI',
+      hash: '#/bridge',
+    });
+
+    ensureIpfsHashRoute(location);
+
+    expect(location.pathname).toBe('/ipfs/QmHash/');
+    expect(location.hash).toBe('#/bridge');
+  });
+
+  it('keeps explicit IPFS index documents unchanged', () => {
+    const location = createLocation({ pathname: '/ipfs/QmHash/index.html' });
+
+    ensureIpfsHashRoute(location);
+
+    expect(location.pathname).toBe('/ipfs/QmHash/index.html');
+    expect(location.hash).toBe('');
   });
 });

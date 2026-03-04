@@ -1,5 +1,11 @@
 <template>
-  <div :class="['app-menu', { visible, collapsed, 'app-menu__loading': pageLoading }]" @click="emit('click', $event)">
+  <div
+    :class="[
+      'app-menu',
+      { visible, 'is-open': visible, 'is-closed': !visible, collapsed, 'app-menu__loading': pageLoading },
+    ]"
+    @click="emit('click', $event)"
+  >
     <s-button
       class="collapse-button"
       id="collapse-button"
@@ -10,7 +16,7 @@
       @click.stop="collapseMenu"
     ></s-button>
     <s-scrollbar class="app-sidebar-scrollbar">
-      <aside class="app-sidebar">
+      <aside ref="menuElement" class="app-sidebar">
         <slot name="head"></slot>
         <div class="app-sidebar-menu">
           <s-menu
@@ -97,9 +103,27 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, PageNames, SidebarMenuGroups, SidebarMenuItemLink, FaucetLink } from '@/consts';
+import {
+  Components,
+  PageNames,
+  PoolChildPages,
+  BridgeChildPages,
+  RewardsChildPages,
+  ExploreChildPages,
+  SidebarMenuGroups,
+  SidebarMenuItemLink,
+  FaucetLink,
+} from '@/consts';
+import { DashboardPageNames } from '@/modules/dashboard/consts';
+import { isDashboardPage } from '@/modules/dashboard/router';
+import { PoolPageNames } from '@/modules/pool/consts';
+import { StakingPageNames } from '@/modules/staking/consts';
+import { isStakingPage } from '@/modules/staking/router';
+import { VaultPageNames } from '@/modules/vault/consts';
+import { isVaultPage } from '@/modules/vault/router';
 import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
 import store from '@/store';
@@ -114,9 +138,10 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'click', event: Event): void;
-  (e: 'open-product-dialog'): void;
+  (e: 'open-product-dialog', product: string): void;
 }>();
 
+const route = useRoute();
 const { t } = useTranslation();
 
 const pageLoading = computed(() => Boolean(store.state.router?.loading));
@@ -128,8 +153,39 @@ const kensetsuEnabled = computed(() => Boolean(store.getters?.settings?.kensetsu
 const assetOwnerEnabled = computed(() => Boolean(store.getters?.settings?.assetOwnerEnabled));
 
 const menuElement = ref<HTMLElement | null>(null);
+const resizeObserver = ref<ResizeObserver | null>(null);
 
-const currentPath = computed(() => (store.state.router?.currentRoute as string) ?? '');
+const currentPath = computed(() => {
+  const currentName = route.name as PageNames;
+
+  if (!currentName) {
+    return '';
+  }
+
+  if (PoolChildPages.includes(currentName)) {
+    return PoolPageNames.Pool;
+  }
+  if (BridgeChildPages.includes(currentName)) {
+    return PageNames.Bridge;
+  }
+  if (RewardsChildPages.includes(currentName)) {
+    return PageNames.Rewards;
+  }
+  if (isStakingPage(currentName)) {
+    return StakingPageNames.Staking;
+  }
+  if (ExploreChildPages.includes(currentName)) {
+    return PageNames.ExploreTokens;
+  }
+  if (isDashboardPage(currentName)) {
+    return DashboardPageNames.AssetOwner;
+  }
+  if (isVaultPage(currentName)) {
+    return VaultPageNames.Vaults;
+  }
+
+  return currentName;
+});
 
 const sidebarMenuItems = computed(() => {
   let menuItems: SidebarMenuItemLink[] = SidebarMenuGroups.slice();
@@ -137,7 +193,7 @@ const sidebarMenuItems = computed(() => {
     menuItems = menuItems.filter(({ title }) => title !== PageNames.OrderBook);
   }
   if (!kensetsuEnabled.value) {
-    menuItems = menuItems.filter(({ title }) => title !== PageNames.KensetsuVaults);
+    menuItems = menuItems.filter(({ title }) => title !== VaultPageNames.VaultsContainer);
   }
   if (!assetOwnerEnabled.value) {
     menuItems = menuItems.filter(({ title }) => title !== PageNames.AssetOwnerContainer);
@@ -159,8 +215,8 @@ function preventAnchorNavigation(event: Event): void {
   event.preventDefault();
 }
 
-function openProductDialog(): void {
-  emit('open-product-dialog');
+function openProductDialog(product = 'soraMobile'): void {
+  emit('open-product-dialog', product);
 }
 
 function handleSelect(item: any): void {
@@ -168,18 +224,23 @@ function handleSelect(item: any): void {
 }
 
 onMounted(() => {
-  menuElement.value = document.querySelector('.app-sidebar') as HTMLElement | null;
   if (!menuElement.value) return;
-  const resizeObserver = new ResizeObserver(() => {
+
+  const updateSidebarWidth = (): void => {
     const width = menuElement.value?.clientWidth ?? 0;
     if (width) {
       document.documentElement.style.setProperty('--sidebar-width', `${width}px`);
     }
-  });
-  resizeObserver.observe(menuElement.value);
+  };
+
+  resizeObserver.value = new ResizeObserver(updateSidebarWidth);
+  resizeObserver.value.observe(menuElement.value);
+  updateSidebarWidth();
 });
 
 onBeforeUnmount(() => {
+  resizeObserver.value?.disconnect();
+  resizeObserver.value = null;
   document.documentElement.style.removeProperty('--sidebar-width');
 });
 </script>
@@ -327,7 +388,7 @@ onBeforeUnmount(() => {
     bottom: 0;
     left: 0;
     z-index: $app-sidebar-layer;
-    visibility: hidden;
+    visibility: visible;
 
     .collapse-button {
       opacity: 0;
@@ -353,9 +414,11 @@ onBeforeUnmount(() => {
       position: fixed;
       right: 0;
       z-index: $app-above-loader-layer;
+      pointer-events: none;
 
+      &.is-open,
       &.visible {
-        visibility: visible;
+        pointer-events: auto;
         background-color: rgba(42, 23, 31, 0.1);
         backdrop-filter: blur(4px);
 
@@ -367,7 +430,8 @@ onBeforeUnmount(() => {
 
       .app-sidebar {
         width: 50%;
-        min-width: calc(#{$breakpoint_mobile} / 2);
+        min-width: min(calc(#{$breakpoint_mobile} / 2), calc(100vw - #{$inner-spacing-medium * 2}));
+        max-width: calc(100vw - #{$inner-spacing-medium * 2});
         background-color: var(--s-color-utility-body);
         padding: $inner-spacing-mini $inner-spacing-medium;
         filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));

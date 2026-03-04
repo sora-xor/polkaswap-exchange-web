@@ -15,12 +15,18 @@ const toKebabCase = (name: string): string => {
     .toLowerCase();
 };
 
+const registerIfAbsent = (app: App, name: string, component: Component): void => {
+  if (!app.component(name)) {
+    app.component(name, component);
+  }
+};
+
 const registerWalletComponents = (app: App, components?: Record<string, Component>): void => {
   if (!components) return;
 
   Object.entries(components).forEach(([name, component]) => {
-    app.component(name, component);
-    app.component(toKebabCase(name), component);
+    registerIfAbsent(app, name, component);
+    registerIfAbsent(app, toKebabCase(name), component);
   });
 };
 

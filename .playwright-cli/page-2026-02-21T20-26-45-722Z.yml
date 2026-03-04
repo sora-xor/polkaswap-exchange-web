@@ -1,0 +1,59 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button [ref=e5] [cursor=pointer]
+    - button [ref=e8] [cursor=pointer]
+    - generic [ref=e9]:
+      - button [disabled] [ref=e10]:
+        - img [ref=e14]
+      - button "Settings" [ref=e18] [cursor=pointer]:
+        - img [ref=e21]
+  - generic [ref=e29]:
+    - generic:
+      - generic [ref=e34] [cursor=pointer]:
+        - generic [ref=e36]: Customize page
+        - button [ref=e38]:
+          - img [ref=e41]
+      - generic [ref=e44]:
+        - generic [ref=e46]:
+          - generic [ref=e48]: Swap
+          - generic [ref=e51]:
+            - generic [ref=e52]: "Market:"
+            - generic [ref=e53]: SMART
+            - button [ref=e55] [cursor=pointer]:
+              - img [ref=e58]
+          - button [ref=e61] [cursor=pointer]:
+            - img [ref=e64]
+        - generic [ref=e69]:
+          - button [disabled] [ref=e70]:
+            - img [ref=e73]
+          - button "Connect account" [ref=e77] [cursor=pointer]:
+            - generic [ref=e78]: Connect account
+      - generic [ref=e80]:
+        - generic [ref=e82]:
+          - generic [ref=e84]: Route
+          - button [ref=e86] [cursor=pointer]:
+            - img [ref=e89]
+        - generic [ref=e93]:
+          - generic:
+            - list
+      - generic [ref=e99]:
+        - generic [ref=e101]: XOR
+        - generic [ref=e102]:
+          - button "5m" [disabled] [ref=e104] [cursor=pointer]:
+            - generic [ref=e105]:
+              - text: 5m
+              - img [ref=e107]
+          - button [disabled] [ref=e109]:
+            - img [ref=e111]
+          - button [disabled] [ref=e113]:
+            - img [ref=e115]
+        - button [ref=e118] [cursor=pointer]:
+          - img [ref=e121]
+  - generic [ref=e132]:
+    - generic [ref=e135]: Node re-connecting
+    - generic [ref=e136]:
+      - img [ref=e138]
+      - generic [ref=e140]: Internet stable
+    - generic [ref=e141]:
+      - img [ref=e143]
+      - generic [ref=e145]: Statistics available

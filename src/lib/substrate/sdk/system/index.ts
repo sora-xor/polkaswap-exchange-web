@@ -1,5 +1,5 @@
 import { assert } from '@polkadot/util';
-import { map, Subject } from 'rxjs';
+import { EMPTY, map, Subject } from 'rxjs';
 import { FPNumber } from '@sora-substrate/math';
 import type { Observable } from '@polkadot/types/types';
 import type { GenericExtrinsic } from '@polkadot/types';
@@ -18,15 +18,21 @@ export class SystemModule<T> {
   public updated = this.subject.asObservable();
 
   get specVersion(): number {
-    return this.root.api.consts.system.version.specVersion.toNumber();
+    return this.root.connection?.api?.consts?.system?.version?.specVersion?.toNumber?.() ?? 0;
   }
 
-  public getChainDecimals(api = this.root.api): number {
-    return api.registry.chainDecimals[0];
+  public getChainDecimals(api = this.root.connection?.api): number {
+    return api?.registry?.chainDecimals?.[0] ?? 0;
   }
 
-  public getBlockNumberObservable(apiRx = this.root.apiRx): Observable<number> {
-    return apiRx.query.system.number().pipe(
+  public getBlockNumberObservable(apiRx = this.root.connection?.api?.rx): Observable<number> {
+    const getBlockNumber = apiRx?.query?.system?.number;
+
+    if (typeof getBlockNumber !== 'function') {
+      return EMPTY;
+    }
+
+    return getBlockNumber().pipe(
       map<u32, number>((codec) => {
         const blockNumber = codec.toNumber();
 
@@ -37,22 +43,40 @@ export class SystemModule<T> {
     );
   }
 
-  public getBlockHashObservable(blockNumber: number, apiRx = this.root.apiRx): Observable<string | null> {
-    return apiRx.query.system.blockHash(blockNumber).pipe(
+  public getBlockHashObservable(blockNumber: number, apiRx = this.root.connection?.api?.rx): Observable<string | null> {
+    const getBlockHash = apiRx?.query?.system?.blockHash;
+
+    if (typeof getBlockHash !== 'function') {
+      return EMPTY;
+    }
+
+    return getBlockHash(blockNumber).pipe(
       map((hash) => {
         return hash.isEmpty ? null : hash.toString();
       })
     );
   }
 
-  public async getRuntimeVersion(api = this.root.api): Promise<number | null> {
-    const data = await api.query.system.lastRuntimeUpgrade();
+  public async getRuntimeVersion(api = this.root.connection?.api): Promise<number | null> {
+    const getRuntimeUpgrade = api?.query?.system?.lastRuntimeUpgrade;
+
+    if (typeof getRuntimeUpgrade !== 'function') {
+      return null;
+    }
+
+    const data = await getRuntimeUpgrade();
     const systemInfo: FrameSystemLastRuntimeUpgradeInfo | null = data.unwrapOr(null);
     return systemInfo?.specVersion?.toNumber?.() ?? null;
   }
 
-  public getRuntimeVersionObservable(apiRx = this.root.apiRx): Observable<number | null> {
-    return apiRx.query.system.lastRuntimeUpgrade().pipe<number | null>(
+  public getRuntimeVersionObservable(apiRx = this.root.connection?.api?.rx): Observable<number | null> {
+    const getRuntimeUpgrade = apiRx?.query?.system?.lastRuntimeUpgrade;
+
+    if (typeof getRuntimeUpgrade !== 'function') {
+      return EMPTY;
+    }
+
+    return getRuntimeUpgrade().pipe<number | null>(
       map((data) => {
         const systemInfo: FrameSystemLastRuntimeUpgradeInfo | null = data.unwrapOr(null);
         return systemInfo?.specVersion?.toNumber?.() ?? null;
@@ -60,8 +84,14 @@ export class SystemModule<T> {
     );
   }
 
-  public getEventsObservable(apiRx = this.root.apiRx): Observable<Vec<FrameSystemEventRecord>> {
-    return apiRx.query.system.events();
+  public getEventsObservable(apiRx = this.root.connection?.api?.rx): Observable<Vec<FrameSystemEventRecord>> {
+    const getEvents = apiRx?.query?.system?.events;
+
+    if (typeof getEvents !== 'function') {
+      return EMPTY;
+    }
+
+    return getEvents();
   }
 
   public async getBlockHash(blockNumber: number, api = this.root.api): Promise<string> {
@@ -120,8 +150,14 @@ export class SystemModule<T> {
   }
 
   /** NetworkFeeMultiplier is for the SORA network only */
-  public getNetworkFeeMultiplierObservable(apiRx = this.root.apiRx): Observable<number> {
-    return apiRx.query.xorFee.multiplier().pipe(map<u128, number>((u128Data) => new FPNumber(u128Data).toNumber()));
+  public getNetworkFeeMultiplierObservable(apiRx = this.root.connection?.api?.rx): Observable<number> {
+    const getMultiplier = apiRx?.query?.xorFee?.multiplier;
+
+    if (typeof getMultiplier !== 'function') {
+      return EMPTY;
+    }
+
+    return getMultiplier().pipe(map<u128, number>((u128Data) => new FPNumber(u128Data).toNumber()));
   }
 
   /** Check in for the **SORATOPIA** project */

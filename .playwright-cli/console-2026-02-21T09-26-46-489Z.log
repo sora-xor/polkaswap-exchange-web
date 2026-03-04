@@ -1,0 +1,27 @@
+[     849ms] [WARNING] @polkadot/keyring requires direct dependencies exactly matching version 10.4.2.
+Either remove and explicitly install matching versions or dedupe using your package manager.
+The following conflicting packages were found:
+	12.6.2	@polkadot/util @ https://polkaswap.io/assets/index-BHqySXo4.js:7
+[     849ms] [WARNING] @polkadot/util-crypto requires direct dependencies exactly matching version 10.4.2.
+Either remove and explicitly install matching versions or dedupe using your package manager.
+The following conflicting packages were found:
+	12.6.2	@polkadot/util @ https://polkaswap.io/assets/index-BHqySXo4.js:7
+[     965ms] [WARNING] @polkadot/types-create has multiple versions, ensure that there is only one installed.
+Either remove and explicitly install matching versions or dedupe using your package manager.
+The following conflicting packages were found:
+	cjs 9.14.2	<unknown>
+	cjs 9.14.2	<unknown> @ https://polkaswap.io/assets/index-BHqySXo4.js:7
+[     966ms] [WARNING] @polkadot/types-codec has multiple versions, ensure that there is only one installed.
+Either remove and explicitly install matching versions or dedupe using your package manager.
+The following conflicting packages were found:
+	cjs 9.14.2	<unknown>
+	cjs 9.14.2	<unknown> @ https://polkaswap.io/assets/index-BHqySXo4.js:7
+[    4370ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[    5016ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[    5016ms] [WARNING] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: WebSocket is closed before the connection is established. @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[    5685ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[    6537ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[    7442ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[    8930ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   12059ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
+[   17956ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126

@@ -182,9 +182,16 @@ function toggleMenu(): void {
 
 .app-menu-button {
   margin-right: $inner-spacing-mini;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
 }
 
-@include desktop(true) {
+.app-logo--header {
+  flex-shrink: 0;
+}
+
+@include desktop {
   .app-menu-button {
     display: none;
   }

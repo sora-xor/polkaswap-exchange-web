@@ -163,7 +163,6 @@ const { localStorageMock } = vi.hoisted(() => {
 let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
 beforeAll(() => {
-  console.log('useWalletConnect beforeAll start');
   consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 });
 

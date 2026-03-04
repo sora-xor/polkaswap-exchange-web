@@ -9,40 +9,18 @@ import { access, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { normalizePrefix, parseArgs, shouldServeHealth, toBooleanFlag } from './ipfs-preview-config.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..', '..');
 const distDir = path.join(projectRoot, 'dist');
 
-function parseArgs(argv) {
-  return argv.reduce((acc, arg) => {
-    const [key, value] = arg.startsWith('--') ? arg.slice(2).split('=') : [];
-    if (!key) return acc;
-    if (value !== undefined) {
-      acc[key] = value;
-      return acc;
-    }
-
-    const next = argv[argv.indexOf(arg) + 1];
-    if (next && !next.startsWith('--')) {
-      acc[key] = next;
-    } else {
-      acc[key] = true;
-    }
-    return acc;
-  }, {});
-}
-
 const args = parseArgs(process.argv.slice(2));
 
 const host = args.host ?? process.env.PS_IPFS_TEST_HOST ?? '127.0.0.1';
 const port = Number(args.port ?? process.env.PS_IPFS_TEST_PORT ?? '4173');
-const prefix = (() => {
-  const raw = args.prefix ?? process.env.PS_IPFS_TEST_PREFIX ?? '/ipfs/polkaswap-e2e';
-  const trimmed = raw.trim();
-  const normalized = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
-  return normalized.endsWith('/') ? normalized : `${normalized}/`;
-})();
+const prefix = normalizePrefix(args.prefix ?? process.env.PS_IPFS_TEST_PREFIX);
+const logRequests = toBooleanFlag(args['log-requests'] ?? process.env.PS_IPFS_TEST_LOG_REQUESTS, false);
 
 const mimeTypes = {
   '.css': 'text/css; charset=utf-8',
@@ -127,9 +105,14 @@ const server = createServer(async (req, res) => {
   try {
     const url = new URL(req.url ?? '/', `http://${req.headers.host ?? `${host}:${port}`}`);
     const start = Date.now();
+    const logRequest = (message) => {
+      if (logRequests) {
+        console.log(message);
+      }
+    };
     const respond = (status, message) => {
       const duration = Date.now() - start;
-      console.log(`[ipfs-preview] ${req.method ?? 'GET'} ${url.pathname} -> ${status} (${duration}ms)`);
+      logRequest(`[ipfs-preview] ${req.method ?? 'GET'} ${url.pathname} -> ${status} (${duration}ms)`);
       if (!res.headersSent) {
         res.writeHead(status, { 'Content-Type': 'text/plain; charset=utf-8' });
       }
@@ -139,7 +122,7 @@ const server = createServer(async (req, res) => {
         res.end();
       }
     };
-    if (url.pathname === '/' || url.pathname === '' || url.pathname === '/healthz') {
+    if (shouldServeHealth(url.pathname, prefix)) {
       respond(200, 'ipfs-preview-ok');
       return;
     }
@@ -175,7 +158,7 @@ const server = createServer(async (req, res) => {
       })
       .on('close', () => {
         const duration = Date.now() - start;
-        console.log(
+        logRequest(
           `[ipfs-preview] ${req.method ?? 'GET'} ${url.pathname} -> 200 (${duration}ms) [${asset.contentType}]`
         );
       });

@@ -13,6 +13,17 @@ export function normalizeHashHref(href: string): string {
   // Keep absolute URLs intact (e.g. "https://polkaswap.io/#/swap").
   if (href.startsWith('/#')) return href.slice(1);
 
+  // Normalize root-relative route-like links to hash-router links
+  // (e.g. "/swap" -> "#/swap") so they don't escape nested static hosting.
+  if (href.startsWith('/') && !href.startsWith('//')) {
+    const isIpfsRoot = /^\/(ipfs|ipns)\//i.test(href);
+    const hasFileExtension = /\.[a-z0-9]+(?:[?#]|$)/i.test(href);
+
+    if (!isIpfsRoot && !hasFileExtension) {
+      return `#${href}`;
+    }
+  }
+
   return href;
 }
 

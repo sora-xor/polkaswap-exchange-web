@@ -62,7 +62,9 @@ defineExpose({
 <style lang="scss">
 .transaction-details-popper.el-popover.el-popper {
   @include popper-content;
-  min-width: 420px;
+  width: min(420px, calc(100vw - 24px));
+  min-width: min(420px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
 }
 </style>
 

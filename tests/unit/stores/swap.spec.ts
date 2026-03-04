@@ -1,4 +1,5 @@
 import { FPNumber } from '@sora-substrate/math';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { createPinia, setActivePinia } from 'pinia';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -214,7 +215,7 @@ describe('swap store', () => {
   it('initializes with default state', () => {
     const store = useSwapStore();
 
-    expect(store.tokenFromAddress).toBe('');
+    expect(store.tokenFromAddress).toBe(XOR.address);
     expect(store.tokenToAddress).toBe('');
     expect(store.fromValue).toBe('');
     expect(store.toValue).toBe('');

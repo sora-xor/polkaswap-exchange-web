@@ -38,7 +38,10 @@
     "test:unit": "node ./scripts/testing/run-vitest-unit.mjs",
     "test:ipfs": "node ./scripts/ipfs-smoke.mjs",
     "test:translation": "vitest run --config vitest.config.mjs --project translation --pass-with-no-tests",
-    "test:e2e": "playwright test",
+    "test:e2e": "env -u NO_COLOR playwright test",
+    "test:e2e:all": "yarn test:e2e tests/e2e/ui && yarn test:e2e:root && yarn test:e2e:live",
+    "test:e2e:root": "env -u NO_COLOR PS_PLAYWRIGHT_REUSE_SERVER=0 PS_IPFS_TEST_PREFIX='' playwright test tests/e2e/ui/app.spec.ts tests/e2e/ui/navigation.spec.ts",
+    "test:e2e:live": "env -u NO_COLOR PS_E2E_LIVE_NETWORK=1 playwright test tests/e2e/ui/live-runtime.spec.ts",
     "test:all": "yarn test:unit"
   },
   "dependencies": {

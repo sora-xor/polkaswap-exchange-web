@@ -54,6 +54,15 @@ $base-class: '.status-action-badge';
     transform: translate(0, -50%);
     background-color: var(--s-color-utility-body);
     border-radius: 50%;
+
+    :deep(.s-button) {
+      color: var(--s-color-base-content-tertiary);
+
+      &:hover,
+      &:focus {
+        color: var(--s-color-base-content-secondary);
+      }
+    }
   }
 }
 </style>

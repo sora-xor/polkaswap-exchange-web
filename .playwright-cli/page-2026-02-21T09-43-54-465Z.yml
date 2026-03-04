@@ -1,0 +1,166 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button [ref=e5] [cursor=pointer]:
+      - img [ref=e8]
+    - button [ref=e10] [cursor=pointer]:
+      - img [ref=e12]
+    - button "Buy Tokens" [ref=e25] [cursor=pointer]:
+      - generic [ref=e26]: Buy Tokens
+    - generic [ref=e32]:
+      - button "Connect account" [disabled] [ref=e33]:
+        - generic [ref=e34]:
+          - img [ref=e37]
+          - generic [ref=e39]: Connect account
+      - button "Settings" [ref=e42] [cursor=pointer]:
+        - img [ref=e45]
+  - generic [ref=e47]:
+    - generic [ref=e48]:
+      - button [ref=e49] [cursor=pointer]:
+        - img [ref=e52]
+      - complementary [ref=e57]:
+        - generic [ref=e58]:
+          - menubar [ref=e59]:
+            - menuitem "Swap" [ref=e60] [cursor=pointer]:
+              - link "Swap" [ref=e61]:
+                - /url: "#/swap"
+                - img [ref=e64]
+                - generic [ref=e68]: Swap
+            - menuitem "Trade" [ref=e69] [cursor=pointer]:
+              - link "Trade" [ref=e70]:
+                - /url: "#/trade"
+                - img [ref=e73]
+                - generic [ref=e75]: Trade
+            - menuitem "Rewards" [ref=e76] [cursor=pointer]:
+              - link "Rewards" [ref=e77]:
+                - /url: "#/points"
+                - img [ref=e80]
+                - generic [ref=e82]: Rewards
+            - menuitem "Pool" [ref=e83] [cursor=pointer]:
+              - link "Pool" [ref=e84]:
+                - /url: "#/pool"
+                - img [ref=e87]
+                - generic [ref=e89]: Pool
+            - menuitem "Staking" [ref=e90] [cursor=pointer]:
+              - link "Staking" [ref=e91]:
+                - /url: "#/staking"
+                - img [ref=e94]
+                - generic [ref=e96]: Staking
+            - menuitem "Bridge" [ref=e97] [cursor=pointer]:
+              - link "Bridge" [ref=e98]:
+                - /url: "#/bridge"
+                - img [ref=e101]
+                - generic [ref=e103]: Bridge
+            - menuitem "SCCP" [ref=e104] [cursor=pointer]:
+              - link "SCCP" [ref=e105]:
+                - /url: "#/bridge/sccp"
+                - img [ref=e108]
+                - generic [ref=e110]: SCCP
+            - menuitem "Account" [ref=e111] [cursor=pointer]:
+              - link "Account" [ref=e112]:
+                - /url: "#/wallet"
+                - img [ref=e115]
+                - generic [ref=e117]: Account
+            - menuitem "Kensetsu" [ref=e118] [cursor=pointer]:
+              - link "Kensetsu" [ref=e119]:
+                - /url: "#/kensetsu"
+                - img [ref=e122]
+                - generic [ref=e124]: Kensetsu
+            - menuitem "Explore" [ref=e125] [cursor=pointer]:
+              - link "Explore" [ref=e126]:
+                - /url: "#/explore"
+                - img [ref=e129]
+                - generic [ref=e131]: Explore
+            - menuitem "Statistics" [ref=e132] [cursor=pointer]:
+              - link "Statistics" [ref=e133]:
+                - /url: "#/stats"
+                - img [ref=e136]
+                - generic [ref=e138]: Statistics
+            - link "About" [ref=e139] [cursor=pointer]:
+              - /url: https://about.polkaswap.io
+              - img [ref=e142]
+              - generic [ref=e144]: About
+          - menubar
+    - generic [ref=e154]:
+      - generic:
+        - generic [ref=e156]:
+          - generic [ref=e158]:
+            - generic [ref=e160]: Swap
+            - generic [ref=e163]:
+              - generic [ref=e164]: "Market:"
+              - generic [ref=e165]: SMART
+              - button [ref=e167] [cursor=pointer]:
+                - img [ref=e170]
+            - button [ref=e173] [cursor=pointer]:
+              - img [ref=e176]
+          - generic [ref=e181]:
+            - button [disabled] [ref=e182]:
+              - img [ref=e185]
+            - button "Connect account" [ref=e189] [cursor=pointer]:
+              - generic [ref=e190]: Connect account
+        - generic [ref=e195] [cursor=pointer]:
+          - generic [ref=e197]: Customize page
+          - button [ref=e199]:
+            - img [ref=e202]
+        - generic [ref=e206]:
+          - generic [ref=e208]:
+            - generic [ref=e210]: Route
+            - button [ref=e212] [cursor=pointer]:
+              - img [ref=e215]
+          - generic [ref=e219]:
+            - generic:
+              - list
+        - generic [ref=e221]:
+          - generic [ref=e223]:
+            - generic [ref=e225]: Transaction details
+            - button [ref=e227] [cursor=pointer]:
+              - img [ref=e230]
+          - generic [ref=e235]: Choose tokens
+        - generic [ref=e239]:
+          - generic [ref=e240]:
+            - generic [ref=e241]: Token supply
+            - img [ref=e244]
+          - button "1D" [ref=e248] [cursor=pointer]:
+            - generic [ref=e249]:
+              - text: 1D
+              - img [ref=e251]
+          - button [ref=e254] [cursor=pointer]:
+            - img [ref=e257]
+        - generic [ref=e265]:
+          - generic [ref=e267]:
+            - button "5m" [disabled] [ref=e269] [cursor=pointer]:
+              - generic [ref=e270]:
+                - text: 5m
+                - img [ref=e272]
+            - button [disabled] [ref=e274]
+            - button [disabled] [ref=e275]
+          - button [ref=e277] [cursor=pointer]:
+            - img [ref=e280]
+        - generic [ref=e286]:
+          - generic [ref=e288]:
+            - generic [ref=e290]: Transactions
+            - button [ref=e292] [cursor=pointer]:
+              - img [ref=e295]
+          - generic [ref=e303]: No Data
+        - generic [ref=e307]:
+          - generic [ref=e309]:
+            - button "5m" [ref=e311] [cursor=pointer]:
+              - generic [ref=e312]:
+                - text: 5m
+                - img [ref=e314]
+            - button [ref=e316] [cursor=pointer]
+            - button [ref=e317] [cursor=pointer]
+          - button [ref=e319] [cursor=pointer]:
+            - img [ref=e322]
+  - generic [ref=e331]:
+    - generic [ref=e334]: Node re-connecting
+    - generic [ref=e335]:
+      - img [ref=e337]
+      - generic [ref=e339]: Internet stable
+    - generic [ref=e340]:
+      - img [ref=e342]
+      - generic [ref=e344]: Statistics available
+    - generic [ref=e345]:
+      - generic [ref=e346]: Powered by
+      - link "Sora" [ref=e347] [cursor=pointer]:
+        - /url: https://sora.org
+        - img [ref=e348]

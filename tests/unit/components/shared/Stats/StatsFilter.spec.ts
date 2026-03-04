@@ -74,17 +74,24 @@ describe('StatsFilter.vue', () => {
     exposed?.toggleMenu();
     await nextTick();
     expect(exposed?.visibility.value).toBe(true);
-    expect(addListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
+    const outsideEvent = 'PointerEvent' in window ? 'pointerdown' : 'click';
+    expect(addListenerSpy).toHaveBeenCalledWith(outsideEvent, expect.any(Function));
+    if (!('PointerEvent' in window)) {
+      expect(addListenerSpy).toHaveBeenCalledWith('touchstart', expect.any(Function));
+    }
 
-    const clickListenerCall = addListenerSpy.mock.calls.find(([event]) => event === 'click');
-    expect(clickListenerCall).toBeTruthy();
-    const clickHandler = clickListenerCall?.[1] as EventListener;
-    expect(clickHandler).toBeTypeOf('function');
+    const outsideListenerCall = addListenerSpy.mock.calls.find(([event]) => event === outsideEvent);
+    expect(outsideListenerCall).toBeTruthy();
+    const outsideHandler = outsideListenerCall?.[1] as EventListener;
+    expect(outsideHandler).toBeTypeOf('function');
 
     exposed?.closeMenu();
     await nextTick();
     expect(exposed?.visibility.value).toBe(false);
-    expect(removeListenerSpy).toHaveBeenCalledWith('click', clickHandler);
+    expect(removeListenerSpy).toHaveBeenCalledWith(outsideEvent, outsideHandler);
+    if (!('PointerEvent' in window)) {
+      expect(removeListenerSpy).toHaveBeenCalledWith('touchstart', outsideHandler);
+    }
 
     wrapper.unmount();
     addListenerSpy.mockRestore();
@@ -106,12 +113,16 @@ describe('StatsFilter.vue', () => {
     exposed?.toggleMenu();
     await nextTick();
     expect(exposed?.visibility.value).toBe(true);
-    expect(addListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
+    const outsideEvent = 'PointerEvent' in window ? 'pointerdown' : 'click';
+    expect(addListenerSpy).toHaveBeenCalledWith(outsideEvent, expect.any(Function));
+    if (!('PointerEvent' in window)) {
+      expect(addListenerSpy).toHaveBeenCalledWith('touchstart', expect.any(Function));
+    }
 
-    const clickListenerCall = addListenerSpy.mock.calls.find(([event]) => event === 'click');
-    expect(clickListenerCall).toBeTruthy();
-    const clickHandler = clickListenerCall?.[1] as EventListener;
-    expect(clickHandler).toBeTypeOf('function');
+    const outsideListenerCall = addListenerSpy.mock.calls.find(([event]) => event === outsideEvent);
+    expect(outsideListenerCall).toBeTruthy();
+    const outsideHandler = outsideListenerCall?.[1] as EventListener;
+    expect(outsideHandler).toBeTypeOf('function');
 
     await wrapper.setProps({ disabled: true });
     expect(wrapper.props('disabled')).toBe(true);
@@ -126,10 +137,108 @@ describe('StatsFilter.vue', () => {
     exposed?.toggleMenu();
     await nextTick();
     expect(exposed?.visibility.value).toBe(false);
-    expect(removeListenerSpy).toHaveBeenCalledWith('click', clickHandler);
+    expect(removeListenerSpy).toHaveBeenCalledWith(outsideEvent, outsideHandler);
+    if (!('PointerEvent' in window)) {
+      expect(removeListenerSpy).toHaveBeenCalledWith('touchstart', outsideHandler);
+    }
 
     wrapper.unmount();
     addListenerSpy.mockRestore();
     removeListenerSpy.mockRestore();
+  });
+
+  it('closes an open menu on outside pointer interaction', async () => {
+    const wrapper = mountComponent();
+    await nextTick();
+
+    const exposed = (
+      wrapper.vm as {
+        $: { exposed?: { toggleMenu: () => void; visibility: { value: boolean } } };
+      }
+    ).$?.exposed;
+
+    expect(exposed).toBeTruthy();
+    exposed?.toggleMenu();
+    await nextTick();
+    expect(exposed?.visibility.value).toBe(true);
+
+    const outsideTarget = document.createElement('div');
+    document.body.appendChild(outsideTarget);
+    if ('PointerEvent' in window) {
+      outsideTarget.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    } else {
+      outsideTarget.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    }
+    await nextTick();
+
+    expect(exposed?.visibility.value).toBe(false);
+
+    wrapper.unmount();
+  });
+
+  it('closes an open menu on viewport resize', async () => {
+    const wrapper = mountComponent();
+    await nextTick();
+
+    const exposed = (
+      wrapper.vm as {
+        $: { exposed?: { toggleMenu: () => void; visibility: { value: boolean } } };
+      }
+    ).$?.exposed;
+
+    expect(exposed).toBeTruthy();
+    exposed?.toggleMenu();
+    await nextTick();
+    expect(exposed?.visibility.value).toBe(true);
+
+    window.dispatchEvent(new Event('resize'));
+    await nextTick();
+
+    expect(exposed?.visibility.value).toBe(false);
+    wrapper.unmount();
+  });
+
+  it('closes an open menu on hash navigation change', async () => {
+    const wrapper = mountComponent();
+    await nextTick();
+
+    const exposed = (
+      wrapper.vm as {
+        $: { exposed?: { toggleMenu: () => void; visibility: { value: boolean } } };
+      }
+    ).$?.exposed;
+
+    expect(exposed).toBeTruthy();
+    exposed?.toggleMenu();
+    await nextTick();
+    expect(exposed?.visibility.value).toBe(true);
+
+    window.dispatchEvent(new Event('hashchange'));
+    await nextTick();
+
+    expect(exposed?.visibility.value).toBe(false);
+    wrapper.unmount();
+  });
+
+  it('closes an open menu on history popstate event', async () => {
+    const wrapper = mountComponent();
+    await nextTick();
+
+    const exposed = (
+      wrapper.vm as {
+        $: { exposed?: { toggleMenu: () => void; visibility: { value: boolean } } };
+      }
+    ).$?.exposed;
+
+    expect(exposed).toBeTruthy();
+    exposed?.toggleMenu();
+    await nextTick();
+    expect(exposed?.visibility.value).toBe(true);
+
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    await nextTick();
+
+    expect(exposed?.visibility.value).toBe(false);
+    wrapper.unmount();
   });
 });

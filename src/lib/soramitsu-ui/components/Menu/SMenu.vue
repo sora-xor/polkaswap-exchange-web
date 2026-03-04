@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, readonly, ref, watch } from 'vue';
+import { computed, provide, ref, watch } from 'vue';
 import { MENU_CONTEXT_KEY } from './api';
 
 defineOptions({ name: 'SMenu' });
@@ -43,13 +43,10 @@ function select(value: string): void {
   emit('select', value);
 }
 
-provide(
-  MENU_CONTEXT_KEY,
-  readonly({
-    active,
-    select,
-  })
-);
+provide(MENU_CONTEXT_KEY, {
+  active,
+  select,
+});
 
 const menuStyles = computed(() => ({
   '--s-menu-background': props.backgroundColor,

@@ -75,6 +75,8 @@ $account-control-name-max-width: 200px;
   &-title {
     display: none;
     font-size: var(--s-font-size-small);
+    font-weight: 700;
+    text-transform: uppercase;
     max-width: $account-control-name-max-width;
     overflow: hidden;
     text-overflow: ellipsis;

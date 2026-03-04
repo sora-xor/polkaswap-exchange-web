@@ -77,8 +77,9 @@ const headlineHtml = computed(() => {
 
 <style lang="scss">
 .popup .el-dialog {
-  max-width: 660px !important;
-  margin-top: 22vh !important;
+  width: min(660px, calc(100vw - 24px)) !important;
+  max-width: min(660px, calc(100vw - 24px)) !important;
+  margin-top: clamp(16px, 22vh, 180px) !important;
 }
 
 .popup-info {
@@ -102,6 +103,12 @@ const headlineHtml = computed(() => {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  gap: $inner-spacing-medium;
+}
+
+.popup-info {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 @include mobile-app-logos;
@@ -109,22 +116,77 @@ const headlineHtml = computed(() => {
 .popup-app {
   display: flex;
   position: relative;
+  flex: 0 0 auto;
+  justify-content: center;
+  min-width: 260px;
+
   &__qr-code {
     width: 244px;
     height: 244px;
     position: absolute;
-    left: 20%;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 8%;
+    top: 0;
   }
+
   &__left-image {
     height: 320px;
     width: 200px;
     margin-top: -50px;
   }
+
   &__right-image {
     height: 260px;
     width: 150px;
     margin-left: -50px;
+  }
+}
+
+@include tablet(true) {
+  .popup-mobile {
+    flex-direction: column;
+    gap: $inner-spacing-small;
+  }
+
+  .popup-app {
+    width: 100%;
+    min-width: 0;
+    padding-top: $inner-spacing-medium;
+
+    &__left-image {
+      width: auto;
+      height: 220px;
+      margin-top: 0;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    &__right-image {
+      display: none;
+    }
+
+    &__qr-code {
+      width: 156px;
+      height: 156px;
+      top: 32px;
+    }
+  }
+}
+
+@include mobile(true) {
+  .popup-app {
+    padding-top: $inner-spacing-small;
+
+    &__left-image {
+      height: 188px;
+    }
+
+    &__qr-code {
+      width: 132px;
+      height: 132px;
+      top: 28px;
+    }
   }
 }
 </style>

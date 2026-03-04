@@ -1,6 +1,8 @@
 <template>
   <s-button :class="classes" type="action" v-bind="attrs">
-    <component :is="iconComponent"></component>
+    <template #icon>
+      <component :is="iconComponent"></component>
+    </template>
   </s-button>
 </template>
 

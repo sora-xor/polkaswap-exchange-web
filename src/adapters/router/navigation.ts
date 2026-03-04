@@ -51,7 +51,9 @@ export const syncLegacyRoute = (params: RouterParams): void => {
 
 export const setLegacyRouterLoading = (loading: boolean): void => {
   const setLoading = withRouterCommit(
-    (legacyStore) => legacyStore?.commit?.router?.setLoading,
+    (legacyStore) =>
+      (legacyStore?.commit?.router?.setLoading as Nullable<(loading: boolean) => void>) ??
+      (legacyStore?.commit?.wallet?.router?.setLoading as Nullable<(loading: boolean) => void>),
     'router.setLoading missing'
   );
 

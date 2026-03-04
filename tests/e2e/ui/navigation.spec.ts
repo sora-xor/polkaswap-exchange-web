@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 
 import { ensureAppLoaded, expectHash, ipfsEntryUrl, preparePage, trackConsole } from './support/ipfs';
 
@@ -18,10 +18,72 @@ const expectNoCorruptedUiText = async (page: Page): Promise<void> => {
   }
 };
 
+const expectNoHorizontalOverflow = async (page: Page): Promise<void> => {
+  const metrics = await page.evaluate(() => {
+    const viewportWidth = window.innerWidth;
+    const docScrollWidth = document.documentElement.scrollWidth;
+    const bodyScrollWidth = document.body.scrollWidth;
+
+    return { viewportWidth, docScrollWidth, bodyScrollWidth };
+  });
+
+  expect(metrics.docScrollWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
+  expect(metrics.bodyScrollWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
+};
+
+const expectLocatorWithinViewport = async (page: Page, selector: string): Promise<void> => {
+  const metrics = await page
+    .locator(selector)
+    .first()
+    .evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+
+      return {
+        top: rect.top,
+        left: rect.left,
+        right: rect.right,
+        bottom: rect.bottom,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+      };
+    });
+
+  expect(metrics.left).toBeGreaterThanOrEqual(-1);
+  expect(metrics.top).toBeGreaterThanOrEqual(-1);
+  expect(metrics.right).toBeLessThanOrEqual(metrics.viewportWidth + 1);
+  expect(metrics.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
+};
+
+const expectLocatorBoxWithinViewport = async (locator: Locator): Promise<void> => {
+  const metrics = await locator.first().evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+
+    return {
+      top: rect.top,
+      left: rect.left,
+      right: rect.right,
+      bottom: rect.bottom,
+      viewportWidth: window.innerWidth,
+      viewportHeight: window.innerHeight,
+    };
+  });
+
+  expect(metrics.left).toBeGreaterThanOrEqual(-1);
+  expect(metrics.top).toBeGreaterThanOrEqual(-1);
+  expect(metrics.right).toBeLessThanOrEqual(metrics.viewportWidth + 1);
+  expect(metrics.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
+};
+
 const openSwap = async (page: Page): Promise<void> => {
   await page.goto(`${ipfsEntryUrl}#/swap`);
   await ensureAppLoaded(page);
   await expectHash(page, '#/swap');
+};
+
+const openTrade = async (page: Page): Promise<void> => {
+  await page.goto(`${ipfsEntryUrl}#/trade`);
+  await ensureAppLoaded(page);
+  await expectHash(page, '#/trade');
 };
 
 test.beforeEach(async ({ page }) => {
@@ -80,6 +142,1575 @@ test('collapses and expands the sidebar menu', async ({ page }) => {
   await expect(sidebar).toHaveClass(/collapsed/);
   await collapseButton.click();
   await expect(sidebar).not.toHaveClass(/collapsed/);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('opens and closes mobile sidebar from header menu button', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+
+  await expect(menuButton).toBeVisible();
+  await expect(menu).toHaveClass(/is-closed/);
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await page.mouse.click(380, 120);
+  await expect(menu).toHaveClass(/is-closed/);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes mobile sidebar with Escape key', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await page.keyboard.press('Escape');
+  await expect(menu).toHaveClass(/is-closed/);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('navigates from mobile sidebar and closes menu after selection', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await page.getByRole('link', { name: 'Bridge', exact: true }).first().click();
+  await expectHash(page, '#/bridge');
+  await expect(menu).toHaveClass(/is-closed/);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes mobile sidebar on external hash navigation', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await page.evaluate(() => {
+    window.location.hash = '#/bridge';
+  });
+  await expectHash(page, '#/bridge');
+  await expect(menu).toHaveClass(/is-closed/);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps swap controls clickable after mobile sidebar open-close cycle', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+  const settingsButton = page.locator('.el-button--settings').first();
+  const settingsDialog = page.locator('.market-algorithm');
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await page.mouse.click(380, 120);
+  await expect(menu).toHaveClass(/is-closed/);
+
+  await settingsButton.click();
+  await expect(settingsDialog).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(settingsDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('restores swap control clickability immediately after closing mobile sidebar', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+  const settingsButton = page.locator('.el-button--settings').first();
+  const settingsDialog = page.locator('.market-algorithm').first();
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await page.mouse.click(380, 120);
+  await expect(menu).toHaveClass(/is-closed/);
+
+  await settingsButton.click({ trial: true, timeout: 100 });
+  await settingsButton.click();
+  await expect(settingsDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(settingsDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps mobile account button clickable when sidebar is closed', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSwap(page);
+
+  const menu = page.locator('.app-menu');
+  const accountButton = page.locator('.account-control').first();
+
+  await expect(menu).toHaveClass(/is-closed/);
+  await expect(accountButton).toBeVisible();
+
+  await accountButton.click();
+  await expectHash(page, '#/wallet');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes header settings overlay on escape and outside click', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.keyboard.press('Escape');
+  await expect(settingsOverlay).toHaveCount(0);
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.mouse.click(20, 200);
+  await expect(settingsOverlay).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps header settings overlay within viewport on desktop', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.header-menu');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes header settings overlay on hash navigation change', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.evaluate(() => {
+    window.location.hash = '#/bridge';
+  });
+  await expectHash(page, '#/bridge');
+  await expect(settingsOverlay).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('navigates to wallet from Connect account after closing settings overlay', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const connectAccountButton = page.getByRole('button', { name: /connect account/i }).first();
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.keyboard.press('Escape');
+  await expect(settingsOverlay).toHaveCount(0);
+
+  await connectAccountButton.click();
+  await expectHash(page, '#/wallet');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps header account control clickable after closing settings overlay', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const accountControl = page.locator('.header .account-control').first();
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.keyboard.press('Escape');
+  await expect(settingsOverlay).toHaveCount(0);
+
+  await accountControl.click();
+  await expectHash(page, '#/wallet');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('opens swap connect-account dialog while settings overlay is open', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const connectAccountButton = page.locator('.swap-form .action-button', { hasText: /connect account/i });
+  const accountDialog = page.getByRole('dialog').filter({ hasText: /Learn more about wallet connection/i });
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await connectAccountButton.click();
+  await expect(accountDialog).toBeVisible();
+  await expect(settingsOverlay).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps swap connect-account dialog within viewport on extra narrow mobile screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 653 });
+  await openSwap(page);
+
+  const connectAccountButton = page.locator('.swap-form .action-button', { hasText: /connect account/i });
+  const accountDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /Learn more about wallet connection/i })
+    .first();
+  const accountDialogCard = accountDialog.locator('.dialog-card').first();
+
+  await expect(connectAccountButton).toBeVisible();
+  await connectAccountButton.click();
+  await expect(accountDialog).toBeVisible();
+  await expect(accountDialogCard).toBeVisible();
+  await expectLocatorBoxWithinViewport(accountDialogCard);
+  await expectNoHorizontalOverflow(page);
+
+  await page.keyboard.press('Escape');
+  await expect(accountDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps swap select-token dialog within viewport on extra narrow mobile screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 653 });
+  await openSwap(page);
+
+  const selectTokenTrigger = page.getByRole('button', { name: /choose token/i }).first();
+  const selectTokenDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /select( a)? token/i })
+    .first();
+  const selectTokenDialogCard = selectTokenDialog.locator('.dialog-card').first();
+
+  await expect(selectTokenTrigger).toBeVisible();
+  await selectTokenTrigger.click();
+
+  await expect(selectTokenDialog).toBeVisible();
+  await expect(selectTokenDialogCard).toBeVisible();
+  await expectLocatorBoxWithinViewport(selectTokenDialogCard);
+  await expectNoHorizontalOverflow(page);
+
+  await page.keyboard.press('Escape');
+  await expect(selectTokenDialog).toHaveCount(0);
+
+  await selectTokenTrigger.click();
+  await expect(selectTokenDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(selectTokenDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps swap controls clickable after closing select-token dialog on extra narrow mobile screens', async ({
+  page,
+}) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 653 });
+  await openSwap(page);
+
+  const selectTokenTrigger = page.getByRole('button', { name: /choose token/i }).first();
+  const selectTokenDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /select( a)? token/i })
+    .first();
+  const connectAccountButton = page.locator('.swap-form .action-button', { hasText: /connect account/i });
+  const connectAccountDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /Learn more about wallet connection/i })
+    .first();
+
+  await expect(selectTokenTrigger).toBeVisible();
+  await selectTokenTrigger.click();
+  await expect(selectTokenDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(selectTokenDialog).toHaveCount(0);
+
+  await expect(connectAccountButton).toBeVisible();
+  await connectAccountButton.click();
+  await expect(connectAccountDialog).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(connectAccountDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('restores swap control clickability immediately after closing select-token dialog', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 653 });
+  await openSwap(page);
+
+  const selectTokenTrigger = page.getByRole('button', { name: /choose token/i }).first();
+  const selectTokenDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /select( a)? token/i })
+    .first();
+  const connectAccountButton = page.locator('.swap-form .action-button', { hasText: /connect account/i });
+  const connectAccountDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /Learn more about wallet connection/i })
+    .first();
+
+  await expect(selectTokenTrigger).toBeVisible();
+  await selectTokenTrigger.click();
+  await expect(selectTokenDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+
+  await expect(connectAccountButton).toBeVisible();
+  await connectAccountButton.click({ trial: true, timeout: 100 });
+  await connectAccountButton.click();
+  await expect(connectAccountDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(connectAccountDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('navigates via header logo and Buy Tokens button', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await page.goto(`${ipfsEntryUrl}#/bridge`);
+  await ensureAppLoaded(page);
+  await expectHash(page, '#/bridge');
+
+  await page.locator('.app-logo--header').click();
+  await expectHash(page, '#/swap');
+
+  await page.getByRole('button', { name: /buy tokens/i }).click();
+  await expectHash(page, '#/deposit');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('opens and closes swap settings dialog from market settings button', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const settingsButton = page.locator('.el-button--settings').first();
+  const settingsDialog = page.locator('.market-algorithm');
+
+  await settingsButton.click();
+  await expect(settingsDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(settingsDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps swap settings dialog within viewport on extra narrow mobile screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 653 });
+  await openSwap(page);
+
+  const settingsButton = page.locator('.el-button--settings').first();
+  const settingsDialogBody = page.locator('.market-algorithm').first();
+  const settingsDialog = page.getByRole('dialog').filter({ has: settingsDialogBody }).first();
+  const settingsDialogCard = settingsDialog.locator('.dialog-card').first();
+
+  await expect(settingsButton).toBeVisible();
+  await settingsButton.click();
+  await expect(settingsDialogBody).toBeVisible();
+  await expect(settingsDialog).toBeVisible();
+  await expect(settingsDialogCard).toBeVisible();
+  await expectLocatorBoxWithinViewport(settingsDialogCard);
+  await expectNoHorizontalOverflow(page);
+
+  await page.keyboard.press('Escape');
+  await expect(settingsDialog).toHaveCount(0);
+
+  await settingsButton.click();
+  await expect(settingsDialogBody).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(settingsDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('restores swap settings trigger clickability immediately after closing market settings dialog', async ({
+  page,
+}) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 653 });
+  await openSwap(page);
+
+  const settingsButton = page.locator('.el-button--settings').first();
+  const settingsDialogBody = page.locator('.market-algorithm').first();
+  const settingsDialog = page.getByRole('dialog').filter({ has: settingsDialogBody }).first();
+
+  await settingsButton.click();
+  await expect(settingsDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+
+  await settingsButton.click({ trial: true, timeout: 100 });
+  await settingsButton.click();
+  await expect(settingsDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(settingsDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes header settings overlay when opening notification settings', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await page.locator('.header-menu [data-test-name="notification"]').click();
+  await expect(settingsOverlay).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('restores header settings trigger clickability immediately after closing notification settings dialog', async ({
+  page,
+}) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 653 });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const alertsDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /alerts/i })
+    .first();
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.locator('.header-menu [data-test-name="notification"]').click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(alertsDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(alertsDialog).toHaveCount(0);
+
+  await settingsTrigger.click({ trial: true, timeout: 100 });
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.keyboard.press('Escape');
+  await expect(settingsOverlay).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('toggles slippage tolerance section in swap form', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const slippageToggle = page.getByRole('button', { name: /slippage tolerance/i }).first();
+  const slippageWrap = page.locator('.slippage-tolerance .el-collapse-item__wrap').first();
+
+  await expect(slippageWrap).toBeHidden();
+
+  await slippageToggle.click();
+  await expect(slippageWrap).toBeVisible();
+
+  await slippageToggle.click();
+  await expect(slippageWrap).toBeHidden();
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('opens language and currency dialogs from header settings without overlay stacking', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const languageDialog = page.getByRole('dialog').filter({ hasText: /language/i });
+  const currencyDialog = page.getByRole('dialog').filter({ hasText: /currency/i });
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await page.locator('.header-menu [data-test-name="language"]').click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(languageDialog).toBeVisible();
+  await expect(page.locator('.select-language-item__name').first()).toContainText('English');
+  await expect(page.locator('.select-language-item__name').first()).not.toContainText('languages.');
+  await page.keyboard.press('Escape');
+  await expect(languageDialog).toHaveCount(0);
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await page.locator('.header-menu [data-test-name="currency"]').click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(currencyDialog).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(currencyDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps language dialog within viewport on extra narrow mobile screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 653 });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const languageDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /language/i })
+    .first();
+  const languageDialogCard = languageDialog.locator('.dialog-card').first();
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.locator('.header-menu [data-test-name="language"]').click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(languageDialog).toBeVisible();
+  await expect(languageDialogCard).toBeVisible();
+  await expectLocatorBoxWithinViewport(languageDialogCard);
+  await expectNoHorizontalOverflow(page);
+
+  await page.keyboard.press('Escape');
+  await expect(languageDialog).toHaveCount(0);
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('restores header settings trigger clickability immediately after closing language dialog', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 653 });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const languageDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /language/i })
+    .first();
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.locator('.header-menu [data-test-name="language"]').click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(languageDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+
+  await settingsTrigger.click({ trial: true, timeout: 100 });
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.keyboard.press('Escape');
+  await expect(settingsOverlay).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps currency dialog within viewport on extra narrow mobile screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 653 });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const currencyDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /currency/i })
+    .first();
+  const currencyDialogCard = currencyDialog.locator('.dialog-card').first();
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.locator('.header-menu [data-test-name="currency"]').click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(currencyDialog).toBeVisible();
+  await expect(currencyDialogCard).toBeVisible();
+  await expectLocatorBoxWithinViewport(currencyDialogCard);
+  await expectNoHorizontalOverflow(page);
+
+  const searchInput = currencyDialog.locator('input').first();
+  await expect(searchInput).toBeVisible();
+  await searchInput.fill('usd');
+  await expect(searchInput).toHaveValue('usd');
+
+  await page.keyboard.press('Escape');
+  await expect(currencyDialog).toHaveCount(0);
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('restores header settings trigger clickability immediately after closing currency dialog', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 653 });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const currencyDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /currency/i })
+    .first();
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.locator('.header-menu [data-test-name="currency"]').click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(currencyDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+
+  await settingsTrigger.click({ trial: true, timeout: 100 });
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.keyboard.press('Escape');
+  await expect(settingsOverlay).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('opens stats filter dropdown and closes it on outside click', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  await page.getByRole('link', { name: 'Statistics', exact: true }).first().click();
+  await expectHash(page, '#/stats');
+
+  const statsFilter = page.locator('.stats-filter').first();
+  const statsFilterButton = statsFilter.locator('.stats-filter-button');
+  const statsFilterMenu = statsFilter.locator('.stats-filter-menu');
+
+  await expect(statsFilter).toBeVisible();
+
+  if (await statsFilterButton.isDisabled()) {
+    await expect(statsFilterButton).toBeDisabled();
+    expect(consoleErrors).toEqual([]);
+    return;
+  }
+
+  await statsFilterButton.click();
+  await expect(statsFilterMenu).toBeVisible();
+
+  await page.mouse.click(20, 20);
+  await expect(statsFilterMenu).toBeHidden();
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes stats filter dropdown on viewport breakpoint switch', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  await page.getByRole('link', { name: 'Statistics', exact: true }).first().click();
+  await expectHash(page, '#/stats');
+
+  const statsFilter = page.locator('.stats-filter').first();
+  const statsFilterButton = statsFilter.locator('.stats-filter-button');
+  const statsFilterMenu = statsFilter.locator('.stats-filter-menu');
+
+  await expect(statsFilter).toBeVisible();
+
+  if (await statsFilterButton.isDisabled()) {
+    await expect(statsFilterButton).toBeDisabled();
+    expect(consoleErrors).toEqual([]);
+    return;
+  }
+
+  await statsFilterButton.click();
+  await expect(statsFilterMenu).toBeVisible();
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(statsFilterMenu).toBeHidden();
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps stats filter dropdown within viewport on narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await page.getByRole('link', { name: 'Statistics', exact: true }).first().click();
+  await expectHash(page, '#/stats');
+  await expect(menu).toHaveClass(/is-closed/);
+
+  const statsFilter = page.locator('.stats-filter').first();
+  const statsFilterButton = statsFilter.locator('.stats-filter-button');
+  const statsFilterMenu = statsFilter.locator('.stats-filter-menu');
+
+  await expect(statsFilter).toBeVisible();
+
+  if (await statsFilterButton.isDisabled()) {
+    await expect(statsFilterButton).toBeDisabled();
+    expect(consoleErrors).toEqual([]);
+    return;
+  }
+
+  await statsFilterButton.click();
+  await expect(statsFilterMenu).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.stats-filter-menu');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('opens info popover and launches the SORA Wallet popup dialog', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const infoTrigger = page.locator('.app-menu .menu-item--small').first();
+  const infoPopover = page.locator('.app-info-popper');
+  const mobilePopupDialog = page.getByRole('dialog').filter({ hasText: /Download\s+SORA Wallet/i });
+
+  await infoTrigger.click();
+  await expect(infoPopover).toBeVisible();
+  await expect(infoPopover).toContainText('Swap tokens from different networks');
+
+  await infoPopover.getByRole('button', { name: /Get SORA Wallet/i }).click();
+  await expect(mobilePopupDialog).toBeVisible();
+  await expect(infoPopover).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps header and sidebar interactions stable across desktop and mobile viewport switches', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await page.keyboard.press('Escape');
+  await expect(settingsOverlay).toHaveCount(0);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(menuButton).toBeVisible();
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+  await page.mouse.click(380, 120);
+  await expect(menu).toHaveClass(/is-closed/);
+
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await expect(settingsTrigger).toBeVisible();
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await page.keyboard.press('Escape');
+  await expect(settingsOverlay).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('maintains layout within viewport width on desktop and mobile interaction states', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  await expectNoHorizontalOverflow(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  await settingsTrigger.click();
+  await expectNoHorizontalOverflow(page);
+  await page.keyboard.press('Escape');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expectNoHorizontalOverflow(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+  await expectNoHorizontalOverflow(page);
+  await page.mouse.click(380, 120);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps mobile sidebar within viewport width on narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+  await expectNoHorizontalOverflow(page);
+
+  await page.mouse.click(310, 120);
+  await expect(menu).toHaveClass(/is-closed/);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps mobile sidebar within viewport width on extra narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 640 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+  await expectNoHorizontalOverflow(page);
+
+  await page.mouse.click(270, 120);
+  await expect(menu).toHaveClass(/is-closed/);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps transaction details popover within viewport on narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openSwap(page);
+
+  const detailsTrigger = page.locator('.transaction-details').first();
+  const detailsPopper = page.locator('.transaction-details-popper');
+
+  if ((await detailsTrigger.count()) === 0) {
+    expect(consoleErrors).toEqual([]);
+    return;
+  }
+
+  await detailsTrigger.click();
+  await expect(detailsPopper).toHaveCount(1);
+  await expectNoHorizontalOverflow(page);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps transaction details popover within viewport on extra narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 640 });
+  await openSwap(page);
+
+  const detailsTrigger = page.locator('.transaction-details').first();
+  const detailsPopper = page.locator('.transaction-details-popper');
+
+  if ((await detailsTrigger.count()) === 0) {
+    expect(consoleErrors).toEqual([]);
+    return;
+  }
+
+  await detailsTrigger.click();
+  await expect(detailsPopper).toHaveCount(1);
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.transaction-details-popper');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('resets mobile sidebar visibility across breakpoint switches', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(menu).toHaveClass(/is-closed/);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes header settings overlay on viewport breakpoint switch', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(settingsOverlay).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps header settings overlay within viewport on narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.header-menu');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps header settings overlay within viewport on extra narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 640 });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.header-menu');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes info popover when mobile sidebar closes on backdrop click', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+  const infoTrigger = page.locator('.app-menu .menu-item--small').first();
+  const infoPopover = page.locator('.app-info-popper');
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await infoTrigger.click();
+  await expect(infoPopover).toBeVisible();
+
+  await page.mouse.click(380, 120);
+  await expect(menu).toHaveClass(/is-closed/);
+  await expect(infoPopover).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes info popover and mobile sidebar on Escape', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+  const infoTrigger = page.locator('.app-menu .menu-item--small').first();
+  const infoPopover = page.locator('.app-info-popper');
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await infoTrigger.click();
+  await expect(infoPopover).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(menu).toHaveClass(/is-closed/);
+  await expect(infoPopover).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('restores info popover trigger clickability immediately after escape close', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const infoTrigger = page.locator('.app-menu .menu-item--small').first();
+  const infoPopover = page.locator('.app-info-popper');
+
+  await infoTrigger.click();
+  await expect(infoPopover).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(infoPopover).toHaveCount(0);
+
+  await infoTrigger.click({ trial: true, timeout: 100 });
+  await infoTrigger.click();
+  await expect(infoPopover).toBeVisible();
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes info popover on hash navigation change', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const infoTrigger = page.locator('.app-menu .menu-item--small').first();
+  const infoPopover = page.locator('.app-info-popper');
+
+  await infoTrigger.click();
+  await expect(infoPopover).toBeVisible();
+
+  await page.evaluate(() => {
+    window.location.hash = '#/bridge';
+  });
+  await expectHash(page, '#/bridge');
+  await expect(infoPopover).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes info popover on viewport breakpoint switch', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const infoTrigger = page.locator('.app-menu .menu-item--small').first();
+  const infoPopover = page.locator('.app-info-popper');
+
+  await infoTrigger.click();
+  await expect(infoPopover).toBeVisible();
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(infoPopover).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes footer status popover on escape and outside click', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const footerStatusItem = page.locator('.app-status .app-status__item').first();
+  const footerPopover = page.locator('.app-status__tooltip');
+
+  await footerStatusItem.click();
+  await expect(footerPopover).toHaveCount(1);
+
+  await page.keyboard.press('Escape');
+  await expect(footerPopover).toHaveCount(0);
+
+  await footerStatusItem.click();
+  await expect(footerPopover).toHaveCount(1);
+
+  await page.mouse.click(20, 200);
+  await expect(footerPopover).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('restores footer status trigger clickability immediately after closing popover', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const footerStatusItem = page.locator('.app-status .app-status__item').first();
+  const footerPopover = page.locator('.app-status__tooltip');
+
+  await footerStatusItem.click();
+  await expect(footerPopover).toHaveCount(1);
+
+  await page.keyboard.press('Escape');
+  await expect(footerPopover).toHaveCount(0);
+
+  await footerStatusItem.click({ trial: true, timeout: 100 });
+  await footerStatusItem.click();
+  await expect(footerPopover).toHaveCount(1);
+
+  await page.keyboard.press('Escape');
+  await expect(footerPopover).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes footer status popover on hash navigation change', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const footerStatusItem = page.locator('.app-status .app-status__item').first();
+  const footerPopover = page.locator('.app-status__tooltip');
+
+  await footerStatusItem.click();
+  await expect(footerPopover).toHaveCount(1);
+
+  await page.evaluate(() => {
+    window.location.hash = '#/bridge';
+  });
+  await expectHash(page, '#/bridge');
+  await expect(footerPopover).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes footer status popover on viewport breakpoint switch', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const footerStatusItem = page.locator('.app-status .app-status__item').first();
+  const footerPopover = page.locator('.app-status__tooltip');
+
+  await footerStatusItem.click();
+  await expect(footerPopover).toHaveCount(1);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(footerPopover).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps footer status popover within viewport on narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSwap(page);
+
+  const footerStatusItem = page.locator('.app-status .app-status__item').first();
+  const footerPopover = page.locator('.app-status__tooltip');
+
+  await footerStatusItem.click();
+  await expect(footerPopover).toHaveCount(1);
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.app-status__tooltip');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps footer status popover within viewport on extra narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 640 });
+  await openSwap(page);
+
+  const footerStatusItem = page.locator('.app-status .app-status__item').first();
+  const footerPopover = page.locator('.app-status__tooltip');
+
+  await footerStatusItem.click();
+  await expect(footerPopover).toHaveCount(1);
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.app-status__tooltip');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps info popover within viewport on narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+  const infoTrigger = page.locator('.app-menu .menu-item--small').first();
+  const infoPopover = page.locator('.app-info-popper');
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+  await infoTrigger.click();
+  await expect(infoPopover).toHaveCount(1);
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.app-info-popper');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps info popover within viewport on extra narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 640 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+  const infoTrigger = page.locator('.app-menu .menu-item--small').first();
+  const infoPopover = page.locator('.app-info-popper');
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+  await infoTrigger.click();
+  await expect(infoPopover).toHaveCount(1);
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.app-info-popper');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes mobile sidebar when launching SORA Wallet popup from info popover', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+  const infoTrigger = page.locator('.app-menu .menu-item--small').first();
+  const infoPopover = page.locator('.app-info-popper');
+  const mobilePopupDialog = page.getByRole('dialog').filter({ hasText: /Download\s+SORA Wallet/i });
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await infoTrigger.click();
+  await expect(infoPopover).toBeVisible();
+
+  await infoPopover.getByRole('button', { name: /Get SORA Wallet/i }).click();
+  await expect(mobilePopupDialog).toBeVisible();
+  await expect(menu).toHaveClass(/is-closed/);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps SORA Wallet popup within viewport on narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+  const infoTrigger = page.locator('.app-menu .menu-item--small').first();
+  const infoPopover = page.locator('.app-info-popper');
+  const mobilePopupDialog = page.getByRole('dialog').filter({ hasText: /Download\s+SORA Wallet/i });
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await infoTrigger.click();
+  await expect(infoPopover).toHaveCount(1);
+
+  await infoPopover.getByRole('button', { name: /Get SORA Wallet/i }).click();
+  await expect(mobilePopupDialog).toBeVisible();
+  await expect(menu).toHaveClass(/is-closed/);
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.popup-mobile');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps SORA Wallet popup within viewport on extra narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 640 });
+  await openSwap(page);
+
+  const menuButton = page.locator('.app-menu-button');
+  const menu = page.locator('.app-menu');
+  const infoTrigger = page.locator('.app-menu .menu-item--small').first();
+  const infoPopover = page.locator('.app-info-popper');
+  const mobilePopupDialog = page.getByRole('dialog').filter({ hasText: /Download\s+SORA Wallet/i });
+
+  await menuButton.click();
+  await expect(menu).toHaveClass(/is-open/);
+
+  await infoTrigger.click();
+  await expect(infoPopover).toHaveCount(1);
+
+  await infoPopover.getByRole('button', { name: /Get SORA Wallet/i }).click();
+  await expect(mobilePopupDialog).toBeVisible();
+  await expect(menu).toHaveClass(/is-closed/);
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.popup-mobile');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('closes order-book pair-list popover on escape and outside click', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openTrade(page);
+
+  const pairTrigger = page.locator('.order-book-choose-pair').first();
+  const pairPopover = page.locator('.order-book-whitelist');
+
+  await expect(pairTrigger).toBeVisible();
+  await pairTrigger.click();
+  await expect(pairPopover).toHaveCount(1);
+
+  await page.keyboard.press('Escape');
+  await expect(pairPopover).toHaveCount(0);
+
+  await pairTrigger.click();
+  await expect(pairPopover).toHaveCount(1);
+
+  await page.mouse.click(20, 200);
+  await expect(pairPopover).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('restores order-book pair-list trigger clickability immediately after closing popover', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openTrade(page);
+
+  const pairTrigger = page.locator('.order-book-choose-pair').first();
+  const pairPopover = page.locator('.order-book-whitelist');
+
+  await expect(pairTrigger).toBeVisible();
+  await pairTrigger.click();
+  await expect(pairPopover).toHaveCount(1);
+
+  await page.keyboard.press('Escape');
+  await expect(pairPopover).toHaveCount(0);
+
+  await pairTrigger.click({ trial: true, timeout: 100 });
+  await pairTrigger.click();
+  await expect(pairPopover).toHaveCount(1);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps order-book pair-list popover within viewport on narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openTrade(page);
+
+  const pairTrigger = page.locator('.order-book-choose-pair').first();
+  const pairPopover = page.locator('.order-book-whitelist');
+
+  await expect(pairTrigger).toBeVisible();
+  await pairTrigger.click();
+  await expect(pairPopover).toHaveCount(1);
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.order-book-whitelist');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps order-book pair-list popover within viewport on extra narrow screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 640 });
+  await openTrade(page);
+
+  const pairTrigger = page.locator('.order-book-choose-pair').first();
+  const pairPopover = page.locator('.order-book-whitelist');
+
+  await expect(pairTrigger).toBeVisible();
+  await pairTrigger.click();
+  await expect(pairPopover).toHaveCount(1);
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.order-book-whitelist');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps disclaimer overlay within viewport on desktop', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const disclaimerAction = page.locator('.header-menu [data-test-name="disclaimer"]');
+  const disclaimer = page.locator('.disclaimer');
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await expect(disclaimerAction).toBeVisible();
+
+  await disclaimerAction.click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(disclaimer).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.disclaimer');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('restores header settings trigger clickability immediately after closing disclaimer overlay', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await page.addInitScript(() => {
+    localStorage.setItem('dexSettings.disclaimerApprove', 'true');
+  });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const disclaimerAction = page.locator('.header-menu [data-test-name="disclaimer"]');
+  const disclaimer = page.locator('.disclaimer');
+  const disclaimerCloseButton = page.locator('.disclaimer__header-close-btn').first();
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await expect(disclaimerAction).toBeVisible();
+
+  await disclaimerAction.click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(disclaimer).toBeVisible();
+  await expect(disclaimerCloseButton).toBeVisible();
+
+  await disclaimerCloseButton.click();
+  await expect(disclaimer).toHaveCount(0);
+
+  await settingsTrigger.click({ trial: true, timeout: 100 });
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('restores header settings trigger clickability immediately after closing disclaimer overlay on narrow mobile', async ({
+  page,
+}) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 320, height: 640 });
+
+  await page.addInitScript(() => {
+    localStorage.setItem('dexSettings.disclaimerApprove', 'true');
+  });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const disclaimerAction = page.locator('.header-menu [data-test-name="disclaimer"]');
+  const disclaimer = page.locator('.disclaimer');
+  const disclaimerCloseButton = page.locator('.disclaimer__header-close-btn').first();
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await expect(disclaimerAction).toBeVisible();
+
+  await disclaimerAction.click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(disclaimer).toBeVisible();
+  await expect(disclaimerCloseButton).toBeVisible();
+
+  await disclaimerCloseButton.click();
+  await expect(disclaimer).toHaveCount(0);
+
+  await settingsTrigger.click({ trial: true, timeout: 100 });
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps disclaimer overlay within viewport on narrow mobile screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const disclaimerAction = page.locator('.header-menu [data-test-name="disclaimer"]');
+  const disclaimer = page.locator('.disclaimer');
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await expect(disclaimerAction).toBeVisible();
+
+  await disclaimerAction.click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(disclaimer).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.disclaimer');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps disclaimer overlay within viewport on extra narrow mobile screens', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 280, height: 640 });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const disclaimerAction = page.locator('.header-menu [data-test-name="disclaimer"]');
+  const disclaimer = page.locator('.disclaimer');
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await expect(disclaimerAction).toBeVisible();
+
+  await disclaimerAction.click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(disclaimer).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+  await expectLocatorWithinViewport(page, '.disclaimer');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps swap shell layout stable across representative viewport widths', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  const viewports = [
+    { width: 320, height: 640 },
+    { width: 390, height: 844 },
+    { width: 768, height: 1024 },
+    { width: 1024, height: 768 },
+    { width: 1280, height: 900 },
+  ];
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport);
+    await openSwap(page);
+    await expectNoHorizontalOverflow(page);
+    await expectLocatorWithinViewport(page, '.header');
+    await expectLocatorWithinViewport(page, '.account-control');
+  }
 
   expect(consoleErrors).toEqual([]);
 });

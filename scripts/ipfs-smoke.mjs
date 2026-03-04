@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { createServer } from 'node:http';
 import { extname, join } from 'node:path';
 import { promises as fs } from 'node:fs';
@@ -78,7 +77,8 @@ const run = async () => {
   const context = await browser.newContext({
     viewport: { width: 1280, height: 720 },
     // Force a non-headless user agent so the app does not enter offline shell mode
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    userAgent:
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
   });
   const page = await context.newPage();
 
@@ -190,9 +190,7 @@ const run = async () => {
     });
 
     if (originRootHashLinks.length > 0) {
-      throw new Error(
-        `Origin-root hash hrefs detected (breaks IPFS base paths): ${originRootHashLinks.join(', ')}`
-      );
+      throw new Error(`Origin-root hash hrefs detected (breaks IPFS base paths): ${originRootHashLinks.join(', ')}`);
     }
 
     console.log('[ipfs-smoke] PASS', appState.title);

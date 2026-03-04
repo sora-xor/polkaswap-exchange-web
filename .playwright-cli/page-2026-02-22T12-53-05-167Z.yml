@@ -1,0 +1,261 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - button [ref=e5] [cursor=pointer]:
+        - img [ref=e7]
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - img [ref=e23] [cursor=pointer]
+          - link "WHAT IS POLKASWAP" [ref=e491] [cursor=pointer]:
+            - /url: https://about.polkaswap.io
+            - generic [ref=e492]:
+              - text: WHAT IS POLKASWAP
+              - img [ref=e494]
+          - img [ref=e34] [cursor=pointer]
+        - button "Buy Tokens" [ref=e485] [cursor=pointer]:
+          - generic [ref=e37]: Buy Tokens
+      - generic [ref=e43]:
+        - button "Connect account" [ref=e477] [cursor=pointer]:
+          - generic [ref=e45]:
+            - img [ref=e48]
+            - generic [ref=e50]: Connect account
+        - button "Settings" [active] [ref=e53] [cursor=pointer]:
+          - img [ref=e56]
+    - generic [ref=e58]:
+      - generic [ref=e59]:
+        - button [ref=e60] [cursor=pointer]:
+          - img [ref=e63]
+        - complementary [ref=e68]:
+          - generic [ref=e69]:
+            - menubar [ref=e70]:
+              - menuitem "Swap" [ref=e71] [cursor=pointer]:
+                - link "Swap" [ref=e72]:
+                  - /url: "#/swap"
+                  - img [ref=e75]
+                  - generic [ref=e79]: Swap
+              - menuitem "Trade" [ref=e80] [cursor=pointer]:
+                - link "Trade" [ref=e81]:
+                  - /url: "#/trade"
+                  - img [ref=e84]
+                  - generic [ref=e86]: Trade
+              - menuitem "Rewards" [ref=e87] [cursor=pointer]:
+                - link "Rewards" [ref=e88]:
+                  - /url: "#/points"
+                  - img [ref=e91]
+                  - generic [ref=e93]: Rewards
+              - menuitem "Pool" [ref=e94] [cursor=pointer]:
+                - link "Pool" [ref=e95]:
+                  - /url: "#/pool"
+                  - img [ref=e98]
+                  - generic [ref=e100]: Pool
+              - menuitem "Staking" [ref=e101] [cursor=pointer]:
+                - link "Staking" [ref=e102]:
+                  - /url: "#/staking"
+                  - img [ref=e105]
+                  - generic [ref=e107]: Staking
+              - menuitem "Bridge" [ref=e108] [cursor=pointer]:
+                - link "Bridge" [ref=e109]:
+                  - /url: "#/bridge"
+                  - img [ref=e112]
+                  - generic [ref=e114]: Bridge
+              - menuitem "SCCP" [ref=e115] [cursor=pointer]:
+                - link "SCCP" [ref=e116]:
+                  - /url: "#/bridge/sccp"
+                  - img [ref=e119]
+                  - generic [ref=e121]: SCCP
+              - menuitem "Account" [ref=e122] [cursor=pointer]:
+                - link "Account" [ref=e123]:
+                  - /url: "#/wallet"
+                  - img [ref=e126]
+                  - generic [ref=e128]: Account
+              - menuitem "Kensetsu" [ref=e129] [cursor=pointer]:
+                - link "Kensetsu" [ref=e130]:
+                  - /url: "#/kensetsu"
+                  - img [ref=e133]
+                  - generic [ref=e135]: Kensetsu
+              - menuitem "Explore" [ref=e136] [cursor=pointer]:
+                - link "Explore" [ref=e137]:
+                  - /url: "#/explore"
+                  - img [ref=e140]
+                  - generic [ref=e142]: Explore
+              - menuitem "Statistics" [ref=e143] [cursor=pointer]:
+                - link "Statistics" [ref=e144]:
+                  - /url: "#/stats"
+                  - img [ref=e147]
+                  - generic [ref=e149]: Statistics
+              - link "About" [ref=e150] [cursor=pointer]:
+                - /url: https://about.polkaswap.io
+                - img [ref=e153]
+                - generic [ref=e155]: About
+            - menubar
+      - generic [ref=e164]:
+        - generic [ref=e165]:
+          - generic [ref=e167]: Disclaimer
+          - generic [ref=e171]:
+            - paragraph [ref=e172]:
+              - text: "Disclaimer: This website is maintained by the SORA community. Before continuing to use this website, please review the"
+              - link "Polkaswap FAQ" [ref=e173] [cursor=pointer]:
+                - /url: https://wiki.sora.org/polkaswap/polkaswap-faq
+              - text: and documentation, which includes a detailed explanation on how Polkaswap works, as well as the
+              - link "Polkaswap Memorandum and Terms of Services" [ref=e174] [cursor=pointer]:
+                - /url: https://wiki.sora.org/polkaswap/terms
+              - text: ", and"
+              - link "Privacy Policy" [ref=e175] [cursor=pointer]:
+                - /url: https://wiki.sora.org/polkaswap/privacy
+              - text: ". These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Please do not continue without reading the"
+              - link "Polkaswap FAQ" [ref=e176] [cursor=pointer]:
+                - /url: https://wiki.sora.org/polkaswap/polkaswap-faq
+              - text: ","
+              - link "Polkaswap Memorandum and Terms of Services" [ref=e177] [cursor=pointer]:
+                - /url: https://wiki.sora.org/polkaswap/terms
+              - text: ","
+              - link "Privacy Policy" [ref=e178] [cursor=pointer]:
+                - /url: https://wiki.sora.org/polkaswap/privacy
+              - text: "!"
+            - paragraph [ref=e179]: Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API) are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.
+          - button "Scroll to accept" [disabled] [ref=e184]:
+            - generic [ref=e185]: Scroll to accept
+        - generic [ref=e186]:
+          - generic:
+            - generic [ref=e188]:
+              - generic [ref=e190]:
+                - generic [ref=e192]: Swap
+                - generic [ref=e195]:
+                  - generic [ref=e196]: "Market:"
+                  - generic [ref=e197]: SMART
+                  - button [ref=e199] [cursor=pointer]:
+                    - img [ref=e202]
+                - button [ref=e205] [cursor=pointer]:
+                  - img [ref=e208]
+              - generic [ref=e213]:
+                - generic [ref=e214]:
+                  - generic [ref=e216]:
+                    - generic [ref=e218]: From
+                    - generic [ref=e219]:
+                      - generic [ref=e220]: Balance
+                      - generic [ref=e221]:
+                        - generic [ref=e223]:
+                          - text: "0"
+                          - generic [ref=e224]: ".0"
+                        - generic [ref=e226]:
+                          - generic [ref=e227]: $
+                          - text: "0"
+                          - generic [ref=e228]: ".00"
+                  - generic [ref=e229]:
+                    - textbox "0.0" [ref=e231]
+                    - button "XOR" [ref=e234] [cursor=pointer]:
+                      - generic [ref=e235]:
+                        - text: XOR
+                        - img [ref=e239]
+                  - textbox "0.0" [ref=e247]
+                - button [disabled] [ref=e248]:
+                  - img [ref=e251]
+                - generic [ref=e255]:
+                  - generic [ref=e259]: To
+                  - generic [ref=e260]:
+                    - textbox "0.0" [ref=e262]
+                    - button "Choose token" [ref=e265] [cursor=pointer]:
+                      - generic [ref=e266]:
+                        - text: Choose token
+                        - img [ref=e268]
+                - button "SLIPPAGE TOLERANCE 0.5% ›" [ref=e274] [cursor=pointer]:
+                  - generic [ref=e275]:
+                    - generic [ref=e276]: SLIPPAGE TOLERANCE
+                    - img [ref=e279]
+                    - generic [ref=e283]: 0.5%
+                  - generic [ref=e284]: ›
+                - button "Connect account" [ref=e285] [cursor=pointer]:
+                  - generic [ref=e286]: Connect account
+                - generic [ref=e287]:
+                  - generic [ref=e288]:
+                    - generic [ref=e289]: Network Fee
+                    - img [ref=e292]
+                    - generic [ref=e294]:
+                      - generic [ref=e296]:
+                        - text: "0"
+                        - generic [ref=e297]: ".0000764"
+                        - text: XOR
+                      - generic [ref=e299]:
+                        - generic [ref=e300]: $
+                        - text: "0"
+                        - generic [ref=e301]: ".00"
+                  - img [ref=e303]
+            - generic [ref=e309] [cursor=pointer]:
+              - generic [ref=e311]: Customize page
+              - button [ref=e313]:
+                - img [ref=e316]
+            - generic [ref=e319]:
+              - generic [ref=e321]:
+                - generic [ref=e323]: Route
+                - button [ref=e325] [cursor=pointer]:
+                  - img [ref=e328]
+              - generic [ref=e332]:
+                - generic:
+                  - list
+            - generic [ref=e334]:
+              - generic [ref=e336]:
+                - generic [ref=e342]: XOR
+                - generic [ref=e343]:
+                  - button "5m" [ref=e345] [cursor=pointer]:
+                    - generic [ref=e346]:
+                      - text: 5m
+                      - img [ref=e348]
+                  - button [ref=e350] [cursor=pointer]:
+                    - img [ref=e352]
+                  - button [ref=e354] [cursor=pointer]:
+                    - img [ref=e356]
+                - button [ref=e359] [cursor=pointer]:
+                  - img [ref=e362]
+              - generic [ref=e369]:
+                - text: "4"
+                - generic [ref=e370]: .31DAI
+    - generic [ref=e378]:
+      - link "24,966,929" [ref=e497] [cursor=pointer]:
+        - /url: https://sora.subscan.io
+        - generic [ref=e381]: 24,966,929
+      - generic [ref=e382]:
+        - img [ref=e384]
+        - generic [ref=e386]: Node connected
+      - generic [ref=e387]:
+        - img [ref=e389]
+        - generic [ref=e391]: Internet stable
+      - generic [ref=e394]: Statistics loading
+      - generic [ref=e395]:
+        - generic [ref=e396]: Powered by
+        - link "Sora" [ref=e397] [cursor=pointer]:
+          - /url: https://sora.org
+          - img [ref=e398]
+  - menu [ref=e417]:
+    - generic [ref=e418]:
+      - paragraph [ref=e419]: Settings
+      - button [ref=e420] [cursor=pointer]:
+        - img [ref=e423]
+    - generic [ref=e425]:
+      - paragraph [ref=e426]: BALANCES
+      - menuitem "Hide Balances" [ref=e428]:
+        - img [ref=e430]
+        - paragraph [ref=e432]: Hide Balances
+        - checkbox [ref=e434]
+      - menuitem "Turn phone & hide" [ref=e436]:
+        - paragraph [ref=e437]: Turn phone & hide
+        - img [ref=e439]
+    - generic [ref=e441]:
+      - paragraph [ref=e442]: COLOR THEME
+      - menuitem "EN Language" [ref=e444]:
+        - generic [ref=e445]: EN
+        - paragraph [ref=e446]: Language
+      - menuitem "DAI Select Currency" [ref=e449]:
+        - generic [ref=e450]: DAI
+        - paragraph [ref=e451]: Select Currency
+      - menuitem "Light mode" [ref=e454]:
+        - paragraph [ref=e455]: Light mode
+        - img [ref=e458]
+      - menuitem "Noir mode" [ref=e461]:
+        - paragraph [ref=e462]: Noir mode
+        - img [ref=e465]
+    - generic [ref=e467]:
+      - paragraph [ref=e468]: MISC
+      - menuitem "Set Notifications" [ref=e470]:
+        - paragraph [ref=e471]: Set Notifications
+      - menuitem "Hide Disclaimer" [ref=e474]:
+        - paragraph [ref=e475]: Hide Disclaimer

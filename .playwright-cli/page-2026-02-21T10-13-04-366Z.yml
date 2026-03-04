@@ -1,0 +1,421 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button [ref=e5] [cursor=pointer]:
+      - img [ref=e8]
+    - button [ref=e10] [cursor=pointer]:
+      - img [ref=e12]
+    - generic [ref=e24]:
+      - generic [ref=e25]:
+        - img [ref=e28] [cursor=pointer]
+        - link "WHAT IS POLKASWAP" [ref=e886] [cursor=pointer]:
+          - /url: https://about.polkaswap.io
+          - generic [ref=e887]:
+            - text: WHAT IS POLKASWAP
+            - img [ref=e889]
+        - img [ref=e39] [cursor=pointer]
+      - button "Buy Tokens" [ref=e41] [cursor=pointer]:
+        - generic [ref=e42]: Buy Tokens
+    - generic [ref=e48]:
+      - button "Connect account" [ref=e49] [cursor=pointer]:
+        - generic [ref=e50]:
+          - img [ref=e53]
+          - generic [ref=e55]: Connect account
+      - button "Settings" [ref=e58] [cursor=pointer]:
+        - img [ref=e61]
+  - generic [ref=e63]:
+    - generic [ref=e64]:
+      - button [ref=e65] [cursor=pointer]:
+        - img [ref=e68]
+      - complementary [ref=e73]:
+        - generic [ref=e74]:
+          - menubar [ref=e75]:
+            - menuitem "Swap" [ref=e76] [cursor=pointer]:
+              - link "Swap" [ref=e77]:
+                - /url: "#/swap"
+                - img [ref=e80]
+                - generic [ref=e84]: Swap
+            - menuitem "Trade" [ref=e85] [cursor=pointer]:
+              - link "Trade" [ref=e86]:
+                - /url: "#/trade"
+                - img [ref=e89]
+                - generic [ref=e91]: Trade
+            - menuitem "Rewards" [ref=e92] [cursor=pointer]:
+              - link "Rewards" [ref=e93]:
+                - /url: "#/points"
+                - img [ref=e96]
+                - generic [ref=e98]: Rewards
+            - menuitem "Pool" [ref=e99] [cursor=pointer]:
+              - link "Pool" [ref=e100]:
+                - /url: "#/pool"
+                - img [ref=e103]
+                - generic [ref=e105]: Pool
+            - menuitem "Staking" [ref=e106] [cursor=pointer]:
+              - link "Staking" [ref=e107]:
+                - /url: "#/staking"
+                - img [ref=e110]
+                - generic [ref=e112]: Staking
+            - menuitem "Bridge" [ref=e113] [cursor=pointer]:
+              - link "Bridge" [ref=e114]:
+                - /url: "#/bridge"
+                - img [ref=e117]
+                - generic [ref=e119]: Bridge
+            - menuitem "SCCP" [ref=e120] [cursor=pointer]:
+              - link "SCCP" [ref=e121]:
+                - /url: "#/bridge/sccp"
+                - img [ref=e124]
+                - generic [ref=e126]: SCCP
+            - menuitem "Account" [ref=e127] [cursor=pointer]:
+              - link "Account" [ref=e128]:
+                - /url: "#/wallet"
+                - img [ref=e131]
+                - generic [ref=e133]: Account
+            - menuitem "Kensetsu" [ref=e134] [cursor=pointer]:
+              - link "Kensetsu" [ref=e135]:
+                - /url: "#/kensetsu"
+                - img [ref=e138]
+                - generic [ref=e140]: Kensetsu
+            - menuitem "Explore" [ref=e141] [cursor=pointer]:
+              - link "Explore" [ref=e142]:
+                - /url: "#/explore"
+                - img [ref=e145]
+                - generic [ref=e147]: Explore
+            - menuitem "Statistics" [ref=e148] [cursor=pointer]:
+              - link "Statistics" [ref=e149]:
+                - /url: "#/stats"
+                - img [ref=e152]
+                - generic [ref=e154]: Statistics
+            - link "About" [ref=e155] [cursor=pointer]:
+              - /url: https://about.polkaswap.io
+              - img [ref=e158]
+              - generic [ref=e160]: About
+          - menubar
+    - generic [ref=e892]:
+      - generic:
+        - generic [ref=e894]:
+          - generic [ref=e896]:
+            - generic [ref=e898]: Swap
+            - generic [ref=e901]:
+              - generic [ref=e902]: "Market:"
+              - generic [ref=e903]: SMART
+              - button [ref=e905] [cursor=pointer]:
+                - img [ref=e908]
+            - button [ref=e911] [cursor=pointer]:
+              - img [ref=e914]
+          - generic [ref=e919]:
+            - generic [ref=e920]:
+              - generic [ref=e924]: From
+              - generic [ref=e925]:
+                - textbox "0.0" [ref=e927]
+                - button "Choose token" [ref=e930] [cursor=pointer]:
+                  - generic [ref=e931]:
+                    - text: Choose token
+                    - img [ref=e933]
+            - button [disabled] [ref=e936]:
+              - img [ref=e939]
+            - generic [ref=e943]:
+              - generic [ref=e947]: To
+              - generic [ref=e948]:
+                - textbox "0.0" [ref=e950]
+                - button "Choose token" [ref=e953] [cursor=pointer]:
+                  - generic [ref=e954]:
+                    - text: Choose token
+                    - img [ref=e956]
+            - button "SLIPPAGE TOLERANCE 0.5% ›" [ref=e962] [cursor=pointer]:
+              - generic [ref=e963]:
+                - generic [ref=e964]: SLIPPAGE TOLERANCE
+                - img [ref=e967]
+                - generic [ref=e971]: 0.5%
+              - generic [ref=e972]: ›
+            - button "Connect account" [ref=e973] [cursor=pointer]:
+              - generic [ref=e974]: Connect account
+            - generic [ref=e975]:
+              - generic [ref=e976]:
+                - generic [ref=e977]: Network Fee
+                - img [ref=e980]
+                - generic [ref=e982]:
+                  - generic [ref=e984]:
+                    - text: "0"
+                    - generic [ref=e985]: ".0000764"
+                    - text: XOR
+                  - generic [ref=e987]:
+                    - generic [ref=e988]: $
+                    - text: "0"
+                    - generic [ref=e989]: ".00"
+              - img [ref=e991]
+        - generic [ref=e997] [cursor=pointer]:
+          - generic [ref=e999]: Customize page
+          - button [ref=e1001]:
+            - img [ref=e1004]
+        - generic [ref=e1008]:
+          - generic [ref=e1010]:
+            - generic [ref=e1012]: Route
+            - button [ref=e1014] [cursor=pointer]:
+              - img [ref=e1017]
+          - generic [ref=e1021]:
+            - generic:
+              - list
+        - generic [ref=e1023]:
+          - generic [ref=e1025]:
+            - generic [ref=e1027]: Transaction details
+            - button [ref=e1029] [cursor=pointer]:
+              - img [ref=e1032]
+          - generic [ref=e1037]: Choose tokens
+        - generic [ref=e1039]:
+          - generic [ref=e1041]:
+            - generic [ref=e1042]:
+              - generic [ref=e1043]: Token supply
+              - img [ref=e1046]
+            - button "1D" [ref=e1050] [cursor=pointer]:
+              - generic [ref=e1051]:
+                - text: 1D
+                - img [ref=e1053]
+            - button "XOR" [ref=e1056] [cursor=pointer]:
+              - generic [ref=e1057]:
+                - text: XOR
+                - img [ref=e1061]
+            - button [ref=e1064] [cursor=pointer]:
+              - img [ref=e1067]
+          - generic [ref=e1074]:
+            - text: "1"
+            - generic [ref=e1075]: ".0"
+            - text: Q
+        - generic [ref=e1080]:
+          - generic [ref=e1082]:
+            - generic [ref=e1084]:
+              - button "5m" [ref=e1086] [cursor=pointer]:
+                - generic [ref=e1087]:
+                  - text: 5m
+                  - img [ref=e1089]
+              - button [ref=e1091] [cursor=pointer]:
+                - img [ref=e1093]
+              - button [ref=e1095] [cursor=pointer]:
+                - img [ref=e1097]
+            - button [ref=e1100] [cursor=pointer]:
+              - img [ref=e1103]
+          - generic [ref=e1110]:
+            - text: "4"
+            - generic [ref=e1111]: .81DAI
+        - generic [ref=e1116]:
+          - generic [ref=e1118]:
+            - generic [ref=e1120]: Transactions
+            - button "XOR" [ref=e1122] [cursor=pointer]:
+              - generic [ref=e1123]:
+                - text: XOR
+                - img [ref=e1127]
+            - button [ref=e1130] [cursor=pointer]:
+              - img [ref=e1133]
+          - generic [ref=e1137]:
+            - generic [ref=e1140]:
+              - generic [ref=e1142]:
+                - generic [ref=e1144]: Date
+                - generic [ref=e1147]:
+                  - generic [ref=e1148]: 2/21
+                  - generic [ref=e1149]: 13:57:00
+                - generic [ref=e1151]: Input
+                - generic [ref=e1154]:
+                  - generic [ref=e1156]:
+                    - text: "0"
+                    - generic [ref=e1157]: ".01"
+                  - generic [ref=e1159]:
+                    - generic [ref=e1160]: $
+                    - text: "0"
+                    - generic [ref=e1161]: ".05"
+                - generic [ref=e1163]: Output
+                - generic [ref=e1166]:
+                  - generic [ref=e1168]:
+                    - text: "0"
+                    - generic [ref=e1169]: ".00028"
+                  - generic [ref=e1171]:
+                    - generic [ref=e1172]: $
+                    - text: "0"
+                    - generic [ref=e1173]: ".00"
+                - generic [ref=e1175]: From
+                - generic [ref=e1181]: XOR
+                - generic [ref=e1183]: To
+                - generic [ref=e1189]: PUSSY
+                - generic [ref=e1191]: account
+                - generic [ref=e1195] [cursor=pointer]:
+                  - generic [ref=e1196]: cnSMPnA1v4R4uciDxgkzgYYraipNfNwwWSdMxjQ9JfbGmPe56
+                  - text: ...
+                  - generic [ref=e1197]: Pe56
+                - img [ref=e1200]
+                - img [ref=e1206] [cursor=pointer]
+              - generic [ref=e1209]:
+                - generic [ref=e1211]: Date
+                - generic [ref=e1214]:
+                  - generic [ref=e1215]: 2/21
+                  - generic [ref=e1216]: 13:56:06
+                - generic [ref=e1218]: Input
+                - generic [ref=e1221]:
+                  - generic [ref=e1223]:
+                    - text: "0"
+                    - generic [ref=e1224]: ".01"
+                  - generic [ref=e1226]:
+                    - generic [ref=e1227]: $
+                    - text: "0"
+                    - generic [ref=e1228]: ".05"
+                - generic [ref=e1230]: Output
+                - generic [ref=e1233]:
+                  - generic [ref=e1235]:
+                    - text: 1,313,203
+                    - generic [ref=e1236]: ".47"
+                  - generic [ref=e1238]:
+                    - generic [ref=e1239]: $
+                    - text: "0"
+                    - generic [ref=e1240]: ".00"
+                - generic [ref=e1242]: From
+                - generic [ref=e1248]: XOR
+                - generic [ref=e1250]: To
+                - generic [ref=e1256]: KXOR
+                - generic [ref=e1258]: account
+                - generic [ref=e1262] [cursor=pointer]:
+                  - generic [ref=e1263]: cnSMPnA1v4R4uciDxgkzgYYraipNfNwwWSdMxjQ9JfbGmPe56
+                  - text: ...
+                  - generic [ref=e1264]: Pe56
+                - img [ref=e1267]
+                - img [ref=e1273] [cursor=pointer]
+              - generic [ref=e1276]:
+                - generic [ref=e1278]: Date
+                - generic [ref=e1281]:
+                  - generic [ref=e1282]: 2/21
+                  - generic [ref=e1283]: 13:55:18
+                - generic [ref=e1285]: Input
+                - generic [ref=e1288]:
+                  - generic [ref=e1290]:
+                    - text: "0"
+                    - generic [ref=e1291]: ".01"
+                  - generic [ref=e1293]:
+                    - generic [ref=e1294]: $
+                    - text: "0"
+                    - generic [ref=e1295]: ".05"
+                - generic [ref=e1297]: Output
+                - generic [ref=e1300]:
+                  - generic [ref=e1302]:
+                    - text: 3,135,552
+                    - generic [ref=e1303]: ".13"
+                  - generic [ref=e1305]:
+                    - generic [ref=e1306]: $
+                    - text: "0"
+                    - generic [ref=e1307]: ".00"
+                - generic [ref=e1309]: From
+                - generic [ref=e1315]: XOR
+                - generic [ref=e1317]: To
+                - generic [ref=e1323]: XST
+                - generic [ref=e1325]: account
+                - generic [ref=e1329] [cursor=pointer]:
+                  - generic [ref=e1330]: cnSMPnA1v4R4uciDxgkzgYYraipNfNwwWSdMxjQ9JfbGmPe56
+                  - text: ...
+                  - generic [ref=e1331]: Pe56
+                - img [ref=e1334]
+                - img [ref=e1340] [cursor=pointer]
+              - generic [ref=e1343]:
+                - generic [ref=e1345]: Date
+                - generic [ref=e1348]:
+                  - generic [ref=e1349]: 2/21
+                  - generic [ref=e1350]: 13:54:36
+                - generic [ref=e1352]: Input
+                - generic [ref=e1355]:
+                  - generic [ref=e1357]:
+                    - text: "0"
+                    - generic [ref=e1358]: ".01"
+                  - generic [ref=e1360]:
+                    - generic [ref=e1361]: $
+                    - text: "0"
+                    - generic [ref=e1362]: ".05"
+                - generic [ref=e1364]: Output
+                - generic [ref=e1367]:
+                  - generic [ref=e1369]:
+                    - text: "0"
+                    - generic [ref=e1370]: ".0000041"
+                  - generic [ref=e1372]:
+                    - generic [ref=e1373]: $
+                    - text: "0"
+                    - generic [ref=e1374]: ".00"
+                - generic [ref=e1376]: From
+                - generic [ref=e1382]: XOR
+                - generic [ref=e1384]: To
+                - generic [ref=e1390]: KARMA
+                - generic [ref=e1392]: account
+                - generic [ref=e1396] [cursor=pointer]:
+                  - generic [ref=e1397]: cnSMPnA1v4R4uciDxgkzgYYraipNfNwwWSdMxjQ9JfbGmPe56
+                  - text: ...
+                  - generic [ref=e1398]: Pe56
+                - img [ref=e1401]
+                - img [ref=e1407] [cursor=pointer]
+              - generic [ref=e1410]:
+                - generic [ref=e1412]: Date
+                - generic [ref=e1415]:
+                  - generic [ref=e1416]: 2/21
+                  - generic [ref=e1417]: 13:53:48
+                - generic [ref=e1419]: Input
+                - generic [ref=e1422]:
+                  - generic [ref=e1424]:
+                    - text: "0"
+                    - generic [ref=e1425]: ".01"
+                  - generic [ref=e1427]:
+                    - generic [ref=e1428]: $
+                    - text: "0"
+                    - generic [ref=e1429]: ".05"
+                - generic [ref=e1431]: Output
+                - generic [ref=e1434]:
+                  - generic [ref=e1436]:
+                    - text: 432,043
+                    - generic [ref=e1437]: ".07"
+                  - generic [ref=e1439]:
+                    - generic [ref=e1440]: $
+                    - text: "0"
+                    - generic [ref=e1441]: ".00"
+                - generic [ref=e1443]: From
+                - generic [ref=e1449]: XOR
+                - generic [ref=e1451]: To
+                - generic [ref=e1457]: VXOR
+                - generic [ref=e1459]: account
+                - generic [ref=e1463] [cursor=pointer]:
+                  - generic [ref=e1464]: cnSMPnA1v4R4uciDxgkzgYYraipNfNwwWSdMxjQ9JfbGmPe56
+                  - text: ...
+                  - generic [ref=e1465]: Pe56
+                - img [ref=e1468]
+                - img [ref=e1474] [cursor=pointer]
+            - generic [ref=e1476]:
+              - generic [ref=e1478]:
+                - generic [ref=e1479]:
+                  - generic [ref=e1480]: Rows per page
+                  - img [ref=e1484]
+                - generic [ref=e1486]: 1—0 of 0
+              - button "1" [ref=e1490] [cursor=pointer]
+        - generic [ref=e1492]:
+          - generic [ref=e1494]:
+            - button "XOR" [ref=e1496] [cursor=pointer]:
+              - generic [ref=e1497]:
+                - text: XOR
+                - img [ref=e1501]
+            - generic [ref=e1503]:
+              - button "5m" [ref=e1505] [cursor=pointer]:
+                - generic [ref=e1506]:
+                  - text: 5m
+                  - img [ref=e1508]
+              - button [ref=e1510] [cursor=pointer]:
+                - img [ref=e1512]
+              - button [ref=e1514] [cursor=pointer]:
+                - img [ref=e1516]
+            - button [ref=e1519] [cursor=pointer]:
+              - img [ref=e1522]
+          - generic [ref=e1529]:
+            - text: "4"
+            - generic [ref=e1530]: .81DAI
+  - generic [ref=e816]:
+    - link "24,950,966" [ref=e1534] [cursor=pointer]:
+      - /url: https://sora.subscan.io
+      - generic [ref=e819]: 24,950,966
+    - generic [ref=e820]:
+      - img [ref=e822]
+      - generic [ref=e824]: Node connected
+    - generic [ref=e825]:
+      - img [ref=e827]
+      - generic [ref=e829]: Internet stable
+    - generic [ref=e832]: Statistics loading
+    - generic [ref=e833]:
+      - generic [ref=e834]: Powered by
+      - link "Sora" [ref=e835] [cursor=pointer]:
+        - /url: https://sora.org
+        - img [ref=e836]

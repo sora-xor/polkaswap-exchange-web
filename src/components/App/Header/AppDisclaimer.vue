@@ -11,7 +11,7 @@
         @click="handleClose"
       ></s-icon>
     </div>
-    <s-scrollbar>
+    <s-scrollbar ref="scrollbarRef">
       <div class="disclaimer__text">
         <p v-html="disclaimerContent"></p>
         <p class="disclaimer__text-fiat" ref="endLine">{{ t('fiatDisclaimer') }}</p>
@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted, ref, computed } from 'vue';
+import { onBeforeUnmount, onMounted, ref, computed, nextTick } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { Links } from '@/consts';
@@ -47,7 +47,10 @@ const settingsStore = useSettingsStore();
 const loadingAcceptBtn = ref(false);
 const isActiveAcceptBtn = ref(false);
 const endLine = ref<HTMLElement | null>(null);
+const scrollbarRef = ref<unknown>(null);
 let observer: Nullable<IntersectionObserver> = null;
+let scrollContainer: Nullable<HTMLElement> = null;
+let handleScroll: Nullable<() => void> = null;
 
 const userDisclaimerApprove = computed(() => settingsStore.userDisclaimerApprove);
 
@@ -84,11 +87,64 @@ const disclaimerContent = computed(() => {
 });
 
 async function makeAcceptBtnActive(ms = 1_000): Promise<void> {
+  if (isActiveAcceptBtn.value) return;
   await delay(ms);
   isActiveAcceptBtn.value = true;
 }
 
+function resolveScrollContainer(): Nullable<HTMLElement> {
+  const candidate = scrollbarRef.value as HTMLElement | { wrap?: unknown; $el?: unknown } | null;
+
+  if (!candidate) return null;
+
+  const wrapped = (candidate as { wrap?: unknown }).wrap;
+  if (wrapped instanceof HTMLElement) {
+    return wrapped;
+  }
+
+  const root = candidate instanceof HTMLElement ? candidate : (candidate as { $el?: unknown }).$el;
+  if (!(root instanceof HTMLElement)) return null;
+
+  return root.querySelector('.el-scrollbar__wrap') ?? root;
+}
+
+function isEndLineVisible(container: HTMLElement): boolean {
+  const target = endLine.value;
+  if (!target) return false;
+
+  const containerRect = container.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+
+  return targetRect.bottom <= containerRect.bottom + 1;
+}
+
+function activateOnScrollEnd(container: HTMLElement): void {
+  if (isActiveAcceptBtn.value) return;
+  if (!isEndLineVisible(container)) return;
+  void makeAcceptBtnActive(300);
+}
+
+function setupScrollListener(): void {
+  const container = scrollContainer;
+  if (!container) return;
+
+  handleScroll = () => activateOnScrollEnd(container);
+  container.addEventListener('scroll', handleScroll, { passive: true });
+  activateOnScrollEnd(container);
+}
+
+function cleanupScrollListener(): void {
+  if (scrollContainer && handleScroll) {
+    scrollContainer.removeEventListener('scroll', handleScroll);
+  }
+  handleScroll = null;
+  scrollContainer = null;
+}
+
 function setupScrollObserver(): void {
+  scrollContainer = resolveScrollContainer();
+  setupScrollListener();
+
   try {
     observer = new IntersectionObserver(
       (entries) => {
@@ -96,7 +152,10 @@ function setupScrollObserver(): void {
           void makeAcceptBtnActive(300);
         }
       },
-      { threshold: 0.95 }
+      {
+        root: scrollContainer,
+        threshold: 0.95,
+      }
     );
   } catch {
     void makeAcceptBtnActive(2_000);
@@ -106,7 +165,9 @@ function setupScrollObserver(): void {
   if (endLine.value) {
     observer.observe(endLine.value);
   } else {
-    void makeAcceptBtnActive(2_000);
+    if (!scrollContainer) {
+      void makeAcceptBtnActive(2_000);
+    }
   }
 }
 
@@ -122,13 +183,15 @@ function handleClose(): void {
   settingsStore.toggleDisclaimerDialogVisibility();
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await nextTick();
   setupScrollObserver();
 });
 
 onBeforeUnmount(() => {
   observer?.disconnect();
   observer = null;
+  cleanupScrollListener();
 });
 </script>
 
@@ -157,6 +220,14 @@ onBeforeUnmount(() => {
   right: var(--s-size-mini);
   z-index: $app-above-loader-layer;
   padding: $basic-spacing 6px 12px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  :deep(.el-scrollbar) {
+    flex: 1;
+    min-height: 0;
+  }
 
   &__header {
     display: flex;
@@ -201,6 +272,57 @@ onBeforeUnmount(() => {
   &__accept-btn {
     margin-top: $basic-spacing;
     width: 100%;
+    min-height: 42px;
+    height: 42px;
+
+    :deep(.s-button__text) {
+      text-transform: uppercase;
+      font-size: var(--s-font-size-small);
+      font-weight: 500;
+      line-height: 14px;
+    }
+
+    &.is-disabled,
+    &:disabled {
+      border: 2px solid var(--s-color-base-background-hover) !important;
+      background: var(--s-color-utility-surface) !important;
+      color: var(--s-color-base-content-tertiary) !important;
+      box-shadow:
+        1px 1px 5px 0px var(--s-shadow-color-light),
+        -5px -5px 5px 0px inset rgba(255, 255, 255, 0.5),
+        1px 1px 10px 0px inset var(--s-shadow-color-dark) !important;
+    }
+  }
+
+  @include desktop(true) {
+    width: auto;
+    min-width: 0;
+    max-width: calc(100% - (#{$inner-spacing-small} * 2));
+    top: $inner-spacing-small;
+    right: $inner-spacing-small;
+    left: $inner-spacing-small;
+    padding: $basic-spacing $inner-spacing-mini $inner-spacing-small;
+
+    &__text {
+      height: clamp(160px, 33vh, 240px);
+    }
+  }
+
+  @include tablet(true) {
+    position: relative;
+    top: unset;
+    left: unset;
+    right: unset;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    max-height: none;
+    margin-bottom: $inner-spacing-medium;
+    z-index: auto;
+
+    &__text {
+      height: clamp(140px, 34dvh, 220px);
+    }
   }
 }
 </style>

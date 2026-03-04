@@ -377,50 +377,72 @@ export interface SidebarMenuItemLink extends SidebarMenuItem {
   href?: string;
 }
 
+/**
+ * Sidebar icon names must stay aligned with the live polkaswap.io menu.
+ * `Sccp` is the only intentional extension over production and reuses the
+ * statistics icon.
+ */
+export const SidebarIcon = {
+  Swap: 'arrows-swap-90-24',
+  Trade: 'music-CD-24',
+  Rewards: 'basic-circle-star-24',
+  Pool: 'basic-drop-24',
+  Staking: 'basic-layers-24',
+  Bridge: 'grid-block-distribute-vertically-24',
+  Sccp: 'various-planet-24',
+  Account: 'finance-wallet-24',
+  Kensetsu: 'call-phone-16',
+  Explore: 'various-items-24',
+  Statistics: 'various-planet-24',
+  AssetOwner: 'various-rocket-24',
+  About: 'finance-PSWAP-24',
+  Info: 'info-16',
+} as const;
+
 const MainMenu: Array<SidebarMenuItemLink> = [
   {
-    icon: 'arrows-swap-90-24',
+    icon: SidebarIcon.Swap,
     title: PageNames.Swap,
     href: '#/swap',
   },
   {
-    icon: 'music-CD-24',
+    icon: SidebarIcon.Trade,
     title: PageNames.OrderBook,
     href: '#/trade',
   },
   {
-    icon: 'basic-circle-star-24',
+    icon: SidebarIcon.Rewards,
     title: PageNames.Rewards,
     href: '#/points',
   },
   {
-    icon: 'basic-drop-24',
+    icon: SidebarIcon.Pool,
     title: PoolPageNames.Pool,
     href: '#/pool',
   },
   {
-    icon: 'basic-layers-24',
+    icon: SidebarIcon.Staking,
     title: PageNames.StakingContainer,
     href: '#/staking',
     index: StakingPageNames.Staking,
   },
   {
-    icon: 'grid-block-distribute-vertically-24',
+    icon: SidebarIcon.Bridge,
     title: PageNames.Bridge,
     href: '#/bridge',
   },
   {
-    icon: 'various-planet-24',
+    icon: SidebarIcon.Sccp,
     title: PageNames.Sccp,
     href: '#/bridge/sccp',
   },
   {
-    icon: 'finance-wallet-24',
+    icon: SidebarIcon.Account,
     title: PageNames.Wallet,
     href: '#/wallet',
   },
   {
-    icon: 'call-phone-16',
+    icon: SidebarIcon.Kensetsu,
     title: VaultPageNames.VaultsContainer,
     href: '#/kensetsu',
     index: VaultPageNames.Vaults,
@@ -429,13 +451,13 @@ const MainMenu: Array<SidebarMenuItemLink> = [
 
 const OtherPagesMenu: Array<SidebarMenuItemLink> = [
   {
-    icon: 'various-items-24',
+    icon: SidebarIcon.Explore,
     title: PageNames.ExploreContainer,
     href: '#/explore',
     index: PageNames.ExploreTokens,
   },
   {
-    icon: 'various-planet-24',
+    icon: SidebarIcon.Statistics,
     title: PageNames.Stats,
     href: '#/stats',
   },
@@ -450,7 +472,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
   //   href: '/#/card',
   // },
   {
-    icon: 'various-rocket-24',
+    icon: SidebarIcon.AssetOwner,
     title: PageNames.AssetOwnerContainer,
     href: '#/dashboard/owner',
     index: DashboardPageNames.AssetOwner,

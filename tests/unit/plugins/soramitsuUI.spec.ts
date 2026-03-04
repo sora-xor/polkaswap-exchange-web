@@ -8,29 +8,46 @@ vi.mock('@soramitsu-ui/ui', () => ({
 }));
 
 describe('soramitsuUI plugin', () => {
-  it('registers legacy compat component aliases', async () => {
+  it('registers and overrides legacy compat components without duplicate registration warnings', async () => {
+    const contextComponents: Record<string, unknown> = {};
     const app = {
       use: vi.fn(),
-      component: vi.fn(),
+      _context: { components: contextComponents },
+      component: vi.fn(function (name: string, component?: unknown) {
+        if (arguments.length === 1) return contextComponents[name];
+        contextComponents[name] = component;
+        return app;
+      }),
     } as any;
 
     const { install } = await import('@/plugins/soramitsuUI');
+
+    contextComponents.SMenu = { name: 'LegacySMenu' };
+    contextComponents.SDropdown = { name: 'LegacySDropdown' };
+    contextComponents.SMenuItem = { name: 'LegacySMenuItem' };
+    contextComponents.SMenuItemGroup = { name: 'LegacySMenuItemGroup' };
 
     install(app);
 
     expect(soramitsuPluginFactory).toHaveBeenCalledTimes(1);
     expect(app.use).toHaveBeenCalledWith(soramitsuPlugin);
-    expect(app.component).toHaveBeenCalledWith('ElPopover', expect.any(Object));
-    expect(app.component).toHaveBeenCalledWith('el-popover', expect.any(Object));
-    expect(app.component).toHaveBeenCalledWith('SCollapse', expect.any(Object));
-    expect(app.component).toHaveBeenCalledWith('s-collapse', expect.any(Object));
-    expect(app.component).toHaveBeenCalledWith('SCollapseItem', expect.any(Object));
-    expect(app.component).toHaveBeenCalledWith('s-collapse-item', expect.any(Object));
-    expect(app.component).toHaveBeenCalledWith('SDropdown', expect.any(Object));
-    expect(app.component).toHaveBeenCalledWith('s-dropdown', expect.any(Object));
-    expect(app.component).toHaveBeenCalledWith('SDropdownItem', expect.any(Object));
-    expect(app.component).toHaveBeenCalledWith('s-dropdown-item', expect.any(Object));
-    expect(app.component).toHaveBeenCalledWith('SFloatInput', expect.any(Object));
-    expect(app.component).toHaveBeenCalledWith('s-float-input', expect.any(Object));
+    expect(contextComponents.ElPopover).toEqual(expect.any(Object));
+    expect(contextComponents['el-popover']).toEqual(expect.any(Object));
+    expect(contextComponents.SCollapse).toEqual(expect.any(Object));
+    expect(contextComponents['s-collapse']).toEqual(expect.any(Object));
+    expect(contextComponents.SCollapseItem).toEqual(expect.any(Object));
+    expect(contextComponents['s-collapse-item']).toEqual(expect.any(Object));
+    expect(contextComponents.SDropdown).toEqual(expect.any(Object));
+    expect(contextComponents['s-dropdown']).toEqual(expect.any(Object));
+    expect(contextComponents.SDropdownItem).toEqual(expect.any(Object));
+    expect(contextComponents['s-dropdown-item']).toEqual(expect.any(Object));
+    expect(contextComponents.SFloatInput).toEqual(expect.any(Object));
+    expect(contextComponents['s-float-input']).toEqual(expect.any(Object));
+    expect(contextComponents.SMenu).toEqual(expect.any(Object));
+    expect(contextComponents['s-menu']).toEqual(expect.any(Object));
+    expect(contextComponents.SMenuItem).toEqual(expect.any(Object));
+    expect(contextComponents['s-menu-item']).toEqual(expect.any(Object));
+    expect(contextComponents.SMenuItemGroup).toEqual(expect.any(Object));
+    expect(contextComponents['s-menu-item-group']).toEqual(expect.any(Object));
   });
 });

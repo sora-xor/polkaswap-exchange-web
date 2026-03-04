@@ -28,7 +28,8 @@ const SCardStub = {
 const SButtonStub = {
   name: 'SButtonStub',
   emits: ['click'],
-  template: '<button class="s-button-stub" @click="$emit(\'click\')"><slot /></button>',
+  template:
+    '<button class="s-button-stub" @click="$emit(\'click\')"><span class="icon-slot"><slot name="icon"></slot></span><span class="default-slot"><slot></slot></span></button>',
 };
 
 const STooltipStub = {
@@ -71,6 +72,10 @@ describe('BaseWidget', () => {
     disconnectMock.mockClear();
   });
 
+  afterEach(() => {
+    delete (window as any).documentPictureInPicture;
+  });
+
   afterAll(() => {
     vi.unstubAllGlobals();
   });
@@ -111,5 +116,17 @@ describe('BaseWidget', () => {
     const wrapper = mountComponent({ pipDisabled: true }, { default: 'content' });
 
     expect(wrapper.find('.base-widget-pip').exists()).toBe(false);
+  });
+
+  it('renders pip icon when picture-in-picture is available', () => {
+    Object.defineProperty(window, 'documentPictureInPicture', {
+      value: {},
+      configurable: true,
+    });
+
+    const wrapper = mountComponent({ title: 'details' }, { default: 'content' });
+
+    expect(wrapper.find('.base-widget-pip').exists()).toBe(true);
+    expect(wrapper.find('.base-widget-pip .s-icon-stub[data-name="finance-receive-24"]').exists()).toBe(true);
   });
 });

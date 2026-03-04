@@ -7,9 +7,17 @@ node_modules
 
 /tests/e2e/videos/
 /tests/e2e/screenshots/
+/playwright-report/
+/test-results/
+.playwright-cli/*.log
+.playwright-cli/network-*.log
+.playwright-cli/page-*.yml
+.playwright-cli/page-*.png
 
 .vitest-localstorage.sqlite
 .ipfs-workspace/*
+tmp*
+output*
 
 
 # local env files

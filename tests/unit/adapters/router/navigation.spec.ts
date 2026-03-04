@@ -73,4 +73,23 @@ describe('router legacy adapter', () => {
 
     expect(setLoading).toHaveBeenCalledWith(true);
   });
+
+  it('setLegacyRouterLoading falls back to wallet router loading mutation', () => {
+    const setLoading = vi.fn();
+    storeShape = {
+      commit: {
+        router: {},
+        wallet: {
+          router: {
+            setLoading,
+          },
+        },
+      },
+    };
+
+    setLegacyRouterLoading(true);
+
+    expect(setLoading).toHaveBeenCalledWith(true);
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
 });

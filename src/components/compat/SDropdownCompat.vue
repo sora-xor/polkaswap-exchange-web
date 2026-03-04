@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, ref } from 'vue';
+import { computed, provide, ref, useAttrs } from 'vue';
 
 import ElPopoverCompat from './ElPopoverCompat';
 import { dropdownCompatContextKey } from './dropdownContext';
@@ -47,6 +47,7 @@ const emit = defineEmits<{
   (event: 'visible-change', value: boolean): void;
 }>();
 
+const attrs = useAttrs();
 const visible = ref(false);
 
 const effectiveTrigger = computed<DropdownTrigger>(() => (props.disabled ? 'manual' : props.trigger));
@@ -66,6 +67,10 @@ const popperClasses = computed(() => ['el-dropdown-menu', props.popperClass].fil
 const iconSize = computed(() => (typeof props.size === 'number' ? `${props.size}px` : undefined));
 
 const triggerTabIndex = computed(() => (props.disabled ? -1 : (props.tabindex ?? 0)));
+const triggerAttrs = computed(() => {
+  const { class: _class, style: _style, ...rest } = attrs;
+  return rest;
+});
 
 function setVisible(next: boolean): void {
   visible.value = next;
@@ -128,7 +133,13 @@ defineExpose({
     @visible-change="setVisible"
   >
     <template #reference>
-      <span :class="triggerClasses" :tabindex="triggerTabIndex" @keydown="handleKeyDown">
+      <span
+        v-bind="triggerAttrs"
+        :class="[triggerClasses, attrs.class]"
+        :style="attrs.style"
+        :tabindex="triggerTabIndex"
+        @keydown="handleKeyDown"
+      >
         <slot>
           <s-icon v-if="icon" :name="icon" :size="iconSize || '16'" />
         </slot>

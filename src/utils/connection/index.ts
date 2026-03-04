@@ -275,8 +275,10 @@ export class NodesConnection {
               console.warn(`[${this.network}] Reconnect attempt failed`, retryError);
             });
           }, delay);
+          return;
         } else {
           await nextCall();
+          return;
         }
       }
 
@@ -310,6 +312,8 @@ export class NodesConnection {
         onReconnect,
         onConnect,
         connectionOptions: { ...connectionOpenOptions, once: false },
+      }).catch((reconnectError) => {
+        console.warn(`[${this.network}] Reconnect after disconnect failed`, reconnectError);
       });
     };
 

@@ -284,10 +284,33 @@ export const updateDocumentTitle = (to?: RouteLike) => {
   }
 };
 
+const getCssVariablesScopeElement = (): Nullable<Element> => {
+  if (typeof document === 'undefined') return null;
+
+  return (
+    document.querySelector('.sora-theme-provider[data-theme]') ??
+    document.querySelector('.sora-theme-provider') ??
+    document.documentElement
+  );
+};
+
 export const getCssVariableValue = (name: string): string => {
-  return getComputedStyle(document.documentElement as any)
+  const scope = getCssVariablesScopeElement();
+  if (!scope) return '';
+
+  const scopeValue = getComputedStyle(scope as any)
     .getPropertyValue(name)
     .trim();
+
+  if (scopeValue) return scopeValue;
+
+  if (scope !== document.documentElement) {
+    return getComputedStyle(document.documentElement as any)
+      .getPropertyValue(name)
+      .trim();
+  }
+
+  return '';
 };
 
 export const toQueryString = (params: any): string => {

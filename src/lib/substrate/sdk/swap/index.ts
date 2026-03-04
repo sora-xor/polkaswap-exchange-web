@@ -213,6 +213,48 @@ export class SwapModule<T> {
 
   constructor(private readonly root: Api<T>) {}
 
+  private get query(): any {
+    return this.root.connection?.api?.query;
+  }
+
+  private get queryRx(): any {
+    return this.root.connection?.api?.rx?.query;
+  }
+
+  private get isXykSourceSupported(): boolean {
+    return typeof this.queryRx?.poolXYK?.reserves === 'function';
+  }
+
+  private get isTbcSourceSupported(): boolean {
+    return (
+      typeof this.query?.multicollateralBondingCurvePool?.enabledTargets === 'function' &&
+      typeof this.queryRx?.multicollateralBondingCurvePool?.collateralReserves === 'function' &&
+      typeof this.queryRx?.multicollateralBondingCurvePool?.initialPrice === 'function' &&
+      typeof this.queryRx?.multicollateralBondingCurvePool?.priceChangeStep === 'function' &&
+      typeof this.queryRx?.multicollateralBondingCurvePool?.priceChangeRate === 'function' &&
+      typeof this.queryRx?.multicollateralBondingCurvePool?.sellPriceCoefficient === 'function' &&
+      typeof this.queryRx?.multicollateralBondingCurvePool?.referenceAssetId === 'function' &&
+      typeof this.queryRx?.balances?.totalIssuance === 'function'
+    );
+  }
+
+  private get isXstSourceSupported(): boolean {
+    return (
+      typeof this.query?.xstPool?.enabledSynthetics?.entries === 'function' &&
+      typeof this.queryRx?.xstPool?.syntheticBaseAssetFloorPrice === 'function' &&
+      typeof this.queryRx?.xstPool?.referenceAssetId === 'function' &&
+      typeof this.queryRx?.band?.symbolRates === 'function'
+    );
+  }
+
+  private get isOrderBookSourceSupported(): boolean {
+    return (
+      typeof this.queryRx?.orderBook?.orderBooks === 'function' &&
+      typeof this.queryRx?.orderBook?.aggregatedAsks === 'function' &&
+      typeof this.queryRx?.orderBook?.aggregatedBids === 'function'
+    );
+  }
+
   public async update(): Promise<void> {
     this.enabledAssets = await this.getPrimaryMarketsEnabledAssets();
   }
@@ -323,14 +365,34 @@ export class SwapModule<T> {
   }
 
   public async getTbcAssets(): Promise<string[]> {
-    const assets = await this.root.api.query.multicollateralBondingCurvePool.enabledTargets();
-    return toAssetIds(assets);
+    const enabledTargets = this.query?.multicollateralBondingCurvePool?.enabledTargets;
+
+    if (typeof enabledTargets !== 'function') return [];
+
+    try {
+      const assets = await enabledTargets();
+      return toAssetIds(assets);
+    } catch {
+      return [];
+    }
   }
 
   public async getXstAssets(): Promise<Record<string, { referenceSymbol: string; feeRatio: FPNumber }>> {
-    const entries = await this.root.api.query.xstPool.enabledSynthetics.entries();
+    const entriesMethod = this.query?.xstPool?.enabledSynthetics?.entries;
+
+    if (typeof entriesMethod !== 'function') return {};
+
+    let entries: Array<[any, any]> = [];
+
+    try {
+      entries = await entriesMethod();
+    } catch {
+      return {};
+    }
 
     return entries.reduce<Record<string, { referenceSymbol: string; feeRatio: FPNumber }>>((buffer, [key, value]) => {
+      if (!value || typeof value.unwrap !== 'function' || value.isNone) return buffer;
+
       const id = toAssetId(key.args[0]);
       const data = value.unwrap();
       const referenceSymbol = new TextDecoder().decode(data.referenceSymbol);
@@ -385,15 +447,18 @@ export class SwapModule<T> {
 
     const tbcAssets = enabledAssets?.tbc ?? [];
     const xstAssets = enabledAssets?.xst ?? {};
+    const hasPriceTools = typeof this.queryRx?.priceTools?.priceInfos === 'function';
 
     const isSourceUsed = (source: LiquiditySourceTypes): boolean =>
       enabledSources.includes(source) && (!selectedSources.length || selectedSources.includes(source));
 
     // is [XYK, TBC, XST, OrderBook] sources used
-    const xykUsed = isSourceUsed(LiquiditySourceTypes.XYKPool);
-    const tbcUsed = isXorDex && isSourceUsed(LiquiditySourceTypes.MulticollateralBondingCurvePool);
-    const xstUsed = isXorDex && isSourceUsed(LiquiditySourceTypes.XSTPool);
-    const orderBookUsed = (isXorDex || isKusdDex || isVxorDex) && isSourceUsed(LiquiditySourceTypes.OrderBook);
+    const xykUsed = this.isXykSourceSupported && isSourceUsed(LiquiditySourceTypes.XYKPool);
+    const tbcUsed =
+      isXorDex && this.isTbcSourceSupported && hasPriceTools && isSourceUsed(LiquiditySourceTypes.MulticollateralBondingCurvePool);
+    const xstUsed = isXorDex && this.isXstSourceSupported && hasPriceTools && isSourceUsed(LiquiditySourceTypes.XSTPool);
+    const orderBookUsed =
+      (isXorDex || isKusdDex || isVxorDex) && this.isOrderBookSourceSupported && isSourceUsed(LiquiditySourceTypes.OrderBook);
 
     if ([xykUsed, tbcUsed, xstUsed, orderBookUsed].every((isUsed) => !isUsed)) {
       return null;
@@ -471,8 +536,9 @@ export class SwapModule<T> {
       : [];
 
     // storage consts
-    const bandRateStalePeriod = this.root.api.consts.band.getBandRateStalePeriod.toNumber();
-    const syntheticBaseBuySellLimit = this.root.api.consts.xstPool.getSyntheticBaseBuySellLimit.toString();
+    const bandRateStalePeriod = this.root.connection?.api?.consts?.band?.getBandRateStalePeriod?.toNumber?.() ?? 0;
+    const syntheticBaseBuySellLimit =
+      this.root.connection?.api?.consts?.xstPool?.getSyntheticBaseBuySellLimit?.toString?.() ?? '0';
 
     return combineLatest([
       ...tickersRates,

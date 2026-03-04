@@ -82,3 +82,99 @@ export function deriveVisibilityModelFromLayout(
 
   return initial;
 }
+
+function toSafeNumber(value: unknown, fallback: number): number {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(value, max));
+}
+
+function normalizeWidgetByDefault(widget: LayoutWidget, fallback: LayoutWidget, cols: number): LayoutWidget {
+  const minW = toSafeNumber(fallback.minW ?? widget.minW, 1);
+  const minH = toSafeNumber(fallback.minH ?? widget.minH, 1);
+
+  const maxWRaw = fallback.maxW ?? widget.maxW;
+  const maxHRaw = fallback.maxH ?? widget.maxH;
+
+  const maxW = Number.isFinite(maxWRaw) ? Math.max(minW, Number(maxWRaw)) : undefined;
+  const maxH = Number.isFinite(maxHRaw) ? Math.max(minH, Number(maxHRaw)) : undefined;
+
+  const widthLimit = Math.max(1, maxW ? Math.min(maxW, cols) : cols);
+  const rawW = toSafeNumber(widget.w, fallback.w);
+  const w = clamp(rawW, minW, widthLimit);
+
+  const maxX = Math.max(0, cols - w);
+  const x = clamp(toSafeNumber(widget.x, fallback.x), 0, maxX);
+  const y = Math.max(0, toSafeNumber(widget.y, fallback.y));
+
+  const heightLimit = maxH ?? Number.MAX_SAFE_INTEGER;
+  const rawH = toSafeNumber(widget.h, fallback.h);
+  const h = clamp(rawH, minH, heightLimit);
+
+  const normalized: LayoutWidget = {
+    ...fallback,
+    ...widget,
+    x,
+    y,
+    w,
+    h,
+    minW,
+    minH,
+  };
+
+  if (maxW !== undefined) {
+    normalized.maxW = maxW;
+  } else {
+    delete normalized.maxW;
+  }
+
+  if (maxH !== undefined) {
+    normalized.maxH = maxH;
+  } else {
+    delete normalized.maxH;
+  }
+
+  return normalized;
+}
+
+/**
+ * Ensures persisted layouts remain compatible with the current widget defaults.
+ * It drops unknown widgets, removes duplicates, and clamps positions/sizes to
+ * the active breakpoint columns and default min/max constraints.
+ */
+export function normalizeLayoutsWithDefaults(
+  storedLayouts: ResponsiveLayouts,
+  defaultLayouts: ResponsiveLayouts,
+  cols: LayoutConfig
+): ResponsiveLayouts {
+  const points = new Set<BreakpointKey>([
+    ...(Object.keys(defaultLayouts) as BreakpointKey[]),
+    ...(Object.keys(storedLayouts) as BreakpointKey[]),
+  ]);
+
+  const normalized: ResponsiveLayouts = {};
+
+  for (const point of points) {
+    const defaults = defaultLayouts[point] ?? [];
+    const defaultById = new Map(defaults.map((widget) => [widget.i, widget] as const));
+    const breakpointCols = Math.max(1, cols[point] ?? 1);
+    const source = storedLayouts[point] ?? defaults;
+    const seen = new Set<string>();
+
+    normalized[point] = source.reduce<Layout>((acc, widget) => {
+      if (!widget || typeof widget.i !== 'string' || seen.has(widget.i)) return acc;
+
+      const fallback = defaultById.get(widget.i);
+      if (!fallback) return acc;
+
+      seen.add(widget.i);
+      acc.push(normalizeWidgetByDefault(widget, fallback, breakpointCols));
+      return acc;
+    }, []);
+  }
+
+  return normalized;
+}

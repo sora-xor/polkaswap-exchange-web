@@ -1,0 +1,192 @@
+{
+  "live": {
+    "settingsTrigger": "s-icon-grid-block-align-left-24",
+    "sidebarRows": [
+      {
+        "text": "Swap",
+        "icon": "s-icon-arrows-swap-90-24"
+      },
+      {
+        "text": "Trade",
+        "icon": "s-icon-music-CD-24"
+      },
+      {
+        "text": "Rewards",
+        "icon": "s-icon-basic-circle-star-24"
+      },
+      {
+        "text": "Pool",
+        "icon": "s-icon-basic-drop-24"
+      },
+      {
+        "text": "Staking",
+        "icon": "s-icon-basic-layers-24"
+      },
+      {
+        "text": "Bridge",
+        "icon": "s-icon-grid-block-distribute-vertically-24"
+      },
+      {
+        "text": "Account",
+        "icon": "s-icon-finance-wallet-24"
+      },
+      {
+        "text": "Kensetsu",
+        "icon": "s-icon-call-phone-16"
+      },
+      {
+        "text": "Explore",
+        "icon": "s-icon-various-items-24"
+      },
+      {
+        "text": "Statistics",
+        "icon": "s-icon-various-planet-24"
+      },
+      {
+        "text": "About",
+        "icon": "s-icon-finance-PSWAP-24"
+      },
+      {
+        "text": "Info & Community",
+        "icon": "s-icon-info-16"
+      }
+    ],
+    "headerRows": [
+      {
+        "text": "Hide Balances",
+        "icon": "s-icon-basic-filterlist-24",
+        "indicator": null
+      },
+      {
+        "text": "System preferences",
+        "icon": "s-icon-basic-lightning-24",
+        "indicator": null
+      },
+      {
+        "text": "Light mode",
+        "icon": "s-icon-various-brightness-low-24",
+        "indicator": null
+      },
+      {
+        "text": "Noir mode",
+        "icon": "s-icon-finance-PSWAP-24",
+        "indicator": null
+      },
+      {
+        "text": "Select Currency",
+        "icon": "s-icon-arrows-chevron-right-rounded-24",
+        "indicator": "s-icon-arrows-chevron-right-rounded-24"
+      },
+      {
+        "text": "Set Notifications",
+        "icon": "s-icon-notifications-bell-24",
+        "indicator": "s-icon-arrows-chevron-right-rounded-24"
+      },
+      {
+        "text": "Show Disclaimer",
+        "icon": "s-icon-info-16",
+        "indicator": "s-icon-arrows-chevron-right-rounded-24"
+      },
+      {
+        "text": "English (UK)",
+        "icon": "s-icon-arrows-chevron-right-rounded-24",
+        "indicator": "s-icon-arrows-chevron-right-rounded-24"
+      }
+    ]
+  },
+  "local": {
+    "settingsTrigger": "s-icon-grid-block-align-left-24",
+    "sidebarRows": [
+      {
+        "text": "Swap",
+        "icon": "s-icon-arrows-swap-90-24"
+      },
+      {
+        "text": "Trade",
+        "icon": "s-icon-music-CD-24"
+      },
+      {
+        "text": "Rewards",
+        "icon": "s-icon-basic-circle-star-24"
+      },
+      {
+        "text": "Pool",
+        "icon": "s-icon-basic-drop-24"
+      },
+      {
+        "text": "Staking",
+        "icon": "s-icon-basic-layers-24"
+      },
+      {
+        "text": "Bridge",
+        "icon": "s-icon-grid-block-distribute-vertically-24"
+      },
+      {
+        "text": "SCCP",
+        "icon": "s-icon-various-planet-24"
+      },
+      {
+        "text": "Account",
+        "icon": "s-icon-finance-wallet-24"
+      },
+      {
+        "text": "Kensetsu",
+        "icon": "s-icon-call-phone-16"
+      },
+      {
+        "text": "Explore",
+        "icon": "s-icon-various-items-24"
+      },
+      {
+        "text": "Statistics",
+        "icon": "s-icon-various-planet-24"
+      },
+      {
+        "text": "About",
+        "icon": "s-icon-finance-PSWAP-24"
+      }
+    ],
+    "headerRows": [
+      {
+        "text": "Hide Balances",
+        "icon": "s-icon-basic-filterlist-24",
+        "indicator": null
+      },
+      {
+        "text": "System preferences",
+        "icon": "s-icon-basic-lightning-24",
+        "indicator": null
+      },
+      {
+        "text": "Light mode",
+        "icon": "s-icon-various-brightness-low-24",
+        "indicator": null
+      },
+      {
+        "text": "Noir mode",
+        "icon": "s-icon-finance-PSWAP-24",
+        "indicator": null
+      },
+      {
+        "text": "Select Currency",
+        "icon": "s-icon-arrows-chevron-right-rounded-24",
+        "indicator": "s-icon-arrows-chevron-right-rounded-24"
+      },
+      {
+        "text": "Set Notifications",
+        "icon": "s-icon-notifications-bell-24",
+        "indicator": "s-icon-arrows-chevron-right-rounded-24"
+      },
+      {
+        "text": "Show Disclaimer",
+        "icon": "s-icon-info-16",
+        "indicator": "s-icon-arrows-chevron-right-rounded-24"
+      },
+      {
+        "text": "English (UK)",
+        "icon": "s-icon-arrows-chevron-right-rounded-24",
+        "indicator": "s-icon-arrows-chevron-right-rounded-24"
+      }
+    ]
+  }
+}

@@ -18,8 +18,8 @@
       <div class="app-body">
         <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div class="app-content">
-            <router-view :parent-loading="loading || !nodeIsConnected"></router-view>
             <app-disclaimer v-if="disclaimerVisibility"></app-disclaimer>
+            <router-view :parent-loading="loading || !nodeIsConnected"></router-view>
           </div>
         </s-scrollbar>
       </div>
@@ -105,6 +105,11 @@ import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/stor
 import { getEnvConfigCandidates, resolveStaticAssetUrl } from '@/utils/staticAssets';
 import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
+import { resolveMenuVisibilityOnBreakpointChange } from '@/views/utils/resolveMenuVisibilityOnBreakpointChange';
+import { resolveDialogVisibilityOnRouteChange } from '@/views/utils/resolveDialogVisibilityOnRouteChange';
+import { resolveMenuVisibilityOnRouteChange } from '@/views/utils/resolveMenuVisibilityOnRouteChange';
+import { resolveProductPopupKey } from '@/views/utils/resolveProductPopupKey';
+import { resolveWalletOverlayVisibility } from '@/views/utils/resolveWalletOverlayVisibility';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
@@ -180,6 +185,7 @@ const libraryDesignSystem = computed(() => store.getters?.libraryDesignSystem as
 const account = computed(() => store.getters?.wallet?.account?.account);
 const isSignTxDialogVisible = computed(() => Boolean(store.state.wallet?.transactions?.isSignTxDialogVisible));
 const isWalletLoaded = computed(() => Boolean(store.state.wallet?.settings?.isWalletLoaded));
+const showWalletOverlays = computed(() => resolveWalletOverlayVisibility(isWalletLoaded.value, isTearingDown.value));
 const orientationWarningVisible = computed({
   get: () => Boolean(store.state.settings.isOrientationWarningVisible),
   set: (flag: boolean) => {
@@ -262,6 +268,26 @@ const unsubscribeFromInvitedUsers =
 const setEvmNetworksApp = resolveCommit(store.commit?.web3?.setEvmNetworksApp, 'web3/setEvmNetworksApp');
 const setSubNetworkApps = resolveCommit(store.commit?.web3?.setSubNetworkApps, 'web3/setSubNetworkApps');
 const setEthBridgeSettings = resolveCommit(store.commit?.web3?.setEthBridgeSettings, 'web3/setEthBridgeSettings');
+const setSoraAccountDialogVisibility = resolveCommit(
+  store.commit?.web3?.setSoraAccountDialogVisibility,
+  'web3/setSoraAccountDialogVisibility'
+);
+const setSelectProviderDialogVisibility = resolveCommit(
+  store.commit?.web3?.setSelectProviderDialogVisibility,
+  'web3/setSelectProviderDialogVisibility'
+);
+const setSelectNetworkDialogVisibility = resolveCommit(
+  store.commit?.web3?.setSelectNetworkDialogVisibility,
+  'web3/setSelectNetworkDialogVisibility'
+);
+const setSelectSubNodeDialogVisibility = resolveCommit(
+  store.commit?.web3?.setSelectSubNodeDialogVisibility,
+  'web3/setSelectSubNodeDialogVisibility'
+);
+const setSubAccountDialogVisibility = resolveCommit(
+  store.commit?.web3?.setSubAccountDialogVisibility,
+  'web3/setSubAccountDialogVisibility'
+);
 const resetStorageReferrer =
   resolveCommit(store.commit?.referrals?.resetStorageReferrer, 'referrals/resetStorageReferrer') ?? (() => {});
 const setSignTxDialogVisibility =
@@ -323,8 +349,9 @@ function handleAppMenuClick(event: Event): void {
   }
 }
 
-function openProductDialog(product: string): void {
-  const key = `show${product.charAt(0).toUpperCase()}${product.slice(1)}Popup`;
+function openProductDialog(product = 'soraMobile'): void {
+  closeMenu();
+  const key = resolveProductPopupKey(product);
   const popup = productPopupRefs[key];
   if (popup) {
     popup.value = true;
@@ -417,6 +444,7 @@ function unsubscribeFromLocalStorage(): void {
 }
 
 function setResponsiveClass(): void {
+  closeMenu();
   if (typeof setScreenBreakpointClass === 'function') {
     setScreenBreakpointClass(window.innerWidth);
   }
@@ -459,6 +487,20 @@ function unsubscribeFromScreenOrientation(): void {
   } else {
     window.removeEventListener('resize', handleOrientationChange);
   }
+}
+
+function handleGlobalKeydown(event: KeyboardEvent): void {
+  if (event.key === 'Escape') {
+    closeMenu();
+  }
+}
+
+function subscribeOnKeyboard(): void {
+  window.addEventListener('keydown', handleGlobalKeydown);
+}
+
+function unsubscribeFromKeyboard(): void {
+  window.removeEventListener('keydown', handleGlobalKeydown);
 }
 
 async function runAppConnectionToNode(): Promise<void> {
@@ -519,7 +561,15 @@ async function loadRuntimeEnvConfig(): Promise<RuntimeEnvConfig> {
         return data as RuntimeEnvConfig;
       }
 
-      console.warn('[bootstrap] Invalid env config payload:', candidate, data);
+      const payloadType = Array.isArray(data) ? 'array' : typeof data;
+      const payloadPreview = typeof data === 'string' ? data.trim().slice(0, 32).toLowerCase() : undefined;
+      const isHtmlFallback = payloadType === 'string' && payloadPreview?.startsWith('<!doctype html');
+
+      if (isHtmlFallback) {
+        console.warn('[bootstrap] Env config fallback returned HTML document:', candidate);
+      } else {
+        console.warn('[bootstrap] Invalid env config payload type:', candidate, payloadType);
+      }
     } catch (error) {
       console.warn('[bootstrap] Failed to load env config:', candidate, error);
     }
@@ -550,6 +600,7 @@ async function teardown(): Promise<void> {
   unsubscribeFromLocalStorage();
   unsubscribeFromScreenSize();
   unsubscribeFromScreenOrientation();
+  unsubscribeFromKeyboard();
   removeThemeListeners(isTMA.value);
   tmaSdkService.destroy();
   await resetInternalSubscriptions();
@@ -585,6 +636,30 @@ watch(isLoggedIn, (loggedIn) => {
   if (loggedIn) {
     void confirmInvitation();
   }
+});
+
+watch(
+  () => route.fullPath,
+  (nextPath, prevPath) => {
+    menuVisibility.value = resolveMenuVisibilityOnRouteChange(menuVisibility.value, prevPath, nextPath);
+
+    const syncRouteScopedDialog = (isVisible: boolean, setter: unknown): void => {
+      const nextVisibility = resolveDialogVisibilityOnRouteChange(isVisible, prevPath, nextPath);
+      if (nextVisibility !== isVisible && typeof setter === 'function') {
+        setter(nextVisibility);
+      }
+    };
+
+    syncRouteScopedDialog(Boolean(store.state.web3?.soraAccountDialogVisibility), setSoraAccountDialogVisibility);
+    syncRouteScopedDialog(Boolean(store.state.web3?.selectProviderDialogVisibility), setSelectProviderDialogVisibility);
+    syncRouteScopedDialog(Boolean(store.state.web3?.selectNetworkDialogVisibility), setSelectNetworkDialogVisibility);
+    syncRouteScopedDialog(Boolean(store.state.web3?.selectSubNodeDialogVisibility), setSelectSubNodeDialogVisibility);
+    syncRouteScopedDialog(Boolean(store.state.web3?.subAccountDialogVisibility), setSubAccountDialogVisibility);
+  }
+);
+
+watch(responsiveClass, (nextClass, prevClass) => {
+  menuVisibility.value = resolveMenuVisibilityOnBreakpointChange(menuVisibility.value, prevClass, nextClass);
 });
 
 watch(
@@ -729,6 +804,7 @@ onMounted(() => {
   subscribeOnLocalStorage();
   subscribeOnScreenSize();
   subscribeOnScreenOrientation();
+  subscribeOnKeyboard();
 });
 
 onBeforeUnmount(() => {
@@ -754,6 +830,9 @@ ul ul {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Sora', sans-serif;
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100vh;
   height: 100dvh;
   color: var(--s-color-base-content-primary);
   background-color: var(--s-color-utility-body);
@@ -792,6 +871,7 @@ ul ul {
   align-items: center;
   position: absolute;
   width: 405px;
+  max-width: calc(100vw - 24px);
   .el-notification {
     &__icon {
       position: relative;
@@ -933,6 +1013,7 @@ i.icon-divider {
   &-main {
     display: flex;
     align-items: stretch;
+    height: calc(100vh - #{$header-height} - #{$footer-height});
     height: calc(100dvh - #{$header-height} - #{$footer-height});
     position: relative;
   }
@@ -943,11 +1024,13 @@ i.icon-divider {
     flex: 1;
     flex-flow: column nowrap;
     max-width: 100%;
+    min-width: 0;
   }
 
   &-content {
     flex: 1;
     padding: $inner-spacing-medium;
+    min-width: 0;
   }
 
   &-footer {

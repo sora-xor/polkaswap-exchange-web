@@ -25,6 +25,20 @@ vi.mock('@/components/shared/Button/SvgIconButton/Icons/Candle.vue', () => ({
 const mountComponent = (props?: Record<string, unknown>) =>
   mount(SvgIconButton, {
     props,
+    global: {
+      stubs: {
+        SButton: {
+          name: 'SButton',
+          template:
+            '<button class="s-button-stub" v-bind="$attrs"><span class="icon-slot"><slot name="icon"></slot></span><span class="default-slot"><slot></slot></span></button>',
+        },
+        's-button': {
+          name: 's-button',
+          template:
+            '<button class="s-button-stub" v-bind="$attrs"><span class="icon-slot"><slot name="icon"></slot></span><span class="default-slot"><slot></slot></span></button>',
+        },
+      },
+    },
   });
 
 const settleAsyncComponents = async () => {
@@ -45,6 +59,7 @@ describe('SvgIconButton', () => {
     await settleAsyncComponents();
 
     expect(wrapper.html()).toContain('line-icon-stub');
+    expect(wrapper.find('.icon-slot .line-icon-stub').exists()).toBe(true);
     expect(wrapper.attributes('aria-label')).toBe('toggle-line');
   });
 
@@ -60,5 +75,6 @@ describe('SvgIconButton', () => {
     const exposed = wrapper.vm as unknown as { classes: Array<string | Record<string, boolean>> };
     expect(JSON.stringify(exposed.classes)).toContain('s-pressed');
     expect(wrapper.html()).toContain('candle-icon-stub');
+    expect(wrapper.find('.icon-slot .candle-icon-stub').exists()).toBe(true);
   });
 });

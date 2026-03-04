@@ -140,6 +140,7 @@ $polkaswap-light-token-overrides: (
   sys: (
     color: (
       background: #faf4f8,
+      background-hover: #f7f3f4,
       primary: $accent,
       primary-hover: $accent-hover,
       primary-pressed: $accent-pressed,
@@ -148,9 +149,18 @@ $polkaswap-light-token-overrides: (
       primary-hover-background: $accent-hover-background,
       primary-pressed-background: $accent-pressed-background,
       primary-focused-background: $accent-focused-background,
+      content-primary: #2a171f,
+      content-secondary: #a19a9d,
+      content-tertiary: #d5cdd0,
+      content-quaternary: #75787b,
+      border-primary: #f7f3f4,
+      border-secondary: #ede4e7,
+      disabled: #fdf7fb,
+      on-disabled: #a19a9d,
       util: (
         body: #f7f3f4,
         surface: #fdf7fb,
+        overlay: rgba(42, 23, 31, 0.1),
       ),
     ),
   ),

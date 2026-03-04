@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onBeforeUnmount, ref, toRef, watchEffect } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, toRef, watchEffect } from 'vue';
 
 import type { SnapshotFilter } from '@/types/filters';
 
@@ -67,7 +67,12 @@ const closeMenu = () => {
   removeListener();
 };
 
-const handleClickOutside = (event: MouseEvent) => {
+const handleViewportOrNavigationChange = () => {
+  if (!visibility.value) return;
+  closeMenu();
+};
+
+const handleClickOutside = (event: Event) => {
   const target = event.target as Node | null;
   if (!target) return;
   const container = root.value;
@@ -77,14 +82,26 @@ const handleClickOutside = (event: MouseEvent) => {
   }
 };
 
+const supportsPointerEvents = typeof window !== 'undefined' && 'PointerEvent' in window;
+
 const addListener = () => {
   const doc = root.value?.ownerDocument ?? document;
-  doc.addEventListener('click', handleClickOutside);
+  if (supportsPointerEvents) {
+    doc.addEventListener('pointerdown', handleClickOutside);
+  } else {
+    doc.addEventListener('click', handleClickOutside);
+    doc.addEventListener('touchstart', handleClickOutside);
+  }
 };
 
 const removeListener = () => {
   const doc = root.value?.ownerDocument ?? document;
-  doc.removeEventListener('click', handleClickOutside);
+  if (supportsPointerEvents) {
+    doc.removeEventListener('pointerdown', handleClickOutside);
+  } else {
+    doc.removeEventListener('click', handleClickOutside);
+    doc.removeEventListener('touchstart', handleClickOutside);
+  }
 };
 
 watchEffect(
@@ -98,6 +115,15 @@ watchEffect(
 
 onBeforeUnmount(() => {
   removeListener();
+  window.removeEventListener('resize', handleViewportOrNavigationChange);
+  window.removeEventListener('hashchange', handleViewportOrNavigationChange);
+  window.removeEventListener('popstate', handleViewportOrNavigationChange);
+});
+
+onMounted(() => {
+  window.addEventListener('resize', handleViewportOrNavigationChange);
+  window.addEventListener('hashchange', handleViewportOrNavigationChange);
+  window.addEventListener('popstate', handleViewportOrNavigationChange);
 });
 
 const toggleMenu = () => {

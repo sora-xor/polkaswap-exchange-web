@@ -61,11 +61,16 @@ const selectedLang = computed<Language>({
   },
 });
 
-const entries = Object.entries(Languages).map(([key, value]) => ({
-  key: key as Language,
-  value,
-  name: t(`languages.${key}`),
-}));
+const entries = Languages.map((language) => {
+  const translationKey = `languages.${language.key}`;
+  const translatedName = t(translationKey);
+
+  return {
+    key: language.key as Language,
+    value: language.value,
+    name: translatedName !== translationKey ? translatedName : language.name,
+  };
+});
 
 function setSelectedEl(element: HTMLDivElement | null, isSelected: boolean): void {
   if (isSelected) {

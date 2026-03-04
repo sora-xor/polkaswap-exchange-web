@@ -60,7 +60,10 @@ yarn install
 | `yarn test:unit` | Execute the Vitest unit suites (`tests/unit/**`). |
 | `yarn test:ipfs` | Serve the built `dist/` under an IPFS-style path and run a Playwright smoke check for runtime errors/blank pages. |
 | `yarn test:translation` | Ensure locale catalogs mirror `en.json` and detect missing keys. |
-| `yarn test:e2e` | Run the Playwright bridge/MoonPay smokes. |
+| `yarn test:e2e` | Run the default Playwright UI suite under an IPFS-style prefix with deterministic network stubs. |
+| `yarn test:e2e:root` | Run key UI app/navigation specs with root prefix (`PS_IPFS_TEST_PREFIX=''`) to catch `/` deployment regressions. |
+| `yarn test:e2e:live` | Run live-runtime UI smokes without network stubs (`PS_E2E_LIVE_NETWORK=1`) and fail on browser console/page errors. |
+| `yarn test:e2e:all` | Run the full e2e matrix (`default` + `root-prefix` + `live`). |
 | `yarn test:all` | Alias for `yarn test:unit`. |
 | `yarn lang:generate` | Build `src/lang/en.json` from `src/lang/messages.ts` (keeps wallet bundles in sync). |
 | `yarn lang:fix` | Alphabetize and format `src/lang/en.json`. |
@@ -75,7 +78,10 @@ Vitest is configured via `vitest.config.mjs` with projects for unit suites and i
 
 - `yarn test:unit` — runs every unit suite. Target a single file via `vitest run --config vitest.config.mjs --project unit path/to/spec`.
 - `yarn test:translation` — validates that every locale mirrors the English catalog and that special locales (for example Akkadian) respect their constraints.
-- `yarn test:e2e` — executes the Playwright smoke tests covering bridge/MoonPay flows.
+- `yarn test:e2e` — runs the default Playwright UI suite with deterministic stubs.
+- `yarn test:e2e:root` — validates key UI flows when served from root path (`/`) instead of `/ipfs/<cid>/`.
+- `yarn test:e2e:live` — runs real-runtime UI smoke tests without request/WebSocket stubbing.
+- `yarn test:e2e:all` — runs default + root + live e2e checks in sequence.
 - `yarn test:all` — alias for unit tests, handy for CI hooks.
 
 Always keep `yarn test:unit` and `yarn test:translation` green locally before opening a PR. They are also part of `yarn ci:nightly`, so failures break the nightly Pinia/compat streak.

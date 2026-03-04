@@ -1,0 +1,142 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button [ref=e387] [cursor=pointer]:
+      - img [ref=e390]
+    - button [ref=e421] [cursor=pointer]
+    - generic [ref=e27]:
+      - button [ref=e398] [cursor=pointer]:
+        - img [ref=e32]
+      - button "Settings" [ref=e37] [cursor=pointer]:
+        - img [ref=e40]
+  - generic [ref=e148]:
+    - generic [ref=e399]:
+      - generic [ref=e401]: Disclaimer
+      - generic [ref=e405]:
+        - paragraph [ref=e406]:
+          - text: "Disclaimer: This website is maintained by the SORA community. Before continuing to use this website, please review the"
+          - link "Polkaswap FAQ" [ref=e407] [cursor=pointer]:
+            - /url: https://wiki.sora.org/polkaswap/polkaswap-faq
+          - text: and documentation, which includes a detailed explanation on how Polkaswap works, as well as the
+          - link "Polkaswap Memorandum and Terms of Services" [ref=e408] [cursor=pointer]:
+            - /url: https://wiki.sora.org/polkaswap/terms
+          - text: ", and"
+          - link "Privacy Policy" [ref=e409] [cursor=pointer]:
+            - /url: https://wiki.sora.org/polkaswap/privacy
+          - text: ". These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Please do not continue without reading the"
+          - link "Polkaswap FAQ" [ref=e410] [cursor=pointer]:
+            - /url: https://wiki.sora.org/polkaswap/polkaswap-faq
+          - text: ","
+          - link "Polkaswap Memorandum and Terms of Services" [ref=e411] [cursor=pointer]:
+            - /url: https://wiki.sora.org/polkaswap/terms
+          - text: ","
+          - link "Privacy Policy" [ref=e412] [cursor=pointer]:
+            - /url: https://wiki.sora.org/polkaswap/privacy
+          - text: "!"
+        - paragraph [ref=e413]: Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API) are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.
+      - button "Scroll to accept" [disabled] [ref=e418]:
+        - generic [ref=e419]: Scroll to accept
+    - generic [ref=e149]:
+      - generic:
+        - generic [ref=e215] [cursor=pointer]:
+          - generic [ref=e217]: Customize page
+          - button [ref=e219]:
+            - img [ref=e222]
+        - generic [ref=e151]:
+          - generic [ref=e153]:
+            - generic [ref=e155]: Swap
+            - generic [ref=e158]:
+              - generic [ref=e159]: "Market:"
+              - generic [ref=e160]: SMART
+              - button [ref=e162] [cursor=pointer]:
+                - img [ref=e165]
+            - button [ref=e168] [cursor=pointer]:
+              - img [ref=e171]
+          - generic [ref=e176]:
+            - generic [ref=e177]:
+              - generic [ref=e179]:
+                - generic [ref=e181]: From
+                - generic [ref=e182]:
+                  - generic [ref=e183]: Balance
+                  - generic [ref=e300]:
+                    - generic [ref=e302]:
+                      - text: "0"
+                      - generic [ref=e303]: ".0"
+                    - generic [ref=e368]:
+                      - generic [ref=e369]: $
+                      - text: "0"
+                      - generic [ref=e370]: ".00"
+              - generic [ref=e184]:
+                - textbox "0.0" [ref=e186]
+                - button "XOR" [ref=e306] [cursor=pointer]:
+                  - generic [ref=e307]:
+                    - text: XOR
+                    - img [ref=e311]
+              - textbox "0.0" [ref=e376]
+            - button [disabled] [ref=e188]:
+              - img [ref=e191]
+            - generic [ref=e195]:
+              - generic [ref=e199]: To
+              - generic [ref=e200]:
+                - textbox "0.0" [ref=e202]
+                - button "Choose token" [ref=e315] [cursor=pointer]:
+                  - generic [ref=e316]:
+                    - text: Choose token
+                    - img [ref=e318]
+            - button "SLIPPAGE TOLERANCE 0.5% ›" [ref=e320] [cursor=pointer]:
+              - generic [ref=e321]:
+                - generic [ref=e322]: SLIPPAGE TOLERANCE
+                - img [ref=e325]
+                - generic [ref=e329]: 0.5%
+              - generic [ref=e208]: ›
+            - button "Connect account" [ref=e209] [cursor=pointer]:
+              - generic [ref=e210]: Connect account
+            - generic [ref=e330]:
+              - generic [ref=e331]:
+                - generic [ref=e332]: Network Fee
+                - img [ref=e335]
+                - generic [ref=e337]:
+                  - generic [ref=e339]:
+                    - text: "0"
+                    - generic [ref=e340]: ".0000764"
+                    - text: XOR
+                  - generic [ref=e378]:
+                    - generic [ref=e379]: $
+                    - text: "0"
+                    - generic [ref=e380]: ".00"
+              - img [ref=e342]
+        - generic [ref=e225]:
+          - generic [ref=e227]:
+            - generic [ref=e229]: Route
+            - button [ref=e231] [cursor=pointer]:
+              - img [ref=e234]
+          - generic [ref=e238]:
+            - generic:
+              - list
+        - generic [ref=e240]:
+          - generic [ref=e242]:
+            - generic [ref=e248]: XOR
+            - generic [ref=e249]:
+              - button "5m" [ref=e251] [cursor=pointer]:
+                - generic [ref=e252]:
+                  - text: 5m
+                  - img [ref=e254]
+              - button [ref=e256] [cursor=pointer]:
+                - img [ref=e258]
+              - button [ref=e260] [cursor=pointer]:
+                - img [ref=e262]
+            - button [ref=e265] [cursor=pointer]:
+              - img [ref=e268]
+          - generic [ref=e345]:
+            - text: "4"
+            - generic [ref=e346]: .09DAI
+  - generic [ref=e281]:
+    - link "24,968,942" [ref=e422] [cursor=pointer]:
+      - /url: https://sora.subscan.io
+      - generic [ref=e386]: 24,968,942
+    - generic [ref=e282]:
+      - img [ref=e348]
+      - generic [ref=e284]: Node connected
+    - generic [ref=e285]:
+      - img [ref=e287]
+      - generic [ref=e289]: Internet stable
+    - generic [ref=e294]: Statistics loading

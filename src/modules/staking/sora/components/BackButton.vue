@@ -1,6 +1,8 @@
 <template>
   <s-button type="action" size="medium" @click="handleBack">
-    <s-icon name="arrows-chevron-left-rounded-24"></s-icon>
+    <template #icon>
+      <s-icon name="arrows-chevron-left-rounded-24"></s-icon>
+    </template>
   </s-button>
 </template>
 

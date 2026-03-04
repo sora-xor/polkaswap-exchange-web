@@ -140,8 +140,23 @@ describe('WidgetsGrid', () => {
     });
   });
 
+  it('supports modelValue/update:modelValue in addition to legacy value/input', async () => {
+    const wrapper = await mountGrid({
+      value: undefined,
+      modelValue: baseModel,
+    });
+
+    const emittedModelValue = wrapper.emitted('update:modelValue') ?? [];
+    expect(emittedModelValue.length).toBeGreaterThan(0);
+    const [model] = emittedModelValue[emittedModelValue.length - 1];
+    expect(model).toEqual({
+      'widget-1': true,
+      'widget-2': false,
+    });
+  });
+
   it('updates widget height while resizing and persists layouts', async () => {
-    const wrapper = await mountGrid();
+    const wrapper = await mountGrid({ resizable: true });
 
     wrapper.vm.layout = [
       {
@@ -172,9 +187,46 @@ describe('WidgetsGrid', () => {
     expect(layoutsStorageMock.set).toHaveBeenCalledWith('test-grid', expect.stringContaining('"widget-1"'));
   });
 
+  it('does not persist layout-updated events while editing mode is disabled', async () => {
+    const wrapper = await mountGrid({ resizable: false, draggable: false });
+    layoutsStorageMock.set.mockClear();
+
+    const updatedLayout = [
+      {
+        i: 'widget-1',
+        x: 0,
+        y: 0,
+        w: 4,
+        h: 2,
+        moved: true,
+      },
+    ] as unknown as Layout;
+
+    wrapper.vm.onLayoutUpdate(updatedLayout);
+    expect(layoutsStorageMock.set).not.toHaveBeenCalled();
+  });
+
+  it('ignores auto-resize updates when editing mode is disabled', async () => {
+    const wrapper = await mountGrid({ resizable: false });
+
+    wrapper.vm.layout = [
+      {
+        i: 'widget-1',
+        x: 0,
+        y: 0,
+        w: 4,
+        h: 10,
+        minH: 1,
+      },
+    ] as unknown as Layout;
+
+    wrapper.vm.onResize('widget-1', { width: 0, height: 400 });
+    expect(wrapper.vm.layout[0].h).toBe(10);
+  });
+
   it('stores layouts under CID-scoped key on IPFS paths', async () => {
     window.history.replaceState({}, '', '/ipfs/QmUnitTestCid/index.html');
-    const wrapper = await mountGrid();
+    const wrapper = await mountGrid({ resizable: true });
 
     const updatedLayout = [
       {
@@ -227,5 +279,34 @@ describe('WidgetsGrid', () => {
     expect(layoutsStorageMock.remove).toHaveBeenCalledWith('QmBrokenCid::test-grid');
     const emitted = wrapper.emitted('input') ?? [];
     expect(emitted.length).toBeGreaterThan(0);
+  });
+
+  it('normalizes stored layouts against default constraints', async () => {
+    const constrainedLayouts: ResponsiveLayouts = {
+      lg: [{ i: 'customise', x: 0, y: 0, w: 6, h: 3, minW: 2, minH: 3, maxH: 3 }],
+    };
+    const brokenStoredLayouts: ResponsiveLayouts = {
+      lg: [{ i: 'customise', x: -5, y: -8, w: 30, h: 30, minW: 2, minH: 3 }],
+    };
+    layoutsStorageMock.get.mockReturnValueOnce(JSON.stringify(brokenStoredLayouts));
+
+    const wrapper = await mountGrid({
+      defaultLayouts: constrainedLayouts,
+      value: { customise: true },
+    });
+
+    expect(wrapper.vm.layouts.lg).toEqual([
+      {
+        i: 'customise',
+        x: 0,
+        y: 0,
+        w: 24,
+        h: 3,
+        minW: 2,
+        minH: 3,
+        maxH: 3,
+      },
+    ]);
+    expect(layoutsStorageMock.set).toHaveBeenCalledWith('test-grid', expect.stringContaining('"customise"'));
   });
 });

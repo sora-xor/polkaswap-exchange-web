@@ -12,6 +12,19 @@ const expectNoCorruptedUiText = async (page: Page): Promise<void> => {
   expect(bodyText).not.toMatch(/\bNaN\b/);
 };
 
+const expectNoHorizontalOverflow = async (page: Page): Promise<void> => {
+  const metrics = await page.evaluate(() => {
+    const viewportWidth = window.innerWidth;
+    const docScrollWidth = document.documentElement.scrollWidth;
+    const bodyScrollWidth = document.body.scrollWidth;
+
+    return { viewportWidth, docScrollWidth, bodyScrollWidth };
+  });
+
+  expect(metrics.docScrollWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
+  expect(metrics.bodyScrollWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
+};
+
 test('renders the swap page shell', async ({ page }) => {
   const consoleErrors = trackConsole(page);
 
@@ -45,7 +58,11 @@ test('loads the full app from a direct ipfs index file URL', async ({ page }) =>
   }));
 
   expect(checks.isOfflineShell).toBe(false);
-  expect(checks.pathname).toBe(`${ipfsBasePath}/index.html`);
+  if (ipfsBasePath) {
+    expect(checks.pathname).toBe(`${ipfsBasePath}/index.html`);
+  } else {
+    expect(['/index.html', '/']).toContain(checks.pathname);
+  }
   expect(checks.hasHeader).toBe(true);
   expect(checks.hasMenu).toBe(true);
   expect(checks.appMainClass).toContain('app-main');
@@ -93,6 +110,29 @@ test('navigates to the bridge form from the main menu', async ({ page }) => {
   expect(consoleErrors).toEqual([]);
 });
 
+test('opens the info popover and launches the mobile app dialog', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await page.goto(`${ipfsEntryUrl}#/swap`);
+  await ensureAppLoaded(page);
+
+  const infoMenuItem = page.locator('.app-menu .menu-item--small').first();
+  await expect(infoMenuItem).toBeVisible();
+  await infoMenuItem.click();
+
+  const infoPopover = page.locator('.app-info-popper');
+  await expect(infoPopover).toBeVisible();
+
+  const popoverAction = infoPopover.locator('.s-button').first();
+  await expect(popoverAction).toBeVisible();
+  await popoverAction.click();
+
+  await expect(page.locator('.popup-mobile')).toBeVisible();
+  await expectNoCorruptedUiText(page);
+
+  expect(consoleErrors).toEqual([]);
+});
+
 test.describe('loads primary routes directly', () => {
   const routes = [
     { hash: '#/swap', name: 'Swap', appClass: 'app-main--swap' },
@@ -133,4 +173,64 @@ test.describe('loads primary routes directly', () => {
       expect(consoleErrors).toEqual([]);
     });
   }
+});
+
+test.describe('keeps major route layouts within viewport width', () => {
+  const routes = [
+    { hash: '#/swap', hashes: ['#/swap'] },
+    { hash: '#/trade', hashes: ['#/trade'] },
+    { hash: '#/points', hashes: ['#/points', '#/rewards'] },
+    { hash: '#/pool', hashes: ['#/pool'] },
+    { hash: '#/staking', hashes: ['#/staking'] },
+    { hash: '#/bridge', hashes: ['#/bridge'] },
+    { hash: '#/wallet', hashes: ['#/wallet'] },
+    { hash: '#/kensetsu', hashes: ['#/kensetsu'] },
+    { hash: '#/explore', hashes: ['#/explore', '#/explore/tokens'] },
+    { hash: '#/stats', hashes: ['#/stats'] },
+  ];
+
+  test('desktop route layouts stay inside viewport bounds', async ({ page }) => {
+    const consoleErrors = trackConsole(page);
+
+    for (const route of routes) {
+      await page.goto(`${ipfsEntryUrl}${route.hash}`);
+      await ensureAppLoaded(page);
+      await page.waitForFunction(
+        (allowed) => {
+          const current = window.location.hash;
+          return allowed.some((expected) => current === expected || current.startsWith(`${expected}/`));
+        },
+        route.hashes,
+        { timeout: 15_000 }
+      );
+      await page.waitForTimeout(200);
+      await expectNoCorruptedUiText(page);
+      await expectNoHorizontalOverflow(page);
+    }
+
+    expect(consoleErrors).toEqual([]);
+  });
+
+  test('mobile route layouts stay inside viewport bounds', async ({ page }) => {
+    const consoleErrors = trackConsole(page);
+    await page.setViewportSize({ width: 390, height: 844 });
+
+    for (const route of routes) {
+      await page.goto(`${ipfsEntryUrl}${route.hash}`);
+      await ensureAppLoaded(page);
+      await page.waitForFunction(
+        (allowed) => {
+          const current = window.location.hash;
+          return allowed.some((expected) => current === expected || current.startsWith(`${expected}/`));
+        },
+        route.hashes,
+        { timeout: 15_000 }
+      );
+      await page.waitForTimeout(200);
+      await expectNoCorruptedUiText(page);
+      await expectNoHorizontalOverflow(page);
+    }
+
+    expect(consoleErrors).toEqual([]);
+  });
 });

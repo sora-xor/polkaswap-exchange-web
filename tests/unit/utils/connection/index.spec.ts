@@ -1,4 +1,4 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/sub/consts', () => ({ SubNetworkId: { Mainnet: 'Mainnet' } }));
 vi.mock('@/utils/rpc', () => ({
@@ -6,7 +6,9 @@ vi.mock('@/utils/rpc', () => ({
   getRpcEndpoint: (url: string) => url,
 }));
 
-import type { ConnectToNodeOptions } from '@/types/nodes';
+import type { Connection } from '@sora-substrate/connection';
+import type { Storage } from '@sora-substrate/sdk';
+import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 import { NodesConnection } from '@/utils/connection';
 
 type MockedStorage = {
@@ -16,14 +18,18 @@ type MockedStorage = {
 };
 
 type MockedConnection = {
-  close: () => Promise<void>;
-  open: () => Promise<void>;
-  addEventListener: () => void;
-  removeEventListener: () => void;
+  close: ReturnType<typeof vi.fn>;
+  open: ReturnType<typeof vi.fn>;
+  addEventListener: ReturnType<typeof vi.fn>;
+  removeEventListener: ReturnType<typeof vi.fn>;
 };
+
+const nodeA: Node = { name: 'A', chain: 'chain', address: 'ws://node-a' };
+const nodeB: Node = { name: 'B', chain: 'chain', address: 'ws://node-b' };
 
 const createStorage = (): MockedStorage => {
   const store = new Map<string, string>();
+
   return {
     get: (key) => store.get(key) ?? null,
     set: (key, value) => {
@@ -36,34 +42,50 @@ const createStorage = (): MockedStorage => {
 };
 
 const createConnection = (): MockedConnection => ({
-  close: vi.fn().mockResolvedValue(),
-  open: vi.fn().mockResolvedValue(),
+  close: vi.fn().mockResolvedValue(undefined),
+  open: vi.fn().mockResolvedValue(undefined),
   addEventListener: vi.fn(),
   removeEventListener: vi.fn(),
 });
 
-class TestNodesConnection extends NodesConnection {
+const toStorage = (storage: MockedStorage): Storage => storage as unknown as Storage;
+
+const toConnection = (connection: MockedConnection, overrides: Partial<Connection> = {}): Connection =>
+  ({ endpoint: '', api: undefined, ...connection, ...overrides }) as unknown as Connection;
+
+class RetryNodesConnection extends NodesConnection {
   public connectNodeCalls = 0;
 
-  protected async connectNode(options: ConnectToNodeOptions = {}): Promise<void> {
+  protected async connectNode(_options: ConnectToNodeOptions = {}): Promise<void> {
     this.connectNodeCalls += 1;
 
     if (this.connectNodeCalls === 1) {
       throw new Error('connect fail');
     }
 
-    this.unlockConnection();
     this.nodeAddressConnecting = '';
+    this.unlockConnection();
   }
 }
 
-describe('NodesConnection backoff scheduling', () => {
+class DisconnectReconnectNodesConnection extends NodesConnection {
+  public reconnectCalls = 0;
+
+  public async connect(_options: ConnectToNodeOptions = {}): Promise<void> {
+    this.reconnectCalls += 1;
+    throw new Error('reconnect fail');
+  }
+
+  public async runConnectNode(options: ConnectToNodeOptions): Promise<void> {
+    await this.connectNode(options);
+  }
+}
+
+describe('NodesConnection reconnect behavior', () => {
   let originalBackoff: boolean;
 
   beforeEach(() => {
     originalBackoff = NodesConnection.enableBackoff;
-    NodesConnection.enableBackoff = true;
-    vi.useFakeTimers();
     vi.spyOn(Math, 'random').mockReturnValue(0);
   });
 
@@ -73,19 +95,13 @@ describe('NodesConnection backoff scheduling', () => {
     vi.restoreAllMocks();
   });
 
-  it('consumes scheduled reconnect promise to avoid unhandled rejections', async () => {
-    const storage = createStorage() as unknown as import('@sora-substrate/sdk').Storage;
-    const connection = {
-      endpoint: '',
-      api: undefined,
-      ...createConnection(),
-    } as unknown as import('@sora-substrate/connection').Connection;
-    const nodesConnection = new TestNodesConnection(storage, connection);
+  it('schedules reconnect with backoff without rejecting the caller promise', async () => {
+    NodesConnection.enableBackoff = true;
+    vi.useFakeTimers();
 
-    nodesConnection.setDefaultNodes([
-      { name: 'A', chain: 'chain', address: 'ws://node-a' },
-      { name: 'B', chain: 'chain', address: 'ws://node-b' },
-    ]);
+    const nodesConnection = new RetryNodesConnection(toStorage(createStorage()), toConnection(createConnection()));
+
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
 
     const unhandled: unknown[] = [];
     const listener = (reason: unknown) => {
@@ -94,7 +110,7 @@ describe('NodesConnection backoff scheduling', () => {
     process.on('unhandledRejection', listener);
 
     try {
-      await expect(nodesConnection.connect()).rejects.toThrow('connect fail');
+      await expect(nodesConnection.connect()).resolves.toBeUndefined();
 
       await vi.runOnlyPendingTimersAsync();
       await Promise.resolve();
@@ -106,16 +122,74 @@ describe('NodesConnection backoff scheduling', () => {
     expect(nodesConnection.connectNodeCalls).toBe(2);
   });
 
-  it('normalizes invalid default nodes payload to empty list', () => {
-    const storage = createStorage() as unknown as import('@sora-substrate/sdk').Storage;
-    const connection = {
-      endpoint: '',
-      api: undefined,
-      ...createConnection(),
-    } as unknown as import('@sora-substrate/connection').Connection;
-    const nodesConnection = new TestNodesConnection(storage, connection);
+  it('resolves after fallback node connects when backoff is disabled', async () => {
+    NodesConnection.enableBackoff = false;
 
-    expect(() => nodesConnection.setDefaultNodes(undefined as any)).not.toThrow();
+    const nodesConnection = new RetryNodesConnection(toStorage(createStorage()), toConnection(createConnection()));
+
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+
+    await expect(nodesConnection.connect()).resolves.toBeUndefined();
+    expect(nodesConnection.connectNodeCalls).toBe(2);
+  });
+
+  it('consumes disconnect reconnect rejection to avoid unhandled promise rejections', async () => {
+    NodesConnection.enableBackoff = false;
+
+    let disconnectedHandler: (() => Promise<void>) | null = null;
+
+    const connectionMock = createConnection();
+    connectionMock.addEventListener.mockImplementation((event: string, callback: () => Promise<void>) => {
+      if (event === 'disconnected') {
+        disconnectedHandler = callback;
+      }
+    });
+    connectionMock.open.mockImplementation(
+      async (_endpoint: string, options?: { eventListeners?: Array<[string, () => void]> }) => {
+        const listeners = options?.eventListeners ?? [];
+        const readyListener = listeners.find(([event]) => event === 'ready')?.[1];
+        readyListener?.();
+      }
+    );
+
+    const connection = toConnection(connectionMock, {
+      endpoint: nodeA.address,
+      api: {
+        genesisHash: {
+          toHex: () => '0x1',
+        },
+      } as Connection['api'],
+    });
+
+    const nodesConnection = new DisconnectReconnectNodesConnection(toStorage(createStorage()), connection);
+    nodesConnection.setDefaultNodes([nodeA]);
+
+    const unhandled: unknown[] = [];
+    const listener = (reason: unknown) => {
+      unhandled.push(reason);
+    };
+
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    process.on('unhandledRejection', listener);
+
+    try {
+      await nodesConnection.runConnectNode({ node: nodeA });
+      await disconnectedHandler?.();
+      await Promise.resolve();
+    } finally {
+      process.off('unhandledRejection', listener);
+    }
+
+    expect(nodesConnection.reconnectCalls).toBe(1);
+    expect(warnSpy).toHaveBeenCalled();
+    expect(unhandled).toHaveLength(0);
+  });
+
+  it('normalizes invalid default nodes payload to empty list', () => {
+    const nodesConnection = new RetryNodesConnection(toStorage(createStorage()), toConnection(createConnection()));
+
+    expect(() => nodesConnection.setDefaultNodes(undefined as never)).not.toThrow();
     expect(nodesConnection.defaultNodes).toEqual([]);
   });
 });

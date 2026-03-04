@@ -183,7 +183,21 @@ const sort = (a: Asset, b: Asset, whitelist: Whitelist) => {
 };
 
 export async function getAssets(api: ApiPromise, whitelist?: Whitelist, blacklist?: Blacklist): Promise<Array<Asset>> {
-  const allAssets = (await api.query.assets.assetInfosV2.entries()).map<Asset>(([key, codec]) => {
+  const getAssetEntries = api?.query?.assets?.assetInfosV2?.entries;
+
+  if (typeof getAssetEntries !== 'function') {
+    return [];
+  }
+
+  let assetEntries: Array<any> = [];
+
+  try {
+    assetEntries = await getAssetEntries();
+  } catch {
+    return [];
+  }
+
+  const allAssets = assetEntries.map<Asset>(([key, codec]) => {
     const address = toAssetId(key.args[0]);
 
     const { symbol, name, precision, isMintable, assetType, contentSource, description } = codec.toHuman() as any;
@@ -549,7 +563,7 @@ export class AssetsModule<T> {
    * @param blacklist set of blacklist tokens
    */
   public async getAssets(withPoolTokens = false, whitelist?: Whitelist, blacklist?: Blacklist): Promise<Array<Asset>> {
-    const assets = await getAssets(this.root.api, whitelist, blacklist);
+    const assets = await getAssets(this.root.connection?.api as ApiPromise, whitelist, blacklist);
 
     return withPoolTokens ? assets : excludePoolXYKAssets(assets);
   }
@@ -559,7 +573,13 @@ export class AssetsModule<T> {
    * @param blacklist set of blacklist tokens
    */
   public async getAssetsIds(blacklist?: Blacklist): Promise<string[]> {
-    const ids = (await this.root.api.rpc.assets.listAssetIds()).map((codec) => codec.toString());
+    const listAssetIds = this.root.connection?.api?.rpc?.assets?.listAssetIds;
+
+    if (typeof listAssetIds !== 'function') {
+      return [];
+    }
+
+    const ids = (await listAssetIds()).map((codec) => codec.toString());
     const filtered = blacklist?.length ? ids.filter((id) => !isBlacklistedAssetAddress(id, blacklist)) : ids;
 
     return filtered;

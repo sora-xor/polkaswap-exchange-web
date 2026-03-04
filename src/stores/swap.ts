@@ -1,4 +1,5 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { DexId } from '@sora-substrate/sdk/build/dex/consts';
 import { api } from '@wallet';
 import { defineStore } from 'pinia';
@@ -30,32 +31,6 @@ const getBalanceSubscriptionApi = () => {
 
 const preservedResetKeys = new Set<keyof SwapState>(['tokenFromAddress', 'tokenToAddress']);
 
-const buildInitialState = (): SwapState => {
-  const allowLossPopup = settingsStorage.get('allowSwapLossPopup' as any);
-
-  return {
-    tokenFromAddress: '',
-    tokenToAddress: '',
-    tokenFromBalance: null,
-    tokenToBalance: null,
-    tokenFromCache: null,
-    tokenToCache: null,
-    fromValue: '',
-    toValue: '',
-    amountWithoutImpact: '',
-    liquidityProviderFee: '',
-    isExchangeB: false,
-    rewards: [],
-    route: [],
-    distribution: [],
-    isAvailable: false,
-    liquiditySources: [],
-    swapQuote: null,
-    selectedDexId: DexId.XOR,
-    allowLossPopup: allowLossPopup ? Boolean(JSON.parse(allowLossPopup)) : true,
-  };
-};
-
 const resolveToken = (address: Nullable<string>): Nullable<RegisteredAccountAsset> => {
   if (!address) return null;
   const assetsStore = useAssetsStore();
@@ -78,6 +53,32 @@ const resolveTokenWithBalance = (
 ): Nullable<RegisteredAccountAsset> => {
   const token = resolveToken(address);
   return applyBalance(token, balance);
+};
+
+const buildInitialState = (): SwapState => {
+  const allowLossPopup = settingsStorage.get('allowSwapLossPopup' as any);
+
+  return {
+    tokenFromAddress: XOR.address,
+    tokenToAddress: '',
+    tokenFromBalance: null,
+    tokenToBalance: null,
+    tokenFromCache: resolveTokenWithBalance(XOR.address, null),
+    tokenToCache: null,
+    fromValue: '',
+    toValue: '',
+    amountWithoutImpact: '',
+    liquidityProviderFee: '',
+    isExchangeB: false,
+    rewards: [],
+    route: [],
+    distribution: [],
+    isAvailable: false,
+    liquiditySources: [],
+    swapQuote: null,
+    selectedDexId: DexId.XOR,
+    allowLossPopup: allowLossPopup ? Boolean(JSON.parse(allowLossPopup)) : true,
+  };
 };
 
 /**

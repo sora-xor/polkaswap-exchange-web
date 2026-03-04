@@ -83,7 +83,18 @@ const runRule = async (rule: FormRule, value: unknown): Promise<void> => {
     try {
       const result = rule.validator!(rule, value, callback);
       if (result instanceof Promise) {
-        result.then(() => callback()).catch((error) => callback(toError(error, rule.message || 'Validation failed')));
+        void result.then(
+          () => {
+            if (resolved) return;
+            resolved = true;
+            resolve();
+          },
+          (error) => {
+            if (resolved) return;
+            resolved = true;
+            reject(toError(error, rule.message || 'Validation failed'));
+          }
+        );
         return;
       }
 

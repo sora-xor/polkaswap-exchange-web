@@ -75,6 +75,20 @@ $networks:
 }
 
 /*________________________________________COMMON LAYOUT________________________________________*/
+.s-flex {
+  display: flex;
+}
+
+.s-flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.s-flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
 h3 {
   text-transform: capitalize;
 }
@@ -109,6 +123,7 @@ div.transaction-row_value {
   color: var(--s-color-base-content-quaternary) !important;
   font-weight: 600;
 }
+
 /*_______________________ CURRENT UI FIXES FOR CONSISTENCY (GENERALLY BASED ON TEST USERS FEEDBACK) _______________________*/
 button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-medium.s-border-radius-small.s-primary.s-i-position-left
   span {

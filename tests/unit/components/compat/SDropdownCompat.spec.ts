@@ -79,4 +79,35 @@ describe('SDropdownCompat', () => {
     await nextTick();
     expect(document.body.querySelector('.el-dropdown-menu__item')).toBeNull();
   });
+
+  it('forwards class, style and data attributes to the dropdown trigger element', () => {
+    const wrapper = mount(SDropdownCompat, {
+      attrs: {
+        class: 'custom-trigger-class',
+        style: 'border: 1px solid red;',
+        'data-test-id': 'header-settings-trigger',
+      },
+      slots: {
+        default: '<span>Open</span>',
+      },
+    });
+
+    const trigger = wrapper.get('.s-dropdown');
+    expect(trigger.classes()).toContain('custom-trigger-class');
+    expect(trigger.attributes('data-test-id')).toBe('header-settings-trigger');
+    expect(trigger.attributes('style')).toContain('border: 1px solid red');
+  });
+
+  it('closes an open dropdown on window resize', async () => {
+    const wrapper = mountDropdown();
+
+    await wrapper.get('.s-dropdown').trigger('click');
+    await nextTick();
+    expect(document.body.querySelectorAll('.el-dropdown-menu__item').length).toBeGreaterThan(0);
+
+    window.dispatchEvent(new Event('resize'));
+    await nextTick();
+
+    expect(document.body.querySelector('.el-dropdown-menu__item')).toBeNull();
+  });
 });

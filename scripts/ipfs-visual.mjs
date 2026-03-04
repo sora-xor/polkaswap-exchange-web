@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { createServer } from 'node:http';
 import { extname, join } from 'node:path';
 import { promises as fs } from 'node:fs';
@@ -92,7 +91,8 @@ const run = async () => {
   const context = await browser.newContext({
     viewport: { width: 1280, height: 720 },
     // Force a non-headless user agent so the app does not enter offline shell mode
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    userAgent:
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
   });
 
   await context.addInitScript(() => {
@@ -135,7 +135,9 @@ const run = async () => {
 
       const consoleErrors = consoleMessages.filter((m) => m.type === 'error');
       if (consoleErrors.length > 0) {
-        throw new Error(`[ipfs-visual] Console errors on ${route.name}: ${consoleErrors.map((e) => e.text).join(' | ')}`);
+        throw new Error(
+          `[ipfs-visual] Console errors on ${route.name}: ${consoleErrors.map((e) => e.text).join(' | ')}`
+        );
       }
 
       const screenshotPath = join(outputDir, `${route.name}.png`);

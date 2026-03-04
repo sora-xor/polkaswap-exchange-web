@@ -2,34 +2,28 @@
   <div class="container" v-loading="parentLoadingValue">
     <div class="header">
       <back-button :page="SoraStakingPageNames.Staking"></back-button>
-      <s-button
+      <s-dropdown
         v-if="stakingInitialized"
-        type="action"
         class="dropdown-menu-button"
-        :tooltip="t('headerMenu.settings')"
-        @click="handleClickDropdownMenu"
+        popper-class="dropdown-menu"
+        type="ellipsis"
+        placement="bottom-start"
+        @select="handleSelectDropdownMenuItem"
       >
-        <s-dropdown
-          ref="dropdownMenu"
-          popper-class="dropdown-menu"
-          icon="basic-more-vertical-24"
-          type="ellipsis"
-          placement="bottom-start"
-          @select="handleSelectDropdownMenuItem"
-        >
-          <template #menu>
-            <s-dropdown-item
-              v-for="{ value, text } in dropdownMenuItems"
-              :key="value"
-              class="dropdown-menu__item"
-              :data-test-name="value"
-              :value="value"
-            >
-              {{ text }}
-            </s-dropdown-item>
-          </template>
-        </s-dropdown>
-      </s-button>
+        <s-button type="action" class="s-pressed" icon="basic-more-vertical-24" :tooltip="t('headerMenu.settings')">
+        </s-button>
+        <template #menu>
+          <s-dropdown-item
+            v-for="{ value, text } in dropdownMenuItems"
+            :key="value"
+            class="dropdown-menu__item"
+            :data-test-name="value"
+            :value="value"
+          >
+            {{ text }}
+          </s-dropdown-item>
+        </template>
+      </s-dropdown>
     </div>
     <div class="staking-logo-container">
       <div class="staking-logo">
@@ -265,16 +259,6 @@ type DropdownItem = {
   value: DropdownMenuItemType;
   text: string;
 };
-
-type DropdownController = {
-  dropdown?: {
-    visible: boolean;
-    show: () => void;
-    hide: () => void;
-  };
-};
-
-const dropdownMenu = ref<DropdownController | null>(null);
 const showStakeDialog = ref(false);
 const showClaimRewardsDialog = ref(false);
 const showPendingRewardsDialog = ref(false);
@@ -421,21 +405,6 @@ const handleStake = (): void => {
  */
 const handleNominate = (): void => {
   showValidatorsDialog.value = false;
-};
-
-/**
- * Toggle the action dropdown visibility.
- */
-const handleClickDropdownMenu = (): void => {
-  const dropdown = dropdownMenu.value?.dropdown;
-
-  if (!dropdown) return;
-
-  if (dropdown.visible) {
-    dropdown.hide();
-  } else {
-    dropdown.show();
-  }
 };
 
 /**

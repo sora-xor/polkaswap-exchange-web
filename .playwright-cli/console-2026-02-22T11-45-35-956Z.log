@@ -1,0 +1,88 @@
+[    3387ms] [WARNING] Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information. @ http://127.0.0.1:4174/node_modules/.vite/deps/chunk-LDSTK3W2.js?v=6169dbc0:2824
+[    3654ms] [WARNING] [bootstrap] Invalid env config payload: env.json <!doctype html>
+<html lang="en">
+  <head>
+    <script type="module" src="/@vite/client"></script>
+
+    <script type="module" src="/src/redirect.ts"></script>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' https://telegram.org https://apis.google.com https://accounts.google.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: wss: ws:; frame-src 'self' https://buy.moonpay.com https://buy-staging.moonpay.com https://secure.walletconnect.org https://secure.walletconnect.com https://accounts.google.com https://www.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'"
+    />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <title>Polkaswap — The DEX for the Interoperable Future.</title>
+    <meta name="title" property="title" content="Polkaswap — The DEX for the Interoperable Future." />
+    <meta
+      name="description"
+      property="description"
+      content="Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of Polkadot is here and we are at the forefront!"
+    />
+    <meta
+      name="keywords"
+      property="keywords"
+      content="Polkaswap, DEX, Cross-chain, DeFi, AMM, Polkadot, Ecosystem, Interoperable, Future, SORA, SORA network, Kusama"
+    />
+    <meta name="author" property="author" content="SORA" />
+    <meta name="twitter:title" content="Polkaswap — The DEX for the Interoperable Future." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://polkaswap.io/polkaswap-share-image.jpg" />
+    <meta name="twitter:site" content="@polkaswap" />
+    <meta
+      name="twitter:description"
+      content="Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of Polkadot is here and we are at the forefront!"
+    />
+    <meta property="og:title" content="Polkaswap — The DEX for the Interoperable Future." />
+    <meta
+      property="og:description"
+      content="Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of Polkadot is here and we are at the forefront!"
+    />
+    <meta property="og:site_name" content="Polkaswap" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://polkaswap.io/" />
+    <meta property="og:image" content="https://polkaswap.io/polkaswap-share-image.jpg" />
+    <meta property="og:image:secure_url" content="https://polkaswap.io/polkaswap-share-image.jpg" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="630" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  </head>
+  <body>
+    <noscript>
+      <strong
+        >We're sorry but Polkaswap doesn't work properly without JavaScript enabled. Please enable it to
+        continue.</strong
+      >
+    </noscript>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
+ @ http://127.0.0.1:4174/src/App.vue:381
+[    3654ms] [WARNING] [bootstrap] NETWORK_TYPE is not set. Falling back to default network: Prod @ http://127.0.0.1:4174/src/App.vue:485
+[    3655ms] [WARNING] [bootstrap] No node endpoints configured. Initial node connection skipped. @ http://127.0.0.1:4174/src/App.vue:354
+[    3701ms] [WARNING] Connection was lost during getAssets operation @ http://127.0.0.1:4174/src/lib/soraneo-wallet/src/store/account/actions.ts:192
+[    3702ms] [WARNING] [wallet] initWallet network subscriptions skipped TypeError: Cannot read properties of null (reading 'rx')
+    at get apiRx (http://127.0.0.1:4174/src/lib/substrate/sdk/apiAccount.ts:48:21)
+    at SystemModule.getBlockNumberObservable (http://127.0.0.1:4174/src/lib/substrate/sdk/system/index.ts:25:46)
+    at Store2.subscribeOnBlockNumber (http://127.0.0.1:4174/src/lib/soraneo-wallet/src/store/settings/actions.ts:128:37)
+    at Array.wrappedActionHandler (http://127.0.0.1:4174/node_modules/.vite/deps/chunk-S4FF5ZIM.js?v=6169dbc0:256:23)
+    at Store2.dispatch (http://127.0.0.1:4174/node_modules/.vite/deps/chunk-S4FF5ZIM.js?v=6169dbc0:873:17)
+    at Store2.boundDispatch [as dispatch] (http://127.0.0.1:4174/node_modules/.vite/deps/chunk-S4FF5ZIM.js?v=6169dbc0:788:22)
+    at local.dispatch (http://127.0.0.1:4174/node_modules/.vite/deps/chunk-S4FF5ZIM.js?v=6169dbc0:194:20)
+    at dispatchRoot (http://127.0.0.1:4174/src/lib/soraneo-wallet/src/store/subscriptions/actions.ts:11:58)
+    at http://127.0.0.1:4174/src/lib/soraneo-wallet/src/store/subscriptions/actions.ts:13:48
+    at Array.map (<anonymous>) @ http://127.0.0.1:4174/src/lib/soraneo-wallet/src/index.ts:205
+[    3703ms] [WARNING] [bootstrap] Indexer endpoints are not configured. Exchange-rate subscription skipped. @ http://127.0.0.1:4174/src/App.vue:550
+[    4042ms] [WARNING] [swap] api.swap.update skipped TypeError: Cannot read properties of null (reading 'query')
+    at SwapModule.getTbcAssets (http://127.0.0.1:4174/src/lib/substrate/sdk/swap/index.ts:213:40)
+    at SwapModule.getPrimaryMarketsEnabledAssets (http://127.0.0.1:4174/src/lib/substrate/sdk/swap/index.ts:234:48)
+    at SwapModule.update (http://127.0.0.1:4174/src/lib/substrate/sdk/swap/index.ts:141:37)
+    at http://127.0.0.1:4174/src/components/pages/Swap/Widget/Form.vue:349:26
+    at withLoading (http://127.0.0.1:4174/src/composables/useLoading.ts:51:20)
+    at withApi (http://127.0.0.1:4174/src/composables/useLoading.ts:83:18)
+    at http://127.0.0.1:4174/src/components/pages/Swap/Widget/Form.vue:347:13
+    at http://127.0.0.1:4174/node_modules/.vite/deps/chunk-T3ZBBJ5B.js?v=6169dbc0:10360:44
+    at callWithErrorHandling (http://127.0.0.1:4174/node_modules/.vite/deps/chunk-T3ZBBJ5B.js?v=6169dbc0:2524:19)
+    at callWithAsyncErrorHandling (http://127.0.0.1:4174/node_modules/.vite/deps/chunk-T3ZBBJ5B.js?v=6169dbc0:2531:17) @ http://127.0.0.1:4174/src/components/pages/Swap/Widget/Form.vue:350

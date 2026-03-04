@@ -37,10 +37,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import { Status } from '@soramitsu-ui/ui/types';
+import { BreakpointClass } from '@/consts/layout';
+import store from '@/store';
 import { delay } from '@/utils';
+import { resolvePopoverLeft, shouldClosePopoverOnBreakpointChange } from './footerPopover.utils';
 
 const cssPopperClass = 'app-status__tooltip';
 
@@ -77,13 +80,29 @@ const computedPopperClass = computed(() => [cssPopperClass, props.status].filter
 const computedClass = computed(() => [props.panelClass, props.status].filter(Boolean).join(' '));
 const isLoading = computed(() => props.status === Status.INFO);
 const tabIndex = computed(() => (isLoading.value ? -1 : 0));
+const screenBreakpointClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
+
+watch(screenBreakpointClass, (next, prev) => {
+  if (shouldClosePopoverOnBreakpointChange(prev, next)) {
+    popover.value?.doClose();
+  }
+});
 
 async function handleShow(): Promise<void> {
   await delay(100);
-  const left = popover.value?.popperElm?.style?.getPropertyValue('left');
-  if (left && left.includes('-')) {
-    popover.value.popperElm.style.setProperty('left', '0');
-  }
+  const popperEl: Nullable<HTMLElement> = popover.value?.popperElm;
+  if (!popperEl) return;
+
+  const rect = popperEl.getBoundingClientRect();
+  const currentLeft = popperEl.style.getPropertyValue('left');
+  const nextLeft = resolvePopoverLeft({
+    currentLeft,
+    popoverLeft: rect.left,
+    popoverRight: rect.right,
+    popoverWidth: rect.width,
+    viewportWidth: window.innerWidth,
+  });
+  popperEl.style.setProperty('left', `${nextLeft}px`);
 }
 
 function handleActionClick(): void {
@@ -117,6 +136,11 @@ $footer-action-background-color: #f7f3f4;
   box-shadow: var(--s-shadow-tooltip);
   padding: $inner-spacing-mini $inner-spacing-small;
   color: var(--s-color-base-on-accent);
+  max-width: min(380px, calc(100vw - 16px));
+  max-height: calc(100dvh - 16px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 
   @each $status in $status-classes {
     &.#{$status} {
@@ -137,6 +161,8 @@ $footer-action-background-color: #f7f3f4;
     &__title {
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: $inner-spacing-mini;
     }
     &__label {
       flex-direction: column;
@@ -169,7 +195,7 @@ $footer-action-background-color: #f7f3f4;
       }
     }
     &__action {
-      margin-left: 30px;
+      margin-left: auto;
       &,
       &:hover,
       &:focus,

@@ -96,7 +96,9 @@
                 <p class="p3 asset-title__symbol asset__label">{{ asset.symbol }}</p>
               </div>
               <s-button type="action" size="small" alternative :tooltip="t('assets.details')">
-                <s-icon name="arrows-chevron-right-rounded-24" size="24"></s-icon>
+                <template #icon>
+                  <s-icon name="arrows-chevron-right-rounded-24" size="24"></s-icon>
+                </template>
               </s-button>
             </div>
             <p class="p3 asset-text asset__label">Mint & burn, send the token in the details page</p>

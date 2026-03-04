@@ -1,0 +1,434 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button [ref=e5] [cursor=pointer]:
+      - img [ref=e8]
+    - button [ref=e10] [cursor=pointer]:
+      - img [ref=e12]
+    - generic [ref=e24]:
+      - generic [ref=e482]:
+        - img [ref=e485] [cursor=pointer]
+        - link "GET SORA CARD" [ref=e883] [cursor=pointer]:
+          - /url: https://soracard.com
+          - generic [ref=e884]:
+            - text: GET SORA CARD
+            - img [ref=e886]
+        - img [ref=e496] [cursor=pointer]
+      - button "Buy Tokens" [ref=e25] [cursor=pointer]:
+        - generic [ref=e26]: Buy Tokens
+    - generic [ref=e32]:
+      - button "Connect account" [ref=e33] [cursor=pointer]:
+        - generic [ref=e34]:
+          - img [ref=e37]
+          - generic [ref=e39]: Connect account
+      - button "Settings" [ref=e42] [cursor=pointer]:
+        - img [ref=e45]
+  - generic [ref=e47]:
+    - generic [ref=e48]:
+      - button [ref=e49] [cursor=pointer]:
+        - img [ref=e52]
+      - complementary [ref=e57]:
+        - generic [ref=e58]:
+          - menubar [ref=e59]:
+            - menuitem "Swap" [ref=e60] [cursor=pointer]:
+              - link "Swap" [ref=e61]:
+                - /url: "#/swap"
+                - img [ref=e64]
+                - generic [ref=e68]: Swap
+            - menuitem "Trade" [ref=e69] [cursor=pointer]:
+              - link "Trade" [ref=e70]:
+                - /url: "#/trade"
+                - img [ref=e73]
+                - generic [ref=e75]: Trade
+            - menuitem "Rewards" [ref=e76] [cursor=pointer]:
+              - link "Rewards" [ref=e77]:
+                - /url: "#/points"
+                - img [ref=e80]
+                - generic [ref=e82]: Rewards
+            - menuitem "Pool" [ref=e83] [cursor=pointer]:
+              - link "Pool" [ref=e84]:
+                - /url: "#/pool"
+                - img [ref=e87]
+                - generic [ref=e89]: Pool
+            - menuitem "Staking" [ref=e90] [cursor=pointer]:
+              - link "Staking" [ref=e91]:
+                - /url: "#/staking"
+                - img [ref=e94]
+                - generic [ref=e96]: Staking
+            - menuitem "Bridge" [ref=e97] [cursor=pointer]:
+              - link "Bridge" [ref=e98]:
+                - /url: "#/bridge"
+                - img [ref=e101]
+                - generic [ref=e103]: Bridge
+            - menuitem "SCCP" [ref=e104] [cursor=pointer]:
+              - link "SCCP" [ref=e105]:
+                - /url: "#/bridge/sccp"
+                - img [ref=e108]
+                - generic [ref=e110]: SCCP
+            - menuitem "Account" [ref=e111] [cursor=pointer]:
+              - link "Account" [ref=e112]:
+                - /url: "#/wallet"
+                - img [ref=e115]
+                - generic [ref=e117]: Account
+            - menuitem "Kensetsu" [ref=e118] [cursor=pointer]:
+              - link "Kensetsu" [ref=e119]:
+                - /url: "#/kensetsu"
+                - img [ref=e122]
+                - generic [ref=e124]: Kensetsu
+            - menuitem "Explore" [ref=e125] [cursor=pointer]:
+              - link "Explore" [ref=e126]:
+                - /url: "#/explore"
+                - img [ref=e129]
+                - generic [ref=e131]: Explore
+            - menuitem "Statistics" [ref=e132] [cursor=pointer]:
+              - link "Statistics" [ref=e133]:
+                - /url: "#/stats"
+                - img [ref=e136]
+                - generic [ref=e138]: Statistics
+            - link "About" [ref=e139] [cursor=pointer]:
+              - /url: https://about.polkaswap.io
+              - img [ref=e142]
+              - generic [ref=e144]: About
+          - menubar
+    - generic [ref=e154]:
+      - generic:
+        - generic [ref=e156]:
+          - generic [ref=e158]:
+            - generic [ref=e160]: Swap
+            - generic [ref=e163]:
+              - generic [ref=e164]: "Market:"
+              - generic [ref=e165]: SMART
+              - button [ref=e167] [cursor=pointer]:
+                - img [ref=e170]
+            - button [ref=e173] [cursor=pointer]:
+              - img [ref=e176]
+          - generic [ref=e181]:
+            - generic [ref=e350]:
+              - generic [ref=e352]:
+                - generic [ref=e354]: From
+                - generic [ref=e498]:
+                  - generic [ref=e499]: Balance
+                  - generic [ref=e500]:
+                    - generic [ref=e502]:
+                      - text: "0"
+                      - generic [ref=e503]: ".0"
+                    - generic [ref=e505]:
+                      - generic [ref=e506]: $
+                      - text: "0"
+                      - generic [ref=e507]: ".00"
+              - generic [ref=e355]:
+                - textbox "0.0" [ref=e357]
+                - button "XOR" [ref=e508] [cursor=pointer]:
+                  - generic [ref=e361]:
+                    - text: XOR
+                    - img [ref=e363]
+              - textbox "0.0" [ref=e516]
+            - button [disabled] [ref=e182]:
+              - img [ref=e185]
+            - generic [ref=e366]:
+              - generic [ref=e370]: To
+              - generic [ref=e371]:
+                - textbox "0.0" [ref=e373]
+                - button "Choose token" [ref=e376] [cursor=pointer]:
+                  - generic [ref=e377]:
+                    - text: Choose token
+                    - img [ref=e379]
+            - button "SLIPPAGE TOLERANCE 0.5% ›" [ref=e385] [cursor=pointer]:
+              - generic [ref=e386]:
+                - generic [ref=e387]: SLIPPAGE TOLERANCE
+                - img [ref=e390]
+                - generic [ref=e394]: 0.5%
+              - generic [ref=e395]: ›
+            - button "Connect account" [ref=e189] [cursor=pointer]:
+              - generic [ref=e190]: Connect account
+            - generic [ref=e396]:
+              - generic [ref=e397]:
+                - generic [ref=e398]: Network Fee
+                - img [ref=e401]
+                - generic [ref=e403]:
+                  - generic [ref=e405]:
+                    - text: "0"
+                    - generic [ref=e406]: ".0000764"
+                    - text: XOR
+                  - generic [ref=e518]:
+                    - generic [ref=e519]: $
+                    - text: "0"
+                    - generic [ref=e520]: ".00"
+              - img [ref=e408]
+        - generic [ref=e195] [cursor=pointer]:
+          - generic [ref=e197]: Customize page
+          - button [ref=e199]:
+            - img [ref=e202]
+        - generic [ref=e206]:
+          - generic [ref=e208]:
+            - generic [ref=e210]: Route
+            - button [ref=e212] [cursor=pointer]:
+              - img [ref=e215]
+          - generic [ref=e219]:
+            - generic:
+              - list
+        - generic [ref=e221]:
+          - generic [ref=e223]:
+            - generic [ref=e225]: Transaction details
+            - button [ref=e227] [cursor=pointer]:
+              - img [ref=e230]
+          - generic [ref=e235]: Choose tokens
+        - generic [ref=e237]:
+          - generic [ref=e239]:
+            - generic [ref=e240]:
+              - generic [ref=e241]: Token supply
+              - img [ref=e244]
+            - button "1D" [ref=e248] [cursor=pointer]:
+              - generic [ref=e249]:
+                - text: 1D
+                - img [ref=e251]
+            - button "XOR" [ref=e411] [cursor=pointer]:
+              - generic [ref=e412]:
+                - text: XOR
+                - img [ref=e522]
+            - button [ref=e254] [cursor=pointer]:
+              - img [ref=e257]
+          - generic [ref=e417]:
+            - text: "1"
+            - generic [ref=e418]: ".0"
+            - text: Q
+        - generic [ref=e263]:
+          - generic [ref=e265]:
+            - generic [ref=e528]: XOR
+            - generic [ref=e267]:
+              - button "5m" [ref=e269] [cursor=pointer]:
+                - generic [ref=e270]:
+                  - text: 5m
+                  - img [ref=e272]
+              - button [ref=e274] [cursor=pointer]:
+                - img [ref=e423]
+              - button [ref=e275] [cursor=pointer]:
+                - img [ref=e426]
+            - button [ref=e277] [cursor=pointer]:
+              - img [ref=e280]
+          - generic [ref=e430]:
+            - text: "4"
+            - generic [ref=e431]: .81DAI
+        - generic [ref=e286]:
+          - generic [ref=e288]:
+            - generic [ref=e290]: Transactions
+            - button "XOR" [ref=e436] [cursor=pointer]:
+              - generic [ref=e437]:
+                - text: XOR
+                - img [ref=e533]
+            - button [ref=e292] [cursor=pointer]:
+              - img [ref=e295]
+          - generic [ref=e299]:
+            - generic [ref=e535]:
+              - generic [ref=e537]:
+                - generic [ref=e539]: Date
+                - generic [ref=e542]:
+                  - generic [ref=e543]: 2/21
+                  - generic [ref=e544]: 13:44:12
+                - generic [ref=e546]: Input
+                - generic [ref=e549]:
+                  - generic [ref=e551]:
+                    - text: "2"
+                    - generic [ref=e552]: ".81"
+                  - generic [ref=e554]:
+                    - generic [ref=e555]: $
+                    - text: "2"
+                    - generic [ref=e556]: ".82"
+                - generic [ref=e558]: Output
+                - generic [ref=e561]:
+                  - generic [ref=e563]:
+                    - text: "0"
+                    - generic [ref=e564]: ".54"
+                  - generic [ref=e566]:
+                    - generic [ref=e567]: $
+                    - text: "2"
+                    - generic [ref=e568]: ".62"
+                - generic [ref=e570]: From
+                - generic [ref=e576]: DAI
+                - generic [ref=e578]: To
+                - generic [ref=e584]: XOR
+                - generic [ref=e586]: account
+                - generic [ref=e590] [cursor=pointer]:
+                  - generic [ref=e591]: cnRWUatULzf8AVfKVexXMKJx9bT9UeTEM4wmWG7B7g1cxVjXy
+                  - text: ...
+                  - generic [ref=e592]: VjXy
+                - img [ref=e595]
+                - img [ref=e601] [cursor=pointer]
+              - generic [ref=e604]:
+                - generic [ref=e606]: Date
+                - generic [ref=e609]:
+                  - generic [ref=e610]: 2/21
+                  - generic [ref=e611]: 13:43:30
+                - generic [ref=e613]: Input
+                - generic [ref=e616]:
+                  - generic [ref=e618]:
+                    - text: "3"
+                    - generic [ref=e619]: ".53"
+                  - generic [ref=e621]:
+                    - generic [ref=e622]: $
+                    - text: "3"
+                    - generic [ref=e623]: ".54"
+                - generic [ref=e625]: Output
+                - generic [ref=e628]:
+                  - generic [ref=e630]:
+                    - text: "0"
+                    - generic [ref=e631]: ".71"
+                  - generic [ref=e633]:
+                    - generic [ref=e634]: $
+                    - text: "3"
+                    - generic [ref=e635]: ".26"
+                - generic [ref=e637]: From
+                - generic [ref=e643]: DAI
+                - generic [ref=e645]: To
+                - generic [ref=e651]: XOR
+                - generic [ref=e653]: account
+                - generic [ref=e657] [cursor=pointer]:
+                  - generic [ref=e658]: cnRWUatULzf8AVfKVexXMKJx9bT9UeTEM4wmWG7B7g1cxVjXy
+                  - text: ...
+                  - generic [ref=e659]: VjXy
+                - img [ref=e662]
+                - img [ref=e668] [cursor=pointer]
+              - generic [ref=e671]:
+                - generic [ref=e673]: Date
+                - generic [ref=e676]:
+                  - generic [ref=e677]: 2/21
+                  - generic [ref=e678]: 13:28:12
+                - generic [ref=e680]: Input
+                - generic [ref=e683]:
+                  - generic [ref=e685]:
+                    - text: "4"
+                    - generic [ref=e686]: ".65"
+                  - generic [ref=e688]:
+                    - generic [ref=e689]: $
+                    - text: "4"
+                    - generic [ref=e690]: ".66"
+                - generic [ref=e692]: Output
+                - generic [ref=e695]:
+                  - generic [ref=e697]:
+                    - text: "1"
+                    - generic [ref=e698]: ".0"
+                  - generic [ref=e700]:
+                    - generic [ref=e701]: $
+                    - text: "4"
+                    - generic [ref=e702]: ".26"
+                - generic [ref=e704]: From
+                - generic [ref=e710]: DAI
+                - generic [ref=e712]: To
+                - generic [ref=e718]: XOR
+                - generic [ref=e720]: account
+                - generic [ref=e724] [cursor=pointer]:
+                  - generic [ref=e725]: cnTYTinG9gZd6Uu5Su16X3iivuuqXvcAZqskr8v9ZLTy2gcbU
+                  - text: ...
+                  - generic [ref=e726]: gcbU
+                - img [ref=e729]
+                - img [ref=e735] [cursor=pointer]
+              - generic [ref=e738]:
+                - generic [ref=e740]: Date
+                - generic [ref=e743]:
+                  - generic [ref=e744]: 2/21
+                  - generic [ref=e745]: 13:27:30
+                - generic [ref=e747]: Input
+                - generic [ref=e750]:
+                  - generic [ref=e752]:
+                    - text: "4"
+                    - generic [ref=e753]: ".43"
+                  - generic [ref=e755]:
+                    - generic [ref=e756]: $
+                    - text: "4"
+                    - generic [ref=e757]: ".44"
+                - generic [ref=e759]: Output
+                - generic [ref=e762]:
+                  - generic [ref=e764]:
+                    - text: "1"
+                    - generic [ref=e765]: ".0"
+                  - generic [ref=e767]:
+                    - generic [ref=e768]: $
+                    - text: "4"
+                    - generic [ref=e769]: ".06"
+                - generic [ref=e771]: From
+                - generic [ref=e777]: DAI
+                - generic [ref=e779]: To
+                - generic [ref=e785]: XOR
+                - generic [ref=e787]: account
+                - generic [ref=e791] [cursor=pointer]:
+                  - generic [ref=e792]: cnTYTinG9gZd6Uu5Su16X3iivuuqXvcAZqskr8v9ZLTy2gcbU
+                  - text: ...
+                  - generic [ref=e793]: gcbU
+                - img [ref=e796]
+                - img [ref=e802] [cursor=pointer]
+              - generic [ref=e805]:
+                - generic [ref=e807]: Date
+                - generic [ref=e810]:
+                  - generic [ref=e811]: 2/21
+                  - generic [ref=e812]: 13:25:36
+                - generic [ref=e814]: Input
+                - generic [ref=e817]:
+                  - generic [ref=e819]:
+                    - text: "1"
+                    - generic [ref=e820]: ".0"
+                  - generic [ref=e822]:
+                    - generic [ref=e823]: $
+                    - text: "4"
+                    - generic [ref=e824]: ".26"
+                - generic [ref=e826]: Output
+                - generic [ref=e829]:
+                  - generic [ref=e831]:
+                    - text: "4"
+                    - generic [ref=e832]: ".38"
+                  - generic [ref=e834]:
+                    - generic [ref=e835]: $
+                    - text: "4"
+                    - generic [ref=e836]: ".38"
+                - generic [ref=e838]: From
+                - generic [ref=e844]: XOR
+                - generic [ref=e846]: To
+                - generic [ref=e852]: DAI
+                - generic [ref=e854]: account
+                - generic [ref=e858] [cursor=pointer]:
+                  - generic [ref=e859]: cnRwt3q7DkvJqr3YkuN7dFibTx6yu8rqDDYKmBp4Sko5TW2Dd
+                  - text: ...
+                  - generic [ref=e860]: W2Dd
+                - img [ref=e863]
+                - img [ref=e869] [cursor=pointer]
+            - generic [ref=e440]:
+              - generic [ref=e442]:
+                - generic [ref=e443]:
+                  - generic [ref=e444]: Rows per page
+                  - img [ref=e448]
+                - generic [ref=e450]: 1—0 of 0
+              - button "1" [ref=e454] [cursor=pointer]
+        - generic [ref=e305]:
+          - generic [ref=e307]:
+            - button "XOR" [ref=e455] [cursor=pointer]:
+              - generic [ref=e456]:
+                - text: XOR
+                - img [ref=e460]
+            - generic [ref=e309]:
+              - button "5m" [ref=e311] [cursor=pointer]:
+                - generic [ref=e312]:
+                  - text: 5m
+                  - img [ref=e314]
+              - button [ref=e316] [cursor=pointer]:
+                - img [ref=e463]
+              - button [ref=e317] [cursor=pointer]:
+                - img [ref=e466]
+            - button [ref=e319] [cursor=pointer]:
+              - img [ref=e322]
+          - generic [ref=e470]:
+            - text: "4"
+            - generic [ref=e471]: .81DAI
+  - generic [ref=e331]:
+    - link "24,950,718" [ref=e889] [cursor=pointer]:
+      - /url: https://sora.subscan.io
+      - generic [ref=e477]: 24,950,718
+    - generic [ref=e332]:
+      - img [ref=e479]
+      - generic [ref=e334]: Node connected
+    - generic [ref=e335]:
+      - img [ref=e337]
+      - generic [ref=e339]: Internet stable
+    - generic [ref=e344]: Statistics loading
+    - generic [ref=e345]:
+      - generic [ref=e346]: Powered by
+      - link "Sora" [ref=e347] [cursor=pointer]:
+        - /url: https://sora.org
+        - img [ref=e348]

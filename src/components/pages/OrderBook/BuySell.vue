@@ -2,7 +2,7 @@
   <div class="order-book order-books">
     <el-popover popper-class="order-book-whitelist" trigger="click" v-model="visibleBookList" :visible-arrow="false">
       <pair-list-popover @close="toggleBookList" />
-      <div slot="reference">
+      <template #reference>
         <div class="order-book-choose-pair">
           <div>{{ t('orderBook.tokenPair') }}</div>
           <div class="order-book-choose-btn">
@@ -34,7 +34,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </template>
     </el-popover>
 
     <s-tabs class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick">
@@ -112,71 +112,71 @@
           </div>
         </div>
       </div>
-      <s-button
-        v-if="buttonDisabled"
-        slot="reference"
-        type="primary"
-        class="btn s-typography-button--medium"
-        :class="computedBtnClass"
-        :disabled="buttonDisabled"
-        @click="handleOrderPlacement"
-      >
-        <template v-if="bookStopped">
-          {{ t('orderBook.stop') }}
-        </template>
-        <template v-else-if="userReachedSpotLimit || userReachedOwnLimit">
-          <error />
-        </template>
-        <template v-else-if="isLimitOrder && !quoteValue">{{ t('orderBook.setPrice') }}</template>
-        <template v-else-if="isBalanceLessThanStepSize">
-          <error />
-        </template>
-        <template v-else-if="isLimitOrder && (!baseValue || isZeroAmount)">
-          {{ t('orderBook.enterAmount') }}
-        </template>
-        <template v-else-if="isLimitOrder && !isPriceBeyondPrecision">
-          <error />
-        </template>
-        <template v-else-if="isLimitOrder && isPlaceAndCancelMode && priceExceedsSpread">
-          <error />
-        </template>
-        <template v-else-if="isLimitOrder && limitForSinglePriceReached">
-          <error />
-        </template>
-        <template v-else-if="!isLimitOrder && isZeroAmount">
-          {{ t('orderBook.enterAmount') }}
-        </template>
-        <template v-else-if="!isLimitOrder && !marketQuotePrice">
-          <error />
-        </template>
-        <template v-else-if="isOutOfAmountBounds">
-          <error />
-        </template>
-        <template v-else-if="isInsufficientXorForFee">
-          {{ t('insufficientBalanceText', { tokenSymbol: xor?.symbol }) }}
-        </template>
-        <template v-else-if="isInsufficientBalance">
-          {{ t('insufficientBalanceText', { tokenSymbol: tokenFrom?.symbol }) }}
-        </template>
-      </s-button>
-      <s-button
-        v-else
-        slot="reference"
-        type="primary"
-        class="btn s-typography-button--medium"
-        :class="computedBtnClass"
-        @click="handleOrderPlacement"
-      >
-        <template v-if="!isLoggedIn">
-          {{ t('connectWalletText') }}
-        </template>
-        <template v-else-if="isBuySide">
-          {{ t('orderBook.Buy', { asset: baseAsset?.symbol }) }}
-        </template>
-        <template v-else>
-          {{ t('orderBook.Sell', { asset: baseAsset?.symbol }) }}
-        </template>
-      </s-button>
+      <template #reference>
+        <s-button
+          v-if="buttonDisabled"
+          type="primary"
+          class="btn s-typography-button--medium"
+          :class="computedBtnClass"
+          :disabled="buttonDisabled"
+          @click="handleOrderPlacement"
+        >
+          <template v-if="bookStopped">
+            {{ t('orderBook.stop') }}
+          </template>
+          <template v-else-if="userReachedSpotLimit || userReachedOwnLimit">
+            <error />
+          </template>
+          <template v-else-if="isLimitOrder && !quoteValue">{{ t('orderBook.setPrice') }}</template>
+          <template v-else-if="isBalanceLessThanStepSize">
+            <error />
+          </template>
+          <template v-else-if="isLimitOrder && (!baseValue || isZeroAmount)">
+            {{ t('orderBook.enterAmount') }}
+          </template>
+          <template v-else-if="isLimitOrder && !isPriceBeyondPrecision">
+            <error />
+          </template>
+          <template v-else-if="isLimitOrder && isPlaceAndCancelMode && priceExceedsSpread">
+            <error />
+          </template>
+          <template v-else-if="isLimitOrder && limitForSinglePriceReached">
+            <error />
+          </template>
+          <template v-else-if="!isLimitOrder && isZeroAmount">
+            {{ t('orderBook.enterAmount') }}
+          </template>
+          <template v-else-if="!isLimitOrder && !marketQuotePrice">
+            <error />
+          </template>
+          <template v-else-if="isOutOfAmountBounds">
+            <error />
+          </template>
+          <template v-else-if="isInsufficientXorForFee">
+            {{ t('insufficientBalanceText', { tokenSymbol: xor?.symbol }) }}
+          </template>
+          <template v-else-if="isInsufficientBalance">
+            {{ t('insufficientBalanceText', { tokenSymbol: tokenFrom?.symbol }) }}
+          </template>
+        </s-button>
+        <s-button
+          v-else
+          type="primary"
+          class="btn s-typography-button--medium"
+          :class="computedBtnClass"
+          @click="handleOrderPlacement"
+        >
+          <template v-if="!isLoggedIn">
+            {{ t('connectWalletText') }}
+          </template>
+          <template v-else-if="isBuySide">
+            {{ t('orderBook.Buy', { asset: baseAsset?.symbol }) }}
+          </template>
+          <template v-else>
+            {{ t('orderBook.Sell', { asset: baseAsset?.symbol }) }}
+          </template>
+        </s-button>
+      </template>
     </el-popover>
 
     <place-transaction-details

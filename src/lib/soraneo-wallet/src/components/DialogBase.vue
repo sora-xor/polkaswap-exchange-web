@@ -114,6 +114,10 @@ const handleBackClick = () => {
   align-items: center;
   justify-content: center;
   padding: $basic-spacing-big;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100vw;
+  min-width: 0;
   @include scrollbar;
 }
 
@@ -121,7 +125,8 @@ const handleBackClick = () => {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 496px;
+  min-width: 0;
+  max-width: min(496px, calc(100vw - (#{$basic-spacing-big} * 2)));
   background: var(--s-color-utility-surface);
   border-radius: var(--s-border-radius-medium);
   box-shadow: var(--s-shadow-surface);
@@ -173,6 +178,7 @@ const handleBackClick = () => {
 .dialog-card__content {
   padding: $basic-spacing $basic-spacing-big $basic-spacing-big;
   max-height: 70vh;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 

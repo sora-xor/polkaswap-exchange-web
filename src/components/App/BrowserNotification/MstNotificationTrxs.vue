@@ -60,17 +60,20 @@ async function handleButtonClick(): Promise<void> {
 <style lang="scss" scoped>
 .notification-mst {
   position: fixed;
-  top: 72px;
-  right: 16px;
-  width: 370px;
-  height: 116px;
+  top: calc(72px + env(safe-area-inset-top, 0px));
+  right: max(16px, env(safe-area-inset-right, 0px));
+  width: min(370px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  min-height: 116px;
+  box-sizing: border-box;
   z-index: $app-above-loader-layer;
   background-color: #a09a9d;
   border-radius: 12px;
   padding: 14px;
   p {
     color: #ffffff;
-    max-width: 320px;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     font-size: 13px;
   }
   button {
@@ -84,14 +87,22 @@ async function handleButtonClick(): Promise<void> {
   }
   .close-button {
     position: absolute;
-    top: -8px;
-    right: 8px;
+    top: 4px;
+    right: 4px;
     background: unset !important;
     border: none;
     cursor: pointer;
     &:hover {
       background: #a09a9d !important;
     }
+  }
+
+  @include mobile(true) {
+    top: calc(56px + env(safe-area-inset-top, 0px));
+    right: max(8px, env(safe-area-inset-right, 0px));
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    padding: 12px;
   }
 }
 </style>

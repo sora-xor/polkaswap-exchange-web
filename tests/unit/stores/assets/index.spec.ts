@@ -1,6 +1,7 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 
 import { ZeroStringValue } from '@/consts';
 import type { Nullable } from '@/types/common';
@@ -262,6 +263,45 @@ describe('useAssetsStore getters', () => {
     });
     expect(store.assetDataByAddress('0x02')).toBeNull();
     expect(store.assetDataByAddress()).toBeUndefined();
+  });
+
+  it('resolves asset metadata from wallet assets when assets table is not ready', () => {
+    const store = useAssetsStore();
+    walletStoreStub.assets = [
+      {
+        address: '0xFallback',
+        symbol: 'XOR',
+        decimals: 18,
+      },
+    ];
+    walletStoreStub.accountAssetsAddressTable = {
+      '0xFallback': {
+        balance: '42',
+      },
+    } as WalletStoreStub['accountAssetsAddressTable'];
+
+    const asset = store.assetDataByAddress('0xFallback');
+
+    expect(asset).toMatchObject({
+      address: '0xFallback',
+      symbol: 'XOR',
+      decimals: 18,
+      balance: '42',
+      externalBalance: ZeroStringValue,
+    });
+  });
+
+  it('falls back to known assets when wallet assets are not ready', () => {
+    const store = useAssetsStore();
+
+    const asset = store.assetDataByAddress(XOR.address);
+
+    expect(asset).toMatchObject({
+      address: XOR.address,
+      symbol: XOR.symbol,
+      decimals: XOR.decimals,
+      externalBalance: ZeroStringValue,
+    });
   });
 });
 

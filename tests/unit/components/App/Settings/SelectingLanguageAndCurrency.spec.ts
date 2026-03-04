@@ -162,7 +162,16 @@ describe('settings dialogs (BVT)', () => {
 
     expect(store.selectLanguageDialogVisibility).toBe(true);
 
-    const vm = wrapper.vm as { selectedLang: string };
+    const vm = wrapper.vm as {
+      selectedLang: string;
+      entries: Array<{ key: string; value: string; name: string }>;
+    };
+    expect(vm.entries[0]).toMatchObject({
+      key: 'en',
+      value: 'English',
+      name: 'English (UK)',
+    });
+
     vm.selectedLang = 'ru';
     await flushPromises();
 

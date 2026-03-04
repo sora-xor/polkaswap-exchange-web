@@ -5,29 +5,58 @@ import SCollapseItemCompat from '@/components/compat/SCollapseItemCompat.vue';
 import SDropdownCompat from '@/components/compat/SDropdownCompat.vue';
 import SDropdownItemCompat from '@/components/compat/SDropdownItemCompat.vue';
 import SFloatInputCompat from '@/components/compat/SFloatInputCompat.vue';
+import SMenuCompat from '@/lib/soramitsu-ui/components/Menu/SMenu.vue';
+import SMenuItemCompat from '@/lib/soramitsu-ui/components/Menu/SMenuItem.vue';
+import SMenuItemGroupCompat from '@/lib/soramitsu-ui/components/Menu/SMenuItemGroup.vue';
 
-import type { App } from 'vue';
+import type { App, Component } from 'vue';
 
 import '@soramitsu-ui/ui/styles';
 
+const registerCompat = (app: App, name: string, component: Component): void => {
+  const existing = app.component(name);
+  if (existing === component) return;
+
+  const contextComponents = (app as App & { _context?: { components?: Record<string, Component> } })._context
+    ?.components;
+
+  // Vue warns on duplicate global registration. When intentionally overriding
+  // a legacy component with a compat replacement, update app context directly.
+  if (existing && contextComponents) {
+    contextComponents[name] = component;
+    return;
+  }
+
+  app.component(name, component);
+};
+
 export function install(app: App): void {
   app.use(soramitsuUIPlugin());
-  app.component('ElPopover', ElPopoverCompat);
-  // eslint-disable-next-line vue/component-definition-name-casing -- Preserve Vue 2 legacy kebab-case global alias.
-  app.component('el-popover', ElPopoverCompat);
-  app.component('SCollapse', SCollapseCompat);
-  // eslint-disable-next-line vue/component-definition-name-casing -- Preserve Vue 2 legacy kebab-case global alias.
-  app.component('s-collapse', SCollapseCompat);
-  app.component('SCollapseItem', SCollapseItemCompat);
-  // eslint-disable-next-line vue/component-definition-name-casing -- Preserve Vue 2 legacy kebab-case global alias.
-  app.component('s-collapse-item', SCollapseItemCompat);
-  app.component('SDropdown', SDropdownCompat);
-  // eslint-disable-next-line vue/component-definition-name-casing -- Preserve Vue 2 legacy kebab-case global alias.
-  app.component('s-dropdown', SDropdownCompat);
-  app.component('SDropdownItem', SDropdownItemCompat);
-  // eslint-disable-next-line vue/component-definition-name-casing -- Preserve Vue 2 legacy kebab-case global alias.
-  app.component('s-dropdown-item', SDropdownItemCompat);
-  app.component('SFloatInput', SFloatInputCompat);
-  // eslint-disable-next-line vue/component-definition-name-casing -- Preserve Vue 2 legacy kebab-case global alias.
-  app.component('s-float-input', SFloatInputCompat);
+  registerCompat(app, 'ElPopover', ElPopoverCompat);
+
+  registerCompat(app, 'el-popover', ElPopoverCompat);
+  registerCompat(app, 'SCollapse', SCollapseCompat);
+
+  registerCompat(app, 's-collapse', SCollapseCompat);
+  registerCompat(app, 'SCollapseItem', SCollapseItemCompat);
+
+  registerCompat(app, 's-collapse-item', SCollapseItemCompat);
+  registerCompat(app, 'SDropdown', SDropdownCompat);
+
+  registerCompat(app, 's-dropdown', SDropdownCompat);
+  registerCompat(app, 'SDropdownItem', SDropdownItemCompat);
+
+  registerCompat(app, 's-dropdown-item', SDropdownItemCompat);
+  registerCompat(app, 'SFloatInput', SFloatInputCompat);
+
+  registerCompat(app, 's-float-input', SFloatInputCompat);
+  registerCompat(app, 'SMenu', SMenuCompat);
+
+  registerCompat(app, 's-menu', SMenuCompat);
+  registerCompat(app, 'SMenuItem', SMenuItemCompat);
+
+  registerCompat(app, 's-menu-item', SMenuItemCompat);
+  registerCompat(app, 'SMenuItemGroup', SMenuItemGroupCompat);
+
+  registerCompat(app, 's-menu-item-group', SMenuItemGroupCompat);
 }

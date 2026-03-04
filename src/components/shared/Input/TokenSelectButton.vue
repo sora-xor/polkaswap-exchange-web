@@ -36,11 +36,10 @@ import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types
  */
 defineOptions({
   name: 'TokenSelectButton',
-  components: {
-    TokenLogo: components.TokenLogo,
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-  },
 });
+
+const TokenLogo = components.TokenLogo;
+const PairTokenLogo = lazyComponent(Components.PairTokenLogo);
 
 const props = withDefaults(
   defineProps<{
@@ -67,7 +66,7 @@ const computedClasses = computed(() => {
   return hasToken.value ? [baseClass, `${baseClass}--token`] : [baseClass];
 });
 const buttonTabindex = computed(() => (props.disabled ? -1 : props.tabindex));
-const tokenLogoComponent = computed(() => (props.tokens.length !== 0 ? 'pair-token-logo' : 'token-logo'));
+const tokenLogoComponent = computed(() => (props.tokens.length !== 0 ? PairTokenLogo : TokenLogo));
 const tokenComponentSize = computed(() => (props.tokens.length !== 0 ? 'mini' : 'small'));
 const buttonType = computed(() => (hasToken.value ? 'tertiary' : 'secondary'));
 const buttonText = computed(() => {
@@ -93,6 +92,17 @@ defineExpose({
 $baseClass: '.token-select-button';
 
 button.el-button.neumorphic#{$baseClass} {
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+  text-transform: uppercase;
+  background-color: var(--s-color-base-content-tertiary);
+  color: var(--s-color-base-on-accent);
+
+  #{$baseClass}__text {
+    color: var(--s-color-base-on-accent);
+    text-transform: uppercase;
+  }
+
   &:hover,
   &:active,
   &:focus,
@@ -106,6 +116,15 @@ button.el-button.neumorphic#{$baseClass} {
   }
 
   &--token {
+    background-color: var(--s-color-base-border-primary);
+    color: var(--s-color-base-content-tertiary);
+
+    #{$baseClass}__text {
+      color: var(--s-color-base-content-primary);
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
     &:hover,
     &:active,
     &:focus,

@@ -106,7 +106,8 @@ export const svgSaveAs = async (
 
 const ALLOWED_ICON_MIME_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml']);
 
-const DATA_URI_REGEX = /^data:(image\/[a-z0-9+.-]+);base64,([A-Za-z0-9+/=]+)$/i;
+const DATA_URI_BASE64_REGEX = /^data:(image\/[a-z0-9+.-]+);base64,([A-Za-z0-9+/=]+)$/i;
+const DATA_URI_UTF8_SVG_REGEX = /^data:(image\/svg\+xml)(?:;charset=[a-z0-9-]+|;utf8)?,(.+)$/i;
 
 const decodeBase64 = (value: string): string => {
   try {
@@ -183,14 +184,23 @@ const stripDisallowedSvgContent = (rawSvg: string): string | null => {
 };
 
 const sanitizeSvgDataUri = (dataUri: string): string => {
-  const match = DATA_URI_REGEX.exec(dataUri);
-  if (!match) return '';
-
-  const [, mimeType, payload] = match;
-  if (mimeType.toLowerCase() !== 'image/svg+xml') return '';
-
   try {
-    const decodedSvg = decodeBase64(payload);
+    let decodedSvg = '';
+
+    const base64Match = DATA_URI_BASE64_REGEX.exec(dataUri);
+    if (base64Match) {
+      const [, mimeType, payload] = base64Match;
+      if (mimeType.toLowerCase() !== 'image/svg+xml') return '';
+      decodedSvg = decodeBase64(payload);
+    } else {
+      const utf8Match = DATA_URI_UTF8_SVG_REGEX.exec(dataUri);
+      if (!utf8Match) return '';
+
+      const [, mimeType, payload] = utf8Match;
+      if (mimeType.toLowerCase() !== 'image/svg+xml') return '';
+      decodedSvg = decodeURIComponent(payload);
+    }
+
     const sanitizedSvg = stripDisallowedSvgContent(decodedSvg);
 
     if (!sanitizedSvg) return '';
@@ -204,19 +214,17 @@ const sanitizeSvgDataUri = (dataUri: string): string => {
 };
 
 const sanitizeDataUri = (dataUri: string): string => {
-  const match = DATA_URI_REGEX.exec(dataUri);
-  if (!match) return '';
+  const base64Match = DATA_URI_BASE64_REGEX.exec(dataUri);
+  const utf8SvgMatch = DATA_URI_UTF8_SVG_REGEX.exec(dataUri);
+  const mimeType = (base64Match?.[1] ?? utf8SvgMatch?.[1] ?? '').toLowerCase();
 
-  const [, mimeType] = match;
-  const normalizedMime = mimeType.toLowerCase();
+  if (!mimeType || !ALLOWED_ICON_MIME_TYPES.has(mimeType)) return '';
 
-  if (!ALLOWED_ICON_MIME_TYPES.has(normalizedMime)) {
-    return '';
-  }
-
-  if (normalizedMime === 'image/svg+xml') {
+  if (mimeType === 'image/svg+xml') {
     return sanitizeSvgDataUri(dataUri);
   }
+
+  if (!base64Match) return '';
 
   return dataUri;
 };

@@ -1,9 +1,13 @@
 import {
+  Comment,
+  Fragment,
   Teleport,
+  Text,
   cloneVNode,
   computed,
   defineComponent,
   h,
+  isVNode,
   nextTick,
   onBeforeUnmount,
   onMounted,
@@ -18,6 +22,14 @@ type PopoverTrigger = 'click' | 'hover' | 'focus' | 'manual';
 
 const DEFAULT_OFFSET = 8;
 const VIEWPORT_PADDING = 8;
+const VIEWPORT_BOUNDS_STYLE: CSSProperties = {
+  maxWidth: `calc(100vw - ${VIEWPORT_PADDING * 2}px)`,
+  maxHeight: `calc(100vh - ${VIEWPORT_PADDING * 2}px)`,
+  overflowX: 'auto',
+  overflowY: 'auto',
+  boxSizing: 'border-box',
+  overscrollBehavior: 'contain',
+};
 
 const SUPPORTED_PLACEMENTS = new Set([
   'top',
@@ -80,6 +92,26 @@ function mergeClassNames(base: string[], extraClass: unknown): Array<string> {
   return base;
 }
 
+/**
+ * Finds the first element/component vnode that can be used as a popover trigger.
+ * Skips whitespace text/comment nodes and unwraps fragments.
+ */
+function resolveReferenceVNode(nodes: Array<unknown>): VNode | null {
+  for (const node of nodes) {
+    if (!isVNode(node)) continue;
+    if (node.type === Text || node.type === Comment) continue;
+    if (node.type === Fragment) {
+      const fragmentChildren = Array.isArray(node.children) ? node.children : [];
+      const nested = resolveReferenceVNode(fragmentChildren);
+      if (nested) return nested;
+      continue;
+    }
+    return node;
+  }
+
+  return null;
+}
+
 export default defineComponent({
   name: 'ElPopover',
   inheritAttrs: false,
@@ -137,10 +169,33 @@ export default defineComponent({
       top: '-99999px',
       left: '-99999px',
       zIndex: 2100,
+      ...VIEWPORT_BOUNDS_STYLE,
     });
 
     let showTimer: ReturnType<typeof setTimeout> | null = null;
     let hideTimer: ReturnType<typeof setTimeout> | null = null;
+    let activeReferenceEl: HTMLElement | null = null;
+    let popperResizeObserver: ResizeObserver | null = null;
+
+    const onReferenceClick = (): void => {
+      handleReferenceClick();
+    };
+
+    const onReferenceMouseEnter = (): void => {
+      handleReferenceMouseEnter();
+    };
+
+    const onReferenceMouseLeave = (): void => {
+      handleReferenceMouseLeave();
+    };
+
+    const onReferenceFocusIn = (): void => {
+      handleReferenceFocusIn();
+    };
+
+    const onReferenceFocusOut = (event: FocusEvent): void => {
+      handleReferenceFocusOut(event);
+    };
 
     const normalizedTrigger = computed<PopoverTrigger>(() => {
       const value = props.trigger;
@@ -174,6 +229,11 @@ export default defineComponent({
         clearTimeout(hideTimer);
         hideTimer = null;
       }
+    };
+
+    const disconnectPopperObserver = (): void => {
+      popperResizeObserver?.disconnect();
+      popperResizeObserver = null;
     };
 
     const emitModelUpdates = (next: boolean): void => {
@@ -235,6 +295,7 @@ export default defineComponent({
 
       popperStyle.value = {
         ...popperStyle.value,
+        ...VIEWPORT_BOUNDS_STYLE,
         top: `${Math.round(top)}px`,
         left: `${Math.round(left)}px`,
       };
@@ -252,6 +313,39 @@ export default defineComponent({
           hide();
         }
       }, toDelay(props.closeDelay));
+    };
+
+    const unbindReferenceListeners = (): void => {
+      if (!activeReferenceEl) return;
+
+      activeReferenceEl.removeEventListener('click', onReferenceClick);
+      activeReferenceEl.removeEventListener('mouseenter', onReferenceMouseEnter);
+      activeReferenceEl.removeEventListener('mouseleave', onReferenceMouseLeave);
+      activeReferenceEl.removeEventListener('focusin', onReferenceFocusIn);
+      activeReferenceEl.removeEventListener('focusout', onReferenceFocusOut);
+      activeReferenceEl = null;
+    };
+
+    const bindReferenceListeners = (el: HTMLElement | null): void => {
+      if (activeReferenceEl === el) {
+        return;
+      }
+
+      // Bind directly on the resolved element so trigger behavior works
+      // even when the reference slot is a component that does not forward attrs/events.
+      unbindReferenceListeners();
+      if (!el) return;
+
+      if (props.tabindex !== undefined && props.tabindex !== null) {
+        el.setAttribute('tabindex', String(props.tabindex));
+      }
+
+      el.addEventListener('click', onReferenceClick);
+      el.addEventListener('mouseenter', onReferenceMouseEnter);
+      el.addEventListener('mouseleave', onReferenceMouseLeave);
+      el.addEventListener('focusin', onReferenceFocusIn);
+      el.addEventListener('focusout', onReferenceFocusOut);
+      activeReferenceEl = el;
     };
 
     const handleReferenceClick = (): void => {
@@ -301,7 +395,7 @@ export default defineComponent({
       }
     };
 
-    const handleDocumentPointerDown = (event: MouseEvent): void => {
+    const handleDocumentPointerDown = (event: Event): void => {
       if (!isVisible.value || normalizedTrigger.value !== 'click') return;
 
       const target = event.target as Node | null;
@@ -313,10 +407,40 @@ export default defineComponent({
       hide();
     };
 
-    const handleViewportUpdate = (): void => {
+    const handleWindowResize = (): void => {
+      if (!isVisible.value) return;
+      hide();
+    };
+
+    const handleViewportScroll = (): void => {
       if (!isVisible.value) return;
       updatePosition();
     };
+
+    const handleDocumentKeyDown = (event: KeyboardEvent): void => {
+      if (!isVisible.value) return;
+      if (event.key !== 'Escape') return;
+      hide();
+    };
+
+    const handleNavigationChange = (): void => {
+      if (!isVisible.value) return;
+      hide();
+    };
+
+    const observePopper = (element: HTMLElement | null): void => {
+      disconnectPopperObserver();
+      if (!element) return;
+      if (typeof window === 'undefined' || typeof window.ResizeObserver === 'undefined') return;
+
+      popperResizeObserver = new window.ResizeObserver(() => {
+        if (!isVisible.value) return;
+        updatePosition();
+      });
+      popperResizeObserver.observe(element);
+    };
+
+    const supportsPointerEvents = typeof window !== 'undefined' && 'PointerEvent' in window;
 
     watch(
       isVisible,
@@ -335,17 +459,44 @@ export default defineComponent({
       { flush: 'post' }
     );
 
+    watch(
+      () => props.tabindex,
+      (value) => {
+        if (!activeReferenceEl) return;
+        if (value === undefined || value === null) return;
+        activeReferenceEl.setAttribute('tabindex', String(value));
+      }
+    );
+
     onMounted(() => {
-      window.addEventListener('resize', handleViewportUpdate);
-      window.addEventListener('scroll', handleViewportUpdate, true);
-      window.addEventListener('mousedown', handleDocumentPointerDown, true);
+      window.addEventListener('resize', handleWindowResize);
+      window.addEventListener('scroll', handleViewportScroll, true);
+      if (supportsPointerEvents) {
+        window.addEventListener('pointerdown', handleDocumentPointerDown, true);
+      } else {
+        window.addEventListener('mousedown', handleDocumentPointerDown, true);
+        window.addEventListener('touchstart', handleDocumentPointerDown, true);
+      }
+      window.addEventListener('keydown', handleDocumentKeyDown, true);
+      window.addEventListener('hashchange', handleNavigationChange);
+      window.addEventListener('popstate', handleNavigationChange);
     });
 
     onBeforeUnmount(() => {
       clearTimers();
-      window.removeEventListener('resize', handleViewportUpdate);
-      window.removeEventListener('scroll', handleViewportUpdate, true);
-      window.removeEventListener('mousedown', handleDocumentPointerDown, true);
+      unbindReferenceListeners();
+      disconnectPopperObserver();
+      window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener('scroll', handleViewportScroll, true);
+      if (supportsPointerEvents) {
+        window.removeEventListener('pointerdown', handleDocumentPointerDown, true);
+      } else {
+        window.removeEventListener('mousedown', handleDocumentPointerDown, true);
+        window.removeEventListener('touchstart', handleDocumentPointerDown, true);
+      }
+      window.removeEventListener('keydown', handleDocumentKeyDown, true);
+      window.removeEventListener('hashchange', handleNavigationChange);
+      window.removeEventListener('popstate', handleNavigationChange);
     });
 
     expose({
@@ -359,28 +510,26 @@ export default defineComponent({
     });
 
     const setReference = (instance: unknown): void => {
-      referenceEl.value = resolveElement(instance);
+      const resolved = resolveElement(instance);
+      referenceEl.value = resolved;
+      bindReferenceListeners(resolved);
     };
 
     const setPopper = (instance: unknown): void => {
-      popperEl.value = resolveElement(instance);
+      const resolved = resolveElement(instance);
+      popperEl.value = resolved;
+      observePopper(resolved);
     };
 
     return () => {
       const referenceNodes = slots.reference?.() ?? [];
-      const referenceVNode = referenceNodes.find(Boolean) as VNode | undefined;
+      const referenceVNode = resolveReferenceVNode(referenceNodes);
 
       const clonedReference = referenceVNode
         ? cloneVNode(
             referenceVNode,
             {
               ref: setReference,
-              tabindex: props.tabindex,
-              onClick: handleReferenceClick,
-              onMouseenter: handleReferenceMouseEnter,
-              onMouseleave: handleReferenceMouseLeave,
-              onFocusin: handleReferenceFocusIn,
-              onFocusout: handleReferenceFocusOut,
             },
             true
           )
