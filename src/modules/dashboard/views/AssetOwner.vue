@@ -138,6 +138,7 @@ import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import router from '@/router';
 import store from '@/store';
+import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 
 defineOptions({
   components: {
@@ -150,15 +151,16 @@ defineOptions({
 const { isLoggedIn, connectSoraWallet } = useInternalConnect();
 const { t } = useTranslation();
 
-const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
 const assets = computed(() => store.getters.dashboard.ownedAssets as OwnedAsset[]);
 
 const showCreateTokenDialog = ref(false);
 
 const isNotLoggedInOrEmptyAssets = computed(() => !(isLoggedIn.value && assets.value.length));
 
-const noAssetsImg = computed(() => `/asset-owner/${libraryTheme.value}-hero.png`);
-const noAssetsImgDemo = computed(() => `/asset-owner/${libraryTheme.value}.png`);
+const resolvedTheme = computed(() => (libraryTheme.value === Theme.DARK ? Theme.DARK : Theme.LIGHT));
+const noAssetsImg = computed(() => `/asset-owner/${resolvedTheme.value}-hero.png`);
+const noAssetsImgDemo = computed(() => `/asset-owner/${resolvedTheme.value}.png`);
 
 function handleCreateAsset(): void {
   showCreateTokenDialog.value = true;

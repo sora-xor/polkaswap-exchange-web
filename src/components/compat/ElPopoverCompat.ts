@@ -214,8 +214,12 @@ export default defineComponent({
     const isVisible = computed<boolean>(() =>
       isControlled.value ? Boolean(controlledVisible.value) : localVisible.value
     );
+    const isHeaderMenuPopover = computed<boolean>(() => props.popperClass.includes('header-menu'));
     const popperClassNames = computed<Array<string>>(() =>
-      mergeClassNames(['el-popover', 'el-popper'], [props.popperClass, attrs.class].filter(Boolean).join(' '))
+      mergeClassNames(
+        isHeaderMenuPopover.value ? ['el-popper'] : ['el-popover', 'el-popper'],
+        [props.popperClass, attrs.class].filter(Boolean).join(' ')
+      )
     );
 
     const placement = computed(() => (SUPPORTED_PLACEMENTS.has(props.placement) ? props.placement : 'bottom'));

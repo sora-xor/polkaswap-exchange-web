@@ -20,6 +20,7 @@ import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 import { useTranslation } from '@/composables/useTranslation';
 import { sanitizeHtml } from '@/utils/sanitize';
 import store from '@/store';
+import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 
 import { MoonpayNotifications } from './consts';
 
@@ -43,7 +44,7 @@ const visibility = computed({
 });
 
 const notificationKey = computed(() => store.state.moonpay.notificationKey as MoonpayNotifications | '');
-const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
 
 const success = computed(() => notificationKey.value === MoonpayNotifications.Success);
 

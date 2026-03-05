@@ -17,6 +17,7 @@ node_modules
 .vitest-localstorage.sqlite
 .ipfs-workspace/*
 tmp*
+.tmp*
 output*
 
 

@@ -65,6 +65,18 @@ $legacy-static-vars: (
   '--s-color-theme-secondary-pressed': #24daa0,
   '--s-color-theme-secondary-focused': #24daa0,
   '--s-color-base-on-disabled--dark': #c29ab7,
+  '--s-shadow-element': '1px 1px 5px #fff, inset -5px -5px 5px rgba(255, 255, 255, 0.5), inset 1px 1px 10px rgba(0, 0, 0, 0.1)',
+  '--s-shadow-element-pressed':
+    '-5px -5px 10px #fff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8)',
+  '--s-shadow-tooltip': 0px 1px 4px rgba(13, 2, 72, 0.35),
+  '--s-color-status-success': #34ad87,
+  '--s-color-status-warning': #eba332,
+  '--s-color-status-error': #f754a3,
+  '--s-color-status-info': #479aef,
+  '--s-color-status-success-background': #b9ebdb,
+  '--s-color-status-warning-background': #fceebd,
+  '--s-color-status-error-background': #ffd8eb,
+  '--s-color-status-info-background': #c6e2ff,
   '--s-color-fiat-value': rgba(71, 154, 239, 1),
   '--s-color-rewards': #c0e2ff,
   '--s-size-big': 58px,
@@ -130,10 +142,24 @@ $legacy-dark-overrides: (
   '--s-color-theme-secondary-hover': #1fb89c,
   '--s-color-theme-secondary-pressed': #1ba88d,
   '--s-color-theme-secondary-focused': #25bea4,
+  '--s-color-status-success': #34ad87,
+  '--s-color-status-warning': #eba332,
+  '--s-color-status-error': #f754a3,
+  '--s-color-status-info': #479aef,
+  '--s-color-status-success-background': #34ad87,
+  '--s-color-status-warning-background': #eba332,
+  '--s-color-status-error-background': #f754a3,
+  '--s-color-status-info-background': #c6e2ff,
   '--s-color-fiat-value': rgba(71, 154, 239, 0.84),
-  '--s-shadow-element': 0px 10px 24px rgba(0, 0, 0, 0.4),
-  '--s-shadow-element-pressed': 0px 6px 16px rgba(0, 0, 0, 0.5),
-  '--s-shadow-tooltip': 0px 16px 40px rgba(0, 0, 0, 0.5),
+  // Keep shadow palette aligned with production noir mode (purple depth).
+  '--s-shadow-color-dark-light': rgba(155, 111, 165, 0.1),
+  '--s-shadow-color-dark': rgba(41, 0, 71, 0.33),
+  '--s-shadow-color-light-dark': hsla(0, 0%, 100%, 0.05),
+  '--s-shadow-element':
+    '1px 1px 2px rgba(255, 255, 255, 0.1), inset -5px -5px 5px rgba(255, 255, 255, 0.05), inset 1px 1px 10px rgba(41, 0, 71, 0.33)',
+  '--s-shadow-element-pressed':
+    '-5px -5px 10px rgba(155, 111, 165, 0.25), 2px 2px 15px #492067, inset 1px 1px 2px rgba(155, 111, 165, 0.25)',
+  '--s-shadow-tooltip': 0px 1px 4px rgba(13, 2, 72, 0.35),
 );
 
 $polkaswap-light-token-overrides: (
@@ -169,10 +195,25 @@ $polkaswap-light-token-overrides: (
 $polkaswap-dark-token-overrides: (
   sys: (
     color: (
-      primary: $accent,
-      primary-hover: $accent-hover,
-      primary-pressed: $accent-pressed,
-      primary-focused: $accent-focused,
+      background: #492067,
+      background-hover: #693d81,
+      primary: #f24197,
+      primary-hover: #f754a3,
+      primary-pressed: #bf065f,
+      primary-focused: #f754a3,
+      content-primary: #f0d7dc,
+      content-secondary: #c29ab7,
+      content-tertiary: #9b6fa5,
+      content-quaternary: #9b6fa5,
+      border-primary: #693d81,
+      border-secondary: #693d81,
+      disabled: #5d2f73,
+      on-disabled: #c29ab7,
+      util: (
+        body: #5d2f73,
+        surface: #592d71,
+        overlay: rgba(41, 0, 71, 0.35),
+      ),
     ),
   ),
 );
@@ -225,6 +266,7 @@ $wallet-dark-token-overrides: (
 
 @include theme.typography-preset-default;
 
+:root,
 .sora-theme-provider {
   color-scheme: light;
 
@@ -233,12 +275,34 @@ $wallet-dark-token-overrides: (
   @include apply-custom-properties($legacy-token-bridges);
   @include apply-custom-properties($legacy-static-vars);
   @include apply-custom-properties($legacy-metrics);
+}
 
-  &[data-theme='dark'] {
-    color-scheme: dark;
+:root[data-theme='dark'],
+.sora-theme-provider[data-theme='dark'] {
+  color-scheme: dark;
 
-    @include theme.eval-tokens-partial($polkaswap-dark-token-overrides);
-    @include theme.eval-tokens-partial($wallet-dark-token-overrides);
-    @include apply-custom-properties($legacy-dark-overrides);
-  }
+  @include theme.eval-tokens-partial($polkaswap-dark-token-overrides);
+  @include apply-custom-properties($legacy-dark-overrides);
+}
+
+// Soramitsu UI now renders many icons as inline SVG. Ensure icon primitives
+// follow the current text color like legacy font-based icons did.
+i.s-icon .s-icon__svg {
+  fill: currentColor;
+}
+
+i.s-icon .s-icon__svg path:not([fill]) {
+  fill: currentColor !important;
+}
+
+i.s-icon .s-icon__svg [fill='#000' i],
+i.s-icon .s-icon__svg [fill='#000000' i],
+i.s-icon .s-icon__svg [fill='black' i] {
+  fill: currentColor !important;
+}
+
+i.s-icon .s-icon__svg [stroke='#000' i],
+i.s-icon .s-icon__svg [stroke='#000000' i],
+i.s-icon .s-icon__svg [stroke='black' i] {
+  stroke: currentColor !important;
 }

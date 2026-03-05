@@ -110,7 +110,7 @@ $marketing-width-wide: 330px;
     opacity: 0.3;
 
     > i {
-      line-height: 1.75;
+      line-height: 42px;
       color: var(--s-color-base-on-accent);
     }
 
@@ -165,6 +165,11 @@ $marketing-width-wide: 330px;
   &-suffix {
     color: var(--s-color-base-on-accent);
     font-weight: bold;
+
+    :deep(i.s-icon-arrows-arrow-top-right-24) {
+      font-size: 16px !important;
+      line-height: 16px !important;
+    }
   }
 
   &-image {

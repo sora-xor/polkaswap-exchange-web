@@ -101,6 +101,7 @@ import { useWalletStore } from '@/stores/wallet';
 import { getMobileCssClasses } from '@/utils';
 import { NodesConnection } from '@/utils/connection';
 import { toDwebLink } from '@/utils/ipfs';
+import { resolveLibraryDesignSystem, resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { getEnvConfigCandidates, resolveStaticAssetUrl } from '@/utils/staticAssets';
 import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
@@ -180,8 +181,8 @@ const firstReadyTransaction = computed(
   () => store.getters?.wallet?.transactions?.firstReadyTx as Nullable<HistoryItem>
 );
 const isLoggedIn = computed(() => Boolean(store.getters?.wallet?.account?.isLoggedIn));
-const libraryTheme = computed(() => store.getters?.libraryTheme as Theme);
-const libraryDesignSystem = computed(() => store.getters?.libraryDesignSystem as DesignSystem);
+const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
+const libraryDesignSystem = computed(() => resolveLibraryDesignSystem(store) as DesignSystem);
 const account = computed(() => store.getters?.wallet?.account?.account);
 const isSignTxDialogVisible = computed(() => Boolean(store.state.wallet?.transactions?.isSignTxDialogVisible));
 const isWalletLoaded = computed(() => Boolean(store.state.wallet?.settings?.isWalletLoaded));
@@ -287,6 +288,14 @@ const setSelectSubNodeDialogVisibility = resolveCommit(
 const setSubAccountDialogVisibility = resolveCommit(
   store.commit?.web3?.setSubAccountDialogVisibility,
   'web3/setSubAccountDialogVisibility'
+);
+const setSelectNodeDialogVisibility = resolveCommit(
+  store.commit?.settings?.setSelectNodeDialogVisibility,
+  'settings/setSelectNodeDialogVisibility'
+);
+const setSelectIndexerDialogVisibility = resolveCommit(
+  store.commit?.settings?.setSelectIndexerDialogVisibility,
+  'settings/setSelectIndexerDialogVisibility'
 );
 const resetStorageReferrer =
   resolveCommit(store.commit?.referrals?.resetStorageReferrer, 'referrals/resetStorageReferrer') ?? (() => {});
@@ -609,6 +618,25 @@ async function teardown(): Promise<void> {
   await connection.close();
 }
 
+const syncRootTheme = (theme: Theme): void => {
+  if (typeof document === 'undefined') return;
+  const nextTheme = theme === Theme.DARK ? Theme.DARK : Theme.LIGHT;
+  document.documentElement.setAttribute('data-theme', nextTheme);
+  document.documentElement.setAttribute('design-system-theme', nextTheme);
+
+  const provider = document.querySelector('.sora-theme-provider');
+  provider?.setAttribute('data-theme', nextTheme);
+  provider?.setAttribute('design-system-theme', nextTheme);
+};
+
+watch(
+  libraryTheme,
+  (theme) => {
+    syncRootTheme(theme);
+  },
+  { immediate: true }
+);
+
 watch(assetsToNotifyQueue, (queue) => {
   if (!queue?.length) return;
   void notifyOnDeposit({ asset: queue[0], message: t('assetDeposit') });
@@ -655,11 +683,32 @@ watch(
     syncRouteScopedDialog(Boolean(store.state.web3?.selectNetworkDialogVisibility), setSelectNetworkDialogVisibility);
     syncRouteScopedDialog(Boolean(store.state.web3?.selectSubNodeDialogVisibility), setSelectSubNodeDialogVisibility);
     syncRouteScopedDialog(Boolean(store.state.web3?.subAccountDialogVisibility), setSubAccountDialogVisibility);
+    syncRouteScopedDialog(Boolean(store.state.settings?.selectNodeDialogVisibility), setSelectNodeDialogVisibility);
+    syncRouteScopedDialog(
+      Boolean(store.state.settings?.selectIndexerDialogVisibility),
+      setSelectIndexerDialogVisibility
+    );
   }
 );
 
 watch(responsiveClass, (nextClass, prevClass) => {
   menuVisibility.value = resolveMenuVisibilityOnBreakpointChange(menuVisibility.value, prevClass, nextClass);
+
+  if (nextClass === prevClass) return;
+
+  const closeVisibleDialog = (isVisible: boolean, setter: unknown): void => {
+    if (isVisible && typeof setter === 'function') {
+      setter(false);
+    }
+  };
+
+  closeVisibleDialog(Boolean(store.state.web3?.soraAccountDialogVisibility), setSoraAccountDialogVisibility);
+  closeVisibleDialog(Boolean(store.state.web3?.selectProviderDialogVisibility), setSelectProviderDialogVisibility);
+  closeVisibleDialog(Boolean(store.state.web3?.selectNetworkDialogVisibility), setSelectNetworkDialogVisibility);
+  closeVisibleDialog(Boolean(store.state.web3?.selectSubNodeDialogVisibility), setSelectSubNodeDialogVisibility);
+  closeVisibleDialog(Boolean(store.state.web3?.subAccountDialogVisibility), setSubAccountDialogVisibility);
+  closeVisibleDialog(Boolean(store.state.settings?.selectNodeDialogVisibility), setSelectNodeDialogVisibility);
+  closeVisibleDialog(Boolean(store.state.settings?.selectIndexerDialogVisibility), setSelectIndexerDialogVisibility);
 });
 
 watch(

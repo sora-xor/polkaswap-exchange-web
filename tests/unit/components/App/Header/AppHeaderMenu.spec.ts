@@ -256,6 +256,8 @@ describe('AppHeaderMenu', () => {
           SDropdownItem: SDropdownItemStub,
           's-divider': { template: '<hr class="s-divider-stub" />' },
           SDivider: { template: '<hr class="s-divider-stub" />' },
+          'el-divider': { template: '<hr class="el-divider-stub" />' },
+          ElDivider: { template: '<hr class="el-divider-stub" />' },
           's-icon': SIconStub,
           SIcon: SIconStub,
           's-switch': { template: '<div class="s-switch-stub" />' },

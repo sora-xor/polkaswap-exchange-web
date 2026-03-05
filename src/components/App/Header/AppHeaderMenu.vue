@@ -2,13 +2,13 @@
   <div class="app-header-menu">
     <s-button
       type="action"
-      class="settings-control s-pressed"
+      :class="['settings-control', 's-pressed', { 'settings-control--open': isDropdownVisible }]"
       :tooltip="isDropdownVisible ? '' : t('headerMenu.settings')"
     >
       <template #icon>
         <s-dropdown
           ref="headerMenu"
-          :popper-class="`header-menu ${isDropdownVisible ? 'is-open' : 'is-closed'} custom-z-index`"
+          :popper-class="`header-menu el-dropdown-menu--medium ${isDropdownVisible ? 'is-open' : ''} ellipsis s-border-radius-small custom-z-index`"
           class="header-menu__button"
           icon="grid-block-align-left-24"
           type="ellipsis"
@@ -21,7 +21,7 @@
               <p>{{ t('settingsText') }}</p>
               <s-button class="s-pressed" type="action" icon="x-16" @click="handleClickHeaderMenu"></s-button>
             </div>
-            <s-divider></s-divider>
+            <el-divider class="s-divider-secondary"></el-divider>
             <div v-for="section in dropdownHeaderMenuItems" :key="section.title">
               <p class="dropdown-section-title">{{ section.title.toUpperCase() }}</p>
               <div v-for="(item, index) in section.items" :key="item.value" @click="handleSelectHeaderMenu(item.value)">
@@ -57,7 +57,10 @@
                     <s-icon :name="item.iconType" size="14px" class="icontype"></s-icon>
                   </template>
                 </s-dropdown-item>
-                <s-divider class="divider-between-items" v-if="index < section.items.length - 1"></s-divider>
+                <el-divider
+                  class="divider-between-items s-divider-secondary"
+                  v-if="index < section.items.length - 1"
+                ></el-divider>
               </div>
             </div>
           </template>
@@ -260,11 +263,9 @@ function handleDropdownVisibilityChange(visible: boolean): void {
 }
 
 function handleClickHeaderMenu(): void {
-  headerMenu.value?.hide();
-}
-
-function closeHeaderMenu(): void {
-  headerMenu.value?.hide();
+  headerMenu.value?.hide?.();
+  headerMenu.value?.dropdown?.hide?.();
+  isDropdownVisible.value = false;
 }
 
 async function handleSelectHeaderMenu(type: HeaderMenuType): Promise<void> {
@@ -291,25 +292,25 @@ async function handleSelectHeaderMenu(type: HeaderMenuType): Promise<void> {
         store.commit.settings.setIsRotatePhoneHideBalanceFeatureEnabled(true);
       } else {
         (store.commit.settings as any).setRotatePhoneDialogVisibility?.(true);
-        closeHeaderMenu();
+        handleClickHeaderMenu();
       }
       break;
     case HeaderMenuType.Language:
       store.commit.settings.setSelectLanguageDialogVisibility(true);
-      closeHeaderMenu();
+      handleClickHeaderMenu();
       break;
     case HeaderMenuType.Currency:
       store.commit.settings.setSelectCurrencyDialogVisibility(true);
-      closeHeaderMenu();
+      handleClickHeaderMenu();
       break;
     case HeaderMenuType.Notification:
       store.commit.settings.setAlertSettingsPopup(true);
-      closeHeaderMenu();
+      handleClickHeaderMenu();
       break;
     case HeaderMenuType.Disclaimer:
       if (disclaimerDisabled.value) break;
       store.commit.settings.toggleDisclaimerDialogVisibility();
-      closeHeaderMenu();
+      handleClickHeaderMenu();
       break;
   }
 }
@@ -344,50 +345,38 @@ $item-padding: 17px;
 }
 
 .header-menu {
-  $dropdown-background: var(--s-color-utility-surface, #fdf7fb);
-  $dropdown-shadow: var(--s-shadow-element-pressed, 0 6px 16px rgba(0, 0, 0, 0.08));
-  $dropdown-content-primary: var(--s-color-base-content-primary, #2a171f);
-  $dropdown-content-secondary: var(--s-color-base-content-secondary, #a19a9d);
-  $dropdown-content-tertiary: var(--s-color-base-content-tertiary, #d5cdd0);
+  $dropdown-background: var(--s-color-utility-surface);
   $dropdown-item-line-height: 42px;
-
-  transform: translateX(100%);
+  transform: translate(-100%);
   transition: transform 0.2s cubic-bezier(0.22, 0.77, 0.81, 0.61);
-  pointer-events: none;
 
   &.custom-z-index {
     z-index: 1999 !important;
   }
 
-  &.is-open {
-    transform: translateX(0);
-    pointer-events: auto;
+  &.slide-in {
+    transform: translate(0);
   }
 
-  &.is-closed {
-    transform: translateX(100%);
-    pointer-events: none;
+  &.is-open {
+    transform: translateX(calc(-100% + 170px));
+
+    @include desktop {
+      transform: translateX(calc(-100% + 143px));
+    }
   }
 
   &.el-dropdown-menu.el-popper {
     background-color: $dropdown-background;
-    box-shadow: $dropdown-shadow;
+    box-shadow: var(--s-shadow-element-pressed);
     position: fixed !important;
-    top: 0 !important;
-    max-width: $menu-setting-max-width;
-    width: min(#{$menu-setting-max-width}, calc(100vw - #{$inner-spacing-mini}));
-    max-width: calc(100vw - #{$inner-spacing-mini});
-    height: calc(100vh - #{$footer-height});
-    max-height: calc(100vh - #{$footer-height});
-    height: calc(100dvh - #{$footer-height});
-    max-height: calc(100dvh - #{$footer-height});
-    right: 0;
+    top: -4px !important;
+    right: -272px;
     left: auto !important;
-    border-radius: unset;
+    max-width: 284px !important;
+    height: calc(100% - 28px) !important;
     border: unset;
-    box-sizing: border-box;
-    overflow-y: auto;
-    overflow-x: hidden;
+    border-radius: unset;
 
     .popper__arrow {
       display: none;
@@ -399,7 +388,7 @@ $item-padding: 17px;
   }
 
   &__settings {
-    min-width: min(264px, 100%);
+    min-width: 264px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -413,7 +402,7 @@ $item-padding: 17px;
     p {
       font-weight: 500;
       font-size: 15px;
-      color: $dropdown-content-primary;
+      color: var(--s-color-base-content-primary);
     }
   }
 
@@ -422,10 +411,9 @@ $item-padding: 17px;
     font-weight: 500;
     font-size: var(--s-font-size-small);
     font-feature-settings: 'case' on;
-    color: $dropdown-content-primary;
+    color: var(--s-color-base-content-primary);
     display: flex;
     align-items: center;
-
     p {
       margin-left: $inner-spacing-small;
       margin-right: 4px;
@@ -435,7 +423,7 @@ $item-padding: 17px;
     }
 
     i {
-      color: $dropdown-content-tertiary;
+      color: var(--s-color-base-content-tertiary);
       font-size: $icon-size;
     }
 
@@ -445,25 +433,25 @@ $item-padding: 17px;
 
     &:focus {
       background-color: transparent;
-      color: $dropdown-content-primary;
+      color: var(--s-color-base-content-primary);
     }
 
     &:hover,
     &:focus:hover {
       background-color: transparent;
-      color: $dropdown-content-secondary;
+      color: var(--s-color-base-content-secondary);
     }
 
     @include tablet(true) {
       &:hover {
-        color: $dropdown-content-primary !important;
+        color: var(--s-color-base-content-primary) !important;
       }
     }
 
     .current-currency {
       min-width: 31px;
       text-align: center;
-      color: $dropdown-content-secondary;
+      color: var(--s-color-base-content-secondary);
     }
   }
 
@@ -473,7 +461,7 @@ $item-padding: 17px;
     align-items: center;
     width: 24px;
     height: 24px;
-    border: 1px solid $dropdown-content-secondary;
+    border: 1px solid var(--s-color-base-content-secondary);
     border-radius: 50%;
     transition:
       opacity 150ms,
@@ -491,7 +479,7 @@ $item-padding: 17px;
   }
 
   .selected {
-    background: var(--s-color-theme-accent, #f8087b);
+    background: var(--s-color-theme-accent);
     border: 1px solid transparent;
 
     i {
@@ -518,7 +506,7 @@ $item-padding: 17px;
   padding: 0 $item-padding;
   font-size: 13px;
   font-weight: 700;
-  color: var(--s-color-base-content-secondary, #a19a9d);
+  color: var(--s-color-base-content-secondary);
 }
 
 .el-dropdown-menu__item.header-menu__item.is-disabled {

@@ -10,7 +10,7 @@
               <pair-token-logo :first-token="baseAsset" :second-token="quoteAsset" />
               <span v-if="baseAsset && quoteAsset">{{ `${baseSymbol}-${quoteSymbol}` }}</span>
             </div>
-            <s-icon :name="icon" class="order-book-choose-btn-icon" />
+            <s-icon :name="icon" class="order-book-choose-btn-icon" size="24px" />
           </div>
           <div class="delimiter" />
           <div class="order-book-pair-data">
@@ -1061,6 +1061,8 @@ const isMaxAmountAvailable = computed(() => {
 
     &-icon {
       color: var(--s-color-base-content-secondary);
+      font-size: 24px;
+      line-height: 24px;
       filter: drop-shadow(1px 1px 5px rgba(0, 0, 0, 0.01)) drop-shadow(-1px -1px 5px rgba(0, 0, 0, 0.01));
 
       &:hover {

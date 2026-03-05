@@ -64,9 +64,13 @@ $icon-size: 42px;
   border-radius: 50%;
   background-color: var(--s-color-utility-body);
   transition: var(--s-transition-default);
-  > i {
+  :deep(i) {
     margin: auto;
     @include icon-styles(true);
+    font-size: 28px !important;
+    line-height: 28px !important;
+    width: 28px !important;
+    height: 28px !important;
   }
   & + span {
     margin-left: $inner-spacing-small;

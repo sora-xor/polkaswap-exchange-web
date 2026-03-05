@@ -2,6 +2,7 @@
   <s-card
     ref="container"
     size="big"
+    border-radius="small"
     primary
     :shadow="shadow"
     :class="['base-widget', { delimeter, full, flat, pip: pipOpened }]"

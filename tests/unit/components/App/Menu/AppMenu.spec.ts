@@ -22,6 +22,7 @@ const { routeMock, storeMock, resizeObserverObserveMock, resizeObserverDisconnec
       libraryTheme: 'light',
       settings: {
         orderBookEnabled: true,
+        debugEnabled: false,
         kensetsuEnabled: true,
         assetOwnerEnabled: true,
       },
@@ -106,6 +107,7 @@ describe('AppMenu', () => {
     storeMock.state.settings.faucetUrl = '';
     routeMock.name = PageNames.Swap;
     storeMock.getters.settings.orderBookEnabled = true;
+    storeMock.getters.settings.debugEnabled = false;
     storeMock.getters.settings.kensetsuEnabled = true;
     storeMock.getters.settings.assetOwnerEnabled = true;
     resizeObserverObserveMock.mockReset();
@@ -150,7 +152,7 @@ describe('AppMenu', () => {
     });
   }
 
-  it('renders production sidebar icons and preserves SCCP icon', () => {
+  it('renders production sidebar icons by default', () => {
     const wrapper = mountComponent();
 
     const renderedRouteItems = wrapper
@@ -168,7 +170,6 @@ describe('AppMenu', () => {
       { href: '#/pool', icon: 'basic-drop-24' },
       { href: '#/staking', icon: 'basic-layers-24' },
       { href: '#/bridge', icon: 'grid-block-distribute-vertically-24' },
-      { href: '#/bridge/sccp', icon: 'various-planet-24' },
       { href: '#/wallet', icon: 'finance-wallet-24' },
       { href: '#/kensetsu', icon: 'call-phone-16' },
       { href: '#/explore', icon: 'various-items-24' },
@@ -177,6 +178,21 @@ describe('AppMenu', () => {
     ];
 
     expect(renderedRouteItems).toEqual(expectedRouteItems);
+  });
+
+  it('shows SCCP entry only when debug flag is enabled', () => {
+    storeMock.getters.settings.debugEnabled = true;
+    const wrapper = mountComponent();
+
+    const renderedRouteItems = wrapper
+      .findAll('.sidebar-item-content-stub')
+      .map((item) => ({
+        href: item.attributes('data-href'),
+        icon: item.attributes('data-icon'),
+      }))
+      .filter((item) => item.href?.startsWith('#/'));
+
+    expect(renderedRouteItems).toContainEqual({ href: '#/bridge/sccp', icon: 'various-planet-24' });
   });
 
   it('uses production icons for about and info footer entries', () => {
@@ -190,16 +206,14 @@ describe('AppMenu', () => {
     expect(info?.attributes('data-icon')).toBe('info-16');
   });
 
-  it('applies explicit open and closed state classes', async () => {
+  it('toggles visible class based on menu visibility', async () => {
     const wrapper = mountComponent(true);
 
-    expect(wrapper.classes()).toContain('is-open');
-    expect(wrapper.classes()).not.toContain('is-closed');
+    expect(wrapper.classes()).toContain('visible');
 
     await wrapper.setProps({ visible: false });
 
-    expect(wrapper.classes()).toContain('is-closed');
-    expect(wrapper.classes()).not.toContain('is-open');
+    expect(wrapper.classes()).not.toContain('visible');
   });
 
   it('tracks sidebar width and clears observer-driven sidebar styles on unmount', () => {

@@ -49,6 +49,7 @@ import { Components, PageNames, TranslationConsts } from '@/consts';
 import { Theme } from '@/consts/theme';
 import { goTo, lazyComponent } from '@/router';
 import store from '@/store';
+import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { Nullable } from '@/types/common';
@@ -65,7 +66,7 @@ const { t } = useTranslation();
 const { isLoggedIn, connectSoraWallet } = useInternalConnect();
 const { connectEvmWallet, evmAddress, disconnectExternalNetwork } = useWeb3Connection();
 
-const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
 const moonpayEnabled = computed(() => Boolean(store.getters.settings.moonpayEnabled));
 const startBridgeButtonVisibility = computed(() => Boolean(store.state.moonpay.startBridgeButtonVisibility));
 const bridgeTransactionData = computed(() => store.state.moonpay.bridgeTransactionData as Nullable<EthHistory>);

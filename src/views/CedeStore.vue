@@ -15,6 +15,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { Theme } from '@/consts/theme';
 import store from '@/store';
 import { capitalize } from '@/utils';
+import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 
 import { Components, PageNames } from '../consts';
 import { goTo, lazyComponent } from '../router';
@@ -41,7 +42,7 @@ const { TranslationConsts } = useTranslation();
 const brandName = computed(() => capitalize(TranslationConsts.CedeStore));
 
 const accountAddress = computed(() => store.state?.wallet?.account?.address ?? '');
-const libraryTheme = computed(() => (store.getters?.libraryTheme as Theme | undefined) ?? Theme.Light);
+const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
 
 const rootSelector = '#cede-widget';
 

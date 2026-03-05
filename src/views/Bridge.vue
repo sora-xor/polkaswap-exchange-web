@@ -192,7 +192,7 @@
       :asset="asset"
       @select="selectAsset"
     ></bridge-select-asset>
-    <bridge-select-sub-account v-model:visible="showSelectTokenDialog"></bridge-select-sub-account>
+    <bridge-select-sub-account></bridge-select-sub-account>
     <app-browser-m-s-t-warning-bridge v-model:visible="showMSTWarning"></app-browser-m-s-t-warning-bridge>
     <select-node-dialog
       v-if="subConnection"

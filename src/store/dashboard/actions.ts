@@ -8,8 +8,16 @@ const INTERVAL = 2 * 60_000;
 const actions = defineActions({
   async requestOwnedAssetIds(context): Promise<void> {
     const { commit, rootGetters } = dashboardActionContext(context);
+    const account = rootGetters.wallet?.account;
+    const accountId = account?.account?.address;
+    const isLoggedIn = Boolean(account?.isLoggedIn);
+
+    if (!isLoggedIn || !accountId) {
+      commit.resetOwnedAssetIds();
+      return;
+    }
+
     try {
-      const accountId = rootGetters.wallet.account.account.address;
       const assetIds = await api.assets.getOwnedAssetIds(accountId);
       commit.setOwnedAssetIds(assetIds);
     } catch (error) {

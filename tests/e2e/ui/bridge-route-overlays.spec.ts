@@ -1,0 +1,296 @@
+import { expect, test, type Locator, type Page } from '@playwright/test';
+
+import { ensureAppLoaded, expectHash, ipfsEntryUrl, preparePage, trackConsole } from './support/ipfs';
+
+const bridgeRouteHash = '#/bridge';
+const swapRouteHash = '#/swap';
+
+const openBridge = async (page: Page): Promise<void> => {
+  await page.goto(`${ipfsEntryUrl}${bridgeRouteHash}`);
+  await ensureAppLoaded(page);
+  await expectHash(page, bridgeRouteHash);
+  await expect(page.locator('.bridge')).toBeVisible();
+};
+
+const goToSwap = async (page: Page): Promise<void> => {
+  await page.evaluate(() => {
+    window.location.hash = '#/swap';
+  });
+  await expectHash(page, swapRouteHash);
+  await ensureAppLoaded(page);
+};
+
+const goToBridge = async (page: Page): Promise<void> => {
+  await page.evaluate(() => {
+    window.location.hash = '#/bridge';
+  });
+  await expectHash(page, bridgeRouteHash);
+  await ensureAppLoaded(page);
+  await expect(page.locator('.bridge')).toBeVisible();
+};
+
+const expectSwapSettingsClickable = async (page: Page): Promise<void> => {
+  const swapSettingsTrigger = page.locator('.el-button--settings').first();
+  const swapSettingsDialog = page.locator('.market-algorithm').first();
+
+  await expect(swapSettingsTrigger).toBeVisible();
+  await swapSettingsTrigger.click({ trial: true, timeout: 500 });
+  await swapSettingsTrigger.click();
+  await expect(swapSettingsDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(swapSettingsDialog).toHaveCount(0);
+};
+
+const injectSubNodeDialogContext = async (page: Page): Promise<void> => {
+  await page.evaluate(() => {
+    const store = (window as Record<string, any>).__PS_APP_STORE__;
+    const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
+    const bridgeStore = pinia?._s?.get('bridge');
+
+    const subConnection = {
+      nodeIsConnected: true,
+      nodeAddressConnecting: '',
+      connectionAllowance: true,
+      node: { chain: 'Kusama', name: 'Parity', address: 'wss://kusama-rpc.polkadot.io', location: 'JP' },
+      nodeList: [{ chain: 'Kusama', name: 'Parity', address: 'wss://kusama-rpc.polkadot.io', location: 'JP' }],
+      defaultNodes: [{ chain: 'Kusama', name: 'Parity', address: 'wss://kusama-rpc.polkadot.io', location: 'JP' }],
+      customNodes: [],
+      connect: async () => undefined,
+      updateCustomNode: () => undefined,
+      removeCustomNode: () => undefined,
+    };
+
+    if (bridgeStore?.connector) {
+      bridgeStore.connector.standalone = {
+        subNetwork: 'Kusama',
+        subNetworkConnection: subConnection,
+        formatAddress: (value: string) => value,
+      };
+    }
+
+    store.commit.web3.setNetworkType('Sub');
+    store.commit.web3.setSelectedNetwork('Kusama');
+    store.commit.web3.setSelectSubNodeDialogVisibility(true);
+  });
+};
+
+test.beforeEach(async ({ page }) => {
+  await preparePage(page);
+});
+
+test('tears down bridge provider dialog on hash churn and preserves swap clickability', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openBridge(page);
+
+  await page.evaluate(() => {
+    const store = (window as Record<string, any>).__PS_APP_STORE__;
+    store.commit.web3.setSelectProviderDialogVisibility(true);
+  });
+
+  const providerDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /connect ethereum wallet/i })
+    .first();
+  await expect(providerDialog).toBeVisible();
+
+  await goToSwap(page);
+  await expect(providerDialog).toHaveCount(0);
+  await expectSwapSettingsClickable(page);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('tears down bridge network dialog on hash churn and preserves swap clickability', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openBridge(page);
+
+  await page.evaluate(() => {
+    const store = (window as Record<string, any>).__PS_APP_STORE__;
+    store.commit.web3.setSelectNetworkDialogVisibility(true);
+  });
+
+  const networkDialog = page.getByText(/bridge sora network with:/i).first();
+  await expect(networkDialog).toBeVisible();
+
+  await goToSwap(page);
+  await expect(networkDialog).toHaveCount(0);
+  await expectSwapSettingsClickable(page);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('tears down SORA account dialog on hash churn and preserves swap clickability', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openBridge(page);
+
+  await page.evaluate(() => {
+    const store = (window as Record<string, any>).__PS_APP_STORE__;
+    store.commit.web3.setSoraAccountDialogVisibility(true);
+  });
+
+  const soraAccountDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /learn more about wallet connection/i })
+    .first();
+  await expect(soraAccountDialog).toBeVisible();
+
+  await goToSwap(page);
+  await expect(soraAccountDialog).toHaveCount(0);
+  await expectSwapSettingsClickable(page);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('tears down bridge sub-account dialog on hash churn and preserves swap clickability', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openBridge(page);
+
+  await page.evaluate(() => {
+    const store = (window as Record<string, any>).__PS_APP_STORE__;
+    store.commit.web3.setSubAccountDialogVisibility(true);
+  });
+
+  const subAccountDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /learn more about wallet connection/i })
+    .first();
+  await expect(subAccountDialog).toBeVisible();
+
+  await goToSwap(page);
+  await expect(subAccountDialog).toHaveCount(0);
+  await expectSwapSettingsClickable(page);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('tears down bridge sub-node dialog on hash churn and preserves swap clickability', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openBridge(page);
+
+  await injectSubNodeDialogContext(page);
+
+  const subNodeDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /network node selection/i })
+    .first();
+  await expect(subNodeDialog).toBeVisible();
+
+  await goToSwap(page);
+  await expect(subNodeDialog).toHaveCount(0);
+  await expectSwapSettingsClickable(page);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps bridge asset selector visibility decoupled from sub-account dialog visibility', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openBridge(page);
+
+  const assetTrigger = page.locator('.bridge .token-select-button').first();
+  const assetDialog = page.locator('.asset-select').first();
+  const subAccountDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /learn more about wallet connection/i })
+    .first();
+
+  await expect(subAccountDialog).toHaveCount(0);
+  await expect(assetTrigger).toBeVisible();
+
+  await assetTrigger.click();
+  await expect(assetDialog).toBeVisible();
+  await expect(subAccountDialog).toHaveCount(0);
+
+  await page.keyboard.press('Escape');
+  await expect(assetDialog).toHaveCount(0);
+  await expect(subAccountDialog).toHaveCount(0);
+
+  await page.evaluate(() => {
+    const store = (window as Record<string, any>).__PS_APP_STORE__;
+    store.commit.web3.setSubAccountDialogVisibility(true);
+  });
+  await expect(subAccountDialog).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(subAccountDialog).toHaveCount(0);
+
+  await assetTrigger.click({ trial: true, timeout: 500 });
+  await assetTrigger.click();
+  await expect(assetDialog).toBeVisible();
+  await expect(subAccountDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('bridge dialogs reopen correctly after bridge-swap-bridge hash churn', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openBridge(page);
+
+  const scenarios: Array<{
+    open: () => Promise<void>;
+    dialog: Locator;
+  }> = [
+    {
+      open: async () => {
+        await page.evaluate(() => {
+          const store = (window as Record<string, any>).__PS_APP_STORE__;
+          store.commit.web3.setSelectNetworkDialogVisibility(true);
+        });
+      },
+      dialog: page.getByText(/bridge sora network with:/i),
+    },
+    {
+      open: async () => {
+        await page.evaluate(() => {
+          const store = (window as Record<string, any>).__PS_APP_STORE__;
+          store.commit.web3.setSoraAccountDialogVisibility(true);
+        });
+      },
+      dialog: page.getByRole('dialog').filter({ hasText: /learn more about wallet connection/i }),
+    },
+    {
+      open: async () => {
+        await page.evaluate(() => {
+          const store = (window as Record<string, any>).__PS_APP_STORE__;
+          store.commit.web3.setSelectProviderDialogVisibility(true);
+        });
+      },
+      dialog: page.getByRole('dialog').filter({ hasText: /connect ethereum wallet/i }),
+    },
+    {
+      open: async () => {
+        await page.evaluate(() => {
+          const store = (window as Record<string, any>).__PS_APP_STORE__;
+          store.commit.web3.setSubAccountDialogVisibility(true);
+        });
+      },
+      dialog: page.getByRole('dialog').filter({ hasText: /learn more about wallet connection/i }),
+    },
+    {
+      open: async () => {
+        await injectSubNodeDialogContext(page);
+      },
+      dialog: page.getByRole('dialog').filter({ hasText: /network node selection/i }),
+    },
+  ];
+
+  for (const scenario of scenarios) {
+    const dialog = scenario.dialog.first();
+
+    await scenario.open();
+    await expect(dialog).toBeVisible();
+
+    await goToSwap(page);
+    await expect(dialog).toHaveCount(0);
+    await expectSwapSettingsClickable(page);
+
+    await goToBridge(page);
+    await scenario.open();
+    await expect(dialog).toBeVisible();
+
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
+  }
+
+  expect(consoleErrors).toEqual([]);
+});

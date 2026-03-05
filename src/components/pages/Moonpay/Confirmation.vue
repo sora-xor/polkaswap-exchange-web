@@ -27,6 +27,7 @@ import { Components } from '@/consts';
 import type { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
 import store from '@/store';
+import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -47,7 +48,7 @@ const { t } = useTranslation();
 const { bridgeTransactionData, getAsset, startBridgeForMoonpayTransaction, setConfirmationVisibility } =
   useMoonpayBridge();
 
-const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
 
 const visibility = computed({
   get: () => Boolean(store.state.moonpay.confirmationVisibility),

@@ -1,11 +1,5 @@
 <template>
-  <div
-    :class="[
-      'app-menu',
-      { visible, 'is-open': visible, 'is-closed': !visible, collapsed, 'app-menu__loading': pageLoading },
-    ]"
-    @click="emit('click', $event)"
-  >
+  <div :class="['app-menu', { visible, collapsed, 'app-menu__loading': pageLoading }]" @click="emit('click', $event)">
     <s-button
       class="collapse-button"
       id="collapse-button"
@@ -13,7 +7,7 @@
       size="small"
       :icon="collapseIcon"
       :tooltip="collapseTooltip"
-      @click.stop="collapseMenu"
+      @click="collapseMenu"
     ></s-button>
     <s-scrollbar class="app-sidebar-scrollbar">
       <aside ref="menuElement" class="app-sidebar">
@@ -127,6 +121,7 @@ import { isVaultPage } from '@/modules/vault/router';
 import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
 import store from '@/store';
+import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 
 import AppInfoPopper from './AppInfoPopper.vue';
 import AppSidebarItemContent from './SidebarItemContent.vue';
@@ -147,10 +142,11 @@ const { t } = useTranslation();
 const pageLoading = computed(() => Boolean(store.state.router?.loading));
 const collapsed = computed(() => Boolean(store.state.settings?.menuCollapsed));
 const faucetUrl = computed(() => (store.state.settings?.faucetUrl as string) ?? '');
-const libraryTheme = computed(() => store.getters?.libraryTheme as Theme);
+const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
 const orderBookEnabled = computed(() => Boolean(store.getters?.settings?.orderBookEnabled));
 const kensetsuEnabled = computed(() => Boolean(store.getters?.settings?.kensetsuEnabled));
 const assetOwnerEnabled = computed(() => Boolean(store.getters?.settings?.assetOwnerEnabled));
+const debugEnabled = computed(() => Boolean(store.getters?.settings?.debugEnabled));
 
 const menuElement = ref<HTMLElement | null>(null);
 const resizeObserver = ref<ResizeObserver | null>(null);
@@ -191,6 +187,9 @@ const sidebarMenuItems = computed(() => {
   let menuItems: SidebarMenuItemLink[] = SidebarMenuGroups.slice();
   if (!orderBookEnabled.value) {
     menuItems = menuItems.filter(({ title }) => title !== PageNames.OrderBook);
+  }
+  if (!debugEnabled.value) {
+    menuItems = menuItems.filter(({ title }) => title !== PageNames.Sccp);
   }
   if (!kensetsuEnabled.value) {
     menuItems = menuItems.filter(({ title }) => title !== VaultPageNames.VaultsContainer);
@@ -298,6 +297,11 @@ onBeforeUnmount(() => {
   .el-menu-item {
     .icon-container {
       box-shadow: var(--s-shadow-element-pressed);
+
+      > i[class*='s-icon-'] {
+        font-size: 28px !important;
+        line-height: 28px !important;
+      }
     }
 
     &.menu-item--small {
@@ -369,6 +373,14 @@ onBeforeUnmount(() => {
   transition-duration: 0.2s;
   z-index: #{$app-sidebar-layer} + 1;
 
+  :deep(i[class*='s-icon-']) {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 24px !important;
+    line-height: 24px !important;
+    color: var(--s-color-base-content-tertiary) !important;
+  }
+
   &:hover,
   &:focus,
   &.focusing {
@@ -388,7 +400,7 @@ onBeforeUnmount(() => {
     bottom: 0;
     left: 0;
     z-index: $app-sidebar-layer;
-    visibility: visible;
+    visibility: hidden;
 
     .collapse-button {
       opacity: 0;
@@ -414,11 +426,8 @@ onBeforeUnmount(() => {
       position: fixed;
       right: 0;
       z-index: $app-above-loader-layer;
-      pointer-events: none;
-
-      &.is-open,
       &.visible {
-        pointer-events: auto;
+        visibility: visible;
         background-color: rgba(42, 23, 31, 0.1);
         backdrop-filter: blur(4px);
 
@@ -430,8 +439,7 @@ onBeforeUnmount(() => {
 
       .app-sidebar {
         width: 50%;
-        min-width: min(calc(#{$breakpoint_mobile} / 2), calc(100vw - #{$inner-spacing-medium * 2}));
-        max-width: calc(100vw - #{$inner-spacing-medium * 2});
+        min-width: 232px;
         background-color: var(--s-color-utility-body);
         padding: $inner-spacing-mini $inner-spacing-medium;
         filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));

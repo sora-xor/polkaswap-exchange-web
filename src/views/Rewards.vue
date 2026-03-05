@@ -133,6 +133,7 @@ import type { ClaimRewardsParams } from '@/store/rewards/types';
 import type { Nullable } from '@/types/common';
 import type { RewardsAmountHeaderItem, RewardInfoGroup, SelectedRewards } from '@/types/rewards';
 import { hasInsufficientXorForFee } from '@/utils';
+import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
@@ -211,7 +212,7 @@ const externalRewardsSelected = computed(() => store.getters.rewards.externalRew
 const internalRewardsAvailable = computed(() => store.getters.rewards.internalRewardsAvailable as boolean);
 const vestedRewardsAvailable = computed(() => store.getters.rewards.vestedRewardsAvailable as boolean);
 const rewardsByAssetsList = computed(() => store.getters.rewards.rewardsByAssetsList as RewardsAmountHeaderItem[]);
-const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
 
 const setSelectedRewardsAction = (payload: SelectedRewards) => store.dispatch.rewards.setSelectedRewards(payload);
 const getExternalRewardsAction = (address: string) => store.dispatch.rewards.getExternalRewards(address);

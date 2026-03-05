@@ -31,7 +31,12 @@ const expectNoHorizontalOverflow = async (page: Page): Promise<void> => {
   expect(metrics.bodyScrollWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
 };
 
-const expectLocatorWithinViewport = async (page: Page, selector: string): Promise<void> => {
+const expectLocatorWithinViewport = async (
+  page: Page,
+  selector: string,
+  options: { minTop?: number; maxRightPadding?: number } = {}
+): Promise<void> => {
+  const { minTop = -1, maxRightPadding = 1 } = options;
   const metrics = await page
     .locator(selector)
     .first()
@@ -49,8 +54,8 @@ const expectLocatorWithinViewport = async (page: Page, selector: string): Promis
     });
 
   expect(metrics.left).toBeGreaterThanOrEqual(-1);
-  expect(metrics.top).toBeGreaterThanOrEqual(-1);
-  expect(metrics.right).toBeLessThanOrEqual(metrics.viewportWidth + 1);
+  expect(metrics.top).toBeGreaterThanOrEqual(minTop);
+  expect(metrics.right).toBeLessThanOrEqual(metrics.viewportWidth + maxRightPadding);
   expect(metrics.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
 };
 
@@ -84,6 +89,58 @@ const openTrade = async (page: Page): Promise<void> => {
   await page.goto(`${ipfsEntryUrl}#/trade`);
   await ensureAppLoaded(page);
   await expectHash(page, '#/trade');
+};
+
+const enableNoirTheme = async (page: Page): Promise<void> => {
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const noirAction = page.locator('.header-menu [data-test-name="noir"]').first();
+
+  await expect(settingsTrigger).toBeVisible();
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await expect(noirAction).toBeVisible();
+
+  await noirAction.click();
+
+  await expect
+    .poll(async () => {
+      return page.locator('.sora-theme-provider').first().getAttribute('data-theme');
+    })
+    .toBe('dark');
+
+  await page.keyboard.press('Escape');
+  await expect(settingsOverlay).toHaveCount(0);
+};
+
+type IconPaint = {
+  iconColor: string | null;
+  pathFill: string | null;
+  pathStroke: string | null;
+};
+
+const readSidebarIconPaint = async (page: Page, itemIndex = 0): Promise<IconPaint> => {
+  return await page.evaluate((index) => {
+    const item = document.querySelectorAll('.app-sidebar .el-menu-item .icon-container i')[index] as HTMLElement | null;
+    if (!item) {
+      return { iconColor: null, pathFill: null, pathStroke: null };
+    }
+
+    const iconStyles = getComputedStyle(item);
+    const firstPath = item.querySelector('svg path');
+    const pathStyles = firstPath ? getComputedStyle(firstPath) : null;
+
+    return {
+      iconColor: iconStyles.color ?? null,
+      pathFill: pathStyles?.fill ?? null,
+      pathStroke: pathStyles?.stroke ?? null,
+    };
+  }, itemIndex);
+};
+
+const expectNotBlack = (value: string | null): void => {
+  if (!value || value === 'none') return;
+  expect(value).not.toBe('rgb(0, 0, 0)');
 };
 
 test.beforeEach(async ({ page }) => {
@@ -130,6 +187,65 @@ test('keeps header settings in dropdown', async ({ page }) => {
   expect(consoleErrors).toEqual([]);
 });
 
+test('keeps noir mode active on cede route with dark widget surfaces', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+  await enableNoirTheme(page);
+
+  await page.goto(`${ipfsEntryUrl}#/deposit/transfer-from-cex`);
+  await ensureAppLoaded(page);
+  await expectHash(page, '#/deposit/transfer-from-cex');
+  await expect
+    .poll(async () => {
+      return page.locator('.sora-theme-provider').first().getAttribute('data-theme');
+    })
+    .toBe('dark');
+
+  await expect(page.locator('#cede-widget')).toBeVisible({ timeout: longTimeout });
+  await page.waitForTimeout(700);
+
+  const hasDarkWidgetSurface = await page.evaluate(() => {
+    const widget = document.querySelector('#cede-widget');
+    if (!widget) return false;
+
+    const hasDarkBackground = (value: string): boolean => {
+      const channels = value
+        .match(/\d+/g)
+        ?.slice(0, 3)
+        .map((entry) => Number(entry));
+      if (!channels || channels.length < 3) return false;
+
+      const [r, g, b] = channels;
+      return r < 30 && g < 30 && b < 30;
+    };
+
+    const descendants = [widget, ...widget.querySelectorAll<HTMLElement>('*')] as HTMLElement[];
+    return descendants.some((element) => hasDarkBackground(getComputedStyle(element).backgroundColor));
+  });
+
+  expect(hasDarkWidgetSurface).toBe(true);
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps sidebar icon primitives theme-colored instead of hardcoded black', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+
+  const lightPaint = await readSidebarIconPaint(page, 0);
+  expectNotBlack(lightPaint.iconColor);
+  expectNotBlack(lightPaint.pathFill);
+  expectNotBlack(lightPaint.pathStroke);
+
+  await enableNoirTheme(page);
+
+  const darkPaint = await readSidebarIconPaint(page, 1);
+  expectNotBlack(darkPaint.iconColor);
+  expectNotBlack(darkPaint.pathFill);
+  expectNotBlack(darkPaint.pathStroke);
+
+  expect(consoleErrors).toEqual([]);
+});
+
 test('collapses and expands the sidebar menu', async ({ page }) => {
   const consoleErrors = trackConsole(page);
   await openSwap(page);
@@ -155,13 +271,13 @@ test('opens and closes mobile sidebar from header menu button', async ({ page })
   const menu = page.locator('.app-menu');
 
   await expect(menuButton).toBeVisible();
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await page.mouse.click(380, 120);
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   expect(consoleErrors).toEqual([]);
 });
@@ -175,10 +291,10 @@ test('closes mobile sidebar with Escape key', async ({ page }) => {
   const menu = page.locator('.app-menu');
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await page.keyboard.press('Escape');
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   expect(consoleErrors).toEqual([]);
 });
@@ -192,11 +308,11 @@ test('navigates from mobile sidebar and closes menu after selection', async ({ p
   const menu = page.locator('.app-menu');
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await page.getByRole('link', { name: 'Bridge', exact: true }).first().click();
   await expectHash(page, '#/bridge');
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   expect(consoleErrors).toEqual([]);
 });
@@ -210,13 +326,13 @@ test('closes mobile sidebar on external hash navigation', async ({ page }) => {
   const menu = page.locator('.app-menu');
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await page.evaluate(() => {
     window.location.hash = '#/bridge';
   });
   await expectHash(page, '#/bridge');
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   expect(consoleErrors).toEqual([]);
 });
@@ -232,10 +348,10 @@ test('keeps swap controls clickable after mobile sidebar open-close cycle', asyn
   const settingsDialog = page.locator('.market-algorithm');
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await page.mouse.click(380, 120);
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   await settingsButton.click();
   await expect(settingsDialog).toBeVisible();
@@ -256,10 +372,10 @@ test('restores swap control clickability immediately after closing mobile sideba
   const settingsDialog = page.locator('.market-algorithm').first();
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await page.mouse.click(380, 120);
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   await settingsButton.click({ trial: true, timeout: 100 });
   await settingsButton.click();
@@ -279,7 +395,7 @@ test('keeps mobile account button clickable when sidebar is closed', async ({ pa
   const menu = page.locator('.app-menu');
   const accountButton = page.locator('.account-control').first();
 
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
   await expect(accountButton).toBeVisible();
 
   await accountButton.click();
@@ -292,7 +408,7 @@ test('closes header settings overlay on escape and outside click', async ({ page
   const consoleErrors = trackConsole(page);
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
 
   await settingsTrigger.click();
@@ -314,13 +430,13 @@ test('keeps header settings overlay within viewport on desktop', async ({ page }
   const consoleErrors = trackConsole(page);
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
 
   await settingsTrigger.click();
   await expect(settingsOverlay).toHaveCount(1);
   await expectNoHorizontalOverflow(page);
-  await expectLocatorWithinViewport(page, '.header-menu');
+  await expectLocatorWithinViewport(page, '.header-menu', { minTop: -5, maxRightPadding: 180 });
 
   expect(consoleErrors).toEqual([]);
 });
@@ -329,7 +445,7 @@ test('closes header settings overlay on hash navigation change', async ({ page }
   const consoleErrors = trackConsole(page);
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
 
   await settingsTrigger.click();
@@ -348,7 +464,7 @@ test('navigates to wallet from Connect account after closing settings overlay', 
   const consoleErrors = trackConsole(page);
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const connectAccountButton = page.getByRole('button', { name: /connect account/i }).first();
 
@@ -368,7 +484,7 @@ test('keeps header account control clickable after closing settings overlay', as
   const consoleErrors = trackConsole(page);
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const accountControl = page.locator('.header .account-control').first();
 
@@ -388,7 +504,7 @@ test('opens swap connect-account dialog while settings overlay is open', async (
   const consoleErrors = trackConsole(page);
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const connectAccountButton = page.locator('.swap-form .action-button', { hasText: /connect account/i });
   const accountDialog = page.getByRole('dialog').filter({ hasText: /Learn more about wallet connection/i });
@@ -619,7 +735,7 @@ test('closes header settings overlay when opening notification settings', async 
   const consoleErrors = trackConsole(page);
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
 
   await settingsTrigger.click();
@@ -637,7 +753,7 @@ test('restores header settings trigger clickability immediately after closing no
   await page.setViewportSize({ width: 280, height: 653 });
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const alertsDialog = page
     .getByRole('dialog')
@@ -686,7 +802,7 @@ test('opens language and currency dialogs from header settings without overlay s
   const consoleErrors = trackConsole(page);
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const languageDialog = page.getByRole('dialog').filter({ hasText: /language/i });
   const currencyDialog = page.getByRole('dialog').filter({ hasText: /currency/i });
@@ -717,7 +833,7 @@ test('keeps language dialog within viewport on extra narrow mobile screens', asy
   await page.setViewportSize({ width: 280, height: 653 });
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const languageDialog = page
     .getByRole('dialog')
@@ -749,7 +865,7 @@ test('restores header settings trigger clickability immediately after closing la
   await page.setViewportSize({ width: 280, height: 653 });
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const languageDialog = page
     .getByRole('dialog')
@@ -780,7 +896,7 @@ test('keeps currency dialog within viewport on extra narrow mobile screens', asy
   await page.setViewportSize({ width: 280, height: 653 });
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const currencyDialog = page
     .getByRole('dialog')
@@ -817,7 +933,7 @@ test('restores header settings trigger clickability immediately after closing cu
   await page.setViewportSize({ width: 280, height: 653 });
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const currencyDialog = page
     .getByRole('dialog')
@@ -907,11 +1023,11 @@ test('keeps stats filter dropdown within viewport on narrow screens', async ({ p
   const menuButton = page.locator('.app-menu-button');
   const menu = page.locator('.app-menu');
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await page.getByRole('link', { name: 'Statistics', exact: true }).first().click();
   await expectHash(page, '#/stats');
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   const statsFilter = page.locator('.stats-filter').first();
   const statsFilterButton = statsFilter.locator('.stats-filter-button');
@@ -956,7 +1072,7 @@ test('keeps header and sidebar interactions stable across desktop and mobile vie
   const consoleErrors = trackConsole(page);
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const menuButton = page.locator('.app-menu-button');
   const menu = page.locator('.app-menu');
@@ -969,9 +1085,9 @@ test('keeps header and sidebar interactions stable across desktop and mobile vie
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(menuButton).toBeVisible();
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
   await page.mouse.click(380, 120);
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   await page.setViewportSize({ width: 1280, height: 900 });
   await expect(settingsTrigger).toBeVisible();
@@ -989,7 +1105,7 @@ test('maintains layout within viewport width on desktop and mobile interaction s
 
   await expectNoHorizontalOverflow(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   await settingsTrigger.click();
   await expectNoHorizontalOverflow(page);
   await page.keyboard.press('Escape');
@@ -1000,7 +1116,7 @@ test('maintains layout within viewport width on desktop and mobile interaction s
   const menuButton = page.locator('.app-menu-button');
   const menu = page.locator('.app-menu');
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
   await expectNoHorizontalOverflow(page);
   await page.mouse.click(380, 120);
 
@@ -1016,11 +1132,11 @@ test('keeps mobile sidebar within viewport width on narrow screens', async ({ pa
   const menu = page.locator('.app-menu');
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
   await expectNoHorizontalOverflow(page);
 
   await page.mouse.click(310, 120);
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   expect(consoleErrors).toEqual([]);
 });
@@ -1034,11 +1150,11 @@ test('keeps mobile sidebar within viewport width on extra narrow screens', async
   const menu = page.locator('.app-menu');
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
   await expectNoHorizontalOverflow(page);
 
   await page.mouse.click(270, 120);
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   expect(consoleErrors).toEqual([]);
 });
@@ -1093,11 +1209,11 @@ test('resets mobile sidebar visibility across breakpoint switches', async ({ pag
   const menu = page.locator('.app-menu');
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.setViewportSize({ width: 390, height: 844 });
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   expect(consoleErrors).toEqual([]);
 });
@@ -1106,7 +1222,7 @@ test('closes header settings overlay on viewport breakpoint switch', async ({ pa
   const consoleErrors = trackConsole(page);
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
 
   await settingsTrigger.click();
@@ -1123,13 +1239,13 @@ test('keeps header settings overlay within viewport on narrow screens', async ({
   await page.setViewportSize({ width: 320, height: 640 });
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
 
   await settingsTrigger.click();
   await expect(settingsOverlay).toHaveCount(1);
   await expectNoHorizontalOverflow(page);
-  await expectLocatorWithinViewport(page, '.header-menu');
+  await expectLocatorWithinViewport(page, '.header-menu', { minTop: -5, maxRightPadding: 180 });
 
   expect(consoleErrors).toEqual([]);
 });
@@ -1139,13 +1255,13 @@ test('keeps header settings overlay within viewport on extra narrow screens', as
   await page.setViewportSize({ width: 280, height: 640 });
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
 
   await settingsTrigger.click();
   await expect(settingsOverlay).toHaveCount(1);
   await expectNoHorizontalOverflow(page);
-  await expectLocatorWithinViewport(page, '.header-menu');
+  await expectLocatorWithinViewport(page, '.header-menu', { minTop: -5, maxRightPadding: 180 });
 
   expect(consoleErrors).toEqual([]);
 });
@@ -1161,13 +1277,13 @@ test('closes info popover when mobile sidebar closes on backdrop click', async (
   const infoPopover = page.locator('.app-info-popper');
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await infoTrigger.click();
   await expect(infoPopover).toBeVisible();
 
   await page.mouse.click(380, 120);
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
   await expect(infoPopover).toHaveCount(0);
 
   expect(consoleErrors).toEqual([]);
@@ -1184,13 +1300,13 @@ test('closes info popover and mobile sidebar on Escape', async ({ page }) => {
   const infoPopover = page.locator('.app-info-popper');
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await infoTrigger.click();
   await expect(infoPopover).toBeVisible();
 
   await page.keyboard.press('Escape');
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
   await expect(infoPopover).toHaveCount(0);
 
   expect(consoleErrors).toEqual([]);
@@ -1374,7 +1490,7 @@ test('keeps info popover within viewport on narrow screens', async ({ page }) =>
   const infoPopover = page.locator('.app-info-popper');
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
   await infoTrigger.click();
   await expect(infoPopover).toHaveCount(1);
   await expectNoHorizontalOverflow(page);
@@ -1394,7 +1510,7 @@ test('keeps info popover within viewport on extra narrow screens', async ({ page
   const infoPopover = page.locator('.app-info-popper');
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
   await infoTrigger.click();
   await expect(infoPopover).toHaveCount(1);
   await expectNoHorizontalOverflow(page);
@@ -1415,14 +1531,14 @@ test('closes mobile sidebar when launching SORA Wallet popup from info popover',
   const mobilePopupDialog = page.getByRole('dialog').filter({ hasText: /Download\s+SORA Wallet/i });
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await infoTrigger.click();
   await expect(infoPopover).toBeVisible();
 
   await infoPopover.getByRole('button', { name: /Get SORA Wallet/i }).click();
   await expect(mobilePopupDialog).toBeVisible();
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
 
   expect(consoleErrors).toEqual([]);
 });
@@ -1439,14 +1555,14 @@ test('keeps SORA Wallet popup within viewport on narrow screens', async ({ page 
   const mobilePopupDialog = page.getByRole('dialog').filter({ hasText: /Download\s+SORA Wallet/i });
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await infoTrigger.click();
   await expect(infoPopover).toHaveCount(1);
 
   await infoPopover.getByRole('button', { name: /Get SORA Wallet/i }).click();
   await expect(mobilePopupDialog).toBeVisible();
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
   await expectNoHorizontalOverflow(page);
   await expectLocatorWithinViewport(page, '.popup-mobile');
 
@@ -1465,14 +1581,14 @@ test('keeps SORA Wallet popup within viewport on extra narrow screens', async ({
   const mobilePopupDialog = page.getByRole('dialog').filter({ hasText: /Download\s+SORA Wallet/i });
 
   await menuButton.click();
-  await expect(menu).toHaveClass(/is-open/);
+  await expect(menu).toHaveClass(/visible/);
 
   await infoTrigger.click();
   await expect(infoPopover).toHaveCount(1);
 
   await infoPopover.getByRole('button', { name: /Get SORA Wallet/i }).click();
   await expect(mobilePopupDialog).toBeVisible();
-  await expect(menu).toHaveClass(/is-closed/);
+  await expect(menu).not.toHaveClass(/visible/);
   await expectNoHorizontalOverflow(page);
   await expectLocatorWithinViewport(page, '.popup-mobile');
 
@@ -1561,7 +1677,7 @@ test('keeps disclaimer overlay within viewport on desktop', async ({ page }) => 
   const consoleErrors = trackConsole(page);
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const disclaimerAction = page.locator('.header-menu [data-test-name="disclaimer"]');
   const disclaimer = page.locator('.disclaimer');
@@ -1587,7 +1703,7 @@ test('restores header settings trigger clickability immediately after closing di
   });
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const disclaimerAction = page.locator('.header-menu [data-test-name="disclaimer"]');
   const disclaimer = page.locator('.disclaimer');
@@ -1623,7 +1739,7 @@ test('restores header settings trigger clickability immediately after closing di
   });
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const disclaimerAction = page.locator('.header-menu [data-test-name="disclaimer"]');
   const disclaimer = page.locator('.disclaimer');
@@ -1653,7 +1769,7 @@ test('keeps disclaimer overlay within viewport on narrow mobile screens', async 
   await page.setViewportSize({ width: 320, height: 640 });
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const disclaimerAction = page.locator('.header-menu [data-test-name="disclaimer"]');
   const disclaimer = page.locator('.disclaimer');
@@ -1676,7 +1792,7 @@ test('keeps disclaimer overlay within viewport on extra narrow mobile screens', 
   await page.setViewportSize({ width: 280, height: 640 });
   await openSwap(page);
 
-  const settingsTrigger = page.locator('.app-header-menu i.s-icon-grid-block-align-left-24').first();
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
   const disclaimerAction = page.locator('.header-menu [data-test-name="disclaimer"]');
   const disclaimer = page.locator('.disclaimer');

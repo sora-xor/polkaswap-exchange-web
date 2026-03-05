@@ -4,18 +4,27 @@
   - Uses local IPFS preview and network/WebSocket stubs from `tests/e2e/ui/support/ipfs.ts`.
   - Designed for stable, deterministic CI checks.
   - Combined matrix runner: `yarn test:e2e:all` (`default` + `root-prefix` + `live`).
+  - Route-rendering focused runner: `yarn test:e2e:render`.
+  - Live route-rendering focused runner: `yarn test:e2e:render:live`.
   - Playwright uses `yarn build --logLevel error` to keep build output compact during test runs.
   - Request-level preview logs are disabled by default; set `PS_IPFS_TEST_LOG_REQUESTS=1` to enable verbose server request logging while debugging.
 
 - Live runtime smoke: `yarn test:e2e:live`
   - Runs `tests/e2e/ui/live-runtime.spec.ts` with `PS_E2E_LIVE_NETWORK=1`.
-  - Does **not** install network stubs; validates core shell interactions against real runtime behavior.
-  - Uses strict browser console/page-error assertions; only external TLS resource failures (`net::ERR_CERT_COMMON_NAME_INVALID`) are ignored to avoid non-app infrastructure noise.
+  - Does **not** install network stubs; validates core shell interactions, swap wallet connect-overlay teardown, authenticated wallet account-settings/account-action overlays with hash-churn teardown, footer node/indexer dialog parity (`Escape`/outside/hash/breakpoint/reopen) with post-close swap clickability, bridge provider/network/SORA-account/sub-account/sub-node hash-churn teardown plus bridge asset/sub-account decoupling with reopen checks and swap clickability against real runtime behavior, and live route-matrix rendering checks (public routes, protected-route redirects, and protected-route render paths with seeded auth state).
+  - Uses strict browser console/page-error assertions; only known external infrastructure errors are ignored (`net::ERR_CERT_COMMON_NAME_INVALID`, transient websocket handshake failures such as `ERR_CONNECTION_RESET` + follow-up error events, CoinGecko CORS + related exchange-rate fetch failures) to avoid non-app noise.
   - This spec is skipped unless `PS_E2E_LIVE_NETWORK` is enabled.
 
 - Root-prefix smoke: `yarn test:e2e:root`
-  - Runs key app/navigation suites with `PS_IPFS_TEST_PREFIX=''`.
+  - Runs app/navigation/stability plus bridge-moonpay, wallet/bridge/footer overlay regression suites, and route-rendering matrix checks with `PS_IPFS_TEST_PREFIX=''`.
   - Validates behavior when app is served at root (`/`) instead of `/ipfs/<cid>/`.
+
+- Route rendering matrix: `tests/e2e/ui/route-rendering.spec.ts`
+  - Uses centralized route fixtures from `tests/e2e/ui/support/route-matrix.ts`.
+  - Covers all user-facing routes plus protected-route redirect and authenticated render paths.
+  - Enforces shell-class correctness, corruption-text absence, and horizontal-overflow bounds.
+  - Adds deterministic screenshot snapshots for route states on desktop + mobile breakpoints (with masked volatile widgets), enabling render-regression diffs during CI runs.
+  - Update snapshots intentionally with: `yarn test:e2e tests/e2e/ui/route-rendering.spec.ts --update-snapshots`.
 
 - Interaction and layout regressions covered in `tests/e2e/ui/navigation.spec.ts`, `tests/e2e/ui/bridge-moonpay.spec.ts`, and `tests/e2e/ui/stability.spec.ts`:
   - Mobile sidebar closes correctly on outside click, `Escape`, route hash changes, and breakpoint switches, and no longer blocks immediate clicks on swap controls after close.
@@ -28,11 +37,15 @@
   - Bridge network selector, bridge asset selector, and bridge account-connect dialog no longer block immediate re-clicks on their originating triggers after close (`bridge-moonpay.spec.ts`).
   - Bridge network selector, bridge asset selector, and bridge account-connect dialogs stay within viewport bounds on extra-narrow mobile screens (`bridge-moonpay.spec.ts`).
   - Bridge network-selector overlays are torn down on hash navigation and do not leak hitboxes that block immediate swap interactions after route change (`bridge-moonpay.spec.ts`).
+  - Bridge provider, network, SORA-account, sub-account, and sub-node dialogs are torn down on hash navigation, do not block immediate swap control interactions after route churn, and can be reopened after bridge-swap-bridge hash cycles (`bridge-route-overlays.spec.ts`).
+  - Bridge asset selector visibility is decoupled from bridge sub-account dialog visibility, preventing accidental cross-dialog reopen/leak regressions when asset-selection flows are exercised (`bridge-route-overlays.spec.ts`).
   - Route churn between swap and bridge tears down route-specific overlays (swap settings + bridge network) and preserves immediate post-navigation control clickability (`stability.spec.ts`).
   - Route churn between swap and wallet tears down route-specific overlays (swap token-select + wallet header settings) and preserves immediate post-navigation control clickability (`stability.spec.ts`).
   - Route churn between deposit/rewards and swap tears down route-scoped connect dialogs and preserves immediate post-navigation swap control clickability (`stability.spec.ts`).
   - Route churn between pool/staking and swap tears down route-scoped connect dialogs and preserves immediate post-navigation swap control clickability (`stability.spec.ts`).
   - Route changes force-close route-scoped web3 dialogs (SORA account/provider/network/sub-node/sub-account) to prevent stale modal hitboxes after navigation (`App.vue` + `resolveDialogVisibilityOnRouteChange.ts`).
+  - Authenticated wallet overlays cover account settings, account rename/export/delete dialogs, MST onboarding, nested address-book dialogs, and MST overlay teardown across hash churn with immediate post-navigation swap clickability (`wallet-overlays.spec.ts`).
+  - Footer node and statistics dialogs close on `Escape`, outside click, hash navigation, and viewport breakpoint changes, can be reopened immediately after each close mode, and preserve immediate swap settings clickability after each close path (`footer-dialogs.spec.ts`).
   - Swap `Connect account` dialog stays within viewport bounds on extra-narrow mobile screens.
   - Swap `Select token` dialog stays within viewport bounds on extra-narrow mobile screens, can be reopened after close, and no longer leaves a transient post-close hitbox that blocks immediate button clicks.
   - Swap market settings dialog stays within viewport bounds on extra-narrow mobile screens and no longer blocks immediate re-clicks on the settings trigger after close.

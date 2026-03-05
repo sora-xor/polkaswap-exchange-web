@@ -9,6 +9,7 @@ import { setLegacyStoreOverride } from '@/utils/legacy-store';
 const connectWalletMock = vi.fn();
 const isLoggedInRef = ref(false);
 const assetsStoreRef = ref<OwnedAsset[]>([]);
+const libraryThemeRef = ref<unknown>('light');
 var routerPushMock: ReturnType<typeof vi.fn> | undefined;
 
 vi.mock('@/composables/useInternalConnect', () => ({
@@ -78,7 +79,7 @@ const storeModule = vi.hoisted(() => {
       state: {},
       getters: {
         get libraryTheme() {
-          return 'light';
+          return libraryThemeRef.value;
         },
         get dashboard() {
           return { ownedAssets: assetsStoreRef.value };
@@ -102,8 +103,8 @@ const globalStubs = {
   SCol: { template: '<div><slot /></div>' },
   's-card': cardStub,
   SCard: cardStub,
-  's-image': { template: '<img />' },
-  SImage: { template: '<img />' },
+  's-image': { template: '<img v-bind="$attrs" />' },
+  SImage: { template: '<img v-bind="$attrs" />' },
   's-icon': { template: '<i />' },
   SIcon: { template: '<i />' },
   's-button': buttonStub,
@@ -116,6 +117,7 @@ describe('AssetOwner.vue', () => {
   beforeEach(() => {
     isLoggedInRef.value = false;
     assetsStoreRef.value = [];
+    libraryThemeRef.value = 'light';
     connectWalletMock.mockClear();
     routerPushMock?.mockClear();
     dialogVisibleRef.value = false;
@@ -171,5 +173,17 @@ describe('AssetOwner.vue', () => {
       name: 'AssetOwnerDetails',
       params: { asset: '0x01' },
     });
+  });
+
+  it('falls back to light asset-owner placeholders when theme is unavailable', () => {
+    libraryThemeRef.value = undefined;
+
+    const wrapper = mount(AssetOwner, {
+      global: { stubs: globalStubs },
+    });
+
+    const images = wrapper.findAll('img');
+    expect(images.some((node) => node.attributes('src') === '/asset-owner/light-hero.png')).toBe(true);
+    expect(images.some((node) => node.attributes('src') === '/asset-owner/light.png')).toBe(true);
   });
 });

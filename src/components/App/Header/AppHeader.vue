@@ -48,6 +48,7 @@ import { BreakpointClass } from '@/consts/layout';
 import { Theme } from '@/consts/theme';
 import { goTo, lazyComponent } from '@/router';
 import store from '@/store';
+import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 
 import AppAccountButton from './AppAccountButton.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
@@ -81,7 +82,7 @@ const xor = XOR;
 const eth = ETH;
 
 const screenBreakpointClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
-const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
 
 const isMobile = computed(() => screenBreakpointClass.value === BreakpointClass.Mobile);
 const isAnyMobile = computed(
@@ -114,6 +115,96 @@ function toggleMenu(): void {
   }
 }
 
+.app-controls .app-controls-fiat-btn:not(.app-controls-fiat-btn--active),
+.app-controls .settings-control {
+  background-color: var(--s-color-utility-body) !important;
+  border-color: transparent !important;
+  color: var(--s-color-base-content-tertiary) !important;
+}
+
+.app-controls .account-control {
+  background-color: var(--s-color-utility-surface) !important;
+  border-color: var(--s-color-base-border-primary) !important;
+  color: var(--s-color-base-content-tertiary) !important;
+}
+
+.app-controls .app-controls-fiat-btn,
+.app-controls .account-control {
+  box-shadow:
+    -5px -5px 10px #fff,
+    1px 1px 10px rgba(0, 0, 0, 0.1),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.8) !important;
+}
+
+.app-controls .settings-control {
+  box-shadow:
+    1px 1px 5px #fff,
+    -5px -5px 5px rgba(255, 255, 255, 0.5) inset,
+    1px 1px 10px rgba(0, 0, 0, 0.1) inset !important;
+}
+
+.app-controls .account-control i,
+.app-controls .settings-control i,
+.app-controls .settings-control .header-menu__button i {
+  color: var(--s-color-base-content-tertiary) !important;
+}
+
+.app-controls .settings-control i,
+.app-controls .settings-control .header-menu__button i,
+.app-controls .account-control i[class*='s-icon-'] {
+  font-size: 28px !important;
+  line-height: 28px !important;
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.app-menu-button.el-button.neumorphic.s-action.s-primary {
+  background-color: var(--s-color-theme-accent) !important;
+  border-color: var(--s-color-base-border-secondary) !important;
+  color: #fff !important;
+  box-shadow:
+    1px 1px 5px #fff,
+    -1px -1px 5px #fff !important;
+}
+
+.app-menu-button.el-button.neumorphic.s-action.s-primary i {
+  color: #fff !important;
+}
+
+[design-system-theme='dark'] .app-controls .app-controls-fiat-btn:not(.app-controls-fiat-btn--active),
+[design-system-theme='dark'] .app-controls .account-control,
+[design-system-theme='dark'] .app-controls .settings-control {
+  background-color: var(--s-color-utility-body) !important;
+  border-color: transparent !important;
+  color: var(--s-color-base-content-tertiary) !important;
+}
+
+[design-system-theme='dark'] .app-controls .app-controls-fiat-btn,
+[design-system-theme='dark'] .app-controls .account-control {
+  box-shadow:
+    -5px -5px 10px rgba(155, 111, 165, 0.25),
+    2px 2px 15px #492067,
+    inset 1px 1px 2px rgba(155, 111, 165, 0.25) !important;
+}
+
+[design-system-theme='dark'] .app-controls .settings-control {
+  box-shadow:
+    1px 1px 2px rgba(255, 255, 255, 0.1),
+    -5px -5px 5px rgba(255, 255, 255, 0.05) inset,
+    1px 1px 10px rgba(41, 0, 71, 0.33) inset !important;
+}
+
+[design-system-theme='dark'] .app-menu-button.el-button.neumorphic.s-action.s-primary {
+  color: #592d71 !important;
+  box-shadow:
+    1px 1px 5px #391057,
+    -1px -1px 5px #9b6fa5 !important;
+}
+
+[design-system-theme='dark'] .app-menu-button.el-button.neumorphic.s-action.s-primary i {
+  color: #592d71 !important;
+}
+
 .settings-control:hover > span > .header-menu__button i {
   color: var(--s-color-base-content-secondary);
 }
@@ -126,6 +217,7 @@ function toggleMenu(): void {
   padding: $inner-spacing-mini;
   min-height: $header-height;
   position: relative;
+
   &:after {
     content: '';
     position: absolute;
@@ -156,6 +248,7 @@ function toggleMenu(): void {
 
   .node-control {
     @include element-size('token-logo', 32px);
+
     &__logo {
       display: block;
       margin: auto;
@@ -164,16 +257,34 @@ function toggleMenu(): void {
 
   &-fiat-btn.s-action .payment-icon {
     margin: auto;
+    margin-top: 2px;
   }
-  &-fiat-btn:hover {
-    background-color: var(--s-color-base-surface-popover);
+
+  .el-button {
+    + .el-button {
+      margin-left: 0;
+    }
+  }
+
+  @include desktop {
+    margin-left: auto;
   }
 }
 
 .app-controls--middle {
-  flex: 1;
-  justify-content: center;
-  align-items: center;
+  margin-left: auto;
+
+  @include desktop {
+    position: absolute;
+    top: 50%;
+    left: 42.5%;
+    transform: translate(-50%, -50%);
+    margin-right: 0;
+  }
+
+  @media (minmax(1220px, false)) {
+    left: 50%;
+  }
 }
 
 .payment-icon {
@@ -181,18 +292,15 @@ function toggleMenu(): void {
 }
 
 .app-menu-button {
-  margin-right: $inner-spacing-mini;
-  position: relative;
-  z-index: 1;
   flex-shrink: 0;
+
+  @include large-mobile {
+    display: none;
+  }
 }
 
 .app-logo--header {
-  flex-shrink: 0;
-}
-
-@include desktop {
-  .app-menu-button {
+  @include large-mobile(true) {
     display: none;
   }
 }

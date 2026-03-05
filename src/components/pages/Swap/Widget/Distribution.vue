@@ -1,44 +1,6 @@
 <template>
   <base-widget v-bind="$attrs" :title="t('swap.route')">
-    <s-skeleton :loading="!swapPaths.length">
-      <template #template>
-        <div class="distribution">
-          <div class="distribution-step">
-            <div class="distribution-asset">
-              <template v-if="tokenFrom">
-                <token-logo :token="tokenFrom" size="small" class="distribution-asset-logo"></token-logo>
-                <span class="distribution-asset-amount">{{ fromValue }} {{ tokenFrom.symbol }}</span>
-              </template>
-            </div>
-            <div class="distribution-path">
-              <span class="distribution-path-line"></span>
-              <div class="distribution-path-sources">
-                <div class="distribution-path-source">
-                  <div class="flex-cell">
-                    <s-skeleton-item element="rect" class="distribution-path-source-name"></s-skeleton-item>
-                    <s-skeleton-item element="rect" class="distribution-path-source-change"></s-skeleton-item>
-                  </div>
-                  <div class="flex-cell">
-                    <s-skeleton-item element="circle"></s-skeleton-item>
-                    <s-skeleton-item element="rect"></s-skeleton-item>
-                    <s-skeleton-item element="circle"></s-skeleton-item>
-                    <s-skeleton-item element="rect"></s-skeleton-item>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="distribution-step">
-            <div class="distribution-asset">
-              <template v-if="tokenTo">
-                <token-logo :token="tokenTo" size="small" class="distribution-asset-logo"></token-logo>
-                <span class="distribution-asset-amount">{{ toValue }} {{ tokenTo.symbol }}</span>
-              </template>
-            </div>
-          </div>
-        </div>
-      </template>
-
+    <template v-if="swapPaths.length">
       <ul class="distribution">
         <li v-for="{ input, output, amount, sources } in swapPaths" :key="input.address" class="distribution-step">
           <div class="distribution-asset">
@@ -69,7 +31,42 @@
           </div>
         </li>
       </ul>
-    </s-skeleton>
+    </template>
+    <div v-else class="distribution">
+      <div class="distribution-step">
+        <div class="distribution-asset">
+          <template v-if="tokenFrom">
+            <token-logo :token="tokenFrom" size="small" class="distribution-asset-logo"></token-logo>
+            <span class="distribution-asset-amount">{{ fromValue }} {{ tokenFrom.symbol }}</span>
+          </template>
+        </div>
+        <div class="distribution-path">
+          <span class="distribution-path-line"></span>
+          <div class="distribution-path-sources">
+            <div class="distribution-path-source">
+              <div class="flex-cell">
+                <span class="distribution-skeleton distribution-skeleton--rect distribution-path-source-name"></span>
+                <span class="distribution-skeleton distribution-skeleton--rect distribution-path-source-change"></span>
+              </div>
+              <div class="flex-cell">
+                <span class="distribution-skeleton distribution-skeleton--circle"></span>
+                <span class="distribution-skeleton distribution-skeleton--rect"></span>
+                <span class="distribution-skeleton distribution-skeleton--circle"></span>
+                <span class="distribution-skeleton distribution-skeleton--rect"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="distribution-step">
+        <div class="distribution-asset">
+          <template v-if="tokenTo">
+            <token-logo :token="tokenTo" size="small" class="distribution-asset-logo"></token-logo>
+            <span class="distribution-asset-amount">{{ toValue }} {{ tokenTo.symbol }}</span>
+          </template>
+        </div>
+      </div>
+    </div>
   </base-widget>
 </template>
 
@@ -79,7 +76,6 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { components } from '@wallet';
 import { computed } from 'vue';
 
-import { SSkeleton, SSkeletonItem } from '@soramitsu-ui/ui/components/Skeleton';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useTranslation } from '@/composables/useTranslation';
@@ -171,29 +167,6 @@ const swapPaths = computed(() => {
 });
 </script>
 
-<style lang="scss">
-.s-skeleton .distribution {
-  .el-skeleton__item {
-    display: inline-flex;
-    flex-shrink: 0;
-    width: initial;
-
-    &:not(:last-child) {
-      margin-bottom: 0;
-    }
-
-    &.el-skeleton__circle {
-      width: 16px;
-      height: 16px;
-    }
-    &.el-skeleton__rect {
-      min-width: 48px;
-      min-height: 16px;
-    }
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 $path-color: var(--s-color-base-content-tertiary);
 
@@ -207,6 +180,29 @@ $path-color: var(--s-color-base-content-tertiary);
 .distribution {
   list-style-type: none;
   padding-left: 0;
+
+  &-skeleton {
+    display: inline-flex;
+    flex-shrink: 0;
+    border-radius: var(--s-border-radius-mini);
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 25%, rgba(0, 0, 0, 0.1) 37%, rgba(0, 0, 0, 0.06) 63%);
+    background-size: 400% 100%;
+    min-width: 48px;
+    min-height: 16px;
+    animation: ps-skeleton-loading 1.4s ease infinite;
+
+    &--circle {
+      width: 16px;
+      min-width: 16px;
+      height: 16px;
+      min-height: 16px;
+      border-radius: 50%;
+    }
+
+    &--rect {
+      width: 48px;
+    }
+  }
 
   &-asset {
     display: inline-flex;

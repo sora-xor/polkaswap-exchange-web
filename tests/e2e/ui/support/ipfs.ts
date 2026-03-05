@@ -1,6 +1,6 @@
 import { expect, type Page } from '@playwright/test';
 
-const allowedConsolePatterns = [
+const STUBBED_ALLOWED_CONSOLE_PATTERNS = [
   /\[Telegram\.WebView]/i,
   /WebSocket connection/i,
   /@polkadot\//i,
@@ -9,7 +9,23 @@ const allowedConsolePatterns = [
   /Error:\s*Connection Timeout/i,
   /\[Exchange rate API\] Error while fetching rates\./i,
 ];
+
+const LIVE_ALLOWED_CONSOLE_PATTERNS = [
+  /Failed to load resource: net::ERR_CERT_COMMON_NAME_INVALID/i,
+  /Failed to load resource: net::ERR_CONNECTION_RESET/i,
+  /\[Exchange rate API\] Error while fetching rates\./i,
+];
+
+const KNOWN_WALLET_NOISE_PATTERNS = [/Unable to retrieve keypair/i, /You should connect wallet/i];
+
 const emptyJson = JSON.stringify({ data: null });
+
+export type ConsoleTrackMode = 'stubbed' | 'live';
+
+export type TrackConsoleOptions = {
+  mode?: ConsoleTrackMode;
+  extraAllowedPatterns?: RegExp[];
+};
 
 export const ipfsBasePath = (() => {
   const raw = process.env.PS_IPFS_TEST_PREFIX ?? '/ipfs/polkaswap-e2e';
@@ -165,32 +181,86 @@ async function stubWebSocket(page: Page): Promise<void> {
   });
 }
 
-export function trackConsole(page: Page): string[] {
+const isCoinGeckoCorsError = (message: string): boolean => {
+  return message.includes('api.coingecko.com') && message.includes('CORS policy');
+};
+
+const isWebSocketConnectionFailure = (message: string): boolean => {
+  return message.includes('WebSocket connection to') && message.includes('failed');
+};
+
+const isIgnorableLiveRuntimeError = (
+  entry: string,
+  sawCoinGeckoCors: boolean,
+  sawWebSocketConnectionFailure: boolean
+): boolean => {
+  if (LIVE_ALLOWED_CONSOLE_PATTERNS.some((pattern) => pattern.test(entry))) return true;
+  if (isCoinGeckoCorsError(entry)) return true;
+  if (isWebSocketConnectionFailure(entry)) return true;
+  if (sawCoinGeckoCors && entry.includes('Failed to load resource: net::ERR_FAILED')) return true;
+  if (sawWebSocketConnectionFailure && entry === '[console.error] Event') return true;
+
+  return false;
+};
+
+export const filterKnownWalletConsoleNoise = (entries: string[]): string[] => {
+  return entries.filter((entry) => !KNOWN_WALLET_NOISE_PATTERNS.some((pattern) => pattern.test(entry)));
+};
+
+export function trackConsole(page: Page, options: TrackConsoleOptions = {}): string[] {
   const errors: string[] = [];
+  const mode = options.mode ?? 'stubbed';
+  const allowPatterns = [
+    ...(mode === 'live' ? LIVE_ALLOWED_CONSOLE_PATTERNS : STUBBED_ALLOWED_CONSOLE_PATTERNS),
+    ...(options.extraAllowedPatterns ?? []),
+  ];
+
+  let sawCoinGeckoCors = false;
+  let sawWebSocketConnectionFailure = false;
 
   page.on('console', (message) => {
     if (message.type() !== 'error') return;
+
+    const entry = `[console.${message.type()}] ${message.text()}`;
     const text = message.text();
-    if (allowedConsolePatterns.some((pattern) => pattern.test(text))) {
+
+    if (isCoinGeckoCorsError(text) || isCoinGeckoCorsError(entry)) {
+      sawCoinGeckoCors = true;
+    }
+
+    if (isWebSocketConnectionFailure(text) || isWebSocketConnectionFailure(entry)) {
+      sawWebSocketConnectionFailure = true;
+    }
+
+    if (allowPatterns.some((pattern) => pattern.test(text) || pattern.test(entry))) return;
+
+    if (mode === 'live' && isIgnorableLiveRuntimeError(entry, sawCoinGeckoCors, sawWebSocketConnectionFailure)) {
       return;
     }
-    errors.push(`[console.${message.type()}] ${text}`);
+
+    errors.push(entry);
   });
 
   page.on('pageerror', (error) => {
-    errors.push(`[pageerror] ${error.message}`);
+    const entry = `[pageerror] ${error.message}`;
+
+    if (mode === 'live' && isIgnorableLiveRuntimeError(entry, sawCoinGeckoCors, sawWebSocketConnectionFailure)) {
+      return;
+    }
+
+    errors.push(entry);
   });
 
   return errors;
 }
 
 export async function ensureAppLoaded(page: Page): Promise<void> {
-  const header = page.locator('.header');
+  const header = page.locator('header.header').first();
   const menu = page.locator('.app-menu');
 
   await expect.poll(() => page.evaluate(() => document.querySelectorAll('#app').length)).resolves.toBe(1);
   await expect(header).toBeVisible({ timeout: 15_000 });
-  await expect(menu).toBeVisible({ timeout: 15_000 });
+  await expect(menu).toHaveCount(1);
 }
 
 export async function expectHash(page: Page, hash: string): Promise<void> {

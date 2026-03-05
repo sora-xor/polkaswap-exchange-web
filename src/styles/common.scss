@@ -176,3 +176,54 @@ div.el-tabs__item {
     background-position: 0 50%;
   }
 }
+
+/* Legacy icon-font fallback for unresolved token logos in widget placeholders. */
+.asset-logo.s-icon-notifications-info-24::before {
+  content: '?';
+  color: var(--s-color-base-content-secondary);
+  font-size: 0.85em;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* Preserve legacy CTA typography/metrics used by production connect buttons. */
+.action-button.s-typography-button--large {
+  min-height: 42px !important;
+  height: 42px !important;
+  padding: 5px 13px !important;
+}
+
+.action-button.s-typography-button--large > span,
+.action-button.s-typography-button--large .s-button__text {
+  font-size: 24px !important;
+  line-height: 24px !important;
+  letter-spacing: -0.48px !important;
+  text-transform: uppercase !important;
+}
+
+[design-system-theme='dark'] .action-button.s-typography-button--large,
+[design-system-theme='dark'] .action-button.s-typography-button--large > span,
+[design-system-theme='dark'] .action-button.s-typography-button--large .s-button__text {
+  color: #391057 !important;
+}
+
+.s-button__text > i.s-icon-chevron-down-rounded-16 {
+  font-size: 18px !important;
+  line-height: 18px !important;
+}
+
+.transaction-details i.s-icon-arrows-chevron-bottom-24,
+.transaction-details i.s-icon-arrows-chevron-top-24 {
+  font-size: 16px !important;
+  line-height: 16px !important;
+}
+
+.marketing-prev > i.s-icon-arrows-chevron-left-rounded-24,
+.marketing-next > i.s-icon-arrows-chevron-right-rounded-24 {
+  line-height: 42px !important;
+}
+
+i.marketing-suffix.s-icon-arrows-arrow-top-right-24 {
+  font-size: 16px !important;
+  line-height: 16px !important;
+}

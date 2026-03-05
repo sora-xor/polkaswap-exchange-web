@@ -53,8 +53,10 @@ const formatted = computed(() => {
     color: var(--s-color-theme-secondary-hover);
   }
 
-  &-arrow {
+  :deep(.price-change-arrow) {
     color: inherit;
+    font-size: 14px !important;
+    line-height: 14px !important;
   }
 }
 </style>

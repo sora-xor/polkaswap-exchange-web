@@ -247,6 +247,11 @@ $mono-font: 'JetBrainsMono';
       margin-left: 4px;
     }
 
+    .trend-icon.s-icon-arrows-arrow-bold-bottom-24 {
+      font-size: 18px !important;
+      line-height: 18px !important;
+    }
+
     &--up {
       .mark-price,
       .trend-icon {

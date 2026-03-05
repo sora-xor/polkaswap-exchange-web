@@ -81,6 +81,7 @@ import store from '@/store';
 import { useMoonpayBridge } from '@/composables/useMoonpayBridge';
 import { useTranslation } from '@/composables/useTranslation';
 import { getCssVariableValue } from '@/utils';
+import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 import { MoonpayTransactionStatus, MOONPAY_WIDGET_ORIGINS, buildMoonpayTransactionDetailsUrl } from '@/utils/moonpay';
 
 import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '@/utils/moonpay';
@@ -117,7 +118,7 @@ const {
 const transactions = computed(() => store.state.moonpay.transactions as MoonpayTransaction[]);
 const currencies = computed(() => store.state.moonpay.currencies as MoonpayCurrency[]);
 const isValidNetwork = computed(() => Boolean(store.getters.web3.isValidNetwork));
-const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
 
 const currentPage = ref(1);
 const currentView = ref<string>(HistoryView);

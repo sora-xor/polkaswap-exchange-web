@@ -96,11 +96,13 @@ import { Components } from '@/consts';
 import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
 import store from '@/store';
+import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 import type { FeatureFlags, SettingsState } from '@/store/settings/types';
 import type { Node } from '@/types/nodes';
 import { NodesConnection } from '@/utils/connection';
 import { settingsStorage } from '@/utils/storage';
 import { formatLocation } from '@/components/App/Settings/Node/utils';
+import { resolveIndexerStatus } from '@/components/App/Footer/utils/resolveIndexerStatus';
 
 import FooterPopper from './FooterPopper.vue';
 import NoInternetDialog from './NoInternetDialog.vue';
@@ -128,7 +130,7 @@ const blockNumber = computed(() => (walletSettings.value.blockNumber as number) 
 const indexerType = computed(
   () => (walletSettings.value.indexerType as WALLET_CONSTS.IndexerType) ?? WALLET_CONSTS.IndexerType.SUBQUERY
 );
-const libraryTheme = computed(() => store.getters?.libraryTheme as Theme);
+const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
 
 const fallbackAppConnection = markRaw(new NodesConnection(settingsStorage, markRaw(connection)));
 const appConnection = computed<NodesConnection>(() => {
@@ -221,9 +223,7 @@ const internetConnectionSpeedMbText = computed(() => {
 });
 
 const indexerStatus = computed(() => {
-  const currentType = indexerType.value;
-  const statusEntry = indexersData.value?.[currentType];
-  return statusEntry?.status ?? WALLET_TYPES.ConnectionStatus.Loading;
+  return resolveIndexerStatus(indexerType.value, indexersData.value);
 });
 
 const statisticsConnectionStatus = computed(() => {
@@ -304,6 +304,13 @@ $sora-logo-width: 115px;
   background-color: var(--s-color-utility-surface);
   justify-content: center;
   align-items: center;
+
+  :deep(i[class*='s-icon-']) {
+    font-size: 16px !important;
+    line-height: 16px !important;
+    width: 16px;
+    height: 16px;
+  }
 }
 .block-number {
   color: var(--s-color-status-success);

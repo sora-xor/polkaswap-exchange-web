@@ -20,6 +20,7 @@ import store from '@/store';
 import { useMoonpayBridge } from '@/composables/useMoonpayBridge';
 import { useTranslation } from '@/composables/useTranslation';
 import { getCssVariableValue } from '@/utils';
+import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 import { MOONPAY_WIDGET_ORIGINS } from '@/utils/moonpay';
 
 import type { MoonpayTransaction } from '@/utils/moonpay';
@@ -52,7 +53,7 @@ const { t, language } = useTranslation();
 
 const transactions = computed(() => store.state.moonpay.transactions as MoonpayTransaction[]);
 const pollingTimestamp = computed(() => store.state.moonpay.pollingTimestamp as number);
-const libraryTheme = computed(() => store.getters.libraryTheme as Theme);
+const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
 
 const account = computed(() => store.getters.wallet.account.account as Nullable<WALLET_TYPES.PolkadotJsAccount>);
 
