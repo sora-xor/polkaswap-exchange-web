@@ -1207,7 +1207,8 @@
     "Swap": "Swap",
     "VaultDetails": "Position Details",
     "Vaults": "{Kensetsu}",
-    "Wallet": "Wallet"
+    "Wallet": "Wallet",
+    "Burn": "Burn"
   },
   "pairIsNotCreated": "Token pair isn't created",
   "points": {

@@ -72,6 +72,7 @@
               size="small"
               class="explore-table-item-logo explore-table-item-logo--plain"
               :token="row.inputAsset"
+              :token-symbol="row.inputAssetSymbol"
             ></token-logo>
             <span class="explore-table-item-token">{{ row.inputAssetSymbol }}</span>
           </div>
@@ -87,6 +88,7 @@
               size="small"
               class="explore-table-item-logo explore-table-item-logo--plain"
               :token="row.outputAsset"
+              :token-symbol="row.outputAssetSymbol"
             ></token-logo>
             <span class="explore-table-item-token">{{ row.outputAssetSymbol }}</span>
           </div>
@@ -277,9 +279,9 @@ const tableItems = computed<TableItem[]>(() =>
     const blockId = item.blockId ?? '';
     const address = item.from ?? '';
     const inputAsset = item.assetAddress ? assetsDataTable.value[item.assetAddress] : null;
-    const inputAssetSymbol = inputAsset?.symbol ?? '??';
+    const inputAssetSymbol = inputAsset?.symbol || item.symbol || '??';
     const outputAsset = item.asset2Address ? assetsDataTable.value[item.asset2Address] : null;
-    const outputAssetSymbol = outputAsset?.symbol ?? '??';
+    const outputAssetSymbol = outputAsset?.symbol || item.symbol2 || '??';
     const inputAmount = showMostFittingValue(new FPNumber(item.amount ?? 0));
     const inputAmountUSD = new FPNumber(item.payload.amountUSD ?? 0).toLocaleString();
     const outputAmount = showMostFittingValue(new FPNumber(item.amount2 ?? 0));

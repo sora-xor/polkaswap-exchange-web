@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 type SizeValue = string | number;
 
@@ -23,6 +23,13 @@ const emit = defineEmits<{
 }>();
 
 const wrapRef = ref<HTMLElement | null>(null);
+const viewRef = ref<HTMLElement | null>(null);
+const hasVerticalScroll = ref(false);
+const hasHorizontalScroll = ref(false);
+const verticalThumbStyle = ref<Record<string, string>>({});
+const horizontalThumbStyle = ref<Record<string, string>>({});
+
+const MIN_THUMB_SIZE = 40;
 
 const toCssSize = (value: SizeValue | undefined): string | undefined => {
   if (value === undefined || value === null || value === '') return undefined;
@@ -35,6 +42,7 @@ const wrapStyle = computed(() => ({
 }));
 
 function handleScroll(event: Event): void {
+  updateThumbState();
   emit('scroll', event);
 }
 
@@ -50,26 +58,93 @@ function setScrollLeft(value: number): void {
   }
 }
 
+function getMinThumbSizePercent(trackSize: number): number {
+  return trackSize ? (MIN_THUMB_SIZE / trackSize) * 100 : 100;
+}
+
+function updateThumbState(): void {
+  const wrap = wrapRef.value;
+
+  if (!wrap) return;
+
+  const { clientHeight, scrollHeight, scrollTop, clientWidth, scrollWidth, scrollLeft } = wrap;
+
+  hasVerticalScroll.value = scrollHeight > clientHeight + 1;
+  hasHorizontalScroll.value = scrollWidth > clientWidth + 1;
+
+  if (hasVerticalScroll.value && clientHeight > 0) {
+    const sizePercent = Math.max((clientHeight * 100) / scrollHeight, getMinThumbSizePercent(clientHeight));
+    const movePercent = (scrollTop * 100) / clientHeight;
+
+    verticalThumbStyle.value = {
+      height: `${sizePercent}%`,
+      transform: `translateY(${movePercent}%)`,
+    };
+  } else {
+    verticalThumbStyle.value = {};
+  }
+
+  if (hasHorizontalScroll.value && clientWidth > 0) {
+    const sizePercent = Math.max((clientWidth * 100) / scrollWidth, getMinThumbSizePercent(clientWidth));
+    const movePercent = (scrollLeft * 100) / clientWidth;
+
+    horizontalThumbStyle.value = {
+      width: `${sizePercent}%`,
+      transform: `translateX(${movePercent}%)`,
+    };
+  } else {
+    horizontalThumbStyle.value = {};
+  }
+}
+
+let resizeObserver: ResizeObserver | undefined;
+
+onMounted(() => {
+  void nextTick(updateThumbState);
+
+  if (typeof ResizeObserver !== 'undefined') {
+    resizeObserver = new ResizeObserver(updateThumbState);
+    if (wrapRef.value) resizeObserver.observe(wrapRef.value);
+    if (viewRef.value) resizeObserver.observe(viewRef.value);
+  }
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', updateThumbState, { passive: true });
+  }
+});
+
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect();
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateThumbState);
+  }
+});
+
+watch([() => props.height, () => props.maxHeight, () => props.native], () => {
+  void nextTick(updateThumbState);
+});
+
 defineExpose({
   wrapRef,
   setScrollTop,
   setScrollLeft,
+  updateThumbState,
 });
 </script>
 
 <template>
   <div class="s-scrollbar el-scrollbar" :class="{ 's-scrollbar_native': native }">
     <div ref="wrapRef" class="el-scrollbar__wrap" :style="wrapStyle" @scroll="handleScroll">
-      <div class="el-scrollbar__view">
+      <div ref="viewRef" class="el-scrollbar__view">
         <slot />
       </div>
     </div>
 
-    <div v-if="!native" class="el-scrollbar__bar is-vertical">
-      <div class="el-scrollbar__thumb"></div>
+    <div v-if="!native" v-show="hasVerticalScroll" class="el-scrollbar__bar is-vertical">
+      <div class="el-scrollbar__thumb" :style="verticalThumbStyle"></div>
     </div>
-    <div v-if="!native" class="el-scrollbar__bar is-horizontal">
-      <div class="el-scrollbar__thumb"></div>
+    <div v-if="!native" v-show="hasHorizontalScroll" class="el-scrollbar__bar is-horizontal">
+      <div class="el-scrollbar__thumb" :style="horizontalThumbStyle"></div>
     </div>
   </div>
 </template>
@@ -129,12 +204,14 @@ defineExpose({
 
   > .el-scrollbar__bar.is-vertical .el-scrollbar__thumb {
     width: 100%;
-    height: 40px;
+    min-height: 40px;
+    will-change: transform;
   }
 
   > .el-scrollbar__bar.is-horizontal .el-scrollbar__thumb {
-    width: 40px;
+    min-width: 40px;
     height: 100%;
+    will-change: transform;
   }
 
   &.s-scrollbar_native > .el-scrollbar__bar {

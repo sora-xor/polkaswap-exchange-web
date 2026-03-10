@@ -22,8 +22,11 @@ describe('SCollapseCompat', () => {
     });
 
     const header = wrapper.find('.el-collapse-item__header');
+    const arrow = wrapper.find('.el-collapse-item__arrow');
 
     expect(wrapper.find('.el-collapse-item').classes()).not.toContain('is-active');
+    expect(arrow.element.tagName).toBe('I');
+    expect(arrow.classes()).toContain('el-icon-arrow-right');
 
     await header.trigger('click');
 

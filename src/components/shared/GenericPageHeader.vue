@@ -15,15 +15,14 @@
       </slot>
       <s-tooltip
         v-if="tooltip"
-        class="page-header-tooltip"
+        class="page-header-tooltip s-icon-info-16"
+        wrapper-tag="i"
         popper-class="info-tooltip info-tooltip--page-header"
         border-radius="mini"
         :content="tooltip"
         :placement="tooltipPlacement"
         tabindex="-1"
-      >
-        <s-icon name="info-16" size="18px"></s-icon>
-      </s-tooltip>
+      ></s-tooltip>
     </h3>
     <slot></slot>
   </div>
@@ -93,6 +92,7 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
     }
   }
   &-title {
+    margin: 0;
     color: var(--s-color-base-content-primary);
     line-height: $tooltip-area-height;
 
@@ -105,10 +105,13 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
       }
     }
   }
-  &-tooltip {
+  :deep(.page-header-tooltip) {
+    display: inline;
+    color: var(--s-color-base-content-tertiary);
     margin-top: auto;
     margin-bottom: auto;
     margin-left: $inner-spacing-mini;
+    font-size: 18px;
     line-height: $tooltip-area-height;
     cursor: pointer;
   }

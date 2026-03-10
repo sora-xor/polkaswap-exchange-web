@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { components } from '@wallet';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from '@/composables/useTranslation';
 
 import { useDialogModel } from '@/composables/useDialogModel';
 import router from '@/router';
@@ -35,7 +35,7 @@ const emit = defineEmits<{
   (event: 'proceed'): void;
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const { isVisible, closeDialog } = useDialogModel(props, emit);
 
 const DialogBase = components.DialogBase;

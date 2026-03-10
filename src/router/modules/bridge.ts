@@ -20,11 +20,6 @@ export const bridgeRoutes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
-        path: 'sccp',
-        name: PageNames.Sccp,
-        component: lazyView(PageNames.Sccp),
-      },
-      {
         path: 'transaction',
         name: PageNames.BridgeTransaction,
         component: lazyView(PageNames.BridgeTransaction),

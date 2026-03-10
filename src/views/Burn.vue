@@ -1,6 +1,6 @@
 <template>
   <div class="burn-container s-flex-column">
-    <s-row :gutter="16">
+    <s-row class="burn-row" :gutter="16" justify="center">
       <s-col
         v-for="{ id, title, description, link, receivedAsset, rate, disabledText } in campaigns"
         :key="id"
@@ -17,31 +17,28 @@
           :class="{ disabled: ended[id] }"
           :show-message="false"
         >
+          <img v-if="id === 'solswap'" class="campaign-logo" :src="solswapMarkUrl" alt="SOLSWAP logo" />
           <generic-page-header class="page-header--burn" :title="title"></generic-page-header>
           <p class="description centered p4">
             {{ description }}
           </p>
           <external-link class="p4 link" title="Read more" :href="link"></external-link>
           <info-line
-            :label="`1 ${receivedAsset.symbol}`"
+            :label="`1\u00A0${receivedAsset.symbol}`"
             :value="getFormattedXor(rate)"
             :asset-symbol="xor.symbol"
             :fiat-value="getFormattedXorFiat(rate)"
-            is-formatted
           ></info-line>
-          <info-line label="Time left" :value="timeLeftFormatted[id]"></info-line>
           <info-line
             :label="`Your reserved ${receivedAsset.symbol} tokens`"
             :value="getFormattedAccountReserved(id, rate)"
             :asset-symbol="receivedAsset.symbol"
-            is-formatted
             value-can-be-hidden
           ></info-line>
           <info-line
             label="Your burned XOR tokens"
             :value="getFormattedAccountXorBurned(id)"
             :asset-symbol="xor.symbol"
-            is-formatted
             value-can-be-hidden
           ></info-line>
           <div class="info-card-container s-flex">
@@ -108,13 +105,14 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { XOR, KEN } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, WALLET_CONSTS } from '@wallet';
 import dayjs from 'dayjs/esm';
 import durationPlugin from 'dayjs/plugin/duration';
 import { computed, onBeforeUnmount, onMounted, reactive, ref, toRef } from 'vue';
 
 import BurnDialog from '@/components/pages/Burn/BurnDialog.vue';
+import solswapMarkUrl from '@/assets/img/solswap-mark.svg?url';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useLoading } from '@/composables/useLoading';
@@ -129,7 +127,7 @@ import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 dayjs.extend(durationPlugin);
 
-type CampaignKey = 'chameleon' | 'kensetsu';
+type CampaignKey = 'solswap';
 
 type Campaign = {
   id: CampaignKey;
@@ -138,7 +136,7 @@ type Campaign = {
   disabledText?: string;
   link: string;
   receivedAsset: Asset;
-  rate: number;
+  rate: string;
   max: number;
   min: number;
   from: number;
@@ -180,94 +178,91 @@ const blockNumber = computed(() => store.state.wallet.settings.blockNumber as nu
 const soraNetwork = computed(() => store.state.wallet.settings.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>);
 
 const campaignsObj = reactive<Record<CampaignKey, Campaign>>({
-  chameleon: {
-    id: 'chameleon',
-    title: 'Reserve KARMA by burning your XOR',
+  solswap: {
+    id: 'solswap',
+    title: 'Burn XOR for SOLSWAP (SS)',
     description:
-      'Burn 100M XOR (permanently remove from your wallet) on SORA for KARMA in a fair launch; KARMA token is a reward token for LPs who provide liquidity to Chameleon liquidity pools. 22 days only (till Jun 6 2024).',
-    link: 'https://medium.com/@shibarimoto/earn-karma-with-a-sora-chameleon-01b25c12fd49',
-    receivedAsset: { symbol: 'KARMA', address: '', name: 'Chameleon', decimals: 18 } as Asset,
-    rate: 100_000_000,
-    max: 1_000,
-    min: 0.1,
-    from: 15_739_737,
-    fromTimestamp: 1715791500000,
-    to: 16_056_666,
-    toTimestamp: 1717693074000,
-    disabledText: 'Already distributed',
-  },
-  kensetsu: {
-    id: 'kensetsu',
-    title: 'Reserve KEN by burning your XOR',
-    description:
-      'Burn 1M XOR (permanently remove from your wallet) on SORA for KEN in a fair launch of Kensetsu; KEN incentivizes liquidity and is deflationary token with a status symbol appeal. 30 days only (till Mar 20 2024).',
-    link: 'https://medium.com/@shibarimoto/kensetsu-ken-356077ebee78',
-    receivedAsset: KEN,
-    rate: 1_000_000,
-    max: 10_000,
+      'Starting at block 25,043,003 on the SORA 2 network, burn XOR to reserve SOLSWAP (SS). 100% of supply (100,000,000 SS) is distributed via fair launch at 100 SOLSWAP per 1 XOR burned.',
+    link: 'https://t.me/solswap_io',
+    receivedAsset: { symbol: 'SS', address: '', name: 'SOLSWAP', decimals: 18 } as Asset,
+    rate: '0.01',
+    max: 100_000_000,
     min: 1,
-    from: 14_464_000,
-    fromTimestamp: 1708097280000,
-    to: 14_939_200,
-    toTimestamp: 1710949772883,
-    disabledText: 'Already distributed',
+    from: 25_043_003,
+    fromTimestamp: 1717693074001,
+    to: 60_000_000,
+    toTimestamp: 1893456000000,
   },
 });
 
-const campaignOrder: CampaignKey[] = ['chameleon', 'kensetsu'];
+const campaignOrder: CampaignKey[] = ['solswap'];
 const campaigns = computed(() => campaignOrder.map((key) => campaignsObj[key]));
 
 const createDefaultBurned = () => ({
-  chameleon: new FPNumber(0),
-  kensetsu: new FPNumber(0),
+  solswap: new FPNumber(0),
 });
 
 const totalXorBurned = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
 const accountXorBurned = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
 
 const timeLeftFormatted = reactive<Record<CampaignKey, string>>({
-  chameleon: '30D',
-  kensetsu: '30D',
+  solswap: '30D',
 });
 
 const ended = reactive<Record<CampaignKey, boolean>>({
-  chameleon: false,
-  kensetsu: false,
+  solswap: false,
 });
 
 const burnDialogVisible = ref(false);
-const selectedReceivedAsset = ref<Asset>(campaignsObj.chameleon.receivedAsset);
-const selectedRate = ref<number>(campaignsObj.chameleon.rate);
-const selectedMax = ref<number>(campaignsObj.chameleon.max);
-const selectedMin = ref<number>(campaignsObj.chameleon.min);
+const selectedReceivedAsset = ref<Asset>(campaignsObj.solswap.receivedAsset);
+const selectedRate = ref<string>(campaignsObj.solswap.rate);
+const selectedMax = ref<number>(campaignsObj.solswap.max);
+const selectedMin = ref<number>(campaignsObj.solswap.min);
 
 const intervalId = ref<Nullable<number>>(null);
+const decimalDelimiter = FPNumber.DELIMITERS_CONFIG.decimal;
+const escapedDecimalDelimiter = decimalDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const decimalOnlyZerosRegExp = new RegExp(`${escapedDecimalDelimiter}0+$`);
+const trailingZerosRegExp = new RegExp(`(${escapedDecimalDelimiter}\\d*?[1-9])0+$`);
+const danglingDecimalRegExp = new RegExp(`${escapedDecimalDelimiter}$`);
 
 const minBlock = computed(() => Math.min(...campaignOrder.map((key) => campaignsObj[key].from)));
 const maxBlock = computed(() => Math.max(...campaignOrder.map((key) => campaignsObj[key].to)));
 
-function getFormattedXor(rate: number): string {
-  return getFPNumber(rate).toLocaleString();
+function trimTrailingZeros(value: string): string {
+  return value
+    .replace(decimalOnlyZerosRegExp, '')
+    .replace(trailingZerosRegExp, '$1')
+    .replace(danglingDecimalRegExp, '');
 }
 
-function getFormattedXorFiat(rate: number): Nullable<string> {
-  return getFiatAmountByString(`${rate}`, xor);
+function formatAmount(value: FPNumber, precision?: number): string {
+  const formatted = precision === undefined ? value.toLocaleString() : value.toLocaleString(precision);
+  return trimTrailingZeros(formatted);
+}
+
+function getFormattedXor(rate: string): string {
+  return formatAmount(getFPNumber(rate));
+}
+
+function getFormattedXorFiat(rate: string): Nullable<string> {
+  return getFiatAmountByString(rate, xor);
 }
 
 function getFormattedTotalXorBurned(id: CampaignKey): string {
-  return totalXorBurned[id]?.toLocaleString() ?? zeroString;
+  return totalXorBurned[id] ? formatAmount(totalXorBurned[id]) : zeroString;
 }
 
-function getFormattedTotalReserved(id: CampaignKey, rate: number): string {
-  return totalXorBurned[id]?.div(rate).toLocaleString(3) ?? zeroString;
+function getFormattedTotalReserved(id: CampaignKey, rate: string): string {
+  return totalXorBurned[id] ? formatAmount(totalXorBurned[id].div(rate), 3) : zeroString;
 }
 
 function getFormattedAccountXorBurned(id: CampaignKey): string {
-  return accountXorBurned[id]?.toLocaleString() ?? zeroString;
+  return accountXorBurned[id] ? formatAmount(accountXorBurned[id]) : zeroString;
 }
 
-function getFormattedAccountReserved(id: CampaignKey, rate: number): string {
-  return accountXorBurned[id]?.div(rate).toLocaleString(3) ?? zeroString;
+function getFormattedAccountReserved(id: CampaignKey, rate: string): string {
+  return accountXorBurned[id] ? formatAmount(accountXorBurned[id].div(rate), 3) : zeroString;
 }
 
 function calcCountdown(): void {
@@ -304,7 +299,7 @@ async function fetchStatistics(): Promise<void> {
       return acc;
     }, {});
 
-    const minBurned = new FPNumber(campaign.rate * campaign.min);
+    const minBurned = new FPNumber(campaign.rate).mul(campaign.min);
 
     Object.entries(accountsBurned).forEach(([burnAddress, amount]) => {
       if (!amount.gte(minBurned)) return;
@@ -316,10 +311,10 @@ async function fetchStatistics(): Promise<void> {
     });
   }
 
-  accountXorBurned.chameleon = accountTotals.chameleon;
-  accountXorBurned.kensetsu = accountTotals.kensetsu;
-  totalXorBurned.chameleon = overallTotals.chameleon;
-  totalXorBurned.kensetsu = overallTotals.kensetsu;
+  for (const key of campaignOrder) {
+    accountXorBurned[key] = accountTotals[key];
+    totalXorBurned[key] = overallTotals[key];
+  }
 }
 
 async function fetchDataAndCalcCountdown(): Promise<void> {
@@ -366,10 +361,8 @@ onMounted(async () => {
     const network = soraNetwork.value ?? (await waitForSoraNetworkFromEnv());
 
     if (network !== WALLET_CONSTS.SoraNetwork.Prod) {
-      campaignsObj.chameleon.from = 11_000;
-      campaignsObj.chameleon.to = 1_000_000;
-      campaignsObj.kensetsu.from = 0;
-      campaignsObj.kensetsu.to = 10_000;
+      campaignsObj.solswap.from = 0;
+      campaignsObj.solswap.to = 10_000;
     }
 
     await fetchDataAndCalcCountdown();
@@ -402,9 +395,24 @@ onBeforeUnmount(() => {
     }
   }
 }
+
+.burn-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .page-header--burn {
   justify-content: center;
 }
+
+.campaign-logo {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto $inner-spacing-mini;
+}
+
 .description {
   margin-bottom: $inner-spacing-mini;
   font-size: var(--s-font-size-extra-small);

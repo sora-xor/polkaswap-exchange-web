@@ -14,6 +14,7 @@ const LIVE_ALLOWED_CONSOLE_PATTERNS = [
   /Failed to load resource: net::ERR_CERT_COMMON_NAME_INVALID/i,
   /Failed to load resource: net::ERR_CONNECTION_RESET/i,
   /\[Exchange rate API\] Error while fetching rates\./i,
+  /failed to instantiate a new WASM module instance: Limit of 32 concurrent instances has been reached/i,
 ];
 
 const KNOWN_WALLET_NOISE_PATTERNS = [/Unable to retrieve keypair/i, /You should connect wallet/i];

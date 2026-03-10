@@ -5,6 +5,12 @@ import { nextTick } from 'vue';
 import SDropdownCompat from '@/components/compat/SDropdownCompat.vue';
 import SDropdownItemCompat from '@/components/compat/SDropdownItemCompat.vue';
 
+const SIconStub = {
+  name: 'SIconStub',
+  props: ['name', 'size'],
+  template: '<i class="s-icon-stub" :class="$attrs.class" :data-icon="name"></i>',
+};
+
 const mountDropdown = (props: Record<string, unknown> = {}) =>
   mount(SDropdownCompat, {
     attachTo: document.body,
@@ -15,6 +21,7 @@ const mountDropdown = (props: Record<string, unknown> = {}) =>
         's-dropdown-item': SDropdownItemCompat,
       },
       stubs: {
+        's-icon': SIconStub,
         'el-popover': false,
       },
     },
@@ -109,5 +116,12 @@ describe('SDropdownCompat', () => {
     await nextTick();
 
     expect(document.body.querySelector('.el-dropdown-menu__item')).toBeNull();
+  });
+
+  it('renders legacy dropdown arrow icon class for button triggers', () => {
+    const wrapper = mountDropdown();
+    const arrow = wrapper.get('.s-dropdown__arrow');
+
+    expect(arrow.attributes('data-icon')).toBe('el-icon-arrow-down el-icon--right');
   });
 });

@@ -1,5 +1,5 @@
 <template>
-  <s-card shadow="always" size="small" class="status-action-badge">
+  <s-card shadow="always" size="small" border-radius="small" class="status-action-badge">
     <span class="status-action-badge__label"><slot name="label"></slot></span>
     <span class="status-action-badge__value"><slot name="value"></slot></span>
     <div class="status-action-badge__action"><slot name="action"></slot></div>
@@ -16,7 +16,14 @@ export default defineComponent({
 
 <style lang="scss">
 .status-action-badge.s-card.neumorphic.s-size-small {
+  min-height: 32px;
+  height: 32px;
+  border-radius: 24px !important;
   padding: $inner-spacing-tiny * 1.75 $inner-spacing-big * 2 $inner-spacing-tiny * 1.75 $inner-spacing-small;
+
+  > .el-card__body {
+    padding: 0;
+  }
 }
 </style>
 
@@ -56,6 +63,10 @@ $base-class: '.status-action-badge';
     border-radius: 50%;
 
     :deep(.s-button) {
+      min-width: 42px;
+      width: 42px;
+      min-height: 42px;
+      height: 42px;
       color: var(--s-color-base-content-tertiary);
 
       &:hover,

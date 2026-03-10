@@ -155,6 +155,12 @@ const nodeDataChanged = computed(
   () => nodeModel.name !== props.node?.name || nodeModel.address !== props.node?.address
 );
 
+const title = computed(() => {
+  const customNodeText = t('selectNodeDialog.customNode');
+  if (!existing.value) return customNodeText;
+  return props.node?.chain || props.node?.name || customNodeText;
+});
+
 const buttonText = computed(() => {
   if (!existing.value) return t('selectNodeDialog.addNode');
   if (nodeDataChanged.value) return t('selectNodeDialog.updateNode');
@@ -203,3 +209,86 @@ onMounted(() => {
   }
 });
 </script>
+
+<style lang="scss">
+.node-info {
+  &-tutorial-button {
+    .s-icon-question-circle-16:before {
+      font-size: 18px;
+    }
+  }
+
+  .el-form-item.is-error > .el-form-item__content {
+    & > [class^='s-input']:not(.s-disabled) {
+      &,
+      &:hover {
+        & .el-input > input {
+          background-color: inherit;
+        }
+      }
+
+      .s-placeholder {
+        background-color: inherit;
+      }
+    }
+
+    & > .el-form-item__error,
+    & > .s-icon-status-error {
+      color: var(--s-color-status-error) !important;
+    }
+
+    .s-icon-status-error:before {
+      content: '\ea29';
+    }
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+$min-s-input-height: 58px;
+
+.node-info {
+  flex-direction: column;
+  align-items: center;
+
+  &-title {
+    padding-top: calc(var(--s-basic-spacing) * 2);
+  }
+
+  & > *:not(:last-child) {
+    margin-bottom: $inner-spacing-medium;
+    width: 100%;
+  }
+
+  &-button,
+  &-tutorial-button {
+    width: 100%;
+  }
+}
+
+.location-input {
+  display: flex;
+  flex-direction: column;
+  border-color: var(--s-color-base-disabled);
+  color: var(--s-color-base-content-secondary);
+  box-shadow: var(--s-shadow-element);
+  background: var(--s-color-base-background);
+  border-width: 0;
+  padding: $inner-spacing-mini $inner-spacing-medium;
+  height: auto;
+  min-height: $min-s-input-height;
+  border-radius: var(--s-border-radius-small);
+  border-style: solid;
+  letter-spacing: var(--s-letter-spacing-small);
+  cursor: not-allowed;
+
+  &__value {
+    font-weight: 400;
+  }
+
+  &__placeholder {
+    font-size: var(--s-font-size-mini);
+    font-weight: 300;
+  }
+}
+</style>

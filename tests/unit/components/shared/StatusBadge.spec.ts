@@ -1,16 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 
-const fiatPriceObjectStub: { current: Record<string, string> } = {
-  current: { AAA: '1' },
-};
-
-vi.mock('@/composables/useFormattedAmount', () => ({
-  useFormattedAmount: () => ({
-    fiatPriceObject: fiatPriceObjectStub.current,
-  }),
-}));
-
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string) => `i18n:${key}`,
@@ -68,10 +58,12 @@ describe('StatusBadge', () => {
     expect(wrapper.find('.status-badge-logo-icon.active').exists()).toBe(false);
   });
 
-  it('hides APR when fiat prices are unavailable', () => {
-    fiatPriceObjectStub.current = {};
-    const wrapper = mountComponent(baseProps);
+  it('hides APR when apr value is empty', () => {
+    const wrapper = mountComponent({
+      ...baseProps,
+      apr: '',
+    });
+
     expect(wrapper.text()).not.toContain('APR');
-    fiatPriceObjectStub.current = { AAA: '1' };
   });
 });

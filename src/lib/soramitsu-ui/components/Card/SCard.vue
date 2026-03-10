@@ -59,8 +59,6 @@ const rootTag = computed(() => props.tag || 'div');
 const hasHeaderSlot = computed(() => typeof slots.header === 'function');
 const shouldRenderHeader = computed(() => Boolean(props.header) || hasHeaderSlot.value);
 
-const isDefaultStatus = computed(() => normalizedStatus.value === 'default');
-
 const classes = computed(() => {
   const result = new Set<string>();
 
@@ -83,9 +81,7 @@ const classes = computed(() => {
     result.add('s-pressed');
   }
 
-  if (!isDefaultStatus.value) {
-    result.add(`s-status-${normalizedStatus.value}`);
-  }
+  result.add(`s-status-${normalizedStatus.value}`);
 
   if (CARD_SIZE_VALUES.includes(normalizedSize.value)) {
     result.add(`s-size-${normalizedSize.value}`);

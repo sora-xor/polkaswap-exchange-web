@@ -1,25 +1,35 @@
 import { defineAsyncComponent } from 'vue';
 
 const ASYNC_COMPONENT_DEFAULT_INIT_MESSAGE = "Cannot access 'default' before initialization";
+const RETRYABLE_IMPORT_FAILURE_PATTERNS = [
+  ASYNC_COMPONENT_DEFAULT_INIT_MESSAGE,
+  'Failed to fetch dynamically imported module',
+  'Importing a module script failed',
+  'Loading chunk',
+  'ChunkLoadError',
+];
+const MAX_RETRY_ATTEMPTS = 3;
+const RETRY_DELAY_MS = 250;
 
-export const isRetryableAsyncComponentError = (error: unknown): boolean => {
-  if (error instanceof Error) {
-    return error.message.includes(ASYNC_COMPONENT_DEFAULT_INIT_MESSAGE);
-  }
-
-  if (typeof error === 'string') {
-    return error.includes(ASYNC_COMPONENT_DEFAULT_INIT_MESSAGE);
-  }
-
-  return false;
+const getErrorMessage = (error: unknown): string => {
+  if (error instanceof Error) return error.message;
+  if (typeof error === 'string') return error;
+  return '';
 };
 
-const scheduleRetry = (callback: () => void): void => {
-  if (typeof queueMicrotask === 'function') {
+export const isRetryableAsyncComponentError = (error: unknown): boolean => {
+  const message = getErrorMessage(error);
+  return RETRYABLE_IMPORT_FAILURE_PATTERNS.some((pattern) => message.includes(pattern));
+};
+
+const scheduleRetry = (callback: () => void, attempts: number): void => {
+  if (attempts <= 1 && typeof queueMicrotask === 'function') {
     queueMicrotask(callback);
     return;
   }
-  setTimeout(callback, 0);
+
+  const delay = Math.max(0, (attempts - 1) * RETRY_DELAY_MS);
+  setTimeout(callback, delay);
 };
 
 /**
@@ -31,9 +41,9 @@ export const createAsyncComponent = <T>(loader: () => Promise<T>) =>
     delay: 0,
     suspensible: false,
     onError: (error, retry, fail, attempts) => {
-      // Safari/WebKit can throw this transiently while resolving async SFC default exports.
-      if (isRetryableAsyncComponentError(error) && attempts <= 2) {
-        scheduleRetry(retry);
+      // Retry known transient import failures (Safari default-export race and chunk fetch hiccups).
+      if (isRetryableAsyncComponentError(error) && attempts <= MAX_RETRY_ATTEMPTS) {
+        scheduleRetry(retry, attempts);
         return;
       }
       fail();

@@ -45,6 +45,23 @@ const whitelistIdsBySymbol = computed<WhitelistIdsBySymbol>(() => {
   return value ?? {};
 });
 
+const normalizeTokenSymbol = (value?: string): string => (value ?? '').replace(/\s+/g, '').toUpperCase().trim();
+
+const normalizedWhitelistIdsBySymbol = computed<WhitelistIdsBySymbol>(() => {
+  return Object.entries(whitelistIdsBySymbol.value).reduce<WhitelistIdsBySymbol>((result, [symbol, address]) => {
+    if (symbol) {
+      result[symbol] = address;
+    }
+
+    const normalized = normalizeTokenSymbol(symbol);
+    if (normalized) {
+      result[normalized] = address;
+    }
+
+    return result;
+  }, {});
+});
+
 const isNft = computed(() => {
   const maybeAsset = props.token as AccountAsset | Asset | null;
   if (!maybeAsset) return false;
@@ -55,7 +72,13 @@ const isNft = computed(() => {
 });
 
 const assetAddress = computed<Nullable<string>>(() => {
-  return props.tokenSymbol ? whitelistIdsBySymbol.value[props.tokenSymbol] : (props.token?.address ?? null);
+  const tokenAddress = props.token?.address ?? null;
+  if (tokenAddress) return tokenAddress;
+
+  const normalizedSymbol = normalizeTokenSymbol(props.tokenSymbol);
+  if (!normalizedSymbol) return null;
+
+  return normalizedWhitelistIdsBySymbol.value[normalizedSymbol] ?? null;
 });
 
 const whitelistedItem = computed<Nullable<WhitelistItem>>(() => {
@@ -93,11 +116,14 @@ const iconClasses = computed(() => {
   const questionMark = 's-icon-notifications-info-24';
   const tokenLogoClass = 'asset-logo';
   const classes = [tokenLogoClass];
+  const hasIcon = Boolean(sanitizedIcon.value);
 
   if (!assetAddress.value) {
     classes.push(questionMark);
   } else if (!whitelistedItem.value) {
     classes.push(isNft.value ? 'asset-logo-nft' : questionMark);
+  } else if (!isNft.value && !hasIcon) {
+    classes.push(questionMark);
   }
 
   classes.push(`${tokenLogoClass}--${props.size.toLowerCase()}`);

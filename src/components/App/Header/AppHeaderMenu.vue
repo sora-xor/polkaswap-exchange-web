@@ -8,7 +8,7 @@
       <template #icon>
         <s-dropdown
           ref="headerMenu"
-          :popper-class="`header-menu el-dropdown-menu--medium ${isDropdownVisible ? 'is-open' : ''} ellipsis s-border-radius-small custom-z-index`"
+          :popper-class="`header-menu el-dropdown-menu--medium ellipsis s-border-radius-small custom-z-index`"
           class="header-menu__button"
           icon="grid-block-align-left-24"
           type="ellipsis"
@@ -414,6 +414,7 @@ $item-padding: 17px;
     color: var(--s-color-base-content-primary);
     display: flex;
     align-items: center;
+    padding: 0 $item-padding;
     p {
       margin-left: $inner-spacing-small;
       margin-right: 4px;

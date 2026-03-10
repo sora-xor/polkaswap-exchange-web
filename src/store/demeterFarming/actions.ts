@@ -3,10 +3,54 @@ import { defineActions } from 'direct-vuex';
 
 import { demeterFarmingActionContext } from '@/store/demeterFarming';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
+import type { FnWithoutArgs } from '@/types/common';
 import { waitForAccountPair } from '@/utils';
 
 import type { DemeterAccountPool } from '@sora-substrate/sdk/build/demeterFarming/types';
-import type { Subscription } from 'rxjs';
+import type { Observable, Subscription } from 'rxjs';
+
+const INITIAL_EMISSION_TIMEOUT_MS = 8_000;
+
+const wait = (ms: number): Promise<void> => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
+
+const subscribeWithInitialEmissionGuard = async <T>({
+  observable,
+  onValue,
+  onTimeout,
+  timeoutMs = INITIAL_EMISSION_TIMEOUT_MS,
+}: {
+  observable: Observable<T>;
+  onValue: (value: T) => void;
+  onTimeout?: FnWithoutArgs;
+  timeoutMs?: number;
+}): Promise<Subscription> => {
+  let didReceiveFirstValue = false;
+  let resolveFirstValue!: FnWithoutArgs;
+
+  const firstValuePromise = new Promise<void>((resolve) => {
+    resolveFirstValue = resolve;
+  });
+
+  const subscription = observable.subscribe((value) => {
+    onValue(value);
+    if (!didReceiveFirstValue) {
+      didReceiveFirstValue = true;
+      resolveFirstValue();
+    }
+  });
+
+  await Promise.race([firstValuePromise, wait(timeoutMs)]);
+
+  if (!didReceiveFirstValue) {
+    onTimeout?.();
+  }
+
+  return subscription;
+};
 
 const actions = defineActions({
   async subscribeOnPools(context): Promise<void> {
@@ -17,15 +61,20 @@ const actions = defineActions({
     try {
       const observable = await api.demeterFarming.getPoolsObservable();
 
-      if (!observable) return;
+      if (!observable) {
+        commit.setPools([]);
+        return;
+      }
 
-      let subscription!: Subscription;
-
-      await new Promise<void>((resolve) => {
-        subscription = observable.subscribe((pools) => {
-          commit.setPools(pools);
-          resolve();
-        });
+      const subscription = await subscribeWithInitialEmissionGuard({
+        observable,
+        onValue: (pools) => commit.setPools(pools),
+        onTimeout: () => {
+          console.warn(
+            `[demeterFarming] subscribeOnPools initial emission timed out after ${INITIAL_EMISSION_TIMEOUT_MS}ms`
+          );
+          commit.setPools([]);
+        },
       });
 
       commit.setPoolsUpdates(subscription);
@@ -43,15 +92,20 @@ const actions = defineActions({
     try {
       const observable = await api.demeterFarming.getTokenInfosObservable();
 
-      if (!observable) return;
+      if (!observable) {
+        commit.setTokens([]);
+        return;
+      }
 
-      let subscription!: Subscription;
-
-      await new Promise<void>((resolve) => {
-        subscription = observable.subscribe((tokens) => {
-          commit.setTokens(tokens);
-          resolve();
-        });
+      const subscription = await subscribeWithInitialEmissionGuard({
+        observable,
+        onValue: (tokens) => commit.setTokens(tokens),
+        onTimeout: () => {
+          console.warn(
+            `[demeterFarming] subscribeOnTokens initial emission timed out after ${INITIAL_EMISSION_TIMEOUT_MS}ms`
+          );
+          commit.setTokens([]);
+        },
       });
 
       commit.setTokensUpdates(subscription);
@@ -66,20 +120,25 @@ const actions = defineActions({
 
     commit.resetAccountPoolsUpdates();
 
-    if (!rootGetters.wallet.account.isLoggedIn) return;
+    if (!rootGetters.wallet.account.isLoggedIn) {
+      commit.setAccountPools([]);
+      return;
+    }
 
     try {
       await waitForAccountPair();
 
       const observable = api.demeterFarming.getAccountPoolsObservable();
 
-      let subscription!: Subscription;
-
-      await new Promise<void>((resolve) => {
-        subscription = observable.subscribe((accountPools) => {
-          commit.setAccountPools(accountPools);
-          resolve();
-        });
+      const subscription = await subscribeWithInitialEmissionGuard({
+        observable,
+        onValue: (accountPools) => commit.setAccountPools(accountPools),
+        onTimeout: () => {
+          console.warn(
+            `[demeterFarming] subscribeOnAccountPools initial emission timed out after ${INITIAL_EMISSION_TIMEOUT_MS}ms`
+          );
+          commit.setAccountPools([]);
+        },
       });
 
       commit.setAccountPoolsUpdates(subscription);

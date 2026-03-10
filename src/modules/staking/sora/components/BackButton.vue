@@ -1,7 +1,7 @@
 <template>
-  <s-button type="action" size="medium" @click="handleBack">
+  <s-button class="back-button" type="action" size="medium" @click="handleBack">
     <template #icon>
-      <s-icon name="arrows-chevron-left-rounded-24"></s-icon>
+      <s-icon name="arrows-chevron-left-rounded-24" size="24"></s-icon>
     </template>
   </s-button>
 </template>
@@ -26,3 +26,33 @@ const handleBack = () => {
   emit('back');
 };
 </script>
+
+<style lang="scss">
+button.el-button.back-button.neumorphic.s-action {
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  min-height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--s-color-base-border-primary);
+  box-shadow: var(--s-shadow-element-pressed);
+  color: var(--s-color-base-content-tertiary);
+}
+
+button.el-button.back-button.neumorphic.s-action .s-icon {
+  display: inline-block;
+  font-size: 24px !important;
+  line-height: 24px !important;
+  color: var(--s-color-base-content-tertiary) !important;
+}
+
+button.el-button.back-button.neumorphic.s-action .s-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+</style>

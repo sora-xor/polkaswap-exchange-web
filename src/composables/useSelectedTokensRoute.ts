@@ -1,19 +1,52 @@
-import { XSTUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, KUSD, XSTUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { WALLET_TYPES, api } from '@wallet';
 import { computed, ref } from 'vue';
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 
 import { PageNames } from '@/consts';
-import store from '@/store';
+import { useWalletStore } from '@/stores/wallet';
 
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
 
 const MAX_SYMBOL_LENGTH = 7;
+const CORE_ROUTE_SYMBOLS: Record<string, string> = {
+  [DAI.address]: DAI.symbol,
+  [KUSD.address]: KUSD.symbol,
+};
+const CORE_ROUTE_ADDRESSES_BY_SYMBOL: Record<string, string> = {
+  [DAI.symbol]: DAI.address,
+  [KUSD.symbol]: KUSD.address,
+};
 
 type TokensChangeHandler = (params: { firstAddress: string; secondAddress: string }) => Promise<void> | void;
 
 type Params = { first?: string; second?: string };
+
+const resolveAddressBySymbolFromAssetsTable = (
+  symbol: string,
+  assetsDataTable: Nullable<WALLET_TYPES.AssetsTable>
+): string => {
+  if (!assetsDataTable) return '';
+
+  const normalized = symbol.toUpperCase();
+  let matchedAddress = '';
+
+  for (const asset of Object.values(assetsDataTable)) {
+    if (!asset?.address) continue;
+    if ((asset.symbol ?? '').toUpperCase() !== normalized) continue;
+
+    if (!matchedAddress) {
+      matchedAddress = asset.address;
+      continue;
+    }
+
+    // Ambiguous symbol, do not guess.
+    return '';
+  }
+
+  return matchedAddress;
+};
 
 export const resolveRouteAddress = (
   param: Nullable<string>,
@@ -29,10 +62,24 @@ export const resolveRouteAddress = (
     return assetsTable[param] ? param : '';
   }
 
-  return whitelistBySymbol[param.toUpperCase()] ?? '';
+  const normalized = param.toUpperCase();
+  const whitelistMatch = whitelistBySymbol[normalized];
+
+  if (whitelistMatch) return whitelistMatch;
+
+  const coreMatch = CORE_ROUTE_ADDRESSES_BY_SYMBOL[normalized];
+
+  if (coreMatch) return coreMatch;
+
+  return resolveAddressBySymbolFromAssetsTable(normalized, assetsDataTable) || '';
 };
 
-const routeIsValid = (params: Params, routeName: string, firstAddress: string, secondAddress: string): boolean => {
+export const routeIsValid = (
+  params: Params,
+  routeName: string,
+  firstAddress: string,
+  secondAddress: string
+): boolean => {
   const { first = '', second = '' } = params;
 
   if (!(first || second)) return true;
@@ -42,7 +89,7 @@ const routeIsValid = (params: Params, routeName: string, firstAddress: string, s
 
   switch (routeName) {
     case PageNames.OrderBook:
-      return bothArePresented && secondAddress === XOR.address;
+      return bothArePresented;
     case PageNames.AddLiquidity: {
       if (!(bothArePresented && api.dex.baseAssetsIds.includes(firstAddress))) {
         return false;
@@ -57,9 +104,22 @@ const routeIsValid = (params: Params, routeName: string, firstAddress: string, s
   }
 };
 
-const buildRouteTokens = (token: Nullable<AccountAsset | Asset>, whitelist: WALLET_TYPES.Whitelist): string => {
+export const buildRouteTokens = (
+  token: Nullable<AccountAsset | Asset>,
+  whitelistIdsBySymbol: Nullable<WALLET_TYPES.WhitelistIdsBySymbol>
+): string => {
   if (!token) return '';
-  return whitelist[token.address] ? token.symbol : token.address;
+
+  const symbol = token.symbol?.trim() ?? '';
+  const normalizedSymbol = symbol.toUpperCase();
+  const symbolAddress = whitelistIdsBySymbol?.[normalizedSymbol];
+  const canUseSymbol = Boolean(symbol && symbolAddress && symbolAddress === token.address);
+
+  if (CORE_ROUTE_SYMBOLS[token.address]) {
+    return CORE_ROUTE_SYMBOLS[token.address];
+  }
+
+  return canUseSymbol ? symbol : token.address;
 };
 
 /**
@@ -68,14 +128,23 @@ const buildRouteTokens = (token: Nullable<AccountAsset | Asset>, whitelist: WALL
 export function useSelectedTokensRoute(onTokensChange: TokensChangeHandler) {
   const route = useRoute();
   const router = useRouter();
+  const walletStore = useWalletStore();
 
-  const whitelist = computed(() => (store.getters?.wallet?.account?.whitelist as WALLET_TYPES.Whitelist) ?? {});
   const whitelistIdsBySymbol = computed(
-    () => (store.getters?.wallet?.account?.whitelistIdsBySymbol as Nullable<WALLET_TYPES.WhitelistIdsBySymbol>) ?? {}
+    () => (walletStore.whitelistIdsBySymbol as Nullable<WALLET_TYPES.WhitelistIdsBySymbol>) ?? {}
   );
-  const assetsDataTable = computed(
-    () => (store.getters?.wallet?.account?.assetsDataTable as Nullable<WALLET_TYPES.AssetsTable>) ?? {}
-  );
+  const assetsDataTable = computed(() => {
+    const table = (walletStore.assetsDataTable as Nullable<WALLET_TYPES.AssetsTable>) ?? {};
+    if (Object.keys(table).length) return table;
+
+    return (walletStore.assets ?? []).reduce<WALLET_TYPES.AssetsTable>((buffer, asset) => {
+      if (asset?.address) {
+        buffer[asset.address] = asset as WALLET_TYPES.AssetsTable[string];
+      }
+
+      return buffer;
+    }, {});
+  });
 
   const wasRedirected = ref(false);
 
@@ -118,8 +187,8 @@ export function useSelectedTokensRoute(onTokensChange: TokensChangeHandler) {
   ) => {
     if (!(firstToken && secondToken)) return;
 
-    const first = buildRouteTokens(firstToken, whitelist.value);
-    const second = buildRouteTokens(secondToken, whitelist.value);
+    const first = buildRouteTokens(firstToken, whitelistIdsBySymbol.value);
+    const second = buildRouteTokens(secondToken, whitelistIdsBySymbol.value);
 
     if (route.params.first === first && route.params.second === second) return;
 

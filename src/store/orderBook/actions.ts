@@ -44,8 +44,14 @@ const actions = defineActions({
 
   async getOrderBooksInfo(context): Promise<void> {
     const { commit, rootGetters } = orderBookActionContext(context);
-    const { whitelist } = rootGetters.wallet.account;
+    const whitelist = rootGetters.wallet.account.whitelist ?? {};
     const orderBooks = await api.orderBook.getOrderBooks();
+    const hasWhitelistEntries = Object.keys(whitelist).length > 0;
+
+    if (!hasWhitelistEntries) {
+      commit.setOrderBooks(orderBooks);
+      return;
+    }
 
     const orderBooksWhitelist = Object.entries(orderBooks).reduce<Record<string, OrderBook>>((buffer, [key, book]) => {
       const { base, quote } = book.orderBookId;
@@ -55,7 +61,7 @@ const actions = defineActions({
       return buffer;
     }, {});
 
-    commit.setOrderBooks(orderBooksWhitelist);
+    commit.setOrderBooks(Object.keys(orderBooksWhitelist).length ? orderBooksWhitelist : orderBooks);
   },
 
   async updateOrderBooksStats(context): Promise<void> {

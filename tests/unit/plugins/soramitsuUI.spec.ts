@@ -41,6 +41,8 @@ describe('soramitsuUI plugin', () => {
     expect(contextComponents['s-dropdown']).toEqual(expect.any(Object));
     expect(contextComponents.SDropdownItem).toEqual(expect.any(Object));
     expect(contextComponents['s-dropdown-item']).toEqual(expect.any(Object));
+    expect(contextComponents.SIcon).toEqual(expect.any(Object));
+    expect(contextComponents['s-icon']).toEqual(expect.any(Object));
     expect(contextComponents.SFloatInput).toEqual(expect.any(Object));
     expect(contextComponents['s-float-input']).toEqual(expect.any(Object));
     expect(contextComponents.SMenu).toEqual(expect.any(Object));

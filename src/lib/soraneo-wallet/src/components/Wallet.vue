@@ -1,7 +1,7 @@
 <template>
   <wallet-base :title="headerTitle" :show-back="!!selectedTransaction" :reset-focus="headerTitle" @back="handleBack">
     <template v-if="!selectedTransaction" #actions>
-      <s-button :type="isMultisig() ? 'primary' : 'tertiary'" @click="handleMST"> Multi-Sig </s-button>
+      <s-button :type="isMultisig() ? 'primary' : 'tertiary'" @click="handleMST"> MULTI-SIG </s-button>
       <!-- <s-button @click="handleEncrypt">Encrypt</s-button> -->
 
       <s-button type="action" :tooltip="t('accountSettings.title')" @click="handleAccountSettings">
@@ -17,7 +17,7 @@
       </s-button>
     </template>
 
-    <wallet-account v-if="!selectedTransaction">
+    <wallet-account v-if="!selectedTransaction" class="wallet-account-panel">
       <qr-code-scan-button alternative @change="parseQrCodeValue"></qr-code-scan-button>
 
       <s-button
@@ -285,6 +285,25 @@ export default class Wallet extends mixins(AccountActionsMixin, OperationsMixin,
 
 <style scoped lang="scss">
 .wallet {
-  margin-top: #{$basic-spacing-medium};
+  margin-top: 16px;
+
+  :deep(.el-tabs__item) {
+    text-transform: uppercase;
+  }
+}
+
+.wallet-account-panel {
+  :deep(.s-button.s-button_type_action),
+  :deep(.s-button.s-action),
+  :deep(.account-actions.el-dropdown) {
+    color: var(--s-color-base-content-tertiary);
+  }
+
+  :deep(.s-button.s-button_type_action .s-button__icon > i),
+  :deep(.s-button.s-action .s-button__icon > i),
+  :deep(.account-actions.el-dropdown .s-icon-basic-more-vertical-24) {
+    color: inherit;
+    opacity: 0.7;
+  }
 }
 </style>

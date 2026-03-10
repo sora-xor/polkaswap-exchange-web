@@ -63,6 +63,37 @@ describe('SButton compatibility', () => {
       },
     });
 
-    expect(wrapper.classes()).toEqual(expect.arrayContaining(['s-action', 's-primary', 'el-button--primary']));
+    expect(wrapper.classes()).toEqual(expect.arrayContaining(['s-action', 's-primary', 'el-button--plain']));
+    expect(wrapper.classes()).not.toContain('el-button--primary');
+    expect(wrapper.classes()).not.toContain('sora-tpg-h6');
+  });
+
+  it('renders default slot content for action buttons as icon fallback', () => {
+    const wrapper = mount(SButton, {
+      props: {
+        type: 'action',
+      },
+      slots: {
+        default: '<i class="s-icon-basic-close-24"></i>',
+      },
+    });
+
+    expect(wrapper.find('.s-button__icon .s-icon-basic-close-24').exists()).toBe(true);
+    expect(wrapper.find('.s-button__text').text()).toBe('');
+  });
+
+  it('does not render an empty icon container for text-only buttons', () => {
+    const wrapper = mount(SButton, {
+      props: {
+        type: 'primary',
+        size: 'medium',
+      },
+      slots: {
+        default: () => 'Connect account',
+      },
+    });
+
+    expect(wrapper.find('.s-button__icon').exists()).toBe(false);
+    expect(wrapper.find('.s-button__text').text()).toContain('Connect account');
   });
 });

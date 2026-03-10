@@ -1,6 +1,6 @@
 <template>
   <div v-if="address" class="account-panel">
-    <s-divider type="tertiary"></s-divider>
+    <div class="account-panel-divider"></div>
 
     <div class="account-group">
       <slot name="icon">
@@ -93,6 +93,22 @@ function handleDisconnect(): void {
 <style lang="scss" scoped>
 @include full-width-button('account-panel-button', $inner-spacing-mini);
 
+.account-panel-button.el-button.neumorphic {
+  border-color: var(--s-color-base-border-secondary);
+  box-shadow:
+    1px 1px 5px 0px var(--s-shadow-color-light),
+    -1px -1px 5px 0px var(--s-shadow-color-light);
+
+  :deep(.s-button__text) {
+    overflow: visible;
+    text-overflow: clip;
+    font-size: 22px !important;
+    line-height: 22px !important;
+    letter-spacing: -0.6px;
+    font-variation-settings: 'wght' 700;
+  }
+}
+
 .account-panel {
   display: flex;
   flex: 1;
@@ -101,8 +117,13 @@ function handleDisconnect(): void {
   font-size: var(--s-font-size-mini);
   line-height: var(--s-line-height-medium);
   color: var(--s-color-base-content-primary);
+}
 
-  @include vertical-divider('s-divider-tertiary');
+.account-panel-divider {
+  width: 100%;
+  height: 1px;
+  margin: $inner-spacing-mini 0;
+  background-color: var(--s-color-base-border-secondary);
 }
 
 .account-group {

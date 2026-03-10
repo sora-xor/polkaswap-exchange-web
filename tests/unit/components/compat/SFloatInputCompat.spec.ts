@@ -40,4 +40,14 @@ describe('SFloatInputCompat', () => {
 
     wrapper.unmount();
   });
+
+  it('applies legacy disabled compatibility classes', () => {
+    const wrapper = mount(SFloatInputCompat, {
+      props: {
+        disabled: true,
+      },
+    });
+
+    expect(wrapper.classes()).toEqual(expect.arrayContaining(['is-disabled', 's-disabled']));
+  });
 });

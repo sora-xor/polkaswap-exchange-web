@@ -79,28 +79,6 @@ const RadioStub = defineComponent({
   },
 });
 
-const SwitchStub = defineComponent({
-  name: 'SwitchStub',
-  props: {
-    modelValue: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ['update:modelValue'],
-  setup(props, { slots }) {
-    return () =>
-      h(
-        'button',
-        {
-          class: 'switch-stub',
-          'data-value': props.modelValue,
-        },
-        slots.default?.()
-      );
-  },
-});
-
 // Needs to be imported after mocks.
 import SelectIndexer from '@/components/App/Footer/Indexer/SelectIndexer.vue';
 
@@ -124,7 +102,6 @@ const mountComponent = (props: Record<string, unknown> = {}) =>
     props: {
       indexers: defaultIndexers,
       indexer: defaultIndexers[0].type,
-      ceres: false,
       ...props,
     },
     global: {
@@ -133,7 +110,6 @@ const mountComponent = (props: Record<string, unknown> = {}) =>
         's-divider': DividerStub,
         's-radio-group': RadioGroupStub,
         's-radio': RadioStub,
-        's-switch': SwitchStub,
       },
     },
   });
@@ -149,15 +125,12 @@ describe('SelectIndexer', () => {
     expect(wrapper.text()).toContain('Offline');
   });
 
-  it('emits updates when selecting another indexer and toggling Ceres usage', async () => {
+  it('emits updates when selecting another indexer', async () => {
     const wrapper = mountComponent();
 
     wrapper.findComponent(RadioGroupStub).vm.$emit('update:modelValue', defaultIndexers[1].type);
     await wrapper.vm.$nextTick();
-    wrapper.findComponent(SwitchStub).vm.$emit('update:modelValue', true);
-    await wrapper.vm.$nextTick();
 
     expect(wrapper.emitted('update:indexer')?.[0]).toEqual([defaultIndexers[1].type]);
-    expect(wrapper.emitted('update:ceres')?.[0]).toEqual([true]);
   });
 });

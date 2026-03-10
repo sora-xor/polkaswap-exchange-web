@@ -216,7 +216,9 @@ describe('Pool.vue', () => {
     const wrapper = mountPoolView();
     await flushPromises();
 
+    expect(wrapper.find('.pool-empty-state').exists()).toBe(true);
     expect(wrapper.text()).toContain('pool.connectToWallet');
+    expect(wrapper.find('.pool-empty-state__action').text()).toContain('connectWalletText');
     await (wrapper.vm as any).connectSoraWallet();
 
     expect(connectSpy).toHaveBeenCalledTimes(1);
@@ -227,7 +229,9 @@ describe('Pool.vue', () => {
     const wrapper = mountPoolView();
     await flushPromises();
 
+    expect(wrapper.find('.pool-empty-state').exists()).toBe(true);
     expect(wrapper.text()).toContain('pool.liquidityNotFound');
+    expect(wrapper.find('.pool-empty-state__action').text()).toContain('pool.addLiquidity');
   });
 
   it('triggers add and remove actions for existing liquidity', async () => {

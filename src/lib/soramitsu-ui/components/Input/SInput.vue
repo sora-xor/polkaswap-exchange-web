@@ -77,12 +77,15 @@ const normalizedIconClass = (icon: string): string => {
 
 const rootClasses = computed(() => [
   's-input',
+  attrs.class,
   {
     'is-disabled': props.disabled,
     'is-readonly': props.readonly,
     's-input-textarea': isTextarea.value,
   },
 ]);
+
+const rootStyle = computed(() => attrs.style);
 
 const passThroughAttrs = computed(() => {
   const { class: _class, style: _style, ...rest } = attrs;
@@ -126,7 +129,7 @@ defineExpose({
 </script>
 
 <template>
-  <div :class="rootClasses">
+  <div :class="rootClasses" :style="rootStyle">
     <div class="s-input__content">
       <span v-if="$slots.left" class="s-input__left">
         <slot name="left" />

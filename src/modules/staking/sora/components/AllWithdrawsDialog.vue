@@ -48,7 +48,7 @@ import assert from 'assert';
 import { FPNumber } from '@sora-substrate/sdk';
 import { components } from '@wallet';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from '@/composables/useTranslation';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useDialogModel } from '@/composables/useDialogModel';
@@ -76,7 +76,7 @@ const emit = defineEmits<{
   (event: 'close'): void;
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const { getFiatAmountByFPNumber } = useFormattedAmount();
 const dialogModel = useDialogModel(props, emit);
 

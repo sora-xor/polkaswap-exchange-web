@@ -1,5 +1,6 @@
 import { getCurrentIndexer } from '@wallet';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
+import { retryOnEmptyResult } from '@/indexer/queries/retry';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -101,7 +102,10 @@ export async function fetchAssetPriceData(
       const subqueryIndexer = indexer as SubqueryIndexer;
       const filter = subqueryAssetPriceFilter(entityId, type);
       const variables = { filter, first, after };
-      data = await subqueryIndexer.services.explorer.fetchEntities(SubqueryAssetPriceQuery, variables);
+      data = await retryOnEmptyResult(
+        async () => subqueryIndexer.services.explorer.fetchEntities(SubqueryAssetPriceQuery, variables),
+        (value) => !value?.edges?.length
+      );
       break;
     }
     case IndexerType.SUBSQUID: {
@@ -113,7 +117,10 @@ export async function fetchAssetPriceData(
 
       const filter = subsquidAssetPriceFilter(entityId, type);
       const variables = { filter, first, after };
-      data = await subsquidIndexer.services.explorer.fetchEntitiesConnection(SubsquidAssetPriceQuery, variables);
+      data = await retryOnEmptyResult(
+        async () => subsquidIndexer.services.explorer.fetchEntitiesConnection(SubsquidAssetPriceQuery, variables),
+        (value) => !value?.edges?.length
+      );
       break;
     }
   }

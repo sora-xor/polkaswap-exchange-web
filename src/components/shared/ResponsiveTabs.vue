@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, toRefs } from 'vue';
 
 import { UiSize } from '@/consts/theme';
 import type { ResponsiveTab } from '@/types/tabs';
@@ -82,7 +82,7 @@ function handleTabChange(name: string): void {
 
 const selectedKey = computed(() => selectedKeyModel.value);
 
-const { isMobile, isHeader, size, tabs, disabled } = props;
+const { isMobile, isHeader, size, tabs, disabled } = toRefs(props);
 </script>
 
 <style lang="scss">

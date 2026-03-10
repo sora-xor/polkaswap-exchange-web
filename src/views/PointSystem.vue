@@ -322,12 +322,22 @@ watch(isLoggedIn, async (value) => {
 
 <style lang="scss" scoped>
 .points {
+  padding: $inner-spacing-small;
   background-image: url('@/assets/img/points/header.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: top;
+  :deep(.el-card__header),
+  :deep(.el-card__body) {
+    padding: 0;
+  }
   &__header {
     color: white;
+    margin: 0;
+    font-size: var(--s-heading3-font-size);
+    line-height: 1.3;
+    font-weight: 300;
+    letter-spacing: -0.48px;
   }
   &__main {
     padding-top: $inner-spacing-small;

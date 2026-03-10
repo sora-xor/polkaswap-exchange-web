@@ -171,6 +171,7 @@ describe('AppMenu', () => {
       { href: '#/staking', icon: 'basic-layers-24' },
       { href: '#/bridge', icon: 'grid-block-distribute-vertically-24' },
       { href: '#/wallet', icon: 'finance-wallet-24' },
+      { href: '#/burn', icon: 'basic-flame-24' },
       { href: '#/kensetsu', icon: 'call-phone-16' },
       { href: '#/explore', icon: 'various-items-24' },
       { href: '#/stats', icon: 'various-planet-24' },
@@ -180,7 +181,7 @@ describe('AppMenu', () => {
     expect(renderedRouteItems).toEqual(expectedRouteItems);
   });
 
-  it('shows SCCP entry only when debug flag is enabled', () => {
+  it('keeps SCCP hidden from the sidebar even when debug flag is enabled', () => {
     storeMock.getters.settings.debugEnabled = true;
     const wrapper = mountComponent();
 
@@ -192,7 +193,7 @@ describe('AppMenu', () => {
       }))
       .filter((item) => item.href?.startsWith('#/'));
 
-    expect(renderedRouteItems).toContainEqual({ href: '#/bridge/sccp', icon: 'various-planet-24' });
+    expect(renderedRouteItems).not.toContainEqual({ href: '#/bridge/sccp', icon: 'various-planet-24' });
   });
 
   it('uses production icons for about and info footer entries', () => {

@@ -46,6 +46,7 @@ const getLegacyStore = requireLegacyStore;
 
 const buildInitialState = (): SettingsState => {
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
+  const userDisclaimerApprove = disclaimerApprove ? JSON.parse(disclaimerApprove) : false;
   const isRotatePhoneHideBalanceFeatureEnabled =
     settingsStorage.get('isRotatePhoneHideBalanceFeatureEnabled') === 'true';
   const isAccessAccelerometrEventDeclined = settingsStorage.get('isAccessAccelerometrEventDeclined') === 'true';
@@ -59,7 +60,7 @@ const buildInitialState = (): SettingsState => {
     featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: (storage.get('marketAlgorithm') || DefaultMarketAlgorithm) as MarketAlgorithms,
-    userDisclaimerApprove: disclaimerApprove ? JSON.parse(disclaimerApprove) : false,
+    userDisclaimerApprove,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     isBrowserNotificationApiAvailable,
     browserNotifsPermission: resolveNotificationPermission(isBrowserNotificationApiAvailable),
@@ -161,13 +162,13 @@ export const useSettingsStore = defineStore('settings', {
       return getLegacyStore().getters.libraryTheme as Nullable<Theme>;
     },
     exchangeRate(): number {
-      return (getLegacyStore().state.wallet.settings.exchangeRate as number) ?? 0;
+      return (getLegacyStore().getters?.wallet?.settings?.exchangeRate as number) ?? 1;
     },
     currencySymbol(): string {
-      return (getLegacyStore().state.wallet.settings.currencySymbol as string) ?? 'USD';
+      return (getLegacyStore().getters?.wallet?.settings?.currencySymbol as string) ?? '$';
     },
     networkFees(): NetworkFeesObject {
-      return getLegacyStore().state.wallet.settings.networkFees as NetworkFeesObject;
+      return (getLegacyStore().state?.wallet?.settings?.networkFees as NetworkFeesObject) ?? ({} as NetworkFeesObject);
     },
     blockNumber(): number {
       return getLegacyStore().state.wallet.settings.blockNumber as number;
@@ -188,7 +189,7 @@ export const useSettingsStore = defineStore('settings', {
       return Boolean(getLegacyStore().state.wallet.settings.isMSTAvailable);
     },
     currency(): Nullable<Currency> {
-      return getLegacyStore().state.wallet.settings.currency as Nullable<Currency>;
+      return (getLegacyStore().state?.wallet?.settings?.currency as Nullable<Currency>) ?? null;
     },
     assetsFilter(): WALLET_TYPES.FilterOptions {
       return getLegacyStore().state.wallet.settings.assetsFilter as WALLET_TYPES.FilterOptions;

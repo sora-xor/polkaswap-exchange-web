@@ -25,10 +25,16 @@
 .account-card {
   display: flex;
   align-items: center;
+  position: static;
+  overflow: hidden;
 
   & > .el-card__body {
     flex: 1;
     max-width: 100%;
+  }
+
+  &.s-card.s-size-small > .el-card__body {
+    padding: 0;
   }
 
   &.s-card.neumorphic {
@@ -37,7 +43,7 @@
     border-color: transparent;
 
     &.s-size-small {
-      padding: $basic-spacing $basic-spacing-medium;
+      padding: 8px 16px;
     }
   }
 }
@@ -59,7 +65,7 @@
 <style scoped lang="scss">
 @use '../../styles/mixins' as *;
 
-$gap: $basic-spacing-small;
+$gap: 12px;
 $avatar-size: 32px;
 
 .account {

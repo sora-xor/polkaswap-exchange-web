@@ -171,7 +171,7 @@ test.describe('live runtime smoke', () => {
     const menu = page.locator('.app-menu');
 
     await menuButton.click();
-    await expect(menu).toHaveClass(/is-open/);
+    await expect(menu).toHaveClass(/visible/);
 
     await page.getByRole('link', { name: 'Bridge', exact: true }).first().click();
     await page.waitForFunction(
@@ -179,10 +179,10 @@ test.describe('live runtime smoke', () => {
       undefined,
       { timeout: 15_000 }
     );
-    await expect(menu).toHaveClass(/is-closed/);
+    await expect(menu).not.toHaveClass(/visible/);
 
     await menuButton.click();
-    await expect(menu).toHaveClass(/is-open/);
+    await expect(menu).toHaveClass(/visible/);
     await page.getByRole('link', { name: 'Swap', exact: true }).first().click();
     await page.waitForFunction(
       () => window.location.hash === '#/swap' || window.location.hash.startsWith('#/swap/'),
@@ -198,7 +198,7 @@ test.describe('live runtime smoke', () => {
     await expect(settingsDialog).toHaveCount(0);
 
     await menuButton.click();
-    await expect(menu).toHaveClass(/is-open/);
+    await expect(menu).toHaveClass(/visible/);
 
     const infoTrigger = page.locator('.app-menu .menu-item--small').first();
     const infoPopover = page.locator('.app-info-popper');
@@ -206,7 +206,7 @@ test.describe('live runtime smoke', () => {
     await expect(infoPopover).toBeVisible();
     await infoPopover.getByRole('button', { name: /get sora wallet/i }).click();
     await expect(page.locator('.popup-mobile')).toBeVisible();
-    await expect(menu).toHaveClass(/is-closed/);
+    await expect(menu).not.toHaveClass(/visible/);
 
     await expectNoCorruptedUiText(page);
     expect(consoleErrors).toEqual([]);
@@ -276,7 +276,7 @@ test.describe('live runtime smoke', () => {
     await openAuthenticatedWallet(page);
     await expectNoCorruptedUiText(page);
 
-    const accountSettingsTrigger = page.locator('.container--wallet button.el-button--action').first();
+    const accountSettingsTrigger = page.locator('.container--wallet button[tooltip="Account settings"]').first();
     const accountSettingsDialog = dialogByTitle(page, /account settings/i);
 
     await expect(accountSettingsTrigger).toBeVisible();

@@ -447,7 +447,7 @@ $padding: 5px;
 <style scoped lang="scss">
 .wallet-assets {
   flex-direction: column;
-  margin-top: #{$basic-spacing-medium};
+  margin-top: 16px;
 
   .asset {
     &-value-locked {
@@ -470,7 +470,17 @@ $padding: 5px;
   }
 
   &-add {
-    margin-top: #{$basic-spacing-medium};
+    margin-top: 16px;
+    background-color: var(--s-color-base-content-tertiary);
+    color: var(--s-color-base-on-accent);
+    box-shadow:
+      -5px -5px 10px 0px rgb(255, 255, 255),
+      1px 1px 10px 0px rgba(0, 0, 0, 0.1),
+      1px 1px 2px 0px rgba(255, 255, 255, 0.8) inset;
+
+    :deep(.s-button__text) {
+      color: inherit;
+    }
   }
 
   &__button {

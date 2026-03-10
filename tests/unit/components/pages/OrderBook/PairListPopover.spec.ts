@@ -13,6 +13,7 @@ const pairListMocks = vi.hoisted(() => ({
   orderBooksStats: {} as Record<string, OrderBookStats>,
   selectOrderBook: vi.fn<(id: OrderBookId) => void>(),
 }));
+const routerReplaceMock = vi.hoisted(() => vi.fn());
 
 vi.doMock('@/composables/useOrderBookPairList', () => ({
   useOrderBookPairList: () => ({
@@ -35,6 +36,10 @@ vi.doMock('@/stores/assets', () => ({
       return (globalThis as Record<string, any>).__ASSETS_STORE_OVERRIDE?.assetDataByAddress?.(address) ?? null;
     },
   }),
+}));
+vi.doMock('vue-router', () => ({
+  useRoute: () => ({ name: 'OrderBook' }),
+  useRouter: () => ({ replace: routerReplaceMock }),
 }));
 
 vi.mock('@/router', () => ({
@@ -105,6 +110,7 @@ describe('PairListPopover.vue', () => {
   afterEach(() => {
     delete (globalThis as Record<string, any>).__ASSETS_STORE_OVERRIDE;
     pairListMocks.selectOrderBook.mockReset();
+    routerReplaceMock.mockReset();
     pairListMocks.orderBooks = {};
     pairListMocks.orderBooksStats = {};
   });
@@ -167,6 +173,13 @@ describe('PairListPopover.vue', () => {
 
     expect(pairListMocks.selectOrderBook).toHaveBeenCalledTimes(1);
     expect(pairListMocks.selectOrderBook).toHaveBeenCalledWith(tableItems[0].id);
+    expect(routerReplaceMock).toHaveBeenCalledWith({
+      name: 'OrderBook',
+      params: {
+        first: tableItems[0].id.base,
+        second: tableItems[0].id.quote,
+      },
+    });
     expect(wrapper.emitted().close).toBeTruthy();
   });
 

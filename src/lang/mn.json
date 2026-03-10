@@ -1,17 +1,17 @@
 {
   "acceptOnScrollText": "Хүлээн зөвшөөрөхийн тулд гүйлгэнэ үү",
   "acceptText": "Хүлээн зөвшөөрөөд нуух",
-  "backText": "Буцах",
-  "cancelText": "Цуцлах",
-  "confirmText": "Батлах",
-  "continueText": "Үргэлжлүүлэх",
-  "connectWalletText": "Данс холбох",
-  "disconnectWalletText": "Салгах",
-  "bridgeText": "Гүүр",
-  "sendText": "Илгээх",
-  "swapText": "Солих",
+  "backText": "Back",
+  "cancelText": "Cancel",
+  "confirmText": "Confirm",
+  "continueText": "Continue",
+  "connectWalletText": "Connect account",
+  "disconnectWalletText": "Disconnect",
+  "bridgeText": "Bridge",
+  "sendText": "Send",
+  "swapText": "Swap",
   "priceText": "Үнэ",
-  "marketText": "Зах зээл",
+  "marketText": "Market",
   "account": {
     "accountTitle": "Account",
     "copy": "Copy address",
@@ -195,7 +195,6 @@
     "swap": "@:swapText",
     "totalAssetsValue": "Total assets value:"
   },
-  "backText": "Back",
   "balanceText": "Balance",
   "blockNumberText": "Block number",
   "bridge": {
@@ -222,7 +221,6 @@
     "statusAction": "Action Needed",
     "title": "History"
   },
-  "bridgeText": "Bridge",
   "bridgeTransaction": {
     "allowToken": "Allow {AppName} to use your {tokenSymbol}",
     "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.",
@@ -279,20 +277,17 @@
     "max": "MAX"
   },
   "calculatingText": "Calculating",
-  "cancelText": "Cancel",
   "changeAccountText": "Change account",
   "changeNetworkText": "Change network in wallet",
   "closeText": "Close",
   "code": {
-    "allowanceError": "Check your camera availability and browser permissions to use it",
-    "allowanceRequest": "Press “Allow” to access camera",
-    "camera": "Camera",
-    "download": "Download QR Code",
-    "import": "Import an image",
-    "invalid": "Invalid QR Code",
-    "receive": "Receive",
-    "scan": "Scan with camera",
-    "upload": "Scan QR"
+    "camera": "Камер",
+    "download": "QR код татах",
+    "import": "Зураг импортлох",
+    "invalid": "Буруу QR код",
+    "receive": "Хүлээн авах",
+    "scan": "Камераар унших",
+    "upload": "QR унших"
   },
   "collapseText": "Collapse",
   "comingSoonText": "Coming Soon",
@@ -306,7 +301,6 @@
     "outputDescription": "Гарцыг урьдчилан тооцоолсон. Үнэ {slippageTolerance}%‑иас их өөрчлөгдвөл гүйлгээ цуцлагдана.",
     "title": "Таны пуул дахь хувь"
   },
-  "confirmText": "Confirm",
   "confirmTransactionText": "Confirm transaction",
   "connectedAccount": "Connected account",
   "connectedText": "Connected",
@@ -330,9 +324,7 @@
       "recommended": "Recommended"
     }
   },
-  "connectWalletText": "Connect account",
   "connectWalletTextTooltip": "Connect to {Sora} Network with {PolkadotJs}",
-  "continueText": "Continue",
   "copiedText": "Copied!",
   "copiedWithValue": "{value} is copied!",
   "copyPhraseText": "Copy Passphrase",
@@ -532,7 +524,6 @@
   },
   "disclaimer": "{disclaimerPrefix} This website is maintained by the {Sora} community. Before continuing to use this website, please review the {polkaswapFaqLink} and documentation, which includes a detailed explanation on how {AppName} works, as well as the {memorandumLink}, and {privacyLink}. These documents are crucial to a secure and positive user experience. By using {AppName}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {AppName} in your legal jurisdiction; 2) your understanding that the current version of {AppName} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {AppName}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
   "disclaimerTitle": "Disclaimer",
-  "disconnectWalletText": "Disconnect",
   "doNotShowText": "Don’t show me this again",
   "dragAndDropText": "Drag & drop or choose {extension} file",
   "editText": "Edit",
@@ -644,17 +635,17 @@
     "turnPhoneHideBalances": "Turn phone & hide"
   },
   "helpDialog": {
-    "appVersion": "{AppName} version",
-    "contactUs": "Contact us",
-    "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service",
-    "title": "Help"
+    "title": "Тусламж",
+    "termsOfService": "Үйлчилгээний нөхцөл",
+    "privacyPolicy": "Нууцлалын бодлого",
+    "contactUs": "Холбоо барих",
+    "appVersion": "{AppName} хувилбар"
   },
   "history": {
-    "clearHistory": "Clear history",
-    "empty": "Your transactions will appear here",
-    "emptySearch": "No transactions found",
-    "filterPlaceholder": "Filter by Address, Symbol, Type or Block ID"
+    "clearHistory": "Түүхийг арилгах",
+    "empty": "Таны гүйлгээнүүд энд харагдана",
+    "emptySearch": "Гүйлгээ олдсонгүй",
+    "filterPlaceholder": "Хаяг, тэмдэг, төрөл эсвэл блок ID-гаар шүүх"
   },
   "historyErrorMessages": {
     "balances": {
@@ -803,7 +794,6 @@
     "Wallet": "Account"
   },
   "marketAlgorithmText": "Market algorithm",
-  "marketText": "Market",
   "maxAmountText": "max. amount",
   "memorandum": "{AppName} Memorandum and Terms of Services",
   "minAmountText": "min. amount",
@@ -1218,7 +1208,8 @@
     "Swap": "Swap",
     "VaultDetails": "Position Details",
     "Vaults": "{Kensetsu}",
-    "Wallet": "Wallet"
+    "Wallet": "Wallet",
+    "Burn": "Burn"
   },
   "pairIsNotCreated": "Token pair isn't created",
   "points": {
@@ -1339,7 +1330,6 @@
   "poweredBy": "Дэмжлэгтэй",
   "prevText": "Previous",
   "priceChartText": "Үнийн график",
-  "priceText": "Үнэ",
   "provider": {
     "messages": {
       "checkExtension": "{name} өргөтгөл завгүй байна, шалгана уу",
@@ -1492,7 +1482,7 @@
   "selectLanguageDialog": {
     "title": "Language"
   },
-  "selectNodeConnected": "Connected to: {chain}",
+  "selectNodeConnected": "Холбогдсон: {chain}",
   "selectNodeDialog": {
     "addNode": "Add custom node",
     "connected": "Connected",
@@ -1509,7 +1499,7 @@
     "title": "Network node selection",
     "updateNode": "Update node"
   },
-  "selectNodeText": "Select Network Node",
+  "selectNodeText": "Сүлжээний зангилаа сонгох",
   "selectRegisteredAsset": {
     "search": {
       "networkLabelEthereum": "{network} network mirror tokens",
@@ -1533,7 +1523,6 @@
     "searchPlaceholder": "Filter by Asset ID, Name or Ticker Symbol",
     "title": "Select a token"
   },
-  "sendText": "Send",
   "sentText": "Sent",
   "settingsText": "Settings",
   "signAndClaimText": "Sign and claim",
@@ -1702,7 +1691,6 @@
     "slippageTolerance": "Slippage Tolerance",
     "swapOutputMessage": "Гарцыг урьдчилан тооцоолсон. Та дор хаяж {transactionValue} хүлээн авна, эс тэгвээс гүйлгээ цуцлагдана."
   },
-  "swapText": "Swap",
   "tokens": {
     "assetId": "Asset ID"
   },
@@ -1778,29 +1766,5 @@
     "unlockFrequency": "Unlock frequency",
     "vestingPercentage": "Vesting percentage"
   },
-  "warningText": "Warning",
-  "history": {
-    "clearHistory": "Түүхийг арилгах",
-    "empty": "Таны гүйлгээнүүд энд харагдана",
-    "emptySearch": "Гүйлгээ олдсонгүй",
-    "filterPlaceholder": "Хаяг, тэмдэг, төрөл эсвэл блок ID-гаар шүүх"
-  },
-  "helpDialog": {
-    "title": "Тусламж",
-    "termsOfService": "Үйлчилгээний нөхцөл",
-    "privacyPolicy": "Нууцлалын бодлого",
-    "contactUs": "Холбоо барих",
-    "appVersion": "{AppName} хувилбар"
-  },
-  "selectNodeConnected": "Холбогдсон: {chain}",
-  "selectNodeText": "Сүлжээний зангилаа сонгох",
-  "code": {
-    "camera": "Камер",
-    "download": "QR код татах",
-    "import": "Зураг импортлох",
-    "invalid": "Буруу QR код",
-    "receive": "Хүлээн авах",
-    "scan": "Камераар унших",
-    "upload": "QR унших"
-  }
+  "warningText": "Warning"
 }

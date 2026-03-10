@@ -79,9 +79,14 @@ export default class ExtensionListStep extends mixins(TranslationMixin) {
 
   &-text {
     color: var(--s-color-base-content-primary);
-    font-size: var(--s-font-size-extra-small);
+    font-size: 13px;
     font-weight: 300;
-    line-height: var(--s-line-height-base);
+    line-height: 18.2px;
+
+    :deep(.external-link.p3) {
+      font-size: 14px;
+      line-height: 25.2px;
+    }
   }
 
   &-title {
@@ -95,7 +100,8 @@ export default class ExtensionListStep extends mixins(TranslationMixin) {
   &-list {
     display: flex;
     flex-flow: column nowrap;
-    gap: $basic-spacing-small;
+    gap: 12px;
+    margin-top: 0;
   }
 }
 </style>

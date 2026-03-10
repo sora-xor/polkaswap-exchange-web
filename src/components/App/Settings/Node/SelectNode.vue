@@ -103,3 +103,136 @@ function getTitle(node: Node): string {
   return name && chain ? t('selectNodeDialog.nodeTitle', { chain, name }) : name || chain || '';
 }
 </script>
+
+<style lang="scss">
+.select-node-list__item {
+  &.el-radio,
+  &.s-radio {
+    height: initial;
+  }
+
+  &.s-radio {
+    width: 100%;
+
+    > .flex {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-width: 0;
+    }
+
+    > .flex.space-x-2 {
+      column-gap: 0;
+    }
+
+    > .flex.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+  }
+
+  .el-radio__label,
+  > .flex > label {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.select-node-scrollbar {
+  @include scrollbar(-$inner-spacing-big);
+}
+
+.select-node {
+  .el-button + .el-button {
+    margin-left: 0;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+$node-list-item-height: 66px;
+$node-list-items: 5;
+$node-desc-spacing: 6px;
+$node-desc-border-radius: 8px;
+
+.select-node {
+  flex-direction: column;
+
+  & > *:not(:last-child) {
+    margin-bottom: $inner-spacing-medium;
+  }
+
+  &-list {
+    max-height: calc(#{$node-list-item-height} * #{$node-list-items});
+    flex-direction: column;
+
+    &__item {
+      margin-right: 0;
+      align-items: center;
+      padding: $inner-spacing-small $inner-spacing-big;
+      white-space: normal;
+    }
+  }
+
+  &-item {
+    flex: 1;
+    align-items: center;
+  }
+
+  &-info {
+    flex-direction: column;
+    flex: 1;
+    margin-right: $inner-spacing-small;
+
+    &__label {
+      color: var(--s-color-base-content-primary);
+      line-height: var(--s-line-height-medium);
+      @include radio-title;
+    }
+
+    &__desc {
+      flex-wrap: wrap;
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-mini);
+      font-weight: 300;
+      line-height: var(--s-line-height-medium);
+
+      > div {
+        background: var(--s-color-base-background);
+        padding: $node-desc-spacing;
+        margin-top: $node-desc-spacing;
+        margin-right: $inner-spacing-mini;
+        border-radius: $node-desc-border-radius;
+      }
+    }
+  }
+
+  &-details {
+    padding: 0;
+  }
+
+  &-button {
+    width: 100%;
+  }
+
+  &-badge {
+    width: var(--s-size-medium);
+    height: var(--s-size-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .el-icon-loading {
+      color: var(--s-color-base-content-tertiary);
+    }
+  }
+
+  &-description {
+    font-size: var(--s-font-size-extra-small);
+    font-weight: 300;
+    line-height: var(--s-line-height-base);
+    padding: 0 $inner-spacing-small;
+  }
+}
+</style>

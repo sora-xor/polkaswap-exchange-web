@@ -9,7 +9,7 @@
         size="big"
         primary
       >
-        <generic-page-header class="header--bridge" :title="t('hashiBridgeText')" :tooltip="t('bridge.info')">
+        <generic-page-header class="header--bridge" :title="bridgeTitle" :tooltip="t('bridge.info')">
           <div class="bridge-header-buttons">
             <s-button
               v-if="isLoggedIn"
@@ -116,6 +116,7 @@
         </token-input>
 
         <s-button
+          v-if="areAccountsConnected"
           class="el-button--next s-typography-button--large"
           data-test-name="nextButton"
           type="primary"
@@ -123,10 +124,7 @@
           :loading="areAccountsConnected && isValidNetwork && isConfirmTxLoading"
           @click="handleNextButtonClick"
         >
-          <template v-if="!areAccountsConnected">
-            {{ t('bridge.connectWallets') }}
-          </template>
-          <template v-else-if="!isValidNetwork">
+          <template v-if="!isValidNetwork">
             {{ t('changeNetworkText') }}
           </template>
           <template v-else-if="!isAssetSelected">
@@ -185,7 +183,11 @@
       </s-card>
     </s-form>
 
-    <div v-if="!areAccountsConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
+    <div v-if="!areAccountsConnected" class="bridge-footer">
+      <div class="bridge-footer__callout">
+        {{ t('bridge.connectWallets') }}
+      </div>
+    </div>
 
     <bridge-select-asset
       v-model:visible="showSelectTokenDialog"
@@ -304,6 +306,7 @@ const router = useRouter();
 
 const { t } = useTranslation();
 const { formatStringValue, getStringFromCodec, getFPNumber, getFPNumberFromCodec } = useFormattedAmount();
+const bridgeTitle = computed(() => t('hashiBridgeText'));
 
 const {
   asset,
@@ -808,6 +811,13 @@ watch(
 }
 
 .history-button {
+  color: var(--s-color-base-content-tertiary);
+
+  :deep(.s-button__icon > i) {
+    color: inherit;
+    opacity: 0.7;
+  }
+
   &-icon {
     position: absolute;
     bottom: 4px;
@@ -835,14 +845,41 @@ watch(
     @include vertical-divider('s-divider-tertiary');
     @include buttons;
     @include full-width-button('el-button--next');
+    padding: $inner-spacing-big $inner-spacing-big 32px;
+
+    :deep(.el-card__body) {
+      padding: 0 !important;
+    }
+
+    :deep(.s-button--switch) {
+      width: 42px;
+      min-width: 42px;
+      height: 42px;
+      min-height: 42px;
+      border: 0;
+      box-shadow: var(--s-shadow-element-pressed);
+      background-color: var(--s-color-base-border-primary);
+      color: var(--s-color-base-content-tertiary);
+      font-weight: 500;
+      line-height: 14px;
+    }
+
     .input-title {
       &--network {
         white-space: nowrap;
       }
     }
+
     .network-icon {
       width: calc(var(--s-size-small) / 2);
       height: calc(var(--s-size-small) / 2);
+    }
+
+    :deep(.token-input.is-disabled),
+    :deep(.token-input.s-disabled) {
+      opacity: 1;
+      color: var(--s-color-base-content-secondary);
+      border-color: var(--s-color-base-border-primary);
     }
   }
 
@@ -851,19 +888,50 @@ watch(
     align-items: center;
     gap: $inner-spacing-mini;
     margin-left: auto;
+
+    :deep(.el-button--settings) {
+      color: var(--s-color-base-content-tertiary);
+    }
+
+    :deep(.el-button--settings .s-button__icon > i) {
+      color: inherit;
+      opacity: 0.7;
+    }
+  }
+
+  :deep(.header--bridge i.s-icon-info-16) {
+    color: var(--s-color-base-content-tertiary);
   }
 
   &-footer {
+    width: min(100%, #{$inner-window-width});
     display: flex;
-    align-items: center;
+    justify-content: center;
     margin-top: $inner-spacing-medium;
-    font-size: var(--s-font-size-mini);
-    line-height: var(--s-line-height-big);
-    color: var(--s-color-base-content-secondary);
+
+    &__callout {
+      width: min(100%, 560px);
+      padding: $inner-spacing-medium $inner-spacing-big;
+      border-radius: var(--s-border-radius-small);
+      background: var(--s-color-utility-surface);
+      border: 1px solid rgba(42, 23, 31, 0.06);
+      box-shadow: var(--s-shadow-dialog);
+      font-size: var(--s-font-size-small);
+      line-height: var(--s-line-height-big);
+      color: var(--s-color-base-content-secondary);
+      text-align: center;
+    }
   }
 
   &-limit-card {
     margin-top: $inner-spacing-medium;
   }
+}
+
+:global([design-system-theme='dark']) .bridge-footer__callout {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 24px 54px rgba(20, 6, 31, 0.28),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
 }
 </style>

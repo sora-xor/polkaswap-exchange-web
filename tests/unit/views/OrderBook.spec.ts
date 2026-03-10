@@ -118,6 +118,11 @@ beforeEach(() => {
   unsubscribeFromBidsAndAsksMock.mockClear();
   updateRouteAfterSelectTokensMock.mockClear();
   parseCurrentRouteMock.mockClear();
+  orderBookIdRef.value = 'orderbook-aaa-bbb';
+  baseAssetRef.value = { symbol: 'AAA', address: 'addr-1' };
+  quoteAssetRef.value = { symbol: 'BBB', address: 'addr-2' };
+  firstRouteAddressRef.value = 'addr-1';
+  secondRouteAddressRef.value = 'addr-2';
 });
 
 describe('OrderBookView telemetry', () => {
@@ -139,6 +144,36 @@ describe('OrderBookView telemetry', () => {
       baseAsset: 'AAA',
       quoteAsset: 'BBB',
     });
+
+    wrapper.unmount();
+  });
+
+  it('normalizes trade URL when route params are not provided', async () => {
+    firstRouteAddressRef.value = '';
+    secondRouteAddressRef.value = '';
+
+    const wrapper = mount(OrderBookView);
+    await flushPromises();
+
+    expect(updateRouteAfterSelectTokensMock).toHaveBeenCalledWith(
+      expect.objectContaining({ address: 'addr-1', symbol: 'AAA' }),
+      expect.objectContaining({ address: 'addr-2', symbol: 'BBB' })
+    );
+
+    wrapper.unmount();
+  });
+
+  it('syncs trade URL when explicit route params are present', async () => {
+    firstRouteAddressRef.value = 'addr-1';
+    secondRouteAddressRef.value = 'addr-2';
+
+    const wrapper = mount(OrderBookView);
+    await flushPromises();
+
+    expect(updateRouteAfterSelectTokensMock).toHaveBeenCalledWith(
+      expect.objectContaining({ address: 'addr-1', symbol: 'AAA' }),
+      expect.objectContaining({ address: 'addr-2', symbol: 'BBB' })
+    );
 
     wrapper.unmount();
   });

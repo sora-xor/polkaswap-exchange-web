@@ -58,6 +58,11 @@ function handleClick(event: MouseEvent): void {
 $account-control-name-max-width: 200px;
 
 .account-control {
+  &.el-button {
+    font-weight: 500 !important;
+    line-height: 14px !important;
+  }
+
   &:hover,
   &:focus {
     [class^='s-icon-'] {
@@ -66,6 +71,9 @@ $account-control-name-max-width: 200px;
   }
 
   &.el-button.neumorphic.s-medium {
+    height: 42px !important;
+    padding: 5px 13px !important;
+
     @include tablet(true) {
       padding-left: 5px;
       padding-right: 5px;
@@ -76,6 +84,7 @@ $account-control-name-max-width: 200px;
     display: none;
     font-size: var(--s-font-size-small);
     font-weight: 700;
+    line-height: 14px;
     text-transform: uppercase;
     max-width: $account-control-name-max-width;
     overflow: hidden;

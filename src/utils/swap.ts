@@ -1,4 +1,9 @@
 import { FPNumber } from '@sora-substrate/sdk';
+import { getAssetBalance } from '@/utils/asset-formatting';
+
+import type { Nullable } from '@/types/common';
+import type { CodecString } from '@sora-substrate/sdk';
+import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 export enum DifferenceStatus {
   Success = 'success',
@@ -19,4 +24,16 @@ export const getDifferenceStatus = (value: number): string => {
   if (value < -10) return DifferenceStatus.Error;
   if (value < -1) return DifferenceStatus.Warning;
   return '';
+};
+
+/**
+ * Returns swap input balance only for authenticated users.
+ * Logged-out state should not render stale or synthetic balance rows.
+ */
+export const getVisibleSwapTokenBalance = (
+  token: Nullable<AccountAsset>,
+  isLoggedIn: boolean
+): Nullable<CodecString> => {
+  if (!isLoggedIn || !token) return null;
+  return getAssetBalance(token);
 };

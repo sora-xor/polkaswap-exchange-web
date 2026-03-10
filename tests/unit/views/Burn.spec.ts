@@ -77,7 +77,7 @@ vi.mock('@/store', () => {
     state: {
       wallet: {
         settings: {
-          blockNumber: 15_739_737,
+          blockNumber: 25_100_000,
           soraNetwork: 'Prod',
         },
         account: {
@@ -123,7 +123,7 @@ describe('Burn.vue', () => {
 
   beforeEach(async () => {
     store = (await import('@/store')).default;
-    store.state.wallet.settings.blockNumber = 15_739_737;
+    store.state.wallet.settings.blockNumber = 25_100_000;
     store.state.wallet.settings.soraNetwork = 'Prod';
     store.state.wallet.account.fiatPriceObject = {};
     loadingRef.value = false;
@@ -135,7 +135,7 @@ describe('Burn.vue', () => {
     vi.clearAllMocks();
   });
 
-  it('opens burn dialog with selected campaign data', async () => {
+  it('renders only SOLSWAP campaign and opens its burn dialog', async () => {
     const wrapper = mount(BurnView, {
       global: {
         stubs: {
@@ -155,17 +155,25 @@ describe('Burn.vue', () => {
     await flushPromises();
 
     const vm = wrapper.vm as unknown as Record<string, any>;
+    const burnLogo = wrapper.find('img.campaign-logo[alt="SOLSWAP logo"]');
 
-    vm.handleBurnClick('kensetsu');
+    expect(vm.campaigns).toHaveLength(1);
+    expect(vm.campaigns[0].id).toBe('solswap');
+    expect(vm.campaigns[0].link).toBe('https://t.me/solswap_io');
+    expect(burnLogo.exists()).toBe(true);
+    expect(wrapper.findAll('img.campaign-logo')).toHaveLength(1);
+
+    vm.handleBurnClick('solswap');
 
     expect(vm.burnDialogVisible).toBe(true);
-    expect(vm.selectedRate).toBe(1_000_000);
-    expect(vm.selectedMax).toBe(10_000);
+    expect(vm.selectedReceivedAsset.symbol).toBe('SS');
+    expect(vm.selectedRate).toBe('0.01');
+    expect(vm.selectedMax).toBe(100_000_000);
     expect(vm.selectedMin).toBe(1);
   });
 
   it('marks campaigns as ended when block height exceeds range', async () => {
-    store.state.wallet.settings.blockNumber = 20_000_000;
+    store.state.wallet.settings.blockNumber = 61_000_000;
 
     const wrapper = mount(BurnView, {
       global: {
@@ -186,10 +194,8 @@ describe('Burn.vue', () => {
 
     const vm = wrapper.vm as unknown as Record<string, any>;
 
-    expect(vm.ended.chameleon).toBe(true);
-    expect(vm.ended.kensetsu).toBe(true);
-    expect(vm.timeLeftFormatted.chameleon).toBe('0D 0H 0M');
-    expect(vm.timeLeftFormatted.kensetsu).toBe('0D 0H 0M');
+    expect(vm.ended.solswap).toBe(true);
+    expect(vm.timeLeftFormatted.solswap).toBe('0D 0H 0M');
 
     wrapper.unmount();
     expect(clearIntervalSpy).toHaveBeenCalled();
@@ -219,11 +225,11 @@ describe('Burn.vue', () => {
   });
 
   it('aggregates burned amounts for qualifying accounts', async () => {
-    const amount = new FPNumber(100_000_000);
+    const amount = new FPNumber(2);
 
     fetchBurnDataMock.mockResolvedValue([
-      { blockHeight: 15_750_000, amount, address: 'alice' },
-      { blockHeight: 15_750_000, amount, address: 'bob' },
+      { blockHeight: 25_100_000, amount, address: 'alice' },
+      { blockHeight: 25_100_000, amount, address: 'bob' },
     ]);
 
     const wrapper = mount(BurnView, {
@@ -243,7 +249,40 @@ describe('Burn.vue', () => {
 
     const vm = wrapper.vm as unknown as Record<string, any>;
 
-    expect(vm.totalXorBurned.chameleon.gte(amount)).toBe(true);
-    expect(vm.accountXorBurned.chameleon.gte(amount)).toBe(true);
+    expect(vm.totalXorBurned.solswap.gte(amount.add(amount))).toBe(true);
+    expect(vm.accountXorBurned.solswap.gte(amount)).toBe(true);
+  });
+
+  it('renders burn amounts without trailing decimal zeros', async () => {
+    const wrapper = mount(BurnView, {
+      global: {
+        stubs: {
+          BurnDialog: { template: '<div />' },
+          ExternalLink: { template: '<a><slot /></a>' },
+          InfoLine: {
+            props: ['label', 'value', 'assetSymbol'],
+            template:
+              '<div class="info-line-stub"><span class="label">{{ label }}</span><span class="value">{{ value }}</span><span class="asset">{{ assetSymbol }}</span></div>',
+          },
+          's-button': { template: '<button><slot /></button>' },
+          's-form': { template: '<form><slot /></form>' },
+          's-row': { template: '<div><slot /></div>' },
+          's-col': { template: '<div><slot /></div>' },
+          's-card': { template: '<div><slot /></div>' },
+        },
+      },
+    });
+
+    await flushPromises();
+
+    const text = wrapper.text();
+
+    expect(text).toContain('0.01');
+    expect(text).toContain('100 SOLSWAP per 1 XOR burned');
+    expect(text).toContain('burn XOR to reserve SOLSWAP (SS)');
+    expect(text).not.toContain('Time left');
+    expect(text).not.toContain('Reserve KARMA');
+    expect(text).not.toContain('Reserve KEN');
+    expect(text).not.toContain('0.0 XOR');
   });
 });

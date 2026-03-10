@@ -6,12 +6,18 @@
       :tooltip="t('pool.description')"
     ></generic-page-header>
     <div class="pool-wrapper" data-test-name="Pools">
-      <p v-if="!isLoggedIn" key="not-logged" class="pool-info-container pool-info-container--empty">
-        {{ t('pool.connectToWallet') }}
-      </p>
-      <p v-else-if="!hasAccountLiquidities" key="pools-empty" class="pool-info-container pool-info-container--empty">
-        {{ t('pool.liquidityNotFound') }}
-      </p>
+      <div v-if="!isLoggedIn || !hasAccountLiquidities" class="pool-empty-state">
+        <p class="pool-info-container pool-info-container--empty">
+          {{ !isLoggedIn ? t('pool.connectToWallet') : t('pool.liquidityNotFound') }}
+        </p>
+        <s-button
+          type="primary"
+          class="pool-empty-state__action s-typography-button--large"
+          @click="!isLoggedIn ? connectSoraWallet() : handleAddLiquidity()"
+        >
+          {{ !isLoggedIn ? t('connectWalletText') : t('pool.addLiquidity') }}
+        </s-button>
+      </div>
       <s-collapse v-else key="has-pools" class="pool-list" :borders="true" @change="updateActiveCollapseItems">
         <s-collapse-item
           v-for="liquidityItem of accountLiquidityData"
@@ -84,16 +90,13 @@
       </s-collapse>
     </div>
     <s-button
-      v-if="isLoggedIn"
+      v-if="isLoggedIn && hasAccountLiquidities"
       class="el-button--add-liquidity s-typography-button--large"
       data-test-name="addLiquidity"
       type="primary"
       @click="handleAddLiquidity()"
     >
       {{ t('pool.addLiquidity') }}
-    </s-button>
-    <s-button v-else type="primary" class="s-typography-button--large" @click="connectSoraWallet">
-      {{ t('connectWalletText') }}
     </s-button>
 
     <add-liquidity-dialog v-model:visible="addLiquidityVisibility"></add-liquidity-dialog>
@@ -270,9 +273,32 @@ $title-height: 42px;
   }
   @include full-width-button;
   @include full-width-button('el-button--create-pair', $inner-spacing-mini);
+
+  :deep(.el-button--primary.neumorphic) {
+    letter-spacing: -0.48px;
+    display: block;
+    box-shadow:
+      1px 1px 5px 0px var(--s-shadow-color-light),
+      -1px -1px 5px 0px var(--s-shadow-color-light);
+  }
 }
 
 .pool {
+  &-empty-state {
+    width: 100%;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $inner-spacing-medium;
+
+    &__action {
+      width: min(100%, 320px);
+      margin-top: 0;
+    }
+  }
+
   &-wrapper {
     width: 100%;
   }
@@ -284,15 +310,17 @@ $title-height: 42px;
   &-info {
     &-container {
       &--empty {
-        color: var(--s-color-base-content-secondary);
-        padding: $basic-spacing-medium $inner-spacing-big;
+        width: min(100%, 560px);
+        margin: 0;
+        color: var(--s-color-base-content-primary);
+        padding: $inner-spacing-big;
         background: var(--s-color-utility-surface);
         border-radius: var(--s-border-radius-small);
         box-shadow: var(--s-shadow-dialog);
-        font-size: var(--s-font-size-small);
+        border: 1px solid rgba(42, 23, 31, 0.06);
+        font-size: var(--s-font-size-medium);
         line-height: var(--s-line-height-medium);
-        font-weight: 600;
-        text-transform: uppercase;
+        font-weight: 400;
         text-align: center;
       }
 
@@ -316,5 +344,12 @@ $title-height: 42px;
       margin-right: $inner-spacing-mini;
     }
   }
+}
+
+:global([design-system-theme='dark']) .pool-info-container--empty {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 24px 54px rgba(20, 6, 31, 0.28),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
 }
 </style>

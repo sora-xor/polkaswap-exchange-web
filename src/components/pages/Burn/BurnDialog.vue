@@ -91,14 +91,14 @@ const props = withDefaults(
     visible?: boolean;
     receivedAsset: Asset;
     burnedAsset: Asset;
-    rate?: number;
+    rate?: string;
     max?: number;
     min?: number;
   }>(),
   {
     visible: false,
-    rate: 1_000_000,
-    max: 10_000,
+    rate: '0.01',
+    max: 100_000_000,
     min: 1,
   }
 );
@@ -136,7 +136,7 @@ const xorBalance = computed(() =>
   getFPNumberFromCodec(accountXor.value?.balance?.transferable ?? ZeroStringValue, burnedAsset.value.decimals)
 );
 
-const willBeBurned = computed(() => getFPNumber((Number(value.value || ZeroStringValue) || 0) * rate.value));
+const willBeBurned = computed(() => getFPNumber(value.value || ZeroStringValue).mul(rate.value));
 const tokensLeft = computed(() => {
   const diff = xorBalance.value.sub(willBeBurned.value);
   return diff.isLtZero() ? Zero : diff;

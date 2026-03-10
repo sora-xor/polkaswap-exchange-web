@@ -100,3 +100,65 @@ function setSelectedEl(element: HTMLDivElement | null, isSelected: boolean): voi
   }
 }
 </script>
+
+<style lang="scss" scoped>
+:deep(.dialog-wrapper.select-currency-dialog .el-radio) {
+  margin-right: 0;
+}
+
+:deep(.select-currency-scrollbar.el-scrollbar) {
+  margin-left: -24px;
+  margin-right: -24px;
+}
+
+:deep(.select-currency-scrollbar.el-scrollbar > .el-scrollbar__wrap) {
+  margin-bottom: 0 !important;
+  overflow-x: hidden;
+}
+
+:deep(.select-currency-scrollbar.el-scrollbar > .el-scrollbar__wrap),
+:deep(.select-currency-scrollbar.el-scrollbar > .el-scrollbar__wrap > .el-scrollbar__view) {
+  display: flex;
+  flex: 1;
+  flex-flow: column nowrap;
+}
+
+:deep(.select-currency-scrollbar.el-scrollbar > .el-scrollbar__bar.is-vertical) {
+  right: 2px;
+}
+
+.select-currency-list {
+  flex-direction: column;
+  height: 600px;
+  max-height: 462px;
+}
+
+.select-currency-list__item {
+  align-items: center;
+  border-radius: var(--s-border-radius-mini);
+  height: 66px;
+  padding: 12px 24px;
+}
+
+.select-currency-list .select-currency-item {
+  flex-direction: column;
+}
+
+.select-currency-list .select-currency-item__value {
+  color: var(--s-color-base-content-primary);
+  font-size: var(--s-font-size-medium);
+  font-weight: 600;
+  line-height: var(--s-line-height-medium);
+}
+
+.select-currency-list .select-currency-item__name {
+  color: var(--s-color-base-content-secondary);
+  font-size: var(--s-font-size-mini);
+  font-weight: 300;
+  line-height: var(--s-line-height-medium);
+}
+
+.select-currency__search {
+  margin-bottom: 16px;
+}
+</style>

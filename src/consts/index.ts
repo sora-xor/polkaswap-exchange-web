@@ -377,11 +377,7 @@ export interface SidebarMenuItemLink extends SidebarMenuItem {
   href?: string;
 }
 
-/**
- * Sidebar icon names must stay aligned with the live polkaswap.io menu.
- * `Sccp` is the only intentional extension over production and reuses the
- * statistics icon.
- */
+/** Sidebar icon names must stay aligned with the live polkaswap.io menu. */
 export const SidebarIcon = {
   Swap: 'arrows-swap-90-24',
   Trade: 'music-CD-24',
@@ -389,8 +385,8 @@ export const SidebarIcon = {
   Pool: 'basic-drop-24',
   Staking: 'basic-layers-24',
   Bridge: 'grid-block-distribute-vertically-24',
-  Sccp: 'various-planet-24',
   Account: 'finance-wallet-24',
+  Burn: 'basic-flame-24',
   Kensetsu: 'call-phone-16',
   Explore: 'various-items-24',
   Statistics: 'various-planet-24',
@@ -432,14 +428,14 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     href: '#/bridge',
   },
   {
-    icon: SidebarIcon.Sccp,
-    title: PageNames.Sccp,
-    href: '#/bridge/sccp',
-  },
-  {
     icon: SidebarIcon.Account,
     title: PageNames.Wallet,
     href: '#/wallet',
+  },
+  {
+    icon: SidebarIcon.Burn,
+    title: PageNames.Burn,
+    href: '#/burn',
   },
   {
     icon: SidebarIcon.Kensetsu,
@@ -461,11 +457,6 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     title: PageNames.Stats,
     href: '#/stats',
   },
-  // {
-  //   icon: 'basic-flame-24',
-  //   title: PageNames.Burn,
-  //   href: '/#/burn',
-  // },
   // {
   //   icon: 'music-eject-24',
   //   title: PageNames.SoraCard,
@@ -524,12 +515,7 @@ export const FaucetLink: SidebarMenuItemLink = {
 
 export const SidebarMenuGroups = [...MainMenu, ...OtherPagesMenu];
 
-export const BridgeChildPages = [
-  PageNames.Bridge,
-  PageNames.Sccp,
-  PageNames.BridgeTransaction,
-  PageNames.BridgeTransactionsHistory,
-];
+export const BridgeChildPages = [PageNames.Bridge, PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
 export const PoolChildPages = [PageNames.AddLiquidity];
 export const RewardsChildPages = [
   PageNames.PointSystemWrapper,

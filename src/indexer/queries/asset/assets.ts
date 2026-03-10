@@ -1,6 +1,7 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { getCurrentIndexer } from '@wallet';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
+import { retryOnEmptyResult } from '@/indexer/queries/retry';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -118,14 +119,20 @@ export async function fetchTokensData(assets: Asset[]): Promise<Record<string, T
       const filter = subqueryAssetsFilter(ids);
       const variables = { filter };
       const subqueryIndexer = indexer as SubqueryIndexer;
-      items = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAssetsQuery, variables, parse);
+      items = await retryOnEmptyResult(
+        async () => subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAssetsQuery, variables, parse),
+        (value) => !value?.length
+      );
       break;
     }
     case IndexerType.SUBSQUID: {
       const where = subsquidAssetsFilter(ids);
       const variables = { where };
       const subsquidIndexer = indexer as SubsquidIndexer;
-      items = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(SubsquidAssetsQuery, variables, parse);
+      items = await retryOnEmptyResult(
+        async () => subsquidIndexer.services.explorer.fetchAllEntitiesConnection(SubsquidAssetsQuery, variables, parse),
+        (value) => !value?.length
+      );
       break;
     }
   }

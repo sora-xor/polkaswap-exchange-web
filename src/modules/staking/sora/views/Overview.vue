@@ -219,7 +219,7 @@
 <script setup lang="ts">
 import { components as walletComponents } from '@wallet';
 import { computed, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from '@/composables/useTranslation';
 
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useLoading } from '@/composables/useLoading';
@@ -267,7 +267,7 @@ const showWithdrawDialog = ref(false);
 const showAllWithdrawsDialog = ref(false);
 const stakeDialogMode = ref<StakeDialogMode>(StakeDialogMode.ADD);
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const { isLoggedIn, connectSoraWallet } = useInternalConnect();
 const { loading } = useLoading();
 
@@ -479,6 +479,8 @@ $logo-size: 64px;
 
 h1 {
   font-size: 28px;
+  font-weight: 400;
+  line-height: 33.6px;
   text-align: center;
   margin-bottom: 15px;
 }

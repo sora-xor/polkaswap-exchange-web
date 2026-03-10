@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { computed, reactive, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from '@/composables/useTranslation';
 
 import { useDialogModel } from '@/composables/useDialogModel';
 import { emptyValidatorsFilter, ValidatorsFilterType } from '@/modules/staking/sora/consts';
@@ -47,7 +47,7 @@ const emit = defineEmits<{
   (event: 'save', value: ValidatorsFilter): void;
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const { isVisible } = useDialogModel(props, emit);
 
 const localFilter = reactive<ValidatorsFilter>({ ...emptyValidatorsFilter, ...props.filter });

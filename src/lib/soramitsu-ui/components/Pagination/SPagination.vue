@@ -5,9 +5,11 @@ import {
   IconChevronsLeft16,
   IconChevronsRight16,
 } from '@soramitsu-ui/ui/components/icons';
+import { eagerComputed, useResizeObserver, whenever } from '@vueuse/core';
 import { not } from '@vueuse/math';
 import { SDropdown } from '@soramitsu-ui/ui/components';
 import { usePassiveModel } from '@soramitsu-ui/ui/composables/passive-model';
+import { computed, ref, watch } from 'vue';
 
 const PAGINATION_MAX_PAGES_SELECTABLE = 7;
 const PAGINATION_JUMP_SIZE = PAGINATION_MAX_PAGES_SELECTABLE - 2;
@@ -37,6 +39,10 @@ const props = withDefaults(
      * text shown near sizes dropdown
      * */
     sizesLabel?: string;
+    /**
+     * legacy layout mode from element-ui pagination (`layout="slot"`).
+     * */
+    layout?: string;
   }>(),
   {
     total: 0,
@@ -44,6 +50,7 @@ const props = withDefaults(
     currentPage: 1,
     pageSizes: () => [10, 50, 100],
     sizesLabel: 'Rows per page',
+    layout: '',
   }
 );
 
@@ -115,6 +122,7 @@ const shouldWrap = computed(() => {
     paginationContainerWidth.value <= PAGINATION_BREAKPOINT_WIDTH
   );
 });
+const isLegacySlotLayout = computed(() => props.layout === 'slot');
 
 watch(pagesNum, () => {
   if (pagesNum.value < current.value) {
@@ -206,7 +214,15 @@ function handlePrevClick() {
 </script>
 
 <template>
-  <div ref="pagination" class="s-pagination flex flex-wrap justify-between flex-row-reverse" data-testid="pagination">
+  <div v-if="isLegacySlotLayout" class="el-pagination s-pagination" data-testid="pagination">
+    <slot />
+  </div>
+  <div
+    v-else
+    ref="pagination"
+    class="s-pagination flex flex-wrap justify-between flex-row-reverse"
+    data-testid="pagination"
+  >
     <div
       class="order-last flex"
       :class="{

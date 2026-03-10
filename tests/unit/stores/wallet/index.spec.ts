@@ -69,6 +69,7 @@ vi.mock('@/store', () => ({
           shouldBalanceBeHidden: false,
           isMSTAvailable: false,
           currency: 'usd',
+          networkFees: {},
           theme: Theme.LIGHT,
         },
         transactions: {
@@ -101,6 +102,10 @@ vi.mock('@/store', () => ({
         },
         transactions: {
           firstReadyTx: null,
+        },
+        settings: {
+          currencySymbol: '$',
+          exchangeRate: 1,
         },
       },
       settings: {
@@ -178,6 +183,21 @@ describe('wallet store actions', () => {
 
     walletStore.removeActiveTransactions(['tx-1']);
     expect(removeActiveTxsMock).toHaveBeenCalledWith(['tx-1']);
+  });
+
+  it('exposes wallet fiat preferences and network fee map', async () => {
+    const legacyStore = (await import('@/store')).default as any;
+    legacyStore.getters.wallet.settings.currencySymbol = '€';
+    legacyStore.getters.wallet.settings.exchangeRate = 1.25;
+    legacyStore.state.wallet.settings.currency = 'eur';
+    legacyStore.state.wallet.settings.networkFees = { swap: '1000000000' };
+
+    const walletStore = useWalletStore();
+
+    expect(walletStore.currencySymbol).toBe('€');
+    expect(walletStore.exchangeRate).toBe(1.25);
+    expect(walletStore.currency).toBe('eur');
+    expect(walletStore.networkFees).toEqual({ swap: '1000000000' });
   });
 
   it('wraps account connection helpers', async () => {

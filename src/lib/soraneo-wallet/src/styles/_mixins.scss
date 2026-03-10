@@ -172,8 +172,10 @@
   }
 
   @at-root #{ selector.nest($scrollbar, '.el-scrollbar__wrap') } {
-    overflow-x: hidden;
-    margin-bottom: 0px !important; // to disable element-ui negative margin
+    @if $withHorizontalScroll == false {
+      overflow-x: hidden;
+      margin-bottom: 0px !important; // to disable element-ui negative margin
+    }
     @if $height != '' {
       height: $height;
     }
@@ -192,6 +194,16 @@
 
   @at-root #{ selector.nest($scrollbar, '.el-scrollbar__bar.is-vertical') } {
     right: $verticalRight;
+
+    @if $hideVerticalScroll == true {
+      width: 0;
+    }
+  }
+
+  @if $withHorizontalScroll == false {
+    @at-root #{ selector.nest($scrollbar, '.el-scrollbar__bar.is-horizontal') } {
+      display: none;
+    }
   }
 }
 

@@ -69,16 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  api,
-  connection,
-  components,
-  settingsStorage,
-  WALLET_CONSTS,
-  AlertsApiService,
-  initWallet,
-  waitForCore,
-} from '@wallet';
+import { api, connection, components, WALLET_CONSTS, AlertsApiService, initWallet, waitForCore } from '@wallet';
 import debounce from 'lodash/debounce';
 import { computed, onBeforeMount, onMounted, onBeforeUnmount, ref, watch, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -304,11 +295,6 @@ const setSignTxDialogVisibility =
     store.commit?.wallet?.transactions?.setSignTxDialogVisibility,
     'wallet/transactions/setSignTxDialogVisibility'
   ) ?? (() => {});
-const toggleDisclaimerDialogVisibility = resolveCommit(
-  store.commit?.settings?.toggleDisclaimerDialogVisibility,
-  'settings/toggleDisclaimerDialogVisibility'
-);
-
 const setApiKeys = walletStore.setApiKeys;
 const subscribeOnExchangeRatesApi = walletStore.subscribeOnExchangeRatesApi;
 const resetNetworkSubscriptions = walletStore.resetNetworkSubscriptions;
@@ -364,13 +350,6 @@ function openProductDialog(product = 'soraMobile'): void {
   const popup = productPopupRefs[key];
   if (popup) {
     popup.value = true;
-  }
-}
-
-function showDisclaimer(): void {
-  const disclaimerApprove = settingsStorage.get('disclaimerApprove');
-  if (!disclaimerApprove && typeof toggleDisclaimerDialogVisibility === 'function') {
-    setTimeout(() => toggleDisclaimerDialogVisibility(), 5_000);
   }
 }
 
@@ -561,26 +540,40 @@ async function loadRuntimeEnvConfig(): Promise<RuntimeEnvConfig> {
   const candidates = getEnvConfigCandidates();
 
   for (const candidate of candidates) {
-    const envConfigUrl = resolveStaticAssetUrl(candidate);
+    const envConfigUrls = [resolveStaticAssetUrl(candidate)];
+    const normalizedCandidate = candidate.replace(/^\/+/g, '');
 
-    try {
-      const { data } = await axiosInstance.get(envConfigUrl);
-
-      if (data && typeof data === 'object' && !Array.isArray(data)) {
-        return data as RuntimeEnvConfig;
+    if (typeof window !== 'undefined' && typeof window.location?.origin === 'string') {
+      try {
+        const rootConfigUrl = new URL(normalizedCandidate, `${window.location.origin}/`).toString();
+        if (!envConfigUrls.includes(rootConfigUrl)) {
+          envConfigUrls.push(rootConfigUrl);
+        }
+      } catch {
+        // Ignore malformed runtime location values and continue with resolved URLs.
       }
+    }
 
-      const payloadType = Array.isArray(data) ? 'array' : typeof data;
-      const payloadPreview = typeof data === 'string' ? data.trim().slice(0, 32).toLowerCase() : undefined;
-      const isHtmlFallback = payloadType === 'string' && payloadPreview?.startsWith('<!doctype html');
+    for (const envConfigUrl of envConfigUrls) {
+      try {
+        const { data } = await axiosInstance.get(envConfigUrl);
 
-      if (isHtmlFallback) {
-        console.warn('[bootstrap] Env config fallback returned HTML document:', candidate);
-      } else {
-        console.warn('[bootstrap] Invalid env config payload type:', candidate, payloadType);
+        if (data && typeof data === 'object' && !Array.isArray(data)) {
+          return data as RuntimeEnvConfig;
+        }
+
+        const payloadType = Array.isArray(data) ? 'array' : typeof data;
+        const payloadPreview = typeof data === 'string' ? data.trim().slice(0, 32).toLowerCase() : undefined;
+        const isHtmlFallback = payloadType === 'string' && payloadPreview?.startsWith('<!doctype html');
+
+        if (isHtmlFallback) {
+          console.warn('[bootstrap] Env config fallback returned HTML document:', candidate, envConfigUrl);
+        } else {
+          console.warn('[bootstrap] Invalid env config payload type:', candidate, payloadType, envConfigUrl);
+        }
+      } catch (error) {
+        console.warn('[bootstrap] Failed to load env config:', candidate, envConfigUrl, error);
       }
-    } catch (error) {
-      console.warn('[bootstrap] Failed to load env config:', candidate, error);
     }
   }
 
@@ -844,7 +837,6 @@ onBeforeMount(async () => {
   } else if (!hasIndexerEndpoint) {
     console.warn('[bootstrap] Indexer endpoints are not configured. Exchange-rate subscription skipped.');
   }
-  showDisclaimer();
   void fetchAdsArray();
 });
 
@@ -865,7 +857,6 @@ onBeforeUnmount(() => {
 html {
   overflow-y: hidden;
   font-size: var(--s-font-size-small);
-  line-height: var(--s-line-height-base);
   letter-spacing: var(--s-letter-spacing-small);
   background-color: var(--s-color-utility-body);
   scrollbar-color: transparent transparent;
@@ -884,7 +875,7 @@ ul ul {
   height: 100vh;
   height: 100dvh;
   color: var(--s-color-base-content-primary);
-  background-color: var(--s-color-utility-body);
+  background: var(--s-color-utility-body);
   transition: background-color 500ms linear;
 }
 
@@ -902,6 +893,19 @@ ul ul {
     flex: 1;
 
     @include scrollbar;
+
+    > .el-scrollbar__bar {
+      opacity: 0 !important;
+    }
+
+    > .el-scrollbar__bar.is-horizontal {
+      display: none !important;
+    }
+
+    &:hover > .el-scrollbar__bar.is-vertical,
+    &:focus-within > .el-scrollbar__bar.is-vertical {
+      opacity: 0.25 !important;
+    }
   }
 }
 

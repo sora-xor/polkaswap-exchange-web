@@ -56,7 +56,7 @@
 import { Operation } from '@sora-substrate/sdk';
 import { components } from '@wallet';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from '@/composables/useTranslation';
 
 import { useDialogModel } from '@/composables/useDialogModel';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -78,7 +78,7 @@ const emit = defineEmits<{
   (event: 'show-all-withdraws'): void;
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const dialogModel = useDialogModel(props, emit);
 const { isVisible, closeDialog } = dialogModel;
 const { getFiatAmountByCodecString } = useFormattedAmount();

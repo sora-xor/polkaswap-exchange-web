@@ -90,6 +90,15 @@ describe('TokenSelectButton', () => {
     expect(exposed.computedClasses).toContain('token-select-button--token');
   });
 
+  it('normalizes token symbols to avoid visual line breaks', () => {
+    const wrapper = mountComponent({
+      tokens: [{ symbol: ' XOR\n' }, { symbol: ' V AL ' }],
+    });
+    const exposed = wrapper.vm as unknown as { buttonText: string };
+
+    expect(exposed.buttonText).toBe('XOR-VAL');
+  });
+
   it('renders token logo when a single token is provided', () => {
     const wrapper = mountComponent({
       token: { symbol: 'XOR' },
@@ -107,5 +116,19 @@ describe('TokenSelectButton', () => {
 
     expect(wrapper.find('.s-icon-stub').exists()).toBe(false);
     expect(exposed.buttonTabindex).toBe(-1);
+  });
+
+  it('keeps logo, text and chevron inside a shared content wrapper', () => {
+    const wrapper = mountComponent({
+      token: { symbol: 'XOR' },
+      icon: 'chevron-down-rounded-16',
+    });
+
+    const content = wrapper.find('.token-select-button__content');
+
+    expect(content.exists()).toBe(true);
+    expect(content.find('.token-logo-stub').exists()).toBe(true);
+    expect(content.find('.token-select-button__text').text()).toBe('XOR');
+    expect(content.find('.s-icon-stub').attributes('data-name')).toBe('chevron-down-rounded-16');
   });
 });

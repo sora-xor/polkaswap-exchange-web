@@ -146,7 +146,7 @@ defineExpose({
         <s-icon
           v-if="type === 'button'"
           class="s-dropdown__arrow"
-          name="arrows-chevron-bottom-16"
+          name="el-icon-arrow-down el-icon--right"
           :size="iconSize || '16'"
         />
       </span>

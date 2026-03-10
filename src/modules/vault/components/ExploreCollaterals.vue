@@ -36,7 +36,13 @@
         </template>
         <template v-slot="{ $index, index, row }">
           <span class="explore-table-item-index explore-table-item-index--body">
-            {{ ($index ?? index ?? 0) + sliceStart + 1 }}
+            {{
+              (typeof ($index ?? index) === 'number' && Number.isFinite($index ?? index)
+                ? ($index ?? index)
+                : tableItems.indexOf(row)) +
+              sliceStart +
+              1
+            }}
           </span>
           <pair-token-logo
             class="explore-table-item-logo"
@@ -475,6 +481,22 @@ onBeforeUnmount(() => {
   background-color: rgba(42, 23, 31, 0.06);
   cursor: pointer;
 }
+
+.collaterals-table.explore-table.el-table {
+  font-size: 16px;
+  line-height: 18.4px;
+}
+
+.collaterals-table.explore-table.el-table .el-table__header tr > th > .cell {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  font-weight: 500 !important;
+}
+
+.collaterals-table.explore-table.el-table .el-table__body tr > td > .cell {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
 </style>
 
 <style lang="scss" scoped>
@@ -516,6 +538,27 @@ $min_breakpoint_large-mobile: $breakpoint_large-mobile - 1px;
     padding: 0 $inner-spacing-small;
     > .search {
       max-width: $explore-search-input-max-width;
+    }
+
+    > :deep(.search.search-input) {
+      min-height: 58px;
+      border-radius: 24px;
+      padding: $inner-spacing-small $inner-spacing-medium;
+      background-color: var(--s-color-utility-surface);
+      box-shadow:
+        1px 1px 5px 0 var(--s-shadow-color-light),
+        -5px -5px 5px 0 inset rgba(255, 255, 255, 0.5),
+        1px 1px 10px 0 inset var(--s-shadow-color-dark);
+    }
+
+    > :deep(.search.search-input .s-input__content) {
+      min-height: 42px;
+      padding: 0;
+    }
+
+    > :deep(.search.search-input .el-input__inner) {
+      line-height: 21px;
+      padding: 0 26px;
     }
   }
 }

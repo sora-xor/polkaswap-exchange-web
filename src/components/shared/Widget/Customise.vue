@@ -2,7 +2,13 @@
   <div class="customise-widget-wrapper" @click.stop="toggleVisibility">
     <base-widget v-bind="$attrs" :title="t('customisePageText')" class="customise-widget">
       <template #filters>
-        <el-popover popper-class="customise-widget-popper" trigger="click" v-model="visible" :visible-arrow="false">
+        <el-popover
+          popper-class="customise-widget-popper"
+          placement="bottom-end"
+          trigger="click"
+          v-model="visible"
+          :visible-arrow="false"
+        >
           <template #reference>
             <s-button id="customise-button" type="action" alternative size="small" icon="basic-settings-24"></s-button>
           </template>
@@ -12,10 +18,16 @@
 
             <div v-for="entry in modelEntries" :key="entry.name" class="customise-options">
               <s-divider></s-divider>
-              <label v-for="(value, key) in entry.model" :key="key" class="customise-option">
-                <s-switch :model-value="value" @update:model-value="(val) => toggle(entry.name, key, val)" />
-                <span>{{ getLabel(key) }}</span>
-              </label>
+              <div v-for="(value, key) in entry.model" :key="key" class="customise-option">
+                <s-switch
+                  :model-value="value"
+                  @update:model-value="(val) => toggle(entry.name, key, val)"
+                  @change="(val) => toggle(entry.name, key, val)"
+                />
+                <button type="button" class="customise-option__label" @click="toggleLabel(entry.name, key, value)">
+                  {{ getLabel(key) }}
+                </button>
+              </div>
             </div>
 
             <slot></slot>
@@ -76,11 +88,17 @@ const modelEntries = computed(() => {
 
 function toggle(name: ModelKey, key: string, value: boolean): void {
   const target = name === 'widgets' ? widgetsModel : optionsModel;
+  if (Boolean(target.value?.[key]) === Boolean(value)) return;
+
   const nextValue: WidgetsVisibilityModel = {
     ...(target.value ?? ((ObjectInit() ?? {}) as WidgetsVisibilityModel)),
     [key]: value,
   };
   target.value = nextValue;
+}
+
+function toggleLabel(name: ModelKey, key: string, value: boolean): void {
+  toggle(name, key, !value);
 }
 
 function getLabel(key: string): string {
@@ -113,12 +131,38 @@ function toggleVisibility(event: PointerEvent): void {
   &-icon {
     @include icon-styles(true);
   }
+
+  :deep(#customise-button) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    min-height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: none;
+    color: var(--s-color-base-content-tertiary);
+  }
+
+  :deep(#customise-button .s-button__icon),
+  :deep(#customise-button i[class*='s-icon-']) {
+    display: inline-block;
+    font-size: 18px;
+    line-height: 18px;
+    color: inherit;
+    opacity: 0.7;
+  }
 }
 
 .customise {
   display: flex;
   flex-flow: column nowrap;
-  gap: $inner-spacing-medium;
+  gap: $inner-spacing-small;
+  min-width: 240px;
 
   @include vertical-divider('el-divider', 0);
 
@@ -130,15 +174,46 @@ function toggleVisibility(event: PointerEvent): void {
   &-options {
     display: flex;
     flex-flow: column nowrap;
-    gap: $inner-spacing-medium;
+    gap: $inner-spacing-small;
   }
 
   &-option {
-    cursor: pointer;
     display: flex;
     flex-flow: row nowrap;
+    align-items: center;
     gap: $inner-spacing-small;
+  }
+
+  &-option__label {
+    cursor: pointer;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    color: var(--s-color-base-content-primary);
+    text-align: left;
+    font: inherit;
     text-transform: capitalize;
+  }
+
+  :deep(.customise-options .el-divider) {
+    margin: 0 0 $inner-spacing-small;
+  }
+
+  :deep(> .s-button) {
+    width: 100%;
+    height: 42px;
+    border: 0;
+    border-radius: 24px;
+    background: var(--s-color-base-border-secondary);
+    box-shadow: var(--s-shadow-element-pressed);
+    text-transform: uppercase;
+  }
+
+  :deep(> .s-button .s-button__text) {
+    font-weight: 700;
+    color: var(--s-color-base-content-quaternary);
+    text-transform: uppercase;
   }
 }
 </style>

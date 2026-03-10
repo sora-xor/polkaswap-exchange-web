@@ -83,7 +83,7 @@
 <script setup lang="ts">
 import { components } from '@wallet';
 import { computed, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from '@/composables/useTranslation';
 
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 import { useValidatorsFormatting } from '@/modules/staking/sora/composables/useValidatorsFormatting';
@@ -121,7 +121,7 @@ const emit = defineEmits<{
   (event: 'update:selected', value: ValidatorInfoFull[]): void;
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const {
   validators,
   validatorsFilter,

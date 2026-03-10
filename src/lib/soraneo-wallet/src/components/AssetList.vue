@@ -1,5 +1,5 @@
 <template>
-  <div class="asset-list">
+  <div class="asset-list" v-bind="rootAttrs">
     <recycle-scroller
       ref="wrap"
       :items="assets"
@@ -57,6 +57,10 @@ import Scrollbar from './ScrollBar.vue';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { RecycleScroller } from 'vue-virtual-scroller';
 
+defineOptions({
+  inheritAttrs: false,
+});
+
 type Props = {
   assets?: Asset[];
   size?: number;
@@ -94,6 +98,9 @@ const barMove = ref(0);
 const scrollHeight = ref(0);
 
 const forwardedSlots = computed(() => Object.keys(slots).filter((name) => name !== 'list-empty'));
+const rootAttrs = computed(() => {
+  return Object.fromEntries(Object.entries(attrs).filter(([key]) => !key.startsWith('on')));
+});
 
 const invokeListener = (handler: unknown, asset: Asset, args: unknown[]): void => {
   if (Array.isArray(handler)) {

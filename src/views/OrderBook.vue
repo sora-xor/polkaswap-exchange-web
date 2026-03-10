@@ -33,6 +33,7 @@
 <script setup lang="ts">
 import isEmpty from 'lodash/fp/isEmpty';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { DAI, KUSD } from '@sora-substrate/sdk/build/assets/consts';
 
 import { useLoading } from '@/composables/useLoading';
 import { useOrderBook } from '@/composables/useOrderBook';
@@ -46,7 +47,7 @@ import { useSettingsStore } from '@/stores/settings';
 import { useOrderBookStore } from '@/stores/orderBook';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Nullable } from '@/types/common';
 
 const BookWidget = lazyComponent(Components.BookWidget);
@@ -119,14 +120,19 @@ watch(
   (id) => {
     if (id) {
       void subscribeToOrderBookStats();
-      const base = baseAsset.value;
-      const quote = quoteAsset.value;
-      if (base?.address && quote?.address && firstRouteAddress.value && base.address !== firstRouteAddress.value) {
-        updateRouteAfterSelectTokens(base, quote);
-      }
     }
   },
   { immediate: true }
+);
+
+watch(
+  [orderBookId, baseAsset, quoteAsset, firstRouteAddress, secondRouteAddress],
+  ([id, base, quote, first, second]) => {
+    if (!(id && base?.address && quote?.address && base?.symbol && quote?.symbol)) return;
+    if (first === base.address && second === quote.address) return;
+
+    updateRouteAfterSelectTokens(base, quote);
+  }
 );
 
 watch(
@@ -140,13 +146,29 @@ watch(
 );
 
 onMounted(() => {
+  const hasRequestedPairInRoute = Boolean(firstRouteAddress.value && secondRouteAddress.value);
+
+  if (!hasRequestedPairInRoute) {
+    const base = baseAsset.value;
+    const quote = quoteAsset.value;
+
+    if (base?.symbol && quote?.symbol) {
+      updateRouteAfterSelectTokens(base, quote);
+    } else {
+      updateRouteAfterSelectTokens(
+        { address: DAI.address, symbol: DAI.symbol } as AccountAsset,
+        { address: KUSD.address, symbol: KUSD.symbol } as AccountAsset
+      );
+    }
+  }
+
   void withApi(async () => {
     await getOrderBooksInfo();
 
     if (orderBookId.value) {
       const base = baseAsset.value;
       const quote = quoteAsset.value;
-      if (base && quote) {
+      if (base?.symbol && quote?.symbol) {
         updateRouteAfterSelectTokens(base, quote);
       }
       return;
@@ -159,19 +181,25 @@ onMounted(() => {
     }
 
     if (!orderBookId.value) {
-      const fallback = [...orderbookList].sort((a, b) => {
-        if (a.status !== b.status) {
-          return b.status > a.status ? 1 : -1;
-        }
-        return b.orderBookId.dexId - a.orderBookId.dexId;
-      })[0];
+      const preferredFallback = orderbookList.find(
+        ({ orderBookId }) => orderBookId.base === DAI.address && orderBookId.quote === KUSD.address
+      );
+
+      const fallback =
+        preferredFallback ??
+        [...orderbookList].sort((a, b) => {
+          if (a.status !== b.status) {
+            return b.status > a.status ? 1 : -1;
+          }
+          return b.orderBookId.dexId - a.orderBookId.dexId;
+        })[0];
 
       if (fallback) {
         setCurrentOrderBook(fallback.orderBookId as OrderBookId);
         await nextTick();
         const base = baseAsset.value;
         const quote = quoteAsset.value;
-        if (base && quote) {
+        if (base?.symbol && quote?.symbol) {
           updateRouteAfterSelectTokens(base, quote);
         }
       }

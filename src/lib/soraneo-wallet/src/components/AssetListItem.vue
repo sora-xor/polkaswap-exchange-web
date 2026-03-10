@@ -120,6 +120,7 @@ defineExpose({ handleIconClick, pin });
     flex-direction: column;
     align-items: flex-start;
     line-height: var(--s-line-height-big);
+    word-break: break-word;
     padding: 0 var(--s-basic-spacing);
     width: 30%;
   }
@@ -129,6 +130,7 @@ defineExpose({ handleIconClick, pin });
     font-weight: 600;
     letter-spacing: var(--s-letter-spacing-small);
     line-height: var(--s-line-height-extra-small);
+    word-break: break-word;
   }
   .check {
     display: flex;

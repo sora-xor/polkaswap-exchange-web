@@ -1,5 +1,6 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { getCurrentIndexer } from '@wallet';
+import { retryOnEmptyResult } from '@/indexer/queries/retry';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -97,10 +98,10 @@ export async function fetchOrderBooks(assets?: Asset[]): Promise<Nullable<OrderB
       const filter = ids.length ? { baseAssetId: { in: ids } } : undefined;
       const variables = { filter };
       const subqueryIndexer = indexer as SubqueryIndexer;
-      const response = await subqueryIndexer.services.explorer.fetchAllEntities(
-        SubqueryOrderBooksQuery,
-        variables,
-        parseOrderBookEntity
+      const response = await retryOnEmptyResult(
+        async () =>
+          subqueryIndexer.services.explorer.fetchAllEntities(SubqueryOrderBooksQuery, variables, parseOrderBookEntity),
+        (value) => !value?.length
       );
       return response;
     }
@@ -108,10 +109,14 @@ export async function fetchOrderBooks(assets?: Asset[]): Promise<Nullable<OrderB
       const where = ids.length ? { baseAsset: { id_in: ids } } : undefined;
       const variables = { where };
       const subsquidIndexer = indexer as SubsquidIndexer;
-      const response = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
-        SubsquidOrderBooksQuery,
-        variables,
-        parseOrderBookEntity
+      const response = await retryOnEmptyResult(
+        async () =>
+          subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
+            SubsquidOrderBooksQuery,
+            variables,
+            parseOrderBookEntity
+          ),
+        (value) => !value?.length
       );
       return response;
     }

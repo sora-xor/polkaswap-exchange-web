@@ -43,6 +43,11 @@ $icon-size: 42px;
 .sidebar-item-content {
   display: flex;
   align-items: center;
+  border-color: currentColor;
+
+  span {
+    border-color: currentColor;
+  }
 
   &--link {
     &,
@@ -63,6 +68,7 @@ $icon-size: 42px;
   height: $icon-size;
   border-radius: 50%;
   background-color: var(--s-color-utility-body);
+  border-color: currentColor;
   transition: var(--s-transition-default);
   :deep(i) {
     margin: auto;
@@ -71,6 +77,7 @@ $icon-size: 42px;
     line-height: 28px !important;
     width: 28px !important;
     height: 28px !important;
+    border-color: currentColor;
   }
   & + span {
     margin-left: $inner-spacing-small;

@@ -66,7 +66,7 @@
 <script setup lang="ts">
 import { components } from '@wallet';
 import { computed, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from '@/composables/useTranslation';
 
 import { useDialogModel } from '@/composables/useDialogModel';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -84,7 +84,7 @@ const emit = defineEmits<{
   (event: 'show-rewards'): void;
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const { getFiatAmountByCodecString } = useFormattedAmount();
 const { isVisible, closeDialog } = useDialogModel(props, emit);
 

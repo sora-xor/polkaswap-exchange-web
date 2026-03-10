@@ -33,12 +33,12 @@ i[class^='s-icon-'] {
 
 i[class*='s-icon-'][class*='-24'],
 i[class^='s-icon-'][class*='-24'] {
-  font-size: 24px !important;
-  line-height: 24px !important;
+  font-size: 24px;
+  line-height: 24px;
 }
 
 i[class*='s-icon-'][class*='-16'],
 i[class^='s-icon-'][class*='-16'] {
-  font-size: 16px !important;
-  line-height: 16px !important;
+  font-size: 16px;
+  line-height: 16px;
 }

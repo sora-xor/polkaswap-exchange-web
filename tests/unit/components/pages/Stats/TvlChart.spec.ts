@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import { defineComponent, nextTick } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -9,9 +9,12 @@ const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
 const passthroughComponent = defineComponent({
   template: '<div><slot name="filters"></slot><slot></slot></div>',
 });
+const priceChangeStub = defineComponent({
+  template: '<div class="price-change-stub"></div>',
+});
 
 vi.mock('@/router', () => ({
-  lazyComponent: () => passthroughComponent,
+  lazyComponent: (name: string) => (name.includes('PriceChange') ? priceChangeStub : passthroughComponent),
 }));
 
 vi.mock('@wallet', async (importOriginal) => {
@@ -85,7 +88,7 @@ vi.mock('pinia', () => ({
 
 describe('TvlChart', () => {
   it('renders without runtime errors when translation consts are available', async () => {
-    const wrapper = shallowMount(TvlChart, {
+    const wrapper = mount(TvlChart, {
       global: {
         stubs: {
           'v-chart': true,
@@ -97,5 +100,6 @@ describe('TvlChart', () => {
 
     expect(wrapper.exists()).toBe(true);
     expect(fetchDataMock).toHaveBeenCalled();
+    expect(wrapper.find('.price-change-stub').exists()).toBe(true);
   });
 });

@@ -15,6 +15,15 @@ $country-emoji-font: 'Twemoji Country Flags';
 
 @include generic-input-lines;
 
+/* Match production root typography metrics from polkaswap.io. */
+html {
+  line-height: 1.15 !important;
+}
+
+body {
+  line-height: inherit;
+}
+
 .el-loading-mask {
   background-color: var(--s-color-utility-body);
   z-index: $app-loader-layer;
@@ -186,30 +195,49 @@ div.el-tabs__item {
   line-height: 1;
 }
 
-/* Preserve legacy CTA typography/metrics used by production connect buttons. */
-.action-button.s-typography-button--large {
+/* Preserve legacy CTA typography/metrics used by production large action buttons. */
+button.el-button.s-typography-button--large {
   min-height: 42px !important;
   height: 42px !important;
   padding: 5px 13px !important;
+  border: 2px solid rgb(237, 228, 231) !important;
+  font-size: 24px !important;
+  line-height: 24px !important;
+  white-space: nowrap !important;
 }
 
-.action-button.s-typography-button--large > span,
-.action-button.s-typography-button--large .s-button__text {
+button.el-button.s-typography-button--large > span,
+button.el-button.s-typography-button--large .s-button__text {
   font-size: 24px !important;
   line-height: 24px !important;
   letter-spacing: -0.48px !important;
   text-transform: uppercase !important;
+  white-space: nowrap !important;
 }
 
-[design-system-theme='dark'] .action-button.s-typography-button--large,
-[design-system-theme='dark'] .action-button.s-typography-button--large > span,
-[design-system-theme='dark'] .action-button.s-typography-button--large .s-button__text {
-  color: #391057 !important;
+button.el-button.s-typography-button--medium {
+  min-height: 42px !important;
+  height: 42px !important;
+  padding: 5px 13px !important;
+  white-space: nowrap !important;
+}
+
+button.el-button.s-typography-button--medium > span,
+button.el-button.s-typography-button--medium .s-button__text {
+  font-size: 16px !important;
+  line-height: 16px !important;
+  letter-spacing: -0.32px !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
 }
 
 .s-button__text > i.s-icon-chevron-down-rounded-16 {
   font-size: 18px !important;
   line-height: 18px !important;
+}
+
+.info-line i.s-icon-info-16 {
+  color: var(--s-color-base-content-tertiary) !important;
 }
 
 .transaction-details i.s-icon-arrows-chevron-bottom-24,
@@ -226,4 +254,208 @@ div.el-tabs__item {
 i.marketing-suffix.s-icon-arrows-arrow-top-right-24 {
   font-size: 16px !important;
   line-height: 16px !important;
+}
+
+/* Keep application card containers at legacy fixed width despite global UI `.container` utilities. */
+.app-content .container:not([class*='container--']):not(.collaterals-container) {
+  max-width: $inner-window-width;
+}
+
+.app-content .container.container--burn,
+.app-content .container.container--wallet {
+  max-width: $inner-window-width;
+}
+
+/* Restore legacy tabs look-and-feel used by production pages. */
+.s-tabs.s-border-radius-big.s-accent-rounded .el-tabs__nav-wrap,
+.s-tabs.s-border-radius-big.s-accent-rounded .el-tabs__nav-wrap .el-tabs__item,
+.s-tabs.s-border-radius-big.s-rounded .el-tabs__nav-wrap,
+.s-tabs.s-border-radius-big.s-rounded .el-tabs__nav-wrap .el-tabs__item.is-active,
+.s-tabs.s-border-radius-big.s-rounded .el-tabs__nav-wrap .el-tabs__item:focus.is-focus {
+  border-radius: var(--s-border-radius-big);
+}
+
+.s-tabs.s-border-radius-medium.s-accent-rounded .el-tabs__nav-wrap,
+.s-tabs.s-border-radius-medium.s-accent-rounded .el-tabs__nav-wrap .el-tabs__item,
+.s-tabs.s-border-radius-medium.s-rounded .el-tabs__nav-wrap,
+.s-tabs.s-border-radius-medium.s-rounded .el-tabs__nav-wrap .el-tabs__item.is-active,
+.s-tabs.s-border-radius-medium.s-rounded .el-tabs__nav-wrap .el-tabs__item:focus.is-focus {
+  border-radius: var(--s-border-radius-medium);
+}
+
+.s-tabs.s-border-radius-small.s-accent-rounded .el-tabs__nav-wrap,
+.s-tabs.s-border-radius-small.s-accent-rounded .el-tabs__nav-wrap .el-tabs__item,
+.s-tabs.s-border-radius-small.s-rounded .el-tabs__nav-wrap,
+.s-tabs.s-border-radius-small.s-rounded .el-tabs__nav-wrap .el-tabs__item.is-active,
+.s-tabs.s-border-radius-small.s-rounded .el-tabs__nav-wrap .el-tabs__item:focus.is-focus {
+  border-radius: var(--s-border-radius-small);
+}
+
+.s-tabs.s-border-radius-mini.s-accent-rounded .el-tabs__nav-wrap,
+.s-tabs.s-border-radius-mini.s-accent-rounded .el-tabs__nav-wrap .el-tabs__item,
+.s-tabs.s-border-radius-mini.s-rounded .el-tabs__nav-wrap,
+.s-tabs.s-border-radius-mini.s-rounded .el-tabs__nav-wrap .el-tabs__item.is-active,
+.s-tabs.s-border-radius-mini.s-rounded .el-tabs__nav-wrap .el-tabs__item:focus.is-focus {
+  border-radius: var(--s-border-radius-mini);
+}
+
+.s-tabs .el-tabs__nav-wrap:after {
+  background-color: var(--s-color-base-background);
+}
+
+.s-tabs .el-tabs__nav-wrap .el-tabs__item {
+  display: inline-block;
+  position: relative;
+  white-space: nowrap;
+  text-align: center;
+  padding: 0 12px;
+}
+
+.s-tabs.neumorphic.s-card .el-tabs__nav-wrap .el-tabs__active-bar {
+  height: 2px;
+  background-color: var(--s-color-theme-accent);
+  bottom: 0;
+}
+
+.s-tabs.s-rounded .el-tabs__nav-wrap {
+  background-color: var(--s-color-base-background);
+  height: 32px;
+}
+
+.s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__nav {
+  display: flex;
+}
+
+.s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__nav-scroll {
+  padding: 2px;
+}
+
+.s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__active-bar,
+.s-tabs.s-rounded .el-tabs__nav-wrap:after {
+  height: 0;
+}
+
+.s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
+  height: 28px;
+  line-height: 28px;
+  padding: 0 32px;
+}
+
+.s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item:last-child,
+.s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item:nth-child(2) {
+  padding: 0 32px;
+}
+
+.s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item.is-active {
+  background-color: var(--s-color-base-on-accent);
+  box-shadow: var(--s-shadow-surface);
+  color: var(--s-color-base-content-primary);
+}
+
+.s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item:focus.is-focus {
+  box-shadow: var(--s-shadow-surface);
+}
+
+.s-tabs.s-accent-rounded .el-tabs__nav-wrap {
+  background-color: var(--s-color-base-background);
+  height: 32px;
+}
+
+.s-tabs.s-accent-rounded .el-tabs__nav-wrap .el-tabs__nav {
+  display: flex;
+}
+
+.s-tabs.s-accent-rounded .el-tabs__nav-wrap .el-tabs__active-bar,
+.s-tabs.s-accent-rounded .el-tabs__nav-wrap:after {
+  height: 0;
+}
+
+.s-tabs.s-accent-rounded .el-tabs__nav-wrap .el-tabs__item {
+  height: 32px;
+  line-height: 32px;
+  padding: 0 18px;
+  transition: 0.2s;
+}
+
+.s-tabs.s-accent-rounded .el-tabs__nav-wrap .el-tabs__item.is-active {
+  background-color: var(--s-color-theme-accent);
+  color: var(--s-color-base-on-accent);
+}
+
+.s-tabs.s-accent-rounded .el-tabs__nav-wrap .el-tabs__item.is-active i {
+  color: var(--s-color-base-on-accent);
+}
+
+.s-tabs.s-accent-rounded .el-tabs__nav-wrap .el-tabs__item i {
+  line-height: 32px;
+}
+
+.s-tabs.neumorphic .el-tabs__nav-wrap .el-tabs__item:not(.is-active) {
+  color: var(--s-color-base-content-primary);
+}
+
+.s-tabs.neumorphic .el-tabs__nav-wrap .el-tabs__item.is-active {
+  color: var(--s-color-theme-accent);
+}
+
+.s-tabs.neumorphic.s-card .el-tabs__nav-wrap,
+.s-tabs.neumorphic.s-rounded .el-tabs__nav-wrap {
+  background-color: var(--s-color-base-background);
+  box-shadow: var(--neu-tabs-shadow);
+}
+
+.s-tabs.neumorphic.s-card .el-tabs__nav-wrap .el-tabs__item.is-active,
+.s-tabs.neumorphic.s-card .el-tabs__nav-wrap .el-tabs__item.is-active:focus.is-focus,
+.s-tabs.neumorphic.s-rounded .el-tabs__nav-wrap .el-tabs__item.is-active,
+.s-tabs.neumorphic.s-rounded .el-tabs__nav-wrap .el-tabs__item.is-active:focus.is-focus {
+  background-color: var(--s-color-utility-surface);
+  box-shadow: var(--neu-tab-shadow);
+  color: var(--s-color-theme-accent);
+}
+
+.s-tabs.neumorphic.s-card .el-tabs__nav-wrap .el-tabs__item:not(.is-active):hover,
+.s-tabs.neumorphic.s-rounded .el-tabs__nav-wrap .el-tabs__item:not(.is-active):hover {
+  color: var(--s-color-theme-accent-hover);
+}
+
+.s-tabs.neumorphic.s-card .el-tabs__nav-wrap .el-tabs__item:not(.is-active):focus.is-focus,
+.s-tabs.neumorphic.s-rounded .el-tabs__nav-wrap .el-tabs__item:not(.is-active):focus.is-focus {
+  box-shadow: none;
+  color: var(--s-color-theme-accent-focused);
+}
+
+.s-tabs.neumorphic.s-card .el-tabs__nav-wrap .el-tabs__item {
+  box-shadow:
+    -5px -5px 15px var(--s-shadow-color-light-dark),
+    1px 1px 15px var(--s-shadow-color-dark),
+    inset 0 0 8px var(--s-shadow-color-dark);
+}
+
+.s-tabs.neumorphic.s-card .el-tabs__nav-wrap .el-tabs__item.is-active {
+  box-shadow:
+    -5px -5px 15px var(--s-shadow-color-light-dark),
+    1px 1px 15px var(--s-shadow-color-dark);
+}
+
+.s-tabs.neumorphic.s-card .el-tabs__nav-wrap .el-tabs__item.is-active,
+.s-tabs.neumorphic.s-card .el-tabs__nav-wrap .el-tabs__item:not(.is-active):focus.is-focus,
+.s-tabs.neumorphic.s-card .el-tabs__nav-wrap .el-tabs__item:not(.is-active):hover {
+  color: var(--s-color-base-content-primary);
+}
+
+/* Restore legacy card depth/background combinations used in production layouts. */
+.s-card.neumorphic.is-always-shadow.s-pressed,
+.s-card.neumorphic.is-hover-shadow:focus.s-pressed,
+.s-card.neumorphic.is-hover-shadow:hover.s-pressed {
+  box-shadow: var(--s-shadow-element-pressed);
+}
+
+.s-card.neumorphic.s-primary.s-status-default {
+  background: var(--s-color-utility-surface);
+}
+
+.s-card.neumorphic.s-primary.s-status-default.is-always-shadow,
+.s-card.neumorphic.s-primary.s-status-default.is-hover-shadow:focus,
+.s-card.neumorphic.s-primary.s-status-default.is-hover-shadow:hover {
+  box-shadow: var(--s-shadow-dialog);
 }

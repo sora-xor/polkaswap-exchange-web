@@ -120,4 +120,11 @@ const handleBridge = (asset: AccountAsset) => {
     }
   }
 }
+
+.app-main--wallet {
+  .app-body-scrollbar > .el-scrollbar__bar.is-vertical,
+  .container--wallet .el-scrollbar__bar.is-vertical {
+    opacity: 0 !important;
+  }
+}
 </style>

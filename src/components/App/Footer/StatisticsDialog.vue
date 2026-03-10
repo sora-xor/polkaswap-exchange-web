@@ -2,7 +2,6 @@
   <dialog-base v-model:visible="visibility" :title="t('footer.statistics.dialog.title')" class="select-indexer-dialog">
     <select-indexer
       v-model:indexer="selectedIndexerType"
-      v-model:ceres="useCeresApi"
       :indexers="indexers"
       :environment="soraNetwork"
     ></select-indexer>
@@ -32,8 +31,6 @@ const { t } = useTranslation();
 const settingsStore = useSettingsStore();
 
 const walletSettingsState = computed(() => (store.state.wallet?.settings ?? {}) as Record<string, unknown>);
-const walletAccountState = computed(() => (store.state.wallet?.account ?? {}) as Record<string, unknown>);
-
 const visibility = computed({
   get: () => Boolean(settingsStore.selectIndexerDialogVisibility),
   set: (flag: boolean) => {
@@ -69,16 +66,6 @@ const selectedIndexerType = computed<WALLET_CONSTS.IndexerType>({
     const selectIndexer = store.dispatch?.wallet?.settings?.selectIndexer;
     if (typeof selectIndexer === 'function') {
       await selectIndexer(type);
-    }
-  },
-});
-
-const useCeresApi = computed<boolean>({
-  get: () => Boolean(walletAccountState.value.ceresFiatValuesUsage),
-  set: async (flag: boolean) => {
-    const toggleCeres = store.dispatch?.wallet?.account?.useCeresApiForFiatValues;
-    if (typeof toggleCeres === 'function') {
-      await toggleCeres(flag);
     }
   },
 });

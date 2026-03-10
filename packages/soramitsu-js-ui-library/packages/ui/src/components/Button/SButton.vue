@@ -78,7 +78,8 @@ const font = computed(() => {
 
     <span class="s-button__icon" data-testid="icon">
       <i v-if="icon" :class="icon" />
-      <slot v-else name="icon" />
+      <slot v-else-if="$slots.icon" name="icon" />
+      <slot v-else-if="isAction" />
     </span>
     <span class="s-button__text" data-testid="text">
       <slot v-if="!isAction" />

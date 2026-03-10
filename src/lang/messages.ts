@@ -95,6 +95,7 @@ export default {
     [PageNames.ExploreFarming]: 'Farming',
     [PageNames.ExploreBooks]: '@:pageTitle.OrderBook',
     [PageNames.OrderBook]: 'Trade',
+    [PageNames.Burn]: 'Burn',
     [StakingPageNames.Staking]: 'Staking',
     [DashboardPageNames.AssetOwner]: 'Asset owner',
     [DashboardPageNames.AssetOwnerDetails]: '@:pageTitle.AssetOwner',

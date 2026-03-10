@@ -73,4 +73,19 @@ describe('ResponsiveTabs', () => {
     wrapper.findComponent(TabsStub).vm.$emit('input', 'overview');
     expect(wrapper.emitted('input')?.[0]?.[0]).toBe('overview');
   });
+
+  it('reacts to isMobile prop changes after mount', async () => {
+    const wrapper = mountComponent({ isMobile: true });
+
+    expect(wrapper.find('.dropdown-stub').exists()).toBe(true);
+    expect(wrapper.find('.tabs-stub').exists()).toBe(false);
+
+    await wrapper.setProps({ isMobile: false });
+    expect(wrapper.find('.dropdown-stub').exists()).toBe(false);
+    expect(wrapper.find('.tabs-stub').exists()).toBe(true);
+
+    await wrapper.setProps({ isMobile: true });
+    expect(wrapper.find('.dropdown-stub').exists()).toBe(true);
+    expect(wrapper.find('.tabs-stub').exists()).toBe(false);
+  });
 });

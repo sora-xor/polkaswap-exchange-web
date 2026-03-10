@@ -594,6 +594,10 @@ defineExpose({
 
     &__title {
       align-items: center;
+      font-size: var(--s-heading2-font-size);
+      line-height: 39px;
+      font-weight: 400;
+
       &-icon {
         margin-left: 4px;
       }

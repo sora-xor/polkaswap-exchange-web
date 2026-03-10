@@ -14,7 +14,7 @@
         <template #prefix>{{ currencySymbol }}</template>
         {{ amount.suffix }}
       </formatted-amount>
-      <price-change :value="priceChange"></price-change>
+      <PriceChange :value="priceChange"></PriceChange>
       <v-chart ref="chart" class="chart" :key="chartKey" :option="chartSpec" autoresize></v-chart>
     </chart-skeleton>
   </base-widget>

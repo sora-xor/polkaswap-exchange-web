@@ -157,8 +157,24 @@ $gap: $inner-spacing-mini;
   position: relative;
 
   &-button {
+    color: var(--s-color-base-content-primary) !important;
+    font-weight: 500;
+    line-height: 12px;
+    padding: 4px 6px !important;
+
+    :deep(.s-button__text) {
+      color: var(--s-color-base-content-primary);
+      font-weight: 500;
+      line-height: 12px;
+    }
+
     &-icon {
       margin-left: $inner-spacing-tiny;
+      width: 12px;
+      height: 12px;
+      font-size: 12px;
+      line-height: 12px;
+      color: inherit;
 
       &.opened {
         transform: rotate(180deg);

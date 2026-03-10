@@ -8,7 +8,6 @@
       :rename-account="rename"
       :close-view="closeView"
       :show-close="!soraAccount?.address"
-      shadow="never"
     ></connection-view>
   </dialog-base>
 </template>

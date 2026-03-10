@@ -24,15 +24,6 @@
             </div>
           </s-radio>
         </s-radio-group>
-        <s-divider></s-divider>
-        <div class="statistics-dialog__group">
-          <div class="statistics-dialog__item">
-            <div class="switcher">
-              <s-switch v-model="useCeres"></s-switch>
-              <span>{{ t('footer.statistics.dialog.useCeres') }}</span>
-            </div>
-          </div>
-        </div>
       </div>
     </s-scrollbar>
   </div>
@@ -52,17 +43,14 @@ const props = withDefaults(
   defineProps<{
     indexers?: Array<Indexer>;
     indexer?: IndexerType;
-    ceres?: boolean;
   }>(),
   {
     indexers: () => [],
-    ceres: false,
   }
 );
 
 const emit = defineEmits<{
   (event: 'update:indexer', value: IndexerType): void;
-  (event: 'update:ceres', value: boolean): void;
 }>();
 
 const { t, TranslationConsts } = useTranslation();
@@ -73,13 +61,6 @@ const indexerType = computed<IndexerType | undefined>({
   set: (value) => {
     if (value === undefined) return;
     emit('update:indexer', value);
-  },
-});
-
-const useCeres = computed<boolean>({
-  get: () => props.ceres,
-  set: (value) => {
-    emit('update:ceres', value);
   },
 });
 </script>
@@ -169,18 +150,6 @@ $statistics-border-radius: 8px;
         }
       }
     }
-  }
-}
-
-.switcher {
-  display: flex;
-  align-items: center;
-
-  & > span {
-    margin-left: $inner-spacing-small;
-    color: var(--s-color-base-content-primary);
-    font-size: var(--s-font-size-medium);
-    font-weight: 600;
   }
 }
 </style>

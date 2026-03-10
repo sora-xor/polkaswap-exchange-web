@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 interface Props {
   /**
    * v-model for two-way data binding
    */
   modelValue?: boolean;
   /**
+   * Legacy one-way binding used by Vue 2 templates.
+   */
+  value?: boolean;
+  /**
    * Id for matching switch with label
    *
    */
-  id: string;
+  id?: string;
   /**
    * Text label for switch
    *
@@ -24,82 +30,144 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  modelValue: undefined,
+  value: undefined,
+  id: '',
   label: '',
   disabled: false,
 });
 
-const model = defineModel<boolean | undefined>();
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: boolean): void;
+  (event: 'input', value: boolean): void;
+  (event: 'change', value: boolean): void;
+}>();
+
+const checked = computed(() => Boolean(props.modelValue ?? props.value ?? false));
+const switchId = computed(() => props.id || 's-switch');
+
+const emitValue = (nextValue: boolean): void => {
+  emit('update:modelValue', nextValue);
+  emit('input', nextValue);
+  emit('change', nextValue);
+};
+
+const handleSwitchChange = (value: boolean): void => {
+  emitValue(Boolean(value));
+};
+
+const handleLabelClick = (): void => {
+  if (props.disabled) return;
+  emitValue(!checked.value);
+};
+
+const toggleSwitch = (): void => {
+  if (props.disabled) return;
+  emitValue(!checked.value);
+};
 </script>
 
 <template>
-  <div class="s-switch">
-    <input :id="id" v-model="model" type="checkbox" :disabled="disabled" class="s-switch__button" />
-    <label :for="id" class="s-switch__label sora-tpg-p3">{{ label }}</label>
+  <div class="s-switch neumorphic">
+    <div
+      :class="['el-switch', { 'is-checked': checked, 'is-disabled': disabled }]"
+      role="switch"
+      :aria-checked="checked"
+      :tabindex="disabled ? -1 : 0"
+      @click="toggleSwitch"
+      @keydown.enter.prevent="toggleSwitch"
+      @keydown.space.prevent="toggleSwitch"
+    >
+      <input
+        :id="switchId"
+        type="checkbox"
+        class="el-switch__input"
+        :checked="checked"
+        :disabled="disabled"
+        @click.stop
+        @change="(event) => handleSwitchChange((event.target as HTMLInputElement).checked)"
+      />
+      <span class="el-switch__core" style="width: 40px"></span>
+    </div>
+    <label v-if="label" :for="switchId" class="s-switch__label sora-tpg-p3" @click.prevent="handleLabelClick">
+      {{ label }}
+    </label>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@use '@soramitsu-ui/theme';
-
-$border-primary: theme.token-as-var('sys.color.border-primary');
-$content-primary: theme.token-as-var('sys.color.content-primary');
-$content-quaternary: theme.token-as-var('sys.color.content-quaternary');
-$primary: theme.token-as-var('sys.color.primary');
-$primary-hover: theme.token-as-var('sys.color.primary-hover');
-$util-surface: theme.token-as-var('sys.color.util.surface');
-
 .s-switch {
   display: flex;
   align-items: center;
-  &__button {
-    position: relative;
-    background-color: $border-primary;
-    width: 40px;
+
+  :deep(.el-switch) {
     height: 20px;
-    appearance: none;
-    outline: none;
-    border-radius: 20px;
-    transition: 0.5s;
-    &:checked {
-      background-color: $primary;
-    }
-    &:checked:hover {
-      background-color: $primary-hover;
-    }
-    &::before {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      border-radius: 10px;
-      top: 0;
-      left: 0;
-      background-color: $util-surface;
-      transition: 0.5s;
-      transform: scale(0.8);
-    }
-    &:checked::before {
-      left: 20px;
-    }
-    &:hover {
-      background-color: $primary-hover;
-      cursor: pointer;
-    }
-    &:disabled {
-      background-color: $border-primary;
-    }
-    &:disabled + .s-switch-label {
-      color: $content-quaternary;
-    }
-    &:disabled:hover {
-      background-color: $border-primary;
-      cursor: pointer;
-    }
+    line-height: 20px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    cursor: pointer;
   }
+
+  :deep(.el-switch.is-disabled) {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  :deep(.el-switch__input) {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    margin: 0;
+  }
+
+  :deep(.el-switch__core) {
+    position: relative;
+    display: inline-block;
+    width: 40px !important;
+    height: 20px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--s-color-utility-surface);
+    box-shadow: var(--s-shadow-element);
+    transition: background-color 0.2s ease;
+  }
+
+  :deep(.el-switch__core::after) {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #a19a9d;
+    transition:
+      left 0.2s ease,
+      margin-left 0.2s ease,
+      background-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  :deep(.el-switch.is-checked .el-switch__core) {
+    background: var(--s-color-theme-accent);
+  }
+
+  :deep(.el-switch.is-checked .el-switch__core::after) {
+    left: 40px;
+    margin-left: -19px;
+    background: #fff;
+    box-shadow:
+      1px 1px 5px rgba(255, 255, 255, 0.7),
+      -1px -1px 5px #fff,
+      0 0 20px rgba(247, 84, 163, 0.5);
+  }
+
   &__label {
-    color: $content-primary;
+    color: var(--s-color-base-content-primary);
     margin-left: 8px;
-    text-align: center;
     cursor: pointer;
   }
 }

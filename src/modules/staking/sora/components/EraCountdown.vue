@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from '@/composables/useTranslation';
 
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 
@@ -13,7 +13,7 @@ const props = defineProps<{
   targetEra?: number;
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const { activeEra, activeEraStart } = useSoraStaking();
 
 const days = ref(0);

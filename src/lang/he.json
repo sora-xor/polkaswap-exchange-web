@@ -1,1791 +1,1792 @@
 {
-    "acceptOnScrollText": "גלול לאישור",
-    "acceptText": "קבל והסתר",
-    "account": {
-        "accountTitle": "חשבון",
-        "copy": "העתק כתובת",
-        "delete": "מחק חשבון",
-        "export": "ייצוא ‎.json",
-        "rename": "שינוי שם חשבון",
-        "switch": "החלף חשבון",
-        "walletAddress": "כתובת ארנק"
+  "acceptOnScrollText": "גלול לאישור",
+  "acceptText": "קבל והסתר",
+  "account": {
+    "accountTitle": "חשבון",
+    "copy": "העתק כתובת",
+    "delete": "מחק חשבון",
+    "export": "ייצוא ‎.json",
+    "rename": "שינוי שם חשבון",
+    "switch": "החלף חשבון",
+    "walletAddress": "כתובת ארנק"
+  },
+  "accountAddressText": "כתובת חשבון",
+  "accountSettings": {
+    "confirmation": {
+      "description": "חלון קופץ המציג את פרטי העסקאות לפני החתימה.",
+      "title": "השבתת אישור עסקה"
     },
-    "accountAddressText": "כתובת חשבון",
-    "accountSettings": {
-        "confirmation": {
-            "description": "חלון קופץ המציג את פרטי העסקאות לפני החתימה.",
-            "title": "השבתת אישור עסקה"
-        },
-        "disable": "השבת עבור",
-        "disabled": "מושבת עבור",
-        "enterPassword": "הזן סיסמה",
-        "googleOnly": "חשבונות {Google} בלבד",
-        "hint": "ניתן להפעיל זאת מחדש בהגדרות החשבון",
-        "signature": {
-            "description": "הפעל/השבת את הצורך בהקלדת סיסמה בחלון החתימה בעסקאות.",
-            "title": "השבתת אישור סיסמה"
-        },
-        "title": "הגדרות חשבון"
+    "disable": "השבת עבור",
+    "disabled": "מושבת עבור",
+    "enterPassword": "הזן סיסמה",
+    "googleOnly": "חשבונות {Google} בלבד",
+    "hint": "ניתן להפעיל זאת מחדש בהגדרות החשבון",
+    "signature": {
+      "description": "הפעל/השבת את הצורך בהקלדת סיסמה בחלון החתימה בעסקאות.",
+      "title": "השבתת אישור סיסמה"
     },
-    "accountText": "חשבון | חשבונות",
-    "addAsset": {
-        "add": "לְהוֹסִיף",
-        "AddAssetToken": {
-            "switchBtn": "נכסים מאומתים בלבד",
-            "title": "מטבעות"
-        },
-        "alreadyAttached": "אסימון כבר היה מחובר",
-        "approved": "נכס שאושר על ידי הקהילה",
-        "assetType": {
-            "nft": "Nft | NFTS",
-            "token": "אסימון | אסימונים"
-        },
-        "empty": "לא נמצאו אסימונים",
-        "pinAsset": "נכס סיכה",
-        "scam": "הונאה",
-        "searchInputText": "חפש על ידי מזהה נכס, שם או סמל Ticker",
-        "success": "נכס __ph__0__ התווסף בהצלחה!",
-        "understand": "אני מבין",
-        "unknown": "מקור לא ידוע",
-        "unpinAsset": "נכס פין",
-        "warningMessage": "זה __ph__0__ | אלה __ph__1__",
-        "warningMessageText": "כל אחד יכול ליצור __ph__0__, כולל יצירת גרסאות מזויפות של __ph__1__ קיימות הטוענות כי הן מייצגות פרויקטים.\nאם אתה רוכש __ph__2__, יתכן שלא תוכל למכור אותו בחזרה.",
-        "warningTitle": "סחר על אחריותך בלבד!"
+    "title": "הגדרות חשבון"
+  },
+  "accountText": "חשבון | חשבונות",
+  "addAsset": {
+    "add": "לְהוֹסִיף",
+    "AddAssetToken": {
+      "switchBtn": "נכסים מאומתים בלבד",
+      "title": "מטבעות"
     },
-    "addAssetsText": "הוסף נכס | הוסף נכסים",
-    "addAssetText": "הוסף נכס",
-    "addLiquidity": {
-        "title": "הוסף נזילות"
+    "alreadyAttached": "אסימון כבר היה מחובר",
+    "approved": "נכס שאושר על ידי הקהילה",
+    "assetType": {
+      "nft": "Nft | NFTS",
+      "token": "אסימון | אסימונים"
     },
-    "addressBook": {
-        "addContact": "הוסף איש קשר",
-        "btn": {
-            "enterName": "הזן שם",
-            "present": "כבר נוכח",
-            "saveChanges": "שמור שינויים"
-        },
-        "detected": "כתובת חדשה זוהתה",
-        "dialogTitle": "אנשי הקשר שלך",
-        "identity": "זהות על שרשרת",
-        "input": "כתובת קלט או בחר איש קשר",
-        "myAccounts": "החשבונות שלי",
-        "myBook": "הספר שלי",
-        "noContacts": "עדיין אין לך אנשי קשר",
-        "noFoundRecords": "לא נמצאו רשומות",
-        "none": "אַף לֹא אֶחָד",
-        "notSoraAddress": "כתובת זו תישמר ככתובת __ph__0__ להלן. וודא שהמקבל יכול לגשת לשרשרת __ph__1__:",
-        "options": {
-            "delete": "לִמְחוֹק",
-            "edit": "ערוך איש קשר",
-            "send": "שלח אסימונים"
-        },
-        "save": "שמור כאיש קשר",
-        "searchPlaceholder": "חיפוש לפי כתובת, שם או זהות",
-        "selectContact": "בחר איש קשר",
-        "tooltip": "איסוף פנקס כתובות על ידי מתן שם וכתובת כדי לשמור על אנשי הקשר שלך מסודרים ומעודכנים"
+    "empty": "לא נמצאו אסימונים",
+    "pinAsset": "נכס סיכה",
+    "scam": "הונאה",
+    "searchInputText": "חפש על ידי מזהה נכס, שם או סמל Ticker",
+    "success": "נכס __ph__0__ התווסף בהצלחה!",
+    "understand": "אני מבין",
+    "unknown": "מקור לא ידוע",
+    "unpinAsset": "נכס פין",
+    "warningMessage": "זה __ph__0__ | אלה __ph__1__",
+    "warningMessageText": "כל אחד יכול ליצור __ph__0__, כולל יצירת גרסאות מזויפות של __ph__1__ קיימות הטוענות כי הן מייצגות פרויקטים.\nאם אתה רוכש __ph__2__, יתכן שלא תוכל למכור אותו בחזרה.",
+    "warningTitle": "סחר על אחריותך בלבד!"
+  },
+  "addAssetsText": "הוסף נכס | הוסף נכסים",
+  "addAssetText": "הוסף נכס",
+  "addLiquidity": {
+    "title": "הוסף נזילות"
+  },
+  "addressBook": {
+    "addContact": "הוסף איש קשר",
+    "btn": {
+      "enterName": "הזן שם",
+      "present": "כבר נוכח",
+      "saveChanges": "שמור שינויים"
     },
-    "addressText": "כְּתוֹבֶת",
-    "alerts": {
-        "alertFrequencyTitle": "תדר התראה",
-        "alertsCreateTitle": "הגדר התראה על מחיר",
-        "alertsTitle": "התראות",
-        "alertsTooltip": "התראות על מחיר הן התראות שניתן להגדיר על ידיך לקבל עדכונים כאשר מחיר האסימון מסוים מגיע לנקודה מסוימת שתגדיר",
-        "alertTypeTitle": "סוג התראה",
-        "always": "תָמִיד",
-        "createBtn": "צור התראת מחיר חדשה",
-        "currentPrice": "מחיר נוכחי",
-        "delete": "מחק התראה",
-        "drop": "טיפות למטה",
-        "edit": "ערוך התראה",
-        "enableSwitch": "אפשר התראות על הפקדת נכס",
-        "finishBtn": "סיום הגדרת התראה",
-        "frequencyTooltip": "בחר בין 'פעם' ל'אמת 'תמיד כדי לקבוע באיזו תדירות אתה מקבל התראות על סוג ההתראה שנבחר. 'ברגע' ישלח הודעה יחידה בעת עמידה בתנאי, ואילו 'תמיד' ימשיך להודיע ​​לך בכל פעם שחוצה סף המחירים",
-        "noSupportMsg": "ההודעות אינן נתמכות על ידי הדפדפן שלך",
-        "once": "פַּעַם",
-        "onDropDesc": "__Ph__0__ יורד מתחת __ph__1__",
-        "onRaiseDesc": "__Ph__0__ עולה מעל __ph__1__",
-        "raise": "עולה למעלה",
-        "typeTooltip": "בחר באפשרות 'טיפות למטה' או 'עולה מעל' כדי לציין תנאי התראה למעקב אחר תנועות מחיר חשובות. אפשרויות אלה מאפשרות לך לקבל התראות בזמן כאשר ערך הנכס שלך נופל למטה או עולה מעל סף המיועד שלך"
+    "detected": "כתובת חדשה זוהתה",
+    "dialogTitle": "אנשי הקשר שלך",
+    "identity": "זהות על שרשרת",
+    "input": "כתובת קלט או בחר איש קשר",
+    "myAccounts": "החשבונות שלי",
+    "myBook": "הספר שלי",
+    "noContacts": "עדיין אין לך אנשי קשר",
+    "noFoundRecords": "לא נמצאו רשומות",
+    "none": "אַף לֹא אֶחָד",
+    "notSoraAddress": "כתובת זו תישמר ככתובת __ph__0__ להלן. וודא שהמקבל יכול לגשת לשרשרת __ph__1__:",
+    "options": {
+      "delete": "לִמְחוֹק",
+      "edit": "ערוך איש קשר",
+      "send": "שלח אסימונים"
     },
-    "amountText": "סְכוּם",
-    "appName": "{AppName}",
-    "asset": {
-        "receive": "קבל __ph__0__",
-        "remove": "הסר את הנכס",
-        "select": "בחר נכס"
+    "save": "שמור כאיש קשר",
+    "searchPlaceholder": "חיפוש לפי כתובת, שם או זהות",
+    "selectContact": "בחר איש קשר",
+    "tooltip": "איסוף פנקס כתובות על ידי מתן שם וכתובת כדי לשמור על אנשי הקשר שלך מסודרים ומעודכנים"
+  },
+  "addressText": "כְּתוֹבֶת",
+  "alerts": {
+    "alertFrequencyTitle": "תדר התראה",
+    "alertsCreateTitle": "הגדר התראה על מחיר",
+    "alertsTitle": "התראות",
+    "alertsTooltip": "התראות על מחיר הן התראות שניתן להגדיר על ידיך לקבל עדכונים כאשר מחיר האסימון מסוים מגיע לנקודה מסוימת שתגדיר",
+    "alertTypeTitle": "סוג התראה",
+    "always": "תָמִיד",
+    "createBtn": "צור התראת מחיר חדשה",
+    "currentPrice": "מחיר נוכחי",
+    "delete": "מחק התראה",
+    "drop": "טיפות למטה",
+    "edit": "ערוך התראה",
+    "enableSwitch": "אפשר התראות על הפקדת נכס",
+    "finishBtn": "סיום הגדרת התראה",
+    "frequencyTooltip": "בחר בין 'פעם' ל'אמת 'תמיד כדי לקבוע באיזו תדירות אתה מקבל התראות על סוג ההתראה שנבחר. 'ברגע' ישלח הודעה יחידה בעת עמידה בתנאי, ואילו 'תמיד' ימשיך להודיע ​​לך בכל פעם שחוצה סף המחירים",
+    "noSupportMsg": "ההודעות אינן נתמכות על ידי הדפדפן שלך",
+    "once": "פַּעַם",
+    "onDropDesc": "__Ph__0__ יורד מתחת __ph__1__",
+    "onRaiseDesc": "__Ph__0__ עולה מעל __ph__1__",
+    "raise": "עולה למעלה",
+    "typeTooltip": "בחר באפשרות 'טיפות למטה' או 'עולה מעל' כדי לציין תנאי התראה למעקב אחר תנועות מחיר חשובות. אפשרויות אלה מאפשרות לך לקבל התראות בזמן כאשר ערך הנכס שלך נופל למטה או עולה מעל סף המיועד שלך"
+  },
+  "amountText": "סְכוּם",
+  "appName": "{AppName}",
+  "asset": {
+    "receive": "קבל __ph__0__",
+    "remove": "הסר את הנכס",
+    "select": "בחר נכס"
+  },
+  "assetDeposit": "יתרת הנכסים הופקדה",
+  "assetOwner": {
+    "accountWithAccess": "חשבון עם גישה SBT",
+    "addRegulatedAsset": "הוסף נכס מוסדר נוסף",
+    "addRegulatedAssets": "הוסף נכסים מוסדרים",
+    "attachedRegulatedAssets": "נכסים מוסדרים מצורפים",
+    "createRegulatedAsset": "צור נכס מוסדר חדש",
+    "createSbt": "צור __ph__0__",
+    "dialog": {
+      "addExisting": "הוסף נכס קיים",
+      "addExistingDesc": "הוסף נכס שנוצר כבר ל- SBT",
+      "createAsset": "צור נכס חדש",
+      "createAssetDesc": "הגדר נכס אישור חדש עבור __ph__0__",
+      "enterAddress": "הזן כתובת להנפקה",
+      "issueAccess": "גישה להבעיה",
+      "pickDate": "בחר יום",
+      "selectAccessEnd": "בחר מתי הגישה תסתיים",
+      "selectDate": "בחר תאריך"
     },
-    "assetDeposit": "יתרת הנכסים הופקדה",
-    "assetOwner": {
-        "accountWithAccess": "חשבון עם גישה SBT",
-        "addRegulatedAsset": "הוסף נכס מוסדר נוסף",
-        "addRegulatedAssets": "הוסף נכסים מוסדרים",
-        "attachedRegulatedAssets": "נכסים מוסדרים מצורפים",
-        "createRegulatedAsset": "צור נכס מוסדר חדש",
-        "createSbt": "צור __ph__0__",
-        "dialog": {
-            "addExisting": "הוסף נכס קיים",
-            "addExistingDesc": "הוסף נכס שנוצר כבר ל- SBT",
-            "createAsset": "צור נכס חדש",
-            "createAssetDesc": "הגדר נכס אישור חדש עבור __ph__0__",
-            "enterAddress": "הזן כתובת להנפקה",
-            "issueAccess": "גישה להבעיה",
-            "pickDate": "בחר יום",
-            "selectAccessEnd": "בחר מתי הגישה תסתיים",
-            "selectDate": "בחר תאריך"
-        },
-        "guide": {
-            "createToken": "צור את האסימון שלך",
-            "createTokenDesc": "הפעל בקלות את האסימון הייחודי שלך - זמין בפורמטים מרובים כמו NFTs ו- SBTS - השימוש בתשתית החזקה והמאובטחת של רשת סורה",
-            "disclaimerSbt": "שמור על דף זה פתוח במהלך כל התהליך. סגירה או ניווט משם תדרוש מכם להפעיל מחדש מההתחלה. השלם צעדים במהירות כדי להימנע מפסק זמן.",
-            "stepOneDesc": "בחר או צור נכסים שיצרת באופן אישי וווסת. אלה נכסים בשליטתך וניהולך.",
-            "stepOneTitle": "בחר או צור נכסים מוסדרים",
-            "stepThreeDesc": "סקור וחתום על עסקת היצירה הסופית להשלמת הגדרת SBT.",
-            "stepThreeTitle": "סקור וחתום על העסקה",
-            "stepTwoDesc": "ספק מידע חיוני כמו שם ה- SBT וסמל המסקר, כמו גם האייקון.",
-            "stepTwoTitle": "הזן פרטי SBT",
-            "title": "כיצד ליצור __ph__0__:"
-        },
-        "issueSbtAccess": "גיליון __ph__0__ גישה",
-        "letsStartBtn": "נתחיל",
-        "orSelectExisting": "או בחר קיים",
-        "ownerSbtTitle": "__Ph__0__ שלך",
-        "permissionedAssets": "נכסים מורשים",
-        "regulatedAssetsConnected": "נכסים מוסדרים מחוברים",
-        "regulatedPools": "בריכות מוסדרות",
-        "sbtCreation": {
-            "addAssets": "הוסף נכסים ל- SBT",
-            "addDescription": "הזן פרטי SBT",
-            "addMeta": "הזן פרטי SBT",
-            "preview": "תצוגה מקדימה של SBT"
-        },
-        "sbtManagers": "__Ph__0__ מנהלים",
-        "selectExisting": "בחר קיים",
-        "startIssue": "התחל להנפיק גישה עבור ה- SBT לחשבונות",
-        "you": "אַתָה"
+    "guide": {
+      "createToken": "צור את האסימון שלך",
+      "createTokenDesc": "הפעל בקלות את האסימון הייחודי שלך - זמין בפורמטים מרובים כמו NFTs ו- SBTS - השימוש בתשתית החזקה והמאובטחת של רשת סורה",
+      "disclaimerSbt": "שמור על דף זה פתוח במהלך כל התהליך. סגירה או ניווט משם תדרוש מכם להפעיל מחדש מההתחלה. השלם צעדים במהירות כדי להימנע מפסק זמן.",
+      "stepOneDesc": "בחר או צור נכסים שיצרת באופן אישי וווסת. אלה נכסים בשליטתך וניהולך.",
+      "stepOneTitle": "בחר או צור נכסים מוסדרים",
+      "stepThreeDesc": "סקור וחתום על עסקת היצירה הסופית להשלמת הגדרת SBT.",
+      "stepThreeTitle": "סקור וחתום על העסקה",
+      "stepTwoDesc": "ספק מידע חיוני כמו שם ה- SBT וסמל המסקר, כמו גם האייקון.",
+      "stepTwoTitle": "הזן פרטי SBT",
+      "title": "כיצד ליצור __ph__0__:"
     },
-    "assets": {
-        "assetId": "מזהה נכס",
-        "balance": {
-            "bonded": "קשור",
-            "frozen": "קָפוּא",
-            "locked": "נָעוּל",
-            "reserved": "שָׁמוּר",
-            "total": "סַך הַכֹּל",
-            "transferable": "הניתן להעברה"
-        },
-        "bridge": "לְגַשֵׁר",
-        "copied": "מוּעֲתָק!",
-        "copy": "העתק מזהה נכס",
-        "details": "פרטים",
-        "empty": "אין נכסים",
-        "liquidity": "הוסף נזילות",
-        "receive": "@:account.copy",
-        "send": "@:sendText",
-        "swap": "@:swapText",
-        "totalAssetsValue": "ערך הנכסים הכולל:"
+    "issueSbtAccess": "גיליון __ph__0__ גישה",
+    "letsStartBtn": "נתחיל",
+    "orSelectExisting": "או בחר קיים",
+    "ownerSbtTitle": "__Ph__0__ שלך",
+    "permissionedAssets": "נכסים מורשים",
+    "regulatedAssetsConnected": "נכסים מוסדרים מחוברים",
+    "regulatedPools": "בריכות מוסדרות",
+    "sbtCreation": {
+      "addAssets": "הוסף נכסים ל- SBT",
+      "addDescription": "הזן פרטי SBT",
+      "addMeta": "הזן פרטי SBT",
+      "preview": "תצוגה מקדימה של SBT"
     },
-    "backText": "בְּחֲזָרָה",
-    "balanceText": "לְאַזֵן",
-    "blockNumberText": "מספר חסום",
-    "bridge": {
-        "connectWallets": "חבר ארנקים לצפייה בהיסטוריה של עסקאות בהתאמה.",
-        "externalMinDeposit": "__Ph__0__ דקות. לְהַפְקִיד",
-        "externalMinDepositTooltip": "יתרה מינימלית __ph__0__ שחייבת להיות בחשבון __ph__1__ שלך לאחר העברת הגשר",
-        "externalTransferFee": "__Ph__0__ __ph__1__ עמלה",
-        "externalTransferFeeTooltip": "כשאתה שולח עסקת גשר לרשת __ph__0__, נלקחת עמלה מינורית מהסכום שאתה מעביר",
-        "info": "המרת אסימונים בין רשתות __ph__0__ ל- __ph__1__.",
-        "limitMessage": "נכון לעכשיו, יש __ph__0__ __ph__1__ __ph__2__ לגישור כדי להבטיח את היציבות והביטחון של רשת __ph__3__. אנו מעריכים את ההבנה שלך.",
-        "networkInfo": "גשר __ph__0__ רשת עם:",
-        "next": "הַבָּא",
-        "notRegisteredAsset": "נכס __ph__0__ אינו רשום",
-        "selectNetwork": "בחר רשת",
-        "soraNetworkFee": "__Ph__0__ דמי רשת",
-        "title": "לְגַשֵׁר"
+    "sbtManagers": "__Ph__0__ מנהלים",
+    "selectExisting": "בחר קיים",
+    "startIssue": "התחל להנפיק גישה עבור ה- SBT לחשבונות",
+    "you": "אַתָה"
+  },
+  "assets": {
+    "assetId": "מזהה נכס",
+    "balance": {
+      "bonded": "קשור",
+      "frozen": "קָפוּא",
+      "locked": "נָעוּל",
+      "reserved": "שָׁמוּר",
+      "total": "סַך הַכֹּל",
+      "transferable": "הניתן להעברה"
     },
-    "bridgeHistory": {
-        "clearHistory": "היסטוריה ברורה",
-        "empty": "העסקאות שלך יופיעו כאן.",
-        "filterPlaceholder": "סנן על ידי מזהה נכס או סמל טיקר",
-        "restoreHistory": "לשחזר את ההיסטוריה",
-        "showHistory": "להראות היסטוריה",
-        "statusAction": "פעולה דרושה",
-        "title": "הִיסטוֹרִיָה"
+    "bridge": "לְגַשֵׁר",
+    "copied": "מוּעֲתָק!",
+    "copy": "העתק מזהה נכס",
+    "details": "פרטים",
+    "empty": "אין נכסים",
+    "liquidity": "הוסף נזילות",
+    "receive": "@:account.copy",
+    "send": "@:sendText",
+    "swap": "@:swapText",
+    "totalAssetsValue": "ערך הנכסים הכולל:"
+  },
+  "backText": "בְּחֲזָרָה",
+  "balanceText": "לְאַזֵן",
+  "blockNumberText": "מספר חסום",
+  "bridge": {
+    "connectWallets": "חבר ארנקים לצפייה בהיסטוריה של עסקאות בהתאמה.",
+    "externalMinDeposit": "__Ph__0__ דקות. לְהַפְקִיד",
+    "externalMinDepositTooltip": "יתרה מינימלית __ph__0__ שחייבת להיות בחשבון __ph__1__ שלך לאחר העברת הגשר",
+    "externalTransferFee": "__Ph__0__ __ph__1__ עמלה",
+    "externalTransferFeeTooltip": "כשאתה שולח עסקת גשר לרשת __ph__0__, נלקחת עמלה מינורית מהסכום שאתה מעביר",
+    "info": "המרת אסימונים בין רשתות __ph__0__ ל- __ph__1__.",
+    "limitMessage": "נכון לעכשיו, יש __ph__0__ __ph__1__ __ph__2__ לגישור כדי להבטיח את היציבות והביטחון של רשת __ph__3__. אנו מעריכים את ההבנה שלך.",
+    "networkInfo": "גשר __ph__0__ רשת עם:",
+    "next": "הַבָּא",
+    "notRegisteredAsset": "נכס __ph__0__ אינו רשום",
+    "selectNetwork": "בחר רשת",
+    "soraNetworkFee": "__Ph__0__ דמי רשת",
+    "title": "לְגַשֵׁר"
+  },
+  "bridgeHistory": {
+    "clearHistory": "היסטוריה ברורה",
+    "empty": "העסקאות שלך יופיעו כאן.",
+    "filterPlaceholder": "סנן על ידי מזהה נכס או סמל טיקר",
+    "restoreHistory": "לשחזר את ההיסטוריה",
+    "showHistory": "להראות היסטוריה",
+    "statusAction": "פעולה דרושה",
+    "title": "הִיסטוֹרִיָה"
+  },
+  "bridgeText": "לְגַשֵׁר",
+  "bridgeTransaction": {
+    "allowToken": "אפשר __ph__0__ להשתמש __ph__1__ שלך",
+    "approveToken": "שימו לב שנדרש רק לאשר את האסימון פעם אחת. אם לתוסף שלך יש בקשות אישור אסימון מרובות, הקפד לאשר רק את האחרון תוך דחיית השאר.",
+    "blocksLeft": "__Ph__0__ חסימות שנשארו ...",
+    "for": "עֲבוּר",
+    "networkInfo": {
+      "amount": "סְכוּם",
+      "date": "תַאֲרִיך",
+      "status": "סטָטוּס",
+      "transactionFee": "דמי עסקה"
     },
-    "bridgeText": "לְגַשֵׁר",
-    "bridgeTransaction": {
-        "allowToken": "אפשר __ph__0__ להשתמש __ph__1__ שלך",
-        "approveToken": "שימו לב שנדרש רק לאשר את האסימון פעם אחת. אם לתוסף שלך יש בקשות אישור אסימון מרובות, הקפד לאשר רק את האחרון תוך דחיית השאר.",
-        "blocksLeft": "__Ph__0__ חסימות שנשארו ...",
-        "for": "עֲבוּר",
-        "networkInfo": {
-            "amount": "סְכוּם",
-            "date": "תַאֲרִיך",
-            "status": "סטָטוּס",
-            "transactionFee": "דמי עסקה"
-        },
-        "newTransaction": "צור עסקה חדשה",
-        "pending": "__Ph__0__ עסקה בהמתנה ...",
-        "statuses": {
-            "done": "לְהַשְׁלִים",
-            "failed": "העסקה נכשלה",
-            "pending": "תָלוּי וְעוֹמֵד",
-            "waitingForConfirmation": "מחכה לאישור ..."
-        },
-        "title": "עסקת גשר",
-        "transactionHash": "חשיש עסקה"
+    "newTransaction": "צור עסקה חדשה",
+    "pending": "__Ph__0__ עסקה בהמתנה ...",
+    "statuses": {
+      "done": "לְהַשְׁלִים",
+      "failed": "העסקה נכשלה",
+      "pending": "תָלוּי וְעוֹמֵד",
+      "waitingForConfirmation": "מחכה לאישור ..."
     },
-    "bridgeTransferNotification": {
-        "addToken": "הוסף __ph__0__ לארנק",
-        "title": "עסקת גשר מוצלחת"
+    "title": "עסקת גשר",
+    "transactionHash": "חשיש עסקה"
+  },
+  "bridgeTransferNotification": {
+    "addToken": "הוסף __ph__0__ לארנק",
+    "title": "עסקת גשר מוצלחת"
+  },
+  "browserNotificationDialog": {
+    "agree": "כן, אני מבין",
+    "button": "אפשר התראות",
+    "info": "אנו נשלח לך רק עדכונים רלוונטיים לגבי הארנק שלך, למשל: שינויים באיזון נכסים",
+    "notificationBlocked": "כדי לקבל את ההודעות על __ph__0__, אנא אפשר את ההודעות בהגדרות המקוריות של הדפדפן שלך",
+    "pointer": "לחץ על \"אפשר\" להפעיל את ההודעות",
+    "rotateMessage": "החוויה זמינה רק במצב דיוקן",
+    "rotatetitle": "אנא, סובב את המכשיר שלך",
+    "title": "הגדר התראות"
+  },
+  "browserNotificationLocalStorageOverride": {
+    "agree": "כן, אני מבין",
+    "info": "האחסון המקומי שלך עומס יתר על המידה, כדי להמשיך לעבוד עם __ph__0__ צריך לנקות אותו",
+    "title": "אחסון מקומי __ph__0__ מקומי"
+  },
+  "browserPermission": {
+    "btnAllow": "אפשר גישה",
+    "btnGoToSettings": "עבור להגדרות",
+    "desc": "כדי להבטיח את האותנטיות של המסמכים ולאמת את זהות המשתמש לאימות KYC, נדרשת גישה למצלמת המכשיר שלך.",
+    "disclaimer": "גישה למצלמה נדרשת לכידת מסמכים בזמן אמת כדי למנוע הונאה.",
+    "title": "אפשר גישה למצלמה בהגדרות הדפדפן"
+  },
+  "buttons": {
+    "chooseAToken": "בחרו טוקן",
+    "chooseToken": "בחר טוקן",
+    "chooseTokens": "בחרו טוקנים",
+    "enterAmount": "הזן סכום",
+    "max": "מקסימום"
+  },
+  "calculatingText": "חישוב",
+  "cancelText": "לְבַטֵל",
+  "changeAccountText": "שינוי חשבון",
+  "changeNetworkText": "שנה רשת בארנק",
+  "closeText": "לִסְגוֹר",
+  "code": {
+    "allowanceError": "בדוק את זמינות המצלמה שלך והרשאות הדפדפן שלך כדי להשתמש בה",
+    "allowanceRequest": "לחץ על \"אפשר\" לגשת למצלמה",
+    "camera": "מַצלֵמָה",
+    "download": "הורד קוד QR",
+    "import": "ייבא תמונה",
+    "invalid": "קוד QR לא חוקי",
+    "receive": "לְקַבֵּל",
+    "scan": "סרוק עם מצלמה",
+    "upload": "סריקה QR"
+  },
+  "collapseText": "הִתמוֹטְטוּת",
+  "comingSoonText": "בקרוב",
+  "confirmNextTxFailure": {
+    "button": "כן, אני מבין את הסיכון",
+    "header": "תְשׁוּמַת לֵב",
+    "info": "מאזן ה- XOR שלך יהיה פחות מ- __ph__0__ xor לאחר עסקה זו. לא תוכל לשלם עבור דמי הרשת עבור עסקה אחרת.",
+    "payoff": "תצטרך להשתמש בגשר כדי להשיג XOR מרשתות אחרות, לקבל את XOR מחשבון {Sora} אחר, או להחליף כל אסימון אחר שכבר כבר בחשבונך ל- XOR."
+  },
+  "confirmSupply": {
+    "outputDescription": "פלט מוערך. אם המחיר ישתנה יותר מ- __ph__0 __% העסקה שלך תחזור.",
+    "title": "נתח הבריכה שלך יהיה"
+  },
+  "confirmText": "לְאַשֵׁר",
+  "confirmTransactionText": "אשר את העסקה",
+  "connectedAccount": "חשבון מחובר",
+  "connectedText": "מְחוּבָּר",
+  "connectEthereumWalletText": "חבר ארנק __ph__0__",
+  "connection": {
+    "action": {
+      "learnMore": "למידע נוסף על חיבור ארנק",
+      "refresh": "לְרַעֲנֵן"
     },
-    "browserNotificationDialog": {
-        "agree": "כן, אני מבין",
-        "button": "אפשר התראות",
-        "info": "אנו נשלח לך רק עדכונים רלוונטיים לגבי הארנק שלך, למשל: שינויים באיזון נכסים",
-        "notificationBlocked": "כדי לקבל את ההודעות על __ph__0__, אנא אפשר את ההודעות בהגדרות המקוריות של הדפדפן שלך",
-        "pointer": "לחץ על \"אפשר\" להפעיל את ההודעות",
-        "rotateMessage": "החוויה זמינה רק במצב דיוקן",
-        "rotatetitle": "אנא, סובב את המכשיר שלך",
-        "title": "הגדר התראות"
+    "disclaimer": "שימו לב כי ארנקים מסוימים עשויים שלא להיות נתמכים במלואם.",
+    "internalText": "אתה יכול ליצור או לייבא חשבון __ph__0__ קיים כדי להתחבר לחשבון __ph__1__ שלך. כל הנתונים המאוחסנים על ידי __ph__2__ מוצפנים באמצעות הצפנה מתקדמת מובנית.",
+    "internalTitle": "להתחבר ל- __ph__0__",
+    "list": {
+      "extensions": "הרחבות",
+      "integrated": "מְשׁוּלָב"
     },
-    "browserNotificationLocalStorageOverride": {
-        "agree": "כן, אני מבין",
-        "info": "האחסון המקומי שלך עומס יתר על המידה, כדי להמשיך לעבוד עם __ph__0__ צריך לנקות אותו",
-        "title": "אחסון מקומי __ph__0__ מקומי"
+    "selectAccount": "בחר חשבון לעבוד איתו",
+    "wallet": {
+      "connected": "מְחוּבָּר",
+      "install": "לְהַתְקִין",
+      "recommended": "מוּמלָץ"
+    }
+  },
+  "connectWalletText": "חיבור חשבון",
+  "connectWalletTextTooltip": "התחבר לרשת __ph__0__ עם __ph__1__",
+  "continueText": "לְהַמשִׁיך",
+  "copiedText": "מוּעֲתָק!",
+  "copiedWithValue": "__Ph__0__ מועתק!",
+  "copyPhraseText": "העתק את משפחת הסיסמה",
+  "copyWithValue": "העתק __ph__0__",
+  "createPair": {
+    "deposit": "לְהַפְקִיד",
+    "firstLiquidityProvider": "אתה ספק הנזילות הראשון",
+    "firstLiquidityProviderInfo": "היחס בין אסימונים שתוסיפו יקבע את מחיר הבריכה הזו. <br/> ברגע שאתה שמח עם אספקת הלחיצה לשיעור כדי לבחון.",
+    "firstSecondPoolTokens": "__Ph__0 __-__ pH__1__ בריכה",
+    "pricePool": "מחירים ועמלות",
+    "shareOfPool": "חלק בבריכה",
+    "supply": "לְסַפֵּק",
+    "yourPosition": "עמדתך"
+  },
+  "createToken": {
+    "confirmTokenTitleCommon": "ליצור אסימון",
+    "confirmTokenTitleNFT": "צור nft",
+    "CreateSimpleToken": "אֲסִימוֹן",
+    "divisible": {
+      "desc": "יכולת NFT להתחלק לחלקים שברים. אספקת נזילות עובדת רק עם נכסים חלוקים",
+      "placeholder": "מִתחַלֵק"
     },
-    "browserPermission": {
-        "btnAllow": "אפשר גישה",
-        "btnGoToSettings": "עבור להגדרות",
-        "desc": "כדי להבטיח את האותנטיות של המסמכים ולאמת את זהות המשתמש לאימות KYC, נדרשת גישה למצלמת המכשיר שלך.",
-        "disclaimer": "גישה למצלמה נדרשת לכידת מסמכים בזמן אמת כדי למנוע הונאה.",
-        "title": "אפשר גישה למצלמה בהגדרות הדפדפן"
+    "enterName": "הזן שם אסימון",
+    "enterSupply": "הזן אספקת אסימון",
+    "enterSymbol": "הזן סמל אסימון",
+    "enterTokenDescription": "הזן תיאור",
+    "error": "יצירת אסימון __ph__0__",
+    "extensibleSupply": {
+      "desc": "יכולת לנענע יותר אסימונים.",
+      "placeholder": "אספקה ​​הניתנת להרחבה"
     },
+    "nft": {
+      "description": {
+        "placeholder": "תֵאוּר"
+      },
+      "image": {
+        "placeholderBadSource": "הקובץ לא הצליח לעבד",
+        "placeholderBadSourceAddition": "או שזה עדיין לא הועלה ל- IPFS",
+        "placeholderFileLimit": "גודל הקובץ עולה על הגבול של __ph__000mb",
+        "placeholderNoImage": "העלה את הקובץ על ידי הזנת קישור או בחירה מאחסון מקומי"
+      },
+      "link": {
+        "copyLink": "העתק קישור",
+        "placeholder": "קישור IPFS",
+        "tooltip": "IPFS היא מערכת מבוזרת לאחסון וגישה לקבצים, ומאפשרת לגשת לקבצים ממקומות רבים שאינם מנוהלים על ידי ארגון אחד."
+      },
+      "source": {
+        "label": "מָקוֹר",
+        "limit": "בחר קובץ אחר",
+        "value": "קבצים מקומיים"
+      },
+      "supply": {
+        "desc": "כמות NFTs שאתה הולך לקבל.",
+        "placeholder": "אספקת אסימון",
+        "quantity": "כַּמוּת"
+      }
+    },
+    "provideContent": "לספק תוכן",
+    "success": {
+      "desc": "צור אסימון __ph__0__",
+      "title": "העסקה הוגשה"
+    },
+    "titleCommon": "לִיצוֹר",
+    "tokenName": {
+      "desc": "זה שם לאסימון. אתה יכול להשתמש בין 1 עד 33 תווים לבחירה.",
+      "placeholder": "שם אסימון"
+    },
+    "tokenSupply": {
+      "desc": "תקבל אסימונים אלה עם היצירה.",
+      "placeholder": "אספקת אסימון"
+    },
+    "tokenSymbol": {
+      "desc": "זהו מזהה לאסימון. אתה יכול להשתמש בין 1 עד 7 תווים לבחירה.",
+      "placeholder": "סמל אסימון"
+    }
+  },
+  "createTokenText": "לִיצוֹר",
+  "createTokenTextNFT": "צור nft",
+  "currencyDialog": {
+    "currency": "מַטְבֵּעַ",
+    "searchPlaceholder": "חיפוש בשם מטבע או סמל"
+  },
+  "customisePageText": "התאמה אישית של דף",
+  "dark": "כֵּהֶה",
+  "demeterFarming": {
+    "actions": {
+      "add": "יתכן יותר",
+      "claim": "לתבוע תגמולים",
+      "remove": "הסר את Stake",
+      "start": "התחל לעלות"
+    },
+    "amountAdd": "מסתכם במוקד",
+    "amountRemove": "כמות להסרה",
+    "calculator": "מַחשְׁבוֹן",
+    "info": {
+      "earned": "__Ph__0__ הרוויח",
+      "fee": "תַשְׁלוּם",
+      "feeTooltip": "דמי ההפקדה מוחלים על הסכום שלך",
+      "owned": "{symbol} @:balanceText",
+      "poolShare": "הבריכה שלך שיתוף",
+      "poolShareWillBe": "שיתוף הבריכה שלך יסתיים יהיה",
+      "rewardToken": "אסימון תגמול",
+      "stake": "__Ph__0__ שלך נקלע",
+      "stakeWillBe": "יתד __ph__0__ שלך יהיה",
+      "totalLiquidityLocked": "נזילות מוחלטת נעולה"
+    },
+    "poweredBy": "מופעל על ידי חקלאות דמטר",
+    "results": "תוצאות",
+    "rewards": "__Ph__0__ תגמולים",
+    "staking": {
+      "active": "סטרייט פעיל",
+      "inactive": "אחזקות כדי להרוויח תגמולים נוספים",
+      "stopped": "ההפעלה נעצרה"
+    }
+  },
+  "desktop": {
+    "accountMnemonic": {
+      "placeholder": "ביטוי מנמוני"
+    },
+    "accountName": {
+      "desc": "זה שם חשבונך. זה יהיה גלוי רק לך ב- __ph__0__.",
+      "placeholder": "שם חשבון"
+    },
+    "addAccount": "הוסף חשבון",
+    "assetsAtRiskText": "נכסים בסיכון!",
+    "button": {
+      "createAccount": "צור חשבון",
+      "importAccount": "חשבון יבוא",
+      "next": "השלב הבא",
+      "skip": "לְדַלֵג"
+    },
+    "confirmPassword": {
+      "placeholder": "אשר את הסיסמה"
+    },
+    "confirmSeedText": "אשר את משפט הסיסמה על ידי לחיצה על המילים בסדר הנכון",
+    "deleteAccountText": "לא ניתן לשחזר חשבון ללא ביטוי זרעים, קובץ .json או אם הוא מאוחסן בהרחבה כלשהי. אתה תיסגר.",
+    "dialog": {
+      "confirmButton": "סימן על עסקת",
+      "confirmTitle": "אשר באמצעות סיסמה"
+    },
+    "errorMessages": {
+      "alreadyImported": "חשבון כבר מיובא __ph__0__",
+      "jsonFields": "לקובץ JSON אין שדות נדרשים",
+      "mnemonic": "צוין BIP39 Mnemonic לא חוקי",
+      "mnemonicLength": "Mnemonic צריך להכיל __ph__0__ מילים",
+      "password": "הסיסמה לא תואמת",
+      "passwords": "סיסמאות לא תואמות"
+    },
+    "errorMnemonicText": "סדר משפט סיסמה שגוי",
+    "exportJsonText": "תמיד תוכל לשחזר את חשבונך על ידי ייבוא ​​קובץ __ph__0__ זה. אל תשתף את זה עם אף אחד! אחסן אותו בבטחה, רצוי מוצפן.",
+    "exportOptionText": "ייצוא __ph__0__ קובץ לשיקום חשבון",
+    "exportTutorialsText": "הדרכות ייצוא",
+    "heading": {
+      "accountDetailsTitle": "פרטי חשבון",
+      "confirmSeedTitle": "אשר את סיסמה",
+      "importTitle": "חשבון יבוא",
+      "seedPhraseTitle": "משפט סיסמה"
+    },
+    "importSteps": {
+      "exportAccount": "ייצא את קובץ __ph__0__",
+      "selectAccount": "בחר את החשבון שברצונך לייצא",
+      "selectWallet": "פתח את הארנק עם החשבונות / ים הקיימים שלך"
+    },
+    "password": {
+      "desc": "ודא שאתה משתמש בסיסמה ייחודית חזקה להגנה נאותה (8 תווים מינימום)",
+      "placeholder": "סִיסמָה"
+    },
+    "seedAdviceAdditionText": "אם מישהו מבקש ממך את ביטוי הסיסמה שלך, סביר להניח שהם מנסים להטריד אותך ולגנוב את הנכסים שלך!",
+    "seedAdviceAdditionTitle": "לעולם אל תשתף את משפט הסיסמה שלך עם מישהו!",
+    "seedAdviceText": "משפט הסיסמה בן 12 המילים הוא מפתח פרטי להחזרת גישה לחשבון __ph__0__ שלך למקרה שתאבד גישה לחשבון __ph__1__ שלך. אחסן אותו בבטחה בסדר המדויק שהוא מופיע לעיל.",
+    "welcome": {
+      "createAccount": "צור חשבון",
+      "header": "ברוך הבא ל- __ph__0__!",
+      "headline": "בואו נקבע את חשבונך",
+      "importAccount": "חשבון יבוא",
+      "text": "צור את חשבון הרשת __ph__0__ שלך או היכנס אליהם הישנים באמצעות ביטוי mnemonic או יבוא .json. זה מאפשר לך לחתום היטב על עסקאות ולנהל נכסים ברשת __ph__1__."
+    }
+  },
+  "dexSettings": {
+    "marketAlgorithm": "@.upper: MarketalGorithMtext",
+    "marketAlgorithms": {
+      "SMART": "ניתוב נזילות __ph__0__ מבטיח את המחיר הטוב ביותר עבור כל עסקה על ידי שילוב רק אפשרויות המחיר הטובות ביותר מכל השווקים הזמינים. כאשר הוא זמין, עקומת מליטה אסימון (__ph__1__) תשמש לנזילות כל עוד מחיר הנכס זול יותר מאשר ממקורות אחרים, עליהם משתמשים בבריכת __ph__2__.",
+      "TBC": "__Ph__0__ - קנייה רק ​​מעקומת האגודה האסימון (שוק ראשוני). קיימת אפשרות שהמחיר יכול להיות שלילי בהשוואה לבריכת __ph__1__ (שוק משני), אך הערך שהתקבל מהתגמולים המוקנים עשוי להתברר כחיובי הרבה יותר לאורך זמן.",
+      "XYK": "__Ph__0__ - קנייה רק ​​מבריכת XYK (שוק משני). החלפת בריכת XYK מסורתית."
+    },
+    "marketAlgorithmTooltip": {
+      "main": "- אפשרות לבחור בין שוק ראשי (TBC), שוק משני (XYK) או אלגוריתם חכם משולב עבור המחיר הטוב ביותר המובטח לכל עסקה נתונה."
+    },
+    "slippageTolerance": "סובלנות להחליק",
+    "slippageToleranceHint": "העסקה שלך תחזור אם המחיר ישתנה באופן לא חיובי באחוז זה.",
+    "slippageToleranceValidation": {
+      "error": "הזן אחוז החלקה תקף",
+      "frontrun": "העסקה שלך עשויה להיות חזיתית",
+      "warning": "העסקה שלך עלולה להיכשל"
+    },
+    "title": "הגדרות"
+  },
+  "disclaimer": "__Ph__0__ אתר זה נשמר על ידי קהילת __ph__1__. לפני שתמשיך להשתמש באתר זה, אנא עיין ב- __ph__2__ והתיעוד, הכולל הסבר מפורט כיצד עובד __ph__3__, כמו גם את __ph__4__ ו- __ph__5__. מסמכים אלה הם מכריעים לחוויית משתמש מאובטחת וחיובית. על ידי שימוש __ph__6__, אתה מאשר כי קראת והבנת מסמכים אלה. אתה גם מאשר את הדברים הבאים: 1) האחריות הבלעדית שלך לעמידה בכל החוקים שעשויים לחול על השימוש הספציפי שלך ב- __ph__7__ בתחום השיפוט החוקי שלך; 2) ההבנה שלך שהגרסה הנוכחית של __ph__8__ היא גרסת אלפא: היא לא נבדקה במלואה, ופונקציות מסוימות עשויות שלא להתפקד כמתוכנן; 3) הבנתך וקבלה מרצון של הסיכונים הכרוכים בשימוש __ph__9__, כולל, אך לא רק, הסיכון לאבד אסימונים. אנא אל תמשיך בלי לקרוא את __ph__10__, __ph__11__, __ph__12__!",
+  "disclaimerTitle": "הצהרת אחריות",
+  "disconnectWalletText": "לְנַתֵק",
+  "doNotShowText": "אל תראה לי את זה שוב",
+  "dragAndDropText": "גרור ושחרר או בחר קובץ __ph__0__",
+  "editText": "לַעֲרוֹך",
+  "errorText": "שְׁגִיאָה",
+  "ethNetworkFeeTooltipText": "שימו לב כי דמי הרשת __ph__0__ המוצגים ב- __ph__1__ הם רק הערכות גסות, תוכלו לראות את סכום העמלה הנכון בארנק __ph__2__ המחובר שלכם לפני אישור העסקה.",
+  "exceededAmountText": "__Ph__0__ חרג",
+  "exchange": {
+    "lossWarning": "אתה הולך לאבד __ph__0% __% על הסחר שלך. גילינו סוגיית אספקת נזילות. זה עלול להוביל להפסדים משמעותיים במהלך החלפות אסימון. אנא וודא שיש נזילות מספקת עבור זוג ההחלפות הרצוי שלך.",
+    "Pool": "פּוּל",
+    "Swap": "לְהַחלִיף"
+  },
+  "expandText": "לְהַרְחִיב",
+  "explore": {
+    "myPositions": "העמדות שלי",
+    "showOnly": "להראות רק __ph__0__",
+    "synthetics": "אסימונים סינתטיים"
+  },
+  "FAQ": "__Ph__0__ שאלות נפוצות",
+  "fiatDisclaimer": "שימו לב כי ערכי הפיאט המשויכים לקריפטו -מטבעות באתר שלנו ניתנים על ידי שירותים חיצוניים (תת -שאת, SubsQuid, API של CERES) הם משוערים. בהתחשב במורכבות המובנית של חישובים אלה, לא ניתן להבטיח דיוק מוחלט בכל עת.",
+  "fiatPayment": {
+    "cedeStoreBtn": "העברה מ- __ph__0__ דרך __ph__1__",
+    "cedeStoreDesc": "העבר אסימונים מ- __ph__0__ ל- __ph__1__ דרך __ph__2__",
+    "cedeStoreTitle": "העברה מ- __ph__0__",
+    "errorMessage": "מתנצל על אי הנוחות. אנו פועלים בשקדנות כדי לפתור זאת. אנא נסה שוב מאוחר יותר.",
+    "historyBtn": "הרכישות שלי",
+    "historyTitle": "היסטוריית עסקאות",
+    "moonpayDesc": "רכוש אסימוני ETH ב- __ph__0__ והעביר אותם לרשת __ph__1__ דרך הגשר",
+    "moonpayTitle": "קנו את ETH באמצעות MoonPay"
+  },
+  "filter": {
+    "all": "כֹּל",
+    "native": "יָלִיד",
+    "reset": "אִתחוּל",
+    "show": "לְהַצִיג",
+    "showAssets": "להראות נכסים",
+    "synthetics": "סינתטיים",
+    "token": "מטבעות",
+    "verifiedOnly": "הצג נכסים מאומתים בלבד",
+    "zeroBalance": "הסתר 0 נכסי מאזן"
+  },
+  "firstPerSecond": "__Ph__0__ לכל __ph__1__",
+  "firstText": "רֵאשִׁית",
+  "footer": {
+    "internet": {
+      "action": "רענן __ph__0__",
+      "desc": {
+        "disabled": "מְנוּתָק",
+        "stable": "מהירות אופטימלית",
+        "unstable": "חיבור איטי"
+      },
+      "dialogDesc": "__Ph__0__ דורש חיבור לאינטרנט לצורך ניסיון יציב",
+      "dialogTitle": "התחבר למקור האינטרנט",
+      "label": "מהירות האינטרנט שלך",
+      "title": {
+        "disabled": "נכה באינטרנט",
+        "stable": "אינטרנט יציב",
+        "unstable": "אינטרנט לא יציב"
+      }
+    },
+    "node": {
+      "title": {
+        "connected": "צומת מחובר",
+        "disconnected": "צומת מנותק",
+        "loading": "חיבור מחדש של צומת"
+      }
+    },
+    "statistics": {
+      "action": "בחר שירותים",
+      "desc": {
+        "available": "כל השירותים יציבים",
+        "loading": "כל השירותים טוענים",
+        "unavailable": "כל השירותים מנותקים"
+      },
+      "dialog": {
+        "indexer": "מַפתְחָן",
+        "title": "__Ph__0__ בחירת שירות רשת",
+        "useCeres": "השתמש ב- __ph__0__ לערכי פיאט"
+      },
+      "label": "שירותי סטטיסטיקה",
+      "title": {
+        "available": "סטטיסטיקה זמינה",
+        "loading": "טעינת סטטיסטיקה",
+        "unavailable": "סטטיסטיקה לא זמינה"
+      }
+    }
+  },
+  "footerMenu": {
+    "faucet": "בֶּרֶז",
+    "github": "Github",
+    "info": "מידע וקהילה",
+    "privacy": "מדיניות פרטיות",
+    "sorawiki": "__Ph__0__ wiki"
+  },
+  "forText": "עֲבוּר",
+  "hashiBridgeText": "__Ph__0__ גשר",
+  "headerMenu": {
+    "hideBalances": "להסתיר יתרות",
+    "hideDisclaimer": "הסתר הצהרת אחריות",
+    "selectCurrency": "בחר מטבע",
+    "settings": "הגדרות",
+    "showBalances": "יתרות להראות",
+    "showDisclaimer": "הצג כתב ויתור",
+    "switchTheme": "מצב __ph__0__",
+    "systemPreferencesTheme": "העדפות מערכת",
+    "titleBalance": "יתרות",
+    "titleCurrency": "מטבע פיאט",
+    "titleMisc": "Misc",
+    "titleTheme": "נושא צבע",
+    "turnPhoneHideBalances": "הפוך טלפון והסתתר"
+  },
+  "helpDialog": {
+    "appVersion": "גרסת __ph__0__",
+    "contactUs": "צרו קשר",
+    "privacyPolicy": "מדיניות פרטיות",
+    "termsOfService": "תנאי שירות",
+    "title": "עֶזרָה"
+  },
+  "history": {
+    "clearHistory": "היסטוריה ברורה",
+    "empty": "העסקאות שלך יופיעו כאן",
+    "emptySearch": "לא נמצאו עסקאות",
+    "filterPlaceholder": "סנן לפי כתובת, סמל, סוג או מזהה חסימה"
+  },
+  "historyErrorMessages": {
+    "balances": {
+      "liquidityrestrictions": "מגבלות נזילות בחשבון מונעות משיכה"
+    },
+    "demeterfarmingplatform": {
+      "insufficientfunds": "לא מספיק קרנות",
+      "insufficientlptokens": "לא מספיק אסימוני מתן נזילות",
+      "pooldoesnothaverewards": "לבריכה אין תגמולים"
+    },
+    "generalError": "משהו השתבש",
+    "liquidityproxy": {
+      "forbiddenfilter": "מקור נזילות נבחר אסור",
+      "slippagenottolerated": "השפעת המחיר חרגה מהערך שנבחר"
+    },
+    "multicollateralbondingcurvepool": {
+      "pricecalculationfailed": "אירעה שגיאה בעת חישוב המחיר"
+    },
+    "poolxyk": {
+      "calculatedvalueisnotmeetsrequiredboundaries": "הסכומים הם מחוץ לתחום הנדרש",
+      "impossibletodecidevalidpairvaluesfromrangeforthispool": "הסכומים המסופקים מגוונים מדי",
+      "sourcebalanceisnotlargeenough": "איזון המקור אינו מספיק גדול",
+      "targetbalanceisnotlargeenough": "איזון היעד אינו מספיק גדול",
+      "unabletodepositxorlessthanminimum": "XOR נמוך מערך המינימום (0.007)",
+      "zerovalueinamountparameter": "לפרמטר הסכום יש ערך אפס"
+    },
+    "referrals": {
+      "alreadyhasreferrer": "לחשבון יש כבר מפנה",
+      "referrerinsufficientbalance": "למפנה אין מספיק איזון שמור"
+    },
+    "vestedrewards": {
+      "cantcalculatereward": "נכשל בביצוע חישוב תגמול",
+      "norewardsforasset": "אין תגמולים לנכס זה",
+      "rewardssupplyshortage": "תוכנית התגמולים כבר סיימה"
+    },
+    "xstpool": {
+      "poolalreadyinitializedforpair": "זוג בריכה כבר קיים",
+      "slippagelimitexceeded": "סובלנות להחליק לא עמדו בגבולות נאותים"
+    }
+  },
+  "importText": "יְבוּא",
+  "insufficientBalanceText": "לא מספיק __ph__0__ איזון",
+  "kensetsu": {
+    "addCollateral": "הוסף בטחונות",
+    "addCollateralDescription": "הפקדו יותר נכסים בעמדתכם כדי להגדיל את מגבלת ההלוואות שלכם או לשפר את יחס ההלוואה לערך. זה יכול גם לעזור במניעת חיסול.",
+    "available": "זָמִין",
+    "availableToBorrow": "זמין להשאלה",
+    "availableToBorrowDescription": "הסכום הנותר אתה זכאי למשוך בתנאים הנוכחיים של עמדתך, בהתבסס על בטחונות שהופקדו וכל החוב הקיים.",
+    "borrowDebt": "לווה חוב",
+    "borrowMore": "לווה יותר",
+    "borrowMoreDescription": "צייר כספים נוספים מהמיקום שלך עד הסכום המקסימלי הזמין. ודא שערך הבטחונות שלך תומך בחוב המוגבר כדי למנוע סיכוני פירוק.",
+    "borrowTax": "לווה מס",
+    "borrowTaxDescription": "המס __ph__0__ הוחל על הסכום שהושאל",
+    "closeVault": "סגור את עמדתי",
+    "closeVaultDescription": "סגור את המיקום שנבחר על ידי החזרת כל החוב המצטיין ומשיכת כל הבטוחות",
+    "collateralDetails": "פרטי בטחונות",
+    "createVault": "פתח מיקום לווה",
+    "createVaultAction": "לִלווֹת",
+    "createVaultDescription": "לפתוח עסקה חדשה על ידי הפקדת בטחונות במיקום שלך ולציור כספים. זה יוצר חובת חוב שעליך לנהל.",
+    "debtAvailable": "חוב זמין",
+    "debtAvailableDescription": "כמות הכספים שאתה עדיין יכול לשאוב ממיקום שלך מבלי לחרוג ממגבלת ההלוואות שלך, על סמך הביטחונות הנוכחיים שלך.",
+    "debtDetails": "פרטי חוב",
+    "depositCollateral": "ביטחונות על הפקדה",
+    "disclaimerDescription": "לווה נכסים דיגיטליים באמצעות __ph__0__ יש סיכון משמעותי ונמצא לגמרי על אחריותך בלבד. הערך של הנכסים הדיגיטליים הוא תנודתי ביותר, וכל שינוי במחירי השוק של הנכסים ששאלתם או השתמשתם כבטוחה יכול להוביל להפסדים כספיים משמעותיים.",
+    "error": {
+      "borrowMoreThanAvailable": "החוב הזמין חרג",
+      "enterBorrow": "הזן סכום הלוואה",
+      "enterCollateral": "הזן בטחונות",
+      "enterRepayDebt": "הזן חובות להחזר",
+      "incorrectCollateral": "זוג אסימון אינו נתמך",
+      "insufficientCollateral": "לא מספיק בטחונות",
+      "repayMoreThanDebt": "שכר יתר על המידה"
+    },
+    "highLiquidationRisk": "סיכון לפירוק גבוה",
+    "interest": "אִינטֶרֶס",
+    "interestDescription": "עמלה שנתית שגובה הסכום שנמשך ממצבך, המחושב כאחוז. עמלה זו מפצה על סיכונים ותנודות שוק.",
+    "introDescription": "התנסו בהלוואות והלוואות בטוחות וללא מאמץ. פתח עמדות הלוואה עם פלטפורמת __ph__0__.",
+    "introTitle": "פתח עמדות לווה והרוויח עם __ph__0__",
+    "liquidated": "מְחוּסָל",
+    "liquidatedMessage": "חוסל __ph__0__ __ph__1__",
+    "liquidationClose": "חיסול קרוב",
+    "liquidationPenalty": "עונש חיסול",
+    "liquidationPenaltyDescription": "עמלה המיוחלת אם שווי הביטחונות שלך נופל מתחת לסף מסוים, מה שמניע מכירת נכסים לכיסוי החוב. עונש זה מגדיל את סך החוב שלך.",
+    "ltv": "הלוואה לערך (__ph__0__)",
+    "ltvDescription": "היחס בין הסכום שנמשך לערך הבטחונות במצבך, המביע כאחוז. __Ph__0__ גבוה יותר מגדיל את התשואות הפוטנציאליות אך גם מסתכן, כולל הסיכוי לפירוק.",
+    "ltvMaxTooltip": "הסכום המרבי של עמדת הלוואה שניתן לספק ביחס לערך המוערך של הנכס המשמש כבטוחה.",
+    "maxAvailableToBorrow": "מקס. זמין להשאלה",
+    "maxAvailableToBorrowDescription": "הסכום המרבי שתוכלו לשאוב ממיקוםכם, שנקבע לפי ערך הבטוחות שלכם. מגבלה זו מתאימה כשערך הביטחונות משתנה.",
+    "minDepositCollateral": "דקה. ביטחונות על הפקדה",
+    "minDepositCollateralDescription": "סכום הנכסים המינימלי הנדרש לפתיחת עמדה. פיקדון ראשוני זה מאבטח את הכספים שברצונך ללוות.",
+    "openSwap": "פתוח החלפה",
+    "outstandingDebt": "חוב מצטיין",
+    "outstandingDebtDescription": "הסכום הכולל שאתה חייב כרגע מהקרנות שנשאבו מעמדתך, כולל ריבית שנצברה. יש להחזיר זאת כדי לסגור את עמדתך או לשמור על יחסי הלוואה לבריאים לערך.",
+    "overallAvailable": "סך הכל זמין",
+    "overallAvailableDescription": "הסכום הכולל של הכספים הזמינים להשאלה בפלטפורמת __ph__0__.",
+    "overallBadDebt": "חוֹב אָבוּד",
+    "overallBadDebtDescription": "החלק של החוב שלא סביר שיוחזר בגלל ברירת מחדל של הלווה או לא מספיק בטחונות.",
+    "overallTotalCollateral": "בטחונות מוחלטים",
+    "overallTotalCollateralDescription": "הערך הכולל של נכסים שהופקדו על ידי לווים כדי להבטיח את עמדות ההלוואות שלהם בפלטפורמת __ph__0__.",
+    "overallTotalDebt": "סך החוב",
+    "overallTotalDebtDescription": "סכום החוב הכולל שנמצא כיום מצטיין בכל עמדות ההלוואות בפלטפורמת __ph__0__.",
+    "positionHistory": "היסטוריית המיקום",
+    "positionInfo": "מידע על מיקום",
+    "positionSafe": "מיקום בטוח",
+    "readMore": "קרא עוד",
+    "reopen": "פתיחה מחדש",
+    "repayDebt": "החזר חוב",
+    "repayDebtDescription": "החזר כספים שאולים כדי להפחית את החוב המצטיין שלך. זה יכול להפחית את עלויות הריבית ולהוריד את הסיכון לפירוק.",
+    "requiredAmountWithSlippage": "סכום נדרש כולל החלקה",
+    "requiredAmountWithSlippageDescription": "לסגירת מיקום חלקה, קנו מעט יותר __ph__0__ מה- __ph__1__ הנדרש בגלל החלקה אפשרית. אתה צריך תוספת לכיסוי המחסור. החלף את הנכסים שלך ל- __ph__2__ כדי לענות על הצורך הזה.",
+    "status": {
+      "Closed": "סָגוּר",
+      "Liquidated": "מְחוּסָל",
+      "Opened": "פָּעִיל"
+    },
+    "totalCollateral": "בטחונות מוחלטים",
+    "totalCollateralDescription": "הערך הכולל של כל הנכסים המופקדים כעת בעמדתך. ערך זה משפיע על יכולת ההלוואות שלך ועל הסיכון לפירוק.",
+    "totalCollateralReturned": "סך הביטחונות חזרו",
+    "totalCollateralReturnedDescription": "הערך הכולל של הנכסים שהוחזרו אליכם לאחר סגירת מיקומכם, כולל סך הביטחונות שנותרו.",
+    "yourCollateral": "הביטחונות שלך",
+    "yourCollateralDescription": "הנכסים שהפקדת בעמדתך כדי להבטיח את הכספים שנמשכו. הנכסים הללו עשויים להיות מחוסלים על ידי המלווה אם אינך מצליח לשמור על יחס ההלוואה לערך הנדרש.",
+    "yourDebt": "החוב שלך",
+    "yourDebtDescription": "הסכום הכולל המצטיין כיום בתפקידך, כולל הסכום המצויר וכל ריבית שנצברה. יתרה זו עולה עם הזמן אם הריבית מצטברת.",
+    "yourDebtTokenBalance": "האיזון שלך __ph__0__"
+  },
+  "lastText": "אַחֲרוֹן",
+  "learnMoreText": "למידע נוסף",
+  "light": "אוֹר",
+  "locationText": "מִקוּם",
+  "logoutText": "התנתק",
+  "mainMenu": {
+    "About": "אוֹדוֹת",
+    "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+    "Bridge": "@:bridgeText",
+    "Burn": "@:pageTitle.Burn",
+    "Explore/Container": "לַחקוֹר",
+    "Farming": "חַקלָאוּת",
+    "OrderBook": "סַחַר",
+    "Pool": "פּוּל",
+    "Rewards": "תגמולים",
+    "SoraCard": "__Ph__0__ כרטיס",
+    "StakingContainer": "מעלה",
+    "Stats": "סטָטִיסטִיקָה",
+    "Swap": "לְהַחלִיף",
+    "VaultsContainer": "@:pageTitle.Vaults",
+    "Wallet": "ארנק",
+    "Sccp": "@:pageTitle.Sccp"
+  },
+  "marketAlgorithmText": "אלגוריתם שוק",
+  "marketText": "שׁוּק",
+  "maxAmountText": "מקס. סְכוּם",
+  "memorandum": "__Ph__0__ מזכר ותנאי שירותים",
+  "minAmountText": "דקה. סְכוּם",
+  "mobilePopup": {
+    "header": "הורידו את ארנק {Sora} עם תכונות {polkaswapHighlight}",
+    "info": "החלף אסימונים מרשתות שונות - __ph__0__, __ph__1__, __ph__2__, __ph__3__. ספק מאגר נזילות והרוויח % מדמי חליפין.",
+    "sideMenu": "קבלו את ארנק {Sora}"
+  },
+  "moonpay": {
     "buttons": {
-        "chooseAToken": "בחרו טוקן",
-        "chooseToken": "בחר טוקן",
-        "chooseTokens": "בחרו טוקנים",
-        "enterAmount": "הזן סכום",
-        "max": "מקסימום"
+      "buy": "קנו אסימונים",
+      "history": "היסטוריה של רכישה",
+      "transfer": "התחל גשר",
+      "view": "צפה בעסקת גשר"
     },
-    "calculatingText": "חישוב",
-    "cancelText": "לְבַטֵל",
-    "changeAccountText": "שינוי חשבון",
-    "changeNetworkText": "שנה רשת בארנק",
-    "closeText": "לִסְגוֹר",
-    "code": {
-        "allowanceError": "בדוק את זמינות המצלמה שלך והרשאות הדפדפן שלך כדי להשתמש בה",
-        "allowanceRequest": "לחץ על \"אפשר\" לגשת למצלמה",
-        "camera": "מַצלֵמָה",
-        "download": "הורד קוד QR",
-        "import": "ייבא תמונה",
-        "invalid": "קוד QR לא חוקי",
-        "receive": "לְקַבֵּל",
-        "scan": "סרוק עם מצלמה",
-        "upload": "סריקה QR"
-    },
-    "collapseText": "הִתמוֹטְטוּת",
-    "comingSoonText": "בקרוב",
-    "confirmNextTxFailure": {
-        "button": "כן, אני מבין את הסיכון",
-        "header": "תְשׁוּמַת לֵב",
-        "info": "מאזן ה- XOR שלך יהיה פחות מ- __ph__0__ xor לאחר עסקה זו. לא תוכל לשלם עבור דמי הרשת עבור עסקה אחרת.",
-        "payoff": "תצטרך להשתמש בגשר כדי להשיג XOR מרשתות אחרות, לקבל את XOR מחשבון {Sora} אחר, או להחליף כל אסימון אחר שכבר כבר בחשבונך ל- XOR."
-    },
-    "confirmSupply": {
-        "outputDescription": "פלט מוערך. אם המחיר ישתנה יותר מ- __ph__0 __% העסקה שלך תחזור.",
-        "title": "נתח הבריכה שלך יהיה"
-    },
-    "confirmText": "לְאַשֵׁר",
-    "confirmTransactionText": "אשר את העסקה",
-    "connectedAccount": "חשבון מחובר",
-    "connectedText": "מְחוּבָּר",
-    "connectEthereumWalletText": "חבר ארנק __ph__0__",
-    "connection": {
-        "action": {
-            "learnMore": "למידע נוסף על חיבור ארנק",
-            "refresh": "לְרַעֲנֵן"
-        },
-        "disclaimer": "שימו לב כי ארנקים מסוימים עשויים שלא להיות נתמכים במלואם.",
-        "internalText": "אתה יכול ליצור או לייבא חשבון __ph__0__ קיים כדי להתחבר לחשבון __ph__1__ שלך. כל הנתונים המאוחסנים על ידי __ph__2__ מוצפנים באמצעות הצפנה מתקדמת מובנית.",
-        "internalTitle": "להתחבר ל- __ph__0__",
-        "list": {
-            "extensions": "הרחבות",
-            "integrated": "מְשׁוּלָב"
-        },
-        "selectAccount": "בחר חשבון לעבוד איתו",
-        "wallet": {
-            "connected": "מְחוּבָּר",
-            "install": "לְהַתְקִין",
-            "recommended": "מוּמלָץ"
-        }
-    },
-    "connectWalletText": "חיבור חשבון",
-    "connectWalletTextTooltip": "התחבר לרשת __ph__0__ עם __ph__1__",
-    "continueText": "לְהַמשִׁיך",
-    "copiedText": "מוּעֲתָק!",
-    "copiedWithValue": "__Ph__0__ מועתק!",
-    "copyPhraseText": "העתק את משפחת הסיסמה",
-    "copyWithValue": "העתק __ph__0__",
-    "createPair": {
-        "deposit": "לְהַפְקִיד",
-        "firstLiquidityProvider": "אתה ספק הנזילות הראשון",
-        "firstLiquidityProviderInfo": "היחס בין אסימונים שתוסיפו יקבע את מחיר הבריכה הזו. <br/> ברגע שאתה שמח עם אספקת הלחיצה לשיעור כדי לבחון.",
-        "firstSecondPoolTokens": "__Ph__0 __-__ pH__1__ בריכה",
-        "pricePool": "מחירים ועמלות",
-        "shareOfPool": "חלק בבריכה",
-        "supply": "לְסַפֵּק",
-        "yourPosition": "עמדתך"
-    },
-    "createToken": {
-        "confirmTokenTitleCommon": "ליצור אסימון",
-        "confirmTokenTitleNFT": "צור nft",
-        "CreateSimpleToken": "אֲסִימוֹן",
-        "divisible": {
-            "desc": "יכולת NFT להתחלק לחלקים שברים. אספקת נזילות עובדת רק עם נכסים חלוקים",
-            "placeholder": "מִתחַלֵק"
-        },
-        "enterName": "הזן שם אסימון",
-        "enterSupply": "הזן אספקת אסימון",
-        "enterSymbol": "הזן סמל אסימון",
-        "enterTokenDescription": "הזן תיאור",
-        "error": "יצירת אסימון __ph__0__",
-        "extensibleSupply": {
-            "desc": "יכולת לנענע יותר אסימונים.",
-            "placeholder": "אספקה ​​הניתנת להרחבה"
-        },
-        "nft": {
-            "description": {
-                "placeholder": "תֵאוּר"
-            },
-            "image": {
-                "placeholderBadSource": "הקובץ לא הצליח לעבד",
-                "placeholderBadSourceAddition": "או שזה עדיין לא הועלה ל- IPFS",
-                "placeholderFileLimit": "גודל הקובץ עולה על הגבול של __ph__000mb",
-                "placeholderNoImage": "העלה את הקובץ על ידי הזנת קישור או בחירה מאחסון מקומי"
-            },
-            "link": {
-                "copyLink": "העתק קישור",
-                "placeholder": "קישור IPFS",
-                "tooltip": "IPFS היא מערכת מבוזרת לאחסון וגישה לקבצים, ומאפשרת לגשת לקבצים ממקומות רבים שאינם מנוהלים על ידי ארגון אחד."
-            },
-            "source": {
-                "label": "מָקוֹר",
-                "limit": "בחר קובץ אחר",
-                "value": "קבצים מקומיים"
-            },
-            "supply": {
-                "desc": "כמות NFTs שאתה הולך לקבל.",
-                "placeholder": "אספקת אסימון",
-                "quantity": "כַּמוּת"
-            }
-        },
-        "provideContent": "לספק תוכן",
-        "success": {
-            "desc": "צור אסימון __ph__0__",
-            "title": "העסקה הוגשה"
-        },
-        "titleCommon": "לִיצוֹר",
-        "tokenName": {
-            "desc": "זה שם לאסימון. אתה יכול להשתמש בין 1 עד 33 תווים לבחירה.",
-            "placeholder": "שם אסימון"
-        },
-        "tokenSupply": {
-            "desc": "תקבל אסימונים אלה עם היצירה.",
-            "placeholder": "אספקת אסימון"
-        },
-        "tokenSymbol": {
-            "desc": "זהו מזהה לאסימון. אתה יכול להשתמש בין 1 עד 7 תווים לבחירה.",
-            "placeholder": "סמל אסימון"
-        }
-    },
-    "createTokenText": "לִיצוֹר",
-    "createTokenTextNFT": "צור nft",
-    "currencyDialog": {
-        "currency": "מַטְבֵּעַ",
-        "searchPlaceholder": "חיפוש בשם מטבע או סמל"
-    },
-    "customisePageText": "התאמה אישית של דף",
-    "dark": "כֵּהֶה",
-    "demeterFarming": {
-        "actions": {
-            "add": "יתכן יותר",
-            "claim": "לתבוע תגמולים",
-            "remove": "הסר את Stake",
-            "start": "התחל לעלות"
-        },
-        "amountAdd": "מסתכם במוקד",
-        "amountRemove": "כמות להסרה",
-        "calculator": "מַחשְׁבוֹן",
-        "info": {
-            "earned": "__Ph__0__ הרוויח",
-            "fee": "תַשְׁלוּם",
-            "feeTooltip": "דמי ההפקדה מוחלים על הסכום שלך",
-            "owned": "{symbol} @:balanceText",
-            "poolShare": "הבריכה שלך שיתוף",
-            "poolShareWillBe": "שיתוף הבריכה שלך יסתיים יהיה",
-            "rewardToken": "אסימון תגמול",
-            "stake": "__Ph__0__ שלך נקלע",
-            "stakeWillBe": "יתד __ph__0__ שלך יהיה",
-            "totalLiquidityLocked": "נזילות מוחלטת נעולה"
-        },
-        "poweredBy": "מופעל על ידי חקלאות דמטר",
-        "results": "תוצאות",
-        "rewards": "__Ph__0__ תגמולים",
-        "staking": {
-            "active": "סטרייט פעיל",
-            "inactive": "אחזקות כדי להרוויח תגמולים נוספים",
-            "stopped": "ההפעלה נעצרה"
-        }
-    },
-    "desktop": {
-        "accountMnemonic": {
-            "placeholder": "ביטוי מנמוני"
-        },
-        "accountName": {
-            "desc": "זה שם חשבונך. זה יהיה גלוי רק לך ב- __ph__0__.",
-            "placeholder": "שם חשבון"
-        },
-        "addAccount": "הוסף חשבון",
-        "assetsAtRiskText": "נכסים בסיכון!",
-        "button": {
-            "createAccount": "צור חשבון",
-            "importAccount": "חשבון יבוא",
-            "next": "השלב הבא",
-            "skip": "לְדַלֵג"
-        },
-        "confirmPassword": {
-            "placeholder": "אשר את הסיסמה"
-        },
-        "confirmSeedText": "אשר את משפט הסיסמה על ידי לחיצה על המילים בסדר הנכון",
-        "deleteAccountText": "לא ניתן לשחזר חשבון ללא ביטוי זרעים, קובץ .json או אם הוא מאוחסן בהרחבה כלשהי. אתה תיסגר.",
-        "dialog": {
-            "confirmButton": "סימן על עסקת",
-            "confirmTitle": "אשר באמצעות סיסמה"
-        },
-        "errorMessages": {
-            "alreadyImported": "חשבון כבר מיובא __ph__0__",
-            "jsonFields": "לקובץ JSON אין שדות נדרשים",
-            "mnemonic": "צוין BIP39 Mnemonic לא חוקי",
-            "mnemonicLength": "Mnemonic צריך להכיל __ph__0__ מילים",
-            "password": "הסיסמה לא תואמת",
-            "passwords": "סיסמאות לא תואמות"
-        },
-        "errorMnemonicText": "סדר משפט סיסמה שגוי",
-        "exportJsonText": "תמיד תוכל לשחזר את חשבונך על ידי ייבוא ​​קובץ __ph__0__ זה. אל תשתף את זה עם אף אחד! אחסן אותו בבטחה, רצוי מוצפן.",
-        "exportOptionText": "ייצוא __ph__0__ קובץ לשיקום חשבון",
-        "exportTutorialsText": "הדרכות ייצוא",
-        "heading": {
-            "accountDetailsTitle": "פרטי חשבון",
-            "confirmSeedTitle": "אשר את סיסמה",
-            "importTitle": "חשבון יבוא",
-            "seedPhraseTitle": "משפט סיסמה"
-        },
-        "importSteps": {
-            "exportAccount": "ייצא את קובץ __ph__0__",
-            "selectAccount": "בחר את החשבון שברצונך לייצא",
-            "selectWallet": "פתח את הארנק עם החשבונות / ים הקיימים שלך"
-        },
-        "password": {
-            "desc": "ודא שאתה משתמש בסיסמה ייחודית חזקה להגנה נאותה (8 תווים מינימום)",
-            "placeholder": "סִיסמָה"
-        },
-        "seedAdviceAdditionText": "אם מישהו מבקש ממך את ביטוי הסיסמה שלך, סביר להניח שהם מנסים להטריד אותך ולגנוב את הנכסים שלך!",
-        "seedAdviceAdditionTitle": "לעולם אל תשתף את משפט הסיסמה שלך עם מישהו!",
-        "seedAdviceText": "משפט הסיסמה בן 12 המילים הוא מפתח פרטי להחזרת גישה לחשבון __ph__0__ שלך למקרה שתאבד גישה לחשבון __ph__1__ שלך. אחסן אותו בבטחה בסדר המדויק שהוא מופיע לעיל.",
-        "welcome": {
-            "createAccount": "צור חשבון",
-            "header": "ברוך הבא ל- __ph__0__!",
-            "headline": "בואו נקבע את חשבונך",
-            "importAccount": "חשבון יבוא",
-            "text": "צור את חשבון הרשת __ph__0__ שלך או היכנס אליהם הישנים באמצעות ביטוי mnemonic או יבוא .json. זה מאפשר לך לחתום היטב על עסקאות ולנהל נכסים ברשת __ph__1__."
-        }
-    },
-    "dexSettings": {
-        "marketAlgorithm": "@.upper: MarketalGorithMtext",
-        "marketAlgorithms": {
-            "SMART": "ניתוב נזילות __ph__0__ מבטיח את המחיר הטוב ביותר עבור כל עסקה על ידי שילוב רק אפשרויות המחיר הטובות ביותר מכל השווקים הזמינים. כאשר הוא זמין, עקומת מליטה אסימון (__ph__1__) תשמש לנזילות כל עוד מחיר הנכס זול יותר מאשר ממקורות אחרים, עליהם משתמשים בבריכת __ph__2__.",
-            "TBC": "__Ph__0__ - קנייה רק ​​מעקומת האגודה האסימון (שוק ראשוני). קיימת אפשרות שהמחיר יכול להיות שלילי בהשוואה לבריכת __ph__1__ (שוק משני), אך הערך שהתקבל מהתגמולים המוקנים עשוי להתברר כחיובי הרבה יותר לאורך זמן.",
-            "XYK": "__Ph__0__ - קנייה רק ​​מבריכת XYK (שוק משני). החלפת בריכת XYK מסורתית."
-        },
-        "marketAlgorithmTooltip": {
-            "main": "- אפשרות לבחור בין שוק ראשי (TBC), שוק משני (XYK) או אלגוריתם חכם משולב עבור המחיר הטוב ביותר המובטח לכל עסקה נתונה."
-        },
-        "slippageTolerance": "סובלנות להחליק",
-        "slippageToleranceHint": "העסקה שלך תחזור אם המחיר ישתנה באופן לא חיובי באחוז זה.",
-        "slippageToleranceValidation": {
-            "error": "הזן אחוז החלקה תקף",
-            "frontrun": "העסקה שלך עשויה להיות חזיתית",
-            "warning": "העסקה שלך עלולה להיכשל"
-        },
-        "title": "הגדרות"
-    },
-    "disclaimer": "__Ph__0__ אתר זה נשמר על ידי קהילת __ph__1__. לפני שתמשיך להשתמש באתר זה, אנא עיין ב- __ph__2__ והתיעוד, הכולל הסבר מפורט כיצד עובד __ph__3__, כמו גם את __ph__4__ ו- __ph__5__. מסמכים אלה הם מכריעים לחוויית משתמש מאובטחת וחיובית. על ידי שימוש __ph__6__, אתה מאשר כי קראת והבנת מסמכים אלה. אתה גם מאשר את הדברים הבאים: 1) האחריות הבלעדית שלך לעמידה בכל החוקים שעשויים לחול על השימוש הספציפי שלך ב- __ph__7__ בתחום השיפוט החוקי שלך; 2) ההבנה שלך שהגרסה הנוכחית של __ph__8__ היא גרסת אלפא: היא לא נבדקה במלואה, ופונקציות מסוימות עשויות שלא להתפקד כמתוכנן; 3) הבנתך וקבלה מרצון של הסיכונים הכרוכים בשימוש __ph__9__, כולל, אך לא רק, הסיכון לאבד אסימונים. אנא אל תמשיך בלי לקרוא את __ph__10__, __ph__11__, __ph__12__!",
-    "disclaimerTitle": "הצהרת אחריות",
-    "disconnectWalletText": "לְנַתֵק",
-    "doNotShowText": "אל תראה לי את זה שוב",
-    "dragAndDropText": "גרור ושחרר או בחר קובץ __ph__0__",
-    "editText": "לַעֲרוֹך",
-    "errorText": "שְׁגִיאָה",
-    "ethNetworkFeeTooltipText": "שימו לב כי דמי הרשת __ph__0__ המוצגים ב- __ph__1__ הם רק הערכות גסות, תוכלו לראות את סכום העמלה הנכון בארנק __ph__2__ המחובר שלכם לפני אישור העסקה.",
-    "exceededAmountText": "__Ph__0__ חרג",
-    "exchange": {
-        "lossWarning": "אתה הולך לאבד __ph__0% __% על הסחר שלך. גילינו סוגיית אספקת נזילות. זה עלול להוביל להפסדים משמעותיים במהלך החלפות אסימון. אנא וודא שיש נזילות מספקת עבור זוג ההחלפות הרצוי שלך.",
-        "Pool": "פּוּל",
-        "Swap": "לְהַחלִיף"
-    },
-    "expandText": "לְהַרְחִיב",
-    "explore": {
-        "myPositions": "העמדות שלי",
-        "showOnly": "להראות רק __ph__0__",
-        "synthetics": "אסימונים סינתטיים"
-    },
-    "FAQ": "__Ph__0__ שאלות נפוצות",
-    "fiatDisclaimer": "שימו לב כי ערכי הפיאט המשויכים לקריפטו -מטבעות באתר שלנו ניתנים על ידי שירותים חיצוניים (תת -שאת, SubsQuid, API של CERES) הם משוערים. בהתחשב במורכבות המובנית של חישובים אלה, לא ניתן להבטיח דיוק מוחלט בכל עת.",
-    "fiatPayment": {
-        "cedeStoreBtn": "העברה מ- __ph__0__ דרך __ph__1__",
-        "cedeStoreDesc": "העבר אסימונים מ- __ph__0__ ל- __ph__1__ דרך __ph__2__",
-        "cedeStoreTitle": "העברה מ- __ph__0__",
-        "errorMessage": "מתנצל על אי הנוחות. אנו פועלים בשקדנות כדי לפתור זאת. אנא נסה שוב מאוחר יותר.",
-        "historyBtn": "הרכישות שלי",
-        "historyTitle": "היסטוריית עסקאות",
-        "moonpayDesc": "רכוש אסימוני ETH ב- __ph__0__ והעביר אותם לרשת __ph__1__ דרך הגשר",
-        "moonpayTitle": "קנו את ETH באמצעות MoonPay"
-    },
-    "filter": {
-        "all": "כֹּל",
-        "native": "יָלִיד",
-        "reset": "אִתחוּל",
-        "show": "לְהַצִיג",
-        "showAssets": "להראות נכסים",
-        "synthetics": "סינתטיים",
-        "token": "מטבעות",
-        "verifiedOnly": "הצג נכסים מאומתים בלבד",
-        "zeroBalance": "הסתר 0 נכסי מאזן"
-    },
-    "firstPerSecond": "__Ph__0__ לכל __ph__1__",
-    "firstText": "רֵאשִׁית",
-    "footer": {
-        "internet": {
-            "action": "רענן __ph__0__",
-            "desc": {
-                "disabled": "מְנוּתָק",
-                "stable": "מהירות אופטימלית",
-                "unstable": "חיבור איטי"
-            },
-            "dialogDesc": "__Ph__0__ דורש חיבור לאינטרנט לצורך ניסיון יציב",
-            "dialogTitle": "התחבר למקור האינטרנט",
-            "label": "מהירות האינטרנט שלך",
-            "title": {
-                "disabled": "נכה באינטרנט",
-                "stable": "אינטרנט יציב",
-                "unstable": "אינטרנט לא יציב"
-            }
-        },
-        "node": {
-            "title": {
-                "connected": "צומת מחובר",
-                "disconnected": "צומת מנותק",
-                "loading": "חיבור מחדש של צומת"
-            }
-        },
-        "statistics": {
-            "action": "בחר שירותים",
-            "desc": {
-                "available": "כל השירותים יציבים",
-                "loading": "כל השירותים טוענים",
-                "unavailable": "כל השירותים מנותקים"
-            },
-            "dialog": {
-                "indexer": "מַפתְחָן",
-                "title": "__Ph__0__ בחירת שירות רשת",
-                "useCeres": "השתמש ב- __ph__0__ לערכי פיאט"
-            },
-            "label": "שירותי סטטיסטיקה",
-            "title": {
-                "available": "סטטיסטיקה זמינה",
-                "loading": "טעינת סטטיסטיקה",
-                "unavailable": "סטטיסטיקה לא זמינה"
-            }
-        }
-    },
-    "footerMenu": {
-        "faucet": "בֶּרֶז",
-        "github": "Github",
-        "info": "מידע וקהילה",
-        "privacy": "מדיניות פרטיות",
-        "sorawiki": "__Ph__0__ wiki"
-    },
-    "forText": "עֲבוּר",
-    "hashiBridgeText": "__Ph__0__ גשר",
-    "headerMenu": {
-        "hideBalances": "להסתיר יתרות",
-        "hideDisclaimer": "הסתר הצהרת אחריות",
-        "selectCurrency": "בחר מטבע",
-        "settings": "הגדרות",
-        "showBalances": "יתרות להראות",
-        "showDisclaimer": "הצג כתב ויתור",
-        "switchTheme": "מצב __ph__0__",
-        "systemPreferencesTheme": "העדפות מערכת",
-        "titleBalance": "יתרות",
-        "titleCurrency": "מטבע פיאט",
-        "titleMisc": "Misc",
-        "titleTheme": "נושא צבע",
-        "turnPhoneHideBalances": "הפוך טלפון והסתתר"
-    },
-    "helpDialog": {
-        "appVersion": "גרסת __ph__0__",
-        "contactUs": "צרו קשר",
-        "privacyPolicy": "מדיניות פרטיות",
-        "termsOfService": "תנאי שירות",
-        "title": "עֶזרָה"
+    "confirmations": {
+      "txReady": "עסקה מוכנה לגשר"
     },
     "history": {
-        "clearHistory": "היסטוריה ברורה",
-        "empty": "העסקאות שלך יופיעו כאן",
-        "emptySearch": "לא נמצאו עסקאות",
-        "filterPlaceholder": "סנן לפי כתובת, סמל, סוג או מזהה חסימה"
+      "empty": "@:noDataText",
+      "title": "היסטוריה של רכישה"
     },
-    "historyErrorMessages": {
-        "balances": {
-            "liquidityrestrictions": "מגבלות נזילות בחשבון מונעות משיכה"
-        },
-        "demeterfarmingplatform": {
-            "insufficientfunds": "לא מספיק קרנות",
-            "insufficientlptokens": "לא מספיק אסימוני מתן נזילות",
-            "pooldoesnothaverewards": "לבריכה אין תגמולים"
-        },
-        "generalError": "משהו השתבש",
-        "liquidityproxy": {
-            "forbiddenfilter": "מקור נזילות נבחר אסור",
-            "slippagenottolerated": "השפעת המחיר חרגה מהערך שנבחר"
-        },
-        "multicollateralbondingcurvepool": {
-            "pricecalculationfailed": "אירעה שגיאה בעת חישוב המחיר"
-        },
-        "poolxyk": {
-            "calculatedvalueisnotmeetsrequiredboundaries": "הסכומים הם מחוץ לתחום הנדרש",
-            "impossibletodecidevalidpairvaluesfromrangeforthispool": "הסכומים המסופקים מגוונים מדי",
-            "sourcebalanceisnotlargeenough": "איזון המקור אינו מספיק גדול",
-            "targetbalanceisnotlargeenough": "איזון היעד אינו מספיק גדול",
-            "unabletodepositxorlessthanminimum": "XOR נמוך מערך המינימום (0.007)",
-            "zerovalueinamountparameter": "לפרמטר הסכום יש ערך אפס"
-        },
-        "referrals": {
-            "alreadyhasreferrer": "לחשבון יש כבר מפנה",
-            "referrerinsufficientbalance": "למפנה אין מספיק איזון שמור"
-        },
-        "vestedrewards": {
-            "cantcalculatereward": "נכשל בביצוע חישוב תגמול",
-            "norewardsforasset": "אין תגמולים לנכס זה",
-            "rewardssupplyshortage": "תוכנית התגמולים כבר סיימה"
-        },
-        "xstpool": {
-            "poolalreadyinitializedforpair": "זוג בריכה כבר קיים",
-            "slippagelimitexceeded": "סובלנות להחליק לא עמדו בגבולות נאותים"
-        }
-    },
-    "importText": "יְבוּא",
-    "insufficientBalanceText": "לא מספיק __ph__0__ איזון",
-    "kensetsu": {
-        "addCollateral": "הוסף בטחונות",
-        "addCollateralDescription": "הפקדו יותר נכסים בעמדתכם כדי להגדיל את מגבלת ההלוואות שלכם או לשפר את יחס ההלוואה לערך. זה יכול גם לעזור במניעת חיסול.",
-        "available": "זָמִין",
-        "availableToBorrow": "זמין להשאלה",
-        "availableToBorrowDescription": "הסכום הנותר אתה זכאי למשוך בתנאים הנוכחיים של עמדתך, בהתבסס על בטחונות שהופקדו וכל החוב הקיים.",
-        "borrowDebt": "לווה חוב",
-        "borrowMore": "לווה יותר",
-        "borrowMoreDescription": "צייר כספים נוספים מהמיקום שלך עד הסכום המקסימלי הזמין. ודא שערך הבטחונות שלך תומך בחוב המוגבר כדי למנוע סיכוני פירוק.",
-        "borrowTax": "לווה מס",
-        "borrowTaxDescription": "המס __ph__0__ הוחל על הסכום שהושאל",
-        "closeVault": "סגור את עמדתי",
-        "closeVaultDescription": "סגור את המיקום שנבחר על ידי החזרת כל החוב המצטיין ומשיכת כל הבטוחות",
-        "collateralDetails": "פרטי בטחונות",
-        "createVault": "פתח מיקום לווה",
-        "createVaultAction": "לִלווֹת",
-        "createVaultDescription": "לפתוח עסקה חדשה על ידי הפקדת בטחונות במיקום שלך ולציור כספים. זה יוצר חובת חוב שעליך לנהל.",
-        "debtAvailable": "חוב זמין",
-        "debtAvailableDescription": "כמות הכספים שאתה עדיין יכול לשאוב ממיקום שלך מבלי לחרוג ממגבלת ההלוואות שלך, על סמך הביטחונות הנוכחיים שלך.",
-        "debtDetails": "פרטי חוב",
-        "depositCollateral": "ביטחונות על הפקדה",
-        "disclaimerDescription": "לווה נכסים דיגיטליים באמצעות __ph__0__ יש סיכון משמעותי ונמצא לגמרי על אחריותך בלבד. הערך של הנכסים הדיגיטליים הוא תנודתי ביותר, וכל שינוי במחירי השוק של הנכסים ששאלתם או השתמשתם כבטוחה יכול להוביל להפסדים כספיים משמעותיים.",
-        "error": {
-            "borrowMoreThanAvailable": "החוב הזמין חרג",
-            "enterBorrow": "הזן סכום הלוואה",
-            "enterCollateral": "הזן בטחונות",
-            "enterRepayDebt": "הזן חובות להחזר",
-            "incorrectCollateral": "זוג אסימון אינו נתמך",
-            "insufficientCollateral": "לא מספיק בטחונות",
-            "repayMoreThanDebt": "שכר יתר על המידה"
-        },
-        "highLiquidationRisk": "סיכון לפירוק גבוה",
-        "interest": "אִינטֶרֶס",
-        "interestDescription": "עמלה שנתית שגובה הסכום שנמשך ממצבך, המחושב כאחוז. עמלה זו מפצה על סיכונים ותנודות שוק.",
-        "introDescription": "התנסו בהלוואות והלוואות בטוחות וללא מאמץ. פתח עמדות הלוואה עם פלטפורמת __ph__0__.",
-        "introTitle": "פתח עמדות לווה והרוויח עם __ph__0__",
-        "liquidated": "מְחוּסָל",
-        "liquidatedMessage": "חוסל __ph__0__ __ph__1__",
-        "liquidationClose": "חיסול קרוב",
-        "liquidationPenalty": "עונש חיסול",
-        "liquidationPenaltyDescription": "עמלה המיוחלת אם שווי הביטחונות שלך נופל מתחת לסף מסוים, מה שמניע מכירת נכסים לכיסוי החוב. עונש זה מגדיל את סך החוב שלך.",
-        "ltv": "הלוואה לערך (__ph__0__)",
-        "ltvDescription": "היחס בין הסכום שנמשך לערך הבטחונות במצבך, המביע כאחוז. __Ph__0__ גבוה יותר מגדיל את התשואות הפוטנציאליות אך גם מסתכן, כולל הסיכוי לפירוק.",
-        "ltvMaxTooltip": "הסכום המרבי של עמדת הלוואה שניתן לספק ביחס לערך המוערך של הנכס המשמש כבטוחה.",
-        "maxAvailableToBorrow": "מקס. זמין להשאלה",
-        "maxAvailableToBorrowDescription": "הסכום המרבי שתוכלו לשאוב ממיקוםכם, שנקבע לפי ערך הבטוחות שלכם. מגבלה זו מתאימה כשערך הביטחונות משתנה.",
-        "minDepositCollateral": "דקה. ביטחונות על הפקדה",
-        "minDepositCollateralDescription": "סכום הנכסים המינימלי הנדרש לפתיחת עמדה. פיקדון ראשוני זה מאבטח את הכספים שברצונך ללוות.",
-        "openSwap": "פתוח החלפה",
-        "outstandingDebt": "חוב מצטיין",
-        "outstandingDebtDescription": "הסכום הכולל שאתה חייב כרגע מהקרנות שנשאבו מעמדתך, כולל ריבית שנצברה. יש להחזיר זאת כדי לסגור את עמדתך או לשמור על יחסי הלוואה לבריאים לערך.",
-        "overallAvailable": "סך הכל זמין",
-        "overallAvailableDescription": "הסכום הכולל של הכספים הזמינים להשאלה בפלטפורמת __ph__0__.",
-        "overallBadDebt": "חוֹב אָבוּד",
-        "overallBadDebtDescription": "החלק של החוב שלא סביר שיוחזר בגלל ברירת מחדל של הלווה או לא מספיק בטחונות.",
-        "overallTotalCollateral": "בטחונות מוחלטים",
-        "overallTotalCollateralDescription": "הערך הכולל של נכסים שהופקדו על ידי לווים כדי להבטיח את עמדות ההלוואות שלהם בפלטפורמת __ph__0__.",
-        "overallTotalDebt": "סך החוב",
-        "overallTotalDebtDescription": "סכום החוב הכולל שנמצא כיום מצטיין בכל עמדות ההלוואות בפלטפורמת __ph__0__.",
-        "positionHistory": "היסטוריית המיקום",
-        "positionInfo": "מידע על מיקום",
-        "positionSafe": "מיקום בטוח",
-        "readMore": "קרא עוד",
-        "reopen": "פתיחה מחדש",
-        "repayDebt": "החזר חוב",
-        "repayDebtDescription": "החזר כספים שאולים כדי להפחית את החוב המצטיין שלך. זה יכול להפחית את עלויות הריבית ולהוריד את הסיכון לפירוק.",
-        "requiredAmountWithSlippage": "סכום נדרש כולל החלקה",
-        "requiredAmountWithSlippageDescription": "לסגירת מיקום חלקה, קנו מעט יותר __ph__0__ מה- __ph__1__ הנדרש בגלל החלקה אפשרית. אתה צריך תוספת לכיסוי המחסור. החלף את הנכסים שלך ל- __ph__2__ כדי לענות על הצורך הזה.",
-        "status": {
-            "Closed": "סָגוּר",
-            "Liquidated": "מְחוּסָל",
-            "Opened": "פָּעִיל"
-        },
-        "totalCollateral": "בטחונות מוחלטים",
-        "totalCollateralDescription": "הערך הכולל של כל הנכסים המופקדים כעת בעמדתך. ערך זה משפיע על יכולת ההלוואות שלך ועל הסיכון לפירוק.",
-        "totalCollateralReturned": "סך הביטחונות חזרו",
-        "totalCollateralReturnedDescription": "הערך הכולל של הנכסים שהוחזרו אליכם לאחר סגירת מיקומכם, כולל סך הביטחונות שנותרו.",
-        "yourCollateral": "הביטחונות שלך",
-        "yourCollateralDescription": "הנכסים שהפקדת בעמדתך כדי להבטיח את הכספים שנמשכו. הנכסים הללו עשויים להיות מחוסלים על ידי המלווה אם אינך מצליח לשמור על יחס ההלוואה לערך הנדרש.",
-        "yourDebt": "החוב שלך",
-        "yourDebtDescription": "הסכום הכולל המצטיין כיום בתפקידך, כולל הסכום המצויר וכל ריבית שנצברה. יתרה זו עולה עם הזמן אם הריבית מצטברת.",
-        "yourDebtTokenBalance": "האיזון שלך __ph__0__"
-    },
-    "lastText": "אַחֲרוֹן",
-    "learnMoreText": "למידע נוסף",
-    "light": "אוֹר",
-    "locationText": "מִקוּם",
-    "logoutText": "התנתק",
-    "mainMenu": {
-        "About": "אוֹדוֹת",
-        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "Bridge": "@:bridgeText",
-        "Burn": "@:pageTitle.Burn",
-        "Explore/Container": "לַחקוֹר",
-        "Farming": "חַקלָאוּת",
-        "OrderBook": "סַחַר",
-        "Pool": "פּוּל",
-        "Rewards": "תגמולים",
-        "SoraCard": "__Ph__0__ כרטיס",
-        "StakingContainer": "מעלה",
-        "Stats": "סטָטִיסטִיקָה",
-        "Swap": "לְהַחלִיף",
-        "VaultsContainer": "@:pageTitle.Vaults",
-        "Wallet": "ארנק",
-        "Sccp": "@:pageTitle.Sccp"
-    },
-    "marketAlgorithmText": "אלגוריתם שוק",
-    "marketText": "שׁוּק",
-    "maxAmountText": "מקס. סְכוּם",
-    "memorandum": "__Ph__0__ מזכר ותנאי שירותים",
-    "minAmountText": "דקה. סְכוּם",
-    "mobilePopup": {
-        "header": "הורידו את ארנק {Sora} עם תכונות {polkaswapHighlight}",
-        "info": "החלף אסימונים מרשתות שונות - __ph__0__, __ph__1__, __ph__2__, __ph__3__. ספק מאגר נזילות והרוויח % מדמי חליפין.",
-        "sideMenu": "קבלו את ארנק {Sora}"
-    },
-    "moonpay": {
-        "buttons": {
-            "buy": "קנו אסימונים",
-            "history": "היסטוריה של רכישה",
-            "transfer": "התחל גשר",
-            "view": "צפה בעסקת גשר"
-        },
-        "confirmations": {
-            "txReady": "עסקה מוכנה לגשר"
-        },
-        "history": {
-            "empty": "@:noDataText",
-            "title": "היסטוריה של רכישה"
-        },
-        "notifications": {
-            "accountAddressError": {
-                "text": "לרוע המזל, עסקת הגשר __ph__0__ נכשלה בגלל כתובת הנמען של האסימונים בצו __ph__3__ אינה תואמת את כתובת החשבון הנוכחית שלך __ph__1__. אנא החלף __ph__2__ חשבון בהרחבה ונסה שוב.",
-                "title": "חשבון לא נכון __ph__0__"
-            },
-            "amountError": {
-                "text": "לרוע המזל עסקת הגשר __ph__0__ נכשלה בגלל שלא הייתה מספיק אסימונים לעסקה. אנא בדוק את יתרת החשבון שלך __ph__1__ ונסה שוב.",
-                "title": "לא מספיק איזון"
-            },
-            "feeError": {
-                "text": "לרוע המזל עסקת הגשר __ph__0__ נכשלה בגלל שלא הייתה מספיק ETH כדי לשלם עבור דמי העברת הרשת {Ethereum}. אנא הוסף עוד ETH ונסה שוב.",
-                "title": "לא מספיק את ETH לגשר TX"
-            },
-            "success": {
-                "text": "רכישת אסימון מסתיימת. עסקת הגשר __ph__0__ תתחיל אוטומטית ברגע שהאסימונים התקבלו בחשבון __phected __p.__ המחובר. זה בטוח לסגור חלון זה ולהמשיך להשתמש __ph__2__. תהיה הודעה על עסקת הגשר כאשר היא מוכנה.",
-                "title": "אסימונים שנרכשו"
-            },
-            "supportError": {
-                "text": "לרוע המזל האסימון שנרכש באמצעות __ph__5__ עדיין לא נתמך על ידי גשר __ph__0__ ב- __ph__1__. בדרך כלל רק האסימונים הנתמכים צריכים להיות זמינים לרכישה באמצעות MoonPay ב- __ph__2__, מכאן שמשהו כנראה השתבש איפשהו. אנא אל תהססו ליידע את הקהילה על המקרה הזה ב- <a class = \"קישור\" href = \"https://t.me/polkaswap\" target = \"_ ריק\" rel = \"nofollow noopener\" title = \"__ ph__3 __\"> __ pH__4__ קבוצת Telegram </a>.",
-                "title": "אסימון לא נתמך"
-            },
-            "transactionError": {
-                "text": "לרוע המזל נראה כי העסקה __ph__0__ נכשלה. אנא נסה שוב. עבור __ph__1__ תמיכה עבור אל <a class = \"link\" href = \"https://support.moonpay.com\" target = \"_ ריק\" rel = \"nofollow noopener\" title = \"__ph__2__\"> https://support.moonpay.com </a>",
-                "title": "העסקה נכשלה"
-            }
-        },
-        "tooltips": {
-            "transfer": "אסימונים שנרכשו בהצלחה!\nלחץ כדי להתחיל את עסקת הגשר"
-        }
-    },
-    "moonpayText": "MoonPay",
-    "mst": {
-        "about": "אוֹדוֹת",
-        "accountNameMst": "שם חשבון Multisig",
-        "addAddr": "הוסף כתובת",
-        "addAddress": "הוסף כתובת נוספת",
-        "addMST": "הוסף כתובות Multisig",
-        "addrCreation": "יצירת כתובת מולטיסיג",
-        "addressEntered": "כתובת זו כבר הוזנה",
-        "amountOfSignatures": "חתימות שהוגשו",
-        "cardMessageFirst": "כדי שה- MULTISIG שלך יתפקד כראוי, כל הכתובות הרשומות חייבות ליצור את ה- MULTISIG באותה צורה בדיוק כמוך.",
-        "cardMessageSecond": "לא ניתן לשנות את הארנק Multisig בעתיד, רק את השם.",
-        "connectFearless": "התחבר באמצעות פחד ללא פחד",
-        "continue": "לְהַמשִׁיך",
-        "createMst": "צור ארנק Multisig",
-        "enterAddress": "הזן את כתובת Multisig",
-        "enterName": "הזן/י שם ארנק מרובה חתימות",
-        "forget": "לִשְׁכּוֹחַ",
-        "forgetMst": "פרטי הכניסה שלך יימחקו. תאבד לצמיתות גישה לחשבונך",
-        "how": "איך?",
-        "incorrectFormatAddress": "הכתובת אינה בפורמט נכון",
-        "loading": "טְעִינָה...",
-        "minFee": "סכום דקה של חתימת תשלום צורך",
-        "mstBridgeWarning": "העברה מ- MST אינה נתמכת לעת עתה",
-        "mstFearless": "התקן/י את Fearless Wallet או חבר/י את החשבון שלך",
-        "mstForgetBtn": "תשכח מחשבון Multisig",
-        "mstIcon": "צור חשבון Multisig",
-        "mstKeys": "ארנקים מרובי -סיג דורשים חתימות ומפתחות מרובים",
-        "mstSave": "שמור שינויים",
-        "mstSign": "הגדר את מספר החתימות הנדרשות להשלמת עסקאות",
-        "mstSwitchWarning": "כל הפעילויות והעסקאות יבוצעו דרך חשבון Multisig",
-        "mstWallet": "חתימות מרובות מפחיתות את הסיכון לפשרה מרכזית. הכספים נשארים בטוחים גם אם מפתח אחד אבוד או נגנב",
-        "multisigAccount": "חשבון Multisig",
-        "seeActivity": "ראה פעילות רב -סיגית",
-        "settingsMst": "הגדרות חשבון Multisig",
-        "setupDetails": "הגדר את הפרטים",
-        "sign": "סִימָן",
-        "successMstSetUp": "ארנק Multisig הוקם בהצלחה!",
-        "suggestSwitchFromMst": "אתה יכול לעבור מ- MST או להעביר ל- MST",
-        "sureForgetMst": "האם אתה בטוח שאתה רוצה לשכוח חשבון Multisig?",
-        "switchFromMst": "לעבור מ- MST",
-        "switchMst": "לעבור לחשבון Multisig",
-        "threshold": "סַף",
-        "thresholdNumber": "הגדר סף אישור עסקה",
-        "warningSwitch": "יש צורך בשלט כדי לאשר את העסקה. אנא עברו לחשבון Multisig.",
-        "yourAddress": "הכתובת שלך"
-    },
-    "multipleRecipients": "מספר נמענים",
-    "nameText": "שֵׁם",
-    "networkFeeText": "דמי רשת",
-    "networkFeeTooltipText": "דמי רשת משמשת כדי להבטיח את הצמיחה של מערכת __ph__0__ וביצועים יציבים.",
-    "networkStatisticsText": "סטטיסטיקות רשת",
-    "newAccountsText": "חשבונות חדשים",
-    "nextText": "הַבָּא",
-    "noDataText": "אין נתונים",
-    "node": {
-        "errors": {
-            "connection": "אירעה שגיאה בזמן החיבור לצומת\n__Ph__0__",
-            "existing": "צומת זה כבר מתווסף: __ph__0__",
-            "network": "הצומת\n__Ph__0__\n הוא מהרשת האחרת"
-        },
-        "messages": {
-            "connected": "חיבור שנקבע עם הצומת\n__Ph__0__",
-            "selectNode": "אנא בחר צומת כדי להתחבר מרשימת הצומת"
-        },
-        "warnings": {
-            "disconnect": "החיבור לצומת אבד. חיבור מחדש ..."
-        }
-    },
-    "noir": "נואר",
-    "ofText": "__Ph__0__ של __ph__1__",
-    "operations": {
-        "AddLiquidity": "הוסף נזילות",
-        "andText": "וכן",
-        "BindRegulatedAsset": "קישור נכס מוסדר",
-        "BorrowVaultDebt": "לווה חוב",
-        "Burn": "לִשְׂרוֹף",
-        "ClaimRewards": "לתבוע תגמולים",
-        "CloseVault": "מיקום סגור",
-        "CreatePair": "צור זוג",
-        "CreateVault": "ליצור מיקום",
-        "DemeterFarmingDepositLiquidity": "נזילות מוחלטת",
-        "DemeterFarmingGetRewards": "לתבוע תגמולים",
-        "DemeterFarmingStakeToken": "אסימון המוקד",
-        "DemeterFarmingUnstakeToken": "אסימון לא יציב",
-        "DemeterFarmingWithdrawLiquidity": "נזילות ללא תקיפה",
-        "DepositCollateral": "מיקום פיקדון",
-        "error": {
-            "AddLiquidity": "נכשלה לספק __ph__0__ __ph__1__ ו- __ph__2__ __ph__3__",
-            "BindRegulatedAsset": "נכשל לאגד את הנכס __ph__0__ ל- sbt __ph__1__",
-            "BorrowVaultDebt": "נכשל להשאיל __ph__0__ __ph__1__",
-            "Burn": "נכשל לשרוף __ph__0__ __ph__1__",
-            "ClaimRewards": "נכשל לתבוע תגמולים __ph__0__",
-            "CloseVault": "נכשל לסגור __ph__00 __/__ pH__1__ מיקום",
-            "CreatePair": "נכשלה לספק __ph__0__ __ph__1__ ו- __ph__2__ __ph__3__",
-            "CreateVault": "מיקום נכשל",
-            "DemeterFarmingDepositLiquidity": "נכשלה לספק __ph__0__ __ph__1__ ו- __ph__2__ אסימוני LP",
-            "DemeterFarmingGetRewards": "נכשל לתבוע __ph__0__",
-            "DemeterFarmingStakeToken": "נכשל להוסיף __ph__0__ __ph__1__",
-            "DemeterFarmingUnstakeToken": "הסרת __ph__0__ __ph__1__ נכשלה",
-            "DemeterFarmingWithdrawLiquidity": "הסרת __ph__0__ __ph__1__ ו- __ph__2__ אסימוני LP",
-            "DepositCollateral": "נכשל להפקיד __ph__0__ __ph__1__",
-            "EthBridgeIncoming": "נכשל להעביר __ph__0__ __ph__1__ מ- __ph__2__ ל- __ph__3__",
-            "EthBridgeOutgoing": "נכשל להעביר __ph__0__ __ph__1__ מ- __ph__2__ ל- __ph__3__",
-            "IssueSoulBoundToken": "לא הצליח להנפיק אסימון נשמה __ph__0__",
-            "Mint": "נכשל נענע __ph__0__ __ph__1__ ל- __ph__2__",
-            "OrderBookCancelLimitOrder": "נכשל בביטול הזמנת הגבלה",
-            "OrderBookCancelLimitOrders": "נכשל בביטול הגבלת הזמנות",
-            "OrderBookPlaceLimitOrder": "נכשל במבצע סדר הגבלה של __ph__0__ __ph__1__ ב __ph__2__ __ph__3__",
-            "ReferralReserveXor": "נכשל בקשר __ph__0__ xor",
-            "ReferralSetInvitedUser": "נכשל הגדרת __ph__0__ __ph__1__",
-            "ReferralUnreserveXor": "נכשל בפתק __ph__0__ xor",
-            "RegisterAndRegulateAsset": "נכשל בהרשמה והסדרת __ph__0__",
-            "RegisterAsset": "נכשל נכשל __ph__0__ נכס",
-            "RegulateAsset": "נכשל להסדיר נכס __ph__0__",
-            "RemoveLiquidity": "הסרת __ph__0__ __ph__1__ ו- __ph__2__ __ph__3__",
-            "RepayVaultDebt": "נכשל להחזיר את __ph__0__ __ph__1__",
-            "SetAccessExpiration": "נכשל עדכון התפוגה ל- __ph__0__ עבור __ph__1__",
-            "StakingBond": "נכשל בקשר __ph__0__ __ph__1__",
-            "StakingBondAndNominate": "נכשל בקשר __ph__0__ __ph__1__",
-            "StakingBondExtra": "נכשל לקשר נוסף __ph__0__ __ph__1__",
-            "StakingChill": "נכשל להירגע",
-            "StakingNominate": "לא נכשל במינוי תוקפים",
-            "StakingPayout": "תגמולים נכשלים בתשלום",
-            "StakingRebond": "נכשל מחדש מחדש __ph__0__ __ph__1__",
-            "StakingSetController": "הגדרת בקר נכשלה __ph__0__",
-            "StakingSetPayee": "נכשל בהגדרת מקבל התשלום __ph__0__",
-            "StakingUnbond": "נכשל בפתק __ph__0__ __ph__1__",
-            "StakingWithdrawUnbonded": "נכשל לסגת __ph__0__ __ph__1__",
-            "Swap": "נכשל להחליף __ph__0__ __ph__1__ עבור __ph__2__ __ph__3__",
-            "SwapAndSend": "נכשל להחליף __ph__0__ __ph__1__ עבור __ph__2__ __ph__3__ ו- __ph__4__ __ph__5__ __ph6__",
-            "SwapTransferBatch": "נכשל __ph__0__ __ph__1__ __ph__2__",
-            "Transfer": "נכשל __ph__0__ __ph__1__ __ph__2__ __ph__3__ __ph__4__",
-            "VestedTransfer": "נכשל __ph__0__ __ph__1__ __ph__2__ __ph__3__ __ph__4__",
-            "XorlessTransfer": "נכשלה לשלוח __ph__0__ __ph__1__ ל- __ph__2__"
-        },
-        "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText",
-        "finalized": {
-            "AddLiquidity": "מסופק __ph__0__ __ph__1__ ו- __ph__2__ __ph3__",
-            "BindRegulatedAsset": "קישור נכס __ph__0__ ל- sbt",
-            "BorrowVaultDebt": "שאול __ph__0__ __ph__1__",
-            "Burn": "שרוף __ph__0__ __ph__1__",
-            "ClaimRewards": "תגמול טען בהצלחה __ph__0__",
-            "CloseVault": "__Ph__0 __/__ pH__1__ מיקום סגור",
-            "CreatePair": "מסופק __ph__0__ __ph__1__ ו- __ph__2__ __ph3__",
-            "CreateVault": "__Ph__0 __/__ pH__1__ מיקום נוצר",
-            "DemeterFarmingDepositLiquidity": "מסופק __ph__0__ ו- __ph__1__ __ph__2__ אסימוני LP",
-            "DemeterFarmingGetRewards": "__Ph__0__ __ph__1__ נטען בהצלחה",
-            "DemeterFarmingStakeToken": "נוסף __ph__0__ __ph__1__",
-            "DemeterFarmingUnstakeToken": "הוסר __ph__0__ __ph__1__",
-            "DemeterFarmingWithdrawLiquidity": "הוסרה __ph__0__ ו- __ph__1__ __ph__2__ אסימוני LP",
-            "DepositCollateral": "הפקיד __ph__0__ __ph__1__",
-            "EthBridgeIncoming": "הועבר __ph__0__ __ph__1__ מ- __ph__2__ ל- __ph__3__",
-            "EthBridgeOutgoing": "הועבר __ph__0__ __ph__1__ מ- __ph__2__ ל- __ph__3__",
-            "IssueSoulBoundToken": "להנפיק אסימון נשמה __ph__0__",
-            "Mint": "מוטבע __ph__0__ __ph__1__ ל- __ph__2__",
-            "OrderBookCancelLimitOrder": "הגבלת הזמנה מבוטלת",
-            "OrderBookCancelLimitOrders": "הגבל את ההזמנות שבוטלו",
-            "OrderBookPlaceLimitOrder": "__Ph__0__ __ph__1__ __ph__2__ ב __ph__3__ __ph__4__ ממוקם",
-            "ReferralReserveXor": "קשור __ph__0__ xor",
-            "ReferralSetInvitedUser": "__Ph__0__ __ph__1__ מוגדר בהצלחה",
-            "ReferralUnreserveXor": "__Ph__0__ לא מוגבל",
-            "RegisterAndRegulateAsset": "לרשום ולווסת __ph__0__ נכס",
-            "RegisterAsset": "נכס רשום __ph__0__",
-            "RegulateAsset": "לווסת נכס __ph__0__",
-            "RemoveLiquidity": "הוסר __ph__0__ __ph__1__ ו- __ph__2__ __ph3__",
-            "RepayVaultDebt": "החזרת __ph__0__ __ph__1__",
-            "SetAccessExpiration": "אסימון SB __ph__0__ עדכון תפוגה ל- __ph__1__",
-            "StakingBond": "קשור __ph__0__ __ph__1__",
-            "StakingBondAndNominate": "קשור __ph__0__ __ph__1__",
-            "StakingBondExtra": "קשר נוסף __ph__0__ __ph__1__",
-            "StakingChill": "לְצַנֵן",
-            "StakingNominate": "תוקפים מועמדים",
-            "StakingPayout": "תגמולים בתשלום",
-            "StakingRebond": "נולד מחדש __ph__0__ __ph__1__",
-            "StakingSetController": "הגדר בקר __ph__0__",
-            "StakingSetPayee": "הגדר את מקבל התשלום __ph__0__",
-            "StakingUnbond": "__Ph__0__ בלתי מוגדר __ph__1__",
-            "StakingWithdrawUnbonded": "משך __ph__0__ __ph__1__",
-            "Swap": "החלף __ph__0__ __ph__1__ עבור __ph__2__ __ph__3__",
-            "SwapAndSend": "החלף __ph__0__ __ph__1__ עבור __ph__2__ __ph__3__ ו- __ph__4__ __ph__5__ __ph__6__",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
-            "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
-            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
-        },
-        "IssueSoulBoundToken": "סוגיה SBT",
-        "Mint": "מֶנטָה",
-        "OrderBookCancelLimitOrder": "בטל את ההזמנה",
-        "OrderBookCancelLimitOrders": "בטל הזמנות",
-        "OrderBookPlaceLimitOrder": "הצב הזמנה",
-        "ReferralReserveXor": "בונד Xor",
-        "ReferralSetInvitedUser": "הגדר __ph__0__",
-        "ReferralUnreserveXor": "Unbond Xor",
-        "RegisterAndRegulateAsset": "רשם נכס",
-        "RegisterAsset": "רשם נכס",
-        "RegulateAsset": "לווסת נכס",
-        "RemoveLiquidity": "הסר את הנזילות",
-        "RepayVaultDebt": "החזר חוב",
-        "SetAccessExpiration": "הגדר תום SBT",
-        "StakingBond": "קֶשֶׁר",
-        "StakingBondAndNominate": "קשר ומינוי",
-        "StakingBondExtra": "בונד נוסף",
-        "StakingChill": "לְצַנֵן",
-        "StakingNominate": "לְמַנוֹת",
-        "StakingPayout": "תגמולים בתשלום",
-        "StakingRebond": "Refond",
-        "StakingSetController": "הגדר בקר",
-        "StakingSetPayee": "הגדר מקבל תשלום",
-        "StakingUnbond": "לא",
-        "StakingWithdrawUnbonded": "לסגת ללא תנועה",
-        "Swap": "לְהַחלִיף",
-        "SwapAndSend": "החלף ושלח",
-        "SwapTransferBatch": "העברה __ph__0__",
-        "Transfer": "לְהַעֲבִיר",
-        "VestedTransfer": "לְהַעֲבִיר",
-        "XorlessTransfer": "לְהַעֲבִיר"
-    },
-    "orderBook": {
-        "amount": "סְכוּם",
-        "book": {
-            "noAsks": "לא שואלים נפתחים",
-            "noBids": "אין הצעות מחיר"
-        },
-        "bookStatus": {
-            "active": "פָּעִיל",
-            "cancelable": "ניתן לבטל",
-            "inactive": "לֹא פָּעִיל",
-            "placeable": "נצפה"
-        },
-        "Buy": "קנה __ph__0__",
-        "cantPlaceOrder": "לא יכול לבצע הזמנה",
-        "change": "לְשַׁנוֹת",
-        "dayVolume": "כרך 1D",
-        "dialog": {
-            "askCancel": "האם אתה בטוח שאתה רוצה לבטל את כל ההזמנות הפתוחות שלך?",
-            "at": "ב __ph__0__ __ph__1__",
-            "buy": "קנה __ph__0__ __ph__1__",
-            "cancelAll": "כן, בטל את הכל",
-            "placeLimit": "מקום הגבלה",
-            "placeMarket": "מקם את הזמנת השוק",
-            "sell": "למכור __ph__0__ __ph__1__"
-        },
-        "enterAmount": "הזן סכום",
-        "error": {
-            "accountLimit": {
-                "reading": "הגבלה שהושגה: כל חשבון מוגבל למספר 1024 הזמנות הגבלה. אנא המתן עד שחלק מההזמנות שלך ימלאו",
-                "reason": "יותר מדי הזמנות נמשכות"
-            },
-            "beyondPrecision": {
-                "reading": "דיוק חורג: הסכום/המחיר שהוזן יש יותר מדי מקומות עשרוניים. אנא הזן ערך עם פחות מקומות עשרוניים",
-                "reason": "המחיר שהוזן מדויק מכדי לחשב"
-            },
-            "exceedsSpread": {
-                "reading": "המחיר חרג: מחיר הצעת השוק או המחיר של שוק חרגו ממחיר הבקש/הצעת המחיר שלו",
-                "reason": "המחיר חרג מהפיזור"
-            },
-            "marketNotAvailable": {
-                "reading": "מגבלת הזמנת שוק: אין מספיק הזמנות העומדות לרשותם למילוי הזמנת שוק זו. אנא התאם את גודל ההזמנה שלך או המתן למוצב הזמנות נוספות",
-                "reason": "אין מספיק הזמנות זמינות למילוי ההזמנה הזו"
-            },
-            "multipleOf": {
-                "reading": "כדי לעבד את ההזמנה, אנא הזן מחיר שהוא מכפיל של __ph__0__",
-                "reason": "המחיר שהוזן הוא ספציפי מדי"
-            },
-            "outOfBounds": {
-                "reading": "טווח ה- blockchain חרג: הסכום שהוזן שלך נופל מחוץ לטווח המותר של blockchain. דקות: __ph__0__; מקסימום: __ph__1__",
-                "reason": "הסכום נכשל בציית לטווח blockchain"
-            },
-            "singlePriceLimit": {
-                "reading": "הגבלה שהושגה: כל מיקום מוגבל למספר 1024 הוראות הגבלה. אנא המתן עד שממלאים כמה הזמנות",
-                "reason": "יותר מדי הזמנות נמשכות במחיר זה"
-            },
-            "spotLimit": {
-                "reading": "כובע טווח מחירים: כל צד ספר הזמנות מוגבל ל 1024 נקודות מחיר ייחודיות. אנא בחר מחיר בטווח הקיים או המתן לחלל שיהיה זמין",
-                "reason": "הצד המסחר התמלא"
-            }
-        },
-        "history": {
-            "cancel": "בטל את הזמנה __ph__0__",
-            "cancelAll": "בטל את הכל",
-            "connect": "חבר חשבון כדי להתחיל לסחור",
-            "openOrders": "פתיחת הזמנות __ph__0__",
-            "orderHistory": "היסטוריה של הזמנה",
-            "tradeHistory": "היסטוריית סחר"
-        },
-        "limit": "לְהַגבִּיל",
-        "market": "שׁוּק",
-        "marketTrades": "סחר בשוק",
-        "month": "חוֹדֶשׁ",
-        "orderBook": "ספר הזמנה",
-        "orderStatus": {
-            "active": "פָּעִיל",
-            "canceled": "בּוּטלָה",
-            "expired": "פג תוקף",
-            "filled": "מְמוּלָא"
-        },
-        "orderTable": {
-            "filled": "מְמוּלָא",
-            "lifetime": "מֶשֶׁך הָחַיִים",
-            "noOrders": "אין הזמנות. צור את הראשון שלך!",
-            "pair": "זוּג",
-            "side": "צַד",
-            "time": "זְמַן"
-        },
-        "Sell": "למכור __ph__0__",
-        "setPrice": "מחיר מוגדר",
-        "stop": "הספר נעצר",
-        "time": "זְמַן",
-        "tokenPair": "זוג אסימון",
-        "tooltip": {
-            "bookStatus": {
-                "active": "פונקציונליות מסחר מלאה מופעלת. אתה יכול לבצע הזמנות חדשות או לבטל את הקיימות.",
-                "cancelable": "אתה יכול לבטל רק הזמנות קיימות. מיקום הזמנה חדש מושבת כעת.",
-                "inactive": "כל פעילויות המסחר נעצרות כעת. בשלב זה לא ניתן להציב או לבטל הזמנות.",
-                "placeable": "פונקציונליות מוגבלת. אתה יכול לבצע הזמנות חדשות ולבטל תכונות קיימות, אך תכונות מסוימות עשויות להיות אינן זמינות."
-            },
-            "bookWidget": "שיא חי ומעדכן כל העת של קנייה (BID) ומכור (שאל) הזמנות לנכס ספציפי, המאורגן לפי רמת מחיר. ספר ההזמנות מציג את עומק השוק, כולל כמויות הנכסים המוצעים במחירים שונים. סוחרים מנצלים תצוגה מפורטת זו כדי לאמוד את סנטימנט השוק, לזהות רמות התנגדות ותמיכה פוטנציאליות ולצפות תנועות מחירים על בסיס ביקוש והיצע קיימים",
-            "limitOrder": "הזמנת 'מגבלה' מאפשרת לך לציין את המחיר המדויק בו ברצונך לקנות או למכור נכס. הזמנת 'קניית מגבלה' תבוצע רק במחיר שצוין או נמוכה יותר, ואילו הזמנת 'מכירת גבול' תבצע רק במחיר שצוין ומעלה. בקרה זו מבטיחה שלא תשלם יותר או תמכור בפחות ממה שנוח לך.",
-            "marketOrder": "'הזמנת שוק' היא הזמנה לקנות או למכור מייד במחיר הנוכחי הזמין ביותר. זה לא דורש קביעת מחיר, להבטיח ביצוע מהיר אך עם הסחר של פחות שליטה על המחיר שהתקבל או תשלום. סוג זה של סדר משמש כאשר וודאות הביצוע היא בראש סדר העדיפויות על פני בקרת מחירים.",
-            "marketWidget": "יישומון זה מציג זרם בזמן אמת של עסקאות מבוצעות בשוק, ומספק מידע על נפחי עסקאות, פעילות אחרונה ומגמות שוק נוכחיות. על ידי התבוננות בתזמון, במחיר ובגודל המקצועות בפועל, סוחרים יכולים לקבל תובנות על דינמיקת השוק והרגש, לעזור להם לאתר הזדמנויות מסחר ולקבל החלטות מושכלות",
-            "pairsList": "רשימה בזמן אמת המציגה הזמנות קנייה ומכירה עדכניות עבור cryptocurrency. זה עוזר לך להבין את הביקוש, כיוון המחיר הפוטנציאלי ואת נפח הסחר ברשת __ph__0__ ו- __ph__1__ dex",
-            "txDetails": {
-                "amount": "'הסכום' מתייחס למספר הנכסים הכולל שאתה רוצה לקנות או למכור בהזמנה שלך. חשוב לציין, מכיוון שהיא קובעת את גודל העסקה שלך, ומשפיעה על העלות הכוללת עבור הזמנות קנייה או הכנסות עבור הזמנות מכירה.",
-                "expiryDate": "'תאריך התפוגה' הוא המועד האחרון לביצוע ההזמנה שלך. אם השוק לא מגיע למחיר שצוין לפני תאריך זה, ההזמנה מבוטלת אוטומטית. אתה לא מחויב להמתנה תמידית אם תנאי השוק לא יתיישרו עם העדפות המסחר שלך.",
-                "limit": "'מחיר המגבלה' הוא המחיר המדויק שהגדרת להזמנת הגבלה. הסחר יבצע רק כאשר מחיר השוק של הנכס עומד במחיר המגבלה שלך, ומבטיח שלא לרכוש למעלה או למכור מתחת לערך שצוין זה.",
-                "locked": "ה\"נעול \"מראה את כמות הנכס שיש לקיים בזמן ההזמנה נמשכת.",
-                "orderType": "הזמנת 'קנה' תבוצע רק במחיר שצוין או נמוכה יותר, ואילו הזמנת 'מכירה' תבצע רק במחיר שצוין ומעלה. בקרה זו מבטיחה שלא תשלם יותר או תמכור בפחות ממה שנוח לך."
-            }
-        },
-        "total": "סַך הַכֹּל",
-        "tradingPair": {
-            "choosePair": "בחר זוג מסחר",
-            "status": "סטָטוּס",
-            "total": "__Ph__0__ __ph__1__ ב __ph__2__ __ph__3__",
-            "volume": "כֶּרֶך"
-        },
-        "txDetails": {
-            "expiryDate": "תאריך תפוגה",
-            "limitPrice": "מחיר הגבלה",
-            "orderType": "סוג הזמנה"
-        }
-    },
-    "pageTitle": {
-        "AddLiquidity": "הוסף נזילות",
-        "AssetOwner": "בעל נכס",
-        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Bridge": "@:bridgeText",
-        "Explore/Books": "@:pageTitle.OrderBook",
-        "Explore/Farming": "חַקלָאוּת",
-        "Explore/Pools": "בריכות",
-        "Explore/Staking": "מעלה",
-        "Explore/Tokens": "אסימונים",
-        "OrderBook": "סַחַר",
-        "Pool": "פּוּל",
-        "Rewards": "תגמולים",
-        "Staking": "מעלה",
-        "Stats": "סטָטִיסטִיקָה",
-        "Swap": "לְהַחלִיף",
-        "VaultDetails": "פרטי מיקום",
-        "Vaults": "{Kensetsu}",
-        "Wallet": "אַרְנָק",
-        "Sccp": "SCCP"
-    },
-    "pairIsNotCreated": "זוג אסימון לא נוצר",
-    "points": {
-        "accountsText": "חשבונות __ph__0__",
-        "airdrop": "השלם משימות הקשורות למערכת אקולוגית של סורה על מנת להעפיל לאוויר של 3 מיליון דולר",
-        "bridgeVolume": "נפח גשר",
-        "complete": "הושלם | לְהַשְׁלִים",
-        "currently": "כַּיוֹם",
-        "dated": "מְיוּשָׁן",
-        "depositVolumeBridges": {
-            "descriptionTask": "הפקדה ומשיכה באמצעות גשרים, bitget, 1x, gateio",
-            "titleProgress": "נפח הפקדה",
-            "titleTask": "הפקדה ומשיכה"
-        },
-        "feesSpent": "עמלות שהוצאו",
-        "firstSoraNetworkTransaction": "עסקת רשת הסורה הראשונה שלך",
-        "firstTxAccount": {
-            "descriptionTask": "השלם את עסקת ה- XOR הראשונה שלך אי פעם וקבל את התגמול",
-            "titleProgress": "TRX ראשונה",
-            "titleTask": "בצע את העסקה הראשונה שלך"
-        },
-        "governanceLockedXOR": {
-            "descriptionTask": "לנעול XOR על ידי השתתפות באירועי הצבעה ממשלתיים",
-            "titleProgress": "ממשל",
-            "titleTask": "לנעול XOR בהצבעה ממשלתית"
-        },
-        "kensetsuVolumeRepaid": {
-            "descriptionTask": "החזר חוב KUSD במהלך פיצולים או עמדות סגירה",
-            "titleProgress": "נפח קנסטסו",
-            "titleTask": "החזר חוב KUSD"
-        },
-        "KUSDHoldings": {
-            "descriptionTask": "החזק את אחזקות ה- KUSD הנוכחיות שלך",
-            "titleProgress": "KUSD HOLD",
-            "titleTask": "להחזיק את KUSD"
-        },
-        "liquidityProvision": {
-            "descriptionTask": "לספק נזילות על פני בריכות",
-            "titleProgress": "אספקת נזילות",
-            "titleTask": "לספק נזילות"
-        },
-        "loginText": "חבר את חשבונך כדי לראות את הנקודות שלך",
-        "lvl": "LVL",
-        "maxLvl": "הגעת למקס LVL",
-        "nativeXorStaking": {
-            "descriptionTask": "STAME XOR ולהרוויח תגמולים של VAL",
-            "titleProgress": "Xor Staking",
-            "titleTask": "Stoce Xor"
-        },
-        "networkFeeSpent": {
-            "descriptionTask": "הוצא XOR בעמלות רשת על פני מספר עסקאות על שרשרת מספר רב",
-            "titleProgress": "דמי רשת",
-            "titleTask": "הוצא XOR על דמי רשת"
-        },
-        "nextLvl": "הבא LVL",
-        "openTelegram": "פתוח __ph__0__",
-        "orderbookVolume": {
-            "descriptionTask": "צור הזמנות מגבלה בספר ההזמנה",
-            "titleProgress": "ספר הזמנה",
-            "titleTask": "צור הזמנות מגבלה"
-        },
-        "progress": "הִתקַדְמוּת",
-        "referralRewards": {
-            "descriptionTask": "הפנה חשבונות באמצעות מערכת ההפניה",
-            "titleProgress": "הפניה סיטם",
-            "titleTask": "עיין בחשבונות"
-        },
-        "relatedTasks": "השלם __ph__0 __- משימות קשורות כדי לפלס את המיומנות שלך",
-        "rewardNextLvl": "תגמול ברמה הבאה",
-        "soraCard": "הגש בקשה עכשיו",
-        "title": "הנקודות שלך",
-        "toEarnPoints": "להרוויח נקודות",
-        "tokenHold": {
-            "descriptionTask": "החזק את אחזקות __ph__0__ הנוכחיות שלך",
-            "titleProgress": "__Ph__0__ אחזקות",
-            "titleTask": "החזק את __ph__0__"
-        },
-        "VXORHoldings": {
-            "descriptionTask": "החזק את אחזקות ה- VXOR הנוכחיות שלך",
-            "titleProgress": "VXOR Holdings",
-            "titleTask": "החזק את VXOR"
-        },
-        "xorBurned": "__Ph__0__ נשרף",
-        "XORBurned": {
-            "descriptionTask": "לשרוף XOR ולהמיר לערך $",
-            "titleProgress": "Xor נשרף",
-            "titleTask": "לשרוף XOR"
-        },
-        "XORHoldings": {
-            "descriptionTask": "החזק את אחזקות ה- XOR הנוכחיות שלך",
-            "titleProgress": "XOR HOLD",
-            "titleTask": "להחזיק את Xor"
-        },
-        "yourLevel": "הרמה שלך",
-        "yourReferrals": "הפניות שלך",
-        "yourRewards": "התגמולים שלך",
-        "yourTasks": "המשימות שלך"
-    },
-    "polkadotjs": {
-        "connectionError": "שגיאה התרחשה במהלך חיבור הארנק. אתה יכול לנסות לחבר את הארנק באמצעות __ph__0__ שוב",
-        "noAccount": "__Ph__0__ שגיאת חשבון. אנא בדוק את חשבונך בתוסף __ph__1__",
-        "noExtension": "לא נמצא סיומת __ph__0__. אנא התקן אותו וטען מחדש דף זה",
-        "noExtensions": "לא נמצא סיומת __ph__0__. אנא התקן אותו וטען מחדש דף זה\nhttps://polkadot.js.org/extension/",
-        "noSigner": "הגִישָׁה נִדחֲתָה. עבור אל __ph__0__ הגדרות סיומת ופתח \"נהל גישה לאתר\" כדי לאפשר."
-    },
-    "pool": {
-        "addLiquidity": "הוסף נזילות",
-        "connectToWallet": "חבר חשבון כדי להציג את הנזילות שלך.",
-        "createPair": "צור זוג",
-        "description": "כשאתה מוסיף נזילות, נותנים לך אסימוני בריכה המייצגים את עמדתך. אסימונים אלה מרוויחים אוטומטית עמלות ביחס לחלקכם בבריכה, וניתן לממש אותם בכל עת.",
-        "liquidityNotFound": "לא נמצא נזילות.",
-        "pairTokens": "__Ph__0__ אסימוני בריכה",
-        "pooledToken": "__Ph__0__ מאוחד",
-        "poolShare": "שיתוף הבריכה שלך",
-        "removeLiquidity": "הסר את הנזילות",
-        "strategicBonusApy": "בונוס אסטרטגי APY"
-    },
-    "poweredBy": "מופעל על ידי",
-    "prevText": "קוֹדֵם",
-    "priceChartText": "תרשים מחירים",
-    "priceText": "מְחִיר",
-    "provider": {
-        "messages": {
-            "checkExtension": "סיומת __ph__0__ עמוסה, אנא בדוק אותה",
-            "extensionLogin": "אנא התחבר לתוסף __ph__0__ שלך",
-            "installExtension": "__Ph__0__ הרחבה לא נמצאת. אנא התקן אותו!\n\nכבר הותקן סיומת? אנא טען מחדש את הדף",
-            "notAvailable": "__Ph__0__ אינו זמין.",
-            "reloadPage": "דף טען מחדש"
-        }
-    },
-    "receivedText": "התקבל",
-    "referralProgram": {
-        "action": {
-            "bond": "קֶשֶׁר",
-            "bondMore": "קשר יותר",
-            "copyLink": "העתק קישור",
-            "shareLink": "לַחֲלוֹק",
-            "unbond": "לא"
-        },
-        "bondedXOR": "XOR קשור",
-        "bondTitle": "בונד Xor",
-        "confirm": {
-            "bond": "אשר איגרות חוב",
-            "freeOfCharge": "פעולה זו ללא עלות",
-            "hasReferrerDescription": "למרבה הצער, אתה יכול רק להגדיר אחד",
-            "hasReferrerTitle": "כבר הגדרת את המפנה שלך",
-            "inviteDescription": "עבור כל עסקה, 10% מהתשלום יעבור למפנה שלך, ללא עלות נוספת עבורך.",
-            "inviteTitle": "הוזמנת ל- __ph__0__",
-            "ok": "בְּסֵדֶר",
-            "signInvitation": "לְאַשֵׁר",
-            "unbond": "לאשר את Unnond"
-        },
-        "connectAccount": "כדי להזמין משתמשים אתה צריך לחבר את חשבון __ph__0__ שלך.",
-        "insufficientBondedAmount": "כדי להזמין הפניות נוספות, קשר לפחות __ph__0__ xor",
-        "insufficientBondedBalance": "לא מספיק איזון מלוכד",
-        "invitationLink": "קישור הזמנה",
-        "inviteViaTelegram": "הזמן דרך __ph__0__",
-        "receivedRewards": "קיבל תגמולים",
-        "referralsNumber": "__Ph__0__ הפניות",
-        "referrer": {
-            "approve": "לְאַשֵׁר",
-            "approved": "מְאוּשָׁר",
-            "description": "אתה יכול להתייחס ל- __ph__0__, <br/> הקלד את הקישור או הקוד של המפנה",
-            "info": "כאשר תשלם תשלום עבור עסקה, <br/> 10% יעברו למפנה שלך",
-            "label": "קישור או קוד הזמנה",
-            "placeholder": "הזן קישור או קוד הזמנה",
-            "referredBy": "הופנית על ידי __ph__0__",
-            "referredLablel": "כתובת מופנית",
-            "title": "הוסף את המפנה שלך",
-            "titleReferrer": "המפנה שלך"
-        },
-        "startInviting": "בונד XOR להפנות אחרים",
-        "title": "תוכנית הפניה",
-        "unbondTitle": "Unbond Xor",
-        "welcomeMessage": "הצטרף אלי ב- __ph__0__!\n\nגלה את ה- __ph__1__ המסוגנן המאפשר לך להחליף עשרות אסימונים עם החלפות חוצה שרשרת, ספר הזמנה והרבה תגמולים!\n\n🎁 הזמינו חברים והרוויחו 10% מדמי המסחר שלהם\n\nנתראה שם!"
-    },
-    "releaseNotesText": "שחרור הערות",
-    "removeLiquidity": {
-        "amount": "סְכוּם",
-        "confirmTitle": "תקבל",
-        "description": "הסרת אסימוני בריכה ממירה את עמדתך בחזרה לאסימונים הבסיסיים בקצב הנוכחי, פרופורציונלית לחלק שלך בבריכה. עמלות שנצברו כלולות בסכומים שאתה מקבל.",
-        "input": "קֶלֶט",
-        "liquidity": "נְזִילוּת",
-        "locked": "__Ph__0__ מהבריכה שלך נמצא ב- __ph__1__",
-        "output": "תְפוּקָה",
-        "outputMessage": "פלט מוערך. אם המחיר ישתנה יותר מ- __ph__0 __% העסקה שלך תחזור.",
-        "remove": "לְהַסִיר",
-        "shareOfPool": "חלק בבריכה לאחר העסקה",
-        "title": "הסר את הנזילות"
-    },
-    "resetText": "אִתחוּל",
-    "retryText": "לנסות שוב",
-    "rewards": {
-        "action": {
-            "checkRewards": "לִבדוֹק",
-            "connectExternalWallet": "חבר את חשבון __ph__0__",
-            "pendingExternal": "__Ph__0__ עסקה בהמתנה ...",
-            "pendingInternal": "__Ph__0__ עסקה בהמתנה ...",
-            "signAndClaim": "חותם ותביעה"
-        },
-        "andText": "וכן",
-        "claimableAmountDoneVesting": "תגמולים טעונים",
-        "claiming": {
-            "pending": "טוען ...",
-            "success": "טען בהצלחה"
-        },
-        "events": {
-            "BuyOnBondingCurve": "קנייה מ- TBC",
-            "LiquidityProvision": "עמלות שנצברו מהספאת נזילות",
-            "LiquidityProvisionFarming": "חַקלָאוּת",
-            "MarketMakerVolume": "ייצור שוק",
-            "NftAirdrop": "NFT AirDrop",
-            "SoraFarmHarvest": "__Ph__0__. קציר חווה",
-            "XorErc20": "XOR ERC-20"
-        },
-        "forText": "עֲבוּר",
-        "groups": {
-            "crowdloan": "תגמולים של Crowdloan",
-            "external": "תגמולים עבור חשבון {Ethereum} המחובר",
-            "strategic": "תגמולים אסטרטגיים"
-        },
-        "hint": {
-            "connectAccounts": "כדי לתבוע את תגמולי ה- PSWAP וה- VAL שלך, עליך לחבר את חשבונות __ph__0__ ואת __ph__1__ שלך.",
-            "connectAnotherAccount": "חבר חשבון נוסף __ph__0__ כדי לבדוק אם יש תגמולים של PSWAP ו- VAL.",
-            "connectExternalAccount": "חבר חשבון __ph__0__ כדי לבדוק אם יש תגמולים של PSWAP ו- VAL.",
-            "howToClaimRewards": "כדי לתבוע את התגמולים שלך __ph__0__ אתה צריך לחתום __ph__1__ __ph__2__ ב- __ph__3__. תגמולים יופקדו לחשבון __ph__4__ שלך."
-        },
-        "notification": {
-            "empty": "אין תביעות זמינות עבור חשבון זה"
-        },
-        "PointSystemWrapper": "נקודות",
-        "ReferralProgram": "הפניות",
-        "Rewards": "תגמולים",
-        "signing": {
-            "accounts": "חשבונות __ph__0__ ו- __ph__1__ שלך בהתאמה",
-            "extension": "__Ph__0__ סיומת דפדפן"
-        },
-        "totalVested": "תגמולים מוחלטים",
-        "transactions": {
-            "confimation": "אשר __ph__0__ של __ph__1__ עסקאות ...",
-            "failed": "__Ph__0__ של עסקאות __ph__1__ נכשלו. __Ph__2__",
-            "success": "תקבל את התגמולים שלך בקרוב"
-        }
-    },
-    "rotatePhoneNotification": {
-        "enableAcceleration": "אפשר גישה להאצה בהגדרות שלך.",
-        "gyroscropePhone": "הטכנולוגיה שלנו משתמשת בג'ירוסקופ המובנה של הטלפון שלך כדי להסתיר באופן מיידי את שיווי המשקל שלך כשאתה מטה את המכשיר שלך.",
-        "info": "לקבלת פרטיות נוספת, הטו את המכשיר שלך עם הפנים כלפי מטה כדי להסתיר באופן מיידי את יתרות הנכסים שלך. תכונה זו משתמשת בחיישני המובנים של הטלפון שלך.",
-        "title": "הפוך את המכשיר שלך הפוך כדי להסתיר יתרות"
-    },
-    "saveText": "לְהַצִיל",
-    "sbtDetails": {
-        "accessPermitted": "גישה מותרת",
-        "description": "SBT זה מספק גישה למספר אסימונים ובריכות ומחובר לחשבונך",
-        "expiresIn": "פג תוקף",
-        "expiresInTooltip": "'פג תוקף' מציג תקופה או נקודת זמן שנרכשת הגישה",
-        "expiryDate": "תאריך תפוגה",
-        "expiryDateTooltip": "'תאריך התפוגה' הוא המועד האחרון לגישה שלך לנכסים מוסדרים של SBT",
-        "indefiniteExp": "פתוח",
-        "issuedBy": "__Ph__0__ הונפק על ידי",
-        "kycProvider": "__Ph__0__ ספק",
-        "kycVerification": "אימות __ph__0__",
-        "listOperable": "נכסים מוסדרים ניתנים להפעלה",
-        "noPermissions": "אין הרשאות נוספות",
-        "noReceiverAccess": "אתה מנסה לשלוח אסימון מוסדר למשתמש ללא גישה ל- SBT",
-        "permission": "רְשׁוּת",
-        "permissions": "הרשאות",
-        "regulatedInsitution": "מוסד מוסדר"
-    },
-    "searchText": "לְחַפֵּשׂ",
-    "selectLanguageDialog": {
-        "title": "שפה"
-    },
-    "selectNodeConnected": "מחובר ל: __ph__0__",
-    "selectNodeDialog": {
-        "addNode": "הוסף צומת מותאם אישית",
-        "connected": "מְחוּבָּר",
-        "customNode": "צומת מותאם אישית",
-        "howToSetupOwnNode": "הגדר את הצומת שלך",
-        "messages": {
-            "emptyAddress": "אנא הזן את כתובת הצומת",
-            "emptyName": "אנא הזן את שם הצומת",
-            "incorrectAddress": "כתובת שגויה",
-            "incorrectProtocol": "הכתובת צריכה להתחיל מ- ws: // או wss: //"
-        },
-        "nodeTitle": "__Ph__0__ מתארח על ידי __ph__1__",
-        "select": "לִבחוֹר",
-        "title": "בחירת צומת רשת",
-        "updateNode": "צומת עדכן"
-    },
-    "selectNodeText": "בחר צומת רשת",
-    "selectRegisteredAsset": {
-        "search": {
-            "networkLabelEthereum": "__Ph__0__ אסימוני מראה רשת",
-            "networkLabelSora": "__Ph__0__ אסימוני רשת",
-            "placeholder": "סנן על ידי מזהה נכס, שם או סמל טיקר"
-        },
-        "title": "בחר אסימון"
-    },
-    "selectToken": {
-        "assets": {
-            "title": "נכסים"
-        },
-        "custom": {
-            "alreadyAttached": "האסימון הזה כבר היה מחובר",
-            "notFound": "אסימון לא נמצא",
-            "search": "מזהה נכס קלט",
-            "text": "אסימונים בהתאמה אישית",
-            "title": "מִנְהָג"
-        },
-        "emptyListMessage": "אין תוצאות",
-        "searchPlaceholder": "סנן על ידי מזהה נכס, שם או סמל טיקר",
-        "title": "בחר אסימון"
-    },
-    "sendText": "לִשְׁלוֹחַ",
-    "sentText": "נשלח",
-    "settingsText": "הגדרות",
-    "signAndClaimText": "חותם ותביעה",
-    "social": {
-        "github": "Github",
-        "medium": "בֵּינוֹנִי",
-        "reddit": "Reddit",
-        "telegram": "מִברָק",
-        "twitter": "לְצַפְצֵף",
-        "wiki": "__Ph__0__ wiki"
-    },
-    "soraStaking": {
-        "actions": {
-            "claim": "לתבוע תגמולים",
-            "confirm": "לאשר את ההפעלה",
-            "more": "יתכן יותר",
-            "remove": "הסר את Stake",
-            "withdraw": "לָסֶגֶת"
-        },
-        "allWithdrawsDialog": {
-            "information": "ברגע שאתה מבטל את האסימונים, יש תקופה חובה של 7 ימים. לאחר תקופה זו האסימונים שלך לא יוחזרו אוטומטית לארנק שלך. עליכם להשלים את התהליך על ידי משיכת אסימונים ידנית.",
-            "title": "פעילות בלתי מעורערת"
-        },
-        "claimRewardsDialog": {
-            "checkRewards": "בדוק תגמולים לכל עידן ומאמת",
-            "rewardsDestination": "כתובת יעד מתגמלת",
-            "title": "לתבוע תגמולים"
-        },
-        "dropdownMenu": {
-            "controllerAccount": "חשבון בקר"
-        },
-        "info": {
-            "minimumStake": "אחזקה מינימלית",
-            "nominators": "מועמדים",
-            "rewarded": "מתוגמל",
-            "rewardToken": "אסימון תגמול",
-            "selectedValidators": "תוקפים נבחרים",
-            "stakingBalance": "איזון בהעלאת",
-            "totalLiquidityStaked": "נזילות מוחלטת",
-            "unstaking": "לא מתמודד",
-            "unstakingPeriod": "תקופה בלתי מעורערת",
-            "validators": "תוקפים"
-        },
-        "newStake": {
-            "title": "התחל לעלות"
-        },
-        "overview": {
-            "description": "Stake __ph__0__ אסימונים ברשת __ph__1__ כמועמד לאמת עסקאות ולהרוויח __ph__2__ תגמולים אסימון.",
-            "title": "__Ph__0__ סטייה"
-        },
-        "pendingRewardsDialog": {
-            "information": "תוקף תשלום את התגמולים כל 2-5 ימים. עם זאת, אתה יכול לשלם אותם בעצמך, במיוחד אם התגמולים קרובים לתוקף, אך תשלם את העמלה.",
-            "noPendingRewards": "אין תגמולים ממתינים",
-            "noSelectedRewards": "בחר תגמולים",
-            "payout": "תשלום",
-            "title": "תגמולים בהמתנה"
-        },
-        "selectedValidators": "{count} ({Max} {max})",
-        "selectValidatorsMode": {
-            "confirm": {
-                "manual": "אני אבחר בעצמי את המאמת",
-                "suggested": "יתכן עם הציע"
-            },
-            "criteria": {
-                "0": "הכי רווחי",
-                "1": "לא מנוי יתר על המידה",
-                "2": "בעל זהות Onchain",
-                "3": "לא נחתך",
-                "4": "גבול של 2 מאשרים לכל זהות"
-            },
-            "description": "__Ph__0__ אלגוריתם רשת בחר רשימה של תוקפים מומלצים על סמך הקריטריונים:",
-            "title": "אחזקות עם מאמתים המוצעים על ידי האלגוריתם"
-        },
-        "stakeDialog": {
-            "toRemove": "להסרה",
-            "toStake": "להתייחס"
-        },
-        "validators": {
-            "alreadyNominated": "תוקפים נבחרים כבר היו מועמדים",
-            "change": "שינוי מאמת",
-            "next": "הַבָּא",
-            "recommended": "מאמתים מומלצים",
-            "save": "שמור שינויים",
-            "select": "בחר מאמת",
-            "selected": "__Ph__0 __/__ pH__1__ נבחר",
-            "tooManyValidators": "יותר מדי מאמתים שנבחרו (__ph__0__ __ph__1__)"
-        },
-        "validatorsAttentionDialog": {
-            "confirm": "כן, אני מבין את הסיכון",
-            "description": {
-                "0": "הצעות מאמת אלגוריתמיות אינן מהוות ייעוץ או ייעוץ פיננסי. ההפעלה היא פעילות בסיכון גבוה, והצעות מאמת אלגוריתמי אינן בהכרח מקלות על סיכון זה.",
-                "1": "עדיין ניתן עדיין לחתוך מאמת שהציע האלגוריתם. מאמת המוצע על ידי האלגוריתם יכול גם לשנות את הפרמטרים שלהם (למשל, שיעורי עמלה וכו ') בכל עת לאחר שהוצעו ו/או נבחרו.",
-                "2": "אתה יכול לאבד אסימונים או תגמולים מסיבות אלה או אחרות. רק אסימוני כתם והשתמשו בהצעות מאמת על פי שיקול דעתכם, לאחר ביצוע בדיקת נאותות ובהתחשב בזהירות בהתחשב בסיכונים הכרוכים בכך."
-            },
-            "title": "תְשׁוּמַת לֵב"
-        },
-        "validatorsDialog": {
-            "tabs": {
-                "all": "כֹּל",
-                "user": "שֶׁלְךָ"
-            },
-            "title": {
-                "edit": "ערוך את המאמת שלי"
-            }
-        },
-        "validatorsFilterDialog": {
-            "filters": {
-                "hasIdentity": {
-                    "description": "לפחות איש קשר זהות אחד המחובר לחשבון",
-                    "name": "זהות על שרשרת"
-                },
-                "notOversubscribed": {
-                    "description": "חשבון בגבול ההקצאה, נמנע מעונשים של המנוי יתר על __ph__0__.",
-                    "name": "לא מנוי יתר על המידה"
-                },
-                "notSlashed": {
-                    "description": "לא חוו עונשים או הפחתה בכספים המוקדמים שלהם בגלל הפרות התנהגות שגויה או פרוטוקול.",
-                    "name": "לא נחתך"
-                },
-                "twoValidatorsPerIdentity": {
-                    "description": "מקסימום שני תוקפים לכל זהות לקידום ביזור ולמנוע ריכוז הכוח.",
-                    "name": "גבול של 2 מאשרים לכל זהות"
-                }
-            },
-            "reset": "לאפס את הכל",
-            "save": "שמור פילטר",
-            "title": "פילטרים"
-        },
-        "validatorsList": {
-            "commission": "עֲמָלָה",
-            "commissionTooltip": "העמלה מתייחסת לתשלום שגובה תוקפים בגין שירותיהם בתהליך ההפעלה. שכר טרחה זה, המתבטא כאחוזים, מנוכה מהתגמולים המגיעים שהרוויחו המועמדים לפני ההפצה. חשוב לציין כי תוקפים יכולים להתאים את שיעורי העמלה שלהם בכל עת",
-            "name": "שֵׁם",
-            "noNominatedValidators": "אין לך תוקפים מועמדים",
-            "noValidators": "אין מאמתים המספקים את המסנן שצוין",
-            "return": "לַחֲזוֹר",
-            "search": "לְחַפֵּשׂ..."
-        },
-        "withdraw": {
-            "beingWithdrawn": "להיות נסוג",
-            "countdownLeft": "שְׁמֹאל",
-            "nextWithdrawal": "הנסיגה הבאה",
-            "seeAll": "ראה הכל",
-            "withdrawable": "נסוג"
-        },
-        "withdrawDialog": {
-            "showAllWithdraws": "הראה את כל הנסיגות",
-            "title": "למשוך כספים שלא הושלמו"
-        }
-    },
-    "stepText": "שָׁלָב",
-    "successText": "הַצלָחָה",
-    "swap": {
-        "confirmSwap": "אישור החלפה",
-        "errorFetching": "שגיאה בעת אחזור הנתונים",
-        "insufficientAmount": "כמות {tokenSymbol} בלתי מספקת",
-        "insufficientLiquidity": "נזילות בלתי מספקת",
-        "liquidityProviderFee": "עמלת ספק נזילות",
-        "liquidityProviderFeeTooltip": "חלק מכל עסקה ({liquidityProviderFee}%) מועבר לספקי הנזילות כתמריץ פרוטוקול.",
-        "maxSold": "מקסימום נמכר",
-        "minReceived": "מינימום שיתקבל",
-        "minReceivedTooltip": "העסקה תבוטל אם יחול שינוי מחיר גדול ולא מיטיבי לפני האישור.",
-        "priceImpact": "השפעת מחיר",
-        "priceImpactTooltip": "ההבדל בין מחיר השוק למחיר המשוער עקב גודל העסקה.",
-        "rewardsForSwap": "תגמולי PSWAP אסטרטגיים",
-        "route": "מסלול",
-        "slippageTolerance": "סבילות החלקה",
-        "swapOutputMessage": "הפלט הוא הערכה. תקבלו לפחות {transactionValue} או שהעסקה תבוטל."
-    },
-    "swapText": "החלף",
-    "tokens": {
-        "assetId": "מזהה נכס"
+    "notifications": {
+      "accountAddressError": {
+        "text": "לרוע המזל, עסקת הגשר __ph__0__ נכשלה בגלל כתובת הנמען של האסימונים בצו __ph__3__ אינה תואמת את כתובת החשבון הנוכחית שלך __ph__1__. אנא החלף __ph__2__ חשבון בהרחבה ונסה שוב.",
+        "title": "חשבון לא נכון __ph__0__"
+      },
+      "amountError": {
+        "text": "לרוע המזל עסקת הגשר __ph__0__ נכשלה בגלל שלא הייתה מספיק אסימונים לעסקה. אנא בדוק את יתרת החשבון שלך __ph__1__ ונסה שוב.",
+        "title": "לא מספיק איזון"
+      },
+      "feeError": {
+        "text": "לרוע המזל עסקת הגשר __ph__0__ נכשלה בגלל שלא הייתה מספיק ETH כדי לשלם עבור דמי העברת הרשת {Ethereum}. אנא הוסף עוד ETH ונסה שוב.",
+        "title": "לא מספיק את ETH לגשר TX"
+      },
+      "success": {
+        "text": "רכישת אסימון מסתיימת. עסקת הגשר __ph__0__ תתחיל אוטומטית ברגע שהאסימונים התקבלו בחשבון __phected __p.__ המחובר. זה בטוח לסגור חלון זה ולהמשיך להשתמש __ph__2__. תהיה הודעה על עסקת הגשר כאשר היא מוכנה.",
+        "title": "אסימונים שנרכשו"
+      },
+      "supportError": {
+        "text": "לרוע המזל האסימון שנרכש באמצעות __ph__5__ עדיין לא נתמך על ידי גשר __ph__0__ ב- __ph__1__. בדרך כלל רק האסימונים הנתמכים צריכים להיות זמינים לרכישה באמצעות MoonPay ב- __ph__2__, מכאן שמשהו כנראה השתבש איפשהו. אנא אל תהססו ליידע את הקהילה על המקרה הזה ב- <a class = \"קישור\" href = \"https://t.me/polkaswap\" target = \"_ ריק\" rel = \"nofollow noopener\" title = \"__ ph__3 __\"> __ pH__4__ קבוצת Telegram </a>.",
+        "title": "אסימון לא נתמך"
+      },
+      "transactionError": {
+        "text": "לרוע המזל נראה כי העסקה __ph__0__ נכשלה. אנא נסה שוב. עבור __ph__1__ תמיכה עבור אל <a class = \"link\" href = \"https://support.moonpay.com\" target = \"_ ריק\" rel = \"nofollow noopener\" title = \"__ph__2__\"> https://support.moonpay.com </a>",
+        "title": "העסקה נכשלה"
+      }
     },
     "tooltips": {
-        "accounts": "חשבונות הם כתובות דיגיטליות המחזיקות בנכסי המשתמש ברשת. כל חשבון משויך לכתובת ציבורית ייחודית ולמפתח פרטי המאפשר למשתמש לגשת ולנהל את נכסיו.",
-        "bridgeTransactions": "__Ph__0__ עד __ph__1__ גשר מתייחס לתהליך העברת נכסים בין רשתות __ph__2__ ל- __ph__3__ באמצעות גשר. הגשר מאפשר יכולת פעולה הדדית של שתי הרשתות, ומאפשר למשתמשים להעביר בצורה חלקה נכסים ביניהם.",
-        "fees": "עמלות ב- __ph__0__ blockchain מתייחסות לחיובים שנמצאים בביצוע עסקאות ברשת. עמלות אלה משולמות ב- XOR, הקריפטו המקורי של רשת __ph__1__. סכום העמלה נקבע על ידי המורכבות וגודל העסקה שמתבצעת",
-        "roi": "__Ph__0__ מהווה החזר השקעה. זה מחושב על ידי חלוקת הרווח שנצבר בהשקעה בעלות ההשקעה ההיא באחוזים שווה ערך.",
-        "supply": "אספקת האסימון מתייחסת למספר האסימונים הכולל שנוצרו ונמצאים במחזור ברשת. אספקת האסימון יכולה להשתנות בהתבסס על כמות האסימונים שנשרפים, נשרפים או מועברים ברשת.",
-        "transactions": "עסקאות מתייחסות לתהליך שליחת או קבלת נכסים דיגיטליים ברשת, כולל פעולות נזילות וכן החלפות.",
-        "tvl": "__Ph__0__ מהווה ערך סך הכל נעול. הוא מייצג אסימונים נעולים בבריכות בשווי הדולר.",
-        "velocity": "מהירות האסימון היא מספר הפעמים של אסימון חשבונות במהלך התקופה (חודש) בממוצע. זה מציין את רמת פעילות המסחר והנזילות.",
-        "volume": "הנפח מתייחס לסכום הכולל של הנכסים שנסחרו או הוחלפו ברשת לאורך פרק זמן מסוים. הנפח הוא מדד חשוב למדידת הנזילות והפעילות הכוללת של הרשת."
-    },
-    "transaction": {
-        "amount": "@:amountText",
-        "amount2": "__Ph__0__ 2",
-        "blockId": "מזהה חסום",
-        "comment": "הֶעָרָה",
-        "copy": "העתק __ph__0__",
-        "fee": "דמי עסקה",
-        "from": "מִן",
-        "history": {
-            "confirmed": "העסקה אושרה",
-            "created": "נוצרה עסקה עבור __ph__0__ __ph__1__.",
-            "submitted": "עסקה המוגשת בתשלום של __ph__0__ __ph__1__"
-        },
-        "price": "מְחִיר",
-        "referral": "הפניה",
-        "referrer": "מפנה",
-        "side": "צַד",
-        "startTime": "תַאֲרִיך",
-        "status": "סטָטוּס",
-        "statuses": {
-            "complete": "לְהַשְׁלִים",
-            "failed": "העסקה נכשלה",
-            "pending": "תָלוּי וְעוֹמֵד..."
-        },
-        "title": "פרטי עסקה",
-        "to": "אֶל",
-        "total": "סַך הַכֹּל",
-        "txId": "מזהה עסקה",
-        "viewIn": "תצוגה ב- __ph__0__"
-    },
-    "transactionDetailsText": "פרטי עסקה",
-    "transactionSubmittedText": "הוגשה עסקה",
-    "transactionText": "עסקה | עסקאות",
-    "transfers": {
-        "from": "מ",
-        "to": "אל"
-    },
-    "unknownAssetText": "נכס לא ידוע",
-    "unknownErrorText": "שגיאה משהו השתבש ...",
-    "wallet": {
-        "WalletAssets": "נכסים",
-        "WalletHistory": "פְּעִילוּת"
-    },
-    "walletSend": {
-        "addressError": "אינך יכול לשלוח אסימונים לאותו חשבון שאתה מחובר אליו כרגע.",
-        "addressWarning": "אסימונים יישלחו לכתובת __ph__0__ למטה. וודא שהמקבל יכול לגשת לשרשרת __ph__1__ כדי להשתמש באסימונים:",
-        "badAddress": "כתובת שגויה",
-        "balance": "לְאַזֵן",
-        "confirmTitle": "אשר את העסקה",
-        "enableVesting": "אפשר הבשת אסימון",
-        "enterAddress": "הזן כתובת",
-        "enterAmount": "הזן סכום",
-        "enterVestingPercentage": "הזן אחוז ההבשלה",
-        "errorAddress": "כתובת לא חוקית. אנא בדוק את זה ונסה שוב.",
-        "max": "MAX",
-        "startUnlockingDate": "התחל תאריך ביטול נעילה",
-        "title": "לִשְׁלוֹחַ",
-        "tooltip": "שלח אסימונים בין חשבונות רשת __ph__0__",
-        "unlockFrequency": "ביטול נעילת תדר",
-        "vestingPercentage": "אחוז ההבשלה"
-    },
-    "warningText": "אַזהָרָה",
-    "sccp": {
-        "amountLabel": "Amount",
-        "assetLabel": "Asset symbol",
-        "clearPayload": "Clear form",
-        "copyPayload": "Copy payload",
-        "destinationAddressLabel": "Recipient address",
-        "destinationNetworkLabel": "To network",
-        "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-        "generatePayload": "Generate SCCP payload",
-        "noteLabel": "Optional memo",
-        "payloadCopied": "Payload copied",
-        "payloadCopyFailed": "Copy failed, please try again",
-        "payloadLabel": "Prepared payload",
-        "sourceNetworkLabel": "From network",
-        "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-        "supportedNetworks": "Supported chains: {chains}.",
-        "title": "SCCP"
+      "transfer": "אסימונים שנרכשו בהצלחה!\nלחץ כדי להתחיל את עסקת הגשר"
     }
+  },
+  "moonpayText": "MoonPay",
+  "mst": {
+    "about": "אוֹדוֹת",
+    "accountNameMst": "שם חשבון Multisig",
+    "addAddr": "הוסף כתובת",
+    "addAddress": "הוסף כתובת נוספת",
+    "addMST": "הוסף כתובות Multisig",
+    "addrCreation": "יצירת כתובת מולטיסיג",
+    "addressEntered": "כתובת זו כבר הוזנה",
+    "amountOfSignatures": "חתימות שהוגשו",
+    "cardMessageFirst": "כדי שה- MULTISIG שלך יתפקד כראוי, כל הכתובות הרשומות חייבות ליצור את ה- MULTISIG באותה צורה בדיוק כמוך.",
+    "cardMessageSecond": "לא ניתן לשנות את הארנק Multisig בעתיד, רק את השם.",
+    "connectFearless": "התחבר באמצעות פחד ללא פחד",
+    "continue": "לְהַמשִׁיך",
+    "createMst": "צור ארנק Multisig",
+    "enterAddress": "הזן את כתובת Multisig",
+    "enterName": "הזן/י שם ארנק מרובה חתימות",
+    "forget": "לִשְׁכּוֹחַ",
+    "forgetMst": "פרטי הכניסה שלך יימחקו. תאבד לצמיתות גישה לחשבונך",
+    "how": "איך?",
+    "incorrectFormatAddress": "הכתובת אינה בפורמט נכון",
+    "loading": "טְעִינָה...",
+    "minFee": "סכום דקה של חתימת תשלום צורך",
+    "mstBridgeWarning": "העברה מ- MST אינה נתמכת לעת עתה",
+    "mstFearless": "התקן/י את Fearless Wallet או חבר/י את החשבון שלך",
+    "mstForgetBtn": "תשכח מחשבון Multisig",
+    "mstIcon": "צור חשבון Multisig",
+    "mstKeys": "ארנקים מרובי -סיג דורשים חתימות ומפתחות מרובים",
+    "mstSave": "שמור שינויים",
+    "mstSign": "הגדר את מספר החתימות הנדרשות להשלמת עסקאות",
+    "mstSwitchWarning": "כל הפעילויות והעסקאות יבוצעו דרך חשבון Multisig",
+    "mstWallet": "חתימות מרובות מפחיתות את הסיכון לפשרה מרכזית. הכספים נשארים בטוחים גם אם מפתח אחד אבוד או נגנב",
+    "multisigAccount": "חשבון Multisig",
+    "seeActivity": "ראה פעילות רב -סיגית",
+    "settingsMst": "הגדרות חשבון Multisig",
+    "setupDetails": "הגדר את הפרטים",
+    "sign": "סִימָן",
+    "successMstSetUp": "ארנק Multisig הוקם בהצלחה!",
+    "suggestSwitchFromMst": "אתה יכול לעבור מ- MST או להעביר ל- MST",
+    "sureForgetMst": "האם אתה בטוח שאתה רוצה לשכוח חשבון Multisig?",
+    "switchFromMst": "לעבור מ- MST",
+    "switchMst": "לעבור לחשבון Multisig",
+    "threshold": "סַף",
+    "thresholdNumber": "הגדר סף אישור עסקה",
+    "warningSwitch": "יש צורך בשלט כדי לאשר את העסקה. אנא עברו לחשבון Multisig.",
+    "yourAddress": "הכתובת שלך"
+  },
+  "multipleRecipients": "מספר נמענים",
+  "nameText": "שֵׁם",
+  "networkFeeText": "דמי רשת",
+  "networkFeeTooltipText": "דמי רשת משמשת כדי להבטיח את הצמיחה של מערכת __ph__0__ וביצועים יציבים.",
+  "networkStatisticsText": "סטטיסטיקות רשת",
+  "newAccountsText": "חשבונות חדשים",
+  "nextText": "הַבָּא",
+  "noDataText": "אין נתונים",
+  "node": {
+    "errors": {
+      "connection": "אירעה שגיאה בזמן החיבור לצומת\n__Ph__0__",
+      "existing": "צומת זה כבר מתווסף: __ph__0__",
+      "network": "הצומת\n__Ph__0__\n הוא מהרשת האחרת"
+    },
+    "messages": {
+      "connected": "חיבור שנקבע עם הצומת\n__Ph__0__",
+      "selectNode": "אנא בחר צומת כדי להתחבר מרשימת הצומת"
+    },
+    "warnings": {
+      "disconnect": "החיבור לצומת אבד. חיבור מחדש ..."
+    }
+  },
+  "noir": "נואר",
+  "ofText": "__Ph__0__ של __ph__1__",
+  "operations": {
+    "AddLiquidity": "הוסף נזילות",
+    "andText": "וכן",
+    "BindRegulatedAsset": "קישור נכס מוסדר",
+    "BorrowVaultDebt": "לווה חוב",
+    "Burn": "לִשְׂרוֹף",
+    "ClaimRewards": "לתבוע תגמולים",
+    "CloseVault": "מיקום סגור",
+    "CreatePair": "צור זוג",
+    "CreateVault": "ליצור מיקום",
+    "DemeterFarmingDepositLiquidity": "נזילות מוחלטת",
+    "DemeterFarmingGetRewards": "לתבוע תגמולים",
+    "DemeterFarmingStakeToken": "אסימון המוקד",
+    "DemeterFarmingUnstakeToken": "אסימון לא יציב",
+    "DemeterFarmingWithdrawLiquidity": "נזילות ללא תקיפה",
+    "DepositCollateral": "מיקום פיקדון",
+    "error": {
+      "AddLiquidity": "נכשלה לספק __ph__0__ __ph__1__ ו- __ph__2__ __ph__3__",
+      "BindRegulatedAsset": "נכשל לאגד את הנכס __ph__0__ ל- sbt __ph__1__",
+      "BorrowVaultDebt": "נכשל להשאיל __ph__0__ __ph__1__",
+      "Burn": "נכשל לשרוף __ph__0__ __ph__1__",
+      "ClaimRewards": "נכשל לתבוע תגמולים __ph__0__",
+      "CloseVault": "נכשל לסגור __ph__00 __/__ pH__1__ מיקום",
+      "CreatePair": "נכשלה לספק __ph__0__ __ph__1__ ו- __ph__2__ __ph__3__",
+      "CreateVault": "מיקום נכשל",
+      "DemeterFarmingDepositLiquidity": "נכשלה לספק __ph__0__ __ph__1__ ו- __ph__2__ אסימוני LP",
+      "DemeterFarmingGetRewards": "נכשל לתבוע __ph__0__",
+      "DemeterFarmingStakeToken": "נכשל להוסיף __ph__0__ __ph__1__",
+      "DemeterFarmingUnstakeToken": "הסרת __ph__0__ __ph__1__ נכשלה",
+      "DemeterFarmingWithdrawLiquidity": "הסרת __ph__0__ __ph__1__ ו- __ph__2__ אסימוני LP",
+      "DepositCollateral": "נכשל להפקיד __ph__0__ __ph__1__",
+      "EthBridgeIncoming": "נכשל להעביר __ph__0__ __ph__1__ מ- __ph__2__ ל- __ph__3__",
+      "EthBridgeOutgoing": "נכשל להעביר __ph__0__ __ph__1__ מ- __ph__2__ ל- __ph__3__",
+      "IssueSoulBoundToken": "לא הצליח להנפיק אסימון נשמה __ph__0__",
+      "Mint": "נכשל נענע __ph__0__ __ph__1__ ל- __ph__2__",
+      "OrderBookCancelLimitOrder": "נכשל בביטול הזמנת הגבלה",
+      "OrderBookCancelLimitOrders": "נכשל בביטול הגבלת הזמנות",
+      "OrderBookPlaceLimitOrder": "נכשל במבצע סדר הגבלה של __ph__0__ __ph__1__ ב __ph__2__ __ph__3__",
+      "ReferralReserveXor": "נכשל בקשר __ph__0__ xor",
+      "ReferralSetInvitedUser": "נכשל הגדרת __ph__0__ __ph__1__",
+      "ReferralUnreserveXor": "נכשל בפתק __ph__0__ xor",
+      "RegisterAndRegulateAsset": "נכשל בהרשמה והסדרת __ph__0__",
+      "RegisterAsset": "נכשל נכשל __ph__0__ נכס",
+      "RegulateAsset": "נכשל להסדיר נכס __ph__0__",
+      "RemoveLiquidity": "הסרת __ph__0__ __ph__1__ ו- __ph__2__ __ph__3__",
+      "RepayVaultDebt": "נכשל להחזיר את __ph__0__ __ph__1__",
+      "SetAccessExpiration": "נכשל עדכון התפוגה ל- __ph__0__ עבור __ph__1__",
+      "StakingBond": "נכשל בקשר __ph__0__ __ph__1__",
+      "StakingBondAndNominate": "נכשל בקשר __ph__0__ __ph__1__",
+      "StakingBondExtra": "נכשל לקשר נוסף __ph__0__ __ph__1__",
+      "StakingChill": "נכשל להירגע",
+      "StakingNominate": "לא נכשל במינוי תוקפים",
+      "StakingPayout": "תגמולים נכשלים בתשלום",
+      "StakingRebond": "נכשל מחדש מחדש __ph__0__ __ph__1__",
+      "StakingSetController": "הגדרת בקר נכשלה __ph__0__",
+      "StakingSetPayee": "נכשל בהגדרת מקבל התשלום __ph__0__",
+      "StakingUnbond": "נכשל בפתק __ph__0__ __ph__1__",
+      "StakingWithdrawUnbonded": "נכשל לסגת __ph__0__ __ph__1__",
+      "Swap": "נכשל להחליף __ph__0__ __ph__1__ עבור __ph__2__ __ph__3__",
+      "SwapAndSend": "נכשל להחליף __ph__0__ __ph__1__ עבור __ph__2__ __ph__3__ ו- __ph__4__ __ph__5__ __ph6__",
+      "SwapTransferBatch": "נכשל __ph__0__ __ph__1__ __ph__2__",
+      "Transfer": "נכשל __ph__0__ __ph__1__ __ph__2__ __ph__3__ __ph__4__",
+      "VestedTransfer": "נכשל __ph__0__ __ph__1__ __ph__2__ __ph__3__ __ph__4__",
+      "XorlessTransfer": "נכשלה לשלוח __ph__0__ __ph__1__ ל- __ph__2__"
+    },
+    "EthBridgeIncoming": "@:hashiBridgeText",
+    "EthBridgeOutgoing": "@:hashiBridgeText",
+    "finalized": {
+      "AddLiquidity": "מסופק __ph__0__ __ph__1__ ו- __ph__2__ __ph3__",
+      "BindRegulatedAsset": "קישור נכס __ph__0__ ל- sbt",
+      "BorrowVaultDebt": "שאול __ph__0__ __ph__1__",
+      "Burn": "שרוף __ph__0__ __ph__1__",
+      "ClaimRewards": "תגמול טען בהצלחה __ph__0__",
+      "CloseVault": "__Ph__0 __/__ pH__1__ מיקום סגור",
+      "CreatePair": "מסופק __ph__0__ __ph__1__ ו- __ph__2__ __ph3__",
+      "CreateVault": "__Ph__0 __/__ pH__1__ מיקום נוצר",
+      "DemeterFarmingDepositLiquidity": "מסופק __ph__0__ ו- __ph__1__ __ph__2__ אסימוני LP",
+      "DemeterFarmingGetRewards": "__Ph__0__ __ph__1__ נטען בהצלחה",
+      "DemeterFarmingStakeToken": "נוסף __ph__0__ __ph__1__",
+      "DemeterFarmingUnstakeToken": "הוסר __ph__0__ __ph__1__",
+      "DemeterFarmingWithdrawLiquidity": "הוסרה __ph__0__ ו- __ph__1__ __ph__2__ אסימוני LP",
+      "DepositCollateral": "הפקיד __ph__0__ __ph__1__",
+      "EthBridgeIncoming": "הועבר __ph__0__ __ph__1__ מ- __ph__2__ ל- __ph__3__",
+      "EthBridgeOutgoing": "הועבר __ph__0__ __ph__1__ מ- __ph__2__ ל- __ph__3__",
+      "IssueSoulBoundToken": "להנפיק אסימון נשמה __ph__0__",
+      "Mint": "מוטבע __ph__0__ __ph__1__ ל- __ph__2__",
+      "OrderBookCancelLimitOrder": "הגבלת הזמנה מבוטלת",
+      "OrderBookCancelLimitOrders": "הגבל את ההזמנות שבוטלו",
+      "OrderBookPlaceLimitOrder": "__Ph__0__ __ph__1__ __ph__2__ ב __ph__3__ __ph__4__ ממוקם",
+      "ReferralReserveXor": "קשור __ph__0__ xor",
+      "ReferralSetInvitedUser": "__Ph__0__ __ph__1__ מוגדר בהצלחה",
+      "ReferralUnreserveXor": "__Ph__0__ לא מוגבל",
+      "RegisterAndRegulateAsset": "לרשום ולווסת __ph__0__ נכס",
+      "RegisterAsset": "נכס רשום __ph__0__",
+      "RegulateAsset": "לווסת נכס __ph__0__",
+      "RemoveLiquidity": "הוסר __ph__0__ __ph__1__ ו- __ph__2__ __ph3__",
+      "RepayVaultDebt": "החזרת __ph__0__ __ph__1__",
+      "SetAccessExpiration": "אסימון SB __ph__0__ עדכון תפוגה ל- __ph__1__",
+      "StakingBond": "קשור __ph__0__ __ph__1__",
+      "StakingBondAndNominate": "קשור __ph__0__ __ph__1__",
+      "StakingBondExtra": "קשר נוסף __ph__0__ __ph__1__",
+      "StakingChill": "לְצַנֵן",
+      "StakingNominate": "תוקפים מועמדים",
+      "StakingPayout": "תגמולים בתשלום",
+      "StakingRebond": "נולד מחדש __ph__0__ __ph__1__",
+      "StakingSetController": "הגדר בקר __ph__0__",
+      "StakingSetPayee": "הגדר את מקבל התשלום __ph__0__",
+      "StakingUnbond": "__Ph__0__ בלתי מוגדר __ph__1__",
+      "StakingWithdrawUnbonded": "משך __ph__0__ __ph__1__",
+      "Swap": "החלף __ph__0__ __ph__1__ עבור __ph__2__ __ph__3__",
+      "SwapAndSend": "החלף __ph__0__ __ph__1__ עבור __ph__2__ __ph__3__ ו- __ph__4__ __ph__5__ __ph__6__",
+      "SwapTransferBatch": "{action} {amount} {symbol}",
+      "Transfer": "{action} {amount} {symbol} {direction} {address}",
+      "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
+      "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
+    },
+    "IssueSoulBoundToken": "סוגיה SBT",
+    "Mint": "מֶנטָה",
+    "OrderBookCancelLimitOrder": "בטל את ההזמנה",
+    "OrderBookCancelLimitOrders": "בטל הזמנות",
+    "OrderBookPlaceLimitOrder": "הצב הזמנה",
+    "ReferralReserveXor": "בונד Xor",
+    "ReferralSetInvitedUser": "הגדר __ph__0__",
+    "ReferralUnreserveXor": "Unbond Xor",
+    "RegisterAndRegulateAsset": "רשם נכס",
+    "RegisterAsset": "רשם נכס",
+    "RegulateAsset": "לווסת נכס",
+    "RemoveLiquidity": "הסר את הנזילות",
+    "RepayVaultDebt": "החזר חוב",
+    "SetAccessExpiration": "הגדר תום SBT",
+    "StakingBond": "קֶשֶׁר",
+    "StakingBondAndNominate": "קשר ומינוי",
+    "StakingBondExtra": "בונד נוסף",
+    "StakingChill": "לְצַנֵן",
+    "StakingNominate": "לְמַנוֹת",
+    "StakingPayout": "תגמולים בתשלום",
+    "StakingRebond": "Refond",
+    "StakingSetController": "הגדר בקר",
+    "StakingSetPayee": "הגדר מקבל תשלום",
+    "StakingUnbond": "לא",
+    "StakingWithdrawUnbonded": "לסגת ללא תנועה",
+    "Swap": "לְהַחלִיף",
+    "SwapAndSend": "החלף ושלח",
+    "SwapTransferBatch": "העברה __ph__0__",
+    "Transfer": "לְהַעֲבִיר",
+    "VestedTransfer": "לְהַעֲבִיר",
+    "XorlessTransfer": "לְהַעֲבִיר"
+  },
+  "orderBook": {
+    "amount": "סְכוּם",
+    "book": {
+      "noAsks": "לא שואלים נפתחים",
+      "noBids": "אין הצעות מחיר"
+    },
+    "bookStatus": {
+      "active": "פָּעִיל",
+      "cancelable": "ניתן לבטל",
+      "inactive": "לֹא פָּעִיל",
+      "placeable": "נצפה"
+    },
+    "Buy": "קנה __ph__0__",
+    "cantPlaceOrder": "לא יכול לבצע הזמנה",
+    "change": "לְשַׁנוֹת",
+    "dayVolume": "כרך 1D",
+    "dialog": {
+      "askCancel": "האם אתה בטוח שאתה רוצה לבטל את כל ההזמנות הפתוחות שלך?",
+      "at": "ב __ph__0__ __ph__1__",
+      "buy": "קנה __ph__0__ __ph__1__",
+      "cancelAll": "כן, בטל את הכל",
+      "placeLimit": "מקום הגבלה",
+      "placeMarket": "מקם את הזמנת השוק",
+      "sell": "למכור __ph__0__ __ph__1__"
+    },
+    "enterAmount": "הזן סכום",
+    "error": {
+      "accountLimit": {
+        "reading": "הגבלה שהושגה: כל חשבון מוגבל למספר 1024 הזמנות הגבלה. אנא המתן עד שחלק מההזמנות שלך ימלאו",
+        "reason": "יותר מדי הזמנות נמשכות"
+      },
+      "beyondPrecision": {
+        "reading": "דיוק חורג: הסכום/המחיר שהוזן יש יותר מדי מקומות עשרוניים. אנא הזן ערך עם פחות מקומות עשרוניים",
+        "reason": "המחיר שהוזן מדויק מכדי לחשב"
+      },
+      "exceedsSpread": {
+        "reading": "המחיר חרג: מחיר הצעת השוק או המחיר של שוק חרגו ממחיר הבקש/הצעת המחיר שלו",
+        "reason": "המחיר חרג מהפיזור"
+      },
+      "marketNotAvailable": {
+        "reading": "מגבלת הזמנת שוק: אין מספיק הזמנות העומדות לרשותם למילוי הזמנת שוק זו. אנא התאם את גודל ההזמנה שלך או המתן למוצב הזמנות נוספות",
+        "reason": "אין מספיק הזמנות זמינות למילוי ההזמנה הזו"
+      },
+      "multipleOf": {
+        "reading": "כדי לעבד את ההזמנה, אנא הזן מחיר שהוא מכפיל של __ph__0__",
+        "reason": "המחיר שהוזן הוא ספציפי מדי"
+      },
+      "outOfBounds": {
+        "reading": "טווח ה- blockchain חרג: הסכום שהוזן שלך נופל מחוץ לטווח המותר של blockchain. דקות: __ph__0__; מקסימום: __ph__1__",
+        "reason": "הסכום נכשל בציית לטווח blockchain"
+      },
+      "singlePriceLimit": {
+        "reading": "הגבלה שהושגה: כל מיקום מוגבל למספר 1024 הוראות הגבלה. אנא המתן עד שממלאים כמה הזמנות",
+        "reason": "יותר מדי הזמנות נמשכות במחיר זה"
+      },
+      "spotLimit": {
+        "reading": "כובע טווח מחירים: כל צד ספר הזמנות מוגבל ל 1024 נקודות מחיר ייחודיות. אנא בחר מחיר בטווח הקיים או המתן לחלל שיהיה זמין",
+        "reason": "הצד המסחר התמלא"
+      }
+    },
+    "history": {
+      "cancel": "בטל את הזמנה __ph__0__",
+      "cancelAll": "בטל את הכל",
+      "connect": "חבר חשבון כדי להתחיל לסחור",
+      "openOrders": "פתיחת הזמנות __ph__0__",
+      "orderHistory": "היסטוריה של הזמנה",
+      "tradeHistory": "היסטוריית סחר"
+    },
+    "limit": "לְהַגבִּיל",
+    "market": "שׁוּק",
+    "marketTrades": "סחר בשוק",
+    "month": "חוֹדֶשׁ",
+    "orderBook": "ספר הזמנה",
+    "orderStatus": {
+      "active": "פָּעִיל",
+      "canceled": "בּוּטלָה",
+      "expired": "פג תוקף",
+      "filled": "מְמוּלָא"
+    },
+    "orderTable": {
+      "filled": "מְמוּלָא",
+      "lifetime": "מֶשֶׁך הָחַיִים",
+      "noOrders": "אין הזמנות. צור את הראשון שלך!",
+      "pair": "זוּג",
+      "side": "צַד",
+      "time": "זְמַן"
+    },
+    "Sell": "למכור __ph__0__",
+    "setPrice": "מחיר מוגדר",
+    "stop": "הספר נעצר",
+    "time": "זְמַן",
+    "tokenPair": "זוג אסימון",
+    "tooltip": {
+      "bookStatus": {
+        "active": "פונקציונליות מסחר מלאה מופעלת. אתה יכול לבצע הזמנות חדשות או לבטל את הקיימות.",
+        "cancelable": "אתה יכול לבטל רק הזמנות קיימות. מיקום הזמנה חדש מושבת כעת.",
+        "inactive": "כל פעילויות המסחר נעצרות כעת. בשלב זה לא ניתן להציב או לבטל הזמנות.",
+        "placeable": "פונקציונליות מוגבלת. אתה יכול לבצע הזמנות חדשות ולבטל תכונות קיימות, אך תכונות מסוימות עשויות להיות אינן זמינות."
+      },
+      "bookWidget": "שיא חי ומעדכן כל העת של קנייה (BID) ומכור (שאל) הזמנות לנכס ספציפי, המאורגן לפי רמת מחיר. ספר ההזמנות מציג את עומק השוק, כולל כמויות הנכסים המוצעים במחירים שונים. סוחרים מנצלים תצוגה מפורטת זו כדי לאמוד את סנטימנט השוק, לזהות רמות התנגדות ותמיכה פוטנציאליות ולצפות תנועות מחירים על בסיס ביקוש והיצע קיימים",
+      "limitOrder": "הזמנת 'מגבלה' מאפשרת לך לציין את המחיר המדויק בו ברצונך לקנות או למכור נכס. הזמנת 'קניית מגבלה' תבוצע רק במחיר שצוין או נמוכה יותר, ואילו הזמנת 'מכירת גבול' תבצע רק במחיר שצוין ומעלה. בקרה זו מבטיחה שלא תשלם יותר או תמכור בפחות ממה שנוח לך.",
+      "marketOrder": "'הזמנת שוק' היא הזמנה לקנות או למכור מייד במחיר הנוכחי הזמין ביותר. זה לא דורש קביעת מחיר, להבטיח ביצוע מהיר אך עם הסחר של פחות שליטה על המחיר שהתקבל או תשלום. סוג זה של סדר משמש כאשר וודאות הביצוע היא בראש סדר העדיפויות על פני בקרת מחירים.",
+      "marketWidget": "יישומון זה מציג זרם בזמן אמת של עסקאות מבוצעות בשוק, ומספק מידע על נפחי עסקאות, פעילות אחרונה ומגמות שוק נוכחיות. על ידי התבוננות בתזמון, במחיר ובגודל המקצועות בפועל, סוחרים יכולים לקבל תובנות על דינמיקת השוק והרגש, לעזור להם לאתר הזדמנויות מסחר ולקבל החלטות מושכלות",
+      "pairsList": "רשימה בזמן אמת המציגה הזמנות קנייה ומכירה עדכניות עבור cryptocurrency. זה עוזר לך להבין את הביקוש, כיוון המחיר הפוטנציאלי ואת נפח הסחר ברשת __ph__0__ ו- __ph__1__ dex",
+      "txDetails": {
+        "amount": "'הסכום' מתייחס למספר הנכסים הכולל שאתה רוצה לקנות או למכור בהזמנה שלך. חשוב לציין, מכיוון שהיא קובעת את גודל העסקה שלך, ומשפיעה על העלות הכוללת עבור הזמנות קנייה או הכנסות עבור הזמנות מכירה.",
+        "expiryDate": "'תאריך התפוגה' הוא המועד האחרון לביצוע ההזמנה שלך. אם השוק לא מגיע למחיר שצוין לפני תאריך זה, ההזמנה מבוטלת אוטומטית. אתה לא מחויב להמתנה תמידית אם תנאי השוק לא יתיישרו עם העדפות המסחר שלך.",
+        "limit": "'מחיר המגבלה' הוא המחיר המדויק שהגדרת להזמנת הגבלה. הסחר יבצע רק כאשר מחיר השוק של הנכס עומד במחיר המגבלה שלך, ומבטיח שלא לרכוש למעלה או למכור מתחת לערך שצוין זה.",
+        "locked": "ה\"נעול \"מראה את כמות הנכס שיש לקיים בזמן ההזמנה נמשכת.",
+        "orderType": "הזמנת 'קנה' תבוצע רק במחיר שצוין או נמוכה יותר, ואילו הזמנת 'מכירה' תבצע רק במחיר שצוין ומעלה. בקרה זו מבטיחה שלא תשלם יותר או תמכור בפחות ממה שנוח לך."
+      }
+    },
+    "total": "סַך הַכֹּל",
+    "tradingPair": {
+      "choosePair": "בחר זוג מסחר",
+      "status": "סטָטוּס",
+      "total": "__Ph__0__ __ph__1__ ב __ph__2__ __ph__3__",
+      "volume": "כֶּרֶך"
+    },
+    "txDetails": {
+      "expiryDate": "תאריך תפוגה",
+      "limitPrice": "מחיר הגבלה",
+      "orderType": "סוג הזמנה"
+    }
+  },
+  "pageTitle": {
+    "AddLiquidity": "הוסף נזילות",
+    "AssetOwner": "בעל נכס",
+    "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+    "Bridge": "@:bridgeText",
+    "Explore/Books": "@:pageTitle.OrderBook",
+    "Explore/Farming": "חַקלָאוּת",
+    "Explore/Pools": "בריכות",
+    "Explore/Staking": "מעלה",
+    "Explore/Tokens": "אסימונים",
+    "OrderBook": "סַחַר",
+    "Pool": "פּוּל",
+    "Rewards": "תגמולים",
+    "Staking": "מעלה",
+    "Stats": "סטָטִיסטִיקָה",
+    "Swap": "לְהַחלִיף",
+    "VaultDetails": "פרטי מיקום",
+    "Vaults": "{Kensetsu}",
+    "Wallet": "אַרְנָק",
+    "Sccp": "SCCP",
+    "Burn": "לִשְׂרוֹף"
+  },
+  "pairIsNotCreated": "זוג אסימון לא נוצר",
+  "points": {
+    "accountsText": "חשבונות __ph__0__",
+    "airdrop": "השלם משימות הקשורות למערכת אקולוגית של סורה על מנת להעפיל לאוויר של 3 מיליון דולר",
+    "bridgeVolume": "נפח גשר",
+    "complete": "הושלם | לְהַשְׁלִים",
+    "currently": "כַּיוֹם",
+    "dated": "מְיוּשָׁן",
+    "depositVolumeBridges": {
+      "descriptionTask": "הפקדה ומשיכה באמצעות גשרים, bitget, 1x, gateio",
+      "titleProgress": "נפח הפקדה",
+      "titleTask": "הפקדה ומשיכה"
+    },
+    "feesSpent": "עמלות שהוצאו",
+    "firstSoraNetworkTransaction": "עסקת רשת הסורה הראשונה שלך",
+    "firstTxAccount": {
+      "descriptionTask": "השלם את עסקת ה- XOR הראשונה שלך אי פעם וקבל את התגמול",
+      "titleProgress": "TRX ראשונה",
+      "titleTask": "בצע את העסקה הראשונה שלך"
+    },
+    "governanceLockedXOR": {
+      "descriptionTask": "לנעול XOR על ידי השתתפות באירועי הצבעה ממשלתיים",
+      "titleProgress": "ממשל",
+      "titleTask": "לנעול XOR בהצבעה ממשלתית"
+    },
+    "kensetsuVolumeRepaid": {
+      "descriptionTask": "החזר חוב KUSD במהלך פיצולים או עמדות סגירה",
+      "titleProgress": "נפח קנסטסו",
+      "titleTask": "החזר חוב KUSD"
+    },
+    "KUSDHoldings": {
+      "descriptionTask": "החזק את אחזקות ה- KUSD הנוכחיות שלך",
+      "titleProgress": "KUSD HOLD",
+      "titleTask": "להחזיק את KUSD"
+    },
+    "liquidityProvision": {
+      "descriptionTask": "לספק נזילות על פני בריכות",
+      "titleProgress": "אספקת נזילות",
+      "titleTask": "לספק נזילות"
+    },
+    "loginText": "חבר את חשבונך כדי לראות את הנקודות שלך",
+    "lvl": "LVL",
+    "maxLvl": "הגעת למקס LVL",
+    "nativeXorStaking": {
+      "descriptionTask": "STAME XOR ולהרוויח תגמולים של VAL",
+      "titleProgress": "Xor Staking",
+      "titleTask": "Stoce Xor"
+    },
+    "networkFeeSpent": {
+      "descriptionTask": "הוצא XOR בעמלות רשת על פני מספר עסקאות על שרשרת מספר רב",
+      "titleProgress": "דמי רשת",
+      "titleTask": "הוצא XOR על דמי רשת"
+    },
+    "nextLvl": "הבא LVL",
+    "openTelegram": "פתוח __ph__0__",
+    "orderbookVolume": {
+      "descriptionTask": "צור הזמנות מגבלה בספר ההזמנה",
+      "titleProgress": "ספר הזמנה",
+      "titleTask": "צור הזמנות מגבלה"
+    },
+    "progress": "הִתקַדְמוּת",
+    "referralRewards": {
+      "descriptionTask": "הפנה חשבונות באמצעות מערכת ההפניה",
+      "titleProgress": "הפניה סיטם",
+      "titleTask": "עיין בחשבונות"
+    },
+    "relatedTasks": "השלם __ph__0 __- משימות קשורות כדי לפלס את המיומנות שלך",
+    "rewardNextLvl": "תגמול ברמה הבאה",
+    "soraCard": "הגש בקשה עכשיו",
+    "title": "הנקודות שלך",
+    "toEarnPoints": "להרוויח נקודות",
+    "tokenHold": {
+      "descriptionTask": "החזק את אחזקות __ph__0__ הנוכחיות שלך",
+      "titleProgress": "__Ph__0__ אחזקות",
+      "titleTask": "החזק את __ph__0__"
+    },
+    "VXORHoldings": {
+      "descriptionTask": "החזק את אחזקות ה- VXOR הנוכחיות שלך",
+      "titleProgress": "VXOR Holdings",
+      "titleTask": "החזק את VXOR"
+    },
+    "xorBurned": "__Ph__0__ נשרף",
+    "XORBurned": {
+      "descriptionTask": "לשרוף XOR ולהמיר לערך $",
+      "titleProgress": "Xor נשרף",
+      "titleTask": "לשרוף XOR"
+    },
+    "XORHoldings": {
+      "descriptionTask": "החזק את אחזקות ה- XOR הנוכחיות שלך",
+      "titleProgress": "XOR HOLD",
+      "titleTask": "להחזיק את Xor"
+    },
+    "yourLevel": "הרמה שלך",
+    "yourReferrals": "הפניות שלך",
+    "yourRewards": "התגמולים שלך",
+    "yourTasks": "המשימות שלך"
+  },
+  "polkadotjs": {
+    "connectionError": "שגיאה התרחשה במהלך חיבור הארנק. אתה יכול לנסות לחבר את הארנק באמצעות __ph__0__ שוב",
+    "noAccount": "__Ph__0__ שגיאת חשבון. אנא בדוק את חשבונך בתוסף __ph__1__",
+    "noExtension": "לא נמצא סיומת __ph__0__. אנא התקן אותו וטען מחדש דף זה",
+    "noExtensions": "לא נמצא סיומת __ph__0__. אנא התקן אותו וטען מחדש דף זה\nhttps://polkadot.js.org/extension/",
+    "noSigner": "הגִישָׁה נִדחֲתָה. עבור אל __ph__0__ הגדרות סיומת ופתח \"נהל גישה לאתר\" כדי לאפשר."
+  },
+  "pool": {
+    "addLiquidity": "הוסף נזילות",
+    "connectToWallet": "חבר חשבון כדי להציג את הנזילות שלך.",
+    "createPair": "צור זוג",
+    "description": "כשאתה מוסיף נזילות, נותנים לך אסימוני בריכה המייצגים את עמדתך. אסימונים אלה מרוויחים אוטומטית עמלות ביחס לחלקכם בבריכה, וניתן לממש אותם בכל עת.",
+    "liquidityNotFound": "לא נמצא נזילות.",
+    "pairTokens": "__Ph__0__ אסימוני בריכה",
+    "pooledToken": "__Ph__0__ מאוחד",
+    "poolShare": "שיתוף הבריכה שלך",
+    "removeLiquidity": "הסר את הנזילות",
+    "strategicBonusApy": "בונוס אסטרטגי APY"
+  },
+  "poweredBy": "מופעל על ידי",
+  "prevText": "קוֹדֵם",
+  "priceChartText": "תרשים מחירים",
+  "priceText": "מְחִיר",
+  "provider": {
+    "messages": {
+      "checkExtension": "סיומת __ph__0__ עמוסה, אנא בדוק אותה",
+      "extensionLogin": "אנא התחבר לתוסף __ph__0__ שלך",
+      "installExtension": "__Ph__0__ הרחבה לא נמצאת. אנא התקן אותו!\n\nכבר הותקן סיומת? אנא טען מחדש את הדף",
+      "notAvailable": "__Ph__0__ אינו זמין.",
+      "reloadPage": "דף טען מחדש"
+    }
+  },
+  "receivedText": "התקבל",
+  "referralProgram": {
+    "action": {
+      "bond": "קֶשֶׁר",
+      "bondMore": "קשר יותר",
+      "copyLink": "העתק קישור",
+      "shareLink": "לַחֲלוֹק",
+      "unbond": "לא"
+    },
+    "bondedXOR": "XOR קשור",
+    "bondTitle": "בונד Xor",
+    "confirm": {
+      "bond": "אשר איגרות חוב",
+      "freeOfCharge": "פעולה זו ללא עלות",
+      "hasReferrerDescription": "למרבה הצער, אתה יכול רק להגדיר אחד",
+      "hasReferrerTitle": "כבר הגדרת את המפנה שלך",
+      "inviteDescription": "עבור כל עסקה, 10% מהתשלום יעבור למפנה שלך, ללא עלות נוספת עבורך.",
+      "inviteTitle": "הוזמנת ל- __ph__0__",
+      "ok": "בְּסֵדֶר",
+      "signInvitation": "לְאַשֵׁר",
+      "unbond": "לאשר את Unnond"
+    },
+    "connectAccount": "כדי להזמין משתמשים אתה צריך לחבר את חשבון __ph__0__ שלך.",
+    "insufficientBondedAmount": "כדי להזמין הפניות נוספות, קשר לפחות __ph__0__ xor",
+    "insufficientBondedBalance": "לא מספיק איזון מלוכד",
+    "invitationLink": "קישור הזמנה",
+    "inviteViaTelegram": "הזמן דרך __ph__0__",
+    "receivedRewards": "קיבל תגמולים",
+    "referralsNumber": "__Ph__0__ הפניות",
+    "referrer": {
+      "approve": "לְאַשֵׁר",
+      "approved": "מְאוּשָׁר",
+      "description": "אתה יכול להתייחס ל- __ph__0__, <br/> הקלד את הקישור או הקוד של המפנה",
+      "info": "כאשר תשלם תשלום עבור עסקה, <br/> 10% יעברו למפנה שלך",
+      "label": "קישור או קוד הזמנה",
+      "placeholder": "הזן קישור או קוד הזמנה",
+      "referredBy": "הופנית על ידי __ph__0__",
+      "referredLablel": "כתובת מופנית",
+      "title": "הוסף את המפנה שלך",
+      "titleReferrer": "המפנה שלך"
+    },
+    "startInviting": "בונד XOR להפנות אחרים",
+    "title": "תוכנית הפניה",
+    "unbondTitle": "Unbond Xor",
+    "welcomeMessage": "הצטרף אלי ב- __ph__0__!\n\nגלה את ה- __ph__1__ המסוגנן המאפשר לך להחליף עשרות אסימונים עם החלפות חוצה שרשרת, ספר הזמנה והרבה תגמולים!\n\n🎁 הזמינו חברים והרוויחו 10% מדמי המסחר שלהם\n\nנתראה שם!"
+  },
+  "releaseNotesText": "שחרור הערות",
+  "removeLiquidity": {
+    "amount": "סְכוּם",
+    "confirmTitle": "תקבל",
+    "description": "הסרת אסימוני בריכה ממירה את עמדתך בחזרה לאסימונים הבסיסיים בקצב הנוכחי, פרופורציונלית לחלק שלך בבריכה. עמלות שנצברו כלולות בסכומים שאתה מקבל.",
+    "input": "קֶלֶט",
+    "liquidity": "נְזִילוּת",
+    "locked": "__Ph__0__ מהבריכה שלך נמצא ב- __ph__1__",
+    "output": "תְפוּקָה",
+    "outputMessage": "פלט מוערך. אם המחיר ישתנה יותר מ- __ph__0 __% העסקה שלך תחזור.",
+    "remove": "לְהַסִיר",
+    "shareOfPool": "חלק בבריכה לאחר העסקה",
+    "title": "הסר את הנזילות"
+  },
+  "resetText": "אִתחוּל",
+  "retryText": "לנסות שוב",
+  "rewards": {
+    "action": {
+      "checkRewards": "לִבדוֹק",
+      "connectExternalWallet": "חבר את חשבון __ph__0__",
+      "pendingExternal": "__Ph__0__ עסקה בהמתנה ...",
+      "pendingInternal": "__Ph__0__ עסקה בהמתנה ...",
+      "signAndClaim": "חותם ותביעה"
+    },
+    "andText": "וכן",
+    "claimableAmountDoneVesting": "תגמולים טעונים",
+    "claiming": {
+      "pending": "טוען ...",
+      "success": "טען בהצלחה"
+    },
+    "events": {
+      "BuyOnBondingCurve": "קנייה מ- TBC",
+      "LiquidityProvision": "עמלות שנצברו מהספאת נזילות",
+      "LiquidityProvisionFarming": "חַקלָאוּת",
+      "MarketMakerVolume": "ייצור שוק",
+      "NftAirdrop": "NFT AirDrop",
+      "SoraFarmHarvest": "__Ph__0__. קציר חווה",
+      "XorErc20": "XOR ERC-20"
+    },
+    "forText": "עֲבוּר",
+    "groups": {
+      "crowdloan": "תגמולים של Crowdloan",
+      "external": "תגמולים עבור חשבון {Ethereum} המחובר",
+      "strategic": "תגמולים אסטרטגיים"
+    },
+    "hint": {
+      "connectAccounts": "כדי לתבוע את תגמולי ה- PSWAP וה- VAL שלך, עליך לחבר את חשבונות __ph__0__ ואת __ph__1__ שלך.",
+      "connectAnotherAccount": "חבר חשבון נוסף __ph__0__ כדי לבדוק אם יש תגמולים של PSWAP ו- VAL.",
+      "connectExternalAccount": "חבר חשבון __ph__0__ כדי לבדוק אם יש תגמולים של PSWAP ו- VAL.",
+      "howToClaimRewards": "כדי לתבוע את התגמולים שלך __ph__0__ אתה צריך לחתום __ph__1__ __ph__2__ ב- __ph__3__. תגמולים יופקדו לחשבון __ph__4__ שלך."
+    },
+    "notification": {
+      "empty": "אין תביעות זמינות עבור חשבון זה"
+    },
+    "PointSystemWrapper": "נקודות",
+    "ReferralProgram": "הפניות",
+    "Rewards": "תגמולים",
+    "signing": {
+      "accounts": "חשבונות __ph__0__ ו- __ph__1__ שלך בהתאמה",
+      "extension": "__Ph__0__ סיומת דפדפן"
+    },
+    "totalVested": "תגמולים מוחלטים",
+    "transactions": {
+      "confimation": "אשר __ph__0__ של __ph__1__ עסקאות ...",
+      "failed": "__Ph__0__ של עסקאות __ph__1__ נכשלו. __Ph__2__",
+      "success": "תקבל את התגמולים שלך בקרוב"
+    }
+  },
+  "rotatePhoneNotification": {
+    "enableAcceleration": "אפשר גישה להאצה בהגדרות שלך.",
+    "gyroscropePhone": "הטכנולוגיה שלנו משתמשת בג'ירוסקופ המובנה של הטלפון שלך כדי להסתיר באופן מיידי את שיווי המשקל שלך כשאתה מטה את המכשיר שלך.",
+    "info": "לקבלת פרטיות נוספת, הטו את המכשיר שלך עם הפנים כלפי מטה כדי להסתיר באופן מיידי את יתרות הנכסים שלך. תכונה זו משתמשת בחיישני המובנים של הטלפון שלך.",
+    "title": "הפוך את המכשיר שלך הפוך כדי להסתיר יתרות"
+  },
+  "saveText": "לְהַצִיל",
+  "sbtDetails": {
+    "accessPermitted": "גישה מותרת",
+    "description": "SBT זה מספק גישה למספר אסימונים ובריכות ומחובר לחשבונך",
+    "expiresIn": "פג תוקף",
+    "expiresInTooltip": "'פג תוקף' מציג תקופה או נקודת זמן שנרכשת הגישה",
+    "expiryDate": "תאריך תפוגה",
+    "expiryDateTooltip": "'תאריך התפוגה' הוא המועד האחרון לגישה שלך לנכסים מוסדרים של SBT",
+    "indefiniteExp": "פתוח",
+    "issuedBy": "__Ph__0__ הונפק על ידי",
+    "kycProvider": "__Ph__0__ ספק",
+    "kycVerification": "אימות __ph__0__",
+    "listOperable": "נכסים מוסדרים ניתנים להפעלה",
+    "noPermissions": "אין הרשאות נוספות",
+    "noReceiverAccess": "אתה מנסה לשלוח אסימון מוסדר למשתמש ללא גישה ל- SBT",
+    "permission": "רְשׁוּת",
+    "permissions": "הרשאות",
+    "regulatedInsitution": "מוסד מוסדר"
+  },
+  "searchText": "לְחַפֵּשׂ",
+  "selectLanguageDialog": {
+    "title": "שפה"
+  },
+  "selectNodeConnected": "מחובר ל: __ph__0__",
+  "selectNodeDialog": {
+    "addNode": "הוסף צומת מותאם אישית",
+    "connected": "מְחוּבָּר",
+    "customNode": "צומת מותאם אישית",
+    "howToSetupOwnNode": "הגדר את הצומת שלך",
+    "messages": {
+      "emptyAddress": "אנא הזן את כתובת הצומת",
+      "emptyName": "אנא הזן את שם הצומת",
+      "incorrectAddress": "כתובת שגויה",
+      "incorrectProtocol": "הכתובת צריכה להתחיל מ- ws: // או wss: //"
+    },
+    "nodeTitle": "__Ph__0__ מתארח על ידי __ph__1__",
+    "select": "לִבחוֹר",
+    "title": "בחירת צומת רשת",
+    "updateNode": "צומת עדכן"
+  },
+  "selectNodeText": "בחר צומת רשת",
+  "selectRegisteredAsset": {
+    "search": {
+      "networkLabelEthereum": "__Ph__0__ אסימוני מראה רשת",
+      "networkLabelSora": "__Ph__0__ אסימוני רשת",
+      "placeholder": "סנן על ידי מזהה נכס, שם או סמל טיקר"
+    },
+    "title": "בחר אסימון"
+  },
+  "selectToken": {
+    "assets": {
+      "title": "נכסים"
+    },
+    "custom": {
+      "alreadyAttached": "האסימון הזה כבר היה מחובר",
+      "notFound": "אסימון לא נמצא",
+      "search": "מזהה נכס קלט",
+      "text": "אסימונים בהתאמה אישית",
+      "title": "מִנְהָג"
+    },
+    "emptyListMessage": "אין תוצאות",
+    "searchPlaceholder": "סנן על ידי מזהה נכס, שם או סמל טיקר",
+    "title": "בחר אסימון"
+  },
+  "sendText": "לִשְׁלוֹחַ",
+  "sentText": "נשלח",
+  "settingsText": "הגדרות",
+  "signAndClaimText": "חותם ותביעה",
+  "social": {
+    "github": "Github",
+    "medium": "בֵּינוֹנִי",
+    "reddit": "Reddit",
+    "telegram": "מִברָק",
+    "twitter": "לְצַפְצֵף",
+    "wiki": "__Ph__0__ wiki"
+  },
+  "soraStaking": {
+    "actions": {
+      "claim": "לתבוע תגמולים",
+      "confirm": "לאשר את ההפעלה",
+      "more": "יתכן יותר",
+      "remove": "הסר את Stake",
+      "withdraw": "לָסֶגֶת"
+    },
+    "allWithdrawsDialog": {
+      "information": "ברגע שאתה מבטל את האסימונים, יש תקופה חובה של 7 ימים. לאחר תקופה זו האסימונים שלך לא יוחזרו אוטומטית לארנק שלך. עליכם להשלים את התהליך על ידי משיכת אסימונים ידנית.",
+      "title": "פעילות בלתי מעורערת"
+    },
+    "claimRewardsDialog": {
+      "checkRewards": "בדוק תגמולים לכל עידן ומאמת",
+      "rewardsDestination": "כתובת יעד מתגמלת",
+      "title": "לתבוע תגמולים"
+    },
+    "dropdownMenu": {
+      "controllerAccount": "חשבון בקר"
+    },
+    "info": {
+      "minimumStake": "אחזקה מינימלית",
+      "nominators": "מועמדים",
+      "rewarded": "מתוגמל",
+      "rewardToken": "אסימון תגמול",
+      "selectedValidators": "תוקפים נבחרים",
+      "stakingBalance": "איזון בהעלאת",
+      "totalLiquidityStaked": "נזילות מוחלטת",
+      "unstaking": "לא מתמודד",
+      "unstakingPeriod": "תקופה בלתי מעורערת",
+      "validators": "תוקפים"
+    },
+    "newStake": {
+      "title": "התחל לעלות"
+    },
+    "overview": {
+      "description": "Stake __ph__0__ אסימונים ברשת __ph__1__ כמועמד לאמת עסקאות ולהרוויח __ph__2__ תגמולים אסימון.",
+      "title": "__Ph__0__ סטייה"
+    },
+    "pendingRewardsDialog": {
+      "information": "תוקף תשלום את התגמולים כל 2-5 ימים. עם זאת, אתה יכול לשלם אותם בעצמך, במיוחד אם התגמולים קרובים לתוקף, אך תשלם את העמלה.",
+      "noPendingRewards": "אין תגמולים ממתינים",
+      "noSelectedRewards": "בחר תגמולים",
+      "payout": "תשלום",
+      "title": "תגמולים בהמתנה"
+    },
+    "selectedValidators": "{count} ({Max} {max})",
+    "selectValidatorsMode": {
+      "confirm": {
+        "manual": "אני אבחר בעצמי את המאמת",
+        "suggested": "יתכן עם הציע"
+      },
+      "criteria": {
+        "0": "הכי רווחי",
+        "1": "לא מנוי יתר על המידה",
+        "2": "בעל זהות Onchain",
+        "3": "לא נחתך",
+        "4": "גבול של 2 מאשרים לכל זהות"
+      },
+      "description": "__Ph__0__ אלגוריתם רשת בחר רשימה של תוקפים מומלצים על סמך הקריטריונים:",
+      "title": "אחזקות עם מאמתים המוצעים על ידי האלגוריתם"
+    },
+    "stakeDialog": {
+      "toRemove": "להסרה",
+      "toStake": "להתייחס"
+    },
+    "validators": {
+      "alreadyNominated": "תוקפים נבחרים כבר היו מועמדים",
+      "change": "שינוי מאמת",
+      "next": "הַבָּא",
+      "recommended": "מאמתים מומלצים",
+      "save": "שמור שינויים",
+      "select": "בחר מאמת",
+      "selected": "__Ph__0 __/__ pH__1__ נבחר",
+      "tooManyValidators": "יותר מדי מאמתים שנבחרו (__ph__0__ __ph__1__)"
+    },
+    "validatorsAttentionDialog": {
+      "confirm": "כן, אני מבין את הסיכון",
+      "description": {
+        "0": "הצעות מאמת אלגוריתמיות אינן מהוות ייעוץ או ייעוץ פיננסי. ההפעלה היא פעילות בסיכון גבוה, והצעות מאמת אלגוריתמי אינן בהכרח מקלות על סיכון זה.",
+        "1": "עדיין ניתן עדיין לחתוך מאמת שהציע האלגוריתם. מאמת המוצע על ידי האלגוריתם יכול גם לשנות את הפרמטרים שלהם (למשל, שיעורי עמלה וכו ') בכל עת לאחר שהוצעו ו/או נבחרו.",
+        "2": "אתה יכול לאבד אסימונים או תגמולים מסיבות אלה או אחרות. רק אסימוני כתם והשתמשו בהצעות מאמת על פי שיקול דעתכם, לאחר ביצוע בדיקת נאותות ובהתחשב בזהירות בהתחשב בסיכונים הכרוכים בכך."
+      },
+      "title": "תְשׁוּמַת לֵב"
+    },
+    "validatorsDialog": {
+      "tabs": {
+        "all": "כֹּל",
+        "user": "שֶׁלְךָ"
+      },
+      "title": {
+        "edit": "ערוך את המאמת שלי"
+      }
+    },
+    "validatorsFilterDialog": {
+      "filters": {
+        "hasIdentity": {
+          "description": "לפחות איש קשר זהות אחד המחובר לחשבון",
+          "name": "זהות על שרשרת"
+        },
+        "notOversubscribed": {
+          "description": "חשבון בגבול ההקצאה, נמנע מעונשים של המנוי יתר על __ph__0__.",
+          "name": "לא מנוי יתר על המידה"
+        },
+        "notSlashed": {
+          "description": "לא חוו עונשים או הפחתה בכספים המוקדמים שלהם בגלל הפרות התנהגות שגויה או פרוטוקול.",
+          "name": "לא נחתך"
+        },
+        "twoValidatorsPerIdentity": {
+          "description": "מקסימום שני תוקפים לכל זהות לקידום ביזור ולמנוע ריכוז הכוח.",
+          "name": "גבול של 2 מאשרים לכל זהות"
+        }
+      },
+      "reset": "לאפס את הכל",
+      "save": "שמור פילטר",
+      "title": "פילטרים"
+    },
+    "validatorsList": {
+      "commission": "עֲמָלָה",
+      "commissionTooltip": "העמלה מתייחסת לתשלום שגובה תוקפים בגין שירותיהם בתהליך ההפעלה. שכר טרחה זה, המתבטא כאחוזים, מנוכה מהתגמולים המגיעים שהרוויחו המועמדים לפני ההפצה. חשוב לציין כי תוקפים יכולים להתאים את שיעורי העמלה שלהם בכל עת",
+      "name": "שֵׁם",
+      "noNominatedValidators": "אין לך תוקפים מועמדים",
+      "noValidators": "אין מאמתים המספקים את המסנן שצוין",
+      "return": "לַחֲזוֹר",
+      "search": "לְחַפֵּשׂ..."
+    },
+    "withdraw": {
+      "beingWithdrawn": "להיות נסוג",
+      "countdownLeft": "שְׁמֹאל",
+      "nextWithdrawal": "הנסיגה הבאה",
+      "seeAll": "ראה הכל",
+      "withdrawable": "נסוג"
+    },
+    "withdrawDialog": {
+      "showAllWithdraws": "הראה את כל הנסיגות",
+      "title": "למשוך כספים שלא הושלמו"
+    }
+  },
+  "stepText": "שָׁלָב",
+  "successText": "הַצלָחָה",
+  "swap": {
+    "confirmSwap": "אישור החלפה",
+    "errorFetching": "שגיאה בעת אחזור הנתונים",
+    "insufficientAmount": "כמות {tokenSymbol} בלתי מספקת",
+    "insufficientLiquidity": "נזילות בלתי מספקת",
+    "liquidityProviderFee": "עמלת ספק נזילות",
+    "liquidityProviderFeeTooltip": "חלק מכל עסקה ({liquidityProviderFee}%) מועבר לספקי הנזילות כתמריץ פרוטוקול.",
+    "maxSold": "מקסימום נמכר",
+    "minReceived": "מינימום שיתקבל",
+    "minReceivedTooltip": "העסקה תבוטל אם יחול שינוי מחיר גדול ולא מיטיבי לפני האישור.",
+    "priceImpact": "השפעת מחיר",
+    "priceImpactTooltip": "ההבדל בין מחיר השוק למחיר המשוער עקב גודל העסקה.",
+    "rewardsForSwap": "תגמולי PSWAP אסטרטגיים",
+    "route": "מסלול",
+    "slippageTolerance": "סבילות החלקה",
+    "swapOutputMessage": "הפלט הוא הערכה. תקבלו לפחות {transactionValue} או שהעסקה תבוטל."
+  },
+  "swapText": "החלף",
+  "tokens": {
+    "assetId": "מזהה נכס"
+  },
+  "tooltips": {
+    "accounts": "חשבונות הם כתובות דיגיטליות המחזיקות בנכסי המשתמש ברשת. כל חשבון משויך לכתובת ציבורית ייחודית ולמפתח פרטי המאפשר למשתמש לגשת ולנהל את נכסיו.",
+    "bridgeTransactions": "__Ph__0__ עד __ph__1__ גשר מתייחס לתהליך העברת נכסים בין רשתות __ph__2__ ל- __ph__3__ באמצעות גשר. הגשר מאפשר יכולת פעולה הדדית של שתי הרשתות, ומאפשר למשתמשים להעביר בצורה חלקה נכסים ביניהם.",
+    "fees": "עמלות ב- __ph__0__ blockchain מתייחסות לחיובים שנמצאים בביצוע עסקאות ברשת. עמלות אלה משולמות ב- XOR, הקריפטו המקורי של רשת __ph__1__. סכום העמלה נקבע על ידי המורכבות וגודל העסקה שמתבצעת",
+    "roi": "__Ph__0__ מהווה החזר השקעה. זה מחושב על ידי חלוקת הרווח שנצבר בהשקעה בעלות ההשקעה ההיא באחוזים שווה ערך.",
+    "supply": "אספקת האסימון מתייחסת למספר האסימונים הכולל שנוצרו ונמצאים במחזור ברשת. אספקת האסימון יכולה להשתנות בהתבסס על כמות האסימונים שנשרפים, נשרפים או מועברים ברשת.",
+    "transactions": "עסקאות מתייחסות לתהליך שליחת או קבלת נכסים דיגיטליים ברשת, כולל פעולות נזילות וכן החלפות.",
+    "tvl": "__Ph__0__ מהווה ערך סך הכל נעול. הוא מייצג אסימונים נעולים בבריכות בשווי הדולר.",
+    "velocity": "מהירות האסימון היא מספר הפעמים של אסימון חשבונות במהלך התקופה (חודש) בממוצע. זה מציין את רמת פעילות המסחר והנזילות.",
+    "volume": "הנפח מתייחס לסכום הכולל של הנכסים שנסחרו או הוחלפו ברשת לאורך פרק זמן מסוים. הנפח הוא מדד חשוב למדידת הנזילות והפעילות הכוללת של הרשת."
+  },
+  "transaction": {
+    "amount": "@:amountText",
+    "amount2": "__Ph__0__ 2",
+    "blockId": "מזהה חסום",
+    "comment": "הֶעָרָה",
+    "copy": "העתק __ph__0__",
+    "fee": "דמי עסקה",
+    "from": "מִן",
+    "history": {
+      "confirmed": "העסקה אושרה",
+      "created": "נוצרה עסקה עבור __ph__0__ __ph__1__.",
+      "submitted": "עסקה המוגשת בתשלום של __ph__0__ __ph__1__"
+    },
+    "price": "מְחִיר",
+    "referral": "הפניה",
+    "referrer": "מפנה",
+    "side": "צַד",
+    "startTime": "תַאֲרִיך",
+    "status": "סטָטוּס",
+    "statuses": {
+      "complete": "לְהַשְׁלִים",
+      "failed": "העסקה נכשלה",
+      "pending": "תָלוּי וְעוֹמֵד..."
+    },
+    "title": "פרטי עסקה",
+    "to": "אֶל",
+    "total": "סַך הַכֹּל",
+    "txId": "מזהה עסקה",
+    "viewIn": "תצוגה ב- __ph__0__"
+  },
+  "transactionDetailsText": "פרטי עסקה",
+  "transactionSubmittedText": "הוגשה עסקה",
+  "transactionText": "עסקה | עסקאות",
+  "transfers": {
+    "from": "מ",
+    "to": "אל"
+  },
+  "unknownAssetText": "נכס לא ידוע",
+  "unknownErrorText": "שגיאה משהו השתבש ...",
+  "wallet": {
+    "WalletAssets": "נכסים",
+    "WalletHistory": "פְּעִילוּת"
+  },
+  "walletSend": {
+    "addressError": "אינך יכול לשלוח אסימונים לאותו חשבון שאתה מחובר אליו כרגע.",
+    "addressWarning": "אסימונים יישלחו לכתובת __ph__0__ למטה. וודא שהמקבל יכול לגשת לשרשרת __ph__1__ כדי להשתמש באסימונים:",
+    "badAddress": "כתובת שגויה",
+    "balance": "לְאַזֵן",
+    "confirmTitle": "אשר את העסקה",
+    "enableVesting": "אפשר הבשת אסימון",
+    "enterAddress": "הזן כתובת",
+    "enterAmount": "הזן סכום",
+    "enterVestingPercentage": "הזן אחוז ההבשלה",
+    "errorAddress": "כתובת לא חוקית. אנא בדוק את זה ונסה שוב.",
+    "max": "MAX",
+    "startUnlockingDate": "התחל תאריך ביטול נעילה",
+    "title": "לִשְׁלוֹחַ",
+    "tooltip": "שלח אסימונים בין חשבונות רשת __ph__0__",
+    "unlockFrequency": "ביטול נעילת תדר",
+    "vestingPercentage": "אחוז ההבשלה"
+  },
+  "warningText": "אַזהָרָה",
+  "sccp": {
+    "amountLabel": "Amount",
+    "assetLabel": "Asset symbol",
+    "clearPayload": "Clear form",
+    "copyPayload": "Copy payload",
+    "destinationAddressLabel": "Recipient address",
+    "destinationNetworkLabel": "To network",
+    "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
+    "generatePayload": "Generate SCCP payload",
+    "noteLabel": "Optional memo",
+    "payloadCopied": "Payload copied",
+    "payloadCopyFailed": "Copy failed, please try again",
+    "payloadLabel": "Prepared payload",
+    "sourceNetworkLabel": "From network",
+    "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
+    "supportedNetworks": "Supported chains: {chains}.",
+    "title": "SCCP"
+  }
 }

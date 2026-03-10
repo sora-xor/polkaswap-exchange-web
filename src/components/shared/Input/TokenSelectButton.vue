@@ -7,17 +7,19 @@
     size="small"
     border-radius="mini"
   >
-    <component
-      v-if="hasToken"
-      :is="tokenLogoComponent"
-      :token="token"
-      :first-token="tokens[0]"
-      :second-token="tokens[1]"
-      :size="tokenComponentSize"
-      class="token-select-button__logo"
-    ></component>
-    <span class="token-select-button__text">{{ buttonText }}</span>
-    <s-icon v-if="icon && !disabled" class="token-select-button__icon" :name="icon" size="18"></s-icon>
+    <span class="token-select-button__content">
+      <component
+        v-if="hasToken"
+        :is="tokenLogoComponent"
+        :token="token"
+        :first-token="tokens[0]"
+        :second-token="tokens[1]"
+        :size="tokenComponentSize"
+        class="token-select-button__logo"
+      ></component>
+      <span class="token-select-button__text">{{ buttonText }}</span>
+      <s-icon v-if="icon && !disabled" class="token-select-button__icon" :name="icon" size="18"></s-icon>
+    </span>
   </s-button>
 </template>
 
@@ -69,12 +71,13 @@ const buttonTabindex = computed(() => (props.disabled ? -1 : props.tabindex));
 const tokenLogoComponent = computed(() => (props.tokens.length !== 0 ? PairTokenLogo : TokenLogo));
 const tokenComponentSize = computed(() => (props.tokens.length !== 0 ? 'mini' : 'small'));
 const buttonType = computed(() => (hasToken.value ? 'tertiary' : 'secondary'));
+const normalizeTokenSymbol = (value?: string): string => (value ?? '').replace(/\s+/g, '').trim();
 const buttonText = computed(() => {
   if (!hasToken.value) return t('buttons.chooseToken');
   if (props.tokens.length !== 0) {
-    return props.tokens.map((item) => item.symbol).join('-');
+    return props.tokens.map((item) => normalizeTokenSymbol(item.symbol)).join('-');
   }
-  return props.token?.symbol ?? '';
+  return normalizeTokenSymbol(props.token?.symbol);
 });
 
 defineExpose({
@@ -92,9 +95,14 @@ defineExpose({
 $baseClass: '.token-select-button';
 
 button.el-button.neumorphic#{$baseClass} {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
   padding-left: 6px !important;
   padding-right: 6px !important;
+  line-height: 12px;
+  font-weight: 500;
   text-transform: uppercase;
+  box-shadow: var(--s-shadow-element-pressed);
   background-color: var(--s-color-base-content-tertiary);
   color: var(--s-color-base-on-accent);
 
@@ -149,20 +157,45 @@ button.el-button.neumorphic#{$baseClass} {
 $baseClass: '.token-select-button';
 
 #{$baseClass} {
+  display: block;
+
+  :deep(.s-button__text) {
+    white-space: nowrap;
+  }
+
+  &__content {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    line-height: 1;
+  }
+
   &__logo {
+    flex: 0 0 auto;
     margin-right: $inner-spacing-tiny;
+    line-height: 1;
   }
 
   &__text {
     margin: 0 $inner-spacing-tiny;
     font-weight: 800 !important;
+    white-space: nowrap;
+    word-break: keep-all;
+    overflow-wrap: normal;
+    line-height: 1;
   }
 
   &__icon {
+    display: block;
+    align-items: normal;
+    justify-content: normal;
+    flex: 0 0 auto;
     margin-left: $inner-spacing-tiny;
     background-color: var(--s-color-base-on-accent);
     color: var(--s-color-base-content-tertiary) !important;
     border-radius: var(--s-border-radius-medium);
+    line-height: 1;
   }
 
   &--token {

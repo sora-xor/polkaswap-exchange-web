@@ -80,9 +80,9 @@ const scheduleRestoreSelectedNetwork = (): Promise<void> => {
 };
 
 const updateBridgeApps = async () => {
-  await getSupportedApps();
-  // don't block UI while connecting to an external network
+  // don't block UI while loading supported apps list
   void scheduleRestoreSelectedNetwork();
+  await getSupportedApps();
 };
 
 const { subscriptionsDataLoading, trackLogin } = useSubscriptions({

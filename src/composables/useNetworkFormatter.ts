@@ -81,7 +81,20 @@ export function useNetworkFormatter() {
   const settingsStore = useSettingsStore();
 
   const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>);
+  const networkType = computed(
+    () => (store.getters.web3.networkType ?? store.state.web3?.networkType) as Nullable<BridgeNetworkType>
+  );
+  const networkSelected = computed(
+    () => (store.getters.web3.networkSelected ?? store.state.web3?.networkSelected) as Nullable<BridgeNetworkId>
+  );
   const selectedNetwork = computed(() => store.getters.web3.selectedNetwork as Nullable<NetworkData>);
+  const selectedNetworkFallbackData = computed<Nullable<NetworkData>>(() => {
+    if (selectedNetwork.value) return selectedNetwork.value;
+    if (!networkType.value || networkSelected.value === null || networkSelected.value === undefined) return null;
+
+    const networks = networkType.value === BridgeNetworkType.Sub ? SUB_NETWORKS : EVM_NETWORKS;
+    return networks[networkSelected.value] ?? null;
+  });
   const availableNetworks = computed(
     () =>
       store.getters.web3.availableNetworks as Record<
@@ -91,8 +104,8 @@ export function useNetworkFormatter() {
   );
   const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
 
-  const selectedNetworkName = computed(() => selectedNetwork.value?.name ?? '');
-  const selectedNetworkShortName = computed(() => selectedNetwork.value?.shortName ?? '');
+  const selectedNetworkName = computed(() => selectedNetworkFallbackData.value?.name ?? '');
+  const selectedNetworkShortName = computed(() => selectedNetworkFallbackData.value?.shortName ?? '');
 
   const formatSelectedNetwork = (isSora: boolean): string => {
     if (isSora && soraNetwork.value) {

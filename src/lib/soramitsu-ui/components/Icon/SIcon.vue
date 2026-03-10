@@ -15,7 +15,6 @@ const props = withDefaults(
   }>(),
   {
     name: '',
-    size: '16px',
     tooltipText: '',
   }
 );
@@ -26,16 +25,20 @@ const ICON_COMPONENTS = import.meta.glob('../../icons/icomoon/*.svg', {
 }) as Record<string, Component>;
 
 const ELEMENT_ICON_MAP: Record<string, string> = {
+  'el-icon-arrow-down': 'arrows-chevron-bottom-24',
+  'el-icon-arrow-up': 'arrows-chevron-top-24',
+  'el-icon-arrow-left': 'arrows-chevron-left-24',
+  'el-icon-arrow-right': 'arrows-chevron-right-24',
+  'el-icon-caret-top': 'arrows-chevron-top-24',
+  'el-icon-caret-bottom': 'arrows-chevron-bottom-24',
+  'el-icon-caret-left': 'arrows-chevron-left-24',
+  'el-icon-caret-right': 'arrows-chevron-right-24',
   'el-icon-close': 'basic-close-24',
   'el-icon-edit': 'basic-edit-24',
   'el-icon-delete': 'basic-delete-24',
   'el-icon-document': 'basic-newspaper-24',
   'el-icon-link': 'basic-link-24',
   'el-icon-success': 'basic-circle-checked-24',
-  'el-icon-arrow-right': 'arrow-right-16',
-  'el-icon-arrow-left': 'arrow-left-16',
-  'el-icon-arrow-up': 'arrow-top-16',
-  'el-icon-arrow-down': 'arrow-bottom-16',
   'el-icon-loading': 'arrows-refresh-cw-24',
 };
 
@@ -44,6 +47,7 @@ const ICON_SPIN_SET = new Set(['el-icon-loading']);
 const rawName = computed(() => props.name.trim());
 
 const iconClassTokens = computed(() => rawName.value.split(/\s+/).filter(Boolean));
+const legacyElementClassTokens = computed(() => iconClassTokens.value.filter((token) => token.startsWith('el-icon')));
 
 const normalizedName = computed(() => {
   if (!rawName.value) return '';
@@ -52,6 +56,7 @@ const normalizedName = computed(() => {
   if (!token) return '';
 
   const noPrefix = token.startsWith('s-icon-') ? token.slice(7) : token;
+  if (token.startsWith('el-icon-') && !ELEMENT_ICON_MAP[noPrefix]) return '';
   return ELEMENT_ICON_MAP[noPrefix] ?? noPrefix;
 });
 
@@ -60,33 +65,60 @@ const iconComponent = computed(() => {
   return ICON_COMPONENTS[`../../icons/icomoon/${normalizedName.value}.svg`] ?? null;
 });
 
-const iconSize = computed(() => (typeof props.size === 'number' ? `${props.size}px` : props.size));
+const inferIconSize = (value: string): string => {
+  const tokens = value.split('-');
 
-const classes = computed(() => {
-  const result: string[] = [];
-
-  if (normalizedName.value) {
-    result.push(`s-icon-${normalizedName.value}`);
+  for (let index = tokens.length - 1; index >= 0; index -= 1) {
+    const token = Number(tokens[index]);
+    if (Number.isFinite(token) && token >= 12 && token <= 128) {
+      return `${token}px`;
+    }
   }
 
-  if (iconClassTokens.value.length) {
-    result.push(...iconClassTokens.value);
+  return '16px';
+};
+
+const iconSize = computed(() => {
+  if (typeof props.size === 'number') return `${props.size}px`;
+  if (typeof props.size === 'string' && props.size.trim()) {
+    const normalizedSize = props.size.trim();
+    return /^\d+(\.\d+)?$/.test(normalizedSize) ? `${normalizedSize}px` : normalizedSize;
+  }
+  return inferIconSize(normalizedName.value || rawName.value);
+});
+const isLegacyElementIcon = computed(
+  () => iconClassTokens.value.some((token) => token.startsWith('el-icon-')) && !normalizedName.value
+);
+
+const classes = computed(() => {
+  const result = new Set<string>();
+
+  // Preserve legacy Element icon class hooks for existing CSS selectors.
+  legacyElementClassTokens.value.forEach((token) => result.add(token));
+
+  if (isLegacyElementIcon.value && iconClassTokens.value.length) {
+    iconClassTokens.value.forEach((token) => result.add(token));
+  }
+
+  if (!isLegacyElementIcon.value && normalizedName.value) {
+    result.add(`s-icon-${normalizedName.value}`);
   }
 
   if (iconClassTokens.value.some((token) => ICON_SPIN_SET.has(token))) {
-    result.push('s-icon--spin');
+    result.add('s-icon--spin');
   }
 
-  result.push('s-icon');
-
-  return result;
+  return Array.from(result);
 });
 
-const styles = computed(() => ({
-  width: iconSize.value,
-  height: iconSize.value,
-  fontSize: iconSize.value,
-}));
+const styles = computed(() => {
+  if (isLegacyElementIcon.value) return undefined;
+
+  return {
+    fontSize: iconSize.value,
+    lineHeight: iconSize.value,
+  };
+});
 </script>
 
 <template>
@@ -96,17 +128,37 @@ const styles = computed(() => ({
 </template>
 
 <style lang="scss">
-.s-icon {
+i[class*='s-icon-'] {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
+  width: 1em;
+  height: 1em;
   line-height: 1;
   color: inherit;
 
-  &__svg {
+  .s-icon__svg {
     width: 100%;
     height: 100%;
+    display: block;
+
+    [fill]:not([fill='none']) {
+      fill: currentColor;
+    }
+
+    [stroke]:not([stroke='none']) {
+      stroke: currentColor;
+    }
+
+    path:not([fill='none']),
+    rect:not([fill='none']),
+    circle:not([fill='none']),
+    ellipse:not([fill='none']),
+    polygon:not([fill='none']),
+    polyline:not([fill='none']) {
+      fill: currentColor;
+    }
   }
 }
 

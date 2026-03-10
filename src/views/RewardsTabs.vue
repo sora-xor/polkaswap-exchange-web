@@ -63,6 +63,8 @@ $tab-margin: 22px;
     margin-left: -$tab-margin;
     margin-top: -$tab-margin;
     width: calc(100% + $tab-margin * 2);
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
     &,
     .el-tabs__header,
     .el-tabs__nav-wrap,
@@ -76,6 +78,8 @@ $tab-margin: 22px;
     }
     .el-tabs__header {
       margin: 0;
+      position: relative;
+      inset: 0;
     }
     .el-tabs__header .el-tabs {
       &__nav,
@@ -95,13 +99,15 @@ $tab-margin: 22px;
           overflow-x: hidden;
           &,
           &.is-active {
-            border-top-right-radius: 0;
-            border-top-left-radius: inherit;
+            border-radius: 0;
             @include page-header-title(true);
           }
+          &:first-child,
+          &:first-child.is-active {
+            border-top-left-radius: var(--s-border-radius-big);
+          }
           &:last-child {
-            border-top-right-radius: inherit;
-            border-top-left-radius: 0;
+            border-top-right-radius: var(--s-border-radius-big);
           }
         }
       }
@@ -113,12 +119,11 @@ $tab-margin: 22px;
   }
 
   @include mobile(true) {
-    #tab-Rewards {
-      font-size: var(--s-icon-font-size-medium);
-    }
-
-    #tab-ReferralProgram {
-      font-size: var(--s-icon-font-size-medium);
+    #tab-Rewards,
+    #tab-ReferralProgram,
+    .el-tabs__nav > .el-tabs__item:nth-child(3),
+    .el-tabs__nav > .el-tabs__item:nth-child(4) {
+      font-size: var(--s-icon-font-size-medium) !important;
     }
   }
 }

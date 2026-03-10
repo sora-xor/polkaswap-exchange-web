@@ -66,9 +66,11 @@ const connected = computed(() => resolveStore()?.getters?.['wallet/account/accou
 const account = computed<Nullable<PolkadotJsAccount>>(() => props.polkadotAccount ?? connected.value ?? null);
 
 const address = computed(() => {
-  const value = account.value?.address;
+  const value = account.value?.address?.trim();
+  if (!value) return '';
 
-  return value ? formatAccountAddress(value, true, resolvedChainApi.value) : '';
+  // Keep UI stable even if formatter validation temporarily fails during boot.
+  return formatAccountAddress(value, true, resolvedChainApi.value) || value;
 });
 
 const accountIdentity = ref<Nullable<AccountIdentity>>(null);

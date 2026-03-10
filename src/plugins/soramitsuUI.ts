@@ -5,9 +5,12 @@ import SCollapseItemCompat from '@/components/compat/SCollapseItemCompat.vue';
 import SDropdownCompat from '@/components/compat/SDropdownCompat.vue';
 import SDropdownItemCompat from '@/components/compat/SDropdownItemCompat.vue';
 import SFloatInputCompat from '@/components/compat/SFloatInputCompat.vue';
+import SIconCompat from '@/lib/soramitsu-ui/components/Icon/SIcon.vue';
 import SMenuCompat from '@/lib/soramitsu-ui/components/Menu/SMenu.vue';
 import SMenuItemCompat from '@/lib/soramitsu-ui/components/Menu/SMenuItem.vue';
 import SMenuItemGroupCompat from '@/lib/soramitsu-ui/components/Menu/SMenuItemGroup.vue';
+import STabCompat from '@/lib/soramitsu-ui/components/Tabs/STab.vue';
+import STabsCompat from '@/lib/soramitsu-ui/components/Tabs/STabsPanel.vue';
 
 import type { App, Component } from 'vue';
 
@@ -47,6 +50,9 @@ export function install(app: App): void {
   registerCompat(app, 'SDropdownItem', SDropdownItemCompat);
 
   registerCompat(app, 's-dropdown-item', SDropdownItemCompat);
+  registerCompat(app, 'SIcon', SIconCompat);
+
+  registerCompat(app, 's-icon', SIconCompat);
   registerCompat(app, 'SFloatInput', SFloatInputCompat);
 
   registerCompat(app, 's-float-input', SFloatInputCompat);
@@ -59,4 +65,13 @@ export function install(app: App): void {
   registerCompat(app, 'SMenuItemGroup', SMenuItemGroupCompat);
 
   registerCompat(app, 's-menu-item-group', SMenuItemGroupCompat);
+  registerCompat(app, 'STabs', STabsCompat);
+
+  registerCompat(app, 's-tabs', STabsCompat);
+  registerCompat(app, 'STabsPanel', STabsCompat);
+
+  registerCompat(app, 's-tabs-panel', STabsCompat);
+  registerCompat(app, 'STab', STabCompat);
+
+  registerCompat(app, 's-tab', STabCompat);
 }

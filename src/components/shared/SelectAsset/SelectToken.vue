@@ -74,6 +74,7 @@ import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
+import { isSelectableAsset } from '@/components/shared/SelectAsset/utils';
 import { sortAssets } from '@/utils';
 
 import type { Nullable } from '@/types/common';
@@ -192,7 +193,7 @@ const isLoggedIn = computed(() => walletStore.isLoggedIn);
 const assets = computed<Asset[]>(() => (walletStore.assets ?? []) as Asset[]);
 const accountAssets = computed<AccountAsset[]>(() => (walletStore.accountAssets ?? []) as AccountAsset[]);
 const pinnedAssetsAddresses = computed(() => walletStore.pinnedAssets ?? []);
-const assetsFilter = computed<WALLET_TYPES.FilterOptions>(
+const selectedAssetsFilter = computed<WALLET_TYPES.FilterOptions>(
   () => (settingsStore.assetsFilter as WALLET_TYPES.FilterOptions) ?? WALLET_TYPES.FilterOptions.All
 );
 
@@ -209,10 +210,10 @@ const whitelistAssets = computed(() => {
     const filtered = props.isFirstTokenSelected
       ? mainLPSources.value
       : assets.value.filter((asset) => asset.address !== XOR.address);
-    return getAssetsSubset(filtered, assetsFilter.value);
+    return getAssetsSubset(filtered, selectedAssetsFilter.value);
   }
 
-  return getAssetsSubset(assets.value, assetsFilter.value);
+  return getAssetsSubset(assets.value, selectedAssetsFilter.value);
 });
 
 const getAssetWithBalance = (address?: string): Nullable<RegisteredAccountAsset> =>
@@ -298,7 +299,9 @@ const shouldAssetsListBeShown = computed(
 
 const assetsListSize = computed(() => (isCustomTabActive.value ? 5 : 6));
 
-const selectAsset = (asset: Asset | AccountAsset | RegisteredAccountAsset) => {
+const selectAsset = (asset: unknown) => {
+  if (!isSelectableAsset(asset)) return;
+
   clearSearch();
   emit('select', asset);
   closeDialog();
@@ -336,17 +339,79 @@ const handleTabChange = (name: Tabs) => {
     }
   }
 
+  .dialog-card {
+    overflow: hidden;
+    box-shadow: var(--s-shadow-dialog);
+
+    &__content {
+      padding: $inner-spacing-mini 0 $inner-spacing-big !important;
+    }
+
+    &__header {
+      padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini;
+      box-shadow: none;
+    }
+
+    &__title,
+    &__title-text {
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 31.2px;
+      letter-spacing: -0.96px;
+    }
+
+    &__close {
+      width: 42px;
+      min-width: 42px;
+      height: 42px;
+      min-height: 42px;
+      border: 0;
+      border-radius: 50%;
+      background-color: var(--s-color-base-border-secondary);
+      box-shadow: var(--s-shadow-element-pressed);
+      color: var(--s-color-base-content-tertiary);
+
+      .s-button__icon > i {
+        font-size: 16px !important;
+        line-height: 16px !important;
+        opacity: 0.6;
+      }
+    }
+  }
+
   @include exchange-tabs;
+
+  .s-tabs--exchange {
+    .el-tabs__item {
+      text-transform: uppercase;
+    }
+  }
 }
 </style>
 
 <style lang="scss" scoped>
 .token-search {
   // TODO: Fix input styles (paddings and icon position)
-  margin-left: $inner-spacing-big;
+  margin-left: 0;
   margin-bottom: $inner-spacing-medium;
-  width: calc(100% - 2 * #{$inner-spacing-big});
+  width: 100%;
+  min-height: 58px;
+  padding: $inner-spacing-small $inner-spacing-big;
+  border-radius: 24px;
+  background-color: var(--s-color-utility-surface);
+  box-shadow: var(--s-shadow-element);
+  border: 1px solid rgba(42, 23, 31, 0.35);
   @include focus-outline($withOffset: true);
+
+  :deep(.s-input__content) {
+    min-height: 42px;
+    padding: 0;
+  }
+
+  :deep(.el-input__inner) {
+    line-height: 21px;
+    padding: 0 $inner-spacing-small;
+  }
 }
 
 .token-filter-options {

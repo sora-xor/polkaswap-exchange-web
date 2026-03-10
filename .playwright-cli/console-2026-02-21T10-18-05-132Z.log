@@ -1,5 +1,0 @@
-[    1571ms] [WARNING] Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information. @ http://127.0.0.1:5180/node_modules/.vite/deps/chunk-LDSTK3W2.js?v=6169dbc0:2824
-[    2437ms] [WARNING] 2026-02-21 14:18:07        API/INIT: MetadataApi not available, rpc::state::get_metadata will be used. @ http://127.0.0.1:5180/node_modules/.vite/deps/chunk-HUCCFKGI.js?v=6169dbc0:5687
-[  371828ms] [WARNING] Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information. @ http://127.0.0.1:5180/node_modules/.vite/deps/chunk-LDSTK3W2.js?v=6169dbc0:2824
-[  372049ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://sora.api.onfinality.io/public-ws:0
-[  373352ms] [WARNING] 2026-02-21 14:24:18        API/INIT: MetadataApi not available, rpc::state::get_metadata will be used. @ http://127.0.0.1:5180/node_modules/.vite/deps/chunk-HUCCFKGI.js?v=6169dbc0:5687

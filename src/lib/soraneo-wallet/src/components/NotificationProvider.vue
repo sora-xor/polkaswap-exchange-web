@@ -1,5 +1,5 @@
 <template>
-  <s-notifications-provider>
+  <s-notifications-provider vertical="top" horizontal="right">
     <NotificationBridge></NotificationBridge>
     <slot></slot>
   </s-notifications-provider>

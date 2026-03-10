@@ -127,7 +127,16 @@ const readSidebarIconPaint = async (page: Page, itemIndex = 0): Promise<IconPain
     }
 
     const iconStyles = getComputedStyle(item);
-    const firstPath = item.querySelector('svg path');
+    const svg = item.querySelector('svg');
+    const isSvgVisible = Boolean(
+      svg &&
+        (() => {
+          const styles = getComputedStyle(svg);
+          const rect = svg.getBoundingClientRect();
+          return styles.display !== 'none' && styles.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+        })()
+    );
+    const firstPath = isSvgVisible ? (svg?.querySelector('path') ?? null) : null;
     const pathStyles = firstPath ? getComputedStyle(firstPath) : null;
 
     return {

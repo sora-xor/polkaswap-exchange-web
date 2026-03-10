@@ -119,6 +119,7 @@ const classes = computed(() => [
   `s-input--${props.size}`,
   {
     'is-disabled': props.disabled,
+    's-disabled': props.disabled,
     'is-readonly': props.readonly,
     's-focused': focused.value,
   },
@@ -396,8 +397,13 @@ defineExpose({
     padding: $inner-spacing-medium;
   }
 
-  &.is-disabled {
-    opacity: 0.65;
+  &.is-disabled,
+  &.s-disabled {
+    color: var(--s-color-base-content-tertiary);
+
+    .el-input__inner {
+      color: inherit;
+    }
   }
 
   .s-input__top,

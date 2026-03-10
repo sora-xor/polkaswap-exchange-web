@@ -285,6 +285,34 @@ $mask-box-angles: (
     display: inline-block;
   }
 
+  &-button.el-button {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    min-height: 32px;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    background-color: transparent !important;
+    font-size: 12px;
+    line-height: 12px;
+
+    .s-button__icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+    }
+
+    .s-icon-basic-scan-24 {
+      width: 24px;
+      height: 24px;
+      font-size: 24px !important;
+      line-height: 24px !important;
+    }
+  }
+
   &-file {
     display: none;
   }

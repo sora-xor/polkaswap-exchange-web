@@ -1,3 +1,0 @@
-[    6008ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
-[   16355ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126
-[   26703ms] [ERROR] WebSocket connection to 'wss://api.subquery.network/sq/sora-xor/sora-prod' failed: Error during WebSocket handshake: Unexpected response code: 302 @ https://polkaswap.io/assets/index-BHqySXo4.js:126

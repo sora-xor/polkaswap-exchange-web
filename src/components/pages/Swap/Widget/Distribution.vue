@@ -175,9 +175,14 @@ $path-color: var(--s-color-base-content-tertiary);
   flex-flow: row wrap;
   align-items: center;
   gap: $inner-spacing-tiny;
+  font-size: var(--s-font-size-small);
+  line-height: var(--s-line-height-medium);
 }
 
 .distribution {
+  // Remove inline-block whitespace between route blocks to keep spacing aligned with production layout.
+  font-size: 0;
+  line-height: 0;
   list-style-type: none;
   padding-left: 0;
 
@@ -220,6 +225,7 @@ $path-color: var(--s-color-base-content-tertiary);
     &-amount {
       font-weight: 500;
       font-size: var(--s-font-size-medium);
+      line-height: var(--s-line-height-medium);
     }
   }
 

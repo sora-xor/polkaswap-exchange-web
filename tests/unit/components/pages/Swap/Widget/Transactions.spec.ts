@@ -25,8 +25,8 @@ const mockIndexer = {
 const walletComponents = {
   TokenLogo: defineComponent({
     name: 'TokenLogoStub',
-    props: ['token'],
-    template: '<span class="token-logo">{{ token?.symbol ?? "?" }}</span>',
+    props: ['token', 'tokenSymbol'],
+    template: '<span class="token-logo">{{ token?.symbol ?? tokenSymbol ?? "?" }}</span>',
   }),
   FormattedAmountWithFiatValue: defineComponent({
     name: 'FormattedAmountWithFiatValueStub',
@@ -304,6 +304,45 @@ describe('SwapTransactionsWidget', () => {
     expect(mockGetHistory).toHaveBeenCalledTimes(2);
     const lastCall = mockGetHistory.mock.calls.at(-1)?.[0];
     expect(lastCall?.filter.assetAddress).toBe('val');
+
+    wrapper.unmount();
+  });
+
+  it('keeps transaction token symbols and token-logo props when assets table misses addresses', async () => {
+    const historyItem = {
+      id: 'tx-symbol-fallback',
+      blockId: 'block-1',
+      from: 'addr-1',
+      assetAddress: 'unknown-input',
+      asset2Address: 'unknown-output',
+      symbol: 'XOR',
+      symbol2: 'VAL',
+      amount: '1',
+      amount2: '2',
+      payload: {
+        amountUSD: '3',
+        amount2USD: '4',
+      },
+      startTime: Date.now(),
+    };
+
+    mockGetHistory.mockResolvedValue({
+      nodes: [{ id: 'node-1' }],
+      totalCount: 1,
+    });
+    mockParseHistoryItem.mockResolvedValue(historyItem as any);
+
+    const wrapper = await mountWidget();
+    await advanceFetchQueue();
+
+    const tokens = wrapper.findAll('.explore-table-item-token').map((node) => node.text());
+    expect(tokens).toContain('XOR');
+    expect(tokens).toContain('VAL');
+
+    const tokenLogos = wrapper.findAllComponents({ name: 'TokenLogoStub' });
+    expect(tokenLogos).toHaveLength(2);
+    expect(tokenLogos[0]?.props('tokenSymbol')).toBe('XOR');
+    expect(tokenLogos[1]?.props('tokenSymbol')).toBe('VAL');
 
     wrapper.unmount();
   });

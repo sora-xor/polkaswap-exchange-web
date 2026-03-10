@@ -11,49 +11,54 @@
     :delimiters="delimiters"
     v-bind="$attrs"
   >
-    <div slot="top" class="input-line">
-      <div class="input-title">
-        <span class="input-title--uppercase input-title--primary">{{ title }}</span>
-        <slot name="title-append"></slot>
+    <template #top>
+      <div class="input-line">
+        <div class="input-title">
+          <span class="input-title--uppercase input-title--primary">{{ title }}</span>
+          <slot name="title-append"></slot>
+        </div>
+        <div class="input-value">
+          <slot name="balance">
+            <template v-if="isBalanceAvailable">
+              <span class="input-value--uppercase">{{ balanceText || t('balanceText') }}</span>
+              <formatted-amount-with-fiat-value
+                value-can-be-hidden
+                with-left-shift
+                value-class="input-value--primary"
+                :value="formattedBalance"
+                :has-fiat-value="hasFiatValue"
+                :fiat-value="formattedFiatBalance"
+              ></formatted-amount-with-fiat-value>
+            </template>
+          </slot>
+        </div>
       </div>
-      <div class="input-value">
-        <slot name="balance">
-          <template v-if="isBalanceAvailable">
-            <span class="input-value--uppercase">{{ balanceText || t('balanceText') }}</span>
-            <formatted-amount-with-fiat-value
-              value-can-be-hidden
-              with-left-shift
-              value-class="input-value--primary"
-              :value="formattedBalance"
-              :has-fiat-value="hasFiatValue"
-              :fiat-value="formattedFiatBalance"
-            ></formatted-amount-with-fiat-value>
-          </template>
-        </slot>
+    </template>
+
+    <template #right>
+      <div class="s-flex el-buttons">
+        <s-button
+          v-if="isMaxAvailable"
+          class="el-button--max s-typography-button--small"
+          type="primary"
+          alternative
+          size="mini"
+          border-radius="mini"
+          :loading="loading"
+          :disabled="disabled"
+          @click.stop="handleMax"
+        >
+          {{ t('buttons.max') }}
+        </s-button>
+        <token-select-button
+          v-if="token || isSelectAvailable"
+          icon="chevron-down-rounded-16"
+          :disabled="!isSelectAvailable"
+          :token="token"
+          @click.stop="handleSelectToken"
+        ></token-select-button>
       </div>
-    </div>
-    <div slot="right" class="s-flex el-buttons">
-      <s-button
-        v-if="isMaxAvailable"
-        class="el-button--max s-typography-button--small"
-        type="primary"
-        alternative
-        size="mini"
-        border-radius="mini"
-        :loading="loading"
-        :disabled="disabled"
-        @click.stop="handleMax"
-      >
-        {{ t('buttons.max') }}
-      </s-button>
-      <token-select-button
-        v-if="token || isSelectAvailable"
-        icon="chevron-down-rounded-16"
-        :disabled="!isSelectAvailable"
-        :token="token"
-        @click.stop="handleSelectToken"
-      ></token-select-button>
-    </div>
+    </template>
 
     <template #bottom>
       <slot name="bottom">
@@ -74,7 +79,9 @@
               @focus="handleFiatFocus"
               @blur="handleFiatBlur"
             >
-              <span slot="left" class="input-prefix">{{ currencySymbol }}</span>
+              <template #left>
+                <span class="input-prefix">{{ currencySymbol }}</span>
+              </template>
             </s-float-input>
 
             <slot name="fiat-amount-append"></slot>
@@ -337,9 +344,16 @@ $el-input-class: '.el-input';
     min-height: 0;
     height: auto;
     padding: 0;
+    display: block;
+    width: 100%;
+    gap: 0;
   }
 
   & > .s-input__content {
+    padding-left: 0;
+    padding-right: 0;
+    gap: 0;
+
     #{$el-input-class} {
       #{$el-input-class}__inner {
         padding-top: 0;
@@ -352,6 +366,7 @@ $el-input-class: '.el-input';
       border-radius: 0 !important;
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-large);
+      letter-spacing: -0.48px;
       line-height: var(--s-line-height-small);
       font-weight: 800;
 
@@ -378,10 +393,17 @@ $el-input-class: '.el-input';
 
       .input-prefix {
         padding-right: calc(var(--s-basic-spacing) / 4);
+        color: inherit;
+      }
+
+      .s-input__left {
+        color: inherit;
       }
 
       #{$el-input-class}__inner {
         color: inherit;
+        font-size: inherit !important;
+        line-height: inherit !important;
         letter-spacing: inherit;
       }
     }

@@ -92,20 +92,25 @@
           </div>
         </div>
       </rewards-gradient-box>
-      <div v-if="!claimingInProgressOrFinished && hintText" class="rewards-block rewards-hint">
-        {{ hintText }}
-      </div>
-      <s-button
-        v-if="!(rewardsReceived || loading)"
-        class="rewards-block rewards-action-button s-typography-button--large"
-        data-test-name="LoginAndGet"
-        type="primary"
-        @click="handleAction"
-        :loading="actionButtonLoading"
-        :disabled="actionButtonDisabled"
+      <div
+        v-if="!claimingInProgressOrFinished && (hintText || !(rewardsReceived || loading))"
+        class="rewards-empty-state"
       >
-        {{ actionButtonText }}
-      </s-button>
+        <div v-if="hintText" class="rewards-block rewards-hint">
+          {{ hintText }}
+        </div>
+        <s-button
+          v-if="!(rewardsReceived || loading)"
+          class="rewards-block rewards-action-button s-typography-button--large"
+          data-test-name="LoginAndGet"
+          type="primary"
+          @click="handleAction"
+          :loading="actionButtonLoading"
+          :disabled="actionButtonDisabled"
+        >
+          {{ actionButtonText }}
+        </s-button>
+      </div>
     </div>
     <select-provider-dialog></select-provider-dialog>
   </div>
@@ -458,6 +463,22 @@ onUnmounted(() => {
 
 <style lang="scss">
 .rewards {
+  &-content {
+    width: min(100%, 720px);
+    margin: 0 auto;
+  }
+
+  &-block {
+    width: 100%;
+  }
+
+  &-empty-state {
+    display: flex;
+    flex-direction: column;
+    gap: $inner-spacing-medium;
+    width: 100%;
+  }
+
   .formatted-amount.formatted-amount--fiat-value {
     color: var(--s-color-rewards);
   }
@@ -527,6 +548,17 @@ onUnmounted(() => {
 
   @include rewards-hint(46px, true);
 
+  &-hint {
+    width: 100%;
+    border-radius: var(--s-border-radius-small);
+    padding: $inner-spacing-medium $inner-spacing-big;
+    background: var(--s-color-utility-surface);
+    border: 1px solid rgba(42, 23, 31, 0.06);
+    box-shadow: var(--s-shadow-dialog);
+    text-align: left;
+    color: var(--s-color-base-content-secondary);
+  }
+
   &-footer {
     & > *:not(:last-child) {
       margin-bottom: $inner-spacing-small;
@@ -582,5 +614,12 @@ onUnmounted(() => {
 
   @include full-width-button('rewards-action-button');
   @include full-width-button('rewards-connect-button', 0);
+}
+
+:global([design-system-theme='dark']) .rewards-hint {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 24px 54px rgba(20, 6, 31, 0.28),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
 }
 </style>

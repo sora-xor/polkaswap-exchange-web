@@ -1,5 +1,6 @@
 import { getCurrentIndexer } from '@wallet';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
+import { retryOnEmptyResult } from '@/indexer/queries/retry';
 import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
@@ -74,19 +75,23 @@ export async function fetchData(from: number, to: number, type: SnapshotTypes): 
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
       const subqueryIndexer = indexer as SubqueryIndexer;
-      data = await subqueryIndexer.services.explorer.fetchAllEntities(
-        SubqueryNetworkTvlQuery,
-        { from, to, type },
-        parse
+      data = await retryOnEmptyResult(
+        async () =>
+          subqueryIndexer.services.explorer.fetchAllEntities(SubqueryNetworkTvlQuery, { from, to, type }, parse),
+        (value) => !value?.length
       );
       break;
     }
     case IndexerType.SUBSQUID: {
       const subsquidIndexer = indexer as SubsquidIndexer;
-      data = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
-        SubsquidNetworkTvlQuery,
-        { from, to, type },
-        parse
+      data = await retryOnEmptyResult(
+        async () =>
+          subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
+            SubsquidNetworkTvlQuery,
+            { from, to, type },
+            parse
+          ),
+        (value) => !value?.length
       );
       break;
     }

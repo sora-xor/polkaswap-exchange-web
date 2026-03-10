@@ -20,6 +20,7 @@
     "analyze:store": "tsx ./scripts/analyze/store-usage.ts",
     "analyze:compat": "tsx ./scripts/analyze/compat-alias.ts",
     "compat:smoke": "tsx ./scripts/analyze/compat-smoke.ts",
+    "prepreview": "yarn build",
     "preview": "vite preview",
     "ipfs:publish": "tsx ./scripts/ipfs/publish.ts",
     "ipfs:check": "node ./scripts/ipfs/check-browser.js",
@@ -186,7 +187,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
-      "eslint --fix"
+      "eslint --fix --no-warn-ignored"
     ]
   }
 }

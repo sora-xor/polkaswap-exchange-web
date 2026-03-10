@@ -1207,7 +1207,8 @@
     "Swap": "Айырбастау",
     "VaultDetails": "Позиция туралы мәліметтер",
     "Vaults": "{Kensetsu}",
-    "Wallet": "Шилан"
+    "Wallet": "Шилан",
+    "Burn": "Жағу"
   },
   "pairIsNotCreated": "Токен жұпы жасалмайды",
   "points": {

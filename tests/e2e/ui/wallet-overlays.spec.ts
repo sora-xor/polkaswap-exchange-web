@@ -65,7 +65,9 @@ test('covers authenticated wallet account settings and account-action dialogs', 
   const consoleErrors = trackConsole(page);
   await openAuthenticatedWallet(page);
 
-  const accountSettingsTrigger = page.locator('.container--wallet button.el-button--action').first();
+  const accountSettingsTrigger = page
+    .locator('.container--wallet .base-title_action button:has(i.s-icon-basic-settings-24)')
+    .first();
   const accountSettingsDialog = dialogByTitle(page, /account settings/i);
 
   await expect(accountSettingsTrigger).toBeVisible();

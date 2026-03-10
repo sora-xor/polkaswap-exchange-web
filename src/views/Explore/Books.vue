@@ -4,6 +4,7 @@
       ref="table"
       v-loading="loadingState"
       :data="tableItems"
+      :adapt-breakpoint="0"
       :highlight-current-row="false"
       size="small"
       class="explore-table"
@@ -29,7 +30,13 @@
         </template>
         <template v-slot="{ $index, index, row }">
           <span class="explore-table-item-index explore-table-item-index--body">
-            {{ ($index ?? index ?? 0) + startIndex + 1 }}
+            {{
+              (typeof ($index ?? index) === 'number' && Number.isFinite($index ?? index)
+                ? ($index ?? index)
+                : tableItems.indexOf(row)) +
+              startIndex +
+              1
+            }}
           </span>
           <pair-token-logo
             :first-token="row.baseAsset"

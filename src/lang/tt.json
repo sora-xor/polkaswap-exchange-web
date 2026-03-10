@@ -1207,7 +1207,8 @@
     "Swap": "Своп",
     "VaultDetails": "Позиция детальләре",
     "Vaults": "{Kensetsu}",
-    "Wallet": "Капчык"
+    "Wallet": "Капчык",
+    "Burn": "Яндыру"
   },
   "pairIsNotCreated": "Токен пар ясалмаган",
   "points": {

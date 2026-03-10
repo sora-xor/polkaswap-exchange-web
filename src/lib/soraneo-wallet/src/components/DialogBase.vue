@@ -121,6 +121,13 @@ const handleBackClick = () => {
   @include scrollbar;
 }
 
+.dialog-wrapper__overlay {
+  background: var(--s-color-utility-overlay, rgba(42, 23, 31, 0.1));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 1;
+}
+
 .dialog-card {
   display: flex;
   flex-direction: column;

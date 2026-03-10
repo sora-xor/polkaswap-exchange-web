@@ -22,7 +22,7 @@
       <formatted-amount class="chart-price" :value="amount.amount">
         {{ amount.suffix }}
       </formatted-amount>
-      <price-change :value="priceChange"></price-change>
+      <PriceChange :value="priceChange"></PriceChange>
       <v-chart ref="chart" class="chart" :option="chartSpec" autoresize></v-chart>
     </chart-skeleton>
     <select-token

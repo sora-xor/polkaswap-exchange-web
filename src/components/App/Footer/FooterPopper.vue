@@ -12,6 +12,8 @@
         v-button
         class="app-status__item s-flex"
         :class="computedClass"
+        :aria-label="panelText"
+        :title="panelText"
         @keypress.enter="handleEnterClick"
         @blur="handleBlur"
       >
@@ -230,6 +232,24 @@ $status-classes: 'error', 'warning', 'success';
   }
   &__text {
     margin-left: $inner-spacing-mini;
+  }
+}
+
+@include large-mobile(true) {
+  .app-status {
+    &__item {
+      flex: 1 1 0;
+      justify-content: center;
+      min-width: 0;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: $inner-spacing-tiny;
+      padding-right: $inner-spacing-tiny;
+    }
+
+    &__text {
+      display: none;
+    }
   }
 }
 </style>

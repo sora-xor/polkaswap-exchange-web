@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from '@/composables/useTranslation';
 import { useRouter } from 'vue-router';
 
 import { useLoading } from '@/composables/useLoading';
@@ -28,7 +28,7 @@ const props = defineProps<{
   parentLoading?: boolean;
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const router = useRouter();
 const { loading } = useLoading();
 const { setValidatorsType } = useSoraStaking();

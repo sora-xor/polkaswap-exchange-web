@@ -9,14 +9,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from '@/composables/useTranslation';
 
 import { Components } from '@/consts';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 import { lazyComponent } from '@/router';
 import { asZeroValue, formatDecimalPlaces } from '@/utils';
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const { stakingInitialized, maxApy, rewardAsset } = useSoraStaking();
 
 const StatusBadgeShared = lazyComponent(Components.StatusBadge);

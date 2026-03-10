@@ -292,6 +292,10 @@
     "mstFearless": "𒉡𒉎𒋼"
   },
   "mainMenu": {
-    "Farming": "𒉆𒀳"
+    "Farming": "𒉆𒀳",
+    "Burn": "𒌋"
+  },
+  "pageTitle": {
+    "Burn": "𒌋"
   }
 }

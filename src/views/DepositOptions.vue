@@ -5,7 +5,9 @@
         <MoonpayLogo :theme="libraryTheme"></MoonpayLogo>
         <h4>{{ t('fiatPayment.moonpayTitle') }}</h4>
         <span>{{ t('fiatPayment.moonpayDesc') }}</span>
-        <s-button type="primary" @click="openMoonpayDialog">{{ moonpayTextBtn }}</s-button>
+        <s-button class="pay-options__button" type="primary" @click="openMoonpayDialog">
+          {{ moonpayTextBtn }}
+        </s-button>
       </div>
       <div class="pay-options__option pay-options-cede">
         <CedeStoreLogo :theme="libraryTheme"></CedeStoreLogo>
@@ -17,7 +19,9 @@
             value3: TranslationConsts.CedeStore,
           })
         }}</span>
-        <s-button type="primary" @click="openCedeWidget">{{ cedeTextBtn }}</s-button>
+        <s-button class="pay-options__button" type="primary" @click="openCedeWidget">
+          {{ cedeTextBtn }}
+        </s-button>
       </div>
       <div v-if="isLoggedIn" class="pay-options__history-btn" @click="openDepositTxHistory">
         <span>{{ t('fiatPayment.historyBtn') }}</span>
@@ -155,17 +159,30 @@ onBeforeUnmount(() => {
       width: 70%;
     }
 
-    svg {
-      width: 140px;
+    h4 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 27px;
     }
 
-    button {
-      width: 50%;
+    svg {
+      width: 140px;
     }
 
     &:hover {
       box-shadow: var(--s-shadow-element);
     }
+  }
+
+  &__button {
+    width: 85%;
+    max-width: 298px;
+    height: 42px;
+    min-height: 42px;
+    font-weight: 500;
+    line-height: 14px;
+    text-transform: uppercase;
   }
 
   &__history-btn {
@@ -207,15 +224,8 @@ onBeforeUnmount(() => {
 @media screen and (max-width: 720px) {
   .pay-options {
     &__option {
-      height: 280px;
+      height: 240px;
     }
   }
-}
-
-.pay-options-moonpay {
-  background-image: linear-gradient(135deg, #0b132b 0%, #1c2541 100%);
-  color: #fff;
-  background-size: cover;
-  background-position: center;
 }
 </style>

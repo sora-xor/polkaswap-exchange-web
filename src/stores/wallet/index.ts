@@ -7,7 +7,7 @@ import type { Nullable } from '@/types/common';
 import type { Theme } from '@/consts/theme';
 import { requireLegacyStore } from '@/utils/legacy-store';
 
-import type { HistoryItem } from '@sora-substrate/sdk';
+import type { HistoryItem, NetworkFeesObject } from '@sora-substrate/sdk';
 import type {
   AccountAsset,
   RegisteredAccountAsset,
@@ -121,6 +121,21 @@ export const useWalletStore = defineStore('wallet', {
     },
     shouldBalanceBeHidden(): boolean {
       return accessLegacyStore((store) => Boolean(store.state.wallet.settings.shouldBalanceBeHidden), false);
+    },
+    currency(): Nullable<string> {
+      return accessLegacyStore((store) => store.state.wallet.settings.currency as Nullable<string>, null);
+    },
+    currencySymbol(): string {
+      return accessLegacyStore((store) => store.getters.wallet.settings.currencySymbol as string, '$');
+    },
+    exchangeRate(): number {
+      return accessLegacyStore((store) => store.getters.wallet.settings.exchangeRate as number, 1);
+    },
+    networkFees(): NetworkFeesObject {
+      return accessLegacyStore(
+        (store) => store.state.wallet.settings.networkFees as NetworkFeesObject,
+        {} as NetworkFeesObject
+      );
     },
     firstReadyTransaction(): Nullable<HistoryItem> {
       return accessLegacyStore(

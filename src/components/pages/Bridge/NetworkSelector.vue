@@ -40,3 +40,29 @@ function handleChangeNetwork(): void {
   store.commit.web3.setSelectNetworkDialogVisibility(true);
 }
 </script>
+
+<style lang="scss" scoped>
+.el-button--settings {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--s-color-base-content-tertiary);
+  box-shadow: none;
+
+  :deep(.s-button__icon > i) {
+    color: inherit;
+    opacity: 0.7;
+  }
+}
+</style>

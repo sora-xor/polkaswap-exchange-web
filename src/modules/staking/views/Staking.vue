@@ -16,7 +16,7 @@
             <sora-status-badge></sora-status-badge>
           </div>
         </div>
-        <s-icon class="staking-sora-arrow" name="arrows-chevron-right-rounded-24"></s-icon>
+        <s-icon class="staking-sora-arrow" name="arrows-chevron-right-rounded-24" size="24"></s-icon>
       </s-card>
     </router-link>
 
@@ -198,6 +198,7 @@ const tokensData = computed<DemeterStakingItem[]>(() => {
   .el-card__body {
     display: flex;
     align-items: flex-start;
+    padding: 0 !important;
   }
 }
 </style>
@@ -219,7 +220,7 @@ $title-height: 42px;
     position: relative;
     width: 100%;
     margin-bottom: 16px;
-    padding: 0;
+    padding: 16px;
     background: var(--s-color-utility-surface);
     border-radius: var(--s-border-radius-small);
     box-shadow: var(--s-shadow-element-pressed);
@@ -237,22 +238,23 @@ $title-height: 42px;
   }
   &-arrow {
     display: block;
-    width: var(--s-size-medium);
-    height: var(--s-size-medium);
-    line-height: var(--s-size-medium);
+    width: 42px !important;
+    height: 42px !important;
     background: var(--s-color-utility-body);
     border-color: transparent;
     border-style: solid;
     border-width: 0px;
     box-shadow: var(--s-shadow-element-pressed);
     color: var(--s-color-base-content-tertiary);
-    font-size: 28px;
-    height: 42px;
-    width: 42px;
+    font-size: 24px !important;
     right: 0;
     top: 0;
     border-radius: 100%;
     margin-left: auto;
+    flex-shrink: 0;
+  }
+  &-arrow.staking-sora-arrow {
+    line-height: 42px !important;
   }
   &-separator {
     display: block;
@@ -276,7 +278,10 @@ $title-height: 42px;
     text-align: left;
   }
   &-title {
+    margin: 0;
+    font-size: 24px;
     font-weight: 700;
+    letter-spacing: -0.48px;
     text-align: left;
     height: $title-height;
     line-height: $title-height;

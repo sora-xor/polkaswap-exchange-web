@@ -2,6 +2,8 @@ import { api } from '@wallet/core';
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import axiosInstance from '@/api';
+import legacyStore from '@/store';
+import { setLegacyStoreOverride } from '@/utils/legacy-store';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 
 vi.mock('@/store', () => import('@stubs/store'));
@@ -98,10 +100,12 @@ describe('settings store actions', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia());
+    setLegacyStoreOverride(legacyStore as any);
   });
 
   afterEach(() => {
     vi.clearAllMocks();
+    setLegacyStoreOverride(null);
   });
 
   it('merges feature flags and toggles ALT flag', () => {
@@ -157,5 +161,32 @@ describe('settings store actions', () => {
     expect(settingsStore.adsArray).toHaveLength(1);
     expect(settingsStore.adsArray[0]?.img).toBe(resolveStaticAssetUrl('/marketing/banner.png'));
     expect(settingsStore.adsArray[0]?.link).toBe('#/swap');
+  });
+
+  it('reads fiat formatting values from legacy wallet settings', () => {
+    const settingsStore = useSettingsStore();
+    const store = legacyStore as any;
+
+    store.getters.wallet.settings.currencySymbol = '€';
+    store.getters.wallet.settings.exchangeRate = 1.33;
+    store.state.wallet.settings.currency = 'eur';
+    store.state.wallet.settings.networkFees = { swap: '123000000' };
+
+    expect(settingsStore.currencySymbol).toBe('€');
+    expect(settingsStore.exchangeRate).toBe(1.33);
+    expect(settingsStore.currency).toBe('eur');
+    expect(settingsStore.networkFees).toEqual({ swap: '123000000' });
+  });
+
+  it('keeps disclaimer hidden by default', () => {
+    settingsStorageStub.get.mockImplementation((key: string) => {
+      if (key === 'disclaimerApprove') return null;
+      return null;
+    });
+
+    const settingsStore = useSettingsStore();
+
+    expect(settingsStore.userDisclaimerApprove).toBe(false);
+    expect(settingsStore.disclaimerVisibility).toBe(false);
   });
 });

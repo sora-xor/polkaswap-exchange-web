@@ -9,7 +9,6 @@
       :close-view="closeView"
       :check-connected-account-source="checkConnectedAccountSource"
       :show-close="!subAccount.address"
-      shadow="never"
     ></connection-view>
   </dialog-base>
 </template>

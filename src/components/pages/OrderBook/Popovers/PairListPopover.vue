@@ -75,6 +75,7 @@ import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
 import { components } from '@wallet';
 import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import { Components } from '@/consts';
 import { useOrderBookPairList } from '@/composables/useOrderBookPairList';
@@ -110,6 +111,8 @@ defineOptions({
 const emit = defineEmits<{ (event: 'close'): void }>();
 
 const { t } = useTranslation();
+const route = useRoute();
+const router = useRouter();
 const assetsStore = useAssetsStore();
 const { orderBooks, orderBooksStats, selectOrderBook } = useOrderBookPairList();
 
@@ -205,6 +208,14 @@ const tableItems = computed<BookFields[]>(() => {
  */
 const chooseBook = (row: BookFields): void => {
   selectOrderBook(row.id);
+  const routeName = (route.name as string) || 'OrderBook';
+  void router.replace({
+    name: routeName,
+    params: {
+      first: row.id.base,
+      second: row.id.quote,
+    },
+  });
   emit('close');
 };
 

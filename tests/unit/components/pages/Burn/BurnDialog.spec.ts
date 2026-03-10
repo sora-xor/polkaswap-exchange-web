@@ -26,6 +26,10 @@ const formattedAmountMocks = vi.hoisted(() => {
 
     return {
       value: numeric,
+      mul(other: ReturnType<typeof createFp> | string | number) {
+        const multiplier = typeof other === 'object' ? other.value : Number(other);
+        return createFp(numeric * multiplier);
+      },
       sub(other: ReturnType<typeof createFp>) {
         return createFp(numeric - other.value);
       },
@@ -154,7 +158,7 @@ const mountComponent = (props: Record<string, unknown> = {}) =>
         decimals: 18,
         address: '0xburned',
       },
-      rate: 1,
+      rate: '1',
       max: 1000,
       min: 1,
       ...props,

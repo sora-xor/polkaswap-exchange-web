@@ -243,6 +243,16 @@ defineExpose({
     color: var(--s-color-base-on-accent) !important;
     border-radius: var(--s-border-radius-medium);
     font-size: 16px;
+    font-weight: 300;
+    font-family: var(--s-font-family-icons) !important;
+    box-shadow:
+      -5px -5px 10px 0px var(--s-shadow-color-light),
+      1px 1px 10px 0px var(--s-shadow-color-dark),
+      1px 1px 2px 0px inset rgba(255, 255, 255, 0.8);
+  }
+
+  .info-line .s-icon-info-16 {
+    color: var(--s-color-base-content-tertiary);
   }
 
   .el-collapse-item__header {

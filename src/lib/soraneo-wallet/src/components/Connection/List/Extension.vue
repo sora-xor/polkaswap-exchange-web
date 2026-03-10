@@ -29,7 +29,9 @@
             rel="nofollow noopener noreferrer"
             class="connection-action"
           >
-            <s-button size="mini" tabindex="-1">{{ t('connection.wallet.install') }}</s-button>
+            <s-button class="connection-install" type="secondary" size="mini" tabindex="-1">
+              {{ t('connection.wallet.install') }}
+            </s-button>
           </a>
           <span v-else-if="isSelectedWalletLoading(wallet)" class="connection-loading">
             <s-icon name="el-icon-loading" size="16" class="connection-loading-icon"></s-icon>
@@ -117,10 +119,35 @@ export default class ExtensionConnectionList extends mixins(TranslationMixin) {
 }
 
 .connection-disclaimer {
-  margin-top: $basic-spacing-medium;
+  margin-top: $basic-spacing;
   text-align: center;
   font-size: var(--s-font-size-mini);
   color: var(--s-color-base-content-secondary);
+}
+
+.connection-action {
+  color: rgb(0, 0, 238);
+
+  :deep(.el-button.el-button--mini) {
+    display: inline-block !important;
+    justify-content: normal !important;
+    align-items: normal !important;
+    padding: 3px 6px !important;
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 12px;
+    color: var(--s-color-base-on-accent) !important;
+    background-color: var(--s-color-base-content-tertiary);
+    border-color: transparent;
+    box-shadow: var(--s-shadow-element-pressed);
+  }
+
+  :deep(.el-button.el-button--mini .s-button__text) {
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 12px;
+    color: inherit;
+  }
 }
 
 .extension {

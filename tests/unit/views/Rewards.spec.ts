@@ -258,6 +258,10 @@ describe('Rewards.vue', () => {
     const wrapper = mountComponent();
     await flushPromises();
 
+    expect(wrapper.find('.rewards-empty-state').exists()).toBe(true);
+    expect(wrapper.find('.rewards-hint').exists()).toBe(true);
+    expect(wrapper.find('[data-test-name="LoginAndGet"]').exists()).toBe(true);
+
     await (wrapper.vm as any).handleAction();
 
     expect(connectSoraWalletMock).toHaveBeenCalledTimes(1);

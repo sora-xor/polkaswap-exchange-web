@@ -211,7 +211,7 @@ export default defineConfig({
   },
   preview: {
     port: 8888,
-    strictPort: true,
+    strictPort: false,
   },
   ssr: {
     noExternal: isTest ? ['@soramitsu-ui/ui', '@wallet'] : undefined,

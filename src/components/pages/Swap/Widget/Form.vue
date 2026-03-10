@@ -158,16 +158,16 @@ import { useSwapStore } from '@/stores/swap';
 import { lazyComponent } from '@/router';
 import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
+import { isSelectableAsset } from '@/components/shared/SelectAsset/utils';
 import {
   asZeroValue,
   debouncedInputHandler,
-  getAssetBalance,
   getMaxValue,
   hasInsufficientBalance,
   hasInsufficientXorForFee,
   isMaxButtonAvailable,
 } from '@/utils';
-import { DifferenceStatus, calcFiatDifference, getDifferenceStatus } from '@/utils/swap';
+import { DifferenceStatus, calcFiatDifference, getDifferenceStatus, getVisibleSwapTokenBalance } from '@/utils/swap';
 
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { Distribution } from '@sora-substrate/liquidity-proxy/build/types';
@@ -322,8 +322,8 @@ const recountSwapValues = debouncedInputHandler(async () => {
   await runRecountSwapValues();
 }, 100);
 
-function getTokenBalance(token: Nullable<AccountAsset>): CodecString {
-  return getAssetBalance(token);
+function getTokenBalance(token: Nullable<AccountAsset>): Nullable<CodecString> {
+  return getVisibleSwapTokenBalance(token, isLoggedIn.value);
 }
 
 function resetFieldFrom() {
@@ -462,7 +462,7 @@ function openSelectTokenDialog(isFrom: boolean) {
 }
 
 async function handleSelectToken(token: AccountAsset) {
-  if (!token) return;
+  if (!isSelectableAsset(token)) return;
 
   await withSelectAssetLoading(async () => {
     if (isTokenFromSelected.value) {
@@ -613,34 +613,27 @@ onBeforeUnmount(() => {
   }
 }
 
+:deep(button.action-button.el-button--primary.neumorphic) {
+  box-shadow:
+    1px 1px 5px 0px var(--s-shadow-color-light),
+    -1px -1px 5px 0px var(--s-shadow-color-light);
+}
+
 .swap-details-info-line {
   :deep(.info-line) {
     min-width: 0;
   }
 
-  :deep(.info-line-label) {
-    white-space: nowrap;
-  }
-
   :deep(.info-line-content) {
-    min-width: 0;
-    max-width: 62%;
+    min-width: auto;
+    max-width: none;
+    gap: 4px;
   }
 
   :deep(.info-line-value) {
-    max-width: 100%;
+    max-width: none;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  @include tablet(true) {
-    :deep(.info-line-label) {
-      white-space: normal;
-    }
-
-    :deep(.info-line-content) {
-      max-width: 100%;
-    }
   }
 }
 
@@ -654,10 +647,7 @@ onBeforeUnmount(() => {
   background: var(--s-color-base-background-hover);
   color: var(--s-color-base-content-tertiary);
   line-height: 14px;
-  box-shadow:
-    1px 1px 5px 0px var(--s-shadow-color-light),
-    -5px -5px 5px 0px inset rgba(255, 255, 255, 0.5),
-    1px 1px 10px 0px inset var(--s-shadow-color-dark);
+  box-shadow: var(--s-shadow-element);
 
   .s-icon,
   [class*='s-icon-'] {
@@ -680,10 +670,7 @@ onBeforeUnmount(() => {
 
   &.is-disabled,
   &:disabled {
-    box-shadow:
-      1px 1px 5px 0px var(--s-shadow-color-light),
-      -5px -5px 5px 0px inset rgba(255, 255, 255, 0.5),
-      1px 1px 10px 0px inset var(--s-shadow-color-dark);
+    box-shadow: var(--s-shadow-element);
   }
 }
 

@@ -98,6 +98,11 @@ const legacyStyleType = computed<LegacyButtonType>(() => {
   if (props.primary && legacyType.value === 'action') return 'primary';
   return legacyType.value;
 });
+const legacyTypeClass = computed(() => (legacyType.value === 'action' ? 'plain' : legacyType.value));
+const legacyStyleTypeClass = computed(() => {
+  if (legacyType.value === 'action') return 'plain';
+  return legacyStyleType.value === 'action' ? 'plain' : legacyStyleType.value;
+});
 const isTooltip = computed(() => attrs.tooltip !== undefined && attrs.tooltip !== false);
 const legacyStyleSize = computed<LegacyButtonSize>(() => {
   if (isLegacySize(legacySize.value)) return legacySize.value;
@@ -112,6 +117,8 @@ const buttonRadius = computed(() => {
   return undefined;
 });
 const font = computed(() => {
+  if (isAction.value) return '';
+
   if ((definitelySize.value === 'xs' || legacyStyleSize.value === 'mini') && props.uppercase) {
     return 'sora-tpg-ch3';
   }
@@ -134,8 +141,8 @@ const font = computed(() => {
       font,
       'el-button',
       'neumorphic',
-      `el-button--${legacyType}`,
-      `el-button--${legacyStyleType}`,
+      `el-button--${legacyTypeClass}`,
+      `el-button--${legacyStyleTypeClass}`,
       `el-button--${legacyStyleSize}`,
       `s-${legacyType}`,
       `s-${legacyStyleType}`,
@@ -162,9 +169,10 @@ const font = computed(() => {
       :width="SPINNER_WIDTH[definitelySize]"
     />
 
-    <span class="s-button__icon" data-testid="icon">
+    <span v-if="icon || $slots.icon || isAction" class="s-button__icon" data-testid="icon">
       <SIcon v-if="icon" :name="icon" />
-      <slot v-else name="icon" />
+      <slot v-else-if="$slots.icon" name="icon" />
+      <slot v-else-if="isAction" />
     </span>
     <span class="s-button__text" data-testid="text">
       <slot v-if="!isAction" />
@@ -173,6 +181,18 @@ const font = computed(() => {
 </template>
 
 <style lang="scss">
+.s-button {
+  white-space: nowrap;
+}
+
+.s-button .s-button__text {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .s-button.s-link {
   background: transparent;
   border: 0;

@@ -349,6 +349,12 @@ $button-custom-shadow:
         width: 0;
       }
     }
+
+    @if $withHorizontalScroll == false {
+      & > .el-scrollbar__bar.is-horizontal {
+        display: none;
+      }
+    }
   }
 }
 

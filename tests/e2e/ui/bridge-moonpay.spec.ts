@@ -55,7 +55,7 @@ test('renders the bridge form shell and CTA', async ({ page }) => {
 
   await expect(page.locator('.bridge')).toBeVisible();
   await expect(page.getByRole('heading', { name: /hashi bridge/i })).toBeVisible();
-  await expect(page.locator('[data-test-name="nextButton"]')).toBeVisible();
+  await expect(page.locator('.bridge .account-panel-button').first()).toBeVisible();
 
   expect(consoleErrors).toEqual([]);
 });

@@ -57,7 +57,7 @@
         :asset-symbol="symbol"
         symbol-as-decimal
       ></formatted-amount>
-      <price-change v-if="!isFetchingError" :value="priceChange"></price-change>
+      <PriceChange :value="priceChange"></PriceChange>
       <v-chart
         ref="chart"
         class="chart"
@@ -81,6 +81,7 @@ import pick from 'lodash/fp/pick';
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 
 import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
+import PriceChange from '@/components/shared/PriceChange.vue';
 import { useChartSpec } from '@/composables/useChartSpec';
 import { useLoading } from '@/composables/useLoading';
 import { createThemePalette, useThemePalette } from '@/composables/useThemePalette';
@@ -128,17 +129,17 @@ const CHART_TYPE_ICONS = {
 };
 
 const LINE_CHART_FILTERS: SnapshotFilter[] = [
-  { name: Timeframes.FIVE_MINUTES, label: '5m', type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT, count: 48 },
+  { name: Timeframes.FIVE_MINUTES, label: '5M', type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT, count: 48 },
   {
     name: Timeframes.FIFTEEN_MINUTES,
-    label: '15m',
+    label: '15M',
     type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
     count: 48 * 3,
     group: 3,
   },
   {
     name: Timeframes.THIRTY_MINUTES,
-    label: '30m',
+    label: '30M',
     type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
     count: 48 * 6,
     group: 6,
@@ -237,7 +238,6 @@ defineOptions({
     BaseWidget: lazyComponent(Components.BaseWidget),
     SvgIconButton: lazyComponent(Components.SvgIconButton),
     TokensRow: lazyComponent(Components.TokensRow),
-    PriceChange: lazyComponent(Components.PriceChange),
     StatsFilter: lazyComponent(Components.StatsFilter),
     ChartSkeleton: lazyComponent(Components.ChartSkeleton),
   },
@@ -701,7 +701,7 @@ const getHistoricalPrices = async (): Promise<void> => {
         const { timestamp, price, volume } = mergeSnapshots(a, b);
 
         if (price.some((part) => !Number.isFinite(part))) continue;
-        if (price[0] === 0 && price[1] === 0) break;
+        if (price[0] === 0 && price[1] === 0) continue;
 
         datasetChunk.push({ timestamp, price, volume });
         min = Math.min(min, ...price);

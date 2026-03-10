@@ -5,7 +5,7 @@ import { PoolPageNames } from '@/modules/pool/consts';
 import { VaultPageNames } from '@/modules/vault/consts';
 
 describe('SidebarMenuGroups icons', () => {
-  it('keeps sidebar icons aligned with polkaswap menu and preserves SCCP icon', () => {
+  it('keeps sidebar icons aligned with polkaswap menu', () => {
     const menuEntries = SidebarMenuGroups.map(({ href, icon, title }) => ({ href, icon, title }));
 
     expect(menuEntries).toEqual([
@@ -15,9 +15,8 @@ describe('SidebarMenuGroups icons', () => {
       { href: '#/pool', icon: 'basic-drop-24', title: PoolPageNames.Pool },
       { href: '#/staking', icon: 'basic-layers-24', title: PageNames.StakingContainer },
       { href: '#/bridge', icon: 'grid-block-distribute-vertically-24', title: PageNames.Bridge },
-      // SCCP is the only intentional extension over live polkaswap menu.
-      { href: '#/bridge/sccp', icon: 'various-planet-24', title: PageNames.Sccp },
       { href: '#/wallet', icon: 'finance-wallet-24', title: PageNames.Wallet },
+      { href: '#/burn', icon: 'basic-flame-24', title: PageNames.Burn },
       { href: '#/kensetsu', icon: 'call-phone-16', title: VaultPageNames.VaultsContainer },
       { href: '#/explore', icon: 'various-items-24', title: PageNames.ExploreContainer },
       { href: '#/stats', icon: 'various-planet-24', title: PageNames.Stats },

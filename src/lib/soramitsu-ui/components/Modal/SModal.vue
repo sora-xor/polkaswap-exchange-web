@@ -227,10 +227,20 @@ provide(MODAL_API_KEY, api);
 // ETC
 
 function onOverlayClick() {
+  closeOnOutsideClick();
+}
+
+function closeOnOutsideClick() {
   emit('click:overlay');
   if (props.closeOnOverlayClick) {
     showModel.value = false;
   }
+}
+
+function onModalClick(event: MouseEvent) {
+  if (event.target !== event.currentTarget) return;
+
+  closeOnOutsideClick();
 }
 
 useCloseOnEsc(
@@ -274,6 +284,7 @@ useCloseOnEsc(
           aria-modal="true"
           :aria-labelledby="labelledBy"
           :aria-describedby="describedBy || ''"
+          @click="onModalClick"
         >
           <slot v-bind="api" />
         </div>

@@ -190,12 +190,15 @@ const actions = defineActions({
     const { commit, dispatch, rootDispatch } = web3ActionContext(context);
 
     await dispatch.disconnectExternalNetwork();
-    await dispatch.fetchDenominatorCoefficient();
 
     commit.setNetworkType(type);
     commit.setSelectedNetwork(id);
 
-    await Promise.allSettled([rootDispatch.assets.getRegisteredAssets(), connectNetworkType(context)]);
+    await Promise.allSettled([
+      dispatch.fetchDenominatorCoefficient(),
+      rootDispatch.assets.getRegisteredAssets(),
+      connectNetworkType(context),
+    ]);
 
     await autoselectBridgeAsset(context);
   },

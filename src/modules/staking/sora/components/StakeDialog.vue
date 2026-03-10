@@ -77,7 +77,7 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { components } from '@wallet';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from '@/composables/useTranslation';
 
 import { Components } from '@/consts';
 import { useDialogModel } from '@/composables/useDialogModel';
@@ -103,7 +103,7 @@ const emit = defineEmits<{
   (event: 'confirm'): void;
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const { getFiatAmountByCodecString } = useFormattedAmount();
 const dialogModel = useDialogModel(props, emit);
 const { isVisible } = dialogModel;

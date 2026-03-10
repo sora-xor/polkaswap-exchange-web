@@ -9,6 +9,7 @@ node_modules
 /tests/e2e/screenshots/
 /playwright-report/
 /test-results/
+.playwright-cli*
 .playwright-cli/*.log
 .playwright-cli/network-*.log
 .playwright-cli/page-*.yml

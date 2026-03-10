@@ -42,6 +42,7 @@ const store = {
           { key: 'eur', name: 'Euro', symbol: '€', disabled: false },
         ],
         currency: 'usd',
+        networkFees: {},
         selectLanguageDialogVisibility: false,
         selectCurrencyDialogVisibility: false,
       },
@@ -90,6 +91,10 @@ const store = {
       account: {
         isLoggedIn: false,
         accountAssetsAddressTable: {},
+      },
+      settings: {
+        currencySymbol: '$',
+        exchangeRate: 1,
       },
     },
   },

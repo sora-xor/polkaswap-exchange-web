@@ -32,8 +32,16 @@ export default class ConnectionItems extends Vue {
 <style lang="scss">
 $item-height: 60px;
 
-.connection-items {
+.connection-items.s-scrollbar.el-scrollbar {
   @include scrollbar($basic-spacing-big);
+  display: block;
+  flex: 0 1 auto;
+  overflow: hidden;
+
+  > .el-scrollbar__wrap {
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+  }
 
   &-list {
     display: flex;

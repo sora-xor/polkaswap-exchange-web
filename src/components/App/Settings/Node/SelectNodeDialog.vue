@@ -2,7 +2,7 @@
   <dialog-base
     v-model:visible="visibilityModel"
     :title="t('selectNodeDialog.title')"
-    :class="['select-node-dialog', dialogCustomClass]"
+    :custom-class="dialogCardClassName"
   >
     <select-node
       v-if="isNodeListView"
@@ -98,6 +98,7 @@ const isSelectedNodeConnected = computed(() =>
 const existingNodeIsSelected = computed(() => Boolean(findNodeInListByAddress(selectedNode.value.address ?? '')));
 const isNodeListView = computed(() => currentView.value === 'NodeListView');
 const dialogCustomClass = computed(() => (isNodeListView.value ? '' : 'select-node-dialog--add-node'));
+const dialogCardClassName = computed(() => ['select-node-dialog', dialogCustomClass.value].filter(Boolean).join(' '));
 
 const getNodePermittedData = (node: Node): Node => pick(Object.keys(NodeModel))(node) as Node;
 
@@ -186,3 +187,24 @@ const connectedNodeAddressModel = computed({
   },
 });
 </script>
+
+<style lang="scss">
+.dialog-wrapper.select-node-dialog--add-node {
+  .el-dialog {
+    .el-dialog__header {
+      display: none;
+      padding: 0;
+    }
+  }
+}
+
+.dialog-card.select-node-dialog--add-node {
+  .dialog-card__header {
+    display: none;
+  }
+
+  .dialog-card__content {
+    padding-top: $basic-spacing-big;
+  }
+}
+</style>

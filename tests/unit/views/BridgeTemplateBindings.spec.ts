@@ -30,4 +30,11 @@ describe('Bridge.vue template bindings', () => {
     expect(assetTag).toBeDefined();
     expect(assetTag).toContain('v-model:visible="showSelectTokenDialog"');
   });
+
+  it('keeps the disconnected bridge hint inside the footer callout container', async () => {
+    const template = await readBridgeTemplate();
+
+    expect(template).toContain('class="bridge-footer__callout"');
+    expect(template).toContain("t('bridge.connectWallets')");
+  });
 });

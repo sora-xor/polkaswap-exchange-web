@@ -180,20 +180,33 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   'mouse-enter:cell': TableCellEventData<DataType>;
+  'cell-mouse-enter': TableCellEventData<DataType>;
   'mouse-leave:cell': TableCellEventData<DataType>;
+  'cell-mouse-leave': TableCellEventData<DataType>;
   'click:cell': TableCellEventData<DataType>;
+  'cell-click': TableCellEventData<DataType>;
   'dblclick:cell': TableCellEventData<DataType>;
+  'cell-dblclick': TableCellEventData<DataType>;
   'click:header': TableHeaderEventData;
+  'header-click': TableHeaderEventData;
   'contextmenu:header': TableHeaderEventData;
+  'header-contextmenu': TableHeaderEventData;
   'click:row': TableRowEventData<DataType>;
+  'row-click': TableRowEventData<DataType>;
   'dblclick:row': TableRowEventData<DataType>;
+  'row-dblclick': TableRowEventData<DataType>;
   'contextmenu:row': TableRowEventData<DataType>;
+  'row-contextmenu': TableRowEventData<DataType>;
   'change:sort': [TableSortEventData];
+  'sort-change': [TableSortEventData];
   'change:selection': [DataType[]];
+  'selection-change': [DataType[]];
   'select-all': [DataType[]];
   select: [DataType[], DataType];
   'change:expand': [DataType, DataType[]];
+  'expand-change': [DataType, DataType[]];
   'change:current': [DataType | null, DataType | null];
+  'current-change': [DataType | null, DataType | null];
   'click:row-details': [DataType];
 }>();
 
@@ -487,7 +500,9 @@ function getSortIconStateClasses(column: TableColumnApi) {
 
 function handleSortClick(column: TableColumnApi) {
   handleSortChange(column);
-  emit('change:sort', { column, prop: column.prop, order: sortState.order });
+  const payload = { column, prop: column.prop, order: sortState.order };
+  emit('change:sort', payload);
+  emit('sort-change', payload);
 }
 
 function handleAllSelect() {
@@ -495,6 +510,7 @@ function handleAllSelect() {
   const selectedArray = [...selectedRows];
   emit('select-all', selectedArray);
   emit('change:selection', selectedArray);
+  emit('selection-change', selectedArray);
 }
 
 function handleRowSelect(row: DataType) {
@@ -502,11 +518,14 @@ function handleRowSelect(row: DataType) {
   const selectedArray = [...selectedRows];
   emit('select', selectedArray, row);
   emit('change:selection', selectedArray);
+  emit('selection-change', selectedArray);
 }
 
 function handleRowExpand(row: DataType) {
   toggleRowExpanded(row);
-  emit('change:expand', row, [...expandedRows]);
+  const expanded = [...expandedRows];
+  emit('change:expand', row, expanded);
+  emit('expand-change', row, expanded);
 }
 
 function handleRowDetails(row: DataType) {
@@ -527,10 +546,12 @@ function handleCellMouseEvent(ctx: {
   switch (ctx.event.type) {
     case 'mouseleave': {
       emit('mouse-leave:cell', rawRow, ctx.column, ctx.event.target, ctx.event);
+      emit('cell-mouse-leave', rawRow, ctx.column, ctx.event.target, ctx.event);
       break;
     }
     case 'mouseenter': {
       emit('mouse-enter:cell', rawRow, ctx.column, ctx.event.target, ctx.event);
+      emit('cell-mouse-enter', rawRow, ctx.column, ctx.event.target, ctx.event);
       break;
     }
     case 'click': {
@@ -548,17 +569,23 @@ function handleCellMouseEvent(ctx: {
       setCurrentRow(rawRow);
 
       emit('click:cell', rawRow, ctx.column, ctx.event.target, ctx.event);
+      emit('cell-click', rawRow, ctx.column, ctx.event.target, ctx.event);
       emit('click:row', rawRow, ctx.column, ctx.event);
+      emit('row-click', rawRow, ctx.column, ctx.event);
       emit('change:current', currentRow.value, oldCurrentRow.value);
+      emit('current-change', currentRow.value, oldCurrentRow.value);
       break;
     }
     case 'dblclick': {
       emit('dblclick:cell', rawRow, ctx.column, ctx.event.target, ctx.event);
+      emit('cell-dblclick', rawRow, ctx.column, ctx.event.target, ctx.event);
       emit('dblclick:row', rawRow, ctx.column, ctx.event);
+      emit('row-dblclick', rawRow, ctx.column, ctx.event);
       break;
     }
     case 'contextmenu': {
       emit('contextmenu:row', rawRow, ctx.column, ctx.event);
+      emit('row-contextmenu', rawRow, ctx.column, ctx.event);
       break;
     }
   }
@@ -576,17 +603,21 @@ function handleHeaderMouseEvent(ctx: { column: TableColumnApi | TableActionColum
       }
 
       emit('click:header', ctx.column, ctx.event);
+      emit('header-click', ctx.column, ctx.event);
       break;
     }
     case 'contextmenu': {
       emit('contextmenu:header', ctx.column, ctx.event);
+      emit('header-contextmenu', ctx.column, ctx.event);
       break;
     }
   }
 }
 
 const instance = getCurrentInstance();
-const hasClickRowHandler = computed(() => !!instance?.vnode?.props?.['onClick:row']);
+const hasClickRowHandler = computed(
+  () => !!instance?.vnode?.props?.['onClick:row'] || !!instance?.vnode?.props?.onRowClick
+);
 </script>
 
 <template>
@@ -753,7 +784,7 @@ const hasClickRowHandler = computed(() => !!instance?.vnode?.props?.['onClick:ro
         <slot name="empty">
           <div class="s-table__empty-text flex justify-center items-center min-h-60px sora-tpg-p3">
             <slot name="empty-text">
-              {{ emptyText || 'No Data' }}
+              {{ emptyText || 'No data' }}
             </slot>
           </div>
         </slot>

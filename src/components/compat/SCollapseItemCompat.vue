@@ -35,7 +35,7 @@ const handleToggle = (): void => {
   <div class="el-collapse-item" :class="{ 'is-active': isActive, 'is-disabled': disabled }">
     <button class="el-collapse-item__header" type="button" :disabled="disabled" @click="handleToggle">
       <slot name="title" />
-      <span class="el-collapse-item__arrow el-icon-arrow-right" :class="{ 'is-active': isActive }"> › </span>
+      <i class="el-collapse-item__arrow el-icon-arrow-right" :class="{ 'is-active': isActive }" aria-hidden="true"></i>
     </button>
 
     <transition name="el-collapse-transition">
@@ -75,6 +75,12 @@ const handleToggle = (): void => {
   &__arrow {
     transition: transform var(--s-transition-default);
     transform: rotate(0deg);
+    font-family: element-icons;
+    font-weight: 300;
+    box-shadow:
+      #fff -5px -5px 10px 0,
+      rgba(0, 0, 0, 0.1) 1px 1px 10px 0,
+      rgba(255, 255, 255, 0.8) 1px 1px 2px 0 inset;
   }
 
   &__arrow.is-active {

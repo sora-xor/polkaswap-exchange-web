@@ -2,6 +2,7 @@
   <WalletProviders>
     <component
       :is="currentRoute"
+      v-bind="$attrs"
       v-loading="loading"
       @swap="(asset) => handleOperation(Operations.Swap, asset)"
       @liquidity="(asset) => handleOperation(Operations.Liquidity, asset)"
@@ -34,6 +35,7 @@ import type { RouteNames } from './consts';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 @Options({
+  inheritAttrs: false,
   components: {
     AddAsset,
     SelectAsset,

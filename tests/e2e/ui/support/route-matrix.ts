@@ -77,8 +77,8 @@ const publicRoutes: RouteAuditCase[] = [
   {
     id: 'bridge-sccp',
     hash: '#/bridge/sccp',
-    acceptedHashes: ['#/bridge/sccp'],
-    expectedClassToken: 'app-main--sccp',
+    acceptedHashes: ['#/swap'],
+    expectedClassToken: 'app-main--swap',
     requiresAuth: false,
     mode: 'public',
     liveEligible: true,

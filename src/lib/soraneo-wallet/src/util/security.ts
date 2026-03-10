@@ -3,7 +3,8 @@ import type { Blacklist, WhitelistArrayItem } from '@sora-substrate/sdk/build/as
 const MAX_SYMBOL_LENGTH = 32;
 const MAX_NAME_LENGTH = 128;
 const MAX_ADDRESS_LENGTH = 256;
-const MAX_ICON_LENGTH = 1024;
+const MAX_ICON_URL_LENGTH = 2048;
+const MAX_ICON_DATA_URI_LENGTH = 32_768;
 const CONTROL_CHARS_REGEXP = /[\u0000-\u001F\u007F]/g;
 const FORBIDDEN_HTML_CHARS_REGEXP = /[<>]/g;
 const ALLOWED_ICON_PROTOCOLS = new Set(['http:', 'https:', 'ipfs:', 'data:']);
@@ -27,11 +28,21 @@ const sanitizeName = (value: unknown): string => {
 };
 
 const sanitizeIcon = (value: unknown): string => {
-  const icon = sanitizeText(value, MAX_ICON_LENGTH);
-  if (!icon) return '';
+  if (typeof value !== 'string') return '';
 
+  const normalized = value.replace(CONTROL_CHARS_REGEXP, '').trim();
+  if (!normalized) return '';
+
+  if (normalized.startsWith('data:image/')) {
+    // Preserve icon payloads as-is. Truncation or aggressive whitespace stripping
+    // can corrupt encoded SVG payloads and produce broken token logos.
+    if (normalized.length > MAX_ICON_DATA_URI_LENGTH) return '';
+    return normalized;
+  }
+
+  const icon = normalized.replace(FORBIDDEN_HTML_CHARS_REGEXP, '');
+  if (!icon || icon.length > MAX_ICON_URL_LENGTH) return '';
   if (icon.startsWith('/') || icon.startsWith('./') || icon.startsWith('../')) return icon;
-  if (icon.startsWith('data:image/')) return icon;
 
   try {
     const parsed = new URL(icon, 'https://placeholder.invalid');

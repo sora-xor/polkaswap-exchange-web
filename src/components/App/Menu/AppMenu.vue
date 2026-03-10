@@ -40,7 +40,7 @@
                   tabindex="-1"
                   :href="item.href"
                   :icon="item.icon"
-                  :title="t(`mainMenu.${item.title}`)"
+                  :title="getMenuTitle(item)"
                   @click.prevent="preventAnchorNavigation"
                 ></app-sidebar-item-content>
               </s-menu-item>
@@ -109,6 +109,7 @@ import {
   ExploreChildPages,
   SidebarMenuGroups,
   SidebarMenuItemLink,
+  SidebarIcon,
   FaucetLink,
 } from '@/consts';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
@@ -121,6 +122,7 @@ import { isVaultPage } from '@/modules/vault/router';
 import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
 import store from '@/store';
+import type { Nullable } from '@/types/common';
 import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 
 import AppInfoPopper from './AppInfoPopper.vue';
@@ -143,10 +145,9 @@ const pageLoading = computed(() => Boolean(store.state.router?.loading));
 const collapsed = computed(() => Boolean(store.state.settings?.menuCollapsed));
 const faucetUrl = computed(() => (store.state.settings?.faucetUrl as string) ?? '');
 const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
-const orderBookEnabled = computed(() => Boolean(store.getters?.settings?.orderBookEnabled));
-const kensetsuEnabled = computed(() => Boolean(store.getters?.settings?.kensetsuEnabled));
+const orderBookEnabled = computed(() => (store.getters?.settings?.orderBookEnabled as Nullable<boolean>) ?? true);
+const kensetsuEnabled = computed(() => (store.getters?.settings?.kensetsuEnabled as Nullable<boolean>) ?? true);
 const assetOwnerEnabled = computed(() => Boolean(store.getters?.settings?.assetOwnerEnabled));
-const debugEnabled = computed(() => Boolean(store.getters?.settings?.debugEnabled));
 
 const menuElement = ref<HTMLElement | null>(null);
 const resizeObserver = ref<ResizeObserver | null>(null);
@@ -188,15 +189,25 @@ const sidebarMenuItems = computed(() => {
   if (!orderBookEnabled.value) {
     menuItems = menuItems.filter(({ title }) => title !== PageNames.OrderBook);
   }
-  if (!debugEnabled.value) {
-    menuItems = menuItems.filter(({ title }) => title !== PageNames.Sccp);
-  }
   if (!kensetsuEnabled.value) {
     menuItems = menuItems.filter(({ title }) => title !== VaultPageNames.VaultsContainer);
   }
   if (!assetOwnerEnabled.value) {
     menuItems = menuItems.filter(({ title }) => title !== PageNames.AssetOwnerContainer);
   }
+
+  const hasBurn = menuItems.some(({ title, href }) => title === PageNames.Burn || href === '#/burn');
+  if (!hasBurn) {
+    const burnMenuItem: SidebarMenuItemLink = {
+      icon: SidebarIcon.Burn,
+      title: PageNames.Burn,
+      href: '#/burn',
+    };
+    const accountIndex = menuItems.findIndex(({ title }) => title === PageNames.Wallet);
+    const insertAt = accountIndex >= 0 ? accountIndex + 1 : menuItems.length;
+    menuItems = [...menuItems.slice(0, insertAt), burnMenuItem, ...menuItems.slice(insertAt)];
+  }
+
   return menuItems;
 });
 
@@ -220,6 +231,20 @@ function openProductDialog(product = 'soraMobile'): void {
 
 function handleSelect(item: any): void {
   props.onSelect(item);
+}
+
+function getMenuTitle(item: SidebarMenuItemLink): string {
+  const key = `mainMenu.${item.title}`;
+  const translated = t(key);
+  if (item.title !== PageNames.Burn) return translated;
+
+  if (!translated || translated === key) {
+    const pageFallback = t('pageTitle.Burn');
+    if (pageFallback && pageFallback !== 'pageTitle.Burn') return pageFallback;
+    return 'Burn';
+  }
+
+  return translated;
 }
 
 onMounted(() => {
@@ -251,6 +276,7 @@ onBeforeUnmount(() => {
 
 .app-menu {
   background: var(--s-color-utility-body);
+  border-color: var(--s-color-base-content-primary);
 }
 
 .app-menu.collapsed {
@@ -372,13 +398,17 @@ onBeforeUnmount(() => {
   margin: auto;
   transition-duration: 0.2s;
   z-index: #{$app-sidebar-layer} + 1;
+  background: var(--s-color-utility-body) !important;
+  border-color: transparent !important;
+  box-shadow: var(--s-shadow-element-pressed) !important;
+  color: var(--s-color-base-content-tertiary) !important;
 
   :deep(i[class*='s-icon-']) {
     width: 24px !important;
     height: 24px !important;
     font-size: 24px !important;
     line-height: 24px !important;
-    color: var(--s-color-base-content-tertiary) !important;
+    color: currentColor !important;
   }
 
   &:hover,
@@ -386,7 +416,31 @@ onBeforeUnmount(() => {
   &.focusing {
     background: var(--s-color-theme-accent-hover) !important;
     border-color: var(--s-color-utility-surface) !important;
+    box-shadow: var(--s-shadow-element-pressed) !important;
     color: var(--s-color-base-on-accent) !important;
+  }
+}
+
+.app-menu.collapsed {
+  .collapse-button {
+    box-shadow: var(--s-shadow-element) !important;
+  }
+
+  .collapse-button:hover,
+  .collapse-button:focus,
+  .collapse-button.focusing {
+    box-shadow: var(--s-shadow-element-pressed) !important;
+  }
+
+  &:hover,
+  &:focus,
+  &:focus-within {
+    .collapse-button:not(:hover) {
+      background: var(--s-color-utility-body) !important;
+      border-color: transparent !important;
+      box-shadow: var(--s-shadow-element-pressed) !important;
+      color: var(--s-color-base-content-tertiary) !important;
+    }
   }
 }
 .app {
@@ -439,7 +493,7 @@ onBeforeUnmount(() => {
 
       .app-sidebar {
         width: 50%;
-        min-width: 232px;
+        min-width: calc(#{$breakpoint_mobile} / 2);
         background-color: var(--s-color-utility-body);
         padding: $inner-spacing-mini $inner-spacing-medium;
         filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));
@@ -478,6 +532,7 @@ onBeforeUnmount(() => {
     flex-flow: column nowrap;
     padding: $inner-spacing-mini 0;
     border-right: none;
+    border-color: var(--s-color-base-content-primary);
 
     &-menu {
       display: flex;
@@ -493,6 +548,7 @@ onBeforeUnmount(() => {
 .menu {
   padding: 0;
   border-right: none;
+  border-color: var(--s-color-base-content-primary);
 
   & + .menu {
     margin-top: $inner-spacing-small;
@@ -500,16 +556,25 @@ onBeforeUnmount(() => {
 
   &.s-menu {
     border-bottom: none;
+    border-color: var(--s-color-base-content-primary);
 
     .el-menu-item {
       margin-right: 0;
       margin-bottom: 0;
       border: none;
       border-radius: 0;
+      border-color: inherit;
     }
   }
 
   .el-menu-item {
+    &,
+    span,
+    .icon-container,
+    .icon-container :deep(i[class*='s-icon-']) {
+      border-color: currentColor !important;
+    }
+
     padding-top: $inner-spacing-mini;
     padding-bottom: $inner-spacing-mini;
 

@@ -22,8 +22,6 @@
         </span>
         <div class="node-extras" v-if="node">
           <span v-if="nodeLatencyText">Latency: {{ nodeLatencyText }}</span>
-          <span>Backoff: {{ backoffEnabledText }}</span>
-          <span>Parallel dial: {{ parallelDialEnabledText }}</span>
           <span v-if="backoffNextText">Next retry: {{ backoffNextText }}</span>
           <s-button class="s-typography-button--mini" size="mini" type="secondary" @click="runLatencyProbe">
             Test latency
@@ -304,6 +302,8 @@ $sora-logo-width: 115px;
   background-color: var(--s-color-utility-surface);
   justify-content: center;
   align-items: center;
+  gap: $inner-spacing-tiny;
+  padding: 0 $inner-spacing-small;
 
   :deep(i[class*='s-icon-']) {
     font-size: 16px !important;
@@ -352,6 +352,22 @@ $sora-logo-width: 115px;
 }
 
 @include desktop(true) {
+  .sora-logo {
+    display: none;
+  }
+}
+
+@include large-mobile(true) {
+  .app-status {
+    justify-content: space-between;
+    padding: 0 $inner-spacing-mini;
+    gap: $inner-spacing-mini;
+  }
+
+  .block-number {
+    display: none;
+  }
+
   .sora-logo {
     display: none;
   }

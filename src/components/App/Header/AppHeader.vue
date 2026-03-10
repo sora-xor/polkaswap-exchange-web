@@ -122,7 +122,13 @@ function toggleMenu(): void {
   color: var(--s-color-base-content-tertiary) !important;
 }
 
-.app-controls .account-control {
+.app-controls .account-control:not(.s-pressed) {
+  background-color: var(--s-color-utility-body) !important;
+  border-color: transparent !important;
+  color: var(--s-color-base-content-tertiary) !important;
+}
+
+.app-controls .account-control.s-pressed {
   background-color: var(--s-color-utility-surface) !important;
   border-color: var(--s-color-base-border-primary) !important;
   color: var(--s-color-base-content-tertiary) !important;
