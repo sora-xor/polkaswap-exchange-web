@@ -14,6 +14,7 @@ import type { NetworkData } from '@/types/bridge';
 import type { Nullable } from '@/types/common';
 import { getSubstrateExplorerLinks } from '@/utils';
 import { isOutgoingTransaction, isWaitingForAction } from '@/utils/bridge/common/utils';
+import { toSafeExternalLink } from '@/utils/externalLinks';
 
 import type { IBridgeTransaction, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
@@ -37,9 +38,11 @@ function buildSubNetworkLinks(
   eventIndex?: number
 ): WALLET_CONSTS.ExplorerLink[] {
   const baseLinks: WALLET_CONSTS.ExplorerLink[] = [];
-  const subscanLink = networkData.blockExplorerUrls[0];
+  const subscanLink = toSafeExternalLink(networkData.blockExplorerUrls[0]);
   const polkadotUrl = networkData.nodes?.[0].address;
-  const polkadotLink = polkadotUrl ? `https://polkadot.js.org/apps/?rpc=${polkadotUrl}#/explorer/query` : '';
+  const polkadotLink = polkadotUrl
+    ? toSafeExternalLink(`https://polkadot.js.org/apps/?rpc=${encodeURIComponent(polkadotUrl)}#/explorer/query`)
+    : '';
 
   if (subscanLink) {
     baseLinks.push({ type: WALLET_CONSTS.ExplorerType.Subscan, value: subscanLink });
@@ -57,7 +60,7 @@ function buildEvmNetworkLinks(
   type: EvmLinkType,
   value?: string
 ): WALLET_CONSTS.ExplorerLink[] {
-  const explorerUrl = networkData.blockExplorerUrls[0];
+  const explorerUrl = toSafeExternalLink(networkData.blockExplorerUrls[0]);
 
   if (!explorerUrl || !value) {
     return [];

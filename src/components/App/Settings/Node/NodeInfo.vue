@@ -69,7 +69,7 @@ import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
 import { useTranslation } from '@/composables/useTranslation';
 import { Links } from '@/consts';
 import type { Node } from '@/types/nodes';
-import { wsRegexp, dnsPathRegexp, ipv4Regexp } from '@/utils/regexp';
+import { wsRegexp, secureWsRegexp, isLocalWsUrl, dnsPathRegexp, ipv4Regexp } from '@/utils/regexp';
 
 import { NodeModel } from './consts';
 import { formatLocation } from './utils';
@@ -82,6 +82,10 @@ const checkAddress =
     if (!value) return callback(new Error(translate('selectNodeDialog.messages.emptyAddress')));
 
     if (!wsRegexp.test(value)) {
+      return callback(new Error(translate('selectNodeDialog.messages.incorrectProtocol')));
+    }
+
+    if (!secureWsRegexp.test(value) && !isLocalWsUrl(value)) {
       return callback(new Error(translate('selectNodeDialog.messages.incorrectProtocol')));
     }
 

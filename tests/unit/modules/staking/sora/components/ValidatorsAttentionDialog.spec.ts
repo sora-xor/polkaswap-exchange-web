@@ -51,6 +51,12 @@ vi.mock('vue-i18n', () => ({
   }),
 }));
 
+vi.mock('@/composables/useTranslation', () => ({
+  useTranslation: () => ({
+    t: tMock,
+  }),
+}));
+
 vi.mock('@/router', () => ({
   __esModule: true,
   default: {

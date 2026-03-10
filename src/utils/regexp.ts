@@ -11,7 +11,22 @@ const exactStart = (exp) => `^${exp}`;
 const exact = (exp) => `^${exp}$`;
 
 export const wsRegexp = new RegExp(exactStart(ws));
+export const secureWsRegexp = /^wss:\/\//;
 export const dnsPathRegexp = new RegExp(exactStart(`${dns}${port}?(${segment})*/?`));
 export const ipv4Regexp = new RegExp(exact(`${ipv4}${port}?(${segment})*/?`));
 export const syntheticAssetRegexp = WALLET_CONSTS.syntheticAssetRegexp;
 export const kensetsuAssetRegexp = WALLET_CONSTS.kensetsuAssetRegexp;
+
+const localhostHostnames = new Set(['localhost', '127.0.0.1', '0.0.0.0', '::1']);
+
+/**
+ * Allows plaintext ws:// only for local development hosts.
+ */
+export const isLocalWsUrl = (value: string): boolean => {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'ws:' && localhostHostnames.has(url.hostname.toLowerCase());
+  } catch {
+    return false;
+  }
+};

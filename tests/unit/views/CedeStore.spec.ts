@@ -157,8 +157,8 @@ describe('CedeStore view', () => {
         lockNetwork: true,
       },
       theme: expect.objectContaining({
-        mode: Theme.Light,
-        logoTheme: Theme.Light,
+        mode: Theme.LIGHT,
+        logoTheme: Theme.LIGHT,
       }),
     });
   });

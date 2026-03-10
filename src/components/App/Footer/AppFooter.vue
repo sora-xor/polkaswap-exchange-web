@@ -1,6 +1,12 @@
 <template>
   <div class="app-status s-flex">
-    <a v-if="blockNumber" class="block-number s-flex" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
+    <a
+      v-if="blockNumber && blockExplorerLink"
+      class="block-number s-flex"
+      :href="blockExplorerLink"
+      target="_blank"
+      rel="nofollow noopener"
+    >
       <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
     </a>
     <footer-popper
@@ -98,6 +104,7 @@ import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 import type { FeatureFlags, SettingsState } from '@/store/settings/types';
 import type { Node } from '@/types/nodes';
 import { NodesConnection } from '@/utils/connection';
+import { toSafeExternalLink } from '@/utils/externalLinks';
 import { settingsStorage } from '@/utils/storage';
 import { formatLocation } from '@/components/App/Settings/Node/utils';
 import { resolveIndexerStatus } from '@/components/App/Footer/utils/resolveIndexerStatus';
@@ -149,7 +156,7 @@ const isBrowserOnline = computed(() => Boolean(store.getters?.settings?.isIntern
 const isConnectionStable = computed(() => Boolean(store.getters?.settings?.isInternetConnectionStable));
 const connectionSpeedMb = computed(() => store.getters?.settings?.internetConnectionSpeedMb as number);
 
-const blockExplorerLink = computed(() => getExplorerLinks(soraNetwork.value)?.[0]?.value);
+const blockExplorerLink = computed(() => toSafeExternalLink(getExplorerLinks(soraNetwork.value)?.[0]?.value));
 const blockNumberFormatted = computed(() => new FPNumber(blockNumber.value).toLocaleString());
 
 const connectingNode = computed(() => {

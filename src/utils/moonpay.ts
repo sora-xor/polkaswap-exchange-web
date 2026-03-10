@@ -1,3 +1,4 @@
+import { FPNumber } from '@sora-substrate/sdk';
 import { api, WALLET_CONSTS } from '@wallet';
 
 import axios from '@/api';
@@ -10,6 +11,17 @@ type MoonpayWidgetOrigin = (typeof MOONPAY_WIDGET_ORIGINS)[number];
 const isMoonpayWidgetOrigin = (origin: string): origin is MoonpayWidgetOrigin => {
   return (MOONPAY_WIDGET_ORIGINS as readonly string[]).includes(origin);
 };
+
+/**
+ * Returns a non-negative amount that is capped by both limits, preserving decimal precision.
+ */
+export function clampMoonpayTransferAmount(maxAmount: string, transferAmount: string): string {
+  const max = new FPNumber(maxAmount || 0);
+  const transfer = new FPNumber(transferAmount || 0);
+  const minAmount = FPNumber.min(max, transfer) as FPNumber;
+  const nonNegativeAmount = FPNumber.max(minAmount, FPNumber.ZERO) as FPNumber;
+  return nonNegativeAmount.toString();
+}
 
 /**
  * Builds a safe MoonPay transaction details widget URL by validating the `returnUrl`

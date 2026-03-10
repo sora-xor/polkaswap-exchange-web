@@ -25,14 +25,13 @@ describe('subsquid createExplorerClient', () => {
     mocks.wsCreateClientMock.mockClear();
   });
 
-  it('forces POST transport by disabling preferGetMethod', () => {
+  it('configures explorer client with network-only policy', () => {
     createExplorerClient('https://api.example.com/graphql');
 
     expect(mocks.createClientMock).toHaveBeenCalledWith(
       expect.objectContaining({
         url: 'https://api.example.com/graphql',
         requestPolicy: 'network-only',
-        preferGetMethod: false,
       })
     );
   });

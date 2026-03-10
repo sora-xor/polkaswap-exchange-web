@@ -1,4 +1,4 @@
-import { Operation } from '@sora-substrate/sdk';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { storeToRefs } from 'pinia';
 import { computed, type Ref } from 'vue';
@@ -17,7 +17,12 @@ import type { Nullable, FnWithoutArgs } from '@/types/common';
 import { getMaxValue, hasInsufficientNativeTokenForFee } from '@/utils';
 import { getEthNetworkFee } from '@/utils/bridge/eth/utils';
 import ethersUtil from '@/utils/ethers-util';
-import type { MoonpayEVMTransferAssetData, MoonpayTransaction, MoonpayApi } from '@/utils/moonpay';
+import {
+  clampMoonpayTransferAmount,
+  type MoonpayEVMTransferAssetData,
+  type MoonpayTransaction,
+  type MoonpayApi,
+} from '@/utils/moonpay';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset, AccountBalance } from '@sora-substrate/sdk/build/assets/types';
@@ -210,16 +215,16 @@ export function useMoonpayBridge(options: UseMoonpayBridgeOptions = {}) {
         isExternalBalance: true,
         isExternalNative,
       });
-      const amount = Math.min(Number(maxAmount), Number(ethTransferData.amount));
+      const amount = clampMoonpayTransferAmount(maxAmount, ethTransferData.amount);
 
-      if (amount <= 0) {
+      if (!FPNumber.gt(new FPNumber(amount), FPNumber.ZERO)) {
         throw createError('Insufficient amount', MoonpayNotifications.AmountError);
       }
 
       return {
         type: Operation.EthBridgeIncoming,
-        amount: String(amount),
-        amount2: String(amount),
+        amount,
+        amount2: amount,
         symbol: accountAsset.symbol,
         assetAddress: accountAsset.address,
         soraNetworkFee: bridgeHistory.networkFees.value[Operation.EthBridgeIncoming],

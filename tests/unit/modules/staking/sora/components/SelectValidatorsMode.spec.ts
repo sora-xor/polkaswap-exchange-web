@@ -34,6 +34,12 @@ vi.mock('vue-i18n', () => ({
   }),
 }));
 
+vi.mock('@/composables/useTranslation', () => ({
+  useTranslation: () => ({
+    t: tMock,
+  }),
+}));
+
 import SelectValidatorsMode from '@/modules/staking/sora/components/SelectValidatorsMode.vue';
 
 const SButtonStub = defineComponent({

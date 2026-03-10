@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildMoonpayTransactionDetailsUrl } from '@/utils/moonpay';
+import { buildMoonpayTransactionDetailsUrl, clampMoonpayTransferAmount } from '@/utils/moonpay';
 
 describe('moonpay url utilities', () => {
   it('buildMoonpayTransactionDetailsUrl returns a safe widget URL for allowed origins', () => {
@@ -41,5 +41,11 @@ describe('moonpay url utilities', () => {
     });
 
     expect(result).toBe('');
+  });
+
+  it('clampMoonpayTransferAmount preserves precision while capping the amount', () => {
+    expect(clampMoonpayTransferAmount('1.000000000000000001', '2')).toBe('1.000000000000000001');
+    expect(clampMoonpayTransferAmount('2', '1.500000000000000001')).toBe('1.500000000000000001');
+    expect(clampMoonpayTransferAmount('-1', '5')).toBe('0');
   });
 });

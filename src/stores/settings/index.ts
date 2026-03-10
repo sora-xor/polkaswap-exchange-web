@@ -15,6 +15,7 @@ import { getLocale, getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/
 import type { Nullable } from '@/types/common';
 import { updateDocumentTitle, updateFpNumberLocale } from '@/utils';
 import { NodesConnection } from '@/utils/connection';
+import { toSafeExternalLink } from '@/utils/externalLinks';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 import storage, { settingsStorage } from '@/utils/storage';
 import { requireLegacyStore } from '@/utils/legacy-store';
@@ -232,7 +233,7 @@ export const useSettingsStore = defineStore('settings', {
       storage.set('transactionDeadline', value);
     },
     setFaucetUrl(url: string): void {
-      this.faucetUrl = url;
+      this.faucetUrl = toSafeExternalLink(url, { allowHttpLocalhost: true });
     },
     setSelectNodeDialogVisibility(value: boolean): void {
       this.selectNodeDialogVisibility = value;

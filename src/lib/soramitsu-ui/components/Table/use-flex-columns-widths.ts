@@ -1,5 +1,5 @@
 import type { TableActionColumnApi, TableColumnApi } from './api';
-import type { Ref } from 'vue';
+import { computed, type Ref } from 'vue';
 
 export function useFlexColumns(
   columns: (TableColumnApi | TableActionColumnApi)[],
@@ -14,11 +14,11 @@ export function useFlexColumns(
       const freeSpace = tableWidth.value - baseColumnsWidthsSum;
       const columnsMinWidthsSum = columns.reduce((sum, col) => sum + (col.width ? 0 : col.minWidth), 0);
 
-      if (freeSpace > 0) {
+      if (freeSpace !== 0 && columnsMinWidthsSum > 0) {
         return columns.map((col) => {
           if (col.width) return col.width;
 
-          return col.minWidth + (col.minWidth * freeSpace) / columnsMinWidthsSum;
+          return Math.max(col.minWidth + (col.minWidth * freeSpace) / columnsMinWidthsSum, 0);
         });
       }
     }

@@ -105,6 +105,12 @@ vi.mock('vue-i18n', () => ({
   }),
 }));
 
+vi.mock('@/composables/useTranslation', () => ({
+  useTranslation: () => ({
+    t: (key: string, params?: Record<string, unknown>) => (params ? `${key}:${JSON.stringify(params)}` : key),
+  }),
+}));
+
 vi.mock('vue-router', () => ({
   __esModule: true,
   useRouter: () => ({

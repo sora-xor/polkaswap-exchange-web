@@ -389,10 +389,20 @@ function publishDirectoryToIpfs(directory: string): string {
   return cid;
 }
 
+/**
+ * Creates a public dweb.link URL for a published IPFS CID.
+ */
+export function createDwebGatewayUrl(cid: string): string {
+  return `https://dweb.link/ipfs/${cid}/index.html`;
+}
+
 function logGatewayUrls(cid: string, label: string): void {
   const url = `https://ipfs.io/ipfs/${cid}/index.html`;
   console.log(`\n${label} CID:`, cid);
   console.log(`${label} gateway (ipfs.io):`, url);
+  if (label === 'Production') {
+    console.log('Production dweb link:', createDwebGatewayUrl(cid));
+  }
   console.log(`${label} local gateway:`, `http://127.0.0.1:8080/ipfs/${cid}/index.html`);
 }
 

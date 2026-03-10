@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   collectMissingOutputs,
+  createDwebGatewayUrl,
   hasVueMajorVersion,
   isPermissionError,
   resolveVue3BuildArgs,
@@ -214,5 +215,11 @@ describe('swapEnvConfigForProduction', () => {
     expect(() => swapEnvConfigForProduction(distPath, sourceConfigPath, fsDeps)).toThrowError(
       /Missing production environment configuration/
     );
+  });
+});
+
+describe('createDwebGatewayUrl', () => {
+  it('builds a public dweb link for the provided CID', () => {
+    expect(createDwebGatewayUrl('QmExampleCid')).toBe('https://dweb.link/ipfs/QmExampleCid/index.html');
   });
 });

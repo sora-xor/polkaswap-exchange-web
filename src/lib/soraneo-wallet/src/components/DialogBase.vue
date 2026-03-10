@@ -1,8 +1,7 @@
 <template>
   <s-modal
     v-model:show="isVisible"
-    class="dialog-wrapper"
-    :modal-class="'dialog-wrapper__modal'"
+    :modal-class="modalClass"
     :overlay-class="'dialog-wrapper__overlay'"
     :lock-scroll="true"
     v-bind="$attrs"
@@ -59,6 +58,7 @@ const props = withDefaults(
   defineProps<{
     visible?: boolean;
     customClass?: string;
+    wrapperClass?: string | string[] | Record<string, boolean>;
     title?: string;
     tooltip?: string;
     width?: string;
@@ -68,6 +68,7 @@ const props = withDefaults(
   {
     visible: false,
     customClass: '',
+    wrapperClass: '',
     title: '',
     tooltip: '',
     width: '',
@@ -93,6 +94,22 @@ const cardClasses = computed(() => {
     classes.push(props.customClass);
   }
   return classes;
+});
+
+const flattenClassNames = (value: unknown): string[] => {
+  if (!value) return [];
+  if (typeof value === 'string') return value.split(/\s+/).filter(Boolean);
+  if (Array.isArray(value)) return value.flatMap((item) => flattenClassNames(item));
+  if (typeof value === 'object') {
+    return Object.entries(value as Record<string, unknown>)
+      .filter(([, enabled]) => Boolean(enabled))
+      .map(([className]) => className);
+  }
+  return [];
+};
+
+const modalClass = computed(() => {
+  return ['dialog-wrapper', 'dialog-wrapper__modal', ...flattenClassNames(props.wrapperClass)];
 });
 
 const cardStyle = computed(() => {

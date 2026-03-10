@@ -1,5 +1,11 @@
 <template>
-  <dialog-base v-model:visible="visibility" :show-close-button="false" append-to-body class="account-select-dialog">
+  <dialog-base
+    v-model:visible="visibility"
+    :show-close-button="false"
+    append-to-body
+    class="account-select-dialog"
+    wrapper-class="account-select-dialog"
+  >
     <connection-view
       :chain-api="chainApi"
       :account="subAccount"
@@ -73,6 +79,39 @@ const login = async (account: WALLET_TYPES.PolkadotJsAccount): Promise<void> => 
 
 <style lang="scss">
 .account-select-dialog.dialog-wrapper {
+  .dialog-card {
+    box-shadow: var(--s-shadow-dialog);
+  }
+
+  .dialog-card__header {
+    display: none;
+  }
+
+  .dialog-card__content {
+    padding: 0;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .dialog-card > .el-card.base {
+    max-width: 100%;
+  }
+
+  .dialog-card .base-title_close.el-button {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    border-radius: 50% !important;
+    background-color: var(--s-color-utility-body);
+    color: #d5cdd0;
+    box-shadow: var(--s-shadow-element) !important;
+  }
+
+  .dialog-card .base-title_close.el-button .s-button__icon > i {
+    color: #d5cdd0 !important;
+    opacity: 1 !important;
+  }
+
   .el-dialog > {
     .el-dialog__header {
       display: none;

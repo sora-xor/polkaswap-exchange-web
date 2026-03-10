@@ -30,6 +30,7 @@ import store from '@/store';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
+import { toSafeExternalLink } from '@/utils/externalLinks';
 
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
@@ -101,9 +102,12 @@ const prepareLink = (
 ): { href: string; title: string } | null => {
   if (!link) return null;
 
+  const href = toSafeExternalLink(link.value);
+  if (!href) return null;
+
   const linkText = isTxLink ? tc('transactionText', 1) : tc('accountText', 1);
   return {
-    href: link.value,
+    href,
     title: bridgeTransaction.getNetworkText(linkText, externalNetworkId),
   };
 };

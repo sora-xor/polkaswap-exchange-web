@@ -189,4 +189,21 @@ describe('settings store actions', () => {
     expect(settingsStore.userDisclaimerApprove).toBe(false);
     expect(settingsStore.disclaimerVisibility).toBe(false);
   });
+
+  it('stores only safe external faucet links', () => {
+    const settingsStore = useSettingsStore();
+
+    settingsStore.setFaucetUrl('javascript:alert(1)');
+    expect(settingsStore.faucetUrl).toBe('');
+
+    settingsStore.setFaucetUrl('https://faucet.dev.sora.org');
+    expect(settingsStore.faucetUrl).toBe('https://faucet.dev.sora.org');
+  });
+
+  it('allows localhost http faucet links for local development', () => {
+    const settingsStore = useSettingsStore();
+
+    settingsStore.setFaucetUrl('http://localhost:3000/faucet');
+    expect(settingsStore.faucetUrl).toBe('http://localhost:3000/faucet');
+  });
 });

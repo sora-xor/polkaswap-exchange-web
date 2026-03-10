@@ -28,6 +28,7 @@ import { computed } from 'vue';
 import { WALLET_CONSTS } from '@wallet';
 
 import { useTranslation } from '@/composables/useTranslation';
+import { toSafeExternalLink } from '@/utils/externalLinks';
 
 const props = withDefaults(
   defineProps<{
@@ -40,7 +41,15 @@ const props = withDefaults(
 
 const { t } = useTranslation();
 
-const links = computed(() => props.links);
+const links = computed(() =>
+  props.links.reduce<Array<WALLET_CONSTS.ExplorerLink>>((result, link) => {
+    const href = toSafeExternalLink(link?.value);
+    if (href) {
+      result.push({ ...link, value: href });
+    }
+    return result;
+  }, [])
+);
 
 defineExpose({
   links,

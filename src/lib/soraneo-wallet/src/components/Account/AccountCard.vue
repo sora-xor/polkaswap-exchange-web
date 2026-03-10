@@ -1,6 +1,6 @@
 <template>
   <s-card v-bind="{ shadow: 'always', size: 'small', borderRadius: 'medium', ...$attrs }" class="account-card">
-    <div class="account">
+    <div class="account" @click="handleClick">
       <div class="account-avatar">
         <slot name="avatar"></slot>
       </div>
@@ -19,7 +19,15 @@
   </s-card>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const emit = defineEmits<{
+  (event: 'click', value: MouseEvent): void;
+}>();
+
+const handleClick = (event: MouseEvent): void => {
+  emit('click', event);
+};
+</script>
 
 <style lang="scss">
 .account-card {
