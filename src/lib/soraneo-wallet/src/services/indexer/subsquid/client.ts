@@ -7,8 +7,42 @@ import type { Client } from '@urql/core';
 
 export type { Client, OperationResult, TypedDocumentNode, AnyVariables } from '@urql/core';
 
+const shouldDisableSubscriptionWs = (url: URL): boolean => {
+  return url.hostname === 'api.subquery.network' && url.pathname.startsWith('/sq/');
+};
+
+const resolveSubscriptionWsUrl = (url: string): string | null => {
+  try {
+    const parsed = new URL(url);
+    if (shouldDisableSubscriptionWs(parsed)) {
+      return null;
+    }
+
+    if (parsed.protocol === 'http:') {
+      parsed.protocol = 'ws:';
+      return parsed.toString();
+    }
+
+    if (parsed.protocol === 'https:') {
+      parsed.protocol = 'wss:';
+      return parsed.toString();
+    }
+
+    if (parsed.protocol === 'ws:' || parsed.protocol === 'wss:') {
+      return parsed.toString();
+    }
+
+    return null;
+  } catch {
+    return url.replace(/^http/, 'ws');
+  }
+};
+
 const createSubscriptionClient = (url: string) => {
-  const wsUrl = url.replace(/^http/, 'ws');
+  const wsUrl = resolveSubscriptionWsUrl(url);
+  if (!wsUrl) {
+    return null;
+  }
 
   return createWSClient({
     url: wsUrl,
@@ -36,8 +70,10 @@ const createSubscriptionExchange = (subscriptionClient: ReturnType<typeof create
 export const createExplorerClient = (url: string): Client => {
   const exchanges = [fetchExchange];
   const subscriptionClient = createSubscriptionClient(url);
-  const subscriptionExchange = createSubscriptionExchange(subscriptionClient);
-  exchanges.push(subscriptionExchange);
+  if (subscriptionClient) {
+    const subscriptionExchange = createSubscriptionExchange(subscriptionClient);
+    exchanges.push(subscriptionExchange);
+  }
 
   const client = createClient({
     url,

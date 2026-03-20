@@ -35,4 +35,16 @@ describe('subsquid createExplorerClient', () => {
       })
     );
   });
+
+  it('skips websocket subscription exchange for unsupported subquery gateway endpoints', () => {
+    createExplorerClient('https://api.subquery.network/sq/sora-xor/sora-prod');
+
+    expect(mocks.wsCreateClientMock).not.toHaveBeenCalled();
+    expect(mocks.subscriptionExchangeMock).not.toHaveBeenCalled();
+    expect(mocks.createClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        exchanges: [expect.any(Object)],
+      })
+    );
+  });
 });

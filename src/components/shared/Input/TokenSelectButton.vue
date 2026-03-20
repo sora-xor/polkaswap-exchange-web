@@ -104,6 +104,7 @@ button.el-button.neumorphic#{$baseClass} {
   text-transform: uppercase;
   box-shadow: var(--s-shadow-element-pressed);
   background-color: var(--s-color-base-content-tertiary);
+  border-color: transparent;
   color: var(--s-color-base-on-accent);
 
   #{$baseClass}__text {
@@ -116,7 +117,7 @@ button.el-button.neumorphic#{$baseClass} {
   &:focus,
   &.focusing,
   &.s-pressed {
-    box-shadow: $button-custom-shadow;
+    box-shadow: var(--s-shadow-element-pressed);
 
     #{$baseClass}__icon {
       color: var(--s-color-base-content-secondary) !important;
@@ -124,7 +125,7 @@ button.el-button.neumorphic#{$baseClass} {
   }
 
   &--token {
-    background-color: var(--s-color-base-border-primary);
+    background-color: var(--s-color-utility-body);
     color: var(--s-color-base-content-tertiary);
 
     #{$baseClass}__text {
@@ -138,15 +139,10 @@ button.el-button.neumorphic#{$baseClass} {
     &:focus,
     &.focusing,
     &.s-pressed {
-      background-color: var(--s-color-utility-surface);
-      box-shadow:
-        1px 1px 5px rgba(255, 255, 255, 0.7),
-        -1px -1px 5px #ffffff,
-        0px 0px 20px rgba(247, 84, 163, 0.5);
+      box-shadow: var(--s-shadow-element-pressed);
 
       #{$baseClass}__icon {
-        background-color: var(--s-color-base-content-secondary);
-        color: var(--s-color-utility-surface) !important;
+        color: var(--s-color-base-content-secondary) !important;
       }
     }
   }
@@ -166,6 +162,7 @@ $baseClass: '.token-select-button';
   &__content {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     white-space: nowrap;
     flex-wrap: nowrap;
     line-height: 1;
@@ -191,6 +188,7 @@ $baseClass: '.token-select-button';
     align-items: normal;
     justify-content: normal;
     flex: 0 0 auto;
+    vertical-align: baseline;
     margin-left: $inner-spacing-tiny;
     background-color: var(--s-color-base-on-accent);
     color: var(--s-color-base-content-tertiary) !important;

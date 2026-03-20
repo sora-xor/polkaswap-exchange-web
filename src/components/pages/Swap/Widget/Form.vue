@@ -244,8 +244,8 @@ const networkFee = computed(() => networkFees.value[Operation.Swap]);
 const slippageToleranceValue = computed(() => store.state.settings.slippageTolerance);
 const xor = computed(() => assetsStore.assetDataByAddress(XOR.address) as AccountAsset);
 const liquiditySource = computed(() => swapStore.swapLiquiditySource);
-const debugEnabled = computed(() => store.getters.settings.debugEnabled);
-const nodeIsConnected = computed(() => store.getters.settings.nodeIsConnected);
+const debugEnabled = computed(() => Boolean(store.getters?.settings?.debugEnabled));
+const nodeIsConnected = computed(() => Boolean(store.getters?.settings?.nodeIsConnected));
 const swapMarketAlgorithm = computed(() => swapStore.swapMarketAlgorithm);
 const isAvailable = computed(() => swapStore.isAvailable);
 const allowLossPopup = computed(() => swapStore.allowLossPopup);
@@ -335,6 +335,8 @@ function resetFieldTo() {
 }
 
 async function handleInputFieldFrom(value: string) {
+  swapStore.setExchangeB(false);
+
   if (!areTokensSelected.value || asZeroValue(value)) {
     resetFieldTo();
   }
@@ -346,6 +348,8 @@ async function handleInputFieldFrom(value: string) {
 }
 
 async function handleInputFieldTo(value: string) {
+  swapStore.setExchangeB(true);
+
   if (!areTokensSelected.value || asZeroValue(value)) {
     resetFieldFrom();
   }
@@ -421,10 +425,23 @@ function resetQuoteSubscription() {
   quoteSubscription.value = null;
 }
 
+async function refreshSwapQuotesConfiguration() {
+  try {
+    await api.swap.update();
+  } catch (error) {
+    console.warn('[swap] api.swap.update skipped', error);
+  }
+}
+
 async function subscribeOnQuote() {
   resetQuoteSubscription();
 
-  if (!areTokensSelected.value) return;
+  if (!areTokensSelected.value) {
+    quoteLoading.value = false;
+    swapStore.setSubscriptionPayload();
+    await runRecountSwapValues();
+    return;
+  }
 
   quoteLoading.value = true;
 
@@ -434,26 +451,44 @@ async function subscribeOnQuote() {
   );
 
   if (observableQuote) {
-    quoteSubscription.value = observableQuote.subscribe((quoteData: SwapQuoteData) => {
-      const { quote, isAvailable, liquiditySources } = quoteData;
-      swapStore.setSubscriptionPayload({ quote, isAvailable, liquiditySources });
-      recountSwapValues();
-      quoteLoading.value = false;
+    quoteSubscription.value = observableQuote.subscribe({
+      next: (quoteData: SwapQuoteData) => {
+        const { quote, isAvailable, liquiditySources } = quoteData;
+        swapStore.setSubscriptionPayload({ quote, isAvailable, liquiditySources });
+        recountSwapValues();
+        quoteLoading.value = false;
+      },
+      error: (error) => {
+        console.error('[swap] quote subscription failed', error);
+        swapStore.setSubscriptionPayload();
+        quoteLoading.value = false;
+        void runRecountSwapValues();
+      },
+      complete: () => {
+        quoteLoading.value = false;
+      },
     });
   } else {
     swapStore.setSubscriptionPayload();
     quoteLoading.value = false;
+    await runRecountSwapValues();
   }
 }
 
-function enableSwapSubscriptions() {
+async function enableSwapSubscriptions(withApiRefresh = false) {
+  if (withApiRefresh) {
+    await refreshSwapQuotesConfiguration();
+  }
   swapStore.updateSubscriptions();
-  subscribeOnQuote();
+  await subscribeOnQuote();
 }
 
 function resetSwapSubscriptions() {
   swapStore.resetSubscriptions();
   resetQuoteSubscription();
+  quoteLoading.value = false;
+  swapStore.setSubscriptionPayload();
+  void runRecountSwapValues();
 }
 
 function openSelectTokenDialog(isFrom: boolean) {
@@ -470,7 +505,6 @@ async function handleSelectToken(token: AccountAsset) {
     } else {
       await setTokenToAddress(token.address);
     }
-    subscribeOnQuote();
   });
 }
 
@@ -527,6 +561,7 @@ async function handleSwitchTokens() {
   if (!areTokensSelected.value) return;
 
   await swapStore.switchTokens();
+  await subscribeOnQuote();
   recountSwapValues();
 }
 
@@ -542,13 +577,22 @@ function openSettingsDialog() {
   showSettings.value = true;
 }
 
+watch(
+  [() => tokenFrom.value?.address ?? '', () => tokenTo.value?.address ?? ''],
+  ([fromAddress, toAddress], [prevFromAddress, prevToAddress]) => {
+    if (fromAddress === prevFromAddress && toAddress === prevToAddress) return;
+
+    void subscribeOnQuote();
+  }
+);
+
 watch(liquiditySource, () => {
   runRecountSwapValues();
 });
 
-watch(nodeIsConnected, (connected) => {
+watch(nodeIsConnected, async (connected) => {
   if (connected) {
-    enableSwapSubscriptions();
+    await enableSwapSubscriptions(true);
   } else {
     resetSwapSubscriptions();
   }
@@ -556,12 +600,7 @@ watch(nodeIsConnected, (connected) => {
 
 onMounted(async () => {
   await withApi(async () => {
-    try {
-      await api.swap.update();
-    } catch (error) {
-      console.warn('[swap] api.swap.update skipped', error);
-    }
-    enableSwapSubscriptions();
+    await enableSwapSubscriptions(true);
   });
 });
 
@@ -577,6 +616,21 @@ onBeforeUnmount(() => {
   @include full-width-button('action-button');
   @include full-width-button('swap-details', 0);
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
+
+  :deep(button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary)) {
+    display: inline-block;
+    line-height: 14px;
+    text-align: center;
+
+    .s-button__icon {
+      line-height: 14px !important;
+    }
+
+    .s-icon,
+    [class*='s-icon-'] {
+      vertical-align: baseline !important;
+    }
+  }
 }
 
 .el-button.neumorphic.s-action:disabled {
@@ -593,6 +647,60 @@ onBeforeUnmount(() => {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
+
+  // `swap-details` is rendered inside a nested child slot tree, so scoped
+  // selectors from this component do not reach it without `:deep`.
+  :deep(.swap-details) {
+    margin-top: 0;
+    width: 100%;
+  }
+
+  :deep(button.el-button.neumorphic.s-action.el-button--switch-tokens:not(.s-primary)) {
+    display: block;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    padding: 0;
+    border-radius: var(--s-border-radius-small);
+    background: var(--s-color-utility-body);
+    border-color: transparent;
+    color: var(--s-color-base-content-tertiary);
+    line-height: 14px;
+    box-shadow: var(--s-shadow-element-pressed) !important;
+    transition:
+      box-shadow 0.12s ease,
+      color 0.12s ease;
+
+    .s-icon,
+    [class*='s-icon-'] {
+      font-size: 24px !important;
+      line-height: 24px !important;
+      width: 24px !important;
+      height: 24px !important;
+      display: inline-block !important;
+      vertical-align: baseline !important;
+      color: var(--s-color-base-content-tertiary);
+    }
+
+    .s-button__icon {
+      width: auto !important;
+      height: auto !important;
+      line-height: 14px !important;
+      display: inline !important;
+    }
+
+    &:not(.is-disabled):not(:disabled):active {
+      box-shadow: var(--s-shadow-element) !important;
+      color: var(--s-color-theme-accent);
+    }
+
+    &.is-disabled,
+    &:disabled {
+      box-shadow: var(--s-shadow-element) !important;
+      border-color: var(--s-color-utility-body);
+    }
+  }
 }
 
 .price-difference {
@@ -607,21 +715,29 @@ onBeforeUnmount(() => {
   }
 }
 
-.action-button {
-  :deep(.s-button__text) {
-    text-transform: uppercase;
-  }
+:deep(button.el-button.action-button.s-typography-button--large) {
+  height: auto !important;
+  min-height: 42px !important;
+  white-space: normal !important;
 }
 
-:deep(button.action-button.el-button--primary.neumorphic) {
-  box-shadow:
-    1px 1px 5px 0px var(--s-shadow-color-light),
-    -1px -1px 5px 0px var(--s-shadow-color-light);
+:deep(button.el-button.action-button.s-typography-button--large > .s-button__text) {
+  display: block !important;
+  width: 100%;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .swap-details-info-line {
   :deep(.info-line) {
     min-width: 0;
+  }
+
+  :deep(.el-tooltip) {
+    margin-right: 4px !important;
   }
 
   :deep(.info-line-content) {
@@ -634,43 +750,6 @@ onBeforeUnmount(() => {
     max-width: none;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-}
-
-:deep(.el-button--switch-tokens) {
-  width: 42px;
-  height: 42px;
-  min-width: 42px;
-  min-height: 42px;
-  padding: 0;
-  border-radius: var(--s-border-radius-small);
-  background: var(--s-color-base-background-hover);
-  color: var(--s-color-base-content-tertiary);
-  line-height: 14px;
-  box-shadow: var(--s-shadow-element);
-
-  .s-icon,
-  [class*='s-icon-'] {
-    font-size: 24px !important;
-    line-height: 24px !important;
-    width: 24px !important;
-    height: 24px !important;
-    display: inline-block !important;
-    color: var(--s-color-base-content-tertiary);
-  }
-
-  .s-button__icon {
-    width: 24px !important;
-    height: 24px !important;
-    line-height: 24px !important;
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &.is-disabled,
-  &:disabled {
-    box-shadow: var(--s-shadow-element);
   }
 }
 

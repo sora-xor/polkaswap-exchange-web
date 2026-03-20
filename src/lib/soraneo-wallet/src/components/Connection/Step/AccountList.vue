@@ -86,6 +86,7 @@ import LoadingMixin from '../../mixins/LoadingMixin';
 import NotificationMixin from '../../mixins/NotificationMixin';
 import AccountConnectionList from '../List/Account.vue';
 import ConnectionItems from '../List/ConnectionItems.vue';
+import { formatConnectedAddress } from '../utils';
 
 import type { PolkadotJsAccount } from '../../../types/common';
 import type { WithKeyring } from '@sora-substrate/sdk';
@@ -140,7 +141,10 @@ export default class AccountListStep extends mixins(LoadingMixin, NotificationMi
   isConnectedAccount(account: PolkadotJsAccount): boolean {
     return (
       this.connectedWallet === account.source &&
-      this.chainApi.formatAddress(this.connectedAccount, false) === account.address
+      formatConnectedAddress(
+        this.chainApi as Nullable<{ formatAddress?: (address: string, isShort?: boolean) => string }>,
+        this.connectedAccount
+      ) === account.address
     );
   }
 

@@ -1,10 +1,10 @@
 <template>
   <div class="market-algorithm">
     <swap-settings-header :title="t('dexSettings.marketAlgorithm')">
-      <div slot="tooltip-content">
+      <template #tooltip-content>
         <strong>{{ t('marketAlgorithmText') }}</strong>
         <span>{{ t('dexSettings.marketAlgorithmTooltip.main') }}</span>
-      </div>
+      </template>
     </swap-settings-header>
     <settings-tabs :value="currentMarketAlgorithm" :tabs="marketAlgorithmTabs" @input="selectTab"></settings-tabs>
   </div>
@@ -20,6 +20,7 @@ import store from '@/store';
 import { useSwapStore } from '@/stores/swap';
 import type { TabItem } from '@/types/tabs';
 
+import { resolveCurrentMarketAlgorithm, resolveMarketAlgorithms } from './utils';
 import SwapSettingsHeader from './Header.vue';
 
 const SettingsTabs = lazyComponent(Components.SettingsTabs);
@@ -30,11 +31,12 @@ const swapStore = useSwapStore();
 const marketAlgorithm = computed(() => store.state.settings.marketAlgorithm as MarketAlgorithms);
 const marketAlgorithms = computed(() => swapStore.marketAlgorithms);
 const marketAlgorithmsAvailable = computed(() => swapStore.marketAlgorithmsAvailable);
+const availableMarketAlgorithms = computed(() => resolveMarketAlgorithms(marketAlgorithms.value));
 
 const generateAlgorithmItem = (type: string) => `<span class="algorithm">${type}</span>`;
 
 const marketAlgorithmTabs = computed<Array<TabItem>>(() =>
-  marketAlgorithms.value.map((name) => {
+  availableMarketAlgorithms.value.map((name) => {
     const contentKey = `dexSettings.marketAlgorithms.${name}`;
     const content = te(contentKey)
       ? t(`dexSettings.marketAlgorithms.${name}`, {
@@ -52,9 +54,13 @@ const marketAlgorithmTabs = computed<Array<TabItem>>(() =>
   })
 );
 
-const currentMarketAlgorithm = computed(() =>
-  marketAlgorithmsAvailable.value ? marketAlgorithm.value : MarketAlgorithms.SMART
-);
+const currentMarketAlgorithm = computed(() => {
+  return resolveCurrentMarketAlgorithm(
+    marketAlgorithmsAvailable.value,
+    marketAlgorithm.value,
+    availableMarketAlgorithms.value
+  );
+});
 
 const selectTab = (name: MarketAlgorithms) => {
   store.commit.settings.setMarketAlgorithm(name);
@@ -71,6 +77,10 @@ const selectTab = (name: MarketAlgorithms) => {
 
     .el-tabs__item {
       flex: 1;
+    }
+
+    .el-tabs__item.is-active {
+      box-shadow: var(--s-shadow-element-pressed) !important;
     }
   }
 }

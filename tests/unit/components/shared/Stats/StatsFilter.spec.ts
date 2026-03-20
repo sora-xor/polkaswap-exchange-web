@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { nextTick } from 'vue';
+import statsFilterSource from '@/components/shared/Stats/StatsFilter.vue?raw';
 
 import StatsFilter from '@/components/shared/Stats/StatsFilter.vue';
 import type { SnapshotFilter } from '@/types/filters';
@@ -240,5 +241,13 @@ describe('StatsFilter.vue', () => {
 
     expect(exposed?.visibility.value).toBe(false);
     wrapper.unmount();
+  });
+
+  it('uses themed text colors for inactive and selected periods', () => {
+    expect(statsFilterSource).toContain('color: var(--s-color-base-content-secondary) !important;');
+    expect(statsFilterSource).toContain(":global(:root[data-theme='dark'] .stats-filter-button)");
+    expect(statsFilterSource).toContain('color: var(--s-color-base-content-primary) !important;');
+    expect(statsFilterSource).toContain('&.s-pressed {');
+    expect(statsFilterSource).toContain('color: var(--s-color-theme-accent) !important;');
   });
 });

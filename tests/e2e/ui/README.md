@@ -9,6 +9,17 @@
   - Playwright uses `yarn build --logLevel error` to keep build output compact during test runs.
   - Request-level preview logs are disabled by default; set `PS_IPFS_TEST_LOG_REQUESTS=1` to enable verbose server request logging while debugging.
 
+- Additional smoke runners (CLI-first Playwright scripts):
+  - Swap interaction regression smoke: `yarn test:e2e:swap:smoke`
+    - Validates repeated token selection changes, modal outside-click close, and customize-widget switch/label toggles on `#/swap`.
+  - Safari/WebKit UI smoke: `yarn test:e2e:safari:smoke`
+    - Runs cross-route shell checks under Playwright WebKit (`#/swap`, `#/trade/DAI/KUSD`, `#/wallet`, `#/burn`, `#/stats`) with screenshots in `output/playwright/safari-smoke/`.
+  - Wallet matrix (multi-route + signing readiness): `yarn test:e2e:wallet:matrix`
+    - Verifies `polkadot-js`, `fearless-wallet`, `subwallet-js`, and `talisman` across `#/swap`, `#/bridge`, `#/burn`, `#/trade/DAI/KUSD`, `#/wallet`, `#/stats`.
+    - Includes provider-account checks plus signature-readiness (`signRaw`) checks after connection.
+  - Fresh-profile wallet matrix: `yarn test:e2e:wallet:matrix:fresh`
+    - Runs the same wallet matrix using fresh copied extension profiles for deterministic reruns.
+
 - Live runtime smoke: `yarn test:e2e:live`
   - Runs `tests/e2e/ui/live-runtime.spec.ts` with `PS_E2E_LIVE_NETWORK=1`.
   - Does **not** install network stubs; validates core shell interactions, swap wallet connect-overlay teardown, authenticated wallet account-settings/account-action overlays with hash-churn teardown, footer node/indexer dialog parity (`Escape`/outside/hash/breakpoint/reopen) with post-close swap clickability, bridge provider/network/SORA-account/sub-account/sub-node hash-churn teardown plus bridge asset/sub-account decoupling with reopen checks and swap clickability against real runtime behavior, and live route-matrix rendering checks (public routes, protected-route redirects, and protected-route render paths with seeded auth state).

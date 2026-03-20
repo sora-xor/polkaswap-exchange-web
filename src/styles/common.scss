@@ -21,6 +21,7 @@ html {
 }
 
 body {
+  font-family: 'Sora', sans-serif;
   line-height: inherit;
 }
 
@@ -30,12 +31,75 @@ body {
 
   .el-loading-spinner {
     background-image: url('@/assets/img/pswap-loader.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    animation: pswap-loader-spin 1s linear infinite;
     height: var(--s-size-medium);
     width: var(--s-size-medium);
     margin-left: calc(50% - (var(--s-size-medium) / 2));
-    > svg {
+    > svg,
+    > i,
+    .circular,
+    .path {
       display: none;
     }
+  }
+}
+
+.app-loading-overlay__host {
+  position: relative !important;
+}
+
+.app-loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--s-color-utility-body);
+  z-index: $app-loader-layer;
+}
+
+.app-loading-overlay__spinner {
+  width: var(--s-size-medium);
+  height: var(--s-size-medium);
+  background-image: url('@/assets/img/pswap-loader.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  animation: pswap-loader-spin 1s linear infinite;
+
+  > * {
+    display: none !important;
+  }
+}
+
+@keyframes pswap-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+i.el-icon-loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  background-image: url('@/assets/img/pswap-loader.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  animation: pswap-loader-spin 1s linear infinite;
+  color: transparent !important;
+
+  .s-icon__svg {
+    display: none !important;
+  }
+
+  &::before {
+    opacity: 0 !important;
   }
 }
 
@@ -200,7 +264,7 @@ button.el-button.s-typography-button--large {
   min-height: 42px !important;
   height: 42px !important;
   padding: 5px 13px !important;
-  border: 2px solid rgb(237, 228, 231) !important;
+  border: 2px solid var(--s-color-base-border-secondary) !important;
   font-size: 24px !important;
   line-height: 24px !important;
   white-space: nowrap !important;
@@ -231,6 +295,95 @@ button.el-button.s-typography-button--medium .s-button__text {
   white-space: nowrap !important;
 }
 
+/* Restore production neumorphic state treatment for action buttons. */
+.el-button.s-action:not(.s-primary) {
+  background-color: var(--s-color-base-background);
+  border-color: var(--s-color-base-background);
+  color: var(--s-color-base-content-primary);
+}
+
+.el-button.s-action:not(.s-primary):disabled,
+.el-button.s-action:not(.s-primary):disabled:hover {
+  background-color: var(--s-color-base-disabled);
+  border-color: var(--s-color-base-disabled);
+  color: var(--s-color-base-on-disabled);
+}
+
+button.el-button.neumorphic.s-action:not(.s-primary) {
+  background: var(--s-color-utility-body);
+  box-shadow: var(--s-shadow-element-pressed);
+  border: 0 solid transparent;
+  border-color: var(--s-color-utility-body);
+  color: var(--s-color-base-content-tertiary);
+}
+
+button.el-button.neumorphic.s-action:not(.s-primary):disabled,
+button.el-button.neumorphic.s-action:not(.s-primary):disabled:hover {
+  background: var(--s-color-utility-body);
+  box-shadow: var(--s-shadow-element);
+  border-color: var(--s-color-utility-body);
+  color: var(--s-color-base-content-tertiary);
+}
+
+button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary) {
+  border-color: transparent;
+}
+
+[design-system-theme='light'] button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary):hover,
+[design-system-theme='light'] button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary):focus {
+  color: #d5cdd0;
+}
+
+[design-system-theme='dark'] button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary):hover,
+[design-system-theme='dark'] button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary):focus {
+  color: var(--s-color-base-content-tertiary);
+}
+
+/* Keep primary CTA styling aligned with production in both light and noir themes. */
+button.el-button.neumorphic.s-primary {
+  box-shadow:
+    1px 1px 5px 0px #ffffff,
+    -1px -1px 5px 0px #ffffff;
+  border-color: var(--s-color-base-border-secondary);
+  color: var(--s-color-base-on-accent);
+}
+
+[design-system-theme='light'] button.el-button.neumorphic.s-primary:hover,
+[design-system-theme='light'] button.el-button.neumorphic.s-primary:focus,
+[design-system-theme='light'] button.el-button.neumorphic.s-primary:active,
+[design-system-theme='dark'] button.el-button.neumorphic.s-primary:hover,
+[design-system-theme='dark'] button.el-button.neumorphic.s-primary:focus,
+[design-system-theme='dark'] button.el-button.neumorphic.s-primary:active {
+  background-color: var(--s-color-theme-accent);
+}
+
+[design-system-theme='dark'] button.el-button.neumorphic.s-primary {
+  box-shadow:
+    1px 1px 5px 0px #391057,
+    -1px -1px 5px 0px #9b6fa5;
+}
+
+.order-book-connect-btn {
+  min-height: 42px !important;
+  height: auto !important;
+  white-space: normal !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.order-book-connect-btn > span,
+.order-book-connect-btn .s-button__text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 20px !important;
+  text-align: center;
+}
+
 .s-button__text > i.s-icon-chevron-down-rounded-16 {
   font-size: 18px !important;
   line-height: 18px !important;
@@ -244,11 +397,17 @@ button.el-button.s-typography-button--medium .s-button__text {
 .transaction-details i.s-icon-arrows-chevron-top-24 {
   font-size: 16px !important;
   line-height: 16px !important;
+  vertical-align: baseline !important;
 }
 
 .marketing-prev > i.s-icon-arrows-chevron-left-rounded-24,
 .marketing-next > i.s-icon-arrows-chevron-right-rounded-24 {
-  line-height: 42px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  line-height: 24px !important;
 }
 
 i.marketing-suffix.s-icon-arrows-arrow-top-right-24 {

@@ -192,4 +192,24 @@ describe('TokenInput', () => {
     const asHuman = FPNumber.fromCodecValue(lastEmission?.[0] ?? '0', token.decimals).toString();
     expect(asHuman).toBe('5');
   });
+
+  it('forwards primary amount input from the main float input', async () => {
+    const wrapper = createWrapper({
+      token,
+      isSelectAvailable: true,
+    });
+
+    const mainFloatInput = wrapper
+      .findAllComponents(FloatInputStub)
+      .find((component) => component.props('size') === 'medium');
+    expect(mainFloatInput).toBeTruthy();
+
+    mainFloatInput!.vm.$emit('input', '1.25');
+    await nextTick();
+
+    const emitted = wrapper.emitted('input');
+    expect(emitted).toBeTruthy();
+    const lastEmission = emitted?.[emitted.length - 1];
+    expect(lastEmission?.[0]).toBe('1.25');
+  });
 });

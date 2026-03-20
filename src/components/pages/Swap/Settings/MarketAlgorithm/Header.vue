@@ -9,7 +9,9 @@
       border-radius="mini"
       tabindex="-1"
     >
-      <slot slot="content" :name="tooltipScopedSlot"></slot>
+      <template #content>
+        <slot :name="tooltipScopedSlot"></slot>
+      </template>
       <s-icon class="settings-header-hint" name="info-16" size="14px"></s-icon>
     </s-tooltip>
   </div>
@@ -66,6 +68,7 @@ const hasTooltipContent = computed(() => !!tooltip.value || !!slots[tooltipScope
   &-hint {
     margin-left: $inner-spacing-mini;
     cursor: pointer;
+    color: var(--s-color-base-content-tertiary);
   }
 }
 </style>

@@ -1,5 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import slippageToleranceSource from '@/components/shared/Settings/SlippageTolerance.vue?raw';
 
 const setSlippageMock = vi.hoisted(() => vi.fn());
 const setDeadlineMock = vi.hoisted(() => vi.fn());
@@ -163,5 +164,20 @@ describe('SlippageTolerance', () => {
     await flushPromises();
 
     expect(Number(storeState.settings.slippageTolerance)).toBeGreaterThanOrEqual(0.01);
+  });
+
+  it('keeps the slippage arrow chip and glyph flip aligned with production', () => {
+    expect(slippageToleranceSource).toContain('.el-collapse.neumorphic .el-icon-arrow-right {');
+    expect(slippageToleranceSource).toContain('box-shadow: var(--s-shadow-element-pressed);');
+    expect(slippageToleranceSource).toContain('.el-collapse-item__header .el-icon-arrow-right.is-active {');
+    expect(slippageToleranceSource).toContain('transform: none;');
+    expect(slippageToleranceSource).toContain('.el-collapse-item__header .el-icon-arrow-right.is-active::before {');
+    expect(slippageToleranceSource).toContain('transform: scaleY(-1);');
+  });
+
+  it('keeps the expanded slippage input compact like the production swap panel', () => {
+    expect(slippageToleranceSource).toContain('height: var(--s-size-small);');
+    expect(slippageToleranceSource).toContain('padding: $basic-spacing #{$inner-spacing-medium};');
+    expect(slippageToleranceSource).toContain('min-height: calc(var(--s-size-small) - (#{$basic-spacing} * 2));');
   });
 });

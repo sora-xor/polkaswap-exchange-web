@@ -8,6 +8,7 @@ import { getCurrency } from '@/util';
 
 import { DaiCurrency } from '../../consts/currencies';
 import { settingsGetterContext } from './../settings';
+import { normalizeTheme } from './theme';
 
 import type { SettingsState } from './types';
 
@@ -37,14 +38,15 @@ const getters = defineGetters<SettingsState>()({
   libraryTheme(...args) {
     const { state } = settingsGetterContext(args);
 
-    return state.theme;
+    return normalizeTheme(state.theme);
   },
 
   libraryDesignSystem(...args): LibraryDesignSystem {
     const { state } = settingsGetterContext(args);
+    const theme = normalizeTheme(state.theme);
 
     return {
-      theme: state.theme,
+      theme,
     };
   },
 });

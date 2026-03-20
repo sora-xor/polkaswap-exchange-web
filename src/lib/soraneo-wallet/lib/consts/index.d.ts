@@ -79,6 +79,7 @@ export declare enum HashType {
 }
 export declare enum ExplorerType {
   Sorascan = 'sorascan',
+  Sorametrics = 'sorametrics',
   Subscan = 'subscan',
   Polkadot = 'polkadot',
 }
@@ -190,6 +191,7 @@ export declare const TranslationConsts: {
   readonly CEX: 'CEX';
   readonly Polkadot: 'Polkadot';
   readonly SORAScan: 'SORAScan';
+  readonly SoraMetrics: 'SoraMetrics';
   readonly Subscan: 'Subscan';
   readonly CedeStore: 'cede.store';
   readonly QR: 'QR';

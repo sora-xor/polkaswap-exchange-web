@@ -10,6 +10,8 @@
     :decimals="decimals"
     :delimiters="delimiters"
     v-bind="$attrs"
+    @input="handleMainInput"
+    @focus="handleMainFocus"
   >
     <template #top>
       <div class="input-line">
@@ -289,6 +291,14 @@ const handleFiatBlur = (): void => {
 
 const handleMax = (): void => {
   emit('max', props.token ?? null);
+};
+
+const handleMainInput = (value: string): void => {
+  emit('input', value);
+};
+
+const handleMainFocus = (): void => {
+  emit('focus');
 };
 
 const handleSelectToken = (): void => {

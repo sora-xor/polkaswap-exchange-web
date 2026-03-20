@@ -129,13 +129,12 @@ const styles = computed(() => {
 
 <style lang="scss">
 i[class*='s-icon-'] {
-  display: inline-flex;
+  display: inline-block;
   flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
   width: 1em;
   height: 1em;
   line-height: 1;
+  vertical-align: middle;
   color: inherit;
 
   .s-icon__svg {

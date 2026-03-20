@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 
 import { FPNumber } from '@sora-substrate/math';
@@ -20,11 +20,13 @@ import { api, WALLET_CONSTS } from '@wallet';
 import { PageNames } from '@/consts';
 import store from '@/store';
 import { useRouterStore } from '@/stores/router';
+import { useSwapStore } from '@/stores/swap';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 const routerStore = useRouterStore();
+const swapStore = useSwapStore();
 const walletStore = useWalletStore();
 const vueRouter = useRouter();
 const route = useRoute();
@@ -36,9 +38,13 @@ const whitelist = computed(() => walletStore.whitelist);
 const whitelistIdsBySymbol = computed(() => walletStore.whitelistIdsBySymbol);
 const getAsset = (address?: string) => store.getters.assets.assetDataByAddress(address) as AccountAsset;
 
-const setSwapFromAsset = (address?: string) => store.dispatch.swap.setTokenFromAddress(address);
-const setSwapToAsset = () => store.dispatch.swap.setTokenToAddress();
+const setSwapFromAsset = (address?: string) => swapStore.setTokenFromAddress(address);
+const setSwapToAsset = () => swapStore.setTokenToAddress();
 const setAddliquidityAssetA = (address: string) => store.dispatch.addLiquidity.setFirstTokenAddress(address);
+
+const ensureWalletRoute = (): void => {
+  routerStore.checkCurrentRoute();
+};
 
 const tryNavigate = () => {
   try {
@@ -61,22 +67,43 @@ const tryNavigate = () => {
 };
 
 onMounted(() => {
+  ensureWalletRoute();
   tryNavigate();
 });
 
 onBeforeRouteUpdate((to, from, next) => {
   next();
+  ensureWalletRoute();
   tryNavigate();
 });
+
+watch(
+  () => ({
+    isLoggedIn: isLoggedIn.value,
+    page: route.query.page,
+    asset: route.query.asset,
+    to: route.query.to,
+    amount: route.query.amount,
+    whitelistSize: Object.keys(whitelistIdsBySymbol.value ?? {}).length,
+  }),
+  () => {
+    tryNavigate();
+  }
+);
 
 const handleClose = () => {
   vueRouter.back();
 };
 
-const handleSwap = async (asset: AccountAsset) => {
-  await setSwapFromAsset(asset.address);
-  await setSwapToAsset();
-  vueRouter.push({ name: PageNames.Swap });
+const handleSwap = async (asset?: AccountAsset) => {
+  try {
+    setSwapFromAsset(asset?.address);
+    setSwapToAsset();
+  } catch (error) {
+    console.warn('[WALLET] Swap setup issue:', error);
+  }
+
+  await vueRouter.push({ name: PageNames.Swap });
 };
 
 const handleLiquidity = async (asset: AccountAsset) => {

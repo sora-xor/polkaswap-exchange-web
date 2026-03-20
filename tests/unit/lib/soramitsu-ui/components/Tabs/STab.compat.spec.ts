@@ -16,6 +16,23 @@ vi.mock('@soramitsu-ui/ui/util', () => ({
   },
 }));
 
+class ResizeObserverMock {
+  static instances: ResizeObserverMock[] = [];
+  callback: ResizeObserverCallback;
+
+  constructor(callback: ResizeObserverCallback) {
+    this.callback = callback;
+    ResizeObserverMock.instances.push(this);
+  }
+
+  observe = vi.fn();
+  disconnect = vi.fn();
+
+  trigger() {
+    this.callback([], this as unknown as ResizeObserver);
+  }
+}
+
 describe('STab compatibility', () => {
   it('renders label prop when slot is not provided', () => {
     const wrapper = mount(STabs, {
@@ -100,9 +117,83 @@ describe('STab compatibility', () => {
     await wrapper.vm.$nextTick();
 
     const activeBarStyle = wrapper.find('.el-tabs__active-bar').attributes('style');
-
     expect(activeBarStyle).toContain('width: 107px;');
     expect(activeBarStyle).toContain('translateX(143px)');
+  });
+
+  it('recomputes active bar when observed tab geometry changes after mount', async () => {
+    ResizeObserverMock.instances = [];
+    vi.stubGlobal('ResizeObserver', ResizeObserverMock as unknown as ResizeObserver);
+    const requestAnimationFrameSpy = vi
+      .spyOn(window, 'requestAnimationFrame')
+      .mockImplementation((callback: FrameRequestCallback) => {
+        callback(0);
+        return 0;
+      });
+    try {
+      const wrapper = mount(STabs, {
+        props: {
+          value: 'two',
+        },
+        slots: {
+          default: () => [h(STab, { name: 'one', label: 'One' }), h(STab, { name: 'two', label: 'Two' })],
+        },
+      });
+
+      const nav = wrapper.find('.el-tabs__nav').element as HTMLElement;
+      const tabs = wrapper.findAll('[role="tab"]');
+      const activeTab = tabs[1]?.element as HTMLElement;
+
+      activeTab.style.paddingLeft = '12px';
+      activeTab.style.paddingRight = '12px';
+
+      vi.spyOn(nav, 'getBoundingClientRect').mockReturnValue({
+        x: 100,
+        y: 0,
+        width: 262,
+        height: 42,
+        top: 0,
+        right: 362,
+        bottom: 42,
+        left: 100,
+        toJSON: () => ({}),
+      } as DOMRect);
+
+      let activeWidth = 90;
+
+      vi.spyOn(activeTab, 'getBoundingClientRect').mockImplementation(
+        () =>
+          ({
+            x: 231,
+            y: 0,
+            width: activeWidth,
+            height: 42,
+            top: 0,
+            right: 231 + activeWidth,
+            bottom: 42,
+            left: 231,
+            toJSON: () => ({}),
+          }) as DOMRect
+      );
+
+      await wrapper.vm.$nextTick();
+
+      const lastCall = ResizeObserverMock.instances.at(-1);
+
+      expect(lastCall).toBeTruthy();
+
+      activeWidth = 131;
+      lastCall?.trigger();
+      await wrapper.vm.$nextTick();
+
+      const activeBarStyle = wrapper.find('.el-tabs__active-bar').attributes('style');
+
+      expect(activeBarStyle).toContain('width: 107px;');
+      expect(activeBarStyle).toContain('translateX(143px)');
+    } finally {
+      requestAnimationFrameSpy.mockRestore();
+      vi.unstubAllGlobals();
+    }
   });
 
   it('renders non-tab slot nodes alongside tab content', () => {

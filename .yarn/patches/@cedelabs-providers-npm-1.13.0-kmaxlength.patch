@@ -1,0 +1,12 @@
+diff --git a/dist/index-f2ac92fa.mjs b/dist/index-f2ac92fa.mjs
+index e5f2f908e63d6f18ee7328f2d8139be2f9ea66c7..380f57a8d5370dbfbe4d93ecd97ffcf3eaebd6fe 100644
+--- a/dist/index-f2ac92fa.mjs
++++ b/dist/index-f2ac92fa.mjs
+@@ -1623,6 +1623,6 @@
+ })(Or);
+ (function(e) {
+-  var i = C.Buffer, t = Q.Transform, r = Or, a = oe, n = Dr().ok, l = C.kMaxLength, o = "Cannot create final Buffer. It would be larger than 0x" + l.toString(16) + " bytes";
++  var i = C.Buffer, t = Q.Transform, r = Or, a = oe, n = Dr().ok, l = C.kMaxLength || C.Buffer && C.Buffer.kMaxLength || 2147483647, o = "Cannot create final Buffer. It would be larger than 0x" + l.toString(16) + " bytes";
+   r.Z_MIN_WINDOWBITS = 8, r.Z_MAX_WINDOWBITS = 15, r.Z_DEFAULT_WINDOWBITS = 15, r.Z_MIN_CHUNK = 64, r.Z_MAX_CHUNK = 1 / 0, r.Z_DEFAULT_CHUNK = 16 * 1024, r.Z_MIN_MEMLEVEL = 1, r.Z_MAX_MEMLEVEL = 9, r.Z_DEFAULT_MEMLEVEL = 8, r.Z_MIN_LEVEL = -1, r.Z_MAX_LEVEL = 9, r.Z_DEFAULT_LEVEL = r.Z_DEFAULT_COMPRESSION;
+   for (var d = Object.keys(r), f = 0; f < d.length; f++) {
+     var h = d[f];

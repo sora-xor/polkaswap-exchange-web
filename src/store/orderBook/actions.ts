@@ -1,6 +1,7 @@
 import { api } from '@wallet';
 import { defineActions } from 'direct-vuex';
 import { combineLatest } from 'rxjs';
+import { FPNumber } from '@sora-substrate/math';
 
 import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook/orderBook';
 import { fetchOrderBooks } from '@/indexer/queries/orderBook/orderBooks';
@@ -8,18 +9,110 @@ import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import { orderBookActionContext } from '.';
 
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
 import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
 import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
+const ORDER_BOOK_SNAPSHOT_TIMEOUT_MS = 4_000;
+
+type TimedResult<T> = {
+  timedOut: boolean;
+  value: T;
+};
+
+type MaybeOrderBookState = Nullable<{
+  baseAssetAddress?: Nullable<string>;
+  quoteAssetAddress?: Nullable<string>;
+}>;
+
+type MaybeOrderBookGetters = Nullable<{
+  baseAsset?: Nullable<{ address?: string }>;
+  quoteAsset?: Nullable<{ address?: string }>;
+}>;
+
+const withTimeout = <T>(promise: Promise<T>, fallback: T): Promise<TimedResult<T>> => {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      resolve({ timedOut: true, value: fallback });
+    }, ORDER_BOOK_SNAPSHOT_TIMEOUT_MS);
+
+    promise
+      .then((value) => {
+        clearTimeout(timer);
+        resolve({ timedOut: false, value });
+      })
+      .catch((error) => {
+        clearTimeout(timer);
+        reject(error);
+      });
+  });
+};
+
+const toFpNumber = (value: unknown): FPNumber => {
+  if (value instanceof FPNumber) return value;
+
+  const codecValue = value as Nullable<{ inner?: { toString?: () => string }; isDivisible?: { isTrue?: boolean } }>;
+  const inner = codecValue?.inner?.toString?.();
+
+  if (inner !== undefined) {
+    const decimals = codecValue?.isDivisible?.isTrue ? FPNumber.DEFAULT_PRECISION : 0;
+    return FPNumber.fromCodecValue(inner, decimals);
+  }
+
+  return new FPNumber((value as string | number | bigint | undefined) ?? 0);
+};
+
+const mapAggregatedSnapshot = (snapshot: unknown): Array<OrderBookPriceVolume> => {
+  const result: Array<OrderBookPriceVolume> = [];
+  const maybeIterable = snapshot as Nullable<{ forEach?: (cb: (value: unknown, key: unknown) => void) => void }>;
+
+  if (typeof maybeIterable?.forEach !== 'function') {
+    return result;
+  }
+
+  maybeIterable.forEach((value, key) => {
+    result.push([toFpNumber(key), toFpNumber(value)]);
+  });
+
+  return result;
+};
+
+const loadSnapshotFromConnection = async (
+  rootState: any,
+  side: 'asks' | 'bids',
+  base: string,
+  quote: string,
+  dexId?: number
+): Promise<Array<OrderBookPriceVolume>> => {
+  const connectionApi = rootState?.settings?.appConnection?.connection?.api;
+  const queryFn =
+    side === 'asks' ? connectionApi?.query?.orderBook?.aggregatedAsks : connectionApi?.query?.orderBook?.aggregatedBids;
+
+  if (typeof queryFn !== 'function') {
+    return [];
+  }
+
+  const snapshot = await queryFn({ dexId: dexId ?? 0, base, quote });
+  return mapAggregatedSnapshot(snapshot);
+};
+
+const resolveOrderBookAddresses = (
+  state: MaybeOrderBookState,
+  getters: MaybeOrderBookGetters
+): { baseAssetAddress: Nullable<string>; quoteAssetAddress: Nullable<string> } => {
+  const baseAssetAddress = state?.baseAssetAddress ?? getters?.baseAsset?.address ?? null;
+  const quoteAssetAddress = state?.quoteAssetAddress ?? getters?.quoteAsset?.address ?? null;
+
+  return { baseAssetAddress, quoteAssetAddress };
+};
 
 const actions = defineActions({
   updateBalanceSubscription(context, reset: boolean): void {
     const { commit, getters, rootGetters } = orderBookActionContext(context);
 
-    const { baseAsset: token } = getters;
+    const token = getters?.baseAsset;
     const { setBaseAssetBalance } = commit;
     const field = token?.address as string;
 
@@ -83,34 +176,48 @@ const actions = defineActions({
   },
 
   async subscribeToBidsAndAsks(context): Promise<void> {
-    const { commit, dispatch, getters } = orderBookActionContext(context);
-    const { baseAsset, quoteAsset } = getters;
+    const { commit, dispatch, getters, state, rootState } = orderBookActionContext(context);
+    const { baseAssetAddress, quoteAssetAddress } = resolveOrderBookAddresses(state, getters);
+    const selectedDexId = Number.isFinite(state?.dexId) ? state.dexId : undefined;
 
     dispatch.unsubscribeFromBidsAndAsks();
 
-    if (!(baseAsset && quoteAsset)) return;
+    if (!(baseAssetAddress && quoteAssetAddress)) return;
 
-    let asksSubscription!: Subscription;
-    let bidsSubscription!: Subscription;
-
-    await Promise.all([
-      new Promise<void>((resolve) => {
-        asksSubscription = api.orderBook
-          .subscribeOnAggregatedAsks(baseAsset.address, quoteAsset.address)
-          .subscribe((asks) => {
-            commit.setAsks(asks.toReversed());
-            resolve();
-          });
-      }),
-      new Promise<void>((resolve) => {
-        bidsSubscription = api.orderBook
-          .subscribeOnAggregatedBids(baseAsset.address, quoteAsset.address)
-          .subscribe((bids) => {
-            commit.setBids(bids.toReversed());
-            resolve();
-          });
-      }),
+    const [asksSnapshot, bidsSnapshot] = await Promise.all([
+      withTimeout(
+        api.orderBook.getAggregatedAsks(baseAssetAddress, quoteAssetAddress, selectedDexId),
+        [] as Array<OrderBookPriceVolume>
+      ),
+      withTimeout(
+        api.orderBook.getAggregatedBids(baseAssetAddress, quoteAssetAddress, selectedDexId),
+        [] as Array<OrderBookPriceVolume>
+      ),
     ]);
+
+    const [initialAsks, initialBids] = await Promise.all([
+      asksSnapshot.timedOut
+        ? loadSnapshotFromConnection(rootState, 'asks', baseAssetAddress, quoteAssetAddress, selectedDexId)
+        : asksSnapshot.value,
+      bidsSnapshot.timedOut
+        ? loadSnapshotFromConnection(rootState, 'bids', baseAssetAddress, quoteAssetAddress, selectedDexId)
+        : bidsSnapshot.value,
+    ]);
+
+    commit.setAsks(Array.from(initialAsks).toReversed());
+    commit.setBids(Array.from(initialBids).toReversed());
+
+    const asksSubscription = api.orderBook
+      .subscribeOnAggregatedAsks(baseAssetAddress, quoteAssetAddress, selectedDexId)
+      .subscribe((asks) => {
+        commit.setAsks(Array.from(asks).toReversed());
+      });
+
+    const bidsSubscription = api.orderBook
+      .subscribeOnAggregatedBids(baseAssetAddress, quoteAssetAddress, selectedDexId)
+      .subscribe((bids) => {
+        commit.setBids(Array.from(bids).toReversed());
+      });
 
     commit.setOrderBookUpdates([asksSubscription, bidsSubscription]);
   },
@@ -126,13 +233,13 @@ const actions = defineActions({
   async subscribeToOrderBookStats(context): Promise<void> {
     const { commit, dispatch, getters, state } = orderBookActionContext(context);
     const { dexId } = state;
-    const { baseAsset, quoteAsset } = getters;
+    const { baseAssetAddress, quoteAssetAddress } = resolveOrderBookAddresses(state, getters);
 
     dispatch.unsubscribeFromOrderBookStats();
 
-    if (!(baseAsset && quoteAsset)) return;
+    if (!(baseAssetAddress && quoteAssetAddress)) return;
 
-    const orderBookId = [dexId, baseAsset.address, quoteAsset.address].join('-');
+    const orderBookId = [dexId, baseAssetAddress, quoteAssetAddress].join('-');
 
     const subscription = await subscribeOnOrderBookUpdates(
       orderBookId,
@@ -162,48 +269,83 @@ const actions = defineActions({
   },
 
   async subscribeToUserLimitOrders(context): Promise<void> {
-    const { commit, dispatch, getters, rootState } = orderBookActionContext(context);
-    const { baseAsset, quoteAsset } = getters;
-    const accountAddress = rootState.wallet.account.address;
+    const { commit, dispatch, getters, rootGetters, rootState, state } = orderBookActionContext(context);
+    const { baseAssetAddress, quoteAssetAddress } = resolveOrderBookAddresses(state, getters);
+    const selectedDexId = Number.isFinite(state?.dexId) ? state.dexId : undefined;
+    const accountAddress = rootState?.wallet?.account?.address ?? rootGetters?.wallet?.account?.address;
 
     dispatch.unsubscribeFromUserLimitOrders();
 
-    if (!(accountAddress && baseAsset && quoteAsset)) return;
+    if (!(accountAddress && baseAssetAddress && quoteAssetAddress)) return;
 
-    let subscription!: Subscription;
+    const syncUserLimitOrders = async (ids: number[]): Promise<void> => {
+      try {
+        const userLimitOrders = await Promise.all(
+          ids.map(async (id) => {
+            try {
+              return await api.orderBook.getLimitOrder(baseAssetAddress, quoteAssetAddress, id, selectedDexId);
+            } catch (error) {
+              console.error('[orderBook] Failed to fetch limit order', { id, error });
+              return null;
+            }
+          })
+        );
 
-    await new Promise<void>((resolve) => {
-      subscription = api.orderBook
-        .subscribeOnUserLimitOrdersIds(baseAsset.address, quoteAsset.address, accountAddress)
-        .subscribe(async (ids) => {
-          const userLimitOrders = (await Promise.all(
-            ids.map((id) => api.orderBook.getLimitOrder(baseAsset.address, quoteAsset.address, id))
-          )) as LimitOrder[];
-
-          const orders = userLimitOrders.map((el) => {
-            const amountStr = el.amount.toString();
-            const originalAmountStr = el.originalAmount.toString();
-            return { ...el, amountStr, originalAmountStr };
+        const orders = userLimitOrders
+          .filter((order): order is LimitOrder => !!order)
+          .map((order) => {
+            const amountStr = order.amount.toString();
+            const originalAmountStr = order.originalAmount.toString();
+            return { ...order, amountStr, originalAmountStr };
           });
 
-          commit.setUserLimitOrders(orders);
+        commit.setUserLimitOrders(orders);
+      } catch (error) {
+        console.error('[orderBook] Failed to process user limit orders payload', error);
+        commit.setUserLimitOrders([]);
+      }
+    };
 
-          resolve();
-        });
-    });
+    try {
+      const ids = await api.orderBook.getUserLimitOrdersIds(
+        baseAssetAddress,
+        quoteAssetAddress,
+        accountAddress,
+        selectedDexId
+      );
+      await syncUserLimitOrders(ids);
+    } catch (error) {
+      console.error('[orderBook] Failed to load initial user limit orders', error);
+      commit.setUserLimitOrders([]);
+    }
+
+    const subscription = api.orderBook
+      .subscribeOnUserLimitOrdersIds(baseAssetAddress, quoteAssetAddress, accountAddress, selectedDexId)
+      .subscribe({
+        next: async (ids) => {
+          await syncUserLimitOrders(ids);
+        },
+        error: (error) => {
+          console.error('[orderBook] User limit orders subscription failed', error);
+          commit.setUserLimitOrders([]);
+        },
+      });
 
     commit.setUserLimitOrderUpdates(subscription);
   },
 
   async subscribeOnLimitOrders(context, ids: number[]): Promise<void> {
-    const { commit, getters, state, rootState } = orderBookActionContext(context);
-    const { baseAsset, quoteAsset } = getters;
-    const accountAddress = rootState.wallet.account.address;
+    const { commit, getters, rootGetters, state, rootState } = orderBookActionContext(context);
+    const { baseAssetAddress, quoteAssetAddress } = resolveOrderBookAddresses(state, getters);
+    const selectedDexId = Number.isFinite(state?.dexId) ? state.dexId : undefined;
+    const accountAddress = rootState?.wallet?.account?.address ?? rootGetters?.wallet?.account?.address;
 
-    if (!(accountAddress && baseAsset && quoteAsset)) return;
+    if (!(accountAddress && baseAssetAddress && quoteAssetAddress)) return;
 
     let subscription!: Subscription;
-    const observables = ids.map((id) => api.orderBook.subscribeOnLimitOrder(baseAsset.address, quoteAsset.address, id));
+    const observables = ids.map((id) =>
+      api.orderBook.subscribeOnLimitOrder(baseAssetAddress, quoteAssetAddress, id, selectedDexId)
+    );
 
     await new Promise<void>((resolve) => {
       subscription = combineLatest(observables).subscribe((updated) => {

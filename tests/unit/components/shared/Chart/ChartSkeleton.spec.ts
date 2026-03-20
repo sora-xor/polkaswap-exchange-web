@@ -88,5 +88,7 @@ describe('ChartSkeleton', () => {
     });
 
     expect(wrapper.find('.charts-skeleton-error').exists()).toBe(false);
+    expect(wrapper.find('.app-loading-overlay').exists()).toBe(true);
+    expect(wrapper.find('.app-loading-overlay__spinner').exists()).toBe(true);
   });
 });

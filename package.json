@@ -45,11 +45,15 @@
     "test:e2e:render:live": "env -u NO_COLOR PS_E2E_LIVE_NETWORK=1 playwright test tests/e2e/ui/live-runtime.spec.ts --grep \"route rendering matrix\"",
     "test:e2e:root": "env -u NO_COLOR PS_PLAYWRIGHT_REUSE_SERVER=0 PS_IPFS_TEST_PREFIX='' playwright test tests/e2e/ui/app.spec.ts tests/e2e/ui/navigation.spec.ts tests/e2e/ui/bridge-moonpay.spec.ts tests/e2e/ui/wallet-overlays.spec.ts tests/e2e/ui/bridge-route-overlays.spec.ts tests/e2e/ui/footer-dialogs.spec.ts tests/e2e/ui/stability.spec.ts tests/e2e/ui/route-rendering.spec.ts",
     "test:e2e:live": "env -u NO_COLOR PS_E2E_LIVE_NETWORK=1 playwright test tests/e2e/ui/live-runtime.spec.ts",
-    "test:all": "yarn test:unit"
+    "test:all": "yarn test:unit",
+    "test:e2e:swap:smoke": "node ./scripts/playwright/swap-smoke.mjs",
+    "test:e2e:safari:smoke": "node ./scripts/playwright/safari-smoke.mjs",
+    "test:e2e:wallet:matrix": "node ./scripts/playwright/wallet-matrix.mjs",
+    "test:e2e:wallet:matrix:fresh": "WALLET_MATRIX_FRESH=1 node ./scripts/playwright/wallet-matrix.mjs"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.8",
-    "@cedelabs/widgets-universal": "^1.6.0",
+    "@cedelabs/widgets-universal": "patch:@cedelabs/widgets-universal@npm:1.6.0#./.yarn/patches/@cedelabs-widgets-universal-npm-1.6.0-kmaxlength.patch",
     "@interactjs/actions": "1.10.27",
     "@interactjs/auto-scroll": "1.10.27",
     "@interactjs/auto-start": "1.10.27",
@@ -166,6 +170,8 @@
     "vue-eslint-parser": "^10.2.0"
   },
   "resolutions": {
+    "@cedelabs/providers": "patch:@cedelabs/providers@npm:1.13.0#./.yarn/patches/@cedelabs-providers-npm-1.13.0-kmaxlength.patch",
+    "@cedelabs/widgets-universal": "patch:@cedelabs/widgets-universal@npm:1.6.0#./.yarn/patches/@cedelabs-widgets-universal-npm-1.6.0-kmaxlength.patch",
     "tinypool": "^2.0.0",
     "@polkadot/extension-dapp": "^0.62.1",
     "@polkadot/extension-inject": "^0.62.1",

@@ -40,6 +40,8 @@ const soraneoWalletCssFallbackPath = fileURLToPath(
 );
 const soraneoWalletCssEntry = existsSync(soraneoWalletCssPath) ? soraneoWalletCssPath : soraneoWalletCssFallbackPath;
 const walletShimPath = fileURLToPath(new URL('./src/shims/wallet.ts', import.meta.url));
+const bufferShimPath = fileURLToPath(new URL('./src/shims/buffer.ts', import.meta.url));
+const safeBufferShimPath = fileURLToPath(new URL('./src/shims/safe-buffer.ts', import.meta.url));
 const polkadotUiSharedPath = fileURLToPath(new URL('./vendor/@polkadot/ui-shared', import.meta.url));
 
 const alias = [
@@ -59,6 +61,8 @@ const alias = [
   { find: 'virtual:windi.css', replacement: soramitsuUiStylesEntry },
   { find: 'stream/web', replacement: 'web-streams-polyfill/dist/ponyfill.es2018.js' },
   { find: 'node:stream/web', replacement: 'web-streams-polyfill/dist/ponyfill.es2018.js' },
+  { find: /^buffer$/, replacement: bufferShimPath },
+  { find: /^node:buffer$/, replacement: bufferShimPath },
   {
     find: 'vite-plugin-node-polyfills/shims/global',
     replacement: fileURLToPath(
@@ -100,6 +104,7 @@ const alias = [
   { find: '@wallet/vuex', replacement: `${soraneoWalletSrcPath}/vuex.ts` },
   { find: '@wallet/src', replacement: soraneoWalletSrcPath },
   { find: '@wallet', replacement: walletShimPath },
+  { find: /^safe-buffer(?:\/index(?:\.js)?)?$/, replacement: safeBufferShimPath },
   {
     find: '@vueuse/core',
     replacement: fileURLToPath(new URL('./vendor/@vueuse/core', import.meta.url)),
@@ -218,6 +223,8 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 6000,
+    cssCodeSplit: false,
+    modulePreload: false,
     rollupOptions: {
       onwarn(warning, defaultHandler) {
         const message = warning.message ?? '';
@@ -232,13 +239,9 @@ export default defineConfig({
         defaultHandler(warning);
       },
       output: {
-        manualChunks(id) {
-          if (!id.includes('node_modules')) return;
-          if (id.includes('@wallet') || id.includes('@walletconnect')) return 'wallet-stack';
-          if (id.includes('@polkadot')) return 'polkadot';
-          if (id.includes('node_modules/echarts')) return 'echarts';
-          if (id.includes('node_modules/lodash')) return 'lodash';
-        },
+        // IPFS public gateways can aggressively throttle many parallel chunk requests.
+        // A single JS bundle and single CSS file improves first-load reliability.
+        inlineDynamicImports: true,
       },
     },
   },

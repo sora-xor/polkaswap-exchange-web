@@ -122,6 +122,20 @@ function toggleMenu(): void {
   color: var(--s-color-base-content-tertiary) !important;
 }
 
+.app-controls .app-controls-fiat-btn {
+  display: block !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 5px 13px !important;
+}
+
+.app-controls .app-controls-fiat-btn .s-button__text {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 14px !important;
+  text-transform: uppercase !important;
+}
+
 .app-controls .account-control:not(.s-pressed) {
   background-color: var(--s-color-utility-body) !important;
   border-color: transparent !important;

@@ -9,13 +9,12 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 
 import { Theme } from '@/consts';
+import { normalizeTheme } from '../store/settings/theme';
 
 const store = useStore();
 
 const currentTheme = computed<Theme>(() => {
-  const theme = store.getters['wallet/settings/libraryTheme'] as Theme | undefined;
-
-  return theme ?? Theme.Light;
+  return normalizeTheme(store.getters['wallet/settings/libraryTheme']);
 });
 </script>
 

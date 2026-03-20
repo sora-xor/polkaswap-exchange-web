@@ -203,6 +203,8 @@ defineExpose({
 .slippage-tolerance {
   &-custom_input.s-input {
     min-height: var(--s-size-small);
+    height: var(--s-size-small);
+    padding: $basic-spacing #{$inner-spacing-medium};
     box-shadow: var(--s-shadow-element);
 
     @include focus-outline($focusWithin: true, $withOffset: true);
@@ -211,6 +213,16 @@ defineExpose({
       .el-input__inner {
         color: var(--s-color-theme-accent);
       }
+    }
+
+    .s-input__content {
+      min-height: calc(var(--s-size-small) - (#{$basic-spacing} * 2));
+    }
+
+    .el-input,
+    .el-input__inner {
+      height: calc(var(--s-size-small) - (#{$basic-spacing} * 2));
+      line-height: calc(var(--s-size-small) - (#{$basic-spacing} * 2));
     }
 
     .el-input > input {
@@ -245,10 +257,37 @@ defineExpose({
     font-size: 16px;
     font-weight: 300;
     font-family: var(--s-font-family-icons) !important;
-    box-shadow:
-      -5px -5px 10px 0px var(--s-shadow-color-light),
-      1px 1px 10px 0px var(--s-shadow-color-dark),
-      1px 1px 2px 0px inset rgba(255, 255, 255, 0.8);
+    box-shadow: var(--s-shadow-element-pressed);
+  }
+
+  .el-collapse-item__header {
+    justify-content: normal;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 48px;
+  }
+
+  .el-collapse-item__arrow {
+    margin: 0 0 0 auto;
+  }
+
+  .el-collapse-item__header .el-icon-arrow-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .el-collapse-item__header .el-icon-arrow-right::before {
+    position: absolute;
+    transition: transform 0.25s ease-in-out;
+  }
+
+  .el-collapse-item__header .el-icon-arrow-right.is-active {
+    transform: none;
+  }
+
+  .el-collapse-item__header .el-icon-arrow-right.is-active::before {
+    transform: scaleY(-1);
   }
 
   .info-line .s-icon-info-16 {

@@ -1,7 +1,14 @@
 <template>
   <grid-layout
     ref="grid"
-    class="widgets-grid"
+    :class="[
+      'widgets-grid',
+      {
+        'widgets-grid--auto-resize': autoResize,
+        'widgets-grid--editing': draggable || resizable,
+        'widgets-grid--layout-settling': autoResize && !layoutMotionReady,
+      },
+    ]"
     responsive
     :layout="layout"
     :responsive-layouts="layouts"
@@ -16,6 +23,7 @@
     :use-css-transforms="false"
     @breakpoint-changed="onBreakpointChanged"
     @layout-updated="onLayoutUpdate"
+    @layout-ready="onLayoutReady"
   >
     <div v-if="lines" class="grid-lines" :style="gridLinesStyle"></div>
     <transition-group name="list" tag="div">
@@ -122,6 +130,7 @@ const props = withDefaults(
     defaultLayouts?: ResponsiveLayouts;
     rowHeight?: number;
     margin?: number;
+    autoResize?: boolean;
     draggable?: boolean;
     resizable?: boolean;
     compact?: boolean;
@@ -138,6 +147,7 @@ const props = withDefaults(
     defaultLayouts: () => ({}) as ResponsiveLayouts,
     rowHeight: 10,
     margin: 16,
+    autoResize: false,
     draggable: false,
     resizable: false,
     compact: true,
@@ -172,6 +182,7 @@ const grid = ref<ComponentPublicInstance | null>(null);
 const breakpoint = ref<BreakpointKey>(BreakpointKey.lg);
 const layouts = ref<ResponsiveLayouts>(cloneDeep(toRaw(props.defaultLayouts)));
 const layout = ref<Layout>((cloneDeep(layouts.value[breakpoint.value]) as Layout) ?? []);
+const layoutMotionReady = ref(!props.autoResize);
 const widgetsModel = computed<WidgetsVisibilityModel>(() => props.modelValue ?? props.value);
 const defaultValue = ref<WidgetsVisibilityModel>(cloneDeep(widgetsModel.value));
 const storageKey = computed(() => getGridStorageKey(props.gridId));
@@ -307,6 +318,12 @@ const onBreakpointChanged = (newBreakpoint: BreakpointKey) => {
   updateLayout();
 };
 
+const onLayoutReady = () => {
+  if (layoutMotionReady.value) return;
+
+  layoutMotionReady.value = true;
+};
+
 const onLayoutUpdate = (updated: Layout) => {
   const prepared = updated.map((widget) => omit('moved')(widget)) as Layout;
 
@@ -346,7 +363,7 @@ const isResizable = (widget: LayoutWidget): boolean => {
 };
 
 const onResize = (widgetId: string, rect: Size): void => {
-  if (!props.resizable) return;
+  if (!(props.resizable || props.autoResize)) return;
 
   const nextLayout = cloneDeep(layout.value);
   const widget = findWidgetInLayout(nextLayout, widgetId);
@@ -356,6 +373,7 @@ const onResize = (widgetId: string, rect: Size): void => {
   const { height } = rect;
   const calculatedH = Math.ceil((height + props.margin) / (props.rowHeight + props.margin));
   const updatedH = Math.max(widget.minH ?? 1, calculatedH);
+  if (widget.h === updatedH) return;
 
   widget.h = updatedH;
   layout.value = nextLayout;
@@ -384,10 +402,16 @@ onMounted(() => {
 $line: var(--s-color-base-border-secondary);
 
 .widgets-grid {
+  &.widgets-grid--layout-settling {
+    .vue-grid-item {
+      transition: none !important;
+    }
+  }
+
   .vue-grid-item {
     transition-property: opacity, scale;
     transition-duration: 0.3s;
-    touch-action: none;
+    touch-action: auto;
 
     &.vue-grid-placeholder {
       background: var(--s-color-theme-accent-hover);
@@ -429,6 +453,20 @@ $line: var(--s-color-base-border-secondary);
   .list-leave-to {
     opacity: 0;
     scale: 0.8;
+  }
+
+  &.widgets-grid--auto-resize:not(.widgets-grid--editing) {
+    .vue-grid-item {
+      transition-property: opacity, scale, left, top, right, height;
+      will-change: height;
+    }
+  }
+
+  &.widgets-grid--editing {
+    .vue-grid-item {
+      touch-action: none;
+      will-change: auto;
+    }
   }
 }
 </style>

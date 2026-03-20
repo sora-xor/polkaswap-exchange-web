@@ -163,7 +163,7 @@
           v-else
           type="primary"
           class="btn s-typography-button--medium"
-          :class="computedBtnClass"
+          :class="[computedBtnClass, { 'order-book-connect-btn': !isLoggedIn }]"
           @click="handleOrderPlacement"
         >
           <template v-if="!isLoggedIn">

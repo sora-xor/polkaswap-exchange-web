@@ -428,14 +428,14 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     href: '#/bridge',
   },
   {
-    icon: SidebarIcon.Account,
-    title: PageNames.Wallet,
-    href: '#/wallet',
-  },
-  {
     icon: SidebarIcon.Burn,
     title: PageNames.Burn,
     href: '#/burn',
+  },
+  {
+    icon: SidebarIcon.Account,
+    title: PageNames.Wallet,
+    href: '#/wallet',
   },
   {
     icon: SidebarIcon.Kensetsu,

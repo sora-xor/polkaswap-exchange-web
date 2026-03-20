@@ -80,7 +80,10 @@ const login = async (account: WALLET_TYPES.PolkadotJsAccount): Promise<void> => 
 <style lang="scss">
 .account-select-dialog.dialog-wrapper {
   .dialog-card {
-    box-shadow: var(--s-shadow-dialog);
+    background: transparent;
+    box-shadow: none !important;
+    border-radius: 0;
+    overflow: hidden;
   }
 
   .dialog-card__header {
@@ -90,11 +93,23 @@ const login = async (account: WALLET_TYPES.PolkadotJsAccount): Promise<void> => 
   .dialog-card__content {
     padding: 0;
     max-height: none;
-    overflow: visible;
+    overflow: hidden;
   }
 
-  .dialog-card > .el-card.base {
-    max-width: 100%;
+  .dialog-card__content > .el-card.base {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    box-shadow: none !important;
+    padding: 24px 24px 32px;
+
+    > .el-card__body {
+      padding: 0;
+    }
+  }
+
+  .dialog-card__content .connection-items.s-scrollbar.el-scrollbar > .el-scrollbar__wrap {
+    overflow-y: auto !important;
   }
 
   .dialog-card .base-title_close.el-button {
@@ -120,7 +135,15 @@ const login = async (account: WALLET_TYPES.PolkadotJsAccount): Promise<void> => 
       padding: 0;
 
       .el-card.base {
-        max-width: 100%;
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+        box-shadow: none !important;
+        padding: 24px 24px 32px;
+
+        > .el-card__body {
+          padding: 0;
+        }
       }
     }
   }

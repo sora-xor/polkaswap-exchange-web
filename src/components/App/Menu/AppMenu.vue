@@ -109,7 +109,6 @@ import {
   ExploreChildPages,
   SidebarMenuGroups,
   SidebarMenuItemLink,
-  SidebarIcon,
   FaucetLink,
 } from '@/consts';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
@@ -196,18 +195,6 @@ const sidebarMenuItems = computed(() => {
     menuItems = menuItems.filter(({ title }) => title !== PageNames.AssetOwnerContainer);
   }
 
-  const hasBurn = menuItems.some(({ title, href }) => title === PageNames.Burn || href === '#/burn');
-  if (!hasBurn) {
-    const burnMenuItem: SidebarMenuItemLink = {
-      icon: SidebarIcon.Burn,
-      title: PageNames.Burn,
-      href: '#/burn',
-    };
-    const accountIndex = menuItems.findIndex(({ title }) => title === PageNames.Wallet);
-    const insertAt = accountIndex >= 0 ? accountIndex + 1 : menuItems.length;
-    menuItems = [...menuItems.slice(0, insertAt), burnMenuItem, ...menuItems.slice(insertAt)];
-  }
-
   return menuItems;
 });
 
@@ -234,17 +221,7 @@ function handleSelect(item: any): void {
 }
 
 function getMenuTitle(item: SidebarMenuItemLink): string {
-  const key = `mainMenu.${item.title}`;
-  const translated = t(key);
-  if (item.title !== PageNames.Burn) return translated;
-
-  if (!translated || translated === key) {
-    const pageFallback = t('pageTitle.Burn');
-    if (pageFallback && pageFallback !== 'pageTitle.Burn') return pageFallback;
-    return 'Burn';
-  }
-
-  return translated;
+  return t(`mainMenu.${item.title}`);
 }
 
 onMounted(() => {
@@ -290,7 +267,7 @@ onBeforeUnmount(() => {
     }
 
     .collapse-button {
-      pointer-events: none;
+      pointer-events: all;
     }
 
     &:hover,
@@ -392,10 +369,9 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 .collapse-button {
   position: absolute;
-  top: 100%;
+  top: 50%;
   left: calc(100% - var(--s-size-small) / 2);
-  bottom: 0;
-  margin: auto;
+  transform: translateY(-50%);
   transition-duration: 0.2s;
   z-index: #{$app-sidebar-layer} + 1;
   background: var(--s-color-utility-body) !important;
@@ -458,12 +434,6 @@ onBeforeUnmount(() => {
 
     .collapse-button {
       opacity: 0;
-
-      @include tablet {
-        &:not(.collapsed) {
-          opacity: 0;
-        }
-      }
     }
 
     @include tablet {
@@ -511,6 +481,12 @@ onBeforeUnmount(() => {
 
       &:not(.collapsed) {
         position: relative;
+      }
+
+      &.collapsed {
+        .collapse-button {
+          opacity: 1;
+        }
       }
     }
 

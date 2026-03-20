@@ -19,7 +19,7 @@
         <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div class="app-content">
             <app-disclaimer v-if="disclaimerVisibility"></app-disclaimer>
-            <router-view :parent-loading="loading || !nodeIsConnected"></router-view>
+            <router-view :parent-loading="routeParentLoading"></router-view>
           </div>
         </s-scrollbar>
       </div>
@@ -75,9 +75,20 @@ import { computed, onBeforeMount, onMounted, onBeforeUnmount, ref, watch, type R
 import { useRoute } from 'vue-router';
 
 import axiosInstance, { updateBaseUrl, getFullBaseUrl } from '@/api';
+import Alerts from '@/components/App/Alerts/Alerts.vue';
+import AppBrowserNotifsBlockedDialog from '@/components/App/BrowserNotification/BlockedDialog.vue';
+import AppBrowserNotifsBlockedRotatePhone from '@/components/App/BrowserNotification/BlockedRotatePhone.vue';
+import AppBrowserNotifsEnableDialog from '@/components/App/BrowserNotification/EnableDialog.vue';
+import AppBrowserNotifsLocalStorageOverride from '@/components/App/BrowserNotification/LocalStorageOverride.vue';
+import AppBrowserMstNotificationTrxs from '@/components/App/BrowserNotification/MstNotificationTrxs.vue';
 import AppFooter from '@/components/App/Footer/AppFooter.vue';
 import AppHeader from '@/components/App/Header/AppHeader.vue';
+import AppDisclaimer from '@/components/App/Header/AppDisclaimer.vue';
+import AppLogoButton from '@/components/App/Header/AppLogoButton.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
+import AppMobilePopup from '@/components/App/MobilePopup.vue';
+import ReferralsConfirmInviteUser from '@/components/pages/Referrals/ConfirmInviteUser.vue';
+import SelectSoraAccountDialog from '@/components/shared/Dialog/SelectSoraAccount.vue';
 import { useNodeNotifications } from '@/composables/useNodeNotifications';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
@@ -86,6 +97,7 @@ import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { Theme, type DesignSystem } from '@/consts/theme';
 import { getLocale } from '@/lang';
 import router, { goTo as navigateTo, lazyComponent } from '@/router';
+import { getDataPlaneClient, normalizeRealtimeProfile } from '@/services/realtime';
 import store from '@/store';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
@@ -96,8 +108,10 @@ import { resolveLibraryDesignSystem, resolveLibraryTheme } from '@/utils/resolve
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { getEnvConfigCandidates, resolveStaticAssetUrl } from '@/utils/staticAssets';
 import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
+import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 import { tmaSdkService } from '@/utils/telegram';
 import { resolveMenuVisibilityOnBreakpointChange } from '@/views/utils/resolveMenuVisibilityOnBreakpointChange';
+import { resolveParentLoadingByConnection } from '@/views/utils/resolveParentLoadingByConnection';
 import { resolveDialogVisibilityOnRouteChange } from '@/views/utils/resolveDialogVisibilityOnRouteChange';
 import { resolveMenuVisibilityOnRouteChange } from '@/views/utils/resolveMenuVisibilityOnRouteChange';
 import { resolveProductPopupKey } from '@/views/utils/resolveProductPopupKey';
@@ -115,18 +129,18 @@ defineOptions({
     AppHeader,
     AppFooter,
     AppMenu,
-    Alerts: lazyComponent(Components.Alerts),
-    AppMobilePopup: lazyComponent(Components.AppMobilePopup),
-    AppLogoButton: lazyComponent(Components.AppLogoButton),
-    AppDisclaimer: lazyComponent(Components.AppDisclaimer),
-    AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),
-    AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
-    AppBrowserNotifsLocalStorageOverride: lazyComponent(Components.AppBrowserNotifsLocalStorageOverride),
-    AppBrowserNotifsBlockedRotatePhone: lazyComponent(Components.AppBrowserNotifsBlockedRotatePhone),
-    AppBrowserMstNotificationTrxs: lazyComponent(Components.AppBrowserMstNotificationTrxs),
-    ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
+    Alerts,
+    AppMobilePopup,
+    AppLogoButton,
+    AppDisclaimer,
+    AppBrowserNotifsEnableDialog,
+    AppBrowserNotifsBlockedDialog,
+    AppBrowserNotifsLocalStorageOverride,
+    AppBrowserNotifsBlockedRotatePhone,
+    AppBrowserMstNotificationTrxs,
+    ReferralsConfirmInviteUser,
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
-    SelectSoraAccountDialog: lazyComponent(Components.SelectSoraAccountDialog),
+    SelectSoraAccountDialog,
     NotificationEnablingPage: components.NotificationEnablingPage,
     ConfirmDialog: components.ConfirmDialog,
   },
@@ -139,6 +153,9 @@ const { handleNodeError, handleNodeDisconnect, handleNodeConnect } = useNodeNoti
 const route = useRoute();
 const settingsStore = useSettingsStore();
 const walletStore = useWalletStore();
+const dataPlaneClient = getDataPlaneClient();
+const buildVariant = getBuildVariant();
+const NODE_CONNECTION_LOADING_TIMEOUT_MS = 12_000;
 
 const showSoraMobilePopup = ref(false);
 const menuVisibility = ref(false);
@@ -147,6 +164,7 @@ const showNotifsDarkPage = ref(false);
 const showErrorLocalStorageExceed = ref(false);
 const showNotificationMST = ref(false);
 const isTearingDown = ref(false);
+const nodeConnectionGateExpired = ref(false);
 
 const responsiveClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
 const appConnection = computed(() => store.state.settings.appConnection as NodesConnection);
@@ -310,6 +328,30 @@ const productPopupRefs: Record<string, Ref<boolean>> = {
 };
 
 let ipfsObserver: MutationObserver | undefined;
+let teardownDataPlaneMetricsTelemetry: Nullable<FnWithoutArgs> = null;
+let teardownDataPlaneStatusTelemetry: Nullable<FnWithoutArgs> = null;
+let lastDataPlaneMetricsKey = '';
+let lastDataPlanePressureKey = '';
+let nodeConnectionGateTimer: Nullable<ReturnType<typeof setTimeout>> = null;
+let lastDataPlanePressureTs = 0;
+let realtimeVisibilitySyncEnabled = false;
+let realtimeVisibilityListenerBound = false;
+const dataPlaneStatusByConnection = new Map<string, string>();
+const DATAPLANE_PRESSURE_PENDING_RPC_THRESHOLD = 40;
+const DATAPLANE_PRESSURE_OPEN_CONNECTIONS_THRESHOLD = 8;
+const DATAPLANE_PRESSURE_MIN_INTERVAL_MS = 60_000;
+
+function resolveWsConnectionCap(value: unknown): number {
+  if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+    return Math.floor(value);
+  }
+
+  if (value === true) {
+    return 4;
+  }
+
+  return Number.POSITIVE_INFINITY;
+}
 
 function setDarkPage(value: boolean): void {
   showNotifsDarkPage.value = value;
@@ -491,11 +533,128 @@ function unsubscribeFromKeyboard(): void {
   window.removeEventListener('keydown', handleGlobalKeydown);
 }
 
+function syncRealtimeVisibility(): void {
+  if (typeof document === 'undefined') return;
+  if (!realtimeVisibilitySyncEnabled) return;
+  void dataPlaneClient.setVisibility(document.visibilityState === 'visible');
+}
+
+function subscribeOnRealtimeVisibility(): void {
+  if (typeof document === 'undefined') return;
+  if (!realtimeVisibilitySyncEnabled) return;
+  if (realtimeVisibilityListenerBound) return;
+  document.addEventListener('visibilitychange', syncRealtimeVisibility);
+  realtimeVisibilityListenerBound = true;
+}
+
+function unsubscribeFromRealtimeVisibility(): void {
+  if (typeof document === 'undefined') return;
+  if (!realtimeVisibilityListenerBound) return;
+  document.removeEventListener('visibilitychange', syncRealtimeVisibility);
+  realtimeVisibilityListenerBound = false;
+}
+
+function subscribeToDataPlaneTelemetry(): void {
+  if (teardownDataPlaneMetricsTelemetry || teardownDataPlaneStatusTelemetry) {
+    return;
+  }
+
+  teardownDataPlaneMetricsTelemetry = dataPlaneClient.onMetrics(({ metrics }) => {
+    const dedupeKey = `${metrics.openConnections}:${metrics.activeSubscriptions}:${metrics.pendingRpcRequests}:${metrics.connectedClients}:${metrics.visible}:${metrics.profile}`;
+    if (dedupeKey === lastDataPlaneMetricsKey) return;
+
+    lastDataPlaneMetricsKey = dedupeKey;
+    trackEvent('realtime_dataplane_metrics', {
+      ...metrics,
+      buildVariant,
+    });
+
+    const isPressure =
+      metrics.pendingRpcRequests >= DATAPLANE_PRESSURE_PENDING_RPC_THRESHOLD ||
+      metrics.openConnections >= DATAPLANE_PRESSURE_OPEN_CONNECTIONS_THRESHOLD;
+
+    if (!isPressure) return;
+
+    const pressureKey = `${metrics.openConnections}:${metrics.pendingRpcRequests}:${metrics.profile}`;
+    const now = Date.now();
+    const canEmitByTime = now - lastDataPlanePressureTs >= DATAPLANE_PRESSURE_MIN_INTERVAL_MS;
+    if (pressureKey === lastDataPlanePressureKey && !canEmitByTime) return;
+
+    lastDataPlanePressureKey = pressureKey;
+    lastDataPlanePressureTs = now;
+    trackEvent('realtime_dataplane_pressure', {
+      ...metrics,
+      buildVariant,
+      pendingRpcThreshold: DATAPLANE_PRESSURE_PENDING_RPC_THRESHOLD,
+      openConnectionsThreshold: DATAPLANE_PRESSURE_OPEN_CONNECTIONS_THRESHOLD,
+    });
+  });
+
+  teardownDataPlaneStatusTelemetry = dataPlaneClient.onStatus(({ connectionId, status, details }) => {
+    const previous = dataPlaneStatusByConnection.get(connectionId);
+    if (previous === status) return;
+
+    dataPlaneStatusByConnection.set(connectionId, status);
+    trackEvent('realtime_dataplane_status', {
+      connectionId,
+      status,
+      ...(details ? { details } : {}),
+      buildVariant,
+    });
+  });
+}
+
+function unsubscribeFromDataPlaneTelemetry(): void {
+  teardownDataPlaneMetricsTelemetry?.();
+  teardownDataPlaneStatusTelemetry?.();
+  teardownDataPlaneMetricsTelemetry = null;
+  teardownDataPlaneStatusTelemetry = null;
+  lastDataPlaneMetricsKey = '';
+  lastDataPlanePressureKey = '';
+  lastDataPlanePressureTs = 0;
+  dataPlaneStatusByConnection.clear();
+}
+
+const hasNodeConfiguration = computed(() => {
+  const nodes = appConnection.value?.nodeList;
+  return Array.isArray(nodes) && nodes.length > 0;
+});
+
+const routeParentLoading = computed(() =>
+  resolveParentLoadingByConnection({
+    transactionLoading: loading.value,
+    nodeConnected: nodeIsConnected.value,
+    nodeGateExpired: nodeConnectionGateExpired.value,
+    hasNodeConfiguration: hasNodeConfiguration.value,
+  })
+);
+
+function startNodeConnectionGate(): void {
+  nodeConnectionGateExpired.value = false;
+  if (nodeConnectionGateTimer) {
+    clearTimeout(nodeConnectionGateTimer);
+  }
+  nodeConnectionGateTimer = setTimeout(() => {
+    nodeConnectionGateExpired.value = true;
+    nodeConnectionGateTimer = null;
+  }, NODE_CONNECTION_LOADING_TIMEOUT_MS);
+}
+
+function releaseNodeConnectionGate(): void {
+  nodeConnectionGateExpired.value = true;
+  if (nodeConnectionGateTimer) {
+    clearTimeout(nodeConnectionGateTimer);
+    nodeConnectionGateTimer = null;
+  }
+}
+
 async function runAppConnectionToNode(): Promise<void> {
   const walletOptions = {
     permissions: WalletPermissions,
     appName: WALLET_CONSTS.TranslationConsts.Polkaswap,
   };
+
+  startNodeConnectionGate();
 
   try {
     const connectionInstance = appConnection.value;
@@ -515,6 +674,7 @@ async function runAppConnectionToNode(): Promise<void> {
   } catch {
     // handled via callbacks
   } finally {
+    releaseNodeConnectionGate();
     if (!isWalletLoaded.value) {
       await initWallet(walletOptions);
     }
@@ -598,16 +758,21 @@ async function teardown(): Promise<void> {
   if (isTearingDown.value) return;
   isTearingDown.value = true;
 
+  releaseNodeConnectionGate();
   stopIpfsObserver();
   unsubscribeFromLocalStorage();
   unsubscribeFromScreenSize();
   unsubscribeFromScreenOrientation();
   unsubscribeFromKeyboard();
+  realtimeVisibilitySyncEnabled = false;
+  unsubscribeFromRealtimeVisibility();
+  unsubscribeFromDataPlaneTelemetry();
   removeThemeListeners(isTMA.value);
   tmaSdkService.destroy();
   await resetInternalSubscriptions();
   await resetNetworkSubscriptions();
   unsubscribeFromInvitedUsers();
+  await dataPlaneClient.stop();
   await connection.close();
 }
 
@@ -781,8 +946,41 @@ onBeforeMount(async () => {
     try {
       NodesConnection.enableBackoff = Boolean(data?.FEATURE_FLAGS?.wsBackoff);
       NodesConnection.enableParallelDial = Boolean(data?.FEATURE_FLAGS?.wsParallelDial);
+      NodesConnection.maxActiveConnections = resolveWsConnectionCap(data?.FEATURE_FLAGS?.wsConnectionCaps);
     } catch {
       // noop
+    }
+
+    if (data?.FEATURE_FLAGS?.wsWorkerDataPlane) {
+      try {
+        subscribeToDataPlaneTelemetry();
+        const started = await dataPlaneClient.start({
+          preferSharedWorker: Boolean(data?.FEATURE_FLAGS?.wsSharedWorker),
+          profile: normalizeRealtimeProfile(data?.FEATURE_FLAGS?.wsProfile),
+          maxConnections: resolveWsConnectionCap(data?.FEATURE_FLAGS?.wsConnectionCaps),
+        });
+
+        realtimeVisibilitySyncEnabled = started;
+        if (started) {
+          subscribeOnRealtimeVisibility();
+          syncRealtimeVisibility();
+        } else {
+          unsubscribeFromDataPlaneTelemetry();
+          unsubscribeFromRealtimeVisibility();
+          await dataPlaneClient.stop();
+        }
+      } catch (error) {
+        realtimeVisibilitySyncEnabled = false;
+        unsubscribeFromDataPlaneTelemetry();
+        unsubscribeFromRealtimeVisibility();
+        await dataPlaneClient.stop();
+        console.warn('[bootstrap] realtime data-plane init skipped', error);
+      }
+    } else {
+      realtimeVisibilitySyncEnabled = false;
+      unsubscribeFromDataPlaneTelemetry();
+      unsubscribeFromRealtimeVisibility();
+      await dataPlaneClient.stop();
     }
 
     if (typeof setSoraNetwork === 'function') {
@@ -846,6 +1044,7 @@ onMounted(() => {
   subscribeOnScreenSize();
   subscribeOnScreenOrientation();
   subscribeOnKeyboard();
+  subscribeOnRealtimeVisibility();
 });
 
 onBeforeUnmount(() => {
@@ -858,8 +1057,13 @@ html {
   overflow-y: hidden;
   font-size: var(--s-font-size-small);
   letter-spacing: var(--s-letter-spacing-small);
+  font-family: var(--s-font-family-default);
   background-color: var(--s-color-utility-body);
   scrollbar-color: transparent transparent;
+}
+
+body {
+  font-family: var(--s-font-family-default);
 }
 
 ul ul {
@@ -869,7 +1073,7 @@ ul ul {
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: 'Sora', sans-serif;
+  font-family: var(--s-font-family-default);
   min-height: 100vh;
   min-height: 100dvh;
   height: 100vh;

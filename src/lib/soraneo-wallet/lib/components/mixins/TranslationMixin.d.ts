@@ -20,6 +20,7 @@ export default class TranslationMixin extends Vue {
     readonly CEX: 'CEX';
     readonly Polkadot: 'Polkadot';
     readonly SORAScan: 'SORAScan';
+    readonly SoraMetrics: 'SoraMetrics';
     readonly Subscan: 'Subscan';
     readonly CedeStore: 'cede.store';
     readonly QR: 'QR';

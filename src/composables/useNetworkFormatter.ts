@@ -38,15 +38,10 @@ function buildSubNetworkLinks(
   eventIndex?: number
 ): WALLET_CONSTS.ExplorerLink[] {
   const baseLinks: WALLET_CONSTS.ExplorerLink[] = [];
-  const subscanLink = toSafeExternalLink(networkData.blockExplorerUrls[0]);
   const polkadotUrl = networkData.nodes?.[0].address;
   const polkadotLink = polkadotUrl
     ? toSafeExternalLink(`https://polkadot.js.org/apps/?rpc=${encodeURIComponent(polkadotUrl)}#/explorer/query`)
     : '';
-
-  if (subscanLink) {
-    baseLinks.push({ type: WALLET_CONSTS.ExplorerType.Subscan, value: subscanLink });
-  }
 
   if (polkadotLink) {
     baseLinks.push({ type: WALLET_CONSTS.ExplorerType.Polkadot, value: polkadotLink });

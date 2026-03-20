@@ -3,6 +3,8 @@ const W3M_MESSAGE_PREFIXES = ['@w3m-app/', '@w3m-frame/'] as const;
 export const DEFAULT_W3M_ALLOWED_ORIGINS = [
   'https://secure.walletconnect.org',
   'https://secure.walletconnect.com',
+  'https://verify.walletconnect.org',
+  'https://verify.walletconnect.com',
 ] as const;
 
 type RegisterOptions = {
@@ -21,7 +23,7 @@ const shouldGuardMessage = (data: unknown): boolean => {
 
 /**
  * Installs a capture-phase `message` handler that blocks `@w3m-*` postMessage traffic
- * unless it originates from a known WalletConnect secure iframe origin.
+ * unless it originates from a known WalletConnect iframe origin.
  *
  * This mitigates upstream code paths that parse message payloads without validating `event.origin`.
  *

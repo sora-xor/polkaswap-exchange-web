@@ -1,16 +1,18 @@
 <template>
   <base-widget v-bind="$attrs" :title="t('networkStatisticsText')">
     <template #filters>
-      <stats-filter :disabled="loading" :filters="filters" :value="filter" @input="changeFilter"></stats-filter>
+      <stats-filter :disabled="loadingState" :filters="filters" :value="filter" @input="changeFilter"></stats-filter>
     </template>
 
     <div class="stats-row">
       <div
         v-for="{ title, tooltip, value, change } in statsColumns"
         :key="title"
-        class="stats-column"
-        v-loading="loading"
+        class="stats-column app-loading-overlay__host"
       >
+        <div v-if="loadingState" class="app-loading-overlay">
+          <div class="app-loading-overlay__spinner"></div>
+        </div>
         <s-card size="small" border-radius="mini">
           <div slot="header" class="stats-card-title">
             <span>{{ title }}</span>
@@ -38,7 +40,7 @@
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
 import { components, WALLET_CONSTS } from '@wallet';
-import { computed, getCurrentScope, onMounted, onScopeDispose, ref } from 'vue';
+import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';
 
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
@@ -46,6 +48,7 @@ import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { fetchData } from '@/indexer/queries/network/stats';
 import { lazyComponent } from '@/router';
+import { useSettingsStore } from '@/stores/settings';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { Nullable } from '@/types/common';
@@ -88,10 +91,14 @@ const filter = ref<SnapshotFilter>(filters[0]);
 
 const currData = ref<Nullable<NetworkSnapshot>>(null);
 const prevData = ref<Nullable<NetworkSnapshot>>(null);
+const hasResolvedData = ref(false);
 
 const parentLoading = computed(() => props.parentLoading);
 const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
 const { t, tc, TranslationConsts } = useTranslation();
+const settingsStore = useSettingsStore();
+const nodeIsConnected = computed(() => settingsStore.nodeIsConnected);
+const loadingState = computed(() => parentLoading.value || loading.value || !hasResolvedData.value);
 
 const FontSizeRate = WALLET_CONSTS.FontSizeRate;
 const FontWeightRate = WALLET_CONSTS.FontWeightRate;
@@ -152,16 +159,22 @@ const groupData = (data: NetworkSnapshotData[]): Nullable<NetworkSnapshot> => {
 const updateData = async () => {
   await withLoading(async () => {
     await withParentLoading(async () => {
-      const { type, count } = filter.value;
-      const seconds = SECONDS_IN_TYPE[type];
-      const now = Math.floor(Date.now() / (seconds * 1000)) * seconds;
-      const aTime = now - seconds * count;
-      const bTime = aTime - seconds * count;
+      try {
+        const { type, count } = filter.value;
+        const seconds = SECONDS_IN_TYPE[type];
+        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds;
+        const aTime = now - seconds * count;
+        const bTime = aTime - seconds * count;
 
-      const [current, previous] = await Promise.all([fetchData(now, aTime, type), fetchData(aTime, bTime, type)]);
+        const [current, previous] = await Promise.all([fetchData(now, aTime, type), fetchData(aTime, bTime, type)]);
 
-      currData.value = Object.freeze(groupData(current));
-      prevData.value = Object.freeze(groupData(previous));
+        currData.value = Object.freeze(groupData(current));
+        prevData.value = Object.freeze(groupData(previous));
+        hasResolvedData.value = current.length > 0 || previous.length > 0 || nodeIsConnected.value;
+      } catch (error) {
+        console.error(error);
+        hasResolvedData.value = nodeIsConnected.value;
+      }
     });
   });
 };
@@ -171,12 +184,26 @@ const changeFilter = (value: SnapshotFilter) => {
   updateData();
 };
 
-onMounted(updateData);
+watch(nodeIsConnected, (connected) => {
+  if (!connected) {
+    hasResolvedData.value = false;
+    return;
+  }
+
+  if (!hasResolvedData.value) {
+    void updateData();
+  }
+});
+
+onMounted(() => {
+  void updateData();
+});
 
 if (getCurrentScope()) {
   onScopeDispose(() => {
     currData.value = null;
     prevData.value = null;
+    hasResolvedData.value = false;
   });
 }
 </script>

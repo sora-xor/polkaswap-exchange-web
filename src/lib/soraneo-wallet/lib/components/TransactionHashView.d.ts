@@ -19,7 +19,7 @@ declare const _default: import('vue').DefineComponent<
   {
     handleCopyAddress: (address: string, event?: PointerEvent | MouseEvent | undefined) => Promise<void>;
     copyTooltip: (tooltipCopyValue?: string) => string;
-    getExplorerTranslation: (type: ExplorerType) => 'Polkadot' | 'SORAScan' | 'Subscan' | '';
+    getExplorerTranslation: (type: ExplorerType) => 'Polkadot' | 'SORAScan' | 'SoraMetrics' | 'Subscan' | '';
     handleOpenEtherscan: () => void;
   },
   {},

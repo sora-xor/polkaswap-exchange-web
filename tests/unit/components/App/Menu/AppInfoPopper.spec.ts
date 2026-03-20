@@ -4,12 +4,22 @@ import { defineComponent, nextTick, useAttrs } from 'vue';
 
 import AppInfoPopper from '@/components/App/Menu/AppInfoPopper.vue';
 import ElPopoverCompat from '@/components/compat/ElPopoverCompat';
+import { Links, SocialNetworkLinks, app } from '@/consts';
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string) => {
-      if (key === 'mobilePopup.info') return 'Info description';
-      if (key === 'mobilePopup.sideMenu') return 'Get Sora Wallet';
+      if (key === 'mobilePopup.info') return 'Swap tokens from different networks';
+      if (key === 'mobilePopup.sideMenu') return 'Get SORA Wallet';
+      if (key === 'social.wiki') return 'SORA Wiki';
+      if (key === 'social.telegram') return 'Telegram';
+      if (key === 'social.twitter') return 'Twitter';
+      if (key === 'social.reddit') return 'Reddit';
+      if (key === 'social.medium') return 'Medium';
+      if (key === 'social.github') return 'GitHub';
+      if (key === 'helpDialog.privacyPolicy') return 'Privacy Policy';
+      if (key === 'releaseNotesText') return 'Release notes';
+      if (key === 'helpDialog.termsOfService') return 'Terms of Service';
       return key;
     },
   }),
@@ -34,10 +44,8 @@ const mountComponent = (slotContent = '<button class="info-trigger">Info</button
         AttrForwardingTrigger,
       },
       stubs: {
-        's-button': {
-          emits: ['click'],
-          template: '<button class="s-button-stub" @click="$emit(\'click\')"><slot /></button>',
-        },
+        's-icon': { template: '<i class="s-icon-stub"></i>' },
+        'el-divider': { template: '<hr class="el-divider-stub" />' },
       },
     },
     slots: {
@@ -50,16 +58,31 @@ describe('AppInfoPopper', () => {
     document.body.innerHTML = '';
   });
 
-  it('opens on trigger click and emits open-product action from the popover button', async () => {
+  it('opens on trigger click, renders popup links and emits open-product action', async () => {
     const wrapper = mountComponent();
 
     await wrapper.get('.info-trigger').trigger('click');
     await nextTick();
     await nextTick();
 
-    expect(document.body.querySelector('.app-info-popper__content')).not.toBeNull();
+    const appInfo = document.body.querySelector('.app-info');
+    const socialLinks = Array.from(document.body.querySelectorAll('.app-info-link--social')) as HTMLAnchorElement[];
+    const textLinks = Array.from(document.body.querySelectorAll('.app-info-link--text')) as HTMLAnchorElement[];
 
-    const actionButton = document.body.querySelector('.s-button-stub') as HTMLButtonElement;
+    expect(appInfo).not.toBeNull();
+    expect(socialLinks).toHaveLength(SocialNetworkLinks.length);
+    expect(textLinks).toHaveLength(3);
+    expect(socialLinks.map((item) => item.getAttribute('href'))).toEqual(SocialNetworkLinks.map((item) => item.href));
+    expect(textLinks.map((item) => item.getAttribute('href'))).toEqual([
+      Links.privacy,
+      Links.releaseNotes,
+      Links.terms,
+    ]);
+    expect(appInfo?.textContent).toContain('Swap tokens from different networks');
+    expect(appInfo?.textContent).toContain(`Get SORA Wallet`);
+    expect(appInfo?.textContent).toContain(`${app.name} v${app.version}`);
+
+    const actionButton = document.body.querySelector('.app-info-link--product.s-button') as HTMLButtonElement;
     actionButton.click();
     await nextTick();
     await nextTick();
@@ -75,6 +98,6 @@ describe('AppInfoPopper', () => {
     await nextTick();
     await nextTick();
 
-    expect(document.body.querySelector('.app-info-popper__content')).not.toBeNull();
+    expect(document.body.querySelector('.app-info')).not.toBeNull();
   });
 });

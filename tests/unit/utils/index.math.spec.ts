@@ -205,12 +205,14 @@ vi.mock('lodash/debounce', () => ({ default: (fn: any) => fn }));
 let getMaxBalance: any;
 let hasInsufficientBalance: any;
 let hasInsufficientNativeTokenForFee: any;
+let getSubstrateExplorerLinks: any;
 
 beforeAll(async () => {
   const utils = await import('@/utils');
   getMaxBalance = utils.getMaxBalance;
   hasInsufficientBalance = utils.hasInsufficientBalance;
   hasInsufficientNativeTokenForFee = utils.hasInsufficientNativeTokenForFee;
+  getSubstrateExplorerLinks = utils.getSubstrateExplorerLinks;
 });
 
 const mockAsset = (options: {
@@ -265,5 +267,50 @@ describe('utils amount math edge cases', () => {
   it('hasInsufficientNativeTokenForFee handles zero fee and balance', () => {
     expect(hasInsufficientNativeTokenForFee('0', '0')).toBe(false);
     expect(hasInsufficientNativeTokenForFee('0', '1000')).toBe(true);
+  });
+});
+
+describe('substrate explorer links', () => {
+  it('builds Sorametrics deep links for transaction hashes and accounts', () => {
+    const baseLinks = [{ type: 'sorametrics', value: 'https://sorametrics.org' }];
+
+    expect(getSubstrateExplorerLinks(baseLinks, false, '0xabc')).toEqual([
+      {
+        type: 'sorametrics',
+        value: 'https://sorametrics.org/#tx=0xabc',
+      },
+    ]);
+
+    expect(getSubstrateExplorerLinks(baseLinks, true, 'cnValidAddress')).toEqual([
+      {
+        type: 'sorametrics',
+        value: 'https://sorametrics.org/#wallet=cnValidAddress',
+      },
+    ]);
+  });
+
+  it('falls back to Sorametrics block and extrinsic deep links when a tx hash is unavailable', () => {
+    const baseLinks = [{ type: 'sorametrics', value: 'https://sorametrics.org/' }];
+
+    expect(getSubstrateExplorerLinks(baseLinks, false, '25268814-1')).toEqual([
+      {
+        type: 'sorametrics',
+        value: 'https://sorametrics.org/#extrinsic=25268814-1',
+      },
+    ]);
+
+    expect(getSubstrateExplorerLinks(baseLinks, false, undefined, 25268814, 1)).toEqual([
+      {
+        type: 'sorametrics',
+        value: 'https://sorametrics.org/#extrinsic=25268814-1',
+      },
+    ]);
+
+    expect(getSubstrateExplorerLinks(baseLinks, false, undefined, 25268814)).toEqual([
+      {
+        type: 'sorametrics',
+        value: 'https://sorametrics.org/#block=25268814',
+      },
+    ]);
   });
 });

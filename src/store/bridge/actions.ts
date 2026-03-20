@@ -12,6 +12,7 @@ import { combineLatest } from 'rxjs';
 import { MaxUint256, ZeroStringValue } from '@/consts';
 import { KnownEthBridgeAsset } from '@/consts/evm';
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
+import { getDataPlaneClient, normalizeRealtimeProfile, parseSubstrateHeaderNumber } from '@/services/realtime';
 import { bridgeActionContext } from '@/store/bridge';
 import { resolveAssetLookup, resolveRegisteredAssets } from '@/store/bridge/utils';
 import { FocusedField } from '@/store/bridge/types';
@@ -42,6 +43,7 @@ import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
+import type { RealtimeProfile } from '@/services/realtime';
 
 const Direction =
   BridgeTxDirection ??
@@ -49,6 +51,152 @@ const Direction =
     Outgoing: 'Outgoing',
     Incoming: 'Incoming',
   } as Record<'Outgoing' | 'Incoming', string>);
+
+const PROFILE_RECONCILE_INTERVAL_MS: Record<RealtimeProfile, { visible: number; hidden: number }> = {
+  balanced: { visible: 1000, hidden: 5000 },
+  ultra: { visible: 250, hidden: 1000 },
+  load_first: { visible: 2000, hidden: 7000 },
+};
+
+const dataPlaneClient = getDataPlaneClient();
+
+type BridgeRealtimeRuntimeState = {
+  reconcileTimer: ReturnType<typeof setTimeout> | null;
+  reconcileInFlight: boolean;
+  reconcileLastRunTs: number;
+  reconcilePending: boolean;
+  workerLifecycle: Promise<void>;
+};
+
+const bridgeRealtimeState = new WeakMap<object, BridgeRealtimeRuntimeState>();
+
+function getBridgeRealtimeState(context: ActionContext<any, any>): BridgeRealtimeRuntimeState {
+  const key = bridgeActionContext(context).state as object;
+  const existing = bridgeRealtimeState.get(key);
+  if (existing) return existing;
+
+  const created: BridgeRealtimeRuntimeState = {
+    reconcileTimer: null,
+    reconcileInFlight: false,
+    reconcileLastRunTs: 0,
+    reconcilePending: false,
+    workerLifecycle: Promise.resolve(),
+  };
+
+  bridgeRealtimeState.set(key, created);
+  return created;
+}
+
+function enqueueWorkerLifecycle(context: ActionContext<any, any>, task: () => Promise<void>): Promise<void> {
+  const state = getBridgeRealtimeState(context);
+  state.workerLifecycle = state.workerLifecycle.then(task, task).catch(() => undefined);
+  return state.workerLifecycle;
+}
+
+async function flushWorkerLifecycle(context: ActionContext<any, any>): Promise<void> {
+  await getBridgeRealtimeState(context).workerLifecycle;
+}
+
+function resolveConnectionCap(value: unknown): number {
+  if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+    return Math.floor(value);
+  }
+
+  if (value === true) {
+    return 4;
+  }
+
+  return Number.MAX_SAFE_INTEGER;
+}
+
+function resolveRealtimeProfile(context: ActionContext<any, any>): RealtimeProfile {
+  const { rootState } = bridgeActionContext(context);
+  const profile = rootState.settings?.featureFlags?.wsProfile;
+
+  return normalizeRealtimeProfile(profile) as RealtimeProfile;
+}
+
+function resolveReconcileInterval(context: ActionContext<any, any>): number {
+  const profile = resolveRealtimeProfile(context);
+  const visible = typeof document === 'undefined' ? true : document.visibilityState === 'visible';
+  const schedule = PROFILE_RECONCILE_INTERVAL_MS[profile];
+
+  return visible ? schedule.visible : schedule.hidden;
+}
+
+function clearReconcileTimer(context: ActionContext<any, any>): void {
+  const state = getBridgeRealtimeState(context);
+  if (state.reconcileTimer) {
+    clearTimeout(state.reconcileTimer);
+  }
+  state.reconcileTimer = null;
+  state.reconcilePending = false;
+}
+
+async function runScheduledReconcile(context: ActionContext<any, any>): Promise<void> {
+  const state = getBridgeRealtimeState(context);
+
+  if (state.reconcileInFlight) {
+    state.reconcilePending = true;
+    return;
+  }
+
+  state.reconcileInFlight = true;
+  state.reconcilePending = false;
+  state.reconcileLastRunTs = Date.now();
+  try {
+    await updateBalancesFeesAndAmounts(context);
+  } finally {
+    state.reconcileInFlight = false;
+    if (state.reconcilePending) {
+      state.reconcilePending = false;
+      scheduleReconcile(context);
+    }
+  }
+}
+
+function scheduleReconcile(context: ActionContext<any, any>): void {
+  const state = getBridgeRealtimeState(context);
+
+  if (state.reconcileInFlight) {
+    state.reconcilePending = true;
+    return;
+  }
+
+  if (state.reconcileTimer) {
+    return;
+  }
+
+  const interval = resolveReconcileInterval(context);
+  const now = Date.now();
+  const delay = Math.max(0, interval - (now - state.reconcileLastRunTs));
+
+  state.reconcileTimer = setTimeout(() => {
+    state.reconcileTimer = null;
+    void runScheduledReconcile(context);
+  }, delay);
+}
+
+function resolveBridgeSubscriptionEndpoint(context: ActionContext<any, any>): string | null {
+  const { getters, state, rootState } = bridgeActionContext(context);
+
+  if (getters.isSubBridge) {
+    return (
+      state.subBridgeConnector.network?.subNetworkConnection.connection.endpoint ??
+      state.subBridgeConnector.network?.subNetworkConnection.node?.address ??
+      null
+    );
+  }
+
+  return (
+    rootState.settings?.appConnection?.connection?.endpoint ?? rootState.settings?.appConnection?.node?.address ?? null
+  );
+}
+
+function shouldUseWorkerDataPlane(context: ActionContext<any, any>): boolean {
+  const { rootState } = bridgeActionContext(context);
+  return Boolean(rootState.settings?.featureFlags?.wsWorkerDataPlane);
+}
 
 const getSoraBalance = async (accountAddress: string, asset: RegisteredAccountAsset): Promise<CodecString> => {
   const accountBalance = await getAssetBalance(api.api, accountAddress, asset.address, asset.decimals);
@@ -397,10 +545,18 @@ function calculateMaxLimit(
 }
 
 let lastEvmBlockPollTs = 0;
-async function updateExternalBlockNumber(context: ActionContext<any, any>): Promise<void> {
+async function updateExternalBlockNumber(
+  context: ActionContext<any, any>,
+  knownSubBlockNumber?: number
+): Promise<void> {
   const { getters, commit, state } = bridgeActionContext(context);
   try {
     if (getters.isSubBridge) {
+      if (Number.isFinite(knownSubBlockNumber)) {
+        commit.setExternalBlockNumber(knownSubBlockNumber as number);
+        return;
+      }
+
       const blockNumber = await state.subBridgeConnector.network.getBlockNumber();
       commit.setExternalBlockNumber(blockNumber);
       return;
@@ -639,14 +795,72 @@ const actions = defineActions({
   },
 
   async subscribeOnBlockUpdates(context): Promise<void> {
-    const { commit } = bridgeActionContext(context);
+    const { commit, rootState } = bridgeActionContext(context);
+    const runtime = getBridgeRealtimeState(context);
 
     commit.resetBlockUpdatesSubscription();
+    clearReconcileTimer(context);
+    runtime.reconcileInFlight = false;
+    runtime.reconcilePending = false;
+    await flushWorkerLifecycle(context);
 
-    const subscription = api.system.updated.subscribe(() => {
-      updateExternalBlockNumber(context);
-      updateBalancesFeesAndAmounts(context);
+    if (shouldUseWorkerDataPlane(context)) {
+      const endpoint = resolveBridgeSubscriptionEndpoint(context);
+      if (endpoint) {
+        try {
+          await dataPlaneClient.start({
+            preferSharedWorker: Boolean(rootState.settings?.featureFlags?.wsSharedWorker),
+            profile: resolveRealtimeProfile(context),
+            maxConnections: resolveConnectionCap(rootState.settings?.featureFlags?.wsConnectionCaps),
+          });
+
+          const connectionId = `bridge-substrate:${endpoint}`;
+          const subscriptionKey = `bridge:block-updates:${connectionId}`;
+          const unsubscribe = await dataPlaneClient.subscribeSubstrateFinalizedHeads(
+            {
+              connectionId,
+              endpoint,
+              subscriptionKey,
+              priority: 'standard',
+            },
+            (payload) => {
+              void updateExternalBlockNumber(context, parseSubstrateHeaderNumber(payload) ?? undefined);
+              scheduleReconcile(context);
+            }
+          );
+
+          const subscription = {
+            unsubscribe: () => {
+              clearReconcileTimer(context);
+              void enqueueWorkerLifecycle(context, async () => {
+                try {
+                  await unsubscribe();
+                } finally {
+                  await dataPlaneClient.disconnect(connectionId).catch(() => undefined);
+                }
+              });
+            },
+          } as unknown as Subscription;
+
+          commit.setBlockUpdatesSubscription(subscription);
+          return;
+        } catch (error) {
+          console.warn('[bridge] worker data-plane block subscription fallback', error);
+        }
+      }
+    }
+
+    const baseSubscription = api.system.updated.subscribe(() => {
+      void updateExternalBlockNumber(context);
+      scheduleReconcile(context);
     });
+
+    const subscription = {
+      unsubscribe: () => {
+        clearReconcileTimer(context);
+        baseSubscription.unsubscribe();
+      },
+    } as unknown as Subscription;
 
     commit.setBlockUpdatesSubscription(subscription);
   },

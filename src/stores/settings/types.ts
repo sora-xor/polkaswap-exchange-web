@@ -18,6 +18,12 @@ export type FeatureFlags = {
   alt?: boolean;
   debug?: boolean;
   pointSystemV2?: boolean;
+  wsWorkerDataPlane?: boolean;
+  wsSharedWorker?: boolean;
+  wsProfile?: 'balanced' | 'ultra' | 'load_first';
+  wsConnectionCaps?: number | boolean;
+  wsBackoff?: boolean;
+  wsParallelDial?: boolean;
 };
 
 export type SettingsState = {

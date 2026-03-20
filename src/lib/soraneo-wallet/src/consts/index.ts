@@ -108,6 +108,7 @@ export enum HashType {
 
 export enum ExplorerType {
   Sorascan = 'sorascan',
+  Sorametrics = 'sorametrics',
   Subscan = 'subscan',
   Polkadot = 'polkadot',
 }
@@ -243,6 +244,7 @@ export const TranslationConsts = {
   CEX: 'CEX',
   Polkadot: 'Polkadot',
   SORAScan: 'SORAScan',
+  SoraMetrics: 'SoraMetrics',
   Subscan: 'Subscan',
   CedeStore: 'cede.store',
   QR: 'QR', // QR code

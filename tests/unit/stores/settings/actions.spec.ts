@@ -178,7 +178,7 @@ describe('settings store actions', () => {
     expect(settingsStore.networkFees).toEqual({ swap: '123000000' });
   });
 
-  it('keeps disclaimer hidden by default', () => {
+  it('shows disclaimer by default for users who did not accept it yet', () => {
     settingsStorageStub.get.mockImplementation((key: string) => {
       if (key === 'disclaimerApprove') return null;
       return null;
@@ -187,7 +187,7 @@ describe('settings store actions', () => {
     const settingsStore = useSettingsStore();
 
     expect(settingsStore.userDisclaimerApprove).toBe(false);
-    expect(settingsStore.disclaimerVisibility).toBe(false);
+    expect(settingsStore.disclaimerVisibility).toBe(true);
   });
 
   it('stores only safe external faucet links', () => {

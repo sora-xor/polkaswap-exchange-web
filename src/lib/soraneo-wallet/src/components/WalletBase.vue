@@ -162,6 +162,7 @@ $button-size: var(--s-size-medium);
   max-width: 464px;
   width: 100%;
   overflow: hidden;
+  font-family: var(--s-font-family-default, 'Sora, sans-serif');
   font-size: var(--s-font-size-small);
   line-height: var(--s-line-height-base);
 
@@ -170,6 +171,7 @@ $button-size: var(--s-size-medium);
   }
 
   & > :deep(.el-card__header) {
+    border: none;
     border-bottom: 1px solid transparent;
   }
 

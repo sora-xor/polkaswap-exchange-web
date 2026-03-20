@@ -115,6 +115,9 @@ vi.mock('@/api', () => {
     },
     updateBaseUrl: vi.fn(),
     getFullBaseUrl: vi.fn(() => 'http://localhost/#/'),
+    __mocks: {
+      get,
+    },
   };
 });
 
@@ -363,6 +366,24 @@ vi.mock('@/utils/switchTheme', () => ({
   removeThemeListeners: vi.fn(),
 }));
 
+vi.mock('@/services/realtime', () => {
+  const dataPlaneClient = {
+    start: vi.fn().mockResolvedValue(true),
+    stop: vi.fn().mockResolvedValue(undefined),
+    setVisibility: vi.fn().mockResolvedValue(undefined),
+    onMetrics: vi.fn(() => () => undefined),
+    onStatus: vi.fn(() => () => undefined),
+  };
+
+  return {
+    getDataPlaneClient: () => dataPlaneClient,
+    normalizeRealtimeProfile: (profile: unknown) => profile ?? 'balanced',
+    __mocks: {
+      dataPlaneClient,
+    },
+  };
+});
+
 vi.mock('@/utils/telegram', () => ({
   tmaSdkService: {
     init: vi.fn(),
@@ -434,15 +455,45 @@ type RouterMocks = {
   };
 };
 
+type ApiMocks = {
+  get: ReturnType<typeof vi.fn>;
+};
+
+type RealtimeMocks = {
+  dataPlaneClient: {
+    start: ReturnType<typeof vi.fn>;
+    stop: ReturnType<typeof vi.fn>;
+    setVisibility: ReturnType<typeof vi.fn>;
+    onMetrics: ReturnType<typeof vi.fn>;
+    onStatus: ReturnType<typeof vi.fn>;
+  };
+};
+
 let storeMocks: StoreMocks;
 let routerMocks: RouterMocks;
+let apiMocks: ApiMocks;
+let realtimeMocks: RealtimeMocks;
 
 beforeEach(async () => {
   storeMocks = (await import('@/store')).__mocks;
   routerMocks = (await import('vue-router')).__mocks;
+  apiMocks = (await import('@/api')).__mocks;
+  realtimeMocks = (await import('@/services/realtime')).__mocks;
 
   routerMocks.routeState.fullPath = '/bridge';
   routerMocks.routeState.name = 'Bridge';
+
+  apiMocks.get.mockReset().mockResolvedValue({
+    data: {
+      NETWORK_TYPE: 'Prod',
+      SUBQUERY_ENDPOINT: 'https://indexer.example',
+    },
+  });
+  realtimeMocks.dataPlaneClient.start.mockReset().mockResolvedValue(true);
+  realtimeMocks.dataPlaneClient.stop.mockReset().mockResolvedValue(undefined);
+  realtimeMocks.dataPlaneClient.setVisibility.mockReset().mockResolvedValue(undefined);
+  realtimeMocks.dataPlaneClient.onMetrics.mockReset().mockImplementation(() => () => undefined);
+  realtimeMocks.dataPlaneClient.onStatus.mockReset().mockImplementation(() => () => undefined);
 
   storeMocks.state.settings.screenBreakpointClass = BreakpointClass.Mobile;
   storeMocks.state.settings.selectNodeDialogVisibility = false;
@@ -464,6 +515,11 @@ beforeEach(async () => {
   storeMocks.commit.web3.setSubAccountDialogVisibility?.mockReset();
   (storeMocks.commit.settings.setSelectNodeDialogVisibility as ReturnType<typeof vi.fn>).mockReset();
   (storeMocks.commit.settings.setSelectIndexerDialogVisibility as ReturnType<typeof vi.fn>).mockReset();
+
+  Object.defineProperty(document, 'visibilityState', {
+    configurable: true,
+    value: 'visible',
+  });
 });
 
 describe('App.vue dialog teardown wiring', () => {
@@ -640,5 +696,50 @@ describe('App.vue dialog teardown wiring', () => {
       storeMocks.commit.settings.setSelectNodeDialogVisibility = originalSetNodeDialogVisibility;
       storeMocks.commit.settings.setSelectIndexerDialogVisibility = originalSetIndexerDialogVisibility;
     }
+  });
+
+  it('does not sync visibility to worker when wsWorkerDataPlane flag is disabled', async () => {
+    const wrapper = await mountApp();
+
+    realtimeMocks.dataPlaneClient.setVisibility.mockClear();
+
+    Object.defineProperty(document, 'visibilityState', {
+      configurable: true,
+      value: 'hidden',
+    });
+    document.dispatchEvent(new Event('visibilitychange'));
+    await nextTick();
+
+    expect(realtimeMocks.dataPlaneClient.setVisibility).not.toHaveBeenCalled();
+
+    wrapper.unmount();
+  });
+
+  it('syncs visibility when wsWorkerDataPlane flag is enabled', async () => {
+    apiMocks.get.mockResolvedValueOnce({
+      data: {
+        NETWORK_TYPE: 'Prod',
+        SUBQUERY_ENDPOINT: 'https://indexer.example',
+        FEATURE_FLAGS: {
+          wsWorkerDataPlane: true,
+        },
+      },
+    });
+
+    const wrapper = await mountApp();
+
+    expect(realtimeMocks.dataPlaneClient.start).toHaveBeenCalledTimes(1);
+    realtimeMocks.dataPlaneClient.setVisibility.mockClear();
+
+    Object.defineProperty(document, 'visibilityState', {
+      configurable: true,
+      value: 'hidden',
+    });
+    document.dispatchEvent(new Event('visibilitychange'));
+    await nextTick();
+
+    expect(realtimeMocks.dataPlaneClient.setVisibility).toHaveBeenCalledWith(false);
+
+    wrapper.unmount();
   });
 });

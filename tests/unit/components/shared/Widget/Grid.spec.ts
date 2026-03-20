@@ -37,8 +37,8 @@ vi.mock('@/utils/storage', () => {
 vi.mock('@/lib/grid', () => {
   const GridLayout = defineComponent({
     name: 'GridLayoutStub',
-    setup(_, { slots }) {
-      return () => h('div', { class: 'grid-layout-stub' }, slots.default?.());
+    setup(_, { slots, attrs }) {
+      return () => h('div', { ...attrs, class: ['grid-layout-stub', attrs.class as string] }, slots.default?.());
     },
   });
 
@@ -224,6 +224,24 @@ describe('WidgetsGrid', () => {
     expect(wrapper.vm.layout[0].h).toBe(10);
   });
 
+  it('updates widget height from content changes when autoResize is enabled', async () => {
+    const wrapper = await mountGrid({ resizable: false, autoResize: true });
+
+    wrapper.vm.layout = [
+      {
+        i: 'widget-1',
+        x: 0,
+        y: 0,
+        w: 4,
+        h: 10,
+        minH: 1,
+      },
+    ] as unknown as Layout;
+
+    wrapper.vm.onResize('widget-1', { width: 0, height: 400 });
+    expect(wrapper.vm.layout[0].h).toBeGreaterThan(10);
+  });
+
   it('stores layouts under CID-scoped key on IPFS paths', async () => {
     window.history.replaceState({}, '', '/ipfs/QmUnitTestCid/index.html');
     const wrapper = await mountGrid({ resizable: true });
@@ -308,5 +326,39 @@ describe('WidgetsGrid', () => {
       },
     ]);
     expect(layoutsStorageMock.set).toHaveBeenCalledWith('test-grid', expect.stringContaining('"customise"'));
+  });
+
+  it('toggles editing class only while widget editing is enabled', async () => {
+    const wrapper = await mountGrid({ draggable: false, resizable: false });
+
+    const grid = wrapper.find('.grid-layout-stub');
+    expect(grid.classes()).toContain('widgets-grid');
+    expect(grid.classes()).not.toContain('widgets-grid--editing');
+
+    await wrapper.setProps({ draggable: true });
+    await flushPromises();
+    expect(wrapper.find('.grid-layout-stub').classes()).toContain('widgets-grid--editing');
+  });
+
+  it('adds the auto-resize class when content-driven widget resizing is enabled', async () => {
+    const wrapper = await mountGrid({ autoResize: true });
+
+    expect(wrapper.find('.grid-layout-stub').classes()).toContain('widgets-grid--auto-resize');
+
+    await wrapper.setProps({ autoResize: false });
+    await flushPromises();
+    expect(wrapper.find('.grid-layout-stub').classes()).not.toContain('widgets-grid--auto-resize');
+  });
+
+  it('keeps auto-resize grids in settling mode until the initial layout is ready', async () => {
+    const wrapper = await mountGrid({ autoResize: true });
+    const gridLayout = wrapper.findComponent({ name: 'GridLayoutStub' });
+
+    expect(gridLayout.classes()).toContain('widgets-grid--layout-settling');
+
+    gridLayout.vm.$emit('layout-ready');
+    await flushPromises();
+
+    expect(gridLayout.classes()).not.toContain('widgets-grid--layout-settling');
   });
 });

@@ -28,26 +28,32 @@ const getters = defineGetters<OrderBookState>()({
     return rootGetters.assets.assetDataByAddress(state.quoteAssetAddress);
   },
   orderBookId(...args): string {
-    const { getters } = orderBookGetterContext(args);
-    const { baseAsset, quoteAsset } = getters;
+    const { state } = orderBookGetterContext(args);
+    const { baseAssetAddress, quoteAssetAddress } = state;
 
-    if (!(baseAsset && quoteAsset)) return '';
+    if (!(baseAssetAddress && quoteAssetAddress)) return '';
 
-    return api.orderBook.serializeKey(baseAsset.address, quoteAsset.address);
+    return api.orderBook.serializeKey(baseAssetAddress, quoteAssetAddress);
   },
   currentOrderBook(...args): Nullable<OrderBook> {
-    const { getters, state } = orderBookGetterContext(args);
+    const { state } = orderBookGetterContext(args);
+    const { baseAssetAddress, quoteAssetAddress } = state;
 
-    if (!getters.orderBookId) return null;
+    if (!(baseAssetAddress && quoteAssetAddress)) return null;
 
-    return state.orderBooks[getters.orderBookId];
+    const key = api.orderBook.serializeKey(baseAssetAddress, quoteAssetAddress);
+
+    return state.orderBooks[key];
   },
   orderBookStats(...args): Nullable<OrderBookStats> {
-    const { getters, state } = orderBookGetterContext(args);
+    const { state } = orderBookGetterContext(args);
+    const { baseAssetAddress, quoteAssetAddress } = state;
 
-    if (!getters.orderBookId) return null;
+    if (!(baseAssetAddress && quoteAssetAddress)) return null;
 
-    return state.orderBooksStats[getters.orderBookId];
+    const key = api.orderBook.serializeKey(baseAssetAddress, quoteAssetAddress);
+
+    return state.orderBooksStats[key];
   },
   orderBookDecimals(...args): number {
     const { getters } = orderBookGetterContext(args);

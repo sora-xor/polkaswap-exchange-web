@@ -2,6 +2,7 @@
   <widgets-grid
     :grid-id="SWAP_GRID_ID"
     class="swap-container"
+    auto-resize
     :draggable="options.edit"
     :resizable="options.edit"
     :lines="options.edit"
@@ -56,13 +57,21 @@
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, ref, watch } from 'vue';
 
+import SwapDistributionWidget from '@/components/pages/Swap/Widget/Distribution.vue';
+import SwapFormWidget from '@/components/pages/Swap/Widget/Form.vue';
+import SwapTransactionDetailsWidget from '@/components/pages/Swap/Widget/TransactionDetails.vue';
+import SwapTransactionsWidget from '@/components/pages/Swap/Widget/Transactions.vue';
+import CustomiseWidget from '@/components/shared/Widget/Customise.vue';
+import PriceChartWidget from '@/components/shared/Widget/PriceChart.vue';
+import WidgetsGrid from '@/components/shared/Widget/Grid.vue';
+import SupplyChartWidget from '@/components/shared/Widget/SupplyChart.vue';
+import TokenPriceChartWidget from '@/components/shared/Widget/TokenPriceChart.vue';
 import { useLoading } from '@/composables/useLoading';
 import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useSelectedTokensRoute } from '@/composables/useSelectedTokensRoute';
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, PageNames } from '@/consts';
-import { lazyComponent } from '@/router';
+import { PageNames } from '@/consts';
 import store from '@/store';
 import { useSwapStore } from '@/stores/swap';
 import type { ResponsiveLayouts, WidgetsVisibilityModel } from '@/types/layout';
@@ -80,16 +89,6 @@ enum SwapWidgets {
   TokenPriceChart = 'swapTokenPriceChart',
   SupplyChart = 'swapSupplyChart',
 }
-
-const SwapFormWidget = lazyComponent(Components.SwapFormWidget);
-const SwapTransactionsWidget = lazyComponent(Components.SwapTransactionsWidget);
-const SwapTransactionDetailsWidget = lazyComponent(Components.SwapTransactionDetailsWidget);
-const SwapDistributionWidget = lazyComponent(Components.SwapDistributionWidget);
-const CustomiseWidget = lazyComponent(Components.CustomiseWidget);
-const PriceChartWidget = lazyComponent(Components.PriceChartWidget);
-const TokenPriceChartWidget = lazyComponent(Components.TokenPriceChartWidget);
-const SupplyChartWidget = lazyComponent(Components.SupplyChartWidget);
-const WidgetsGrid = lazyComponent(Components.WidgetsGrid);
 
 defineOptions({ name: 'SwapPage' });
 

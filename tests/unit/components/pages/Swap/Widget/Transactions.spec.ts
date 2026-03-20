@@ -59,7 +59,7 @@ vi.mock('@wallet', () => ({
   WALLET_CONSTS: {
     FontSizeRate: { SMALL: 'SMALL' },
     PaginationButton: { Prev: 'Prev', Next: 'Next', Last: 'Last' },
-    ExplorerType: { Subscan: 'subscan', Polkadot: 'polkadot' },
+    ExplorerType: { Sorametrics: 'sorametrics', Subscan: 'subscan', Polkadot: 'polkadot' },
   },
   WALLET_TYPES: {
     AssetsTable: Object,
@@ -67,7 +67,7 @@ vi.mock('@wallet', () => ({
   storage: storageMock,
   settingsStorage: storageMock,
   runtimeStorage: storageMock,
-  getExplorerLinks: () => [{ type: 'subscan', value: 'https://explorer.test/tx' }],
+  getExplorerLinks: () => [{ type: 'sorametrics', value: 'https://sorametrics.org/#tx=0x123' }],
 }));
 
 const assetsTable = {

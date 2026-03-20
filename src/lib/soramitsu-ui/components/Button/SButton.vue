@@ -163,7 +163,7 @@ const font = computed(() => {
   >
     <SSpinner
       v-if="loading"
-      class="flex-grow absolute"
+      class="s-button__spinner"
       data-testid="spinner"
       :size="SPINNER_SIZE[definitelySize]"
       :width="SPINNER_WIDTH[definitelySize]"
@@ -182,7 +182,19 @@ const font = computed(() => {
 
 <style lang="scss">
 .s-button {
+  position: relative;
   white-space: nowrap;
+}
+
+.s-button .s-button__spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 .s-button .s-button__text {

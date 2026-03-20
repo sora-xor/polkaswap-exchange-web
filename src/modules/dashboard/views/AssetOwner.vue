@@ -139,6 +139,7 @@ import type { OwnedAsset } from '@/modules/dashboard/types';
 import router from '@/router';
 import store from '@/store';
 import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
+import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 
 defineOptions({
   components: {
@@ -159,8 +160,8 @@ const showCreateTokenDialog = ref(false);
 const isNotLoggedInOrEmptyAssets = computed(() => !(isLoggedIn.value && assets.value.length));
 
 const resolvedTheme = computed(() => (libraryTheme.value === Theme.DARK ? Theme.DARK : Theme.LIGHT));
-const noAssetsImg = computed(() => `/asset-owner/${resolvedTheme.value}-hero.png`);
-const noAssetsImgDemo = computed(() => `/asset-owner/${resolvedTheme.value}.png`);
+const noAssetsImg = computed(() => resolveStaticAssetUrl(`asset-owner/${resolvedTheme.value}-hero.png`));
+const noAssetsImgDemo = computed(() => resolveStaticAssetUrl(`asset-owner/${resolvedTheme.value}.png`));
 
 function handleCreateAsset(): void {
   showCreateTokenDialog.value = true;

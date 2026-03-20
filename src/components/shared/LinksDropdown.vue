@@ -16,7 +16,7 @@
         rel="nofollow noopener"
       >
         <s-dropdown-item class="s-dropdown-menu__item">
-          {{ t('transaction.viewIn', { explorer: link.type }) }}
+          {{ t('transaction.viewIn', { explorer: getExplorerLabel(link.type) }) }}
         </s-dropdown-item>
       </a>
     </template>
@@ -41,6 +41,14 @@ const props = withDefaults(
 
 const { t } = useTranslation();
 
+const explorerLabels: Record<string, string> = {
+  etherscan: 'Etherscan',
+  polkadot: 'Polkadot',
+  sorametrics: 'SoraMetrics',
+  sorascan: 'SORAScan',
+  subscan: 'Subscan',
+};
+
 const links = computed(() =>
   props.links.reduce<Array<WALLET_CONSTS.ExplorerLink>>((result, link) => {
     const href = toSafeExternalLink(link?.value);
@@ -51,7 +59,10 @@ const links = computed(() =>
   }, [])
 );
 
+const getExplorerLabel = (type: string): string => explorerLabels[type.toLowerCase()] ?? type;
+
 defineExpose({
+  getExplorerLabel,
   links,
 });
 </script>

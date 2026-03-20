@@ -68,6 +68,17 @@ class RetryNodesConnection extends NodesConnection {
   }
 }
 
+class DedupNodesConnection extends NodesConnection {
+  public connectNodeCalls = 0;
+
+  protected async connectNode(_options: ConnectToNodeOptions = {}): Promise<void> {
+    this.connectNodeCalls += 1;
+    await new Promise<void>((resolve) => setTimeout(resolve, 10));
+    this.nodeAddressConnecting = '';
+    this.unlockConnection();
+  }
+}
+
 class DisconnectReconnectNodesConnection extends NodesConnection {
   public reconnectCalls = 0;
 
@@ -81,16 +92,42 @@ class DisconnectReconnectNodesConnection extends NodesConnection {
   }
 }
 
+class ProbeTrackingNodesConnection extends NodesConnection {
+  public probeCalls = 0;
+
+  protected async probeAndSortDefaultNodesByLatency(): Promise<void> {
+    this.probeCalls += 1;
+    this.lastLatencyProbeTs = Date.now();
+    this.lastLatencyProbeNodeListKey = this.buildProbeNodeListKey();
+  }
+}
+
+class CapTrackingNodesConnection extends NodesConnection {
+  public markActive(): void {
+    this.registerActiveConnection();
+  }
+
+  public assertCapAllowed(): void {
+    this.guardConnectionCap();
+  }
+}
+
 describe('NodesConnection reconnect behavior', () => {
   let originalBackoff: boolean;
+  let originalLatencyProbe: boolean;
+  let originalMaxActiveConnections: number;
 
   beforeEach(() => {
     originalBackoff = NodesConnection.enableBackoff;
+    originalLatencyProbe = NodesConnection.enableLatencyProbe;
+    originalMaxActiveConnections = NodesConnection.maxActiveConnections;
     vi.spyOn(Math, 'random').mockReturnValue(0);
   });
 
   afterEach(() => {
     NodesConnection.enableBackoff = originalBackoff;
+    NodesConnection.enableLatencyProbe = originalLatencyProbe;
+    NodesConnection.maxActiveConnections = originalMaxActiveConnections;
     vi.useRealTimers();
     vi.restoreAllMocks();
   });
@@ -120,6 +157,17 @@ describe('NodesConnection reconnect behavior', () => {
 
     expect(unhandled).toHaveLength(0);
     expect(nodesConnection.connectNodeCalls).toBe(2);
+  });
+
+  it('deduplicates concurrent connect calls', async () => {
+    NodesConnection.enableBackoff = false;
+
+    const nodesConnection = new DedupNodesConnection(toStorage(createStorage()), toConnection(createConnection()));
+    nodesConnection.setDefaultNodes([nodeA]);
+
+    await Promise.all([nodesConnection.connect(), nodesConnection.connect()]);
+
+    expect(nodesConnection.connectNodeCalls).toBe(1);
   });
 
   it('resolves after fallback node connects when backoff is disabled', async () => {
@@ -191,5 +239,73 @@ describe('NodesConnection reconnect behavior', () => {
 
     expect(() => nodesConnection.setDefaultNodes(undefined as never)).not.toThrow();
     expect(nodesConnection.defaultNodes).toEqual([]);
+  });
+
+  it('throttles default-node latency probes within the TTL window', () => {
+    NodesConnection.enableLatencyProbe = true;
+    vi.useFakeTimers();
+
+    const nodesConnection = new ProbeTrackingNodesConnection(
+      toStorage(createStorage()),
+      toConnection(createConnection())
+    );
+
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+
+    expect(nodesConnection.probeCalls).toBe(1);
+
+    vi.advanceTimersByTime(5 * 60_000 + 1);
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+
+    expect(nodesConnection.probeCalls).toBe(2);
+  });
+
+  it('re-probes immediately when default node list changes within TTL window', () => {
+    NodesConnection.enableLatencyProbe = true;
+    vi.useFakeTimers();
+
+    const nodesConnection = new ProbeTrackingNodesConnection(
+      toStorage(createStorage()),
+      toConnection(createConnection())
+    );
+
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+    nodesConnection.setDefaultNodes([nodeA]);
+    nodesConnection.setDefaultNodes([nodeB, nodeA, { name: 'C', chain: 'chain', address: 'ws://node-c' }]);
+
+    expect(nodesConnection.probeCalls).toBe(2);
+  });
+
+  it('skips latency probe when fewer than two default nodes are configured', () => {
+    NodesConnection.enableLatencyProbe = true;
+
+    const nodesConnection = new ProbeTrackingNodesConnection(
+      toStorage(createStorage()),
+      toConnection(createConnection())
+    );
+    nodesConnection.setDefaultNodes([nodeA]);
+
+    expect(nodesConnection.probeCalls).toBe(0);
+  });
+
+  it('unregisters active connection tracking even when close() throws', async () => {
+    NodesConnection.maxActiveConnections = 1;
+
+    const failingConnection = createConnection();
+    failingConnection.close.mockRejectedValueOnce(new Error('close fail'));
+
+    const first = new CapTrackingNodesConnection(
+      toStorage(createStorage()),
+      toConnection(failingConnection, {
+        api: {} as Connection['api'],
+      })
+    );
+    first.markActive();
+
+    await expect(first.closeConnection()).rejects.toThrow('close fail');
+
+    const second = new CapTrackingNodesConnection(toStorage(createStorage()), toConnection(createConnection()));
+    expect(() => second.assertCapAllowed()).not.toThrow();
   });
 });

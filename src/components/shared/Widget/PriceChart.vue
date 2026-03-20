@@ -128,27 +128,35 @@ const CHART_TYPE_ICONS = {
   [CHART_TYPES.CANDLE]: SvgIcons.CandleIcon,
 };
 
+const SNAPSHOT_TYPES = (SUBQUERY_TYPES?.SnapshotTypes ??
+  ({
+    DEFAULT: 'default',
+    HOUR: 'hour',
+    DAY: 'day',
+    MONTH: 'month',
+  } as const)) as Record<'DEFAULT' | 'HOUR' | 'DAY' | 'MONTH', SnapshotFilter['type']>;
+
 const LINE_CHART_FILTERS: SnapshotFilter[] = [
-  { name: Timeframes.FIVE_MINUTES, label: '5M', type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT, count: 48 },
+  { name: Timeframes.FIVE_MINUTES, label: '5M', type: SNAPSHOT_TYPES.DEFAULT, count: 48 },
   {
     name: Timeframes.FIFTEEN_MINUTES,
     label: '15M',
-    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
+    type: SNAPSHOT_TYPES.DEFAULT,
     count: 48 * 3,
     group: 3,
   },
   {
     name: Timeframes.THIRTY_MINUTES,
     label: '30M',
-    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
+    type: SNAPSHOT_TYPES.DEFAULT,
     count: 48 * 6,
     group: 6,
   },
-  { name: Timeframes.HOUR, label: '1H', type: SUBQUERY_TYPES.SnapshotTypes.HOUR, count: 48 },
-  { name: Timeframes.FOUR_HOURS, label: '4H', type: SUBQUERY_TYPES.SnapshotTypes.HOUR, count: 48 * 4, group: 4 },
-  { name: Timeframes.DAY, label: '1D', type: SUBQUERY_TYPES.SnapshotTypes.DAY, count: 90 },
-  { name: Timeframes.YEAR, label: '1Y', type: SUBQUERY_TYPES.SnapshotTypes.DAY, count: 365 },
-  { name: Timeframes.ALL, label: 'ALL', type: SUBQUERY_TYPES.SnapshotTypes.DAY, count: Infinity },
+  { name: Timeframes.HOUR, label: '1H', type: SNAPSHOT_TYPES.HOUR, count: 48 },
+  { name: Timeframes.FOUR_HOURS, label: '4H', type: SNAPSHOT_TYPES.HOUR, count: 48 * 4, group: 4 },
+  { name: Timeframes.DAY, label: '1D', type: SNAPSHOT_TYPES.DAY, count: 90 },
+  { name: Timeframes.YEAR, label: '1Y', type: SNAPSHOT_TYPES.DAY, count: 365 },
+  { name: Timeframes.ALL, label: 'ALL', type: SNAPSHOT_TYPES.DAY, count: Infinity },
 ];
 
 const LABEL_PADDING = 4;
@@ -597,7 +605,7 @@ const clearData = (saveReversedState = false, clearBuffer = false): void => {
 
 const requestData = async (
   entityId: string,
-  type: SUBQUERY_TYPES.SnapshotTypes,
+  type: SnapshotFilter['type'],
   count: number,
   hasNextPage = true,
   endCursor?: string

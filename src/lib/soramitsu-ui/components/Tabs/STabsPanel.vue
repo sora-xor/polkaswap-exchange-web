@@ -1,52 +1,27 @@
-<script setup lang="ts">
+<script lang="ts">
 import {
   Comment,
   Fragment,
   Text,
   cloneVNode,
-  computed,
+  defineComponent,
+  h,
+  nextTick,
   onBeforeUnmount,
   onMounted,
+  onUpdated,
   ref,
-  useSlots,
-  type Component,
   type CSSProperties,
+  type PropType,
   type VNode,
 } from 'vue';
-
-defineOptions({
-  name: 'STabs',
-});
-
-const props = withDefaults(
-  defineProps<{
-    modelValue?: string;
-    value?: string;
-    type?: string;
-    background?: string;
-  }>(),
-  {
-    modelValue: '',
-    value: '',
-    type: '',
-    background: 'primary',
-  }
-);
-
-const emit = defineEmits<{
-  (event: 'update:modelValue', value: string): void;
-  (event: 'input', value: string): void;
-}>();
 
 type TabItem = {
   key: string;
   name: string;
   label: string;
   disabled: boolean;
-  panelRenderer: Component | null;
 };
-
-const slots = useSlots();
 
 const toNodeArray = (nodes: unknown): Array<VNode | null | undefined> => {
   if (Array.isArray(nodes)) return nodes as Array<VNode | null | undefined>;
@@ -91,10 +66,8 @@ const isTabNode = (node: VNode): boolean => {
   return nodeName === 'STab' || Boolean((node.props as Record<string, unknown> | null | undefined)?.name);
 };
 
-const defaultNodes = computed(() => flattenVNodes(slots.default?.() ?? []));
-
-const parsedTabs = computed<Array<TabItem>>(() => {
-  return defaultNodes.value
+const parseTabs = (defaultNodes: Array<VNode>): Array<TabItem> => {
+  return defaultNodes
     .filter((node) => isTabNode(node))
     .map((node, index) => {
       const rawProps = (node.props as Record<string, unknown> | null | undefined) ?? {};
@@ -112,41 +85,28 @@ const parsedTabs = computed<Array<TabItem>>(() => {
         rawProps.disabled === true ||
         rawProps.disabled === 'true' ||
         rawProps.disabled === 1;
-      const panelRenderer =
-        hasLabelProp && slotObject?.default
-          ? ({
-              render: () => flattenVNodes(slotObject.default?.() ?? []),
-            } as Component)
-          : null;
 
       return {
         key: String(node.key ?? name),
         name,
         label,
         disabled,
-        panelRenderer,
       };
     });
-});
+};
 
-const activeTab = computed(() => {
-  const requested = props.modelValue || props.value;
-  if (requested && parsedTabs.value.some((tab) => tab.name === requested)) {
+const resolveActiveTab = (parsedTabs: Array<TabItem>, requested: string): string => {
+  if (requested && parsedTabs.some((tab) => tab.name === requested)) {
     return requested;
   }
 
-  return parsedTabs.value.find((tab) => !tab.disabled)?.name ?? '';
-});
+  return parsedTabs.find((tab) => !tab.disabled)?.name ?? '';
+};
 
-const orderedContentRenderers = computed<Array<{ key: string; renderer: Component }>>(() => {
-  return defaultNodes.value.reduce<Array<{ key: string; renderer: Component }>>((buffer, node, index) => {
+const buildContentNodes = (defaultNodes: Array<VNode>, activeTab: string): Array<VNode> => {
+  return defaultNodes.reduce<Array<VNode>>((buffer, node, index) => {
     if (!isTabNode(node)) {
-      buffer.push({
-        key: `extra-${index}`,
-        renderer: {
-          render: () => [cloneVNode(node)],
-        } as Component,
-      });
+      buffer.push(cloneVNode(node, { key: `extra-${index}` }));
       return buffer;
     }
 
@@ -158,132 +118,269 @@ const orderedContentRenderers = computed<Array<{ key: string; renderer: Componen
         ? (node.children as { default?: () => Array<VNode> })
         : null;
 
-    if (!(name === activeTab.value && hasLabelProp && slotObject?.default)) return buffer;
-
-    buffer.push({
-      key: `panel-${name}-${index}`,
-      renderer: {
-        render: () => flattenVNodes(slotObject.default?.() ?? []),
-      } as Component,
+    if (!(name === activeTab && hasLabelProp && slotObject?.default)) return buffer;
+    const panelNodes = flattenVNodes(slotObject.default());
+    panelNodes.forEach((panelNode, panelIndex) => {
+      buffer.push(cloneVNode(panelNode, { key: panelNode.key ?? `panel-${name}-${index}-${panelIndex}` }));
     });
 
     return buffer;
   }, []);
-});
-
-const roundedTypeClass = computed(() => (props.type ? `s-${props.type}` : null));
-
-const navRef = ref<HTMLElement | null>(null);
-const tabRefs = ref<Record<string, HTMLElement | null>>({});
-const viewportTick = ref(0);
-
-const handleResize = (): void => {
-  viewportTick.value += 1;
 };
 
-const setTabRef =
-  (name: string) =>
-  (el: Element | null): void => {
-    tabRefs.value[name] = el as HTMLElement | null;
-  };
+export default defineComponent({
+  name: 'STabs',
+  props: {
+    modelValue: {
+      type: String as PropType<string>,
+      default: '',
+    },
+    value: {
+      type: String as PropType<string>,
+      default: '',
+    },
+    type: {
+      type: String as PropType<string>,
+      default: '',
+    },
+    background: {
+      type: String as PropType<string>,
+      default: 'primary',
+    },
+  },
+  emits: ['update:modelValue', 'input'],
+  setup(props, { emit, slots }) {
+    const navRef = ref<HTMLElement | null>(null);
+    const tabRefs = ref<Record<string, HTMLElement | null>>({});
+    const viewportTick = ref(0);
+    const activeBarTransitionsEnabled = ref(false);
+    let metricsObserver: ResizeObserver | null = null;
+    const refreshTimeouts = new Set<number>();
+    let lastRenderedLayoutSignature = '';
+    let lastScheduledLayoutSignature = '';
+    let lastRenderedActiveTab = '';
 
-onMounted(() => {
-  if (typeof window === 'undefined') return;
-
-  window.addEventListener('resize', handleResize);
-});
-
-onBeforeUnmount(() => {
-  if (typeof window === 'undefined') return;
-
-  window.removeEventListener('resize', handleResize);
-});
-
-const activeBarStyle = computed<CSSProperties>(() => {
-  // Recompute metrics on viewport changes to keep active-bar alignment in sync.
-  viewportTick.value;
-
-  const navElement = navRef.value;
-  const activeElement = tabRefs.value[activeTab.value];
-
-  if (navElement && activeElement) {
-    const navRect = navElement.getBoundingClientRect();
-    const activeRect = activeElement.getBoundingClientRect();
-    const styles = getComputedStyle(activeElement);
-    const leftPadding = parseFloat(styles.paddingLeft) || 0;
-    const rightPadding = parseFloat(styles.paddingRight) || 0;
-    const width = Math.max(activeRect.width - leftPadding - rightPadding, 0);
-    const offset = activeRect.left - navRect.left + leftPadding;
-
-    return {
-      width: `${width}px`,
-      transform: `translateX(${offset}px)`,
+    const handleResize = (): void => {
+      viewportTick.value += 1;
     };
-  }
 
-  const count = parsedTabs.value.length;
-  if (!count) return {};
+    const disconnectMetricsObserver = (): void => {
+      metricsObserver?.disconnect();
+      metricsObserver = null;
+    };
 
-  const activeIndex = parsedTabs.value.findIndex((tab) => tab.name === activeTab.value);
-  const safeIndex = activeIndex >= 0 ? activeIndex : 0;
+    const clearScheduledRefreshes = (): void => {
+      refreshTimeouts.forEach((timeoutId) => {
+        window.clearTimeout(timeoutId);
+      });
+      refreshTimeouts.clear();
+    };
 
-  return {
-    width: `${100 / count}%`,
-    transform: `translateX(${safeIndex * 100}%)`,
-  };
+    const observeActiveTabMetrics = (activeTabName: string): void => {
+      disconnectMetricsObserver();
+
+      if (typeof ResizeObserver === 'undefined') return;
+
+      const observer = new ResizeObserver(() => {
+        handleResize();
+      });
+
+      const navElement = navRef.value;
+      const activeElement = tabRefs.value[activeTabName];
+
+      if (navElement) observer.observe(navElement);
+      if (activeElement) observer.observe(activeElement);
+
+      metricsObserver = observer;
+    };
+
+    const scheduleActiveBarRefresh = (activeTabName: string): void => {
+      if (typeof window === 'undefined') return;
+
+      clearScheduledRefreshes();
+
+      window.requestAnimationFrame(() => {
+        handleResize();
+        observeActiveTabMetrics(activeTabName);
+        activeBarTransitionsEnabled.value = true;
+
+        // Run a second pass after the first paint to catch late tab width changes.
+        window.requestAnimationFrame(() => {
+          handleResize();
+        });
+      });
+
+      [250, 400].forEach((delay) => {
+        const timeoutId = window.setTimeout(() => {
+          refreshTimeouts.delete(timeoutId);
+          handleResize();
+          observeActiveTabMetrics(activeTabName);
+        }, delay);
+
+        refreshTimeouts.add(timeoutId);
+      });
+    };
+
+    const setTabRef =
+      (name: string) =>
+      (el: Element | null): void => {
+        tabRefs.value[name] = el as HTMLElement | null;
+      };
+
+    const emitSelection = (tabName: string, isDisabled: boolean): void => {
+      if (isDisabled) return;
+
+      emit('update:modelValue', tabName);
+      emit('input', tabName);
+    };
+
+    const activateByKeyboard = (event: KeyboardEvent, tabName: string, isDisabled: boolean): void => {
+      const key = event.key.toLowerCase();
+      if (key !== 'enter' && key !== ' ') return;
+
+      event.preventDefault();
+      emitSelection(tabName, isDisabled);
+    };
+
+    const resolveActiveBarStyle = (parsedTabs: Array<TabItem>, activeTabName: string): CSSProperties => {
+      // Recompute metrics on viewport changes to keep active-bar alignment in sync.
+      viewportTick.value;
+
+      const navElement = navRef.value;
+      const activeElement = tabRefs.value[activeTabName];
+
+      if (navElement && activeElement) {
+        const navRect = navElement.getBoundingClientRect();
+        const activeRect = activeElement.getBoundingClientRect();
+        const styles = getComputedStyle(activeElement);
+        const leftPadding = parseFloat(styles.paddingLeft) || 0;
+        const rightPadding = parseFloat(styles.paddingRight) || 0;
+        const width = Math.max(activeRect.width - leftPadding - rightPadding, 0);
+        const offset = activeRect.left - navRect.left + leftPadding;
+
+        return {
+          width: `${width}px`,
+          transform: `translateX(${offset}px)`,
+        };
+      }
+
+      const count = parsedTabs.length;
+      if (!count) return {};
+
+      const activeIndex = parsedTabs.findIndex((tab) => tab.name === activeTabName);
+      const safeIndex = activeIndex >= 0 ? activeIndex : 0;
+
+      return {
+        width: `${100 / count}%`,
+        transform: `translateX(${safeIndex * 100}%)`,
+      };
+    };
+
+    onMounted(() => {
+      if (typeof window === 'undefined') return;
+
+      window.addEventListener('resize', handleResize);
+      void nextTick(() => {
+        if (lastRenderedLayoutSignature) {
+          scheduleActiveBarRefresh(lastRenderedActiveTab);
+        }
+      });
+
+      void document.fonts?.ready?.then(() => {
+        if (lastRenderedLayoutSignature) {
+          scheduleActiveBarRefresh(lastRenderedActiveTab);
+        }
+      });
+    });
+
+    onUpdated(() => {
+      if (!lastRenderedLayoutSignature || lastRenderedLayoutSignature === lastScheduledLayoutSignature) return;
+
+      activeBarTransitionsEnabled.value = false;
+      lastScheduledLayoutSignature = lastRenderedLayoutSignature;
+      void nextTick(() => {
+        scheduleActiveBarRefresh(lastRenderedActiveTab);
+      });
+    });
+
+    onBeforeUnmount(() => {
+      if (typeof window === 'undefined') return;
+
+      window.removeEventListener('resize', handleResize);
+      clearScheduledRefreshes();
+      disconnectMetricsObserver();
+    });
+
+    return () => {
+      const defaultNodes = flattenVNodes(slots.default?.() ?? []);
+      const parsedTabs = parseTabs(defaultNodes);
+      const activeTab = resolveActiveTab(parsedTabs, props.modelValue || props.value);
+      const contentNodes = buildContentNodes(defaultNodes, activeTab);
+      const roundedTypeClass = props.type ? `s-${props.type}` : null;
+      const activeBarStyle = resolveActiveBarStyle(parsedTabs, activeTab);
+      const layoutSignature = `${parsedTabs
+        .map((tab) => `${tab.name}:${tab.label}:${tab.disabled ? '1' : '0'}`)
+        .join('|')}::${activeTab}`;
+
+      lastRenderedLayoutSignature = layoutSignature;
+      lastRenderedActiveTab = activeTab;
+
+      return h(
+        'div',
+        {
+          role: 'tablist',
+          class: ['s-tabs', 'el-tabs', 'el-tabs--top', 'neumorphic', 's-border-radius-small', roundedTypeClass],
+        },
+        [
+          h('div', { class: 'el-tabs__header is-top' }, [
+            h('div', { class: 'el-tabs__nav-wrap is-top' }, [
+              h('div', { class: 'el-tabs__nav-scroll' }, [
+                h(
+                  'div',
+                  {
+                    ref: navRef,
+                    class: 'el-tabs__nav is-top',
+                  },
+                  [
+                    h('div', {
+                      class: ['el-tabs__active-bar', 'is-top', { 'is-ready': activeBarTransitionsEnabled.value }],
+                      style: activeBarStyle,
+                    }),
+                    ...parsedTabs.map((tab) =>
+                      h(
+                        'div',
+                        {
+                          key: tab.key,
+                          ref: setTabRef(tab.name),
+                          role: 'tab',
+                          class: [
+                            'el-tabs__item',
+                            'is-top',
+                            {
+                              'is-active': tab.name === activeTab,
+                              'is-disabled': tab.disabled,
+                            },
+                          ],
+                          'aria-selected': tab.name === activeTab,
+                          tabindex: tab.disabled ? -1 : 0,
+                          onClick: () => emitSelection(tab.name, tab.disabled),
+                          onKeydown: (event: KeyboardEvent) => activateByKeyboard(event, tab.name, tab.disabled),
+                        },
+                        tab.label
+                      )
+                    ),
+                  ]
+                ),
+              ]),
+            ]),
+          ]),
+          h('div', { class: 'el-tabs__content' }, contentNodes),
+        ]
+      );
+    };
+  },
 });
-
-const emitSelection = (tabName: string, isDisabled: boolean): void => {
-  if (isDisabled) return;
-
-  emit('update:modelValue', tabName);
-  emit('input', tabName);
-};
-
-const activateByKeyboard = (event: KeyboardEvent, tabName: string, isDisabled: boolean): void => {
-  const key = event.key.toLowerCase();
-  if (key !== 'enter' && key !== ' ') return;
-
-  event.preventDefault();
-  emitSelection(tabName, isDisabled);
-};
 </script>
-
-<template>
-  <div role="tablist" class="s-tabs el-tabs el-tabs--top neumorphic s-border-radius-small" :class="[roundedTypeClass]">
-    <div class="el-tabs__header is-top">
-      <div class="el-tabs__nav-wrap is-top">
-        <div class="el-tabs__nav-scroll">
-          <div ref="navRef" class="el-tabs__nav is-top">
-            <div class="el-tabs__active-bar is-top" :style="activeBarStyle"></div>
-
-            <div
-              v-for="tab in parsedTabs"
-              :key="tab.key"
-              :ref="setTabRef(tab.name)"
-              role="tab"
-              class="el-tabs__item is-top"
-              :class="{
-                'is-active': tab.name === activeTab,
-                'is-disabled': tab.disabled,
-              }"
-              :aria-selected="tab.name === activeTab"
-              :tabindex="tab.disabled ? -1 : 0"
-              @click="emitSelection(tab.name, tab.disabled)"
-              @keydown="activateByKeyboard($event, tab.name, tab.disabled)"
-            >
-              {{ tab.label }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="el-tabs__content">
-      <component v-for="entry in orderedContentRenderers" :is="entry.renderer" :key="entry.key" />
-    </div>
-  </div>
-</template>
 
 <style lang="scss">
 .s-tabs .el-tabs__nav-wrap {
@@ -307,9 +404,12 @@ const activateByKeyboard = (event: KeyboardEvent, tabName: string, isDisabled: b
   left: 0;
   bottom: 0;
   height: 2px;
+  pointer-events: none;
+}
+
+.s-tabs .el-tabs__active-bar.is-ready {
   transition:
     transform 0.3s ease,
     width 0.3s ease;
-  pointer-events: none;
 }
 </style>

@@ -164,6 +164,7 @@ export default defineComponent({
     const localVisible = ref(false);
     const hoverTrigger = ref(false);
     const hoverPopper = ref(false);
+    const isHeaderMenuSlidingIn = ref(false);
     const popperStyle = ref<CSSProperties>({
       position: 'fixed',
       top: '-99999px',
@@ -174,6 +175,7 @@ export default defineComponent({
 
     let showTimer: ReturnType<typeof setTimeout> | null = null;
     let hideTimer: ReturnType<typeof setTimeout> | null = null;
+    let headerMenuSlideTimer: ReturnType<typeof setTimeout> | null = null;
     let activeReferenceEl: HTMLElement | null = null;
     let popperResizeObserver: ResizeObserver | null = null;
 
@@ -218,7 +220,7 @@ export default defineComponent({
     const popperClassNames = computed<Array<string>>(() =>
       mergeClassNames(
         isHeaderMenuPopover.value ? ['el-popper'] : ['el-popover', 'el-popper'],
-        [props.popperClass, attrs.class].filter(Boolean).join(' ')
+        [props.popperClass, attrs.class, isHeaderMenuSlidingIn.value ? 'slide-in' : ''].filter(Boolean).join(' ')
       )
     );
 
@@ -235,6 +237,33 @@ export default defineComponent({
       }
     };
 
+    const clearHeaderMenuSlideTimer = (): void => {
+      if (!headerMenuSlideTimer) return;
+      clearTimeout(headerMenuSlideTimer);
+      headerMenuSlideTimer = null;
+    };
+
+    /**
+     * Header menu popper starts from translate(0) and then settles to its base transform.
+     * This mirrors the settings panel slide animation on polkaswap.io.
+     */
+    const startHeaderMenuSlideIn = (): void => {
+      if (!isHeaderMenuPopover.value) return;
+      clearHeaderMenuSlideTimer();
+      isHeaderMenuSlidingIn.value = true;
+    };
+
+    const finishHeaderMenuSlideIn = (): void => {
+      if (!isHeaderMenuPopover.value) return;
+      clearHeaderMenuSlideTimer();
+
+      headerMenuSlideTimer = setTimeout(() => {
+        headerMenuSlideTimer = null;
+        if (!isVisible.value) return;
+        isHeaderMenuSlidingIn.value = false;
+      }, 0);
+    };
+
     const disconnectPopperObserver = (): void => {
       popperResizeObserver?.disconnect();
       popperResizeObserver = null;
@@ -247,6 +276,13 @@ export default defineComponent({
     };
 
     const setVisible = (next: boolean): void => {
+      if (next) {
+        startHeaderMenuSlideIn();
+      } else {
+        clearHeaderMenuSlideTimer();
+        isHeaderMenuSlidingIn.value = false;
+      }
+
       if (!isControlled.value) {
         localVisible.value = next;
       }
@@ -455,9 +491,13 @@ export default defineComponent({
         emit(next ? 'show' : 'hide');
 
         if (next) {
+          finishHeaderMenuSlideIn();
           nextTick(() => {
             updatePosition();
           });
+        } else {
+          clearHeaderMenuSlideTimer();
+          isHeaderMenuSlidingIn.value = false;
         }
       },
       { flush: 'post' }
@@ -488,6 +528,7 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       clearTimers();
+      clearHeaderMenuSlideTimer();
       unbindReferenceListeners();
       disconnectPopperObserver();
       window.removeEventListener('resize', handleWindowResize);

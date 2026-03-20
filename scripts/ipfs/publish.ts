@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 const DIST_DIR = join(process.cwd(), 'dist');
 const PROD_ENV_CONFIG_FILENAME = 'env.json';
 const TESTNET_ENV_CONFIG_FILENAME = 'env.dev.json';
+const DEFAULT_LOCAL_GATEWAY_BASE_URL = 'http://127.0.0.1:8080';
 
 interface WorkspaceRepository {
   name: string;
@@ -390,25 +391,174 @@ function publishDirectoryToIpfs(directory: string): string {
 }
 
 /**
+ * Converts an IPFS multiaddr into an HTTP gateway base URL.
+ */
+export function multiaddrToGatewayBaseUrl(multiaddr: string): string | null {
+  if (!multiaddr) {
+    return null;
+  }
+
+  const parts = multiaddr.split('/').filter(Boolean);
+  if (parts.length === 0) {
+    return null;
+  }
+
+  let host: string | null = null;
+  let isIpv6 = false;
+
+  for (let index = 0; index < parts.length - 1; index++) {
+    const segment = parts[index];
+    const value = parts[index + 1];
+    if (!value) {
+      continue;
+    }
+
+    if (segment === 'ip4' || segment === 'dns' || segment === 'dns4' || segment === 'dns6') {
+      host = value;
+      isIpv6 = false;
+      break;
+    }
+
+    if (segment === 'ip6') {
+      host = value;
+      isIpv6 = true;
+      break;
+    }
+  }
+
+  const tcpIndex = parts.indexOf('tcp');
+  const port = tcpIndex !== -1 ? parts[tcpIndex + 1] : null;
+  if (!host || !port || port === '0') {
+    return null;
+  }
+
+  const normalizedHost = isIpv6 ? `[${host}]` : host;
+  return `http://${normalizedHost}:${port}`;
+}
+
+/**
+ * Normalizes raw gateway values (URL or multiaddr) to an HTTP base URL.
+ */
+export function normalizeGatewayBaseUrl(value: string): string | null {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  if (trimmed.startsWith('/')) {
+    return multiaddrToGatewayBaseUrl(trimmed);
+  }
+
+  const withProtocol = /^https?:\/\//i.test(trimmed) ? trimmed : `http://${trimmed}`;
+
+  try {
+    const parsed = new URL(withProtocol);
+    const path = parsed.pathname === '/' ? '' : parsed.pathname.replace(/\/+$/, '');
+    return `${parsed.protocol}//${parsed.host}${path}`;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Reads an active gateway endpoint from an IPFS repository path when available.
+ */
+export function resolveGatewayBaseUrlFromRepo(
+  repoPath: string,
+  fsDeps: FsDeps = { existsSync, readFileSync }
+): string | null {
+  const gatewayPath = join(repoPath, 'gateway');
+  if (!fsDeps.existsSync(gatewayPath)) {
+    return null;
+  }
+
+  try {
+    const gatewayValue = fsDeps.readFileSync(gatewayPath, 'utf-8');
+    return normalizeGatewayBaseUrl(gatewayValue);
+  } catch {
+    return null;
+  }
+}
+
+function readGatewayMultiaddrFromConfig(): string | null {
+  try {
+    const { stdout } = runCommand('ipfs', ['config', 'Addresses.Gateway'], { capture: true, silent: true });
+    return stdout.trim() || null;
+  } catch {
+    return null;
+  }
+}
+
+type ResolveLocalGatewayOptions = {
+  cwd?: string;
+  env?: NodeJS.ProcessEnv;
+  fsDeps?: FsDeps;
+  readGatewayAddress?: () => string | null;
+};
+
+/**
+ * Resolves the local IPFS gateway base URL from runtime state/config.
+ */
+export function resolveLocalGatewayBaseUrl(options: ResolveLocalGatewayOptions = {}): string {
+  const cwd = options.cwd ?? process.cwd();
+  const env = options.env ?? process.env;
+  const fsDeps = options.fsDeps ?? { existsSync, readFileSync };
+
+  const candidates = Array.from(
+    new Set(
+      [
+        env.IPFS_PATH,
+        join(cwd, '.ipfs-workspace'),
+        env.HOME ? join(env.HOME, '.ipfs') : null,
+        env.USERPROFILE ? join(env.USERPROFILE, '.ipfs') : null,
+      ].filter((value): value is string => Boolean(value))
+    )
+  );
+
+  for (const repoPath of candidates) {
+    const gatewayBaseUrl = resolveGatewayBaseUrlFromRepo(repoPath, fsDeps);
+    if (gatewayBaseUrl) {
+      return gatewayBaseUrl;
+    }
+  }
+
+  const rawAddress = options.readGatewayAddress ? options.readGatewayAddress() : readGatewayMultiaddrFromConfig();
+  const configuredGateway = rawAddress ? normalizeGatewayBaseUrl(rawAddress) : null;
+  if (configuredGateway) {
+    return configuredGateway;
+  }
+
+  return DEFAULT_LOCAL_GATEWAY_BASE_URL;
+}
+
+/**
  * Creates a public dweb.link URL for a published IPFS CID.
  */
 export function createDwebGatewayUrl(cid: string): string {
   return `https://dweb.link/ipfs/${cid}/index.html`;
 }
 
-function logGatewayUrls(cid: string, label: string): void {
+/**
+ * Creates a local gateway URL for a published IPFS CID.
+ */
+export function createLocalGatewayUrl(cid: string, baseUrl: string = DEFAULT_LOCAL_GATEWAY_BASE_URL): string {
+  return `${baseUrl.replace(/\/+$/, '')}/ipfs/${cid}/index.html`;
+}
+
+function logGatewayUrls(cid: string, label: string, localGatewayBaseUrl: string): void {
   const url = `https://ipfs.io/ipfs/${cid}/index.html`;
   console.log(`\n${label} CID:`, cid);
   console.log(`${label} gateway (ipfs.io):`, url);
   if (label === 'Production') {
     console.log('Production dweb link:', createDwebGatewayUrl(cid));
   }
-  console.log(`${label} local gateway:`, `http://127.0.0.1:8080/ipfs/${cid}/index.html`);
+  console.log(`${label} local gateway:`, createLocalGatewayUrl(cid, localGatewayBaseUrl));
 }
 
 function main(): void {
   console.log('Checking IPFS CLI availability...');
   ensureIpfsCli();
+  const localGatewayBaseUrl = resolveLocalGatewayBaseUrl();
 
   console.log('Ensuring local workspaces are built...');
   buildLocalRepositories();
@@ -421,14 +571,14 @@ function main(): void {
 
   console.log('Publishing production `dist/` to IPFS...');
   const productionCid = publishDirectoryToIpfs(DIST_DIR);
-  logGatewayUrls(productionCid, 'Production');
+  logGatewayUrls(productionCid, 'Production', localGatewayBaseUrl);
 
   console.log('Preparing testnet assets from the build output...');
   const { distPath: testnetDistPath, cleanup } = createTestnetDistClone();
   try {
     console.log('Publishing testnet build to IPFS...');
     const testnetCid = publishDirectoryToIpfs(testnetDistPath);
-    logGatewayUrls(testnetCid, 'Testnet');
+    logGatewayUrls(testnetCid, 'Testnet', localGatewayBaseUrl);
   } finally {
     cleanup();
   }

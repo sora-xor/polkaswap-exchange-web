@@ -49,6 +49,7 @@ vi.mock('@/utils/walletCore', () => ({
     WALLET_CONSTS: {
       SoraNetwork: {},
       ExplorerType: {
+        Sorametrics: 'sorametrics',
         Subscan: 'subscan',
         Polkadot: 'polkadot',
       },
@@ -163,5 +164,6 @@ describe('useNetworkFormatter', () => {
 
     const polkadotLink = links.find((item) => item.value?.includes('polkadot.js.org/apps/'))?.value ?? '';
     expect(polkadotLink).toContain('rpc=wss%3A%2F%2Fnode.example%2F%3Fx%3D1%26y%3D2');
+    expect(links.some((item) => item.value?.includes('subscan.io'))).toBe(false);
   });
 });

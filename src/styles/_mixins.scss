@@ -191,6 +191,10 @@ $button-custom-shadow:
         width: calc(100% - 2 * #{$inner-spacing-big});
 
         #{$tabs-class}__nav-wrap {
+          margin-bottom: -1px;
+          border-radius: 24px;
+          box-shadow: var(--s-shadow-element);
+          color: var(--s-color-base-content-primary);
           #{$tabs-class}__item {
             padding-right: $inner-spacing-medium;
             padding-left: $inner-spacing-medium;
@@ -200,6 +204,11 @@ $button-custom-shadow:
             text-align: center;
             overflow: hidden;
             text-overflow: ellipsis;
+            &.is-active {
+              border-radius: 24px;
+              background-color: var(--s-color-utility-surface);
+              box-shadow: var(--s-shadow-element-pressed);
+            }
             &.is-focus:not(.is-active) {
               box-shadow: none !important;
             }
@@ -218,6 +227,9 @@ $button-custom-shadow:
         &-wrap {
           background-color: var(--s-color-base-background);
         }
+      }
+      &__active-bar {
+        background-color: var(--s-color-theme-accent);
       }
       &__content {
         min-height: calc(#{$select-asset-item-height} * 6);

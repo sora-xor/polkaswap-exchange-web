@@ -17,7 +17,7 @@
             {{ wallet.title }}
             <div v-if="isRecommendedWallet(wallet)" class="extension-label extension-label--recommended">
               <span>{{ t('connection.wallet.recommended') }}</span>
-              <s-icon name="basic-circle-star-24" size="12"></s-icon>
+              <s-icon name="basic-circle-star-24" size="12" class="extension-label__icon"></s-icon>
             </div>
           </div>
         </template>
@@ -37,10 +37,15 @@
             <s-icon name="el-icon-loading" size="16" class="connection-loading-icon"></s-icon>
           </span>
 
-          <s-button v-if="hasDisconnectAction(wallet)" size="small" @click.stop="handleDisconnect(wallet)">
+          <s-button
+            v-if="hasDisconnectAction(wallet)"
+            class="connection-state"
+            size="small"
+            @click.stop="handleDisconnect(wallet)"
+          >
             {{ t('disconnectWalletText') }}
           </s-button>
-          <s-button v-else-if="isConnectedWallet(wallet)" size="small" disabled>
+          <s-button v-else-if="isConnectedWallet(wallet)" class="connection-state" size="small" disabled>
             {{ t('connection.wallet.connected') }}
           </s-button>
         </template>
@@ -60,6 +65,7 @@ import { mixins, Options, Prop } from 'vue-property-decorator';
 
 import AccountCard from '../../Account/AccountCard.vue';
 import TranslationMixin from '../../mixins/TranslationMixin';
+import { isProviderConnected } from '../utils';
 
 import ConnectionItems from './ConnectionItems.vue';
 
@@ -92,9 +98,7 @@ export default class ExtensionConnectionList extends mixins(TranslationMixin) {
   }
 
   hasDisconnectAction(wallet: Wallet): boolean {
-    if (!wallet.provider) return false;
-
-    return wallet.provider.isConnected;
+    return isProviderConnected(wallet.provider as Nullable<{ isConnected?: unknown }>);
   }
 
   handleSelect(wallet: Wallet): void {
@@ -126,12 +130,16 @@ export default class ExtensionConnectionList extends mixins(TranslationMixin) {
 }
 
 .connection-action {
-  color: rgb(0, 0, 238);
+  display: inline-flex;
+  flex-shrink: 0;
+  color: inherit;
+  text-decoration: none;
 
-  :deep(.el-button.el-button--mini) {
-    display: inline-block !important;
-    justify-content: normal !important;
-    align-items: normal !important;
+  :deep(.connection-install) {
+    display: inline-flex !important;
+    position: static !important;
+    align-items: center !important;
+    justify-content: center !important;
     padding: 3px 6px !important;
     text-transform: uppercase;
     font-weight: 500;
@@ -142,12 +150,16 @@ export default class ExtensionConnectionList extends mixins(TranslationMixin) {
     box-shadow: var(--s-shadow-element-pressed);
   }
 
-  :deep(.el-button.el-button--mini .s-button__text) {
+  :deep(.connection-install .s-button__text) {
     text-transform: uppercase;
     font-weight: 500;
     line-height: 12px;
     color: inherit;
   }
+}
+
+:deep(.connection-state) {
+  flex-shrink: 0;
 }
 
 .extension {
@@ -180,6 +192,19 @@ export default class ExtensionConnectionList extends mixins(TranslationMixin) {
       background-color: var(--s-color-theme-accent);
       color: var(--s-color-base-on-accent);
     }
+  }
+}
+
+.extension-label__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+
+  &::before {
+    content: none !important;
+  }
+
+  :deep(.s-icon__svg) {
+    display: block !important;
   }
 }
 </style>

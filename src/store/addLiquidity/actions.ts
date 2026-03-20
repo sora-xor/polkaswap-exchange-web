@@ -148,9 +148,15 @@ const actions = defineActions({
   async setDataFromLiquidity(context, { firstAddress, secondAddress }: LiquidityParams): Promise<void> {
     const { dispatch } = addLiquidityActionContext(context);
 
-    const findAssetAddress = async (address: string): Promise<string> => {
-      const asset = await api.assets.getAssetInfo(address);
-      return asset?.address ?? '';
+    const findAssetAddress = async (address?: string): Promise<string> => {
+      if (!address) return '';
+
+      try {
+        const asset = await api.assets.getAssetInfo(address);
+        return asset?.address ?? '';
+      } catch {
+        return '';
+      }
     };
 
     const [first, second] = await Promise.all([findAssetAddress(firstAddress), findAssetAddress(secondAddress)]);

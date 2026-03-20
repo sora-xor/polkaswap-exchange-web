@@ -218,16 +218,6 @@ const waitForCore = async ({
  * written without defensive checks at every stage.
  */
 const waitForConnection = async (): Promise<void> => {
-  const isIpfsContext =
-    typeof window !== 'undefined' &&
-    typeof window.location?.pathname === 'string' &&
-    window.location.pathname.includes('/ipfs/');
-
-  if (isIpfsContext) {
-    console.info('[wallet] skipping chain connection in IPFS context');
-    return;
-  }
-
   if (connection.loading) {
     await delay(100);
     await waitForConnection();

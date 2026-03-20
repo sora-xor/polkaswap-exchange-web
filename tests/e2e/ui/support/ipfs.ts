@@ -38,6 +38,10 @@ export const ipfsBasePath = (() => {
 export const ipfsEntryUrl = `${ipfsBasePath}/?ipfs-check=1`;
 
 export async function preparePage(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    // Keep E2E viewport/layout checks deterministic by starting with disclaimer accepted.
+    localStorage.setItem('dexSettings.disclaimerApprove', 'true');
+  });
   await stubWebSocket(page);
   await stubNetwork(page);
 }

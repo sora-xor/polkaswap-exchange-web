@@ -60,8 +60,13 @@ function closeView(): void {
 
 <style lang="scss">
 .account-select-dialog.dialog-wrapper {
+  font-family: var(--s-font-family-default, 'Sora, sans-serif');
+
   .dialog-card {
-    box-shadow: var(--s-shadow-dialog);
+    background: transparent;
+    box-shadow: none !important;
+    border-radius: 0;
+    overflow: hidden;
   }
 
   .dialog-card__header {
@@ -71,11 +76,29 @@ function closeView(): void {
   .dialog-card__content {
     padding: 0;
     max-height: none;
-    overflow: visible;
+    overflow: hidden;
   }
 
-  .dialog-card > .el-card.base {
-    max-width: 100%;
+  .dialog-card__content > .el-card.base {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    box-shadow: none !important;
+    padding: 24px 24px 32px;
+    font-family: inherit;
+
+    > .el-card__body {
+      padding: 0;
+    }
+  }
+
+  .wallet-connection,
+  .wallet-connection * {
+    font-family: inherit;
+  }
+
+  .dialog-card__content .connection-items.s-scrollbar.el-scrollbar > .el-scrollbar__wrap {
+    overflow-y: auto !important;
   }
 
   .dialog-card .base-title_close.el-button {
@@ -102,7 +125,15 @@ function closeView(): void {
       padding: 0;
 
       .el-card.base {
-        max-width: 100%;
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+        box-shadow: none !important;
+        padding: 24px 24px 32px;
+
+        > .el-card__body {
+          padding: 0;
+        }
       }
     }
   }

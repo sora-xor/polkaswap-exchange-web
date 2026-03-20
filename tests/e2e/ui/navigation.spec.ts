@@ -88,7 +88,7 @@ const openSwap = async (page: Page): Promise<void> => {
 const openTrade = async (page: Page): Promise<void> => {
   await page.goto(`${ipfsEntryUrl}#/trade`);
   await ensureAppLoaded(page);
-  await expectHash(page, '#/trade');
+  await expect.poll(async () => page.evaluate(() => window.location.hash)).toMatch(/^#\/trade(?:\/[^/]+\/[^/]+)?$/);
 };
 
 const enableNoirTheme = async (page: Page): Promise<void> => {
@@ -168,6 +168,7 @@ test('supports sidebar navigation across major routes', async ({ page }) => {
     'Pool',
     'Staking',
     'Bridge',
+    'Burn',
     'Account',
     'Kensetsu',
     'Explore',
@@ -263,8 +264,31 @@ test('collapses and expands the sidebar menu', async ({ page }) => {
   const collapseButton = sidebar.locator('.collapse-button');
 
   await expect(sidebar).not.toHaveClass(/collapsed/);
+  await expect(collapseButton).toBeVisible();
   await collapseButton.click();
   await expect(sidebar).toHaveClass(/collapsed/);
+
+  await expect(collapseButton).toBeVisible();
+  const collapsedButtonMetrics = await page.evaluate(() => {
+    const button = document.querySelector('.app-menu.collapsed .collapse-button') as HTMLElement | null;
+    if (!button) return null;
+
+    const rect = button.getBoundingClientRect();
+    const style = getComputedStyle(button);
+
+    return {
+      pointerEvents: style.pointerEvents,
+      top: rect.top,
+      bottom: rect.bottom,
+      viewportHeight: window.innerHeight,
+    };
+  });
+
+  expect(collapsedButtonMetrics).not.toBeNull();
+  expect(collapsedButtonMetrics?.pointerEvents).toBe('all');
+  expect(collapsedButtonMetrics!.top).toBeGreaterThanOrEqual(0);
+  expect(collapsedButtonMetrics!.bottom).toBeLessThanOrEqual(collapsedButtonMetrics!.viewportHeight);
+
   await collapseButton.click();
   await expect(sidebar).not.toHaveClass(/collapsed/);
 
@@ -1055,6 +1079,47 @@ test('keeps stats filter dropdown within viewport on narrow screens', async ({ p
   await expectNoHorizontalOverflow(page);
   await expectLocatorWithinViewport(page, '.stats-filter-menu');
 
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps stats filter colors aligned with production in noir mode', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+  await enableNoirTheme(page);
+
+  await page.getByRole('link', { name: 'Statistics', exact: true }).first().click();
+  await expectHash(page, '#/stats');
+
+  const statsFilter = page.locator('.stats-filter').first();
+  const statsFilterButton = statsFilter.locator('.stats-filter-button');
+  const statsFilterMenu = statsFilter.locator('.stats-filter-menu');
+
+  await expect(statsFilter).toBeVisible();
+
+  if (await statsFilterButton.isDisabled()) {
+    await expect(statsFilterButton).toBeDisabled();
+    expect(consoleErrors).toEqual([]);
+    return;
+  }
+
+  await statsFilterButton.click();
+  await expect(statsFilterMenu).toBeVisible();
+
+  const colors = await statsFilter.evaluate((root) => {
+    const trigger = root.querySelector('.stats-filter-button') as HTMLElement | null;
+    const selected = root.querySelector('.stats-filter-list-item.s-pressed') as HTMLElement | null;
+    const unselected = root.querySelector('.stats-filter-list-item:not(.s-pressed)') as HTMLElement | null;
+
+    return {
+      trigger: trigger ? getComputedStyle(trigger).color : null,
+      selected: selected ? getComputedStyle(selected).color : null,
+      unselected: unselected ? getComputedStyle(unselected).color : null,
+    };
+  });
+
+  expect(colors.trigger).toBe('rgb(240, 215, 220)');
+  expect(colors.selected).toBe('rgb(242, 65, 151)');
+  expect(colors.unselected).toBe('rgb(240, 215, 220)');
   expect(consoleErrors).toEqual([]);
 });
 

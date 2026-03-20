@@ -347,23 +347,18 @@ $item-padding: 17px;
 .header-menu {
   $dropdown-background: var(--s-color-utility-surface);
   $dropdown-item-line-height: 42px;
-  transform: translate(-100%);
-  transition: transform 0.2s cubic-bezier(0.22, 0.77, 0.81, 0.61);
+  transition: right 0.2s cubic-bezier(0.22, 0.77, 0.81, 0.61);
 
   &.custom-z-index {
     z-index: 1999 !important;
   }
 
   &.slide-in {
-    transform: translate(0);
+    right: 4px !important;
   }
 
   &.is-open {
-    transform: translateX(calc(-100% + 170px));
-
-    @include desktop {
-      transform: translateX(calc(-100% + 143px));
-    }
+    right: 4px !important;
   }
 
   &.el-dropdown-menu.el-popper {
@@ -371,9 +366,10 @@ $item-padding: 17px;
     box-shadow: var(--s-shadow-element-pressed);
     position: fixed !important;
     top: -4px !important;
-    right: -272px;
+    right: 4px !important;
     left: auto !important;
-    max-width: 284px !important;
+    width: min(284px, calc(100vw - 8px));
+    max-width: min(284px, calc(100vw - 8px)) !important;
     height: calc(100% - 28px) !important;
     border: unset;
     border-radius: unset;

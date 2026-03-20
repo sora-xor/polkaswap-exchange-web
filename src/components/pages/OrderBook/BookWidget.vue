@@ -37,25 +37,25 @@
         class="row"
         @click="fillPrice(order.price, PriceVariant.Sell)"
       >
-        <span class="order-info total">{{ order.total }}</span>
-        <span class="order-info amount">{{ order.amount }}</span>
-        <span class="order-info price">{{ order.price }}</span>
+        <span class="order-info total" :title="order.total">{{ order.total }}</span>
+        <span class="order-info amount" :title="order.amount">{{ order.amount }}</span>
+        <span class="order-info price" :title="order.price">{{ order.price }}</span>
         <div class="bar" :style="barStyle(order.filled)"></div>
       </div>
     </div>
     <div v-else class="stock-book-sell--no-asks">{{ t('orderBook.book.noAsks') }}</div>
     <div :class="trendClass">
       <div>
-        <span class="mark-price">{{ lastPriceFormatted }}</span>
+        <span class="mark-price" :title="lastPriceFormatted">{{ lastPriceFormatted }}</span>
         <s-icon class="trend-icon" :name="trendIcon" size="18"></s-icon>
-        <span class="last-traded-price">{{ fiatValue }}</span>
+        <span class="last-traded-price" :title="fiatValue">{{ fiatValue }}</span>
       </div>
     </div>
     <div v-if="bidsFormatted.length" class="stock-book-buy" :class="{ unclickable: isMarketOrder }">
       <div v-for="order in buyOrders" :key="order.price" class="row" @click="fillPrice(order.price, PriceVariant.Buy)">
-        <span class="order-info total">{{ order.total }}</span>
-        <span class="order-info amount">{{ order.amount }}</span>
-        <span class="order-info price">{{ order.price }}</span>
+        <span class="order-info total" :title="order.total">{{ order.total }}</span>
+        <span class="order-info amount" :title="order.amount">{{ order.amount }}</span>
+        <span class="order-info price" :title="order.price">{{ order.price }}</span>
         <div class="bar" :style="barStyle(order.filled)"></div>
       </div>
     </div>
@@ -151,6 +151,7 @@ $mono-font: 'JetBrainsMono';
     transform-style: preserve-3d;
     font-family: $mono-font;
     margin: 2px;
+    min-width: 0;
   }
 
   &__switcher {
@@ -181,6 +182,11 @@ $mono-font: 'JetBrainsMono';
 
   .order-info {
     width: 130px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
     padding: 4px $basic-spacing 4px $basic-spacing;
     transform: scaleX(-1);
 
@@ -228,14 +234,32 @@ $mono-font: 'JetBrainsMono';
     height: 30px;
     line-height: 30px;
     background-color: rgba($color: $background-column-color-light, $alpha: 0.2);
+    overflow: hidden;
+
+    > div {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-width: 0;
+    }
 
     .mark-price {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       font-size: var(--s-font-size-large);
       padding-left: $inner-spacing-big;
       font-weight: 450;
     }
 
     .last-traded-price {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       margin-left: $inner-spacing-big;
       font-size: var(--s-font-size-big);
       font-weight: 450;

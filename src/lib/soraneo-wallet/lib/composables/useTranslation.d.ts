@@ -29,6 +29,7 @@ export declare function useTranslation(): {
     readonly CEX: 'CEX';
     readonly Polkadot: 'Polkadot';
     readonly SORAScan: 'SORAScan';
+    readonly SoraMetrics: 'SoraMetrics';
     readonly Subscan: 'Subscan';
     readonly CedeStore: 'cede.store';
     readonly QR: 'QR';

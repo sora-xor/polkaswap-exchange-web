@@ -13,6 +13,7 @@ import {
 import { Alert, ApiKeysObject, ConnectionStatus, type FilterOptions } from '../../types/common';
 import { Currency, type CurrencyFields, type FiatExchangeRateObject } from '../../types/currency';
 import { runtimeStorage, settingsStorage, storage } from '../../util/storage';
+import { normalizeTheme } from './theme';
 
 import type { SettingsState } from './types';
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
@@ -170,8 +171,9 @@ const mutations = defineMutations<SettingsState>()({
     state.isMSTAvailable = isAvailable;
   },
   setTheme(state, theme: Theme): void {
-    state.theme = theme;
-    settingsStorage.set('theme', theme);
+    const nextTheme = normalizeTheme(theme);
+    state.theme = nextTheme;
+    settingsStorage.set('theme', nextTheme);
   },
 });
 

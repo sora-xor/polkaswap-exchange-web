@@ -334,7 +334,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cedelabs/providers@npm:*":
+"@cedelabs/providers@npm:1.13.0":
   version: 1.13.0
   resolution: "@cedelabs/providers@npm:1.13.0"
   dependencies:
@@ -345,7 +345,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cedelabs/widgets-universal@npm:^1.6.0":
+"@cedelabs/providers@patch:@cedelabs/providers@npm:1.13.0#./.yarn/patches/@cedelabs-providers-npm-1.13.0-kmaxlength.patch::locator=polkaswap-exchange-web%40workspace%3A.":
+  version: 1.13.0
+  resolution: "@cedelabs/providers@patch:@cedelabs/providers@npm%3A1.13.0#./.yarn/patches/@cedelabs-providers-npm-1.13.0-kmaxlength.patch::version=1.13.0&hash=5d0377&locator=polkaswap-exchange-web%40workspace%3A."
+  dependencies:
+    "@metamask/providers": "npm:^8.1.1"
+    "@metamask/safe-event-emitter": "npm:^3.0.0"
+    json-rpc-engine: "npm:^6.1.0"
+  checksum: 10c0/e7f30619c6cfe67d224c7e47dfa12c57915639517826659d331c70f6d75c507a1fb312c6aedbeb278f23d02a16b22d5e4b8f02cde544786389f7b430db8f6106
+  languageName: node
+  linkType: hard
+
+"@cedelabs/widgets-universal@npm:1.6.0":
   version: 1.6.0
   resolution: "@cedelabs/widgets-universal@npm:1.6.0"
   dependencies:
@@ -354,6 +365,18 @@ __metadata:
     "@metamask/safe-event-emitter": "npm:^3.0.0"
     json-rpc-engine: "npm:^6.1.0"
   checksum: 10c0/bba17fdffb193b8b13abbe55f22ca4f08aaff259eac06134462f5e938e894862ffb2d2b579bde720e6fe300383eafda7040e5523f6d30f4082ee7bc4bbcf6042
+  languageName: node
+  linkType: hard
+
+"@cedelabs/widgets-universal@patch:@cedelabs/widgets-universal@npm:1.6.0#./.yarn/patches/@cedelabs-widgets-universal-npm-1.6.0-kmaxlength.patch::locator=polkaswap-exchange-web%40workspace%3A.":
+  version: 1.6.0
+  resolution: "@cedelabs/widgets-universal@patch:@cedelabs/widgets-universal@npm%3A1.6.0#./.yarn/patches/@cedelabs-widgets-universal-npm-1.6.0-kmaxlength.patch::version=1.6.0&hash=7e77bd&locator=polkaswap-exchange-web%40workspace%3A."
+  dependencies:
+    "@cedelabs/providers": "npm:*"
+    "@metamask/providers": "npm:^8.1.1"
+    "@metamask/safe-event-emitter": "npm:^3.0.0"
+    json-rpc-engine: "npm:^6.1.0"
+  checksum: 10c0/c9b2271b3a43b76cb134b3c651670dcb20dabf8527b3353d23b6d2a6df360a696cce3f5d9c592569d19da9a88ec8f8b1583431c60e42b98416e2fa143e2f3418
   languageName: node
   linkType: hard
 
@@ -10337,7 +10360,7 @@ __metadata:
   resolution: "polkaswap-exchange-web@workspace:."
   dependencies:
     "@babel/runtime": "npm:^7.24.8"
-    "@cedelabs/widgets-universal": "npm:^1.6.0"
+    "@cedelabs/widgets-universal": "patch:@cedelabs/widgets-universal@npm:1.6.0#./.yarn/patches/@cedelabs-widgets-universal-npm-1.6.0-kmaxlength.patch"
     "@electron-toolkit/preload": "npm:^3.0.2"
     "@electron-toolkit/utils": "npm:^4.0.0"
     "@eslint/js": "npm:9.39.1"

@@ -51,7 +51,14 @@ import { useCopyAddress } from '@/composables/useCopyAddress';
 import { useTranslation } from '@/composables/useTranslation';
 import { HashType, ExplorerType, SoraNetwork, type ExplorerLink } from '@/consts';
 import { requireLegacyStore } from '@/utils/legacy-store';
-import { formatAddress, formatAccountAddress, getExplorerLinks } from '@/util';
+import {
+  formatAddress,
+  formatAccountAddress,
+  getExplorerLinks,
+  getSorametricsAccountLink,
+  getSorametricsBlockLink,
+  getSorametricsTransactionLink,
+} from '@/util';
 
 const props = withDefaults(
   defineProps<{
@@ -95,13 +102,21 @@ const explorerLinks = computed<ExplorerLink[]>(() => {
     case HashType.Account:
       return baseLinks
         .filter(({ type }) => type !== ExplorerType.Polkadot)
-        .map(({ type, value }) => ({ type, value: `${value}/${props.type}/${formattedValue.value}` }));
+        .map(({ type, value }) => ({
+          type,
+          value:
+            type === ExplorerType.Sorametrics
+              ? getSorametricsAccountLink(formattedValue.value)
+              : `${value}/${props.type}/${formattedValue.value}`,
+        }));
     case HashType.Block:
       return baseLinks.map(({ type, value }) => {
         const link: ExplorerLink = { type, value: '' };
 
         if (type === ExplorerType.Polkadot) {
           link.value = `${value}/${formattedValue.value}`;
+        } else if (type === ExplorerType.Sorametrics) {
+          link.value = getSorametricsBlockLink(formattedValue.value);
         } else {
           link.value = `${value}/${props.type}/${formattedValue.value}`;
         }
@@ -113,7 +128,9 @@ const explorerLinks = computed<ExplorerLink[]>(() => {
         .map(({ type, value }) => {
           const link: ExplorerLink = { type, value: '' };
 
-          if (type === ExplorerType.Sorascan) {
+          if (type === ExplorerType.Sorametrics) {
+            link.value = getSorametricsTransactionLink(props.value);
+          } else if (type === ExplorerType.Sorascan) {
             link.value = `${value}/transaction/${props.value}`;
           } else if (type === ExplorerType.Subscan) {
             if (props.value.startsWith('0x')) {
@@ -148,6 +165,8 @@ const getExplorerTranslation = (type: ExplorerType) => {
       return TranslationConsts.Polkadot;
     case ExplorerType.Sorascan:
       return TranslationConsts.SORAScan;
+    case ExplorerType.Sorametrics:
+      return TranslationConsts.SoraMetrics;
     case ExplorerType.Subscan:
       return TranslationConsts.Subscan;
     default:

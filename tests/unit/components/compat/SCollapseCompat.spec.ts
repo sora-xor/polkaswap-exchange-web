@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { h } from 'vue';
 import { mount } from '@vue/test-utils';
+import sCollapseItemCompatSource from '@/components/compat/SCollapseItemCompat.vue?raw';
 
 import SCollapseCompat from '@/components/compat/SCollapseCompat.vue';
 import SCollapseItemCompat from '@/components/compat/SCollapseItemCompat.vue';
@@ -76,5 +77,12 @@ describe('SCollapseCompat', () => {
     expect(items[0].classes()).not.toContain('is-active');
     expect(items[1].classes()).toContain('is-active');
     expect(wrapper.emitted('input')?.[1]).toEqual(['two']);
+  });
+
+  it('uses production-style height transitions for collapse wrappers', () => {
+    expect(sCollapseItemCompatSource).toContain('class="el-collapse-item__wrap collapse-transition"');
+    expect(sCollapseItemCompatSource).toContain('@before-enter="handleBeforeEnter"');
+    expect(sCollapseItemCompatSource).toContain('@leave="handleLeave"');
+    expect(sCollapseItemCompatSource).toContain('height 0.3s ease-in-out');
   });
 });

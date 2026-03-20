@@ -14,12 +14,17 @@ const LOCK_TIMEOUT = 6_000;
 const BASE_BACKOFF_DELAY = 2_000; // 2s
 const BACKOFF_MULTIPLIER = 1.7; // gentler than 2x for smoother growth
 const MAX_BACKOFF_DELAY = 120_000; // 120s
+const LATENCY_PROBE_TIMEOUT_MS = 5_000;
+const LATENCY_PROBE_MIN_INTERVAL_MS = 5 * 60_000;
 
 export class NodesConnection {
   // Feature flags can be toggled at runtime, e.g. from App.vue after env is loaded
   static enableBackoff = false;
   static enableLatencyProbe = true;
   static enableParallelDial = false;
+  static maxActiveConnections = Number.POSITIVE_INFINITY;
+
+  private static activeConnections = new Set<NodesConnection>();
   public readonly connection!: Connection;
   public readonly network!: SubNetworkId;
   protected readonly storage!: Storage;
@@ -30,11 +35,15 @@ export class NodesConnection {
   public nodeAddressConnecting = '';
   public chainId = '';
   protected nodeLatencies: Record<string, number> = {};
+  protected lastLatencyProbeTs = 0;
+  protected lastLatencyProbeNodeListKey = '';
   public lastReconnectDelayMs = 0;
   public reconnectAttempt = 0;
 
   protected connectionLocked = false;
   protected connectionLockTimeout: Nullable<NodeJS.Timeout> = null;
+  protected reconnectTimer: Nullable<NodeJS.Timeout> = null;
+  protected connectPromise: Nullable<Promise<void>> = null;
 
   constructor(storage: Storage, connection: Connection, network = SubNetworkId.Mainnet) {
     this.network = network;
@@ -110,18 +119,18 @@ export class NodesConnection {
 
     const { node, defaultNodes } = this;
 
-    if (!node) return;
+    if (node) {
+      const defaultNode = defaultNodes.find((item) => item.address === node.address);
 
-    const defaultNode = defaultNodes.find((item) => item.address === node.address);
+      if (defaultNode) {
+        // If node from default nodes list - keep this node from localstorage up to date
+        this.setNode(defaultNode);
+      }
+    }
 
-    if (!defaultNode) return;
-    // If node from default nodes list - keep this node from localstorage up to date
-    this.setNode(defaultNode);
-
-    // Probe default nodes latency asynchronously to reorder by fastest
-    if (NodesConnection.enableLatencyProbe) {
+    if (this.shouldProbeNodeLatency()) {
       // fire and forget
-      this.probeAndSortDefaultNodesByLatency();
+      void this.probeAndSortDefaultNodesByLatency();
     }
   }
 
@@ -144,16 +153,36 @@ export class NodesConnection {
     return id;
   }
 
+  protected buildProbeNodeListKey(nodes: ReadonlyArray<Node> = this.defaultNodes): string {
+    return [...nodes]
+      .map((item) => item.address)
+      .sort()
+      .join('|');
+  }
+
+  protected shouldProbeNodeLatency(now = Date.now()): boolean {
+    if (!NodesConnection.enableLatencyProbe) return false;
+    if (this.defaultNodes.length < 2) return false;
+    const nodeListKey = this.buildProbeNodeListKey();
+    if (nodeListKey !== this.lastLatencyProbeNodeListKey) return true;
+    if (this.lastLatencyProbeTs && now - this.lastLatencyProbeTs < LATENCY_PROBE_MIN_INTERVAL_MS) return false;
+    return true;
+  }
+
   protected async probeAndSortDefaultNodesByLatency(): Promise<void> {
+    this.lastLatencyProbeTs = Date.now();
     const nodes = [...this.defaultNodes];
+    this.lastLatencyProbeNodeListKey = this.buildProbeNodeListKey(nodes);
     const timings: Array<{ addr: string; t: number | null }> = await Promise.all(
       nodes.map(async (n) => {
         const start = Date.now();
         try {
-          // race with timeout 5s
+          // race with timeout to avoid probe hangs delaying later retries
           await Promise.race([
             this.getChainId(n.address),
-            new Promise((_resolve, reject) => setTimeout(() => reject(new Error('probe-timeout')), 5000)),
+            new Promise((_resolve, reject) =>
+              setTimeout(() => reject(new Error('probe-timeout')), LATENCY_PROBE_TIMEOUT_MS)
+            ),
           ]);
           return { addr: n.address, t: Date.now() - start };
         } catch (_) {
@@ -163,7 +192,11 @@ export class NodesConnection {
     );
 
     // Update latencies and persist
-    this.nodeLatencies = timings.reduce((acc, { addr, t }) => ({ ...acc, [addr]: t ?? Number.MAX_SAFE_INTEGER }), {});
+    const nextLatencies: Record<string, number> = {};
+    timings.forEach(({ addr, t }) => {
+      nextLatencies[addr] = t ?? Number.MAX_SAFE_INTEGER;
+    });
+    this.nodeLatencies = nextLatencies;
     this.storage.set('nodeLatencies', JSON.stringify(this.nodeLatencies));
 
     // Sort by latency (unknowns at end)
@@ -193,17 +226,64 @@ export class NodesConnection {
     this.connectionLocked = false;
   }
 
+  protected clearReconnectTimer(): void {
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer);
+    }
+    this.reconnectTimer = null;
+  }
+
+  protected registerActiveConnection(): void {
+    NodesConnection.activeConnections.add(this);
+  }
+
+  protected unregisterActiveConnection(): void {
+    NodesConnection.activeConnections.delete(this);
+  }
+
+  protected guardConnectionCap(): void {
+    const cap = NodesConnection.maxActiveConnections;
+    if (!Number.isFinite(cap) || cap <= 0) return;
+    if (NodesConnection.activeConnections.has(this)) return;
+
+    const active = NodesConnection.activeConnections.size;
+    if (active >= cap) {
+      throw new Error(`[${this.network}] Active connection cap reached (${cap})`);
+    }
+  }
+
   public async closeConnection() {
-    if (!this.connection.api) return;
+    this.clearReconnectTimer();
+
+    if (!this.connection.api) {
+      this.unregisterActiveConnection();
+      return;
+    }
 
     const { endpoint } = this.connection;
 
-    await this.connection.close();
-
-    console.info(`[${this.network}] Disconnected from node`, endpoint);
+    try {
+      await this.connection.close();
+      console.info(`[${this.network}] Disconnected from node`, endpoint);
+    } finally {
+      // Keep global cap bookkeeping consistent even if close() rejects.
+      this.unregisterActiveConnection();
+    }
   }
 
   public async connect(options: ConnectToNodeOptions = {}): Promise<void> {
+    if (this.connectPromise) {
+      return this.connectPromise;
+    }
+
+    this.connectPromise = this.connectInternal(options).finally(() => {
+      this.connectPromise = null;
+    });
+
+    return this.connectPromise;
+  }
+
+  protected async connectInternal(options: ConnectToNodeOptions = {}): Promise<void> {
     const { node, onError, currentNodeIndex = 0, attempt = 0, ...restOptions } = options;
 
     const defaultNode = this.nodeList[currentNodeIndex];
@@ -269,7 +349,8 @@ export class NodesConnection {
             `[${this.network}] Reconnect scheduled in ${delay}ms (attempt ${nextAttempt}) to`,
             nextNode?.address
           );
-          setTimeout(() => {
+          this.clearReconnectTimer();
+          this.reconnectTimer = setTimeout(() => {
             // Consume reconnect promise so repeated failures do not surface as unhandled rejections.
             void nextCall().catch((retryError) => {
               console.warn(`[${this.network}] Reconnect attempt failed`, retryError);
@@ -277,7 +358,8 @@ export class NodesConnection {
           }, delay);
           return;
         } else {
-          await nextCall();
+          // Avoid connectPromise self-recursion when immediate fallback is needed.
+          await this.connectInternal({ onError, currentNodeIndex: nextIndex, attempt: nextAttempt, ...restOptions });
           return;
         }
       }
@@ -330,6 +412,7 @@ export class NodesConnection {
 
       console.info(`[${this.network}] Connection request to node`, endpoint);
 
+      this.guardConnectionCap();
       await this.closeConnection();
 
       await this.connection.open(endpoint, {
@@ -372,6 +455,8 @@ export class NodesConnection {
         onConnect?.(node as Node);
       }
 
+      this.clearReconnectTimer();
+      this.registerActiveConnection();
       this.setNode(node);
       this.nodeAddressConnecting = '';
       this.unlockConnection();

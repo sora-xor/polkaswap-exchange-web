@@ -105,12 +105,22 @@ $marketing-width-wide: 330px;
   &-prev,
   &-next {
     position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 1;
     cursor: pointer;
     opacity: 0.3;
 
     > i {
-      line-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
       color: var(--s-color-base-on-accent);
     }
 

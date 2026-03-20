@@ -46,6 +46,18 @@ export const APP_NAME = 'Sora2 Wallet';
 
 export const WHITE_LIST_URL = 'https://whitelist.polkaswap2.io/whitelist.json';
 export const NFT_BLACK_LIST_URL = 'https://whitelist.polkaswap2.io/blacklist.json';
+export const SORAMETRICS_EXPLORER_URL = 'https://sorametrics.org';
+
+const getSorametricsLink = (fragment: string): string => `${SORAMETRICS_EXPLORER_URL.replace(/\/+$/, '')}/${fragment}`;
+
+export const getSorametricsAccountLink = (address: string): string =>
+  getSorametricsLink(`#wallet=${encodeURIComponent(address)}`);
+
+export const getSorametricsBlockLink = (block: string | number): string =>
+  getSorametricsLink(`#block=${encodeURIComponent(String(block))}`);
+
+export const getSorametricsTransactionLink = (value: string): string =>
+  getSorametricsLink(`${value.startsWith('0x') ? '#tx=' : '#extrinsic='}${encodeURIComponent(value)}`);
 
 /**
  * Resolves once the browser has finished loading the document. Useful for
@@ -118,7 +130,7 @@ export const getExplorerLinks = (soraNetwork?: Nullable<SoraNetwork>): Array<Exp
   // DEV { type: ExplorerType.Sorascan, value: 'https://explorer.s2.dev.sora2.soramitsu.co.jp/sora-dev' }
   const links: Array<ExplorerLink> = [];
   if (soraNetwork === SoraNetwork.Prod) {
-    links.push({ type: ExplorerType.Subscan, value: 'https://sora.subscan.io' });
+    links.push({ type: ExplorerType.Sorametrics, value: SORAMETRICS_EXPLORER_URL });
   }
   return [
     ...links,

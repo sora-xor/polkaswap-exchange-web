@@ -29,6 +29,68 @@ const handleToggle = (): void => {
   if (props.disabled) return;
   context?.toggleItem(itemName.value);
 };
+
+const resetCollapseStyles = (element: HTMLElement): void => {
+  element.style.height = '';
+  element.style.overflow = element.dataset.oldOverflow ?? '';
+  element.style.paddingTop = element.dataset.oldPaddingTop ?? '';
+  element.style.paddingBottom = element.dataset.oldPaddingBottom ?? '';
+};
+
+const handleBeforeEnter = (element: Element): void => {
+  const target = element as HTMLElement;
+  target.dataset.oldPaddingTop = target.style.paddingTop;
+  target.dataset.oldPaddingBottom = target.style.paddingBottom;
+  target.dataset.oldOverflow = target.style.overflow;
+  target.style.height = '0';
+  target.style.paddingTop = '0';
+  target.style.paddingBottom = '0';
+};
+
+const handleEnter = (element: Element): void => {
+  const target = element as HTMLElement;
+  target.style.overflow = 'hidden';
+
+  void target.offsetHeight;
+
+  if (target.scrollHeight) {
+    target.style.height = `${target.scrollHeight}px`;
+  } else {
+    target.style.height = '';
+  }
+
+  target.style.paddingTop = target.dataset.oldPaddingTop ?? '';
+  target.style.paddingBottom = target.dataset.oldPaddingBottom ?? '';
+};
+
+const handleAfterEnter = (element: Element): void => {
+  resetCollapseStyles(element as HTMLElement);
+};
+
+const handleBeforeLeave = (element: Element): void => {
+  const target = element as HTMLElement;
+  target.dataset.oldPaddingTop = target.style.paddingTop;
+  target.dataset.oldPaddingBottom = target.style.paddingBottom;
+  target.dataset.oldOverflow = target.style.overflow;
+  target.style.height = `${target.scrollHeight}px`;
+  target.style.overflow = 'hidden';
+};
+
+const handleLeave = (element: Element): void => {
+  const target = element as HTMLElement;
+
+  if (!target.scrollHeight) return;
+
+  void target.offsetHeight;
+
+  target.style.height = '0';
+  target.style.paddingTop = '0';
+  target.style.paddingBottom = '0';
+};
+
+const handleAfterLeave = (element: Element): void => {
+  resetCollapseStyles(element as HTMLElement);
+};
 </script>
 
 <template>
@@ -38,8 +100,15 @@ const handleToggle = (): void => {
       <i class="el-collapse-item__arrow el-icon-arrow-right" :class="{ 'is-active': isActive }" aria-hidden="true"></i>
     </button>
 
-    <transition name="el-collapse-transition">
-      <div v-show="isActive" class="el-collapse-item__wrap">
+    <transition
+      @before-enter="handleBeforeEnter"
+      @enter="handleEnter"
+      @after-enter="handleAfterEnter"
+      @before-leave="handleBeforeLeave"
+      @leave="handleLeave"
+      @after-leave="handleAfterLeave"
+    >
+      <div v-show="isActive" class="el-collapse-item__wrap collapse-transition">
         <div class="el-collapse-item__content">
           <slot />
         </div>
@@ -88,13 +157,10 @@ const handleToggle = (): void => {
   }
 }
 
-.el-collapse-transition-enter-active,
-.el-collapse-transition-leave-active {
-  transition: opacity var(--s-transition-default);
-}
-
-.el-collapse-transition-enter-from,
-.el-collapse-transition-leave-to {
-  opacity: 0;
+.collapse-transition {
+  transition:
+    height 0.3s ease-in-out,
+    padding-top 0.3s ease-in-out,
+    padding-bottom 0.3s ease-in-out;
 }
 </style>

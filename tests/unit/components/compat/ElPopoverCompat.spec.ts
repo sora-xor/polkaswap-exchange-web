@@ -350,4 +350,36 @@ describe('ElPopoverCompat', () => {
 
     expect(popover.style.left).toBe('8px');
   });
+
+  it('applies temporary slide-in class for header menu poppers on open', async () => {
+    vi.useFakeTimers();
+
+    try {
+      const wrapper = mount(ElPopoverCompat, {
+        attachTo: document.body,
+        props: {
+          trigger: 'click',
+          popperClass: 'header-menu',
+        },
+        slots: {
+          reference: '<button class="trigger">Open</button>',
+          default: '<div class="popover-content">Popover content</div>',
+        },
+      });
+
+      await wrapper.get('.trigger').trigger('click');
+      await nextTick();
+
+      const openingPopover = document.body.querySelector('.header-menu');
+      expect(openingPopover?.classList.contains('slide-in')).toBe(true);
+
+      vi.runAllTimers();
+      await nextTick();
+
+      const settledPopover = document.body.querySelector('.header-menu');
+      expect(settledPopover?.classList.contains('slide-in')).toBe(false);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });

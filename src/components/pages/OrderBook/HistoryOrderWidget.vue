@@ -49,7 +49,11 @@
     <div v-else class="order-history-connect-account">
       <div class="order-history-connect-account-button">
         <h4 class="h4">{{ t('orderBook.history.connect') }}</h4>
-        <s-button type="primary" class="btn s-typography-button--medium" @click="connectSoraWallet">
+        <s-button
+          type="primary"
+          class="btn s-typography-button--medium order-book-connect-btn"
+          @click="connectSoraWallet"
+        >
           {{ t('connectWalletText') }}
         </s-button>
       </div>
@@ -73,7 +77,6 @@ import { useOrderBookUserOrders } from '@/composables/useOrderBookUserOrders';
 import { lazyComponent } from '@/router';
 import { useOrderBookStore } from '@/stores/orderBook';
 import { Filter, Cancel } from '@/types/orderBook';
-import { delay } from '@/utils';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
@@ -121,14 +124,24 @@ const currentFilter = ref(FilterEnum.open);
 const openOrdersLoading = ref(false);
 
 const subscribe = async () => {
+  if (!(isLoggedIn.value && nodeIsConnected.value && orderBookId.value)) {
+    openOrdersLoading.value = false;
+    await unsubscribeFromUserLimitOrders();
+    return;
+  }
+
   openOrdersLoading.value = true;
-  await unsubscribeFromUserLimitOrders();
-  await subscribeToUserLimitOrders();
-  await delay(2_000);
-  openOrdersLoading.value = false;
+  try {
+    await unsubscribeFromUserLimitOrders();
+    await subscribeToUserLimitOrders();
+  } catch (error) {
+    console.error('[orderBook] Failed to refresh user limit orders subscription', error);
+  } finally {
+    openOrdersLoading.value = false;
+  }
 };
 
-watch([orderBookId, soraAddress, nodeIsConnected], subscribe, { immediate: true });
+watch([orderBookId, soraAddress, nodeIsConnected, isLoggedIn], subscribe, { immediate: true });
 
 onBeforeUnmount(() => {
   unsubscribeFromUserLimitOrders();
@@ -268,8 +281,9 @@ defineExpose({
       align-items: center;
       justify-content: center;
 
-      .el-button {
-        width: 70%;
+      .order-book-connect-btn {
+        width: fit-content;
+        max-width: 100%;
         margin-top: $inner-spacing-mini;
       }
     }

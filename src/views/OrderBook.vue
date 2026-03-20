@@ -45,6 +45,7 @@ import { BreakpointClass } from '@/consts/layout';
 import { goTo, lazyComponent } from '@/router';
 import { useSettingsStore } from '@/stores/settings';
 import { useOrderBookStore } from '@/stores/orderBook';
+import { useWalletStore } from '@/stores/wallet';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -62,6 +63,7 @@ defineOptions({ name: 'OrderBookView' });
 const settingsVisibility = ref(false);
 
 const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
 const responsiveClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
 const orderBookEnabled = computed(() => settingsStore.orderBookEnabled as Nullable<boolean>);
 const { orderBookId, baseAsset, quoteAsset } = useOrderBook();
@@ -108,12 +110,56 @@ const selectOrderBookByAddresses = async (firstAddress?: string, secondAddress?:
   }
 };
 
-const { firstRouteAddress, secondRouteAddress, parseCurrentRoute, updateRouteAfterSelectTokens } =
+const { route, firstRouteAddress, secondRouteAddress, parseCurrentRoute, updateRouteAfterSelectTokens } =
   useSelectedTokensRoute(async ({ firstAddress, secondAddress }) => {
     await selectOrderBookByAddresses(firstAddress, secondAddress);
   });
 
 const isScreenHuge = computed(() => responsiveClass.value === BreakpointClass.HugeDesktop);
+const hasRouteParams = computed(() => Boolean(route.params.first && route.params.second));
+const hasResolvedRoutePair = computed(() => Boolean(firstRouteAddress.value && secondRouteAddress.value));
+const routeLookupReady = computed(
+  () =>
+    Object.keys(walletStore.whitelistIdsBySymbol ?? {}).length > 0 &&
+    Object.keys(walletStore.assetsDataTable ?? {}).length > 0
+);
+
+const syncRouteFromCurrentOrderBook = () => {
+  const base = baseAsset.value;
+  const quote = quoteAsset.value;
+
+  if (base?.symbol && quote?.symbol) {
+    updateRouteAfterSelectTokens(base, quote);
+  }
+};
+
+const selectFallbackOrderBook = async () => {
+  if (orderBookId.value) return;
+
+  if (isEmpty(orderBooks.value)) {
+    await getOrderBooksInfo();
+  }
+
+  const orderbookList = Object.values(orderBooks.value);
+  const preferredFallback = orderbookList.find(
+    ({ orderBookId }) => orderBookId.base === DAI.address && orderBookId.quote === KUSD.address
+  );
+
+  const fallback =
+    preferredFallback ??
+    [...orderbookList].sort((a, b) => {
+      if (a.status !== b.status) {
+        return b.status > a.status ? 1 : -1;
+      }
+      return b.orderBookId.dexId - a.orderBookId.dexId;
+    })[0];
+
+  if (!fallback) return;
+
+  setCurrentOrderBook(fallback.orderBookId as OrderBookId);
+  await nextTick();
+  syncRouteFromCurrentOrderBook();
+};
 
 watch(
   orderBookId,
@@ -129,11 +175,31 @@ watch(
   [orderBookId, baseAsset, quoteAsset, firstRouteAddress, secondRouteAddress],
   ([id, base, quote, first, second]) => {
     if (!(id && base?.address && quote?.address && base?.symbol && quote?.symbol)) return;
+    if (hasRouteParams.value && !hasResolvedRoutePair.value) return;
     if (first === base.address && second === quote.address) return;
 
     updateRouteAfterSelectTokens(base, quote);
   }
 );
+
+watch(
+  [hasRouteParams, firstRouteAddress, secondRouteAddress],
+  ([hasParams, first, second]) => {
+    if (!(hasParams && first && second)) return;
+
+    void selectOrderBookByAddresses(first, second);
+  },
+  { immediate: true }
+);
+
+watch([hasRouteParams, hasResolvedRoutePair, routeLookupReady], ([hasParams, hasResolvedPair, lookupReady]) => {
+  if (!(hasParams && !hasResolvedPair && lookupReady)) return;
+
+  const isValid = parseCurrentRoute();
+  if (!isValid) {
+    void selectFallbackOrderBook();
+  }
+});
 
 watch(
   orderBookEnabled,
@@ -146,7 +212,7 @@ watch(
 );
 
 onMounted(() => {
-  const hasRequestedPairInRoute = Boolean(firstRouteAddress.value && secondRouteAddress.value);
+  const hasRequestedPairInRoute = hasRouteParams.value;
 
   if (!hasRequestedPairInRoute) {
     const base = baseAsset.value;
@@ -165,44 +231,26 @@ onMounted(() => {
   void withApi(async () => {
     await getOrderBooksInfo();
 
-    if (orderBookId.value) {
-      const base = baseAsset.value;
-      const quote = quoteAsset.value;
-      if (base?.symbol && quote?.symbol) {
-        updateRouteAfterSelectTokens(base, quote);
-      }
-      return;
-    }
-    const orderbookList = Object.values(orderBooks.value);
-    parseCurrentRoute();
-
-    if (firstRouteAddress.value && secondRouteAddress.value) {
-      await selectOrderBookByAddresses(firstRouteAddress.value, secondRouteAddress.value);
-    }
-
-    if (!orderBookId.value) {
-      const preferredFallback = orderbookList.find(
-        ({ orderBookId }) => orderBookId.base === DAI.address && orderBookId.quote === KUSD.address
-      );
-
-      const fallback =
-        preferredFallback ??
-        [...orderbookList].sort((a, b) => {
-          if (a.status !== b.status) {
-            return b.status > a.status ? 1 : -1;
-          }
-          return b.orderBookId.dexId - a.orderBookId.dexId;
-        })[0];
-
-      if (fallback) {
-        setCurrentOrderBook(fallback.orderBookId as OrderBookId);
-        await nextTick();
-        const base = baseAsset.value;
-        const quote = quoteAsset.value;
-        if (base?.symbol && quote?.symbol) {
-          updateRouteAfterSelectTokens(base, quote);
+    if (hasRequestedPairInRoute) {
+      if (hasResolvedRoutePair.value) {
+        parseCurrentRoute();
+        await selectOrderBookByAddresses(firstRouteAddress.value, secondRouteAddress.value);
+      } else if (routeLookupReady.value) {
+        const isValid = parseCurrentRoute();
+        if (!isValid) {
+          await selectFallbackOrderBook();
+          return;
         }
       }
+    }
+
+    if (!orderBookId.value && !(hasRequestedPairInRoute && !hasResolvedRoutePair.value && !routeLookupReady.value)) {
+      await selectFallbackOrderBook();
+    }
+
+    const shouldDeferRouteSync = hasRouteParams.value && !hasResolvedRoutePair.value && !routeLookupReady.value;
+    if (!shouldDeferRouteSync) {
+      syncRouteFromCurrentOrderBook();
     }
   });
 });

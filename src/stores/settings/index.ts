@@ -75,7 +75,8 @@ const buildInitialState = (): SettingsState => {
     selectLanguageDialogVisibility: false,
     selectCurrencyDialogVisibility: false,
     rotatePhoneDialogVisibility: false,
-    disclaimerVisibility: false,
+    // Keep disclaimer visible until user explicitly approves it.
+    disclaimerVisibility: !userDisclaimerApprove,
     alertSettingsVisibility: false,
     browserNotifPopupVisibility: false,
     browserNotifPopupBlockedVisibility: false,

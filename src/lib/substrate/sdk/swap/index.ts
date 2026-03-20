@@ -1,5 +1,5 @@
 import { assert } from '@polkadot/util';
-import { combineLatest, map, distinctUntilChanged, Observable } from 'rxjs';
+import { combineLatest, map, distinctUntilChanged, Observable, startWith, catchError, of } from 'rxjs';
 import { NumberLike, FPNumber, CodecString } from '@sora-substrate/math';
 import {
   quote,
@@ -700,10 +700,20 @@ export class SwapModule<T> {
     if (observables.length === 0) return null;
     if (observables.length === 1) return observables[0];
 
-    return combineLatest(observables).pipe(
+    // Some DEX streams can be silent for long periods. Seed each stream so one silent source
+    // does not block live quote updates from other DEXes.
+    const seededObservables = observables.map((observable) =>
+      observable.pipe(
+        catchError(() => of(undefined)),
+        startWith(undefined)
+      )
+    );
+
+    return combineLatest(seededObservables).pipe(
       map((swapQuoteData) => {
-        const isAvailable = swapQuoteData.some(({ isAvailable }) => !!isAvailable);
-        const liquiditySources = [...new Set(swapQuoteData.map(({ liquiditySources }) => liquiditySources).flat(1))];
+        const activeSwapQuotes = swapQuoteData.filter((entry): entry is SwapQuoteData => !!entry);
+        const isAvailable = activeSwapQuotes.some(({ isAvailable }) => !!isAvailable);
+        const liquiditySources = [...new Set(activeSwapQuotes.map(({ liquiditySources }) => liquiditySources).flat(1))];
         const quote: SwapQuote = (
           inputAssetAddress: string,
           outputAssetAddress: string,
@@ -712,7 +722,7 @@ export class SwapModule<T> {
           selectedSources: LiquiditySourceTypes[] = [],
           deduceFee = true
         ) => {
-          const results = swapQuoteData.reduce<{ [dexId: number]: SwapResult }>((buffer, { quote }) => {
+          const results = activeSwapQuotes.reduce<{ [dexId: number]: SwapResult }>((buffer, { quote }) => {
             const { dexId, result } = quote(
               inputAssetAddress,
               outputAssetAddress,
@@ -724,6 +734,13 @@ export class SwapModule<T> {
 
             return { ...buffer, [dexId]: result };
           }, {});
+
+          if (Object.keys(results).length === 0) {
+            return {
+              dexId: DexId.XOR,
+              result: emptySwapResult as SwapResult,
+            };
+          }
 
           return getBestResult(isExchangeB, results);
         };

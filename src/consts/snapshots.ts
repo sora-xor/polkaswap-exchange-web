@@ -3,7 +3,13 @@ import { SUBQUERY_TYPES } from '@wallet';
 import { Timeframes } from '@/types/filters';
 import type { SnapshotFilter } from '@/types/filters';
 
-const { SnapshotTypes } = SUBQUERY_TYPES;
+const SnapshotTypes = (SUBQUERY_TYPES?.SnapshotTypes ??
+  ({
+    DEFAULT: 'default',
+    HOUR: 'hour',
+    DAY: 'day',
+    MONTH: 'month',
+  } as const)) as Record<'DEFAULT' | 'HOUR' | 'DAY' | 'MONTH', SnapshotFilter['type']>;
 
 export const SECONDS_IN_TYPE = {
   [SnapshotTypes.DEFAULT]: 5 * 60,

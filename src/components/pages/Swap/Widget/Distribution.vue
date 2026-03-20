@@ -45,14 +45,14 @@
           <div class="distribution-path-sources">
             <div class="distribution-path-source">
               <div class="flex-cell">
-                <span class="distribution-skeleton distribution-skeleton--rect distribution-path-source-name"></span>
-                <span class="distribution-skeleton distribution-skeleton--rect distribution-path-source-change"></span>
+                <div class="distribution-path-source-name el-skeleton__item el-skeleton__rect"></div>
+                <div class="distribution-path-source-change el-skeleton__item el-skeleton__rect"></div>
               </div>
               <div class="flex-cell">
-                <span class="distribution-skeleton distribution-skeleton--circle"></span>
-                <span class="distribution-skeleton distribution-skeleton--rect"></span>
-                <span class="distribution-skeleton distribution-skeleton--circle"></span>
-                <span class="distribution-skeleton distribution-skeleton--rect"></span>
+                <div class="el-skeleton__item el-skeleton__circle"></div>
+                <div class="el-skeleton__item el-skeleton__rect"></div>
+                <div class="el-skeleton__item el-skeleton__circle"></div>
+                <div class="el-skeleton__item el-skeleton__rect"></div>
               </div>
             </div>
           </div>
@@ -133,6 +133,7 @@ const swapPaths = computed(() => {
 
     const input = getAsset(step[0].input);
     const output = getAsset(step[0].output);
+    if (!input || !output) return;
 
     let income = FPNumber.ZERO;
     let outcome = FPNumber.ZERO;
@@ -175,39 +176,13 @@ $path-color: var(--s-color-base-content-tertiary);
   flex-flow: row wrap;
   align-items: center;
   gap: $inner-spacing-tiny;
-  font-size: var(--s-font-size-small);
-  line-height: var(--s-line-height-medium);
 }
 
 .distribution {
-  // Remove inline-block whitespace between route blocks to keep spacing aligned with production layout.
-  font-size: 0;
-  line-height: 0;
   list-style-type: none;
   padding-left: 0;
-
-  &-skeleton {
-    display: inline-flex;
-    flex-shrink: 0;
-    border-radius: var(--s-border-radius-mini);
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 25%, rgba(0, 0, 0, 0.1) 37%, rgba(0, 0, 0, 0.06) 63%);
-    background-size: 400% 100%;
-    min-width: 48px;
-    min-height: 16px;
-    animation: ps-skeleton-loading 1.4s ease infinite;
-
-    &--circle {
-      width: 16px;
-      min-width: 16px;
-      height: 16px;
-      min-height: 16px;
-      border-radius: 50%;
-    }
-
-    &--rect {
-      width: 48px;
-    }
-  }
+  padding-bottom: $inner-spacing-mini;
+  margin: 0;
 
   &-asset {
     display: inline-flex;
@@ -225,7 +200,6 @@ $path-color: var(--s-color-base-content-tertiary);
     &-amount {
       font-weight: 500;
       font-size: var(--s-font-size-medium);
-      line-height: var(--s-line-height-medium);
     }
   }
 
@@ -277,6 +251,26 @@ $path-color: var(--s-color-base-content-tertiary);
         }
       }
     }
+  }
+}
+
+.distribution .el-skeleton__item {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: auto;
+
+  &:not(:last-child) {
+    margin-bottom: 0;
+  }
+
+  &.el-skeleton__circle {
+    width: 16px;
+    height: 16px;
+  }
+
+  &.el-skeleton__rect {
+    min-width: 48px;
+    min-height: 16px;
   }
 }
 </style>

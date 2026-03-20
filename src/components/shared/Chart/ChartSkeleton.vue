@@ -10,6 +10,9 @@
           </div>
         </div>
         <div class="charts-skeleton-container chart">
+          <div v-if="loading" class="app-loading-overlay">
+            <div class="app-loading-overlay__spinner"></div>
+          </div>
           <div v-for="i in yTick" :key="i" class="charts-skeleton-line">
             <s-skeleton-item v-if="yLabel" element="rect" class="charts-skeleton-label"></s-skeleton-item>
             <s-skeleton-item element="rect" class="charts-skeleton-border"></s-skeleton-item>
@@ -90,8 +93,10 @@ $skeleton-label-width: 34px;
   flex-flow: column nowrap;
   flex: 1;
   width: 100%;
+  gap: 0;
 
   .chart {
+    display: flex;
     flex: 1;
     min-height: 260px;
 

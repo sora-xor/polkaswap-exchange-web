@@ -5,6 +5,7 @@ import { describe, expect, it, beforeEach, vi } from 'vitest';
 import AssetOwner from '@/modules/dashboard/views/AssetOwner.vue';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import { setLegacyStoreOverride } from '@/utils/legacy-store';
+import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 
 const connectWalletMock = vi.fn();
 const isLoggedInRef = ref(false);
@@ -183,7 +184,23 @@ describe('AssetOwner.vue', () => {
     });
 
     const images = wrapper.findAll('img');
-    expect(images.some((node) => node.attributes('src') === '/asset-owner/light-hero.png')).toBe(true);
-    expect(images.some((node) => node.attributes('src') === '/asset-owner/light.png')).toBe(true);
+    expect(images.some((node) => node.attributes('src') === resolveStaticAssetUrl('asset-owner/light-hero.png'))).toBe(
+      true
+    );
+    expect(images.some((node) => node.attributes('src') === resolveStaticAssetUrl('asset-owner/light.png'))).toBe(true);
+  });
+
+  it('scopes asset-owner placeholders to the current IPFS base path', () => {
+    window.history.replaceState({}, '', '/ipfs/QmAssetOwner/index.html');
+
+    const wrapper = mount(AssetOwner, {
+      global: { stubs: globalStubs },
+    });
+
+    const images = wrapper.findAll('img');
+    expect(images.some((node) => node.attributes('src') === resolveStaticAssetUrl('asset-owner/light-hero.png'))).toBe(
+      true
+    );
+    expect(images.some((node) => node.attributes('src') === resolveStaticAssetUrl('asset-owner/light.png'))).toBe(true);
   });
 });

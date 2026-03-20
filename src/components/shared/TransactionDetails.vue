@@ -1,30 +1,31 @@
 <template>
-  <div v-if="infoOnly">
+  <div v-if="infoOnly" v-bind="attrs">
     <slot></slot>
   </div>
-  <el-popover
-    v-else
-    v-model="visible"
-    :visible-arrow="false"
-    :disabled="disabled"
-    placement="bottom"
-    popper-class="transaction-details-popper"
-    trigger="click"
-  >
-    <template #reference>
-      <div :class="['transaction-details', { visible, disabled }]" v-button>
-        <slot name="reference">
-          <span>{{ t('transactionDetailsText') }}</span>
-        </slot>
-        <s-icon :name="icon" size="16px" class="transaction-details-icon"></s-icon>
-      </div>
-    </template>
-    <slot></slot>
-  </el-popover>
+  <span v-else v-bind="attrs">
+    <el-popover
+      v-model="visible"
+      :visible-arrow="false"
+      :disabled="disabled"
+      placement="bottom"
+      popper-class="transaction-details-popper"
+      trigger="click"
+    >
+      <template #reference>
+        <div :class="['transaction-details', { visible, disabled }]" v-button>
+          <slot name="reference">
+            <span>{{ t('transactionDetailsText') }}</span>
+          </slot>
+          <s-icon :name="icon" size="16px" class="transaction-details-icon"></s-icon>
+        </div>
+      </template>
+      <slot></slot>
+    </el-popover>
+  </span>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
+import { computed, ref, useAttrs, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -38,6 +39,8 @@ const props = withDefaults(
     disabled: false,
   }
 );
+
+const attrs = useAttrs();
 
 const visible = ref(false);
 

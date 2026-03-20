@@ -1274,7 +1274,7 @@ declare const components: {
     {
       handleCopyAddress: (address: string, event?: PointerEvent | MouseEvent | undefined) => Promise<void>;
       copyTooltip: (tooltipCopyValue?: string) => string;
-      getExplorerTranslation: (type: WALLET_CONSTS.ExplorerType) => 'Polkadot' | 'SORAScan' | 'Subscan' | '';
+      getExplorerTranslation: (type: WALLET_CONSTS.ExplorerType) => 'Polkadot' | 'SORAScan' | 'SoraMetrics' | 'Subscan' | '';
       handleOpenEtherscan: () => void;
     },
     {},

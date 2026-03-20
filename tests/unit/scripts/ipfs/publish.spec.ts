@@ -5,8 +5,12 @@ import { describe, expect, it } from 'vitest';
 import {
   collectMissingOutputs,
   createDwebGatewayUrl,
+  createLocalGatewayUrl,
   hasVueMajorVersion,
   isPermissionError,
+  multiaddrToGatewayBaseUrl,
+  resolveGatewayBaseUrlFromRepo,
+  resolveLocalGatewayBaseUrl,
   resolveVue3BuildArgs,
   swapEnvConfigForProduction,
   swapEnvConfigForTestnet,
@@ -221,5 +225,73 @@ describe('swapEnvConfigForProduction', () => {
 describe('createDwebGatewayUrl', () => {
   it('builds a public dweb link for the provided CID', () => {
     expect(createDwebGatewayUrl('QmExampleCid')).toBe('https://dweb.link/ipfs/QmExampleCid/index.html');
+  });
+});
+
+describe('multiaddrToGatewayBaseUrl', () => {
+  it('converts a TCP multiaddr into an HTTP gateway URL', () => {
+    expect(multiaddrToGatewayBaseUrl('/ip4/127.0.0.1/tcp/61543')).toBe('http://127.0.0.1:61543');
+  });
+
+  it('returns null for dynamic port placeholders', () => {
+    expect(multiaddrToGatewayBaseUrl('/ip4/127.0.0.1/tcp/0')).toBeNull();
+  });
+});
+
+describe('resolveGatewayBaseUrlFromRepo', () => {
+  it('reads runtime gateway address from the repository gateway file', () => {
+    const repoPath = '/home/user/.ipfs';
+    const fsDeps = createFsDeps({
+      [join(repoPath, 'gateway')]: 'http://127.0.0.1:61543\n',
+    });
+
+    expect(resolveGatewayBaseUrlFromRepo(repoPath, fsDeps)).toBe('http://127.0.0.1:61543');
+  });
+});
+
+describe('resolveLocalGatewayBaseUrl', () => {
+  it('prefers active runtime gateway files over config defaults', () => {
+    const fsDeps = createFsDeps({
+      '/home/user/.ipfs/gateway': 'http://127.0.0.1:61543\n',
+    });
+
+    const baseUrl = resolveLocalGatewayBaseUrl({
+      cwd: '/workspace',
+      env: { HOME: '/home/user' } as NodeJS.ProcessEnv,
+      fsDeps,
+      readGatewayAddress: () => '/ip4/127.0.0.1/tcp/8080',
+    });
+
+    expect(baseUrl).toBe('http://127.0.0.1:61543');
+  });
+
+  it('falls back to configured multiaddr when no runtime gateway file exists', () => {
+    const baseUrl = resolveLocalGatewayBaseUrl({
+      cwd: '/workspace',
+      env: {} as NodeJS.ProcessEnv,
+      fsDeps: createFsDeps({}),
+      readGatewayAddress: () => '/ip4/127.0.0.1/tcp/61777',
+    });
+
+    expect(baseUrl).toBe('http://127.0.0.1:61777');
+  });
+
+  it('uses the legacy default when no gateway address can be resolved', () => {
+    const baseUrl = resolveLocalGatewayBaseUrl({
+      cwd: '/workspace',
+      env: {} as NodeJS.ProcessEnv,
+      fsDeps: createFsDeps({}),
+      readGatewayAddress: () => null,
+    });
+
+    expect(baseUrl).toBe('http://127.0.0.1:8080');
+  });
+});
+
+describe('createLocalGatewayUrl', () => {
+  it('builds local gateway links without double slashes', () => {
+    expect(createLocalGatewayUrl('QmExampleCid', 'http://127.0.0.1:61543/')).toBe(
+      'http://127.0.0.1:61543/ipfs/QmExampleCid/index.html'
+    );
   });
 });

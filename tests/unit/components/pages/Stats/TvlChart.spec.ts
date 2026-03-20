@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 import TvlChart from '@/components/pages/Stats/TvlChart.vue';
 
 const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
+const nodeIsConnectedState = vi.hoisted(() => ({ value: false }));
 
 const passthroughComponent = defineComponent({
   template: '<div><slot name="filters"></slot><slot></slot></div>',
@@ -12,9 +13,19 @@ const passthroughComponent = defineComponent({
 const priceChangeStub = defineComponent({
   template: '<div class="price-change-stub"></div>',
 });
+const chartSkeletonStub = defineComponent({
+  props: ['loading', 'isEmpty', 'isError'],
+  template:
+    '<div class="chart-skeleton-stub" :data-loading="String(loading)" :data-empty="String(isEmpty)" :data-error="String(isError)"><slot /></div>',
+});
 
 vi.mock('@/router', () => ({
-  lazyComponent: (name: string) => (name.includes('PriceChange') ? priceChangeStub : passthroughComponent),
+  lazyComponent: (name: string) =>
+    name.includes('PriceChange')
+      ? priceChangeStub
+      : name.includes('ChartSkeleton')
+        ? chartSkeletonStub
+        : passthroughComponent,
 }));
 
 vi.mock('@wallet', async (importOriginal) => {
@@ -63,7 +74,11 @@ vi.mock('@/indexer/queries/network/tvl', () => ({
 }));
 
 vi.mock('@/stores/settings', () => ({
-  useSettingsStore: () => ({}),
+  useSettingsStore: () => ({
+    get nodeIsConnected() {
+      return nodeIsConnectedState.value;
+    },
+  }),
 }));
 
 vi.mock('@/consts/snapshots', () => ({
@@ -87,7 +102,50 @@ vi.mock('pinia', () => ({
 }));
 
 describe('TvlChart', () => {
+  it('keeps chart skeleton loading when node is disconnected and data is unresolved', async () => {
+    nodeIsConnectedState.value = false;
+    fetchDataMock.mockResolvedValueOnce([]);
+
+    const wrapper = mount(TvlChart, {
+      global: {
+        stubs: {
+          'v-chart': true,
+        },
+      },
+    });
+
+    await nextTick();
+    await nextTick();
+
+    const skeleton = wrapper.find('.chart-skeleton-stub');
+    expect(skeleton.exists()).toBe(true);
+    expect(skeleton.attributes('data-loading')).toBe('true');
+  });
+
+  it('stops chart skeleton loading when node is connected even with empty dataset', async () => {
+    nodeIsConnectedState.value = true;
+    fetchDataMock.mockResolvedValueOnce([]);
+
+    const wrapper = mount(TvlChart, {
+      global: {
+        stubs: {
+          'v-chart': true,
+        },
+      },
+    });
+
+    await nextTick();
+    await nextTick();
+
+    const skeleton = wrapper.find('.chart-skeleton-stub');
+    expect(skeleton.exists()).toBe(true);
+    expect(skeleton.attributes('data-loading')).toBe('false');
+  });
+
   it('renders without runtime errors when translation consts are available', async () => {
+    nodeIsConnectedState.value = false;
+    fetchDataMock.mockResolvedValueOnce([]);
+
     const wrapper = mount(TvlChart, {
       global: {
         stubs: {

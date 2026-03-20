@@ -63,14 +63,6 @@ function handleButtonClick(): void {
 }
 </script>
 
-<style lang="scss">
-.asset-logo--small,
-.task-card__title-image img {
-  width: 18px !important;
-  height: 18px !important;
-}
-</style>
-
 <style lang="scss" scoped>
 .task-card {
   .el-divider {
@@ -114,6 +106,13 @@ function handleButtonClick(): void {
     display: flex;
     flex-direction: row;
     gap: $basic-spacing-small;
+
+    :deep(.asset-logo--small),
+    img {
+      width: 18px;
+      height: 18px;
+    }
+
     p {
       font-weight: 800;
     }

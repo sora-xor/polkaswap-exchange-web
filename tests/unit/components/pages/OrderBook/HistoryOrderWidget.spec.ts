@@ -95,12 +95,6 @@ vi.mock('@/router', () => ({
   lazyComponent: () => ({ template: '<div><slot /></div>' }),
 }));
 
-const delayMock = vi.fn(async () => undefined);
-
-vi.mock('@/utils', () => ({
-  delay: delayMock,
-}));
-
 const orderBookUserOrdersMocks = vi.hoisted(() => ({
   userLimitOrders: { value: [] as LimitOrder[] },
   ordersToBeCancelled: { value: [] as LimitOrder[] },
@@ -140,7 +134,7 @@ const mountWidget = async () => {
         'open-orders': { template: '<div class="open-orders-stub"></div>' },
         'all-orders': { template: '<div class="all-orders-stub"></div>' },
         'cancel-confirm': { template: '<div class="cancel-confirm-stub"></div>' },
-        's-button': { template: '<button><slot /></button>' },
+        's-button': { template: '<button class="s-button-stub" v-bind="$attrs"><slot /></button>' },
         's-tooltip': { template: '<span><slot /></span>' },
       },
       directives: {
@@ -187,7 +181,6 @@ describe('HistoryOrderWidget.vue', () => {
     orderBookUserOrdersMocks.subscribeToUserLimitOrders.mockClear();
     orderBookUserOrdersMocks.unsubscribeFromUserLimitOrders.mockClear();
     orderBookUserOrdersMocks.setOrdersToBeCancelled.mockClear();
-    delayMock.mockClear();
   });
 
   it('registers telemetry metadata', async () => {
@@ -219,6 +212,34 @@ describe('HistoryOrderWidget.vue', () => {
 
     wrapper.unmount();
     expect(orderBookUserOrdersMocks.unsubscribeFromUserLimitOrders).toHaveBeenCalledTimes(2);
+  });
+
+  it('recovers loading state when user limit order subscription fails', async () => {
+    orderBookUserOrdersMocks.subscribeToUserLimitOrders.mockRejectedValueOnce(new Error('subscription failed'));
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    const vm = wrapper.vm as unknown as { openOrdersLoading: boolean };
+    expect(vm.openOrdersLoading).toBe(false);
+    expect(consoleErrorSpy).toHaveBeenCalled();
+
+    consoleErrorSpy.mockRestore();
+  });
+
+  it('shows a dedicated connect CTA without clipping class regressions when user is logged out', async () => {
+    isLoggedInRef.value = false;
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    const connectButton = wrapper.find('button.order-book-connect-btn');
+    expect(connectButton.exists()).toBe(true);
+    expect(connectButton.text()).toContain('connectWalletText');
+
+    await connectButton.trigger('click');
+    expect(connectWalletMock).toHaveBeenCalledTimes(1);
   });
 
   it('cancels selected orders in batch mode', async () => {

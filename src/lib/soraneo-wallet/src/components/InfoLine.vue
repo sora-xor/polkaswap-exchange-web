@@ -8,9 +8,10 @@
       :content="labelTooltip"
       placement="right-start"
       border-radius="mini"
+      wrapper-tag="span"
       tabindex="-1"
     >
-      <s-icon name="info-16" size="14px"></s-icon>
+      <s-icon class="el-tooltip" name="info-16" size="14px"></s-icon>
     </s-tooltip>
     <div class="info-line-content">
       <template v-if="isValueExists">
@@ -186,14 +187,18 @@ export default class InfoLine extends Vue {
     white-space: nowrap;
   }
   .el-tooltip {
-    margin-top: -1px;
+    margin-top: 0;
     margin-right: var(--s-basic-spacing);
     flex-shrink: 0;
+    display: block;
+    vertical-align: baseline;
+    color: var(--s-color-base-content-tertiary);
     i {
       margin-top: auto;
       margin-bottom: auto;
       display: block;
-      color: var(--s-color-base-content-tertiary);
+      vertical-align: baseline;
+      color: inherit;
     }
   }
   &-icon {

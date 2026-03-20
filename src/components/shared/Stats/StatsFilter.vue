@@ -157,13 +157,13 @@ $gap: $inner-spacing-mini;
   position: relative;
 
   &-button {
-    color: var(--s-color-base-content-primary) !important;
+    color: var(--s-color-base-content-secondary) !important;
     font-weight: 500;
     line-height: 12px;
     padding: 4px 6px !important;
 
     :deep(.s-button__text) {
-      color: var(--s-color-base-content-primary);
+      color: var(--s-color-base-content-secondary);
       font-weight: 500;
       line-height: 12px;
     }
@@ -202,7 +202,30 @@ $gap: $inner-spacing-mini;
 
     &-item {
       @include columns(3, $gap);
+      color: var(--s-color-base-content-primary) !important;
+
+      :deep(.s-button__text) {
+        color: inherit;
+      }
+
+      &.s-pressed {
+        color: var(--s-color-theme-accent) !important;
+      }
     }
   }
+}
+
+:global(:root[data-theme='dark'] .stats-filter-button),
+:global(:root[design-system-theme='dark'] .stats-filter-button),
+:global(.sora-theme-provider[data-theme='dark'] .stats-filter-button),
+:global(.sora-theme-provider[design-system-theme='dark'] .stats-filter-button) {
+  color: var(--s-color-base-content-primary) !important;
+}
+
+:global(:root[data-theme='dark'] .stats-filter-button .s-button__text),
+:global(:root[design-system-theme='dark'] .stats-filter-button .s-button__text),
+:global(.sora-theme-provider[data-theme='dark'] .stats-filter-button .s-button__text),
+:global(.sora-theme-provider[design-system-theme='dark'] .stats-filter-button .s-button__text) {
+  color: var(--s-color-base-content-primary) !important;
 }
 </style>

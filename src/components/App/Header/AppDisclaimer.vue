@@ -19,7 +19,6 @@
     </s-scrollbar>
     <s-button
       v-if="!userDisclaimerApprove"
-      :loading="loadingAcceptBtn"
       type="primary"
       @click="handleAccept"
       class="disclaimer__accept-btn"
@@ -44,7 +43,6 @@ defineOptions({ name: 'AppDisclaimer' });
 const { t } = useTranslation();
 const settingsStore = useSettingsStore();
 
-const loadingAcceptBtn = ref(false);
 const isActiveAcceptBtn = ref(false);
 const endLine = ref<HTMLElement | null>(null);
 const scrollbarRef = ref<unknown>(null);
@@ -171,12 +169,9 @@ function setupScrollObserver(): void {
   }
 }
 
-async function handleAccept(): Promise<void> {
-  loadingAcceptBtn.value = true;
-  await delay(1_200);
+function handleAccept(): void {
   settingsStore.setUserDisclaimerApprove();
   settingsStore.toggleDisclaimerDialogVisibility();
-  loadingAcceptBtn.value = false;
 }
 
 function handleClose(): void {
@@ -221,13 +216,7 @@ onBeforeUnmount(() => {
   z-index: $app-above-loader-layer;
   padding: $basic-spacing 6px 12px 20px;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-
-  :deep(.el-scrollbar) {
-    flex: 1;
-    min-height: 0;
-  }
+  display: block;
 
   &__header {
     display: flex;
@@ -274,6 +263,14 @@ onBeforeUnmount(() => {
     width: 100%;
     min-height: 42px;
     height: 42px;
+    display: inline-block !important;
+    position: static !important;
+    padding: 5px 13px !important;
+    font-size: var(--s-font-size-small) !important;
+    font-weight: 500 !important;
+    line-height: 14px !important;
+    text-transform: uppercase !important;
+    text-align: center !important;
 
     :deep(.s-button__text) {
       text-transform: uppercase;

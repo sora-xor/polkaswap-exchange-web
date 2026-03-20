@@ -57,7 +57,7 @@ export const addWcSubWalletLocally = (chainApi: WithKeyring, onDisconnect: (sour
   if (!WcProvider.projectId) return '';
 
   const isSingletone = api === chainApi; // SORA wc wallet
-  const chainGenesisHash = chainApi.api?.genesisHash.toString();
+  const chainGenesisHash = chainApi.api?.genesisHash?.toString?.();
 
   if (chainGenesisHash) {
     return addWcWalletLocally(chainGenesisHash, onDisconnect, WcSubProvider, isSingletone);

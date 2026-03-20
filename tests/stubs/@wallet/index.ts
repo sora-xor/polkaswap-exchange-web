@@ -197,6 +197,7 @@ export const WALLET_CONSTS = {
     NetworkFee: 'Network Fee',
     Transactions: 'Transactions',
     Polkaswap: 'Polkaswap',
+    SoraMetrics: 'SoraMetrics',
   },
   KnownAssets: {},
   KnownTokens: {},
@@ -276,6 +277,7 @@ export const WALLET_CONSTS = {
   },
   ExplorerType: {
     Sorascan: 'sorascan',
+    Sorametrics: 'sorametrics',
     Subscan: 'subscan',
     Polkadot: 'polkadot',
   },

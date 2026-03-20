@@ -96,4 +96,21 @@ describe('SButton compatibility', () => {
     expect(wrapper.find('.s-button__icon').exists()).toBe(false);
     expect(wrapper.find('.s-button__text').text()).toContain('Connect account');
   });
+
+  it('renders centered spinner host when loading is enabled', () => {
+    const wrapper = mount(SButton, {
+      props: {
+        type: 'primary',
+        size: 'medium',
+        loading: true,
+      },
+      slots: {
+        default: () => 'Connect account',
+      },
+    });
+
+    expect(wrapper.classes()).toContain('s-button_loading');
+    expect(wrapper.find('[data-testid="spinner"]').classes()).toContain('s-button__spinner');
+    expect(wrapper.find('.s-button__text').exists()).toBe(true);
+  });
 });

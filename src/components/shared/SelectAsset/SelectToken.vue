@@ -3,6 +3,7 @@
     v-model:visible="isVisible"
     :title="t('selectToken.title')"
     custom-class="asset-select"
+    wrapper-class="asset-select-wrapper"
     :append-to-body="appendToBody"
     :modal-append-to-body="appendToBody"
   >
@@ -13,7 +14,7 @@
         :placeholder="activeSearchPlaceholder"
         autofocus
         @clear="handleClearSearch"
-        class="token-search"
+        class="token-search neumorphic s-focused s-border-radius-small s-size-big s-input--prefix"
       ></search-input>
 
       <s-tab :label="t('selectToken.assets.title')" name="assets">
@@ -43,7 +44,7 @@
       </s-tab>
 
       <select-asset-list
-        v-show="shouldAssetsListBeShown"
+        v-if="shouldAssetsListBeRendered"
         :assets="activeAssetsList"
         :size="assetsListSize"
         :connected="connected"
@@ -180,6 +181,10 @@ const clearAndFocusSearch = () => {
   focusSearchInput();
 };
 
+const handleClearSearch = () => {
+  clearAndFocusSearch();
+};
+
 const closeDialog = () => {
   emit('close');
   isVisible.value = false;
@@ -187,7 +192,7 @@ const closeDialog = () => {
 
 const shouldBalanceBeHidden = computed(() => settingsStore.shouldBalanceBeHidden);
 const libraryTheme = computed<Nullable<Theme>>(() => settingsStore.libraryTheme);
-const whitelist = computed<Whitelist>(() => walletStore.whitelist ?? []);
+const whitelist = computed<Whitelist>(() => walletStore.whitelist ?? {});
 const whitelistIdsBySymbol = computed(() => walletStore.whitelistIdsBySymbol ?? {});
 const isLoggedIn = computed(() => walletStore.isLoggedIn);
 const assets = computed<Asset[]>(() => (walletStore.assets ?? []) as Asset[]);
@@ -205,15 +210,23 @@ const mainLPSources = computed(() => {
   return assets.value.filter((asset) => mainSourceAddresses.includes(asset.address));
 });
 
+/**
+ * Keeps the default assets tab aligned with the verified whitelist while
+ * leaving the custom tab available for manual non-whitelist additions.
+ */
+const filterWhitelistedAssets = <T extends Asset>(items: T[]): T[] => {
+  return items.filter((asset) => api.assets.isWhitelist(asset, whitelist.value));
+};
+
 const whitelistAssets = computed(() => {
   if (props.isAddLiquidity) {
     const filtered = props.isFirstTokenSelected
-      ? mainLPSources.value
-      : assets.value.filter((asset) => asset.address !== XOR.address);
+      ? filterWhitelistedAssets(mainLPSources.value)
+      : filterWhitelistedAssets(assets.value.filter((asset) => asset.address !== XOR.address));
     return getAssetsSubset(filtered, selectedAssetsFilter.value);
   }
 
-  return getAssetsSubset(assets.value, selectedAssetsFilter.value);
+  return getAssetsSubset(filterWhitelistedAssets(assets.value), selectedAssetsFilter.value);
 });
 
 const getAssetWithBalance = (address?: string): Nullable<RegisteredAccountAsset> =>
@@ -296,6 +309,14 @@ const customAsset = computed<Nullable<Asset>>(() => nonWhitelistAssets.value[sea
 const shouldAssetsListBeShown = computed(
   () => !(isCustomTabActive.value && !activeAssetsList.value.length && searchQuery.value)
 );
+const hasReadyAssetsForActiveTab = computed(() =>
+  isCustomTabActive.value
+    ? Boolean(sortedNonWhitelistAccountAssets.value.length)
+    : Boolean(whitelistAssetsList.value.length)
+);
+const shouldAssetsListBeRendered = computed(
+  () => shouldAssetsListBeShown.value && (Boolean(activeAssetsList.value.length) || hasReadyAssetsForActiveTab.value)
+);
 
 const assetsListSize = computed(() => (isCustomTabActive.value ? 5 : 6));
 
@@ -331,52 +352,75 @@ const handleTabChange = (name: Tabs) => {
 </script>
 
 <style lang="scss">
+.dialog-wrapper__modal.asset-select-wrapper.s-modal__modal-transition-enter-from,
+.dialog-wrapper__modal.asset-select-wrapper.s-modal__modal-transition-leave-to {
+  transform: none;
+}
+
+.dialog-card.asset-select,
+.asset-select .el-dialog {
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: var(--s-shadow-element-pressed);
+}
+
+.dialog-card.asset-select {
+  display: block;
+}
+
+.dialog-card.asset-select .dialog-card__content,
+.asset-select .el-dialog__body {
+  padding: $inner-spacing-mini 0 $inner-spacing-big !important;
+  max-height: none;
+  overflow: visible;
+}
+
+.dialog-card.asset-select .dialog-card__header,
+.asset-select .el-dialog__header {
+  padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini;
+  box-shadow: none;
+}
+
+.dialog-card.asset-select .dialog-card__title,
+.dialog-card.asset-select .dialog-card__title-text,
+.asset-select .el-dialog__title {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 31.2px;
+  letter-spacing: -0.96px;
+}
+
+.dialog-card.asset-select .dialog-card__close,
+.asset-select .el-dialog__headerbtn {
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  min-height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--s-color-base-border-secondary);
+  box-shadow: var(--s-shadow-element-pressed);
+  color: var(--s-color-base-content-tertiary);
+
+  .s-button__icon > i {
+    font-size: 16px !important;
+    line-height: 16px !important;
+    opacity: 0.6;
+  }
+}
+
 .asset-select {
-  .el-dialog {
-    overflow: hidden;
-    &__body {
-      padding: $inner-spacing-mini 0 $inner-spacing-big !important;
-    }
+  .s-tabs--exchange .el-tabs__header {
+    width: calc(100% - 2 * #{$inner-spacing-big}) !important;
   }
 
-  .dialog-card {
+  .s-tabs--exchange .el-tabs__nav-wrap,
+  .s-tabs--exchange .el-tabs__nav-scroll {
+    width: 100%;
+  }
+
+  .s-tabs--exchange .el-tabs__content {
     overflow: hidden;
-    box-shadow: var(--s-shadow-dialog);
-
-    &__content {
-      padding: $inner-spacing-mini 0 $inner-spacing-big !important;
-    }
-
-    &__header {
-      padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini;
-      box-shadow: none;
-    }
-
-    &__title,
-    &__title-text {
-      font-size: 24px;
-      font-weight: 300;
-      line-height: 31.2px;
-      letter-spacing: -0.96px;
-    }
-
-    &__close {
-      width: 42px;
-      min-width: 42px;
-      height: 42px;
-      min-height: 42px;
-      border: 0;
-      border-radius: 50%;
-      background-color: var(--s-color-base-border-secondary);
-      box-shadow: var(--s-shadow-element-pressed);
-      color: var(--s-color-base-content-tertiary);
-
-      .s-button__icon > i {
-        font-size: 16px !important;
-        line-height: 16px !important;
-        opacity: 0.6;
-      }
-    }
   }
 
   @include exchange-tabs;
@@ -391,26 +435,59 @@ const handleTabChange = (name: Tabs) => {
 
 <style lang="scss" scoped>
 .token-search {
-  // TODO: Fix input styles (paddings and icon position)
-  margin-left: 0;
+  display: flex;
+  justify-content: center;
+  margin: 2px 0 $inner-spacing-medium $inner-spacing-big;
   margin-bottom: $inner-spacing-medium;
-  width: 100%;
+  width: calc(100% - 2 * #{$inner-spacing-big});
   min-height: 58px;
-  padding: $inner-spacing-small $inner-spacing-big;
+  padding: 8px $inner-spacing-medium;
   border-radius: 24px;
-  background-color: var(--s-color-utility-surface);
+  background-color: var(--s-color-base-background);
   box-shadow: var(--s-shadow-element);
-  border: 1px solid rgba(42, 23, 31, 0.35);
-  @include focus-outline($withOffset: true);
+  border: 0 solid var(--s-color-base-border-primary);
+  @include focus-outline($focusWithin: true, $withOffset: true);
+
+  &.s-focused {
+    outline: 1px solid var(--s-color-outline);
+    outline-offset: -1px;
+  }
 
   :deep(.s-input__content) {
-    min-height: 42px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 21px;
+    margin: auto 0;
     padding: 0;
+  }
+
+  :deep(.s-input__input) {
+    width: 100%;
+  }
+
+  :deep(.s-input__prefix),
+  :deep(.s-input__suffix) {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+  }
+
+  :deep(.s-input__prefix) {
+    left: 0;
+    color: var(--s-color-base-content-secondary);
+  }
+
+  :deep(.s-input__suffix) {
+    right: 0;
   }
 
   :deep(.el-input__inner) {
     line-height: 21px;
-    padding: 0 $inner-spacing-small;
+    padding: 0 26px;
   }
 }
 

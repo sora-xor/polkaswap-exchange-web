@@ -115,12 +115,20 @@ const ensureAppKitInstance = async (chainProps: ChainsProps): Promise<AppKit> =>
     appKitPromise = Promise.resolve(
       createAppKit({
         projectId,
+        basic: true,
         networks: cachedNetworks as [AppKitNetworkConfig, ...AppKitNetworkConfig[]],
         defaultNetwork,
         metadata: getMetadata(),
         manualWCControl: true,
         enableWalletGuide: false,
         showWallets: true,
+        features: {
+          email: false,
+          socials: false,
+          emailCapture: false,
+          analytics: false,
+          allWallets: false,
+        },
         themeVariables: APPKIT_THEME,
       })
     );

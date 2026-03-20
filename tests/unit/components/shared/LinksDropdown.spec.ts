@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import LinksDropdown from '@/components/shared/LinksDropdown.vue';
 
 const explorerLinks = [
-  { type: 'Subscan', value: 'https://subscan.io' },
+  { type: 'sorametrics', value: 'https://sorametrics.org/#tx=0x123' },
   { type: 'Sorascan', value: 'https://sorascan.io' },
 ];
 
@@ -36,6 +36,30 @@ describe('LinksDropdown.vue', () => {
 
     const exposed = wrapper.vm as unknown as { links: typeof explorerLinks };
     expect(exposed.links).toEqual(explorerLinks);
+  });
+
+  it('maps known explorer ids to readable labels', () => {
+    const wrapper = shallowMount(LinksDropdown, {
+      props: { links: explorerLinks },
+      global: {
+        components: {
+          's-dropdown': {
+            template: '<div class="dropdown-stub"><slot name="menu" /></div>',
+          },
+          's-dropdown-item': {
+            template: '<div class="dropdown-item"><slot /></div>',
+          },
+        },
+        stubs: {
+          SDropdown: false,
+          SDropdownItem: false,
+        },
+      },
+    });
+
+    const exposed = wrapper.vm as unknown as { getExplorerLabel: (value: string) => string };
+    expect(exposed.getExplorerLabel('sorametrics')).toBe('SoraMetrics');
+    expect(exposed.getExplorerLabel('polkadot')).toBe('Polkadot');
   });
 
   it('filters out unsafe explorer links', () => {

@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/math';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const piniaStub = vi.hoisted(() => ({
   getActivePinia: vi.fn(),
@@ -9,6 +9,21 @@ const piniaStub = vi.hoisted(() => ({
 }));
 
 vi.mock('pinia', () => piniaStub);
+
+const dataPlaneClientMock = vi.hoisted(() => ({
+  start: vi.fn(async () => true),
+  disconnect: vi.fn(async () => undefined),
+  subscribeSubstrateFinalizedHeads: vi.fn(async () => async () => undefined),
+}));
+
+const normalizeRealtimeProfileMock = vi.hoisted(() => vi.fn((value: unknown) => value || 'balanced'));
+const parseSubstrateHeaderNumberMock = vi.hoisted(() => vi.fn(() => 321));
+
+vi.mock('@/services/realtime', () => ({
+  getDataPlaneClient: () => dataPlaneClientMock,
+  normalizeRealtimeProfile: normalizeRealtimeProfileMock,
+  parseSubstrateHeaderNumber: parseSubstrateHeaderNumberMock,
+}));
 
 // Make bridgeActionContext a passthrough and stub default module to avoid importing the full store
 vi.mock('@/store/bridge', () => ({ bridgeActionContext: (ctx: any) => ctx, default: {} }));
@@ -109,6 +124,7 @@ vi.mock('@/utils/bridge/common/utils', () => ({
   isDenominatedAsset: (addr: string) => addr === 'xor',
 }));
 import actions from '@/store/bridge/actions';
+import { api } from '@wallet';
 
 // Helper to build a minimal action context for setSendedAmount/setReceivedAmount
 function makeCtx({ isSoraToEvm }: { isSoraToEvm: boolean }) {
@@ -213,5 +229,222 @@ describe('bridge/actions amount math with denomination', () => {
     const expected = new FPNumber('10.5').sub(fee).mul(ctx.rootState.web3.denominator);
 
     expect(FPNumber.eq(result, expected)).toBe(true);
+  });
+});
+
+function makeSubscribeContext({
+  workerDataPlane = true,
+  isSubBridge = false,
+  endpoint = 'wss://rpc.test',
+}: {
+  workerDataPlane?: boolean;
+  isSubBridge?: boolean;
+  endpoint?: string;
+}) {
+  let currentBlockUpdatesSubscription: { unsubscribe: () => void } | null = null;
+  const setBlockUpdatesSubscription = vi.fn((subscription: { unsubscribe: () => void }) => {
+    currentBlockUpdatesSubscription = subscription;
+  });
+  const resetBlockUpdatesSubscription = vi.fn(() => {
+    currentBlockUpdatesSubscription?.unsubscribe();
+    currentBlockUpdatesSubscription = null;
+  });
+
+  const commit = {
+    resetBlockUpdatesSubscription,
+    setBlockUpdatesSubscription,
+    setExternalBlockNumber: vi.fn(),
+    setBalancesFetching: vi.fn(),
+    setBalancesBatch: vi.fn(),
+    setExternalMinBalance: vi.fn(),
+    setFeesAndLockedFundsFetching: vi.fn(),
+    setAssetLockedBalance: vi.fn(),
+    setExternalNetworkFee: vi.fn(),
+    setExternalTransferFee: vi.fn(),
+    setSoraNetworkFee: vi.fn(),
+  };
+
+  const dispatch = {
+    updateExternalBalance: vi.fn().mockResolvedValue(undefined),
+  };
+
+  const subNetwork = {
+    getBlockNumber: vi.fn().mockResolvedValue(777),
+    getNetworkFee: vi.fn().mockResolvedValue('0'),
+    getAssetMinDeposit: vi.fn().mockResolvedValue('0'),
+    getTokenBalance: vi.fn().mockResolvedValue('0'),
+    getTokenBalancesBatch: vi.fn().mockResolvedValue(['0', '0', '0']),
+    subNetworkConnection: {
+      connection: { endpoint },
+      node: { address: endpoint },
+    },
+  };
+
+  const context: any = {
+    commit,
+    dispatch,
+    getters: {
+      isSubBridge,
+      isEvmBridge: false,
+      isEthBridge: !isSubBridge,
+      asset: null,
+      isRegisteredAsset: false,
+    },
+    state: {
+      isSoraToEvm: true,
+      subBridgeConnector: {
+        network: subNetwork,
+      },
+    },
+    rootState: {
+      settings: {
+        featureFlags: {
+          wsWorkerDataPlane: workerDataPlane,
+          wsSharedWorker: true,
+          wsProfile: 'ultra',
+          wsConnectionCaps: 3,
+        },
+        appConnection: {
+          connection: { endpoint },
+          node: { address: endpoint },
+        },
+      },
+      web3: {
+        networkSelected: null,
+        denominator: new FPNumber('1'),
+      },
+      wallet: {
+        account: { address: '' },
+        settings: { networkFees: {} },
+      },
+      assets: {},
+    },
+    rootGetters: {
+      web3: {
+        isValidNetwork: false,
+        contractAddress: vi.fn(() => ''),
+      },
+    },
+  };
+
+  return {
+    context,
+    commit,
+    dispatch,
+    subNetwork,
+    getCurrentBlockUpdatesSubscription: () => currentBlockUpdatesSubscription,
+  };
+}
+
+describe('bridge/actions block updates subscription', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.useFakeTimers();
+
+    (api.system as any).updated = {
+      subscribe: vi.fn(() => ({ unsubscribe: vi.fn() })),
+    };
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('uses worker data-plane subscription when feature flag is enabled', async () => {
+    const { context, commit, dispatch } = makeSubscribeContext({ workerDataPlane: true, isSubBridge: true });
+
+    const unsubscribeWorker = vi.fn(async () => undefined);
+    let workerHandler: ((payload: unknown) => void) | undefined;
+    dataPlaneClientMock.subscribeSubstrateFinalizedHeads.mockImplementationOnce(async (_options, handler) => {
+      workerHandler = handler;
+      return unsubscribeWorker;
+    });
+
+    await (actions as any).subscribeOnBlockUpdates(context);
+
+    expect(dataPlaneClientMock.start).toHaveBeenCalledWith({
+      preferSharedWorker: true,
+      profile: 'ultra',
+      maxConnections: 3,
+    });
+    expect(dataPlaneClientMock.subscribeSubstrateFinalizedHeads).toHaveBeenCalledTimes(1);
+    expect((api.system as any).updated.subscribe).not.toHaveBeenCalled();
+    expect(commit.setBlockUpdatesSubscription).toHaveBeenCalledTimes(1);
+
+    workerHandler?.({ header: { number: '0x141' } });
+    await vi.runOnlyPendingTimersAsync();
+
+    expect(parseSubstrateHeaderNumberMock).toHaveBeenCalled();
+    expect(commit.setExternalBlockNumber).toHaveBeenCalledWith(321);
+    expect(dispatch.updateExternalBalance).toHaveBeenCalled();
+
+    const blockSubscription = commit.setBlockUpdatesSubscription.mock.calls[0][0];
+    blockSubscription.unsubscribe();
+    await vi.runAllTimersAsync();
+    await Promise.resolve();
+
+    expect(unsubscribeWorker).toHaveBeenCalledTimes(1);
+    expect(dataPlaneClientMock.disconnect).toHaveBeenCalledWith('bridge-substrate:wss://rpc.test');
+  });
+
+  it('falls back to api.system.updated when worker data-plane start fails', async () => {
+    const { context, commit } = makeSubscribeContext({ workerDataPlane: true, isSubBridge: false });
+    const subscribeFallback = vi.fn(() => ({ unsubscribe: vi.fn() }));
+    (api.system as any).updated = { subscribe: subscribeFallback };
+
+    dataPlaneClientMock.start.mockRejectedValueOnce(new Error('worker unavailable'));
+
+    await (actions as any).subscribeOnBlockUpdates(context);
+
+    expect(subscribeFallback).toHaveBeenCalledTimes(1);
+    expect(commit.setBlockUpdatesSubscription).toHaveBeenCalledTimes(1);
+  });
+
+  it('uses api block polling callback for sub bridge when worker flag is disabled', async () => {
+    const { context, commit, subNetwork } = makeSubscribeContext({ workerDataPlane: false, isSubBridge: true });
+
+    let onUpdated: FnWithoutArgs | undefined;
+    (api.system as any).updated = {
+      subscribe: vi.fn((callback: FnWithoutArgs) => {
+        onUpdated = callback;
+        return { unsubscribe: vi.fn() };
+      }),
+    };
+
+    await (actions as any).subscribeOnBlockUpdates(context);
+
+    expect((api.system as any).updated.subscribe).toHaveBeenCalledTimes(1);
+    expect(dataPlaneClientMock.subscribeSubstrateFinalizedHeads).not.toHaveBeenCalled();
+
+    await onUpdated?.();
+    expect(subNetwork.getBlockNumber).toHaveBeenCalledTimes(1);
+    expect(commit.setExternalBlockNumber).toHaveBeenCalledWith(777);
+  });
+
+  it('serializes prior worker disconnect before starting next block subscription', async () => {
+    const { context } = makeSubscribeContext({ workerDataPlane: true, isSubBridge: true });
+
+    const unsubscribeFirst = vi.fn(async () => undefined);
+    dataPlaneClientMock.subscribeSubstrateFinalizedHeads.mockImplementationOnce(async () => unsubscribeFirst);
+
+    let resolveDisconnect!: () => void;
+    const disconnectGate = new Promise<void>((resolve) => {
+      resolveDisconnect = resolve;
+    });
+    dataPlaneClientMock.disconnect.mockImplementationOnce(() => disconnectGate);
+
+    await (actions as any).subscribeOnBlockUpdates(context);
+
+    const secondSubscribePromise = (actions as any).subscribeOnBlockUpdates(context);
+
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(dataPlaneClientMock.subscribeSubstrateFinalizedHeads).toHaveBeenCalledTimes(1);
+
+    resolveDisconnect();
+    await secondSubscribePromise;
+
+    expect(dataPlaneClientMock.disconnect).toHaveBeenCalledTimes(1);
+    expect(dataPlaneClientMock.subscribeSubstrateFinalizedHeads).toHaveBeenCalledTimes(2);
   });
 });

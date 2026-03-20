@@ -47,7 +47,7 @@ import isEqual from 'lodash/fp/isEqual';
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, reactive, ref, useSlots } from 'vue';
 
 import type { Size } from '@/types/layout';
-import { debouncedInputHandler, capitalize as capitalizeUtil } from '@/utils';
+import { capitalize as capitalizeUtil } from '@/utils';
 
 const props = withDefaults(
   defineProps<{
@@ -104,19 +104,37 @@ const isPipAvailable = computed(() => {
   return 'documentPictureInPicture' in window;
 });
 
-const handleContentResize = debouncedInputHandler(
-  () => {
-    const currentSize = getWidgetContentSize();
-    if (!isEqual(currentSize)(size)) {
-      props.onResize?.(props.id, getWidgetSize());
-      updateSize(getWidgetContentSize());
-    }
-  },
-  300,
-  {
-    leading: false,
+let resizeAnimationFrame: number | null = null;
+
+const requestResizeFrame = (callback: FrameRequestCallback): number => {
+  if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
+    return window.requestAnimationFrame(callback);
   }
-);
+
+  return window.setTimeout(() => callback(Date.now()), 16);
+};
+
+const cancelResizeFrame = (frameId: number): void => {
+  if (typeof window !== 'undefined' && typeof window.cancelAnimationFrame === 'function') {
+    window.cancelAnimationFrame(frameId);
+    return;
+  }
+
+  window.clearTimeout(frameId);
+};
+
+const handleContentResize = (): void => {
+  if (resizeAnimationFrame !== null) return;
+
+  resizeAnimationFrame = requestResizeFrame(() => {
+    resizeAnimationFrame = null;
+    const currentSize = getRequiredWidgetSize();
+    if (!isEqual(currentSize)(size)) {
+      props.onResize?.(props.id, currentSize);
+      updateSize(currentSize);
+    }
+  });
+};
 
 let contentObserver: ResizeObserver | null = null;
 let mutationObserver: MutationObserver | null = null;
@@ -143,8 +161,30 @@ function getWidgetSize(): Size {
   return getElementSize(resolveContainerElement());
 }
 
-function getWidgetContentSize(): Size {
-  return getElementSize(content.value);
+function getRequiredWidgetSize(): Size {
+  const widgetSize = getWidgetSize();
+  const containerEl = resolveContainerElement() as HTMLElement | undefined;
+  const contentEl = content.value;
+
+  if (!containerEl || !contentEl) return widgetSize;
+
+  const containerRect = containerEl.getBoundingClientRect();
+  const contentRect = contentEl.getBoundingClientRect();
+  const contentOffsetTop = Math.max(0, contentRect.top - containerRect.top);
+  const intrinsicContentHeight = Array.from(contentEl.children).reduce((height, child) => {
+    const childEl = child as HTMLElement;
+    const childRect = childEl.getBoundingClientRect();
+    const childOffsetTop = Math.max(0, childRect.top - contentRect.top);
+    const childHeight = Math.max(Math.ceil(childRect.height), childEl.scrollHeight);
+    return Math.max(height, Math.ceil(childOffsetTop + childHeight));
+  }, 0);
+  const resolvedContentHeight = intrinsicContentHeight || Math.ceil(contentEl.scrollHeight);
+  const requiredHeight = Math.ceil(contentOffsetTop + resolvedContentHeight);
+
+  return {
+    width: widgetSize.width,
+    height: Math.max(1, requiredHeight),
+  };
 }
 
 function updateSize(newSize: Size): void {
@@ -159,6 +199,9 @@ function createContentObserver(): void {
   contentObserver = new ResizeObserver(() => handleContentResize());
   if (content.value) {
     contentObserver.observe(content.value);
+    Array.from(content.value.children).forEach((child) => {
+      contentObserver?.observe(child);
+    });
   }
 }
 
@@ -261,12 +304,16 @@ async function openPip(): Promise<void> {
 
 onMounted(() => {
   createContentObserver();
-  updateSize(getWidgetContentSize());
+  updateSize(getRequiredWidgetSize());
 });
 
 onBeforeUnmount(() => {
   destroyContentObserver();
   destroyMutationObserver();
+  if (resizeAnimationFrame !== null) {
+    cancelResizeFrame(resizeAnimationFrame);
+    resizeAnimationFrame = null;
+  }
   closePip();
 });
 

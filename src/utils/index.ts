@@ -376,6 +376,36 @@ const getSubscanTxLink = (baseUrl: string, txId?: string, blockId?: number | str
   return link;
 };
 
+const getSorametricsBaseUrl = (baseUrl: string): string => `${baseUrl.replace(/\/+$/, '')}/`;
+
+const getSorametricsAccountLink = (baseUrl: string, accountId?: string): string => {
+  if (!accountId) return '';
+
+  return `${getSorametricsBaseUrl(baseUrl)}#wallet=${encodeURIComponent(accountId)}`;
+};
+
+const getSorametricsTxLink = (
+  baseUrl: string,
+  txId?: string,
+  blockId?: number | string,
+  eventIndex?: number
+): string => {
+  if (txId) {
+    const fragment = txId.startsWith('0x') ? '#tx=' : '#extrinsic=';
+    return `${getSorametricsBaseUrl(baseUrl)}${fragment}${encodeURIComponent(txId)}`;
+  }
+
+  if (Number.isFinite(eventIndex) && Number.isFinite(blockId)) {
+    return `${getSorametricsBaseUrl(baseUrl)}#extrinsic=${encodeURIComponent(`${blockId}-${eventIndex}`)}`;
+  }
+
+  if (blockId) {
+    return `${getSorametricsBaseUrl(baseUrl)}#block=${encodeURIComponent(String(blockId))}`;
+  }
+
+  return '';
+};
+
 const getPolkadotTxLink = (baseUrl: string, txId?: string, blockId?: number | string, eventIndex?: number): string => {
   if (blockId) {
     return `${baseUrl}/${blockId}`;
@@ -395,14 +425,23 @@ export const getSubstrateExplorerLinks = (
   if (isAccount) {
     return baseLinks
       .filter(({ type }) => type !== WALLET_CONSTS.ExplorerType.Polkadot)
-      .map(({ type, value }) => ({ type, value: `${value}/account/${id}` }));
+      .map(({ type, value }) => ({
+        type,
+        value:
+          type === WALLET_CONSTS.ExplorerType.Sorametrics
+            ? getSorametricsAccountLink(value, id)
+            : `${value}/account/${id}`,
+      }))
+      .filter((value) => !!value.value);
   }
 
   return baseLinks
     .map(({ type, value }) => {
       const link = { type } as WALLET_CONSTS.ExplorerLink;
 
-      if (type === WALLET_CONSTS.ExplorerType.Subscan) {
+      if (type === WALLET_CONSTS.ExplorerType.Sorametrics) {
+        link.value = getSorametricsTxLink(value, id, blockId, eventIndex);
+      } else if (type === WALLET_CONSTS.ExplorerType.Subscan) {
         link.value = getSubscanTxLink(value, id, blockId, eventIndex);
       } else if (type === WALLET_CONSTS.ExplorerType.Polkadot) {
         link.value = getPolkadotTxLink(value, id, blockId, eventIndex);

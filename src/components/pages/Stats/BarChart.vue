@@ -5,7 +5,7 @@
     </template>
 
     <chart-skeleton
-      :loading="parentLoading || loading"
+      :loading="loadingState"
       :is-empty="data.length === 0"
       :is-error="isFetchingError"
       @retry="updateData"
@@ -26,7 +26,7 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components } from '@wallet';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
-import { computed, getCurrentScope, onMounted, onScopeDispose, ref } from 'vue';
+import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { Components } from '@/consts';
@@ -107,11 +107,14 @@ const filter = ref<SnapshotFilter>(filters[0]);
 
 const settingsStore = useSettingsStore();
 const { exchangeRate, currencySymbol } = storeToRefs(settingsStore);
+const nodeIsConnected = computed(() => settingsStore.nodeIsConnected);
+const hasResolvedData = ref(false);
 
 const parentLoading = computed(() => props.parentLoading);
 const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
 const { t } = useTranslation();
 const { gridSpec, xAxisSpec, yAxisSpec, tooltipSpec, barSeriesSpec } = useChartSpec();
+const loadingState = computed(() => parentLoading.value || loading.value || !hasResolvedData.value);
 
 const data = ref<readonly ChartData[]>([]);
 const prevData = ref<readonly ChartData[]>([]);
@@ -198,19 +201,35 @@ const updateData = async () => {
         prevData.value = Object.freeze(prev);
 
         isFetchingError.value = false;
+        hasResolvedData.value = curr.length > 0 || prev.length > 0 || nodeIsConnected.value;
       } catch (error) {
         console.error(error);
         isFetchingError.value = true;
+        hasResolvedData.value = nodeIsConnected.value;
       }
     });
   });
 };
 
-onMounted(updateData);
+watch(nodeIsConnected, (connected) => {
+  if (!connected) {
+    hasResolvedData.value = false;
+    return;
+  }
+
+  if (!hasResolvedData.value) {
+    void updateData();
+  }
+});
+
+onMounted(() => {
+  void updateData();
+});
 
 if (getCurrentScope()) {
   onScopeDispose(() => {
     chart.value = null;
+    hasResolvedData.value = false;
   });
 }
 </script>

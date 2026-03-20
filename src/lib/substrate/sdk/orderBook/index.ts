@@ -243,9 +243,15 @@ export class OrderBookModule<T> {
    * @param base base orderbook asset ID
    * @param quote quote orderbook asset ID
    * @param account account address
+   * @param dex (optional) dexId number to avoid implicit dex lookup by quote asset
    */
-  public async getUserLimitOrdersIds(base: string, quote: string, account: string): Promise<Array<number>> {
-    const dexId = this.root.dex.getDexId(quote);
+  public async getUserLimitOrdersIds(
+    base: string,
+    quote: string,
+    account: string,
+    dex?: number
+  ): Promise<Array<number>> {
+    const dexId = dex ?? this.root.dex.getDexId(quote);
     const idsCodec = await this.root.api.query.orderBook.userLimitOrders(account, { dexId, base, quote });
     return (idsCodec.unwrapOrDefault().toJSON() ?? []) as Array<number>;
   }
@@ -270,9 +276,15 @@ export class OrderBookModule<T> {
    * @param base base orderbook asset ID
    * @param quote quote orderbook asset ID
    * @param account account address
+   * @param dex (optional) dexId number to avoid implicit dex lookup by quote asset
    */
-  public subscribeOnUserLimitOrdersIds(base: string, quote: string, account: string): Observable<Array<number>> {
-    const dexId = this.root.dex.getDexId(quote);
+  public subscribeOnUserLimitOrdersIds(
+    base: string,
+    quote: string,
+    account: string,
+    dex?: number
+  ): Observable<Array<number>> {
+    const dexId = dex ?? this.root.dex.getDexId(quote);
     return this.root.apiRx.query.orderBook
       .userLimitOrders(account, { dexId, base, quote })
       .pipe(map((idsCodec) => idsCodec.unwrapOrDefault().toJSON() as Array<number>));
@@ -306,10 +318,11 @@ export class OrderBookModule<T> {
    * @param base base orderbook asset ID
    * @param quote quote orderbook asset ID
    * @param id limit order id
+   * @param dex (optional) dexId number to avoid implicit dex lookup by quote asset
    * @returns formatted limit order info
    */
-  public async getLimitOrder(base: string, quote: string, id: number): Promise<LimitOrder | null> {
-    const dexId = this.root.dex.getDexId(quote);
+  public async getLimitOrder(base: string, quote: string, id: number, dex?: number): Promise<LimitOrder | null> {
+    const dexId = dex ?? this.root.dex.getDexId(quote);
     const orderCodec = await this.root.api.query.orderBook.limitOrders({ dexId, base, quote }, id);
 
     return this.formatLimitOrder(orderCodec, base, quote, dexId);
@@ -338,9 +351,10 @@ export class OrderBookModule<T> {
    * @param base base orderbook asset ID
    * @param quote quote orderbook asset ID
    * @param id limit order id
+   * @param dex (optional) dexId number to avoid implicit dex lookup by quote asset
    */
-  public subscribeOnLimitOrder(base: string, quote: string, id: number): Observable<LimitOrder | null> {
-    const dexId = this.root.dex.getDexId(quote);
+  public subscribeOnLimitOrder(base: string, quote: string, id: number, dex?: number): Observable<LimitOrder | null> {
+    const dexId = dex ?? this.root.dex.getDexId(quote);
     return this.root.apiRx.query.orderBook
       .limitOrders({ dexId, base, quote }, id)
       .pipe(map((orderCodec) => this.formatLimitOrder(orderCodec, base, quote, dexId)));

@@ -1,6 +1,7 @@
 import { computed } from 'vue';
 
 import { PageNames } from '@/consts';
+import pinia from '@/plugins/pinia';
 import { goTo } from '@/router';
 import store from '@/store';
 import { useWalletStore } from '@/stores/wallet';
@@ -11,7 +12,7 @@ import { formatAddress } from '@/utils/formatAddress';
  * `InternalConnectMixin`.
  */
 export function useInternalConnect() {
-  const walletStore = useWalletStore();
+  const walletStore = useWalletStore(pinia);
 
   const soraAddress = computed(() => walletStore.address);
   const isLoggedIn = computed(() => walletStore.isLoggedIn);

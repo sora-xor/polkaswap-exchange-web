@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { registerW3mMessageGuard } from '@/security/w3mMessageGuard';
+import { DEFAULT_W3M_ALLOWED_ORIGINS, registerW3mMessageGuard } from '@/security/w3mMessageGuard';
 
 describe('w3m message guard', () => {
   it('blocks @w3m-* messages from untrusted origins', () => {
@@ -22,20 +22,22 @@ describe('w3m message guard', () => {
     unregister();
   });
 
-  it('allows @w3m-* messages from the WalletConnect secure iframe origin', () => {
+  it('allows @w3m-* messages from trusted WalletConnect origins', () => {
     const unregister = registerW3mMessageGuard();
     const listener = vi.fn();
 
     window.addEventListener('message', listener);
 
-    window.dispatchEvent(
-      new MessageEvent('message', {
-        data: { type: '@w3m-frame/FRAME_READY' },
-        origin: 'https://secure.walletconnect.org',
-      })
-    );
+    for (const origin of DEFAULT_W3M_ALLOWED_ORIGINS) {
+      window.dispatchEvent(
+        new MessageEvent('message', {
+          data: { type: '@w3m-frame/FRAME_READY' },
+          origin,
+        })
+      );
+    }
 
-    expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledTimes(DEFAULT_W3M_ALLOWED_ORIGINS.length);
 
     window.removeEventListener('message', listener);
     unregister();

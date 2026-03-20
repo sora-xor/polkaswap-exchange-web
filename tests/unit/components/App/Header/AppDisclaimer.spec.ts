@@ -99,7 +99,11 @@ describe('AppDisclaimer', () => {
     expect(observeMock).toHaveBeenCalled();
     expect(wrapper.text()).toContain('Accept & Hide');
 
-    await wrapper.find('.s-button-stub').trigger('click');
+    const acceptButton = wrapper.find('.s-button-stub');
+    expect(acceptButton.attributes('data-loading')).toBe('false');
+
+    await acceptButton.trigger('click');
+    expect(wrapper.find('.s-button-stub').attributes('data-loading')).toBe('false');
 
     expect(setUserDisclaimerApproveMock).toHaveBeenCalledTimes(1);
     expect(toggleDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);

@@ -3,6 +3,7 @@ import { Currency } from '@/types/currency';
 import { Theme, WalletAssetFilters, WalletFilteringOptions, IndexerType } from '../../consts';
 import { Alert, ConnectionStatus, FilterOptions } from '../../types/common';
 import { storage, runtimeStorage, settingsStorage } from '../../util/storage';
+import { normalizeTheme } from './theme';
 
 import type { SettingsState } from './types';
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
@@ -21,7 +22,7 @@ function initialState(): SettingsState {
   const allowTopUpAlerts = settingsStorage.get('allowTopUpAlerts');
   const filters = storage.get('filters');
   const { option, verifiedOnly, zeroBalance } = filters && JSON.parse(filters);
-  const theme = settingsStorage.get('theme') as Theme;
+  const theme = normalizeTheme(settingsStorage.get('theme'));
 
   return {
     apiKeys: {},
@@ -69,7 +70,7 @@ function initialState(): SettingsState {
     exchangeRateUnsubFn: null,
     assetsFilter: FilterOptions.All,
     isMSTAvailable: false,
-    theme: theme ?? Theme.Light,
+    theme,
   };
 }
 

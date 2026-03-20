@@ -35,7 +35,7 @@ test('renders the swap page shell', async ({ page }) => {
   await expect(page.evaluate(() => window.__PS_IPFS_CHECK__ === true)).resolves.toBe(true);
 
   await expect(page.locator('.header')).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Swap' })).toBeVisible();
+  await expect(page.locator('.app-menu').getByRole('link', { name: 'Swap', exact: true }).first()).toBeVisible();
   await expect(page.locator('.app-main')).toHaveClass(/app-main--swap/, { timeout: 15_000 });
   await expect(page.getByRole('button', { name: 'Connect account' }).first()).toBeVisible();
   await expectNoCorruptedUiText(page);

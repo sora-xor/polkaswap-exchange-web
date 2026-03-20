@@ -103,6 +103,7 @@ beforeAll(async () => {
   setActivePiniaInstance = pinia.setActivePinia;
 });
 
+import selectLanguageDialogSource from '@/components/App/Settings/Language/SelectLanguageDialog.vue?raw';
 import SelectLanguageDialog from '@/components/App/Settings/Language/SelectLanguageDialog.vue';
 import SelectCurrencyDialog from '@/components/App/Settings/Currency/SelectCurrencyDialog.vue';
 import { useSettingsStore } from '@/stores/settings';
@@ -177,6 +178,13 @@ describe('settings dialogs (BVT)', () => {
 
     expect(store.language).toBe('ru');
     expect(store.selectLanguageDialogVisibility).toBe(true);
+  });
+
+  it('uses the production dialog class hook and vertical list styling for language selection', () => {
+    expect(selectLanguageDialogSource).toContain('custom-class="select-language-dialog"');
+    expect(selectLanguageDialogSource).toContain('.select-language-list {');
+    expect(selectLanguageDialogSource).toContain('flex-direction: column;');
+    expect(selectLanguageDialogSource).toContain('overflow-x: hidden;');
   });
 
   it('filters and selects a currency', async () => {

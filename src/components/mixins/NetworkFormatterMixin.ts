@@ -28,18 +28,11 @@ const getSubNetworkLinks = (
 ): WALLET_CONSTS.ExplorerLink[] => {
   const baseLinks: WALLET_CONSTS.ExplorerLink[] = [];
 
-  const subscanLink = networkData.blockExplorerUrls[0];
   const polkadotUrl = networkData.nodes?.[0].address;
   const polkadotLink = polkadotUrl
     ? `https://polkadot.js.org/apps/?rpc=${networkData.nodes?.[0].address}#/explorer/query`
     : '';
 
-  if (subscanLink) {
-    baseLinks.push({
-      type: WALLET_CONSTS.ExplorerType.Subscan,
-      value: subscanLink,
-    });
-  }
   if (polkadotLink) {
     baseLinks.push({
       type: WALLET_CONSTS.ExplorerType.Polkadot,
