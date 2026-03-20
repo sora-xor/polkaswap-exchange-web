@@ -48,7 +48,6 @@ import { components } from '@wallet';
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
@@ -61,20 +60,17 @@ import type { MyStakingInfo } from '@sora-substrate/sdk/build/staking/types';
 import type { CodecString } from '@sora-substrate/sdk';
 
 const props = defineProps<{
-  visible: boolean;
   parentLoading?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'confirm'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
 const { getFiatAmountByCodecString } = useFormattedAmount();
-const dialogModel = useDialogModel(props, emit);
-const { isVisible } = dialogModel;
 
 const {
   stakingInfo,

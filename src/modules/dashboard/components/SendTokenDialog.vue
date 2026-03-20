@@ -94,28 +94,22 @@ const TokenInput = lazyComponent(Components.TokenInput);
 
 const props = withDefaults(
   defineProps<{
-    visible?: boolean;
     balance?: CodecString;
     editableFiat?: boolean;
     asset?: OwnedAsset;
   }>(),
   {
-    visible: false,
     balance: ZeroStringValue,
     editableFiat: false,
     asset: () => ObjectInit as OwnedAsset,
   }
 );
 
-const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
-}>();
-
 const { t } = useTranslation();
 const { loading, withNotifications } = useTransaction();
 const { Zero, getFPNumber, getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
 
-const isVisible = ref(props.visible);
+const isVisible = defineModel<boolean>('visible', { default: false });
 const value = ref('');
 const address = ref('');
 const comment = ref('');
@@ -229,9 +223,8 @@ const handleSend = async () => {
 };
 
 watch(
-  () => props.visible,
+  isVisible,
   async (visible) => {
-    isVisible.value = visible;
     if (visible) {
       resetForm();
       await nextTick();
@@ -240,10 +233,6 @@ watch(
   },
   { immediate: true }
 );
-
-watch(isVisible, (visible) => {
-  emit('update:visible', visible);
-});
 
 defineExpose({
   isVisible,

@@ -18,7 +18,7 @@ import { NodesConnection } from '@/utils/connection';
 import { toSafeExternalLink } from '@/utils/externalLinks';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 import storage, { settingsStorage } from '@/utils/storage';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 
 import type { Ad, FeatureFlags, SettingsState } from './types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
@@ -43,7 +43,7 @@ const resolveConnectionDownlink = (): number => {
   return typeof connectionLike?.downlink === 'number' ? (connectionLike.downlink as number) : 0;
 };
 
-const getLegacyStore = requireLegacyStore;
+const getAppStore = requireAppStore;
 
 const buildInitialState = (): SettingsState => {
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
@@ -127,7 +127,7 @@ export const useSettingsStore = defineStore('settings', {
       return LiquiditySourceForMarketAlgorithm[state.marketAlgorithm];
     },
     moonpayApiKey(): string {
-      return getLegacyStore().state.wallet.settings.apiKeys.moonpay;
+      return getAppStore().state.wallet.settings.apiKeys.moonpay;
     },
     moonpayEnabled(): boolean {
       return Boolean(this.moonpayApiKey) && Boolean(this.featureFlags.moonpay);
@@ -161,58 +161,58 @@ export const useSettingsStore = defineStore('settings', {
       return speed >= 1 || !speed;
     },
     libraryTheme(): Nullable<Theme> {
-      return getLegacyStore().getters.libraryTheme as Nullable<Theme>;
+      return getAppStore().getters.libraryTheme as Nullable<Theme>;
     },
     exchangeRate(): number {
-      return (getLegacyStore().getters?.wallet?.settings?.exchangeRate as number) ?? 1;
+      return (getAppStore().getters?.wallet?.settings?.exchangeRate as number) ?? 1;
     },
     currencySymbol(): string {
-      return (getLegacyStore().getters?.wallet?.settings?.currencySymbol as string) ?? '$';
+      return (getAppStore().getters?.wallet?.settings?.currencySymbol as string) ?? '$';
     },
     networkFees(): NetworkFeesObject {
-      return (getLegacyStore().state?.wallet?.settings?.networkFees as NetworkFeesObject) ?? ({} as NetworkFeesObject);
+      return (getAppStore().state?.wallet?.settings?.networkFees as NetworkFeesObject) ?? ({} as NetworkFeesObject);
     },
     blockNumber(): number {
-      return getLegacyStore().state.wallet.settings.blockNumber as number;
+      return getAppStore().state.wallet.settings.blockNumber as number;
     },
     shouldBalanceBeHidden(): boolean {
-      return Boolean(getLegacyStore().state.wallet.settings.shouldBalanceBeHidden);
+      return Boolean(getAppStore().state.wallet.settings.shouldBalanceBeHidden);
     },
     isWalletLoaded(): boolean {
-      return Boolean(getLegacyStore().state.wallet.settings.isWalletLoaded);
+      return Boolean(getAppStore().state.wallet.settings.isWalletLoaded);
     },
     allowFeePopup(): boolean {
-      return Boolean(getLegacyStore().state.wallet.settings.allowFeePopup);
+      return Boolean(getAppStore().state.wallet.settings.allowFeePopup);
     },
     soraNetwork(): Nullable<WALLET_CONSTS.SoraNetwork> {
-      return getLegacyStore().state.wallet.settings.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>;
+      return getAppStore().state.wallet.settings.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>;
     },
     isMSTAvailable(): boolean {
-      return Boolean(getLegacyStore().state.wallet.settings.isMSTAvailable);
+      return Boolean(getAppStore().state.wallet.settings.isMSTAvailable);
     },
     currency(): Nullable<Currency> {
-      return (getLegacyStore().state?.wallet?.settings?.currency as Nullable<Currency>) ?? null;
+      return (getAppStore().state?.wallet?.settings?.currency as Nullable<Currency>) ?? null;
     },
     assetsFilter(): WALLET_TYPES.FilterOptions {
-      return getLegacyStore().state.wallet.settings.assetsFilter as WALLET_TYPES.FilterOptions;
+      return getAppStore().state.wallet.settings.assetsFilter as WALLET_TYPES.FilterOptions;
     },
     currencies(): CurrencyFields[] {
-      return (getLegacyStore().state.wallet.settings.currencies as CurrencyFields[]) ?? [];
+      return (getAppStore().state.wallet.settings.currencies as CurrencyFields[]) ?? [];
     },
     alerts(): Array<Alert> {
-      return (getLegacyStore().state.wallet.settings.alerts as Array<Alert>) ?? [];
+      return (getAppStore().state.wallet.settings.alerts as Array<Alert>) ?? [];
     },
     allowTopUpAlert(): boolean {
-      return Boolean(getLegacyStore().state.wallet.settings.allowTopUpAlert);
+      return Boolean(getAppStore().state.wallet.settings.allowTopUpAlert);
     },
     indexers(): Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState> {
-      return getLegacyStore().state.wallet.settings.indexers as Record<
+      return getAppStore().state.wallet.settings.indexers as Record<
         WALLET_CONSTS.IndexerType,
         WALLET_TYPES.IndexerState
       >;
     },
     indexerType(): Nullable<WALLET_CONSTS.IndexerType> {
-      return getLegacyStore().state.wallet.settings.indexerType as Nullable<WALLET_CONSTS.IndexerType>;
+      return getAppStore().state.wallet.settings.indexerType as Nullable<WALLET_CONSTS.IndexerType>;
     },
   },
   actions: {

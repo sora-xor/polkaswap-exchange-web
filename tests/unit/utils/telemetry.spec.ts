@@ -32,10 +32,10 @@ describe('telemetry helper', () => {
     delete (window as Record<string, unknown>).__PS_BUILD_VARIANT__;
   });
 
-  it('returns unknown when build variant is missing', () => {
+  it('defaults to the native Vue 3 build variant when the global marker is missing', () => {
     delete (window as Record<string, unknown>).__PS_BUILD_VARIANT__;
 
-    expect(getBuildVariant()).toBe('unknown');
+    expect(getBuildVariant()).toBe('vue3-native');
   });
 
   it('registers a console-based telemetry stub when enabled via query', () => {

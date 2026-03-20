@@ -1,7 +1,7 @@
 <template>
   <div class="assets-filter-wrapper">
     <div :class="computedClasses">
-      <el-popover popper-class="assets-filter" trigger="click" :visible-arrow="false">
+      <s-popover-panel popper-class="assets-filter" trigger="click" :visible-arrow="false">
         <div class="assets-filter__headline">
           <div class="assets-filter__text">{{ t('filter.show') }}</div>
           <div class="assets-filter__text--reset" @click="resetFilter">{{ t('filter.reset') }}</div>
@@ -25,7 +25,7 @@
             <s-icon class="assets-filter__button-icon" name="basic-settings-24" size="14px"></s-icon>
           </div>
         </template>
-      </el-popover>
+      </s-popover-panel>
     </div>
   </div>
 </template>
@@ -35,7 +35,7 @@ import { computed, ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { AddAssetTabs } from '@/consts';
-import { getLegacyStore } from '@/utils/legacy-store';
+import { getAppStore } from '@/utils/app-store';
 import { FilterOptions } from '@/types/common';
 
 const props = withDefaults(
@@ -54,7 +54,7 @@ const emit = defineEmits<{
 }>();
 
 const { t, TranslationConsts } = useTranslation();
-const resolveStore = () => getLegacyStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any);
+const resolveStore = () => getAppStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any);
 
 const loading = ref(false);
 

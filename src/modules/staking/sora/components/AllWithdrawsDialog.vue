@@ -51,7 +51,6 @@ import { computed } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
-import { useDialogModel } from '@/composables/useDialogModel';
 import { formatDecimalPlaces } from '@/utils';
 
 import { soraStakingLazyComponent } from '../../router';
@@ -67,18 +66,13 @@ type Withdraw = {
   valueFiat: Nullable<string>;
 };
 
-const props = defineProps<{
-  visible: boolean;
-}>();
-
-const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
+defineEmits<{
   (event: 'close'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
 const { getFiatAmountByFPNumber } = useFormattedAmount();
-const dialogModel = useDialogModel(props, emit);
 
 const { accountLedger, stakingAsset, withdrawableFunds, withdrawableFundsFiat, currentEra } = useSoraStaking();
 
@@ -137,8 +131,6 @@ const withdraws = computed<Withdraw[]>(() => {
 });
 
 const noReward = computed(() => !withdraws.value.length);
-
-const { isVisible } = dialogModel;
 
 defineExpose({
   withdraws,

@@ -165,7 +165,7 @@ describe('RewardsAmountTable.vue', () => {
             ],
           } as never,
         ],
-        value: [],
+        modelValue: [],
       },
       global: {
         stubs: {
@@ -188,7 +188,7 @@ describe('RewardsAmountTable.vue', () => {
     });
 
     (wrapper.vm as { innerModel: boolean | string[] }).innerModel = ['reward'];
-    expect(wrapper.emitted('input')?.[0]).toEqual([['reward']]);
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['reward']]);
   });
 
   it('disables reward items when limit amount resolves to zero', async () => {

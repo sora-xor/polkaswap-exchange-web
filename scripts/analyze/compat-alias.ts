@@ -47,17 +47,6 @@ const COMPAT_IMPORT_PATTERN = /['"](@vue\/compat|@\/compat(?:\/[^'"]*)?)['"]/g;
 
 const DEFAULT_ALLOW_LIST: AllowListEntry[] = [
   { pattern: 'tests/unit/compat/polkadot.spec.ts', modules: ['@/compat/polkadot'] },
-  { pattern: 'src/main.ts', modules: ['@/compat/runtime-helpers'] },
-  { pattern: 'src/lib/soraneo-wallet/src/core.ts', modules: ['@/compat/runtime-helpers'] },
-  { pattern: 'src/lib/soraneo-wallet/src/index.ts', modules: ['@/compat/runtime-helpers'] },
-  {
-    pattern: 'tests/unit/lib/soramitsu-ui/components/Notifications/SNotificationBodyTimeline.spec.ts',
-    modules: ['@/compat/runtime-helpers'],
-  },
-  {
-    pattern: 'tests/unit/lib/soramitsu-ui/components/Table/STable.spec.ts',
-    modules: ['@/compat/runtime-helpers'],
-  },
 ];
 
 const INTERNAL_IGNORE = new Set(['scripts/analyze/compat-alias.ts', 'tests/unit/scripts/analyze/compat-alias.spec.ts']);

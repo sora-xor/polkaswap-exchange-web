@@ -22,7 +22,6 @@ import { components } from '@wallet';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useTranslation } from '@/composables/useTranslation';
 import { useSettingsStore } from '@/stores/settings';
 
@@ -32,25 +31,22 @@ defineOptions({
   },
 });
 
-const props = defineProps({
-  visible: {
-    type: Boolean,
-    default: false,
-  },
-});
-
 const emit = defineEmits<{
-  (e: 'update:visible', value: boolean): void;
   (e: 'close'): void;
   (e: 'set-dark-page', value: boolean): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const settingsStore = useSettingsStore();
 const { isBrowserNotificationApiAvailable: isAvailable } = storeToRefs(settingsStore);
 
 const { t } = useTranslation();
-const { isVisible, closeDialog } = useDialogModel(props, emit);
 const loading = ref(false);
+
+const closeDialog = (): void => {
+  emit('close');
+  isVisible.value = false;
+};
 
 async function handleConfirm(): Promise<void> {
   if (!isAvailable.value) return;

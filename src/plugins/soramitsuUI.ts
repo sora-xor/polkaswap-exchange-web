@@ -1,10 +1,4 @@
 import { plugin as soramitsuUIPlugin } from '@soramitsu-ui/ui';
-import ElPopoverCompat from '@/components/compat/ElPopoverCompat';
-import SCollapseCompat from '@/components/compat/SCollapseCompat.vue';
-import SCollapseItemCompat from '@/components/compat/SCollapseItemCompat.vue';
-import SDropdownCompat from '@/components/compat/SDropdownCompat.vue';
-import SDropdownItemCompat from '@/components/compat/SDropdownItemCompat.vue';
-import SFloatInputCompat from '@/components/compat/SFloatInputCompat.vue';
 import SIconCompat from '@/lib/soramitsu-ui/components/Icon/SIcon.vue';
 import SMenuCompat from '@/lib/soramitsu-ui/components/Menu/SMenu.vue';
 import SMenuItemCompat from '@/lib/soramitsu-ui/components/Menu/SMenuItem.vue';
@@ -35,27 +29,9 @@ const registerCompat = (app: App, name: string, component: Component): void => {
 
 export function install(app: App): void {
   app.use(soramitsuUIPlugin());
-  registerCompat(app, 'ElPopover', ElPopoverCompat);
-
-  registerCompat(app, 'el-popover', ElPopoverCompat);
-  registerCompat(app, 'SCollapse', SCollapseCompat);
-
-  registerCompat(app, 's-collapse', SCollapseCompat);
-  registerCompat(app, 'SCollapseItem', SCollapseItemCompat);
-
-  registerCompat(app, 's-collapse-item', SCollapseItemCompat);
-  registerCompat(app, 'SDropdown', SDropdownCompat);
-
-  registerCompat(app, 's-dropdown', SDropdownCompat);
-  registerCompat(app, 'SDropdownItem', SDropdownItemCompat);
-
-  registerCompat(app, 's-dropdown-item', SDropdownItemCompat);
   registerCompat(app, 'SIcon', SIconCompat);
 
   registerCompat(app, 's-icon', SIconCompat);
-  registerCompat(app, 'SFloatInput', SFloatInputCompat);
-
-  registerCompat(app, 's-float-input', SFloatInputCompat);
   registerCompat(app, 'SMenu', SMenuCompat);
 
   registerCompat(app, 's-menu', SMenuCompat);

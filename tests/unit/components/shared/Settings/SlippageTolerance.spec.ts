@@ -63,8 +63,8 @@ import SlippageTolerance from '@/components/shared/Settings/SlippageTolerance.vu
 const SettingsTabsStub = {
   name: 'SettingsTabsStub',
   props: ['tabs', 'value'],
-  emits: ['input'],
-  template: '<div class="settings-tabs-stub" @click="$emit(\'input\', \'slippage-1\')"></div>',
+  emits: ['update:modelValue'],
+  template: '<div class="settings-tabs-stub" @click="$emit(\'update:modelValue\', \'slippage-1\')"></div>',
 };
 
 const CollapseStub = {
@@ -141,7 +141,7 @@ describe('SlippageTolerance', () => {
     const tabs = tabsStub.props('tabs') as Array<{ name: string }>;
     expect(tabs.map((t) => t.name)).toEqual(['slippage-0-1', 'slippage-0-5', 'slippage-1']);
 
-    tabsStub.vm.$emit('input', 'slippage-1');
+    tabsStub.vm.$emit('update:modelValue', 'slippage-1');
     await wrapper.vm.$nextTick();
 
     expect(setSlippageMock).toHaveBeenCalledWith('1');

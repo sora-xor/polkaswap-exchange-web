@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, toRef } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useLoading } from '@/composables/useLoading';
@@ -69,23 +69,15 @@ import AccountConfirmDialog from './ConfirmDialog.vue';
 import AccountConfirmationOption from './Settings/ConfirmationOption.vue';
 import AccountSignatureOption from './Settings/SignatureOption.vue';
 
-const props = withDefaults(
-  defineProps<{
-    visible?: boolean;
-  }>(),
-  {
-    visible: false,
-  }
-);
+const props = withDefaults(defineProps<{}>(), {});
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
 }>();
 
 const { t } = useTranslation();
-const { isVisible } = useDialogVisibility(toRef(props, 'visible'), {
-  emit: (value) => emit('update:visible', value),
+const visibleModel = defineModel<boolean>('visible', { default: false });
+const { isVisible } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 

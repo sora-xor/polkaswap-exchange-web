@@ -23,6 +23,7 @@ export default [
     ignores: [
       'node_modules/',
       'dist/**/*',
+      'out/**/*',
       'packages/**',
       'vendor/**',
       '*.config.js',

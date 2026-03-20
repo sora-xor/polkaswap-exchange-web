@@ -87,7 +87,6 @@ const PrevNextInfoLine = vaultLazyComponent(VaultComponents.PrevNextInfoLine);
 
 const props = withDefaults(
   defineProps<{
-    visible?: boolean;
     vault?: Nullable<Vault>;
     debtAsset?: Nullable<RegisteredAccountAsset>;
     prevLtv?: Nullable<FPNumber>;
@@ -95,7 +94,6 @@ const props = withDefaults(
     maxLtv?: number;
   }>(),
   {
-    visible: false,
     vault: ObjectInit,
     debtAsset: ObjectInit,
     prevLtv: () => FPNumber.ZERO,
@@ -105,7 +103,6 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'confirm'): void;
 }>();
 
@@ -120,10 +117,7 @@ const xorSymbol = XOR.symbol;
 const debtInput = ref<InstanceType<typeof TokenInputComponent> | null>(null);
 const repayDebtValue = ref('');
 
-const isVisible = computed({
-  get: () => props.visible,
-  set: (value: boolean) => emit('update:visible', value),
-});
+const isVisible = defineModel<boolean>('visible', { default: false });
 
 const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject | undefined);
 const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
@@ -258,7 +252,7 @@ const handleRepayDebt = async () => {
 };
 
 watch(
-  () => props.visible,
+  isVisible,
   async (value) => {
     await nextTick();
     repayDebtValue.value = '';

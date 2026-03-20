@@ -16,8 +16,8 @@ const DropdownItemStub = {
 const TabsStub = {
   name: 'STabsStub',
   props: ['value'],
-  emits: ['input'],
-  template: '<div class="tabs-stub" @click="$emit(\'input\', value)"><slot /></div>',
+  emits: ['update:modelValue'],
+  template: '<div class="tabs-stub" @click="$emit(\'update:modelValue\', value)"><slot /></div>',
 };
 
 const TabStub = {
@@ -37,7 +37,7 @@ describe('ResponsiveTabs', () => {
   const mountComponent = (props?: Record<string, unknown>) =>
     mount(ResponsiveTabs, {
       props: {
-        value: 'overview',
+        modelValue: 'overview',
         tabs: sampleTabs,
         ...props,
       },
@@ -51,7 +51,7 @@ describe('ResponsiveTabs', () => {
       },
     });
 
-  it('renders dropdown when mobile and emits input on selection', async () => {
+  it('renders dropdown when mobile and emits modelValue updates on selection', async () => {
     const wrapper = mountComponent({ isMobile: true });
 
     expect(wrapper.find('.dropdown-stub').exists()).toBe(true);
@@ -59,7 +59,7 @@ describe('ResponsiveTabs', () => {
 
     const dropdown = wrapper.findComponent(DropdownStub);
     dropdown.vm.$emit('select', 'details');
-    expect(wrapper.emitted('input')?.[0]?.[0]).toBe('details');
+    expect(wrapper.emitted('update:modelValue')?.[0]?.[0]).toBe('details');
   });
 
   it('renders tabs when not mobile and updates value', async () => {
@@ -70,8 +70,8 @@ describe('ResponsiveTabs', () => {
     expect(tabs).toHaveLength(2);
     expect(wrapper.text()).toContain('Overview');
 
-    wrapper.findComponent(TabsStub).vm.$emit('input', 'overview');
-    expect(wrapper.emitted('input')?.[0]?.[0]).toBe('overview');
+    wrapper.findComponent(TabsStub).vm.$emit('update:modelValue', 'overview');
+    expect(wrapper.emitted('update:modelValue')?.[0]?.[0]).toBe('overview');
   });
 
   it('reacts to isMobile prop changes after mount', async () => {

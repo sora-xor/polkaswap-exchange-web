@@ -41,7 +41,6 @@ import { components } from '@wallet';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
 import { PoolComponents } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
@@ -52,7 +51,6 @@ import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 const props = withDefaults(
   defineProps<{
-    visible: boolean;
     parentLoading?: boolean;
   }>(),
   {
@@ -61,15 +59,13 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'confirm'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useI18n();
 const { formatStringValue } = useNumberFormatter();
-const dialogModel = useDialogModel(props, emit);
-const { isVisible, closeDialog } = dialogModel;
 
 const firstTokenAmount = computed(() => store.state.removeLiquidity.firstTokenAmount as string);
 const secondTokenAmount = computed(() => store.state.removeLiquidity.secondTokenAmount as string);
@@ -80,6 +76,10 @@ const secondToken = computed<Nullable<Asset>>(() => store.getters.removeLiquidit
 
 const formattedFromValue = computed(() => formatStringValue(firstTokenAmount.value));
 const formattedToValue = computed(() => formatStringValue(secondTokenAmount.value));
+const closeDialog = (): void => {
+  emit('close');
+  isVisible.value = false;
+};
 const handleConfirmRemoveLiquidity = () => {
   emit('confirm');
   closeDialog();

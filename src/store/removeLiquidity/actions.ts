@@ -1,6 +1,6 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { api } from '@wallet';
-import { defineActions } from 'direct-vuex';
+import { defineActions } from '@/store/module-helpers';
 
 import { removeLiquidityActionContext } from '@/store/removeLiquidity';
 

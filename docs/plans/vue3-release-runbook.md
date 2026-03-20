@@ -17,7 +17,7 @@ This runbook captures the repeatable steps for shipping the Vue 3 migration to p
 
 Complete the following before triggering the preview build:
 
-- [ ] KPIs in `roadmap.md` are green or understood (compat build pass streak ≥5/7, translation streak active, bundle delta <1.5%).
+- [ ] KPIs in `roadmap.md` are green or understood (native Vue 3 build pass streak ≥5/7, translation streak active, bundle delta <1.5%).
 - [ ] `yarn test:unit` and `yarn test:translation` pass locally and in CI.
 - [ ] `yarn build:vue3` succeeds locally; bundle analyzer report archived under `./dist/reports`.
 - [ ] Telemetry instrumentation verified in staging (events defined in _Telemetry Requirements_ section of `roadmap.md`).
@@ -42,8 +42,8 @@ Complete the following before triggering the preview build:
 
 ### 3.2 Staged Rollout (Week 4–5)
 
-1. Enable compat toggle flag (`VITE_DISABLE_COMPAT=true`) for alpha/beta cohorts via environment configuration.
-2. Monitor telemetry dashboards for `pinia_store_usage`, `compat_warning`, and `translation_missing` events.
+1. Promote the current native Vue 3 release artifact to the alpha/beta cohort and record the deployed release hash/CID in the rollout tracker.
+2. Monitor telemetry dashboards for `pinia_store_usage`, `build_variant_selected`, and `translation_missing` events.
 3. QA executes regression suite focused on wallet dialogs, order book widgets, and Sora Card flows.
 4. Support lead shares updated troubleshooting notes with frontline agents.
 5. Migration lead provides daily (#migration-status) updates summarising health, telemetry, and feedback.
@@ -61,7 +61,7 @@ Complete the following before triggering the preview build:
 3. Release engineering updates CDN/IPFS pointers and verifies gateway availability.
 4. Documentation updates (README, migration plan, onboarding guide, IPFS runbook) merged and linked in announcement.
 5. Marketing publishes blog/social announcement; support posts status page update.
-6. Migration lead flips feature flag for all users and monitors telemetry/error budgets.
+6. Migration lead confirms all users are on the canonical native Vue 3 release and monitors telemetry/error budgets.
 
 **Exit criteria**
 
@@ -97,8 +97,8 @@ Complete the following before triggering the preview build:
 
 | Trigger                                                          | Decision owner          | Rollback action                                                                                                     | Communication                                  |
 | ---------------------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| Sev1 production incident attributable to Vue 3 changes           | Migration lead + DevOps | Re-enable compat flag, redeploy last green compat build via `yarn build && yarn ipfs:publish --tag compat-rollback` | Incident channel, #release, status page update |
-| Telemetry shows ≥10% flows falling back to legacy stores for >2h | Platform team lead      | Investigate; if unresolved within 2h, roll back to compat build                                                     | #migration-status (yellow), steering sync      |
+| Sev1 production incident attributable to Vue 3 changes           | Migration lead + DevOps | Redeploy the last verified release artifact via `yarn build && yarn ipfs:publish --tag vue3-rollback`               | Incident channel, #release, status page update |
+| Telemetry shows ≥10% flows falling back to legacy stores for >2h | Platform team lead      | Investigate; if unresolved within 2h, roll back to the last verified release artifact                               | #migration-status (yellow), steering sync      |
 | Translation failures causing user-facing errors                  | Localization lead       | Restore previous locale bundles, disable problematic flows                                                          | Support bulletin, #migration-status            |
 
 Rollback steps must be rehearsed during staging; document completion in Confluence.

@@ -1,6 +1,12 @@
 <template>
   <div class="container rewards-tabs">
-    <s-tabs class="rewards-tabs__tabs" :key="windowWidth" :value="currentTab" type="card" @input="handleChangeTab">
+    <s-tabs
+      class="rewards-tabs__tabs"
+      :key="windowWidth"
+      :value="currentTab"
+      type="card"
+      @update:model-value="handleChangeTab"
+    >
       <s-tab
         v-for="(rewardsTab, index) in rewardsTabsItems"
         :key="rewardsTab"

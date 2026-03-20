@@ -1,0 +1,40 @@
+import { mount } from '@vue/test-utils';
+import { describe, expect, it } from 'vitest';
+
+import ConnectionItems from '@/lib/soraneo-wallet/src/components/Connection/List/ConnectionItems.vue';
+
+describe('ConnectionItems', () => {
+  it('caps list height when item count reaches the visible threshold', () => {
+    const wrapper = mount(ConnectionItems, {
+      props: {
+        size: 7,
+        visible: 4,
+        itemHeight: 60,
+        itemOffset: 8,
+      },
+      global: {
+        stubs: {
+          SScrollbar: { template: '<div><slot /></div>' },
+        },
+      },
+    });
+
+    expect((wrapper.vm as any).style).toEqual({ height: '264px' });
+  });
+
+  it('does not force a height when there are fewer items than the visible limit', () => {
+    const wrapper = mount(ConnectionItems, {
+      props: {
+        size: 2,
+        visible: 4,
+      },
+      global: {
+        stubs: {
+          SScrollbar: { template: '<div><slot /></div>' },
+        },
+      },
+    });
+
+    expect((wrapper.vm as any).style).toEqual({});
+  });
+});

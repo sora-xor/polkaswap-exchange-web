@@ -1,7 +1,7 @@
 <template>
   <div>
     <s-table
-      ref="table"
+      ref="tableRef"
       v-loading="loadingState"
       :data="tableItems"
       :adapt-breakpoint="0"
@@ -136,20 +136,26 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@wallet';
-import { Options, mixins as vueMixins } from 'vue-property-decorator';
+import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
+import { WALLET_CONSTS, components } from '@wallet';
+import { SortDirection } from '@soramitsu-ui/ui/types';
+import { computed, onMounted, ref, toRef } from 'vue';
 
-import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
+import { useExploreTable } from '@/composables/useExploreTable';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { fetchOrderBooks } from '@/indexer/queries/orderBook/orderBooks';
 import { lazyComponent } from '@/router';
+import store from '@/store';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { OrderBookWithStats } from '@/types/orderBook';
 import { formatAmountWithSuffix, sortPools, showMostFittingValue } from '@/utils';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 type TableItem = {
   name: string;
@@ -166,7 +172,20 @@ type TableItem = {
   tvlFormatted: AmountWithSuffix;
 };
 
-@Options({
+const props = withDefaults(
+  defineProps<{
+    exploreQuery?: string;
+    isAccountItemsOnly?: boolean;
+    parentLoading?: boolean;
+  }>(),
+  {
+    exploreQuery: '',
+    isAccountItemsOnly: false,
+    parentLoading: false,
+  }
+);
+
+defineOptions({
   components: {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PriceChange: lazyComponent(Components.PriceChange),
@@ -175,70 +194,110 @@ type TableItem = {
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
   },
-})
-export default class ExploreBooks extends vueMixins(ExplorePageMixin) {
-  private orderBooks: readonly OrderBookWithStats[] = [];
+});
 
-  get prefilteredItems(): TableItem[] {
-    const items = this.orderBooks.reduce<TableItem[]>((buffer, item) => {
-      const {
-        id: { base, quote },
-        stats: { baseAssetReserves, quoteAssetReserves, price, priceChange, volume },
-      } = item;
+const { t, TranslationConsts } = useTranslation();
+const { getAssetFiatPrice } = useFormattedAmount();
+const parentLoading = toRef(props, 'parentLoading');
+const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
 
-      const baseAsset = this.getAsset(base);
-      const targetAsset = this.getAsset(quote);
+const FontWeightRate = WALLET_CONSTS.FontWeightRate;
+const loadingState = computed(() => parentLoading.value || loading.value);
+const orderBooks = ref<readonly OrderBookWithStats[]>([]);
 
-      if (!(baseAsset && targetAsset)) return buffer;
+const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
+const whitelistAssets = computed(() => store.getters.assets.whitelistAssets as Array<Asset>);
+const allowedAssets = computed<Array<Asset>>(() =>
+  whitelistAssets.value.length ? whitelistAssets.value : [...KnownAssets]
+);
 
-      const name = `${baseAsset.symbol}-${targetAsset.symbol}`; // For search
+const prefilteredItems = computed<TableItem[]>(() => {
+  const items = orderBooks.value.reduce<TableItem[]>((buffer, item) => {
+    const {
+      id: { base, quote },
+      stats: { baseAssetReserves, quoteAssetReserves, price, priceChange, volume },
+    } = item;
 
-      const fpBaseAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(baseAsset) ?? 0);
-      const fpQuoteAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(targetAsset) ?? 0);
-      const fpBaseAssetReserves = FPNumber.fromCodecValue(baseAssetReserves ?? 0, baseAsset.decimals);
-      const fpQuoteAssetReserves = FPNumber.fromCodecValue(quoteAssetReserves ?? 0, targetAsset.decimals);
-      const fpBaseAssetTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves);
-      const fpQuoteAssetTvl = fpQuoteAssetPrice.mul(fpQuoteAssetReserves);
-      const fpTvl = fpBaseAssetTvl.add(fpQuoteAssetTvl);
-      const fpPriceUSD = price.mul(fpQuoteAssetPrice);
+    const baseAsset = getAsset(base);
+    const targetAsset = getAsset(quote);
 
-      buffer.push({
-        name,
-        baseAsset,
-        targetAsset,
-        price: price.toNumber(),
-        priceFormatted: showMostFittingValue(price),
-        priceUSDFormatted: fpPriceUSD.toLocaleString(),
-        priceChangeDay: priceChange.toNumber(),
-        priceChangeDayFP: priceChange,
-        volumeDay: volume.toNumber(),
-        volumeDayFormatted: formatAmountWithSuffix(volume),
-        tvl: fpTvl.toNumber(),
-        tvlFormatted: formatAmountWithSuffix(fpTvl),
-      });
+    if (!(baseAsset && targetAsset)) return buffer;
 
-      return buffer;
-    }, []);
+    const name = `${baseAsset.symbol}-${targetAsset.symbol}`;
+    const fpBaseAssetPrice = FPNumber.fromCodecValue(getAssetFiatPrice(baseAsset) ?? 0);
+    const fpQuoteAssetPrice = FPNumber.fromCodecValue(getAssetFiatPrice(targetAsset) ?? 0);
+    const fpBaseAssetReserves = FPNumber.fromCodecValue(baseAssetReserves ?? 0, baseAsset.decimals);
+    const fpQuoteAssetReserves = FPNumber.fromCodecValue(quoteAssetReserves ?? 0, targetAsset.decimals);
+    const fpTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves).add(fpQuoteAssetPrice.mul(fpQuoteAssetReserves));
+    const fpPriceUSD = price.mul(fpQuoteAssetPrice);
 
-    const defaultSorted = [...items].sort((a, b) =>
-      sortPools(
-        { baseAsset: a.baseAsset, poolAsset: a.targetAsset },
-        { baseAsset: b.baseAsset, poolAsset: b.targetAsset }
-      )
-    );
-
-    return defaultSorted;
-  }
-
-  // ExplorePageMixin method implementation
-  async updateExploreData(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        this.orderBooks = Object.freeze((await fetchOrderBooks(this.allowedAssets)) ?? []);
-      });
+    buffer.push({
+      name,
+      baseAsset,
+      targetAsset,
+      price: price.toNumber(),
+      priceFormatted: showMostFittingValue(price),
+      priceUSDFormatted: fpPriceUSD.toLocaleString(),
+      priceChangeDay: priceChange.toNumber(),
+      priceChangeDayFP: priceChange,
+      volumeDay: volume.toNumber(),
+      volumeDayFormatted: formatAmountWithSuffix(volume),
+      tvl: fpTvl.toNumber(),
+      tvlFormatted: formatAmountWithSuffix(fpTvl),
     });
-  }
-}
+
+    return buffer;
+  }, []);
+
+  return [...items].sort((a, b) =>
+    sortPools(
+      { baseAsset: a.baseAsset, poolAsset: a.targetAsset },
+      { baseAsset: b.baseAsset, poolAsset: b.targetAsset }
+    )
+  );
+});
+
+const filterItems = (items: readonly TableItem[], search: string): readonly TableItem[] => {
+  return items.filter((item) =>
+    [item.name, item.baseAsset.name, item.baseAsset.symbol, item.baseAsset.address, item.targetAsset.name]
+      .concat([item.targetAsset.symbol, item.targetAsset.address])
+      .some((value) => value?.toLowerCase?.().includes(search))
+  );
+};
+
+const {
+  order,
+  property,
+  currentPage,
+  pageAmount,
+  total,
+  lastPage,
+  startIndex,
+  tableItems,
+  tableRef,
+  isDefaultSort,
+  changeSort,
+  handleResetSort,
+  handlePaginationClick,
+} = useExploreTable<TableItem>({
+  items: prefilteredItems,
+  query: () => props.exploreQuery,
+  filter: filterItems,
+  defaultOrder: SortDirection.DESC,
+  defaultProperty: 'tvl',
+});
+
+const updateExploreData = async (): Promise<void> => {
+  await withLoading(async () => {
+    await withParentLoading(async () => {
+      orderBooks.value = Object.freeze((await fetchOrderBooks(allowedAssets.value)) ?? []);
+    });
+  });
+};
+
+onMounted(() => {
+  void updateExploreData();
+});
 </script>
 
 <style lang="scss">

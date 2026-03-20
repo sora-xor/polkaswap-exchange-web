@@ -31,24 +31,21 @@
 import { computed, reactive, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import { emptyValidatorsFilter, ValidatorsFilterType } from '@/modules/staking/sora/consts';
 
 import type { ValidatorsFilter } from '@/modules/staking/sora/types';
 
 const props = defineProps<{
-  visible: boolean;
   filter: ValidatorsFilter;
 }>();
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'save', value: ValidatorsFilter): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
-const { isVisible } = useDialogModel(props, emit);
 
 const localFilter = reactive<ValidatorsFilter>({ ...emptyValidatorsFilter, ...props.filter });
 
@@ -65,7 +62,7 @@ const syncLocalFilter = () => {
 };
 
 watch(
-  () => props.visible,
+  isVisible,
   (visible) => {
     if (visible) syncLocalFilter();
   },
@@ -75,7 +72,7 @@ watch(
 watch(
   () => props.filter,
   () => {
-    if (props.visible) syncLocalFilter();
+    if (isVisible.value) syncLocalFilter();
   },
   { deep: true }
 );

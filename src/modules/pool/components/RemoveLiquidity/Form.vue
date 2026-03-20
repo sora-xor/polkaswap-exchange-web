@@ -9,7 +9,7 @@
         :decimals="0"
         :disabled="liquidityLocked"
         :max="MAX_PART"
-        @input="handleRemovePartChange"
+        @update:model-value="handleRemovePartChange"
         @focus="setFocusedField(FocusedField.Percent)"
         @blur="resetFocusedField"
       >
@@ -48,8 +48,8 @@
         :max="getTokenMaxAmount(firstTokenBalance)"
         :title="t('removeLiquidity.output')"
         :token="firstToken"
-        :value="firstTokenAmount"
-        @input="setFirstTokenAmount"
+        :model-value="firstTokenAmount"
+        @update:model-value="setFirstTokenAmount"
         @focus="setFocusedField(FocusedField.First)"
         @blur="resetFocusedField"
       >
@@ -63,8 +63,8 @@
         :max="getTokenMaxAmount(secondTokenBalance)"
         :title="t('removeLiquidity.output')"
         :token="secondToken"
-        :value="secondTokenAmount"
-        @input="setSecondTokenAmount"
+        :model-value="secondTokenAmount"
+        @update:model-value="setSecondTokenAmount"
         @focus="setFocusedField(FocusedField.Second)"
         @blur="resetFocusedField"
       >

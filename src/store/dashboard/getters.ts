@@ -1,9 +1,9 @@
 import { FPNumber } from '@sora-substrate/math';
-import { defineGetters } from 'direct-vuex';
+import { defineGetters } from '@/store/module-helpers';
 
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import { dashboardGetterContext } from '@/store/dashboard';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 
 import type { DashboardState } from './types';
 
@@ -11,7 +11,7 @@ const resolveWalletAccount = (rootState: any, rootGetters: any) => {
   const account = rootState?.wallet?.account;
   if (account) return account;
 
-  const legacyStore = requireLegacyStore();
+  const legacyStore = requireAppStore();
 
   return legacyStore?.state?.wallet?.account ?? legacyStore?.getters?.wallet?.account;
 };
@@ -20,7 +20,7 @@ const resolveAssetsTable = (rootGetters: any) => {
   const table = rootGetters?.wallet?.account?.assetsDataTable;
   if (table) return table;
 
-  const legacyStore = requireLegacyStore();
+  const legacyStore = requireAppStore();
 
   return legacyStore?.getters?.wallet?.account?.assetsDataTable ?? {};
 };

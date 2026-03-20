@@ -58,7 +58,6 @@ import { components } from '@wallet';
 import { computed } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
@@ -68,19 +67,16 @@ import { hasInsufficientXorForFee } from '@/utils';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 
 const props = defineProps<{
-  visible: boolean;
   parentLoading?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'show-all-withdraws'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
-const dialogModel = useDialogModel(props, emit);
-const { isVisible, closeDialog } = dialogModel;
 const { getFiatAmountByCodecString } = useFormattedAmount();
 const settingsStore = useSettingsStore();
 
@@ -118,6 +114,11 @@ const confirmDisabled = computed(() => insufficientXorForFee.value || insufficie
 const buttonLoading = computed(() => Boolean(props.parentLoading) || loading.value);
 
 const title = computed(() => t('soraStaking.withdrawDialog.title'));
+
+const closeDialog = (): void => {
+  emit('close');
+  isVisible.value = false;
+};
 
 /**
  * Submits the withdraw extrinsic and closes the dialog once finalized.

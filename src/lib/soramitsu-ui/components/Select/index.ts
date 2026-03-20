@@ -1,6 +1,7 @@
 // opinionated components
 export { default as SSelect } from './SSelect.vue';
 export { default as SDropdown } from './SDropdown.vue';
+export { default as SDropdownItem } from './SDropdownItem.vue';
 
 // unopinionated components
 export { default as SSelectBase } from './SSelectBase.vue';

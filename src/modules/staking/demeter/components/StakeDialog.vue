@@ -20,7 +20,7 @@
           :value="value"
           :decimals="0"
           :max="100"
-          @input="handleValue"
+          @update:model-value="handleValue"
         >
           <div slot="top" class="input-title">{{ inputTitle }}</div>
           <div slot="right" class="el-buttons el-buttons--between">
@@ -53,8 +53,8 @@
           :is-max-available="isMaxButtonAvailable"
           :title="inputTitle"
           :token="poolAsset"
-          :value="value"
-          @input="handleValue"
+          :model-value="value"
+          @update:model-value="handleValue"
           @max="handleMaxValue"
         ></token-input>
       </s-form>
@@ -118,7 +118,6 @@ import { components } from '@wallet';
 import { computed, ref, toRefs, watch, type PropType } from 'vue';
 
 import { Components, ZeroStringValue } from '@/consts';
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
@@ -146,7 +145,6 @@ defineOptions({
 });
 
 const props = defineProps({
-  visible: { type: Boolean, default: false },
   parentLoading: { type: Boolean, default: false },
   isAdding: { type: Boolean, default: true },
   liquidity: { type: Object as PropType<Nullable<AccountLiquidity>>, default: null },
@@ -160,23 +158,13 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'add', payload: DemeterLiquidityParams): void;
   (event: 'remove', payload: DemeterLiquidityParams): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { liquidity, pool, accountPool, poolAsset, rewardAsset, baseAsset, apr, tvl } = toRefs(props);
-
-const dialogModel = useDialogModel(props, (event, value) => {
-  if (event === 'update:visible') {
-    emit('update:visible', value ?? false);
-  } else {
-    emit('close');
-  }
-});
-
-const { isVisible } = dialogModel;
 
 const settingsStore = useSettingsStore();
 const assetsStore = useAssetsStore();
@@ -197,12 +185,9 @@ const statusApi = useDemeterPoolStatus({
 const cardApi = useDemeterPoolCard(statusApi);
 
 const value = ref<string>('');
-watch(
-  () => props.visible,
-  () => {
-    value.value = '';
-  }
-);
+watch(isVisible, () => {
+  value.value = '';
+});
 
 const isAdding = computed(() => props.isAdding);
 const isFarm = computed(() => statusApi.isFarm.value);

@@ -1,5 +1,5 @@
 import { TransactionStatus } from '@sora-substrate/sdk';
-import { defineGetters } from 'direct-vuex';
+import { defineGetters } from '@/store/module-helpers';
 
 import { transactionsGetterContext } from './../transactions';
 

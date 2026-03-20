@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { components } from '@wallet';
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
@@ -71,7 +71,6 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
-    visible: boolean;
     isInsufficientBalance?: boolean;
     appendToBody?: boolean;
   }>(),
@@ -82,7 +81,6 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'confirm'): void;
 }>();
 
@@ -91,10 +89,7 @@ const { formatStringValue, formatCodecNumber } = useFormattedAmount();
 const { tokenFrom, tokenTo, fromValue, toValue } = useSwapAmounts();
 const swapStore = useSwapStore();
 
-const visible = computed({
-  get: () => props.visible,
-  set: (value: boolean) => emit('update:visible', value),
-});
+const visible = defineModel<boolean>('visible', { required: true });
 
 const appendToBody = computed(() => props.appendToBody);
 const isInsufficientBalance = computed(() => props.isInsufficientBalance);

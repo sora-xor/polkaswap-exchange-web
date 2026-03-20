@@ -34,28 +34,28 @@ const props = withDefaults(
   defineProps<{
     filters?: SnapshotFilter[];
     disabled?: boolean;
-    value?: SnapshotFilter | null;
+    modelValue?: SnapshotFilter | null;
   }>(),
   {
     filters: () => [],
     disabled: false,
-    value: null,
+    modelValue: undefined,
   }
 );
 
 const emit = defineEmits<{
-  (event: 'update:value', value: Nullable<SnapshotFilter>): void;
-  (event: 'input', value: Nullable<SnapshotFilter>): void;
+  (event: 'update:modelValue', value: Nullable<SnapshotFilter>): void;
 }>();
 
 const root = ref<HTMLElement | null>(null);
 const visibility = ref(false);
 
+const selectedFilter = computed<Nullable<SnapshotFilter>>(() => props.modelValue ?? props.filters[0] ?? null);
+
 const filterModel = computed<Nullable<SnapshotFilter>>({
-  get: () => props.value ?? props.filters[0] ?? null,
+  get: () => selectedFilter.value,
   set: (value) => {
-    emit('update:value', value);
-    emit('input', value);
+    emit('update:modelValue', value);
   },
 });
 

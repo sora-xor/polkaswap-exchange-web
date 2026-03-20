@@ -1,6 +1,6 @@
 import { KnownAssets, KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
 import { groupRewardsByAssetsList } from '@wallet';
-import { defineGetters } from 'direct-vuex';
+import { defineGetters } from '@/store/module-helpers';
 
 import { rewardsGetterContext } from '@/store/rewards';
 import { RewardsAmountHeaderItem } from '@/types/rewards';

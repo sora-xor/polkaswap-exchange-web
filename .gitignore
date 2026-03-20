@@ -4,6 +4,7 @@ node_modules
 /dist
 # Electron-builder output
 /dist-electron
+/out
 
 /tests/e2e/videos/
 /tests/e2e/screenshots/

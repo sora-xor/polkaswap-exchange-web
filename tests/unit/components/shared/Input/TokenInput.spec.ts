@@ -83,8 +83,8 @@ vi.mock('@/composables/useTranslation', () => ({
 
 const FloatInputStub = {
   name: 'SFloatInputStub',
-  props: ['size'],
-  emits: ['input', 'focus', 'blur'],
+  props: ['size', 'value'],
+  emits: ['update:modelValue', 'focus', 'blur'],
   template: `
     <div class="s-float-input-stub" :data-size="size">
       <slot name="top" />
@@ -94,7 +94,7 @@ const FloatInputStub = {
       <input
         v-if="size === 'mini'"
         class="fiat-input"
-        @input="$emit('input', $event.target.value)"
+        @input="$emit('update:modelValue', $event.target.value)"
         @focus="$emit('focus')"
         @blur="$emit('blur')"
       />
@@ -183,13 +183,13 @@ describe('TokenInput', () => {
     const fiatFloatInput = floatInputs.find((component) => component.props('size') === 'mini');
     expect(fiatFloatInput).toBeTruthy();
 
-    fiatFloatInput!.vm.$emit('input', '10');
+    fiatFloatInput!.vm.$emit('update:modelValue', '10');
     await nextTick();
 
-    const emitted = wrapper.emitted('input');
-    expect(emitted).toBeTruthy();
-    const lastEmission = emitted?.[emitted.length - 1];
-    const asHuman = FPNumber.fromCodecValue(lastEmission?.[0] ?? '0', token.decimals).toString();
+    const updateModelValue = wrapper.emitted('update:modelValue');
+    expect(updateModelValue).toBeTruthy();
+    const lastUpdate = updateModelValue?.[updateModelValue.length - 1];
+    const asHuman = FPNumber.fromCodecValue(lastUpdate?.[0] ?? '0', token.decimals).toString();
     expect(asHuman).toBe('5');
   });
 
@@ -204,12 +204,12 @@ describe('TokenInput', () => {
       .find((component) => component.props('size') === 'medium');
     expect(mainFloatInput).toBeTruthy();
 
-    mainFloatInput!.vm.$emit('input', '1.25');
+    mainFloatInput!.vm.$emit('update:modelValue', '1.25');
     await nextTick();
 
-    const emitted = wrapper.emitted('input');
-    expect(emitted).toBeTruthy();
-    const lastEmission = emitted?.[emitted.length - 1];
-    expect(lastEmission?.[0]).toBe('1.25');
+    const updateModelValue = wrapper.emitted('update:modelValue');
+    expect(updateModelValue).toBeTruthy();
+    const lastUpdate = updateModelValue?.[updateModelValue.length - 1];
+    expect(lastUpdate?.[0]).toBe('1.25');
   });
 });

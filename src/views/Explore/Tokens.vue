@@ -2,7 +2,7 @@
   <div>
     <assets-filter class="token-filter-options"></assets-filter>
     <s-table
-      ref="table"
+      ref="tableRef"
       v-loading="loadingState"
       :data="tableItems"
       :adapt-breakpoint="0"
@@ -172,17 +172,22 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, WALLET_TYPES, getAssetsSubset } from '@wallet';
-import { Options, mixins as vueMixins } from 'vue-property-decorator';
+import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
+import { WALLET_CONSTS, components, WALLET_TYPES, getAssetsSubset } from '@wallet';
+import { SortDirection } from '@soramitsu-ui/ui/types';
+import { computed, onMounted, ref, toRef, watch } from 'vue';
 
-import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
+import { useExploreTable } from '@/composables/useExploreTable';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
 import { Components, ZeroStringValue } from '@/consts';
 import { fetchTokensData } from '@/indexer/queries/asset/assets';
 import type { TokenData } from '@/indexer/queries/asset/assets';
 import { lazyComponent } from '@/router';
-import { state } from '@/store/decorators';
+import store from '@/store';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, sortAssets } from '@/utils';
 
@@ -205,7 +210,20 @@ type TableItem = {
   velocityFormatted?: string;
 } & Asset;
 
-@Options({
+const props = withDefaults(
+  defineProps<{
+    exploreQuery?: string;
+    isAccountItemsOnly?: boolean;
+    parentLoading?: boolean;
+  }>(),
+  {
+    exploreQuery: '',
+    isAccountItemsOnly: false,
+    parentLoading: false,
+  }
+);
+
+defineOptions({
   components: {
     AssetsFilter: components.AssetsFilter,
     PriceChange: lazyComponent(Components.PriceChange),
@@ -215,85 +233,122 @@ type TableItem = {
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
   },
-})
-export default class Tokens extends vueMixins(ExplorePageMixin) {
-  @state.wallet.settings.assetsFilter assetsFilter!: WALLET_TYPES.FilterOptions;
+});
 
-  private tokensData: Record<string, TokenData> = {};
+const { t, TranslationConsts } = useTranslation();
+const { getAssetFiatPrice } = useFormattedAmount();
+const parentLoading = toRef(props, 'parentLoading');
+const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
 
-  get hasTokensData(): boolean {
-    return Object.keys(this.tokensData).length !== 0;
-  }
+const FontWeightRate = WALLET_CONSTS.FontWeightRate;
+const loadingState = computed(() => parentLoading.value || loading.value);
+const tokensData = ref<Record<string, TokenData>>({});
 
-  get items(): TableItem[] {
-    if (!this.hasTokensData) {
-      return this.allowedAssets.map((asset) => {
-        const price = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? ZeroStringValue);
-        const zero = FPNumber.ZERO;
+const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<Asset>;
+const whitelistAssets = computed(() => store.getters.assets.whitelistAssets as Array<Asset>);
+const allowedAssets = computed<Array<Asset>>(() =>
+  whitelistAssets.value.length ? whitelistAssets.value : [...KnownAssets]
+);
+const assetsFilter = computed(() => store.state.wallet.settings.assetsFilter as WALLET_TYPES.FilterOptions);
 
-        return {
-          ...asset,
-          price: price.toNumber(),
-          priceFormatted: price.toLocaleString(7),
-          priceChangeDay: zero.toNumber(),
-          priceChangeDayFP: zero,
-          priceChangeWeek: zero.toNumber(),
-          priceChangeWeekFP: zero,
-          volumeDay: zero.toNumber(),
-          volumeDayFormatted: formatAmountWithSuffix(zero),
-          tvl: zero.toNumber(),
-          tvlFormatted: formatAmountWithSuffix(zero),
-          velocity: zero.toNumber(),
-          velocityFormatted: String(zero.toNumber(2)),
-        };
-      });
-    }
+const items = computed<TableItem[]>(() => {
+  if (!Object.keys(tokensData.value).length) {
+    return allowedAssets.value.map((asset) => {
+      const price = FPNumber.fromCodecValue(getAssetFiatPrice(asset) ?? ZeroStringValue);
+      const zero = FPNumber.ZERO;
 
-    return Object.entries(this.tokensData).reduce<TableItem[]>((buffer, [address, tokenData]) => {
-      const asset = this.getAsset(address);
-
-      if (!asset) return buffer;
-
-      buffer.push({
+      return {
         ...asset,
-        price: tokenData.priceUSD.toNumber(),
-        priceFormatted: tokenData.priceUSD.toLocaleString(7),
-        priceChangeDay: tokenData.priceChangeDay.toNumber(),
-        priceChangeDayFP: tokenData.priceChangeDay,
-        priceChangeWeek: tokenData.priceChangeWeek.toNumber(),
-        priceChangeWeekFP: tokenData.priceChangeWeek,
-        volumeDay: tokenData.volumeDayUSD.toNumber(),
-        volumeDayFormatted: formatAmountWithSuffix(tokenData.volumeDayUSD),
-        tvl: tokenData.tvlUSD.toNumber(),
-        tvlFormatted: formatAmountWithSuffix(tokenData.tvlUSD),
-        velocity: tokenData.velocity.toNumber(),
-        velocityFormatted: String(tokenData.velocity.toNumber(2)),
-      });
-
-      return buffer;
-    }, []);
-  }
-
-  get defaultSorted(): TableItem[] {
-    return [...this.items].sort((a, b) => sortAssets(a, b));
-  }
-
-  get prefilteredItems(): TableItem[] {
-    // return to first page not to show empty list after option switch
-    this.currentPage = 1;
-
-    return getAssetsSubset(this.defaultSorted, this.assetsFilter);
-  }
-
-  // ExplorePageMixin method implementation
-  async updateExploreData(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        this.tokensData = Object.freeze(await fetchTokensData(this.allowedAssets));
-      });
+        price: price.toNumber(),
+        priceFormatted: price.toLocaleString(7),
+        priceChangeDay: zero.toNumber(),
+        priceChangeDayFP: zero,
+        priceChangeWeek: zero.toNumber(),
+        priceChangeWeekFP: zero,
+        volumeDay: zero.toNumber(),
+        volumeDayFormatted: formatAmountWithSuffix(zero),
+        tvl: zero.toNumber(),
+        tvlFormatted: formatAmountWithSuffix(zero),
+        velocity: zero.toNumber(),
+        velocityFormatted: String(zero.toNumber(2)),
+      };
     });
   }
-}
+
+  return Object.entries(tokensData.value).reduce<TableItem[]>((buffer, [address, tokenData]) => {
+    const asset = getAsset(address);
+    if (!asset) return buffer;
+
+    buffer.push({
+      ...asset,
+      price: tokenData.priceUSD.toNumber(),
+      priceFormatted: tokenData.priceUSD.toLocaleString(7),
+      priceChangeDay: tokenData.priceChangeDay.toNumber(),
+      priceChangeDayFP: tokenData.priceChangeDay,
+      priceChangeWeek: tokenData.priceChangeWeek.toNumber(),
+      priceChangeWeekFP: tokenData.priceChangeWeek,
+      volumeDay: tokenData.volumeDayUSD.toNumber(),
+      volumeDayFormatted: formatAmountWithSuffix(tokenData.volumeDayUSD),
+      tvl: tokenData.tvlUSD.toNumber(),
+      tvlFormatted: formatAmountWithSuffix(tokenData.tvlUSD),
+      velocity: tokenData.velocity.toNumber(),
+      velocityFormatted: String(tokenData.velocity.toNumber(2)),
+    });
+
+    return buffer;
+  }, []);
+});
+
+const prefilteredItems = computed<TableItem[]>(() => {
+  return getAssetsSubset(
+    [...items.value].sort((a, b) => sortAssets(a, b)),
+    assetsFilter.value
+  );
+});
+
+const filterItems = (items: readonly TableItem[], search: string): readonly TableItem[] => {
+  return items.filter((item) =>
+    [item.symbol, item.name, item.address].some((value) => value?.toLowerCase?.().includes(search))
+  );
+};
+
+const {
+  order,
+  property,
+  currentPage,
+  pageAmount,
+  total,
+  lastPage,
+  startIndex,
+  tableItems,
+  tableRef,
+  isDefaultSort,
+  changeSort,
+  handleResetSort,
+  handlePaginationClick,
+} = useExploreTable<TableItem>({
+  items: prefilteredItems,
+  query: () => props.exploreQuery,
+  filter: filterItems,
+  defaultOrder: SortDirection.DESC,
+  defaultProperty: 'tvl',
+});
+
+watch(assetsFilter, () => {
+  currentPage.value = 1;
+});
+
+const updateExploreData = async (): Promise<void> => {
+  await withLoading(async () => {
+    await withParentLoading(async () => {
+      tokensData.value = Object.freeze(await fetchTokensData(allowedAssets.value));
+    });
+  });
+};
+
+onMounted(() => {
+  void updateExploreData();
+});
 </script>
 
 <style lang="scss">

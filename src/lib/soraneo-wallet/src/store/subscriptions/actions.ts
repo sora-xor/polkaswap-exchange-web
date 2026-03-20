@@ -1,4 +1,4 @@
-import { defineActions } from 'direct-vuex';
+import { defineActions } from '@/store/module-helpers';
 import debounce from 'lodash/fp/debounce';
 
 import { subscriptionsActionContext } from './../subscriptions';

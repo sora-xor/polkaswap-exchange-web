@@ -11,8 +11,8 @@
         :is-max-available="isMaxButtonAvailable"
         :title="t(isBond ? 'referralProgram.action.bond' : 'referralProgram.action.unbond')"
         :token="xor"
-        :value="amount"
-        @input="handleInputXor"
+        :model-value="amount"
+        @update:model-value="handleInputXor"
         @max="handleMaxValue"
       />
 

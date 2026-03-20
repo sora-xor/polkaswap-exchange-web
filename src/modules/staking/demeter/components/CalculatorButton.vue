@@ -5,10 +5,6 @@ import CalculatorIcon from './CalculatorIcon.vue';
 
 export default defineComponent({
   name: 'CalculatorButton',
-  compatConfig: {
-    MODE: 3,
-    COMPONENT_ASYNC: false,
-  },
   emits: ['click'],
   methods: {
     handleClick(event: MouseEvent): void {

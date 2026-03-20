@@ -10,19 +10,14 @@
 
 <script setup lang="ts">
 import { components } from '@wallet';
-import { computed, watch } from 'vue';
+import { watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { PoolComponents } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
 import store from '@/store';
 
-const props = defineProps<{
-  visible: boolean;
-}>();
-
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
 }>();
 
@@ -30,10 +25,7 @@ const { t } = useTranslation();
 const DialogBase = components.DialogBase;
 const RemoveLiquidityForm = poolLazyComponent(PoolComponents.RemoveLiquidityForm);
 
-const isVisible = computed({
-  get: () => props.visible,
-  set: (value: boolean) => emit('update:visible', value),
-});
+const isVisible = defineModel<boolean>('visible', { required: true });
 
 const closeDialog = () => {
   emit('close');

@@ -1,10 +1,10 @@
-import { Options, mixins } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
+import { mapGetters } from 'vuex';
 
 import { useRouterStore } from '@/stores/router';
 
 import { api } from '../../api';
 import { RouteNames } from '../../consts';
-import { getter } from '../../store/decorators';
 import { formatAccountAddress } from '../../util';
 
 import NotificationMixin from './NotificationMixin';
@@ -17,107 +17,100 @@ const reject = (message: string) => {
   throw new Error(`[QR Code]: ${message}`);
 };
 
-@Options({})
-export default class QrCodeParserMixin extends mixins(NotificationMixin) {
-  @getter.account.assetsDataTable assetsDataTable!: AssetsTable;
+export default defineComponent({
+  mixins: [NotificationMixin],
+  computed: {
+    ...mapGetters('wallet/account', ['assetsDataTable']),
+  },
+  methods: {
+    navigate(this: any, options: Route): Promise<void> {
+      useRouterStore((this as any).$pinia).navigate(options);
+      return Promise.resolve();
+    },
+    checkAddress(address: string): string {
+      if (!address) reject(`Account address not provided: ${address}`);
 
-  private get routerStore() {
-    return useRouterStore((this as any).$pinia);
-  }
+      const formatted = formatAccountAddress(address, true, api);
 
-  private navigate(options: Route): Promise<void> {
-    this.routerStore.navigate(options);
-    return Promise.resolve();
-  }
+      if (!formatted) reject(`Invalid address: ${address}`);
 
-  private checkAddress(address: string): string {
-    if (!address) reject(`Account address not provided: ${address}`);
+      return formatted;
+    },
+    checkAsset(this: any, assetId: string): Asset {
+      if (!assetId) reject(`Asset ID not provided: ${assetId}`);
 
-    const formatted = formatAccountAddress(address, true, api);
+      const asset = (this.assetsDataTable as AssetsTable)[assetId];
 
-    if (!formatted) reject(`Invalid address: ${address}`);
+      if (!asset) reject(`Unsupported asset: ${assetId}`);
 
-    return formatted;
-  }
+      return asset;
+    },
+    checkPublicKey(publicKey: string, address: string): void {
+      if (!publicKey) reject(`Account public key not provided: ${publicKey}`);
 
-  private checkAsset(assetId: string): Asset {
-    if (!assetId) reject(`Asset ID not provided: ${assetId}`);
+      const publicKeyHex = `0x${api.getPublicKeyByAddress(address)}`;
 
-    const asset = this.assetsDataTable[assetId];
+      if (publicKeyHex !== publicKey) {
+        reject(`Invalid public key: ${publicKey}`);
+      }
+    },
+    checkAmount(amount?: string): void {
+      if (amount && !Number.isFinite(parseInt(amount))) {
+        reject(`Invalid amount: ${amount}`);
+      }
+    },
+    async parseQrCodeValue(this: any, value: Nullable<string>): Promise<void> {
+      try {
+        if (!value) reject('QR Code not provided');
 
-    if (!asset) reject(`Unsupported asset: ${assetId}`);
+        const args = (value as string).split(':');
 
-    return asset;
-  }
+        // fearless extension qr support (account address only)
+        if (args.length === 1) {
+          const address = this.checkAddress(args[0]);
 
-  private checkPublicKey(publicKey: string, address: string): void {
-    if (!publicKey) reject(`Account public key not provided: ${publicKey}`);
+          this.navigate({
+            name: RouteNames.SelectAsset,
+            params: {
+              address,
+            },
+          });
 
-    const publicKeyHex = `0x${api.getPublicKeyByAddress(address)}`;
+          return;
+        }
 
-    if (publicKeyHex !== publicKey) {
-      reject(`Invalid public key: ${publicKey}`);
-    }
-  }
+        const [chain, accountAddress, publicKey, _accountName, assetId, amount] = args;
 
-  private checkAmount(amount?: string): void {
-    if (amount && !Number.isFinite(parseInt(amount))) {
-      reject(`Invalid amount: ${amount}`);
-    }
-  }
+        if (chain !== 'substrate') reject(`Unsupported chain: ${chain}`);
 
-  async parseQrCodeValue(value: Nullable<string>): Promise<void> {
-    try {
-      if (!value) reject('QR Code not provided');
+        const address = this.checkAddress(accountAddress);
+        const asset = this.checkAsset(assetId);
 
-      const args = (value as string).split(':');
-
-      // fearless extension qr support (account address only)
-      if (args.length === 1) {
-        const address = this.checkAddress(args[0]);
+        this.checkPublicKey(publicKey, address);
+        this.checkAmount(amount);
 
         this.navigate({
-          name: RouteNames.SelectAsset,
+          name: RouteNames.WalletSend,
           params: {
+            asset,
             address,
+            amount,
           },
         });
-
-        return;
+      } catch (error) {
+        console.error(error);
+        this.showAppNotification(this.t('code.invalid'), 'error');
       }
-
-      const [chain, accountAddress, publicKey, _accountName, assetId, amount] = args;
-
-      if (chain !== 'substrate') reject(`Unsupported chain: ${chain}`);
-
-      const address = this.checkAddress(accountAddress);
-      const asset = this.checkAsset(assetId);
-
-      this.checkPublicKey(publicKey, address);
-      this.checkAmount(amount);
+    },
+    receiveByQrCode(this: any, asset: Nullable<AccountAsset>): void {
+      const name = asset ? RouteNames.ReceiveToken : RouteNames.SelectAsset;
 
       this.navigate({
-        name: RouteNames.WalletSend,
+        name,
         params: {
           asset,
-          address,
-          amount,
         },
       });
-    } catch (error) {
-      console.error(error);
-      this.showAppNotification(this.t('code.invalid'), 'error');
-    }
-  }
-
-  receiveByQrCode(asset: Nullable<AccountAsset>): void {
-    const name = asset ? RouteNames.ReceiveToken : RouteNames.SelectAsset;
-
-    this.navigate({
-      name,
-      params: {
-        asset,
-      },
-    });
-  }
-}
+    },
+  },
+});

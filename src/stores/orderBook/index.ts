@@ -16,7 +16,7 @@ import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
 import { LimitOrderType } from '@/consts';
-import { requireLegacyStore, type LegacyStore } from '@/utils/legacy-store';
+import { requireAppStore, type AppStoreRuntime } from '@/utils/app-store';
 import type { OrderBookState } from '@/store/orderBook/types';
 import type { Nullable } from '@/types/common';
 
@@ -25,8 +25,8 @@ type LegacyOrderBookGetters = Record<string, unknown>;
 const WARN_PREFIX = '[orderBookStore]';
 let warnedMissingModule = false;
 
-const getLegacyStore = (): LegacyStore | null => {
-  const legacyStore = requireLegacyStore();
+const getAppStore = (): AppStoreRuntime | null => {
+  const legacyStore = requireAppStore();
   if (!legacyStore?.state?.orderBook) {
     if (!warnedMissingModule) {
       console.warn(`${WARN_PREFIX} Legacy order book module is not ready yet.`);
@@ -40,7 +40,7 @@ const getLegacyStore = (): LegacyStore | null => {
 };
 
 const readOrderBookState = (): OrderBookState | null => {
-  const legacyStore = getLegacyStore();
+  const legacyStore = getAppStore();
   if (!legacyStore) return null;
 
   const state = legacyStore.state?.orderBook as OrderBookState | undefined;
@@ -53,7 +53,7 @@ const readOrderBookState = (): OrderBookState | null => {
 };
 
 const readOrderBookGetters = (): LegacyOrderBookGetters | null => {
-  const legacyStore = getLegacyStore();
+  const legacyStore = getAppStore();
   if (!legacyStore) return null;
 
   const getters = legacyStore.getters?.orderBook as LegacyOrderBookGetters | undefined;
@@ -90,7 +90,7 @@ const accessGetter = <T>(selector: (getters: LegacyOrderBookGetters) => T, fallb
 };
 
 const callLegacyMethod = (kind: 'dispatch' | 'commit', method: string, args: unknown[] = []): unknown => {
-  const legacyStore = getLegacyStore();
+  const legacyStore = getAppStore();
   if (!legacyStore) return undefined;
 
   const container = legacyStore[kind]?.orderBook as Record<string, unknown> | undefined;

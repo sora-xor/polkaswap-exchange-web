@@ -58,6 +58,13 @@ vi.mock('@/composables/useChartSpec', () => ({
   }),
 }));
 
+vi.mock('@/lib/echarts/component', () => ({
+  default: defineComponent({
+    name: 'VChartStub',
+    template: '<div class="v-chart-stub"></div>',
+  }),
+}));
+
 vi.mock('@/indexer/queries/network/volume', () => ({
   fetchData: fetchDataMock,
 }));
@@ -99,6 +106,7 @@ describe('BarChart', () => {
     const wrapper = mount(BarChart, {
       global: {
         stubs: {
+          VChart: true,
           'v-chart': true,
         },
       },

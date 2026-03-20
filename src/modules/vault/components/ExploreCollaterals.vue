@@ -4,9 +4,9 @@
       <search-input
         class="search"
         autofocus
-        :value="exploreQuery"
+        :model-value="exploreQuery"
         :placeholder="t('searchText')"
-        @input="updateSearch"
+        @update:model-value="updateSearch"
         @clear="resetSearch"
       ></search-input>
     </div>

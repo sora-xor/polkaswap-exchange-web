@@ -4,8 +4,12 @@ import {
   provide,
   inject,
   computed,
+  ref,
+  getCurrentInstance,
   type App,
   type Component,
+  type InjectionKey,
+  type Ref,
   type PropType,
   type VNodeArrayChildren,
 } from 'vue';
@@ -43,6 +47,9 @@ const withBaseClasses = (attrs: Attrs, baseClass: string, additional?: string | 
 };
 
 const renderChildren = (children?: () => VNodeArrayChildren) => children?.() ?? [];
+
+const appCounters = new WeakMap<App, number>();
+let fallbackCounter = 0;
 
 function createPrimitiveStub(name: string, tag: string = 'div'): Component {
   const baseClass = `s-${toKebab(name)}`;
@@ -285,6 +292,7 @@ const basicComponentNames = [
   'SBadge',
   'SPagination',
   'SPopover',
+  'SPopoverPanel',
   'SDatePicker',
   'SDatePickerPanel',
   'SDatePickerPanelOptions',
@@ -341,6 +349,54 @@ export const SortDirection = {
   ASC: 'ascending',
   DESC: 'descending',
 } as const;
+
+export function forceInject<T>(key: string | InjectionKey<T>): T {
+  const sentinel = Symbol('forceInject sentinel');
+  const something = inject(key, sentinel as unknown);
+
+  if (something === sentinel) {
+    throw new Error(`Injection of "${String(key)}" failed`);
+  }
+
+  return something as T;
+}
+
+export function bareMetalVModel<T, K extends string = 'modelValue'>(
+  model: Ref<T>,
+  prop: K = 'modelValue' as K
+): {
+  [key in `${K}`]: T;
+} & {
+  [key in `onUpdate:${K}`]: (value: T) => void;
+} {
+  return {
+    [prop]: model.value as T,
+    [`onUpdate:${prop}`]: (value: T) => {
+      model.value = value;
+    },
+  } as any;
+}
+
+export function nextIncrementalCounter(): number {
+  const instance = getCurrentInstance();
+  const app = instance?.appContext.app;
+
+  if (app) {
+    const current = appCounters.get(app) ?? 0;
+    appCounters.set(app, current + 1);
+    return current;
+  }
+
+  return fallbackCounter++;
+}
+
+export function uniqueElementId(): string {
+  return `soraui-uid-${nextIncrementalCounter()}`;
+}
+
+export const useFocusTrap = () => ({
+  trap: ref(null),
+});
 
 export const components = componentMap;
 

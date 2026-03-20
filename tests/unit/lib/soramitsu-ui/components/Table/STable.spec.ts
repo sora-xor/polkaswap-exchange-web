@@ -1,5 +1,3 @@
-import '@/compat/runtime-helpers';
-
 import { shallowMount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 

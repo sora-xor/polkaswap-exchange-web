@@ -6,7 +6,7 @@ import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import { waitForSoraNetworkFromEnv } from '@/utils';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 
 import type { SnapshotTypes, AssetSnapshotEntity, ConnectionQueryResponse } from '@wallet/lib/services/indexer/types';
 
@@ -125,8 +125,7 @@ export async function fetchAssetSupplyData(
     return chartData;
   }
   // VAL & PSWAP have huge difference between circulating & total supply on prod env
-  const env =
-    (requireLegacyStore() as any)?.state?.wallet?.settings?.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+  const env = (requireAppStore() as any)?.state?.wallet?.settings?.soraNetwork ?? (await waitForSoraNetworkFromEnv());
   if (env !== 'Prod') return chartData;
 
   const diff = CIRCULATING_DIFF[id];

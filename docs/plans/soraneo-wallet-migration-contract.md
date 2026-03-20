@@ -43,7 +43,7 @@
 | Bridge smoke                 | `yarn vitest run --project unit tests/unit/components/pages/Bridge/*.spec.ts`                                                      | Every RC (Thu)         | Frontend QA       | All specs green; manual spot check of asset selector                                           |
 | Swap smoke                   | `yarn vitest run --project unit tests/unit/components/pages/Swap/Widget/*.spec.ts`                                                 | Every RC + hotfix      | Frontend QA       | No new failures vs baseline                                                                    |
 | Wallet connect flow          | `yarn vitest run --project unit tests/unit/composables/useInternalConnect.spec.ts tests/unit/composables/useWalletConnect.spec.ts` | Every RC               | Wallet squad QA   | Ensure connect/disconnect + provider selection unaffected                                      |
-| E2E integration (Playwright) | `VITE_DISABLE_COMPAT=true yarn test:e2e --project chromium`                                                                        | Weekly (Fri 20:00 UTC) | QA lead           | Bridge + Moonpay happy path succeed in compat-free build; report posted to `#wallet-migration` |
+| E2E integration (Playwright) | `yarn test:e2e --project chromium`                                                                                                 | Weekly (Fri 20:00 UTC) | QA lead           | Bridge + Moonpay happy path succeed in the native Vue 3 build; report posted to `#wallet-migration` |
 | Type & build check           | `yarn build:vue3` with bundle override                                                                                             | Every RC               | Platform engineer | No TS compile errors, bundle diff < 5% unless pre-approved                                     |
 
 **Scheduling:** Wallet squad posts the new RC in `#wallet-migration` by 12:00 UTC Thursdays. Migration pod runs the first three suites immediately; E2E and build checks run overnight via Jenkins job `wallet-migration-integration`. Blockers reported via shared board before 10:00 UTC Friday. Acceptance or rollback decision announced during Friday stand-up.
@@ -55,8 +55,8 @@
    - `yarn vitest run --project unit tests/unit/components/pages/Bridge/*.spec.ts`
    - `yarn vitest run --project unit tests/unit/components/pages/Swap/Widget/*.spec.ts`
    - `yarn vitest run --project unit tests/unit/composables/useInternalConnect.spec.ts tests/unit/composables/useWalletConnect.spec.ts`
-   - `VITE_DISABLE_COMPAT=true yarn test:e2e --project chromium`
-   - `VITE_DISABLE_COMPAT=true yarn build:vue3 --mode production --report`
+   - `yarn test:e2e --project chromium`
+   - `yarn build:vue3 --mode production --report`
 3. Jenkins pushes the HTML summary and artefacts to the `wallet-migration-integration` job history and posts a condensed status (green, amber with blockers, red with failure logs) to `#wallet-migration`.
 4. Migration pod reviews results and files any regressions under the shared `wallet-migration` Jira board before 09:00 UTC Friday; acceptance or rollback call happens during the Friday stand-up.
 

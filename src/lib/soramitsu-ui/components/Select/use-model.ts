@@ -1,4 +1,4 @@
-import type { Ref } from 'vue';
+import { computed, shallowReactive, watch, type Ref } from 'vue';
 import type { SelectOption, SelectOptionGroup } from './types';
 import { whenever } from '@vueuse/core';
 import { and, not } from '@vueuse/math';

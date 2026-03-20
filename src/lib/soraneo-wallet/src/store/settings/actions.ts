@@ -1,4 +1,4 @@
-import { defineActions } from 'direct-vuex';
+import { defineActions } from '@/store/module-helpers';
 import isEmpty from 'lodash/fp/isEmpty';
 import isEqual from 'lodash/fp/isEqual';
 import { combineLatest } from 'rxjs';

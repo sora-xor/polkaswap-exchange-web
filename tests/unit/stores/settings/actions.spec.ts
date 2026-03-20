@@ -3,7 +3,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vite
 
 import axiosInstance from '@/api';
 import legacyStore from '@/store';
-import { setLegacyStoreOverride } from '@/utils/legacy-store';
+import { setAppStoreOverride } from '@/utils/app-store';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 
 vi.mock('@/store', () => import('@stubs/store'));
@@ -100,12 +100,12 @@ describe('settings store actions', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia());
-    setLegacyStoreOverride(legacyStore as any);
+    setAppStoreOverride(legacyStore as any);
   });
 
   afterEach(() => {
     vi.clearAllMocks();
-    setLegacyStoreOverride(null);
+    setAppStoreOverride(null);
   });
 
   it('merges feature flags and toggles ALT flag', () => {

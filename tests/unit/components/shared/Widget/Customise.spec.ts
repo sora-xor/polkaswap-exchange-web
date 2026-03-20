@@ -77,9 +77,9 @@ describe('CustomiseWidget', () => {
       },
       global: {
         stubs: {
-          'el-popover': {
-            props: ['modelValue'],
-            emits: ['update:modelValue'],
+          's-popover-panel': {
+            props: ['show'],
+            emits: ['update:show'],
             template: '<div><slot name="reference" /><slot /></div>',
           },
           's-button': {
@@ -128,9 +128,9 @@ describe('CustomiseWidget', () => {
       },
       global: {
         stubs: {
-          'el-popover': {
-            props: ['modelValue'],
-            emits: ['update:modelValue'],
+          's-popover-panel': {
+            props: ['show'],
+            emits: ['update:show'],
             template: '<div><slot name="reference" /><slot /></div>',
           },
           's-button': {
@@ -164,9 +164,9 @@ describe('CustomiseWidget', () => {
       },
       global: {
         stubs: {
-          'el-popover': {
-            props: ['modelValue'],
-            emits: ['update:modelValue'],
+          's-popover-panel': {
+            props: ['show'],
+            emits: ['update:show'],
             template: '<div><slot name="reference" /><slot /></div>',
           },
           's-button': {

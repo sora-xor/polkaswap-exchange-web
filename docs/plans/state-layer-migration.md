@@ -1,6 +1,6 @@
 # State Layer Migration Tracking
 
-This document captures the live audit results and action items required to retire the remaining legacy Vuex (direct-vuex + decorators) usage.
+This document captures the live audit results and action items required to retire the remaining Vuex-backed facade usage. The external `direct-vuex` package and app-owned decorators are gone; the remaining debt lives in the repo-local Vuex compatibility shim plus the facades still mounted under `src/store/**`.
 
 ## 1. Audit Snapshot
 
@@ -19,7 +19,7 @@ This document captures the live audit results and action items required to retir
 | `composables`        | 17    | 78   | Platform           | Build Pinia-aware helpers (swap, bridge, wallet connect).         |
 | `components/App`     | 12    | 74   | Platform           | App shell + menus blocked on wallet/settings Pinia stores.        |
 | `modules/pool`       | 11    | 74   | DeFi               | Remove pool mixins; finish `usePool*` composables.                |
-| `legacy-store`       | 2     | 72   | Platform           | Remaining bootstrap glue; delete once Pinia parity lands.         |
+| `app-store bridge`   | 2     | 72   | Platform           | Remaining bootstrap glue; delete once Pinia parity lands.         |
 | `modules/vault`      | 11    | 65   | DeFi               | Vault dialogs still read Vuex; migrate after pool work.           |
 | `modules/staking`    | 9     | 58   | DeFi               | Demeter + Sora staking watchers still tied to Vuex.               |
 | `App.vue`            | 1     | 44   | Platform           | Root shell still dispatches via legacy helpers; migrate to Pinia. |
@@ -39,7 +39,7 @@ This document captures the live audit results and action items required to retir
 | Staking / Demeter         | DeFi               | `modules/staking/**`, `views/Explore/Demeter` | Convert remaining mixins to `useDemeter*`; hook telemetry + tests.              | S2 W2         |
 | Sora Card onboarding      | Wallet Experience  | `pages/SoraCard/**`, `views/SoraCard.vue`     | Create Pinia KYC/rewards stores, drop decorators, add snapshot/i18n coverage.   | S2 W3         |
 | Bridge flows              | Bridge + Platform  | `views/Bridge*.vue`, bridge composables       | Wrap legacy bridge state with Pinia (accounts, forms, transactions). `useBridgeStore` scaffolding landed (form/balance/fees/history); next migrate legacy actions and consumers. | S3 W1         |
-| Legacy bootstrap cleanup  | Platform           | `src/store/**`, `legacy-store.ts`             | After above migrations, remove direct-vuex bootstrap + decorators.              | Post S3       |
+| Vuex bootstrap cleanup    | Platform           | `src/store/**`, `app-store.ts`, compat shims  | After above migrations, remove the repo-local Vuex compatibility shim and final bootstrap glue.        | Post S3       |
 
 Owners should open subtasks per domain referencing the relevant subset of `docs/reports/store-access-audit.json` so we can track burn-down in Jira/Linear.
 
@@ -78,7 +78,7 @@ Owners should open subtasks per domain referencing the relevant subset of `docs/
 
 6. **Cleanup (P2)**
    - Once domains above are Pinia-only, remove:
-     - `src/store/**` direct-vuex modules.
+     - `src/store/**` legacy Vuex facade modules.
      - Decorator helpers.
      - `store.original` bootstrapping.
    - Update docs/README to reference the Pinia-only architecture.

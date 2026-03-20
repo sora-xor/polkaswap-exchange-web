@@ -13,8 +13,8 @@ const tokenInputStubRef = vi.hoisted(() => ({ component: null as Component | nul
 vi.mock('@/router', () => {
   tokenInputStubRef.component = defineComponent({
     name: 'TokenInputStub',
-    props: ['value', 'balance', 'isMaxAvailable', 'title', 'token'],
-    emits: ['input', 'max'],
+    props: ['modelValue', 'balance', 'isMaxAvailable', 'title', 'token'],
+    emits: ['update:modelValue', 'max'],
     template: `<div class="token-input-stub"><slot /></div>`,
   });
 
@@ -138,7 +138,7 @@ const stubs = {
   's-float-input': defineComponent({
     name: 'SFloatInputStub',
     props: ['value', 'class', 'decimals', 'max'],
-    emits: ['input'],
+    emits: ['update:modelValue'],
     template: '<div class="float-input-stub"><slot /></div>',
   }),
   's-slider': defineComponent({
@@ -187,12 +187,12 @@ describe('Demeter StakeDialog', () => {
     await wrapper.setProps({ visible: true });
     const tokenInput = wrapper.findComponent(tokenInputStubRef.component as Component);
 
-    await tokenInput.vm.$emit('input', '42');
-    expect(tokenInput.props('value')).toBe('42');
+    await tokenInput.vm.$emit('update:modelValue', '42');
+    expect(tokenInput.props('modelValue')).toBe('42');
 
     await wrapper.setProps({ visible: false });
     await wrapper.setProps({ visible: true });
-    expect(wrapper.findComponent(tokenInputStubRef.component as Component).props('value')).toBe('');
+    expect(wrapper.findComponent(tokenInputStubRef.component as Component).props('modelValue')).toBe('');
   });
 
   it('emits add event with computed FPNumber value on confirm', async () => {
@@ -203,7 +203,7 @@ describe('Demeter StakeDialog', () => {
 
     await wrapper.setProps({ visible: true });
     const tokenInput = wrapper.findComponent(tokenInputStubRef.component as Component);
-    await tokenInput.vm.$emit('input', '5');
+    await tokenInput.vm.$emit('update:modelValue', '5');
 
     const confirmButton = wrapper.findComponent({ name: 'SButtonStub' });
     expect(confirmButton.exists()).toBe(true);

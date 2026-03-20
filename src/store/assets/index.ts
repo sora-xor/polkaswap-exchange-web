@@ -1,4 +1,4 @@
-import { defineModule } from 'direct-vuex';
+import { defineModule } from '@/store/module-helpers';
 import { getActivePinia, type Pinia } from 'pinia';
 
 import { localActionContext, localGetterContext } from '@/store/context';

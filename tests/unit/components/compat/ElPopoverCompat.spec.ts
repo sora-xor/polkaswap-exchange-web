@@ -2,16 +2,16 @@ import { mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Fragment, defineComponent, h, nextTick } from 'vue';
 
-import ElPopoverCompat from '@/components/compat/ElPopoverCompat';
+import SPopoverPanel from '@/lib/soramitsu-ui/components/Popover/SPopoverPanel';
 
-describe('ElPopoverCompat', () => {
+describe('SPopoverPanel', () => {
   afterEach(() => {
     document.body.innerHTML = '';
     vi.unstubAllGlobals();
   });
 
   it('renders popper content only after trigger click', async () => {
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       props: {
         trigger: 'click',
@@ -33,7 +33,7 @@ describe('ElPopoverCompat', () => {
   });
 
   it('emits model updates and supports imperative close', async () => {
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       props: {
         trigger: 'click',
@@ -47,18 +47,18 @@ describe('ElPopoverCompat', () => {
     await wrapper.get('.trigger').trigger('click');
     await nextTick();
 
-    const openEvents = wrapper.emitted('update:modelValue') ?? [];
+    const openEvents = wrapper.emitted('update:show') ?? [];
     expect(openEvents[0]).toEqual([true]);
 
     (wrapper.vm as { doClose: () => void }).doClose();
     await nextTick();
 
-    const closeEvents = wrapper.emitted('update:modelValue') ?? [];
+    const closeEvents = wrapper.emitted('update:show') ?? [];
     expect(closeEvents[1]).toEqual([false]);
   });
 
   it('closes visible popover on Escape key press', async () => {
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       props: {
         trigger: 'click',
@@ -80,7 +80,7 @@ describe('ElPopoverCompat', () => {
   });
 
   it('closes visible popover on outside pointer interaction', async () => {
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       props: {
         trigger: 'click',
@@ -109,7 +109,7 @@ describe('ElPopoverCompat', () => {
   });
 
   it('closes visible popover on navigation hash change', async () => {
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       props: {
         trigger: 'click',
@@ -131,7 +131,7 @@ describe('ElPopoverCompat', () => {
   });
 
   it('closes visible popover on history popstate event', async () => {
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       props: {
         trigger: 'click',
@@ -153,7 +153,7 @@ describe('ElPopoverCompat', () => {
   });
 
   it('closes visible popover on window resize', async () => {
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       props: {
         trigger: 'click',
@@ -181,7 +181,7 @@ describe('ElPopoverCompat', () => {
       template: '<button class="opaque-trigger">Open</button>',
     });
 
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       global: {
         components: {
@@ -204,7 +204,7 @@ describe('ElPopoverCompat', () => {
   });
 
   it('uses the first element node from reference slot when text nodes are present', async () => {
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       props: {
         trigger: 'click',
@@ -222,7 +222,7 @@ describe('ElPopoverCompat', () => {
   });
 
   it('ignores non-vnode slot children before resolving popover trigger', async () => {
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       props: {
         trigger: 'click',
@@ -240,7 +240,7 @@ describe('ElPopoverCompat', () => {
   });
 
   it('unwraps fragment children in reference slot to resolve trigger element', async () => {
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       props: {
         trigger: 'click',
@@ -258,7 +258,7 @@ describe('ElPopoverCompat', () => {
   });
 
   it('applies viewport bounds styles to visible popovers', async () => {
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       props: {
         trigger: 'click',
@@ -294,7 +294,7 @@ describe('ElPopoverCompat', () => {
 
     vi.stubGlobal('ResizeObserver', ResizeObserverMock);
 
-    const wrapper = mount(ElPopoverCompat, {
+    const wrapper = mount(SPopoverPanel, {
       attachTo: document.body,
       props: {
         trigger: 'click',
@@ -355,7 +355,7 @@ describe('ElPopoverCompat', () => {
     vi.useFakeTimers();
 
     try {
-      const wrapper = mount(ElPopoverCompat, {
+      const wrapper = mount(SPopoverPanel, {
         attachTo: document.body,
         props: {
           trigger: 'click',

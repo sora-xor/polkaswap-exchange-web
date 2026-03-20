@@ -1,5 +1,4 @@
-import { createDirectStore } from 'direct-vuex';
-import { vuex } from '@wallet/vuex';
+import { createAppStoreBridge } from '@/store/app-store-bridge';
 import walletModule from '@wallet/src/store/wallet';
 
 import addLiquidity from './addLiquidity';
@@ -19,7 +18,7 @@ import staking from './staking';
 import vault from './vault';
 import web3 from './web3';
 import { localActionContext, localGetterContext, setStoreContext } from './context';
-import { setLegacyStore } from '@/utils/legacy-store';
+import { setAppStore } from '@/utils/app-store';
 
 const modules = {
   router,
@@ -41,13 +40,13 @@ const modules = {
   vault,
 };
 
-const { store, rootGetterContext, rootActionContext } = createDirectStore({
+const { store, rootGetterContext, rootActionContext } = createAppStoreBridge({
   modules,
   strict: false,
 });
 
 setStoreContext(rootActionContext, rootGetterContext);
-setLegacyStore(store);
+setAppStore(store);
 
 if (typeof globalThis !== 'undefined') {
   (globalThis as Record<string, unknown>).__PS_APP_STORE__ = store;

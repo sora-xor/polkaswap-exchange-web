@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/math';
-import { api as walletApi } from '@wallet';
+import { api as walletApi, accountUtils } from '@wallet';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const ethersUtilMock = vi.hoisted(() => ({
@@ -186,5 +186,88 @@ describe('web3 actions - restoreSelectedNetwork', () => {
       id: 11155111,
       type: 'Eth',
     });
+  });
+});
+
+describe('web3 actions - selectSubAccount', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (accountUtils as any).loginApi = vi.fn(async () => undefined);
+    (accountUtils as any).isAppStorageSource = vi.fn(() => false);
+  });
+
+  const makeContext = ({ nodeIsConnected = true, hasApi = true }: { nodeIsConnected?: boolean; hasApi?: boolean }) => {
+    const accountApi = {
+      connection: hasApi ? { api: {} } : { api: undefined },
+      formatAddress: vi.fn((address: string, withPrefix = true) => (withPrefix ? `fmt:${address}` : `raw:${address}`)),
+    };
+
+    return {
+      commit: {
+        setSubAccount: vi.fn(),
+        setSubAccountDialogVisibility: vi.fn(),
+        setSelectSubNodeDialogVisibility: vi.fn(),
+      },
+      state: {
+        subAddressSource: 'polkadot-js',
+      },
+      rootState: {
+        bridge: {
+          subBridgeConnector: {
+            accountApi,
+            network: {
+              subNetworkConnection: {
+                nodeIsConnected,
+              },
+            },
+          },
+        },
+      },
+      getters: {
+        subAccount: {
+          address: '',
+          name: '',
+          source: '',
+        },
+      },
+      accountApi,
+    };
+  };
+
+  it('logs into the selected sub account when the connector is ready', async () => {
+    const context = makeContext({});
+    const loginApiMock = (accountUtils as any).loginApi as ReturnType<typeof vi.fn>;
+    const isAppStorageSourceMock = (accountUtils as any).isAppStorageSource as ReturnType<typeof vi.fn>;
+    const account = {
+      address: '5SubAccount',
+      name: 'Liberland',
+      source: 'polkadot-js',
+    };
+
+    isAppStorageSourceMock.mockReturnValue(false);
+
+    await (actions as any).selectSubAccount(context, account);
+
+    expect(loginApiMock).toHaveBeenCalledWith(context.accountApi, account, false);
+    expect(context.commit.setSubAccount).toHaveBeenCalledWith(account);
+    expect(context.commit.setSubAccountDialogVisibility).not.toHaveBeenCalled();
+    expect(context.commit.setSelectSubNodeDialogVisibility).not.toHaveBeenCalled();
+  });
+
+  it('redirects to sub node selection when the connector is not ready', async () => {
+    const context = makeContext({ nodeIsConnected: false, hasApi: false });
+    const loginApiMock = (accountUtils as any).loginApi as ReturnType<typeof vi.fn>;
+    const account = {
+      address: '5SubAccount',
+      name: 'Liberland',
+      source: 'polkadot-js',
+    };
+
+    await (actions as any).selectSubAccount(context, account);
+
+    expect(loginApiMock).not.toHaveBeenCalled();
+    expect(context.commit.setSubAccount).not.toHaveBeenCalled();
+    expect(context.commit.setSubAccountDialogVisibility).toHaveBeenCalledWith(false);
+    expect(context.commit.setSelectSubNodeDialogVisibility).toHaveBeenCalledWith(true);
   });
 });

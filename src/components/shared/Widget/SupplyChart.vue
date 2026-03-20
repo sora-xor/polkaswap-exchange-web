@@ -1,7 +1,12 @@
 <template>
   <base-widget v-bind="$attrs" :title="t('createToken.tokenSupply.placeholder')" :tooltip="t('tooltips.supply')">
     <template #filters>
-      <stats-filter is-dropdown :filters="filters" :value="filter" @input="changeFilter"></stats-filter>
+      <stats-filter
+        is-dropdown
+        :filters="filters"
+        :model-value="filter"
+        @update:model-value="changeFilter"
+      ></stats-filter>
     </template>
 
     <template v-if="!predefinedToken" #types>
@@ -51,6 +56,7 @@ import { useThemePalette, createThemePalette } from '@/composables/useThemePalet
 import { useTranslation } from '@/composables/useTranslation';
 import { useWidgetTokenSelect } from '@/composables/useWidgetTokenSelect';
 import { fetchAssetSupplyData } from '@/indexer/queries/asset/supply';
+import VChart from '@/lib/echarts/component';
 import { lazyComponent } from '@/router';
 import { useSettingsStore } from '@/stores/settings';
 import type { SnapshotFilter } from '@/types/filters';

@@ -38,100 +38,108 @@
 </template>
 
 <script lang="ts">
-import { Options, mixins, Prop } from 'vue-property-decorator';
+import { defineComponent, type PropType } from 'vue';
+import { mapGetters } from 'vuex';
 
 import { Theme } from '@/consts';
 
 import { api } from '../../api';
-import { getter } from '../../store/decorators';
 import { getCssVariableValue } from '../../util';
 import AssetListItem from '../AssetListItem.vue';
 import AddAssetMixin from '../mixins/AddAssetMixin';
 import LoadingMixin from '../mixins/LoadingMixin';
 import TranslationMixin from '../mixins/TranslationMixin';
-import WalletBase from '../WalletBase.vue';
 
 import type { WhitelistIdsBySymbol } from '../../types/common';
 import type { Asset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 
-@Options({
+export default defineComponent({
   components: {
-    WalletBase,
     AssetListItem,
   },
-})
-export default class AddAssetDetailsCard extends mixins(TranslationMixin, LoadingMixin, AddAssetMixin) {
-  @getter.account.whitelist whitelist!: Whitelist;
-  @getter.account.whitelistIdsBySymbol whitelistIdsBySymbol!: WhitelistIdsBySymbol;
+  mixins: [TranslationMixin, LoadingMixin, AddAssetMixin],
+  props: {
+    selectAssets: {
+      required: true,
+      type: Array as PropType<Asset[]>,
+    },
+    theme: {
+      default: Theme.Light,
+      type: String as PropType<Theme>,
+    },
+    assetTypeKey: {
+      required: true,
+      type: String,
+    },
+  },
+  emits: ['add'],
+  data() {
+    return {
+      isConfirmed: false,
+    };
+  },
+  computed: {
+    ...mapGetters('wallet/account', ['whitelist', 'whitelistIdsBySymbol']),
+    isCardPrimary(this: any): boolean {
+      return this.theme !== Theme.Dark;
+    },
+    height(this: any): string {
+      const itemHeight = parseFloat(getCssVariableValue('--s-asset-item-height--fiat'));
+      const itemHeightFixed = itemHeight + 1; // card is bigger on 1px
+      const gutter = 16;
+      const count = this.selectAssets.length;
+      const size = Math.min(count, 2);
+      const preview = Number(size < count) * (gutter + itemHeight / 2);
+      const height = itemHeightFixed * size + gutter * (size - 1) + preview;
 
-  @Prop({ required: true, type: Array }) readonly selectAssets!: Array<Asset>;
-  @Prop({ default: Theme.Light, type: String }) readonly theme!: Theme;
-  @Prop({ required: true, type: String }) readonly assetTypeKey!: string;
+      return `${height}px`;
+    },
+    warningMessage(this: any): string {
+      const assetType = this.tc(`addAsset.assetType.${this.assetTypeKey}`, 1);
+      const assetTypePlural = this.tc(`addAsset.assetType.${this.assetTypeKey}`, this.selectAssets.length);
+      const purchaseAssetType =
+        this.selectAssets.length === 1
+          ? this.tc('addAsset.warningMessage', 1, { assetType })
+          : this.tc('addAsset.warningMessage', this.selectAssets.length, { assetTypePlural });
 
-  isConfirmed = false;
+      return this.tc('addAsset.warningMessageText', this.selectAssets.length, {
+        assetType,
+        assetTypePlural,
+        purchaseAssetType,
+      });
+    },
+  },
+  methods: {
+    isWhitelist(this: any, asset: Asset): boolean {
+      return api.assets.isWhitelist(asset, this.whitelist as Whitelist);
+    },
+    isBlacklist(this: any, asset: Asset): boolean {
+      return api.assets.isBlacklist(asset, this.whitelistIdsBySymbol as WhitelistIdsBySymbol);
+    },
+    assetCardStatus(this: any, asset: Asset): string {
+      return this.isWhitelist(asset) ? 'success' : 'error';
+    },
+    assetNatureText(this: any, asset: Asset): string {
+      const isWhitelist = this.isWhitelist(asset);
+      const isBlacklist = this.isBlacklist(asset);
 
-  get isCardPrimary(): boolean {
-    return this.theme !== Theme.Dark;
-  }
+      if (isWhitelist) {
+        return this.t('addAsset.approved');
+      }
+      if (isBlacklist) {
+        return this.t('addAsset.scam');
+      }
 
-  get height(): string {
-    const itemHeight = parseFloat(getCssVariableValue('--s-asset-item-height--fiat'));
-    const itemHeightFixed = itemHeight + 1; // card is bigger on 1px
-    const gutter = 16;
-    const count = this.selectAssets.length;
-    const size = Math.min(count, 2);
-    const preview = Number(size < count) * (gutter + itemHeight / 2);
-    const height = itemHeightFixed * size + gutter * (size - 1) + preview;
-
-    return `${height}px`;
-  }
-
-  isWhitelist(asset: Asset): boolean {
-    return api.assets.isWhitelist(asset, this.whitelist);
-  }
-
-  isBlacklist(asset: Asset): boolean {
-    return api.assets.isBlacklist(asset, this.whitelistIdsBySymbol);
-  }
-
-  assetCardStatus(asset: Asset): string {
-    return this.isWhitelist(asset) ? 'success' : 'error';
-  }
-
-  assetNatureText(asset: Asset): string {
-    const isWhitelist = this.isWhitelist(asset);
-    const isBlacklist = this.isBlacklist(asset);
-    if (isWhitelist) {
-      return this.t('addAsset.approved');
-    }
-    if (isBlacklist) {
-      return this.t('addAsset.scam');
-    }
-    return this.t('addAsset.unknown');
-  }
-
-  async handleAddAssets(): Promise<void> {
-    this.$emit('add');
-    this.selectAssets.forEach((asset) => {
-      this.addAccountAsset(asset);
-    });
-  }
-
-  get warningMessage(): string {
-    const assetType = this.tc(`addAsset.assetType.${this.assetTypeKey}`, 1);
-    const assetTypePlural = this.tc(`addAsset.assetType.${this.assetTypeKey}`, this.selectAssets.length);
-    const purchaseAssetType =
-      this.selectAssets.length === 1
-        ? this.tc('addAsset.warningMessage', 1, { assetType })
-        : this.tc('addAsset.warningMessage', this.selectAssets.length, { assetTypePlural });
-
-    return this.tc('addAsset.warningMessageText', this.selectAssets.length, {
-      assetType,
-      assetTypePlural,
-      purchaseAssetType,
-    });
-  }
-}
+      return this.t('addAsset.unknown');
+    },
+    async handleAddAssets(this: any): Promise<void> {
+      this.$emit('add');
+      this.selectAssets.forEach((asset: Asset) => {
+        this.addAccountAsset(asset);
+      });
+    },
+  },
+});
 </script>
 
 <style lang="scss">

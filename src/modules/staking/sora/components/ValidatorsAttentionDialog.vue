@@ -18,27 +18,29 @@ import { components } from '@wallet';
 import { computed } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import router from '@/router';
 
 import { SoraStakingPageNames } from '../consts';
 
 const props = defineProps<{
-  visible: boolean;
   parentLoading?: boolean;
   isRecommended?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'proceed'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
-const { isVisible, closeDialog } = useDialogModel(props, emit);
 
 const DialogBase = components.DialogBase;
+
+const closeDialog = (): void => {
+  emit('close');
+  isVisible.value = false;
+};
 
 const description = computed(() => {
   const value = t('soraStaking.validatorsAttentionDialog.description');

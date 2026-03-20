@@ -60,7 +60,7 @@
           :placeholder="t('code.camera')"
           border-radius="mini"
           popper-class="device-select-popper"
-          @input="handleChangeDevice"
+          @update:model-value="handleChangeDevice"
         >
           <s-option v-for="(device, index) in mediaDevices" :key="index" :label="device.label" :value="device.deviceId">
             {{ device.label }}
@@ -77,7 +77,7 @@
 
 <script lang="ts">
 import { BrowserQRCodeReader } from '@zxing/browser';
-import { Options, Ref, mixins } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
 import DialogBase from '../DialogBase.vue';
 import CameraPermissionMixin from '../mixins/CameraPermissionMixin';
@@ -85,7 +85,6 @@ import TranslationMixin from '../mixins/TranslationMixin';
 import NotificationEnablingPage from '../NotificationEnablingPage.vue';
 
 import type { IScannerControls } from '@zxing/browser';
-import type { ComponentPublicInstance } from 'vue';
 
 enum SCAN_TYPES {
   FILE = 'file',
@@ -94,147 +93,147 @@ enum SCAN_TYPES {
 
 const reader = new BrowserQRCodeReader();
 
-@Options({
+export default defineComponent({
   components: {
     DialogBase,
     NotificationEnablingPage,
   },
-})
-export default class QrCodeScanButton extends mixins(TranslationMixin, CameraPermissionMixin) {
-  @Ref('input') readonly input!: HTMLInputElement;
-  @Ref('preview') readonly preview!: HTMLVideoElement;
-  @Ref('dropdown') readonly dropdown!: ComponentPublicInstance;
+  mixins: [TranslationMixin, CameraPermissionMixin],
+  emits: ['change'],
+  data() {
+    return {
+      scanTypes: SCAN_TYPES,
+      mediaDevices: [] as MediaDeviceInfo[],
+      selectedDeviceId: null as Nullable<string>,
+      scanProcess: null as Nullable<IScannerControls>,
+      scanDialogVisibility: false,
+    };
+  },
+  computed: {
+    scanerDialog: {
+      get(this: any): boolean {
+        return this.scanDialogVisibility;
+      },
+      set(this: any, flag: boolean) {
+        this.scanDialogVisibility = flag;
 
-  readonly scanTypes = SCAN_TYPES;
+        if (!flag) {
+          this.stopScanProcess();
+        }
+      },
+    },
+    multipleMediaDevices(this: any): boolean {
+      return this.mediaDevices.length > 1;
+    },
+  },
+  methods: {
+    handleButtonClick(this: any): void {
+      // `dropdown` can be unavailable during fast route changes.
+      const dropdown = (this.$refs as Record<string, any>).dropdown as
+        | { $refs?: { dropdown?: { handleClick?: () => void } } }
+        | undefined;
+      dropdown?.$refs?.dropdown?.handleClick?.();
+    },
+    handleSelect(this: any, value: SCAN_TYPES): void {
+      if (value === SCAN_TYPES.FILE) {
+        this.openFileInput();
+      } else {
+        this.openScanDialog();
+      }
+    },
+    async handleChangeDevice(this: any, deviceId: string): Promise<void> {
+      this.selectedDeviceId = deviceId;
+      await this.startScanProcess();
+    },
+    async openScanDialog(this: any): Promise<void> {
+      try {
+        const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('QRcode');
 
-  mediaDevices: MediaDeviceInfo[] = [];
-  selectedDeviceId: Nullable<string> = null;
+        if (!mediaDevicesAllowance) return;
 
-  scanProcess: Nullable<IScannerControls> = null;
-  scanDialogVisibility = false;
+        // find video devices
+        this.mediaDevices = await BrowserQRCodeReader.listVideoInputDevices();
+        // if no video devices, return
+        if (!this.mediaDevices.length) return;
+        // open dialog
+        this.scanerDialog = true;
+        await this.$nextTick();
 
-  get scanerDialog(): boolean {
-    return this.scanDialogVisibility;
-  }
-
-  set scanerDialog(flag: boolean) {
-    this.scanDialogVisibility = flag;
-
-    if (!flag) {
-      this.stopScanProcess();
-    }
-  }
-
-  get multipleMediaDevices(): boolean {
-    return this.mediaDevices.length > 1;
-  }
-
-  handleButtonClick(): void {
-    // `dropdown` can be unavailable during fast route changes.
-    const dropdown = this.dropdown as { $refs?: { dropdown?: { handleClick?: () => void } } } | undefined;
-    dropdown?.$refs?.dropdown?.handleClick?.();
-  }
-
-  handleSelect(value: SCAN_TYPES): void {
-    if (value === SCAN_TYPES.FILE) {
-      this.openFileInput();
-    } else {
-      this.openScanDialog();
-    }
-  }
-
-  async handleChangeDevice(deviceId: string): Promise<void> {
-    this.selectedDeviceId = deviceId;
-    this.startScanProcess();
-  }
-
-  async openScanDialog(): Promise<void> {
-    try {
-      const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('QRcode');
-
-      if (!mediaDevicesAllowance) return;
-
-      // find video devices
-      this.mediaDevices = await BrowserQRCodeReader.listVideoInputDevices();
-      // if no video devices, return
-      if (!this.mediaDevices.length) return;
-      // open dialog
-      this.scanerDialog = true;
-      await this.$nextTick();
-
-      await this.handleChangeDevice(this.mediaDevices[0].deviceId);
-    } catch (error) {
-      console.error('[QR Code]: Scan error.', error);
-      this.scanerDialog = false;
-    }
-  }
-
-  private async startScanProcess(): Promise<void> {
-    if (!this.selectedDeviceId) return;
-
-    // stop current scan
-    this.stopScanProcess();
-
-    console.info(`[QR Code]: Started decode from camera with id ${this.selectedDeviceId}`);
-
-    // start scan process
-    this.scanProcess = await reader.decodeFromVideoDevice(this.selectedDeviceId, this.preview, (result) => {
-      if (result) {
-        this.$emit('change', result.getText());
+        await this.handleChangeDevice(this.mediaDevices[0].deviceId);
+      } catch (error) {
+        console.error('[QR Code]: Scan error.', error);
         this.scanerDialog = false;
       }
-    });
-  }
+    },
+    async startScanProcess(this: any): Promise<void> {
+      if (!this.selectedDeviceId) return;
 
-  private stopScanProcess(): void {
-    if (this.scanProcess) {
-      this.scanProcess.stop();
-      this.scanProcess = null;
-    }
-  }
+      // stop current scan
+      this.stopScanProcess();
 
-  openFileInput(): void {
-    this.input.click();
-  }
+      console.info(`[QR Code]: Started decode from camera with id ${this.selectedDeviceId}`);
 
-  private resetFileInput(): void {
-    this.input.value = '';
-  }
+      const preview = (this.$refs as Record<string, any>).preview as HTMLVideoElement;
 
-  async handleFileInput(event: Event): Promise<void> {
-    const value = await new Promise((resolve) => {
-      const input = event.target as HTMLInputElement;
-
-      if (!input) return resolve(null);
-
-      const files = input.files;
-
-      if (!(files instanceof FileList)) return resolve(null);
-
-      const file = files[0] as File;
-
-      if (!file) return resolve(null);
-
-      const fileReader = new FileReader();
-
-      fileReader.addEventListener('load', async () => {
-        try {
-          const base64 = fileReader.result as string;
-          const result = await reader.decodeFromImageUrl(base64);
-          resolve(result.getText());
-        } catch (error) {
-          console.error(error);
-          resolve(null);
+      // start scan process
+      this.scanProcess = await reader.decodeFromVideoDevice(this.selectedDeviceId, preview, (result) => {
+        if (result) {
+          this.$emit('change', result.getText());
+          this.scanerDialog = false;
         }
       });
+    },
+    stopScanProcess(this: any): void {
+      if (this.scanProcess) {
+        this.scanProcess.stop();
+        this.scanProcess = null;
+      }
+    },
+    openFileInput(this: any): void {
+      const input = (this.$refs as Record<string, any>).input as HTMLInputElement | undefined;
+      input?.click();
+    },
+    resetFileInput(this: any): void {
+      const input = (this.$refs as Record<string, any>).input as HTMLInputElement | undefined;
+      if (input) {
+        input.value = '';
+      }
+    },
+    async handleFileInput(this: any, event: Event): Promise<void> {
+      const value = await new Promise((resolve) => {
+        const input = event.target as HTMLInputElement;
 
-      fileReader.readAsDataURL(file);
-    });
+        if (!input) return resolve(null);
 
-    this.$emit('change', value);
-    this.resetFileInput();
-  }
-}
+        const files = input.files;
+
+        if (!(files instanceof FileList)) return resolve(null);
+
+        const file = files[0] as File;
+
+        if (!file) return resolve(null);
+
+        const fileReader = new FileReader();
+
+        fileReader.addEventListener('load', async () => {
+          try {
+            const base64 = fileReader.result as string;
+            const result = await reader.decodeFromImageUrl(base64);
+            resolve(result.getText());
+          } catch (error) {
+            console.error(error);
+            resolve(null);
+          }
+        });
+
+        fileReader.readAsDataURL(file);
+      });
+
+      this.$emit('change', value);
+      this.resetFileInput();
+    },
+  },
+});
 </script>
 
 <style lang="scss">

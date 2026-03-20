@@ -1,7 +1,7 @@
 import type { ActionContext } from 'vuex';
 
 import { Module } from './consts';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 
 type GetterFactory = (args: [any, any, any, any], module: Module, definition: unknown) => any;
 type ActionFactory = (context: ActionContext<any, any>, module: Module, definition: unknown) => any;
@@ -68,7 +68,7 @@ const resolveRootState = (rootState: Record<string, unknown> | undefined) => {
   const next = { ...(rootState ?? {}) } as Record<string, unknown>;
 
   if (!next.wallet) {
-    const legacyStore = requireLegacyStore();
+    const legacyStore = requireAppStore();
 
     if (legacyStore?.state?.wallet) {
       next.wallet = legacyStore.state.wallet;
@@ -76,7 +76,7 @@ const resolveRootState = (rootState: Record<string, unknown> | undefined) => {
   }
 
   if (!next.web3) {
-    const legacyStore = requireLegacyStore();
+    const legacyStore = requireAppStore();
     next.web3 = legacyStore?.state?.web3 ?? {};
   }
 

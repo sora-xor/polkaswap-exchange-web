@@ -144,10 +144,10 @@ const mountComponent = async (routeName = PageNames.ExploreTokens, attrs: Record
     global: {
       stubs: {
         ResponsiveTabs: {
-          props: ['tabs', 'value'],
-          emits: ['input'],
+          props: ['tabs', 'modelValue'],
+          emits: ['update:modelValue'],
           template:
-            '<button class="tabs-stub" @click="$emit(\'input\', tabs[1]?.name || tabs[0]?.name)">{{ tabs.length }} tabs</button>',
+            '<button class="tabs-stub" @click="$emit(\'update:modelValue\', tabs[1]?.name || tabs[0]?.name)">{{ tabs.length }} tabs</button>',
         },
         SearchInput: {
           props: ['modelValue'],

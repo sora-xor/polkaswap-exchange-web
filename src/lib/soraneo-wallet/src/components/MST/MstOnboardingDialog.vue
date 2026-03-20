@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, toRef } from 'vue';
+import { computed, ref } from 'vue';
 
 import MSTFearless from '@/assets/img/MSTFearless.svg?url';
 import MSTIcon from '@/assets/img/MSTIcon.svg?url';
@@ -61,7 +61,7 @@ import MSTWallet from '@/assets/img/MSTWallet.svg?url';
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
-import { getLegacyStore } from '@/utils/legacy-store';
+import { getAppStore } from '@/utils/app-store';
 import type { Route } from '@/store/router/types';
 
 import DialogBase from '../DialogBase.vue';
@@ -70,24 +70,16 @@ import CreateMstWalletDialog from './CreateMstWalletDialog.vue';
 
 defineOptions({ name: 'MstOnboardingDialog' });
 
-const props = withDefaults(
-  defineProps<{
-    visible?: boolean;
-  }>(),
-  {
-    visible: false,
-  }
-);
+const props = withDefaults(defineProps<{}>(), {});
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
 }>();
 
 const { t } = useTranslation();
-const store = computed(() => getLegacyStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any));
-const { isVisible, closeDialog } = useDialogVisibility(toRef(props, 'visible'), {
-  emit: (value) => emit('update:visible', value),
+const store = computed(() => getAppStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any));
+const visibleModel = defineModel<boolean>('visible', { default: false });
+const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 

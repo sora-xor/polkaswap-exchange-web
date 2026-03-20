@@ -1,4 +1,4 @@
-import { defineModule } from 'direct-vuex';
+import { defineModule } from '@/store/module-helpers';
 
 import { localActionContext, localGetterContext } from '@/store/context';
 import { Module } from '@/store/consts';

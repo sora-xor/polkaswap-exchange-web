@@ -20,8 +20,8 @@ vi.mock('@/utils/telemetry', () => ({
   trackEvent: telemetry.trackEventMock,
 }));
 
-vi.mock('@/utils/legacy-store', () => ({
-  requireLegacyStore: () => ({
+vi.mock('@/utils/app-store', () => ({
+  requireAppStore: () => ({
     dispatch: {
       bridge: legacyDispatchMock,
     },

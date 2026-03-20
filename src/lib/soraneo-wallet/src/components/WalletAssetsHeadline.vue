@@ -11,7 +11,7 @@
           :value="assetsFiatAmount"
         ></formatted-amount>
       </div>
-      <el-popover popper-class="wallet-assets-filter" trigger="click" :visible-arrow="false">
+      <s-popover-panel popper-class="wallet-assets-filter" trigger="click" :visible-arrow="false">
         <div class="wallet-assets-filter__text">{{ t('filter.showAssets') }}</div>
         <s-radio-group v-model="selectedFilter">
           <s-radio v-for="(filter, index) in filterOptionsText" :key="index" size="small" :label="getLabel(index)">
@@ -34,7 +34,7 @@
             <s-icon class="wallet-assets-filter__button-icon" name="basic-settings-24" size="14px"></s-icon>
           </div>
         </template>
-      </el-popover>
+      </s-popover-panel>
     </div>
     <s-divider class="wallet-assets-headline__divider"></s-divider>
   </div>
@@ -45,7 +45,7 @@ import { computed, ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { WalletFilteringOptions, type WalletAssetFilters } from '@/consts';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 
 import FormattedAmount from './FormattedAmount.vue';
 
@@ -63,7 +63,7 @@ const emit = defineEmits<{
 }>();
 
 const { t, TranslationConsts } = useTranslation();
-const store = requireLegacyStore();
+const store = requireAppStore();
 
 const filters = computed<WalletAssetFilters>(() => store.state.wallet.settings.filters);
 

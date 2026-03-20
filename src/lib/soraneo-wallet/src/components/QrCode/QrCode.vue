@@ -5,41 +5,58 @@
 <script lang="ts">
 import { BrowserQRCodeSvgWriter } from '@zxing/browser';
 import { EncodeHintType, QRCodeDecoderErrorCorrectionLevel } from '@zxing/library';
-import { Options, Prop, Ref, Vue, Watch } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
 const writer = new BrowserQRCodeSvgWriter();
 const hints = new Map();
 hints.set(EncodeHintType.ERROR_CORRECTION, QRCodeDecoderErrorCorrectionLevel.Q);
 
-@Options({})
-export default class QrCode extends Vue {
-  @Prop({ default: '', type: String }) readonly value!: string;
-  @Prop({ default: 260, type: Number }) readonly size!: number;
-  @Ref('container') readonly container!: HTMLDivElement;
-
-  @Watch('value')
-  private rerender(): void {
+export default defineComponent({
+  props: {
+    value: {
+      default: '',
+      type: String,
+    },
+    size: {
+      default: 260,
+      type: Number,
+    },
+  },
+  data() {
+    return {
+      element: null as Nullable<SVGSVGElement>,
+    };
+  },
+  watch: {
+    value(this: any): void {
+      this.rerender();
+    },
+  },
+  mounted(this: any): void {
     this.renderCode();
-  }
+  },
+  methods: {
+    rerender(this: any): void {
+      this.renderCode();
+    },
+    clearContainer(this: any): void {
+      const container = (this.$refs as Record<string, any>).container as HTMLDivElement | undefined;
 
-  element: Nullable<SVGSVGElement> = null;
+      if (container?.firstChild) {
+        container.firstChild.remove();
+      }
+    },
+    renderCode(this: any): void {
+      const container = (this.$refs as Record<string, any>).container as HTMLDivElement | undefined;
 
-  mounted(): void {
-    this.renderCode();
-  }
+      if (!container) return;
 
-  clearContainer(): void {
-    if (this.container && this.container.firstChild) {
-      this.container.firstChild.remove();
-    }
-  }
-
-  renderCode(): void {
-    this.clearContainer();
-    this.element = writer.write(this.value, this.size, this.size, hints);
-    this.container.appendChild(this.element);
-  }
-}
+      this.clearContainer();
+      this.element = writer.write(this.value, this.size, this.size, hints);
+      container.appendChild(this.element);
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

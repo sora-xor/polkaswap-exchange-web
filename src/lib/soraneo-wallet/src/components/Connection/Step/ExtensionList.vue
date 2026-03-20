@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options, Prop } from 'vue-property-decorator';
+import { defineComponent, type PropType } from 'vue';
 
 import { AppWallet, Links } from '../../../consts';
 import TranslationMixin from '../../mixins/TranslationMixin';
@@ -44,30 +44,55 @@ import ExtensionConnectionList from '../List/Extension.vue';
 
 import type { Wallet } from '../../../services/wallet/types';
 
-@Options({
+const wikiLink = Links.connection.wiki;
+
+export default defineComponent({
   components: {
     ExtensionConnectionList,
     ExternalLink,
   },
-})
-export default class ExtensionListStep extends mixins(TranslationMixin) {
-  @Prop({ default: '', type: String }) readonly connectedWallet!: string;
-  @Prop({ default: '', type: String }) readonly selectedWallet!: AppWallet;
-  @Prop({ default: false, type: Boolean }) readonly selectedWalletLoading!: boolean;
-  @Prop({ default: () => [], type: Array }) readonly internalWallets!: Wallet[];
-  @Prop({ default: () => [], type: Array }) readonly externalWallets!: Wallet[];
-  @Prop({ default: () => [], type: Array }) readonly recommendedWallets!: string[];
-
-  readonly wikiLink = Links.connection.wiki;
-
-  handleSelectWallet(wallet: Wallet): void {
-    this.$emit('select', wallet);
-  }
-
-  handleDisconnectWallet(wallet: Wallet): void {
-    this.$emit('disconnect', wallet);
-  }
-}
+  mixins: [TranslationMixin],
+  props: {
+    connectedWallet: {
+      default: '',
+      type: String,
+    },
+    selectedWallet: {
+      default: '',
+      type: String as PropType<AppWallet>,
+    },
+    selectedWalletLoading: {
+      default: false,
+      type: Boolean,
+    },
+    internalWallets: {
+      default: () => [],
+      type: Array as PropType<Wallet[]>,
+    },
+    externalWallets: {
+      default: () => [],
+      type: Array as PropType<Wallet[]>,
+    },
+    recommendedWallets: {
+      default: () => [],
+      type: Array as PropType<string[]>,
+    },
+  },
+  emits: ['select', 'disconnect'],
+  data() {
+    return {
+      wikiLink,
+    };
+  },
+  methods: {
+    handleSelectWallet(this: any, wallet: Wallet): void {
+      this.$emit('select', wallet);
+    },
+    handleDisconnectWallet(this: any, wallet: Wallet): void {
+      this.$emit('disconnect', wallet);
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">

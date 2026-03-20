@@ -8,7 +8,7 @@ vi.mock('@soramitsu-ui/ui', () => ({
 }));
 
 describe('soramitsuUI plugin', () => {
-  it('registers and overrides legacy compat components without duplicate registration warnings', async () => {
+  it('registers the app-owned Soramitsu overrides without duplicate registration warnings', async () => {
     const contextComponents: Record<string, unknown> = {};
     const app = {
       use: vi.fn(),
@@ -23,33 +23,28 @@ describe('soramitsuUI plugin', () => {
     const { install } = await import('@/plugins/soramitsuUI');
 
     contextComponents.SMenu = { name: 'LegacySMenu' };
-    contextComponents.SDropdown = { name: 'LegacySDropdown' };
     contextComponents.SMenuItem = { name: 'LegacySMenuItem' };
     contextComponents.SMenuItemGroup = { name: 'LegacySMenuItemGroup' };
+    contextComponents.STabs = { name: 'LegacySTabs' };
+    contextComponents.STab = { name: 'LegacySTab' };
 
     install(app);
 
     expect(soramitsuPluginFactory).toHaveBeenCalledTimes(1);
     expect(app.use).toHaveBeenCalledWith(soramitsuPlugin);
-    expect(contextComponents.ElPopover).toEqual(expect.any(Object));
-    expect(contextComponents['el-popover']).toEqual(expect.any(Object));
-    expect(contextComponents.SCollapse).toEqual(expect.any(Object));
-    expect(contextComponents['s-collapse']).toEqual(expect.any(Object));
-    expect(contextComponents.SCollapseItem).toEqual(expect.any(Object));
-    expect(contextComponents['s-collapse-item']).toEqual(expect.any(Object));
-    expect(contextComponents.SDropdown).toEqual(expect.any(Object));
-    expect(contextComponents['s-dropdown']).toEqual(expect.any(Object));
-    expect(contextComponents.SDropdownItem).toEqual(expect.any(Object));
-    expect(contextComponents['s-dropdown-item']).toEqual(expect.any(Object));
     expect(contextComponents.SIcon).toEqual(expect.any(Object));
     expect(contextComponents['s-icon']).toEqual(expect.any(Object));
-    expect(contextComponents.SFloatInput).toEqual(expect.any(Object));
-    expect(contextComponents['s-float-input']).toEqual(expect.any(Object));
     expect(contextComponents.SMenu).toEqual(expect.any(Object));
     expect(contextComponents['s-menu']).toEqual(expect.any(Object));
     expect(contextComponents.SMenuItem).toEqual(expect.any(Object));
     expect(contextComponents['s-menu-item']).toEqual(expect.any(Object));
     expect(contextComponents.SMenuItemGroup).toEqual(expect.any(Object));
     expect(contextComponents['s-menu-item-group']).toEqual(expect.any(Object));
+    expect(contextComponents.STabs).toEqual(expect.any(Object));
+    expect(contextComponents['s-tabs']).toEqual(expect.any(Object));
+    expect(contextComponents.STabsPanel).toEqual(expect.any(Object));
+    expect(contextComponents['s-tabs-panel']).toEqual(expect.any(Object));
+    expect(contextComponents.STab).toEqual(expect.any(Object));
+    expect(contextComponents['s-tab']).toEqual(expect.any(Object));
   });
 });

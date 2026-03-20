@@ -1,6 +1,6 @@
-import { Vue, Options, Prop } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
+import { mapState } from 'vuex';
 
-import { state } from '../../store/decorators';
 import { delay } from '../../util';
 
 import type { WithConnectionApi } from '@sora-substrate/sdk';
@@ -14,65 +14,72 @@ const resolveChainApi = (chainApi: WithConnectionApi): WithConnectionApi['api'] 
   }
 };
 
-@Options({})
-export default class LoadingMixin extends Vue {
-  @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean;
+export default defineComponent({
+  props: {
+    parentLoading: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      loading: false,
+    };
+  },
+  computed: {
+    ...mapState('wallet/settings', ['isWalletLoaded']),
+  },
+  methods: {
+    async withLoading<T = void>(this: any, func: FnWithoutArgs<T> | AsyncFnWithoutArgs<T>): Promise<T> {
+      this.loading = true;
+      try {
+        return await func();
+      } catch (e) {
+        console.error(e);
+        throw e;
+      } finally {
+        this.loading = false;
+      }
+    },
+    /**
+     * Function for any request to blockchain.
+     * It is guaranteed that api has a connection
+     * @param func
+     */
+    async withApi<T = void>(this: any, func: FnWithoutArgs<T> | AsyncFnWithoutArgs<T>): Promise<T> {
+      this.loading = true;
 
-  @state.settings.isWalletLoaded isWalletLoaded!: boolean;
+      if (!this.isWalletLoaded) {
+        await delay();
+        return await this.withApi(func);
+      }
 
-  loading = false;
-
-  async withLoading<T = void>(func: FnWithoutArgs<T> | AsyncFnWithoutArgs<T>): Promise<T> {
-    this.loading = true;
-    try {
-      return await func();
-    } catch (e) {
-      console.error(e);
-      throw e;
-    } finally {
-      this.loading = false;
-    }
-  }
-
-  /**
-   * Function for any request to blockchain.
-   * It is guaranteed that api has a connection
-   * @param func
-   */
-  async withApi<T = void>(func: FnWithoutArgs<T> | AsyncFnWithoutArgs<T>): Promise<T> {
-    this.loading = true;
-
-    if (!this.isWalletLoaded) {
-      await delay();
-      return await this.withApi(func);
-    } else {
       return await this.withLoading(func);
-    }
-  }
+    },
+    async withChainApi<T = void>(
+      this: any,
+      chainApi: WithConnectionApi,
+      func: FnWithoutArgs<T> | AsyncFnWithoutArgs<T>
+    ): Promise<T> {
+      this.loading = true;
 
-  async withChainApi<T = void>(
-    chainApi: WithConnectionApi,
-    func: FnWithoutArgs<T> | AsyncFnWithoutArgs<T>
-  ): Promise<T> {
-    this.loading = true;
+      const api = resolveChainApi(chainApi);
 
-    const api = resolveChainApi(chainApi);
+      if (!api) {
+        await delay();
+        return await this.withChainApi(chainApi, func);
+      }
 
-    if (!api) {
-      await delay();
-      return await this.withChainApi(chainApi, func);
-    } else {
       await api.isReady;
       return await this.withLoading(func);
-    }
-  }
+    },
+    async withParentLoading<T = void>(this: any, func: FnWithoutArgs<T> | AsyncFnWithoutArgs<T>): Promise<T> {
+      if (this.parentLoading) {
+        await delay();
+        return await this.withParentLoading(func);
+      }
 
-  async withParentLoading<T = void>(func: FnWithoutArgs<T> | AsyncFnWithoutArgs<T>): Promise<T> {
-    if (this.parentLoading) {
-      await delay();
-      return await this.withParentLoading(func);
-    } else {
       return await func();
-    }
-  }
-}
+    },
+  },
+});

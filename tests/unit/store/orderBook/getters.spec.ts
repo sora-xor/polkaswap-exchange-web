@@ -10,7 +10,7 @@ vi.mock('@wallet', () => ({
   },
 }));
 
-vi.mock('direct-vuex', () => ({
+vi.mock('@/store/direct-vuex', () => ({
   defineGetters: () => (getters: Record<string, unknown>) => getters,
 }));
 

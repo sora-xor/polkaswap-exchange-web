@@ -1,5 +1,5 @@
 import { api } from '@wallet';
-import { defineActions } from 'direct-vuex';
+import { defineActions } from '@/store/module-helpers';
 import { combineLatest } from 'rxjs';
 import { FPNumber } from '@sora-substrate/math';
 

@@ -7,26 +7,28 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue, Prop } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
-@Options({})
-export default class ConnectionItems extends Vue {
-  @Prop({ default: 0, type: Number }) readonly size!: number;
-  @Prop({ default: 7, type: Number }) readonly visible!: number;
-  @Prop({ default: 8, type: Number }) readonly itemOffset!: number;
-  @Prop({ default: 60, type: Number }) readonly itemHeight!: number;
+export default defineComponent({
+  props: {
+    size: { default: 0, type: Number },
+    visible: { default: 7, type: Number },
+    itemOffset: { default: 8, type: Number },
+    itemHeight: { default: 60, type: Number },
+  },
+  computed: {
+    style(this: any): Partial<CSSStyleDeclaration> {
+      const styles: Partial<CSSStyleDeclaration> = {};
 
-  get style() {
-    const styles: Partial<CSSStyleDeclaration> = {};
+      if (this.size >= this.visible) {
+        const height = (this.itemHeight + this.itemOffset) * this.visible - this.itemOffset;
+        styles.height = `${height}px`;
+      }
 
-    if (this.size >= this.visible) {
-      const height = (this.itemHeight + this.itemOffset) * this.visible - this.itemOffset;
-      styles.height = `${height}px`;
-    }
-
-    return styles;
-  }
-}
+      return styles;
+    },
+  },
+});
 </script>
 
 <style lang="scss">

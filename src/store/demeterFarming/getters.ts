@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/math';
-import { defineGetters } from 'direct-vuex';
+import { defineGetters } from '@/store/module-helpers';
 
 import { demeterFarmingGetterContext } from './index';
 

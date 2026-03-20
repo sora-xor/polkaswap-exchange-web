@@ -1,5 +1,3 @@
-import '@/compat/runtime-helpers';
-
 import { api, connection } from './api';
 import en from './lang/en';
 import AlertsApiService from './services/alerts';
@@ -11,10 +9,7 @@ import { historyElementsFilter } from './services/indexer/subsquid/queries/histo
 import { initializeWallets } from './services/wallet';
 import * as WC from './services/walletconnect';
 import { addWcSubWalletLocally } from './services/walletconnect';
-import internalStore, { modules } from './store';
-import * as VUEX_TYPES from './store/types';
-import { attachDecorator, createDecoratorsObject, VuexOperation } from './store/util';
-import { WalletModules } from './store/wallet';
+import vuex from './vuex';
 import * as WALLET_CONSTS from './consts';
 import * as WALLET_TYPES from './types/common';
 import {
@@ -43,6 +38,7 @@ export {
   beforeTransactionSign,
   delay,
   getAssetsSubset,
+  vuex,
   WALLET_CONSTS,
   WALLET_TYPES,
   accountUtils,
@@ -53,19 +49,10 @@ export {
   SUBQUERY_TYPES,
   SUBSQUID_TYPES,
   INDEXER_TYPES,
-  VUEX_TYPES,
   WC,
   en,
   initializeWallets,
   addWcSubWalletLocally,
-};
-
-export const vuex = {
-  walletModules: modules,
-  VuexOperation,
-  attachDecorator,
-  createDecoratorsObject,
-  WalletModules,
 };
 
 export type { WithKeyring } from '@sora-substrate/sdk';

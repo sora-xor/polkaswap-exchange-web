@@ -1,7 +1,5 @@
 import { createApp, type App as VueApp } from 'vue';
 
-import '@/compat/runtime-helpers';
-import { installCompatWarningHandler } from '@/plugins/compatWarnings';
 import pinia from '@/plugins/pinia';
 import store from './store';
 import App from './App.vue';
@@ -11,10 +9,9 @@ import router from './router';
 import { shouldRenderOfflineShell } from '@/utils/env';
 import { renderOfflineShell } from '@/utils/offlineShell';
 import { registerW3mMessageGuard } from '@/security/w3mMessageGuard';
-import { registerPilotFeedbackBridge, registerTelemetryStub, trackEvent } from '@/utils/telemetry';
+import { APP_BUILD_VARIANT, registerPilotFeedbackBridge, registerTelemetryStub, trackEvent } from '@/utils/telemetry';
 import { installVueErrorHandler } from '@/utils/vueErrorHandler';
 
-import './store/decorators';
 import './styles';
 
 registerW3mMessageGuard();
@@ -22,7 +19,6 @@ registerW3mMessageGuard();
 async function bootstrapApp(): Promise<VueApp> {
   const app = createApp(App);
 
-  installCompatWarningHandler(app);
   installVueErrorHandler(app);
   app.use(store.original);
   app.use(pinia);
@@ -34,15 +30,7 @@ async function bootstrapApp(): Promise<VueApp> {
   return app;
 }
 
-const resolveBuildVariant = (): string => {
-  if (import.meta.env.VITE_DISABLE_COMPAT === 'true' || import.meta.env.VITE_DISABLE_COMPAT === true) {
-    return 'vue3-native';
-  }
-
-  return 'compat';
-};
-
-const buildVariant = resolveBuildVariant();
+const buildVariant = APP_BUILD_VARIANT;
 
 if (typeof window !== 'undefined') {
   registerTelemetryStub(window.location?.search);

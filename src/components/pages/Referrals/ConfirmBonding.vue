@@ -39,7 +39,6 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { PageNames } from '@/consts';
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
 import store from '@/store';
@@ -53,19 +52,14 @@ defineOptions({
   },
 });
 
-const props = defineProps<{
-  visible: boolean;
-}>();
-
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'confirm'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
 const { formatStringValue, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
-const { isVisible } = useDialogModel(props, emit);
 const route = useRoute();
 
 const xor = XOR;

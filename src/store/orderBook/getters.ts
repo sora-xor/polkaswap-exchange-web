@@ -1,6 +1,6 @@
 import { OrderBook } from '@sora-substrate/liquidity-proxy';
 import { api } from '@wallet';
-import { defineGetters } from 'direct-vuex';
+import { defineGetters } from '@/store/module-helpers';
 
 import type { OrderBookStats, OrderBookDealData } from '@/types/orderBook';
 import { getBookDecimals } from '@/utils/orderBook';

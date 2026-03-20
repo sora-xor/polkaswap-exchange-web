@@ -6,7 +6,11 @@
         <span>{{ t('dexSettings.marketAlgorithmTooltip.main') }}</span>
       </template>
     </swap-settings-header>
-    <settings-tabs :value="currentMarketAlgorithm" :tabs="marketAlgorithmTabs" @input="selectTab"></settings-tabs>
+    <settings-tabs
+      :value="currentMarketAlgorithm"
+      :tabs="marketAlgorithmTabs"
+      @update:model-value="selectTab"
+    ></settings-tabs>
   </div>
 </template>
 

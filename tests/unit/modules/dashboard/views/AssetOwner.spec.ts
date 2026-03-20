@@ -4,7 +4,7 @@ import { describe, expect, it, beforeEach, vi } from 'vitest';
 
 import AssetOwner from '@/modules/dashboard/views/AssetOwner.vue';
 import type { OwnedAsset } from '@/modules/dashboard/types';
-import { setLegacyStoreOverride } from '@/utils/legacy-store';
+import { setAppStoreOverride } from '@/utils/app-store';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 
 const connectWalletMock = vi.fn();
@@ -122,7 +122,7 @@ describe('AssetOwner.vue', () => {
     connectWalletMock.mockClear();
     routerPushMock?.mockClear();
     dialogVisibleRef.value = false;
-    setLegacyStoreOverride(store as any);
+    setAppStoreOverride(store as any);
   });
 
   it('flags empty asset state when logged out', () => {

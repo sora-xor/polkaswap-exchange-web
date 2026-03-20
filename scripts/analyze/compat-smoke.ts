@@ -131,9 +131,6 @@ const runCommand = ({ command, args, env }: CommandSpec, cwd: string): Promise<v
 export const createBuildCommand = (): CommandSpec => ({
   command: 'yarn',
   args: ['build:vue3'],
-  env: {
-    VITE_DISABLE_COMPAT: 'true',
-  },
 });
 
 export const createVitestCommand = (pattern: string): CommandSpec => {
@@ -203,7 +200,7 @@ const writeAliasReport = async (root: string, outputPath: string): Promise<{ all
  * Execute the compat smoke workflow: build, optional smoke tests, bundle report, alias report.
  */
 export const runCompatSmoke = async (options: CompatSmokeOptions): Promise<void> => {
-  console.info('Running Vue 3 compat smoke build...');
+  console.info('Running native Vue 3 smoke build...');
   await runCommand(createBuildCommand(), options.root);
 
   if (!options.skipTests) {

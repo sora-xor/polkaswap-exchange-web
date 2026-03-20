@@ -1,4 +1,4 @@
-import { defineMutations } from 'direct-vuex';
+import { defineMutations } from '@/store/module-helpers';
 import { Subscription } from 'rxjs';
 
 import { api } from '../../api';

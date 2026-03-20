@@ -1,4 +1,4 @@
-import { defineMutations } from 'direct-vuex';
+import { defineMutations } from '@/store/module-helpers';
 
 import type { ClosedVault } from '@/modules/vault/types';
 

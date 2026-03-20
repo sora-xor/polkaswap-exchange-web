@@ -1,5 +1,3 @@
-import { Singleton } from '../../decorators';
-
 import { GoogleDriveApi } from './api';
 import { GoogleOauth } from './oauth';
 
@@ -10,7 +8,6 @@ const DRIVE_DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/
  * Coordinates Google Drive API access for encrypted account backups, handling
  * authentication, folder provisioning and CRUD helpers.
  */
-@Singleton
 class GoogleDriveStorage {
   protected readonly api!: GoogleDriveApi;
   protected readonly oauth!: GoogleOauth;

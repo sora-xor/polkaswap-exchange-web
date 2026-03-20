@@ -1,5 +1,5 @@
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { defineMutations } from 'direct-vuex';
+import { defineMutations } from '@/store/module-helpers';
 
 import type { AppEIPProvider } from '@/types/evm/provider';
 import ethersUtil from '@/utils/ethers-util';

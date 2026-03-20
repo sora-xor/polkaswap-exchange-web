@@ -5,7 +5,7 @@ import WalletAccount from '@/lib/soraneo-wallet/src/components/Account/WalletAcc
 
 const getMstAddressMock = vi.hoisted(() => vi.fn(() => ''));
 const getMstAccountMock = vi.hoisted(() => vi.fn(() => null));
-const getLegacyStoreMock = vi.hoisted(() => vi.fn(() => null));
+const getAppStoreMock = vi.hoisted(() => vi.fn(() => null));
 const formatAccountAddressMock = vi.hoisted(() => vi.fn((address: string) => address));
 
 vi.mock('@/api', () => ({
@@ -29,8 +29,8 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@/utils/legacy-store', () => ({
-  getLegacyStore: getLegacyStoreMock,
+vi.mock('@/utils/app-store', () => ({
+  getAppStore: getAppStoreMock,
 }));
 
 vi.mock('@/util', () => ({
@@ -62,7 +62,7 @@ describe('WalletAccount', () => {
     delete (globalThis as Record<string, unknown>).__PS_APP_STORE__;
   });
 
-  it('mounts with legacy-store fallback without runtime reference errors', () => {
+  it('mounts with app-store fallback without runtime reference errors', () => {
     const wrapper = shallowMount(WalletAccount, {
       global: {
         stubs: {

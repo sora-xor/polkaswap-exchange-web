@@ -22,7 +22,7 @@ import { computed, ref, watch } from 'vue';
 import { api } from '@/api';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
-import { getLegacyStore } from '@/utils/legacy-store';
+import { getAppStore } from '@/utils/app-store';
 import type { AccountIdentity, PolkadotJsAccount } from '@/types/common';
 import { formatAccountAddress, getAccountIdentity } from '@/util';
 
@@ -35,7 +35,7 @@ import WalletAvatar from './WalletAvatar.vue';
 import type { WithConnectionApi } from '@sora-substrate/sdk';
 
 const DEFAULT_NAME = '<unknown>';
-const resolveStore = () => getLegacyStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any);
+const resolveStore = () => getAppStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any);
 
 const props = withDefaults(
   defineProps<{

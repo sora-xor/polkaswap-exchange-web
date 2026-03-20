@@ -32,7 +32,6 @@ import { computed, watchEffect } from 'vue';
 
 import { useTransaction } from '@/composables/useTransaction';
 import store from '@/store';
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useTranslation } from '@/composables/useTranslation';
 
 defineOptions({
@@ -41,18 +40,13 @@ defineOptions({
   },
 });
 
-const props = defineProps<{
-  visible: boolean;
-}>();
-
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'confirm', value?: boolean): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { loading, withNotifications } = useTransaction();
-const { isVisible } = useDialogModel(props, emit);
 const { t } = useTranslation();
 
 const referrer = computed(() => store.state.referrals.referrer);
@@ -88,7 +82,7 @@ const handleConfirmInviteUser = async () => {
 };
 
 watchEffect(() => {
-  if (!props.visible && storageReferrer.value) {
+  if (!isVisible.value && storageReferrer.value) {
     resetStorageReferrer();
   }
 });

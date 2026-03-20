@@ -1,7 +1,7 @@
 <template>
   <DialogBase :title="t('createToken.titleCommon')" v-model:visible="isVisible" tooltip="COMING SOON...">
     <div class="dashboard-create">
-      <s-tabs class="token__tab" type="rounded" :value="currentTab" @input="handleChangeTab">
+      <s-tabs class="token__tab" type="rounded" :value="currentTab" @update:model-value="handleChangeTab">
         <s-tab v-for="tab in TokenTabs" :key="tab" :label="getTabName(tab)" :name="tab"></s-tab>
       </s-tabs>
       <component :is="currentTab"></component>
@@ -32,7 +32,7 @@
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, WALLET_CONSTS } from '@wallet';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 import { Components, ZeroStringValue } from '@/consts';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -53,24 +53,11 @@ const CreateNftToken = dashboardLazyComponent(DashboardComponents.CreateNftToken
 
 const TokenTabs = WALLET_CONSTS.TokenTabs;
 
-const props = withDefaults(
-  defineProps<{
-    visible?: boolean;
-  }>(),
-  {
-    visible: false,
-  }
-);
-
-const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
-}>();
-
 const { t, TranslationConsts } = useTranslation();
 const { loading } = useTransaction();
 const { getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
 
-const isVisible = ref(props.visible);
+const isVisible = defineModel<boolean>('visible', { default: false });
 const currentTab = ref<WalletConstsTypes.TokenTabs>(TokenTabs.Token);
 
 const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject | undefined);
@@ -101,18 +88,6 @@ const handleChangeTab = (value: WalletConstsTypes.TokenTabs) => {
 const handleCreate = () => {
   // Logic handled by tab content components; keep placeholder for future integration.
 };
-
-watch(
-  () => props.visible,
-  (visible) => {
-    isVisible.value = visible;
-  },
-  { immediate: true }
-);
-
-watch(isVisible, (visible) => {
-  emit('update:visible', visible);
-});
 
 defineExpose({
   isVisible,

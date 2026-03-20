@@ -9,8 +9,8 @@ vi.mock('@/services/notification', () => ({
 const legacyStoreMock = vi.fn();
 const settingsStorageGetMock = vi.fn();
 
-vi.mock('@/utils/legacy-store', () => ({
-  requireLegacyStore: () => legacyStoreMock(),
+vi.mock('@/utils/app-store', () => ({
+  requireAppStore: () => legacyStoreMock(),
 }));
 
 vi.mock('@/utils/storage', () => ({

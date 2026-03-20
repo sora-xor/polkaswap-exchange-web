@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import { withLegacyStore } from '@/utils/legacy-store';
+import { withAppStore } from '@/utils/app-store';
 import { trackEvent } from '@/utils/telemetry';
 
 import {
@@ -50,7 +50,7 @@ export const useBridgeHistoryStore = defineStore('bridgeHistory', {
         return;
       }
 
-      const committed = withLegacyStore((store) => {
+      const committed = withAppStore((store) => {
         const mutation = store?.commit?.bridge?.setHistoryPage;
 
         if (typeof mutation !== 'function') {
@@ -97,7 +97,7 @@ export const useBridgeHistoryStore = defineStore('bridgeHistory', {
         return;
       }
 
-      const committed = withLegacyStore((store) => {
+      const committed = withAppStore((store) => {
         const mutation = store?.commit?.bridge?.setHistoryId;
 
         if (typeof mutation !== 'function') {

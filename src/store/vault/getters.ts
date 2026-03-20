@@ -1,5 +1,5 @@
 import { api } from '@wallet';
-import { defineGetters } from 'direct-vuex';
+import { defineGetters } from '@/store/module-helpers';
 
 import { vaultGetterContext } from '@/store/vault';
 

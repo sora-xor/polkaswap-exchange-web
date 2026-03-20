@@ -31,7 +31,6 @@ const soraConnectionSrcPath = fileURLToPath(new URL('./src/lib/substrate/connect
 const soraTypesSrcPath = fileURLToPath(new URL('./src/lib/substrate/types', import.meta.url));
 const soraTypeDefsSrcPath = fileURLToPath(new URL('./src/lib/substrate/type-definitions', import.meta.url));
 const soraneoWalletSrcPath = fileURLToPath(new URL('./src/lib/soraneo-wallet/src', import.meta.url));
-const soraneoWalletLibPath = fileURLToPath(new URL('./src/lib/soraneo-wallet/lib', import.meta.url));
 const soraneoWalletCssPath = fileURLToPath(
   new URL('./src/lib/soraneo-wallet/lib/soraneo-wallet-web.css', import.meta.url)
 );
@@ -43,6 +42,144 @@ const walletShimPath = fileURLToPath(new URL('./src/shims/wallet.ts', import.met
 const bufferShimPath = fileURLToPath(new URL('./src/shims/buffer.ts', import.meta.url));
 const safeBufferShimPath = fileURLToPath(new URL('./src/shims/safe-buffer.ts', import.meta.url));
 const polkadotUiSharedPath = fileURLToPath(new URL('./vendor/@polkadot/ui-shared', import.meta.url));
+
+const VUE_COMPAT_AUTO_IMPORTS = [
+  'computed',
+  'getCurrentInstance',
+  'h',
+  'inject',
+  'markRaw',
+  'nextTick',
+  'onBeforeUnmount',
+  'onMounted',
+  'onScopeDispose',
+  'onUnmounted',
+  'provide',
+  'reactive',
+  'readonly',
+  'ref',
+  'shallowReactive',
+  'shallowRef',
+  'toRef',
+  'toRefs',
+  'unref',
+  'useAttrs',
+  'useSlots',
+  'watch',
+  'watchEffect',
+];
+
+const VUEUSE_COMPAT_AUTO_IMPORTS = [
+  'eagerComputed',
+  'templateRef',
+  'unrefElement',
+  'useFocus',
+  'useResizeObserver',
+  'useToggle',
+  'watchOnce',
+  'whenever',
+];
+
+const collectNamedImports = (code, moduleName) => {
+  const names = new Set();
+  const matcher = new RegExp(
+    String.raw`import\s*\{([^}]*)\}\s*from\s*['"]${moduleName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}['"]`,
+    'g'
+  );
+
+  for (const match of code.matchAll(matcher)) {
+    const specifiers = match[1].split(',');
+    for (const specifier of specifiers) {
+      const localName = specifier.trim().split(/\s+as\s+/).at(-1)?.trim();
+      if (localName) {
+        names.add(localName);
+      }
+    }
+  }
+
+  return names;
+};
+
+const hasLocalBinding = (code, identifier) => {
+  const patterns = [
+    new RegExp(String.raw`\b(?:const|let|var|function|class)\s+${identifier}\b`),
+    new RegExp(String.raw`\bcatch\s*\(\s*${identifier}\s*\)`),
+    new RegExp(String.raw`\bfor\s*\(\s*(?:const|let|var)\s+${identifier}\b`),
+  ];
+
+  return patterns.some((pattern) => pattern.test(code));
+};
+
+const injectCompatImports = (source) => {
+  const vueImports = collectNamedImports(source, 'vue');
+  const vueUseImports = collectNamedImports(source, '@vueuse/core');
+  const injectVue = VUE_COMPAT_AUTO_IMPORTS.filter((identifier) => {
+    return (
+      new RegExp(String.raw`\b${identifier}\b`).test(source) &&
+      !vueImports.has(identifier) &&
+      !hasLocalBinding(source, identifier)
+    );
+  });
+  const injectVueUse = VUEUSE_COMPAT_AUTO_IMPORTS.filter((identifier) => {
+    return (
+      new RegExp(String.raw`\b${identifier}\b`).test(source) &&
+      !vueUseImports.has(identifier) &&
+      !hasLocalBinding(source, identifier)
+    );
+  });
+
+  if (!injectVue.length && !injectVueUse.length) {
+    return null;
+  }
+
+  const banner = [
+    injectVue.length ? `import { ${injectVue.join(', ')} } from 'vue';` : '',
+    injectVueUse.length ? `import { ${injectVueUse.join(', ')} } from '@vueuse/core';` : '',
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  return `${banner}\n${source}`;
+};
+
+const compatAutoImportPlugin = () => ({
+  name: 'compat-auto-imports',
+  enforce: 'pre',
+  transform(code, id) {
+    if (id.includes('?')) {
+      return null;
+    }
+
+    const isVendoredSource = id.startsWith(soramitsuUiRootPath) || id.startsWith(soraneoWalletSrcPath);
+
+    if (!isVendoredSource) {
+      return null;
+    }
+
+    if (id.endsWith('.vue')) {
+      const match = code.match(/<script\b([^>]*)>([\s\S]*?)<\/script>/);
+      if (!match) return null;
+
+      const [fullMatch, attrs, scriptContent] = match;
+      const nextScriptContent = injectCompatImports(scriptContent);
+      if (!nextScriptContent) return null;
+
+      return code.replace(fullMatch, `<script${attrs}>\n${nextScriptContent}\n</script>`);
+    }
+
+    if (/\.([cm]?js|ts|tsx)$/.test(id)) {
+      const nextCode = injectCompatImports(code);
+      if (!nextCode) return null;
+
+      return {
+        code: nextCode,
+        map: null,
+      };
+    }
+
+    return null;
+  },
+});
 
 const alias = [
   { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
@@ -98,7 +235,7 @@ const alias = [
   { find: '@sora-substrate/type-definitions/build', replacement: soraTypeDefsSrcPath },
   { find: '@sora-substrate/type-definitions', replacement: `${soraTypeDefsSrcPath}/index.ts` },
   { find: '@wallet/lib/soraneo-wallet-web.css', replacement: soraneoWalletCssEntry },
-  { find: '@wallet/lib', replacement: soraneoWalletLibPath },
+  { find: '@wallet/lib', replacement: soraneoWalletSrcPath },
   { find: '@wallet/core', replacement: `${soraneoWalletSrcPath}/core.ts` },
   { find: '@wallet/internal', replacement: `${soraneoWalletSrcPath}/index.ts` },
   { find: '@wallet/vuex', replacement: `${soraneoWalletSrcPath}/vuex.ts` },
@@ -192,7 +329,7 @@ if (isTest) {
 
 export default defineConfig({
   base: './',
-  plugins: [vue(), dynamicImport(), svgLoader(), ...(disableNodePolyfills ? [] : [nodePolyfills()])],
+  plugins: [vue(), dynamicImport(), svgLoader(), compatAutoImportPlugin(), ...(disableNodePolyfills ? [] : [nodePolyfills()])],
   resolve: {
     alias,
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
@@ -239,9 +376,8 @@ export default defineConfig({
         defaultHandler(warning);
       },
       output: {
-        // IPFS public gateways can aggressively throttle many parallel chunk requests.
-        // A single JS bundle and single CSS file improves first-load reliability.
-        inlineDynamicImports: true,
+        // Rollup's default chunk graph avoids the circular startup imports that
+        // were produced by the custom manual chunk topology.
       },
     },
   },

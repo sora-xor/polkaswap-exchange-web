@@ -5,12 +5,12 @@
     ref="floatInput"
     has-locale-string
     :disabled="disabled"
-    :value="value"
+    :value="currentValue"
     :max="maxValue"
     :decimals="decimals"
     :delimiters="delimiters"
     v-bind="$attrs"
-    @input="handleMainInput"
+    @update:model-value="handleMainInput"
     @focus="handleMainFocus"
   >
     <template #top>
@@ -77,7 +77,7 @@
               :max="maxFiatValueFormatted"
               :readonly="!isFiatEditable"
               :value="fiatValue"
-              @input="setFiatValue"
+              @update:model-value="setFiatValue"
               @focus="handleFiatFocus"
               @blur="handleFiatBlur"
             >
@@ -144,7 +144,7 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
-    value?: string;
+    modelValue?: string;
     max?: string | number;
     token?: Nullable<RegisteredAccountAsset>;
     balance?: Nullable<CodecString>;
@@ -163,7 +163,7 @@ const props = withDefaults(
     withoutFiat?: boolean;
   }>(),
   {
-    value: '',
+    modelValue: undefined,
     token: null,
     balance: null,
     title: '',
@@ -183,7 +183,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'input', value: string): void;
+  (event: 'update:modelValue', value: string): void;
   (event: 'max', token: Nullable<RegisteredAccountAsset>): void;
   (event: 'select'): void;
   (event: 'slide', value: string): void;
@@ -205,6 +205,7 @@ const walletStore = useWalletStore();
 const currencySymbol = computed(() => walletStore.currencySymbol ?? '');
 const exchangeRate = computed(() => walletStore.exchangeRate ?? 1);
 const currency = computed(() => walletStore.currency ?? null);
+const currentValue = computed(() => props.modelValue ?? '');
 
 const decimals = computed(() => {
   const token = props.token;
@@ -261,7 +262,7 @@ const calcFiatAmount = (amount: string | number): FPNumber => {
 const maxFiatValue = computed(() => calcFiatAmount(maxValue.value));
 const maxFiatValueFormatted = computed(() => maxFiatValue.value.toString());
 
-const fiatAmount = computed(() => calcFiatAmount(props.value ?? ''));
+const fiatAmount = computed(() => calcFiatAmount(currentValue.value));
 
 const slideValue = computed(() => props.sliderValue);
 
@@ -277,7 +278,7 @@ const recalcValue = (value: string): void => {
       ? new FPNumber(value).div(exchangeRate.value).div(tokenPrice.value).toString()
       : '';
 
-  emit('input', result);
+  emit('update:modelValue', result);
 };
 
 const handleFiatFocus = (): void => {
@@ -294,7 +295,7 @@ const handleMax = (): void => {
 };
 
 const handleMainInput = (value: string): void => {
-  emit('input', value);
+  emit('update:modelValue', value);
 };
 
 const handleMainFocus = (): void => {

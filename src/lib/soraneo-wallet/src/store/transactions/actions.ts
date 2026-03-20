@@ -1,5 +1,5 @@
 import { Operation } from '@sora-substrate/sdk';
-import { defineActions } from 'direct-vuex';
+import { defineActions } from '@/store/module-helpers';
 import omit from 'lodash/fp/omit';
 
 import { api } from '../../api';

@@ -34,12 +34,12 @@
 
 <script lang="ts">
 import { Operation } from '@sora-substrate/sdk';
-import { Options, mixins, Prop } from 'vue-property-decorator';
+import { defineComponent, type PropType } from 'vue';
+import { mapGetters } from 'vuex';
 
 import { formatAddress } from '@/util';
 
 import { HashType } from '../consts';
-import { getter } from '../store/decorators';
 
 import InfoLine from './InfoLine.vue';
 import NumberFormatterMixin from './mixins/NumberFormatterMixin';
@@ -50,42 +50,46 @@ import TransactionHashView from './TransactionHashView.vue';
 import type { PolkadotJsAccount } from '../types/common';
 import type { HistoryItem } from '@sora-substrate/sdk';
 
-@Options({
+export default defineComponent({
   components: {
     InfoLine,
     TransactionHashView,
   },
-})
-export default class WalletAdarTxDetails extends mixins(TranslationMixin, NumberFormatterMixin, PaginationSearchMixin) {
-  readonly HashType = HashType;
-
-  @getter.account.account private account!: PolkadotJsAccount;
-
-  @Prop() readonly transaction!: HistoryItem;
-
-  pageAmount = 4;
-
-  get isAdarOperation(): boolean {
-    return this.transaction.type === Operation.SwapTransferBatch;
-  }
-
-  get swapTransferBatchRecipients() {
-    if (!this.isAdarOperation || this.account.address !== this.transaction.from) return [];
-    return this.transaction.payload?.receivers;
-  }
-
-  get txsList() {
-    return this.getPageItems(this.swapTransferBatchRecipients);
-  }
-
-  get numberOfRecipients() {
-    return this.swapTransferBatchRecipients?.length || 0;
-  }
-
-  formatAddress(address: string) {
-    return formatAddress(address);
-  }
-}
+  mixins: [TranslationMixin, NumberFormatterMixin, PaginationSearchMixin],
+  props: {
+    transaction: {
+      required: true,
+      type: Object as PropType<HistoryItem>,
+    },
+  },
+  data() {
+    return {
+      HashType,
+      pageAmount: 4,
+    };
+  },
+  computed: {
+    ...mapGetters('wallet/account', ['account']),
+    isAdarOperation(this: any): boolean {
+      return this.transaction.type === Operation.SwapTransferBatch;
+    },
+    swapTransferBatchRecipients(this: any) {
+      if (!this.isAdarOperation || (this.account as PolkadotJsAccount).address !== this.transaction.from) return [];
+      return this.transaction.payload?.receivers;
+    },
+    txsList(this: any) {
+      return this.getPageItems(this.swapTransferBatchRecipients);
+    },
+    numberOfRecipients(this: any): number {
+      return this.swapTransferBatchRecipients?.length || 0;
+    },
+  },
+  methods: {
+    formatAddress(address: string): string {
+      return formatAddress(address);
+    },
+  },
+});
 </script>
 
 <style lang="scss">

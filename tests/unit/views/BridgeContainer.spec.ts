@@ -77,8 +77,8 @@ vi.mock('@/router', () => ({
   ),
 }));
 
-vi.mock('@/utils/legacy-store', () => ({
-  requireLegacyStore: () => ({
+vi.mock('@/utils/app-store', () => ({
+  requireAppStore: () => ({
     getters: {
       bridge: {
         get externalAccount() {

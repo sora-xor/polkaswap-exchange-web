@@ -10,7 +10,7 @@ import { computed, type CSSProperties } from 'vue';
 
 import { api } from '@/api';
 import { LogoSize } from '@/consts';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 import type { WhitelistIdsBySymbol } from '@/types/common';
 import { buildCssUrl, sanitizeIconSource } from '@/util/image';
 
@@ -33,7 +33,7 @@ const props = withDefaults(
   }
 );
 
-const store = requireLegacyStore();
+const store = requireAppStore();
 
 const whitelist = computed<Whitelist>(() => {
   const value = store.getters['wallet/account/whitelist'] as Nullable<Whitelist>;

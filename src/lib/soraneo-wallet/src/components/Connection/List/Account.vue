@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options, Prop } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
 import { api } from '../../../api';
 import WalletAccount from '../../Account/WalletAccount.vue';
@@ -33,32 +33,36 @@ import type { AppWallet } from '../../../consts';
 import type { PolkadotJsAccount } from '../../../types/common';
 import type { WithConnectionApi } from '@sora-substrate/sdk';
 
-@Options({
+export default defineComponent({
   components: {
     ConnectionItems,
     WalletAccount,
   },
-})
-export default class AccountConnectionList extends mixins(TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) private accounts!: Array<PolkadotJsAccount>;
-  @Prop({ default: '', type: String }) private wallet!: AppWallet;
-  @Prop({ default: () => false, type: Function }) private isConnected!: (account: PolkadotJsAccount) => boolean;
-  @Prop({ default: () => api, type: Object }) readonly chainApi!: WithConnectionApi;
+  mixins: [TranslationMixin],
+  props: {
+    accounts: { default: () => [], type: Array as () => PolkadotJsAccount[] },
+    wallet: { default: '', type: String as () => AppWallet },
+    isConnected: { default: () => false, type: Function as () => (account: PolkadotJsAccount) => boolean },
+    chainApi: { default: () => api, type: Object as () => WithConnectionApi },
+  },
+  emits: ['select'],
+  computed: {
+    accountList(this: any) {
+      return this.accounts.map((account: PolkadotJsAccount) => {
+        const source = this.wallet;
+        const accountData = { ...account, source };
 
-  get accountList() {
-    return this.accounts.map((account) => {
-      const source = this.wallet;
-      const accountData = { ...account, source };
-
-      return {
-        account,
-        isConnected: this.isConnected(accountData),
-      };
-    });
-  }
-
-  handleSelectAccount(account: PolkadotJsAccount, isConnected: boolean): void {
-    this.$emit('select', account, isConnected);
-  }
-}
+        return {
+          account,
+          isConnected: this.isConnected(accountData),
+        };
+      });
+    },
+  },
+  methods: {
+    handleSelectAccount(this: any, account: PolkadotJsAccount, isConnected: boolean): void {
+      this.$emit('select', account, isConnected);
+    },
+  },
+});
 </script>

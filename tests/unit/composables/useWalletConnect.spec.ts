@@ -103,6 +103,7 @@ const mockStore = vi.hoisted(() => {
     commit: {
       web3: {
         setSubAccountDialogVisibility: vi.fn(),
+        setSelectSubNodeDialogVisibility: vi.fn(),
       },
       bridge: {
         setSignTxDialogVisibility: vi.fn(),
@@ -129,6 +130,13 @@ vi.mock('@/store', () => ({
 const bridgeStorePiniaMock = vi.hoisted(() => ({
   isSubBridge: false,
   isSubAccountType: true,
+  connector: {
+    network: {
+      subNetworkConnection: {
+        nodeIsConnected: true,
+      },
+    },
+  },
 }));
 
 const web3StorePiniaMock = vi.hoisted(() => ({
@@ -177,6 +185,7 @@ beforeEach(() => {
   disconnectSubMock.mockReset();
   changeNetworkMock.mockReset();
   mockStore.commit.web3.setSubAccountDialogVisibility.mockReset();
+  mockStore.commit.web3.setSelectSubNodeDialogVisibility.mockReset();
   mockStore.commit.bridge.setSignTxDialogVisibility.mockReset();
   mockStore.provider.getProvider.mockReset();
   localStorageMock.getItem.mockClear();
@@ -188,6 +197,13 @@ beforeEach(() => {
   walletStorageMock.remove.mockClear();
   bridgeStorePiniaMock.isSubBridge = false;
   bridgeStorePiniaMock.isSubAccountType = true;
+  bridgeStorePiniaMock.connector = {
+    network: {
+      subNetworkConnection: {
+        nodeIsConnected: true,
+      },
+    },
+  };
   web3StorePiniaMock.evmProvider = mockStore.state.web3.evmProvider;
   web3StorePiniaMock.evmProviderLoading = null;
   web3StorePiniaMock.evmAddress = '0x123';
@@ -252,6 +268,27 @@ describe('useWalletConnect', () => {
     selectProviderMock.mockResolvedValueOnce(undefined);
     await wallet.connectEvmProvider(provider);
     expect(selectProviderMock).toHaveBeenCalledWith(provider);
+
+    wrapper.unmount();
+  });
+
+  it('opens the node selector instead of the sub-account dialog when the sub bridge is not ready', () => {
+    bridgeStorePiniaMock.isSubBridge = true;
+    bridgeStorePiniaMock.connector = {
+      network: {
+        subNetworkConnection: {
+          nodeIsConnected: false,
+        },
+      },
+    };
+
+    const wrapper = createHarness();
+    const { wallet } = wrapper.vm as { wallet: ReturnType<typeof useWalletConnect> };
+
+    wallet.connectSubWallet();
+
+    expect(mockStore.commit.web3.setSelectSubNodeDialogVisibility).toHaveBeenCalledWith(true);
+    expect(mockStore.commit.web3.setSubAccountDialogVisibility).not.toHaveBeenCalled();
 
     wrapper.unmount();
   });

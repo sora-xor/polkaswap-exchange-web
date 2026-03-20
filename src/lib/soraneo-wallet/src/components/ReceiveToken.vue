@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { Options, mixins, Ref } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
 import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
@@ -46,80 +46,76 @@ import type { Route } from '../store/router/types';
 import type { PolkadotJsAccount } from '../types/common';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Options({
+export default defineComponent({
   components: {
     WalletBase,
     WalletAccount,
     QrCode,
     TokenLogo,
   },
-})
-export default class ReceiveToken extends mixins(NotificationMixin) {
-  private get routerStore() {
-    return useRouterStore((this as any).$pinia);
-  }
+  mixins: [NotificationMixin],
+  data() {
+    return {
+      delimiters: FPNumber.DELIMITERS_CONFIG,
+      amount: '',
+    };
+  },
+  computed: {
+    routerStore(this: any) {
+      return useRouterStore(this.$pinia);
+    },
+    walletStore(this: any) {
+      return useWalletStore(this.$pinia);
+    },
+    currentRouteParams(this: any): Record<string, AccountAsset> {
+      return this.routerStore.currentParams as Record<string, AccountAsset>;
+    },
+    previousRoute(this: any): RouteNames {
+      return (this.routerStore.prev as RouteNames) ?? RouteNames.Wallet;
+    },
+    previousRouteParams(this: any): Record<string, unknown> {
+      return this.routerStore.prevParams;
+    },
+    account(this: any): PolkadotJsAccount {
+      return this.walletStore.account as PolkadotJsAccount;
+    },
+    asset(this: any): AccountAsset {
+      return this.currentRouteParams.asset;
+    },
+    title(this: any): string {
+      return this.t('asset.receive', { symbol: this.asset.symbol });
+    },
+    code(this: any): string {
+      const chain = 'substrate';
+      const accountAddress = this.account.address;
+      const publicKey = `0x${api.getPublicKeyByAddress(accountAddress)}`;
+      const accountName = this.account.name || '';
+      const assetAddress = this.asset.address;
 
-  private get walletStore() {
-    return useWalletStore((this as any).$pinia);
-  }
+      return [chain, accountAddress, publicKey, accountName, assetAddress, this.amount].join(':');
+    },
+  },
+  methods: {
+    downloadCode(this: any): void {
+      void this.withAppNotification(async () => {
+        const qrcode = (this.$refs as Record<string, any>).qrcode as { element?: SVGSVGElement } | undefined;
+        const codeSvg = qrcode?.element as SVGSVGElement | undefined;
 
-  @Ref('qrcode') readonly qrcode!: QrCode;
+        if (!codeSvg) return;
 
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+        const filename = `${this.asset.symbol}_${this.account.address}`;
 
-  public amount = '';
-
-  get currentRouteParams(): Record<string, AccountAsset> {
-    return this.routerStore.currentParams as Record<string, AccountAsset>;
-  }
-
-  get previousRoute(): RouteNames {
-    return (this.routerStore.prev as RouteNames) ?? RouteNames.Wallet;
-  }
-
-  get previousRouteParams(): Record<string, unknown> {
-    return this.routerStore.prevParams;
-  }
-
-  get account(): PolkadotJsAccount {
-    return this.walletStore.account as PolkadotJsAccount;
-  }
-
-  get asset(): AccountAsset {
-    return this.currentRouteParams.asset;
-  }
-
-  get title(): string {
-    return this.t('asset.receive', { symbol: this.asset.symbol });
-  }
-
-  get code(): string {
-    const chain = 'substrate';
-    const accountAddress = this.account.address;
-    const publicKey = `0x${api.getPublicKeyByAddress(accountAddress)}`;
-    const accountName = this.account.name || '';
-    const assetAddress = this.asset.address;
-    const amount = this.amount;
-
-    return [chain, accountAddress, publicKey, accountName, assetAddress, amount].join(':');
-  }
-
-  downloadCode(): void {
-    this.withAppNotification(async () => {
-      const codeSvg = (this.qrcode as any).element as SVGSVGElement;
-      const filename = `${this.asset.symbol}_${this.account.address}`;
-
-      await svgSaveAs(codeSvg, filename, IMAGE_EXTENSIONS.JPEG);
-    });
-  }
-
-  handleBack(): void {
-    this.routerStore.navigate({
-      name: this.previousRoute,
-      params: this.previousRouteParams,
-    });
-  }
-}
+        await svgSaveAs(codeSvg, filename, IMAGE_EXTENSIONS.JPEG);
+      });
+    },
+    handleBack(this: any): void {
+      this.routerStore.navigate({
+        name: this.previousRoute,
+        params: this.previousRouteParams,
+      });
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

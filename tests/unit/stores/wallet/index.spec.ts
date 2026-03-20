@@ -35,7 +35,7 @@ vi.mock('pinia', () => ({
 
 import { Theme } from '@/consts/theme';
 import type { WALLET_TYPES } from '@wallet';
-import { setLegacyStoreOverride } from '@/utils/legacy-store';
+import { setAppStoreOverride } from '@/utils/app-store';
 
 const loginAccountMock = vi.hoisted(() => vi.fn());
 const renameAccountMock = vi.hoisted(() => vi.fn());
@@ -156,7 +156,7 @@ describe('wallet store actions', () => {
     piniaStub.setActivePinia(piniaStub.createPinia());
     vi.clearAllMocks();
     const legacyStore = (await import('@/store')).default;
-    setLegacyStoreOverride(legacyStore as any);
+    setAppStoreOverride(legacyStore as any);
   });
 
   it('falls back when legacy getters return undefined during boot', async () => {

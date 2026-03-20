@@ -1,5 +1,5 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { defineMutations } from 'direct-vuex';
+import { defineMutations } from '@/store/module-helpers';
 
 import { LimitOrderType } from '@/consts';
 import type { OrderBookDealData, OrderBookStats } from '@/types/orderBook';

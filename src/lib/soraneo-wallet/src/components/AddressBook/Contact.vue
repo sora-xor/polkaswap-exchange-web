@@ -14,7 +14,7 @@
         class="set-address__input"
         :placeholder="t('addressText')"
         :disabled="inputDisabled"
-        @input="defineIdentity"
+        @update:model-value="defineIdentity"
       ></s-input>
       <template v-if="validAddress && isNotSoraAddress">
         <p class="wallet-send-address-warning">{{ t('addressBook.notSoraAddress') }}</p>
@@ -41,7 +41,7 @@
 
 <script lang="ts" setup>
 import debounce from 'lodash/fp/debounce';
-import { computed, nextTick, ref, toRef, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 
 import { useCopyAddress } from '@/composables/useCopyAddress';
 import { useDialogVisibility } from '@/composables/useDialog';
@@ -55,14 +55,12 @@ defineOptions({ name: 'AddressBookContactDialog' });
 
 const props = withDefaults(
   defineProps<{
-    visible?: boolean;
     book?: Book;
     accounts?: PolkadotJsAccount[];
     prefilledAddress?: string;
     isEditMode?: boolean;
   }>(),
   {
-    visible: false,
     book: () => ({}) as Book,
     accounts: () => [] as PolkadotJsAccount[],
     prefilledAddress: '',
@@ -71,7 +69,6 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'add', value: { address: string; name: string }): void;
 }>();
@@ -79,8 +76,8 @@ const emit = defineEmits<{
 const { t } = useTranslation();
 const { handleCopyAddress, copyTooltip } = useCopyAddress();
 
-const { isVisible, closeDialog } = useDialogVisibility(toRef(props, 'visible'), {
-  emit: (value) => emit('update:visible', value),
+const visibleModel = defineModel<boolean>('visible', { default: false });
+const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 

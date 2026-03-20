@@ -36,13 +36,13 @@
 </template>
 
 <script lang="ts">
-import { Options, mixins } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
+import { mapGetters, mapState } from 'vuex';
 
 import { FilterOptions } from '@/types/common';
 
 import { api } from '../../api';
 import { AddAssetTabs } from '../../consts';
-import { state, getter } from '../../store/decorators';
 import { getAssetsSubset } from '../../util';
 import AssetList from '../AssetList.vue';
 import SearchInput from '../Input/SearchInput.vue';
@@ -54,60 +54,61 @@ import AddAssetDetailsCard from './AddAssetDetailsCard.vue';
 
 import type { Asset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 
-@Options({
+export default defineComponent({
   components: {
     AssetList,
     AssetsFilter,
     SearchInput,
     AddAssetDetailsCard,
   },
-})
-export default class AddAssetToken extends mixins(LoadingMixin, AddAssetMixin) {
-  readonly AddAssetTabs = AddAssetTabs;
+  mixins: [LoadingMixin, AddAssetMixin],
+  emits: ['change-visibility'],
+  data() {
+    return {
+      AddAssetTabs,
+      /** `true` by default cuz we have a lot of assets */
+      isVerifiedOnly: true,
+    };
+  },
+  computed: {
+    ...mapState('wallet/settings', ['assetsFilter']),
+    ...mapGetters('wallet/account', ['whitelist']),
+    notAddedAssets(this: any): Asset[] {
+      return this.assets.filter(
+        (asset: Asset) => !(asset.address in this.accountAssetsAddressTable) && !api.assets.isNft(asset)
+      );
+    },
+    prefilteredAssets(this: any): Asset[] {
+      const prefiltered = getAssetsSubset(this.notAddedAssets, this.assetsFilter as FilterOptions);
 
-  @state.settings.assetsFilter assetsFilter!: FilterOptions;
-  @getter.account.whitelist private whitelist!: Whitelist;
-  /** `true` by default cuz we have a lot of assets */
-  isVerifiedOnly = true;
+      return this.isVerifiedOnly
+        ? prefiltered.filter((asset: Asset) => api.assets.isWhitelist(asset, this.whitelist as Whitelist))
+        : prefiltered;
+    },
+    foundAssets(this: any): Asset[] {
+      if (!this.searchValue) return this.prefilteredAssets;
+      return this.getSoughtAssets(this.prefilteredAssets);
+    },
+    assetIsAlreadyAdded(this: any): boolean {
+      if (!this.searchValue) return false;
 
-  private get notAddedAssets(): Array<Asset> {
-    return this.assets.filter(
-      (asset) => !(asset.address in this.accountAssetsAddressTable) && !api.assets.isNft(asset)
-    );
-  }
-
-  private get prefilteredAssets(): Array<Asset> {
-    const prefiltered = getAssetsSubset(this.notAddedAssets, this.assetsFilter);
-
-    return this.isVerifiedOnly
-      ? prefiltered.filter((asset) => api.assets.isWhitelist(asset, this.whitelist))
-      : prefiltered;
-  }
-
-  get foundAssets(): Array<Asset> {
-    if (!this.searchValue) return this.prefilteredAssets;
-    return this.getSoughtAssets(this.prefilteredAssets);
-  }
-
-  get assetIsAlreadyAdded(): boolean {
-    if (!this.searchValue) return false;
-
-    return this.accountAssets.some(
-      ({ name = '', symbol = '', address = '' }) =>
-        address.toLowerCase() === this.searchValue ||
-        symbol.toLowerCase() === this.searchValue ||
-        name.toLowerCase() === this.searchValue
-    );
-  }
-
-  get showAddButton(): boolean {
-    return this.selectedAssets.length > 0;
-  }
-
-  handleAdd() {
-    this.$emit('change-visibility');
-  }
-}
+      return this.accountAssets.some(
+        ({ name = '', symbol = '', address = '' }: Asset) =>
+          address.toLowerCase() === this.searchValue ||
+          symbol.toLowerCase() === this.searchValue ||
+          name.toLowerCase() === this.searchValue
+      );
+    },
+    showAddButton(this: any): boolean {
+      return this.selectedAssets.length > 0;
+    },
+  },
+  methods: {
+    handleAdd(this: any): void {
+      this.$emit('change-visibility');
+    },
+  },
+});
 </script>
 
 <style lang="scss">

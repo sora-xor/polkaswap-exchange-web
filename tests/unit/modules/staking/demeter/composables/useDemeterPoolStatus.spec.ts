@@ -2,7 +2,7 @@ import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { createPinia, setActivePinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { setLegacyStoreOverride } from '@/utils/legacy-store';
+import { setAppStoreOverride } from '@/utils/app-store';
 
 const mockStore = vi.hoisted(() => ({
   state: {
@@ -140,7 +140,7 @@ describe('useDemeterPoolStatus & useDemeterPoolCard', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia());
-    setLegacyStoreOverride(mockStore as any);
+    setAppStoreOverride(mockStore as any);
     statusApi = useDemeterPoolStatus({
       pool: () => pool,
       accountPool: () => accountPool,

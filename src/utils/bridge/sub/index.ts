@@ -10,7 +10,7 @@ import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import { SubBridgeOutgoingReducer, SubBridgeIncomingReducer } from '@/utils/bridge/sub/classes/reducers';
 import type { SubBridgeReducer } from '@/utils/bridge/sub/classes/reducers';
 import { getTransaction, updateTransaction } from '@/utils/bridge/sub/utils';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 
 import type { SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 
@@ -21,7 +21,7 @@ interface SubBridgeConstructorOptions extends IBridgeConstructorOptions<SubHisto
 type SubBridge = Bridge<SubHistory, SubBridgeReducer, SubBridgeConstructorOptions>;
 
 const resolveWalletStore = () => useWalletStore();
-const resolveLegacyStore = () => requireLegacyStore() as any;
+const resolveAppStore = () => requireAppStore() as any;
 
 const subBridge: SubBridge = new Bridge({
   reducers: {
@@ -44,18 +44,18 @@ const subBridge: SubBridge = new Bridge({
   getAssetByAddress: (address: string) => useAssetsStore().assetDataByAddress(address),
   // transaction
   getTransaction: (id: string) =>
-    (getTransaction(id) || resolveLegacyStore().getters?.bridge?.history?.[id]) as SubHistory,
+    (getTransaction(id) || resolveAppStore().getters?.bridge?.history?.[id]) as SubHistory,
   updateTransaction,
   // ui integration
-  showNotification: (tx: SubHistory) => resolveLegacyStore().commit?.bridge?.setNotificationData?.(tx),
-  updateHistory: () => resolveLegacyStore().dispatch?.bridge?.updateInternalHistory?.(),
-  getActiveTransaction: () => resolveLegacyStore().getters?.bridge?.historyItem as SubHistory,
-  addTransactionToProgress: (id: string) => resolveLegacyStore().commit?.bridge?.addTxIdInProgress?.(id),
-  removeTransactionFromProgress: (id: string) => resolveLegacyStore().commit?.bridge?.removeTxIdFromProgress?.(id),
+  showNotification: (tx: SubHistory) => resolveAppStore().commit?.bridge?.setNotificationData?.(tx),
+  updateHistory: () => resolveAppStore().dispatch?.bridge?.updateInternalHistory?.(),
+  getActiveTransaction: () => resolveAppStore().getters?.bridge?.historyItem as SubHistory,
+  addTransactionToProgress: (id: string) => resolveAppStore().commit?.bridge?.addTxIdInProgress?.(id),
+  removeTransactionFromProgress: (id: string) => resolveAppStore().commit?.bridge?.removeTxIdFromProgress?.(id),
   // transaction signing
-  beforeTransactionSign: (api, ...args: any[]) => beforeTransactionSign(resolveLegacyStore().original, api, ...args),
+  beforeTransactionSign: (api, ...args: any[]) => beforeTransactionSign(resolveAppStore().original, api, ...args),
   // custom
-  getSubBridgeConnector: () => resolveLegacyStore().state?.bridge?.subBridgeConnector,
+  getSubBridgeConnector: () => resolveAppStore().state?.bridge?.subBridgeConnector,
 });
 
 export default subBridge;

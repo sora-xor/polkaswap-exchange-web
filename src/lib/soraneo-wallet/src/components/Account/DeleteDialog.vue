@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, toRef, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
@@ -25,25 +25,22 @@ import SimpleNotification from '../SimpleNotification.vue';
 
 const props = withDefaults(
   defineProps<{
-    visible?: boolean;
     loading?: boolean;
   }>(),
   {
-    visible: false,
     loading: false,
   }
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'confirm', hideOnConfirm: boolean): void;
 }>();
 
 const { t } = useTranslation();
 
-const { isVisible } = useDialogVisibility(toRef(props, 'visible'), {
-  emit: (value) => emit('update:visible', value),
+const visibleModel = defineModel<boolean>('visible', { default: false });
+const { isVisible } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 

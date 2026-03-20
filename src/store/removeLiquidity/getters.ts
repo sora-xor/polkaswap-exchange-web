@@ -1,6 +1,6 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { api } from '@wallet';
-import { defineGetters } from 'direct-vuex';
+import { defineGetters } from '@/store/module-helpers';
 
 import { ZeroStringValue } from '@/consts';
 import { removeLiquidityGetterContext } from '@/store/removeLiquidity';

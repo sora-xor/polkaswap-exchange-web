@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 import { RouteNames } from '@wallet/src/consts';
 import type { Nullable } from '@/types/common';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 
 import { enterPiniaSync, isLegacySyncing, leavePiniaSync } from './sync';
 import type { RouterParams, RouterState } from './types';
@@ -43,7 +43,7 @@ export const useRouterStore = defineStore('router', {
       this.prevParams = { ...this.currentParams };
       this.current = normalizeRouteName(route.name);
       this.currentParams = { ...(route.params ?? {}) };
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       if (!isLegacySyncing() && legacyStore?.commit?.wallet?.router?.navigate) {
         enterPiniaSync();
         try {
@@ -64,7 +64,7 @@ export const useRouterStore = defineStore('router', {
       this.prevParams = { ...params };
     },
     back(): void {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       const isLoggedIn = Boolean(legacyStore.getters?.wallet?.account?.isLoggedIn);
       if (!isLoggedIn || !this.prev || [this.current, this.prev].includes(RouteNames.WalletConnection)) {
         return;
@@ -72,7 +72,7 @@ export const useRouterStore = defineStore('router', {
       this.navigate({ name: this.prev, params: this.prevParams });
     },
     checkCurrentRoute(): void {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       const isLoggedIn = Boolean(legacyStore.getters?.wallet?.account?.isLoggedIn);
       const accountRoute = RouteNames.Wallet;
       const connectionRoute = RouteNames.WalletConnection;

@@ -1,5 +1,4 @@
 import { AppWallet } from '../../../consts';
-import { Singleton } from '../../../decorators';
 import { addWalletLocally } from '../../../services/wallet';
 import { GDriveStorage } from '../index';
 
@@ -11,7 +10,6 @@ import type { InjectedWindowProvider, Injected } from '@polkadot/extension-injec
  * Minimal WalletConnect-like adapter that exposes Google Drive backups through
  * the polkadot extension interface expected by the wallet infrastructure.
  */
-@Singleton
 class GoogleDriveWallet implements InjectedWindowProvider {
   public static readonly version = '0.0.1';
 

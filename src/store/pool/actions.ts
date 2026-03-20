@@ -1,5 +1,5 @@
 import { api } from '@wallet';
-import { defineActions } from 'direct-vuex';
+import { defineActions } from '@/store/module-helpers';
 import { firstValueFrom } from 'rxjs';
 
 import { getPoolsApyObject, createPoolsApySubscription } from '@/indexer/queries/pool/apy';

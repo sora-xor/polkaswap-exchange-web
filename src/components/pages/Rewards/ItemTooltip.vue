@@ -1,5 +1,5 @@
 <template>
-  <el-popover popper-class="reward-item-tooltip" placement="right" trigger="hover">
+  <s-popover-panel popper-class="reward-item-tooltip" placement="right" trigger="hover">
     <div class="reward-item-tooltip-content">
       <div>{{ t('rewards.totalVested') }}:</div>
       <formatted-amount
@@ -14,7 +14,7 @@
     <template #reference>
       <s-icon name="info-16" size="14px" class="reward-item-tooltip-value-icon" tabindex="-1"></s-icon>
     </template>
-  </el-popover>
+  </s-popover-panel>
 </template>
 
 <script lang="ts" setup>

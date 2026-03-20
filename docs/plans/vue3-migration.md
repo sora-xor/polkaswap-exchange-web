@@ -2,11 +2,12 @@
 
 ## Current State
 
-- Runtime builds natively against Vue 3.5; `configureCompat` and the `@vue/compat` alias have been removed from the boot process.
-- Almost every SFC still relies on class components (`vue-class-component@7` + `vue-property-decorator@9`) and Vue 2–only options such as `beforeDestroy`, `.sync`, and `.native`.
-- Store access goes through decorator glue supplied by `direct-vuex`, which injects getters/actions as class fields.
-- Shared widgets inside `src/lib/soraneo-wallet` mirror the same Vue 2 patterns and ship pre-built bundles that expect compat mode.
-- Tests already run on Vue 3 tooling (Vitest + `@vue/test-utils@2`), but they indirectly exercise compat behaviours.
+- Runtime builds natively against Vue 3.5; `configureCompat`, the `@vue/compat` alias, and the old compat boot split are gone.
+- The app ships a single native Vue 3 runtime; the historical `build:vue3` entrypoint remains only as a CI alias to `yarn build`.
+- App-owned and vendored wallet source files now run on native Vue 3 Options API / Composition API patterns. The repo no longer depends on `vue-class-component` or `vue-property-decorator`.
+- Store access in the remaining Vuex facades still goes through the repo-local compatibility layer at `src/store/direct-vuex.ts`, surfaced via `src/store/app-store-bridge.ts` and `src/utils/app-store.ts`; the external `direct-vuex` package and app-owned decorator glue are gone.
+- `@wallet/lib` now resolves through `src/lib/soraneo-wallet/src` in both the main Vite build and the Electron renderer. `src/lib/soraneo-wallet/lib` remains only for the prebuilt CSS bundle.
+- Tests already run on Vue 3 tooling (Vitest + `@vue/test-utils@2`), and the migration guard now blocks decorator packages, legacy wallet decorator helpers, and stray vendored build output from re-entering the active app path.
 - Wallet bundle delivery expectations and integration cadence are codified in `docs/plans/soraneo-wallet-migration-contract.md`; treat that document as the working agreement with the wallet squad.
 
 ## Migration Goals
@@ -20,7 +21,7 @@
 
 ### Stage 1 – Compat Exit Foundations
 
-1. Upgrade to `vue-class-component@8` and `vue-property-decorator@10` (or remove them entirely) so existing classes can run without compat.
+1. Keep the Vue 3 class-component stack on `vue-class-component@8` and `vue-property-decorator@10` only until the vendored wallet/UI sources stop requiring it.
 2. Update global shims (`src/compat/**`) to expose Vue 3 friendly helpers, replacing `$listeners` with explicit `emits` contracts.
 3. Convert the application shell (`App.vue`, global widgets, router-view wrappers) to Composition/Options API and remove `.native`/`.sync` usage.
 4. Create shared utilities (store hooks, dialog factories) that allow Composition API components to talk to the existing Vuex modules without decorators.
@@ -48,10 +49,9 @@
 
 ## Near-Term Backlog
 
-- Convert the App shell and navigation components to native Vue 3 patterns.
-- Introduce composables that wrap the most-used store selectors/actions to ease refactors.
-- Inventory all `.sync` consumers and define the `v-model` contracts each dialog must emit.
-- Track compat-specific warnings during development to ensure none remain once the alias is removed.
+- Simplify the remaining repo-local Vuex compatibility layer as Pinia parity improves.
+- Keep the vendored wallet sync workflow strict: source under `src`, CSS/static assets only under `lib`.
+- Continue tightening migration guards so Electron and future sync branches cannot drift back to compiled wallet bundles or decorator-era helpers.
 
 ## Pinia / Vuex Parity Checklist
 
@@ -135,9 +135,9 @@ piniaParity:
 - **Upstream source:** Tagged archives from the private `wallet-web` repository. Capture commit hash and tag in the PR description.
 - **Sync workflow:**
   1. Create the sync branch from `develop`.
-  2. `rsync --delete --exclude "lib/" <upstream-src>/ src/lib/soraneo-wallet/src` to copy source files; copy built artefacts (CSS/types) into `src/lib/soraneo-wallet/lib` once upstream build passes.
+  2. `rsync --delete --exclude "lib/" <upstream-src>/ src/lib/soraneo-wallet/src` to copy source files; copy only the CSS bundle or other explicitly imported static assets into `src/lib/soraneo-wallet/lib` once upstream build passes.
   3. Update translations or assets that moved upstream (keep aliases intact).
-  4. Run the verification matrix locally or via Jenkins: `yarn test:unit`, `yarn build`, `yarn build:vue3`, `VITE_DISABLE_COMPAT=true yarn test:e2e --project chromium`.
+  4. Run the verification matrix locally or via Jenkins: `yarn test:unit`, `yarn build`, `yarn build:vue3`, `yarn test:e2e --project chromium`.
   5. Update `docs/plans/soraneo-wallet-migration-contract.md` Appendix with the new tag + hash and note any local deviations.
   6. Request review from wallet squad code owners; merge after both teams sign off.
 - **Artifacts:** Attach build/test logs to the PR (or link to Jenkins job) and drop status in `#wallet-migration`.

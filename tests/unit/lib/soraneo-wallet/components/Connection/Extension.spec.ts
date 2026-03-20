@@ -3,6 +3,15 @@ import { describe, expect, it } from 'vitest';
 import extensionConnectionListSource from '@/lib/soraneo-wallet/src/components/Connection/List/Extension.vue?raw';
 
 describe('ExtensionConnectionList source', () => {
+  it('does not throw when a wallet has no provider yet', async () => {
+    const { default: ExtensionConnectionList } =
+      await import('@/lib/soraneo-wallet/src/components/Connection/List/Extension.vue');
+    const hasDisconnectAction = (ExtensionConnectionList as any).methods.hasDisconnectAction;
+
+    expect(() => hasDisconnectAction({ extensionName: 'fearless-wallet' })).not.toThrow();
+    expect(hasDisconnectAction({ extensionName: 'fearless-wallet' })).toBe(false);
+  });
+
   it('renders the recommended badge with a dedicated star icon class', () => {
     expect(extensionConnectionListSource).toContain(
       '<s-icon name="basic-circle-star-24" size="12" class="extension-label__icon"></s-icon>'
@@ -19,8 +28,8 @@ describe('ExtensionConnectionList source', () => {
   });
 
   it('marks right-side wallet state buttons with a dedicated class hook', () => {
-    expect(extensionConnectionListSource).toContain(
-      'class="connection-state" size="small" @click.stop="handleDisconnect(wallet)"'
+    expect(extensionConnectionListSource).toMatch(
+      /<s-button[\s\S]*?v-if="hasDisconnectAction\(wallet\)"[\s\S]*?class="connection-state"[\s\S]*?size="small"[\s\S]*?@click\.stop="handleDisconnect\(wallet\)"/
     );
     expect(extensionConnectionListSource).toContain(
       '<s-button v-else-if="isConnectedWallet(wallet)" class="connection-state" size="small" disabled>'

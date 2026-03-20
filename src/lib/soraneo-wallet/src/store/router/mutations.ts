@@ -1,4 +1,4 @@
-import { defineMutations } from 'direct-vuex';
+import { defineMutations } from '@/store/module-helpers';
 
 import { useRouterStore } from '@/stores/router';
 import { enterLegacySync, isPiniaSyncing, leaveLegacySync } from '@/stores/router/sync';

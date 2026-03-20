@@ -11,11 +11,11 @@ const filters: SnapshotFilter[] = [
   { name: 'day', label: 'Last 24h' },
 ];
 
-const mountComponent = (props: Partial<{ value: SnapshotFilter | null; disabled: boolean }> = {}) =>
+const mountComponent = (props: Partial<{ modelValue: SnapshotFilter | null; disabled: boolean }> = {}) =>
   mount(StatsFilter, {
     props: {
       filters,
-      value: filters[0],
+      modelValue: filters[0],
       ...props,
     },
     attachTo: document.body,
@@ -38,7 +38,7 @@ afterEach(() => {
 });
 
 describe('StatsFilter.vue', () => {
-  it('emits both update:value and input when a filter is selected', async () => {
+  it('emits modelValue updates when a filter is selected', async () => {
     const wrapper = mountComponent();
     await nextTick();
     const exposed = (wrapper.vm as { $: { exposed?: { toggleMenu: () => void } } }).$?.exposed;
@@ -52,10 +52,8 @@ describe('StatsFilter.vue', () => {
     target!.vm.$emit('click', new MouseEvent('click'));
     await nextTick();
 
-    expect(wrapper.emitted('update:value')).toBeTruthy();
-    expect(wrapper.emitted('input')).toBeTruthy();
-    expect(wrapper.emitted('update:value')?.[0][0]).toEqual(filters[1]);
-    expect(wrapper.emitted('input')?.[0][0]).toEqual(filters[1]);
+    expect(wrapper.emitted('update:modelValue')).toBeTruthy();
+    expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual(filters[1]);
 
     wrapper.unmount();
   });
@@ -249,5 +247,15 @@ describe('StatsFilter.vue', () => {
     expect(statsFilterSource).toContain('color: var(--s-color-base-content-primary) !important;');
     expect(statsFilterSource).toContain('&.s-pressed {');
     expect(statsFilterSource).toContain('color: var(--s-color-theme-accent) !important;');
+  });
+
+  it('falls back to the legacy value prop when modelValue is not provided', () => {
+    const wrapper = mountComponent({
+      modelValue: undefined,
+      value: filters[1],
+    });
+
+    expect(wrapper.text()).toContain(filters[1].label);
+    wrapper.unmount();
   });
 });

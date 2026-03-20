@@ -1,0 +1,92 @@
+const appName = "𒊹𒂵𒆜";
+const account = { "accountTitle": "𒃻𒋃", "copy": "𒃻𒋃 𒍑𒁲", "delete": "𒀭𒀖", "export": "𒄑𒋗", "rename": "𒃻𒋃 𒌓𒍣", "switch": "𒄑𒀭", "walletAddress": "𒅗𒋗 𒀭𒊺" };
+const accountText = "𒃻𒋃 | 𒃻𒋃";
+const assets = { "bridge": "𒆜", "details": "𒈨𒂊", "empty": "𒄭𒄭", "liquidity": "𒀀 𒅎", "receive": "𒂗𒆠", "send": "𒉌𒌌", "swap": "𒁮𒃲", "totalAssetsValue": "𒀭 𒉌" };
+const backText = "𒊮";
+const balanceText = "𒈦";
+const bridgeText = "𒆜";
+const cancelText = "𒌋";
+const closeText = "𒌑";
+const confirmText = "𒋼";
+const nextText = "𒄷";
+const sendText = "𒉌𒌌";
+const settingsText = "𒊩𒆜";
+const swapText = "𒁮𒃲";
+const swap = { "confirmSwap": "𒋼 𒁮𒃲", "errorFetching": "𒌋 𒈨𒂊", "insufficientAmount": "𒌋 𒈦", "insufficientLiquidity": "𒌋 𒀀", "liquidityProviderFee": "𒀀 𒈠𒄦", "liquidityProviderFeeTooltip": "𒀀 𒈠𒄦 𒊺 ( {liquidityProviderFee}% ) 𒄭", "maxSold": "𒈦 𒉌𒌌", "minReceived": "𒅆 𒂗𒆠", "minReceivedTooltip": "𒅆 𒂗𒆠 𒊺", "priceImpact": "𒃲 𒋼", "priceImpactTooltip": "𒃲 𒋼 𒊺", "rewardsForSwap": "𒉆𒀳 𒁮𒃲", "route": "𒄷𒊒", "slippageTolerance": "𒀀 𒋼", "swapOutputMessage": "𒂗𒆠 𒅆 {transactionValue} 𒊺" };
+const addLiquidity = { "title": "𒀀 𒅎" };
+const confirmSupply = { "outputDescription": "𒂗𒆠 𒅆 𒊺 {slippageTolerance}% 𒄭", "title": "𒀀 𒊓" };
+const pool = { "addLiquidity": "𒀀 𒅎", "connectToWallet": "𒅗𒋗 𒄑𒀭 𒀀", "createPair": "𒌉𒇻", "description": "𒀀 𒅎 𒁮𒃲 𒈠𒄦", "liquidityNotFound": "𒀀 𒄭𒄭", "pairTokens": "{pair} 𒌉𒇻", "pooledToken": "{tokenSymbol} 𒀀", "poolShare": "𒀀 𒊓", "removeLiquidity": "𒀀 𒌋", "strategicBonusApy": "𒉆𒀳 𒊺" };
+const removeLiquidity = { "amount": "𒈦", "confirmTitle": "𒂗𒆠", "description": "𒀀 𒌋 𒈦 𒊺 𒈠𒄦", "input": "𒅆", "liquidity": "𒀀", "locked": "{percent} 𒀀 {lock}", "output": "𒂗𒆠", "outputMessage": "𒂗𒆠 𒅆 {slippageTolerance}%", "remove": "𒌋", "shareOfPool": "𒀀 𒊓", "title": "𒀀 𒌋" };
+const browserNotificationDialog = { "agree": "𒋼", "button": "𒊩𒆜 𒉺𒀀", "info": "𒉌𒌌 𒅗𒋗", "notificationBlocked": "{AppName} 𒉺𒀀 𒌋", "pointer": "𒋼 𒉺𒀀", "rotateMessage": "𒈨𒂊", "rotatetitle": "𒈨𒂊", "title": "𒉺𒀀" };
+const browserNotificationLocalStorageOverride = { "agree": "𒋼", "info": "{AppName} 𒉺𒀀", "title": "{AppName} 𒉺𒀀 𒌋" };
+const browserPermission = { "btnAllow": "𒋼", "btnGoToSettings": "𒊩𒆜", "desc": "𒁾 𒋼", "disclaimer": "𒁾 𒋼", "title": "𒁾 𒋼" };
+const bridge = { "title": "𒆜", "info": "𒆜 𒀭 𒀀", "next": "𒄷" };
+const bridgeHistory = { "title": "𒆜 𒈬", "clearHistory": "𒌋 𒈬", "showHistory": "𒈬", "restoreHistory": "𒄯 𒈬", "empty": "𒄭𒄭", "filterPlaceholder": "𒀭 𒌓𒍣", "statusAction": "𒊓 𒋼" };
+const soraStaking = { "actions": { "claim": "𒉆𒀳 𒂗𒆠", "confirm": "𒋼 𒉆𒀳", "more": "𒉆𒀳 𒄷", "remove": "𒉆𒀳 𒌋", "withdraw": "𒂗" }, "allWithdrawsDialog": { "information": "𒉆𒀳 𒌋 𒊺 𒂗", "title": "𒂗 𒉆𒀳" }, "claimRewardsDialog": { "checkRewards": "𒉆𒀳 𒄷 𒀭", "rewardsDestination": "𒉆𒀳 𒀭𒊺", "title": "𒂗𒆠 𒉆𒀳" }, "dropdownMenu": { "controllerAccount": "𒃻𒋃 𒊩𒆜" }, "info": { "minimumStake": "𒉆𒀳 𒅆", "nominators": "𒃻𒋃 𒉆𒀳", "rewarded": "𒉆𒀳", "rewardToken": "𒉆𒀳", "selectedValidators": "𒊺 𒀭", "stakingBalance": "𒉆𒀳", "totalLiquidityStaked": "𒀀 𒉆𒀳", "unstaking": "𒉆𒀳 𒌋", "unstakingPeriod": "𒉆𒀳 𒌋 𒊺", "validators": "𒀭" }, "newStake": { "title": "𒉆𒀳 𒄷" }, "overview": { "description": "𒉆𒀳 {XOR} 𒀭 {Sora} 𒀭 𒉆𒀳 {VAL}", "title": "{Sora} 𒉆𒀳" }, "pendingRewardsDialog": { "information": "𒉆𒀳 𒂗𒆠 𒀭 𒊺 𒈠𒄦", "noPendingRewards": "𒉆𒀳 𒄭𒄭", "noSelectedRewards": "𒉆𒀳 𒌋", "payout": "𒂗𒆠", "title": "𒉆𒀳 𒄷" }, "stakeDialog": { "toRemove": "𒌋", "toStake": "𒉆𒀳" }, "validatorsAttentionDialog": { "confirm": "𒋼 𒊓", "description": { "0": "𒉆𒀳 𒊺 𒊓", "1": "𒉆𒀳 𒋼", "2": "𒉆𒀳 𒊓 𒈦" }, "title": "𒊮" }, "validators": { "alreadyNominated": "𒀭 𒋼", "change": "𒊩𒆜", "next": "𒄷", "recommended": "𒊺", "save": "𒊩𒆜 𒋼", "select": "𒊺 𒀭", "selected": "𒊺 {selected}/{total}", "tooManyValidators": "𒀭 𒀭 ({Max} {max})" }, "selectValidatorsMode": { "confirm": { "manual": "𒊺 𒀭", "suggested": "𒉆𒀳 𒊺" }, "criteria": { "0": "𒊺", "1": "𒌋 𒊓", "2": "𒌓𒍣", "3": "𒌋", "4": "𒀭 𒀭" }, "description": "𒊩𒆜 {Sora} 𒀭", "title": "𒊺 𒀭" }, "validatorsDialog": { "tabs": { "all": "𒀭", "user": "𒃻𒋃" }, "title": { "edit": "𒃻𒋃 𒊩𒆜" } }, "validatorsFilterDialog": { "filters": { "hasIdentity": { "description": "𒌓𒍣", "name": "𒀭" }, "notOversubscribed": { "description": "𒌋 𒊓", "name": "𒊓 𒋼" }, "notSlashed": { "description": "𒌋", "name": "𒌋" }, "twoValidatorsPerIdentity": { "description": "𒀭 𒀭", "name": "2 𒀭 𒃻𒋃" } }, "reset": "𒌋 𒀭", "save": "𒊩𒆜 𒋼", "title": "𒊩𒆜" }, "validatorsList": { "commission": "𒈠𒄦", "commissionTooltip": "𒈠𒄦 𒀭", "name": "𒌓𒍣", "noNominatedValidators": "𒀭 𒄭𒄭", "noValidators": "𒀭 𒄭𒄭", "return": "𒄯", "search": "𒊺..." }, "withdrawDialog": { "showAllWithdraws": "𒂗 𒀭", "title": "𒂗 𒉆𒀳" } };
+const kensetsu = { "addCollateral": "𒄯", "available": "𒀭", "availableToBorrow": "𒀭 𒉌", "borrowDebt": "𒉌", "borrowMore": "𒉌 𒄷", "borrowTax": "𒈠𒄦", "closeVault": "𒄯 𒉌", "collateralDetails": "𒄯", "createVault": "𒉌 𒁮", "createVaultAction": "𒉌", "debtAvailable": "𒈦 𒀭", "debtDetails": "𒈦", "depositCollateral": "𒄯 𒅎", "highLiquidationRisk": "𒉌 𒊓", "interest": "𒊺", "liquidated": "𒉌 𒌋", "liquidationPenalty": "𒈠𒄦", "ltv": "𒈦", "maxAvailableToBorrow": "𒉌 𒀭", "minDepositCollateral": "𒅆 𒄯", "openSwap": "𒁮𒃲 𒄷", "outstandingDebt": "𒈦", "overallAvailable": "𒀭 𒀭", "overallTotalCollateral": "𒄯 𒀭", "overallTotalDebt": "𒈦 𒀭", "positionHistory": "𒉌 𒈬", "positionInfo": "𒉌 𒈨𒂊", "positionSafe": "𒉌 𒊓", "repayDebt": "𒂗", "requiredAmountWithSlippage": "𒈦 𒀀", "status": { "Closed": "𒌋", "Liquidated": "𒉌 𒌋", "Opened": "𒄷" }, "totalCollateral": "𒄯 𒀭", "totalCollateralReturned": "𒄯 𒀭 𒄯", "yourCollateral": "𒄯 𒃻𒋃", "yourDebt": "𒈦 𒃻𒋃", "yourDebtTokenBalance": "𒃻𒋃 {tokenSymbol} 𒈦" };
+const mst = { "connectFearless": "𒉡𒉎𒋼", "mstFearless": "𒉡𒉎𒋼" };
+const mainMenu = { "Farming": "𒉆𒀳", "Burn": "𒌋" };
+const pageTitle = { "Burn": "𒌋" };
+const akk = {
+  appName,
+  account,
+  accountText,
+  assets,
+  backText,
+  balanceText,
+  bridgeText,
+  cancelText,
+  closeText,
+  confirmText,
+  nextText,
+  sendText,
+  settingsText,
+  swapText,
+  swap,
+  addLiquidity,
+  confirmSupply,
+  pool,
+  removeLiquidity,
+  browserNotificationDialog,
+  browserNotificationLocalStorageOverride,
+  browserPermission,
+  bridge,
+  bridgeHistory,
+  soraStaking,
+  kensetsu,
+  mst,
+  mainMenu,
+  pageTitle
+};
+export {
+  account,
+  accountText,
+  addLiquidity,
+  appName,
+  assets,
+  backText,
+  balanceText,
+  bridge,
+  bridgeHistory,
+  bridgeText,
+  browserNotificationDialog,
+  browserNotificationLocalStorageOverride,
+  browserPermission,
+  cancelText,
+  closeText,
+  confirmSupply,
+  confirmText,
+  akk as default,
+  kensetsu,
+  mainMenu,
+  mst,
+  nextText,
+  pageTitle,
+  pool,
+  removeLiquidity,
+  sendText,
+  settingsText,
+  soraStaking,
+  swap,
+  swapText
+};

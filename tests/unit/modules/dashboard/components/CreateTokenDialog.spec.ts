@@ -150,7 +150,7 @@ const mountComponent = (props: Record<string, unknown> = {}) =>
       stubs: {
         's-tabs': {
           props: ['value'],
-          emits: ['input'],
+          emits: ['update:modelValue'],
           template: '<div class="tabs"><slot /></div>',
         },
         's-tab': {

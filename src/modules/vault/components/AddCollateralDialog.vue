@@ -92,7 +92,6 @@ const PrevNextInfoLine = vaultLazyComponent(VaultComponents.PrevNextInfoLine);
 
 const props = withDefaults(
   defineProps<{
-    visible?: boolean;
     collateral?: Nullable<Collateral>;
     vault?: Nullable<Vault>;
     lockedAsset?: Nullable<RegisteredAccountAsset>;
@@ -104,7 +103,6 @@ const props = withDefaults(
     borrowTax?: number;
   }>(),
   {
-    visible: false,
     collateral: ObjectInit,
     vault: ObjectInit,
     lockedAsset: ObjectInit,
@@ -118,7 +116,6 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'confirm'): void;
 }>();
 
@@ -133,7 +130,7 @@ const {
   getFPNumberFiatAmountByFPNumber,
 } = useFormattedAmount();
 
-const isVisible = ref(props.visible);
+const isVisible = defineModel<boolean>('visible', { default: false });
 const collateralValue = ref('');
 const collateralInput = ref<InstanceType<typeof TokenInputComponent> | null>(null);
 
@@ -295,9 +292,8 @@ const handleAddCollateral = async () => {
 };
 
 watch(
-  () => props.visible,
+  isVisible,
   async (value) => {
-    isVisible.value = value;
     if (value) {
       await nextTick();
       collateralValue.value = '';
@@ -306,10 +302,6 @@ watch(
   },
   { immediate: true }
 );
-
-watch(isVisible, (value) => {
-  emit('update:visible', value);
-});
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
 <template>
   <base-widget extensive v-loading="loadingState">
     <div class="order-book-tabs">
-      <s-tabs :value="currentTab" type="card" @input="handleChangeTab">
+      <s-tabs :value="currentTab" type="card" @update:model-value="handleChangeTab">
         <s-tab
           v-for="bookTab in LimitOrderTabsItems"
           :key="bookTab"

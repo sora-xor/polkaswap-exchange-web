@@ -41,7 +41,6 @@
 import { components } from '@wallet';
 import { computed } from 'vue';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useTranslation } from '@/composables/useTranslation';
 import { getImageSrc as resolveImageSrc, isTokenImage as isTokenImageName, MAX_LEVEL } from '@/consts/pointSystem';
 import type { CalculateCategoryPointResult } from '@/types/pointSystem';
@@ -57,20 +56,16 @@ const props = withDefaults(
   defineProps<{
     pointsForCategory: CalculateCategoryPointResult;
     categoryName: string;
-    visible?: boolean;
   }>(),
-  {
-    visible: false,
-  }
+  {}
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
-const { isVisible } = useDialogModel(props, emit);
 
 const maxLevel = MAX_LEVEL;
 const getImageSrc = resolveImageSrc;

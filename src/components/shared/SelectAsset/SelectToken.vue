@@ -7,7 +7,7 @@
     :append-to-body="appendToBody"
     :modal-append-to-body="appendToBody"
   >
-    <s-tabs :value="tabValue" class="s-tabs--exchange" type="rounded" @input="handleTabChange">
+    <s-tabs :value="tabValue" class="s-tabs--exchange" type="rounded" @update:model-value="handleTabChange">
       <search-input
         ref="searchRef"
         v-model="query"
@@ -87,7 +87,6 @@ enum Tabs {
 }
 
 type SelectTokenEvents = {
-  (event: 'update:visible', value: boolean): void;
   (event: 'select', asset: Asset | AccountAsset | RegisteredAccountAsset): void;
   (event: 'close'): void;
 };
@@ -116,7 +115,6 @@ const getNonWhitelistDivisibleAssets = <T extends Asset | AccountAsset>(
 
 const props = withDefaults(
   defineProps<{
-    visible: boolean;
     connected?: boolean;
     asset?: Nullable<Asset>;
     disabledCustom?: boolean;
@@ -146,24 +144,20 @@ const { loading, withLoading } = useLoading();
 
 const searchRef = ref<InstanceType<any> | null>(null);
 const query = ref('');
-const isVisible = ref(props.visible);
+const isVisible = defineModel<boolean>('visible', { required: true });
 const tabValue = ref<Tabs>(Tabs.Assets);
 
 watch(
-  () => props.visible,
-  (value) => {
-    isVisible.value = value;
-  }
+  isVisible,
+  async (value) => {
+    if (value) {
+      tabValue.value = Tabs.Assets;
+      await nextTick();
+      clearAndFocusSearch();
+    }
+  },
+  { immediate: true }
 );
-
-watch(isVisible, async (value) => {
-  emit('update:visible', value);
-  if (value) {
-    tabValue.value = Tabs.Assets;
-    await nextTick();
-    clearAndFocusSearch();
-  }
-});
 
 const searchQuery = computed(() => query.value.trim().toLowerCase());
 

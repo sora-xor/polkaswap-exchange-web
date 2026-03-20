@@ -35,27 +35,23 @@ import WalletAccount from './WalletAccount.vue';
 
 const props = withDefaults(
   defineProps<{
-    visible?: boolean;
     account?: Nullable<PolkadotJsAccount>;
     loading?: boolean;
   }>(),
   {
-    visible: false,
     account: null,
     loading: false,
   }
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'confirm', name: string): void;
 }>();
 
 const { t } = useTranslation();
-
-const { isVisible } = useDialogVisibility(toRef(props, 'visible'), {
-  emit: (value) => emit('update:visible', value),
+const visibleModel = defineModel<boolean>('visible', { default: false });
+const { isVisible } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 

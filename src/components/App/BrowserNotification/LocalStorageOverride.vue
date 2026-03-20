@@ -24,7 +24,6 @@
 import { components } from '@wallet';
 import { ref } from 'vue';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useTranslation } from '@/composables/useTranslation';
 
 defineOptions({
@@ -33,22 +32,19 @@ defineOptions({
   },
 });
 
-const props = defineProps({
-  visible: {
-    type: Boolean,
-    default: false,
-  },
-});
-
 const emit = defineEmits<{
-  (e: 'update:visible', value: boolean): void;
   (e: 'close'): void;
   (e: 'delete-data-local-storage', value: boolean): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
-const { isVisible, closeDialog } = useDialogModel(props, emit);
 const loading = ref(false);
+
+const closeDialog = (): void => {
+  emit('close');
+  isVisible.value = false;
+};
 
 function agree(): void {
   closeDialog();

@@ -4,7 +4,7 @@ import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 import type { Nullable } from '@/types/common';
-import { trackEvent } from '@/utils/telemetry';
+import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 
 import { enterLegacySync, leaveLegacySync } from './sync';
 
@@ -104,10 +104,7 @@ export const useBridgeTransactionsStore = defineStore('bridgeTransactions', {
     }): void {
       trackEvent('bridge.pinia.transfer.submitted', {
         ...payload,
-        buildVariant:
-          typeof window !== 'undefined' && typeof (window as Record<string, unknown>).__PS_BUILD_VARIANT__ === 'string'
-            ? (window as Record<string, unknown>).__PS_BUILD_VARIANT__
-            : 'unknown',
+        buildVariant: getBuildVariant(),
       });
     },
   },

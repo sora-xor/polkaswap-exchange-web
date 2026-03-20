@@ -39,8 +39,8 @@
           class="vaults-header__tabs"
           :is-mobile="showDropdown"
           :tabs="tabs"
-          :value="selectedTab"
-          @input="handleTabChange"
+          :model-value="selectedTab"
+          @update:model-value="handleTabChange"
         ></responsive-tabs>
       </s-col>
     </s-row>

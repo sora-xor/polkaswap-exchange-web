@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
 import { api } from '@wallet';
-import { computed, nextTick, toRefs } from 'vue';
+import { computed, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useTranslation } from '@/composables/useTranslation';
@@ -17,17 +17,7 @@ import { PageNames } from '@/consts';
 import store from '@/store';
 import { useWalletStore } from '@/stores/wallet';
 
-const props = defineProps({
-  visible: {
-    type: Boolean,
-    default: false,
-  },
-});
-const { visible } = toRefs(props);
-
-const emit = defineEmits<{
-  (e: 'update:visible', value: boolean): void;
-}>();
+const visible = defineModel<boolean>('visible', { default: false });
 
 const { t } = useTranslation();
 const router = useRouter();
@@ -37,7 +27,7 @@ const walletStore = useWalletStore();
 const isMST = computed(() => store.state.wallet.account.isMST);
 
 function closeNotification(): void {
-  emit('update:visible', false);
+  visible.value = false;
 }
 
 async function handleButtonClick(): Promise<void> {

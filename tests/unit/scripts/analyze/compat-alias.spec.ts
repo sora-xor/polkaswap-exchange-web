@@ -77,16 +77,16 @@ describe('compat alias analyzer', () => {
     expect(usages[0]).toMatchObject({ file: 'src/feature.ts', module: '@/compat/example' });
   });
 
-  test('default allow-list permits runtime helper bootstrap imports', () => {
+  test('default allow-list blocks runtime helper bootstrap imports', () => {
     const { allowed, violations } = partitionCompatUsage([
       createUsage({
-        file: 'src/main.ts',
+        file: 'src/lib/soraneo-wallet/src/core.ts',
         module: '@/compat/runtime-helpers',
         lineText: "import '@/compat/runtime-helpers';",
       }),
     ]);
 
-    expect(allowed).toHaveLength(1);
-    expect(violations).toHaveLength(0);
+    expect(allowed).toHaveLength(0);
+    expect(violations).toHaveLength(1);
   });
 });

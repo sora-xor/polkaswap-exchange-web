@@ -3,8 +3,8 @@ import { WALLET_CONSTS } from '@wallet';
 
 const legacyStoreMock = vi.fn();
 
-vi.mock('@/utils/legacy-store', () => ({
-  requireLegacyStore: () => legacyStoreMock(),
+vi.mock('@/utils/app-store', () => ({
+  requireAppStore: () => legacyStoreMock(),
 }));
 
 describe('waitForSoraNetworkFromEnv', () => {

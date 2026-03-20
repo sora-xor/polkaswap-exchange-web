@@ -3,7 +3,7 @@ import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { PageNames } from '@/consts';
 import { RouteNames as WalletRouteNames } from '@wallet/src/consts';
-import { setLegacyStoreOverride } from '@/utils/legacy-store';
+import { setAppStoreOverride } from '@/utils/app-store';
 
 vi.mock('@/store', () => {
   const navigateMock = vi.fn();
@@ -58,7 +58,7 @@ describe('router store', () => {
     localStorageMock.clear.mockClear();
     gettersMock.wallet.account.isLoggedIn = false;
     const legacyStore = (await import('@/store')).default;
-    setLegacyStoreOverride(legacyStore as any);
+    setAppStoreOverride(legacyStore as any);
   });
 
   afterAll(() => {

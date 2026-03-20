@@ -127,7 +127,7 @@ describe('WidgetsGrid', () => {
   it('emits widgets visibility model based on the active layout', async () => {
     const wrapper = await mountGrid();
 
-    const emitted = wrapper.emitted('input') ?? [];
+    const emitted = wrapper.emitted('update:modelValue') ?? [];
     expect(emitted.length).toBeGreaterThan(0);
     const [model] = emitted[emitted.length - 1];
     expect(Object.keys(wrapper.vm.layouts)).toContain('lg');
@@ -295,7 +295,7 @@ describe('WidgetsGrid', () => {
     const wrapper = await mountGrid();
 
     expect(layoutsStorageMock.remove).toHaveBeenCalledWith('QmBrokenCid::test-grid');
-    const emitted = wrapper.emitted('input') ?? [];
+    const emitted = wrapper.emitted('update:modelValue') ?? [];
     expect(emitted.length).toBeGreaterThan(0);
   });
 

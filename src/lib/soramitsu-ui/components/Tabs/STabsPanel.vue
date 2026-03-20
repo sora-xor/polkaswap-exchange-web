@@ -148,7 +148,7 @@ export default defineComponent({
       default: 'primary',
     },
   },
-  emits: ['update:modelValue', 'input'],
+  emits: ['update:modelValue'],
   setup(props, { emit, slots }) {
     const navRef = ref<HTMLElement | null>(null);
     const tabRefs = ref<Record<string, HTMLElement | null>>({});
@@ -231,7 +231,6 @@ export default defineComponent({
       if (isDisabled) return;
 
       emit('update:modelValue', tabName);
-      emit('input', tabName);
     };
 
     const activateByKeyboard = (event: KeyboardEvent, tabName: string, isDisabled: boolean): void => {

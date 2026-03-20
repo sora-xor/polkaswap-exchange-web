@@ -139,13 +139,12 @@
 import { TransactionStatus, Operation, FPNumber } from '@sora-substrate/sdk';
 import { KnownSymbols, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import dayjs from 'dayjs';
-import { Options, mixins, Watch } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
+import { mapGetters, mapState } from 'vuex';
 
 import { api } from '../api';
 import { HashType } from '../consts';
-import { getter, state } from '../store/decorators';
 
-import FormattedAmount from './FormattedAmount.vue';
 import InfoLine from './InfoLine.vue';
 import EthBridgeTransactionMixin from './mixins/EthBridgeTransactionMixin';
 import NotificationMixin from './mixins/NotificationMixin';
@@ -154,415 +153,366 @@ import TranslationMixin from './mixins/TranslationMixin';
 import TokenLogo from './TokenLogo.vue';
 import TransactionHashView from './TransactionHashView.vue';
 import AdarTxDetails from './WalletAdarTxDetails.vue';
-import WalletBase from './WalletBase.vue';
 
 import type { PolkadotJsAccount, AssetsTable } from '../types/common';
 import type { HistoryItem } from '@sora-substrate/sdk';
-@Options({
+
+export default defineComponent({
   components: {
-    WalletBase,
     InfoLine,
     TokenLogo,
-    FormattedAmount,
     TransactionHashView,
     AdarTxDetails,
   },
-})
-export default class WalletTransactionDetails extends mixins(
-  TranslationMixin,
-  NumberFormatterMixin,
-  EthBridgeTransactionMixin,
-  NotificationMixin
-) {
-  readonly HashType = HashType;
-
-  @state.settings.blockNumber private blockNumber!: number;
-
-  @getter.account.assetsDataTable private assetsDataTable!: AssetsTable;
-  @getter.account.account private account!: PolkadotJsAccount;
-  @getter.transactions.selectedTx selectedTransaction!: HistoryItem; // It shouldn't be empty
-
-  minAmountOfXorForSign = 0;
-  currentAmountOfXorSignerHas = 0;
-
-  mounted() {
-    this.fetchMinAmountOfXor();
-    this.getCurrentAmountOfXorOfSigner();
-  }
-
-  @Watch('selectedTransaction', { immediate: true, deep: true })
-  private async fetchMinAmountOfXorOnChange(): Promise<void> {
-    await this.$nextTick();
-    this.fetchMinAmountOfXor();
-  }
-
-  get isCompleteTransaction(): boolean {
-    return [TransactionStatus.InBlock, TransactionStatus.Finalized].includes(
-      this.selectedTransaction.status as TransactionStatus
-    );
-  }
-
-  get isFailedTransaction(): boolean {
-    return [TransactionStatus.Error, TransactionStatus.Invalid].includes(
-      this.selectedTransaction.status as TransactionStatus
-    );
-  }
-
-  get statusClass(): Array<string> {
-    return this.getStatusClass(this.isFailedTransaction);
-  }
-
-  // Transaction status
-  get statusTitle(): string {
-    if (this.isFailedTransaction) {
-      return this.t('transaction.statuses.failed');
-    }
-    if (this.isCompleteTransaction) {
-      return this.t('transaction.statuses.complete');
-    }
-    return this.t('transaction.statuses.pending');
-  }
-
-  get transactionAmount(): string {
-    return this.formatStringValue(this.selectedTransaction.amount as string);
-  }
-
-  get transactionAmountUSD(): string {
-    const amountUSD = this.selectedTransaction.payload?.amountUSD;
-    return amountUSD ? this.formatStringValue(amountUSD) : '';
-  }
-
-  get transactionAmount2(): string {
-    return this.formatStringValue(this.selectedTransaction.amount2 as string);
-  }
-
-  get transactionAmount2USD(): string {
-    const amountUSD = this.selectedTransaction.payload?.amount2USD;
-    return amountUSD ? this.formatStringValue(amountUSD) : '';
-  }
-
-  get transactionSymbol(): string {
-    const { type, symbol, symbol2 } = this.selectedTransaction;
-
-    if ([Operation.DemeterFarmingDepositLiquidity, Operation.DemeterFarmingWithdrawLiquidity].includes(type)) {
-      return `${symbol}-${symbol2}`;
-    }
-
-    if (Operation.OrderBookPlaceLimitOrder) {
-      const { assetAddress } = this.selectedTransaction;
-      const asset = assetAddress ? this.assetsDataTable[assetAddress] : null;
-
-      if (asset) {
-        return asset.symbol;
+  mixins: [TranslationMixin, NumberFormatterMixin, EthBridgeTransactionMixin, NotificationMixin],
+  emits: ['backToWallet'],
+  data() {
+    return {
+      HashType,
+      minAmountOfXorForSign: 0,
+      currentAmountOfXorSignerHas: 0,
+    };
+  },
+  computed: {
+    ...mapState('wallet/settings', ['blockNumber']),
+    ...mapGetters('wallet/account', ['assetsDataTable', 'account']),
+    ...mapGetters('wallet/transactions', { selectedTransaction: 'selectedTx' }),
+    isCompleteTransaction(this: any): boolean {
+      return [TransactionStatus.InBlock, TransactionStatus.Finalized].includes(
+        this.selectedTransaction.status as TransactionStatus
+      );
+    },
+    isFailedTransaction(this: any): boolean {
+      return [TransactionStatus.Error, TransactionStatus.Invalid].includes(
+        this.selectedTransaction.status as TransactionStatus
+      );
+    },
+    statusClass(this: any): Array<string> {
+      return this.getStatusClass(this.isFailedTransaction);
+    },
+    statusTitle(this: any): string {
+      if (this.isFailedTransaction) {
+        return this.t('transaction.statuses.failed');
       }
-    }
-
-    return symbol || '';
-  }
-
-  get transactionSymbol2(): string {
-    if (Operation.OrderBookPlaceLimitOrder) {
-      const { asset2Address } = this.selectedTransaction;
-      const asset = asset2Address ? this.assetsDataTable[asset2Address] : null;
-
-      if (asset) {
-        return asset.symbol;
+      if (this.isCompleteTransaction) {
+        return this.t('transaction.statuses.complete');
       }
-    }
+      return this.t('transaction.statuses.pending');
+    },
+    transactionAmount(this: any): string {
+      return this.formatStringValue(this.selectedTransaction.amount as string);
+    },
+    transactionAmountUSD(this: any): string {
+      const amountUSD = this.selectedTransaction.payload?.amountUSD;
+      return amountUSD ? this.formatStringValue(amountUSD) : '';
+    },
+    transactionAmount2(this: any): string {
+      return this.formatStringValue(this.selectedTransaction.amount2 as string);
+    },
+    transactionAmount2USD(this: any): string {
+      const amountUSD = this.selectedTransaction.payload?.amount2USD;
+      return amountUSD ? this.formatStringValue(amountUSD) : '';
+    },
+    transactionSymbol(this: any): string {
+      const { type, symbol, symbol2 } = this.selectedTransaction;
 
-    return this.selectedTransaction.symbol2 || '';
-  }
-
-  get isRecipient(): boolean {
-    return this.account.address !== this.selectedTransaction.from;
-  }
-
-  get transactionFee(): Nullable<string> {
-    if (this.isRecipient) {
-      return null;
-    }
-    return this.getNetworkFee();
-  }
-
-  get transactionFromDate(): Nullable<string> {
-    if (!this.selectedTransaction.startTime) return null;
-
-    return this.formatDate(this.selectedTransaction.startTime as number);
-  }
-
-  get transactionFromAddress(): Nullable<string> {
-    return this.selectedTransaction.from;
-  }
-
-  get transactionToAddress(): Nullable<string> {
-    return this.selectedTransaction.to;
-  }
-
-  get transactionFromHash() {
-    return this.getTransactionHashData();
-  }
-
-  get transactionComment(): Nullable<string> {
-    return (this.selectedTransaction as any).comment || null;
-  }
-
-  get isSetReferralOperation(): boolean {
-    return this.selectedTransaction.type === Operation.ReferralSetInvitedUser;
-  }
-
-  get vestingPercentage(): Nullable<string> {
-    if (!('percent' in this.selectedTransaction)) return null;
-    return `${this.selectedTransaction.percent}`;
-  }
-
-  get vestingPeriod(): Nullable<string> {
-    if (!('period' in this.selectedTransaction)) return null;
-    const periodInMs = this.selectedTransaction.period * 6_000; // 6 seconds per block
-    return dayjs.duration(periodInMs).locale(this.dayjsLocale).humanize();
-  }
-
-  get vestingStartDate(): Nullable<string> {
-    if (!('start' in this.selectedTransaction)) return null;
-    const diffBlock = this.selectedTransaction.start - this.blockNumber;
-    const diffMs = diffBlock * 6_000; // 6 seconds per block
-    return this.formatDate(Date.now() + diffMs, 'll LT');
-  }
-
-  get isReferrer(): boolean {
-    return this.isSetReferralOperation && this.account.address === this.selectedTransaction.to;
-  }
-
-  get errorMessage(): Nullable<string> {
-    const error = this.selectedTransaction.errorMessage;
-    if (!error) {
-      return null;
-    }
-
-    let errMessage = this.t(`historyErrorMessages.generalError`);
-
-    if (typeof error === 'string') {
-      return errMessage; // Backward compatibility
-    }
-
-    if (error.name && error.section) {
-      errMessage = this.t(`historyErrorMessages.${error.section.toLowerCase()}.${error.name.toLowerCase()}`);
-      if (errMessage.startsWith('historyErrorMessages')) {
-        // was not found in json files
-        return this.t(`historyErrorMessages.generalError`);
+      if ([Operation.DemeterFarmingDepositLiquidity, Operation.DemeterFarmingWithdrawLiquidity].includes(type)) {
+        return `${symbol}-${symbol2}`;
       }
-    }
 
-    return errMessage;
-  }
+      if (Operation.OrderBookPlaceLimitOrder) {
+        const { assetAddress } = this.selectedTransaction;
+        const asset = assetAddress ? (this.assetsDataTable as AssetsTable)[assetAddress] : null;
 
-  // ____________________________________________________ADAR____________________________________________________________
-  get isAdarOperation(): boolean {
-    return this.selectedTransaction.type === Operation.SwapTransferBatch;
-  }
-  // ____________________________________________________________________________________________________________________
+        if (asset) {
+          return asset.symbol;
+        }
+      }
 
-  get networkFeeSymbol(): string {
-    return KnownSymbols.XOR;
-  }
+      return symbol || '';
+    },
+    transactionSymbol2(this: any): string {
+      if (Operation.OrderBookPlaceLimitOrder) {
+        const { asset2Address } = this.selectedTransaction;
+        const asset = asset2Address ? (this.assetsDataTable as AssetsTable)[asset2Address] : null;
 
-  // ETH BRIDGE transaction
-  get isTransactionToCompleted(): boolean {
-    return this.isEthBridgeTxToCompleted(this.selectedTransaction);
-  }
+        if (asset) {
+          return asset.symbol;
+        }
+      }
 
-  get isMST(): boolean {
-    return api.mst.isMST();
-  }
+      return this.selectedTransaction.symbol2 || '';
+    },
+    isRecipient(this: any): boolean {
+      return (this.account as PolkadotJsAccount).address !== this.selectedTransaction.from;
+    },
+    transactionFee(this: any): Nullable<string> {
+      if (this.isRecipient) {
+        return null;
+      }
+      return this.getNetworkFee();
+    },
+    transactionFromDate(this: any): Nullable<string> {
+      if (!this.selectedTransaction.startTime) return null;
 
-  get xor(): string {
-    return XOR.symbol;
-  }
+      return this.formatDate(this.selectedTransaction.startTime as number);
+    },
+    transactionFromAddress(this: any): Nullable<string> {
+      return this.selectedTransaction.from;
+    },
+    transactionToAddress(this: any): Nullable<string> {
+      return this.selectedTransaction.to;
+    },
+    transactionFromHash(this: any) {
+      return this.getTransactionHashData();
+    },
+    transactionComment(this: any): Nullable<string> {
+      return (this.selectedTransaction as any).comment || null;
+    },
+    isSetReferralOperation(this: any): boolean {
+      return this.selectedTransaction.type === Operation.ReferralSetInvitedUser;
+    },
+    vestingPercentage(this: any): Nullable<string> {
+      if (!('percent' in this.selectedTransaction)) return null;
+      return `${this.selectedTransaction.percent}`;
+    },
+    vestingPeriod(this: any): Nullable<string> {
+      if (!('period' in this.selectedTransaction)) return null;
+      const periodInMs = this.selectedTransaction.period * 6_000;
+      return dayjs.duration(periodInMs).locale(this.dayjsLocale).humanize();
+    },
+    vestingStartDate(this: any): Nullable<string> {
+      if (!('start' in this.selectedTransaction)) return null;
+      const diffBlock = this.selectedTransaction.start - this.blockNumber;
+      const diffMs = diffBlock * 6_000;
+      return this.formatDate(Date.now() + diffMs, 'll LT');
+    },
+    isReferrer(this: any): boolean {
+      return this.isSetReferralOperation && (this.account as PolkadotJsAccount).address === this.selectedTransaction.to;
+    },
+    errorMessage(this: any): Nullable<string> {
+      const error = this.selectedTransaction.errorMessage;
+      if (!error) {
+        return null;
+      }
 
-  get isTransactionNotSigned(): boolean {
-    return this.selectedTransaction.status === TransactionStatus.Pending;
-  }
+      let errMessage = this.t(`historyErrorMessages.generalError`);
 
-  get isNotTheAccountInitiatedTrx(): boolean {
-    console.info(this.selectedTransaction);
-    const addressOfMainAccount = api.formatAddress(api?.mst?.getPrevoiusAccount());
-    if ('multisig' in this.selectedTransaction && this.selectedTransaction.multisig) {
-      return addressOfMainAccount !== this.selectedTransaction.multisig.signatories[0];
-    } else {
+      if (typeof error === 'string') {
+        return errMessage;
+      }
+
+      if (error.name && error.section) {
+        errMessage = this.t(`historyErrorMessages.${error.section.toLowerCase()}.${error.name.toLowerCase()}`);
+        if (errMessage.startsWith('historyErrorMessages')) {
+          return this.t(`historyErrorMessages.generalError`);
+        }
+      }
+
+      return errMessage;
+    },
+    isAdarOperation(this: any): boolean {
+      return this.selectedTransaction.type === Operation.SwapTransferBatch;
+    },
+    networkFeeSymbol(): string {
+      return KnownSymbols.XOR;
+    },
+    isTransactionToCompleted(this: any): boolean {
+      return this.isEthBridgeTxToCompleted(this.selectedTransaction);
+    },
+    isMST(): boolean {
+      return api.mst.isMST();
+    },
+    xor(): string {
+      return XOR.symbol;
+    },
+    isTransactionNotSigned(this: any): boolean {
+      return this.selectedTransaction.status === TransactionStatus.Pending;
+    },
+    isNotTheAccountInitiatedTrx(this: any): boolean {
+      console.info(this.selectedTransaction);
+      const addressOfMainAccount = api.formatAddress(api?.mst?.getPrevoiusAccount());
+      if ('multisig' in this.selectedTransaction && this.selectedTransaction.multisig) {
+        return addressOfMainAccount !== this.selectedTransaction.multisig.signatories[0];
+      }
       return false;
-    }
-  }
-
-  getMainAccountName(): string {
-    const addressOfMainAccount = api.formatAddress(api?.mst?.getPrevoiusAccount());
-    const pair = api.getAccountPair(addressOfMainAccount);
-    const accountName = pair.meta.name as string;
-    return accountName.length > 10 ? accountName.slice(0, 10) + '...' : accountName;
-  }
-
-  get amountOfThreshold(): number {
-    if ('multisig' in this.selectedTransaction && this.selectedTransaction.multisig) {
-      return this.selectedTransaction.multisig.threshold;
-    } else {
+    },
+    amountOfThreshold(this: any): number {
+      if ('multisig' in this.selectedTransaction && this.selectedTransaction.multisig) {
+        return this.selectedTransaction.multisig.threshold;
+      }
       return 0;
-    }
-  }
-
-  get alreadySigned(): number {
-    if ('multisig' in this.selectedTransaction && this.selectedTransaction.multisig) {
-      return this.selectedTransaction.multisig.numApprovals;
-    } else {
+    },
+    alreadySigned(this: any): number {
+      if ('multisig' in this.selectedTransaction && this.selectedTransaction.multisig) {
+        return this.selectedTransaction.multisig.numApprovals;
+      }
       return 0;
-    }
-  }
-
-  get progressPercentageMstSigned(): number {
-    return (this.alreadySigned / this.amountOfThreshold) * 100;
-  }
-
-  get amountOfDaysBeforeExpirationTrx(): string {
-    if ('deadline' in this.selectedTransaction && this.selectedTransaction.deadline) {
-      const secondsInADay = 86400;
-      const daysRemaining = Math.ceil(this.selectedTransaction.deadline.secondsRemaining / secondsInADay);
-      return `${daysRemaining}D`;
-    } else {
+    },
+    progressPercentageMstSigned(this: any): number {
+      return (this.alreadySigned / this.amountOfThreshold) * 100;
+    },
+    amountOfDaysBeforeExpirationTrx(this: any): string {
+      if ('deadline' in this.selectedTransaction && this.selectedTransaction.deadline) {
+        const secondsInADay = 86400;
+        const daysRemaining = Math.ceil(this.selectedTransaction.deadline.secondsRemaining / secondsInADay);
+        return `${daysRemaining}D`;
+      }
       return '0';
-    }
-  }
-
-  public async getCurrentAmountOfXorOfSigner() {
-    const address = api?.mst?.getPrevoiusAccount();
-    if (!address) {
-      this.currentAmountOfXorSignerHas = 0;
-      return;
-    }
-    const addressOfMainAccount = api.formatAddress(api?.mst?.getPrevoiusAccount());
-    const pair = api.getAccountPair(addressOfMainAccount);
-    const xorBalance = await api.assets.getAccountAsset(XOR.address, pair.address);
-    this.currentAmountOfXorSignerHas = this.getFPNumberFromCodec(xorBalance.balance.free, 18).toNumber();
-  }
-
-  public async fetchMinAmountOfXor() {
-    if (this.isMST && this.isTransactionNotSigned && this.isNotTheAccountInitiatedTrx) {
+    },
+  },
+  watch: {
+    selectedTransaction: {
+      immediate: true,
+      deep: true,
+      async handler(this: any): Promise<void> {
+        await this.fetchMinAmountOfXorOnChange();
+      },
+    },
+  },
+  mounted(this: any): void {
+    void this.fetchMinAmountOfXor();
+    void this.getCurrentAmountOfXorOfSigner();
+  },
+  methods: {
+    async fetchMinAmountOfXorOnChange(this: any): Promise<void> {
+      await this.$nextTick();
+      await this.fetchMinAmountOfXor();
+    },
+    getMainAccountName(this: any): string {
+      const addressOfMainAccount = api.formatAddress(api?.mst?.getPrevoiusAccount());
+      const pair = api.getAccountPair(addressOfMainAccount);
+      const accountName = pair.meta.name as string;
+      return accountName.length > 10 ? `${accountName.slice(0, 10)}...` : accountName;
+    },
+    async getCurrentAmountOfXorOfSigner(this: any): Promise<void> {
+      const address = api?.mst?.getPrevoiusAccount();
+      if (!address) {
+        this.currentAmountOfXorSignerHas = 0;
+        return;
+      }
+      const addressOfMainAccount = api.formatAddress(api?.mst?.getPrevoiusAccount());
+      const pair = api.getAccountPair(addressOfMainAccount);
+      const xorBalance = await api.assets.getAccountAsset(XOR.address, pair.address);
+      this.currentAmountOfXorSignerHas = this.getFPNumberFromCodec(xorBalance.balance.free, 18).toNumber();
+    },
+    async fetchMinAmountOfXor(this: any): Promise<void> {
+      if (this.isMST && this.isTransactionNotSigned && this.isNotTheAccountInitiatedTrx) {
+        try {
+          const callHash = this.selectedTransaction.id;
+          if (!callHash) {
+            throw new Error('Call hash not found in selected transaction');
+          }
+          const { finalProofSize } = await api.mst.calculateFinalProofSize(
+            callHash,
+            (this.account as PolkadotJsAccount).address
+          );
+          this.minAmountOfXorForSign = finalProofSize.toNumber();
+        } catch (error) {
+          console.error('Failed to fetch minimum XOR amount for signing:', error);
+          this.minAmountOfXorForSign = 0;
+        }
+      } else {
+        this.minAmountOfXorForSign = 0;
+      }
+    },
+    getNetworkFeeSymbol(this: any, isSoraTx = true): string {
+      return isSoraTx ? KnownSymbols.XOR : KnownSymbols.ETH;
+    },
+    async onSignButtonClick(this: any): Promise<void> {
       try {
         const callHash = this.selectedTransaction.id;
+
         if (!callHash) {
           throw new Error('Call hash not found in selected transaction');
         }
-        const { finalProofSize } = await api.mst.calculateFinalProofSize(callHash, this.account.address);
-        const proofSizeNumber = finalProofSize.toNumber();
-        this.minAmountOfXorForSign = proofSizeNumber;
-      } catch (error) {
-        console.error('Failed to fetch minimum XOR amount for signing:', error);
-        this.minAmountOfXorForSign = 0;
+
+        const multisigAccountAddress = this.selectedTransaction.from;
+
+        if (!multisigAccountAddress) {
+          throw new Error('No multisigAccountAddress');
+        }
+        console.info('we are in onSignButtonClick');
+        await api.mst.approveMultisigExtrinsic(callHash, multisigAccountAddress);
+        this.$emit('backToWallet');
+        this.showAppNotification('Transaction has been signed!', 'success');
+      } catch (e) {
+        console.info(e);
+        this.$emit('backToWallet');
+        this.showAppNotification('Transaction has not been signed!', 'error');
       }
-    } else {
-      this.minAmountOfXorForSign = 0;
-    }
-  }
+    },
+    getNetworkFee(this: any): Nullable<string> {
+      const xorFee = (this.selectedTransaction as any).xorFee;
+      const assetFee = (this.selectedTransaction as any).assetFee;
+      const networkFee = this.selectedTransaction.soraNetworkFee;
 
-  public getNetworkFeeSymbol(isSoraTx = true): string {
-    return isSoraTx ? KnownSymbols.XOR : KnownSymbols.ETH;
-  }
+      if (!networkFee) return null;
 
-  public async onSignButtonClick(): Promise<void> {
-    try {
-      const callHash = this.selectedTransaction.id;
+      const networkFeeFormatted = `${this.formatCodecNumber(networkFee)} ${this.networkFeeSymbol}`;
 
-      if (!callHash) {
-        throw new Error('Call hash not found in selected transaction');
+      if (xorFee && assetFee) {
+        const aFee = this.getFPNumber(assetFee);
+        const xFee = this.getFPNumber(xorFee);
+
+        if (FPNumber.isEqualTo(aFee, FPNumber.ZERO)) return networkFeeFormatted;
+
+        const sign = FPNumber.isGreaterThan(xFee, FPNumber.ZERO) ? '+' : '';
+        const complex = [
+          { amount: aFee, symbol: this.transactionSymbol },
+          { amount: xFee, symbol: this.networkFeeSymbol },
+        ]
+          .filter((part) => !part.amount.isZero())
+          .map(({ amount, symbol }) => `${amount.toLocaleString()} ${symbol}`)
+          .join(sign);
+
+        return `${networkFeeFormatted} (${complex})`;
       }
 
-      const multisigAccountAddress = this.selectedTransaction.from;
+      return networkFeeFormatted;
+    },
+    getTransactionHashData(this: any): {
+      value: Nullable<string>;
+      hash: Nullable<string>;
+      translation: string;
+      type: HashType;
+      block: Nullable<string>;
+    } {
+      const { value, type } = this.getTransactionId();
+      const hash = this.selectedTransaction.txId;
+      const translation = this.getTransactionTranslation(type === HashType.Block);
+      const block = type === HashType.ID ? this.selectedTransaction.blockId : undefined;
 
-      if (!multisigAccountAddress) {
-        throw new Error('No multisigAccountAddress');
+      return { value, hash, translation, type, block };
+    },
+    getTransactionId(this: any): { type: HashType; value: Nullable<string> } {
+      if (this.selectedTransaction.txId) {
+        return {
+          type: HashType.ID,
+          value: this.selectedTransaction.txId,
+        };
       }
-      console.info('we are in onSignButtonClick');
-      await api.mst.approveMultisigExtrinsic(callHash, multisigAccountAddress);
-      this.$emit('backToWallet');
-      this.showAppNotification('Transaction has been signed!', 'success');
-    } catch (e) {
-      console.info(e);
-      this.$emit('backToWallet');
-      this.showAppNotification('Transaction has not been signed!', 'error');
-    }
-  }
 
-  private getNetworkFee(): Nullable<string> {
-    // [TODO] update History in js-lib
-    const xorFee = (this.selectedTransaction as any).xorFee;
-    const assetFee = (this.selectedTransaction as any).assetFee;
-    const networkFee = this.selectedTransaction.soraNetworkFee;
-
-    if (!networkFee) return null;
-
-    const networkFeeFormatted = `${this.formatCodecNumber(networkFee)} ${this.networkFeeSymbol}`;
-
-    if (xorFee && assetFee) {
-      const aFee = this.getFPNumber(assetFee);
-      const xFee = this.getFPNumber(xorFee);
-
-      if (FPNumber.isEqualTo(aFee, FPNumber.ZERO)) return networkFeeFormatted;
-
-      const sign = FPNumber.isGreaterThan(xFee, FPNumber.ZERO) ? '+' : '';
-      const complex = [
-        { amount: aFee, symbol: this.transactionSymbol },
-        { amount: xFee, symbol: this.networkFeeSymbol },
-      ]
-        .filter((part) => !part.amount.isZero())
-        .map(({ amount, symbol }) => `${amount.toLocaleString()} ${symbol}`)
-        .join(sign);
-
-      return `${networkFeeFormatted} (${complex})`;
-    }
-
-    return networkFeeFormatted;
-  }
-
-  private getTransactionHashData(): {
-    value: Nullable<string>;
-    hash: Nullable<string>;
-    translation: string;
-    type: HashType;
-    block: Nullable<string>;
-  } {
-    const { value, type } = this.getTransactionId();
-    const hash = this.selectedTransaction.txId;
-    const translation = this.getTransactionTranslation(type === HashType.Block);
-    const block = type === HashType.ID ? this.selectedTransaction.blockId : undefined;
-
-    return { value, hash, translation, type, block };
-  }
-
-  private getTransactionId(): { type: HashType; value: Nullable<string> } {
-    if (this.selectedTransaction.txId) {
       return {
-        type: HashType.ID,
-        value: this.selectedTransaction.txId,
+        type: HashType.Block,
+        value: this.selectedTransaction.blockId,
       };
-    }
+    },
+    getTransactionTranslation(this: any, isBlock = false): string {
+      return isBlock ? 'transaction.blockId' : 'transaction.txId';
+    },
+    getStatusClass(_this: any, isFailedTransaction = false): Array<string> {
+      const baseClass = 'transaction-status';
+      const classes = [baseClass];
 
-    return {
-      type: HashType.Block,
-      value: this.selectedTransaction.blockId,
-    };
-  }
+      if (isFailedTransaction) {
+        classes.push(`${baseClass}--error`);
+      }
 
-  private getTransactionTranslation(isBlock = false): string {
-    return isBlock ? 'transaction.blockId' : 'transaction.txId';
-  }
-
-  private getStatusClass(isFailedTransaction = false): Array<string> {
-    const baseClass = 'transaction-status';
-    const classes = [baseClass];
-
-    if (isFailedTransaction) {
-      classes.push(`${baseClass}--error`);
-    }
-
-    return classes;
-  }
-}
+      return classes;
+    },
+  },
+});
 </script>
 
 <style lang="scss">

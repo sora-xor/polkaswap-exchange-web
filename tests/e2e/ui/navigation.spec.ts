@@ -1,6 +1,13 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 
-import { ensureAppLoaded, expectHash, ipfsEntryUrl, preparePage, trackConsole } from './support/ipfs';
+import {
+  ensureAppLoaded,
+  expectHash,
+  filterKnownWalletConsoleNoise,
+  ipfsEntryUrl,
+  preparePage,
+  trackConsole,
+} from './support/ipfs';
 
 const longTimeout = 15_000;
 const corruptionPatterns = [
@@ -130,11 +137,11 @@ const readSidebarIconPaint = async (page: Page, itemIndex = 0): Promise<IconPain
     const svg = item.querySelector('svg');
     const isSvgVisible = Boolean(
       svg &&
-        (() => {
-          const styles = getComputedStyle(svg);
-          const rect = svg.getBoundingClientRect();
-          return styles.display !== 'none' && styles.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
-        })()
+      (() => {
+        const styles = getComputedStyle(svg);
+        const rect = svg.getBoundingClientRect();
+        return styles.display !== 'none' && styles.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+      })()
     );
     const firstPath = isSvgVisible ? (svg?.querySelector('path') ?? null) : null;
     const pathStyles = firstPath ? getComputedStyle(firstPath) : null;
@@ -513,6 +520,19 @@ test('navigates to wallet from Connect account after closing settings overlay', 
   expect(consoleErrors).toEqual([]);
 });
 
+test('renders the wallet connection view without runtime errors when logged out', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await page.goto(`${ipfsEntryUrl}#/wallet`);
+  await ensureAppLoaded(page);
+  await expectHash(page, '#/wallet');
+
+  await expect(page.locator('.container--wallet')).toBeVisible();
+  await expect(page.getByText(/learn more about wallet connection/i).first()).toBeVisible();
+
+  expect(filterKnownWalletConsoleNoise(consoleErrors)).toEqual([]);
+});
+
 test('keeps header account control clickable after closing settings overlay', async ({ page }) => {
   const consoleErrors = trackConsole(page);
   await openSwap(page);
@@ -548,6 +568,33 @@ test('opens swap connect-account dialog while settings overlay is open', async (
   await connectAccountButton.click();
   await expect(accountDialog).toBeVisible();
   await expect(settingsOverlay).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('opens Kensetsu connect-account dialog while the app disclaimer is visible', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await page.addInitScript(() => {
+    localStorage.removeItem('dexSettings.disclaimerApprove');
+  });
+
+  await page.goto(`${ipfsEntryUrl}#/kensetsu`);
+  await ensureAppLoaded(page);
+  await expectHash(page, '#/kensetsu');
+
+  const appDisclaimer = page.locator('.disclaimer').first();
+  const connectAccountButton = page.locator('.vaults-header__action', { hasText: /connect account/i }).first();
+  const accountDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /Learn more about wallet connection/i })
+    .first();
+
+  await expect(appDisclaimer).toBeVisible();
+  await expect(connectAccountButton).toBeVisible();
+
+  await connectAccountButton.click();
+  await expect(accountDialog).toBeVisible();
 
   expect(consoleErrors).toEqual([]);
 });
@@ -1755,6 +1802,9 @@ test('keeps disclaimer overlay within viewport on desktop', async ({ page }) => 
   const settingsOverlay = page.locator('.header-menu');
   const disclaimerAction = page.locator('.header-menu [data-test-name="disclaimer"]');
   const disclaimer = page.locator('.disclaimer');
+  const swapForm = page.locator('.swap-form').first();
+
+  const swapFormTopBefore = await swapForm.evaluate((element) => element.getBoundingClientRect().top);
 
   await settingsTrigger.click();
   await expect(settingsOverlay).toHaveCount(1);
@@ -1765,6 +1815,9 @@ test('keeps disclaimer overlay within viewport on desktop', async ({ page }) => 
   await expect(disclaimer).toBeVisible();
   await expectNoHorizontalOverflow(page);
   await expectLocatorWithinViewport(page, '.disclaimer');
+
+  const swapFormTopAfter = await swapForm.evaluate((element) => element.getBoundingClientRect().top);
+  expect(Math.abs(swapFormTopAfter - swapFormTopBefore)).toBeLessThanOrEqual(1);
 
   expect(consoleErrors).toEqual([]);
 });

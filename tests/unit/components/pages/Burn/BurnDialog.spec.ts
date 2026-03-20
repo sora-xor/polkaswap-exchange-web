@@ -86,7 +86,8 @@ vi.mock('@wallet', async () => {
 vi.mock('@/router', () => ({
   lazyComponent: () => ({
     name: 'TokenInputStub',
-    emits: ['input'],
+    props: ['modelValue'],
+    emits: ['update:modelValue'],
     template: '<div class="token-input-stub"><slot /></div>',
   }),
 }));

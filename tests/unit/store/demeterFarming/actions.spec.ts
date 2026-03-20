@@ -15,7 +15,7 @@ vi.mock('@wallet', () => ({
   },
 }));
 
-vi.mock('direct-vuex', () => ({
+vi.mock('@/store/direct-vuex', () => ({
   defineActions: (actions: Record<string, unknown>) => actions,
 }));
 

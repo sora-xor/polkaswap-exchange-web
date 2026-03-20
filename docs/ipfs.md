@@ -4,9 +4,9 @@ This guide documents how to prepare Polkaswap for an IPFS release, publish the b
 
 ## 1. Prerequisites
 
-- Node.js 24 (see `.nvmrc`) and Yarn 1.x.
+- Node.js 24 (see `.nvmrc`) and Yarn 4.x.
 - The `ipfs` CLI installed and available on your `$PATH`. Follow the [IPFS command-line quick start](https://docs.ipfs.tech/how-to/command-line-quick-start/).
-- Local access to the workspace repositories that the publish script consumes (e.g. `packages/soramitsu-js-ui-library`).
+- Local access to the vendored workspace sources committed in this repository (for example `src/lib/soramitsu-ui` and `src/lib/soraneo-wallet`).
 - Production/testnet environment configs under `public/env.json` and `public/env.dev.json`.
 
 ## 2. Pre-flight Checklist
@@ -15,7 +15,7 @@ This guide documents how to prepare Polkaswap for an IPFS release, publish the b
    ```bash
    yarn install
    ```
-2. Run the nightly parity script (translation + compat build). This matches what the CI pipeline uses:
+2. Run the nightly parity script (translation + native Vue 3 build). This matches what the CI pipeline uses:
    ```bash
    yarn ci:nightly
    ```
@@ -40,7 +40,7 @@ yarn ipfs:publish
 The script performs the following:
 
 1. Verifies the `ipfs` CLI is available.
-2. Builds any local workspace dependencies (currently the Soramitsu UI library).
+2. Builds any vendored workspace dependencies required by the publish pipeline.
 3. Runs `yarn build --base ./` to generate an IPFS-friendly `dist/`.
 4. Publishes `dist/` to IPFS (production config) and prints the resulting CID and gateway URLs.
 5. Creates a temporary copy of `dist/`, swaps in `public/env.dev.json`, publishes the testnet variant, and prints its CID.

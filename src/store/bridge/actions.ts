@@ -5,7 +5,7 @@ import { DAI } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { DexId } from '@sora-substrate/sdk/build/dex/consts';
 import { api, WALLET_CONSTS } from '@wallet';
-import { defineActions } from 'direct-vuex';
+import { defineActions } from '@/store/module-helpers';
 import { ethers } from 'ethers';
 import { combineLatest } from 'rxjs';
 
@@ -557,7 +557,13 @@ async function updateExternalBlockNumber(
         return;
       }
 
-      const blockNumber = await state.subBridgeConnector.network.getBlockNumber();
+      const subNetwork = state.subBridgeConnector?.network;
+      if (!subNetwork?.getBlockNumber) {
+        commit.setExternalBlockNumber(0);
+        return;
+      }
+
+      const blockNumber = await subNetwork.getBlockNumber();
       commit.setExternalBlockNumber(blockNumber);
       return;
     }

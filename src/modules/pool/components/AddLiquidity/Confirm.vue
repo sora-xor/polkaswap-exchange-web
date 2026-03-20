@@ -65,7 +65,6 @@
 import { computed, toRef } from 'vue';
 import { components } from '@wallet';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
@@ -75,7 +74,6 @@ import { lazyComponent } from '@/router';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 type Props = {
-  visible?: boolean;
   shareOfPool?: string;
   firstToken: Nullable<AccountAsset>;
   secondToken: Nullable<AccountAsset>;
@@ -89,7 +87,6 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  visible: false,
   shareOfPool: '100',
   firstTokenValue: '',
   secondTokenValue: '',
@@ -101,12 +98,11 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'confirm'): void;
   (event: 'close'): void;
 }>();
 
-const { isVisible, closeDialog } = useDialogModel(props, emit);
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
 const { formatStringValue, getFiatAmount, getFPNumberFromCodec, Hundred } = useFormattedAmount();
 const { getPoolApy } = usePoolApy();
@@ -147,6 +143,11 @@ const strategicBonusApy = computed(() => {
   if (!apy) return null;
   return `${getFPNumberFromCodec(apy).mul(Hundred).toLocaleString()}%`;
 });
+
+const closeDialog = (): void => {
+  emit('close');
+  isVisible.value = false;
+};
 
 const handleConfirm = () => {
   emit('confirm');

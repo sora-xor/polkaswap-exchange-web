@@ -133,7 +133,7 @@ const props = withDefaults(
     title?: string;
     showTable?: boolean;
     simpleGroup?: boolean;
-    value?: boolean | string[];
+    modelValue?: boolean | string[];
     isCodecString?: boolean;
     theme?: Theme;
   }>(),
@@ -142,21 +142,23 @@ const props = withDefaults(
     title: '',
     showTable: true,
     simpleGroup: false,
-    value: false,
+    modelValue: undefined,
     isCodecString: false,
     theme: Theme.LIGHT,
   }
 );
 
 const emit = defineEmits<{
-  (event: 'input', value: boolean | string[]): void;
+  (event: 'update:modelValue', value: boolean | string[]): void;
 }>();
 
-const { items, showTable, simpleGroup, value, isCodecString, theme } = toRefs(props);
+const { items, showTable, simpleGroup, isCodecString, theme } = toRefs(props);
 
 const innerModel = computed({
-  get: () => value.value,
-  set: (val: boolean | string[]) => emit('input', val),
+  get: () => props.modelValue ?? false,
+  set: (value: boolean | string[]) => {
+    emit('update:modelValue', value);
+  },
 });
 
 const { t, te } = useTranslation();

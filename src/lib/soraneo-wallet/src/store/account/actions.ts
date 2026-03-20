@@ -1,5 +1,5 @@
 import { excludePoolXYKAssets } from '@sora-substrate/sdk/build/assets';
-import { defineActions } from 'direct-vuex';
+import { defineActions } from '@/store/module-helpers';
 
 import { api } from '../../api';
 import { AppWallet, BLOCK_PRODUCE_TIME } from '../../consts';

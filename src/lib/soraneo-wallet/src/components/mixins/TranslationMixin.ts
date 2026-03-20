@@ -1,4 +1,4 @@
-import { Vue, Options } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
 import { translationUtils } from '@/composables/useTranslation';
 import type { Nullable } from '@/types/common';
@@ -12,38 +12,38 @@ const getAppStore = () =>
       }
     | undefined;
 
-@Options({})
-export default class TranslationMixin extends Vue {
-  private translationApi = translationUtils();
-
-  /**
-   * Contains wallet-specific words which shouldn't be translated.
-   *
-   * Will be extended in Polkaswap
-   */
-  readonly TranslationConsts = TranslationConsts;
-
-  get language(): string {
-    return getAppStore()?.state?.settings?.language ?? 'en';
-  }
-
-  t(key: string, values?: Record<string, unknown>): string {
-    return this.translationApi.t(key, values);
-  }
-
-  tc(key: string, choice?: number, values?: Record<string, unknown>): string {
-    return this.translationApi.tc(key, choice, values);
-  }
-
-  te(key: string): boolean {
-    return this.translationApi.te(key);
-  }
-
-  get dayjsLocale(): string {
-    return this.translationApi.getDayjsLocale();
-  }
-
-  formatDate(date: Nullable<number>, format = 'll LTS'): string {
-    return this.translationApi.formatDate(date, format);
-  }
-}
+export default defineComponent({
+  data() {
+    return {
+      translationApi: translationUtils(),
+      /**
+       * Contains wallet-specific words which shouldn't be translated.
+       *
+       * Will be extended in Polkaswap
+       */
+      TranslationConsts,
+    };
+  },
+  computed: {
+    language(): string {
+      return getAppStore()?.state?.settings?.language ?? 'en';
+    },
+    dayjsLocale(this: any): string {
+      return this.translationApi.getDayjsLocale();
+    },
+  },
+  methods: {
+    t(this: any, key: string, values?: Record<string, unknown>): string {
+      return this.translationApi.t(key, values);
+    },
+    tc(this: any, key: string, choice?: number, values?: Record<string, unknown>): string {
+      return this.translationApi.tc(key, choice, values);
+    },
+    te(this: any, key: string): boolean {
+      return this.translationApi.te(key);
+    },
+    formatDate(this: any, date: Nullable<number>, format = 'll LTS'): string {
+      return this.translationApi.formatDate(date, format);
+    },
+  },
+});

@@ -1,17 +1,12 @@
+import { defineComponent } from 'vue';
+import { mount } from '@vue/test-utils';
+import { createStore } from 'vuex';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const delayMock = vi.hoisted(() => vi.fn(async () => undefined));
 
 vi.mock('@/lib/soraneo-wallet/src/util', () => ({
   delay: delayMock,
-}));
-
-vi.mock('@/lib/soraneo-wallet/src/store/decorators', () => ({
-  state: {
-    settings: {
-      isWalletLoaded: () => () => undefined,
-    },
-  },
 }));
 
 import LoadingMixin from '@/lib/soraneo-wallet/src/components/mixins/LoadingMixin';
@@ -36,10 +31,33 @@ describe('LoadingMixin', () => {
       },
     } as any;
 
-    const mixin = new (LoadingMixin as any)();
+    const store = createStore({
+      modules: {
+        wallet: {
+          namespaced: true,
+          modules: {
+            settings: {
+              namespaced: true,
+              state: () => ({
+                isWalletLoaded: true,
+              }),
+            },
+          },
+        },
+      },
+    });
+    const component = defineComponent({
+      mixins: [LoadingMixin],
+      template: '<div />',
+    });
+    const wrapper = mount(component, {
+      global: {
+        plugins: [store],
+      },
+    });
     const handler = vi.fn(async () => undefined);
 
-    await mixin.withChainApi(chainApi, handler);
+    await (wrapper.vm as any).withChainApi(chainApi, handler);
 
     expect(handler).toHaveBeenCalledTimes(1);
     expect(delayMock).toHaveBeenCalledTimes(1);

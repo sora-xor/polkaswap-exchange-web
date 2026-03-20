@@ -1,11 +1,11 @@
-# Compat Toggle Hardening Plan
+# Compat Removal Hardening Plan
 
-Goal: ensure the Vue 3 compat toggle (`VITE_DISABLE_COMPAT`) can be disabled safely by running nightly `yarn build:vue3` smoke builds, detecting missing aliases, and triaging regressions ahead of removing compat dependencies.
+Goal: keep the native Vue 3 runtime healthy while the remaining compat shims are removed, using nightly `yarn build:vue3` smoke builds, compat import reporting, and regression triage.
 
 ## Objectives
 
 - Nightly `yarn build:vue3` pipeline runs with smoke tests and alerts on failure.
-- Missing alias usage and compat-only imports are reported and tracked.
+- Missing compat alias usage and legacy shim imports are reported and tracked.
 - Outcomes are surfaced in #migration-status and logged in Confluence.
 - Provide go/no-go criteria for dropping compat shims.
 
@@ -13,7 +13,7 @@ Goal: ensure the Vue 3 compat toggle (`VITE_DISABLE_COMPAT`) can be disabled saf
 
 | Area               | Tasks                                                                                                                                                                                                                                                                                                                                    | Owner          | Status |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------ |
-| CI pipeline        | - Ensure `build:vue3` workflow runs nightly. <br> - Add smoke step: `yarn compat:smoke` (wraps build/test/alias report generation). <br> - Trigger `yarn ci:nightly` (translation + compat build) in the same job so localization regressions fail fast. <br> - Publish bundle analyzer + alias report artifacts from smoke run outputs. | DevOps         | ☐      |
+| CI pipeline        | - Ensure `build:vue3` workflow runs nightly. <br> - Add smoke step: `yarn compat:smoke` (wraps build/test/alias report generation for the native runtime). <br> - Trigger `yarn ci:nightly` (translation + native Vue 3 build) in the same job so localization regressions fail fast. <br> - Publish bundle analyzer + alias report artifacts from smoke run outputs. | DevOps         | ☐      |
 | Alias detection    | - Extend `scripts/analyze/compat-alias.ts` (or new script) to list remaining compat imports (`@vue/compat`, legacy shims). <br> - Fail build if new compat usage appears outside allow-list.                                                                                                                                             | Migration pod  | ☐      |
 | Alerting           | - Configure Slack notifications to `#migration-status` when nightly build fails or alias script finds issues. <br> - Track failure count in KPI automation (`compatBuildStreak`).                                                                                                                                                        | DevOps         | ☐      |
 | Dashboard          | - Create Confluence page summarising nightly results (build status, alias counts). <br> - Link dashboards in roadmap KPI section.                                                                                                                                                                                                        | Migration lead | ☐      |
@@ -24,17 +24,17 @@ Goal: ensure the Vue 3 compat toggle (`VITE_DISABLE_COMPAT`) can be disabled saf
 
 1. Nightly build fails → DevOps on-call investigates log.
 2. Determine category: build error, alias violation, smoke test failure.
-3. Create ticket in migration board (label `compat-toggle`) with root cause and ETA.
+3. Create ticket in migration board (label `vue3-hardening`) with root cause and ETA.
 4. Update #migration-status template and Confluence dashboard.
 5. Migration lead reviews during standup; escalate via risk triage huddle if Sev1.
 
 ## Supporting Scripts & Artefacts
 
-- `yarn ci:nightly` (translation + compat build entrypoint used by Jenkins/GitLab).
-- `yarn build:vue3` (existing).
+- `yarn ci:nightly` (translation + native Vue 3 build entrypoint used by Jenkins/GitLab).
+- `yarn build:vue3` (native Vue 3 build alias).
 - New script (planned): `tsx scripts/analyze/compat-alias.ts` producing JSON/Markdown report.
 - Bundle analyzer outputs stored under `dist/reports/build-vue3/`.
-- KPI automation (`yarn kpi:report`) tracks compat build streak.
+- KPI automation (`yarn kpi:report`) tracks the native Vue 3 build streak.
 
 ## Timeline
 
@@ -43,7 +43,7 @@ Goal: ensure the Vue 3 compat toggle (`VITE_DISABLE_COMPAT`) can be disabled saf
 | Sprint 1 Week 2 | CI job scheduled; smoke subset defined; alias script prototype.                         |
 | Sprint 2 Week 1 | Slack alerts live; alias script enforcing allow-list.                                   |
 | Sprint 2 Week 2 | Dashboard published; manual smoke runbook validated.                                    |
-| Sprint 3 Week 1 | Goal: 7 consecutive green builds + zero alias violations; prep compat removal proposal. |
+| Sprint 3 Week 1 | Goal: 7 consecutive green builds + zero alias violations; prep final compat shim removal proposal. |
 
 ## Notes
 

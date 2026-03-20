@@ -1,4 +1,4 @@
-import { defineModule } from 'direct-vuex';
+import { defineModule } from '@/store/module-helpers';
 
 import account from './account';
 import router from './router';

@@ -1,4 +1,5 @@
-import { defineModule, localActionContext, localGetterContext } from 'direct-vuex';
+import { defineModule } from '@/store/module-helpers';
+import { localModuleActionContext, localModuleGetterContext } from '@/store/module-context';
 
 import actions from './actions';
 import getters from './getters';
@@ -13,9 +14,9 @@ const transactions = defineModule({
   getters,
 });
 
-const transactionsGetterContext = (args: [any, any, any, any]) => localGetterContext(args, transactions);
+const transactionsGetterContext = (args: [any, any, any, any]) => localModuleGetterContext(args, transactions);
 
-const transactionsActionContext = (context: any) => localActionContext(context, transactions);
+const transactionsActionContext = (context: any) => localModuleActionContext(context, transactions);
 
 export { transactionsGetterContext, transactionsActionContext };
 export default transactions;

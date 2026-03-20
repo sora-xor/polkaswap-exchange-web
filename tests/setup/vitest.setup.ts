@@ -217,6 +217,10 @@ config.global.stubs = {
     name: 'ElPopoverStub',
     template: '<div class="el-popover-stub"><slot name="reference" /><slot /></div>',
   },
+  's-popover-panel': {
+    name: 'SPopoverPanelStub',
+    template: '<div class="s-popover-panel-stub"><slot name="reference" /><slot /></div>',
+  },
 };
 
 const noopDirectiveHook = () => {
@@ -281,39 +285,27 @@ function createStorage(): Storage {
 }
 
 function ensureStorage<T extends { [key: string]: unknown }>(target: T, key: 'localStorage' | 'sessionStorage') {
-  let current: Storage | undefined;
-  try {
-    current = (target as { [key: string]: Storage | undefined })[key];
-  } catch {
-    current = undefined;
-  }
-
-  if (!current || typeof current.getItem !== 'function') {
-    const storage = createStorage();
-    Object.defineProperty(target, key, {
-      configurable: true,
-      get: () => storage,
-    });
-    return storage;
-  }
-
-  return current;
+  // Avoid touching Node's experimental Web Storage getter in tests. It may emit
+  // warnings when no backing file is configured, while the suites only need an
+  // isolated in-memory implementation.
+  const storage = createStorage();
+  Object.defineProperty(target, key, {
+    configurable: true,
+    get: () => storage,
+  });
+  return storage;
 }
 
 const localStorage = ensureStorage(g.window as any, 'localStorage');
 const sessionStorage = ensureStorage(g.window as any, 'sessionStorage');
-if (!('localStorage' in g) || typeof (g as any).localStorage?.getItem !== 'function') {
-  Object.defineProperty(g, 'localStorage', {
-    configurable: true,
-    get: () => localStorage,
-  });
-}
-if (!('sessionStorage' in g) || typeof (g as any).sessionStorage?.getItem !== 'function') {
-  Object.defineProperty(g, 'sessionStorage', {
-    configurable: true,
-    get: () => sessionStorage,
-  });
-}
+Object.defineProperty(g, 'localStorage', {
+  configurable: true,
+  get: () => localStorage,
+});
+Object.defineProperty(g, 'sessionStorage', {
+  configurable: true,
+  get: () => sessionStorage,
+});
 
 if (!g.window.location) {
   g.window.location = {
@@ -377,50 +369,6 @@ if (typeof g.window.matchMedia !== 'function') {
 if (!('HTMLElement' in g)) {
   (g as any).HTMLElement = function () {};
 }
-
-vi.mock('vue-property-decorator', () => {
-  class Vue {}
-  const classDecorator = () => (target: any) => target;
-  const memberDecorator = () => (_target: any, _key?: string, descriptor?: PropertyDescriptor) =>
-    descriptor ?? undefined;
-  const Mixins = (...mixins: any[]) => {
-    class Mixed extends Vue {}
-    mixins.forEach((mixin) => {
-      if (mixin?.prototype) {
-        Object.getOwnPropertyNames(mixin.prototype).forEach((name) => {
-          if (name === 'constructor') return;
-          Object.defineProperty(
-            Mixed.prototype,
-            name,
-            Object.getOwnPropertyDescriptor(mixin.prototype, name) ?? Object.create(null)
-          );
-        });
-      }
-    });
-    return Mixed;
-  };
-
-  const componentDecorator = classDecorator as typeof classDecorator & { registerHooks?: (...hooks: string[]) => void };
-  componentDecorator.registerHooks = () => undefined;
-
-  return {
-    __esModule: true,
-    default: Vue,
-    Vue,
-    Options: classDecorator,
-    Component: componentDecorator,
-    Mixins,
-    mixins: Mixins,
-    Prop: memberDecorator,
-    PropSync: memberDecorator,
-    Model: memberDecorator,
-    Emit: memberDecorator,
-    Watch: memberDecorator,
-    Provide: memberDecorator,
-    Inject: memberDecorator,
-    Ref: memberDecorator,
-  };
-});
 
 vi.mock('@/router', () => ({
   __esModule: true,

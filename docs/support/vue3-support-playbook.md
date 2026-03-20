@@ -34,10 +34,10 @@ When a ticket or alert arrives:
    - Environment (preview, staged flag, GA).
    - Browser/device and timestamp.
    - Screenshots or console errors.
-   - Feature flag status (`VITE_DISABLE_COMPAT` true/false).
+   - Build variant / release hash (for example `window.__PS_BUILD_VARIANT__` or the deployed CID/hash).
 3. **Check telemetry**:
    - `pinia_store_usage` events (confirm `isLegacyFallback` and `storeName` fields).
-   - `compat_warning` logs if user fell back to compat bundle.
+   - Native Vue 3 runtime/bootstrap logs for regressions around legacy wallet shims.
    - `translation_missing` events for locale gaps.
 4. **Review monitoring**:
    - Nightly `yarn build:vue3` job status.
@@ -54,7 +54,7 @@ Log findings in the shared Zendesk/Jira template and tag the relevant squad.
 
 1. Verify wallet store telemetry (Pinia `wallet` vs legacy). If `isLegacyFallback=true`, instruct user to refresh; capture logs.
 2. Ask user to clear cached `public/env.json` (Ctrl+F5) to ensure updated network list.
-3. Check `@wallet` vendored bundle status (see `docs/plans/soraneo-wallet-inline.md`). If regression confirmed, hand off to wallet squad and consider enabling compat flag for wallet dialogs only.
+3. Check `@wallet` vendored bundle status (see `docs/plans/soraneo-wallet-inline.md`). If regression confirmed, hand off to wallet squad and prepare either a targeted wallet hotfix or a rollback to the last verified release artifact.
 4. Escalate Sev1 connection outages to migration lead + DevOps immediately.
 
 ### 4.2 Bridge Flow Failures

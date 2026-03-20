@@ -6,39 +6,39 @@ This document flags the remaining Vue 2 era dependencies that must be removed be
 
 **Current usage**
 
-- Still imported across the legacy Vuex modules under `src/store/**` (add/remove liquidity, order book, pool, rewards, staking, soraCard, demeter farming, vault, web3, etc.).
-- `src/store/index.ts` bootstraps the entire store via `createDirectStore`.
-- README plus several migration plans remind contributors to avoid adding new `direct-vuex` usage, but we do not yet have a removal checklist.
+- The external package has been removed from `package.json` and `yarn.lock`.
+- The remaining Vuex facade now imports a repo-local compatibility shim at `src/store/direct-vuex.ts`.
+- `src/store/index.ts` and `src/lib/soraneo-wallet/src/store/index.ts` still bootstrap legacy Vuex stores through that shim while Pinia parity work continues.
 
 **Risks / blockers**
 
-- Components that still rely on class-style decorators consume `store.dispatch.*` helpers injected by `direct-vuex`.
-- Some Vuex modules (order book, staking, sora card) lack Pinia equivalents, so consumers cannot be flipped yet.
+- Options API holdouts still consume nested `store.getters.*`, `store.commit.*`, and `store.dispatch.*` helpers exposed by the compatibility shim.
+- Some Vuex modules (order book, staking, vault/pool flows, wallet bundle) still lack full Pinia parity, so the shim cannot be deleted yet.
 
 **Actions**
 
 1. Track module-by-module parity in a shared checklist (see `docs/plans/vue3-migration.md`) and migrate the remaining stores to Pinia (`useOrderBookStore`, `useStakingStore`, etc.).
-2. Once a module has a Pinia replacement, swap the consumers to the new store, then delete the legacy Vuex module and its `direct-vuex` decorators.
-3. After the last module migrates, remove `direct-vuex` from `package.json`/`yarn.lock` and update `src/store/index.ts` to drop the direct-store shim.
+2. Once a module has a Pinia replacement, swap the consumers to the new store, then delete the matching legacy Vuex facade under `src/store/**`.
+3. After the last module migrates, delete `src/store/direct-vuex.ts`, `src/store/index.ts`, and the related `app-store.ts` / compatibility bridge code.
 
 ## `vue-property-decorator`
 
 **Current usage**
 
-- Frontend components that still ship Options API/class mixins (e.g., `src/views/Explore/*`, `src/views/StakingContainer.vue`, `src/components/pages/SoraCard/**`) import `Component`/`Mixins` from `vue-property-decorator`.
+- The app-owned `src/**` tree no longer imports `vue-property-decorator`; remaining usage is isolated to the embedded wallet package and the build/test stubs that support it.
 - The embedded wallet package (`src/lib/soraneo-wallet`) continues to expose decorator-based components until the upstream Vue 3 builds land.
-- The compat shim and stub aliases have been removed; imports now target the upstream `vue-property-decorator` package directly.
+- The app bundle still carries build/test aliases for the vendored wallet sources, so dependency removal remains blocked on the wallet migration.
 
 **Risks / blockers**
 
 - Some wallet components are sourced from upstream packages and still require class decorators.
-- Class components keep the decorator dependency in the bundle until all callers migrate.
+- The dependency cannot be removed until the vendored wallet bundle stops importing those packages.
 
 **Actions**
 
-1. Continue the component conversion wave (see roadmap Component Refactors). Each converted component should drop `vue-property-decorator` imports in favor of `<script setup>` or `defineComponent`.
+1. Keep the app regression test (`tests/unit/source/vue3-modernization.spec.ts`) green so class/decorator imports cannot return to `src/**`.
 2. Coordinate with the wallet team to deliver Vue 3 builds that no longer depend on decorators. Once they land, remove the `src/lib/soraneo-wallet` class mixins and rely on Composition API wrappers.
-3. When no files import `vue-property-decorator`, remove the dependency from `package.json`/`yarn.lock` and clean up any lingering decorator mocks in tests or setup files.
+3. When the vendored wallet sources stop importing `vue-property-decorator`, remove the dependency from `package.json`/`yarn.lock` and clean up the lingering aliases/mocks in build and test setup.
 
 ## Legacy compat shims / UI helpers
 

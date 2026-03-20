@@ -10,8 +10,8 @@
             :is-max-available="isBaseAssetMaxButtonAvailable"
             :title="t('demeterFarming.amountAdd')"
             :token="baseAsset"
-            :value="baseAssetValue"
-            @input="handleBaseAssetValue"
+            :model-value="baseAssetValue"
+            @update:model-value="handleBaseAssetValue"
             @max="handleBaseAssetMax"
           ></token-input>
 
@@ -24,15 +24,15 @@
           :is-max-available="isPoolAssetMaxButtonAvailable"
           :title="t('demeterFarming.amountAdd')"
           :token="poolAsset"
-          :value="poolAssetValue"
-          @input="handlePoolAssetValue"
+          :model-value="poolAssetValue"
+          @update:model-value="handlePoolAssetValue"
           @max="handlePoolAssetMax"
         ></token-input>
       </s-form>
 
       <div class="duration">
         <info-line label="Duration" class="duration-title"></info-line>
-        <s-tabs type="rounded" :value="selectedPeriod" @input="selectPeriod" class="duration-tabs">
+        <s-tabs type="rounded" :value="selectedPeriod" @update:model-value="selectPeriod" class="duration-tabs">
           <s-tab v-for="period in intervals" :key="period" :name="String(period)" :label="`${period}D`"></s-tab>
         </s-tabs>
       </div>
@@ -66,7 +66,6 @@ import { components } from '@wallet';
 import { computed, ref, toRefs, watch, type PropType } from 'vue';
 
 import { Components, Links } from '@/consts';
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
@@ -93,7 +92,6 @@ defineOptions({
 });
 
 const props = defineProps({
-  visible: { type: Boolean, default: false },
   parentLoading: { type: Boolean, default: false },
   liquidity: { type: Object as PropType<Nullable<AccountLiquidity>>, default: null },
   baseAsset: { type: Object as PropType<Nullable<DemeterAsset>>, default: null },
@@ -105,21 +103,11 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { baseAsset, poolAsset, rewardAsset, liquidity, pool, accountPool } = toRefs(props);
-
-const dialogModel = useDialogModel(props, (event, value) => {
-  if (event === 'update:visible') {
-    emit('update:visible', value ?? false);
-  } else {
-    emit('close');
-  }
-});
-
-const { isVisible } = dialogModel;
 
 const settingsStore = useSettingsStore();
 const assetsStore = useAssetsStore();
@@ -141,13 +129,10 @@ const cardApi = useDemeterPoolCard(statusApi);
 const baseAssetValue = ref('');
 const poolAssetValue = ref('');
 
-watch(
-  () => props.visible,
-  () => {
-    baseAssetValue.value = '';
-    poolAssetValue.value = '';
-  }
-);
+watch(isVisible, () => {
+  baseAssetValue.value = '';
+  poolAssetValue.value = '';
+});
 
 const intervals = [1, 7, 30, 90];
 const interval = ref(1);

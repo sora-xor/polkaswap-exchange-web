@@ -6,8 +6,8 @@
           is-header
           :is-mobile="showDropdown"
           :tabs="tabs"
-          :value="pageName"
-          @input="handleTabChange"
+          :model-value="pageName"
+          @update:model-value="handleTabChange"
         ></responsive-tabs>
         <search-input
           autofocus

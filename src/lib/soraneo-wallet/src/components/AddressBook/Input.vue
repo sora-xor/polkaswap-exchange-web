@@ -84,14 +84,13 @@
 </template>
 
 <script lang="ts">
-import { Options, mixins, Prop, Watch } from 'vue-property-decorator';
+import { defineComponent, type PropType } from 'vue';
+import { mapMutations, mapState } from 'vuex';
 
 import { api } from '../../api';
-import { mutation, state } from '../../store/decorators';
 import { formatAccountAddress } from '../../util';
 import { subscribeToWalletAccounts } from '../../util/account';
 import WalletAccount from '../Account/WalletAccount.vue';
-import SearchInput from '../Input/SearchInput.vue';
 import TranslationMixin from '../mixins/TranslationMixin';
 
 import AddressBookContact from './Contact.vue';
@@ -100,149 +99,171 @@ import AddressBookList from './List.vue';
 import type { AppWallet } from '../../consts';
 import type { Book, PolkadotJsAccount } from '../../types/common';
 
-@Options({
+export default defineComponent({
   inheritAttrs: false,
   components: {
-    SearchInput,
     WalletAccount,
     AddressBookList,
     AddressBookContact,
   },
-})
-export default class AddressBookInput extends mixins(TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly excludeConnected!: boolean;
-  @Prop({ default: '', type: String }) readonly value!: string;
-  @Prop({ default: '', type: String }) readonly propPlaceholder!: string;
-  @Prop({ default: false, type: Boolean }) readonly isValid!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
-  @Prop({ required: false, type: Function }) readonly onRemove!: () => void;
-  @Prop({ default: false, type: Boolean }) readonly canRemove!: boolean;
+  mixins: [TranslationMixin],
+  props: {
+    excludeConnected: {
+      default: false,
+      type: Boolean,
+    },
+    modelValue: {
+      default: undefined,
+      type: String,
+    },
+    value: {
+      default: '',
+      type: String,
+    },
+    propPlaceholder: {
+      default: '',
+      type: String,
+    },
+    isValid: {
+      default: false,
+      type: Boolean,
+    },
+    disabled: {
+      default: false,
+      type: Boolean,
+    },
+    onRemove: {
+      required: false,
+      type: Function as PropType<() => void>,
+    },
+    canRemove: {
+      default: false,
+      type: Boolean,
+    },
+  },
+  emits: ['update:modelValue', 'update:name'],
+  data() {
+    return {
+      name: '',
+      prefilledAddress: '',
+      showAddressBookDialog: false,
+      showSetContactDialog: false,
+      isEditMode: false,
+      accountsSubscription: null as Nullable<(() => void) | null>,
+      accountsRecords: [] as PolkadotJsAccount[],
+    };
+  },
+  computed: {
+    ...mapState('wallet/account', {
+      connected: 'address',
+      source: 'source',
+      addressBook: 'book',
+    }),
+    address: {
+      get(this: any): string {
+        return this.modelValue ?? this.value;
+      },
+      set(this: any, value: string): void {
+        this.$emit('update:modelValue', value.trim());
+      },
+    },
+    accountBook(this: any): Book {
+      return this.accountsRecords.reduce((book: Book, { address, name }: PolkadotJsAccount) => {
+        const key = formatAccountAddress(address);
 
-  @Watch('books')
-  @Watch('isValid')
-  private updateContactName(): void {
-    if (!this.isValid) {
-      this.name = '';
-    } else if (!this.name) {
-      const key = formatAccountAddress(this.address);
-      this.name = this.books[key] || '';
-    }
+        return {
+          ...book,
+          [key]: name,
+        };
+      }, {});
+    },
+    books(this: any): Book {
+      return { ...this.accountBook, ...this.addressBook };
+    },
+    bookRecords(this: any): PolkadotJsAccount[] {
+      return Object.entries((this.addressBook ?? {}) as Book).map(([address, name]) => ({
+        address,
+        name,
+        source: this.source as AppWallet,
+      }));
+    },
+    isNewAddress(this: any): boolean {
+      if (!this.address) return false;
 
-    this.updateName();
-  }
+      const formattedAddress = formatAccountAddress(this.address);
 
-  get address(): string {
-    return this.value;
-  }
+      if (!formattedAddress) return false;
 
-  set address(value: string) {
-    const prepared = value.trim();
+      const found = this.accountsRecords.find(
+        (account: PolkadotJsAccount) => formatAccountAddress(account.address) === formattedAddress
+      );
 
-    this.$emit('input', prepared);
-  }
+      return !this.addressBook?.[formattedAddress] && !found;
+    },
+    excludedAddress(this: any): string {
+      return this.excludeConnected ? this.connected : '';
+    },
+    record(this: any): Nullable<PolkadotJsAccount> {
+      const { address, name, source, isValid } = this;
 
-  name = '';
-  prefilledAddress = '';
-
-  @state.account.address private connected!: string;
-  @state.account.source private source!: AppWallet;
-  @state.account.book addressBook!: Book;
-
-  @mutation.account.setAddressToBook setAddressToBook!: (record: PolkadotJsAccount) => void;
-  @mutation.account.removeAddressFromBook removeAddressFromBook!: (address: string) => void;
-
-  showAddressBookDialog = false;
-  showSetContactDialog = false;
-
-  isEditMode = false;
-
-  accountsSubscription: Nullable<any> = null;
-  accountsRecords: PolkadotJsAccount[] = [];
-
-  get accountBook(): Book {
-    return this.accountsRecords.reduce((book, { address, name }) => {
-      const key = formatAccountAddress(address);
-
-      return {
-        ...book,
-        [key]: name,
-      };
-    }, {});
-  }
-
-  get books(): Book {
-    return { ...this.accountBook, ...this.addressBook };
-  }
-
-  get bookRecords(): PolkadotJsAccount[] {
-    return Object.entries(this.addressBook).map(([address, name]) => ({ address, name, source: this.source }));
-  }
-
-  get isNewAddress(): boolean {
-    if (!this.address) return false;
-
-    const formattedAddress = formatAccountAddress(this.address);
-
-    if (!formattedAddress) return false;
-
-    const found = this.accountsRecords.find((account) => formatAccountAddress(account.address) === formattedAddress);
-
-    return !this.addressBook[formattedAddress] && !found;
-  }
-
-  get excludedAddress(): string {
-    return this.excludeConnected ? this.connected : '';
-  }
-
-  get record(): Nullable<PolkadotJsAccount> {
-    const { address, name, source, isValid } = this;
-
-    return isValid && name ? { address, name, source } : null;
-  }
-
-  openAddressBook(): void {
-    this.showAddressBookDialog = true;
-  }
-
-  chooseRecord({ name, address }: PolkadotJsAccount): void {
-    this.address = address;
-    this.name = name;
-    this.updateName();
-  }
-
-  openContact(address: Nullable<string>, isEditMode = false): void {
-    this.isEditMode = isEditMode;
-    this.prefilledAddress = address ? formatAccountAddress(address) : '';
-    this.showSetContactDialog = true;
-  }
-
-  resetAddress(): void {
-    this.address = '';
-  }
-
-  updateName(): void {
-    this.$emit('update:name', this.name);
-  }
-
-  async mounted(): Promise<void> {
+      return isValid && name ? { address, name, source } : null;
+    },
+  },
+  watch: {
+    books(this: any): void {
+      this.updateContactName();
+    },
+    isValid(this: any): void {
+      this.updateContactName();
+    },
+  },
+  async mounted(this: any): Promise<void> {
     this.accountsSubscription = await subscribeToWalletAccounts(api, this.source, (accounts) => {
       this.accountsRecords = accounts;
     });
-  }
-
-  beforeUnmount(): void {
+  },
+  beforeUnmount(this: any): void {
     if (this.accountsSubscription) {
       this.accountsSubscription();
       this.accountsSubscription = null;
     }
-  }
+  },
+  methods: {
+    ...mapMutations('wallet/account', ['setAddressToBook', 'removeAddressFromBook']),
+    updateContactName(this: any): void {
+      if (!this.isValid) {
+        this.name = '';
+      } else if (!this.name) {
+        const key = formatAccountAddress(this.address);
+        this.name = this.books[key] || '';
+      }
 
-  removeInput(): void {
-    if (this.onRemove) {
-      this.onRemove();
-    }
-  }
-}
+      this.updateName();
+    },
+    openAddressBook(this: any): void {
+      this.showAddressBookDialog = true;
+    },
+    chooseRecord(this: any, { name, address }: PolkadotJsAccount): void {
+      this.address = address;
+      this.name = name;
+      this.updateName();
+    },
+    openContact(this: any, address: Nullable<string>, isEditMode = false): void {
+      this.isEditMode = isEditMode;
+      this.prefilledAddress = address ? formatAccountAddress(address) : '';
+      this.showSetContactDialog = true;
+    },
+    resetAddress(this: any): void {
+      this.address = '';
+    },
+    updateName(this: any): void {
+      this.$emit('update:name', this.name);
+    },
+    removeInput(this: any): void {
+      this.onRemove?.();
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

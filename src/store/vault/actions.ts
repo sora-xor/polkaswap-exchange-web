@@ -1,6 +1,6 @@
 import { XOR, KUSD } from '@sora-substrate/sdk/build/assets/consts';
 import { api } from '@wallet';
-import { defineActions } from 'direct-vuex';
+import { defineActions } from '@/store/module-helpers';
 
 import { fetchClosedVaults } from '@/indexer/queries/vault/vaults';
 import { vaultActionContext } from '@/store/vault';

@@ -77,7 +77,7 @@
 <script lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { MaxTotalSupply, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { Options, mixins, Prop } from 'vue-property-decorator';
+import { defineComponent, type PropType } from 'vue';
 
 import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
@@ -91,122 +91,122 @@ import NetworkFeeWarningMixin from './mixins/NetworkFeeWarningMixin';
 import NumberFormatterMixin from './mixins/NumberFormatterMixin';
 import TransactionMixin from './mixins/TransactionMixin';
 import NetworkFeeWarningDialog from './NetworkFeeWarning.vue';
-import WalletBase from './WalletBase.vue';
 import WalletFee from './WalletFee.vue';
 
 import type { Route } from '../store/router/types';
 
-@Options({
+export default defineComponent({
   components: {
-    WalletBase,
     InfoLine,
     WalletFee,
     NetworkFeeWarningDialog,
     AccountConfirmationOption,
   },
-})
-export default class CreateSimpleToken extends mixins(TransactionMixin, NumberFormatterMixin, NetworkFeeWarningMixin) {
-  readonly XOR = XOR.symbol;
-  readonly Step = Step;
-  readonly decimals = FPNumber.DEFAULT_PRECISION;
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-  readonly maxTotalSupply = MaxTotalSupply;
-  readonly tokenSymbolMask = 'AAAAAAA';
-  readonly tokenNameMask = { mask: 'Z*', tokens: { Z: { pattern: /[0-9a-zA-Z ]/ } } };
+  mixins: [TransactionMixin, NumberFormatterMixin, NetworkFeeWarningMixin],
+  props: {
+    step: {
+      default: Step.CreateSimpleToken,
+      type: String as PropType<Step>,
+    },
+  },
+  emits: ['showTabs', 'showHeader', 'stepChange'],
+  data() {
+    return {
+      XOR: XOR.symbol,
+      Step,
+      decimals: FPNumber.DEFAULT_PRECISION,
+      delimiters: FPNumber.DELIMITERS_CONFIG,
+      maxTotalSupply: MaxTotalSupply,
+      tokenSymbolMask: 'AAAAAAA',
+      tokenNameMask: { mask: 'Z*', tokens: { Z: { pattern: /[0-9a-zA-Z ]/ } } },
+      tokenSymbol: '',
+      tokenName: '',
+      tokenSupply: '',
+      extensibleSupply: false,
+      showFee: true,
+    };
+  },
+  computed: {
+    routerStore(this: any) {
+      return useRouterStore(this.$pinia);
+    },
+    walletStore(this: any) {
+      return useWalletStore(this.$pinia);
+    },
+    isConfirmTxDisabled(this: any): boolean {
+      return this.walletStore.isConfirmTxDialogDisabled;
+    },
+    fee(this: any): FPNumber {
+      return this.getFPNumberFromCodec(this.networkFees.RegisterAsset);
+    },
+    formattedFee(this: any): string {
+      return this.fee.toLocaleString();
+    },
+    isCreateDisabled(this: any): boolean {
+      return !(this.tokenSymbol && this.tokenName.trim() && +this.tokenSupply);
+    },
+    formattedTokenSupply(this: any): string {
+      return this.formatStringValue(this.tokenSupply, this.decimals);
+    },
+    hasEnoughXor(this: any): boolean {
+      const accountXor = api.assets.accountAssets.find((asset) => asset.address === XOR.address);
+      if (!accountXor || !accountXor.balance || !+accountXor.balance.transferable) {
+        return false;
+      }
+      const fpAccountXor = this.getFPNumberFromCodec(accountXor.balance.transferable, accountXor.decimals);
+      return FPNumber.gte(fpAccountXor, this.fee);
+    },
+  },
+  methods: {
+    navigate(this: any, options: Route): void {
+      this.routerStore.navigate(options);
+    },
+    async registerAsset(this: any): Promise<void> {
+      return api.assets.register(this.tokenSymbol, this.tokenName.trim(), this.tokenSupply, this.extensibleSupply);
+    },
+    async onCreate(this: any): Promise<void> {
+      if (!this.tokenSymbol.length || !this.tokenSupply.length || !this.tokenName.length) {
+        return;
+      }
 
-  @Prop({ default: Step.CreateSimpleToken, type: String }) readonly step!: Step;
+      this.tokenSupply = this.getCorrectSupply(this.tokenSupply, this.decimals);
 
-  private get routerStore() {
-    return useRouterStore((this as any).$pinia);
-  }
+      this.$emit('showTabs');
 
-  private get walletStore() {
-    return useWalletStore((this as any).$pinia);
-  }
+      if (
+        this.allowFeePopup &&
+        this.hasEnoughXor &&
+        !this.isXorSufficientForNextTx({ type: Operation.RegisterAsset })
+      ) {
+        this.$emit('showHeader');
+        this.showFee = false;
+        this.$emit('stepChange', Step.Warn);
+        return;
+      }
 
-  tokenSymbol = '';
-  tokenName = '';
-  tokenSupply = '';
-  extensibleSupply = false;
-  showFee = true;
-
-  get isConfirmTxDisabled(): boolean {
-    return this.walletStore.isConfirmTxDialogDisabled;
-  }
-
-  private navigate(options: Route): void {
-    this.routerStore.navigate(options);
-  }
-
-  get fee(): FPNumber {
-    return this.getFPNumberFromCodec(this.networkFees.RegisterAsset);
-  }
-
-  get formattedFee(): string {
-    return this.fee.toLocaleString();
-  }
-
-  get isCreateDisabled(): boolean {
-    return !(this.tokenSymbol && this.tokenName.trim() && +this.tokenSupply);
-  }
-
-  get formattedTokenSupply(): string {
-    return this.formatStringValue(this.tokenSupply, this.decimals);
-  }
-
-  get hasEnoughXor(): boolean {
-    const accountXor = api.assets.accountAssets.find((asset) => asset.address === XOR.address);
-    if (!accountXor || !accountXor.balance || !+accountXor.balance.transferable) {
-      return false;
-    }
-    const fpAccountXor = this.getFPNumberFromCodec(accountXor.balance.transferable, accountXor.decimals);
-    return FPNumber.gte(fpAccountXor, this.fee);
-  }
-
-  async registerAsset(): Promise<void> {
-    return api.assets.register(this.tokenSymbol, this.tokenName.trim(), this.tokenSupply, this.extensibleSupply);
-  }
-
-  async onCreate(): Promise<void> {
-    if (!this.tokenSymbol.length || !this.tokenSupply.length || !this.tokenName.length) {
-      return;
-    }
-
-    this.tokenSupply = this.getCorrectSupply(this.tokenSupply, this.decimals);
-
-    this.$emit('showTabs');
-
-    if (this.allowFeePopup && this.hasEnoughXor && !this.isXorSufficientForNextTx({ type: Operation.RegisterAsset })) {
+      if (this.isConfirmTxDisabled) {
+        await this.onConfirm();
+      } else {
+        this.showFee = true;
+        this.$emit('stepChange', Step.ConfirmSimpleToken);
+      }
+    },
+    async onConfirm(this: any): Promise<void> {
+      await this.withNotifications(async () => {
+        if (!this.hasEnoughXor) {
+          throw new Error('insufficientBalanceText');
+        }
+        await this.registerAsset();
+        this.navigate({ name: RouteNames.Wallet });
+      });
+    },
+    confirmNextTxFailure(this: any): void {
       this.$emit('showHeader');
-      this.showFee = false;
-      this.$emit('stepChange', Step.Warn);
-      return;
-    }
-
-    if (this.isConfirmTxDisabled) {
-      await this.onConfirm();
-    } else {
       this.showFee = true;
       this.$emit('stepChange', Step.ConfirmSimpleToken);
-    }
-  }
-
-  async onConfirm(): Promise<void> {
-    await this.withNotifications(async () => {
-      if (!this.hasEnoughXor) {
-        throw new Error('insufficientBalanceText');
-      }
-      await this.registerAsset();
-      this.navigate({ name: RouteNames.Wallet });
-    });
-  }
-
-  confirmNextTxFailure(): void {
-    this.$emit('showHeader');
-    this.showFee = true;
-    this.$emit('stepChange', Step.ConfirmSimpleToken);
-  }
-}
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">

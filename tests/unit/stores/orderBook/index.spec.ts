@@ -35,8 +35,8 @@ const legacyStoreStub = {
 
 vi.mock('@/store', () => ({}));
 
-vi.mock('@/utils/legacy-store', () => ({
-  requireLegacyStore: () => legacyStoreStub,
+vi.mock('@/utils/app-store', () => ({
+  requireAppStore: () => legacyStoreStub,
 }));
 
 describe('useOrderBookStore', () => {

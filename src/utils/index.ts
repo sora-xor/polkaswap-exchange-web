@@ -13,7 +13,7 @@ type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
 import { app, TranslationConsts } from '@/consts';
 import i18n from '@/lang';
 import getScrollbarWidth from '@/utils/scrollbar-width';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 import {
   asZeroValue,
   getAssetBalance,
@@ -38,7 +38,7 @@ export async function waitUntil(condition: () => boolean): Promise<void> {
 }
 
 export async function waitForSoraNetworkFromEnv(): Promise<WALLET_CONSTS.SoraNetwork> {
-  const legacyStore = requireLegacyStore() as any;
+  const legacyStore = requireAppStore() as any;
   const watch = legacyStore?.original?.watch;
 
   if (typeof watch !== 'function') {
@@ -90,7 +90,7 @@ export const isMaxButtonAvailable = (
   xorAsset: AccountAsset | RegisteredAccountAsset,
   isXorOutputSwap = false
 ): boolean => {
-  const legacyStore = requireLegacyStore() as any;
+  const legacyStore = requireAppStore() as any;
   const shouldHideBalance = legacyStore?.state?.wallet?.settings?.shouldBalanceBeHidden;
 
   if (shouldHideBalance) {

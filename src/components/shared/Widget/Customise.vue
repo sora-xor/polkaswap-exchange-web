@@ -2,11 +2,11 @@
   <div class="customise-widget-wrapper" @click.stop="toggleVisibility">
     <base-widget v-bind="$attrs" :title="t('customisePageText')" class="customise-widget">
       <template #filters>
-        <el-popover
+        <s-popover-panel
           popper-class="customise-widget-popper"
           placement="bottom-end"
           trigger="click"
-          v-model="visible"
+          v-model:show="visible"
           :visible-arrow="false"
         >
           <template #reference>
@@ -32,7 +32,7 @@
 
             <slot></slot>
           </div>
-        </el-popover>
+        </s-popover-panel>
       </template>
     </base-widget>
   </div>

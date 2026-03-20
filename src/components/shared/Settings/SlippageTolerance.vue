@@ -14,7 +14,7 @@
             <settings-tabs
               :value="selectedSlippageTab"
               :tabs="slippageToleranceTabs"
-              @input="selectTab"
+              @update:model-value="selectTab"
             ></settings-tabs>
           </div>
           <div class="slippage-tolerance-custom">

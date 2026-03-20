@@ -44,6 +44,69 @@ const openBridge = async (page: Page): Promise<void> => {
   await expectHash(page, '#/bridge');
 };
 
+const injectLiberlandSubBridgeContext = async (
+  page: Page,
+  {
+    nodeIsConnected = false,
+    hasApi = false,
+  }: {
+    nodeIsConnected?: boolean;
+    hasApi?: boolean;
+  } = {}
+): Promise<void> => {
+  await page.evaluate(
+    ({ nodeIsConnected, hasApi }) => {
+      const store = (window as Record<string, any>).__PS_APP_STORE__;
+      const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
+      const bridgeStore = pinia?._s?.get('bridge');
+
+      const node = {
+        chain: 'Liberland',
+        name: 'Dwellir',
+        address: 'wss://liberland-rpc.dwellir.com',
+        location: 'EU',
+      };
+
+      const subConnection = {
+        nodeIsConnected,
+        nodeAddressConnecting: '',
+        connectionAllowance: true,
+        node,
+        nodeList: [node],
+        defaultNodes: [node],
+        customNodes: [],
+        connect: async () => undefined,
+        updateCustomNode: () => undefined,
+        removeCustomNode: () => undefined,
+      };
+
+      const applyConnectorState = (connector?: Record<string, any>) => {
+        if (!connector) return;
+
+        connector.standalone = {
+          subNetwork: 'Liberland',
+          subNetworkConnection: subConnection,
+          formatAddress: (value: string) => value,
+          getBlockNumber: async () => 0,
+        };
+        connector.accountApi = {
+          connection: { api: hasApi ? {} : undefined },
+          formatAddress: (value: string) => value,
+        };
+      };
+
+      applyConnectorState(bridgeStore?.connector);
+      applyConnectorState(store?.state?.bridge?.subBridgeConnector);
+
+      store?.commit?.web3?.setNetworkType?.('Sub');
+      store?.commit?.web3?.setSelectedNetwork?.('Liberland');
+      store?.commit?.web3?.setSubAccountDialogVisibility?.(false);
+      store?.commit?.web3?.setSelectSubNodeDialogVisibility?.(false);
+    },
+    { nodeIsConnected, hasApi }
+  );
+};
+
 test.beforeEach(async ({ page }) => {
   await preparePage(page);
 });
@@ -169,6 +232,65 @@ test('restores bridge account connect trigger clickability immediately after clo
   await connectTrigger.click({ trial: true, timeout: 100 });
   await connectTrigger.click();
   await expect(connectDialog).toBeVisible();
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('opens the Liberland node selector instead of the sub-account dialog when the bridge connector is offline', async ({
+  page,
+}) => {
+  const consoleErrors = trackConsole(page);
+
+  await openBridge(page);
+  await injectLiberlandSubBridgeContext(page);
+
+  const connectTrigger = page.locator('[data-test-name="useMetamaskProvider"]').first();
+  const nodeDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /network node selection/i })
+    .first();
+  const subAccountDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /learn more about wallet connection/i })
+    .first();
+
+  await expect(connectTrigger).toBeVisible();
+  await connectTrigger.click();
+  await expect(nodeDialog).toBeVisible();
+  await expect(subAccountDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('redirects Liberland sub-account selection to node selection when the connector API is unavailable', async ({
+  page,
+}) => {
+  const consoleErrors = trackConsole(page);
+
+  await openBridge(page);
+  await injectLiberlandSubBridgeContext(page);
+
+  await page.evaluate(async () => {
+    const store = (window as Record<string, any>).__PS_APP_STORE__;
+
+    await store?.dispatch?.web3?.selectSubAccount?.({
+      address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
+      name: 'Liberland QA',
+      source: 'polkadot-js',
+    });
+  });
+
+  const nodeDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /network node selection/i })
+    .first();
+  const subAccountDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /learn more about wallet connection/i })
+    .first();
+
+  await expect(nodeDialog).toBeVisible();
+  await expect(subAccountDialog).toHaveCount(0);
 
   expect(consoleErrors).toEqual([]);
 });

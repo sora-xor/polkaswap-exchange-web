@@ -137,19 +137,6 @@ const SelectToken = lazyComponent(Components.SelectToken);
 const ValueStatus = lazyComponent(Components.ValueStatusWrapper);
 const SlippageTolerance = lazyComponent(Components.SlippageTolerance);
 
-const props = withDefaults(
-  defineProps<{
-    visible?: boolean;
-  }>(),
-  {
-    visible: false,
-  }
-);
-
-const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
-}>();
-
 const { t } = useTranslation();
 const { withNotifications, loading } = useTransaction();
 const { showAppAlert } = useNotification();
@@ -165,10 +152,7 @@ const {
 
 const xorSymbol = XOR.symbol;
 
-const isVisible = computed({
-  get: () => props.visible,
-  set: (value: boolean) => emit('update:visible', value),
-});
+const isVisible = defineModel<boolean>('visible', { default: false });
 
 const collateralInput = ref<InstanceType<typeof TokenInputComponent> | null>(null);
 const debtInput = ref<InstanceType<typeof TokenInputComponent> | null>(null);
@@ -481,7 +465,7 @@ const handleCreate = async () => {
 };
 
 watch(
-  () => props.visible,
+  isVisible,
   async (value) => {
     await nextTick();
     collateralValue.value = '';

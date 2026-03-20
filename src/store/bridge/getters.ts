@@ -2,7 +2,7 @@ import { Operation } from '@sora-substrate/sdk';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
 import { SubAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
-import { defineGetters } from 'direct-vuex';
+import { defineGetters } from '@/store/module-helpers';
 
 import { ZeroStringValue } from '@/consts';
 import { bridgeGetterContext } from '@/store/bridge';
@@ -10,7 +10,7 @@ import { resolveAssetLookup, resolveRegisteredAssets } from '@/store/bridge/util
 import { isWaitingForAction } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/sdk';
@@ -26,18 +26,18 @@ const resolveWalletAccount = (rootState: any) => {
   const account = rootState?.wallet?.account;
   if (account) return account;
 
-  const legacyStore = requireLegacyStore();
+  const legacyStore = requireAppStore();
 
   return legacyStore?.state?.wallet?.account;
 };
 
 const resolveAssetsRegistry = (rootState: any) => {
-  const assetsState = rootState?.assets ?? requireLegacyStore()?.state?.assets ?? {};
+  const assetsState = rootState?.assets ?? requireAppStore()?.state?.assets ?? {};
   return resolveRegisteredAssets(assetsState);
 };
 
 const resolveWeb3State = (rootState: any) => {
-  return rootState?.web3 ?? requireLegacyStore()?.state?.web3 ?? {};
+  return rootState?.web3 ?? requireAppStore()?.state?.web3 ?? {};
 };
 
 const getters = defineGetters<BridgeState>()({

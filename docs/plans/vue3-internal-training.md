@@ -22,13 +22,13 @@ These sessions prepare Support, QA, Product, and other stakeholders for the Comp
 | 0:25 – 0:40 | Tooling updates: build/test pipelines, telemetry | Platform engineer        | CI dashboard tour, telemetry requirements, runbook highlights |
 | 0:40 – 0:50 | QA focus: test matrices, pilot validation plan   | QA lead                  | QA test matrix doc, defect triage workflow                    |
 | 0:50 – 1:00 | Support readiness: FAQ, escalation process       | Support lead             | Draft support playbook, ticket templates                      |
-| 1:00 – 1:20 | Live demo (compat-free build)                    | Migration lead           | Preview build walkthrough                                     |
+| 1:00 – 1:20 | Live demo (native Vue 3 build)                  | Migration lead           | Preview build walkthrough                                     |
 | 1:20 – 1:30 | Q&A & next steps                                 | All presenters           |                                                               |
 
 ## Pre-Session Checklist
 
 - [ ] Circulate pre-read materials (roadmap, release runbook, pilot planning doc, support FAQ) 48 hours before session.
-- [ ] Confirm demo environment (`yarn build:vue3` preview) and feature flag configuration.
+- [ ] Confirm demo environment (`yarn build:vue3` preview) and telemetry/dashboard access for the native runtime.
 - [ ] Prepare slide deck covering the agenda topics.
 - [ ] Ensure telemetry dashboards and bundle analyzer reports are accessible during the session.
 - [ ] Book meeting room / Zoom link and send invitations to required attendees (Support, QA, Product, Marketing, DevOps).

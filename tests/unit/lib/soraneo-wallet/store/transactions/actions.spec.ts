@@ -5,7 +5,7 @@ const startPendingTxsSubscriptionMock = vi.hoisted(() => vi.fn());
 const createHistorySubscriptionMock = vi.hoisted(() => vi.fn());
 const parseTransactionAsHistoryItemMock = vi.hoisted(() => vi.fn());
 
-vi.mock('direct-vuex', () => ({
+vi.mock('@/store/direct-vuex', () => ({
   defineActions: (actions: Record<string, unknown>) => actions,
 }));
 

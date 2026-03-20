@@ -1,4 +1,4 @@
-import { defineMutations } from 'direct-vuex';
+import { defineMutations } from '@/store/module-helpers';
 import { NFTStorage } from 'nft.storage';
 
 import { api } from '../../api';

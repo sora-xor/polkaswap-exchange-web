@@ -1,36 +1,35 @@
 # Soraneo Wallet Inline Plan
 
-**Last updated:** 2025-10-26  
+**Last updated:** 2026-03-20  
 **Owner:** Frontend migration pod  
 **Source reference:** `src/lib/soraneo-wallet/**`
 
 ## 1. Current State Snapshot
 
-The repository already carries a full copy of the Soraneo wallet source code under `src/lib/soraneo-wallet`. The structure mirrors the upstream package:
+The repository carries the Soraneo wallet source inline under `src/lib/soraneo-wallet`. The active host-app integration now uses the source tree directly:
 
 - `src/lib/soraneo-wallet/src` – Vue components (`SoraWallet.vue`, `components/**`), composables, mixins, store modules, services, and plugin entry points.
-- `src/lib/soraneo-wallet/lib` – Compiled assets that the host app expects (`soraneo-wallet-web.css`, type utilities, ETS/translation bundles, Pinia/Vuex helpers, notification services, etc.).
+- `src/lib/soraneo-wallet/lib` – Prebuilt static residue. The host app only imports `soraneo-wallet-web.css` from this directory; runtime modules, types, and store helpers resolve through `src`.
 - `src/lib/soraneo-wallet/src/styles` – Theme variables that reference the Soramitsu UI tokens.
 
 Tooling already aliases the local copy:
 
 | Tool                                          | Mapping                                     |
 | --------------------------------------------- | ------------------------------------------- |
-| `tsconfig.json`                               | `@wallet/*` → `src/lib/soraneo-wallet/**`   |
-| `vite.config.mjs` / `electron.vite.config.ts` | Resolves the same paths plus the CSS bundle |
+| `tsconfig.json`                               | `@wallet/lib` / `@wallet/lib/*` → `src/lib/soraneo-wallet/src/**` |
+| `vite.config.mjs` / `electron.vite.config.ts` | Resolves the same source paths plus the CSS bundle |
 
-Despite the local copy, `package.json` still depends on the external workspace (``@wallet`: "workspace:./src/lib/soraneo-wallet"`), so Yarn expects the sibling repo to exist.
+`package.json` no longer depends on an external `@wallet` workspace. The repo builds from the vendored source copy alone.
 
 ## 2. Gaps & Required Follow-up
 
-1. **Stop depending on the sibling workspace**
-   - Remove `@wallet` from `dependencies`/`resolutions`.
-   - Prune the entry from `yarn.lock` (run `yarn install --mode=update-lock` after editing `package.json`).
-   - Ensure CI/electron/IPFS builds still succeed with only the vendored source.
+1. **Keep the vendored boundary clean**
+   - Do not reintroduce compiled JS bundles or `.d.ts` helper output under `src/lib/soraneo-wallet/lib`.
+   - Keep `lib` limited to the CSS bundle or other explicitly imported static assets.
 
 2. **Sync documentation & scripts**
-   - Update any docs that still instruct contributors to pull `sora2-wallet-web` separately.
-   - Confirm scripts (e.g. `ipfs:publish`) no longer try to build the external package.
+   - Keep docs aligned with the vendored-only setup; no sibling `wallet-web` checkout is required for local work.
+   - Confirm tooling continues to resolve `@wallet/lib` through `src/lib/soraneo-wallet/src`.
 
 3. **Ongoing maintenance**
    - Define an upstream sync process (branch names, diff workflow, code-owner sign-off).
@@ -39,7 +38,7 @@ Despite the local copy, `package.json` still depends on the external workspace (
 ## 3. Checklist
 
 - [x] Remove the external dependency from `package.json`/`yarn.lock`.
-- [ ] Verify `yarn build`, `yarn build:vue3`, `yarn test:unit`, and the Playwright bridge/MoonPay smoke tests after removal.
+- [x] Verify `yarn build`, `yarn build:vue3`, and `yarn test:unit` after removal.
 - [x] Document the sync process and assign owners.
 - [ ] Update roadmap status once the dependency is completely vendored.
 
@@ -49,8 +48,8 @@ Despite the local copy, `package.json` still depends on the external workspace (
 **Cadence:** Weekly (aligned with Thursday RC drops) or as-needed for hotfixes
 
 1. **Track upstream changes.** Monitor the private `wallet-web` repository for tagged releases or hotfix branches. New RC announcements land in `#wallet-migration` together with changelog links and checksum artifacts.
-2. **Create a sync branch.** Start from `develop`, branch as `chore/wallet-sync/<date>-<tag>`, and pull the upstream source archive. Use `rsync --delete --exclude "lib/"` to copy `src/**`, `lang/**`, and other source assets into `src/lib/soraneo-wallet/src`. Copy build artefacts (CSS bundle, helpers) into `src/lib/soraneo-wallet/lib` only after the corresponding upstream build passes.
-3. **Run the integration matrix.** Execute `yarn test:unit`, `yarn build`, `yarn build:vue3`, and `VITE_DISABLE_COMPAT=true yarn test:e2e --project chromium` locally or via Jenkins. Record results in the sync branch description and attach relevant artefacts if failures occur.
+2. **Create a sync branch.** Start from `develop`, branch as `chore/wallet-sync/<date>-<tag>`, and pull the upstream source archive. Use `rsync --delete --exclude "lib/"` to copy `src/**`, `lang/**`, and other source assets into `src/lib/soraneo-wallet/src`. Copy only the CSS bundle or other explicitly imported static assets into `src/lib/soraneo-wallet/lib` after the corresponding upstream build passes; do not sync compiled JS or declaration output back into the app repo.
+3. **Run the integration matrix.** Execute `yarn test:unit`, `yarn build`, `yarn build:vue3`, and `yarn test:e2e --project chromium` locally or via Jenkins. Record results in the sync branch description and attach relevant artefacts if failures occur.
 4. **Review & approval.** Tag the wallet squad code owner on the PR, include a diff summary against the upstream tag, and call out any deviations or patches we keep locally. Merge only after both teams sign off.
 5. **Log parity.** Update the table in `docs/plans/soraneo-wallet-migration-contract.md` (Appendix A changelog) with the upstream tag and commit hash. Note manual patches or TODOs that need follow-up in the next RC.
 

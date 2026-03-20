@@ -13,19 +13,36 @@
 </template>
 
 <script lang="ts">
-import { Model, Options, mixins } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
 import InputFocusMixin from '../mixins/InputFocusMixin';
 
-@Options({ inheritAttrs: false })
-export default class SearchInput extends mixins(InputFocusMixin) {
-  @Model('modelValue', { type: String })
-  query!: string;
-
-  handleClearSearch(): void {
-    this.$emit('clear');
-  }
-}
+export default defineComponent({
+  inheritAttrs: false,
+  mixins: [InputFocusMixin],
+  props: {
+    modelValue: {
+      type: String,
+      default: '',
+    },
+  },
+  emits: ['update:modelValue', 'clear'],
+  computed: {
+    query: {
+      get(this: any): string {
+        return this.modelValue;
+      },
+      set(this: any, value: string): void {
+        this.$emit('update:modelValue', value);
+      },
+    },
+  },
+  methods: {
+    handleClearSearch(this: any): void {
+      this.$emit('clear');
+    },
+  },
+});
 </script>
 
 <style lang="scss">

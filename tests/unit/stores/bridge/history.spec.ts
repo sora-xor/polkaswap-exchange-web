@@ -3,8 +3,8 @@ import { createPinia, setActivePinia } from 'pinia';
 
 let storeShape: any = null;
 
-vi.mock('@/utils/legacy-store', () => ({
-  withLegacyStore: (callback: (store: any) => unknown) => {
+vi.mock('@/utils/app-store', () => ({
+  withAppStore: (callback: (store: any) => unknown) => {
     if (!storeShape) return undefined;
     return callback(storeShape);
   },

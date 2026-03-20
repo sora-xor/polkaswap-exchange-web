@@ -38,8 +38,8 @@ vi.mock('@/utils/ethers-util', () => ({
   default: { getTokenDecimals: vi.fn() },
 }));
 
-vi.mock('@/utils/legacy-store', () => ({
-  requireLegacyStore: () => ({
+vi.mock('@/utils/app-store', () => ({
+  requireAppStore: () => ({
     getters: { web3: { isValidNetwork: false } },
     state: { bridge: { subBridgeConnector: {} } },
     dispatch: { web3: { getEvmTokenAddressByAssetId: vi.fn() } },

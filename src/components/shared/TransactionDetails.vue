@@ -3,8 +3,8 @@
     <slot></slot>
   </div>
   <span v-else v-bind="attrs">
-    <el-popover
-      v-model="visible"
+    <s-popover-panel
+      v-model:show="visible"
       :visible-arrow="false"
       :disabled="disabled"
       placement="bottom"
@@ -20,7 +20,7 @@
         </div>
       </template>
       <slot></slot>
-    </el-popover>
+    </s-popover-panel>
   </span>
 </template>
 

@@ -1,29 +1,30 @@
-import { Options, Prop, mixins, Ref } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
-@Options({})
-export default class InputFocusMixin extends mixins() {
-  @Prop({ default: false, type: Boolean }) readonly autofocus!: boolean;
-
-  @Ref('input') readonly input!: any;
-
+export default defineComponent({
+  props: {
+    autofocus: {
+      type: Boolean,
+      default: false,
+    },
+  },
   mounted(): void {
     this.focusCheck();
-  }
-
+  },
   activated(): void {
     this.focusCheck();
-  }
-
-  async focusCheck(): Promise<void> {
-    if (this.autofocus) {
-      await this.$nextTick();
-      this.focus();
-    }
-  }
-
-  focus(): void {
-    if (this.input && typeof this.input.focus === 'function') {
-      this.input.focus();
-    }
-  }
-}
+  },
+  methods: {
+    async focusCheck(this: any): Promise<void> {
+      if (this.autofocus) {
+        await this.$nextTick();
+        this.focus();
+      }
+    },
+    focus(this: any): void {
+      const input = (this.$refs as Record<string, any>).input;
+      if (input && typeof input.focus === 'function') {
+        input.focus();
+      }
+    },
+  },
+});

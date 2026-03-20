@@ -1,7 +1,12 @@
 <template>
   <base-widget v-bind="$attrs" :title="title" :tooltip="tooltip">
     <template #filters>
-      <stats-filter is-dropdown :filters="filters" :value="filter" @input="changeFilter"></stats-filter>
+      <stats-filter
+        is-dropdown
+        :filters="filters"
+        :model-value="filter"
+        @update:model-value="changeFilter"
+      ></stats-filter>
     </template>
 
     <chart-skeleton
@@ -35,6 +40,7 @@ import { useChartSpec } from '@/composables/useChartSpec';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { fetchData } from '@/indexer/queries/network/volume';
+import VChart from '@/lib/echarts/component';
 import { lazyComponent } from '@/router';
 import { useSettingsStore } from '@/stores/settings';
 import type { SnapshotFilter } from '@/types/filters';

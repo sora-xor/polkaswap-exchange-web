@@ -1,5 +1,11 @@
 <template>
-  <el-popover ref="popoverRef" placement="top" v-model:visible="visible" trigger="click" popper-class="app-info-popper">
+  <s-popover-panel
+    ref="popoverRef"
+    placement="top"
+    v-model:show="visible"
+    trigger="click"
+    popper-class="app-info-popper"
+  >
     <template #reference>
       <div class="app-info-popper__reference">
         <slot></slot>
@@ -41,7 +47,7 @@
         <div>{{ app.name }} v{{ app.version }}</div>
       </div>
     </div>
-  </el-popover>
+  </s-popover-panel>
 </template>
 
 <script setup lang="ts">

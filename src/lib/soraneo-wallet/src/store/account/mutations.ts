@@ -1,6 +1,6 @@
 import { AES } from 'crypto-js';
 import cryptoRandomString from 'crypto-random-string';
-import { defineMutations } from 'direct-vuex';
+import { defineMutations } from '@/store/module-helpers';
 import omit from 'lodash/fp/omit';
 
 import { api } from '../../api';

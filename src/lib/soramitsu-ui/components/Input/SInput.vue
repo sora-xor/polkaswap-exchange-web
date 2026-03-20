@@ -41,7 +41,6 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   (event: 'update:modelValue', value: string): void;
-  (event: 'input', value: string): void;
   (event: 'change', value: string): void;
   (event: 'focus', value: FocusEvent): void;
   (event: 'blur', value: FocusEvent): void;
@@ -95,7 +94,6 @@ const passThroughAttrs = computed(() => {
 function updateValue(value: string): void {
   internalValue.value = value;
   emit('update:modelValue', value);
-  emit('input', value);
 }
 
 function handleInput(event: Event): void {

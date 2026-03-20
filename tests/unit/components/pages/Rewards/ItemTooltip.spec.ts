@@ -42,7 +42,7 @@ describe('RewardsItemTooltip.vue', () => {
       },
       global: {
         stubs: {
-          'el-popover': {
+          's-popover-panel': {
             template: '<div><slot /><slot name="reference" /></div>',
           },
           's-icon': {

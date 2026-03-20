@@ -9,7 +9,6 @@ import i18n from './lang';
 import installWalletPlugins from './plugins';
 import store from './store';
 
-import './store/decorators';
 import './styles';
 
 connection.endpoint = env.BLOCKCHAIN_URL;

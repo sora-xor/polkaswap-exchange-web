@@ -15,8 +15,8 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => walletStoreMock,
 }));
 
-vi.mock('@/utils/legacy-store', () => ({
-  requireLegacyStore: () => storeStub?.store ?? { getters: { bridge: {}, web3: {} }, state: {} },
+vi.mock('@/utils/app-store', () => ({
+  requireAppStore: () => storeStub?.store ?? { getters: { bridge: {}, web3: {} }, state: {} },
 }));
 
 vi.mock('@/stores/assets', () => ({

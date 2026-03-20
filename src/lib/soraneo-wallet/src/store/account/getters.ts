@@ -1,5 +1,5 @@
 import { AES, enc } from 'crypto-js';
-import { defineGetters } from 'direct-vuex';
+import { defineGetters } from '@/store/module-helpers';
 import isEqual from 'lodash/fp/isEqual';
 
 import { api } from '../../api';

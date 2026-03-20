@@ -1,6 +1,6 @@
 import { api } from '@wallet';
 
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 
 enum HapticStatusValue {
   success = 'success',
@@ -38,7 +38,7 @@ function useHaptic(type: HapticFeedbackBinding): void {
   }
 }
 
-const getLegacyStore = () => requireLegacyStore() as any;
+const getAppStore = () => requireAppStore() as any;
 
 class TmaSdk {
   private deviceOrientationHandler: ((event: DeviceOrientationEvent) => void) | null = null;
@@ -57,7 +57,7 @@ class TmaSdk {
       WebApp?.expand?.();
       // Disable vertical swipe if possible
       WebApp?.disableVerticalSwipes?.();
-      const store = getLegacyStore();
+      const store = getAppStore();
       store?.commit?.settings?.enableTMA?.();
       store?.commit?.wallet?.account?.setIsDesktop?.(true);
       console.info('[TMA]: Mini app was initialized');
@@ -86,7 +86,7 @@ class TmaSdk {
       }
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
-      const store = getLegacyStore();
+      const store = getAppStore();
       store?.commit?.settings?.disableTMA?.();
       store?.commit?.wallet?.account?.setIsDesktop?.(false);
     }
@@ -163,7 +163,7 @@ class TmaSdk {
 
         if (wasRotatedTo180 && Math.abs(beta) < 30) {
           useHaptic('soft');
-          const store = getLegacyStore();
+          const store = getAppStore();
           store?.commit?.wallet?.settings?.toggleHideBalance?.();
           store?.commit?.wallet?.account?.syncWithStorage?.();
           wasRotatedTo180 = false;
@@ -249,7 +249,7 @@ class TmaSdk {
 
   private setReferrer(referrerAddress?: string): void {
     if (referrerAddress && api.validateAddress(referrerAddress)) {
-      const store = getLegacyStore();
+      const store = getAppStore();
       store?.commit?.referrals?.setStorageReferrer?.(referrerAddress);
       console.info('[TMA]: Referrer was set', referrerAddress);
     }

@@ -100,7 +100,6 @@ import { components } from '@wallet';
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
@@ -131,20 +130,17 @@ type Reward = {
 };
 
 const props = defineProps<{
-  visible: boolean;
   parentLoading?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
 const { getFiatAmountByFPNumber, getFiatAmountByCodecString } = useFormattedAmount();
 const validatorsFormatting = useValidatorsFormatting();
-const dialogModel = useDialogModel(props, emit);
-const { isVisible, closeDialog } = dialogModel;
 
 const {
   pendingRewards,
@@ -172,6 +168,11 @@ const ValidatorAvatar = soraStakingLazyComponent(SoraStakingComponents.Validator
 const selectedRewards = ref<Reward[]>([]);
 const payoutNetworkFee = ref<string | null>(null);
 const feeRequestToken = ref(0);
+
+const closeDialog = (): void => {
+  emit('close');
+  isVisible.value = false;
+};
 
 const title = computed(() => t('soraStaking.pendingRewardsDialog.title'));
 const payouts = computed(() =>
@@ -285,7 +286,7 @@ const updatePayoutFee = async () => {
 };
 
 watch(
-  () => props.visible,
+  isVisible,
   (visible) => {
     if (visible) {
       selectedRewards.value = [];

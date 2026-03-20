@@ -5,7 +5,7 @@ import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useSwapStore } from '@/stores/swap';
 import { settingsStorage } from '@/utils/storage';
-import { setLegacyStoreOverride } from '@/utils/legacy-store';
+import { setAppStoreOverride } from '@/utils/app-store';
 
 type SwapMathDeps = {
   store: ReturnType<typeof useSwapStore>;
@@ -154,7 +154,7 @@ describe('swap store', () => {
     localStorageMock.removeItem.mockClear();
     localStorageMock.clear.mockClear();
     resetLegacyStoreMock();
-    setLegacyStoreOverride(legacyStoreMock as any);
+    setAppStoreOverride(legacyStoreMock as any);
   });
 
   afterAll(() => {

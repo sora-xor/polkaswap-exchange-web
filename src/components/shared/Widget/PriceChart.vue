@@ -24,9 +24,9 @@
       <stats-filter
         is-dropdown
         :filters="filters"
-        :value="selectedFilter"
+        :model-value="selectedFilter"
         :disabled="chartIsLoading"
-        @input="changeFilter"
+        @update:model-value="changeFilter"
       ></stats-filter>
       <svg-icon-button
         v-for="{ type, icon, active } in chartTypeButtons"
@@ -80,6 +80,7 @@ import last from 'lodash/fp/last';
 import pick from 'lodash/fp/pick';
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 
+import VChart from '@/lib/echarts/component';
 import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
 import PriceChange from '@/components/shared/PriceChange.vue';
 import { useChartSpec } from '@/composables/useChartSpec';

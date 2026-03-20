@@ -64,12 +64,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, toRef, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
 import { mstTrxDeadline } from '@/consts/mst';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 import type { MSTData } from '@/types/mst';
 import { validateAddress } from '@/util';
 
@@ -82,25 +82,17 @@ import MultisigCreateDialog from './MultisigCreateDialog.vue';
 
 defineOptions({ name: 'CreateMstWalletDialog' });
 
-const props = withDefaults(
-  defineProps<{
-    visible?: boolean;
-  }>(),
-  {
-    visible: false,
-  }
-);
+const props = withDefaults(defineProps<{}>(), {});
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'closeMstCreate'): void;
 }>();
 
 const { t } = useTranslation();
-const store = requireLegacyStore();
-const { isVisible, setVisible, closeDialog } = useDialogVisibility(toRef(props, 'visible'), {
-  emit: (value) => emit('update:visible', value),
+const store = requireAppStore();
+const visibleModel = defineModel<boolean>('visible', { default: false });
+const { isVisible, setVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 

@@ -3,7 +3,7 @@ import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts'
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import { api as soraApi, accountUtils, WALLET_TYPES, WALLET_CONSTS } from '@wallet';
-import { defineActions } from 'direct-vuex';
+import { defineActions } from '@/store/module-helpers';
 
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
@@ -19,6 +19,12 @@ const BRIDGE_NETWORK_TYPES = new Set<BridgeNetworkType>(Object.values(BridgeNetw
 
 const isBridgeNetworkType = (value: unknown): value is BridgeNetworkType => {
   return BRIDGE_NETWORK_TYPES.has(value as BridgeNetworkType);
+};
+
+const isSubBridgeConnectorReady = (rootState: any): boolean => {
+  const connector = rootState?.bridge?.subBridgeConnector;
+
+  return Boolean(connector?.accountApi?.connection?.api && connector?.network?.subNetworkConnection?.nodeIsConnected);
 };
 
 async function connectNetworkType(context: ActionContext<any, any>): Promise<void> {
@@ -143,13 +149,19 @@ const actions = defineActions({
 
   async selectSubAccount(context, accountData: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
     const { commit, rootState, state } = web3ActionContext(context);
+    if (!isSubBridgeConnectorReady(rootState)) {
+      commit.setSubAccountDialogVisibility(false);
+      commit.setSelectSubNodeDialogVisibility(true);
+      return;
+    }
+
     const { accountApi } = rootState.bridge.subBridgeConnector;
     const { loginApi, isAppStorageSource } = accountUtils;
 
     await loginApi(accountApi, accountData, isAppStorageSource(state.subAddressSource as WALLET_CONSTS.AppWallet));
 
     commit.setSubAccount({
-      address: accountApi.formatAddress(accountData.address),
+      address: accountData.address,
       name: accountData.name,
       source: accountData.source,
     });
@@ -172,7 +184,7 @@ const actions = defineActions({
 
     accountApi.changeAccountName(address, name);
 
-    if (accountApi.formatAddress(getters.subAccount.address) === accountApi.formatAddress(address)) {
+    if (accountApi.formatAddress(getters.subAccount.address, false) === accountApi.formatAddress(address, false)) {
       commit.setSubAccount({
         ...getters.subAccount,
         name,

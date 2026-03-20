@@ -5,10 +5,12 @@ import type { IBridgeTransaction } from '@sora-substrate/sdk';
 
 const telemetry = vi.hoisted(() => ({
   trackEventMock: vi.fn(),
+  getBuildVariantMock: vi.fn(() => 'vue3-native'),
 }));
 
 vi.mock('@/utils/telemetry', () => ({
   trackEvent: telemetry.trackEventMock,
+  getBuildVariant: telemetry.getBuildVariantMock,
 }));
 
 import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
@@ -24,6 +26,8 @@ const sampleTx = (id: string): IBridgeTransaction =>
 beforeEach(() => {
   setActivePinia(createPinia());
   telemetry.trackEventMock.mockClear();
+  telemetry.getBuildVariantMock.mockClear();
+  telemetry.getBuildVariantMock.mockReturnValue('vue3-native');
 });
 
 describe('useBridgeTransactionsStore', () => {
@@ -77,7 +81,12 @@ describe('useBridgeTransactionsStore', () => {
 
     expect(telemetry.trackEventMock).toHaveBeenCalledWith(
       'bridge.pinia.transfer.submitted',
-      expect.objectContaining({ direction: 'soraToExternal', asset: 'XOR', amount: '10' })
+      expect.objectContaining({
+        direction: 'soraToExternal',
+        asset: 'XOR',
+        amount: '10',
+        buildVariant: 'vue3-native',
+      })
     );
   });
 

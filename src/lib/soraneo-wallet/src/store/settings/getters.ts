@@ -1,6 +1,6 @@
 import { FPNumber } from '@sora-substrate/math';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { defineGetters } from 'direct-vuex';
+import { defineGetters } from '@/store/module-helpers';
 
 import type { LibraryDesignSystem } from '@/types/common';
 import { Currency } from '@/types/currency';

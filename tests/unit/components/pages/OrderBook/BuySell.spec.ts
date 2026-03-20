@@ -10,7 +10,7 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { computed, defineComponent, h, reactive, ref } from 'vue';
 
 import { LimitOrderType } from '@/consts';
-import { setLegacyStoreOverride } from '@/utils/legacy-store';
+import { setAppStoreOverride } from '@/utils/app-store';
 
 const storeRef = vi.hoisted(() => ({ value: null as any }));
 const storeProxy = vi.hoisted(
@@ -281,8 +281,8 @@ const SIconStub = defineComponent({
   },
 });
 
-const ElPopoverStub = defineComponent({
-  name: 'ElPopoverStub',
+const SPopoverPanelStub = defineComponent({
+  name: 'SPopoverPanelStub',
   setup(_, { slots }) {
     return () => h('div', { class: 'el-popover-stub' }, [slots.reference?.(), slots.default?.()]);
   },
@@ -294,7 +294,7 @@ const globalStubs = {
   's-tab': STabStub,
   's-tooltip': STooltipStub,
   's-icon': SIconStub,
-  'el-popover': ElPopoverStub,
+  's-popover-panel': SPopoverPanelStub,
 };
 
 type StoreOverrides = {
@@ -418,7 +418,7 @@ const createStoreMock = (overrides: StoreOverrides = {}) => {
     },
   };
 
-  setLegacyStoreOverride(store as any);
+  setAppStoreOverride(store as any);
 
   return { store, orderBookState };
 };
@@ -516,7 +516,7 @@ afterEach(() => {
   walletRestore?.();
   walletRestore = null;
   storeRef.value = null;
-  setLegacyStoreOverride(null);
+  setAppStoreOverride(null);
 });
 
 describe('BuySell.vue', () => {

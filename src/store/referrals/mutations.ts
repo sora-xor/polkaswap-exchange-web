@@ -1,4 +1,4 @@
-import { defineMutations } from 'direct-vuex';
+import { defineMutations } from '@/store/module-helpers';
 import omit from 'lodash/fp/omit';
 
 import type { ReferrerRewards } from '@/indexer/queries/referrals';

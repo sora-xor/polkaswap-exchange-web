@@ -8,8 +8,8 @@
           :is-max-available="isMaxButtonAvailable"
           :title="inputTitle"
           :token="stakingAsset"
-          :value="value"
-          @input="handleValue"
+          :model-value="value"
+          @update:model-value="handleValue"
           @max="handleMaxValue"
         ></TokenInput>
       </s-form>
@@ -80,7 +80,6 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
 import { Components } from '@/consts';
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
@@ -92,21 +91,18 @@ import { hasInsufficientXorForFee } from '@/utils';
 import store from '@/store';
 
 const props = defineProps<{
-  visible: boolean;
   mode: StakeDialogMode;
   parentLoading?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'confirm'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
 const { getFiatAmountByCodecString } = useFormattedAmount();
-const dialogModel = useDialogModel(props, emit);
-const { isVisible } = dialogModel;
 
 const {
   stakingAsset,

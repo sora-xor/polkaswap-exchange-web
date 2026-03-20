@@ -47,10 +47,10 @@ const genericPageHeaderStub = {
 };
 
 const tokenInputStub = {
-  props: ['value', 'balance', 'token', 'title', 'isMaxAvailable'],
-  emits: ['input', 'max'],
+  props: ['modelValue', 'balance', 'token', 'title', 'isMaxAvailable'],
+  emits: ['update:modelValue', 'max'],
   template:
-    '<div class="token-input"><input :value="value" @input="$emit(\'input\', $event.target.value)" /><button class="max-btn" @click="$emit(\'max\')">max</button></div>',
+    '<div class="token-input"><input :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" /><button class="max-btn" @click="$emit(\'max\')">max</button></div>',
 };
 
 const referralsConfirmBondingStub = {

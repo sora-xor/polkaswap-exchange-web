@@ -9,9 +9,6 @@ import type { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
  */
 export default defineComponent({
   name: 'RewardsGradientBox',
-  compatConfig: {
-    MODE: 3,
-  },
   props: {
     symbol: {
       type: String as PropType<KnownSymbols | ''>,

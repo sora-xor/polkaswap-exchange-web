@@ -1,21 +1,9 @@
-import wallet from './store/wallet';
-import { attachDecorator, createDecoratorsObject, VuexOperation } from './store/util';
-
-const walletModuleNames = ['account', 'router', 'settings', 'subscriptions', 'transactions'] as const;
-
-const walletModuleRef = wallet;
-
-const walletModules: Record<string, unknown> = {};
-walletModules.wallet = walletModuleRef;
-
-const WalletModules = walletModuleNames.map((submodule) => `wallet/${submodule}`);
+import { modules } from './store';
+import { WalletModules } from './store/wallet';
 
 export const vuex = {
-  walletModules,
+  walletModules: modules,
   WalletModules,
-  VuexOperation,
-  attachDecorator,
-  createDecoratorsObject,
 };
 
 export default vuex;

@@ -1,18 +1,15 @@
 /**
  * Entry point for the SORA wallet Vue plugin. This module wires together the
  * public API surface that host applications rely on: the plugin installer,
- * exported components, Vuex helpers, and utility functions.
+ * exported components, store/module helpers, and utility functions.
  */
 import { createPinia, type Pinia } from 'pinia';
-
-import '@/compat/runtime-helpers';
 
 import {
   SUBQUERY_TYPES,
   SUBSQUID_TYPES,
   AlertsApiService,
   INDEXER_TYPES,
-  VUEX_TYPES,
   WC,
   accountUtils,
   addWcSubWalletLocally,
@@ -355,8 +352,8 @@ const mixins = {
 };
 
 /**
- * Exposes Vuex utilities that allow consumers to interact with the wallet
- * store using decorators or manual module registration.
+ * Exposes wallet utilities plus the legacy module registry consumed by the
+ * host app while its root store still runs through the bridge layer.
  */
 export {
   initWallet,
@@ -385,7 +382,6 @@ export {
   SUBQUERY_TYPES,
   SUBSQUID_TYPES,
   INDEXER_TYPES,
-  VUEX_TYPES,
   WC,
   vuex,
 };

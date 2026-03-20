@@ -1,4 +1,4 @@
-import { defineMutations } from 'direct-vuex';
+import { defineMutations } from '@/store/module-helpers';
 
 import type { AddLiquidityState, FocusedField } from './types';
 import type { CodecString } from '@sora-substrate/sdk';

@@ -14,7 +14,7 @@
           type="ellipsis"
           placement="bottom-start"
           :hide-on-click="false"
-          @visible-change="handleDropdownVisibilityChange"
+          @update:show="handleDropdownVisibilityChange"
         >
           <template #menu>
             <div class="header-menu__settings">

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed, provide, reactive, ref, toRefs, watch } from 'vue';
+import { useToggle, whenever } from '@vueuse/core';
 import type { SelectOption, SelectOptionGroup } from './types';
 import { SelectSize } from './types';
 import { useSelectModel } from './use-model';

@@ -11,7 +11,7 @@ import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import ethersUtil from '@/utils/ethers-util';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 
 import type { Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
@@ -88,7 +88,7 @@ const fetchSubRegisteredAssets = async (
 const updateEthAssetsData = async (
   assets: Record<string, BridgeRegisteredAsset>
 ): Promise<Record<string, BridgeRegisteredAsset>> => {
-  const store = requireLegacyStore();
+  const store = requireAppStore();
   const { isValidNetwork } = store.getters.web3;
 
   if (!isValidNetwork) return assets;
@@ -113,7 +113,7 @@ const updateSubAssetsData = async (
   assets: Record<string, BridgeRegisteredAsset>,
   network: Nullable<SubNetwork>
 ): Promise<Record<string, BridgeRegisteredAsset>> => {
-  const store = requireLegacyStore();
+  const store = requireAppStore();
   const { destinationNetwork, soraParachain, parachain } = store.state.bridge.subBridgeConnector;
 
   const hasParachainApi =

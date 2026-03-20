@@ -15,7 +15,7 @@ describe('SSwitch compatibility', () => {
     expect((input.element as HTMLInputElement).checked).toBe(true);
   });
 
-  it('emits legacy and v-model events when toggled', async () => {
+  it('emits Vue 3 model and change events when toggled', async () => {
     const wrapper = mount(SSwitch, {
       props: {
         value: false,
@@ -25,7 +25,6 @@ describe('SSwitch compatibility', () => {
     await wrapper.find('input.el-switch__input').setValue(true);
 
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true]);
-    expect(wrapper.emitted('input')?.[0]).toEqual([true]);
     expect(wrapper.emitted('change')?.[0]).toEqual([true]);
   });
 });

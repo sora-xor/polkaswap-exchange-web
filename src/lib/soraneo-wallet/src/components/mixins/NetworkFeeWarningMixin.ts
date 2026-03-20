@@ -1,9 +1,9 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins, Options } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
+import { mapGetters, mapState } from 'vuex';
 
 import { NetworkFeeWarningOptions } from '../../consts';
-import { state, getter } from '../../store/decorators';
 
 import NumberFormatterMixin from './NumberFormatterMixin';
 
@@ -18,54 +18,57 @@ const PredefinedOperations = [
   Operation.AddLiquidity,
 ];
 
-@Options({})
-export default class NetworkFeeWarningMixin extends mixins(NumberFormatterMixin) {
-  @state.settings.networkFees networkFees!: NetworkFeesObject;
-  @state.settings.allowFeePopup allowFeePopup!: boolean;
-  @getter.account.accountAssetsAddressTable accountAssetsAddressTable!: AccountAssetsTable;
+export default defineComponent({
+  mixins: [NumberFormatterMixin],
+  computed: {
+    ...mapState('wallet/settings', ['networkFees', 'allowFeePopup']),
+    ...mapGetters('wallet/account', ['accountAssetsAddressTable']),
+    xorBalance(this: any): FPNumber {
+      const accountXor = (this.accountAssetsAddressTable as AccountAssetsTable)[XOR.address];
 
-  get xorBalance(): FPNumber {
-    const accountXor = this.accountAssetsAddressTable[XOR.address];
-
-    if (accountXor) {
-      return this.getFPNumberFromCodec(accountXor.balance.transferable);
-    }
-
-    return this.Zero;
-  }
-
-  isXorSufficientForNextTx({ type, isXor, amount }: NetworkFeeWarningOptions): boolean {
-    const balanceIsEmpty = !this.xorBalance || !this.xorBalance.isFinity();
-
-    if (type === Operation.EthBridgeIncoming || balanceIsEmpty) return true;
-
-    let fpRemainingBalance: FPNumber;
-
-    const requiredFeeForNextTx =
-      type === Operation.AddLiquidity ? this.networkFees.RemoveLiquidity : this.networkFees[type];
-    const networkFee = this.getFPNumberFromCodec(requiredFeeForNextTx);
-    const fpAmount = amount || this.Zero;
-
-    if (PredefinedOperations.includes(type)) {
-      if (isXor) {
-        fpRemainingBalance = this.xorBalance.sub(fpAmount).sub(networkFee);
-      } else {
-        fpRemainingBalance = this.xorBalance.sub(networkFee);
+      if (accountXor) {
+        return this.getFPNumberFromCodec(accountXor.balance.transferable);
       }
 
-      return FPNumber.gte(fpRemainingBalance, networkFee);
-    }
+      return this.Zero;
+    },
+  },
+  methods: {
+    isXorSufficientForNextTx(this: any, { type, isXor, amount }: NetworkFeeWarningOptions): boolean {
+      const balanceIsEmpty = !this.xorBalance || !this.xorBalance.isFinity();
 
-    if (type === Operation.RemoveLiquidity) {
-      if (isXor) {
-        fpRemainingBalance = this.xorBalance.add(fpAmount).sub(networkFee);
-      } else {
-        fpRemainingBalance = this.xorBalance.sub(networkFee);
+      if (type === Operation.EthBridgeIncoming || balanceIsEmpty) return true;
+
+      let fpRemainingBalance: FPNumber;
+
+      const requiredFeeForNextTx =
+        type === Operation.AddLiquidity
+          ? (this.networkFees as NetworkFeesObject).RemoveLiquidity
+          : (this.networkFees as NetworkFeesObject)[type];
+      const networkFee = this.getFPNumberFromCodec(requiredFeeForNextTx);
+      const fpAmount = amount || this.Zero;
+
+      if (PredefinedOperations.includes(type)) {
+        if (isXor) {
+          fpRemainingBalance = this.xorBalance.sub(fpAmount).sub(networkFee);
+        } else {
+          fpRemainingBalance = this.xorBalance.sub(networkFee);
+        }
+
+        return FPNumber.gte(fpRemainingBalance, networkFee);
       }
 
-      return FPNumber.gte(fpRemainingBalance, networkFee);
-    }
+      if (type === Operation.RemoveLiquidity) {
+        if (isXor) {
+          fpRemainingBalance = this.xorBalance.add(fpAmount).sub(networkFee);
+        } else {
+          fpRemainingBalance = this.xorBalance.sub(networkFee);
+        }
 
-    return true;
-  }
-}
+        return FPNumber.gte(fpRemainingBalance, networkFee);
+      }
+
+      return true;
+    },
+  },
+});

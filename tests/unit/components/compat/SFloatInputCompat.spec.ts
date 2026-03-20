@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 
-import SFloatInputCompat from '@/components/compat/SFloatInputCompat.vue';
+import SFloatInput from '@/lib/soramitsu-ui/components/Input/SFloatInput.vue';
 
-describe('SFloatInputCompat', () => {
+describe('SFloatInput', () => {
   it('emits sanitized numeric values for locale-style input', async () => {
-    const wrapper = mount(SFloatInputCompat, {
+    const wrapper = mount(SFloatInput, {
       props: {
         hasLocaleString: true,
         decimals: 2,
@@ -16,11 +16,10 @@ describe('SFloatInputCompat', () => {
     await input.setValue('1,234.567abc');
 
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['1234.56']);
-    expect(wrapper.emitted('input')?.[0]).toEqual(['1234.56']);
   });
 
   it('renders top and bottom slots and exposes imperative focus api', async () => {
-    const wrapper = mount(SFloatInputCompat, {
+    const wrapper = mount(SFloatInput, {
       attachTo: document.body,
       slots: {
         top: '<div class="slot-top">Top slot</div>',
@@ -42,7 +41,7 @@ describe('SFloatInputCompat', () => {
   });
 
   it('applies legacy disabled compatibility classes', () => {
-    const wrapper = mount(SFloatInputCompat, {
+    const wrapper = mount(SFloatInput, {
       props: {
         disabled: true,
       },

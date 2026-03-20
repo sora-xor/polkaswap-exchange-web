@@ -3,7 +3,7 @@ import { createPinia, setActivePinia } from 'pinia';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useWeb3Store } from '@/stores/web3';
-import { setLegacyStoreOverride } from '@/utils/legacy-store';
+import { setAppStoreOverride } from '@/utils/app-store';
 
 const createLegacyStoreMock = () => {
   const setDialogVisibility = vi.fn();
@@ -31,12 +31,12 @@ describe('useWeb3Store legacy proxies', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia());
-    setLegacyStoreOverride(legacyStore as unknown as any);
+    setAppStoreOverride(legacyStore as unknown as any);
     vi.clearAllMocks();
   });
 
   afterEach(() => {
-    setLegacyStoreOverride(null);
+    setAppStoreOverride(null);
   });
 
   it('delegates dialog visibility mutation to legacy store', () => {

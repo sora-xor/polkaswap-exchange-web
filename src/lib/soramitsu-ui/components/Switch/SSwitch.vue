@@ -39,7 +39,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   (event: 'update:modelValue', value: boolean): void;
-  (event: 'input', value: boolean): void;
   (event: 'change', value: boolean): void;
 }>();
 
@@ -48,7 +47,6 @@ const switchId = computed(() => props.id || 's-switch');
 
 const emitValue = (nextValue: boolean): void => {
   emit('update:modelValue', nextValue);
-  emit('input', nextValue);
   emit('change', nextValue);
 };
 

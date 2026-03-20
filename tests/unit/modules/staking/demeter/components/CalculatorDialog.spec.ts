@@ -11,7 +11,7 @@ const tokenInputStubHolder = vi.hoisted(() => ({ value: null as Component | null
 const STabsStub = defineComponent({
   name: 'STabsStub',
   props: ['value', 'type'],
-  emits: ['input'],
+  emits: ['update:modelValue'],
   template: `<div class="tabs-stub"><slot /></div>`,
 });
 
@@ -37,8 +37,8 @@ const InfoLineStub = defineComponent({
 vi.mock('@/router', () => {
   tokenInputStubHolder.value = defineComponent({
     name: 'TokenInputStub',
-    props: ['balance', 'isMaxAvailable', 'title', 'token', 'value'],
-    emits: ['input', 'max'],
+    props: ['balance', 'isMaxAvailable', 'title', 'token', 'modelValue'],
+    emits: ['update:modelValue', 'max'],
     template: `<div class="token-input-stub"></div>`,
   });
   return {
@@ -180,8 +180,8 @@ describe('Demeter CalculatorDialog', () => {
     const baseInput = inputs[0];
     const poolInput = inputs[1];
 
-    await baseInput.vm.$emit('input', '1');
-    expect(poolInput.props('value')).toBe('2');
+    await baseInput.vm.$emit('update:modelValue', '1');
+    expect(poolInput.props('modelValue')).toBe('2');
   });
 
   it('resets both amounts when dialog visibility toggles off and on', async () => {
@@ -193,15 +193,15 @@ describe('Demeter CalculatorDialog', () => {
     });
 
     const inputs = wrapper.findAllComponents(tokenInputStubHolder.value as Component);
-    await inputs[0].vm.$emit('input', '3');
+    await inputs[0].vm.$emit('update:modelValue', '3');
     await wrapper.setProps({ visible: false });
     await wrapper.setProps({ visible: true });
     const refreshedInputs = wrapper.findAllComponents(tokenInputStubHolder.value as Component);
-    expect(refreshedInputs[0].props('value')).toBe('');
-    expect(refreshedInputs[1].props('value')).toBe('');
+    expect(refreshedInputs[0].props('modelValue')).toBe('');
+    expect(refreshedInputs[1].props('modelValue')).toBe('');
   });
 
-  it('updates selected period when tabs emit input', async () => {
+  it('updates selected period when tabs emit model updates', async () => {
     const wrapper = mount(CalculatorDialog, {
       props: baseProps,
       global: {
@@ -211,7 +211,7 @@ describe('Demeter CalculatorDialog', () => {
 
     const tabs = wrapper.findComponent(STabsStub as Component);
     expect(tabs.props('value')).toBe('1');
-    await tabs.vm.$emit('input', '7');
+    await tabs.vm.$emit('update:modelValue', '7');
     await wrapper.vm.$nextTick();
     expect(wrapper.findComponent(STabsStub as Component).props('value')).toBe('7');
   });

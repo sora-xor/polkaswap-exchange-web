@@ -17,13 +17,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, toRef, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 import { api } from '@/api';
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
-import { getLegacyStore } from '@/utils/legacy-store';
+import { getAppStore } from '@/utils/app-store';
 import type { Route } from '@/store/router/types';
 
 import DialogBase from '../DialogBase.vue';
@@ -32,24 +32,16 @@ import MstForgetDialog from './MstForgetDialog.vue';
 
 defineOptions({ name: 'MultisigChangeNameDialog' });
 
-const props = withDefaults(
-  defineProps<{
-    visible?: boolean;
-  }>(),
-  {
-    visible: false,
-  }
-);
+const props = withDefaults(defineProps<{}>(), {});
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
 }>();
 
 const { t } = useTranslation();
-const store = computed(() => getLegacyStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any));
-const { isVisible, closeDialog } = useDialogVisibility(toRef(props, 'visible'), {
-  emit: (value) => emit('update:visible', value),
+const store = computed(() => getAppStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any));
+const visibleModel = defineModel<boolean>('visible', { default: false });
+const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 

@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 // Compat stub: original component was removed during the Vue 3 migration.
-// The compat build only needs a mounted placeholder to satisfy dynamic imports.
+// Keep a mounted placeholder so legacy dynamic imports resolve during the cleanup window.
 </script>
 
 <style scoped>

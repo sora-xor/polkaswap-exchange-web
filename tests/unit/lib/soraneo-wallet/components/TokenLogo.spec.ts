@@ -5,8 +5,8 @@ const legacyStoreMock: { getters: Record<string, any> } = {
   getters: {},
 };
 
-vi.mock('@/utils/legacy-store', () => ({
-  requireLegacyStore: () => legacyStoreMock,
+vi.mock('@/utils/app-store', () => ({
+  requireAppStore: () => legacyStoreMock,
 }));
 
 vi.mock('@/api', () => ({

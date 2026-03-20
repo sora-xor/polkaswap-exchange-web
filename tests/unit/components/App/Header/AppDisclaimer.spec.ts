@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { nextTick } from 'vue';
+import { defineComponent, h, nextTick, watch } from 'vue';
 
 const {
   settingsStoreMock,
@@ -8,13 +8,18 @@ const {
   toggleDisclaimerDialogVisibilityMock,
   disconnectMock,
   observeMock,
+  modalPropsSnapshots,
+  routeNameRef,
 } = vi.hoisted(() => {
   const setUserDisclaimerApproveMock = vi.fn();
   const toggleDisclaimerDialogVisibilityMock = vi.fn();
   const observeMock = vi.fn();
   const disconnectMock = vi.fn();
+  const modalPropsSnapshots: Array<Record<string, unknown>> = [];
+  const routeNameRef = { value: 'Swap' };
 
   const settingsStoreMock = {
+    disclaimerVisibility: true,
     userDisclaimerApprove: false,
     setUserDisclaimerApprove: setUserDisclaimerApproveMock,
     toggleDisclaimerDialogVisibility: toggleDisclaimerDialogVisibilityMock,
@@ -26,6 +31,8 @@ const {
     toggleDisclaimerDialogVisibilityMock,
     disconnectMock,
     observeMock,
+    modalPropsSnapshots,
+    routeNameRef,
   };
 });
 
@@ -51,12 +58,97 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
+vi.mock('vue-router', () => ({
+  useRoute: () => ({
+    name: routeNameRef.value,
+  }),
+}));
+
 vi.mock('@/utils', () => ({
   delay: vi.fn(() => Promise.resolve()),
 }));
 
+vi.mock('@/lib/soramitsu-ui/components/Modal', () => ({
+  SModal: defineComponent({
+    name: 'SModal',
+    props: {
+      show: {
+        type: Boolean,
+        default: false,
+      },
+      teleportTo: {
+        type: [String, null],
+        default: 'body',
+      },
+      absolute: {
+        type: Boolean,
+        default: false,
+      },
+      lockScroll: {
+        type: Boolean,
+        default: true,
+      },
+      rootClass: {
+        type: [String, Array, Object],
+        default: '',
+      },
+      modalClass: {
+        type: [String, Array, Object],
+        default: '',
+      },
+      closeOnOverlayClick: {
+        type: Boolean,
+        default: true,
+      },
+      closeOnEsc: {
+        type: Boolean,
+        default: true,
+      },
+      showOverlay: {
+        type: Boolean,
+        default: true,
+      },
+    },
+    emits: ['update:show'],
+    setup(props, { slots, emit }) {
+      watch(
+        () => ({
+          teleportTo: props.teleportTo,
+          absolute: props.absolute,
+          lockScroll: props.lockScroll,
+          rootClass: props.rootClass,
+          modalClass: props.modalClass,
+          closeOnOverlayClick: props.closeOnOverlayClick,
+          closeOnEsc: props.closeOnEsc,
+          showOverlay: props.showOverlay,
+        }),
+        (value) => {
+          modalPropsSnapshots.push(value);
+        },
+        { immediate: true, deep: true }
+      );
+
+      return () =>
+        h('div', { class: 's-modal-stub', 'data-show': String(Boolean(props.show)) }, [
+          h('div', {
+            'data-testid': 'overlay',
+            onClick: () => {
+              if (props.closeOnOverlayClick) {
+                emit('update:show', false);
+              }
+            },
+          }),
+          h('div', { 'data-testid': 'modal' }, slots.default?.()),
+        ]);
+    },
+  }),
+}));
+
 describe('AppDisclaimer', () => {
   beforeEach(() => {
+    modalPropsSnapshots.length = 0;
+    routeNameRef.value = 'Swap';
+    settingsStoreMock.disclaimerVisibility = true;
     settingsStoreMock.userDisclaimerApprove = false;
     setUserDisclaimerApproveMock.mockReset();
     toggleDisclaimerDialogVisibilityMock.mockReset();
@@ -80,6 +172,56 @@ describe('AppDisclaimer', () => {
     }
 
     vi.stubGlobal('IntersectionObserver', IntersectionObserverMock);
+  });
+
+  it('renders as an in-place modal overlay instead of inline page content', async () => {
+    const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
+    const wrapper = mount(component, {
+      global: {
+        stubs: {
+          's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
+        },
+      },
+    });
+
+    await vi.dynamicImportSettled();
+    await Promise.resolve();
+    await nextTick();
+
+    const modalProps = modalPropsSnapshots.at(-1);
+
+    expect(wrapper.find('.s-modal-stub').exists()).toBe(true);
+    expect(modalProps?.teleportTo).toBe(null);
+    expect(modalProps?.absolute).toBe(true);
+    expect(modalProps?.lockScroll).toBe(false);
+    expect(modalProps?.showOverlay).toBe(true);
+    expect(modalProps?.rootClass).toEqual(['disclaimer-modal', { 'disclaimer-modal--nonblocking': false }]);
+    expect(modalProps?.modalClass).toBe('disclaimer-modal__dialog');
+    expect(modalProps?.closeOnOverlayClick).toBe(false);
+    expect(modalProps?.closeOnEsc).toBe(false);
+  });
+
+  it('keeps the disclaimer non-blocking off the swap route', async () => {
+    routeNameRef.value = 'VaultsContainer';
+
+    const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
+    mount(component, {
+      global: {
+        stubs: {
+          's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
+        },
+      },
+    });
+
+    await vi.dynamicImportSettled();
+    await Promise.resolve();
+    await nextTick();
+
+    const modalProps = modalPropsSnapshots.at(-1);
+
+    expect(modalProps?.showOverlay).toBe(false);
+    expect(modalProps?.rootClass).toEqual(['disclaimer-modal', { 'disclaimer-modal--nonblocking': true }]);
+    expect(modalProps?.closeOnOverlayClick).toBe(false);
   });
 
   it('activates accept state and handles accept action', async () => {
@@ -144,6 +286,32 @@ describe('AppDisclaimer', () => {
     await wrapper.find('.s-icon-stub').trigger('click');
 
     expect(wrapper.find('.s-button-stub').exists()).toBe(false);
+    expect(toggleDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('allows overlay dismissal only after the disclaimer was already approved', async () => {
+    settingsStoreMock.userDisclaimerApprove = true;
+
+    const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
+    const wrapper = mount(component, {
+      global: {
+        stubs: {
+          's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
+        },
+      },
+    });
+
+    await vi.dynamicImportSettled();
+    await Promise.resolve();
+    await nextTick();
+
+    const modalProps = modalPropsSnapshots.at(-1);
+
+    expect(modalProps?.showOverlay).toBe(true);
+    expect(modalProps?.closeOnOverlayClick).toBe(true);
+    expect(modalProps?.closeOnEsc).toBe(true);
+
+    await wrapper.get('[data-testid="overlay"]').trigger('click');
     expect(toggleDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,4 +1,5 @@
-import { defineModule, localActionContext } from 'direct-vuex';
+import { defineModule } from '@/store/module-helpers';
+import { localModuleActionContext } from '@/store/module-context';
 
 import actions from './actions';
 import mutations from './mutations';
@@ -11,7 +12,7 @@ const router = defineModule({
   actions,
 });
 
-const routerActionContext = (context: any) => localActionContext(context, router);
+const routerActionContext = (context: any) => localModuleActionContext(context, router);
 
 export { routerActionContext };
 export default router;

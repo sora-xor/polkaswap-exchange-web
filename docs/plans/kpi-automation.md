@@ -1,6 +1,6 @@
 # KPI Automation Plan – Vue 3 Migration
 
-This document outlines the agreed approach for automating KPI reporting (class component count, Pinia parity, compat build streak, translation streak, bundle delta) referenced in `roadmap.md`.
+This document outlines the agreed approach for automating KPI reporting (class component count, Pinia parity, native Vue 3 build streak, translation streak, bundle delta) referenced in `roadmap.md`.
 
 ## Decision Summary
 
@@ -14,7 +14,7 @@ This document outlines the agreed approach for automating KPI reporting (class c
 | -------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------- |
 | Class-based components remaining | Git working tree                                | Script runs `rg '@Component' src/components/\*_/_.vue                                            | wc -l` and logs result. |
 | Pinia parity score               | Checklist file (`docs/plans/vue3-migration.md`) | Script parses a YAML/JSON parity checklist (to be exported) and computes percentage.             |
-| Compat build pass rate           | CI API (`build:vue3` job)                       | DevOps exposes latest 7-run status via REST endpoint; script fetches and calculates streak.      |
+| Native Vue 3 build pass rate    | CI API (`build:vue3` job)                       | DevOps exposes latest 7-run status via REST endpoint; script fetches and calculates streak.      |
 | Bundle size delta                | Bundle analyzer reports                         | Compare `dist/reports/build/stats.json` vs `dist/reports/build-vue3/stats.json`; report % delta. |
 | Translation test streak          | CI API (`test:translation` job)                 | Fetch last 7 runs; compute longest current streak.                                               |
 
@@ -32,7 +32,7 @@ Output format (example):
     "translationStreak": 8
   },
   "notes": [
-    "Compat build red on 2025-02-09 due to telemetry test flake."
+    "Native Vue 3 build red on 2025-02-09 due to telemetry test flake."
   ]
 }
 ```
@@ -52,7 +52,7 @@ The script will also render a Markdown summary appended to `docs/status/kpi-hist
 - Nightly KPI report automatically posts to #migration-status before 08:30 CET.
 - `docs/status/kpi-history.md` contains rolling seven-day history.
 - Migration lead can reference automated metrics during sprint reviews without manual calculations.
-- Alerts trigger when streak thresholds drop (compat build <5/7, translation streak <3).
+- Alerts trigger when streak thresholds drop (native Vue 3 build <5/7, translation streak <3).
 
 ## Risks & Mitigations
 

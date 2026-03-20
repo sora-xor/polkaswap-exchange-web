@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref, toRef } from 'vue';
+import { computed, reactive, ref } from 'vue';
 
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
@@ -77,13 +77,11 @@ defineOptions({ name: 'AddressBookListDialog' });
 
 const props = withDefaults(
   defineProps<{
-    visible?: boolean;
     accounts?: PolkadotJsAccount[];
     records?: PolkadotJsAccount[];
     excludedAddress?: string;
   }>(),
   {
-    visible: false,
     accounts: () => [] as PolkadotJsAccount[],
     records: () => [] as PolkadotJsAccount[],
     excludedAddress: '',
@@ -91,7 +89,6 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'select', value: PolkadotJsAccount): void;
   (event: 'open', address: Nullable<string>, isEditMode?: boolean): void;
@@ -99,8 +96,8 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
-const { isVisible, closeDialog } = useDialogVisibility(toRef(props, 'visible'), {
-  emit: (value) => emit('update:visible', value),
+const visibleModel = defineModel<boolean>('visible', { default: false });
+const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 

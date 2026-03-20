@@ -4,18 +4,21 @@ type TelemetryClient = {
   track?: (event: string, payload?: TelemetryPayload) => void;
 };
 
+export const APP_BUILD_VARIANT = 'vue3-native' as const;
+const BUILD_VARIANT_GLOBAL_KEY = '__PS_BUILD_VARIANT__';
+
 /**
- * Read the current build variant from the global scope for telemetry payloads.
+ * Read the current build variant for telemetry payloads.
  */
-export const getBuildVariant = (): string => {
+export const getBuildVariant = (): typeof APP_BUILD_VARIANT => {
   if (typeof window !== 'undefined') {
-    const variant = (window as Record<string, unknown>).__PS_BUILD_VARIANT__;
-    if (typeof variant === 'string' && variant.length > 0) {
+    const variant = (window as Record<string, unknown>)[BUILD_VARIANT_GLOBAL_KEY];
+    if (variant === APP_BUILD_VARIANT) {
       return variant;
     }
   }
 
-  return 'unknown';
+  return APP_BUILD_VARIANT;
 };
 
 const getTelemetryClient = (): TelemetryClient | undefined => {

@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { components } from '@wallet';
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -27,7 +27,6 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
-    visible: boolean;
     appendToBody?: boolean;
   }>(),
   {
@@ -35,26 +34,8 @@ const props = withDefaults(
   }
 );
 
-const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
-  (event: 'close'): void;
-}>();
-
 const { t } = useTranslation();
-
-const isVisible = ref(props.visible);
-
-watch(
-  () => props.visible,
-  (value) => {
-    isVisible.value = value;
-  },
-  { immediate: true }
-);
-
-watch(isVisible, (value) => {
-  emit('update:visible', value);
-});
+const isVisible = defineModel<boolean>('visible', { required: true });
 
 const appendToBody = computed(() => props.appendToBody);
 </script>

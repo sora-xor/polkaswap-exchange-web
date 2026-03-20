@@ -43,82 +43,100 @@
 </template>
 
 <script lang="ts">
-import { Prop, Options, mixins } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
 import TranslationMixin from './mixins/TranslationMixin';
 
-const UrlCreator = window.URL || window.webkitURL;
+const UrlCreator = globalThis.URL || (globalThis as typeof globalThis & { webkitURL?: typeof URL }).webkitURL;
 
-@Options({})
-export default class NftDetails extends mixins(TranslationMixin) {
-  @Prop({ default: '', type: String }) readonly contentLink!: string;
-  @Prop({ default: '', type: String }) readonly tokenName!: string;
-  @Prop({ default: '', type: String }) readonly tokenSymbol!: string;
-  @Prop({ default: '', type: String }) readonly tokenDescription!: string;
-  @Prop({ default: false, type: Boolean }) readonly isAssetDetails!: boolean;
-
-  private nftDetailsClicked = false;
-  badLink = false;
-  imageLoading = true;
-  isNotImage = false;
-  image = '';
-
-  get nftDetailsSectionClasses(): Array<string> {
-    const cssClasses: Array<string> = ['nft-info__header--clickable'];
-    if (this.nftDetailsClicked) {
-      cssClasses.push('nft-info__header--clicked');
+export default defineComponent({
+  mixins: [TranslationMixin],
+  props: {
+    contentLink: {
+      default: '',
+      type: String,
+    },
+    tokenName: {
+      default: '',
+      type: String,
+    },
+    tokenSymbol: {
+      default: '',
+      type: String,
+    },
+    tokenDescription: {
+      default: '',
+      type: String,
+    },
+    isAssetDetails: {
+      default: false,
+      type: Boolean,
+    },
+  },
+  emits: ['click-details'],
+  data() {
+    return {
+      nftDetailsClicked: false,
+      badLink: false,
+      imageLoading: true,
+      isNotImage: false,
+      image: '',
+    };
+  },
+  computed: {
+    nftDetailsSectionClasses(this: any): string[] {
+      const cssClasses = ['nft-info__header--clickable'];
+      if (this.nftDetailsClicked) {
+        cssClasses.push('nft-info__header--clicked');
+      }
+      return cssClasses;
+    },
+    imagePreview(this: any): string[] {
+      return [this.image];
+    },
+  },
+  mounted(this: any): void {
+    void this.$nextTick().then(() => this.checkImageAvailability());
+  },
+  beforeUnmount(this: any): void {
+    if (this.image) {
+      UrlCreator?.revokeObjectURL(this.image);
     }
-    return cssClasses;
-  }
-
-  get imagePreview(): Array<string> {
-    return [this.image];
-  }
-
-  private async checkImageAvailability(): Promise<void> {
-    if (!this.contentLink) {
-      return;
-    }
-
-    try {
-      const response = await fetch(this.contentLink);
-      const buffer = await response.blob();
-
-      if (!buffer.type.startsWith('image/')) {
-        this.isNotImage = true;
-        this.badLink = true;
-        this.imageLoading = false;
+  },
+  methods: {
+    async checkImageAvailability(this: any): Promise<void> {
+      if (!this.contentLink) {
         return;
       }
-      this.imageLoading = false;
-      this.image = UrlCreator.createObjectURL(buffer);
-    } catch {
-      this.badLink = true;
-    }
-  }
 
-  handleDetailsClick(): void {
-    this.nftDetailsClicked = !this.nftDetailsClicked;
-    this.$emit('click-details');
-  }
+      try {
+        const response = await fetch(this.contentLink);
+        const buffer = await response.blob();
 
-  handleRefresh(): void {
-    this.badLink = false;
-    this.imageLoading = true;
-    this.checkImageAvailability();
-  }
+        if (!buffer.type.startsWith('image/')) {
+          this.isNotImage = true;
+          this.badLink = true;
+          this.imageLoading = false;
+          return;
+        }
 
-  async mounted(): Promise<void> {
-    await this.$nextTick();
-    this.checkImageAvailability();
-  }
-
-  beforeUnmount(): void {
-    if (this.image) {
-      UrlCreator.revokeObjectURL(this.image);
-    }
-  }
-}
+        this.imageLoading = false;
+        this.image = UrlCreator?.createObjectURL(buffer) ?? '';
+      } catch {
+        this.badLink = true;
+      }
+    },
+    handleDetailsClick(this: any): void {
+      this.nftDetailsClicked = !this.nftDetailsClicked;
+      this.$emit('click-details');
+    },
+    handleRefresh(this: any): void {
+      this.badLink = false;
+      this.imageLoading = true;
+      void this.checkImageAvailability();
+    },
+  },
+});
 </script>
 
 <style lang="scss">

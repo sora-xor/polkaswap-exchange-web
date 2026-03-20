@@ -1,5 +1,5 @@
 import { api } from '@wallet';
-import { defineActions } from 'direct-vuex';
+import { defineActions } from '@/store/module-helpers';
 
 import { getReferralRewards } from '@/indexer/queries/referrals';
 import { referralsActionContext } from '@/store/referrals';

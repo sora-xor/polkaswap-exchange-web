@@ -15,7 +15,7 @@ import { computed } from 'vue';
 
 import { api } from '@/api';
 import { RouteNames } from '@/consts';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 import { useRouterStore } from '@/stores/router';
 import type { Route } from '@/store/router/types';
 import type { PolkadotJsAccount } from '@/types/common';
@@ -23,7 +23,7 @@ import type { PolkadotJsAccount } from '@/types/common';
 import ConnectionView from './Connection/ConnectionView.vue';
 
 const routerStore = useRouterStore();
-const store = requireLegacyStore();
+const store = requireAppStore();
 
 const chainApi = api;
 

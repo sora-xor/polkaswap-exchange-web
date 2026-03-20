@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options, Ref, Prop } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
 import { IMAGE_MIME_TYPES } from '../util/image';
 
@@ -29,100 +29,125 @@ const FILE_TYPES_LIST_STRING = Object.values(IMAGE_MIME_TYPES).join(',');
 
 const HUNDRED_MB = 100 * 1024 * 1024; // 100MB in bytes
 
-@Options({})
-export default class FileUploader extends mixins(LoadingMixin, TranslationMixin) {
-  /**
-   * Boolean check for the external link
-   */
-  @Prop({ default: false, type: Boolean }) readonly isLinkProvided!: boolean;
-  /**
-   * Accepted format of files. `image/*` is set by default
-   */
-  @Prop({ default: FILE_TYPES_LIST_STRING, type: String }) readonly accept!: string;
-  /**
-   * Limit (in bytes) of the file. 100 MB is set by default.
-   */
-  @Prop({ default: HUNDRED_MB, type: Number }) readonly limit!: number;
+export default defineComponent({
+  mixins: [LoadingMixin, TranslationMixin],
+  props: {
+    /**
+     * Boolean check for the external link
+     */
+    isLinkProvided: {
+      default: false,
+      type: Boolean,
+    },
+    /**
+     * Accepted format of files. `image/*` is set by default
+     */
+    accept: {
+      default: FILE_TYPES_LIST_STRING,
+      type: String,
+    },
+    /**
+     * Limit (in bytes) of the file. 100 MB is set by default.
+     */
+    limit: {
+      default: HUNDRED_MB,
+      type: Number,
+    },
+  },
+  emits: ['hide-limit', 'show-limit', 'upload', 'clear'],
+  data() {
+    return {
+      isFileDraggedOver: false,
+      isClearBtnShown: false,
+    };
+  },
+  computed: {
+    dropZoneClass(this: any): string {
+      return this.isFileDraggedOver || this.isLinkProvided ? 'drop-zone--over' : '';
+    },
+    clearBtnShown(this: any): boolean {
+      return this.isClearBtnShown || this.isLinkProvided;
+    },
+  },
+  methods: {
+    dropImage(this: any, event: DragEvent): void {
+      event.preventDefault();
 
-  @Ref('fileInput') readonly fileInput!: HTMLInputElement;
+      if (
+        !(event.dataTransfer && event.dataTransfer.files[0] && this.accept.includes(event.dataTransfer.files[0].type))
+      ) {
+        this.resetFileInput();
+        return;
+      }
 
-  private isFileDraggedOver = false;
-  private isClearBtnShown = false;
+      const fileInput = (this.$refs as Record<string, any>).fileInput as HTMLInputElement | undefined;
 
-  get dropZoneClass(): string {
-    return this.isFileDraggedOver || this.isLinkProvided ? 'drop-zone--over' : '';
-  }
+      if (!fileInput) {
+        this.resetFileInput();
+        return;
+      }
 
-  get clearBtnShown(): boolean {
-    return this.isClearBtnShown || this.isLinkProvided;
-  }
+      fileInput.files = event.dataTransfer.files as FileList;
+      this.upload();
+    },
+    dragOver(this: any): void {
+      this.isFileDraggedOver = true;
+    },
+    dragCancelled(this: any): void {
+      this.isFileDraggedOver = false;
+    },
+    openFileUpload(this: any): void {
+      const fileInput = (this.$refs as Record<string, any>).fileInput as HTMLInputElement | undefined;
 
-  dropImage(event: DragEvent): void {
-    event.preventDefault();
+      if (!fileInput || fileInput.files?.[0] || this.isLinkProvided) {
+        return;
+      }
 
-    if (
-      !(event.dataTransfer && event.dataTransfer.files[0] && this.accept.includes(event.dataTransfer.files[0].type))
-    ) {
+      fileInput.click();
+    },
+    upload(this: any): void {
+      const fileInput = (this.$refs as Record<string, any>).fileInput as HTMLInputElement | undefined;
+
+      if (!(fileInput && fileInput.files)) {
+        this.resetFileInput();
+        return;
+      }
+
+      this.$emit('hide-limit');
+      const file = fileInput.files[0];
+
+      if (!file) {
+        this.resetFileInput();
+        return;
+      }
+
+      if (file.size > this.limit) {
+        this.$emit('show-limit');
+        this.resetFileInput();
+        return;
+      }
+
+      this.$emit('upload', file);
+      this.isFileDraggedOver = true;
+      this.isClearBtnShown = true;
+    },
+    clear(this: any, event: Event): void {
+      event.stopPropagation();
       this.resetFileInput();
-      return;
-    }
+      this.$emit('clear');
+    },
+    resetFileInput(this: any): void {
+      const fileInput = (this.$refs as Record<string, any>).fileInput as HTMLInputElement | undefined;
 
-    this.fileInput.files = event.dataTransfer.files as FileList;
-    this.upload();
-  }
+      if (fileInput) {
+        fileInput.value = '';
+      }
 
-  dragOver(): void {
-    this.isFileDraggedOver = true;
-  }
-
-  dragCancelled(): void {
-    this.isFileDraggedOver = false;
-  }
-
-  openFileUpload(): void {
-    if ((this.fileInput.files as FileList)[0] || this.isLinkProvided) {
-      return;
-    }
-    this.fileInput.click();
-  }
-
-  upload(): void {
-    if (!(this.fileInput && this.fileInput.files)) {
-      this.resetFileInput();
-      return;
-    }
-
-    this.$emit('hide-limit');
-    const file = this.fileInput.files[0];
-
-    if (!file) {
-      this.resetFileInput();
-      return;
-    }
-
-    if (file.size > this.limit) {
-      this.$emit('show-limit');
-      this.resetFileInput();
-      return;
-    }
-
-    this.$emit('upload', file);
-    this.isFileDraggedOver = true;
-    this.isClearBtnShown = true;
-  }
-
-  clear(e: Event): void {
-    e.stopPropagation();
-    this.resetFileInput();
-    this.$emit('clear');
-  }
-
-  resetFileInput(): void {
-    this.fileInput.value = '';
-    this.isClearBtnShown = false;
-    this.isFileDraggedOver = false;
-  }
-}
+      this.isClearBtnShown = false;
+      this.isFileDraggedOver = false;
+    },
+  },
+});
 </script>
 
 <style lang="scss">

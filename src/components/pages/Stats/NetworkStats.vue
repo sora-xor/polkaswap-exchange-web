@@ -1,7 +1,12 @@
 <template>
   <base-widget v-bind="$attrs" :title="t('networkStatisticsText')">
     <template #filters>
-      <stats-filter :disabled="loadingState" :filters="filters" :value="filter" @input="changeFilter"></stats-filter>
+      <stats-filter
+        :disabled="loadingState"
+        :filters="filters"
+        :model-value="filter"
+        @update:model-value="changeFilter"
+      ></stats-filter>
     </template>
 
     <div class="stats-row">

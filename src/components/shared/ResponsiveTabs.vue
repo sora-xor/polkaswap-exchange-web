@@ -36,7 +36,7 @@
       :class="['responsive-tabs__tabs', size]"
       type="rounded"
       :value="selectedKey"
-      @input="handleTabChange"
+      @update:model-value="handleTabChange"
     >
       <s-tab v-for="tab in tabs" :key="tab.name" :name="tab.name" :label="tab.label" :disabled="disabled"></s-tab>
     </s-tabs>
@@ -56,6 +56,7 @@ const props = withDefaults(
     disabled?: boolean;
     size?: UiSize;
     tabs?: Array<ResponsiveTab>;
+    modelValue?: string;
   }>(),
   {
     isHeader: false,
@@ -63,21 +64,21 @@ const props = withDefaults(
     disabled: false,
     size: UiSize.MEDIUM,
     tabs: () => [],
+    modelValue: undefined,
   }
 );
 
 const emit = defineEmits<{
-  (event: 'input', value: string): void;
+  (event: 'update:modelValue', value: string): void;
 }>();
 
-const selectedKeyModel = defineModel<string>('value', { default: '' });
+const selectedKeyModel = computed(() => props.modelValue ?? '');
 
 const selected = computed(() => props.tabs.find((tab) => tab.name === selectedKeyModel.value));
 const selectedName = computed(() => selected.value?.label ?? '');
 
 function handleTabChange(name: string): void {
-  selectedKeyModel.value = name;
-  emit('input', name);
+  emit('update:modelValue', name);
 }
 
 const selectedKey = computed(() => selectedKeyModel.value);

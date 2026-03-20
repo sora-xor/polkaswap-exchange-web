@@ -3,8 +3,8 @@ import { computed, ref } from 'vue';
 import store from '@/store';
 
 /**
- * Encapsulates shared confirm-dialog state that used to live inside
- * `ConfirmDialogMixin`. Consumers can gate actions behind the wallet-wide
+ * Encapsulates the shared confirm-dialog flow that previously lived in a
+ * mixin-based wallet helper. Consumers can gate actions behind the wallet-wide
  * "confirm transactions" toggle.
  */
 export function useConfirmDialog() {

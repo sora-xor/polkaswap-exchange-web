@@ -1,4 +1,5 @@
-import { defineModule, localActionContext } from 'direct-vuex';
+import { defineModule } from '@/store/module-helpers';
+import { localModuleActionContext } from '@/store/module-context';
 
 import actions from './actions';
 import mutations from './mutations';
@@ -11,7 +12,7 @@ const subscriptions = defineModule({
   actions,
 });
 
-const subscriptionsActionContext = (context: any) => localActionContext(context, subscriptions);
+const subscriptionsActionContext = (context: any) => localModuleActionContext(context, subscriptions);
 
 export { subscriptionsActionContext };
 export default subscriptions;

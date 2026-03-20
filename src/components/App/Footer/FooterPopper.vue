@@ -1,5 +1,5 @@
 <template>
-  <el-popover
+  <s-popover-panel
     ref="popover"
     placement="top"
     trigger="click"
@@ -35,7 +35,7 @@
         <slot></slot>
       </div>
     </div>
-  </el-popover>
+  </s-popover-panel>
 </template>
 
 <script lang="ts" setup>

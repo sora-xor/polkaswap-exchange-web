@@ -55,7 +55,7 @@ Fill in the empty rows per module and keep the table alphabetised. “State pari
 
 **Dependencies & follow-ups**
 
-- Relies on `settingsStorage`, `TokenBalanceSubscriptions`, and multiple legacy getters (`requireLegacyStore().getters.settings`, wallet balances) that must be abstracted before the Vuex module can be deleted.
+- Relies on `settingsStorage`, `TokenBalanceSubscriptions`, and multiple Vuex facade getters (`requireAppStore().getters.settings`, wallet balances) that must be abstracted before the Vuex module can be deleted.
 - Next actions: extract balance subscription helpers into a composable, mirror legacy swap quotes/actions in Pinia (currently still triggered via Vuex), and plan telemetry hooks per `docs/plans/pinia-telemetry-hooks.md`.
 
 ## Telemetry Hooks

@@ -1,6 +1,11 @@
 <template>
   <div class="order-book order-books">
-    <el-popover popper-class="order-book-whitelist" trigger="click" v-model="visibleBookList" :visible-arrow="false">
+    <s-popover-panel
+      popper-class="order-book-whitelist"
+      trigger="click"
+      v-model:show="visibleBookList"
+      :visible-arrow="false"
+    >
       <pair-list-popover @close="toggleBookList" />
       <template #reference>
         <div class="order-book-choose-pair">
@@ -35,7 +40,7 @@
           </div>
         </div>
       </template>
-    </el-popover>
+    </s-popover-panel>
 
     <s-tabs class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick">
       <s-tab label="limit" name="limit">
@@ -73,9 +78,9 @@
       :is-max-available="false"
       :title="t('priceText')"
       :token="quoteAsset"
-      :value="quoteValue"
+      :model-value="quoteValue"
       :disabled="isPriceInputDisabled"
-      @input="handleInputFieldQuote"
+      @update:model-value="handleInputFieldQuote"
       class="order-book-input"
     />
 
@@ -85,10 +90,10 @@
       :with-slider="isSliderAvailable"
       :title="t('orderBook.amount')"
       :token="baseAsset"
-      :value="baseValue"
+      :model-value="baseValue"
       :slider-value="amountSliderValue"
       @slide="handleSlideInputChange"
-      @input="handleInputFieldBase"
+      @update:model-value="handleInputFieldBase"
       @max="handleMaxValue"
       class="order-book-input s-input--with-slider"
     />
@@ -98,7 +103,7 @@
       <info-line class="total-line" :label="t('orderBook.total')" :value="formattedTotal" :asset-symbol="quoteSymbol" />
     </div>
 
-    <el-popover popper-class="book-validation__popover" trigger="hover" :visible-arrow="false">
+    <s-popover-panel popper-class="book-validation__popover" trigger="hover" :visible-arrow="false">
       <div v-if="shouldErrorTooltipBeShown" class="book-validation">
         <div class="book-validation__disclaimer">
           <h4 class="book-validation__disclaimer-header">
@@ -177,7 +182,7 @@
           </template>
         </s-button>
       </template>
-    </el-popover>
+    </s-popover-panel>
 
     <place-transaction-details
       v-if="areTokensSelected && !hasZeroAmount && !hasExplainableError"

@@ -1,4 +1,3 @@
-import { Vue as VueComponent } from 'vue-property-decorator';
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 import { setLegacyRouterLoading, syncLegacyRoute } from '@/adapters/router/navigation';
@@ -12,10 +11,6 @@ import { useBridgeHistoryStore } from '@/stores/bridge/history';
 import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 import { registerDocumentTitleResolver, updateDocumentTitle } from '@/utils';
-
-if (typeof (VueComponent as { registerHooks?: (hooks: string[]) => void }).registerHooks === 'function') {
-  VueComponent.registerHooks(['beforeRouteEnter', 'beforeRouteUpdate', 'beforeRouteLeave']);
-}
 
 const WALLET_DEFAULT_ROUTE = PageNames.Wallet;
 const WALLET_CONNECTION_ROUTE = 'WalletConnection';

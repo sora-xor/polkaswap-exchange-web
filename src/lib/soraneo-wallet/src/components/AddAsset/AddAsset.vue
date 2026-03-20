@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { Options, mixins } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
 import { useRouterStore } from '@/stores/router';
 
@@ -29,55 +29,54 @@ import AddAssetToken from './AddAssetTokenTab.vue';
 
 import type { Route } from '../../store/router/types';
 
-@Options({
+export default defineComponent({
   components: {
     WalletBase,
     AddAssetToken,
     AddAssetNFT,
   },
-})
-export default class AddAsset extends mixins(TranslationMixin) {
-  readonly AddAssetTabs = AddAssetTabs;
+  mixins: [TranslationMixin],
+  data() {
+    return {
+      AddAssetTabs,
+      currentTab: AddAssetTabs.Token as AddAssetTabs,
+      showTabs: true,
+      tokenDetailsPageOpened: false,
+    };
+  },
+  computed: {
+    currentScreen(this: any): string {
+      return `${this.currentTab}${this.tokenDetailsPageOpened}`;
+    },
+    routerStore(this: any) {
+      return useRouterStore(this.$pinia);
+    },
+  },
+  methods: {
+    getTabName(this: any, tab: AddAssetTabs): string {
+      if (tab === AddAssetTabs.NFT) {
+        return this.TranslationConsts.NFT;
+      }
+      return this.t(`addAsset.${tab}.title`);
+    },
+    changeVisibility(this: any): void {
+      this.showTabs = false;
+      this.tokenDetailsPageOpened = true;
+    },
+    navigate(this: any, options: Route): void {
+      this.routerStore.navigate(options);
+    },
+    handleBack(this: any): void {
+      if (!this.showTabs) {
+        this.showTabs = true;
+        this.tokenDetailsPageOpened = false;
+        return;
+      }
 
-  currentTab = AddAssetTabs.Token;
-
-  showTabs = true;
-  tokenDetailsPageOpened = false;
-
-  get currentScreen(): string {
-    return `${this.currentTab}${this.tokenDetailsPageOpened}`;
-  }
-
-  getTabName(tab: AddAssetTabs): string {
-    if (tab === AddAssetTabs.NFT) {
-      return this.TranslationConsts.NFT;
-    }
-    return this.t(`addAsset.${tab}.title`);
-  }
-
-  changeVisibility(): void {
-    this.showTabs = false;
-    this.tokenDetailsPageOpened = true;
-  }
-
-  private get routerStore() {
-    return useRouterStore((this as any).$pinia);
-  }
-
-  private navigate(options: Route): void {
-    this.routerStore.navigate(options);
-  }
-
-  handleBack(): void {
-    if (!this.showTabs) {
-      this.showTabs = true;
-      this.tokenDetailsPageOpened = false;
-      return;
-    }
-
-    this.navigate({ name: RouteNames.Wallet });
-  }
-}
+      this.navigate({ name: RouteNames.Wallet });
+    },
+  },
+});
 </script>
 
 <style lang="scss">

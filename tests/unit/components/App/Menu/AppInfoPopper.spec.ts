@@ -3,8 +3,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, nextTick, useAttrs } from 'vue';
 
 import AppInfoPopper from '@/components/App/Menu/AppInfoPopper.vue';
-import ElPopoverCompat from '@/components/compat/ElPopoverCompat';
 import { Links, SocialNetworkLinks, app } from '@/consts';
+import SPopoverPanel from '@/lib/soramitsu-ui/components/Popover/SPopoverPanel';
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
@@ -39,8 +39,8 @@ const mountComponent = (slotContent = '<button class="info-trigger">Info</button
     attachTo: document.body,
     global: {
       components: {
-        ElPopover: ElPopoverCompat,
-        'el-popover': ElPopoverCompat,
+        SPopoverPanel,
+        's-popover-panel': SPopoverPanel,
         AttrForwardingTrigger,
       },
       stubs: {

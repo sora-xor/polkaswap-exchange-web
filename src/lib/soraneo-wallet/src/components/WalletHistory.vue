@@ -44,13 +44,13 @@
 import { TransactionStatus } from '@sora-substrate/sdk';
 import debounce from 'lodash/fp/debounce';
 import isEmpty from 'lodash/fp/isEmpty';
-import { Options, mixins, Prop, Watch } from 'vue-property-decorator';
+import { defineComponent, type PropType } from 'vue';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
 import { useRouterStore } from '@/stores/router';
 
 import { RouteNames, PaginationButton } from '../consts';
 import { getCurrentIndexer } from '../services/indexer';
-import { state, mutation, action } from '../store/decorators';
 import { getStatusIcon, getStatusClass } from '../util';
 
 import HistoryPagination from './HistoryPagination.vue';
@@ -69,283 +69,261 @@ const isAssetSymbol = (value: string) => value.length > 1 && value.length < 8;
 const isAccountAddress = (value: string) => value.startsWith('cn') && value.length === 49;
 const isHexAddress = (value: string) => value.startsWith('0x') && value.length === 66;
 
-@Options({
+export default defineComponent({
   components: {
     SearchInput,
     HistoryPagination,
   },
-})
-export default class WalletHistory extends mixins(
-  LoadingMixin,
-  TransactionMixin,
-  PaginationSearchMixin,
-  EthBridgeTransactionMixin
-) {
-  /** Date format without seconds, full date time will be available in TX Details */
-  readonly DateFormat = 'll LT';
+  mixins: [LoadingMixin, TransactionMixin, PaginationSearchMixin, EthBridgeTransactionMixin],
+  props: {
+    asset: {
+      default: null,
+      type: Object as PropType<Nullable<AccountAsset>>,
+    },
+  },
+  data() {
+    return {
+      DateFormat: 'll LT',
+      pageAmount: 8,
+      updateCommonHistory: (() => Promise.resolve()) as () => Promise<void>,
+    };
+  },
+  computed: {
+    ...mapState('wallet/account', ['assets']),
+    ...mapState('wallet/transactions', [
+      'history',
+      'externalHistory',
+      'externalHistoryUpdates',
+      'externalHistoryTotal',
+    ]),
+    routerStore(this: any) {
+      return useRouterStore(this.$pinia);
+    },
+    assetAddress(this: any): string {
+      return (this.asset && this.asset.address) || '';
+    },
+    internalHistoryPrefiltered(this: any) {
+      return this.getPrefilteredHistory(this.history as AccountHistory<HistoryItem>);
+    },
+    externalHistoryUpdatesPrefiltered(this: any) {
+      return this.getPrefilteredHistory(this.externalHistoryUpdates as AccountHistory<HistoryItem>);
+    },
+    filteredInternalHistory(this: any): Array<History> {
+      return this.getFilteredHistory(this.internalHistoryPrefiltered);
+    },
+    filteredExternalHistory(this: any): Array<History> {
+      return Object.values(this.externalHistory as AccountHistory<HistoryItem>);
+    },
+    filteredExternalHistoryUpdates(this: any): Array<History> {
+      return this.getFilteredHistory(this.externalHistoryUpdatesPrefiltered);
+    },
+    transactions(this: any): Array<History> {
+      const merged = [
+        ...this.filteredInternalHistory,
+        ...this.filteredExternalHistory,
+        ...this.filteredExternalHistoryUpdates,
+      ];
+      const sorted = this.sortTransactions(merged, this.isLtrDirection);
 
-  @state.account.assets private assets!: Array<Asset>;
-  @state.transactions.history private history!: AccountHistory<HistoryItem>;
-  @state.transactions.externalHistory private externalHistory!: AccountHistory<HistoryItem>;
-  @state.transactions.externalHistoryUpdates private externalHistoryUpdates!: AccountHistory<HistoryItem>;
-  @state.transactions.externalHistoryTotal private externalHistoryTotal!: number;
+      const end = this.isLtrDirection
+        ? Math.min(this.currentPage * this.pageAmount, sorted.length)
+        : Math.max((this.lastPage - this.currentPage + 1) * this.pageAmount - this.directionShift, 0);
 
-  @mutation.transactions.resetExternalHistory private resetExternalHistory!: FnWithoutArgs;
-  @mutation.transactions.saveExternalHistoryUpdates private saveExternalHistoryUpdates!: (flag: boolean) => void;
-  @mutation.transactions.getHistory private getHistory!: FnWithoutArgs;
-  @mutation.transactions.setTxDetailsId private setTxDetailsId!: (id: string) => void;
-  @action.transactions.getExternalHistory private getExternalHistory!: (args?: ExternalHistoryParams) => Promise<void>;
+      const start = this.isLtrDirection
+        ? Math.max(end - this.pageAmount, 0)
+        : Math.max((this.lastPage - this.currentPage) * this.pageAmount - this.directionShift, 0);
 
-  @Prop() readonly asset!: Nullable<AccountAsset>;
+      return this.sortTransactions(this.getPageItems(sorted, start, end), true);
+    },
+    total(this: any): number {
+      return (
+        this.externalHistoryTotal + this.filteredInternalHistory.length + this.filteredExternalHistoryUpdates.length
+      );
+    },
+    hasVisibleTransactions(this: any): boolean {
+      return !!this.transactions.length;
+    },
+    hasTransactions(this: any): boolean {
+      return this.hasVisibleTransactions || !!this.searchQuery;
+    },
+    queryCriterias(this: any): HistoryQuery {
+      if (!this.searchQuery) return {};
 
-  @Watch('searchQuery')
-  private async updateHistoryBySearchQuery() {
-    await this.updateCommonHistory();
-  }
+      const query: HistoryQuery = {};
+      const indexer = getCurrentIndexer();
 
-  readonly pageAmount = 8; // override PaginationSearchMixin
-  readonly updateCommonHistory = debounce(500)(() => this.updateHistory(1, true));
+      const operationNames = indexer.services.dataParser.supportedOperations.filter((operation) =>
+        this.t(`operations.${operation}`).toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
 
-  get assetAddress(): string {
-    return (this.asset && this.asset.address) || '';
-  }
+      if (operationNames.length) query.operationNames = operationNames;
 
-  private getPrefilteredHistory(history: AccountHistory<HistoryItem>): HistoryItem[] {
-    const historyList = Object.values(history);
+      if (isAssetSymbol(this.searchQuery)) {
+        const assetsAddresses = (this.assets as Array<Asset>).reduce((buffer: Array<string>, asset) => {
+          if (asset.symbol.toLowerCase().includes(this.searchQuery.toLowerCase())) {
+            buffer.push(asset.address);
+          }
+          return buffer;
+        }, []);
 
-    if (!this.assetAddress) return historyList;
-
-    return historyList.filter((item) => {
-      return [item.assetAddress, item.asset2Address].includes(this.assetAddress);
-    });
-  }
-
-  get internalHistoryPrefiltered() {
-    return this.getPrefilteredHistory(this.history);
-  }
-
-  get externalHistoryUpdatesPrefiltered() {
-    return this.getPrefilteredHistory(this.externalHistoryUpdates);
-  }
-
-  get filteredInternalHistory(): Array<History> {
-    return this.getFilteredHistory(this.internalHistoryPrefiltered);
-  }
-
-  get filteredExternalHistory(): Array<History> {
-    return Object.values(this.externalHistory);
-  }
-
-  get filteredExternalHistoryUpdates(): Array<History> {
-    return this.getFilteredHistory(this.externalHistoryUpdatesPrefiltered);
-  }
-
-  get transactions(): Array<History> {
-    const merged = [
-      ...this.filteredInternalHistory,
-      ...this.filteredExternalHistory,
-      ...this.filteredExternalHistoryUpdates,
-    ];
-    const sorted = this.sortTransactions(merged, this.isLtrDirection);
-
-    const end = this.isLtrDirection
-      ? Math.min(this.currentPage * this.pageAmount, sorted.length)
-      : Math.max((this.lastPage - this.currentPage + 1) * this.pageAmount - this.directionShift, 0);
-
-    const start = this.isLtrDirection
-      ? Math.max(end - this.pageAmount, 0)
-      : Math.max((this.lastPage - this.currentPage) * this.pageAmount - this.directionShift, 0);
-
-    return this.sortTransactions(this.getPageItems(sorted, start, end), true);
-  }
-
-  get total(): number {
-    return this.externalHistoryTotal + this.filteredInternalHistory.length + this.filteredExternalHistoryUpdates.length;
-  }
-
-  get hasVisibleTransactions(): boolean {
-    return !!this.transactions.length;
-  }
-
-  get hasTransactions(): boolean {
-    return this.hasVisibleTransactions || !!this.searchQuery;
-  }
-
-  private get routerStore() {
-    return useRouterStore((this as any).$pinia);
-  }
-
-  private navigate(options: Route): void {
-    this.routerStore.navigate(options);
-  }
-
-  get queryCriterias(): HistoryQuery {
-    if (!this.searchQuery) return {};
-
-    const query: HistoryQuery = {};
-    const indexer = getCurrentIndexer();
-
-    const operationNames = indexer.services.dataParser.supportedOperations.filter((operation) =>
-      this.t(`operations.${operation}`).toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
-
-    if (operationNames.length) query.operationNames = operationNames;
-
-    if (isAssetSymbol(this.searchQuery)) {
-      const assetsAddresses = this.assets.reduce((buffer: Array<string>, asset) => {
-        if (asset.symbol.toLowerCase().includes(this.searchQuery.toLowerCase())) {
-          buffer.push(asset.address);
+        if (assetsAddresses.length) {
+          query.assetsAddresses = assetsAddresses;
         }
-        return buffer;
-      }, []);
-
-      if (assetsAddresses.length) {
-        query.assetsAddresses = assetsAddresses;
       }
-    }
 
-    if (isAccountAddress(this.searchQuery)) {
-      query.accountAddress = this.searchQuery;
-    }
+      if (isAccountAddress(this.searchQuery)) {
+        query.accountAddress = this.searchQuery;
+      }
 
-    if (isHexAddress(this.searchQuery)) {
-      query.hexAddress = this.searchQuery;
-    }
+      if (isHexAddress(this.searchQuery)) {
+        query.hexAddress = this.searchQuery;
+      }
 
-    return query;
-  }
-
-  get isValidQuery(): boolean {
-    return !(this.searchQuery && isEmpty(this.queryCriterias));
-  }
-
-  async mounted() {
+      return query;
+    },
+    isValidQuery(this: any): boolean {
+      return !(this.searchQuery && isEmpty(this.queryCriterias));
+    },
+  },
+  watch: {
+    async searchQuery(this: any): Promise<void> {
+      await this.updateHistoryBySearchQuery();
+    },
+  },
+  created(this: any): void {
+    this.updateCommonHistory = debounce(500)(() => this.updateHistory(1, true));
+  },
+  async mounted(this: any): Promise<void> {
     this.saveExternalHistoryUpdates(true);
-    this.updateHistory(1, true);
-  }
-
-  beforeUnmount(): void {
+    await this.updateHistory(1, true);
+  },
+  beforeUnmount(this: any): void {
     this.saveExternalHistoryUpdates(false);
     this.reset();
-  }
+  },
+  methods: {
+    ...mapMutations('wallet/transactions', [
+      'resetExternalHistory',
+      'saveExternalHistoryUpdates',
+      'getHistory',
+      'setTxDetailsId',
+    ]),
+    ...mapActions('wallet/transactions', ['getExternalHistory']),
+    navigate(this: any, options: Route): void {
+      this.routerStore.navigate(options);
+    },
+    async updateHistoryBySearchQuery(this: any): Promise<void> {
+      await this.updateCommonHistory();
+    },
+    getPrefilteredHistory(this: any, history: AccountHistory<HistoryItem>): HistoryItem[] {
+      const historyList = Object.values(history);
 
-  reset(): void {
-    this.resetPage();
-    this.resetExternalHistory();
-  }
+      if (!this.assetAddress) return historyList;
 
-  getFilteredHistory(history: Array<History>): Array<History> {
-    if (!this.searchQuery) {
-      return history;
-    }
+      return historyList.filter((item) => {
+        return [item.assetAddress, item.asset2Address].includes(this.assetAddress);
+      });
+    },
+    reset(this: any): void {
+      this.resetPage();
+      this.resetExternalHistory();
+    },
+    getFilteredHistory(this: any, history: Array<History>): Array<History> {
+      if (!this.searchQuery) {
+        return history;
+      }
 
-    const query = this.searchQuery.toLowerCase();
+      const query = this.searchQuery.toLowerCase();
 
-    return history.filter(
-      (item) =>
-        // asset address criteria
-        `${item.assetAddress}`.toLowerCase() === query ||
-        `${item.asset2Address}`.toLowerCase() === query ||
-        // symbol criteria
-        `${item.symbol}`.toLowerCase().includes(query) ||
-        `${item.symbol2}`.toLowerCase().includes(query) ||
-        // search qriteria
-        `${item.blockId}`.toLowerCase().includes(query) ||
-        // account address criteria
-        `${item.from}`.toLowerCase() === query ||
-        `${item.to}`.toLowerCase() === query ||
-        // operation names criteria
-        this.t(`operations.${item.type}`).toLowerCase().includes(query)
-    );
-  }
+      return history.filter(
+        (item) =>
+          `${item.assetAddress}`.toLowerCase() === query ||
+          `${item.asset2Address}`.toLowerCase() === query ||
+          `${item.symbol}`.toLowerCase().includes(query) ||
+          `${item.symbol2}`.toLowerCase().includes(query) ||
+          `${item.blockId}`.toLowerCase().includes(query) ||
+          `${item.from}`.toLowerCase() === query ||
+          `${item.to}`.toLowerCase() === query ||
+          this.t(`operations.${item.type}`).toLowerCase().includes(query)
+      );
+    },
+    getStatus(this: any, item: HistoryItem): string {
+      let status = 'success';
 
-  private getStatus(item: HistoryItem): string {
-    let status = 'success';
+      if (this.isErrorStatus(item)) {
+        status = TransactionStatus.Error;
+      } else if (!this.isFinalizedStatus(item)) {
+        status = 'in_progress';
+      }
 
-    if (this.isErrorStatus(item)) {
-      status = TransactionStatus.Error;
-    } else if (!this.isFinalizedStatus(item)) {
-      status = 'in_progress';
-    }
+      return status.toUpperCase();
+    },
+    getStatusClass(this: any, item: HistoryItem): string {
+      return getStatusClass(this.getStatus(item));
+    },
+    getStatusIcon(this: any, item: HistoryItem): string {
+      return getStatusIcon(this.getStatus(item));
+    },
+    isFinalizedStatus(this: any, item: HistoryItem): boolean {
+      if (this.isEthBridgeTx(item)) return this.isEthBridgeTxToCompleted(item);
 
-    return status.toUpperCase();
-  }
+      return [TransactionStatus.InBlock, TransactionStatus.Finalized].includes(item.status as TransactionStatus);
+    },
+    isErrorStatus(this: any, item: HistoryItem): boolean {
+      if (this.isEthBridgeTx(item)) return this.isEthBridgeTxFromFailed(item) || this.isEthBridgeTxToFailed(item);
 
-  getStatusClass(item: HistoryItem): string {
-    return getStatusClass(this.getStatus(item));
-  }
+      return [TransactionStatus.Error, TransactionStatus.Invalid].includes(item.status as TransactionStatus);
+    },
+    handleOpenTransactionDetails(this: any, id?: string): void {
+      if (!id) {
+        this.navigate({ name: RouteNames.Wallet });
+      } else {
+        this.setTxDetailsId(id);
+      }
+    },
+    async handlePaginationClick(this: any, button: PaginationButton): Promise<void> {
+      let current = 1;
 
-  getStatusIcon(item: HistoryItem): string {
-    return getStatusIcon(this.getStatus(item));
-  }
-
-  isFinalizedStatus(item: HistoryItem): boolean {
-    if (this.isEthBridgeTx(item)) return this.isEthBridgeTxToCompleted(item);
-
-    return [TransactionStatus.InBlock, TransactionStatus.Finalized].includes(item.status as TransactionStatus);
-  }
-
-  private isErrorStatus(item: HistoryItem): boolean {
-    if (this.isEthBridgeTx(item)) return this.isEthBridgeTxFromFailed(item) || this.isEthBridgeTxToFailed(item);
-
-    return [TransactionStatus.Error, TransactionStatus.Invalid].includes(item.status as TransactionStatus);
-  }
-
-  handleOpenTransactionDetails(id?: string): void {
-    if (!id) {
-      this.navigate({ name: RouteNames.Wallet });
-    } else {
-      this.setTxDetailsId(id);
-    }
-  }
-
-  async handlePaginationClick(button: PaginationButton): Promise<void> {
-    let current = 1;
-
-    switch (button) {
-      case PaginationButton.Prev:
-        current = this.currentPage - 1;
-        break;
-      case PaginationButton.Next:
-        current = this.currentPage + 1;
-        if (current === this.lastPage) {
+      switch (button) {
+        case PaginationButton.Prev:
+          current = this.currentPage - 1;
+          break;
+        case PaginationButton.Next:
+          current = this.currentPage + 1;
+          if (current === this.lastPage) {
+            this.isLtrDirection = false;
+          }
+          break;
+        case PaginationButton.First:
+          this.isLtrDirection = true;
+          break;
+        case PaginationButton.Last:
+          current = this.lastPage;
           this.isLtrDirection = false;
+      }
+
+      await this.updateHistory(current);
+      this.currentPage = current;
+    },
+    async updateHistory(this: any, page = 1, withReset = false): Promise<void> {
+      await this.withLoading(async () => {
+        if (withReset) {
+          this.reset();
         }
-        break;
-      case PaginationButton.First:
-        this.isLtrDirection = true;
-        break;
-      case PaginationButton.Last:
-        current = this.lastPage;
-        this.isLtrDirection = false;
-    }
-
-    await this.updateHistory(current);
-    this.currentPage = current;
-  }
-
-  /**
-   * Update external & internal history
-   * @param withReset - reset current page number & clear external history
-   */
-  private async updateHistory(page = 1, withReset = false): Promise<void> {
-    await this.withLoading(async () => {
-      if (withReset) {
-        this.reset();
-      }
-      if (this.isValidQuery) {
-        await this.getExternalHistory({
-          page,
-          address: this.account.address,
-          assetAddress: this.assetAddress,
-          pageAmount: this.pageAmount,
-          query: this.queryCriterias,
-        });
-      }
-      this.getHistory();
-    });
-  }
-}
+        if (this.isValidQuery) {
+          await this.getExternalHistory({
+            page,
+            address: this.account.address,
+            assetAddress: this.assetAddress,
+            pageAmount: this.pageAmount,
+            query: this.queryCriterias,
+          } as ExternalHistoryParams);
+        }
+        this.getHistory();
+      });
+    },
+  },
+});
 </script>
 
 <style lang="scss">

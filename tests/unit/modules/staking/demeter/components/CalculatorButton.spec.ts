@@ -4,6 +4,9 @@ import { describe, expect, it } from 'vitest';
 
 import CalculatorButton from '@/modules/staking/demeter/components/CalculatorButton.vue';
 
+const resolveComponentOptions = (component: unknown) =>
+  (component as { __vccOpts?: Record<string, unknown> }).__vccOpts ?? component;
+
 const mountCalculatorButton = (slots: Record<string, unknown> = {}) =>
   mount(CalculatorButton, {
     slots,
@@ -26,5 +29,9 @@ describe('CalculatorButton.vue', () => {
     const events = wrapper.emitted('click');
     expect(events).toBeTruthy();
     expect(events?.[0]?.[0]).toBeInstanceOf(Event);
+  });
+
+  it('does not rely on compat-only component config', () => {
+    expect(resolveComponentOptions(CalculatorButton)).not.toHaveProperty('compatConfig');
   });
 });

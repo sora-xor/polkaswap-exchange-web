@@ -1,13 +1,11 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ref } from 'vue';
 
 import { Operation, XOR } from '@sora-substrate/sdk';
 
 const formatStringValue = vi.hoisted(() => vi.fn(() => 'formatted-amount'));
 const formatCodecNumber = vi.hoisted(() => vi.fn(() => 'formatted-fee'));
 const getFiatAmountByCodecString = vi.hoisted(() => vi.fn(() => 'fee-fiat'));
-const toggleVisibility = vi.hoisted(() => vi.fn());
 const routeName = vi.hoisted(() => ({ value: '' }));
 let storeMock: { state: any };
 
@@ -30,13 +28,6 @@ vi.mock('vue-router', () => ({
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
-  }),
-}));
-
-vi.mock('@/composables/useDialogModel', () => ({
-  useDialogModel: () => ({
-    isVisible: ref(true),
-    closeDialog: toggleVisibility,
   }),
 }));
 

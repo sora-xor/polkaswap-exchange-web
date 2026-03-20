@@ -68,25 +68,22 @@ import { components } from '@wallet';
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 
 const props = defineProps<{
-  visible: boolean;
   parentLoading?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'show-rewards'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
 const { getFiatAmountByCodecString } = useFormattedAmount();
-const { isVisible, closeDialog } = useDialogModel(props, emit);
 
 const {
   payee,
@@ -113,6 +110,11 @@ const FormattedAmountWithFiatValue = components.FormattedAmountWithFiatValue;
 
 const rewardsDestination = ref('');
 const payoutNetworkFee = ref<string | null>(null);
+
+const closeDialog = (): void => {
+  emit('close');
+  isVisible.value = false;
+};
 
 const payeeAddress = computed(() => {
   switch (payee.value) {

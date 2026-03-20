@@ -44,14 +44,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRef } from 'vue';
+import { computed } from 'vue';
 
 import { api } from '@/api';
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useNotification } from '@/composables/useNotification';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
-import { getLegacyStore } from '@/utils/legacy-store';
+import { getAppStore } from '@/utils/app-store';
 import type { Route } from '@/store/router/types';
 import type { MSTData } from '@/types/mst';
 
@@ -63,12 +63,10 @@ defineOptions({ name: 'MultisigCreateDialog' });
 
 const props = withDefaults(
   defineProps<{
-    visible?: boolean;
     mstData?: MSTData;
     threshold?: number;
   }>(),
   {
-    visible: false,
     mstData: () =>
       ({
         addresses: [],
@@ -81,17 +79,16 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'back'): void;
 }>();
 
 const { t } = useTranslation();
-const store = computed(() => getLegacyStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any));
+const store = computed(() => getAppStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any));
 const { showAppNotification } = useNotification();
 
-const { isVisible, closeDialog } = useDialogVisibility(toRef(props, 'visible'), {
-  emit: (value) => emit('update:visible', value),
+const visibleModel = defineModel<boolean>('visible', { default: false });
+const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 

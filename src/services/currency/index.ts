@@ -1,7 +1,7 @@
 import { timer } from 'rxjs';
 
 import notificationService from '@/services/notification';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 import { settingsStorage } from '@/utils/storage';
 
 import { API_ENDPOINT } from '@wallet/src/consts/currencies';
@@ -14,7 +14,7 @@ const exchangeRateUpdateInterval = timer(0, ONE_MINUTE * 0.25); // polling inter
 const TIMESTAMP_FIELD = 'timestamp';
 
 const getLegacyWalletSettings = () => {
-  const store = requireLegacyStore() as any;
+  const store = requireAppStore() as any;
   return store?.commit?.wallet?.settings;
 };
 

@@ -35,8 +35,16 @@ export function useWalletConnect() {
 
   const isSubBridge = computed(() => bridgeStore.isSubBridge);
   const isSubAccountType = computed(() => bridgeStore.isSubAccountType);
+  const isSubBridgeConnectorReady = computed(() =>
+    Boolean(bridgeStore.connector?.network?.subNetworkConnection?.nodeIsConnected)
+  );
 
   const connectSubWallet = () => {
+    if (isSubBridge.value && !isSubBridgeConnectorReady.value) {
+      store.commit.web3.setSelectSubNodeDialogVisibility(true);
+      return;
+    }
+
     store.commit.web3.setSubAccountDialogVisibility(true);
   };
 

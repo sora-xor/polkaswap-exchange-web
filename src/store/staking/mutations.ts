@@ -1,4 +1,4 @@
-import { defineMutations } from 'direct-vuex';
+import { defineMutations } from '@/store/module-helpers';
 
 import { ValidatorsListMode } from '@/modules/staking/sora/consts';
 import { ValidatorsFilter } from '@/modules/staking/sora/types';

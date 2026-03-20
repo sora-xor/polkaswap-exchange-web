@@ -8,9 +8,9 @@ vi.mock('@/composables/useTranslation', () => ({
 }));
 
 const PopoverStub = {
-  name: 'ElPopover',
-  props: ['modelValue', 'disabled', 'placement', 'popperClass', 'trigger', 'visibleArrow'],
-  emits: ['update:modelValue'],
+  name: 'SPopoverPanelStub',
+  props: ['show', 'disabled', 'placement', 'popperClass', 'trigger', 'visibleArrow'],
+  emits: ['update:show'],
   template: '<div class="popover-stub"><slot name="reference" /><div class="popover-content"><slot /></div></div>',
 };
 
@@ -34,7 +34,7 @@ describe('TransactionDetails', () => {
       attrs,
       global: {
         stubs: {
-          'el-popover': PopoverStub,
+          's-popover-panel': PopoverStub,
           's-icon': IconStub,
         },
         directives: {

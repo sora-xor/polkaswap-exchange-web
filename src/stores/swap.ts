@@ -14,7 +14,7 @@ import {
 import { useAssetsStore } from '@/stores/assets';
 import { useSwapBalanceSubscriptions } from '@/composables/useSwapBalanceSubscriptions';
 import type { SwapState } from '@/stores/types/swap';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 import { settingsStorage } from '@/utils/storage';
 
 import type { Distribution, SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
@@ -90,7 +90,7 @@ export const useSwapStore = defineStore('swap', {
     tokenFrom: (state): Nullable<RegisteredAccountAsset> => state.tokenFromCache,
     tokenTo: (state): Nullable<RegisteredAccountAsset> => state.tokenToCache,
     marketAlgorithms(state): Array<MarketAlgorithms> {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       const baseSources = legacyStore.getters.settings.debugEnabled
         ? state.liquiditySources
         : state.liquiditySources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
@@ -108,7 +108,7 @@ export const useSwapStore = defineStore('swap', {
     swapLiquiditySource(): Nullable<LiquiditySourceTypes> {
       if (!this.marketAlgorithmsAvailable) return undefined;
 
-      return requireLegacyStore().getters.settings.liquiditySource;
+      return requireAppStore().getters.settings.liquiditySource;
     },
     swapMarketAlgorithm(): MarketAlgorithms {
       const liquiditySource = this.swapLiquiditySource ?? '';
@@ -157,7 +157,7 @@ export const useSwapStore = defineStore('swap', {
         state.fromValue,
         state.toValue,
         state.isExchangeB,
-        requireLegacyStore().state.settings.slippageTolerance
+        requireAppStore().state.settings.slippageTolerance
       );
     },
   },

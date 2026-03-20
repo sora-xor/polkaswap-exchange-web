@@ -1,4 +1,4 @@
-import { defineMutations } from 'direct-vuex';
+import { defineMutations } from '@/store/module-helpers';
 
 import type { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import type { MoonpayCurrency, MoonpayTransaction } from '@/utils/moonpay';

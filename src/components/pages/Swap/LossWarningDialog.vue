@@ -26,7 +26,6 @@ const SimpleNotification = components.SimpleNotification;
 
 const props = withDefaults(
   defineProps<{
-    visible: boolean;
     value?: string;
     appendToBody?: boolean;
   }>(),
@@ -37,26 +36,13 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'confirm'): void;
 }>();
 
 const { t } = useTranslation();
 const swapStore = useSwapStore();
 
-const isVisible = ref(props.visible);
-
-watch(
-  () => props.visible,
-  (value) => {
-    isVisible.value = value;
-  },
-  { immediate: true }
-);
-
-watch(isVisible, (value) => {
-  emit('update:visible', value);
-});
+const isVisible = defineModel<boolean>('visible', { required: true });
 
 const appendToBody = computed(() => props.appendToBody);
 const value = computed(() => props.value);

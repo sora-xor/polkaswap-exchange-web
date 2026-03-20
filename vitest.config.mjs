@@ -11,11 +11,7 @@ export default mergeConfig(
     test: {
       environment: 'jsdom',
       pool: 'threads',
-      poolOptions: {
-        threads: {
-          singleThread: true,
-        },
-      },
+      maxWorkers: 1,
       maxConcurrency: 1,
       fileParallelism: false,
       exclude: [...configDefaults.exclude, 'e2e/**'],

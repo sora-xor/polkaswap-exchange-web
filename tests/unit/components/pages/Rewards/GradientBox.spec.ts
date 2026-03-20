@@ -3,6 +3,9 @@ import { describe, expect, it } from 'vitest';
 
 import RewardsGradientBox from '@/components/pages/Rewards/GradientBox.vue';
 
+const resolveComponentOptions = (component: unknown) =>
+  (component as { __vccOpts?: Record<string, unknown> }).__vccOpts ?? component;
+
 describe('RewardsGradientBox.vue', () => {
   it('applies the lowercased symbol as a modifier class', () => {
     const wrapper = shallowMount(RewardsGradientBox, {
@@ -22,5 +25,9 @@ describe('RewardsGradientBox.vue', () => {
     const wrapper = shallowMount(RewardsGradientBox);
 
     expect(wrapper.classes()).toEqual(['gradient-box']);
+  });
+
+  it('does not rely on compat-only component config', () => {
+    expect(resolveComponentOptions(RewardsGradientBox)).not.toHaveProperty('compatConfig');
   });
 });

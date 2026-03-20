@@ -42,17 +42,17 @@ yarn install
 
 ### Known install warnings
 
-- `@open-web3/api-mobx` and the `@polkadot/*` stack are patched via `scripts/postinstall/fix-peer-deps.js` to accept the shipped `@polkadot/api` version. Yarn still prints the peer-range warning; this is expected.
-- `vue-class-component@7` declares a Vue 2 peer dependency. It remains while the wallet bundle finishes the Vue 3 migration, so Yarn warns about the mismatch until that lands.
-- The vendored Soraneo wallet/UI bundles rely on browser helpers such as `vue-plugin-load-script`, `@urql/core`, `nft.storage`, `subscriptions-transport-ws`, `graphql`, `@zxing/browser`, etc. Keep these dependencies in `package.json` or `yarn build` will fail to resolve the wallet sources.
+- `@open-web3/api-mobx` is patched via `scripts/postinstall/fix-peer-deps.js` to accept the shipped `@polkadot/api` version. Yarn may still print peer metadata warnings when upstream package metadata changes; this is expected.
+- The app-owned source no longer imports the class-component stack directly, but the vendored Soraneo wallet/UI sources still require the Vue 3-compatible release lines: `vue-class-component@8.0.0-rc.1`, `vue-property-decorator@10.0.0-rc.3`, and `vuedraggable@4.1.0`. npm `latest` still points at Vue 2 lines for several of these packages, so do not replace them with the `latest` tag by default.
+- The vendored Soraneo wallet/UI bundles rely on browser helpers such as `vue-plugin-load-script`, `vue-observe-visibility`, `@urql/core`, `nft.storage`, `subscriptions-transport-ws`, `graphql`, and `@zxing/browser`. Keep these dependencies in `package.json` or `yarn build` will fail to resolve the wallet sources.
 
 ## Scripts
 
 | Command | Description |
 | --- | --- |
-| `yarn serve` | Start the Vite dev server with the compat shim enabled. |
-| `yarn build` | Build the production bundle (`dist/`) with the compat flag (default deployment target). |
-| `yarn build:vue3` | Build without compat/Vue 2 shims. Run this before release and during sprint checkpoints. |
+| `yarn serve` | Start the Vite dev server against the native Vue 3 app shell. |
+| `yarn build` | Build the production bundle (`dist/`) for the native Vue 3 runtime. |
+| `yarn build:vue3` | Compatibility alias for `yarn build`; kept for CI/release scripts that still reference the old migration name. |
 | `yarn preview` | Serve the last build locally to mirror the IPFS bundle. |
 | `yarn ci:nightly` | Convenience alias for `yarn test:translation && yarn build:vue3`; used by nightly jobs. |
 | `yarn lint` | Run ESLint across the repo. |
@@ -84,12 +84,12 @@ Vitest is configured via `vitest.config.mjs` with projects for unit suites and i
 - `yarn test:e2e:all` — runs default + root + live e2e checks in sequence.
 - `yarn test:all` — alias for unit tests, handy for CI hooks.
 
-Always keep `yarn test:unit` and `yarn test:translation` green locally before opening a PR. They are also part of `yarn ci:nightly`, so failures break the nightly Pinia/compat streak.
+Always keep `yarn test:unit` and `yarn test:translation` green locally before opening a PR. They are also part of `yarn ci:nightly`, so failures break the nightly Vue 3 smoke streak.
 
 ## Build & IPFS
 
-- `yarn build` produces a production-ready bundle with compat enabled.
-- `yarn build:vue3` disables compat imports to simulate the final Vue 3-only runtime; use it for nightly smoke tests and before toggling compat flags.
+- `yarn build` produces the production-ready native Vue 3 bundle.
+- `yarn build:vue3` is an alias for the same native Vue 3 build and remains available for existing CI jobs and release checklists.
 - `yarn preview` serves the generated bundle so you can smoke-test the IPFS artifacts locally.
 - `yarn ipfs:publish` runs the publish workflow described in `docs/ipfs.md` (publishes to the configured gateway/IPFS node and logs the CID in `ipfs_publish.log`). `yarn ipfs:check` and `yarn ipfs:check:electron` verify the browser/electron bundles after a publish.
 
@@ -97,7 +97,7 @@ Vite currently emits a few warnings from Soramitsu UI Tailwind shorthand classes
 
 ## State management workflow
 
-The app is mid-migration from legacy Vuex (via `direct-vuex` decorators) to Pinia. New code must import Pinia stores from `src/stores/**` and avoid referencing the Vuex facades directly. Key stores include:
+The app is mid-migration from Vuex facades to Pinia. The old `direct-vuex` package has been removed; `src/store/direct-vuex.ts` is now a narrow repo-local compatibility layer, with `src/store/app-store-bridge.ts` and `src/utils/app-store.ts` providing the current bootstrap/access surface while feature stores move to Pinia. New code must import Pinia stores from `src/stores/**` and avoid referencing the Vuex facades directly. Key stores include:
 
 - `useAssetsStore` (`src/stores/assets`) — asset metadata, registered bridge assets, balances.
 - `useWalletStore` (`src/stores/wallet`) — account state, login helpers, transaction dialogs.

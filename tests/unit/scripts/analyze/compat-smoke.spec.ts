@@ -49,7 +49,7 @@ describe('compat smoke CLI', () => {
 
     expect(build.command).toBe('yarn');
     expect(build.args).toEqual(['build:vue3']);
-    expect(build.env?.VITE_DISABLE_COMPAT).toBe('true');
+    expect(build.env).toBeUndefined();
 
     expect(vitest.command).toBe('yarn');
     expect(vitest.args).toContain('vitest');

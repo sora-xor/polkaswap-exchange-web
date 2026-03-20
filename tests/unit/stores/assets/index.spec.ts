@@ -5,7 +5,7 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 
 import { ZeroStringValue } from '@/consts';
 import type { Nullable } from '@/types/common';
-import { setLegacyStoreOverride } from '@/utils/legacy-store';
+import { setAppStoreOverride } from '@/utils/app-store';
 import type { useAssetsStore as UseAssetsStore } from '@/stores/assets';
 
 let useAssetsStore: UseAssetsStore;
@@ -183,7 +183,7 @@ beforeEach(() => {
   piniaStub.setActivePinia(piniaStub.createPinia());
   resetWalletStoreStub();
   resetLegacyStoreStub();
-  setLegacyStoreOverride(legacyStoreStub as any);
+  setAppStoreOverride(legacyStoreStub as any);
   ethRegisteredAssetsMock.mockReset();
   evmRegisteredAssetsMock.mockReset();
   subRegisteredAssetsMock.mockReset();
@@ -194,7 +194,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  setLegacyStoreOverride(null);
+  setAppStoreOverride(null);
 });
 
 afterAll(() => {

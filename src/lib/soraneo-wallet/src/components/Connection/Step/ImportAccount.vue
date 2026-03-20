@@ -10,7 +10,7 @@
           :disabled="loading"
           :placeholder="t('desktop.accountMnemonic.placeholder')"
           :maxlength="255"
-          @input="handleMnemonicInput"
+          @update:model-value="handleMnemonicInput"
         ></s-input>
         <s-button
           key="step1"
@@ -105,7 +105,7 @@
 
 <script lang="ts">
 import { mnemonicValidate } from '@polkadot/util-crypto';
-import { mixins, Options, Prop, Ref } from 'vue-property-decorator';
+import { defineComponent, type PropType } from 'vue';
 
 import FearlessLogo from '../../../assets/img/FearlessWalletLogo.svg?url';
 import PolkadotLogo from '../../../assets/img/PolkadotLogo.svg?url';
@@ -121,137 +121,154 @@ import NotificationMixin from '../../mixins/NotificationMixin';
 import type { CreateAccountArgs, RestoreAccountArgs } from '../../../store/account/types';
 import type { KeyringPair$Json } from '../../../types/common';
 
-@Options({
+const Tutorials = [
+  {
+    logo: FearlessLogo,
+    title: 'Fearless',
+    link: 'https://wiki.fearlesswallet.io/accounts/walkthrough/exporting-and-importing-a-wallet-using-a-json-file',
+  },
+  {
+    logo: PolkadotLogo,
+    title: 'Polkadot{.js}',
+    link: 'https://support.polkadot.network/support/solutions/articles/65000177677-how-to-export-your-json-backup-file',
+  },
+  {
+    logo: SubWalletLogo,
+    title: 'Subwallet',
+    link: 'https://docs.subwallet.app/extension-user-guide/export-and-backup-an-account',
+  },
+] as const;
+
+export default defineComponent({
   components: {
     FileUploader,
     PasswordInput,
     WalletAccount,
   },
-})
-export default class ImportAccountStep extends mixins(NotificationMixin) {
-  @Prop({ type: String, required: true }) readonly step!: LoginStep;
-  @Prop({ type: Boolean, default: false }) readonly jsonOnly!: boolean;
-  @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
-  @Prop({ type: Function, default: () => {} }) readonly createAccount!: (data: CreateAccountArgs) => Promise<void>;
-  @Prop({ type: Function, default: () => {} }) readonly restoreAccount!: (data: RestoreAccountArgs) => void;
-
-  @Ref('uploader') readonly uploader!: HTMLFormElement;
-
-  readonly LoginStep = LoginStep;
-  readonly PhraseLength = 12;
-  readonly Tutorials = [
-    {
-      logo: FearlessLogo,
-      title: 'Fearless',
-      link: 'https://wiki.fearlesswallet.io/accounts/walkthrough/exporting-and-importing-a-wallet-using-a-json-file',
+  mixins: [NotificationMixin],
+  props: {
+    step: {
+      required: true,
+      type: String as PropType<LoginStep>,
     },
-    {
-      logo: PolkadotLogo,
-      title: 'Polkadot{.js}',
-      link: 'https://support.polkadot.network/support/solutions/articles/65000177677-how-to-export-your-json-backup-file',
+    jsonOnly: {
+      default: false,
+      type: Boolean,
     },
-    {
-      logo: SubWalletLogo,
-      title: 'Subwallet',
-      link: 'https://docs.subwallet.app/extension-user-guide/export-and-backup-an-account',
+    loading: {
+      default: false,
+      type: Boolean,
     },
-  ];
+    createAccount: {
+      default: () => {},
+      type: Function as PropType<(data: CreateAccountArgs) => Promise<void>>,
+    },
+    restoreAccount: {
+      default: () => {},
+      type: Function as PropType<(data: RestoreAccountArgs) => void>,
+    },
+  },
+  emits: ['update:step'],
+  data() {
+    return {
+      LoginStep,
+      PhraseLength: 12,
+      Tutorials,
+      mnemonicPhrase: '',
+      accountName: '',
+      accountPassword: '',
+      accountPasswordConfirm: '',
+      json: null as Nullable<KeyringPair$Json>,
+    };
+  },
+  computed: {
+    disabledNextStep(this: any): boolean {
+      return this.mnemonicPhrase.length === 0;
+    },
+    disabledImportStep(this: any): boolean {
+      if (this.json) return !this.accountPassword;
 
-  mnemonicPhrase = '';
-  accountName = '';
-  accountPassword = '';
-  accountPasswordConfirm = '';
-  json: Nullable<KeyringPair$Json> = null;
+      return !(this.accountName && this.accountPassword && this.accountPasswordConfirm);
+    },
+    computedClasses(this: any): string {
+      const baseClass = ['login__inputs'];
+      if (this.json) baseClass.push('login__inputs--json');
+      return baseClass.join(' ');
+    },
+    importSteps(this: any): string[] {
+      return [
+        this.t('desktop.importSteps.selectWallet'),
+        this.t('desktop.importSteps.selectAccount'),
+        this.t('desktop.importSteps.exportAccount'),
+      ];
+    },
+  },
+  methods: {
+    handleMnemonicInput(this: any, char: string): void {
+      const letter = char.replace('.', '').replace('  ', ' ');
 
-  get disabledNextStep(): boolean {
-    return this.mnemonicPhrase.length === 0;
-  }
+      if (/^[a-z ]+$/.test(letter)) {
+        this.mnemonicPhrase = letter;
+      }
+    },
+    nextStep(this: any): void {
+      void this.withAppNotification(async () => {
+        try {
+          if (this.mnemonicPhrase.trim().split(' ').length !== this.PhraseLength) {
+            throw new AppError({ key: 'desktop.errorMessages.mnemonicLength', payload: { number: this.PhraseLength } });
+          }
+          if (!mnemonicValidate(this.mnemonicPhrase)) {
+            throw new AppError({ key: 'desktop.errorMessages.mnemonic' });
+          }
 
-  get disabledImportStep(): boolean {
-    if (this.json) return !this.accountPassword;
+          this.json = null;
+          this.resetForm();
 
-    return !(this.accountName && this.accountPassword && this.accountPasswordConfirm);
-  }
-
-  get computedClasses(): string {
-    const baseClass = ['login__inputs'];
-    if (this.json) baseClass.push('login__inputs--json');
-    return baseClass.join(' ');
-  }
-
-  get importSteps(): string[] {
-    return [
-      this.t('desktop.importSteps.selectWallet'),
-      this.t('desktop.importSteps.selectAccount'),
-      this.t('desktop.importSteps.exportAccount'),
-    ];
-  }
-
-  handleMnemonicInput(char: string) {
-    const letter = char.replace('.', '').replace('  ', ' ');
-
-    if (/^[a-z ]+$/.test(letter)) this.mnemonicPhrase = letter;
-  }
-
-  nextStep(): void {
-    this.withAppNotification(async () => {
-      try {
-        if (this.mnemonicPhrase.trim().split(' ').length !== this.PhraseLength) {
-          throw new AppError({ key: 'desktop.errorMessages.mnemonicLength', payload: { number: this.PhraseLength } });
+          this.$emit('update:step', LoginStep.ImportCredentials);
+        } catch (error) {
+          this.mnemonicPhrase = '';
+          throw error;
         }
-        if (!mnemonicValidate(this.mnemonicPhrase)) {
-          throw new AppError({ key: 'desktop.errorMessages.mnemonic' });
+      });
+    },
+    async handleUploadJson(this: any, jsonFile: File): Promise<void> {
+      await this.withAppNotification(async () => {
+        if (!jsonFile) return;
+
+        const parsedJson = await parseAccountJson(jsonFile);
+        const { address, encoded, encoding, meta = {} } = parsedJson;
+
+        if (!(address && encoded && encoding)) {
+          const uploader = (this.$refs as Record<string, any>).uploader as { resetFileInput?: () => void } | undefined;
+          uploader?.resetFileInput?.();
+          throw new AppError({ key: 'desktop.errorMessages.jsonFields' });
         }
 
-        this.json = null;
-        this.resetForm();
-
-        this.$emit('update:step', LoginStep.ImportCredentials);
-      } catch (error) {
+        this.accountName = (meta.name || '') as string;
+        this.json = parsedJson;
         this.mnemonicPhrase = '';
-        throw error;
-      }
-    });
-  }
-
-  async handleUploadJson(jsonFile: File): Promise<void> {
-    this.withAppNotification(async () => {
-      if (!jsonFile) return;
-
-      const parsedJson = await parseAccountJson(jsonFile);
-      const { address, encoded, encoding, meta = {} } = parsedJson;
-
-      if (!(address && encoded && encoding)) {
-        this.uploader.resetFileInput();
-        throw new AppError({ key: 'desktop.errorMessages.jsonFields' });
-      }
-
-      this.accountName = (meta.name || '') as string;
-      this.json = parsedJson;
-      this.mnemonicPhrase = '';
-      this.$emit('update:step', LoginStep.ImportCredentials);
-    });
-  }
-
-  async importAccount(): Promise<void> {
-    const action = this.json
-      ? this.restoreAccount({ json: this.json, password: this.accountPassword })
-      : this.createAccount({
-          seed: this.mnemonicPhrase,
-          name: this.accountName,
-          password: this.accountPassword,
-          passwordConfirm: this.accountPasswordConfirm,
-        });
-    await action;
-    this.resetForm();
-  }
-
-  private resetForm(): void {
-    this.accountName = '';
-    this.accountPassword = '';
-    this.accountPasswordConfirm = '';
-  }
-}
+        this.$emit('update:step', LoginStep.ImportCredentials);
+      });
+    },
+    async importAccount(this: any): Promise<void> {
+      const action = this.json
+        ? this.restoreAccount({ json: this.json, password: this.accountPassword })
+        : this.createAccount({
+            seed: this.mnemonicPhrase,
+            name: this.accountName,
+            password: this.accountPassword,
+            passwordConfirm: this.accountPasswordConfirm,
+          });
+      await action;
+      this.resetForm();
+    },
+    resetForm(this: any): void {
+      this.accountName = '';
+      this.accountPassword = '';
+      this.accountPasswordConfirm = '';
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

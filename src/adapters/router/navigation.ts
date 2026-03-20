@@ -1,8 +1,8 @@
-import { withLegacyStore } from '@/utils/legacy-store';
+import { withAppStore } from '@/utils/app-store';
 
 import type { RouterParams } from '@/stores/router/types';
 import type { Nullable } from '@/types/common';
-import type { LegacyStore } from '@/utils/legacy-store';
+import type { AppStoreRuntime } from '@/utils/app-store';
 
 const warnedMessages = new Set<string>();
 const warn = (message: string): void => {
@@ -12,10 +12,10 @@ const warn = (message: string): void => {
 };
 
 const withRouterCommit = <T extends (...args: any[]) => unknown>(
-  getter: (legacy: LegacyStore) => Nullable<T>,
+  getter: (legacy: AppStoreRuntime) => Nullable<T>,
   message: string
 ): T | undefined => {
-  return withLegacyStore((legacyStore) => {
+  return withAppStore((legacyStore) => {
     const commitFn = getter(legacyStore) as Nullable<T>;
 
     if (typeof commitFn !== 'function') {
@@ -28,7 +28,7 @@ const withRouterCommit = <T extends (...args: any[]) => unknown>(
 };
 
 export const syncLegacyRoute = (params: RouterParams): void => {
-  withLegacyStore((legacyStore) => {
+  withAppStore((legacyStore) => {
     const setRoute = legacyStore?.commit?.router?.setRoute as Nullable<(payload: RouterParams) => void>;
 
     if (typeof setRoute === 'function') {

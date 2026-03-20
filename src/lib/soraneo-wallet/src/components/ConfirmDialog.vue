@@ -11,9 +11,9 @@
 </template>
 
 <script lang="ts">
-import { Options, mixins, Prop } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
-import { getter, action, state } from '../store/decorators';
 import { delay } from '../util';
 import { unlockAccountPair } from '../util/account';
 
@@ -24,67 +24,74 @@ import NotificationMixin from './mixins/NotificationMixin';
 import type { PolkadotJsAccount } from '../types/common';
 import type { WithKeyring } from '@sora-substrate/sdk';
 
-@Options({
+export default defineComponent({
   components: {
     AccountConfirmDialog,
   },
-})
-export default class ConfirmDialog extends mixins(NotificationMixin, LoadingMixin) {
-  @Prop({ required: true, type: Object }) public readonly account!: PolkadotJsAccount;
-  @Prop({ required: true, type: Object }) public readonly chainApi!: WithKeyring;
-  @Prop({ required: true, type: Boolean }) private visibility!: boolean;
-  @Prop({ required: true, type: Function }) private setVisibility!: (flag: boolean) => void;
+  mixins: [NotificationMixin, LoadingMixin],
+  props: {
+    account: {
+      required: true,
+      type: Object as () => PolkadotJsAccount,
+    },
+    chainApi: {
+      required: true,
+      type: Object as () => WithKeyring,
+    },
+    visibility: {
+      required: true,
+      type: Boolean,
+    },
+    setVisibility: {
+      required: true,
+      type: Function as () => (flag: boolean) => void,
+    },
+  },
+  computed: {
+    ...mapState('wallet/transactions', ['isSignTxDialogDisabled']),
+    ...mapGetters('wallet/account', ['getPassword']),
+    visible: {
+      get(this: any): boolean {
+        return this.visibility;
+      },
+      set(this: any, flag: boolean): void {
+        this.setVisibility(flag);
+      },
+    },
+    passphrase(this: any): Nullable<string> {
+      const address = this.account?.address;
 
-  @state.transactions.isSignTxDialogDisabled private isSignTxDialogDisabled!: boolean;
+      return address ? this.getPassword(address) : null;
+    },
+  },
+  methods: {
+    ...mapActions('wallet/account', ['setAccountPassphrase', 'resetAccountPassphrase']),
+    async handleConfirm(this: any, password: string): Promise<void> {
+      await this.withLoading(async () => {
+        // hack: to render loading state before sync code execution, 250 - button transition
+        await this.$nextTick();
+        await delay(250);
 
-  @getter.account.getPassword private getPassword!: (accountAddress: string) => Nullable<string>;
+        await this.withAppNotification(async () => {
+          const address = this.account?.address;
 
-  @action.account.setAccountPassphrase private setAccountPassphrase!: (opts: {
-    address: string;
-    password: string;
-  }) => void;
+          if (!address) {
+            this.setVisibility(false);
+            return;
+          }
 
-  @action.account.resetAccountPassphrase private resetAccountPassphrase!: (address: string) => void;
+          unlockAccountPair(this.chainApi, password);
 
-  get visible(): boolean {
-    return this.visibility;
-  }
+          if (this.isSignTxDialogDisabled) {
+            this.setAccountPassphrase({ address, password });
+          } else {
+            this.resetAccountPassphrase(address);
+          }
 
-  set visible(flag: boolean) {
-    this.setVisibility(flag);
-  }
-
-  get passphrase(): Nullable<string> {
-    const address = this.account?.address;
-
-    return address ? this.getPassword(address) : null;
-  }
-
-  async handleConfirm(password: string): Promise<void> {
-    await this.withLoading(async () => {
-      // hack: to render loading state before sync code execution, 250 - button transition
-      await this.$nextTick();
-      await delay(250);
-
-      await this.withAppNotification(async () => {
-        const address = this.account?.address;
-
-        if (!address) {
           this.setVisibility(false);
-          return;
-        }
-
-        unlockAccountPair(this.chainApi, password);
-
-        if (this.isSignTxDialogDisabled) {
-          this.setAccountPassphrase({ address, password });
-        } else {
-          this.resetAccountPassphrase(address);
-        }
-
-        this.setVisibility(false);
+        });
       });
-    });
-  }
-}
+    },
+  },
+});
 </script>

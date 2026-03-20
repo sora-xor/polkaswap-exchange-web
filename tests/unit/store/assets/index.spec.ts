@@ -1,5 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { setLegacyStoreOverride } from '@/utils/legacy-store';
+import { setAppStoreOverride } from '@/utils/app-store';
 
 import type { AssetsState, BridgeRegisteredAsset } from '@/store/assets/types';
 
@@ -57,7 +57,7 @@ describe('Vuex assets facade', () => {
   let moduleState: AssetsState;
 
   beforeAll(async () => {
-    setLegacyStoreOverride({
+    setAppStoreOverride({
       state: {
         settings: {},
         wallet: {},

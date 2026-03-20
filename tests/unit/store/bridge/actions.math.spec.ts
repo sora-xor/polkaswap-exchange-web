@@ -421,6 +421,24 @@ describe('bridge/actions block updates subscription', () => {
     expect(commit.setExternalBlockNumber).toHaveBeenCalledWith(777);
   });
 
+  it('falls back to zero external block height when the sub bridge network is unavailable', async () => {
+    const { context, commit } = makeSubscribeContext({ workerDataPlane: false, isSubBridge: true });
+    context.state.subBridgeConnector = {};
+
+    let onUpdated: FnWithoutArgs | undefined;
+    (api.system as any).updated = {
+      subscribe: vi.fn((callback: FnWithoutArgs) => {
+        onUpdated = callback;
+        return { unsubscribe: vi.fn() };
+      }),
+    };
+
+    await (actions as any).subscribeOnBlockUpdates(context);
+
+    await onUpdated?.();
+    expect(commit.setExternalBlockNumber).toHaveBeenCalledWith(0);
+  });
+
   it('serializes prior worker disconnect before starting next block subscription', async () => {
     const { context } = makeSubscribeContext({ workerDataPlane: true, isSubBridge: true });
 

@@ -1,6 +1,6 @@
 # DevOps & QA Resourcing Plan – Vue 3 Migration (Sprint 2)
 
-This plan secures DevOps and QA coverage for nightly compat-free builds and the Sprint 2 verification window (Weeks 3–4). It is referenced by the Vue 3 roadmap and should be reviewed in the migration standup each Monday.
+This plan secures DevOps and QA coverage for nightly native Vue 3 builds and the Sprint 2 verification window (Weeks 3–4). It is referenced by the Vue 3 roadmap and should be reviewed in the migration standup each Monday.
 
 ## Objectives
 
@@ -16,7 +16,7 @@ This plan secures DevOps and QA coverage for nightly compat-free builds and the 
 | Nightly builds (`yarn build`, `yarn ci:nightly`) | DevOps on-call (primary: @devops-oncall, backup: @devops-alt) | Daily, 08:00–22:00 CET monitoring window | Run `yarn ci:nightly` in Jenkins/GitLab, monitor logs, investigate failures, coordinate fixes with migration pod, maintain build artifacts. |
 | Translation pipeline (`yarn test:translation`)   | Localization engineer + QA automation                         | Daily                                    | Review failures, coordinate copy fixes, flag localization backlog risks.                                                                    |
 | Sprint 2 verification (Weeks 3–4)                | QA lead + 2 QA engineers                                      | Weekdays, 09:00–18:00 CET                | Execute regression suites for Order Book, Sora Card, Wallet; validate telemetry dashboards; record findings in Pilot Tracker.               |
-| Telemetry validation                             | Platform engineer + QA analyst                                | Align with pilot cohorts                 | Validate `pinia_store_usage`, `compat_warning`, `translation_missing` events in staging; capture evidence in Confluence.                    |
+| Telemetry validation                             | Platform engineer + QA analyst                                | Align with pilot cohorts                 | Validate `pinia_store_usage`, `build_variant_selected`, and `translation_missing` events in staging; capture evidence in Confluence.       |
 | Build artifact publishing                        | DevOps                                                        | After nightly pipeline completion        | Archive bundle analyzer reports, upload preview artifacts (as needed).                                                                      |
 
 ## Escalation & On-Call
@@ -34,7 +34,7 @@ This plan secures DevOps and QA coverage for nightly compat-free builds and the 
 
 ## Communication Cadence
 
-- DevOps provides nightly build status summary in the #migration-status template (`Since last update` section) including `ci:nightly` outcome (translation + compat build) and links to artifacts.
+- DevOps provides nightly build status summary in the #migration-status template (`Since last update` section) including `ci:nightly` outcome (translation + native Vue 3 build) and links to artifacts.
 - QA posts daily verification progress during Sprint 2 in the same thread; include pass/fail counts and blocking issues.
 - Both teams attend the Tuesday wallet sync when integration issues affect build/test coverage.
 

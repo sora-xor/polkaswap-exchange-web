@@ -90,7 +90,6 @@ import { components, api } from '@wallet';
 import { computed } from 'vue';
 
 import { ZeroStringValue, Components } from '@/consts';
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useNotification } from '@/composables/useNotification';
 import { useTransaction } from '@/composables/useTransaction';
@@ -111,13 +110,11 @@ const PairTokenLogo = lazyComponent(Components.PairTokenLogo);
 
 const props = withDefaults(
   defineProps<{
-    visible?: boolean;
     vault?: Nullable<Vault>;
     lockedAsset?: Nullable<RegisteredAccountAsset>;
     debtAsset?: Nullable<RegisteredAccountAsset>;
   }>(),
   {
-    visible: false,
     vault: null,
     lockedAsset: null,
     debtAsset: null,
@@ -125,16 +122,16 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'confirm'): void;
+  (event: 'close'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
 const { withNotifications, loading } = useTransaction();
 const { getFPNumberFromCodec, getFiatAmountByFPNumber, getFiatAmountByCodecString, formatCodecNumber, Zero } =
   useFormattedAmount();
 const { showAppAlert } = useNotification();
-const { isVisible, closeDialog } = useDialogModel(props, emit);
 
 const swapLink = '/#/swap/XOR/KUSD';
 const xorSymbol = XOR.symbol;

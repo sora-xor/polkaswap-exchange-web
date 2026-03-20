@@ -28,7 +28,6 @@
 import { components } from '@wallet';
 import { computed } from 'vue';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useTranslation } from '@/composables/useTranslation';
 import { StoreLinks, app } from '@/consts';
 import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
@@ -40,10 +39,6 @@ defineOptions({
 });
 
 const props = defineProps({
-  visible: {
-    type: Boolean,
-    default: false,
-  },
   fee: {
     type: String,
     default: undefined,
@@ -51,12 +46,11 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-  (e: 'update:visible', value: boolean): void;
   (e: 'close'): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
-const { isVisible } = useDialogModel(props, emit);
 
 const polkaswapHighlight = computed(() => {
   const safeName = escapeHtml(app.name);

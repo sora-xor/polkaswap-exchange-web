@@ -24,19 +24,17 @@ const createTabsSlots = () => ({
 });
 
 describe('STabs compatibility', () => {
-  it('emits legacy input event for value bindings', async () => {
-    const onInput = vi.fn();
+  it('supports legacy value prop for the initial active tab', () => {
     const wrapper = mount(STabs, {
       props: {
         value: 'one',
-        onInput,
       },
       slots: createTabsSlots(),
     });
 
-    await wrapper.findAll('[role="tab"]')[1]?.trigger('click');
-
-    expect(onInput).toHaveBeenCalledWith('two');
+    const tabs = wrapper.findAll('[role="tab"]');
+    expect(tabs[0]?.attributes('aria-selected')).toBe('true');
+    expect(tabs[1]?.attributes('aria-selected')).toBe('false');
   });
 
   it('emits update:modelValue for v-model bindings', async () => {

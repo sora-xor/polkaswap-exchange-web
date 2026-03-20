@@ -30,9 +30,10 @@
 // This file is only for local usage
 
 import { FPNumber, HistoryItem } from '@sora-substrate/sdk';
-import { Options, mixins, Watch } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 
-import env from '../public/env.json';
+import env from '../../../../public/env.json';
 
 import { api } from './api';
 import ConfirmDialog from './components/ConfirmDialog.vue';
@@ -40,7 +41,6 @@ import TransactionMixin from './components/mixins/TransactionMixin';
 import WalletProviders from './components/WalletProviders.vue';
 import { SoraNetwork, IndexerType, Theme } from './consts';
 import SoraWallet from './SoraWallet.vue';
-import { state, mutation, getter, action } from './store/decorators';
 
 import { initWallet } from './index';
 
@@ -48,46 +48,47 @@ import type { ApiKeysObject } from './types/common';
 import type { Currency, CurrencyFields } from './types/currency';
 import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
 
-@Options({
+export default defineComponent({
   components: { SoraWallet, ConfirmDialog, WalletProviders },
-})
-export default class App extends mixins(TransactionMixin) {
-  @state.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
-  @state.settings.indexerType indexerType!: IndexerType;
-  @state.account.ceresFiatValuesUsage ceresFiatValuesUsage!: boolean;
-  @getter.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
-  @getter.libraryTheme libraryTheme!: Theme;
-
-  @mutation.settings.setSoraNetwork private setSoraNetwork!: (network: SoraNetwork) => void;
-  @mutation.settings.setIndexerEndpoint private setIndexerEndpoint!: (options: {
-    indexer: IndexerType;
-    endpoint: string;
-  }) => void;
-
-  @mutation.account.setIsDesktop setIsDesktop!: (flag: boolean) => void;
-  @mutation.settings.toggleHideBalance toggleHideBalance!: FnWithoutArgs;
-  @action.account.useCeresApiForFiatValues private useCeresApiForFiatValues!: (flag: boolean) => void;
-  @action.settings.selectIndexer private selectIndexer!: (IndexerType: IndexerType) => void;
-  @action.settings.setApiKeys private setApiKeys!: (apiKeys: ApiKeysObject) => Promise<void>;
-  @action.settings.toggleTheme private toggleThemeSetting!: () => Promise<void>;
-  @action.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncFnWithoutArgs;
-  @action.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncFnWithoutArgs;
-  @action.account.notifyOnDeposit private notifyOnDeposit!: (info: {
-    asset: WhitelistArrayItem;
-    message: string;
-  }) => Promise<void>;
-
-  @state.settings.currency currency!: Currency;
-  @state.settings.currencies currencies!: CurrencyFields[];
-  @mutation.settings.setFiatCurrency setFiatCurrency!: (currency: Currency) => void;
-  @action.settings.subscribeOnExchangeRatesApi private subscribeOnExchangeRatesApi!: AsyncFnWithoutArgs;
-
-  @state.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
-  @mutation.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
-
-  async created(): Promise<void> {
+  mixins: [TransactionMixin],
+  computed: {
+    ...mapState('wallet/account', ['assetsToNotifyQueue', 'ceresFiatValuesUsage']),
+    ...mapState('wallet/settings', ['indexerType', 'currency', 'currencies']),
+    ...mapState('wallet/transactions', ['isSignTxDialogVisible']),
+    ...mapGetters('wallet/transactions', ['firstReadyTx']),
+    ...mapGetters('wallet/settings', ['libraryTheme']),
+    chainApi() {
+      return api;
+    },
+    firstReadyTransaction(this: any): Nullable<HistoryItem> {
+      return this.firstReadyTx;
+    },
+    appCurrency: {
+      get(this: any): Currency {
+        return this.currency;
+      },
+      set(this: any, value: Currency): void {
+        this.setFiatCurrency(value);
+      },
+    },
+  },
+  watch: {
+    assetsToNotifyQueue(this: any, whitelistAssetArray: WhitelistArrayItem[]): void {
+      if (!whitelistAssetArray.length) return;
+      if ('Notification' in window) {
+        void this.notifyOnDeposit({ asset: whitelistAssetArray[0], message: this.t('assetDeposit') });
+      }
+    },
+    firstReadyTransaction: {
+      deep: true,
+      handler(this: any, value: HistoryItem, oldValue: HistoryItem): void {
+        this.handleChangeTransaction(value, oldValue);
+      },
+    },
+  },
+  async created(this: any): Promise<void> {
     // this.setIsDesktop(true);
-    await this.setApiKeys(env.API_KEYS);
+    await this.setApiKeys(env.API_KEYS as ApiKeysObject);
     this.setIndexerEndpoint({ indexer: IndexerType.SUBQUERY, endpoint: env.SUBQUERY_ENDPOINT });
     this.setIndexerEndpoint({ indexer: IndexerType.SUBSQUID, endpoint: env.SUBSQUID_ENDPOINT });
     this.setSoraNetwork(SoraNetwork.Dev);
@@ -96,50 +97,34 @@ export default class App extends mixins(TransactionMixin) {
     const localeLanguage = navigator.language;
     FPNumber.DELIMITERS_CONFIG.thousand = Number(1000).toLocaleString(localeLanguage).substring(1, 2);
     FPNumber.DELIMITERS_CONFIG.decimal = Number(1.1).toLocaleString(localeLanguage).substring(1, 2);
-  }
-
-  @Watch('assetsToNotifyQueue')
-  private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
-    if (!whitelistAssetArray.length) return;
-    if ('Notification' in window) {
-      this.notifyOnDeposit({ asset: whitelistAssetArray[0], message: this.t('assetDeposit') });
-    }
-  }
-
-  @Watch('firstReadyTransaction', { deep: true })
-  private handleNotifyAboutTransaction(value: HistoryItem, oldValue: HistoryItem): void {
-    this.handleChangeTransaction(value, oldValue);
-  }
-
-  beforeUnmount(): void {
-    this.resetNetworkSubscriptions();
-    this.resetInternalSubscriptions();
-  }
-
-  get chainApi() {
-    return api;
-  }
-
-  changeTheme(): void {
-    this.toggleThemeSetting();
-  }
-
-  changeIndexer() {
-    this.selectIndexer(this.indexerType === IndexerType.SUBSQUID ? IndexerType.SUBQUERY : IndexerType.SUBSQUID);
-  }
-
-  changeCeresFiatUsage() {
-    this.useCeresApiForFiatValues(!this.ceresFiatValuesUsage);
-  }
-
-  get appCurrency() {
-    return this.currency;
-  }
-
-  set appCurrency(value) {
-    this.setFiatCurrency(value);
-  }
-}
+  },
+  beforeUnmount(this: any): void {
+    void this.resetNetworkSubscriptions();
+    void this.resetInternalSubscriptions();
+  },
+  methods: {
+    ...mapMutations('wallet/settings', [
+      'setSoraNetwork',
+      'setIndexerEndpoint',
+      'toggleHideBalance',
+      'setFiatCurrency',
+    ]),
+    ...mapMutations('wallet/account', ['setIsDesktop']),
+    ...mapMutations('wallet/transactions', ['setSignTxDialogVisibility']),
+    ...mapActions('wallet/account', ['useCeresApiForFiatValues', 'notifyOnDeposit']),
+    ...mapActions('wallet/settings', ['selectIndexer', 'setApiKeys', 'toggleTheme', 'subscribeOnExchangeRatesApi']),
+    ...mapActions('wallet/subscriptions', ['resetNetworkSubscriptions', 'resetInternalSubscriptions']),
+    changeTheme(this: any): void {
+      void this.toggleTheme();
+    },
+    changeIndexer(this: any): void {
+      void this.selectIndexer(this.indexerType === IndexerType.SUBSQUID ? IndexerType.SUBQUERY : IndexerType.SUBSQUID);
+    },
+    changeCeresFiatUsage(this: any): void {
+      void this.useCeresApiForFiatValues(!this.ceresFiatValuesUsage);
+    },
+  },
+});
 </script>
 
 <style lang="scss">

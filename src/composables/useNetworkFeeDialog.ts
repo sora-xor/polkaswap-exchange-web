@@ -3,8 +3,8 @@ import { ref } from 'vue';
 import { delay } from '@/utils/promise';
 
 /**
- * Tracks the state of the network-fee warning modal (replacement for
- * `NetworkFeeDialogMixin`).
+ * Tracks the state of the network-fee warning modal for the composable-based
+ * wallet flow.
  */
 export function useNetworkFeeDialog() {
   const showWarningFeeDialog = ref(false);

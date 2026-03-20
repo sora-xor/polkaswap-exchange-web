@@ -174,7 +174,6 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'input', value: WidgetsVisibilityModel): void;
   (event: 'update:modelValue', value: WidgetsVisibilityModel): void;
 }>();
 
@@ -247,7 +246,6 @@ const updateWidgetsModelByLayout = () => {
     return acc;
   }, initialModel);
 
-  emit('input', model);
   emit('update:modelValue', model);
 };
 

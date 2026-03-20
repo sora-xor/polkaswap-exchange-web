@@ -3,7 +3,7 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import { nextTick } from 'vue';
 import { Storage } from '@sora-substrate/sdk';
 
-import { setLegacyStoreOverride } from '@/utils/legacy-store';
+import { setAppStoreOverride } from '@/utils/app-store';
 
 const walletApiMock = {
   divideAssets: vi.fn(() => '0'),
@@ -124,7 +124,7 @@ describe('useSwapAmounts', () => {
   let useSwapStore: typeof import('@/stores/swap').useSwapStore;
 
   beforeAll(async () => {
-    setLegacyStoreOverride(legacyStore);
+    setAppStoreOverride(legacyStore);
     ({ useSwapAmounts } = await import('@/composables/useSwapAmounts'));
     ({ useSwapStore } = await import('@/stores/swap'));
   });
@@ -150,7 +150,7 @@ describe('useSwapAmounts', () => {
     },
     commit: {},
     dispatch: {},
-  } as unknown as Parameters<typeof setLegacyStoreOverride>[0];
+  } as unknown as Parameters<typeof setAppStoreOverride>[0];
 
   beforeEach(async () => {
     setActivePinia(createPinia());
@@ -168,16 +168,16 @@ describe('useSwapAmounts', () => {
       registeredAssets: {},
       registeredAssetsFetching: false,
     };
-    setLegacyStoreOverride(legacyStore);
+    setAppStoreOverride(legacyStore);
   });
 
   afterEach(() => {
     delete (globalThis as Record<string, any>).__ASSETS_STORE_OVERRIDE;
-    setLegacyStoreOverride(null);
+    setAppStoreOverride(null);
   });
 
   afterAll(() => {
-    setLegacyStoreOverride(null);
+    setAppStoreOverride(null);
     vi.unstubAllGlobals();
   });
 

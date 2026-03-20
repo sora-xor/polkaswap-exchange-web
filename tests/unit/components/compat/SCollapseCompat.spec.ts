@@ -1,18 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import { h } from 'vue';
 import { mount } from '@vue/test-utils';
-import sCollapseItemCompatSource from '@/components/compat/SCollapseItemCompat.vue?raw';
+import sCollapseItemSource from '@/lib/soramitsu-ui/components/Accordion/SCollapseItem.vue?raw';
 
-import SCollapseCompat from '@/components/compat/SCollapseCompat.vue';
-import SCollapseItemCompat from '@/components/compat/SCollapseItemCompat.vue';
+import SCollapse from '@/lib/soramitsu-ui/components/Accordion/SCollapse.vue';
+import SCollapseItem from '@/lib/soramitsu-ui/components/Accordion/SCollapseItem.vue';
 
-describe('SCollapseCompat', () => {
+describe('SCollapse', () => {
   it('toggles item visibility and emits active item names', async () => {
-    const wrapper = mount(SCollapseCompat, {
+    const wrapper = mount(SCollapse, {
       slots: {
         default: () =>
           h(
-            SCollapseItemCompat,
+            SCollapseItem,
             { name: 'first' },
             {
               title: () => 'First item',
@@ -41,14 +41,14 @@ describe('SCollapseCompat', () => {
   });
 
   it('keeps only one opened item in accordion mode', async () => {
-    const wrapper = mount(SCollapseCompat, {
+    const wrapper = mount(SCollapse, {
       props: {
         accordion: true,
       },
       slots: {
         default: () => [
           h(
-            SCollapseItemCompat,
+            SCollapseItem,
             { name: 'one' },
             {
               title: () => 'One',
@@ -56,7 +56,7 @@ describe('SCollapseCompat', () => {
             }
           ),
           h(
-            SCollapseItemCompat,
+            SCollapseItem,
             { name: 'two' },
             {
               title: () => 'Two',
@@ -76,13 +76,13 @@ describe('SCollapseCompat', () => {
 
     expect(items[0].classes()).not.toContain('is-active');
     expect(items[1].classes()).toContain('is-active');
-    expect(wrapper.emitted('input')?.[1]).toEqual(['two']);
+    expect(wrapper.emitted('update:modelValue')?.[1]).toEqual(['two']);
   });
 
   it('uses production-style height transitions for collapse wrappers', () => {
-    expect(sCollapseItemCompatSource).toContain('class="el-collapse-item__wrap collapse-transition"');
-    expect(sCollapseItemCompatSource).toContain('@before-enter="handleBeforeEnter"');
-    expect(sCollapseItemCompatSource).toContain('@leave="handleLeave"');
-    expect(sCollapseItemCompatSource).toContain('height 0.3s ease-in-out');
+    expect(sCollapseItemSource).toContain('class="el-collapse-item__wrap collapse-transition"');
+    expect(sCollapseItemSource).toContain('@before-enter="handleBeforeEnter"');
+    expect(sCollapseItemSource).toContain('@leave="handleLeave"');
+    expect(sCollapseItemSource).toContain('height 0.3s ease-in-out');
   });
 });

@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options, Prop } from 'vue-property-decorator';
+import { defineComponent, type PropType } from 'vue';
 
 import { AccountActionTypes, AppWallet } from '../../../consts';
 import { GDriveWallet } from '../../../services/google/wallet';
@@ -91,7 +91,9 @@ import { formatConnectedAddress } from '../utils';
 import type { PolkadotJsAccount } from '../../../types/common';
 import type { WithKeyring } from '@sora-substrate/sdk';
 
-@Options({
+const accountActions = [AccountActionTypes.Rename, AccountActionTypes.Export, AccountActionTypes.Delete];
+
+export default defineComponent({
   components: {
     AccountConnectionList,
     AccountCard,
@@ -101,167 +103,186 @@ import type { WithKeyring } from '@sora-substrate/sdk';
     AccountDeleteDialog,
     ConnectionItems,
   },
-})
-export default class AccountListStep extends mixins(LoadingMixin, NotificationMixin) {
-  @Prop({ required: true, type: Object }) public readonly chainApi!: WithKeyring;
+  mixins: [LoadingMixin, NotificationMixin],
+  props: {
+    chainApi: {
+      required: true,
+      type: Object as PropType<WithKeyring>,
+    },
+    text: {
+      default: '',
+      type: String,
+    },
+    isInternal: {
+      default: false,
+      type: Boolean,
+    },
+    selectedWallet: {
+      default: '',
+      type: String,
+    },
+    connectedWallet: {
+      default: '',
+      type: String as PropType<AppWallet>,
+    },
+    connectedAccount: {
+      default: '',
+      type: String,
+    },
+    accounts: {
+      default: () => [],
+      type: Array as PropType<PolkadotJsAccount[]>,
+    },
+    logoutAccount: {
+      default: () => {},
+      type: Function as PropType<() => Promise<void>>,
+    },
+    renameAccount: {
+      default: () => {},
+      type: Function as PropType<(data: { address: string; name: string }) => Promise<void>>,
+    },
+    exportAccount: {
+      default: () => {},
+      type: Function as PropType<(data: { address: string; password: string }) => Promise<void>>,
+    },
+    deleteAccount: {
+      default: () => {},
+      type: Function as PropType<(address: string) => Promise<void>>,
+    },
+  },
+  emits: ['select', 'create', 'import'],
+  data() {
+    return {
+      accountActions,
+      accountRenameVisibility: false,
+      accountExportVisibility: false,
+      accountDeleteVisibility: false,
+      selectedAccount: null as Nullable<PolkadotJsAccount>,
+    };
+  },
+  computed: {
+    noAccounts(this: any): boolean {
+      return !this.accounts.length;
+    },
+  },
+  methods: {
+    isConnectedAccount(this: any, account: PolkadotJsAccount): boolean {
+      return (
+        this.connectedWallet === account.source &&
+        formatConnectedAddress(
+          this.chainApi as Nullable<{ formatAddress?: (address: string, isShort?: boolean) => string }>,
+          this.connectedAccount
+        ) === account.address
+      );
+    },
+    handleAccountAction(this: any, actionType: string, account: PolkadotJsAccount): void {
+      this.selectedAccount = { ...account };
 
-  @Prop({ default: '', type: String }) readonly text!: string;
-  @Prop({ default: false, type: Boolean }) readonly isInternal!: boolean;
-  @Prop({ default: '', type: String }) readonly selectedWallet!: string;
-  @Prop({ default: '', type: String }) readonly connectedWallet!: AppWallet;
-  @Prop({ default: '', type: String }) readonly connectedAccount!: string;
-  @Prop({ default: () => [], type: Array }) readonly accounts!: Array<PolkadotJsAccount>;
+      switch (actionType) {
+        case AccountActionTypes.Rename: {
+          this.accountRenameVisibility = true;
+          break;
+        }
+        case AccountActionTypes.Export: {
+          this.accountExportVisibility = true;
+          break;
+        }
+        case AccountActionTypes.Delete: {
+          const storageValue = settingsStorage.get('allowAccountDeletePopup');
+          const popupVisibility = storageValue ? Boolean(JSON.parse(storageValue)) : true;
 
-  @Prop({ default: () => {}, type: Function }) private readonly logoutAccount!: () => Promise<void>;
-
-  @Prop({ default: () => {}, type: Function }) private readonly renameAccount!: (data: {
-    address: string;
-    name: string;
-  }) => Promise<void>;
-
-  @Prop({ default: () => {}, type: Function }) private readonly exportAccount!: (data: {
-    address: string;
-    password: string;
-  }) => Promise<void>;
-
-  @Prop({ default: () => {}, type: Function }) private readonly deleteAccount!: (address: string) => Promise<void>;
-
-  readonly accountActions = [AccountActionTypes.Rename, AccountActionTypes.Export, AccountActionTypes.Delete];
-
-  accountRenameVisibility = false;
-  accountExportVisibility = false;
-  accountDeleteVisibility = false;
-
-  selectedAccount: Nullable<PolkadotJsAccount> = null;
-
-  get noAccounts(): boolean {
-    return !this.accounts.length;
-  }
-
-  isConnectedAccount(account: PolkadotJsAccount): boolean {
-    return (
-      this.connectedWallet === account.source &&
-      formatConnectedAddress(
-        this.chainApi as Nullable<{ formatAddress?: (address: string, isShort?: boolean) => string }>,
-        this.connectedAccount
-      ) === account.address
-    );
-  }
-
-  handleAccountAction(actionType: string, account: PolkadotJsAccount): void {
-    this.selectedAccount = { ...account };
-
-    switch (actionType) {
-      case AccountActionTypes.Rename: {
-        this.accountRenameVisibility = true;
-        break;
+          if (popupVisibility) {
+            this.accountDeleteVisibility = true;
+          } else {
+            void this.handleDeleteAccount();
+          }
+          break;
+        }
       }
-      case AccountActionTypes.Export: {
-        this.accountExportVisibility = true;
-        break;
-      }
-      case AccountActionTypes.Delete: {
-        const storageValue = settingsStorage.get('allowAccountDeletePopup');
-        const popupVisibility = storageValue ? Boolean(JSON.parse(storageValue)) : true;
+    },
+    handleRefreshClick(): void {
+      window.history.go();
+    },
+    handleSelectAccount(this: any, account: PolkadotJsAccount, isConnected: boolean): void {
+      this.$emit('select', account, isConnected);
+    },
+    handleCreateAccount(this: any): void {
+      this.$emit('create');
+    },
+    handleImportAccount(this: any): void {
+      this.$emit('import');
+    },
+    async handleRenameAccount(this: any, name: string): Promise<void> {
+      await this.withLoading(async () => {
+        await this.withAppNotification(async () => {
+          if (!this.selectedAccount) return;
 
-        if (popupVisibility) {
-          this.accountDeleteVisibility = true;
-        } else {
-          this.handleDeleteAccount();
-        }
-        break;
-      }
-    }
-  }
+          const { address, source } = this.selectedAccount;
 
-  handleRefreshClick(): void {
-    window.history.go();
-  }
+          if (source === AppWallet.GoogleDrive) {
+            await GDriveWallet.accounts.changeName(address, name);
+          }
 
-  handleSelectAccount(account: PolkadotJsAccount, isConnected: boolean): void {
-    this.$emit('select', account, isConnected);
-  }
+          if (this.isConnectedAccount(this.selectedAccount) || source === AppWallet.Sora) {
+            await this.renameAccount({ address, name });
+          }
 
-  handleCreateAccount(): void {
-    this.$emit('create');
-  }
-
-  handleImportAccount(): void {
-    this.$emit('import');
-  }
-
-  async handleRenameAccount(name: string): Promise<void> {
-    await this.withLoading(async () => {
-      await this.withAppNotification(async () => {
-        if (!this.selectedAccount) return;
-
-        const { address, source } = this.selectedAccount;
-
-        if (source === AppWallet.GoogleDrive) {
-          await GDriveWallet.accounts.changeName(address, name);
-        }
-
-        if (this.isConnectedAccount(this.selectedAccount) || source === AppWallet.Sora) {
-          await this.renameAccount({ address, name });
-        }
-
-        this.accountRenameVisibility = false;
+          this.accountRenameVisibility = false;
+        });
       });
-    });
-  }
+    },
+    async handleExportAccount(this: any, password: string): Promise<void> {
+      await this.withLoading(async () => {
+        // hack: to render loading state before sync code execution, 250 - button transition
+        await this.$nextTick();
+        await delay(250);
 
-  async handleExportAccount(password: string): Promise<void> {
-    await this.withLoading(async () => {
-      // hack: to render loading state before sync code execution, 250 - button transition
-      await this.$nextTick();
-      await delay(250);
+        await this.withAppNotification(async () => {
+          if (!this.selectedAccount) return;
 
-      await this.withAppNotification(async () => {
-        if (!this.selectedAccount) return;
+          const { address, source } = this.selectedAccount;
 
-        const { address, source } = this.selectedAccount;
+          if (source === AppWallet.GoogleDrive) {
+            const json = await GDriveWallet.accounts.getAccount(address, password);
 
-        if (source === AppWallet.GoogleDrive) {
-          const json = await GDriveWallet.accounts.getAccount(address, password);
+            if (!json) throw new Error('polkadotjs.noAccount');
 
-          if (!json) throw new Error('polkadotjs.noAccount');
+            const verified = verifyAccountJson(this.chainApi, json, password);
 
-          const verified = verifyAccountJson(this.chainApi, json, password);
+            exportAccountJson(verified);
+          } else {
+            await this.exportAccount({ address, password });
+          }
 
-          exportAccountJson(verified);
-        } else {
-          await this.exportAccount({ address, password });
-        }
-
-        this.accountExportVisibility = false;
+          this.accountExportVisibility = false;
+        });
       });
-    });
-  }
+    },
+    async handleDeleteAccount(this: any, allowAccountDeletePopup = true): Promise<void> {
+      await this.withLoading(async () => {
+        await this.withAppNotification(async () => {
+          if (!this.selectedAccount) return;
 
-  async handleDeleteAccount(allowAccountDeletePopup = true): Promise<void> {
-    await this.withLoading(async () => {
-      await this.withAppNotification(async () => {
-        if (!this.selectedAccount) return;
+          if (!allowAccountDeletePopup) {
+            settingsStorage.set('allowAccountDeletePopup', false);
+          }
 
-        if (!allowAccountDeletePopup) {
-          settingsStorage.set('allowAccountDeletePopup', false);
-        }
+          if (this.isConnectedAccount(this.selectedAccount)) {
+            await this.logoutAccount();
+          }
 
-        if (this.isConnectedAccount(this.selectedAccount)) {
-          await this.logoutAccount();
-        }
+          if (this.selectedAccount.source === AppWallet.GoogleDrive) {
+            await GDriveWallet.accounts.delete(this.selectedAccount.address);
+          } else {
+            await this.deleteAccount(this.selectedAccount.address);
+          }
 
-        if (this.selectedAccount.source === AppWallet.GoogleDrive) {
-          await GDriveWallet.accounts.delete(this.selectedAccount.address);
-        } else {
-          await this.deleteAccount(this.selectedAccount.address);
-        }
-
-        this.accountDeleteVisibility = false;
+          this.accountDeleteVisibility = false;
+        });
       });
-    });
-  }
-}
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">

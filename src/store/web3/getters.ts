@@ -1,6 +1,6 @@
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { WALLET_CONSTS, WALLET_TYPES } from '@wallet';
-import { defineGetters } from 'direct-vuex';
+import { defineGetters } from '@/store/module-helpers';
 
 import { EVM_NETWORKS } from '@/consts/evm';
 import type { KnownEthBridgeAsset } from '@/consts/evm';

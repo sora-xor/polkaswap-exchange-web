@@ -118,13 +118,13 @@
 
 <script lang="ts">
 import { XOR, BalanceType } from '@sora-substrate/sdk/build/assets/consts';
-import { Options, mixins } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
+import { mapGetters, mapMutations, mapState } from 'vuex';
 
 import { api } from '../api';
 import { useRouterStore } from '@/stores/router';
 
 import { RouteNames } from '../consts';
-import { state, getter, mutation } from '../store/decorators';
 import { Operations } from '../types/common';
 import { copyToClipboard, delay, shortenValue } from '../util';
 import { IpfsStorage } from '../util/ipfsStorage';
@@ -152,7 +152,7 @@ interface Operation {
   icon: string;
 }
 
-@Options({
+export default defineComponent({
   components: {
     WalletBase,
     FormattedAmount,
@@ -164,216 +164,186 @@ interface Operation {
     InfoLine,
     TokenLogo,
   },
-})
-export default class WalletAssetDetails extends mixins(
-  OperationsMixin,
-  FormattedAmountMixin,
-  CopyAddressMixin,
-  QrCodeParserMixin
-) {
-  readonly balanceTypes = [
-    BalanceType.Transferable,
-    BalanceType.Locked,
-    [BalanceType.Frozen, BalanceType.Reserved, BalanceType.Bonded],
-    BalanceType.Total,
-  ];
+  mixins: [OperationsMixin, FormattedAmountMixin, CopyAddressMixin, QrCodeParserMixin],
+  emits: Object.values(Operations),
+  data() {
+    return {
+      balanceTypes: [
+        BalanceType.Transferable,
+        BalanceType.Locked,
+        [BalanceType.Frozen, BalanceType.Reserved, BalanceType.Bonded],
+        BalanceType.Total,
+      ],
+      wasBalanceDetailsClicked: false,
+      wasNftLinkCopied: false,
+      wasNftDetailsClicked: false,
+      nftContentLink: '',
+    };
+  },
+  computed: {
+    ...mapState('wallet/settings', ['permissions']),
+    ...mapState('wallet/account', ['accountAssets']),
+    ...mapState('wallet/transactions', ['history']),
+    ...mapGetters('wallet/transactions', { selectedTransaction: 'selectedTx' }),
+    routerStore(this: any) {
+      return useRouterStore(this.$pinia);
+    },
+    currentRouteParams(this: any): Record<string, AccountAsset> {
+      return this.routerStore.currentParams as Record<string, AccountAsset>;
+    },
+    hasResetFocus(this: any): string {
+      return this.selectedTransaction && this.selectedTransaction.id
+        ? this.selectedTransaction.id.toString()
+        : this.wasBalanceDetailsClicked.toString();
+    },
+    isNft(this: any): boolean {
+      return api.assets.isNft(this.asset);
+    },
+    headerTitle(this: any): string {
+      if (!this.selectedTransaction) return this.asset.name;
 
-  private get routerStore() {
-    return useRouterStore((this as any).$pinia);
-  }
+      return this.getTitle(this.selectedTransaction as HistoryItem);
+    },
+    nftLinkTooltipText(this: any): string {
+      return this.wasNftLinkCopied ? this.t('copiedText') : this.t('createToken.nft.link.copyLink');
+    },
+    displayedNftContentLink(this: any): string {
+      const hostname = IpfsStorage.getStorageHostname(this.nftContentLink);
+      const path = IpfsStorage.getIpfsPath(this.nftContentLink);
+      return shortenValue(hostname + '/ipfs/' + path, 25);
+    },
+    operations(this: any): Array<Operation> {
+      const list: Array<Operation> = [];
+      const divisible = !!this.asset.decimals;
 
-  get currentRouteParams(): Record<string, AccountAsset> {
-    return this.routerStore.currentParams as Record<string, AccountAsset>;
-  }
+      if ((this.permissions as WalletPermissions).sendAssets) {
+        list.push({ type: Operations.Send, icon: 'finance-send-24' });
+      }
+      if ((this.permissions as WalletPermissions).swapAssets && divisible) {
+        list.push({ type: Operations.Swap, icon: 'arrows-swap-24' });
+      }
+      if ((this.permissions as WalletPermissions).addLiquidity && divisible) {
+        list.push({ type: Operations.Liquidity, icon: 'basic-drop-24' });
+      }
+      if ((this.permissions as WalletPermissions).bridgeAssets && divisible) {
+        list.push({ type: Operations.Bridge, icon: 'grid-block-distribute-vertically-24' });
+      }
 
-  @state.settings.permissions private permissions!: WalletPermissions;
-  @state.account.accountAssets private accountAssets!: Array<AccountAsset>;
-  @state.transactions.history private history!: AccountHistory<HistoryItem>;
-  @getter.transactions.selectedTx selectedTransaction!: Nullable<HistoryItem>;
-  @mutation.transactions.resetTxDetailsId private resetTxDetailsId!: FnWithoutArgs;
+      return list;
+    },
+    price(this: any): Nullable<CodecString> {
+      return this.getAssetFiatPrice(this.asset);
+    },
+    asset(this: any): AccountAsset {
+      return (
+        (this.accountAssets as Array<AccountAsset>).find(
+          ({ address }) => address === this.currentRouteParams.asset.address
+        ) || this.currentRouteParams.asset
+      );
+    },
+    balance(this: any): string {
+      return this.formatCodecNumber(this.asset.balance.transferable, this.asset.decimals);
+    },
+    totalBalance(this: any): string {
+      return this.formatBalance(this.asset.balance.total);
+    },
+    isEmptyBalance(this: any): boolean {
+      return this.isCodecZero(this.asset.balance.transferable, this.asset.decimals);
+    },
+    balanceStyles(this: any) {
+      const balanceLength = this.balance.length;
+      let fontSize = 30;
+      if (balanceLength > 35) {
+        fontSize = 14;
+      } else if (balanceLength > 24 && balanceLength <= 35) {
+        fontSize = 16;
+      } else if (balanceLength > 17 && balanceLength <= 24) {
+        fontSize = 20;
+      }
+      return { fontSize: `${fontSize}px` };
+    },
+    balanceDetailsClasses(this: any): Array<string> {
+      const cssClasses: Array<string> = ['asset-details-balance', 'd2'];
+      if (this.isXor) {
+        cssClasses.push('asset-details-balance--clickable');
+      }
+      if (this.wasBalanceDetailsClicked) {
+        cssClasses.push('asset-details-balance--clicked');
+      }
+      return cssClasses;
+    },
+    isXor(this: any): boolean {
+      return this.asset.address === XOR.address;
+    },
+    isCleanHistoryDisabled(this: any): boolean {
+      if (!this.asset) return true;
 
-  wasBalanceDetailsClicked = false;
-
-  // ____________________NFT Token Details_____________________________
-  private wasNftLinkCopied = false;
-  wasNftDetailsClicked = false;
-  nftContentLink = '';
-
-  get hasResetFocus(): string {
-    return this.selectedTransaction && this.selectedTransaction.id
-      ? this.selectedTransaction.id.toString()
-      : this.wasBalanceDetailsClicked.toString();
-  }
-
-  get isNft(): boolean {
-    return api.assets.isNft(this.asset);
-  }
-
-  get headerTitle(): string {
-    if (!this.selectedTransaction) return this.asset.name;
-
-    return this.getTitle(this.selectedTransaction);
-  }
-
-  get nftLinkTooltipText(): string {
-    // TODO: Remove assets.copy, assets.copied
-    return this.wasNftLinkCopied ? this.t('copiedText') : this.t('createToken.nft.link.copyLink');
-  }
-
-  get displayedNftContentLink(): string {
-    const hostname = IpfsStorage.getStorageHostname(this.nftContentLink);
-    const path = IpfsStorage.getIpfsPath(this.nftContentLink);
-    return shortenValue(hostname + '/ipfs/' + path, 25);
-  }
-
-  private async setNftMeta(): Promise<void> {
-    const ipfsPath = this.asset.content as string;
-    this.nftContentLink = IpfsStorage.constructFullIpfsUrl(ipfsPath);
-  }
-
-  handleClickNftDetails(): void {
-    this.wasNftDetailsClicked = !this.wasNftDetailsClicked;
-  }
-
-  async handleCopyNftLink(): Promise<void> {
-    await copyToClipboard(this.nftContentLink);
-    this.wasNftLinkCopied = true;
-    await delay(1000);
-    this.wasNftLinkCopied = false;
-  }
-
-  mounted(): void {
+      return Object.values(this.history as AccountHistory<HistoryItem>).every(
+        (item) => ![item.assetAddress, item.asset2Address].includes(this.asset.address)
+      );
+    },
+  },
+  mounted(this: any): void {
     if (this.isNft) {
-      this.setNftMeta();
+      void this.setNftMeta();
     }
-  }
-  // __________________________________________________________
-
-  formatBalance(value: CodecString): string {
-    return this.formatCodecNumber(value, this.asset.decimals);
-  }
-
-  get operations(): Array<Operation> {
-    const list: Array<Operation> = [];
-    const divisible = !!this.asset.decimals;
-
-    if (this.permissions.sendAssets) {
-      list.push({ type: Operations.Send, icon: 'finance-send-24' });
-    }
-    if (this.permissions.swapAssets && divisible) {
-      list.push({ type: Operations.Swap, icon: 'arrows-swap-24' });
-    }
-    if (this.permissions.addLiquidity && divisible) {
-      list.push({ type: Operations.Liquidity, icon: 'basic-drop-24' });
-    }
-    if (this.permissions.bridgeAssets && divisible) {
-      list.push({ type: Operations.Bridge, icon: 'grid-block-distribute-vertically-24' });
-    }
-
-    return list;
-  }
-
-  get price(): Nullable<CodecString> {
-    return this.getAssetFiatPrice(this.asset);
-  }
-
-  get asset(): AccountAsset {
-    // currentRouteParams.asset was added here to avoid a case when the asset is not found
-    return (
-      this.accountAssets.find(({ address }) => address === this.currentRouteParams.asset.address) ||
-      this.currentRouteParams.asset
-    );
-  }
-
-  get balance(): string {
-    return this.formatCodecNumber(this.asset.balance.transferable, this.asset.decimals);
-  }
-
-  get totalBalance(): string {
-    return this.formatBalance(this.asset.balance.total);
-  }
-
-  get isEmptyBalance(): boolean {
-    return this.isCodecZero(this.asset.balance.transferable, this.asset.decimals);
-  }
-
-  get balanceStyles() {
-    const balanceLength = this.balance.length;
-    // We've decided to calcutate font size values manually
-    let fontSize = 30;
-    if (balanceLength > 35) {
-      fontSize = 14;
-    } else if (balanceLength > 24 && balanceLength <= 35) {
-      fontSize = 16;
-    } else if (balanceLength > 17 && balanceLength <= 24) {
-      fontSize = 20;
-    }
-    return { fontSize: `${fontSize}px` };
-  }
-
-  get balanceDetailsClasses(): Array<string> {
-    const cssClasses: Array<string> = ['asset-details-balance', 'd2'];
-    if (this.isXor) {
-      cssClasses.push('asset-details-balance--clickable');
-    }
-    if (this.wasBalanceDetailsClicked) {
-      cssClasses.push('asset-details-balance--clicked');
-    }
-    return cssClasses;
-  }
-
-  get isXor(): boolean {
-    return this.asset.address === XOR.address;
-  }
-
-  get isCleanHistoryDisabled(): boolean {
-    if (!this.asset) return true;
-
-    return Object.values(this.history).every(
-      (item) => ![item.assetAddress, item.asset2Address].includes(this.asset.address)
-    );
-  }
-
-  handleBack(): void {
-    if (this.selectedTransaction) {
-      this.resetTxDetailsId();
-    } else {
-      this.navigate({ name: RouteNames.Wallet });
-    }
-  }
-
-  getOperationTooltip(operation: Operation): string {
-    return this.t(`assets.${operation.type}`);
-  }
-
-  isOperationDisabled(operation: Operations): boolean {
-    return operation === Operations.Send && this.isEmptyBalance;
-  }
-
-  handleOperation(operation: Operations): void {
-    switch (operation) {
-      case Operations.Send:
-        this.navigate({ name: RouteNames.WalletSend, params: { asset: this.asset } });
-        break;
-      default:
-        this.$emit(operation, this.asset);
-        break;
-    }
-  }
-
-  handleClickDetailedBalance(): void {
-    this.wasBalanceDetailsClicked = !this.wasBalanceDetailsClicked;
-  }
-
-  getBalance(asset: AccountAsset, type: BalanceType): string {
-    return `${this.formatCodecNumber(asset.balance[type], asset.decimals)}`;
-  }
-
-  handleRemoveAsset(): void {
-    api.assets.removeAccountAsset(this.asset.address);
-    this.handleBack();
-  }
-}
+  },
+  methods: {
+    ...mapMutations('wallet/transactions', ['resetTxDetailsId']),
+    navigate(this: any, options: Route): void {
+      this.routerStore.navigate(options);
+    },
+    async setNftMeta(this: any): Promise<void> {
+      const ipfsPath = this.asset.content as string;
+      this.nftContentLink = IpfsStorage.constructFullIpfsUrl(ipfsPath);
+    },
+    handleClickNftDetails(this: any): void {
+      this.wasNftDetailsClicked = !this.wasNftDetailsClicked;
+    },
+    async handleCopyNftLink(this: any): Promise<void> {
+      await copyToClipboard(this.nftContentLink);
+      this.wasNftLinkCopied = true;
+      await delay(1000);
+      this.wasNftLinkCopied = false;
+    },
+    formatBalance(this: any, value: CodecString): string {
+      return this.formatCodecNumber(value, this.asset.decimals);
+    },
+    handleBack(this: any): void {
+      if (this.selectedTransaction) {
+        this.resetTxDetailsId();
+      } else {
+        this.navigate({ name: RouteNames.Wallet });
+      }
+    },
+    getOperationTooltip(this: any, operation: Operation): string {
+      return this.t(`assets.${operation.type}`);
+    },
+    isOperationDisabled(this: any, operation: Operations): boolean {
+      return operation === Operations.Send && this.isEmptyBalance;
+    },
+    handleOperation(this: any, operation: Operations): void {
+      switch (operation) {
+        case Operations.Send:
+          this.navigate({ name: RouteNames.WalletSend, params: { asset: this.asset } });
+          break;
+        default:
+          this.$emit(operation, this.asset);
+          break;
+      }
+    },
+    handleClickDetailedBalance(this: any): void {
+      this.wasBalanceDetailsClicked = !this.wasBalanceDetailsClicked;
+    },
+    getBalance(this: any, asset: AccountAsset, type: BalanceType): string {
+      return `${this.formatCodecNumber(asset.balance[type], asset.decimals)}`;
+    },
+    handleRemoveAsset(this: any): void {
+      api.assets.removeAccountAsset(this.asset.address);
+      this.handleBack();
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">

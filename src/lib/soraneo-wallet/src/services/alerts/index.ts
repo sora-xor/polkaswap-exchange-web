@@ -1,7 +1,6 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { Subject } from 'rxjs';
 
-import { Singleton } from '../../decorators';
 import { getWalletStore } from '../../store/instance';
 import { getBase64Icon } from '../../util/image';
 
@@ -13,7 +12,6 @@ import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types'
  * Coordinates token price alerts by tracking the configured thresholds and
  * dispatching browser notifications when conditions are met.
  */
-@Singleton
 export class AlertsApiService {
   private fiatPriceObject: FiatPriceObject = {};
   public alerts = [] as Array<Alert>;

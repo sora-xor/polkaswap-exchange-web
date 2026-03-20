@@ -6,8 +6,8 @@
       :title="receivedPlaceholder"
       :is-fiat-editable="false"
       :token="receivedAsset"
-      :value="value"
-      @input="handleInputField"
+      :model-value="value"
+      @update:model-value="handleInputField"
     ></token-input>
     <info-line
       :label="toBeBurnedLabel"
@@ -67,7 +67,6 @@ import { api, components } from '@wallet';
 import { computed, getCurrentInstance, nextTick, ref, toRefs, watch } from 'vue';
 
 import { Components, ZeroStringValue } from '@/consts';
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
@@ -88,7 +87,6 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
-    visible?: boolean;
     receivedAsset: Asset;
     burnedAsset: Asset;
     rate?: string;
@@ -96,7 +94,6 @@ const props = withDefaults(
     min?: number;
   }>(),
   {
-    visible: false,
     rate: '0.01',
     max: 100_000_000,
     min: 1,
@@ -104,11 +101,11 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'confirm', success?: boolean): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
 const { loading, withNotifications } = useTransaction();
 const {
@@ -119,9 +116,8 @@ const {
   getFiatAmountByFPNumber,
   getFiatAmountByCodecString,
 } = useFormattedAmount();
-const { isVisible } = useDialogModel(props, emit);
 
-const { visible, max, min, receivedAsset, burnedAsset, rate } = toRefs(props);
+const { max, min, receivedAsset, burnedAsset, rate } = toRefs(props);
 
 const value = ref('');
 const xor = XOR;
@@ -197,7 +193,7 @@ async function handleConfirmBurn(): Promise<void> {
   isVisible.value = false;
 }
 
-watch(visible, async (dialogVisible) => {
+watch(isVisible, async (dialogVisible) => {
   await nextTick();
   if (dialogVisible) {
     value.value = '';

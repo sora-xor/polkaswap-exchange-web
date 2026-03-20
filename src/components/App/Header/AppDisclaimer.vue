@@ -1,39 +1,53 @@
 <template>
-  <div class="disclaimer">
-    <div class="disclaimer__header">
-      <div class="disclaimer__header-title">{{ t('disclaimerTitle') }}</div>
-      <s-icon
-        v-button
-        v-if="userDisclaimerApprove"
-        class="disclaimer__header-close-btn"
-        size="28px"
-        name="basic-clear-X-xs-24"
-        @click="handleClose"
-      ></s-icon>
-    </div>
-    <s-scrollbar ref="scrollbarRef">
-      <div class="disclaimer__text">
-        <p v-html="disclaimerContent"></p>
-        <p class="disclaimer__text-fiat" ref="endLine">{{ t('fiatDisclaimer') }}</p>
+  <s-modal
+    v-model:show="disclaimerVisibility"
+    :teleport-to="null"
+    absolute
+    :lock-scroll="false"
+    :show-overlay="isSwapPage"
+    :root-class="modalRootClass"
+    modal-class="disclaimer-modal__dialog"
+    :close-on-overlay-click="isSwapPage && userDisclaimerApprove"
+    :close-on-esc="userDisclaimerApprove"
+  >
+    <div class="disclaimer">
+      <div class="disclaimer__header">
+        <div class="disclaimer__header-title">{{ t('disclaimerTitle') }}</div>
+        <s-icon
+          v-button
+          v-if="userDisclaimerApprove"
+          class="disclaimer__header-close-btn"
+          size="28px"
+          name="basic-clear-X-xs-24"
+          @click="handleClose"
+        ></s-icon>
       </div>
-    </s-scrollbar>
-    <s-button
-      v-if="!userDisclaimerApprove"
-      type="primary"
-      @click="handleAccept"
-      class="disclaimer__accept-btn"
-      :disabled="!isActiveAcceptBtn"
-    >
-      {{ btnText }}
-    </s-button>
-  </div>
+      <s-scrollbar ref="scrollbarRef">
+        <div class="disclaimer__text">
+          <p v-html="disclaimerContent"></p>
+          <p class="disclaimer__text-fiat" ref="endLine">{{ t('fiatDisclaimer') }}</p>
+        </div>
+      </s-scrollbar>
+      <s-button
+        v-if="!userDisclaimerApprove"
+        type="primary"
+        @click="handleAccept"
+        class="disclaimer__accept-btn"
+        :disabled="!isActiveAcceptBtn"
+      >
+        {{ btnText }}
+      </s-button>
+    </div>
+  </s-modal>
 </template>
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref, computed, nextTick } from 'vue';
+import { useRoute } from 'vue-router';
 
 import { useTranslation } from '@/composables/useTranslation';
-import { Links } from '@/consts';
+import { Links, PageNames } from '@/consts';
+import { SModal } from '@/lib/soramitsu-ui/components/Modal';
 import { useSettingsStore } from '@/stores/settings';
 import { delay } from '@/utils';
 import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
@@ -41,6 +55,7 @@ import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
 defineOptions({ name: 'AppDisclaimer' });
 
 const { t } = useTranslation();
+const route = useRoute();
 const settingsStore = useSettingsStore();
 
 const isActiveAcceptBtn = ref(false);
@@ -51,6 +66,15 @@ let scrollContainer: Nullable<HTMLElement> = null;
 let handleScroll: Nullable<() => void> = null;
 
 const userDisclaimerApprove = computed(() => settingsStore.userDisclaimerApprove);
+const isSwapPage = computed(() => route.name === PageNames.Swap);
+const modalRootClass = computed(() => ['disclaimer-modal', { 'disclaimer-modal--nonblocking': !isSwapPage.value }]);
+const disclaimerVisibility = computed({
+  get: () => settingsStore.disclaimerVisibility,
+  set: (visible: boolean) => {
+    if (visible === settingsStore.disclaimerVisibility) return;
+    settingsStore.toggleDisclaimerDialogVisibility();
+  },
+});
 
 const btnText = computed(() => (isActiveAcceptBtn.value ? t('acceptText') : t('acceptOnScrollText')));
 
@@ -210,13 +234,12 @@ onBeforeUnmount(() => {
   width: 24%;
   min-width: 335px;
   max-width: 550px;
-  position: absolute;
-  top: var(--s-size-mini);
-  right: var(--s-size-mini);
-  z-index: $app-above-loader-layer;
+  max-height: calc(100% - (#{$inner-spacing-small} * 2));
   padding: $basic-spacing 6px 12px 20px;
   box-sizing: border-box;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 
   &__header {
     display: flex;
@@ -295,9 +318,6 @@ onBeforeUnmount(() => {
     width: auto;
     min-width: 0;
     max-width: calc(100% - (#{$inner-spacing-small} * 2));
-    top: $inner-spacing-small;
-    right: $inner-spacing-small;
-    left: $inner-spacing-small;
     padding: $basic-spacing $inner-spacing-mini $inner-spacing-small;
 
     &__text {
@@ -314,12 +334,46 @@ onBeforeUnmount(() => {
     min-width: 0;
     max-width: none;
     max-height: none;
-    margin-bottom: $inner-spacing-medium;
     z-index: auto;
 
     &__text {
       height: clamp(140px, 34dvh, 220px);
     }
+  }
+}
+
+.disclaimer-modal {
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: $inner-spacing-medium;
+}
+
+.disclaimer-modal--nonblocking {
+  pointer-events: none;
+
+  :deep(.s-modal__modal) {
+    pointer-events: none;
+  }
+
+  .disclaimer {
+    pointer-events: auto;
+  }
+}
+
+.disclaimer-modal__dialog {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@include tablet(true) {
+  .disclaimer-modal {
+    padding: $inner-spacing-medium;
+  }
+
+  .disclaimer-modal__dialog {
+    justify-content: flex-start;
   }
 }
 </style>

@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRef } from 'vue';
+import { computed } from 'vue';
 
 import { useDialogVisibility } from '@/composables/useDialog';
 
@@ -56,7 +56,6 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(
   defineProps<{
-    visible?: boolean;
     customClass?: string;
     wrapperClass?: string | string[] | Record<string, boolean>;
     title?: string;
@@ -66,7 +65,6 @@ const props = withDefaults(
     showCloseButton?: boolean;
   }>(),
   {
-    visible: false,
     customClass: '',
     wrapperClass: '',
     title: '',
@@ -78,13 +76,11 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'back'): void;
 }>();
-
-const { isVisible, closeDialog } = useDialogVisibility(toRef(props, 'visible'), {
-  emit: (value) => emit('update:visible', value),
+const visibleModel = defineModel<boolean>('visible', { default: false });
+const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 

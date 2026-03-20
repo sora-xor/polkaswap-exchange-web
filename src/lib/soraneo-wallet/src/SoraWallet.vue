@@ -14,7 +14,8 @@
 </template>
 
 <script lang="ts">
-import { Options, mixins } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
+import { mapState } from 'vuex';
 
 import AddAsset from './components/AddAsset/AddAsset.vue';
 import CreateToken from './components/CreateToken.vue';
@@ -28,13 +29,12 @@ import WalletConnection from './components/WalletConnection.vue';
 import WalletProviders from './components/WalletProviders.vue';
 import WalletSend from './components/WalletSend.vue';
 import WalletTransactionDetails from './components/WalletTransactionDetails.vue';
-import { state } from './store/decorators';
 import { Operations } from './types/common';
 
 import type { RouteNames } from './consts';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-@Options({
+export default defineComponent({
   inheritAttrs: false,
   components: {
     AddAsset,
@@ -48,26 +48,29 @@ import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
     WalletTransactionDetails,
     WalletProviders,
   },
-})
-export default class SoraWallet extends mixins(LoadingMixin, TranslationMixin) {
-  readonly Operations = Operations;
-
-  @state.router.currentRoute currentRoute!: RouteNames;
-
-  async created(): Promise<void> {
-    this.withApi(() => {}); // We need it just for loading state
-  }
-
-  handleClose(): void {
-    this.$emit('close');
-  }
-
-  handleOperation(operation: Operations, asset: AccountAsset): void {
-    this.$emit(operation, asset);
-  }
-
-  handleLearnMore(): void {
-    this.$emit('learn-more');
-  }
-}
+  mixins: [LoadingMixin, TranslationMixin],
+  emits: ['close', 'swap', 'liquidity', 'bridge', 'learn-more'],
+  data() {
+    return {
+      Operations,
+    };
+  },
+  computed: {
+    ...mapState('wallet/router', ['currentRoute']),
+  },
+  created(this: any): void {
+    void this.withApi(() => {}); // We need it just for loading state
+  },
+  methods: {
+    handleClose(this: any): void {
+      this.$emit('close');
+    },
+    handleOperation(this: any, operation: Operations, asset: AccountAsset): void {
+      this.$emit(operation, asset);
+    },
+    handleLearnMore(this: any): void {
+      this.$emit('learn-more');
+    },
+  },
+});
 </script>

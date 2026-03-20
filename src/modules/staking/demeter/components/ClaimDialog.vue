@@ -55,7 +55,6 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { components, WALLET_CONSTS } from '@wallet';
 import { computed, toRefs, type PropType } from 'vue';
 
-import { useDialogModel } from '@/composables/useDialogModel';
 import { useTranslation } from '@/composables/useTranslation';
 import { useDemeterPoolCard } from '../composables/useDemeterPoolCard';
 import { useDemeterPoolStatus } from '../composables/useDemeterPoolStatus';
@@ -76,7 +75,6 @@ defineOptions({
 const FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
 const props = defineProps({
-  visible: { type: Boolean, default: false },
   parentLoading: { type: Boolean, default: false },
   liquidity: { type: Object as PropType<Nullable<AccountLiquidity>>, default: null },
   pool: { type: Object as PropType<Nullable<DemeterPool>>, default: null },
@@ -86,22 +84,12 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
   (event: 'confirm', payload: Nullable<DemeterAccountPool>): void;
 }>();
 
+const isVisible = defineModel<boolean>('visible', { default: false });
 const { liquidity, pool, accountPool, poolAsset, rewardAsset } = toRefs(props);
-
-const dialogModel = useDialogModel(props, (event, value) => {
-  if (event === 'update:visible') {
-    emit('update:visible', value ?? false);
-  } else {
-    emit('close');
-  }
-});
-
-const { isVisible } = dialogModel;
 
 const statusApi = useDemeterPoolStatus({
   liquidity,

@@ -5,7 +5,7 @@ import { ZeroStringValue } from '@/consts';
 import type { Nullable } from '@/types/common';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import { useWalletStore } from '@/stores/wallet';
-import { requireLegacyStore } from '@/utils/legacy-store';
+import { requireAppStore } from '@/utils/app-store';
 
 import { BridgeFocusedField, type BridgeFormPatch, type BridgeState } from '@/stores/bridge/types';
 
@@ -98,70 +98,70 @@ export const useBridgeStore = defineStore('bridge', {
       return state.history.page;
     },
     networkHistoryId(): Nullable<BridgeNetworkId> {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       const value = legacyStore?.getters?.bridge?.networkHistoryId as Nullable<BridgeNetworkId>;
       return value ?? null;
     },
     nativeToken(): Nullable<RegisteredAccountAsset> {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return (legacyStore?.getters?.bridge?.nativeToken as Nullable<RegisteredAccountAsset>) ?? null;
     },
     sender(): string {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return (legacyStore?.getters?.bridge?.sender as string) ?? '';
     },
     recipient(): string {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return (legacyStore?.getters?.bridge?.recipient as string) ?? '';
     },
     externalAccount(): string {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return (legacyStore?.getters?.bridge?.externalAccount as string) ?? '';
     },
     isNativeTokenSelected(): boolean {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return Boolean(legacyStore?.getters?.bridge?.isNativeTokenSelected);
     },
     isSidechainAsset(): boolean {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return Boolean(legacyStore?.getters?.bridge?.isSidechainAsset);
     },
     isValidNetwork(): boolean {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return Boolean(legacyStore?.getters?.web3?.isValidNetwork);
     },
     isRegisteredAsset(): boolean {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return Boolean(legacyStore?.getters?.bridge?.isRegisteredAsset);
     },
     autoselectedAssetAddress(): Nullable<string> {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return (legacyStore?.getters?.bridge?.autoselectedAssetAddress as Nullable<string>) ?? null;
     },
     hasWaitingForActionTx(): boolean {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return Boolean(legacyStore?.getters?.bridge?.hasWaitingForActionTx);
     },
     isSubBridge(): boolean {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return Boolean(legacyStore?.getters?.bridge?.isSubBridge);
     },
     isSubAccountType(): boolean {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return Boolean(legacyStore?.getters?.bridge?.isSubAccountType);
     },
     senderName(): string {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return (legacyStore?.getters?.bridge?.senderName as string) ?? '';
     },
     recipientName(): string {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       return (legacyStore?.getters?.bridge?.recipientName as string) ?? '';
     },
   },
   actions: {
     async runLegacyAction<T = unknown>(action: string, ...params: unknown[]): Promise<T | undefined> {
-      const legacyStore = requireLegacyStore();
+      const legacyStore = requireAppStore();
       const handler = legacyStore?.dispatch?.bridge?.[action];
       if (typeof handler === 'function') {
         return (await handler(...params)) as T;

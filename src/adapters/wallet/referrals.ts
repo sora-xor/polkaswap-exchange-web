@@ -1,9 +1,9 @@
-import { withLegacyStore } from '@/utils/legacy-store';
+import { withAppStore } from '@/utils/app-store';
 
 type ReferrerSetter = (address: string) => void;
 
 const getSetter = (): ReferrerSetter | undefined =>
-  withLegacyStore((store) => {
+  withAppStore((store) => {
     const setter = store?.commit?.referrals?.setStorageReferrer;
 
     if (typeof setter === 'function') {

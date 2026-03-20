@@ -1,16 +1,13 @@
-import { createDirectStore } from 'direct-vuex';
-import Vuex from 'vuex';
+import { createAppStoreBridge } from '@/store/app-store-bridge';
 
 import wallet from './wallet';
 import { setWalletStore } from './instance';
-
-import type { Store } from 'vuex';
 
 const modules = {
   wallet,
 };
 
-const { store, rootActionContext, rootGetterContext } = createDirectStore({
+const { store, rootActionContext, rootGetterContext } = createAppStoreBridge({
   modules,
   strict: false,
 });

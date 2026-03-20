@@ -14,8 +14,6 @@
 </template>
 
 <script lang="ts" setup>
-import { toRef } from 'vue';
-
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -23,24 +21,16 @@ import { api } from '../../api';
 import store from '../../store';
 import DialogBase from '../DialogBase.vue';
 
-const props = withDefaults(
-  defineProps<{
-    visible?: boolean;
-  }>(),
-  {
-    visible: false,
-  }
-);
+const props = withDefaults(defineProps<{}>(), {});
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'close'): void;
 }>();
 
 const { t } = useTranslation();
 
-const { isVisible, closeDialog } = useDialogVisibility(toRef(props, 'visible'), {
-  emit: (value) => emit('update:visible', value),
+const visibleModel = defineModel<boolean>('visible', { default: false });
+const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 

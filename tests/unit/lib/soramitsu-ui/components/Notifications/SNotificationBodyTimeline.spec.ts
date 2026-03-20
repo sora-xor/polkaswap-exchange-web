@@ -1,5 +1,3 @@
-import '@/compat/runtime-helpers';
-
 import { mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 

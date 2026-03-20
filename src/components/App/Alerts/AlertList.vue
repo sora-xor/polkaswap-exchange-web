@@ -13,7 +13,7 @@
             <span class="current-price">{{ getInfo(alert) }}</span>
           </template>
           <div class="alerts-list__type">{{ getType(alert) }}</div>
-          <el-popover
+          <s-popover-panel
             :ref="(el) => setAlertMenuRef(el, index)"
             popper-class="settings-alert-popover"
             trigger="click"
@@ -30,7 +30,7 @@
             <template #reference>
               <s-icon class="options-icon" name="basic-more-vertical-24"></s-icon>
             </template>
-          </el-popover>
+          </s-popover-panel>
         </account-card>
       </div>
     </s-scrollbar>

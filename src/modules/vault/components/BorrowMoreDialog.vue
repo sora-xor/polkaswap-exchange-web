@@ -95,7 +95,6 @@ const SlippageTolerance = lazyComponent(Components.SlippageTolerance);
 
 const props = withDefaults(
   defineProps<{
-    visible?: boolean;
     vault?: Nullable<Vault>;
     debtAsset?: Nullable<RegisteredAccountAsset>;
     collateral?: Nullable<Collateral>;
@@ -106,7 +105,6 @@ const props = withDefaults(
     borrowTax?: number;
   }>(),
   {
-    visible: false,
     vault: ObjectInit,
     debtAsset: ObjectInit,
     collateral: ObjectInit,
@@ -119,7 +117,6 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'update:visible', value: boolean): void;
   (event: 'confirm'): void;
 }>();
 
@@ -127,7 +124,7 @@ const { t } = useTranslation();
 const { loading, withNotifications } = useTransaction();
 const { Zero, getFPNumber, getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
 
-const isVisible = ref(props.visible);
+const isVisible = defineModel<boolean>('visible', { default: false });
 const borrowValue = ref('');
 const debtInput = ref<InstanceType<typeof TokenInputComponent> | null>(null);
 
@@ -253,9 +250,8 @@ const handleBorrowMore = async () => {
 };
 
 watch(
-  () => props.visible,
+  isVisible,
   async (value) => {
-    isVisible.value = value;
     if (value) {
       await nextTick();
       borrowValue.value = '';
@@ -264,10 +260,6 @@ watch(
   },
   { immediate: true }
 );
-
-watch(isVisible, (value) => {
-  emit('update:visible', value);
-});
 </script>
 
 <style lang="scss" scoped>

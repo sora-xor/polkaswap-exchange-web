@@ -26,8 +26,8 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => walletStoreMock,
 }));
 
-vi.mock('@/utils/legacy-store', () => ({
-  requireLegacyStore: () => ({
+vi.mock('@/utils/app-store', () => ({
+  requireAppStore: () => ({
     getters: {
       bridge: {
         networkHistoryId: 'kusama',

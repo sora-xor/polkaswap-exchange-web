@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { Options, mixins } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
 import { api } from '../../api';
 import AssetList from '../AssetList.vue';
@@ -46,45 +46,47 @@ import AddAssetDetailsCard from './AddAssetDetailsCard.vue';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
-@Options({
+export default defineComponent({
   components: {
     AssetList,
     SearchInput,
     AddAssetDetailsCard,
   },
-})
-export default class AddAssetNFT extends mixins(AddAssetMixin) {
-  private get notAddedNftAssets(): Array<Asset> {
-    return this.assets.filter((asset) => !(asset.address in this.accountAssetsAddressTable) && api.assets.isNft(asset));
-  }
-
-  get foundAssets(): Array<Asset> {
-    if (!this.searchValue) return this.notAddedNftAssets;
-
-    return this.getSoughtAssets(this.notAddedNftAssets);
-  }
-
-  get assetIsAlreadyAdded(): boolean {
-    if (!this.searchValue) return false;
-
-    return this.accountAssets
-      .filter((asset) => api.assets.isNft(asset))
-      .some(
-        ({ name = '', symbol = '', address = '' }) =>
-          address.toLowerCase() === this.searchValue ||
-          symbol.toLowerCase() === this.searchValue ||
-          name.toLowerCase() === this.searchValue
+  mixins: [AddAssetMixin],
+  emits: ['change-visibility'],
+  computed: {
+    notAddedNftAssets(this: any): Asset[] {
+      return this.assets.filter(
+        (asset: Asset) => !(asset.address in this.accountAssetsAddressTable) && api.assets.isNft(asset)
       );
-  }
+    },
+    foundAssets(this: any): Asset[] {
+      if (!this.searchValue) return this.notAddedNftAssets;
 
-  get showAddButton(): boolean {
-    return this.selectedAssets.length > 0;
-  }
+      return this.getSoughtAssets(this.notAddedNftAssets);
+    },
+    assetIsAlreadyAdded(this: any): boolean {
+      if (!this.searchValue) return false;
 
-  handleAdd() {
-    this.$emit('change-visibility');
-  }
-}
+      return this.accountAssets
+        .filter((asset: Asset) => api.assets.isNft(asset))
+        .some(
+          ({ name = '', symbol = '', address = '' }: Asset) =>
+            address.toLowerCase() === this.searchValue ||
+            symbol.toLowerCase() === this.searchValue ||
+            name.toLowerCase() === this.searchValue
+        );
+    },
+    showAddButton(this: any): boolean {
+      return this.selectedAssets.length > 0;
+    },
+  },
+  methods: {
+    handleAdd(this: any): void {
+      this.$emit('change-visibility');
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">

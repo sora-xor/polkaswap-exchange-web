@@ -219,6 +219,7 @@
 <script setup lang="ts">
 import { components as walletComponents } from '@wallet';
 import { computed, ref, watch } from 'vue';
+
 import { useTranslation } from '@/composables/useTranslation';
 
 import { useInternalConnect } from '@/composables/useInternalConnect';

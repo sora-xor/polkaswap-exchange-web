@@ -50,69 +50,67 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options, Prop } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
+import { mapState } from 'vuex';
 
 import { FontSizeRate, FontWeightRate, HiddenValue } from '../consts';
-import { state } from '../store/decorators';
 
 import FormattedAmount from './FormattedAmount.vue';
 
-@Options({
+export default defineComponent({
   components: { FormattedAmount },
-})
-export default class InfoLine extends Vue {
-  readonly HiddenValue = HiddenValue;
+  props: {
+    label: { default: '', type: String },
+    labelTooltip: { default: '', type: String },
+    value: { default: '', type: [String, Number] },
+    assetSymbol: { default: '', type: String },
+    isFormatted: { default: false, type: Boolean },
+    fiatValue: { default: '', type: String },
+    valueTooltip: { default: '', type: String },
+    /**
+     * Define directly that this field displays value which can be hidden by hide balances button.
+     */
+    valueCanBeHidden: { default: false, type: Boolean },
+  },
+  data() {
+    return {
+      HiddenValue,
+    };
+  },
+  computed: {
+    ...mapState('wallet/settings', ['shouldBalanceBeHidden']),
+    normalizedValue(this: any): string {
+      if (this.value === null || this.value === undefined) {
+        return '';
+      }
 
-  @Prop({ default: '', type: String }) readonly label!: string;
-  @Prop({ default: '', type: String }) readonly labelTooltip!: string;
-  @Prop({ default: '', type: [String, Number] }) readonly value!: string | number;
-  @Prop({ default: '', type: String }) readonly assetSymbol!: string;
-  @Prop({ default: false, type: Boolean }) readonly isFormatted!: boolean;
-  @Prop({ default: '', type: String }) readonly fiatValue!: string;
-  @Prop({ default: '', type: String }) readonly valueTooltip!: string;
-  /**
-   * Define directly that this field displays value which can be hidden by hide balances button.
-   */
-  @Prop({ default: false, type: Boolean }) readonly valueCanBeHidden!: boolean;
+      if (typeof this.value === 'string') {
+        return this.value;
+      }
 
-  @state.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
+      return String(this.value);
+    },
+    hasInvalidValue(this: any): boolean {
+      return ['NaN', 'Infinity', '-Infinity'].includes(this.normalizedValue);
+    },
+    isValueExists(this: any): boolean {
+      if (this.hasInvalidValue) {
+        return false;
+      }
 
-  get normalizedValue(): string {
-    if (this.value === null || this.value === undefined) {
-      return '';
-    }
-
-    if (typeof this.value === 'string') {
-      return this.value;
-    }
-
-    return String(this.value);
-  }
-
-  get hasInvalidValue(): boolean {
-    return ['NaN', 'Infinity', '-Infinity'].includes(this.normalizedValue);
-  }
-
-  get isValueExists(): boolean {
-    if (this.hasInvalidValue) {
-      return false;
-    }
-
-    return this.normalizedValue.trim().length > 0;
-  }
-
-  get formattedFontSize(): Nullable<FontSizeRate> {
-    return this.isFormatted ? FontSizeRate.MEDIUM : null;
-  }
-
-  get formattedFontWeight(): Nullable<FontWeightRate> {
-    return this.isFormatted ? FontWeightRate.SMALL : null;
-  }
-
-  get tooltipOrTemplate(): string {
-    return this.valueTooltip ? 's-tooltip' : 'span';
-  }
-}
+      return this.normalizedValue.trim().length > 0;
+    },
+    formattedFontSize(this: any): Nullable<FontSizeRate> {
+      return this.isFormatted ? FontSizeRate.MEDIUM : null;
+    },
+    formattedFontWeight(this: any): Nullable<FontWeightRate> {
+      return this.isFormatted ? FontWeightRate.SMALL : null;
+    },
+    tooltipOrTemplate(this: any): string {
+      return this.valueTooltip ? 's-tooltip' : 'span';
+    },
+  },
+});
 </script>
 
 <style lang="scss">

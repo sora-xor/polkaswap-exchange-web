@@ -1,4 +1,4 @@
-import { defineMutations } from 'direct-vuex';
+import { defineMutations } from '@/store/module-helpers';
 
 import type { PoolState } from './types';
 import type { AccountLockedPool } from '@sora-substrate/sdk/build/ceresLiquidityLocker/types';

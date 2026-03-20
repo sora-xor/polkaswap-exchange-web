@@ -7,32 +7,49 @@
 </template>
 
 <script lang="ts">
-import { Model, Options, mixins } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
 import InputFocusMixin from '../mixins/InputFocusMixin';
 import TranslationMixin from '../mixins/TranslationMixin';
 
-@Options({ inheritAttrs: false })
-export default class PasswordInput extends mixins(InputFocusMixin, TranslationMixin) {
-  @Model('modelValue', { type: String })
-  query!: string;
-
-  hidden = true;
-
-  get icon(): string {
-    return this.hidden ? 'basic-eye-no-24' : 'basic-filterlist-24';
-  }
-
-  get type(): string {
-    return this.hidden ? 'password' : 'text';
-  }
-
-  togglePasswordVisibility(): void {
-    this.hidden = !this.hidden;
-  }
-
-  reset(): void {
-    this.hidden = true;
-  }
-}
+export default defineComponent({
+  inheritAttrs: false,
+  mixins: [InputFocusMixin, TranslationMixin],
+  props: {
+    modelValue: {
+      type: String,
+      default: '',
+    },
+  },
+  emits: ['update:modelValue'],
+  data() {
+    return {
+      hidden: true,
+    };
+  },
+  computed: {
+    query: {
+      get(this: any): string {
+        return this.modelValue;
+      },
+      set(this: any, value: string): void {
+        this.$emit('update:modelValue', value);
+      },
+    },
+    icon(this: any): string {
+      return this.hidden ? 'basic-eye-no-24' : 'basic-filterlist-24';
+    },
+    type(this: any): string {
+      return this.hidden ? 'password' : 'text';
+    },
+  },
+  methods: {
+    togglePasswordVisibility(this: any): void {
+      this.hidden = !this.hidden;
+    },
+    reset(this: any): void {
+      this.hidden = true;
+    },
+  },
+});
 </script>

@@ -31,7 +31,11 @@ export function useDialogVisibility(propVisible: Ref<boolean>, options: UseDialo
 
   watch(isVisible, (value, oldValue) => {
     if (value === oldValue) return;
-    emit?.(value);
+    if (emit) {
+      emit(value);
+    } else if (propVisible.value !== value) {
+      propVisible.value = value;
+    }
   });
 
   const setVisible = (value: boolean) => {
