@@ -11,12 +11,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import { components, WALLET_CONSTS, WALLET_TYPES } from '@wallet';
+import { components } from '@/shims/wallet-components';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
+import { ConnectionStatus, type IndexerState } from '@/shims/wallet-common-types';
+import { IndexerType, type SoraNetwork } from '@/shims/wallet-consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
 import { useSettingsStore } from '@/stores/settings';
 import type { Indexer } from '@/types/indexers';
 import type { Nullable } from '@/types/common';
@@ -29,8 +30,6 @@ const SelectIndexer = lazyComponent(Components.SelectIndexer);
 
 const { t } = useTranslation();
 const settingsStore = useSettingsStore();
-
-const walletSettingsState = computed(() => (store.state.wallet?.settings ?? {}) as Record<string, unknown>);
 const visibility = computed({
   get: () => Boolean(settingsStore.selectIndexerDialogVisibility),
   set: (flag: boolean) => {
@@ -38,35 +37,27 @@ const visibility = computed({
   },
 });
 
-const soraNetwork = computed<Nullable<WALLET_CONSTS.SoraNetwork>>(
-  () => walletSettingsState.value.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>
-);
+const soraNetwork = computed<Nullable<SoraNetwork>>(() => settingsStore.soraNetwork);
 
 const indexers = computed<Indexer[]>(() => {
-  const indexersData = walletSettingsState.value.indexers as
-    | Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>
-    | undefined;
+  const indexersData = settingsStore.indexers as Record<IndexerType, IndexerState>;
 
-  return Object.values(WALLET_CONSTS.IndexerType).map((type) => {
+  return Object.values(IndexerType).map((type) => {
     const data = indexersData?.[type] ?? {};
     return {
       name: capitalize(type),
       type,
       endpoint: data.endpoint ?? '',
-      online: data.status === WALLET_TYPES.ConnectionStatus.Available,
+      online: data.status === ConnectionStatus.Available,
     };
   });
 });
 
-const selectedIndexerType = computed<WALLET_CONSTS.IndexerType>({
-  get: () => (walletSettingsState.value.indexerType as WALLET_CONSTS.IndexerType) ?? '',
-  set: async (type: WALLET_CONSTS.IndexerType) => {
-    if (!type || type === walletSettingsState.value.indexerType) return;
-
-    const selectIndexer = store.dispatch?.wallet?.settings?.selectIndexer;
-    if (typeof selectIndexer === 'function') {
-      await selectIndexer(type);
-    }
+const selectedIndexerType = computed<IndexerType>({
+  get: () => settingsStore.indexerType ?? '',
+  set: async (type: IndexerType) => {
+    if (!type || type === settingsStore.indexerType) return;
+    await settingsStore.selectIndexer(type);
   },
 });
 </script>

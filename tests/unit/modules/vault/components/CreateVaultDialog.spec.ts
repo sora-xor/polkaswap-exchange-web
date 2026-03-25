@@ -114,69 +114,63 @@ vi.mock('@/components/shared/Settings/SlippageTolerance.vue', () => ({
   default: SlippageToleranceStub,
 }));
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/settings', () => ({
   __esModule: true,
-  default: {
-    state: {
-      settings: {
-        get percentFormat() {
-          return storeState.percentFormat;
-        },
-        get slippageTolerance() {
-          return storeState.slippageTolerance;
-        },
-      },
-      wallet: {
-        settings: {
-          get networkFees() {
-            return storeState.networkFees;
-          },
-          get shouldBalanceBeHidden() {
-            return storeState.shouldBalanceBeHidden;
-          },
-        },
-      },
-      vault: {
-        get collaterals() {
-          return storeState.collaterals;
-        },
-      },
+  useSettingsStore: () => ({
+    get percentFormat() {
+      return storeState.percentFormat;
     },
-    getters: {
-      assets: {
-        get xor() {
-          return storeState.xor;
-        },
-      },
-      wallet: {
-        account: {
-          get isLoggedIn() {
-            return storeState.isLoggedIn;
-          },
-        },
-      },
-      vault: {
-        get debtToken() {
-          return storeState.debtToken;
-        },
-        get collateralToken() {
-          return storeState.collateralToken;
-        },
-        get averageCollateralPrice() {
-          return storeState.averageCollateralPrice;
-        },
-        get getBorrowTax() {
-          return () => storeState.borrowTax;
-        },
-      },
+    get slippageTolerance() {
+      return storeState.slippageTolerance;
     },
-    dispatch: {
-      vault: {
-        setCollateralTokenAddress: (...args: unknown[]) => setCollateralAddressMock(...args),
-        setDebtTokenAddress: (...args: unknown[]) => setDebtAddressMock(...args),
-      },
+  }),
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  __esModule: true,
+  useWalletStore: () => ({
+    get networkFees() {
+      return storeState.networkFees;
     },
-  },
+    get shouldBalanceBeHidden() {
+      return storeState.shouldBalanceBeHidden;
+    },
+    get isLoggedIn() {
+      return storeState.isLoggedIn;
+    },
+  }),
+}));
+
+vi.mock('@/stores/assets', () => ({
+  __esModule: true,
+  useAssetsStore: () => ({
+    get xor() {
+      return storeState.xor;
+    },
+  }),
+}));
+
+vi.mock('@/stores/vault', () => ({
+  __esModule: true,
+  useVaultStore: () => ({
+    get collaterals() {
+      return storeState.collaterals;
+    },
+    get averageCollateralPrice() {
+      return storeState.averageCollateralPrice;
+    },
+    get debtToken() {
+      return storeState.debtToken;
+    },
+    get collateralToken() {
+      return storeState.collateralToken;
+    },
+    get getBorrowTax() {
+      return () => storeState.borrowTax;
+    },
+    setCollateralTokenAddress: (...args: unknown[]) => setCollateralAddressMock(...args),
+    setDebtTokenAddress: (...args: unknown[]) => setDebtAddressMock(...args),
+  }),
 }));
 
 vi.mock('@/utils', () => ({

@@ -73,7 +73,7 @@
 <script setup lang="ts">
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';

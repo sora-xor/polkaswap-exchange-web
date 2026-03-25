@@ -1,12 +1,12 @@
 import { createAsyncComponent, type AsyncComponentFactory } from '@/utils/asyncComponent';
 
-type WalletModule = typeof import('@wallet/internal');
+type WalletModule = typeof import('@/shims/wallet');
 
 let walletModulePromise: Promise<WalletModule> | null = null;
 
 export const loadWalletModule = () => {
   if (!walletModulePromise) {
-    walletModulePromise = import('@wallet/internal');
+    walletModulePromise = import('@/shims/wallet');
   }
 
   return walletModulePromise;

@@ -1,14 +1,14 @@
 import { defineComponent } from 'vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
 
 import { useRouterStore } from '@/stores/router';
+import { useWalletStore } from '@/stores/wallet';
 
 import { RouteNames } from '../../consts';
 
 import LoadingMixin from './LoadingMixin';
 import NotificationMixin from './NotificationMixin';
 
-import type { Route } from '../../store/router/types';
+import type { Route } from '@/stores/router/types';
 import type { AccountAssetsTable } from '../../types/common';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -28,14 +28,23 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/account', ['assets', 'accountAssets']),
-    ...mapGetters('wallet/account', ['accountAssetsAddressTable']),
+    assets(this: any) {
+      return useWalletStore(this.$pinia).assets;
+    },
+    accountAssets(this: any) {
+      return useWalletStore(this.$pinia).accountAssets;
+    },
+    accountAssetsAddressTable(this: any) {
+      return useWalletStore(this.$pinia).accountAssetsAddressTable;
+    },
     searchValue(this: any): string {
       return this.search ? this.search.trim().toLowerCase() : '';
     },
   },
   methods: {
-    ...mapActions('wallet/account', ['addAsset']),
+    addAsset(this: any, address: string) {
+      return useWalletStore(this.$pinia).addAsset(address);
+    },
     navigate(this: any, options: Route): void {
       useRouterStore((this as any).$pinia).navigate(options);
     },

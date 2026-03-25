@@ -1,40 +1,41 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { WALLET_CONSTS } from '@wallet';
+import { reactive } from 'vue';
 
-const legacyStoreMock = vi.fn();
+const walletStoreMock = reactive({
+  soraNetwork: null as string | null,
+  shouldBalanceBeHidden: false,
+});
 
-vi.mock('@/utils/app-store', () => ({
-  requireAppStore: () => legacyStoreMock(),
+vi.mock('@/plugins/pinia', () => ({
+  __esModule: true,
+  default: {},
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => walletStoreMock,
 }));
 
 describe('waitForSoraNetworkFromEnv', () => {
   beforeEach(() => {
     vi.resetModules();
-    legacyStoreMock.mockReset();
+    walletStoreMock.soraNetwork = null;
   });
 
-  it('resolves to the network emitted by the watcher', async () => {
-    const unsubscribe = vi.fn();
-    const watch = vi.fn((getter, callback) => {
-      callback('Prod');
-      return unsubscribe;
-    });
-    legacyStoreMock.mockReturnValue({ original: { watch } });
-
+  it('resolves to the network emitted by the wallet facade', async () => {
     const { waitForSoraNetworkFromEnv } = await import('@/utils');
 
-    await expect(waitForSoraNetworkFromEnv()).resolves.toBe('Prod');
-    expect(watch).toHaveBeenCalled();
-    expect(unsubscribe).toHaveBeenCalled();
+    const waitPromise = waitForSoraNetworkFromEnv();
+    walletStoreMock.soraNetwork = 'Prod';
+
+    await expect(waitPromise).resolves.toBe('Prod');
   });
 
-  it('falls back to Prod when watcher is unavailable', async () => {
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    legacyStoreMock.mockReturnValue({});
+  it('returns the current network immediately when it is already available', async () => {
+    walletStoreMock.soraNetwork = WALLET_CONSTS.SoraNetwork.Prod;
 
     const { waitForSoraNetworkFromEnv } = await import('@/utils');
 
     await expect(waitForSoraNetworkFromEnv()).resolves.toBe(WALLET_CONSTS.SoraNetwork.Prod);
-    warnSpy.mockRestore();
   });
 });

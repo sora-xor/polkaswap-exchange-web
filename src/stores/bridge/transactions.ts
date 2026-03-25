@@ -3,10 +3,11 @@ import { defineStore } from 'pinia';
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
+import { useBridgeStore } from '@/stores/bridge';
 import type { Nullable } from '@/types/common';
 import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 
-import { enterLegacySync, leaveLegacySync } from './sync';
+import { enterLegacySync, isLegacySyncing, leaveLegacySync } from './sync';
 
 type FlagRecord = Record<string, boolean>;
 
@@ -75,7 +76,14 @@ export const useBridgeTransactionsStore = defineStore('bridgeTransactions', {
       }
     },
     setNotificationData(tx?: Nullable<IBridgeTransaction>): void {
-      this.notificationData = tx ?? null;
+      const nextTx = tx ?? null;
+      this.notificationData = nextTx;
+
+      if (isLegacySyncing()) {
+        return;
+      }
+
+      useBridgeStore().setNotificationData(nextTx);
     },
     syncSignDialogVisibilityFromLegacy(visible: boolean): void {
       enterLegacySync();
@@ -84,6 +92,15 @@ export const useBridgeTransactionsStore = defineStore('bridgeTransactions', {
       } finally {
         leaveLegacySync();
       }
+    },
+    setSignTxDialogVisibility(visible: boolean): void {
+      this.isSignTxDialogVisible = visible;
+
+      if (isLegacySyncing()) {
+        return;
+      }
+
+      useBridgeStore().setSignTxDialogVisibility(visible);
     },
     syncNetworkHistoryToggle(networkId: BridgeNetworkId, loading: boolean): void {
       enterLegacySync();

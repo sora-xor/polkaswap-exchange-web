@@ -1,17 +1,16 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer } from '@wallet';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
-import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
-import type { SubqueryPoolXYKEntity, SubquerySubscriptionPayload } from '@wallet/lib/services/indexer/subquery/types';
-import type { SubsquidPoolXYKEntity } from '@wallet/lib/services/indexer/subsquid/types';
+import type { SubqueryPoolXYKEntity, SubquerySubscriptionPayload } from '@/shims/wallet-indexer-subquery-types';
+import type { SubsquidPoolXYKEntity } from '@/shims/wallet-indexer-subsquid-types';
 import type {
   ConnectionQueryResponse,
   PoolApyObject,
   SubscriptionPayload,
   UpdatesStream,
-} from '@wallet/lib/services/indexer/types';
+} from '@/shims/wallet-indexer-types';
 
 const SubqueryApyQuery = gql<ConnectionQueryResponse<SubqueryPoolXYKEntity>>`
   query SubqueryApyQuery($after: Cursor = "", $first: Int = 100) {

@@ -82,20 +82,6 @@ vi.mock('@/stores/assets', () => ({
   }),
 }));
 
-vi.mock('@/store', () => {
-  const state = {
-    wallet: {
-      settings: {
-        shouldBalanceBeHidden: false,
-      },
-    },
-  };
-  return {
-    __esModule: true,
-    default: { state },
-  };
-});
-
 const useDemeterPoolStatusMock = vi.fn();
 vi.mock('@/modules/staking/demeter/composables/useDemeterPoolStatus', () => ({
   useDemeterPoolStatus: (...args: unknown[]) => useDemeterPoolStatusMock(...args),

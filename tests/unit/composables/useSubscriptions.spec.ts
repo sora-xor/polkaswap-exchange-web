@@ -38,43 +38,6 @@ vi.mock('@/stores/wallet', () => ({
   }),
 }));
 
-vi.mock('@/store', async () => {
-  const { reactive } = await import('vue');
-
-  const state = reactive({
-    wallet: {
-      settings: {
-        isWalletLoaded: true,
-      },
-    },
-    settings: {
-      isWalletLoaded: true,
-    },
-  });
-
-  const getters = reactive({
-    wallet: {
-      account: {
-        get isLoggedIn() {
-          return login.value;
-        },
-      },
-    },
-    settings: {
-      get nodeIsConnected() {
-        return connection.value;
-      },
-    },
-  });
-
-  return {
-    default: {
-      state,
-      getters,
-    },
-  };
-});
-
 describe('useSubscriptions', () => {
   beforeEach(() => {
     setActivePinia(createPinia());

@@ -1,19 +1,22 @@
 import { FPNumber, CodecString } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, WALLET_CONSTS, getExplorerLinks } from '@wallet';
 import debounce from 'lodash/debounce';
+import { watch } from 'vue';
 
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
-import type { Currency, CurrencyFields } from '@wallet/lib/types/currency';
+import type { Currency, CurrencyFields } from '@/shims/wallet-currency-types';
 import type { Route, RouteLocationNormalizedLoaded } from 'vue-router';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
 
-import { app, TranslationConsts } from '@/consts';
+import { app, ExplorerType, type ExplorerLink, SoraNetwork, TranslationConsts } from '@/consts';
 import i18n from '@/lang';
+import { api } from '@/shims/wallet-api';
+import { getExplorerLinks } from '@/shims/wallet-util';
+import pinia from '@/plugins/pinia';
+import { useWalletStore } from '@/stores/wallet';
 import getScrollbarWidth from '@/utils/scrollbar-width';
-import { requireAppStore } from '@/utils/app-store';
 import {
   asZeroValue,
   getAssetBalance,
@@ -37,31 +40,24 @@ export async function waitUntil(condition: () => boolean): Promise<void> {
   await waitUntil(condition);
 }
 
-export async function waitForSoraNetworkFromEnv(): Promise<WALLET_CONSTS.SoraNetwork> {
-  const legacyStore = requireAppStore() as any;
-  const watch = legacyStore?.original?.watch;
+export async function waitForSoraNetworkFromEnv(): Promise<SoraNetwork> {
+  const walletStore = useWalletStore(pinia);
 
-  if (typeof watch !== 'function') {
-    console.warn('[waitForSoraNetworkFromEnv] Legacy store not ready, returning default network');
-    return WALLET_CONSTS.SoraNetwork.Prod;
+  if (walletStore.soraNetwork) {
+    return walletStore.soraNetwork as SoraNetwork;
   }
 
-  return new Promise<WALLET_CONSTS.SoraNetwork>((resolve) => {
-    let unsubscribe: VoidFunction | undefined;
+  return new Promise<SoraNetwork>((resolve) => {
     const stop = watch(
-      (state: any) => state?.wallet?.settings?.soraNetwork,
+      () => walletStore.soraNetwork,
       (value) => {
         if (value) {
-          if (unsubscribe) {
-            unsubscribe();
-          } else {
-            queueMicrotask(() => unsubscribe?.());
-          }
-          resolve(value);
+          stop();
+          resolve(value as SoraNetwork);
         }
-      }
+      },
+      { flush: 'sync' }
     );
-    unsubscribe = typeof stop === 'function' ? stop : undefined;
   });
 }
 
@@ -90,10 +86,9 @@ export const isMaxButtonAvailable = (
   xorAsset: AccountAsset | RegisteredAccountAsset,
   isXorOutputSwap = false
 ): boolean => {
-  const legacyStore = requireAppStore() as any;
-  const shouldHideBalance = legacyStore?.state?.wallet?.settings?.shouldBalanceBeHidden;
+  const walletStore = useWalletStore(pinia);
 
-  if (shouldHideBalance) {
+  if (walletStore.shouldBalanceBeHidden) {
     return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
   }
 
@@ -414,7 +409,7 @@ const getPolkadotTxLink = (baseUrl: string, txId?: string, blockId?: number | st
 };
 
 export const getSubstrateExplorerLinks = (
-  baseLinks: WALLET_CONSTS.ExplorerLink[],
+  baseLinks: ExplorerLink[],
   isAccount = false,
   id?: string, // tx hash or account address
   blockId?: number | string,
@@ -424,26 +419,23 @@ export const getSubstrateExplorerLinks = (
 
   if (isAccount) {
     return baseLinks
-      .filter(({ type }) => type !== WALLET_CONSTS.ExplorerType.Polkadot)
+      .filter(({ type }) => type !== ExplorerType.Polkadot)
       .map(({ type, value }) => ({
         type,
-        value:
-          type === WALLET_CONSTS.ExplorerType.Sorametrics
-            ? getSorametricsAccountLink(value, id)
-            : `${value}/account/${id}`,
+        value: type === ExplorerType.Sorametrics ? getSorametricsAccountLink(value, id) : `${value}/account/${id}`,
       }))
       .filter((value) => !!value.value);
   }
 
   return baseLinks
     .map(({ type, value }) => {
-      const link = { type } as WALLET_CONSTS.ExplorerLink;
+      const link = { type } as ExplorerLink;
 
-      if (type === WALLET_CONSTS.ExplorerType.Sorametrics) {
+      if (type === ExplorerType.Sorametrics) {
         link.value = getSorametricsTxLink(value, id, blockId, eventIndex);
-      } else if (type === WALLET_CONSTS.ExplorerType.Subscan) {
+      } else if (type === ExplorerType.Subscan) {
         link.value = getSubscanTxLink(value, id, blockId, eventIndex);
-      } else if (type === WALLET_CONSTS.ExplorerType.Polkadot) {
+      } else if (type === ExplorerType.Polkadot) {
         link.value = getPolkadotTxLink(value, id, blockId, eventIndex);
       }
 
@@ -453,12 +445,12 @@ export const getSubstrateExplorerLinks = (
 };
 
 export const soraExplorerLinks = (
-  soraNetwork: Nullable<WALLET_CONSTS.SoraNetwork>,
+  soraNetwork: Nullable<SoraNetwork>,
   txValue?: string,
   blockId?: number | string,
   eventIndex?: number,
   isAccount = false
-): Array<WALLET_CONSTS.ExplorerLink> => {
+): Array<ExplorerLink> => {
   if (!soraNetwork) return [];
 
   return getSubstrateExplorerLinks(getExplorerLinks(soraNetwork), isAccount, txValue, blockId, eventIndex);

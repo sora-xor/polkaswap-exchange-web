@@ -1,12 +1,12 @@
 import { computed } from 'vue';
 
 import { useWalletConnect } from '@/composables/useWalletConnect';
-import store from '@/store';
+import pinia from '@/plugins/pinia';
 import { useWeb3Store } from '@/stores/web3';
 import type { AppEIPProvider } from '@/types/evm/provider';
 import type { NetworkData } from '@/types/bridge';
 import type { Nullable } from '@/types/common';
-import type { WALLET_TYPES } from '@wallet';
+import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
 
 /**
  * Aggregates web3 connection helpers (EVM + Substrate) and exposes a single
@@ -14,20 +14,18 @@ import type { WALLET_TYPES } from '@wallet';
  */
 export function useWeb3Connection() {
   const walletConnect = useWalletConnect();
-  const web3Store = useWeb3Store();
+  const web3Store = useWeb3Store(pinia);
 
-  const evmProviders = computed<AppEIPProvider[]>(() => store.getters.web3.appEvmProviders as AppEIPProvider[]);
+  const evmProviders = computed<AppEIPProvider[]>(() => web3Store.appEvmProviders as AppEIPProvider[]);
   const evmProvider = computed<Nullable<AppEIPProvider>>(() => web3Store.evmProvider as Nullable<AppEIPProvider>);
   const evmAddress = walletConnect.evmAddress;
   const evmProviderLoading = walletConnect.evmProviderLoading;
   const selectedNetwork = computed<Nullable<NetworkData>>(() => web3Store.selectedNetworkData as Nullable<NetworkData>);
   const networkType = walletConnect.networkType;
   const networkSelected = walletConnect.networkSelected;
-  const isValidNetwork = computed<boolean>(() => store.getters.web3.isValidNetwork as boolean);
+  const isValidNetwork = computed<boolean>(() => web3Store.isValidNetwork);
 
-  const subAccount = computed<WALLET_TYPES.PolkadotJsAccount>(
-    () => web3Store.subAccount as WALLET_TYPES.PolkadotJsAccount
-  );
+  const subAccount = computed<PolkadotJsAccount>(() => web3Store.subAccount as PolkadotJsAccount);
   const isEvmConnected = computed(() => Boolean(evmAddress.value));
   const isSubConnected = computed(() => Boolean(subAccount.value?.address));
   const isConnected = computed(() => isEvmConnected.value || isSubConnected.value);
@@ -52,10 +50,10 @@ export function useWeb3Connection() {
     disconnectSubWallet();
   };
 
-  const subscribeOnEvmProviders = () => store.dispatch.web3.subscribeOnEvmProviders();
+  const subscribeOnEvmProviders = () => web3Store.subscribeOnEvmProviders();
 
-  const openSelectProviderDialog = () => store.commit.web3.setSelectProviderDialogVisibility(true);
-  const openSelectNetworkDialog = () => store.commit.web3.setSelectNetworkDialogVisibility(true);
+  const openSelectProviderDialog = () => web3Store.setSelectProviderDialogVisibility(true);
+  const openSelectNetworkDialog = () => web3Store.setSelectNetworkDialogVisibility(true);
   const openSubAccountDialog = () => connectSubWallet();
 
   return {

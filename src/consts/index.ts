@@ -1,9 +1,12 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import {
+  FontSizeRate as WalletFontSizeRateEnum,
+  FontWeightRate as WalletFontWeightRateEnum,
+  HiddenValue as WalletHiddenValue,
   IndexerType as WalletIndexerEnum,
   LogoSize as WalletLogoSizeEnum,
   TranslationConsts as WalletTranslationConsts,
-} from '@wallet/src/consts';
+} from '@/shims/wallet-consts';
 import invert from 'lodash/fp/invert';
 
 import { DashboardPageNames } from '@/modules/dashboard/consts';
@@ -15,6 +18,7 @@ import pkg from '../../package.json';
 
 export {
   AddAssetTabs,
+  AppWallet,
   RouteNames,
   AccountActionTypes,
   PassphraseTimeout,
@@ -22,14 +26,19 @@ export {
   DefaultPassphraseTimeout,
   WalletFilteringOptions,
   type WalletAssetFilters,
+  type NetworkFeeWarningOptions,
   PaginationButton,
   SoraNetwork,
+  TokenTabs,
   HashType,
   ExplorerType,
   type ExplorerLink,
-} from '@wallet/src/consts';
+  MAX_ALERTS_NUMBER,
+  syntheticAssetRegexp,
+  kensetsuAssetRegexp,
+} from '@/shims/wallet-consts';
 
-import type { Alert } from '@wallet/lib/types/common';
+import type { Alert } from '@/shims/wallet-common-types';
 
 export const app = {
   version: pkg.version,
@@ -45,6 +54,9 @@ export const WalletPermissions = {
 
 export const IndexerType = WalletIndexerEnum;
 export const LogoSize = WalletLogoSizeEnum;
+export const FontSizeRate = WalletFontSizeRateEnum;
+export const FontWeightRate = WalletFontWeightRateEnum;
+export const HiddenValue = WalletHiddenValue;
 
 /**
  * `navigator.language` values, f.e. ('es', 'eu-ES')

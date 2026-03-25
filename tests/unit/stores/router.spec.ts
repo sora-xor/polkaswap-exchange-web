@@ -1,36 +1,15 @@
 import { createPinia, setActivePinia } from 'pinia';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { PageNames } from '@/consts';
-import { RouteNames as WalletRouteNames } from '@wallet/src/consts';
-import { setAppStoreOverride } from '@/utils/app-store';
+import { PageNames, RouteNames as WalletRouteNames } from '@/consts';
 
-vi.mock('@/store', () => {
-  const navigateMock = vi.fn();
-  const gettersMock = {
-    wallet: {
-      account: {
-        isLoggedIn: false,
-      },
-    },
-  };
+const walletStoreMock = vi.hoisted(() => ({
+  isLoggedIn: false,
+}));
 
-  return {
-    __esModule: true,
-    default: {
-      commit: {
-        wallet: {
-          router: {
-            navigate: navigateMock,
-          },
-        },
-      },
-      getters: gettersMock,
-    },
-    navigateMock,
-    gettersMock,
-  };
-});
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => walletStoreMock,
+}));
 
 const { localStorageMock } = vi.hoisted(() => {
   const storage = {
@@ -45,20 +24,16 @@ const { localStorageMock } = vi.hoisted(() => {
   return { localStorageMock: storage };
 });
 
-import store, { gettersMock, navigateMock } from '@/store';
 import { useRouterStore } from '@/stores/router';
 
 describe('router store', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     setActivePinia(createPinia());
-    navigateMock.mockClear();
     localStorageMock.getItem.mockClear();
     localStorageMock.setItem.mockClear();
     localStorageMock.removeItem.mockClear();
     localStorageMock.clear.mockClear();
-    gettersMock.wallet.account.isLoggedIn = false;
-    const legacyStore = (await import('@/store')).default;
-    setAppStoreOverride(legacyStore as any);
+    walletStoreMock.isLoggedIn = false;
   });
 
   afterAll(() => {
@@ -90,52 +65,46 @@ describe('router store', () => {
     expect(routerStore.currentParams).toEqual({});
   });
 
-  it('navigates while syncing legacy store', () => {
+  it('navigates within native Pinia router state', () => {
     const routerStore = useRouterStore();
 
     routerStore.navigate({ name: PageNames.Bridge, params: { foo: 'bar' } });
 
+    expect(routerStore.prev).toBeNull();
     expect(routerStore.current).toBe(PageNames.Bridge);
     expect(routerStore.currentParams).toEqual({ foo: 'bar' });
-    expect(store.commit.wallet.router.navigate).toHaveBeenCalledWith({
-      name: PageNames.Bridge,
-      params: { foo: 'bar' },
-    });
   });
 
   it('back navigates to previous wallet route when logged in', () => {
     const routerStore = useRouterStore();
     routerStore.setRoute({ current: WalletRouteNames.CreateToken, prev: WalletRouteNames.Wallet });
-    gettersMock.wallet.account.isLoggedIn = true;
-    navigateMock.mockClear();
+    walletStoreMock.isLoggedIn = true;
 
     routerStore.back();
 
     expect(routerStore.current).toBe(WalletRouteNames.Wallet);
-    expect(navigateMock).toHaveBeenCalledWith(expect.objectContaining({ name: WalletRouteNames.Wallet }));
+    expect(routerStore.prev).toBe(WalletRouteNames.CreateToken);
   });
 
   it('checkCurrentRoute redirects to connection when logged out', () => {
     const routerStore = useRouterStore();
     routerStore.setRoute({ current: WalletRouteNames.Wallet });
-    gettersMock.wallet.account.isLoggedIn = false;
-    navigateMock.mockClear();
+    walletStoreMock.isLoggedIn = false;
 
     routerStore.checkCurrentRoute();
 
     expect(routerStore.current).toBe(WalletRouteNames.WalletConnection);
-    expect(navigateMock).toHaveBeenCalledWith(expect.objectContaining({ name: WalletRouteNames.WalletConnection }));
+    expect(routerStore.prev).toBe(WalletRouteNames.Wallet);
   });
 
   it('checkCurrentRoute redirects to wallet when logged in from connection', () => {
     const routerStore = useRouterStore();
     routerStore.setRoute({ current: WalletRouteNames.WalletConnection });
-    gettersMock.wallet.account.isLoggedIn = true;
-    navigateMock.mockClear();
+    walletStoreMock.isLoggedIn = true;
 
     routerStore.checkCurrentRoute();
 
     expect(routerStore.current).toBe(WalletRouteNames.Wallet);
-    expect(navigateMock).toHaveBeenCalledWith(expect.objectContaining({ name: WalletRouteNames.Wallet }));
+    expect(routerStore.prev).toBe(WalletRouteNames.WalletConnection);
   });
 });

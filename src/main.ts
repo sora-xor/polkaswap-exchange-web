@@ -1,7 +1,6 @@
 import { createApp, type App as VueApp } from 'vue';
 
 import pinia from '@/plugins/pinia';
-import store from './store';
 import App from './App.vue';
 import i18n from './lang';
 import installPlugins from './plugins';
@@ -20,7 +19,6 @@ async function bootstrapApp(): Promise<VueApp> {
   const app = createApp(App);
 
   installVueErrorHandler(app);
-  app.use(store.original);
   app.use(pinia);
   app.use(router);
   app.use(i18n);

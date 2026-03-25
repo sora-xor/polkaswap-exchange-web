@@ -16,9 +16,9 @@
 <script lang="ts" setup>
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
+import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../../api';
-import store from '../../store';
 import DialogBase from '../DialogBase.vue';
 
 const props = withDefaults(defineProps<{}>(), {});
@@ -33,23 +33,18 @@ const visibleModel = defineModel<boolean>('visible', { default: false });
 const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
+const walletStore = useWalletStore();
 
-const isMST = () => store.state.wallet.account.isMST;
-const setIsMstAddressExist = store.commit.wallet.account.setIsMstAddressExist;
-const setIsMST = store.commit.wallet.account.setIsMST;
-const syncWithStorage = store.commit.wallet.account.syncWithStorage;
-const afterLogin = store.dispatch.wallet.account.afterLogin;
-
-const forgetMST = () => {
-  if (!isMST()) {
+const forgetMST = async () => {
+  if (!walletStore.isMstAccount) {
     api.mst.switchAccount(true);
   }
 
   api.mst.forgetMSTAccount();
-  setIsMstAddressExist(false);
-  setIsMST(false);
-  syncWithStorage();
-  afterLogin();
+  walletStore.setIsMstAddressExist(false);
+  walletStore.setIsMstAccount(false);
+  walletStore.syncAccountWithStorage();
+  await walletStore.afterLogin();
   closeDialog();
 };
 </script>

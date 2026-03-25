@@ -3,13 +3,15 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { createPinia, setActivePinia } from 'pinia';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { MarketAlgorithms } from '@/consts';
+import { useSettingsStore } from '@/stores/settings';
 import { useSwapStore } from '@/stores/swap';
+import { useWalletStore } from '@/stores/wallet';
 import { settingsStorage } from '@/utils/storage';
-import { setAppStoreOverride } from '@/utils/app-store';
 
 type SwapMathDeps = {
   store: ReturnType<typeof useSwapStore>;
-  rootStore: ReturnType<typeof createLegacyStoreMock>;
+  settingsStore: ReturnType<typeof useSettingsStore>;
 };
 
 vi.mock('@sora-substrate/sdk/build/dex/consts', () => ({
@@ -61,69 +63,6 @@ const { walletApiMock, walletSettingsStorageMock, walletStorageMock } = vi.hoist
   };
 });
 
-function createLegacyStoreMock() {
-  return {
-    state: {
-      settings: {
-        isWalletLoaded: true,
-        slippageTolerance: '0',
-      },
-      wallet: {
-        transactions: {
-          isConfirmTxDialogDisabled: false,
-        },
-        account: {
-          address: '',
-        },
-      },
-    },
-    getters: {
-      assets: {
-        assetDataByAddress: vi.fn(() => null),
-        xor: {},
-      },
-      settings: {
-        debugEnabled: false,
-        nodeIsConnected: true,
-        liquiditySource: null,
-      },
-      wallet: {
-        account: {
-          isLoggedIn: false,
-          accountAssetsAddressTable: {},
-        },
-      },
-    },
-    commit: {
-      wallet: {
-        transactions: {
-          addActiveTx: vi.fn(),
-          removeActiveTxs: vi.fn(),
-        },
-      },
-    },
-    dispatch: {
-      wallet: {
-        account: {
-          logout: vi.fn(),
-        },
-      },
-    },
-  };
-}
-
-const resetLegacyStoreMock = () => {
-  const next = createLegacyStoreMock();
-  legacyStoreMock.state = next.state;
-  legacyStoreMock.getters = next.getters;
-  legacyStoreMock.commit = next.commit;
-  legacyStoreMock.dispatch = next.dispatch;
-};
-
-const { legacyStoreMock } = vi.hoisted(() => ({
-  legacyStoreMock: createLegacyStoreMock(),
-}));
-
 vi.mock('@wallet', async () => {
   const walletStub = await vi.importActual<typeof import('@tests/stubs/@wallet')>('@tests/stubs/@wallet');
   return {
@@ -140,11 +79,6 @@ vi.mock('@wallet', async () => {
   };
 });
 
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: legacyStoreMock,
-}));
-
 describe('swap store', () => {
   beforeEach(async () => {
     setActivePinia(createPinia());
@@ -153,8 +87,14 @@ describe('swap store', () => {
     localStorageMock.setItem.mockClear();
     localStorageMock.removeItem.mockClear();
     localStorageMock.clear.mockClear();
-    resetLegacyStoreMock();
-    setAppStoreOverride(legacyStoreMock as any);
+    const settingsStore = useSettingsStore();
+    const walletStore = useWalletStore();
+    settingsStore.$reset();
+    settingsStore.marketAlgorithm = MarketAlgorithms.SMART;
+    settingsStore.slippageTolerance = '0';
+    walletStore.accountState.address = '';
+    walletStore.accountState.source = '';
+    walletStore.accountState.accountAssets = [];
   });
 
   afterAll(() => {
@@ -163,7 +103,7 @@ describe('swap store', () => {
 
   const setupSwapMath = async (): Promise<SwapMathDeps> => {
     const store = useSwapStore();
-    const rootStore = legacyStoreMock;
+    const settingsStore = useSettingsStore();
     const wallet = await import('@wallet');
     const divideAssets = vi.mocked(wallet.api.divideAssets);
     const priceImpactMock = vi.mocked(wallet.api.swap.getPriceImpact);
@@ -209,7 +149,7 @@ describe('swap store', () => {
       }
     );
 
-    return { store, rootStore };
+    return { store, settingsStore };
   };
 
   it('initializes with default state', () => {
@@ -265,7 +205,7 @@ describe('swap store', () => {
   });
 
   it('derives price, reversed price, price impact, and min/max received with FPNumber precision', async () => {
-    const { store, rootStore } = await setupSwapMath();
+    const { store, settingsStore } = await setupSwapMath();
 
     const tokenFrom = { address: 'AAA', decimals: 12 };
     const tokenTo = { address: 'BBB', decimals: 18 };
@@ -279,7 +219,7 @@ describe('swap store', () => {
     store.setAmountWithoutImpact('4.8');
     store.setExchangeB(false);
 
-    rootStore.state.settings.slippageTolerance = '0.01';
+    settingsStore.slippageTolerance = '0.01';
 
     const price = new FPNumber(store.price);
     const priceReversed = new FPNumber(store.priceReversed);
@@ -298,7 +238,7 @@ describe('swap store', () => {
   });
 
   it('maintains precision when swapping by output (exchange B) with heterogeneous decimals', async () => {
-    const { store, rootStore } = await setupSwapMath();
+    const { store, settingsStore } = await setupSwapMath();
 
     const tokenFrom = { address: 'CCC', decimals: 18 };
     const tokenTo = { address: 'DDD', decimals: 8 };
@@ -312,7 +252,7 @@ describe('swap store', () => {
     store.setToValue('0.12345678');
     store.setAmountWithoutImpact('0.11845678');
 
-    rootStore.state.settings.slippageTolerance = '0.005'; // 0.5%
+    settingsStore.slippageTolerance = '0.005'; // 0.5%
 
     const price = new FPNumber(store.price, tokenTo.decimals);
     const priceReversed = new FPNumber(store.priceReversed, tokenFrom.decimals);
@@ -329,7 +269,7 @@ describe('swap store', () => {
       .sub(new FPNumber('0.11845678', tokenTo.decimals))
       .div(new FPNumber('0.12345678', tokenTo.decimals));
     const expectedMinMax = new FPNumber('2.34567890123456789', tokenFrom.decimals).mul(
-      FPNumber.ONE.sub(new FPNumber(rootStore.state.settings.slippageTolerance))
+      FPNumber.ONE.sub(new FPNumber(settingsStore.slippageTolerance))
     );
 
     expect(price.eq(expectedPrice)).toBe(true);
@@ -341,10 +281,11 @@ describe('swap store', () => {
   it('skips balance subscriptions when wallet API is unavailable', async () => {
     const { store } = await setupSwapMath();
     const wallet = await import('@wallet');
-    const legacyStore = legacyStoreMock;
+    const walletStore = useWalletStore();
 
-    legacyStore.getters.wallet.account.isLoggedIn = true;
-    legacyStore.getters.wallet.account.accountAssetsAddressTable = {};
+    walletStore.accountState.address = '5Fswap';
+    walletStore.accountState.source = 'polkadot-js' as any;
+    walletStore.accountState.accountAssets = [];
 
     store.tokenFromCache = { address: '0xTOKEN' } as any;
 
@@ -361,6 +302,7 @@ describe('swap store', () => {
       wallet.api.assets = originalAssets;
     }
     store.resetSubscriptions();
-    legacyStore.getters.wallet.account.isLoggedIn = false;
+    walletStore.accountState.address = '';
+    walletStore.accountState.source = '';
   });
 });

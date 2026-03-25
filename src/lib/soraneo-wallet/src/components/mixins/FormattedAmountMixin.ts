@@ -1,7 +1,8 @@
 import { FPNumber, CodecString } from '@sora-substrate/sdk';
 import { BalanceType, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { defineComponent } from 'vue';
-import { mapState } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import { FontSizeRate, FontWeightRate } from '../../consts';
 
@@ -19,7 +20,9 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/account', ['fiatPriceObject']),
+    fiatPriceObject(this: any) {
+      return useWalletStore(this.$pinia).fiatPriceObject;
+    },
   },
   methods: {
     getAssetFiatPrice(this: any, asset: Asset | AccountAsset): Nullable<CodecString> {

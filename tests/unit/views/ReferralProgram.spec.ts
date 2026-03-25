@@ -18,68 +18,66 @@ const unsubscribeFromInvitedUsers = vi.fn();
 const resetReferrerSubscription = vi.fn();
 const setStorageReferrer = vi.fn();
 
-const storeStub = {
-  state: {
-    referrals: {
-      referralRewards: {
-        rewards: FPNumber.ZERO,
-        invitedUserRewards: {},
-      },
-      invitedUsers: ['addr-1', 'addr-2', 'addr-3'],
-      referrer: '',
-      isReferrerApproved: false,
-    },
-    settings: {
-      isTMA: false,
-      telegramBotUrl: null,
-    },
-    wallet: {
-      settings: {
-        networkFees: {
-          ReferralSetInvitedUser: '1000000000000000000',
-        },
-      },
-    },
+const referralsStoreMock = {
+  referralRewards: {
+    rewards: FPNumber.ZERO,
+    invitedUserRewards: {},
   },
-  getters: {
-    assets: {
-      xor: {
-        address: XOR.address,
-        symbol: XOR.symbol,
-        balance: {
-          bonded: '2000000000000000000',
-        },
-      },
-    },
-    wallet: {
-      account: {
-        account: {
-          address: '5mock-account',
-        },
-      },
-    },
+  invitedUsers: ['addr-1', 'addr-2', 'addr-3'],
+  referrer: '',
+  isReferrerApproved: false,
+  subscribeOnInvitedUsers,
+  getAccountReferralRewards,
+  getReferrer,
+  subscribeOnReferrer,
+  reset: resetReferrals,
+  unsubscribeFromInvitedUsers,
+  resetReferrerSubscription,
+  setStorageReferrer,
+};
+
+const settingsStoreMock = {
+  isTMA: false,
+  telegramBotUrl: null as string | null,
+};
+
+const walletStoreMock = {
+  account: {
+    address: '5mock-account',
   },
-  dispatch: {
-    referrals: {
-      subscribeOnInvitedUsers,
-      getAccountReferralRewards,
-      getReferrer,
-      subscribeOnReferrer,
-    },
+  networkFees: {
+    ReferralSetInvitedUser: '1000000000000000000',
   },
-  commit: {
-    referrals: {
-      reset: resetReferrals,
-      unsubscribeFromInvitedUsers,
-      resetReferrerSubscription,
-      setStorageReferrer,
+};
+
+const assetsStoreMock = {
+  xor: {
+    address: XOR.address,
+    symbol: XOR.symbol,
+    balance: {
+      bonded: '2000000000000000000',
     },
   },
 };
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/referrals', () => ({
   __esModule: true,
-  default: storeStub,
+  useReferralsStore: () => referralsStoreMock,
+}));
+
+vi.mock('@/stores/settings', () => ({
+  __esModule: true,
+  useSettingsStore: () => settingsStoreMock,
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  __esModule: true,
+  useWalletStore: () => walletStoreMock,
+}));
+
+vi.mock('@/stores/assets', () => ({
+  __esModule: true,
+  useAssetsStore: () => assetsStoreMock,
 }));
 
 vi.mock('@wallet', async () => {
@@ -273,15 +271,25 @@ describe('ReferralProgram.vue', () => {
     unsubscribeFromInvitedUsers.mockClear();
     resetReferrerSubscription.mockClear();
     setStorageReferrer.mockClear();
-    storeStub.state.referrals.referralRewards = {
+    referralsStoreMock.referralRewards = {
       rewards: FPNumber.ZERO,
       invitedUserRewards: {},
     };
-    storeStub.state.referrals.referrer = '';
-    storeStub.state.settings.isTMA = false;
-    storeStub.state.settings.telegramBotUrl = null;
-    storeStub.state.wallet.settings.networkFees = {
+    referralsStoreMock.invitedUsers = ['addr-1', 'addr-2', 'addr-3'];
+    referralsStoreMock.referrer = '';
+    referralsStoreMock.isReferrerApproved = false;
+    settingsStoreMock.isTMA = false;
+    settingsStoreMock.telegramBotUrl = null;
+    walletStoreMock.networkFees = {
       ReferralSetInvitedUser: '1000000000000000000',
+    };
+    walletStoreMock.account = { address: '5mock-account' };
+    assetsStoreMock.xor = {
+      address: XOR.address,
+      symbol: XOR.symbol,
+      balance: {
+        bonded: '2000000000000000000',
+      },
     };
   });
 

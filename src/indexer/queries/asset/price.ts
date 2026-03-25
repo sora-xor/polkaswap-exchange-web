@@ -1,7 +1,6 @@
-import { getCurrentIndexer } from '@wallet';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { retryOnEmptyResult } from '@/indexer/queries/retry';
-import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import type { OCLH, SnapshotItem } from '@/types/chart';
@@ -11,7 +10,7 @@ import type {
   ConnectionQueryResponse,
   ConnectionQueryResponseData,
   SnapshotTypes,
-} from '@wallet/lib/services/indexer/types';
+} from '@/shims/wallet-indexer-types';
 
 const preparePriceData = (item: AssetSnapshotEntity): OCLH => {
   const { open, close, low, high } = item.priceUSD;

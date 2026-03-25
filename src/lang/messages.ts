@@ -1,6 +1,6 @@
 import { RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
-import * as walletModule from '@wallet';
 
+import { en as walletEn } from '@/shims/wallet';
 import { Theme } from '@/consts/theme';
 
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
@@ -11,8 +11,6 @@ import { StakingPageNames } from '../modules/staking/consts';
 import { ValidatorsFilterType, ValidatorsListMode } from '../modules/staking/sora/consts';
 import { VaultPageNames } from '../modules/vault/consts';
 import { AlertFrequencyTabs, AlertTypeTabs } from '../types/tabs';
-
-const walletEn = (walletModule as { en?: Record<string, unknown> }).en ?? {};
 
 export default {
   // Wallet project keys

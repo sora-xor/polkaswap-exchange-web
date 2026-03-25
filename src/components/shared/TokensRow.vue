@@ -14,7 +14,9 @@
 </template>
 
 <script lang="ts" setup>
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
+
+import { LogoSize } from '@/consts';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -28,12 +30,12 @@ defineOptions({
 withDefaults(
   defineProps<{
     assets?: Array<Asset>;
-    size?: WALLET_CONSTS.LogoSize;
+    size?: LogoSize;
     border?: boolean;
   }>(),
   {
     assets: () => [],
-    size: WALLET_CONSTS.LogoSize.LARGE,
+    size: LogoSize.LARGE,
     border: false,
   }
 );

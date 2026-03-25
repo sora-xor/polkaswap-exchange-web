@@ -22,11 +22,8 @@ const closeVaultMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  const actual = await createWalletMock();
-  return {
-    ...actual,
+  return createWalletMock({
     components: {
-      ...actual.components,
       DialogBase: {
         name: 'DialogBaseStub',
         props: ['visible', 'title', 'tooltip'],
@@ -44,13 +41,11 @@ vi.mock('@wallet', async () => {
       },
     },
     api: {
-      ...actual.api,
       kensetsu: {
-        ...actual.api.kensetsu,
         closeVault: (...args: unknown[]) => closeVaultMock(...args),
       },
     },
-  };
+  });
 });
 
 vi.mock('@/modules/vault/components/CloseVaultDialog.vue?raw', () => ({}));
@@ -63,26 +58,22 @@ vi.mock('@/router', () => ({
   }),
 }));
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/wallet', () => ({
   __esModule: true,
-  default: {
-    state: {
-      wallet: {
-        settings: {
-          get networkFees() {
-            return storeState.networkFees;
-          },
-        },
-      },
+  useWalletStore: () => ({
+    get networkFees() {
+      return storeState.networkFees;
     },
-    getters: {
-      assets: {
-        get xor() {
-          return storeState.xor;
-        },
-      },
+  }),
+}));
+
+vi.mock('@/stores/assets', () => ({
+  __esModule: true,
+  useAssetsStore: () => ({
+    get xor() {
+      return storeState.xor;
     },
-  },
+  }),
 }));
 
 vi.mock('@/utils', () => ({

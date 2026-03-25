@@ -139,7 +139,7 @@
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
 import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
-import { WALLET_CONSTS, components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { SortDirection } from '@soramitsu-ui/ui/types';
 import { computed, onMounted, ref, toRef } from 'vue';
 
@@ -149,8 +149,9 @@ import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { fetchOrderBooks } from '@/indexer/queries/orderBook/orderBooks';
+import { FontWeightRate } from '@/shims/wallet-consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { OrderBookWithStats } from '@/types/orderBook';
 import { formatAmountWithSuffix, sortPools, showMostFittingValue } from '@/utils';
@@ -200,13 +201,13 @@ const { t, TranslationConsts } = useTranslation();
 const { getAssetFiatPrice } = useFormattedAmount();
 const parentLoading = toRef(props, 'parentLoading');
 const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
+const assetsStore = useAssetsStore();
 
-const FontWeightRate = WALLET_CONSTS.FontWeightRate;
 const loadingState = computed(() => parentLoading.value || loading.value);
 const orderBooks = ref<readonly OrderBookWithStats[]>([]);
 
-const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
-const whitelistAssets = computed(() => store.getters.assets.whitelistAssets as Array<Asset>);
+const getAsset = (addr?: string) => assetsStore.assetDataByAddress(addr) as Nullable<RegisteredAccountAsset>;
+const whitelistAssets = computed(() => assetsStore.whitelistAssets as Array<Asset>);
 const allowedAssets = computed<Array<Asset>>(() =>
   whitelistAssets.value.length ? whitelistAssets.value : [...KnownAssets]
 );

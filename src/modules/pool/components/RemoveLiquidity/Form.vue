@@ -119,7 +119,6 @@
 <script setup lang="ts">
 import { FPNumber, type CodecString, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { WALLET_CONSTS } from '@wallet';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
@@ -127,12 +126,14 @@ import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useNetworkFeeWarning } from '@/composables/useNetworkFeeWarning';
 import { useNetworkFeeDialog } from '@/composables/useNetworkFeeDialog';
-import { Components } from '@/consts';
+import { Components, type NetworkFeeWarningOptions } from '@/consts';
 import { PoolComponents } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
 import { lazyComponent } from '@/router';
-import store from '@/store';
-import { FocusedField } from '@/store/removeLiquidity/types';
+import { useAssetsStore } from '@/stores/assets';
+import { usePoolStore } from '@/stores/pool';
+import { RemoveLiquidityFocusedField as FocusedField } from '@/stores/pool/types';
+import { useWalletStore } from '@/stores/wallet';
 import { hasInsufficientXorForFee, formatDecimalPlaces } from '@/utils';
 
 import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -166,28 +167,31 @@ const {
   confirmNetworkFeeWariningDialog,
   waitOnFeeWarningConfirmation,
 } = useNetworkFeeDialog();
+const assetsStore = useAssetsStore();
+const poolStore = usePoolStore();
+const walletStore = useWalletStore();
 
-const removePart = computed(() => store.state.removeLiquidity.removePart as string);
-const liquidityAmount = computed(() => store.state.removeLiquidity.liquidityAmount as string);
-const firstTokenAmount = computed(() => store.state.removeLiquidity.firstTokenAmount as string);
-const secondTokenAmount = computed(() => store.state.removeLiquidity.secondTokenAmount as string);
-const focusedField = computed(() => store.state.removeLiquidity.focusedField as FocusedField | null);
+const removePart = computed(() => poolStore.removeLiquidityRemovePart);
+const liquidityAmount = computed(() => poolStore.removeLiquidityLiquidityAmount);
+const firstTokenAmount = computed(() => poolStore.removeLiquidityFirstTokenAmount);
+const secondTokenAmount = computed(() => poolStore.removeLiquiditySecondTokenAmount);
+const focusedField = computed(() => poolStore.removeLiquidityFocusedField as FocusedField | null);
 
-const liquidity = computed(() => store.getters.removeLiquidity.liquidity as Nullable<AccountLiquidity>);
-const liquidityBalanceFull = computed(() => store.getters.removeLiquidity.liquidityBalanceFull as FPNumber);
-const liquidityBalance = computed(() => store.getters.removeLiquidity.liquidityBalance as FPNumber);
-const demeterLockedBalance = computed(() => store.getters.removeLiquidity.demeterLockedBalance as FPNumber);
-const ceresLockedBalance = computed(() => store.getters.removeLiquidity.ceresLockedBalance as FPNumber);
-const firstToken = computed(() => store.getters.removeLiquidity.firstToken as Nullable<Asset>);
-const secondToken = computed(() => store.getters.removeLiquidity.secondToken as Nullable<Asset>);
-const firstTokenBalance = computed(() => store.getters.removeLiquidity.firstTokenBalance as FPNumber);
-const secondTokenBalance = computed(() => store.getters.removeLiquidity.secondTokenBalance as FPNumber);
-const shareOfPool = computed(() => store.getters.removeLiquidity.shareOfPool as string);
-const price = computed(() => store.getters.removeLiquidity.price as string);
-const priceReversed = computed(() => store.getters.removeLiquidity.priceReversed as string);
-const xor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
-const isConfirmTxDisabled = computed(() => store.state.wallet.transactions.isConfirmTxDialogDisabled as boolean);
-const shouldBalanceBeHidden = computed(() => Boolean(store.state.wallet.settings.shouldBalanceBeHidden));
+const liquidity = computed(() => poolStore.removeLiquidityLiquidity as Nullable<AccountLiquidity>);
+const liquidityBalanceFull = computed(() => poolStore.removeLiquidityLiquidityBalanceFull as FPNumber);
+const liquidityBalance = computed(() => poolStore.removeLiquidityLiquidityBalance as FPNumber);
+const demeterLockedBalance = computed(() => poolStore.removeLiquidityDemeterLockedBalance as FPNumber);
+const ceresLockedBalance = computed(() => poolStore.removeLiquidityCeresLockedBalance as FPNumber);
+const firstToken = computed(() => poolStore.removeLiquidityFirstToken as Nullable<Asset>);
+const secondToken = computed(() => poolStore.removeLiquiditySecondToken as Nullable<Asset>);
+const firstTokenBalance = computed(() => poolStore.removeLiquidityFirstTokenBalance as FPNumber);
+const secondTokenBalance = computed(() => poolStore.removeLiquiditySecondTokenBalance as FPNumber);
+const shareOfPool = computed(() => poolStore.removeLiquidityShareOfPool);
+const price = computed(() => poolStore.removeLiquidityPrice);
+const priceReversed = computed(() => poolStore.removeLiquidityPriceReversed);
+const xor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
+const isConfirmTxDisabled = computed(() => walletStore.isConfirmTxDialogDisabled as boolean);
+const shouldBalanceBeHidden = computed(() => Boolean(walletStore.shouldBalanceBeHidden));
 const combinedParentLoading = computed(() => Boolean(props.parentLoading) || loading.value);
 
 const confirmDialogVisible = ref(false);
@@ -258,27 +262,27 @@ const isMaxButtonAvailable = computed(() => {
 });
 
 const setFocusedField = (field: FocusedField) => {
-  store.commit.removeLiquidity.setFocusedField(field);
+  poolStore.setRemoveLiquidityFocusedField(field);
 };
 
 const resetFocusedField = () => {
-  store.commit.removeLiquidity.resetFocusedField();
+  poolStore.resetRemoveLiquidityFocusedField();
 };
 
 const setRemovePart = async (value: string) => {
-  await store.dispatch.removeLiquidity.setRemovePart(value);
+  await poolStore.setRemoveLiquidityPart(value);
 };
 
 const setFirstTokenAmount = async (value: string | number) => {
-  await store.dispatch.removeLiquidity.setFirstTokenAmount(String(value));
+  await poolStore.setRemoveLiquidityFirstTokenAmount(String(value));
 };
 
 const setSecondTokenAmount = async (value: string | number) => {
-  await store.dispatch.removeLiquidity.setSecondTokenAmount(String(value));
+  await poolStore.setRemoveLiquiditySecondTokenAmount(String(value));
 };
 
 const removeLiquidityAction = async () => {
-  await store.dispatch.removeLiquidity.removeLiquidity();
+  await poolStore.submitRemoveLiquidity();
 };
 
 const getTokenMaxAmount = (tokenBalance: FPNumber): string => tokenBalance.toString();
@@ -310,7 +314,7 @@ const confirmOrExecute = async (handler: () => Promise<void> | void) => {
 };
 
 const isXorSufficientForNextOperation = () => {
-  const params: WALLET_CONSTS.NetworkFeeWarningOptions = { type: Operation.RemoveLiquidity };
+  const params: NetworkFeeWarningOptions = { type: Operation.RemoveLiquidity };
 
   if (firstToken.value?.address === XOR.address) {
     params.amount = getFPNumber(firstTokenAmount.value || '0');

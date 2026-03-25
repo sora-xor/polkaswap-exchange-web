@@ -6,8 +6,8 @@ vi.mock('@wallet', () => ({
   },
 }));
 
-import { api } from '@wallet';
 import { isValidWalletAddress } from '@/adapters/wallet/addresses';
+import { api } from '@/shims/wallet-api';
 
 describe('wallet adapter - addresses', () => {
   it('returns false for empty input', () => {

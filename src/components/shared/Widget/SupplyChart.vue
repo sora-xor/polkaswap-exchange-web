@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';

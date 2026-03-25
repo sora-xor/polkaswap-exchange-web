@@ -4,7 +4,7 @@ import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { ZeroStringValue } from '@/consts';
-import store from '@/store';
+import { usePoolStore } from '@/stores/pool';
 import { useSettingsStore } from '@/stores/settings';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -14,17 +14,18 @@ import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
  */
 export function usePoolTokenPair() {
   const { formatCodecNumber, formatStringValue } = useFormattedAmount();
+  const poolStore = usePoolStore();
   const settingsStore = useSettingsStore();
 
   const networkFees = computed<NetworkFeesObject>(() => settingsStore.networkFees);
-  const firstTokenValue = computed(() => store.state.addLiquidity.firstTokenValue as string);
-  const secondTokenValue = computed(() => store.state.addLiquidity.secondTokenValue as string);
-  const isAvailable = computed(() => store.state.addLiquidity.isAvailable as boolean);
+  const firstTokenValue = computed(() => poolStore.addLiquidityFirstTokenValue);
+  const secondTokenValue = computed(() => poolStore.addLiquiditySecondTokenValue);
+  const isAvailable = computed(() => poolStore.addLiquidityIsAvailable);
 
-  const firstToken = computed(() => store.getters.addLiquidity.firstToken as Nullable<AccountAsset>);
-  const secondToken = computed(() => store.getters.addLiquidity.secondToken as Nullable<AccountAsset>);
-  const price = computed(() => store.getters.addLiquidity.price as string);
-  const priceReversed = computed(() => store.getters.addLiquidity.priceReversed as string);
+  const firstToken = computed(() => poolStore.addLiquidityFirstToken as Nullable<AccountAsset>);
+  const secondToken = computed(() => poolStore.addLiquiditySecondToken as Nullable<AccountAsset>);
+  const price = computed(() => poolStore.addLiquidityPrice);
+  const priceReversed = computed(() => poolStore.addLiquidityPriceReversed);
 
   const networkFee = computed<CodecString>(() => {
     const operation = isAvailable.value ? Operation.AddLiquidity : Operation.CreatePair;

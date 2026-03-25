@@ -62,7 +62,7 @@
 <script lang="ts" setup>
 import { FPNumber, Operation, type CodecString } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, ref, toRefs, watch, type PropType } from 'vue';
 
 import { Components, Links } from '@/consts';

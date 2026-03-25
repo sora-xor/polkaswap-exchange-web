@@ -58,8 +58,8 @@ export function useBridgeCore() {
   });
 
   const incomingMaxAmount = computed<Nullable<FPNumber>>(() => {
-    if (isSidechainAsset.value) return null;
-    return assetLockedBalance.value ?? null;
+    if (bridgeStore.isSidechainAsset) return null;
+    return bridgeStore.balances.assetLockedBalance ?? null;
   });
 
   const getTransferMaxAmount = (isOutgoing: boolean): Nullable<FPNumber> =>

@@ -18,16 +18,45 @@ const openTrade = async (page: Page): Promise<void> => {
   await expect.poll(async () => page.evaluate(() => window.location.hash)).toMatch(/^#\/trade(?:\/[^/]+\/[^/]+)?$/);
 };
 
-const enableNoirTheme = async (page: Page): Promise<void> => {
-  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
+const openKensetsu = async (page: Page): Promise<void> => {
+  await page.goto(`${ipfsEntryUrl}#/kensetsu`);
+  await ensureAppLoaded(page);
+  await expect.poll(async () => page.evaluate(() => window.location.hash)).toBe('#/kensetsu');
+};
 
-  await expect(settingsTrigger).toBeVisible();
-  await settingsTrigger.click();
-  await page.waitForSelector('[data-test-name="noir"]', { timeout: 10_000 });
-  await page.evaluate(() => {
-    const noirItem = document.querySelector('[data-test-name="noir"]') as HTMLElement | null;
-    noirItem?.click();
+const openPool = async (page: Page): Promise<void> => {
+  await page.goto(`${ipfsEntryUrl}#/pool`);
+  await ensureAppLoaded(page);
+  await expect.poll(async () => page.evaluate(() => window.location.hash)).toBe('#/pool');
+};
+
+const callWalletStore = async (page: Page, action: string, payload?: unknown): Promise<void> => {
+  await page.evaluate(
+    ({ action, payload }) => {
+      const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
+      const walletStore = pinia?._s?.get('wallet');
+
+      return walletStore?.[action]?.(payload);
+    },
+    { action, payload }
+  );
+};
+
+const enableNoirTheme = async (page: Page): Promise<void> => {
+  await page.evaluate(async () => {
+    const nextTheme = 'dark';
+    document.documentElement.setAttribute('design-system-theme', nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+    document.body?.setAttribute('design-system-theme', nextTheme);
+    if (document.body) {
+      document.body.dataset.theme = nextTheme;
+    }
+
+    const provider = document.querySelector('.sora-theme-provider');
+    provider?.setAttribute('design-system-theme', nextTheme);
+    provider?.setAttribute('data-theme', nextTheme);
   });
+  await callWalletStore(page, 'setTheme', 'dark');
   await expect
     .poll(async () => page.evaluate(() => document.documentElement.getAttribute('design-system-theme')))
     .toBe('dark');
@@ -726,6 +755,147 @@ test('keeps swap noir shadows and highlights aligned with production palette', a
   expect(styles?.tokenSelect.color).toBe('rgb(155, 111, 165)');
 });
 
+test('keeps Kensetsu noir search surface aligned with production palette', async ({ page }) => {
+  await openKensetsu(page);
+  await expect(page.locator('.collaterals-search .search.search-input').first()).toBeVisible({ timeout: 15_000 });
+  await enableNoirTheme(page);
+
+  const styles = await page.evaluate(() => {
+    const searchInput = document.querySelector('.collaterals-search .search.search-input') as HTMLElement | null;
+
+    if (!searchInput) {
+      return null;
+    }
+
+    const computed = getComputedStyle(searchInput);
+    const bounds = searchInput.getBoundingClientRect();
+
+    return {
+      boxShadow: computed.boxShadow,
+      backgroundColor: computed.backgroundColor,
+      borderColor: computed.borderColor,
+      color: computed.color,
+      height: Math.round(bounds.height),
+    };
+  });
+
+  expect(styles).not.toBeNull();
+  expect(styles?.boxShadow).toBe(
+    'rgba(255, 255, 255, 0.1) 1px 1px 2px 0px, rgba(255, 255, 255, 0.05) -5px -5px 5px 0px inset, rgba(41, 0, 71, 0.33) 1px 1px 10px 0px inset'
+  );
+  expect(styles?.backgroundColor).toBe('rgb(73, 32, 103)');
+  expect(styles?.borderColor).toBe('rgb(105, 61, 129)');
+  expect(styles?.color).toBe('rgb(240, 215, 220)');
+  expect(styles?.height).toBe(58);
+});
+
+test('keeps pool empty state aligned with production in light and noir modes', async ({ page }) => {
+  await openPool(page);
+  await expect(page.locator('.pool-info-container--empty').first()).toBeVisible({ timeout: 15_000 });
+
+  const readPoolEmptyState = async () => {
+    return page.evaluate(() => {
+      const wrapper = document.querySelector('.pool-wrapper') as HTMLElement | null;
+      const card = document.querySelector('.pool-info-container--empty') as HTMLElement | null;
+      const button = document.querySelector(
+        '.container.el-form--pool > button.el-button--primary'
+      ) as HTMLElement | null;
+
+      if (!wrapper || !card || !button) {
+        return null;
+      }
+
+      const cardStyles = getComputedStyle(card);
+      const buttonStyles = getComputedStyle(button);
+      const cardRect = card.getBoundingClientRect();
+      const buttonRect = button.getBoundingClientRect();
+
+      return {
+        hasLegacyWrapper: Boolean(document.querySelector('.pool-empty-state')),
+        wrapperText: wrapper.textContent?.replace(/\s+/g, ' ').trim() ?? '',
+        card: {
+          backgroundColor: cardStyles.backgroundColor,
+          color: cardStyles.color,
+          borderColor: cardStyles.borderColor,
+          borderRadius: cardStyles.borderRadius,
+          boxShadow: cardStyles.boxShadow,
+          padding: cardStyles.padding,
+          fontSize: cardStyles.fontSize,
+          lineHeight: cardStyles.lineHeight,
+          letterSpacing: cardStyles.letterSpacing,
+          width: Math.round(cardRect.width),
+          height: Math.round(cardRect.height),
+        },
+        button: {
+          text: button.textContent?.replace(/\s+/g, ' ').trim() ?? '',
+          backgroundColor: buttonStyles.backgroundColor,
+          color: buttonStyles.color,
+          borderColor: buttonStyles.borderColor,
+          borderRadius: buttonStyles.borderRadius,
+          boxShadow: buttonStyles.boxShadow,
+          padding: buttonStyles.padding,
+          fontSize: buttonStyles.fontSize,
+          lineHeight: buttonStyles.lineHeight,
+          letterSpacing: buttonStyles.letterSpacing,
+          width: Math.round(buttonRect.width),
+          height: Math.round(buttonRect.height),
+          marginTop: buttonStyles.marginTop,
+        },
+      };
+    });
+  };
+
+  const light = await readPoolEmptyState();
+
+  expect(light).not.toBeNull();
+  expect(light?.hasLegacyWrapper).toBe(false);
+  expect(light?.wrapperText).toBe('Connect an account to view your liquidity.');
+  expect(light?.card.backgroundColor).toBe('rgb(253, 247, 251)');
+  expect(light?.card.color).toBe('rgb(161, 154, 157)');
+  expect(light?.card.borderColor).toBe('rgb(161, 154, 157)');
+  expect(light?.card.borderRadius).toBe('24px');
+  expect(light?.card.boxShadow).toBe(
+    'rgb(255, 255, 255) -5px -5px 10px 0px, rgba(0, 0, 0, 0.1) 1px 1px 10px 0px, rgba(255, 255, 255, 0.8) 1px 1px 2px 0px inset'
+  );
+  expect(light?.card.padding).toBe('20px 24px');
+  expect(light?.card.fontSize).toBe('14px');
+  expect(light?.card.lineHeight).toBe('21px');
+  expect(light?.card.letterSpacing).toBe('-0.28px');
+  expect(light?.card.width).toBe(416);
+  expect(light?.card.height).toBe(61);
+  expect(light?.button.text).toBe('Connect account');
+  expect(light?.button.backgroundColor).toBe('rgb(248, 8, 123)');
+  expect(light?.button.color).toBe('rgb(255, 255, 255)');
+  expect(light?.button.borderColor).toBe('rgb(237, 228, 231)');
+  expect(light?.button.borderRadius).toBe('24px');
+  expect(light?.button.boxShadow).toBe('rgb(255, 255, 255) 1px 1px 5px 0px, rgb(255, 255, 255) -1px -1px 5px 0px');
+  expect(light?.button.padding).toBe('5px 13px');
+  expect(light?.button.fontSize).toBe('24px');
+  expect(light?.button.lineHeight).toBe('24px');
+  expect(light?.button.letterSpacing).toBe('-0.48px');
+  expect(light?.button.width).toBe(416);
+  expect(light?.button.height).toBe(42);
+  expect(light?.button.marginTop).toBe('16px');
+
+  await enableNoirTheme(page);
+
+  const dark = await readPoolEmptyState();
+
+  expect(dark).not.toBeNull();
+  expect(dark?.card.backgroundColor).toBe('rgb(89, 45, 113)');
+  expect(dark?.card.color).toBe('rgb(194, 154, 183)');
+  expect(dark?.card.borderColor).toBe('rgb(194, 154, 183)');
+  expect(dark?.card.boxShadow).toBe(
+    'rgba(155, 111, 165, 0.25) -5px -5px 10px 0px, rgb(73, 32, 103) 2px 2px 15px 0px, rgba(155, 111, 165, 0.25) 1px 1px 2px 0px inset'
+  );
+  expect(dark?.card.padding).toBe('20px 24px');
+  expect(dark?.card.fontSize).toBe('14px');
+  expect(dark?.card.lineHeight).toBe('21px');
+  expect(dark?.card.letterSpacing).toBe('-0.28px');
+  expect(dark?.card.width).toBe(416);
+  expect(dark?.card.height).toBe(61);
+});
+
 test('keeps swap hover highlights aligned with production in light and noir modes', async ({ page }) => {
   await openSwap(page);
 
@@ -815,6 +985,20 @@ test('keeps swap token icon sizing aligned with production contract', async ({ p
   expect(selectedTokenIcon?.height).toBe(24);
   expect(selectedTokenIcon?.lineHeight).toBe('24px');
   expect(selectedTokenIcon?.fontSize).toBe('18px');
+});
+
+test('keeps swap network fee details accessible before token selection', async ({ page }) => {
+  await openSwap(page);
+  await expect(page.locator('.transaction-details').first()).toBeVisible({ timeout: 15_000 });
+
+  const trigger = page.locator('.transaction-details').first();
+  await expect(trigger).toHaveClass(/disabled/);
+
+  await trigger.click();
+
+  const detailsPopper = page.locator('.transaction-details-popper');
+  await expect(detailsPopper).toHaveCount(1);
+  await expect(detailsPopper).toContainText('Liquidity Provider Fee');
 });
 
 test('keeps selected swap token colors aligned with production in light and noir modes', async ({ page }) => {

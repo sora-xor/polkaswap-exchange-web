@@ -2,6 +2,14 @@ import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { TransactionResponse } from 'ethers';
 
+export const BridgeTransactionSignDialogMode = {
+  Wallet: 'wallet',
+  Bridge: 'bridge',
+} as const;
+
+export type BridgeTransactionSignDialogMode =
+  (typeof BridgeTransactionSignDialogMode)[keyof typeof BridgeTransactionSignDialogMode];
+
 export type AddAsset = (address: string) => Promise<void>;
 export type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAsset>;
 export type GetActiveTransaction<T> = () => Nullable<T>;
@@ -11,7 +19,7 @@ export type GetBridgeHistoryInstance<T> = () => Promise<T>;
 export type GetTransaction<T> = (id: string) => T;
 export type UpdateTransaction<T> = (id: string, params: Partial<T>) => void;
 export type ShowNotification<T> = (tx: T) => void;
-export type BeforeTransactionSign = (...args: any[]) => Promise<void>;
+export type BeforeTransactionSign = (signerApi: unknown, dialogMode?: BridgeTransactionSignDialogMode) => Promise<void>;
 export type SignExternal = (id: string) => Promise<TransactionResponse>;
 export type TransactionBoundaryStates<T extends IBridgeTransaction> = Partial<
   Record<
@@ -62,7 +70,7 @@ export interface IBridgeReducer<T extends IBridgeTransaction> {
   handleState: (id: string, payload: TransactionHandlerPayload<T>) => Promise<void>;
   updateTransactionParams: (id: string, params: Partial<T>) => void;
   beforeSubmit: (id: string) => void;
-  beforeSign: (id: string, ...args: any[]) => void;
+  beforeSign: (id: string, ...args: Parameters<BeforeTransactionSign>) => void;
   onComplete: (id: string) => Promise<void>;
   waitForTransactionStatus: (id: string) => Promise<void>;
   waitForTransactionBlockId: (id: string) => Promise<void>;

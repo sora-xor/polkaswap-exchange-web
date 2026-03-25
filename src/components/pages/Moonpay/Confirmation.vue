@@ -24,10 +24,9 @@ import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 import { useMoonpayBridge } from '@/composables/useMoonpayBridge';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
-import type { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
-import store from '@/store';
-import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
+import { useMoonpayStore } from '@/stores/moonpay';
+import { useSettingsStore } from '@/stores/settings';
 
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -45,13 +44,15 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
+const moonpayStore = useMoonpayStore();
+const settingsStore = useSettingsStore();
 const { bridgeTransactionData, getAsset, startBridgeForMoonpayTransaction, setConfirmationVisibility } =
   useMoonpayBridge();
 
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
+const libraryTheme = computed(() => settingsStore.libraryTheme);
 
 const visibility = computed({
-  get: () => Boolean(store.state.moonpay.confirmationVisibility),
+  get: () => Boolean(moonpayStore.confirmationVisibility),
   set: (flag: boolean) => {
     setConfirmationVisibility(flag);
   },

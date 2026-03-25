@@ -73,7 +73,7 @@
 <script setup lang="ts">
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 

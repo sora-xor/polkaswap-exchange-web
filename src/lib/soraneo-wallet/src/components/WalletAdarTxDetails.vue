@@ -35,7 +35,8 @@
 <script lang="ts">
 import { Operation } from '@sora-substrate/sdk';
 import { defineComponent, type PropType } from 'vue';
-import { mapGetters } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import { formatAddress } from '@/util';
 
@@ -69,7 +70,9 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapGetters('wallet/account', ['account']),
+    account(this: any) {
+      return useWalletStore(this.$pinia).account;
+    },
     isAdarOperation(this: any): boolean {
       return this.transaction.type === Operation.SwapTransferBatch;
     },

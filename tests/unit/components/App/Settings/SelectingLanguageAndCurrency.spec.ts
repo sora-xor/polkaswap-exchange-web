@@ -42,8 +42,15 @@ const walletTypesStub = vi.hoisted(() => ({
 const connectionStub = vi.hoisted(() => ({
   nodeIsConnected: false,
 }));
+const walletStoreState = vi.hoisted(() => ({
+  currency: 'usd' as Currency,
+  currencies: [] as Array<{ key: string; symbol: string; name: string }>,
+  setFiatCurrency: vi.fn((currency?: Currency) => {
+    walletStoreState.currency = (currency ?? 'dai') as Currency;
+    settingsStorageStub.set('currency', walletStoreState.currency);
+  }),
+}));
 
-vi.mock('@/store', () => import('@stubs/store'));
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
@@ -93,6 +100,9 @@ vi.mock('@/utils', () => ({
   updateDocumentTitle: vi.fn(),
   updateFpNumberLocale: vi.fn(),
 }));
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => walletStoreState,
+}));
 
 let createPiniaInstance: (() => Pinia) | null = null;
 let setActivePiniaInstance: ((pinia: Pinia) => void) | null = null;
@@ -104,12 +114,12 @@ beforeAll(async () => {
 });
 
 import selectLanguageDialogSource from '@/components/App/Settings/Language/SelectLanguageDialog.vue?raw';
+import selectCurrencyDialogSource from '@/components/App/Settings/Currency/SelectCurrencyDialog.vue?raw';
 import SelectLanguageDialog from '@/components/App/Settings/Language/SelectLanguageDialog.vue';
 import SelectCurrencyDialog from '@/components/App/Settings/Currency/SelectCurrencyDialog.vue';
 import { useSettingsStore } from '@/stores/settings';
-import rootStore from '@/store';
 
-import type { Currency } from '@wallet/lib/types/currency';
+import type { Currency } from '@/lib/soraneo-wallet/src/types/currency';
 
 vi.mock('@/utils/staticAssets', () => ({ resolveStaticAssetUrl: (value: string) => value }));
 
@@ -118,20 +128,27 @@ const makeSettingsStore = () => {
     throw new Error('Pinia was not initialized');
   }
   setActivePiniaInstance(createPiniaInstance());
-  const store = useSettingsStore();
-  rootStore.commit.wallet.settings.setFiatCurrency = vi.fn((currency: Currency) => {
-    rootStore.state.wallet.settings.currency = currency;
-  });
-  return store;
+  walletStoreState.currency = 'usd' as Currency;
+  walletStoreState.currencies = [
+    { key: 'usd', symbol: '$', name: 'US Dollar' },
+    { key: 'eur', symbol: 'EUR', name: 'Euro' },
+  ];
+
+  return {
+    store: useSettingsStore(),
+    walletStore: walletStoreState,
+  };
 };
 
 describe('settings dialogs (BVT)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    walletStoreState.currency = 'usd' as Currency;
+    walletStoreState.currencies = [];
   });
 
   it('selects a language and persists via settings store', async () => {
-    const store = makeSettingsStore();
+    const { store } = makeSettingsStore();
     store.setSelectLanguageDialogVisibility(true);
 
     const wrapper = shallowMount(SelectLanguageDialog, {
@@ -173,7 +190,7 @@ describe('settings dialogs (BVT)', () => {
       name: 'English (UK)',
     });
 
-    vm.selectedLang = 'ru';
+    await store.setLanguage('ru' as any);
     await flushPromises();
 
     expect(store.language).toBe('ru');
@@ -187,8 +204,17 @@ describe('settings dialogs (BVT)', () => {
     expect(selectLanguageDialogSource).toContain('overflow-x: hidden;');
   });
 
+  it('uses the shared search focus helper for currency selection instead of raw autofocus', () => {
+    expect(selectCurrencyDialogSource).toContain(
+      'const { search, query, handleClearSearch, focusSearchInput } = useSearchInput();'
+    );
+    expect(selectCurrencyDialogSource).toContain('ref="search"');
+    expect(selectCurrencyDialogSource).toContain('void focusSearchInput()');
+    expect(selectCurrencyDialogSource).not.toContain('autofocus');
+  });
+
   it('filters and selects a currency', async () => {
-    const store = makeSettingsStore();
+    const { store, walletStore } = makeSettingsStore();
     store.setSelectCurrencyDialogVisibility(true);
 
     const wrapper = shallowMount(SelectCurrencyDialog, {
@@ -228,7 +254,7 @@ describe('settings dialogs (BVT)', () => {
     vm.selectedCurrency = 'eur';
     await flushPromises();
 
-    expect(rootStore.commit.wallet.settings.setFiatCurrency).toHaveBeenCalledWith('eur');
-    expect(rootStore.state.wallet.settings.currency).toBe('eur');
+    expect(walletStore.currency).toBe('eur');
+    expect(settingsStorageStub.set).toHaveBeenCalledWith('currency', 'eur');
   });
 });

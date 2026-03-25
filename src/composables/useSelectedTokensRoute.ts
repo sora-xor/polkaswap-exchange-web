@@ -1,8 +1,9 @@
 import { DAI, KUSD, XSTUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { WALLET_TYPES, api } from '@wallet';
+import { api } from '@/shims/wallet-api';
 import { computed, ref } from 'vue';
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 
+import type { AssetsTable, WhitelistIdsBySymbol } from '@/shims/wallet-common-types';
 import { PageNames } from '@/consts';
 import { useWalletStore } from '@/stores/wallet';
 
@@ -23,10 +24,7 @@ type TokensChangeHandler = (params: { firstAddress: string; secondAddress: strin
 
 type Params = { first?: string; second?: string };
 
-const resolveAddressBySymbolFromAssetsTable = (
-  symbol: string,
-  assetsDataTable: Nullable<WALLET_TYPES.AssetsTable>
-): string => {
+const resolveAddressBySymbolFromAssetsTable = (symbol: string, assetsDataTable: Nullable<AssetsTable>): string => {
   if (!assetsDataTable) return '';
 
   const normalized = symbol.toUpperCase();
@@ -50,8 +48,8 @@ const resolveAddressBySymbolFromAssetsTable = (
 
 export const resolveRouteAddress = (
   param: Nullable<string>,
-  assetsDataTable: Nullable<WALLET_TYPES.AssetsTable>,
-  whitelistIdsBySymbol: Nullable<WALLET_TYPES.WhitelistIdsBySymbol>
+  assetsDataTable: Nullable<AssetsTable>,
+  whitelistIdsBySymbol: Nullable<WhitelistIdsBySymbol>
 ): string => {
   if (!param) return '';
 
@@ -106,7 +104,7 @@ export const routeIsValid = (
 
 export const buildRouteTokens = (
   token: Nullable<AccountAsset | Asset>,
-  whitelistIdsBySymbol: Nullable<WALLET_TYPES.WhitelistIdsBySymbol>
+  whitelistIdsBySymbol: Nullable<WhitelistIdsBySymbol>
 ): string => {
   if (!token) return '';
 
@@ -131,15 +129,15 @@ export function useSelectedTokensRoute(onTokensChange: TokensChangeHandler) {
   const walletStore = useWalletStore();
 
   const whitelistIdsBySymbol = computed(
-    () => (walletStore.whitelistIdsBySymbol as Nullable<WALLET_TYPES.WhitelistIdsBySymbol>) ?? {}
+    () => (walletStore.whitelistIdsBySymbol as Nullable<WhitelistIdsBySymbol>) ?? {}
   );
   const assetsDataTable = computed(() => {
-    const table = (walletStore.assetsDataTable as Nullable<WALLET_TYPES.AssetsTable>) ?? {};
+    const table = (walletStore.assetsDataTable as Nullable<AssetsTable>) ?? {};
     if (Object.keys(table).length) return table;
 
-    return (walletStore.assets ?? []).reduce<WALLET_TYPES.AssetsTable>((buffer, asset) => {
+    return (walletStore.assets ?? []).reduce<AssetsTable>((buffer, asset) => {
       if (asset?.address) {
-        buffer[asset.address] = asset as WALLET_TYPES.AssetsTable[string];
+        buffer[asset.address] = asset as AssetsTable[string];
       }
 
       return buffer;

@@ -33,7 +33,7 @@ import CreateSimpleToken from './CreateSimpleToken.vue';
 import TranslationMixin from './mixins/TranslationMixin';
 import WalletBase from './WalletBase.vue';
 
-import type { Route } from '../store/router/types';
+import type { Route } from '@/stores/router/types';
 
 export default defineComponent({
   components: {

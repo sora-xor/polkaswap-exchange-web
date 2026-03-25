@@ -6,10 +6,10 @@
 </template>
 
 <script lang="ts" setup>
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
-import { ObjectInit } from '@/consts';
+import { LogoSize, ObjectInit } from '@/consts';
 
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -24,12 +24,12 @@ const props = withDefaults(
   defineProps<{
     firstToken?: AccountAsset | Asset;
     secondToken?: AccountAsset | Asset;
-    size?: WALLET_CONSTS.LogoSize;
+    size?: LogoSize;
   }>(),
   {
     firstToken: ObjectInit,
     secondToken: ObjectInit,
-    size: WALLET_CONSTS.LogoSize.MEDIUM,
+    size: LogoSize.MEDIUM,
   }
 );
 

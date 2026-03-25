@@ -67,7 +67,8 @@
 <script lang="ts" setup>
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, api } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue';
 
 import { Components, HundredNumber, ObjectInit, ZeroStringValue } from '@/consts';
@@ -78,7 +79,9 @@ import { LtvTranslations, VaultComponents } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
 import { getLtvStatus as resolveLtvStatus } from '@/modules/vault/util';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import { asZeroValue } from '@/utils';
 
 import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
@@ -123,6 +126,9 @@ const emit = defineEmits<{
 const { t } = useTranslation();
 const { loading, withNotifications } = useTransaction();
 const { Zero, getFPNumber, getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
+const assetsStore = useAssetsStore();
 
 const isVisible = defineModel<boolean>('visible', { default: false });
 const borrowValue = ref('');
@@ -130,11 +136,11 @@ const debtInput = ref<InstanceType<typeof TokenInputComponent> | null>(null);
 
 const xorSymbol = XOR.symbol;
 
-const percentFormat = computed(() => store.state.settings.percentFormat as Nullable<Intl.NumberFormat>);
-const networkFees = computed(() => store.state.wallet.settings.networkFees as Record<string, CodecString>);
-const slippageTolerance = computed(() => store.state.settings.slippageTolerance as string);
-const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
-const shouldBalanceBeHidden = computed(() => store.state.wallet.settings.shouldBalanceBeHidden ?? false);
+const percentFormat = computed(() => settingsStore.percentFormat as Nullable<Intl.NumberFormat>);
+const networkFees = computed(() => walletStore.networkFees as Record<string, CodecString>);
+const slippageTolerance = computed(() => settingsStore.slippageTolerance);
+const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
+const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
 
 const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.CreateVault] ?? ZeroStringValue);
 const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));

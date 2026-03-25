@@ -93,7 +93,7 @@ import TransactionMixin from './mixins/TransactionMixin';
 import NetworkFeeWarningDialog from './NetworkFeeWarning.vue';
 import WalletFee from './WalletFee.vue';
 
-import type { Route } from '../store/router/types';
+import type { Route } from '@/stores/router/types';
 
 export default defineComponent({
   components: {

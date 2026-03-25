@@ -52,8 +52,8 @@ import { useWeb3Connection } from '@/composables/useWeb3Connection';
 import { Components, PageNames, TranslationConsts } from '@/consts';
 import { Theme } from '@/consts/theme';
 import { goTo, lazyComponent } from '@/router';
-import store from '@/store';
-import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
+import { useMoonpayStore } from '@/stores/moonpay';
+import { useSettingsStore } from '@/stores/settings';
 
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { Nullable } from '@/types/common';
@@ -69,11 +69,13 @@ const showErrorInfoBanner = ref(false);
 const { t } = useTranslation();
 const { isLoggedIn, connectSoraWallet } = useInternalConnect();
 const { connectEvmWallet, evmAddress, disconnectExternalNetwork } = useWeb3Connection();
+const moonpayStore = useMoonpayStore();
+const settingsStore = useSettingsStore();
 
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
-const moonpayEnabled = computed(() => Boolean(store.getters.settings.moonpayEnabled));
-const startBridgeButtonVisibility = computed(() => Boolean(store.state.moonpay.startBridgeButtonVisibility));
-const bridgeTransactionData = computed(() => store.state.moonpay.bridgeTransactionData as Nullable<EthHistory>);
+const libraryTheme = computed(() => (settingsStore.libraryTheme ?? Theme.LIGHT) as Theme);
+const moonpayEnabled = computed(() => Boolean(settingsStore.moonpayEnabled));
+const startBridgeButtonVisibility = computed(() => Boolean(moonpayStore.startBridgeButtonVisibility));
+const bridgeTransactionData = computed(() => moonpayStore.bridgeTransactionData as Nullable<EthHistory>);
 const pendingTxCount = computed(() => (startBridgeButtonVisibility.value && bridgeTransactionData.value ? 1 : 0));
 const hasPendingTx = computed(() => pendingTxCount.value > 0);
 const computedCounterClass = computed(() => {
@@ -93,8 +95,9 @@ const cedeTextBtn = computed(() =>
       })
     : t('connectWalletText')
 );
-
-const setMoonpayVisibility = store.commit.moonpay.setDialogVisibility;
+const setMoonpayVisibility = (value: boolean) => {
+  moonpayStore.setDialogVisibility(value);
+};
 
 function openDepositTxHistory(): void {
   goTo(PageNames.DepositTxHistory);

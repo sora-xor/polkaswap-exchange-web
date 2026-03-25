@@ -86,7 +86,8 @@
 <script setup lang="ts">
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, api } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed } from 'vue';
 
 import { ZeroStringValue, Components } from '@/consts';
@@ -95,7 +96,8 @@ import { useNotification } from '@/composables/useNotification';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useWalletStore } from '@/stores/wallet';
 import { getAssetBalance } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
@@ -132,12 +134,14 @@ const { withNotifications, loading } = useTransaction();
 const { getFPNumberFromCodec, getFiatAmountByFPNumber, getFiatAmountByCodecString, formatCodecNumber, Zero } =
   useFormattedAmount();
 const { showAppAlert } = useNotification();
+const walletStore = useWalletStore();
+const assetsStore = useAssetsStore();
 
 const swapLink = '/#/swap/XOR/KUSD';
 const xorSymbol = XOR.symbol;
 
-const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject | undefined);
-const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
+const networkFees = computed(() => walletStore.networkFees as NetworkFeesObject | undefined);
+const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
 
 const vault = computed(() => props.vault as Nullable<Vault>);
 const lockedAsset = computed(() => props.lockedAsset as Nullable<RegisteredAccountAsset>);

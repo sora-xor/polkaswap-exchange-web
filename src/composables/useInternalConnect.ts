@@ -3,8 +3,8 @@ import { computed } from 'vue';
 import { PageNames } from '@/consts';
 import pinia from '@/plugins/pinia';
 import { goTo } from '@/router';
-import store from '@/store';
 import { useWalletStore } from '@/stores/wallet';
+import { useWeb3Store } from '@/stores/web3';
 import { formatAddress } from '@/utils/formatAddress';
 
 /**
@@ -13,12 +13,13 @@ import { formatAddress } from '@/utils/formatAddress';
  */
 export function useInternalConnect() {
   const walletStore = useWalletStore(pinia);
+  const web3Store = useWeb3Store(pinia);
 
   const soraAddress = computed(() => walletStore.address);
   const isLoggedIn = computed(() => walletStore.isLoggedIn);
 
   const connectSoraWallet = () => {
-    store.commit.web3.setSoraAccountDialogVisibility(true);
+    web3Store.setSoraAccountDialogVisibility(true);
   };
 
   const disconnectSoraWallet = () => walletStore.logout();

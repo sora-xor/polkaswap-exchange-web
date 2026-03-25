@@ -6,11 +6,11 @@ vi.mock('@/services/notification', () => ({
   },
 }));
 
-const legacyStoreMock = vi.fn();
+const settingsStoreMock = vi.fn();
 const settingsStorageGetMock = vi.fn();
 
-vi.mock('@/utils/app-store', () => ({
-  requireAppStore: () => legacyStoreMock(),
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => settingsStoreMock(),
 }));
 
 vi.mock('@/utils/storage', () => ({
@@ -47,15 +47,9 @@ describe('CurrencyExchangeRateService', () => {
     );
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network failed')));
 
-    legacyStoreMock.mockReturnValue({
-      commit: {
-        wallet: {
-          settings: {
-            updateFiatExchangeRates,
-            setFiatCurrency,
-          },
-        },
-      },
+    settingsStoreMock.mockReturnValue({
+      updateFiatExchangeRates,
+      setFiatCurrency,
     });
 
     const { CurrencyExchangeRateService } = await import('@/services/currency');
@@ -82,15 +76,9 @@ describe('CurrencyExchangeRateService', () => {
     settingsStorageGetMock.mockReturnValue(JSON.stringify({ timestamp: Date.now() - 16 * 60_000 }));
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network failed')));
 
-    legacyStoreMock.mockReturnValue({
-      commit: {
-        wallet: {
-          settings: {
-            updateFiatExchangeRates,
-            setFiatCurrency: vi.fn(),
-          },
-        },
-      },
+    settingsStoreMock.mockReturnValue({
+      updateFiatExchangeRates,
+      setFiatCurrency: vi.fn(),
     });
 
     const { CurrencyExchangeRateService } = await import('@/services/currency');
@@ -103,15 +91,9 @@ describe('CurrencyExchangeRateService', () => {
     const updateFiatExchangeRates = vi.fn();
     const setFiatCurrency = vi.fn();
 
-    legacyStoreMock.mockReturnValue({
-      commit: {
-        wallet: {
-          settings: {
-            updateFiatExchangeRates,
-            setFiatCurrency,
-          },
-        },
-      },
+    settingsStoreMock.mockReturnValue({
+      updateFiatExchangeRates,
+      setFiatCurrency,
     });
 
     const { CurrencyExchangeRateService } = await import('@/services/currency');
@@ -122,8 +104,10 @@ describe('CurrencyExchangeRateService', () => {
     expect(setFiatCurrency).toHaveBeenCalled();
   });
 
-  it('does not throw if legacy store is unavailable', async () => {
-    legacyStoreMock.mockReturnValue({});
+  it('does not throw if settings store is unavailable', async () => {
+    settingsStoreMock.mockImplementation(() => {
+      throw new Error('pinia not ready');
+    });
     const { CurrencyExchangeRateService } = await import('@/services/currency');
 
     expect(() => CurrencyExchangeRateService.resetData('error')).not.toThrow();

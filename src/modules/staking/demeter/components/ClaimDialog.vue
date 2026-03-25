@@ -52,10 +52,11 @@
 
 <script lang="ts" setup>
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, toRefs, type PropType } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
+import { FontSizeRate } from '@/shims/wallet-consts';
 import { useDemeterPoolCard } from '../composables/useDemeterPoolCard';
 import { useDemeterPoolStatus } from '../composables/useDemeterPoolStatus';
 
@@ -71,8 +72,6 @@ defineOptions({
     FormattedAmount: components.FormattedAmount,
   },
 });
-
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
 const props = defineProps({
   parentLoading: { type: Boolean, default: false },

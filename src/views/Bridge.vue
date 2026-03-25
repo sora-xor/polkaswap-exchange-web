@@ -235,12 +235,12 @@
 <script setup lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { KnownSymbols as KnownSymbolsEnum } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { Components, PageNames } from '@/consts';
-import { FocusedField as FocusedFieldEnum } from '@/store/bridge/types';
+import { BridgeFocusedField as FocusedFieldEnum } from '@/stores/bridge/types';
 import { useTranslation } from '@/composables/useTranslation';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useBridgeCore } from '@/composables/useBridgeCore';
@@ -253,7 +253,6 @@ import { useConfirmDialog } from '@/composables/useConfirmDialog';
 import { useTokenSelect } from '@/composables/useTokenSelect';
 import { useLoading } from '@/composables/useLoading';
 import { lazyComponent } from '@/router';
-import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
 import { useBridgeStore } from '@/stores/bridge';
 import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
@@ -398,7 +397,7 @@ const feesAndLockedFundsFetching = computed(() => bridgeStore.flags.feesAndLocke
 const registeredAssetsFetching = computed(() => assetsStore.registeredAssetsFetching);
 const amountSend = computed(() => bridgeStore.form.amountSend);
 const amountReceived = computed(() => bridgeStore.form.amountReceived);
-const isMST = computed(() => Boolean(store.state.wallet.account.isMST));
+const isMST = computed(() => walletStore.isMstAccount);
 const operation = computed(() => bridgeStore.operation);
 const selectedNetworkName = computed(() => selectedNetworkNameComputed.value);
 const accountAssetsAddressTableMap = computed(() => accountAssetsAddressTable.value ?? ({} as Record<string, unknown>));
@@ -575,7 +574,7 @@ const setFocusedField = (field: FocusedFieldEnum) => {
 };
 
 const setSelectSubNodeDialogVisibility = (flag: boolean) => {
-  store.commit.web3.setSelectSubNodeDialogVisibility(flag);
+  web3Store.setSelectSubNodeDialogVisibility(flag);
 };
 
 const setSendedAmount = async (value?: string) => {

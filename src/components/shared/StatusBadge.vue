@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';

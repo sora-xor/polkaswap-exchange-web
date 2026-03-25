@@ -118,7 +118,7 @@ import FileUploader from '../../FileUploader.vue';
 import PasswordInput from '../../Input/Password.vue';
 import NotificationMixin from '../../mixins/NotificationMixin';
 
-import type { CreateAccountArgs, RestoreAccountArgs } from '../../../store/account/types';
+import type { CreateAccountArgs, RestoreAccountArgs } from '@/stores/wallet/account/types';
 import type { KeyringPair$Json } from '../../../types/common';
 
 const Tutorials = [

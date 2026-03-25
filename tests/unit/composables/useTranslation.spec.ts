@@ -39,7 +39,7 @@ vi.mock('@/lang', () => ({
   default: i18nStub,
 }));
 
-vi.mock('@wallet/src/composables/useTranslation', () => {
+vi.mock('@/lib/soraneo-wallet/src/composables/useTranslation', () => {
   return {
     useTranslation: () => {
       const i18nInstance = (globalThis as Record<string, any>).__TEST_I18N__;
@@ -75,14 +75,11 @@ const storeState = reactive({
   },
 });
 
-vi.mock('@/store', () => ({
-  default: {
-    state: storeState,
-  },
-}));
-
 vi.mock('@/stores/settings', () => ({
   useSettingsStore: () => ({
+    get language() {
+      return storeState.settings.language;
+    },
     setLanguageState(lang: any) {
       storeState.settings.language = lang;
     },

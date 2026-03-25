@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { Theme } from '@/lib/soraneo-wallet/src/consts';
-import { normalizeTheme } from '@/lib/soraneo-wallet/src/store/settings/theme';
+import { normalizeTheme } from '@/stores/wallet/settings/theme';
 
 describe('wallet settings theme normalization', () => {
   it('returns dark only for the explicit dark value', () => {

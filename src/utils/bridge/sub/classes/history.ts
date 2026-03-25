@@ -1,7 +1,7 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
-import { api } from '@wallet';
+import { api } from '@/shims/wallet-api';
 
 import { ZeroStringValue } from '@/consts';
 import { getBlockEventsByTxIndex } from '@/utils/bridge/common/utils';
@@ -25,7 +25,11 @@ import type { ApiPromise } from '@polkadot/api';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { SubNetwork, SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { BridgeTransactionData } from '@sora-substrate/sdk/build/bridgeProxy/types';
-import type { ActionContext } from 'vuex';
+
+type BridgeActionContext<TRootState = any, TRootGetters = any> = {
+  rootState: TRootState;
+  rootGetters: TRootGetters;
+};
 
 const hasFinishedState = (item: Nullable<SubHistory>) => {
   if (!item) return false;
@@ -664,7 +668,7 @@ class SubBridgeHistory extends SubNetworksConnector {
  * @param context store context
  */
 export const updateSubBridgeHistory =
-  (context: ActionContext<any, any>) =>
+  (context: BridgeActionContext) =>
   async (clearHistory = false, updateCallback?: VoidFunction): Promise<void> => {
     try {
       const { rootState, rootGetters } = context;

@@ -69,63 +69,15 @@ const disconnectExternalNetworkMock = vi.hoisted(() => vi.fn());
 const disconnectEvmMock = vi.hoisted(() => vi.fn());
 const disconnectSubMock = vi.hoisted(() => vi.fn());
 const changeNetworkMock = vi.hoisted(() => vi.fn());
-
-const mockStore = vi.hoisted(() => {
-  const provider = {
-    uuid: 'WalletConnect',
-    name: 'WalletConnect',
-    icon: 'icon.svg',
-    getProvider: vi.fn(),
-  } as unknown as AppEIPProvider;
-
-  return {
-    state: {
-      web3: {
-        evmProvider: provider,
-        evmProviderLoading: null,
-        evmAddress: '0x123',
-        networkSelected: 'network',
-        networkType: 'type',
-      },
-      bridge: {
-        isSignTxDialogVisible: false,
-      },
-    },
-    getters: {
-      bridge: {
-        isSubBridge: false,
-        isSubAccountType: true,
-      },
-      web3: {
-        appEvmProviders: [provider],
-      },
-    },
-    commit: {
-      web3: {
-        setSubAccountDialogVisibility: vi.fn(),
-        setSelectSubNodeDialogVisibility: vi.fn(),
-      },
-      bridge: {
-        setSignTxDialogVisibility: vi.fn(),
-      },
-    },
-    dispatch: {
-      web3: {
-        disconnectExternalNetwork: disconnectExternalNetworkMock,
-        resetEvmProviderConnection: disconnectEvmMock,
-        resetSubAccount: disconnectSubMock,
-        changeEvmNetworkProvided: changeNetworkMock,
-        selectEvmProvider: selectProviderMock,
-      },
-      bridge: {},
-    },
-    provider,
-  };
-});
-
-vi.mock('@/store', () => ({
-  default: mockStore,
-}));
+const provider = vi.hoisted(
+  () =>
+    ({
+      uuid: 'WalletConnect',
+      name: 'WalletConnect',
+      icon: 'icon.svg',
+      getProvider: vi.fn(),
+    }) as unknown as AppEIPProvider
+);
 
 const bridgeStorePiniaMock = vi.hoisted(() => ({
   isSubBridge: false,
@@ -140,11 +92,19 @@ const bridgeStorePiniaMock = vi.hoisted(() => ({
 }));
 
 const web3StorePiniaMock = vi.hoisted(() => ({
-  evmProvider: mockStore.state.web3.evmProvider,
+  appEvmProviders: [provider],
+  evmProvider: provider,
   evmProviderLoading: null,
   evmAddress: '0x123',
   networkSelected: 'network',
   networkType: 'type',
+  setSubAccountDialogVisibility: vi.fn(),
+  setSelectSubNodeDialogVisibility: vi.fn(),
+  disconnectExternalNetwork: disconnectExternalNetworkMock,
+  resetEvmProviderConnection: disconnectEvmMock,
+  resetSubAccount: disconnectSubMock,
+  changeEvmNetworkProvided: changeNetworkMock,
+  selectEvmProvider: selectProviderMock,
 }));
 
 vi.mock('@/stores/bridge', () => ({
@@ -184,10 +144,9 @@ beforeEach(() => {
   disconnectEvmMock.mockReset();
   disconnectSubMock.mockReset();
   changeNetworkMock.mockReset();
-  mockStore.commit.web3.setSubAccountDialogVisibility.mockReset();
-  mockStore.commit.web3.setSelectSubNodeDialogVisibility.mockReset();
-  mockStore.commit.bridge.setSignTxDialogVisibility.mockReset();
-  mockStore.provider.getProvider.mockReset();
+  web3StorePiniaMock.setSubAccountDialogVisibility.mockReset();
+  web3StorePiniaMock.setSelectSubNodeDialogVisibility.mockReset();
+  provider.getProvider.mockReset();
   localStorageMock.getItem.mockClear();
   localStorageMock.setItem.mockClear();
   localStorageMock.removeItem.mockClear();
@@ -204,7 +163,8 @@ beforeEach(() => {
       },
     },
   };
-  web3StorePiniaMock.evmProvider = mockStore.state.web3.evmProvider;
+  web3StorePiniaMock.appEvmProviders = [provider];
+  web3StorePiniaMock.evmProvider = provider;
   web3StorePiniaMock.evmProviderLoading = null;
   web3StorePiniaMock.evmAddress = '0x123';
   web3StorePiniaMock.networkSelected = 'network';
@@ -245,10 +205,10 @@ describe('useWalletConnect', () => {
 
     expect(wallet.evmAddress.value).toBe('0x123');
     await wallet.connectEvmWallet();
-    expect(selectProviderMock).toHaveBeenCalledWith(mockStore.provider);
+    expect(selectProviderMock).toHaveBeenCalledWith(expect.objectContaining({ uuid: 'WalletConnect' }));
 
     wallet.connectSubWallet();
-    expect(mockStore.commit.web3.setSubAccountDialogVisibility).toHaveBeenCalledWith(true);
+    expect(web3StorePiniaMock.setSubAccountDialogVisibility).toHaveBeenCalledWith(true);
 
     await wallet.disconnectExternalNetwork();
     expect(disconnectExternalNetworkMock).toHaveBeenCalled();
@@ -287,8 +247,8 @@ describe('useWalletConnect', () => {
 
     wallet.connectSubWallet();
 
-    expect(mockStore.commit.web3.setSelectSubNodeDialogVisibility).toHaveBeenCalledWith(true);
-    expect(mockStore.commit.web3.setSubAccountDialogVisibility).not.toHaveBeenCalled();
+    expect(web3StorePiniaMock.setSelectSubNodeDialogVisibility).toHaveBeenCalledWith(true);
+    expect(web3StorePiniaMock.setSubAccountDialogVisibility).not.toHaveBeenCalled();
 
     wrapper.unmount();
   });

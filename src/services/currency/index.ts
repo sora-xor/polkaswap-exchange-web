@@ -1,21 +1,23 @@
 import { timer } from 'rxjs';
 
 import notificationService from '@/services/notification';
-import { requireAppStore } from '@/utils/app-store';
+import { useSettingsStore } from '@/stores/settings';
 import { settingsStorage } from '@/utils/storage';
+import { API_ENDPOINT } from '@/shims/wallet-currencies';
 
-import { API_ENDPOINT } from '@wallet/src/consts/currencies';
-
-import type { FiatExchangeRateObject } from '@wallet/src/types/currency';
+import type { FiatExchangeRateObject } from '@/shims/wallet-currency-types';
 
 const INTERVAL = 15; // minutes between refreshes
 const ONE_MINUTE = 60_000;
 const exchangeRateUpdateInterval = timer(0, ONE_MINUTE * 0.25); // polling interval (15s)
 const TIMESTAMP_FIELD = 'timestamp';
 
-const getLegacyWalletSettings = () => {
-  const store = requireAppStore() as any;
-  return store?.commit?.wallet?.settings;
+const getWalletSettingsStore = () => {
+  try {
+    return useSettingsStore();
+  } catch {
+    return null;
+  }
 };
 
 type CachedExchangeRates = FiatExchangeRateObject & {
@@ -55,7 +57,7 @@ export class CurrencyExchangeRateService {
     }
 
     if (hasCachedRates) {
-      getLegacyWalletSettings()?.updateFiatExchangeRates({ ...cachedRates, timestamp: Date.now() });
+      getWalletSettingsStore()?.updateFiatExchangeRates({ ...cachedRates, timestamp: Date.now() });
     }
 
     try {
@@ -112,7 +114,7 @@ export class CurrencyExchangeRateService {
       severity: 'error',
       timeout: 4500,
     });
-    const walletSettings = getLegacyWalletSettings();
+    const walletSettings = getWalletSettingsStore();
     walletSettings?.updateFiatExchangeRates();
     walletSettings?.setFiatCurrency();
   }

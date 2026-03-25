@@ -36,14 +36,15 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, ref, toRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { PageNames, Components } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import type { ResponsiveTab } from '@/types/tabs';
 import storage from '@/utils/storage';
 import { lazyComponent } from '@/router';
@@ -72,12 +73,12 @@ const storageKey = 'exploreAccountItems';
 const routerInstance = useRouter();
 const route = useRoute();
 const { t } = useTranslation();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
 
-const collapsed = computed(() => Boolean(store.state?.settings?.menuCollapsed));
-const screenBreakpointClass = computed(
-  () => (store.state?.settings?.screenBreakpointClass as BreakpointClass | undefined) ?? BreakpointClass.Desktop
-);
-const isLoggedIn = computed(() => Boolean(store.getters?.wallet?.account?.isLoggedIn));
+const collapsed = computed(() => Boolean(settingsStore.menuCollapsed));
+const screenBreakpointClass = computed(() => settingsStore.screenBreakpointClass ?? BreakpointClass.Desktop);
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
 
 const exploreQuery = ref('');
 const accountItems = ref<boolean>(

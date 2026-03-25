@@ -73,7 +73,7 @@
 
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, WALLET_CONSTS, SUBQUERY_TYPES, getCurrentIndexer } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
@@ -87,11 +87,13 @@ import { useChartSpec } from '@/composables/useChartSpec';
 import { useLoading } from '@/composables/useLoading';
 import { createThemePalette, useThemePalette } from '@/composables/useThemePalette';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components } from '@/consts';
+import { Components, FontWeightRate, IndexerType } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
 import { fetchAssetPriceData } from '@/indexer/queries/asset/price';
+import { getCurrentIndexer } from '@/shims/wallet-indexer';
+import * as SUBQUERY_TYPES from '@/shims/wallet-indexer-subquery-types';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
 import {
   calcPriceChange,
   debouncedInputHandler,
@@ -102,8 +104,8 @@ import {
 } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { PageInfo } from '@wallet/lib/services/indexer/types';
-import type { Currency, CurrencyFields } from '@wallet/lib/types/currency';
+import type { PageInfo } from '@/shims/wallet-indexer-types';
+import type { Currency, CurrencyFields } from '@/shims/wallet-currency-types';
 import type { OCLH, RequestMethod, RequestSubscription, SnapshotItem } from '@/types/chart';
 import { Timeframes } from '@/types/filters';
 import type { SnapshotFilter } from '@/types/filters';
@@ -266,15 +268,15 @@ const parentLoading = computed(() => props.parentLoading ?? false);
 const { loading, withApi } = useLoading({ parentLoading });
 const { t } = useTranslation();
 const { theme } = useThemePalette();
+const settingsStore = useSettingsStore();
 const palette = computed(() => theme.value ?? createThemePalette());
 const { gridSpec, xAxisSpec, yAxisSpec, tooltipSpec, lineSeriesSpec, barSeriesSpec, candlestickSeriesSpec } =
   useChartSpec();
 
-const FontWeightRate = WALLET_CONSTS.FontWeightRate;
-const currency = computed<Nullable<Currency>>(() => store.state.wallet?.settings?.currency);
-const currencies = computed<CurrencyFields[]>(() => store.state.wallet?.settings?.currencies ?? []);
-const exchangeRate = computed(() => store.state.wallet?.settings?.exchangeRate ?? 1);
-const currencySymbol = computed(() => store.state.wallet?.settings?.currencySymbol ?? USD_SYMBOL);
+const currency = computed<Nullable<Currency>>(() => settingsStore.currency);
+const currencies = computed<CurrencyFields[]>(() => settingsStore.currencies ?? []);
+const exchangeRate = computed(() => settingsStore.exchangeRate ?? 1);
+const currencySymbol = computed(() => settingsStore.currencySymbol ?? USD_SYMBOL);
 
 const chart = ref<any>(null);
 const isFetchingError = ref(false);
@@ -617,7 +619,7 @@ const requestData = async (
   let nextPage = hasNextPage;
 
   do {
-    const maxCount = getCurrentIndexer().type === WALLET_CONSTS.IndexerType.SUBSQUID ? 1000 : 100;
+    const maxCount = getCurrentIndexer().type === IndexerType.SUBSQUID ? 1000 : 100;
     const first = Math.min(remaining, maxCount);
     const requestMethod = props.requestMethod ?? fetchAssetPriceData;
     const response = await requestMethod(entityId, type, first, cursor);

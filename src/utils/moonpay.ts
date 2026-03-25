@@ -1,6 +1,7 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { api, WALLET_CONSTS } from '@wallet';
+import { api } from '@/shims/wallet-api';
 
+import { SoraNetwork } from '@/consts';
 import axios from '@/api';
 import { toQueryString } from '@/utils';
 
@@ -95,7 +96,7 @@ export class MoonpayApi {
   public soraNetwork = '';
 
   public static getWidgetBaseUrl(soraNetwork: string): string {
-    if (soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
+    if (soraNetwork === SoraNetwork.Prod) {
       return MOONPAY_WIDGET_ORIGINS[0];
     }
     return MOONPAY_WIDGET_ORIGINS[1];

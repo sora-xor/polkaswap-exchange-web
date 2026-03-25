@@ -106,7 +106,7 @@
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import dayjs from 'dayjs/esm';
 import durationPlugin from 'dayjs/plugin/duration';
 import { computed, onBeforeUnmount, onMounted, reactive, ref, toRef } from 'vue';
@@ -117,10 +117,10 @@ import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components } from '@/consts';
+import { Components, SoraNetwork } from '@/consts';
 import { fetchData as fetchBurnData } from '@/indexer/queries/burnXor';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
@@ -169,13 +169,14 @@ const { loading, withLoading, withApi } = useLoading({ parentLoading: parentLoad
 const { t } = useTranslation();
 const { getFPNumber, getFiatAmountByString } = useFormattedAmount();
 const { isLoggedIn, connectSoraWallet, soraAddress } = useInternalConnect();
+const settingsStore = useSettingsStore();
 
 const xor = XOR;
 const zeroString = '0';
 const blockDuration = 6_000; // 6 seconds
 
-const blockNumber = computed(() => store.state.wallet.settings.blockNumber as number);
-const soraNetwork = computed(() => store.state.wallet.settings.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>);
+const blockNumber = computed(() => settingsStore.blockNumber);
+const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<SoraNetwork>);
 
 const campaignsObj = reactive<Record<CampaignKey, Campaign>>({
   solswap: {
@@ -360,7 +361,7 @@ onMounted(async () => {
   await withApi(async () => {
     const network = soraNetwork.value ?? (await waitForSoraNetworkFromEnv());
 
-    if (network !== WALLET_CONSTS.SoraNetwork.Prod) {
+    if (network !== SoraNetwork.Prod) {
       campaignsObj.solswap.from = 0;
       campaignsObj.solswap.to = 10_000;
     }

@@ -1,8 +1,22 @@
 import { mount } from '@vue/test-utils';
+import { createPinia, setActivePinia } from 'pinia';
 import { defineComponent, h, ref } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const subscriptionsDataLoading = ref(true);
+
+const shared = vi.hoisted(() => ({
+  demeterFarmingStore: {
+    subscribeOnPools: vi.fn(),
+    subscribeOnTokens: vi.fn(),
+    subscribeOnAccountPools: vi.fn(),
+    unsubscribeUpdates: vi.fn(),
+  },
+  stakingStore: {
+    getValidatorsInfo: vi.fn(),
+    getStakingInfo: vi.fn(),
+  },
+}));
 
 vi.mock('@/composables/useSubscriptions', () => ({
   __esModule: true,
@@ -11,22 +25,12 @@ vi.mock('@/composables/useSubscriptions', () => ({
   }),
 }));
 
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: {
-    dispatch: {
-      demeterFarming: {
-        subscribeOnPools: vi.fn(),
-        subscribeOnTokens: vi.fn(),
-        subscribeOnAccountPools: vi.fn(),
-        unsubscribeUpdates: vi.fn(),
-      },
-      staking: {
-        getValidatorsInfo: vi.fn(),
-        getStakingInfo: vi.fn(),
-      },
-    },
-  },
+vi.mock('@/stores/demeterFarming', () => ({
+  useDemeterFarmingStore: () => shared.demeterFarmingStore,
+}));
+
+vi.mock('@/stores/staking', () => ({
+  useStakingStore: () => shared.stakingStore,
 }));
 
 import DataContainer from '@/modules/staking/demeter/views/DataContainer.vue';
@@ -49,6 +53,12 @@ const RouterViewStub = defineComponent({
 });
 
 describe('demeter DataContainer.vue', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    Object.values(shared.demeterFarmingStore).forEach((spy) => spy.mockReset());
+    Object.values(shared.stakingStore).forEach((spy) => spy.mockReset());
+  });
+
   it('forwards computed loading state and listeners to nested route view', async () => {
     const onRefresh = vi.fn();
     const wrapper = mount(DataContainer, {

@@ -25,12 +25,17 @@ const mockAppKit = {
 };
 
 const ensureAppKitMock = vi.fn(async () => mockAppKit);
+const loadWalletCoreMock = vi.hoisted(() =>
+  vi.fn(async () => {
+    walletModuleLoadCount.value += 1;
+    return await buildWalletModule();
+  })
+);
 
-vi.mock('@wallet', async () => {
-  walletModuleLoadCount.value += 1;
-  return await buildWalletModule();
-});
-vi.mock('@wallet/core', async () => buildWalletModule());
+vi.mock('@/utils/walletCore', () => ({
+  loadWalletCore: loadWalletCoreMock,
+  getWalletCore: vi.fn(),
+}));
 
 vi.mock('@walletconnect/ethereum-provider', () => {
   class MockEthereumProvider {
@@ -53,6 +58,7 @@ describe('walletconnect utils', () => {
     vi.resetModules();
     vi.clearAllMocks();
     walletModuleLoadCount.value = 0;
+    loadWalletCoreMock.mockClear();
     mockAppKit.open.mockReset();
     mockAppKit.close.mockReset();
     mockAppKit.subscribeState.mockImplementation(() => () => undefined);

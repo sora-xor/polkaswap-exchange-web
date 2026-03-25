@@ -4,9 +4,9 @@ import { computed } from 'vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { ZeroStringValue } from '@/consts';
 import { DAY_HOURS, rewardAsset, ValidatorsListMode } from '@/modules/staking/sora/consts';
-import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
+import { useStakingStore } from '@/stores/staking';
 import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import { formatDecimalPlaces, getAssetBalance, hasInsufficientXorForFee } from '@/utils';
@@ -29,37 +29,39 @@ function asCodec(value?: CodecString | string | null): CodecString {
 export function useSoraStaking() {
   const { getAssetFiatPrice, getFiatAmountByFPNumber, formatCodecNumber } = useFormattedAmount();
   const assetsStore = useAssetsStore();
+  const stakingStore = useStakingStore();
 
-  const stakingInfo = computed(() => store.state.staking.stakingInfo as Nullable<MyStakingInfo>);
-  const newStakeValidatorsMode = computed(() => store.state.staking.newStakeValidatorsMode);
-  const minNominatorBond = computed(() => store.state.staking.minNominatorBond as number);
-  const unbondPeriod = computed(() => store.state.staking.unbondPeriod as number);
+  const stakingInfo = computed(() => stakingStore.stakingInfo as Nullable<MyStakingInfo>);
+  const newStakeValidatorsMode = computed(() => stakingStore.newStakeValidatorsMode);
+  const minNominatorBond = computed(() => stakingStore.minNominatorBond as number);
+  const unbondPeriod = computed(() => stakingStore.unbondPeriod as number);
   const stakeAmount = computed({
-    get: () => store.state.staking.stakeAmount,
-    set: (value: string) => store.commit.staking.setStakeAmount(value),
+    get: () => stakingStore.stakeAmount,
+    set: (value: string) => stakingStore.setStakeAmount(value),
   });
-  const validators = computed(() => store.state.staking.validatorsInfo as ValidatorInfoFull[]);
+  const validators = computed(() => stakingStore.validatorsInfo as ValidatorInfoFull[]);
   const selectedValidators = computed({
-    get: () => store.state.staking.selectedValidators as ValidatorInfoFull[],
-    set: (value: ValidatorInfoFull[]) => store.commit.staking.selectValidators(value),
+    get: () => stakingStore.selectedValidators as ValidatorInfoFull[],
+    set: (value: ValidatorInfoFull[]) => stakingStore.selectValidators(value),
   });
-  const activeEra = computed(() => store.state.staking.activeEra as Nullable<number>);
-  const activeEraStart = computed(() => store.state.staking.activeEraStart as Nullable<number>);
-  const currentEra = computed(() => store.state.staking.currentEra as number);
-  const currentEraTotalStake = computed(() => store.state.staking.currentEraTotalStake as string);
-  const maxNominations = computed(() => store.state.staking.maxNominations as number);
-  const accountLedger = computed(() => store.state.staking.accountLedger as Nullable<AccountStakingLedger>);
-  const pendingRewards = computed(() => store.state.staking.pendingRewards as Nullable<NominatorReward>);
+  const activeEra = computed(() => stakingStore.activeEra as Nullable<number>);
+  const activeEraStart = computed(() => stakingStore.activeEraStart as Nullable<number>);
+  const currentEra = computed(() => stakingStore.currentEra as number);
+  const currentEraTotalStake = computed(() => stakingStore.currentEraTotalStake as string);
+  const maxNominations = computed(() => stakingStore.maxNominations as number);
+  const accountLedger = computed(() => stakingStore.accountLedger as Nullable<AccountStakingLedger>);
+  const pendingRewards = computed(() => stakingStore.pendingRewards as Nullable<NominatorReward>);
   const validatorsFilter = computed({
-    get: () => store.state.staking.validatorsFilter,
-    set: (value) => store.commit.staking.setValidatorsFilter(value),
+    get: () => stakingStore.validatorsFilter,
+    set: (value) => stakingStore.setValidatorsFilter(value),
   });
   const showValidatorsFilterDialog = computed({
-    get: () => store.state.staking.showValidatorsFilterDialog,
-    set: (value: boolean) => store.commit.staking.setShowValidatorsFilterDialog(value),
+    get: () => stakingStore.showValidatorsFilterDialog,
+    set: (value: boolean) => stakingStore.setShowValidatorsFilterDialog(value),
   });
-  const payee = computed(() => store.state.staking.payee as string);
-  const controller = computed(() => store.state.staking.controller as string);
+  const payee = computed(() => stakingStore.payee as string);
+  const controller = computed(() => stakingStore.controller as string);
+  const totalNominators = computed(() => stakingStore.totalNominators as Nullable<number>);
 
   const settingsStore = useSettingsStore();
   const walletStore = useWalletStore();
@@ -69,7 +71,7 @@ export function useSoraStaking() {
 
   const xor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
   const getAsset = assetsStore.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
-  const stash = computed(() => store.getters.staking.stash as string);
+  const stash = computed(() => stakingStore.stash);
 
   const pricesAvailable = computed(() => Object.keys(walletStore.fiatPriceObject ?? {}).length > 0);
   const stakingAsset = xor;
@@ -174,22 +176,44 @@ export function useSoraStaking() {
   );
 
   const setValidatorsFilter = (value: typeof validatorsFilter.value) => {
-    store.commit.staking.setValidatorsFilter(value);
+    stakingStore.setValidatorsFilter(value);
   };
   const setShowValidatorsFilterDialog = (value: boolean) => {
-    store.commit.staking.setShowValidatorsFilterDialog(value);
+    stakingStore.setShowValidatorsFilterDialog(value);
   };
 
-  const nominate = () => store.dispatch.staking.nominate();
-  const bondAndNominate = () => store.dispatch.staking.bondAndNominate();
-  const getBondAndNominateNetworkFee = () => store.dispatch.staking.getBondAndNominateNetworkFee();
-  const bondExtra = () => store.dispatch.staking.bondExtra();
-  const unbond = () => store.dispatch.staking.unbond();
-  const withdraw = (value: number) => store.dispatch.staking.withdraw(value);
-  const payout = (args: { payouts: Payouts; payee?: string }) => store.dispatch.staking.payout(args);
-  const getPayoutNetworkFee = (args: { payouts: Payouts; payee?: string }) =>
-    store.dispatch.staking.getPayoutNetworkFee(args);
-  const getPendingRewards = () => store.dispatch.staking.getPendingRewards();
+  const nominate = () => stakingStore.nominate();
+  const bondAndNominate = () => stakingStore.bondAndNominate();
+  const getBondAndNominateNetworkFee = () => stakingStore.getBondAndNominateNetworkFee();
+  const getNominateNetworkFee = () => stakingStore.getNominateNetworkFee();
+  const bondExtra = () => stakingStore.bondExtra();
+  const unbond = () => stakingStore.unbond();
+  const withdraw = (value: number) => stakingStore.withdraw(value);
+  const payout = (args: { payouts: Payouts; payee?: string }) => stakingStore.payout(args);
+  const getPayoutNetworkFee = (args: { payouts: Payouts; payee?: string }) => stakingStore.getPayoutNetworkFee(args);
+  const getPendingRewards = () => stakingStore.getPendingRewards();
+  const getStakingInfo = () => stakingStore.getStakingInfo();
+  const getValidatorsInfo = () => stakingStore.getValidatorsInfo();
+  const getMinNominatorBond = () => stakingStore.getMinNominatorBond();
+  const getUnbondPeriod = () => stakingStore.getUnbondPeriod();
+  const getMaxNominations = () => stakingStore.getMaxNominations();
+  const getHistoryDepth = () => stakingStore.getHistoryDepth();
+  const subscribeOnActiveEra = () => stakingStore.subscribeOnActiveEra();
+  const subscribeOnCurrentEra = () => stakingStore.subscribeOnCurrentEra();
+  const subscribeOnController = () => stakingStore.subscribeOnController();
+  const subscribeOnPayee = () => stakingStore.subscribeOnPayee();
+  const subscribeOnNominations = () => stakingStore.subscribeOnNominations();
+  const subscribeOnAccountLedger = () => stakingStore.subscribeOnAccountLedger();
+  const subscribeOnCurrentEraTotalStake = () => stakingStore.subscribeOnCurrentEraTotalStake();
+  const resetActiveEraUpdates = () => stakingStore.resetActiveEraUpdates();
+  const resetCurrentEraUpdates = () => stakingStore.resetCurrentEraUpdates();
+  const resetCurrentEraTotalStakeUpdates = () => stakingStore.resetCurrentEraTotalStakeUpdates();
+  const resetControllerUpdates = () => stakingStore.resetControllerUpdates();
+  const resetPayeeUpdates = () => stakingStore.resetPayeeUpdates();
+  const resetNominationsUpdates = () => stakingStore.resetNominationsUpdates();
+  const resetAccountLedgerUpdates = () => stakingStore.resetAccountLedgerUpdates();
+  const setStakingInfo = (info: MyStakingInfo) => stakingStore.setStakingInfo(info);
+  const setTotalNominators = (value: number) => stakingStore.setTotalNominators(value);
 
   return {
     stakingInfo,
@@ -210,6 +234,7 @@ export function useSoraStaking() {
     showValidatorsFilterDialog,
     payee,
     controller,
+    totalNominators,
     networkFee,
     networkFeeFormatted,
     isInsufficientXorForFee,
@@ -242,20 +267,43 @@ export function useSoraStaking() {
     stash,
     xor,
     getAsset,
-    setStakeAmount: (value: string) => store.commit.staking.setStakeAmount(value),
+    setStakeAmount: (value: string) => stakingStore.setStakeAmount(value),
     setValidatorsFilter,
     setShowValidatorsFilterDialog,
-    setValidatorsType: (value: ValidatorsListMode) => store.commit.staking.setValidatorsType(value),
-    selectValidators: (value: ValidatorInfoFull[]) => store.commit.staking.selectValidators(value),
+    setValidatorsType: (value: ValidatorsListMode) => stakingStore.setValidatorsType(value),
+    selectValidators: (value: ValidatorInfoFull[]) => stakingStore.selectValidators(value),
+    setStakingInfo,
+    setTotalNominators,
     nominate,
     bondAndNominate,
     getBondAndNominateNetworkFee,
+    getNominateNetworkFee,
     bondExtra,
     unbond,
     withdraw,
     payout,
     getPayoutNetworkFee,
     getPendingRewards,
+    getStakingInfo,
+    getValidatorsInfo,
+    getMinNominatorBond,
+    getUnbondPeriod,
+    getMaxNominations,
+    getHistoryDepth,
+    subscribeOnActiveEra,
+    subscribeOnCurrentEra,
+    subscribeOnController,
+    subscribeOnPayee,
+    subscribeOnNominations,
+    subscribeOnAccountLedger,
+    subscribeOnCurrentEraTotalStake,
+    resetActiveEraUpdates,
+    resetCurrentEraUpdates,
+    resetCurrentEraTotalStakeUpdates,
+    resetControllerUpdates,
+    resetPayeeUpdates,
+    resetNominationsUpdates,
+    resetAccountLedgerUpdates,
   };
 }
 

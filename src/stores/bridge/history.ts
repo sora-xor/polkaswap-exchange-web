@@ -1,16 +1,9 @@
 import { defineStore } from 'pinia';
 
-import { withAppStore } from '@/utils/app-store';
+import { useBridgeStore } from '@/stores/bridge';
 import { trackEvent } from '@/utils/telemetry';
 
-import {
-  enterPiniaSync,
-  enterLegacySync,
-  isLegacySyncing,
-  isPiniaSyncing,
-  leaveLegacySync,
-  leavePiniaSync,
-} from './sync';
+import { enterLegacySync, isLegacySyncing, leaveLegacySync } from './sync';
 
 type BridgeHistoryState = {
   historyPage: number;
@@ -34,10 +27,6 @@ const normalizePage = (page?: number): number => {
 
 const normalizeId = (id?: string): string => (typeof id === 'string' ? id : '');
 
-const warn = (message: string): void => {
-  console.warn(`[bridge-history] ${message}`);
-};
-
 export const useBridgeHistoryStore = defineStore('bridgeHistory', {
   state: (): BridgeHistoryState => buildInitialState(),
   actions: {
@@ -50,27 +39,7 @@ export const useBridgeHistoryStore = defineStore('bridgeHistory', {
         return;
       }
 
-      const committed = withAppStore((store) => {
-        const mutation = store?.commit?.bridge?.setHistoryPage;
-
-        if (typeof mutation !== 'function') {
-          warn('setHistoryPage mutation missing');
-          return undefined;
-        }
-
-        enterPiniaSync();
-        try {
-          mutation(nextPage);
-        } finally {
-          leavePiniaSync();
-        }
-
-        return true;
-      });
-
-      if (!committed) {
-        warn('unable to sync historyPage to legacy store');
-      }
+      useBridgeStore().setHistoryPage(nextPage);
     },
     resetHistoryPage(): void {
       this.setHistoryPage(1);
@@ -97,27 +66,7 @@ export const useBridgeHistoryStore = defineStore('bridgeHistory', {
         return;
       }
 
-      const committed = withAppStore((store) => {
-        const mutation = store?.commit?.bridge?.setHistoryId;
-
-        if (typeof mutation !== 'function') {
-          warn('setHistoryId mutation missing');
-          return undefined;
-        }
-
-        enterPiniaSync();
-        try {
-          mutation(nextId);
-        } finally {
-          leavePiniaSync();
-        }
-
-        return true;
-      });
-
-      if (!committed) {
-        warn('unable to sync historyId to legacy store');
-      }
+      useBridgeStore().setHistoryId(nextId);
     },
     syncHistoryIdFromLegacy(id?: string): void {
       const nextId = normalizeId(id);

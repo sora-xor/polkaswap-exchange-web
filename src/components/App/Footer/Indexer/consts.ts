@@ -1,6 +1,4 @@
-import { WALLET_CONSTS } from '@wallet';
-
-const { IndexerType } = WALLET_CONSTS;
+import { IndexerType } from '@/consts';
 
 export const IndexerModel = {
   name: '',

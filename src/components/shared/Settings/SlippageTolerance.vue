@@ -41,15 +41,15 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, ref } from 'vue';
 
 import { Components } from '@/consts';
 import { UiSize } from '@/consts/theme';
 import { lazyComponent } from '@/router';
-import store from '@/store';
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
 import { useTranslation } from '@/composables/useTranslation';
+import { useSettingsStore } from '@/stores/settings';
 import type { TabItem } from '@/types/tabs';
 
 import { DEFAULT_SLIPPAGE_TABS_LIST, getTabName } from './useSlippageToleranceModel';
@@ -64,6 +64,7 @@ defineOptions({
 
 const { t } = useTranslation();
 const { formatStringValue, getFPNumber } = useNumberFormatter();
+const settingsStore = useSettingsStore();
 
 const slippageToleranceFocused = ref(false);
 const slippageToleranceOpened = ref(true);
@@ -76,16 +77,16 @@ const slippageToleranceExtremeValues = {
 };
 
 const slippageTolerance = computed({
-  get: () => store.state.settings.slippageTolerance as string,
+  get: () => settingsStore.slippageTolerance,
   set: (value: string) => {
-    store.commit.settings.setSlippageTolerance(value);
+    settingsStore.setSlippageTolerance(value);
   },
 });
 
 const transactionDeadline = computed({
-  get: () => store.state.settings.transactionDeadline as number,
+  get: () => settingsStore.transactionDeadline,
   set: (value: number) => {
-    store.commit.settings.setTransactionDeadline(value);
+    settingsStore.setTransactionDeadline(value);
   },
 });
 

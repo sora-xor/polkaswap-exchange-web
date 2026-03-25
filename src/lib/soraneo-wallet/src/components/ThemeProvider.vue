@@ -6,15 +6,14 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { useStore } from 'vuex';
 
 import { Theme } from '@/consts';
-import { normalizeTheme } from '../store/settings/theme';
+import { useWalletStore } from '@/stores/wallet';
 
-const store = useStore();
+const walletStore = useWalletStore();
 
 const currentTheme = computed<Theme>(() => {
-  return normalizeTheme(store.getters['wallet/settings/libraryTheme']);
+  return walletStore.libraryTheme ?? Theme.Light;
 });
 </script>
 

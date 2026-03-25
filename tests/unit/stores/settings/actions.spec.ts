@@ -1,12 +1,8 @@
-import { api } from '@wallet/core';
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import axiosInstance from '@/api';
-import legacyStore from '@/store';
-import { setAppStoreOverride } from '@/utils/app-store';
+import { api } from '@/shims/wallet-api';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
-
-vi.mock('@/store', () => import('@stubs/store'));
 
 const walletApiStub = vi.hoisted(() => ({
   swap: { isALT: false },
@@ -26,6 +22,55 @@ const walletConstsStub = vi.hoisted(() => ({
   SoraNetwork: { Test: 'test', Prod: 'prod' },
 }));
 const walletTypesStub = vi.hoisted(() => ({}));
+const connectionStub = vi.hoisted(() => ({
+  open: vi.fn(),
+  close: vi.fn(),
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+  endpoint: '',
+  api: null,
+}));
+const walletStoreState = vi.hoisted(() => ({
+  moonpayApiKey: '',
+  theme: null,
+  currencySymbol: 'DAI',
+  exchangeRate: 1,
+  networkFees: {} as Record<string, string>,
+  blockNumber: 0,
+  shouldBalanceBeHidden: false,
+  isWalletLoaded: false,
+  allowFeePopup: true,
+  soraNetwork: null,
+  isMSTAvailable: false,
+  currency: 'dai',
+  filters: {
+    option: 'All',
+    verifiedOnly: false,
+    zeroBalance: false,
+  },
+  assetsFilter: 'All',
+  currencies: [] as Array<Record<string, unknown>>,
+  alerts: [] as Array<Record<string, unknown>>,
+  allowTopUpAlert: false,
+  indexers: {} as Record<string, unknown>,
+  indexerType: 'subquery',
+  addPriceAlert: vi.fn(),
+  editPriceAlert: vi.fn(),
+  removePriceAlert: vi.fn(),
+  setDepositNotifications: vi.fn((value: boolean) => {
+    walletStoreState.allowTopUpAlert = value;
+  }),
+  setFiatCurrency: vi.fn((value?: string) => {
+    walletStoreState.currency = value ?? 'dai';
+  }),
+  updateFiatExchangeRates: vi.fn(),
+  setAssetsFilter: vi.fn((value: string) => {
+    walletStoreState.assetsFilter = value;
+  }),
+  setFilterOptions: vi.fn((value: Record<string, unknown>) => {
+    walletStoreState.filters = value as typeof walletStoreState.filters;
+  }),
+}));
 
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
@@ -46,13 +91,12 @@ vi.mock('@wallet/core', async () => {
     WALLET_TYPES: walletTypesStub,
   });
 });
-vi.mock('@/utils/walletCore', () => ({
-  loadWalletCore: vi.fn(async () => ({
-    api: walletApiStub,
-    connection: {},
-    WALLET_CONSTS: walletConstsStub,
-    WALLET_TYPES: walletTypesStub,
-  })),
+vi.mock('@/shims/wallet-api', () => ({
+  api: walletApiStub,
+  connection: connectionStub,
+}));
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => walletStoreState,
 }));
 
 vi.mock('@/lang', () => ({
@@ -100,12 +144,23 @@ describe('settings store actions', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia());
-    setAppStoreOverride(legacyStore as any);
+    walletStoreState.currencySymbol = 'DAI';
+    walletStoreState.exchangeRate = 1;
+    walletStoreState.currency = 'dai';
+    walletStoreState.networkFees = {};
+    walletStoreState.allowTopUpAlert = false;
+    walletStoreState.assetsFilter = 'All';
+    walletStoreState.filters = {
+      option: 'All',
+      verifiedOnly: false,
+      zeroBalance: false,
+    };
+    walletStoreState.currencies = [];
+    walletStoreState.alerts = [];
   });
 
   afterEach(() => {
     vi.clearAllMocks();
-    setAppStoreOverride(null);
   });
 
   it('merges feature flags and toggles ALT flag', () => {
@@ -163,19 +218,62 @@ describe('settings store actions', () => {
     expect(settingsStore.adsArray[0]?.link).toBe('#/swap');
   });
 
-  it('reads fiat formatting values from legacy wallet settings', () => {
+  it('reads fiat formatting values from wallet state snapshots', () => {
     const settingsStore = useSettingsStore();
-    const store = legacyStore as any;
-
-    store.getters.wallet.settings.currencySymbol = '€';
-    store.getters.wallet.settings.exchangeRate = 1.33;
-    store.state.wallet.settings.currency = 'eur';
-    store.state.wallet.settings.networkFees = { swap: '123000000' };
+    walletStoreState.currency = 'eur';
+    walletStoreState.currencySymbol = '€';
+    walletStoreState.exchangeRate = 1.33;
+    walletStoreState.currencies = [{ key: 'eur', symbol: '€' }];
+    walletStoreState.networkFees = { swap: '123000000' };
 
     expect(settingsStore.currencySymbol).toBe('€');
     expect(settingsStore.exchangeRate).toBe(1.33);
     expect(settingsStore.currency).toBe('eur');
     expect(settingsStore.networkFees).toEqual({ swap: '123000000' });
+  });
+
+  it('forwards alert and deposit-notification mutations to the wallet Pinia facade', () => {
+    const settingsStore = useSettingsStore();
+    const alert = {
+      token: 'XOR',
+      price: '10',
+      type: 'raise',
+      once: true,
+      wasNotified: false,
+    };
+    const editableAlert = {
+      alert,
+      position: 1,
+    };
+
+    settingsStore.addPriceAlert(alert as any);
+    settingsStore.editPriceAlert(editableAlert as any);
+    settingsStore.removePriceAlert(1);
+    settingsStore.setDepositNotifications(true);
+
+    expect(walletStoreState.addPriceAlert).toHaveBeenCalledWith(alert);
+    expect(walletStoreState.editPriceAlert).toHaveBeenCalledWith(editableAlert);
+    expect(walletStoreState.removePriceAlert).toHaveBeenCalledWith(1);
+    expect(walletStoreState.setDepositNotifications).toHaveBeenCalledWith(true);
+  });
+
+  it('forwards wallet filter and exchange-rate mutations to the wallet Pinia facade', () => {
+    const settingsStore = useSettingsStore();
+    const filters = {
+      option: 'All',
+      verifiedOnly: true,
+      zeroBalance: false,
+    };
+
+    settingsStore.updateFiatExchangeRates({ usd: 1.5 } as any);
+    settingsStore.setAssetsFilter('Native' as any);
+    settingsStore.setFilterOptions(filters as any);
+    settingsStore.setFiatCurrency();
+
+    expect(walletStoreState.updateFiatExchangeRates).toHaveBeenCalledWith({ usd: 1.5 });
+    expect(walletStoreState.setAssetsFilter).toHaveBeenCalledWith('Native');
+    expect(walletStoreState.setFilterOptions).toHaveBeenCalledWith(filters);
+    expect(walletStoreState.setFiatCurrency).toHaveBeenCalledWith(undefined);
   });
 
   it('shows disclaimer by default for users who did not accept it yet', () => {

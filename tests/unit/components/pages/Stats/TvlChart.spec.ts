@@ -101,12 +101,17 @@ vi.mock('@/consts/snapshots', () => ({
   ],
 }));
 
-vi.mock('pinia', () => ({
-  storeToRefs: () => ({
-    exchangeRate: { value: 1 },
-    currencySymbol: { value: '$' },
-  }),
-}));
+vi.mock('pinia', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('pinia')>();
+
+  return {
+    ...actual,
+    storeToRefs: () => ({
+      exchangeRate: { value: 1 },
+      currencySymbol: { value: '$' },
+    }),
+  };
+});
 
 describe('TvlChart', () => {
   it('keeps chart skeleton loading when node is disconnected and data is unresolved', async () => {

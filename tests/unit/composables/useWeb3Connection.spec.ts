@@ -37,41 +37,24 @@ const subscribeOnEvmProviders = vi.hoisted(() => vi.fn(async () => vi.fn()));
 const setSelectProviderDialogVisibility = vi.hoisted(() => vi.fn());
 const setSelectNetworkDialogVisibility = vi.hoisted(() => vi.fn());
 
-vi.mock('@/store', () => ({
-  default: {
-    getters: {
-      web3: {
-        appEvmProviders: [],
-        isValidNetwork: true,
-      },
-    },
-    dispatch: {
-      web3: {
-        subscribeOnEvmProviders,
-      },
-    },
-    commit: {
-      web3: {
-        setSelectProviderDialogVisibility,
-        setSelectNetworkDialogVisibility,
-      },
-    },
-  },
-}));
-
 const web3StorePiniaMock = vi.hoisted(() => ({
+  appEvmProviders: [],
   evmProvider: null,
   evmProviderLoading: null,
   evmAddress: '0x0',
   networkSelected: null,
   networkType: null,
   selectedNetworkData: null,
+  isValidNetwork: true,
   subAccount: {
     address: '',
     name: '',
     source: '',
   },
   selectProviderDialogVisibility: false,
+  subscribeOnEvmProviders,
+  setSelectProviderDialogVisibility,
+  setSelectNetworkDialogVisibility,
 }));
 
 vi.mock('@/stores/web3', () => ({
@@ -85,12 +68,14 @@ describe('useWeb3Connection', () => {
     setActivePinia(createPinia());
     vi.clearAllMocks();
     walletConnectMock.evmAddress.value = '';
+    web3StorePiniaMock.appEvmProviders = [];
     web3StorePiniaMock.evmProvider = null;
     web3StorePiniaMock.evmProviderLoading = null;
     web3StorePiniaMock.evmAddress = '';
     web3StorePiniaMock.networkSelected = null;
     web3StorePiniaMock.networkType = null;
     web3StorePiniaMock.selectedNetworkData = null;
+    web3StorePiniaMock.isValidNetwork = true;
     web3StorePiniaMock.subAccount = {
       address: '',
       name: '',

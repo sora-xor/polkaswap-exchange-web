@@ -42,11 +42,23 @@ const expectSwapSettingsClickable = async (page: Page): Promise<void> => {
   await expect(swapSettingsDialog).toHaveCount(0);
 };
 
+const callWeb3Store = async (page: Page, action: string, payload?: unknown): Promise<void> => {
+  await page.evaluate(
+    ({ action, payload }) => {
+      const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
+      const web3Store = pinia?._s?.get('web3');
+
+      web3Store?.[action]?.(payload);
+    },
+    { action, payload }
+  );
+};
+
 const injectSubNodeDialogContext = async (page: Page): Promise<void> => {
   await page.evaluate(() => {
-    const store = (window as Record<string, any>).__PS_APP_STORE__;
     const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
     const bridgeStore = pinia?._s?.get('bridge');
+    const web3Store = pinia?._s?.get('web3');
 
     const subConnection = {
       nodeIsConnected: true,
@@ -69,9 +81,9 @@ const injectSubNodeDialogContext = async (page: Page): Promise<void> => {
       };
     }
 
-    store.commit.web3.setNetworkType('Sub');
-    store.commit.web3.setSelectedNetwork('Kusama');
-    store.commit.web3.setSelectSubNodeDialogVisibility(true);
+    web3Store?.setNetworkType?.('Sub');
+    web3Store?.setSelectedNetwork?.('Kusama');
+    web3Store?.setSelectSubNodeDialogVisibility?.(true);
   });
 };
 
@@ -83,10 +95,7 @@ test('tears down bridge provider dialog on hash churn and preserves swap clickab
   const consoleErrors = trackConsole(page);
   await openBridge(page);
 
-  await page.evaluate(() => {
-    const store = (window as Record<string, any>).__PS_APP_STORE__;
-    store.commit.web3.setSelectProviderDialogVisibility(true);
-  });
+  await callWeb3Store(page, 'setSelectProviderDialogVisibility', true);
 
   const providerDialog = page
     .getByRole('dialog')
@@ -105,10 +114,7 @@ test('tears down bridge network dialog on hash churn and preserves swap clickabi
   const consoleErrors = trackConsole(page);
   await openBridge(page);
 
-  await page.evaluate(() => {
-    const store = (window as Record<string, any>).__PS_APP_STORE__;
-    store.commit.web3.setSelectNetworkDialogVisibility(true);
-  });
+  await callWeb3Store(page, 'setSelectNetworkDialogVisibility', true);
 
   const networkDialog = page.getByText(/bridge sora network with:/i).first();
   await expect(networkDialog).toBeVisible();
@@ -124,10 +130,7 @@ test('tears down SORA account dialog on hash churn and preserves swap clickabili
   const consoleErrors = trackConsole(page);
   await openBridge(page);
 
-  await page.evaluate(() => {
-    const store = (window as Record<string, any>).__PS_APP_STORE__;
-    store.commit.web3.setSoraAccountDialogVisibility(true);
-  });
+  await callWeb3Store(page, 'setSoraAccountDialogVisibility', true);
 
   const soraAccountDialog = page
     .getByRole('dialog')
@@ -146,10 +149,7 @@ test('tears down bridge sub-account dialog on hash churn and preserves swap clic
   const consoleErrors = trackConsole(page);
   await openBridge(page);
 
-  await page.evaluate(() => {
-    const store = (window as Record<string, any>).__PS_APP_STORE__;
-    store.commit.web3.setSubAccountDialogVisibility(true);
-  });
+  await callWeb3Store(page, 'setSubAccountDialogVisibility', true);
 
   const subAccountDialog = page
     .getByRole('dialog')
@@ -205,10 +205,7 @@ test('keeps bridge asset selector visibility decoupled from sub-account dialog v
   await expect(assetDialog).toHaveCount(0);
   await expect(subAccountDialog).toHaveCount(0);
 
-  await page.evaluate(() => {
-    const store = (window as Record<string, any>).__PS_APP_STORE__;
-    store.commit.web3.setSubAccountDialogVisibility(true);
-  });
+  await callWeb3Store(page, 'setSubAccountDialogVisibility', true);
   await expect(subAccountDialog).toBeVisible();
 
   await page.keyboard.press('Escape');
@@ -232,37 +229,25 @@ test('bridge dialogs reopen correctly after bridge-swap-bridge hash churn', asyn
   }> = [
     {
       open: async () => {
-        await page.evaluate(() => {
-          const store = (window as Record<string, any>).__PS_APP_STORE__;
-          store.commit.web3.setSelectNetworkDialogVisibility(true);
-        });
+        await callWeb3Store(page, 'setSelectNetworkDialogVisibility', true);
       },
       dialog: page.getByText(/bridge sora network with:/i),
     },
     {
       open: async () => {
-        await page.evaluate(() => {
-          const store = (window as Record<string, any>).__PS_APP_STORE__;
-          store.commit.web3.setSoraAccountDialogVisibility(true);
-        });
+        await callWeb3Store(page, 'setSoraAccountDialogVisibility', true);
       },
       dialog: page.getByRole('dialog').filter({ hasText: /learn more about wallet connection/i }),
     },
     {
       open: async () => {
-        await page.evaluate(() => {
-          const store = (window as Record<string, any>).__PS_APP_STORE__;
-          store.commit.web3.setSelectProviderDialogVisibility(true);
-        });
+        await callWeb3Store(page, 'setSelectProviderDialogVisibility', true);
       },
       dialog: page.getByRole('dialog').filter({ hasText: /connect ethereum wallet/i }),
     },
     {
       open: async () => {
-        await page.evaluate(() => {
-          const store = (window as Record<string, any>).__PS_APP_STORE__;
-          store.commit.web3.setSubAccountDialogVisibility(true);
-        });
+        await callWeb3Store(page, 'setSubAccountDialogVisibility', true);
       },
       dialog: page.getByRole('dialog').filter({ hasText: /learn more about wallet connection/i }),
     },

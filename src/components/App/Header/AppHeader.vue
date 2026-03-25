@@ -47,8 +47,7 @@ import { Components, PageNames } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { Theme } from '@/consts/theme';
 import { goTo, lazyComponent } from '@/router';
-import store from '@/store';
-import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
+import { useSettingsStore } from '@/stores/settings';
 
 import AppAccountButton from './AppAccountButton.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
@@ -77,12 +76,13 @@ const emit = defineEmits<{
 const { t } = useTranslation();
 const { navigateToWallet } = useInternalConnect();
 const route = useRoute();
+const settingsStore = useSettingsStore();
 
 const xor = XOR;
 const eth = ETH;
 
-const screenBreakpointClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
+const screenBreakpointClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
+const libraryTheme = computed(() => (settingsStore.libraryTheme as Theme | null) ?? Theme.LIGHT);
 
 const isMobile = computed(() => screenBreakpointClass.value === BreakpointClass.Mobile);
 const isAnyMobile = computed(

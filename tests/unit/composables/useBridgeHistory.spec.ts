@@ -17,11 +17,6 @@ vi.mock('@/router', () => ({
   },
 }));
 
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: {},
-}));
-
 vi.mock('@/stores/router', () => ({
   useRouterStore: () => ({ prev: null }),
 }));

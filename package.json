@@ -101,15 +101,13 @@
     "nft.storage": "^7.2.0",
     "pinia": "3.0.4",
     "rxjs": "^7.8.2",
-    "subscriptions-transport-ws": "^0.11.0",
     "vue": "3.5.30",
     "vue-echarts": "^8.0.1",
     "vue-i18n": "^11.3.0",
     "vue-observe-visibility": "^2.0.0-alpha.1",
     "vue-plugin-load-script": "^2.1.1",
     "vue-router": "^4.6.4",
-    "vuedraggable": "^4.1.0",
-    "vuex": "^4.1.0"
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@electron-toolkit/preload": "^3.0.2",

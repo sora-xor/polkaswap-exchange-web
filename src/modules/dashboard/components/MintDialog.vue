@@ -57,7 +57,8 @@
 <script lang="ts" setup>
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, components } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, nextTick, ref, watch } from 'vue';
 
 import { Components, ObjectInit, ZeroStringValue } from '@/consts';
@@ -66,7 +67,8 @@ import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
 import type { Nullable } from '@/types/common';
 
 import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
@@ -92,6 +94,8 @@ const props = withDefaults(
 const { t } = useTranslation();
 const { loading, withNotifications } = useTransaction();
 const { formatCodecNumber, getFiatAmountByCodecString, getFPNumberFromCodec } = useFormattedAmount();
+const settingsStore = useSettingsStore();
+const assetsStore = useAssetsStore();
 
 const isVisible = defineModel<boolean>('visible', { default: false });
 const value = ref('');
@@ -102,8 +106,8 @@ const xorSymbol = XOR.symbol;
 const asset = computed(() => props.asset);
 const editableFiat = computed(() => props.editableFiat);
 
-const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject | undefined);
-const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject | undefined);
+const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
 
 const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.Mint] ?? ZeroStringValue);
 const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));

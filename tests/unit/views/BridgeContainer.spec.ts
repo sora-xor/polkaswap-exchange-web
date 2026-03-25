@@ -77,69 +77,6 @@ vi.mock('@/router', () => ({
   ),
 }));
 
-vi.mock('@/utils/app-store', () => ({
-  requireAppStore: () => ({
-    getters: {
-      bridge: {
-        get externalAccount() {
-          return externalAccountRef.value;
-        },
-      },
-      web3: {
-        get isValidNetwork() {
-          return true;
-        },
-      },
-    },
-  }),
-}));
-
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: {
-    getters: {
-      web3: {
-        get selectedNetwork() {
-          return selectedNetworkRef.value;
-        },
-        get subAccount() {
-          return subAccountRef.value;
-        },
-      },
-      bridge: {
-        get externalAccount() {
-          return externalAccountRef.value;
-        },
-      },
-    },
-    state: {
-      bridge: {
-        get subBridgeConnector() {
-          return subBridgeConnectorRef.value;
-        },
-        get isSignTxDialogVisible() {
-          return isSignTxDialogVisibleRef.value;
-        },
-      },
-    },
-    dispatch: {
-      web3: {
-        getSupportedApps: (...args: unknown[]) => getSupportedAppsSpy(...args),
-        restoreSelectedNetwork: (...args: unknown[]) => restoreSelectedNetworkSpy(...args),
-      },
-      bridge: {
-        updateExternalBalance: (...args: unknown[]) => updateExternalBalanceSpy(...args),
-        subscribeOnBlockUpdates: (...args: unknown[]) => subscribeOnBlockUpdatesSpy(...args),
-        updateOutgoingMaxLimit: (...args: unknown[]) => updateOutgoingMaxLimitSpy(...args),
-        resetBridgeForm: (...args: unknown[]) => resetBridgeFormSpy(...args),
-      },
-    },
-    commit: {
-      bridge: {},
-    },
-  },
-}));
-
 vi.mock('@/stores/bridge', () => ({
   useBridgeStore: () => bridgeStoreMock,
 }));
@@ -161,6 +98,8 @@ vi.mock('@/stores/web3', () => ({
     get selectSubNodeDialogVisibility() {
       return false;
     },
+    getSupportedApps: (...args: unknown[]) => getSupportedAppsSpy(...args),
+    restoreSelectedNetwork: (...args: unknown[]) => restoreSelectedNetworkSpy(...args),
   }),
 }));
 

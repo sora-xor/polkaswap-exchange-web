@@ -193,15 +193,18 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { SortDirection } from '@soramitsu-ui/ui/types';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, HundredNumber } from '@/consts';
+import { Components, FontSizeRate, FontWeightRate, HundredNumber, PaginationButton } from '@/consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
+import { useVaultStore } from '@/stores/vault';
+import { useWalletStore } from '@/stores/wallet';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral } from '@sora-substrate/sdk/build/kensetsu/types';
@@ -234,8 +237,6 @@ const FormattedAmount = components.FormattedAmount;
 const HistoryPagination = components.HistoryPagination;
 const SearchInput = components.SearchInput;
 
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
-const FontWeightRate = WALLET_CONSTS.FontWeightRate;
 const ZERO = FPNumber.ZERO;
 
 const props = defineProps<{
@@ -252,12 +253,16 @@ const teardownScrollSync = ref<Nullable<FnWithoutArgs>>(null);
 
 const { getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
 const { t } = useTranslation();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
+const assetsStore = useAssetsStore();
+const vaultStore = useVaultStore();
 
-const collaterals = computed(() => store.state.vault.collaterals as Record<string, Collateral>);
-const percentFormat = computed(() => store.state.settings.percentFormat as Nullable<Intl.NumberFormat>);
-const collapsed = computed(() => store.state.settings.menuCollapsed ?? false);
-const isLoggedIn = computed(() => store.getters.wallet.account.isLoggedIn as boolean);
-const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
+const collaterals = computed(() => vaultStore.collaterals);
+const percentFormat = computed(() => settingsStore.percentFormat as Nullable<Intl.NumberFormat>);
+const collapsed = computed(() => settingsStore.menuCollapsed);
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
+const getAsset = assetsStore.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
 
 const order = ref<SortDirection | ''>(SortDirection.DESC);
 const property = ref<string>('totalDebtValue');
@@ -406,15 +411,15 @@ const sortState = computed(() => ({
   property: property.value,
 }));
 
-const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
+const handlePaginationClick = (button: PaginationButton) => {
   switch (button) {
-    case WALLET_CONSTS.PaginationButton.Prev:
+    case PaginationButton.Prev:
       currentPage.value = Math.max(currentPage.value - 1, 1);
       break;
-    case WALLET_CONSTS.PaginationButton.Next:
+    case PaginationButton.Next:
       currentPage.value = Math.min(currentPage.value + 1, lastPage.value);
       break;
-    case WALLET_CONSTS.PaginationButton.Last:
+    case PaginationButton.Last:
       currentPage.value = lastPage.value;
       break;
     default:
@@ -543,7 +548,7 @@ $min_breakpoint_large-mobile: $breakpoint_large-mobile - 1px;
     > :deep(.search.search-input) {
       min-height: 58px;
       border-radius: 24px;
-      padding: $inner-spacing-small $inner-spacing-medium;
+      padding: 8px 16px;
       background-color: var(--s-color-utility-surface);
       box-shadow:
         1px 1px 5px 0 var(--s-shadow-color-light),
@@ -561,5 +566,14 @@ $min_breakpoint_large-mobile: $breakpoint_large-mobile - 1px;
       padding: 0 26px;
     }
   }
+}
+
+:global(:root[data-theme='dark'] .collaterals-search > .search.search-input),
+:global(:root[design-system-theme='dark'] .collaterals-search > .search.search-input),
+:global(.sora-theme-provider[data-theme='dark'] .collaterals-search > .search.search-input),
+:global(.sora-theme-provider[design-system-theme='dark'] .collaterals-search > .search.search-input) {
+  background-color: var(--s-color-base-dark-background);
+  border-color: var(--s-color-base-border-primary);
+  box-shadow: var(--s-shadow-element);
 }
 </style>

@@ -20,11 +20,12 @@
 </template>
 
 <script lang="ts" setup>
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
+import { FontSizeRate } from '@/shims/wallet-consts';
 import type { RewardsAmountHeaderItem } from '@/types/rewards';
 
 import type { FPNumber } from '@sora-substrate/math';
@@ -45,8 +46,6 @@ const props = withDefaults(
     items: () => [],
   }
 );
-
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
 const { getFPNumberFiatAmountByFPNumber, getFPNumber, Zero } = useFormattedAmount();
 const { formatStringValue } = useNumberFormatter();

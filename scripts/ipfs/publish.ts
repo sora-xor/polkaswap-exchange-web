@@ -39,6 +39,7 @@ const FALLBACK_BUILD_ARGS = ['build'] as const;
 
 const VUE3_BUILD_SCRIPT_CANDIDATES = [/^build(?::|-)vue3$/i, /^build.*vue3$/i];
 const PERMISSION_DENIED_PATTERN = /(EPERM|EACCES|permission denied|Operation not permitted)/i;
+const NO_SPACE_LEFT_PATTERN = /(ENOSPC|no space left on device|disk full)/i;
 const GLOB_PATTERN = /[*?[{\]]/;
 
 type RunCommandOptions = Omit<SpawnSyncOptionsWithStringEncoding, 'encoding'> & {
@@ -46,6 +47,9 @@ type RunCommandOptions = Omit<SpawnSyncOptionsWithStringEncoding, 'encoding'> & 
   capture?: boolean;
   silent?: boolean;
 };
+
+type CommandResult = Pick<SpawnSyncReturns<string>, 'stdout' | 'stderr'>;
+type RunCommandLike = (command: string, args: string[], options?: RunCommandOptions) => CommandResult;
 
 function formatCommand(command: string, args: string[]): string {
   return [command, ...args].join(' ').trim();
@@ -175,14 +179,14 @@ export function collectMissingOutputs(
 }
 
 /**
- * Determines whether an error was caused by filesystem permission issues.
+ * Determines whether an error matches a known filesystem/process error pattern.
  */
-export function isPermissionError(error: unknown): boolean {
+function matchesErrorPattern(error: unknown, pattern: RegExp): boolean {
   if (!(error instanceof Error)) {
     return false;
   }
 
-  if (PERMISSION_DENIED_PATTERN.test(error.message)) {
+  if (pattern.test(error.message)) {
     return true;
   }
 
@@ -192,22 +196,36 @@ export function isPermissionError(error: unknown): boolean {
   }
 
   if (typeof cause === 'string') {
-    return PERMISSION_DENIED_PATTERN.test(cause);
+    return pattern.test(cause);
   }
 
   if (cause instanceof Error) {
-    return PERMISSION_DENIED_PATTERN.test(cause.message);
+    return pattern.test(cause.message);
   }
 
   if (typeof cause === 'object') {
     const { stdout, stderr } = cause as Partial<SpawnSyncReturns<string>>;
     const combined = `${stdout ?? ''}\n${stderr ?? ''}`;
-    if (PERMISSION_DENIED_PATTERN.test(combined)) {
+    if (pattern.test(combined)) {
       return true;
     }
   }
 
   return false;
+}
+
+/**
+ * Determines whether an error was caused by filesystem permission issues.
+ */
+export function isPermissionError(error: unknown): boolean {
+  return matchesErrorPattern(error, PERMISSION_DENIED_PATTERN);
+}
+
+/**
+ * Determines whether an error was caused by disk or datastore exhaustion.
+ */
+export function isNoSpaceLeftError(error: unknown): boolean {
+  return matchesErrorPattern(error, NO_SPACE_LEFT_PATTERN);
 }
 
 /**
@@ -379,15 +397,93 @@ function createTestnetDistClone(): { distPath: string; cleanup: () => void } {
   };
 }
 
-function publishDirectoryToIpfs(directory: string): string {
-  const { stdout } = runCommand('ipfs', ['add', '-Qr', directory], { capture: true });
-  const cid = stdout.trim();
+function resolveIpfsRepoPath(env: NodeJS.ProcessEnv = process.env): string | null {
+  const candidates = [
+    env.IPFS_PATH,
+    env.HOME ? join(env.HOME, '.ipfs') : null,
+    env.USERPROFILE ? join(env.USERPROFILE, '.ipfs') : null,
+  ];
+
+  for (const candidate of candidates) {
+    if (candidate && existsSync(candidate)) {
+      return candidate;
+    }
+  }
+
+  return candidates.find((candidate): candidate is string => Boolean(candidate)) ?? null;
+}
+
+function extractCid(result: CommandResult, directory: string): string {
+  const cid = result.stdout.trim();
 
   if (!cid) {
     throw new Error(`IPFS did not return a CID for ${directory}. Check the command output above for details.`);
   }
 
   return cid;
+}
+
+function createNoSpaceRecoveryMessage(directory: string, repoPath: string | null, attemptedGc: boolean): string {
+  const retryMessage = attemptedGc
+    ? 'The script ran `ipfs repo gc` and retried `ipfs add -Qr` once, but the publish still failed.'
+    : 'Automatic recovery via `ipfs repo gc` failed before the publish could be retried.';
+
+  return [
+    `Local IPFS repository ran out of space while publishing ${directory}.`,
+    retryMessage,
+    repoPath ? `Repository: ${repoPath}` : null,
+    'Free disk space or prune unused IPFS data, then rerun `yarn ipfs:publish`.',
+    'Helpful checks: `ipfs repo gc`, `du -sh ~/.ipfs`, `df -h ~/.ipfs`.',
+  ]
+    .filter((line): line is string => Boolean(line))
+    .join('\n');
+}
+
+/**
+ * Publishes a directory to the local IPFS repository, retrying once after
+ * garbage collection when the datastore runs out of space.
+ */
+export function publishDirectoryToIpfs(
+  directory: string,
+  deps: {
+    runCommand?: RunCommandLike;
+    resolveRepoPath?: () => string | null;
+  } = {}
+): string {
+  const run = deps.runCommand ?? runCommand;
+  const repoPath = deps.resolveRepoPath?.() ?? resolveIpfsRepoPath();
+
+  try {
+    return extractCid(run('ipfs', ['add', '-Qr', directory], { capture: true }), directory);
+  } catch (error) {
+    if (!isNoSpaceLeftError(error)) {
+      throw error;
+    }
+
+    console.warn(
+      [
+        `IPFS reported no space left on device while publishing ${directory}.`,
+        'Running `ipfs repo gc` and retrying `ipfs add -Qr` once...',
+        repoPath ? `Repository: ${repoPath}` : null,
+      ]
+        .filter((line): line is string => Boolean(line))
+        .join('\n')
+    );
+
+    try {
+      run('ipfs', ['repo', 'gc'], { capture: true, silent: true });
+    } catch (gcError) {
+      throw new Error(createNoSpaceRecoveryMessage(directory, repoPath, false), { cause: gcError });
+    }
+
+    try {
+      const cid = extractCid(run('ipfs', ['add', '-Qr', directory], { capture: true }), directory);
+      console.warn('IPFS publish recovered after `ipfs repo gc`.');
+      return cid;
+    } catch (retryError) {
+      throw new Error(createNoSpaceRecoveryMessage(directory, repoPath, true), { cause: retryError });
+    }
+  }
 }
 
 /**

@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -53,10 +53,8 @@ import { useTransaction } from '@/composables/useTransaction';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 import { soraStakingLazyComponent } from '@/modules/staking/router';
 import { SoraStakingComponents, ValidatorsListMode } from '@/modules/staking/sora/consts';
-import store from '@/store';
 import { hasInsufficientXorForFee } from '@/utils';
 
-import type { MyStakingInfo } from '@sora-substrate/sdk/build/staking/types';
 import type { CodecString } from '@sora-substrate/sdk';
 
 const props = defineProps<{
@@ -81,6 +79,8 @@ const {
   xor,
   formatCodecNumber,
   nominate,
+  getNominateNetworkFee,
+  setStakingInfo,
 } = useSoraStaking();
 
 const { loading, withNotifications, withApi } = useTransaction({
@@ -165,10 +165,6 @@ const confirmDisabled = computed(() => {
 
 const buttonLoading = computed(() => Boolean(props.parentLoading) || loading.value);
 
-const setStakingInfo = (info: MyStakingInfo) => {
-  store.commit.staking.setStakingInfo(info);
-};
-
 const setMode = (nextMode: ValidatorsListMode) => {
   mode.value = nextMode;
   isSelectingEditingMode.value = false;
@@ -180,7 +176,7 @@ const setMode = (nextMode: ValidatorsListMode) => {
 const updateNominateFee = async () => {
   try {
     await withApi(async () => {
-      nominateNetworkFee.value = await store.dispatch.staking.getNominateNetworkFee();
+      nominateNetworkFee.value = await getNominateNetworkFee();
     });
   } catch (error) {
     console.error('Failed to fetch nominate network fee', error);

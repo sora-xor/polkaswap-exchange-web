@@ -5,16 +5,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const networkShortName = ref('SORA');
 const commitSpy = vi.fn();
 
-const storeMock = {
-  commit: {
-    web3: {
-      setSelectNetworkDialogVisibility: commitSpy,
-    },
-  },
-};
-
-vi.mock('@/store', () => ({
-  default: storeMock,
+vi.mock('@/stores/web3', () => ({
+  useWeb3Store: () => ({
+    setSelectNetworkDialogVisibility: commitSpy,
+  }),
 }));
 
 vi.mock('@/composables/useTranslation', () => ({

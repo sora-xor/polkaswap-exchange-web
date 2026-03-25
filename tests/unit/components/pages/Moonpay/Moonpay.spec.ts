@@ -26,18 +26,24 @@ async function createContext() {
     },
   });
 
-  const store = {
-    state,
-    getters: {
-      libraryTheme: 'light',
-      wallet: {
-        account: {
-          account: { address: '5FAKEADDRESS' },
-          isLoggedIn: true,
-        },
-      },
+  const moonpayStore = reactive({
+    get transactions() {
+      return state.moonpay.transactions;
     },
-  };
+    get pollingTimestamp() {
+      return state.moonpay.pollingTimestamp;
+    },
+    get dialogVisibility() {
+      return state.moonpay.dialogVisibility;
+    },
+    setDialogVisibility: vi.fn((flag: boolean) => {
+      state.moonpay.dialogVisibility = flag;
+    }),
+  });
+  const settingsStore = reactive({ libraryTheme: 'light' });
+  const walletStore = reactive({
+    account: { address: '5FAKEADDRESS' },
+  });
 
   const isLoggedInRef = ref(true);
   const moonpayApiMock = {
@@ -62,6 +68,7 @@ async function createContext() {
     state.moonpay.dialogVisibility = true;
     state.settings.language = 'en';
     isLoggedInRef.value = true;
+    moonpayStore.setDialogVisibility.mockClear();
     moonpayApiMock.createWidgetUrl.mockClear();
     initMoonpayApiMock.mockClear();
     showNotificationMock.mockClear();
@@ -75,7 +82,9 @@ async function createContext() {
 
   return {
     state,
-    store,
+    moonpayStore,
+    settingsStore,
+    walletStore,
     isLoggedInRef,
     moonpayApiMock,
     initMoonpayApiMock,
@@ -98,10 +107,24 @@ async function getContext() {
   return shared.ctx;
 }
 
-vi.mock('@/store', async () => {
+vi.mock('@/stores/moonpay', async () => {
   const ctx = await getContext();
   return {
-    default: ctx.store,
+    useMoonpayStore: () => ctx.moonpayStore,
+  };
+});
+
+vi.mock('@/stores/settings', async () => {
+  const ctx = await getContext();
+  return {
+    useSettingsStore: () => ctx.settingsStore,
+  };
+});
+
+vi.mock('@/stores/wallet', async () => {
+  const ctx = await getContext();
+  return {
+    useWalletStore: () => ctx.walletStore,
   };
 });
 
@@ -218,7 +241,7 @@ describe('Moonpay.vue', () => {
     expect(ctx.initMoonpayApiMock).toHaveBeenCalled();
     expect(ctx.moonpayApiMock.createWidgetUrl).toHaveBeenCalledWith({
       colorCode: '#112233',
-      externalTransactionId: ctx.store.getters.wallet.account.account.address,
+      externalTransactionId: ctx.walletStore.account.address,
       language: 'en',
     });
     expect((wrapper.vm as unknown as { widgetUrl: string }).widgetUrl).toBe('https://widget.example');

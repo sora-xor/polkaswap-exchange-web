@@ -1,18 +1,12 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      wallet: {
-        account: {
-          fiatPriceObject: {
-            asset: '2',
-          },
-        },
-      },
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => ({
+    fiatPriceObject: {
+      asset: '2',
     },
-  },
+  }),
 }));
 
 vi.mock('@/composables/useNumberFormatter', () => ({

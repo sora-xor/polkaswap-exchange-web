@@ -1,10 +1,11 @@
 import type { Nullable } from '@/types/common';
+import { loadWalletCore } from '@/utils/walletCore';
 
 let projectIdPromise: Promise<string> | null = null;
 
 const resolveProjectId = async (): Promise<string> => {
   if (!projectIdPromise) {
-    projectIdPromise = import('@wallet/core').then(({ WC }) => {
+    projectIdPromise = loadWalletCore().then(({ WC }) => {
       const projectId = (WC as Nullable<{ WcProvider?: { projectId?: string } }>)?.WcProvider?.projectId;
 
       if (!projectId) {

@@ -25,14 +25,14 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { WALLET_CONSTS } from '@wallet';
 
+import type { ExplorerLink } from '@/consts';
 import { useTranslation } from '@/composables/useTranslation';
 import { toSafeExternalLink } from '@/utils/externalLinks';
 
 const props = withDefaults(
   defineProps<{
-    links?: Array<WALLET_CONSTS.ExplorerLink>;
+    links?: Array<ExplorerLink>;
   }>(),
   {
     links: () => [],
@@ -50,7 +50,7 @@ const explorerLabels: Record<string, string> = {
 };
 
 const links = computed(() =>
-  props.links.reduce<Array<WALLET_CONSTS.ExplorerLink>>((result, link) => {
+  props.links.reduce<Array<ExplorerLink>>((result, link) => {
     const href = toSafeExternalLink(link?.value);
     if (href) {
       result.push({ ...link, value: href });

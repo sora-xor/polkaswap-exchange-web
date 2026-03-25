@@ -180,7 +180,7 @@
 <script lang="ts" setup>
 import { KnownSymbols as KnownSymbolsEnum } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, onBeforeUnmount, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 
@@ -191,7 +191,7 @@ import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { useWeb3Connection } from '@/composables/useWeb3Connection';
-import { Components, PageNames, ZeroStringValue } from '@/consts';
+import { Components, type ExplorerLink, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { useBridgeStore } from '@/stores/bridge';
 import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
@@ -219,7 +219,7 @@ type LinkData = {
   formatted: string;
   placeholder: string;
   tooltip: string;
-  links: Array<WALLET_CONSTS.ExplorerLink>;
+  links: Array<ExplorerLink>;
 };
 
 defineOptions({
@@ -523,7 +523,7 @@ function sortLinksByTxDirection(outgoingOrderedLinks: Array<LinkData | null>): L
 
 function getLinkData(
   value: string,
-  links: Array<WALLET_CONSTS.ExplorerLink>,
+  links: Array<ExplorerLink>,
   name: string,
   networkId?: Nullable<BridgeNetworkId>
 ): LinkData | null {
@@ -574,7 +574,7 @@ const txAccountLink = computed(() => {
 });
 
 function prepareLink(
-  link: WALLET_CONSTS.ExplorerLink | undefined,
+  link: ExplorerLink | undefined,
   externalNetworkId?: Nullable<BridgeNetworkId>,
   isTxLink = true
 ): { href: string; title: string } | null {

@@ -78,7 +78,7 @@ const storeStub = {
           : null,
     },
     vault: {
-      getBorrowTax: () => () => 0,
+      getBorrowTax: () => 0,
     },
   },
 };
@@ -124,9 +124,53 @@ vi.mock('@/modules/vault/router', () => ({
   vaultLazyComponent: () => createSlotPassthroughStub(),
 }));
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/wallet', () => ({
   __esModule: true,
-  default: storeStub,
+  useWalletStore: () => ({
+    get isLoggedIn() {
+      return isLoggedInRef.value;
+    },
+  }),
+}));
+
+vi.mock('@/stores/assets', () => ({
+  __esModule: true,
+  useAssetsStore: () => ({
+    assetDataByAddress: storeStub.getters.assets.assetDataByAddress,
+  }),
+}));
+
+vi.mock('@/stores/settings', () => ({
+  __esModule: true,
+  useSettingsStore: () => ({
+    get percentFormat() {
+      return storeStub.state.settings.percentFormat;
+    },
+  }),
+}));
+
+vi.mock('@/stores/vault', () => ({
+  __esModule: true,
+  useVaultStore: () => ({
+    get accountVaults() {
+      return storeStub.state.vault.accountVaults;
+    },
+    get closedAccountVaults() {
+      return storeStub.state.vault.closedAccountVaults;
+    },
+    get collaterals() {
+      return storeStub.state.vault.collaterals;
+    },
+    get averageCollateralPrices() {
+      return storeStub.state.vault.averageCollateralPrices;
+    },
+    get liquidationPenalty() {
+      return storeStub.state.vault.liquidationPenalty;
+    },
+    get getBorrowTax() {
+      return storeStub.getters.vault.getBorrowTax;
+    },
+  }),
 }));
 
 vi.mock('@/composables/useTranslation', () => ({

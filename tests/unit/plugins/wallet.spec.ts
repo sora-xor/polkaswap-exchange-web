@@ -28,7 +28,7 @@ const { localStorageMock } = vi.hoisted(() => {
 const dialogBaseComponent = { name: 'DialogBaseMock' };
 const walletPlugin = vi.fn();
 
-vi.mock('@wallet/internal', () => ({
+vi.mock('@/shims/wallet', () => ({
   __esModule: true,
   default: walletPlugin,
   components: {
@@ -40,11 +40,6 @@ vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });
-
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: {},
-}));
 
 describe('wallet plugin', () => {
   beforeEach(() => {
@@ -74,22 +69,27 @@ describe('wallet plugin', () => {
 
     await install(app, { pinia: {} as any });
 
-    expect(app.use).toHaveBeenCalledWith(walletPlugin, expect.objectContaining({ store: expect.any(Object) }));
+    expect(app.use).toHaveBeenCalledWith(walletPlugin, expect.any(Object));
+    expect(app.use.mock.calls[0]?.[1]?.store).toBeUndefined();
     expect(app.component).toHaveBeenCalledWith('DialogBase', dialogBaseComponent);
     expect(app.component).toHaveBeenCalledWith('dialog-base', dialogBaseComponent);
   });
 
-  it('uses the provided store in plugin options', async () => {
+  it('does not forward legacy store options into the wallet plugin', async () => {
     const app: any = {
       use: vi.fn(),
       component: vi.fn(),
     };
-    const explicitStore = { commit: { wallet: {} } };
+    const compatStore = {
+      state: { wallet: {} },
+      getters: {},
+      commit: vi.fn(),
+      dispatch: vi.fn(),
+    };
 
     const { install } = await import('@/plugins/wallet');
 
-    await install(app, { store: explicitStore, pinia: {} as any });
-
-    expect(app.use).toHaveBeenCalledWith(walletPlugin, expect.objectContaining({ store: explicitStore }));
+    await install(app, { store: compatStore, pinia: {} as any } as any);
+    expect(app.use.mock.calls[0]?.[1]?.store).toBeUndefined();
   });
 });

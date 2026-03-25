@@ -1,10 +1,11 @@
 import { TransactionStatus, Operation } from '@sora-substrate/sdk';
 import findLast from 'lodash/fp/findLast';
 import { defineComponent } from 'vue';
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../../api';
-import { delay, beforeTransactionSign } from '../../util';
+import { delay } from '../../util';
 
 import LoadingMixin from './LoadingMixin';
 import OperationsMixin from './OperationsMixin';
@@ -15,15 +16,23 @@ import type { HistoryItem } from '@sora-substrate/sdk';
 export default defineComponent({
   mixins: [LoadingMixin, OperationsMixin],
   computed: {
-    ...mapState('wallet/settings', ['shouldBalanceBeHidden']),
-    ...mapGetters('wallet/account', ['accountAssetsAddressTable']),
+    shouldBalanceBeHidden(this: any) {
+      return useWalletStore(this.$pinia).shouldBalanceBeHidden;
+    },
+    accountAssetsAddressTable(this: any) {
+      return useWalletStore(this.$pinia).accountAssetsAddressTable;
+    },
   },
   methods: {
-    ...mapMutations('wallet/transactions', {
-      addActiveTransaction: 'addActiveTx',
-      removeActiveTxs: 'removeActiveTxs',
-    }),
-    ...mapActions('wallet/account', ['addAsset']),
+    addActiveTransaction(this: any, transactionId: string) {
+      return useWalletStore(this.$pinia).addActiveTransaction(transactionId);
+    },
+    removeActiveTxs(this: any, transactionIds: string[]) {
+      return useWalletStore(this.$pinia).removeActiveTransactions(transactionIds);
+    },
+    addAsset(this: any, address: string) {
+      return useWalletStore(this.$pinia).addAsset(address);
+    },
     async getLastTransaction(this: any, time: number): Promise<HistoryItem> {
       const tx = findLast((item) => Number(item.startTime) > time, api.historyList);
       if (!tx) {
@@ -71,7 +80,9 @@ export default defineComponent({
     async withNotifications(this: any, func: AsyncFnWithoutArgs): Promise<void> {
       await this.withLoading(async () => {
         await this.withAppNotification(async () => {
-          await beforeTransactionSign(this.$store, api);
+          const walletStore = useWalletStore(this.$pinia);
+
+          await walletStore.beforeTransactionSign(api);
           const time = Date.now();
           await func();
           const tx = await this.getLastTransaction(time);

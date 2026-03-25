@@ -49,4 +49,21 @@ describe('SFloatInput', () => {
 
     expect(wrapper.classes()).toEqual(expect.arrayContaining(['is-disabled', 's-disabled']));
   });
+
+  it('prefers the explicit readonly prop over a leaked readonly attr', () => {
+    const wrapper = mount(SFloatInput, {
+      props: {
+        readonly: false,
+      },
+      attrs: {
+        readonly: true,
+      },
+    });
+
+    const input = wrapper.find('input.el-input__inner');
+
+    expect(input.exists()).toBe(true);
+    expect((input.element as HTMLInputElement).readOnly).toBe(false);
+    expect(input.attributes('readonly')).toBeUndefined();
+  });
 });

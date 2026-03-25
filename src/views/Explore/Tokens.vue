@@ -175,7 +175,7 @@
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
 import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
-import { WALLET_CONSTS, components, WALLET_TYPES, getAssetsSubset } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { SortDirection } from '@soramitsu-ui/ui/types';
 import { computed, onMounted, ref, toRef, watch } from 'vue';
 
@@ -184,14 +184,18 @@ import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components, ZeroStringValue } from '@/consts';
+import { FontWeightRate } from '@/shims/wallet-consts';
+import { getAssetsSubset } from '@/shims/wallet-util';
 import { fetchTokensData } from '@/indexer/queries/asset/assets';
 import type { TokenData } from '@/indexer/queries/asset/assets';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, sortAssets } from '@/utils';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { FilterOptions } from '@/shims/wallet-common-types';
 
 type TableItem = {
   price: number;
@@ -239,17 +243,18 @@ const { t, TranslationConsts } = useTranslation();
 const { getAssetFiatPrice } = useFormattedAmount();
 const parentLoading = toRef(props, 'parentLoading');
 const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
+const assetsStore = useAssetsStore();
+const settingsStore = useSettingsStore();
 
-const FontWeightRate = WALLET_CONSTS.FontWeightRate;
 const loadingState = computed(() => parentLoading.value || loading.value);
 const tokensData = ref<Record<string, TokenData>>({});
 
-const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<Asset>;
-const whitelistAssets = computed(() => store.getters.assets.whitelistAssets as Array<Asset>);
+const getAsset = (addr?: string) => assetsStore.assetDataByAddress(addr) as Nullable<Asset>;
+const whitelistAssets = computed(() => assetsStore.whitelistAssets as Array<Asset>);
 const allowedAssets = computed<Array<Asset>>(() =>
   whitelistAssets.value.length ? whitelistAssets.value : [...KnownAssets]
 );
-const assetsFilter = computed(() => store.state.wallet.settings.assetsFilter as WALLET_TYPES.FilterOptions);
+const assetsFilter = computed(() => settingsStore.assetsFilter as FilterOptions);
 
 const items = computed<TableItem[]>(() => {
   if (!Object.keys(tokensData.value).length) {

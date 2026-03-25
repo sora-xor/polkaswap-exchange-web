@@ -33,7 +33,7 @@
             @add="page.changePoolStake($event, true)"
             @remove="page.changePoolStake($event, false)"
             @claim="page.claimPoolRewards"
-            @calculator="base.showCalculatorDialog($event)"
+            @calculator="base.showPoolCalculator"
             border
             class="demeter-pool"
           ></pool-card>
@@ -42,26 +42,26 @@
     </pool-base>
 
     <stake-dialog
-      v-model:visible="page.showStakeDialog"
-      :is-adding="page.isAddingStake"
-      :liquidity="base.selectedAccountLiquidity"
-      :parent-loading="parentLoading || page.loading"
-      v-bind="page.selectedDerivedPool"
+      v-model:visible="showStakeDialog"
+      :is-adding="isAddingStake"
+      :liquidity="selectedAccountLiquidity"
+      :parent-loading="dialogParentLoading"
+      v-bind="selectedDerivedPool"
       @add="page.handleStakeAction($event, page.deposit)"
       @remove="page.handleStakeAction($event, page.withdraw)"
     ></stake-dialog>
 
     <claim-dialog
-      v-model:visible="page.showClaimDialog"
-      :parent-loading="parentLoading || page.loading"
-      v-bind="page.selectedDerivedPool"
+      v-model:visible="showClaimDialog"
+      :parent-loading="dialogParentLoading"
+      v-bind="selectedDerivedPool"
       @confirm="page.handleClaimRewards"
     ></claim-dialog>
 
     <calculator-dialog
-      v-model:visible="base.showCalculatorDialog"
-      :liquidity="base.selectedAccountLiquidity"
-      v-bind="page.selectedDerivedPool"
+      v-model:visible="showCalculatorDialog"
+      :liquidity="selectedAccountLiquidity"
+      v-bind="selectedDerivedPool"
     ></calculator-dialog>
   </div>
 </template>
@@ -98,6 +98,28 @@ const parentLoading = computed(() => props.parentLoading);
 
 const base = useDemeterBasePage();
 const page = useDemeterPage(base, { parentLoading });
+const showStakeDialog = computed({
+  get: () => page.showStakeDialog.value,
+  set: (value: boolean) => {
+    page.showStakeDialog.value = value;
+  },
+});
+const showClaimDialog = computed({
+  get: () => page.showClaimDialog.value,
+  set: (value: boolean) => {
+    page.showClaimDialog.value = value;
+  },
+});
+const showCalculatorDialog = computed({
+  get: () => base.showCalculatorDialog.value,
+  set: (value: boolean) => {
+    base.showCalculatorDialog.value = value;
+  },
+});
+const isAddingStake = computed(() => page.isAddingStake.value);
+const dialogParentLoading = computed(() => parentLoading.value || page.loading.value);
+const selectedAccountLiquidity = computed(() => base.selectedAccountLiquidity.value ?? null);
+const selectedDerivedPool = computed(() => page.selectedDerivedPool.value ?? null);
 </script>
 
 <style lang="scss" scoped>

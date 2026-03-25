@@ -1,10 +1,10 @@
 import { mount } from '@vue/test-utils';
+import { createPinia, setActivePinia } from 'pinia';
 import { defineComponent, h, ref, watch } from 'vue';
-import { describe, expect, it, beforeEach, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import AssetOwner from '@/modules/dashboard/views/AssetOwner.vue';
 import type { OwnedAsset } from '@/modules/dashboard/types';
-import { setAppStoreOverride } from '@/utils/app-store';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 
 const connectWalletMock = vi.fn();
@@ -73,26 +73,24 @@ vi.mock('@/router', () => {
   };
 });
 
-const storeModule = vi.hoisted(() => {
-  return {
-    __esModule: true,
-    default: {
-      state: {},
-      getters: {
-        get libraryTheme() {
-          return libraryThemeRef.value;
-        },
-        get dashboard() {
-          return { ownedAssets: assetsStoreRef.value };
-        },
-      },
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => ({
+    get libraryTheme() {
+      return libraryThemeRef.value;
     },
-  };
-});
+    get theme() {
+      return libraryThemeRef.value;
+    },
+  }),
+}));
 
-vi.mock('@/store', () => storeModule);
-
-const { default: store } = storeModule as { default: unknown };
+vi.mock('@/stores/dashboard', () => ({
+  useDashboardStore: () => ({
+    get ownedAssets() {
+      return assetsStoreRef.value;
+    },
+  }),
+}));
 
 const buttonStub = { template: '<button v-bind="$attrs" @click="$emit(\'click\')"><slot /></button>' };
 const cardStub = { template: '<div v-bind="$attrs" @click="$emit(\'click\')"><slot /></div>' };
@@ -116,13 +114,13 @@ const globalStubs = {
 
 describe('AssetOwner.vue', () => {
   beforeEach(() => {
+    setActivePinia(createPinia());
     isLoggedInRef.value = false;
     assetsStoreRef.value = [];
     libraryThemeRef.value = 'light';
     connectWalletMock.mockClear();
     routerPushMock?.mockClear();
     dialogVisibleRef.value = false;
-    setAppStoreOverride(store as any);
   });
 
   it('flags empty asset state when logged out', () => {

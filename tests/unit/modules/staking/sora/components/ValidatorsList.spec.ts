@@ -79,12 +79,17 @@ vi.mock('@/modules/staking/router', () => {
   };
 });
 
-vi.mock('vue-i18n', () => ({
-  __esModule: true,
-  useI18n: () => ({
-    t: tMock,
-  }),
-}));
+vi.mock('vue-i18n', async () => {
+  const actual = await vi.importActual<typeof import('vue-i18n')>('vue-i18n');
+
+  return {
+    __esModule: true,
+    ...actual,
+    useI18n: () => ({
+      t: tMock,
+    }),
+  };
+});
 
 vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
   __esModule: true,

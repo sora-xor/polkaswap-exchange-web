@@ -54,7 +54,8 @@
 <script setup lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, onBeforeUnmount, ref, toRef } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -63,7 +64,9 @@ import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useReferralsStore } from '@/stores/referrals';
+import { useSettingsStore } from '@/stores/settings';
 import { getMaxValue, hasInsufficientBalance, asZeroValue, getAssetBalance } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
@@ -88,13 +91,16 @@ const { t } = useTranslation();
 const { formatCodecNumber, getFiatAmountByCodecString, getFPNumber, getFPNumberFromCodec } = useFormattedAmount();
 const { withNotifications, loading } = useTransaction();
 const route = useRoute();
+const referralsStore = useReferralsStore();
+const settingsStore = useSettingsStore();
+const assetsStore = useAssetsStore();
 
 const networkFees = computed<NetworkFeesObject>(
-  () => (store.state?.wallet?.settings?.networkFees as NetworkFeesObject | undefined) ?? ({} as NetworkFeesObject)
+  () => (settingsStore.networkFees as NetworkFeesObject | undefined) ?? ({} as NetworkFeesObject)
 );
-const amount = computed(() => (store.state?.referrals?.amount as string | undefined) ?? '');
-const xor = computed<Nullable<AccountAsset>>(() => store.getters?.assets?.xor as Nullable<AccountAsset>);
-const shouldBalanceBeHidden = computed(() => Boolean(store.state?.wallet?.settings?.shouldBalanceBeHidden));
+const amount = computed(() => referralsStore.amount as string);
+const xor = computed<Nullable<AccountAsset>>(() => assetsStore.xor as Nullable<AccountAsset>);
+const shouldBalanceBeHidden = computed(() => settingsStore.shouldBalanceBeHidden);
 
 const xorSymbol = computed(() => XOR.symbol);
 const xorDecimals = computed(() => xor.value?.decimals ?? XOR.decimals);
@@ -162,11 +168,11 @@ const isConfirmBondDisabled = computed(() => {
 const confirmDialogVisible = ref(false);
 
 const setAmount = (value: string) => {
-  store.commit?.referrals?.setAmount?.(value);
+  referralsStore.setAmount(value);
 };
 
 const resetAmount = () => {
-  store.commit?.referrals?.resetAmount?.();
+  referralsStore.resetAmount();
 };
 
 const handleInputXor = (value: string) => {

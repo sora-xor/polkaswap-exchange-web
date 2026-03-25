@@ -33,9 +33,8 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, ref } from 'vue';
 
-import store from '../store';
-
 import { Currency } from '@/types/currency';
+import { useWalletStore } from '@/stores/wallet';
 import { FontSizeRate, FontWeightRate, HiddenValue } from '../consts';
 import { DaiCurrency } from '../consts/currencies';
 import { getCurrency } from '../util';
@@ -72,21 +71,22 @@ const props = withDefaults(
 const parent = ref<HTMLSpanElement | null>(null);
 const child = ref<HTMLSpanElement | null>(null);
 const isValueWider = ref(false);
+const walletStore = useWalletStore();
 
-const shouldBalanceBeHidden = computed(() => store.state.wallet.settings.shouldBalanceBeHidden ?? false);
-const fiatExchangeRateObject = computed(() => store.state.wallet.settings.fiatExchangeRateObject ?? {});
-const fiatPriceObject = computed(() => store.state.wallet.account.fiatPriceObject ?? {});
+const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
+const fiatExchangeRateObject = computed(() => walletStore.fiatExchangeRateObject);
+const fiatPriceObject = computed(() => walletStore.fiatPriceObject);
 
 const symbol = computed(() => {
   if (props.customizableCurrency) {
     return getCurrency(props.customizableCurrency)?.symbol ?? DaiCurrency.symbol;
   }
-  const currency = store.state.wallet.settings.currency ?? Currency.DAI;
+  const currency = walletStore.currency ?? Currency.DAI;
   return getCurrency(currency)?.symbol ?? DaiCurrency.symbol;
 });
 
 const exchangeRate = computed(() => {
-  const currency = store.state.wallet.settings.currency ?? Currency.DAI;
+  const currency = walletStore.currency ?? Currency.DAI;
   if (currency === Currency.XOR) {
     const xorPriceCodec = fiatPriceObject.value[XOR.address];
     const xorPrice = FPNumber.fromCodecValue(xorPriceCodec);

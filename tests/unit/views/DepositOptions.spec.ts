@@ -8,6 +8,15 @@ const mocks = vi.hoisted(() => ({
   setMoonpayVisibility: vi.fn(),
   isLoggedIn: { value: false },
   evmAddress: { value: '' },
+  settingsStore: {
+    libraryTheme: 'light',
+    moonpayEnabled: true,
+  },
+  moonpayStore: {
+    bridgeTransactionData: null,
+    startBridgeButtonVisibility: false,
+    setDialogVisibility: vi.fn(),
+  },
 }));
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -36,26 +45,15 @@ vi.mock('@/router', () => ({
   lazyComponent: () => ({ template: '<div />' }),
 }));
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      moonpay: {
-        bridgeTransactionData: null,
-        startBridgeButtonVisibility: false,
-      },
-    },
-    getters: {
-      libraryTheme: 'light',
-      settings: {
-        moonpayEnabled: true,
-      },
-    },
-    commit: {
-      moonpay: {
-        setDialogVisibility: mocks.setMoonpayVisibility,
-      },
-    },
-  },
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => mocks.settingsStore,
+}));
+
+vi.mock('@/stores/moonpay', () => ({
+  useMoonpayStore: () => ({
+    ...mocks.moonpayStore,
+    setDialogVisibility: mocks.setMoonpayVisibility,
+  }),
 }));
 
 import { shallowMount } from '@vue/test-utils';

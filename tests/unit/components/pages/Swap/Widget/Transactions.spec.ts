@@ -54,7 +54,6 @@ const storageMock = {
 
 vi.mock('@wallet', () => ({
   __esModule: true,
-  getCurrentIndexer: () => mockIndexer,
   components: walletComponents,
   WALLET_CONSTS: {
     FontSizeRate: { SMALL: 'SMALL' },
@@ -70,26 +69,28 @@ vi.mock('@wallet', () => ({
   getExplorerLinks: () => [{ type: 'sorametrics', value: 'https://sorametrics.org/#tx=0x123' }],
 }));
 
+vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
+  __esModule: true,
+  getCurrentIndexer: () => mockIndexer,
+}));
+
 const assetsTable = {
   xor: { address: 'xor', symbol: 'XOR', decimals: 18 },
   val: { address: 'val', symbol: 'VAL', decimals: 12 },
 };
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/settings', () => ({
   __esModule: true,
-  default: {
-    state: {
-      settings: { isWalletLoaded: true },
-      wallet: { settings: { soraNetwork: 'testnet' } },
-    },
-    getters: {
-      wallet: {
-        account: {
-          assetsDataTable: assetsTable,
-        },
-      },
-    },
-  },
+  useSettingsStore: () => ({
+    soraNetwork: 'testnet',
+  }),
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  __esModule: true,
+  useWalletStore: () => ({
+    assetsDataTable: assetsTable,
+  }),
 }));
 
 vi.mock('@/composables/useTranslation', () => ({

@@ -1,8 +1,8 @@
 import { computed, ref, toValue } from 'vue';
 
 import { useTransaction } from '@/composables/useTransaction';
-import store from '@/store';
-import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
+import { useDemeterFarmingStore } from '@/stores/demeterFarming';
+import type { DemeterLiquidityParams } from '@/stores/demeterFarming/types';
 
 import type { DemeterBasePageComposable } from './useDemeterBasePage';
 import type { DemeterPoolDerivedData } from '../types';
@@ -21,6 +21,7 @@ type UseDemeterPageOptions = {
  */
 export function useDemeterPage(basePage: DemeterBasePageComposable, options: UseDemeterPageOptions = {}) {
   const parentLoading = options.parentLoading;
+  const demeterFarmingStore = useDemeterFarmingStore();
 
   const { loading, withNotifications } = useTransaction({
     parentLoading: parentLoading
@@ -57,9 +58,9 @@ export function useDemeterPage(basePage: DemeterBasePageComposable, options: Use
     showClaimDialog.value = true;
   };
 
-  const deposit = (params: DemeterLiquidityParams) => store.dispatch.demeterFarming.deposit(params);
-  const withdraw = (params: DemeterLiquidityParams) => store.dispatch.demeterFarming.withdraw(params);
-  const claimRewards = (pool: DemeterAccountPool) => store.dispatch.demeterFarming.claimRewards(pool);
+  const deposit = (params: DemeterLiquidityParams) => demeterFarmingStore.deposit(params);
+  const withdraw = (params: DemeterLiquidityParams) => demeterFarmingStore.withdraw(params);
+  const claimRewards = (pool: DemeterAccountPool) => demeterFarmingStore.claimRewards(pool);
 
   const handleStakeAction = async (
     params: DemeterLiquidityParams,

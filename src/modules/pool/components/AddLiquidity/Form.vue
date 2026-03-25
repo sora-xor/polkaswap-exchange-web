@@ -109,13 +109,14 @@
 <script setup lang="ts">
 import { Operation } from '@sora-substrate/sdk';
 import { XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 import { useTransaction } from '@/composables/useTransaction';
 import { useNetworkFeeWarning } from '@/composables/useNetworkFeeWarning';
 import { useNetworkFeeDialog } from '@/composables/useNetworkFeeDialog';
 import { useTokenSelect } from '@/composables/useTokenSelect';
+import type { NetworkFeeWarningOptions } from '@/consts';
 import { usePoolTokenPair } from '@/modules/pool/composables/usePoolTokenPair';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
@@ -123,8 +124,11 @@ import { Components } from '@/consts';
 import { PoolComponents } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
 import { lazyComponent } from '@/router';
-import store from '@/store';
-import { FocusedField } from '@/store/addLiquidity/types';
+import { useAssetsStore } from '@/stores/assets';
+import { usePoolStore } from '@/stores/pool';
+import { AddLiquidityFocusedField as FocusedField } from '@/stores/pool/types';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBalance } from '@/utils';
 import { sanitizeHtml } from '@/utils/sanitize';
 
@@ -148,15 +152,19 @@ const {
   waitOnFeeWarningConfirmation,
 } = useNetworkFeeDialog();
 const { loading, withNotifications } = useTransaction();
+const assetsStore = useAssetsStore();
+const poolStore = usePoolStore();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
 
-const shareOfPool = computed(() => store.getters.addLiquidity.shareOfPool as string);
-const liquidityInfo = computed(() => store.getters.addLiquidity.liquidityInfo as Nullable<AccountLiquidity>);
-const isNotFirstLiquidityProvider = computed(() => store.getters.addLiquidity.isNotFirstLiquidityProvider as boolean);
-const isLoggedIn = computed(() => store.getters.wallet.account.isLoggedIn as boolean);
-const xor = computed(() => store.getters.assets.xor as AccountAsset);
-const slippageToleranceValue = computed(() => store.state.settings.slippageTolerance as string);
-const isConfirmTxDisabled = computed(() => store.state.wallet.transactions.isConfirmTxDialogDisabled as boolean);
-const nodeIsConnected = computed(() => store.getters.settings.nodeIsConnected as boolean);
+const shareOfPool = computed(() => poolStore.addLiquidityShareOfPool);
+const liquidityInfo = computed(() => poolStore.addLiquidityLiquidityInfo as Nullable<AccountLiquidity>);
+const isNotFirstLiquidityProvider = computed(() => poolStore.addLiquidityIsNotFirstLiquidityProvider);
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
+const xor = computed(() => assetsStore.xor as AccountAsset);
+const slippageToleranceValue = computed(() => settingsStore.slippageTolerance as string);
+const isConfirmTxDisabled = computed(() => walletStore.isConfirmTxDialogDisabled as boolean);
+const nodeIsConnected = computed(() => settingsStore.nodeIsConnected as boolean);
 
 const showSelectTokenDialog = ref(false);
 const isFirstTokenSelected = ref(false);
@@ -191,7 +199,7 @@ const removeLiquidityFormattedFee = computed(() =>
 );
 
 const isXorSufficientForNextOperation = () => {
-  const params: WALLET_CONSTS.NetworkFeeWarningOptions = {
+  const params: NetworkFeeWarningOptions = {
     type: isAvailable.value ? Operation.AddLiquidity : Operation.CreatePair,
   };
 
@@ -243,14 +251,14 @@ const firstLiquidityProviderInfo = computed(() =>
   })
 );
 
-const setFirstTokenAddress = (address: string) => store.dispatch.addLiquidity.setFirstTokenAddress(address);
-const setSecondTokenAddress = (address: string) => store.dispatch.addLiquidity.setSecondTokenAddress(address);
-const setFirstTokenValue = (value: string) => store.dispatch.addLiquidity.setFirstTokenValue(value);
-const setSecondTokenValue = (value: string) => store.dispatch.addLiquidity.setSecondTokenValue(value);
-const addLiquidity = () => store.dispatch.addLiquidity.addLiquidity();
-const updateSubscriptions = () => store.dispatch.addLiquidity.updateSubscriptions();
-const resetSubscriptions = () => store.dispatch.addLiquidity.resetSubscriptions();
-const setFocusedField = (value: FocusedField) => store.commit.addLiquidity.setFocusedField(value);
+const setFirstTokenAddress = (address: string) => poolStore.setAddLiquidityFirstTokenAddress(address);
+const setSecondTokenAddress = (address: string) => poolStore.setAddLiquiditySecondTokenAddress(address);
+const setFirstTokenValue = (value: string) => poolStore.setAddLiquidityFirstTokenValue(value);
+const setSecondTokenValue = (value: string) => poolStore.setAddLiquiditySecondTokenValue(value);
+const addLiquidity = () => poolStore.submitAddLiquidity();
+const updateSubscriptions = () => poolStore.updateAddLiquiditySubscriptions();
+const resetSubscriptions = () => poolStore.resetAddLiquiditySubscriptions();
+const setFocusedField = (value: FocusedField) => poolStore.setAddLiquidityFocusedField(value);
 
 watch(
   nodeIsConnected,

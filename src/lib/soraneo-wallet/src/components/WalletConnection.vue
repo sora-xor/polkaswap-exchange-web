@@ -15,30 +15,26 @@ import { computed } from 'vue';
 
 import { api } from '@/api';
 import { RouteNames } from '@/consts';
-import { requireAppStore } from '@/utils/app-store';
 import { useRouterStore } from '@/stores/router';
-import type { Route } from '@/store/router/types';
+import { useWalletStore } from '@/stores/wallet';
 import type { PolkadotJsAccount } from '@/types/common';
 
 import ConnectionView from './Connection/ConnectionView.vue';
 
 const routerStore = useRouterStore();
-const store = requireAppStore();
+const walletStore = useWalletStore();
 
 const chainApi = api;
 
-const account = computed<Nullable<PolkadotJsAccount>>(
-  () => store.getters['wallet/account/account'] as Nullable<PolkadotJsAccount>
-);
+const account = computed<Nullable<PolkadotJsAccount>>(() => walletStore.account as Nullable<PolkadotJsAccount>);
 
-const loginAccount = (payload: PolkadotJsAccount) => store.dispatch.wallet.account.loginAccount(payload);
-const logoutAccount = () => store.dispatch.wallet.account.logout();
-const renameAccount = (data: { address: string; name: string }) => store.dispatch.wallet.account.renameAccount(data);
-const checkConnectedAccountSource = (source: string) =>
-  store.dispatch.wallet.account.checkConnectedAccountSource(source);
+const loginAccount = (payload: PolkadotJsAccount) => walletStore.loginAccount(payload);
+const logoutAccount = () => walletStore.logout();
+const renameAccount = (data: { address: string; name: string }) => walletStore.renameAccount(data);
+const checkConnectedAccountSource = (source: string) => walletStore.checkConnectedAccountSource(source);
 
 const navigateToAccount = () => {
-  routerStore.navigate({ name: RouteNames.Wallet } as Route);
+  routerStore.navigate({ name: RouteNames.Wallet });
 };
 
 defineExpose({

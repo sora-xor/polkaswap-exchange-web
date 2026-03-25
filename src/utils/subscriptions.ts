@@ -1,4 +1,4 @@
-import { api } from '@wallet';
+import { api } from '@/shims/wallet-api';
 
 import type { AccountBalance, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Subscription } from 'rxjs';

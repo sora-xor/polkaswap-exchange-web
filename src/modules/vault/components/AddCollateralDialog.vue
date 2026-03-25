@@ -65,7 +65,8 @@
 <script lang="ts" setup>
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, api } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue';
 
 import { Components, HundredNumber, ObjectInit, ZeroStringValue } from '@/consts';
@@ -76,7 +77,8 @@ import { LtvTranslations, VaultComponents } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
 import { getLtvStatus } from '@/modules/vault/util';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useWalletStore } from '@/stores/wallet';
 import { asZeroValue, getAssetBalance, hasInsufficientBalance } from '@/utils';
 
 import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
@@ -129,15 +131,17 @@ const {
   getFiatAmountByCodecString,
   getFPNumberFiatAmountByFPNumber,
 } = useFormattedAmount();
+const walletStore = useWalletStore();
+const assetsStore = useAssetsStore();
 
 const isVisible = defineModel<boolean>('visible', { default: false });
 const collateralValue = ref('');
 const collateralInput = ref<InstanceType<typeof TokenInputComponent> | null>(null);
 
 const xorSymbol = XOR.symbol;
-const shouldBalanceBeHidden = computed(() => store.state.wallet.settings.shouldBalanceBeHidden ?? false);
-const networkFees = computed(() => store.state.wallet.settings.networkFees as Record<string, CodecString>);
-const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
+const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
+const networkFees = computed(() => walletStore.networkFees as Record<string, CodecString>);
+const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
 
 const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.DepositCollateral] ?? ZeroStringValue);
 const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));

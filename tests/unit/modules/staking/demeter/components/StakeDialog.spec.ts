@@ -1,5 +1,5 @@
 import { FPNumber, Operation, type CodecString } from '@sora-substrate/sdk';
-import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
+import type { DemeterLiquidityParams } from '@/stores/demeterFarming/types';
 import type { DemeterAccountPool, DemeterPool } from '@sora-substrate/sdk/build/demeterFarming/types';
 import type { Component } from 'vue';
 import { defineComponent, ref } from 'vue';

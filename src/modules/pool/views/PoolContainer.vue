@@ -6,18 +6,19 @@
 import { computed, useAttrs } from 'vue';
 
 import { useSubscriptions } from '@/composables/useSubscriptions';
-import store from '@/store';
+import { usePoolStore } from '@/stores/pool';
 
 const attrs = useAttrs();
+const poolStore = usePoolStore();
 
 const { subscriptionsDataLoading } = useSubscriptions({
   startSubscriptions: [
-    () => store.dispatch.pool.subscribeOnAccountLiquidityList(),
-    () => store.dispatch.pool.subscribeOnAccountLiquidityUpdates(),
-    () => store.dispatch.pool.subscribeOnAccountLockedLiquidity(),
-    () => store.dispatch.pool.subscribeOnPoolsApy(),
+    () => poolStore.subscribeOnAccountLiquidityList(),
+    () => poolStore.subscribeOnAccountLiquidityUpdates(),
+    () => poolStore.subscribeOnAccountLockedLiquidity(),
+    () => poolStore.subscribeOnPoolsApy(),
   ],
-  resetSubscriptions: [() => store.dispatch.pool.unsubscribeAccountLiquidityListAndUpdates()],
+  resetSubscriptions: [() => poolStore.unsubscribeAccountLiquidityListAndUpdates()],
 });
 
 const forwardedAttrs = computed(() => ({

@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import { computed, toRef } from 'vue';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';

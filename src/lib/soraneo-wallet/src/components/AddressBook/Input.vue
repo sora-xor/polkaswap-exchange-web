@@ -85,7 +85,8 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
-import { mapMutations, mapState } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../../api';
 import { formatAccountAddress } from '../../util';
@@ -154,11 +155,15 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/account', {
-      connected: 'address',
-      source: 'source',
-      addressBook: 'book',
-    }),
+    connected(this: any) {
+      return useWalletStore(this.$pinia).address;
+    },
+    source(this: any) {
+      return useWalletStore(this.$pinia).source;
+    },
+    addressBook(this: any) {
+      return useWalletStore(this.$pinia).book;
+    },
     address: {
       get(this: any): string {
         return this.modelValue ?? this.value;
@@ -229,7 +234,12 @@ export default defineComponent({
     }
   },
   methods: {
-    ...mapMutations('wallet/account', ['setAddressToBook', 'removeAddressFromBook']),
+    setAddressToBook(this: any, payload: { address: string; name: string }) {
+      return useWalletStore(this.$pinia).setAddressToBook(payload);
+    },
+    removeAddressFromBook(this: any, address: string) {
+      return useWalletStore(this.$pinia).removeAddressFromBook(address);
+    },
     updateContactName(this: any): void {
       if (!this.isValid) {
         this.name = '';

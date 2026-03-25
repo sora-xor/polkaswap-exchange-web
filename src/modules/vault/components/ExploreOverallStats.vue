@@ -35,30 +35,34 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
+import { FontSizeRate, FontWeightRate } from '@/consts';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useVaultStore } from '@/stores/vault';
+import { useWalletStore } from '@/stores/wallet';
 import { formatAmountWithSuffix } from '@/utils';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral, StablecoinInfo } from '@sora-substrate/sdk/build/kensetsu/types';
 
 const FormattedAmount = components.FormattedAmount;
-const FontWeightRate = WALLET_CONSTS.FontWeightRate;
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
 const { t } = useTranslation();
 const { getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
+const assetsStore = useAssetsStore();
+const vaultStore = useVaultStore();
+const walletStore = useWalletStore();
 
-const collaterals = computed(() => Object.values(store.state.vault.collaterals as Record<string, Collateral>));
-const stablecoinInfos = computed(() => store.state.vault.stablecoinInfos as Record<string, StablecoinInfo>);
+const collaterals = computed(() => Object.values(vaultStore.collaterals as Record<string, Collateral>));
+const stablecoinInfos = computed(() => vaultStore.stablecoinInfos as Record<string, StablecoinInfo>);
 
-const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
-const exchangeRate = computed(() => store.getters.wallet.settings.exchangeRate as number);
-const currencySymbol = computed(() => store.getters.wallet.settings.currencySymbol as string);
+const getAsset = assetsStore.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
+const exchangeRate = computed(() => walletStore.exchangeRate);
+const currencySymbol = computed(() => walletStore.currencySymbol);
 
 const badDebt = computed(() =>
   Object.entries(stablecoinInfos.value).reduce((acc, [id, info]) => {

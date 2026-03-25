@@ -75,7 +75,7 @@
 
 <script setup lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -88,7 +88,6 @@ import { useSettingsStore } from '@/stores/settings';
 import type { NetworkFeesObject, CodecString } from '@sora-substrate/sdk';
 import { lazyComponent } from '@/router';
 import { hasInsufficientXorForFee } from '@/utils';
-import store from '@/store';
 
 const props = defineProps<{
   mode: StakeDialogMode;
@@ -137,7 +136,7 @@ const feeRequestId = ref(0);
 const dialogRoot = ref<HTMLElement | null>(null);
 
 const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
-const shouldBalanceBeHidden = computed(() => Boolean(store.state.wallet.settings.shouldBalanceBeHidden));
+const shouldBalanceBeHidden = computed(() => settingsStore.shouldBalanceBeHidden);
 
 const networkFee = computed<CodecString>(() => {
   switch (props.mode) {

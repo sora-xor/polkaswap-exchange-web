@@ -75,30 +75,27 @@
     </s-collapse>
 
     <stake-dialog
-      v-model:visible="page.showStakeDialog"
-      :is-adding="page.isAddingStake"
+      v-model:visible="showStakeDialog"
+      :is-adding="isAddingStake"
       :parent-loading="parentLoading"
-      v-bind="page.selectedDerivedPool"
+      v-bind="selectedDerivedPool"
       @add="page.handleStakeAction($event, page.deposit)"
       @remove="page.handleStakeAction($event, page.withdraw)"
     ></stake-dialog>
 
     <claim-dialog
-      v-model:visible="page.showClaimDialog"
+      v-model:visible="showClaimDialog"
       :parent-loading="parentLoading"
-      v-bind="page.selectedDerivedPool"
+      v-bind="selectedDerivedPool"
       @confirm="page.handleClaimRewards"
     ></claim-dialog>
 
-    <calculator-dialog
-      v-model:visible="base.showCalculatorDialog"
-      v-bind="page.selectedDerivedPool"
-    ></calculator-dialog>
+    <calculator-dialog v-model:visible="showCalculatorDialog" v-bind="selectedDerivedPool"></calculator-dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
@@ -144,6 +141,27 @@ const base = useDemeterBasePage({ isFarmingPage: true });
 const page = useDemeterPage(base, { parentLoading: computed(() => props.parentLoading) });
 const parentLoading = computed(() => props.parentLoading || page.loading.value);
 const soraStaking = soraStakingConfig;
+const showPoolCalculator = base.showPoolCalculator;
+const showStakeDialog = computed({
+  get: () => page.showStakeDialog.value,
+  set: (value: boolean) => {
+    page.showStakeDialog.value = value;
+  },
+});
+const showClaimDialog = computed({
+  get: () => page.showClaimDialog.value,
+  set: (value: boolean) => {
+    page.showClaimDialog.value = value;
+  },
+});
+const showCalculatorDialog = computed({
+  get: () => base.showCalculatorDialog.value,
+  set: (value: boolean) => {
+    base.showCalculatorDialog.value = value;
+  },
+});
+const isAddingStake = computed(() => page.isAddingStake.value);
+const selectedDerivedPool = computed(() => page.selectedDerivedPool.value ?? null);
 
 const activeCollapseItems = ref<string[]>([]);
 const updateActiveCollapseItems = (items: string[]) => {

@@ -1,4 +1,4 @@
-import { SUBQUERY_TYPES } from '@wallet';
+import * as SUBQUERY_TYPES from '@/shims/wallet-indexer-subquery-types';
 
 import { Timeframes } from '@/types/filters';
 import type { SnapshotFilter } from '@/types/filters';

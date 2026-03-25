@@ -1,4 +1,4 @@
-import { IndexerType } from '@wallet/lib/consts';
+import { IndexerType } from '@/shims/wallet-consts';
 
 export interface Indexer {
   name: string;

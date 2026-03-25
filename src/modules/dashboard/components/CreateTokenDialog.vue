@@ -31,37 +31,37 @@
 <script lang="ts" setup>
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, ref } from 'vue';
 
-import { Components, ZeroStringValue } from '@/consts';
+import { Components, TokenTabs, ZeroStringValue } from '@/consts';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { DashboardComponents } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { WALLET_CONSTS as WalletConstsTypes } from '@wallet/core';
 
 const DialogBase = components.DialogBase;
 const InfoLine = components.InfoLine;
 const CreateSimpleToken = dashboardLazyComponent(DashboardComponents.CreateSimpleToken);
 const CreateNftToken = dashboardLazyComponent(DashboardComponents.CreateNftToken);
 
-const TokenTabs = WALLET_CONSTS.TokenTabs;
-
 const { t, TranslationConsts } = useTranslation();
 const { loading } = useTransaction();
 const { getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
+const settingsStore = useSettingsStore();
+const assetsStore = useAssetsStore();
 
 const isVisible = defineModel<boolean>('visible', { default: false });
-const currentTab = ref<WalletConstsTypes.TokenTabs>(TokenTabs.Token);
+const currentTab = ref<TokenTabs>(TokenTabs.Token);
 
-const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject | undefined);
-const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject | undefined);
+const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
 
 const xorSymbol = XOR.symbol;
 const title = computed(() => 'Create token');
@@ -74,14 +74,14 @@ const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
 const isInsufficientXorForFee = computed(() => xorBalance.value.sub(fpNetworkFee.value).isLtZero());
 const disabled = computed(() => loading.value || isInsufficientXorForFee.value);
 
-const getTabName = (tab: WalletConstsTypes.TokenTabs): string => {
+const getTabName = (tab: TokenTabs): string => {
   if (tab === TokenTabs.NonFungibleToken) {
     return TranslationConsts.NFT;
   }
   return t(`createToken.${tab}`);
 };
 
-const handleChangeTab = (value: WalletConstsTypes.TokenTabs) => {
+const handleChangeTab = (value: TokenTabs) => {
   currentTab.value = value;
 };
 

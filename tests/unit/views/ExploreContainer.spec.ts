@@ -75,7 +75,7 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@wallet/src/util/storage', () => ({
+vi.mock('@/lib/soraneo-wallet/src/util/storage', () => ({
   __esModule: true,
   storage: storageMock.wallet,
   settingsStorage: storageMock.settings,
@@ -103,28 +103,23 @@ vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => translationMock,
 }));
 
-const storeState = vi.hoisted(() => ({
-  settings: {
-    screenBreakpointClass: 'Desktop',
-    menuCollapsed: false,
-  },
-  wallet: {
-    account: {
-      isLoggedIn: true,
-    },
-  },
+const settingsStoreMock = vi.hoisted(() => ({
+  screenBreakpointClass: 'Desktop',
+  menuCollapsed: false,
 }));
 
-vi.mock('@/store', () => ({
+const walletStoreMock = vi.hoisted(() => ({
+  isLoggedIn: true,
+}));
+
+vi.mock('@/stores/settings', () => ({
   __esModule: true,
-  default: storeState,
-  getters: {
-    wallet: {
-      account: {
-        isLoggedIn: true,
-      },
-    },
-  },
+  useSettingsStore: () => settingsStoreMock,
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  __esModule: true,
+  useWalletStore: () => walletStoreMock,
 }));
 
 let ExploreContainer: typeof import('@/views/Explore/Container.vue').default;
@@ -182,6 +177,9 @@ describe('ExploreContainer', () => {
     storageMock.wallet.get.mockReset();
     storageMock.wallet.set.mockReset();
     storageMock.wallet.get.mockReturnValue(JSON.stringify(false));
+    settingsStoreMock.screenBreakpointClass = 'Desktop';
+    settingsStoreMock.menuCollapsed = false;
+    walletStoreMock.isLoggedIn = true;
   });
 
   it('saves account-item switcher preference to storage', async () => {

@@ -67,19 +67,21 @@
 </template>
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 
 import { useNotification } from '@/composables/useNotification';
 import { useTranslation } from '@/composables/useTranslation';
-import { ZeroStringValue } from '@/consts';
-import store from '@/store';
+import { MAX_ALERTS_NUMBER, ZeroStringValue } from '@/consts';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import type { EditableAlertObject, NumberedAlert } from '@/consts';
 import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
 import { calcPriceChange, showMostFittingValue } from '@/utils';
 
 import type { AccountAsset, WhitelistIdsBySymbol } from '@sora-substrate/sdk/build/assets/types';
-import type { Alert } from '@wallet/lib/types/common';
+import type { Alert } from '@/shims/wallet-common-types';
 
 defineOptions({
   components: {
@@ -101,11 +103,14 @@ const props = defineProps<{ alertToEdit: NumberedAlert | null }>();
 
 const { t } = useTranslation();
 const { showAppNotification } = useNotification();
+const assetsStore = useAssetsStore();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
 
-const alerts = computed(() => store.state.wallet.settings.alerts as Alert[]);
-const whitelistIdsBySymbol = computed(() => store.getters.wallet.account.whitelistIdsBySymbol as WhitelistIdsBySymbol);
-const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => AccountAsset;
-const xor = computed(() => store.getters.assets.xor as AccountAsset);
+const alerts = computed(() => settingsStore.alerts as Alert[]);
+const whitelistIdsBySymbol = computed(() => walletStore.whitelistIdsBySymbol as WhitelistIdsBySymbol);
+const getAsset = assetsStore.assetDataByAddress as (addr?: string) => AccountAsset;
+const xor = computed(() => assetsStore.xor as AccountAsset);
 
 const floatInput = ref<any>();
 const amount = ref('');
@@ -182,7 +187,7 @@ function handleAlertCreation(): void {
     }
 
     if (isEditMode.value && props.alertToEdit) {
-      store.commit.wallet.settings.editPriceAlert({
+      settingsStore.editPriceAlert({
         alert: {
           token: asset.symbol,
           price: amount.value,
@@ -196,12 +201,12 @@ function handleAlertCreation(): void {
       return;
     }
 
-    if (alerts.value.length >= WALLET_CONSTS.MAX_ALERTS_NUMBER) {
+    if (alerts.value.length >= MAX_ALERTS_NUMBER) {
       showAppNotification(t('alerts.limitReached'), 'error');
       return;
     }
 
-    store.commit.wallet.settings.addPriceAlert({
+    settingsStore.addPriceAlert({
       token: asset.symbol,
       price: amount.value,
       type: currentTypeTab.value,
@@ -226,9 +231,7 @@ function setAsset(selectedAsset: AccountAsset | undefined): void {
 
 function getAssetFiatPrice(currentAsset: AccountAsset | undefined): Nullable<string> {
   if (!currentAsset) return null;
-  return (
-    (store.state.wallet.account.fiatPriceObject as Record<string, string> | undefined)?.[currentAsset.address] ?? null
-  );
+  return (walletStore.fiatPriceObject as Record<string, string> | undefined)?.[currentAsset.address] ?? null;
 }
 
 onMounted(() => {

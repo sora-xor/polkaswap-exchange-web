@@ -2,20 +2,6 @@ import { BalanceType } from '@sora-substrate/sdk/build/assets/consts';
 import { FPNumber } from '@sora-substrate/math';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      wallet: {
-        account: {
-          fiatPriceObject: {
-            asset: '2000000000000000000',
-          },
-        },
-      },
-    },
-  },
-}));
-
 vi.mock('@/composables/useFormattedAmount', () => ({
   useFormattedAmount: () => ({
     getAssetFiatPrice: () => '2',

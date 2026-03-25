@@ -1,21 +1,14 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { networkState, storeMock } = vi.hoisted(() => {
+const { networkState, settingsStoreMock } = vi.hoisted(() => {
   const networkState = { enabled: true };
-  const settings: Record<string, unknown> = {};
-
-  Object.defineProperty(settings, 'isInternetConnectionEnabled', {
-    configurable: true,
-    enumerable: true,
-    get: () => networkState.enabled,
-  });
 
   return {
     networkState,
-    storeMock: {
-      getters: {
-        settings,
+    settingsStoreMock: {
+      get isInternetConnectionEnabled() {
+        return networkState.enabled;
       },
     },
   };
@@ -43,9 +36,8 @@ vi.mock('@wallet', async () => {
   };
 });
 
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: storeMock,
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => settingsStoreMock,
 }));
 
 describe('NoInternetDialog', () => {

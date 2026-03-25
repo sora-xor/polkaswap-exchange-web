@@ -7,7 +7,8 @@ const formatStringValue = vi.hoisted(() => vi.fn(() => 'formatted-amount'));
 const formatCodecNumber = vi.hoisted(() => vi.fn(() => 'formatted-fee'));
 const getFiatAmountByCodecString = vi.hoisted(() => vi.fn(() => 'fee-fiat'));
 const routeName = vi.hoisted(() => ({ value: '' }));
-let storeMock: { state: any };
+let referralsStoreMock: { amount: string };
+let settingsStoreMock: { networkFees: Record<string, string> };
 
 vi.mock('@/composables/useFormattedAmount', () => ({
   useFormattedAmount: () => ({
@@ -31,24 +32,24 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@/store', async () => {
+vi.mock('@/stores/referrals', async () => {
   const { Operation } = await import('@sora-substrate/sdk');
-  storeMock = {
-    state: {
-      referrals: { amount: '1000000000000' },
-      wallet: {
-        settings: {
-          networkFees: {
-            [Operation.ReferralReserveXor]: '5000000000',
-            [Operation.ReferralUnreserveXor]: '1000000000',
-          },
-        },
-      },
+  referralsStoreMock = {
+    amount: '1000000000000',
+  };
+  settingsStoreMock = {
+    networkFees: {
+      [Operation.ReferralReserveXor]: '5000000000',
+      [Operation.ReferralUnreserveXor]: '1000000000',
     },
   };
 
-  return { default: storeMock };
+  return { useReferralsStore: () => referralsStoreMock };
 });
+
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => settingsStoreMock,
+}));
 
 const mountComponent = async () => {
   const module = await import('@/components/pages/Referrals/ConfirmBonding.vue');
@@ -82,14 +83,14 @@ describe('ReferralsConfirmBonding.vue', () => {
 
     expect(formatStringValue).toHaveBeenCalled();
     const [amountArg, decimalsArg] = formatStringValue.mock.calls.at(-1) ?? [];
-    expect(amountArg).toBe(storeMock.state.referrals.amount);
+    expect(amountArg).toBe(referralsStoreMock.amount);
     expect(decimalsArg).toBeDefined();
 
     const [feeArg] = formatCodecNumber.mock.calls.at(-1) ?? [];
-    expect(feeArg).toBe(storeMock.state.wallet.settings.networkFees[Operation.ReferralReserveXor]);
+    expect(feeArg).toBe(settingsStoreMock.networkFees[Operation.ReferralReserveXor]);
 
     const [fiatFeeArg] = getFiatAmountByCodecString.mock.calls.at(-1) ?? [];
-    expect(fiatFeeArg).toBe(storeMock.state.wallet.settings.networkFees[Operation.ReferralReserveXor]);
+    expect(fiatFeeArg).toBe(settingsStoreMock.networkFees[Operation.ReferralReserveXor]);
 
     await (wrapper.vm as { handleConfirmBonding: () => void }).handleConfirmBonding();
     await wrapper.vm.$nextTick();
@@ -102,6 +103,6 @@ describe('ReferralsConfirmBonding.vue', () => {
     await mountComponent();
 
     const [feeArg] = formatCodecNumber.mock.calls.at(-1) ?? [];
-    expect(feeArg).toBe(storeMock.state.wallet.settings.networkFees[Operation.ReferralUnreserveXor]);
+    expect(feeArg).toBe(settingsStoreMock.networkFees[Operation.ReferralUnreserveXor]);
   });
 });

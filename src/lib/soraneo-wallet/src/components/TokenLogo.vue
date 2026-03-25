@@ -10,7 +10,7 @@ import { computed, type CSSProperties } from 'vue';
 
 import { api } from '@/api';
 import { LogoSize } from '@/consts';
-import { requireAppStore } from '@/utils/app-store';
+import { useWalletStore } from '@/stores/wallet';
 import type { WhitelistIdsBySymbol } from '@/types/common';
 import { buildCssUrl, sanitizeIconSource } from '@/util/image';
 
@@ -32,16 +32,15 @@ const props = withDefaults(
     withClickableLogo: false,
   }
 );
-
-const store = requireAppStore();
+const walletStore = useWalletStore();
 
 const whitelist = computed<Whitelist>(() => {
-  const value = store.getters['wallet/account/whitelist'] as Nullable<Whitelist>;
+  const value = walletStore.whitelist as Nullable<Whitelist>;
   return value ?? {};
 });
 
 const whitelistIdsBySymbol = computed<WhitelistIdsBySymbol>(() => {
-  const value = store.getters['wallet/account/whitelistIdsBySymbol'] as Nullable<WhitelistIdsBySymbol>;
+  const value = walletStore.whitelistIdsBySymbol as Nullable<WhitelistIdsBySymbol>;
   return value ?? {};
 });
 

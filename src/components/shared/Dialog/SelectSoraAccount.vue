@@ -18,11 +18,13 @@
 </template>
 
 <script setup lang="ts">
-import { api, components, WALLET_TYPES } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed } from 'vue';
 
-import store from '@/store';
+import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
 import { useWalletStore } from '@/stores/wallet';
+import { useWeb3Store } from '@/stores/web3';
 
 defineOptions({
   components: {
@@ -31,16 +33,18 @@ defineOptions({
   },
 });
 
+const web3Store = useWeb3Store();
+
 const visible = computed({
-  get: () => Boolean(store.state.web3.soraAccountDialogVisibility),
+  get: () => Boolean(web3Store.soraAccountDialogVisibility),
   set: (flag: boolean) => {
-    store.commit.web3.setSoraAccountDialogVisibility(flag);
+    web3Store.setSoraAccountDialogVisibility(flag);
   },
 });
 
 const walletStore = useWalletStore();
 
-const soraAccount = computed(() => walletStore.account as Nullable<WALLET_TYPES.PolkadotJsAccount>);
+const soraAccount = computed(() => walletStore.account as Nullable<PolkadotJsAccount>);
 
 const chainApi = api;
 
@@ -48,7 +52,7 @@ const loginAccount = walletStore.loginAccount;
 const logout = () => walletStore.logout();
 const rename = (data: { address: string; name: string }) => walletStore.renameAccount(data);
 
-async function login(account: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
+async function login(account: PolkadotJsAccount): Promise<void> {
   await loginAccount(account);
   closeView();
 }

@@ -305,7 +305,8 @@
 import { FPNumber } from '@sora-substrate/math';
 import { XOR, KUSD } from '@sora-substrate/sdk/build/assets/consts';
 import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
-import { components, api } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -318,7 +319,10 @@ import { vaultLazyComponent } from '@/modules/vault/router';
 import type { ClosedVault, VaultStatus } from '@/modules/vault/types';
 import { getLtvStatus } from '@/modules/vault/util';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
+import { useVaultStore } from '@/stores/vault';
+import { useWalletStore } from '@/stores/wallet';
 import { asZeroValue, getAssetBalance } from '@/utils';
 
 import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -341,6 +345,10 @@ const PositionStatus = vaultLazyComponent(VaultComponents.PositionStatus);
 const { t } = useTranslation();
 const { Zero, getFiatAmountByFPNumber, getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
 const { withApi } = useLoading();
+const walletStore = useWalletStore();
+const assetsStore = useAssetsStore();
+const settingsStore = useSettingsStore();
+const vaultStore = useVaultStore();
 
 const route = useRoute();
 const routerInstance = useRouter();
@@ -359,21 +367,19 @@ const vaultSkeleton = reactive<ClosedVault>({
   returned: Zero,
 });
 
-const isLoggedIn = computed(() => store.getters.wallet.account.isLoggedIn as boolean);
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
 const assetByAddress = computed(
-  () => store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>
+  () => assetsStore.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>
 );
 const borrowTaxResolver = computed(
-  () => store.getters.vault.getBorrowTax as (debtAsset: Asset | AccountAsset | string) => number
+  () => vaultStore.getBorrowTax as (debtAsset: Asset | AccountAsset | string) => number
 );
-const accountVaults = computed(() => store.state.vault.accountVaults as Vault[]);
-const closedAccountVaults = computed(() => store.state.vault.closedAccountVaults as ClosedVault[]);
-const collaterals = computed(() => store.state.vault.collaterals as Record<string, Collateral>);
-const averageCollateralPrices = computed(
-  () => store.state.vault.averageCollateralPrices as Record<string, Nullable<FPNumber>>
-);
-const liquidationPenalty = computed(() => store.state.vault.liquidationPenalty as number);
-const percentFormat = computed(() => store.state.settings.percentFormat as Nullable<Intl.NumberFormat>);
+const accountVaults = computed(() => vaultStore.accountVaults);
+const closedAccountVaults = computed(() => vaultStore.closedAccountVaults);
+const collaterals = computed(() => vaultStore.collaterals);
+const averageCollateralPrices = computed(() => vaultStore.averageCollateralPrices);
+const liquidationPenalty = computed(() => vaultStore.liquidationPenalty);
+const percentFormat = computed(() => settingsStore.percentFormat as Nullable<Intl.NumberFormat>);
 
 const routeVaultId = computed(() => {
   const id = route.params.vault;

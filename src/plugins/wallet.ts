@@ -1,11 +1,14 @@
-import store from '@/store';
-
 import { loadWalletModule } from '@/utils/walletModule';
+import { resolveGlobalPinia } from './pinia';
+import type { Pinia } from 'pinia';
 import type { App, Component } from 'vue';
 
 type WalletInstallContext = {
-  store?: unknown;
   pinia?: unknown;
+};
+
+const isPiniaInstance = (value: unknown): value is Pinia => {
+  return Boolean(value) && typeof value === 'object' && '_s' in (value as Record<string, unknown>);
 };
 
 const toKebabCase = (name: string): string => {
@@ -32,10 +35,9 @@ const registerWalletComponents = (app: App, components?: Record<string, Componen
 
 export async function install(app: App, context: WalletInstallContext = {}): Promise<void> {
   const walletModule = await loadWalletModule();
-
-  const defaultStore = (store as any)?.commit?.wallet ? (store as any) : ((store as any)?.original ?? store);
-  const resolvedStore = context.store ?? defaultStore;
-  const pluginOptions = { ...context, store: resolvedStore };
+  const pinia = isPiniaInstance(context.pinia) ? context.pinia : resolveGlobalPinia();
+  const { store: _legacyStore, ...restContext } = context as WalletInstallContext & { store?: unknown };
+  const pluginOptions = { ...restContext, pinia };
 
   app.use(walletModule.default, pluginOptions);
   registerWalletComponents(app, walletModule.components);

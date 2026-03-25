@@ -83,15 +83,19 @@
 
 <script lang="ts" setup>
 import { XOR, KUSD, VXOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, onMounted, ref, watch } from 'vue';
 
 import { Components } from '@/consts';
 import { pointSystemCategory } from '@/consts/pointSystem';
 import { fetchAccountMeta } from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
+import { LogoSize } from '@/shims/wallet-consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { usePoolStore } from '@/stores/pool';
+import { useReferralsStore } from '@/stores/referrals';
+import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import { AccountPointSystems, CalculateCategoryPointResult, CategoryPoints } from '@/types/pointSystem';
 import { convertFPNumberToNumber } from '@/utils';
@@ -117,8 +121,6 @@ defineOptions({
     FirstTxCard: lazyComponent(Components.FirstTxCard),
   },
 });
-
-const LogoSize = WALLET_CONSTS.LogoSize;
 const categoryPoints = ref(pointSystemCategory.tasks);
 const pointsForCards = ref<Record<string, CalculateCategoryPointResult> | null>(null);
 
@@ -126,12 +128,16 @@ const { t } = useTranslation();
 const { loading, withApi, withLoading } = useLoading();
 const { getFiatAmountByCodecString, getFiatBalance } = useFormattedAmount();
 const { connectSoraWallet, isLoggedIn } = useInternalConnect();
+const poolStore = usePoolStore();
+const referralsStore = useReferralsStore();
+const walletStore = useWalletStore();
+const assetsStore = useAssetsStore();
 
-const referralRewards = computed(() => store.state.referrals.referralRewards as Nullable<ReferrerRewards>);
-const accountAssets = computed(() => (store.state.wallet.account.accountAssets as Array<AccountAsset>) ?? []);
-const accountLiquidity = computed(() => (store.state.pool.accountLiquidity as Array<AccountLiquidity>) ?? []);
-const account = computed(() => store.getters.wallet.account.account as Nullable<PolkadotJsAccount>);
-const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<AccountAsset>;
+const referralRewards = computed(() => referralsStore.referralRewards as Nullable<ReferrerRewards>);
+const accountAssets = computed(() => walletStore.accountAssets as Array<AccountAsset>);
+const accountLiquidity = computed(() => poolStore.accountLiquidity as Array<AccountLiquidity>);
+const account = computed(() => walletStore.account as Nullable<PolkadotJsAccount>);
+const getAsset = (addr?: string) => assetsStore.assetDataByAddress(addr) as Nullable<AccountAsset>;
 
 const totalPoints = computed(() => {
   if (!pointsForCards.value) return 0;
@@ -227,7 +233,7 @@ const initData = async (): Promise<void> => {
     return;
   }
 
-  await store.dispatch.referrals.getAccountReferralRewards();
+  await referralsStore.getAccountReferralRewards();
 
   const accountAddress = account.value?.address;
   if (!accountAddress) {
@@ -244,8 +250,8 @@ const initData = async (): Promise<void> => {
 
 onMounted(() => {
   void withApi(async () => {
-    await store.dispatch.pool.subscribeOnAccountLiquidityList();
-    await store.dispatch.pool.subscribeOnAccountLiquidityUpdates();
+    await poolStore.subscribeOnAccountLiquidityList();
+    await poolStore.subscribeOnAccountLiquidityUpdates();
     await initData();
   });
 });

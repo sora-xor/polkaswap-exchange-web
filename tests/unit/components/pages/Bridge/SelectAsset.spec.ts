@@ -3,24 +3,32 @@ import { mount } from '@vue/test-utils';
 import { describe, expect, beforeEach, it, vi } from 'vitest';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { BridgeRegisteredAsset } from '@/store/assets/types';
+import type { BridgeRegisteredAsset } from '@/stores/assets/types';
 
 const stubAssets: RegisteredAccountAsset[] = [];
 
-const storeMock = {
-  state: {
-    bridge: { isSoraToEvm: true },
-    wallet: { settings: { shouldBalanceBeHidden: false } },
-  },
-  getters: {
-    web3: {
-      selectedNetwork: { shortName: 'ETH' },
-    },
-  },
+const bridgeStoreMock = {
+  isSoraToEvm: true,
 };
 
-vi.mock('@/store', () => ({
-  default: storeMock,
+const walletStoreMock = {
+  shouldBalanceBeHidden: false,
+};
+
+const web3StoreMock = {
+  selectedNetworkData: { shortName: 'ETH' },
+};
+
+vi.mock('@/stores/bridge', () => ({
+  useBridgeStore: () => bridgeStoreMock,
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => walletStoreMock,
+}));
+
+vi.mock('@/stores/web3', () => ({
+  useWeb3Store: () => web3StoreMock,
 }));
 
 const assetsStoreMock = {
@@ -109,8 +117,9 @@ describe('BridgeSelectAsset', () => {
       alpha: { address: '0xalpha', decimals: 18 },
       beta: { address: '0xbeta', decimals: 18 },
     };
-    storeMock.state.bridge.isSoraToEvm = true;
-    storeMock.getters.web3.selectedNetwork = { shortName: 'ETH' };
+    bridgeStoreMock.isSoraToEvm = true;
+    walletStoreMock.shouldBalanceBeHidden = false;
+    web3StoreMock.selectedNetworkData = { shortName: 'ETH' };
 
     ({ default: BridgeSelectAsset } = await import('@/components/pages/Bridge/SelectAsset.vue'));
   });
@@ -122,7 +131,7 @@ describe('BridgeSelectAsset', () => {
   });
 
   it('uses external network name when bridging to Sora', () => {
-    storeMock.state.bridge.isSoraToEvm = false;
+    bridgeStoreMock.isSoraToEvm = false;
     const wrapper = factory();
 
     expect(wrapper.vm.label).toBe('network:ETH');

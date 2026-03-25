@@ -258,19 +258,22 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-import { components, WALLET_CONSTS, api } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 
-import { Components, HundredNumber, ZeroStringValue } from '@/consts';
+import { Components, HundredNumber, PaginationButton, ZeroStringValue } from '@/consts';
 import { DsBreakpoints, BreakpointClass } from '@/consts/layout';
 import { LtvTranslations, VaultComponents, VaultPageNames, VaultStatuses } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
 import type { ClosedVault, VaultStatus } from '@/modules/vault/types';
 import { getLtvStatus } from '@/modules/vault/util';
 import router, { lazyComponent } from '@/router';
-import store from '@/store';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
+import { useVaultStore } from '@/stores/vault';
 
 import type { Nullable } from '@/types/common';
 import type { ResponsiveTab } from '@/types/tabs';
@@ -316,6 +319,9 @@ const { t, TranslationConsts } = useTranslation();
 const { connectSoraWallet, isLoggedIn } = useInternalConnect();
 const { formatCodecNumber, formatStringValue, getFiatAmountByFPNumber, getFiatAmountByCodecString, Zero } =
   useFormattedAmount();
+const settingsStore = useSettingsStore();
+const assetsStore = useAssetsStore();
+const vaultStore = useVaultStore();
 
 const loading = ref(false);
 const showCreateVaultDialog = ref(false);
@@ -327,21 +333,19 @@ const currentPage = ref(1);
 const pageAmount = ref(6);
 const isLtrDirection = ref(true);
 
-const windowWidth = computed(() => store.state.settings.windowWidth as number);
-const screenBreakpointClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
+const windowWidth = computed(() => settingsStore.windowWidth);
+const screenBreakpointClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
 
-const openedVaults = computed(() => (store.state.vault.accountVaults as Vault[]) ?? []);
-const closedAccountVaults = computed(() => (store.state.vault.closedAccountVaults as ClosedVault[]) ?? []);
-const collaterals = computed(() => store.state.vault.collaterals as Record<string, Collateral>);
-const averageCollateralPrices = computed(
-  () => store.state.vault.averageCollateralPrices as Record<string, Nullable<FPNumber>>
-);
+const openedVaults = computed(() => vaultStore.accountVaults);
+const closedAccountVaults = computed(() => vaultStore.closedAccountVaults);
+const collaterals = computed(() => vaultStore.collaterals);
+const averageCollateralPrices = computed(() => vaultStore.averageCollateralPrices);
 
-const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
-const getBorrowTax = store.getters.vault.getBorrowTax as (debtAsset: Asset | AccountAsset | string) => number;
+const getAsset = assetsStore.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
+const getBorrowTax = vaultStore.getBorrowTax as (debtAsset: Asset | AccountAsset | string) => number;
 
-const selectCollateral = (address?: string) => store.dispatch.vault.setCollateralTokenAddress(address);
-const selectDebt = (address?: string) => store.dispatch.vault.setDebtTokenAddress(address);
+const selectCollateral = (address?: string) => vaultStore.setCollateralTokenAddress(address);
+const selectDebt = (address?: string) => vaultStore.setDebtTokenAddress(address);
 
 const resolvePageAmount = (width: number): number => {
   if (width <= DsBreakpoints.sm) return 2;
@@ -468,24 +472,24 @@ const handleTabChange = (tab: VaultStatus) => {
   isLtrDirection.value = true;
 };
 
-const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
+const handlePaginationClick = (button: PaginationButton) => {
   let next = currentPage.value;
 
   switch (button) {
-    case WALLET_CONSTS.PaginationButton.Prev:
+    case PaginationButton.Prev:
       next -= 1;
       break;
-    case WALLET_CONSTS.PaginationButton.Next:
+    case PaginationButton.Next:
       next += 1;
       if (next === lastPage.value) {
         isLtrDirection.value = false;
       }
       break;
-    case WALLET_CONSTS.PaginationButton.First:
+    case PaginationButton.First:
       next = 1;
       isLtrDirection.value = true;
       break;
-    case WALLET_CONSTS.PaginationButton.Last:
+    case PaginationButton.Last:
       next = lastPage.value;
       isLtrDirection.value = false;
       break;

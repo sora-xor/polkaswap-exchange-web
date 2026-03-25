@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { ref, watch, computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';

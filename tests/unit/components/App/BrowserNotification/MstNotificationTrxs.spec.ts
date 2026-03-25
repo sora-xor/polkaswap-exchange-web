@@ -4,8 +4,34 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import MstNotificationTrxs from '@/components/App/BrowserNotification/MstNotificationTrxs.vue';
 import { PageNames } from '@/consts';
 
-const { switchAccountMock, pushMock, afterLoginMock, setIsMSTMock, syncWithStorageMock, routeState, storeState } =
-  vi.hoisted(() => ({
+const {
+  switchAccountMock,
+  pushMock,
+  afterLoginMock,
+  setIsMSTMock,
+  syncWithStorageMock,
+  routeState,
+  storeState,
+  walletStore,
+} = vi.hoisted(() => {
+  const storeState = {
+    wallet: {
+      account: {
+        isMST: false,
+      },
+    },
+  };
+
+  const walletStore = {
+    get isMstAccount() {
+      return storeState.wallet.account.isMST;
+    },
+    afterLogin: vi.fn(),
+    setIsMstAccount: vi.fn(),
+    syncAccountWithStorage: vi.fn(),
+  };
+
+  return {
     switchAccountMock: vi.fn(),
     pushMock: vi.fn(),
     afterLoginMock: vi.fn(),
@@ -14,14 +40,10 @@ const { switchAccountMock, pushMock, afterLoginMock, setIsMSTMock, syncWithStora
     routeState: {
       name: 'Swap',
     },
-    storeState: {
-      wallet: {
-        account: {
-          isMST: false,
-        },
-      },
-    },
-  }));
+    storeState,
+    walletStore,
+  };
+});
 
 vi.mock('@wallet', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@wallet')>();
@@ -52,23 +74,7 @@ vi.mock('@/composables/useTranslation', () => ({
 }));
 
 vi.mock('@/stores/wallet', () => ({
-  useWalletStore: () => ({
-    afterLogin: afterLoginMock,
-  }),
-}));
-
-vi.mock('@/store', () => ({
-  default: {
-    state: storeState,
-    commit: {
-      wallet: {
-        account: {
-          setIsMST: setIsMSTMock,
-          syncWithStorage: syncWithStorageMock,
-        },
-      },
-    },
-  },
+  useWalletStore: () => walletStore,
 }));
 
 const mountComponent = (visible = true) =>
@@ -89,6 +95,9 @@ describe('MstNotificationTrxs', () => {
   beforeEach(() => {
     routeState.name = PageNames.Swap;
     storeState.wallet.account.isMST = false;
+    walletStore.afterLogin = afterLoginMock;
+    walletStore.setIsMstAccount = setIsMSTMock;
+    walletStore.syncAccountWithStorage = syncWithStorageMock;
     switchAccountMock.mockReset();
     pushMock.mockReset();
     pushMock.mockResolvedValue(undefined);

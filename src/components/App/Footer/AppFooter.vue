@@ -90,18 +90,18 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { getExplorerLinks, WALLET_CONSTS, WALLET_TYPES, connection } from '@wallet';
 import { computed, markRaw, onBeforeUnmount, onMounted } from 'vue';
 
 import { Status } from '@soramitsu-ui/ui/types';
 import { useTranslation } from '@/composables/useTranslation';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { Components } from '@/consts';
+import { Components, IndexerType, type SoraNetwork } from '@/consts';
 import { Theme } from '@/consts/theme';
+import { connection } from '@/shims/wallet-api';
+import { getExplorerLinks } from '@/shims/wallet-util';
+import { ConnectionStatus, type IndexerState } from '@/shims/wallet-common-types';
 import { lazyComponent } from '@/router';
-import store from '@/store';
-import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
-import type { FeatureFlags, SettingsState } from '@/store/settings/types';
+import { useSettingsStore } from '@/stores/settings';
 import type { Node } from '@/types/nodes';
 import { NodesConnection } from '@/utils/connection';
 import { toSafeExternalLink } from '@/utils/externalLinks';
@@ -126,35 +126,27 @@ defineOptions({
 });
 
 const { t, TranslationConsts } = useTranslation();
+const settingsStore = useSettingsStore();
 
-const settingsState = computed<Partial<SettingsState>>(() => store.state.settings ?? {});
-const walletSettings = computed(() => store.state.wallet?.settings ?? ({} as Record<string, unknown>));
-
-const soraNetwork = computed(() => walletSettings.value.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>);
-const blockNumber = computed(() => (walletSettings.value.blockNumber as number) ?? 0);
-const indexerType = computed(
-  () => (walletSettings.value.indexerType as WALLET_CONSTS.IndexerType) ?? WALLET_CONSTS.IndexerType.SUBQUERY
-);
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
+const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<SoraNetwork>);
+const blockNumber = computed(() => settingsStore.blockNumber);
+const indexerType = computed(() => settingsStore.indexerType ?? IndexerType.SUBQUERY);
+const libraryTheme = computed(() => (settingsStore.libraryTheme as Theme | null) ?? Theme.LIGHT);
 
 const fallbackAppConnection = markRaw(new NodesConnection(settingsStorage, markRaw(connection)));
 const appConnection = computed<NodesConnection>(() => {
-  const connectionInstance = settingsState.value.appConnection as NodesConnection | undefined;
+  const connectionInstance = settingsStore.appConnection as NodesConnection | undefined;
   return connectionInstance ?? fallbackAppConnection;
 });
-const selectNodeDialogVisibility = computed(() => Boolean(settingsState.value.selectNodeDialogVisibility));
-
-const featureFlags = computed(() => (settingsState.value.featureFlags as FeatureFlags) ?? ({} as FeatureFlags));
+const selectNodeDialogVisibility = computed(() => Boolean(settingsStore.selectNodeDialogVisibility));
 
 const indexersData = computed(
-  () =>
-    (walletSettings.value.indexers as Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>) ??
-    ({} as Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>)
+  () => (settingsStore.indexers as Record<IndexerType, IndexerState>) ?? ({} as Record<IndexerType, IndexerState>)
 );
 
-const isBrowserOnline = computed(() => Boolean(store.getters?.settings?.isInternetConnectionEnabled));
-const isConnectionStable = computed(() => Boolean(store.getters?.settings?.isInternetConnectionStable));
-const connectionSpeedMb = computed(() => store.getters?.settings?.internetConnectionSpeedMb as number);
+const isBrowserOnline = computed(() => settingsStore.isInternetConnectionEnabled);
+const isConnectionStable = computed(() => settingsStore.isInternetConnectionStable);
+const connectionSpeedMb = computed(() => settingsStore.internetConnectionSpeedMb);
 
 const blockExplorerLink = computed(() => toSafeExternalLink(getExplorerLinks(soraNetwork.value)?.[0]?.value));
 const blockNumberFormatted = computed(() => new FPNumber(blockNumber.value).toLocaleString());
@@ -203,7 +195,7 @@ const backoffNextText = computed(() => {
   return `${s}s (attempt ${appConnection.value.reconnectAttempt})`;
 });
 
-const isDebug = computed(() => Boolean(featureFlags.value?.debug));
+const isDebug = computed(() => settingsStore.debugEnabled);
 
 const internetConnectionStatus = computed(() => {
   if (!isBrowserOnline.value) return Status.ERROR;
@@ -233,11 +225,11 @@ const indexerStatus = computed(() => {
 
 const statisticsConnectionStatus = computed(() => {
   switch (indexerStatus.value) {
-    case WALLET_TYPES.ConnectionStatus.Unavailable:
+    case ConnectionStatus.Unavailable:
       return Status.ERROR;
-    case WALLET_TYPES.ConnectionStatus.Loading:
+    case ConnectionStatus.Loading:
       return Status.INFO;
-    case WALLET_TYPES.ConnectionStatus.Available:
+    case ConnectionStatus.Available:
       return Status.SUCCESS;
     default:
       return Status.INFO;
@@ -248,11 +240,11 @@ const statisticsConnectionText = computed(() => t(`footer.statistics.title.${ind
 const statisticsConnectionDesc = computed(() => t(`footer.statistics.desc.${indexerStatus.value}`));
 
 function setSelectNodeDialogVisibility(flag: boolean): void {
-  store.commit?.settings?.setSelectNodeDialogVisibility?.(flag);
+  settingsStore.setSelectNodeDialogVisibility(flag);
 }
 
 function setSelectIndexerDialogVisibility(flag: boolean): void {
-  store.commit?.settings?.setSelectIndexerDialogVisibility?.(flag);
+  settingsStore.setSelectIndexerDialogVisibility(flag);
 }
 
 async function runLatencyProbe(): Promise<void> {
@@ -272,15 +264,15 @@ function refreshPage(): void {
 }
 
 function handleOffline(): void {
-  store.commit?.settings?.setInternetConnectionDisabled?.();
+  settingsStore.setInternetConnectionDisabled();
 }
 
 function handleOnline(): void {
-  store.commit?.settings?.setInternetConnectionEnabled?.();
+  settingsStore.setInternetConnectionEnabled();
 }
 
 function handleConnectionChange(): void {
-  store.commit?.settings?.setInternetConnectionSpeed?.();
+  settingsStore.setInternetConnectionSpeed();
 }
 
 onMounted(() => {

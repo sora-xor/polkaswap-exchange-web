@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';

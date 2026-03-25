@@ -1,22 +1,25 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 
-vi.doMock('@wallet', () => ({
-  storage: {
-    get: vi.fn(),
-    set: vi.fn(),
-    remove: vi.fn(),
-  },
-  settingsStorage: {
-    get: vi.fn(),
-    set: vi.fn(),
-    remove: vi.fn(),
-  },
-  WALLET_CONSTS: {
-    IndexerType: { SUBQUERY: 'subquery', SUBSQUID: 'subsquid' },
-    SoraNetwork: { Test: 'Test' },
-  },
-}));
+vi.doMock('@wallet', async () => {
+  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
+  return createWalletMock({
+    storage: {
+      get: vi.fn(),
+      set: vi.fn(),
+      remove: vi.fn(),
+    },
+    settingsStorage: {
+      get: vi.fn(),
+      set: vi.fn(),
+      remove: vi.fn(),
+    },
+    WALLET_CONSTS: {
+      IndexerType: { SUBQUERY: 'subquery', SUBSQUID: 'subsquid' },
+      SoraNetwork: { Test: 'Test' },
+    },
+  });
+});
 
 vi.mock('@/lang', () => ({
   getLocale: () => 'en',
@@ -27,15 +30,6 @@ vi.mock('@/lang', () => ({
 vi.mock('@/utils', () => ({
   updateDocumentTitle: vi.fn(),
   updateFpNumberLocale: vi.fn(),
-}));
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: {
-    state: {
-      wallet: { settings: {} },
-    },
-    getters: {},
-  },
 }));
 
 const walletMocks = vi.hoisted(() => {
@@ -50,32 +44,15 @@ const walletMocks = vi.hoisted(() => {
 
   return {
     connectionStub,
-    loadWalletCore: vi.fn(async () => ({
-      api: { swap: { isALT: false } },
-      connection: connectionStub,
-      WALLET_CONSTS: {
-        IndexerType: { SUBQUERY: 'subquery', SUBSQUID: 'subsquid' },
-        SoraNetwork: { Test: 'Test' },
-      },
-      WALLET_TYPES: {},
-      storage: {
-        get: vi.fn(),
-        set: vi.fn(),
-        remove: vi.fn(),
-      },
-      settingsStorage: {
-        get: vi.fn(),
-        set: vi.fn(),
-        remove: vi.fn(),
-      },
-    })),
+    apiStub: { swap: { isALT: false } },
   };
 });
 
-const { connectionStub } = walletMocks;
+const { apiStub, connectionStub } = walletMocks;
 
-vi.doMock('@/utils/walletCore', () => ({
-  loadWalletCore: walletMocks.loadWalletCore,
+vi.doMock('@/shims/wallet-api', () => ({
+  api: apiStub,
+  connection: connectionStub,
 }));
 
 describe('settings store initialisation', () => {

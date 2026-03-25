@@ -31,22 +31,13 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 
-import store from '@/store';
 import { useSettingsStore } from '@/stores/settings';
 import { isInternalHashHref, normalizeHashHref } from '@/utils/hashHref';
 
-import type { Ad } from '@/store/settings/types';
+import type { Ad } from '@/stores/settings/types';
 
 const settingsStore = useSettingsStore();
-const adsArray = computed(() => {
-  const ads = settingsStore.adsArray as Ad[] | undefined;
-  if (Array.isArray(ads) && ads.length) {
-    return ads;
-  }
-
-  const legacyAds = store.state?.settings?.adsArray as Ad[] | undefined;
-  return Array.isArray(legacyAds) ? legacyAds : [];
-});
+const adsArray = computed(() => (Array.isArray(settingsStore.adsArray) ? (settingsStore.adsArray as Ad[]) : []));
 const hasMultipleAds = computed(() => adsArray.value.length > 1);
 
 const currentIndex = ref(0);

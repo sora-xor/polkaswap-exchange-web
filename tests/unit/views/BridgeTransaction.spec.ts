@@ -132,6 +132,11 @@ vi.mock('@wallet', async () => {
 });
 
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
+  BridgeNetworkType: {
+    Eth: 'Eth',
+    Evm: 'Evm',
+    Sub: 'Sub',
+  },
   BridgeTxStatus: {
     Done: 'Done',
     Failed: 'Failed',
@@ -161,12 +166,6 @@ vi.mock('@/router', () => {
       }),
   };
 });
-
-vi.mock('@/store', () => ({
-  get default() {
-    return mocks.store;
-  },
-}));
 
 vi.mock('@/composables/useBridgeCore', () => ({
   useBridgeCore: () => ({

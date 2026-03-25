@@ -23,11 +23,23 @@ const corruptionPatterns = [
   /Cannot read properties of null \(reading 'query'\)/i,
 ];
 
+const callWeb3Store = async (page: Page, action: string, payload?: unknown): Promise<void> => {
+  await page.evaluate(
+    ({ action, payload }) => {
+      const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
+      const web3Store = pinia?._s?.get('web3');
+
+      return web3Store?.[action]?.(payload);
+    },
+    { action, payload }
+  );
+};
+
 const injectSubNodeDialogContext = async (page: Page): Promise<void> => {
   await page.evaluate(() => {
-    const store = (window as Record<string, any>).__PS_APP_STORE__;
     const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
     const bridgeStore = pinia?._s?.get('bridge');
+    const web3Store = pinia?._s?.get('web3');
 
     const subConnection = {
       nodeIsConnected: true,
@@ -50,9 +62,9 @@ const injectSubNodeDialogContext = async (page: Page): Promise<void> => {
       };
     }
 
-    store?.commit?.web3?.setNetworkType?.('Sub');
-    store?.commit?.web3?.setSelectedNetwork?.('Kusama');
-    store?.commit?.web3?.setSelectSubNodeDialogVisibility?.(true);
+    web3Store?.setNetworkType?.('Sub');
+    web3Store?.setSelectedNetwork?.('Kusama');
+    web3Store?.setSelectSubNodeDialogVisibility?.(true);
   });
 };
 
@@ -383,10 +395,7 @@ test.describe('live runtime smoke', () => {
     await page.waitForTimeout(1_500);
     await expectNoCorruptedUiText(page);
 
-    await page.evaluate(() => {
-      const store = (window as Record<string, any>).__PS_APP_STORE__;
-      store?.commit?.web3?.setSelectNetworkDialogVisibility?.(true);
-    });
+    await callWeb3Store(page, 'setSelectNetworkDialogVisibility', true);
 
     const networkDialog = page.getByText(/bridge sora network with:/i).first();
     await expect(networkDialog).toBeVisible();
@@ -413,10 +422,7 @@ test.describe('live runtime smoke', () => {
     );
     await ensureAppLoaded(page);
 
-    await page.evaluate(() => {
-      const store = (window as Record<string, any>).__PS_APP_STORE__;
-      store?.commit?.web3?.setSelectNetworkDialogVisibility?.(true);
-    });
+    await callWeb3Store(page, 'setSelectNetworkDialogVisibility', true);
     await expect(networkDialog).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(networkDialog).toHaveCount(0);
@@ -435,10 +441,7 @@ test.describe('live runtime smoke', () => {
     await page.waitForTimeout(1_500);
     await expectNoCorruptedUiText(page);
 
-    await page.evaluate(() => {
-      const store = (window as Record<string, any>).__PS_APP_STORE__;
-      store?.commit?.web3?.setSoraAccountDialogVisibility?.(true);
-    });
+    await callWeb3Store(page, 'setSoraAccountDialogVisibility', true);
 
     const soraAccountDialog = page
       .getByRole('dialog')
@@ -468,10 +471,7 @@ test.describe('live runtime smoke', () => {
     );
     await ensureAppLoaded(page);
 
-    await page.evaluate(() => {
-      const store = (window as Record<string, any>).__PS_APP_STORE__;
-      store?.commit?.web3?.setSoraAccountDialogVisibility?.(true);
-    });
+    await callWeb3Store(page, 'setSoraAccountDialogVisibility', true);
     await expect(soraAccountDialog).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(soraAccountDialog).toHaveCount(0);
@@ -642,10 +642,7 @@ test.describe('live runtime smoke', () => {
     await page.waitForTimeout(1_500);
     await expectNoCorruptedUiText(page);
 
-    await page.evaluate(() => {
-      const store = (window as Record<string, any>).__PS_APP_STORE__;
-      store?.commit?.web3?.setSelectProviderDialogVisibility?.(true);
-    });
+    await callWeb3Store(page, 'setSelectProviderDialogVisibility', true);
 
     const providerDialog = page
       .getByRole('dialog')
@@ -675,10 +672,7 @@ test.describe('live runtime smoke', () => {
     );
     await ensureAppLoaded(page);
 
-    await page.evaluate(() => {
-      const store = (window as Record<string, any>).__PS_APP_STORE__;
-      store?.commit?.web3?.setSelectProviderDialogVisibility?.(true);
-    });
+    await callWeb3Store(page, 'setSelectProviderDialogVisibility', true);
     await expect(providerDialog).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(providerDialog).toHaveCount(0);
@@ -697,10 +691,7 @@ test.describe('live runtime smoke', () => {
     await page.waitForTimeout(1_500);
     await expectNoCorruptedUiText(page);
 
-    await page.evaluate(() => {
-      const store = (window as Record<string, any>).__PS_APP_STORE__;
-      store?.commit?.web3?.setSubAccountDialogVisibility?.(true);
-    });
+    await callWeb3Store(page, 'setSubAccountDialogVisibility', true);
 
     const subAccountDialog = page
       .getByRole('dialog')
@@ -730,10 +721,7 @@ test.describe('live runtime smoke', () => {
     );
     await ensureAppLoaded(page);
 
-    await page.evaluate(() => {
-      const store = (window as Record<string, any>).__PS_APP_STORE__;
-      store?.commit?.web3?.setSubAccountDialogVisibility?.(true);
-    });
+    await callWeb3Store(page, 'setSubAccountDialogVisibility', true);
     await expect(subAccountDialog).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(subAccountDialog).toHaveCount(0);
@@ -819,10 +807,7 @@ test.describe('live runtime smoke', () => {
     await expect(assetDialog).toHaveCount(0);
     await expect(subAccountDialog).toHaveCount(0);
 
-    await page.evaluate(() => {
-      const store = (window as Record<string, any>).__PS_APP_STORE__;
-      store?.commit?.web3?.setSubAccountDialogVisibility?.(true);
-    });
+    await callWeb3Store(page, 'setSubAccountDialogVisibility', true);
     await expect(subAccountDialog).toBeVisible();
 
     await page.keyboard.press('Escape');

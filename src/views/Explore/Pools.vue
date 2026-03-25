@@ -161,7 +161,7 @@
 
 <script lang="ts" setup>
 import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, ref, watch } from 'vue';
 
 import { SortDirection } from '@soramitsu-ui/ui/types';
@@ -170,9 +170,11 @@ import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components, TranslationConsts } from '@/consts';
 import { fetchPoolsData, type PoolData } from '@/indexer/queries/pool/pools';
+import { FontSizeRate, FontWeightRate } from '@/shims/wallet-consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
+import { usePoolStore } from '@/stores/pool';
+import { useWalletStore } from '@/stores/wallet';
 import { buildPoolTableItems, filterPoolTableItems, type PoolExploreTableItem } from '@/views/Explore/poolsTable';
 
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
@@ -188,9 +190,6 @@ defineOptions({
   },
 });
 
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
-const FontWeightRate = WALLET_CONSTS.FontWeightRate;
-
 const props = defineProps({
   parentLoading: { type: Boolean, default: false },
   exploreQuery: { type: String, default: '' },
@@ -203,11 +202,13 @@ const { loading, withLoading, withParentLoading } = useLoading({ parentLoading }
 const loadingState = computed(() => loading.value || parentLoading.value);
 
 const assetsStore = useAssetsStore();
+const poolStore = usePoolStore();
+const walletStore = useWalletStore();
 const whitelistAssets = computed(() => assetsStore.whitelistAssets ?? []);
 const allowedAssets = computed(() => (whitelistAssets.value.length ? whitelistAssets.value : KnownAssets));
 
 const getAsset = (address?: string) => assetsStore.assetDataByAddress(address);
-const accountLiquidity = computed<readonly AccountLiquidity[]>(() => store.state.pool.accountLiquidity ?? []);
+const accountLiquidity = computed<readonly AccountLiquidity[]>(() => poolStore.accountLiquidity ?? []);
 const poolsData = ref<readonly PoolData[]>([]);
 
 const items = computed<PoolExploreTableItem[]>(() =>
@@ -249,11 +250,11 @@ const {
 } = table;
 
 const pricesAvailable = computed(() => {
-  const fiatPriceObject = store.state.wallet.account.fiatPriceObject ?? {};
+  const fiatPriceObject = walletStore.fiatPriceObject ?? {};
   return Object.keys(fiatPriceObject).length > 0;
 });
 
-const isLoggedIn = computed(() => store.getters.wallet.account.isLoggedIn as boolean);
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
 const whitelistSignature = computed(() => whitelistAssets.value.map((asset) => asset.address).join(';'));
 
 const updateExploreData = async (): Promise<void> => {

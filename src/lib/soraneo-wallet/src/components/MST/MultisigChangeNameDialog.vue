@@ -23,8 +23,8 @@ import { api } from '@/api';
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
-import { getAppStore } from '@/utils/app-store';
-import type { Route } from '@/store/router/types';
+import { useRouterStore } from '@/stores/router';
+import { useWalletStore } from '@/stores/wallet';
 
 import DialogBase from '../DialogBase.vue';
 
@@ -39,22 +39,15 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
-const store = computed(() => getAppStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any));
+const routerStore = useRouterStore();
+const walletStore = useWalletStore();
 const visibleModel = defineModel<boolean>('visible', { default: false });
 const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 
-const navigate = (route: Route) => {
-  store.value.original.commit('router/navigate', route);
-};
-const syncWithStorage = store.value.commit.wallet.account.syncWithStorage;
-const setIsMST = store.value.commit.wallet.account.setIsMST;
-const afterLogin = store.value.dispatch.wallet.account.afterLogin;
-const renameAccount = store.value.dispatch.wallet.account.renameAccount;
-
-const account = computed(() => store.value.getters.wallet.account.account);
-const isMST = computed(() => store.value.state.wallet.account.isMST);
+const account = computed(() => walletStore.account);
+const isMST = computed(() => walletStore.isMstAccount);
 
 const dialogMSTNameChange = ref(false);
 const multisigNewName = ref('');
@@ -91,21 +84,21 @@ const isNoNameOrTheSame = computed(() => currentName.value === multisigNewName.v
 
 const switchToFromMST = () => {
   mst.value?.switchAccount?.(isMSTLocal.value);
-  setIsMST(isMSTLocal.value);
-  syncWithStorage();
-  afterLogin();
+  walletStore.setIsMstAccount(isMSTLocal.value);
+  walletStore.syncAccountWithStorage();
+  void walletStore.afterLogin();
 };
 
 const updateName = async () => {
   mst.value?.updateMultisigName?.(multisigNewName.value);
   const mstAddress = mst.value?.getMstAddress?.();
   if (mstAddress) {
-    await renameAccount({ address: mstAddress, name: multisigNewName.value });
+    await walletStore.renameAccount({ address: mstAddress, name: multisigNewName.value });
   }
   multisigNewName.value = '';
   resolveCurrentName();
   closeDialog();
-  navigate({ name: RouteNames.Wallet });
+  routerStore.navigate({ name: RouteNames.Wallet });
 };
 
 const forgetMultisig = () => {

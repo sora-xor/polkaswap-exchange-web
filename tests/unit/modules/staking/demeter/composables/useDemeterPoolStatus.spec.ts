@@ -2,51 +2,36 @@ import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { createPinia, setActivePinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { setAppStoreOverride } from '@/utils/app-store';
-
-const mockStore = vi.hoisted(() => ({
-  state: {
-    wallet: {
-      settings: {
-        networkFees: {} as Record<string, string>,
-        shouldBalanceBeHidden: false,
-      },
-      account: {
-        fiatPriceObject: {} as Record<string, string>,
-      },
-    },
+const shared = vi.hoisted(() => ({
+  walletStore: {
+    fiatPriceObject: {} as Record<string, string>,
   },
-  getters: {
-    assets: {
-      xor: {
-        symbol: 'XOR',
-        decimals: 18,
-        balance: {
-          transferable: '1000000000000000000',
-        },
+  settingsStore: {
+    networkFees: {} as Record<string, string>,
+    shouldBalanceBeHidden: false,
+  },
+  assetsStore: {
+    xor: {
+      symbol: 'XOR',
+      decimals: 18,
+      balance: {
+        transferable: '1000000000000000000',
       },
-    },
-    wallet: {
-      account: {
-        assetsDataTable: {},
-        accountAssetsAddressTable: {},
-      },
-    },
+    } as any,
+    assetDataByAddress: vi.fn((address?: string) => (address ? null : null)),
   },
 }));
 
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: mockStore,
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => shared.walletStore,
 }));
 
-const assetsStoreMock = vi.hoisted(() => ({
-  assetDataByAddress: (address?: string) =>
-    address ? (mockStore.getters.wallet.account.assetsDataTable[address] ?? null) : null,
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => shared.settingsStore,
 }));
 
 vi.mock('@/stores/assets', () => ({
-  useAssetsStore: () => assetsStoreMock,
+  useAssetsStore: () => shared.assetsStore,
 }));
 
 vi.mock('@sora-substrate/sdk/build/assets/consts', () => import('@stubs/sdk-assets-consts'));
@@ -62,8 +47,8 @@ vi.mock('@/utils', async (importOriginal) => {
 import { useDemeterPoolCard } from '@/modules/staking/demeter/composables/useDemeterPoolCard';
 import { useDemeterPoolStatus } from '@/modules/staking/demeter/composables/useDemeterPoolStatus';
 
-mockStore.state.wallet.settings.networkFees[Operation.DemeterFarmingGetRewards] = '10000000000';
-mockStore.state.wallet.account.fiatPriceObject = {
+shared.settingsStore.networkFees[Operation.DemeterFarmingGetRewards] = '10000000000';
+shared.walletStore.fiatPriceObject = {
   B: '1',
   R: '2',
   XOR: '1',
@@ -90,34 +75,6 @@ describe('useDemeterPoolStatus & useDemeterPoolCard', () => {
     price: FPNumber.fromCodecValue('2'),
   } as any;
 
-  mockStore.getters.wallet.account.assetsDataTable = {
-    A: {
-      address: 'A',
-      symbol: 'AAA',
-      decimals: 18,
-      balance: {
-        transferable: '0',
-      },
-    },
-    B: poolAsset,
-    R: rewardAsset,
-    xor: mockStore.getters.assets.xor,
-  } as Record<string, any>;
-  mockStore.getters.wallet.account.accountAssetsAddressTable = {
-    xor: {
-      balance: {
-        transferable: '1000000000000000000',
-      },
-    },
-    A: {
-      balance: {
-        transferable: '0',
-      },
-    },
-    B: poolAsset.balance,
-    R: rewardAsset.balance,
-  } as Record<string, any>;
-
   const pool = {
     baseAsset: 'A',
     poolAsset: 'B',
@@ -140,7 +97,29 @@ describe('useDemeterPoolStatus & useDemeterPoolCard', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia());
-    setAppStoreOverride(mockStore as any);
+    shared.assetsStore.assetDataByAddress.mockImplementation((address?: string) => {
+      if (!address) return null;
+
+      switch (address) {
+        case 'A':
+          return {
+            address: 'A',
+            symbol: 'AAA',
+            decimals: 18,
+            balance: {
+              transferable: '0',
+            },
+          };
+        case 'B':
+          return poolAsset;
+        case 'R':
+          return rewardAsset;
+        case 'xor':
+          return shared.assetsStore.xor;
+        default:
+          return null;
+      }
+    });
     statusApi = useDemeterPoolStatus({
       pool: () => pool,
       accountPool: () => accountPool,

@@ -6,7 +6,7 @@ const getGlobalScope = (): Record<string, unknown> => globalThis as Record<strin
 
 let sharedPinia: Pinia | null = null;
 
-const registerGlobalPinia = (instance: Pinia): Pinia => {
+export const registerGlobalPinia = (instance: Pinia): Pinia => {
   sharedPinia = instance;
   setActivePinia(sharedPinia);
   getGlobalScope()[PINIA_SCOPE_TOKEN] = sharedPinia;

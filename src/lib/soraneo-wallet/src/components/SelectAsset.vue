@@ -23,7 +23,7 @@ import { useAssets } from '@/composables/useAssets';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
 import { useRouterStore } from '@/stores/router';
-import type { Route } from '@/store/router/types';
+import type { Route } from '@/stores/router/types';
 import type { Nullable } from '@/types/common';
 
 import AssetList from './AssetList.vue';

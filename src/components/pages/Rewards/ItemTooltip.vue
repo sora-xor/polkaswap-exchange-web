@@ -18,10 +18,11 @@
 </template>
 
 <script lang="ts" setup>
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { toRefs } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
+import { FontSizeRate } from '@/shims/wallet-consts';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -38,7 +39,6 @@ const props = defineProps<{
 }>();
 
 const { t } = useTranslation();
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
 const { value, asset } = toRefs(props);
 </script>

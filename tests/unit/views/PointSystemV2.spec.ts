@@ -10,60 +10,60 @@ const subscribeOnUpdates = vi.fn().mockResolvedValue(undefined);
 const getAccountReferralRewards = vi.fn().mockResolvedValue(undefined);
 const fetchAccountMetaMock = vi.fn();
 
-const storeStub = {
-  state: {
-    settings: {
-      isWalletLoaded: true,
-    },
-    referrals: {
-      referralRewards: null,
-    },
-    wallet: {
-      account: {
-        accountAssets: [] as Array<any>,
-        fiatPriceObject: {} as Record<string, string>,
-      },
-    },
-    pool: {
-      accountLiquidity: [] as Array<any>,
-    },
-  },
-  getters: {
-    wallet: {
-      account: {
-        account: { address: '5mock' },
-      },
-    },
-    assets: {
-      assetDataByAddress: (address?: string) => ({
-        address: address ?? '0x00',
-        symbol: (address ?? 'asset').toUpperCase(),
-        decimals: 18,
-        balance: {
-          transferable: '0',
-        },
-      }),
-    },
-  },
-  dispatch: {
-    referrals: {
-      getAccountReferralRewards,
-    },
-    pool: {
-      subscribeOnAccountLiquidityList: subscribeOnList,
-      subscribeOnAccountLiquidityUpdates: subscribeOnUpdates,
-    },
-  },
-  commit: {
-    wallet: {
-      settings: {},
-    },
-  },
+const settingsStoreMock = {
+  isWalletLoaded: true,
 };
 
-vi.mock('@/store', () => ({
+const walletStoreMock = {
+  account: { address: '5mock' },
+  accountAssets: [] as Array<any>,
+};
+
+const referralsStoreMock = {
+  referralRewards: null as any,
+  getAccountReferralRewards,
+};
+
+const poolStoreMock = {
+  accountLiquidity: [] as Array<any>,
+  subscribeOnAccountLiquidityList: subscribeOnList,
+  subscribeOnAccountLiquidityUpdates: subscribeOnUpdates,
+};
+
+const assetsStoreMock = {
+  assetDataByAddress: vi.fn((address?: string) => ({
+    address: address ?? '0x00',
+    symbol: (address ?? 'asset').toUpperCase(),
+    decimals: 18,
+    balance: {
+      transferable: '0',
+    },
+  })),
+};
+
+vi.mock('@/stores/wallet', () => ({
   __esModule: true,
-  default: storeStub,
+  useWalletStore: () => walletStoreMock,
+}));
+
+vi.mock('@/stores/settings', () => ({
+  __esModule: true,
+  useSettingsStore: () => settingsStoreMock,
+}));
+
+vi.mock('@/stores/referrals', () => ({
+  __esModule: true,
+  useReferralsStore: () => referralsStoreMock,
+}));
+
+vi.mock('@/stores/pool', () => ({
+  __esModule: true,
+  usePoolStore: () => poolStoreMock,
+}));
+
+vi.mock('@/stores/assets', () => ({
+  __esModule: true,
+  useAssetsStore: () => assetsStoreMock,
 }));
 
 vi.mock('@/composables/useInternalConnect', () => ({
@@ -86,7 +86,7 @@ vi.mock('@wallet', async () => {
   return createWalletMock();
 });
 
-vi.mock('@wallet/src/util', () => ({
+vi.mock('@/lib/soraneo-wallet/src/util', () => ({
   __esModule: true,
   delay: vi.fn().mockResolvedValue(undefined),
 }));
@@ -146,11 +146,11 @@ describe('PointSystemV2.vue', () => {
     getAccountReferralRewards.mockClear();
     fetchAccountMetaMock.mockReset();
 
-    storeStub.state.referrals.referralRewards = null;
-    storeStub.state.wallet.account.accountAssets = [];
-    storeStub.state.wallet.account.fiatPriceObject = {};
-    storeStub.state.pool.accountLiquidity = [];
-    storeStub.getters.wallet.account.account = { address: '5mock' };
+    referralsStoreMock.referralRewards = null;
+    poolStoreMock.accountLiquidity = [];
+    walletStoreMock.accountAssets = [];
+    walletStoreMock.account = { address: '5mock' };
+    assetsStoreMock.assetDataByAddress.mockClear();
   });
 
   it('prompts the user to connect the wallet when logged out', async () => {

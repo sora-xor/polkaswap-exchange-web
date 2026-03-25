@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, watch } from 'vue';
 
 import { useSearchInput } from '@/composables/useSearchInput';
@@ -35,10 +35,12 @@ import { useSelectAssetTools } from '@/composables/useSelectAssetTools';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
+import { useBridgeStore } from '@/stores/bridge';
+import { useWalletStore } from '@/stores/wallet';
+import { useWeb3Store } from '@/stores/web3';
 
-import type { BridgeRegisteredAsset } from '@/store/assets/types';
+import type { BridgeRegisteredAsset } from '@/stores/assets/types';
 import type { NetworkData } from '@/types/bridge';
 import type { Nullable } from '@/types/common';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -68,13 +70,16 @@ const { t } = useTranslation();
 const { search, query, handleClearSearch, focusSearchInput } = useSearchInput();
 const { sortByBalance, getAssetsWithBalances } = useSelectAssetTools();
 const assetsStore = useAssetsStore();
+const bridgeStore = useBridgeStore();
+const walletStore = useWalletStore();
+const web3Store = useWeb3Store();
 
 const isVisible = defineModel<boolean>('visible', { default: false });
 
-const selectedNetwork = computed(() => store.getters.web3.selectedNetwork as Nullable<NetworkData>);
+const selectedNetwork = computed(() => web3Store.selectedNetworkData as Nullable<NetworkData>);
 const registeredAssets = computed(() => assetsStore.registeredAssets as Record<string, BridgeRegisteredAsset>);
-const isSoraToEvm = computed(() => Boolean(store.state.bridge.isSoraToEvm));
-const shouldBalanceBeHidden = computed(() => Boolean(store.state.wallet.settings.shouldBalanceBeHidden));
+const isSoraToEvm = computed(() => bridgeStore.isSoraToEvm);
+const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
 
 const assetsList = computed<RegisteredAccountAsset[]>(() => {
   const assetsAddresses = Object.keys(registeredAssets.value ?? {});

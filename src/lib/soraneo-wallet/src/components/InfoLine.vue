@@ -51,7 +51,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapState } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import { FontSizeRate, FontWeightRate, HiddenValue } from '../consts';
 
@@ -78,7 +79,9 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/settings', ['shouldBalanceBeHidden']),
+    shouldBalanceBeHidden(this: any) {
+      return useWalletStore(this.$pinia).shouldBalanceBeHidden;
+    },
     normalizedValue(this: any): string {
       if (this.value === null || this.value === undefined) {
         return '';

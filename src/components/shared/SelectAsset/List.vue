@@ -54,10 +54,11 @@
 <script lang="ts" setup>
 import { toRef } from 'vue';
 
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { useTranslation } from '@/composables/useTranslation';
 import { useAssetFormatting } from '@/composables/useAssetFormatting';
-import store from '@/store';
+import { FontSizeRate, FontWeightRate } from '@/shims/wallet-consts';
+import { useWalletStore } from '@/stores/wallet';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -90,24 +91,20 @@ const connected = toRef(props, 'connected');
 
 const { t } = useTranslation();
 const { formatAssetBalance, getFiatBalance, getAssetFiatPrice } = useAssetFormatting();
+const walletStore = useWalletStore();
 
 const FormattedZeroSymbol = '-';
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
-const FontWeightRate = WALLET_CONSTS.FontWeightRate;
-
-const getPinnedAssetHandler = (type: 'add' | 'remove') => {
-  const accountMutations = store.commit?.wallet?.account;
-  return type === 'add' ? accountMutations?.setPinnedAsset : accountMutations?.removePinnedAsset;
-};
 
 const isAssetPinned = (asset: AccountAsset): boolean => {
-  const checker = store.getters?.wallet?.account?.isAssetPinned;
-  return typeof checker === 'function' ? checker(asset) : false;
+  return walletStore.isAssetPinned(asset);
 };
 
 const togglePinnedAsset = (asset: AccountAsset): void => {
-  const handler = isAssetPinned(asset) ? getPinnedAssetHandler('remove') : getPinnedAssetHandler('add');
-  handler?.(asset);
+  if (isAssetPinned(asset)) {
+    walletStore.removePinnedAsset(asset);
+  } else {
+    walletStore.setPinnedAsset(asset);
+  }
 };
 
 const formatBalance = (asset: AccountAsset): string => {

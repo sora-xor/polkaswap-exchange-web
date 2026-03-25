@@ -61,8 +61,8 @@ import MSTWallet from '@/assets/img/MSTWallet.svg?url';
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
-import { getAppStore } from '@/utils/app-store';
-import type { Route } from '@/store/router/types';
+import { useRouterStore } from '@/stores/router';
+import { useSettingsStore } from '@/stores/settings';
 
 import DialogBase from '../DialogBase.vue';
 
@@ -77,16 +77,14 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
-const store = computed(() => getAppStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any));
+const routerStore = useRouterStore();
+const settingsStore = useSettingsStore();
 const visibleModel = defineModel<boolean>('visible', { default: false });
 const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
 
-const isMSTAvailable = computed(() => store.value.state.wallet.settings.isMSTAvailable);
-const navigate = (route: Route) => {
-  store.value.original.commit('router/navigate', route);
-};
+const isMSTAvailable = computed(() => settingsStore.isMSTAvailable);
 
 const sectionsAbout = computed(() => [
   {
@@ -134,7 +132,7 @@ const connectFearlessOrCreateMST = () => {
   }
 
   closeDialog();
-  navigate({ name: RouteNames.WalletConnection });
+  routerStore.navigate({ name: RouteNames.WalletConnection });
 };
 </script>
 

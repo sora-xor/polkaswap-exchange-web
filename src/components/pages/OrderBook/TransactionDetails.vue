@@ -49,7 +49,7 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { Operation, type CodecString, type FPNumber, type NetworkFeesObject } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import dayjs from 'dayjs/esm';
 import { computed } from 'vue';
 

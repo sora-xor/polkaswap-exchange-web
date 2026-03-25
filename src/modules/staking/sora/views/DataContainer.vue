@@ -18,7 +18,6 @@ import { useSubscriptions } from '@/composables/useSubscriptions';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 import { SoraStakingComponents, SoraStakingPageNames } from '@/modules/staking/sora/consts';
 import { soraStakingLazyComponent } from '@/modules/staking/router';
-import store from '@/store';
 
 import type { AsyncFnWithoutArgs } from '@/types/common';
 import type { ValidatorsFilter } from '../types';
@@ -40,29 +39,32 @@ const {
   setShowValidatorsFilterDialog,
   newStakeValidatorsMode,
   currentEra,
+  getStakingInfo,
+  getValidatorsInfo,
+  getMinNominatorBond,
+  getUnbondPeriod,
+  getMaxNominations,
+  getHistoryDepth,
+  getPendingRewards,
+  subscribeOnActiveEra,
+  subscribeOnCurrentEra,
+  subscribeOnController,
+  subscribeOnPayee,
+  subscribeOnNominations,
+  subscribeOnAccountLedger,
+  subscribeOnCurrentEraTotalStake,
+  resetActiveEraUpdates,
+  resetCurrentEraUpdates,
+  resetCurrentEraTotalStakeUpdates,
+  resetControllerUpdates,
+  resetPayeeUpdates,
+  resetNominationsUpdates,
+  resetAccountLedgerUpdates,
 } = useSoraStaking();
 
 const ValidatorsFilterDialog = soraStakingLazyComponent(SoraStakingComponents.ValidatorsFilterDialog);
 
 const parentLoadingFlag = computed(() => Boolean(props.parentLoading));
-
-const stakingDispatch = store.dispatch.staking;
-const stakingCommit = store.commit.staking;
-
-const getStakingInfo = () => stakingDispatch.getStakingInfo();
-const getValidatorsInfo = () => stakingDispatch.getValidatorsInfo();
-const getMinNominatorBond = () => stakingDispatch.getMinNominatorBond();
-const getUnbondPeriod = () => stakingDispatch.getUnbondPeriod();
-const getMaxNominations = () => stakingDispatch.getMaxNominations();
-const getHistoryDepth = () => stakingDispatch.getHistoryDepth();
-const getPendingRewards = () => stakingDispatch.getPendingRewards();
-const subscribeOnActiveEra = () => stakingDispatch.subscribeOnActiveEra();
-const subscribeOnCurrentEra = () => stakingDispatch.subscribeOnCurrentEra();
-const subscribeOnController = () => stakingDispatch.subscribeOnController();
-const subscribeOnPayee = () => stakingDispatch.subscribeOnPayee();
-const subscribeOnNominations = () => stakingDispatch.subscribeOnNominations();
-const subscribeOnAccountLedger = () => stakingDispatch.subscribeOnAccountLedger();
-const subscribeOnCurrentEraTotalStake = () => stakingDispatch.subscribeOnCurrentEraTotalStake();
 
 const startStakingSubscriptions: AsyncFnWithoutArgs = async () => {
   await Promise.all([
@@ -84,13 +86,13 @@ const startStakingSubscriptions: AsyncFnWithoutArgs = async () => {
 };
 
 const resetStakingSubscriptions = async () => {
-  stakingCommit.resetActiveEraUpdates();
-  stakingCommit.resetCurrentEraUpdates();
-  stakingCommit.resetCurrentEraTotalStakeUpdates();
-  stakingCommit.resetControllerUpdates();
-  stakingCommit.resetPayeeUpdates();
-  stakingCommit.resetNominationsUpdates();
-  stakingCommit.resetAccountLedgerUpdates();
+  resetActiveEraUpdates();
+  resetCurrentEraUpdates();
+  resetCurrentEraTotalStakeUpdates();
+  resetControllerUpdates();
+  resetPayeeUpdates();
+  resetNominationsUpdates();
+  resetAccountLedgerUpdates();
 };
 
 const { loading, subscriptionsDataLoading, updateSubscriptions } = useSubscriptions({

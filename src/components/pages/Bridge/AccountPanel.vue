@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 
 import { useTranslation } from '@/composables/useTranslation';
 

@@ -7,17 +7,6 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: {
-    state: {
-      settings: {
-        language: 'en',
-      },
-    },
-  },
-}));
-
 vi.mock('@/consts', async () => {
   const actual = await vi.importActual<typeof import('@/consts')>('@/consts');
 

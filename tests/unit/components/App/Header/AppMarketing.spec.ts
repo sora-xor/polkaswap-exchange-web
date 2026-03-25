@@ -1,24 +1,14 @@
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { settingsStoreMock, legacyStoreMock } = vi.hoisted(() => ({
+const { settingsStoreMock } = vi.hoisted(() => ({
   settingsStoreMock: {
     adsArray: [] as Array<{ title: string; img: string; link: string }>,
-  },
-  legacyStoreMock: {
-    state: {
-      settings: {
-        adsArray: [] as Array<{ title: string; img: string; link: string }>,
-      },
-    },
   },
 }));
 
 vi.mock('@/stores/settings', () => ({
   useSettingsStore: () => settingsStoreMock,
-}));
-vi.mock('@/store', () => ({
-  default: legacyStoreMock,
 }));
 
 import AppMarketing from '@/components/App/Header/AppMarketing.vue';
@@ -41,7 +31,6 @@ const mountComponent = () =>
 describe('AppMarketing', () => {
   beforeEach(() => {
     settingsStoreMock.adsArray = [];
-    legacyStoreMock.state.settings.adsArray = [];
     vi.useFakeTimers();
   });
 
@@ -81,16 +70,5 @@ describe('AppMarketing', () => {
 
     expect(wrapper.find('.marketing-prev').exists()).toBe(true);
     expect(wrapper.find('.marketing-next').exists()).toBe(true);
-  });
-
-  it('falls back to legacy settings ads when pinia ads are empty', async () => {
-    legacyStoreMock.state.settings.adsArray = [{ title: 'LEGACY AD', img: '/legacy.png', link: '#/swap/XOR' }];
-
-    const wrapper = mountComponent();
-    await wrapper.vm.$nextTick();
-
-    const card = wrapper.find('.marketing-card');
-    expect(card.exists()).toBe(true);
-    expect(wrapper.text()).toContain('LEGACY AD');
   });
 });

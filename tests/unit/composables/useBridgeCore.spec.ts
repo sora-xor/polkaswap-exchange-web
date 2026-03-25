@@ -1,11 +1,17 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { reactive } from 'vue';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
+import { EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
+import { nextTick, reactive } from 'vue';
 import { createPinia, setActivePinia } from 'pinia';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { PageNames } from '@/consts';
+import pinia from '@/plugins/pinia';
 import router from '@/router';
 import { useBridgeStore } from '@/stores/bridge';
+
+vi.mock('pinia', async (importOriginal) => await importOriginal<typeof import('pinia')>());
 
 const walletStoreMock = {
   assetsDataTable: {} as Record<string, RegisteredAssetMock>,
@@ -15,21 +21,44 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => walletStoreMock,
 }));
 
-vi.mock('@/utils/app-store', () => ({
-  requireAppStore: () => storeStub?.store ?? { getters: { bridge: {}, web3: {} }, state: {} },
-}));
+const assetsStoreMock = {
+  registeredAssets: {} as Record<string, { address: string; decimals: number; kind: string }>,
+  assetDataByAddress: (address?: string | null) => {
+    if (!address) return null;
 
-vi.mock('@/stores/assets', () => ({
-  useAssetsStore: () => ({
-    assetDataByAddress: () =>
+    return (
+      walletStoreMock.assetsDataTable[address] ??
       ({
         address: 'xor',
         externalAddress: 'xor-external',
         symbol: 'XOR',
         decimals: 12,
         externalDecimals: 18,
-      }) as RegisteredAssetMock,
-  }),
+      } as RegisteredAssetMock)
+    );
+  },
+};
+
+vi.mock('@/stores/assets', () => ({
+  useAssetsStore: () => assetsStoreMock,
+}));
+
+const web3StoreMock = {
+  networkType: BridgeNetworkType.Eth,
+  networkSelected: EvmNetworkId.EthereumSepolia,
+  selectedNetworkData: {
+    nativeCurrency: {
+      symbol: 'XOR',
+    },
+  },
+  isValidNetwork: true,
+  subAddress: '',
+  subAddressName: '',
+  evmAddress: 'evmAddress',
+};
+
+vi.mock('@/stores/web3', () => ({
+  useWeb3Store: () => web3StoreMock,
 }));
 
 type RegisteredAssetMock = {
@@ -63,10 +92,6 @@ type StoreStub = {
     bridge: ReturnType<typeof reactive>;
     web3: ReturnType<typeof reactive>;
     assets: ReturnType<typeof reactive>;
-  };
-  store: {
-    state: StoreStub['state'];
-    getters: StoreStub['getters'];
   };
 };
 
@@ -113,7 +138,7 @@ const createStoreStub = (): StoreStub => {
     externalNetworkFee: '300000000000000000',
   });
 
-  const getters = {
+  const getters = reactive({
     bridge: bridgeGetters,
     web3: reactive({
       isValidNetwork: true,
@@ -126,15 +151,11 @@ const createStoreStub = (): StoreStub => {
         externalDecimals: 18,
       }),
     }),
-  };
+  });
 
   return {
     state,
     getters,
-    store: {
-      state,
-      getters,
-    },
   };
 };
 
@@ -145,6 +166,19 @@ let bridgeStore: ReturnType<typeof useBridgeStore>;
 
 const syncBridgeStore = () => {
   if (!bridgeStore) return;
+
+  assetsStoreMock.registeredAssets = {
+    [storeStub.getters.bridge.asset.address]: {
+      address: storeStub.getters.bridge.asset.externalAddress,
+      decimals: storeStub.getters.bridge.asset.externalDecimals,
+      kind: storeStub.getters.bridge.isSidechainAsset ? EthAssetKind.Sidechain : 'Other',
+    },
+    [storeStub.getters.bridge.nativeToken.address]: {
+      address: storeStub.getters.bridge.nativeToken.externalAddress,
+      decimals: storeStub.getters.bridge.nativeToken.externalDecimals,
+      kind: 'Other',
+    },
+  };
 
   bridgeStore.$patch({
     form: {
@@ -209,19 +243,24 @@ const resetStore = () => {
 
 beforeEach(async () => {
   storeStub = createStoreStub();
-  vi.doMock('@/store', () => ({
-    default: storeStub.store,
-  }));
-  setActivePinia(createPinia());
-  bridgeStore = useBridgeStore();
+  setActivePinia(pinia);
+  bridgeStore = useBridgeStore(pinia);
   const module = await import('@/composables/useBridgeCore');
   useBridgeCore = module.useBridgeCore;
   routerPush = vi.spyOn(router, 'push').mockResolvedValue();
+  web3StoreMock.networkType = BridgeNetworkType.Eth;
+  web3StoreMock.networkSelected = EvmNetworkId.EthereumSepolia;
+  web3StoreMock.selectedNetworkData = {
+    nativeCurrency: {
+      symbol: 'XOR',
+    },
+  };
+  web3StoreMock.isValidNetwork = true;
+  web3StoreMock.evmAddress = 'evmAddress';
   resetStore();
 });
 
 afterEach(() => {
-  vi.doUnmock('@/store');
   vi.resetModules();
   routerPush.mockRestore();
   bridgeStore.$reset();
@@ -229,6 +268,7 @@ afterEach(() => {
 
 describe('useBridgeCore', () => {
   it('exposes bridge state and computed limits', () => {
+    setActivePinia(pinia);
     const core = useBridgeCore();
 
     expect(core.isSoraToEvm.value).toBe(true);
@@ -249,13 +289,24 @@ describe('useBridgeCore', () => {
     expect(core.isLowerThanTransferMinAmount('10', core.asset.value, true, true)).toBe(false);
   });
 
-  it('derives incoming limits for non sidechain assets', () => {
+  it('derives incoming limits for non sidechain assets', async () => {
+    const localPinia = createPinia();
+    storeStub = createStoreStub();
     storeStub.getters.bridge.isSidechainAsset = false;
+    setActivePinia(localPinia);
+    bridgeStore = useBridgeStore(localPinia);
+    walletStoreMock.assetsDataTable = {
+      [storeStub.getters.bridge.asset.address]: storeStub.getters.bridge.asset as RegisteredAssetMock,
+      [storeStub.getters.bridge.nativeToken.address]: storeStub.getters.bridge.nativeToken as RegisteredAssetMock,
+    };
+    syncBridgeStore();
+    await nextTick();
 
+    setActivePinia(localPinia);
     const core = useBridgeCore();
 
-    expect(core.incomingMaxAmount.value?.toString()).toBe('50');
-    expect(core.getTransferMaxAmount(false)?.toString()).toBe('50');
+    expect(core.incomingMaxAmount.value?.eq(storeStub.state.bridge.assetLockedBalance)).toBe(true);
+    expect(core.getTransferMaxAmount(false)?.eq(storeStub.state.bridge.assetLockedBalance)).toBe(true);
     expect(core.getTransferMinAmount(false)?.toString()).toBe(storeStub.state.bridge.incomingMinLimit.toString());
   });
 
@@ -271,9 +322,14 @@ describe('useBridgeCore', () => {
       externalDecimals: 18,
     });
     storeStub.getters.bridge.isSidechainAsset = true;
+    walletStoreMock.assetsDataTable = {
+      [storeStub.getters.bridge.asset.address]: storeStub.getters.bridge.asset as RegisteredAssetMock,
+      [storeStub.getters.bridge.nativeToken.address]: storeStub.getters.bridge.nativeToken as RegisteredAssetMock,
+    };
 
     syncBridgeStore();
 
+    setActivePinia(pinia);
     const core = useBridgeCore();
 
     const expectedFee = FPNumber.fromCodecValue(storeStub.state.bridge.externalTransferFee, 18);
@@ -302,6 +358,7 @@ describe('useBridgeCore', () => {
   });
 
   it('navigates to bridge pages via router', () => {
+    setActivePinia(pinia);
     const core = useBridgeCore();
 
     core.handleViewTransactionsHistory();

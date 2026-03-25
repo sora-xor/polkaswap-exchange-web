@@ -140,7 +140,8 @@ import { TransactionStatus, Operation, FPNumber } from '@sora-substrate/sdk';
 import { KnownSymbols, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import dayjs from 'dayjs';
 import { defineComponent } from 'vue';
-import { mapGetters, mapState } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../api';
 import { HashType } from '../consts';
@@ -174,9 +175,18 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/settings', ['blockNumber']),
-    ...mapGetters('wallet/account', ['assetsDataTable', 'account']),
-    ...mapGetters('wallet/transactions', { selectedTransaction: 'selectedTx' }),
+    blockNumber(this: any) {
+      return useWalletStore(this.$pinia).blockNumber;
+    },
+    assetsDataTable(this: any) {
+      return useWalletStore(this.$pinia).assetsDataTable;
+    },
+    account(this: any) {
+      return useWalletStore(this.$pinia).account;
+    },
+    selectedTransaction(this: any) {
+      return useWalletStore(this.$pinia).selectedTransaction;
+    },
     isCompleteTransaction(this: any): boolean {
       return [TransactionStatus.InBlock, TransactionStatus.Finalized].includes(
         this.selectedTransaction.status as TransactionStatus

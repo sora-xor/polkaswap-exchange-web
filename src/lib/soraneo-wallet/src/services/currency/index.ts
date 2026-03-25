@@ -1,10 +1,11 @@
 import { timer } from 'rxjs';
 
 import notificationService from '@/services/notification';
-import { settingsStorage } from '@/util/storage';
+import { resolveGlobalPinia } from '@/plugins/pinia';
+import { useWalletStore } from '@/stores/wallet';
 
 import { API_ENDPOINT } from '../../consts/currencies';
-import { getWalletStore } from '../../store/instance';
+import { settingsStorage } from '../../util/storage';
 
 import type { FiatExchangeRateObject } from '../../types/currency';
 
@@ -15,6 +16,14 @@ const TIMESTAMP_FIELD = 'timestamp';
 
 type CachedExchangeRates = FiatExchangeRateObject & {
   timestamp?: number;
+};
+
+const resolveWalletStore = () => {
+  try {
+    return useWalletStore(resolveGlobalPinia());
+  } catch {
+    return null;
+  }
 };
 
 const parseCachedRates = (rawRates: unknown): CachedExchangeRates | null => {
@@ -37,10 +46,6 @@ const hasRateValues = (rates: CachedExchangeRates | null): rates is CachedExchan
 export class CurrencyExchangeRateService {
   public static readonly apiEndpoint = API_ENDPOINT;
 
-  private static get store() {
-    return getWalletStore();
-  }
-
   /**
    * Returns rates by new fetching request or taking from localStorage
    * depending upon timestamp.
@@ -60,7 +65,7 @@ export class CurrencyExchangeRateService {
 
     // lock other tabs without dropping valid rates from storage
     if (hasCachedRates) {
-      this.store.commit.wallet.settings.updateFiatExchangeRates({ ...cachedRates, timestamp: Date.now() });
+      resolveWalletStore()?.updateFiatExchangeRates({ ...cachedRates, timestamp: Date.now() });
     }
 
     try {
@@ -117,7 +122,8 @@ export class CurrencyExchangeRateService {
       severity: 'error',
       timeout: 4500,
     });
-    this.store.commit.wallet.settings.updateFiatExchangeRates();
-    this.store.commit.wallet.settings.setFiatCurrency();
+    const walletStore = resolveWalletStore();
+    walletStore?.updateFiatExchangeRates();
+    walletStore?.setFiatCurrency();
   }
 }

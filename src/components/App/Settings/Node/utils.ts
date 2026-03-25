@@ -1,6 +1,6 @@
 import { countryCodeEmoji } from 'country-code-emoji';
 
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
 import type { Nullable } from '@/types/common';
 
 export function formatLocation(code: string): Nullable<{ flag: string; name?: string }> {
@@ -8,11 +8,8 @@ export function formatLocation(code: string): Nullable<{ flag: string; name?: st
     const isoCode = code.toUpperCase();
     const flag = countryCodeEmoji(isoCode);
     const location = { flag, name: '' };
-    const displayRegions = (
-      store.state.settings as typeof store.state.settings & {
-        displayRegions?: Nullable<Intl.DisplayNames>;
-      }
-    ).displayRegions as Nullable<Intl.DisplayNames>;
+    const settingsStore = useSettingsStore();
+    const displayRegions = settingsStore.displayRegions as Nullable<Intl.DisplayNames>;
     if (!displayRegions) {
       return location;
     }

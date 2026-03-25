@@ -17,22 +17,18 @@ const routerViewStub = {
   template: '<div class="router-view-stub" :data-parent-loading="String(parentLoading)"><slot /></div>',
 };
 
-vi.mock('@/store', () => {
+vi.mock('@/stores/dashboard', () => {
   const subscribeOnOwnedAssets = vi.fn();
-  const resetOwnedAssets = vi.fn();
+  const reset = vi.fn();
 
   return {
-    default: {
-      dispatch: {
-        dashboard: {
-          subscribeOnOwnedAssets,
-          reset: resetOwnedAssets,
-        },
-      },
-    },
+    useDashboardStore: () => ({
+      subscribeOnOwnedAssets,
+      reset,
+    }),
     __mocks: {
       subscribeOnOwnedAssets,
-      resetOwnedAssets,
+      reset,
     },
   };
 });
@@ -95,7 +91,7 @@ vi.mock('@/composables/useSubscriptions', () => {
 
 type StoreMocks = {
   subscribeOnOwnedAssets: ReturnType<typeof vi.fn>;
-  resetOwnedAssets: ReturnType<typeof vi.fn>;
+  reset: ReturnType<typeof vi.fn>;
 };
 
 type SubscriptionsMocks = {
@@ -110,13 +106,13 @@ let subscriptionsMocks: SubscriptionsMocks;
 let settingsMocks: { assetOwnerEnabledRef: Ref<Nullable<boolean>> };
 
 beforeEach(async () => {
-  storeMocks = (await import('@/store')).__mocks;
+  storeMocks = (await import('@/stores/dashboard')).__mocks;
   routerMocks = (await import('@/router')).__mocks;
   subscriptionsMocks = (await import('@/composables/useSubscriptions')).__mocks;
   settingsMocks = (await import('@/stores/settings')).__mocks;
 
   storeMocks.subscribeOnOwnedAssets.mockClear();
-  storeMocks.resetOwnedAssets.mockClear();
+  storeMocks.reset.mockClear();
   routerMocks.goTo.mockClear();
   subscriptionsMocks.subscriptionsDataLoading.value = false;
   subscriptionsMocks.startHandlers.splice(0, subscriptionsMocks.startHandlers.length);
@@ -146,7 +142,7 @@ describe('AssetOwnerContainer.vue', () => {
     expect(storeMocks.subscribeOnOwnedAssets).toHaveBeenCalledTimes(1);
     expect(subscriptionsMocks.resetHandlers).toHaveLength(1);
     await subscriptionsMocks.resetHandlers[0]?.();
-    expect(storeMocks.resetOwnedAssets).toHaveBeenCalledTimes(1);
+    expect(storeMocks.reset).toHaveBeenCalledTimes(1);
   });
 
   it('allows parent provided parentLoading override', () => {

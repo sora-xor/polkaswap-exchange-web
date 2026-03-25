@@ -195,27 +195,15 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      wallet: {
-        settings: {
-          networkFees: {
-            Swap: '0',
-          },
-        },
-      },
-      settings: {
-        slippageTolerance: '0.1',
-      },
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => ({
+    networkFees: {
+      Swap: '0',
     },
-    getters: {
-      settings: {
-        debugEnabled: false,
-        nodeIsConnected: true,
-      },
-    },
-  },
+    slippageTolerance: '0.1',
+    debugEnabled: false,
+    nodeIsConnected: true,
+  }),
 }));
 
 vi.mock('@/utils', () => ({

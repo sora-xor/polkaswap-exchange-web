@@ -1,1 +1,1 @@
-export * from '@wallet/src/util';
+export * from '@/shims/wallet-util';

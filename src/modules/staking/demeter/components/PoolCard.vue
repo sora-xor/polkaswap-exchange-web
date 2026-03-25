@@ -98,7 +98,7 @@
 
 <script lang="ts" setup>
 import { computed, toRefs, type PropType } from 'vue';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 
 import { Components, Links, ZeroStringValue } from '@/consts';
 import { useInternalConnect } from '@/composables/useInternalConnect';

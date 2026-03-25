@@ -31,7 +31,8 @@
 
 import { FPNumber, HistoryItem } from '@sora-substrate/sdk';
 import { defineComponent } from 'vue';
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import env from '../../../../public/env.json';
 
@@ -42,7 +43,7 @@ import WalletProviders from './components/WalletProviders.vue';
 import { SoraNetwork, IndexerType, Theme } from './consts';
 import SoraWallet from './SoraWallet.vue';
 
-import { initWallet } from './index';
+import { initWallet } from './bootstrap';
 
 import type { ApiKeysObject } from './types/common';
 import type { Currency, CurrencyFields } from './types/currency';
@@ -52,16 +53,35 @@ export default defineComponent({
   components: { SoraWallet, ConfirmDialog, WalletProviders },
   mixins: [TransactionMixin],
   computed: {
-    ...mapState('wallet/account', ['assetsToNotifyQueue', 'ceresFiatValuesUsage']),
-    ...mapState('wallet/settings', ['indexerType', 'currency', 'currencies']),
-    ...mapState('wallet/transactions', ['isSignTxDialogVisible']),
-    ...mapGetters('wallet/transactions', ['firstReadyTx']),
-    ...mapGetters('wallet/settings', ['libraryTheme']),
+    walletStore(this: any) {
+      return useWalletStore(this.$pinia);
+    },
+    assetsToNotifyQueue(this: any) {
+      return this.walletStore.assetsToNotifyQueue;
+    },
+    ceresFiatValuesUsage(this: any) {
+      return this.walletStore.ceresFiatValuesUsage;
+    },
+    indexerType(this: any) {
+      return this.walletStore.indexerType;
+    },
+    currency(this: any) {
+      return this.walletStore.currency;
+    },
+    currencies(this: any) {
+      return this.walletStore.currencies;
+    },
+    isSignTxDialogVisible(this: any) {
+      return this.walletStore.isSignTxDialogVisible;
+    },
+    libraryTheme(this: any) {
+      return this.walletStore.libraryTheme;
+    },
     chainApi() {
       return api;
     },
     firstReadyTransaction(this: any): Nullable<HistoryItem> {
-      return this.firstReadyTx;
+      return this.walletStore.firstReadyTransaction;
     },
     appCurrency: {
       get(this: any): Currency {
@@ -92,7 +112,7 @@ export default defineComponent({
     this.setIndexerEndpoint({ indexer: IndexerType.SUBQUERY, endpoint: env.SUBQUERY_ENDPOINT });
     this.setIndexerEndpoint({ indexer: IndexerType.SUBSQUID, endpoint: env.SUBSQUID_ENDPOINT });
     this.setSoraNetwork(SoraNetwork.Dev);
-    await initWallet({ withoutStore: true, appName: 'APP NAME HERE' }); // We don't need storage for local development
+    await initWallet({ appName: 'APP NAME HERE' });
     await this.subscribeOnExchangeRatesApi();
     const localeLanguage = navigator.language;
     FPNumber.DELIMITERS_CONFIG.thousand = Number(1000).toLocaleString(localeLanguage).substring(1, 2);
@@ -103,17 +123,48 @@ export default defineComponent({
     void this.resetInternalSubscriptions();
   },
   methods: {
-    ...mapMutations('wallet/settings', [
-      'setSoraNetwork',
-      'setIndexerEndpoint',
-      'toggleHideBalance',
-      'setFiatCurrency',
-    ]),
-    ...mapMutations('wallet/account', ['setIsDesktop']),
-    ...mapMutations('wallet/transactions', ['setSignTxDialogVisibility']),
-    ...mapActions('wallet/account', ['useCeresApiForFiatValues', 'notifyOnDeposit']),
-    ...mapActions('wallet/settings', ['selectIndexer', 'setApiKeys', 'toggleTheme', 'subscribeOnExchangeRatesApi']),
-    ...mapActions('wallet/subscriptions', ['resetNetworkSubscriptions', 'resetInternalSubscriptions']),
+    setSoraNetwork(this: any, network: SoraNetwork): void {
+      this.walletStore.setSoraNetwork(network);
+    },
+    setIndexerEndpoint(this: any, payload: { indexer: IndexerType; endpoint: string }): void {
+      this.walletStore.setIndexerEndpoint(payload);
+    },
+    toggleHideBalance(this: any): void {
+      this.walletStore.toggleHideBalance();
+    },
+    setFiatCurrency(this: any, value: Currency): void {
+      this.walletStore.setFiatCurrency(value);
+    },
+    setIsDesktop(this: any, flag: boolean): void {
+      this.walletStore.setIsDesktop(flag);
+    },
+    setSignTxDialogVisibility(this: any, flag: boolean): void {
+      this.walletStore.setSignTxDialogVisibility(flag);
+    },
+    useCeresApiForFiatValues(this: any, flag: boolean): Promise<void> {
+      return this.walletStore.useCeresApiForFiatValues(flag);
+    },
+    notifyOnDeposit(this: any, payload: { asset: WhitelistArrayItem; message: string }): Promise<void> {
+      return this.walletStore.notifyOnDeposit(payload);
+    },
+    selectIndexer(this: any, type: IndexerType): Promise<void> {
+      return this.walletStore.selectIndexer(type);
+    },
+    setApiKeys(this: any, keys: ApiKeysObject): Promise<void> {
+      return this.walletStore.setApiKeys(keys);
+    },
+    toggleTheme(this: any): Promise<void> {
+      return this.walletStore.toggleTheme();
+    },
+    subscribeOnExchangeRatesApi(this: any): Promise<void> {
+      return this.walletStore.subscribeOnExchangeRatesApi();
+    },
+    resetNetworkSubscriptions(this: any): Promise<void> {
+      return this.walletStore.resetNetworkSubscriptions();
+    },
+    resetInternalSubscriptions(this: any): Promise<void> {
+      return this.walletStore.resetInternalSubscriptions();
+    },
     changeTheme(this: any): void {
       void this.toggleTheme();
     },

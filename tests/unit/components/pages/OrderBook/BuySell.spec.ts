@@ -10,48 +10,9 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { computed, defineComponent, h, reactive, ref } from 'vue';
 
 import { LimitOrderType } from '@/consts';
-import { setAppStoreOverride } from '@/utils/app-store';
 
 const storeRef = vi.hoisted(() => ({ value: null as any }));
-const storeProxy = vi.hoisted(
-  () =>
-    new Proxy({} as Record<string | symbol, unknown>, {
-      get(_target, key) {
-        const store = storeRef.value;
-        if (!store) return undefined;
-        const value = Reflect.get(store, key);
-        return typeof value === 'function' ? value.bind(store) : value;
-      },
-      set(_target, key, value) {
-        const store = storeRef.value ?? (storeRef.value = {});
-        Reflect.set(store, key, value);
-        return true;
-      },
-      has(_target, key) {
-        const store = storeRef.value;
-        return store ? Reflect.has(store, key) : false;
-      },
-      ownKeys() {
-        const store = storeRef.value;
-        return store ? Reflect.ownKeys(store) : [];
-      },
-      getOwnPropertyDescriptor(_target, key) {
-        const store = storeRef.value;
-        if (!store) return undefined;
-        const descriptor = Reflect.getOwnPropertyDescriptor(store, key);
-        if (descriptor) {
-          descriptor.configurable = true;
-        }
-        return descriptor;
-      },
-    })
-);
 let walletRestore: (() => void) | null = null;
-
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: storeProxy,
-}));
 
 const swapStore = vi.hoisted(() => ({
   setLiquiditySource: vi.fn(),
@@ -196,6 +157,66 @@ const resetTransaction = () => {
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
+  }),
+}));
+
+vi.mock('@/composables/useOrderBook', () => ({
+  useOrderBook: () => ({
+    baseAsset: computed(() => storeRef.value?.getters?.orderBook?.baseAsset ?? null),
+    quoteAsset: computed(() => storeRef.value?.getters?.orderBook?.quoteAsset ?? null),
+    asks: computed(() => storeRef.value?.state?.orderBook?.asks ?? []),
+    bids: computed(() => storeRef.value?.state?.orderBook?.bids ?? []),
+    dexId: computed(() => storeRef.value?.state?.orderBook?.dexId ?? 0),
+    baseValue: computed({
+      get: () => storeRef.value?.state?.orderBook?.baseValue ?? '',
+      set: (value: string) => {
+        storeRef.value?.commit?.orderBook?.setBaseValue?.(value);
+      },
+    }),
+    quoteValue: computed({
+      get: () => storeRef.value?.state?.orderBook?.quoteValue ?? '',
+      set: (value: string) => {
+        storeRef.value?.commit?.orderBook?.setQuoteValue?.(value);
+      },
+    }),
+    limitOrderType: computed({
+      get: () => storeRef.value?.state?.orderBook?.limitOrderType ?? LimitOrderType.limit,
+      set: (value: LimitOrderType) => {
+        storeRef.value?.commit?.orderBook?.setLimitOrderType?.(value);
+      },
+    }),
+    side: computed({
+      get: () => storeRef.value?.state?.orderBook?.side ?? PriceVariant.Buy,
+      set: (value: PriceVariant) => {
+        storeRef.value?.commit?.orderBook?.setSide?.(value);
+      },
+    }),
+    amountSliderValue: computed({
+      get: () => storeRef.value?.state?.orderBook?.amountSliderValue ?? 0,
+      set: (value: number) => {
+        storeRef.value?.commit?.orderBook?.setAmountSliderValue?.(value);
+      },
+    }),
+    baseAssetAddress: computed(() => storeRef.value?.state?.orderBook?.baseAssetAddress ?? null),
+    currentOrderBook: computed(() => storeRef.value?.getters?.orderBook?.currentOrderBook ?? null),
+    orderBookStats: computed(() => storeRef.value?.getters?.orderBook?.orderBookStats ?? null),
+  }),
+}));
+
+vi.mock('@/composables/useOrderBookManagement', () => ({
+  useOrderBookManagement: () => ({
+    updateBalanceSubscription: async (reset = false) => {
+      await storeRef.value?.dispatch?.orderBook?.updateBalanceSubscription?.(reset);
+    },
+    updateOrderBooksStats: async () => {
+      await storeRef.value?.dispatch?.orderBook?.updateOrderBooksStats?.();
+    },
+  }),
+}));
+
+vi.mock('@/composables/useOrderBookUserOrders', () => ({
+  useOrderBookUserOrders: () => ({
+    userLimitOrders: computed(() => storeRef.value?.state?.orderBook?.userLimitOrders ?? []),
   }),
 }));
 
@@ -418,8 +439,6 @@ const createStoreMock = (overrides: StoreOverrides = {}) => {
     },
   };
 
-  setAppStoreOverride(store as any);
-
   return { store, orderBookState };
 };
 
@@ -516,7 +535,6 @@ afterEach(() => {
   walletRestore?.();
   walletRestore = null;
   storeRef.value = null;
-  setAppStoreOverride(null);
 });
 
 describe('BuySell.vue', () => {

@@ -12,7 +12,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import { delay } from '../util';
 import { unlockAccountPair } from '../util/account';
@@ -48,8 +49,12 @@ export default defineComponent({
     },
   },
   computed: {
-    ...mapState('wallet/transactions', ['isSignTxDialogDisabled']),
-    ...mapGetters('wallet/account', ['getPassword']),
+    isSignTxDialogDisabled(this: any) {
+      return useWalletStore(this.$pinia).isSignTxDialogDisabled;
+    },
+    getPassword(this: any) {
+      return useWalletStore(this.$pinia).getPassword;
+    },
     visible: {
       get(this: any): boolean {
         return this.visibility;
@@ -65,7 +70,12 @@ export default defineComponent({
     },
   },
   methods: {
-    ...mapActions('wallet/account', ['setAccountPassphrase', 'resetAccountPassphrase']),
+    setAccountPassphrase(this: any, payload: { address: string; password: string }) {
+      return useWalletStore(this.$pinia).setAccountPassphrase(payload);
+    },
+    resetAccountPassphrase(this: any, address: string) {
+      return useWalletStore(this.$pinia).resetAccountPassphrase(address);
+    },
     async handleConfirm(this: any, password: string): Promise<void> {
       await this.withLoading(async () => {
         // hack: to render loading state before sync code execution, 250 - button transition

@@ -92,6 +92,7 @@ describe('TransactionDetails', () => {
     const wrapper = mountComponent({ infoOnly: false, disabled: true });
 
     expect(wrapper.find('.transaction-details').classes()).toContain('disabled');
+    expect(wrapper.findComponent({ name: 'SPopoverPanelStub' }).props('disabled')).not.toBe(true);
     const visibleRef = (wrapper.vm as unknown as { $: { exposed: { visible: { value: boolean } } } }).$.exposed.visible;
     expect(visibleRef.value).toBe(false);
   });

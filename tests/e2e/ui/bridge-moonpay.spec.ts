@@ -44,6 +44,18 @@ const openBridge = async (page: Page): Promise<void> => {
   await expectHash(page, '#/bridge');
 };
 
+const callWeb3Store = async (page: Page, action: string, payload?: unknown): Promise<void> => {
+  await page.evaluate(
+    ({ action, payload }) => {
+      const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
+      const web3Store = pinia?._s?.get('web3');
+
+      return web3Store?.[action]?.(payload);
+    },
+    { action, payload }
+  );
+};
+
 const injectLiberlandSubBridgeContext = async (
   page: Page,
   {
@@ -56,9 +68,9 @@ const injectLiberlandSubBridgeContext = async (
 ): Promise<void> => {
   await page.evaluate(
     ({ nodeIsConnected, hasApi }) => {
-      const store = (window as Record<string, any>).__PS_APP_STORE__;
       const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
       const bridgeStore = pinia?._s?.get('bridge');
+      const web3Store = pinia?._s?.get('web3');
 
       const node = {
         chain: 'Liberland',
@@ -96,12 +108,11 @@ const injectLiberlandSubBridgeContext = async (
       };
 
       applyConnectorState(bridgeStore?.connector);
-      applyConnectorState(store?.state?.bridge?.subBridgeConnector);
 
-      store?.commit?.web3?.setNetworkType?.('Sub');
-      store?.commit?.web3?.setSelectedNetwork?.('Liberland');
-      store?.commit?.web3?.setSubAccountDialogVisibility?.(false);
-      store?.commit?.web3?.setSelectSubNodeDialogVisibility?.(false);
+      web3Store?.setNetworkType?.('Sub');
+      web3Store?.setSelectedNetwork?.('Liberland');
+      web3Store?.setSubAccountDialogVisibility?.(false);
+      web3Store?.setSelectSubNodeDialogVisibility?.(false);
     },
     { nodeIsConnected, hasApi }
   );
@@ -270,14 +281,10 @@ test('redirects Liberland sub-account selection to node selection when the conne
   await openBridge(page);
   await injectLiberlandSubBridgeContext(page);
 
-  await page.evaluate(async () => {
-    const store = (window as Record<string, any>).__PS_APP_STORE__;
-
-    await store?.dispatch?.web3?.selectSubAccount?.({
-      address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
-      name: 'Liberland QA',
-      source: 'polkadot-js',
-    });
+  await callWeb3Store(page, 'selectSubAccount', {
+    address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
+    name: 'Liberland QA',
+    source: 'polkadot-js',
   });
 
   const nodeDialog = page

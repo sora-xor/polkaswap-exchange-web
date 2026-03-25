@@ -17,6 +17,14 @@ type WalletModule = typeof actual & {
 };
 
 const moduleWithFallback = actual as WalletModule;
+const safeRead = <K extends keyof WalletModule>(key: K): WalletModule[K] | undefined => {
+  try {
+    return moduleWithFallback[key];
+  } catch {
+    return undefined;
+  }
+};
+const walletConsts = safeRead('WALLET_CONSTS');
 
 const defaultIndexerType = {
   SUBQUERY: 'subquery',
@@ -24,16 +32,16 @@ const defaultIndexerType = {
 };
 
 export let WALLET_CONSTS = {
-  ...(moduleWithFallback.WALLET_CONSTS ?? {}),
+  ...(walletConsts ?? {}),
   IndexerType: {
     ...defaultIndexerType,
-    ...(moduleWithFallback.WALLET_CONSTS?.IndexerType ?? {}),
+    ...(walletConsts?.IndexerType ?? {}),
   },
 };
 
-export const en = moduleWithFallback.en ?? {};
-export const storage = moduleWithFallback.storage ?? new Storage('wallet');
-export const settingsStorage = moduleWithFallback.settingsStorage ?? new Storage('settings');
+export const en = safeRead('en') ?? {};
+export const storage = safeRead('storage') ?? new Storage('wallet');
+export const settingsStorage = safeRead('settingsStorage') ?? new Storage('settings');
 
 const createFallbackIndexer = () => ({
   type: WALLET_CONSTS.IndexerType.SUBQUERY,
@@ -47,6 +55,6 @@ const createFallbackIndexer = () => ({
   },
 });
 
-export const getCurrentIndexer = moduleWithFallback.getCurrentIndexer ?? createFallbackIndexer;
+export const getCurrentIndexer = safeRead('getCurrentIndexer') ?? createFallbackIndexer;
 
 export * from '../lib/soraneo-wallet/src/index.ts';

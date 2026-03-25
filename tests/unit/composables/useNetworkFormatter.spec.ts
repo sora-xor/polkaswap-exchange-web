@@ -6,8 +6,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { EvmLinkType } from '@/consts/evm';
 
-const web3GetterState = reactive({
-  selectedNetwork: null as { name?: string; shortName?: string } | null,
+const web3StoreState = reactive({
+  selectedNetworkData: null as { name?: string; shortName?: string } | null,
   networkType: BridgeNetworkType.Eth,
   networkSelected: EvmNetworkId.EthereumMainnet,
   availableNetworks: {
@@ -17,12 +17,8 @@ const web3GetterState = reactive({
   },
 });
 
-vi.mock('@/store', () => ({
-  default: {
-    getters: {
-      web3: web3GetterState,
-    },
-  },
+vi.mock('@/stores/web3', () => ({
+  useWeb3Store: () => web3StoreState,
 }));
 
 vi.mock('@/stores/settings', () => ({
@@ -44,31 +40,12 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@/utils/walletCore', () => ({
-  loadWalletCore: async () => ({
-    WALLET_CONSTS: {
-      SoraNetwork: {},
-      ExplorerType: {
-        Sorametrics: 'sorametrics',
-        Subscan: 'subscan',
-        Polkadot: 'polkadot',
-      },
-      ETH_BRIDGE_STATES: {
-        EVM_REJECTED: 'EVM_REJECTED',
-        SORA_REJECTED: 'SORA_REJECTED',
-        EVM_COMMITED: 'EVM_COMMITED',
-        SORA_COMMITED: 'SORA_COMMITED',
-      },
-    },
-  }),
-}));
-
 describe('useNetworkFormatter', () => {
   beforeEach(() => {
-    web3GetterState.selectedNetwork = null;
-    web3GetterState.networkType = BridgeNetworkType.Eth;
-    web3GetterState.networkSelected = EvmNetworkId.EthereumMainnet;
-    web3GetterState.availableNetworks = {
+    web3StoreState.selectedNetworkData = null;
+    web3StoreState.networkType = BridgeNetworkType.Eth;
+    web3StoreState.networkSelected = EvmNetworkId.EthereumMainnet;
+    web3StoreState.availableNetworks = {
       [BridgeNetworkType.Eth]: {},
       [BridgeNetworkType.Evm]: {},
       [BridgeNetworkType.Sub]: {},
@@ -85,7 +62,7 @@ describe('useNetworkFormatter', () => {
   });
 
   it('prefers selected network metadata when available', async () => {
-    web3GetterState.selectedNetwork = {
+    web3StoreState.selectedNetworkData = {
       name: 'Custom Mainnet',
       shortName: 'Custom',
     };
@@ -99,8 +76,8 @@ describe('useNetworkFormatter', () => {
   });
 
   it('falls back to static Sub network metadata when selectedNetwork is not hydrated', async () => {
-    web3GetterState.networkType = BridgeNetworkType.Sub;
-    web3GetterState.networkSelected = SubNetworkId.Polkadot;
+    web3StoreState.networkType = BridgeNetworkType.Sub;
+    web3StoreState.networkSelected = SubNetworkId.Polkadot;
 
     const { useNetworkFormatter } = await import('@/composables/useNetworkFormatter');
     const { formatSelectedNetwork, formatNetworkShortName, selectedNetworkName } = useNetworkFormatter();
@@ -111,7 +88,7 @@ describe('useNetworkFormatter', () => {
   });
 
   it('drops explorer links when network metadata contains unsafe URLs', async () => {
-    web3GetterState.availableNetworks = {
+    web3StoreState.availableNetworks = {
       [BridgeNetworkType.Eth]: {
         [EvmNetworkId.EthereumMainnet]: {
           data: {
@@ -138,7 +115,7 @@ describe('useNetworkFormatter', () => {
   });
 
   it('encodes node rpc URLs when constructing polkadot.js explorer links', async () => {
-    web3GetterState.availableNetworks = {
+    web3StoreState.availableNetworks = {
       [BridgeNetworkType.Eth]: {},
       [BridgeNetworkType.Evm]: {},
       [BridgeNetworkType.Sub]: {

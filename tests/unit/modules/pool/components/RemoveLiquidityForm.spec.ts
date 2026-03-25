@@ -1,9 +1,10 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { computed, defineComponent, ref, type Ref } from 'vue';
 import { flushPromises, mount } from '@vue/test-utils';
+import { createPinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { FocusedField } from '@/store/removeLiquidity/types';
+import { RemoveLiquidityFocusedField as FocusedField } from '@/stores/pool/types';
 
 let allowFeePopupRef: Ref<boolean> | undefined;
 let networkFeesRef: Ref<Record<string, string>> | undefined;
@@ -149,11 +150,6 @@ const ensureStore = () => {
   return storeInstance;
 };
 
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: ensureStore(),
-}));
-
 vi.mock('@/composables/useTranslation', () => ({
   __esModule: true,
   useTranslation: () => ({
@@ -292,7 +288,12 @@ const RemoveLiquidityForm = defineComponent({
   },
 });
 
-const mountComponent = () => mount(RemoveLiquidityForm);
+const mountComponent = () =>
+  mount(RemoveLiquidityForm, {
+    global: {
+      plugins: [createPinia()],
+    },
+  });
 
 describe('RemoveLiquidityForm.vue', () => {
   beforeEach(() => {

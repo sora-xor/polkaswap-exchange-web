@@ -13,12 +13,12 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, onScopeDispose, ref, watch } from 'vue';
 
 import { useWeb3Connection } from '@/composables/useWeb3Connection';
 import { useTranslation } from '@/composables/useTranslation';
-import store from '@/store';
+import { useWeb3Store } from '@/stores/web3';
 import type { AppEIPProvider } from '@/types/evm/provider';
 import { PredefinedProvider } from '@/utils/connection/evm/providers';
 
@@ -42,19 +42,20 @@ defineOptions({
 
 const { t } = useTranslation();
 const { connectEvmProvider, evmProvider, evmProviderLoading, subscribeOnEvmProviders } = useWeb3Connection();
+const web3Store = useWeb3Store();
 
 const visible = defineModel<boolean>('visible', {
   default: false,
   get(value) {
-    return store.state.web3.selectProviderDialogVisibility;
+    return web3Store.selectProviderDialogVisibility;
   },
   set(value) {
-    store.commit.web3.setSelectProviderDialogVisibility(value);
+    web3Store.setSelectProviderDialogVisibility(value);
     return value;
   },
 });
 
-const appEvmProviders = ref<AppEIPProvider[]>(store.getters.web3.appEvmProviders);
+const appEvmProviders = ref<AppEIPProvider[]>(web3Store.appEvmProviders);
 const recommendedWallets = [PredefinedProvider.Fearless];
 
 let unsubscribeProviders: Nullable<VoidFunction> = null;
@@ -69,7 +70,7 @@ const updateProviders = async (nextVisible: boolean) => {
 };
 
 watch(
-  () => store.getters.web3.appEvmProviders as AppEIPProvider[],
+  () => web3Store.appEvmProviders as AppEIPProvider[],
   (providers) => {
     appEvmProviders.value = providers;
   }

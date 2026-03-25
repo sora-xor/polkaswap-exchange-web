@@ -3,8 +3,6 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import { nextTick } from 'vue';
 import { Storage } from '@sora-substrate/sdk';
 
-import { setAppStoreOverride } from '@/utils/app-store';
-
 const walletApiMock = {
   divideAssets: vi.fn(() => '0'),
   swap: {
@@ -20,12 +18,10 @@ const walletModuleMock = {
   settingsStorage: new Storage('settings-mock'),
 };
 
-vi.mock('@wallet', () => ({
-  __esModule: true,
-  default: walletModuleMock,
-  ...walletModuleMock,
-  WALLET_CONSTS: {},
-}));
+vi.mock('@wallet', async () => {
+  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
+  return createWalletMock(walletModuleMock);
+});
 
 const assetDataByAddress = vi.hoisted(() =>
   vi.fn((address: string) => ({
@@ -57,55 +53,6 @@ vi.mock('@/utils/subscriptions', () => ({
   TokenBalanceSubscriptions: TokenBalanceSubscriptionsMock,
 }));
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      settings: {
-        isWalletLoaded: true,
-        slippageTolerance: '0',
-      },
-      wallet: {
-        account: {
-          address: '',
-          fiatPriceObject: {},
-        },
-        transactions: {
-          isConfirmTxDialogDisabled: false,
-        },
-      },
-    },
-    getters: {
-      assets: {
-        assetDataByAddress,
-      },
-      settings: {
-        debugEnabled: false,
-        liquiditySource: null,
-      },
-      wallet: {
-        account: {
-          isLoggedIn: false,
-          accountAssetsAddressTable: {},
-        },
-      },
-    },
-    commit: {
-      wallet: {
-        transactions: {
-          addActiveTx: vi.fn(),
-        },
-      },
-    },
-    dispatch: {
-      wallet: {
-        account: {
-          logout: vi.fn(),
-        },
-      },
-    },
-  },
-}));
-
 const { localStorageMock } = vi.hoisted(() => {
   const storage = {
     getItem: vi.fn(() => null),
@@ -124,33 +71,9 @@ describe('useSwapAmounts', () => {
   let useSwapStore: typeof import('@/stores/swap').useSwapStore;
 
   beforeAll(async () => {
-    setAppStoreOverride(legacyStore);
     ({ useSwapAmounts } = await import('@/composables/useSwapAmounts'));
     ({ useSwapStore } = await import('@/stores/swap'));
   });
-
-  const legacyStore = {
-    state: {
-      settings: {
-        slippageTolerance: '0',
-      },
-      wallet: {
-        account: {
-          isLoggedIn: false,
-        },
-      },
-    },
-    getters: {
-      wallet: {
-        account: {
-          isLoggedIn: false,
-          accountAssetsAddressTable: {},
-        },
-      },
-    },
-    commit: {},
-    dispatch: {},
-  } as unknown as Parameters<typeof setAppStoreOverride>[0];
 
   beforeEach(async () => {
     setActivePinia(createPinia());
@@ -168,16 +91,13 @@ describe('useSwapAmounts', () => {
       registeredAssets: {},
       registeredAssetsFetching: false,
     };
-    setAppStoreOverride(legacyStore);
   });
 
   afterEach(() => {
     delete (globalThis as Record<string, any>).__ASSETS_STORE_OVERRIDE;
-    setAppStoreOverride(null);
   });
 
   afterAll(() => {
-    setAppStoreOverride(null);
     vi.unstubAllGlobals();
   });
 

@@ -2,13 +2,14 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { hexToString } from '@polkadot/util';
 import { computed } from 'vue';
 
-import store from '@/store';
+import { useStakingStore } from '@/stores/staking';
 import type { Nullable } from '@/types/common';
 
 import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
 
 export function useValidatorsFormatting() {
-  const historyDepth = computed(() => store.state.staking.historyDepth as Nullable<number>);
+  const stakingStore = useStakingStore();
+  const historyDepth = computed(() => stakingStore.historyDepth as Nullable<number>);
 
   const decodeName = (validator: ValidatorInfoFull): string => {
     const identityName = validator.identity?.info.display;

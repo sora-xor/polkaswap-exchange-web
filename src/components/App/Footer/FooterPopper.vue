@@ -43,7 +43,7 @@ import { computed, ref, watch } from 'vue';
 
 import { Status } from '@soramitsu-ui/ui/types';
 import { BreakpointClass } from '@/consts/layout';
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
 import { delay } from '@/utils';
 import { resolvePopoverLeft, shouldClosePopoverOnBreakpointChange } from './footerPopover.utils';
 
@@ -77,12 +77,13 @@ const emit = defineEmits<{
 }>();
 
 const popover = ref<any>();
+const settingsStore = useSettingsStore();
 
 const computedPopperClass = computed(() => [cssPopperClass, props.status].filter(Boolean).join(' '));
 const computedClass = computed(() => [props.panelClass, props.status].filter(Boolean).join(' '));
 const isLoading = computed(() => props.status === Status.INFO);
 const tabIndex = computed(() => (isLoading.value ? -1 : 0));
-const screenBreakpointClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
+const screenBreakpointClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
 
 watch(screenBreakpointClass, (next, prev) => {
   if (shouldClosePopoverOnBreakpointChange(prev, next)) {

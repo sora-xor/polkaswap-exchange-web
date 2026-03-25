@@ -34,14 +34,15 @@
 <script setup lang="ts">
 import { Operation, type CodecString, type NetworkFeesObject } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { usePoolStore } from '@/stores/pool';
+import { useSettingsStore } from '@/stores/settings';
 
 import type { Nullable } from '@/types/common';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
@@ -58,14 +59,16 @@ const props = withDefaults(
 const { t } = useI18n();
 const formattedAmount = useFormattedAmount();
 const { formatStringValue, formatCodecNumber, getFiatAmountByCodecString } = formattedAmount;
+const poolStore = usePoolStore();
+const settingsStore = useSettingsStore();
 
-const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject);
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
 
-const shareOfPool = computed(() => store.getters.removeLiquidity.shareOfPool as string);
-const firstToken = computed<Nullable<Asset>>(() => store.getters.removeLiquidity.firstToken as Nullable<Asset>);
-const secondToken = computed<Nullable<Asset>>(() => store.getters.removeLiquidity.secondToken as Nullable<Asset>);
-const priceReversed = computed(() => store.getters.removeLiquidity.priceReversed as string);
-const price = computed(() => store.getters.removeLiquidity.price as string);
+const shareOfPool = computed(() => poolStore.removeLiquidityShareOfPool);
+const firstToken = computed<Nullable<Asset>>(() => poolStore.removeLiquidityFirstToken as Nullable<Asset>);
+const secondToken = computed<Nullable<Asset>>(() => poolStore.removeLiquiditySecondToken as Nullable<Asset>);
+const priceReversed = computed(() => poolStore.removeLiquidityPriceReversed);
+const price = computed(() => poolStore.removeLiquidityPrice);
 
 const firstTokenSymbol = computed(() => firstToken.value?.symbol ?? null);
 const secondTokenSymbol = computed(() => secondToken.value?.symbol ?? null);

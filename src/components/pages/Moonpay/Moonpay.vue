@@ -8,24 +8,24 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 import { Components } from '@/consts';
-import type { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
-import store from '@/store';
 import { useMoonpayBridge } from '@/composables/useMoonpayBridge';
 import { useTranslation } from '@/composables/useTranslation';
+import { useMoonpayStore } from '@/stores/moonpay';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import { getCssVariableValue } from '@/utils';
-import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 import { MOONPAY_WIDGET_ORIGINS } from '@/utils/moonpay';
 
+import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
 import type { MoonpayTransaction } from '@/utils/moonpay';
 import type { FnWithoutArgs } from '@/types/common';
-import type { WALLET_TYPES } from '@wallet';
 
 defineOptions({
   components: {
@@ -37,6 +37,9 @@ defineOptions({
 
 const widgetUrl = ref('');
 const transactionsPolling = ref<Nullable<FnWithoutArgs>>(null);
+const moonpayStore = useMoonpayStore();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
 
 const {
   internalWallet,
@@ -51,14 +54,14 @@ const {
 
 const { t, language } = useTranslation();
 
-const transactions = computed(() => store.state.moonpay.transactions as MoonpayTransaction[]);
-const pollingTimestamp = computed(() => store.state.moonpay.pollingTimestamp as number);
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
+const transactions = computed(() => moonpayStore.transactions as MoonpayTransaction[]);
+const pollingTimestamp = computed(() => moonpayStore.pollingTimestamp as number);
+const libraryTheme = computed(() => settingsStore.libraryTheme);
 
-const account = computed(() => store.getters.wallet.account.account as Nullable<WALLET_TYPES.PolkadotJsAccount>);
+const account = computed(() => walletStore.account as Nullable<PolkadotJsAccount>);
 
 const visibility = computed({
-  get: () => Boolean(store.state.moonpay.dialogVisibility),
+  get: () => Boolean(moonpayStore.dialogVisibility),
   set: (flag: boolean) => setDialogVisibility(flag),
 });
 

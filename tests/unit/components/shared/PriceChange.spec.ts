@@ -1,9 +1,9 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { FontWeightRate } from '@wallet/src/consts';
 import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 
 import PriceChange from '@/components/shared/PriceChange.vue';
+import { FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
 
 const iconStub = {
   name: 'SIconStub',
@@ -17,6 +17,11 @@ const mountComponent = (value?: FPNumber) =>
     global: {
       stubs: {
         's-icon': iconStub,
+        FormattedAmount: {
+          props: ['value', 'fontWeightRate'],
+          template:
+            '<span class="formatted-amount-stub" :data-value="value" :data-weight="fontWeightRate"><slot /></span>',
+        },
       },
     },
   });

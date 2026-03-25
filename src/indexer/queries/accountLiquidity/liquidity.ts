@@ -1,14 +1,13 @@
 import { FPNumber } from '@sora-substrate/math';
-import { getCurrentIndexer } from '@wallet';
+import { getCurrentIndexer, SubqueryIndexer } from '@/shims/wallet-indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
-import { SubqueryIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import type {
   AccountLiquiditySnapshotEntity,
   ConnectionQueryResponse,
   ConnectionQueryResponseData,
-} from '@wallet/lib/services/indexer/types';
+} from '@/shims/wallet-indexer-types';
 
 type LiquidityItem = {
   timestamp: number;

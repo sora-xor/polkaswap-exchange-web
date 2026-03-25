@@ -1,14 +1,16 @@
 import { join } from 'node:path';
 
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   collectMissingOutputs,
   createDwebGatewayUrl,
   createLocalGatewayUrl,
   hasVueMajorVersion,
+  isNoSpaceLeftError,
   isPermissionError,
   multiaddrToGatewayBaseUrl,
+  publishDirectoryToIpfs,
   resolveGatewayBaseUrlFromRepo,
   resolveLocalGatewayBaseUrl,
   resolveVue3BuildArgs,
@@ -143,6 +145,83 @@ describe('isPermissionError', () => {
 
   it('ignores other failures', () => {
     expect(isPermissionError(new Error('Process exited with code 1'))).toBe(false);
+  });
+});
+
+describe('isNoSpaceLeftError', () => {
+  it('detects datastore exhaustion from captured output', () => {
+    const error = new Error('Command `ipfs add -Qr /dist` exited with code 1', {
+      cause: { stdout: 'QmPartialCid', stderr: 'Error: write repo.log: no space left on device' },
+    });
+
+    expect(isNoSpaceLeftError(error)).toBe(true);
+  });
+
+  it('ignores unrelated failures', () => {
+    expect(isNoSpaceLeftError(new Error('ipfs add failed'))).toBe(false);
+  });
+});
+
+describe('publishDirectoryToIpfs', () => {
+  it('runs ipfs repo gc and retries once after a no-space error', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const calls: string[] = [];
+    let addAttempts = 0;
+
+    const cid = publishDirectoryToIpfs('/dist', {
+      resolveRepoPath: () => '/home/user/.ipfs',
+      runCommand: (command, args) => {
+        calls.push([command, ...args].join(' '));
+
+        if (command === 'ipfs' && args[0] === 'add') {
+          addAttempts += 1;
+
+          if (addAttempts === 1) {
+            throw new Error('Command `ipfs add -Qr /dist` exited with code 1', {
+              cause: { stdout: 'QmPartialCid\n', stderr: 'Error: no space left on device\n' },
+            });
+          }
+
+          return { stdout: 'QmRecoveredCid\n', stderr: '' };
+        }
+
+        if (command === 'ipfs' && args[0] === 'repo' && args[1] === 'gc') {
+          return { stdout: '', stderr: '' };
+        }
+
+        throw new Error(`Unexpected command: ${[command, ...args].join(' ')}`);
+      },
+    });
+
+    expect(cid).toBe('QmRecoveredCid');
+    expect(calls).toEqual(['ipfs add -Qr /dist', 'ipfs repo gc', 'ipfs add -Qr /dist']);
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('IPFS reported no space left on device while publishing /dist.')
+    );
+    expect(warnSpy).toHaveBeenCalledWith('IPFS publish recovered after `ipfs repo gc`.');
+
+    warnSpy.mockRestore();
+  });
+
+  it('throws a focused recovery message when retrying still fails', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    expect(() =>
+      publishDirectoryToIpfs('/dist', {
+        resolveRepoPath: () => '/home/user/.ipfs',
+        runCommand: (command, args) => {
+          if (command === 'ipfs' && args[0] === 'repo' && args[1] === 'gc') {
+            return { stdout: '', stderr: '' };
+          }
+
+          throw new Error('Command `ipfs add -Qr /dist` exited with code 1', {
+            cause: { stdout: '', stderr: 'Error: no space left on device\n' },
+          });
+        },
+      })
+    ).toThrowError(/Local IPFS repository ran out of space while publishing \/dist\./);
+
+    warnSpy.mockRestore();
   });
 });
 

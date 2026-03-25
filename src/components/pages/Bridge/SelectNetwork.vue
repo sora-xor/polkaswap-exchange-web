@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
@@ -39,7 +39,7 @@ import { useWeb3Store } from '@/stores/web3';
 
 import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
 
-import type { AvailableNetwork } from '@/store/web3/types';
+import type { AvailableNetwork } from '@/stores/web3';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 

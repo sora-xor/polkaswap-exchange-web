@@ -58,6 +58,13 @@ vi.mock('vue-i18n', async () => {
   };
 });
 
+vi.mock('@/composables/useTranslation', () => ({
+  __esModule: true,
+  useTranslation: () => ({
+    t: (key: string) => key,
+  }),
+}));
+
 import StatusBadge from '@/modules/staking/sora/components/StatusBadge.vue';
 
 describe('StatusBadge.vue', () => {

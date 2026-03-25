@@ -1,6 +1,16 @@
+import { createPinia, setActivePinia } from 'pinia';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 const getInfo = vi.hoisted(() => vi.fn(() => ({ address: '0xpool' })));
+
+vi.mock('@/shims/wallet-api', () => ({
+  api: {
+    poolXyk: {
+      getInfo,
+    },
+  },
+  connection: {},
+}));
 
 vi.mock('@/utils/walletCore', () => ({
   loadWalletCore: vi.fn(async () => ({
@@ -12,22 +22,19 @@ vi.mock('@/utils/walletCore', () => ({
   })),
 }));
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      pool: {
-        poolApyObject: {
-          '0xpool': '0.12',
-        },
-      },
+vi.mock('@/stores/pool', () => ({
+  usePoolStore: () => ({
+    poolApyObject: {
+      '0xpool': '0.12',
     },
-  },
+  }),
 }));
 
 import { usePoolApy } from '@/modules/pool/composables/usePoolApy';
 
 describe('usePoolApy', () => {
   beforeEach(() => {
+    setActivePinia(createPinia());
     getInfo.mockClear();
   });
 

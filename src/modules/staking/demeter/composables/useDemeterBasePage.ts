@@ -1,8 +1,9 @@
 import { FPNumber } from '@sora-substrate/math';
 import { computed, ref, toValue } from 'vue';
 
-import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
+import { useDemeterFarmingStore } from '@/stores/demeterFarming';
+import { usePoolStore } from '@/stores/pool';
 import type { DataMap, DoubleMap } from '@/types/common';
 import { formatDecimalPlaces } from '@/utils';
 
@@ -46,13 +47,15 @@ export function useDemeterBasePage(options: UseDemeterBasePageOptions = {}) {
   const { getAssetFiatPrice, getFiatAmountByFPNumber, formatCodecNumber, getEmission, getTvl, getApr, formatApr } =
     aprApi;
   const assetsStore = useAssetsStore();
+  const demeterFarmingStore = useDemeterFarmingStore();
+  const poolStore = usePoolStore();
 
   const isFarmingPage = computed(() => toValue(options.isFarmingPage) ?? true);
 
-  const tokens = computed(() => store.state.demeterFarming.tokens as DemeterRewardToken[]);
-  const demeterPools = computed(() => store.state.demeterFarming.pools as DemeterPool[]);
-  const demeterAccountPools = computed(() => store.state.demeterFarming.accountPools as DemeterAccountPool[]);
-  const accountLiquidity = computed(() => (store.state.pool?.accountLiquidity as AccountLiquidity[]) ?? []);
+  const tokens = computed(() => demeterFarmingStore.tokens as DemeterRewardToken[]);
+  const demeterPools = computed(() => demeterFarmingStore.pools as DemeterPool[]);
+  const demeterAccountPools = computed(() => demeterFarmingStore.accountPools as DemeterAccountPool[]);
+  const accountLiquidity = computed(() => poolStore.accountLiquidity as AccountLiquidity[]);
 
   const getAsset = assetsStore.assetDataByAddress as (addr?: string) => Nullable<AccountAsset>;
 

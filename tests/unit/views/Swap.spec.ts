@@ -166,15 +166,11 @@ vi.mock('@/composables/useSelectedTokensRoute', () => ({
   },
 }));
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/router', () => ({
   __esModule: true,
-  default: {
-    state: {
-      router: {
-        prev: null,
-      },
-    },
-  },
+  useRouterStore: () => ({
+    prev: null,
+  }),
 }));
 
 let SwapView: typeof import('@/views/Swap.vue').default;

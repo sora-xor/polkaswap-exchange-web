@@ -96,26 +96,20 @@ vi.mock('@/modules/dashboard/router', () => ({
   dashboardLazyComponent: () => tabComponentStub,
 }));
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      wallet: {
-        settings: {
-          get networkFees() {
-            return storeStateMocks.networkFees;
-          },
-        },
-      },
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => ({
+    get networkFees() {
+      return storeStateMocks.networkFees;
     },
-    getters: {
-      assets: {
-        get xor() {
-          return storeStateMocks.accountXor;
-        },
-      },
+  }),
+}));
+
+vi.mock('@/stores/assets', () => ({
+  useAssetsStore: () => ({
+    get xor() {
+      return storeStateMocks.accountXor;
     },
-  },
-  __mocks: storeStateMocks,
+  }),
 }));
 
 vi.mock('@/composables/useTransaction', () => ({

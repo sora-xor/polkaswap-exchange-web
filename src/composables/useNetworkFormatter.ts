@@ -5,21 +5,21 @@ import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
+import { ExplorerType, SoraNetwork, type ExplorerLink } from '@/consts';
 import { EVM_NETWORKS, EvmLinkType } from '@/consts/evm';
 import { SUB_NETWORKS } from '@/consts/sub';
-import store from '@/store';
-import type { AvailableNetwork } from '@/store/web3/types';
+import pinia from '@/plugins/pinia';
 import { useSettingsStore } from '@/stores/settings';
+import { useWeb3Store, type AvailableNetwork } from '@/stores/web3';
 import type { NetworkData } from '@/types/bridge';
 import type { Nullable } from '@/types/common';
 import { getSubstrateExplorerLinks } from '@/utils';
 import { isOutgoingTransaction, isWaitingForAction } from '@/utils/bridge/common/utils';
+import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 import { toSafeExternalLink } from '@/utils/externalLinks';
 
 import type { IBridgeTransaction, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
-import { loadWalletCore } from '@/utils/walletCore';
-const { WALLET_CONSTS } = await loadWalletCore();
 
 type ExplorerLinksParams = {
   networkType: BridgeNetworkType;
@@ -36,25 +36,21 @@ function buildSubNetworkLinks(
   value?: string,
   blockId?: number | string,
   eventIndex?: number
-): WALLET_CONSTS.ExplorerLink[] {
-  const baseLinks: WALLET_CONSTS.ExplorerLink[] = [];
+): ExplorerLink[] {
+  const baseLinks: ExplorerLink[] = [];
   const polkadotUrl = networkData.nodes?.[0].address;
   const polkadotLink = polkadotUrl
     ? toSafeExternalLink(`https://polkadot.js.org/apps/?rpc=${encodeURIComponent(polkadotUrl)}#/explorer/query`)
     : '';
 
   if (polkadotLink) {
-    baseLinks.push({ type: WALLET_CONSTS.ExplorerType.Polkadot, value: polkadotLink });
+    baseLinks.push({ type: ExplorerType.Polkadot, value: polkadotLink });
   }
 
   return getSubstrateExplorerLinks(baseLinks, type === EvmLinkType.Account, value, blockId, eventIndex);
 }
 
-function buildEvmNetworkLinks(
-  networkData: NetworkData,
-  type: EvmLinkType,
-  value?: string
-): WALLET_CONSTS.ExplorerLink[] {
+function buildEvmNetworkLinks(networkData: NetworkData, type: EvmLinkType, value?: string): ExplorerLink[] {
   const explorerUrl = toSafeExternalLink(networkData.blockExplorerUrls[0]);
 
   if (!explorerUrl || !value) {
@@ -64,7 +60,7 @@ function buildEvmNetworkLinks(
   const path = type === EvmLinkType.Transaction ? 'tx' : 'address';
   return [
     {
-      type: 'etherscan' as WALLET_CONSTS.ExplorerType,
+      type: 'etherscan' as ExplorerType,
       value: `${explorerUrl}/${path}/${value}`,
     },
   ];
@@ -76,16 +72,13 @@ function buildEvmNetworkLinks(
  */
 export function useNetworkFormatter() {
   const { t, TranslationConsts, formatDate } = useTranslation();
-  const settingsStore = useSettingsStore();
+  const settingsStore = useSettingsStore(pinia);
+  const web3Store = useWeb3Store(pinia);
 
-  const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>);
-  const networkType = computed(
-    () => (store.getters.web3.networkType ?? store.state.web3?.networkType) as Nullable<BridgeNetworkType>
-  );
-  const networkSelected = computed(
-    () => (store.getters.web3.networkSelected ?? store.state.web3?.networkSelected) as Nullable<BridgeNetworkId>
-  );
-  const selectedNetwork = computed(() => store.getters.web3.selectedNetwork as Nullable<NetworkData>);
+  const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<SoraNetwork>);
+  const networkType = computed(() => web3Store.networkType as Nullable<BridgeNetworkType>);
+  const networkSelected = computed(() => web3Store.networkSelected as Nullable<BridgeNetworkId>);
+  const selectedNetwork = computed(() => web3Store.selectedNetworkData as Nullable<NetworkData>);
   const selectedNetworkFallbackData = computed<Nullable<NetworkData>>(() => {
     if (selectedNetwork.value) return selectedNetwork.value;
     if (!networkType.value || networkSelected.value === null || networkSelected.value === undefined) return null;
@@ -94,11 +87,7 @@ export function useNetworkFormatter() {
     return networks[networkSelected.value] ?? null;
   });
   const availableNetworks = computed(
-    () =>
-      store.getters.web3.availableNetworks as Record<
-        BridgeNetworkType,
-        Partial<Record<BridgeNetworkId, AvailableNetwork>>
-      >
+    () => web3Store.availableNetworks as Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>>
   );
   const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
 
@@ -183,7 +172,7 @@ export function useNetworkFormatter() {
     blockId,
     eventIndex,
     type = EvmLinkType.Transaction,
-  }: ExplorerLinksParams): Array<WALLET_CONSTS.ExplorerLink> => {
+  }: ExplorerLinksParams): Array<ExplorerLink> => {
     const networkMeta = availableNetworks.value[networkType]?.[networkId];
     const networkData = networkMeta?.data;
 
@@ -202,11 +191,7 @@ export function useNetworkFormatter() {
   const isFailedState = (item: Nullable<IBridgeTransaction>): boolean => {
     if (!item?.transactionState) return false;
 
-    if (
-      [WALLET_CONSTS.ETH_BRIDGE_STATES.EVM_REJECTED, WALLET_CONSTS.ETH_BRIDGE_STATES.SORA_REJECTED].includes(
-        item.transactionState
-      )
-    ) {
+    if ([ETH_BRIDGE_STATES.EVM_REJECTED, ETH_BRIDGE_STATES.SORA_REJECTED].includes(item.transactionState)) {
       return true;
     }
 
@@ -219,10 +204,7 @@ export function useNetworkFormatter() {
     if (!item) return false;
 
     if (
-      item.transactionState ===
-      (isOutgoingTx(item)
-        ? WALLET_CONSTS.ETH_BRIDGE_STATES.EVM_COMMITED
-        : WALLET_CONSTS.ETH_BRIDGE_STATES.SORA_COMMITED)
+      item.transactionState === (isOutgoingTx(item) ? ETH_BRIDGE_STATES.EVM_COMMITED : ETH_BRIDGE_STATES.SORA_COMMITED)
     ) {
       return true;
     }

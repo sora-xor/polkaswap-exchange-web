@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 import { useLoading } from '@/composables/useLoading';

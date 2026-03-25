@@ -1,5 +1,12 @@
 <template>
-  <s-input ref="input" v-model="query" class="search-input" prefix="s-icon-search-16" size="big" v-bind="$attrs">
+  <s-input
+    ref="input"
+    v-model="query"
+    class="search-input"
+    prefix="s-icon-search-16"
+    v-bind="inputAttrs"
+    :readonly="false"
+  >
     <template #suffix>
       <s-button
         v-show="query"
@@ -35,6 +42,12 @@ export default defineComponent({
       set(this: any, value: string): void {
         this.$emit('update:modelValue', value);
       },
+    },
+    inputAttrs(this: any): Record<string, unknown> {
+      const { readonly, readOnly, ...attrs } = this.$attrs as Record<string, unknown>;
+      void readonly;
+      void readOnly;
+      return attrs;
     },
   },
   methods: {

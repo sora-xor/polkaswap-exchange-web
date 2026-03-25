@@ -7,10 +7,18 @@ const telemetry = vi.hoisted(() => ({
   trackEventMock: vi.fn(),
   getBuildVariantMock: vi.fn(() => 'vue3-native'),
 }));
+const bridgeStoreMock = vi.hoisted(() => ({
+  setNotificationData: vi.fn(),
+  setSignTxDialogVisibility: vi.fn(),
+}));
 
 vi.mock('@/utils/telemetry', () => ({
   trackEvent: telemetry.trackEventMock,
   getBuildVariant: telemetry.getBuildVariantMock,
+}));
+
+vi.mock('@/stores/bridge', () => ({
+  useBridgeStore: () => bridgeStoreMock,
 }));
 
 import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
@@ -28,6 +36,8 @@ beforeEach(() => {
   telemetry.trackEventMock.mockClear();
   telemetry.getBuildVariantMock.mockClear();
   telemetry.getBuildVariantMock.mockReturnValue('vue3-native');
+  bridgeStoreMock.setNotificationData.mockClear();
+  bridgeStoreMock.setSignTxDialogVisibility.mockClear();
 });
 
 describe('useBridgeTransactionsStore', () => {
@@ -90,14 +100,28 @@ describe('useBridgeTransactionsStore', () => {
     );
   });
 
-  it('sets notification data via Pinia action', () => {
+  it('sets notification data via Pinia action and keeps bridge compat state aligned', () => {
     const store = useBridgeTransactionsStore();
     const tx = sampleTx('pinia');
 
     store.setNotificationData(tx);
     expect(store.notificationData).toEqual(tx);
+    expect(bridgeStoreMock.setNotificationData).toHaveBeenCalledWith(tx);
 
     store.setNotificationData();
     expect(store.notificationData).toBeNull();
+    expect(bridgeStoreMock.setNotificationData).toHaveBeenLastCalledWith(null);
+  });
+
+  it('sets sign dialog visibility via Pinia action and keeps bridge compat state aligned', () => {
+    const store = useBridgeTransactionsStore();
+
+    store.setSignTxDialogVisibility(true);
+    expect(store.isSignTxDialogVisible).toBe(true);
+    expect(bridgeStoreMock.setSignTxDialogVisibility).toHaveBeenCalledWith(true);
+
+    store.setSignTxDialogVisibility(false);
+    expect(store.isSignTxDialogVisible).toBe(false);
+    expect(bridgeStoreMock.setSignTxDialogVisibility).toHaveBeenLastCalledWith(false);
   });
 });

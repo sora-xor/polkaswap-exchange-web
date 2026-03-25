@@ -1,16 +1,10 @@
 import { defineComponent } from 'vue';
 
 import { translationUtils } from '@/composables/useTranslation';
+import { useSettingsStore } from '@/stores/settings';
 import type { Nullable } from '@/types/common';
 
 import { TranslationConsts } from '../../consts';
-
-const getAppStore = () =>
-  (typeof globalThis !== 'undefined' ? (globalThis as Record<string, unknown>).__PS_APP_STORE__ : undefined) as
-    | {
-        state?: Record<string, any>;
-      }
-    | undefined;
 
 export default defineComponent({
   data() {
@@ -26,7 +20,11 @@ export default defineComponent({
   },
   computed: {
     language(): string {
-      return getAppStore()?.state?.settings?.language ?? 'en';
+      try {
+        return useSettingsStore().language ?? 'en';
+      } catch {
+        return 'en';
+      }
     },
     dayjsLocale(this: any): string {
       return this.translationApi.getDayjsLocale();

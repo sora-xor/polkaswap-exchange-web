@@ -4,35 +4,31 @@ import { defineComponent, h } from 'vue';
 
 import { PageNames } from '@/consts';
 
-const { routeMock, storeMock, resizeObserverObserveMock, resizeObserverDisconnectMock } = vi.hoisted(() => ({
+const {
+  routeMock,
+  settingsStore,
+  routerStore,
+  setMenuCollapsedMock,
+  resizeObserverObserveMock,
+  resizeObserverDisconnectMock,
+} = vi.hoisted(() => ({
   routeMock: {
     name: 'Swap',
   },
-  storeMock: {
-    state: {
-      router: {
-        loading: false,
-      },
-      settings: {
-        menuCollapsed: false,
-        faucetUrl: '',
-      },
-    },
-    getters: {
-      libraryTheme: 'light',
-      settings: {
-        orderBookEnabled: true,
-        debugEnabled: false,
-        kensetsuEnabled: true,
-        assetOwnerEnabled: true,
-      },
-    },
-    commit: {
-      settings: {
-        setMenuCollapsed: vi.fn(),
-      },
-    },
+  settingsStore: {
+    menuCollapsed: false,
+    faucetUrl: '',
+    libraryTheme: 'light',
+    orderBookEnabled: true,
+    debugEnabled: false,
+    kensetsuEnabled: true,
+    assetOwnerEnabled: true,
+    setMenuCollapsed: vi.fn(),
   },
+  routerStore: {
+    loading: false,
+  },
+  setMenuCollapsedMock: vi.fn(),
   resizeObserverObserveMock: vi.fn(),
   resizeObserverDisconnectMock: vi.fn(),
 }));
@@ -47,8 +43,12 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@/store', () => ({
-  default: storeMock,
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => settingsStore,
+}));
+
+vi.mock('@/stores/router', () => ({
+  useRouterStore: () => routerStore,
 }));
 
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
@@ -102,14 +102,16 @@ class ResizeObserverMock {
 
 describe('AppMenu', () => {
   beforeEach(() => {
-    storeMock.state.router.loading = false;
-    storeMock.state.settings.menuCollapsed = false;
-    storeMock.state.settings.faucetUrl = '';
+    routerStore.loading = false;
+    settingsStore.menuCollapsed = false;
+    settingsStore.faucetUrl = '';
     routeMock.name = PageNames.Swap;
-    storeMock.getters.settings.orderBookEnabled = true;
-    storeMock.getters.settings.debugEnabled = false;
-    storeMock.getters.settings.kensetsuEnabled = true;
-    storeMock.getters.settings.assetOwnerEnabled = true;
+    settingsStore.orderBookEnabled = true;
+    settingsStore.debugEnabled = false;
+    settingsStore.kensetsuEnabled = true;
+    settingsStore.assetOwnerEnabled = true;
+    settingsStore.setMenuCollapsed = setMenuCollapsedMock;
+    setMenuCollapsedMock.mockReset();
     resizeObserverObserveMock.mockReset();
     resizeObserverDisconnectMock.mockReset();
 
@@ -182,7 +184,7 @@ describe('AppMenu', () => {
   });
 
   it('keeps SCCP hidden from the sidebar even when debug flag is enabled', () => {
-    storeMock.getters.settings.debugEnabled = true;
+    settingsStore.debugEnabled = true;
     const wrapper = mountComponent();
 
     const renderedRouteItems = wrapper

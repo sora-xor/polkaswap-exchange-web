@@ -143,7 +143,8 @@
 <script setup lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { KnownSymbols, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, components } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { useConfirmDialog } from '@/composables/useConfirmDialog';
@@ -156,8 +157,8 @@ import { useTranslation } from '@/composables/useTranslation';
 import { Components, MarketAlgorithms } from '@/consts';
 import { useSwapStore } from '@/stores/swap';
 import { lazyComponent } from '@/router';
-import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
 import { isSelectableAsset } from '@/components/shared/SelectAsset/utils';
 import {
   asZeroValue,
@@ -208,6 +209,7 @@ const props = withDefaults(
 const { t } = useTranslation();
 const swapStore = useSwapStore();
 const assetsStore = useAssetsStore();
+const settingsStore = useSettingsStore();
 const {
   tokenFrom,
   tokenTo,
@@ -238,14 +240,14 @@ const {
   getFPNumberFiatAmountByFPNumber,
 } = useFormattedAmount();
 
-const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject);
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
 const networkFee = computed(() => networkFees.value[Operation.Swap]);
 // Avoid name collision with the <slippage-tolerance> component tag in the template.
-const slippageToleranceValue = computed(() => store.state.settings.slippageTolerance);
+const slippageToleranceValue = computed(() => settingsStore.slippageTolerance);
 const xor = computed(() => assetsStore.assetDataByAddress(XOR.address) as AccountAsset);
 const liquiditySource = computed(() => swapStore.swapLiquiditySource);
-const debugEnabled = computed(() => Boolean(store.getters?.settings?.debugEnabled));
-const nodeIsConnected = computed(() => Boolean(store.getters?.settings?.nodeIsConnected));
+const debugEnabled = computed(() => Boolean(settingsStore.debugEnabled));
+const nodeIsConnected = computed(() => Boolean(settingsStore.nodeIsConnected));
 const swapMarketAlgorithm = computed(() => swapStore.swapMarketAlgorithm);
 const isAvailable = computed(() => swapStore.isAvailable);
 const allowLossPopup = computed(() => swapStore.allowLossPopup);

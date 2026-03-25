@@ -42,7 +42,7 @@ import TokenLogo from './TokenLogo.vue';
 import WalletBase from './WalletBase.vue';
 
 import type { RouteNames } from '../consts';
-import type { Route } from '../store/router/types';
+import type { Route } from '@/stores/router/types';
 import type { PolkadotJsAccount } from '../types/common';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 

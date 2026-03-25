@@ -72,7 +72,8 @@
 <script lang="ts">
 import { api, type WithKeyring } from '@sora-substrate/sdk';
 import { defineComponent, type PropType } from 'vue';
-import { mapActions, mapMutations, mapState } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import { AppWallet, LoginStep } from '../../consts';
 import { GDriveWallet } from '../../services/google/wallet';
@@ -100,7 +101,7 @@ import ExtensionListStep from './Step/ExtensionList.vue';
 import ImportAccountStep from './Step/ImportAccount.vue';
 
 import type { Wallet } from '../../services/wallet/types';
-import type { CreateAccountArgs, RestoreAccountArgs } from '../../store/account/types';
+import type { CreateAccountArgs, RestoreAccountArgs } from '@/stores/wallet/account/types';
 import type { PolkadotJsAccount, KeyringPair$Json } from '../../types/common';
 
 const SelectAccountFlow = [LoginStep.ExtensionList, LoginStep.AccountList];
@@ -175,9 +176,21 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/account', ['availableWallets', 'isMST']),
-    ...mapState('wallet/transactions', ['isSignTxDialogDisabled']),
-    ...mapState('wallet/settings', ['isMSTAvailable']),
+    walletStore(this: any) {
+      return useWalletStore(this.$pinia);
+    },
+    availableWallets(this: any) {
+      return this.walletStore.availableWallets;
+    },
+    isMST(this: any) {
+      return this.walletStore.isMST;
+    },
+    isSignTxDialogDisabled(this: any) {
+      return this.walletStore.isSignTxDialogDisabled;
+    },
+    isMSTAvailable(this: any) {
+      return this.walletStore.isMSTAvailable;
+    },
     chainGenesisHash(this: any): string {
       try {
         return this.chainApi.api.genesisHash.toString();
@@ -305,8 +318,18 @@ export default defineComponent({
     this.resetSelectedWallet();
   },
   methods: {
-    ...mapMutations('wallet/settings', ['setIsMstAvailable']),
-    ...mapActions('wallet/account', ['initMultisigAddress', 'updateAvailableWallets', 'setAccountPassphrase']),
+    setIsMstAvailable(this: any, flag: boolean): void {
+      this.walletStore.setIsMstAvailable(flag);
+    },
+    initMultisigAddress(this: any): void {
+      this.walletStore.initMultisigAddress();
+    },
+    updateAvailableWallets(this: any): Promise<void> {
+      return this.walletStore.updateAvailableWallets();
+    },
+    setAccountPassphrase(this: any, payload: { address: string; password: string }): void {
+      this.walletStore.setAccountPassphrase(payload);
+    },
     resetWalletAccountsSubscription(this: any): void {
       this.accountsSubscription?.();
       this.accountsSubscription = null;

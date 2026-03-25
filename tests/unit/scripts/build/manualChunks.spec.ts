@@ -20,7 +20,7 @@ describe('scripts/build/manualChunks', () => {
   });
 
   it('assigns bridge and EVM dependencies to the bridge-related chunks', () => {
-    expect(getManualChunk('/Users/test/repo/src/store/bridge/actions.ts')).toBe('bridge');
+    expect(getManualChunk('/Users/test/repo/src/stores/bridge/index.ts')).toBe('bridge');
     expect(getManualChunk('/Users/test/repo/node_modules/ethers/lib.esm/index.js')).toBe('evm-stack');
   });
 

@@ -112,7 +112,7 @@ import { copyToClipboard } from '../../../util';
 import PasswordInput from '../../Input/Password.vue';
 import NotificationMixin from '../../mixins/NotificationMixin';
 
-import type { CreateAccountArgs } from '../../../store/account/types';
+import type { CreateAccountArgs } from '@/stores/wallet/account/types';
 import type { WithKeyring } from '@sora-substrate/sdk';
 
 export default defineComponent({

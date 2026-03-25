@@ -1,12 +1,22 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { Subject } from 'rxjs';
 
-import { getWalletStore } from '../../store/instance';
+import { resolveGlobalPinia } from '@/plugins/pinia';
+import { useWalletStore } from '@/stores/wallet';
+
 import { getBase64Icon } from '../../util/image';
 
 import type { Alert } from '../../types/common';
 import type { FiatPriceObject } from '../indexer/subsquid/types';
 import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
+
+const resolveWalletStore = () => {
+  try {
+    return useWalletStore(resolveGlobalPinia());
+  } catch {
+    return null;
+  }
+};
 
 /**
  * Coordinates token price alerts by tracking the configured thresholds and
@@ -18,11 +28,11 @@ export class AlertsApiService {
   public baseRoute = 'https://polkaswap.io/#/';
 
   private isAlertSetByUser(): boolean {
-    return !!this.store.state.wallet.settings.alerts.length;
+    return !!this.store?.alerts.length;
   }
 
   private get store() {
-    return getWalletStore();
+    return resolveWalletStore();
   }
 
   /**
@@ -58,14 +68,18 @@ export class AlertsApiService {
     this.alerts.forEach((alert, position) => {
       if (alert.wasNotified) return;
 
-      const tokenAddress = this.store.getters.wallet.account.whitelistIdsBySymbol[alert.token];
+      const tokenAddress = this.store?.whitelistIdsBySymbol?.[alert.token];
+
+      if (!tokenAddress) {
+        return;
+      }
 
       const currentPrice = FPNumber.fromCodecValue(this.fiatPriceObject[tokenAddress]);
       const desiredPrice = FPNumber.fromNatural(alert.price);
 
       if (alert.type === 'drop') {
         if (FPNumber.lte(currentPrice, desiredPrice)) {
-          const asset = this.store.getters.wallet.account.whitelist[tokenAddress];
+          const asset = this.store?.whitelist?.[tokenAddress];
 
           if (asset) {
             this.pushNotification(asset as WhitelistArrayItem, `Token price dropped to $${desiredPrice}`);
@@ -78,7 +92,7 @@ export class AlertsApiService {
 
       if (alert.type === 'raise') {
         if (FPNumber.gte(currentPrice, desiredPrice)) {
-          const asset = this.store.getters.wallet.account.whitelist[tokenAddress];
+          const asset = this.store?.whitelist?.[tokenAddress];
 
           if (asset) {
             this.pushNotification(asset as WhitelistArrayItem, `Token price raised to $${desiredPrice}`);
@@ -97,7 +111,11 @@ export class AlertsApiService {
     this.alerts.forEach((alert, position) => {
       if (!alert.wasNotified) return alert;
 
-      const tokenAddress = this.store.getters.wallet.account.whitelistIdsBySymbol[alert.token];
+      const tokenAddress = this.store?.whitelistIdsBySymbol?.[alert.token];
+
+      if (!tokenAddress) {
+        return;
+      }
 
       const currentPrice = FPNumber.fromCodecValue(this.fiatPriceObject[tokenAddress]);
       const desiredPrice = FPNumber.fromNatural(alert.price);
@@ -120,12 +138,12 @@ export class AlertsApiService {
 
   /** Removes the alert at the given index from Vuex. */
   public removeAlert(position: number): void {
-    this.store.commit.wallet.settings.removePriceAlert(position);
+    this.store?.removePriceAlert(position);
   }
 
   /** Flags the alert as already notified so the UI can reflect the state. */
   public setAlertAsNotified(position: number, value: boolean): void {
-    this.store.commit.wallet.settings.setPriceAlertAsNotified({ position, value });
+    this.store?.setPriceAlertAsNotified({ position, value });
   }
 
   /**
@@ -139,7 +157,7 @@ export class AlertsApiService {
       next: (fiatPriceObject: FiatPriceObject) => {
         if (!this.isAlertSetByUser()) return;
 
-        this.alerts = this.store.state.wallet.settings.alerts;
+        this.alerts = this.store?.alerts ?? [];
 
         this.fiatPriceObject = fiatPriceObject;
 

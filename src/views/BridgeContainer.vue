@@ -13,17 +13,17 @@
 </template>
 
 <script lang="ts" setup>
-import { components, WALLET_TYPES } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import isEqual from 'lodash/fp/isEqual';
 import { computed, onBeforeUnmount, useAttrs, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
+import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useSubscriptions } from '@/composables/useSubscriptions';
 import { useWeb3Connection } from '@/composables/useWeb3Connection';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
 import { useBridgeStore } from '@/stores/bridge';
 import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
 import { useWeb3Store } from '@/stores/web3';
@@ -51,16 +51,16 @@ const { isSignTxDialogVisible } = storeToRefs(bridgeTransactionsStore);
 
 const selectedNetwork = computed(() => web3Store.selectedNetworkData as Nullable<NetworkData>);
 const externalAccount = computed(() => bridgeStore.externalAccount);
-const subAccount = computed(() => web3Store.subAccount as WALLET_TYPES.PolkadotJsAccount);
+const subAccount = computed(() => web3Store.subAccount as PolkadotJsAccount);
 const subBridgeConnector = computed(() => bridgeStore.connector as SubNetworksConnector);
 const chainApi = computed(() => subBridgeConnector.value?.accountApi);
 
 const setSignTxDialogVisibility = (flag: boolean) => {
-  bridgeStore.setSignTxDialogVisibility(flag);
+  bridgeTransactionsStore.setSignTxDialogVisibility(flag);
 };
 
-const getSupportedApps = () => store.dispatch.web3.getSupportedApps();
-const restoreSelectedNetwork = () => store.dispatch.web3.restoreSelectedNetwork();
+const getSupportedApps = () => web3Store.getSupportedApps();
+const restoreSelectedNetwork = () => web3Store.restoreSelectedNetwork();
 const updateExternalBalance = () => bridgeStore.updateExternalBalance();
 const subscribeOnBlockUpdates = () => bridgeStore.subscribeOnBlockUpdates();
 const updateOutgoingMaxLimit = () => bridgeStore.updateOutgoingMaxLimit();

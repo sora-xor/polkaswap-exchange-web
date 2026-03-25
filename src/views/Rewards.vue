@@ -120,7 +120,7 @@
 import { CodecString, FPNumber } from '@sora-substrate/sdk';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
 import { RewardType } from '@sora-substrate/sdk/build/rewards/consts';
-import { components, groupRewardsByAssetsList } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, onBeforeUnmount, onMounted, onUnmounted, toRef, watch } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -131,14 +131,16 @@ import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { useWalletConnect } from '@/composables/useWalletConnect';
 import { Components } from '@/consts';
+import { groupRewardsByAssetsList } from '@/shims/wallet-util';
 import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
-import store from '@/store';
-import type { ClaimRewardsParams } from '@/store/rewards/types';
+import { useAssetsStore } from '@/stores/assets';
+import { useRewardsStore } from '@/stores/rewards';
+import type { ClaimRewardsParams } from '@/stores/rewards/types';
+import { useSettingsStore } from '@/stores/settings';
 import type { Nullable } from '@/types/common';
 import type { RewardsAmountHeaderItem, RewardInfoGroup, SelectedRewards } from '@/types/rewards';
 import { hasInsufficientXorForFee } from '@/utils';
-import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
@@ -182,9 +184,12 @@ const {
 } = useWalletConnect();
 const { showAppNotification } = useNotification();
 const { loading, withNotifications } = useTransaction({ parentLoading: parentLoadingRef });
+const assetsStore = useAssetsStore();
+const rewardsStore = useRewardsStore();
+const settingsStore = useSettingsStore();
 
-const subscribeOnRewardsAction = () => store.dispatch.rewards.subscribeOnRewards();
-const unsubscribeFromRewardsAction = () => store.dispatch.rewards.unsubscribeFromRewards();
+const subscribeOnRewardsAction = () => rewardsStore.subscribeOnRewards();
+const unsubscribeFromRewardsAction = () => rewardsStore.unsubscribeFromRewards();
 
 const { subscriptionsDataLoading, withApi: withSubscriptionsApi } = useSubscriptions({
   parentLoading: parentLoadingRef,
@@ -192,37 +197,37 @@ const { subscriptionsDataLoading, withApi: withSubscriptionsApi } = useSubscript
   resetSubscriptions: [unsubscribeFromRewardsAction],
 });
 
-const feeFetching = computed(() => store.state.rewards.feeFetching);
-const rewardsFetching = computed(() => store.state.rewards.rewardsFetching);
-const rewardsClaiming = computed(() => store.state.rewards.rewardsClaiming);
-const transactionError = computed(() => store.state.rewards.transactionError);
-const transactionStep = computed(() => store.state.rewards.transactionStep);
-const receivedRewards = computed(() => store.state.rewards.receivedRewards as RewardsAmountHeaderItem[]);
-const fee = computed(() => store.state.rewards.fee as CodecString);
+const feeFetching = computed(() => rewardsStore.feeFetching);
+const rewardsFetching = computed(() => rewardsStore.rewardsFetching);
+const rewardsClaiming = computed(() => rewardsStore.rewardsClaiming);
+const transactionError = computed(() => rewardsStore.transactionError);
+const transactionStep = computed(() => rewardsStore.transactionStep);
+const receivedRewards = computed(() => rewardsStore.receivedRewards as RewardsAmountHeaderItem[]);
+const fee = computed(() => rewardsStore.fee as CodecString);
 
-const vestedRewards = computed(() => store.state.rewards.vestedRewards as Nullable<RewardsInfo>);
-const crowdloanRewards = computed(() => store.state.rewards.crowdloanRewards as Record<string, RewardInfo[]>);
-const internalRewards = computed(() => store.state.rewards.internalRewards as Nullable<RewardInfo>);
-const externalRewards = computed(() => store.state.rewards.externalRewards as RewardInfo[]);
+const vestedRewards = computed(() => rewardsStore.vestedRewards as Nullable<RewardsInfo>);
+const crowdloanRewards = computed(() => rewardsStore.crowdloanRewards as Record<string, RewardInfo[]>);
+const internalRewards = computed(() => rewardsStore.internalRewards as Nullable<RewardInfo>);
+const externalRewards = computed(() => rewardsStore.externalRewards as RewardInfo[]);
 
-const selectedVestedRewards = computed(() => store.state.rewards.selectedVested as Nullable<RewardsInfo>);
-const selectedInternalRewards = computed(() => store.state.rewards.selectedInternal as Nullable<RewardInfo>);
-const selectedExternalRewards = computed(() => store.state.rewards.selectedExternal as RewardInfo[]);
-const selectedCrowdloanRewards = computed(() => store.state.rewards.selectedCrowdloan as Record<string, RewardInfo[]>);
+const selectedVestedRewards = computed(() => rewardsStore.selectedVested as Nullable<RewardsInfo>);
+const selectedInternalRewards = computed(() => rewardsStore.selectedInternal as Nullable<RewardInfo>);
+const selectedExternalRewards = computed(() => rewardsStore.selectedExternal as RewardInfo[]);
+const selectedCrowdloanRewards = computed(() => rewardsStore.selectedCrowdloan as Record<string, RewardInfo[]>);
 
-const xor = computed(() => store.getters.assets.xor as AccountAsset);
-const rewardsAvailable = computed(() => store.getters.rewards.rewardsAvailable as boolean);
-const externalRewardsAvailable = computed(() => store.getters.rewards.externalRewardsAvailable as boolean);
-const externalRewardsSelected = computed(() => store.getters.rewards.externalRewardsSelected as boolean);
-const internalRewardsAvailable = computed(() => store.getters.rewards.internalRewardsAvailable as boolean);
-const vestedRewardsAvailable = computed(() => store.getters.rewards.vestedRewardsAvailable as boolean);
-const rewardsByAssetsList = computed(() => store.getters.rewards.rewardsByAssetsList as RewardsAmountHeaderItem[]);
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
+const xor = computed(() => assetsStore.xor as AccountAsset);
+const rewardsAvailable = computed(() => rewardsStore.rewardsAvailable);
+const externalRewardsAvailable = computed(() => rewardsStore.externalRewardsAvailable);
+const externalRewardsSelected = computed(() => rewardsStore.externalRewardsSelected);
+const internalRewardsAvailable = computed(() => rewardsStore.internalRewardsAvailable);
+const vestedRewardsAvailable = computed(() => rewardsStore.vestedRewardsAvailable);
+const rewardsByAssetsList = computed(() => rewardsStore.rewardsByAssetsList as RewardsAmountHeaderItem[]);
+const libraryTheme = computed(() => (settingsStore.libraryTheme ?? Theme.LIGHT) as Theme);
 
-const setSelectedRewardsAction = (payload: SelectedRewards) => store.dispatch.rewards.setSelectedRewards(payload);
-const getExternalRewardsAction = (address: string) => store.dispatch.rewards.getExternalRewards(address);
-const claimRewardsAction = (payload: ClaimRewardsParams) => store.dispatch.rewards.claimRewards(payload);
-const resetRewards = () => store.commit.rewards.reset();
+const setSelectedRewardsAction = (payload: SelectedRewards) => rewardsStore.setSelectedRewards(payload);
+const getExternalRewardsAction = (address: string) => rewardsStore.getExternalRewards(address);
+const claimRewardsAction = (payload: ClaimRewardsParams) => rewardsStore.claimRewards(payload);
+const resetRewards = () => rewardsStore.reset();
 
 const transactionStepsCount = computed(() => (externalRewardsSelected.value ? 2 : 1));
 const rewardsReceivedFlag = computed(() => receivedRewards.value.length !== 0);

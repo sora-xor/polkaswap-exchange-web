@@ -1,12 +1,12 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { api } from '@wallet';
+import { api } from '@/shims/wallet-api';
 import { combineLatest } from 'rxjs';
 
 import { ZeroStringValue } from '@/consts';
 import { conditionalAwait } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
-import type { IBridgeReducerOptions } from '@/utils/bridge/common/types';
+import { BridgeTransactionSignDialogMode, type IBridgeReducerOptions } from '@/utils/bridge/common/types';
 import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -158,7 +158,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (tx.txId) return;
     // transaction not signed
-    await this.beforeSign(id, this.connector.accountApi, 'bridge/setSignTxDialogVisibility');
+    await this.beforeSign(id, this.connector.accountApi, BridgeTransactionSignDialogMode.Bridge);
     // open connections
     await this.connector.start();
     // sign transaction (from is sora account)

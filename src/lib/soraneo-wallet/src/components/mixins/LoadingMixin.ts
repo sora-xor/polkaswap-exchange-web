@@ -1,5 +1,6 @@
 import { defineComponent } from 'vue';
-import { mapState } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import { delay } from '../../util';
 
@@ -27,7 +28,9 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/settings', ['isWalletLoaded']),
+    isWalletLoaded(this: any) {
+      return useWalletStore(this.$pinia).isWalletLoaded;
+    },
   },
   methods: {
     async withLoading<T = void>(this: any, func: FnWithoutArgs<T> | AsyncFnWithoutArgs<T>): Promise<T> {

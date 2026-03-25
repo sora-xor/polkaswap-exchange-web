@@ -11,13 +11,6 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   useFormattedAmount: () => formattedAmountStub,
 }));
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {},
-    getters: {},
-  },
-}));
-
 vi.mock('@/router', () => ({
   __esModule: true,
   default: {

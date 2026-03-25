@@ -1,10 +1,8 @@
 import { defineStore } from 'pinia';
 
-import { RouteNames } from '@wallet/src/consts';
 import type { Nullable } from '@/types/common';
-import { requireAppStore } from '@/utils/app-store';
-
-import { enterPiniaSync, isLegacySyncing, leavePiniaSync } from './sync';
+import { RouteNames } from '@/consts';
+import { useWalletStore } from '@/stores/wallet';
 import type { RouterParams, RouterState } from './types';
 
 const buildInitialState = (): RouterState => ({
@@ -43,15 +41,6 @@ export const useRouterStore = defineStore('router', {
       this.prevParams = { ...this.currentParams };
       this.current = normalizeRouteName(route.name);
       this.currentParams = { ...(route.params ?? {}) };
-      const legacyStore = requireAppStore();
-      if (!isLegacySyncing() && legacyStore?.commit?.wallet?.router?.navigate) {
-        enterPiniaSync();
-        try {
-          legacyStore.commit.wallet.router.navigate(route);
-        } finally {
-          leavePiniaSync();
-        }
-      }
     },
     setLoading(loading: boolean): void {
       this.loading = loading;
@@ -64,16 +53,16 @@ export const useRouterStore = defineStore('router', {
       this.prevParams = { ...params };
     },
     back(): void {
-      const legacyStore = requireAppStore();
-      const isLoggedIn = Boolean(legacyStore.getters?.wallet?.account?.isLoggedIn);
+      const walletStore = useWalletStore();
+      const isLoggedIn = Boolean(walletStore.isLoggedIn);
       if (!isLoggedIn || !this.prev || [this.current, this.prev].includes(RouteNames.WalletConnection)) {
         return;
       }
       this.navigate({ name: this.prev, params: this.prevParams });
     },
     checkCurrentRoute(): void {
-      const legacyStore = requireAppStore();
-      const isLoggedIn = Boolean(legacyStore.getters?.wallet?.account?.isLoggedIn);
+      const walletStore = useWalletStore();
+      const isLoggedIn = Boolean(walletStore.isLoggedIn);
       const accountRoute = RouteNames.Wallet;
       const connectionRoute = RouteNames.WalletConnection;
       if (isLoggedIn && this.current === connectionRoute) {

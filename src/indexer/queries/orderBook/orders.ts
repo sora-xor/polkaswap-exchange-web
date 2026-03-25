@@ -1,15 +1,14 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer } from '@wallet';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
-import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import { OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
 import type { OrderBookId } from '@sora-substrate/liquidity-proxy';
-import type { OrderBookOrderEntity, ConnectionQueryResponse } from '@wallet/lib/services/indexer/types';
+import type { OrderBookOrderEntity, ConnectionQueryResponse } from '@/shims/wallet-indexer-types';
 
 const parseSide = (isBuy: boolean): PriceVariant => {
   return isBuy ? PriceVariant.Buy : PriceVariant.Sell;

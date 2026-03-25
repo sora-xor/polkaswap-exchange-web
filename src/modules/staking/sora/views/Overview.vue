@@ -217,7 +217,7 @@
 </template>
 
 <script setup lang="ts">
-import { components as walletComponents } from '@wallet';
+import { components as walletComponents } from '@/shims/wallet-components';
 import { computed, ref, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
@@ -230,7 +230,6 @@ import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStakin
 import { SoraStakingComponents, SoraStakingPageNames, StakeDialogMode } from '@/modules/staking/sora/consts';
 import { soraStakingLazyComponent } from '@/modules/staking/router';
 import router from '@/router';
-import store from '@/store';
 
 import type { Nullable } from '@/types/common';
 
@@ -297,6 +296,8 @@ const {
   currentEra,
   activeEra,
   maxApy,
+  totalNominators,
+  setTotalNominators,
 } = useSoraStaking();
 
 const lockedFundsFormatted = computed(() => lockedFunds.value.toLocaleString());
@@ -307,8 +308,6 @@ const showNextWithdrawal = computed(() => Boolean(nextWithdrawalEra.value));
 const stakeMoreText = computed(() =>
   lockedFunds.value.isZero() ? t('soraStaking.newStake.title') : t('soraStaking.actions.more')
 );
-const totalNominators = computed(() => store.state.staking.totalNominators as Nullable<number>);
-
 const dropdownMenuItems = computed<DropdownItem[]>(() => [
   {
     value: DropdownMenuItemType.PendingRewards,
@@ -330,7 +329,7 @@ const fetchNominatorsCount = async (): Promise<void> => {
 
   if (nominatorsCount === undefined || nominatorsCount === null) return;
 
-  store.commit.staking.setTotalNominators(nominatorsCount);
+  setTotalNominators(nominatorsCount);
 };
 
 watch(

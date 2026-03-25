@@ -141,7 +141,7 @@
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, onMounted, ref, watch } from 'vue';
 
 import { ZeroStringValue } from '@/consts';
@@ -149,10 +149,15 @@ import { Theme } from '@/consts/theme';
 import { fetchData as fetchBurnXorData } from '@/indexer/queries/burnXor';
 import { CountType, type BridgeData, fetchBridgeData, fetchCount } from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
-import store from '@/store';
+import { FontSizeRate, FontWeightRate, LogoSize } from '@/shims/wallet-consts';
+import { useAssetsStore } from '@/stores/assets';
+import { usePoolStore } from '@/stores/pool';
+import { useReferralsStore } from '@/stores/referrals';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
+import type { Nullable } from '@/types/common';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix } from '@/utils';
-import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useLoading } from '@/composables/useLoading';
@@ -160,6 +165,7 @@ import { useTranslation } from '@/composables/useTranslation';
 
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
 type PolkadotJsAccount = {
   address: string;
@@ -172,22 +178,26 @@ defineOptions({
   },
 });
 
-const LogoSize = WALLET_CONSTS.LogoSize;
-const FontWeightRate = WALLET_CONSTS.FontWeightRate;
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
-
 const { t } = useTranslation();
 const { loading, withApi, withLoading } = useLoading();
 const { Zero, getFPNumberFromCodec, getFiatAmountByFPNumber, getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
 const { connectSoraWallet, isLoggedIn } = useInternalConnect();
+const settingsStore = useSettingsStore();
+const poolStore = usePoolStore();
+const referralsStore = useReferralsStore();
+const walletStore = useWalletStore();
+const assetsStore = useAssetsStore();
 
-const referralRewards = computed(() => store.state.referrals.referralRewards as Nullable<ReferrerRewards>);
-const blockNumber = computed(() => store.state.wallet.settings.blockNumber as number);
-const networkFees = computed(() => store.state.wallet.settings.networkFees as Nullable<NetworkFeesObject>);
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
-const account = computed(() => store.getters.wallet.account.account as Nullable<PolkadotJsAccount>);
-const xor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
-const currencySymbol = computed(() => store.getters.wallet.settings.currencySymbol as string);
+const referralRewards = computed(() => referralsStore.referralRewards as Nullable<ReferrerRewards>);
+const blockNumber = computed(() => settingsStore.blockNumber);
+const networkFees = computed(() => settingsStore.networkFees as Nullable<NetworkFeesObject>);
+const libraryTheme = computed(() => (settingsStore.libraryTheme ?? Theme.LIGHT) as Theme);
+const account = computed(() => walletStore.account as Nullable<PolkadotJsAccount>);
+const xor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
+const currencySymbol = computed(() => walletStore.currencySymbol);
+const accountAssets = computed(() => walletStore.accountAssets as Array<AccountAsset>);
+const accountLiquidity = computed(() => poolStore.accountLiquidity as Array<AccountLiquidity>);
+const getAsset = (address?: string) => assetsStore.assetDataByAddress(address) as Nullable<AccountAsset>;
 
 const burnData = ref<Nullable<FPNumber>>(null);
 const bridgeData = ref<BridgeData[]>([]);
@@ -278,7 +288,7 @@ const initData = async () => {
     return;
   }
 
-  await store.dispatch.referrals.getAccountReferralRewards();
+  await referralsStore.getAccountReferralRewards();
 
   const accountAddress = account.value?.address;
   const endBlock = blockNumber.value;

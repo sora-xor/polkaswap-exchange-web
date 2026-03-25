@@ -51,13 +51,11 @@ import { useDialogVisibility } from '@/composables/useDialog';
 import { useNotification } from '@/composables/useNotification';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
-import { getAppStore } from '@/utils/app-store';
-import type { Route } from '@/store/router/types';
+import { useRouterStore } from '@/stores/router';
+import { useWalletStore } from '@/stores/wallet';
 import type { MSTData } from '@/types/mst';
 
 import DialogBase from '../DialogBase.vue';
-
-import CreateMstWalletDialog from './CreateMstWalletDialog.vue';
 
 defineOptions({ name: 'MultisigCreateDialog' });
 
@@ -84,22 +82,14 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
-const store = computed(() => getAppStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any));
+const routerStore = useRouterStore();
+const walletStore = useWalletStore();
 const { showAppNotification } = useNotification();
 
 const visibleModel = defineModel<boolean>('visible', { default: false });
 const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
-
-const navigate = (route: Route) => {
-  store.value.original.commit('router/navigate', route);
-};
-const setIsMstAddressExist = store.value.commit.wallet.account.setIsMstAddressExist;
-const setIsMST = store.value.commit.wallet.account.setIsMST;
-const syncWithStorage = store.value.commit.wallet.account.syncWithStorage;
-const afterLogin = store.value.dispatch.wallet.account.afterLogin;
-const trackPendingMstTxs = store.value.dispatch.wallet.transactions.trackPendingMstTxs;
 
 const cardMessages = computed(() => [t('mst.cardMessageFirst'), t('mst.cardMessageSecond')]);
 
@@ -113,7 +103,7 @@ const handleBack = () => {
   emit('back');
 };
 
-const handleCreateClose = () => {
+const handleCreateClose = async () => {
   const data = props.mstData ?? {
     addresses: [],
     multisigName: '',
@@ -122,14 +112,14 @@ const handleCreateClose = () => {
   };
 
   api.mst.createMST(data.addresses, data.threshold || 0, data.multisigName, data.duration);
-  setIsMstAddressExist(true);
-  setIsMST(true);
+  walletStore.setIsMstAddressExist(true);
+  walletStore.setIsMstAccount(true);
   api.mst.switchAccount(true);
-  syncWithStorage();
-  afterLogin();
-  trackPendingMstTxs();
+  walletStore.syncAccountWithStorage();
+  await walletStore.afterLogin();
+  await walletStore.trackPendingMstTxs();
   closeDialog();
-  navigate({ name: RouteNames.Wallet });
+  routerStore.navigate({ name: RouteNames.Wallet });
   showAppNotification(t('mst.successMstSetUp'), 'success');
 };
 </script>

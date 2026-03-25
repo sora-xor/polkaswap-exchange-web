@@ -1,10 +1,9 @@
-import { getCurrentIndexer } from '@wallet';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { retryOnEmptyResult } from '@/indexer/queries/retry';
-import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
-import type { SnapshotTypes, NetworkSnapshotEntity, ConnectionQueryResponse } from '@wallet/lib/services/indexer/types';
+import type { SnapshotTypes, NetworkSnapshotEntity, ConnectionQueryResponse } from '@/shims/wallet-indexer-types';
 
 export type ChartData = {
   timestamp: number;

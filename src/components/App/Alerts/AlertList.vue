@@ -54,18 +54,20 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 
 import { useNotification } from '@/composables/useNotification';
 import { useTranslation } from '@/composables/useTranslation';
-import { ZeroStringValue } from '@/consts';
-import store from '@/store';
+import { MAX_ALERTS_NUMBER, ZeroStringValue } from '@/consts';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import { calcPriceChange, showMostFittingValue, toPrecision } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { Alert, WhitelistIdsBySymbol } from '@wallet/lib/types/common';
+import type { Alert, WhitelistIdsBySymbol } from '@/shims/wallet-common-types';
 
 defineOptions({
   components: {
@@ -81,19 +83,22 @@ const emit = defineEmits<{
 
 const { t } = useTranslation();
 const { showAppNotification } = useNotification();
+const assetsStore = useAssetsStore();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
 
-const alerts = computed(() => (store.state.wallet.settings.alerts as Array<Alert>) ?? []);
-const allowTopUpAlert = computed(() => Boolean(store.state.wallet.settings.allowTopUpAlert));
-const isBrowserNotificationApiAvailable = computed(() => store.state.settings.isBrowserNotificationApiAvailable);
-const whitelistIdsBySymbol = computed(() => store.getters.wallet.account.whitelistIdsBySymbol as WhitelistIdsBySymbol);
-const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => AccountAsset;
+const alerts = computed(() => (settingsStore.alerts as Array<Alert>) ?? []);
+const allowTopUpAlert = computed(() => Boolean(settingsStore.allowTopUpAlert));
+const isBrowserNotificationApiAvailable = computed(() => settingsStore.isBrowserNotificationApiAvailable);
+const whitelistIdsBySymbol = computed(() => walletStore.whitelistIdsBySymbol as WhitelistIdsBySymbol);
+const getAsset = assetsStore.assetDataByAddress as (addr?: string) => AccountAsset;
 
 const loading = ref(false);
 const scrollKey = ref(0);
 const topUpNotifs = ref<Nullable<boolean>>(null);
 const alertMenuRefs = reactive<Record<number, any>>({});
 
-const showCreateAlertBtn = computed(() => alerts.value.length < WALLET_CONSTS.MAX_ALERTS_NUMBER);
+const showCreateAlertBtn = computed(() => alerts.value.length < MAX_ALERTS_NUMBER);
 
 function setAlertMenuRef(el: any, index: number): void {
   if (el) {
@@ -111,10 +116,10 @@ function isNotificationsEnabledByUser(): boolean {
 
   switch (Notification.permission) {
     case 'denied':
-      store.commit.settings.setBrowserNotifsPopupBlocked(true);
+      settingsStore.setBrowserNotifsPopupBlocked(true);
       return false;
     case 'default':
-      store.commit.settings.setBrowserNotifsPopupEnabled(true);
+      settingsStore.setBrowserNotifsPopupEnabled(true);
       return false;
     default:
       return true;
@@ -156,7 +161,7 @@ function handleCreateAlert(): void {
 }
 
 function handleDeleteAlert(position: number): void {
-  store.commit.wallet.settings.removePriceAlert(position);
+  settingsStore.removePriceAlert(position);
   closeAlertMenu(position);
   forceScrollUpdate();
 }
@@ -168,17 +173,17 @@ function handleEditAlert(alert: Alert, position: number): void {
 
 function handleTopUpNotifs(value: boolean): void {
   isNotificationsEnabledByUser();
-  store.commit.wallet.settings.setDepositNotifications(value);
+  settingsStore.setDepositNotifications(value);
 }
 
 function getAssetFiatPrice(asset: AccountAsset | undefined): Nullable<string> {
   if (!asset) return null;
-  return (store.state.wallet.account.fiatPriceObject as Record<string, string> | undefined)?.[asset.address] ?? null;
+  return (walletStore.fiatPriceObject as Record<string, string> | undefined)?.[asset.address] ?? null;
 }
 
 onMounted(() => {
   if (Notification.permission !== 'granted') {
-    store.commit.wallet.settings.setDepositNotifications(false);
+    settingsStore.setDepositNotifications(false);
   }
 
   topUpNotifs.value = allowTopUpAlert.value;

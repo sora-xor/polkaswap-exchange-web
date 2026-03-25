@@ -1,6 +1,9 @@
-import { api } from '@wallet';
+import { api } from '@/shims/wallet-api';
 
-import { requireAppStore } from '@/utils/app-store';
+import pinia from '@/plugins/pinia';
+import { useReferralsStore } from '@/stores/referrals';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 
 enum HapticStatusValue {
   success = 'success',
@@ -38,7 +41,9 @@ function useHaptic(type: HapticFeedbackBinding): void {
   }
 }
 
-const getAppStore = () => requireAppStore() as any;
+const resolveSettingsStore = () => useSettingsStore(pinia);
+const resolveWalletStore = () => useWalletStore(pinia);
+const resolveReferralsStore = () => useReferralsStore(pinia);
 
 class TmaSdk {
   private deviceOrientationHandler: ((event: DeviceOrientationEvent) => void) | null = null;
@@ -57,9 +62,10 @@ class TmaSdk {
       WebApp?.expand?.();
       // Disable vertical swipe if possible
       WebApp?.disableVerticalSwipes?.();
-      const store = getAppStore();
-      store?.commit?.settings?.enableTMA?.();
-      store?.commit?.wallet?.account?.setIsDesktop?.(true);
+      const settingsStore = resolveSettingsStore();
+      const walletStore = resolveWalletStore();
+      settingsStore.enableTMA();
+      walletStore.setIsDesktop(true);
       console.info('[TMA]: Mini app was initialized');
       // Set theme
       this.updateTheme();
@@ -67,28 +73,26 @@ class TmaSdk {
       this.setReferrer(WebApp?.initDataUnsafe?.start_param);
       // Set the Telegram bot URL
       if (botUrl) {
-        store?.commit?.settings?.setTelegramBotUrl?.(botUrl);
+        settingsStore.setTelegramBotUrl(botUrl);
       }
       // Init haptic feedback
       this.addHapticListener();
 
-      const settings = store?.state?.settings;
-      if (settings?.isRotatePhoneHideBalanceFeatureEnabled && settings?.isAccessRotationListener) {
+      if (settingsStore.isRotatePhoneHideBalanceFeatureEnabled && settingsStore.isAccessRotationListener) {
         this.listenForDeviceRotation();
-      } else if (!settings?.isAccessRotationListener && settings?.isAccessAccelerometrEventDeclined) {
+      } else if (!settingsStore.isAccessRotationListener && settingsStore.isAccessAccelerometrEventDeclined) {
         const accessGranted = await this.checkAccelerometerAccess();
         if (accessGranted) {
           this.listenForDeviceRotation();
-          store?.commit?.settings?.setIsRotatePhoneHideBalanceFeatureEnabled?.(true);
-          store?.commit?.settings?.setAccessGranted?.(true);
-          store?.commit?.settings?.setIsAccessAccelerometrEventDeclined?.(false);
+          settingsStore.setIsRotatePhoneHideBalanceFeatureEnabled(true);
+          settingsStore.setAccessGranted(true);
+          settingsStore.setIsAccessAccelerometrEventDeclined(false);
         }
       }
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
-      const store = getAppStore();
-      store?.commit?.settings?.disableTMA?.();
-      store?.commit?.wallet?.account?.setIsDesktop?.(false);
+      resolveSettingsStore().disableTMA();
+      resolveWalletStore().setIsDesktop(false);
     }
   }
 
@@ -163,9 +167,9 @@ class TmaSdk {
 
         if (wasRotatedTo180 && Math.abs(beta) < 30) {
           useHaptic('soft');
-          const store = getAppStore();
-          store?.commit?.wallet?.settings?.toggleHideBalance?.();
-          store?.commit?.wallet?.account?.syncWithStorage?.();
+          const walletStore = resolveWalletStore();
+          walletStore.toggleHideBalance();
+          walletStore.syncAccountWithStorage();
           wasRotatedTo180 = false;
         }
       }
@@ -249,8 +253,7 @@ class TmaSdk {
 
   private setReferrer(referrerAddress?: string): void {
     if (referrerAddress && api.validateAddress(referrerAddress)) {
-      const store = getAppStore();
-      store?.commit?.referrals?.setStorageReferrer?.(referrerAddress);
+      resolveReferralsStore().setStorageReferrer(referrerAddress);
       console.info('[TMA]: Referrer was set', referrerAddress);
     }
   }

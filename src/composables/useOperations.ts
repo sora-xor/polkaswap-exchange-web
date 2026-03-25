@@ -1,14 +1,15 @@
 import { Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { HiddenValue, accountIdBasedOperations } from '@wallet/src/consts';
-import { formatAddress, groupRewardsByAssetsList } from '@wallet/src/util';
 import { computed } from 'vue';
 
+import { HiddenValue, accountIdBasedOperations } from '@/shims/wallet-consts';
+import { formatAddress, groupRewardsByAssetsList } from '@/shims/wallet-util';
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
 import { useTranslation } from '@/composables/useTranslation';
-import store from '@/store';
+import pinia from '@/plugins/pinia';
+import { useWalletStore } from '@/stores/wallet';
 
 import type { History } from '@sora-substrate/sdk';
-import type { PolkadotJsAccount } from '@wallet/src/types/common';
+import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
 
 const twoAssetsBasedOperations = [
   Operation.AddLiquidity,
@@ -48,7 +49,8 @@ const orderBookOperations = [
 export function useOperations() {
   const { t } = useTranslation();
   const { formatStringValue } = useNumberFormatter();
-  const account = computed(() => store.getters.wallet.account.account as PolkadotJsAccount);
+  const walletStore = useWalletStore(pinia);
+  const account = computed(() => walletStore.account as PolkadotJsAccount);
 
   const getOperationMessage = (value?: History, hideAmountValues = false): string => {
     if (!value || !Object.values(Operation).includes(value.type as Operation)) return '';

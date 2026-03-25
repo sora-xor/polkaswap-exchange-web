@@ -1,7 +1,6 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { DexId } from '@sora-substrate/sdk/build/dex/consts';
-import { api } from '@wallet';
 import { defineStore } from 'pinia';
 import { nextTick } from 'vue';
 
@@ -11,10 +10,11 @@ import {
   MarketAlgorithms,
   ZeroStringValue,
 } from '@/consts';
+import { api } from '@/shims/wallet-api';
 import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
 import { useSwapBalanceSubscriptions } from '@/composables/useSwapBalanceSubscriptions';
 import type { SwapState } from '@/stores/types/swap';
-import { requireAppStore } from '@/utils/app-store';
 import { settingsStorage } from '@/utils/storage';
 
 import type { Distribution, SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
@@ -90,8 +90,8 @@ export const useSwapStore = defineStore('swap', {
     tokenFrom: (state): Nullable<RegisteredAccountAsset> => state.tokenFromCache,
     tokenTo: (state): Nullable<RegisteredAccountAsset> => state.tokenToCache,
     marketAlgorithms(state): Array<MarketAlgorithms> {
-      const legacyStore = requireAppStore();
-      const baseSources = legacyStore.getters.settings.debugEnabled
+      const settingsStore = useSettingsStore();
+      const baseSources = settingsStore.debugEnabled
         ? state.liquiditySources
         : state.liquiditySources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
 
@@ -108,7 +108,9 @@ export const useSwapStore = defineStore('swap', {
     swapLiquiditySource(): Nullable<LiquiditySourceTypes> {
       if (!this.marketAlgorithmsAvailable) return undefined;
 
-      return requireAppStore().getters.settings.liquiditySource;
+      const settingsStore = useSettingsStore();
+
+      return settingsStore.liquiditySource;
     },
     swapMarketAlgorithm(): MarketAlgorithms {
       const liquiditySource = this.swapLiquiditySource ?? '';
@@ -148,6 +150,7 @@ export const useSwapStore = defineStore('swap', {
     minMaxReceived(state): CodecString {
       const tokenFrom = this.tokenFrom;
       const tokenTo = this.tokenTo;
+      const settingsStore = useSettingsStore();
 
       if (!(tokenFrom && tokenTo)) return ZeroStringValue;
 
@@ -157,7 +160,7 @@ export const useSwapStore = defineStore('swap', {
         state.fromValue,
         state.toValue,
         state.isExchangeB,
-        requireAppStore().state.settings.slippageTolerance
+        settingsStore.slippageTolerance
       );
     },
   },

@@ -27,7 +27,6 @@ const CHUNK_RULES = [
   {
     name: 'bridge',
     patterns: [
-      '/src/store/bridge/',
       '/src/stores/bridge/',
       '/src/store/web3/',
       '/src/stores/web3/',

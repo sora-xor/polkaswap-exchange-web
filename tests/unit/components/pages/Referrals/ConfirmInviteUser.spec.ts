@@ -33,23 +33,15 @@ vi.mock('@/composables/useTransaction', () => ({
   }),
 }));
 
-const storeMock = {
-  state: {
-    referrals: {
-      referrer: '',
-      storageReferrer: '0x123',
-    },
-  },
-  commit: {
-    referrals: {
-      approveReferrer,
-      resetStorageReferrer,
-    },
-  },
+const referralsStoreMock = {
+  referrer: '',
+  storageReferrer: '0x123',
+  approveReferrer,
+  resetStorageReferrer,
 };
 
-vi.mock('@/store', () => ({
-  default: storeMock,
+vi.mock('@/stores/referrals', () => ({
+  useReferralsStore: () => referralsStoreMock,
 }));
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -74,8 +66,8 @@ const mountComponent = (visible = true) =>
 describe('ReferralsConfirmInviteUser.vue', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    storeMock.state.referrals.referrer = '';
-    storeMock.state.referrals.storageReferrer = '0x123';
+    referralsStoreMock.referrer = '';
+    referralsStoreMock.storageReferrer = '0x123';
     setInvitedUser.mockResolvedValue(undefined);
   });
 
@@ -100,7 +92,7 @@ describe('ReferralsConfirmInviteUser.vue', () => {
   });
 
   it('skips invitation request when referrer already exists', async () => {
-    storeMock.state.referrals.referrer = '0xabc';
+    referralsStoreMock.referrer = '0xabc';
     const wrapper = await mountComponent();
     await (wrapper.vm as { handleConfirmInviteUser: () => Promise<void> }).handleConfirmInviteUser();
     await wrapper.vm.$nextTick();

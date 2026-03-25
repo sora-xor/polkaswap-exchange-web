@@ -58,20 +58,8 @@ vi.mock('@/stores/settings', () => ({
       [Operation.StakingBondExtra]: '5',
       [Operation.StakingUnbond]: '6',
     },
+    shouldBalanceBeHidden: false,
   }),
-}));
-
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: {
-    state: {
-      wallet: {
-        settings: {
-          shouldBalanceBeHidden: false,
-        },
-      },
-    },
-  },
 }));
 
 vi.mock('@/composables/useTransaction', () => ({

@@ -88,11 +88,11 @@
 <script lang="ts">
 import { api } from '@sora-substrate/sdk';
 import { defineComponent } from 'vue';
-import { mapGetters, mapMutations, mapState } from 'vuex';
 
 import { PolkadotJsAccount } from '@/types/common';
 
 import { useRouterStore } from '@/stores/router';
+import { useWalletStore } from '@/stores/wallet';
 
 import { RouteNames, WalletTabs, AccountActionTypes } from '../consts';
 
@@ -113,7 +113,7 @@ import WalletBase from './WalletBase.vue';
 import WalletHistory from './WalletHistory.vue';
 import WalletTransactionDetails from './WalletTransactionDetails.vue';
 
-import type { Route } from '../store/router/types';
+import type { Route } from '@/stores/router/types';
 import type { WalletPermissions } from '../consts';
 import type { HistoryItem } from '@sora-substrate/sdk';
 
@@ -151,10 +151,30 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/settings', ['permissions', 'isMSTAvailable']),
-    ...mapState('wallet/account', ['isExternal', 'isMST', 'isMstAddressExist']),
-    ...mapGetters('wallet/transactions', { selectedTransaction: 'selectedTx' }),
-    ...mapGetters('wallet/account', { accountOwn: 'account' }),
+    walletStore(this: any) {
+      return useWalletStore(this.$pinia);
+    },
+    permissions(this: any) {
+      return this.walletStore.permissions;
+    },
+    isMSTAvailable(this: any) {
+      return this.walletStore.isMSTAvailable;
+    },
+    isExternal(this: any) {
+      return this.walletStore.isExternal;
+    },
+    isMST(this: any) {
+      return this.walletStore.isMST;
+    },
+    isMstAddressExist(this: any) {
+      return this.walletStore.isMstAddressExist;
+    },
+    selectedTransaction(this: any) {
+      return this.walletStore.selectedTransaction;
+    },
+    accountOwn(this: any) {
+      return this.walletStore.account;
+    },
     routerStore(this: any) {
       return useRouterStore(this.$pinia);
     },
@@ -182,7 +202,9 @@ export default defineComponent({
     }
   },
   methods: {
-    ...mapMutations('wallet/transactions', ['resetTxDetailsId']),
+    resetTxDetailsId(this: any): void {
+      this.walletStore.resetTxDetailsId();
+    },
     navigate(this: any, options: Route): void {
       this.routerStore.navigate(options);
     },
@@ -264,21 +286,6 @@ export default defineComponent({
 
   :deep(.el-tabs__item) {
     text-transform: uppercase;
-  }
-}
-
-.wallet-account-panel {
-  :deep(.s-button.s-button_type_action),
-  :deep(.s-button.s-action),
-  :deep(.account-actions.el-dropdown) {
-    color: var(--s-color-base-content-tertiary);
-  }
-
-  :deep(.s-button.s-button_type_action .s-button__icon > i),
-  :deep(.s-button.s-action .s-button__icon > i),
-  :deep(.account-actions.el-dropdown .s-icon-basic-more-vertical-24) {
-    color: inherit;
-    opacity: 0.7;
   }
 }
 </style>

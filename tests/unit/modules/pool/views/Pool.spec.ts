@@ -1,4 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils';
+import { createPinia } from 'pinia';
 import { computed, defineComponent, h, ref } from 'vue';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -7,37 +8,26 @@ const loginState = ref(false);
 const connectSpy = vi.fn();
 const setDataFromLiquidity = vi.fn().mockResolvedValue(undefined);
 const setAddressesToRemove = vi.fn();
-
-const storeStub = {
-  state: {
-    pool: {
-      accountLiquidity: [] as Array<any>,
-    },
-  },
-  getters: {
-    assets: {
-      assetDataByAddress: (address?: string) => ({
-        address,
-        symbol: address?.toUpperCase() ?? '',
-        decimals: 18,
-      }),
-    },
-  },
-  dispatch: {
-    addLiquidity: {
-      setDataFromLiquidity,
-    },
-  },
-  commit: {
-    removeLiquidity: {
-      setAddresses: setAddressesToRemove,
-    },
-  },
+const poolStoreMock = {
+  accountLiquidity: [] as Array<any>,
+  setAddLiquidityDataFromLiquidity: setDataFromLiquidity,
+  setRemoveLiquidityAddresses: setAddressesToRemove,
 };
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/assets', () => ({
   __esModule: true,
-  default: storeStub,
+  useAssetsStore: () => ({
+    assetDataByAddress: (address?: string) => ({
+      address,
+      symbol: address?.toUpperCase() ?? '',
+      decimals: 18,
+    }),
+  }),
+}));
+
+vi.mock('@/stores/pool', () => ({
+  __esModule: true,
+  usePoolStore: () => poolStoreMock,
 }));
 
 vi.mock('@/composables/useInternalConnect', () => ({
@@ -175,6 +165,7 @@ const PoolInfoStub = defineComponent({
 const mountPoolView = () =>
   mount(Pool, {
     global: {
+      plugins: [createPinia()],
       stubs: {
         'generic-page-header': {
           template: '<div class="header-stub" />',
@@ -209,17 +200,19 @@ describe('Pool.vue', () => {
     connectSpy.mockClear();
     setDataFromLiquidity.mockClear();
     setAddressesToRemove.mockClear();
-    storeStub.state.pool.accountLiquidity = [];
+    poolStoreMock.accountLiquidity = [];
   });
 
   it('prompts the user to connect when logged out', async () => {
     const wrapper = mountPoolView();
     await flushPromises();
 
-    expect(wrapper.find('.pool-empty-state').exists()).toBe(true);
+    expect(wrapper.find('.pool-empty-state').exists()).toBe(false);
+    expect(wrapper.find('.pool-info-container--empty').exists()).toBe(true);
     expect(wrapper.text()).toContain('pool.connectToWallet');
-    expect(wrapper.find('.pool-empty-state__action').text()).toContain('connectWalletText');
-    await (wrapper.vm as any).connectSoraWallet();
+    const actionButton = wrapper.find('[data-test-name="addLiquidity"]');
+    expect(actionButton.text()).toContain('connectWalletText');
+    await actionButton.trigger('click');
 
     expect(connectSpy).toHaveBeenCalledTimes(1);
   });
@@ -229,9 +222,10 @@ describe('Pool.vue', () => {
     const wrapper = mountPoolView();
     await flushPromises();
 
-    expect(wrapper.find('.pool-empty-state').exists()).toBe(true);
+    expect(wrapper.find('.pool-empty-state').exists()).toBe(false);
+    expect(wrapper.find('.pool-info-container--empty').exists()).toBe(true);
     expect(wrapper.text()).toContain('pool.liquidityNotFound');
-    expect(wrapper.find('.pool-empty-state__action').text()).toContain('pool.addLiquidity');
+    expect(wrapper.find('[data-test-name="addLiquidity"]').text()).toContain('pool.addLiquidity');
   });
 
   it('triggers add and remove actions for existing liquidity', async () => {

@@ -1,8 +1,8 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import * as walletModule from '@wallet';
-import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
+import { IndexerType } from '@/consts';
+import { getCurrentIndexer, type SubqueryIndexer, type SubsquidIndexer } from '@/shims/wallet-indexer';
 import { AccountPointSystems, AccountPointsVersioned, AccountPointsCalculation } from '@/types/pointSystem';
 
 import type {
@@ -11,40 +11,7 @@ import type {
   HistoryElement,
   HistoryElementEthBridgeIncoming,
   HistoryElementEthBridgeOutgoing,
-} from '@wallet/lib/services/indexer/types';
-
-type ExplorerLike = {
-  request: (...args: any[]) => Promise<any>;
-  fetchEntities: (...args: any[]) => Promise<any>;
-  fetchEntitiesConnection: (...args: any[]) => Promise<any>;
-  createEntitySubscription?: (...args: any[]) => () => void;
-};
-
-const createFallbackIndexer = (): { type: string; services: { explorer: ExplorerLike } } => ({
-  type: 'subquery',
-  services: {
-    explorer: {
-      request: async () => null,
-      fetchEntities: async () => ({ totalCount: 0 }),
-      fetchEntitiesConnection: async () => ({ totalCount: 0 }),
-      createEntitySubscription: () => () => undefined,
-    },
-  },
-});
-
-const getCurrentIndexer =
-  (walletModule as { getCurrentIndexer?: () => ReturnType<typeof createFallbackIndexer> }).getCurrentIndexer ??
-  createFallbackIndexer;
-
-const walletConsts = (walletModule as { WALLET_CONSTS?: { IndexerType?: { SUBQUERY: string; SUBSQUID: string } } })
-  .WALLET_CONSTS ?? {
-  IndexerType: {
-    SUBQUERY: 'subquery',
-    SUBSQUID: 'subsquid',
-  },
-};
-
-const { IndexerType } = walletConsts;
+} from '@/shims/wallet-indexer-types';
 
 type BridgeHistoryElement = HistoryElementEthBridgeIncoming | HistoryElementEthBridgeOutgoing;
 type CountResponse = {

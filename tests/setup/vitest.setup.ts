@@ -1,6 +1,49 @@
 import { config } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
 import { vi } from 'vitest';
+import { mockWalletModule } from '@tests/stubs/mockWalletModule';
+
+const fallbackWalletConsts = {
+  TranslationConsts: {},
+  IndexerType: {
+    SUBQUERY: 'subquery',
+    SUBSQUID: 'subsquid',
+  },
+} as const;
+
+const ensureWalletModule = (module: Record<string, unknown>) => {
+  const walletModule = mockWalletModule(module as Parameters<typeof mockWalletModule>[0]);
+
+  if (walletModule.en == null) {
+    walletModule.en = {};
+  }
+
+  if (walletModule.WALLET_CONSTS == null) {
+    walletModule.WALLET_CONSTS = fallbackWalletConsts;
+  }
+
+  return walletModule;
+};
+
+const walletOverrideCache = new WeakMap<Function, Promise<Record<string, unknown>>>();
+
+async function resolveWalletModule() {
+  const override = (globalThis as Record<string, any>).__WALLET_MODULE_OVERRIDE;
+
+  if (typeof override === 'function') {
+    let cached = walletOverrideCache.get(override);
+
+    if (!cached) {
+      cached = Promise.resolve(override()).then((module) => ensureWalletModule(module));
+      walletOverrideCache.set(override, cached);
+    }
+
+    return cached;
+  }
+
+  const module = await import('@wallet');
+  return ensureWalletModule(module);
+}
 
 if (typeof process.setMaxListeners === 'function') {
   process.setMaxListeners(0);
@@ -24,6 +67,72 @@ vi.mock('@vue/devtools-kit', () => ({
   getDevtoolsGlobalHook: () => ({}),
   setDevtoolsGlobalHook: () => undefined,
 }));
+
+vi.mock('@/lib/soraneo-wallet/src/api', async () => {
+  const wallet = await resolveWalletModule();
+
+  return {
+    api: wallet.api,
+    connection:
+      wallet.connection ??
+      ({
+        open: vi.fn(),
+        close: vi.fn(),
+        connect: vi.fn(),
+        disconnect: vi.fn(),
+      } as const),
+  };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/util/account', async () => {
+  const wallet = await resolveWalletModule();
+  const accountUtils = wallet.accountUtils ?? {};
+
+  return {
+    lockAccountPair: vi.fn(),
+    unlockAccountPair: vi.fn(),
+    loginApi: accountUtils.loginApi ?? vi.fn(),
+    logoutApi: accountUtils.logoutApi ?? vi.fn(),
+    updateApiSigner: vi.fn(),
+    isAppStorageSource: accountUtils.isAppStorageSource ?? vi.fn(() => false),
+    checkExternalAccount: vi.fn(),
+    subscribeToWalletAccounts: vi.fn(),
+    parseAccountJson: vi.fn(),
+    exportAccountJson: vi.fn(),
+    verifyAccountJson: vi.fn(),
+    createAccount: vi.fn(),
+    exportAccount: vi.fn(),
+    restoreAccount: vi.fn(),
+    deleteAccount: vi.fn(),
+  };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/registry', async () => {
+  const wallet = await resolveWalletModule();
+  const walletComponents = wallet.components as Record<string, unknown>;
+  const SoraWallet =
+    walletComponents.SoraWallet ??
+    defineComponent({
+      name: 'SoraWalletStub',
+      setup(_, { slots }) {
+        return () => h('div', { class: 'sora-wallet-stub' }, slots.default?.());
+      },
+    });
+
+  return {
+    SoraWallet,
+    components: walletComponents,
+  };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/bootstrap', async () => {
+  const wallet = await resolveWalletModule();
+
+  return {
+    initWallet: wallet.initWallet,
+    waitForCore: wallet.waitForCore,
+  };
+});
 
 // Additional polyfills for unit tests running in jsdom.
 
@@ -383,56 +492,9 @@ vi.mock('@/router', () => ({
   },
   lazyComponent: () => ({ template: '<div><slot /></div>' }),
 }));
-const fallbackWalletConsts = {
-  TranslationConsts: {},
-  IndexerType: {
-    SUBQUERY: 'subquery',
-    SUBSQUID: 'subsquid',
-  },
-} as const;
-
-const ensureWalletModule = <T extends Record<string, unknown>>(module: T): T => {
-  if (!('en' in module) || module.en == null) {
-    return {
-      en: {},
-      ...module,
-    } as T;
-  }
-
-  if (!('WALLET_CONSTS' in module) || module.WALLET_CONSTS == null) {
-    return {
-      ...module,
-      WALLET_CONSTS: fallbackWalletConsts,
-    } as T;
-  }
-
-  return module;
-};
-
-const gScope = globalThis as Record<string, unknown>;
-if (typeof gScope.__WALLET_MODULE_OVERRIDE !== 'function') {
-  gScope.__WALLET_MODULE_OVERRIDE = async () => {
-    const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-    return createWalletMock();
-  };
-}
-
-async function resolveWalletModule() {
-  const override = (globalThis as Record<string, any>).__WALLET_MODULE_OVERRIDE;
-  if (typeof override === 'function') {
-    const overridden = await override();
-    return ensureWalletModule(overridden);
-  }
-
-  const module = await import('@wallet');
-  return ensureWalletModule(module);
-}
-
 const resolveWalletModuleFactory = vi.hoisted(() => () => resolveWalletModule());
 
-vi.mock('@wallet', resolveWalletModuleFactory);
-vi.mock('@wallet/core', resolveWalletModuleFactory);
-vi.mock('@wallet/src/lang/en', () => ({}));
+vi.mock('@/shims/wallet', resolveWalletModuleFactory);
 vi.mock('@polkadot/api', () => ({
   ApiPromise: class {},
   WsProvider: class {},

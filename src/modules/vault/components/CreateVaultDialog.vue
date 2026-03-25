@@ -110,7 +110,8 @@
 <script setup lang="ts">
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, api } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, nextTick, ref, watch } from 'vue';
 
 import { Components, HundredNumber, ZeroStringValue } from '@/consts';
@@ -121,7 +122,10 @@ import { useTranslation } from '@/composables/useTranslation';
 import { LtvTranslations } from '@/modules/vault/consts';
 import { getLtvStatus } from '@/modules/vault/util';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
+import { useVaultStore } from '@/stores/vault';
+import { useWalletStore } from '@/stores/wallet';
 import { asZeroValue, getAssetBalance, hasInsufficientBalance } from '@/utils';
 
 import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
@@ -149,6 +153,10 @@ const {
   getFiatAmountByCodecString,
   getFiatAmountByFPNumber,
 } = useFormattedAmount();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
+const assetsStore = useAssetsStore();
+const vaultStore = useVaultStore();
 
 const xorSymbol = XOR.symbol;
 
@@ -161,16 +169,16 @@ const borrowValue = ref('');
 const showSelectTokenDialog = ref(false);
 const isCollateralSelected = ref(true);
 
-const percentFormat = computed(() => store.state.settings.percentFormat as Nullable<Intl.NumberFormat>);
-const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject | undefined);
-const slippageToleranceValue = computed(() => store.state.settings.slippageTolerance as string);
-const collaterals = computed(() => store.state.vault.collaterals as Record<string, Collateral>);
-const averageCollateralPrice = computed(() => store.getters.vault.averageCollateralPrice as Nullable<FPNumber>);
-const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
-const isLoggedIn = computed(() => store.getters.wallet.account.isLoggedIn as boolean);
-const debtToken = computed(() => store.getters.vault.debtToken as Nullable<RegisteredAccountAsset>);
-const collateralToken = computed(() => store.getters.vault.collateralToken as Nullable<RegisteredAccountAsset>);
-const shouldBalanceBeHidden = computed(() => store.state.wallet.settings.shouldBalanceBeHidden ?? false);
+const percentFormat = computed(() => settingsStore.percentFormat as Nullable<Intl.NumberFormat>);
+const networkFees = computed(() => walletStore.networkFees as NetworkFeesObject | undefined);
+const slippageToleranceValue = computed(() => settingsStore.slippageTolerance);
+const collaterals = computed(() => vaultStore.collaterals);
+const averageCollateralPrice = computed(() => vaultStore.averageCollateralPrice);
+const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
+const debtToken = computed(() => vaultStore.debtToken);
+const collateralToken = computed(() => vaultStore.collateralToken);
+const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
 
 const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.CreateVault] ?? ZeroStringValue);
 const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));
@@ -267,9 +275,7 @@ const isMaxCollateralAvailable = computed(() => {
 
 const isBorrowSliderAvailable = computed(() => availableCollateralBalanceFp.value.gte(minDeposit.value));
 
-const getBorrowTax = computed(
-  () => store.getters.vault.getBorrowTax as (debtAsset: Asset | AccountAsset | string) => number
-);
+const getBorrowTax = computed(() => vaultStore.getBorrowTax as (debtAsset: Asset | AccountAsset | string) => number);
 
 const borrowTax = computed(() => {
   const token = debtToken.value;
@@ -427,9 +433,9 @@ const openSelectTokenDialog = (isCollateral = true) => {
 
 const handleSelectToken = async (token: Asset) => {
   if (isCollateralSelected.value) {
-    await store.dispatch.vault.setCollateralTokenAddress(token?.address);
+    await vaultStore.setCollateralTokenAddress(token?.address);
   } else {
-    await store.dispatch.vault.setDebtTokenAddress(token?.address);
+    await vaultStore.setDebtTokenAddress(token?.address);
   }
 
   collateralValue.value = '';
@@ -472,7 +478,7 @@ watch(
     borrowValue.value = '';
     showSelectTokenDialog.value = false;
     if (!value) {
-      await store.dispatch.vault.setCollateralTokenAddress();
+      await vaultStore.setCollateralTokenAddress();
     } else {
       const focus =
         collateralInput.value && typeof (collateralInput.value as any).focus === 'function'

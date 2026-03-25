@@ -10,6 +10,7 @@ const backMock = vi.fn();
 const setTokenFromAddressMock = vi.fn();
 const setTokenToAddressMock = vi.fn();
 const assetDataByAddressMock = vi.fn();
+const setFirstTokenAddressMock = vi.fn();
 const routeMock = reactive<{ query: Record<string, unknown> }>({ query: {} });
 const walletStoreMock = reactive<{
   isLoggedIn: boolean;
@@ -49,20 +50,18 @@ vi.mock('@/stores/swap', () => ({
   }),
 }));
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/pool', () => ({
   __esModule: true,
-  default: {
-    getters: {
-      assets: {
-        assetDataByAddress: assetDataByAddressMock,
-      },
-    },
-    dispatch: {
-      addLiquidity: {
-        setFirstTokenAddress: vi.fn(),
-      },
-    },
-  },
+  usePoolStore: () => ({
+    setAddLiquidityFirstTokenAddress: setFirstTokenAddressMock,
+  }),
+}));
+
+vi.mock('@/stores/assets', () => ({
+  __esModule: true,
+  useAssetsStore: () => ({
+    assetDataByAddress: assetDataByAddressMock,
+  }),
 }));
 
 vi.mock('vue-router', () => ({
@@ -101,6 +100,7 @@ describe('Wallet view route syncing', () => {
     setTokenFromAddressMock.mockReset();
     setTokenToAddressMock.mockReset();
     assetDataByAddressMock.mockReset();
+    setFirstTokenAddressMock.mockReset();
     setTokenFromAddressMock.mockImplementation(() => undefined);
     setTokenToAddressMock.mockImplementation(() => undefined);
     routeMock.query = {};

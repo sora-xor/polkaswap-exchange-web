@@ -5,32 +5,30 @@ import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 
 const storeSetup = vi.hoisted(() => {
   const setNotificationVisibility = vi.fn();
+  const moonpayStore = {
+    notificationVisibility: true,
+    notificationKey: '' as MoonpayNotifications | '',
+    setNotificationVisibility,
+  };
+  const settingsStore = {
+    libraryTheme: 'light',
+  };
 
   return {
-    store: {
-      state: {
-        moonpay: {
-          notificationVisibility: true,
-          notificationKey: '',
-        },
-      },
-      getters: {
-        libraryTheme: 'light',
-      },
-      commit: {
-        moonpay: {
-          setNotificationVisibility,
-        },
-      },
-    },
+    moonpayStore,
+    settingsStore,
     setNotificationVisibility,
   };
 });
 
-const storeMocks = storeSetup.store;
+const storeMocks = storeSetup.moonpayStore;
 
-vi.mock('@/store', () => ({
-  default: storeMocks,
+vi.mock('@/stores/moonpay', () => ({
+  useMoonpayStore: () => storeMocks,
+}));
+
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => storeSetup.settingsStore,
 }));
 
 vi.mock('@/components/shared/Logo/Moonpay.vue', () => ({
@@ -102,8 +100,8 @@ const mountComponent = () =>
 
 beforeEach(async () => {
   vi.clearAllMocks();
-  storeMocks.state.moonpay.notificationVisibility = true;
-  storeMocks.state.moonpay.notificationKey = MoonpayNotifications.Success;
+  storeMocks.notificationVisibility = true;
+  storeMocks.notificationKey = MoonpayNotifications.Success;
   storeSetup.setNotificationVisibility.mockClear();
 
   ({ default: MoonpayNotification } = await import('@/components/pages/Moonpay/Notification.vue'));

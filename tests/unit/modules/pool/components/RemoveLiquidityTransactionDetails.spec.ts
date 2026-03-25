@@ -1,29 +1,26 @@
 import { Operation } from '@sora-substrate/sdk';
 import { mount } from '@vue/test-utils';
+import { createPinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/pool', () => ({
   __esModule: true,
-  default: {
-    state: {
-      wallet: {
-        settings: {
-          networkFees: {
-            [Operation.RemoveLiquidity]: '25',
-          },
-        },
-      },
+  usePoolStore: () => ({
+    removeLiquidityShareOfPool: '12.5',
+    removeLiquidityFirstToken: { symbol: 'DEMO1' },
+    removeLiquiditySecondToken: { symbol: 'DEMO2' },
+    removeLiquidityPriceReversed: '0.25',
+    removeLiquidityPrice: '4',
+  }),
+}));
+
+vi.mock('@/stores/settings', () => ({
+  __esModule: true,
+  useSettingsStore: () => ({
+    networkFees: {
+      [Operation.RemoveLiquidity]: '25',
     },
-    getters: {
-      removeLiquidity: {
-        shareOfPool: '12.5',
-        firstToken: { symbol: 'DEMO1' },
-        secondToken: { symbol: 'DEMO2' },
-        priceReversed: '0.25',
-        price: '4',
-      },
-    },
-  },
+  }),
 }));
 
 vi.mock('@/composables/useFormattedAmount', () => ({
@@ -78,6 +75,7 @@ describe('RemoveLiquidityTransactionDetails.vue', () => {
         infoOnly: false,
       },
       global: {
+        plugins: [createPinia()],
         stubs: {
           InfoLine: {
             props: ['label', 'value', 'assetSymbol', 'fiatValue'],

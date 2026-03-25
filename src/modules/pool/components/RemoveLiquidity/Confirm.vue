@@ -37,14 +37,15 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
 import { PoolComponents } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
-import store from '@/store';
+import { usePoolStore } from '@/stores/pool';
+import { useSettingsStore } from '@/stores/settings';
 
 import type { Nullable } from '@/types/common';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
@@ -66,13 +67,15 @@ const emit = defineEmits<{
 const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useI18n();
 const { formatStringValue } = useNumberFormatter();
+const poolStore = usePoolStore();
+const settingsStore = useSettingsStore();
 
-const firstTokenAmount = computed(() => store.state.removeLiquidity.firstTokenAmount as string);
-const secondTokenAmount = computed(() => store.state.removeLiquidity.secondTokenAmount as string);
-const slippageTolerance = computed(() => store.state.settings.slippageTolerance as string);
+const firstTokenAmount = computed(() => poolStore.removeLiquidityFirstTokenAmount);
+const secondTokenAmount = computed(() => poolStore.removeLiquiditySecondTokenAmount);
+const slippageTolerance = computed(() => settingsStore.slippageTolerance as string);
 
-const firstToken = computed<Nullable<Asset>>(() => store.getters.removeLiquidity.firstToken as Nullable<Asset>);
-const secondToken = computed<Nullable<Asset>>(() => store.getters.removeLiquidity.secondToken as Nullable<Asset>);
+const firstToken = computed<Nullable<Asset>>(() => poolStore.removeLiquidityFirstToken as Nullable<Asset>);
+const secondToken = computed<Nullable<Asset>>(() => poolStore.removeLiquiditySecondToken as Nullable<Asset>);
 
 const formattedFromValue = computed(() => formatStringValue(firstTokenAmount.value));
 const formattedToValue = computed(() => formatStringValue(secondTokenAmount.value));

@@ -1,14 +1,13 @@
 import { FPNumber } from '@sora-substrate/math';
 import { VAL, PSWAP } from '@sora-substrate/sdk/build/assets/consts';
-import { getCurrentIndexer } from '@wallet';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
-import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
+import { getCurrentIndexer, type SubqueryIndexer, type SubsquidIndexer } from '@/shims/wallet-indexer';
 import { gql } from '@urql/core';
 
+import { useSettingsStore } from '@/stores/settings';
 import { waitForSoraNetworkFromEnv } from '@/utils';
-import { requireAppStore } from '@/utils/app-store';
 
-import type { SnapshotTypes, AssetSnapshotEntity, ConnectionQueryResponse } from '@wallet/lib/services/indexer/types';
+import type { SnapshotTypes, AssetSnapshotEntity, ConnectionQueryResponse } from '@/shims/wallet-indexer-types';
 
 const CIRCULATING_DIFF = {
   [VAL.address]: 33449609.3779,
@@ -90,6 +89,14 @@ const parse = (node: AssetSnapshotEntity): ChartData => {
   };
 };
 
+const resolveSoraNetwork = async (): Promise<string> => {
+  try {
+    return useSettingsStore().soraNetwork ?? (await waitForSoraNetworkFromEnv());
+  } catch {
+    return waitForSoraNetworkFromEnv();
+  }
+};
+
 export async function fetchAssetSupplyData(
   id: string,
   from: number,
@@ -125,7 +132,7 @@ export async function fetchAssetSupplyData(
     return chartData;
   }
   // VAL & PSWAP have huge difference between circulating & total supply on prod env
-  const env = (requireAppStore() as any)?.state?.wallet?.settings?.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+  const env = await resolveSoraNetwork();
   if (env !== 'Prod') return chartData;
 
   const diff = CIRCULATING_DIFF[id];

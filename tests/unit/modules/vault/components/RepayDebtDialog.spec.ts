@@ -81,29 +81,25 @@ vi.mock('@/router', () => ({
   lazyComponent: () => TokenInputStub,
 }));
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/wallet', () => ({
   __esModule: true,
-  default: {
-    state: {
-      wallet: {
-        settings: {
-          get networkFees() {
-            return storeState.networkFees;
-          },
-          get shouldBalanceBeHidden() {
-            return storeState.shouldBalanceBeHidden;
-          },
-        },
-      },
+  useWalletStore: () => ({
+    get networkFees() {
+      return storeState.networkFees;
     },
-    getters: {
-      assets: {
-        get xor() {
-          return storeState.xor;
-        },
-      },
+    get shouldBalanceBeHidden() {
+      return storeState.shouldBalanceBeHidden;
     },
-  },
+  }),
+}));
+
+vi.mock('@/stores/assets', () => ({
+  __esModule: true,
+  useAssetsStore: () => ({
+    get xor() {
+      return storeState.xor;
+    },
+  }),
 }));
 
 vi.mock('@/utils', () => ({

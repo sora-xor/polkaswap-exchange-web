@@ -5,7 +5,6 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 
 import { ZeroStringValue } from '@/consts';
 import type { Nullable } from '@/types/common';
-import { setAppStoreOverride } from '@/utils/app-store';
 import type { useAssetsStore as UseAssetsStore } from '@/stores/assets';
 
 let useAssetsStore: UseAssetsStore;
@@ -98,10 +97,24 @@ vi.mock('@/stores/wallet', () => ({
 const web3StoreMock = vi.hoisted(() => ({
   networkType: null as Nullable<BridgeNetworkType>,
   networkSelected: null as Nullable<string | number>,
+  isValidNetwork: true,
+  getEvmTokenAddressByAssetId: vi.fn(),
 }));
 
 vi.mock('@/stores/web3', () => ({
   useWeb3Store: () => web3StoreMock,
+}));
+
+const bridgeStoreMock = vi.hoisted(() => ({
+  subBridgeConnector: {
+    destinationNetwork: null as Nullable<string | number>,
+    soraParachain: null as any,
+    parachain: null as any,
+  },
+}));
+
+vi.mock('@/stores/bridge', () => ({
+  useBridgeStore: () => bridgeStoreMock,
 }));
 
 const ethRegisteredAssetsMock = vi.hoisted(() => vi.fn());
@@ -139,41 +152,16 @@ vi.mock('@/utils/ethers-util', () => ({
   },
 }));
 
-const legacyStoreStub = vi.hoisted(() => ({
-  state: {
-    web3: {
-      networkType: null,
-      networkSelected: null,
-    },
-    bridge: {
-      subBridgeConnector: {
-        destinationNetwork: null,
-        soraParachain: null,
-        parachain: null,
-      },
-    },
-  },
-  getters: {
-    web3: {
-      isValidNetwork: true,
-    },
-  },
-  dispatch: {
-    web3: {
-      getEvmTokenAddressByAssetId: vi.fn(),
-    },
-  },
-}));
-
 const resetLegacyStoreStub = () => {
   web3StoreMock.networkType = BridgeNetworkType.Eth;
   web3StoreMock.networkSelected = null;
-  legacyStoreStub.state.bridge.subBridgeConnector = {
+  web3StoreMock.isValidNetwork = true;
+  web3StoreMock.getEvmTokenAddressByAssetId.mockReset();
+  bridgeStoreMock.subBridgeConnector = {
     destinationNetwork: null,
     soraParachain: null,
     parachain: null,
   };
-  legacyStoreStub.dispatch.web3.getEvmTokenAddressByAssetId.mockReset();
   getTokenDecimalsMock.mockReset();
 };
 
@@ -183,7 +171,6 @@ beforeEach(() => {
   piniaStub.setActivePinia(piniaStub.createPinia());
   resetWalletStoreStub();
   resetLegacyStoreStub();
-  setAppStoreOverride(legacyStoreStub as any);
   ethRegisteredAssetsMock.mockReset();
   evmRegisteredAssetsMock.mockReset();
   subRegisteredAssetsMock.mockReset();
@@ -193,9 +180,7 @@ beforeEach(() => {
   consoleErrorSpy.mockClear();
 });
 
-afterEach(() => {
-  setAppStoreOverride(null);
-});
+afterEach(() => {});
 
 afterAll(() => {
   consoleErrorSpy.mockRestore();
@@ -454,12 +439,12 @@ describe('useAssetsStore actions', () => {
         kind: 'evm',
       },
     });
-    legacyStoreStub.dispatch.web3.getEvmTokenAddressByAssetId.mockResolvedValue('0xResolved');
+    web3StoreMock.getEvmTokenAddressByAssetId.mockResolvedValue('0xResolved');
     getTokenDecimalsMock.mockResolvedValue(18);
 
     await store.updateRegisteredAssets();
 
-    expect(legacyStoreStub.dispatch.web3.getEvmTokenAddressByAssetId).toHaveBeenCalledWith('0x01');
+    expect(web3StoreMock.getEvmTokenAddressByAssetId).toHaveBeenCalledWith('0x01');
     expect(getTokenDecimalsMock).toHaveBeenCalledWith('0xResolved');
     expect(store.registeredAssets['0x01']).toMatchObject({
       address: '0xResolved',
@@ -483,7 +468,7 @@ describe('useAssetsStore actions', () => {
       connect: vi.fn(),
       getAssetIdByMultilocation: vi.fn().mockResolvedValue('para-asset'),
     };
-    legacyStoreStub.state.bridge.subBridgeConnector = {
+    bridgeStoreMock.subBridgeConnector = {
       destinationNetwork: SubNetworkId.Liberland,
       soraParachain,
       parachain,
@@ -522,7 +507,7 @@ describe('useAssetsStore actions', () => {
       connect: vi.fn(),
       getAssetIdByMultilocation: vi.fn().mockResolvedValue('para-asset'),
     };
-    legacyStoreStub.state.bridge.subBridgeConnector = {
+    bridgeStoreMock.subBridgeConnector = {
       destinationNetwork: SubNetworkId.Liberland,
       soraParachain,
       parachain,

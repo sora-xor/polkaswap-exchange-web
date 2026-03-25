@@ -1,5 +1,5 @@
 import { flushPromises, shallowMount } from '@vue/test-utils';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const connectSoraWalletMock = vi.fn();
@@ -21,72 +21,62 @@ const unsubscribeFromRewardsMock = vi.fn().mockResolvedValue(undefined);
 const resetRewardsMock = vi.fn();
 const checkAccountIsConnectedMock = vi.fn().mockResolvedValue(true);
 
-const storeStub = {
-  state: {
-    rewards: {
-      feeFetching: false,
-      rewardsFetching: false,
-      rewardsClaiming: false,
-      transactionError: false,
-      transactionStep: 1,
-      receivedRewards: [] as any[],
-      fee: '0',
-      vestedRewards: null,
-      crowdloanRewards: {} as Record<string, any[]>,
-      internalRewards: null as any,
-      externalRewards: [] as any[],
-      selectedVested: null,
-      selectedInternal: null,
-      selectedExternal: [] as any[],
-      selectedCrowdloan: {} as Record<string, any[]>,
-    },
-    wallet: {
-      account: {
-        address: soraAddressRef.value,
-        fiatPriceObject: {},
-      },
-    },
-    settings: {
-      windowWidth: 1280,
-      nodeIsConnected: true,
-    },
-  },
-  getters: {
-    assets: {
-      xor: {
-        address: 'xor',
-        symbol: 'XOR',
-        decimals: 18,
-        balance: {
-          transferable: '0',
-        },
-      },
-    },
-    rewards: {
-      rewardsAvailable: false,
-      externalRewardsAvailable: false,
-      externalRewardsSelected: false,
-      internalRewardsAvailable: false,
-      vestedRewardsAvailable: false,
-      rewardsByAssetsList: [] as any[],
-    },
-    libraryTheme: 'light',
-  },
-  dispatch: {
-    rewards: {
-      setSelectedRewards: setSelectedRewardsMock,
-      getExternalRewards: getExternalRewardsMock,
-      claimRewards: claimRewardsMock,
-      subscribeOnRewards: subscribeOnRewardsMock,
-      unsubscribeFromRewards: unsubscribeFromRewardsMock,
+const rewardsStoreMock = reactive({
+  feeFetching: false,
+  rewardsFetching: false,
+  rewardsClaiming: false,
+  transactionError: false,
+  transactionStep: 1,
+  receivedRewards: [] as any[],
+  fee: '0',
+  vestedRewards: null as any,
+  crowdloanRewards: {} as Record<string, any[]>,
+  internalRewards: null as any,
+  externalRewards: [] as any[],
+  selectedVested: null as any,
+  selectedInternal: null as any,
+  selectedExternal: [] as any[],
+  selectedCrowdloan: {} as Record<string, any[]>,
+  rewardsAvailable: false,
+  externalRewardsAvailable: false,
+  externalRewardsSelected: false,
+  internalRewardsAvailable: false,
+  vestedRewardsAvailable: false,
+  rewardsByAssetsList: [] as any[],
+  setSelectedRewards: setSelectedRewardsMock,
+  getExternalRewards: getExternalRewardsMock,
+  claimRewards: claimRewardsMock,
+  subscribeOnRewards: subscribeOnRewardsMock,
+  unsubscribeFromRewards: unsubscribeFromRewardsMock,
+  reset: resetRewardsMock,
+});
+
+const settingsStoreMock = {
+  libraryTheme: 'light',
+};
+
+const assetsStoreMock = {
+  xor: {
+    address: 'xor',
+    symbol: 'XOR',
+    decimals: 18,
+    balance: {
+      transferable: '0',
     },
   },
-  commit: {
-    rewards: {
-      reset: resetRewardsMock,
-    },
-  },
-} as const;
+};
+
+vi.mock('@/stores/rewards', () => ({
+  useRewardsStore: () => rewardsStoreMock,
+}));
+
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => settingsStoreMock,
+}));
+
+vi.mock('@/stores/assets', () => ({
+  useAssetsStore: () => assetsStoreMock,
+}));
 
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
@@ -95,8 +85,16 @@ vi.mock('@wallet', async () => {
       InfoLine: { name: 'InfoLineStub', template: '<div><slot /></div>' },
       FormattedAddress: { name: 'FormattedAddressStub', template: '<div><slot /></div>' },
     },
-    groupRewardsByAssetsList: (list: unknown[]) => list,
   });
+});
+
+vi.mock('@/lib/soraneo-wallet/src/util', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/soraneo-wallet/src/util')>('@/lib/soraneo-wallet/src/util');
+
+  return {
+    ...actual,
+    groupRewardsByAssetsList: (list: unknown[]) => list,
+  };
 });
 
 vi.mock('@/router', () => ({
@@ -178,10 +176,6 @@ vi.mock('@/utils/ethers-util', () => ({
   },
 }));
 
-vi.mock('@/store', () => ({
-  default: storeStub,
-}));
-
 let RewardsView: (typeof import('@/views/Rewards.vue'))['default'];
 
 beforeAll(async () => {
@@ -226,7 +220,7 @@ describe('Rewards.vue', () => {
     resetRewardsMock.mockClear();
     checkAccountIsConnectedMock.mockClear();
 
-    Object.assign(storeStub.state.rewards, {
+    Object.assign(rewardsStoreMock, {
       feeFetching: false,
       rewardsFetching: false,
       rewardsClaiming: false,
@@ -242,9 +236,6 @@ describe('Rewards.vue', () => {
       selectedInternal: null,
       selectedExternal: [],
       selectedCrowdloan: {},
-    });
-
-    Object.assign(storeStub.getters.rewards, {
       rewardsAvailable: false,
       externalRewardsAvailable: false,
       externalRewardsSelected: false,
@@ -252,6 +243,16 @@ describe('Rewards.vue', () => {
       vestedRewardsAvailable: false,
       rewardsByAssetsList: [],
     });
+
+    settingsStoreMock.libraryTheme = 'light';
+    assetsStoreMock.xor = {
+      address: 'xor',
+      symbol: 'XOR',
+      decimals: 18,
+      balance: {
+        transferable: '0',
+      },
+    };
   });
 
   it('connects SORA wallet when user is not logged in', async () => {
@@ -270,7 +271,7 @@ describe('Rewards.vue', () => {
 
   it('claims rewards when user is logged in and rewards are available', async () => {
     isLoggedInRef.value = true;
-    storeStub.getters.rewards.rewardsAvailable = true;
+    rewardsStoreMock.rewardsAvailable = true;
 
     const wrapper = mountComponent();
     await flushPromises();
@@ -285,8 +286,8 @@ describe('Rewards.vue', () => {
   });
 
   it('updates selected internal rewards through computed setter', async () => {
-    storeStub.state.rewards.internalRewards = { amount: '1' } as any;
-    storeStub.getters.rewards.internalRewardsAvailable = true;
+    rewardsStoreMock.internalRewards = { amount: '1' } as any;
+    rewardsStoreMock.internalRewardsAvailable = true;
 
     const wrapper = mountComponent();
     await flushPromises();
@@ -295,7 +296,7 @@ describe('Rewards.vue', () => {
     await flushPromises();
 
     expect(setSelectedRewardsMock).toHaveBeenCalledWith({
-      selectedInternal: storeStub.state.rewards.internalRewards,
+      selectedInternal: rewardsStoreMock.internalRewards,
     });
   });
 

@@ -9,13 +9,13 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { PoolComponents } from '@/modules/pool/consts';
 import { poolLazyComponent } from '@/modules/pool/router';
-import store from '@/store';
+import { usePoolStore } from '@/stores/pool';
 
 const emit = defineEmits<{
   (event: 'close'): void;
@@ -24,6 +24,7 @@ const emit = defineEmits<{
 const { t } = useTranslation();
 const DialogBase = components.DialogBase;
 const RemoveLiquidityForm = poolLazyComponent(PoolComponents.RemoveLiquidityForm);
+const poolStore = usePoolStore();
 
 const isVisible = defineModel<boolean>('visible', { required: true });
 
@@ -34,7 +35,7 @@ const closeDialog = () => {
 
 watch(isVisible, (value) => {
   if (!value) {
-    store.dispatch.removeLiquidity.resetData();
+    void poolStore.resetRemoveLiquidityData();
   }
 });
 </script>

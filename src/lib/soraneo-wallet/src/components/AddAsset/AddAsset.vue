@@ -27,7 +27,7 @@ import WalletBase from '../WalletBase.vue';
 import AddAssetNFT from './AddAssetNftTab.vue';
 import AddAssetToken from './AddAssetTokenTab.vue';
 
-import type { Route } from '../../store/router/types';
+import type { Route } from '@/stores/router/types';
 
 export default defineComponent({
   components: {

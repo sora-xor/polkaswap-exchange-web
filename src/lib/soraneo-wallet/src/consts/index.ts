@@ -153,7 +153,6 @@ export interface WalletAssetFilters {
 }
 
 export interface WalletInitOptions {
-  withoutStore?: boolean;
   permissions?: WalletPermissions;
   appName?: string;
 }

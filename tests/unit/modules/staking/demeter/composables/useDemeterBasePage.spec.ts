@@ -8,37 +8,26 @@ const assetsStoreMock = vi.hoisted(() => ({
   assetDataByAddress: (address?: string) => getAssetMock(address ?? ''),
 }));
 
-const mockStore = vi.hoisted(() => ({
-  state: {
-    demeterFarming: {
-      tokens: [] as any[],
-      pools: [] as any[],
-      accountPools: [] as any[],
-    },
-    pool: {
-      accountLiquidity: [] as any[],
-    },
-  },
-  getters: {
-    assets: {
-      assetDataByAddress: getAssetMock,
-    },
-    wallet: {
-      account: {
-        assetsDataTable: {},
-        accountAssetsAddressTable: {},
-      },
-    },
-  },
+const demeterFarmingStoreMock = vi.hoisted(() => ({
+  tokens: [] as any[],
+  pools: [] as any[],
+  accountPools: [] as any[],
 }));
 
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: mockStore,
+const poolStoreMock = vi.hoisted(() => ({
+  accountLiquidity: [] as any[],
 }));
 
 vi.mock('@/stores/assets', () => ({
   useAssetsStore: () => assetsStoreMock,
+}));
+
+vi.mock('@/stores/demeterFarming', () => ({
+  useDemeterFarmingStore: () => demeterFarmingStoreMock,
+}));
+
+vi.mock('@/stores/pool', () => ({
+  usePoolStore: () => poolStoreMock,
 }));
 
 vi.mock('@wallet', async () => {
@@ -96,17 +85,6 @@ describe('useDemeterBasePage', () => {
       decimals: 18,
     } as any;
 
-    mockStore.getters.wallet.account.assetsDataTable = {
-      A: baseAsset,
-      B: poolAsset,
-      R: rewardAsset,
-    } as Record<string, any>;
-    mockStore.getters.wallet.account.accountAssetsAddressTable = {
-      A: { balance: { transferable: '0' } },
-      B: { balance: { transferable: '0' } },
-      R: { balance: { transferable: '0' } },
-    } as Record<string, any>;
-
     getAssetMock.mockImplementation((address: string) => {
       switch (address) {
         case 'A':
@@ -120,7 +98,7 @@ describe('useDemeterBasePage', () => {
       }
     });
 
-    mockStore.state.demeterFarming.tokens = [
+    demeterFarmingStoreMock.tokens = [
       {
         assetId: 'R',
         farmsTotalMultiplier: '4',
@@ -131,7 +109,7 @@ describe('useDemeterBasePage', () => {
       },
     ];
 
-    mockStore.state.demeterFarming.pools = [
+    demeterFarmingStoreMock.pools = [
       {
         baseAsset: 'A',
         poolAsset: 'B',
@@ -152,7 +130,7 @@ describe('useDemeterBasePage', () => {
       },
     ] as any[];
 
-    mockStore.state.demeterFarming.accountPools = [
+    demeterFarmingStoreMock.accountPools = [
       {
         baseAsset: 'A',
         poolAsset: 'B',
@@ -162,12 +140,12 @@ describe('useDemeterBasePage', () => {
         isFarm: true,
       },
     ] as any[];
-    mockStore.state.pool.accountLiquidity = [{ firstAddress: 'A', secondAddress: 'B', address: 'liquidity' }] as any[];
+    poolStoreMock.accountLiquidity = [{ firstAddress: 'A', secondAddress: 'B', address: 'liquidity' }] as any[];
   });
 
   it('filters derived pools keeping entries with active pools or balances', () => {
     const basePage = useDemeterBasePage();
-    const pools = mockStore.state.demeterFarming.pools as any[];
+    const pools = demeterFarmingStoreMock.pools as any[];
     const derived = basePage.getDerivedPools(pools);
 
     expect(derived).toHaveLength(2);
@@ -177,8 +155,8 @@ describe('useDemeterBasePage', () => {
 
   it('prepares derived pool data including APR and TVL projections', () => {
     const basePage = useDemeterBasePage();
-    const pool = mockStore.state.demeterFarming.pools[0] as any;
-    const accountPool = mockStore.state.demeterFarming.accountPools[0] as any;
+    const pool = demeterFarmingStoreMock.pools[0] as any;
+    const accountPool = demeterFarmingStoreMock.accountPools[0] as any;
 
     const derived = basePage.prepareDerivedPoolData(pool, accountPool, {
       firstBalance: '100',

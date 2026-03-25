@@ -179,7 +179,8 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { api, components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, onMounted, ref, watch } from 'vue';
 
 import { SortDirection } from '@soramitsu-ui/ui/types';
@@ -187,13 +188,14 @@ import { useExploreTable } from '@/composables/useExploreTable';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components, TranslationConsts } from '@/consts';
+import { FontSizeRate, FontWeightRate } from '@/shims/wallet-consts';
 import { DemeterStakingComponents } from '@/modules/staking/demeter/consts';
 import { useDemeterBasePage } from '@/modules/staking/demeter/composables/useDemeterBasePage';
 import { useDemeterPage } from '@/modules/staking/demeter/composables/useDemeterPage';
 import type { DemeterPoolDerivedData } from '@/modules/staking/demeter/types';
 import { demeterStakingLazyComponent } from '@/modules/staking/router';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useWalletStore } from '@/stores/wallet';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
 
@@ -241,9 +243,6 @@ defineOptions({
   },
 });
 
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
-const FontWeightRate = WALLET_CONSTS.FontWeightRate;
-
 const props = defineProps({
   parentLoading: { type: Boolean, default: false },
   exploreQuery: { type: String, default: '' },
@@ -255,6 +254,7 @@ const { t } = useTranslation();
 const parentLoading = computed(() => props.parentLoading);
 const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
 const loadingState = computed(() => loading.value || parentLoading.value);
+const walletStore = useWalletStore();
 
 const base = useDemeterBasePage({ isFarmingPage: computed(() => props.isFarmingPage) });
 const page = useDemeterPage(base, { parentLoading });
@@ -408,11 +408,11 @@ const {
 } = table;
 
 const pricesAvailable = computed(() => {
-  const fiatObject = store.state.wallet.account.fiatPriceObject ?? {};
+  const fiatObject = walletStore.fiatPriceObject ?? {};
   return Object.keys(fiatObject).length > 0;
 });
 
-const isLoggedIn = computed(() => store.getters.wallet.account.isLoggedIn as boolean);
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
 const hasAprColumnData = computed(() => items.value.some((item) => item.apr !== 0));
 const showCalculatorDialog = computed({
   get: () => base.showCalculatorDialog.value,

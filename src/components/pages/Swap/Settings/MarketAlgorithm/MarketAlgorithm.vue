@@ -20,7 +20,7 @@ import { computed } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components, MarketAlgorithms } from '@/consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
 import { useSwapStore } from '@/stores/swap';
 import type { TabItem } from '@/types/tabs';
 
@@ -30,9 +30,10 @@ import SwapSettingsHeader from './Header.vue';
 const SettingsTabs = lazyComponent(Components.SettingsTabs);
 
 const { t, te } = useTranslation();
+const settingsStore = useSettingsStore();
 const swapStore = useSwapStore();
 
-const marketAlgorithm = computed(() => store.state.settings.marketAlgorithm as MarketAlgorithms);
+const marketAlgorithm = computed(() => settingsStore.marketAlgorithm as MarketAlgorithms);
 const marketAlgorithms = computed(() => swapStore.marketAlgorithms);
 const marketAlgorithmsAvailable = computed(() => swapStore.marketAlgorithmsAvailable);
 const availableMarketAlgorithms = computed(() => resolveMarketAlgorithms(marketAlgorithms.value));
@@ -67,7 +68,7 @@ const currentMarketAlgorithm = computed(() => {
 });
 
 const selectTab = (name: MarketAlgorithms) => {
-  store.commit.settings.setMarketAlgorithm(name);
+  settingsStore.setMarketAlgorithm(name);
 };
 </script>
 

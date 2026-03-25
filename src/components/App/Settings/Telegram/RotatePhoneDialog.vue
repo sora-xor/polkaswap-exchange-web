@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { useSettingsStore } from '@/stores/settings';

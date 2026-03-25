@@ -1,25 +1,17 @@
 import { mount } from '@vue/test-utils';
-import { createStore } from 'vuex';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+const useWalletStoreMock = vi.hoisted(() =>
+  vi.fn(() => ({
+    shouldBalanceBeHidden: false,
+  }))
+);
+
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: useWalletStoreMock,
+}));
 
 import InfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
-
-const createStoreMock = (shouldBalanceBeHidden = false) =>
-  createStore({
-    modules: {
-      wallet: {
-        namespaced: true,
-        modules: {
-          settings: {
-            namespaced: true,
-            state: () => ({
-              shouldBalanceBeHidden,
-            }),
-          },
-        },
-      },
-    },
-  });
 
 describe('InfoLine', () => {
   it('treats numeric values as displayable strings', () => {
@@ -28,7 +20,6 @@ describe('InfoLine', () => {
         value: 42,
       },
       global: {
-        plugins: [createStoreMock()],
         stubs: {
           FormattedAmount: true,
           STooltip: { template: '<div><slot /></div>' },
@@ -47,7 +38,6 @@ describe('InfoLine', () => {
         value: 'NaN',
       },
       global: {
-        plugins: [createStoreMock(true)],
         stubs: {
           FormattedAmount: true,
           STooltip: { template: '<div><slot /></div>' },

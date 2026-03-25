@@ -64,12 +64,15 @@
 
 <script setup lang="ts">
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, components, WALLET_TYPES, getAssetsSubset } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, nextTick, ref, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { useLoading } from '@/composables/useLoading';
 import { Components, ObjectInit } from '@/consts';
+import { getAssetsSubset } from '@/shims/wallet-util';
+import { FilterOptions } from '@/shims/wallet-common-types';
 import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
@@ -192,8 +195,8 @@ const isLoggedIn = computed(() => walletStore.isLoggedIn);
 const assets = computed<Asset[]>(() => (walletStore.assets ?? []) as Asset[]);
 const accountAssets = computed<AccountAsset[]>(() => (walletStore.accountAssets ?? []) as AccountAsset[]);
 const pinnedAssetsAddresses = computed(() => walletStore.pinnedAssets ?? []);
-const selectedAssetsFilter = computed<WALLET_TYPES.FilterOptions>(
-  () => (settingsStore.assetsFilter as WALLET_TYPES.FilterOptions) ?? WALLET_TYPES.FilterOptions.All
+const selectedAssetsFilter = computed<FilterOptions>(
+  () => (settingsStore.assetsFilter as FilterOptions) ?? FilterOptions.All
 );
 
 const nonWhitelistAssets = computed(() => getNonWhitelistDivisibleAssets(assets.value, whitelist.value));

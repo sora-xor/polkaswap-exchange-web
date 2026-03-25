@@ -16,9 +16,10 @@
 </template>
 
 <script lang="ts" setup>
-import { components, type WALLET_TYPES } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, useAttrs } from 'vue';
 
+import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
 import { useTranslation } from '@/composables/useTranslation';
 import { useWalletStore } from '@/stores/wallet';
 import { formatAddress } from '@/utils';
@@ -37,7 +38,7 @@ const attrs = useAttrs();
 const { t } = useTranslation();
 const walletStore = useWalletStore();
 
-const account = computed(() => walletStore.account as WALLET_TYPES.PolkadotJsAccount | undefined);
+const account = computed(() => walletStore.account as PolkadotJsAccount | undefined);
 const isLoggedIn = computed(() => walletStore.isLoggedIn);
 
 const accountTooltip = computed(() => (isLoggedIn.value ? t('connectedAccount') : t('connectWalletTextTooltip')));

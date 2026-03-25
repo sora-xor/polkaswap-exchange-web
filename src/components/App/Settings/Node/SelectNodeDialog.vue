@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
-import { components, WALLET_CONSTS, WALLET_TYPES } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import pick from 'lodash/fp/pick';
 import { computed, ref } from 'vue';
 

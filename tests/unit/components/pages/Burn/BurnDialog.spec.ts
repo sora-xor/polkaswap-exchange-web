@@ -92,32 +92,28 @@ vi.mock('@/router', () => ({
   }),
 }));
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      wallet: {
-        settings: {
-          get networkFees() {
-            return storeMocks.networkFees;
-          },
-        },
-      },
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => ({
+    get networkFees() {
+      return storeMocks.networkFees;
     },
-    getters: {
-      assets: {
-        get xor() {
-          return storeMocks.accountXor;
-        },
-      },
-      wallet: {
-        account: {
-          get isLoggedIn() {
-            return storeMocks.isLoggedIn;
-          },
-        },
-      },
+  }),
+}));
+
+vi.mock('@/stores/assets', () => ({
+  useAssetsStore: () => ({
+    get xor() {
+      return storeMocks.accountXor;
     },
-  },
+  }),
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => ({
+    get isLoggedIn() {
+      return storeMocks.isLoggedIn;
+    },
+  }),
 }));
 
 vi.mock('@/composables/useTransaction', () => ({

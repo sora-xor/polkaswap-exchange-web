@@ -1,11 +1,10 @@
 import { Theme } from '@/consts/theme';
-import { requireAppStore } from '@/utils/app-store';
+import pinia from '@/plugins/pinia';
+import { useWalletStore } from '@/stores/wallet';
 import { tmaSdkService } from './telegram';
 import { updatePipTheme } from '.';
 
 let prefersDarkScheme: MediaQueryList | null = null;
-
-const getAppStore = () => requireAppStore() as any;
 
 const handleThemeChange = (e: MediaQueryListEvent): void => {
   applyTheme(e.matches);
@@ -13,8 +12,8 @@ const handleThemeChange = (e: MediaQueryListEvent): void => {
 
 export const applyTheme = (isDark: boolean): void => {
   const nextTheme = isDark ? Theme.DARK : Theme.LIGHT;
-  const store = getAppStore();
-  store?.commit?.wallet?.settings?.setTheme?.(nextTheme);
+  const walletStore = useWalletStore(pinia);
+  void walletStore.setTheme(nextTheme);
   updatePipTheme();
   tmaSdkService.updateTheme();
 };

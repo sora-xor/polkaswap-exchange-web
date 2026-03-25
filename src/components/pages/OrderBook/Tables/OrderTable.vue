@@ -114,11 +114,12 @@
 <script setup lang="ts">
 import { PriceVariant as LiquidityPriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import dayjs from 'dayjs/esm';
 import debounce from 'lodash/debounce';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
+import { PaginationButton } from '@/consts';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
@@ -128,7 +129,7 @@ import { OrderStatus } from '@/types/orderBook';
 
 import type { OrderData } from '@/types/orderBook';
 import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
-import type { OrderStatus as OrderStatusType } from '@wallet/lib/services/indexer/types';
+import type { OrderStatus as OrderStatusType } from '@/shims/wallet-indexer-types';
 
 type OrderTableRow = {
   id: LimitOrder['id'];
@@ -259,7 +260,7 @@ const rowKey = computed(() => (props.selectable ? 'id' : undefined));
 
 const syncTableItems = async () => {
   if (currentPage.value !== 1 && tableItems.value.length === 0) {
-    await handlePagination(WALLET_CONSTS.PaginationButton.Prev);
+    await handlePagination(PaginationButton.Prev);
     return;
   }
 
@@ -331,20 +332,20 @@ const handleSelectionChange = (rows: LimitOrder[]) => {
   emit('selection-change', rows);
 };
 
-const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
+const handlePaginationClick = (button: PaginationButton) => {
   let nextPage = 1;
 
   switch (button) {
-    case WALLET_CONSTS.PaginationButton.Prev:
+    case PaginationButton.Prev:
       nextPage = currentPage.value - 1;
       break;
-    case WALLET_CONSTS.PaginationButton.Next:
+    case PaginationButton.Next:
       nextPage = currentPage.value + 1;
       break;
-    case WALLET_CONSTS.PaginationButton.Last:
+    case PaginationButton.Last:
       nextPage = lastPage.value;
       break;
-    case WALLET_CONSTS.PaginationButton.First:
+    case PaginationButton.First:
     default:
       nextPage = 1;
       break;
@@ -353,7 +354,7 @@ const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
   currentPage.value = Math.min(Math.max(nextPage, 1), lastPage.value);
 };
 
-const handlePagination = async (button: WALLET_CONSTS.PaginationButton) => {
+const handlePagination = async (button: PaginationButton) => {
   handlePaginationClick(button);
   await nextTick();
   emit('page-updated', currentPage.value, tableItems.value);

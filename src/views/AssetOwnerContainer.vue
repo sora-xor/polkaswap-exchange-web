@@ -8,17 +8,18 @@ import { computed, watch, useAttrs } from 'vue';
 import { useSubscriptions } from '@/composables/useSubscriptions';
 import { PageNames } from '@/consts';
 import { goTo } from '@/router';
-import store from '@/store';
+import { useDashboardStore } from '@/stores/dashboard';
 import { useSettingsStore } from '@/stores/settings';
 
 const attrs = useAttrs();
+const dashboardStore = useDashboardStore();
 
 const subscribeOnOwnedAssets = async () => {
-  await store.dispatch.dashboard.subscribeOnOwnedAssets();
+  await dashboardStore.subscribeOnOwnedAssets();
 };
 
 const resetOwnedAssets = async () => {
-  await store.dispatch.dashboard.reset();
+  await dashboardStore.reset();
 };
 
 const { subscriptionsDataLoading } = useSubscriptions({

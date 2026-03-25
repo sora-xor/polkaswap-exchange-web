@@ -15,19 +15,23 @@ import { computed, useAttrs, watch } from 'vue';
 import { useSubscriptions } from '@/composables/useSubscriptions';
 import { PageNames } from '@/consts';
 import { goTo } from '@/router';
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
+import { useVaultStore } from '@/stores/vault';
 
 defineOptions({
   inheritAttrs: false,
 });
 
-const subscribeOnCollaterals = () => store.dispatch.vault.subscribeOnCollaterals();
-const subscribeOnAccountVaults = () => store.dispatch.vault.subscribeOnAccountVaults();
-const updateBalanceSubscriptions = () => store.dispatch.vault.updateBalanceSubscriptions();
-const getLiquidationPenalty = () => store.dispatch.vault.getLiquidationPenalty();
-const subscribeOnBorrowTaxes = () => store.dispatch.vault.subscribeOnBorrowTaxes();
-const subscribeOnDebtCalculation = () => store.dispatch.vault.subscribeOnDebtCalculation();
-const resetVaults = () => store.dispatch.vault.reset();
+const settingsStore = useSettingsStore();
+const vaultStore = useVaultStore();
+
+const subscribeOnCollaterals = () => vaultStore.subscribeOnCollaterals();
+const subscribeOnAccountVaults = () => vaultStore.subscribeOnAccountVaults();
+const updateBalanceSubscriptions = () => vaultStore.updateBalanceSubscriptions();
+const getLiquidationPenalty = () => vaultStore.getLiquidationPenalty();
+const subscribeOnBorrowTaxes = () => vaultStore.subscribeOnBorrowTaxes();
+const subscribeOnDebtCalculation = () => vaultStore.subscribeOnDebtCalculation();
+const resetVaults = () => vaultStore.reset();
 const attrs = useAttrs();
 
 const { subscriptionsDataLoading } = useSubscriptions({
@@ -42,7 +46,7 @@ const { subscriptionsDataLoading } = useSubscriptions({
   resetSubscriptions: [resetVaults],
 });
 
-const kensetsuEnabled = computed(() => store.getters.settings.kensetsuEnabled as Nullable<boolean>);
+const kensetsuEnabled = computed(() => settingsStore.kensetsuEnabled);
 
 watch(
   kensetsuEnabled,

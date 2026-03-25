@@ -1,12 +1,16 @@
 import { defineComponent } from 'vue';
 import { mount } from '@vue/test-utils';
-import { createStore } from 'vuex';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const delayMock = vi.hoisted(() => vi.fn(async () => undefined));
+const useWalletStoreMock = vi.hoisted(() => vi.fn(() => ({ isWalletLoaded: true })));
 
 vi.mock('@/lib/soraneo-wallet/src/util', () => ({
   delay: delayMock,
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: useWalletStoreMock,
 }));
 
 import LoadingMixin from '@/lib/soraneo-wallet/src/components/mixins/LoadingMixin';
@@ -14,6 +18,8 @@ import LoadingMixin from '@/lib/soraneo-wallet/src/components/mixins/LoadingMixi
 describe('LoadingMixin', () => {
   beforeEach(() => {
     delayMock.mockClear();
+    useWalletStoreMock.mockClear();
+    useWalletStoreMock.mockReturnValue({ isWalletLoaded: true });
   });
 
   it('retries withChainApi when chain api getter throws during connection setup', async () => {
@@ -31,30 +37,11 @@ describe('LoadingMixin', () => {
       },
     } as any;
 
-    const store = createStore({
-      modules: {
-        wallet: {
-          namespaced: true,
-          modules: {
-            settings: {
-              namespaced: true,
-              state: () => ({
-                isWalletLoaded: true,
-              }),
-            },
-          },
-        },
-      },
-    });
     const component = defineComponent({
       mixins: [LoadingMixin],
       template: '<div />',
     });
-    const wrapper = mount(component, {
-      global: {
-        plugins: [store],
-      },
-    });
+    const wrapper = mount(component);
     const handler = vi.fn(async () => undefined);
 
     await (wrapper.vm as any).withChainApi(chainApi, handler);

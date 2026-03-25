@@ -13,7 +13,7 @@
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
-import { requireAppStore } from '@/utils/app-store';
+import { useWalletStore } from '@/stores/wallet';
 
 import AccountSettingsOption from './Option.vue';
 
@@ -27,12 +27,12 @@ const props = withDefaults(
 );
 
 const { t } = useTranslation();
-const store = requireAppStore();
+const walletStore = useWalletStore();
 
 const model = computed({
-  get: () => store.state.wallet.transactions.isConfirmTxDialogDisabled,
+  get: () => walletStore.isConfirmTxDialogDisabled,
   set: (value: boolean) => {
-    store.commit.wallet.transactions.setConfirmTxDialogDisabled(value);
+    walletStore.setConfirmTxDialogDisabled(value);
   },
 });
 

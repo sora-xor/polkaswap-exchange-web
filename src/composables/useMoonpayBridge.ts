@@ -8,11 +8,12 @@ import { useBridgeHistory } from '@/composables/useBridgeHistory';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useWeb3Connection } from '@/composables/useWeb3Connection';
 import { KnownEthBridgeAsset } from '@/consts/evm';
-import store from '@/store';
-import type { BridgeTxData } from '@/store/moonpay/types';
 import { useAssetsStore } from '@/stores/assets';
 import type { BridgeRegisteredAsset } from '@/stores/assets/types';
+import { useMoonpayStore } from '@/stores/moonpay';
+import type { BridgeTxData } from '@/stores/moonpay/types';
 import { useSettingsStore } from '@/stores/settings';
+import { useWeb3Store } from '@/stores/web3';
 import type { Nullable, FnWithoutArgs } from '@/types/common';
 import { getMaxValue, hasInsufficientNativeTokenForFee } from '@/utils';
 import { getEthNetworkFee } from '@/utils/bridge/eth/utils';
@@ -29,7 +30,7 @@ import type { RegisteredAccountAsset, AccountBalance } from '@sora-substrate/sdk
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
-import type { WALLET_CONSTS } from '@wallet/core';
+import type { SoraNetwork } from '@/shims/wallet-consts';
 
 type ParentLoadingSource = Ref<boolean> | (() => boolean);
 
@@ -54,46 +55,48 @@ export function useMoonpayBridge(options: UseMoonpayBridgeOptions = {}) {
   const walletConnect = useWeb3Connection();
 
   const settingsStore = useSettingsStore();
+  const web3Store = useWeb3Store();
+  const moonpayStore = useMoonpayStore();
   const assetsStore = useAssetsStore();
   const { registeredAssets } = storeToRefs(assetsStore);
-  const moonpayApi = computed(() => store.state.moonpay.api as MoonpayApi);
-  const bridgeTransactionData = computed(() => store.state.moonpay.bridgeTransactionData as Nullable<EthHistory>);
-  const ethBridgeEvmNetwork = computed(() => store.state.web3.ethBridgeEvmNetwork as EvmNetwork);
-  const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>);
+  const moonpayApi = computed(() => moonpayStore.api as MoonpayApi);
+  const bridgeTransactionData = computed(() => moonpayStore.bridgeTransactionData as Nullable<EthHistory>);
+  const ethBridgeEvmNetwork = computed(() => web3Store.ethBridgeEvmNetwork as Nullable<EvmNetwork>);
+  const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<SoraNetwork>);
   const moonpayApiKey = computed(() => settingsStore.moonpayApiKey);
-  const contractAddress = store.getters.web3.contractAddress as (asset: KnownEthBridgeAsset) => string;
+  const contractAddress = computed(() => web3Store.contractAddress as (asset: KnownEthBridgeAsset) => string);
   const getAsset = assetsStore.assetDataByAddress as (addr?: string) => RegisteredAccountAsset;
 
   const setConfirmationVisibility = (flag: boolean) => {
-    store.commit.moonpay.setConfirmationVisibility(flag);
+    moonpayStore.setConfirmationVisibility(flag);
   };
 
   const setNotificationVisibility = (flag: boolean) => {
-    store.commit.moonpay.setNotificationVisibility(flag);
+    moonpayStore.setNotificationVisibility(flag);
   };
 
   const setNotificationKey = (key: string) => {
-    store.commit.moonpay.setNotificationKey(key);
+    moonpayStore.setNotificationKey(key as MoonpayNotifications | '');
   };
 
   const setBridgeTxData = (data?: BridgeTxData) => {
-    store.commit.moonpay.setBridgeTxData(data);
+    moonpayStore.setBridgeTxData(data);
   };
 
   const setDialogVisibility = (flag: boolean) => {
-    store.commit.moonpay.setDialogVisibility(flag);
+    moonpayStore.setDialogVisibility(flag);
   };
 
   const selectExternalNetwork = async (network: { id: BridgeNetworkId; type: BridgeNetworkType }) => {
-    await store.dispatch.web3.selectExternalNetwork(network);
+    await web3Store.selectExternalNetwork(network);
   };
 
   const getTransactionTransferData = async (hash: string): Promise<Nullable<MoonpayEVMTransferAssetData>> => {
-    return await store.dispatch.moonpay.getTransactionTranserData(hash);
+    return await moonpayStore.getTransactionTranserData(hash);
   };
 
   const createTransactionsPolling = async () => {
-    return (await store.dispatch.moonpay.createTransactionsPolling()) as FnWithoutArgs;
+    return (await moonpayStore.createTransactionsPolling()) as FnWithoutArgs;
   };
 
   const prepareEvmNetwork = async () => {
@@ -191,7 +194,7 @@ export function useMoonpayBridge(options: UseMoonpayBridgeOptions = {}) {
       const evmNetworkFee: CodecString = await getEthNetworkFee(
         asset,
         registeredAsset.kind,
-        contractAddress,
+        contractAddress.value,
         ethTransferData.amount,
         false,
         internalWallet.soraAddress.value ?? '',

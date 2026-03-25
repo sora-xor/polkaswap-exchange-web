@@ -1,90 +1,45 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 
-let rootSettingsAccesses = 0;
-let walletModuleAccesses = 0;
+const settingsStoreMock = {
+  isWalletLoaded: false,
+};
 
-let walletDefined = true;
-let walletLoadedValue: unknown = false;
-let rootLoadedValue: unknown = true;
 const delayMock = vi.hoisted(() => vi.fn(async () => undefined));
 
-vi.mock('@wallet/src/util', () => ({
+vi.mock('@/lib/soraneo-wallet/src/util', () => ({
   delay: delayMock,
 }));
 
-vi.mock('@/store', () => {
-  const state = new Proxy(
-    {},
-    {
-      get(_target, prop: string | symbol) {
-        if (prop === 'wallet') {
-          walletModuleAccesses += 1;
-          if (!walletDefined) return undefined;
-          return {
-            settings: {
-              isWalletLoaded: walletLoadedValue,
-            },
-          };
-        }
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => settingsStoreMock,
+}));
 
-        if (prop === 'settings') {
-          rootSettingsAccesses += 1;
-          return {
-            isWalletLoaded: rootLoadedValue,
-          };
-        }
-
-        return undefined;
-      },
-    }
-  );
-
-  return {
-    __esModule: true,
-    default: { state },
-  };
-});
+vi.mock('@/plugins/pinia', () => ({
+  __esModule: true,
+  default: {},
+}));
 
 import { useLoading } from '@/composables/useLoading';
 
 describe('useLoading', () => {
   beforeEach(() => {
-    rootSettingsAccesses = 0;
-    walletModuleAccesses = 0;
-    walletDefined = true;
-    walletLoadedValue = false;
-    rootLoadedValue = true;
+    settingsStoreMock.isWalletLoaded = false;
     delayMock.mockClear();
   });
 
-  it('prefers wallet.settings.isWalletLoaded over root settings flag', async () => {
+  it('uses the settings store wallet-loaded flag before running api handlers', async () => {
+    settingsStoreMock.isWalletLoaded = true;
     const { withApi } = useLoading();
     const handler = vi.fn(async () => 'ok');
 
     await withApi(handler);
 
     expect(handler).toHaveBeenCalledTimes(1);
-    expect(walletModuleAccesses).toBeGreaterThan(0);
-    expect(rootSettingsAccesses).toBe(0);
-  });
-
-  it('falls back to root settings flag when wallet module value is missing', async () => {
-    walletDefined = false;
-    rootLoadedValue = false;
-
-    const { withApi } = useLoading();
-    const handler = vi.fn(async () => 'ok');
-
-    await withApi(handler);
-
-    expect(handler).toHaveBeenCalledTimes(1);
-    expect(walletModuleAccesses).toBeGreaterThan(0);
-    expect(rootSettingsAccesses).toBeGreaterThan(0);
+    expect(delayMock).not.toHaveBeenCalled();
   });
 
   it('continues after wallet-load timeout when forced in tests', async () => {
-    walletLoadedValue = false;
-    rootLoadedValue = false;
+    settingsStoreMock.isWalletLoaded = false;
 
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     const { withApi } = useLoading({

@@ -1,4 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils';
+import { createPinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const tokens = vi.hoisted(() => ({
@@ -34,26 +35,22 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/pool', () => ({
   __esModule: true,
-  default: {
-    state: {
-      removeLiquidity: {
-        liquidityAmount: '1.5',
-        firstTokenAmount: '1.00',
-        secondTokenAmount: '2.00',
-      },
-      settings: {
-        slippageTolerance: '0.5',
-      },
-    },
-    getters: {
-      removeLiquidity: {
-        firstToken: tokens.first,
-        secondToken: tokens.second,
-      },
-    },
-  },
+  usePoolStore: () => ({
+    removeLiquidityLiquidityAmount: '1.5',
+    removeLiquidityFirstTokenAmount: '1.00',
+    removeLiquiditySecondTokenAmount: '2.00',
+    removeLiquidityFirstToken: tokens.first,
+    removeLiquiditySecondToken: tokens.second,
+  }),
+}));
+
+vi.mock('@/stores/settings', () => ({
+  __esModule: true,
+  useSettingsStore: () => ({
+    slippageTolerance: '0.5',
+  }),
 }));
 
 vi.mock('@/composables/useNumberFormatter', () => ({
@@ -93,6 +90,7 @@ describe('RemoveLiquidityConfirm.vue', () => {
         parentLoading: false,
       },
       global: {
+        plugins: [createPinia()],
         stubs: {
           DialogBase: walletComponents.DialogBase,
           TokenLogo: walletComponents.TokenLogo,

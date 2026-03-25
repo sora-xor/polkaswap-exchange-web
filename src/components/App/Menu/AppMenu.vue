@@ -120,9 +120,9 @@ import { VaultPageNames } from '@/modules/vault/consts';
 import { isVaultPage } from '@/modules/vault/router';
 import { Theme } from '@/consts/theme';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useRouterStore } from '@/stores/router';
+import { useSettingsStore } from '@/stores/settings';
 import type { Nullable } from '@/types/common';
-import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 
 import AppInfoPopper from './AppInfoPopper.vue';
 import AppSidebarItemContent from './SidebarItemContent.vue';
@@ -139,14 +139,16 @@ const emit = defineEmits<{
 
 const route = useRoute();
 const { t } = useTranslation();
+const routerStore = useRouterStore();
+const settingsStore = useSettingsStore();
 
-const pageLoading = computed(() => Boolean(store.state.router?.loading));
-const collapsed = computed(() => Boolean(store.state.settings?.menuCollapsed));
-const faucetUrl = computed(() => (store.state.settings?.faucetUrl as string) ?? '');
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
-const orderBookEnabled = computed(() => (store.getters?.settings?.orderBookEnabled as Nullable<boolean>) ?? true);
-const kensetsuEnabled = computed(() => (store.getters?.settings?.kensetsuEnabled as Nullable<boolean>) ?? true);
-const assetOwnerEnabled = computed(() => Boolean(store.getters?.settings?.assetOwnerEnabled));
+const pageLoading = computed(() => Boolean(routerStore.loading));
+const collapsed = computed(() => Boolean(settingsStore.menuCollapsed));
+const faucetUrl = computed(() => settingsStore.faucetUrl ?? '');
+const libraryTheme = computed(() => settingsStore.libraryTheme as Theme);
+const orderBookEnabled = computed(() => (settingsStore.orderBookEnabled as Nullable<boolean>) ?? true);
+const kensetsuEnabled = computed(() => (settingsStore.kensetsuEnabled as Nullable<boolean>) ?? true);
+const assetOwnerEnabled = computed(() => Boolean(settingsStore.assetOwnerEnabled));
 
 const menuElement = ref<HTMLElement | null>(null);
 const resizeObserver = ref<ResizeObserver | null>(null);
@@ -205,7 +207,7 @@ const mainMenuActiveColor = computed(() =>
 );
 
 function collapseMenu(): void {
-  store.commit.settings.setMenuCollapsed(!collapsed.value);
+  settingsStore.setMenuCollapsed(!collapsed.value);
 }
 
 function preventAnchorNavigation(event: Event): void {

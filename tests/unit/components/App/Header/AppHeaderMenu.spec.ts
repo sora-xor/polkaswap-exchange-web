@@ -8,7 +8,8 @@ const {
   listenForDeviceRotationMock,
   removeDeviceRotationListenerMock,
   setThemeMock,
-  storeMock,
+  settingsStoreMock,
+  walletStoreMock,
 } = vi.hoisted(() => {
   const applyThemeMock = vi.fn();
   const setThemeMock = vi.fn();
@@ -16,43 +17,31 @@ const {
   const listenForDeviceRotationMock = vi.fn();
   const removeDeviceRotationListenerMock = vi.fn();
 
-  const storeMock = {
-    state: {
-      settings: {
-        disclaimerVisibility: true,
-        userDisclaimerApprove: false,
-        isRotatePhoneHideBalanceFeatureEnabled: false,
-        isAccessRotationListener: true,
-        isAccessAccelerometrEventDeclined: false,
-        isThemePreference: false,
-        screenBreakpointClass: 'desktop',
-        isTMA: false,
-        language: 'en',
-      },
-      wallet: {
-        settings: {
-          currency: 'usd',
-          shouldBalanceBeHidden: false,
-          theme: 'light',
-        },
-      },
-    },
-    commit: {
-      wallet: {
-        settings: {
-          toggleHideBalance: vi.fn(),
-        },
-      },
-      settings: {
-        setIsRotatePhoneHideBalanceFeatureEnabled: vi.fn(),
-        setRotatePhoneDialogVisibility: vi.fn(),
-        setSelectLanguageDialogVisibility: vi.fn(),
-        setSelectCurrencyDialogVisibility: vi.fn(),
-        setAlertSettingsPopup: vi.fn(),
-        toggleDisclaimerDialogVisibility: vi.fn(),
-        setIsThemePreference: vi.fn(),
-      },
-    },
+  const settingsStoreMock = {
+    disclaimerVisibility: true,
+    userDisclaimerApprove: false,
+    isRotatePhoneHideBalanceFeatureEnabled: false,
+    isAccessRotationListener: true,
+    isAccessAccelerometrEventDeclined: false,
+    isThemePreference: false,
+    screenBreakpointClass: 'desktop',
+    isTMA: false,
+    language: 'en',
+    currency: 'usd',
+    setIsRotatePhoneHideBalanceFeatureEnabled: vi.fn(),
+    setRotatePhoneDialogVisibility: vi.fn(),
+    setSelectLanguageDialogVisibility: vi.fn(),
+    setSelectCurrencyDialogVisibility: vi.fn(),
+    setAlertSettingsPopup: vi.fn(),
+    toggleDisclaimerDialogVisibility: vi.fn(),
+    setIsThemePreference: vi.fn(),
+  };
+
+  const walletStoreMock = {
+    shouldBalanceBeHidden: false,
+    theme: 'light',
+    toggleHideBalance: vi.fn(),
+    setTheme: setThemeMock,
   };
 
   return {
@@ -61,7 +50,8 @@ const {
     listenForDeviceRotationMock,
     removeDeviceRotationListenerMock,
     setThemeMock,
-    storeMock,
+    settingsStoreMock,
+    walletStoreMock,
   };
 });
 
@@ -71,14 +61,12 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@/store', () => ({
-  default: storeMock,
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => settingsStoreMock,
 }));
 
 vi.mock('@/stores/wallet', () => ({
-  useWalletStore: () => ({
-    setTheme: setThemeMock,
-  }),
+  useWalletStore: () => walletStoreMock,
 }));
 
 vi.mock('@/utils/switchTheme', () => ({
@@ -224,18 +212,18 @@ describe('AppHeaderMenu', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    storeMock.state.settings.disclaimerVisibility = true;
-    storeMock.state.settings.userDisclaimerApprove = false;
-    storeMock.state.settings.isRotatePhoneHideBalanceFeatureEnabled = false;
-    storeMock.state.settings.isAccessRotationListener = true;
-    storeMock.state.settings.isAccessAccelerometrEventDeclined = false;
-    storeMock.state.settings.isThemePreference = false;
-    storeMock.state.settings.screenBreakpointClass = 'min-desktop';
-    storeMock.state.settings.isTMA = false;
-    storeMock.state.settings.language = 'en';
-    storeMock.state.wallet.settings.currency = 'usd';
-    storeMock.state.wallet.settings.shouldBalanceBeHidden = false;
-    storeMock.state.wallet.settings.theme = 'light';
+    settingsStoreMock.disclaimerVisibility = true;
+    settingsStoreMock.userDisclaimerApprove = false;
+    settingsStoreMock.isRotatePhoneHideBalanceFeatureEnabled = false;
+    settingsStoreMock.isAccessRotationListener = true;
+    settingsStoreMock.isAccessAccelerometrEventDeclined = false;
+    settingsStoreMock.isThemePreference = false;
+    settingsStoreMock.screenBreakpointClass = 'min-desktop';
+    settingsStoreMock.isTMA = false;
+    settingsStoreMock.language = 'en';
+    settingsStoreMock.currency = 'usd';
+    walletStoreMock.shouldBalanceBeHidden = false;
+    walletStoreMock.theme = 'light';
   });
 
   afterEach(() => {
@@ -339,7 +327,7 @@ describe('AppHeaderMenu', () => {
   });
 
   it('switches hide balances icon based on hidden balances state', () => {
-    storeMock.state.wallet.settings.shouldBalanceBeHidden = true;
+    walletStoreMock.shouldBalanceBeHidden = true;
     const wrapper = mountComponent();
 
     expect(wrapper.find('[data-test-name="hide-balances"] .s-dropdown-item-icon-stub').attributes('data-icon')).toBe(
@@ -348,8 +336,8 @@ describe('AppHeaderMenu', () => {
   });
 
   it('renders turn-phone-hide with the same icon as polkaswap in TMA mobile mode', () => {
-    storeMock.state.settings.isTMA = true;
-    storeMock.state.settings.screenBreakpointClass = 'min-mobile';
+    settingsStoreMock.isTMA = true;
+    settingsStoreMock.screenBreakpointClass = 'min-mobile';
     const wrapper = mountComponent();
 
     const turnPhoneItem = wrapper.find('[data-test-name="turn-phone-hide"]');
@@ -360,9 +348,9 @@ describe('AppHeaderMenu', () => {
   });
 
   it('uses chevron indicator for turn-phone-hide when rotation access is unavailable', () => {
-    storeMock.state.settings.isTMA = true;
-    storeMock.state.settings.screenBreakpointClass = 'min-mobile';
-    storeMock.state.settings.isAccessRotationListener = false;
+    settingsStoreMock.isTMA = true;
+    settingsStoreMock.screenBreakpointClass = 'min-mobile';
+    settingsStoreMock.isAccessRotationListener = false;
     const wrapper = mountComponent();
 
     const turnPhoneIndicator = wrapper.find('[data-test-name="turn-phone-hide"] .icontype.s-icon-stub');
@@ -390,13 +378,13 @@ describe('AppHeaderMenu', () => {
     expect(disclaimerItem.attributes('data-disabled')).toBe('true');
     await disclaimerItem.trigger('click');
 
-    expect(storeMock.commit.settings.toggleDisclaimerDialogVisibility).not.toHaveBeenCalled();
+    expect(settingsStoreMock.toggleDisclaimerDialogVisibility).not.toHaveBeenCalled();
     expect(hideDropdownMock).not.toHaveBeenCalled();
   });
 
   it('marks system preferences as selected when theme preference is enabled', () => {
-    storeMock.state.settings.isThemePreference = true;
-    storeMock.state.wallet.settings.theme = 'dark';
+    settingsStoreMock.isThemePreference = true;
+    walletStoreMock.theme = 'dark';
 
     const wrapper = mountComponent();
     const systemThemeCheck = wrapper.find('[data-test-name="theme"] .check');
@@ -428,20 +416,20 @@ describe('AppHeaderMenu', () => {
 
     await wrapper.find('[data-test-name="theme"]').trigger('click');
 
-    expect(storeMock.commit.settings.setIsThemePreference).toHaveBeenCalledWith(true);
+    expect(settingsStoreMock.setIsThemePreference).toHaveBeenCalledWith(true);
     expect(applyThemeMock).not.toHaveBeenCalled();
     expect(setThemeMock).not.toHaveBeenCalled();
   });
 
   it('applies light mode as manual theme selection', async () => {
-    storeMock.state.wallet.settings.theme = 'dark';
+    walletStoreMock.theme = 'dark';
     const wrapper = mountComponent();
 
     await wrapper.find('[data-test-name="light"]').trigger('click');
 
     expect(applyThemeMock).toHaveBeenCalledWith(false);
     expect(setThemeMock).toHaveBeenCalledWith('light');
-    expect(storeMock.commit.settings.setIsThemePreference).toHaveBeenCalledWith(false);
+    expect(settingsStoreMock.setIsThemePreference).toHaveBeenCalledWith(false);
   });
 
   it('applies noir mode as manual theme selection', async () => {
@@ -451,11 +439,11 @@ describe('AppHeaderMenu', () => {
 
     expect(applyThemeMock).toHaveBeenCalledWith(true);
     expect(setThemeMock).toHaveBeenCalledWith('dark');
-    expect(storeMock.commit.settings.setIsThemePreference).toHaveBeenCalledWith(false);
+    expect(settingsStoreMock.setIsThemePreference).toHaveBeenCalledWith(false);
   });
 
   it('dispatches actions for currency, language, notifications and disclaimer', async () => {
-    storeMock.state.settings.disclaimerVisibility = false;
+    settingsStoreMock.disclaimerVisibility = false;
     const wrapper = mountComponent();
 
     await wrapper.find('[data-test-name="hide-balances"]').trigger('click');
@@ -464,51 +452,51 @@ describe('AppHeaderMenu', () => {
     await wrapper.find('[data-test-name="notification"]').trigger('click');
     await wrapper.find('[data-test-name="disclaimer"]').trigger('click');
 
-    expect(storeMock.commit.wallet.settings.toggleHideBalance).toHaveBeenCalledTimes(1);
-    expect(storeMock.commit.settings.setSelectCurrencyDialogVisibility).toHaveBeenCalledWith(true);
-    expect(storeMock.commit.settings.setSelectLanguageDialogVisibility).toHaveBeenCalledWith(true);
-    expect(storeMock.commit.settings.setAlertSettingsPopup).toHaveBeenCalledWith(true);
-    expect(storeMock.commit.settings.toggleDisclaimerDialogVisibility).toHaveBeenCalledTimes(1);
+    expect(walletStoreMock.toggleHideBalance).toHaveBeenCalledTimes(1);
+    expect(settingsStoreMock.setSelectCurrencyDialogVisibility).toHaveBeenCalledWith(true);
+    expect(settingsStoreMock.setSelectLanguageDialogVisibility).toHaveBeenCalledWith(true);
+    expect(settingsStoreMock.setAlertSettingsPopup).toHaveBeenCalledWith(true);
+    expect(settingsStoreMock.toggleDisclaimerDialogVisibility).toHaveBeenCalledTimes(1);
     expect(hideDropdownMock).toHaveBeenCalledTimes(4);
   });
 
   it('enables turn-phone-hide rotation listener when access is available', async () => {
-    storeMock.state.settings.isTMA = true;
-    storeMock.state.settings.screenBreakpointClass = 'min-mobile';
-    storeMock.state.settings.isRotatePhoneHideBalanceFeatureEnabled = false;
-    storeMock.state.settings.isAccessRotationListener = true;
+    settingsStoreMock.isTMA = true;
+    settingsStoreMock.screenBreakpointClass = 'min-mobile';
+    settingsStoreMock.isRotatePhoneHideBalanceFeatureEnabled = false;
+    settingsStoreMock.isAccessRotationListener = true;
     const wrapper = mountComponent();
 
     await wrapper.find('[data-test-name="turn-phone-hide"]').trigger('click');
 
     expect(listenForDeviceRotationMock).toHaveBeenCalledTimes(1);
-    expect(storeMock.commit.settings.setIsRotatePhoneHideBalanceFeatureEnabled).toHaveBeenCalledWith(true);
+    expect(settingsStoreMock.setIsRotatePhoneHideBalanceFeatureEnabled).toHaveBeenCalledWith(true);
   });
 
   it('disables turn-phone-hide rotation listener when already enabled', async () => {
-    storeMock.state.settings.isTMA = true;
-    storeMock.state.settings.screenBreakpointClass = 'min-mobile';
-    storeMock.state.settings.isRotatePhoneHideBalanceFeatureEnabled = true;
-    storeMock.state.settings.isAccessRotationListener = true;
+    settingsStoreMock.isTMA = true;
+    settingsStoreMock.screenBreakpointClass = 'min-mobile';
+    settingsStoreMock.isRotatePhoneHideBalanceFeatureEnabled = true;
+    settingsStoreMock.isAccessRotationListener = true;
     const wrapper = mountComponent();
 
     await wrapper.find('[data-test-name="turn-phone-hide"]').trigger('click');
 
     expect(removeDeviceRotationListenerMock).toHaveBeenCalledTimes(1);
-    expect(storeMock.commit.settings.setIsRotatePhoneHideBalanceFeatureEnabled).toHaveBeenCalledWith(false);
-    expect(storeMock.commit.settings.setRotatePhoneDialogVisibility).toHaveBeenCalledWith(false);
+    expect(settingsStoreMock.setIsRotatePhoneHideBalanceFeatureEnabled).toHaveBeenCalledWith(false);
+    expect(settingsStoreMock.setRotatePhoneDialogVisibility).toHaveBeenCalledWith(false);
   });
 
   it('opens rotate-phone dialog when turn-phone-hide has no access permission', async () => {
-    storeMock.state.settings.isTMA = true;
-    storeMock.state.settings.screenBreakpointClass = 'min-mobile';
-    storeMock.state.settings.isRotatePhoneHideBalanceFeatureEnabled = false;
-    storeMock.state.settings.isAccessRotationListener = false;
+    settingsStoreMock.isTMA = true;
+    settingsStoreMock.screenBreakpointClass = 'min-mobile';
+    settingsStoreMock.isRotatePhoneHideBalanceFeatureEnabled = false;
+    settingsStoreMock.isAccessRotationListener = false;
     const wrapper = mountComponent();
 
     await wrapper.find('[data-test-name="turn-phone-hide"]').trigger('click');
 
-    expect(storeMock.commit.settings.setRotatePhoneDialogVisibility).toHaveBeenCalledWith(true);
+    expect(settingsStoreMock.setRotatePhoneDialogVisibility).toHaveBeenCalledWith(true);
     expect(listenForDeviceRotationMock).not.toHaveBeenCalled();
     expect(hideDropdownMock).toHaveBeenCalledTimes(1);
   });

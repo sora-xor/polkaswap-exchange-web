@@ -35,7 +35,7 @@ import { computed, ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { AddAssetTabs } from '@/consts';
-import { getAppStore } from '@/utils/app-store';
+import { useSettingsStore } from '@/stores/settings';
 import { FilterOptions } from '@/types/common';
 
 const props = withDefaults(
@@ -54,18 +54,16 @@ const emit = defineEmits<{
 }>();
 
 const { t, TranslationConsts } = useTranslation();
-const resolveStore = () => getAppStore() ?? ((globalThis as Record<string, unknown>).__PS_APP_STORE__ as any);
+const settingsStore = useSettingsStore();
 
 const loading = ref(false);
 
-const assetsFilter = computed<FilterOptions>(
-  () => resolveStore()?.state?.wallet?.settings?.assetsFilter ?? FilterOptions.All
-);
+const assetsFilter = computed<FilterOptions>(() => settingsStore.assetsFilter ?? FilterOptions.All);
 
 const selectedFilter = computed<FilterOptions>({
   get: () => assetsFilter.value,
   set: (value: FilterOptions) => {
-    resolveStore()?.commit?.wallet?.settings?.setAssetsFilter(value);
+    settingsStore.setAssetsFilter(value);
   },
 });
 

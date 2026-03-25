@@ -75,57 +75,6 @@ vi.mock('@/utils/subscriptions', () => ({
   })),
 }));
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      settings: {
-        isWalletLoaded: true,
-        slippageTolerance: '0',
-      },
-      wallet: {
-        transactions: {
-          isConfirmTxDialogDisabled: false,
-        },
-        account: {
-          address: '',
-          fiatPriceObject: {},
-        },
-      },
-    },
-    getters: {
-      assets: {
-        assetDataByAddress,
-        xor: { symbol: 'XOR' },
-      },
-      settings: {
-        debugEnabled: false,
-        nodeIsConnected: true,
-        liquiditySource: null,
-      },
-      wallet: {
-        account: {
-          isLoggedIn: true,
-          accountAssetsAddressTable: {},
-        },
-      },
-    },
-    commit: {
-      wallet: {
-        transactions: {
-          addActiveTx: vi.fn(),
-        },
-      },
-    },
-    dispatch: {
-      wallet: {
-        account: {
-          logout: vi.fn(),
-        },
-      },
-    },
-  },
-}));
-
 describe('swap workflow', () => {
   beforeEach(async () => {
     setActivePinia(createPinia());

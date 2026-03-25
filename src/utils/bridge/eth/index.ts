@@ -1,7 +1,8 @@
 import { Operation } from '@sora-substrate/sdk';
-import { beforeTransactionSign } from '@wallet';
 
+import pinia from '@/plugins/pinia';
 import { useAssetsStore } from '@/stores/assets';
+import { useBridgeStore } from '@/stores/bridge';
 import { useWalletStore } from '@/stores/wallet';
 import { Bridge } from '@/utils/bridge/common/classes';
 import type { GetBridgeHistoryInstance, IBridgeConstructorOptions, SignExternal } from '@/utils/bridge/common/types';
@@ -11,7 +12,6 @@ import { EthBridgeOutgoingReducer, EthBridgeIncomingReducer } from '@/utils/brid
 import type { EthBridgeReducer } from '@/utils/bridge/eth/classes/reducers';
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 import { getTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
-import { requireAppStore } from '@/utils/app-store';
 
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 
@@ -23,8 +23,8 @@ interface EthBridgeConstructorOptions extends IBridgeConstructorOptions<EthHisto
 
 type EthBridge = Bridge<EthHistory, EthBridgeReducer, EthBridgeConstructorOptions>;
 
-const resolveWalletStore = () => useWalletStore();
-const resolveAppStore = () => requireAppStore() as any;
+const resolveWalletStore = () => useWalletStore(pinia);
+const resolveBridgeStore = () => useBridgeStore(pinia);
 
 const ethBridge: EthBridge = new Bridge({
   reducers: {
@@ -48,17 +48,17 @@ const ethBridge: EthBridge = new Bridge({
   getTransaction,
   updateTransaction,
   // ui integration
-  showNotification: (tx: EthHistory) => resolveAppStore().commit?.bridge?.setNotificationData?.(tx as any),
-  addTransactionToProgress: (id: string) => resolveAppStore().commit?.bridge?.addTxIdInProgress?.(id),
-  removeTransactionFromProgress: (id: string) => resolveAppStore().commit?.bridge?.removeTxIdFromProgress?.(id),
-  updateHistory: () => resolveAppStore().dispatch?.bridge?.updateInternalHistory?.(),
-  getActiveTransaction: () => resolveAppStore().getters?.bridge?.historyItem as EthHistory,
+  showNotification: (tx: EthHistory) => resolveBridgeStore().setNotificationData(tx as any),
+  addTransactionToProgress: (id: string) => resolveBridgeStore().addTransactionToProgress(id),
+  removeTransactionFromProgress: (id: string) => resolveBridgeStore().removeTransactionFromProgress(id),
+  updateHistory: () => resolveBridgeStore().updateInternalHistory(),
+  getActiveTransaction: () => resolveBridgeStore().activeTransaction as EthHistory,
   // transaction signing
-  beforeTransactionSign: (...args: any[]) => beforeTransactionSign(resolveAppStore().original, ethBridgeApi, ...args),
+  beforeTransactionSign: (...args: any[]) => resolveBridgeStore().beforeTransactionSign(ethBridgeApi, ...args),
   // custom
-  getBridgeHistoryInstance: () => resolveAppStore().dispatch?.bridge?.getEthBridgeHistoryInstance?.(),
-  signExternalOutgoing: (id: string) => resolveAppStore().dispatch?.bridge?.signEthBridgeOutgoingEvm?.(id),
-  signExternalIncoming: (id: string) => resolveAppStore().dispatch?.bridge?.signEthBridgeIncomingEvm?.(id),
+  getBridgeHistoryInstance: () => resolveBridgeStore().getEthBridgeHistoryInstance() as Promise<EthBridgeHistory>,
+  signExternalOutgoing: (id: string) => resolveBridgeStore().signEthBridgeOutgoingEvm(id) as Promise<unknown>,
+  signExternalIncoming: (id: string) => resolveBridgeStore().signEthBridgeIncomingEvm(id) as Promise<unknown>,
 });
 
 export default ethBridge;

@@ -101,15 +101,6 @@ defineExpose({ items });
   &.el-dropdown {
     color: inherit;
     line-height: 0;
-    width: 24px;
-    height: 24px;
-
-    .s-icon-basic-more-vertical-24 {
-      width: 24px;
-      height: 24px;
-      font-size: 24px !important;
-      line-height: 24px !important;
-    }
   }
 
   &__item.el-dropdown-menu__item {

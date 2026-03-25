@@ -1,5 +1,5 @@
-import { api as walletApi } from '@wallet';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { api as walletApi } from '@/shims/wallet-api';
 
 // Mock ethersUtil functions used in utils
 vi.mock('@/utils/ethers-util', () => ({

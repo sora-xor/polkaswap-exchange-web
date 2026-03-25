@@ -19,7 +19,8 @@
 </template>
 
 <script lang="ts" setup>
-import { api, components } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';

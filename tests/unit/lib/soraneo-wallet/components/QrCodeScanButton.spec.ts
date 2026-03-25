@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 
 import QrCodeScanButton from '@/lib/soraneo-wallet/src/components/QrCode/QrCodeScanButton.vue';
+import qrCodeScanButtonSource from '@/lib/soraneo-wallet/src/components/QrCode/QrCodeScanButton.vue?raw';
 
 vi.mock('@/composables/useTranslation', () => ({
   translationUtils: () => ({
@@ -76,5 +77,9 @@ describe('QrCodeScanButton', () => {
     });
 
     expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the wallet QR action button on the shared production button contract', () => {
+    expect(qrCodeScanButtonSource).not.toContain('.qr-code-button.el-button');
   });
 });

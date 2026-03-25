@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { graphic } from 'echarts';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';

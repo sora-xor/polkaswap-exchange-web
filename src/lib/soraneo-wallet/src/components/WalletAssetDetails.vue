@@ -119,10 +119,10 @@
 <script lang="ts">
 import { XOR, BalanceType } from '@sora-substrate/sdk/build/assets/consts';
 import { defineComponent } from 'vue';
-import { mapGetters, mapMutations, mapState } from 'vuex';
 
 import { api } from '../api';
 import { useRouterStore } from '@/stores/router';
+import { useWalletStore } from '@/stores/wallet';
 
 import { RouteNames } from '../consts';
 import { Operations } from '../types/common';
@@ -181,10 +181,21 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/settings', ['permissions']),
-    ...mapState('wallet/account', ['accountAssets']),
-    ...mapState('wallet/transactions', ['history']),
-    ...mapGetters('wallet/transactions', { selectedTransaction: 'selectedTx' }),
+    walletStore(this: any) {
+      return useWalletStore(this.$pinia);
+    },
+    permissions(this: any) {
+      return this.walletStore.permissions;
+    },
+    accountAssets(this: any) {
+      return this.walletStore.accountAssets;
+    },
+    history(this: any) {
+      return this.walletStore.history;
+    },
+    selectedTransaction(this: any) {
+      return this.walletStore.selectedTransaction;
+    },
     routerStore(this: any) {
       return useRouterStore(this.$pinia);
     },
@@ -289,7 +300,9 @@ export default defineComponent({
     }
   },
   methods: {
-    ...mapMutations('wallet/transactions', ['resetTxDetailsId']),
+    resetTxDetailsId(this: any): void {
+      this.walletStore.resetTxDetailsId();
+    },
     navigate(this: any, options: Route): void {
       this.routerStore.navigate(options);
     },

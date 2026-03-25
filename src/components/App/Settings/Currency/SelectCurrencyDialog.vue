@@ -4,7 +4,6 @@
       ref="search"
       v-model="query"
       class="select-currency__search"
-      autofocus
       :placeholder="t('currencyDialog.searchPlaceholder')"
       @clear="handleClearSearch"
     ></search-input>
@@ -34,14 +33,14 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@wallet';
-import { computed, nextTick, ref } from 'vue';
+import { components } from '@/shims/wallet-components';
+import { computed, nextTick, ref, watch } from 'vue';
 
+import { useSearchInput } from '@/composables/useSearchInput';
 import { useTranslation } from '@/composables/useTranslation';
-import store from '@/store';
 import { useSettingsStore } from '@/stores/settings';
 
-import type { CurrencyFields, Currency } from '@wallet/lib/types/currency';
+import type { CurrencyFields, Currency } from '@/shims/wallet-currency-types';
 
 defineOptions({
   name: 'SelectCurrencyDialog',
@@ -54,7 +53,7 @@ defineOptions({
 const { t } = useTranslation();
 const settingsStore = useSettingsStore();
 
-const query = ref('');
+const { search, query, handleClearSearch, focusSearchInput } = useSearchInput();
 const selectedEl = ref<HTMLDivElement | null>(null);
 
 const isVisible = computed({
@@ -68,13 +67,13 @@ const isVisible = computed({
 });
 
 const selectedCurrency = computed<Currency>({
-  get: () => store.state.wallet.settings.currency as Currency,
+  get: () => settingsStore.currency as Currency,
   set: (value) => {
-    store.commit.wallet.settings.setFiatCurrency(value);
+    settingsStore.setFiatCurrency(value);
   },
 });
 
-const currencies = computed(() => store.state.wallet.settings.currencies as CurrencyFields[]);
+const currencies = computed(() => settingsStore.currencies as CurrencyFields[]);
 
 const filteredCurrencies = computed(() => {
   const rawQuery = query.value.toLowerCase().trim();
@@ -88,10 +87,6 @@ const filteredCurrencies = computed(() => {
   );
 });
 
-function handleClearSearch(): void {
-  query.value = '';
-}
-
 function setSelectedEl(element: HTMLDivElement | null, isSelected: boolean): void {
   if (isSelected) {
     selectedEl.value = element;
@@ -99,6 +94,18 @@ function setSelectedEl(element: HTMLDivElement | null, isSelected: boolean): voi
     selectedEl.value = null;
   }
 }
+
+watch(
+  isVisible,
+  (visible) => {
+    if (visible) {
+      void focusSearchInput();
+    } else {
+      handleClearSearch();
+    }
+  },
+  { immediate: false }
+);
 </script>
 
 <style lang="scss" scoped>

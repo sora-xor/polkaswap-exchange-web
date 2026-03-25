@@ -37,7 +37,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { PassphraseTimeout, PassphraseTimeoutDuration, DefaultPassphraseTimeout } from '@/consts';
-import { requireAppStore } from '@/utils/app-store';
+import { useWalletStore } from '@/stores/wallet';
 
 import AccountSettingsOption from './Option.vue';
 
@@ -53,8 +53,7 @@ const props = withDefaults(
     disabled: false,
   }
 );
-
-const store = requireAppStore();
+const walletStore = useWalletStore();
 
 const { t, dayjsLocale } = useTranslation();
 
@@ -90,19 +89,19 @@ onUnmounted(() => {
 });
 
 const model = computed({
-  get: () => store.state.wallet.transactions.isSignTxDialogDisabled,
+  get: () => walletStore.isSignTxDialogDisabled,
   set: (value: boolean) => {
-    store.commit.wallet.transactions.setSignTxDialogDisabled(value);
+    walletStore.setSignTxDialogDisabled(value);
 
     if (!value) {
-      store.dispatch.wallet.account.resetAccountPassphrase(store.state.wallet.account.address);
+      walletStore.resetAccountPassphrase(walletStore.address);
     }
   },
 });
 
 const passwordTimeoutModel = computed<PassphraseTimeout>({
   get: () => {
-    const currentTimeout = store.state.wallet.account.accountPasswordTimeout;
+    const currentTimeout = walletStore.accountPasswordTimeout;
     const key = (Object.keys(PassphraseTimeoutDuration) as PassphraseTimeout[]).find(
       (durationKey) => PassphraseTimeoutDuration[durationKey] === currentTimeout
     );
@@ -111,18 +110,18 @@ const passwordTimeoutModel = computed<PassphraseTimeout>({
   },
   set: (name) => {
     const duration = PassphraseTimeoutDuration[name] ?? DefaultPassphraseTimeout;
-    store.commit.wallet.account.setPasswordTimeout(duration);
+    walletStore.setPasswordTimeout(duration);
   },
 });
 
 const passwordResetDate = computed<Nullable<string>>(() => {
-  const accountTimestamp = store.state.wallet.account.accountPasswordTimestamp[store.state.wallet.account.address];
+  const accountTimestamp = walletStore.accountPasswordTimestamp[walletStore.address];
 
   if (!accountTimestamp || !timestamp.value) {
     return null;
   }
 
-  const diff = accountTimestamp + store.state.wallet.account.accountPasswordTimeout - timestamp.value;
+  const diff = accountTimestamp + walletStore.accountPasswordTimeout - timestamp.value;
 
   return dayjs.duration(diff).locale(dayjsLocale.value).humanize();
 });

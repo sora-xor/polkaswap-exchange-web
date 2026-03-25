@@ -150,7 +150,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     this.addTransactionToProgress(id);
   }
 
-  async beforeSign(id: string, ...args: any[]): Promise<void> {
+  async beforeSign(id: string, ...args: Parameters<BeforeTransactionSign>): Promise<void> {
     const tx = this.getTransaction(id);
 
     if (!tx) throw new Error(`Transaction not found: ${id}`);

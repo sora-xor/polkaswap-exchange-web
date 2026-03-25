@@ -22,8 +22,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 
+import { FontSizeRate, FontWeightRate } from '@/consts';
 const FormattedAmount = components.FormattedAmount;
 const InfoLine = components.InfoLine;
 
@@ -44,8 +45,8 @@ const props = withDefaults(
   }
 );
 
-const fontSize = WALLET_CONSTS.FontSizeRate.MEDIUM;
-const fontWeight = WALLET_CONSTS.FontWeightRate.SMALL;
+const fontSize = FontSizeRate.MEDIUM;
+const fontWeight = FontWeightRate.SMALL;
 
 const isPercentSymbol = computed(() => props.symbol === '%');
 const firstSymbol = computed(() => (isPercentSymbol.value ? props.symbol : ''));

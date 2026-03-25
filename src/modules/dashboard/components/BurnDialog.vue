@@ -49,7 +49,8 @@
 <script lang="ts" setup>
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, components } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue';
 
 import { Components, HundredNumber, ObjectInit, ZeroStringValue } from '@/consts';
@@ -58,7 +59,8 @@ import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
 import { isMaxButtonAvailable } from '@/utils';
 
 import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
@@ -85,6 +87,8 @@ const props = withDefaults(
 const { t } = useTranslation();
 const { loading, withNotifications } = useTransaction();
 const { Zero, getFPNumber, getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
+const settingsStore = useSettingsStore();
+const assetsStore = useAssetsStore();
 
 const isVisible = defineModel<boolean>('visible', { default: false });
 const value = ref('');
@@ -95,8 +99,8 @@ const asset = computed(() => props.asset);
 const editableFiat = computed(() => props.editableFiat);
 const balance = computed(() => props.balance);
 
-const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject | undefined);
-const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject | undefined);
+const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
 
 const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.Burn] ?? ZeroStringValue);
 const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));

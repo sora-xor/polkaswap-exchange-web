@@ -5,13 +5,13 @@ import { defineStore } from 'pinia';
 
 import { ZeroStringValue } from '@/consts';
 import type { AssetsState, BridgeRegisteredAsset } from '@/stores/assets/types';
+import { useBridgeStore } from '@/stores/bridge';
 import { useWalletStore } from '@/stores/wallet';
 import { useWeb3Store } from '@/stores/web3';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import ethersUtil from '@/utils/ethers-util';
-import { requireAppStore } from '@/utils/app-store';
 
 import type { Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
@@ -88,8 +88,8 @@ const fetchSubRegisteredAssets = async (
 const updateEthAssetsData = async (
   assets: Record<string, BridgeRegisteredAsset>
 ): Promise<Record<string, BridgeRegisteredAsset>> => {
-  const store = requireAppStore();
-  const { isValidNetwork } = store.getters.web3;
+  const web3Store = useWeb3Store();
+  const { isValidNetwork } = web3Store;
 
   if (!isValidNetwork) return assets;
 
@@ -98,7 +98,7 @@ const updateEthAssetsData = async (
       const asset = { ...assetData };
 
       if (!asset.address) {
-        asset.address = await store.dispatch.web3.getEvmTokenAddressByAssetId(soraAddress);
+        asset.address = await web3Store.getEvmTokenAddressByAssetId(soraAddress);
         asset.decimals = await ethersUtil.getTokenDecimals(asset.address);
       }
 
@@ -113,8 +113,8 @@ const updateSubAssetsData = async (
   assets: Record<string, BridgeRegisteredAsset>,
   network: Nullable<SubNetwork>
 ): Promise<Record<string, BridgeRegisteredAsset>> => {
-  const store = requireAppStore();
-  const { destinationNetwork, soraParachain, parachain } = store.state.bridge.subBridgeConnector;
+  const bridgeStore = useBridgeStore();
+  const { destinationNetwork, soraParachain, parachain } = bridgeStore.subBridgeConnector;
 
   const hasParachainApi =
     Boolean(subBridgeApi?.soraParachainApi?.getAssetMulilocation) &&

@@ -4,6 +4,7 @@
     :teleport-to="null"
     absolute
     :lock-scroll="false"
+    :focus-trap="isSwapPage"
     :show-overlay="isSwapPage"
     :root-class="modalRootClass"
     modal-class="disclaimer-modal__dialog"
@@ -342,25 +343,25 @@ onBeforeUnmount(() => {
   }
 }
 
-.disclaimer-modal {
+:global(.disclaimer-modal) {
   justify-content: flex-end;
   align-items: flex-start;
   padding: $inner-spacing-medium;
 }
 
-.disclaimer-modal--nonblocking {
+:global(.disclaimer-modal--nonblocking) {
   pointer-events: none;
-
-  :deep(.s-modal__modal) {
-    pointer-events: none;
-  }
-
-  .disclaimer {
-    pointer-events: auto;
-  }
 }
 
-.disclaimer-modal__dialog {
+:global(.disclaimer-modal--nonblocking .s-modal__modal) {
+  pointer-events: none;
+}
+
+:global(.disclaimer-modal--nonblocking .disclaimer) {
+  pointer-events: auto;
+}
+
+:global(.disclaimer-modal__dialog) {
   width: 100%;
   max-width: 100%;
   display: flex;
@@ -368,11 +369,11 @@ onBeforeUnmount(() => {
 }
 
 @include tablet(true) {
-  .disclaimer-modal {
+  :global(.disclaimer-modal) {
     padding: $inner-spacing-medium;
   }
 
-  .disclaimer-modal__dialog {
+  :global(.disclaimer-modal__dialog) {
     justify-content: flex-start;
   }
 }

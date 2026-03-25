@@ -2,9 +2,8 @@ import { FPNumber, Operation, type NetworkFeesObject } from '@sora-substrate/sdk
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed } from 'vue';
 
+import { useWalletStore } from '@/stores/wallet';
 import { NetworkFeeWarningOptions } from '../consts';
-import { getWalletStore } from '../store/instance';
-import type { AccountAssetsTable } from '@/types/common';
 
 import { useNumberFormatter } from './useNumberFormatter';
 
@@ -17,14 +16,12 @@ const PREDEFINED_OPERATIONS = [
 ];
 
 export function useNetworkFeeWarning() {
-  const store = getWalletStore();
+  const walletStore = useWalletStore();
   const { Zero, getFPNumberFromCodec } = useNumberFormatter();
 
-  const networkFees = computed<NetworkFeesObject>(() => store.state.wallet.settings.networkFees);
-  const allowFeePopup = computed<boolean>(() => store.state.wallet.settings.allowFeePopup);
-  const accountAssetsAddressTable = computed<AccountAssetsTable>(
-    () => store.getters['wallet/account/accountAssetsAddressTable']
-  );
+  const networkFees = computed<NetworkFeesObject>(() => walletStore.networkFees);
+  const allowFeePopup = computed<boolean>(() => walletStore.allowFeePopup);
+  const accountAssetsAddressTable = computed(() => walletStore.accountAssetsAddressTable);
 
   const xorBalance = computed(() => {
     const accountXor = accountAssetsAddressTable.value[XOR.address];

@@ -101,10 +101,10 @@
 import { api, FPNumber } from '@sora-substrate/sdk';
 import isEmpty from 'lodash/fp/isEmpty';
 import { defineComponent } from 'vue';
-import { mapGetters, mapMutations, mapState } from 'vuex';
 import draggable from 'vuedraggable';
 
 import { useRouterStore } from '@/stores/router';
+import { useWalletStore } from '@/stores/wallet';
 
 import { RouteNames, HiddenValue, WalletFilteringOptions } from '../consts';
 
@@ -116,7 +116,7 @@ import TranslationMixin from './mixins/TranslationMixin';
 import WalletAssetsHeadline from './WalletAssetsHeadline.vue';
 
 import type { WalletAssetFilters, WalletPermissions } from '../consts';
-import type { Route } from '../store/router/types';
+import type { Route } from '@/stores/router/types';
 import type { AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 type DraggableMoveEvent<T> = {
   draggedContext: { element: T };
@@ -133,9 +133,27 @@ export default defineComponent({
   mixins: [LoadingMixin, FormattedAmountMixin, TranslationMixin],
   emits: ['swap'],
   computed: {
-    ...mapState('wallet/account', ['accountAssets']),
-    ...mapState('wallet/settings', ['shouldBalanceBeHidden', 'permissions', 'filters']),
-    ...mapGetters('wallet/account', ['whitelist', 'isAssetPinned']),
+    walletStore(this: any) {
+      return useWalletStore(this.$pinia);
+    },
+    accountAssets(this: any) {
+      return this.walletStore.accountAssets;
+    },
+    shouldBalanceBeHidden(this: any) {
+      return this.walletStore.shouldBalanceBeHidden;
+    },
+    permissions(this: any) {
+      return this.walletStore.permissions;
+    },
+    filters(this: any) {
+      return this.walletStore.filters;
+    },
+    whitelist(this: any) {
+      return this.walletStore.whitelist;
+    },
+    isAssetPinned(this: any) {
+      return this.walletStore.isAssetPinned;
+    },
     routerStore(this: any) {
       return useRouterStore(this.$pinia);
     },
@@ -203,12 +221,18 @@ export default defineComponent({
     },
   },
   methods: {
-    ...mapMutations('wallet/account', [
-      'setAccountAssets',
-      'setPinnedAsset',
-      'removePinnedAsset',
-      'setMultiplePinnedAssets',
-    ]),
+    setAccountAssets(this: any, assets: AccountAsset[]): void {
+      this.walletStore.setAccountAssets(assets);
+    },
+    setPinnedAsset(this: any, asset: AccountAsset): void {
+      this.walletStore.setPinnedAsset(asset);
+    },
+    removePinnedAsset(this: any, asset: AccountAsset): void {
+      this.walletStore.removePinnedAsset(asset);
+    },
+    setMultiplePinnedAssets(this: any, assetAddresses: string[]): void {
+      this.walletStore.setMultiplePinnedAssets(assetAddresses);
+    },
     navigate(this: any, options: Route): void {
       this.routerStore.navigate(options);
     },

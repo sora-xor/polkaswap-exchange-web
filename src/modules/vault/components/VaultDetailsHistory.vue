@@ -27,16 +27,16 @@
 </template>
 
 <script lang="ts" setup>
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
-import { ObjectInit } from '@/consts';
+import { HiddenValue, ObjectInit, PaginationButton } from '@/consts';
 import { fetchVaultEvents } from '@/indexer/queries/vault/events';
 import { VaultEventTypes } from '@/modules/vault/consts';
 import type { VaultEvent, VaultEventType } from '@/modules/vault/types';
-import store from '@/store';
+import { useWalletStore } from '@/stores/wallet';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -59,7 +59,6 @@ const pageAmount = 5;
 const fetchAmount = 5;
 const updateInterval = 24_000;
 const DateFormat = 'll LT';
-const HiddenValue = WALLET_CONSTS.HiddenValue;
 
 const currentPage = ref(1);
 const totalCount = ref(0);
@@ -68,9 +67,10 @@ const intervalId = ref<Nullable<ReturnType<typeof setInterval>>>(null);
 
 const { t, formatDate } = useTranslation();
 const { loading, withLoading } = useLoading();
+const walletStore = useWalletStore();
 
 const loadingState = computed(() => loading.value);
-const shouldBalanceBeHidden = computed(() => store.state.wallet.settings.shouldBalanceBeHidden ?? false);
+const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
 const lockedAssetSymbol = computed(() => props.lockedAsset?.symbol ?? '');
 const debtAssetSymbol = computed(() => props.debtAsset?.symbol ?? '');
 
@@ -173,15 +173,15 @@ onBeforeUnmount(() => {
   resetDataSubscription();
 });
 
-const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
+const handlePaginationClick = (button: PaginationButton) => {
   switch (button) {
-    case WALLET_CONSTS.PaginationButton.Prev:
+    case PaginationButton.Prev:
       currentPage.value = Math.max(currentPage.value - 1, 1);
       break;
-    case WALLET_CONSTS.PaginationButton.Next:
+    case PaginationButton.Next:
       currentPage.value = Math.min(currentPage.value + 1, lastPage.value);
       break;
-    case WALLET_CONSTS.PaginationButton.Last:
+    case PaginationButton.Last:
       currentPage.value = lastPage.value;
       break;
     default:

@@ -191,19 +191,20 @@
 
 <script lang="ts" setup>
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, components } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import StatsSupplyChart from '@/components/shared/Widget/SupplyChart.vue';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
-import { FontSizeRate as WalletFontSizeRate, FontWeightRate as WalletFontWeightRate } from '@wallet/src/consts';
+import { FontSizeRate as WalletFontSizeRate, FontWeightRate as WalletFontWeightRate } from '@/shims/wallet-consts';
 import { BreakpointClass } from '@/consts/layout';
 import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import router, { lazyComponent } from '@/router';
-import store from '@/store';
+import { useDashboardStore } from '@/stores/dashboard';
 import { waitUntil } from '@/utils';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
@@ -245,10 +246,11 @@ const route = useRoute();
 const { t } = useTranslation();
 const { formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
 const { isLoggedIn } = useInternalConnect();
+const dashboardStore = useDashboardStore();
 const settingsStore = useSettingsStore();
 
 const responsiveClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
-const assets = computed(() => store.getters.dashboard.ownedAssets as OwnedAsset[]);
+const assets = computed(() => dashboardStore.ownedAssets as OwnedAsset[]);
 
 const balance = ref<CodecString>(ZeroStringValue);
 const supply = ref<CodecString>(ZeroStringValue);

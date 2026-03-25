@@ -12,47 +12,19 @@ const mockAccount = {
   source: 'polkadot-js',
 } as unknown as WALLET_TYPES.PolkadotJsAccount;
 
-const storeMock = {
-  state: {
-    web3: {
-      subAccountDialogVisibility: true,
-    },
-    bridge: {
-      subBridgeConnector: {
-        accountApi: { foo: 'bar' },
-      },
-    },
-  },
-  getters: {
-    web3: {
-      subAccount: mockAccount,
-    },
-  },
-  commit: {
-    web3: {
-      setSubAccountDialogVisibility: vi.fn(),
-    },
-  },
-  dispatch: {
-    web3: {
-      resetSubAccount: logoutSpy,
-      changeSubAccountName: vi.fn(),
-      selectSubAccount: selectSpy,
-    },
-  },
-};
-
-vi.mock('@/store', () => ({
-  default: storeMock,
-}));
-
 const bridgeStorePiniaMock = {
-  connector: storeMock.state.bridge.subBridgeConnector,
+  connector: {
+    accountApi: { foo: 'bar' },
+  },
 };
 
 const web3StorePiniaMock = {
   subAccountDialogVisibility: true,
   subAccount: mockAccount,
+  setSubAccountDialogVisibility: vi.fn(),
+  resetSubAccount: logoutSpy,
+  changeSubAccountName: vi.fn(),
+  selectSubAccount: selectSpy,
 };
 
 vi.mock('@/stores/bridge', () => ({
@@ -98,12 +70,12 @@ const factory = () => mount(SelectSubAccount);
 describe('BridgeSelectSubAccount', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
-    storeMock.state.web3.subAccountDialogVisibility = true;
-    storeMock.dispatch.web3.resetSubAccount = logoutSpy;
-    storeMock.dispatch.web3.selectSubAccount = selectSpy;
-    storeMock.commit.web3.setSubAccountDialogVisibility = vi.fn();
     web3StorePiniaMock.subAccount = mockAccount;
     web3StorePiniaMock.subAccountDialogVisibility = true;
+    web3StorePiniaMock.resetSubAccount = logoutSpy;
+    web3StorePiniaMock.changeSubAccountName = vi.fn();
+    web3StorePiniaMock.selectSubAccount = selectSpy;
+    web3StorePiniaMock.setSubAccountDialogVisibility = vi.fn();
 
     ({ default: SelectSubAccount } = await import('@/components/pages/Bridge/SelectSubAccount.vue'));
   });
@@ -128,6 +100,6 @@ describe('BridgeSelectSubAccount', () => {
     await wrapper.vm.login(mockAccount);
 
     expect(selectSpy).toHaveBeenCalledWith(mockAccount);
-    expect(storeMock.commit.web3.setSubAccountDialogVisibility).toHaveBeenCalledWith(false);
+    expect(web3StorePiniaMock.setSubAccountDialogVisibility).toHaveBeenCalledWith(false);
   });
 });

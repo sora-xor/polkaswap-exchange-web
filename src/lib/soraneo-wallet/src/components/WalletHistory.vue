@@ -45,9 +45,9 @@ import { TransactionStatus } from '@sora-substrate/sdk';
 import debounce from 'lodash/fp/debounce';
 import isEmpty from 'lodash/fp/isEmpty';
 import { defineComponent, type PropType } from 'vue';
-import { mapActions, mapMutations, mapState } from 'vuex';
 
 import { useRouterStore } from '@/stores/router';
+import { useWalletStore } from '@/stores/wallet';
 
 import { RouteNames, PaginationButton } from '../consts';
 import { getCurrentIndexer } from '../services/indexer';
@@ -60,7 +60,7 @@ import LoadingMixin from './mixins/LoadingMixin';
 import PaginationSearchMixin from './mixins/PaginationSearchMixin';
 import TransactionMixin from './mixins/TransactionMixin';
 
-import type { Route } from '../store/router/types';
+import type { Route } from '@/stores/router/types';
 import type { ExternalHistoryParams, HistoryQuery } from '../types/history';
 import type { History, AccountHistory, HistoryItem } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
@@ -89,13 +89,24 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/account', ['assets']),
-    ...mapState('wallet/transactions', [
-      'history',
-      'externalHistory',
-      'externalHistoryUpdates',
-      'externalHistoryTotal',
-    ]),
+    assets(this: any) {
+      return useWalletStore(this.$pinia).assets;
+    },
+    history(this: any) {
+      return useWalletStore(this.$pinia).history;
+    },
+    externalHistory(this: any) {
+      return useWalletStore(this.$pinia).externalHistory;
+    },
+    externalHistoryUpdates(this: any) {
+      return useWalletStore(this.$pinia).externalHistoryUpdates;
+    },
+    externalHistoryTotal(this: any) {
+      return useWalletStore(this.$pinia).externalHistoryTotal;
+    },
+    account(this: any) {
+      return useWalletStore(this.$pinia).account;
+    },
     routerStore(this: any) {
       return useRouterStore(this.$pinia);
     },
@@ -202,13 +213,21 @@ export default defineComponent({
     this.reset();
   },
   methods: {
-    ...mapMutations('wallet/transactions', [
-      'resetExternalHistory',
-      'saveExternalHistoryUpdates',
-      'getHistory',
-      'setTxDetailsId',
-    ]),
-    ...mapActions('wallet/transactions', ['getExternalHistory']),
+    resetExternalHistory(this: any) {
+      return useWalletStore(this.$pinia).resetExternalHistory();
+    },
+    saveExternalHistoryUpdates(this: any, flag: boolean) {
+      return useWalletStore(this.$pinia).saveExternalHistoryUpdates(flag);
+    },
+    getHistory(this: any) {
+      return useWalletStore(this.$pinia).getHistory();
+    },
+    setTxDetailsId(this: any, id: string) {
+      return useWalletStore(this.$pinia).setTxDetailsId(id);
+    },
+    getExternalHistory(this: any, params: ExternalHistoryParams) {
+      return useWalletStore(this.$pinia).getExternalHistory(params);
+    },
     navigate(this: any, options: Route): void {
       this.routerStore.navigate(options);
     },

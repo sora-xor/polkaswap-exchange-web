@@ -2,7 +2,8 @@ import { FPNumber, type CodecString } from '@sora-substrate/sdk';
 import { BalanceType, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed } from 'vue';
 
-import store from '@/store';
+import pinia from '@/plugins/pinia';
+import { useWalletStore } from '@/stores/wallet';
 
 import { useNumberFormatter } from './useNumberFormatter';
 
@@ -14,7 +15,8 @@ import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types
  */
 export function useFormattedAmount() {
   const numberFormatter = useNumberFormatter();
-  const fiatPriceObject = computed(() => store.state.wallet.account.fiatPriceObject);
+  const walletStore = useWalletStore(pinia);
+  const fiatPriceObject = computed(() => walletStore.fiatPriceObject);
 
   const getAssetFiatPrice = (asset?: Nullable<Asset | AccountAsset>): Nullable<CodecString> => {
     if (!asset?.address) return null;

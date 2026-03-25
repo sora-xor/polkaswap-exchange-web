@@ -199,7 +199,6 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import dayjs from 'dayjs';
 import debounce from 'lodash/fp/debounce';
 import { defineComponent } from 'vue';
-import { mapActions } from 'vuex';
 
 import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
@@ -223,8 +222,8 @@ import TokenLogo from './TokenLogo.vue';
 import WalletBase from './WalletBase.vue';
 import WalletFee from './WalletFee.vue';
 
-import type { VestedTransferFeeParams, VestedTransferParams } from '../store/account/types';
-import type { Route } from '../store/router/types';
+import type { VestedTransferFeeParams, VestedTransferParams } from '@/stores/wallet/account/types';
+import type { Route } from '@/stores/router/types';
 import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountAsset, AccountBalance, UnlockPeriodDays } from '@sora-substrate/sdk/build/assets/types';
 import type { Subscription } from 'rxjs';
@@ -438,7 +437,15 @@ export default defineComponent({
     this.resetAssetBalanceSubscription();
   },
   methods: {
-    ...mapActions('wallet/account', ['transfer', 'vestedTransfer', 'getVestedTransferFee']),
+    transfer(this: any, payload: { to: string; amount: string }) {
+      return this.walletStore.transfer(payload);
+    },
+    vestedTransfer(this: any, payload: VestedTransferParams) {
+      return this.walletStore.vestedTransfer(payload);
+    },
+    getVestedTransferFee(this: any, payload: VestedTransferFeeParams) {
+      return this.walletStore.getVestedTransferFee(payload);
+    },
     navigate(this: any, options: Route): void {
       this.routerStore.navigate(options);
     },

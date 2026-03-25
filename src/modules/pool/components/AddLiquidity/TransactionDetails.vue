@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, toRef } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -53,7 +53,7 @@ import { Components } from '@/consts';
 import { usePoolTokenPair } from '@/modules/pool/composables/usePoolTokenPair';
 import { usePoolApy } from '@/modules/pool/composables/usePoolApy';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { usePoolStore } from '@/stores/pool';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
@@ -71,9 +71,10 @@ const { t } = useTranslation();
 const poolTokenPair = usePoolTokenPair();
 const { getFiatAmountByCodecString, getFiatAmountByFPNumber, getFPNumberFromCodec, Hundred } = useFormattedAmount();
 const { getPoolApy } = usePoolApy();
+const poolStore = usePoolStore();
 
-const liquidityInfo = computed(() => store.getters.addLiquidity.liquidityInfo as Nullable<AccountLiquidity>);
-const shareOfPool = computed(() => store.getters.addLiquidity.shareOfPool as string);
+const liquidityInfo = computed(() => poolStore.addLiquidityLiquidityInfo as Nullable<AccountLiquidity>);
+const shareOfPool = computed(() => poolStore.addLiquidityShareOfPool);
 
 const getTokenPosition = (
   liquidityInfoBalance: string | undefined,

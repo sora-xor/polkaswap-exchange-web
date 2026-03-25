@@ -1,5 +1,6 @@
 import { defineComponent } from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../../api';
 import { AppWallet, AccountActionTypes } from '../../consts';
@@ -24,10 +25,17 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapGetters('wallet/account', ['isConnectedAccount']),
+    isConnectedAccount(this: any) {
+      return useWalletStore(this.$pinia).isConnectedAccount;
+    },
   },
   methods: {
-    ...mapActions('wallet/account', ['renameAccount', 'logoutAccount']),
+    renameAccount(this: any, payload: { address: string; name: string }) {
+      return useWalletStore(this.$pinia).renameAccount(payload);
+    },
+    logoutAccount(this: any) {
+      return useWalletStore(this.$pinia).logout();
+    },
     handleAccountAction(this: any, actionType: string, account: PolkadotJsAccount): void {
       this.selectedAccount = { ...account };
 

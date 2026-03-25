@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-import type { IndexerType } from '@wallet/lib/consts';
+import type { IndexerType } from '@/lib/soraneo-wallet/src/consts';
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({

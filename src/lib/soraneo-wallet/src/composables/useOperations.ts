@@ -3,7 +3,7 @@ import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { HiddenValue, accountIdBasedOperations } from '@/consts';
-import { getWalletStore } from '../store/instance';
+import { useWalletStore } from '@/stores/wallet';
 import type { PolkadotJsAccount } from '@/types/common';
 import { formatAddress, groupRewardsByAssetsList } from '@/util';
 
@@ -42,11 +42,11 @@ const ORDER_BOOK_OPERATIONS = [
 ];
 
 export function useOperations() {
-  const store = getWalletStore();
+  const walletStore = useWalletStore();
   const { t } = useTranslation();
   const { formatStringValue } = useNumberFormatter();
 
-  const account = computed<PolkadotJsAccount>(() => store.getters['wallet/account/account'] as PolkadotJsAccount);
+  const account = computed<PolkadotJsAccount>(() => walletStore.account as PolkadotJsAccount);
 
   const getTitle = (value?: History): string => {
     if (!value || !Object.values(Operation).includes(value.type as Operation)) {

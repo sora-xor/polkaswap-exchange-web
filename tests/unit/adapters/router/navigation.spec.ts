@@ -1,12 +1,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-let storeShape: any = null;
+const routerStoreState = vi.hoisted(() => ({
+  navigate: undefined as ReturnType<typeof vi.fn> | undefined,
+  setLoading: undefined as ReturnType<typeof vi.fn> | undefined,
+  setRoute: undefined as ReturnType<typeof vi.fn> | undefined,
+}));
 
-vi.mock('@/utils/app-store', () => ({
-  withAppStore: (callback: (store: any) => unknown) => {
-    if (!storeShape) return undefined;
-    return callback(storeShape);
-  },
+vi.mock('@/stores/router', () => ({
+  useRouterStore: () => routerStoreState,
 }));
 
 import { setLegacyRouterLoading, syncLegacyRoute } from '@/adapters/router/navigation';
@@ -15,19 +16,15 @@ const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
 afterEach(() => {
   warnSpy.mockClear();
-  storeShape = null;
+  routerStoreState.setRoute = undefined;
+  routerStoreState.navigate = undefined;
+  routerStoreState.setLoading = undefined;
 });
 
 describe('router legacy adapter', () => {
-  it('syncLegacyRoute updates router module when mutation exists', () => {
+  it('syncLegacyRoute updates the Pinia router store when setRoute exists', () => {
     const setRoute = vi.fn();
-    storeShape = {
-      commit: {
-        router: {
-          setRoute,
-        },
-      },
-    };
+    routerStoreState.setRoute = setRoute;
 
     syncLegacyRoute({ prev: null, current: 'swap', currentParams: {}, prevParams: {} });
 
@@ -35,23 +32,15 @@ describe('router legacy adapter', () => {
     expect(warnSpy).not.toHaveBeenCalled();
   });
 
-  it('syncLegacyRoute warns when mutation missing', () => {
-    storeShape = { commit: { router: {} } };
-
+  it('syncLegacyRoute warns when route setters are missing', () => {
     syncLegacyRoute({ prev: null, current: 'swap', currentParams: {}, prevParams: {} });
 
     expect(warnSpy).toHaveBeenCalledWith('[router-adapter] router.setRoute missing');
   });
 
-  it('syncLegacyRoute falls back to legacy navigate mutation', () => {
+  it('syncLegacyRoute falls back to navigate when setRoute is unavailable', () => {
     const navigate = vi.fn();
-    storeShape = {
-      commit: {
-        router: {
-          navigate,
-        },
-      },
-    };
+    routerStoreState.navigate = navigate;
 
     syncLegacyRoute({ prev: null, current: 'swap', currentParams: { a: 1 }, prevParams: {} });
 
@@ -59,37 +48,18 @@ describe('router legacy adapter', () => {
     expect(warnSpy).not.toHaveBeenCalled();
   });
 
-  it('setLegacyRouterLoading updates loading flag', () => {
+  it('setLegacyRouterLoading updates the Pinia loading flag', () => {
     const setLoading = vi.fn();
-    storeShape = {
-      commit: {
-        router: {
-          setLoading,
-        },
-      },
-    };
+    routerStoreState.setLoading = setLoading;
 
     setLegacyRouterLoading(true);
 
     expect(setLoading).toHaveBeenCalledWith(true);
   });
 
-  it('setLegacyRouterLoading falls back to wallet router loading mutation', () => {
-    const setLoading = vi.fn();
-    storeShape = {
-      commit: {
-        router: {},
-        wallet: {
-          router: {
-            setLoading,
-          },
-        },
-      },
-    };
-
+  it('setLegacyRouterLoading warns when loading setter is missing', () => {
     setLegacyRouterLoading(true);
 
-    expect(setLoading).toHaveBeenCalledWith(true);
-    expect(warnSpy).not.toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledWith('[router-adapter] router.setLoading missing');
   });
 });

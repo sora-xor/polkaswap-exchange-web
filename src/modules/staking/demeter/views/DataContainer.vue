@@ -9,18 +9,22 @@
 
 <script lang="ts" setup>
 import { useSubscriptions } from '@/composables/useSubscriptions';
-import store from '@/store';
+import { useDemeterFarmingStore } from '@/stores/demeterFarming';
+import { useStakingStore } from '@/stores/staking';
 
 defineOptions({
   inheritAttrs: false,
 });
 
-const subscribeOnPools = () => store.dispatch.demeterFarming.subscribeOnPools();
-const subscribeOnTokens = () => store.dispatch.demeterFarming.subscribeOnTokens();
-const subscribeOnAccountPools = () => store.dispatch.demeterFarming.subscribeOnAccountPools();
-const unsubscribeDemeter = () => store.dispatch.demeterFarming.unsubscribeUpdates();
-const getValidatorsInfo = () => store.dispatch.staking.getValidatorsInfo();
-const getStakingInfo = () => store.dispatch.staking.getStakingInfo();
+const demeterFarmingStore = useDemeterFarmingStore();
+const stakingStore = useStakingStore();
+
+const subscribeOnPools = () => demeterFarmingStore.subscribeOnPools();
+const subscribeOnTokens = () => demeterFarmingStore.subscribeOnTokens();
+const subscribeOnAccountPools = () => demeterFarmingStore.subscribeOnAccountPools();
+const unsubscribeDemeter = () => demeterFarmingStore.unsubscribeUpdates();
+const getValidatorsInfo = () => stakingStore.getValidatorsInfo();
+const getStakingInfo = () => stakingStore.getStakingInfo();
 
 const { subscriptionsDataLoading } = useSubscriptions({
   startSubscriptions: [subscribeOnPools, subscribeOnTokens, subscribeOnAccountPools, getValidatorsInfo, getStakingInfo],

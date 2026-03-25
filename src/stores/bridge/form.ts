@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { FPNumber } from '@sora-substrate/sdk';
 
 import { ZeroStringValue } from '@/consts';
+import { useBridgeStore } from '@/stores/bridge';
 import type { Nullable } from '@/types/common';
 import { trackEvent } from '@/utils/telemetry';
 
@@ -181,29 +182,19 @@ export const useBridgeFormStore = defineStore('bridgeForm', {
       }
     },
     async refreshExternalBalance(): Promise<void> {
-      const bridgeDispatch = getLegacyBridgeDispatch();
-      if (!bridgeDispatch?.updateExternalBalance) return;
-      await bridgeDispatch.updateExternalBalance();
+      await useBridgeStore().updateExternalBalance();
     },
     async refreshExternalMinBalance(): Promise<void> {
-      const bridgeDispatch = getLegacyBridgeDispatch();
-      if (!bridgeDispatch?.updateExternalMinBalance) return;
-      await bridgeDispatch.updateExternalMinBalance();
+      await useBridgeStore().updateExternalMinBalance();
     },
     async refreshExternalTransferFee(): Promise<void> {
-      const bridgeDispatch = getLegacyBridgeDispatch();
-      if (!bridgeDispatch?.updateExternalTransferFee) return;
-      await bridgeDispatch.updateExternalTransferFee();
+      await useBridgeStore().updateExternalTransferFee();
     },
     async refreshExternalNetworkFee(): Promise<void> {
-      const bridgeDispatch = getLegacyBridgeDispatch();
-      if (!bridgeDispatch?.updateExternalNetworkFee) return;
-      await bridgeDispatch.updateExternalNetworkFee();
+      await useBridgeStore().updateExternalNetworkFee();
     },
     async refreshFeesAndLockedFunds(): Promise<void> {
-      const bridgeDispatch = getLegacyBridgeDispatch();
-      if (!bridgeDispatch?.updateFeesAndLockedFunds) return;
-      await bridgeDispatch.updateFeesAndLockedFunds();
+      await useBridgeStore().updateFeesAndLockedFunds();
     },
   },
 });

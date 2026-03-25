@@ -7,15 +7,11 @@ import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types
 import { ETH } from '@sora-substrate/sdk/build/assets/consts';
 
 const hoisted = vi.hoisted(() => {
-  const store = {
-    state: {
-      moonpay: {
-        confirmationVisibility: true,
-      },
-    },
-    getters: {
-      libraryTheme: 'light',
-    },
+  const moonpayStore = {
+    confirmationVisibility: true,
+  };
+  const settingsStore = {
+    libraryTheme: 'light',
   };
   const bridgeTransactionRef: { value: EthHistory | null } = { value: null };
   const getAssetMock = vi.fn();
@@ -23,13 +19,14 @@ const hoisted = vi.hoisted(() => {
   const setConfirmationVisibilityMock = vi.fn();
 
   return {
-    store,
+    moonpayStore,
+    settingsStore,
     bridgeTransactionRef,
     getAssetMock,
     startBridgeMock,
     setConfirmationVisibilityMock,
     reset() {
-      store.state.moonpay.confirmationVisibility = true;
+      moonpayStore.confirmationVisibility = true;
       bridgeTransactionRef.value = null;
       getAssetMock.mockReset();
       startBridgeMock.mockReset();
@@ -38,14 +35,18 @@ const hoisted = vi.hoisted(() => {
   };
 });
 
-const storeMock = hoisted.store;
+const moonpayStoreMock = hoisted.moonpayStore;
 const bridgeTransactionRef = hoisted.bridgeTransactionRef;
 const getAssetMock = hoisted.getAssetMock;
 const startBridgeMock = hoisted.startBridgeMock;
 const setConfirmationVisibilityMock = hoisted.setConfirmationVisibilityMock;
 
-vi.mock('@/store', () => ({
-  default: hoisted.store,
+vi.mock('@/stores/moonpay', () => ({
+  useMoonpayStore: () => hoisted.moonpayStore,
+}));
+
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => hoisted.settingsStore,
 }));
 
 vi.mock('@/router', () => ({
@@ -126,7 +127,7 @@ const createWrapper = () =>
 beforeEach(() => {
   vi.clearAllMocks();
   hoisted.reset();
-  storeMock.state.moonpay.confirmationVisibility = true;
+  moonpayStoreMock.confirmationVisibility = true;
   bridgeTransactionRef.value = {
     type: 'EthBridgeIncoming',
     amount: '10',

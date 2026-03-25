@@ -6,7 +6,6 @@
     <s-popover-panel
       v-model:show="visible"
       :visible-arrow="false"
-      :disabled="disabled"
       placement="bottom"
       popper-class="transaction-details-popper"
       trigger="click"

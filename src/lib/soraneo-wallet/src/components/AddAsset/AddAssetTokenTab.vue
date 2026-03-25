@@ -37,9 +37,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapGetters, mapState } from 'vuex';
 
 import { FilterOptions } from '@/types/common';
+import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../../api';
 import { AddAssetTabs } from '../../consts';
@@ -71,8 +71,12 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/settings', ['assetsFilter']),
-    ...mapGetters('wallet/account', ['whitelist']),
+    assetsFilter(this: any) {
+      return useWalletStore(this.$pinia).assetsFilter;
+    },
+    whitelist(this: any) {
+      return useWalletStore(this.$pinia).whitelist;
+    },
     notAddedAssets(this: any): Asset[] {
       return this.assets.filter(
         (asset: Asset) => !(asset.address in this.accountAssetsAddressTable) && !api.assets.isNft(asset)

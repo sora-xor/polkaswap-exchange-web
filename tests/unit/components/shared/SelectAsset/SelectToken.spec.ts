@@ -259,8 +259,16 @@ vi.mock('@wallet', async () => {
         All: 'All',
       },
     },
-    getAssetsSubset: (value: Asset[]) => value,
   });
+});
+
+vi.mock('@/lib/soraneo-wallet/src/util', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/soraneo-wallet/src/util')>('@/lib/soraneo-wallet/src/util');
+
+  return {
+    ...actual,
+    getAssetsSubset: (value: Asset[]) => value,
+  };
 });
 
 let SelectToken: typeof import('@/components/shared/SelectAsset/SelectToken.vue').default;

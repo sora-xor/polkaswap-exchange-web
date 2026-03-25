@@ -147,7 +147,7 @@ defineExpose({
           class="el-textarea__inner"
           :placeholder="placeholder"
           :disabled="disabled"
-          :readonly="readonly"
+          :readonly="props.readonly"
           :maxlength="maxlength"
           :minlength="minlength"
           :tabindex="tabindex"
@@ -166,7 +166,7 @@ defineExpose({
           :type="type"
           :placeholder="placeholder"
           :disabled="disabled"
-          :readonly="readonly"
+          :readonly="props.readonly"
           :maxlength="maxlength"
           :minlength="minlength"
           :tabindex="tabindex"
@@ -189,7 +189,7 @@ defineExpose({
         v-if="clearable && internalValue"
         class="s-input__clear"
         type="button"
-        :disabled="disabled || readonly"
+        :disabled="disabled || props.readonly"
         @click="clearValue"
       >
         x

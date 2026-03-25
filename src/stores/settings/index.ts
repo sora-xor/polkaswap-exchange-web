@@ -7,26 +7,28 @@ import {
   DefaultSlippageTolerance,
   LiquiditySourceForMarketAlgorithm,
   MarketAlgorithms,
+  type WalletAssetFilters,
+  Language,
+  EditableAlertObject,
 } from '@/consts';
-import type { Language } from '@/consts';
 import { Breakpoint, BreakpointClass } from '@/consts/layout';
-import { Theme } from '@/consts/theme';
+import { Theme, type DesignSystem } from '@/consts/theme';
+import { api, connection } from '@/shims/wallet-api';
+import type { IndexerType, SoraNetwork } from '@/shims/wallet-consts';
 import { getLocale, getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
+import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import { updateDocumentTitle, updateFpNumberLocale } from '@/utils';
 import { NodesConnection } from '@/utils/connection';
 import { toSafeExternalLink } from '@/utils/externalLinks';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 import storage, { settingsStorage } from '@/utils/storage';
-import { requireAppStore } from '@/utils/app-store';
 
 import type { Ad, FeatureFlags, SettingsState } from './types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
-import type { Alert } from '@wallet/lib/types/common';
-import type { Currency, CurrencyFields } from '@wallet/lib/types/currency';
-import { loadWalletCore } from '@/utils/walletCore';
-const { api, connection, WALLET_CONSTS, WALLET_TYPES } = await loadWalletCore();
+import { FilterOptions, type Alert, type IndexerState } from '@/shims/wallet-common-types';
+import type { Currency, CurrencyFields, FiatExchangeRateObject } from '@/shims/wallet-currency-types';
 
 const detectNotificationApiAvailability = (): boolean => typeof Notification !== 'undefined';
 
@@ -43,7 +45,11 @@ const resolveConnectionDownlink = (): number => {
   return typeof connectionLike?.downlink === 'number' ? (connectionLike.downlink as number) : 0;
 };
 
-const getAppStore = requireAppStore;
+const fallbackWalletFilters: WalletAssetFilters = {
+  option: 'All' as WalletAssetFilters['option'],
+  verifiedOnly: false,
+  zeroBalance: false,
+};
 
 const buildInitialState = (): SettingsState => {
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
@@ -127,7 +133,8 @@ export const useSettingsStore = defineStore('settings', {
       return LiquiditySourceForMarketAlgorithm[state.marketAlgorithm];
     },
     moonpayApiKey(): string {
-      return getAppStore().state.wallet.settings.apiKeys.moonpay;
+      const walletStore = useWalletStore();
+      return walletStore.moonpayApiKey;
     },
     moonpayEnabled(): boolean {
       return Boolean(this.moonpayApiKey) && Boolean(this.featureFlags.moonpay);
@@ -161,58 +168,79 @@ export const useSettingsStore = defineStore('settings', {
       return speed >= 1 || !speed;
     },
     libraryTheme(): Nullable<Theme> {
-      return getAppStore().getters.libraryTheme as Nullable<Theme>;
+      const walletStore = useWalletStore();
+      return walletStore.theme ?? Theme.LIGHT;
+    },
+    libraryDesignSystem(): DesignSystem {
+      return { theme: this.libraryTheme ?? Theme.LIGHT };
     },
     exchangeRate(): number {
-      return (getAppStore().getters?.wallet?.settings?.exchangeRate as number) ?? 1;
+      const walletStore = useWalletStore();
+      return walletStore.exchangeRate;
     },
     currencySymbol(): string {
-      return (getAppStore().getters?.wallet?.settings?.currencySymbol as string) ?? '$';
+      const walletStore = useWalletStore();
+      return walletStore.currencySymbol;
     },
     networkFees(): NetworkFeesObject {
-      return (getAppStore().state?.wallet?.settings?.networkFees as NetworkFeesObject) ?? ({} as NetworkFeesObject);
+      const walletStore = useWalletStore();
+      return walletStore.networkFees;
     },
     blockNumber(): number {
-      return getAppStore().state.wallet.settings.blockNumber as number;
+      const walletStore = useWalletStore();
+      return walletStore.blockNumber;
     },
     shouldBalanceBeHidden(): boolean {
-      return Boolean(getAppStore().state.wallet.settings.shouldBalanceBeHidden);
+      const walletStore = useWalletStore();
+      return walletStore.shouldBalanceBeHidden;
     },
     isWalletLoaded(): boolean {
-      return Boolean(getAppStore().state.wallet.settings.isWalletLoaded);
+      const walletStore = useWalletStore();
+      return walletStore.isWalletLoaded;
     },
     allowFeePopup(): boolean {
-      return Boolean(getAppStore().state.wallet.settings.allowFeePopup);
+      const walletStore = useWalletStore();
+      return walletStore.allowFeePopup;
     },
-    soraNetwork(): Nullable<WALLET_CONSTS.SoraNetwork> {
-      return getAppStore().state.wallet.settings.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>;
+    soraNetwork(): Nullable<SoraNetwork> {
+      const walletStore = useWalletStore();
+      return walletStore.soraNetwork as Nullable<SoraNetwork>;
     },
     isMSTAvailable(): boolean {
-      return Boolean(getAppStore().state.wallet.settings.isMSTAvailable);
+      const walletStore = useWalletStore();
+      return walletStore.isMSTAvailable;
     },
     currency(): Nullable<Currency> {
-      return (getAppStore().state?.wallet?.settings?.currency as Nullable<Currency>) ?? null;
+      const walletStore = useWalletStore();
+      return walletStore.currency as Nullable<Currency>;
     },
-    assetsFilter(): WALLET_TYPES.FilterOptions {
-      return getAppStore().state.wallet.settings.assetsFilter as WALLET_TYPES.FilterOptions;
+    filters(): WalletAssetFilters {
+      const walletStore = useWalletStore();
+      return walletStore.filters ?? fallbackWalletFilters;
+    },
+    assetsFilter(): FilterOptions {
+      const walletStore = useWalletStore();
+      return (walletStore.assetsFilter as FilterOptions) ?? FilterOptions.All;
     },
     currencies(): CurrencyFields[] {
-      return (getAppStore().state.wallet.settings.currencies as CurrencyFields[]) ?? [];
+      const walletStore = useWalletStore();
+      return walletStore.currencies as CurrencyFields[];
     },
     alerts(): Array<Alert> {
-      return (getAppStore().state.wallet.settings.alerts as Array<Alert>) ?? [];
+      const walletStore = useWalletStore();
+      return walletStore.alerts as Array<Alert>;
     },
     allowTopUpAlert(): boolean {
-      return Boolean(getAppStore().state.wallet.settings.allowTopUpAlert);
+      const walletStore = useWalletStore();
+      return walletStore.allowTopUpAlert;
     },
-    indexers(): Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState> {
-      return getAppStore().state.wallet.settings.indexers as Record<
-        WALLET_CONSTS.IndexerType,
-        WALLET_TYPES.IndexerState
-      >;
+    indexers(): Record<IndexerType, IndexerState> {
+      const walletStore = useWalletStore();
+      return walletStore.indexers as Record<IndexerType, IndexerState>;
     },
-    indexerType(): Nullable<WALLET_CONSTS.IndexerType> {
-      return getAppStore().state.wallet.settings.indexerType as Nullable<WALLET_CONSTS.IndexerType>;
+    indexerType(): Nullable<IndexerType> {
+      const walletStore = useWalletStore();
+      return walletStore.indexerType as Nullable<IndexerType>;
     },
   },
   actions: {
@@ -319,6 +347,42 @@ export const useSettingsStore = defineStore('settings', {
     },
     setAdsArray(arr: SettingsState['adsArray']): void {
       this.adsArray = arr;
+    },
+    addPriceAlert(alert: Alert): void {
+      const walletStore = useWalletStore();
+      walletStore.addPriceAlert(alert);
+    },
+    editPriceAlert(payload: EditableAlertObject): void {
+      const walletStore = useWalletStore();
+      walletStore.editPriceAlert(payload);
+    },
+    removePriceAlert(position: number): void {
+      const walletStore = useWalletStore();
+      walletStore.removePriceAlert(position);
+    },
+    setDepositNotifications(value: boolean): void {
+      const walletStore = useWalletStore();
+      walletStore.setDepositNotifications(value);
+    },
+    setFiatCurrency(value?: Currency): void {
+      const walletStore = useWalletStore();
+      walletStore.setFiatCurrency(value);
+    },
+    updateFiatExchangeRates(value?: FiatExchangeRateObject): void {
+      const walletStore = useWalletStore();
+      walletStore.updateFiatExchangeRates(value);
+    },
+    setAssetsFilter(value: FilterOptions): void {
+      const walletStore = useWalletStore();
+      walletStore.setAssetsFilter(value);
+    },
+    setFilterOptions(value: WalletAssetFilters): void {
+      const walletStore = useWalletStore();
+      walletStore.setFilterOptions(value);
+    },
+    async selectIndexer(type: IndexerType): Promise<void> {
+      const walletStore = useWalletStore();
+      await walletStore.selectIndexer(type);
     },
     enableTMA(): void {
       this.isTMA = true;

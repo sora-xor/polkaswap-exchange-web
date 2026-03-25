@@ -69,7 +69,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
 import { mstTrxDeadline } from '@/consts/mst';
-import { requireAppStore } from '@/utils/app-store';
+import { useWalletStore } from '@/stores/wallet';
 import type { MSTData } from '@/types/mst';
 import { validateAddress } from '@/util';
 
@@ -90,7 +90,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
-const store = requireAppStore();
+const walletStore = useWalletStore();
 const visibleModel = defineModel<boolean>('visible', { default: false });
 const { isVisible, setVisible, closeDialog } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
@@ -110,7 +110,7 @@ const mstData = ref<MSTData>({
   duration: 0,
 });
 
-const account = computed(() => store.getters.wallet.account.account);
+const account = computed(() => walletStore.account);
 const accountAddress = computed(() => account.value.address);
 
 const totalNumberOfAddresses = computed(() => multisigAddresses.value.length + 1);

@@ -19,7 +19,7 @@ import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
 import { ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
-import { getWalletStore } from '../store/instance';
+import { useWalletStore } from '@/stores/wallet';
 
 import SimpleNotification from './SimpleNotification.vue';
 
@@ -41,12 +41,12 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
-const store = getWalletStore();
+const walletStore = useWalletStore();
 
 const hidePopup = ref(false);
 
 const handleConfirm = async () => {
-  store.commit.wallet.settings.setAllowFeePopup(!hidePopup.value);
+  walletStore.setAllowFeePopup(!hidePopup.value);
   emit('confirm');
 };
 

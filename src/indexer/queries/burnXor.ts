@@ -1,14 +1,9 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer } from '@wallet';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
-import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
-import type {
-  ConnectionQueryResponse,
-  HistoryElement,
-  HistoryElementAssetBurn,
-} from '@wallet/lib/services/indexer/types';
+import type { ConnectionQueryResponse, HistoryElement, HistoryElementAssetBurn } from '@/shims/wallet-indexer-types';
 
 type XorBurn = {
   address: string;

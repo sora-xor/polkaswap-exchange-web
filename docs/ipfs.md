@@ -99,6 +99,12 @@ It shares the same CLI flags as the browser script and captures console/network 
 - **Missing `dist/` directory** – run `yarn build --base ./` before `yarn ipfs:publish`.
 - **Permission errors while building workspaces** – build the dependency manually (`yarn && yarn build` inside the workspace) so the generated files exist, then re-run `yarn ipfs:publish`.
 - **IPFS CLI not found** – install the CLI and ensure `ipfs --version` works in your shell.
+- **`no space left on device` while publishing** – `yarn ipfs:publish` now runs `ipfs repo gc` once and retries automatically. If the retry still fails, free host disk space or prune old IPFS data manually, then rerun the publish. `du -sh ~/.ipfs` and `df -h ~/.ipfs` are the quickest checks. As a fallback, you can publish from a fresh temporary repo instead of `~/.ipfs`:
+  ```bash
+  IPFS_PATH=/tmp/polkaswap-ipfs-publish-repo ipfs init
+  IPFS_PATH=/tmp/polkaswap-ipfs-publish-repo yarn ipfs:publish
+  ```
+  Keep that temporary repo around if you need the local node to continue serving or pinning those CIDs.
 - **Gateway failures in `ipfs:check`** – use `--url` to point to a staging gateway or pass `--ipfs-path` plus `--no-spawn-gateway` if you already have a daemon running.
 - **Screenshots not written** – set `--screenshot` or export `IPFS_CHECK_SCREENSHOT=<path>` to capture evidence when tests run in CI.
 

@@ -1,4 +1,4 @@
-import type { ConnectionQueryResponseData, SnapshotTypes } from '@wallet/lib/services/indexer/types';
+import type { ConnectionQueryResponseData, SnapshotTypes } from '@/shims/wallet-indexer-types';
 
 /** "open", "close", "low", "high" data */
 export type OCLH = [number, number, number, number];

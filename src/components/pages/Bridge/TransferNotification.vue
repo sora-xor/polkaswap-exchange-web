@@ -19,14 +19,16 @@
 
 <script setup lang="ts">
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
+import type { ExplorerLink } from '@/consts';
 import { useBridgeTransaction } from '@/composables/useBridgeTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { useAssetsStore } from '@/stores/assets';
+import { useBridgeStore } from '@/stores/bridge';
 import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
-import store from '@/store';
+import { useWalletStore } from '@/stores/wallet';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
@@ -47,6 +49,8 @@ defineOptions({
 });
 
 const bridgeTransactionsStore = useBridgeTransactionsStore();
+const bridgeStore = useBridgeStore();
+const walletStore = useWalletStore();
 
 const visible = defineModel<boolean>('visible', {
   default: false,
@@ -61,8 +65,8 @@ const visible = defineModel<boolean>('visible', {
 const { t, tc } = useTranslation();
 
 const notificationData = computed(() => bridgeTransactionsStore.notificationData as Nullable<IBridgeTransaction>);
-const subBridgeConnector = computed<SubNetworksConnector>(() => store.state.bridge.subBridgeConnector);
-const whitelist = computed(() => store.getters.wallet.account.whitelist as Whitelist);
+const subBridgeConnector = computed<SubNetworksConnector>(() => bridgeStore.connector);
+const whitelist = computed(() => walletStore.whitelist as Whitelist);
 
 const assetsStore = useAssetsStore();
 
@@ -96,7 +100,7 @@ const selectPrimaryLink = <T,>(links: T[], fallback: T[]): T | undefined =>
   bridgeTransaction.isOutgoing.value ? links[0] : fallback[0];
 
 const prepareLink = (
-  link: WALLET_CONSTS.ExplorerLink | undefined,
+  link: ExplorerLink | undefined,
   externalNetworkId?: Nullable<BridgeNetworkId>,
   isTxLink = true
 ): { href: string; title: string } | null => {

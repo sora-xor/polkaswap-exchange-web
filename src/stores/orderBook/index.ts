@@ -1,218 +1,538 @@
-import { defineStore } from 'pinia';
-
-import '@/store';
-
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
+import { FPNumber } from '@sora-substrate/math';
+import { DexId } from '@sora-substrate/sdk/build/dex/consts';
+import { defineStore } from 'pinia';
+import { combineLatest } from 'rxjs';
 
-import type {
-  OrderBook,
-  OrderBookDealData,
-  OrderBookId,
-  OrderBookPriceVolume,
-  OrderBookStats,
-} from '@sora-substrate/liquidity-proxy';
-import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import { LimitOrderType } from '@/consts';
+import { api } from '@/shims/wallet-api';
+import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook/orderBook';
+import { fetchOrderBooks } from '@/indexer/queries/orderBook/orderBooks';
+import { useAssetsStore } from '@/stores/assets';
+import type { OrderBookState } from '@/stores/orderBook/types';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
+import type { OrderBookDealData, OrderBookStats } from '@/types/orderBook';
+import type { Nullable } from '@/types/common';
+import { getBookDecimals } from '@/utils/orderBook';
+import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
+
+import type { OrderBook, OrderBookId, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
+import type { AccountBalance, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
-import { LimitOrderType } from '@/consts';
-import { requireAppStore, type AppStoreRuntime } from '@/utils/app-store';
-import type { OrderBookState } from '@/store/orderBook/types';
-import type { Nullable } from '@/types/common';
+const ORDER_BOOK_BASE_BALANCE_SUBSCRIPTION_KEY = 'order-book-base-balance';
+const ORDER_BOOK_SNAPSHOT_TIMEOUT_MS = 4_000;
 
-type LegacyOrderBookGetters = Record<string, unknown>;
+const balanceSubscriptions = new TokenBalanceSubscriptions();
 
-const WARN_PREFIX = '[orderBookStore]';
-let warnedMissingModule = false;
+const buildInitialState = (): OrderBookState => ({
+  orderBooks: {},
+  dexId: DexId.XOR,
+  baseAssetAddress: null,
+  quoteAssetAddress: null,
+  limitOrderType: LimitOrderType.limit,
+  orderBooksStats: {},
+  deals: [],
+  asks: [],
+  bids: [],
+  userLimitOrders: [],
+  baseValue: '',
+  quoteValue: '',
+  side: PriceVariant.Buy,
+  orderBookUpdates: [],
+  orderBookStatsUpdates: null,
+  userLimitOrderUpdates: null,
+  pagedUserLimitOrdersSubscription: null,
+  ordersToBeCancelled: [],
+  amountSliderValue: 0,
+  baseAssetBalance: null,
+});
 
-const getAppStore = (): AppStoreRuntime | null => {
-  const legacyStore = requireAppStore();
-  if (!legacyStore?.state?.orderBook) {
-    if (!warnedMissingModule) {
-      console.warn(`${WARN_PREFIX} Legacy order book module is not ready yet.`);
-      warnedMissingModule = true;
-    }
-    return null;
-  }
-
-  warnedMissingModule = false;
-  return legacyStore;
+type TimedResult<T> = {
+  timedOut: boolean;
+  value: T;
 };
 
-const readOrderBookState = (): OrderBookState | null => {
-  const legacyStore = getAppStore();
-  if (!legacyStore) return null;
-
-  const state = legacyStore.state?.orderBook as OrderBookState | undefined;
-  if (!state) {
-    console.warn(`${WARN_PREFIX} Legacy order book state is unavailable.`);
-    return null;
-  }
-
-  return state;
+type AddressWhitelistEntry = {
+  address?: Nullable<string>;
 };
 
-const readOrderBookGetters = (): LegacyOrderBookGetters | null => {
-  const legacyStore = getAppStore();
-  if (!legacyStore) return null;
-
-  const getters = legacyStore.getters?.orderBook as LegacyOrderBookGetters | undefined;
-  if (!getters) {
-    console.warn(`${WARN_PREFIX} Legacy order book getters are unavailable.`);
-    return null;
-  }
-
-  return getters;
+const clearSubscription = <T extends { unsubscribe?: () => void }>(subscription: Nullable<T>): null => {
+  subscription?.unsubscribe?.();
+  return null;
 };
 
-const accessState = <T>(selector: (state: OrderBookState) => T, fallback: T): T => {
-  const state = readOrderBookState();
-  if (!state) return fallback;
-
-  try {
-    return selector(state);
-  } catch (error) {
-    console.warn(`${WARN_PREFIX} Failed to access legacy state.`, error);
-    return fallback;
-  }
+const clearCallback = (callback: Nullable<VoidFunction>): null => {
+  callback?.();
+  return null;
 };
 
-const accessGetter = <T>(selector: (getters: LegacyOrderBookGetters) => T, fallback: T): T => {
-  const getters = readOrderBookGetters();
-  if (!getters) return fallback;
+const withTimeout = <T>(promise: Promise<T>, fallback: T): Promise<TimedResult<T>> => {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      resolve({ timedOut: true, value: fallback });
+    }, ORDER_BOOK_SNAPSHOT_TIMEOUT_MS);
 
-  try {
-    return selector(getters);
-  } catch (error) {
-    console.warn(`${WARN_PREFIX} Failed to access legacy getters.`, error);
-    return fallback;
-  }
+    promise
+      .then((value) => {
+        clearTimeout(timer);
+        resolve({ timedOut: false, value });
+      })
+      .catch((error) => {
+        clearTimeout(timer);
+        reject(error);
+      });
+  });
 };
 
-const callLegacyMethod = (kind: 'dispatch' | 'commit', method: string, args: unknown[] = []): unknown => {
-  const legacyStore = getAppStore();
-  if (!legacyStore) return undefined;
+const toFpNumber = (value: unknown): FPNumber => {
+  if (value instanceof FPNumber) return value;
 
-  const container = legacyStore[kind]?.orderBook as Record<string, unknown> | undefined;
-  const handler = container?.[method];
+  const codecValue = value as Nullable<{ inner?: { toString?: () => string }; isDivisible?: { isTrue?: boolean } }>;
+  const inner = codecValue?.inner?.toString?.();
 
-  if (typeof handler !== 'function') {
-    console.warn(`${WARN_PREFIX} Legacy ${kind}.orderBook.${method} is not available.`);
-    return undefined;
+  if (inner !== undefined) {
+    const decimals = codecValue?.isDivisible?.isTrue ? FPNumber.DEFAULT_PRECISION : 0;
+    return FPNumber.fromCodecValue(inner, decimals);
   }
 
-  return handler(...args);
+  return new FPNumber((value as string | number | bigint | undefined) ?? 0);
+};
+
+const mapAggregatedSnapshot = (snapshot: unknown): Array<OrderBookPriceVolume> => {
+  const result: Array<OrderBookPriceVolume> = [];
+  const maybeIterable = snapshot as Nullable<{ forEach?: (cb: (value: unknown, key: unknown) => void) => void }>;
+
+  if (typeof maybeIterable?.forEach !== 'function') {
+    return result;
+  }
+
+  maybeIterable.forEach((value, key) => {
+    result.push([toFpNumber(key), toFpNumber(value)]);
+  });
+
+  return result;
+};
+
+const loadSnapshotFromConnection = async (
+  side: 'asks' | 'bids',
+  base: string,
+  quote: string,
+  dexId?: number
+): Promise<Array<OrderBookPriceVolume>> => {
+  const settingsStore = useSettingsStore();
+  const connectionApi = settingsStore.appConnection?.connection?.api;
+  const queryFn =
+    side === 'asks' ? connectionApi?.query?.orderBook?.aggregatedAsks : connectionApi?.query?.orderBook?.aggregatedBids;
+
+  if (typeof queryFn !== 'function') {
+    return [];
+  }
+
+  const snapshot = await queryFn({ dexId: dexId ?? 0, base, quote });
+  return mapAggregatedSnapshot(snapshot);
+};
+
+const hasWhitelistEntries = (whitelist: unknown): boolean => {
+  if (Array.isArray(whitelist)) {
+    return whitelist.length > 0;
+  }
+
+  return Boolean(whitelist && typeof whitelist === 'object' && Object.keys(whitelist).length > 0);
+};
+
+const isAddressWhitelisted = (whitelist: unknown, address: string): boolean => {
+  if (Array.isArray(whitelist)) {
+    return whitelist.some((item) => {
+      if (typeof item === 'string') {
+        return item === address;
+      }
+
+      return (item as AddressWhitelistEntry)?.address === address;
+    });
+  }
+
+  return Boolean(whitelist && typeof whitelist === 'object' && address in (whitelist as Record<string, unknown>));
+};
+
+const normalizeLimitOrder = (order: LimitOrder): LimitOrder => {
+  const amount = order.amount?.toString?.() ?? (order as LimitOrder & { amountStr?: string }).amountStr ?? '';
+  const originalAmount =
+    order.originalAmount?.toString?.() ??
+    (order as LimitOrder & { originalAmountStr?: string }).originalAmountStr ??
+    '';
+
+  return {
+    ...order,
+    amountStr: amount,
+    originalAmountStr: originalAmount,
+  } as LimitOrder;
 };
 
 /**
- * Transitional Pinia facade for the legacy order book Vuex module.
- * Provides a Pinia `$id` for telemetry and a thin compatibility layer
- * so callers can begin depending on Pinia APIs before the module is
- * fully migrated away from Vuex.
+ * Native Pinia store for order-book state and subscriptions.
+ * Replaces the bridge-backed facade while keeping the existing public store API stable.
  */
 export const useOrderBookStore = defineStore('orderBook', {
-  state: () => ({}) as Record<string, never>,
+  state: (): OrderBookState => buildInitialState(),
   getters: {
-    orderBooks: () => accessState((state) => state.orderBooks, {} as Record<string, OrderBook>),
-    orderBookId: () => accessGetter((getters) => (getters.orderBookId as string) ?? '', ''),
-    dexId: () => accessState((state) => state.dexId, null),
-    baseAsset: () =>
-      accessGetter(
-        (getters) => (getters.baseAsset as Nullable<RegisteredAccountAsset>) ?? null,
-        null as Nullable<RegisteredAccountAsset>
-      ),
-    quoteAsset: () =>
-      accessGetter(
-        (getters) => (getters.quoteAsset as Nullable<RegisteredAccountAsset>) ?? null,
-        null as Nullable<RegisteredAccountAsset>
-      ),
-    currentOrderBook: () =>
-      accessGetter((getters) => (getters.currentOrderBook as Nullable<OrderBook>) ?? null, null as Nullable<OrderBook>),
-    orderBookStats: () =>
-      accessGetter(
-        (getters) => (getters.orderBookStats as Nullable<OrderBookStats>) ?? null,
-        null as Nullable<OrderBookStats>
-      ),
-    lastDeal: () =>
-      accessGetter(
-        (getters) => (getters.orderBookLastDeal as Nullable<OrderBookDealData>) ?? null,
-        null as Nullable<OrderBookDealData>
-      ),
-    deals: () => accessState((state) => state.deals, []),
-    asks: () => accessState((state) => state.asks, []),
-    bids: () => accessState((state) => state.bids, []),
-    limitOrderType: () =>
-      accessState((state) => (state.limitOrderType as LimitOrderType) ?? LimitOrderType.limit, LimitOrderType.limit),
-    baseValue: () => accessState((state) => state.baseValue, ''),
-    quoteValue: () => accessState((state) => state.quoteValue, ''),
-    amountSliderValue: () => accessState((state) => state.amountSliderValue, 0),
-    side: () => accessState((state) => state.side, PriceVariant.Buy),
-    baseAssetAddress: () => accessState((state) => state.baseAssetAddress, null),
-    quoteAssetAddress: () => accessState((state) => state.quoteAssetAddress, null),
-    baseAssetBalance: () => accessState((state) => state.baseAssetBalance, null),
-    orderBooksStats: () => accessState((state) => state.orderBooksStats, {} as Record<string, OrderBookStats>),
-    userLimitOrders: () => accessState((state) => state.userLimitOrders as LimitOrder[], []),
-    ordersToBeCancelled: () => accessState((state) => state.ordersToBeCancelled as LimitOrder[], []),
-    orderBookUpdates: () => accessState((state) => state.orderBookUpdates as Array<Subscription>, []),
-    orderBookStatsUpdates: () => accessState((state) => state.orderBookStatsUpdates as Nullable<VoidFunction>, null),
-    userLimitOrderUpdates: () => accessState((state) => state.userLimitOrderUpdates as Nullable<Subscription>, null),
-    pagedUserLimitOrdersSubscription: () =>
-      accessState((state) => state.pagedUserLimitOrdersSubscription as Nullable<Subscription>, null),
+    orderBookId(state): string {
+      if (!(state.baseAssetAddress && state.quoteAssetAddress)) return '';
+
+      return api.orderBook.serializeKey(state.baseAssetAddress, state.quoteAssetAddress);
+    },
+    baseAsset(state): Nullable<RegisteredAccountAsset> {
+      if (!state.baseAssetAddress) return null;
+
+      const assetsStore = useAssetsStore();
+      const token = assetsStore.assetDataByAddress(state.baseAssetAddress);
+
+      if (!token) return token ?? null;
+      if (!state.baseAssetBalance) return token;
+
+      return { ...token, balance: state.baseAssetBalance } as RegisteredAccountAsset;
+    },
+    quoteAsset(state): Nullable<RegisteredAccountAsset> {
+      if (!state.quoteAssetAddress) return null;
+
+      const assetsStore = useAssetsStore();
+      return assetsStore.assetDataByAddress(state.quoteAssetAddress) ?? null;
+    },
+    currentOrderBook(): Nullable<OrderBook> {
+      if (!this.orderBookId) return null;
+      return this.orderBooks[this.orderBookId] ?? null;
+    },
+    orderBookStats(): Nullable<OrderBookStats> {
+      if (!this.orderBookId) return null;
+      return this.orderBooksStats[this.orderBookId] ?? null;
+    },
+    orderBookLastDeal(): Nullable<OrderBookDealData> {
+      return this.deals[0] ?? null;
+    },
+    lastDeal(): Nullable<OrderBookDealData> {
+      return this.orderBookLastDeal;
+    },
+    orderBookDecimals(): number {
+      return getBookDecimals(this.currentOrderBook);
+    },
   },
   actions: {
-    async getOrderBooksInfo(): Promise<void> {
-      await callLegacyMethod('dispatch', 'getOrderBooksInfo');
-    },
-    async subscribeToOrderBookStats(): Promise<void> {
-      await callLegacyMethod('dispatch', 'subscribeToOrderBookStats');
-    },
-    async unsubscribeFromOrderBookStats(): Promise<void> {
-      await callLegacyMethod('dispatch', 'unsubscribeFromOrderBookStats');
-    },
-    async subscribeToBidsAndAsks(): Promise<void> {
-      await callLegacyMethod('dispatch', 'subscribeToBidsAndAsks');
-    },
-    async unsubscribeFromBidsAndAsks(): Promise<void> {
-      await callLegacyMethod('dispatch', 'unsubscribeFromBidsAndAsks');
-    },
-    async updateBalanceSubscription(reset = false): Promise<void> {
-      await callLegacyMethod('dispatch', 'updateBalanceSubscription', [reset]);
-    },
-    async updateOrderBooksStats(): Promise<void> {
-      await callLegacyMethod('dispatch', 'updateOrderBooksStats');
-    },
-    async subscribeToUserLimitOrders(): Promise<void> {
-      await callLegacyMethod('dispatch', 'subscribeToUserLimitOrders');
-    },
-    async unsubscribeFromUserLimitOrders(): Promise<void> {
-      await callLegacyMethod('dispatch', 'unsubscribeFromUserLimitOrders');
-    },
-    async subscribeOnLimitOrders(ids: Array<number | string>): Promise<void> {
-      await callLegacyMethod('dispatch', 'subscribeOnLimitOrders', [ids]);
+    setOrderBooks(orderBooks: Record<string, OrderBook>): void {
+      this.orderBooks = Object.freeze({ ...orderBooks });
     },
     setCurrentOrderBook(orderBookId: OrderBookId): void {
-      callLegacyMethod('commit', 'setCurrentOrderBook', [orderBookId]);
+      this.dexId = orderBookId.dexId;
+      this.baseAssetAddress = orderBookId.base;
+      this.quoteAssetAddress = orderBookId.quote;
     },
     setBaseValue(value: string): void {
-      callLegacyMethod('commit', 'setBaseValue', [value]);
+      this.baseValue = value;
     },
     setQuoteValue(value: string): void {
-      callLegacyMethod('commit', 'setQuoteValue', [value]);
+      this.quoteValue = value;
     },
-    setAmountSliderValue(value: number): void {
-      callLegacyMethod('commit', 'setAmountSliderValue', [value]);
+    setSide(side: PriceVariant): void {
+      this.side = side;
     },
-    setLimitOrderType(value: LimitOrderType): void {
-      callLegacyMethod('commit', 'setLimitOrderType', [value]);
+    setLimitOrderType(type: LimitOrderType): void {
+      this.limitOrderType = type;
     },
-    setSide(value: PriceVariant): void {
-      callLegacyMethod('commit', 'setSide', [value]);
+    setAsks(asks: readonly OrderBookPriceVolume[] = []): void {
+      this.asks = Object.freeze([...asks]);
     },
-    setOrdersToBeCancelled(orders: LimitOrder[]): void {
-      callLegacyMethod('commit', 'setOrdersToBeCancelled', [orders]);
+    setBids(bids: readonly OrderBookPriceVolume[] = []): void {
+      this.bids = Object.freeze([...bids]);
+    },
+    setDeals(deals: readonly OrderBookDealData[] = []): void {
+      this.deals = Object.freeze([...deals]);
+    },
+    setStats(stats: Record<string, OrderBookStats>): void {
+      this.orderBooksStats = Object.freeze({ ...this.orderBooksStats, ...stats });
+    },
+    setUserLimitOrders(limitOrders: LimitOrder[] = []): void {
+      this.userLimitOrders = Object.freeze([...limitOrders]);
+    },
+    setOrderBookUpdates(subscriptions: Array<Subscription>): void {
+      this.orderBookUpdates = [...subscriptions];
+    },
+    resetOrderBookUpdates(): void {
+      this.orderBookUpdates.forEach((subscription) => subscription?.unsubscribe?.());
+      this.orderBookUpdates = [];
+    },
+    setOrderBookStatsUpdates(subscription: VoidFunction): void {
+      this.orderBookStatsUpdates = subscription;
+    },
+    resetOrderBookStatsUpdates(): void {
+      this.orderBookStatsUpdates = clearCallback(this.orderBookStatsUpdates);
+    },
+    setUserLimitOrderUpdates(subscription: Subscription): void {
+      this.userLimitOrderUpdates = subscription;
+    },
+    resetUserLimitOrderUpdates(): void {
+      this.userLimitOrderUpdates = clearSubscription(this.userLimitOrderUpdates);
+    },
+    setPagedUserLimitOrdersSubscription(subscription: Subscription): void {
+      this.pagedUserLimitOrdersSubscription = subscription;
     },
     resetPagedUserLimitOrdersSubscription(): void {
-      callLegacyMethod('commit', 'resetPagedUserLimitOrdersSubscription');
+      this.pagedUserLimitOrdersSubscription = clearSubscription(this.pagedUserLimitOrdersSubscription);
+    },
+    setOrdersToBeCancelled(orders: LimitOrder[]): void {
+      this.ordersToBeCancelled = [...orders];
+    },
+    setAmountSliderValue(percent: number): void {
+      this.amountSliderValue = percent;
+    },
+    setBaseAssetBalance(balance: Nullable<AccountBalance>): void {
+      this.baseAssetBalance = balance;
+    },
+    async getOrderBooksInfo(): Promise<void> {
+      const walletStore = useWalletStore();
+      const whitelist = walletStore.whitelist ?? {};
+      const orderBooks = await api.orderBook.getOrderBooks();
+
+      if (!hasWhitelistEntries(whitelist)) {
+        this.setOrderBooks(orderBooks);
+        return;
+      }
+
+      const orderBooksWhitelist = Object.entries(orderBooks).reduce<Record<string, OrderBook>>(
+        (buffer, [key, book]) => {
+          const { base, quote } = book.orderBookId;
+
+          if ([base, quote].every((address) => isAddressWhitelisted(whitelist, address))) {
+            buffer[key] = book;
+          }
+
+          return buffer;
+        },
+        {}
+      );
+
+      this.setOrderBooks(Object.keys(orderBooksWhitelist).length ? orderBooksWhitelist : orderBooks);
+    },
+    async updateBalanceSubscription(reset = false): Promise<void> {
+      const walletStore = useWalletStore();
+      const token = this.baseAsset;
+
+      this.setBaseAssetBalance(null);
+      balanceSubscriptions.remove(ORDER_BOOK_BASE_BALANCE_SUBSCRIPTION_KEY);
+
+      if (reset) {
+        balanceSubscriptions.resetSubscriptions();
+        return;
+      }
+
+      if (walletStore.isLoggedIn && token?.address && !(token.address in walletStore.accountAssetsAddressTable)) {
+        balanceSubscriptions.add(ORDER_BOOK_BASE_BALANCE_SUBSCRIPTION_KEY, {
+          token,
+          updateBalance: (balance) => {
+            this.setBaseAssetBalance(balance);
+          },
+        });
+      }
+    },
+    async updateOrderBooksStats(): Promise<void> {
+      const orderBooksWithStats = await fetchOrderBooks();
+      const orderBooksStats = (orderBooksWithStats ?? []).reduce<Record<string, OrderBookStats>>((buffer, item) => {
+        const {
+          id: { base, quote },
+          stats,
+        } = item;
+
+        const key = api.orderBook.serializeKey(base, quote);
+        buffer[key] = stats;
+        return buffer;
+      }, {});
+
+      this.setStats(orderBooksStats);
+    },
+    async subscribeToBidsAndAsks(): Promise<void> {
+      const { baseAssetAddress, quoteAssetAddress } = this;
+      const selectedDexId = Number.isFinite(this.dexId) ? this.dexId : undefined;
+
+      this.unsubscribeFromBidsAndAsks();
+
+      if (!(baseAssetAddress && quoteAssetAddress)) return;
+
+      const [asksSnapshot, bidsSnapshot] = await Promise.all([
+        withTimeout(
+          api.orderBook.getAggregatedAsks(baseAssetAddress, quoteAssetAddress, selectedDexId),
+          [] as Array<OrderBookPriceVolume>
+        ),
+        withTimeout(
+          api.orderBook.getAggregatedBids(baseAssetAddress, quoteAssetAddress, selectedDexId),
+          [] as Array<OrderBookPriceVolume>
+        ),
+      ]);
+
+      const [initialAsks, initialBids] = await Promise.all([
+        asksSnapshot.timedOut
+          ? loadSnapshotFromConnection('asks', baseAssetAddress, quoteAssetAddress, selectedDexId)
+          : asksSnapshot.value,
+        bidsSnapshot.timedOut
+          ? loadSnapshotFromConnection('bids', baseAssetAddress, quoteAssetAddress, selectedDexId)
+          : bidsSnapshot.value,
+      ]);
+
+      this.setAsks(Array.from(initialAsks).toReversed());
+      this.setBids(Array.from(initialBids).toReversed());
+
+      const asksSubscription = api.orderBook
+        .subscribeOnAggregatedAsks(baseAssetAddress, quoteAssetAddress, selectedDexId)
+        .subscribe((asks) => {
+          this.setAsks(Array.from(asks).toReversed());
+        });
+
+      const bidsSubscription = api.orderBook
+        .subscribeOnAggregatedBids(baseAssetAddress, quoteAssetAddress, selectedDexId)
+        .subscribe((bids) => {
+          this.setBids(Array.from(bids).toReversed());
+        });
+
+      this.setOrderBookUpdates([asksSubscription, bidsSubscription]);
+    },
+    unsubscribeFromBidsAndAsks(): void {
+      this.setAsks();
+      this.setBids();
+      this.resetOrderBookUpdates();
+    },
+    async subscribeToOrderBookStats(): Promise<void> {
+      const { dexId, baseAssetAddress, quoteAssetAddress } = this;
+
+      this.unsubscribeFromOrderBookStats();
+
+      if (!(baseAssetAddress && quoteAssetAddress)) return;
+
+      const orderBookId = [dexId, baseAssetAddress, quoteAssetAddress].join('-');
+      const subscription = await subscribeOnOrderBookUpdates(
+        orderBookId,
+        (data) => {
+          const {
+            id: { base, quote },
+            stats,
+            deals,
+          } = data;
+          const key = api.orderBook.serializeKey(base, quote);
+          this.setDeals(deals);
+          this.setStats({ [key]: stats });
+        },
+        () => {
+          console.error('[orderBook] Failed to receive order book stats update');
+        }
+      );
+
+      if (!subscription) return;
+
+      this.setOrderBookStatsUpdates(subscription);
+    },
+    unsubscribeFromOrderBookStats(): void {
+      this.setDeals();
+      this.resetOrderBookStatsUpdates();
+    },
+    async subscribeToUserLimitOrders(): Promise<void> {
+      const walletStore = useWalletStore();
+      const { baseAssetAddress, quoteAssetAddress } = this;
+      const selectedDexId = Number.isFinite(this.dexId) ? this.dexId : undefined;
+      const accountAddress = walletStore.address || walletStore.account?.address;
+
+      this.unsubscribeFromUserLimitOrders();
+
+      if (!(accountAddress && baseAssetAddress && quoteAssetAddress)) return;
+
+      const syncUserLimitOrders = async (ids: number[]): Promise<void> => {
+        try {
+          const userLimitOrders = await Promise.all(
+            ids.map(async (id) => {
+              try {
+                return await api.orderBook.getLimitOrder(baseAssetAddress, quoteAssetAddress, id, selectedDexId);
+              } catch (error) {
+                console.error('[orderBook] Failed to fetch limit order', { id, error });
+                return null;
+              }
+            })
+          );
+
+          const orders = userLimitOrders
+            .filter((order): order is LimitOrder => !!order)
+            .map((order) => normalizeLimitOrder(order));
+
+          this.setUserLimitOrders(orders);
+        } catch (error) {
+          console.error('[orderBook] Failed to process user limit orders payload', error);
+          this.setUserLimitOrders([]);
+        }
+      };
+
+      try {
+        const ids = await api.orderBook.getUserLimitOrdersIds(
+          baseAssetAddress,
+          quoteAssetAddress,
+          accountAddress,
+          selectedDexId
+        );
+        await syncUserLimitOrders(ids);
+      } catch (error) {
+        console.error('[orderBook] Failed to load initial user limit orders', error);
+        this.setUserLimitOrders([]);
+      }
+
+      const subscription = api.orderBook
+        .subscribeOnUserLimitOrdersIds(baseAssetAddress, quoteAssetAddress, accountAddress, selectedDexId)
+        .subscribe({
+          next: async (ids) => {
+            await syncUserLimitOrders(ids);
+          },
+          error: (error) => {
+            console.error('[orderBook] User limit orders subscription failed', error);
+            this.setUserLimitOrders([]);
+          },
+        });
+
+      this.setUserLimitOrderUpdates(subscription);
+    },
+    async subscribeOnLimitOrders(ids: Array<number | string>): Promise<void> {
+      const walletStore = useWalletStore();
+      const { baseAssetAddress, quoteAssetAddress } = this;
+      const selectedDexId = Number.isFinite(this.dexId) ? this.dexId : undefined;
+      const accountAddress = walletStore.address || walletStore.account?.address;
+
+      if (!(accountAddress && baseAssetAddress && quoteAssetAddress)) return;
+
+      this.resetPagedUserLimitOrdersSubscription();
+
+      const limitOrderIds = ids.map((id) => Number(id)).filter((id) => Number.isFinite(id));
+
+      if (!limitOrderIds.length) return;
+
+      let subscription!: Subscription;
+      const observables = limitOrderIds.map((id) =>
+        api.orderBook.subscribeOnLimitOrder(baseAssetAddress, quoteAssetAddress, id, selectedDexId)
+      );
+
+      await new Promise<void>((resolve) => {
+        subscription = combineLatest(observables).subscribe((updated) => {
+          const updatedOrders = updated.filter((item) => !!item) as LimitOrder[];
+
+          if (updatedOrders.length) {
+            const userLimitOrders = this.userLimitOrders.map((order) => {
+              const found = updatedOrders.find((item) => item.id === order.id);
+              return found ? normalizeLimitOrder({ ...order, ...found } as LimitOrder) : order;
+            });
+
+            this.setUserLimitOrders(userLimitOrders as LimitOrder[]);
+          }
+
+          resolve();
+        });
+      });
+
+      this.setPagedUserLimitOrdersSubscription(subscription);
+    },
+    unsubscribeFromUserLimitOrders(): void {
+      this.resetUserLimitOrderUpdates();
     },
   },
 });

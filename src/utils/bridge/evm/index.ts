@@ -1,8 +1,9 @@
 import { Operation } from '@sora-substrate/sdk';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { beforeTransactionSign } from '@wallet';
 
+import pinia from '@/plugins/pinia';
 import { useAssetsStore } from '@/stores/assets';
+import { useBridgeStore } from '@/stores/bridge';
 import { useWalletStore } from '@/stores/wallet';
 import { Bridge } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeConstructorOptions } from '@/utils/bridge/common/types';
@@ -10,7 +11,6 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { EvmBridgeOutgoingReducer, EvmBridgeIncomingReducer } from '@/utils/bridge/evm/classes/reducers';
 import type { EvmBridgeReducer } from '@/utils/bridge/evm/classes/reducers';
 import { updateTransaction } from '@/utils/bridge/evm/utils';
-import { requireAppStore } from '@/utils/app-store';
 
 import type { EvmHistory } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 
@@ -20,8 +20,8 @@ interface EvmBridgeConstructorOptions extends IBridgeConstructorOptions<EvmHisto
 
 type EvmBridge = Bridge<EvmHistory, EvmBridgeReducer, EvmBridgeConstructorOptions>;
 
-const resolveWalletStore = () => useWalletStore();
-const resolveAppStore = () => requireAppStore() as any;
+const resolveWalletStore = () => useWalletStore(pinia);
+const resolveBridgeStore = () => useBridgeStore(pinia);
 
 const evmBridge: EvmBridge = new Bridge({
   reducers: {
@@ -44,19 +44,19 @@ const evmBridge: EvmBridge = new Bridge({
   getAssetByAddress: (address: string) => useAssetsStore().assetDataByAddress(address),
   // transaction
   getTransaction: (id: string) =>
-    (resolveAppStore().getters?.bridge?.history?.[id] || evmBridgeApi.getHistory(id)) as EvmHistory,
+    (resolveBridgeStore().historyRecord?.[id] || evmBridgeApi.getHistory(id)) as EvmHistory,
   updateTransaction,
   // ui integration
-  showNotification: (tx: EvmHistory) => resolveAppStore().commit?.bridge?.setNotificationData?.(tx),
-  updateHistory: () => resolveAppStore().dispatch?.bridge?.updateInternalHistory?.(),
-  getActiveTransaction: () => resolveAppStore().getters?.bridge?.historyItem as EvmHistory,
-  addTransactionToProgress: (id: string) => resolveAppStore().commit?.bridge?.addTxIdInProgress?.(id),
-  removeTransactionFromProgress: (id: string) => resolveAppStore().commit?.bridge?.removeTxIdFromProgress?.(id),
+  showNotification: (tx: EvmHistory) => resolveBridgeStore().setNotificationData(tx),
+  updateHistory: () => resolveBridgeStore().updateInternalHistory(),
+  getActiveTransaction: () => resolveBridgeStore().activeTransaction as EvmHistory,
+  addTransactionToProgress: (id: string) => resolveBridgeStore().addTransactionToProgress(id),
+  removeTransactionFromProgress: (id: string) => resolveBridgeStore().removeTransactionFromProgress(id),
   // transaction signing
-  beforeTransactionSign: (...args: any[]) => beforeTransactionSign(resolveAppStore().original, evmBridgeApi, ...args),
+  beforeTransactionSign: (...args: any[]) => resolveBridgeStore().beforeTransactionSign(evmBridgeApi, ...args),
   // custom
   removeTransactionByHash: (options: { tx: Partial<EvmHistory>; force: boolean }) =>
-    resolveAppStore().dispatch?.bridge?.removeHistory?.(options),
+    resolveBridgeStore().removeHistory(options),
 });
 
 export default evmBridge;

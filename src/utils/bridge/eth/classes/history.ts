@@ -1,13 +1,15 @@
 import { Operation } from '@sora-substrate/sdk';
 import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { api, SUBQUERY_TYPES, getCurrentIndexer } from '@wallet';
+import { api } from '@/shims/wallet-api';
 import { ethers, EtherscanProvider } from 'ethers';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 
 import { ZeroStringValue } from '@/consts';
+import { getCurrentIndexer } from '@/shims/wallet-indexer';
+import * as SUBQUERY_TYPES from '@/shims/wallet-indexer-subquery-types';
 import { SmartContracts, SmartContractType, KnownEthBridgeAsset } from '@/consts/evm';
-import type { EthBridgeContractsAddresses } from '@/store/web3/types';
+import type { EthBridgeContractsAddresses } from '@/stores/web3';
 import { getEvmTransactionReceiptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
@@ -16,7 +18,11 @@ import type { NetworkFeesObject } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { BlockTag } from 'ethers';
-import type { ActionContext } from 'vuex';
+
+type BridgeActionContext<TRootState = any, TRootGetters = any> = {
+  rootState: TRootState;
+  rootGetters: TRootGetters;
+};
 
 export default class EtherscanHistoryProvider extends EtherscanProvider {
   async getHistory(address: string, startBlock?: BlockTag, endBlock?: BlockTag): Promise<Array<any>> {
@@ -388,7 +394,7 @@ export class EthBridgeHistory {
   }
 }
 
-export const getEthBridgeHistoryInstance = async (context: ActionContext<any, any>): Promise<EthBridgeHistory> => {
+export const getEthBridgeHistoryInstance = async (context: BridgeActionContext): Promise<EthBridgeHistory> => {
   const { rootState } = context;
 
   const {
@@ -412,7 +418,7 @@ export const getEthBridgeHistoryInstance = async (context: ActionContext<any, an
  * @param context store context
  */
 export const updateEthBridgeHistory =
-  (context: ActionContext<any, any>) =>
+  (context: BridgeActionContext) =>
   async (clearHistory = false, updateCallback?: VoidFunction): Promise<void> => {
     try {
       const { rootState, rootGetters } = context;

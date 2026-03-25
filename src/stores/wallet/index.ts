@@ -1,232 +1,1657 @@
+import cryptoRandomString from 'crypto-random-string';
+import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
+import { AES, enc } from 'crypto-js';
+import debounce from 'lodash/fp/debounce';
+import { NFTStorage } from 'nft.storage';
+import { FPNumber } from '@sora-substrate/math';
+import { Operation, TransactionStatus, type HistoryItem, type NetworkFeesObject } from '@sora-substrate/sdk';
+import { excludePoolXYKAssets } from '@sora-substrate/sdk/build/assets';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { combineLatest } from 'rxjs';
 
-import '@/store';
-
+import { DefaultPassphraseTimeout } from '@/consts';
+import type { EditableAlertObject, WalletAssetFilters } from '@/consts';
+import type { Theme } from '@/consts/theme';
+import { api as walletApi } from '@/shims/wallet-api';
+import { accountIdBasedOperations, BLOCK_PRODUCE_TIME, MAX_ALERTS_NUMBER, SoraNetwork } from '@/shims/wallet-consts';
+import { getCurrenciesState } from '@/shims/wallet-currencies';
+import alertsApiService from '@/shims/wallet-alerts';
+import {
+  CeresApiService,
+  CurrencyExchangeRateService,
+  checkWallet,
+  getAppWallets,
+  GDriveStorage,
+  WcProvider,
+} from '@/shims/wallet-services';
+import { getCurrentIndexer } from '@/shims/wallet-indexer';
+import { beforeTransactionSign, NFT_BLACK_LIST_URL, WHITE_LIST_URL, formatAccountAddress } from '@/shims/wallet-util';
+import { initialState as createAccountState } from '@/stores/wallet/account/state';
+import type { AccountState, VestedTransferFeeParams, VestedTransferParams } from '@/stores/wallet/account/types';
+import { initialState as createSettingsState } from '@/stores/wallet/settings/state';
+import { normalizeTheme } from '@/stores/wallet/settings/theme';
+import type { SettingsState } from '@/stores/wallet/settings/types';
+import { initialState as createTransactionsState } from '@/stores/wallet/transactions/state';
+import type { TransactionsState } from '@/stores/wallet/transactions/types';
+import { IpfsStorage } from '@/shims/wallet-ipfs-storage';
+import { runtimeStorage, settingsStorage, storage } from '@/shims/wallet-storage';
+import { isAppStorageSource, loginApi, logoutApi, updateApiSigner } from '@/shims/wallet-account';
+import { sanitizeNftBlacklistPayload, sanitizeWhitelistPayload } from '@/shims/wallet-security';
+import type { ExternalHistoryParams } from '@/shims/wallet-history-types';
 import { useRouterStore } from '@/stores/router';
 import type { Nullable } from '@/types/common';
-import type { Theme } from '@/consts/theme';
-import { requireAppStore } from '@/utils/app-store';
+import type { AppWallet } from '@/shims/wallet-consts';
+import type { TransactionSignVisibilityController } from '@/shims/wallet-util';
 
-import type { HistoryItem, NetworkFeesObject } from '@sora-substrate/sdk';
+import type {
+  Alert,
+  FilterOptions,
+  IndexerState,
+  PolkadotJsAccount,
+  WhitelistIdsBySymbol,
+} from '@/shims/wallet-common-types';
+import type { Currency, CurrencyFields, FiatExchangeRateObject } from '@/shims/wallet-currency-types';
 import type {
   AccountAsset,
+  Asset,
   RegisteredAccountAsset,
   Whitelist,
   WhitelistArrayItem,
 } from '@sora-substrate/sdk/build/assets/types';
-import type { WALLET_TYPES } from '@wallet';
-import type { WALLET_TYPES } from '@wallet/core';
 
-type AssetsTable = Record<string, RegisteredAccountAsset>;
-type AccountAssetsTable = Record<string, { balance: { transferable?: string } }>;
+type AssetsTable = Record<string, Asset | RegisteredAccountAsset>;
+type AccountAssetsTable = Record<string, AccountAsset>;
 type FiatPriceObject = Record<string, string>;
+const DEFAULT_CURRENCY_SYMBOL = '$';
+const XOR_CURRENCY_KEY = 'xor';
+const DAI_CURRENCY_KEY = 'dai';
+const UPDATE_ACTIVE_TRANSACTIONS_INTERVAL = 2_000;
+const UPDATE_ASSETS_TIMEOUT = BLOCK_PRODUCE_TIME * 3;
 
-const getAppStore = () => {
-  const appStore = requireAppStore();
-
-  if (!appStore?.state?.wallet) {
-    return null;
-  }
-
-  return appStore;
+const fallbackFilters: WalletAssetFilters = {
+  option: 'All',
+  verifiedOnly: false,
+  zeroBalance: false,
 };
 
-const accessAppStore = <T>(getter: (store: ReturnType<typeof requireAppStore>) => T, fallback: T): T => {
-  const appStore = getAppStore();
+const mapByAddress = <T extends { address: string }>(items: ReadonlyArray<T> = []): Record<string, T> => {
+  return items.reduce<Record<string, T>>((buffer, item) => {
+    if (item?.address) {
+      buffer[item.address] = item;
+    }
 
-  if (!appStore) {
-    return fallback;
+    return buffer;
+  }, {});
+};
+
+const resolveWhitelist = (whitelistArray: ReadonlyArray<WhitelistArrayItem> = []): Whitelist => {
+  if (!whitelistArray.length) {
+    return {};
   }
 
   try {
-    // Vuex-backed getters may temporarily resolve to `undefined` during boot.
-    // Preserve explicit falsy values (false/0/'') while falling back on nullish.
-    return (getter(appStore) ?? fallback) as T;
-  } catch (error) {
-    return fallback;
+    return walletApi.assets.getWhitelist([...whitelistArray]);
+  } catch {
+    return {};
   }
 };
 
+const resolveWhitelistIdsBySymbol = (whitelistArray: ReadonlyArray<WhitelistArrayItem> = []): WhitelistIdsBySymbol => {
+  if (!whitelistArray.length) {
+    return {} as WhitelistIdsBySymbol;
+  }
+
+  try {
+    return walletApi.assets.getWhitelistIdsBySymbol([...whitelistArray]) as WhitelistIdsBySymbol;
+  } catch {
+    return {} as WhitelistIdsBySymbol;
+  }
+};
+
+const resolveCurrencySymbol = (currency: Nullable<string>, currencies: CurrencyFields[] = []): string => {
+  if (!currency) {
+    return DEFAULT_CURRENCY_SYMBOL;
+  }
+
+  const currencyKey = currency.toLowerCase();
+  const configuredCurrency = currencies.find((entry) => String(entry.key).toLowerCase() === currencyKey);
+
+  if (configuredCurrency?.symbol) {
+    return configuredCurrency.symbol;
+  }
+
+  if (currencyKey === XOR_CURRENCY_KEY) {
+    return 'XOR';
+  }
+
+  try {
+    const parts = new Intl.NumberFormat('en', {
+      style: 'currency',
+      currency: currencyKey.toUpperCase(),
+      currencyDisplay: 'narrowSymbol',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).formatToParts(1);
+
+    return parts.find((part) => part.type === 'currency')?.value ?? DEFAULT_CURRENCY_SYMBOL;
+  } catch {
+    return DEFAULT_CURRENCY_SYMBOL;
+  }
+};
+
+const resolveExchangeRate = (settings: SettingsState, account: AccountState): number => {
+  if (String(settings.currency).toLowerCase() === XOR_CURRENCY_KEY) {
+    const xorPriceCodec = account.fiatPriceObject?.[XOR.address];
+    const xorPrice = FPNumber.fromCodecValue(xorPriceCodec ?? 0);
+
+    if (xorPrice.isGtZero()) {
+      return FPNumber.ONE.div(xorPrice).toNumber();
+    }
+
+    return 1;
+  }
+
+  return settings.fiatExchangeRateObject?.[settings.currency] ?? 1;
+};
+
+const areLocalNetworkFeesOkay = (
+  localFees: NetworkFeesObject = {} as NetworkFeesObject,
+  apiFees: NetworkFeesObject = {} as NetworkFeesObject
+): boolean => {
+  const localFeeKeys = Object.keys(localFees);
+  const apiFeeKeys = Object.keys(apiFees);
+
+  if (!localFeeKeys.length) {
+    return false;
+  }
+
+  if (!Number(localFees.Swap ?? 0)) {
+    return false;
+  }
+
+  if (localFeeKeys.length !== apiFeeKeys.length) {
+    return false;
+  }
+
+  localFeeKeys.sort();
+  apiFeeKeys.sort();
+
+  return localFeeKeys.every((key, index) => key === apiFeeKeys[index]);
+};
+
+const resolveFirstReadyTransaction = (state: TransactionsState): Nullable<HistoryItem> => {
+  return state.activeTxsIds
+    .map((id) => state.history[id])
+    .find((transaction) =>
+      transaction
+        ? [TransactionStatus.InBlock, TransactionStatus.Finalized, TransactionStatus.Error].includes(
+            transaction.status as TransactionStatus
+          )
+        : false
+    ) as Nullable<HistoryItem>;
+};
+
+const resolveSelectedTransaction = (state: TransactionsState): Nullable<HistoryItem> => {
+  if (!state.selectedTxId) {
+    return null;
+  }
+
+  return (
+    state.history[state.selectedTxId] ||
+    state.externalHistory[state.selectedTxId] ||
+    state.externalHistoryUpdates[state.selectedTxId]
+  );
+};
+
 /**
- * Transitional Pinia facade over the Vuex-backed wallet module.
- * Enables gradual migration away from `store.state.wallet`/`store.getters.wallet`
- * access throughout the app while the underlying module remains Vuex-based.
+ * Pinia-backed wallet facade that owns wallet state locally and exposes
+ * stable wallet state/getters to the rest of the app.
  */
-export const useWalletStore = defineStore('wallet', {
-  getters: {
-    address: () => accessAppStore((store) => store.state.wallet.account.address as string, ''),
-    soraAddress(): string {
-      return this.address;
-    },
-    account(): Nullable<WALLET_TYPES.PolkadotJsAccount> {
-      return accessAppStore(
-        (store) => store.getters.wallet.account.account as Nullable<WALLET_TYPES.PolkadotJsAccount>,
-        null
-      );
-    },
-    isLoggedIn(): boolean {
-      return accessAppStore((store) => Boolean(store.getters.wallet.account.isLoggedIn), false);
-    },
-    whitelist(): Whitelist {
-      return accessAppStore((store) => store.getters.wallet.account.whitelist as Whitelist, []);
-    },
-    whitelistIdsBySymbol(): WALLET_TYPES.WhitelistIdsBySymbol {
-      return accessAppStore(
-        (store) => store.getters.wallet.account.whitelistIdsBySymbol as WALLET_TYPES.WhitelistIdsBySymbol,
-        {} as WALLET_TYPES.WhitelistIdsBySymbol
-      );
-    },
-    assets(): AccountAsset[] {
-      return accessAppStore((store) => store.state.wallet.account.assets as AccountAsset[], []);
-    },
-    accountAssets(): AccountAsset[] {
-      return accessAppStore((store) => store.state.wallet.account.accountAssets as AccountAsset[], []);
-    },
-    isAssetPinned(): (asset: AccountAsset) => boolean {
-      return accessAppStore(
-        (store) => store.getters.wallet.account.isAssetPinned as (asset: AccountAsset) => boolean,
-        () => false
-      );
-    },
-    fiatPriceObject(): FiatPriceObject {
-      return accessAppStore((store) => (store.state.wallet.account.fiatPriceObject as FiatPriceObject) ?? {}, {});
-    },
-    assetsDataTable(): AssetsTable {
-      return accessAppStore((store) => store.getters.wallet.account.assetsDataTable as AssetsTable, {});
-    },
-    accountAssetsAddressTable(): AccountAssetsTable {
-      return accessAppStore(
-        (store) => store.getters.wallet.account.accountAssetsAddressTable as AccountAssetsTable,
-        {}
-      );
-    },
-    pinnedAssets(): string[] {
-      return accessAppStore((store) => store.state.wallet.account.pinnedAssets as string[], []);
-    },
-    assetsToNotifyQueue(): string[] {
-      return accessAppStore((store) => store.state.wallet.account.assetsToNotifyQueue as string[], []);
-    },
-    accountSource(): Nullable<WALLET_TYPES.AppWallet> {
-      return accessAppStore((store) => store.state.wallet.account.source as Nullable<WALLET_TYPES.AppWallet>, null);
-    },
-    currentRoute(): Nullable<string> {
-      const routerStore = useRouterStore();
-      return routerStore.current;
-    },
-    isMstAccount(): boolean {
-      return accessAppStore((store) => Boolean(store.state.wallet.account.isMST), false);
-    },
-    ceresFiatValuesUsage(): boolean {
-      return accessAppStore((store) => Boolean(store.state.wallet.account.ceresFiatValuesUsage), false);
-    },
-    shouldBalanceBeHidden(): boolean {
-      return accessAppStore((store) => Boolean(store.state.wallet.settings.shouldBalanceBeHidden), false);
-    },
-    currency(): Nullable<string> {
-      return accessAppStore((store) => store.state.wallet.settings.currency as Nullable<string>, null);
-    },
-    currencySymbol(): string {
-      return accessAppStore((store) => store.getters.wallet.settings.currencySymbol as string, '$');
-    },
-    exchangeRate(): number {
-      return accessAppStore((store) => store.getters.wallet.settings.exchangeRate as number, 1);
-    },
-    networkFees(): NetworkFeesObject {
-      return accessAppStore(
-        (store) => store.state.wallet.settings.networkFees as NetworkFeesObject,
-        {} as NetworkFeesObject
-      );
-    },
-    firstReadyTransaction(): Nullable<HistoryItem> {
-      return accessAppStore((store) => store.getters.wallet.transactions.firstReadyTx as Nullable<HistoryItem>, null);
-    },
-    pendingMstTransactions(): HistoryItem[] {
-      return accessAppStore((store) => store.state.wallet.transactions.pendingMstTransactions as HistoryItem[], []);
-    },
-    isSignTxDialogVisible(): boolean {
-      return accessAppStore((store) => Boolean(store.state.wallet.transactions.isSignTxDialogVisible), false);
-    },
-    isSignTxDialogDisabled(): boolean {
-      return accessAppStore((store) => Boolean(store.state.wallet.transactions.isSignTxDialogDisabled), false);
-    },
-    isConfirmTxDialogDisabled(): boolean {
-      return accessAppStore((store) => Boolean(store.state.wallet.transactions.isConfirmTxDialogDisabled), false);
-    },
-    isMstWarningVisible(): boolean {
-      return accessAppStore((store) => Boolean(store.state.wallet.settings.isMSTAvailable), false);
-    },
-    soraNetwork(): Nullable<string> {
-      return accessAppStore((store) => store.state.wallet.settings.soraNetwork as Nullable<string>, null);
-    },
-  },
-  actions: {
-    toggleHideBalance(): void {
-      getAppStore()?.commit?.wallet?.settings?.toggleHideBalance?.();
-    },
-    setSignTxDialogVisibility(flag: boolean): void {
-      getAppStore()?.commit?.wallet?.transactions?.setSignTxDialogVisibility?.(flag);
-    },
-    navigate(payload: { name: string; params?: Record<string, unknown> }): void {
-      const routerStore = useRouterStore();
-      routerStore.navigate(payload);
-    },
-    async loginAccount(account: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
-      await getAppStore()?.dispatch?.wallet?.account?.loginAccount?.(account);
-    },
-    logout(): Promise<void> {
-      return getAppStore()?.dispatch?.wallet?.account?.logout?.() ?? Promise.resolve();
-    },
-    async renameAccount(payload: { address: string; name: string }): Promise<void> {
-      await getAppStore()?.dispatch?.wallet?.account?.renameAccount?.(payload);
-    },
-    async addAsset(address?: string): Promise<void> {
-      await getAppStore()?.dispatch?.wallet?.account?.addAsset?.(address);
-    },
-    async notifyOnDeposit(data: { asset: WhitelistArrayItem; message: string }): Promise<void> {
-      await getAppStore()?.dispatch?.wallet?.account?.notifyOnDeposit?.(data);
-    },
-    async afterLogin(): Promise<void> {
-      await getAppStore()?.dispatch?.wallet?.account?.afterLogin?.();
-    },
-    async setApiKeys(keys: Record<string, string>): Promise<void> {
-      await getAppStore()?.dispatch?.wallet?.settings?.setApiKeys?.(keys);
-    },
-    async subscribeOnExchangeRatesApi(): Promise<void> {
-      await getAppStore()?.dispatch?.wallet?.settings?.subscribeOnExchangeRatesApi?.();
-    },
-    addActiveTransaction(id: string): void {
-      const transactions = getAppStore()?.commit?.wallet?.transactions;
+export const useWalletStore = defineStore('wallet', () => {
+  const accountState = ref<AccountState>(createAccountState());
+  const settingsState = ref<SettingsState>(createSettingsState());
+  const transactionsState = ref<TransactionsState>(createTransactionsState());
 
-      if (!transactions?.addActiveTx) {
-        console.warn('[wallet] Legacy transactions module is not ready yet.');
+  const storageUpdatesSubscription = ref<Nullable<VoidFunction>>(null);
+
+  const address = computed(() => accountState.value.address ?? '');
+  const soraAddress = computed(() => address.value);
+  const account = computed<Nullable<PolkadotJsAccount>>(() => {
+    const { address, name, source } = accountState.value;
+
+    if (!(address && source)) {
+      return null;
+    }
+
+    return {
+      address,
+      name,
+      source: source as AppWallet,
+    };
+  });
+  const isLoggedIn = computed(() => Boolean(accountState.value.address && accountState.value.source));
+  const whitelist = computed<Whitelist>(() => resolveWhitelist(accountState.value.whitelistArray));
+  const whitelistIdsBySymbol = computed<WhitelistIdsBySymbol>(() =>
+    resolveWhitelistIdsBySymbol(accountState.value.whitelistArray)
+  );
+  const assets = computed(() => (accountState.value.assets ?? []) as AccountAsset[]);
+  const accountAssets = computed(() => accountState.value.accountAssets ?? []);
+  const isAssetPinned = (asset: AccountAsset): boolean =>
+    Boolean(asset && accountState.value.pinnedAssets.includes(asset.address));
+  const fiatPriceObject = computed(() => (accountState.value.fiatPriceObject ?? {}) as FiatPriceObject);
+  const assetsDataTable = computed<AssetsTable>(() => mapByAddress((accountState.value.assets ?? []) as Asset[]));
+  const accountAssetsAddressTable = computed<AccountAssetsTable>(() =>
+    mapByAddress(accountState.value.accountAssets ?? [])
+  );
+  const pinnedAssets = computed(() => accountState.value.pinnedAssets ?? []);
+  const assetsToNotifyQueue = computed<WhitelistArrayItem[]>(() => accountState.value.assetsToNotifyQueue ?? []);
+  const accountSource = computed(() => (accountState.value.source as Nullable<AppWallet>) ?? null);
+  const currentRoute = computed<Nullable<string>>(() => useRouterStore().current);
+  const isDesktop = computed(() => Boolean(accountState.value.isDesktop));
+  const isMstAccount = computed(() => Boolean(accountState.value.isMST));
+  const ceresFiatValuesUsage = computed(() => Boolean(accountState.value.ceresFiatValuesUsage));
+  const blacklist = computed(() => accountState.value.blacklistArray ?? []);
+  const shouldBalanceBeHidden = computed(() => Boolean(settingsState.value.shouldBalanceBeHidden));
+  const apiKeys = computed(() => ({ ...(settingsState.value.apiKeys ?? {}) }) as Record<string, string>);
+  const moonpayApiKey = computed(() => settingsState.value.apiKeys?.moonpay ?? '');
+  const currency = computed(() => (settingsState.value.currency as Nullable<string>) ?? null);
+  const theme = computed(() => (settingsState.value.theme as Nullable<Theme>) ?? null);
+  const libraryTheme = computed(() => normalizeTheme(settingsState.value.theme as Theme));
+  const currencySymbol = computed(() =>
+    resolveCurrencySymbol(settingsState.value.currency, settingsState.value.currencies)
+  );
+  const exchangeRate = computed(() => resolveExchangeRate(settingsState.value, accountState.value));
+  const networkFees = computed(() => (settingsState.value.networkFees ?? {}) as NetworkFeesObject);
+  const blockNumber = computed(() => Number(settingsState.value.blockNumber ?? 0));
+  const isWalletLoaded = computed(() => Boolean(settingsState.value.isWalletLoaded));
+  const allowFeePopup = computed(() => Boolean(settingsState.value.allowFeePopup));
+  const filters = computed(() => (settingsState.value.filters as WalletAssetFilters) ?? fallbackFilters);
+  const assetsFilter = computed(() => (settingsState.value.assetsFilter as FilterOptions) ?? ('All' as FilterOptions));
+  const currencies = computed(() => (settingsState.value.currencies ?? []) as CurrencyFields[]);
+  const alerts = computed(() => (settingsState.value.alerts ?? []) as Alert[]);
+  const allowTopUpAlert = computed(() => Boolean(settingsState.value.allowTopUpAlert));
+  const indexers = computed(() => (settingsState.value.indexers ?? {}) as Record<string, IndexerState>);
+  const indexerType = computed(() => (settingsState.value.indexerType as Nullable<string>) ?? null);
+  const activeTransactions = computed<HistoryItem[]>(() =>
+    transactionsState.value.activeTxsIds
+      .map((id) => transactionsState.value.history[id])
+      .filter((transaction): transaction is HistoryItem => Boolean(transaction))
+  );
+  const firstReadyTransaction = computed(() => resolveFirstReadyTransaction(transactionsState.value));
+  const selectedTransaction = computed(() => resolveSelectedTransaction(transactionsState.value));
+  const pendingMstTransactions = computed(() => transactionsState.value.pendingMstTransactions ?? []);
+  const isSignTxDialogVisible = computed(() => Boolean(transactionsState.value.isSignTxDialogVisible));
+  const isSignTxDialogDisabled = computed(() => Boolean(transactionsState.value.isSignTxDialogDisabled));
+  const isConfirmTxDialogDisabled = computed(() => Boolean(transactionsState.value.isConfirmTxDialogDisabled));
+  const accountPasswordTimeout = computed(() =>
+    Number(accountState.value.accountPasswordTimeout ?? DefaultPassphraseTimeout)
+  );
+  const accountPasswordTimestamp = computed(
+    () => (accountState.value.accountPasswordTimestamp ?? {}) as Record<string, Nullable<number>>
+  );
+  const isMstWarningVisible = computed(() => Boolean(settingsState.value.isMSTAvailable));
+  const isMSTAvailable = computed(() => Boolean(settingsState.value.isMSTAvailable));
+  const soraNetwork = computed(() => (settingsState.value.soraNetwork as Nullable<string>) ?? null);
+  const getPassword = (accountAddress: string): Nullable<string> => {
+    if (!accountAddress) {
+      return null;
+    }
+
+    const address = walletApi.formatAddress(accountAddress, false);
+    const encryptedPassphrase = accountState.value.addressPassphraseMapping[address];
+    const sessionKey = accountState.value.addressKeyMapping[address];
+
+    if (!(encryptedPassphrase && sessionKey)) {
+      return null;
+    }
+
+    return AES.decrypt(encryptedPassphrase, sessionKey).toString(enc.Utf8);
+  };
+  const isConnectedAccount = (nextAccount: PolkadotJsAccount): boolean => {
+    if (!nextAccount) {
+      return false;
+    }
+
+    return (
+      formatAccountAddress(nextAccount.address) === accountState.value.address &&
+      nextAccount.name === accountState.value.name &&
+      nextAccount.source === accountState.value.source
+    );
+  };
+
+  const resetExchangeRateSubscription = (): void => {
+    settingsState.value.exchangeRateUnsubFn?.();
+    settingsState.value.exchangeRateUnsubFn = null;
+  };
+
+  const handleExchangeRatesSuccess = (newRates: FiatExchangeRateObject): void => {
+    updateFiatExchangeRates(newRates);
+    settingsState.value.currencies = getCurrenciesState(true);
+  };
+
+  const handleExchangeRatesError = (): void => {
+    updateFiatExchangeRates({});
+    settingsState.value.currencies = getCurrenciesState(false);
+  };
+
+  const setAccountAssets = (value: AccountAsset[]): void => {
+    accountState.value.accountAssets = value;
+  };
+
+  const setAssets = (value: Asset[]): void => {
+    accountState.value.assets = value;
+  };
+
+  const setAvailableWallets = (wallets: unknown[]): void => {
+    accountState.value.availableWallets = wallets as AccountState['availableWallets'];
+  };
+
+  const resetAssetsSubscription = (): void => {
+    accountState.value.assetsSubscription?.();
+    accountState.value.assetsSubscription = null;
+  };
+
+  const getAssets = async (): Promise<void> => {
+    const allAssets = await Promise.race([
+      walletApi.assets.getAssets(true, whitelist.value, blacklist.value),
+      new Promise<never>((_resolve, reject) => {
+        setTimeout(() => reject(new Error('Request Timeout')), UPDATE_ASSETS_TIMEOUT);
+      }),
+    ]);
+    const filtered = excludePoolXYKAssets(allAssets);
+
+    setAssets(filtered);
+  };
+
+  const subscribeOnAssets = async (): Promise<void> => {
+    resetAssetsSubscription();
+    await getAssets();
+
+    const indexer = getCurrentIndexer();
+    const subscription = indexer.services.explorer.asset.createNewAssetsSubscription((newAssets) => {
+      if (!newAssets.length) {
         return;
       }
 
-      transactions.addActiveTx(id);
-    },
-    removeActiveTransactions(ids: string[]): void {
-      const transactions = getAppStore()?.commit?.wallet?.transactions;
+      const assetsToAdd = newAssets.filter((asset) => !(asset.address in assetsDataTable.value));
 
-      if (!transactions?.removeActiveTxs) {
-        console.warn('[wallet] Legacy transactions module is not ready yet.');
+      if (assetsToAdd.length) {
+        setAssets([...(accountState.value.assets as Asset[]), ...assetsToAdd]);
+      }
+    }, console.error);
+
+    accountState.value.assetsSubscription = subscription;
+  };
+
+  const resetAccountAssetsSubscription = (): void => {
+    walletApi.assets.clearAccountAssets();
+
+    if (accountState.value.accountAssetsSubscription) {
+      accountState.value.accountAssetsSubscription.unsubscribe();
+      accountState.value.accountAssetsSubscription = null;
+    }
+  };
+
+  const subscribeOnAccountAssets = async (): Promise<void> => {
+    resetAccountAssetsSubscription();
+
+    if (!isLoggedIn.value) {
+      return;
+    }
+
+    try {
+      const subscription = walletApi.assets.balanceUpdated.subscribe(() => {
+        setAccountAssets(
+          walletApi.assets.accountAssets.filter((asset) => !walletApi.assets.isNftBlacklisted(asset, blacklist.value))
+        );
+      });
+
+      accountState.value.accountAssetsSubscription = subscription;
+      await walletApi.assets.updateAccountAssets();
+    } catch {
+      setAccountAssets([]);
+    }
+  };
+
+  const syncAccountHistory = (): void => {
+    transactionsState.value.history = Object.freeze({ ...walletApi.history });
+  };
+
+  const getHistory = (): void => {
+    syncAccountHistory();
+  };
+
+  const setExternalHistory = (history: TransactionsState['externalHistory']): void => {
+    transactionsState.value.externalHistory = Object.freeze({ ...history });
+  };
+
+  const setExternalHistoryUpdates = (history: TransactionsState['externalHistoryUpdates']): void => {
+    transactionsState.value.externalHistoryUpdates = Object.freeze({ ...history });
+  };
+
+  const setExternalHistoryTotal = (total = 0): void => {
+    transactionsState.value.externalHistoryTotal = total;
+  };
+
+  const removeHistoryByIds = (ids: string[]): void => {
+    transactionsState.value.activeTxsIds = transactionsState.value.activeTxsIds.filter((txId) => !ids.includes(txId));
+    walletApi.removeHistory(...ids);
+  };
+
+  const setTxDetailsId = (id: string): void => {
+    transactionsState.value.selectedTxId = id;
+  };
+
+  const resetTxDetailsId = (): void => {
+    transactionsState.value.selectedTxId = null;
+  };
+
+  const saveExternalHistoryUpdates = (flag: boolean): void => {
+    transactionsState.value.saveExternalHistoryUpdates = flag;
+  };
+
+  const resetExternalHistory = (): void => {
+    transactionsState.value.externalHistory = {};
+    transactionsState.value.externalHistoryUpdates = {};
+    transactionsState.value.externalHistoryTotal = 0;
+  };
+
+  const resetExternalHistorySubscription = (): void => {
+    transactionsState.value.externalHistorySubscription?.();
+    transactionsState.value.externalHistorySubscription = null;
+  };
+
+  const subscribeOnExternalHistory = async (): Promise<void> => {
+    resetExternalHistorySubscription();
+
+    if (!(isLoggedIn.value && address.value)) {
+      return;
+    }
+
+    try {
+      const indexer = getCurrentIndexer();
+      const subscription = indexer.services.explorer.account.createHistorySubscription(
+        address.value,
+        async (transaction) => {
+          const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(transaction);
+
+          if (!historyItem?.id) {
+            return;
+          }
+
+          if ([Operation.EthBridgeIncoming, Operation.EthBridgeOutgoing].includes(historyItem.type as Operation)) {
+            return;
+          }
+
+          if (historyItem.id in walletApi.history) {
+            removeHistoryByIds([historyItem.id]);
+            syncAccountHistory();
+          }
+
+          if (
+            transactionsState.value.saveExternalHistoryUpdates &&
+            !(historyItem.id in transactionsState.value.externalHistory)
+          ) {
+            transactionsState.value.externalHistoryUpdates = Object.freeze({
+              ...transactionsState.value.externalHistoryUpdates,
+              [historyItem.id]: historyItem,
+            });
+          }
+
+          if (
+            accountIdBasedOperations.includes(historyItem.type as Operation) &&
+            historyItem.to === account.value?.address
+          ) {
+            const asset = whitelist.value[historyItem.assetAddress as string];
+
+            if (asset && settingsState.value.allowTopUpAlert) {
+              setAssetToNotify(asset as WhitelistArrayItem);
+            }
+          }
+        }
+      );
+
+      transactionsState.value.externalHistorySubscription = subscription;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getExternalHistory = async ({
+    address = '',
+    assetAddress = '',
+    pageAmount = 8,
+    page = 1,
+    query = {},
+  }: ExternalHistoryParams = {}): Promise<void> => {
+    const indexer = getCurrentIndexer();
+    const operations = indexer.services.dataParser.supportedOperations;
+    const filter = indexer.historyElementsFilter({
+      address,
+      assetAddress,
+      operations,
+      query,
+    });
+    const variables = {
+      filter,
+      first: pageAmount,
+      offset: pageAmount * (page - 1),
+    };
+
+    try {
+      const response = await indexer.services.explorer.account.getHistory(variables);
+
+      if (!response) {
         return;
       }
 
-      transactions.removeActiveTxs(ids);
+      const { nodes, totalCount } = response;
+      const buffer: Record<string, HistoryItem> = {};
+      const removeInternalIds: string[] = [];
+      const removeExternalUpdatesIds: string[] = [];
+
+      for (const transaction of nodes ?? []) {
+        const id = transaction?.id as Nullable<string>;
+
+        if (!(id && !(id in transactionsState.value.externalHistory))) {
+          continue;
+        }
+
+        const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(transaction as never);
+
+        if (!historyItem?.id) {
+          continue;
+        }
+
+        buffer[id] = historyItem;
+
+        if (id in walletApi.history) {
+          removeInternalIds.push(id);
+        }
+
+        if (id in transactionsState.value.externalHistoryUpdates) {
+          removeExternalUpdatesIds.push(id);
+        }
+      }
+
+      if (removeInternalIds.length) {
+        removeHistoryByIds(removeInternalIds);
+      }
+
+      if (removeExternalUpdatesIds.length) {
+        const nextExternalHistoryUpdates = { ...transactionsState.value.externalHistoryUpdates };
+
+        removeExternalUpdatesIds.forEach((id) => {
+          delete nextExternalHistoryUpdates[id];
+        });
+
+        setExternalHistoryUpdates(nextExternalHistoryUpdates);
+      }
+
+      setExternalHistory({
+        ...transactionsState.value.externalHistory,
+        ...buffer,
+      });
+      setExternalHistoryTotal(totalCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const setFiatPriceObject = (value: FiatPriceObject): void => {
+    accountState.value.fiatPriceObject = Object.freeze(value);
+  };
+
+  const updateFiatPriceObject = (value?: FiatPriceObject): void => {
+    if (!value) {
+      return;
+    }
+
+    const nextValue = Object.freeze({ ...(accountState.value.fiatPriceObject || {}), ...value });
+
+    accountState.value.alertSubject?.next(nextValue);
+    accountState.value.fiatPriceObject = nextValue;
+  };
+
+  const clearFiatPriceObject = (): void => {
+    accountState.value.fiatPriceObject = {};
+  };
+
+  const resetFiatPriceSubscription = (): void => {
+    accountState.value.fiatPriceSubscription?.();
+    accountState.value.fiatPriceSubscription = null;
+  };
+
+  const getFiatPriceObjectUsingIndexer = async (): Promise<void> => {
+    const indexer = getCurrentIndexer();
+    const data = await indexer.services.explorer.price.getFiatPriceObject();
+
+    if (data) {
+      setFiatPriceObject(data);
+    } else {
+      clearFiatPriceObject();
+    }
+  };
+
+  const getFiatPriceUpdatesUsingIndexer = async (): Promise<void> => {
+    const indexer = getCurrentIndexer();
+    const data = await indexer.services.explorer.price.getFiatPriceUpdates();
+
+    if (data) {
+      updateFiatPriceObject(data);
+    }
+  };
+
+  const subscribeOnFiatUsingCurrentIndexer = (): void => {
+    resetFiatPriceSubscription();
+
+    const indexer = getCurrentIndexer();
+    const subscription = indexer.services.explorer.price.createFiatPriceSubscription(
+      (priceObject) => {
+        if (priceObject) {
+          updateFiatPriceObject(priceObject);
+        } else {
+          void getFiatPriceUpdatesUsingIndexer();
+        }
+      },
+      () => undefined
+    );
+
+    accountState.value.fiatPriceSubscription = subscription;
+  };
+
+  const useFiatValuesFromIndexer = async (): Promise<void> => {
+    await getFiatPriceObjectUsingIndexer();
+    subscribeOnFiatUsingCurrentIndexer();
+  };
+
+  const useFiatValuesFromCeresApi = async (): Promise<void> => {
+    const data = await CeresApiService.getFiatPriceObject();
+
+    if (data) {
+      setFiatPriceObject(data);
+    } else {
+      clearFiatPriceObject();
+    }
+
+    resetFiatPriceSubscription();
+
+    const subscription = CeresApiService.createFiatPriceSubscription(updateFiatPriceObject, clearFiatPriceObject);
+
+    accountState.value.fiatPriceSubscription = subscription;
+  };
+
+  const subscribeOnFiatPrice = async (): Promise<void> => {
+    if (!accountState.value.ceresFiatValuesUsage) {
+      await useFiatValuesFromIndexer();
+    } else {
+      await useFiatValuesFromCeresApi();
+    }
+  };
+
+  const setCeresFiatValuesUsage = (flag: boolean): void => {
+    accountState.value.ceresFiatValuesUsage = flag;
+    settingsStorage.set('ceresFiatValues', flag);
+  };
+
+  const useCeresApiForFiatValues = async (flag: boolean): Promise<void> => {
+    setCeresFiatValuesUsage(flag);
+    await subscribeOnFiatPrice();
+  };
+
+  const subscribeOnAlerts = (): void => {
+    const alertSubject = alertsApiService.createPriceAlertSubscription();
+
+    accountState.value.alertSubject = alertSubject;
+  };
+
+  const resetAlertsSubscription = (): void => {
+    accountState.value.alertSubject?.unsubscribe();
+    accountState.value.alertSubject = null;
+  };
+
+  const resetBlockNumberSubscription = (): void => {
+    settingsState.value.blockNumberSubscription?.unsubscribe();
+    settingsState.value.blockNumberSubscription = null;
+  };
+
+  const subscribeOnBlockNumber = (): void => {
+    resetBlockNumberSubscription();
+
+    const subscription = walletApi.system.getBlockNumberObservable().subscribe((nextBlockNumber) => {
+      settingsState.value.blockNumber = nextBlockNumber;
+    });
+
+    settingsState.value.blockNumberSubscription = subscription;
+  };
+
+  const resetFeeMultiplierAndRuntimeSubscriptions = (): void => {
+    settingsState.value.feeMultiplierAndRuntimeSubscriptions?.unsubscribe();
+    settingsState.value.feeMultiplierAndRuntimeSubscriptions = null;
+  };
+
+  const updateNetworkFees = (value: NetworkFeesObject = {} as NetworkFeesObject): void => {
+    const nextNetworkFees = { ...value };
+
+    settingsState.value.networkFees = nextNetworkFees;
+    runtimeStorage.set('networkFees', JSON.stringify(nextNetworkFees));
+  };
+
+  const setNetworkFees = (value: NetworkFeesObject = {} as NetworkFeesObject): void => {
+    const nextNetworkFees = { ...value };
+
+    settingsState.value.networkFees = nextNetworkFees;
+    walletApi.NetworkFee = nextNetworkFees;
+  };
+
+  const setFeeMultiplier = (multiplier: number): void => {
+    settingsState.value.feeMultiplier = multiplier;
+    runtimeStorage.set('feeMultiplier', multiplier);
+  };
+
+  const setRuntimeVersion = (version: number): void => {
+    settingsState.value.runtimeVersion = version;
+    runtimeStorage.set('version', version);
+  };
+
+  const subscribeOnFeeMultiplierAndRuntime = (): void => {
+    resetFeeMultiplierAndRuntimeSubscriptions();
+
+    const subscription = combineLatest([
+      walletApi.system.getRuntimeVersionObservable(),
+      walletApi.system.getNetworkFeeMultiplierObservable(),
+    ]).subscribe(async ([runtime, multiplier]) => {
+      const runtimeVersion = runtimeStorage.get('version');
+      const feeMultiplier = runtimeStorage.get('feeMultiplier');
+      const networkFeesValue = runtimeStorage.get('networkFees');
+      const localMultiplier = feeMultiplier ? Number(JSON.parse(feeMultiplier)) : 0;
+      const localRuntime = runtimeVersion ? Number(JSON.parse(runtimeVersion)) : 0;
+      const localNetworkFees = networkFeesValue
+        ? (JSON.parse(networkFeesValue) as NetworkFeesObject)
+        : ({} as NetworkFeesObject);
+
+      if (
+        localRuntime === runtime &&
+        localMultiplier === multiplier &&
+        areLocalNetworkFeesOkay(localNetworkFees, walletApi.NetworkFee)
+      ) {
+        setNetworkFees(localNetworkFees);
+        return;
+      }
+
+      if (localMultiplier !== multiplier) {
+        setFeeMultiplier(multiplier);
+      }
+
+      if (runtime && localRuntime !== runtime) {
+        setRuntimeVersion(runtime);
+      }
+
+      await walletApi.calcStaticNetworkFees();
+      updateNetworkFees(walletApi.NetworkFee);
+    });
+
+    settingsState.value.feeMultiplierAndRuntimeSubscriptions = subscription;
+  };
+
+  const resetAccountState = (): void => {
+    const nextAccountState = createAccountState();
+
+    nextAccountState.whitelistArray = accountState.value.whitelistArray;
+    nextAccountState.blacklistArray = accountState.value.blacklistArray;
+    nextAccountState.fiatPriceObject = accountState.value.fiatPriceObject;
+    nextAccountState.fiatPriceSubscription = accountState.value.fiatPriceSubscription;
+    nextAccountState.assets = accountState.value.assets;
+    nextAccountState.assetsSubscription = accountState.value.assetsSubscription;
+    nextAccountState.availableWallets = accountState.value.availableWallets;
+
+    accountState.value = nextAccountState;
+  };
+
+  const toggleHideBalance = (): void => {
+    settingsState.value.shouldBalanceBeHidden = !settingsState.value.shouldBalanceBeHidden;
+    storage.set('shouldBalanceBeHidden', settingsState.value.shouldBalanceBeHidden);
+  };
+
+  const setSignTxDialogVisibility = (flag: boolean): void => {
+    transactionsState.value.isSignTxDialogVisible = flag;
+  };
+
+  const setSignTxDialogDisabled = (flag: boolean): void => {
+    transactionsState.value.isSignTxDialogDisabled = flag;
+    settingsStorage.set('signTxDialogDisabled', flag);
+  };
+
+  const setConfirmTxDialogDisabled = (flag: boolean): void => {
+    transactionsState.value.isConfirmTxDialogDisabled = flag;
+    settingsStorage.set('confirmTxDialogDisabled', flag);
+  };
+
+  const setSoraNetwork = (value: Nullable<string>): void => {
+    settingsState.value.soraNetwork = value;
+  };
+
+  const setIndexerEndpoint = (payload: { indexer: string; endpoint: string }): void => {
+    const current = settingsState.value.indexers[payload.indexer] ?? {
+      endpoint: null,
+      status: (payload.endpoint ? 'available' : 'unavailable') as IndexerState['status'],
+    };
+
+    settingsState.value.indexers[payload.indexer] = {
+      ...current,
+      endpoint: payload.endpoint,
+      status: (!payload.endpoint ? 'unavailable' : current.status) as IndexerState['status'],
+    };
+  };
+
+  const setIsDesktop = (flag: boolean): void => {
+    accountState.value.isDesktop = flag;
+  };
+
+  const navigate = (payload: { name: string; params?: Record<string, unknown> }): void => {
+    useRouterStore().navigate(payload);
+  };
+
+  const loginAccount = async (nextAccount: PolkadotJsAccount): Promise<void> => {
+    await loginApi(walletApi as never, nextAccount as never, isAppStorageSource(accountState.value.source));
+    syncAccountWithStorage();
+    await afterLogin();
+  };
+
+  const logout = async (): Promise<void> => {
+    const forgetCurrentAccount = !isAppStorageSource(accountState.value.source);
+
+    logoutApi(walletApi as never, forgetCurrentAccount);
+    resetAccountAssetsSubscription();
+    resetExternalHistorySubscription();
+    resetAccountState();
+    useRouterStore().checkCurrentRoute();
+  };
+
+  const renameAccount = async (payload: { address: string; name: string }): Promise<void> => {
+    walletApi.changeAccountName(payload.address, payload.name);
+    syncAccountWithStorage();
+  };
+
+  const addAsset = async (assetAddress?: string): Promise<void> => {
+    if (!assetAddress) {
+      return;
+    }
+
+    try {
+      await walletApi.assets.addAccountAsset(assetAddress);
+    } catch (error) {
+      console.error('[Add asset]:', error);
+    }
+  };
+
+  const transfer = async ({ to, amount }: { to: string; amount: string }): Promise<void> => {
+    const asset = useRouterStore().currentParams.asset as Nullable<AccountAsset>;
+
+    if (!asset) {
+      console.warn('[Transfer]: Route asset is unavailable');
+      return;
+    }
+
+    await walletApi.assets.simpleTransfer(asset, to, amount);
+  };
+
+  const getVestedTransferFee = async ({
+    asset,
+    amount,
+    vestingPercent,
+    unlockPeriodInDays,
+  }: VestedTransferFeeParams): Promise<Nullable<FPNumber>> => {
+    try {
+      return await walletApi.assets.getVestedTransferFee(
+        asset,
+        amount,
+        settingsState.value.blockNumber,
+        vestingPercent,
+        unlockPeriodInDays
+      );
+    } catch (error) {
+      console.warn('[Vested Transfer Fee]:', error);
+      return null;
+    }
+  };
+
+  const vestedTransfer = async ({
+    to,
+    asset,
+    amount,
+    vestingPercent,
+    unlockPeriodInDays,
+    start,
+    current,
+  }: VestedTransferParams): Promise<void> => {
+    const diff = Math.floor((start - current) / 6_000);
+    const startBlock = diff > 0 ? settingsState.value.blockNumber + diff : settingsState.value.blockNumber;
+
+    await walletApi.assets.vestedTransfer(asset, to, amount, startBlock, vestingPercent, unlockPeriodInDays);
+  };
+
+  /** Keeps the deposit-notification queue local-first. */
+  const setAssetToNotify = (asset: WhitelistArrayItem): void => {
+    accountState.value.assetsToNotifyQueue.push(asset);
+  };
+
+  /** Mirrors queue consumption so legacy wallet observers do not resurrect already-notified deposits. */
+  const popAssetFromNotificationQueue = (): void => {
+    accountState.value.assetsToNotifyQueue.shift();
+  };
+
+  const notifyOnDeposit = async (data: { asset: WhitelistArrayItem; message: string }): Promise<void> => {
+    await alertsApiService.pushNotification(data.asset, data.message);
+    popAssetFromNotificationQueue();
+  };
+
+  const afterLogin = async (): Promise<void> => {
+    await subscribeOnAccountAssets();
+    await subscribeOnExternalHistory();
+    useRouterStore().checkCurrentRoute();
+  };
+
+  const setApiKeys = async (keys: Record<string, string>): Promise<void> => {
+    settingsState.value.apiKeys = {
+      ...settingsState.value.apiKeys,
+      ...keys,
+    };
+
+    const { googleApi, googleClientId, walletconnect } = settingsState.value.apiKeys;
+
+    if (googleApi && googleClientId) {
+      GDriveStorage.setOptions(googleApi, googleClientId);
+    }
+
+    if (walletconnect) {
+      WcProvider.projectId = walletconnect;
+    }
+  };
+
+  const setNftStorage = ({ marketplaceDid, ucan }: { marketplaceDid?: string; ucan?: string } = {}): void => {
+    settingsState.value.nftStorage =
+      marketplaceDid && ucan
+        ? new NFTStorage({
+            token: ucan,
+            did: marketplaceDid,
+          })
+        : new NFTStorage({ token: settingsState.value.apiKeys.nftStorage });
+  };
+
+  const createNftStorageInstance = async (): Promise<void> => {
+    if (settingsState.value.soraNetwork === SoraNetwork.Prod) {
+      try {
+        const { marketplaceDid, ucan } = await IpfsStorage.getUcanTokens();
+        setNftStorage({ marketplaceDid, ucan });
+      } catch {
+        console.error('Error while getting API keys for NFT marketplace.');
+      }
+    } else {
+      setNftStorage({});
+    }
+  };
+
+  const subscribeOnExchangeRatesApi = async (): Promise<void> => {
+    resetExchangeRateSubscription();
+    settingsState.value.exchangeRateUnsubFn = CurrencyExchangeRateService.createExchangeRatesSubscription(
+      handleExchangeRatesSuccess,
+      handleExchangeRatesError
+    );
+  };
+
+  const addPriceAlert = (alert: Alert): void => {
+    const nextAlerts = [alert, ...settingsState.value.alerts].slice(0, MAX_ALERTS_NUMBER);
+    settingsState.value.alerts = nextAlerts;
+    settingsStorage.set('alerts', JSON.stringify(nextAlerts));
+  };
+
+  const editPriceAlert = (payload: EditableAlertObject): void => {
+    settingsState.value.alerts[payload.position] = payload.alert;
+    settingsStorage.set('alerts', JSON.stringify(settingsState.value.alerts));
+  };
+
+  const removePriceAlert = (position: number): void => {
+    settingsState.value.alerts.splice(position, 1);
+    settingsStorage.set('alerts', JSON.stringify(settingsState.value.alerts));
+  };
+
+  const setPriceAlertAsNotified = (payload: { position: number; value: boolean }): void => {
+    const nextAlert = settingsState.value.alerts[payload.position];
+
+    if (!nextAlert) {
+      return;
+    }
+
+    settingsState.value.alerts[payload.position] = {
+      ...nextAlert,
+      wasNotified: payload.value,
+    };
+    settingsStorage.set('alerts', JSON.stringify(settingsState.value.alerts));
+  };
+
+  const setDepositNotifications = (value: boolean): void => {
+    settingsState.value.allowTopUpAlert = value;
+    settingsStorage.set('allowTopUpAlerts', value);
+  };
+
+  const setFiatCurrency = (value?: Currency): void => {
+    settingsState.value.currency = (value ?? DAI_CURRENCY_KEY) as Currency;
+    settingsStorage.set('currency', settingsState.value.currency);
+  };
+
+  const updateFiatExchangeRates = (value?: FiatExchangeRateObject): void => {
+    const nextRates = {
+      [DAI_CURRENCY_KEY]: 1,
+      ...(value ?? {}),
+    };
+
+    settingsState.value.fiatExchangeRateObject = nextRates;
+    settingsStorage.set('fiatExchangeRates', JSON.stringify(nextRates));
+  };
+
+  const setAssetsFilter = (value: FilterOptions): void => {
+    settingsState.value.assetsFilter = value;
+  };
+
+  const setFilterOptions = (value: WalletAssetFilters): void => {
+    settingsState.value.filters = value;
+    storage.set('filters', JSON.stringify(value));
+  };
+
+  const setAllowFeePopup = (flag: boolean): void => {
+    settingsState.value.allowFeePopup = flag;
+    settingsStorage.set('allowFeePopup', flag.toString());
+  };
+
+  const setPermissions = (permissions: Partial<SettingsState['permissions']>): void => {
+    if (!permissions || typeof permissions !== 'object' || Array.isArray(permissions)) {
+      console.error(`Permissions should be an object, ${typeof permissions} is given`);
+      return;
+    }
+
+    settingsState.value.permissions = {
+      ...settingsState.value.permissions,
+      ...permissions,
+    };
+  };
+
+  const setWalletLoaded = (flag: boolean): void => {
+    settingsState.value.isWalletLoaded = flag;
+  };
+
+  const setIndexerType = (type: string): void => {
+    settingsState.value.indexerType = type as SettingsState['indexerType'];
+    settingsStorage.set('indexerType', settingsState.value.indexerType);
+  };
+
+  const setIndexerStatus = async (payload: { indexer: string; status: IndexerState['status'] }): Promise<void> => {
+    const current = settingsState.value.indexers[payload.indexer];
+
+    if (current) {
+      current.status = payload.status;
+    } else {
+      settingsState.value.indexers[payload.indexer] = {
+        endpoint: null,
+        status: payload.status,
+      };
+    }
+
+    if (payload.status !== 'unavailable' || settingsState.value.indexerType !== payload.indexer) {
+      return;
+    }
+
+    const nextIndexer = Object.entries(settingsState.value.indexers).reduce<string | null>(
+      (buffer, [indexer, data]) => {
+        if (buffer || data.status === 'unavailable') {
+          return buffer;
+        }
+
+        return indexer;
+      },
+      null
+    );
+
+    if (nextIndexer) {
+      await selectIndexer(nextIndexer);
+    }
+  };
+
+  const resetIndexerSubscriptions = async (): Promise<void> => {
+    resetFiatPriceSubscription();
+    resetExternalHistorySubscription();
+  };
+
+  const activateIndexerSubscriptions = async (): Promise<void> => {
+    await Promise.all([subscribeOnFiatPrice(), subscribeOnExternalHistory()]);
+  };
+
+  const selectIndexer = async (type: string): Promise<void> => {
+    const nextIndexer = type || settingsState.value.indexerType;
+
+    try {
+      await resetIndexerSubscriptions();
+      setIndexerType(nextIndexer);
+      await activateIndexerSubscriptions();
+    } catch (error) {
+      console.error(error);
+      await setIndexerStatus({ indexer: nextIndexer, status: 'unavailable' });
+    }
+  };
+
+  const addActiveTransaction = (id: string): void => {
+    transactionsState.value.activeTxsIds = [...new Set([...transactionsState.value.activeTxsIds, id])];
+  };
+
+  const removeActiveTransactions = (ids: string[]): void => {
+    transactionsState.value.activeTxsIds = transactionsState.value.activeTxsIds.filter((txId) => !ids.includes(txId));
+  };
+
+  const setPinnedAsset = (asset: AccountAsset): void => {
+    accountState.value.pinnedAssets.push(asset.address);
+    settingsStorage.set('pinnedAssets', JSON.stringify(accountState.value.pinnedAssets));
+  };
+
+  const removePinnedAsset = (asset: AccountAsset): void => {
+    accountState.value.pinnedAssets = accountState.value.pinnedAssets.filter((address) => address !== asset.address);
+    settingsStorage.set('pinnedAssets', JSON.stringify(accountState.value.pinnedAssets));
+  };
+
+  const setMultiplePinnedAssets = (assetAddresses: string[]): void => {
+    accountState.value.pinnedAssets = [...new Set(assetAddresses.filter(Boolean))];
+    settingsStorage.set('pinnedAssets', JSON.stringify(accountState.value.pinnedAssets));
+  };
+
+  const setIsMstAccount = (flag: boolean): void => {
+    accountState.value.isMST = flag;
+  };
+
+  const setIsMstAddressExist = (flag: boolean): void => {
+    accountState.value.isMstAddressExist = flag;
+  };
+
+  const setPasswordTimeout = (timeout: number): void => {
+    accountState.value.accountPasswordTimeout = timeout;
+    settingsStorage.set('accountPasswordTimeout', JSON.stringify(timeout));
+  };
+
+  const setAddressToBook = (payload: Pick<PolkadotJsAccount, 'address' | 'name'>): void => {
+    if (!payload?.address) {
+      return;
+    }
+
+    accountState.value.book = {
+      ...(accountState.value.book ?? {}),
+      [payload.address]: payload.name ?? '',
+    };
+    settingsStorage.set('book', JSON.stringify(accountState.value.book));
+  };
+
+  const removeAddressFromBook = (address: string): void => {
+    if (!address) {
+      return;
+    }
+
+    const nextBook = { ...(accountState.value.book ?? {}) };
+    delete nextBook[address];
+
+    accountState.value.book = nextBook;
+    settingsStorage.set('book', JSON.stringify(nextBook));
+  };
+
+  const setAccountPassphrase = (payload: { address: string; password: string }): void => {
+    resetAccountPassphrase(payload.address);
+
+    const address = walletApi.formatAddress(payload.address, false);
+    const key = cryptoRandomString({ length: 10, type: 'ascii-printable' });
+    const passphrase = AES.encrypt(payload.password, key).toString();
+
+    accountState.value.addressPassphraseMapping = {
+      ...accountState.value.addressPassphraseMapping,
+      [address]: passphrase,
+    };
+    accountState.value.addressKeyMapping = {
+      ...accountState.value.addressKeyMapping,
+      [address]: key,
+    };
+
+    const timer = setTimeout(() => resetAccountPassphrase(payload.address), accountState.value.accountPasswordTimeout);
+
+    accountState.value.accountPasswordTimer = {
+      ...accountState.value.accountPasswordTimer,
+      [address]: timer,
+    };
+    accountState.value.accountPasswordTimestamp = {
+      ...accountState.value.accountPasswordTimestamp,
+      [address]: Date.now(),
+    };
+  };
+
+  const syncAccountWithStorage = (): void => {
+    const isExternal = storage.get('isExternal');
+
+    accountState.value.address = storage.get('address') || '';
+    accountState.value.name = storage.get('name') || '';
+    accountState.value.source = (storage.get('source') as AppWallet) || '';
+    accountState.value.isExternal = isExternal ? JSON.parse(isExternal) : false;
+  };
+
+  const resetAccountPassphrase = (nextAddress: string): void => {
+    const address = walletApi.formatAddress(nextAddress, false);
+    const timer = accountState.value.accountPasswordTimer[address];
+
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    accountState.value.accountPasswordTimer[address] = null;
+    accountState.value.accountPasswordTimestamp[address] = null;
+    accountState.value.addressKeyMapping = {
+      ...accountState.value.addressKeyMapping,
+      [address]: null,
+    };
+    accountState.value.addressPassphraseMapping = {
+      ...accountState.value.addressPassphraseMapping,
+      [address]: null,
+    };
+  };
+
+  const updateAvailableWallets = async (): Promise<void> => {
+    try {
+      setAvailableWallets(getAppWallets(accountState.value.isDesktop));
+    } catch (error) {
+      console.error(error);
+      setAvailableWallets([]);
+    }
+  };
+
+  const clearWhitelist = (): void => {
+    accountState.value.whitelistArray = [];
+  };
+
+  const setWhitelist = (value: WhitelistArrayItem[]): void => {
+    accountState.value.whitelistArray = value;
+  };
+
+  const clearBlacklist = (): void => {
+    accountState.value.blacklistArray = [];
+  };
+
+  const setNftBlacklist = (value: AccountState['blacklistArray']): void => {
+    accountState.value.blacklistArray = value;
+  };
+
+  const getWhitelist = async (): Promise<void> => {
+    clearWhitelist();
+
+    try {
+      const response = await fetch(WHITE_LIST_URL, { cache: 'no-cache' });
+
+      if (!response.ok) {
+        throw new Error(`Whitelist request failed with status ${response.status}`);
+      }
+
+      const payload = await response.text();
+      setWhitelist(sanitizeWhitelistPayload(payload));
+    } catch (error) {
+      clearWhitelist();
+      console.error('[whitelist] Unable to load whitelist.', error);
+    }
+  };
+
+  const getNftBlacklist = async (): Promise<void> => {
+    clearBlacklist();
+
+    try {
+      const response = await fetch(NFT_BLACK_LIST_URL, { cache: 'no-cache' });
+
+      if (!response.ok) {
+        throw new Error(`NFT blacklist request failed with status ${response.status}`);
+      }
+
+      const payload = await response.text();
+      setNftBlacklist(sanitizeNftBlacklistPayload(payload));
+    } catch (error) {
+      clearBlacklist();
+      console.error('[nft-blacklist] Unable to load NFT blacklist.', error);
+    }
+  };
+
+  const checkWalletAvailability = async (): Promise<void> => {
+    if (!(isLoggedIn.value && accountState.value.source)) {
+      return;
+    }
+
+    try {
+      if (accountState.value.isExternal) {
+        await updateApiSigner(walletApi as never, accountState.value.source as never);
+      } else {
+        checkWallet(accountState.value.source as never);
+      }
+    } catch (error) {
+      console.error(error);
+      await logout();
+    }
+  };
+
+  const checkConnectedAccountSource = async (source: string): Promise<void> => {
+    if (source && account.value?.source === source) {
+      await logout();
+    }
+  };
+
+  const initMultisigAddress = (): void => {
+    setIsMstAddressExist(walletApi.mst.isMstAddressExist());
+    setIsMstAccount(walletApi.mst.isMST());
+  };
+
+  const resetNetworkSubscriptions = async (): Promise<void> => {
+    resetBlockNumberSubscription();
+    resetFeeMultiplierAndRuntimeSubscriptions();
+    resetAssetsSubscription();
+    resetAccountAssetsSubscription();
+  };
+
+  const resetInternalSubscriptions = async (): Promise<void> => {
+    resetActiveTxs();
+    resetPendingMstTxsSubscription();
+    resetAlertsSubscription();
+    resetStorageUpdatesSubscription();
+  };
+
+  const activateNetworkSubscriptions = async (): Promise<void> => {
+    await Promise.all([
+      Promise.resolve(subscribeOnBlockNumber()),
+      Promise.resolve(subscribeOnFeeMultiplierAndRuntime()),
+      subscribeOnAssets(),
+      subscribeOnAccountAssets(),
+    ]);
+  };
+
+  const activateInternalSubscriptions = async (): Promise<void> => {
+    await Promise.all([
+      Promise.resolve(trackActiveTxs()),
+      trackPendingMstTxs(),
+      Promise.resolve(subscribeOnAlerts()),
+      Promise.resolve(subscribeToStorageUpdates()),
+    ]);
+  };
+
+  const trackActiveTxs = (): void => {
+    resetActiveTxs();
+
+    const subscription = setInterval(() => {
+      if (transactionsState.value.activeTxsIds.length) {
+        syncAccountHistory();
+      }
+    }, UPDATE_ACTIVE_TRANSACTIONS_INTERVAL);
+
+    transactionsState.value.updateActiveTxsId = subscription;
+  };
+
+  const resetActiveTxs = (): void => {
+    if (transactionsState.value.updateActiveTxsId) {
+      clearInterval(transactionsState.value.updateActiveTxsId as number);
+    }
+
+    transactionsState.value.activeTxsIds = [];
+    transactionsState.value.updateActiveTxsId = null;
+  };
+
+  const resetPendingMstTxsSubscription = (): void => {
+    transactionsState.value.pendingMstTxsSubscription?.unsubscribe();
+    transactionsState.value.pendingMstTxsSubscription = null;
+    walletApi.mst.stopPendingTxsSubscription();
+  };
+
+  const trackPendingMstTxs = async (): Promise<void> => {
+    resetPendingMstTxsSubscription();
+
+    if (!(isLoggedIn.value && walletApi.mst.isMstAddressExist() && address.value)) {
+      return;
+    }
+
+    try {
+      const mstAddress = walletApi.mst.getMstAddress();
+
+      await walletApi.mst.startPendingTxsSubscription(mstAddress);
+
+      const subscription = walletApi.mst.pendingTxsUpdated.subscribe((pendingTxs) => {
+        if (pendingTxs?.length) {
+          let userAddress = address.value;
+
+          if (walletApi.mst.isMST()) {
+            userAddress = walletApi.formatAddress(walletApi.mst.getPrevoiusAccount());
+          }
+
+          const pendingApprovalTxs = pendingTxs.filter((tx) => {
+            const multisig = (tx as { multisig?: { walletsApproved?: string[] } }).multisig;
+
+            if (!multisig) {
+              return false;
+            }
+
+            return !multisig.walletsApproved?.includes(userAddress);
+          });
+
+          transactionsState.value.pendingMstTransactions = pendingApprovalTxs;
+        } else {
+          transactionsState.value.pendingMstTransactions = [];
+        }
+
+        syncAccountHistory();
+      });
+
+      transactionsState.value.pendingMstTxsSubscription = subscription;
+    } catch (error) {
+      console.error('Error starting MST pending transactions subscription:', error);
+    }
+  };
+
+  const setTheme = async (nextTheme: Theme): Promise<void> => {
+    settingsState.value.theme = normalizeTheme(nextTheme);
+    settingsStorage.set('theme', settingsState.value.theme);
+  };
+
+  const toggleTheme = async (): Promise<void> => {
+    const nextTheme = settingsState.value.theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
+
+    await setTheme(nextTheme);
+  };
+
+  const setIsMstAvailable = (flag: boolean): void => {
+    settingsState.value.isMSTAvailable = flag;
+  };
+
+  const subscribeToStorageUpdates = (): void => {
+    resetStorageUpdatesSubscription();
+
+    storageUpdatesSubscription.value = debounce(100)(() => {
+      syncAccountWithStorage();
+      syncAccountHistory();
+    }) as VoidFunction;
+
+    window.addEventListener('storage', storageUpdatesSubscription.value);
+  };
+
+  const resetStorageUpdatesSubscription = (): void => {
+    if (!storageUpdatesSubscription.value) {
+      return;
+    }
+
+    window.removeEventListener('storage', storageUpdatesSubscription.value);
+    storageUpdatesSubscription.value = null;
+  };
+
+  const createSignDialogController = (): TransactionSignVisibilityController => ({
+    setVisibility: (visible: boolean) => {
+      setSignTxDialogVisibility(visible);
     },
-    async resetNetworkSubscriptions(): Promise<void> {
-      await getAppStore()?.dispatch?.wallet?.subscriptions?.resetNetworkSubscriptions?.();
+    subscribe: (handler: (visible: boolean) => void) => {
+      return watch(isSignTxDialogVisible, (visible) => {
+        handler(Boolean(visible));
+      });
     },
-    async resetInternalSubscriptions(): Promise<void> {
-      await getAppStore()?.dispatch?.wallet?.subscriptions?.resetInternalSubscriptions?.();
-    },
-    async activateNetworkSubscriptions(): Promise<void> {
-      await getAppStore()?.dispatch?.wallet?.subscriptions?.activateNetwokSubscriptions?.();
-    },
-    async setTheme(theme: Theme): Promise<void> {
-      await getAppStore()?.dispatch?.wallet?.settings?.setTheme?.(theme);
-    },
-  },
+  });
+
+  const signBeforeTransaction = async (signerApi: unknown, _mutationType?: string): Promise<void> => {
+    await beforeTransactionSign(null, signerApi as never, createSignDialogController(), {
+      getPassword,
+      isSignTxDialogDisabled: isSignTxDialogDisabled.value,
+    });
+  };
+
+  return {
+    accountState,
+    settingsState,
+    transactionsState,
+    address,
+    soraAddress,
+    account,
+    isLoggedIn,
+    whitelist,
+    whitelistIdsBySymbol,
+    assets,
+    accountAssets,
+    setAccountAssets,
+    isAssetPinned,
+    fiatPriceObject,
+    assetsDataTable,
+    accountAssetsAddressTable,
+    pinnedAssets,
+    assetsToNotifyQueue,
+    accountSource,
+    currentRoute,
+    isDesktop,
+    isMstAccount,
+    ceresFiatValuesUsage,
+    blacklist,
+    shouldBalanceBeHidden,
+    apiKeys,
+    moonpayApiKey,
+    currency,
+    theme,
+    libraryTheme,
+    currencySymbol,
+    exchangeRate,
+    networkFees,
+    blockNumber,
+    isWalletLoaded,
+    allowFeePopup,
+    filters,
+    assetsFilter,
+    currencies,
+    alerts,
+    allowTopUpAlert,
+    indexers,
+    indexerType,
+    activeTransactions,
+    firstReadyTransaction,
+    selectedTransaction,
+    pendingMstTransactions,
+    isSignTxDialogVisible,
+    isSignTxDialogDisabled,
+    isConfirmTxDialogDisabled,
+    accountPasswordTimeout,
+    accountPasswordTimestamp,
+    isMstWarningVisible,
+    isMSTAvailable,
+    soraNetwork,
+    getPassword,
+    isConnectedAccount,
+    toggleHideBalance,
+    setSignTxDialogVisibility,
+    setSignTxDialogDisabled,
+    setConfirmTxDialogDisabled,
+    setSoraNetwork,
+    setIndexerEndpoint,
+    setIsDesktop,
+    navigate,
+    loginAccount,
+    logout,
+    renameAccount,
+    addAsset,
+    transfer,
+    getVestedTransferFee,
+    vestedTransfer,
+    setAssetToNotify,
+    notifyOnDeposit,
+    afterLogin,
+    setApiKeys,
+    createNftStorageInstance,
+    subscribeOnExchangeRatesApi,
+    addPriceAlert,
+    editPriceAlert,
+    removePriceAlert,
+    setDepositNotifications,
+    setFiatCurrency,
+    updateFiatExchangeRates,
+    setAssetsFilter,
+    setFilterOptions,
+    setAllowFeePopup,
+    setPermissions,
+    setWalletLoaded,
+    setPriceAlertAsNotified,
+    setIndexerStatus,
+    selectIndexer,
+    addActiveTransaction,
+    removeActiveTransactions,
+    getHistory,
+    setTxDetailsId,
+    resetTxDetailsId,
+    saveExternalHistoryUpdates,
+    resetExternalHistory,
+    setPinnedAsset,
+    removePinnedAsset,
+    setMultiplePinnedAssets,
+    setIsMstAccount,
+    setIsMstAddressExist,
+    setIsMstAvailable,
+    setPasswordTimeout,
+    setAddressToBook,
+    removeAddressFromBook,
+    setAccountPassphrase,
+    syncAccountWithStorage,
+    updateAvailableWallets,
+    getWhitelist,
+    getNftBlacklist,
+    checkWalletAvailability,
+    initMultisigAddress,
+    subscribeOnAssets,
+    resetAssetsSubscription,
+    subscribeOnAccountAssets,
+    resetAccountAssetsSubscription,
+    subscribeOnFiatPrice,
+    resetFiatPriceSubscription,
+    useCeresApiForFiatValues,
+    subscribeOnAlerts,
+    resetAlertsSubscription,
+    subscribeOnBlockNumber,
+    resetBlockNumberSubscription,
+    subscribeOnFeeMultiplierAndRuntime,
+    resetFeeMultiplierAndRuntimeSubscriptions,
+    subscribeOnExternalHistory,
+    getExternalHistory,
+    resetExternalHistorySubscription,
+    resetAccountPassphrase,
+    checkConnectedAccountSource,
+    resetIndexerSubscriptions,
+    activateIndexerSubscriptions,
+    resetNetworkSubscriptions,
+    resetInternalSubscriptions,
+    activateNetworkSubscriptions,
+    activateInternalSubscriptions,
+    trackActiveTxs,
+    resetActiveTxs,
+    resetPendingMstTxsSubscription,
+    trackPendingMstTxs,
+    setTheme,
+    toggleTheme,
+    subscribeToStorageUpdates,
+    resetStorageUpdatesSubscription,
+    beforeTransactionSign: signBeforeTransaction,
+  };
 });
 
 export type WalletStore = ReturnType<typeof useWalletStore>;

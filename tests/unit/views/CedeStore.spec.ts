@@ -67,27 +67,25 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@wallet/src/util/storage', () => ({
+vi.mock('@/lib/soraneo-wallet/src/util/storage', () => ({
   __esModule: true,
   storage: walletStorageStub,
   runtimeStorage: walletStorageStub,
   settingsStorage: walletStorageStub,
 }));
 
-const storeState = vi.hoisted(() => ({
-  wallet: {
-    account: {
-      address: 'cn123',
-    },
-  },
+vi.mock('@/stores/wallet', () => ({
+  __esModule: true,
+  useWalletStore: () => ({
+    address: 'cn123',
+  }),
 }));
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/settings', () => ({
   __esModule: true,
-  default: {
-    state: storeState,
-    getters: {},
-  },
+  useSettingsStore: () => ({
+    libraryTheme: Theme.LIGHT,
+  }),
 }));
 
 vi.mock('@/utils/storage', () => ({

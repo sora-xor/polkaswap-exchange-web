@@ -26,23 +26,10 @@ const accountLedgerRef = ref<{ unlocking: Array<Record<string, unknown>> }>({ un
 const currentEraRef = ref<number | null>(1);
 const activeEraRef = ref<number | null>(1);
 const maxApyRef = ref(12);
-
-type StoreState = {
-  staking: {
-    totalNominators: number | null;
-  };
-};
-
-var storeState: StoreState = {
-  staking: {
-    totalNominators: null,
-  },
-};
+const totalNominatorsRef = ref<number | null>(null);
 
 const setTotalNominatorsMock = vi.fn((value: number) => {
-  if (storeState) {
-    storeState.staking.totalNominators = value;
-  }
+  totalNominatorsRef.value = value;
 });
 
 function createMockAmount(value: number) {
@@ -147,9 +134,20 @@ const lazyComponentStub = (name: string): Component =>
     },
   });
 
-vi.mock('vue-i18n', () => ({
+vi.mock('vue-i18n', async () => {
+  const actual = await vi.importActual<typeof import('vue-i18n')>('vue-i18n');
+  return {
+    __esModule: true,
+    ...actual,
+    useI18n: () => ({
+      t: (key: string) => key,
+    }),
+  };
+});
+
+vi.mock('@/composables/useTranslation', () => ({
   __esModule: true,
-  useI18n: () => ({
+  useTranslation: () => ({
     t: (key: string) => key,
   }),
 }));
@@ -250,29 +248,6 @@ vi.mock('@/indexer/queries/staking/nominators', () => ({
   fetchData: (...args: unknown[]) => fetchDataMock(...args),
 }));
 
-vi.mock('@/store', () => {
-  storeState = reactive<StoreState>({
-    staking: {
-      totalNominators: null,
-    },
-  });
-
-  return {
-    __esModule: true,
-    default: {
-      state: storeState,
-      commit: {
-        staking: {
-          setTotalNominators: (value: number) => {
-            setTotalNominatorsMock(value);
-            storeState.staking.totalNominators = value;
-          },
-        },
-      },
-    },
-  };
-});
-
 vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
   __esModule: true,
   useSoraStaking: () => ({
@@ -298,6 +273,8 @@ vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
     currentEra: computed(() => currentEraRef.value),
     activeEra: computed(() => activeEraRef.value),
     maxApy: computed(() => maxApyRef.value),
+    totalNominators: computed(() => totalNominatorsRef.value),
+    setTotalNominators: (value: number) => setTotalNominatorsMock(value),
   }),
 }));
 
@@ -351,7 +328,7 @@ describe('Overview.vue', () => {
     currentEraRef.value = 1;
     activeEraRef.value = 1;
     maxApyRef.value = 12;
-    storeState.staking.totalNominators = null;
+    totalNominatorsRef.value = null;
     fetchDataMock.mockResolvedValue(123);
     routerPushMock = vi.fn();
   });
@@ -456,6 +433,6 @@ describe('Overview.vue', () => {
 
     expect(fetchDataMock).toHaveBeenCalledTimes(1);
     expect(setTotalNominatorsMock).toHaveBeenCalledWith(123);
-    expect(storeState.staking.totalNominators).toBe(123);
+    expect(totalNominatorsRef.value).toBe(123);
   });
 });

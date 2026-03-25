@@ -50,7 +50,7 @@ import { computed } from 'vue';
 import { useCopyAddress } from '@/composables/useCopyAddress';
 import { useTranslation } from '@/composables/useTranslation';
 import { HashType, ExplorerType, SoraNetwork, type ExplorerLink } from '@/consts';
-import { requireAppStore } from '@/utils/app-store';
+import { useSettingsStore } from '@/stores/settings';
 import {
   formatAddress,
   formatAccountAddress,
@@ -75,10 +75,10 @@ const props = withDefaults(
 );
 
 const { t, TranslationConsts } = useTranslation();
-const store = requireAppStore();
+const settingsStore = useSettingsStore();
 const { copyTooltip, handleCopyAddress } = useCopyAddress();
 
-const soraNetwork = computed<SoraNetwork>(() => store.state.wallet.settings.soraNetwork ?? SoraNetwork.Dev);
+const soraNetwork = computed<SoraNetwork>(() => settingsStore.soraNetwork ?? SoraNetwork.Dev);
 
 const isEthHash = computed(() => [HashType.EthAccount, HashType.EthTransaction].includes(props.type));
 

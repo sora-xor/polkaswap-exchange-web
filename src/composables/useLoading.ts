@@ -1,7 +1,8 @@
-import { delay } from '@wallet/src/util';
 import { computed, ref } from 'vue';
 
-import store from '@/store';
+import { delay } from '@/shims/wallet-util';
+import pinia from '@/plugins/pinia';
+import { useSettingsStore } from '@/stores/settings';
 
 import type { WithConnectionApi } from '@sora-substrate/sdk';
 import type { Ref } from 'vue';
@@ -56,12 +57,8 @@ const resolveChainApi = (apiRef: WithConnectionApi): ChainApiInstance | null => 
 
 export function useLoading(options: LoadingOptions = {}) {
   const loading = ref(false);
-  // `isWalletLoaded` lives under the wallet Vuex module. A legacy root-level
-  // `settings.isWalletLoaded` flag existed in some host apps; keep it as a
-  // best-effort fallback to avoid hanging when only that signal is present.
-  const isWalletLoaded = computed(
-    () => store.state?.wallet?.settings?.isWalletLoaded ?? (store.state as any)?.settings?.isWalletLoaded ?? true
-  );
+  const settingsStore = useSettingsStore(pinia);
+  const isWalletLoaded = computed(() => settingsStore.isWalletLoaded);
   const parentLoading = options.parentLoading;
 
   const resolveParentLoading = (): boolean => {

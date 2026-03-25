@@ -45,7 +45,7 @@ import { computed, ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { WalletFilteringOptions, type WalletAssetFilters } from '@/consts';
-import { requireAppStore } from '@/utils/app-store';
+import { useSettingsStore } from '@/stores/settings';
 
 import FormattedAmount from './FormattedAmount.vue';
 
@@ -63,9 +63,9 @@ const emit = defineEmits<{
 }>();
 
 const { t, TranslationConsts } = useTranslation();
-const store = requireAppStore();
+const settingsStore = useSettingsStore();
 
-const filters = computed<WalletAssetFilters>(() => store.state.wallet.settings.filters);
+const filters = computed<WalletAssetFilters>(() => settingsStore.filters);
 
 const zeroBalanceSwitch = ref(false);
 
@@ -75,7 +75,7 @@ const updateFilters = <K extends keyof WalletAssetFilters>(key: K, value: Wallet
     [key]: value,
   } as WalletAssetFilters;
 
-  store.commit.wallet.settings.setFilterOptions(updatedFilters);
+  settingsStore.setFilterOptions(updatedFilters);
   emit('update-filter');
 };
 

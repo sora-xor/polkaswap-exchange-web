@@ -1,4 +1,5 @@
 import { Operation } from '@sora-substrate/sdk';
+import { createPinia, setActivePinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { usePoolTokenPair } from '@/modules/pool/composables/usePoolTokenPair';
@@ -19,27 +20,18 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   }),
 }));
 
-const storeMock = vi.hoisted(() => ({
-  state: {
-    wallet: {
-      settings: {
-        networkFees: {},
-      },
-    },
-    addLiquidity: {
-      firstTokenValue: '1',
-      secondTokenValue: '2',
-      isAvailable: true,
-    },
-  },
-  getters: {
-    addLiquidity: {
-      firstToken: { symbol: 'A' },
-      secondToken: { symbol: 'B' },
-      price: '3',
-      priceReversed: '4',
-    },
-  },
+const settingsStateMock = vi.hoisted(() => ({
+  networkFees: {},
+}));
+
+const poolStoreMock = vi.hoisted(() => ({
+  addLiquidityFirstTokenValue: '1',
+  addLiquiditySecondTokenValue: '2',
+  addLiquidityIsAvailable: true,
+  addLiquidityFirstToken: { symbol: 'A' },
+  addLiquiditySecondToken: { symbol: 'B' },
+  addLiquidityPrice: '3',
+  addLiquidityPriceReversed: '4',
 }));
 
 const initialNetworkFees = {
@@ -47,13 +39,9 @@ const initialNetworkFees = {
   [Operation.CreatePair]: '20',
 };
 
-vi.mock('@/store', () => ({
-  default: storeMock,
-}));
-
 const settingsStoreMock = {
   get networkFees() {
-    return storeMock.state.wallet.settings.networkFees;
+    return settingsStateMock.networkFees;
   },
 };
 
@@ -61,15 +49,22 @@ vi.mock('@/stores/settings', () => ({
   useSettingsStore: () => settingsStoreMock,
 }));
 
+vi.mock('@/stores/pool', () => ({
+  usePoolStore: () => poolStoreMock,
+}));
+
 describe('usePoolTokenPair', () => {
   beforeEach(() => {
+    setActivePinia(createPinia());
     formatCodecNumber.mockClear();
     formatStringValue.mockClear();
 
-    storeMock.state.addLiquidity.firstTokenValue = '1';
-    storeMock.state.addLiquidity.secondTokenValue = '2';
-    storeMock.state.addLiquidity.isAvailable = true;
-    storeMock.state.wallet.settings.networkFees = { ...initialNetworkFees };
+    poolStoreMock.addLiquidityFirstTokenValue = '1';
+    poolStoreMock.addLiquiditySecondTokenValue = '2';
+    poolStoreMock.addLiquidityIsAvailable = true;
+    poolStoreMock.addLiquidityPrice = '3';
+    poolStoreMock.addLiquidityPriceReversed = '4';
+    settingsStateMock.networkFees = { ...initialNetworkFees };
   });
 
   it('provides formatted values and detects empty assets', () => {
@@ -80,9 +75,9 @@ describe('usePoolTokenPair', () => {
   });
 
   it('falls back to create pair fee when liquidity is unavailable and detects empty assets', () => {
-    storeMock.state.addLiquidity.isAvailable = false;
-    storeMock.state.addLiquidity.firstTokenValue = '';
-    storeMock.state.addLiquidity.secondTokenValue = '';
+    poolStoreMock.addLiquidityIsAvailable = false;
+    poolStoreMock.addLiquidityFirstTokenValue = '';
+    poolStoreMock.addLiquiditySecondTokenValue = '';
 
     const { emptyAssets } = usePoolTokenPair();
     expect(emptyAssets.value).toBe(true);

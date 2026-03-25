@@ -6,18 +6,9 @@
       :tooltip="t('pool.description')"
     ></generic-page-header>
     <div class="pool-wrapper" data-test-name="Pools">
-      <div v-if="!isLoggedIn || !hasAccountLiquidities" class="pool-empty-state">
-        <p class="pool-info-container pool-info-container--empty">
-          {{ !isLoggedIn ? t('pool.connectToWallet') : t('pool.liquidityNotFound') }}
-        </p>
-        <s-button
-          type="primary"
-          class="pool-empty-state__action s-typography-button--large"
-          @click="!isLoggedIn ? connectSoraWallet() : handleAddLiquidity()"
-        >
-          {{ !isLoggedIn ? t('connectWalletText') : t('pool.addLiquidity') }}
-        </s-button>
-      </div>
+      <p v-if="!isLoggedIn || !hasAccountLiquidities" class="pool-info-container pool-info-container--empty">
+        {{ !isLoggedIn ? t('pool.connectToWallet') : t('pool.liquidityNotFound') }}
+      </p>
       <s-collapse v-else key="has-pools" class="pool-list" :borders="true" @change="updateActiveCollapseItems">
         <s-collapse-item
           v-for="liquidityItem of accountLiquidityData"
@@ -90,13 +81,12 @@
       </s-collapse>
     </div>
     <s-button
-      v-if="isLoggedIn && hasAccountLiquidities"
       class="el-button--add-liquidity s-typography-button--large"
       data-test-name="addLiquidity"
       type="primary"
-      @click="handleAddLiquidity()"
+      @click="!isLoggedIn ? connectSoraWallet() : handleAddLiquidity()"
     >
-      {{ t('pool.addLiquidity') }}
+      {{ !isLoggedIn ? t('connectWalletText') : t('pool.addLiquidity') }}
     </s-button>
 
     <add-liquidity-dialog v-model:visible="addLiquidityVisibility"></add-liquidity-dialog>
@@ -106,7 +96,7 @@
 
 <script lang="ts" setup>
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, ref } from 'vue';
 
 import { Components } from '@/consts';
@@ -114,14 +104,16 @@ import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
+import { FontSizeRate, FontWeightRate } from '@/shims/wallet-consts';
 import { PoolComponents } from '@/modules/pool/consts';
 import { usePoolApy } from '@/modules/pool/composables/usePoolApy';
 import { poolLazyComponent } from '@/modules/pool/router';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { usePoolStore } from '@/stores/pool';
+import type { LiquidityParams } from '@/stores/pool/types';
 import { sortPools } from '@/utils';
 
-import type { LiquidityParams } from '@/store/pool/types';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 
@@ -157,12 +149,11 @@ const parentLoading = loading;
 const { connectSoraWallet, isLoggedIn } = useInternalConnect();
 const { formatCodecNumber, formatStringValue, getFiatAmountByCodecString } = useFormattedAmount();
 const { getPoolApyFormatted } = usePoolApy();
+const assetsStore = useAssetsStore();
+const poolStore = usePoolStore();
 
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
-const FontWeightRate = WALLET_CONSTS.FontWeightRate;
-
-const accountLiquidity = computed(() => store.state.pool.accountLiquidity as Array<AccountLiquidity>);
-const getAsset = store.getters.assets.assetDataByAddress as (addr?: string) => Nullable<AccountAsset>;
+const accountLiquidity = computed(() => poolStore.accountLiquidity as Array<AccountLiquidity>);
+const getAsset = assetsStore.assetDataByAddress as (addr?: string) => Nullable<AccountAsset>;
 
 const addLiquidityVisibility = ref(false);
 const removeLiquidityVisibility = ref(false);
@@ -205,7 +196,7 @@ const handleAddLiquidity = (item?: LiquidityItem) => {
   const firstAddress = item?.firstAsset.address ?? XOR.address;
   const secondAddress = item?.secondAsset.address ?? '';
 
-  void store.dispatch.addLiquidity.setDataFromLiquidity({ firstAddress, secondAddress } as LiquidityParams);
+  void poolStore.setAddLiquidityDataFromLiquidity({ firstAddress, secondAddress } as LiquidityParams);
 
   addLiquidityVisibility.value = true;
 };
@@ -214,7 +205,7 @@ const handleRemoveLiquidity = (item: LiquidityItem) => {
   const firstAddress = item.firstAsset.address;
   const secondAddress = item.secondAsset.address;
 
-  store.commit.removeLiquidity.setAddresses({ firstAddress, secondAddress } as LiquidityParams);
+  poolStore.setRemoveLiquidityAddresses({ firstAddress, secondAddress } as LiquidityParams);
   removeLiquidityVisibility.value = true;
 };
 
@@ -284,21 +275,6 @@ $title-height: 42px;
 }
 
 .pool {
-  &-empty-state {
-    width: 100%;
-    min-height: 280px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: $inner-spacing-medium;
-
-    &__action {
-      width: min(100%, 320px);
-      margin-top: 0;
-    }
-  }
-
   &-wrapper {
     width: 100%;
   }
@@ -312,14 +288,15 @@ $title-height: 42px;
       &--empty {
         width: min(100%, 560px);
         margin: 0;
-        color: var(--s-color-base-content-primary);
-        padding: $inner-spacing-big;
+        color: var(--s-color-base-content-secondary);
+        letter-spacing: -0.28px;
+        padding: 20px 24px;
         background: var(--s-color-utility-surface);
         border-radius: var(--s-border-radius-small);
+        border-color: var(--s-color-base-content-secondary);
         box-shadow: var(--s-shadow-dialog);
-        border: 1px solid rgba(42, 23, 31, 0.06);
-        font-size: var(--s-font-size-medium);
-        line-height: var(--s-line-height-medium);
+        font-size: var(--s-font-size-small);
+        line-height: 21px;
         font-weight: 400;
         text-align: center;
       }
@@ -344,12 +321,5 @@ $title-height: 42px;
       margin-right: $inner-spacing-mini;
     }
   }
-}
-
-:global([design-system-theme='dark']) .pool-info-container--empty {
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 24px 54px rgba(20, 6, 31, 0.28),
-    0 1px 0 rgba(255, 255, 255, 0.08) inset;
 }
 </style>

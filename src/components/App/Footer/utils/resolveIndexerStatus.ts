@@ -1,6 +1,7 @@
-import { WALLET_CONSTS, WALLET_TYPES } from '@wallet';
+import { ConnectionStatus, type IndexerState } from '@/shims/wallet-common-types';
+import type { IndexerType } from '@/shims/wallet-consts';
 
-type IndexerStates = Record<WALLET_CONSTS.IndexerType, Partial<WALLET_TYPES.IndexerState>>;
+type IndexerStates = Record<IndexerType, Partial<IndexerState>>;
 
 /**
  * Resolves the footer indexer status with a safe fallback strategy.
@@ -11,9 +12,9 @@ type IndexerStates = Record<WALLET_CONSTS.IndexerType, Partial<WALLET_TYPES.Inde
  * "loading".
  */
 export function resolveIndexerStatus(
-  indexerType: WALLET_CONSTS.IndexerType,
+  indexerType: IndexerType,
   indexersData: Partial<IndexerStates> = {}
-): WALLET_TYPES.ConnectionStatus {
+): ConnectionStatus {
   const selectedStatus = indexersData?.[indexerType]?.status;
   if (selectedStatus) {
     return selectedStatus;
@@ -21,15 +22,15 @@ export function resolveIndexerStatus(
 
   const fallbackStatuses = Object.values(indexersData)
     .map((entry) => entry?.status)
-    .filter((status): status is WALLET_TYPES.ConnectionStatus => Boolean(status));
+    .filter((status): status is ConnectionStatus => Boolean(status));
 
-  if (fallbackStatuses.includes(WALLET_TYPES.ConnectionStatus.Available)) {
-    return WALLET_TYPES.ConnectionStatus.Available;
+  if (fallbackStatuses.includes(ConnectionStatus.Available)) {
+    return ConnectionStatus.Available;
   }
 
-  if (fallbackStatuses.includes(WALLET_TYPES.ConnectionStatus.Unavailable)) {
-    return WALLET_TYPES.ConnectionStatus.Unavailable;
+  if (fallbackStatuses.includes(ConnectionStatus.Unavailable)) {
+    return ConnectionStatus.Unavailable;
   }
 
-  return WALLET_TYPES.ConnectionStatus.Loading;
+  return ConnectionStatus.Loading;
 }

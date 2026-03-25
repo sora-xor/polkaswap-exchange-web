@@ -20,10 +20,11 @@
 </template>
 
 <script lang="ts" setup>
-import { components, WALLET_TYPES } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
-import store from '@/store';
+import type { AppWallet } from '@/shims/wallet-consts';
+import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
 import { useBridgeStore } from '@/stores/bridge';
 import { useWeb3Store } from '@/stores/web3';
 
@@ -41,25 +42,25 @@ const web3Store = useWeb3Store();
 
 const visibility = computed({
   get: () => web3Store.subAccountDialogVisibility,
-  set: (flag: boolean) => store.commit.web3.setSubAccountDialogVisibility(flag),
+  set: (flag: boolean) => web3Store.setSubAccountDialogVisibility(flag),
 });
 
 const subBridgeConnector = computed<SubNetworksConnector>(() => bridgeStore.connector);
-const subAccount = computed<WALLET_TYPES.PolkadotJsAccount>(() => {
+const subAccount = computed<PolkadotJsAccount>(() => {
   return (
     web3Store.subAccount ??
     ({
       address: '',
       name: '',
-      source: '' as WALLET_TYPES.AppWallet,
-    } as WALLET_TYPES.PolkadotJsAccount)
+      source: '' as AppWallet,
+    } as PolkadotJsAccount)
   );
 });
 
 const chainApi = computed(() => subBridgeConnector.value.accountApi);
 
-const logout = () => store.dispatch.web3.resetSubAccount();
-const rename = (payload: { address: string; name: string }) => store.dispatch.web3.changeSubAccountName(payload);
+const logout = () => web3Store.resetSubAccount();
+const rename = (payload: { address: string; name: string }) => web3Store.changeSubAccountName(payload);
 
 const checkConnectedAccountSource = (source: string) => {
   if (source && subAccount.value && subAccount.value.source === source) {
@@ -71,8 +72,8 @@ const closeView = () => {
   visibility.value = false;
 };
 
-const login = async (account: WALLET_TYPES.PolkadotJsAccount): Promise<void> => {
-  await store.dispatch.web3.selectSubAccount(account);
+const login = async (account: PolkadotJsAccount): Promise<void> => {
+  await web3Store.selectSubAccount(account);
   closeView();
 };
 </script>

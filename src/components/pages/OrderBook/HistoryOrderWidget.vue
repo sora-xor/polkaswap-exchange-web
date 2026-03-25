@@ -63,7 +63,7 @@
 </template>
 <script setup lang="ts">
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import { api } from '@wallet';
+import { api } from '@/shims/wallet-api';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 import { Components } from '@/consts';

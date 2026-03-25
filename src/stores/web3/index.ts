@@ -1,121 +1,564 @@
-import { defineStore } from 'pinia';
+import { FPNumber } from '@sora-substrate/math';
+import { defineStore, type Pinia } from 'pinia';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 
+import type { AppWallet } from '@/consts';
+import { api as soraApi } from '@/shims/wallet-api';
+import * as accountUtils from '@/shims/wallet-account';
+import { EVM_NETWORKS, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
+import { SUB_NETWORKS } from '@/consts/sub';
+import { useAssetsStore } from '@/stores/assets';
+import { useBridgeStore } from '@/stores/bridge';
+import { useWalletStore } from '@/stores/wallet';
+import web3Mutations from '@/stores/web3/mutations';
+import { initialState as createInitialWeb3State } from '@/stores/web3/state';
+import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
+import type { AvailableNetwork, EthBridgeSettings, SubNetworkApps, Web3State } from '@/stores/web3/types';
 import type { Nullable } from '@/types/common';
-import { requireAppStore, withAppStore } from '@/utils/app-store';
-
 import type { NetworkData } from '@/types/bridge';
-import type { AvailableNetwork } from '@/store/web3/types';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
-import type { WALLET_TYPES } from '@wallet';
+import type { AppEIPProvider } from '@/types/evm/provider';
+import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
+import {
+  FearlessWalletProvider,
+  MetamaskProvider,
+  WalletConnectProvider,
+  getProvidersList,
+} from '@/utils/connection/evm/providers';
+import ethersUtil, { PROVIDER_ERROR } from '@/utils/ethers-util';
+
+import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
 type ExternalNetworkSelection = {
   id: BridgeNetworkId | SubNetwork;
   type: BridgeNetworkType;
 };
 
-const warn = (message: string): void => {
-  console.warn(`[web3-store] ${message}`);
+export type {
+  AvailableNetwork,
+  EthBridgeContractsAddresses,
+  EthBridgeSettings,
+  SubNetworkApps,
+} from '@/stores/web3/types';
+
+const cloneWeb3State = (incoming?: Partial<Web3State> | null): Web3State => {
+  const base = createInitialWeb3State();
+  const state = incoming ?? {};
+
+  return {
+    ...base,
+    ...state,
+    evmProviders: Array.isArray(state.evmProviders) ? [...state.evmProviders] : [...base.evmProviders],
+    evmNetworkApps: Array.isArray(state.evmNetworkApps) ? [...state.evmNetworkApps] : [...base.evmNetworkApps],
+    subNetworkApps: state.subNetworkApps && typeof state.subNetworkApps === 'object' ? { ...state.subNetworkApps } : {},
+    supportedApps: {
+      [BridgeNetworkType.Eth]: {
+        ...(base.supportedApps?.[BridgeNetworkType.Eth] ?? {}),
+        ...(state.supportedApps?.[BridgeNetworkType.Eth] ?? {}),
+      },
+      [BridgeNetworkType.Evm]: {
+        ...(base.supportedApps?.[BridgeNetworkType.Evm] ?? {}),
+        ...(state.supportedApps?.[BridgeNetworkType.Evm] ?? {}),
+      },
+      [BridgeNetworkType.Sub]: Array.isArray(state.supportedApps?.[BridgeNetworkType.Sub])
+        ? [...state.supportedApps[BridgeNetworkType.Sub]]
+        : [...(base.supportedApps?.[BridgeNetworkType.Sub] ?? [])],
+    },
+    ethBridgeContractAddress: {
+      ...base.ethBridgeContractAddress,
+      ...(state.ethBridgeContractAddress ?? {}),
+    },
+  };
+};
+
+const buildAvailableNetworks = (
+  state: Web3State
+): Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>> => {
+  const hashi = [state.ethBridgeEvmNetwork].reduce<Partial<Record<BridgeNetworkId, AvailableNetwork>>>((buffer, id) => {
+    const data = EVM_NETWORKS[id];
+
+    if (data) {
+      buffer[id] = {
+        disabled: false,
+        data,
+      };
+    }
+
+    return buffer;
+  }, {});
+
+  const evm = state.evmNetworkApps.reduce<Partial<Record<BridgeNetworkId, AvailableNetwork>>>((buffer, id) => {
+    const data = EVM_NETWORKS[id];
+
+    if (data) {
+      buffer[id] = {
+        disabled: !state.supportedApps?.[BridgeNetworkType.Evm]?.[id],
+        data,
+      };
+    }
+
+    return buffer;
+  }, {});
+
+  const sub = Object.entries(state.subNetworkApps).reduce<Partial<Record<BridgeNetworkId, AvailableNetwork>>>(
+    (buffer, [id, nodesOrFlag]) => {
+      const data = SUB_NETWORKS[id];
+
+      if (data) {
+        const disabled = !(nodesOrFlag && state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork));
+
+        buffer[id as BridgeNetworkId] = {
+          disabled,
+          data: Array.isArray(nodesOrFlag) ? { ...data, nodes: nodesOrFlag } : data,
+        };
+      }
+
+      return buffer;
+    },
+    {}
+  );
+
+  return {
+    [BridgeNetworkType.Eth]: hashi,
+    [BridgeNetworkType.Evm]: evm,
+    [BridgeNetworkType.Sub]: sub,
+  };
+};
+
+const buildSelectedNetwork = (
+  state: Web3State,
+  availableNetworks: Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>>
+): Nullable<NetworkData> => {
+  const { networkSelected, networkType } = state;
+
+  if (!(networkType && networkSelected != null)) {
+    return null;
+  }
+
+  const networks = availableNetworks[networkType];
+
+  if (!networks) {
+    return null;
+  }
+
+  return networks[networkSelected]?.data ?? null;
+};
+
+const getAssetsStore = (pinia: Pinia) => useAssetsStore(pinia);
+
+const getBridgeStore = (pinia: Pinia) => useBridgeStore(pinia);
+
+const resolveBridgeConnector = (pinia: Pinia): Nullable<SubNetworksConnector> => {
+  return getBridgeStore(pinia).subBridgeConnector ?? null;
+};
+
+const resolveAutoselectedBridgeAssetAddress = (pinia: Pinia): Nullable<string> => {
+  return getBridgeStore(pinia).autoselectedAssetAddress ?? null;
+};
+
+const isSubBridgeConnectorReady = (connector?: Nullable<SubNetworksConnector>): boolean => {
+  if (!connector) {
+    return false;
+  }
+
+  return Boolean(connector?.accountApi?.connection?.api && connector?.network?.subNetworkConnection?.nodeIsConnected);
+};
+
+const connectSubNetwork = async (store: Web3State & { $pinia: Pinia; selectedNetworkData: Nullable<NetworkData> }) => {
+  const subNetwork = store.selectedNetworkData;
+  const connector = resolveBridgeConnector(store.$pinia);
+
+  if (!subNetwork || !connector?.open) {
+    return;
+  }
+
+  await connector.open(subNetwork.id as SubNetwork);
+};
+
+const updateProvidedEvmNetwork = async (store: Web3State & { $pinia: Pinia }, evmNetworkId?: number): Promise<void> => {
+  const evmNetwork = evmNetworkId ?? (await ethersUtil.getEvmNetworkId());
+
+  web3Mutations.setProvidedEvmNetwork(store, evmNetwork);
+
+  await getAssetsStore(store.$pinia).updateRegisteredAssets();
+};
+
+const subscribeOnEvm = async (
+  store: Web3State & {
+    $pinia: Pinia;
+    resetEvmProviderConnection: () => Promise<void>;
+  }
+): Promise<void> => {
+  web3Mutations.resetEvmProviderSubscription(store);
+
+  const subscription = await ethersUtil.watchEthereum({
+    onAccountChange: (addressList: string[]) => {
+      if (addressList.length) {
+        web3Mutations.setEvmAddress(store, addressList[0]);
+      } else {
+        void store.resetEvmProviderConnection();
+      }
+    },
+    onNetworkChange: (networkHex: string) => {
+      const evmNetwork = ethersUtil.hexToNumber(networkHex);
+      void updateProvidedEvmNetwork(store, evmNetwork);
+    },
+    onDisconnect: (error) => {
+      if (error?.code === PROVIDER_ERROR.DisconnectedFromChain) {
+        return;
+      }
+
+      void store.resetEvmProviderConnection();
+    },
+  });
+
+  web3Mutations.setEvmProviderSubscription(store, subscription);
+};
+
+const autoselectBridgeAsset = async (pinia: Pinia): Promise<void> => {
+  const assetAddress = resolveAutoselectedBridgeAssetAddress(pinia);
+
+  if (assetAddress) {
+    await getBridgeStore(pinia).setAssetAddress(assetAddress);
+  }
 };
 
 /**
  * Transitional Pinia facade for the legacy web3 Vuex module.
- * Provides read-only accessors for network selection data until
- * the underlying store is migrated.
+ * Reads and writes resolve from local Pinia state while the remaining legacy
+ * root-store module stays mounted only for old compatibility consumers.
  */
 export const useWeb3Store = defineStore('web3-legacy', {
+  state: (): Web3State => cloneWeb3State(),
   getters: {
-    networkSelected(): Nullable<BridgeNetworkId> {
-      const legacyStore = requireAppStore();
-      return (legacyStore?.state?.web3?.networkSelected as Nullable<BridgeNetworkId>) ?? null;
+    selectedNetworkData(state): Nullable<NetworkData> {
+      return buildSelectedNetwork(state, this.availableNetworks);
     },
-    networkType(): Nullable<BridgeNetworkType> {
-      const legacyStore = requireAppStore();
-      return (legacyStore?.state?.web3?.networkType as Nullable<BridgeNetworkType>) ?? null;
+    isValidNetwork(state): boolean {
+      const selectedNetwork = this.selectedNetworkData;
+
+      if (!selectedNetwork) {
+        return false;
+      }
+
+      if (state.networkType === BridgeNetworkType.Sub) {
+        if (selectedNetwork.evmId) {
+          return state.evmProviderNetwork === selectedNetwork.evmId;
+        }
+
+        return true;
+      }
+
+      return state.evmProviderNetwork === selectedNetwork.id;
     },
-    selectSubNodeDialogVisibility(): boolean {
-      const legacyStore = requireAppStore();
-      return Boolean(legacyStore?.state?.web3?.selectSubNodeDialogVisibility);
+    availableNetworks(state): Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>> {
+      return buildAvailableNetworks(state);
     },
-    selectNetworkDialogVisibility(): boolean {
-      const legacyStore = requireAppStore();
-      return Boolean(legacyStore?.state?.web3?.selectNetworkDialogVisibility);
+    appEvmProviders(state): AppEIPProvider[] {
+      const walletStore = useWalletStore();
+      const isDesktop = walletStore.isDesktop;
+
+      if (isDesktop) {
+        return [WalletConnectProvider];
+      }
+
+      const providers: AppEIPProvider[] = state.evmProviders.map((provider) => ({ ...provider }));
+      const predefinedProviders: AppEIPProvider[] = [];
+      const predefinedWallets = [FearlessWalletProvider, MetamaskProvider, WalletConnectProvider];
+
+      predefinedWallets.forEach((provider) => {
+        const injected = providers.find((added) => added.name === provider.name);
+
+        if (injected) {
+          injected.uuid = provider.uuid;
+        } else {
+          predefinedProviders.push(provider);
+        }
+      });
+
+      return [...providers, ...predefinedProviders].sort((a, b) => {
+        if (a.name === FearlessWalletProvider.name) {
+          return -1;
+        }
+
+        if (b.name === FearlessWalletProvider.name) {
+          return 1;
+        }
+
+        return 0;
+      });
     },
-    selectProviderDialogVisibility(): boolean {
-      const legacyStore = requireAppStore();
-      return Boolean(legacyStore?.state?.web3?.selectProviderDialogVisibility);
+    subAccount(state): Nullable<PolkadotJsAccount> {
+      if (!(state.subAddress || state.subAddressName || state.subAddressSource)) {
+        return null;
+      }
+
+      return {
+        address: state.subAddress,
+        name: state.subAddressName,
+        source: state.subAddressSource as AppWallet,
+      };
     },
-    subAccountDialogVisibility(): boolean {
-      const legacyStore = requireAppStore();
-      return Boolean(legacyStore?.state?.web3?.subAccountDialogVisibility);
+    contractAddress(state): (asset: KnownEthBridgeAsset) => string {
+      return (asset: KnownEthBridgeAsset) => state.ethBridgeContractAddress[asset] ?? '';
     },
-    soraAccountDialogVisibility(): boolean {
-      const legacyStore = requireAppStore();
-      return Boolean(legacyStore?.state?.web3?.soraAccountDialogVisibility);
-    },
-    evmProvider(): Nullable<Record<string, unknown>> {
-      const legacyStore = requireAppStore();
-      return (legacyStore?.state?.web3?.evmProvider as Nullable<Record<string, unknown>>) ?? null;
-    },
-    evmProviderLoading(): Nullable<{ name?: string }> {
-      const legacyStore = requireAppStore();
-      return (legacyStore?.state?.web3?.evmProviderLoading as Nullable<{ name?: string }>) ?? null;
-    },
-    evmAddress(): string {
-      const legacyStore = requireAppStore();
-      return (legacyStore?.state?.web3?.evmAddress as string) ?? '';
-    },
-    selectedNetworkData(): Nullable<NetworkData> {
-      const legacyStore = requireAppStore();
-      return (legacyStore?.getters?.web3?.selectedNetwork as Nullable<NetworkData>) ?? null;
-    },
-    availableNetworks(): Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>> {
-      const legacyStore = requireAppStore();
-      const data = legacyStore?.getters?.web3?.availableNetworks as Record<
-        BridgeNetworkType,
-        Partial<Record<BridgeNetworkId, AvailableNetwork>>
-      >;
-      return data ?? ({} as Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>>);
-    },
-    subAccount(): Nullable<WALLET_TYPES.PolkadotJsAccount> {
-      const legacyStore = requireAppStore();
-      return (legacyStore?.getters?.web3?.subAccount as Nullable<WALLET_TYPES.PolkadotJsAccount>) ?? null;
+    ethBridgeSettings(state): Nullable<EthBridgeSettings> {
+      const { ethBridgeEvmNetwork: evmNetwork, ethBridgeContractAddress: address } = state;
+
+      if (!evmNetwork || !address) {
+        return null;
+      }
+
+      return { evmNetwork, address };
     },
   },
   actions: {
-    /**
-     * Mirrors the legacy mutation to toggle the select-network dialog visibility.
-     */
     setSelectNetworkDialogVisibility(flag: boolean): void {
-      const committed = withAppStore((store) => {
-        const mutation = store?.commit?.web3?.setSelectNetworkDialogVisibility;
-        if (typeof mutation !== 'function') {
-          return false;
-        }
-        mutation(flag);
-        return true;
-      });
+      web3Mutations.setSelectNetworkDialogVisibility(this, flag);
+    },
+    setSelectProviderDialogVisibility(flag: boolean): void {
+      web3Mutations.setSelectProviderDialogVisibility(this, flag);
+    },
+    setSelectSubNodeDialogVisibility(flag: boolean): void {
+      web3Mutations.setSelectSubNodeDialogVisibility(this, flag);
+    },
+    setSubAccountDialogVisibility(flag: boolean): void {
+      web3Mutations.setSubAccountDialogVisibility(this, flag);
+    },
+    setSoraAccountDialogVisibility(flag: boolean): void {
+      web3Mutations.setSoraAccountDialogVisibility(this, flag);
+    },
+    setEvmNetworksApp(networks: Nullable<EvmNetwork[]> = []): void {
+      web3Mutations.setEvmNetworksApp(this, networks);
+    },
+    setSubNetworkApps(apps: SubNetworkApps = {}): void {
+      web3Mutations.setSubNetworkApps(this, apps);
+    },
+    setEthBridgeSettings(settings?: Nullable<EthBridgeSettings>): void {
+      web3Mutations.setEthBridgeSettings(this, settings);
+    },
+    async selectExternalNetwork(payload: ExternalNetworkSelection): Promise<void> {
+      await this.disconnectExternalNetwork();
 
-      if (!committed) {
-        warn('setSelectNetworkDialogVisibility mutation missing on legacy store');
+      web3Mutations.setNetworkType(this, payload.type);
+      web3Mutations.setSelectedNetwork(this, payload.id as BridgeNetworkId);
+
+      await Promise.allSettled([
+        this.fetchDenominatorCoefficient(),
+        getAssetsStore(this.$pinia).getRegisteredAssets(),
+        payload.type === BridgeNetworkType.Sub ? connectSubNetwork(this as typeof this & { $pinia: Pinia }) : undefined,
+      ]);
+
+      await autoselectBridgeAsset(this.$pinia);
+    },
+    async disconnectExternalNetwork(): Promise<void> {
+      const connector = resolveBridgeConnector(this.$pinia);
+      await connector?.stop?.();
+    },
+    async resetEvmProviderConnection(): Promise<void> {
+      const provider = this.evmProvider;
+
+      web3Mutations.resetEvmAddress(this);
+      web3Mutations.resetEvmProvider(this);
+      web3Mutations.resetEvmProviderNetwork(this);
+      web3Mutations.resetEvmProviderSubscription(this);
+
+      ethersUtil.disconnectEvmProvider(provider);
+    },
+    async resetSubAccount(): Promise<void> {
+      const connector = resolveBridgeConnector(this.$pinia);
+      const accountApi = connector?.accountApi;
+      const { logoutApi, isAppStorageSource } = accountUtils;
+      const forgetCurrentAccount = !isAppStorageSource(this.subAddressSource as AppWallet);
+
+      if (accountApi) {
+        logoutApi(accountApi, forgetCurrentAccount);
+      }
+
+      web3Mutations.setSubAccount(this);
+    },
+    async changeEvmNetworkProvided(): Promise<void> {
+      const selectedNetwork = this.selectedNetworkData;
+
+      if (!selectedNetwork) {
+        return;
+      }
+
+      await ethersUtil.switchOrAddChain(selectedNetwork);
+    },
+    async selectEvmProvider(provider: AppEIPProvider): Promise<void> {
+      try {
+        web3Mutations.setEvmProviderLoading(this, provider);
+
+        const address = await ethersUtil.connectEvmProvider(provider, {
+          chains: [this.ethBridgeEvmNetwork],
+          optionalChains: [...this.evmNetworkApps],
+        });
+
+        if (address && this.evmProviderLoading?.uuid === provider.uuid) {
+          web3Mutations.setEvmAddress(this, address);
+          web3Mutations.setEvmProvider(this, provider);
+          await updateProvidedEvmNetwork(this as typeof this & { $pinia: Pinia });
+          await subscribeOnEvm(
+            this as typeof this & { $pinia: Pinia; resetEvmProviderConnection: () => Promise<void> }
+          );
+        }
+      } finally {
+        web3Mutations.setEvmProviderLoading(this);
       }
     },
-    /**
-     * Proxies the legacy action used to switch between bridge networks.
-     */
-    async selectExternalNetwork(payload: ExternalNetworkSelection): Promise<void> {
-      const dispatched = await withAppStore(async (store) => {
-        const action = store?.dispatch?.web3?.selectExternalNetwork;
-        if (typeof action !== 'function') {
-          return false;
+    async subscribeOnEvmProviders(): Promise<VoidFunction | undefined> {
+      return getProvidersList((event) => {
+        if (this.evmProviders.map((provider) => provider.uuid).includes(event.detail.info.uuid)) {
+          return;
         }
-        await action(payload);
-        return true;
-      });
 
-      if (!dispatched) {
-        warn('selectExternalNetwork action missing on legacy store');
+        const { info, provider } = event.detail;
+        web3Mutations.addEvmProvider(this, {
+          ...info,
+          installed: true,
+          getProvider: async () => provider,
+        });
+      });
+    },
+    async getSupportedApps(): Promise<void> {
+      let supportedApps = {
+        [BridgeNetworkType.Eth]: {},
+        [BridgeNetworkType.Evm]: {},
+        [BridgeNetworkType.Sub]: [
+          SubNetworkId.Kusama,
+          SubNetworkId.KusamaCurio,
+          SubNetworkId.KusamaSora,
+          SubNetworkId.Polkadot,
+          SubNetworkId.PolkadotAstar,
+          SubNetworkId.PolkadotAcala,
+          SubNetworkId.PolkadotSora,
+          SubNetworkId.Liberland,
+        ],
+      };
+
+      try {
+        supportedApps = await soraApi.bridgeProxy.getListApps();
+      } catch {
+        // Fall back to production defaults when the bridge proxy API is unavailable.
+      }
+
+      web3Mutations.setSupportedApps(this, supportedApps as any);
+
+      const networks = this.availableNetworks?.[BridgeNetworkType.Sub];
+
+      if (!networks) {
+        return;
+      }
+
+      const nodes = Object.entries(networks).reduce((acc, [key, value]) => {
+        if (!value?.data?.nodes) {
+          return acc;
+        }
+
+        return { ...acc, [key]: value.data.nodes };
+      }, {});
+
+      SubNetworksConnector.nodes = nodes;
+    },
+    async restoreSelectedNetwork(): Promise<void> {
+      const rawType = ethersUtil.getSelectedBridgeType();
+      const type =
+        rawType && Object.values(BridgeNetworkType).includes(rawType as BridgeNetworkType)
+          ? (rawType as BridgeNetworkType)
+          : null;
+      const id = ethersUtil.getSelectedNetwork();
+
+      if (type && id !== null && id !== undefined) {
+        const networkData = this.availableNetworks?.[type]?.[id];
+
+        if (!!networkData && !networkData.disabled) {
+          await this.selectExternalNetwork({ id, type });
+          return;
+        }
+      }
+
+      await this.selectExternalNetwork({
+        id: this.ethBridgeEvmNetwork,
+        type: BridgeNetworkType.Eth,
+      });
+    },
+    async getEvmTokenAddressByAssetId(soraAssetId: string): Promise<string> {
+      try {
+        if (!soraAssetId) {
+          return '';
+        }
+
+        const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other];
+        const contractAddress = this.contractAddress(KnownEthBridgeAsset.Other);
+
+        if (!contractAddress || !contractAbi) {
+          throw new Error('Contract address/abi is not found');
+        }
+
+        const contractInstance = await ethersUtil.getContract(contractAddress, contractAbi);
+        const externalAddress = await contractInstance._sidechainTokens(soraAssetId);
+
+        if (ethersUtil.isNativeEvmTokenAddress(externalAddress)) {
+          throw new Error('Asset is not registered');
+        }
+
+        return externalAddress;
+      } catch (error) {
+        console.error(soraAssetId, error);
+        return '';
+      }
+    },
+    async selectSubAccount(account: PolkadotJsAccount): Promise<void> {
+      const connector = resolveBridgeConnector(this.$pinia);
+
+      if (!isSubBridgeConnectorReady(connector)) {
+        web3Mutations.setSubAccountDialogVisibility(this, false);
+        web3Mutations.setSelectSubNodeDialogVisibility(this, true);
+        return;
+      }
+
+      const { accountApi } = connector;
+      const { loginApi, isAppStorageSource } = accountUtils;
+
+      await loginApi(accountApi, account, isAppStorageSource(this.subAddressSource as AppWallet));
+      web3Mutations.setSubAccount(this, {
+        address: account.address,
+        name: account.name,
+        source: account.source,
+      });
+    },
+    async changeSubAccountName(payload: { address: string; name: string }): Promise<void> {
+      const connector = resolveBridgeConnector(this.$pinia);
+      const accountApi = connector?.accountApi;
+      const subAccount = this.subAccount;
+
+      if (!(accountApi && subAccount)) {
+        return;
+      }
+
+      accountApi.changeAccountName(payload.address, payload.name);
+
+      if (accountApi.formatAddress(subAccount.address, false) === accountApi.formatAddress(payload.address, false)) {
+        web3Mutations.setSubAccount(this, {
+          ...subAccount,
+          name: payload.name,
+        });
+      }
+    },
+    async fetchDenominatorCoefficient(): Promise<void> {
+      try {
+        const denominator = await soraApi.system.getDenominator();
+
+        if (denominator.isFinity() && !denominator.isZero()) {
+          web3Mutations.setDenominator(this, denominator);
+        } else {
+          web3Mutations.setDenominator(this, FPNumber.ONE);
+        }
+      } catch {
+        web3Mutations.setDenominator(this, FPNumber.ONE);
       }
     },
   },

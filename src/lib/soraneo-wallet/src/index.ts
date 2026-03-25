@@ -3,8 +3,9 @@
  * public API surface that host applications rely on: the plugin installer,
  * exported components, store/module helpers, and utility functions.
  */
-import { createPinia, type Pinia } from 'pinia';
+import type { Pinia } from 'pinia';
 
+import { registerGlobalPinia, resolveGlobalPinia } from '@/plugins/pinia';
 import {
   SUBQUERY_TYPES,
   SUBSQUID_TYPES,
@@ -12,11 +13,9 @@ import {
   INDEXER_TYPES,
   WC,
   accountUtils,
-  addWcSubWalletLocally,
   api,
   beforeTransactionSign,
   connection,
-  delay,
   en,
   formatAccountAddress,
   getAssetsSubset,
@@ -24,15 +23,15 @@ import {
   getExplorerLinks,
   groupRewardsByAssetsList,
   historyElementsFilter,
-  initializeWallets,
   runtimeStorage,
   settingsStorage,
   storage,
   validateAddress,
-  vuex,
   WALLET_CONSTS,
   WALLET_TYPES,
 } from './core';
+import { initWallet, waitForCore } from './bootstrap';
+import { SoraWallet, components } from './components/registry';
 import CameraPermissionMixin from './components/mixins/CameraPermissionMixin';
 import CopyAddressMixin from './components/mixins/CopyAddressMixin';
 import FormattedAmountMixin from './components/mixins/FormattedAmountMixin';
@@ -44,294 +43,32 @@ import PaginationSearchMixin from './components/mixins/PaginationSearchMixin';
 import TransactionMixin from './components/mixins/TransactionMixin';
 import TranslationMixin from './components/mixins/TranslationMixin';
 import installWalletPlugins from './plugins';
-import { addGDriveWalletLocally } from './services/google/wallet';
-import { addSoraWalletLocally } from './services/sorawallet';
 import { ScriptLoader } from './util/scriptLoader';
-import internalStore from './store'; // `internalStore` is required for local usage
 
-import type { WithKeyring } from '@sora-substrate/sdk';
-import { defineAsyncComponent, type App, type Plugin, type AsyncComponentLoader } from 'vue';
+import { type App, type Plugin } from 'vue';
 
-type Store = typeof internalStore;
 type PluginOptions = {
-  store: Store;
   pinia?: Pinia;
 };
 
-const lazyComponent = <T>(loader: AsyncComponentLoader<T>) =>
-  defineAsyncComponent({
-    loader,
-    suspensible: false,
-  });
-
-const SoraWallet = lazyComponent(() => import('./SoraWallet.vue'));
-const WalletAccount = lazyComponent(() => import('./components/Account/WalletAccount.vue'));
-const WalletAvatar = lazyComponent(() => import('./components/Account/WalletAvatar.vue'));
-const WalletBase = lazyComponent(() => import('./components/WalletBase.vue'));
-const WalletFee = lazyComponent(() => import('./components/WalletFee.vue'));
-const AccountCard = lazyComponent(() => import('./components/Account/AccountCard.vue'));
-const AccountConfirmationOption = lazyComponent(() => import('./components/Account/Settings/ConfirmationOption.vue'));
-const AddressBookInput = lazyComponent(() => import('./components/AddressBook/Input.vue'));
-const AssetsFilter = lazyComponent(() => import('./components/shared/AssetsFilter.vue'));
-const AssetList = lazyComponent(() => import('./components/AssetList.vue'));
-const AssetListItem = lazyComponent(() => import('./components/AssetListItem.vue'));
-const AddAssetDetailsCard = lazyComponent(() => import('./components/AddAsset/AddAssetDetailsCard.vue'));
-const ConfirmDialog = lazyComponent(() => import('./components/ConfirmDialog.vue'));
-const TokenAddress = lazyComponent(() => import('./components/TokenAddress.vue'));
-const SearchInput = lazyComponent(() => import('./components/Input/SearchInput.vue'));
-const InfoLine = lazyComponent(() => import('./components/InfoLine.vue'));
-const FormattedAmount = lazyComponent(() => import('./components/FormattedAmount.vue'));
-const FormattedAmountWithFiatValue = lazyComponent(() => import('./components/FormattedAmountWithFiatValue.vue'));
-const FileUploader = lazyComponent(() => import('./components/FileUploader.vue'));
-const TransactionHashView = lazyComponent(() => import('./components/TransactionHashView.vue'));
-const NetworkFeeWarning = lazyComponent(() => import('./components/NetworkFeeWarning.vue'));
-const TokenLogo = lazyComponent(() => import('./components/TokenLogo.vue'));
-const NftDetails = lazyComponent(() => import('./components/NftDetails.vue'));
-const HistoryPagination = lazyComponent(() => import('./components/HistoryPagination.vue'));
-const DialogBase = lazyComponent(() => import('./components/DialogBase.vue'));
-const NotificationEnablingPage = lazyComponent(() => import('./components/NotificationEnablingPage.vue'));
-const SimpleNotification = lazyComponent(() => import('./components/SimpleNotification.vue'));
-const ConnectionItems = lazyComponent(() => import('./components/Connection/List/ConnectionItems.vue'));
-const SyntheticSwitcher = lazyComponent(() => import('./components/shared/SyntheticSwitcher.vue'));
-const ExternalLink = lazyComponent(() => import('./components/shared/ExternalLink.vue'));
-const FormattedAddress = lazyComponent(() => import('./components/shared/FormattedAddress.vue'));
-const AccountConnectionList = lazyComponent(() => import('./components/Connection/List/Account.vue'));
-const ExtensionConnectionList = lazyComponent(() => import('./components/Connection/List/Extension.vue'));
-const ConnectionView = lazyComponent(() => import('./components/Connection/ConnectionView.vue'));
-const PinIcon = lazyComponent(() => import('./components/PinIcon.vue'));
-
-let store: Store;
-let piniaInstance: Pinia | undefined;
-
-const attachExternalStoreIfAvailable = (): void => {
-  const maybeStore = (globalThis as Record<string, unknown> | undefined)?.__PS_APP_STORE__ as
-    | { original?: Store }
-    | Store
-    | undefined;
-
-  if (!store && maybeStore) {
-    const candidate = (maybeStore as any).commit ? maybeStore : (maybeStore as any).original;
-    if (candidate) {
-      store = candidate as Store;
-    }
-  }
-};
-
-export const getWalletPinia = (): Pinia | undefined => piniaInstance;
-
 /**
  * Vue plugin definition that registers the wallet into the host application.
- * The plugin expects a Vuex store so it can connect the internal modules.
+ * Pinia is the wallet runtime contract for both the host app and standalone
+ * wallet-local development.
  */
 const SoraWalletElements: Plugin<PluginOptions> = {
   install(app: App, options?: PluginOptions): void {
-    if (!options || !options.store) {
-      throw new Error('Please provide vuex store.');
-    }
-    store = options.store;
-    piniaInstance = options.pinia ?? piniaInstance ?? createPinia();
+    const pinia = registerGlobalPinia(
+      (options?.pinia ?? app.config.globalProperties.$pinia ?? resolveGlobalPinia()) as Pinia
+    );
 
-    if (!app.config.globalProperties.$pinia && piniaInstance) {
-      app.use(piniaInstance);
+    if (!app.config.globalProperties.$pinia) {
+      app.use(pinia);
     }
 
     installWalletPlugins(app);
     app.component('SoraWallet', SoraWallet); // Root component
   },
-};
-
-/**
- * Initializes built-in wallet integrations and local storage depending on the
- * runtime environment (desktop vs web). The initialization is intentionally
- * side-effectful because the wallet modules depend on these registrations.
- */
-const initAppWallets = (api: WithKeyring, isDesktop = false, appName?: string) => {
-  const dAppName = appName ?? WALLET_CONSTS.TranslationConsts.Polkaswap;
-
-  if (isDesktop) {
-    addSoraWalletLocally(api, dAppName);
-  } else {
-    addGDriveWalletLocally(dAppName);
-  }
-
-  addWcSubWalletLocally(api, (source) => {
-    store?.dispatch?.wallet?.account?.checkConnectedAccountSource?.(source);
-    store?.dispatch?.wallet?.account?.updateAvailableWallets?.();
-  });
-
-  initializeWallets(dAppName);
-
-  store?.dispatch?.wallet?.account?.updateAvailableWallets?.();
-};
-
-/**
- * Ensures the Vuex store instance is ready before running wallet logic. The
- * wallet can work with either an injected store from the host app or the
- * internal store used by standalone mode, so we wait until one is available.
- */
-const waitForStore = async (withoutStore = false): Promise<void> => {
-  attachExternalStoreIfAvailable();
-
-  if (!store) {
-    if (withoutStore) {
-      store = internalStore;
-    } else {
-      await delay(100);
-      await waitForStore(withoutStore);
-    }
-  }
-};
-
-let walletCoreLoaded = false;
-
-/**
- * Lazily bootstraps the wallet core by waiting for the store and keyring to
- * initialize, then fetching runtime data and applying permission overrides.
- * The function is idempotent so subsequent calls resolve immediately.
- */
-const waitForCore = async ({
-  withoutStore = false,
-  permissions,
-}: WALLET_CONSTS.WalletInitOptions = {}): Promise<void> => {
-  if (!walletCoreLoaded) {
-    await Promise.all([waitForStore(withoutStore), api.initKeyring(true)]);
-
-    const setPermissions = store?.commit?.wallet?.settings?.setPermissions ?? store?.commit?.settings?.setPermissions;
-
-    if (permissions && typeof setPermissions === 'function') {
-      setPermissions(permissions);
-    }
-
-    store?.dispatch?.wallet?.account?.getWhitelist?.();
-    store?.dispatch?.wallet?.account?.getNftBlacklist?.();
-
-    walletCoreLoaded = true;
-  }
-};
-
-/**
- * Waits for an active blockchain connection before continuing. The helper
- * retries until the API instance is ready so that higher level flows can be
- * written without defensive checks at every stage.
- */
-const waitForConnection = async (): Promise<void> => {
-  if (connection.loading) {
-    await delay(100);
-    await waitForConnection();
-  } else if (!connection.api) {
-    const endpoint = (connection as Record<string, unknown>).endpoint;
-    if (!endpoint) return;
-
-    try {
-      await connection.open();
-      console.info('Connected to blockchain', connection.endpoint);
-    } catch (error) {
-      console.warn('[wallet] connection.open skipped', error);
-    }
-  }
-};
-
-/**
- * Restores the last active account and refreshes all computed state that
- * depends on it. This includes route guards and wallet availability checks.
- */
-const checkActiveAccount = async (): Promise<void> => {
-  await api.restoreActiveAccount?.();
-  await store?.dispatch?.wallet?.account?.checkWalletAvailability?.();
-  await store?.dispatch?.wallet?.router?.checkCurrentRoute?.();
-};
-
-/**
- * Public initializer that brings the wallet online. Consumers should await
- * this function before interacting with any wallet services.
- */
-async function initWallet(options: WALLET_CONSTS.WalletInitOptions = {}): Promise<void> {
-  await Promise.all([waitForCore(options), waitForConnection()]);
-
-  const walletState = (store as any)?.state?.wallet?.account ?? {};
-  const walletCommit = store?.commit?.wallet;
-
-  try {
-    initAppWallets(api, Boolean(walletState.isDesktop), options.appName);
-    await checkActiveAccount();
-
-    // don't wait for finalization of internal & external services subscriptions
-    store?.dispatch?.wallet?.subscriptions?.activateInternalSubscriptions?.();
-    store?.dispatch?.wallet?.settings?.selectIndexer?.();
-    walletCommit?.settings?.setIsMstAvailable?.(
-      walletState?.account?.source === WALLET_CONSTS.AppWallet.FearlessWallet
-    );
-
-    // wait for finalization of network subscriptions (best effort).
-    // In some static/IPFS contexts the chain connection may be intentionally skipped,
-    // so `api.initialize` can fail. Do not block UI rendering in that case.
-    try {
-      await Promise.all(
-        [
-          typeof api.initialize === 'function' ? api.initialize(false) : undefined,
-          store?.dispatch?.wallet?.subscriptions?.activateNetwokSubscriptions?.(),
-        ].filter(Boolean) as Array<Promise<unknown>>
-      );
-    } catch (error) {
-      console.warn('[wallet] initWallet network subscriptions skipped', error);
-    }
-
-    try {
-      store?.dispatch?.wallet?.account?.initMultisigAddress?.();
-    } catch (error) {
-      console.warn('[wallet] initMultisigAddress skipped', error);
-    }
-  } catch (error) {
-    console.warn('[wallet] initWallet skipped', error);
-  } finally {
-    // Some host apps register the wallet settings module both at `wallet/settings`
-    // and at the root `settings` module for convenience. Keep both flags in sync
-    // so composables that gate on `settings.isWalletLoaded` don't suspend forever.
-    walletCommit?.settings?.setWalletLoaded?.(true);
-    store?.commit?.settings?.setWalletLoaded?.(true);
-  }
-}
-
-/**
- * Public registry of Vue components that can be consumed individually by the
- * host application when the full plugin is not desired.
- */
-const components = {
-  SoraWallet,
-  WalletAccount,
-  WalletAvatar,
-  WalletBase,
-  WalletFee,
-  AccountCard,
-  AccountConfirmationOption,
-  AddressBookInput,
-  AssetsFilter,
-  AssetList,
-  AssetListItem,
-  AddAssetDetailsCard,
-  ConfirmDialog,
-  TokenAddress,
-  SearchInput,
-  InfoLine,
-  FormattedAmount,
-  FormattedAmountWithFiatValue,
-  FileUploader,
-  TransactionHashView,
-  NetworkFeeWarning,
-  TokenLogo,
-  NftDetails,
-  HistoryPagination,
-  DialogBase,
-  NotificationEnablingPage,
-  SimpleNotification,
-  ConnectionItems,
-  SyntheticSwitcher,
-  ExternalLink,
-  FormattedAddress,
-  AccountConnectionList,
-  ExtensionConnectionList,
-  ConnectionView,
-  PinIcon,
 };
 
 /**
@@ -383,7 +120,6 @@ export {
   SUBSQUID_TYPES,
   INDEXER_TYPES,
   WC,
-  vuex,
 };
 
 export { useDialogVisibility } from './composables/useDialog';
@@ -392,5 +128,6 @@ export { useTranslation } from './composables/useTranslation';
 export { useNotificationStore } from './stores/notification';
 
 export type { PluginOptions };
+export type { TransactionSignVisibilityController, TransactionSignVisibilityTarget } from './util';
 
 export default SoraWalletElements;

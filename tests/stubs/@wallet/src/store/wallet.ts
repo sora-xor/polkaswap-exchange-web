@@ -1,3 +1,5 @@
+import { WalletModule, WalletModules } from './registry';
+
 const walletModule = {
   namespaced: true,
   modules: {
@@ -10,3 +12,4 @@ const walletModule = {
 };
 
 export default walletModule;
+export { WalletModule, WalletModules };

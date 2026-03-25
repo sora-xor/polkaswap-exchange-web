@@ -31,7 +31,7 @@ import { useRoute } from 'vue-router';
 import { useTranslation } from '@/composables/useTranslation';
 import { RewardsTabsItems as RewardsTabsItemsEnum } from '@/consts';
 import router from '@/router';
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
 
 defineOptions({
   name: 'RewardsTabs',
@@ -49,9 +49,10 @@ const props = withDefaults(
 const parentLoading = toRef(props, 'parentLoading');
 const { t } = useTranslation();
 const route = useRoute();
+const settingsStore = useSettingsStore();
 
 const rewardsTabsItems = Object.values(RewardsTabsItemsEnum);
-const windowWidth = computed(() => store.state.settings.windowWidth as number);
+const windowWidth = computed(() => settingsStore.windowWidth);
 const currentTab = computed(() => route.name as string);
 
 const handleChangeTab = (name: string) => {

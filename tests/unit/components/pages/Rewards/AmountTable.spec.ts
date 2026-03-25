@@ -71,17 +71,6 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   useFormattedAmount: () => formattedAmountMocks,
 }));
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      wallet: {
-        settings: { shouldBalanceBeHidden: false, fiatExchangeRateObject: {} },
-        account: { fiatPriceObject: {} },
-      },
-    },
-  },
-}));
-
 vi.mock('@/composables/useNumberFormatter', () => ({
   useNumberFormatter: () => ({
     formatStringValue: vi.fn(() => 'formatted'),

@@ -63,7 +63,8 @@
 <script lang="ts" setup>
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, components } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, getCurrentInstance, nextTick, ref, toRefs, watch } from 'vue';
 
 import { Components, ZeroStringValue } from '@/consts';
@@ -71,7 +72,9 @@ import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import { asZeroValue } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
@@ -118,13 +121,16 @@ const {
 } = useFormattedAmount();
 
 const { max, min, receivedAsset, burnedAsset, rate } = toRefs(props);
+const assetsStore = useAssetsStore();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
 
 const value = ref('');
 const xor = XOR;
 
-const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject | undefined);
-const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
-const isLoggedIn = computed(() => Boolean(store.getters.wallet.account.isLoggedIn));
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject | undefined);
+const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
 
 const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.Burn] ?? ZeroStringValue);
 const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value, burnedAsset.value.decimals));

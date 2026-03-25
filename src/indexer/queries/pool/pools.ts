@@ -1,14 +1,13 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer } from '@wallet';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
-import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { SubqueryPoolXYKEntity } from '@wallet/lib/services/indexer/subquery/types';
-import type { SubsquidPoolXYKEntity } from '@wallet/lib/services/indexer/subsquid/types';
-import type { ConnectionQueryResponse, PoolXYKEntity } from '@wallet/lib/services/indexer/types';
+import type { SubqueryPoolXYKEntity } from '@/shims/wallet-indexer-subquery-types';
+import type { SubsquidPoolXYKEntity } from '@/shims/wallet-indexer-subsquid-types';
+import type { ConnectionQueryResponse, PoolXYKEntity } from '@/shims/wallet-indexer-types';
 
 export type PoolData = {
   baseAssetId: string;

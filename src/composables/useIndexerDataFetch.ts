@@ -1,7 +1,7 @@
-import { WALLET_CONSTS } from '@wallet';
 import isEqual from 'lodash/fp/isEqual';
 import { computed, onBeforeUnmount, ref, watch, type Ref } from 'vue';
 
+import { PaginationButton } from '@/consts';
 import { useLoading } from '@/composables/useLoading';
 import { debouncedInputHandler } from '@/utils';
 
@@ -142,17 +142,17 @@ export function useIndexerDataFetch<T>(options: UseIndexerDataFetchOptions<T>) {
     }
   };
 
-  const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
+  const handlePaginationClick = (button: PaginationButton) => {
     let current = 1;
 
     switch (button) {
-      case WALLET_CONSTS.PaginationButton.Prev:
+      case PaginationButton.Prev:
         current = currentPage.value - 1;
         break;
-      case WALLET_CONSTS.PaginationButton.Next:
+      case PaginationButton.Next:
         current = currentPage.value + 1;
         break;
-      case WALLET_CONSTS.PaginationButton.Last:
+      case PaginationButton.Last:
         current = lastPage.value;
         break;
       default:

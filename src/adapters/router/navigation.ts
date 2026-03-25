@@ -1,8 +1,6 @@
-import { withAppStore } from '@/utils/app-store';
+import { useRouterStore } from '@/stores/router';
 
 import type { RouterParams } from '@/stores/router/types';
-import type { Nullable } from '@/types/common';
-import type { AppStoreRuntime } from '@/utils/app-store';
 
 const warnedMessages = new Set<string>();
 const warn = (message: string): void => {
@@ -11,51 +9,29 @@ const warn = (message: string): void => {
   console.warn(`[router-adapter] ${message}`);
 };
 
-const withRouterCommit = <T extends (...args: any[]) => unknown>(
-  getter: (legacy: AppStoreRuntime) => Nullable<T>,
-  message: string
-): T | undefined => {
-  return withAppStore((legacyStore) => {
-    const commitFn = getter(legacyStore) as Nullable<T>;
-
-    if (typeof commitFn !== 'function') {
-      warn(message);
-      return undefined;
-    }
-
-    return commitFn;
-  });
-};
-
 export const syncLegacyRoute = (params: RouterParams): void => {
-  withAppStore((legacyStore) => {
-    const setRoute = legacyStore?.commit?.router?.setRoute as Nullable<(payload: RouterParams) => void>;
+  const routerStore = useRouterStore();
 
-    if (typeof setRoute === 'function') {
-      setRoute(params);
-      return;
-    }
+  if (typeof routerStore.setRoute === 'function') {
+    routerStore.setRoute(params);
+    return;
+  }
 
-    const navigate = legacyStore?.commit?.router?.navigate as Nullable<
-      (payload: { name: string; params?: Record<string, unknown> }) => void
-    >;
+  if (typeof routerStore.navigate === 'function' && params.current) {
+    routerStore.navigate({ name: params.current, params: params.currentParams ?? {} });
+    return;
+  }
 
-    if (typeof navigate === 'function' && params.current) {
-      navigate({ name: params.current, params: params.currentParams ?? {} });
-      return;
-    }
-
-    warn('router.setRoute missing');
-  });
+  warn('router.setRoute missing');
 };
 
 export const setLegacyRouterLoading = (loading: boolean): void => {
-  const setLoading = withRouterCommit(
-    (legacyStore) =>
-      (legacyStore?.commit?.router?.setLoading as Nullable<(loading: boolean) => void>) ??
-      (legacyStore?.commit?.wallet?.router?.setLoading as Nullable<(loading: boolean) => void>),
-    'router.setLoading missing'
-  );
+  const routerStore = useRouterStore();
 
-  setLoading?.(loading);
+  if (typeof routerStore.setLoading === 'function') {
+    routerStore.setLoading(loading);
+    return;
+  }
+
+  warn('router.setLoading missing');
 };

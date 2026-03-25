@@ -1,11 +1,12 @@
 import {
   useTranslation as useWalletTranslation,
   translationUtils as walletTranslationUtils,
-} from '@wallet/src/composables/useTranslation';
+} from '@/shims/wallet-translation';
 import { computed } from 'vue';
 
 import { TranslationConsts } from '@/consts';
-import store from '@/store';
+import pinia from '@/plugins/pinia';
+import { useSettingsStore } from '@/stores/settings';
 
 const OrdinalRules = {
   en: (value: number) => {
@@ -35,6 +36,7 @@ const OrdinalRules = {
  */
 export function useTranslation() {
   const base = useWalletTranslation();
+  const settingsStore = useSettingsStore(pinia);
   const asyncWarnings = new Set<string>();
 
   const coerceAsyncTranslateResult = (value: unknown, key: unknown): string | null => {
@@ -64,7 +66,7 @@ export function useTranslation() {
   const t = wrapTranslate(base.t);
   const tc = wrapTranslate(base.tc);
 
-  const language = computed(() => store.state.settings.language);
+  const language = computed(() => settingsStore.language);
 
   const tOrdinal = (value: number | string) => {
     const locale = language.value?.toLowerCase();

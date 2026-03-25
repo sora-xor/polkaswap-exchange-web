@@ -27,12 +27,13 @@
 </template>
 
 <script setup lang="ts">
-import { api, components } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, watchEffect } from 'vue';
 
 import { useTransaction } from '@/composables/useTransaction';
-import store from '@/store';
 import { useTranslation } from '@/composables/useTranslation';
+import { useReferralsStore } from '@/stores/referrals';
 
 defineOptions({
   components: {
@@ -48,12 +49,10 @@ const emit = defineEmits<{
 const isVisible = defineModel<boolean>('visible', { default: false });
 const { loading, withNotifications } = useTransaction();
 const { t } = useTranslation();
+const referralsStore = useReferralsStore();
 
-const referrer = computed(() => store.state.referrals.referrer);
-const storageReferrer = computed(() => store.state.referrals.storageReferrer);
-
-const approveReferrer = store.commit.referrals.approveReferrer;
-const resetStorageReferrer = store.commit.referrals.resetStorageReferrer;
+const referrer = computed(() => referralsStore.referrer);
+const storageReferrer = computed(() => referralsStore.storageReferrer);
 
 const hasReferrer = computed(() => Boolean(referrer.value));
 const iconName = computed(() => (hasReferrer.value ? 'notifications-alert-triangle-24' : 'finance-PSWAP-24'));
@@ -61,14 +60,14 @@ const iconSize = computed(() => (hasReferrer.value ? 64 : 40));
 
 const handleConfirmInviteUser = async () => {
   if (!hasReferrer.value) {
-    approveReferrer(true);
+    referralsStore.approveReferrer(true);
     try {
       await withNotifications(async () => {
         await api.referralSystem.setInvitedUser(storageReferrer.value);
       });
       emit('confirm', true);
     } catch (error) {
-      approveReferrer(false);
+      referralsStore.approveReferrer(false);
       emit('confirm');
     }
   } else {
@@ -77,13 +76,13 @@ const handleConfirmInviteUser = async () => {
 
   isVisible.value = false;
   if (storageReferrer.value) {
-    resetStorageReferrer();
+    referralsStore.resetStorageReferrer();
   }
 };
 
 watchEffect(() => {
   if (!isVisible.value && storageReferrer.value) {
-    resetStorageReferrer();
+    referralsStore.resetStorageReferrer();
   }
 });
 

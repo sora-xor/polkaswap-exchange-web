@@ -4,9 +4,11 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { RewardType, RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
 import getOr from 'lodash/fp/getOr';
 
+import { resolveGlobalPinia } from '@/plugins/pinia';
+import { useWalletStore } from '@/stores/wallet';
+
 import { api } from '../../api';
 import { ObjectInit } from '../../consts';
-import { getWalletStore } from '../../store/instance';
 
 import { ModuleNames, ModuleMethods } from './subquery/types';
 
@@ -57,6 +59,14 @@ import type { VaultHistory } from '@sora-substrate/sdk/build/kensetsu/types';
 import type { LimitOrderHistory } from '@sora-substrate/sdk/build/orderBook/types';
 import type { RewardClaimHistory, RewardInfo } from '@sora-substrate/sdk/build/rewards/types';
 import type { StakingHistory } from '@sora-substrate/sdk/build/staking/types';
+
+const resolveWalletStore = () => {
+  try {
+    return useWalletStore(resolveGlobalPinia());
+  } catch {
+    return null;
+  }
+};
 
 const insensitive = (value: string) => value.toLowerCase();
 
@@ -263,7 +273,7 @@ const getAssetByAddress = async (address: string): Promise<Nullable<Asset>> => {
   // Always treat asset lookups as best-effort: the wallet store and/or the chain API might not be ready yet.
   // Returning null keeps the UI functional (it will render placeholders) and avoids console errors during bootstrap.
   try {
-    const walletAsset = getWalletStore().getters?.wallet?.account?.assetsDataTable?.[address] as Nullable<Asset>;
+    const walletAsset = resolveWalletStore()?.assetsDataTable?.[address] as Nullable<Asset>;
     if (walletAsset) return walletAsset;
   } catch {
     // Ignore - store may not be initialised yet.

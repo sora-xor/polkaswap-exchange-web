@@ -3,7 +3,7 @@
     <template v-if="isLoggedIn">
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
-        <token-logo :token="xor" :size="WALLET_CONSTS.LogoSize.BIGGER"></token-logo>
+        <token-logo :token="xor" :size="LogoSize.BIGGER"></token-logo>
         <formatted-amount
           class="rewards-value"
           value-can-be-hidden
@@ -167,10 +167,13 @@
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, api, WALLET_TYPES, WALLET_CONSTS as WALLET_CONSTS_LIB } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import last from 'lodash/fp/last';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
+import { FontSizeRate, FontWeightRate, LogoSize } from '@/shims/wallet-consts';
+import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
 import { getFullBaseUrl, getRouterMode } from '@/api';
 import { PageNames, ZeroStringValue } from '@/consts';
 import { useCopyAddress } from '@/composables/useCopyAddress';
@@ -181,7 +184,10 @@ import { useTranslation } from '@/composables/useTranslation';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import router from '@/router';
 import { createAsyncComponent } from '@/router/lazy';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useReferralsStore } from '@/stores/referrals';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import { formatAddress } from '@/utils';
 import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
@@ -201,14 +207,14 @@ defineOptions({
   },
 });
 
-const WALLET_CONSTS = WALLET_CONSTS_LIB;
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
-const FontWeightRate = WALLET_CONSTS.FontWeightRate;
-
 const { t } = useTranslation();
 const { loading, withApi } = useLoading();
 const { connectSoraWallet, isLoggedIn } = useInternalConnect();
 const { handleCopyAddress, copyTooltip } = useCopyAddress();
+const referralsStore = useReferralsStore();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
+const assetsStore = useAssetsStore();
 const {
   Zero,
   formatCodecNumber,
@@ -218,17 +224,15 @@ const {
   getFPNumberFromCodec,
 } = useFormattedAmount();
 
-const referralRewards = computed(() => store.state.referrals.referralRewards as Nullable<ReferrerRewards>);
-const invitedUsers = computed(() => (store.state.referrals.invitedUsers as Array<string>) ?? []);
-const referrer = computed(() => store.state.referrals.referrer as string);
-const isReferrerApproved = computed(() => Boolean(store.state.referrals.isReferrerApproved));
-const isTMA = computed(() => Boolean(store.state.settings.isTMA));
-const telegramBotUrl = computed(() => store.state.settings.telegramBotUrl as Nullable<string>);
-const xor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
-const account = computed(() => store.getters.wallet.account.account as Nullable<WALLET_TYPES.PolkadotJsAccount>);
-const networkFees = computed(
-  () => (store.state.wallet.settings.networkFees as Nullable<Record<string, CodecString>>) ?? {}
-);
+const referralRewards = computed(() => referralsStore.referralRewards as Nullable<ReferrerRewards>);
+const invitedUsers = computed(() => referralsStore.invitedUsers as Array<string>);
+const referrer = computed(() => referralsStore.referrer as string);
+const isReferrerApproved = computed(() => Boolean(referralsStore.isReferrerApproved));
+const isTMA = computed(() => Boolean(settingsStore.isTMA));
+const telegramBotUrl = computed(() => settingsStore.telegramBotUrl as Nullable<string>);
+const xor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
+const account = computed(() => walletStore.account as Nullable<PolkadotJsAccount>);
+const networkFees = computed(() => walletStore.networkFees as Nullable<Record<string, CodecString>>);
 
 const referrerLinkOrCode = ref('');
 const pageAmount = 5;
@@ -439,25 +443,25 @@ const handleBonding = (isBond = false) => {
 
 const handleSetReferrer = () => {
   if (!isValidReferrerLink.value) return;
-  store.commit.referrals.setStorageReferrer(referrerAddress.value);
+  referralsStore.setStorageReferrer(referrerAddress.value);
 };
 
 const resetSubscriptions = () => {
-  store.commit.referrals.unsubscribeFromInvitedUsers();
-  store.commit.referrals.resetReferrerSubscription();
+  referralsStore.unsubscribeFromInvitedUsers();
+  referralsStore.resetReferrerSubscription();
 };
 
 const resetState = () => {
-  store.commit.referrals.reset();
+  referralsStore.reset();
 };
 
 const initData = async () => {
   if (!isLoggedIn.value) return;
 
-  await store.dispatch.referrals.subscribeOnInvitedUsers();
-  await store.dispatch.referrals.getAccountReferralRewards();
-  await store.dispatch.referrals.getReferrer();
-  await store.dispatch.referrals.subscribeOnReferrer();
+  await referralsStore.subscribeOnInvitedUsers();
+  await referralsStore.getAccountReferralRewards();
+  await referralsStore.getReferrer();
+  await referralsStore.subscribeOnReferrer();
 };
 
 watch(isLoggedIn, async (value) => {

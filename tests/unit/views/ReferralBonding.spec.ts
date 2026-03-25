@@ -5,7 +5,9 @@ import { describe, expect, it, vi } from 'vitest';
 import { Operation } from '@sora-substrate/sdk';
 
 const createStorageStub = () => ({
-  get: vi.fn(() => null),
+  get: vi.fn((key: string) =>
+    key === 'filters' ? JSON.stringify({ option: null, verifiedOnly: false, zeroBalance: false }) : null
+  ),
   set: vi.fn(),
   remove: vi.fn(),
 });
@@ -26,7 +28,7 @@ vi.mock('@/utils/storage', () => ({
   clearLocalStorage: vi.fn(),
 }));
 
-vi.mock('@wallet/src/util/storage', () => ({
+vi.mock('@/lib/soraneo-wallet/src/util/storage', () => ({
   __esModule: true,
   storage: storageStub,
   settingsStorage: settingsStorageStub,
@@ -83,51 +85,48 @@ vi.mock('vue-router', () => ({
 }));
 
 const storeMocks = (() => {
-  const state = {
-    referrals: {
-      amount: '0',
-    },
-    wallet: {
-      account: {
-        fiatPriceObject: {},
-      },
-      settings: {
-        shouldBalanceBeHidden: false,
-        networkFees: {
-          [Operation.ReferralReserveXor]: '5000000000',
-          [Operation.ReferralUnreserveXor]: '1000000000',
-        },
-      },
+  const referralsStore = {
+    amount: '0',
+    setAmount: vi.fn(),
+    resetAmount: vi.fn(),
+  };
+
+  const settingsStore = {
+    shouldBalanceBeHidden: false,
+    networkFees: {
+      [Operation.ReferralReserveXor]: '5000000000',
+      [Operation.ReferralUnreserveXor]: '1000000000',
     },
   };
 
-  const getters = {
-    assets: {
-      xor: {
-        address: 'xor',
-        symbol: 'XOR',
-        decimals: 18,
-        balance: {
-          transferable: '1000000000000000000000000000000000000000000000',
-          bonded: '500000000000000000000000000000000000000000000',
-        },
+  const assetsStore = {
+    xor: {
+      address: 'xor',
+      symbol: 'XOR',
+      decimals: 18,
+      balance: {
+        transferable: '1000000000000000000000000000000000000000000000',
+        bonded: '500000000000000000000000000000000000000000000',
       },
     },
   };
 
-  const commit = {
-    referrals: {
-      setAmount: vi.fn(),
-      resetAmount: vi.fn(),
-    },
-  };
-
-  return { state, getters, commit };
+  return { referralsStore, settingsStore, assetsStore };
 })();
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/referrals', () => ({
   __esModule: true,
-  default: storeMocks,
+  useReferralsStore: () => storeMocks.referralsStore,
+}));
+
+vi.mock('@/stores/settings', () => ({
+  __esModule: true,
+  useSettingsStore: () => storeMocks.settingsStore,
+}));
+
+vi.mock('@/stores/assets', () => ({
+  __esModule: true,
+  useAssetsStore: () => storeMocks.assetsStore,
 }));
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -206,7 +205,7 @@ describe('ReferralBonding view', () => {
   });
 
   it('confirms bonding flow and resets amount', async () => {
-    storeMocks.state.referrals.amount = '100000000000';
+    storeMocks.referralsStore.amount = '100000000000';
     const wrapper = await mountView();
 
     await wrapper.find('.action-button').trigger('click');
@@ -216,7 +215,7 @@ describe('ReferralBonding view', () => {
     await flushPromises();
 
     expect(reserveXorMock).toHaveBeenCalledWith('100000000000');
-    expect(storeMocks.commit.referrals.resetAmount).toHaveBeenCalled();
+    expect(storeMocks.referralsStore.resetAmount).toHaveBeenCalled();
     expect(wrapper.findComponent({ name: 'referrals-confirm-bonding' })).toBeTruthy();
   });
 });

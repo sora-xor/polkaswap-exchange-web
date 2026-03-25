@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { Cancel } from '@/types/orderBook';

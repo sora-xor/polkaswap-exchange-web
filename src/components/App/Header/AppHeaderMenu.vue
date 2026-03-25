@@ -77,12 +77,12 @@ import { useTranslation } from '@/composables/useTranslation';
 import { Language, Languages } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { Theme } from '@/consts/theme';
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 import { applyTheme } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
-import type { Currency } from '@wallet/lib/types/currency';
+import type { Currency } from '@/shims/wallet-currency-types';
 
 enum HeaderMenuType {
   HideBalances = 'hide-balances',
@@ -112,28 +112,25 @@ type MenuSection = {
 };
 
 const { t } = useTranslation();
+const settingsStore = useSettingsStore();
 const walletStore = useWalletStore();
 const headerMenu = ref();
 const isDropdownVisible = ref(false);
 const selectedTheme = ref<HeaderMenuType | null>(null);
 
-const disclaimerVisibility = computed(() => store.state.settings.disclaimerVisibility);
-const userDisclaimerApprove = computed(() => store.state.settings.userDisclaimerApprove);
-const isThemePreference = computed(() => store.state.settings.isThemePreference);
-const isRotatePhoneHideBalanceFeatureEnabled = computed(
-  () => store.state.settings.isRotatePhoneHideBalanceFeatureEnabled as boolean
-);
-const isAccessRotationListener = computed(() => store.state.settings.isAccessRotationListener as boolean);
-const isAccessAccelerometrEventDeclined = computed(
-  () => store.state.settings.isAccessAccelerometrEventDeclined as boolean
-);
-const isTMA = computed(() => store.state.settings.isTMA as boolean);
-const screenBreakpointClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
+const disclaimerVisibility = computed(() => settingsStore.disclaimerVisibility);
+const userDisclaimerApprove = computed(() => settingsStore.userDisclaimerApprove);
+const isThemePreference = computed(() => settingsStore.isThemePreference);
+const isRotatePhoneHideBalanceFeatureEnabled = computed(() => settingsStore.isRotatePhoneHideBalanceFeatureEnabled);
+const isAccessRotationListener = computed(() => settingsStore.isAccessRotationListener);
+const isAccessAccelerometrEventDeclined = computed(() => settingsStore.isAccessAccelerometrEventDeclined);
+const isTMA = computed(() => settingsStore.isTMA);
+const screenBreakpointClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
 
-const locale = computed(() => store.state.settings.language as Language);
-const currentCurrency = computed(() => store.state.wallet.settings.currency as Currency);
-const shouldBalanceBeHidden = computed(() => store.state.wallet.settings.shouldBalanceBeHidden as boolean);
-const walletTheme = computed(() => store.state.wallet.settings.theme as Theme);
+const locale = computed(() => settingsStore.language as Language);
+const currentCurrency = computed(() => settingsStore.currency as Currency);
+const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
+const walletTheme = computed(() => walletStore.theme as Theme | null);
 const isMobile = computed(() => screenBreakpointClass.value === BreakpointClass.Mobile);
 const disclaimerDisabled = computed(() => disclaimerVisibility.value && !userDisclaimerApprove.value);
 const disclaimerMenuText = computed(() =>
@@ -271,11 +268,11 @@ function handleClickHeaderMenu(): void {
 async function handleSelectHeaderMenu(type: HeaderMenuType): Promise<void> {
   switch (type) {
     case HeaderMenuType.HideBalances:
-      store.commit.wallet.settings.toggleHideBalance();
+      walletStore.toggleHideBalance();
       break;
     case HeaderMenuType.Theme:
       if (selectedTheme.value === type) break;
-      store.commit.settings.setIsThemePreference(true);
+      settingsStore.setIsThemePreference(true);
       break;
     case HeaderMenuType.LightMode:
     case HeaderMenuType.NoirMode:
@@ -284,32 +281,32 @@ async function handleSelectHeaderMenu(type: HeaderMenuType): Promise<void> {
       break;
     case HeaderMenuType.TurnPhoneHide:
       if (isRotatePhoneHideBalanceFeatureEnabled.value) {
-        store.commit.settings.setIsRotatePhoneHideBalanceFeatureEnabled(false);
+        settingsStore.setIsRotatePhoneHideBalanceFeatureEnabled(false);
         tmaSdkService.removeDeviceRotationListener();
-        (store.commit.settings as any).setRotatePhoneDialogVisibility?.(false);
+        settingsStore.setRotatePhoneDialogVisibility(false);
       } else if (!isRotatePhoneHideBalanceFeatureEnabled.value && isAccessRotationListener.value) {
         tmaSdkService.listenForDeviceRotation();
-        store.commit.settings.setIsRotatePhoneHideBalanceFeatureEnabled(true);
+        settingsStore.setIsRotatePhoneHideBalanceFeatureEnabled(true);
       } else {
-        (store.commit.settings as any).setRotatePhoneDialogVisibility?.(true);
+        settingsStore.setRotatePhoneDialogVisibility(true);
         handleClickHeaderMenu();
       }
       break;
     case HeaderMenuType.Language:
-      store.commit.settings.setSelectLanguageDialogVisibility(true);
+      settingsStore.setSelectLanguageDialogVisibility(true);
       handleClickHeaderMenu();
       break;
     case HeaderMenuType.Currency:
-      store.commit.settings.setSelectCurrencyDialogVisibility(true);
+      settingsStore.setSelectCurrencyDialogVisibility(true);
       handleClickHeaderMenu();
       break;
     case HeaderMenuType.Notification:
-      store.commit.settings.setAlertSettingsPopup(true);
+      settingsStore.setAlertSettingsPopup(true);
       handleClickHeaderMenu();
       break;
     case HeaderMenuType.Disclaimer:
       if (disclaimerDisabled.value) break;
-      store.commit.settings.toggleDisclaimerDialogVisibility();
+      settingsStore.toggleDisclaimerDialogVisibility();
       handleClickHeaderMenu();
       break;
   }
@@ -320,7 +317,7 @@ async function updateTheme(type: HeaderMenuType): Promise<void> {
   const theme = type === HeaderMenuType.LightMode ? Theme.LIGHT : Theme.DARK;
   applyTheme(theme === Theme.DARK);
   await walletStore.setTheme(theme);
-  store.commit.settings.setIsThemePreference(false);
+  settingsStore.setIsThemePreference(false);
 }
 
 watch(

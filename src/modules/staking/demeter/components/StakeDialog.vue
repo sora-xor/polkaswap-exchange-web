@@ -114,15 +114,15 @@
 <script lang="ts" setup>
 import { FPNumber, Operation, type CodecString } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, ref, toRefs, watch, type PropType } from 'vue';
 
 import { Components, ZeroStringValue } from '@/consts';
 import { useTranslation } from '@/composables/useTranslation';
 import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
+import type { DemeterLiquidityParams } from '@/stores/demeterFarming/types';
 import { useSettingsStore } from '@/stores/settings';
-import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 import type { Nullable } from '@/types/common';
 import { getMaxValue, hasInsufficientXorForFee, isXorAccountAsset } from '@/utils';
 

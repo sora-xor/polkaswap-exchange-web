@@ -7,23 +7,24 @@ import { useLoading } from '@/composables/useLoading';
 import { useNotification, type AsyncFnWithoutArgs } from '@/composables/useNotification';
 import { useOperations } from '@/composables/useOperations';
 import { useTranslation } from '@/composables/useTranslation';
-import { getWalletStore } from '../store/instance';
-import { beforeTransactionSign, delay } from '@/util';
+import { useWalletStore } from '@/stores/wallet';
+import { delay } from '@/util';
 
 export function useTransaction() {
-  const store = getWalletStore();
+  const walletStore = useWalletStore();
   const { loading, withLoading, withApi, withChainApi, withParentLoading } = useLoading({
-    isWalletLoaded: () => store.state.wallet.settings.isWalletLoaded,
+    isWalletLoaded: () => walletStore.isWalletLoaded,
   });
   const notification = useNotification();
   const { getOperationMessage } = useOperations();
   const { t } = useTranslation();
 
-  const shouldBalanceBeHidden = computed(() => store.state.wallet.settings.shouldBalanceBeHidden);
+  const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
 
-  const addAsset = store.dispatch.wallet.account.addAsset;
-  const addActiveTransaction = store.commit.wallet.transactions.addActiveTx;
-  const removeActiveTxs = store.commit.wallet.transactions.removeActiveTxs;
+  const addAsset = (address: string) => walletStore.addAsset(address);
+  const addActiveTransaction = (id: string) => walletStore.addActiveTransaction(id);
+  const removeActiveTxs = (ids: string[]) => walletStore.removeActiveTransactions(ids);
+  const accountAssetsAddressTable = computed(() => walletStore.accountAssetsAddressTable);
 
   const getLastTransaction = async (time: number): Promise<HistoryItem> => {
     const tx = findLast((item: HistoryItem) => Number(item.startTime) > time, api.historyList as HistoryItem[]);
@@ -58,7 +59,7 @@ export function useTransaction() {
       }
       if (value.status === TransactionStatus.InBlock) return;
     } else if (value.type === Operation.RegisterAsset && value.assetAddress) {
-      const alreadyExists = store.getters['wallet/account/accountAssetsAddressTable'][value.assetAddress];
+      const alreadyExists = accountAssetsAddressTable.value[value.assetAddress];
       if (!alreadyExists) {
         addAsset(value.assetAddress)
           .then(() => {
@@ -76,7 +77,7 @@ export function useTransaction() {
   const withNotifications = async (func: AsyncFnWithoutArgs): Promise<void> => {
     await withLoading(async () => {
       await notification.withAppNotification(async () => {
-        await beforeTransactionSign(store.original, api);
+        await walletStore.beforeTransactionSign(api);
 
         const time = Date.now();
         await func();

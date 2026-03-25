@@ -1,7 +1,7 @@
 import { pipe, subscribe } from 'wonka';
 
-import { IndexerType } from '@/consts';
-import { ConnectionStatus } from '@/types/common';
+import { IndexerType } from '../../../consts';
+import { ConnectionStatus } from '../../../types/common';
 
 import type { Client, OperationResult, TypedDocumentNode, AnyVariables } from '@urql/core';
 

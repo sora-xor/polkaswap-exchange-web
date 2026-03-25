@@ -1,11 +1,11 @@
-import type * as WalletCoreModule from '@wallet/core';
+import type * as WalletCoreModule from '@/shims/wallet-core';
 
 let walletCorePromise: Promise<WalletCoreModule> | null = null;
 let walletCoreModule: WalletCoreModule | null = null;
 
 export const loadWalletCore = async (): Promise<WalletCoreModule> => {
   if (!walletCorePromise) {
-    walletCorePromise = import('@wallet/core').then((module) => {
+    walletCorePromise = import('@/shims/wallet-core').then((module) => {
       walletCoreModule = module;
       return module;
     });

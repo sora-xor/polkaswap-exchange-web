@@ -86,7 +86,7 @@
 </template>
 
 <script lang="ts" setup>
-import { WALLET_CONSTS, components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, nextTick, ref, watch } from 'vue';
 
 import { useBridgeCore } from '@/composables/useBridgeCore';
@@ -96,7 +96,7 @@ import { useLoading } from '@/composables/useLoading';
 import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components } from '@/consts';
+import { Components, PaginationButton } from '@/consts';
 import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
 import { useBridgeFormStore } from '@/stores/bridge/form';
@@ -104,7 +104,7 @@ import { useBridgeHistoryStore } from '@/stores/bridge/history';
 import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
 import { useBridgeStore } from '@/stores/bridge';
 
-import type { BridgeRegisteredAsset } from '@/store/assets/types';
+import type { BridgeRegisteredAsset } from '@/stores/assets/types';
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
 
 const SearchAttrs = [
@@ -321,24 +321,24 @@ const historyStatusText = (item: IBridgeTransaction): string => {
   return '';
 };
 
-const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
+const handlePaginationClick = (button: PaginationButton) => {
   let nextPage = currentPage.value;
 
   switch (button) {
-    case WALLET_CONSTS.PaginationButton.Prev:
+    case PaginationButton.Prev:
       nextPage = currentPage.value - 1;
       break;
-    case WALLET_CONSTS.PaginationButton.Next:
+    case PaginationButton.Next:
       nextPage = currentPage.value + 1;
       if (nextPage === lastPage.value) {
         isLtrDirection.value = false;
       }
       break;
-    case WALLET_CONSTS.PaginationButton.First:
+    case PaginationButton.First:
       nextPage = 1;
       isLtrDirection.value = true;
       break;
-    case WALLET_CONSTS.PaginationButton.Last:
+    case PaginationButton.Last:
       nextPage = lastPage.value;
       isLtrDirection.value = false;
       break;

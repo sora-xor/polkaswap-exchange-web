@@ -1,20 +1,17 @@
-import { computed } from 'vue';
 import { mount } from '@vue/test-utils';
+import { createPinia } from 'pinia';
 import { describe, expect, it, vi } from 'vitest';
 
 const emitted: { reset: number } = { reset: 0 };
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/pool', () => ({
   __esModule: true,
-  default: {
-    dispatch: {
-      addLiquidity: {
-        resetData: vi.fn(() => {
-          emitted.reset += 1;
-        }),
-      },
-    },
-  },
+  usePoolStore: () => ({
+    resetAddLiquidityData: vi.fn(() => {
+      emitted.reset += 1;
+      return Promise.resolve();
+    }),
+  }),
 }));
 
 vi.mock('@/modules/pool/router', () => ({
@@ -55,6 +52,9 @@ describe('AddLiquidityDialog.vue', () => {
 
     const wrapper = mount(AddLiquidityDialog, {
       props: { visible: true },
+      global: {
+        plugins: [createPinia()],
+      },
     });
 
     await wrapper.setProps({ visible: false });

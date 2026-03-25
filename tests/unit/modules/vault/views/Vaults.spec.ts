@@ -85,9 +85,46 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/settings', () => ({
   __esModule: true,
-  default: storeStub,
+  useSettingsStore: () => ({
+    get screenBreakpointClass() {
+      return storeStub.state.settings.screenBreakpointClass;
+    },
+    get windowWidth() {
+      return storeStub.state.settings.windowWidth;
+    },
+  }),
+}));
+
+vi.mock('@/stores/assets', () => ({
+  __esModule: true,
+  useAssetsStore: () => ({
+    assetDataByAddress: storeStub.getters.assets.assetDataByAddress,
+  }),
+}));
+
+vi.mock('@/stores/vault', () => ({
+  __esModule: true,
+  useVaultStore: () => ({
+    get accountVaults() {
+      return storeStub.state.vault.accountVaults;
+    },
+    get closedAccountVaults() {
+      return storeStub.state.vault.closedAccountVaults;
+    },
+    get collaterals() {
+      return storeStub.state.vault.collaterals;
+    },
+    get averageCollateralPrices() {
+      return storeStub.state.vault.averageCollateralPrices;
+    },
+    get getBorrowTax() {
+      return storeStub.getters.vault.getBorrowTax;
+    },
+    setCollateralTokenAddress: (...args: unknown[]) => setCollateralSpy(...args),
+    setDebtTokenAddress: (...args: unknown[]) => setDebtSpy(...args),
+  }),
 }));
 
 vi.mock('@/router', () => ({

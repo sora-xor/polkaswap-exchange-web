@@ -1,30 +1,58 @@
-import { vi } from 'vitest';
+import * as walletStub from '@tests/stubs/@wallet';
 
 type WalletStubModule = typeof import('@tests/stubs/@wallet');
 
 type WalletOverride = Partial<WalletStubModule>;
 
-const applyOverrides = (
+const normalizeModule = <T extends Record<string, unknown> | undefined>(module: T): Record<string, unknown> => {
+  if (!module) return {};
+
+  const normalized = { ...module };
+
+  if (Reflect.has(module, 'default')) {
+    normalized.default = Reflect.get(module, 'default');
+  }
+
+  return normalized;
+};
+
+export const isPlainObject = (value: unknown): value is Record<string, unknown> => {
+  return Object.prototype.toString.call(value) === '[object Object]';
+};
+
+export const mergeDeep = <T>(base: T, override: unknown): T => {
+  if (!isPlainObject(base) || !isPlainObject(override)) {
+    return (override ?? base) as T;
+  }
+
+  const merged = { ...base } as Record<string, unknown>;
+
+  Object.entries(override).forEach(([key, value]) => {
+    const current = merged[key];
+    merged[key] = isPlainObject(current) && isPlainObject(value) ? mergeDeep(current, value) : value;
+  });
+
+  return merged as T;
+};
+
+export const applyOverrides = (
   base: WalletStubModule,
   overrides: WalletOverride = {}
 ): WalletStubModule & { default: WalletStubModule['default'] } => {
-  const defaultExport = (base as { default?: WalletStubModule['default'] }).default ?? base;
+  const normalizedBase = normalizeModule(base);
+  const normalizedOverrides = normalizeModule(overrides);
+  const defaultExport = normalizedBase.default ?? normalizedBase;
 
-  const merged = {
-    ...base,
-    ...overrides,
-  } as WalletStubModule & { default: WalletStubModule['default'] };
+  const merged = mergeDeep(normalizedBase, normalizedOverrides) as WalletStubModule & {
+    default: WalletStubModule['default'];
+  };
 
-  merged.default = {
-    ...defaultExport,
-    ...overrides,
-  } as WalletStubModule['default'];
+  merged.default = mergeDeep(defaultExport, normalizedOverrides) as WalletStubModule['default'];
 
   return merged;
 };
 
-export const mockWalletModule = async (overrides: WalletOverride = {}) => {
-  const walletStub = await vi.importActual<WalletStubModule>('@tests/stubs/@wallet');
+export const mockWalletModule = (overrides: WalletOverride = {}) => {
   return applyOverrides(walletStub, overrides);
 };
 
@@ -32,9 +60,7 @@ export const withWalletModule = <T extends WalletStubModule, O extends WalletOve
   wallet: T,
   overrides: O
 ): T & O => {
-  Object.assign(wallet, overrides);
-  if (wallet.default && typeof wallet.default === 'object') {
-    Object.assign(wallet.default as Record<string, unknown>, overrides);
-  }
+  const merged = applyOverrides(wallet, overrides);
+  Object.assign(wallet, merged);
   return wallet as T & O;
 };

@@ -1,4 +1,4 @@
-import { api } from '@wallet';
+import { api } from '@/shims/wallet-api';
 
 import type { Nullable } from '@/types/common';
 

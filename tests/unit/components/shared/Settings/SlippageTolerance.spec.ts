@@ -44,12 +44,17 @@ vi.mock('@/router', () => ({
   lazyComponent: () => lazyComponentStub,
 }));
 
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: {
-    state: storeState,
-    commit: storeCommit,
-  },
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => ({
+    get slippageTolerance() {
+      return storeState.settings.slippageTolerance;
+    },
+    get transactionDeadline() {
+      return storeState.settings.transactionDeadline;
+    },
+    setSlippageTolerance: setSlippageMock,
+    setTransactionDeadline: setDeadlineMock,
+  }),
 }));
 
 vi.mock('@/composables/useTranslation', () => ({

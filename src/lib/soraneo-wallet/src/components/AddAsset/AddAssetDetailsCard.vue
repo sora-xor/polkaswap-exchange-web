@@ -39,9 +39,9 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
-import { mapGetters } from 'vuex';
 
 import { Theme } from '@/consts';
+import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../../api';
 import { getCssVariableValue } from '../../util';
@@ -79,7 +79,12 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapGetters('wallet/account', ['whitelist', 'whitelistIdsBySymbol']),
+    whitelist(this: any) {
+      return useWalletStore(this.$pinia).whitelist;
+    },
+    whitelistIdsBySymbol(this: any) {
+      return useWalletStore(this.$pinia).whitelistIdsBySymbol;
+    },
     isCardPrimary(this: any): boolean {
       return this.theme !== Theme.Dark;
     },

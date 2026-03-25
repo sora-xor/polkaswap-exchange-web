@@ -104,22 +104,35 @@ vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({
   },
 }));
 vi.mock('@wallet', async () => {
-  const walletStub = await vi.importActual<typeof import('@tests/stubs/@wallet')>('@tests/stubs/@wallet');
+  const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
+  const walletStub = await createWalletMock({
+    storage: {
+      set: vi.fn(),
+      get: vi.fn((key?: string) => {
+        if (key === 'filters') {
+          return JSON.stringify({ option: 'All', verifiedOnly: false, zeroBalance: false });
+        }
+        if (key === 'shouldBalanceBeHidden') {
+          return 'false';
+        }
+        return null;
+      }),
+      remove: vi.fn(),
+    },
+    runtimeStorage: {
+      set: vi.fn(),
+      get: vi.fn(() => null),
+      remove: vi.fn(),
+    },
+    settingsStorage: {
+      set: vi.fn(),
+      get: vi.fn(() => null),
+      remove: vi.fn(),
+    },
+  });
+
   return {
-    ...walletStub,
-    WALLET_CONSTS: {
-      ...walletStub.WALLET_CONSTS,
-      ETH_BRIDGE_STATES: {
-        INITIAL: 0,
-      },
-    },
-    api: {
-      ...(walletStub.api ?? {}),
-      assets: {},
-    },
-    getExplorerLinks: () => ({ account: () => '' }),
-    default: {
-      ...(walletStub as { default?: Record<string, unknown> }).default,
+    ...withWalletMock(walletStub, {
       WALLET_CONSTS: {
         ...walletStub.WALLET_CONSTS,
         ETH_BRIDGE_STATES: {
@@ -130,45 +143,16 @@ vi.mock('@wallet', async () => {
         ...(walletStub.api ?? {}),
         assets: {},
       },
-      getExplorerLinks: () => ({ account: () => '' }),
-    },
+    }),
   };
 });
-vi.mock('@/store', () => {
-  const store = {
-    state: {
-      wallet: {
-        settings: { shouldBalanceBeHidden: false, soraNetwork: 'test' },
-        account: { assets: [], address: 'addr' },
-      },
-      web3: { denominator: { toCodecString: () => '1' } },
-    },
-    getters: {
-      wallet: { account: { isLoggedIn: false } },
-      assets: { assetDataByAddress: () => null },
-      bridge: { autoselectedAssetAddress: null },
-    },
-    commit: () => {},
-    dispatch: () => {},
-  };
 
-  const watch = (selector: (state: typeof store.state) => unknown, callback: (value: unknown) => void) => {
-    try {
-      const value = selector(store.state);
-      if (value !== undefined && value !== null) {
-        callback(value);
-      }
-    } catch {
-      /* ignore */
-    }
-    return () => {};
-  };
+vi.mock('@/lib/soraneo-wallet/src/util', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/soraneo-wallet/src/util')>('@/lib/soraneo-wallet/src/util');
 
   return {
-    default: {
-      ...store,
-      original: { watch },
-    },
+    ...actual,
+    getExplorerLinks: () => ({ account: () => '' }),
   };
 });
 vi.mock('@/lang', () => ({ default: { t: () => '', tc: () => '', locale: 'en' } }));
@@ -176,6 +160,31 @@ vi.mock('@/router', () => ({
   __esModule: true,
   default: { currentRoute: { name: '' }, push: () => Promise.resolve() },
   lazyComponent: () => ({ template: '<div class="router-lazy-component-stub"><slot /></div>' }),
+}));
+vi.mock('@/lib/soraneo-wallet/src/util/storage', () => ({
+  storage: {
+    set: () => {},
+    get: (key?: string) => {
+      if (key === 'filters') {
+        return JSON.stringify({ option: 'All', verifiedOnly: false, zeroBalance: false });
+      }
+      if (key === 'shouldBalanceBeHidden') {
+        return 'false';
+      }
+      return null;
+    },
+    remove: () => {},
+  },
+  runtimeStorage: {
+    set: () => {},
+    get: () => null,
+    remove: () => {},
+  },
+  settingsStorage: {
+    set: () => {},
+    get: () => null,
+    remove: () => {},
+  },
 }));
 vi.mock('@/utils/storage', () => ({
   default: { set: () => {}, get: () => null, remove: () => {} },

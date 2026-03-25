@@ -15,19 +15,22 @@ import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 
 import { FPNumber } from '@sora-substrate/math';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, WALLET_CONSTS } from '@wallet';
+import { api } from '@/shims/wallet-api';
 
-import { PageNames } from '@/consts';
-import store from '@/store';
+import { PageNames, RouteNames } from '@/consts';
+import { useAssetsStore } from '@/stores/assets';
+import { usePoolStore } from '@/stores/pool';
 import { useRouterStore } from '@/stores/router';
 import { useSwapStore } from '@/stores/swap';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
+const poolStore = usePoolStore();
 const routerStore = useRouterStore();
 const swapStore = useSwapStore();
 const walletStore = useWalletStore();
+const assetsStore = useAssetsStore();
 const vueRouter = useRouter();
 const route = useRoute();
 
@@ -36,11 +39,11 @@ const parentLoading = ref(false);
 const isLoggedIn = computed(() => walletStore.isLoggedIn);
 const whitelist = computed(() => walletStore.whitelist);
 const whitelistIdsBySymbol = computed(() => walletStore.whitelistIdsBySymbol);
-const getAsset = (address?: string) => store.getters.assets.assetDataByAddress(address) as AccountAsset;
+const getAsset = (address?: string) => assetsStore.assetDataByAddress(address) as AccountAsset;
 
 const setSwapFromAsset = (address?: string) => swapStore.setTokenFromAddress(address);
 const setSwapToAsset = () => swapStore.setTokenToAddress();
-const setAddliquidityAssetA = (address: string) => store.dispatch.addLiquidity.setFirstTokenAddress(address);
+const setAddliquidityAssetA = async (address: string) => await poolStore.setAddLiquidityFirstTokenAddress(address);
 
 const ensureWalletRoute = (): void => {
   routerStore.checkCurrentRoute();
@@ -58,7 +61,7 @@ const tryNavigate = () => {
     if (!assetId) return;
     const asset = getAsset(assetId);
     routerStore.navigate({
-      name: WALLET_CONSTS.RouteNames.WalletSend,
+      name: RouteNames.WalletSend,
       params: { address: to, amount, asset },
     });
   } catch (error) {
@@ -108,8 +111,8 @@ const handleSwap = async (asset?: AccountAsset) => {
 
 const handleLiquidity = async (asset: AccountAsset) => {
   if (api.dex.baseAssetsIds.includes(asset.address)) {
-    setAddliquidityAssetA(asset.address);
-    vueRouter.push({ name: PageNames.AddLiquidity });
+    await setAddliquidityAssetA(asset.address);
+    await vueRouter.push({ name: PageNames.AddLiquidity });
     return;
   }
 

@@ -1,4 +1,4 @@
-import type { WALLET_TYPES } from '@wallet/core';
+import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
 
 type TranslateFn = (key: string) => string;
 
@@ -8,7 +8,7 @@ export function getAccountTooltip(isLoggedIn: boolean, t: TranslateFn): string {
 
 export function getAccountLabel(
   isLoggedIn: boolean,
-  account: WALLET_TYPES.PolkadotJsAccount | undefined,
+  account: PolkadotJsAccount | undefined,
   t: TranslateFn,
   formatAddress: (address: string, symbols: number) => string
 ): string {

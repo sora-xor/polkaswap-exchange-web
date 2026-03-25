@@ -1,12 +1,13 @@
 import { Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { api } from '@wallet';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useTransaction } from '@/composables/useTransaction';
+import { api } from '@/shims/wallet-api';
 
 const addActiveTx = vi.hoisted(() => vi.fn());
 const removeActiveTransactions = vi.hoisted(() => vi.fn());
 const addAsset = vi.hoisted(() => vi.fn(async () => undefined));
+const beforeTransactionSign = vi.hoisted(() => vi.fn(async () => undefined));
 const notificationStubs = vi.hoisted(() => {
   const withAppNotification = vi.fn(async (handler: () => Promise<void> | void) => {
     await handler?.();
@@ -44,13 +45,12 @@ vi.mock('@wallet', () => ({
   WALLET_CONSTS: {},
 }));
 
-vi.mock('@wallet/src/util', async () => {
-  const actual = await vi.importActual<typeof import('@wallet/src/util')>('@wallet/src/util');
+vi.mock('@/lib/soraneo-wallet/src/util', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/soraneo-wallet/src/util')>('@/lib/soraneo-wallet/src/util');
 
   return {
     __esModule: true,
     ...actual,
-    beforeTransactionSign: vi.fn(),
     delay: vi.fn(async () => undefined),
   };
 });
@@ -64,55 +64,10 @@ vi.mock('@/stores/wallet', () => ({
     addAsset,
     addActiveTransaction: addActiveTx,
     removeActiveTransactions,
+    beforeTransactionSign,
     shouldBalanceBeHidden: false,
+    accountAssetsAddressTable: {},
   }),
-}));
-
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      settings: {
-        isWalletLoaded: true,
-        language: 'en',
-      },
-      wallet: {
-        settings: {
-          shouldBalanceBeHidden: false,
-        },
-        transactions: {
-          isConfirmTxDialogDisabled: false,
-        },
-        account: {
-          address: '',
-          fiatPriceObject: {},
-        },
-      },
-    },
-    getters: {
-      assets: {
-        xor: { symbol: 'XOR' },
-      },
-      settings: {
-        debugEnabled: false,
-        nodeIsConnected: true,
-        liquiditySource: null,
-      },
-      wallet: {
-        account: {
-          isLoggedIn: true,
-          accountAssetsAddressTable: {},
-        },
-      },
-    },
-    dispatch: {
-      wallet: {
-        account: {
-          logout: vi.fn(),
-        },
-      },
-    },
-    original: {},
-  },
 }));
 
 describe('useTransaction', () => {
@@ -134,6 +89,7 @@ describe('useTransaction', () => {
 
     expect(handler).toHaveBeenCalledTimes(1);
     expect(withAppNotification).toHaveBeenCalledTimes(1);
+    expect(beforeTransactionSign).toHaveBeenCalledWith(api);
     expect(addActiveTx).toHaveBeenCalledWith('tx-1');
     expect(showAppNotification).toHaveBeenCalledWith('transactionSubmittedText');
   });

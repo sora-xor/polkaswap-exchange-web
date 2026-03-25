@@ -2,6 +2,8 @@ import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick, watch } from 'vue';
 
+import appDisclaimerSource from '@/components/App/Header/AppDisclaimer.vue?raw';
+
 const {
   settingsStoreMock,
   setUserDisclaimerApproveMock,
@@ -88,6 +90,10 @@ vi.mock('@/lib/soramitsu-ui/components/Modal', () => ({
         type: Boolean,
         default: true,
       },
+      focusTrap: {
+        type: [Boolean, Object],
+        default: true,
+      },
       rootClass: {
         type: [String, Array, Object],
         default: '',
@@ -116,6 +122,7 @@ vi.mock('@/lib/soramitsu-ui/components/Modal', () => ({
           teleportTo: props.teleportTo,
           absolute: props.absolute,
           lockScroll: props.lockScroll,
+          focusTrap: props.focusTrap,
           rootClass: props.rootClass,
           modalClass: props.modalClass,
           closeOnOverlayClick: props.closeOnOverlayClick,
@@ -194,6 +201,7 @@ describe('AppDisclaimer', () => {
     expect(modalProps?.teleportTo).toBe(null);
     expect(modalProps?.absolute).toBe(true);
     expect(modalProps?.lockScroll).toBe(false);
+    expect(modalProps?.focusTrap).toBe(true);
     expect(modalProps?.showOverlay).toBe(true);
     expect(modalProps?.rootClass).toEqual(['disclaimer-modal', { 'disclaimer-modal--nonblocking': false }]);
     expect(modalProps?.modalClass).toBe('disclaimer-modal__dialog');
@@ -220,8 +228,22 @@ describe('AppDisclaimer', () => {
     const modalProps = modalPropsSnapshots.at(-1);
 
     expect(modalProps?.showOverlay).toBe(false);
+    expect(modalProps?.focusTrap).toBe(false);
     expect(modalProps?.rootClass).toEqual(['disclaimer-modal', { 'disclaimer-modal--nonblocking': true }]);
     expect(modalProps?.closeOnOverlayClick).toBe(false);
+  });
+
+  it('keeps nonblocking disclaimer hit testing global for modal roots outside the component scope', () => {
+    expect(appDisclaimerSource).toContain(':global(.disclaimer-modal--nonblocking)');
+    expect(appDisclaimerSource).toContain(':global(.disclaimer-modal--nonblocking .s-modal__modal)');
+    expect(appDisclaimerSource).toContain(':global(.disclaimer-modal--nonblocking .disclaimer)');
+  });
+
+  it('anchors the disclaimer modal in the upper-right corner through global modal root styles', () => {
+    expect(appDisclaimerSource).toContain(':global(.disclaimer-modal)');
+    expect(appDisclaimerSource).toContain('justify-content: flex-end;');
+    expect(appDisclaimerSource).toContain('align-items: flex-start;');
+    expect(appDisclaimerSource).toContain(':global(.disclaimer-modal__dialog)');
   });
 
   it('activates accept state and handles accept action', async () => {

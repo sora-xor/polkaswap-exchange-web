@@ -127,7 +127,7 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, getCurrentInstance, ref } from 'vue';
 
 import { useInternalConnect } from '@/composables/useInternalConnect';
@@ -137,8 +137,8 @@ import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/con
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import router from '@/router';
-import store from '@/store';
-import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
+import { useDashboardStore } from '@/stores/dashboard';
+import { useSettingsStore } from '@/stores/settings';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 
 defineOptions({
@@ -151,9 +151,11 @@ defineOptions({
 
 const { isLoggedIn, connectSoraWallet } = useInternalConnect();
 const { t } = useTranslation();
+const dashboardStore = useDashboardStore();
+const settingsStore = useSettingsStore();
 
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
-const assets = computed(() => store.getters.dashboard.ownedAssets as OwnedAsset[]);
+const libraryTheme = computed(() => (settingsStore.libraryTheme ?? settingsStore.theme ?? Theme.LIGHT) as Theme);
+const assets = computed(() => dashboardStore.ownedAssets as OwnedAsset[]);
 
 const showCreateTokenDialog = ref(false);
 

@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 
 import { useTranslation } from '@/composables/useTranslation';
 

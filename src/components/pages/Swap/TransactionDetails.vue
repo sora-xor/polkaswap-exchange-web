@@ -53,7 +53,7 @@
 <script setup lang="ts">
 import { Operation, type CodecString, type NetworkFeesObject } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -61,8 +61,8 @@ import { useTranslation } from '@/composables/useTranslation';
 import { Components } from '@/consts';
 import { useSwapStore } from '@/stores/swap';
 import { lazyComponent } from '@/router';
-import store from '@/store';
 import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
 
 import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -86,11 +86,12 @@ const props = withDefaults(
 
 const swapStore = useSwapStore();
 const assetsStore = useAssetsStore();
+const settingsStore = useSettingsStore();
 const { t } = useTranslation();
 const { formatCodecNumber, formatStringValue, getFiatAmountByString, getFiatAmountByCodecString } =
   useFormattedAmount();
 
-const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject);
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
 const networkFee = computed(() => networkFees.value[Operation.Swap]);
 
 const liquidityProviderFee = computed(() => swapStore.liquidityProviderFee as CodecString);

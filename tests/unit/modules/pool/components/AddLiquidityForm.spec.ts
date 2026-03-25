@@ -1,9 +1,10 @@
 import { Operation } from '@sora-substrate/sdk';
 import { computed, defineComponent, ref, type Ref } from 'vue';
 import { flushPromises, mount } from '@vue/test-utils';
+import { createPinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { FocusedField } from '@/store/addLiquidity/types';
+import { AddLiquidityFocusedField as FocusedField } from '@/stores/pool/types';
 
 type TokenRef = Ref<{ address: string; symbol: string } | null>;
 
@@ -87,22 +88,6 @@ const storeGetters = vi.hoisted(() => ({
 
 let storeCommit: any;
 let storeDispatch: any;
-
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: {
-    get state() {
-      return storeState;
-    },
-    getters: storeGetters,
-    get commit() {
-      return storeCommit;
-    },
-    get dispatch() {
-      return storeDispatch;
-    },
-  },
-}));
 
 vi.mock('@/composables/useTranslation', () => ({
   __esModule: true,
@@ -267,7 +252,12 @@ const AddLiquidityForm = defineComponent({
   },
 });
 
-const mountComponent = () => mount(AddLiquidityForm);
+const mountComponent = () =>
+  mount(AddLiquidityForm, {
+    global: {
+      plugins: [createPinia()],
+    },
+  });
 
 describe('AddLiquidityForm.vue', () => {
   beforeEach(() => {

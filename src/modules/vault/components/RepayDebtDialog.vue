@@ -58,7 +58,8 @@
 <script setup lang="ts">
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, api } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, nextTick, ref, watch } from 'vue';
 
 import { Components, HundredNumber, ObjectInit, ZeroStringValue } from '@/consts';
@@ -70,7 +71,8 @@ import { LtvTranslations, VaultComponents } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
 import { getLtvStatus } from '@/modules/vault/util';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useAssetsStore } from '@/stores/assets';
+import { useWalletStore } from '@/stores/wallet';
 import { asZeroValue, getAssetBalance, hasInsufficientBalance } from '@/utils';
 
 import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
@@ -111,6 +113,8 @@ const { withNotifications, loading } = useTransaction();
 const { showAppAlert } = useNotification();
 const { Zero, Hundred, getFPNumber, getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } =
   useFormattedAmount();
+const walletStore = useWalletStore();
+const assetsStore = useAssetsStore();
 
 const xorSymbol = XOR.symbol;
 
@@ -119,9 +123,9 @@ const repayDebtValue = ref('');
 
 const isVisible = defineModel<boolean>('visible', { default: false });
 
-const networkFees = computed(() => store.state.wallet.settings.networkFees as NetworkFeesObject | undefined);
-const accountXor = computed(() => store.getters.assets.xor as Nullable<AccountAsset>);
-const shouldBalanceBeHidden = computed(() => store.state.wallet.settings.shouldBalanceBeHidden ?? false);
+const networkFees = computed(() => walletStore.networkFees as NetworkFeesObject | undefined);
+const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
+const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
 
 const vault = computed(() => props.vault as Nullable<Vault>);
 const debtAsset = computed(() => props.debtAsset as Nullable<RegisteredAccountAsset>);

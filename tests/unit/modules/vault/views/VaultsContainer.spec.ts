@@ -17,9 +17,7 @@ const resetMock = vi.fn().mockResolvedValue(undefined);
 
 const goToMock = vi.fn();
 
-let storeStub: any;
-
-storeStub = {
+const appStoreStub = {
   dispatch: {
     vault: {
       subscribeOnCollaterals: subscribeOnCollateralsMock,
@@ -29,13 +27,6 @@ storeStub = {
       subscribeOnBorrowTaxes: subscribeOnBorrowTaxesMock,
       subscribeOnDebtCalculation: subscribeOnDebtCalculationMock,
       reset: resetMock,
-    },
-  },
-  getters: {
-    settings: {
-      get kensetsuEnabled() {
-        return kensetsuEnabledRef.value;
-      },
     },
   },
 };
@@ -86,9 +77,26 @@ vi.mock('@/router', () => ({
   lazyComponent: () => ({ template: '<div class="router-lazy-component-stub"><slot /></div>' }),
 }));
 
-vi.mock('@/store', () => ({
+vi.mock('@/stores/settings', () => ({
   __esModule: true,
-  default: storeStub,
+  useSettingsStore: () => ({
+    get kensetsuEnabled() {
+      return kensetsuEnabledRef.value;
+    },
+  }),
+}));
+
+vi.mock('@/stores/vault', () => ({
+  __esModule: true,
+  useVaultStore: () => ({
+    subscribeOnCollaterals: () => subscribeOnCollateralsMock(),
+    subscribeOnAccountVaults: () => subscribeOnAccountVaultsMock(),
+    updateBalanceSubscriptions: () => updateBalanceSubscriptionsMock(),
+    getLiquidationPenalty: () => getLiquidationPenaltyMock(),
+    subscribeOnBorrowTaxes: () => subscribeOnBorrowTaxesMock(),
+    subscribeOnDebtCalculation: () => subscribeOnDebtCalculationMock(),
+    reset: () => resetMock(),
+  }),
 }));
 
 const VaultsContainer = (await import('@/modules/vault/views/VaultsContainer.vue')).default;

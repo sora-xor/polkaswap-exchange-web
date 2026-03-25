@@ -1,4 +1,4 @@
-export { FilterOptions } from '@wallet/src/types/common';
+export { FilterOptions } from '@/shims/wallet-common-types';
 
 /**
  * Shared utility types that need both module exports and global availability.

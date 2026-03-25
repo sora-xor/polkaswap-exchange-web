@@ -97,6 +97,27 @@ vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
     setShowValidatorsFilterDialog: (value: boolean) => setShowFilterMock(value),
     newStakeValidatorsMode: computed(() => newStakeValidatorsModeRef.value),
     currentEra: computed(() => currentEraRef.value),
+    getStakingInfo: () => dispatchStakingMocks.getStakingInfo(),
+    getValidatorsInfo: () => dispatchStakingMocks.getValidatorsInfo(),
+    getMinNominatorBond: () => dispatchStakingMocks.getMinNominatorBond(),
+    getUnbondPeriod: () => dispatchStakingMocks.getUnbondPeriod(),
+    getMaxNominations: () => dispatchStakingMocks.getMaxNominations(),
+    getHistoryDepth: () => dispatchStakingMocks.getHistoryDepth(),
+    getPendingRewards: () => dispatchStakingMocks.getPendingRewards(),
+    subscribeOnActiveEra: () => dispatchStakingMocks.subscribeOnActiveEra(),
+    subscribeOnCurrentEra: () => dispatchStakingMocks.subscribeOnCurrentEra(),
+    subscribeOnController: () => dispatchStakingMocks.subscribeOnController(),
+    subscribeOnPayee: () => dispatchStakingMocks.subscribeOnPayee(),
+    subscribeOnNominations: () => dispatchStakingMocks.subscribeOnNominations(),
+    subscribeOnAccountLedger: () => dispatchStakingMocks.subscribeOnAccountLedger(),
+    subscribeOnCurrentEraTotalStake: () => dispatchStakingMocks.subscribeOnCurrentEraTotalStake(),
+    resetActiveEraUpdates: () => commitStakingMocks.resetActiveEraUpdates(),
+    resetCurrentEraUpdates: () => commitStakingMocks.resetCurrentEraUpdates(),
+    resetCurrentEraTotalStakeUpdates: () => commitStakingMocks.resetCurrentEraTotalStakeUpdates(),
+    resetControllerUpdates: () => commitStakingMocks.resetControllerUpdates(),
+    resetPayeeUpdates: () => commitStakingMocks.resetPayeeUpdates(),
+    resetNominationsUpdates: () => commitStakingMocks.resetNominationsUpdates(),
+    resetAccountLedgerUpdates: () => commitStakingMocks.resetAccountLedgerUpdates(),
   }),
 }));
 
@@ -136,22 +157,6 @@ vi.mock('@/composables/useSubscriptions', () => ({
       subscriptionsDataLoading,
       updateSubscriptions,
     };
-  },
-}));
-
-vi.mock('@/store', () => ({
-  __esModule: true,
-  default: {
-    get dispatch() {
-      return {
-        staking: dispatchStakingMocks,
-      };
-    },
-    get commit() {
-      return {
-        staking: commitStakingMocks,
-      };
-    },
   },
 }));
 

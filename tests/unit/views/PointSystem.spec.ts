@@ -6,78 +6,71 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const loginState = ref(false);
 const connectSpy = vi.fn();
 const getAccountReferralRewards = vi.fn().mockResolvedValue(undefined);
-const subscribeOnList = vi.fn().mockResolvedValue(undefined);
-const subscribeOnUpdates = vi.fn().mockResolvedValue(undefined);
 const fetchBurnXorDataMock = vi.fn();
 const fetchBridgeDataMock = vi.fn();
 const fetchCountMock = vi.fn();
 
-const storeStub = {
-  state: {
-    settings: {
-      isWalletLoaded: true,
-    },
-    referrals: {
-      referralRewards: {
-        rewards: FPNumber.ZERO,
-        invitedUserRewards: {},
-      },
-    },
-    wallet: {
-      settings: {
-        blockNumber: 100,
-        networkFees: {
-          Swap: '1000000000000000000',
-          EthBridgeOutgoing: '500000000000000000',
-          AddLiquidity: '700000000000000000',
-          RemoveLiquidity: '400000000000000000',
-        },
-      },
-      account: {
-        accountAssets: [],
-        fiatPriceObject: {
-          '0xbridge': '1000000000000000000',
-          xor: '1000000000000000000',
-        },
-      },
-    },
-    pool: {
-      accountLiquidity: [],
-    },
+const settingsStoreMock = {
+  blockNumber: 100,
+  networkFees: {
+    Swap: '1000000000000000000',
+    EthBridgeOutgoing: '500000000000000000',
+    AddLiquidity: '700000000000000000',
+    RemoveLiquidity: '400000000000000000',
   },
-  getters: {
-    libraryTheme: 'dark',
-    wallet: {
-      account: {
-        account: { address: '5mock' },
-      },
-      settings: {
-        currencySymbol: '$',
-      },
-    },
-    assets: {
-      xor: {
-        address: 'xor',
-        symbol: 'XOR',
-        decimals: 18,
-      },
-    },
-  },
-  dispatch: {
-    referrals: {
-      getAccountReferralRewards,
-    },
-    pool: {
-      subscribeOnAccountLiquidityList: subscribeOnList,
-      subscribeOnAccountLiquidityUpdates: subscribeOnUpdates,
-    },
-  },
-  commit: {},
+  libraryTheme: 'dark',
 };
 
-vi.mock('@/store', () => ({
+const walletStoreMock = {
+  account: { address: '5mock' },
+  currencySymbol: '$',
+  accountAssets: [] as Array<any>,
+};
+
+const referralsStoreMock = {
+  referralRewards: {
+    rewards: FPNumber.ZERO,
+    invitedUserRewards: {},
+  },
+  getAccountReferralRewards,
+};
+
+const poolStoreMock = {
+  accountLiquidity: [] as Array<any>,
+};
+
+const assetsStoreMock = {
+  xor: {
+    address: 'xor',
+    symbol: 'XOR',
+    decimals: 18,
+  },
+  assetDataByAddress: vi.fn(),
+};
+
+vi.mock('@/stores/settings', () => ({
   __esModule: true,
-  default: storeStub,
+  useSettingsStore: () => settingsStoreMock,
+}));
+
+vi.mock('@/stores/referrals', () => ({
+  __esModule: true,
+  useReferralsStore: () => referralsStoreMock,
+}));
+
+vi.mock('@/stores/pool', () => ({
+  __esModule: true,
+  usePoolStore: () => poolStoreMock,
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  __esModule: true,
+  useWalletStore: () => walletStoreMock,
+}));
+
+vi.mock('@/stores/assets', () => ({
+  __esModule: true,
+  useAssetsStore: () => assetsStoreMock,
 }));
 
 vi.mock('@wallet', async () => {
@@ -91,7 +84,7 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@wallet/src/util', () => ({
+vi.mock('@/lib/soraneo-wallet/src/util', () => ({
   __esModule: true,
   delay: vi.fn().mockResolvedValue(undefined),
 }));
@@ -154,17 +147,32 @@ describe('PointSystem.vue', () => {
     loginState.value = false;
     connectSpy.mockClear();
     getAccountReferralRewards.mockClear();
-    subscribeOnList.mockClear();
-    subscribeOnUpdates.mockClear();
     fetchBurnXorDataMock.mockReset();
     fetchBridgeDataMock.mockReset();
     fetchCountMock.mockReset();
 
-    storeStub.state.referrals.referralRewards = {
+    referralsStoreMock.referralRewards = {
       rewards: FPNumber.ZERO,
       invitedUserRewards: {},
     };
-    storeStub.getters.wallet.account.account = { address: '5mock' };
+    poolStoreMock.accountLiquidity = [];
+    settingsStoreMock.blockNumber = 100;
+    settingsStoreMock.networkFees = {
+      Swap: '1000000000000000000',
+      EthBridgeOutgoing: '500000000000000000',
+      AddLiquidity: '700000000000000000',
+      RemoveLiquidity: '400000000000000000',
+    };
+    settingsStoreMock.libraryTheme = 'dark';
+    walletStoreMock.account = { address: '5mock' };
+    walletStoreMock.currencySymbol = '$';
+    walletStoreMock.accountAssets = [];
+    assetsStoreMock.xor = {
+      address: 'xor',
+      symbol: 'XOR',
+      decimals: 18,
+    };
+    assetsStoreMock.assetDataByAddress.mockReset();
   });
 
   it('offers wallet connection controls while logged out', async () => {

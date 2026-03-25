@@ -38,14 +38,6 @@ vi.mock('@/utils/ethers-util', () => ({
   default: { getTokenDecimals: vi.fn() },
 }));
 
-vi.mock('@/utils/app-store', () => ({
-  requireAppStore: () => ({
-    getters: { web3: { isValidNetwork: false } },
-    state: { bridge: { subBridgeConnector: {} } },
-    dispatch: { web3: { getEvmTokenAddressByAssetId: vi.fn() } },
-  }),
-}));
-
 let useAssetsStore: typeof import('@/stores/assets').useAssetsStore;
 
 describe('useAssetsStore (real Pinia runtime)', () => {

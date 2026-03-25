@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';
 
 import { Components } from '@/consts';
@@ -52,6 +52,7 @@ import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { fetchData } from '@/indexer/queries/network/stats';
+import { FontSizeRate, FontWeightRate } from '@/shims/wallet-consts';
 import { lazyComponent } from '@/router';
 import { useSettingsStore } from '@/stores/settings';
 import type { SnapshotFilter } from '@/types/filters';
@@ -105,8 +106,6 @@ const settingsStore = useSettingsStore();
 const nodeIsConnected = computed(() => settingsStore.nodeIsConnected);
 const loadingState = computed(() => parentLoading.value || loading.value || !hasResolvedData.value);
 
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
-const FontWeightRate = WALLET_CONSTS.FontWeightRate;
 const arrow = String.fromCodePoint(0x2192);
 
 const columns = computed(() => {

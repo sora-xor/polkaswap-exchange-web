@@ -126,17 +126,20 @@
 
 <script setup lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { getCurrentIndexer, components, WALLET_CONSTS, WALLET_TYPES } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import dayjs from 'dayjs/esm';
 import { computed, watch, type Ref } from 'vue';
 
+import type { AssetsTable } from '@/shims/wallet-common-types';
 import { useIndexerDataFetch } from '@/composables/useIndexerDataFetch';
 import { useScrollableTable } from '@/composables/useScrollableTable';
 import { useWidgetTokenSelect } from '@/composables/useWidgetTokenSelect';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components } from '@/consts';
+import { Components, type ExplorerLink, FontSizeRate, SoraNetwork } from '@/consts';
+import { getCurrentIndexer } from '@/shims/wallet-indexer';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import { type FetchVariables } from '@/types/indexers';
 import { soraExplorerLinks, showMostFittingValue } from '@/utils';
 
@@ -157,7 +160,7 @@ type TableItem = {
     date: string;
     time: string;
   };
-  links: WALLET_CONSTS.ExplorerLink[];
+  links: ExplorerLink[];
 };
 
 defineOptions({
@@ -185,12 +188,10 @@ const props = withDefaults(
 
 const predefinedToken = computed<Nullable<Asset>>(() => props.predefinedToken);
 const { t, tc } = useTranslation();
-const soraNetwork = computed(() => store.state?.wallet?.settings?.soraNetwork as Nullable<WALLET_CONSTS.SoraNetwork>);
-const assetsDataTable = computed(
-  () =>
-    (store.getters?.wallet?.account?.assetsDataTable as WALLET_TYPES.AssetsTable) ?? ({} as WALLET_TYPES.AssetsTable)
-);
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
+const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<SoraNetwork>);
+const assetsDataTable = computed(() => (walletStore.assetsDataTable as AssetsTable) ?? ({} as AssetsTable));
 const operations = [Operation.Swap];
 const fromTimestamp = dayjs().subtract(1, 'week').startOf('day').unix();
 

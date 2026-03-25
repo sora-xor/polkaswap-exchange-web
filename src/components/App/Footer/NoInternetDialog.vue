@@ -21,11 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
 
 defineOptions({
   components: {
@@ -34,8 +34,9 @@ defineOptions({
 });
 
 const { t } = useTranslation();
+const settingsStore = useSettingsStore();
 
-const isInternetConnectionEnabled = computed(() => Boolean(store.getters?.settings?.isInternetConnectionEnabled));
+const isInternetConnectionEnabled = computed(() => settingsStore.isInternetConnectionEnabled);
 
 function refreshPage(): void {
   window.location.reload();

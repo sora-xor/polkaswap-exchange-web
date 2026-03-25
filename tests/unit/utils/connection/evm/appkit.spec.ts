@@ -17,25 +17,6 @@ const getWalletConnectProjectIdMock = vi.hoisted(() => vi.fn(async () => 'projec
 let ensureAppKit: (typeof import('@/utils/connection/evm/appkit'))['ensureAppKit'];
 let resetAppKitCache: (typeof import('@/utils/connection/evm/appkit'))['resetAppKitCache'];
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      wallet: {
-        settings: {
-          slippageTolerance: '0',
-          isWalletLoaded: true,
-        },
-      },
-    },
-    getters: {
-      settings: {
-        debugEnabled: false,
-        liquiditySource: null,
-      },
-    },
-  },
-}));
-
 vi.mock('@reown/appkit/vue', () => ({
   createAppKit: createAppKitMock,
 }));

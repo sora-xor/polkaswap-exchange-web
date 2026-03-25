@@ -5,8 +5,13 @@ import WalletAccount from '@/lib/soraneo-wallet/src/components/Account/WalletAcc
 
 const getMstAddressMock = vi.hoisted(() => vi.fn(() => ''));
 const getMstAccountMock = vi.hoisted(() => vi.fn(() => null));
-const getAppStoreMock = vi.hoisted(() => vi.fn(() => null));
 const formatAccountAddressMock = vi.hoisted(() => vi.fn((address: string) => address));
+const walletStoreMock = vi.hoisted(() => ({
+  account: null as any,
+}));
+const settingsStoreMock = vi.hoisted(() => ({
+  isWalletLoaded: false,
+}));
 
 vi.mock('@/api', () => ({
   api: {
@@ -29,8 +34,12 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@/utils/app-store', () => ({
-  getAppStore: getAppStoreMock,
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => walletStoreMock,
+}));
+
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => settingsStoreMock,
 }));
 
 vi.mock('@/util', () => ({
@@ -39,30 +48,14 @@ vi.mock('@/util', () => ({
 }));
 
 describe('WalletAccount', () => {
-  const storeFallback = {
-    state: {
-      wallet: {
-        settings: {
-          isWalletLoaded: false,
-        },
-      },
-    },
-    getters: {
-      'wallet/account/account': null,
-    },
-  };
-
   beforeEach(() => {
     vi.clearAllMocks();
     formatAccountAddressMock.mockImplementation((address: string) => address);
-    (globalThis as Record<string, unknown>).__PS_APP_STORE__ = storeFallback;
+    walletStoreMock.account = null;
+    settingsStoreMock.isWalletLoaded = false;
   });
 
-  afterEach(() => {
-    delete (globalThis as Record<string, unknown>).__PS_APP_STORE__;
-  });
-
-  it('mounts with app-store fallback without runtime reference errors', () => {
+  it('mounts with wallet/settings facades without runtime reference errors', () => {
     const wrapper = shallowMount(WalletAccount, {
       global: {
         stubs: {
@@ -83,15 +76,10 @@ describe('WalletAccount', () => {
 
   it('falls back to raw account address when formatter returns empty string', () => {
     const accountAddress = 'cnRXua6zs8TaE87BQFL6uWVbT2g6GXsUjwk6PTvL6UHcHDCvo';
-    (globalThis as Record<string, unknown>).__PS_APP_STORE__ = {
-      ...storeFallback,
-      getters: {
-        'wallet/account/account': {
-          address: accountAddress,
-          name: 'E2E Wallet',
-          source: 'polkadot-js',
-        },
-      },
+    walletStoreMock.account = {
+      address: accountAddress,
+      name: 'E2E Wallet',
+      source: 'polkadot-js',
     };
     formatAccountAddressMock.mockReturnValueOnce('');
 

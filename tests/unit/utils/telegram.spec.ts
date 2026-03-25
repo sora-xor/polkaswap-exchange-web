@@ -18,39 +18,41 @@ vi.mock('@wallet', async () => {
 });
 
 const mockStore = vi.hoisted(() => ({
-  commit: {
-    settings: {
-      enableTMA: vi.fn(),
-      disableTMA: vi.fn(),
-      setTelegramBotUrl: vi.fn(),
-      setIsRotatePhoneHideBalanceFeatureEnabled: vi.fn(),
-      setAccessGranted: vi.fn(),
-      setIsAccessAccelerometrEventDeclined: vi.fn(),
-    },
-    wallet: {
-      account: {
-        setIsDesktop: vi.fn(),
-        syncWithStorage: vi.fn(),
-      },
-      settings: {
-        toggleHideBalance: vi.fn(),
-      },
-    },
-    referrals: {
-      setStorageReferrer: vi.fn(),
-    },
+  settings: {
+    enableTMA: vi.fn(),
+    disableTMA: vi.fn(),
+    setTelegramBotUrl: vi.fn(),
+    setIsRotatePhoneHideBalanceFeatureEnabled: vi.fn(),
+    setAccessGranted: vi.fn(),
+    setIsAccessAccelerometrEventDeclined: vi.fn(),
+    isRotatePhoneHideBalanceFeatureEnabled: false,
+    isAccessRotationListener: false,
+    isAccessAccelerometrEventDeclined: false,
   },
-  state: {
-    settings: {
-      isRotatePhoneHideBalanceFeatureEnabled: false,
-      isAccessRotationListener: false,
-      isAccessAccelerometrEventDeclined: false,
-    },
+  wallet: {
+    setIsDesktop: vi.fn(),
+    syncAccountWithStorage: vi.fn(),
+    toggleHideBalance: vi.fn(),
+  },
+  referrals: {
+    setStorageReferrer: vi.fn(),
   },
 }));
 
-vi.mock('@/store', () => ({
-  default: mockStore,
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => mockStore.settings,
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => mockStore.wallet,
+}));
+
+vi.mock('@/stores/referrals', () => ({
+  useReferralsStore: () => mockStore.referrals,
+}));
+
+vi.mock('@/plugins/pinia', () => ({
+  default: {},
 }));
 
 describe('tmaSdkService', () => {
@@ -73,5 +75,28 @@ describe('tmaSdkService', () => {
     const { tmaSdkService } = await import('@/utils/telegram');
 
     expect(() => tmaSdkService.useHaptic('light')).not.toThrow();
+  });
+
+  test('init uses Pinia facades when Telegram mini app is available', async () => {
+    (window as any).Telegram = {
+      WebApp: {
+        initData: 'telegram-init',
+        initDataUnsafe: {
+          start_param: 'not-a-valid-address',
+        },
+        expand: vi.fn(),
+        disableVerticalSwipes: vi.fn(),
+        setHeaderColor: vi.fn(),
+        setBackgroundColor: vi.fn(),
+      },
+    };
+
+    const { tmaSdkService } = await import('@/utils/telegram');
+
+    await tmaSdkService.init('https://t.me/polkaswap_bot');
+
+    expect(mockStore.settings.enableTMA).toHaveBeenCalledTimes(1);
+    expect(mockStore.wallet.setIsDesktop).toHaveBeenCalledWith(true);
+    expect(mockStore.settings.setTelegramBotUrl).toHaveBeenCalledWith('https://t.me/polkaswap_bot');
   });
 });

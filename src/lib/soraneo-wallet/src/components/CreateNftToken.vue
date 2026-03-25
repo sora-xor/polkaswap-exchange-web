@@ -149,7 +149,6 @@ import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { MaxTotalSupply, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { File as ImageNFT } from 'nft.storage';
 import { defineComponent, type PropType } from 'vue';
-import { mapActions, mapState } from 'vuex';
 
 import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
@@ -171,7 +170,7 @@ import NetworkFeeWarningDialog from './NetworkFeeWarning.vue';
 import NftDetails from './NftDetails.vue';
 import WalletFee from './WalletFee.vue';
 
-import type { Route } from '../store/router/types';
+import type { Route } from '@/stores/router/types';
 import type { NFTStorage } from 'nft.storage';
 
 export default defineComponent({
@@ -217,12 +216,14 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/settings', ['nftStorage']),
     routerStore(this: any) {
       return useRouterStore(this.$pinia);
     },
     walletStore(this: any) {
       return useWalletStore(this.$pinia);
+    },
+    nftStorage(this: any) {
+      return this.walletStore.nftStorage;
     },
     uploader(this: any): { resetFileInput?: () => void } | undefined {
       return this.$refs.uploader as { resetFileInput?: () => void } | undefined;
@@ -255,7 +256,9 @@ export default defineComponent({
     },
   },
   methods: {
-    ...mapActions('wallet/settings', ['createNftStorageInstance']),
+    createNftStorageInstance(this: any) {
+      return this.walletStore.createNftStorageInstance();
+    },
     navigate(this: any, options: Route): void {
       this.routerStore.navigate(options);
     },

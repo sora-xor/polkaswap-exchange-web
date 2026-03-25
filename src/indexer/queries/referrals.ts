@@ -1,11 +1,10 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { getCurrentIndexer } from '@wallet';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
-import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
 import { gql } from '@urql/core';
 
-import type { ConnectionQueryResponse, ReferrerRewardEntity } from '@wallet/lib/services/indexer/types';
+import type { ConnectionQueryResponse, ReferrerRewardEntity } from '@/shims/wallet-indexer-types';
 
 export type ReferrerRewards = {
   rewards: FPNumber;

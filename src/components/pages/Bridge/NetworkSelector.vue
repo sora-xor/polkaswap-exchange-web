@@ -21,7 +21,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
+import { useWeb3Store } from '@/stores/web3';
 
 defineOptions({
   name: 'BridgeNetworkSelector',
@@ -32,12 +32,13 @@ defineOptions({
 
 const { t } = useTranslation();
 const { selectedNetworkShortName } = useNetworkFormatter();
+const web3Store = useWeb3Store();
 
 /**
  * Opens the network selection dialog so the user can switch bridge networks.
  */
 function handleChangeNetwork(): void {
-  store.commit.web3.setSelectNetworkDialogVisibility(true);
+  web3Store.setSelectNetworkDialogVisibility(true);
 }
 </script>
 

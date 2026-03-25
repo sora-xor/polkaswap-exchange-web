@@ -1,6 +1,7 @@
 import { TransactionStatus, Operation } from '@sora-substrate/sdk';
 import { defineComponent } from 'vue';
-import { mapGetters } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import { HiddenValue, accountIdBasedOperations } from '../../consts';
 import { formatAddress, groupRewardsByAssetsList } from '../../util';
@@ -46,7 +47,9 @@ const orderBookOperations = [
 export default defineComponent({
   mixins: [NotificationMixin, NumberFormatterMixin],
   computed: {
-    ...mapGetters('wallet/account', ['account']),
+    account(this: any) {
+      return useWalletStore(this.$pinia).account;
+    },
   },
   methods: {
     getTitle(this: any, value?: History): string {

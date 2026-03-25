@@ -13,9 +13,9 @@ import { computed, nextTick, onMounted, toRef } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { Theme } from '@/consts/theme';
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import { capitalize } from '@/utils';
-import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 
 import { Components, PageNames } from '../consts';
 import { goTo, lazyComponent } from '../router';
@@ -39,10 +39,12 @@ defineOptions({
 const parentLoading = toRef(props, 'parentLoading');
 
 const { TranslationConsts } = useTranslation();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
 const brandName = computed(() => capitalize(TranslationConsts.CedeStore));
 
-const accountAddress = computed(() => store.state?.wallet?.account?.address ?? '');
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
+const accountAddress = computed(() => walletStore.address ?? '');
+const libraryTheme = computed(() => (settingsStore.libraryTheme ?? Theme.LIGHT) as Theme);
 
 const rootSelector = '#cede-widget';
 

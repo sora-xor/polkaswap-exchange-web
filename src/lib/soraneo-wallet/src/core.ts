@@ -9,7 +9,6 @@ import { historyElementsFilter } from './services/indexer/subsquid/queries/histo
 import { initializeWallets } from './services/wallet';
 import * as WC from './services/walletconnect';
 import { addWcSubWalletLocally } from './services/walletconnect';
-import vuex from './vuex';
 import * as WALLET_CONSTS from './consts';
 import * as WALLET_TYPES from './types/common';
 import {
@@ -38,7 +37,6 @@ export {
   beforeTransactionSign,
   delay,
   getAssetsSubset,
-  vuex,
   WALLET_CONSTS,
   WALLET_TYPES,
   accountUtils,
@@ -56,3 +54,4 @@ export {
 };
 
 export type { WithKeyring } from '@sora-substrate/sdk';
+export type { TransactionSignVisibilityController, TransactionSignVisibilityTarget } from './util';

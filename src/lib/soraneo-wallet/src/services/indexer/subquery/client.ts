@@ -1,5 +1,5 @@
 import { createClient, fetchExchange, subscriptionExchange } from '@urql/core';
-import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { SubscribePayload, createClient as createWSClient } from 'graphql-ws';
 
 import { wsClientLazy, wsClientReconnect, wsClientRetryAttempts } from '@/consts/indexer';
 
@@ -40,25 +40,32 @@ const resolveSubscriptionWsUrl = (url: string): string | null => {
   }
 };
 
-// https://github.com/apollographql/subscriptions-transport-ws/blob/51270cc7dbaf09c7b9aa67368f1de58148c7d334/README.md#constructorurl-options-websocketimpl
 const createSubscriptionClient = (url: string) => {
   const wsUrl = resolveSubscriptionWsUrl(url);
   if (!wsUrl) {
     return null;
   }
 
-  return new SubscriptionClient(wsUrl, {
-    minTimeout: 6000, // the minimum amount of time the client should wait for a connection to be made (default 1000 ms)
-    lazy: wsClientLazy, // connects only when first subscription created, and delay the socket initialization
-    reconnect: wsClientReconnect, // automatic reconnect in case of connection error
-    reconnectionAttempts: wsClientRetryAttempts,
+  return createWSClient({
+    url: wsUrl,
+    lazy: wsClientLazy,
+    retryAttempts: wsClientRetryAttempts,
+    shouldRetry: () => wsClientReconnect,
   });
 };
 
-// https://formidable.com/open-source/urql/docs/advanced/subscriptions/#setting-up-subscriptions-transport-ws
-const createSubscriptionExchange = (subscriptionClient: SubscriptionClient) => {
+const createSubscriptionExchange = (subscriptionClient: ReturnType<typeof createWSClient>) => {
   return subscriptionExchange({
-    forwardSubscription: (operation) => subscriptionClient.request(operation),
+    forwardSubscription: (operation) => {
+      return {
+        subscribe: (sink) => {
+          const dispose = subscriptionClient.subscribe(operation as SubscribePayload, sink);
+          return {
+            unsubscribe: dispose,
+          };
+        },
+      };
+    },
   });
 };
 

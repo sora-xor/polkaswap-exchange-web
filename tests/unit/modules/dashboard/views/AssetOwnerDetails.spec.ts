@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { createPinia, setActivePinia } from 'pinia';
 import { ref } from 'vue';
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 
@@ -122,6 +123,16 @@ vi.mock('@/stores/settings', () => ({
   }),
 }));
 
+vi.mock('@/stores/dashboard', () => ({
+  useDashboardStore: () => ({
+    get ownedAssets() {
+      return assetsRef.value;
+    },
+    subscribeOnOwnedAssets: vi.fn(async () => undefined),
+    reset: vi.fn(async () => undefined),
+  }),
+}));
+
 vi.mock('@/composables/useSubscriptions', () => ({
   useSubscriptions: (
     options: {
@@ -156,30 +167,6 @@ vi.mock('vue-router', () => ({
   useRoute: () => ({ params: { asset: '0x01' } }),
 }));
 
-vi.mock('@/store', () => ({
-  default: {
-    state: {
-      settings: {
-        screenBreakpointClass: 'desktop',
-      },
-    },
-    getters: {
-      dashboard: {
-        get ownedAssets() {
-          return assetsRef.value;
-        },
-      },
-      wallet: {
-        account: {
-          get isLoggedIn() {
-            return loggedInRef.value;
-          },
-        },
-      },
-    },
-  },
-}));
-
 vi.mock('@/utils', () => ({
   waitUntil: async (handler: () => boolean) => {
     const result = handler();
@@ -208,6 +195,7 @@ const globalStubs = {
 
 describe('AssetOwnerDetails.vue', () => {
   beforeEach(async () => {
+    setActivePinia(createPinia());
     const routerModule = await import('@/router');
     routerModule.default.push.mockClear();
     routerModule.default.back.mockClear();

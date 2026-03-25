@@ -1,6 +1,9 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { KnownAssets, NativeAssets } from '@sora-substrate/sdk/build/assets/consts';
 
+import { resolveGlobalPinia } from '@/plugins/pinia';
+import { useWalletStore } from '@/stores/wallet';
+
 import { api, connection } from '../api';
 import {
   ExplorerLink,
@@ -19,7 +22,6 @@ import type { RewardsAmountHeaderItem } from '../types/rewards';
 import type { WithKeyring, WithConnectionApi } from '@sora-substrate/sdk';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/sdk/build/rewards/types';
-import type { Store } from 'vuex';
 
 /**
  * Custom error type that serializes metadata into the message payload so Vuex
@@ -317,31 +319,89 @@ export const getScrollbarWidth = (): number => {
   return scrollBarWidth;
 };
 
-/**
- * Ensures the active account is ready to sign a transaction. The helper either
- * unlocks the account (when a password is cached) or shows the signature modal
- * and waits until the user confirms.
- */
+/** Bridges transaction-sign visibility updates into either a store mutation or a local UI controller. */
+export type TransactionSignVisibilityController = {
+  setVisibility: (visible: boolean) => void;
+  subscribe: (handler: (visible: boolean) => void) => VoidFunction;
+};
+
+export type TransactionSignVisibilityTarget = string | TransactionSignVisibilityController;
+export type TransactionSignWalletState = {
+  getPassword: (address: string) => Nullable<string>;
+  isSignTxDialogDisabled: boolean;
+};
+
+type TransactionSignMutation = {
+  type: string;
+  payload?: unknown;
+};
+
+type TransactionSignStore = {
+  commit: (type: string, payload?: unknown) => unknown;
+  subscribe: (handler: (mutation: TransactionSignMutation) => void) => VoidFunction;
+} | null;
+
+const isTransactionSignVisibilityController = (
+  value: TransactionSignVisibilityTarget | undefined
+): value is TransactionSignVisibilityController => {
+  return Boolean(value) && typeof value !== 'string';
+};
+
+const createMutationVisibilityController = (
+  store: TransactionSignStore,
+  mutationType: string
+): TransactionSignVisibilityController => ({
+  setVisibility: (visible: boolean) => {
+    if (!store) return;
+    store.commit(mutationType, visible);
+  },
+  subscribe: (handler: (visible: boolean) => void) =>
+    store
+      ? store.subscribe((mutation) => {
+          if (mutation.type === mutationType && typeof mutation.payload === 'boolean') {
+            handler(mutation.payload);
+          }
+        })
+      : () => undefined,
+});
+
+const resolveTransactionSignWalletState = (): TransactionSignWalletState | null => {
+  try {
+    return useWalletStore(resolveGlobalPinia());
+  } catch {
+    return null;
+  }
+};
+
 export async function beforeTransactionSign(
-  store: Store<any>,
+  store: TransactionSignStore,
   signerApi: WithKeyring,
-  mutationType = 'wallet/transactions/setSignTxDialogVisibility'
+  visibilityTarget: TransactionSignVisibilityTarget = 'wallet/transactions/setSignTxDialogVisibility',
+  walletState: TransactionSignWalletState | null = resolveTransactionSignWalletState()
 ): Promise<void> {
   const { address, signer } = signerApi;
 
   if (!address || signer) return;
 
-  const password = store.getters['wallet/account/getPassword'](address);
-  const confirmDisabled = store.state.wallet.transactions.isSignTxDialogDisabled;
+  const password = walletState?.getPassword(address) ?? null;
+  const confirmDisabled = Boolean(walletState?.isSignTxDialogDisabled);
 
   if (password && confirmDisabled) {
     signerApi.unlockPair(password);
   } else {
-    store.commit(mutationType, true);
+    if (!isTransactionSignVisibilityController(visibilityTarget) && !store) {
+      throw new Error('Transaction sign visibility store is unavailable.');
+    }
+
+    const controller = isTransactionSignVisibilityController(visibilityTarget)
+      ? visibilityTarget
+      : createMutationVisibilityController(store, visibilityTarget);
+
+    controller.setVisibility(true);
 
     await new Promise<void>((resolve) => {
-      const unsubscribe = store.subscribe((mutation) => {
-        if (mutationType === mutation.type && mutation.payload === false) {
+      const unsubscribe = controller.subscribe((visible) => {
+        if (!visible) {
           unsubscribe();
           resolve();
         }

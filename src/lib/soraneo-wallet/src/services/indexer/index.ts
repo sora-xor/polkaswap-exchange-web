@@ -1,10 +1,18 @@
-import { IndexerType } from '@/consts';
+import { resolveGlobalPinia } from '@/plugins/pinia';
+import { useWalletStore } from '@/stores/wallet';
 
-import { getWalletStore } from '../../store/instance';
-
+import { IndexerType } from '../../consts';
 import IndexerDataParser from './parser';
 import { SubqueryExplorerService, historyElementsFilter as subqueryHistoryElementsFilter } from './subquery';
 import { SubsquidExplorerService, historyElementsFilter as subsquidHistoryElementsFilter } from './subsquid';
+
+const resolveWalletStore = () => {
+  try {
+    return useWalletStore(resolveGlobalPinia());
+  } catch {
+    return null;
+  }
+};
 
 export interface SubqueryIndexer {
   type: IndexerType.SUBQUERY;
@@ -67,9 +75,9 @@ function getIndexer<T extends IndexerType>(type: T): IndexerTypeMap[T] {
 
 /**
  * Convenience helper that resolves the indexer configuration based on the
- * value stored in Vuex settings.
+ * value stored in the active Pinia wallet settings.
  */
 export function getCurrentIndexer() {
-  const indexerType = getWalletStore().state.wallet.settings.indexerType;
+  const indexerType = resolveWalletStore()?.indexerType ?? IndexerType.SUBQUERY;
   return getIndexer(indexerType);
 }

@@ -70,18 +70,18 @@
 </template>
 
 <script lang="ts" setup>
-import { WALLET_CONSTS, components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, onMounted, ref } from 'vue';
 
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
-import { Components } from '@/consts';
-import type { Theme } from '@/consts/theme';
+import { Components, FontSizeRate, PaginationButton } from '@/consts';
 import { lazyComponent } from '@/router';
-import store from '@/store';
 import { useMoonpayBridge } from '@/composables/useMoonpayBridge';
 import { useTranslation } from '@/composables/useTranslation';
+import { useMoonpayStore } from '@/stores/moonpay';
+import { useSettingsStore } from '@/stores/settings';
+import { useWeb3Store } from '@/stores/web3';
 import { getCssVariableValue } from '@/utils';
-import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 import { MoonpayTransactionStatus, MOONPAY_WIDGET_ORIGINS, buildMoonpayTransactionDetailsUrl } from '@/utils/moonpay';
 
 import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '@/utils/moonpay';
@@ -91,7 +91,6 @@ import type { Nullable } from '@/types/common';
 const HistoryView = 'history';
 const DetailsView = 'details';
 const pageAmount = 5;
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
 defineOptions({
   components: {
@@ -104,6 +103,9 @@ defineOptions({
 });
 
 const { t, language, formatDate } = useTranslation();
+const moonpayStore = useMoonpayStore();
+const settingsStore = useSettingsStore();
+const web3Store = useWeb3Store();
 const {
   loading,
   withApi,
@@ -115,10 +117,10 @@ const {
   walletConnect,
 } = useMoonpayBridge();
 
-const transactions = computed(() => store.state.moonpay.transactions as MoonpayTransaction[]);
-const currencies = computed(() => store.state.moonpay.currencies as MoonpayCurrency[]);
-const isValidNetwork = computed(() => Boolean(store.getters.web3.isValidNetwork));
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
+const transactions = computed(() => moonpayStore.transactions as MoonpayTransaction[]);
+const currencies = computed(() => moonpayStore.currencies as MoonpayCurrency[]);
+const isValidNetwork = computed(() => web3Store.isValidNetwork);
+const libraryTheme = computed(() => settingsStore.libraryTheme);
 
 const currentPage = ref(1);
 const currentView = ref<string>(HistoryView);
@@ -206,17 +208,17 @@ const changeView = (view: string) => {
   currentView.value = view;
 };
 
-const handlePaginationClick = (button: WALLET_CONSTS.PaginationButton) => {
+const handlePaginationClick = (button: PaginationButton) => {
   let nextPage = currentPage.value;
 
   switch (button) {
-    case WALLET_CONSTS.PaginationButton.Prev:
+    case PaginationButton.Prev:
       nextPage = currentPage.value - 1;
       break;
-    case WALLET_CONSTS.PaginationButton.Next:
+    case PaginationButton.Next:
       nextPage = currentPage.value + 1;
       break;
-    case WALLET_CONSTS.PaginationButton.Last:
+    case PaginationButton.Last:
       nextPage = lastPage.value;
       break;
   }
@@ -256,7 +258,7 @@ const loadMoonpayData = async () => {
   await withApi(async () => {
     initMoonpayApi();
     await prepareEvmNetwork();
-    await Promise.all([store.dispatch.moonpay.getTransactions(), store.dispatch.moonpay.getCurrencies()]);
+    await Promise.all([moonpayStore.getTransactions(), moonpayStore.getCurrencies()]);
   });
 };
 

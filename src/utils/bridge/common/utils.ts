@@ -1,6 +1,6 @@
 import { isEthOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/sdk';
 import { XOR, TBCD } from '@sora-substrate/sdk/build/assets/consts';
-import { api as soraApi } from '@wallet';
+import { api as soraApi } from '@/shims/wallet-api';
 import { ethers } from 'ethers';
 
 import type { GetTransaction, UpdateTransaction } from '@/utils/bridge/common/types';

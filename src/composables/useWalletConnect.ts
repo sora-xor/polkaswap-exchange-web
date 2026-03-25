@@ -1,8 +1,8 @@
 import { computed, getCurrentInstance } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
+import pinia from '@/plugins/pinia';
 import router from '@/router';
-import store from '@/store';
 import { useBridgeStore } from '@/stores/bridge';
 import { useWeb3Store } from '@/stores/web3';
 import type { AppEIPProvider } from '@/types/evm/provider';
@@ -23,15 +23,15 @@ export function useWalletConnect() {
       ) => void)
     | undefined;
 
-  const bridgeStore = useBridgeStore();
-  const web3Store = useWeb3Store();
+  const bridgeStore = useBridgeStore(pinia);
+  const web3Store = useWeb3Store(pinia);
 
   const evmProvider = computed(() => web3Store.evmProvider ?? null);
   const evmProviderLoading = computed(() => web3Store.evmProviderLoading ?? null);
   const evmAddress = computed(() => web3Store.evmAddress ?? '');
   const networkSelected = computed(() => web3Store.networkSelected);
   const networkType = computed(() => web3Store.networkType);
-  const appEvmProviders = computed<AppEIPProvider[]>(() => store.getters.web3.appEvmProviders as AppEIPProvider[]);
+  const appEvmProviders = computed<AppEIPProvider[]>(() => web3Store.appEvmProviders as AppEIPProvider[]);
 
   const isSubBridge = computed(() => bridgeStore.isSubBridge);
   const isSubAccountType = computed(() => bridgeStore.isSubAccountType);
@@ -41,11 +41,11 @@ export function useWalletConnect() {
 
   const connectSubWallet = () => {
     if (isSubBridge.value && !isSubBridgeConnectorReady.value) {
-      store.commit.web3.setSelectSubNodeDialogVisibility(true);
+      web3Store.setSelectSubNodeDialogVisibility(true);
       return;
     }
 
-    store.commit.web3.setSubAccountDialogVisibility(true);
+    web3Store.setSubAccountDialogVisibility(true);
   };
 
   /**
@@ -74,12 +74,12 @@ export function useWalletConnect() {
     await connectEvmProvider(target);
   };
 
-  const disconnectExternalNetwork = () => store.dispatch.web3.disconnectExternalNetwork();
-  const disconnectEvmWallet = () => store.dispatch.web3.resetEvmProviderConnection();
-  const disconnectSubWallet = () => store.dispatch.web3.resetSubAccount();
+  const disconnectExternalNetwork = () => web3Store.disconnectExternalNetwork();
+  const disconnectEvmWallet = () => web3Store.resetEvmProviderConnection();
+  const disconnectSubWallet = () => web3Store.resetSubAccount();
 
-  const changeEvmNetworkProvided = () => store.dispatch.web3.changeEvmNetworkProvided();
-  const selectEvmProvider = (provider: AppEIPProvider) => store.dispatch.web3.selectEvmProvider(provider);
+  const changeEvmNetworkProvided = () => web3Store.changeEvmNetworkProvided();
+  const selectEvmProvider = (provider: AppEIPProvider) => web3Store.selectEvmProvider(provider);
 
   const getEvmProviderIcon = (provider: AppEIPProvider): string => provider.icon;
 

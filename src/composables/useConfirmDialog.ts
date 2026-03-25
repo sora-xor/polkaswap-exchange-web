@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue';
 
-import store from '@/store';
+import pinia from '@/plugins/pinia';
+import { useWalletStore } from '@/stores/wallet';
 
 /**
  * Encapsulates the shared confirm-dialog flow that previously lived in a
@@ -8,7 +9,8 @@ import store from '@/store';
  * "confirm transactions" toggle.
  */
 export function useConfirmDialog() {
-  const isConfirmTxDisabled = computed(() => store.state.wallet.transactions.isConfirmTxDialogDisabled);
+  const walletStore = useWalletStore(pinia);
+  const isConfirmTxDisabled = computed(() => walletStore.isConfirmTxDialogDisabled);
   const confirmDialogVisible = ref(false);
 
   const openConfirmDialog = () => {

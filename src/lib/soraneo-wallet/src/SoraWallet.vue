@@ -15,7 +15,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapState } from 'vuex';
+
+import { useRouterStore } from '@/stores/router';
 
 import AddAsset from './components/AddAsset/AddAsset.vue';
 import CreateToken from './components/CreateToken.vue';
@@ -29,9 +30,8 @@ import WalletConnection from './components/WalletConnection.vue';
 import WalletProviders from './components/WalletProviders.vue';
 import WalletSend from './components/WalletSend.vue';
 import WalletTransactionDetails from './components/WalletTransactionDetails.vue';
+import { RouteNames } from './consts';
 import { Operations } from './types/common';
-
-import type { RouteNames } from './consts';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 export default defineComponent({
@@ -56,7 +56,12 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState('wallet/router', ['currentRoute']),
+    routerStore(this: any) {
+      return useRouterStore(this.$pinia);
+    },
+    currentRoute(this: any): RouteNames {
+      return (this.routerStore.current as RouteNames | null) ?? RouteNames.WalletConnection;
+    },
   },
   created(this: any): void {
     void this.withApi(() => {}); // We need it just for loading state

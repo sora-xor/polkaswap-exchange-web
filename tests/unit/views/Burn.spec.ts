@@ -72,45 +72,14 @@ vi.mock('@/components/pages/Burn/BurnDialog.vue', () => ({
   },
 }));
 
-vi.mock('@/store', () => {
-  const store = {
-    state: {
-      wallet: {
-        settings: {
-          blockNumber: 25_100_000,
-          soraNetwork: 'Prod',
-        },
-        account: {
-          fiatPriceObject: {},
-        },
-      },
-      settings: {
-        isWalletLoaded: true,
-      },
-    },
-    getters: {
-      wallet: {
-        account: {
-          isLoggedIn: true,
-        },
-      },
-    },
-    commit: {
-      web3: {
-        setSoraAccountDialogVisibility: vi.fn(),
-      },
-    },
-    dispatch: {
-      wallet: {
-        account: {
-          logout: vi.fn(),
-        },
-      },
-    },
-  };
+const settingsStoreMock = vi.hoisted(() => ({
+  blockNumber: 25_100_000,
+  soraNetwork: 'Prod',
+}));
 
-  return { default: store };
-});
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => settingsStoreMock,
+}));
 
 describe('Burn.vue', () => {
   const intervalSpy = vi.spyOn(global, 'setInterval').mockImplementation((handler: TimerHandler) => {
@@ -118,14 +87,9 @@ describe('Burn.vue', () => {
     return 1 as unknown as number;
   });
   const clearIntervalSpy = vi.spyOn(global, 'clearInterval').mockImplementation(() => {});
-
-  let store: any;
-
   beforeEach(async () => {
-    store = (await import('@/store')).default;
-    store.state.wallet.settings.blockNumber = 25_100_000;
-    store.state.wallet.settings.soraNetwork = 'Prod';
-    store.state.wallet.account.fiatPriceObject = {};
+    settingsStoreMock.blockNumber = 25_100_000;
+    settingsStoreMock.soraNetwork = 'Prod';
     loadingRef.value = false;
     fetchBurnDataMock.mockResolvedValue([]);
     waitForNetworkMock.mockResolvedValue('prod');
@@ -173,7 +137,7 @@ describe('Burn.vue', () => {
   });
 
   it('marks campaigns as ended when block height exceeds range', async () => {
-    store.state.wallet.settings.blockNumber = 61_000_000;
+    settingsStoreMock.blockNumber = 61_000_000;
 
     const wrapper = mount(BurnView, {
       global: {

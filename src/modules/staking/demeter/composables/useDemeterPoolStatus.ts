@@ -2,7 +2,6 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { computed, toValue } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
-import store from '@/store';
 import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import { getAssetBalance, getLiquidityBalance } from '@/utils';

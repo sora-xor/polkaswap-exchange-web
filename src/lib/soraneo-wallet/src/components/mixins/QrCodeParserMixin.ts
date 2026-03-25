@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue';
-import { mapGetters } from 'vuex';
 
 import { useRouterStore } from '@/stores/router';
+import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../../api';
 import { RouteNames } from '../../consts';
@@ -9,7 +9,7 @@ import { formatAccountAddress } from '../../util';
 
 import NotificationMixin from './NotificationMixin';
 
-import type { Route } from '../../store/router/types';
+import type { Route } from '@/stores/router/types';
 import type { AssetsTable } from '../../types/common';
 import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -20,7 +20,9 @@ const reject = (message: string) => {
 export default defineComponent({
   mixins: [NotificationMixin],
   computed: {
-    ...mapGetters('wallet/account', ['assetsDataTable']),
+    assetsDataTable(this: any) {
+      return useWalletStore(this.$pinia).assetsDataTable;
+    },
   },
   methods: {
     navigate(this: any, options: Route): Promise<void> {

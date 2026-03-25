@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { FPNumber } from '@sora-substrate/sdk';
 
@@ -6,7 +6,7 @@ const telemetry = vi.hoisted(() => ({
   trackEventMock: vi.fn(),
 }));
 
-const legacyDispatchMock = vi.hoisted(() => ({
+const bridgeStoreMock = vi.hoisted(() => ({
   updateExternalBalance: vi.fn(),
   updateExternalMinBalance: vi.fn(),
   updateExternalTransferFee: vi.fn(),
@@ -14,18 +14,12 @@ const legacyDispatchMock = vi.hoisted(() => ({
   updateFeesAndLockedFunds: vi.fn(),
 }));
 
-vi.stubGlobal('getLegacyBridgeDispatch', () => legacyDispatchMock);
-
 vi.mock('@/utils/telemetry', () => ({
   trackEvent: telemetry.trackEventMock,
 }));
 
-vi.mock('@/utils/app-store', () => ({
-  requireAppStore: () => ({
-    dispatch: {
-      bridge: legacyDispatchMock,
-    },
-  }),
+vi.mock('@/stores/bridge', () => ({
+  useBridgeStore: () => bridgeStoreMock,
 }));
 
 import { useBridgeFormStore } from '@/stores/bridge/form';
@@ -33,11 +27,7 @@ import { useBridgeFormStore } from '@/stores/bridge/form';
 beforeEach(() => {
   setActivePinia(createPinia());
   telemetry.trackEventMock.mockClear();
-  Object.values(legacyDispatchMock).forEach((mock) => mock.mockClear());
-});
-
-afterAll(() => {
-  vi.unstubAllGlobals();
+  Object.values(bridgeStoreMock).forEach((mock) => mock.mockClear());
 });
 
 describe('useBridgeFormStore', () => {
@@ -74,8 +64,8 @@ describe('useBridgeFormStore', () => {
   });
 });
 
-describe('bridge form store legacy refresh', () => {
-  it('calls legacy dispatchers', async () => {
+describe('bridge form store refresh helpers', () => {
+  it('calls bridge store refresh actions', async () => {
     const store = useBridgeFormStore();
 
     await store.refreshExternalBalance();
@@ -84,10 +74,10 @@ describe('bridge form store legacy refresh', () => {
     await store.refreshExternalNetworkFee();
     await store.refreshFeesAndLockedFunds();
 
-    expect(legacyDispatchMock.updateExternalBalance).toHaveBeenCalled();
-    expect(legacyDispatchMock.updateExternalMinBalance).toHaveBeenCalled();
-    expect(legacyDispatchMock.updateExternalTransferFee).toHaveBeenCalled();
-    expect(legacyDispatchMock.updateExternalNetworkFee).toHaveBeenCalled();
-    expect(legacyDispatchMock.updateFeesAndLockedFunds).toHaveBeenCalled();
+    expect(bridgeStoreMock.updateExternalBalance).toHaveBeenCalled();
+    expect(bridgeStoreMock.updateExternalMinBalance).toHaveBeenCalled();
+    expect(bridgeStoreMock.updateExternalTransferFee).toHaveBeenCalled();
+    expect(bridgeStoreMock.updateExternalNetworkFee).toHaveBeenCalled();
+    expect(bridgeStoreMock.updateFeesAndLockedFunds).toHaveBeenCalled();
   });
 });

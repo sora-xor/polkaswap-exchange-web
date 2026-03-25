@@ -34,14 +34,15 @@
 <script setup lang="ts">
 import { Operation, CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { PageNames } from '@/consts';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
-import store from '@/store';
+import { useReferralsStore } from '@/stores/referrals';
+import { useSettingsStore } from '@/stores/settings';
 
 defineOptions({
   components: {
@@ -61,11 +62,13 @@ const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
 const { formatStringValue, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
 const route = useRoute();
+const referralsStore = useReferralsStore();
+const settingsStore = useSettingsStore();
 
 const xor = XOR;
 
-const amount = computed(() => store.state.referrals.amount);
-const networkFees = computed<NetworkFeesObject>(() => store.state.wallet.settings.networkFees);
+const amount = computed(() => referralsStore.amount);
+const networkFees = computed<NetworkFeesObject>(() => settingsStore.networkFees);
 
 const xorSymbol = XOR.symbol;
 const isBond = computed(() => route.name === PageNames.ReferralBonding);

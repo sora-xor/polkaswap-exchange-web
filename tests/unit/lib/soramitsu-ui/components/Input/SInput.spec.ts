@@ -26,4 +26,23 @@ describe('SInput attrs forwarding', () => {
     expect((root.element as HTMLElement).style.maxWidth).toBe('290px');
     expect(input.classes()).not.toContain('search-input');
   });
+
+  it('prefers the explicit readonly prop over a leaked readonly attr', () => {
+    const wrapper = mount(SInput, {
+      props: {
+        modelValue: '',
+        readonly: false,
+        placeholder: 'Search',
+      },
+      attrs: {
+        readonly: true,
+      },
+    });
+
+    const input = wrapper.find('input.el-input__inner');
+
+    expect(input.exists()).toBe(true);
+    expect((input.element as HTMLInputElement).readOnly).toBe(false);
+    expect(input.attributes('readonly')).toBeUndefined();
+  });
 });

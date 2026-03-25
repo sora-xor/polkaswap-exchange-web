@@ -50,6 +50,18 @@ const expectSwapSettingsClickable = async (page: Page): Promise<void> => {
   await expect(swapSettingsDialog).toHaveCount(0);
 };
 
+const callWalletStore = async (page: Page, action: string, payload?: unknown): Promise<void> => {
+  await page.evaluate(
+    ({ action, payload }) => {
+      const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
+      const walletStore = pinia?._s?.get('wallet');
+
+      return walletStore?.[action]?.(payload);
+    },
+    { action, payload }
+  );
+};
+
 test.beforeEach(async ({ page }) => {
   await preparePage(page);
 
@@ -139,10 +151,7 @@ test('covers MST onboarding with nested address-book overlays in authenticated w
   const consoleErrors = trackConsole(page);
   await openAuthenticatedWallet(page);
 
-  await page.evaluate(() => {
-    const store = (window as Record<string, any>).__PS_APP_STORE__;
-    store.commit.wallet.settings.setIsMstAvailable(true);
-  });
+  await callWalletStore(page, 'setIsMstAvailable', true);
 
   await page
     .getByRole('button', { name: /multi-sig/i })
@@ -192,10 +201,7 @@ test('tears down MST overlays on hash navigation and keeps swap controls clickab
   const consoleErrors = trackConsole(page);
   await openAuthenticatedWallet(page);
 
-  await page.evaluate(() => {
-    const store = (window as Record<string, any>).__PS_APP_STORE__;
-    store.commit.wallet.settings.setIsMstAvailable(true);
-  });
+  await callWalletStore(page, 'setIsMstAvailable', true);
 
   await page
     .getByRole('button', { name: /multi-sig/i })

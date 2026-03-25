@@ -327,7 +327,7 @@ defineExpose({
           :value="internalValue"
           :placeholder="effectivePlaceholder"
           :disabled="disabled"
-          :readonly="readonly"
+          :readonly="props.readonly"
           :max="max"
           :min="min"
           :maxlength="maxlength"

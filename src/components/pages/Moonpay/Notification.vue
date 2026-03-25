@@ -13,18 +13,16 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 import { useTranslation } from '@/composables/useTranslation';
+import { useMoonpayStore } from '@/stores/moonpay';
+import { useSettingsStore } from '@/stores/settings';
 import { sanitizeHtml } from '@/utils/sanitize';
-import store from '@/store';
-import { resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 
 import { MoonpayNotifications } from './consts';
-
-import type { Theme } from '@/consts/theme';
 
 defineOptions({
   components: {
@@ -35,16 +33,18 @@ defineOptions({
 });
 
 const { t } = useTranslation();
+const moonpayStore = useMoonpayStore();
+const settingsStore = useSettingsStore();
 
 const visibility = computed({
-  get: () => Boolean(store.state.moonpay.notificationVisibility),
+  get: () => Boolean(moonpayStore.notificationVisibility),
   set: (flag: boolean) => {
-    store.commit.moonpay.setNotificationVisibility(flag);
+    moonpayStore.setNotificationVisibility(flag);
   },
 });
 
-const notificationKey = computed(() => store.state.moonpay.notificationKey as MoonpayNotifications | '');
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
+const notificationKey = computed(() => moonpayStore.notificationKey as MoonpayNotifications | '');
+const libraryTheme = computed(() => settingsStore.libraryTheme);
 
 const success = computed(() => notificationKey.value === MoonpayNotifications.Success);
 

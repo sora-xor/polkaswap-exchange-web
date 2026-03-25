@@ -88,13 +88,14 @@
 </template>
 
 <script lang="ts" setup>
-import { components, WALLET_CONSTS } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import { computed, toRefs } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
 import { useTranslation } from '@/composables/useTranslation';
 import { Theme } from '@/consts/theme';
+import { FontSizeRate } from '@/shims/wallet-consts';
 import type { RewardInfoGroup, RewardsAmountHeaderItem } from '@/types/rewards';
 import { asZeroValue } from '@/utils';
 
@@ -165,8 +166,6 @@ const { t, te } = useTranslation();
 const { formatCodecNumber, getFPNumberFromCodec, getFiatAmountByCodecString, getFiatAmountByString, getFPNumber } =
   useFormattedAmount();
 const { formatStringValue } = useNumberFormatter();
-
-const FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
 const formattedItems = computed<RewardsAmountTableItem[]>(() => items.value.map((item) => formatItem(item)));
 

@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { IndexerType } from '@/consts';
-import { ConnectionStatus } from '@/types/common';
 import BaseExplorer from '@/lib/soraneo-wallet/src/services/indexer/explorer/base';
+import { ConnectionStatus } from '@/lib/soraneo-wallet/src/types/common';
 
 type Setup = {
   explorer: BaseExplorer;

@@ -1,7 +1,18 @@
 import { h } from 'vue';
+import { getRootStore } from '@tests/stubs/rootStore';
 
 const noop = () => undefined;
 const asyncNoop = async () => undefined;
+const createUnsubscribe = () => ({ unsubscribe: createMockFn() });
+const createObservable = <T = unknown>(value?: T) => ({
+  subscribe: createMockFn((callback?: (next: T) => void) => {
+    if (typeof callback === 'function' && value !== undefined) {
+      callback(value);
+    }
+
+    return createUnsubscribe();
+  }),
+});
 
 type MockFn<T extends any[] = any[], R = any> = ((...args: T) => R) & {
   mock: { calls: T[] };
@@ -78,12 +89,17 @@ const proxyComponent = new Proxy(
 
 export class Vue {}
 
-const getAppStore = () => {
-  return (globalThis as Record<string, unknown>).__PS_APP_STORE__ as
-    | {
-        state?: Record<string, any>;
-      }
-    | undefined;
+const getWalletRuntimeStore = () => {
+  try {
+    return getRootStore() as
+      | {
+          state?: Record<string, any>;
+          commit?: Record<string, any>;
+        }
+      | undefined;
+  } catch {
+    return undefined;
+  }
 };
 
 const fallbackState = {
@@ -135,31 +151,171 @@ export class AlertsApiService {
   }));
 }
 
+export const validateAddress = createMockFn((address?: string) => Boolean(address));
+export const formatAccountAddress = (value: string) => value;
+export const formatAddress = formatAccountAddress;
+
 export const api = {
   NetworkFee: {},
   initKeyring: createMockFn(asyncNoop),
+  initialize: createMockFn(asyncNoop),
+  restoreActiveAccount: createMockFn(asyncNoop),
+  setStorage: createMockFn(),
+  validateAddress,
   tx: {},
   query: {},
+  api: {},
+  apiRx: {
+    query: {},
+  },
   account: { assets: [] },
   system: {
     getDenominator: createMockFn(),
     getExtrinsicsFromBlock: createMockFn(),
     getBlockEvents: createMockFn(),
+    getNetworkFeeMultiplierObservable: createMockFn(() => createObservable(1)),
+    updated: createMockFn(() => createObservable(1)),
+  },
+  assets: {
+    burn: createMockFn(asyncNoop),
+    mint: createMockFn(asyncNoop),
+    transfer: createMockFn(asyncNoop),
+    register: createMockFn(asyncNoop),
+    removeAccountAsset: createMockFn(asyncNoop),
+    updateAccountAssets: createMockFn(),
+    getOwnedAssetIds: createMockFn(async () => []),
+    getAssetInfo: createMockFn(async () => null),
+    getAccountAsset: createMockFn(() => null),
+    getAssetBalanceObservable: createMockFn(() => createObservable()),
+    getWhitelist: createMockFn(() => ({})),
+    getWhitelistIdsBySymbol: createMockFn(() => ({})),
+    isWhitelist: createMockFn(() => true),
+    isBlacklist: createMockFn(() => false),
+    isNft: createMockFn(() => false),
+    accountAssets: [],
+    accountAssetsAddresses: [],
+  },
+  rewards: {
+    getLiquidityProvisionRewardsSubscription: createMockFn(() => createObservable()),
+    getVestedRewardsSubscription: createMockFn(() => createObservable()),
+    getCrowdloanRewardsSubscription: createMockFn(async () => createObservable({})),
+    getNetworkFee: createMockFn(async () => '0'),
+    checkForExternalAccount: createMockFn(async () => []),
+    claim: createMockFn(asyncNoop),
+  },
+  referralSystem: {
+    reserveXor: createMockFn(asyncNoop),
+    unreserveXor: createMockFn(asyncNoop),
+    getAccountReferrer: createMockFn(async () => ''),
+    subscribeOnReferrer: createMockFn(() => createUnsubscribe()),
+    subscribeOnAccountInvitedUsers: createMockFn(() => createUnsubscribe()),
+    setInvitedUser: createMockFn(asyncNoop),
+  },
+  poolXyk: {
+    accountLiquidity: [],
+    accountLiquidityLoaded: false,
+    getInfo: createMockFn(async () => null),
+    getUserPoolsSubscription: createMockFn(() => createObservable([])),
+    getPoolPropertiesObservable: createMockFn(() => createObservable(null)),
+    estimatePoolTokensMinted: createMockFn(async () => '0'),
+    add: createMockFn(asyncNoop),
+    create: createMockFn(asyncNoop),
+    remove: createMockFn(asyncNoop),
+    unsubscribeFromAllUpdates: createMockFn(),
+    updated: createMockFn(() => createObservable()),
+  },
+  orderBook: {
+    serializeKey: createMockFn((base: string, quote: string) => `${base}-${quote}`),
+    getOrderBooks: createMockFn(async () => []),
+    getAggregatedAsks: createMockFn(async () => []),
+    getAggregatedBids: createMockFn(async () => []),
+    getLimitOrder: createMockFn(async () => null),
+    getUserLimitOrdersIds: createMockFn(async () => []),
+    subscribeOnLimitOrder: createMockFn(() => createUnsubscribe()),
+    cancelLimitOrder: createMockFn(asyncNoop),
+    cancelLimitOrderBatch: createMockFn(asyncNoop),
+    isOrderPlaceable: createMockFn(async () => true),
+    placeLimitOrder: createMockFn(asyncNoop),
+  },
+  demeterFarming: {
+    getPoolsObservable: createMockFn(async () => createObservable([])),
+    getTokenInfosObservable: createMockFn(async () => createObservable([])),
+    getAccountPoolsObservable: createMockFn(() => createObservable([])),
+    depositLiquidity: createMockFn(asyncNoop),
+    withdrawLiquidity: createMockFn(asyncNoop),
+    stake: createMockFn(asyncNoop),
+    unstake: createMockFn(asyncNoop),
+    getRewards: createMockFn(asyncNoop),
+  },
+  staking: {
+    nominate: createMockFn(asyncNoop),
+    bondAndNominate: createMockFn(asyncNoop),
+    bondExtra: createMockFn(asyncNoop),
+    payout: createMockFn(asyncNoop),
+    unbond: createMockFn(asyncNoop),
+    withdrawUnbonded: createMockFn(asyncNoop),
+    getMyStakingInfo: createMockFn(async () => null),
+    getValidatorsInfo: createMockFn(async () => []),
+    getHistoryDepth: createMockFn(async () => 0),
+    getMinNominatorBond: createMockFn(async () => '0'),
+    getMaxNominations: createMockFn(async () => 0),
+    getUnbondPeriod: createMockFn(async () => 0),
+    getBondAndNominateNetworkFee: createMockFn(async () => '0'),
+    getNominateNetworkFee: createMockFn(async () => '0'),
+    getPayoutNetworkFee: createMockFn(async () => '0'),
+    getActiveEraObservable: createMockFn(() => createObservable(0)),
+    getCurrentEraObservable: createMockFn(() => createObservable(0)),
+    getControllerObservable: createMockFn(() => createObservable(null)),
+    getPayeeObservable: createMockFn(() => createObservable(null)),
+    getNominationsObservable: createMockFn(() => createObservable([])),
+    getEraTotalStakeObservable: createMockFn(() => createObservable('0')),
+    getAccountLedgerObservable: createMockFn(() => createObservable(null)),
+    getNominatorsReward: createMockFn(async () => []),
   },
   kensetsu: {
     serializeKey: createMockFn((locked: string, debt: string) => `${locked}-${debt}`),
+    deserializeKey: createMockFn((value: string) => value.split('-')),
+    getCollaterals: createMockFn(async () => ({})),
+    getLiquidationPenalty: createMockFn(async () => 0),
+    calcTax: createMockFn(() => 0),
+    calcNewDebt: createMockFn(() => null),
+    closeVault: createMockFn(asyncNoop),
+    repayVaultDebt: createMockFn(asyncNoop),
+    createVault: createMockFn(asyncNoop),
+    borrow: createMockFn(asyncNoop),
+    depositCollateral: createMockFn(asyncNoop),
   },
   bridgeProxy: {
+    getCurrentTransferLimitObservable: createMockFn(() => createObservable(null)),
+    isAssetTransferLimited: createMockFn(async () => false),
     eth: {},
     evm: {},
     sub: {},
   },
+  mst: {
+    switchAccount: createMockFn(),
+    getMstAccount: createMockFn(() => undefined),
+    forgetMSTAccount: createMockFn(asyncNoop),
+    createMST: createMockFn(asyncNoop),
+    approveMultisigExtrinsic: createMockFn(asyncNoop),
+    calculateFinalProofSize: createMockFn(async () => 0),
+    isMST: createMockFn(() => false),
+  },
   divideAssets: createMockFn(() => '0'),
   swap: {
     isALT: false,
+    update: createMockFn(asyncNoop),
+    execute: createMockFn(asyncNoop),
     getDexesSwapQuoteObservable: createMockFn(),
     getPriceImpact: createMockFn(),
     getMinMaxValue: createMockFn(),
+    getSwapQuoteObservable: createMockFn(),
+    getResultRpc: createMockFn(async () => null),
+  },
+  dex: {
+    baseAssetsIds: [],
+    poolBaseAssetsIds: [],
+    getDexId: createMockFn(async () => 0),
   },
   createType: createMockFn(() => ({
     toU8a: () => new Uint8Array([0, 0, 0, 0, 0]),
@@ -250,6 +406,15 @@ export const WALLET_CONSTS = {
     Prod: 'Prod',
     Stage: 'Stage',
   },
+  AppWallet: {
+    Sora: 'sora',
+    WalletConnect: 'walletconnect',
+    GoogleDrive: 'google-drive',
+    FearlessWallet: 'fearless-wallet',
+    PolkadotJS: 'polkadot-js',
+    SubwalletJS: 'subwallet-js',
+    TalismanJS: 'talisman',
+  },
   WalletFilteringOptions: {
     All: 'All',
     Currencies: 'Currencies',
@@ -290,7 +455,7 @@ const createTranslationMixin = () => {
     if (!cached) {
       cached = class TranslationMixin extends Vue {
         get language(): string {
-          return getAppStore()?.state?.settings?.language ?? 'en';
+          return getWalletRuntimeStore()?.state?.settings?.language ?? 'en';
         }
 
         TranslationConsts = WALLET_CONSTS.TranslationConsts;
@@ -344,7 +509,7 @@ const createStateDecorator = (segments: string[]) =>
         configurable: true,
         enumerable: true,
         get() {
-          let value: any = getAppStore()?.state;
+          let value: any = getWalletRuntimeStore()?.state;
           let fallback: any = fallbackState;
           for (const segment of segments) {
             value = value?.[segment];
@@ -366,7 +531,7 @@ const createMutationDecorator = (segments: string[]) =>
       const [prototype, key, descriptor] = args as [Record<string, unknown>, string, PropertyDescriptor];
       const original = descriptor?.value;
       descriptor.value = function (...methodArgs: unknown[]) {
-        let branch: any = getAppStore()?.commit;
+        let branch: any = getWalletRuntimeStore()?.commit;
         for (const segment of segments) {
           branch = branch?.[segment];
         }
@@ -404,6 +569,11 @@ export const mutation = new Proxy(
 
 export const TranslationConsts = WALLET_CONSTS.TranslationConsts;
 export const IndexerType = WALLET_CONSTS.IndexerType;
+export const ConnectionStatus = {
+  Loading: 'loading',
+  Unavailable: 'unavailable',
+  Available: 'available',
+} as const;
 export const LogoSize = {
   MINI: 'mini',
   SMALL: 'small',
@@ -414,12 +584,25 @@ export const LogoSize = {
 } as const;
 export const HiddenValue = WALLET_CONSTS.HiddenValue;
 export const accountIdBasedOperations: string[] = [];
+export const BLOCK_PRODUCE_TIME = 6_000;
+export const MAX_ALERTS_NUMBER = 10;
+export const AppWallet = WALLET_CONSTS.AppWallet;
+export const Theme = {
+  Light: 'light',
+  Dark: 'dark',
+} as const;
+export const TokenTabs = {
+  Token: 'CreateSimpleToken',
+  NonFungibleToken: 'CreateNftToken',
+} as const;
 export const FontSizeRate = {
   SMALL: 'small',
   MEDIUM: 'medium',
   NORMAL: 'normal',
 } as const;
 export const FontWeightRate = WALLET_CONSTS.FontWeightRate;
+export const syntheticAssetRegexp = /^0x03/i;
+export const kensetsuAssetRegexp = /^0x05/i;
 export const FilterOptions = {
   All: 'All',
   Native: 'Native',
@@ -473,11 +656,7 @@ export const TransactionStatus = {
 } as const;
 
 export const WALLET_TYPES = {
-  ConnectionStatus: {
-    Loading: 'loading',
-    Unavailable: 'unavailable',
-    Available: 'available',
-  },
+  ConnectionStatus,
   FilterOptions: FilterOptions,
 };
 export const SUBQUERY_TYPES = {
@@ -567,9 +746,6 @@ export const loadWalletCore = async () => ({
 export const initWallet = createMockFn(asyncNoop);
 export const waitForCore = createMockFn(asyncNoop);
 export const en = {};
-export const validateAddress = () => true;
-export const formatAccountAddress = (value: string) => value;
-export const formatAddress = formatAccountAddress;
 export const groupRewardsByAssetsList = () => ({ transactions: [] });
 export const getExplorerLinks = () => ({
   account: () => '',

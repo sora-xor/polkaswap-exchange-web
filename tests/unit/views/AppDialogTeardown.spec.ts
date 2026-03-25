@@ -1,129 +1,14 @@
 import { flushPromises, shallowMount } from '@vue/test-utils';
-import { nextTick } from 'vue';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { nextTick, reactive } from 'vue';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { BreakpointClass } from '@/consts/layout';
 
-vi.mock('lodash/debounce', () => ({
-  default: (fn: (...args: Array<unknown>) => unknown) => {
-    const debounced = ((...args: Array<unknown>) => fn(...args)) as ((...args: Array<unknown>) => unknown) & {
-      cancel: ReturnType<typeof vi.fn>;
-      flush: ReturnType<typeof vi.fn>;
-    };
-    debounced.cancel = vi.fn();
-    debounced.flush = vi.fn();
-    return debounced;
-  },
+const legacyStoreHolder = vi.hoisted(() => ({
+  current: null as any,
 }));
 
-vi.mock('vue-router', () => {
-  const { reactive } = require('vue') as typeof import('vue');
-
-  const routeState = reactive({
-    name: 'Swap',
-    fullPath: '/swap',
-  });
-
-  return {
-    useRoute: () => routeState,
-    __mocks: {
-      routeState,
-    },
-  };
-});
-
-vi.mock('@/router', () => {
-  const { defineComponent, h } = require('vue') as typeof import('vue');
-  const goTo = vi.fn();
-  const lazyComponent = vi.fn(() =>
-    defineComponent({
-      name: 'LazyComponentStub',
-      setup(_, { slots }) {
-        return () => h('div', { class: 'lazy-component-stub' }, slots.default?.());
-      },
-    })
-  );
-
-  return {
-    __esModule: true,
-    default: {
-      options: {
-        history: {
-          type: 'hash',
-        },
-      },
-    },
-    goTo,
-    lazyComponent,
-  };
-});
-
-vi.mock('@wallet', () => {
-  const { defineComponent, h } = require('vue') as typeof import('vue');
-  const WalletStub = defineComponent({
-    name: 'WalletComponentStub',
-    setup(_, { slots }) {
-      return () => h('div', { class: 'wallet-component-stub' }, slots.default?.());
-    },
-  });
-
-  return {
-    api: {},
-    connection: {
-      connect: vi.fn().mockResolvedValue(undefined),
-      close: vi.fn().mockResolvedValue(undefined),
-    },
-    components: {
-      NotificationEnablingPage: WalletStub,
-      ConfirmDialog: WalletStub,
-    },
-    settingsStorage: {
-      get: vi.fn(() => true),
-    },
-    WALLET_CONSTS: {
-      TranslationConsts: {
-        Polkaswap: 'Polkaswap',
-      },
-      SoraNetwork: {
-        Prod: 'Prod',
-      },
-      IndexerType: {
-        SUBQUERY: 'subquery',
-        SUBSQUID: 'subsquid',
-      },
-    },
-    AlertsApiService: {
-      baseRoute: '',
-    },
-    initWallet: vi.fn().mockResolvedValue(undefined),
-    waitForCore: vi.fn().mockResolvedValue(undefined),
-  };
-});
-
-vi.mock('@/api', () => {
-  const get = vi.fn().mockResolvedValue({
-    data: {
-      NETWORK_TYPE: 'Prod',
-      SUBQUERY_ENDPOINT: 'https://indexer.example',
-    },
-  });
-
-  return {
-    __esModule: true,
-    default: {
-      get,
-    },
-    updateBaseUrl: vi.fn(),
-    getFullBaseUrl: vi.fn(() => 'http://localhost/#/'),
-    __mocks: {
-      get,
-    },
-  };
-});
-
-vi.mock('@/store', () => {
-  const { reactive } = require('vue') as typeof import('vue');
-
+const createStoreMocks = () => {
   const state = reactive({
     settings: {
       screenBreakpointClass: BreakpointClass.Mobile,
@@ -239,78 +124,309 @@ vi.mock('@/store', () => {
     },
   };
 
-  const originalCommit = vi.fn();
+  return {
+    state,
+    commit,
+    dispatch,
+    originalCommit: vi.fn(),
+  };
+};
+
+vi.mock('lodash/debounce', () => ({
+  default: (fn: (...args: Array<unknown>) => unknown) => {
+    const debounced = ((...args: Array<unknown>) => fn(...args)) as ((...args: Array<unknown>) => unknown) & {
+      cancel: ReturnType<typeof vi.fn>;
+      flush: ReturnType<typeof vi.fn>;
+    };
+    debounced.cancel = vi.fn();
+    debounced.flush = vi.fn();
+    return debounced;
+  },
+}));
+
+vi.mock('vue-router', () => {
+  const { reactive } = require('vue') as typeof import('vue');
+
+  const routeState = reactive({
+    name: 'Swap',
+    fullPath: '/swap',
+  });
+
+  return {
+    useRoute: () => routeState,
+    __mocks: {
+      routeState,
+    },
+  };
+});
+
+vi.mock('@/router', () => {
+  const { defineComponent, h } = require('vue') as typeof import('vue');
+  const goTo = vi.fn();
+  const lazyComponent = vi.fn(() =>
+    defineComponent({
+      name: 'LazyComponentStub',
+      setup(_, { slots }) {
+        return () => h('div', { class: 'lazy-component-stub' }, slots.default?.());
+      },
+    })
+  );
 
   return {
     __esModule: true,
     default: {
-      state,
-      getters: {
-        get libraryTheme() {
-          return 'light';
+      options: {
+        history: {
+          type: 'hash',
         },
-        get libraryDesignSystem() {
-          return 'default';
-        },
-        settings: {
-          get nodeIsConnected() {
-            return true;
-          },
-        },
-        wallet: {
-          transactions: {
-            get firstReadyTx() {
-              return null;
-            },
-          },
-          account: {
-            get isLoggedIn() {
-              return Boolean(state.wallet.account.isLoggedIn);
-            },
-            get account() {
-              return {
-                address: state.wallet.account.address,
-              };
-            },
-          },
-        },
-      },
-      commit,
-      dispatch,
-      original: {
-        commit: originalCommit,
       },
     },
+    goTo,
+    lazyComponent,
+  };
+});
+
+vi.mock('@wallet', () => {
+  const { defineComponent, h } = require('vue') as typeof import('vue');
+  const WalletStub = defineComponent({
+    name: 'WalletComponentStub',
+    setup(_, { slots }) {
+      return () => h('div', { class: 'wallet-component-stub' }, slots.default?.());
+    },
+  });
+
+  return {
+    api: {},
+    components: {
+      NotificationEnablingPage: WalletStub,
+      ConfirmDialog: WalletStub,
+    },
+  };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
+  api: {},
+  connection: {
+    close: vi.fn().mockResolvedValue(undefined),
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/services/alerts', () => ({
+  __esModule: true,
+  default: {
+    baseRoute: '',
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/bootstrap', () => ({
+  initWallet: vi.fn().mockResolvedValue(undefined),
+  waitForCore: vi.fn().mockResolvedValue(undefined),
+}));
+
+vi.mock('@/api', () => {
+  const get = vi.fn().mockResolvedValue({
+    data: {
+      NETWORK_TYPE: 'Prod',
+      SUBQUERY_ENDPOINT: 'https://indexer.example',
+    },
+  });
+
+  return {
+    __esModule: true,
+    default: {
+      get,
+    },
+    updateBaseUrl: vi.fn(),
+    getFullBaseUrl: vi.fn(() => 'http://localhost/#/'),
     __mocks: {
-      state,
-      commit,
-      dispatch,
-      originalCommit,
+      get,
     },
   };
 });
 
 vi.mock('@/stores/settings', () => ({
-  useSettingsStore: () => ({
-    disclaimerVisibility: false,
-  }),
+  useSettingsStore: () => {
+    const root = legacyStoreHolder.current;
+
+    return {
+      get disclaimerVisibility() {
+        return false;
+      },
+      get screenBreakpointClass() {
+        return root.state.settings.screenBreakpointClass;
+      },
+      get appConnection() {
+        return root.state.settings.appConnection;
+      },
+      get browserNotifPopupVisibility() {
+        return root.state.settings.browserNotifPopupVisibility;
+      },
+      get browserNotifPopupBlockedVisibility() {
+        return root.state.settings.browserNotifPopupBlockedVisibility;
+      },
+      get isThemePreference() {
+        return root.state.settings.isThemePreference;
+      },
+      get isOrientationWarningVisible() {
+        return root.state.settings.isOrientationWarningVisible;
+      },
+      get selectNodeDialogVisibility() {
+        return root.state.settings.selectNodeDialogVisibility;
+      },
+      get selectIndexerDialogVisibility() {
+        return root.state.settings.selectIndexerDialogVisibility;
+      },
+      get isTMA() {
+        return false;
+      },
+      get nodeIsConnected() {
+        return true;
+      },
+      get libraryTheme() {
+        return 'light';
+      },
+      get libraryDesignSystem() {
+        return { theme: 'light' };
+      },
+      get isWalletLoaded() {
+        return true;
+      },
+      get isMSTAvailable() {
+        return false;
+      },
+      setFaucetUrl: root.commit.settings.setFaucetUrl,
+      setFeatureFlags: root.commit.settings.setFeatureFlags,
+      setScreenBreakpointClass: root.commit.settings.setScreenBreakpointClass,
+      showOrientationWarning: root.commit.settings.showOrientationWarning,
+      hideOrientationWarning: root.commit.settings.hideOrientationWarning,
+      setSelectNodeDialogVisibility: root.commit.settings.setSelectNodeDialogVisibility,
+      setSelectIndexerDialogVisibility: root.commit.settings.setSelectIndexerDialogVisibility,
+      setBrowserNotifsPopupEnabled: root.commit.settings.setBrowserNotifsPopupEnabled,
+      setBrowserNotifsPopupBlocked: root.commit.settings.setBrowserNotifsPopupBlocked,
+      setLanguage: root.dispatch.settings.setLanguage,
+      fetchAdsArray: root.dispatch.settings.fetchAdsArray,
+    };
+  },
 }));
 
 vi.mock('@/stores/wallet', () => {
-  const walletStore = {
-    setApiKeys: vi.fn().mockResolvedValue(undefined),
-    subscribeOnExchangeRatesApi: vi.fn().mockResolvedValue(undefined),
-    resetNetworkSubscriptions: vi.fn().mockResolvedValue(undefined),
-    resetInternalSubscriptions: vi.fn().mockResolvedValue(undefined),
-    activateNetworkSubscriptions: vi.fn().mockResolvedValue(undefined),
-    notifyOnDeposit: vi.fn().mockResolvedValue(undefined),
-  };
+  const setApiKeys = vi.fn().mockResolvedValue(undefined);
+  const subscribeOnExchangeRatesApi = vi.fn().mockResolvedValue(undefined);
+  const resetNetworkSubscriptions = vi.fn().mockResolvedValue(undefined);
+  const resetInternalSubscriptions = vi.fn().mockResolvedValue(undefined);
+  const activateNetworkSubscriptions = vi.fn().mockResolvedValue(undefined);
+  const notifyOnDeposit = vi.fn().mockResolvedValue(undefined);
 
   return {
-    useWalletStore: () => walletStore,
-    __mocks: walletStore,
+    useWalletStore: () => {
+      const root = legacyStoreHolder.current;
+
+      return {
+        get address() {
+          return root.state.wallet.account.address;
+        },
+        get assetsToNotifyQueue() {
+          return root.state.wallet.account.assetsToNotifyQueue;
+        },
+        get pendingMstTransactions() {
+          return root.state.wallet.transactions.pendingMstTransactions;
+        },
+        get firstReadyTransaction() {
+          return null;
+        },
+        get isLoggedIn() {
+          return Boolean(root.state.wallet.account.isLoggedIn);
+        },
+        get account() {
+          return {
+            address: root.state.wallet.account.address,
+          };
+        },
+        get isSignTxDialogVisible() {
+          return root.state.wallet.transactions.isSignTxDialogVisible;
+        },
+        setSoraNetwork: root.commit.wallet.settings.setSoraNetwork,
+        setIndexerEndpoint: root.commit.wallet.settings.setIndexerEndpoint,
+        setSignTxDialogVisibility: root.commit.wallet.transactions.setSignTxDialogVisibility,
+        setApiKeys,
+        subscribeOnExchangeRatesApi,
+        resetNetworkSubscriptions,
+        resetInternalSubscriptions,
+        activateNetworkSubscriptions,
+        notifyOnDeposit,
+      };
+    },
+    __mocks: {
+      setApiKeys,
+      subscribeOnExchangeRatesApi,
+      resetNetworkSubscriptions,
+      resetInternalSubscriptions,
+      activateNetworkSubscriptions,
+      notifyOnDeposit,
+    },
   };
 });
+
+vi.mock('@/stores/referrals', () => ({
+  useReferralsStore: () => {
+    const root = legacyStoreHolder.current;
+
+    return {
+      get referrer() {
+        return root.state.referrals.referrer;
+      },
+      get storageReferrer() {
+        return root.state.referrals.storageReferrer;
+      },
+      getReferrer: root.dispatch.referrals.getReferrer,
+      resetStorageReferrer: root.commit.referrals.resetStorageReferrer,
+      unsubscribeFromInvitedUsers: root.commit.referrals.unsubscribeFromInvitedUsers,
+    };
+  },
+}));
+
+vi.mock('@/stores/web3', () => ({
+  useWeb3Store: () => {
+    const root = legacyStoreHolder.current;
+
+    return {
+      get soraAccountDialogVisibility() {
+        return root.state.web3.soraAccountDialogVisibility;
+      },
+      get selectProviderDialogVisibility() {
+        return root.state.web3.selectProviderDialogVisibility;
+      },
+      get selectNetworkDialogVisibility() {
+        return root.state.web3.selectNetworkDialogVisibility;
+      },
+      get selectSubNodeDialogVisibility() {
+        return root.state.web3.selectSubNodeDialogVisibility;
+      },
+      get subAccountDialogVisibility() {
+        return root.state.web3.subAccountDialogVisibility;
+      },
+      setEvmNetworksApp: root.commit.web3.setEvmNetworksApp,
+      setSubNetworkApps: root.commit.web3.setSubNetworkApps,
+      setEthBridgeSettings: root.commit.web3.setEthBridgeSettings,
+      setSoraAccountDialogVisibility: root.commit.web3.setSoraAccountDialogVisibility,
+      setSelectProviderDialogVisibility: root.commit.web3.setSelectProviderDialogVisibility,
+      setSelectNetworkDialogVisibility: root.commit.web3.setSelectNetworkDialogVisibility,
+      setSelectSubNodeDialogVisibility: root.commit.web3.setSelectSubNodeDialogVisibility,
+      setSubAccountDialogVisibility: root.commit.web3.setSubAccountDialogVisibility,
+    };
+  },
+}));
+
+vi.mock('@/stores/router', () => ({
+  useRouterStore: () => {
+    const root = legacyStoreHolder.current;
+    return {
+      get isLoading() {
+        return root.state.router.loading;
+      },
+    };
+  },
+}));
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
@@ -475,7 +591,8 @@ let apiMocks: ApiMocks;
 let realtimeMocks: RealtimeMocks;
 
 beforeEach(async () => {
-  storeMocks = (await import('@/store')).__mocks;
+  storeMocks = createStoreMocks() as StoreMocks;
+  legacyStoreHolder.current = storeMocks;
   routerMocks = (await import('vue-router')).__mocks;
   apiMocks = (await import('@/api')).__mocks;
   realtimeMocks = (await import('@/services/realtime')).__mocks;
@@ -557,7 +674,7 @@ describe('App.vue dialog teardown wiring', () => {
     wrapper.unmount();
   });
 
-  it('falls back to legacy commit names when web3 route teardown mutations are unavailable', async () => {
+  it('skips web3 route-scoped teardown when the facade setters are unavailable', async () => {
     storeMocks.state.web3.soraAccountDialogVisibility = true;
     storeMocks.state.web3.selectProviderDialogVisibility = true;
     storeMocks.state.web3.selectNetworkDialogVisibility = true;
@@ -585,11 +702,7 @@ describe('App.vue dialog teardown wiring', () => {
       routerMocks.routeState.name = 'Swap';
       await nextTick();
 
-      expect(storeMocks.originalCommit).toHaveBeenCalledWith('web3/setSoraAccountDialogVisibility', false);
-      expect(storeMocks.originalCommit).toHaveBeenCalledWith('web3/setSelectProviderDialogVisibility', false);
-      expect(storeMocks.originalCommit).toHaveBeenCalledWith('web3/setSelectNetworkDialogVisibility', false);
-      expect(storeMocks.originalCommit).toHaveBeenCalledWith('web3/setSelectSubNodeDialogVisibility', false);
-      expect(storeMocks.originalCommit).toHaveBeenCalledWith('web3/setSubAccountDialogVisibility', false);
+      expect(storeMocks.originalCommit).not.toHaveBeenCalled();
 
       wrapper.unmount();
     } finally {
@@ -670,7 +783,7 @@ describe('App.vue dialog teardown wiring', () => {
     wrapper.unmount();
   });
 
-  it('falls back to legacy commit names when settings mutations are unavailable', async () => {
+  it('skips settings dialog teardown when the facade setters are unavailable', async () => {
     storeMocks.state.settings.selectNodeDialogVisibility = true;
     storeMocks.state.settings.selectIndexerDialogVisibility = true;
 
@@ -688,8 +801,7 @@ describe('App.vue dialog teardown wiring', () => {
       routerMocks.routeState.name = 'Swap';
       await nextTick();
 
-      expect(storeMocks.originalCommit).toHaveBeenCalledWith('settings/setSelectNodeDialogVisibility', false);
-      expect(storeMocks.originalCommit).toHaveBeenCalledWith('settings/setSelectIndexerDialogVisibility', false);
+      expect(storeMocks.originalCommit).not.toHaveBeenCalled();
 
       wrapper.unmount();
     } finally {

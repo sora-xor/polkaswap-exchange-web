@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
+import { api } from '@sora-substrate/sdk';
 
-import { api } from '@/lib/soraneo-wallet/src/api';
 import WalletAssets from '@/lib/soraneo-wallet/src/components/WalletAssets.vue';
 
 describe('Wallet WalletAssets', () => {

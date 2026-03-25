@@ -3,41 +3,6 @@ import { mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { nextTick } from 'vue';
 
-vi.mock('@/store', () => {
-  const commit = {
-    orderBook: {
-      setAmountSliderValue: vi.fn(),
-    },
-  };
-
-  return {
-    __esModule: true,
-    default: {
-      state: {
-        wallet: {
-          settings: {
-            currencySymbol: '$',
-            exchangeRate: 2,
-            currency: 'usd',
-          },
-          account: {
-            fiatPriceObject: {},
-          },
-        },
-      },
-      getters: {
-        wallet: {
-          settings: {
-            currencySymbol: '$',
-            exchangeRate: 2,
-          },
-        },
-      },
-      commit,
-    },
-  };
-});
-
 vi.mock('@/composables/useFormattedAmount', () => ({
   useFormattedAmount: () => ({
     MaxInputNumber: '1000000000',

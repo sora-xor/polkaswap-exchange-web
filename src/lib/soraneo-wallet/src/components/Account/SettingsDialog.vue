@@ -57,10 +57,10 @@ import { useDialogVisibility } from '@/composables/useDialog';
 import { useLoading } from '@/composables/useLoading';
 import { useNotification } from '@/composables/useNotification';
 import { useTranslation } from '@/composables/useTranslation';
+import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../../api';
 import GoogleLogoAsset from '../../assets/img/GoogleLogo.svg?url';
-import store from '../../store';
 import { delay } from '../../util';
 import { lockAccountPair, unlockAccountPair } from '../../util/account';
 import DialogBase from '../DialogBase.vue';
@@ -80,21 +80,21 @@ const visibleModel = defineModel<boolean>('visible', { default: false });
 const { isVisible } = useDialogVisibility(visibleModel, {
   onClose: () => emit('close'),
 });
+const walletStore = useWalletStore();
 
-const isWalletLoaded = computed(() => store.state.wallet.settings.isWalletLoaded);
+const isWalletLoaded = computed(() => walletStore.isWalletLoaded);
 const { loading, withLoading } = useLoading({ isWalletLoaded });
 const { withAppNotification } = useNotification();
 
-const getPassword = computed(() => store.getters.wallet.account.getPassword);
-const connected = computed(() => store.state.wallet.account.address);
-const isExternal = computed(() => store.state.wallet.account.isExternal);
-const isSignTxDialogDisabled = computed(() => store.state.wallet.transactions.isSignTxDialogDisabled);
+const connected = computed(() => walletStore.address);
+const isExternal = computed(() => walletStore.isExternal);
+const isSignTxDialogDisabled = computed(() => walletStore.isSignTxDialogDisabled);
 const GoogleLogo = GoogleLogoAsset;
 
 const accountConfirmVisibility = ref(false);
 
 const passphrase = computed(() => {
-  const value = getPassword.value(connected.value);
+  const value = walletStore.getPassword(connected.value);
   return value ?? undefined;
 });
 
@@ -108,7 +108,7 @@ const saveAccountPassphrase = async (password: string) => {
     await delay(250);
     await withAppNotification(async () => {
       unlockAccountPair(api, password);
-      await store.dispatch.wallet.account.setAccountPassphrase({ address: connected.value, password });
+      walletStore.setAccountPassphrase({ address: connected.value, password });
       accountConfirmVisibility.value = false;
     });
     lockAccountPair(api);

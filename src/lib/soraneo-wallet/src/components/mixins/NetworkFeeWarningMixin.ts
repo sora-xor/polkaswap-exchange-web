@@ -1,7 +1,8 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { defineComponent } from 'vue';
-import { mapGetters, mapState } from 'vuex';
+
+import { useWalletStore } from '@/stores/wallet';
 
 import { NetworkFeeWarningOptions } from '../../consts';
 
@@ -21,8 +22,15 @@ const PredefinedOperations = [
 export default defineComponent({
   mixins: [NumberFormatterMixin],
   computed: {
-    ...mapState('wallet/settings', ['networkFees', 'allowFeePopup']),
-    ...mapGetters('wallet/account', ['accountAssetsAddressTable']),
+    networkFees(this: any) {
+      return useWalletStore(this.$pinia).networkFees;
+    },
+    allowFeePopup(this: any) {
+      return useWalletStore(this.$pinia).allowFeePopup;
+    },
+    accountAssetsAddressTable(this: any) {
+      return useWalletStore(this.$pinia).accountAssetsAddressTable;
+    },
     xorBalance(this: any): FPNumber {
       const accountXor = (this.accountAssetsAddressTable as AccountAssetsTable)[XOR.address];
 

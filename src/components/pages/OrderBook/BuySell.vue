@@ -206,7 +206,8 @@ import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { DexId } from '@sora-substrate/sdk/build/dex/consts';
-import { components, api } from '@wallet';
+import { components } from '@/shims/wallet-components';
+import { api } from '@/shims/wallet-api';
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { Components, LimitOrderType, PageNames } from '@/consts';

@@ -8,13 +8,12 @@
 </template>
 
 <script lang="ts" setup>
-import { api } from '@wallet';
+import { api } from '@/shims/wallet-api';
 import { computed, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { PageNames } from '@/consts';
-import store from '@/store';
 import { useWalletStore } from '@/stores/wallet';
 
 const visible = defineModel<boolean>('visible', { default: false });
@@ -24,7 +23,7 @@ const router = useRouter();
 const route = useRoute();
 
 const walletStore = useWalletStore();
-const isMST = computed(() => store.state.wallet.account.isMST);
+const isMST = computed(() => walletStore.isMstAccount);
 
 function closeNotification(): void {
   visible.value = false;
@@ -33,8 +32,8 @@ function closeNotification(): void {
 async function handleButtonClick(): Promise<void> {
   if (!isMST.value) {
     api.mst.switchAccount(true);
-    store.commit.wallet.account.setIsMST(true);
-    store.commit.wallet.account.syncWithStorage();
+    walletStore.setIsMstAccount(true);
+    walletStore.syncAccountWithStorage();
     await walletStore.afterLogin();
   }
 

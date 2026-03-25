@@ -24,7 +24,7 @@ const storeSpies = vi.hoisted(() => {
   };
 });
 
-vi.mock('@wallet/src/util/storage', () => ({
+vi.mock('@/lib/soraneo-wallet/src/util/storage', () => ({
   storage: {
     get: vi.fn(),
     set: vi.fn(),
@@ -137,41 +137,15 @@ vi.mock('@wallet', () => {
   };
 });
 
-vi.mock('@/store', () => {
+vi.mock('@/stores/wallet', () => {
   const { pinnedAssets, setPinnedAsset, removePinnedAsset } = storeSpies;
 
-  const store = {
-    state: {
-      settings: {
-        language: 'en',
-      },
-      wallet: {
-        account: {
-          fiatPriceObject: {},
-        },
-      },
-    },
-    getters: {
-      wallet: {
-        account: {
-          isAssetPinned: (asset: AccountAsset) => pinnedAssets.has(asset.address),
-        },
-      },
-    },
-    commit: {
-      wallet: {
-        account: {
-          setPinnedAsset,
-          removePinnedAsset,
-        },
-      },
-    },
-  };
-
   return {
-    __esModule: true,
-    default: store,
-    ...store,
+    useWalletStore: () => ({
+      isAssetPinned: (asset: AccountAsset) => pinnedAssets.has(asset.address),
+      setPinnedAsset,
+      removePinnedAsset,
+    }),
   };
 });
 

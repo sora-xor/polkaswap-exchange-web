@@ -72,7 +72,7 @@ import { useSelectedTokensRoute } from '@/composables/useSelectedTokensRoute';
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useTranslation } from '@/composables/useTranslation';
 import { PageNames } from '@/consts';
-import store from '@/store';
+import { useRouterStore } from '@/stores/router';
 import { useSwapStore } from '@/stores/swap';
 import type { ResponsiveLayouts, WidgetsVisibilityModel } from '@/types/layout';
 import { normalizeSwapRouteTokens } from '@/views/utils/normalizeSwapRouteTokens';
@@ -94,6 +94,7 @@ defineOptions({ name: 'SwapPage' });
 
 const { t, tc } = useTranslation();
 const { loading, withApi } = useLoading();
+const routerStore = useRouterStore();
 const swapStore = useSwapStore();
 const { tokenFrom, tokenTo, setTokenFromAddress, setTokenToAddress } = useSwapAmounts();
 
@@ -170,7 +171,7 @@ const DefaultLayouts: ResponsiveLayouts = {
 };
 
 const isAvailable = computed(() => swapStore.isAvailable);
-const prevRoute = computed(() => store.state.router.prev as Nullable<PageNames>);
+const prevRoute = computed(() => routerStore.prev as Nullable<PageNames>);
 
 const { firstRouteAddress, secondRouteAddress, isValidRoute, parseCurrentRoute, updateRouteAfterSelectTokens } =
   useSelectedTokensRoute(async ({ firstAddress, secondAddress }) => {

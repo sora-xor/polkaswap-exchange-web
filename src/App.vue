@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { api, connection, components, WALLET_CONSTS, AlertsApiService, initWallet, waitForCore } from '@wallet';
+import { components } from '@/shims/wallet-components';
 import debounce from 'lodash/debounce';
 import { computed, onBeforeMount, onMounted, onBeforeUnmount, ref, watch, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -92,19 +92,32 @@ import SelectSoraAccountDialog from '@/components/shared/Dialog/SelectSoraAccoun
 import { useNodeNotifications } from '@/composables/useNodeNotifications';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
-import { PageNames, Components, Language, WalletPermissions, LOCAL_STORAGE_LIMIT_PERCENTAGE } from '@/consts';
+import {
+  PageNames,
+  Components,
+  IndexerType,
+  Language,
+  LOCAL_STORAGE_LIMIT_PERCENTAGE,
+  SoraNetwork,
+  TranslationConsts,
+  WalletPermissions,
+} from '@/consts';
 import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { Theme, type DesignSystem } from '@/consts/theme';
 import { getLocale } from '@/lang';
+import { api, connection } from '@/shims/wallet-api';
+import { initWallet, waitForCore } from '@/shims/wallet-bootstrap';
+import AlertsApiService from '@/shims/wallet-alerts';
 import router, { goTo as navigateTo, lazyComponent } from '@/router';
 import { getDataPlaneClient, normalizeRealtimeProfile } from '@/services/realtime';
-import store from '@/store';
+import { useReferralsStore } from '@/stores/referrals';
+import { useRouterStore } from '@/stores/router';
 import { useSettingsStore } from '@/stores/settings';
+import { useWeb3Store } from '@/stores/web3';
 import { useWalletStore } from '@/stores/wallet';
 import { getMobileCssClasses } from '@/utils';
 import { NodesConnection } from '@/utils/connection';
 import { toDwebLink } from '@/utils/ipfs';
-import { resolveLibraryDesignSystem, resolveLibraryTheme } from '@/utils/resolveLibraryTheme';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { getEnvConfigCandidates, resolveStaticAssetUrl } from '@/utils/staticAssets';
 import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
@@ -117,8 +130,8 @@ import { resolveMenuVisibilityOnRouteChange } from '@/views/utils/resolveMenuVis
 import { resolveProductPopupKey } from '@/views/utils/resolveProductPopupKey';
 import { resolveWalletOverlayVisibility } from '@/views/utils/resolveWalletOverlayVisibility';
 
-import type { FeatureFlags } from './store/settings/types';
-import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
+import type { FeatureFlags } from '@/stores/settings/types';
+import type { EthBridgeSettings, SubNetworkApps } from '@/stores/web3/types';
 import type { HistoryItem } from '@sora-substrate/sdk';
 import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
@@ -151,7 +164,10 @@ const { loading, withLoading, withApi, handleChangeTransaction } = useTransactio
 const { handleNodeError, handleNodeDisconnect, handleNodeConnect } = useNodeNotifications();
 
 const route = useRoute();
+const routerStore = useRouterStore();
 const settingsStore = useSettingsStore();
+const referralsStore = useReferralsStore();
+const web3Store = useWeb3Store();
 const walletStore = useWalletStore();
 const dataPlaneClient = getDataPlaneClient();
 const buildVariant = getBuildVariant();
@@ -166,43 +182,39 @@ const showNotificationMST = ref(false);
 const isTearingDown = ref(false);
 const nodeConnectionGateExpired = ref(false);
 
-const responsiveClass = computed(() => store.state.settings.screenBreakpointClass as BreakpointClass);
-const appConnection = computed(() => store.state.settings.appConnection as NodesConnection);
-const browserNotifPopup = computed(() => Boolean(store.state.settings?.browserNotifPopupVisibility));
-const browserNotifPopupBlocked = computed(() => store.state.settings?.browserNotifPopupBlockedVisibility as boolean);
-const isThemePreference = computed(() => Boolean(store.state.settings?.isThemePreference));
-const isTMA = computed(() => Boolean(store.state.settings?.isTMA));
-const isMSTAvailable = computed(() => Boolean(store.state.wallet?.settings?.isMSTAvailable));
-const assetsToNotifyQueue = computed(
-  () => (store.state.wallet?.account?.assetsToNotifyQueue as WhitelistArrayItem[]) ?? []
-);
-const accountAddress = computed(() => (store.state.wallet?.account?.address as string) ?? '');
+const responsiveClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
+const appConnection = computed(() => settingsStore.appConnection as NodesConnection);
+const browserNotifPopup = computed(() => Boolean(settingsStore.browserNotifPopupVisibility));
+const browserNotifPopupBlocked = computed(() => settingsStore.browserNotifPopupBlockedVisibility as boolean);
+const isThemePreference = computed(() => Boolean(settingsStore.isThemePreference));
+const isTMA = computed(() => Boolean(settingsStore.isTMA));
+const isMSTAvailable = computed(() => Boolean(settingsStore.isMSTAvailable));
+const assetsToNotifyQueue = computed(() => (walletStore.assetsToNotifyQueue as WhitelistArrayItem[]) ?? []);
+const accountAddress = computed(() => walletStore.address as string);
 const pendingMstTransactions = computed(() => {
-  const list = store.state.wallet?.transactions?.pendingMstTransactions as Nullable<HistoryItem[]>;
+  const list = walletStore.pendingMstTransactions as Nullable<HistoryItem[]>;
   return Array.isArray(list) ? list : [];
 });
-const storageReferrer = computed(() => (store.state.referrals?.storageReferrer as string) ?? '');
-const referrer = computed(() => (store.state.referrals?.referrer as string) ?? '');
+const storageReferrer = computed(() => referralsStore.storageReferrer as string);
+const referrer = computed(() => referralsStore.referrer as string);
 const disclaimerVisibility = computed(() => Boolean(settingsStore.disclaimerVisibility));
-const pageLoading = computed(() => Boolean(store.state.router?.loading));
-const nodeIsConnected = computed(() => Boolean(store.getters?.settings?.nodeIsConnected));
-const firstReadyTransaction = computed(
-  () => store.getters?.wallet?.transactions?.firstReadyTx as Nullable<HistoryItem>
-);
-const isLoggedIn = computed(() => Boolean(store.getters?.wallet?.account?.isLoggedIn));
-const libraryTheme = computed(() => resolveLibraryTheme(store) as Theme);
-const libraryDesignSystem = computed(() => resolveLibraryDesignSystem(store) as DesignSystem);
-const account = computed(() => store.getters?.wallet?.account?.account);
-const isSignTxDialogVisible = computed(() => Boolean(store.state.wallet?.transactions?.isSignTxDialogVisible));
-const isWalletLoaded = computed(() => Boolean(store.state.wallet?.settings?.isWalletLoaded));
+const pageLoading = computed(() => Boolean(routerStore.isLoading));
+const nodeIsConnected = computed(() => Boolean(settingsStore.nodeIsConnected));
+const firstReadyTransaction = computed(() => walletStore.firstReadyTransaction as Nullable<HistoryItem>);
+const isLoggedIn = computed(() => Boolean(walletStore.isLoggedIn));
+const libraryTheme = computed(() => settingsStore.libraryTheme as Theme);
+const libraryDesignSystem = computed(() => settingsStore.libraryDesignSystem as DesignSystem);
+const account = computed(() => walletStore.account);
+const isSignTxDialogVisible = computed(() => Boolean(walletStore.isSignTxDialogVisible));
+const isWalletLoaded = computed(() => Boolean(settingsStore.isWalletLoaded));
 const showWalletOverlays = computed(() => resolveWalletOverlayVisibility(isWalletLoaded.value, isTearingDown.value));
 const orientationWarningVisible = computed({
-  get: () => Boolean(store.state.settings.isOrientationWarningVisible),
+  get: () => Boolean(settingsStore.isOrientationWarningVisible),
   set: (flag: boolean) => {
     if (flag) {
-      showOrientationWarning();
+      settingsStore.showOrientationWarning();
     } else {
-      hideOrientationWarning();
+      settingsStore.hideOrientationWarning();
     }
   },
 });
@@ -210,14 +222,14 @@ const orientationWarningVisible = computed({
 const showBrowserNotifPopup = computed({
   get: () => Boolean(browserNotifPopup.value),
   set: (flag: boolean) => {
-    store.commit?.settings?.setBrowserNotifsPopupEnabled?.(flag);
+    settingsStore.setBrowserNotifsPopupEnabled(flag);
   },
 });
 
 const showBrowserNotifBlockedPopup = computed({
   get: () => Boolean(browserNotifPopupBlocked.value),
   set: (flag: boolean) => {
-    store.commit?.settings?.setBrowserNotifsPopupBlocked?.(flag);
+    settingsStore.setBrowserNotifsPopupBlocked(flag);
   },
 });
 
@@ -236,91 +248,34 @@ const appClasses = computed(() => {
 });
 
 const chainApi = api;
-
-const resolveCommit = (fn: unknown, type: string) => {
-  if (typeof fn === 'function') {
-    return fn as (...args: any[]) => unknown;
-  }
-  if (typeof store.original?.commit === 'function') {
-    return (...args: any[]) => store.original.commit(type, ...args);
-  }
-  return undefined;
-};
-
-const resolveDispatch = (fn: unknown, type: string) => {
-  if (typeof fn === 'function') {
-    return fn as (...args: any[]) => unknown;
-  }
-  if (typeof store.original?.dispatch === 'function') {
-    return (...args: any[]) => store.original.dispatch(type, ...args);
-  }
-  return undefined;
-};
-
-const setSoraNetwork = resolveCommit(store.commit?.wallet?.settings?.setSoraNetwork, 'wallet/settings/setSoraNetwork');
-const setIndexerEndpoint = resolveCommit(
-  store.commit?.wallet?.settings?.setIndexerEndpoint,
-  'wallet/settings/setIndexerEndpoint'
-);
-const setFaucetUrl = resolveCommit(store.commit?.settings?.setFaucetUrl, 'settings/setFaucetUrl');
-const setFeatureFlags = resolveCommit(store.commit?.settings?.setFeatureFlags, 'settings/setFeatureFlags');
-const setScreenBreakpointClass = resolveCommit(
-  store.commit?.settings?.setScreenBreakpointClass,
-  'settings/setScreenBreakpointClass'
-);
-const showOrientationWarning =
-  resolveCommit(store.commit?.settings?.showOrientationWarning, 'settings/showOrientationWarning') ?? (() => {});
-const hideOrientationWarning =
-  resolveCommit(store.commit?.settings?.hideOrientationWarning, 'settings/hideOrientationWarning') ?? (() => {});
-const unsubscribeFromInvitedUsers =
-  resolveCommit(store.commit?.referrals?.unsubscribeFromInvitedUsers, 'referrals/unsubscribeFromInvitedUsers') ??
-  (() => {});
-const setEvmNetworksApp = resolveCommit(store.commit?.web3?.setEvmNetworksApp, 'web3/setEvmNetworksApp');
-const setSubNetworkApps = resolveCommit(store.commit?.web3?.setSubNetworkApps, 'web3/setSubNetworkApps');
-const setEthBridgeSettings = resolveCommit(store.commit?.web3?.setEthBridgeSettings, 'web3/setEthBridgeSettings');
-const setSoraAccountDialogVisibility = resolveCommit(
-  store.commit?.web3?.setSoraAccountDialogVisibility,
-  'web3/setSoraAccountDialogVisibility'
-);
-const setSelectProviderDialogVisibility = resolveCommit(
-  store.commit?.web3?.setSelectProviderDialogVisibility,
-  'web3/setSelectProviderDialogVisibility'
-);
-const setSelectNetworkDialogVisibility = resolveCommit(
-  store.commit?.web3?.setSelectNetworkDialogVisibility,
-  'web3/setSelectNetworkDialogVisibility'
-);
-const setSelectSubNodeDialogVisibility = resolveCommit(
-  store.commit?.web3?.setSelectSubNodeDialogVisibility,
-  'web3/setSelectSubNodeDialogVisibility'
-);
-const setSubAccountDialogVisibility = resolveCommit(
-  store.commit?.web3?.setSubAccountDialogVisibility,
-  'web3/setSubAccountDialogVisibility'
-);
-const setSelectNodeDialogVisibility = resolveCommit(
-  store.commit?.settings?.setSelectNodeDialogVisibility,
-  'settings/setSelectNodeDialogVisibility'
-);
-const setSelectIndexerDialogVisibility = resolveCommit(
-  store.commit?.settings?.setSelectIndexerDialogVisibility,
-  'settings/setSelectIndexerDialogVisibility'
-);
-const resetStorageReferrer =
-  resolveCommit(store.commit?.referrals?.resetStorageReferrer, 'referrals/resetStorageReferrer') ?? (() => {});
-const setSignTxDialogVisibility =
-  resolveCommit(
-    store.commit?.wallet?.transactions?.setSignTxDialogVisibility,
-    'wallet/transactions/setSignTxDialogVisibility'
-  ) ?? (() => {});
+const setSoraNetwork = walletStore.setSoraNetwork;
+const setIndexerEndpoint = walletStore.setIndexerEndpoint;
+const setFaucetUrl = settingsStore.setFaucetUrl;
+const setFeatureFlags = settingsStore.setFeatureFlags;
+const setScreenBreakpointClass = settingsStore.setScreenBreakpointClass;
+const showOrientationWarning = settingsStore.showOrientationWarning;
+const hideOrientationWarning = settingsStore.hideOrientationWarning;
+const unsubscribeFromInvitedUsers = () => referralsStore.unsubscribeFromInvitedUsers();
+const setEvmNetworksApp = web3Store.setEvmNetworksApp;
+const setSubNetworkApps = web3Store.setSubNetworkApps;
+const setEthBridgeSettings = web3Store.setEthBridgeSettings;
+const setSoraAccountDialogVisibility = web3Store.setSoraAccountDialogVisibility;
+const setSelectProviderDialogVisibility = web3Store.setSelectProviderDialogVisibility;
+const setSelectNetworkDialogVisibility = web3Store.setSelectNetworkDialogVisibility;
+const setSelectSubNodeDialogVisibility = web3Store.setSelectSubNodeDialogVisibility;
+const setSubAccountDialogVisibility = web3Store.setSubAccountDialogVisibility;
+const setSelectNodeDialogVisibility = settingsStore.setSelectNodeDialogVisibility;
+const setSelectIndexerDialogVisibility = settingsStore.setSelectIndexerDialogVisibility;
+const resetStorageReferrer = () => referralsStore.resetStorageReferrer();
+const setSignTxDialogVisibility = walletStore.setSignTxDialogVisibility;
 const setApiKeys = walletStore.setApiKeys;
 const subscribeOnExchangeRatesApi = walletStore.subscribeOnExchangeRatesApi;
 const resetNetworkSubscriptions = walletStore.resetNetworkSubscriptions;
 const resetInternalSubscriptions = walletStore.resetInternalSubscriptions;
 const activateNetworkSubscriptions = walletStore.activateNetworkSubscriptions;
-const setLanguage = resolveDispatch(store.dispatch?.settings?.setLanguage, 'settings/setLanguage');
-const fetchAdsArray = resolveDispatch(store.dispatch?.settings?.fetchAdsArray, 'settings/fetchAdsArray');
-const getReferrer = resolveDispatch(store.dispatch?.referrals?.getReferrer, 'referrals/getReferrer');
+const setLanguage = settingsStore.setLanguage;
+const fetchAdsArray = settingsStore.fetchAdsArray;
+const getReferrer = () => referralsStore.getReferrer();
 const notifyOnDeposit = walletStore.notifyOnDeposit;
 
 const productPopupRefs: Record<string, Ref<boolean>> = {
@@ -651,7 +606,7 @@ function releaseNodeConnectionGate(): void {
 async function runAppConnectionToNode(): Promise<void> {
   const walletOptions = {
     permissions: WalletPermissions,
-    appName: WALLET_CONSTS.TranslationConsts.Polkaswap,
+    appName: TranslationConsts.Polkaswap,
   };
 
   startNodeConnectionGate();
@@ -836,16 +791,13 @@ watch(
       }
     };
 
-    syncRouteScopedDialog(Boolean(store.state.web3?.soraAccountDialogVisibility), setSoraAccountDialogVisibility);
-    syncRouteScopedDialog(Boolean(store.state.web3?.selectProviderDialogVisibility), setSelectProviderDialogVisibility);
-    syncRouteScopedDialog(Boolean(store.state.web3?.selectNetworkDialogVisibility), setSelectNetworkDialogVisibility);
-    syncRouteScopedDialog(Boolean(store.state.web3?.selectSubNodeDialogVisibility), setSelectSubNodeDialogVisibility);
-    syncRouteScopedDialog(Boolean(store.state.web3?.subAccountDialogVisibility), setSubAccountDialogVisibility);
-    syncRouteScopedDialog(Boolean(store.state.settings?.selectNodeDialogVisibility), setSelectNodeDialogVisibility);
-    syncRouteScopedDialog(
-      Boolean(store.state.settings?.selectIndexerDialogVisibility),
-      setSelectIndexerDialogVisibility
-    );
+    syncRouteScopedDialog(Boolean(web3Store.soraAccountDialogVisibility), setSoraAccountDialogVisibility);
+    syncRouteScopedDialog(Boolean(web3Store.selectProviderDialogVisibility), setSelectProviderDialogVisibility);
+    syncRouteScopedDialog(Boolean(web3Store.selectNetworkDialogVisibility), setSelectNetworkDialogVisibility);
+    syncRouteScopedDialog(Boolean(web3Store.selectSubNodeDialogVisibility), setSelectSubNodeDialogVisibility);
+    syncRouteScopedDialog(Boolean(web3Store.subAccountDialogVisibility), setSubAccountDialogVisibility);
+    syncRouteScopedDialog(Boolean(settingsStore.selectNodeDialogVisibility), setSelectNodeDialogVisibility);
+    syncRouteScopedDialog(Boolean(settingsStore.selectIndexerDialogVisibility), setSelectIndexerDialogVisibility);
   }
 );
 
@@ -860,13 +812,13 @@ watch(responsiveClass, (nextClass, prevClass) => {
     }
   };
 
-  closeVisibleDialog(Boolean(store.state.web3?.soraAccountDialogVisibility), setSoraAccountDialogVisibility);
-  closeVisibleDialog(Boolean(store.state.web3?.selectProviderDialogVisibility), setSelectProviderDialogVisibility);
-  closeVisibleDialog(Boolean(store.state.web3?.selectNetworkDialogVisibility), setSelectNetworkDialogVisibility);
-  closeVisibleDialog(Boolean(store.state.web3?.selectSubNodeDialogVisibility), setSelectSubNodeDialogVisibility);
-  closeVisibleDialog(Boolean(store.state.web3?.subAccountDialogVisibility), setSubAccountDialogVisibility);
-  closeVisibleDialog(Boolean(store.state.settings?.selectNodeDialogVisibility), setSelectNodeDialogVisibility);
-  closeVisibleDialog(Boolean(store.state.settings?.selectIndexerDialogVisibility), setSelectIndexerDialogVisibility);
+  closeVisibleDialog(Boolean(web3Store.soraAccountDialogVisibility), setSoraAccountDialogVisibility);
+  closeVisibleDialog(Boolean(web3Store.selectProviderDialogVisibility), setSelectProviderDialogVisibility);
+  closeVisibleDialog(Boolean(web3Store.selectNetworkDialogVisibility), setSelectNetworkDialogVisibility);
+  closeVisibleDialog(Boolean(web3Store.selectSubNodeDialogVisibility), setSelectSubNodeDialogVisibility);
+  closeVisibleDialog(Boolean(web3Store.subAccountDialogVisibility), setSubAccountDialogVisibility);
+  closeVisibleDialog(Boolean(settingsStore.selectNodeDialogVisibility), setSelectNodeDialogVisibility);
+  closeVisibleDialog(Boolean(settingsStore.selectIndexerDialogVisibility), setSelectIndexerDialogVisibility);
 });
 
 watch(
@@ -919,9 +871,7 @@ onBeforeMount(async () => {
   await withLoading(async () => {
     const data = await loadRuntimeEnvConfig();
     const networkType =
-      typeof data.NETWORK_TYPE === 'string' && data.NETWORK_TYPE.length > 0
-        ? data.NETWORK_TYPE
-        : WALLET_CONSTS.SoraNetwork.Prod;
+      typeof data.NETWORK_TYPE === 'string' && data.NETWORK_TYPE.length > 0 ? data.NETWORK_TYPE : SoraNetwork.Prod;
 
     if (!data.NETWORK_TYPE) {
       console.warn('[bootstrap] NETWORK_TYPE is not set. Falling back to default network:', networkType);
@@ -1001,10 +951,10 @@ onBeforeMount(async () => {
 
     if (typeof setIndexerEndpoint === 'function') {
       if (hasSubqueryEndpoint) {
-        setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBQUERY, endpoint: data.SUBQUERY_ENDPOINT });
+        setIndexerEndpoint({ indexer: IndexerType.SUBQUERY, endpoint: data.SUBQUERY_ENDPOINT });
       }
       if (hasSubsquidEndpoint) {
-        setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBSQUID, endpoint: data.SUBSQUID_ENDPOINT });
+        setIndexerEndpoint({ indexer: IndexerType.SUBSQUID, endpoint: data.SUBSQUID_ENDPOINT });
       }
     }
 

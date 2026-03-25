@@ -1,18 +1,17 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer } from '@wallet';
-import { SubqueryIndexer, SubsquidIndexer } from '@wallet/lib/services/indexer';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
 import { gql } from '@urql/core';
 
 import type { OrderBookDealData, OrderBookUpdateData } from '@/types/orderBook';
 
-import type { SubquerySubscriptionPayload } from '@wallet/lib/services/indexer/subquery/types';
+import type { SubquerySubscriptionPayload } from '@/shims/wallet-indexer-subquery-types';
 import type {
   OrderBookEntity,
   OrderBookDealEntity,
   QueryData,
   SubscriptionPayload,
-} from '@wallet/lib/services/indexer/types';
+} from '@/shims/wallet-indexer-types';
 
 type OrderBookEntityMutation = {
   price: string;

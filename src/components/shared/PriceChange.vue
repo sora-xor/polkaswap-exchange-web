@@ -7,10 +7,10 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import FormattedAmount from '@wallet/src/components/FormattedAmount.vue';
-import { FontWeightRate } from '@wallet/src/consts';
 import { computed } from 'vue';
 
+import { components } from '@/shims/wallet-components';
+import { FontWeightRate } from '@/shims/wallet-consts';
 import { toPrecision } from '@/utils/fp';
 
 /**
@@ -19,7 +19,7 @@ import { toPrecision } from '@/utils/fp';
 defineOptions({
   name: 'PriceChange',
   components: {
-    FormattedAmount,
+    FormattedAmount: components.FormattedAmount,
   },
 });
 

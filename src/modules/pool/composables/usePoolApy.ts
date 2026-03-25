@@ -1,16 +1,16 @@
 import { computed } from 'vue';
 
-import store from '@/store';
-import { loadWalletCore } from '@/utils/walletCore';
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
+import { api } from '@/shims/wallet-api';
+import { usePoolStore } from '@/stores/pool';
 
-import type { PoolApyObject } from '@wallet/lib/services/indexer/types';
+import type { PoolApyObject } from '@/shims/wallet-indexer-types';
 
-const { api } = await loadWalletCore();
 const { getFPNumberFromCodec, Hundred } = useNumberFormatter();
 
 export function usePoolApy() {
-  const poolApyObject = computed<PoolApyObject>(() => store.state.pool.poolApyObject);
+  const poolStore = usePoolStore();
+  const poolApyObject = computed<PoolApyObject>(() => poolStore.poolApyObject);
 
   const getPoolApy = (baseAssetAddress: Nullable<string>, targetAssetAddress: Nullable<string>): Nullable<string> => {
     if (!(baseAssetAddress && targetAssetAddress)) return null;

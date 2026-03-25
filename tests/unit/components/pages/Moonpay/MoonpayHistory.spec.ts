@@ -25,24 +25,21 @@ async function createContext() {
     },
   });
 
-  const store = {
-    state,
-    getters: {
-      libraryTheme: 'light',
-      web3: {
-        isValidNetwork: true,
-      },
+  const moonpayStore = reactive({
+    get transactions() {
+      return state.moonpay.transactions;
     },
-    dispatch: {
-      moonpay: {
-        getTransactions: vi.fn(async () => undefined),
-        getCurrencies: vi.fn(async () => undefined),
-      },
+    get currencies() {
+      return state.moonpay.currencies;
     },
-  };
+    getTransactions: vi.fn(async () => undefined),
+    getCurrencies: vi.fn(async () => undefined),
+  });
 
   const loadingRef = ref(false);
   const isLoggedInRef = ref(true);
+  const settingsStore = reactive({ libraryTheme: 'light' });
+  const web3Store = reactive({ isValidNetwork: true });
   const moonpayApiMock = {
     createWidgetUrl: vi.fn(),
   };
@@ -65,7 +62,7 @@ async function createContext() {
     state.moonpay.transactions = [];
     state.moonpay.currencies = [];
     state.settings.language = 'en';
-    store.getters.web3.isValidNetwork = true;
+    web3Store.isValidNetwork = true;
     loadingRef.value = false;
     isLoggedInRef.value = true;
     bridgeTransactionRef.value = null;
@@ -77,13 +74,15 @@ async function createContext() {
     getBridgeHistoryItemByMoonpayIdMock.mockClear();
     changeEvmNetworkProvidedMock.mockClear();
     withApiMock.mockClear();
-    store.dispatch.moonpay.getTransactions.mockClear();
-    store.dispatch.moonpay.getCurrencies.mockClear();
+    moonpayStore.getTransactions.mockClear();
+    moonpayStore.getCurrencies.mockClear();
   };
 
   return {
     state,
-    store,
+    moonpayStore,
+    settingsStore,
+    web3Store,
     loadingRef,
     isLoggedInRef,
     moonpayApiMock,
@@ -108,10 +107,24 @@ async function getContext() {
   return shared.ctx;
 }
 
-vi.mock('@/store', async () => {
+vi.mock('@/stores/moonpay', async () => {
   const ctx = await getContext();
   return {
-    default: ctx.store,
+    useMoonpayStore: () => ctx.moonpayStore,
+  };
+});
+
+vi.mock('@/stores/settings', async () => {
+  const ctx = await getContext();
+  return {
+    useSettingsStore: () => ctx.settingsStore,
+  };
+});
+
+vi.mock('@/stores/web3', async () => {
+  const ctx = await getContext();
+  return {
+    useWeb3Store: () => ctx.web3Store,
   };
 });
 
@@ -233,8 +246,8 @@ describe('MoonpayHistory.vue', () => {
     expect(ctx.withApiMock).toHaveBeenCalled();
     expect(ctx.initMoonpayApiMock).toHaveBeenCalled();
     expect(ctx.prepareEvmNetworkMock).toHaveBeenCalled();
-    expect(ctx.store.dispatch.moonpay.getTransactions).toHaveBeenCalled();
-    expect(ctx.store.dispatch.moonpay.getCurrencies).toHaveBeenCalled();
+    expect(ctx.moonpayStore.getTransactions).toHaveBeenCalled();
+    expect(ctx.moonpayStore.getCurrencies).toHaveBeenCalled();
   });
 
   it('derives formatted history items', async () => {
@@ -271,7 +284,7 @@ describe('MoonpayHistory.vue', () => {
 
   it('requests network change when transaction cannot proceed on current network', async () => {
     const ctx = await getContext();
-    ctx.store.getters.web3.isValidNetwork = false;
+    ctx.web3Store.isValidNetwork = false;
 
     const wrapper = mountComponent();
     const item = {

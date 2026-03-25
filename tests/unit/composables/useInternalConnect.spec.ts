@@ -21,16 +21,10 @@ vi.mock('@/stores/wallet', () => ({
   }),
 }));
 
-const storeMock = {
-  commit: {
-    web3: {
-      setSoraAccountDialogVisibility: setDialogVisibilityMock,
-    },
-  },
-};
-
-vi.mock('@/store', () => ({
-  default: storeMock,
+vi.mock('@/stores/web3', () => ({
+  useWeb3Store: () => ({
+    setSoraAccountDialogVisibility: setDialogVisibilityMock,
+  }),
 }));
 
 vi.mock('@/router', () => ({
@@ -49,9 +43,8 @@ describe('useInternalConnect', () => {
   });
 
   it('exposes reactive wallet state and connection helpers', async () => {
-    const { soraAddress, isLoggedIn, connectSoraWallet, disconnectSoraWallet, navigateToWallet } = await import(
-      '@/composables/useInternalConnect'
-    ).then((m) => m.useInternalConnect());
+    const { soraAddress, isLoggedIn, connectSoraWallet, disconnectSoraWallet, navigateToWallet } =
+      await import('@/composables/useInternalConnect').then((m) => m.useInternalConnect());
 
     expect(soraAddress.value).toBe('alice');
     expect(isLoggedIn.value).toBe(false);
