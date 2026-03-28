@@ -6,13 +6,7 @@
   </s-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'SwapStatusActionBadge',
-});
-</script>
+<script setup lang="ts"></script>
 
 <style lang="scss">
 .status-action-badge.s-card.neumorphic.s-size-small {

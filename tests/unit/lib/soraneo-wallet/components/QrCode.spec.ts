@@ -18,27 +18,27 @@ import QrCode from '@/lib/soraneo-wallet/src/components/QrCode/QrCode.vue';
 
 describe('Wallet QrCode', () => {
   it('renders a fresh svg element into the container', () => {
-    const methods = (QrCode as any).methods;
     const container = document.createElement('div');
     container.appendChild(document.createElement('span'));
-
-    const context = {
-      $refs: {
-        container,
+    const state = (QrCode as any).setup(
+      {
+        value: 'payload',
+        size: 128,
       },
-      value: 'payload',
-      size: 128,
-      element: null,
-      clearContainer() {
-        return methods.clearContainer.call(this);
-      },
-    };
+      {
+        attrs: {},
+        emit: vi.fn(),
+        expose: vi.fn(),
+        slots: {},
+      }
+    );
 
-    methods.renderCode.call(context);
+    state.container.value = container;
+    state.renderCode();
 
     expect(writeMock).toHaveBeenCalledWith('payload', 128, 128, expect.any(Map));
     expect(container.childNodes).toHaveLength(1);
     expect(container.firstChild?.nodeName.toLowerCase()).toBe('svg');
-    expect((context.element as SVGSVGElement).getAttribute('data-value')).toBe('payload');
+    expect((state.element.value as SVGSVGElement).getAttribute('data-value')).toBe('payload');
   });
 });

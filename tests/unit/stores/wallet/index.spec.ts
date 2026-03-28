@@ -1087,13 +1087,19 @@ describe('wallet store actions', () => {
     expect(walletStore.theme).toBe(Theme.DARK);
   });
 
-  it('merges wallet permissions locally and mirrors the compat mutation', () => {
+  it('exposes wallet permissions locally and keeps them in sync with updates', () => {
     const walletStore = useWalletStore();
+
+    expect(walletStore.permissions.createAssets).toBe(true);
+    expect(walletStore.permissions.bridgeAssets).toBe(true);
 
     walletStore.setPermissions({ bridgeAssets: false });
 
+    expect(walletStore.permissions.bridgeAssets).toBe(false);
+    expect(walletStore.permissions.swapAssets).toBe(true);
     expect(walletStore.settingsState.permissions.bridgeAssets).toBe(false);
     expect(walletStore.settingsState.permissions.swapAssets).toBe(true);
+    expect(walletStore.permissions).toEqual(walletStore.settingsState.permissions);
     expect(walletRuntimeBridge.store.commit).not.toHaveBeenCalled();
   });
 

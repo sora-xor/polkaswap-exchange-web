@@ -52,10 +52,11 @@ describe('subquery createExplorerClient', () => {
   });
 
   it('skips websocket subscription exchange for unsupported subquery gateway endpoints', () => {
-    createExplorerClient('https://api.subquery.network/sq/sora-xor/sora-prod');
+    const client = createExplorerClient('https://api.subquery.network/sq/sora-xor/sora-prod');
 
     expect(mocks.createWsClientMock).not.toHaveBeenCalled();
     expect(mocks.subscriptionExchangeMock).not.toHaveBeenCalled();
+    expect(client.supportsSubscriptions).toBe(false);
     expect(mocks.createClientMock).toHaveBeenCalledWith(
       expect.objectContaining({
         exchanges: [expect.any(Object)],
@@ -64,7 +65,7 @@ describe('subquery createExplorerClient', () => {
   });
 
   it('configures graphql-ws subscriptions for supported endpoints', () => {
-    createExplorerClient('https://indexer.example.com/graphql');
+    const client = createExplorerClient('https://indexer.example.com/graphql');
 
     expect(mocks.createWsClientMock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -75,6 +76,7 @@ describe('subquery createExplorerClient', () => {
       })
     );
     expect(mocks.subscriptionExchangeMock).toHaveBeenCalledOnce();
+    expect(client.supportsSubscriptions).toBe(true);
 
     const exchangeOptions = mocks.subscriptionExchangeMock.mock.calls[0]?.[0];
     const subscription = exchangeOptions.forwardSubscription({ query: 'subscription test' });

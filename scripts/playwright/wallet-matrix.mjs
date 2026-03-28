@@ -281,8 +281,14 @@ const handleWalletPages = async (wallet, context, extensionOrigin) => {
 const getAppState = async (app) => {
   return app
     .evaluate(() => ({
-      source: window.__POLKASWAP_LEGACY_STORE__?.state?.wallet?.account?.source || '',
-      address: window.__POLKASWAP_LEGACY_STORE__?.state?.wallet?.account?.address || '',
+      source:
+        globalThis.__PS_ACTIVE_PINIA__?.state?.value?.wallet?.accountState?.source ||
+        window.__POLKASWAP_LEGACY_STORE__?.state?.wallet?.account?.source ||
+        '',
+      address:
+        globalThis.__PS_ACTIVE_PINIA__?.state?.value?.wallet?.accountState?.address ||
+        window.__POLKASWAP_LEGACY_STORE__?.state?.wallet?.account?.address ||
+        '',
     }))
     .catch(() => ({ source: '', address: '' }));
 };
@@ -549,6 +555,9 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
       headless: false,
       args: [`--disable-extensions-except=${extensionPath}`, `--load-extension=${extensionPath}`, '--no-first-run', '--no-default-browser-check'],
       viewport: { width: 1366, height: 900 },
+    });
+    await context.addInitScript(() => {
+      localStorage.setItem('dexSettings.disclaimerApprove', 'true');
     });
 
     const extensionOrigin = await getExtensionOrigin(context);

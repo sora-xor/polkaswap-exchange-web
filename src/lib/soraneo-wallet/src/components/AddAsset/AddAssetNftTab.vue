@@ -34,59 +34,76 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 
+import { useAddAsset } from '../../composables/useAddAsset';
 import { api } from '../../api';
 import AssetList from '../AssetList.vue';
 import SearchInput from '../Input/SearchInput.vue';
-import AddAssetMixin from '../mixins/AddAssetMixin';
 
 import AddAssetDetailsCard from './AddAssetDetailsCard.vue';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
-export default defineComponent({
-  components: {
-    AssetList,
-    SearchInput,
-    AddAssetDetailsCard,
-  },
-  mixins: [AddAssetMixin],
-  emits: ['change-visibility'],
-  computed: {
-    notAddedNftAssets(this: any): Asset[] {
-      return this.assets.filter(
-        (asset: Asset) => !(asset.address in this.accountAssetsAddressTable) && api.assets.isNft(asset)
-      );
-    },
-    foundAssets(this: any): Asset[] {
-      if (!this.searchValue) return this.notAddedNftAssets;
+withDefaults(
+  defineProps<{
+    tokenDetailsPageOpened?: boolean;
+  }>(),
+  {
+    tokenDetailsPageOpened: false,
+  }
+);
 
-      return this.getSoughtAssets(this.notAddedNftAssets);
-    },
-    assetIsAlreadyAdded(this: any): boolean {
-      if (!this.searchValue) return false;
+const emit = defineEmits<{
+  'change-visibility': [];
+}>();
 
-      return this.accountAssets
-        .filter((asset: Asset) => api.assets.isNft(asset))
-        .some(
-          ({ name = '', symbol = '', address = '' }: Asset) =>
-            address.toLowerCase() === this.searchValue ||
-            symbol.toLowerCase() === this.searchValue ||
-            name.toLowerCase() === this.searchValue
-        );
-    },
-    showAddButton(this: any): boolean {
-      return this.selectedAssets.length > 0;
-    },
-  },
-  methods: {
-    handleAdd(this: any): void {
-      this.$emit('change-visibility');
-    },
-  },
+const {
+  t,
+  search,
+  searchValue,
+  resetSearch,
+  selectedAssets,
+  parentLoading,
+  loading,
+  assets,
+  accountAssetsAddressTable,
+  accountAssets,
+  getSoughtAssets,
+  handleSelectAsset,
+} = useAddAsset();
+
+const notAddedNftAssets = computed((): Asset[] => {
+  return assets.value.filter(
+    (asset: Asset) => !(asset.address in accountAssetsAddressTable.value) && api.assets.isNft(asset)
+  );
 });
+
+const foundAssets = computed((): Asset[] => {
+  if (!searchValue.value) return notAddedNftAssets.value;
+
+  return getSoughtAssets(notAddedNftAssets.value);
+});
+
+const assetIsAlreadyAdded = computed((): boolean => {
+  if (!searchValue.value) return false;
+
+  return accountAssets.value
+    .filter((asset: Asset) => api.assets.isNft(asset))
+    .some(
+      ({ name = '', symbol = '', address = '' }: Asset) =>
+        address.toLowerCase() === searchValue.value ||
+        symbol.toLowerCase() === searchValue.value ||
+        name.toLowerCase() === searchValue.value
+    );
+});
+
+const showAddButton = computed(() => selectedAssets.value.length > 0);
+
+function handleAdd(): void {
+  emit('change-visibility');
+}
 </script>
 
 <style scoped lang="scss">

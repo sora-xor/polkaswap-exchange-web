@@ -6,28 +6,33 @@
   </s-scrollbar>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 
-export default defineComponent({
-  props: {
-    size: { default: 0, type: Number },
-    visible: { default: 7, type: Number },
-    itemOffset: { default: 8, type: Number },
-    itemHeight: { default: 60, type: Number },
-  },
-  computed: {
-    style(this: any): Partial<CSSStyleDeclaration> {
-      const styles: Partial<CSSStyleDeclaration> = {};
+const props = withDefaults(
+  defineProps<{
+    size?: number;
+    visible?: number;
+    itemOffset?: number;
+    itemHeight?: number;
+  }>(),
+  {
+    size: 0,
+    visible: 7,
+    itemOffset: 8,
+    itemHeight: 60,
+  }
+);
 
-      if (this.size >= this.visible) {
-        const height = (this.itemHeight + this.itemOffset) * this.visible - this.itemOffset;
-        styles.height = `${height}px`;
-      }
+const style = computed<Partial<CSSStyleDeclaration>>(() => {
+  const styles: Partial<CSSStyleDeclaration> = {};
 
-      return styles;
-    },
-  },
+  if (props.size >= props.visible) {
+    const height = (props.itemHeight + props.itemOffset) * props.visible - props.itemOffset;
+    styles.height = `${height}px`;
+  }
+
+  return styles;
 });
 </script>
 

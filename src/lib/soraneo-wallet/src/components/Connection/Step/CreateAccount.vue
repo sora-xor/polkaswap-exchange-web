@@ -103,176 +103,161 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import isEqual from 'lodash/fp/isEqual';
-import { defineComponent, type PropType } from 'vue';
+import { computed, ref, watch } from 'vue';
 
+import { useNotification } from '../../../composables/useNotification';
 import { LoginStep } from '../../../consts';
 import { copyToClipboard } from '../../../util';
 import PasswordInput from '../../Input/Password.vue';
-import NotificationMixin from '../../mixins/NotificationMixin';
 
 import type { CreateAccountArgs } from '@/stores/wallet/account/types';
 import type { WithKeyring } from '@sora-substrate/sdk';
 
-export default defineComponent({
-  components: {
-    PasswordInput,
-  },
-  mixins: [NotificationMixin],
-  props: {
-    chainApi: {
-      required: true,
-      type: Object as PropType<WithKeyring>,
-    },
-    step: {
-      required: true,
-      type: String as PropType<LoginStep>,
-    },
-    selectedWalletTitle: {
-      default: '',
-      type: String,
-    },
-    loading: {
-      default: false,
-      type: Boolean,
-    },
-    createAccount: {
-      default: () => {},
-      type: Function as PropType<(data: CreateAccountArgs) => Promise<void>>,
-    },
-  },
-  emits: ['update:step'],
-  data() {
-    return {
-      ColumnsCount: 3,
-      LoginStep,
-      PhraseLength: 12,
-      accountName: '',
-      accountPassword: '',
-      accountPasswordConfirm: '',
-      seedPhraseToCompareIdx: [] as number[],
-      showErrorMessage: false,
-      toExport: false,
-      incorrect: false,
-    };
-  },
-  watch: {
-    step(this: any, value: LoginStep) {
-      if (value !== LoginStep.ConfirmSeedPhrase) {
-        this.seedPhraseToCompareIdx = [];
-      }
-    },
-  },
-  computed: {
-    stepNumber(this: any): number {
-      switch (this.step) {
-        case LoginStep.SeedPhrase:
-          return 1;
-        case LoginStep.ConfirmSeedPhrase:
-          return 2;
-        case LoginStep.CreateCredentials:
-          return 3;
-        default:
-          return 1;
-      }
-    },
-    btnTextConfirmStep(this: any): string {
-      if (this.seedPhraseToCompare.length === this.PhraseLength) {
-        return this.t('desktop.button.next');
-      }
-      return this.t('desktop.button.skip');
-    },
-    btnTypeConfirmStep(this: any): string {
-      return this.seedPhraseToCompare.length === this.PhraseLength ? 'primary' : 'secondary';
-    },
-    btnConfirmDisabled(this: any): boolean {
-      return this.isInputsNotFilled || !this.arePasswordsEqual;
-    },
-    isInputsNotFilled(this: any): boolean {
-      return !this.accountName || !this.accountPassword || !this.accountPasswordConfirm;
-    },
-    arePasswordsEqual(this: any): boolean {
-      return this.accountPassword === this.accountPasswordConfirm;
-    },
-    seedPhrase(this: any): string {
-      const { seed } = this.chainApi.createSeed();
-      return seed;
-    },
-    seedPhraseWords(this: any): string[] {
-      return this.seedPhrase.split(' ');
-    },
-    randomizedSeedPhraseMap(this: any): Record<number, string> {
-      return [...this.seedPhraseWords]
-        .sort(() => Math.random() - 0.5)
-        .reduce((acc, word, index) => ({ ...acc, [index]: word }), {});
-    },
-    seedPhraseToCompare(this: any): string[] {
-      return this.seedPhraseToCompareIdx.map((idx: number) => this.randomizedSeedPhraseMap[idx]);
-    },
-  },
-  methods: {
-    isHiddenWord(this: any, wordIndex: number): boolean {
-      return this.seedPhraseToCompareIdx.includes(wordIndex);
-    },
-    chooseWord(this: any, index: number): void {
-      if (!this.isHiddenWord(index)) {
-        this.seedPhraseToCompareIdx.push(index);
-      }
-    },
-    discardWord(this: any, index: number): void {
-      this.seedPhraseToCompareIdx = this.seedPhraseToCompareIdx.filter((idx: number) => idx !== index);
-    },
-    async handleCopy(this: any): Promise<void> {
-      await copyToClipboard(this.seedPhrase);
-    },
-    renderWord(this: any, column: number, index: number): boolean {
-      return Math.floor(index / 4) === column - 1;
-    },
-    nextStep(this: any): void {
-      this.$emit('update:step', LoginStep.ConfirmSeedPhrase);
-    },
-    handleMnemonicCheck(this: any): void {
-      if (this.seedPhraseToCompare.length < this.PhraseLength) {
-        this.$emit('update:step', LoginStep.CreateCredentials);
-        return;
-      }
+const props = withDefaults(
+  defineProps<{
+    chainApi: WithKeyring;
+    step: LoginStep;
+    selectedWalletTitle?: string;
+    loading?: boolean;
+    createAccount?: (data: CreateAccountArgs) => Promise<void>;
+  }>(),
+  {
+    selectedWalletTitle: '',
+    loading: false,
+    createAccount: async () => undefined,
+  }
+);
 
-      const isSeedPhraseMatched = isEqual(this.seedPhraseToCompare.join(' '), this.seedPhrase);
+const emit = defineEmits<{
+  'update:step': [step: LoginStep];
+}>();
 
-      if (!isSeedPhraseMatched) {
-        this.seedPhraseToCompareIdx = [];
-        this.runErrorMessage();
-        this.runReturnAnimation();
-      } else {
-        this.$emit('update:step', LoginStep.CreateCredentials);
-      }
-    },
-    runErrorMessage(this: any): void {
-      this.showErrorMessage = true;
+const { t } = useNotification();
 
-      setTimeout(() => {
-        this.showErrorMessage = false;
-      }, 4_500);
-    },
-    runReturnAnimation(this: any): void {
-      this.incorrect = true;
+const ColumnsCount = 3;
+const PhraseLength = 12;
+const accountName = ref('');
+const accountPassword = ref('');
+const accountPasswordConfirm = ref('');
+const seedPhraseToCompareIdx = ref<number[]>([]);
+const showErrorMessage = ref(false);
+const toExport = ref(false);
+const incorrect = ref(false);
 
-      setTimeout(() => {
-        this.incorrect = false;
-      }, 2_000);
-    },
-    handleAccountCreate(this: any): Promise<void> {
-      return this.createAccount({
-        seed: this.seedPhrase,
-        name: this.accountName,
-        password: this.accountPassword,
-        passwordConfirm: this.accountPasswordConfirm,
-        exportAccount: this.toExport,
-      });
-    },
-  },
+watch(
+  () => props.step,
+  (value) => {
+    if (value !== LoginStep.ConfirmSeedPhrase) {
+      seedPhraseToCompareIdx.value = [];
+    }
+  }
+);
+
+const stepNumber = computed((): number => {
+  switch (props.step) {
+    case LoginStep.SeedPhrase:
+      return 1;
+    case LoginStep.ConfirmSeedPhrase:
+      return 2;
+    case LoginStep.CreateCredentials:
+      return 3;
+    default:
+      return 1;
+  }
 });
+const seedPhrase = computed(() => {
+  const { seed } = props.chainApi.createSeed();
+  return seed;
+});
+const seedPhraseWords = computed(() => seedPhrase.value.split(' '));
+const randomizedSeedPhraseMap = computed<Record<number, string>>(() => {
+  return [...seedPhraseWords.value]
+    .sort(() => Math.random() - 0.5)
+    .reduce((acc, word, index) => ({ ...acc, [index]: word }), {});
+});
+const seedPhraseToCompare = computed(() =>
+  seedPhraseToCompareIdx.value.map((idx) => randomizedSeedPhraseMap.value[idx])
+);
+const btnTextConfirmStep = computed(() =>
+  seedPhraseToCompare.value.length === PhraseLength ? t('desktop.button.next') : t('desktop.button.skip')
+);
+const btnTypeConfirmStep = computed(() =>
+  seedPhraseToCompare.value.length === PhraseLength ? 'primary' : 'secondary'
+);
+const isInputsNotFilled = computed(() => !accountName.value || !accountPassword.value || !accountPasswordConfirm.value);
+const arePasswordsEqual = computed(() => accountPassword.value === accountPasswordConfirm.value);
+const btnConfirmDisabled = computed(() => isInputsNotFilled.value || !arePasswordsEqual.value);
+
+function isHiddenWord(wordIndex: number): boolean {
+  return seedPhraseToCompareIdx.value.includes(wordIndex);
+}
+
+function chooseWord(index: number): void {
+  if (!isHiddenWord(index)) {
+    seedPhraseToCompareIdx.value.push(index);
+  }
+}
+
+function discardWord(index: number): void {
+  seedPhraseToCompareIdx.value = seedPhraseToCompareIdx.value.filter((idx) => idx !== index);
+}
+
+async function handleCopy(): Promise<void> {
+  await copyToClipboard(seedPhrase.value);
+}
+
+function renderWord(column: number, index: number): boolean {
+  return Math.floor(index / 4) === column - 1;
+}
+
+function nextStep(): void {
+  emit('update:step', LoginStep.ConfirmSeedPhrase);
+}
+
+function runErrorMessage(): void {
+  showErrorMessage.value = true;
+
+  setTimeout(() => {
+    showErrorMessage.value = false;
+  }, 4_500);
+}
+
+function runReturnAnimation(): void {
+  incorrect.value = true;
+
+  setTimeout(() => {
+    incorrect.value = false;
+  }, 2_000);
+}
+
+function handleMnemonicCheck(): void {
+  if (seedPhraseToCompare.value.length < PhraseLength) {
+    emit('update:step', LoginStep.CreateCredentials);
+    return;
+  }
+
+  const isSeedPhraseMatched = isEqual(seedPhraseToCompare.value.join(' '), seedPhrase.value);
+
+  if (!isSeedPhraseMatched) {
+    seedPhraseToCompareIdx.value = [];
+    runErrorMessage();
+    runReturnAnimation();
+  } else {
+    emit('update:step', LoginStep.CreateCredentials);
+  }
+}
+
+function handleAccountCreate(): Promise<void> {
+  return props.createAccount({
+    seed: seedPhrase.value,
+    name: accountName.value,
+    password: accountPassword.value,
+    passwordConfirm: accountPasswordConfirm.value,
+    exportAccount: toExport.value,
+  });
+}
 </script>
 
 <style lang="scss" scoped>

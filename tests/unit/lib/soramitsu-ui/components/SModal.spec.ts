@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, nextTick, ref } from 'vue';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import SModal from '@/lib/soramitsu-ui/components/Modal/SModal.vue';
 
@@ -31,6 +31,19 @@ const HostWithoutOutsideClose = defineComponent({
       :focus-trap="false"
       :close-on-overlay-click="false"
     >
+      <button type="button">content</button>
+    </SModal>
+  `,
+});
+
+const HostWithComponentAttrs = defineComponent({
+  components: { SModal },
+  setup() {
+    const show = ref(true);
+    return { show };
+  },
+  template: `
+    <SModal v-model:show="show" class="legacy-modal" :teleport-to="null" :eager="true" :focus-trap="false">
       <button type="button">content</button>
     </SModal>
   `,
@@ -89,6 +102,19 @@ describe('SModal', () => {
 
     expect(wrapper.vm.show).toBe(true);
 
+    wrapper.unmount();
+  });
+
+  it('does not warn about extraneous attrs when used through a teleport root', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    const wrapper = mount(HostWithComponentAttrs);
+
+    expect(warnSpy.mock.calls.some(([message]) => String(message).includes('Extraneous non-props attributes'))).toBe(
+      false
+    );
+
+    warnSpy.mockRestore();
     wrapper.unmount();
   });
 });

@@ -13,11 +13,27 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const sanitizeRouteName = (route) => route.replace(/^#\//, '').replace(/[\/]/g, '-');
 
+const waitForCountAtLeast = async (locator, minimum, timeout = 10_000, step = 200) => {
+  const deadline = Date.now() + timeout;
+  let count = 0;
+
+  while (Date.now() < deadline) {
+    count = await locator.count().catch(() => 0);
+    if (count >= minimum) return count;
+    await sleep(step);
+  }
+
+  return locator.count().catch(() => 0);
+};
+
 const run = async () => {
   await fs.mkdir(outDir, { recursive: true });
 
   const browser = await webkit.launch({ headless: true });
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  await context.addInitScript(() => {
+    localStorage.setItem('dexSettings.disclaimerApprove', 'true');
+  });
   const page = await context.newPage();
 
   const report = [];
@@ -47,23 +63,39 @@ const run = async () => {
 
     if (route === '#/swap') {
       const tokenButtons = page.locator('.token-select-button');
-      const count = await tokenButtons.count().catch(() => 0);
+      const count = await waitForCountAtLeast(tokenButtons, 2);
       if (count < 2) {
         issues.push(`swap token button count is ${count}`);
       } else {
         const fromButton = tokenButtons.nth(0);
-        await fromButton.click().catch(() => {});
-        await sleep(500);
-        const rows = page.locator('.asset-select .s-flex.asset');
-        const rowCount = await rows.count().catch(() => 0);
-        if (rowCount <= 1) {
-          issues.push(`swap token rows unavailable (${rowCount})`);
-        } else {
-          await rows.nth(1).click().catch(() => {});
-          await sleep(700);
-          const fromText = ((await fromButton.innerText().catch(() => '')) || '').replace(/\s+/g, ' ').trim();
-          if (!fromText || /^(XOR|CHOOSE TOKEN)$/i.test(fromText)) {
-            issues.push(`swap from token did not update in safari check (${fromText})`);
+        const dialog = page.locator('.asset-select').first();
+
+        try {
+          await fromButton.click({ timeout: 5_000 });
+          await dialog.waitFor({ state: 'visible', timeout: 5_000 });
+        } catch (error) {
+          issues.push(`swap token dialog did not open in safari check (${String(error)})`);
+        }
+
+        if (!issues.length) {
+          const rows = dialog.locator('.s-flex.asset');
+          const rowCount = await waitForCountAtLeast(rows, 2);
+          if (rowCount <= 1) {
+            issues.push(`swap token rows unavailable (${rowCount})`);
+          } else {
+            try {
+              await rows.nth(1).click({ timeout: 5_000 });
+              await sleep(700);
+            } catch (error) {
+              issues.push(`swap token selection failed in safari check (${String(error)})`);
+            }
+          }
+
+          if (!issues.length) {
+            const fromText = ((await fromButton.innerText().catch(() => '')) || '').replace(/\s+/g, ' ').trim();
+            if (!fromText || /^(XOR|CHOOSE TOKEN)$/i.test(fromText)) {
+              issues.push(`swap from token did not update in safari check (${fromText})`);
+            }
           }
         }
       }

@@ -3,21 +3,23 @@ import findLast from 'lodash/fp/findLast';
 import { computed } from 'vue';
 
 import { api } from '@/api';
-import { useLoading } from '@/composables/useLoading';
-import { useNotification, type AsyncFnWithoutArgs } from '@/composables/useNotification';
-import { useOperations } from '@/composables/useOperations';
-import { useTranslation } from '@/composables/useTranslation';
 import { useWalletStore } from '@/stores/wallet';
 import { delay } from '@/util';
 
+import { useLoading } from './useLoading';
+import { useNotification, type AsyncFnWithoutArgs } from './useNotification';
+import { useOperations } from './useOperations';
+
 export function useTransaction() {
   const walletStore = useWalletStore();
-  const { loading, withLoading, withApi, withChainApi, withParentLoading } = useLoading({
+  const loadingApi = useLoading({
     isWalletLoaded: () => walletStore.isWalletLoaded,
   });
+  const { loading, withLoading, withApi, withChainApi, withParentLoading } = loadingApi;
   const notification = useNotification();
-  const { getOperationMessage } = useOperations();
-  const { t } = useTranslation();
+  const operations = useOperations();
+  const { getOperationMessage } = operations;
+  const { t } = notification;
 
   const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
 
@@ -89,6 +91,9 @@ export function useTransaction() {
   };
 
   return {
+    ...loadingApi,
+    ...notification,
+    ...operations,
     loading,
     withLoading,
     withApi,

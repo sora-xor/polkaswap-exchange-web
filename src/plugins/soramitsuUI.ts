@@ -1,4 +1,6 @@
 import { plugin as soramitsuUIPlugin } from '@soramitsu-ui/ui';
+import buttonDirective from '@/directives/button';
+import loadingDirective from '@/directives/loading';
 import SIconCompat from '@/lib/soramitsu-ui/components/Icon/SIcon.vue';
 import SMenuCompat from '@/lib/soramitsu-ui/components/Menu/SMenu.vue';
 import SMenuItemCompat from '@/lib/soramitsu-ui/components/Menu/SMenuItem.vue';
@@ -6,7 +8,7 @@ import SMenuItemGroupCompat from '@/lib/soramitsu-ui/components/Menu/SMenuItemGr
 import STabCompat from '@/lib/soramitsu-ui/components/Tabs/STab.vue';
 import STabsCompat from '@/lib/soramitsu-ui/components/Tabs/STabsPanel.vue';
 
-import type { App, Component } from 'vue';
+import type { App, Component, Directive } from 'vue';
 
 import '@soramitsu-ui/ui/styles';
 
@@ -27,8 +29,26 @@ const registerCompat = (app: App, name: string, component: Component): void => {
   app.component(name, component);
 };
 
+const registerDirective = (app: App, name: string, directive: Directive): void => {
+  const existing = app.directive(name);
+
+  if (existing === directive) return;
+
+  const contextDirectives = (app as App & { _context?: { directives?: Record<string, Directive> } })._context
+    ?.directives;
+
+  if (existing && contextDirectives) {
+    contextDirectives[name] = directive;
+    return;
+  }
+
+  app.directive(name, directive);
+};
+
 export function install(app: App): void {
   app.use(soramitsuUIPlugin());
+  registerDirective(app, 'loading', loadingDirective);
+  registerDirective(app, 'button', buttonDirective);
   registerCompat(app, 'SIcon', SIconCompat);
 
   registerCompat(app, 's-icon', SIconCompat);

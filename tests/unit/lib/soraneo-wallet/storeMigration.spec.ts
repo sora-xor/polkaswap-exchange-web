@@ -346,77 +346,34 @@ const files = {
   walletCore: path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'core.ts'),
   walletIndex: path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'index.ts'),
   walletMain: path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'main.ts'),
-  translationMixin: path.join(
+  accountActionsComposable: path.join(
     repoRoot,
     'src',
     'lib',
     'soraneo-wallet',
     'src',
-    'components',
-    'mixins',
-    'TranslationMixin.ts'
+    'composables',
+    'useAccountActions.ts'
   ),
-  transactionMixin: path.join(
+  walletTranslationComposable: path.join(
     repoRoot,
     'src',
     'lib',
     'soraneo-wallet',
     'src',
-    'components',
-    'mixins',
-    'TransactionMixin.ts'
+    'composables',
+    'useWalletTranslation.ts'
   ),
-  accountActionsMixin: path.join(
+  addAssetComposable: path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'composables', 'useAddAsset.ts'),
+  loadingComposable: path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'composables', 'useLoading.ts'),
+  qrCodeParserComposable: path.join(
     repoRoot,
     'src',
     'lib',
     'soraneo-wallet',
     'src',
-    'components',
-    'mixins',
-    'AccountActionsMixin.ts'
-  ),
-  addAssetMixin: path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'components', 'mixins', 'AddAssetMixin.ts'),
-  formattedAmountMixin: path.join(
-    repoRoot,
-    'src',
-    'lib',
-    'soraneo-wallet',
-    'src',
-    'components',
-    'mixins',
-    'FormattedAmountMixin.ts'
-  ),
-  loadingMixin: path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'components', 'mixins', 'LoadingMixin.ts'),
-  networkFeeWarningMixin: path.join(
-    repoRoot,
-    'src',
-    'lib',
-    'soraneo-wallet',
-    'src',
-    'components',
-    'mixins',
-    'NetworkFeeWarningMixin.ts'
-  ),
-  operationsMixin: path.join(
-    repoRoot,
-    'src',
-    'lib',
-    'soraneo-wallet',
-    'src',
-    'components',
-    'mixins',
-    'OperationsMixin.ts'
-  ),
-  qrCodeParserMixin: path.join(
-    repoRoot,
-    'src',
-    'lib',
-    'soraneo-wallet',
-    'src',
-    'components',
-    'mixins',
-    'QrCodeParserMixin.ts'
+    'composables',
+    'useQrCodeParser.ts'
   ),
   themeProvider: path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'components', 'ThemeProvider.vue'),
   settingsDialog: path.join(
@@ -502,6 +459,7 @@ const walletAppFile = path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src',
 const walletComponentsDir = path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'components');
 const walletStoreDir = path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'store');
 const removedWalletVuexFile = path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'vuex.ts');
+const removedWalletMixinsDir = path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'components', 'mixins');
 
 const collectWalletComponentFiles = async (directory: string): Promise<string[]> => {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -607,10 +565,10 @@ describe('wallet store migration', () => {
     expect(sources.walletIndex).not.toContain('Please provide a compatible store.');
     expect(sources.walletIndex).not.toContain('vuex,');
     expect(sources.walletMain).not.toContain('app.use(store.original)');
-    expect(sources.translationMixin).toContain("from '@/stores/settings'");
-    expect(sources.transactionMixin).not.toContain('this.$store');
-    expect(sources.transactionMixin).toContain("from '@/stores/wallet'");
-    expect(sources.transactionMixin).not.toContain('getWalletStore()');
+    expect(sources.walletTranslationComposable).toContain("from '@/stores/settings'");
+    expect(sources.transactionComposable).not.toContain('this.$store');
+    expect(sources.transactionComposable).toContain("from '@/stores/wallet'");
+    expect(sources.transactionComposable).not.toContain('getWalletStore()');
     expect(sources.settingsDialog).toContain("from '@/stores/wallet'");
     expect(sources.formattedAmountComponent).toContain("from '@/stores/wallet'");
     expect(sources.mstForgetDialog).toContain("from '@/stores/wallet'");
@@ -637,18 +595,17 @@ describe('wallet store migration', () => {
     expect(sources.transactionSignUtil).not.toContain('store/pinia');
   });
 
-  it('keeps migrated wallet mixins on the Pinia wallet facade instead of wallet-local helper mappers', async () => {
-    const mixinFiles = [
-      files.accountActionsMixin,
-      files.addAssetMixin,
-      files.formattedAmountMixin,
-      files.loadingMixin,
-      files.networkFeeWarningMixin,
-      files.operationsMixin,
-      files.qrCodeParserMixin,
-      files.transactionMixin,
+  it('keeps migrated wallet composables on the Pinia wallet facade instead of wallet-local helper mappers', async () => {
+    const piniaWalletComposableFiles = [
+      files.accountActionsComposable,
+      files.addAssetComposable,
+      files.formattedAmountComposable,
+      files.networkFeeWarningComposable,
+      files.operationsComposable,
+      files.qrCodeParserComposable,
+      files.transactionComposable,
     ];
-    const sources = await Promise.all(mixinFiles.map((filePath) => readFile(filePath, 'utf8')));
+    const sources = await Promise.all(piniaWalletComposableFiles.map((filePath) => readFile(filePath, 'utf8')));
 
     for (const source of sources) {
       expect(source).toContain("from '@/stores/wallet'");
@@ -660,6 +617,16 @@ describe('wallet store migration', () => {
       expect(source).not.toContain('mapMutations(');
       expect(source).not.toContain('mapActions(');
     }
+
+    const loadingSource = await readFile(files.loadingComposable, 'utf8');
+
+    expect(loadingSource).not.toContain('store/helpers');
+    expect(loadingSource).not.toContain('/store/router/types');
+    expect(loadingSource).not.toContain('/store/account/types');
+    expect(loadingSource).not.toContain('mapState(');
+    expect(loadingSource).not.toContain('mapGetters(');
+    expect(loadingSource).not.toContain('mapMutations(');
+    expect(loadingSource).not.toContain('mapActions(');
   });
 
   it('keeps migrated wallet components on direct Pinia wallet access instead of wallet-local helper mappers', async () => {
@@ -744,7 +711,11 @@ describe('wallet store migration', () => {
     }
   });
 
-  it('keeps wallet components and mixins off direct vuex helpers', async () => {
+  it('removes the dead vendored wallet mixin directory from src/', async () => {
+    await expect(stat(removedWalletMixinsDir)).rejects.toBeDefined();
+  });
+
+  it('keeps wallet components and composables off direct vuex helpers', async () => {
     const componentFiles = await collectWalletComponentFiles(walletComponentsDir);
     const sources = await Promise.all([walletAppFile, ...componentFiles].map((filePath) => readFile(filePath, 'utf8')));
 

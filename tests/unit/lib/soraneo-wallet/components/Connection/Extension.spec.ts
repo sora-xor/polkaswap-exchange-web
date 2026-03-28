@@ -1,4 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/lib/soraneo-wallet/src/composables/useWalletTranslation', () => ({
+  useWalletTranslation: () => ({
+    t: (key: string) => key,
+  }),
+}));
 
 import extensionConnectionListSource from '@/lib/soraneo-wallet/src/components/Connection/List/Extension.vue?raw';
 
@@ -6,10 +12,10 @@ describe('ExtensionConnectionList source', () => {
   it('does not throw when a wallet has no provider yet', async () => {
     const { default: ExtensionConnectionList } =
       await import('@/lib/soraneo-wallet/src/components/Connection/List/Extension.vue');
-    const hasDisconnectAction = (ExtensionConnectionList as any).methods.hasDisconnectAction;
+    const state = (ExtensionConnectionList as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
 
-    expect(() => hasDisconnectAction({ extensionName: 'fearless-wallet' })).not.toThrow();
-    expect(hasDisconnectAction({ extensionName: 'fearless-wallet' })).toBe(false);
+    expect(() => state.hasDisconnectAction({ extensionName: 'fearless-wallet' })).not.toThrow();
+    expect(state.hasDisconnectAction({ extensionName: 'fearless-wallet' })).toBe(false);
   });
 
   it('renders the recommended badge with a dedicated star icon class', () => {

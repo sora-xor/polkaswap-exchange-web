@@ -34,11 +34,9 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, type PropType } from 'vue';
-
+<script setup lang="ts">
+import { useWalletTranslation } from '../../../composables/useWalletTranslation';
 import { AppWallet, Links } from '../../../consts';
-import TranslationMixin from '../../mixins/TranslationMixin';
 import ExternalLink from '../../shared/ExternalLink.vue';
 import ExtensionConnectionList from '../List/Extension.vue';
 
@@ -46,53 +44,39 @@ import type { Wallet } from '../../../services/wallet/types';
 
 const wikiLink = Links.connection.wiki;
 
-export default defineComponent({
-  components: {
-    ExtensionConnectionList,
-    ExternalLink,
-  },
-  mixins: [TranslationMixin],
-  props: {
-    connectedWallet: {
-      default: '',
-      type: String,
-    },
-    selectedWallet: {
-      default: '',
-      type: String as PropType<AppWallet>,
-    },
-    selectedWalletLoading: {
-      default: false,
-      type: Boolean,
-    },
-    internalWallets: {
-      default: () => [],
-      type: Array as PropType<Wallet[]>,
-    },
-    externalWallets: {
-      default: () => [],
-      type: Array as PropType<Wallet[]>,
-    },
-    recommendedWallets: {
-      default: () => [],
-      type: Array as PropType<string[]>,
-    },
-  },
-  emits: ['select', 'disconnect'],
-  data() {
-    return {
-      wikiLink,
-    };
-  },
-  methods: {
-    handleSelectWallet(this: any, wallet: Wallet): void {
-      this.$emit('select', wallet);
-    },
-    handleDisconnectWallet(this: any, wallet: Wallet): void {
-      this.$emit('disconnect', wallet);
-    },
-  },
-});
+withDefaults(
+  defineProps<{
+    connectedWallet?: string;
+    selectedWallet?: AppWallet | '';
+    selectedWalletLoading?: boolean;
+    internalWallets?: Wallet[];
+    externalWallets?: Wallet[];
+    recommendedWallets?: string[];
+  }>(),
+  {
+    connectedWallet: '',
+    selectedWallet: '',
+    selectedWalletLoading: false,
+    internalWallets: () => [],
+    externalWallets: () => [],
+    recommendedWallets: () => [],
+  }
+);
+
+const emit = defineEmits<{
+  select: [wallet: Wallet];
+  disconnect: [wallet: Wallet];
+}>();
+
+const { t } = useWalletTranslation();
+
+function handleSelectWallet(wallet: Wallet): void {
+  emit('select', wallet);
+}
+
+function handleDisconnectWallet(wallet: Wallet): void {
+  emit('disconnect', wallet);
+}
 </script>
 
 <style scoped lang="scss">

@@ -59,22 +59,17 @@ describe('QrCodeScanButton', () => {
 
   it('forwards click to dropdown handleClick when refs exist', () => {
     const handleClick = vi.fn();
-    const wrapper = createWrapper();
-    const handleButtonClick = (wrapper.vm as any).$options.methods.handleButtonClick as (
-      this: Record<string, unknown>
-    ) => void;
+    const state = (QrCodeScanButton as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
 
-    handleButtonClick.call({
+    state.dropdown.value = {
       $refs: {
         dropdown: {
-          $refs: {
-            dropdown: {
-              handleClick,
-            },
-          },
+          handleClick,
         },
       },
-    });
+    };
+
+    state.handleButtonClick();
 
     expect(handleClick).toHaveBeenCalledTimes(1);
   });

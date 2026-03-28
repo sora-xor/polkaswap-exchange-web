@@ -4,10 +4,11 @@
     :modal-class="modalClass"
     :overlay-class="'dialog-wrapper__overlay'"
     :lock-scroll="true"
-    v-bind="$attrs"
+    :close-on-overlay-click="closeOnOverlayClick"
+    :close-on-esc="closeOnEsc"
   >
     <div :class="cardClasses" :style="cardStyle">
-      <header class="dialog-card__header">
+      <header class="dialog-card__header el-dialog__header">
         <div v-if="showBack" class="dialog-card__back">
           <s-button type="action" size="sm" @click="handleBackClick">
             <s-icon name="arrows-chevron-left-rounded-24" size="28"></s-icon>
@@ -15,7 +16,7 @@
         </div>
         <div class="dialog-card__title">
           <slot name="title">
-            <span class="dialog-card__title-text">
+            <span class="dialog-card__title-text el-dialog__title">
               {{ title }}
             </span>
           </slot>
@@ -32,15 +33,17 @@
         </div>
         <div class="dialog-card__actions">
           <slot name="header-actions"></slot>
-          <s-button v-if="showCloseButton" class="dialog-card__close" type="action" size="sm" @click="closeDialog">
-            <s-icon name="basic-close-24" size="28"></s-icon>
-          </s-button>
+          <span v-if="showCloseButton" class="dialog-card__close-wrapper el-dialog__headerbtn">
+            <s-button class="dialog-card__close el-dialog__close" type="action" size="sm" @click="closeDialog">
+              <s-icon name="basic-close-24" size="28"></s-icon>
+            </s-button>
+          </span>
         </div>
       </header>
-      <div class="dialog-card__content">
+      <div class="dialog-card__content el-dialog__body">
         <slot></slot>
       </div>
-      <footer v-if="$slots.footer" class="dialog-card__footer">
+      <footer v-if="$slots.footer" class="dialog-card__footer el-dialog__footer">
         <slot name="footer"></slot>
       </footer>
     </div>
@@ -48,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, useAttrs } from 'vue';
 
 import { useDialogVisibility } from '@/composables/useDialog';
 
@@ -63,6 +66,10 @@ const props = withDefaults(
     width?: string;
     showBack?: boolean;
     showCloseButton?: boolean;
+    appendToBody?: boolean;
+    modalAppendToBody?: boolean;
+    closeOnClickModal?: boolean;
+    closeOnEsc?: boolean;
   }>(),
   {
     customClass: '',
@@ -72,8 +79,14 @@ const props = withDefaults(
     width: '',
     showBack: false,
     showCloseButton: true,
+    appendToBody: true,
+    modalAppendToBody: true,
+    closeOnClickModal: true,
+    closeOnEsc: true,
   }
 );
+
+const attrs = useAttrs();
 
 const emit = defineEmits<{
   (event: 'close'): void;
@@ -85,7 +98,7 @@ const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
 });
 
 const cardClasses = computed(() => {
-  const classes = ['dialog-card', 'neumorphic'];
+  const classes = ['dialog-card', 'el-dialog', 'neumorphic'];
   if (props.customClass) {
     classes.push(props.customClass);
   }
@@ -105,7 +118,13 @@ const flattenClassNames = (value: unknown): string[] => {
 };
 
 const modalClass = computed(() => {
-  return ['dialog-wrapper', 'dialog-wrapper__modal', ...flattenClassNames(props.wrapperClass)];
+  return [
+    'dialog-wrapper',
+    'dialog-wrapper__modal',
+    'el-dialog__wrapper',
+    ...flattenClassNames(attrs.class),
+    ...flattenClassNames(props.wrapperClass),
+  ];
 });
 
 const cardStyle = computed(() => {
@@ -115,6 +134,9 @@ const cardStyle = computed(() => {
     maxWidth: '100%',
   } as Record<string, string>;
 });
+
+const closeOnOverlayClick = computed(() => props.closeOnClickModal);
+const closeOnEsc = computed(() => props.closeOnEsc);
 
 const handleBackClick = () => {
   emit('back');
@@ -193,6 +215,10 @@ const handleBackClick = () => {
   display: flex;
   align-items: center;
   gap: $basic-spacing;
+}
+
+.dialog-card__close-wrapper {
+  display: inline-flex;
 }
 
 .dialog-card__content {

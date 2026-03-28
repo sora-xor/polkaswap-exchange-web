@@ -4,7 +4,6 @@ import {
   Fragment,
   Text,
   cloneVNode,
-  defineComponent,
   h,
   nextTick,
   onBeforeUnmount,
@@ -128,7 +127,7 @@ const buildContentNodes = (defaultNodes: Array<VNode>, activeTab: string): Array
   }, []);
 };
 
-export default defineComponent({
+export default {
   name: 'STabs',
   props: {
     modelValue: {
@@ -378,7 +377,7 @@ export default defineComponent({
       );
     };
   },
-});
+};
 </script>
 
 <style lang="scss">

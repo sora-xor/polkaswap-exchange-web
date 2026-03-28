@@ -49,8 +49,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 
 import { useWalletStore } from '@/stores/wallet';
 
@@ -58,62 +58,47 @@ import { FontSizeRate, FontWeightRate, HiddenValue } from '../consts';
 
 import FormattedAmount from './FormattedAmount.vue';
 
-export default defineComponent({
-  components: { FormattedAmount },
-  props: {
-    label: { default: '', type: String },
-    labelTooltip: { default: '', type: String },
-    value: { default: '', type: [String, Number] },
-    assetSymbol: { default: '', type: String },
-    isFormatted: { default: false, type: Boolean },
-    fiatValue: { default: '', type: String },
-    valueTooltip: { default: '', type: String },
-    /**
-     * Define directly that this field displays value which can be hidden by hide balances button.
-     */
-    valueCanBeHidden: { default: false, type: Boolean },
-  },
-  data() {
-    return {
-      HiddenValue,
-    };
-  },
-  computed: {
-    shouldBalanceBeHidden(this: any) {
-      return useWalletStore(this.$pinia).shouldBalanceBeHidden;
-    },
-    normalizedValue(this: any): string {
-      if (this.value === null || this.value === undefined) {
-        return '';
-      }
+const props = withDefaults(
+  defineProps<{
+    label?: string;
+    labelTooltip?: string;
+    value?: string | number | null;
+    assetSymbol?: string;
+    isFormatted?: boolean;
+    fiatValue?: string;
+    valueTooltip?: string;
+    valueCanBeHidden?: boolean;
+  }>(),
+  {
+    label: '',
+    labelTooltip: '',
+    value: '',
+    assetSymbol: '',
+    isFormatted: false,
+    fiatValue: '',
+    valueTooltip: '',
+    valueCanBeHidden: false,
+  }
+);
 
-      if (typeof this.value === 'string') {
-        return this.value;
-      }
+const walletStore = useWalletStore();
+const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
+const normalizedValue = computed(() => {
+  if (props.value === null || props.value === undefined) {
+    return '';
+  }
 
-      return String(this.value);
-    },
-    hasInvalidValue(this: any): boolean {
-      return ['NaN', 'Infinity', '-Infinity'].includes(this.normalizedValue);
-    },
-    isValueExists(this: any): boolean {
-      if (this.hasInvalidValue) {
-        return false;
-      }
+  if (typeof props.value === 'string') {
+    return props.value;
+  }
 
-      return this.normalizedValue.trim().length > 0;
-    },
-    formattedFontSize(this: any): Nullable<FontSizeRate> {
-      return this.isFormatted ? FontSizeRate.MEDIUM : null;
-    },
-    formattedFontWeight(this: any): Nullable<FontWeightRate> {
-      return this.isFormatted ? FontWeightRate.SMALL : null;
-    },
-    tooltipOrTemplate(this: any): string {
-      return this.valueTooltip ? 's-tooltip' : 'span';
-    },
-  },
+  return String(props.value);
 });
+const hasInvalidValue = computed(() => ['NaN', 'Infinity', '-Infinity'].includes(normalizedValue.value));
+const isValueExists = computed(() => !hasInvalidValue.value && normalizedValue.value.trim().length > 0);
+const formattedFontSize = computed<Nullable<FontSizeRate>>(() => (props.isFormatted ? FontSizeRate.MEDIUM : null));
+const formattedFontWeight = computed<Nullable<FontWeightRate>>(() => (props.isFormatted ? FontWeightRate.SMALL : null));
+const tooltipOrTemplate = computed(() => (props.valueTooltip ? 's-tooltip' : 'span'));
 </script>
 
 <style lang="scss">

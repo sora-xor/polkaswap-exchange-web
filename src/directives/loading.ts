@@ -1,9 +1,10 @@
-import { SSpinner } from '@soramitsu-ui/ui';
-import { createVNode, type Directive, render } from 'vue';
+import type { Directive } from 'vue';
 
 const HOST_CLASS = 'app-loading-overlay__host';
 const OVERLAY_CLASS = 'app-loading-overlay';
 const SPINNER_CLASS = 'app-loading-overlay__spinner';
+const LEGACY_OVERLAY_CLASS = 'el-loading-mask';
+const LEGACY_SPINNER_CLASS = 'el-loading-spinner';
 
 interface LoadingState {
   overlay: HTMLDivElement;
@@ -16,14 +17,11 @@ type LoadingHTMLElement = HTMLElement & { __loadingState__?: LoadingState };
 
 function createOverlay(): LoadingState {
   const overlay = document.createElement('div');
-  overlay.className = OVERLAY_CLASS;
+  overlay.className = `${OVERLAY_CLASS} ${LEGACY_OVERLAY_CLASS}`;
 
   const spinnerMount = document.createElement('div');
-  spinnerMount.className = SPINNER_CLASS;
+  spinnerMount.className = `${SPINNER_CLASS} ${LEGACY_SPINNER_CLASS}`;
   overlay.appendChild(spinnerMount);
-
-  const spinnerVNode = createVNode(SSpinner, { size: 'var(--s-size-medium)', width: 5 });
-  render(spinnerVNode, spinnerMount);
 
   return {
     overlay,
@@ -44,7 +42,7 @@ function ensureHostClass(el: LoadingHTMLElement, state: LoadingState): void {
   const style = window.getComputedStyle(el);
   state.originalPosition = el.style.position;
 
-  if (style.position === 'static') {
+  if (!style.position || style.position === 'static') {
     el.classList.add(HOST_CLASS);
     state.addedHostClass = true;
   }
@@ -85,7 +83,6 @@ const loadingDirective: Directive<LoadingHTMLElement, boolean> = {
       state.overlay.parentElement.removeChild(state.overlay);
     }
     resetHostClass(el, state);
-    render(null, state.spinnerMount);
     delete el.__loadingState__;
   },
 };

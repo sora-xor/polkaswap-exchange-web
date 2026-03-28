@@ -1,15 +1,19 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const delayMock = vi.hoisted(() => vi.fn(async () => undefined));
 
-vi.mock('@/util', () => ({
+vi.mock('@/lib/soraneo-wallet/src/util', () => ({
   delay: delayMock,
 }));
 
 import { useLoading } from '@/lib/soraneo-wallet/src/composables/useLoading';
 
-describe('wallet useLoading composable', () => {
-  it('retries withChainApi when api getter throws before connection is ready', async () => {
+describe('useLoading', () => {
+  beforeEach(() => {
+    delayMock.mockClear();
+  });
+
+  it('retries withChainApi when chain api getter throws during connection setup', async () => {
     let calls = 0;
     const chainApi = {
       get api() {
@@ -25,7 +29,7 @@ describe('wallet useLoading composable', () => {
     } as any;
 
     const { withChainApi } = useLoading();
-    const handler = vi.fn(async () => 'ok');
+    const handler = vi.fn(async () => undefined);
 
     await withChainApi(chainApi, handler);
 

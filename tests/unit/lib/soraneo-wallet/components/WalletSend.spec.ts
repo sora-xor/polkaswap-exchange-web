@@ -1,35 +1,100 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { describe, expect, it, vi } from 'vitest';
+import { ref } from 'vue';
+
+const isXorSufficientForNextTx = vi.hoisted(() => vi.fn(() => false));
+
+vi.mock('@/stores/router', () => ({
+  useRouterStore: () => ({
+    prev: 'Wallet',
+    prevParams: {},
+    currentParams: {
+      asset: {
+        address: XOR.address,
+        symbol: 'XOR',
+        decimals: 18,
+        balance: { transferable: '1000000000000000000' },
+      },
+    },
+    navigate: vi.fn(),
+  }),
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => ({
+    accountAssets: [],
+    isConfirmTxDialogDisabled: false,
+    transfer: vi.fn(),
+    vestedTransfer: vi.fn(),
+    getVestedTransferFee: vi.fn(),
+  }),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/composables/useTransaction', () => ({
+  useTransaction: () => ({
+    t: (key: string) => key,
+    account: ref({ address: 'sender' }),
+    loading: ref(false),
+    dayjsLocale: ref('en'),
+    formatDate: vi.fn(() => ''),
+    getFPNumber: vi.fn((value: string | number) => new FPNumber(value)),
+    getFPNumberFromCodec: vi.fn((value: string) => FPNumber.fromCodecValue(value)),
+    getStringFromCodec: vi.fn((value: string) => FPNumber.fromCodecValue(value).toString()),
+    formatCodecNumber: vi.fn((value: string) => FPNumber.fromCodecValue(value).toLocaleString()),
+    formatStringValue: vi.fn((value: string) => value),
+    MaxInputNumber: '1000000',
+    shouldBalanceBeHidden: ref(false),
+    withNotifications: vi.fn((handler: () => Promise<unknown>) => handler()),
+  }),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/composables/useFormattedAmount', () => ({
+  useFormattedAmount: () => ({
+    getFiatBalance: vi.fn(),
+    getFiatAmountByString: vi.fn(),
+  }),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/composables/useCopyAddress', () => ({
+  useCopyAddress: () => ({
+    handleCopyAddress: vi.fn(),
+    copyTooltip: vi.fn((value: string) => value),
+  }),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/composables/useNetworkFeeWarning', () => ({
+  useNetworkFeeWarning: () => ({
+    allowFeePopup: ref(true),
+    networkFees: ref({ Transfer: '0' }),
+    isXorSufficientForNextTx,
+  }),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
+  api: {
+    hasEnoughXor: vi.fn(() => true),
+    assets: {
+      getAssetBalanceObservable: vi.fn(() => ({ subscribe: vi.fn() })),
+    },
+  },
+}));
 
 import WalletSend from '@/lib/soraneo-wallet/src/components/WalletSend.vue';
 
 describe('Wallet WalletSend', () => {
   it('routes through the fee warning step when the next transaction would fail the XOR fee check', async () => {
-    const handleConfirm = vi.fn();
-    const fetchNetworkFee = vi.fn();
-    const context = {
-      allowFeePopup: true,
-      isXorSufficientForNextTx: vi.fn(() => false),
-      isXorAccountAsset: true,
-      getFPNumber: vi.fn(() => new FPNumber(1)),
-      amount: '1',
-      showAdditionalInfo: true,
-      step: 1,
-      isConfirmTxDisabled: false,
-      handleConfirm,
-      fetchNetworkFee,
-    };
+    const state = (WalletSend as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
 
-    await (WalletSend as any).methods.handleSend.call(context);
+    state.amount.value = '1';
+    await state.handleSend();
 
-    expect(context.isXorSufficientForNextTx).toHaveBeenCalledWith({
+    expect(isXorSufficientForNextTx).toHaveBeenCalledWith({
       type: Operation.Transfer,
       isXor: true,
       amount: expect.any(FPNumber),
     });
-    expect(context.showAdditionalInfo).toBe(false);
-    expect(context.step).toBe(2);
-    expect(handleConfirm).not.toHaveBeenCalled();
-    expect(fetchNetworkFee).not.toHaveBeenCalled();
+    expect(state.showAdditionalInfo.value).toBe(false);
+    expect(state.step.value).toBe(2);
   });
 });

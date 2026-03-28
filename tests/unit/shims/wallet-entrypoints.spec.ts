@@ -25,6 +25,7 @@ describe('wallet app shims', () => {
     const servicesShim = await import('@/shims/wallet-services');
     const currencyServiceModule = await import('@/lib/soraneo-wallet/src/services/currency');
     const walletShim = await import('@/shims/wallet');
+    const walletModule = await import('@/lib/soraneo-wallet/src/index.ts');
 
     expect(apiShim.api).toBe(apiModule.api);
     expect(apiShim.connection).toBe(apiModule.connection);
@@ -41,5 +42,7 @@ describe('wallet app shims', () => {
     expect(translationShim.useTranslation).toBe(translationModule.useTranslation);
     expect(servicesShim.CurrencyExchangeRateService).toBe(currencyServiceModule.CurrencyExchangeRateService);
     expect(walletShim.en).toBeDefined();
+    expect(walletShim.default).toEqual(expect.objectContaining({ install: expect.any(Function) }));
+    expect(walletModule.default).toEqual(expect.objectContaining({ install: expect.any(Function) }));
   });
 });

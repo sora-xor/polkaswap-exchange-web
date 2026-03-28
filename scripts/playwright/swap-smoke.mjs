@@ -9,7 +9,11 @@ const readButtonText = async (button) => ((await button.innerText().catch(() => 
 
 const run = async () => {
   const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  await context.addInitScript(() => {
+    localStorage.setItem('dexSettings.disclaimerApprove', 'true');
+  });
+  const page = await context.newPage();
   const issues = [];
   const errors = [];
 
@@ -126,6 +130,7 @@ const run = async () => {
   }
 
   await page.screenshot({ path: 'output/playwright/swap-smoke.png', fullPage: true });
+  await context.close();
   await browser.close();
 
   const report = {

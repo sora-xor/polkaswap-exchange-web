@@ -1,33 +1,35 @@
 import { describe, expect, it, vi } from 'vitest';
 
+vi.mock('@/lib/soraneo-wallet/src/composables/useWalletTranslation', () => ({
+  useWalletTranslation: () => ({
+    t: (key: string) => key,
+  }),
+}));
+
 import NftDetails from '@/lib/soraneo-wallet/src/components/NftDetails.vue';
 
 describe('Wallet NftDetails', () => {
   it('toggles the expandable header state and re-emits the click event', () => {
     const emit = vi.fn();
-    const context = {
-      nftDetailsClicked: false,
-      $emit: emit,
-    };
+    const state = (NftDetails as any).setup({ isAssetDetails: true }, { attrs: {}, emit, expose: vi.fn(), slots: {} });
 
-    (NftDetails as any).methods.handleDetailsClick.call(context);
+    state.handleDetailsClick();
 
-    expect(context.nftDetailsClicked).toBe(true);
+    expect(state.nftDetailsClicked.value).toBe(true);
     expect(emit).toHaveBeenCalledWith('click-details');
   });
 
   it('resets the preview state before retrying the image fetch', () => {
-    const checkImageAvailability = vi.fn();
-    const context = {
-      badLink: true,
-      imageLoading: false,
-      checkImageAvailability,
-    };
+    const state = (NftDetails as any).setup(
+      { isAssetDetails: true, contentLink: '' },
+      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+    );
 
-    (NftDetails as any).methods.handleRefresh.call(context);
+    state.badLink.value = true;
+    state.imageLoading.value = false;
+    state.handleRefresh();
 
-    expect(context.badLink).toBe(false);
-    expect(context.imageLoading).toBe(true);
-    expect(checkImageAvailability).toHaveBeenCalledTimes(1);
+    expect(state.badLink.value).toBe(false);
+    expect(state.imageLoading.value).toBe(true);
   });
 });

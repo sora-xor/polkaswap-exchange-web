@@ -94,6 +94,8 @@ interface Props {
   describedBy?: string | null;
 }
 
+defineOptions({ inheritAttrs: false });
+
 const props = withDefaults(defineProps<Props>(), {
   teleportTo: 'body',
   modalTransition: 's-modal__modal-transition',

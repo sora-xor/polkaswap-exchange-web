@@ -44,8 +44,11 @@
 import { TransactionStatus } from '@sora-substrate/sdk';
 import debounce from 'lodash/fp/debounce';
 import isEmpty from 'lodash/fp/isEmpty';
-import { defineComponent, type PropType } from 'vue';
+import { computed, onBeforeUnmount, onMounted, watch, type PropType } from 'vue';
 
+import { useEthBridgeTransaction } from '../composables/useEthBridgeTransaction';
+import { usePaginationSearch } from '../composables/usePaginationSearch';
+import { useTransaction } from '../composables/useTransaction';
 import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 
@@ -55,10 +58,6 @@ import { getStatusIcon, getStatusClass } from '../util';
 
 import HistoryPagination from './HistoryPagination.vue';
 import SearchInput from './Input/SearchInput.vue';
-import EthBridgeTransactionMixin from './mixins/EthBridgeTransactionMixin';
-import LoadingMixin from './mixins/LoadingMixin';
-import PaginationSearchMixin from './mixins/PaginationSearchMixin';
-import TransactionMixin from './mixins/TransactionMixin';
 
 import type { Route } from '@/stores/router/types';
 import type { ExternalHistoryParams, HistoryQuery } from '../types/history';
@@ -69,280 +68,283 @@ const isAssetSymbol = (value: string) => value.length > 1 && value.length < 8;
 const isAccountAddress = (value: string) => value.startsWith('cn') && value.length === 49;
 const isHexAddress = (value: string) => value.startsWith('0x') && value.length === 66;
 
-export default defineComponent({
+export default {
   components: {
     SearchInput,
     HistoryPagination,
   },
-  mixins: [LoadingMixin, TransactionMixin, PaginationSearchMixin, EthBridgeTransactionMixin],
   props: {
     asset: {
       default: null,
       type: Object as PropType<Nullable<AccountAsset>>,
     },
   },
-  data() {
-    return {
-      DateFormat: 'll LT',
-      pageAmount: 8,
-      updateCommonHistory: (() => Promise.resolve()) as () => Promise<void>,
+  setup(props) {
+    const walletStore = useWalletStore();
+    const routerStore = useRouterStore();
+    const { t, formatDate, getTitle, loading, withLoading } = useTransaction();
+    const { isEthBridgeTx, isEthBridgeTxToCompleted, isEthBridgeTxFromFailed, isEthBridgeTxToFailed } =
+      useEthBridgeTransaction();
+    const {
+      currentPage,
+      pageAmount,
+      query,
+      searchQuery,
+      isLtrDirection,
+      resetPage,
+      resetSearch,
+      sortTransactions,
+      getPageItems,
+    } = usePaginationSearch();
+
+    const DateFormat = 'll LT';
+    pageAmount.value = 8;
+
+    const assets = computed(() => walletStore.assets);
+    const history = computed(() => walletStore.history);
+    const externalHistory = computed(() => walletStore.externalHistory);
+    const externalHistoryUpdates = computed(() => walletStore.externalHistoryUpdates);
+    const externalHistoryTotal = computed(() => walletStore.externalHistoryTotal);
+    const account = computed(() => walletStore.account);
+    const assetAddress = computed(() => props.asset?.address || '');
+
+    const getPrefilteredHistory = (historyMap: AccountHistory<HistoryItem>): HistoryItem[] => {
+      const historyList = Object.values(historyMap);
+
+      if (!assetAddress.value) return historyList;
+
+      return historyList.filter((item) => {
+        return [item.assetAddress, item.asset2Address].includes(assetAddress.value);
+      });
     };
-  },
-  computed: {
-    assets(this: any) {
-      return useWalletStore(this.$pinia).assets;
-    },
-    history(this: any) {
-      return useWalletStore(this.$pinia).history;
-    },
-    externalHistory(this: any) {
-      return useWalletStore(this.$pinia).externalHistory;
-    },
-    externalHistoryUpdates(this: any) {
-      return useWalletStore(this.$pinia).externalHistoryUpdates;
-    },
-    externalHistoryTotal(this: any) {
-      return useWalletStore(this.$pinia).externalHistoryTotal;
-    },
-    account(this: any) {
-      return useWalletStore(this.$pinia).account;
-    },
-    routerStore(this: any) {
-      return useRouterStore(this.$pinia);
-    },
-    assetAddress(this: any): string {
-      return (this.asset && this.asset.address) || '';
-    },
-    internalHistoryPrefiltered(this: any) {
-      return this.getPrefilteredHistory(this.history as AccountHistory<HistoryItem>);
-    },
-    externalHistoryUpdatesPrefiltered(this: any) {
-      return this.getPrefilteredHistory(this.externalHistoryUpdates as AccountHistory<HistoryItem>);
-    },
-    filteredInternalHistory(this: any): Array<History> {
-      return this.getFilteredHistory(this.internalHistoryPrefiltered);
-    },
-    filteredExternalHistory(this: any): Array<History> {
-      return Object.values(this.externalHistory as AccountHistory<HistoryItem>);
-    },
-    filteredExternalHistoryUpdates(this: any): Array<History> {
-      return this.getFilteredHistory(this.externalHistoryUpdatesPrefiltered);
-    },
-    transactions(this: any): Array<History> {
-      const merged = [
-        ...this.filteredInternalHistory,
-        ...this.filteredExternalHistory,
-        ...this.filteredExternalHistoryUpdates,
-      ];
-      const sorted = this.sortTransactions(merged, this.isLtrDirection);
 
-      const end = this.isLtrDirection
-        ? Math.min(this.currentPage * this.pageAmount, sorted.length)
-        : Math.max((this.lastPage - this.currentPage + 1) * this.pageAmount - this.directionShift, 0);
+    const getFilteredHistory = (items: Array<History>): Array<History> => {
+      if (!searchQuery.value) {
+        return items;
+      }
 
-      const start = this.isLtrDirection
-        ? Math.max(end - this.pageAmount, 0)
-        : Math.max((this.lastPage - this.currentPage) * this.pageAmount - this.directionShift, 0);
+      const queryValue = searchQuery.value.toLowerCase();
 
-      return this.sortTransactions(this.getPageItems(sorted, start, end), true);
-    },
-    total(this: any): number {
-      return (
-        this.externalHistoryTotal + this.filteredInternalHistory.length + this.filteredExternalHistoryUpdates.length
+      return items.filter(
+        (item) =>
+          `${item.assetAddress}`.toLowerCase() === queryValue ||
+          `${item.asset2Address}`.toLowerCase() === queryValue ||
+          `${item.symbol}`.toLowerCase().includes(queryValue) ||
+          `${item.symbol2}`.toLowerCase().includes(queryValue) ||
+          `${item.blockId}`.toLowerCase().includes(queryValue) ||
+          `${item.from}`.toLowerCase() === queryValue ||
+          `${item.to}`.toLowerCase() === queryValue ||
+          t(`operations.${item.type}`).toLowerCase().includes(queryValue)
       );
-    },
-    hasVisibleTransactions(this: any): boolean {
-      return !!this.transactions.length;
-    },
-    hasTransactions(this: any): boolean {
-      return this.hasVisibleTransactions || !!this.searchQuery;
-    },
-    queryCriterias(this: any): HistoryQuery {
-      if (!this.searchQuery) return {};
+    };
 
-      const query: HistoryQuery = {};
+    const internalHistoryPrefiltered = computed(() =>
+      getPrefilteredHistory(history.value as AccountHistory<HistoryItem>)
+    );
+    const externalHistoryUpdatesPrefiltered = computed(() =>
+      getPrefilteredHistory(externalHistoryUpdates.value as AccountHistory<HistoryItem>)
+    );
+    const filteredInternalHistory = computed(() => getFilteredHistory(internalHistoryPrefiltered.value));
+    const filteredExternalHistory = computed(() => Object.values(externalHistory.value as AccountHistory<HistoryItem>));
+    const filteredExternalHistoryUpdates = computed(() => getFilteredHistory(externalHistoryUpdatesPrefiltered.value));
+    const total = computed(
+      () =>
+        externalHistoryTotal.value + filteredInternalHistory.value.length + filteredExternalHistoryUpdates.value.length
+    );
+    const lastPage = computed(() => (total.value ? Math.ceil(total.value / pageAmount.value) : 1));
+    const directionShift = computed(() => {
+      const lastPageAmount = total.value % pageAmount.value || pageAmount.value;
+      return isLtrDirection.value ? 0 : pageAmount.value - lastPageAmount;
+    });
+    const transactions = computed<Array<History>>(() => {
+      const merged = [
+        ...filteredInternalHistory.value,
+        ...filteredExternalHistory.value,
+        ...filteredExternalHistoryUpdates.value,
+      ];
+      const sorted = sortTransactions(merged, isLtrDirection.value);
+
+      const end = isLtrDirection.value
+        ? Math.min(currentPage.value * pageAmount.value, sorted.length)
+        : Math.max((lastPage.value - currentPage.value + 1) * pageAmount.value - directionShift.value, 0);
+
+      const start = isLtrDirection.value
+        ? Math.max(end - pageAmount.value, 0)
+        : Math.max((lastPage.value - currentPage.value) * pageAmount.value - directionShift.value, 0);
+
+      return sortTransactions(getPageItems(sorted, start, end), true);
+    });
+    const hasVisibleTransactions = computed(() => !!transactions.value.length);
+    const hasTransactions = computed(() => hasVisibleTransactions.value || !!searchQuery.value);
+    const queryCriterias = computed<HistoryQuery>(() => {
+      if (!searchQuery.value) return {};
+
+      const queryParams: HistoryQuery = {};
       const indexer = getCurrentIndexer();
 
       const operationNames = indexer.services.dataParser.supportedOperations.filter((operation) =>
-        this.t(`operations.${operation}`).toLowerCase().includes(this.searchQuery.toLowerCase())
+        t(`operations.${operation}`).toLowerCase().includes(searchQuery.value.toLowerCase())
       );
 
-      if (operationNames.length) query.operationNames = operationNames;
+      if (operationNames.length) queryParams.operationNames = operationNames;
 
-      if (isAssetSymbol(this.searchQuery)) {
-        const assetsAddresses = (this.assets as Array<Asset>).reduce((buffer: Array<string>, asset) => {
-          if (asset.symbol.toLowerCase().includes(this.searchQuery.toLowerCase())) {
+      if (isAssetSymbol(searchQuery.value)) {
+        const assetsAddresses = (assets.value as Array<Asset>).reduce((buffer: Array<string>, asset) => {
+          if (asset.symbol.toLowerCase().includes(searchQuery.value.toLowerCase())) {
             buffer.push(asset.address);
           }
           return buffer;
         }, []);
 
         if (assetsAddresses.length) {
-          query.assetsAddresses = assetsAddresses;
+          queryParams.assetsAddresses = assetsAddresses;
         }
       }
 
-      if (isAccountAddress(this.searchQuery)) {
-        query.accountAddress = this.searchQuery;
+      if (isAccountAddress(searchQuery.value)) {
+        queryParams.accountAddress = searchQuery.value;
       }
 
-      if (isHexAddress(this.searchQuery)) {
-        query.hexAddress = this.searchQuery;
+      if (isHexAddress(searchQuery.value)) {
+        queryParams.hexAddress = searchQuery.value;
       }
 
-      return query;
-    },
-    isValidQuery(this: any): boolean {
-      return !(this.searchQuery && isEmpty(this.queryCriterias));
-    },
-  },
-  watch: {
-    async searchQuery(this: any): Promise<void> {
-      await this.updateHistoryBySearchQuery();
-    },
-  },
-  created(this: any): void {
-    this.updateCommonHistory = debounce(500)(() => this.updateHistory(1, true));
-  },
-  async mounted(this: any): Promise<void> {
-    this.saveExternalHistoryUpdates(true);
-    await this.updateHistory(1, true);
-  },
-  beforeUnmount(this: any): void {
-    this.saveExternalHistoryUpdates(false);
-    this.reset();
-  },
-  methods: {
-    resetExternalHistory(this: any) {
-      return useWalletStore(this.$pinia).resetExternalHistory();
-    },
-    saveExternalHistoryUpdates(this: any, flag: boolean) {
-      return useWalletStore(this.$pinia).saveExternalHistoryUpdates(flag);
-    },
-    getHistory(this: any) {
-      return useWalletStore(this.$pinia).getHistory();
-    },
-    setTxDetailsId(this: any, id: string) {
-      return useWalletStore(this.$pinia).setTxDetailsId(id);
-    },
-    getExternalHistory(this: any, params: ExternalHistoryParams) {
-      return useWalletStore(this.$pinia).getExternalHistory(params);
-    },
-    navigate(this: any, options: Route): void {
-      this.routerStore.navigate(options);
-    },
-    async updateHistoryBySearchQuery(this: any): Promise<void> {
-      await this.updateCommonHistory();
-    },
-    getPrefilteredHistory(this: any, history: AccountHistory<HistoryItem>): HistoryItem[] {
-      const historyList = Object.values(history);
+      return queryParams;
+    });
+    const isValidQuery = computed(() => !(searchQuery.value && isEmpty(queryCriterias.value)));
 
-      if (!this.assetAddress) return historyList;
+    const resetExternalHistory = () => walletStore.resetExternalHistory();
+    const saveExternalHistoryUpdates = (flag: boolean) => walletStore.saveExternalHistoryUpdates(flag);
+    const getHistory = () => walletStore.getHistory();
+    const setTxDetailsId = (id: string) => walletStore.setTxDetailsId(id);
+    const getExternalHistory = (params: ExternalHistoryParams) => walletStore.getExternalHistory(params);
+    const navigate = (options: Route): void => {
+      routerStore.navigate(options);
+    };
+    const reset = (): void => {
+      resetPage();
+      resetExternalHistory();
+    };
 
-      return historyList.filter((item) => {
-        return [item.assetAddress, item.asset2Address].includes(this.assetAddress);
-      });
-    },
-    reset(this: any): void {
-      this.resetPage();
-      this.resetExternalHistory();
-    },
-    getFilteredHistory(this: any, history: Array<History>): Array<History> {
-      if (!this.searchQuery) {
-        return history;
-      }
-
-      const query = this.searchQuery.toLowerCase();
-
-      return history.filter(
-        (item) =>
-          `${item.assetAddress}`.toLowerCase() === query ||
-          `${item.asset2Address}`.toLowerCase() === query ||
-          `${item.symbol}`.toLowerCase().includes(query) ||
-          `${item.symbol2}`.toLowerCase().includes(query) ||
-          `${item.blockId}`.toLowerCase().includes(query) ||
-          `${item.from}`.toLowerCase() === query ||
-          `${item.to}`.toLowerCase() === query ||
-          this.t(`operations.${item.type}`).toLowerCase().includes(query)
-      );
-    },
-    getStatus(this: any, item: HistoryItem): string {
+    const getStatus = (item: HistoryItem): string => {
       let status = 'success';
 
-      if (this.isErrorStatus(item)) {
+      if (isErrorStatus(item)) {
         status = TransactionStatus.Error;
-      } else if (!this.isFinalizedStatus(item)) {
+      } else if (!isFinalizedStatus(item)) {
         status = 'in_progress';
       }
 
       return status.toUpperCase();
-    },
-    getStatusClass(this: any, item: HistoryItem): string {
-      return getStatusClass(this.getStatus(item));
-    },
-    getStatusIcon(this: any, item: HistoryItem): string {
-      return getStatusIcon(this.getStatus(item));
-    },
-    isFinalizedStatus(this: any, item: HistoryItem): boolean {
-      if (this.isEthBridgeTx(item)) return this.isEthBridgeTxToCompleted(item);
+    };
+
+    const getStatusClassValue = (item: HistoryItem): string => getStatusClass(getStatus(item));
+    const getStatusIconValue = (item: HistoryItem): string => getStatusIcon(getStatus(item));
+    const isFinalizedStatus = (item: HistoryItem): boolean => {
+      if (isEthBridgeTx(item)) return isEthBridgeTxToCompleted(item);
 
       return [TransactionStatus.InBlock, TransactionStatus.Finalized].includes(item.status as TransactionStatus);
-    },
-    isErrorStatus(this: any, item: HistoryItem): boolean {
-      if (this.isEthBridgeTx(item)) return this.isEthBridgeTxFromFailed(item) || this.isEthBridgeTxToFailed(item);
+    };
+    const isErrorStatus = (item: HistoryItem): boolean => {
+      if (isEthBridgeTx(item)) return isEthBridgeTxFromFailed(item) || isEthBridgeTxToFailed(item);
 
       return [TransactionStatus.Error, TransactionStatus.Invalid].includes(item.status as TransactionStatus);
-    },
-    handleOpenTransactionDetails(this: any, id?: string): void {
+    };
+    const handleOpenTransactionDetails = (id?: string): void => {
       if (!id) {
-        this.navigate({ name: RouteNames.Wallet });
+        navigate({ name: RouteNames.Wallet });
       } else {
-        this.setTxDetailsId(id);
+        setTxDetailsId(id);
       }
-    },
-    async handlePaginationClick(this: any, button: PaginationButton): Promise<void> {
+    };
+    const updateHistory = async (page = 1, withReset = false): Promise<void> => {
+      await withLoading(async () => {
+        if (withReset) {
+          reset();
+        }
+        if (isValidQuery.value) {
+          await getExternalHistory({
+            page,
+            address: account.value.address,
+            assetAddress: assetAddress.value,
+            pageAmount: pageAmount.value,
+            query: queryCriterias.value,
+          } as ExternalHistoryParams);
+        }
+        getHistory();
+      });
+    };
+
+    const updateCommonHistory = debounce(500)(() => updateHistory(1, true));
+    const updateHistoryBySearchQuery = async (): Promise<void> => {
+      await updateCommonHistory();
+    };
+
+    const handlePaginationClick = async (button: PaginationButton): Promise<void> => {
       let current = 1;
 
       switch (button) {
         case PaginationButton.Prev:
-          current = this.currentPage - 1;
+          current = currentPage.value - 1;
           break;
         case PaginationButton.Next:
-          current = this.currentPage + 1;
-          if (current === this.lastPage) {
-            this.isLtrDirection = false;
+          current = currentPage.value + 1;
+          if (current === lastPage.value) {
+            isLtrDirection.value = false;
           }
           break;
         case PaginationButton.First:
-          this.isLtrDirection = true;
+          isLtrDirection.value = true;
           break;
         case PaginationButton.Last:
-          current = this.lastPage;
-          this.isLtrDirection = false;
+          current = lastPage.value;
+          isLtrDirection.value = false;
       }
 
-      await this.updateHistory(current);
-      this.currentPage = current;
-    },
-    async updateHistory(this: any, page = 1, withReset = false): Promise<void> {
-      await this.withLoading(async () => {
-        if (withReset) {
-          this.reset();
-        }
-        if (this.isValidQuery) {
-          await this.getExternalHistory({
-            page,
-            address: this.account.address,
-            assetAddress: this.assetAddress,
-            pageAmount: this.pageAmount,
-            query: this.queryCriterias,
-          } as ExternalHistoryParams);
-        }
-        this.getHistory();
-      });
-    },
+      await updateHistory(current);
+      currentPage.value = current;
+    };
+
+    watch(searchQuery, () => {
+      void updateHistoryBySearchQuery();
+    });
+
+    onMounted(() => {
+      void (async () => {
+        saveExternalHistoryUpdates(true);
+        await updateHistory(1, true);
+      })();
+    });
+
+    onBeforeUnmount(() => {
+      saveExternalHistoryUpdates(false);
+      reset();
+    });
+
+    return {
+      DateFormat,
+      t,
+      formatDate,
+      loading,
+      currentPage,
+      pageAmount,
+      query,
+      searchQuery,
+      lastPage,
+      transactions,
+      total,
+      hasVisibleTransactions,
+      hasTransactions,
+      handleOpenTransactionDetails,
+      handlePaginationClick,
+      getTitle,
+      getStatusClass: getStatusClassValue,
+      getStatusIcon: getStatusIconValue,
+      isFinalizedStatus,
+      resetSearch,
+    };
   },
-});
+};
 </script>
 
 <style lang="scss">

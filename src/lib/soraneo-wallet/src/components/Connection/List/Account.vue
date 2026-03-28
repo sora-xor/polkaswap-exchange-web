@@ -20,12 +20,12 @@
   </connection-items>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 
+import { useWalletTranslation } from '../../../composables/useWalletTranslation';
 import { api } from '../../../api';
 import WalletAccount from '../../Account/WalletAccount.vue';
-import TranslationMixin from '../../mixins/TranslationMixin';
 
 import ConnectionItems from './ConnectionItems.vue';
 
@@ -33,36 +33,40 @@ import type { AppWallet } from '../../../consts';
 import type { PolkadotJsAccount } from '../../../types/common';
 import type { WithConnectionApi } from '@sora-substrate/sdk';
 
-export default defineComponent({
-  components: {
-    ConnectionItems,
-    WalletAccount,
-  },
-  mixins: [TranslationMixin],
-  props: {
-    accounts: { default: () => [], type: Array as () => PolkadotJsAccount[] },
-    wallet: { default: '', type: String as () => AppWallet },
-    isConnected: { default: () => false, type: Function as () => (account: PolkadotJsAccount) => boolean },
-    chainApi: { default: () => api, type: Object as () => WithConnectionApi },
-  },
-  emits: ['select'],
-  computed: {
-    accountList(this: any) {
-      return this.accounts.map((account: PolkadotJsAccount) => {
-        const source = this.wallet;
-        const accountData = { ...account, source };
+const props = withDefaults(
+  defineProps<{
+    accounts?: PolkadotJsAccount[];
+    wallet?: AppWallet | '';
+    isConnected?: (account: PolkadotJsAccount) => boolean;
+    chainApi?: WithConnectionApi;
+  }>(),
+  {
+    accounts: () => [],
+    wallet: '',
+    isConnected: () => false,
+    chainApi: () => api,
+  }
+);
 
-        return {
-          account,
-          isConnected: this.isConnected(accountData),
-        };
-      });
-    },
-  },
-  methods: {
-    handleSelectAccount(this: any, account: PolkadotJsAccount, isConnected: boolean): void {
-      this.$emit('select', account, isConnected);
-    },
-  },
+const emit = defineEmits<{
+  select: [account: PolkadotJsAccount, isConnected: boolean];
+}>();
+
+const { t } = useWalletTranslation();
+
+const accountList = computed(() => {
+  return props.accounts.map((account: PolkadotJsAccount) => {
+    const source = props.wallet;
+    const accountData = { ...account, source };
+
+    return {
+      account,
+      isConnected: props.isConnected(accountData),
+    };
+  });
 });
+
+function handleSelectAccount(account: PolkadotJsAccount, isConnected: boolean): void {
+  emit('select', account, isConnected);
+}
 </script>

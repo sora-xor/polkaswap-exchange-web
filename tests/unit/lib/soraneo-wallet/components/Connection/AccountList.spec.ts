@@ -1,4 +1,19 @@
+import { ref } from 'vue';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/lib/soraneo-wallet/src/composables/useLoading', () => ({
+  useLoading: () => ({
+    loading: ref(false),
+    withLoading: vi.fn((handler: () => Promise<unknown>) => handler()),
+  }),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/composables/useNotification', () => ({
+  useNotification: () => ({
+    t: (key: string) => key,
+    withAppNotification: vi.fn((handler: () => Promise<unknown>) => handler()),
+  }),
+}));
 
 import AccountListStep from '@/lib/soraneo-wallet/src/components/Connection/Step/AccountList.vue';
 import { AccountActionTypes, AppWallet } from '@/lib/soraneo-wallet/src/consts';
@@ -18,35 +33,37 @@ describe('Wallet AccountListStep', () => {
       address: 'address-1',
       source: AppWallet.Sora,
     } as PolkadotJsAccount;
+    const state = (AccountListStep as any).setup(
+      {
+        chainApi: {},
+      },
+      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+    );
 
-    const context = {
-      selectedAccount: null,
-      accountDeleteVisibility: false,
-      handleDeleteAccount: vi.fn(),
-    };
+    state.handleAccountAction(AccountActionTypes.Delete, account);
 
-    (AccountListStep as any).methods.handleAccountAction.call(context, AccountActionTypes.Delete, account);
-
-    expect(context.selectedAccount).toEqual(account);
-    expect(context.accountDeleteVisibility).toBe(true);
-    expect(context.handleDeleteAccount).not.toHaveBeenCalled();
+    expect(state.selectedAccount.value).toEqual(account);
+    expect(state.accountDeleteVisibility.value).toBe(true);
   });
 
-  it('skips the delete dialog when the popup preference is disabled', () => {
+  it('skips the delete dialog when the popup preference is disabled', async () => {
     vi.spyOn(settingsStorage, 'get').mockReturnValue('false');
+    const deleteAccount = vi.fn(async () => undefined);
+    const state = (AccountListStep as any).setup(
+      {
+        chainApi: {},
+        deleteAccount,
+      },
+      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+    );
 
-    const context = {
-      selectedAccount: null,
-      accountDeleteVisibility: false,
-      handleDeleteAccount: vi.fn(),
-    };
-
-    (AccountListStep as any).methods.handleAccountAction.call(context, AccountActionTypes.Delete, {
+    state.handleAccountAction(AccountActionTypes.Delete, {
       address: 'address-2',
       source: AppWallet.Sora,
     });
+    await Promise.resolve();
 
-    expect(context.accountDeleteVisibility).toBe(false);
-    expect(context.handleDeleteAccount).toHaveBeenCalledTimes(1);
+    expect(state.accountDeleteVisibility.value).toBe(false);
+    expect(deleteAccount).toHaveBeenCalledWith('address-2');
   });
 });

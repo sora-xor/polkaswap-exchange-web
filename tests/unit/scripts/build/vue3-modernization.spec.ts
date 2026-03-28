@@ -9,6 +9,8 @@ const srcRoot = path.join(repoRoot, 'src');
 const mixinsRoot = path.join(srcRoot, 'components', 'mixins');
 const compatRoot = path.join(srcRoot, 'components', 'compat');
 const walletLibRoot = path.join(srcRoot, 'lib', 'soraneo-wallet', 'lib');
+const walletSrcRoot = path.join(srcRoot, 'lib', 'soraneo-wallet', 'src');
+const walletMixinsRoot = path.join(walletSrcRoot, 'components', 'mixins');
 const packageJsonPath = path.join(repoRoot, 'package.json');
 const tsconfigPath = path.join(repoRoot, 'tsconfig.json');
 const viteConfigPath = path.join(repoRoot, 'vite.config.mjs');
@@ -33,6 +35,7 @@ const blockedPatterns = [
   '@/stores/compat',
   '@wallet/src',
 ];
+const appOwnedSourceExcludes = [`${path.sep}stubs${path.sep}`, `${path.sep}test-utils${path.sep}`];
 
 const collectFiles = async (
   directory: string,
@@ -67,6 +70,42 @@ const collectSourceFiles = async (directory: string): Promise<string[]> =>
   collectFiles(directory, (name) => /\.(ts|vue)$/.test(name));
 
 describe('Vue 3 modernization', () => {
+  it('keeps app and shared Vue source on Composition API instead of legacy Options API wrappers', async () => {
+    const files = await collectFiles(srcRoot, (name) => name.endsWith('.vue'), appOwnedSourceExcludes);
+    const optionsApiComponents: string[] = [];
+
+    for (const file of files) {
+      const source = await readFile(file, 'utf8');
+
+      if (
+        /export\s+default\s+defineComponent\s*\(/.test(source) ||
+        /^ {2}(?:data|computed|methods|watch)\s*:/m.test(source)
+      ) {
+        optionsApiComponents.push(path.relative(repoRoot, file));
+      }
+    }
+
+    expect(optionsApiComponents).toEqual([]);
+  });
+
+  it('keeps vendored wallet Vue source on Composition API instead of legacy Options API wrappers', async () => {
+    const files = await collectFiles(walletSrcRoot, (name) => name.endsWith('.vue'), []);
+    const optionsApiComponents: string[] = [];
+
+    for (const file of files) {
+      const source = await readFile(file, 'utf8');
+
+      if (
+        /export\s+default\s+defineComponent\s*\(/.test(source) ||
+        /^ {2}(?:data|computed|methods|watch)\s*:/m.test(source)
+      ) {
+        optionsApiComponents.push(path.relative(repoRoot, file));
+      }
+    }
+
+    expect(optionsApiComponents).toEqual([]);
+  });
+
   it('keeps app-owned source free of class/decorator imports', async () => {
     const files = await collectSourceFiles(srcRoot);
     const violations: string[] = [];
@@ -210,6 +249,31 @@ describe('Vue 3 modernization', () => {
     const files = await collectSourceFiles(mixinsRoot).catch(() => []);
 
     expect(files.map((file) => path.relative(repoRoot, file))).toEqual([]);
+  });
+
+  it('does not keep vendored wallet mixin files under src/lib/soraneo-wallet/src/components/mixins', async () => {
+    const files = await collectSourceFiles(walletMixinsRoot).catch(() => []);
+
+    expect(files.map((file) => path.relative(repoRoot, file))).toEqual([]);
+  });
+
+  it('keeps vendored wallet source off Vue mixin registration and mixin imports', async () => {
+    const files = await collectSourceFiles(walletSrcRoot);
+    const violations: string[] = [];
+
+    for (const file of files) {
+      const source = await readFile(file, 'utf8');
+
+      if (
+        /mixins:\s*\[/.test(source) ||
+        /components\/mixins\//.test(source) ||
+        /from ['"][^'"]*\/mixins\//.test(source)
+      ) {
+        violations.push(path.relative(repoRoot, file));
+      }
+    }
+
+    expect(violations).toEqual([]);
   });
 
   it('does not keep app-owned compat adapter files under src/components/compat', async () => {

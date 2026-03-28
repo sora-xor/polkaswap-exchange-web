@@ -60,55 +60,66 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
+<script setup lang="ts">
+import { useWalletTranslation } from '../../../composables/useWalletTranslation';
 import AccountCard from '../../Account/AccountCard.vue';
-import TranslationMixin from '../../mixins/TranslationMixin';
 import { isProviderConnected } from '../utils';
 
 import ConnectionItems from './ConnectionItems.vue';
 
 import type { Wallet } from '../../../services/wallet/types';
 
-export default defineComponent({
-  components: {
-    ConnectionItems,
-    AccountCard,
-  },
-  mixins: [TranslationMixin],
-  props: {
-    wallets: { default: () => [], type: Array as () => Wallet[] },
-    recommendedWallets: { default: () => [], type: Array as () => string[] },
-    connectedWallet: { default: '', type: String },
-    selectedWallet: { default: '', type: String },
-    selectedWalletLoading: { default: false, type: Boolean },
-    showDisclaimer: { default: false, type: Boolean },
-  },
-  emits: ['select', 'disconnect'],
-  methods: {
-    isSelectedWalletLoading(this: any, wallet: Wallet): boolean {
-      return wallet.extensionName === this.selectedWallet && this.selectedWalletLoading;
-    },
-    isConnectedWallet(this: any, wallet: Wallet): boolean {
-      return wallet.extensionName === this.connectedWallet;
-    },
-    isRecommendedWallet(this: any, wallet: Wallet): boolean {
-      return this.recommendedWallets.includes(wallet.extensionName);
-    },
-    hasDisconnectAction(wallet: Wallet): boolean {
-      return isProviderConnected(wallet?.provider as Nullable<{ isConnected?: unknown }>);
-    },
-    handleSelect(this: any, wallet: Wallet): void {
-      if (!this.isSelectedWalletLoading(wallet)) {
-        this.$emit('select', wallet);
-      }
-    },
-    handleDisconnect(this: any, wallet: Wallet): void {
-      this.$emit('disconnect', wallet);
-    },
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    wallets?: Wallet[];
+    recommendedWallets?: string[];
+    connectedWallet?: string;
+    selectedWallet?: string;
+    selectedWalletLoading?: boolean;
+    showDisclaimer?: boolean;
+  }>(),
+  {
+    wallets: () => [],
+    recommendedWallets: () => [],
+    connectedWallet: '',
+    selectedWallet: '',
+    selectedWalletLoading: false,
+    showDisclaimer: false,
+  }
+);
+
+const emit = defineEmits<{
+  select: [wallet: Wallet];
+  disconnect: [wallet: Wallet];
+}>();
+
+const { t } = useWalletTranslation();
+
+function isSelectedWalletLoading(wallet: Wallet): boolean {
+  return wallet.extensionName === props.selectedWallet && props.selectedWalletLoading;
+}
+
+function isConnectedWallet(wallet: Wallet): boolean {
+  return wallet.extensionName === props.connectedWallet;
+}
+
+function isRecommendedWallet(wallet: Wallet): boolean {
+  return props.recommendedWallets.includes(wallet.extensionName);
+}
+
+function hasDisconnectAction(wallet: Wallet): boolean {
+  return isProviderConnected(wallet?.provider as Nullable<{ isConnected?: unknown }>);
+}
+
+function handleSelect(wallet: Wallet): void {
+  if (!isSelectedWalletLoading(wallet)) {
+    emit('select', wallet);
+  }
+}
+
+function handleDisconnect(wallet: Wallet): void {
+  emit('disconnect', wallet);
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,20 @@
 import { describe, expect, it, vi } from 'vitest';
 
+const navigate = vi.hoisted(() => vi.fn());
+
+vi.mock('@/stores/router', () => ({
+  useRouterStore: () => ({
+    navigate,
+  }),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/composables/useWalletTranslation', () => ({
+  useWalletTranslation: () => ({
+    t: (key: string) => key,
+    TranslationConsts: { NFT: 'NFT' },
+  }),
+}));
+
 vi.mock('@/lib/soraneo-wallet/src/components/AddAsset/AddAssetTokenTab.vue', () => ({
   default: { name: 'AddAssetTokenTabStub' },
 }));
@@ -11,30 +26,34 @@ vi.mock('@/lib/soraneo-wallet/src/components/AddAsset/AddAssetNftTab.vue', () =>
 import AddAsset from '@/lib/soraneo-wallet/src/components/AddAsset/AddAsset.vue';
 import { RouteNames } from '@/lib/soraneo-wallet/src/consts';
 
+const createState = () =>
+  (AddAsset as any).setup(
+    {},
+    {
+      attrs: {},
+      emit: vi.fn(),
+      expose: vi.fn(),
+      slots: {},
+    }
+  );
+
 describe('Wallet AddAsset', () => {
   it('reopens the tabs instead of leaving the flow when details are shown', () => {
-    const navigate = vi.fn();
-    const context = {
-      showTabs: false,
-      tokenDetailsPageOpened: true,
-      navigate,
-    };
+    const state = createState();
 
-    (AddAsset as any).methods.handleBack.call(context);
+    state.showTabs.value = false;
+    state.tokenDetailsPageOpened.value = true;
+    state.handleBack();
 
-    expect(context.showTabs).toBe(true);
-    expect(context.tokenDetailsPageOpened).toBe(false);
+    expect(state.showTabs.value).toBe(true);
+    expect(state.tokenDetailsPageOpened.value).toBe(false);
     expect(navigate).not.toHaveBeenCalled();
   });
 
   it('navigates back to the wallet screen when the tabs are already visible', () => {
-    const navigate = vi.fn();
+    const state = createState();
 
-    (AddAsset as any).methods.handleBack.call({
-      showTabs: true,
-      tokenDetailsPageOpened: false,
-      navigate,
-    });
+    state.handleBack();
 
     expect(navigate).toHaveBeenCalledWith({ name: RouteNames.Wallet });
   });

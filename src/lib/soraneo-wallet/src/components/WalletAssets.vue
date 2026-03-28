@@ -100,9 +100,12 @@
 <script lang="ts">
 import { api, FPNumber } from '@sora-substrate/sdk';
 import isEmpty from 'lodash/fp/isEmpty';
-import { defineComponent } from 'vue';
+import { computed } from 'vue';
 import draggable from 'vuedraggable';
 
+import { useFormattedAmount } from '../composables/useFormattedAmount';
+import { useLoading } from '../composables/useLoading';
+import { useWalletTranslation } from '../composables/useWalletTranslation';
 import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 
@@ -110,9 +113,6 @@ import { RouteNames, HiddenValue, WalletFilteringOptions } from '../consts';
 
 import AssetListItem from './AssetListItem.vue';
 import FormattedAmountWithFiatValue from './FormattedAmountWithFiatValue.vue';
-import FormattedAmountMixin from './mixins/FormattedAmountMixin';
-import LoadingMixin from './mixins/LoadingMixin';
-import TranslationMixin from './mixins/TranslationMixin';
 import WalletAssetsHeadline from './WalletAssetsHeadline.vue';
 
 import type { WalletAssetFilters, WalletPermissions } from '../consts';
@@ -123,125 +123,119 @@ type DraggableMoveEvent<T> = {
   relatedContext: { element: T };
 };
 
-export default defineComponent({
+export default {
   components: {
     AssetListItem,
     FormattedAmountWithFiatValue,
     WalletAssetsHeadline,
     draggable,
   },
-  mixins: [LoadingMixin, FormattedAmountMixin, TranslationMixin],
   emits: ['swap'],
-  computed: {
-    walletStore(this: any) {
-      return useWalletStore(this.$pinia);
-    },
-    accountAssets(this: any) {
-      return this.walletStore.accountAssets;
-    },
-    shouldBalanceBeHidden(this: any) {
-      return this.walletStore.shouldBalanceBeHidden;
-    },
-    permissions(this: any) {
-      return this.walletStore.permissions;
-    },
-    filters(this: any) {
-      return this.walletStore.filters;
-    },
-    whitelist(this: any) {
-      return this.walletStore.whitelist;
-    },
-    isAssetPinned(this: any) {
-      return this.walletStore.isAssetPinned;
-    },
-    routerStore(this: any) {
-      return useRouterStore(this.$pinia);
-    },
-    assetList: {
-      get(this: any): Array<AccountAsset> {
-        return (this.accountAssets as Array<AccountAsset>).sort((a, b) => {
-          const aPinned = Number(this.isAssetPinned(a));
-          const bPinned = Number(this.isAssetPinned(b));
+  setup(_props, { emit }) {
+    const walletStore = useWalletStore();
+    const routerStore = useRouterStore();
+    const { loading } = useLoading();
+    const {
+      t,
+      fiatPriceObject,
+      getAssetFiatPrice,
+      getFPNumberFromCodec,
+      formatCodecNumber,
+      isCodecZero,
+      getFiatBalance,
+      FontSizeRate,
+      FontWeightRate,
+    } = useFormattedAmount();
+    const { shouldBalanceBeHidden, TranslationConsts } = useWalletTranslation();
+
+    const accountAssets = computed(() => walletStore.accountAssets);
+    const permissions = computed(() => walletStore.permissions);
+    const filters = computed(() => walletStore.filters);
+    const whitelist = computed(() => walletStore.whitelist);
+    const isAssetPinned = computed(() => walletStore.isAssetPinned);
+    const assetList = computed<Array<AccountAsset>>({
+      get: () => {
+        return [...accountAssets.value].sort((a, b) => {
+          const aPinned = Number(isAssetPinned.value(a));
+          const bPinned = Number(isAssetPinned.value(b));
 
           return bPinned - aPinned;
         });
       },
-      set(this: any, accountAssets: Array<AccountAsset>) {
-        if (!accountAssets.length) return;
+      set: (sortedAccountAssets: Array<AccountAsset>) => {
+        if (!sortedAccountAssets.length) return;
 
-        const pinnedAssetAddresses = accountAssets.reduce<string[]>((acc, asset) => {
-          if (this.isAssetPinned(asset)) acc.push(asset.address);
+        const pinnedAssetAddresses = sortedAccountAssets.reduce<string[]>((acc, asset) => {
+          if (isAssetPinned.value(asset)) acc.push(asset.address);
           return acc;
         }, []);
-        this.setMultiplePinnedAssets(pinnedAssetAddresses);
+        setMultiplePinnedAssets(pinnedAssetAddresses);
 
-        const assetsAddresses = accountAssets.map((asset) => asset.address);
+        const assetsAddresses = sortedAccountAssets.map((asset) => asset.address);
         api.assets.accountAssetsAddresses = assetsAddresses;
         api.assets.updateAccountAssets();
-        this.setAccountAssets(accountAssets);
+        setAccountAssets(sortedAccountAssets);
       },
-    },
-    visibleAssetList(this: any): AccountAsset[] {
-      return this.assetList.filter((asset: AccountAsset) => this.showAsset(asset));
-    },
-    assetsAreHidden(this: any): boolean {
-      return this.visibleAssetList.length === 0;
-    },
-    computedClasses(this: any): string {
-      const baseClass = 'wallet-assets';
-      const classes = [baseClass];
-
-      if (this.assetsFiatAmount) {
-        classes.push(`${baseClass}--fiat`);
-      }
-
-      return classes.concat('s-flex').join(' ');
-    },
-    formattedAccountAssets(this: any): Array<AccountAsset> {
-      return (this.accountAssets as Array<AccountAsset>).filter(
-        (asset) => asset.balance && !Number.isNaN(+asset.balance.transferable)
-      );
-    },
-    assetsFiatAmount(this: any): Nullable<string> {
-      if (isEmpty(this.fiatPriceObject)) {
+    });
+    const visibleAssetList = computed(() => assetList.value.filter((asset: AccountAsset) => showAsset(asset)));
+    const assetsAreHidden = computed(() => visibleAssetList.value.length === 0);
+    const formattedAccountAssets = computed(() =>
+      accountAssets.value.filter((asset) => asset.balance && !Number.isNaN(+asset.balance.transferable))
+    );
+    const assetsFiatAmount = computed<Nullable<string>>(() => {
+      if (isEmpty(fiatPriceObject.value)) {
         return null;
       }
-      if (!this.formattedAccountAssets.length) {
+      if (!formattedAccountAssets.value.length) {
         return '0';
       }
-      const fiatAmount = this.formattedAccountAssets.reduce((sum: FPNumber, asset: AccountAsset) => {
-        const price = this.getAssetFiatPrice(asset);
+      const fiatAmount = formattedAccountAssets.value.reduce((sum: FPNumber, asset: AccountAsset) => {
+        const price = getAssetFiatPrice(asset);
         return price
           ? sum.add(
-              this.getFPNumberFromCodec(asset.balance.transferable, asset.decimals).mul(FPNumber.fromCodecValue(price))
+              getFPNumberFromCodec(asset.balance.transferable, asset.decimals).mul(FPNumber.fromCodecValue(price))
             )
           : sum;
       }, new FPNumber(0));
       return fiatAmount ? fiatAmount.toLocaleString() : null;
-    },
-  },
-  methods: {
-    setAccountAssets(this: any, assets: AccountAsset[]): void {
-      this.walletStore.setAccountAssets(assets);
-    },
-    setPinnedAsset(this: any, asset: AccountAsset): void {
-      this.walletStore.setPinnedAsset(asset);
-    },
-    removePinnedAsset(this: any, asset: AccountAsset): void {
-      this.walletStore.removePinnedAsset(asset);
-    },
-    setMultiplePinnedAssets(this: any, assetAddresses: string[]): void {
-      this.walletStore.setMultiplePinnedAssets(assetAddresses);
-    },
-    navigate(this: any, options: Route): void {
-      this.routerStore.navigate(options);
-    },
-    onMove(this: any, event: DraggableMoveEvent<AccountAsset>): boolean {
+    });
+    const computedClasses = computed(() => {
+      const baseClass = 'wallet-assets';
+      const classes = [baseClass];
+
+      if (assetsFiatAmount.value) {
+        classes.push(`${baseClass}--fiat`);
+      }
+
+      return classes.concat('s-flex').join(' ');
+    });
+
+    function setAccountAssets(assets: AccountAsset[]): void {
+      walletStore.setAccountAssets(assets);
+    }
+
+    function setPinnedAsset(asset: AccountAsset): void {
+      walletStore.setPinnedAsset(asset);
+    }
+
+    function removePinnedAsset(asset: AccountAsset): void {
+      walletStore.removePinnedAsset(asset);
+    }
+
+    function setMultiplePinnedAssets(assetAddresses: string[]): void {
+      walletStore.setMultiplePinnedAssets(assetAddresses);
+    }
+
+    function navigate(options: Route): void {
+      routerStore.navigate(options);
+    }
+
+    function onMove(event: DraggableMoveEvent<AccountAsset>): boolean {
       const draggedItem = event.draggedContext.element;
       const targetItem = event.relatedContext.element;
 
-      const draggedIsPinned = this.isAssetPinned(draggedItem);
-      const targetIsPinned = this.isAssetPinned(targetItem);
+      const draggedIsPinned = isAssetPinned.value(draggedItem);
+      const targetIsPinned = isAssetPinned.value(targetItem);
 
       if (draggedIsPinned && !targetIsPinned) {
         return false;
@@ -250,50 +244,58 @@ export default defineComponent({
         return false;
       }
       return true;
-    },
-    getBalance(this: any, asset: AccountAsset): string {
-      return `${this.formatCodecNumber(asset.balance.transferable, asset.decimals)}`;
-    },
-    isZeroBalance(this: any, asset: AccountAsset): boolean {
-      return this.isCodecZero(asset.balance.transferable, asset.decimals);
-    },
-    hasLockedBalance(this: any, asset: AccountAsset): boolean {
-      return !this.isCodecZero(asset.balance.locked, asset.decimals);
-    },
-    formatFrozenBalance(this: any, asset: AccountAsset): string {
-      if (this.shouldBalanceBeHidden) {
+    }
+
+    function getBalance(asset: AccountAsset): string {
+      return `${formatCodecNumber(asset.balance.transferable, asset.decimals)}`;
+    }
+
+    function isZeroBalance(asset: AccountAsset): boolean {
+      return isCodecZero(asset.balance.transferable, asset.decimals);
+    }
+
+    function hasLockedBalance(asset: AccountAsset): boolean {
+      return !isCodecZero(asset.balance.locked, asset.decimals);
+    }
+
+    function formatFrozenBalance(asset: AccountAsset): string {
+      if (shouldBalanceBeHidden.value) {
         return HiddenValue;
       }
-      return this.formatCodecNumber(asset.balance.locked, asset.decimals);
-    },
-    handleAssetSwap(this: any, asset: AccountAsset): void {
-      this.$emit('swap', asset);
-    },
-    handleAssetSend(this: any, asset: AccountAsset): void {
-      this.navigate({ name: RouteNames.WalletSend, params: { asset } });
-    },
-    handleOpenAssetDetails(this: any, asset: AccountAsset): void {
-      this.navigate({ name: RouteNames.WalletAssetDetails, params: { asset } });
-    },
-    handleOpenAddAsset(this: any): void {
-      this.navigate({ name: RouteNames.AddAsset });
-    },
-    handlePin(this: any, asset: AccountAsset): void {
-      const isAlreadyPinned = this.isAssetPinned(asset);
+      return formatCodecNumber(asset.balance.locked, asset.decimals);
+    }
 
-      if (isAlreadyPinned) {
-        this.removePinnedAsset(asset);
+    function handleAssetSwap(asset: AccountAsset): void {
+      emit('swap', asset);
+    }
+
+    function handleAssetSend(asset: AccountAsset): void {
+      navigate({ name: RouteNames.WalletSend, params: { asset } });
+    }
+
+    function handleOpenAssetDetails(asset: AccountAsset): void {
+      navigate({ name: RouteNames.WalletAssetDetails, params: { asset } });
+    }
+
+    function handleOpenAddAsset(): void {
+      navigate({ name: RouteNames.AddAsset });
+    }
+
+    function handlePin(asset: AccountAsset): void {
+      if (isAssetPinned.value(asset)) {
+        removePinnedAsset(asset);
       } else {
-        this.setPinnedAsset(asset);
+        setPinnedAsset(asset);
       }
-    },
-    showAsset(this: any, asset: AccountAsset): boolean {
-      const tokenType = (this.filters as WalletAssetFilters).option;
-      const showWhitelistedOnly = (this.filters as WalletAssetFilters).verifiedOnly;
-      const hideZeroBalance = (this.filters as WalletAssetFilters).zeroBalance;
+    }
+
+    function showAsset(asset: AccountAsset): boolean {
+      const tokenType = (filters.value as WalletAssetFilters).option;
+      const showWhitelistedOnly = (filters.value as WalletAssetFilters).verifiedOnly;
+      const hideZeroBalance = (filters.value as WalletAssetFilters).zeroBalance;
 
       const isNft = api.assets.isNft(asset);
-      const isWhitelisted = api.assets.isWhitelist(asset, this.whitelist as Whitelist);
+      const isWhitelisted = api.assets.isWhitelist(asset, whitelist.value as Whitelist);
       const hasZeroBalance = !asset.decimals ? asset.balance.total === '0' : asset.balance.total[8] === undefined;
 
       if (tokenType === WalletFilteringOptions.Currencies && isNft) {
@@ -313,9 +315,39 @@ export default defineComponent({
       }
 
       return true;
-    },
+    }
+
+    return {
+      draggable,
+      loading,
+      t,
+      FontSizeRate,
+      FontWeightRate,
+      TranslationConsts,
+      shouldBalanceBeHidden,
+      permissions,
+      filters,
+      whitelist,
+      isAssetPinned: isAssetPinned.value,
+      assetList,
+      assetsAreHidden,
+      computedClasses,
+      assetsFiatAmount,
+      getBalance,
+      isZeroBalance,
+      hasLockedBalance,
+      formatFrozenBalance,
+      handleAssetSwap,
+      handleAssetSend,
+      handleOpenAssetDetails,
+      handleOpenAddAsset,
+      handlePin,
+      showAsset,
+      onMove,
+      getFiatBalance,
+    };
   },
-});
+};
 </script>
 
 <style lang="scss">

@@ -1,13 +1,14 @@
 import { TransactionStatus, Operation, type History } from '@sora-substrate/sdk';
 import { computed } from 'vue';
 
-import { useTranslation } from '@/composables/useTranslation';
-import { HiddenValue, accountIdBasedOperations } from '@/consts';
 import { useWalletStore } from '@/stores/wallet';
-import type { PolkadotJsAccount } from '@/types/common';
-import { formatAddress, groupRewardsByAssetsList } from '@/util';
+import { HiddenValue, accountIdBasedOperations } from '../consts';
+import { formatAddress, groupRewardsByAssetsList } from '../util';
 
 import { useNumberFormatter } from './useNumberFormatter';
+import { useWalletTranslation } from './useWalletTranslation';
+
+import type { PolkadotJsAccount } from '../types/common';
 
 const TWO_ASSET_OPERATIONS = [
   Operation.AddLiquidity,
@@ -43,8 +44,10 @@ const ORDER_BOOK_OPERATIONS = [
 
 export function useOperations() {
   const walletStore = useWalletStore();
-  const { t } = useTranslation();
-  const { formatStringValue } = useNumberFormatter();
+  const translation = useWalletTranslation();
+  const { t } = translation;
+  const numberFormatter = useNumberFormatter();
+  const { formatStringValue } = numberFormatter;
 
   const account = computed<PolkadotJsAccount>(() => walletStore.account as PolkadotJsAccount);
 
@@ -125,6 +128,9 @@ export function useOperations() {
   };
 
   return {
+    ...translation,
+    ...numberFormatter,
+    account,
     getTitle,
     getOperationMessage,
   };

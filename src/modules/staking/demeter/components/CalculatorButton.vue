@@ -1,30 +1,20 @@
-<script lang="ts">
-import { defineComponent, h } from 'vue';
+<template>
+  <button type="button" class="calculator-button" @click="handleClick">
+    <slot></slot>
+    <CalculatorIcon class="calculator-button-icon" />
+  </button>
+</template>
 
+<script setup lang="ts">
 import CalculatorIcon from './CalculatorIcon.vue';
 
-export default defineComponent({
-  name: 'CalculatorButton',
-  emits: ['click'],
-  methods: {
-    handleClick(event: MouseEvent): void {
-      this.$emit('click', event);
-    },
-  },
-  render() {
-    const slotContent = this.$slots.default?.();
+const emit = defineEmits<{
+  (event: 'click', payload: MouseEvent): void;
+}>();
 
-    return h(
-      'button',
-      {
-        type: 'button',
-        class: 'calculator-button',
-        onClick: this.handleClick,
-      },
-      [slotContent ?? null, h(CalculatorIcon, { class: 'calculator-button-icon' })]
-    );
-  },
-});
+const handleClick = (event: MouseEvent): void => {
+  emit('click', event);
+};
 </script>
 
 <style lang="scss" scoped>

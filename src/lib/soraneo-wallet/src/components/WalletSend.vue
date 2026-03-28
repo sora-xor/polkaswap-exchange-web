@@ -198,14 +198,18 @@ import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import dayjs from 'dayjs';
 import debounce from 'lodash/fp/debounce';
-import { defineComponent } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
+import { useCopyAddress } from '../composables/useCopyAddress';
+import { useFormattedAmount } from '../composables/useFormattedAmount';
+import { useNetworkFeeWarning } from '../composables/useNetworkFeeWarning';
+import { useTransaction } from '../composables/useTransaction';
 import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../api';
 import { RouteNames } from '../consts';
-import { validateAddress, formatAddress, formatAccountAddress, delay } from '../util';
+import { validateAddress, formatAccountAddress, delay } from '../util';
 
 import AccountConfirmationOption from './Account/Settings/ConfirmationOption.vue';
 import WalletAccount from './Account/WalletAccount.vue';
@@ -213,10 +217,6 @@ import AddressBookInput from './AddressBook/Input.vue';
 import FormattedAmount from './FormattedAmount.vue';
 import FormattedAmountWithFiatValue from './FormattedAmountWithFiatValue.vue';
 import InfoLine from './InfoLine.vue';
-import CopyAddressMixin from './mixins/CopyAddressMixin';
-import FormattedAmountMixin from './mixins/FormattedAmountMixin';
-import NetworkFeeWarningMixin from './mixins/NetworkFeeWarningMixin';
-import TransactionMixin from './mixins/TransactionMixin';
 import NetworkFeeWarning from './NetworkFeeWarning.vue';
 import TokenLogo from './TokenLogo.vue';
 import WalletBase from './WalletBase.vue';
@@ -230,7 +230,7 @@ import type { Subscription } from 'rxjs';
 
 const MS_IN_DAY = 24 * 60 * 60_000;
 
-export default defineComponent({
+export default {
   components: {
     WalletBase,
     WalletAccount,
@@ -243,323 +243,361 @@ export default defineComponent({
     AccountConfirmationOption,
     InfoLine,
   },
-  mixins: [TransactionMixin, FormattedAmountMixin, CopyAddressMixin, NetworkFeeWarningMixin],
-  data() {
-    return {
-      delimiters: FPNumber.DELIMITERS_CONFIG,
-      vestingPeriodsInDays: [1, 7, 30, 60, 90] as UnlockPeriodDays[],
-      disabledDate: (date: Date) => {
-        const currentDate = new Date().setHours(0, 0, 0, 0);
-        return date.getTime() < currentDate;
-      },
-      step: 1,
-      address: '',
-      name: '',
-      amount: '',
-      showAdditionalInfo: true,
-      withVesting: false,
-      selectedVestingPeriod: 1 as UnlockPeriodDays,
-      vestingPercentage: '10',
-      vestingStart: Date.now(),
-      fee: new FPNumber(0),
-      assetBalance: null as Nullable<AccountBalance>,
-      assetBalanceSubscription: null as Nullable<Subscription>,
-      fetchNetworkFeeDebounced: (() => undefined) as () => void,
-    };
-  },
-  computed: {
-    routerStore(this: any) {
-      return useRouterStore(this.$pinia);
-    },
-    walletStore(this: any) {
-      return useWalletStore(this.$pinia);
-    },
-    previousRoute(this: any): RouteNames {
-      return (this.routerStore.prev as RouteNames) ?? RouteNames.Wallet;
-    },
-    previousRouteParams(this: any): Record<string, unknown> {
-      return this.routerStore.prevParams;
-    },
-    currentRouteParams(this: any): Record<string, AccountAsset | string> {
-      return this.routerStore.currentParams as Record<string, AccountAsset | string>;
-    },
-    accountAssets(this: any): Array<AccountAsset> {
-      return this.walletStore.accountAssets as Array<AccountAsset>;
-    },
-    isConfirmTxDisabled(this: any): boolean {
-      return this.walletStore.isConfirmTxDialogDisabled;
-    },
-    recipient(this: any) {
-      return { address: this.address, name: this.name };
-    },
-    assetParams(this: any): AccountAsset {
-      return this.currentRouteParams.asset as AccountAsset;
-    },
-    accountAsset(this: any): Nullable<AccountAsset> {
-      return this.accountAssets.find((accountAsset) => accountAsset.address === this.assetParams.address);
-    },
-    asset(this: any): AccountAsset {
-      if (this.accountAsset) return this.accountAsset;
+  setup() {
+    const routerStore = useRouterStore();
+    const walletStore = useWalletStore();
+    const {
+      t,
+      account,
+      loading,
+      dayjsLocale,
+      formatDate,
+      getFPNumber,
+      getFPNumberFromCodec,
+      getStringFromCodec,
+      formatCodecNumber,
+      formatStringValue,
+      MaxInputNumber,
+      shouldBalanceBeHidden,
+      withNotifications,
+    } = useTransaction();
+    const { getFiatBalance, getFiatAmountByString } = useFormattedAmount();
+    const { handleCopyAddress, copyTooltip } = useCopyAddress();
+    const { allowFeePopup, networkFees, isXorSufficientForNextTx } = useNetworkFeeWarning();
 
-      return {
-        ...this.assetParams,
-        balance: this.assetBalance as AccountBalance,
-      };
-    },
-    formattedFee(this: any): string {
-      return this.fee.toLocaleString();
-    },
-    tooltipContent(this: any): string {
-      return this.step === 1 ? this.t('walletSend.tooltip') : '';
-    },
-    copyValueAssetId(this: any): string {
-      return this.copyTooltip(this.t('assets.assetId'));
-    },
-    transferableBalance(this: any): CodecString {
-      return this.asset.balance ? this.asset.balance.transferable : '0';
-    },
-    formattedBalance(this: any): string {
-      return this.formatCodecNumber(this.transferableBalance, this.asset.decimals);
-    },
-    assetFiatPrice(this: any): Nullable<CodecString> {
-      return this.getAssetFiatPrice(this.asset);
-    },
-    fiatAmount(this: any): Nullable<string> {
-      return this.getFiatAmountByString(this.amount, this.asset);
-    },
-    emptyAddress(this: any): boolean {
-      return !this.address.trim();
-    },
-    isAccountAddress(this: any): boolean {
-      return [this.address, this.formattedSoraAddress].includes(this.account.address);
-    },
-    formattedSoraAddress(this: any): string {
-      return formatAccountAddress(this.address);
-    },
-    validAddress(this: any): boolean {
-      return validateAddress(this.address);
-    },
-    isNotSoraAddress(this: any): boolean {
-      return !!this.formattedSoraAddress && !this.address.startsWith('cn');
-    },
-    emptyAmount(this: any): boolean {
-      return +this.amount === 0;
-    },
-    validAmount(this: any): boolean {
-      const amount = this.getFPNumber(this.amount, this.asset.decimals);
-      const balance = this.getFPNumberFromCodec(this.transferableBalance, this.asset.decimals);
-      return amount.isFinity() && !amount.isZero() && FPNumber.lte(amount, balance);
-    },
-    isMaxButtonAvailable(this: any): boolean {
-      if (this.shouldBalanceBeHidden) {
+    const delimiters = FPNumber.DELIMITERS_CONFIG;
+    const vestingPeriodsInDays = [1, 7, 30, 60, 90] as UnlockPeriodDays[];
+    const disabledDate = (date: Date) => {
+      const currentDate = new Date().setHours(0, 0, 0, 0);
+      return date.getTime() < currentDate;
+    };
+    const emptyAsset = { address: '', symbol: '', name: '', decimals: 0, balance: null } as AccountAsset;
+
+    const step = ref(1);
+    const address = ref('');
+    const name = ref('');
+    const amount = ref('');
+    const showAdditionalInfo = ref(true);
+    const withVesting = ref(false);
+    const selectedVestingPeriod = ref<UnlockPeriodDays>(1);
+    const vestingPercentage = ref('10');
+    const vestingStart = ref(Date.now());
+    const fee = ref(new FPNumber(0));
+    const assetBalance = ref<Nullable<AccountBalance>>(null);
+    const assetBalanceSubscription = ref<Nullable<Subscription>>(null);
+
+    const previousRoute = computed<RouteNames>(() => (routerStore.prev as RouteNames) ?? RouteNames.Wallet);
+    const previousRouteParams = computed<Record<string, unknown>>(() => routerStore.prevParams);
+    const currentRouteParams = computed<Record<string, AccountAsset | string>>(
+      () => routerStore.currentParams as Record<string, AccountAsset | string>
+    );
+    const accountAssets = computed<Array<AccountAsset>>(() => walletStore.accountAssets as Array<AccountAsset>);
+    const isConfirmTxDisabled = computed<boolean>(() => walletStore.isConfirmTxDialogDisabled);
+    const recipient = computed(() => ({ address: address.value, name: name.value }));
+    const assetParams = computed<Nullable<AccountAsset>>(
+      () => currentRouteParams.value.asset as Nullable<AccountAsset>
+    );
+    const accountAsset = computed<Nullable<AccountAsset>>(() => {
+      if (!assetParams.value) return null;
+
+      return accountAssets.value.find((entry) => entry.address === assetParams.value?.address) ?? null;
+    });
+    const asset = computed<AccountAsset>(() => {
+      if (accountAsset.value) return accountAsset.value;
+      if (assetParams.value) {
+        return {
+          ...assetParams.value,
+          balance: assetBalance.value as AccountBalance,
+        };
+      }
+
+      return emptyAsset;
+    });
+    const formattedFee = computed(() => fee.value.toLocaleString());
+    const tooltipContent = computed(() => (step.value === 1 ? t('walletSend.tooltip') : ''));
+    const copyValueAssetId = computed(() => copyTooltip(t('assets.assetId')));
+    const transferableBalance = computed<CodecString>(() =>
+      asset.value.balance ? asset.value.balance.transferable : '0'
+    );
+    const formattedBalance = computed(() => formatCodecNumber(transferableBalance.value, asset.value.decimals));
+    const fiatAmount = computed(() => getFiatAmountByString(amount.value, asset.value));
+    const emptyAddress = computed(() => !address.value.trim());
+    const isAccountAddress = computed(() =>
+      [address.value, formattedSoraAddress.value].includes(account.value?.address)
+    );
+    const formattedSoraAddress = computed(() => formatAccountAddress(address.value));
+    const validAddress = computed(() => validateAddress(address.value));
+    const isNotSoraAddress = computed(() => !!formattedSoraAddress.value && !address.value.startsWith('cn'));
+    const emptyAmount = computed(() => +amount.value === 0);
+    const validAmount = computed(() => {
+      const fpAmount = getFPNumber(amount.value, asset.value.decimals);
+      const balance = getFPNumberFromCodec(transferableBalance.value, asset.value.decimals);
+
+      return fpAmount.isFinity() && !fpAmount.isZero() && FPNumber.lte(fpAmount, balance);
+    });
+    const isXorAccountAsset = computed(() => asset.value.address === XOR.address);
+    const isMaxButtonAvailable = computed(() => {
+      if (shouldBalanceBeHidden.value) {
         return false;
       }
 
-      const decimals = this.asset.decimals;
-      const balance = this.getFPNumberFromCodec(this.transferableBalance, decimals);
-      const amount = this.getFPNumber(this.amount, decimals);
+      const decimals = asset.value.decimals;
+      const balance = getFPNumberFromCodec(transferableBalance.value, decimals);
+      const fpAmount = getFPNumber(amount.value, decimals);
 
-      if (this.isXorAccountAsset) {
-        if (this.fee.isZero()) {
+      if (isXorAccountAsset.value) {
+        if (fee.value.isZero()) {
           return false;
         }
-        return !FPNumber.eq(this.fee, balance.sub(amount)) && FPNumber.gt(balance, this.fee);
-      }
-      return !FPNumber.eq(balance, amount);
-    },
-    hasEnoughXor(this: any): boolean {
-      return api.hasEnoughXor(this.asset, this.amount, this.fee);
-    },
-    sendButtonDisabled(this: any): boolean {
-      return (
-        this.loading ||
-        !this.validAddress ||
-        !this.validAmount ||
-        !this.hasEnoughXor ||
-        (this.withVesting && !+this.vestingPercentage)
-      );
-    },
-    sendButtonDisabledText(this: any): string {
-      if (!this.validAddress) {
-        return this.t(`walletSend.${this.emptyAddress ? 'enterAddress' : 'badAddress'}`);
+
+        return !FPNumber.eq(fee.value, balance.sub(fpAmount)) && FPNumber.gt(balance, fee.value);
       }
 
-      if (!this.validAmount) {
-        return this.emptyAmount
-          ? this.t('walletSend.enterAmount')
-          : this.t('insufficientBalanceText', { tokenSymbol: this.asset.symbol });
+      return !FPNumber.eq(balance, fpAmount);
+    });
+    const hasEnoughXor = computed(() => api.hasEnoughXor(asset.value, amount.value, fee.value));
+    const sendButtonDisabled = computed(
+      () =>
+        loading.value ||
+        !validAddress.value ||
+        !validAmount.value ||
+        !hasEnoughXor.value ||
+        (withVesting.value && !+vestingPercentage.value)
+    );
+    const sendButtonDisabledText = computed(() => {
+      if (!validAddress.value) {
+        return t(`walletSend.${emptyAddress.value ? 'enterAddress' : 'badAddress'}`);
       }
 
-      if (!this.hasEnoughXor) {
-        return this.t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
+      if (!validAmount.value) {
+        return emptyAmount.value
+          ? t('walletSend.enterAmount')
+          : t('insufficientBalanceText', { tokenSymbol: asset.value.symbol });
       }
 
-      const vestingPercentage = +this.vestingPercentage;
-      if (this.withVesting && (!vestingPercentage || vestingPercentage > 100)) {
-        return this.t('walletSend.enterVestingPercentage');
+      if (!hasEnoughXor.value) {
+        return t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
+      }
+
+      const percent = +vestingPercentage.value;
+      if (withVesting.value && (!percent || percent > 100)) {
+        return t('walletSend.enterVestingPercentage');
       }
 
       return '';
-    },
-    isXorAccountAsset(this: any): boolean {
-      return this.asset.address === XOR.address;
-    },
-    formattedVestingStart(this: any): string {
-      return this.formatDate(this.vestingStart, 'll');
-    },
-  },
-  created(this: any): void {
-    this.fetchNetworkFeeDebounced = debounce(100)(() => this.fetchNetworkFee());
+    });
+    const formattedVestingStart = computed(() => formatDate(vestingStart.value, 'll'));
 
-    if (!this.currentRouteParams.asset) {
-      this.handleBack();
-      return;
-    }
+    const transfer = (payload: { to: string; amount: string }) => walletStore.transfer(payload);
+    const vestedTransfer = (payload: VestedTransferParams) => walletStore.vestedTransfer(payload);
+    const getVestedTransferFee = (payload: VestedTransferFeeParams) => walletStore.getVestedTransferFee(payload);
 
-    if (this.currentRouteParams.address) {
-      this.address = this.currentRouteParams.address as string;
-    }
+    const navigate = (options: Route): void => {
+      routerStore.navigate(options);
+    };
 
-    if (this.currentRouteParams.amount) {
-      this.amount = this.currentRouteParams.amount as string;
-    }
+    const updateName = (value: string): void => {
+      name.value = value;
+    };
 
-    if (!this.accountAsset) {
-      this.resetAssetBalanceSubscription();
-      this.assetBalanceSubscription = api.assets.getAssetBalanceObservable(this.assetParams).subscribe((balance) => {
-        this.assetBalance = balance;
-      });
-    }
-
-    this.fee = this.getFPNumberFromCodec(this.networkFees.Transfer);
-  },
-  beforeUnmount(this: any): void {
-    this.resetAssetBalanceSubscription();
-  },
-  methods: {
-    transfer(this: any, payload: { to: string; amount: string }) {
-      return this.walletStore.transfer(payload);
-    },
-    vestedTransfer(this: any, payload: VestedTransferParams) {
-      return this.walletStore.vestedTransfer(payload);
-    },
-    getVestedTransferFee(this: any, payload: VestedTransferFeeParams) {
-      return this.walletStore.getVestedTransferFee(payload);
-    },
-    navigate(this: any, options: Route): void {
-      this.routerStore.navigate(options);
-    },
-    updateName(this: any, name: string): void {
-      this.name = name;
-    },
-    formatDuration(this: any, days: UnlockPeriodDays): string {
+    const formatDuration = (days: UnlockPeriodDays): string => {
       return dayjs
         .duration(days * MS_IN_DAY)
-        .locale(this.dayjsLocale)
+        .locale(dayjsLocale.value)
         .humanize();
-    },
-    async fetchNetworkFee(this: any): Promise<void> {
-      const percent = +this.vestingPercentage;
+    };
 
-      if (this.withVesting && percent > 0 && percent <= 100 && !this.emptyAmount) {
-        this.loading = true;
+    const resetAssetBalanceSubscription = (): void => {
+      assetBalanceSubscription.value?.unsubscribe();
+      assetBalanceSubscription.value = null;
+    };
+
+    const fetchNetworkFee = async (): Promise<void> => {
+      const percent = +vestingPercentage.value;
+
+      if (withVesting.value && percent > 0 && percent <= 100 && !emptyAmount.value) {
+        loading.value = true;
         await delay(250);
-        const fee = await this.getVestedTransferFee({
-          amount: this.amount,
-          asset: this.asset,
-          unlockPeriodInDays: this.selectedVestingPeriod,
+        const nextFee = await getVestedTransferFee({
+          amount: amount.value,
+          asset: asset.value,
+          unlockPeriodInDays: selectedVestingPeriod.value,
           vestingPercent: percent,
         } as VestedTransferFeeParams);
 
-        if (fee) {
-          this.fee = fee;
+        if (nextFee) {
+          fee.value = nextFee;
         }
-        this.loading = false;
-      } else {
-        this.fee = this.getFPNumberFromCodec(this.networkFees.Transfer);
-      }
-    },
-    getFormattedAddress(this: any, asset: AccountAsset): string {
-      return formatAddress(asset.address, 10);
-    },
-    handleBack(this: any): void {
-      if (this.step !== 1) {
-        this.showAdditionalInfo = true;
-        this.step = 1;
+
+        loading.value = false;
         return;
       }
-      this.navigate({
-        name: this.previousRoute,
-        params: this.previousRouteParams,
+
+      fee.value = getFPNumberFromCodec(networkFees.value.Transfer);
+    };
+
+    const fetchNetworkFeeDebounced = debounce(100)(() => void fetchNetworkFee()) as () => void;
+
+    const handleBack = (): void => {
+      if (step.value !== 1) {
+        showAdditionalInfo.value = true;
+        step.value = 1;
+        return;
+      }
+
+      navigate({
+        name: previousRoute.value,
+        params: previousRouteParams.value,
       });
-    },
-    async handleMaxClick(this: any): Promise<void> {
-      if (this.isXorAccountAsset) {
-        const balance = this.getFPNumberFromCodec(this.transferableBalance, this.asset.decimals);
-        this.amount = balance.sub(this.fee).toString();
+    };
+
+    const handleMaxClick = async (): Promise<void> => {
+      if (isXorAccountAsset.value) {
+        const balance = getFPNumberFromCodec(transferableBalance.value, asset.value.decimals);
+        amount.value = balance.sub(fee.value).toString();
         return;
       }
-      this.amount = this.getStringFromCodec(this.transferableBalance, this.asset.decimals);
-    },
-    async handleSend(this: any): Promise<void> {
+
+      amount.value = getStringFromCodec(transferableBalance.value, asset.value.decimals);
+    };
+
+    const handleSend = async (): Promise<void> => {
       if (
-        this.allowFeePopup &&
-        !this.isXorSufficientForNextTx({
+        allowFeePopup.value &&
+        !isXorSufficientForNextTx({
           type: Operation.Transfer,
-          isXor: this.isXorAccountAsset,
-          amount: this.getFPNumber(this.amount),
+          isXor: isXorAccountAsset.value,
+          amount: getFPNumber(amount.value),
         })
       ) {
-        this.showAdditionalInfo = false;
-        this.step = 2;
+        showAdditionalInfo.value = false;
+        step.value = 2;
         return;
       }
 
-      if (this.isConfirmTxDisabled) {
-        await this.handleConfirm();
+      if (isConfirmTxDisabled.value) {
+        await handleConfirm();
       } else {
-        await this.fetchNetworkFee();
-        this.step = 3;
+        await fetchNetworkFee();
+        step.value = 3;
       }
-    },
-    async handleConfirm(this: any): Promise<void> {
-      await this.withNotifications(async () => {
-        if (!this.hasEnoughXor) throw new Error('walletSend.insufficientBalanceText');
+    };
 
-        const percent = +this.vestingPercentage;
-        if (this.withVesting && percent > 0 && percent <= 100) {
+    const handleConfirm = async (): Promise<void> => {
+      await withNotifications(async () => {
+        if (!hasEnoughXor.value) {
+          throw new Error('walletSend.insufficientBalanceText');
+        }
+
+        const percent = +vestingPercentage.value;
+        if (withVesting.value && percent > 0 && percent <= 100) {
           const currentDate = new Date();
           const hours = currentDate.getHours();
           const minutes = currentDate.getMinutes();
           const seconds = currentDate.getSeconds();
           const milliseconds = currentDate.getMilliseconds();
-          const start = new Date(this.vestingStart).setHours(hours, minutes, seconds, milliseconds);
-          await this.vestedTransfer({
-            amount: this.amount,
-            asset: this.asset,
-            to: this.address,
-            unlockPeriodInDays: this.selectedVestingPeriod,
+          const start = new Date(vestingStart.value).setHours(hours, minutes, seconds, milliseconds);
+
+          await vestedTransfer({
+            amount: amount.value,
+            asset: asset.value,
+            to: address.value,
+            unlockPeriodInDays: selectedVestingPeriod.value,
             vestingPercent: percent,
             start,
             current: currentDate.getTime(),
           } as VestedTransferParams);
         } else {
-          await this.transfer({ to: this.address, amount: this.amount });
+          await transfer({ to: address.value, amount: amount.value });
         }
-        this.navigate({ name: RouteNames.Wallet });
+
+        navigate({ name: RouteNames.Wallet });
       });
-    },
-    confirmNextTxFailure(this: any): void {
-      this.showAdditionalInfo = true;
-      this.step = 3;
-    },
-    resetAssetBalanceSubscription(this: any): void {
-      if (this.assetBalanceSubscription) {
-        this.assetBalanceSubscription.unsubscribe();
+    };
+
+    const confirmNextTxFailure = (): void => {
+      showAdditionalInfo.value = true;
+      step.value = 3;
+    };
+
+    onMounted(() => {
+      if (!assetParams.value) {
+        handleBack();
+        return;
       }
-    },
+
+      if (currentRouteParams.value.address) {
+        address.value = currentRouteParams.value.address as string;
+      }
+
+      if (currentRouteParams.value.amount) {
+        amount.value = currentRouteParams.value.amount as string;
+      }
+
+      if (!accountAsset.value) {
+        resetAssetBalanceSubscription();
+        assetBalanceSubscription.value = api.assets
+          .getAssetBalanceObservable(assetParams.value)
+          .subscribe((balance) => {
+            assetBalance.value = balance;
+          });
+      }
+
+      fee.value = getFPNumberFromCodec(networkFees.value.Transfer);
+    });
+
+    onBeforeUnmount(() => {
+      resetAssetBalanceSubscription();
+    });
+
+    return {
+      t,
+      loading,
+      delimiters,
+      vestingPeriodsInDays,
+      disabledDate,
+      step,
+      address,
+      amount,
+      showAdditionalInfo,
+      withVesting,
+      selectedVestingPeriod,
+      vestingPercentage,
+      vestingStart,
+      fee,
+      asset,
+      recipient,
+      formattedFee,
+      tooltipContent,
+      copyValueAssetId,
+      formattedBalance,
+      fiatAmount,
+      validAddress,
+      isAccountAddress,
+      formattedSoraAddress,
+      isNotSoraAddress,
+      sendButtonDisabled,
+      sendButtonDisabledText,
+      isXorAccountAsset,
+      isMaxButtonAvailable,
+      hasEnoughXor,
+      formattedVestingStart,
+      fetchNetworkFee,
+      fetchNetworkFeeDebounced,
+      handleBack,
+      handleCopyAddress,
+      handleMaxClick,
+      handleSend,
+      handleConfirm,
+      confirmNextTxFailure,
+      updateName,
+      formatDuration,
+      formatStringValue,
+      getFiatBalance,
+      MaxInputNumber,
+    };
   },
-});
+};
 </script>
 
 <style lang="scss">

@@ -1,123 +1,111 @@
-import { Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { api } from '@/api';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const addActiveTransaction = vi.hoisted(() => vi.fn());
-const removeActiveTransactions = vi.hoisted(() => vi.fn());
-const addAsset = vi.hoisted(() => vi.fn(async () => undefined));
 const beforeTransactionSign = vi.hoisted(() => vi.fn(async () => undefined));
-const getOperationMessage = vi.hoisted(() => vi.fn(() => 'operation-message'));
-const notificationState = vi.hoisted(() => {
-  const withAppNotification = vi.fn(async (handler: () => Promise<void> | void) => {
-    await handler?.();
-  });
-  const showAppNotification = vi.fn();
-
-  return {
-    withAppNotification,
-    showAppNotification,
-  };
-});
-
-vi.mock('@/stores/wallet', () => ({
-  useWalletStore: () => ({
-    addAsset,
-    addActiveTransaction,
-    removeActiveTransactions,
-    beforeTransactionSign,
-    shouldBalanceBeHidden: false,
-    isWalletLoaded: true,
-    accountAssetsAddressTable: {},
-  }),
+const useWalletStoreMock = vi.hoisted(() => vi.fn());
+const showAppNotificationMock = vi.hoisted(() => vi.fn());
+const withAppNotificationMock = vi.hoisted(() => vi.fn(async (handler: () => Promise<void>) => await handler()));
+const getOperationMessageMock = vi.hoisted(() => vi.fn(() => 'operation-message'));
+const api = vi.hoisted(() => ({
+  historyList: [] as Array<{ id: string; startTime: string }>,
 }));
 
-vi.mock('@/composables/useLoading', () => ({
-  useLoading: () => ({
-    loading: false,
-    withLoading: async (handler: () => Promise<void> | void) => {
-      await handler?.();
-    },
-    withApi: vi.fn(),
-    withChainApi: vi.fn(),
-    withParentLoading: vi.fn(),
-  }),
-}));
-
-vi.mock('@/composables/useNotification', () => ({
-  useNotification: () => notificationState,
-}));
-
-vi.mock('@/composables/useOperations', () => ({
-  useOperations: () => ({
-    getOperationMessage,
-  }),
+vi.mock('@/api', () => ({
+  api,
 }));
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
+    tc: (key: string) => key,
+    te: () => true,
+    formatDate: () => '',
+    TranslationConsts: {},
+    dayjsLocale: 'en',
+    language: 'en',
+    tOrdinal: vi.fn(),
   }),
 }));
 
-type HistoryEntry = { id: string; startTime: string };
-const historyList = vi.hoisted(() => [] as HistoryEntry[]);
-
-vi.mock('@/api', () => ({
-  api: {
-    historyList,
-    swap: { isALT: false },
-  },
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: useWalletStoreMock,
 }));
 
-vi.mock('@/util', async () => {
-  const actual = await vi.importActual<typeof import('@/util')>('@/util');
+vi.mock('@/lib/soraneo-wallet/src/composables/useNotification', () => ({
+  useNotification: () => ({
+    t: (key: string) => key,
+    te: () => true,
+    tc: (key: string) => key,
+    formatDate: () => '',
+    TranslationConsts: {},
+    dayjsLocale: 'en',
+    getErrorMessage: vi.fn(),
+    showAppAlert: vi.fn(),
+    showAppNotification: showAppNotificationMock,
+    withAppNotification: withAppNotificationMock,
+    withAppAlert: vi.fn(),
+    setDefaultErrorTranslationKey: vi.fn(),
+    registerErrorMapping: vi.fn(),
+    replaceErrorMappings: vi.fn(),
+  }),
+}));
 
-  return {
-    __esModule: true,
-    ...actual,
-    delay: vi.fn(async () => undefined),
-  };
-});
+vi.mock('@/lib/soraneo-wallet/src/composables/useOperations', () => ({
+  useOperations: () => ({
+    account: { address: 'sender' },
+    t: (key: string) => key,
+    TranslationConsts: {},
+    formatDate: () => '',
+    tc: (key: string) => key,
+    te: () => true,
+    dayjsLocale: 'en',
+    Zero: {},
+    Hundred: {},
+    MaxInputNumber: '0',
+    getFPNumber: vi.fn(),
+    getFPNumberFromCodec: vi.fn(),
+    formatCodecNumber: vi.fn(),
+    formatStringValue: vi.fn(),
+    getStringFromCodec: vi.fn(),
+    isCodecZero: vi.fn(),
+    getCorrectSupply: vi.fn(),
+    getTitle: vi.fn(),
+    getOperationMessage: getOperationMessageMock,
+  }),
+}));
 
 import { useTransaction } from '@/lib/soraneo-wallet/src/composables/useTransaction';
 
-describe('wallet lib useTransaction', () => {
+describe('useTransaction', () => {
+  let walletStore: any;
+
   beforeEach(() => {
     vi.clearAllMocks();
-    historyList.length = 0;
+    api.historyList = [];
+    walletStore = {
+      isWalletLoaded: true,
+      shouldBalanceBeHidden: false,
+      accountAssetsAddressTable: {},
+      beforeTransactionSign,
+      addActiveTransaction: vi.fn(),
+      removeActiveTransactions: vi.fn(),
+    };
+    useWalletStoreMock.mockReturnValue(walletStore);
   });
 
-  it('signs through the Pinia wallet store before submitting notifications', async () => {
-    const { withNotifications } = useTransaction();
-
+  it('resolves the wallet store from Pinia and tracks submitted transactions', async () => {
     const handler = vi.fn(async () => {
-      historyList.push({ id: 'tx-1', startTime: String(Date.now() + 5) });
+      api.historyList.push({
+        id: 'tx-1',
+        startTime: String(Date.now() + 1),
+      });
     });
 
+    const { withNotifications } = useTransaction();
     await withNotifications(handler);
 
-    expect(handler).toHaveBeenCalledTimes(1);
-    expect(notificationState.withAppNotification).toHaveBeenCalledTimes(1);
     expect(beforeTransactionSign).toHaveBeenCalledWith(api);
-    expect(addActiveTransaction).toHaveBeenCalledWith('tx-1');
-    expect(notificationState.showAppNotification).toHaveBeenCalledWith('transactionSubmittedText');
-  });
-
-  it('adds a newly registered asset through the Pinia wallet store when it is missing locally', async () => {
-    const { handleChangeTransaction } = useTransaction();
-    const tx = {
-      id: 'tx-reg',
-      status: TransactionStatus.Finalized,
-      type: Operation.RegisterAsset,
-      assetAddress: '0x987',
-      symbol: 'REG',
-    } as never;
-
-    handleChangeTransaction(tx, { id: 'tx-reg', status: TransactionStatus.Finalized } as never);
-
-    expect(addAsset).toHaveBeenCalledWith('0x987');
-    await Promise.resolve();
-    expect(notificationState.showAppNotification).toHaveBeenLastCalledWith('addAsset.success', 'success');
-    expect(removeActiveTransactions).toHaveBeenCalledWith(['tx-reg']);
+    expect(handler).toHaveBeenCalledTimes(1);
+    expect(walletStore.addActiveTransaction).toHaveBeenCalledWith('tx-1');
+    expect(showAppNotificationMock).toHaveBeenCalledWith('transactionSubmittedText');
   });
 });

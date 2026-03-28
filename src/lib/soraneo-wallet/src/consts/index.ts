@@ -225,10 +225,10 @@ export const DefaultPassphraseTimeout = PassphraseTimeoutDuration[PassphraseTime
 export const ObjectInit = () => null;
 
 /**
- * DO NOT IMPORT THIS CONST if you use TranslationMixin
+ * DO NOT IMPORT THIS CONST if you use the wallet translation composable
  *
  * Contains wallet-specific words which shouldn't be translated.
- * It's used in TranslationMixin of SORA Wallet project and it's extended in Polkaswap TranslationMixin.
+ * It's used in the wallet translation composable of the SORA Wallet project and extended in Polkaswap.
  */
 export const TranslationConsts = {
   Polkaswap: 'Polkaswap',

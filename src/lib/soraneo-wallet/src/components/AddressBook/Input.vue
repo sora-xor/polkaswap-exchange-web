@@ -84,15 +84,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch, type PropType } from 'vue';
 
+import { useWalletTranslation } from '../../composables/useWalletTranslation';
 import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../../api';
 import { formatAccountAddress } from '../../util';
 import { subscribeToWalletAccounts } from '../../util/account';
 import WalletAccount from '../Account/WalletAccount.vue';
-import TranslationMixin from '../mixins/TranslationMixin';
 
 import AddressBookContact from './Contact.vue';
 import AddressBookList from './List.vue';
@@ -100,14 +100,13 @@ import AddressBookList from './List.vue';
 import type { AppWallet } from '../../consts';
 import type { Book, PolkadotJsAccount } from '../../types/common';
 
-export default defineComponent({
+export default {
   inheritAttrs: false,
   components: {
     WalletAccount,
     AddressBookList,
     AddressBookContact,
   },
-  mixins: [TranslationMixin],
   props: {
     excludeConnected: {
       default: false,
@@ -143,37 +142,29 @@ export default defineComponent({
     },
   },
   emits: ['update:modelValue', 'update:name'],
-  data() {
-    return {
-      name: '',
-      prefilledAddress: '',
-      showAddressBookDialog: false,
-      showSetContactDialog: false,
-      isEditMode: false,
-      accountsSubscription: null as Nullable<(() => void) | null>,
-      accountsRecords: [] as PolkadotJsAccount[],
-    };
-  },
-  computed: {
-    connected(this: any) {
-      return useWalletStore(this.$pinia).address;
-    },
-    source(this: any) {
-      return useWalletStore(this.$pinia).source;
-    },
-    addressBook(this: any) {
-      return useWalletStore(this.$pinia).book;
-    },
-    address: {
-      get(this: any): string {
-        return this.modelValue ?? this.value;
+  setup(props, { emit }) {
+    const { t } = useWalletTranslation();
+    const walletStore = useWalletStore();
+
+    const name = ref('');
+    const prefilledAddress = ref('');
+    const showAddressBookDialog = ref(false);
+    const showSetContactDialog = ref(false);
+    const isEditMode = ref(false);
+    const accountsSubscription = ref<Nullable<(() => void) | null>>(null);
+    const accountsRecords = ref<PolkadotJsAccount[]>([]);
+
+    const connected = computed(() => walletStore.address);
+    const source = computed(() => walletStore.source);
+    const addressBook = computed(() => walletStore.book);
+    const address = computed({
+      get: (): string => props.modelValue ?? props.value,
+      set: (value: string): void => {
+        emit('update:modelValue', value.trim());
       },
-      set(this: any, value: string): void {
-        this.$emit('update:modelValue', value.trim());
-      },
-    },
-    accountBook(this: any): Book {
-      return this.accountsRecords.reduce((book: Book, { address, name }: PolkadotJsAccount) => {
+    });
+    const accountBook = computed<Book>(() => {
+      return accountsRecords.value.reduce((book: Book, { address, name }: PolkadotJsAccount) => {
         const key = formatAccountAddress(address);
 
         return {
@@ -181,99 +172,131 @@ export default defineComponent({
           [key]: name,
         };
       }, {});
-    },
-    books(this: any): Book {
-      return { ...this.accountBook, ...this.addressBook };
-    },
-    bookRecords(this: any): PolkadotJsAccount[] {
-      return Object.entries((this.addressBook ?? {}) as Book).map(([address, name]) => ({
+    });
+    const books = computed<Book>(() => ({ ...accountBook.value, ...addressBook.value }));
+    const bookRecords = computed<PolkadotJsAccount[]>(() => {
+      return Object.entries((addressBook.value ?? {}) as Book).map(([address, name]) => ({
         address,
         name,
-        source: this.source as AppWallet,
+        source: source.value as AppWallet,
       }));
-    },
-    isNewAddress(this: any): boolean {
-      if (!this.address) return false;
+    });
+    const isNewAddress = computed((): boolean => {
+      if (!address.value) return false;
 
-      const formattedAddress = formatAccountAddress(this.address);
+      const formattedAddress = formatAccountAddress(address.value);
 
       if (!formattedAddress) return false;
 
-      const found = this.accountsRecords.find(
+      const found = accountsRecords.value.find(
         (account: PolkadotJsAccount) => formatAccountAddress(account.address) === formattedAddress
       );
 
-      return !this.addressBook?.[formattedAddress] && !found;
-    },
-    excludedAddress(this: any): string {
-      return this.excludeConnected ? this.connected : '';
-    },
-    record(this: any): Nullable<PolkadotJsAccount> {
-      const { address, name, source, isValid } = this;
-
-      return isValid && name ? { address, name, source } : null;
-    },
-  },
-  watch: {
-    books(this: any): void {
-      this.updateContactName();
-    },
-    isValid(this: any): void {
-      this.updateContactName();
-    },
-  },
-  async mounted(this: any): Promise<void> {
-    this.accountsSubscription = await subscribeToWalletAccounts(api, this.source, (accounts) => {
-      this.accountsRecords = accounts;
+      return !addressBook.value?.[formattedAddress] && !found;
     });
-  },
-  beforeUnmount(this: any): void {
-    if (this.accountsSubscription) {
-      this.accountsSubscription();
-      this.accountsSubscription = null;
-    }
-  },
-  methods: {
-    setAddressToBook(this: any, payload: { address: string; name: string }) {
-      return useWalletStore(this.$pinia).setAddressToBook(payload);
-    },
-    removeAddressFromBook(this: any, address: string) {
-      return useWalletStore(this.$pinia).removeAddressFromBook(address);
-    },
-    updateContactName(this: any): void {
-      if (!this.isValid) {
-        this.name = '';
-      } else if (!this.name) {
-        const key = formatAccountAddress(this.address);
-        this.name = this.books[key] || '';
+    const excludedAddress = computed(() => (props.excludeConnected ? connected.value : ''));
+    const record = computed<Nullable<PolkadotJsAccount>>(() => {
+      return props.isValid && name.value ? { address: address.value, name: name.value, source: source.value } : null;
+    });
+
+    const setAddressToBook = (payload: { address: string; name: string }) => walletStore.setAddressToBook(payload);
+    const removeAddressFromBook = (address: string) => walletStore.removeAddressFromBook(address);
+
+    const updateName = (): void => {
+      emit('update:name', name.value);
+    };
+
+    const updateContactName = (): void => {
+      if (!props.isValid) {
+        name.value = '';
+      } else if (!name.value) {
+        const key = formatAccountAddress(address.value);
+        name.value = books.value[key] || '';
       }
 
-      this.updateName();
-    },
-    openAddressBook(this: any): void {
-      this.showAddressBookDialog = true;
-    },
-    chooseRecord(this: any, { name, address }: PolkadotJsAccount): void {
-      this.address = address;
-      this.name = name;
-      this.updateName();
-    },
-    openContact(this: any, address: Nullable<string>, isEditMode = false): void {
-      this.isEditMode = isEditMode;
-      this.prefilledAddress = address ? formatAccountAddress(address) : '';
-      this.showSetContactDialog = true;
-    },
-    resetAddress(this: any): void {
-      this.address = '';
-    },
-    updateName(this: any): void {
-      this.$emit('update:name', this.name);
-    },
-    removeInput(this: any): void {
-      this.onRemove?.();
-    },
+      updateName();
+    };
+
+    const openAddressBook = (): void => {
+      showAddressBookDialog.value = true;
+    };
+
+    const chooseRecord = ({ name: accountName, address: accountAddress }: PolkadotJsAccount): void => {
+      address.value = accountAddress;
+      name.value = accountName;
+      updateName();
+    };
+
+    const openContact = (addressValue: Nullable<string>, editMode = false): void => {
+      isEditMode.value = editMode;
+      prefilledAddress.value = addressValue ? formatAccountAddress(addressValue) : '';
+      showSetContactDialog.value = true;
+    };
+
+    const resetAddress = (): void => {
+      address.value = '';
+    };
+
+    const removeInput = (): void => {
+      props.onRemove?.();
+    };
+
+    watch(books, () => {
+      updateContactName();
+    });
+
+    watch(
+      () => props.isValid,
+      () => {
+        updateContactName();
+      }
+    );
+
+    onMounted(() => {
+      void (async () => {
+        accountsSubscription.value = await subscribeToWalletAccounts(api, source.value, (accounts) => {
+          accountsRecords.value = accounts;
+        });
+      })();
+    });
+
+    onBeforeUnmount(() => {
+      if (accountsSubscription.value) {
+        accountsSubscription.value();
+        accountsSubscription.value = null;
+      }
+    });
+
+    return {
+      t,
+      name,
+      prefilledAddress,
+      showAddressBookDialog,
+      showSetContactDialog,
+      isEditMode,
+      accountsRecords,
+      connected,
+      source,
+      addressBook,
+      address,
+      accountBook,
+      books,
+      bookRecords,
+      isNewAddress,
+      excludedAddress,
+      record,
+      setAddressToBook,
+      removeAddressFromBook,
+      updateContactName,
+      openAddressBook,
+      chooseRecord,
+      openContact,
+      resetAddress,
+      updateName,
+      removeInput,
+    };
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

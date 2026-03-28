@@ -32,16 +32,24 @@ import {
 } from './core';
 import { initWallet, waitForCore } from './bootstrap';
 import { SoraWallet, components } from './components/registry';
-import CameraPermissionMixin from './components/mixins/CameraPermissionMixin';
-import CopyAddressMixin from './components/mixins/CopyAddressMixin';
-import FormattedAmountMixin from './components/mixins/FormattedAmountMixin';
-import LoadingMixin from './components/mixins/LoadingMixin';
-import NetworkFeeWarningMixin from './components/mixins/NetworkFeeWarningMixin';
-import NotificationMixin from './components/mixins/NotificationMixin';
-import NumberFormatterMixin from './components/mixins/NumberFormatterMixin';
-import PaginationSearchMixin from './components/mixins/PaginationSearchMixin';
-import TransactionMixin from './components/mixins/TransactionMixin';
-import TranslationMixin from './components/mixins/TranslationMixin';
+import { useAccountActions } from './composables/useAccountActions';
+import { useAddAsset } from './composables/useAddAsset';
+import { useCameraPermission } from './composables/useCameraPermission';
+import { useCopyAddress } from './composables/useCopyAddress';
+import { useDialogVisibility } from './composables/useDialog';
+import { useEthBridgeTransaction } from './composables/useEthBridgeTransaction';
+import { useFormattedAmount } from './composables/useFormattedAmount';
+import { useInputFocus } from './composables/useInputFocus';
+import { useLoading } from './composables/useLoading';
+import { useNetworkFeeWarning } from './composables/useNetworkFeeWarning';
+import { useNotification } from './composables/useNotification';
+import { useNumberFormatter } from './composables/useNumberFormatter';
+import { useOperations } from './composables/useOperations';
+import { usePaginationSearch } from './composables/usePaginationSearch';
+import { useQrCodeParser } from './composables/useQrCodeParser';
+import { useTransaction } from './composables/useTransaction';
+import { useTranslation } from './composables/useTranslation';
+import { useWalletTranslation } from './composables/useWalletTranslation';
 import installWalletPlugins from './plugins';
 import { ScriptLoader } from './util/scriptLoader';
 
@@ -72,20 +80,28 @@ const SoraWalletElements: Plugin<PluginOptions> = {
 };
 
 /**
- * Convenience export for the core mixins. These are kept separate so host
- * applications can register only the behaviors they need.
+ * Composition helpers exposed for host applications that embed the wallet and
+ * need access to the wallet-specific behaviors outside of the bundled views.
  */
-const mixins = {
-  NetworkFeeWarningMixin,
-  NumberFormatterMixin,
-  FormattedAmountMixin,
-  TransactionMixin,
-  TranslationMixin,
-  NotificationMixin,
-  LoadingMixin,
-  PaginationSearchMixin,
-  CopyAddressMixin,
-  CameraPermissionMixin,
+const composables = {
+  useAccountActions,
+  useAddAsset,
+  useCameraPermission,
+  useCopyAddress,
+  useDialogVisibility,
+  useEthBridgeTransaction,
+  useFormattedAmount,
+  useInputFocus,
+  useLoading,
+  useNetworkFeeWarning,
+  useNotification,
+  useNumberFormatter,
+  useOperations,
+  usePaginationSearch,
+  useQrCodeParser,
+  useTransaction,
+  useTranslation,
+  useWalletTranslation,
 };
 
 /**
@@ -110,7 +126,7 @@ export {
   WALLET_CONSTS,
   WALLET_TYPES,
   components,
-  mixins,
+  composables,
   accountUtils,
   ScriptLoader,
   historyElementsFilter,
@@ -122,9 +138,26 @@ export {
   WC,
 };
 
-export { useDialogVisibility } from './composables/useDialog';
-export { useNotification } from './composables/useNotification';
-export { useTranslation } from './composables/useTranslation';
+export {
+  useAccountActions,
+  useAddAsset,
+  useCameraPermission,
+  useCopyAddress,
+  useDialogVisibility,
+  useEthBridgeTransaction,
+  useFormattedAmount,
+  useInputFocus,
+  useLoading,
+  useNetworkFeeWarning,
+  useNotification,
+  useNumberFormatter,
+  useOperations,
+  usePaginationSearch,
+  useQrCodeParser,
+  useTransaction,
+  useTranslation,
+  useWalletTranslation,
+};
 export { useNotificationStore } from './stores/notification';
 
 export type { PluginOptions };

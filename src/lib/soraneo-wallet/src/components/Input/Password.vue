@@ -6,50 +6,51 @@
   </s-input>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 
-import InputFocusMixin from '../mixins/InputFocusMixin';
-import TranslationMixin from '../mixins/TranslationMixin';
+import { useInputFocus } from '../../composables/useInputFocus';
+import { useWalletTranslation } from '../../composables/useWalletTranslation';
 
-export default defineComponent({
+defineOptions({
   inheritAttrs: false,
-  mixins: [InputFocusMixin, TranslationMixin],
-  props: {
-    modelValue: {
-      type: String,
-      default: '',
-    },
-  },
-  emits: ['update:modelValue'],
-  data() {
-    return {
-      hidden: true,
-    };
-  },
-  computed: {
-    query: {
-      get(this: any): string {
-        return this.modelValue;
-      },
-      set(this: any, value: string): void {
-        this.$emit('update:modelValue', value);
-      },
-    },
-    icon(this: any): string {
-      return this.hidden ? 'basic-eye-no-24' : 'basic-filterlist-24';
-    },
-    type(this: any): string {
-      return this.hidden ? 'password' : 'text';
-    },
-  },
-  methods: {
-    togglePasswordVisibility(this: any): void {
-      this.hidden = !this.hidden;
-    },
-    reset(this: any): void {
-      this.hidden = true;
-    },
+});
+
+const props = withDefaults(
+  defineProps<{
+    autofocus?: boolean;
+    modelValue?: string;
+  }>(),
+  {
+    autofocus: false,
+    modelValue: '',
+  }
+);
+
+const emit = defineEmits<{
+  'update:modelValue': [value: string];
+}>();
+
+const { input } = useInputFocus(() => props.autofocus);
+const { t } = useWalletTranslation();
+
+const hidden = ref(true);
+
+const query = computed({
+  get: (): string => props.modelValue,
+  set: (value: string): void => {
+    emit('update:modelValue', value);
   },
 });
+
+const icon = computed(() => (hidden.value ? 'basic-eye-no-24' : 'basic-filterlist-24'));
+const type = computed(() => (hidden.value ? 'password' : 'text'));
+
+function togglePasswordVisibility(): void {
+  hidden.value = !hidden.value;
+}
+
+function reset(): void {
+  hidden.value = true;
+}
 </script>

@@ -9,14 +9,17 @@ type Setup = {
   setStatus: ReturnType<typeof vi.fn>;
   createExplorerClient: ReturnType<typeof vi.fn>;
   queryToPromise: ReturnType<typeof vi.fn>;
+  subscription: ReturnType<typeof vi.fn>;
 };
 
-const setup = (endpoint: Nullable<string> = null): Setup => {
+const setup = (endpoint: Nullable<string> = null, supportsSubscriptions = true): Setup => {
   const setStatus = vi.fn(async () => {});
   const queryToPromise = vi.fn();
+  const subscription = vi.fn();
   const client = {
+    supportsSubscriptions,
     query: vi.fn(() => ({ toPromise: queryToPromise })),
-    subscription: vi.fn(),
+    subscription,
   };
   const createExplorerClient = vi.fn(() => client);
 
@@ -33,6 +36,7 @@ const setup = (endpoint: Nullable<string> = null): Setup => {
     setStatus,
     createExplorerClient,
     queryToPromise,
+    subscription,
   };
 };
 
@@ -71,5 +75,16 @@ describe('BaseExplorer', () => {
     expect(createExplorerClient).toHaveBeenCalledWith('https://indexer.test/graphql');
     expect(setStatus).toHaveBeenNthCalledWith(1, ConnectionStatus.Loading);
     expect(setStatus).toHaveBeenNthCalledWith(2, ConnectionStatus.Available);
+  });
+
+  it('returns a no-op unsubscribe when the indexer client has no subscription support', () => {
+    const { explorer, subscription } = setup('https://indexer.test/graphql', false);
+
+    const subscribe = explorer.subscribe({} as any);
+    const unsubscribe = subscribe(vi.fn());
+
+    expect(typeof unsubscribe).toBe('function');
+    expect(() => unsubscribe()).not.toThrow();
+    expect(subscription).not.toHaveBeenCalled();
   });
 });

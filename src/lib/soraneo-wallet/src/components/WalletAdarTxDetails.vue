@@ -32,10 +32,13 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { Operation } from '@sora-substrate/sdk';
-import { defineComponent, type PropType } from 'vue';
+import { computed } from 'vue';
 
+import { useNumberFormatter } from '../composables/useNumberFormatter';
+import { usePaginationSearch } from '../composables/usePaginationSearch';
+import { useWalletTranslation } from '../composables/useWalletTranslation';
 import { useWalletStore } from '@/stores/wallet';
 
 import { formatAddress } from '@/util';
@@ -43,56 +46,30 @@ import { formatAddress } from '@/util';
 import { HashType } from '../consts';
 
 import InfoLine from './InfoLine.vue';
-import NumberFormatterMixin from './mixins/NumberFormatterMixin';
-import PaginationSearchMixin from './mixins/PaginationSearchMixin';
-import TranslationMixin from './mixins/TranslationMixin';
 import TransactionHashView from './TransactionHashView.vue';
 
 import type { PolkadotJsAccount } from '../types/common';
 import type { HistoryItem } from '@sora-substrate/sdk';
 
-export default defineComponent({
-  components: {
-    InfoLine,
-    TransactionHashView,
-  },
-  mixins: [TranslationMixin, NumberFormatterMixin, PaginationSearchMixin],
-  props: {
-    transaction: {
-      required: true,
-      type: Object as PropType<HistoryItem>,
-    },
-  },
-  data() {
-    return {
-      HashType,
-      pageAmount: 4,
-    };
-  },
-  computed: {
-    account(this: any) {
-      return useWalletStore(this.$pinia).account;
-    },
-    isAdarOperation(this: any): boolean {
-      return this.transaction.type === Operation.SwapTransferBatch;
-    },
-    swapTransferBatchRecipients(this: any) {
-      if (!this.isAdarOperation || (this.account as PolkadotJsAccount).address !== this.transaction.from) return [];
-      return this.transaction.payload?.receivers;
-    },
-    txsList(this: any) {
-      return this.getPageItems(this.swapTransferBatchRecipients);
-    },
-    numberOfRecipients(this: any): number {
-      return this.swapTransferBatchRecipients?.length || 0;
-    },
-  },
-  methods: {
-    formatAddress(address: string): string {
-      return formatAddress(address);
-    },
-  },
+const props = defineProps<{
+  transaction: HistoryItem;
+}>();
+
+const { t } = useWalletTranslation();
+const { formatStringValue } = useNumberFormatter();
+const { currentPage, pageAmount, getPageItems, handlePrevClick, handleNextClick } = usePaginationSearch();
+const walletStore = useWalletStore();
+
+pageAmount.value = 4;
+
+const account = computed(() => walletStore.account as PolkadotJsAccount);
+const isAdarOperation = computed(() => props.transaction.type === Operation.SwapTransferBatch);
+const swapTransferBatchRecipients = computed(() => {
+  if (!isAdarOperation.value || account.value.address !== props.transaction.from) return [];
+  return props.transaction.payload?.receivers ?? [];
 });
+const txsList = computed(() => getPageItems(swapTransferBatchRecipients.value));
+const numberOfRecipients = computed(() => swapTransferBatchRecipients.value.length || 0);
 </script>
 
 <style lang="scss">

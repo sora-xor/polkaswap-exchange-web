@@ -10,98 +10,78 @@
   ></account-confirm-dialog>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, nextTick } from 'vue';
 
 import { useWalletStore } from '@/stores/wallet';
 
+import { useLoading } from '../composables/useLoading';
+import { useNotification } from '../composables/useNotification';
 import { delay } from '../util';
 import { unlockAccountPair } from '../util/account';
 
 import AccountConfirmDialog from './Account/ConfirmDialog.vue';
-import LoadingMixin from './mixins/LoadingMixin';
-import NotificationMixin from './mixins/NotificationMixin';
 
 import type { PolkadotJsAccount } from '../types/common';
 import type { WithKeyring } from '@sora-substrate/sdk';
 
-export default defineComponent({
-  components: {
-    AccountConfirmDialog,
-  },
-  mixins: [NotificationMixin, LoadingMixin],
-  props: {
-    account: {
-      required: true,
-      type: Object as () => PolkadotJsAccount,
-    },
-    chainApi: {
-      required: true,
-      type: Object as () => WithKeyring,
-    },
-    visibility: {
-      required: true,
-      type: Boolean,
-    },
-    setVisibility: {
-      required: true,
-      type: Function as () => (flag: boolean) => void,
-    },
-  },
-  computed: {
-    isSignTxDialogDisabled(this: any) {
-      return useWalletStore(this.$pinia).isSignTxDialogDisabled;
-    },
-    getPassword(this: any) {
-      return useWalletStore(this.$pinia).getPassword;
-    },
-    visible: {
-      get(this: any): boolean {
-        return this.visibility;
-      },
-      set(this: any, flag: boolean): void {
-        this.setVisibility(flag);
-      },
-    },
-    passphrase(this: any): Nullable<string> {
-      const address = this.account?.address;
+const props = defineProps<{
+  account: Nullable<PolkadotJsAccount>;
+  chainApi: WithKeyring;
+  visibility: boolean;
+  setVisibility: (flag: boolean) => void;
+}>();
 
-      return address ? this.getPassword(address) : null;
-    },
-  },
-  methods: {
-    setAccountPassphrase(this: any, payload: { address: string; password: string }) {
-      return useWalletStore(this.$pinia).setAccountPassphrase(payload);
-    },
-    resetAccountPassphrase(this: any, address: string) {
-      return useWalletStore(this.$pinia).resetAccountPassphrase(address);
-    },
-    async handleConfirm(this: any, password: string): Promise<void> {
-      await this.withLoading(async () => {
-        // hack: to render loading state before sync code execution, 250 - button transition
-        await this.$nextTick();
-        await delay(250);
+const walletStore = useWalletStore();
+const { t, withAppNotification } = useNotification();
+const { loading, withLoading } = useLoading();
 
-        await this.withAppNotification(async () => {
-          const address = this.account?.address;
-
-          if (!address) {
-            this.setVisibility(false);
-            return;
-          }
-
-          unlockAccountPair(this.chainApi, password);
-
-          if (this.isSignTxDialogDisabled) {
-            this.setAccountPassphrase({ address, password });
-          } else {
-            this.resetAccountPassphrase(address);
-          }
-
-          this.setVisibility(false);
-        });
-      });
-    },
+const isSignTxDialogDisabled = computed(() => walletStore.isSignTxDialogDisabled);
+const getPassword = computed(() => walletStore.getPassword);
+const visible = computed({
+  get: (): boolean => props.visibility,
+  set: (flag: boolean): void => {
+    props.setVisibility(flag);
   },
 });
+const passphrase = computed<Nullable<string>>(() => {
+  const address = props.account?.address;
+
+  return address ? getPassword.value(address) : null;
+});
+
+function setAccountPassphrase(payload: { address: string; password: string }) {
+  return walletStore.setAccountPassphrase(payload);
+}
+
+function resetAccountPassphrase(address: string) {
+  return walletStore.resetAccountPassphrase(address);
+}
+
+async function handleConfirm(password: string): Promise<void> {
+  await withLoading(async () => {
+    // hack: to render loading state before sync code execution, 250 - button transition
+    await nextTick();
+    await delay(250);
+
+    await withAppNotification(async () => {
+      const address = props.account?.address;
+
+      if (!address) {
+        props.setVisibility(false);
+        return;
+      }
+
+      unlockAccountPair(props.chainApi, password);
+
+      if (isSignTxDialogDisabled.value) {
+        setAccountPassphrase({ address, password });
+      } else {
+        resetAccountPassphrase(address);
+      }
+
+      props.setVisibility(false);
+    });
+  });
+}
 </script>

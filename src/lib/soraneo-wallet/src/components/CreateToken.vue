@@ -21,92 +21,87 @@
   </wallet-base>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 
+import { useWalletTranslation } from '../composables/useWalletTranslation';
 import { useRouterStore } from '@/stores/router';
 
 import { TokenTabs, Step, RouteNames } from '../consts';
 
 import CreateNftToken from './CreateNftToken.vue';
 import CreateSimpleToken from './CreateSimpleToken.vue';
-import TranslationMixin from './mixins/TranslationMixin';
 import WalletBase from './WalletBase.vue';
 
 import type { Route } from '@/stores/router/types';
 
-export default defineComponent({
-  components: {
-    WalletBase,
-    CreateSimpleToken,
-    CreateNftToken,
-  },
-  mixins: [TranslationMixin],
-  data() {
-    return {
-      TokenTabs,
-      step: Step.CreateSimpleToken as Step,
-      currentTab: Step.CreateSimpleToken as Step,
-      showTabs: true,
-      showHeader: true,
-      createTokenTitle: '',
-    };
-  },
-  created(this: any): void {
-    this.createTokenTitle = this.t('createToken.titleCommon');
-  },
-  computed: {
-    currentStep(this: any): Step {
-      return this.step;
-    },
-  },
-  methods: {
-    navigate(this: any, options: Route): void {
-      useRouterStore(this.$pinia).navigate(options);
-    },
-    getTabName(this: any, tab: TokenTabs): string {
-      if (tab === TokenTabs.NonFungibleToken) {
-        return this.TranslationConsts.NFT;
-      }
-      return this.t(`createToken.${tab}`);
-    },
-    handleChangeTab(this: any, value: Step): void {
-      this.step = value;
-      this.currentTab = value;
-    },
-    setTabVisibility(this: any): void {
-      this.showTabs = !this.showTabs;
-    },
-    setHeaderVisibility(this: any): void {
-      this.showHeader = !this.showHeader;
-    },
-    setStep(this: any, step: Step): void {
-      if ([Step.CreateSimpleToken, Step.CreateNftToken].includes(step)) this.setTabVisibility();
-      if (step === Step.ConfirmSimpleToken) this.createTokenTitle = this.t('createToken.confirmTokenTitleCommon');
-      if (step === Step.ConfirmNftToken) this.createTokenTitle = this.t('createToken.confirmTokenTitleNFT');
-      this.step = step;
-    },
-    handleBack(this: any): void {
-      if ([Step.CreateSimpleToken, Step.CreateNftToken].includes(this.step)) {
-        this.navigate({ name: RouteNames.Wallet });
-        return;
-      }
+const { t, TranslationConsts } = useWalletTranslation();
+const routerStore = useRouterStore();
 
-      if ([Step.ConfirmSimpleToken, Step.ConfirmNftToken].includes(this.step)) {
-        if (this.step === Step.ConfirmSimpleToken) this.step = Step.CreateSimpleToken;
-        if (this.step === Step.ConfirmNftToken) this.step = Step.CreateNftToken;
-        this.createTokenTitle = this.t('createToken.titleCommon');
-      } else if (this.step === Step.Warn) {
-        if (this.currentTab === Step.CreateSimpleToken) this.step = Step.CreateSimpleToken;
-        if (this.currentTab === Step.CreateNftToken) this.step = Step.CreateNftToken;
-      }
+const step = ref<Step>(Step.CreateSimpleToken);
+const currentTab = ref<Step>(Step.CreateSimpleToken);
+const showTabs = ref(true);
+const showHeader = ref(true);
+const createTokenTitle = ref(t('createToken.titleCommon'));
 
-      this.showTabs = true;
-      this.showHeader = true;
-      this.navigate({ name: RouteNames.CreateToken });
-    },
-  },
-});
+const currentStep = computed(() => step.value);
+
+function navigate(options: Route): void {
+  routerStore.navigate(options);
+}
+
+function getTabName(tab: TokenTabs): string {
+  if (tab === TokenTabs.NonFungibleToken) {
+    return TranslationConsts.NFT;
+  }
+  return t(`createToken.${tab}`);
+}
+
+function handleChangeTab(value: Step): void {
+  step.value = value;
+  currentTab.value = value;
+}
+
+function setTabVisibility(): void {
+  showTabs.value = !showTabs.value;
+}
+
+function setHeaderVisibility(): void {
+  showHeader.value = !showHeader.value;
+}
+
+function setStep(nextStep: Step): void {
+  if ([Step.CreateSimpleToken, Step.CreateNftToken].includes(nextStep)) {
+    setTabVisibility();
+  }
+  if (nextStep === Step.ConfirmSimpleToken) {
+    createTokenTitle.value = t('createToken.confirmTokenTitleCommon');
+  }
+  if (nextStep === Step.ConfirmNftToken) {
+    createTokenTitle.value = t('createToken.confirmTokenTitleNFT');
+  }
+  step.value = nextStep;
+}
+
+function handleBack(): void {
+  if ([Step.CreateSimpleToken, Step.CreateNftToken].includes(step.value)) {
+    navigate({ name: RouteNames.Wallet });
+    return;
+  }
+
+  if ([Step.ConfirmSimpleToken, Step.ConfirmNftToken].includes(step.value)) {
+    if (step.value === Step.ConfirmSimpleToken) step.value = Step.CreateSimpleToken;
+    if (step.value === Step.ConfirmNftToken) step.value = Step.CreateNftToken;
+    createTokenTitle.value = t('createToken.titleCommon');
+  } else if (step.value === Step.Warn) {
+    if (currentTab.value === Step.CreateSimpleToken) step.value = Step.CreateSimpleToken;
+    if (currentTab.value === Step.CreateNftToken) step.value = Step.CreateNftToken;
+  }
+
+  showTabs.value = true;
+  showHeader.value = true;
+  navigate({ name: RouteNames.CreateToken });
+}
 </script>
 
 <style lang="scss">

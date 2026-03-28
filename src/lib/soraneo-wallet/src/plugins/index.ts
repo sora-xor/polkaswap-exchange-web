@@ -6,7 +6,12 @@ import './days-js-duration';
 import type { App } from 'vue';
 
 const hasSoramitsuUiPlugin = (app: App): boolean => {
-  return Boolean(app.component('SButton')) && Boolean(app.component('SDesignSystemProvider'));
+  return (
+    Boolean(app.component('SButton')) &&
+    Boolean(app.component('SDesignSystemProvider')) &&
+    Boolean(app.directive('loading')) &&
+    Boolean(app.directive('button'))
+  );
 };
 
 export default function installWalletPlugins(app: App): void {

@@ -1,12 +1,20 @@
+import { loadAsyncImportWithRetry } from '@/router/lazy';
 import { createAsyncComponent, type AsyncComponentFactory } from '@/utils/asyncComponent';
 
 type WalletModule = typeof import('@/shims/wallet');
 
 let walletModulePromise: Promise<WalletModule> | null = null;
 
+/**
+ * Lazily loads the shared wallet module and keeps transient gateway failures from
+ * poisoning the cached promise for the rest of the session.
+ */
 export const loadWalletModule = () => {
   if (!walletModulePromise) {
-    walletModulePromise = import('@/shims/wallet');
+    walletModulePromise = loadAsyncImportWithRetry(() => import('@/shims/wallet')).catch((error) => {
+      walletModulePromise = null;
+      throw error;
+    });
   }
 
   return walletModulePromise;

@@ -15,23 +15,28 @@
           <slot name="list-empty">{{ t('assets.empty') }}</slot>
         </div>
       </template>
-      <template #default="{ item, index }">
-        <asset-list-item
-          :key="index"
-          :asset="item"
-          :with-clickable-logo="withClickableLogo"
-          :selectable="selectable"
-          :selected="isSelected(item)"
-          :pinnable="pinnable"
-          :with-fiat="withFiat"
-          :with-tabindex="withTabindex"
-          v-on="wrapListeners(item)"
-        >
-          <template v-for="name in forwardedSlots" #[name]="slotProps">
-            <slot :name="name" v-bind="slotProps"></slot>
-          </template>
-        </asset-list-item>
-        <s-divider v-if="divider && index !== assets.length - 1" :key="`${index}-divider`"></s-divider>
+      <template #default="slotProps">
+        <template v-if="slotProps?.item">
+          <asset-list-item
+            :key="slotProps.index"
+            :asset="slotProps.item"
+            :with-clickable-logo="withClickableLogo"
+            :selectable="selectable"
+            :selected="isSelected(slotProps.item)"
+            :pinnable="pinnable"
+            :with-fiat="withFiat"
+            :with-tabindex="withTabindex"
+            v-on="wrapListeners(slotProps.item)"
+          >
+            <template v-for="name in forwardedSlots" #[name]="forwardedSlotProps">
+              <slot :name="name" v-bind="forwardedSlotProps ?? {}"></slot>
+            </template>
+          </asset-list-item>
+          <s-divider
+            v-if="divider && slotProps.index !== assets.length - 1"
+            :key="`${slotProps.index}-divider`"
+          ></s-divider>
+        </template>
       </template>
     </recycle-scroller>
 

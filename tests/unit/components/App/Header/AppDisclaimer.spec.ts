@@ -239,11 +239,11 @@ describe('AppDisclaimer', () => {
     expect(appDisclaimerSource).toContain(':global(.disclaimer-modal--nonblocking .disclaimer)');
   });
 
-  it('anchors the disclaimer modal in the upper-right corner through global modal root styles', () => {
-    expect(appDisclaimerSource).toContain(':global(.disclaimer-modal)');
-    expect(appDisclaimerSource).toContain('justify-content: flex-end;');
-    expect(appDisclaimerSource).toContain('align-items: flex-start;');
-    expect(appDisclaimerSource).toContain(':global(.disclaimer-modal__dialog)');
+  it('centers the disclaimer modal through global modal root styles', () => {
+    expect(appDisclaimerSource).toMatch(
+      /:global\(\.disclaimer-modal\)\s*\{[\s\S]*?justify-content: center;[\s\S]*?align-items: center;/
+    );
+    expect(appDisclaimerSource).toMatch(/:global\(\.disclaimer-modal__dialog\)\s*\{[\s\S]*?justify-content: center;/);
   });
 
   it('activates accept state and handles accept action', async () => {

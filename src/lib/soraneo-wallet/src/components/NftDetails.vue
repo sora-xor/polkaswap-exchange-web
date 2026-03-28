@@ -42,100 +42,93 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 
-import TranslationMixin from './mixins/TranslationMixin';
+import { useWalletTranslation } from '../composables/useWalletTranslation';
 
 const UrlCreator = globalThis.URL || (globalThis as typeof globalThis & { webkitURL?: typeof URL }).webkitURL;
 
-export default defineComponent({
-  mixins: [TranslationMixin],
-  props: {
-    contentLink: {
-      default: '',
-      type: String,
-    },
-    tokenName: {
-      default: '',
-      type: String,
-    },
-    tokenSymbol: {
-      default: '',
-      type: String,
-    },
-    tokenDescription: {
-      default: '',
-      type: String,
-    },
-    isAssetDetails: {
-      default: false,
-      type: Boolean,
-    },
-  },
-  emits: ['click-details'],
-  data() {
-    return {
-      nftDetailsClicked: false,
-      badLink: false,
-      imageLoading: true,
-      isNotImage: false,
-      image: '',
-    };
-  },
-  computed: {
-    nftDetailsSectionClasses(this: any): string[] {
-      const cssClasses = ['nft-info__header--clickable'];
-      if (this.nftDetailsClicked) {
-        cssClasses.push('nft-info__header--clicked');
-      }
-      return cssClasses;
-    },
-    imagePreview(this: any): string[] {
-      return [this.image];
-    },
-  },
-  mounted(this: any): void {
-    void this.$nextTick().then(() => this.checkImageAvailability());
-  },
-  beforeUnmount(this: any): void {
-    if (this.image) {
-      UrlCreator?.revokeObjectURL(this.image);
+const props = withDefaults(
+  defineProps<{
+    contentLink?: string;
+    tokenName?: string;
+    tokenSymbol?: string;
+    tokenDescription?: string;
+    isAssetDetails?: boolean;
+  }>(),
+  {
+    contentLink: '',
+    tokenName: '',
+    tokenSymbol: '',
+    tokenDescription: '',
+    isAssetDetails: false,
+  }
+);
+
+const emit = defineEmits<{
+  'click-details': [];
+}>();
+
+const { t } = useWalletTranslation();
+const nftDetailsClicked = ref(false);
+const badLink = ref(false);
+const imageLoading = ref(true);
+const isNotImage = ref(false);
+const image = ref('');
+
+const nftDetailsSectionClasses = computed(() => {
+  const cssClasses = ['nft-info__header--clickable'];
+  if (nftDetailsClicked.value) {
+    cssClasses.push('nft-info__header--clicked');
+  }
+  return cssClasses;
+});
+
+const imagePreview = computed(() => [image.value]);
+
+async function checkImageAvailability(): Promise<void> {
+  if (!props.contentLink) {
+    return;
+  }
+
+  try {
+    const response = await fetch(props.contentLink);
+    const buffer = await response.blob();
+
+    if (!buffer.type.startsWith('image/')) {
+      isNotImage.value = true;
+      badLink.value = true;
+      imageLoading.value = false;
+      return;
     }
-  },
-  methods: {
-    async checkImageAvailability(this: any): Promise<void> {
-      if (!this.contentLink) {
-        return;
-      }
 
-      try {
-        const response = await fetch(this.contentLink);
-        const buffer = await response.blob();
+    imageLoading.value = false;
+    image.value = UrlCreator?.createObjectURL(buffer) ?? '';
+  } catch {
+    badLink.value = true;
+  }
+}
 
-        if (!buffer.type.startsWith('image/')) {
-          this.isNotImage = true;
-          this.badLink = true;
-          this.imageLoading = false;
-          return;
-        }
+function handleDetailsClick(): void {
+  nftDetailsClicked.value = !nftDetailsClicked.value;
+  emit('click-details');
+}
 
-        this.imageLoading = false;
-        this.image = UrlCreator?.createObjectURL(buffer) ?? '';
-      } catch {
-        this.badLink = true;
-      }
-    },
-    handleDetailsClick(this: any): void {
-      this.nftDetailsClicked = !this.nftDetailsClicked;
-      this.$emit('click-details');
-    },
-    handleRefresh(this: any): void {
-      this.badLink = false;
-      this.imageLoading = true;
-      void this.checkImageAvailability();
-    },
-  },
+function handleRefresh(): void {
+  badLink.value = false;
+  imageLoading.value = true;
+  void checkImageAvailability();
+}
+
+onMounted(() => {
+  void nextTick().then(() => checkImageAvailability());
+});
+
+onBeforeUnmount(() => {
+  if (image.value) {
+    UrlCreator?.revokeObjectURL(image.value);
+  }
 });
 </script>
 

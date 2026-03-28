@@ -41,6 +41,33 @@ const RecycleScrollerStub = defineComponent({
   },
 });
 
+const RecycleScrollerWithPlaceholderStub = defineComponent({
+  name: 'RecycleScrollerWithPlaceholderStub',
+  props: {
+    items: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  setup(props, { attrs, slots, expose }) {
+    expose({ ready: true });
+
+    return () =>
+      h(
+        'div',
+        {
+          class: 'recycle-scroller-placeholder-stub',
+          ...(attrs as Record<string, unknown>),
+        },
+        [
+          slots.before?.(),
+          slots.default?.(),
+          ...(props.items as Asset[]).map((item, index) => slots.default?.({ item, index })),
+        ]
+      );
+  },
+});
+
 const AssetListItemStub = defineComponent({
   name: 'AssetListItemStub',
   props: {
@@ -121,5 +148,25 @@ describe('Wallet AssetList', () => {
     });
 
     expect(wrapper.get('.asset-list').attributes('data-test-id')).toBe('asset-list-root');
+  });
+
+  it('ignores recycle scroller placeholder renders without slot props', () => {
+    const mountComponent = () =>
+      mount(AssetList, {
+        props: {
+          assets: [asset],
+        },
+        global: {
+          stubs: {
+            'recycle-scroller': RecycleScrollerWithPlaceholderStub,
+            'asset-list-item': AssetListItemStub,
+            scrollbar: ScrollbarStub,
+          },
+        },
+      });
+
+    expect(mountComponent).not.toThrow();
+    const wrapper = mountComponent();
+    expect(wrapper.findAll('.asset-item-stub')).toHaveLength(1);
   });
 });

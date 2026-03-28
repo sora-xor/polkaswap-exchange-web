@@ -9,11 +9,13 @@ import { shouldRenderOfflineShell } from '@/utils/env';
 import { renderOfflineShell } from '@/utils/offlineShell';
 import { registerW3mMessageGuard } from '@/security/w3mMessageGuard';
 import { APP_BUILD_VARIANT, registerPilotFeedbackBridge, registerTelemetryStub, trackEvent } from '@/utils/telemetry';
+import { installConsoleWarningFilter } from '@/utils/consoleWarnings';
 import { installVueErrorHandler } from '@/utils/vueErrorHandler';
 
 import './styles';
 
 registerW3mMessageGuard();
+installConsoleWarningFilter();
 
 async function bootstrapApp(): Promise<VueApp> {
   const app = createApp(App);

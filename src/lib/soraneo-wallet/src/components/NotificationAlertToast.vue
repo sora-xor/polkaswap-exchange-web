@@ -8,50 +8,34 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { SButton } from '@soramitsu-ui/ui';
-import { defineComponent } from 'vue';
 
-export default defineComponent({
+defineOptions({
   name: 'NotificationAlertToast',
-  components: { SButton },
-  props: {
-    message: {
-      type: String,
-      required: true,
-    },
-    confirmText: {
-      type: String,
-      default: 'Reload',
-    },
-    cancelText: {
-      type: String,
-      default: 'Cancel',
-    },
-    onConfirm: {
-      type: Function,
-      required: true,
-    },
-    onCancel: {
-      type: Function,
-      required: true,
-    },
-  },
-  setup(props) {
-    function handleConfirm(): void {
-      (props.onConfirm as () => void)();
-    }
-
-    function handleCancel(): void {
-      (props.onCancel as () => void)();
-    }
-
-    return {
-      handleConfirm,
-      handleCancel,
-    };
-  },
 });
+
+const props = withDefaults(
+  defineProps<{
+    message: string;
+    confirmText?: string;
+    cancelText?: string;
+    onConfirm: () => void;
+    onCancel: () => void;
+  }>(),
+  {
+    confirmText: 'Reload',
+    cancelText: 'Cancel',
+  }
+);
+
+function handleConfirm(): void {
+  props.onConfirm();
+}
+
+function handleCancel(): void {
+  props.onCancel();
+}
 </script>
 
 <style scoped>

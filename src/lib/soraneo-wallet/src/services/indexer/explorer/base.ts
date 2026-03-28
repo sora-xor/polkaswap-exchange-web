@@ -5,13 +5,14 @@ import { ConnectionStatus } from '../../../types/common';
 
 import type { Client, OperationResult, TypedDocumentNode, AnyVariables } from '@urql/core';
 
-export type CreateExplorerClientFn = (url: string) => Client;
+export type ExplorerClient = Client & { supportsSubscriptions?: boolean };
+export type CreateExplorerClientFn = (url: string) => ExplorerClient;
 export type GetStatusFn = () => ConnectionStatus;
 export type SetStatusFn = (status: ConnectionStatus) => Promise<void>;
 export type GetEndpointFn = () => Nullable<string>;
 
 export default class BaseExplorer {
-  public client!: Client;
+  public client!: ExplorerClient;
   public type!: IndexerType;
 
   protected createExplorerClient!: CreateExplorerClientFn;
@@ -70,6 +71,10 @@ export default class BaseExplorer {
   // https://formidable.com/open-source/urql/docs/advanced/subscriptions/#one-off-subscriptions
   public subscribe<T>(subscription: TypedDocumentNode<T>, variables: AnyVariables = {}) {
     if (!this.initClient()) {
+      return () => () => undefined;
+    }
+
+    if (this.client.supportsSubscriptions === false) {
       return () => () => undefined;
     }
 

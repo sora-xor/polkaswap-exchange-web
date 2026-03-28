@@ -2,6 +2,7 @@ import * as actual from '../lib/soraneo-wallet/src/index.ts';
 import { Storage } from '@sora-substrate/sdk';
 
 type WalletModule = typeof actual & {
+  default?: typeof actual.default;
   en?: Record<string, unknown>;
   storage?: Storage;
   settingsStorage?: Storage;
@@ -25,6 +26,7 @@ const safeRead = <K extends keyof WalletModule>(key: K): WalletModule[K] | undef
   }
 };
 const walletConsts = safeRead('WALLET_CONSTS');
+const walletPlugin = safeRead('default') ?? moduleWithFallback.default;
 
 const defaultIndexerType = {
   SUBQUERY: 'subquery',
@@ -58,3 +60,4 @@ const createFallbackIndexer = () => ({
 export const getCurrentIndexer = safeRead('getCurrentIndexer') ?? createFallbackIndexer;
 
 export * from '../lib/soraneo-wallet/src/index.ts';
+export default walletPlugin;

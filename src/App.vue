@@ -1,6 +1,6 @@
 <template>
   <s-design-system-provider
-    :value="libraryDesignSystem"
+    :value="libraryTheme"
     class="app sora-theme-provider"
     :class="dsProviderClasses"
     :data-theme="libraryTheme"
@@ -103,7 +103,7 @@ import {
   WalletPermissions,
 } from '@/consts';
 import { BreakpointClass, Breakpoint } from '@/consts/layout';
-import { Theme, type DesignSystem } from '@/consts/theme';
+import { Theme } from '@/consts/theme';
 import { getLocale } from '@/lang';
 import { api, connection } from '@/shims/wallet-api';
 import { initWallet, waitForCore } from '@/shims/wallet-bootstrap';
@@ -203,7 +203,6 @@ const nodeIsConnected = computed(() => Boolean(settingsStore.nodeIsConnected));
 const firstReadyTransaction = computed(() => walletStore.firstReadyTransaction as Nullable<HistoryItem>);
 const isLoggedIn = computed(() => Boolean(walletStore.isLoggedIn));
 const libraryTheme = computed(() => settingsStore.libraryTheme as Theme);
-const libraryDesignSystem = computed(() => settingsStore.libraryDesignSystem as DesignSystem);
 const account = computed(() => walletStore.account);
 const isSignTxDialogVisible = computed(() => Boolean(walletStore.isSignTxDialogVisible));
 const isWalletLoaded = computed(() => Boolean(settingsStore.isWalletLoaded));

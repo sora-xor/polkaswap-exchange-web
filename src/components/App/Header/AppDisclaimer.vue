@@ -344,8 +344,8 @@ onBeforeUnmount(() => {
 }
 
 :global(.disclaimer-modal) {
-  justify-content: flex-end;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   padding: $inner-spacing-medium;
 }
 
@@ -365,7 +365,7 @@ onBeforeUnmount(() => {
   width: 100%;
   max-width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 @include tablet(true) {
@@ -374,7 +374,7 @@ onBeforeUnmount(() => {
   }
 
   :global(.disclaimer-modal__dialog) {
-    justify-content: flex-start;
+    justify-content: center;
   }
 }
 </style>

@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-import { api } from '@/api';
+import { api } from '../api';
 import { RouteNames } from '@/consts';
 import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';

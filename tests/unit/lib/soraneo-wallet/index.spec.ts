@@ -93,17 +93,6 @@ vi.mock('@/lib/soraneo-wallet/src/core', () => ({
   WALLET_TYPES: {},
 }));
 
-vi.mock('@/lib/soraneo-wallet/src/components/mixins/CameraPermissionMixin', () => ({ default: {} }));
-vi.mock('@/lib/soraneo-wallet/src/components/mixins/CopyAddressMixin', () => ({ default: {} }));
-vi.mock('@/lib/soraneo-wallet/src/components/mixins/FormattedAmountMixin', () => ({ default: {} }));
-vi.mock('@/lib/soraneo-wallet/src/components/mixins/LoadingMixin', () => ({ default: {} }));
-vi.mock('@/lib/soraneo-wallet/src/components/mixins/NetworkFeeWarningMixin', () => ({ default: {} }));
-vi.mock('@/lib/soraneo-wallet/src/components/mixins/NotificationMixin', () => ({ default: {} }));
-vi.mock('@/lib/soraneo-wallet/src/components/mixins/NumberFormatterMixin', () => ({ default: {} }));
-vi.mock('@/lib/soraneo-wallet/src/components/mixins/PaginationSearchMixin', () => ({ default: {} }));
-vi.mock('@/lib/soraneo-wallet/src/components/mixins/TransactionMixin', () => ({ default: {} }));
-vi.mock('@/lib/soraneo-wallet/src/components/mixins/TranslationMixin', () => ({ default: {} }));
-
 vi.mock('@/lib/soraneo-wallet/src/plugins', () => ({
   default: installWalletPluginsMock,
 }));
@@ -216,6 +205,14 @@ describe('wallet entry bootstrap', () => {
     const registryModule = await import('@/lib/soraneo-wallet/src/components/registry');
 
     expect(walletModule.components).toBe(registryModule.components);
+  });
+
+  it('re-exports the wallet composable registry', async () => {
+    const walletModule = await loadWalletIndex();
+
+    expect(walletModule.composables.useLoading).toBeTypeOf('function');
+    expect(walletModule.composables.useTransaction).toBeTypeOf('function');
+    expect(walletModule.composables.useWalletTranslation).toBeTypeOf('function');
   });
 
   it('allows plugin install when Pinia wallet state is available', async () => {

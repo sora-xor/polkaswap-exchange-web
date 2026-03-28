@@ -21,7 +21,7 @@
               <p>{{ t('settingsText') }}</p>
               <s-button class="s-pressed" type="action" icon="x-16" @click="handleClickHeaderMenu"></s-button>
             </div>
-            <el-divider class="s-divider-secondary"></el-divider>
+            <div class="el-divider el-divider--horizontal s-divider-secondary"></div>
             <div v-for="section in dropdownHeaderMenuItems" :key="section.title">
               <p class="dropdown-section-title">{{ section.title.toUpperCase() }}</p>
               <div v-for="(item, index) in section.items" :key="item.value" @click="handleSelectHeaderMenu(item.value)">
@@ -57,10 +57,10 @@
                     <s-icon :name="item.iconType" size="14px" class="icontype"></s-icon>
                   </template>
                 </s-dropdown-item>
-                <el-divider
-                  class="divider-between-items s-divider-secondary"
+                <div
                   v-if="index < section.items.length - 1"
-                ></el-divider>
+                  class="el-divider el-divider--horizontal divider-between-items s-divider-secondary"
+                ></div>
               </div>
             </div>
           </template>

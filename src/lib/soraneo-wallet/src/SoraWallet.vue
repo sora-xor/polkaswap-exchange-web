@@ -13,15 +13,15 @@
   </WalletProviders>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, type Component } from 'vue';
 
+import { useLoading } from './composables/useLoading';
 import { useRouterStore } from '@/stores/router';
+import { useWalletStore } from '@/stores/wallet';
 
 import AddAsset from './components/AddAsset/AddAsset.vue';
 import CreateToken from './components/CreateToken.vue';
-import LoadingMixin from './components/mixins/LoadingMixin';
-import TranslationMixin from './components/mixins/TranslationMixin';
 import ReceiveToken from './components/ReceiveToken.vue';
 import SelectAsset from './components/SelectAsset.vue';
 import Wallet from './components/Wallet.vue';
@@ -34,48 +34,51 @@ import { RouteNames } from './consts';
 import { Operations } from './types/common';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-export default defineComponent({
+defineOptions({
   inheritAttrs: false,
-  components: {
-    AddAsset,
-    SelectAsset,
-    CreateToken,
-    ReceiveToken,
-    Wallet,
-    WalletAssetDetails,
-    WalletConnection,
-    WalletSend,
-    WalletTransactionDetails,
-    WalletProviders,
-  },
-  mixins: [LoadingMixin, TranslationMixin],
-  emits: ['close', 'swap', 'liquidity', 'bridge', 'learn-more'],
-  data() {
-    return {
-      Operations,
-    };
-  },
-  computed: {
-    routerStore(this: any) {
-      return useRouterStore(this.$pinia);
-    },
-    currentRoute(this: any): RouteNames {
-      return (this.routerStore.current as RouteNames | null) ?? RouteNames.WalletConnection;
-    },
-  },
-  created(this: any): void {
-    void this.withApi(() => {}); // We need it just for loading state
-  },
-  methods: {
-    handleClose(this: any): void {
-      this.$emit('close');
-    },
-    handleOperation(this: any, operation: Operations, asset: AccountAsset): void {
-      this.$emit(operation, asset);
-    },
-    handleLearnMore(this: any): void {
-      this.$emit('learn-more');
-    },
-  },
 });
+
+const emit = defineEmits<{
+  close: [];
+  swap: [asset: AccountAsset];
+  liquidity: [asset: AccountAsset];
+  bridge: [asset: AccountAsset];
+  'learn-more': [];
+}>();
+
+const walletStore = useWalletStore();
+const routerStore = useRouterStore();
+const { loading, withApi } = useLoading({
+  isWalletLoaded: () => walletStore.isWalletLoaded,
+});
+
+const routeComponents = {
+  [RouteNames.WalletConnection]: WalletConnection,
+  [RouteNames.WalletSend]: WalletSend,
+  [RouteNames.Wallet]: Wallet,
+  [RouteNames.WalletAssetDetails]: WalletAssetDetails,
+  [RouteNames.CreateToken]: CreateToken,
+  [RouteNames.ReceiveToken]: ReceiveToken,
+  [RouteNames.AddAsset]: AddAsset,
+  [RouteNames.SelectAsset]: SelectAsset,
+} as const satisfies Record<RouteNames, Component>;
+
+const currentRoute = computed<Component>(() => {
+  const routeName = (routerStore.current as RouteNames | null) ?? RouteNames.WalletConnection;
+  return routeComponents[routeName];
+});
+
+void withApi(() => Promise.resolve()); // We need it just for loading state
+
+function handleClose(): void {
+  emit('close');
+}
+
+function handleOperation(operation: Operations, asset: AccountAsset): void {
+  emit(operation, asset);
+}
+
+function handleLearnMore(): void {
+  emit('learn-more');
+}
 </script>

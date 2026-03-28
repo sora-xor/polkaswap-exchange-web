@@ -3,7 +3,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({
   createClientMock: vi.fn(() => ({}) as any),
   subscriptionExchangeMock: vi.fn(() => ({}) as any),
-  wsCreateClientMock: vi.fn(() => ({ subscribe: vi.fn() })),
+  wsCreateClientMock: vi.fn(() => ({
+    subscribe: vi.fn(() => vi.fn()),
+  })),
+  disposeMock: vi.fn(),
+  sink: { next: vi.fn(), error: vi.fn(), complete: vi.fn() },
 }));
 
 vi.mock('@urql/core', () => ({
@@ -37,14 +41,36 @@ describe('subsquid createExplorerClient', () => {
   });
 
   it('skips websocket subscription exchange for unsupported subquery gateway endpoints', () => {
-    createExplorerClient('https://api.subquery.network/sq/sora-xor/sora-prod');
+    const client = createExplorerClient('https://api.subquery.network/sq/sora-xor/sora-prod');
 
     expect(mocks.wsCreateClientMock).not.toHaveBeenCalled();
     expect(mocks.subscriptionExchangeMock).not.toHaveBeenCalled();
+    expect(client.supportsSubscriptions).toBe(false);
     expect(mocks.createClientMock).toHaveBeenCalledWith(
       expect.objectContaining({
         exchanges: [expect.any(Object)],
       })
     );
+  });
+
+  it('configures graphql-ws subscriptions for supported endpoints', () => {
+    const client = createExplorerClient('https://indexer.example.com/graphql');
+
+    expect(mocks.wsCreateClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: 'wss://indexer.example.com/graphql',
+        lazy: expect.any(Boolean),
+        retryAttempts: expect.any(Number),
+        shouldRetry: expect.any(Function),
+      })
+    );
+    expect(mocks.subscriptionExchangeMock).toHaveBeenCalledOnce();
+    expect(client.supportsSubscriptions).toBe(true);
+
+    const exchangeOptions = mocks.subscriptionExchangeMock.mock.calls[0]?.[0];
+    const subscription = exchangeOptions.forwardSubscription({ query: 'subscription test' });
+    const subscriptionHandle = subscription.subscribe(mocks.sink);
+
+    expect(subscriptionHandle).toEqual({ unsubscribe: expect.any(Function) });
   });
 });

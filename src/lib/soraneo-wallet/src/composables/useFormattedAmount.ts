@@ -11,7 +11,8 @@ import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types
 
 export function useFormattedAmount() {
   const walletStore = useWalletStore();
-  const { getFPNumber, getFPNumberFromCodec } = useNumberFormatter();
+  const numberFormatter = useNumberFormatter();
+  const { getFPNumber, getFPNumberFromCodec } = numberFormatter;
 
   const fiatPriceObject = computed(() => walletStore.fiatPriceObject);
 
@@ -91,6 +92,7 @@ export function useFormattedAmount() {
   };
 
   return {
+    ...numberFormatter,
     FontSizeRate,
     FontWeightRate,
     getAssetFiatPrice,

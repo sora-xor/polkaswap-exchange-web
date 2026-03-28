@@ -103,10 +103,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { mnemonicValidate } from '@polkadot/util-crypto';
-import { defineComponent, type PropType } from 'vue';
+import { computed, ref } from 'vue';
 
+import { useNotification } from '../../../composables/useNotification';
 import FearlessLogo from '../../../assets/img/FearlessWalletLogo.svg?url';
 import PolkadotLogo from '../../../assets/img/PolkadotLogo.svg?url';
 import SubWalletLogo from '../../../assets/img/SubWalletLogo.svg?url';
@@ -116,7 +117,6 @@ import { parseAccountJson } from '../../../util/account';
 import WalletAccount from '../../Account/WalletAccount.vue';
 import FileUploader from '../../FileUploader.vue';
 import PasswordInput from '../../Input/Password.vue';
-import NotificationMixin from '../../mixins/NotificationMixin';
 
 import type { CreateAccountArgs, RestoreAccountArgs } from '@/stores/wallet/account/types';
 import type { KeyringPair$Json } from '../../../types/common';
@@ -139,136 +139,118 @@ const Tutorials = [
   },
 ] as const;
 
-export default defineComponent({
-  components: {
-    FileUploader,
-    PasswordInput,
-    WalletAccount,
-  },
-  mixins: [NotificationMixin],
-  props: {
-    step: {
-      required: true,
-      type: String as PropType<LoginStep>,
-    },
-    jsonOnly: {
-      default: false,
-      type: Boolean,
-    },
-    loading: {
-      default: false,
-      type: Boolean,
-    },
-    createAccount: {
-      default: () => {},
-      type: Function as PropType<(data: CreateAccountArgs) => Promise<void>>,
-    },
-    restoreAccount: {
-      default: () => {},
-      type: Function as PropType<(data: RestoreAccountArgs) => void>,
-    },
-  },
-  emits: ['update:step'],
-  data() {
-    return {
-      LoginStep,
-      PhraseLength: 12,
-      Tutorials,
-      mnemonicPhrase: '',
-      accountName: '',
-      accountPassword: '',
-      accountPasswordConfirm: '',
-      json: null as Nullable<KeyringPair$Json>,
-    };
-  },
-  computed: {
-    disabledNextStep(this: any): boolean {
-      return this.mnemonicPhrase.length === 0;
-    },
-    disabledImportStep(this: any): boolean {
-      if (this.json) return !this.accountPassword;
+const props = withDefaults(
+  defineProps<{
+    step: LoginStep;
+    jsonOnly?: boolean;
+    loading?: boolean;
+    createAccount?: (data: CreateAccountArgs) => Promise<void>;
+    restoreAccount?: (data: RestoreAccountArgs) => void | Promise<void>;
+  }>(),
+  {
+    jsonOnly: false,
+    loading: false,
+    createAccount: async () => undefined,
+    restoreAccount: async () => undefined,
+  }
+);
 
-      return !(this.accountName && this.accountPassword && this.accountPasswordConfirm);
-    },
-    computedClasses(this: any): string {
-      const baseClass = ['login__inputs'];
-      if (this.json) baseClass.push('login__inputs--json');
-      return baseClass.join(' ');
-    },
-    importSteps(this: any): string[] {
-      return [
-        this.t('desktop.importSteps.selectWallet'),
-        this.t('desktop.importSteps.selectAccount'),
-        this.t('desktop.importSteps.exportAccount'),
-      ];
-    },
-  },
-  methods: {
-    handleMnemonicInput(this: any, char: string): void {
-      const letter = char.replace('.', '').replace('  ', ' ');
+const emit = defineEmits<{
+  'update:step': [step: LoginStep];
+}>();
 
-      if (/^[a-z ]+$/.test(letter)) {
-        this.mnemonicPhrase = letter;
-      }
-    },
-    nextStep(this: any): void {
-      void this.withAppNotification(async () => {
-        try {
-          if (this.mnemonicPhrase.trim().split(' ').length !== this.PhraseLength) {
-            throw new AppError({ key: 'desktop.errorMessages.mnemonicLength', payload: { number: this.PhraseLength } });
-          }
-          if (!mnemonicValidate(this.mnemonicPhrase)) {
-            throw new AppError({ key: 'desktop.errorMessages.mnemonic' });
-          }
+const { t, withAppNotification, TranslationConsts } = useNotification();
+const uploader = ref<{ resetFileInput?: () => void }>();
+const PhraseLength = 12;
+const mnemonicPhrase = ref('');
+const accountName = ref('');
+const accountPassword = ref('');
+const accountPasswordConfirm = ref('');
+const json = ref<Nullable<KeyringPair$Json>>(null);
 
-          this.json = null;
-          this.resetForm();
+const disabledNextStep = computed(() => mnemonicPhrase.value.length === 0);
+const disabledImportStep = computed(() => {
+  if (json.value) return !accountPassword.value;
 
-          this.$emit('update:step', LoginStep.ImportCredentials);
-        } catch (error) {
-          this.mnemonicPhrase = '';
-          throw error;
-        }
-      });
-    },
-    async handleUploadJson(this: any, jsonFile: File): Promise<void> {
-      await this.withAppNotification(async () => {
-        if (!jsonFile) return;
-
-        const parsedJson = await parseAccountJson(jsonFile);
-        const { address, encoded, encoding, meta = {} } = parsedJson;
-
-        if (!(address && encoded && encoding)) {
-          const uploader = (this.$refs as Record<string, any>).uploader as { resetFileInput?: () => void } | undefined;
-          uploader?.resetFileInput?.();
-          throw new AppError({ key: 'desktop.errorMessages.jsonFields' });
-        }
-
-        this.accountName = (meta.name || '') as string;
-        this.json = parsedJson;
-        this.mnemonicPhrase = '';
-        this.$emit('update:step', LoginStep.ImportCredentials);
-      });
-    },
-    async importAccount(this: any): Promise<void> {
-      const action = this.json
-        ? this.restoreAccount({ json: this.json, password: this.accountPassword })
-        : this.createAccount({
-            seed: this.mnemonicPhrase,
-            name: this.accountName,
-            password: this.accountPassword,
-            passwordConfirm: this.accountPasswordConfirm,
-          });
-      await action;
-      this.resetForm();
-    },
-    resetForm(this: any): void {
-      this.accountName = '';
-      this.accountPassword = '';
-      this.accountPasswordConfirm = '';
-    },
-  },
+  return !(accountName.value && accountPassword.value && accountPasswordConfirm.value);
 });
+const computedClasses = computed(() => {
+  const baseClass = ['login__inputs'];
+  if (json.value) baseClass.push('login__inputs--json');
+  return baseClass.join(' ');
+});
+const importSteps = computed(() => [
+  t('desktop.importSteps.selectWallet'),
+  t('desktop.importSteps.selectAccount'),
+  t('desktop.importSteps.exportAccount'),
+]);
+
+function resetForm(): void {
+  accountName.value = '';
+  accountPassword.value = '';
+  accountPasswordConfirm.value = '';
+}
+
+function handleMnemonicInput(char: string): void {
+  const letter = char.replace('.', '').replace('  ', ' ');
+
+  if (/^[a-z ]+$/.test(letter)) {
+    mnemonicPhrase.value = letter;
+  }
+}
+
+function nextStep(): void {
+  void withAppNotification(async () => {
+    try {
+      if (mnemonicPhrase.value.trim().split(' ').length !== PhraseLength) {
+        throw new AppError({ key: 'desktop.errorMessages.mnemonicLength', payload: { number: PhraseLength } });
+      }
+      if (!mnemonicValidate(mnemonicPhrase.value)) {
+        throw new AppError({ key: 'desktop.errorMessages.mnemonic' });
+      }
+
+      json.value = null;
+      resetForm();
+
+      emit('update:step', LoginStep.ImportCredentials);
+    } catch (error) {
+      mnemonicPhrase.value = '';
+      throw error;
+    }
+  });
+}
+
+async function handleUploadJson(jsonFile: File): Promise<void> {
+  await withAppNotification(async () => {
+    if (!jsonFile) return;
+
+    const parsedJson = await parseAccountJson(jsonFile);
+    const { address, encoded, encoding, meta = {} } = parsedJson;
+
+    if (!(address && encoded && encoding)) {
+      uploader.value?.resetFileInput?.();
+      throw new AppError({ key: 'desktop.errorMessages.jsonFields' });
+    }
+
+    accountName.value = (meta.name || '') as string;
+    json.value = parsedJson;
+    mnemonicPhrase.value = '';
+    emit('update:step', LoginStep.ImportCredentials);
+  });
+}
+
+async function importAccount(): Promise<void> {
+  const action = json.value
+    ? props.restoreAccount({ json: json.value, password: accountPassword.value })
+    : props.createAccount({
+        seed: mnemonicPhrase.value,
+        name: accountName.value,
+        password: accountPassword.value,
+        passwordConfirm: accountPasswordConfirm.value,
+      });
+  await action;
+  resetForm();
+}
 </script>
 
 <style lang="scss" scoped>

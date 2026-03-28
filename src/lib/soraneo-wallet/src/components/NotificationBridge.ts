@@ -1,11 +1,11 @@
 import { useNotifications } from '@soramitsu-ui/ui';
-import { defineComponent, h, onBeforeUnmount } from 'vue';
+import { h, onBeforeUnmount } from 'vue';
 
 import notificationService, { NormalizedAlertRequest, NOTIFICATION_STATUS } from '@/services/notification';
 
 import NotificationAlertToast from './NotificationAlertToast.vue';
 
-export default defineComponent({
+export default {
   name: 'NotificationBridge',
   setup() {
     const { show } = useNotifications();
@@ -51,4 +51,4 @@ export default defineComponent({
 
     return () => null;
   },
-});
+};

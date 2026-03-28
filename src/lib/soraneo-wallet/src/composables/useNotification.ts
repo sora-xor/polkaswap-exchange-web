@@ -2,13 +2,14 @@ import notificationService, { type NotificationSeverity } from '@/services/notif
 import { useNotificationStore } from '@/stores/notification';
 import { AppError } from '@/util';
 
-import { translationUtils } from './useTranslation';
+import { useWalletTranslation } from './useWalletTranslation';
 
 export type AsyncFnWithoutArgs = () => Promise<unknown>;
 
 export function useNotification() {
   const store = useNotificationStore();
-  const { t, te } = translationUtils();
+  const translation = useWalletTranslation();
+  const { t, te } = translation;
 
   const getErrorMessage = (error: unknown): string => {
     if (error instanceof AppError) {
@@ -79,6 +80,7 @@ export function useNotification() {
   };
 
   return {
+    ...translation,
     getErrorMessage,
     showAppAlert,
     showAppNotification,

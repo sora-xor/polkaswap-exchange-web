@@ -71,8 +71,10 @@
 
 <script lang="ts">
 import { api, type WithKeyring } from '@sora-substrate/sdk';
-import { defineComponent, type PropType } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, type PropType } from 'vue';
 
+import { useLoading } from '../../composables/useLoading';
+import { useNotification } from '../../composables/useNotification';
 import { useWalletStore } from '@/stores/wallet';
 
 import { AppWallet, LoginStep } from '../../consts';
@@ -91,8 +93,6 @@ import {
   checkExternalAccount,
 } from '../../util/account';
 import AccountConfirmDialog from '../Account/ConfirmDialog.vue';
-import LoadingMixin from '../mixins/LoadingMixin';
-import NotificationMixin from '../mixins/NotificationMixin';
 import WalletBase from '../WalletBase.vue';
 
 import AccountListStep from './Step/AccountList.vue';
@@ -122,7 +122,7 @@ export const getPreviousLoginStep = (currentStep?: LoginStep): LoginStep => {
   return SelectAccountFlow.includes(currentStep) ? LoginStep.ExtensionList : LoginStep.AccountList;
 };
 
-export default defineComponent({
+export default {
   components: {
     WalletBase,
     AccountConfirmDialog,
@@ -131,7 +131,6 @@ export default defineComponent({
     ExtensionListStep,
     ImportAccountStep,
   },
-  mixins: [NotificationMixin, LoadingMixin],
   props: {
     chainApi: {
       required: true,
@@ -162,63 +161,44 @@ export default defineComponent({
       type: Function as PropType<() => void>,
     },
   },
-  data() {
-    return {
-      step: LoginStep.AccountList as LoginStep,
-      accountLoginVisibility: false,
-      accountLoginData: null as Nullable<PolkadotJsAccount>,
-      selectedWallet: null as Nullable<AppWallet>,
-      selectedWalletLoading: false,
-      accounts: [] as PolkadotJsAccount[],
-      accountsSubscription: null as Nullable<VoidFunction>,
-      wcName: '',
-      recommendedWallets: RecommendedWallets,
-    };
-  },
-  computed: {
-    walletStore(this: any) {
-      return useWalletStore(this.$pinia);
-    },
-    availableWallets(this: any) {
-      return this.walletStore.availableWallets;
-    },
-    isMST(this: any) {
-      return this.walletStore.isMST;
-    },
-    isSignTxDialogDisabled(this: any) {
-      return this.walletStore.isSignTxDialogDisabled;
-    },
-    isMSTAvailable(this: any) {
-      return this.walletStore.isMSTAvailable;
-    },
-    chainGenesisHash(this: any): string {
+  setup(props) {
+    const walletStore = useWalletStore();
+    const { t, withAppNotification, withAppAlert } = useNotification();
+    const { loading, withLoading, withChainApi } = useLoading();
+
+    const step = ref<LoginStep>(LoginStep.AccountList);
+    const accountLoginVisibility = ref(false);
+    const accountLoginData = ref<Nullable<PolkadotJsAccount>>(null);
+    const selectedWallet = ref<Nullable<AppWallet>>(null);
+    const selectedWalletLoading = ref(false);
+    const accounts = ref<PolkadotJsAccount[]>([]);
+    const accountsSubscription = ref<Nullable<VoidFunction>>(null);
+    const wcName = ref('');
+    const recommendedWallets = RecommendedWallets;
+
+    const availableWallets = computed(() => walletStore.availableWallets ?? []);
+    const isMST = computed(() => Boolean(walletStore.isMST));
+    const isSignTxDialogDisabled = computed(() => Boolean(walletStore.isSignTxDialogDisabled));
+    const isMSTAvailable = computed(() => Boolean(walletStore.isMSTAvailable));
+    const chainGenesisHash = computed((): string => {
       try {
-        return this.chainApi.api.genesisHash.toString();
+        return props.chainApi.api.genesisHash.toString();
       } catch {
         return '';
       }
-    },
-    connectedAccount(this: any): string {
-      return this.account?.address ?? '';
-    },
-    connectedWallet(this: any): AppWallet {
-      return (this.account?.source ?? '') as AppWallet;
-    },
-    isInternal(this: any): boolean {
-      return !!this.selectedWallet && isInternalSource(this.selectedWallet);
-    },
-    isAppStored(this: any): boolean {
-      return !!this.selectedWallet && isAppStorageSource(this.selectedWallet);
-    },
-    wallets(this: any): { internal: Wallet[]; external: Wallet[] } {
-      const wallets = {
+    });
+    const connectedAccount = computed(() => props.account?.address ?? '');
+    const connectedWallet = computed(() => (props.account?.source ?? '') as AppWallet);
+    const isInternal = computed(() => !!selectedWallet.value && isInternalSource(selectedWallet.value));
+    const isAppStored = computed(() => !!selectedWallet.value && isAppStorageSource(selectedWallet.value));
+    const wallets = computed<{ internal: Wallet[]; external: Wallet[] }>(() => {
+      const groupedWallets = {
         internal: [] as Wallet[],
         external: [] as Wallet[],
       };
 
-      return this.availableWallets.reduce((buffer: typeof wallets, wallet: Wallet) => {
-        // show walletconnect only for this connection
-        if (this.wcName && isWcWallet(wallet) && wallet.extensionName !== this.wcName) {
+      return availableWallets.value.reduce((buffer: typeof groupedWallets, wallet: Wallet) => {
+        if (wcName.value && isWcWallet(wallet) && wallet.extensionName !== wcName.value) {
           return buffer;
         }
 
@@ -229,311 +209,356 @@ export default defineComponent({
         }
 
         return buffer;
-      }, wallets);
-    },
-    selectedWalletTitle(this: any): string {
-      if (!this.selectedWallet) return '';
+      }, groupedWallets);
+    });
+    const selectedWalletTitle = computed(() => {
+      if (!selectedWallet.value) return '';
 
-      const wallet = this.availableWallets.find((wallet: Wallet) => wallet.extensionName === this.selectedWallet);
+      const wallet = availableWallets.value.find((wallet: Wallet) => wallet.extensionName === selectedWallet.value);
 
-      return wallet ? wallet.title : this.selectedWallet;
-    },
-    viewTitle(this: any): string {
-      if (this.isAccountList && this.selectedWalletTitle) {
-        return this.t('connection.internalTitle', { wallet: this.selectedWalletTitle });
-      } else if (this.isCreateFlow) {
-        switch (this.step) {
+      return wallet ? wallet.title : selectedWallet.value;
+    });
+    const isCreateFlow = computed(() => AccountCreateFlow.includes(step.value));
+    const isImportFlow = computed(() => AccountImportFlow.includes(step.value));
+    const isAccountList = computed(() => step.value === LoginStep.AccountList);
+    const isExtensionsList = computed(() => step.value === LoginStep.ExtensionList);
+    const viewTitle = computed(() => {
+      if (isAccountList.value && selectedWalletTitle.value) {
+        return t('connection.internalTitle', { wallet: selectedWalletTitle.value });
+      }
+      if (isCreateFlow.value) {
+        switch (step.value) {
           case LoginStep.SeedPhrase:
-            return this.t('desktop.heading.seedPhraseTitle');
+            return t('desktop.heading.seedPhraseTitle');
           case LoginStep.ConfirmSeedPhrase:
-            return this.t('desktop.heading.confirmSeedTitle');
+            return t('desktop.heading.confirmSeedTitle');
           case LoginStep.CreateCredentials:
-            return this.t('desktop.heading.accountDetailsTitle');
+            return t('desktop.heading.accountDetailsTitle');
           default:
             return '';
         }
-      } else if (this.isImportFlow) {
-        switch (this.step) {
+      }
+      if (isImportFlow.value) {
+        switch (step.value) {
           case LoginStep.Import:
-            return this.t('desktop.heading.importTitle');
+            return t('desktop.heading.importTitle');
           case LoginStep.ImportCredentials:
-            return this.t('desktop.heading.accountDetailsTitle');
+            return t('desktop.heading.accountDetailsTitle');
           default:
             return '';
         }
-      } else {
-        return this.t('account.accountTitle');
-      }
-    },
-    hasAccounts(this: any): boolean {
-      return !!this.accounts.length;
-    },
-    accountListText(this: any): string {
-      if (this.isInternal) {
-        return this.t('connection.internalText', { wallet: this.selectedWalletTitle });
       }
 
-      return this.hasAccounts ? this.t('connection.selectAccount') : this.t('desktop.welcome.text');
-    },
-    isLoggedIn(this: any): boolean {
-      return !!this.connectedAccount;
-    },
-    logoutButtonVisibility(this: any): boolean {
-      return this.isLoggedIn && !this.isCreateFlow && !this.isImportFlow;
-    },
-    isCreateFlow(this: any): boolean {
-      return AccountCreateFlow.includes(this.step);
-    },
-    isImportFlow(this: any): boolean {
-      return AccountImportFlow.includes(this.step);
-    },
-    isAccountList(this: any): boolean {
-      return this.step === LoginStep.AccountList;
-    },
-    isExtensionsList(this: any): boolean {
-      return this.step === LoginStep.ExtensionList;
-    },
-    prevStep(this: any): LoginStep {
-      return getPreviousLoginStep(this.step);
-    },
-    hasPrevStep(this: any): boolean {
-      return this.step !== this.prevStep;
-    },
-    hasBackBtn(this: any): boolean {
-      return this.hasPrevStep || this.isLoggedIn;
-    },
-  },
-  watch: {
-    async chainGenesisHash(this: any, curr: string, prev: string): Promise<void> {
-      if (curr !== prev) {
-        await this.updateWallets();
+      return t('account.accountTitle');
+    });
+    const hasAccounts = computed(() => !!accounts.value.length);
+    const accountListText = computed(() => {
+      if (isInternal.value) {
+        return t('connection.internalText', { wallet: selectedWalletTitle.value });
       }
-    },
-  },
-  created(this: any): void {
-    this.resetStep();
-    void this.updateWallets();
-  },
-  beforeUnmount(this: any): void {
-    this.resetSelectedWallet();
-  },
-  methods: {
-    setIsMstAvailable(this: any, flag: boolean): void {
-      this.walletStore.setIsMstAvailable(flag);
-    },
-    initMultisigAddress(this: any): void {
-      this.walletStore.initMultisigAddress();
-    },
-    updateAvailableWallets(this: any): Promise<void> {
-      return this.walletStore.updateAvailableWallets();
-    },
-    setAccountPassphrase(this: any, payload: { address: string; password: string }): void {
-      this.walletStore.setAccountPassphrase(payload);
-    },
-    resetWalletAccountsSubscription(this: any): void {
-      this.accountsSubscription?.();
-      this.accountsSubscription = null;
-    },
-    async updateWallets(this: any): Promise<void> {
-      await this.updateWcWallet();
-      await this.updateAvailableWallets();
-    },
-    async updateWcWallet(this: any): Promise<void> {
-      await this.withChainApi(this.chainApi, async () => {
-        this.checkConnectedAccountSource(this.wcName);
 
-        this.wcName = addWcSubWalletLocally(this.chainApi, (source) => {
-          this.checkConnectedAccountSource(source);
-          this.updateAvailableWallets();
+      return hasAccounts.value ? t('connection.selectAccount') : t('desktop.welcome.text');
+    });
+    const isLoggedIn = computed(() => !!connectedAccount.value);
+    const logoutButtonVisibility = computed(() => isLoggedIn.value && !isCreateFlow.value && !isImportFlow.value);
+    const prevStep = computed(() => getPreviousLoginStep(step.value));
+    const hasPrevStep = computed(() => step.value !== prevStep.value);
+    const hasBackBtn = computed(() => hasPrevStep.value || isLoggedIn.value);
+
+    const setIsMstAvailable = (flag: boolean): void => {
+      walletStore.setIsMstAvailable(flag);
+    };
+
+    const initMultisigAddress = (): void => {
+      walletStore.initMultisigAddress();
+    };
+
+    const updateAvailableWallets = (): Promise<void> => {
+      return walletStore.updateAvailableWallets();
+    };
+
+    const setAccountPassphrase = (payload: { address: string; password: string }): void => {
+      walletStore.setAccountPassphrase(payload);
+    };
+
+    const resetWalletAccountsSubscription = (): void => {
+      accountsSubscription.value?.();
+      accountsSubscription.value = null;
+    };
+
+    const updateWcWallet = async (): Promise<void> => {
+      await withChainApi(props.chainApi, async () => {
+        void props.checkConnectedAccountSource(wcName.value);
+
+        wcName.value = addWcSubWalletLocally(props.chainApi, (source) => {
+          void props.checkConnectedAccountSource(source);
+          void updateAvailableWallets();
         });
       });
-    },
-    navigateToCreateAccount(this: any): void {
-      this.step = LoginStep.SeedPhrase;
-    },
-    navigateToImportAccount(this: any): void {
-      this.step = LoginStep.Import;
-    },
-    navigateToAccountList(this: any): void {
-      this.step = LoginStep.AccountList;
-    },
-    switchFromMSTBeforeLogout(this: any): void {
-      if (this.isMST && this.isMSTAvailable) {
+    };
+
+    const updateWallets = async (): Promise<void> => {
+      await updateWcWallet();
+      await updateAvailableWallets();
+    };
+
+    const navigateToCreateAccount = (): void => {
+      step.value = LoginStep.SeedPhrase;
+    };
+
+    const navigateToImportAccount = (): void => {
+      step.value = LoginStep.Import;
+    };
+
+    const navigateToAccountList = (): void => {
+      step.value = LoginStep.AccountList;
+    };
+
+    const switchFromMSTBeforeLogout = (): void => {
+      if (isMST.value && isMSTAvailable.value) {
         api.mst.switchAccount(false);
       }
-    },
-    async handleAccountImport(this: any, data: RestoreAccountArgs): Promise<void> {
-      await this.withLoading(async () => {
-        // hack: to render loading state before sync code execution, 250 - button transition
-        await this.$nextTick();
+    };
+
+    const handleAccountRestore = (data: RestoreAccountArgs): void => {
+      restoreAccount(props.chainApi, data);
+    };
+
+    const handleAccountImport = async (data: RestoreAccountArgs): Promise<void> => {
+      await withLoading(async () => {
+        await nextTick();
         await delay(250);
 
-        await this.withAppNotification(async () => {
+        await withAppNotification(async () => {
           const { json, password } = data;
-          const verified = verifyAccountJson(this.chainApi, json, password);
+          const verified = verifyAccountJson(props.chainApi, json, password);
 
-          if (this.selectedWallet === AppWallet.GoogleDrive) {
+          if (selectedWallet.value === AppWallet.GoogleDrive) {
             await GDriveWallet.accounts.add(verified, password);
-          } else if (this.selectedWallet === AppWallet.Sora) {
-            this.handleAccountRestore(data);
+          } else if (selectedWallet.value === AppWallet.Sora) {
+            handleAccountRestore(data);
           }
 
-          this.navigateToAccountList();
+          navigateToAccountList();
         });
       });
-    },
-    async handleAccountCreate(this: any, data: CreateAccountArgs): Promise<void> {
-      await this.withLoading(async () => {
-        // hack: to render loading state before sync code execution, 250 - button transition
-        await this.$nextTick();
+    };
+
+    const handleAccountCreate = async (data: CreateAccountArgs): Promise<void> => {
+      await withLoading(async () => {
+        await nextTick();
         await delay(250);
 
-        await this.withAppNotification(async () => {
-          if (this.selectedWallet === AppWallet.GoogleDrive) {
-            const accountJson = createAccount(this.chainApi, { ...data });
+        await withAppNotification(async () => {
+          if (selectedWallet.value === AppWallet.GoogleDrive) {
+            const accountJson = createAccount(props.chainApi, { ...data });
             await GDriveWallet.accounts.add(accountJson, data.password, data.seed);
-          } else if (this.selectedWallet === AppWallet.Sora) {
-            createAccount(this.chainApi, { ...data, saveAccount: true });
+          } else if (selectedWallet.value === AppWallet.Sora) {
+            createAccount(props.chainApi, { ...data, saveAccount: true });
           }
 
-          this.navigateToAccountList();
+          navigateToAccountList();
         });
       });
-    },
-    async handleAccountSelect(this: any, account: PolkadotJsAccount, isConnected: boolean): Promise<void> {
-      this.switchFromMSTBeforeLogout();
-      this.setIsMstAvailable(account.source === AppWallet.FearlessWallet);
+    };
+
+    const resetStep = (): void => {
+      step.value = getPreviousLoginStep();
+    };
+
+    const handleAccountSelect = async (account: PolkadotJsAccount, isConnected: boolean): Promise<void> => {
+      switchFromMSTBeforeLogout();
+      setIsMstAvailable(account.source === AppWallet.FearlessWallet);
 
       if (isConnected) {
-        this.closeView();
-      } else if (this.isInternal && !isAppStorageSource(account.source)) {
-        this.accountLoginData = account;
-        this.accountLoginVisibility = true;
+        props.closeView();
+      } else if (isInternal.value && !isAppStorageSource(account.source)) {
+        accountLoginData.value = account;
+        accountLoginVisibility.value = true;
       } else {
-        await this.withLoading(async () => {
-          await this.withAppAlert(async () => {
+        await withLoading(async () => {
+          await withAppAlert(async () => {
             await checkExternalAccount(account);
-            await this.loginAccount(account);
-            this.initMultisigAddress();
-            this.resetStep();
+            await props.loginAccount(account);
+            initMultisigAddress();
+            resetStep();
           });
         });
       }
-    },
-    async handleWalletSelect(this: any, wallet: Wallet): Promise<void> {
-      if (!wallet.installed) return;
+    };
 
-      await this.withAppAlert(async () => {
-        await this.selectWallet(wallet.extensionName as AppWallet);
-        this.navigateToAccountList();
+    const subscribeToWalletAccountsFn = async (): Promise<void> => {
+      if (!selectedWallet.value) return;
+
+      accountsSubscription.value = await subscribeToWalletAccounts(props.chainApi, selectedWallet.value, (items) => {
+        accounts.value = items;
       });
-    },
-    async handleWalletDisconnect(this: any, wallet: Wallet): Promise<void> {
-      if (!wallet.provider) return;
+    };
 
-      await wallet.provider.disconnect();
-    },
-    setSelectedWallet(this: any, wallet: Nullable<AppWallet> = null): void {
-      this.selectedWallet = wallet;
-    },
-    setSelectedWalletLoading(this: any, flag: boolean): void {
-      this.selectedWalletLoading = flag;
-    },
-    async subscribeToWalletAccounts(this: any): Promise<void> {
-      if (!this.selectedWallet) return;
+    const setSelectedWallet = (wallet: Nullable<AppWallet> = null): void => {
+      selectedWallet.value = wallet;
+    };
 
-      this.accountsSubscription = await subscribeToWalletAccounts(this.chainApi, this.selectedWallet, (accounts) => {
-        this.accounts = accounts;
-      });
-    },
-    async selectWallet(this: any, wallet: AppWallet): Promise<void> {
+    const setSelectedWalletLoading = (flag: boolean): void => {
+      selectedWalletLoading.value = flag;
+    };
+
+    const selectWallet = async (wallet: AppWallet): Promise<void> => {
       try {
-        this.resetWalletAccountsSubscription();
-        this.setSelectedWallet(wallet);
-        this.setSelectedWalletLoading(true);
+        resetWalletAccountsSubscription();
+        setSelectedWallet(wallet);
+        setSelectedWalletLoading(true);
 
         await getWallet(wallet);
 
-        this.setSelectedWalletLoading(false);
+        setSelectedWalletLoading(false);
 
-        await this.subscribeToWalletAccounts();
+        await subscribeToWalletAccountsFn();
       } catch (error) {
         console.error(error);
-        this.resetSelectedWallet();
+        resetSelectedWallet();
         throw error;
       }
-    },
-    resetSelectedWallet(this: any): void {
-      this.resetWalletAccountsSubscription();
-      this.setSelectedWallet();
-      this.setSelectedWalletLoading(false);
-    },
-    async loadAccountJson(this: any, password: string): Promise<KeyringPair$Json> {
-      if (!this.accountLoginData || this.selectedWallet !== AppWallet.GoogleDrive) {
+    };
+
+    const handleWalletSelect = async (wallet: Wallet): Promise<void> => {
+      if (!wallet.installed) return;
+
+      await withAppAlert(async () => {
+        await selectWallet(wallet.extensionName as AppWallet);
+        navigateToAccountList();
+      });
+    };
+
+    const handleWalletDisconnect = async (wallet: Wallet): Promise<void> => {
+      if (!wallet.provider) return;
+
+      await wallet.provider.disconnect();
+    };
+
+    const resetSelectedWallet = (): void => {
+      resetWalletAccountsSubscription();
+      setSelectedWallet();
+      setSelectedWalletLoading(false);
+    };
+
+    const loadAccountJson = async (password: string): Promise<KeyringPair$Json> => {
+      if (!accountLoginData.value || selectedWallet.value !== AppWallet.GoogleDrive) {
         throw new Error('polkadotjs.noAccount');
       }
 
-      const json = await GDriveWallet.accounts.getAccount(this.accountLoginData.address, password);
+      const json = await GDriveWallet.accounts.getAccount(accountLoginData.value.address, password);
 
       if (!json) throw new Error('polkadotjs.noAccount');
 
-      this.handleAccountRestore({ json, password });
+      handleAccountRestore({ json, password });
 
       return json;
-    },
-    async handleAccountLogin(this: any, password: string): Promise<void> {
-      await this.withLoading(async () => {
-        // hack: to render loading state before sync code execution, 250 - button transition
-        await this.$nextTick();
+    };
+
+    const handleAccountLogin = async (password: string): Promise<void> => {
+      await withLoading(async () => {
+        await nextTick();
         await delay(250);
 
-        await this.withAppNotification(async () => {
-          const { address, meta } = await this.loadAccountJson(password);
+        await withAppNotification(async () => {
+          const { address, meta } = await loadAccountJson(password);
 
-          await this.loginAccount({
+          await props.loginAccount({
             address,
             name: (meta.name as string) || '',
-            source: this.selectedWallet as AppWallet,
+            source: selectedWallet.value as AppWallet,
           });
-          this.resetStep();
+          resetStep();
 
-          if (this.isSignTxDialogDisabled) {
-            this.setAccountPassphrase({ address, password });
+          if (isSignTxDialogDisabled.value) {
+            setAccountPassphrase({ address, password });
           }
 
-          this.accountLoginVisibility = false;
-          this.accountLoginData = null;
+          accountLoginVisibility.value = false;
+          accountLoginData.value = null;
         });
       });
-    },
-    handleAccountExport(this: any, data: { address: string; password: string }): void {
-      exportAccount(this.chainApi, data);
-    },
-    handleAccountDelete(this: any, address: string): void {
-      deleteAccount(this.chainApi, address);
-    },
-    handleAccountRestore(this: any, data: RestoreAccountArgs): void {
-      restoreAccount(this.chainApi, data);
-    },
-    handleBack(this: any): void {
-      if (this.step === this.prevStep) {
-        this.closeView();
-      } else {
-        this.step = this.prevStep;
+    };
 
-        if (this.isExtensionsList) {
-          this.resetSelectedWallet();
+    const handleAccountExport = (data: { address: string; password: string }): void => {
+      exportAccount(props.chainApi, data);
+    };
+
+    const handleAccountDelete = (address: string): void => {
+      deleteAccount(props.chainApi, address);
+    };
+
+    const handleBack = (): void => {
+      if (step.value === prevStep.value) {
+        props.closeView();
+      } else {
+        step.value = prevStep.value;
+
+        if (isExtensionsList.value) {
+          resetSelectedWallet();
         }
       }
-    },
-    handleAccountLogout(this: any): void {
-      this.switchFromMSTBeforeLogout();
-      this.resetStep();
-      this.logoutAccount();
-    },
-    resetStep(this: any): void {
-      this.step = getPreviousLoginStep();
-    },
+    };
+
+    const handleAccountLogout = (): void => {
+      switchFromMSTBeforeLogout();
+      resetStep();
+      void props.logoutAccount();
+    };
+
+    watch(chainGenesisHash, (curr, prev) => {
+      if (curr !== prev) {
+        void updateWallets();
+      }
+    });
+
+    onMounted(() => {
+      resetStep();
+      void updateWallets();
+    });
+
+    onBeforeUnmount(() => {
+      resetSelectedWallet();
+    });
+
+    return {
+      t,
+      loading,
+      step,
+      accountLoginVisibility,
+      accountLoginData,
+      selectedWallet,
+      selectedWalletLoading,
+      accounts,
+      recommendedWallets,
+      connectedAccount,
+      connectedWallet,
+      isInternal,
+      isAppStored,
+      wallets,
+      selectedWalletTitle,
+      viewTitle,
+      accountListText,
+      logoutButtonVisibility,
+      isCreateFlow,
+      isImportFlow,
+      isAccountList,
+      isExtensionsList,
+      hasBackBtn,
+      handleAccountImport,
+      handleAccountCreate,
+      handleAccountSelect,
+      handleWalletSelect,
+      handleWalletDisconnect,
+      handleAccountLogin,
+      handleAccountExport,
+      handleAccountDelete,
+      handleBack,
+      handleAccountLogout,
+      navigateToCreateAccount,
+      navigateToImportAccount,
+    };
   },
-});
+};
 </script>

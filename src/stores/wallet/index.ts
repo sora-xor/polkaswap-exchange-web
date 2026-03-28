@@ -246,10 +246,14 @@ export const useWalletStore = defineStore('wallet', () => {
   );
   const pinnedAssets = computed(() => accountState.value.pinnedAssets ?? []);
   const assetsToNotifyQueue = computed<WhitelistArrayItem[]>(() => accountState.value.assetsToNotifyQueue ?? []);
+  const availableWallets = computed(() => accountState.value.availableWallets ?? []);
   const accountSource = computed(() => (accountState.value.source as Nullable<AppWallet>) ?? null);
   const currentRoute = computed<Nullable<string>>(() => useRouterStore().current);
+  const isExternal = computed(() => Boolean(accountState.value.isExternal));
   const isDesktop = computed(() => Boolean(accountState.value.isDesktop));
+  const isMST = computed(() => Boolean(accountState.value.isMST));
   const isMstAccount = computed(() => Boolean(accountState.value.isMST));
+  const isMstAddressExist = computed(() => Boolean(accountState.value.isMstAddressExist));
   const ceresFiatValuesUsage = computed(() => Boolean(accountState.value.ceresFiatValuesUsage));
   const blacklist = computed(() => accountState.value.blacklistArray ?? []);
   const shouldBalanceBeHidden = computed(() => Boolean(settingsState.value.shouldBalanceBeHidden));
@@ -266,6 +270,7 @@ export const useWalletStore = defineStore('wallet', () => {
   const blockNumber = computed(() => Number(settingsState.value.blockNumber ?? 0));
   const isWalletLoaded = computed(() => Boolean(settingsState.value.isWalletLoaded));
   const allowFeePopup = computed(() => Boolean(settingsState.value.allowFeePopup));
+  const permissions = computed(() => settingsState.value.permissions);
   const filters = computed(() => (settingsState.value.filters as WalletAssetFilters) ?? fallbackFilters);
   const assetsFilter = computed(() => (settingsState.value.assetsFilter as FilterOptions) ?? ('All' as FilterOptions));
   const currencies = computed(() => (settingsState.value.currencies ?? []) as CurrencyFields[]);
@@ -1521,10 +1526,14 @@ export const useWalletStore = defineStore('wallet', () => {
     accountAssetsAddressTable,
     pinnedAssets,
     assetsToNotifyQueue,
+    availableWallets,
     accountSource,
     currentRoute,
+    isExternal,
     isDesktop,
+    isMST,
     isMstAccount,
+    isMstAddressExist,
     ceresFiatValuesUsage,
     blacklist,
     shouldBalanceBeHidden,
@@ -1539,6 +1548,7 @@ export const useWalletStore = defineStore('wallet', () => {
     blockNumber,
     isWalletLoaded,
     allowFeePopup,
+    permissions,
     filters,
     assetsFilter,
     currencies,

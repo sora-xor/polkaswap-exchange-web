@@ -37,114 +37,97 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, type PropType } from 'vue';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 
 import { Theme } from '@/consts';
 import { useWalletStore } from '@/stores/wallet';
 
+import { useAddAsset } from '../../composables/useAddAsset';
 import { api } from '../../api';
 import { getCssVariableValue } from '../../util';
 import AssetListItem from '../AssetListItem.vue';
-import AddAssetMixin from '../mixins/AddAssetMixin';
-import LoadingMixin from '../mixins/LoadingMixin';
-import TranslationMixin from '../mixins/TranslationMixin';
 
 import type { WhitelistIdsBySymbol } from '../../types/common';
 import type { Asset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 
-export default defineComponent({
-  components: {
-    AssetListItem,
-  },
-  mixins: [TranslationMixin, LoadingMixin, AddAssetMixin],
-  props: {
-    selectAssets: {
-      required: true,
-      type: Array as PropType<Asset[]>,
-    },
-    theme: {
-      default: Theme.Light,
-      type: String as PropType<Theme>,
-    },
-    assetTypeKey: {
-      required: true,
-      type: String,
-    },
-  },
-  emits: ['add'],
-  data() {
-    return {
-      isConfirmed: false,
-    };
-  },
-  computed: {
-    whitelist(this: any) {
-      return useWalletStore(this.$pinia).whitelist;
-    },
-    whitelistIdsBySymbol(this: any) {
-      return useWalletStore(this.$pinia).whitelistIdsBySymbol;
-    },
-    isCardPrimary(this: any): boolean {
-      return this.theme !== Theme.Dark;
-    },
-    height(this: any): string {
-      const itemHeight = parseFloat(getCssVariableValue('--s-asset-item-height--fiat'));
-      const itemHeightFixed = itemHeight + 1; // card is bigger on 1px
-      const gutter = 16;
-      const count = this.selectAssets.length;
-      const size = Math.min(count, 2);
-      const preview = Number(size < count) * (gutter + itemHeight / 2);
-      const height = itemHeightFixed * size + gutter * (size - 1) + preview;
+const props = withDefaults(
+  defineProps<{
+    selectAssets: Asset[];
+    theme?: Theme;
+    assetTypeKey: string;
+  }>(),
+  {
+    theme: Theme.Light,
+  }
+);
 
-      return `${height}px`;
-    },
-    warningMessage(this: any): string {
-      const assetType = this.tc(`addAsset.assetType.${this.assetTypeKey}`, 1);
-      const assetTypePlural = this.tc(`addAsset.assetType.${this.assetTypeKey}`, this.selectAssets.length);
-      const purchaseAssetType =
-        this.selectAssets.length === 1
-          ? this.tc('addAsset.warningMessage', 1, { assetType })
-          : this.tc('addAsset.warningMessage', this.selectAssets.length, { assetTypePlural });
+const emit = defineEmits<{
+  add: [];
+}>();
 
-      return this.tc('addAsset.warningMessageText', this.selectAssets.length, {
-        assetType,
-        assetTypePlural,
-        purchaseAssetType,
-      });
-    },
-  },
-  methods: {
-    isWhitelist(this: any, asset: Asset): boolean {
-      return api.assets.isWhitelist(asset, this.whitelist as Whitelist);
-    },
-    isBlacklist(this: any, asset: Asset): boolean {
-      return api.assets.isBlacklist(asset, this.whitelistIdsBySymbol as WhitelistIdsBySymbol);
-    },
-    assetCardStatus(this: any, asset: Asset): string {
-      return this.isWhitelist(asset) ? 'success' : 'error';
-    },
-    assetNatureText(this: any, asset: Asset): string {
-      const isWhitelist = this.isWhitelist(asset);
-      const isBlacklist = this.isBlacklist(asset);
+const { t, tc, addAccountAsset } = useAddAsset();
+const walletStore = useWalletStore();
+const isConfirmed = ref(false);
 
-      if (isWhitelist) {
-        return this.t('addAsset.approved');
-      }
-      if (isBlacklist) {
-        return this.t('addAsset.scam');
-      }
+const whitelist = computed(() => walletStore.whitelist);
+const whitelistIdsBySymbol = computed(() => walletStore.whitelistIdsBySymbol);
+const isCardPrimary = computed(() => props.theme !== Theme.Dark);
+const height = computed(() => {
+  const itemHeight = parseFloat(getCssVariableValue('--s-asset-item-height--fiat'));
+  const itemHeightFixed = itemHeight + 1; // card is bigger on 1px
+  const gutter = 16;
+  const count = props.selectAssets.length;
+  const size = Math.min(count, 2);
+  const preview = Number(size < count) * (gutter + itemHeight / 2);
+  const value = itemHeightFixed * size + gutter * (size - 1) + preview;
 
-      return this.t('addAsset.unknown');
-    },
-    async handleAddAssets(this: any): Promise<void> {
-      this.$emit('add');
-      this.selectAssets.forEach((asset: Asset) => {
-        this.addAccountAsset(asset);
-      });
-    },
-  },
+  return `${value}px`;
 });
+const warningMessage = computed(() => {
+  const assetType = tc(`addAsset.assetType.${props.assetTypeKey}`, 1);
+  const assetTypePlural = tc(`addAsset.assetType.${props.assetTypeKey}`, props.selectAssets.length);
+  const purchaseAssetType =
+    props.selectAssets.length === 1
+      ? tc('addAsset.warningMessage', 1, { assetType })
+      : tc('addAsset.warningMessage', props.selectAssets.length, { assetTypePlural });
+
+  return tc('addAsset.warningMessageText', props.selectAssets.length, {
+    assetType,
+    assetTypePlural,
+    purchaseAssetType,
+  });
+});
+
+function isWhitelist(asset: Asset): boolean {
+  return api.assets.isWhitelist(asset, whitelist.value as Whitelist);
+}
+
+function isBlacklist(asset: Asset): boolean {
+  return api.assets.isBlacklist(asset, whitelistIdsBySymbol.value as WhitelistIdsBySymbol);
+}
+
+function assetCardStatus(asset: Asset): string {
+  return isWhitelist(asset) ? 'success' : 'error';
+}
+
+function assetNatureText(asset: Asset): string {
+  if (isWhitelist(asset)) {
+    return t('addAsset.approved');
+  }
+  if (isBlacklist(asset)) {
+    return t('addAsset.scam');
+  }
+
+  return t('addAsset.unknown');
+}
+
+async function handleAddAssets(): Promise<void> {
+  emit('add');
+  props.selectAssets.forEach((asset: Asset) => {
+    addAccountAsset(asset);
+  });
+}
 </script>
 
 <style lang="scss">

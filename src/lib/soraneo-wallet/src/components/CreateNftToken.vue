@@ -148,15 +148,15 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { MaxTotalSupply, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { File as ImageNFT } from 'nft.storage';
-import { defineComponent, type PropType } from 'vue';
+import { computed, ref, type PropType } from 'vue';
 
 import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 
+import { useNetworkFeeWarning } from '../composables/useNetworkFeeWarning';
+import { useNumberFormatter } from '../composables/useNumberFormatter';
+import { useTransaction } from '../composables/useTransaction';
 import { api } from '../api';
-import LoadingMixin from '../components/mixins/LoadingMixin';
-import TransactionMixin from '../components/mixins/TransactionMixin';
-import TranslationMixin from '../components/mixins/TranslationMixin';
 import { RouteNames, Step } from '../consts';
 import { IMAGE_MIME_TYPES } from '../util/image';
 import { IpfsStorage } from '../util/ipfsStorage';
@@ -164,8 +164,6 @@ import { IpfsStorage } from '../util/ipfsStorage';
 import AccountConfirmationOption from './Account/Settings/ConfirmationOption.vue';
 import FileUploader from './FileUploader.vue';
 import InfoLine from './InfoLine.vue';
-import NetworkFeeWarningMixin from './mixins/NetworkFeeWarningMixin';
-import NumberFormatterMixin from './mixins/NumberFormatterMixin';
 import NetworkFeeWarningDialog from './NetworkFeeWarning.vue';
 import NftDetails from './NftDetails.vue';
 import WalletFee from './WalletFee.vue';
@@ -173,7 +171,7 @@ import WalletFee from './WalletFee.vue';
 import type { Route } from '@/stores/router/types';
 import type { NFTStorage } from 'nft.storage';
 
-export default defineComponent({
+export default {
   components: {
     InfoLine,
     WalletFee,
@@ -182,7 +180,6 @@ export default defineComponent({
     FileUploader,
     AccountConfirmationOption,
   },
-  mixins: [TranslationMixin, TransactionMixin, LoadingMixin, NumberFormatterMixin, NetworkFeeWarningMixin],
   props: {
     step: {
       default: Step.CreateSimpleToken,
@@ -190,242 +187,278 @@ export default defineComponent({
     },
   },
   emits: ['showTabs', 'showHeader', 'stepChange'],
-  data() {
-    return {
-      tokenSymbolMask: 'AAAAAAA',
-      tokenNameMask: { mask: 'Z*', tokens: { Z: { pattern: /[0-9a-zA-Z ]/ } } },
-      maxTotalSupply: MaxTotalSupply,
-      delimiters: FPNumber.DELIMITERS_CONFIG,
-      Step,
-      XOR_SYMBOL: XOR.symbol,
-      FILE_SIZE_LIMIT: 100,
-      imageLoading: false,
-      fileExceedsLimit: false,
-      badSource: false,
-      contentSrcLink: '',
-      tokenContentIpfsParsed: '',
-      tokenContentLink: '',
-      tokenSymbol: '',
-      tokenName: '',
-      tokenDescription: '',
-      tokenSupply: '',
-      showFee: true,
-      file: null as Nullable<File>,
-      extensibleSupply: false,
-      divisible: false,
-    };
-  },
-  computed: {
-    routerStore(this: any) {
-      return useRouterStore(this.$pinia);
-    },
-    walletStore(this: any) {
-      return useWalletStore(this.$pinia);
-    },
-    nftStorage(this: any) {
-      return this.walletStore.nftStorage;
-    },
-    uploader(this: any): { resetFileInput?: () => void } | undefined {
-      return this.$refs.uploader as { resetFileInput?: () => void } | undefined;
-    },
-    isConfirmTxDisabled(this: any): boolean {
-      return this.walletStore.isConfirmTxDialogDisabled;
-    },
-    decimals(this: any): number {
-      return this.calcDecimals(this.divisible);
-    },
-    isCreateDisabled(this: any): boolean {
+  setup(props, { emit }) {
+    const routerStore = useRouterStore();
+    const walletStore = useWalletStore();
+    const { t, withNotifications, loading } = useTransaction();
+    const { getCorrectSupply, getFPNumberFromCodec } = useNumberFormatter();
+    const { allowFeePopup, networkFees, xorBalance, isXorSufficientForNextTx } = useNetworkFeeWarning();
+
+    const uploader = ref<{ resetFileInput?: () => void }>();
+    const tokenSymbolMask = 'AAAAAAA';
+    const tokenNameMask = { mask: 'Z*', tokens: { Z: { pattern: /[0-9a-zA-Z ]/ } } };
+    const maxTotalSupply = MaxTotalSupply;
+    const delimiters = FPNumber.DELIMITERS_CONFIG;
+    const XOR_SYMBOL = XOR.symbol;
+    const FILE_SIZE_LIMIT = 100;
+    const imageLoading = ref(false);
+    const fileExceedsLimit = ref(false);
+    const badSource = ref(false);
+    const contentSrcLink = ref('');
+    const tokenContentIpfsParsed = ref('');
+    const tokenContentLink = ref('');
+    const tokenSymbol = ref('');
+    const tokenName = ref('');
+    const tokenDescription = ref('');
+    const tokenSupply = ref('');
+    const showFee = ref(true);
+    const file = ref<Nullable<File>>(null);
+    const extensibleSupply = ref(false);
+    const divisible = ref(false);
+
+    const nftStorage = computed(() => walletStore.nftStorage);
+    const isConfirmTxDisabled = computed(() => walletStore.isConfirmTxDialogDisabled);
+    const decimals = computed(() => calcDecimals(divisible.value));
+    const isCreateDisabled = computed(() => {
       return (
-        !(this.tokenSymbol && this.tokenName.trim() && +this.tokenSupply && this.tokenDescription.trim()) ||
-        this.badSource ||
-        !(this.file || this.tokenContentLink)
+        !(tokenSymbol.value && tokenName.value.trim() && +tokenSupply.value && tokenDescription.value.trim()) ||
+        badSource.value ||
+        !(file.value || tokenContentLink.value)
       );
-    },
-    fee(this: any): FPNumber {
-      return this.getFPNumberFromCodec(this.networkFees.RegisterAsset);
-    },
-    formattedFee(this: any): string {
-      return this.fee.toLocaleString();
-    },
-    contentSource(this: any): string {
-      if (this.file) return this.t('createToken.nft.source.value');
-      return IpfsStorage.getStorageHostname(this.tokenContentLink);
-    },
-    hasEnoughXor(this: any): boolean {
-      return FPNumber.gte(this.xorBalance, this.fee);
-    },
-  },
-  methods: {
-    createNftStorageInstance(this: any) {
-      return this.walletStore.createNftStorageInstance();
-    },
-    navigate(this: any, options: Route): void {
-      this.routerStore.navigate(options);
-    },
-    calcDecimals(this: any, divisible: boolean): number {
-      return divisible ? FPNumber.DEFAULT_PRECISION : 0;
-    },
-    async upload(this: any, file: File): Promise<void> {
-      this.imageLoading = true;
-      this.file = file;
-      this.contentSrcLink = await IpfsStorage.fileToBase64(file);
-      this.badSource = false;
-      this.imageLoading = false;
-      this.tokenContentLink = '';
-    },
-    showLimit(this: any): void {
-      this.contentSrcLink = '';
-      this.fileExceedsLimit = true;
-    },
-    hideLimit(this: any): void {
-      this.contentSrcLink = '';
-      this.fileExceedsLimit = false;
-    },
-    handleChangeDivisible(this: any, value: boolean): void {
-      if (!value && this.tokenSupply) {
-        const decimals = this.calcDecimals(value);
-        this.tokenSupply = this.getCorrectSupply(this.tokenSupply, decimals);
-      }
-    },
-    handleInputLinkChange(this: any, link: string): void {
-      this.uploader?.resetFileInput?.();
-      this.resetFileInput();
-      this.fileExceedsLimit = false;
-      this.contentSrcLink = '';
+    });
+    const fee = computed((): FPNumber => getFPNumberFromCodec(networkFees.value.RegisterAsset));
+    const formattedFee = computed(() => fee.value.toLocaleString());
+    const contentSource = computed(() => {
+      if (file.value) return t('createToken.nft.source.value');
+      return IpfsStorage.getStorageHostname(tokenContentLink.value);
+    });
+    const hasEnoughXor = computed(() => FPNumber.gte(xorBalance.value, fee.value));
 
-      try {
-        new URL(link);
-      } catch {
-        this.badSource = true;
-        return;
-      }
+    const createNftStorageInstance = () => walletStore.createNftStorageInstance();
 
-      void this.checkImageFromSource(link);
-    },
-    handleTextAreaInput(this: any, e: KeyboardEvent): boolean | void {
-      if (/^[A-Za-z0-9 _',.#]+$/.test(e.key)) return true;
-      e.preventDefault();
-    },
-    async checkImageFromSource(this: any, url: string): Promise<void> {
-      this.imageLoading = true;
-      this.badSource = false;
+    const navigate = (options: Route): void => {
+      routerStore.navigate(options);
+    };
+
+    function calcDecimals(isDivisible: boolean): number {
+      return isDivisible ? FPNumber.DEFAULT_PRECISION : 0;
+    }
+
+    async function upload(uploadedFile: File): Promise<void> {
+      imageLoading.value = true;
+      file.value = uploadedFile;
+      contentSrcLink.value = await IpfsStorage.fileToBase64(uploadedFile);
+      badSource.value = false;
+      imageLoading.value = false;
+      tokenContentLink.value = '';
+    }
+
+    function showLimit(): void {
+      contentSrcLink.value = '';
+      fileExceedsLimit.value = true;
+    }
+
+    function hideLimit(): void {
+      contentSrcLink.value = '';
+      fileExceedsLimit.value = false;
+    }
+
+    function handleChangeDivisible(value: boolean): void {
+      if (!value && tokenSupply.value) {
+        const nextDecimals = calcDecimals(value);
+        tokenSupply.value = getCorrectSupply(tokenSupply.value, nextDecimals);
+      }
+    }
+
+    function resetFileInput(): void {
+      file.value = null;
+      imageLoading.value = false;
+    }
+
+    function isValidType(type: string): boolean {
+      return Object.values(IMAGE_MIME_TYPES).includes(type);
+    }
+
+    async function checkImageFromSource(url: string): Promise<void> {
+      imageLoading.value = true;
+      badSource.value = false;
 
       try {
         const response = await fetch(url);
         const buffer = await response.blob();
-        this.imageLoading = false;
+        imageLoading.value = false;
 
-        if (this.isValidType(buffer.type)) {
-          this.badSource = false;
-          this.contentSrcLink = url;
-          this.tokenContentIpfsParsed = IpfsStorage.getIpfsPath(url);
+        if (isValidType(buffer.type)) {
+          badSource.value = false;
+          contentSrcLink.value = url;
+          tokenContentIpfsParsed.value = IpfsStorage.getIpfsPath(url);
         } else {
-          this.badSource = true;
-          this.contentSrcLink = '';
+          badSource.value = true;
+          contentSrcLink.value = '';
         }
       } catch {
-        this.badSource = true;
-        this.contentSrcLink = '';
+        badSource.value = true;
+        contentSrcLink.value = '';
       }
 
-      this.resetFileInput();
-    },
-    isValidType(this: any, type: string): boolean {
-      return Object.values(IMAGE_MIME_TYPES).includes(type);
-    },
-    clear(this: any): void {
-      this.tokenContentLink = '';
-      this.contentSrcLink = '';
-      this.resetFileInput();
-    },
-    resetFileInput(this: any): void {
-      this.file = null;
-      this.imageLoading = false;
-    },
-    async storeNftImage(this: any, file: File): Promise<void> {
-      const content = (await IpfsStorage.fileToBuffer(file)) as ArrayBuffer;
+      resetFileInput();
+    }
 
-      if (!(this.nftStorage as NFTStorage | null)) {
-        await this.createNftStorageInstance();
+    function handleInputLinkChange(link: string): void {
+      uploader.value?.resetFileInput?.();
+      resetFileInput();
+      fileExceedsLimit.value = false;
+      contentSrcLink.value = '';
+
+      try {
+        new URL(link);
+      } catch {
+        badSource.value = true;
+        return;
+      }
+
+      void checkImageFromSource(link);
+    }
+
+    function handleTextAreaInput(e: KeyboardEvent): boolean | void {
+      if (/^[A-Za-z0-9 _',.#]+$/.test(e.key)) return true;
+      e.preventDefault();
+    }
+
+    function clear(): void {
+      tokenContentLink.value = '';
+      contentSrcLink.value = '';
+      resetFileInput();
+    }
+
+    async function storeNftImage(imageFile: File): Promise<void> {
+      const content = (await IpfsStorage.fileToBuffer(imageFile)) as ArrayBuffer;
+
+      if (!(nftStorage.value as NFTStorage | null)) {
+        await createNftStorageInstance();
       }
 
       try {
-        const metadata = await (this.nftStorage as NFTStorage).store({
-          name: file.name,
-          description: this.tokenDescription,
-          image: new ImageNFT([content], file.name, { type: file.type }),
+        const metadata = await (nftStorage.value as NFTStorage).store({
+          name: imageFile.name,
+          description: tokenDescription.value,
+          image: new ImageNFT([content], imageFile.name, { type: imageFile.type }),
         });
 
-        this.tokenContentIpfsParsed = IpfsStorage.getIpfsPath(metadata.embed().image.href);
+        tokenContentIpfsParsed.value = IpfsStorage.getIpfsPath(metadata.embed().image.href);
       } catch (error) {
         console.error('Error while storing NFT content:', error);
       }
-    },
-    async registerNftAsset(this: any): Promise<void> {
-      if (!this.tokenContentIpfsParsed.trim()) {
+    }
+
+    async function registerNftAsset(): Promise<void> {
+      if (!tokenContentIpfsParsed.value.trim()) {
         throw new Error('IPFS Token issue');
       }
       return api.assets.register(
-        this.tokenSymbol,
-        this.tokenName.trim(),
-        this.tokenSupply,
-        this.extensibleSupply,
-        !this.divisible,
-        { content: this.tokenContentIpfsParsed, description: this.tokenDescription.trim() }
+        tokenSymbol.value,
+        tokenName.value.trim(),
+        tokenSupply.value,
+        extensibleSupply.value,
+        !divisible.value,
+        { content: tokenContentIpfsParsed.value, description: tokenDescription.value.trim() }
       );
-    },
-    async onCreate(this: any): Promise<void> {
+    }
+
+    async function onCreate(): Promise<void> {
       if (
-        !this.tokenSymbol.length ||
-        !this.tokenSupply.length ||
-        !this.tokenDescription.length ||
-        !this.tokenName.length ||
-        this.badSource
+        !tokenSymbol.value.length ||
+        !tokenSupply.value.length ||
+        !tokenDescription.value.length ||
+        !tokenName.value.length ||
+        badSource.value
       ) {
         return;
       }
 
-      this.tokenSupply = this.getCorrectSupply(this.tokenSupply, this.decimals);
+      tokenSupply.value = getCorrectSupply(tokenSupply.value, decimals.value);
 
-      this.$emit('showTabs');
+      emit('showTabs');
 
-      if (
-        this.allowFeePopup &&
-        this.hasEnoughXor &&
-        !this.isXorSufficientForNextTx({ type: Operation.RegisterAsset })
-      ) {
-        this.$emit('showHeader');
-        this.showFee = false;
-        this.$emit('stepChange', Step.Warn);
+      if (allowFeePopup.value && hasEnoughXor.value && !isXorSufficientForNextTx({ type: Operation.RegisterAsset })) {
+        emit('showHeader');
+        showFee.value = false;
+        emit('stepChange', Step.Warn);
         return;
       }
 
-      if (this.isConfirmTxDisabled) {
-        await this.onConfirm();
+      if (isConfirmTxDisabled.value) {
+        await onConfirm();
       } else {
-        this.showFee = true;
-        this.$emit('stepChange', Step.ConfirmNftToken);
+        showFee.value = true;
+        emit('stepChange', Step.ConfirmNftToken);
       }
-    },
-    async onConfirm(this: any): Promise<void> {
-      await this.withNotifications(async () => {
-        if (!this.hasEnoughXor) {
+    }
+
+    async function onConfirm(): Promise<void> {
+      await withNotifications(async () => {
+        if (!hasEnoughXor.value) {
           throw new Error('insufficientBalanceText');
         }
-        if (this.file) {
-          await this.storeNftImage(this.file);
+        if (file.value) {
+          await storeNftImage(file.value);
         }
-        await this.registerNftAsset();
-        this.navigate({ name: RouteNames.Wallet });
+        await registerNftAsset();
+        navigate({ name: RouteNames.Wallet });
       });
-    },
-    confirmNextTxFailure(this: any): void {
-      this.$emit('showHeader');
-      this.showFee = true;
-      this.$emit('stepChange', Step.ConfirmNftToken);
-    },
+    }
+
+    function confirmNextTxFailure(): void {
+      emit('showHeader');
+      showFee.value = true;
+      emit('stepChange', Step.ConfirmNftToken);
+    }
+
+    return {
+      t,
+      loading,
+      uploader,
+      tokenSymbolMask,
+      tokenNameMask,
+      maxTotalSupply,
+      delimiters,
+      Step,
+      XOR_SYMBOL,
+      FILE_SIZE_LIMIT,
+      imageLoading,
+      fileExceedsLimit,
+      badSource,
+      contentSrcLink,
+      tokenContentIpfsParsed,
+      tokenContentLink,
+      tokenSymbol,
+      tokenName,
+      tokenDescription,
+      tokenSupply,
+      showFee,
+      file,
+      extensibleSupply,
+      divisible,
+      isConfirmTxDisabled,
+      decimals,
+      isCreateDisabled,
+      fee,
+      formattedFee,
+      contentSource,
+      hasEnoughXor,
+      upload,
+      showLimit,
+      hideLimit,
+      handleChangeDivisible,
+      handleInputLinkChange,
+      handleTextAreaInput,
+      clear,
+      onCreate,
+      onConfirm,
+      confirmNextTxFailure,
+    };
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

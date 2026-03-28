@@ -4,6 +4,7 @@ import { SubscribePayload, createClient as createWSClient } from 'graphql-ws';
 import { wsClientLazy, wsClientReconnect, wsClientRetryAttempts } from '@/consts/indexer';
 
 import type { Client } from '@urql/core';
+import type { ExplorerClient } from '../explorer/base';
 
 export type { Client, OperationResult, TypedDocumentNode, AnyVariables } from '@urql/core';
 
@@ -69,7 +70,7 @@ const createSubscriptionExchange = (subscriptionClient: ReturnType<typeof create
   });
 };
 
-export const createExplorerClient = (url: string): Client => {
+export const createExplorerClient = (url: string): ExplorerClient => {
   const exchanges = [fetchExchange];
   const subscriptionClient = createSubscriptionClient(url);
   if (subscriptionClient) {
@@ -81,7 +82,9 @@ export const createExplorerClient = (url: string): Client => {
     url,
     exchanges,
     requestPolicy: 'network-only',
-  });
+  }) as ExplorerClient;
+
+  client.supportsSubscriptions = Boolean(subscriptionClient);
 
   return client;
 };

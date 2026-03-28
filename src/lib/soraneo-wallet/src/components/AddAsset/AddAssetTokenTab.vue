@@ -35,84 +35,87 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 
 import { FilterOptions } from '@/types/common';
 import { useWalletStore } from '@/stores/wallet';
 
+import { useAddAsset } from '../../composables/useAddAsset';
 import { api } from '../../api';
 import { AddAssetTabs } from '../../consts';
 import { getAssetsSubset } from '../../util';
 import AssetList from '../AssetList.vue';
 import SearchInput from '../Input/SearchInput.vue';
-import AddAssetMixin from '../mixins/AddAssetMixin';
-import LoadingMixin from '../mixins/LoadingMixin';
 import AssetsFilter from '../shared/AssetsFilter.vue';
 
 import AddAssetDetailsCard from './AddAssetDetailsCard.vue';
 
 import type { Asset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 
-export default defineComponent({
-  components: {
-    AssetList,
-    AssetsFilter,
-    SearchInput,
-    AddAssetDetailsCard,
-  },
-  mixins: [LoadingMixin, AddAssetMixin],
-  emits: ['change-visibility'],
-  data() {
-    return {
-      AddAssetTabs,
-      /** `true` by default cuz we have a lot of assets */
-      isVerifiedOnly: true,
-    };
-  },
-  computed: {
-    assetsFilter(this: any) {
-      return useWalletStore(this.$pinia).assetsFilter;
-    },
-    whitelist(this: any) {
-      return useWalletStore(this.$pinia).whitelist;
-    },
-    notAddedAssets(this: any): Asset[] {
-      return this.assets.filter(
-        (asset: Asset) => !(asset.address in this.accountAssetsAddressTable) && !api.assets.isNft(asset)
-      );
-    },
-    prefilteredAssets(this: any): Asset[] {
-      const prefiltered = getAssetsSubset(this.notAddedAssets, this.assetsFilter as FilterOptions);
+withDefaults(
+  defineProps<{
+    tokenDetailsPageOpened?: boolean;
+  }>(),
+  {
+    tokenDetailsPageOpened: false,
+  }
+);
 
-      return this.isVerifiedOnly
-        ? prefiltered.filter((asset: Asset) => api.assets.isWhitelist(asset, this.whitelist as Whitelist))
-        : prefiltered;
-    },
-    foundAssets(this: any): Asset[] {
-      if (!this.searchValue) return this.prefilteredAssets;
-      return this.getSoughtAssets(this.prefilteredAssets);
-    },
-    assetIsAlreadyAdded(this: any): boolean {
-      if (!this.searchValue) return false;
+const emit = defineEmits<{
+  'change-visibility': [];
+}>();
 
-      return this.accountAssets.some(
-        ({ name = '', symbol = '', address = '' }: Asset) =>
-          address.toLowerCase() === this.searchValue ||
-          symbol.toLowerCase() === this.searchValue ||
-          name.toLowerCase() === this.searchValue
-      );
-    },
-    showAddButton(this: any): boolean {
-      return this.selectedAssets.length > 0;
-    },
-  },
-  methods: {
-    handleAdd(this: any): void {
-      this.$emit('change-visibility');
-    },
-  },
+const walletStore = useWalletStore();
+const {
+  t,
+  search,
+  searchValue,
+  resetSearch,
+  selectedAssets,
+  parentLoading,
+  loading,
+  assets,
+  accountAssetsAddressTable,
+  accountAssets,
+  getSoughtAssets,
+  handleSelectAsset,
+} = useAddAsset();
+const isVerifiedOnly = ref(true);
+
+const assetsFilter = computed(() => walletStore.assetsFilter);
+const whitelist = computed(() => walletStore.whitelist);
+const notAddedAssets = computed((): Asset[] => {
+  return assets.value.filter(
+    (asset: Asset) => !(asset.address in accountAssetsAddressTable.value) && !api.assets.isNft(asset)
+  );
 });
+const prefilteredAssets = computed((): Asset[] => {
+  const prefiltered = getAssetsSubset(notAddedAssets.value, assetsFilter.value as FilterOptions);
+
+  return isVerifiedOnly.value
+    ? prefiltered.filter((asset: Asset) => api.assets.isWhitelist(asset, whitelist.value as Whitelist))
+    : prefiltered;
+});
+const foundAssets = computed((): Asset[] => {
+  if (!searchValue.value) return prefilteredAssets.value;
+  return getSoughtAssets(prefilteredAssets.value);
+});
+const assetIsAlreadyAdded = computed((): boolean => {
+  if (!searchValue.value) return false;
+
+  return accountAssets.value.some(
+    ({ name = '', symbol = '', address = '' }: Asset) =>
+      address.toLowerCase() === searchValue.value ||
+      symbol.toLowerCase() === searchValue.value ||
+      name.toLowerCase() === searchValue.value
+  );
+});
+const showAddButton = computed(() => selectedAssets.value.length > 0);
+
+function handleAdd(): void {
+  emit('change-visibility');
+}
 </script>
 
 <style lang="scss">

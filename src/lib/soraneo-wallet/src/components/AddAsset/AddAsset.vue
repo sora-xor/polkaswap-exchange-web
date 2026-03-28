@@ -15,13 +15,13 @@
   </wallet-base>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 
+import { useWalletTranslation } from '../../composables/useWalletTranslation';
 import { useRouterStore } from '@/stores/router';
 
 import { RouteNames, AddAssetTabs } from '../../consts';
-import TranslationMixin from '../mixins/TranslationMixin';
 import WalletBase from '../WalletBase.vue';
 
 import AddAssetNFT from './AddAssetNftTab.vue';
@@ -29,54 +29,39 @@ import AddAssetToken from './AddAssetTokenTab.vue';
 
 import type { Route } from '@/stores/router/types';
 
-export default defineComponent({
-  components: {
-    WalletBase,
-    AddAssetToken,
-    AddAssetNFT,
-  },
-  mixins: [TranslationMixin],
-  data() {
-    return {
-      AddAssetTabs,
-      currentTab: AddAssetTabs.Token as AddAssetTabs,
-      showTabs: true,
-      tokenDetailsPageOpened: false,
-    };
-  },
-  computed: {
-    currentScreen(this: any): string {
-      return `${this.currentTab}${this.tokenDetailsPageOpened}`;
-    },
-    routerStore(this: any) {
-      return useRouterStore(this.$pinia);
-    },
-  },
-  methods: {
-    getTabName(this: any, tab: AddAssetTabs): string {
-      if (tab === AddAssetTabs.NFT) {
-        return this.TranslationConsts.NFT;
-      }
-      return this.t(`addAsset.${tab}.title`);
-    },
-    changeVisibility(this: any): void {
-      this.showTabs = false;
-      this.tokenDetailsPageOpened = true;
-    },
-    navigate(this: any, options: Route): void {
-      this.routerStore.navigate(options);
-    },
-    handleBack(this: any): void {
-      if (!this.showTabs) {
-        this.showTabs = true;
-        this.tokenDetailsPageOpened = false;
-        return;
-      }
+const { t, TranslationConsts } = useWalletTranslation();
+const routerStore = useRouterStore();
+const currentTab = ref<AddAssetTabs>(AddAssetTabs.Token);
+const showTabs = ref(true);
+const tokenDetailsPageOpened = ref(false);
 
-      this.navigate({ name: RouteNames.Wallet });
-    },
-  },
-});
+const currentScreen = computed(() => `${currentTab.value}${tokenDetailsPageOpened.value}`);
+
+function getTabName(tab: AddAssetTabs): string {
+  if (tab === AddAssetTabs.NFT) {
+    return TranslationConsts.NFT;
+  }
+  return t(`addAsset.${tab}.title`);
+}
+
+function changeVisibility(): void {
+  showTabs.value = false;
+  tokenDetailsPageOpened.value = true;
+}
+
+function navigate(options: Route): void {
+  routerStore.navigate(options);
+}
+
+function handleBack(): void {
+  if (!showTabs.value) {
+    showTabs.value = true;
+    tokenDetailsPageOpened.value = false;
+    return;
+  }
+
+  navigate({ name: RouteNames.Wallet });
+}
 </script>
 
 <style lang="scss">

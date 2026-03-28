@@ -10,12 +10,18 @@ vi.mock('@soramitsu-ui/ui', () => ({
 describe('soramitsuUI plugin', () => {
   it('registers the app-owned Soramitsu overrides without duplicate registration warnings', async () => {
     const contextComponents: Record<string, unknown> = {};
+    const contextDirectives: Record<string, unknown> = {};
     const app = {
       use: vi.fn(),
-      _context: { components: contextComponents },
+      _context: { components: contextComponents, directives: contextDirectives },
       component: vi.fn(function (name: string, component?: unknown) {
         if (arguments.length === 1) return contextComponents[name];
         contextComponents[name] = component;
+        return app;
+      }),
+      directive: vi.fn(function (name: string, directive?: unknown) {
+        if (arguments.length === 1) return contextDirectives[name];
+        contextDirectives[name] = directive;
         return app;
       }),
     } as any;
@@ -32,6 +38,8 @@ describe('soramitsuUI plugin', () => {
 
     expect(soramitsuPluginFactory).toHaveBeenCalledTimes(1);
     expect(app.use).toHaveBeenCalledWith(soramitsuPlugin);
+    expect(contextDirectives.loading).toEqual(expect.any(Object));
+    expect(contextDirectives.button).toEqual(expect.any(Object));
     expect(contextComponents.SIcon).toEqual(expect.any(Object));
     expect(contextComponents['s-icon']).toEqual(expect.any(Object));
     expect(contextComponents.SMenu).toEqual(expect.any(Object));

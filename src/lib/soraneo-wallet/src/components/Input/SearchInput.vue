@@ -19,43 +19,51 @@
   </s-input>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, useAttrs } from 'vue';
 
-import InputFocusMixin from '../mixins/InputFocusMixin';
+import { useInputFocus } from '../../composables/useInputFocus';
 
-export default defineComponent({
+defineOptions({
   inheritAttrs: false,
-  mixins: [InputFocusMixin],
-  props: {
-    modelValue: {
-      type: String,
-      default: '',
-    },
-  },
-  emits: ['update:modelValue', 'clear'],
-  computed: {
-    query: {
-      get(this: any): string {
-        return this.modelValue;
-      },
-      set(this: any, value: string): void {
-        this.$emit('update:modelValue', value);
-      },
-    },
-    inputAttrs(this: any): Record<string, unknown> {
-      const { readonly, readOnly, ...attrs } = this.$attrs as Record<string, unknown>;
-      void readonly;
-      void readOnly;
-      return attrs;
-    },
-  },
-  methods: {
-    handleClearSearch(this: any): void {
-      this.$emit('clear');
-    },
+});
+
+const props = withDefaults(
+  defineProps<{
+    autofocus?: boolean;
+    modelValue?: string;
+  }>(),
+  {
+    autofocus: false,
+    modelValue: '',
+  }
+);
+
+const emit = defineEmits<{
+  'update:modelValue': [value: string];
+  clear: [];
+}>();
+
+const attrs = useAttrs();
+const { input } = useInputFocus(() => props.autofocus);
+
+const query = computed({
+  get: (): string => props.modelValue,
+  set: (value: string): void => {
+    emit('update:modelValue', value);
   },
 });
+
+const inputAttrs = computed<Record<string, unknown>>(() => {
+  const { readonly, readOnly, ...rest } = attrs as Record<string, unknown>;
+  void readonly;
+  void readOnly;
+  return rest;
+});
+
+function handleClearSearch(): void {
+  emit('clear');
+}
 </script>
 
 <style lang="scss">
