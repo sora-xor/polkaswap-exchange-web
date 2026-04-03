@@ -1,5 +1,5 @@
 <template>
-  <div class="add-asset-token">
+  <div v-loading="parentLoading || loading" class="add-asset-token">
     <div v-if="!tokenDetailsPageOpened" class="add-asset-token__page">
       <search-input
         v-model="search"
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 import { FilterOptions } from '@/types/common';
 import { useWalletStore } from '@/stores/wallet';
@@ -78,13 +78,14 @@ const {
   assets,
   accountAssetsAddressTable,
   accountAssets,
+  whitelist,
   getSoughtAssets,
+  ensureAssetCatalogLoaded,
   handleSelectAsset,
 } = useAddAsset();
 const isVerifiedOnly = ref(true);
 
 const assetsFilter = computed(() => walletStore.assetsFilter);
-const whitelist = computed(() => walletStore.whitelist);
 const notAddedAssets = computed((): Asset[] => {
   return assets.value.filter(
     (asset: Asset) => !(asset.address in accountAssetsAddressTable.value) && !api.assets.isNft(asset)
@@ -92,8 +93,9 @@ const notAddedAssets = computed((): Asset[] => {
 });
 const prefilteredAssets = computed((): Asset[] => {
   const prefiltered = getAssetsSubset(notAddedAssets.value, assetsFilter.value as FilterOptions);
+  const hasWhitelist = Object.keys(whitelist.value as Whitelist).length > 0;
 
-  return isVerifiedOnly.value
+  return isVerifiedOnly.value && hasWhitelist
     ? prefiltered.filter((asset: Asset) => api.assets.isWhitelist(asset, whitelist.value as Whitelist))
     : prefiltered;
 });
@@ -116,6 +118,10 @@ const showAddButton = computed(() => selectedAssets.value.length > 0);
 function handleAdd(): void {
   emit('change-visibility');
 }
+
+onMounted(() => {
+  void ensureAssetCatalogLoaded();
+});
 </script>
 
 <style lang="scss">

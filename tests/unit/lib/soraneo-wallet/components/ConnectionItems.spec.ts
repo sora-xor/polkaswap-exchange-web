@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 
 import ConnectionItems from '@/lib/soraneo-wallet/src/components/Connection/List/ConnectionItems.vue';
+import connectionItemsSource from '@/lib/soraneo-wallet/src/components/Connection/List/ConnectionItems.vue?raw';
 
 describe('ConnectionItems', () => {
   it('caps list height when item count reaches the visible threshold', () => {
@@ -36,5 +37,15 @@ describe('ConnectionItems', () => {
     });
 
     expect((wrapper.vm as any).style).toEqual({});
+  });
+
+  it('keeps the wallet list scrollbar on the production selector and rail geometry', () => {
+    expect(connectionItemsSource).toContain('.connection-items.el-scrollbar');
+    expect(connectionItemsSource).not.toContain('.connection-items.s-scrollbar.el-scrollbar');
+    expect(connectionItemsSource).not.toContain('always-show-vertical-bar');
+    expect(connectionItemsSource).toContain('scrollbar-width: none;');
+    expect(connectionItemsSource).toContain('-ms-overflow-style: none;');
+    expect(connectionItemsSource).toContain('&::-webkit-scrollbar');
+    expect(connectionItemsSource).toContain('display: none !important;');
   });
 });

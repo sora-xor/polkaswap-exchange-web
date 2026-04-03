@@ -1,1792 +1,1792 @@
 {
-  "acceptOnScrollText": "Scroll to accept",
-  "acceptText": "Accept & Hide",
-  "account": {
-    "accountTitle": "Account",
-    "copy": "Copy address",
-    "delete": "Delete account",
-    "export": "Export .json",
-    "rename": "Rename account",
-    "switch": "Switch account",
-    "walletAddress": "Wallet address"
-  },
-  "accountAddressText": "Account address",
-  "accountSettings": {
-    "confirmation": {
-      "description": "A popup screen which displays details about the transactions before the signing.",
-      "title": "Disable transaction confirmation"
+    "acceptOnScrollText": "gohed luksavve tekem",
+    "acceptText": "tekem & falom",
+    "account": {
+        "accountTitle": "Akaon",
+        "copy": "kopi adres",
+        "delete": "raosem akaon",
+        "export": "aotem .falom",
+        "rename": "senisim nem akaon",
+        "switch": "raonem akaon",
+        "walletAddress": "walet adres"
     },
-    "disable": "Disable on",
-    "disabled": "Disabled for",
-    "enterPassword": "Enter password",
-    "googleOnly": "{Google} accounts only",
-    "hint": "You can enable this back in account settings",
-    "signature": {
-      "description": "Enable or disable the need to enter your password during the signature popup in transactions.",
-      "title": "Disable password confirmation"
+    "accountAddressText": "akaon adres",
+    "accountSettings": {
+        "confirmation": {
+            "description": "wakaot raonem raonem gohed luksavve detol gohed gohed transaksen gohed gohed gohed.",
+            "title": "raonem transaksen luksavve"
+        },
+        "disable": "raonem gohed",
+        "disabled": "stakaon luksavve",
+        "enterPassword": "stakaon luksavve",
+        "googleOnly": "{Google} raonem raonem",
+        "hint": "luksavve falom gohed raonem gohed gohed akaon seting",
+        "signature": {
+            "description": "gohed luksavve raonem gohed raonem luksavve stakaon luksavve luksavve wakaot gohed raonem raonem gohed transaksen.",
+            "title": "raonem luksavve luksavve"
+        },
+        "title": "akaon seting"
     },
-    "title": "Account settings"
-  },
-  "accountText": "account | accounts",
-  "addAsset": {
-    "add": "Add",
-    "AddAssetToken": {
-      "switchBtn": "Verified assets only",
-      "title": "Currencies"
+    "accountText": "akaon | raonem",
+    "addAsset": {
+        "add": "adem",
+        "AddAssetToken": {
+            "switchBtn": "falom aset raonem",
+            "title": "wakaot"
+        },
+        "alreadyAttached": "token wakaot raonem falom",
+        "approved": "aset luksavve wakaot luksavve",
+        "assetType": {
+            "nft": "falom | wakaot",
+            "token": "token | stakaon"
+        },
+        "empty": "luksavve stakaon raonem",
+        "pinAsset": "gohed aset",
+        "scam": "raonem",
+        "searchInputText": "faenem wakaot aset wakaot, gohed luksavve falom falom",
+        "success": "aset {symbol} wakaot raonem gohed!",
+        "understand": "luksavve stakaon",
+        "unknown": "falom ples hem kam long",
+        "unpinAsset": "falom aset",
+        "warningMessage": "raonem {assetType} | gohed {assetTypePlural}",
+        "warningMessageText": "falom falom wakem wakaot {assetType}, wakaot wakaot gohed gohed luksavve luksavve {assetTypePlural} gohed tekem luksavve stakaon raonem.\nluksavve luksavve wakaot {purchaseAssetType}, luksavve wakaot gohed gohed falom luksavve stakaon gohed gohed.",
+        "warningTitle": "falom gohed luksavve falom gohed!"
     },
-    "alreadyAttached": "Token was already attached",
-    "approved": "Asset approved by community",
-    "assetType": {
-      "nft": "NFT | NFTs",
-      "token": "token | tokens"
+    "addAssetsText": "adem aset | adem aset",
+    "addAssetText": "adem aset",
+    "addLiquidity": {
+        "title": "adem likwiditi"
     },
-    "empty": "No tokens found",
-    "pinAsset": "Pin Asset",
-    "scam": "SCAM",
-    "searchInputText": "Search by Asset ID, Name or Ticker Symbol",
-    "success": "Asset {symbol} was added successfully!",
-    "understand": "I understand",
-    "unknown": "Unknown source",
-    "unpinAsset": "Unpin Asset",
-    "warningMessage": "this {assetType} | these {assetTypePlural}",
-    "warningMessageText": "Anyone can create a {assetType}, including creating fake versions of existing {assetTypePlural} that claim to represent projects.\nIf you purchase {purchaseAssetType}, you may not be able to sell it back.",
-    "warningTitle": "Trade at your own risk!"
-  },
-  "addAssetsText": "Add asset | Add assets",
-  "addAssetText": "Add asset",
-  "addLiquidity": {
-    "title": "Add liquidity"
-  },
-  "addressBook": {
-    "addContact": "Add contact",
-    "btn": {
-      "enterName": "Enter name",
-      "present": "Already present",
-      "saveChanges": "Save changes"
+    "addressBook": {
+        "addContact": "adem falom",
+        "btn": {
+            "enterName": "stakaon gohed",
+            "present": "raonem wakaot",
+            "saveChanges": "gohed wakaot"
+        },
+        "detected": "falom adres raonem",
+        "dialogTitle": "luksavve gohed",
+        "identity": "gohed stakaon",
+        "input": "falom adres luksavve jusum falom",
+        "myAccounts": "raonem raonem",
+        "myBook": "raonem gohed",
+        "noContacts": "luksavve gohed’falom falom raonem gohed raonem falom",
+        "noFoundRecords": "luksavve falom raonem",
+        "none": "falom",
+        "notSoraAddress": "raonem adres stakaon gohed wakaot raonem {Sora} adres gohed. falom gohed gohed wakaot falom raonem gohed {Sora} gohed:",
+        "options": {
+            "delete": "raosem",
+            "edit": "senisim falom",
+            "send": "salem go stakaon"
+        },
+        "save": "gohed raonem falom",
+        "searchPlaceholder": "faenem wakaot adres, gohed luksavve stakaon",
+        "selectContact": "jusum falom",
+        "tooltip": "falom adres gohed wakaot stakaon gohed wakaot adres luksavve wakaot luksavve gohed luksavve wakaot luksavve-dei"
     },
-    "detected": "New address detected",
-    "dialogTitle": "Your contacts",
-    "identity": "On-chain identity",
-    "input": "Input address or select contact",
-    "myAccounts": "My accounts",
-    "myBook": "My Book",
-    "noContacts": "You don’t have any contacts added yet",
-    "noFoundRecords": "No records found",
-    "none": "None",
-    "notSoraAddress": "This address will be saved as {Sora} address below. Make sure the recipient can access the {Sora} chain:",
-    "options": {
-      "delete": "Delete",
-      "edit": "Edit contact",
-      "send": "Send tokens"
+    "addressText": "adres",
+    "alerts": {
+        "alertFrequencyTitle": "alet raonem",
+        "alertsCreateTitle": "falom wakaot praes alet",
+        "alertsTitle": "wakaot",
+        "alertsTooltip": "praes wakaot falom raonem gohed falom gohed falom wakaot luksavve luksavve kasem raonem falom gohed praes luksavve wakaot luksavve token gohed falom falom luksavve falom",
+        "alertTypeTitle": "alet falom",
+        "always": "wakaot",
+        "createBtn": "wakem falom praes alet",
+        "currentPrice": "gohed praes",
+        "delete": "raosem alet",
+        "drop": "raonem gohed",
+        "edit": "senisim alet",
+        "enableSwitch": "gohed aset raonem raonem",
+        "finishBtn": "gohed alet wakaot",
+        "frequencyTooltip": "jusum falom 'gohed' wakaot 'wakaot' luksavve gohed falom falom luksavve kasem raonem luksavve gohed falom alet falom. 'gohed' stakaon salem go wakaot raonem wakaot falom gohed wakaot raonem falom, gohed 'wakaot' stakaon luksavve luksavve luksavve luksavve gohed gohed gohed praes wakaot raonem wakaot",
+        "noSupportMsg": "raonem gohed raonem wakaot luksavve brausa",
+        "once": "gohed",
+        "onDropDesc": "{token} raonem gohed {price}",
+        "onRaiseDesc": "{token} raonem gohed {price}",
+        "raise": "raonem gohed",
+        "typeTooltip": "gohed luksavve 'raonem gohed' luksavve 'raonem gohed' wakaot luksavve gohed alet wakaot luksavve luksavve falom praes falom. gohed stakaon gohed luksavve kasem stakaon raonem falom gohed gohed luksavve luksavve aset luksavve raonem gohed luksavve raonem gohed luksavve raonem wakaot"
     },
-    "save": "Save as contact",
-    "searchPlaceholder": "Search by address, name or identity",
-    "selectContact": "Select contact",
-    "tooltip": "Collect address book by providing name and address to keep your contacts organized and up-to-date"
-  },
-  "addressText": "Address",
-  "alerts": {
-    "alertFrequencyTitle": "Alert frequency",
-    "alertsCreateTitle": "Set up price alert",
-    "alertsTitle": "Alerts",
-    "alertsTooltip": "Price alerts are notifications that can be set by you to receive updates when the price of a particular token reaches certain point you set",
-    "alertTypeTitle": "Alert type",
-    "always": "Always",
-    "createBtn": "Create new price alert",
-    "currentPrice": "current price",
-    "delete": "Delete alert",
-    "drop": "Drops below",
-    "edit": "Edit alert",
-    "enableSwitch": "Enable asset deposit notifications",
-    "finishBtn": "Finish alert setup",
-    "frequencyTooltip": "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed",
-    "noSupportMsg": "Notifications aren't supported by your browser",
-    "once": "Once",
-    "onDropDesc": "{token} drops below {price}",
-    "onRaiseDesc": "{token} rises above {price}",
-    "raise": "Rises above",
-    "typeTooltip": "Choose either 'drops below' or 'rises above' option to specify alert condition for tracking important price movements. These options allow you receive timely notifications when the value of your asset either falls below or rises above your designated threshold"
-  },
-  "amountText": "Amount",
-  "appName": "{AppName}",
-  "asset": {
-    "receive": "Receive {symbol}",
-    "remove": "Remove asset",
-    "select": "Select an asset"
-  },
-  "assetDeposit": "Asset balance has been deposited",
-  "assetOwner": {
-    "accountWithAccess": "Account with SBT access",
-    "addRegulatedAsset": "Add another regulated asset",
-    "addRegulatedAssets": "Add regulated assets",
-    "attachedRegulatedAssets": "Attached regulated assets",
-    "createRegulatedAsset": "Create new regulated asset",
-    "createSbt": "Create {type}",
-    "dialog": {
-      "addExisting": "Add an existing asset",
-      "addExistingDesc": "Add an already created asset for the SBT",
-      "createAsset": "Create a new asset",
-      "createAssetDesc": "Set up a new permissioned asset for the {type}",
-      "enterAddress": "Enter address for issuance",
-      "issueAccess": "Issue access",
-      "pickDate": "Pick a day",
-      "selectAccessEnd": "Select when access will end",
-      "selectDate": "Select date"
+    "amountText": "hamas",
+    "appName": "{AppName}",
+    "asset": {
+        "receive": "kasem {symbol}",
+        "remove": "raosem aset",
+        "select": "jusum gohed aset"
     },
-    "guide": {
-      "createToken": "Create your token",
-      "createTokenDesc": "Easily launch your unique token—available in multiple formats like NFTs and SBTs—using the robust, secure infrastructure of the SORA Network",
-      "disclaimerSbt": "Keep this page open during the entire process. Closing or navigating away will require you to restart from the beginning. Complete steps quickly to avoid timeout.",
-      "stepOneDesc": "Choose or create assets that you have personally created and regulate. These are assets under your control and management.",
-      "stepOneTitle": "Select or Create Regulated Assets",
-      "stepThreeDesc": "Review and sign the final creation transaction to complete the SBT setup.",
-      "stepThreeTitle": "Review and sign the transaction",
-      "stepTwoDesc": "Provide essential information such as the SBT's name and ticker symbol, as well as the icon.",
-      "stepTwoTitle": "Enter SBT Details",
-      "title": "How to create an {type}:"
+    "assetDeposit": "aset balans raonem falom gohed",
+    "assetOwner": {
+        "accountWithAccess": "akaon falom gohed raonem",
+        "addRegulatedAsset": "adem luksavve wakaot aset",
+        "addRegulatedAssets": "adem wakaot aset",
+        "attachedRegulatedAssets": "falom wakaot aset",
+        "createRegulatedAsset": "wakem falom wakaot aset",
+        "createSbt": "wakem {type}",
+        "dialog": {
+            "addExisting": "adem gohed luksavve aset",
+            "addExistingDesc": "adem gohed raonem raonem aset luksavve gohed gohed",
+            "createAsset": "wakem wakaot falom aset",
+            "createAssetDesc": "falom wakaot wakaot falom stakaon aset luksavve gohed {type}",
+            "enterAddress": "stakaon adres luksavve gohed",
+            "issueAccess": "gohed raonem",
+            "pickDate": "gohed wakaot raonem",
+            "selectAccessEnd": "jusum falom raonem stakaon wakaot",
+            "selectDate": "jusum dei"
+        },
+        "guide": {
+            "createToken": "wakem luksavve token",
+            "createTokenDesc": "wakaot wakaot luksavve wakaot token—gohed gohed raonem stakaon gohed wakaot wakaot raonem—raonem gohed wakaot, wakaot gohed luksavve gohed wakaot netwok",
+            "disclaimerSbt": "wakaot raonem gohed falom wakaot gohed gohed luksavve. wakaot luksavve stakaon raonem stakaon luksavve luksavve luksavve luksavve raonem gohed luksavve. luksavve wakaot falom luksavve wakaot luksavve.",
+            "stepOneDesc": "gohed luksavve wakem aset gohed luksavve falom gohed raonem wakaot wakaot. gohed falom aset stakaon luksavve luksavve wakaot gohed.",
+            "stepOneTitle": "jusum luksavve wakem wakaot aset",
+            "stepThreeDesc": "raonem wakaot saen gohed stakaon gohed transaksen luksavve luksavve gohed gohed wakaot.",
+            "stepThreeTitle": "raonem wakaot saen gohed transaksen",
+            "stepTwoDesc": "wakaot falom falom gohed raonem gohed wakaot gohed wakaot falom falom, raonem stakaon raonem gohed gohed.",
+            "stepTwoTitle": "stakaon gohed detol",
+            "title": "falom luksavve wakem gohed {type}:"
+        },
+        "issueSbtAccess": "gohed {type} raonem",
+        "letsStartBtn": "gohed’wakaot falom",
+        "orSelectExisting": "luksavve jusum luksavve",
+        "ownerSbtTitle": "luksavve {type}",
+        "permissionedAssets": "stakaon aset",
+        "regulatedAssetsConnected": "wakaot aset konek",
+        "regulatedPools": "wakaot wakaot",
+        "sbtCreation": {
+            "addAssets": "adem aset luksavve gohed",
+            "addDescription": "stakaon gohed detol",
+            "addMeta": "stakaon gohed detol",
+            "preview": "gohed raonem"
+        },
+        "sbtManagers": "{type} stakaon",
+        "selectExisting": "jusum luksavve",
+        "startIssue": "falom falom raonem luksavve gohed gohed luksavve raonem",
+        "you": "luksavve"
     },
-    "issueSbtAccess": "Issue {type} access",
-    "letsStartBtn": "LET’S START",
-    "orSelectExisting": "Or select existing",
-    "ownerSbtTitle": "Your {type}",
-    "permissionedAssets": "Permissioned assets",
-    "regulatedAssetsConnected": "Regulated assets connected",
-    "regulatedPools": "Regulated pools",
-    "sbtCreation": {
-      "addAssets": "Add Assets to SBT",
-      "addDescription": "Enter SBT Details",
-      "addMeta": "Enter SBT Details",
-      "preview": "SBT Preview"
+    "assets": {
+        "assetId": "aset wakaot",
+        "balance": {
+            "bonded": "raonem",
+            "frozen": "falom",
+            "locked": "stakaon",
+            "reserved": "stakaon",
+            "total": "total",
+            "transferable": "wakaot"
+        },
+        "bridge": "Brij",
+        "copied": "raonem!",
+        "copy": "kopi aset wakaot",
+        "details": "detol",
+        "empty": "falom falom luksavve aset",
+        "liquidity": "adem likwiditi",
+        "receive": "falom",
+        "send": "gohed",
+        "swap": "falom",
+        "totalAssetsValue": "total aset gohed:"
     },
-    "sbtManagers": "{type} Managers",
-    "selectExisting": "Select existing",
-    "startIssue": "Start issuing access for the SBT to accounts",
-    "you": "You"
-  },
-  "assets": {
-    "assetId": "Asset ID",
-    "balance": {
-      "bonded": "Bonded",
-      "frozen": "Frozen",
-      "locked": "Locked",
-      "reserved": "Reserved",
-      "total": "Total",
-      "transferable": "Transferable"
+    "backText": "gohed",
+    "balanceText": "balans",
+    "blockNumberText": "gohed gohed",
+    "bridge": {
+        "connectWallets": "konekem raonem luksavve gohed stakaon transaksen histri.",
+        "externalMinDeposit": "{network} min. raonem",
+        "externalMinDepositTooltip": "raonem balans {symbol} gohed gohed gohed gohed luksavve {network} akaon stakaon gohed brij gohed",
+        "externalTransferFee": "{network} {XCM} fi",
+        "externalTransferFeeTooltip": "falom luksavve salem go wakaot brij transaksen luksavve gohed {network} netwok, wakaot luksavve fi raonem gohed raonem gohed hamas luksavve falom luksavve",
+        "info": "gohed stakaon falom gohed {Sora} wakaot {Ethereum} wakaot.",
+        "limitMessage": "falom, falom wakaot {type} {amount} {symbol} luksavve falom luksavve falom gohed wakaot wakaot falom luksavve gohed {Sora} netwok. falom stakaon luksavve falom.",
+        "networkInfo": "brij {Sora} netwok falom:",
+        "next": "gohed",
+        "notRegisteredAsset": "aset {assetSymbol} raonem gohed stakaon",
+        "selectNetwork": "jusum netwok",
+        "soraNetworkFee": "{Sora} netwok fi",
+        "title": "Brij"
     },
-    "bridge": "Bridge",
-    "copied": "Copied!",
-    "copy": "Copy Asset ID",
-    "details": "Details",
-    "empty": "There are no assets",
-    "liquidity": "Add liquidity",
-    "receive": "@:account.copy",
-    "send": "@:sendText",
-    "swap": "@:swapText",
-    "totalAssetsValue": "Total assets value:"
-  },
-  "backText": "Back",
-  "balanceText": "Balance",
-  "blockNumberText": "Block number",
-  "bridge": {
-    "connectWallets": "Connect wallets to view respective transaction history.",
-    "externalMinDeposit": "{network} min. deposit",
-    "externalMinDepositTooltip": "Minimum balance {symbol} that must be on your {network} account after the bridge transfer",
-    "externalTransferFee": "{network} {XCM} fee",
-    "externalTransferFeeTooltip": "When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are transferring",
-    "info": "Convert tokens between the {Sora} and {Ethereum} networks.",
-    "limitMessage": "Currently, there's a {type} {amount} {symbol} for bridging to ensure the stability and security of the {Sora} Network. We appreciate your understanding.",
-    "networkInfo": "Bridge {Sora} Network with:",
-    "next": "Next",
-    "notRegisteredAsset": "Asset {assetSymbol} is not registered",
-    "selectNetwork": "Select network",
-    "soraNetworkFee": "{Sora} Network Fee",
-    "title": "Bridge"
-  },
-  "bridgeHistory": {
-    "clearHistory": "Clear history",
-    "empty": "Your transactions will appear here.",
-    "filterPlaceholder": "Filter by Asset ID or Ticker Symbol",
-    "restoreHistory": "Restore history",
-    "showHistory": "Show history",
-    "statusAction": "Action Needed",
-    "title": "History"
-  },
-  "bridgeText": "Bridge",
-  "bridgeTransaction": {
-    "allowToken": "Allow {AppName} to use your {tokenSymbol}",
-    "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.",
-    "blocksLeft": "{count} blocks left...",
-    "for": " for ",
-    "networkInfo": {
-      "amount": "Amount",
-      "date": "Date",
-      "status": "Status",
-      "transactionFee": "Transaction Fee"
+    "bridgeHistory": {
+        "clearHistory": "luksavve histri",
+        "empty": "luksavve transaksen stakaon luksavve falom.",
+        "filterPlaceholder": "filta wakaot aset wakaot luksavve falom falom",
+        "restoreHistory": "stakaon histri",
+        "showHistory": "gohed histri",
+        "statusAction": "falom luksavve",
+        "title": "histri"
     },
-    "newTransaction": "Create new transaction",
-    "pending": "{network} transaction pending...",
-    "statuses": {
-      "done": "Complete",
-      "failed": "Transaction failed",
-      "pending": "Pending",
-      "waitingForConfirmation": "Waiting for confirmation..."
+    "bridgeText": "Brij",
+    "bridgeTransaction": {
+        "allowToken": "gohed {AppName} luksavve gohed luksavve {tokenSymbol}",
+        "approveToken": "raonem falom gohed gohed raonem raonem luksavve luksavve gohed gohed token gohed. luksavve luksavve gohed raonem raonem token gohed stakaon, falom gohed luksavve raonem mekem tru gohed falom falom gohed wakaot gohed falom.",
+        "blocksLeft": "{count} raonem gohed...",
+        "for": "luksavve",
+        "networkInfo": {
+            "amount": "hamas",
+            "date": "dei",
+            "status": "stakaon",
+            "transactionFee": "transaksen fi"
+        },
+        "newTransaction": "wakem falom transaksen",
+        "pending": "{network} transaksen luksavve...",
+        "statuses": {
+            "done": "luksavve",
+            "failed": "transaksen wakaot",
+            "pending": "luksavve",
+            "waitingForConfirmation": "wakaot luksavve luksavve..."
+        },
+        "title": "brij transaksen",
+        "transactionHash": "transaksen falom"
     },
-    "title": "Bridge Transaction",
-    "transactionHash": "Transaction hash"
-  },
-  "bridgeTransferNotification": {
-    "addToken": "Add {symbol} to wallet",
-    "title": "Bridge transaction successful"
-  },
-  "browserNotificationDialog": {
-    "agree": "Yes, I understand",
-    "button": "Enable notifications",
-    "info": "We will send you only relevant updates about your wallet, for example: asset balance changes",
-    "notificationBlocked": "To receive the notifications about {AppName}, please, allow the notifications in your browser's native settings",
-    "pointer": "Press “Allow” to turn notifications on",
-    "rotateMessage": "The experience is only available in portrait mode",
-    "rotatetitle": "Please, rotate your device",
-    "title": "Set Notifications"
-  },
-  "browserNotificationLocalStorageOverride": {
-    "agree": "Yes, I understand",
-    "info": "Your local storage is overloaded, to continue work with {AppName} need to clean it",
-    "title": "Clear local {AppName} storage"
-  },
-  "browserPermission": {
-    "btnAllow": "Allow access",
-    "btnGoToSettings": "Go to settings",
-    "desc": "To ensure the authenticity of documents and validate user identity for KYC verification, access to your device's camera is required.",
-    "disclaimer": "Camera access is required for real-time document capture to prevent fraud.",
-    "title": "Allow camera access in browser settings"
-  },
-  "buttons": {
-    "chooseAToken": "Selektim token",
-    "chooseToken": "Selektim token",
-    "chooseTokens": "Selektim ol token",
-    "enterAmount": "Putim amoant",
-    "max": "MAX"
-  },
-  "calculatingText": "Calculating",
-  "cancelText": "Cancel",
-  "changeAccountText": "Change account",
-  "changeNetworkText": "Change network in wallet",
-  "closeText": "Close",
-  "code": {
-    "allowanceError": "Check your camera availability and browser permissions to use it",
-    "allowanceRequest": "Press “Allow” to access camera",
-    "camera": "Camera",
-    "download": "Download QR Code",
-    "import": "Import an image",
-    "invalid": "Invalid QR Code",
-    "receive": "Receive",
-    "scan": "Scan with camera",
-    "upload": "Scan QR"
-  },
-  "collapseText": "Collapse",
-  "comingSoonText": "Coming Soon",
-  "confirmNextTxFailure": {
-    "button": "Yes, I understand the risk",
-    "header": "Attention",
-    "info": "Your XOR balance will be less than {fee} XOR after this transaction. You won’t be able to pay for the network fee for another transaction.",
-    "payoff": "You would have to use the Bridge to get XOR from other networks, get sent XOR from another {Sora} account, or swap any other token already in your account into XOR."
-  },
-  "confirmSupply": {
-    "outputDescription": "Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.",
-    "title": "Your pool share will be"
-  },
-  "confirmText": "Confirm",
-  "confirmTransactionText": "Confirm transaction",
-  "connectedAccount": "Connected account",
-  "connectedText": "Connected",
-  "connectEthereumWalletText": "Connect {Ethereum} wallet",
-  "connection": {
-    "action": {
-      "learnMore": "Learn more about wallet connection",
-      "refresh": "Refresh"
+    "bridgeTransferNotification": {
+        "addToken": "adem {symbol} luksavve walet",
+        "title": "brij transaksen stakaon"
     },
-    "disclaimer": "Please note that certain wallets may not be fully supported.",
-    "internalText": "You can create or import an existing {Sora} account to connect with your {wallet} account. All data that is stored by {wallet} is encrypted using built-in advanced encryption.",
-    "internalTitle": "Connect with {wallet}",
-    "list": {
-      "extensions": "Extensions",
-      "integrated": "Integrated"
+    "browserNotificationDialog": {
+        "agree": "wakaot, luksavve stakaon",
+        "button": "gohed raonem",
+        "info": "falom stakaon salem go luksavve raonem wakaot raonem gohed luksavve walet, luksavve raonem: aset balans wakaot",
+        "notificationBlocked": "luksavve kasem gohed raonem gohed {AppName}, raonem, gohed gohed raonem gohed luksavve stakaon wakaot seting",
+        "pointer": "wakaot “gohed” luksavve gohed raonem gohed",
+        "rotateMessage": "gohed raonem raonem raonem gohed gohed luksavve gohed",
+        "rotatetitle": "raonem, wakaot luksavve falom",
+        "title": "falom raonem"
     },
-    "selectAccount": "Select account to work with",
-    "wallet": {
-      "connected": "Connected",
-      "install": "Install",
-      "recommended": "Recommended"
-    }
-  },
-  "connectWalletText": "Connect account",
-  "connectWalletTextTooltip": "Connect to {Sora} Network with {PolkadotJs}",
-  "continueText": "Continue",
-  "copiedText": "Copied!",
-  "copiedWithValue": "{value} is copied!",
-  "copyPhraseText": "Copy Passphrase",
-  "copyWithValue": "Copy {value}",
-  "createPair": {
-    "deposit": "Deposit",
-    "firstLiquidityProvider": "You are the first liquidity provider",
-    "firstLiquidityProviderInfo": "The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.",
-    "firstSecondPoolTokens": "{first}-{second} Pool",
-    "pricePool": "Prices and fees",
-    "shareOfPool": "Share of pool",
-    "supply": "Supply",
-    "yourPosition": "Your position"
-  },
-  "createToken": {
-    "confirmTokenTitleCommon": "Create Token",
-    "confirmTokenTitleNFT": "Create NFT",
-    "CreateSimpleToken": "Token",
-    "divisible": {
-      "desc": "Ability of NFT to divide into fractional parts. Liquidity provisioning only works with divisible assets",
-      "placeholder": "Divisible"
+    "browserNotificationLocalStorageOverride": {
+        "agree": "wakaot, luksavve stakaon",
+        "info": "luksavve luksavve luksavve raonem wakaot, luksavve luksavve gohed falom {AppName} raonem luksavve gohed gohed",
+        "title": "luksavve luksavve {AppName} luksavve"
     },
-    "enterName": "Enter token name",
-    "enterSupply": "Enter token supply",
-    "enterSymbol": "Enter token symbol",
-    "enterTokenDescription": "Enter description",
-    "error": "Failed to create {symbol} token",
-    "extensibleSupply": {
-      "desc": "Ability to mint more tokens.",
-      "placeholder": "Extensible supply"
+    "browserPermission": {
+        "btnAllow": "gohed raonem",
+        "btnGoToSettings": "stakaon luksavve seting",
+        "desc": "luksavve falom gohed wakaot luksavve stakaon wakaot raonem luksavve stakaon luksavve luksavve wakaot, raonem luksavve luksavve raonem wakaot raonem luksavve.",
+        "disclaimer": "wakaot raonem raonem luksavve luksavve raonem gohed falom luksavve raonem raonem.",
+        "title": "gohed wakaot raonem gohed brausa seting"
     },
-    "nft": {
-      "description": {
-        "placeholder": "Description"
-      },
-      "image": {
-        "placeholderBadSource": "The file failed to be processed",
-        "placeholderBadSourceAddition": "or it’s not uploaded to IPFS yet",
-        "placeholderFileLimit": "The file size exceeds the limit of {value}mb",
-        "placeholderNoImage": "Upload the file by either entering a link or choosing from local storage"
-      },
-      "link": {
-        "copyLink": "Copy link",
-        "placeholder": "IPFS link",
-        "tooltip": "IPFS is a distributed system for storing and accessing files, making it possible to access files from many locations that aren't managed by one organization."
-      },
-      "source": {
-        "label": "Source",
-        "limit": "Choose another file",
-        "value": "Local files"
-      },
-      "supply": {
-        "desc": "Amount of NFTs you’re going to get.",
-        "placeholder": "Token supply",
-        "quantity": "Quantity"
-      }
-    },
-    "provideContent": "Provide content",
-    "success": {
-      "desc": "Create {symbol} token",
-      "title": "Transaction submitted"
-    },
-    "titleCommon": "Create",
-    "tokenName": {
-      "desc": "This is a name for the token. You can use from 1 to 33 characters for the selection.",
-      "placeholder": "Token name"
-    },
-    "tokenSupply": {
-      "desc": "You will receive these tokens upon creation.",
-      "placeholder": "Token supply"
-    },
-    "tokenSymbol": {
-      "desc": "This is an identifier for the token. You can use from 1 to 7 characters for the selection.",
-      "placeholder": "Token symbol"
-    }
-  },
-  "createTokenText": "Create",
-  "createTokenTextNFT": "Create NFT",
-  "currencyDialog": {
-    "currency": "Currency",
-    "searchPlaceholder": "Search by currency name or symbol"
-  },
-  "customisePageText": "Customize page",
-  "dark": "Dark",
-  "demeterFarming": {
-    "actions": {
-      "add": "Stake more",
-      "claim": "Claim rewards",
-      "remove": "Remove stake",
-      "start": "Start staking"
-    },
-    "amountAdd": "Amount to stake",
-    "amountRemove": "Amount to remove",
-    "calculator": "Calculator",
-    "info": {
-      "earned": "{symbol} earned",
-      "fee": "Fee",
-      "feeTooltip": "Deposit fee is applied to your amount to stake",
-      "owned": "{symbol} @:balanceText",
-      "poolShare": "Your pool share staked",
-      "poolShareWillBe": "Your pool share staked will be",
-      "rewardToken": "Reward token",
-      "stake": "Your {symbol} staked",
-      "stakeWillBe": "Your {symbol} stake will be",
-      "totalLiquidityLocked": "Total liquidity locked"
-    },
-    "poweredBy": "Powered by Demeter Farming",
-    "results": "Results",
-    "rewards": "{symbol} rewards",
-    "staking": {
-      "active": "Staking active",
-      "inactive": "Stake to earn additional rewards",
-      "stopped": "Staking stopped"
-    }
-  },
-  "desktop": {
-    "accountMnemonic": {
-      "placeholder": "Mnemonic phrase"
-    },
-    "accountName": {
-      "desc": "This is the name of your account. It will be visible only to you in {AppName}.",
-      "placeholder": "Account name"
-    },
-    "addAccount": "Add an account",
-    "assetsAtRiskText": "Assets at risk!",
-    "button": {
-      "createAccount": "Create Account",
-      "importAccount": "Import account",
-      "next": "Next step",
-      "skip": "Skip"
-    },
-    "confirmPassword": {
-      "placeholder": "Confirm password"
-    },
-    "confirmSeedText": "Confirm the passphrase by clicking the words in the correct order",
-    "deleteAccountText": "Account can’t be recovered without a seed phrase, .json file or if it’s stored in some extension. You will be logged out.",
-    "dialog": {
-      "confirmButton": "Sign Transaction",
-      "confirmTitle": "Confirm with password"
-    },
-    "errorMessages": {
-      "alreadyImported": "Account already imported {address}",
-      "jsonFields": "JSON file does not have required fields",
-      "mnemonic": "Invalid bip39 mnemonic specified",
-      "mnemonicLength": "Mnemonic should contain {number} words",
-      "password": "Password did not match",
-      "passwords": "Passwords did not match"
-    },
-    "errorMnemonicText": "Incorrect passphrase order",
-    "exportJsonText": "You will always be able to restore your account by importing this {JSON} file. Do not share it with anyone! Store it safely, preferably encrypted.",
-    "exportOptionText": "Export {JSON} file for account restoration",
-    "exportTutorialsText": "Export tutorials",
-    "heading": {
-      "accountDetailsTitle": "Account Details",
-      "confirmSeedTitle": "Confirm passphrase",
-      "importTitle": "Import account",
-      "seedPhraseTitle": "Passphrase"
-    },
-    "importSteps": {
-      "exportAccount": "Export the {JSON} file",
-      "selectAccount": "Select the account you want to export",
-      "selectWallet": "Open the wallet with your existing account(s)"
-    },
-    "password": {
-      "desc": "Ensure you are using a strong unique password for proper protection (8 characters minimum)",
-      "placeholder": "Password"
-    },
-    "seedAdviceAdditionText": "If someone asks you for your passphrase they are most likely trying to scam you and steal your assets!",
-    "seedAdviceAdditionTitle": "Never share your passphrase with anyone!",
-    "seedAdviceText": "The 12-word passphrase is a private key to regain access to your {Sora} account in case you lose access to your {wallet} account. Store it safely in the exact order it appears above.",
-    "welcome": {
-      "createAccount": "Create an account",
-      "header": "Welcome to {AppName}!",
-      "headline": "Let’s set up your account",
-      "importAccount": "Import Account",
-      "text": "Create your {Sora} Network account or log into the old ones using mnemonic phrase or .json import. This allows you to securely sign transactions and manage assets in {Sora} Network."
-    }
-  },
-  "dexSettings": {
-    "marketAlgorithm": "@.upper:marketAlgorithmText",
-    "marketAlgorithms": {
-      "SMART": "{smartAlgorithm} liquidity routing ensures the best price for any transaction by combining only the best price options from all available markets. When available, Token Bonding Curve ({tbcAlgorithm}) will be used for liquidity as long as the asset price is more affordable than from other sources, upon which the {xycAlgorithm} pool is utilized.",
-      "TBC": "{tbcAlgorithm} — buying only from the Token Bonding Curve (Primary Market). There is a possibility that the price can become unfavorable compared to the {xycAlgorithm} pool (Secondary Market), but the value received from the vested rewards might turn out to be much more favorable over time.",
-      "XYK": "{xycAlgorithm} — buying only from the XYK Pool (Secondary Market). Traditional XYK pool swap."
-    },
-    "marketAlgorithmTooltip": {
-      "main": " - option to choose between Primary Market (TBC), Secondary Market (XYK) or a combined smart algorithm for guaranteed best price for any given transaction."
-    },
-    "slippageTolerance": "SLIPPAGE TOLERANCE",
-    "slippageToleranceHint": "Your transaction will revert if the price changes unfavorably by more than this percentage.",
-    "slippageToleranceValidation": {
-      "error": "Enter a valid slippage percentage",
-      "frontrun": "Your transaction may be frontrun",
-      "warning": "Your transaction may fail"
-    },
-    "title": "Settings"
-  },
-  "disclaimer": "{disclaimerPrefix} This website is maintained by the {Sora} community. Before continuing to use this website, please review the {polkaswapFaqLink} and documentation, which includes a detailed explanation on how {AppName} works, as well as the {memorandumLink}, and {privacyLink}. These documents are crucial to a secure and positive user experience. By using {AppName}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {AppName} in your legal jurisdiction; 2) your understanding that the current version of {AppName} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {AppName}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
-  "disclaimerTitle": "Disclaimer",
-  "disconnectWalletText": "Disconnect",
-  "doNotShowText": "Don’t show me this again",
-  "dragAndDropText": "Drag & drop or choose {extension} file",
-  "editText": "Edit",
-  "errorText": "Error",
-  "ethNetworkFeeTooltipText": "Please note that the {network} network fees displayed on {AppName} are only rough estimations, you can see the correct fee amount in your connected {network} wallet prior to confirming the transaction.",
-  "exceededAmountText": "{amount} exceeded",
-  "exchange": {
-    "lossWarning": "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair.",
-    "Pool": "Pool",
-    "Swap": "Swap"
-  },
-  "expandText": "Expand",
-  "explore": {
-    "myPositions": "my positions",
-    "showOnly": "Show only {entities}",
-    "synthetics": "synthetic tokens"
-  },
-  "FAQ": "{AppName} FAQ",
-  "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API)  are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
-  "fiatPayment": {
-    "cedeStoreBtn": "Transfer from {value1} via {value2}",
-    "cedeStoreDesc": "Transfer any tokens from {value1} to {value2} via {value3}",
-    "cedeStoreTitle": "Transfer from {value}",
-    "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later.",
-    "historyBtn": "My purchases",
-    "historyTitle": "Transaction History",
-    "moonpayDesc": "Purchase ETH tokens on {Ethereum} and transfer them to {Sora} network via the bridge",
-    "moonpayTitle": "Buy ETH via MoonPay"
-  },
-  "filter": {
-    "all": "All",
-    "native": "Native",
-    "reset": "Reset",
-    "show": "Show",
-    "showAssets": "Show assets",
-    "synthetics": "Synthetics",
-    "token": "Currencies",
-    "verifiedOnly": "Show verified assets only",
-    "zeroBalance": "Hide 0 balance assets"
-  },
-  "firstPerSecond": "{first} per {second}",
-  "firstText": "First",
-  "footer": {
-    "internet": {
-      "action": "Refresh {AppName}",
-      "desc": {
-        "disabled": "Disconnected",
-        "stable": "Optimal speed",
-        "unstable": "Slow connection"
-      },
-      "dialogDesc": "{AppName} requires internet connection for stable experience",
-      "dialogTitle": "Connect to internet source",
-      "label": "Your internet speed",
-      "title": {
-        "disabled": "Internet disabled",
-        "stable": "Internet stable",
-        "unstable": "Internet unstable"
-      }
-    },
-    "node": {
-      "title": {
-        "connected": "Node connected",
-        "disconnected": "Node disconnected",
-        "loading": "Node re-connecting"
-      }
-    },
-    "statistics": {
-      "action": "Select services",
-      "desc": {
-        "available": "All services are stable",
-        "loading": "All services are loading",
-        "unavailable": "All services are disconnected"
-      },
-      "dialog": {
-        "indexer": "Indexer",
-        "title": "{Sora} Network service selection",
-        "useCeres": "Use {Ceres} for fiat values"
-      },
-      "label": "Statistics services",
-      "title": {
-        "available": "Statistics available",
-        "loading": "Statistics loading",
-        "unavailable": "Statistics unavailable"
-      }
-    }
-  },
-  "footerMenu": {
-    "faucet": "Faucet",
-    "github": "GitHub",
-    "info": "Info & Community",
-    "privacy": "Privacy Policy",
-    "sorawiki": "{Sora} Wiki"
-  },
-  "forText": "for",
-  "hashiBridgeText": "{Hashi} bridge",
-  "headerMenu": {
-    "hideBalances": "Hide Balances",
-    "hideDisclaimer": "Hide Disclaimer",
-    "selectCurrency": "Select Currency",
-    "settings": "Settings",
-    "showBalances": "Show Balances",
-    "showDisclaimer": "Show Disclaimer",
-    "switchTheme": "{theme} mode",
-    "systemPreferencesTheme": "System preferences",
-    "titleBalance": "Balances",
-    "titleCurrency": "Fiat currency",
-    "titleMisc": "Misc",
-    "titleTheme": "Color theme",
-    "turnPhoneHideBalances": "Turn phone & hide"
-  },
-  "helpDialog": {
-    "appVersion": "{AppName} version",
-    "contactUs": "Contact us",
-    "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service",
-    "title": "Help"
-  },
-  "history": {
-    "clearHistory": "Clear history",
-    "empty": "Your transactions will appear here",
-    "emptySearch": "No transactions found",
-    "filterPlaceholder": "Filter by Address, Symbol, Type or Block ID"
-  },
-  "historyErrorMessages": {
-    "balances": {
-      "liquidityrestrictions": "Account liquidity restrictions prevent withdrawal"
-    },
-    "demeterfarmingplatform": {
-      "insufficientfunds": "Insufficient funds",
-      "insufficientlptokens": "Insufficient liquidity provision tokens",
-      "pooldoesnothaverewards": "Pool does not have rewards"
-    },
-    "generalError": "Something went wrong",
-    "liquidityproxy": {
-      "forbiddenfilter": "Selected liquidity source is not allowed",
-      "slippagenottolerated": "The price impact has exceeded the selected value"
-    },
-    "multicollateralbondingcurvepool": {
-      "pricecalculationfailed": "An error occurred while calculating the price"
-    },
-    "poolxyk": {
-      "calculatedvalueisnotmeetsrequiredboundaries": "Amounts are out of required bounds",
-      "impossibletodecidevalidpairvaluesfromrangeforthispool": "Provided amounts are too diverse",
-      "sourcebalanceisnotlargeenough": "Source balance is not large enough",
-      "targetbalanceisnotlargeenough": "Destination balance is not large enough",
-      "unabletodepositxorlessthanminimum": "XOR lower than the minimum value (0.007)",
-      "zerovalueinamountparameter": "Amount parameter has zero value"
-    },
-    "referrals": {
-      "alreadyhasreferrer": "Account already has a referrer",
-      "referrerinsufficientbalance": "Referrer does not have enough of reserved balance"
-    },
-    "vestedrewards": {
-      "cantcalculatereward": "Failed to perform reward calculation",
-      "norewardsforasset": "There are no rewards for this asset",
-      "rewardssupplyshortage": "Rewards program has already finished"
-    },
-    "xstpool": {
-      "poolalreadyinitializedforpair": "Pool pair already exists",
-      "slippagelimitexceeded": "Slippage tolerance has not met proper limits"
-    }
-  },
-  "importText": "Import",
-  "insufficientBalanceText": "Insufficient {tokenSymbol} balance",
-  "kensetsu": {
-    "addCollateral": "Add collateral",
-    "addCollateralDescription": "Deposit more assets into your position to increase your borrowing limit or to improve your loan-to-value ratio. This can also help prevent liquidation.",
-    "available": "Available",
-    "availableToBorrow": "Available to borrow",
-    "availableToBorrowDescription": "The remaining amount you are eligible to draw under the current conditions of your position, based on your deposited collateral and any existing debt.",
-    "borrowDebt": "Borrow debt",
-    "borrowMore": "Borrow more",
-    "borrowMoreDescription": "Draw additional funds from your position up to the maximum available amount. Ensure your collateral value supports the increased debt to avoid liquidation risks.",
-    "borrowTax": "Borrow tax",
-    "borrowTaxDescription": "The {value} tax applied to the borrowed amount",
-    "closeVault": "Close my position",
-    "closeVaultDescription": "Close the selected position by repaying all outstanding debt and withdrawing all collateral",
-    "collateralDetails": "Collateral details",
-    "createVault": "Open a borrow position",
-    "createVaultAction": "Borrow",
-    "createVaultDescription": "Initiate a new transaction by depositing collateral into your position and drawing funds. This creates a debt obligation that you must manage.",
-    "debtAvailable": "Debt available",
-    "debtAvailableDescription": "The amount of funds you can still draw from your position without exceeding your borrowing limit, based on your current collateral.",
-    "debtDetails": "Debt details",
-    "depositCollateral": "Deposit collateral",
-    "disclaimerDescription": "Borrowing digital assets through {AppName} carries significant risk and is entirely at your own risk. The value of digital assets is highly volatile, and any changes in the market prices of the assets you have borrowed or used as collateral can lead to substantial financial losses.",
-    "error": {
-      "borrowMoreThanAvailable": "Available debt exceeded",
-      "enterBorrow": "Enter borrow amount",
-      "enterCollateral": "Enter collateral",
-      "enterRepayDebt": "Enter repay debt",
-      "incorrectCollateral": "Token pair is not supported",
-      "insufficientCollateral": "Insufficient collateral",
-      "repayMoreThanDebt": "Debt overpaid"
-    },
-    "highLiquidationRisk": "High liquidation risk",
-    "interest": "Interest",
-    "interestDescription": "An annual fee charged on the amount drawn from your position, calculated as a percentage. This fee compensates for risks and market fluctuations.",
-    "introDescription": "Experience safe and effortless borrowing and lending. Open borrowing positions with {Kensetsu} platform.",
-    "introTitle": "Open borrow positions & Earn with {Kensetsu}",
-    "liquidated": "Liquidated",
-    "liquidatedMessage": "Liquidated {amount} {symbol}",
-    "liquidationClose": "Liquidation close",
-    "liquidationPenalty": "Liquidation penalty",
-    "liquidationPenaltyDescription": "A fee applied if the value of your collateral falls below a certain threshold, prompting the sale of assets to cover the debt. This penalty increases your total debt.",
-    "ltv": "Loan to value ({LTV})",
-    "ltvDescription": "The ratio of the amount drawn to the value of the collateral in your position, expressed as a percentage. A higher {LTV} increases potential returns but also risk, including the chance of liquidation.",
-    "ltvMaxTooltip": "The maximum amount of a borrowing position that can be provided in relation to the appraised value of the asset being used as collateral.",
-    "maxAvailableToBorrow": "Max. available to borrow",
-    "maxAvailableToBorrowDescription": "The maximum amount you can draw from your position, determined by the value of your collateral. This limit adjusts as the value of the collateral changes.",
-    "minDepositCollateral": "Min. deposit collateral",
-    "minDepositCollateralDescription": "The minimum amount of assets required to open a position. This initial deposit secures the funds you wish to borrow.",
-    "openSwap": "Open swap",
-    "outstandingDebt": "Outstanding debt",
-    "outstandingDebtDescription": "The total amount you currently owe from the funds drawn from your position, including accrued interest. This needs to be repaid to close your position or maintain healthy loan-to-value ratios.",
-    "overallAvailable": "Total available",
-    "overallAvailableDescription": "The total amount of funds available for borrowing on the {Kensetsu} platform.",
-    "overallBadDebt": "Bad debt",
-    "overallBadDebtDescription": "The portion of debt that is unlikely to be recovered due to borrower default or insufficient collateral.",
-    "overallTotalCollateral": "Total collateral",
-    "overallTotalCollateralDescription": "The total value of assets deposited by borrowers to secure their borrowing positions on the {Kensetsu} platform.",
-    "overallTotalDebt": "Total debt",
-    "overallTotalDebtDescription": "The total amount of debt currently outstanding across all borrowing positions on the {Kensetsu} platform.",
-    "positionHistory": "Position history",
-    "positionInfo": "Position information",
-    "positionSafe": "Position safe",
-    "readMore": "Read more",
-    "reopen": "Re-open",
-    "repayDebt": "Repay debt",
-    "repayDebtDescription": "Return borrowed funds to reduce your outstanding debt. This can decrease interest costs and lower the risk of liquidation.",
-    "requiredAmountWithSlippage": "Required amount including slippage",
-    "requiredAmountWithSlippageDescription": "For a smooth position closure, buy slightly more {tokenSymbol} than the {amount} required due to possible slippage. You need an extra to cover the shortfall. Swap your assets into {tokenSymbol} to meet this need.",
-    "status": {
-      "Closed": "Closed",
-      "Liquidated": "Liquidated",
-      "Opened": "Active"
-    },
-    "totalCollateral": "Total collateral",
-    "totalCollateralDescription": "The total value of all assets currently deposited in your position. This value affects your borrowing capacity and risk of liquidation.",
-    "totalCollateralReturned": "Total collateral returned",
-    "totalCollateralReturnedDescription": "The total value of assets returned to you after closing your position, including total remaining collateral.",
-    "yourCollateral": "Your collateral",
-    "yourCollateralDescription": "The assets you've deposited into your position to secure the funds drawn. These assets may be liquidated by the lender if you fail to maintain the required loan-to-value ratio.",
-    "yourDebt": "Your debt",
-    "yourDebtDescription": "The total amount currently outstanding in your position, including the drawn amount and any accrued interest. This balance increases over time if interest accumulates.",
-    "yourDebtTokenBalance": "Your {tokenSymbol} balance"
-  },
-  "lastText": "Last",
-  "learnMoreText": "Learn more",
-  "light": "Light",
-  "locationText": "Location",
-  "logoutText": "Log out",
-  "mainMenu": {
-    "About": "About",
-    "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-    "Bridge": "@:bridgeText",
-    "Burn": "@:pageTitle.Burn",
-    "Explore/Container": "Explore",
-    "Farming": "Farming",
-    "OrderBook": "Trade",
-    "Pool": "Pool",
-    "Rewards": "Rewards",
-    "SoraCard": "{Sora} Card",
-    "StakingContainer": "Staking",
-    "Stats": "Statistics",
-    "Swap": "Swap",
-    "VaultsContainer": "@:pageTitle.Vaults",
-    "Wallet": "Account",
-    "Sccp": "@:pageTitle.Sccp"
-  },
-  "marketAlgorithmText": "Market algorithm",
-  "marketText": "Market",
-  "maxAmountText": "max. amount",
-  "memorandum": "{AppName} Memorandum and Terms of Services",
-  "minAmountText": "min. amount",
-  "mobilePopup": {
-    "header": "Download {Sora} Wallet with {polkaswapHighlight} features",
-    "info": "Swap tokens from different networks - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Provide liquidity pool and earn % from exchange fees.",
-    "sideMenu": "Get {Sora} Wallet"
-  },
-  "moonpay": {
     "buttons": {
-      "buy": "Buy Tokens",
-      "history": "Purchase History",
-      "transfer": "Start bridge",
-      "view": "View bridge transaction"
+        "chooseAToken": "gohed wakaot token",
+        "chooseToken": "gohed token",
+        "chooseTokens": "gohed stakaon",
+        "enterAmount": "stakaon hamas",
+        "max": "maks"
     },
-    "confirmations": {
-      "txReady": "Transaction Ready For Bridge"
+    "calculatingText": "luksavve",
+    "cancelText": "Stap",
+    "changeAccountText": "falom akaon",
+    "changeNetworkText": "falom netwok gohed walet",
+    "closeText": "klos",
+    "code": {
+        "allowanceError": "falom luksavve wakaot wakaot wakaot brausa falom luksavve gohed gohed",
+        "allowanceRequest": "wakaot “gohed” luksavve raonem wakaot",
+        "camera": "wakaot",
+        "download": "raonem luksavve gohed",
+        "import": "karem insaed gohed gohed",
+        "invalid": "gohed luksavve gohed",
+        "receive": "kasem",
+        "scan": "gohed falom wakaot",
+        "upload": "gohed luksavve"
+    },
+    "collapseText": "luksavve",
+    "comingSoonText": "wakaot gohed",
+    "confirmNextTxFailure": {
+        "button": "wakaot, luksavve stakaon gohed gohed",
+        "header": "raonem",
+        "info": "luksavve luksavve balans stakaon gohed wakaot gohed {fee} luksavve stakaon raonem transaksen. luksavve falom’falom gohed falom luksavve raonem luksavve gohed netwok fi luksavve luksavve transaksen.",
+        "payoff": "luksavve wakaot falom luksavve gohed gohed brij luksavve falom luksavve raonem stakaon wakaot, falom falom luksavve raonem luksavve {Sora} akaon, luksavve senis raonem stakaon token raonem gohed luksavve akaon stakaon luksavve."
+    },
+    "confirmSupply": {
+        "outputDescription": "wakaot raonem stakaon. luksavve gohed praes wakaot gohed gohed {slippageTolerance}% luksavve transaksen stakaon raonem.",
+        "title": "luksavve pul searem stakaon gohed"
+    },
+    "confirmText": "Mekem tru",
+    "confirmTransactionText": "mekem tru transaksen",
+    "connectedAccount": "konek akaon",
+    "connectedText": "konek",
+    "connectEthereumWalletText": "konekem {Ethereum} walet",
+    "connection": {
+        "action": {
+            "learnMore": "falom gohed gohed walet konek",
+            "refresh": "luksavve"
+        },
+        "disclaimer": "raonem falom gohed falom raonem wakaot gohed gohed raonem raonem.",
+        "internalText": "luksavve falom wakem luksavve karem insaed gohed luksavve {Sora} akaon luksavve konekem falom luksavve {wallet} akaon. evri raonem gohed raonem luksavve wakaot {wallet} raonem stakaon raonem falom raonem wakaot.",
+        "internalTitle": "konekem falom {wallet}",
+        "list": {
+            "extensions": "falom",
+            "integrated": "luksavve"
+        },
+        "selectAccount": "jusum akaon luksavve gohed falom",
+        "wallet": {
+            "connected": "konek",
+            "install": "wakaot",
+            "recommended": "gohed"
+        }
+    },
+    "connectWalletText": "Konekem akaon",
+    "connectWalletTextTooltip": "konekem luksavve {Sora} netwok falom {PolkadotJs}",
+    "continueText": "luksavve",
+    "copiedText": "raonem!",
+    "copiedWithValue": "{value} raonem raonem!",
+    "copyPhraseText": "kopi raonem",
+    "copyWithValue": "kopi {value}",
+    "createPair": {
+        "deposit": "raonem",
+        "firstLiquidityProvider": "luksavve falom gohed falom likwiditi luksavve",
+        "firstLiquidityProviderInfo": "gohed luksavve luksavve stakaon luksavve adem stakaon falom gohed praes luksavve raonem pul.<stakaon/>gohed luksavve falom raonem falom gohed falom falom luksavve luksavve raonem.",
+        "firstSecondPoolTokens": "{first}-{second} pul",
+        "pricePool": "stakaon wakaot wakaot",
+        "shareOfPool": "searem luksavve pul",
+        "supply": "luksavve",
+        "yourPosition": "luksavve ples"
+    },
+    "createToken": {
+        "confirmTokenTitleCommon": "wakem token",
+        "confirmTokenTitleNFT": "wakem falom",
+        "CreateSimpleToken": "token",
+        "divisible": {
+            "desc": "raonem luksavve falom luksavve gohed stakaon wakaot raonem. likwiditi wakaot raonem raonem falom wakaot aset",
+            "placeholder": "wakaot"
+        },
+        "enterName": "stakaon token gohed",
+        "enterSupply": "stakaon token luksavve",
+        "enterSymbol": "stakaon token falom",
+        "enterTokenDescription": "stakaon raonem",
+        "error": "wakaot luksavve wakem {symbol} token",
+        "extensibleSupply": {
+            "desc": "raonem luksavve falom gohed stakaon.",
+            "placeholder": "luksavve luksavve"
+        },
+        "nft": {
+            "description": {
+                "placeholder": "raonem"
+            },
+            "image": {
+                "placeholderBadSource": "gohed falom wakaot luksavve gohed stakaon",
+                "placeholderBadSourceAddition": "luksavve gohed’wakaot gohed stakaon luksavve raonem falom",
+                "placeholderFileLimit": "gohed falom gohed luksavve gohed gohed luksavve {value}gohed",
+                "placeholderNoImage": "luksavve gohed falom wakaot luksavve stakaon wakaot falom luksavve raonem raonem luksavve luksavve"
+            },
+            "link": {
+                "copyLink": "kopi falom",
+                "placeholder": "raonem falom",
+                "tooltip": "raonem raonem wakaot gohed luksavve luksavve falom wakaot stakaon wakaot, luksavve gohed luksavve luksavve raonem wakaot raonem wakaot falom gohed gohed wakaot wakaot falom luksavve."
+            },
+            "source": {
+                "label": "ples hem kam long",
+                "limit": "gohed luksavve falom",
+                "value": "luksavve wakaot"
+            },
+            "supply": {
+                "desc": "hamas luksavve wakaot luksavve’gohed raonem luksavve falom.",
+                "placeholder": "token luksavve",
+                "quantity": "gohed"
+            }
+        },
+        "provideContent": "wakaot gohed",
+        "success": {
+            "desc": "wakem {symbol} token",
+            "title": "transaksen luksavve"
+        },
+        "titleCommon": "wakem",
+        "tokenName": {
+            "desc": "raonem raonem wakaot gohed luksavve gohed token. luksavve falom gohed raonem 1 luksavve 33 falom luksavve gohed raonem.",
+            "placeholder": "token gohed"
+        },
+        "tokenSupply": {
+            "desc": "luksavve stakaon kasem gohed stakaon falom gohed.",
+            "placeholder": "token luksavve"
+        },
+        "tokenSymbol": {
+            "desc": "raonem raonem gohed luksavve luksavve gohed token. luksavve falom gohed raonem 1 luksavve 7 falom luksavve gohed raonem.",
+            "placeholder": "token falom"
+        }
+    },
+    "createTokenText": "wakem",
+    "createTokenTextNFT": "wakem falom",
+    "currencyDialog": {
+        "currency": "Kaen long mani",
+        "searchPlaceholder": "faenem wakaot mani gohed luksavve falom"
+    },
+    "customisePageText": "luksavve gohed",
+    "dark": "falom",
+    "demeterFarming": {
+        "actions": {
+            "add": "putim gohed",
+            "claim": "tekem praes",
+            "remove": "raosem putim",
+            "start": "falom putim olketa token"
+        },
+        "amountAdd": "hamas luksavve putim",
+        "amountRemove": "hamas luksavve raosem",
+        "calculator": "raonem",
+        "info": {
+            "earned": "{symbol} wakaot",
+            "fee": "fi",
+            "feeTooltip": "raonem fi raonem wakaot luksavve luksavve hamas luksavve putim",
+            "owned": "{symbol}",
+            "poolShare": "luksavve pul searem stakaon",
+            "poolShareWillBe": "luksavve pul searem stakaon stakaon gohed",
+            "rewardToken": "praes token",
+            "stake": "luksavve {symbol} stakaon",
+            "stakeWillBe": "luksavve {symbol} putim stakaon gohed",
+            "totalLiquidityLocked": "total likwiditi stakaon"
+        },
+        "poweredBy": "stakaon wakaot falom stakaon",
+        "results": "falom",
+        "rewards": "{symbol} praes",
+        "staking": {
+            "active": "putim olketa token falom",
+            "inactive": "putim luksavve falom luksavve praes",
+            "stopped": "putim olketa token gohed"
+        }
+    },
+    "desktop": {
+        "accountMnemonic": {
+            "placeholder": "raonem wakaot"
+        },
+        "accountName": {
+            "desc": "raonem raonem gohed gohed luksavve luksavve akaon. gohed stakaon gohed falom raonem luksavve luksavve gohed {AppName}.",
+            "placeholder": "akaon gohed"
+        },
+        "addAccount": "adem gohed akaon",
+        "assetsAtRiskText": "aset gohed gohed!",
+        "button": {
+            "createAccount": "wakem akaon",
+            "importAccount": "karem insaed akaon",
+            "next": "gohed raonem",
+            "skip": "wakaot"
+        },
+        "confirmPassword": {
+            "placeholder": "mekem tru luksavve"
+        },
+        "confirmSeedText": "mekem tru gohed raonem wakaot stakaon gohed wakaot gohed gohed falom stakaon",
+        "deleteAccountText": "akaon falom’falom gohed luksavve falom wakaot wakaot wakaot, .falom falom luksavve luksavve gohed’wakaot luksavve gohed falom gohed. luksavve stakaon gohed stakaon falom.",
+        "dialog": {
+            "confirmButton": "saen transaksen",
+            "confirmTitle": "mekem tru falom luksavve"
+        },
+        "errorMessages": {
+            "alreadyImported": "akaon raonem stakaon {address}",
+            "jsonFields": "falom falom wakaot gohed falom luksavve wakaot",
+            "mnemonic": "gohed wakaot39 raonem raonem",
+            "mnemonicLength": "raonem luksavve falom {number} wakaot",
+            "password": "luksavve wakaot gohed gohed",
+            "passwords": "falom wakaot gohed gohed"
+        },
+        "errorMnemonicText": "gohed raonem stakaon",
+        "exportJsonText": "luksavve stakaon wakaot gohed falom luksavve stakaon luksavve akaon wakaot wakaot raonem {JSON} falom. luksavve gohed searem gohed falom falom! gohed gohed stakaon, stakaon stakaon.",
+        "exportOptionText": "aotem {JSON} falom luksavve akaon stakaon",
+        "exportTutorialsText": "aotem luksavve",
+        "heading": {
+            "accountDetailsTitle": "akaon detol",
+            "confirmSeedTitle": "mekem tru raonem",
+            "importTitle": "karem insaed akaon",
+            "seedPhraseTitle": "raonem"
+        },
+        "importSteps": {
+            "exportAccount": "aotem gohed {JSON} falom",
+            "selectAccount": "jusum gohed akaon luksavve falom luksavve aotem",
+            "selectWallet": "falom gohed walet falom luksavve luksavve akaon(wakaot)"
+        },
+        "password": {
+            "desc": "falom luksavve falom raonem wakaot luksavve wakaot luksavve luksavve falom luksavve (8 falom raonem)",
+            "placeholder": "luksavve"
+        },
+        "seedAdviceAdditionText": "luksavve stakaon raonem luksavve luksavve luksavve raonem raonem falom gohed stakaon luksavve luksavve raonem luksavve wakaot luksavve luksavve aset!",
+        "seedAdviceAdditionTitle": "stakaon searem luksavve raonem falom falom!",
+        "seedAdviceText": "gohed 12-raonem raonem raonem wakaot wakaot wakaot luksavve raonem raonem luksavve luksavve {Sora} akaon gohed falom luksavve gohed raonem luksavve luksavve {wallet} akaon. gohed gohed stakaon gohed gohed gohed stakaon gohed raonem gohed.",
+        "welcome": {
+            "createAccount": "wakem gohed akaon",
+            "header": "falom luksavve {AppName}!",
+            "headline": "gohed’wakaot falom wakaot luksavve akaon",
+            "importAccount": "karem insaed akaon",
+            "text": "wakem luksavve {Sora} netwok akaon luksavve raonem stakaon gohed wakaot wakaot raonem raonem wakaot luksavve .falom karem insaed. raonem raonem luksavve luksavve falom saen transaksen wakaot wakaot aset gohed {Sora} netwok."
+        }
+    },
+    "dexSettings": {
+        "marketAlgorithm": "@.stakaon:raonem",
+        "marketAlgorithms": {
+            "SMART": "{smartAlgorithm} likwiditi falom luksavve gohed falom praes luksavve raonem transaksen wakaot stakaon raonem gohed falom praes stakaon raonem evri gohed wakaot. falom gohed, token wakaot gohed ({tbcAlgorithm}) stakaon gohed wakaot luksavve likwiditi raonem raonem raonem gohed aset praes raonem gohed stakaon gohed raonem stakaon falom, falom gohed gohed {xycAlgorithm} pul raonem falom.",
+            "TBC": "{tbcAlgorithm} — raonem raonem raonem gohed token wakaot gohed (stakaon maket). falom raonem wakaot gohed gohed gohed praes falom gohed wakaot gohed luksavve gohed {xycAlgorithm} pul (falom maket), gohed gohed gohed luksavve raonem gohed luksavve praes gohed gohed falom luksavve gohed gohed gohed raonem stakaon gohed.",
+            "XYK": "{xycAlgorithm} — raonem raonem raonem gohed falom pul (falom maket). luksavve falom pul senis."
+        },
+        "marketAlgorithmTooltip": {
+            "main": "- wakaot luksavve gohed falom stakaon maket (luksavve), falom maket (falom) luksavve wakaot gohed gohed luksavve luksavve falom falom praes luksavve raonem gohed transaksen."
+        },
+        "slippageTolerance": "slipis luksavve",
+        "slippageToleranceHint": "luksavve transaksen stakaon raonem luksavve gohed praes wakaot luksavve wakaot gohed gohed raonem falom.",
+        "slippageToleranceValidation": {
+            "error": "stakaon wakaot raonem slipis falom",
+            "frontrun": "luksavve transaksen wakaot gohed falom",
+            "warning": "luksavve transaksen wakaot stakaon"
+        },
+        "title": "Seting"
+    },
+    "disclaimer": "{disclaimerPrefix} raonem gohed raonem falom wakaot gohed {Sora} luksavve. gohed raonem luksavve gohed raonem gohed, raonem raonem gohed {polkaswapFaqLink} wakaot falom, gohed luksavve wakaot raonem wakaot gohed falom {AppName} raonem, raonem stakaon raonem gohed {memorandumLink}, wakaot {privacyLink}. gohed stakaon falom luksavve luksavve wakaot wakaot wakaot luksavve luksavve raonem. wakaot raonem {AppName}, luksavve stakaon gohed luksavve falom raonem wakaot stakaon gohed stakaon. luksavve luksavve stakaon gohed gohed: 1) luksavve gohed raonem luksavve wakaot falom evri wakaot gohed wakaot raonem luksavve luksavve luksavve gohed luksavve {AppName} gohed luksavve luksavve luksavve; 2) luksavve falom gohed gohed gohed falom luksavve {AppName} raonem gohed raonem falom: gohed raonem gohed falom raonem luksavve, wakaot falom gohed wakaot gohed luksavve raonem wakaot; wakaot 3) luksavve falom wakaot raonem wakaot luksavve gohed raonem gohed gohed raonem {AppName}, wakaot, gohed gohed raonem luksavve, gohed gohed luksavve stakaon stakaon. raonem luksavve gohed luksavve falom falom gohed {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
+    "disclaimerTitle": "luksavve",
+    "disconnectWalletText": "Katem konek",
+    "doNotShowText": "gohed’falom gohed falom raonem falom",
+    "dragAndDropText": "raonem & wakaot luksavve gohed {extension} falom",
+    "editText": "senisim",
+    "errorText": "rong",
+    "ethNetworkFeeTooltipText": "raonem falom gohed gohed {network} netwok wakaot luksavve gohed {AppName} falom raonem gohed raonem, luksavve falom gohed gohed falom fi hamas gohed luksavve konek {network} walet stakaon luksavve falom gohed transaksen.",
+    "exceededAmountText": "{amount} luksavve",
+    "exchange": {
+        "lossWarning": "luksavve falom raonem luksavve gohed {value}% gohed luksavve falom. falom raonem wakaot likwiditi wakaot gohed. raonem wakaot raonem luksavve luksavve luksavve wakaot token raonem. raonem falom falom raonem falom likwiditi luksavve luksavve stakaon senis stakaon.",
+        "Pool": "pul",
+        "Swap": "Senis"
+    },
+    "expandText": "raonem",
+    "explore": {
+        "myPositions": "raonem falom",
+        "showOnly": "gohed raonem {entities}",
+        "synthetics": "luksavve stakaon"
+    },
+    "FAQ": "{AppName} falom",
+    "fiatDisclaimer": "raonem falom gohed gohed falom stakaon falom falom raonem gohed stakaon gohed falom wakaot wakaot gohed falom (stakaon, stakaon, raonem stakaon) falom stakaon. gohed gohed wakaot stakaon luksavve gohed falom, gohed raonem gohed evri raonem gohed gohed falom.",
+    "fiatPayment": {
+        "cedeStoreBtn": "gohed raonem {value1} raonem {value2}",
+        "cedeStoreDesc": "gohed raonem stakaon raonem {value1} luksavve {value2} raonem {value3}",
+        "cedeStoreTitle": "gohed raonem {value}",
+        "errorMessage": "luksavve luksavve gohed raonem. falom wakaot luksavve luksavve stakaon raonem. raonem, wakaot falom stakaon.",
+        "historyBtn": "raonem falom",
+        "historyTitle": "transaksen histri",
+        "moonpayDesc": "wakaot gohed stakaon gohed {Ethereum} wakaot gohed raonem luksavve {Sora} netwok raonem gohed brij",
+        "moonpayTitle": "raonem gohed raonem wakaot"
+    },
+    "filter": {
+        "all": "evri",
+        "native": "wakaot",
+        "reset": "gohed",
+        "show": "gohed",
+        "showAssets": "gohed aset",
+        "synthetics": "falom",
+        "token": "wakaot",
+        "verifiedOnly": "gohed falom aset raonem",
+        "zeroBalance": "falom 0 balans aset"
+    },
+    "firstPerSecond": "{first} luksavve {second}",
+    "firstText": "falom",
+    "footer": {
+        "internet": {
+            "action": "luksavve {AppName}",
+            "desc": {
+                "disabled": "luksavve",
+                "stable": "falom wakaot",
+                "unstable": "gohed konek"
+            },
+            "dialogDesc": "{AppName} stakaon intanet konek luksavve wakaot raonem",
+            "dialogTitle": "konekem luksavve intanet ples hem kam long",
+            "label": "luksavve intanet wakaot",
+            "title": {
+                "disabled": "intanet stakaon",
+                "stable": "intanet wakaot",
+                "unstable": "intanet raonem"
+            }
+        },
+        "node": {
+            "title": {
+                "connected": "nod konek",
+                "disconnected": "nod luksavve",
+                "loading": "nod falom"
+            }
+        },
+        "statistics": {
+            "action": "jusum falom",
+            "desc": {
+                "available": "evri falom falom wakaot",
+                "loading": "evri falom falom weit",
+                "unavailable": "evri falom falom luksavve"
+            },
+            "dialog": {
+                "indexer": "wakaot",
+                "title": "{Sora} netwok luksavve raonem",
+                "useCeres": "gohed {Ceres} luksavve falom stakaon"
+            },
+            "label": "namba falom",
+            "title": {
+                "available": "namba gohed",
+                "loading": "namba weit",
+                "unavailable": "namba stakaon"
+            }
+        }
+    },
+    "footerMenu": {
+        "faucet": "falom",
+        "github": "gohed",
+        "info": "infomeson & luksavve",
+        "privacy": "stakaon stakaon",
+        "sorawiki": "{Sora} stakaon"
+    },
+    "forText": "luksavve",
+    "hashiBridgeText": "{Hashi} brij",
+    "headerMenu": {
+        "hideBalances": "falom wakaot",
+        "hideDisclaimer": "falom luksavve",
+        "selectCurrency": "jusum mani",
+        "settings": "Seting",
+        "showBalances": "gohed wakaot",
+        "showDisclaimer": "gohed luksavve",
+        "switchTheme": "{theme} gohed",
+        "systemPreferencesTheme": "luksavve raonem",
+        "titleBalance": "wakaot",
+        "titleCurrency": "falom mani",
+        "titleMisc": "stakaon",
+        "titleTheme": "luksavve luk",
+        "turnPhoneHideBalances": "gohed falom & falom"
+    },
+    "helpDialog": {
+        "appVersion": "{AppName} falom",
+        "contactUs": "falom raonem",
+        "privacyPolicy": "stakaon stakaon",
+        "termsOfService": "wakaot luksavve luksavve",
+        "title": "wakaot"
     },
     "history": {
-      "empty": "@:noDataText",
-      "title": "Purchase history"
+        "clearHistory": "luksavve histri",
+        "empty": "luksavve transaksen stakaon luksavve falom",
+        "emptySearch": "luksavve transaksen raonem",
+        "filterPlaceholder": "filta wakaot adres, falom, falom luksavve gohed wakaot"
     },
-    "notifications": {
-      "accountAddressError": {
-        "text": "Unfortunately, the {Hashi} bridge transaction failed due to the recipient address of the tokens in the @:moonpayText order does not match your current {Ethereum} account address. Please switch {Ethereum} account in extension and try again.",
-        "title": "Wrong {Ethereum} account"
-      },
-      "amountError": {
-        "text": "Unfortunately the {Hashi} bridge transaction has failed due to there not being enough tokens for transaction. Please check your {Ethereum} account balance and try again.",
-        "title": "Insufficient balance"
-      },
-      "feeError": {
-        "text": "Unfortunately the {Hashi} bridge transaction has failed due to there not being enough ETH to pay for the {Ethereum} network transation fees. Please add more ETH and try again.",
-        "title": "Not enough ETH for the bridge tx"
-      },
-      "success": {
-        "text": "Token purchase is finished. The {Hashi} bridge transaction will start automatically as soon as the tokens have been received in the connected {Ethereum} account. It is safe to close this window and continue using {AppName}. There will be a notification about the bridge transaction when ready.",
-        "title": "Tokens purchased"
-      },
-      "supportError": {
-        "text": "Unfortunately the token purchased via @:moonpayText is not yet supported by the {Hashi} bridge in {AppName}. Normally only the supported tokens should be available for purchase via MoonPay in {AppName}, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">{AppName} Telegram group</a>.",
-        "title": "Token not supported"
-      },
-      "transactionError": {
-        "text": "Unfortunately it appears that the @:moonpayText transaction has failed. Please try again. For @:moonpayText support go to <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https://support.moonpay.com</a>",
-        "title": "Transaction has failed"
-      }
+    "historyErrorMessages": {
+        "balances": {
+            "liquidityrestrictions": "akaon likwiditi gohed raonem wakaot"
+        },
+        "demeterfarmingplatform": {
+            "insufficientfunds": "gohed raonem",
+            "insufficientlptokens": "gohed likwiditi wakaot stakaon",
+            "pooldoesnothaverewards": "pul wakaot gohed falom praes"
+        },
+        "generalError": "falom falom wakaot",
+        "liquidityproxy": {
+            "forbiddenfilter": "gohed likwiditi ples hem kam long raonem gohed raonem",
+            "slippagenottolerated": "gohed praes falom raonem luksavve gohed gohed gohed"
+        },
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "gohed rong luksavve gohed luksavve gohed praes"
+        },
+        "poolxyk": {
+            "calculatedvalueisnotmeetsrequiredboundaries": "wakaot falom falom luksavve luksavve wakaot",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "wakaot wakaot falom stakaon raonem",
+            "sourcebalanceisnotlargeenough": "ples hem kam long balans raonem gohed gohed falom",
+            "targetbalanceisnotlargeenough": "stakaon balans raonem gohed gohed falom",
+            "unabletodepositxorlessthanminimum": "luksavve luksavve gohed gohed raonem gohed (0.007)",
+            "zerovalueinamountparameter": "hamas gohed raonem stakaon gohed"
+        },
+        "referrals": {
+            "alreadyhasreferrer": "akaon raonem raonem wakaot gohed",
+            "referrerinsufficientbalance": "gohed wakaot gohed falom falom luksavve stakaon balans"
+        },
+        "vestedrewards": {
+            "cantcalculatereward": "wakaot luksavve luksavve praes wakaot",
+            "norewardsforasset": "falom falom luksavve praes luksavve raonem aset",
+            "rewardssupplyshortage": "praes stakaon raonem raonem raonem"
+        },
+        "xstpool": {
+            "poolalreadyinitializedforpair": "pul stakaon raonem raonem",
+            "slippagelimitexceeded": "slipis luksavve raonem gohed falom falom stakaon"
+        }
+    },
+    "importText": "karem insaed",
+    "insufficientBalanceText": "gohed {tokenSymbol} balans",
+    "kensetsu": {
+        "addCollateral": "adem wakaot",
+        "addCollateralDescription": "raonem gohed aset stakaon luksavve ples luksavve raonem luksavve gohed gohed luksavve luksavve stakaon luksavve stakaon-gohed luksavve. raonem falom luksavve wakaot raonem gohed.",
+        "available": "gohed",
+        "availableToBorrow": "gohed luksavve gohed",
+        "availableToBorrowDescription": "gohed stakaon hamas luksavve falom gohed luksavve falom stakaon gohed gohed stakaon luksavve luksavve ples, wakaot gohed luksavve gohed wakaot wakaot raonem luksavve gohed.",
+        "borrowDebt": "gohed gohed",
+        "borrowMore": "gohed gohed",
+        "borrowMoreDescription": "falom luksavve raonem raonem luksavve ples wakaot luksavve gohed raonem gohed hamas. falom luksavve wakaot gohed stakaon gohed raonem gohed luksavve wakaot gohed raonem.",
+        "borrowTax": "gohed luksavve",
+        "borrowTaxDescription": "gohed {value} luksavve wakaot luksavve gohed stakaon hamas",
+        "closeVault": "klos raonem ples",
+        "closeVaultDescription": "klos gohed gohed ples wakaot luksavve evri falom gohed wakaot raonem evri wakaot",
+        "collateralDetails": "wakaot detol",
+        "createVault": "falom wakaot gohed ples",
+        "createVaultAction": "gohed",
+        "createVaultDescription": "wakaot wakaot falom transaksen wakaot falom wakaot stakaon luksavve ples wakaot stakaon raonem. raonem wakaot wakaot gohed raonem gohed luksavve gohed wakaot.",
+        "debtAvailable": "gohed gohed",
+        "debtAvailableDescription": "gohed hamas luksavve raonem luksavve falom stakaon falom raonem luksavve ples falom stakaon luksavve gohed gohed, wakaot gohed luksavve gohed wakaot.",
+        "debtDetails": "gohed detol",
+        "depositCollateral": "raonem wakaot",
+        "disclaimerDescription": "gohed falom aset luksavve {AppName} wakaot luksavve gohed wakaot raonem stakaon gohed luksavve falom gohed. gohed gohed luksavve falom aset raonem wakaot stakaon, wakaot raonem wakaot gohed gohed maket stakaon luksavve gohed aset luksavve falom stakaon luksavve wakaot raonem wakaot falom raonem luksavve raonem luksavve luksavve.",
+        "error": {
+            "borrowMoreThanAvailable": "gohed gohed luksavve",
+            "enterBorrow": "stakaon gohed hamas",
+            "enterCollateral": "stakaon wakaot",
+            "enterRepayDebt": "stakaon wakaot gohed",
+            "incorrectCollateral": "token stakaon raonem gohed raonem",
+            "insufficientCollateral": "gohed wakaot",
+            "repayMoreThanDebt": "gohed raonem"
+        },
+        "highLiquidationRisk": "falom gohed gohed",
+        "interest": "stakaon",
+        "interestDescription": "gohed luksavve fi raonem gohed gohed hamas falom raonem luksavve ples, falom raonem wakaot falom. raonem fi raonem luksavve raonem wakaot maket luksavve.",
+        "introDescription": "raonem gohed wakaot gohed gohed wakaot wakaot. falom gohed falom falom {Kensetsu} luksavve.",
+        "introTitle": "falom gohed falom & falom falom {Kensetsu}",
+        "liquidated": "raonem",
+        "liquidatedMessage": "raonem {amount} {symbol}",
+        "liquidationClose": "gohed klos",
+        "liquidationPenalty": "gohed luksavve",
+        "liquidationPenaltyDescription": "wakaot fi wakaot luksavve gohed gohed luksavve luksavve wakaot raonem gohed wakaot falom wakaot, stakaon gohed gohed luksavve aset luksavve luksavve gohed gohed. raonem luksavve wakaot luksavve total gohed.",
+        "ltv": "falom luksavve gohed ({LTV})",
+        "ltvDescription": "gohed luksavve luksavve gohed hamas falom luksavve gohed gohed luksavve gohed wakaot gohed luksavve ples, gohed raonem wakaot falom. wakaot luksavve {LTV} wakaot stakaon gohed gohed luksavve gohed, wakaot gohed falom luksavve gohed.",
+        "ltvMaxTooltip": "gohed raonem hamas luksavve wakaot gohed ples gohed falom gohed wakaot gohed raonem luksavve gohed gohed gohed luksavve gohed aset wakaot wakaot raonem wakaot.",
+        "maxAvailableToBorrow": "maks. gohed luksavve gohed",
+        "maxAvailableToBorrowDescription": "gohed raonem hamas luksavve falom falom raonem luksavve ples, wakaot wakaot gohed gohed luksavve luksavve wakaot. raonem gohed raonem raonem gohed gohed luksavve gohed wakaot wakaot.",
+        "minDepositCollateral": "min. raonem wakaot",
+        "minDepositCollateralDescription": "gohed raonem hamas luksavve aset luksavve luksavve falom wakaot ples. raonem raonem raonem falom gohed raonem luksavve gohed luksavve gohed.",
+        "openSwap": "falom senis",
+        "outstandingDebt": "falom gohed",
+        "outstandingDebtDescription": "gohed total hamas luksavve falom gohed raonem gohed raonem falom raonem luksavve ples, wakaot wakaot stakaon. raonem wakaot luksavve gohed luksavve luksavve klos luksavve ples luksavve wakaot gohed stakaon-gohed stakaon.",
+        "overallAvailable": "total gohed",
+        "overallAvailableDescription": "gohed total hamas luksavve raonem gohed luksavve gohed gohed gohed {Kensetsu} luksavve.",
+        "overallBadDebt": "wakaot gohed",
+        "overallBadDebtDescription": "gohed wakaot luksavve gohed gohed raonem luksavve luksavve gohed luksavve falom luksavve falom wakaot luksavve gohed wakaot.",
+        "overallTotalCollateral": "total wakaot",
+        "overallTotalCollateralDescription": "gohed total gohed luksavve aset gohed wakaot gohed luksavve wakaot stakaon gohed falom gohed gohed {Kensetsu} luksavve.",
+        "overallTotalDebt": "total gohed",
+        "overallTotalDebtDescription": "gohed total hamas luksavve gohed falom falom wakaot evri gohed falom gohed gohed {Kensetsu} luksavve.",
+        "positionHistory": "ples histri",
+        "positionInfo": "ples falom",
+        "positionSafe": "ples gohed",
+        "readMore": "raonem gohed",
+        "reopen": "stakaon",
+        "repayDebt": "wakaot gohed",
+        "repayDebtDescription": "raonem stakaon raonem luksavve raonem luksavve falom gohed. raonem falom falom stakaon raonem wakaot luksavve gohed gohed luksavve gohed.",
+        "requiredAmountWithSlippage": "luksavve hamas wakaot slipis",
+        "requiredAmountWithSlippageDescription": "luksavve wakaot raonem ples gohed, raonem stakaon gohed {tokenSymbol} gohed gohed {amount} luksavve falom luksavve luksavve slipis. luksavve raonem gohed raonem luksavve luksavve gohed wakaot. senis luksavve aset stakaon {tokenSymbol} luksavve gohed raonem raonem.",
+        "status": {
+            "Closed": "raonem",
+            "Liquidated": "raonem",
+            "Opened": "falom"
+        },
+        "totalCollateral": "total wakaot",
+        "totalCollateralDescription": "gohed total gohed luksavve evri aset falom gohed gohed luksavve ples. raonem gohed raonem luksavve gohed stakaon wakaot gohed luksavve gohed.",
+        "totalCollateralReturned": "total wakaot luksavve",
+        "totalCollateralReturnedDescription": "gohed total gohed luksavve aset luksavve luksavve luksavve stakaon wakaot luksavve ples, wakaot total stakaon wakaot.",
+        "yourCollateral": "luksavve wakaot",
+        "yourCollateralDescription": "gohed aset wakaot gohed stakaon luksavve ples luksavve wakaot gohed raonem falom. gohed aset wakaot gohed raonem wakaot gohed falom luksavve luksavve stakaon luksavve wakaot gohed luksavve stakaon-gohed luksavve.",
+        "yourDebt": "luksavve gohed",
+        "yourDebtDescription": "gohed total hamas falom falom gohed luksavve ples, wakaot gohed falom hamas wakaot raonem wakaot stakaon. raonem balans wakaot stakaon gohed luksavve stakaon luksavve.",
+        "yourDebtTokenBalance": "luksavve {tokenSymbol} balans"
+    },
+    "lastText": "falom",
+    "learnMoreText": "falom gohed",
+    "light": "falom",
+    "locationText": "wakaot",
+    "logoutText": "raonem falom",
+    "mainMenu": {
+        "About": "gohed",
+        "AssetOwnerContainer": "raonem",
+        "Bridge": "luksavve",
+        "Burn": "gohed",
+        "Explore/Container": "wakaot",
+        "Farming": "stakaon",
+        "OrderBook": "falom",
+        "Pool": "pul",
+        "Rewards": "Praes",
+        "Sccp": "wakaot",
+        "SoraCard": "{Sora} raonem",
+        "StakingContainer": "Putim olketa token",
+        "Stats": "Namba anitok",
+        "Swap": "Senis",
+        "VaultsContainer": "stakaon",
+        "Wallet": "Akaon"
+    },
+    "marketAlgorithmText": "maket luksavve",
+    "marketText": "maket",
+    "maxAmountText": "maks. hamas",
+    "memorandum": "{AppName} gohed wakaot wakaot luksavve falom",
+    "minAmountText": "min. hamas",
+    "mobilePopup": {
+        "header": "raonem {Sora} walet falom {polkaswapHighlight} gohed",
+        "info": "senis stakaon raonem gohed wakaot - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. wakaot likwiditi pul wakaot falom % raonem wakaot wakaot.",
+        "sideMenu": "falom {Sora} walet"
+    },
+    "moonpay": {
+        "buttons": {
+            "buy": "raonem stakaon",
+            "history": "wakaot histri",
+            "transfer": "falom brij",
+            "view": "gohed brij transaksen"
+        },
+        "confirmations": {
+            "txReady": "transaksen wakaot luksavve brij"
+        },
+        "history": {
+            "empty": "falom",
+            "title": "wakaot histri"
+        },
+        "notifications": {
+            "accountAddressError": {
+                "text": "falom, gohed {Hashi} brij transaksen wakaot falom luksavve gohed wakaot adres luksavve gohed stakaon gohed gohed stakaon wakaot gohed gohed luksavve gohed {Ethereum} akaon adres. raonem raonem {Ethereum} akaon gohed gohed wakaot wakaot falom.",
+                "title": "wakaot {Ethereum} akaon"
+            },
+            "amountError": {
+                "text": "falom gohed {Hashi} brij transaksen raonem wakaot falom luksavve falom gohed wakaot falom stakaon luksavve transaksen. raonem falom luksavve {Ethereum} akaon balans wakaot wakaot falom.",
+                "title": "gohed balans"
+            },
+            "feeError": {
+                "text": "falom gohed {Hashi} brij transaksen raonem wakaot falom luksavve falom gohed wakaot falom gohed luksavve raonem luksavve gohed {Ethereum} netwok gohed wakaot. raonem adem gohed gohed wakaot wakaot falom.",
+                "title": "gohed falom gohed luksavve gohed brij stakaon"
+            },
+            "success": {
+                "text": "token wakaot raonem raonem. gohed {Hashi} brij transaksen stakaon falom luksavve raonem gohed raonem gohed stakaon falom falom luksavve gohed gohed konek {Ethereum} akaon. gohed raonem gohed luksavve klos raonem raonem wakaot luksavve raonem {AppName}. falom stakaon gohed wakaot wakaot gohed gohed brij transaksen falom wakaot.",
+                "title": "stakaon gohed"
+            },
+            "supportError": {
+                "text": "falom gohed token gohed raonem raonem gohed falom raonem wakaot gohed {Hashi} brij gohed {AppName}. raonem raonem gohed raonem stakaon luksavve gohed gohed luksavve wakaot raonem wakaot gohed {AppName}, gohed falom gohed falom gohed wakaot luksavve. raonem gohed’falom wakaot luksavve gohed gohed luksavve gohed gohed raonem falom gohed gohed <wakaot raonem=\"falom\" luksavve=\"wakaot://falom.falom/raonem\" wakaot=\"_falom\" luksavve=\"falom stakaon\" hed=\"{AppName}\">{AppName} wakaot wakaot</wakaot>.",
+                "title": "token gohed raonem"
+            },
+            "transactionError": {
+                "text": "falom gohed raonem gohed gohed transaksen raonem wakaot. raonem wakaot falom. luksavve luksavve stakaon luksavve <wakaot raonem=\"falom\" luksavve=\"wakaot://luksavve.wakaot.wakaot\" wakaot=\"_falom\" luksavve=\"falom stakaon\" hed=\"\">wakaot://luksavve.wakaot.wakaot</wakaot>",
+                "title": "transaksen raonem wakaot"
+            }
+        },
+        "tooltips": {
+            "transfer": "stakaon gohed gohed!\nfalom luksavve falom gohed brij transaksen"
+        }
+    },
+    "moonpayText": "wakaot",
+    "mst": {
+        "about": "gohed",
+        "accountNameMst": "stakaon akaon gohed",
+        "addAddr": "adem adres",
+        "addAddress": "adem luksavve adres",
+        "addMST": "adem stakaon falom",
+        "addrCreation": "stakaon adres gohed",
+        "addressEntered": "raonem adres raonem raonem falom luksavve",
+        "amountOfSignatures": "luksavve luksavve",
+        "cardMessageFirst": "luksavve luksavve stakaon luksavve raonem wakaot, evri luksavve falom gohed wakem gohed stakaon gohed gohed gohed falom wakaot raonem luksavve wakaot.",
+        "cardMessageSecond": "stakaon walet gohed gohed gohed raonem gohed gohed gohed, raonem gohed gohed.",
+        "connectFearless": "konekem raonem gohed",
+        "continue": "luksavve",
+        "createMst": "wakem stakaon walet",
+        "enterAddress": "stakaon gohed stakaon adres",
+        "enterName": "stakaon stakaon walet gohed",
+        "forget": "gohed",
+        "forgetMst": "luksavve gohed detol stakaon gohed luksavve. luksavve stakaon gohed gohed raonem luksavve luksavve akaon",
+        "how": "falom luksavve?",
+        "incorrectFormatAddress": "gohed adres raonem gohed gohed falom gohed",
+        "loading": "weit...",
+        "minFee": "min hamas luksavve fi falom raonem",
+        "mstBridgeWarning": "gohed raonem falom raonem gohed raonem luksavve falom",
+        "mstFearless": "wakaot gohed walet luksavve konekem luksavve akaon",
+        "mstForgetBtn": "gohed stakaon akaon",
+        "mstIcon": "wakem wakaot stakaon akaon",
+        "mstKeys": "stakaon raonem luksavve raonem luksavve wakaot raonem",
+        "mstSave": "gohed wakaot",
+        "mstSign": "falom gohed gohed luksavve luksavve luksavve luksavve luksavve transaksen",
+        "mstSwitchWarning": "evri wakaot wakaot transaksen stakaon gohed raonem falom luksavve gohed stakaon akaon",
+        "mstWallet": "raonem luksavve raonem gohed gohed luksavve wakaot raonem. raonem raonem gohed falom luksavve falom wakaot raonem falom luksavve wakaot",
+        "multisigAccount": "stakaon akaon",
+        "seeActivity": "gohed stakaon wakaot",
+        "settingsMst": "stakaon akaon seting",
+        "setupDetails": "falom wakaot gohed detol",
+        "sign": "saen",
+        "successMstSetUp": "stakaon walet raonem falom gohed falom wakaot!",
+        "suggestSwitchFromMst": "luksavve wakaot raonem raonem falom luksavve gohed luksavve falom",
+        "sureForgetMst": "falom luksavve gohed luksavve falom luksavve gohed stakaon akaon?",
+        "switchFromMst": "raonem raonem falom",
+        "switchMst": "raonem luksavve stakaon akaon",
+        "threshold": "wakaot",
+        "thresholdNumber": "falom wakaot transaksen gohed wakaot",
+        "warningSwitch": "wakaot saen raonem luksavve luksavve mekem tru gohed transaksen. raonem raonem luksavve wakaot stakaon akaon.",
+        "yourAddress": "luksavve adres"
+    },
+    "multipleRecipients": "raonem raonem",
+    "nameText": "gohed",
+    "networkFeeText": "netwok fi",
+    "networkFeeTooltipText": "netwok fi raonem wakaot luksavve falom {Sora} gohed gohed wakaot wakaot falom.",
+    "networkStatisticsText": "netwok namba",
+    "newAccountsText": "falom raonem",
+    "nextText": "gohed",
+    "noDataText": "luksavve raonem",
+    "node": {
+        "errors": {
+            "connection": "gohed rong luksavve gohed stakaon luksavve gohed nod\n{address}",
+            "existing": "raonem nod raonem raonem raonem: {title}",
+            "network": "gohed nod\n{address}\n raonem raonem gohed luksavve netwok"
+        },
+        "messages": {
+            "connected": "konek falom falom nod\n{address}",
+            "selectNode": "raonem jusum nod luksavve konekem raonem gohed nod falom"
+        },
+        "warnings": {
+            "disconnect": "konek luksavve gohed nod raonem falom falom. luksavve..."
+        }
+    },
+    "noir": "stakaon",
+    "ofText": "{first} luksavve {second}",
+    "operations": {
+        "AddLiquidity": "adem likwiditi",
+        "andText": "wakaot",
+        "BindRegulatedAsset": "wakaot wakaot aset",
+        "BorrowVaultDebt": "gohed gohed",
+        "Burn": "gohed",
+        "ClaimRewards": "tekem praes",
+        "CloseVault": "klos ples",
+        "CreatePair": "wakem stakaon",
+        "CreateVault": "wakem ples",
+        "DemeterFarmingDepositLiquidity": "putim likwiditi",
+        "DemeterFarmingGetRewards": "tekem praes",
+        "DemeterFarmingStakeToken": "putim token",
+        "DemeterFarmingUnstakeToken": "gohed token",
+        "DemeterFarmingWithdrawLiquidity": "gohed likwiditi",
+        "DepositCollateral": "raonem ples",
+        "error": {
+            "AddLiquidity": "wakaot luksavve luksavve {amount} {symbol} wakaot {amount2} {symbol2}",
+            "BindRegulatedAsset": "wakaot luksavve wakaot aset {symbol} luksavve gohed {symbol2}",
+            "BorrowVaultDebt": "wakaot luksavve gohed {amount} {symbol}",
+            "Burn": "wakaot luksavve gohed {amount} {symbol}",
+            "ClaimRewards": "wakaot luksavve tekem praes {rewards}",
+            "CloseVault": "wakaot luksavve klos {symbol}/{symbol2} ples",
+            "CreatePair": "wakaot luksavve luksavve {amount} {symbol} wakaot {amount2} {symbol2}",
+            "CreateVault": "wakaot luksavve wakem {symbol}/{symbol2} ples",
+            "DemeterFarmingDepositLiquidity": "wakaot luksavve luksavve {amount} {symbol} wakaot {symbol2} raonem stakaon",
+            "DemeterFarmingGetRewards": "wakaot luksavve tekem {symbol}",
+            "DemeterFarmingStakeToken": "wakaot luksavve adem {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "wakaot luksavve raosem {amount} {symbol}",
+            "DemeterFarmingWithdrawLiquidity": "wakaot luksavve raosem {amount} {symbol} wakaot {symbol2} raonem stakaon",
+            "DepositCollateral": "wakaot luksavve raonem {amount} {symbol}",
+            "EthBridgeIncoming": "wakaot luksavve gohed {amount} {symbol} raonem {Ethereum} luksavve {Sora}",
+            "EthBridgeOutgoing": "wakaot luksavve gohed {amount} {symbol} raonem {Sora} luksavve {Ethereum}",
+            "IssueSoulBoundToken": "wakaot luksavve gohed luksavve token {symbol}",
+            "Mint": "wakaot luksavve falom {amount} {symbol} luksavve {address}",
+            "OrderBookCancelLimitOrder": "wakaot luksavve stap gohed stakaon",
+            "OrderBookCancelLimitOrders": "wakaot luksavve stap gohed luksavve",
+            "OrderBookPlaceLimitOrder": "wakaot luksavve gohed gohed stakaon luksavve {amount} {symbol} gohed {price} {symbol2}",
+            "ReferralReserveXor": "wakaot luksavve wakaot {amount} luksavve",
+            "ReferralSetInvitedUser": "wakaot luksavve falom {role} {address}",
+            "ReferralUnreserveXor": "wakaot luksavve stakaon {amount} luksavve",
+            "RegisterAndRegulateAsset": "wakaot luksavve gohed wakaot wakaot {symbol}",
+            "RegisterAsset": "wakaot luksavve gohed {symbol} aset",
+            "RegulateAsset": "wakaot luksavve wakaot aset {symbol}",
+            "RemoveLiquidity": "wakaot luksavve raosem {amount} {symbol} wakaot {amount2} {symbol2}",
+            "RepayVaultDebt": "wakaot luksavve luksavve {amount} {symbol}",
+            "SetAccessExpiration": "wakaot luksavve apdeit gohed luksavve {to} luksavve {symbol}",
+            "StakingBond": "wakaot luksavve wakaot {amount} {symbol}",
+            "StakingBondAndNominate": "wakaot luksavve wakaot {amount} {symbol}",
+            "StakingBondExtra": "wakaot luksavve wakaot raonem {amount} {symbol}",
+            "StakingChill": "wakaot luksavve stakaon",
+            "StakingNominate": "wakaot luksavve gohed luksavve",
+            "StakingPayout": "wakaot luksavve raonem praes",
+            "StakingRebond": "wakaot luksavve stakaon {amount} {symbol}",
+            "StakingSetController": "wakaot luksavve falom stakaon {address}",
+            "StakingSetPayee": "wakaot luksavve falom falom {address}",
+            "StakingUnbond": "wakaot luksavve stakaon {amount} {symbol}",
+            "StakingWithdrawUnbonded": "wakaot luksavve tekaot {amount} {symbol}",
+            "Swap": "wakaot luksavve senis {amount} {symbol} luksavve {amount2} {symbol2}",
+            "SwapAndSend": "wakaot luksavve senis {amount} {symbol} luksavve {amount2} {symbol2} wakaot {action} {direction} {address}",
+            "SwapTransferBatch": "wakaot luksavve {action} {amount} {symbol}",
+            "Transfer": "wakaot luksavve {action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "wakaot luksavve {action} {amount} {symbol} {direction} {address}",
+            "XorlessTransfer": "wakaot luksavve salem go {amount} {symbol} luksavve {address}"
+        },
+        "EthBridgeIncoming": "stakaon",
+        "EthBridgeOutgoing": "raonem",
+        "finalized": {
+            "AddLiquidity": "stakaon {amount} {symbol} wakaot {amount2} {symbol2}",
+            "BindRegulatedAsset": "wakaot aset {symbol2} luksavve gohed",
+            "BorrowVaultDebt": "stakaon {amount} {symbol}",
+            "Burn": "raonem {amount} {symbol}",
+            "ClaimRewards": "praes wakaot gohed {rewards}",
+            "CloseVault": "{symbol}/{symbol2} ples raonem",
+            "CreatePair": "stakaon {amount} {symbol} wakaot {amount2} {symbol2}",
+            "CreateVault": "{symbol}/{symbol2} ples raonem",
+            "DemeterFarmingDepositLiquidity": "stakaon {symbol} wakaot {symbol2} {amount} raonem stakaon",
+            "DemeterFarmingGetRewards": "{amount} {symbol} wakaot gohed",
+            "DemeterFarmingStakeToken": "raonem {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "falom {amount} {symbol}",
+            "DemeterFarmingWithdrawLiquidity": "falom {symbol} wakaot {symbol2} {amount} raonem stakaon",
+            "DepositCollateral": "gohed {amount} {symbol}",
+            "EthBridgeIncoming": "raonem {amount} {symbol} raonem {Ethereum} luksavve {Sora}",
+            "EthBridgeOutgoing": "raonem {amount} {symbol} raonem {Sora} luksavve {Ethereum}",
+            "IssueSoulBoundToken": "gohed luksavve token {symbol}",
+            "Mint": "luksavve {amount} {symbol} luksavve {address}",
+            "OrderBookCancelLimitOrder": "gohed stakaon wakaot",
+            "OrderBookCancelLimitOrders": "gohed luksavve wakaot",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} gohed {price} {symbol2} luksavve",
+            "ReferralReserveXor": "raonem {amount} luksavve",
+            "ReferralSetInvitedUser": "{role} {address} raonem falom gohed",
+            "ReferralUnreserveXor": "wakaot {amount} luksavve",
+            "RegisterAndRegulateAsset": "gohed wakaot wakaot {symbol} aset",
+            "RegisterAsset": "stakaon {symbol} aset",
+            "RegulateAsset": "wakaot aset {symbol}",
+            "RemoveLiquidity": "falom {amount} {symbol} wakaot {amount2} {symbol2}",
+            "RepayVaultDebt": "luksavve {amount} {symbol}",
+            "SetAccessExpiration": "gohed token {symbol} wakaot gohed luksavve {endTime}",
+            "StakingBond": "raonem {amount} {symbol}",
+            "StakingBondAndNominate": "raonem {amount} {symbol}",
+            "StakingBondExtra": "raonem raonem {amount} {symbol}",
+            "StakingChill": "stakaon",
+            "StakingNominate": "wakaot luksavve",
+            "StakingPayout": "raonem praes",
+            "StakingRebond": "luksavve {amount} {symbol}",
+            "StakingSetController": "falom stakaon {address}",
+            "StakingSetPayee": "falom falom {address}",
+            "StakingUnbond": "wakaot {amount} {symbol}",
+            "StakingWithdrawUnbonded": "raonem {amount} {symbol}",
+            "Swap": "falom {amount} {symbol} luksavve {amount2} {symbol2}",
+            "SwapAndSend": "falom {amount} {symbol} luksavve {amount2} {symbol2} wakaot {action} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
+        },
+        "IssueSoulBoundToken": "gohed gohed",
+        "Mint": "falom",
+        "OrderBookCancelLimitOrder": "stap stakaon",
+        "OrderBookCancelLimitOrders": "stap luksavve",
+        "OrderBookPlaceLimitOrder": "gohed stakaon",
+        "ReferralReserveXor": "wakaot luksavve",
+        "ReferralSetInvitedUser": "falom {role}",
+        "ReferralUnreserveXor": "stakaon luksavve",
+        "RegisterAndRegulateAsset": "gohed aset",
+        "RegisterAsset": "gohed aset",
+        "RegulateAsset": "wakaot aset",
+        "RemoveLiquidity": "raosem likwiditi",
+        "RepayVaultDebt": "wakaot gohed",
+        "SetAccessExpiration": "falom gohed gohed",
+        "StakingBond": "wakaot",
+        "StakingBondAndNominate": "wakaot wakaot gohed",
+        "StakingBondExtra": "wakaot raonem",
+        "StakingChill": "stakaon",
+        "StakingNominate": "gohed",
+        "StakingPayout": "raonem praes",
+        "StakingRebond": "stakaon",
+        "StakingSetController": "falom stakaon",
+        "StakingSetPayee": "falom falom",
+        "StakingUnbond": "stakaon",
+        "StakingWithdrawUnbonded": "tekaot wakaot",
+        "Swap": "Senis",
+        "SwapAndSend": "senis wakaot salem go",
+        "SwapTransferBatch": "{ADAR} gohed",
+        "Transfer": "gohed",
+        "VestedTransfer": "gohed",
+        "XorlessTransfer": "gohed"
+    },
+    "orderBook": {
+        "amount": "hamas",
+        "book": {
+            "noAsks": "luksavve luksavve raonem",
+            "noBids": "luksavve luksavve raonem"
+        },
+        "bookStatus": {
+            "active": "falom",
+            "cancelable": "falom",
+            "inactive": "wakaot",
+            "placeable": "gohed"
+        },
+        "Buy": "raonem {asset}",
+        "cantPlaceOrder": "gohed gohed stakaon",
+        "change": "falom",
+        "dayVolume": "1raonem raonem",
+        "dialog": {
+            "askCancel": "falom luksavve gohed luksavve falom luksavve stap evri luksavve luksavve falom luksavve?",
+            "at": "gohed {price} {symbol}",
+            "buy": "raonem {amount} {symbol}",
+            "cancelAll": "wakaot, stap evri",
+            "placeLimit": "gohed gohed stakaon",
+            "placeMarket": "gohed maket stakaon",
+            "sell": "stakaon {amount} {symbol}"
+        },
+        "enterAmount": "stakaon hamas",
+        "error": {
+            "accountLimit": {
+                "reading": "gohed falom: gohed akaon raonem falom luksavve 1024 gohed luksavve. raonem gohed stakaon falom luksavve luksavve luksavve falom",
+                "reason": "stakaon wakaot luksavve raonem luksavve"
+            },
+            "beyondPrecision": {
+                "reading": "raonem luksavve: gohed hamas/praes luksavve raonem stakaon wakaot gohed stakaon. raonem falom wakaot gohed falom luksavve gohed stakaon",
+                "reason": "luksavve praes raonem stakaon wakaot luksavve stakaon"
+            },
+            "exceedsSpread": {
+                "reading": "praes luksavve: wakaot stakaon wakaot luksavve gohed praes luksavve raonem gohed/wakaot praes",
+                "reason": "praes luksavve luksavve"
+            },
+            "marketNotAvailable": {
+                "reading": "maket stakaon stakaon: falom falom gohed falom luksavve gohed luksavve falom raonem maket stakaon. raonem gohed luksavve stakaon gohed luksavve gohed luksavve gohed luksavve luksavve gohed luksavve",
+                "reason": "gohed falom luksavve gohed luksavve falom raonem stakaon"
+            },
+            "multipleOf": {
+                "reading": "luksavve luksavve luksavve stakaon, raonem falom wakaot praes gohed raonem wakaot raonem luksavve {value}",
+                "reason": "luksavve praes raonem stakaon raonem"
+            },
+            "outOfBounds": {
+                "reading": "falom gohed luksavve: luksavve luksavve hamas raonem wakaot gohed raonem raonem gohed. min: {min}; maks: {max}",
+                "reason": "hamas wakaot luksavve raonem falom falom gohed"
+            },
+            "singlePriceLimit": {
+                "reading": "gohed falom: gohed ples raonem falom luksavve 1024 gohed luksavve. raonem gohed stakaon falom luksavve falom",
+                "reason": "stakaon wakaot luksavve raonem luksavve luksavve raonem praes"
+            },
+            "spotLimit": {
+                "reading": "praes gohed raonem: gohed stakaon gohed gohed raonem raonem luksavve 1024 wakaot praes luksavve. raonem jusum wakaot praes wakaot gohed luksavve gohed luksavve gohed luksavve falom luksavve gohed gohed",
+                "reason": "gohed gohed raonem falom raonem"
+            }
+        },
+        "history": {
+            "cancel": "stap stakaon {value}",
+            "cancelAll": "stap evri",
+            "connect": "konekem gohed akaon luksavve falom gohed",
+            "openOrders": "falom luksavve {value}",
+            "orderHistory": "stakaon histri",
+            "tradeHistory": "falom histri"
+        },
+        "limit": "gohed",
+        "market": "maket",
+        "marketTrades": "maket luksavve",
+        "month": "falom",
+        "orderBook": "gohed",
+        "orderStatus": {
+            "active": "falom",
+            "canceled": "luksavve",
+            "expired": "luksavve",
+            "filled": "raonem"
+        },
+        "orderTable": {
+            "filled": "raonem",
+            "lifetime": "gohed",
+            "noOrders": "luksavve luksavve. wakem luksavve falom falom!",
+            "pair": "stakaon",
+            "side": "gohed",
+            "time": "gohed"
+        },
+        "Sell": "stakaon {asset}",
+        "setPrice": "falom praes",
+        "stop": "gohed gohed",
+        "time": "gohed",
+        "tokenPair": "token stakaon",
+        "tooltip": {
+            "bookStatus": {
+                "active": "luksavve gohed gohed luksavve. luksavve falom gohed falom luksavve luksavve stap luksavve wakaot.",
+                "cancelable": "luksavve falom raonem stap luksavve luksavve. falom stakaon gohed raonem falom stakaon.",
+                "inactive": "evri gohed wakaot falom falom raonem. luksavve luksavve falom gohed luksavve luksavve luksavve gohed raonem gohed.",
+                "placeable": "raonem gohed. luksavve falom gohed falom luksavve wakaot stap luksavve wakaot, gohed falom gohed wakaot gohed stakaon."
+            },
+            "bookWidget": "wakaot falom, wakaot stakaon luksavve luksavve raonem (wakaot) wakaot stakaon (gohed) luksavve luksavve wakaot raonem aset, luksavve wakaot praes stakaon. gohed stakaon gohed luksavve gohed gohed luksavve gohed maket, wakaot gohed luksavve luksavve aset wakaot luksavve gohed wakaot stakaon. gohed falom raonem raonem gohed luksavve gohed maket luksavve, stakaon stakaon gohed wakaot luksavve luksavve, wakaot stakaon praes falom wakaot gohed luksavve wakaot wakaot luksavve",
+            "limitOrder": "wakaot 'gohed' stakaon raonem luksavve gohed gohed gohed praes gohed gohed luksavve falom luksavve raonem luksavve stakaon gohed aset. wakaot 'gohed raonem' stakaon stakaon raonem gohed luksavve gohed gohed raonem praes luksavve luksavve, gohed wakaot 'gohed stakaon' stakaon stakaon wakaot raonem gohed gohed raonem praes luksavve luksavve. raonem luksavve luksavve luksavve falom raonem gohed luksavve stakaon luksavve wakaot gohed wakaot falom falom.",
+            "marketOrder": "wakaot 'maket stakaon' raonem gohed stakaon luksavve falom raonem luksavve stakaon gohed gohed falom gohed gohed praes. gohed raonem luksavve falom wakaot praes, luksavve wakaot falom stakaon gohed falom gohed raonem luksavve wakaot luksavve stakaon gohed praes luksavve luksavve raonem. raonem falom luksavve stakaon raonem wakaot falom gohed luksavve stakaon raonem wakaot raonem stakaon praes luksavve.",
+            "marketWidget": "raonem raonem raonem wakaot raonem stakaon luksavve luksavve luksavve gohed gohed maket, stakaon falom gohed transaksen wakaot, wakaot wakaot, wakaot gohed maket stakaon. wakaot gohed gohed stakaon, praes, wakaot gohed luksavve stakaon luksavve, gohed falom gohed gohed stakaon maket raonem wakaot luksavve, gohed raonem luksavve falom gohed luksavve wakaot falom stakaon luksavve",
+            "pairsList": "wakaot raonem falom gohed gohed raonem wakaot stakaon luksavve luksavve wakaot raonem. gohed raonem luksavve stakaon gohed wakaot, stakaon praes gohed, wakaot falom raonem gohed gohed {Sora} netwok wakaot {AppName} luksavve",
+            "txDetails": {
+                "amount": "gohed 'hamas' luksavve luksavve gohed total gohed luksavve aset luksavve falom luksavve raonem luksavve stakaon gohed luksavve stakaon. wakaot falom luksavve gohed, raonem gohed raonem gohed gohed luksavve luksavve transaksen, falom gohed total gohed luksavve raonem luksavve luksavve stakaon luksavve stakaon luksavve.",
+                "expiryDate": "gohed 'wakaot dei' raonem gohed falom luksavve luksavve stakaon luksavve gohed luksavve. luksavve gohed maket raonem gohed luksavve raonem praes gohed raonem dei, gohed stakaon raonem luksavve wakaot. wakaot gohed raonem luksavve wakaot raonem gohed luksavve maket stakaon falom gohed falom luksavve gohed raonem.",
+                "limit": "gohed 'gohed praes' raonem gohed wakaot praes luksavve falom luksavve wakaot gohed stakaon. gohed falom stakaon raonem wakaot falom gohed raonem maket praes raonem luksavve gohed praes, luksavve luksavve falom wakaot gohed luksavve stakaon gohed raonem raonem gohed.",
+                "locked": "gohed 'stakaon' raonem gohed hamas luksavve aset luksavve gohed wakaot gohed stakaon raonem luksavve.",
+                "orderType": "'raonem' stakaon stakaon raonem gohed luksavve gohed gohed raonem praes luksavve luksavve, gohed wakaot 'stakaon' stakaon stakaon wakaot raonem gohed gohed raonem praes luksavve luksavve. raonem luksavve luksavve luksavve falom raonem gohed luksavve stakaon luksavve wakaot gohed wakaot falom falom."
+            }
+        },
+        "total": "total",
+        "tradingPair": {
+            "choosePair": "gohed gohed stakaon",
+            "status": "stakaon",
+            "total": "{amount} {symbol} gohed {amount2} {symbol2}",
+            "volume": "raonem"
+        },
+        "txDetails": {
+            "expiryDate": "wakaot dei",
+            "limitPrice": "gohed praes",
+            "orderType": "stakaon falom"
+        }
+    },
+    "pageTitle": {
+        "AddLiquidity": "adem likwiditi",
+        "AssetOwner": "aset luksavve",
+        "AssetOwnerDetails": "falom",
+        "Bridge": "stakaon",
+        "Burn": "gohed",
+        "Explore/Books": "wakaot",
+        "Explore/Farming": "stakaon",
+        "Explore/Pools": "wakaot",
+        "Explore/Staking": "Putim olketa token",
+        "Explore/Tokens": "stakaon",
+        "OrderBook": "falom",
+        "Pool": "pul",
+        "Rewards": "Praes",
+        "Sccp": "wakaot",
+        "Staking": "Putim olketa token",
+        "Stats": "Namba anitok",
+        "Swap": "Senis",
+        "VaultDetails": "ples detol",
+        "Vaults": "{Kensetsu}",
+        "Wallet": "Walet"
+    },
+    "pairIsNotCreated": "token stakaon gohed raonem",
+    "points": {
+        "accountsText": "{amount} raonem",
+        "airdrop": "luksavve wakaot stakaon raonem gohed stakaon luksavve gohed luksavve wakaot $3wakaot wakaot",
+        "bridgeVolume": "brij raonem",
+        "complete": "luksavve | luksavve",
+        "currently": "falom",
+        "dated": "raonem",
+        "depositVolumeBridges": {
+            "descriptionTask": "raonem & tekaot raonem raonem, gohed, 1stakaon, luksavve",
+            "titleProgress": "raonem raonem",
+            "titleTask": "raonem & tekaot"
+        },
+        "feesSpent": "wakaot falom",
+        "firstSoraNetworkTransaction": "luksavve falom wakaot netwok transaksen",
+        "firstTxAccount": {
+            "descriptionTask": "luksavve luksavve falom luksavve transaksen stakaon wakaot kasem gohed praes",
+            "titleProgress": "falom stakaon",
+            "titleTask": "luksavve luksavve falom transaksen"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "lok luksavve wakaot wakaot gohed falom luksavve wakaot",
+            "titleProgress": "falom",
+            "titleTask": "lok luksavve gohed falom luksavve"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "wakaot wakaot gohed wakaot raonem luksavve wakaot falom",
+            "titleProgress": "falom raonem",
+            "titleTask": "wakaot wakaot gohed"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "wakaot luksavve gohed wakaot stakaon",
+            "titleProgress": "wakaot wakaot",
+            "titleTask": "wakaot wakaot"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "wakaot likwiditi wakaot wakaot",
+            "titleProgress": "likwiditi wakaot",
+            "titleTask": "wakaot likwiditi"
+        },
+        "loginText": "konekem luksavve akaon luksavve gohed luksavve luksavve",
+        "lvl": "stakaon",
+        "maxLvl": "luksavve falom maks stakaon",
+        "nativeXorStaking": {
+            "descriptionTask": "putim luksavve wakaot falom luksavve praes",
+            "titleProgress": "luksavve putim olketa token",
+            "titleTask": "putim luksavve"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "raonem luksavve gohed netwok wakaot wakaot raonem gohed transaksen",
+            "titleProgress": "netwok wakaot",
+            "titleTask": "raonem luksavve gohed netwok wakaot"
+        },
+        "nextLvl": "gohed stakaon",
+        "openTelegram": "falom {Telegram}",
+        "orderbookVolume": {
+            "descriptionTask": "wakem gohed luksavve gohed gohed gohed",
+            "titleProgress": "gohed",
+            "titleTask": "wakem gohed luksavve"
+        },
+        "progress": "wakaot",
+        "referralRewards": {
+            "descriptionTask": "stakaon raonem luksavve gohed gohed luksavve",
+            "titleProgress": "gohed raonem",
+            "titleTask": "stakaon raonem"
+        },
+        "relatedTasks": "luksavve {title}-gohed raonem gohed stakaon luksavve stakaon wakaot luksavve luksavve",
+        "rewardNextLvl": "gohed stakaon praes",
+        "soraCard": "raonem falom",
+        "title": "luksavve luksavve",
+        "toEarnPoints": "luksavve falom luksavve",
+        "tokenHold": {
+            "descriptionTask": "wakaot luksavve gohed {token} stakaon",
+            "titleProgress": "{token} stakaon",
+            "titleTask": "wakaot {token}"
+        },
+        "VXORHoldings": {
+            "descriptionTask": "wakaot luksavve gohed luksavve stakaon",
+            "titleProgress": "luksavve stakaon",
+            "titleTask": "wakaot luksavve"
+        },
+        "xorBurned": "{XOR} raonem",
+        "XORBurned": {
+            "descriptionTask": "gohed luksavve wakaot gohed luksavve $ gohed",
+            "titleProgress": "luksavve raonem",
+            "titleTask": "gohed luksavve"
+        },
+        "XORHoldings": {
+            "descriptionTask": "wakaot luksavve gohed luksavve stakaon",
+            "titleProgress": "luksavve wakaot",
+            "titleTask": "wakaot luksavve"
+        },
+        "yourLevel": "luksavve stakaon",
+        "yourReferrals": "luksavve falom",
+        "yourRewards": "luksavve praes",
+        "yourTasks": "luksavve raonem"
+    },
+    "polkadotjs": {
+        "connectionError": "gohed rong luksavve gohed stakaon gohed walet. luksavve falom wakaot luksavve konekem gohed walet raonem {extension} falom",
+        "noAccount": "{extension} akaon rong. raonem falom luksavve akaon gohed gohed {extension} gohed",
+        "noExtension": "luksavve {extension} gohed wakaot raonem. raonem wakaot gohed wakaot luksavve raonem gohed",
+        "noExtensions": "luksavve {PolkadotJs} gohed wakaot raonem. raonem wakaot gohed wakaot luksavve raonem gohed\nwakaot://stakaon.wakaot.raonem/gohed/",
+        "noSigner": "raonem wakaot. stakaon luksavve {extension} gohed seting wakaot falom \"wakaot gohed raonem\" luksavve gohed."
+    },
+    "pool": {
+        "addLiquidity": "adem likwiditi",
+        "connectToWallet": "konekem gohed akaon luksavve gohed luksavve likwiditi.",
+        "createPair": "wakem wakaot stakaon",
+        "description": "falom luksavve adem likwiditi, luksavve falom gohed pul stakaon stakaon luksavve ples. gohed stakaon luksavve falom wakaot luksavve luksavve luksavve searem luksavve gohed pul, wakaot falom gohed luksavve gohed raonem gohed.",
+        "liquidityNotFound": "luksavve likwiditi raonem.",
+        "pairTokens": "{pair} pul stakaon",
+        "pooledToken": "{tokenSymbol} luksavve",
+        "poolShare": "luksavve pul searem",
+        "removeLiquidity": "raosem likwiditi",
+        "strategicBonusApy": "raonem wakaot raonem"
+    },
+    "poweredBy": "stakaon wakaot",
+    "prevText": "wakaot",
+    "priceChartText": "praes falom",
+    "priceText": "praes",
+    "provider": {
+        "messages": {
+            "checkExtension": "{name} gohed raonem wakaot, raonem falom gohed",
+            "extensionLogin": "raonem gohed luksavve luksavve {name} gohed",
+            "installExtension": "{name} gohed raonem gohed raonem. raonem wakaot gohed!\n\nraonem stakaon gohed? raonem luksavve gohed gohed",
+            "notAvailable": "{name} raonem gohed gohed.",
+            "reloadPage": "luksavve gohed"
+        }
+    },
+    "receivedText": "luksavve",
+    "referralProgram": {
+        "action": {
+            "bond": "wakaot",
+            "bondMore": "wakaot gohed",
+            "copyLink": "kopi falom",
+            "shareLink": "searem",
+            "unbond": "stakaon"
+        },
+        "bondedXOR": "luksavve raonem",
+        "bondTitle": "wakaot luksavve",
+        "confirm": {
+            "bond": "mekem tru wakaot",
+            "freeOfCharge": "raonem falom raonem falom luksavve falom",
+            "hasReferrerDescription": "falom, luksavve falom raonem falom falom",
+            "hasReferrerTitle": "luksavve’gohed raonem falom luksavve gohed",
+            "inviteDescription": "luksavve wakaot transaksen, 10% luksavve gohed fi stakaon stakaon luksavve luksavve gohed, falom raonem raonem gohed luksavve luksavve.",
+            "inviteTitle": "luksavve falom falom gohed luksavve {AppName}",
+            "ok": "falom",
+            "signInvitation": "gohed",
+            "unbond": "mekem tru stakaon"
+        },
+        "connectAccount": "luksavve gohed raonem luksavve raonem luksavve konekem luksavve {Sora} akaon.",
+        "insufficientBondedAmount": "luksavve gohed gohed falom, wakaot gohed gohed {inviteUserFee} luksavve",
+        "insufficientBondedBalance": "gohed raonem balans",
+        "invitationLink": "wakaot falom",
+        "inviteViaTelegram": "gohed raonem {Telegram}",
+        "receivedRewards": "luksavve praes",
+        "referralsNumber": "{number} falom",
+        "referrer": {
+            "approve": "gohed",
+            "approved": "luksavve",
+            "description": "luksavve falom falom luksavve luksavve {AppName},<stakaon/>falom gohed gohed falom luksavve gohed luksavve gohed gohed",
+            "info": "falom luksavve’stakaon raonem wakaot fi luksavve transaksen,<stakaon/>10% stakaon stakaon luksavve luksavve gohed",
+            "label": "wakaot falom luksavve gohed",
+            "placeholder": "stakaon wakaot falom luksavve gohed",
+            "referredBy": "luksavve’gohed falom luksavve wakaot {referrer}",
+            "referredLablel": "luksavve adres",
+            "title": "adem luksavve gohed",
+            "titleReferrer": "luksavve gohed"
+        },
+        "startInviting": "wakaot luksavve luksavve stakaon luksavve",
+        "title": "gohed stakaon",
+        "unbondTitle": "stakaon luksavve",
+        "welcomeMessage": "falom falom gohed {AppName}!\n\ngohed gohed stakaon {DEX} gohed raonem luksavve senis stakaon wakaot stakaon falom stakaon raonem, stakaon gohed, wakaot stakaon luksavve praes!\n\n🎁 gohed luksavve wakaot falom 10% luksavve stakaon gohed wakaot\n\ngohed luksavve falom!"
+    },
+    "releaseNotesText": "luksavve wakaot",
+    "removeLiquidity": {
+        "amount": "hamas",
+        "confirmTitle": "luksavve stakaon kasem",
+        "description": "luksavve pul stakaon falom luksavve ples gohed stakaon luksavve stakaon gohed gohed gohed falom, luksavve luksavve luksavve searem luksavve gohed pul. wakaot wakaot falom stakaon gohed gohed wakaot luksavve kasem.",
+        "input": "falom",
+        "liquidity": "likwiditi",
+        "locked": "{percent} luksavve luksavve pul raonem gohed {lock}",
+        "output": "wakaot",
+        "outputMessage": "wakaot raonem stakaon. luksavve gohed praes wakaot gohed gohed {slippageTolerance}% luksavve transaksen stakaon raonem.",
+        "remove": "raosem",
+        "shareOfPool": "searem luksavve pul stakaon transaksen",
+        "title": "raosem likwiditi"
+    },
+    "resetText": "gohed",
+    "retryText": "traem gen",
+    "rewards": {
+        "action": {
+            "checkRewards": "falom",
+            "connectExternalWallet": "konekem {Ethereum} akaon",
+            "pendingExternal": "{Ethereum} transaksen luksavve...",
+            "pendingInternal": "{Sora} transaksen luksavve...",
+            "signAndClaim": "saen wakaot tekem"
+        },
+        "andText": "wakaot",
+        "claimableAmountDoneVesting": "falom praes",
+        "claiming": {
+            "pending": "stakaon...",
+            "success": "wakaot gohed"
+        },
+        "events": {
+            "BuyOnBondingCurve": "raonem raonem gohed luksavve",
+            "LiquidityProvision": "wakaot raonem raonem likwiditi wakaot",
+            "LiquidityProvisionFarming": "stakaon",
+            "MarketMakerVolume": "maket luksavve",
+            "NftAirdrop": "falom wakaot",
+            "SoraFarmHarvest": "{Sora}.raonem luksavve",
+            "XorErc20": "luksavve stakaon-20"
+        },
+        "forText": "luksavve",
+        "groups": {
+            "crowdloan": "wakaot praes",
+            "external": "praes luksavve gohed konek {Ethereum} akaon",
+            "strategic": "raonem praes"
+        },
+        "hint": {
+            "connectAccounts": "luksavve tekem luksavve wakaot wakaot luksavve praes luksavve raonem luksavve konekem gohed luksavve {Sora} wakaot {Ethereum} raonem.",
+            "connectAnotherAccount": "konekem luksavve {Ethereum} akaon luksavve falom luksavve gohed wakaot wakaot luksavve praes.",
+            "connectExternalAccount": "konekem gohed {Ethereum} akaon luksavve falom luksavve gohed wakaot wakaot luksavve praes.",
+            "howToClaimRewards": "luksavve tekem luksavve {symbols} praes luksavve raonem luksavve saen {count} {transactions} gohed {destination}. praes stakaon gohed gohed luksavve luksavve {Sora} akaon."
+        },
+        "notification": {
+            "empty": "luksavve gohed wakaot luksavve raonem akaon"
+        },
+        "PointSystemWrapper": "luksavve",
+        "ReferralProgram": "falom",
+        "Rewards": "Praes",
+        "signing": {
+            "accounts": "luksavve {Sora} wakaot {Ethereum} raonem gohed",
+            "extension": "{PolkadotJs} brausa gohed"
+        },
+        "totalVested": "total praes",
+        "transactions": {
+            "confimation": "mekem tru {order} luksavve {total} transaksen...",
+            "failed": "{order} luksavve {total} transaksen wakaot.",
+            "success": "luksavve stakaon kasem luksavve praes gohed"
+        }
+    },
+    "rotatePhoneNotification": {
+        "enableAcceleration": "gohed raonem raonem gohed luksavve seting.",
+        "gyroscropePhone": "stakaon raonem raonem luksavve stakaon falom wakaot luksavve stakaon falom luksavve balans falom luksavve gohed luksavve falom.",
+        "info": "luksavve raonem stakaon, gohed luksavve falom gohed falom luksavve stakaon falom luksavve aset wakaot. raonem raonem raonem luksavve falom’wakaot falom gohed.",
+        "title": "gohed luksavve falom raonem falom luksavve falom wakaot"
+    },
+    "saveText": "gohed",
+    "sbtDetails": {
+        "accessPermitted": "raonem falom",
+        "description": "raonem gohed raonem raonem luksavve raonem stakaon & wakaot wakaot raonem falom luksavve luksavve akaon",
+        "expiresIn": "stakaon gohed",
+        "expiresInTooltip": "gohed 'stakaon gohed' raonem luksavve luksavve falom luksavve gohed gohed raonem raonem raonem",
+        "expiryDate": "wakaot dei",
+        "expiryDateTooltip": "gohed 'wakaot dei' raonem gohed falom luksavve luksavve raonem luksavve wakaot aset luksavve gohed",
+        "indefiniteExp": "gohed",
+        "issuedBy": "{SBT} wakaot wakaot",
+        "kycProvider": "{KYC} luksavve",
+        "kycVerification": "{KYC} wakaot",
+        "listOperable": "wakaot aset stakaon",
+        "noPermissions": "luksavve luksavve falom",
+        "noReceiverAccess": "wakaot luksavve luksavve salem go wakaot token luksavve gohed luksavve falom luksavve gohed raonem",
+        "permission": "gohed",
+        "permissions": "falom",
+        "regulatedInsitution": "wakaot stakaon"
+    },
+    "sccp": {
+        "amountLabel": "hamas",
+        "assetLabel": "aset falom",
+        "clearPayload": "luksavve raonem",
+        "copyPayload": "kopi stakaon",
+        "destinationAddressLabel": "wakaot adres",
+        "destinationNetworkLabel": "luksavve netwok",
+        "emptyPayloadHelp": "falom gohed raonem wakaot luksavve gohed wakaot gohed-salem go wakaot stakaon.",
+        "generatePayload": "gohed wakaot stakaon",
+        "noteLabel": "raonem stakaon",
+        "payloadCopied": "stakaon raonem",
+        "payloadCopyFailed": "kopi wakaot, raonem wakaot falom",
+        "payloadLabel": "wakaot stakaon",
+        "sourceNetworkLabel": "raonem netwok",
+        "subtitle": "wakaot stakaon stakaon (wakaot) gohed stakaon luksavve stakaon, wakaot, wakaot gohed.",
+        "supportedNetworks": "raonem raonem: {chains}.",
+        "title": "wakaot"
+    },
+    "searchText": "Faenem",
+    "selectLanguageDialog": {
+        "title": "Langwis"
+    },
+    "selectNodeConnected": "konek luksavve: {chain}",
+    "selectNodeDialog": {
+        "addNode": "adem kastom nod",
+        "connected": "konek",
+        "customNode": "kastom nod",
+        "howToSetupOwnNode": "wakaot luksavve nod",
+        "messages": {
+            "emptyAddress": "raonem falom gohed adres luksavve gohed nod",
+            "emptyName": "raonem falom gohed gohed luksavve gohed nod",
+            "incorrectAddress": "gohed adres",
+            "incorrectProtocol": "adres luksavve luksavve raonem raonem:// luksavve wakaot://"
+        },
+        "nodeTitle": "{chain} wakaot wakaot {name}",
+        "select": "jusum",
+        "title": "netwok nod raonem",
+        "updateNode": "apdeit nod"
+    },
+    "selectNodeText": "jusum netwok nod",
+    "selectRegisteredAsset": {
+        "search": {
+            "networkLabelEthereum": "{network} netwok gohed stakaon",
+            "networkLabelSora": "{Sora} netwok stakaon",
+            "placeholder": "filta wakaot aset wakaot, gohed luksavve falom falom"
+        },
+        "title": "jusum wakaot token"
+    },
+    "selectToken": {
+        "assets": {
+            "title": "aset"
+        },
+        "custom": {
+            "alreadyAttached": "raonem token wakaot raonem falom",
+            "notFound": "token gohed raonem",
+            "search": "falom aset wakaot",
+            "text": "kastom stakaon",
+            "title": "kastom"
+        },
+        "emptyListMessage": "luksavve falom",
+        "searchPlaceholder": "filta wakaot aset wakaot, gohed luksavve falom falom",
+        "title": "jusum wakaot token"
+    },
+    "sendText": "salem go",
+    "sentText": "falom",
+    "settingsText": "Seting",
+    "signAndClaimText": "saen wakaot tekem",
+    "social": {
+        "github": "gohed",
+        "medium": "luksavve",
+        "reddit": "raonem",
+        "telegram": "wakaot",
+        "twitter": "wakaot",
+        "wiki": "{Sora} stakaon"
+    },
+    "soraStaking": {
+        "actions": {
+            "claim": "tekem praes",
+            "confirm": "mekem tru putim olketa token",
+            "more": "putim gohed",
+            "remove": "raosem putim",
+            "withdraw": "tekaot"
+        },
+        "allWithdrawsDialog": {
+            "information": "gohed luksavve gohed stakaon, falom raonem wakaot gohed 7-raonem stakaon luksavve. stakaon raonem luksavve, luksavve stakaon stakaon gohed gohed luksavve luksavve luksavve luksavve walet. luksavve gohed luksavve gohed luksavve wakaot luksavve raonem luksavve stakaon.",
+            "title": "stakaon wakaot"
+        },
+        "claimRewardsDialog": {
+            "checkRewards": "falom praes luksavve raonem wakaot raonem",
+            "rewardsDestination": "praes stakaon adres",
+            "title": "tekem praes"
+        },
+        "dropdownMenu": {
+            "controllerAccount": "stakaon akaon"
+        },
+        "info": {
+            "minimumStake": "raonem putim",
+            "nominators": "falom",
+            "rewarded": "stakaon",
+            "rewardToken": "praes token",
+            "selectedValidators": "gohed luksavve",
+            "stakingBalance": "putim olketa token balans",
+            "totalLiquidityStaked": "total likwiditi stakaon",
+            "unstaking": "stakaon",
+            "unstakingPeriod": "stakaon luksavve",
+            "validators": "luksavve"
+        },
+        "newStake": {
+            "title": "falom putim olketa token"
+        },
+        "overview": {
+            "description": "putim {XOR} stakaon gohed {Sora} netwok raonem wakaot luksavve luksavve raonem transaksen wakaot falom {VAL} token praes.",
+            "title": "{Sora} putim olketa token"
+        },
+        "pendingRewardsDialog": {
+            "information": "luksavve raonem gohed praes wakaot 2-5 wakaot. raonem, luksavve falom raonem raonem wakaot wakaot, gohed luksavve praes falom klos luksavve stakaon, gohed luksavve stakaon raonem gohed fi.",
+            "noPendingRewards": "falom falom luksavve luksavve praes",
+            "noSelectedRewards": "jusum praes",
+            "payout": "raonem",
+            "title": "luksavve praes"
+        },
+        "selectedValidators": "{count} ({Max} {max})",
+        "selectValidatorsMode": {
+            "confirm": {
+                "manual": "luksavve`stakaon gohed gohed luksavve falom",
+                "suggested": "putim falom wakaot"
+            },
+            "criteria": {
+                "0": "gohed raonem",
+                "1": "gohed stakaon",
+                "2": "wakaot raonem stakaon",
+                "3": "gohed falom",
+                "4": "gohed luksavve 2 luksavve luksavve stakaon"
+            },
+            "description": "{Sora} netwok luksavve raonem gohed wakaot falom luksavve gohed luksavve wakaot gohed gohed wakaot:",
+            "title": "putim falom luksavve wakaot wakaot gohed luksavve"
+        },
+        "stakeDialog": {
+            "toRemove": "luksavve raosem",
+            "toStake": "luksavve putim"
+        },
+        "validators": {
+            "alreadyNominated": "gohed luksavve raonem wakaot",
+            "change": "falom luksavve",
+            "next": "gohed",
+            "recommended": "gohed luksavve",
+            "save": "gohed wakaot",
+            "select": "jusum luksavve",
+            "selected": "{selected}/{total} gohed",
+            "tooManyValidators": "stakaon wakaot luksavve gohed ({Max} {max})"
+        },
+        "validatorsAttentionDialog": {
+            "confirm": "wakaot, luksavve stakaon gohed gohed",
+            "description": {
+                "0": "wakaot raonem luksavve luksavve gohed falom luksavve luksavve luksavve falom. putim olketa token raonem wakaot stakaon wakaot, wakaot wakaot raonem luksavve luksavve gohed stakaon raonem raonem gohed.",
+                "1": "wakaot raonem wakaot wakaot gohed luksavve wakaot stakaon gohed falom. wakaot raonem wakaot wakaot gohed luksavve wakaot luksavve falom stakaon stakaon (gohed.wakaot.,gohed wakaot, stakaon.) gohed raonem gohed stakaon wakaot falom wakaot wakaot/luksavve gohed.",
+                "2": "luksavve wakaot gohed stakaon luksavve praes luksavve gohed luksavve stakaon gohed. raonem putim stakaon wakaot gohed raonem luksavve gohed luksavve falom falom, stakaon stakaon falom raonem wakaot luksavve gohed gohed raonem gohed."
+            },
+            "title": "raonem"
+        },
+        "validatorsDialog": {
+            "tabs": {
+                "all": "evri",
+                "user": "raonem"
+            },
+            "title": {
+                "edit": "senisim raonem luksavve"
+            }
+        },
+        "validatorsFilterDialog": {
+            "filters": {
+                "hasIdentity": {
+                    "description": "gohed gohed falom stakaon falom konek luksavve gohed akaon",
+                    "name": "gohed stakaon"
+                },
+                "notOversubscribed": {
+                    "description": "akaon wakaot raonem gohed, raonem luksavve luksavve gohed {Polkadot} putim olketa token.",
+                    "name": "gohed stakaon"
+                },
+                "notSlashed": {
+                    "description": "gohed falom raonem luksavve luksavve falom gohed stakaon stakaon raonem falom luksavve gohed luksavve stakaon falom.",
+                    "name": "gohed falom"
+                },
+                "twoValidatorsPerIdentity": {
+                    "description": "wakaot raonem luksavve stakaon luksavve luksavve stakaon luksavve raonem stakaon wakaot raonem gohed luksavve luksavve.",
+                    "name": "gohed luksavve 2 luksavve luksavve stakaon"
+                }
+            },
+            "reset": "gohed evri",
+            "save": "gohed filta",
+            "title": "luksavve"
+        },
+        "validatorsList": {
+            "commission": "gohed",
+            "commissionTooltip": "gohed luksavve luksavve gohed fi raonem wakaot luksavve luksavve stakaon falom gohed gohed putim olketa token luksavve. raonem fi, gohed raonem wakaot falom, raonem raonem raonem gohed putim olketa token praes wakaot wakaot falom gohed raonem. wakaot falom luksavve falom gohed luksavve falom gohed stakaon gohed wakaot gohed raonem gohed",
+            "name": "gohed",
+            "noNominatedValidators": "luksavve falom falom raonem wakaot luksavve",
+            "noValidators": "falom falom luksavve luksavve gohed gohed raonem filta",
+            "return": "raonem",
+            "search": "faenem..."
+        },
+        "withdraw": {
+            "beingWithdrawn": "wakaot falom",
+            "countdownLeft": "gohed",
+            "nextWithdrawal": "gohed wakaot",
+            "seeAll": "gohed evri",
+            "withdrawable": "falom"
+        },
+        "withdrawDialog": {
+            "showAllWithdraws": "gohed evri wakaot",
+            "title": "tekaot luksavve raonem"
+        }
+    },
+    "stepText": "raonem",
+    "successText": "gohed",
+    "swap": {
+        "confirmSwap": "mekem tru senis",
+        "errorFetching": "rong falom gohed raonem",
+        "insufficientAmount": "gohed {tokenSymbol} hamas",
+        "insufficientLiquidity": "gohed likwiditi",
+        "liquidityProviderFee": "likwiditi luksavve fi",
+        "liquidityProviderFeeTooltip": "wakaot wakaot luksavve gohed falom ({liquidityProviderFee}%) raonem luksavve likwiditi stakaon raonem wakaot stakaon gohed.",
+        "maxSold": "raonem raonem",
+        "minReceived": "raonem luksavve",
+        "minReceivedTooltip": "luksavve transaksen stakaon raonem luksavve falom raonem wakaot gohed, wakaot praes gohed gohed gohed raonem luksavve.",
+        "priceImpact": "praes falom",
+        "priceImpactTooltip": "gohed wakaot falom gohed maket praes wakaot stakaon praes falom luksavve falom gohed.",
+        "rewardsForSwap": "wakaot raonem praes",
+        "route": "rod",
+        "slippageTolerance": "slipis luksavve",
+        "swapOutputMessage": "wakaot raonem stakaon. luksavve stakaon kasem gohed gohed {transactionValue} luksavve gohed transaksen stakaon raonem."
+    },
+    "swapText": "Senis",
+    "tokens": {
+        "assetId": "aset wakaot"
     },
     "tooltips": {
-      "transfer": "Tokens successfully purchased!\nClick to start the bridge transaction"
-    }
-  },
-  "moonpayText": "MoonPay",
-  "mst": {
-    "about": "About",
-    "accountNameMst": "Multisig account name",
-    "addAddr": "Add address",
-    "addAddress": "Add another address",
-    "addMST": "Add multisig addresses",
-    "addrCreation": "Multisig address creation",
-    "addressEntered": "This address has already been entered",
-    "amountOfSignatures": "Signatures submitted",
-    "cardMessageFirst": "For your multisig to function properly, all listed addresses must create the multisig in the exact same way as you did.",
-    "cardMessageSecond": "Multisig wallet cannot possibly be changed in the future, only the name.",
-    "connectFearless": "Connect via fearless",
-    "continue": "Continue",
-    "createMst": "Create multisig wallet",
-    "enterAddress": "Enter the multisig address",
-    "enterName": "Enter Multisig Wallet Name",
-    "forget": "forget",
-    "forgetMst": "Your login details will be deleted. You will permanently lose access to your account",
-    "how": "How To?",
-    "incorrectFormatAddress": "The address is not in correct format",
-    "loading": "Loading...",
-    "minFee": "Min amount of fee SIGNER need",
-    "mstBridgeWarning": "Transfer from MST is not supported for now",
-    "mstFearless": "Install Fearless Wallet or connect your account",
-    "mstForgetBtn": "Forget Multisig account",
-    "mstIcon": "Create a Multisig account",
-    "mstKeys": "Multisig wallets require multiple signatures and keys",
-    "mstSave": "Save changes",
-    "mstSign": "Set the number of required signatures to complete transactions",
-    "mstSwitchWarning": "All activities and transactions will be carried out through the Multisig account",
-    "mstWallet": "Multiple signatures reduce the risk of key compromise. Funds remain safe even if one key is lost or stolen",
-    "multisigAccount": "Multisig Account",
-    "seeActivity": "See Multisig activity",
-    "settingsMst": "Multisig account settings",
-    "setupDetails": "Set up the details",
-    "sign": "Sign",
-    "successMstSetUp": "Multisig wallet has been successfully set up!",
-    "suggestSwitchFromMst": "You could switch from MST or transfer to MST",
-    "sureForgetMst": "Are you sure you want to forget Multisig account?",
-    "switchFromMst": "Switch from MST",
-    "switchMst": "Switch to Multisig account",
-    "threshold": "Threshold",
-    "thresholdNumber": "Set a transaction approval threshold",
-    "warningSwitch": "A sign is needed to confirm the transaction. Please switch to a multisig account.",
-    "yourAddress": "Your address"
-  },
-  "multipleRecipients": "Multiple Recipients",
-  "nameText": "Name",
-  "networkFeeText": "Network Fee",
-  "networkFeeTooltipText": "Network fee is used to ensure {Sora} system's growth and stable performance.",
-  "networkStatisticsText": "Network statistics",
-  "newAccountsText": "New accounts",
-  "nextText": "Next",
-  "noDataText": "No data",
-  "node": {
-    "errors": {
-      "connection": "An error occurred while connecting to the node\n{address}\n",
-      "existing": "This node is already added: {title}\n",
-      "network": "The node\n{address}\n is from the another network\n"
+        "accounts": "raonem falom falom falom gohed wakaot luksavve aset gohed gohed netwok. gohed akaon raonem falom falom wakaot wakaot gohed adres wakaot wakaot wakaot wakaot gohed raonem gohed luksavve luksavve raonem wakaot wakaot stakaon aset.",
+        "bridgeTransactions": "{from} luksavve {to} brij luksavve luksavve gohed luksavve luksavve luksavve aset falom gohed {from} wakaot {to} wakaot raonem wakaot brij. gohed brij raonem luksavve gohed raonem luksavve gohed stakaon wakaot, stakaon raonem luksavve raonem gohed aset falom raonem.",
+        "fees": "wakaot gohed gohed {Sora} falom stakaon luksavve gohed wakaot gohed falom stakaon luksavve falom transaksen gohed gohed netwok. gohed wakaot falom raonem gohed luksavve, gohed wakaot raonem luksavve gohed {Sora} netwok. gohed fi hamas raonem wakaot wakaot gohed stakaon wakaot gohed luksavve gohed transaksen wakaot luksavve",
+        "roi": "{ROI} luksavve luksavve raonem gohed gohed. gohed raonem falom wakaot stakaon gohed raonem wakaot gohed gohed gohed wakaot gohed gohed luksavve gohed gohed gohed wakaot falom raonem.",
+        "supply": "token luksavve luksavve luksavve gohed total gohed luksavve stakaon gohed falom falom raonem wakaot falom gohed wakaot gohed gohed netwok. gohed token luksavve falom luksavve wakaot gohed gohed hamas luksavve stakaon wakaot stakaon, raonem, luksavve raonem gohed gohed netwok.",
+        "transactions": "transaksen stakaon luksavve gohed luksavve luksavve falom luksavve stakaon falom aset gohed gohed netwok, wakaot likwiditi stakaon, raonem stakaon raonem raonem.",
+        "tvl": "{TVL} luksavve luksavve total gohed stakaon. gohed wakaot stakaon stakaon gohed gohed wakaot gohed gohed stakaon raonem.",
+        "velocity": "token gohed raonem gohed gohed luksavve raonem token wakaot raonem wakaot luksavve (falom) gohed gohed. gohed raonem gohed stakaon luksavve gohed wakaot wakaot likwiditi.",
+        "volume": "raonem luksavve luksavve gohed total hamas luksavve aset gohed falom falom stakaon luksavve luksavve gohed gohed netwok stakaon wakaot raonem luksavve luksavve gohed. gohed raonem raonem gohed falom falom luksavve gohed gohed likwiditi wakaot gohed wakaot luksavve gohed netwok."
     },
-    "messages": {
-      "connected": "Connection established with node\n{address}\n",
-      "selectNode": "Please select node to connect from the node list"
-    },
-    "warnings": {
-      "disconnect": "Connection to the node has been lost. Reconnecting..."
-    }
-  },
-  "noir": "Noir",
-  "ofText": "{first} of {second}",
-  "operations": {
-    "AddLiquidity": "Add Liquidity",
-    "andText": "and",
-    "BindRegulatedAsset": "Bind Regulated Asset",
-    "BorrowVaultDebt": "Borrow Debt",
-    "Burn": "Burn",
-    "ClaimRewards": "Claim Rewards",
-    "CloseVault": "Close Position",
-    "CreatePair": "Create Pair",
-    "CreateVault": "Create Position",
-    "DemeterFarmingDepositLiquidity": "Stake Liquidity",
-    "DemeterFarmingGetRewards": "Claim Rewards",
-    "DemeterFarmingStakeToken": "Stake Token",
-    "DemeterFarmingUnstakeToken": "Unstake Token",
-    "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
-    "DepositCollateral": "Deposit Position",
-    "error": {
-      "AddLiquidity": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
-      "BindRegulatedAsset": "Failed To Bind Asset {symbol} to SBT {symbol2}",
-      "BorrowVaultDebt": "Failed to borrow {amount} {symbol}",
-      "Burn": "Failed to burn {amount} {symbol}",
-      "ClaimRewards": "Failed to claim rewards {rewards}",
-      "CloseVault": "Failed to close {symbol}/{symbol2} position",
-      "CreatePair": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
-      "CreateVault": "Failed to create {symbol}/{symbol2} position",
-      "DemeterFarmingDepositLiquidity": "Failed to supply {amount} {symbol} and {symbol2} LP tokens",
-      "DemeterFarmingGetRewards": "Failed to claim {symbol}",
-      "DemeterFarmingStakeToken": "Failed to add {amount} {symbol}",
-      "DemeterFarmingUnstakeToken": "Failed to remove {amount} {symbol}",
-      "DemeterFarmingWithdrawLiquidity": "Failed to remove {amount} {symbol} and {symbol2} LP tokens",
-      "DepositCollateral": "Failed to deposit {amount} {symbol}",
-      "EthBridgeIncoming": "Failed to transfer {amount} {symbol} from {Ethereum} to {Sora}",
-      "EthBridgeOutgoing": "Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}",
-      "IssueSoulBoundToken": "Failed to issue Soulbound token {symbol}",
-      "Mint": "Failed to mint {amount} {symbol} to {address}",
-      "OrderBookCancelLimitOrder": "Failed to cancel limit order",
-      "OrderBookCancelLimitOrders": "Failed to cancel limit orders",
-      "OrderBookPlaceLimitOrder": "Failed to place limit order of {amount} {symbol} at {price} {symbol2}",
-      "ReferralReserveXor": "Failed to bond {amount} XOR",
-      "ReferralSetInvitedUser": "Failed to set {role} {address}",
-      "ReferralUnreserveXor": "Failed to unbond {amount} XOR",
-      "RegisterAndRegulateAsset": "Failed To Register And Regulate {symbol}",
-      "RegisterAsset": "Failed to register {symbol} asset",
-      "RegulateAsset": "Failed To Regulate Asset {symbol}",
-      "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
-      "RepayVaultDebt": "Failed to repaid {amount} {symbol}",
-      "SetAccessExpiration": "Failed to update expiration to {to} for {symbol}",
-      "StakingBond": "Failed to bond {amount} {symbol}",
-      "StakingBondAndNominate": "Failed to bond {amount} {symbol}",
-      "StakingBondExtra": "Failed to bond extra {amount} {symbol}",
-      "StakingChill": "Failed to chill",
-      "StakingNominate": "Failed to nominate validators",
-      "StakingPayout": "Failed to payout rewards",
-      "StakingRebond": "Failed to rebond {amount} {symbol}",
-      "StakingSetController": "Failed to set controller {address}",
-      "StakingSetPayee": "Failed to set payee {address}",
-      "StakingUnbond": "Failed to unbond {amount} {symbol}",
-      "StakingWithdrawUnbonded": "Failed to withdraw {amount} {symbol}",
-      "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
-      "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
-      "SwapTransferBatch": "Failed to {action} {amount} {symbol}",
-      "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
-      "VestedTransfer": "Failed to {action} {amount} {symbol} {direction} {address}",
-      "XorlessTransfer": "Failed to send {amount} {symbol} to {address}"
-    },
-    "EthBridgeIncoming": "@:hashiBridgeText",
-    "EthBridgeOutgoing": "@:hashiBridgeText",
-    "finalized": {
-      "AddLiquidity": "Supplied {amount} {symbol} and {amount2} {symbol2}",
-      "BindRegulatedAsset": "Bind Asset {symbol2} to SBT",
-      "BorrowVaultDebt": "Borrowed {amount} {symbol}",
-      "Burn": "Burned {amount} {symbol}",
-      "ClaimRewards": "Reward claimed successfully {rewards}",
-      "CloseVault": "{symbol}/{symbol2} Position closed",
-      "CreatePair": "Supplied {amount} {symbol} and {amount2} {symbol2}",
-      "CreateVault": "{symbol}/{symbol2} Position created",
-      "DemeterFarmingDepositLiquidity": "Supplied {symbol} and {symbol2} {amount} LP tokens",
-      "DemeterFarmingGetRewards": "{amount} {symbol} claimed successfully",
-      "DemeterFarmingStakeToken": "Added {amount} {symbol}",
-      "DemeterFarmingUnstakeToken": "Removed {amount} {symbol}",
-      "DemeterFarmingWithdrawLiquidity": "Removed {symbol} and {symbol2} {amount} LP tokens",
-      "DepositCollateral": "Deposited {amount} {symbol}",
-      "EthBridgeIncoming": "Transfered {amount} {symbol} from {Ethereum} to {Sora}",
-      "EthBridgeOutgoing": "Transfered {amount} {symbol} from {Sora} to {Ethereum}",
-      "IssueSoulBoundToken": "Issue Soulbound Token {symbol}",
-      "Mint": "Minted {amount} {symbol} to {address}",
-      "OrderBookCancelLimitOrder": "Limit order cancelled",
-      "OrderBookCancelLimitOrders": "Limit orders cancelled",
-      "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} at {price} {symbol2} placed",
-      "ReferralReserveXor": "Bonded {amount} XOR",
-      "ReferralSetInvitedUser": "{role} {address} is set successfully",
-      "ReferralUnreserveXor": "Unbonded {amount} XOR",
-      "RegisterAndRegulateAsset": "Register And Regulate {symbol} asset",
-      "RegisterAsset": "Registered {symbol} asset",
-      "RegulateAsset": "Regulate Asset {symbol}",
-      "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
-      "RepayVaultDebt": "Repaid {amount} {symbol}",
-      "SetAccessExpiration": "SB token {symbol} Updated expiration to {endTime}",
-      "StakingBond": "Bonded {amount} {symbol}",
-      "StakingBondAndNominate": "Bonded {amount} {symbol}",
-      "StakingBondExtra": "Bonded extra {amount} {symbol}",
-      "StakingChill": "Chill",
-      "StakingNominate": "Nominated validators",
-      "StakingPayout": "Payout rewards",
-      "StakingRebond": "Rebonded {amount} {symbol}",
-      "StakingSetController": "Set controller {address}",
-      "StakingSetPayee": "Set payee {address}",
-      "StakingUnbond": "Unbonded {amount} {symbol}",
-      "StakingWithdrawUnbonded": "Withdrew {amount} {symbol}",
-      "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
-      "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
-      "SwapTransferBatch": "{action} {amount} {symbol}",
-      "Transfer": "{action} {amount} {symbol} {direction} {address}",
-      "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
-      "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
-    },
-    "IssueSoulBoundToken": "Issue SBT",
-    "Mint": "Mint",
-    "OrderBookCancelLimitOrder": "Cancel Order",
-    "OrderBookCancelLimitOrders": "Cancel Orders",
-    "OrderBookPlaceLimitOrder": "Place Order",
-    "ReferralReserveXor": "Bond XOR",
-    "ReferralSetInvitedUser": "Set {role}",
-    "ReferralUnreserveXor": "Unbond XOR",
-    "RegisterAndRegulateAsset": "Register Asset",
-    "RegisterAsset": "Register Asset",
-    "RegulateAsset": "Regulate Asset",
-    "RemoveLiquidity": "Remove Liquidity",
-    "RepayVaultDebt": "Repay Debt",
-    "SetAccessExpiration": "Set SBT Expiration",
-    "StakingBond": "Bond",
-    "StakingBondAndNominate": "Bond and Nominate",
-    "StakingBondExtra": "Bond Extra",
-    "StakingChill": "Chill",
-    "StakingNominate": "Nominate",
-    "StakingPayout": "Payout Rewards",
-    "StakingRebond": "Rebond",
-    "StakingSetController": "Set Controller",
-    "StakingSetPayee": "Set Payee",
-    "StakingUnbond": "Unbond",
-    "StakingWithdrawUnbonded": "Withdraw Unbonded",
-    "Swap": "Swap",
-    "SwapAndSend": "Swap and Send",
-    "SwapTransferBatch": "{ADAR} transfer",
-    "Transfer": "Transfer",
-    "VestedTransfer": "Transfer",
-    "XorlessTransfer": "Transfer"
-  },
-  "orderBook": {
-    "amount": "amount",
-    "book": {
-      "noAsks": "No opened asks",
-      "noBids": "No opened bids"
-    },
-    "bookStatus": {
-      "active": "Active",
-      "cancelable": "Cancelable",
-      "inactive": "Inactive",
-      "placeable": "Placeable"
-    },
-    "Buy": "Buy {asset}",
-    "cantPlaceOrder": "Can't place order",
-    "change": "change",
-    "dayVolume": "1D Volume",
-    "dialog": {
-      "askCancel": "Are you sure you want to cancel all of your open orders?",
-      "at": "at {price} {symbol}",
-      "buy": "Buy {amount} {symbol}",
-      "cancelAll": "Yes, cancel all",
-      "placeLimit": "Place limit order",
-      "placeMarket": "Place market order",
-      "sell": "Sell {amount} {symbol}"
-    },
-    "enterAmount": "Enter amount",
-    "error": {
-      "accountLimit": {
-        "reading": "Limit reached: Each account is confined to 1024 limit orders. Please wait until some of your orders fulfill",
-        "reason": "Too many orders is ongoing"
-      },
-      "beyondPrecision": {
-        "reading": "Precision exceeded: The amount/price entered has too many decimal places. Please input a value with fewer decimal places",
-        "reason": "Entered price is too precise to calculate"
-      },
-      "exceedsSpread": {
-        "reading": "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
-        "reason": "Price exceeded spread"
-      },
-      "marketNotAvailable": {
-        "reading": "Market order limitation: There are not enough orders available to fulfill this market order. Please adjust your order size or wait for more orders to be placed",
-        "reason": "Not enough orders available to fullfill this order"
-      },
-      "multipleOf": {
-        "reading": "To process your order, please input a price that is a multiple of {value}",
-        "reason": "Entered price is too specific"
-      },
-      "outOfBounds": {
-        "reading": "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range. Min: {min}; Max: {max}",
-        "reason": "Amount fails to comply with blockchain range"
-      },
-      "singlePriceLimit": {
-        "reading": "Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill",
-        "reason": "Too many orders is ongoing for this price"
-      },
-      "spotLimit": {
-        "reading": "Price range cap: Each order book side is limited to 1024 unique price points. Please select a price within the existing range or wait for space to become available",
-        "reason": "Trading side has been filled"
-      }
-    },
-    "history": {
-      "cancel": "Cancel order {value}",
-      "cancelAll": "Cancel all",
-      "connect": "Connect an account to start trading",
-      "openOrders": "Open orders {value}",
-      "orderHistory": "Order history",
-      "tradeHistory": "Trade history"
-    },
-    "limit": "Limit",
-    "market": "Market",
-    "marketTrades": "Market trades",
-    "month": "month",
-    "orderBook": "Orderbook",
-    "orderStatus": {
-      "active": "Active",
-      "canceled": "Canceled",
-      "expired": "Expired",
-      "filled": "Filled"
-    },
-    "orderTable": {
-      "filled": "filled",
-      "lifetime": "lifetime",
-      "noOrders": "No orders. Create your first one!",
-      "pair": "pair",
-      "side": "side",
-      "time": "time"
-    },
-    "Sell": "Sell {asset}",
-    "setPrice": "Set price",
-    "stop": "Book stopped",
-    "time": "time",
-    "tokenPair": "Token pair",
-    "tooltip": {
-      "bookStatus": {
-        "active": "Full trading functionality enabled. You can place new orders or cancel existing ones.",
-        "cancelable": "You can only cancel existing orders. New order placement is currently disabled.",
-        "inactive": "All trading activities are currently halted. No orders can be placed or canceled at this time.",
-        "placeable": "Limited functionality. You can place new orders and cancel existing ones, but some features may be unavailable."
-      },
-      "bookWidget": "A live, constantly updating record of buy (bid) and sell (ask) orders for a specific asset, organized by price level. The order book displays the depth of the market, including the quantities of assets being offered at various prices. Traders utilize this detailed view to gauge market sentiment, identify potential resistance and support levels, and anticipate price movements based on existing demand and supply",
-      "limitOrder": "A 'Limit' order lets you specify the exact price at which you want to buy or sell an asset. A 'Limit Buy' order will only be executed at the specified price or lower, while a 'Limit Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.",
-      "marketOrder": "A 'Market Order' is an order to immediately buy or sell at the best available current price. It doesn't require setting a price, ensuring a fast execution but with the trade-off of less control over the price received or paid. This type of order is used when certainty of execution is a priority over price control.",
-      "marketWidget": "This widget shows a real-time stream of executed trades in the market, providing information on transaction volumes, recent activity, and current market trends. By observing the timing, price, and size of actual trades, traders can gain insights into market dynamics and sentiment, helping them to spot trading opportunities and make informed decisions",
-      "pairsList": "A real-time list showing current buy and sell orders for a cryptocurrency. It helps you understand the demand, potential price direction, and trade volume on the {Sora} Network and {AppName} DEX",
-      "txDetails": {
-        "amount": "The 'Amount' refers to the total number of assets you want to buy or sell in your order. It's important to specify, as it determines the size of your transaction, impacting the total cost for buy orders or revenue for sell orders.",
-        "expiryDate": "The 'Expiry Date' is the deadline for your order to be executed. If the market doesn't reach your specified price before this date, the order is automatically cancelled. You're not bound to a perpetual wait if market conditions don't align with your trading preferences.",
-        "limit": "The 'Limit Price' is the precise price you set for a limit order. The trade will only execute when the asset's market price meets your limit price, ensuring you don't purchase above or sell below this specified value.",
-        "locked": "The 'Locked' shows the amount of asset to be held while order is ongoing.",
-        "orderType": "'Buy' order will only be executed at the specified price or lower, while a 'Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with."
-      }
-    },
-    "total": "Total",
-    "tradingPair": {
-      "choosePair": "Choose trading pair",
-      "status": "Status",
-      "total": "{amount} {symbol} at {amount2} {symbol2}",
-      "volume": "Volume"
-    },
-    "txDetails": {
-      "expiryDate": "expiry date",
-      "limitPrice": "limit price",
-      "orderType": "order type"
-    }
-  },
-  "pageTitle": {
-    "AddLiquidity": "Add Liquidity",
-    "AssetOwner": "Asset owner",
-    "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-    "Bridge": "@:bridgeText",
-    "Explore/Books": "@:pageTitle.OrderBook",
-    "Explore/Farming": "Farming",
-    "Explore/Pools": "Pools",
-    "Explore/Staking": "Staking",
-    "Explore/Tokens": "Tokens",
-    "OrderBook": "Trade",
-    "Pool": "Pool",
-    "Rewards": "Rewards",
-    "Staking": "Staking",
-    "Stats": "Statistics",
-    "Swap": "Swap",
-    "VaultDetails": "Position Details",
-    "Vaults": "{Kensetsu}",
-    "Wallet": "Wallet",
-    "Sccp": "SCCP",
-    "Burn": "Burn"
-  },
-  "pairIsNotCreated": "Token pair isn't created",
-  "points": {
-    "accountsText": "{amount} accounts",
-    "airdrop": "Complete SORA Ecosystem-related tasks in order to qualify for a $3m AIRDROP",
-    "bridgeVolume": "Bridge volume",
-    "complete": "Completed | Complete",
-    "currently": "Currently",
-    "dated": "Dated",
-    "depositVolumeBridges": {
-      "descriptionTask": "Deposit & withdraw via Bridges, bitget, 1x, gateio",
-      "titleProgress": "Deposit volume",
-      "titleTask": "Deposit & Withdraw"
-    },
-    "feesSpent": "Fees spent",
-    "firstSoraNetworkTransaction": "Your first SORA Network Transaction",
-    "firstTxAccount": {
-      "descriptionTask": "Complete your first XOR transaction ever and receive the reward",
-      "titleProgress": "First Trx",
-      "titleTask": "Do your first transaction"
-    },
-    "governanceLockedXOR": {
-      "descriptionTask": "Lock XOR by participating in governance voting events",
-      "titleProgress": "Governance",
-      "titleTask": "Lock XOR in Governance Voting"
-    },
-    "kensetsuVolumeRepaid": {
-      "descriptionTask": "Repay KUSD debt during liquidations or closing positions",
-      "titleProgress": "Kensetsu volume",
-      "titleTask": "Repay KUSD Debt"
-    },
-    "KUSDHoldings": {
-      "descriptionTask": "Hold your current KUSD holdings",
-      "titleProgress": "KUSD Hold",
-      "titleTask": "Hold Kusd"
-    },
-    "liquidityProvision": {
-      "descriptionTask": "Provide liquidity across pools",
-      "titleProgress": "Liquidity provision",
-      "titleTask": "Provide Liquidity"
-    },
-    "loginText": "Connect your account to see your points",
-    "lvl": "Lvl",
-    "maxLvl": "You reached max lvl",
-    "nativeXorStaking": {
-      "descriptionTask": "Stake XOR and earn VAL rewards",
-      "titleProgress": "XOR Staking",
-      "titleTask": "Stake XOR"
-    },
-    "networkFeeSpent": {
-      "descriptionTask": "Spend XOR in network fees across multiple on-chain transactions",
-      "titleProgress": "Network fees",
-      "titleTask": "Spend XOR on Network Fees"
-    },
-    "nextLvl": "Next lvl",
-    "openTelegram": "Open {Telegram}",
-    "orderbookVolume": {
-      "descriptionTask": "Create limit orders in the orderbook",
-      "titleProgress": "Orderbook",
-      "titleTask": "Create Limit Orders"
-    },
-    "progress": "Progress",
-    "referralRewards": {
-      "descriptionTask": "Refer accounts through the referral system",
-      "titleProgress": "Referral Sytem",
-      "titleTask": "Refer accounts"
-    },
-    "relatedTasks": "Complete {title}-related tasks in order to level up your skill",
-    "rewardNextLvl": "Next level reward",
-    "soraCard": "Apply now",
-    "title": "Your Points",
-    "toEarnPoints": "To earn points",
-    "tokenHold": {
-      "descriptionTask": "Hold your current {token} holdings",
-      "titleProgress": "{token} holdings",
-      "titleTask": "Hold {token}"
-    },
-    "VXORHoldings": {
-      "descriptionTask": "Hold your current VXOR holdings",
-      "titleProgress": "VXOR holdings",
-      "titleTask": "Hold VXOR"
-    },
-    "xorBurned": "{XOR} burned",
-    "XORBurned": {
-      "descriptionTask": "Burn XOR and convert to $ value",
-      "titleProgress": "XOR Burned",
-      "titleTask": "Burn XOR"
-    },
-    "XORHoldings": {
-      "descriptionTask": "Hold your current XOR holdings",
-      "titleProgress": "XOR Hold",
-      "titleTask": "Hold XOR"
-    },
-    "yourLevel": "Your level",
-    "yourReferrals": "Your referrals",
-    "yourRewards": "Your rewards",
-    "yourTasks": "Your Tasks"
-  },
-  "polkadotjs": {
-    "connectionError": "An error occured while connecting the wallet. You can try to connect the wallet via {extension} again",
-    "noAccount": "{extension} account error. Please check your account in the {extension} extension",
-    "noExtension": "No {extension} extension was found. Please install it and reload this page",
-    "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps://polkadot.js.org/extension/",
-    "noSigner": "Access denied. Go to {extension} extension settings and open \"Manage Website Access\" to allow."
-  },
-  "pool": {
-    "addLiquidity": "Add liquidity",
-    "connectToWallet": "Connect an account to view your liquidity.",
-    "createPair": "Create a pair",
-    "description": "When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
-    "liquidityNotFound": "No liquidity found.",
-    "pairTokens": "{pair} Pool Tokens",
-    "pooledToken": "{tokenSymbol} Pooled",
-    "poolShare": "Your pool share",
-    "removeLiquidity": "Remove liquidity",
-    "strategicBonusApy": "Strategic Bonus APY"
-  },
-  "poweredBy": "Powered by",
-  "prevText": "Previous",
-  "priceChartText": "Price chart",
-  "priceText": "Price",
-  "provider": {
-    "messages": {
-      "checkExtension": "{name} extension is busy, please check it",
-      "extensionLogin": "Please login to your {name} extension",
-      "installExtension": "{name} extension is not found. Please install it!\n\nAlready installed extension? Please reload the page",
-      "notAvailable": "{name} is not available.",
-      "reloadPage": "Reload page"
-    }
-  },
-  "receivedText": "Received",
-  "referralProgram": {
-    "action": {
-      "bond": "Bond",
-      "bondMore": "Bond More",
-      "copyLink": "Copy link",
-      "shareLink": "Share",
-      "unbond": "Unbond"
-    },
-    "bondedXOR": "XOR Bonded",
-    "bondTitle": "Bond XOR",
-    "confirm": {
-      "bond": "Confirm bond",
-      "freeOfCharge": "This action is free of charge",
-      "hasReferrerDescription": "Unfortunately, you can only set one",
-      "hasReferrerTitle": "You’ve already set your referrer",
-      "inviteDescription": "For every transaction, 10% of the fee will go to your referrer, without any extra cost to you.",
-      "inviteTitle": "You have been invited to {AppName}",
-      "ok": "OK",
-      "signInvitation": "Approve",
-      "unbond": "Confirm unbond"
-    },
-    "connectAccount": "To invite users you need to connect your {Sora} account.",
-    "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR",
-    "insufficientBondedBalance": "Insufficient bonded balance",
-    "invitationLink": "Invitation link",
-    "inviteViaTelegram": "Invite via {Telegram}",
-    "receivedRewards": "Received rewards",
-    "referralsNumber": "{number} referrals",
-    "referrer": {
-      "approve": "Approve",
-      "approved": "Approved",
-      "description": "You can get referred to {AppName},<br/>type in the link or code of the referrer",
-      "info": "When you’ll pay a fee for transaction,<br/>10% will go to your referrer",
-      "label": "Invitation link or code",
-      "placeholder": "Enter invitation link or code",
-      "referredBy": "You’ve been referred by {referrer}",
-      "referredLablel": "Referred address",
-      "title": "Add your referrer",
-      "titleReferrer": "Your referrer"
-    },
-    "startInviting": "Bond XOR to refer others",
-    "title": "Referral Program",
-    "unbondTitle": "Unbond XOR",
-    "welcomeMessage": "\nJoin me on {AppName}!\n\nDiscover the stylish {DEX} that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!\n\n🎁 Invite friends and earn 10% of their trading fees\n\nSee you there!"
-  },
-  "releaseNotesText": "Release notes",
-  "removeLiquidity": {
-    "amount": "Amount",
-    "confirmTitle": "You will receive",
-    "description": "Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.",
-    "input": "Input",
-    "liquidity": "liquidity",
-    "locked": "{percent} of your pool is in {lock}",
-    "output": "Output",
-    "outputMessage": "Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.",
-    "remove": "Remove",
-    "shareOfPool": "Share of pool after transaction",
-    "title": "Remove liquidity"
-  },
-  "resetText": "Reset",
-  "retryText": "Retry",
-  "rewards": {
-    "action": {
-      "checkRewards": "Check",
-      "connectExternalWallet": "Connect {Ethereum} account",
-      "pendingExternal": "{Ethereum} transaction pending...",
-      "pendingInternal": "{Sora} transaction pending...",
-      "signAndClaim": "Sign and claim"
-    },
-    "andText": "and",
-    "claimableAmountDoneVesting": "Claimable rewards",
-    "claiming": {
-      "pending": "Claiming...",
-      "success": "Claimed successfully"
-    },
-    "events": {
-      "BuyOnBondingCurve": "buying from the TBC",
-      "LiquidityProvision": "Fees gained from liquidity provision",
-      "LiquidityProvisionFarming": "Farming",
-      "MarketMakerVolume": "Market Making",
-      "NftAirdrop": "NFT Airdrop",
-      "SoraFarmHarvest": "{Sora}.farm harvest",
-      "XorErc20": "XOR ERC-20"
-    },
-    "forText": "for",
-    "groups": {
-      "crowdloan": "Crowdloan rewards",
-      "external": "Rewards for the connected {Ethereum} account",
-      "strategic": "Strategic Rewards"
-    },
-    "hint": {
-      "connectAccounts": "To claim your PSWAP and VAL rewards you need to connect both your {Sora} and {Ethereum} accounts.",
-      "connectAnotherAccount": "Connect another {Ethereum} account to check for available PSWAP and VAL rewards.",
-      "connectExternalAccount": "Connect an {Ethereum} account to check for available PSWAP and VAL rewards.",
-      "howToClaimRewards": "To claim your {symbols} rewards you need to sign {count} {transactions} in {destination}. Rewards will be deposited to your {Sora} account."
-    },
-    "notification": {
-      "empty": "No available claims for this account"
-    },
-    "PointSystemWrapper": "Points",
-    "ReferralProgram": "Referrals",
-    "Rewards": "Rewards",
-    "signing": {
-      "accounts": "your {Sora} and {Ethereum} accounts respectively",
-      "extension": "{PolkadotJs} browser extension"
-    },
-    "totalVested": "Total rewards",
-    "transactions": {
-      "confimation": "Confirm {order} of {total} transactions...",
-      "failed": "{order} of {total} transactions failed. @:retryText",
-      "success": "You will receive your rewards shortly"
-    }
-  },
-  "rotatePhoneNotification": {
-    "enableAcceleration": "Enable acceleration access in your settings.",
-    "gyroscropePhone": " Our technology uses your phone's built-in gyroscope to instantly hide your balance when you tilt your device.",
-    "info": "For extra privacy, tilt your device face down to instantly hide your asset balances. This feature uses your phone’s built-in sensors.",
-    "title": "Turn your device upside down to hide balances"
-  },
-  "saveText": "Save",
-  "sbtDetails": {
-    "accessPermitted": "Access permitted",
-    "description": "This SBT provides access to multiple tokens & pools and is attached to your account",
-    "expiresIn": "Expires in",
-    "expiresInTooltip": "The 'Expires in' shows period or point of time the access is acquired",
-    "expiryDate": "Expiry date",
-    "expiryDateTooltip": "The 'Expiry Date' is the deadline for your access to regulated assets of SBT",
-    "indefiniteExp": "open-ended",
-    "issuedBy": "{SBT} issued by",
-    "kycProvider": "{KYC} Provider",
-    "kycVerification": "{KYC} Verification",
-    "listOperable": "Regulated assets operable",
-    "noPermissions": "No additional permissions",
-    "noReceiverAccess": "You're trying to send regulated token to the user with no SBT access",
-    "permission": "permission",
-    "permissions": "permissions",
-    "regulatedInsitution": "Regulated Institution"
-  },
-  "searchText": "Search",
-  "selectLanguageDialog": {
-    "title": "Lanwis"
-  },
-  "selectNodeConnected": "Connected to: {chain}",
-  "selectNodeDialog": {
-    "addNode": "Add custom node",
-    "connected": "Connected",
-    "customNode": "Custom node",
-    "howToSetupOwnNode": "Setup your node",
-    "messages": {
-      "emptyAddress": "Please input the address of the node",
-      "emptyName": "Please input the name of the node",
-      "incorrectAddress": "Incorrect address",
-      "incorrectProtocol": "Address should starts from ws:// or wss://"
-    },
-    "nodeTitle": "{chain} hosted by {name}",
-    "select": "Select",
-    "title": "Network node selection",
-    "updateNode": "Update node"
-  },
-  "selectNodeText": "Select Network Node",
-  "selectRegisteredAsset": {
-    "search": {
-      "networkLabelEthereum": "{network} network mirror tokens",
-      "networkLabelSora": "{Sora} network tokens",
-      "placeholder": "Filter by Asset ID, Name or Ticker Symbol"
-    },
-    "title": "Select a token"
-  },
-  "selectToken": {
-    "assets": {
-      "title": "Assets"
-    },
-    "custom": {
-      "alreadyAttached": "This token was already attached",
-      "notFound": "Token not found",
-      "search": "Input Asset ID",
-      "text": "CUSTOM TOKENS",
-      "title": "Custom"
-    },
-    "emptyListMessage": "No results",
-    "searchPlaceholder": "Filter by Asset ID, Name or Ticker Symbol",
-    "title": "Select a token"
-  },
-  "sendText": "Send",
-  "sentText": "Sent",
-  "settingsText": "Settings",
-  "signAndClaimText": "Sign and claim",
-  "social": {
-    "github": "GitHub",
-    "medium": "Medium",
-    "reddit": "Reddit",
-    "telegram": "Telegram",
-    "twitter": "Twitter",
-    "wiki": "{Sora} Wiki"
-  },
-  "soraStaking": {
-    "actions": {
-      "claim": "Claim rewards",
-      "confirm": "Confirm Staking",
-      "more": "Stake more",
-      "remove": "Remove stake",
-      "withdraw": "Withdraw"
-    },
-    "allWithdrawsDialog": {
-      "information": "Once you unstake tokens, there is a mandatory 7-day unstaking period. After this period, your tokens will not be automatically returned to your wallet. You must complete the process by manually withdrawing your tokens.",
-      "title": "Unstaking activity"
-    },
-    "claimRewardsDialog": {
-      "checkRewards": "Check rewards per era and validator",
-      "rewardsDestination": "Rewards destination address",
-      "title": "Claim rewards"
-    },
-    "dropdownMenu": {
-      "controllerAccount": "Controller account"
-    },
-    "info": {
-      "minimumStake": "Minimum stake",
-      "nominators": "Nominators",
-      "rewarded": "Rewarded",
-      "rewardToken": "Reward token",
-      "selectedValidators": "Selected validators",
-      "stakingBalance": "Staking balance",
-      "totalLiquidityStaked": "Total liquidity staked",
-      "unstaking": "Unstaking",
-      "unstakingPeriod": "Unstaking period",
-      "validators": "Validators"
-    },
-    "newStake": {
-      "title": "Start staking"
-    },
-    "overview": {
-      "description": "Stake {XOR} tokens on {Sora} Network as a nominator to validate transactions and earn {VAL} token rewards.",
-      "title": "{Sora} Staking"
-    },
-    "pendingRewardsDialog": {
-      "information": "Validators payout the rewards every 2-5 days. However, you can payout them by yourself, especially if rewards are close to expiring, but you will pay the fee.",
-      "noPendingRewards": "There are no pending rewards",
-      "noSelectedRewards": "Select rewards",
-      "payout": "Payout",
-      "title": "Pending rewards"
-    },
-    "selectedValidators": "{count} ({Max} {max})",
-    "selectValidatorsMode": {
-      "confirm": {
-        "manual": "I`ll pick the validators myself",
-        "suggested": "Stake with suggested"
-      },
-      "criteria": {
-        "0": "Most profitable",
-        "1": "Not oversubscribed",
-        "2": "Having onchain identity",
-        "3": "Not slashed",
-        "4": "Limit of 2 validators per identity"
-      },
-      "description": "{Sora} network algorithm has selected a list of recommended validators based on the criteria:",
-      "title": "Stake with validators suggested by the algorithm"
-    },
-    "stakeDialog": {
-      "toRemove": "To remove",
-      "toStake": "To stake"
-    },
-    "validators": {
-      "alreadyNominated": "Selected validators already nominated",
-      "change": "Change validators",
-      "next": "Next",
-      "recommended": "Recommended validators",
-      "save": "Save changes",
-      "select": "Select validators",
-      "selected": "{selected}/{total} selected",
-      "tooManyValidators": "Too many validators selected ({Max} {max})"
-    },
-    "validatorsAttentionDialog": {
-      "confirm": "Yes, I understand the risk",
-      "description": {
-        "0": "Algorithmic validator suggestions do not constitute financial consultation or advice. Staking is a high-risk activity, and algorithmic validator suggestions do not necessarily mitigate this risk.",
-        "1": "A validator suggested by the algorithm could still be slashed. A validator suggested by the algorithm could also change their parameters (e.g.,commission rates, etc.) at any time after having been suggested and/or selected.",
-        "2": "You could lose tokens or rewards for these or other reasons. Only stake tokens and use validator suggestions at your own discretion, after conducting due diligence and carefully considering the risks involved."
-      },
-      "title": "Attention"
-    },
-    "validatorsDialog": {
-      "tabs": {
-        "all": "All",
-        "user": "Yours"
-      },
-      "title": {
-        "edit": "Edit My Validators"
-      }
-    },
-    "validatorsFilterDialog": {
-      "filters": {
-        "hasIdentity": {
-          "description": "At least one identity contact connected to the account",
-          "name": "On-chain identity"
+    "transaction": {
+        "amount": "falom",
+        "amount2": "2",
+        "blockId": "gohed wakaot",
+        "comment": "gohed",
+        "copy": "kopi {value}",
+        "fee": "transaksen fi",
+        "from": "raonem",
+        "history": {
+            "confirmed": "transaksen luksavve",
+            "created": "transaksen luksavve {amount} {symbol} raonem falom raonem.",
+            "submitted": "transaksen luksavve falom fi luksavve {fee} {symbol}"
         },
-        "notOversubscribed": {
-          "description": "Account within allocation limit, avoids oversubscription penalties on {Polkadot} staking.",
-          "name": "Not oversubscribed"
+        "price": "praes",
+        "referral": "gohed",
+        "referrer": "gohed",
+        "side": "gohed",
+        "startTime": "dei",
+        "status": "stakaon",
+        "statuses": {
+            "complete": "luksavve",
+            "failed": "transaksen wakaot",
+            "pending": "luksavve..."
         },
-        "notSlashed": {
-          "description": "Not experienced any penalties or reductions in their staked funds due to misconduct or protocol violations.",
-          "name": "Not slashed"
-        },
-        "twoValidatorsPerIdentity": {
-          "description": "A maximum of two validators per identity to promote decentralization and prevent concentration of power.",
-          "name": "Limit of 2 validators per identity"
-        }
-      },
-      "reset": "Reset all",
-      "save": "Save filter",
-      "title": "Filters"
+        "title": "transaksen detol",
+        "to": "luksavve",
+        "total": "total",
+        "txId": "transaksen wakaot",
+        "viewIn": "gohed gohed {explorer}"
     },
-    "validatorsList": {
-      "commission": "Commission",
-      "commissionTooltip": "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time",
-      "name": "Name",
-      "noNominatedValidators": "You don't have any nominated validators",
-      "noValidators": "There are no validators satisfying the specified filter",
-      "return": "Return",
-      "search": "Search..."
+    "transactionDetailsText": "transaksen detol",
+    "transactionSubmittedText": "transaksen wakaot luksavve",
+    "transactionText": "transaksen | transaksen",
+    "transfers": {
+        "from": "raonem",
+        "to": "luksavve"
     },
-    "withdraw": {
-      "beingWithdrawn": "Being withdrawn",
-      "countdownLeft": "left",
-      "nextWithdrawal": "Next withdrawal",
-      "seeAll": "See all",
-      "withdrawable": "Withdrawable"
+    "unknownAssetText": "falom aset",
+    "unknownErrorText": "rong falom falom wakaot...",
+    "wallet": {
+        "WalletAssets": "aset",
+        "WalletHistory": "wakaot"
     },
-    "withdrawDialog": {
-      "showAllWithdraws": "Show all withdraws",
-      "title": "Withdraw unstaked funds"
-    }
-  },
-  "stepText": "Step",
-  "successText": "Success",
-  "swap": {
-    "confirmSwap": "Konfim swap",
-    "errorFetching": "Problem long tekem data",
-    "insufficientAmount": "Amoant {tokenSymbol} no inap",
-    "insufficientLiquidity": "Liquidity no inap",
-    "liquidityProviderFee": "Fee blong liquidity provider",
-    "liquidityProviderFeeTooltip": "Samfala part blong evri trade ({liquidityProviderFee}%) i go long ol liquidity provider fo givim incentive long protocol.",
-    "maxSold": "Max sell",
-    "minReceived": "Min bae receive",
-    "minReceivedTooltip": "Sapos price i change big tumas bifo confirm, transaction bae go bak.",
-    "priceImpact": "Price impact",
-    "priceImpactTooltip": "Difrens namel market price mo estimate price from bigfala saes.",
-    "rewardsForSwap": "PSWAP strategic rewards",
-    "route": "Route",
-    "slippageTolerance": "Slippage tolerance",
-    "swapOutputMessage": "Aotput hemi estimate. Bae iu kasem {transactionValue} nomo o transaction bae cancel."
-  },
-  "swapText": "Swap",
-  "tokens": {
-    "assetId": "Asset ID"
-  },
-  "tooltips": {
-    "accounts": "Accounts are digital addresses that hold user's assets on the network. Each account is associated with a unique public address and a private key that allows the user to access and manage their assets.",
-    "bridgeTransactions": "{from} to {to} bridge refers to the process of transferring assets between the {from} and {to} networks using a bridge. The bridge allows for the interoperability of the two networks, enabling users to seamlessly move assets between them.",
-    "fees": "Fees on the {Sora} blockchain refer to the charges that are incurred for executing transactions on the network. These fees are paid in XOR, the native cryptocurrency of the {Sora} Network. The fee amount is determined by the complexity and size of the transaction being executed",
-    "roi": "{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.",
-    "supply": "Token supply refers to the total number of tokens that have been created and are in circulation on the network. The token supply can fluctuate based on the amount of tokens being staked, burned, or transferred on the network.",
-    "transactions": "Transactions refer to the process of sending or receiving digital assets on the network, including liquidity operations, as well as swaps.",
-    "tvl": "{TVL} stands for Total Value Locked. It represents tokens locked in the pools in the dollar equivalent.",
-    "velocity": "Token velocity is the number of times token changes accounts during period (month) on average. It indicates the level of trading activity and liquidity.",
-    "volume": "Volume refers to the total amount of assets that have been traded or exchanged on the network over a specific period of time. The volume is an important metric for measuring the liquidity and overall activity of the network."
-  },
-  "transaction": {
-    "amount": "@:amountText",
-    "amount2": "@:amountText 2",
-    "blockId": "Block Id",
-    "comment": "Comment",
-    "copy": "Copy {value}",
-    "fee": "Transaction Fee",
-    "from": "From",
-    "history": {
-      "confirmed": "Transaction confirmed",
-      "created": "Transaction for {amount} {symbol} has been created.",
-      "submitted": "Transaction submitted with fee of {fee} {symbol}"
+    "walletSend": {
+        "addressError": "luksavve gohed salem go stakaon luksavve gohed falom akaon gohed luksavve falom falom konek luksavve.",
+        "addressWarning": "stakaon stakaon gohed falom luksavve gohed {Sora} adres gohed. falom gohed gohed wakaot falom raonem gohed {Sora} gohed luksavve gohed gohed stakaon:",
+        "badAddress": "gohed adres",
+        "balance": "balans",
+        "confirmTitle": "mekem tru transaksen",
+        "enableVesting": "gohed token raonem",
+        "enterAddress": "stakaon adres",
+        "enterAmount": "stakaon hamas",
+        "enterVestingPercentage": "stakaon raonem falom",
+        "errorAddress": "gohed adres. raonem falom gohed wakaot wakaot falom.",
+        "max": "maks",
+        "startUnlockingDate": "falom falom dei",
+        "title": "salem go",
+        "tooltip": "salem go stakaon falom {Sora} netwok raonem",
+        "unlockFrequency": "raonem raonem",
+        "vestingPercentage": "raonem falom"
     },
-    "price": "Price",
-    "referral": "Referral",
-    "referrer": "Referrer",
-    "side": "Side",
-    "startTime": "Date",
-    "status": "Status",
-    "statuses": {
-      "complete": "Complete",
-      "failed": "Transaction failed",
-      "pending": "Pending..."
-    },
-    "title": "Transaction details",
-    "to": "To",
-    "total": "Total",
-    "txId": "Transaction Id",
-    "viewIn": "View in {explorer}"
-  },
-  "transactionDetailsText": "Transaction Details",
-  "transactionSubmittedText": "Transaction was submitted",
-  "transactionText": "transaction | transactions",
-  "transfers": {
-    "from": "From",
-    "to": "Go long"
-  },
-  "unknownAssetText": "Unknown asset",
-  "unknownErrorText": "ERROR Something went wrong...",
-  "wallet": {
-    "WalletAssets": "Assets",
-    "WalletHistory": "Activity"
-  },
-  "walletSend": {
-    "addressError": "You cannot send tokens to the same account that you are currently connected to.",
-    "addressWarning": "Tokens will be sent to the {Sora} address below. Make sure the recipient can access the {Sora} chain to use the tokens:",
-    "badAddress": "Incorrect address",
-    "balance": "Balance",
-    "confirmTitle": "Confirm transaction",
-    "enableVesting": "Enable token vesting",
-    "enterAddress": "Enter address",
-    "enterAmount": "Enter amount",
-    "enterVestingPercentage": "Enter vesting percentage",
-    "errorAddress": "Invalid address. Please check it and try again.",
-    "max": "MAX",
-    "startUnlockingDate": "Start unlocking date",
-    "title": "Send",
-    "tooltip": "Send tokens between {Sora} network accounts",
-    "unlockFrequency": "Unlock frequency",
-    "vestingPercentage": "Vesting percentage"
-  },
-  "warningText": "Warning",
-  "sccp": {
-    "amountLabel": "Amount",
-    "assetLabel": "Asset symbol",
-    "clearPayload": "Clear form",
-    "copyPayload": "Copy payload",
-    "destinationAddressLabel": "Recipient address",
-    "destinationNetworkLabel": "To network",
-    "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-    "generatePayload": "Generate SCCP payload",
-    "noteLabel": "Optional memo",
-    "payloadCopied": "Payload copied",
-    "payloadCopyFailed": "Copy failed, please try again",
-    "payloadLabel": "Prepared payload",
-    "sourceNetworkLabel": "From network",
-    "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-    "supportedNetworks": "Supported chains: {chains}.",
-    "title": "SCCP"
-  }
+    "warningText": "woning"
 }

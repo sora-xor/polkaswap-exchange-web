@@ -279,6 +279,9 @@ export const useSettingsStore = defineStore('settings', {
     setRotatePhoneDialogVisibility(value: boolean): void {
       this.rotatePhoneDialogVisibility = value;
     },
+    setDisclaimerDialogVisibility(value: boolean): void {
+      this.disclaimerVisibility = value;
+    },
     toggleDisclaimerDialogVisibility(): void {
       this.disclaimerVisibility = !this.disclaimerVisibility;
     },

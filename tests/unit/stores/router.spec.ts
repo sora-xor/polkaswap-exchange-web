@@ -99,12 +99,28 @@ describe('router store', () => {
 
   it('checkCurrentRoute redirects to wallet when logged in from connection', () => {
     const routerStore = useRouterStore();
-    routerStore.setRoute({ current: WalletRouteNames.WalletConnection });
+    routerStore.setRoute({ current: WalletRouteNames.WalletConnection, prev: WalletRouteNames.Wallet });
     walletStoreMock.isLoggedIn = true;
 
     routerStore.checkCurrentRoute();
 
     expect(routerStore.current).toBe(WalletRouteNames.Wallet);
+    expect(routerStore.prev).toBe(WalletRouteNames.WalletConnection);
+  });
+
+  it('checkCurrentRoute restores the previous page when logging in from another page', () => {
+    const routerStore = useRouterStore();
+    routerStore.setRoute({
+      current: WalletRouteNames.WalletConnection,
+      prev: PageNames.Pool,
+      prevParams: { foo: 'bar' },
+    });
+    walletStoreMock.isLoggedIn = true;
+
+    routerStore.checkCurrentRoute();
+
+    expect(routerStore.current).toBe(PageNames.Pool);
+    expect(routerStore.currentParams).toEqual({ foo: 'bar' });
     expect(routerStore.prev).toBe(WalletRouteNames.WalletConnection);
   });
 });

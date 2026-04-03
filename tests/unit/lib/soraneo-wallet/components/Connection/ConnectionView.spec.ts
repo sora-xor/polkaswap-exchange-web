@@ -1,5 +1,6 @@
 import { ref } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { AppWallet, LoginStep } from '@/lib/soraneo-wallet/src/consts';
 
 const walletStore = vi.hoisted(() => ({
   availableWallets: [],
@@ -32,12 +33,46 @@ vi.mock('@/lib/soraneo-wallet/src/composables/useLoading', () => ({
   }),
 }));
 
+const accountUtils = vi.hoisted(() => ({
+  verifyAccountJson: vi.fn(),
+  subscribeToWalletAccounts: vi.fn(),
+  exportAccount: vi.fn(),
+  deleteAccount: vi.fn(),
+  createAccount: vi.fn(),
+  restoreAccount: vi.fn(),
+  checkExternalAccount: vi.fn(async () => undefined),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/util/account', () => accountUtils);
+
+const gdriveAccounts = vi.hoisted(() => ({
+  getAccount: vi.fn(async () => ({
+    address: 'cn-demo-address',
+    meta: { name: 'Drive Account' },
+  })),
+  add: vi.fn(),
+  changeName: vi.fn(),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/services/google/wallet', () => ({
+  GDriveWallet: {
+    accounts: gdriveAccounts,
+  },
+}));
+
 import ConnectionView, {
   getPreviousLoginStep,
 } from '@/lib/soraneo-wallet/src/components/Connection/ConnectionView.vue';
-import { LoginStep } from '@/lib/soraneo-wallet/src/consts';
 
 describe('Wallet ConnectionView', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    walletStore.availableWallets = [];
+    walletStore.isMST = false;
+    walletStore.isSignTxDialogDisabled = false;
+    walletStore.isMSTAvailable = false;
+  });
+
   it('treats missing wallet availability data as an empty list instead of crashing the logged-out view', () => {
     walletStore.availableWallets = undefined as unknown as [];
 
@@ -101,6 +136,73 @@ describe('Wallet ConnectionView', () => {
     state.step.value = LoginStep.ExtensionList;
     state.handleBack();
 
+    expect(closeView).toHaveBeenCalledTimes(1);
+  });
+
+  it('closes the view after selecting an external account and completing login', async () => {
+    const closeView = vi.fn();
+    const loginAccount = vi.fn(async () => undefined);
+    const state = (ConnectionView as any).setup(
+      {
+        chainApi: {
+          api: { genesisHash: { toString: () => 'hash' } },
+        },
+        closeView,
+        loginAccount,
+      },
+      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+    );
+
+    await state.handleAccountSelect({ address: 'cn-ext', name: 'External', source: AppWallet.Polkadotjs }, false);
+
+    expect(accountUtils.checkExternalAccount).toHaveBeenCalledWith({
+      address: 'cn-ext',
+      name: 'External',
+      source: AppWallet.Polkadotjs,
+    });
+    expect(loginAccount).toHaveBeenCalledWith({
+      address: 'cn-ext',
+      name: 'External',
+      source: AppWallet.Polkadotjs,
+    });
+    expect(walletStore.initMultisigAddress).toHaveBeenCalledTimes(1);
+    expect(closeView).toHaveBeenCalledTimes(1);
+  });
+
+  it('closes the view after confirming an internal account login', async () => {
+    const closeView = vi.fn();
+    const loginAccount = vi.fn(async () => undefined);
+    const state = (ConnectionView as any).setup(
+      {
+        chainApi: {
+          api: { genesisHash: { toString: () => 'hash' } },
+        },
+        closeView,
+        loginAccount,
+      },
+      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+    );
+
+    state.selectedWallet.value = AppWallet.GoogleDrive;
+    state.accountLoginData.value = {
+      address: 'cn-demo-address',
+      name: 'Drive Account',
+      source: AppWallet.GoogleDrive,
+    };
+    state.accountLoginVisibility.value = true;
+
+    await state.handleAccountLogin('Password123!');
+
+    expect(gdriveAccounts.getAccount).toHaveBeenCalledWith('cn-demo-address', 'Password123!');
+    expect(accountUtils.restoreAccount).toHaveBeenCalled();
+    expect(loginAccount).toHaveBeenCalledWith({
+      address: 'cn-demo-address',
+      name: 'Drive Account',
+      source: AppWallet.GoogleDrive,
+    });
+    expect(walletStore.initMultisigAddress).toHaveBeenCalledTimes(1);
+    expect(state.accountLoginVisibility.value).toBe(false);
+    expect(state.accountLoginData.value).toBeNull();
     expect(closeView).toHaveBeenCalledTimes(1);
   });
 });

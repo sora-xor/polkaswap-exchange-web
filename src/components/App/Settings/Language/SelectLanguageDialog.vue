@@ -4,10 +4,17 @@
     :title="t('selectLanguageDialog.title')"
     custom-class="select-language-dialog"
   >
+    <search-input
+      ref="search"
+      v-model="query"
+      class="select-language__search"
+      :placeholder="t('searchText')"
+      @clear="handleClearSearch"
+    ></search-input>
     <s-scrollbar class="select-language-scrollbar">
       <s-radio-group v-model="selectedLang" class="select-language-list s-flex">
         <s-radio
-          v-for="lang in entries"
+          v-for="lang in filteredEntries"
           :key="lang.key"
           :label="lang.key"
           :value="lang.key"
@@ -30,8 +37,9 @@
 
 <script setup lang="ts">
 import { components } from '@/shims/wallet-components';
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 
+import { useSearchInput } from '@/composables/useSearchInput';
 import { useTranslation } from '@/composables/useTranslation';
 import { Language, Languages } from '@/consts';
 import { useSettingsStore } from '@/stores/settings';
@@ -40,21 +48,20 @@ defineOptions({
   name: 'SelectLanguageDialog',
   components: {
     DialogBase: components.DialogBase,
+    SearchInput: components.SearchInput,
   },
 });
 
 const { t } = useTranslation();
 const settingsStore = useSettingsStore();
 
+const { search, query, searchQuery, handleClearSearch, focusSearchInput } = useSearchInput();
 const selectedEl = ref<HTMLDivElement | null>(null);
 
 const isVisible = computed({
   get: () => settingsStore.selectLanguageDialogVisibility,
   set: (flag: boolean) => {
     settingsStore.setSelectLanguageDialogVisibility(flag);
-    if (flag) {
-      nextTick(() => selectedEl.value?.scrollIntoView({ behavior: 'smooth' }));
-    }
   },
 });
 
@@ -65,15 +72,33 @@ const selectedLang = computed<Language>({
   },
 });
 
-const entries = Languages.map((language) => {
-  const translationKey = `languages.${language.key}`;
-  const translatedName = t(translationKey);
+const entries = computed(() =>
+  Languages.map((language) => {
+    const translationKey = `languages.${language.key}`;
+    const translatedName = t(translationKey);
 
-  return {
-    key: language.key as Language,
-    value: language.value,
-    name: translatedName !== translationKey ? translatedName : language.name,
-  };
+    return {
+      key: language.key as Language,
+      value: language.value,
+      name: translatedName !== translationKey ? translatedName : language.name,
+    };
+  })
+);
+
+const filteredEntries = computed(() => {
+  if (!searchQuery.value) return entries.value;
+
+  return entries.value.filter((entry) => {
+    const normalizedValue = entry.value.toLowerCase();
+    const normalizedName = entry.name.toLowerCase();
+    const normalizedKey = entry.key.toLowerCase();
+
+    return (
+      normalizedValue.includes(searchQuery.value) ||
+      normalizedName.includes(searchQuery.value) ||
+      normalizedKey.includes(searchQuery.value)
+    );
+  });
 });
 
 function setSelectedEl(element: HTMLDivElement | null, isSelected: boolean): void {
@@ -83,6 +108,19 @@ function setSelectedEl(element: HTMLDivElement | null, isSelected: boolean): voi
     selectedEl.value = null;
   }
 }
+
+watch(
+  isVisible,
+  (visible) => {
+    if (visible) {
+      void focusSearchInput();
+      nextTick(() => selectedEl.value?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
+    } else {
+      handleClearSearch();
+    }
+  },
+  { immediate: false }
+);
 </script>
 
 <style lang="scss" scoped>
@@ -113,6 +151,10 @@ function setSelectedEl(element: HTMLDivElement | null, isSelected: boolean): voi
 
 :deep(.select-language-scrollbar.el-scrollbar > .el-scrollbar__bar.is-horizontal) {
   display: none !important;
+}
+
+.select-language__search {
+  margin-bottom: 16px;
 }
 
 .select-language-list {

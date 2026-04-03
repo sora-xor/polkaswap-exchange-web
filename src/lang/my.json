@@ -1,1792 +1,1792 @@
 {
-  "acceptOnScrollText": "လက်ခံရန် အောက်သို့ လှိမ့်ပါ",
-  "acceptText": "လက်ခံပြီး ဖျောက်ပါ",
-  "account": {
-    "accountTitle": "အကောင့်",
-    "copy": "လိပ်စာ မိတ္တူကူး",
-    "delete": "အကောင့် ဖျက်ရန်",
-    "export": ".json ထုတ်ယူရန်",
-    "rename": "အကောင့် အမည်ပြောင်းရန်",
-    "switch": "အကောင့် ပြောင်းရန်",
-    "walletAddress": "ပိုက်ဆံအိတ် လိပ်စာ"
-  },
-  "accountAddressText": "အကောင့် လိပ်စာ",
-  "accountSettings": {
-    "confirmation": {
-      "description": "လက်မှတ်ရေးမီ လုပ်ငန်းရယူနည်း သွားလာမှုများကို ပြသသည့် ပေါ့ပ်အပ် ပြကွက်",
-      "title": "ဂရန်စန့် အတည်ပြုချက် ပိတ်ရန်"
+    "acceptOnScrollText": "လက်ခံရန် အောက်သို့ လှိမ့်ပါ",
+    "acceptText": "လက်ခံပြီး ဖျောက်ပါ",
+    "account": {
+        "accountTitle": "အကောင့်",
+        "copy": "လိပ်စာ မိတ္တူကူး",
+        "delete": "အကောင့် ဖျက်ရန်",
+        "export": ".json ထုတ်ယူရန်",
+        "rename": "အကောင့် အမည်ပြောင်းရန်",
+        "switch": "အကောင့် ပြောင်းရန်",
+        "walletAddress": "ပိုက်ဆံအိတ် လိပ်စာ"
     },
-    "disable": "ပိတ်ရန်",
-    "disabled": "ပိတ်ထားပြီး",
-    "enterPassword": "လျှို့ဝှက်နံပါတ် ထည့်ပါ",
-    "googleOnly": "{Google} အကောင့်များသာ",
-    "hint": "အကောင့် ဆက်တင်တွင် ထိန်းချုပ် ပြန်ဖွင့်နိုင်သည်",
-    "signature": {
-      "description": "ငွေလွှဲစာ ရေးသားရာတွင် လျှို့ဝှက်နံပါတ် ထည့်ရန် လိုအပ်မှုကို ဖွင့်/ပိတ် ပြုလုပ်နိုင်သည်",
-      "title": "လျှို့ဝှက်နံပါတ် အတည်ပြုချက် ပိတ်ရန်"
+    "accountAddressText": "အကောင့် လိပ်စာ",
+    "accountSettings": {
+        "confirmation": {
+            "description": "လက်မှတ်ရေးမီ လုပ်ငန်းရယူနည်း သွားလာမှုများကို ပြသသည့် ပေါ့ပ်အပ် ပြကွက်",
+            "title": "ဂရန်စန့် အတည်ပြုချက် ပိတ်ရန်"
+        },
+        "disable": "ပိတ်ရန်",
+        "disabled": "ပိတ်ထားပြီး",
+        "enterPassword": "လျှို့ဝှက်နံပါတ် ထည့်ပါ",
+        "googleOnly": "{Google} အကောင့်များသာ",
+        "hint": "အကောင့် ဆက်တင်တွင် ထိန်းချုပ် ပြန်ဖွင့်နိုင်သည်",
+        "signature": {
+            "description": "ငွေလွှဲစာ ရေးသားရာတွင် လျှို့ဝှက်နံပါတ် ထည့်ရန် လိုအပ်မှုကို ဖွင့်/ပိတ် ပြုလုပ်နိုင်သည်",
+            "title": "လျှို့ဝှက်နံပါတ် အတည်ပြုချက် ပိတ်ရန်"
+        },
+        "title": "အကောင့် ဆက်တင်"
     },
-    "title": "အကောင့် ဆက်တင်"
-  },
-  "accountText": "အကောင့် | အကောင့်များ",
-  "addAsset": {
-    "add": "ထည့်ရန်",
-    "AddAssetToken": {
-      "switchBtn": "စိစစ်ပြီးသော ပစ္စည်းများသာ",
-      "title": "ငွေကြေး"
+    "accountText": "အကောင့် | အကောင့်များ",
+    "addAsset": {
+        "add": "ထည့်ရန်",
+        "AddAssetToken": {
+            "switchBtn": "စိစစ်ပြီးသော ပစ္စည်းများသာ",
+            "title": "ငွေကြေး"
+        },
+        "alreadyAttached": "တိုကင်ကို ယခင်က ထည့်ပြီးသား",
+        "approved": "ပစ္စည်းကို လူမှုထုက အတည်ပြုပြီး",
+        "assetType": {
+            "nft": "NFT | NFTs",
+            "token": "တိုကင် | တိုကင်များ"
+        },
+        "empty": "တိုကင် မတွေ့ပါ",
+        "pinAsset": "ပစ္စည်းကို ပင်ထားရန်",
+        "scam": "လိမ်လည်",
+        "searchInputText": "Asset ID၊ အမည် သို့မဟုတ် တစ်ကာဖြင့် ရှာရန်",
+        "success": "{symbol} ပစ္စည်းကို အောင်မြင်စွာ ထည့်ပြီးပြီး!",
+        "understand": "နားလည်ပါပြီ",
+        "unknown": "မသိသော အရင်းအမြစ်",
+        "unpinAsset": "ပင်ထားမှု ဖြုတ်ရန်",
+        "warningMessage": "{assetType} ယင်း | {assetTypePlural} များ",
+        "warningMessageText": "ပရောဂျက်များကို ကိုယ်စားပြုသည်ဟု ဆိုထားသော ရှိပြီးသား {assetTypePlural} ၏ ဗားရှင်းအတုများ ဖန်တီးခြင်းအပါအဝင် {assetType} တစ်ခုကို မည်သူမဆို ဖန်တီးနိုင်သည်။\n{purchaseAssetType} ကို သင်ဝယ်ယူပါက၊ ၎င်းကို ပြန်လည်ရောင်းချနိုင်မည်မဟုတ်ပေ။",
+        "warningTitle": "သင်၏ကိုယ်ပိုင်စွန့်စားမှုဖြင့်ကုန်သွယ်မှု။"
     },
-    "alreadyAttached": "တိုကင်ကို ယခင်က ထည့်ပြီးသား",
-    "approved": "ပစ္စည်းကို လူမှုထုက အတည်ပြုပြီး",
-    "assetType": {
-      "nft": "NFT | NFTs",
-      "token": "တိုကင် | တိုကင်များ"
+    "addAssetsText": "ပစ္စည်း ထည့်ရန် | ပစ္စည်းများ ထည့်ရန်",
+    "addAssetText": "ပစ္စည်း ထည့်ရန်",
+    "addLiquidity": {
+        "title": "ရေကြွယ်ဝမှု ထည့်ရန်"
     },
-    "empty": "တိုကင် မတွေ့ပါ",
-    "pinAsset": "ပစ္စည်းကို ပင်ထားရန်",
-    "scam": "လိမ်လည်",
-    "searchInputText": "Asset ID၊ အမည် သို့မဟုတ် တစ်ကာဖြင့် ရှာရန်",
-    "success": "{symbol} ပစ္စည်းကို အောင်မြင်စွာ ထည့်ပြီးပြီး!",
-    "understand": "နားလည်ပါပြီ",
-    "unknown": "မသိသော အရင်းအမြစ်",
-    "unpinAsset": "ပင်ထားမှု ဖြုတ်ရန်",
-    "warningMessage": "{assetType} ယင်း | {assetTypePlural} များ",
-    "warningMessageText": "Anyone can create a {assetType}, including creating fake versions of existing {assetTypePlural} that claim to represent projects.\nIf you purchase {purchaseAssetType}, you may not be able to sell it back.",
-    "warningTitle": "Trade at your own risk!"
-  },
-  "addAssetsText": "ပစ္စည်း ထည့်ရန် | ပစ္စည်းများ ထည့်ရန်",
-  "addAssetText": "ပစ္စည်း ထည့်ရန်",
-  "addLiquidity": {
-    "title": "ရေကြွယ်ဝမှု ထည့်ရန်"
-  },
-  "addressBook": {
-    "addContact": "အဆက်အသွယ် ထည့်ရန်",
-    "btn": {
-      "enterName": "အမည် ထည့်ပါ",
-      "present": "ရှိပြီးသား",
-      "saveChanges": "ပြောင်းလဲမှုများ သိမ်းရန်"
+    "addressBook": {
+        "addContact": "အဆက်အသွယ် ထည့်ရန်",
+        "btn": {
+            "enterName": "အမည် ထည့်ပါ",
+            "present": "ရှိပြီးသား",
+            "saveChanges": "ပြောင်းလဲမှုများ သိမ်းရန်"
+        },
+        "detected": "လိပ်စာ အသစ်ကို တွေ့ရှိ",
+        "dialogTitle": "သင်၏ အဆက်အသွယ်များ",
+        "identity": "ဘလော့ချိန်းပေါ် အမည်အသား",
+        "input": "လိပ်စာ ထည့်ပါ သို့မဟုတ် အဆက်အသွယ် ရွေးပါ",
+        "myAccounts": "ကျွန်ုပ်၏ အကောင့်များ",
+        "myBook": "ကျွန်ုပ်၏ စာအုပ်",
+        "noContacts": "သင်၏ အဆက်အသွယ်များ မရှိသေးပါ",
+        "noFoundRecords": "မှတ်တမ်း မတွေ့ပါ",
+        "none": "မရှိ",
+        "notSoraAddress": "ဤလိပ်စာကို အောက်ပါ {Sora} လိပ်စာအဖြစ် သိမ်းဆည်းပါမည်။ လက်ခံသူသည် {Sora} ကွင်းဆက်သို့ ဝင်ရောက်နိုင်ကြောင်း သေချာပါစေ။",
+        "options": {
+            "delete": "ဖျက်",
+            "edit": "အဆက်အသွယ် တည်းဖြတ်",
+            "send": "တိုကင်များ ပို့ရန်"
+        },
+        "save": "အဆက်အသွယ် အဖြစ် သိမ်းရန်",
+        "searchPlaceholder": "လိပ်စာ၊ အမည် သို့မဟုတ် အမည်အသား ဖြင့် ရှာရန်",
+        "selectContact": "အဆက်အသွယ် ရွေးချယ်",
+        "tooltip": "အမည်နှင့် လိပ်စာ ဖြည့်ပြီး အဆက်အသွယ်များကို စုပေါင်းထားကာ စနစ်တကျ လုပ်ဆောင်နိုင်ရန်"
     },
-    "detected": "လိပ်စာ အသစ်ကို တွေ့ရှိ",
-    "dialogTitle": "သင်၏ အဆက်အသွယ်များ",
-    "identity": "ဘလော့ချိန်းပေါ် အမည်အသား",
-    "input": "လိပ်စာ ထည့်ပါ သို့မဟုတ် အဆက်အသွယ် ရွေးပါ",
-    "myAccounts": "ကျွန်ုပ်၏ အကောင့်များ",
-    "myBook": "ကျွန်ုပ်၏ စာအုပ်",
-    "noContacts": "သင်၏ အဆက်အသွယ်များ မရှိသေးပါ",
-    "noFoundRecords": "မှတ်တမ်း မတွေ့ပါ",
-    "none": "မရှိ",
-    "notSoraAddress": "This address will be saved as {Sora} address below. Make sure the recipient can access the {Sora} chain:",
-    "options": {
-      "delete": "ဖျက်",
-      "edit": "အဆက်အသွယ် တည်းဖြတ်",
-      "send": "တိုကင်များ ပို့ရန်"
+    "addressText": "လိပ်စာ",
+    "alerts": {
+        "alertFrequencyTitle": "သတိပေးချက် အကြိမ်နှုန်း",
+        "alertsCreateTitle": "စျေးနှုန်း သတိပေးချက် ပြင်ဆင်ရန်",
+        "alertsTitle": "သတိပေးချက်များ",
+        "alertsTooltip": "စျေးနှုန်း သတိပေးချက်များသည် သင်သတ်မှတ်ထားသောတန်ဖိုးသို့ ရောက်သည့်အခါ အသိပေးပို့ပေးသော သတိပေးချက်များ ဖြစ်သည်",
+        "alertTypeTitle": "သတိပေးချက် အမျိုးအစား",
+        "always": "အမြဲတမ်း",
+        "createBtn": "စျေးနှုန်း သတိပေးချက် အသစ် ဖန်တီးရန်",
+        "currentPrice": "လက်ရှိ စျေးနှုန်း",
+        "delete": "သတိပေးချက် ဖျက်ရန်",
+        "drop": "အောက်သို့ ကျသွားလျှင်",
+        "edit": "သတိပေးချက် တည်းဖြတ်ရန်",
+        "enableSwitch": "ပစ္စည်း ထည့်ဝင် သတိပေးချက်များ ဖွင့်ရန်",
+        "finishBtn": "သတိပေးချက် ပြင်ဆင်ခြင်း ပြီးစီးရန်",
+        "frequencyTooltip": "'တစ်ကြိမ်' သို့မဟုတ် 'အမြဲတမ်း' ကို ရွေးချယ်ပြီး သင်ရရှိမည့် သတိပေးချက် အကြိမ်နှုန်းကို သတ်မှတ်ပါ။ 'တစ်ကြိမ်' သည် လုံလောက်သောအခါ သတိပေးချက်တစ်ကြိမ်သာ ပေးပို့မည်၊ 'အမြဲတမ်း' သည် အကန့်အသတ်ကို ကျော်လွန်တိုင်း ပေးပို့မည်",
+        "noSupportMsg": "သင့်ဘရောက်ဇာတွင် သတိပေးချက်များ မထောက်ပံ့ပါ",
+        "once": "တစ်ကြိမ်",
+        "onDropDesc": "{token} သည် {price} ထက် အောက်သို့ ကျသွားသည်",
+        "onRaiseDesc": "{token} သည် {price} ထက် အထက်သို့ တက်လာသည်",
+        "raise": "အထက်သို့ တက်လာလျှင်",
+        "typeTooltip": "ဈေးနှုန်း အရေးကြီးပြောင်းလဲမှုများကို ခြေရာခံရန် 'အောက်သို့ ကျသွားလျှင်' သို့မဟုတ် 'အထက်သို့ တက်လာလျှင်' ကို ရွေးချယ်ပါ"
     },
-    "save": "အဆက်အသွယ် အဖြစ် သိမ်းရန်",
-    "searchPlaceholder": "လိပ်စာ၊ အမည် သို့မဟုတ် အမည်အသား ဖြင့် ရှာရန်",
-    "selectContact": "အဆက်အသွယ် ရွေးချယ်",
-    "tooltip": "အမည်နှင့် လိပ်စာ ဖြည့်ပြီး အဆက်အသွယ်များကို စုပေါင်းထားကာ စနစ်တကျ လုပ်ဆောင်နိုင်ရန်"
-  },
-  "addressText": "လိပ်စာ",
-  "alerts": {
-    "alertFrequencyTitle": "သတိပေးချက် အကြိမ်နှုန်း",
-    "alertsCreateTitle": "စျေးနှုန်း သတိပေးချက် ပြင်ဆင်ရန်",
-    "alertsTitle": "သတိပေးချက်များ",
-    "alertsTooltip": "စျေးနှုန်း သတိပေးချက်များသည် သင်သတ်မှတ်ထားသောတန်ဖိုးသို့ ရောက်သည့်အခါ အသိပေးပို့ပေးသော သတိပေးချက်များ ဖြစ်သည်",
-    "alertTypeTitle": "သတိပေးချက် အမျိုးအစား",
-    "always": "အမြဲတမ်း",
-    "createBtn": "စျေးနှုန်း သတိပေးချက် အသစ် ဖန်တီးရန်",
-    "currentPrice": "လက်ရှိ စျေးနှုန်း",
-    "delete": "သတိပေးချက် ဖျက်ရန်",
-    "drop": "အောက်သို့ ကျသွားလျှင်",
-    "edit": "သတိပေးချက် တည်းဖြတ်ရန်",
-    "enableSwitch": "ပစ္စည်း ထည့်ဝင် သတိပေးချက်များ ဖွင့်ရန်",
-    "finishBtn": "သတိပေးချက် ပြင်ဆင်ခြင်း ပြီးစီးရန်",
-    "frequencyTooltip": "'တစ်ကြိမ်' သို့မဟုတ် 'အမြဲတမ်း' ကို ရွေးချယ်ပြီး သင်ရရှိမည့် သတိပေးချက် အကြိမ်နှုန်းကို သတ်မှတ်ပါ။ 'တစ်ကြိမ်' သည် လုံလောက်သောအခါ သတိပေးချက်တစ်ကြိမ်သာ ပေးပို့မည်၊ 'အမြဲတမ်း' သည် အကန့်အသတ်ကို ကျော်လွန်တိုင်း ပေးပို့မည်",
-    "noSupportMsg": "သင့်ဘရောက်ဇာတွင် သတိပေးချက်များ မထောက်ပံ့ပါ",
-    "once": "တစ်ကြိမ်",
-    "onDropDesc": "{token} သည် {price} ထက် အောက်သို့ ကျသွားသည်",
-    "onRaiseDesc": "{token} သည် {price} ထက် အထက်သို့ တက်လာသည်",
-    "raise": "အထက်သို့ တက်လာလျှင်",
-    "typeTooltip": "ဈေးနှုန်း အရေးကြီးပြောင်းလဲမှုများကို ခြေရာခံရန် 'အောက်သို့ ကျသွားလျှင်' သို့မဟုတ် 'အထက်သို့ တက်လာလျှင်' ကို ရွေးချယ်ပါ"
-  },
-  "amountText": "ပမာဏ",
-  "appName": "{AppName}",
-  "asset": {
-    "receive": "{symbol} လက်ခံရန်",
-    "remove": "ပစ္စည်း ဖယ်ရှားရန်",
-    "select": "ပစ္စည်း တစ်ခု ရွေးချယ်ရန်"
-  },
-  "assetDeposit": "Asset balance has been deposited",
-  "assetOwner": {
-    "accountWithAccess": "Account with SBT access",
-    "addRegulatedAsset": "Add another regulated asset",
-    "addRegulatedAssets": "Add regulated assets",
-    "attachedRegulatedAssets": "Attached regulated assets",
-    "createRegulatedAsset": "Create new regulated asset",
-    "createSbt": "Create {type}",
-    "dialog": {
-      "addExisting": "Add an existing asset",
-      "addExistingDesc": "Add an already created asset for the SBT",
-      "createAsset": "Create a new asset",
-      "createAssetDesc": "Set up a new permissioned asset for the {type}",
-      "enterAddress": "ထုတ်ပေးရန် လိပ်စာ ထည့်ပါ",
-      "issueAccess": "Issue access",
-      "pickDate": "Pick a day",
-      "selectAccessEnd": "Select when access will end",
-      "selectDate": "Select date"
+    "amountText": "ပမာဏ",
+    "appName": "{AppName}",
+    "asset": {
+        "receive": "{symbol} လက်ခံရန်",
+        "remove": "ပစ္စည်း ဖယ်ရှားရန်",
+        "select": "ပစ္စည်း တစ်ခု ရွေးချယ်ရန်"
     },
-    "guide": {
-      "createToken": "သင့်တိုကင်ကို ဖန်တီးပါ",
-      "createTokenDesc": "NFT နှင့် SBT ကဲ့သို့ အမျိုးအစားပေါင်းစုံဖြင့် ရရှိနိုင်သော သင့်ရဲ့ထူးခြားသောတိုကင်ကို SORA ကွန်ယက်၏ ခိုင်မာလုံခြုံသော အောက်ခံမျူးမြော်မှုကို အသုံးပြုပြီး လွယ်ကူစွာ ထုတ်မိတ်ပါတယ်",
-      "disclaimerSbt": "လုပ်ငန်းစဉ်တစ်လျှောက် မျက်နှာစာကို ဖွင့်ထားပါ။ ပိတ်ခြင်း သို့မဟုတ် တခြားနေရာသို့ ရွှေ့ခြင်း ပြုလုပ်ပါက အစအဆုံးမှ ပြန်စရမည်။ အချိန်ကျော်လွန်မှု မဖြစ်အောင် အဆင့်များကို မြန်မြန် ပြီးဆုံးပါ",
-      "stepOneDesc": "သင်ကိုယ်တိုင် ဖန်တီးထားပြီး စီမံခန့်ခွဲထားသော ပစ္စည်းများကို ရွေးချယ် သို့မဟုတ် ဖန်တီးပါ။ ၎င်းတို့မှာ သင်ထိန်းချုပ် စီမံခန့်ခွဲနိုင်သော ပစ္စည်းများ ဖြစ်သည်",
-      "stepOneTitle": "ထိန်းသိမ်းထားသော ပစ္စည်းများကို ရွေးချယ်/ဖန်တီးရန်",
-      "stepThreeDesc": "SBT ဆက်တင် ပြီးဆုံးရန် အောင်မြင်စွာ ဖန်တီးသည့် လုပ်ငန်းရယူနည်းကို စစ်ဆေးပြီး လက်မှတ်ရေးထိုးပါ",
-      "stepThreeTitle": "လုပ်ငန်းရယူနည်းကို စစ်ဆေးပြီး လက်မှတ်ရေးထိုးရန်",
-      "stepTwoDesc": "SBT နာမည်၊ တစ်ကာ (ticker) နှင့် အိုင်ကွန် ကဲ့သို့ အရေးကြီးသော အချက်အလက်များကို ပေးပါ",
-      "stepTwoTitle": "SBT အသေးစိတ် ထည့်ရန်",
-      "title": "{type} တစ်ခုကို ဘယ်လိုဖန်တီးမလဲ"
+    "assetDeposit": "ပစ္စည်းလက်ကျန်ကို အပ်နှံပြီးပါပြီ။",
+    "assetOwner": {
+        "accountWithAccess": "SBT အသုံးပြုခွင့်ရှိသော အကောင့်",
+        "addRegulatedAsset": "နောက်ထပ် ထိန်းချုပ်ထားသော ပိုင်ဆိုင်မှုကို ထည့်ပါ။",
+        "addRegulatedAssets": "ထိန်းချုပ်ထားသော ပိုင်ဆိုင်မှုများကို ထည့်ပါ။",
+        "attachedRegulatedAssets": "စည်းကြပ်ထားသော ပိုင်ဆိုင်မှုများ",
+        "createRegulatedAsset": "ထိန်းချုပ်ထားသော ပိုင်ဆိုင်မှုအသစ်ကို ဖန်တီးပါ။",
+        "createSbt": "{type} ဖန်တီးပါ",
+        "dialog": {
+            "addExisting": "ရှိပြီးသားအရာတစ်ခုကို ထည့်ပါ။",
+            "addExistingDesc": "SBT အတွက် ဖန်တီးပြီးသော ပိုင်ဆိုင်မှုတစ်ခုကို ထည့်ပါ။",
+            "createAsset": "ပိုင်ဆိုင်မှုအသစ်တစ်ခု ဖန်တီးပါ။",
+            "createAssetDesc": "{type} အတွက် ခွင့်ပြုထားသော ပိုင်ဆိုင်မှုအသစ်ကို စနစ်ထည့်သွင်းပါ",
+            "enterAddress": "ထုတ်ပေးရန် လိပ်စာ ထည့်ပါ",
+            "issueAccess": "ဝင်ခွင့်ကိစ္စ",
+            "pickDate": "တစ်ရက်ကို ရွေးပါ။",
+            "selectAccessEnd": "အသုံးပြုခွင့် ကုန်ဆုံးမည့်အချိန်ကို ရွေးပါ။",
+            "selectDate": "ရက်စွဲကို ရွေးပါ။"
+        },
+        "guide": {
+            "createToken": "သင့်တိုကင်ကို ဖန်တီးပါ",
+            "createTokenDesc": "NFT နှင့် SBT ကဲ့သို့ အမျိုးအစားပေါင်းစုံဖြင့် ရရှိနိုင်သော သင့်ရဲ့ထူးခြားသောတိုကင်ကို SORA ကွန်ယက်၏ ခိုင်မာလုံခြုံသော အောက်ခံမျူးမြော်မှုကို အသုံးပြုပြီး လွယ်ကူစွာ ထုတ်မိတ်ပါတယ်",
+            "disclaimerSbt": "လုပ်ငန်းစဉ်တစ်လျှောက် မျက်နှာစာကို ဖွင့်ထားပါ။ ပိတ်ခြင်း သို့မဟုတ် တခြားနေရာသို့ ရွှေ့ခြင်း ပြုလုပ်ပါက အစအဆုံးမှ ပြန်စရမည်။ အချိန်ကျော်လွန်မှု မဖြစ်အောင် အဆင့်များကို မြန်မြန် ပြီးဆုံးပါ",
+            "stepOneDesc": "သင်ကိုယ်တိုင် ဖန်တီးထားပြီး စီမံခန့်ခွဲထားသော ပစ္စည်းများကို ရွေးချယ် သို့မဟုတ် ဖန်တီးပါ။ ၎င်းတို့မှာ သင်ထိန်းချုပ် စီမံခန့်ခွဲနိုင်သော ပစ္စည်းများ ဖြစ်သည်",
+            "stepOneTitle": "ထိန်းသိမ်းထားသော ပစ္စည်းများကို ရွေးချယ်/ဖန်တီးရန်",
+            "stepThreeDesc": "SBT ဆက်တင် ပြီးဆုံးရန် အောင်မြင်စွာ ဖန်တီးသည့် လုပ်ငန်းရယူနည်းကို စစ်ဆေးပြီး လက်မှတ်ရေးထိုးပါ",
+            "stepThreeTitle": "လုပ်ငန်းရယူနည်းကို စစ်ဆေးပြီး လက်မှတ်ရေးထိုးရန်",
+            "stepTwoDesc": "SBT နာမည်၊ တစ်ကာ (ticker) နှင့် အိုင်ကွန် ကဲ့သို့ အရေးကြီးသော အချက်အလက်များကို ပေးပါ",
+            "stepTwoTitle": "SBT အသေးစိတ် ထည့်ရန်",
+            "title": "{type} တစ်ခုကို ဘယ်လိုဖန်တီးမလဲ"
+        },
+        "issueSbtAccess": "{type} အားအသုံးပြုခွင့် ပေးရန်",
+        "letsStartBtn": "စတင်ကြမည်",
+        "orSelectExisting": "သို့မဟုတ် ရှိပြီးသားကို ရွေးချယ်ပါ",
+        "ownerSbtTitle": "သင့် {type}",
+        "permissionedAssets": "ခွင့်ပြုထားသော ပစ္စည်းများ",
+        "regulatedAssetsConnected": "ထိန်းသိမ်းထားသော ပစ္စည်းများ ချိတ်ဆက်ပြီး",
+        "regulatedPools": "ထိန်းသိမ်းထားသော ကန်များ",
+        "sbtCreation": {
+            "addAssets": "SBT သို့ ပစ္စည်းများ ထည့်ရန်",
+            "addDescription": "SBT အသေးစိတ် ထည့်ရန်",
+            "addMeta": "SBT အသေးစိတ် ထည့်ရန်",
+            "preview": "SBT အစမ်းကြည့်ရှုမှု"
+        },
+        "sbtManagers": "{type} မန်နေဂျာများ",
+        "selectExisting": "ရှိပြီးသားကို ရွေးပါ",
+        "startIssue": "အကောင့်များအတွက် SBT အသုံးပြုခွင့် စတင်ပေးရန်",
+        "you": "သင်"
     },
-    "issueSbtAccess": "{type} အားအသုံးပြုခွင့် ပေးရန်",
-    "letsStartBtn": "စတင်ကြမည်",
-    "orSelectExisting": "သို့မဟုတ် ရှိပြီးသားကို ရွေးချယ်ပါ",
-    "ownerSbtTitle": "သင့် {type}",
-    "permissionedAssets": "ခွင့်ပြုထားသော ပစ္စည်းများ",
-    "regulatedAssetsConnected": "ထိန်းသိမ်းထားသော ပစ္စည်းများ ချိတ်ဆက်ပြီး",
-    "regulatedPools": "ထိန်းသိမ်းထားသော ကန်များ",
-    "sbtCreation": {
-      "addAssets": "SBT သို့ ပစ္စည်းများ ထည့်ရန်",
-      "addDescription": "SBT အသေးစိတ် ထည့်ရန်",
-      "addMeta": "SBT အသေးစိတ် ထည့်ရန်",
-      "preview": "SBT အစမ်းကြည့်ရှုမှု"
+    "assets": {
+        "assetId": "ပိုင်ဆိုင်မှု ID",
+        "balance": {
+            "bonded": "ချည်နှောင်ထားသည်။",
+            "frozen": "ဖြူဖြူ",
+            "locked": "သော့ခတ်ထားသည်။",
+            "reserved": "လက်ဝယ်ရှိတယ်။",
+            "total": "စုစုပေါင်း",
+            "transferable": "လွှဲပြောင်းနိုင်သော"
+        },
+        "bridge": "တံတား",
+        "copied": "ကူးယူထားသည်။",
+        "copy": "ပိုင်ဆိုင်မှု ID ကို ကူးယူပါ။",
+        "details": "အသေးစိတ်",
+        "empty": "ပိုင်ဆိုင်မှု မရှိဘူး။",
+        "liquidity": "ရေကြွယ်ဝမှု ထည့်ရန်",
+        "receive": "@:account.copy",
+        "send": "@:sendText",
+        "swap": "@:swapText",
+        "totalAssetsValue": "စုစုပေါင်းပိုင်ဆိုင်မှုတန်ဖိုး-"
     },
-    "sbtManagers": "{type} Managers",
-    "selectExisting": "ရှိပြီးသားကို ရွေးပါ",
-    "startIssue": "အကောင့်များအတွက် SBT အသုံးပြုခွင့် စတင်ပေးရန်",
-    "you": "သင်"
-  },
-  "assets": {
-    "assetId": "Asset ID",
-    "balance": {
-      "bonded": "Bonded",
-      "frozen": "Frozen",
-      "locked": "Locked",
-      "reserved": "Reserved",
-      "total": "Total",
-      "transferable": "Transferable"
+    "backText": "နောက်သို့",
+    "balanceText": "လက်ကျန်",
+    "blockNumberText": "ဘလောက် နံပါတ်",
+    "bridge": {
+        "connectWallets": "အကောင့်တစ်ခုချင်းစီ၏ လုပ်ဆောင်မှု မှတ်တမ်းများကို ကြည့်ရှုရန် Wallet များကို ချိတ်ဆက်ပါ",
+        "externalMinDeposit": "{network} အနည်းဆုံး ထည့်သွင်းငွေ",
+        "externalMinDepositTooltip": "ဘရစ်ဂ် လွှဲပြောင်းပြီးနောက် သင့် {network} အကောင့်တွင် ကျန်ရှိရမည့် အနည်းဆုံး {symbol} လက်ကျန်",
+        "externalTransferFee": "{network} {XCM} အခကြေးငွေ",
+        "externalTransferFeeTooltip": "{network} ကွန်ယက်သို့ ဘရစ်ဂ် လုပ်ငန်းရယူနည်း ပို့သောအခါ လွှဲပြောင်းသော ပမာဏမှ ကိစ္စအနည်းငယ်သော ကုန်ကျစရိတ်တစ်ခု ချထားမည်",
+        "info": "{Sora} နှင့် {Ethereum} ကွန်ယက်များအကြား တိုကင်များကို လွယ်ကူစွာ ပြောင်းလဲပါ",
+        "limitMessage": "လတ်တလောတွင် {Sora} ကွန်ယက်၏ တည်ငြိမ်မှုနှင့် လုံခြုံမှုကို သေချာစေရန် ဘရစ်ဂ် အတွက် {type} {amount} {symbol} ကန့်သတ်ချက် ရှိပါသည်။ သင်၏ နားလည်မှုအတွက် ကျေးဇူးတင်ပါသည်",
+        "networkInfo": "{Sora} ကွန်ယက်ကို ဘာနှင့် ဘရစ်ဂ် လုပ်မလဲ៖",
+        "next": "နောက်တစ်ခု",
+        "notRegisteredAsset": "{assetSymbol} ပစ္စည်းကို မှတ်ပုံတင် မလုပ်ရသေးပါ",
+        "selectNetwork": "ကွန်ယက်ကို ရွေးပါ",
+        "soraNetworkFee": "{Sora} ကွန်ရက် အခကြေးငွေ",
+        "title": "ဘရစ်ဂ်"
     },
-    "bridge": "Bridge",
-    "copied": "Copied!",
-    "copy": "Copy Asset ID",
-    "details": "Details",
-    "empty": "There are no assets",
-    "liquidity": "ရေကြွယ်ဝမှု ထည့်ရန်",
-    "receive": "@:account.copy",
-    "send": "@:sendText",
-    "swap": "@:swapText",
-    "totalAssetsValue": "Total assets value:"
-  },
-  "backText": "နောက်သို့",
-  "balanceText": "လက်ကျန်",
-  "blockNumberText": "ဘလောက် နံပါတ်",
-  "bridge": {
-    "connectWallets": "အကောင့်တစ်ခုချင်းစီ၏ လုပ်ဆောင်မှု မှတ်တမ်းများကို ကြည့်ရှုရန် Wallet များကို ချိတ်ဆက်ပါ",
-    "externalMinDeposit": "{network} အနည်းဆုံး ထည့်သွင်းငွေ",
-    "externalMinDepositTooltip": "ဘရစ်ဂ် လွှဲပြောင်းပြီးနောက် သင့် {network} အကောင့်တွင် ကျန်ရှိရမည့် အနည်းဆုံး {symbol} လက်ကျန်",
-    "externalTransferFee": "{network} {XCM} fee",
-    "externalTransferFeeTooltip": "{network} ကွန်ယက်သို့ ဘရစ်ဂ် လုပ်ငန်းရယူနည်း ပို့သောအခါ လွှဲပြောင်းသော ပမာဏမှ ကိစ္စအနည်းငယ်သော ကုန်ကျစရိတ်တစ်ခု ချထားမည်",
-    "info": "{Sora} နှင့် {Ethereum} ကွန်ယက်များအကြား တိုကင်များကို လွယ်ကူစွာ ပြောင်းလဲပါ",
-    "limitMessage": "လတ်တလောတွင် {Sora} ကွန်ယက်၏ တည်ငြိမ်မှုနှင့် လုံခြုံမှုကို သေချာစေရန် ဘရစ်ဂ် အတွက် {type} {amount} {symbol} ကန့်သတ်ချက် ရှိပါသည်။ သင်၏ နားလည်မှုအတွက် ကျေးဇူးတင်ပါသည်",
-    "networkInfo": "{Sora} ကွန်ယက်ကို ဘာနှင့် ဘရစ်ဂ် လုပ်မလဲ៖",
-    "next": "နောက်တစ်ခု",
-    "notRegisteredAsset": "{assetSymbol} ပစ္စည်းကို မှတ်ပုံတင် မလုပ်ရသေးပါ",
-    "selectNetwork": "ကွန်ယက်ကို ရွေးပါ",
-    "soraNetworkFee": "{Sora} Network Fee",
-    "title": "ဘရစ်ဂ်"
-  },
-  "bridgeHistory": {
-    "clearHistory": "မှတ်တမ်း ရှင်းရန်",
-    "empty": "သင့်လုပ်ဆောင်မှုများ ဤနေရာတွင် ပေါ်လာမည်။",
-    "filterPlaceholder": "Asset ID သို့မဟုတ် နိမိတ်လက္ခဏာ ဖြင့် စစ်ထုတ်ရန်",
-    "restoreHistory": "မှတ်တမ်း ပြန်ဖော်",
-    "showHistory": "မှတ်တမ်း ပြရန်",
-    "statusAction": "လုပ်ဆောင်မှု လိုအပ်",
-    "title": "မှတ်တမ်း"
-  },
-  "bridgeText": "Bridge",
-  "bridgeTransaction": {
-    "allowToken": "Allow {AppName} to use your {tokenSymbol}",
-    "approveToken": "သတိပြုရန် — တိုကင်အား တစ်ကြိမ်ပဲ အတည်ပြုရန် လိုအပ်ပါသည်။ သင်၏ အ扩展တွင် တိုကင် အတည်ပြုရန် တောင်းဆိုချက်များ များများရှိလျှင် နောက်ဆုံးတောင်းဆိုချက်ကိုသာ အတည်ပြု၍ အခြားတောင်းဆိုချက်များကို ပယ်ချပါ",
-    "blocksLeft": "{count} blocks left...",
-    "for": " for ",
-    "networkInfo": {
-      "amount": "ပမာဏ",
-      "date": "Date",
-      "status": "Status",
-      "transactionFee": "Transaction Fee"
+    "bridgeHistory": {
+        "clearHistory": "မှတ်တမ်း ရှင်းရန်",
+        "empty": "သင့်လုပ်ဆောင်မှုများ ဤနေရာတွင် ပေါ်လာမည်။",
+        "filterPlaceholder": "Asset ID သို့မဟုတ် နိမိတ်လက္ခဏာ ဖြင့် စစ်ထုတ်ရန်",
+        "restoreHistory": "မှတ်တမ်း ပြန်ဖော်",
+        "showHistory": "မှတ်တမ်း ပြရန်",
+        "statusAction": "လုပ်ဆောင်မှု လိုအပ်",
+        "title": "မှတ်တမ်း"
     },
-    "newTransaction": "Create new transaction",
-    "pending": "{network} transaction pending...",
-    "statuses": {
-      "done": "Complete",
-      "failed": "Transaction failed",
-      "pending": "Pending",
-      "waitingForConfirmation": "Waiting for confirmation..."
+    "bridgeText": "တံတား",
+    "bridgeTransaction": {
+        "allowToken": "သင်၏ {tokenSymbol} ကို အသုံးပြုရန် {AppName} အား ခွင့်ပြုပါ",
+        "approveToken": "သတိပြုရန် — တိုကင်အား တစ်ကြိမ်ပဲ အတည်ပြုရန် လိုအပ်ပါသည်။ သင်၏ အ扩展တွင် တိုကင် အတည်ပြုရန် တောင်းဆိုချက်များ များများရှိလျှင် နောက်ဆုံးတောင်းဆိုချက်ကိုသာ အတည်ပြု၍ အခြားတောင်းဆိုချက်များကို ပယ်ချပါ",
+        "blocksLeft": "{count} တုံးများ ကျန်သည်...",
+        "for": " အတွက် ",
+        "networkInfo": {
+            "amount": "ပမာဏ",
+            "date": "ရက်စွဲ",
+            "status": "အဆင့်အတန်း",
+            "transactionFee": "ငွေလွှဲခ"
+        },
+        "newTransaction": "အရောင်းအဝယ်အသစ်ဖန်တီးပါ။",
+        "pending": "{network} ငွေပေးငွေယူ ဆိုင်းငံ့နေသည်...",
+        "statuses": {
+            "done": "ပြီးအောင်",
+            "failed": "ငွေပေးငွေယူ မအောင်မြင်ပါ။",
+            "pending": "ဆိုင်းငံ့ထားသည်။",
+            "waitingForConfirmation": "အတည်ပြုချက်ကို စောင့်ဆိုင်းနေသည်..."
+        },
+        "title": "တံတားအရောင်းအဝယ်",
+        "transactionHash": "ငွေပေးငွေယူ hash"
     },
-    "title": "Bridge Transaction",
-    "transactionHash": "Transaction hash"
-  },
-  "bridgeTransferNotification": {
-    "addToken": "Add {symbol} to wallet",
-    "title": "Bridge transaction successful"
-  },
-  "browserNotificationDialog": {
-    "agree": "ထိုကဲ့သို့ အလားတူ နားလည်ပါပြီ",
-    "button": "အသိပေးချက်များ ဖွင့်ရန်",
-    "info": "သင့် Wallet အတွက် သက်ဆိုင်ရာ အပ်ဒိတ်များသာ ပေးပို့ပေးမည် — ဥပမာ လက်ကျန် ပမာဏ ပြောင်းလဲမှုများ",
-    "notificationBlocked": "{AppName} အကြောင်း အသိပေးချက်များကို လက်ခံရန် သင့် Browser ၏ အပြင်ကို အပြင် ဆက်တင်များတွင် အသိပေးချက်များကို ခွင့်ပြုပါ",
-    "pointer": "အသိပေးချက်များ ဖွင့်ရန် “Allow” ကို နှိပ်ပါ",
-    "rotateMessage": "ဤအတွေ့အကြုံကို လည်ပတ်အနေအထားတွင်သာ ရနိုင်သည်",
-    "rotatetitle": "ကျေးဇူးပြု၍ ကိရိယာကို လှည့်လိုက်ပါ",
-    "title": "အသိပေးချက် အပြင်အဆင်"
-  },
-  "browserNotificationLocalStorageOverride": {
-    "agree": "နားလည်ပါပြီ",
-    "info": "သင်၏ စက်အတွင်း ဆောင်ရွက်နေသည့် သိမ်းဆည်းရာ နေရာပြည့်နေပါသည်။ {AppName} ကို ဆက်လက် သုံးရန် သန့်ရှင်းရေး လုပ်ရမည်",
-    "title": "{AppName} ၏ စက်အတွင်း သိမ်းဆည်းမှု ရှင်းလင်းရန်"
-  },
-  "browserPermission": {
-    "btnAllow": "Allow access",
-    "btnGoToSettings": "Go to settings",
-    "desc": "To ensure the authenticity of documents and validate user identity for KYC verification, access to your device's camera is required.",
-    "disclaimer": "လိမ်လည်မှုကို တားဆီးရန် အချိန်နှင့်တပြေးညီ စာရွက်စာတမ်းကို ရိုက်ကူးရန် ကင်မရာ ခွင့်ပြုချက် လိုအပ်သည်",
-    "title": "ဘရောက်ဇာ ဆက်တင်များတွင် ကင်မရာ ခွင့်ပြုပါ"
-  },
-  "buttons": {
-    "chooseAToken": "တိုကင်ရွေးပါ",
-    "chooseToken": "တိုကင်ရွေးပါ",
-    "chooseTokens": "တိုကင်များရွေးပါ",
-    "enterAmount": "ပမာဏထည့်ပါ",
-    "max": "အများဆုံး"
-  },
-  "calculatingText": "Calculating",
-  "cancelText": "Cancel",
-  "changeAccountText": "Change account",
-  "changeNetworkText": "Change network in wallet",
-  "closeText": "Close",
-  "code": {
-    "allowanceError": "ကင်မရာ ရရှိနိုင်မှုနှင့် Browser ခွင့်ပြုချက်များကို စစ်ဆေးပါ",
-    "allowanceRequest": "ကင်မရာ အသုံးပြုရန် “Allow” ကို နှိပ်ပါ",
-    "camera": "ကင်မရာ",
-    "download": "QR ကုဒ် ဒေါင်းလုဒ်ရန်",
-    "import": "ပုံ တစ်ပုံ တင်သွင်းရန်",
-    "invalid": "QR ကုဒ် မတ်စပ်မှု မရှိပါ",
-    "receive": "လက်ခံရန်",
-    "scan": "ကင်မရာဖြင့် စကင်ဖတ်ရန်",
-    "upload": "QR စကင်ဖတ်ရန်"
-  },
-  "collapseText": "Collapse",
-  "comingSoonText": "Coming Soon",
-  "confirmNextTxFailure": {
-    "button": "Yes, I understand the risk",
-    "header": "Attention",
-    "info": "ဤလုပ်ငန်းရယူနည်းပြီးသွားသည်နှင့် သင့် XOR လက်ကျန်သည် {fee} XOR ထက် အနည်းငယ်နည်းသွားမည်။ ထို့ကြောင့် နောက်တစ်ကြိမ် အပိုင်းအခြား လုပ်ငန်းရယူနည်းအတွက် ကွန်ယက်ကြေး မပြုနိုင်တော့ပါ",
-    "payoff": "အခြားကွန်ယက်များမှ XOR ကို ရယူရန် ဘရစ်ဂ်ကို အသုံးပြုရမည်၊ အခြား {Sora} အကောင့်မှ XOR ကို လက်ခံရရှိမည် သို့မဟုတ် သင့်အကောင့်ရှိ တိုကင်များကို XOR သို့ ပြောင်းလဲရမည်"
-  },
-  "confirmSupply": {
-    "outputDescription": "ထွက်ရလဒ်မှာ ခန့်မှန်းချက်သာ ဖြစ်သည်။ စျေးနှုန်းသည် {slippageTolerance}% ထက် ပို၍ ပြောင်းလဲပါက သင်၏ လုပ်ငန်းရယူနည်းကို ပြန်လည် ပယ်ဖျက်မည်",
-    "title": "Your pool share will be"
-  },
-  "confirmText": "Confirm",
-  "confirmTransactionText": "Confirm transaction",
-  "connectedAccount": "Connected account",
-  "connectedText": "Connected",
-  "connectEthereumWalletText": "Connect {Ethereum} wallet",
-  "connection": {
-    "action": {
-      "learnMore": "Learn more about wallet connection",
-      "refresh": "Refresh"
+    "bridgeTransferNotification": {
+        "addToken": "ပိုက်ဆံအိတ်သို့ {symbol} ထည့်ပါ။",
+        "title": "တံတားအရောင်းအဝယ် အောင်မြင်သည်။"
     },
-    "disclaimer": "Please note that certain wallets may not be fully supported.",
-    "internalText": "You can create or import an existing {Sora} account to connect with your {wallet} account. All data that is stored by {wallet} is encrypted using built-in advanced encryption.",
-    "internalTitle": "Connect with {wallet}",
-    "list": {
-      "extensions": "Extensions",
-      "integrated": "Integrated"
+    "browserNotificationDialog": {
+        "agree": "ထိုကဲ့သို့ အလားတူ နားလည်ပါပြီ",
+        "button": "အသိပေးချက်များ ဖွင့်ရန်",
+        "info": "သင့် Wallet အတွက် သက်ဆိုင်ရာ အပ်ဒိတ်များသာ ပေးပို့ပေးမည် — ဥပမာ လက်ကျန် ပမာဏ ပြောင်းလဲမှုများ",
+        "notificationBlocked": "{AppName} အကြောင်း အသိပေးချက်များကို လက်ခံရန် သင့် Browser ၏ အပြင်ကို အပြင် ဆက်တင်များတွင် အသိပေးချက်များကို ခွင့်ပြုပါ",
+        "pointer": "အသိပေးချက်များ ဖွင့်ရန် “Allow” ကို နှိပ်ပါ",
+        "rotateMessage": "ဤအတွေ့အကြုံကို လည်ပတ်အနေအထားတွင်သာ ရနိုင်သည်",
+        "rotatetitle": "ကျေးဇူးပြု၍ ကိရိယာကို လှည့်လိုက်ပါ",
+        "title": "အသိပေးချက် အပြင်အဆင်"
     },
-    "selectAccount": "Select account to work with",
-    "wallet": {
-      "connected": "Connected",
-      "install": "Install",
-      "recommended": "Recommended"
-    }
-  },
-  "connectWalletText": "Connect account",
-  "connectWalletTextTooltip": "Connect to {Sora} Network with {PolkadotJs}",
-  "continueText": "Continue",
-  "copiedText": "Copied!",
-  "copiedWithValue": "{value} is copied!",
-  "copyPhraseText": "Copy Passphrase",
-  "copyWithValue": "Copy {value}",
-  "createPair": {
-    "deposit": "Deposit",
-    "firstLiquidityProvider": "You are the first liquidity provider",
-    "firstLiquidityProviderInfo": "The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.",
-    "firstSecondPoolTokens": "{first}-{second} Pool",
-    "pricePool": "Prices and fees",
-    "shareOfPool": "Share of pool",
-    "supply": "Supply",
-    "yourPosition": "Your position"
-  },
-  "createToken": {
-    "confirmTokenTitleCommon": "Create Token",
-    "confirmTokenTitleNFT": "Create NFT",
-    "CreateSimpleToken": "Token",
-    "divisible": {
-      "desc": "Ability of NFT to divide into fractional parts. Liquidity provisioning only works with divisible assets",
-      "placeholder": "Divisible"
+    "browserNotificationLocalStorageOverride": {
+        "agree": "နားလည်ပါပြီ",
+        "info": "သင်၏ စက်အတွင်း ဆောင်ရွက်နေသည့် သိမ်းဆည်းရာ နေရာပြည့်နေပါသည်။ {AppName} ကို ဆက်လက် သုံးရန် သန့်ရှင်းရေး လုပ်ရမည်",
+        "title": "{AppName} ၏ စက်အတွင်း သိမ်းဆည်းမှု ရှင်းလင်းရန်"
     },
-    "enterName": "Enter token name",
-    "enterSupply": "Enter token supply",
-    "enterSymbol": "Enter token symbol",
-    "enterTokenDescription": "Enter description",
-    "error": "Failed to create {symbol} token",
-    "extensibleSupply": {
-      "desc": "Ability to mint more tokens.",
-      "placeholder": "Extensible supply"
+    "browserPermission": {
+        "btnAllow": "ဝင်ရောက်ခွင့်ပြုပါ။",
+        "btnGoToSettings": "ဆက်တင်များသို့သွားပါ။",
+        "desc": "စာရွက်စာတမ်းများ၏ စစ်မှန်ကြောင်းသေချာစေရန်နှင့် KYC အတည်ပြုခြင်းအတွက် အသုံးပြုသူအထောက်အထားကို အတည်ပြုရန်၊ သင့်စက်၏ကင်မရာသို့ ဝင်ရောက်အသုံးပြုရန် လိုအပ်ပါသည်။",
+        "disclaimer": "လိမ်လည်မှုကို တားဆီးရန် အချိန်နှင့်တပြေးညီ စာရွက်စာတမ်းကို ရိုက်ကူးရန် ကင်မရာ ခွင့်ပြုချက် လိုအပ်သည်",
+        "title": "ဘရောက်ဇာ ဆက်တင်များတွင် ကင်မရာ ခွင့်ပြုပါ"
     },
-    "nft": {
-      "description": {
-        "placeholder": "Description"
-      },
-      "image": {
-        "placeholderBadSource": "The file failed to be processed",
-        "placeholderBadSourceAddition": "or it’s not uploaded to IPFS yet",
-        "placeholderFileLimit": "The file size exceeds the limit of {value}mb",
-        "placeholderNoImage": "Upload the file by either entering a link or choosing from local storage"
-      },
-      "link": {
-        "copyLink": "Copy link",
-        "placeholder": "IPFS link",
-        "tooltip": "IPFS is a distributed system for storing and accessing files, making it possible to access files from many locations that aren't managed by one organization."
-      },
-      "source": {
-        "label": "Source",
-        "limit": "Choose another file",
-        "value": "Local files"
-      },
-      "supply": {
-        "desc": "သင်ရရှိမည့် NFT အရေအတွက်",
-        "placeholder": "Token supply",
-        "quantity": "Quantity"
-      }
-    },
-    "provideContent": "Provide content",
-    "success": {
-      "desc": "Create {symbol} token",
-      "title": "Transaction submitted"
-    },
-    "titleCommon": "Create",
-    "tokenName": {
-      "desc": "This is a name for the token. You can use from 1 to 33 characters for the selection.",
-      "placeholder": "Token name"
-    },
-    "tokenSupply": {
-      "desc": "You will receive these tokens upon creation.",
-      "placeholder": "Token supply"
-    },
-    "tokenSymbol": {
-      "desc": "This is an identifier for the token. You can use from 1 to 7 characters for the selection.",
-      "placeholder": "Token symbol"
-    }
-  },
-  "createTokenText": "Create",
-  "createTokenTextNFT": "Create NFT",
-  "currencyDialog": {
-    "currency": "Currency",
-    "searchPlaceholder": "Search by currency name or symbol"
-  },
-  "customisePageText": "Customize page",
-  "dark": "Dark",
-  "demeterFarming": {
-    "actions": {
-      "add": "Stake more",
-      "claim": "Claim rewards",
-      "remove": "Remove stake",
-      "start": "Start staking"
-    },
-    "amountAdd": "စတိတ်ရန် ပမာဏ",
-    "amountRemove": "ဖယ်ရှားရန် ပမာဏ",
-    "calculator": "Calculator",
-    "info": {
-      "earned": "{symbol} earned",
-      "fee": "Fee",
-      "feeTooltip": "Deposit fee is applied to your amount to stake",
-      "owned": "{symbol} @:balanceText",
-      "poolShare": "Your pool share staked",
-      "poolShareWillBe": "Your pool share staked will be",
-      "rewardToken": "Reward token",
-      "stake": "Your {symbol} staked",
-      "stakeWillBe": "Your {symbol} stake will be",
-      "totalLiquidityLocked": "Total liquidity locked"
-    },
-    "poweredBy": "Powered by Demeter Farming",
-    "results": "Results",
-    "rewards": "{symbol} rewards",
-    "staking": {
-      "active": "Staking active",
-      "inactive": "Stake to earn additional rewards",
-      "stopped": "Staking stopped"
-    }
-  },
-  "desktop": {
-    "accountMnemonic": {
-      "placeholder": "Mnemonic phrase"
-    },
-    "accountName": {
-      "desc": "This is the name of your account. It will be visible only to you in {AppName}.",
-      "placeholder": "Account name"
-    },
-    "addAccount": "Add an account",
-    "assetsAtRiskText": "ပစ္စည်းများ အန္တရာယ်ရှိ!",
-    "button": {
-      "createAccount": "အကောင့် ဖန်တီးရန်",
-      "importAccount": "အကောင့် တင်သွင်းရန်",
-      "next": "Next step",
-      "skip": "Skip"
-    },
-    "confirmPassword": {
-      "placeholder": "လျှို့ဝှက်နံပါတ် အတည်ပြုရန်"
-    },
-    "confirmSeedText": "စကားစုကို အမူအရာအချက်အလက် စီစဉ်ထားသည့် အစီအစဉ်အတိုင်း နှိပ်ပြီး အတည်ပြုပါ",
-    "deleteAccountText": "Account can’t be recovered without a seed phrase, .json file or if it’s stored in some extension. You will be logged out.",
-    "dialog": {
-      "confirmButton": "Sign Transaction",
-      "confirmTitle": "Confirm with password"
-    },
-    "errorMessages": {
-      "alreadyImported": "Account already imported {address}",
-      "jsonFields": "JSON file does not have required fields",
-      "mnemonic": "Invalid bip39 mnemonic specified",
-      "mnemonicLength": "Mnemonic should contain {number} words",
-      "password": "Password did not match",
-      "passwords": "Passwords did not match"
-    },
-    "errorMnemonicText": "Incorrect passphrase order",
-    "exportJsonText": "You will always be able to restore your account by importing this {JSON} file. Do not share it with anyone! Store it safely, preferably encrypted.",
-    "exportOptionText": "Export {JSON} file for account restoration",
-    "exportTutorialsText": "Export tutorials",
-    "heading": {
-      "accountDetailsTitle": "Account Details",
-      "confirmSeedTitle": "Confirm passphrase",
-      "importTitle": "အကောင့် တင်သွင်းရန်",
-      "seedPhraseTitle": "Passphrase"
-    },
-    "importSteps": {
-      "exportAccount": "Export the {JSON} file",
-      "selectAccount": "Select the account you want to export",
-      "selectWallet": "Open the wallet with your existing account(s)"
-    },
-    "password": {
-      "desc": "Ensure you are using a strong unique password for proper protection (8 characters minimum)",
-      "placeholder": "Password"
-    },
-    "seedAdviceAdditionText": "If someone asks you for your passphrase they are most likely trying to scam you and steal your assets!",
-    "seedAdviceAdditionTitle": "Never share your passphrase with anyone!",
-    "seedAdviceText": "The 12-word passphrase is a private key to regain access to your {Sora} account in case you lose access to your {wallet} account. Store it safely in the exact order it appears above.",
-    "welcome": {
-      "createAccount": "Create an account",
-      "header": "Welcome to {AppName}!",
-      "headline": "Let’s set up your account",
-      "importAccount": "Import Account",
-      "text": "Create your {Sora} Network account or log into the old ones using mnemonic phrase or .json import. This allows you to securely sign transactions and manage assets in {Sora} Network."
-    }
-  },
-  "dexSettings": {
-    "marketAlgorithm": "@.upper:marketAlgorithmText",
-    "marketAlgorithms": {
-      "SMART": "{smartAlgorithm} ၏ ရေကြွယ်ဝမှု လမ်းကြောင်းက မည်သည့် လုပ်ငန်းရယူနည်းမဆို အကောင်းဆုံး စျေးနှုန်းရရှိစေဖို့ အနိုင်ကျင့်ပါတယ် — ရရှိနိုင်သည့် စျေးကွက်အားလုံးမှ အကောင်းဆုံး ရွေးချယ်မှုပေါင်းစည်းခြင်းဖြင့်။ ရရှိနိုင်ပါက Token Bonding Curve ({tbcAlgorithm}) ကို ရေကြွယ်ဝမှုအတွက် အသုံးပြုပေးမည် — အခြား ရင်းမြစ်များထက် ပစ္စည်း စျေးနှုန်း ပိုမို သက်သာသေးအောင် — ထိုအခါ {xycAlgorithm} ကန်ကို အသုံးပြုမည်",
-      "TBC": "{tbcAlgorithm} — Token Bonding Curve (ပထမဈေးကွက်) မှသာ ဝယ်ယူခြင်း။ {xycAlgorithm} ကန် (ဒုတိယဈေးကွက်) နှင့် နှိုင်းယှဉ်သောအခါ စျေးနှုန်း မဟာသ ဖြစ်နိုင်ခြေ ရှိသော်လည်း အချိန်ကြာလာသည်နှင့် အတူ စောင့်ဆိုင်းထားသော ဆုများမှ ရရှိသည့် တန်ဖိုးသည် ပိုမို အရေးပါလာနိုင်သည်",
-      "XYK": "{xycAlgorithm} — XYK ကန် (ဒုတိယဈေးကွက်) မှသာ ဝယ်ယူခြင်း။ XYK ကန် ပုံစံ လဲလှယ်မှု"
-    },
-    "marketAlgorithmTooltip": {
-      "main": " - ပထမဈေးကွက် (TBC)၊ ဒုတိယဈေးကွက် (XYK) သို့မဟုတ် ပေါင်းစည်းထားသော စမတ် အယ်လ်ဂိုရစ်သမ် တစ်ခု၏ ရွေးချယ်စရာ — လုပ်ငန်းရယူနည်းတိုင်းတွင် အကောင်းဆုံး စျေးနှုန်း အာမခံခြင်း"
-    },
-    "slippageTolerance": "စျေးနှုန်းလျှောင်းလျားမှု ခွင့်လျှောက်",
-    "slippageToleranceHint": "ဤရာခိုင်နှုန်းထက် မဟာသဖြင့် စျေးနှုန်း ပြောင်းလဲပါက သင့်လုပ်ငန်းရယူနည်းကို ပြန်လည် ပယ်ဖျက်မည်",
-    "slippageToleranceValidation": {
-      "error": "မှန်ကန်သော စျေးနှုန်းလျှောင်းလျားမှု ရာခိုင်နှုန်း ထည့်ပါ",
-      "frontrun": "Your transaction may be frontrun",
-      "warning": "Your transaction may fail"
-    },
-    "title": "Settings"
-  },
-  "disclaimer": "{disclaimerPrefix} This website is maintained by the {Sora} community. Before continuing to use this website, please review the {polkaswapFaqLink} and documentation, which includes a detailed explanation on how {AppName} works, as well as the {memorandumLink}, and {privacyLink}. These documents are crucial to a secure and positive user experience. By using {AppName}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {AppName} in your legal jurisdiction; 2) your understanding that the current version of {AppName} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {AppName}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
-  "disclaimerTitle": "Disclaimer",
-  "disconnectWalletText": "Disconnect",
-  "doNotShowText": "Don’t show me this again",
-  "dragAndDropText": "Drag & drop or choose {extension} file",
-  "editText": "Edit",
-  "errorText": "Error",
-  "ethNetworkFeeTooltipText": "Please note that the {network} network fees displayed on {AppName} are only rough estimations, you can see the correct fee amount in your connected {network} wallet prior to confirming the transaction.",
-  "exceededAmountText": "{amount} exceeded",
-  "exchange": {
-    "lossWarning": "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair.",
-    "Pool": "Pool",
-    "Swap": "Swap"
-  },
-  "expandText": "Expand",
-  "explore": {
-    "myPositions": "my positions",
-    "showOnly": "Show only {entities}",
-    "synthetics": "synthetic tokens"
-  },
-  "FAQ": "{AppName} FAQ",
-  "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API)  are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
-  "fiatPayment": {
-    "cedeStoreBtn": "Transfer from {value1} via {value2}",
-    "cedeStoreDesc": "Transfer any tokens from {value1} to {value2} via {value3}",
-    "cedeStoreTitle": "Transfer from {value}",
-    "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later.",
-    "historyBtn": "My purchases",
-    "historyTitle": "Transaction History",
-    "moonpayDesc": "Purchase ETH tokens on {Ethereum} and transfer them to {Sora} network via the bridge",
-    "moonpayTitle": "Buy ETH via MoonPay"
-  },
-  "filter": {
-    "all": "All",
-    "native": "Native",
-    "reset": "Reset",
-    "show": "Show",
-    "showAssets": "Show assets",
-    "synthetics": "Synthetics",
-    "token": "Currencies",
-    "verifiedOnly": "Show verified assets only",
-    "zeroBalance": "Hide 0 balance assets"
-  },
-  "firstPerSecond": "{first} per {second}",
-  "firstText": "First",
-  "footer": {
-    "internet": {
-      "action": "Refresh {AppName}",
-      "desc": {
-        "disabled": "Disconnected",
-        "stable": "Optimal speed",
-        "unstable": "Slow connection"
-      },
-      "dialogDesc": "{AppName} requires internet connection for stable experience",
-      "dialogTitle": "Connect to internet source",
-      "label": "Your internet speed",
-      "title": {
-        "disabled": "Internet disabled",
-        "stable": "Internet stable",
-        "unstable": "Internet unstable"
-      }
-    },
-    "node": {
-      "title": {
-        "connected": "Node connected",
-        "disconnected": "Node disconnected",
-        "loading": "Node re-connecting"
-      }
-    },
-    "statistics": {
-      "action": "Select services",
-      "desc": {
-        "available": "All services are stable",
-        "loading": "All services are loading",
-        "unavailable": "All services are disconnected"
-      },
-      "dialog": {
-        "indexer": "Indexer",
-        "title": "{Sora} Network service selection",
-        "useCeres": "Use {Ceres} for fiat values"
-      },
-      "label": "Statistics services",
-      "title": {
-        "available": "Statistics available",
-        "loading": "Statistics loading",
-        "unavailable": "Statistics unavailable"
-      }
-    }
-  },
-  "footerMenu": {
-    "faucet": "Faucet",
-    "github": "GitHub",
-    "info": "Info & Community",
-    "privacy": "ကိုယ်ရေးအချက်အလက် မူဝါဒ",
-    "sorawiki": "{Sora} Wiki"
-  },
-  "forText": "အတွက်",
-  "hashiBridgeText": "{Hashi} ဘရစ်ဂ်",
-  "headerMenu": {
-    "hideBalances": "လက်ကျန်ဖျောက်ရန်",
-    "hideDisclaimer": "အသိပေးချက် ဖျောက်ရန်",
-    "selectCurrency": "ငွေကြေး ရွေးချယ်ရန်",
-    "settings": "ဆက်တင်",
-    "showBalances": "လက်ကျန်ပြရန်",
-    "showDisclaimer": "အသိပေးချက် ပြရန်",
-    "switchTheme": "{theme} မုဒ်",
-    "systemPreferencesTheme": "စနစ် မူကြိုက်နှစ်သက်မှု",
-    "titleBalance": "လက်ကျန်",
-    "titleCurrency": "ငွေကြေး",
-    "titleMisc": "အခြား",
-    "titleTheme": "အပြင်အဆင် အရောင်",
-    "turnPhoneHideBalances": "ဖုန်းပြောင်းပြီး ဖျောက်"
-  },
-  "helpDialog": {
-    "appVersion": "{AppName} ဗားရှင်း",
-    "contactUs": "ကျွန်ုပ်တို့အား ဆက်သွယ်ရန်",
-    "privacyPolicy": "ကိုယ်ရေးအချက်အလက် မူဝါဒ",
-    "termsOfService": "ဝန်ဆောင်မှုစည်းကမ်းချက်များ",
-    "title": "အကူအညီ"
-  },
-  "history": {
-    "clearHistory": "မှတ်တမ်း ရှင်းရန်",
-    "empty": "သင့်လုပ်ဆောင်မှုများ သည် ဤနေရာတွင် ပေါ်လာပါလိမ့်မည်",
-    "emptySearch": "မည်သည့် လုပ်ဆောင်မှုမျှ မတွေ့ရှိပါ",
-    "filterPlaceholder": "လိပ်စာ၊ သင်္ကေတ၊ အမျိုးအစား သို့မဟုတ် Block ID ဖြင့် စစ်ထုတ်ရန်"
-  },
-  "historyErrorMessages": {
-    "balances": {
-      "liquidityrestrictions": "Account liquidity restrictions prevent withdrawal"
-    },
-    "demeterfarmingplatform": {
-      "insufficientfunds": "Insufficient funds",
-      "insufficientlptokens": "Insufficient liquidity provision tokens",
-      "pooldoesnothaverewards": "Pool does not have rewards"
-    },
-    "generalError": "တစ်စုံတစ်ရာ မှားယွင်းနေသည်",
-    "liquidityproxy": {
-      "forbiddenfilter": "Selected liquidity source is not allowed",
-      "slippagenottolerated": "The price impact has exceeded the selected value"
-    },
-    "multicollateralbondingcurvepool": {
-      "pricecalculationfailed": "An error occurred while calculating the price"
-    },
-    "poolxyk": {
-      "calculatedvalueisnotmeetsrequiredboundaries": "Amounts are out of required bounds",
-      "impossibletodecidevalidpairvaluesfromrangeforthispool": "Provided amounts are too diverse",
-      "sourcebalanceisnotlargeenough": "Source balance is not large enough",
-      "targetbalanceisnotlargeenough": "Destination balance is not large enough",
-      "unabletodepositxorlessthanminimum": "XOR lower than the minimum value (0.007)",
-      "zerovalueinamountparameter": "ပမာဏ အင်ပုတ်တန်ဖိုး သုညဖြစ်နေသည်"
-    },
-    "referrals": {
-      "alreadyhasreferrer": "Account already has a referrer",
-      "referrerinsufficientbalance": "Referrer does not have enough of reserved balance"
-    },
-    "vestedrewards": {
-      "cantcalculatereward": "Failed to perform reward calculation",
-      "norewardsforasset": "There are no rewards for this asset",
-      "rewardssupplyshortage": "Rewards program has already finished"
-    },
-    "xstpool": {
-      "poolalreadyinitializedforpair": "Pool pair already exists",
-      "slippagelimitexceeded": "Slippage tolerance has not met proper limits"
-    }
-  },
-  "importText": "Import",
-  "insufficientBalanceText": "Insufficient {tokenSymbol} balance",
-  "kensetsu": {
-    "addCollateral": "Add collateral",
-    "addCollateralDescription": "Deposit more assets into your position to increase your borrowing limit or to improve your loan-to-value ratio. This can also help prevent liquidation.",
-    "available": "Available",
-    "availableToBorrow": "Available to borrow",
-    "availableToBorrowDescription": "The remaining amount you are eligible to draw under the current conditions of your position, based on your deposited collateral and any existing debt.",
-    "borrowDebt": "Borrow debt",
-    "borrowMore": "Borrow more",
-    "borrowMoreDescription": "Draw additional funds from your position up to the maximum available amount. Ensure your collateral value supports the increased debt to avoid liquidation risks.",
-    "borrowTax": "Borrow tax",
-    "borrowTaxDescription": "The {value} tax applied to the borrowed amount",
-    "closeVault": "Close my position",
-    "closeVaultDescription": "Close the selected position by repaying all outstanding debt and withdrawing all collateral",
-    "collateralDetails": "Collateral details",
-    "createVault": "Open a borrow position",
-    "createVaultAction": "Borrow",
-    "createVaultDescription": "Initiate a new transaction by depositing collateral into your position and drawing funds. This creates a debt obligation that you must manage.",
-    "debtAvailable": "Debt available",
-    "debtAvailableDescription": "The amount of funds you can still draw from your position without exceeding your borrowing limit, based on your current collateral.",
-    "debtDetails": "Debt details",
-    "depositCollateral": "Deposit collateral",
-    "disclaimerDescription": "Borrowing digital assets through {AppName} carries significant risk and is entirely at your own risk. The value of digital assets is highly volatile, and any changes in the market prices of the assets you have borrowed or used as collateral can lead to substantial financial losses.",
-    "error": {
-      "borrowMoreThanAvailable": "Available debt exceeded",
-      "enterBorrow": "Enter borrow amount",
-      "enterCollateral": "Enter collateral",
-      "enterRepayDebt": "Enter repay debt",
-      "incorrectCollateral": "Token pair is not supported",
-      "insufficientCollateral": "Insufficient collateral",
-      "repayMoreThanDebt": "Debt overpaid"
-    },
-    "highLiquidationRisk": "High liquidation risk",
-    "interest": "Interest",
-    "interestDescription": "An annual fee charged on the amount drawn from your position, calculated as a percentage. This fee compensates for risks and market fluctuations.",
-    "introDescription": "Experience safe and effortless borrowing and lending. Open borrowing positions with {Kensetsu} platform.",
-    "introTitle": "Open borrow positions & Earn with {Kensetsu}",
-    "liquidated": "Liquidated",
-    "liquidatedMessage": "Liquidated {amount} {symbol}",
-    "liquidationClose": "Liquidation close",
-    "liquidationPenalty": "Liquidation penalty",
-    "liquidationPenaltyDescription": "A fee applied if the value of your collateral falls below a certain threshold, prompting the sale of assets to cover the debt. This penalty increases your total debt.",
-    "ltv": "Loan to value ({LTV})",
-    "ltvDescription": "The ratio of the amount drawn to the value of the collateral in your position, expressed as a percentage. A higher {LTV} increases potential returns but also risk, including the chance of liquidation.",
-    "ltvMaxTooltip": "The maximum amount of a borrowing position that can be provided in relation to the appraised value of the asset being used as collateral.",
-    "maxAvailableToBorrow": "Max. available to borrow",
-    "maxAvailableToBorrowDescription": "The maximum amount you can draw from your position, determined by the value of your collateral. This limit adjusts as the value of the collateral changes.",
-    "minDepositCollateral": "Min. deposit collateral",
-    "minDepositCollateralDescription": "The minimum amount of assets required to open a position. This initial deposit secures the funds you wish to borrow.",
-    "openSwap": "Open swap",
-    "outstandingDebt": "Outstanding debt",
-    "outstandingDebtDescription": "The total amount you currently owe from the funds drawn from your position, including accrued interest. This needs to be repaid to close your position or maintain healthy loan-to-value ratios.",
-    "overallAvailable": "Total available",
-    "overallAvailableDescription": "The total amount of funds available for borrowing on the {Kensetsu} platform.",
-    "overallBadDebt": "Bad debt",
-    "overallBadDebtDescription": "The portion of debt that is unlikely to be recovered due to borrower default or insufficient collateral.",
-    "overallTotalCollateral": "Total collateral",
-    "overallTotalCollateralDescription": "The total value of assets deposited by borrowers to secure their borrowing positions on the {Kensetsu} platform.",
-    "overallTotalDebt": "Total debt",
-    "overallTotalDebtDescription": "The total amount of debt currently outstanding across all borrowing positions on the {Kensetsu} platform.",
-    "positionHistory": "Position history",
-    "positionInfo": "Position information",
-    "positionSafe": "Position safe",
-    "readMore": "Read more",
-    "reopen": "Re-open",
-    "repayDebt": "Repay debt",
-    "repayDebtDescription": "Return borrowed funds to reduce your outstanding debt. This can decrease interest costs and lower the risk of liquidation.",
-    "requiredAmountWithSlippage": "Required amount including slippage",
-    "requiredAmountWithSlippageDescription": "နေရာလွတ်ခြင်းကို ချောချောမွေ့မွေ့ ပြုလုပ်ရန် စျေးနှုန်းလျှောင်းလျားမှုဖြစ်နိုင်ခြေကြောင့် လိုအပ်သည့် {amount} ထက် {tokenSymbol} အနည်းငယ် ပိုဝယ်ပါ။ ချို့ယွင်းမှုကို ဖြည့်ဆည်းရန် ထပ်မံ တန်ဖိုးတစ်စိတ်တစ်ပိုင်း လိုအပ်ပါသည်။ အဲဒီလိုလိုအပ်ချက်ကို ဖြည့်ဆည်းရန် သင်၏ ပစ္စည်းများကို {tokenSymbol} သို့ ပြောင်းလဲပါ",
-    "status": {
-      "Closed": "Closed",
-      "Liquidated": "Liquidated",
-      "Opened": "Active"
-    },
-    "totalCollateral": "Total collateral",
-    "totalCollateralDescription": "The total value of all assets currently deposited in your position. This value affects your borrowing capacity and risk of liquidation.",
-    "totalCollateralReturned": "Total collateral returned",
-    "totalCollateralReturnedDescription": "The total value of assets returned to you after closing your position, including total remaining collateral.",
-    "yourCollateral": "Your collateral",
-    "yourCollateralDescription": "The assets you've deposited into your position to secure the funds drawn. These assets may be liquidated by the lender if you fail to maintain the required loan-to-value ratio.",
-    "yourDebt": "Your debt",
-    "yourDebtDescription": "The total amount currently outstanding in your position, including the drawn amount and any accrued interest. This balance increases over time if interest accumulates.",
-    "yourDebtTokenBalance": "Your {tokenSymbol} balance"
-  },
-  "lastText": "နောက်ဆုံး",
-  "learnMoreText": "ပိုမိုလေ့လာရန်",
-  "light": "အလင်း",
-  "locationText": "တည်နေရာ",
-  "logoutText": "ထွက်ရန်",
-  "mainMenu": {
-    "About": "About",
-    "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-    "Bridge": "@:bridgeText",
-    "Burn": "@:pageTitle.Burn",
-    "Explore/Container": "Explore",
-    "Farming": "Farming",
-    "OrderBook": "Trade",
-    "Pool": "Pool",
-    "Rewards": "Rewards",
-    "SoraCard": "{Sora} Card",
-    "StakingContainer": "Staking",
-    "Stats": "Statistics",
-    "Swap": "Swap",
-    "VaultsContainer": "@:pageTitle.Vaults",
-    "Wallet": "ပိုက်ဆံအိတ်",
-    "Sccp": "@:pageTitle.Sccp"
-  },
-  "marketAlgorithmText": "Market algorithm",
-  "marketText": "Market",
-  "maxAmountText": "max. amount",
-  "memorandum": "{AppName} Memorandum and Terms of Services",
-  "minAmountText": "min. amount",
-  "mobilePopup": {
-    "header": "{polkaswapHighlight} လုပ်ဆောင်ချက်များ ပါသော {Sora} Wallet ကို ဒေါင်းလုဒ်လုပ်ပါ",
-    "info": "ကွန်ယက်အမျိုးမျိုးမှ တိုကင်များကို ပြောင်းလဲပါ - {Sora}, {Ethereum}, {Polkadot}, {Kusama}။ ရေကြွယ်ဝမှု ပံ့ပိုးပြီး လဲလှယ်ခမှ % ရယူပါ",
-    "sideMenu": "{Sora} Wallet ရယူရန်"
-  },
-  "moonpay": {
     "buttons": {
-      "buy": "Buy Tokens",
-      "history": "Purchase History",
-      "transfer": "Start bridge",
-      "view": "View bridge transaction"
+        "chooseAToken": "တိုကင်ရွေးပါ",
+        "chooseToken": "တိုကင်ရွေးပါ",
+        "chooseTokens": "တိုကင်များရွေးပါ",
+        "enterAmount": "ပမာဏထည့်ပါ",
+        "max": "အများဆုံး"
     },
-    "confirmations": {
-      "txReady": "Transaction Ready For Bridge"
+    "calculatingText": "တွက်ချက်ခြင်း။",
+    "cancelText": "မလုပ်တော့",
+    "changeAccountText": "အကောင့်ပြောင်းပါ။",
+    "changeNetworkText": "ပိုက်ဆံအိတ်ရှိ ကွန်ရက်ကို ပြောင်းပါ။",
+    "closeText": "ပိတ်လိုက်",
+    "code": {
+        "allowanceError": "ကင်မရာ ရရှိနိုင်မှုနှင့် Browser ခွင့်ပြုချက်များကို စစ်ဆေးပါ",
+        "allowanceRequest": "ကင်မရာ အသုံးပြုရန် “Allow” ကို နှိပ်ပါ",
+        "camera": "ကင်မရာ",
+        "download": "QR ကုဒ် ဒေါင်းလုဒ်ရန်",
+        "import": "ပုံ တစ်ပုံ တင်သွင်းရန်",
+        "invalid": "QR ကုဒ် မတ်စပ်မှု မရှိပါ",
+        "receive": "လက်ခံရန်",
+        "scan": "ကင်မရာဖြင့် စကင်ဖတ်ရန်",
+        "upload": "QR စကင်ဖတ်ရန်"
+    },
+    "collapseText": "ပြိုကျသည်။",
+    "comingSoonText": "မကြာမီလာမည်",
+    "confirmNextTxFailure": {
+        "button": "ဟုတ်တယ်၊ အန္တရာယ်ကို နားလည်တယ်။",
+        "header": "အာရုံ",
+        "info": "ဤလုပ်ငန်းရယူနည်းပြီးသွားသည်နှင့် သင့် XOR လက်ကျန်သည် {fee} XOR ထက် အနည်းငယ်နည်းသွားမည်။ ထို့ကြောင့် နောက်တစ်ကြိမ် အပိုင်းအခြား လုပ်ငန်းရယူနည်းအတွက် ကွန်ယက်ကြေး မပြုနိုင်တော့ပါ",
+        "payoff": "အခြားကွန်ယက်များမှ XOR ကို ရယူရန် ဘရစ်ဂ်ကို အသုံးပြုရမည်၊ အခြား {Sora} အကောင့်မှ XOR ကို လက်ခံရရှိမည် သို့မဟုတ် သင့်အကောင့်ရှိ တိုကင်များကို XOR သို့ ပြောင်းလဲရမည်"
+    },
+    "confirmSupply": {
+        "outputDescription": "ထွက်ရလဒ်မှာ ခန့်မှန်းချက်သာ ဖြစ်သည်။ စျေးနှုန်းသည် {slippageTolerance}% ထက် ပို၍ ပြောင်းလဲပါက သင်၏ လုပ်ငန်းရယူနည်းကို ပြန်လည် ပယ်ဖျက်မည်",
+        "title": "သင်၏ရေကူးကန်မျှဝေမှုဖြစ်လိမ့်မည်။"
+    },
+    "confirmText": "အတည်ပြုပါ။",
+    "confirmTransactionText": "ငွေလွှဲခြင်းကို အတည်ပြုပါ။",
+    "connectedAccount": "ချိတ်ဆက်ထားသောအကောင့်",
+    "connectedText": "ချိတ်ဆက်ထားသည်။",
+    "connectEthereumWalletText": "{Ethereum} ပိုက်ဆံအိတ်ကို ချိတ်ဆက်ပါ။",
+    "connection": {
+        "action": {
+            "learnMore": "ပိုက်ဆံအိတ်ချိတ်ဆက်မှုအကြောင်း ပိုမိုလေ့လာပါ။",
+            "refresh": "ပြန်လည်စတင်ပါ။"
+        },
+        "disclaimer": "အချို့သော ပိုက်ဆံအိတ်များကို အပြည့်အဝ မပံ့ပိုးနိုင်သည်ကို သတိပြုပါ။",
+        "internalText": "သင့် {wallet} အကောင့်နှင့် ချိတ်ဆက်ရန် ရှိပြီးသား {Sora} အကောင့်ကို ဖန်တီး သို့မဟုတ် ထည့်သွင်းနိုင်သည်။ {wallet} မှ သိမ်းဆည်းထားသည့် ဒေတာအားလုံးကို ထည့်သွင်းထားသည့် အဆင့်မြင့် ကုဒ်ဝှက်စနစ်ဖြင့် ကုဒ်ဝှက်ထားသည်။",
+        "internalTitle": "{wallet} နှင့် ချိတ်ဆက်ပါ",
+        "list": {
+            "extensions": "တိုးချဲ့မှုများ",
+            "integrated": "ပေါင်းစပ်ထားသည်။"
+        },
+        "selectAccount": "အလုပ်တွဲလုပ်ရန် အကောင့်ကို ရွေးပါ။",
+        "wallet": {
+            "connected": "ချိတ်ဆက်ထားသည်။",
+            "install": "တပ်ဆင်ပါ။",
+            "recommended": "အကြံပြုသည်။"
+        }
+    },
+    "connectWalletText": "အကောင့်ချိတ်ဆက်ပါ။",
+    "connectWalletTextTooltip": "{Sora} ကွန်ရက်သို့ {PolkadotJs} ဖြင့် ချိတ်ဆက်ပါ",
+    "continueText": "ဆက်ရန်",
+    "copiedText": "ကူးယူထားသည်။",
+    "copiedWithValue": "{value} ကို ကူးယူထားသည်။",
+    "copyPhraseText": "စကားဝှက်ကို ကူးယူပါ။",
+    "copyWithValue": "{value} မိတ္တူ",
+    "createPair": {
+        "deposit": "အပ်ငွေ",
+        "firstLiquidityProvider": "သင်သည် ပထမဆုံး ငွေဖြစ်လွယ်မှုပေးဆောင်သူဖြစ်သည်။",
+        "firstLiquidityProviderInfo": "သင်ထည့်သွင်းထားသော တိုကင်များ၏အချိုးသည် ဤရေကူးကန်၏စျေးနှုန်းကို သတ်မှတ်ပေးပါမည်။<br/>ပြန်လည်သုံးသပ်ရန် ထောက်ပံ့မှုနှုန်းကို ကလစ်နှိပ်ခြင်းဖြင့် သင်ကျေနပ်သွားပါသည်။",
+        "firstSecondPoolTokens": "{first}-{second} ရေကူးကန်",
+        "pricePool": "စျေးနှုန်းများနှင့်အခကြေးငွေ",
+        "shareOfPool": "ဝေစုရလေတော့",
+        "supply": "ထောက်ပံ့ရေး",
+        "yourPosition": "မင်းရဲ့ရာထူး"
+    },
+    "createToken": {
+        "confirmTokenTitleCommon": "တိုကင်ဖန်တီးပါ။",
+        "confirmTokenTitleNFT": "NFT ကိုဖန်တီးပါ။",
+        "CreateSimpleToken": "တိုကင်",
+        "divisible": {
+            "desc": "NFT ၏ အပိုင်းများကို အပိုင်းပိုင်းခွဲရန် စွမ်းရည်။ Liquidity စီစဉ်ပေးခြင်းသည် ခွဲဝေနိုင်သော ပိုင်ဆိုင်မှုများဖြင့်သာ အလုပ်လုပ်ပါသည်။",
+            "placeholder": "စားလို့ရတယ်။"
+        },
+        "enterName": "တိုကင်အမည်ထည့်ပါ။",
+        "enterSupply": "တိုကင်ထောက်ပံ့မှုကို ထည့်ပါ။",
+        "enterSymbol": "တိုကင်သင်္ကေတကို ရိုက်ထည့်ပါ။",
+        "enterTokenDescription": "ဖော်ပြချက်ကို ထည့်ပါ။",
+        "error": "{symbol} တိုကင်ကို ဖန်တီး၍မရပါ။",
+        "extensibleSupply": {
+            "desc": "နောက်ထပ် တိုကင်များကို mint လုပ်နိုင်စွမ်း။",
+            "placeholder": "တိုးချဲ့ထောက်ပံ့မှု"
+        },
+        "nft": {
+            "description": {
+                "placeholder": "ဖော်ပြချက်"
+            },
+            "image": {
+                "placeholderBadSource": "ဖိုင်ကို လုပ်ဆောင်၍မရပါ။",
+                "placeholderBadSourceAddition": "သို့မဟုတ် IPFS သို့ မတင်ရသေးပါ။",
+                "placeholderFileLimit": "ဖိုင်အရွယ်အစားသည် ကန့်သတ်ချက် {value}mb ထက် ကျော်လွန်နေပါသည်။",
+                "placeholderNoImage": "လင့်ခ်တစ်ခုဝင်၍ဖြစ်စေ သို့မဟုတ် စက်တွင်းသိုလှောင်မှုမှ ရွေးချယ်ခြင်းဖြင့် ဖိုင်ကို အပ်လုဒ်လုပ်ပါ။"
+            },
+            "link": {
+                "copyLink": "လင့်ခ်ကို ကူးယူပါ။",
+                "placeholder": "IPFS လင့်ခ်",
+                "tooltip": "IPFS သည် အဖွဲ့အစည်းတစ်ခုမှ စီမံခန့်ခွဲခြင်းမရှိသော နေရာများစွာမှ ဖိုင်များကို ဝင်ရောက်ကြည့်ရှုရန် ဖိုင်များကို သိမ်းဆည်းခြင်းနှင့် ဝင်ရောက်ခြင်းအတွက် ဖြန့်ဝေသည့်စနစ်တစ်ခုဖြစ်သည်။"
+            },
+            "source": {
+                "label": "အရင်းအမြစ်",
+                "limit": "အခြားဖိုင်ကို ရွေးပါ။",
+                "value": "ဒေသတွင်းဖိုင်များ"
+            },
+            "supply": {
+                "desc": "သင်ရရှိမည့် NFT အရေအတွက်",
+                "placeholder": "တိုကင်ထောက်ပံ့မှု",
+                "quantity": "အရေအတွက်"
+            }
+        },
+        "provideContent": "အကြောင်းအရာကို ပေးပါ။",
+        "success": {
+            "desc": "{symbol} တိုကင်ကို ဖန်တီးပါ။",
+            "title": "ငွေလွှဲပို့ခဲ့သည်။"
+        },
+        "titleCommon": "ဖန်တီးပါ။",
+        "tokenName": {
+            "desc": "ဤသည်မှာ တိုကင်အတွက် နာမည်တစ်ခုဖြစ်သည်။ ရွေးချယ်မှုအတွက် သင်သည် စာလုံးရေ 1 မှ 33 အထိ အသုံးပြုနိုင်သည်။",
+            "placeholder": "တိုကင်အမည်"
+        },
+        "tokenSupply": {
+            "desc": "ဖန်တီးမှုတွင် သင်သည် ဤတိုကင်များကို လက်ခံရရှိမည်ဖြစ်သည်။",
+            "placeholder": "တိုကင်ထောက်ပံ့မှု"
+        },
+        "tokenSymbol": {
+            "desc": "၎င်းသည် တိုကင်အတွက် အထောက်အထားတစ်ခုဖြစ်သည်။ ရွေးချယ်မှုအတွက် သင်သည် စာလုံးရေ 1 မှ 7 အထိ အသုံးပြုနိုင်သည်။",
+            "placeholder": "တိုကင်သင်္ကေတ"
+        }
+    },
+    "createTokenText": "ဖန်တီးပါ။",
+    "createTokenTextNFT": "NFT ကိုဖန်တီးပါ။",
+    "currencyDialog": {
+        "currency": "ငွေကြေး",
+        "searchPlaceholder": "ငွေကြေးအမည် သို့မဟုတ် သင်္ကေတဖြင့် ရှာဖွေပါ။"
+    },
+    "customisePageText": "စာမျက်နှာကို စိတ်ကြိုက်လုပ်ပါ။",
+    "dark": "အမှောင်",
+    "demeterFarming": {
+        "actions": {
+            "add": "လောင်းကြေးပို",
+            "claim": "ဆုလာဘ်များကို တောင်းဆိုပါ။",
+            "remove": "လောင်းကြေးကို ဖယ်ရှားပါ။",
+            "start": "စတင်လောင်းကြေး"
+        },
+        "amountAdd": "စတိတ်ရန် ပမာဏ",
+        "amountRemove": "ဖယ်ရှားရန် ပမာဏ",
+        "calculator": "ဂဏန်းပေါင်းစက်",
+        "info": {
+            "earned": "{symbol} ရရှိခဲ့သည်။",
+            "fee": "ကြေး",
+            "feeTooltip": "အပ်ငွေအခကြေးငွေသည် သင်၏လောင်းကြေးငွေပမာဏတွင် သက်ရောက်ပါသည်။",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "သင်၏ ရေကူးကန် ရှယ်ယာ အစုရှယ်ယာ",
+            "poolShareWillBe": "သင်၏အစုရှယ်ယာအစုရှယ်ယာဖြစ်လိမ့်မည်။",
+            "rewardToken": "ဆုတံဆိပ်",
+            "stake": "သင်၏ {symbol} လောင်းကြေး",
+            "stakeWillBe": "သင်၏ {symbol} ရှယ်ယာဖြစ်လိမ့်မည်။",
+            "totalLiquidityLocked": "စုစုပေါင်းငွေဖြစ်လွယ်မှုကို သော့ခတ်ထားသည်။"
+        },
+        "poweredBy": "Demeter Farming မှ လုပ်ဆောင်သည်။",
+        "results": "ရလဒ်များ",
+        "rewards": "{symbol} ဆုလာဘ်များ",
+        "staking": {
+            "active": "တက်ကြွနေပါသည်။",
+            "inactive": "အပိုဆုများရယူရန် လောင်းကြေး",
+            "stopped": "ရပ်တည်မှု ရပ်တန့်သွားသည်။"
+        }
+    },
+    "desktop": {
+        "accountMnemonic": {
+            "placeholder": "Mnemonic စကားစု"
+        },
+        "accountName": {
+            "desc": "ဤသည်မှာ သင့်အကောင့်၏အမည်ဖြစ်သည်။ {AppName} တွင် သင်သာ မြင်နိုင်ပါမည်။",
+            "placeholder": "အကောင့်အမည်"
+        },
+        "addAccount": "အကောင့်တစ်ခုထည့်ပါ။",
+        "assetsAtRiskText": "ပစ္စည်းများ အန္တရာယ်ရှိ!",
+        "button": {
+            "createAccount": "အကောင့် ဖန်တီးရန်",
+            "importAccount": "အကောင့် တင်သွင်းရန်",
+            "next": "နောက်တစ်ဆင့်",
+            "skip": "ကျော်သွားပါ။"
+        },
+        "confirmPassword": {
+            "placeholder": "လျှို့ဝှက်နံပါတ် အတည်ပြုရန်"
+        },
+        "confirmSeedText": "စကားစုကို အမူအရာအချက်အလက် စီစဉ်ထားသည့် အစီအစဉ်အတိုင်း နှိပ်ပြီး အတည်ပြုပါ",
+        "deleteAccountText": "မျိုးစေ့စာစု၊ .json ဖိုင် သို့မဟုတ် တိုးချဲ့မှုအချို့တွင် သိမ်းဆည်းထားပါက အကောင့်ကို ပြန်လည်ရယူ၍မရပါ။ သင်သည် အကောင့်ထွက်ပါမည်။",
+        "dialog": {
+            "confirmButton": "ငွေလွှဲဝင်ပါ။",
+            "confirmTitle": "စကားဝှက်ဖြင့် အတည်ပြုပါ။"
+        },
+        "errorMessages": {
+            "alreadyImported": "အကောင့်ကို ထည့်သွင်းပြီး {address}",
+            "jsonFields": "JSON ဖိုင်တွင် လိုအပ်သော အကွက်များ မရှိပါ။",
+            "mnemonic": "bip39 mnemonic သတ်မှတ်ထားသော မမှန်ကန်ပါ။",
+            "mnemonicLength": "Mnemonic တွင် {number} စကားလုံးများ ပါဝင်သင့်သည်။",
+            "password": "စကားဝှက် မတိုက်ဆိုင်ပါ။",
+            "passwords": "စကားဝှက်များ မတိုက်ဆိုင်ပါ။"
+        },
+        "errorMnemonicText": "စကားဝှက်အမှာစာ မမှန်ကန်ပါ။",
+        "exportJsonText": "ဤ {JSON} ဖိုင်ကို ထည့်သွင်းခြင်းဖြင့် သင့်အကောင့်ကို အမြဲတမ်း ပြန်လည်ရယူနိုင်မည်ဖြစ်သည်။ မည်သူ့ကိုမျှ မမျှဝေပါနှင့်။ လုံခြုံစွာသိမ်းဆည်းထားပါ၊ ဖြစ်နိုင်ရင် ကုဒ်ဝှက်ထားပါ။",
+        "exportOptionText": "အကောင့်ပြန်လည်ရယူရန်အတွက် {JSON} ဖိုင်ကို ထုတ်ယူပါ။",
+        "exportTutorialsText": "သင်ခန်းစာများကို ထုတ်ယူပါ။",
+        "heading": {
+            "accountDetailsTitle": "အကောင့်အသေးစိတ်",
+            "confirmSeedTitle": "စကားဝှက်ကို အတည်ပြုပါ။",
+            "importTitle": "အကောင့် တင်သွင်းရန်",
+            "seedPhraseTitle": "စကားဝှက်"
+        },
+        "importSteps": {
+            "exportAccount": "{JSON} ဖိုင်ကို ထုတ်ယူပါ။",
+            "selectAccount": "သင်ထုတ်ယူလိုသောအကောင့်ကို ရွေးပါ။",
+            "selectWallet": "သင့်လက်ရှိအကောင့်(များ)ဖြင့် ပိုက်ဆံအိတ်ကိုဖွင့်ပါ"
+        },
+        "password": {
+            "desc": "သင့်လျော်သောကာကွယ်မှုအတွက် ခိုင်ခံ့သောထူးခြားသောစကားဝှက်ကို သင်အသုံးပြုကြောင်းသေချာစေပါ (အနည်းဆုံး စာလုံး 8 လုံး)",
+            "placeholder": "စကားဝှက်"
+        },
+        "seedAdviceAdditionText": "တစ်စုံတစ်ယောက်က သင့်စကားဝှက်ကို တောင်းဆိုပါက ၎င်းတို့သည် သင့်အား လှည့်စားပြီး သင့်ပိုင်ဆိုင်မှုများကို ခိုးယူရန် အလားအလာများပါသည်။",
+        "seedAdviceAdditionTitle": "သင်၏ စကားဝှက်ကို မည်သူနှင့်မျှ မမျှဝေပါနှင့်။",
+        "seedAdviceText": "သင့် {wallet} အကောင့်သို့ ဝင်ရောက်ခွင့် ဆုံးရှုံးသွားသောအခါတွင် သင့် {Sora} အကောင့်သို့ ပြန်လည်ဝင်ရောက်ခွင့်ရရန် စကားလုံး 12 လုံး စကားဝှက်သည် သီးသန့်သော့တစ်ခုဖြစ်သည်။ အထက်ဖော်ပြပါအတိုင်း အတိအကျ လုံခြုံစွာ သိမ်းဆည်းပါ။",
+        "welcome": {
+            "createAccount": "အကောင့်တစ်ခုဖန်တီးပါ။",
+            "header": "{AppName} မှကြိုဆိုပါသည်။",
+            "headline": "သင့်အကောင့်ကို စဖွင့်ကြပါစို့",
+            "importAccount": "အကောင့်တင်သွင်းပါ။",
+            "text": "သင်၏ {Sora} ကွန်ရက်အကောင့်ကို ဖန်တီးပါ သို့မဟုတ် mnemonic စကားစု သို့မဟုတ် .json တင်သွင်းမှုကို အသုံးပြု၍ အဟောင်းများသို့ အကောင့်ဝင်ပါ။ ၎င်းသည် သင့်အား ငွေပေးငွေယူများကို လုံခြုံစွာ လက်မှတ်ထိုးရန်နှင့် {Sora} ကွန်ရက်ရှိ ပိုင်ဆိုင်မှုများကို စီမံခန့်ခွဲရန် ခွင့်ပြုသည်။"
+        }
+    },
+    "dexSettings": {
+        "marketAlgorithm": "@.upper:marketAlgorithm စာသား",
+        "marketAlgorithms": {
+            "SMART": "{smartAlgorithm} ၏ ရေကြွယ်ဝမှု လမ်းကြောင်းက မည်သည့် လုပ်ငန်းရယူနည်းမဆို အကောင်းဆုံး စျေးနှုန်းရရှိစေဖို့ အနိုင်ကျင့်ပါတယ် — ရရှိနိုင်သည့် စျေးကွက်အားလုံးမှ အကောင်းဆုံး ရွေးချယ်မှုပေါင်းစည်းခြင်းဖြင့်။ ရရှိနိုင်ပါက Token Bonding Curve ({tbcAlgorithm}) ကို ရေကြွယ်ဝမှုအတွက် အသုံးပြုပေးမည် — အခြား ရင်းမြစ်များထက် ပစ္စည်း စျေးနှုန်း ပိုမို သက်သာသေးအောင် — ထိုအခါ {xycAlgorithm} ကန်ကို အသုံးပြုမည်",
+            "TBC": "{tbcAlgorithm} — Token Bonding Curve (ပထမဈေးကွက်) မှသာ ဝယ်ယူခြင်း။ {xycAlgorithm} ကန် (ဒုတိယဈေးကွက်) နှင့် နှိုင်းယှဉ်သောအခါ စျေးနှုန်း မဟာသ ဖြစ်နိုင်ခြေ ရှိသော်လည်း အချိန်ကြာလာသည်နှင့် အတူ စောင့်ဆိုင်းထားသော ဆုများမှ ရရှိသည့် တန်ဖိုးသည် ပိုမို အရေးပါလာနိုင်သည်",
+            "XYK": "{xycAlgorithm} — XYK ကန် (ဒုတိယဈေးကွက်) မှသာ ဝယ်ယူခြင်း။ XYK ကန် ပုံစံ လဲလှယ်မှု"
+        },
+        "marketAlgorithmTooltip": {
+            "main": " - ပထမဈေးကွက် (TBC)၊ ဒုတိယဈေးကွက် (XYK) သို့မဟုတ် ပေါင်းစည်းထားသော စမတ် အယ်လ်ဂိုရစ်သမ် တစ်ခု၏ ရွေးချယ်စရာ — လုပ်ငန်းရယူနည်းတိုင်းတွင် အကောင်းဆုံး စျေးနှုန်း အာမခံခြင်း"
+        },
+        "slippageTolerance": "စျေးနှုန်းလျှောင်းလျားမှု ခွင့်လျှောက်",
+        "slippageToleranceHint": "ဤရာခိုင်နှုန်းထက် မဟာသဖြင့် စျေးနှုန်း ပြောင်းလဲပါက သင့်လုပ်ငန်းရယူနည်းကို ပြန်လည် ပယ်ဖျက်မည်",
+        "slippageToleranceValidation": {
+            "error": "မှန်ကန်သော စျေးနှုန်းလျှောင်းလျားမှု ရာခိုင်နှုန်း ထည့်ပါ",
+            "frontrun": "သင့်ငွေပေးငွေယူသည် ရှေ့ပြေးဖြစ်နိုင်သည်။",
+            "warning": "သင့်ငွေပေးငွေယူ မအောင်မြင်နိုင်ပါ။"
+        },
+        "title": "ဆက်တင်များ"
+    },
+    "disclaimer": "{disclaimerPrefix} ဤဝဘ်ဆိုက်အား {Sora} အသိုင်းအဝိုင်းမှ ထိန်းသိမ်းထားသည်။ ဤဝဘ်ဆိုက်ကို ဆက်လက်အသုံးမပြုမီ၊ {AppName} နှင့် {memorandumLink} နှင့် {privacyLink} နှင့် {privacyLink} နှင့် {privacyLink} တို့ကို အသေးစိတ်ရှင်းလင်းချက်ပါ၀င်သည့် {polkaswapFaqLink} နှင့် စာရွက်စာတမ်းများကို ပြန်လည်သုံးသပ်ပါ။ ဤစာရွက်စာတမ်းများသည် လုံခြုံပြီး အပြုသဘောဆောင်သော သုံးစွဲသူအတွေ့အကြုံအတွက် အရေးကြီးပါသည်။ {AppName} ကို အသုံးပြုခြင်းဖြင့် သင်သည် ဤစာရွက်စာတမ်းများကို ဖတ်ပြီး နားလည်ကြောင်း အသိအမှတ်ပြုပါသည်။ သင်သည် အောက်ပါတို့ကို အသိအမှတ်ပြုပါသည်- 1) သင့်တရားစီရင်ပိုင်ခွင့်အတွင်း {AppName} ကို သင့်တရားစီရင်ပိုင်ခွင့်အတွင်း အသုံးပြုမှုတွင် သက်ရောက်နိုင်သည့် ဥပဒေများအားလုံးကို လိုက်နာရန် သင့်တစ်ဦးတည်း တာဝန်ရှိသည်၊ 2) {AppName} ၏ လက်ရှိဗားရှင်းသည် အယ်လ်ဖာဗားရှင်းဖြစ်ကြောင်း သင့်နားလည်သဘောပေါက်သည်- ၎င်းကို အပြည့်အဝ မစမ်းသပ်ရသေးဘဲ၊ အချို့သောလုပ်ဆောင်ချက်များသည် ပုံစံထုတ်ထားသည့်အတိုင်း လုပ်ဆောင်မည်မဟုတ်ပါ။ နှင့် 3) တိုကင်များ ဆုံးရှုံးနိုင်ခြေ အပါအဝင် {AppName} အသုံးပြုခြင်းတွင် ပါ၀င်သော အန္တရာယ်များကို သင့်သဘောပေါက်နားလည်မှုနှင့် ဆန္ဒအလျောက် လက်ခံမှု။ ကျေးဇူးပြု၍ {polkaswapFaqLink}၊ {memorandumLink}၊ {privacyLink} ကို မဖတ်ဘဲ ဆက်မလုပ်ပါနှင့်။",
+    "disclaimerTitle": "ရှင်းလင်းချက်",
+    "disconnectWalletText": "အဆက်ဖြတ်ပါ။",
+    "doNotShowText": "ဒါကို ထပ်မပြပါနဲ့။",
+    "dragAndDropText": "ဆွဲဆွဲချပါ သို့မဟုတ် {extension} ဖိုင်ကို ရွေးပါ။",
+    "editText": "တည်းဖြတ်ပါ။",
+    "errorText": "အမှား",
+    "ethNetworkFeeTooltipText": "{network} တွင်ပြသထားသည့် {network} ကွန်ရက်အခကြေးငွေများသည် {AppName} အကြမ်းဖျင်းခန့်မှန်းချက်မျှသာဖြစ်သည်၊ ငွေပေးငွေယူကိုအတည်ပြုခြင်းမပြုမီ သင့်ချိတ်ဆက်ထားသော {network} ပိုက်ဆံအိတ်တွင် မှန်ကန်သောအခကြေးငွေပမာဏကို သင်တွေ့မြင်နိုင်ပါသည်။",
+    "exceededAmountText": "{amount} ကျော်လွန်သွားသည်။",
+    "exchange": {
+        "lossWarning": "သင့်ကုန်သွယ်မှုတွင် {value}% ဆုံးရှုံးမည်ဖြစ်သည်။ ငွေဖြစ်လွယ်မှု ပံ့ပိုးမှုပြဿနာကို ကျွန်ုပ်တို့ တွေ့ရှိထားပါသည်။ ၎င်းသည် တိုကင်လဲလှယ်မှုများအတွင်း သိသာထင်ရှားသော ဆုံးရှုံးမှုများကို ဖြစ်ပေါ်စေနိုင်သည်။ သင်လိုချင်သော swap အတွဲအတွက် လုံလောက်သော ငွေဖြစ်လွယ်မှုရှိမရှိ သေချာပါစေ။",
+        "Pool": "ရေကူးကန်",
+        "Swap": "လဲလှယ်ပါ။"
+    },
+    "expandText": "ချဲ့ထွင်ပါ။",
+    "explore": {
+        "myPositions": "ငါ့ရာထူး",
+        "showOnly": "{entities} ကိုသာ ပြပါ",
+        "synthetics": "ဓာတုတိုကင်များ"
+    },
+    "FAQ": "{AppName} FAQ",
+    "fiatDisclaimer": "ကျွန်ုပ်တို့၏ဝဘ်ဆိုက်ရှိ cryptocurrencies နှင့်ဆက်စပ်သော fiat တန်ဖိုးများကို ပြင်ပဝန်ဆောင်မှုများ (Subquery၊ Subsquid၊ Ceres API) မှ အနီးစပ်ဆုံးဖြစ်ကြောင်း သတိပြုပါ။ ဤတွက်ချက်မှုများ၏ မွေးရာပါ ရှုပ်ထွေးမှုကြောင့်၊ အချိန်တိုင်းတွင် အကြွင်းမဲ့တိကျမှုကို အာမမခံနိုင်ပါ။",
+    "fiatPayment": {
+        "cedeStoreBtn": "{value1} မှ {value2} မှတဆင့် လွှဲပြောင်းပါ",
+        "cedeStoreDesc": "မည်သည့်တိုကင်များကို {value1} မှ {value2} သို့ {value3} မှတဆင့် လွှဲပြောင်းပါ",
+        "cedeStoreTitle": "{value} မှ လွှဲပြောင်း",
+        "errorMessage": "အဆင်မပြေမှုအတွက် တောင်းပန်အပ်ပါသည်။ ဒါကို ဖြေရှင်းဖို့ ပြင်းပြင်းထန်ထန် ကြိုးစားနေပါတယ်။ ကျေးဇူးပြု၍ နောက်မှ ထပ်စမ်းကြည့်ပါ။",
+        "historyBtn": "ကျွန်ုပ်၏ဝယ်ယူမှုများ",
+        "historyTitle": "ငွေလွှဲမှတ်တမ်း",
+        "moonpayDesc": "ETH တိုကင်များကို {Ethereum} တွင်ဝယ်ယူပြီး တံတားမှတစ်ဆင့် {Sora} ကွန်ရက်သို့ လွှဲပြောင်းပါ",
+        "moonpayTitle": "MoonPay မှတဆင့် ETH ကိုဝယ်ပါ။"
+    },
+    "filter": {
+        "all": "အားလုံး",
+        "native": "ဇာတိ",
+        "reset": "ပြန်လည်သတ်မှတ်ပါ။",
+        "show": "ရှိုး",
+        "showAssets": "ပိုင်ဆိုင်မှုပြပါ။",
+        "synthetics": "ပေါင်းစပ်မှု",
+        "token": "ငွေကြေးများ",
+        "verifiedOnly": "အတည်ပြုထားသော ပိုင်ဆိုင်မှုများကိုသာ ပြသပါ။",
+        "zeroBalance": "၀ယ်မှူကို ဝှက်အပ်ပါတယ်။"
+    },
+    "firstPerSecond": "{first} {second} တစ်ခုလျှင် {first}",
+    "firstText": "ပထမ",
+    "footer": {
+        "internet": {
+            "action": "ပြန်လည်စတင်ရန် {AppName}",
+            "desc": {
+                "disabled": "အဆက်ပြတ်သွားသည်။",
+                "stable": "အကောင်းဆုံးမြန်နှုန်း",
+                "unstable": "နှေးကွေးသောချိတ်ဆက်မှု"
+            },
+            "dialogDesc": "{AppName} တည်ငြိမ်သော အတွေ့အကြုံအတွက် အင်တာနက်ချိတ်ဆက်မှု လိုအပ်ပါသည်။",
+            "dialogTitle": "အင်တာနက် အရင်းအမြစ်သို့ ချိတ်ဆက်ပါ။",
+            "label": "သင်၏အင်တာနက်အမြန်နှုန်း",
+            "title": {
+                "disabled": "အင်တာနက်ပိတ်ထားသည်။",
+                "stable": "အင်တာနက်တည်ငြိမ်",
+                "unstable": "အင်တာနက် မတည်ငြိမ်ပါ။"
+            }
+        },
+        "node": {
+            "title": {
+                "connected": "Node ချိတ်ဆက်ထားသည်။",
+                "disconnected": "Node ချိတ်ဆက်မှု ပြတ်တောက်သွားသည်။",
+                "loading": "Node ပြန်လည်ချိတ်ဆက်ခြင်း။"
+            }
+        },
+        "statistics": {
+            "action": "ဝန်ဆောင်မှုများကို ရွေးချယ်ပါ။",
+            "desc": {
+                "available": "ဝန်ဆောင်မှုအားလုံးသည် တည်ငြိမ်သည်။",
+                "loading": "ဝန်ဆောင်မှုအားလုံးကို ဖွင့်နေပါသည်။",
+                "unavailable": "ဝန်ဆောင်မှုအားလုံး ချိတ်ဆက်မှု ပြတ်တောက်သွားပါပြီ။"
+            },
+            "dialog": {
+                "indexer": "အညွှန်း",
+                "title": "{Sora} ကွန်ရက်ဝန်ဆောင်မှု ရွေးချယ်မှု",
+                "useCeres": "Fiat တန်ဖိုးများအတွက် {Ceres} ကိုသုံးပါ။"
+            },
+            "label": "စာရင်းအင်းဝန်ဆောင်မှုများ",
+            "title": {
+                "available": "စာရင်းအင်းများ ရရှိနိုင်သည်။",
+                "loading": "စာရင်းအင်းများ တင်နေသည်။",
+                "unavailable": "စာရင်းအင်းများ မရရှိနိုင်ပါ။"
+            }
+        }
+    },
+    "footerMenu": {
+        "faucet": "Faucet",
+        "github": "GitHub",
+        "info": "အချက်အလက်နှင့် အသိုင်းအဝိုင်း",
+        "privacy": "ကိုယ်ရေးအချက်အလက် မူဝါဒ",
+        "sorawiki": "{Sora} ဝီကီ"
+    },
+    "forText": "အတွက်",
+    "hashiBridgeText": "{Hashi} ဘရစ်ဂ်",
+    "headerMenu": {
+        "hideBalances": "လက်ကျန်ဖျောက်ရန်",
+        "hideDisclaimer": "အသိပေးချက် ဖျောက်ရန်",
+        "selectCurrency": "ငွေကြေး ရွေးချယ်ရန်",
+        "settings": "ဆက်တင်",
+        "showBalances": "လက်ကျန်ပြရန်",
+        "showDisclaimer": "အသိပေးချက် ပြရန်",
+        "switchTheme": "{theme} မုဒ်",
+        "systemPreferencesTheme": "စနစ် မူကြိုက်နှစ်သက်မှု",
+        "titleBalance": "လက်ကျန်",
+        "titleCurrency": "ငွေကြေး",
+        "titleMisc": "အခြား",
+        "titleTheme": "အပြင်အဆင် အရောင်",
+        "turnPhoneHideBalances": "ဖုန်းပြောင်းပြီး ဖျောက်"
+    },
+    "helpDialog": {
+        "appVersion": "{AppName} ဗားရှင်း",
+        "contactUs": "ကျွန်ုပ်တို့အား ဆက်သွယ်ရန်",
+        "privacyPolicy": "ကိုယ်ရေးအချက်အလက် မူဝါဒ",
+        "termsOfService": "ဝန်ဆောင်မှုစည်းကမ်းချက်များ",
+        "title": "အကူအညီ"
     },
     "history": {
-      "empty": "@:noDataText",
-      "title": "Purchase history"
+        "clearHistory": "မှတ်တမ်း ရှင်းရန်",
+        "empty": "သင့်လုပ်ဆောင်မှုများ သည် ဤနေရာတွင် ပေါ်လာပါလိမ့်မည်",
+        "emptySearch": "မည်သည့် လုပ်ဆောင်မှုမျှ မတွေ့ရှိပါ",
+        "filterPlaceholder": "လိပ်စာ၊ သင်္ကေတ၊ အမျိုးအစား သို့မဟုတ် Block ID ဖြင့် စစ်ထုတ်ရန်"
     },
-    "notifications": {
-      "accountAddressError": {
-        "text": "Unfortunately, the {Hashi} bridge transaction failed due to the recipient address of the tokens in the @:moonpayText order does not match your current {Ethereum} account address. Please switch {Ethereum} account in extension and try again.",
-        "title": "Wrong {Ethereum} account"
-      },
-      "amountError": {
-        "text": "Unfortunately the {Hashi} bridge transaction has failed due to there not being enough tokens for transaction. Please check your {Ethereum} account balance and try again.",
-        "title": "Insufficient balance"
-      },
-      "feeError": {
-        "text": "Unfortunately the {Hashi} bridge transaction has failed due to there not being enough ETH to pay for the {Ethereum} network transation fees. Please add more ETH and try again.",
-        "title": "Not enough ETH for the bridge tx"
-      },
-      "success": {
-        "text": "Token purchase is finished. The {Hashi} bridge transaction will start automatically as soon as the tokens have been received in the connected {Ethereum} account. It is safe to close this window and continue using {AppName}. There will be a notification about the bridge transaction when ready.",
-        "title": "Tokens purchased"
-      },
-      "supportError": {
-        "text": "Unfortunately the token purchased via @:moonpayText is not yet supported by the {Hashi} bridge in {AppName}. Normally only the supported tokens should be available for purchase via MoonPay in {AppName}, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">{AppName} Telegram group</a>.",
-        "title": "Token not supported"
-      },
-      "transactionError": {
-        "text": "Unfortunately it appears that the @:moonpayText transaction has failed. Please try again. For @:moonpayText support go to <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https://support.moonpay.com</a>",
-        "title": "Transaction has failed"
-      }
+    "historyErrorMessages": {
+        "balances": {
+            "liquidityrestrictions": "အကောင့်ငွေဖြစ်လွယ်မှု ကန့်သတ်ချက်များသည် ငွေထုတ်ခြင်းကို တားဆီးသည်။"
+        },
+        "demeterfarmingplatform": {
+            "insufficientfunds": "ရန်ပုံငွေမလုံလောက်",
+            "insufficientlptokens": "ငွေဖြစ်လွယ်မှု လုံလောက်မှု တိုကင်များ",
+            "pooldoesnothaverewards": "ရေကူးကန်တွင် ဆုလာဘ်များ မရှိပါ။"
+        },
+        "generalError": "တစ်စုံတစ်ရာ မှားယွင်းနေသည်",
+        "liquidityproxy": {
+            "forbiddenfilter": "ရွေးချယ်ထားသော ငွေဖြစ်လွယ်မှုအရင်းအမြစ်ကို ခွင့်မပြုပါ။",
+            "slippagenottolerated": "စျေးနှုန်းသက်ရောက်မှုသည် ရွေးထားသည့်တန်ဖိုးထက် ကျော်လွန်သွားပါသည်။"
+        },
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "စျေးနှုန်းတွက်ချက်ရာတွင် အမှားအယွင်းတစ်ခု ဖြစ်ပေါ်ခဲ့သည်။"
+        },
+        "poolxyk": {
+            "calculatedvalueisnotmeetsrequiredboundaries": "ပမာဏများသည် လိုအပ်သော ကန့်သတ်ချက်များ ကျော်လွန်နေပါသည်။",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "ပေးထားသောပမာဏသည် ကွဲပြားလွန်းသည်။",
+            "sourcebalanceisnotlargeenough": "ရင်းမြစ်လက်ကျန်သည် လုံလောက်စွာ မကြီးမားပါ။",
+            "targetbalanceisnotlargeenough": "သွားမည့်နေရာလက်ကျန်သည် မလုံလောက်ပါ။",
+            "unabletodepositxorlessthanminimum": "အနိမ့်ဆုံးတန်ဖိုး (0.007) ထက်နိမ့်သော XOR",
+            "zerovalueinamountparameter": "ပမာဏ အင်ပုတ်တန်ဖိုး သုညဖြစ်နေသည်"
+        },
+        "referrals": {
+            "alreadyhasreferrer": "အကောင့်တွင် လွှဲပြောင်းပေးသူ ရှိနှင့်ပြီးဖြစ်သည်။",
+            "referrerinsufficientbalance": "လွှဲပြောင်းပေးသူတွင် လက်ကျန်ငွေ လုံလောက်မှု မရှိပါ။"
+        },
+        "vestedrewards": {
+            "cantcalculatereward": "ဆုကြေးငွေတွက်ချက်မှု မအောင်မြင်ပါ။",
+            "norewardsforasset": "ဤပိုင်ဆိုင်မှုအတွက် ဆုလာဘ်များမရှိပါ။",
+            "rewardssupplyshortage": "ဆုပေးပွဲအစီအစဉ် ပြီးသွားပါပြီ။"
+        },
+        "xstpool": {
+            "poolalreadyinitializedforpair": "ရေကူးကန်အတွဲ ရှိနှင့်ပြီးဖြစ်သည်။",
+            "slippagelimitexceeded": "ချော်လဲခြင်း သည်းခံနိုင်မှုသည် သင့်လျော်သော ကန့်သတ်ချက်များနှင့် မကိုက်ညီပါ။"
+        }
+    },
+    "importText": "သွင်းကုန်",
+    "insufficientBalanceText": "လက်ကျန် {tokenSymbol} မလုံလောက်ပါ။",
+    "kensetsu": {
+        "addCollateral": "စရံထည့်ပါ။",
+        "addCollateralDescription": "သင်၏ ချေးငွေကန့်သတ်ချက်ကို တိုးမြှင့်ရန် သို့မဟုတ် သင်၏ ချေးငွေနှင့် တန်ဖိုးအချိုးကို မြှင့်တင်ရန် သင့်အနေအထားတွင် ပိုင်ဆိုင်မှုများကို ပိုမိုအပ်နှံပါ။ ဒါကလည်း ဖျက်သိမ်းမှုကို တားဆီးပေးနိုင်ပါတယ်။",
+        "available": "ရရှိနိုင်ပါသည်။",
+        "availableToBorrow": "ချေးယူနိုင်သည်။",
+        "availableToBorrowDescription": "သင်၏အပ်နှံထားသော အပေါင်ပစ္စည်းနှင့် ရှိပြီးသားကြွေးမြီများကို အခြေခံ၍ သင်၏ရာထူး၏ လက်ရှိအခြေအနေအောက်တွင် သင်ဆွဲရန်ကျန်ရှိသောပမာဏကို အရည်အချင်းပြည့်မီပါသည်။",
+        "borrowDebt": "အကြွေးတွေ ချေးတယ်။",
+        "borrowMore": "များများ ချေးပါ။",
+        "borrowMoreDescription": "သင့်ရာထူးမှ အများဆုံးရရှိနိုင်သည့် ပမာဏအထိ ထပ်ဆောင်းရန်ပုံငွေများကို ရယူပါ။ ဖျက်သိမ်းမှုအန္တရာယ်များကိုရှောင်ရှားရန် သင်၏စရံတန်ဖိုးသည် တိုးလာသောကြွေးမြီများကို ပံ့ပိုးပေးကြောင်း သေချာပါစေ။",
+        "borrowTax": "ချေးခွန်",
+        "borrowTaxDescription": "{value} အခွန်သည် ချေးယူထားသော ပမာဏသို့ သက်ရောက်သည်။",
+        "closeVault": "ငါ့ရာထူးကို ပိတ်လိုက်ပါ။",
+        "closeVaultDescription": "ကျန်ရှိသောကြွေးမြီအားလုံးကို ပြန်ဆပ်ပြီး အပေါင်ပစ္စည်းအားလုံးကို ထုတ်ယူခြင်းဖြင့် ရွေးချယ်ထားသောရာထူးကို ပိတ်ပါ။",
+        "collateralDetails": "စရံအသေးစိတ်",
+        "createVault": "အငှားရာထူးကိုဖွင့်ပါ။",
+        "createVaultAction": "ချေးပါ။",
+        "createVaultDescription": "သင့်ရာထူးတွင် အပေါင်ပစ္စည်းထည့်ကာ ရန်ပုံငွေဆွဲခြင်းဖြင့် ငွေပေးငွေယူအသစ်တစ်ခုကို စတင်လိုက်ပါ။ ၎င်းသည် သင်စီမံခန့်ခွဲရမည့် အကြွေးကို ဖန်တီးပေးသည်။",
+        "debtAvailable": "အကြွေးတွေရှိနိုင်တယ်။",
+        "debtAvailableDescription": "သင်၏လက်ရှိအပေါင်ပစ္စည်းအပေါ်အခြေခံ၍ သင်၏ချေးငွေကန့်သတ်ချက်ထက်မကျော်လွန်ဘဲ သင့်အနေအထားမှ ထုတ်ယူနိုင်သည့် ရန်ပုံငွေပမာဏ။",
+        "debtDetails": "အကြွေးအသေးစိတ်",
+        "depositCollateral": "စရံငွေသွင်းပါ။",
+        "disclaimerDescription": "{AppName} မှတစ်ဆင့် ဒစ်ဂျစ်တယ်ပိုင်ဆိုင်မှုများကို ချေးငှားခြင်းသည် သိသာထင်ရှားသောအန္တရာယ်ကို ခံစားရပြီး သင့်ကိုယ်ပိုင်အန္တရာယ်မှာ လုံးဝဖြစ်သည်။ ဒစ်ဂျစ်တယ်ပိုင်ဆိုင်မှုများ၏တန်ဖိုးသည် အလွန်အမင်းမငြိမ်မသက်ဖြစ်ပြီး သင်ချေးယူထားသော သို့မဟုတ် အပေါင်ပစ္စည်းအဖြစ်အသုံးပြုထားသော ပိုင်ဆိုင်မှုများ၏စျေးကွက်စျေးနှုန်းပြောင်းလဲမှုများသည် ကြီးမားသောဘဏ္ဍာရေးဆုံးရှုံးမှုများဆီသို့ ဦးတည်သွားစေနိုင်သည်။",
+        "error": {
+            "borrowMoreThanAvailable": "ရနိုင်သောအကြွေးကိုကျော်လွန်",
+            "enterBorrow": "ချေးငွေပမာဏကို ထည့်ပါ။",
+            "enterCollateral": "စရံထည့်ပါ။",
+            "enterRepayDebt": "အကြွေးပြန်ဆပ်ပါ",
+            "incorrectCollateral": "တိုကင်အတွဲကို ပံ့ပိုးမထားပါ။",
+            "insufficientCollateral": "အပေါင်ပစ္စည်း မလုံလောက်ပါ။",
+            "repayMoreThanDebt": "အကြွေးတွေ ပိုပေးတယ်။"
+        },
+        "highLiquidationRisk": "ဖျက်သိမ်းမှုအန္တရာယ်မြင့်မားသည်။",
+        "interest": "အတိုး",
+        "interestDescription": "ရာခိုင်နှုန်းအဖြစ် တွက်ချက်ပြီး သင့်ရာထူးမှ ထုတ်ယူသည့် ပမာဏပေါ်တွင် နှစ်စဉ်ကြေးကောက်ခံပါသည်။ ဤအခကြေးငွေသည် အန္တရာယ်များနှင့် စျေးကွက်အတက်အကျများအတွက် လျော်ကြေးပေးသည်။",
+        "introDescription": "လုံခြုံပြီး အားစိုက်ထုတ်ချေးခြင်းနှင့် ချေးငှားခြင်းအတွေ့အကြုံကို ခံစားပါ။ {Kensetsu} ပလပ်ဖောင်းဖြင့် ငွေချေးသည့်ရာထူးများကို ဖွင့်ပါ။",
+        "introTitle": "ငှားရမ်းရာထူးများဖွင့်ပြီး {Kensetsu} ဖြင့် ရယူပါ",
+        "liquidated": "အရည်ပျော်သည်။",
+        "liquidatedMessage": "အရည်အတွက် {amount} {symbol}",
+        "liquidationClose": "အရည်စာရင်းပိတ်",
+        "liquidationPenalty": "ကြွေးမြီ",
+        "liquidationPenaltyDescription": "သင့်အပေါင်ပစ္စည်း၏တန်ဖိုးသည် သတ်မှတ်ထားသော သတ်မှတ်ချက်တစ်ခုအောက် ကျရောက်ပါက အကြွေးကိုကာမိစေရန် ပိုင်ဆိုင်မှုများကို ရောင်းချခြင်းအား လှုံ့ဆော်ပေးသည့် အခကြေးငွေဖြစ်သည်။ ဤပြစ်ဒဏ်သည် သင့်အကြွေးစုစုပေါင်းကို တိုးစေသည်။",
+        "ltv": "တန်ဖိုး ({LTV}) သို့ ချေးငွေ",
+        "ltvDescription": "သင့်အနေအထားရှိ အပေါင်ပစ္စည်း၏တန်ဖိုးနှင့် ထုတ်ယူသည့်ပမာဏ၏အချိုးကို ရာခိုင်နှုန်းအဖြစ် ဖော်ပြသည်။ ပိုမိုမြင့်မားသော {LTV} သည် အလားအလာရှိသော ပြန်လာမှုများသာမက ဖျက်သိမ်းနိုင်သည့်အခွင့်အရေးအပါအဝင် အန္တရာယ်ကိုလည်း တိုးစေသည်။",
+        "ltvMaxTooltip": "အပေါင်ပစ္စည်းအဖြစ် အသုံးပြုထားသည့် ပိုင်ဆိုင်မှု၏ အကဲဖြတ်တန်ဖိုးနှင့်စပ်လျဉ်း၍ ပေးဆောင်နိုင်သည့် ချေးငွေအနေအထား၏ အများဆုံးပမာဏ။",
+        "maxAvailableToBorrow": "မက်တယ်။ ငှါးရန်ရှိသည်။",
+        "maxAvailableToBorrowDescription": "သင့်အပေါင်ပစ္စည်း၏တန်ဖိုးဖြင့် ဆုံးဖြတ်ပြီး သင့်ရာထူးမှ သင်ထုတ်ယူနိုင်သည့် အများဆုံးပမာဏ။ ဤကန့်သတ်ချက်သည် အပေါင်ပစ္စည်း၏တန်ဖိုးအပြောင်းအလဲများအဖြစ် ချိန်ညှိသည်။",
+        "minDepositCollateral": "မင်း စရံငွေ",
+        "minDepositCollateralDescription": "ရာထူးတစ်ခုဖွင့်ရန်အတွက် အနည်းဆုံး ပိုင်ဆိုင်မှုပမာဏ။ ဤကနဦးအပ်ငွေသည် သင်ချေးလိုသောငွေများကို လုံခြုံစေပါသည်။",
+        "openSwap": "လဲလှယ်မှုဖွင့်ပါ။",
+        "outstandingDebt": "ကြွေးကျန်",
+        "outstandingDebtDescription": "စုဆောင်းထားသော အတိုးအပါအဝင် သင့်ရာထူးမှ ထုတ်ယူထားသော ရန်ပုံငွေများမှ လက်ရှိ သင်အကြွေးတင်နေသည့် စုစုပေါင်းပမာဏ။ သင့်ရာထူးကိုပိတ်ရန် သို့မဟုတ် ကျန်းမာသောချေးငွေမှတန်ဖိုးအချိုးများကို ထိန်းသိမ်းရန် ၎င်းကို ပြန်လည်ပေးဆပ်ရန် လိုအပ်သည်။",
+        "overallAvailable": "စုစုပေါင်းရရှိနိုင်သည်။",
+        "overallAvailableDescription": "{Kensetsu} ပလပ်ဖောင်းပေါ်တွင် ချေးယူရန် ရနိုင်သော ရန်ပုံငွေ စုစုပေါင်းပမာဏ။",
+        "overallBadDebt": "အကြွေးမကောင်း",
+        "overallBadDebtDescription": "ချေးယူသူ၏ ပုံသေ သို့မဟုတ် အပေါင်ပစ္စည်း မလုံလောက်ခြင်းကြောင့် ပြန်လည်ရရှိရန် မဖြစ်နိုင်သော ကြွေးမြီအပိုင်း။",
+        "overallTotalCollateral": "စုစုပေါင်းစရံ",
+        "overallTotalCollateralDescription": "{Kensetsu} ပလပ်ဖောင်းပေါ်တွင် ၎င်းတို့၏ ချေးယူသည့်နေရာများကို လုံခြုံစေရန် ငွေချေးသူများမှ အပ်နှံထားသော ပိုင်ဆိုင်မှုစုစုပေါင်းတန်ဖိုး။",
+        "overallTotalDebt": "စုစုပေါင်းအကြွေး",
+        "overallTotalDebtDescription": "{Kensetsu} ပလပ်ဖောင်းပေါ်ရှိ ချေးယူသည့်ရာထူးအားလုံးတွင် လက်ရှိကျန်ရှိနေသော အကြွေးစုစုပေါင်းပမာဏ။",
+        "positionHistory": "ရာထူးမှတ်တမ်း",
+        "positionInfo": "ရာထူးအချက်အလက်",
+        "positionSafe": "လုံခြုံသောအနေအထား",
+        "readMore": "စာများများဖတ်ပါ။",
+        "reopen": "ပြန်ဖွင့်တယ်။",
+        "repayDebt": "အကြွေးပြန်ဆပ်",
+        "repayDebtDescription": "သင်၏ကျန်ရှိသောကြွေးမြီများကိုလျှော့ချရန် ချေးထားသောငွေများကို ပြန်ပေးပါ။ ၎င်းသည် အတိုးကုန်ကျစရိတ်ကို လျှော့ချနိုင်ပြီး ဖျက်သိမ်းမှုအန္တရာယ်ကို လျှော့ချနိုင်သည်။",
+        "requiredAmountWithSlippage": "ချော်လဲခြင်းအပါအဝင် လိုအပ်သောပမာဏ",
+        "requiredAmountWithSlippageDescription": "နေရာလွတ်ခြင်းကို ချောချောမွေ့မွေ့ ပြုလုပ်ရန် စျေးနှုန်းလျှောင်းလျားမှုဖြစ်နိုင်ခြေကြောင့် လိုအပ်သည့် {amount} ထက် {tokenSymbol} အနည်းငယ် ပိုဝယ်ပါ။ ချို့ယွင်းမှုကို ဖြည့်ဆည်းရန် ထပ်မံ တန်ဖိုးတစ်စိတ်တစ်ပိုင်း လိုအပ်ပါသည်။ အဲဒီလိုလိုအပ်ချက်ကို ဖြည့်ဆည်းရန် သင်၏ ပစ္စည်းများကို {tokenSymbol} သို့ ပြောင်းလဲပါ",
+        "status": {
+            "Closed": "ပိတ်ထားသည်။",
+            "Liquidated": "အရည်ပျော်သည်။",
+            "Opened": "လှုပ်လှုပ်ရှားရှား"
+        },
+        "totalCollateral": "စုစုပေါင်းစရံ",
+        "totalCollateralDescription": "သင့်အနေအထားတွင် လက်ရှိအပ်နှံထားသည့် ပိုင်ဆိုင်မှုအားလုံး၏ စုစုပေါင်းတန်ဖိုး။ ဤတန်ဖိုးသည် သင်၏ ချေးယူနိုင်စွမ်းနှင့် ဖျက်သိမ်းမှုအန္တရာယ်အပေါ် သက်ရောက်မှုရှိသည်။",
+        "totalCollateralReturned": "စုစုပေါင်း စရံပြန်ပေးပါသည်။",
+        "totalCollateralReturnedDescription": "လက်ကျန်အပေါင်ပစ္စည်းအပါအဝင် သင့်ရာထူးပိတ်ပြီးနောက် စုစုပေါင်းပိုင်ဆိုင်မှုတန်ဖိုးကို သင့်ထံပြန်ပေးသည်။",
+        "yourCollateral": "သင်၏အပေါင်ပစ္စည်း",
+        "yourCollateralDescription": "စုဆောင်းထားသော ရန်ပုံငွေများကို လုံခြုံစေရန် သင့်ရာထူးတွင် သင်အပ်နှံထားသော ပိုင်ဆိုင်မှုများ။ လိုအပ်သော ချေးငွေနှင့် တန်ဖိုးအချိုးကို ထိန်းသိမ်းရန် ပျက်ကွက်ပါက ဤပိုင်ဆိုင်မှုများကို ငွေချေးသူမှ ဖျက်သိမ်းနိုင်ပါသည်။",
+        "yourDebt": "သင့်အကြွေး",
+        "yourDebtDescription": "ထုတ်ယူထားသောပမာဏနှင့် အတိုးများအပါအဝင် သင့်အနေအထားတွင် လက်ရှိကျန်ရှိသော စုစုပေါင်းပမာဏ။ အတိုးများလာပါက ဤလက်ကျန်ငွေသည် အချိန်နှင့်အမျှတိုးလာသည်။",
+        "yourDebtTokenBalance": "သင်၏ {tokenSymbol} လက်ကျန်ငွေ"
+    },
+    "lastText": "နောက်ဆုံး",
+    "learnMoreText": "ပိုမိုလေ့လာရန်",
+    "light": "အလင်း",
+    "locationText": "တည်နေရာ",
+    "logoutText": "ထွက်ရန်",
+    "mainMenu": {
+        "About": "အကြောင်း",
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "Bridge": "@:bridgeText",
+        "Burn": "@:pageTitle.Burn",
+        "Explore/Container": "စူးစမ်းပါ။",
+        "Farming": "လယ်ယာလုပ်ငန်း",
+        "OrderBook": "ကုန်သွယ်မှု",
+        "Pool": "ရေကူးကန်",
+        "Rewards": "ဆုလာဘ်",
+        "Sccp": "@:pageTitle.Sccp",
+        "SoraCard": "{Sora} ကတ်",
+        "StakingContainer": "လောင်းကြေးထပ်",
+        "Stats": "စာရင်းအင်းများ",
+        "Swap": "လဲလှယ်ပါ။",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Wallet": "ပိုက်ဆံအိတ်"
+    },
+    "marketAlgorithmText": "စျေးကွက် အယ်လဂိုရီသမ်",
+    "marketText": "စျေးကွက်",
+    "maxAmountText": "အများဆုံး ပမာဏ",
+    "memorandum": "{AppName} စာချွန်လွှာနှင့် ဝန်ဆောင်မှုစည်းမျဉ်းများ",
+    "minAmountText": "မိ ပမာဏ",
+    "mobilePopup": {
+        "header": "{polkaswapHighlight} လုပ်ဆောင်ချက်များ ပါသော {Sora} Wallet ကို ဒေါင်းလုဒ်လုပ်ပါ",
+        "info": "ကွန်ယက်အမျိုးမျိုးမှ တိုကင်များကို ပြောင်းလဲပါ - {Sora}, {Ethereum}, {Polkadot}, {Kusama}။ ရေကြွယ်ဝမှု ပံ့ပိုးပြီး လဲလှယ်ခမှ % ရယူပါ",
+        "sideMenu": "{Sora} Wallet ရယူရန်"
+    },
+    "moonpay": {
+        "buttons": {
+            "buy": "တိုကင်များဝယ်ပါ။",
+            "history": "ဝယ်ယူမှုမှတ်တမ်း",
+            "transfer": "တံတားစတင်ပါ။",
+            "view": "တံတားအရောင်းအဝယ်ကို ကြည့်ရှုပါ။"
+        },
+        "confirmations": {
+            "txReady": "တံတားအတွက် ငွေလွှဲရန် အဆင်သင့်"
+        },
+        "history": {
+            "empty": "@:noDataText",
+            "title": "ဝယ်ယူမှုမှတ်တမ်း"
+        },
+        "notifications": {
+            "accountAddressError": {
+                "text": "ကံမကောင်းစွာပဲ၊ {Hashi} မှာယူမှုတွင် တိုကင်များ၏ လက်ခံရရှိသူလိပ်စာသည် သင့်လက်ရှိ {Ethereum} အကောင့်လိပ်စာနှင့် ကိုက်ညီမှုမရှိသောကြောင့် {Hashi} တံတားလွှဲပြောင်းမှု မအောင်မြင်ပါ။ ကျေးဇူးပြု၍ တိုးချဲ့မှုတွင် {Ethereum} အကောင့်ကို ပြောင်းပြီး ထပ်စမ်းကြည့်ပါ။",
+                "title": "{Ethereum} အကောင့် မှားနေသည်။"
+            },
+            "amountError": {
+                "text": "ကံမကောင်းစွာပဲ အရောင်းအ၀ယ်အတွက် တိုကင်အလုံအလောက်မရှိခြင်းကြောင့် {Hashi} တံတားငွေပေးငွေယူ မအောင်မြင်ပါ။ ကျေးဇူးပြု၍ သင်၏ {Ethereum} အကောင့်လက်ကျန်ကို စစ်ဆေးပြီး ထပ်စမ်းကြည့်ပါ။",
+                "title": "လက်ကျန်မလုံလောက်"
+            },
+            "feeError": {
+                "text": "ဝမ်းနည်းစွာပင် {Hashi} ကွန်ရက်ကူးပြောင်းမှုအခကြေးငွေအတွက် ETH လုံလောက်စွာ မရရှိခြင်းကြောင့် {Hashi} တံတား အရောင်းအဝယ် မအောင်မြင်ပါ။ ကျေးဇူးပြု၍ ETH ထပ်ထည့်ပြီး ထပ်စမ်းကြည့်ပါ။",
+                "title": "တံတား tx အတွက် ETH မလုံလောက်ပါ။"
+            },
+            "success": {
+                "text": "တိုကင်ဝယ်ယူမှုပြီးပါပြီ။ ချိတ်ဆက်ထားသော {Ethereum} အကောင့်တွင် တိုကင်များလက်ခံရရှိပြီးသည်နှင့် {Hashi} တံတားငွေပေးငွေယူသည် အလိုအလျောက်စတင်ပါမည်။ ဤဝင်းဒိုးကိုပိတ်ပြီး {AppName} ကို ဆက်လက်အသုံးပြုရန် ဘေးကင်းပါသည်။ အဆင်သင့်ဖြစ်သောအခါ တံတားအရောင်းအဝယ်အကြောင်း အကြောင်းကြားချက် ပေးပါမည်။",
+                "title": "တိုကင်များ ဝယ်ယူခဲ့သည်။"
+            },
+            "supportError": {
+                "text": "ဝမ်းနည်းစွာပင် @:moonpayText မှတစ်ဆင့် ဝယ်ယူထားသော တိုကင်ကို {Hashi} တံတား {AppName} ရှိ {Hashi} မှ မပံ့ပိုးရသေးပါ။ ပုံမှန်အားဖြင့် ပံ့ပိုးပေးထားသော တိုကင်များကို {AppName} တွင် MoonPay မှတစ်ဆင့် ဝယ်ယူနိုင်သင့်သည်၊ ထို့ကြောင့် တစ်စုံတစ်ခု မှားယွင်းသွားပါသည်။ <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">{AppName} Telegram အဖွဲ့</a> တွင် ဤကိစ္စနှင့်ပတ်သက်၍ အသိုင်းအဝိုင်းအား အသိပေးရန် တုံ့ဆိုင်းမနေပါနှင့်။",
+                "title": "တိုကင်ကို မပံ့ပိုးပါ။"
+            },
+            "transactionError": {
+                "text": "ကံမကောင်းစွာပဲ @:moonpayText ငွေပေးငွေယူ ပျက်ကွက်သွားပုံပေါ်ပါတယ်။ ထပ်စမ်းကြည့်ပါ။ @:moonpayText ပံ့ပိုးမှုအတွက် <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https://support.moonpay.com</a> သို့ သွားပါ။",
+                "title": "ငွေလွှဲမှု မအောင်မြင်ပါ။"
+            }
+        },
+        "tooltips": {
+            "transfer": "တိုကင်များကို အောင်မြင်စွာ ဝယ်ယူနိုင်ပါပြီ။\nတံတားအရောင်းအဝယ်စတင်ရန် နှိပ်ပါ။"
+        }
+    },
+    "moonpayText": "MoonPay",
+    "mst": {
+        "about": "အကြောင်း",
+        "accountNameMst": "Multisig အကောင့်အမည်",
+        "addAddr": "လိပ်စာထည့်ပါ။",
+        "addAddress": "အခြားလိပ်စာထည့်ပါ။",
+        "addMST": "multisig လိပ်စာများကိုထည့်ပါ။",
+        "addrCreation": "Multisig လိပ်စာဖန်တီးခြင်း။",
+        "addressEntered": "ဤလိပ်စာကို ထည့်သွင်းပြီးဖြစ်သည်။",
+        "amountOfSignatures": "လက်မှတ်များ တင်သွင်းခဲ့သည်။",
+        "cardMessageFirst": "သင်၏ multisig ကို ကောင်းမွန်စွာ လုပ်ဆောင်နိုင်ရန်၊ စာရင်းသွင်းထားသော လိပ်စာများအားလုံးသည် သင်ပြုလုပ်ခဲ့သည့်အတိုင်း အတိအကျတူညီသည့်အတိုင်း multisig ကို ဖန်တီးရပါမည်။",
+        "cardMessageSecond": "Multisig wallet သည် နာမည်သာဖြစ်ပြီး အနာဂတ်တွင် ပြောင်းလဲ၍မရနိုင်ပါ။",
+        "connectFearless": "မကြောက်မရွံ့မှတဆင့်ချိတ်ဆက်ပါ။",
+        "continue": "ဆက်ရန်",
+        "createMst": "multisig ပိုက်ဆံအိတ်ဖန်တီးပါ။",
+        "enterAddress": "multisig လိပ်စာကိုထည့်ပါ။",
+        "enterName": "Multisig ပိုက်ဆံအိတ် အမည် ထည့်ပါ",
+        "forget": "မေ့",
+        "forgetMst": "သင်၏ဝင်ရောက်မှုအသေးစိတ်အချက်အလက်များကို ဖျက်ပစ်ပါမည်။ သင့်အကောင့်ကို အပြီးအပိုင် ဝင်သုံးခွင့်ဆုံးရှုံးပါမည်။",
+        "how": "ဘယ်လိုလုပ်မလဲ?",
+        "incorrectFormatAddress": "လိပ်စာသည် မှန်ကန်သောဖော်မတ်မဟုတ်ပေ။",
+        "loading": "ဖွင့်နေသည်...",
+        "minFee": "အနည်းဆုံးအခကြေးငွေပမာဏ SIGNER လိုအပ်ပါသည်။",
+        "mstBridgeWarning": "MST မှ လွှဲပြောင်းခြင်းကို လောလောဆယ် မဆောင်ရွက်ပေးပါ။",
+        "mstFearless": "Fearless Wallet တင်သွင်းပါ သို့မဟုတ် သင့်အကောင့်ကို ချိတ်ဆက်ပါ",
+        "mstForgetBtn": "Multisig အကောင့်ကိုမေ့လိုက်ပါ။",
+        "mstIcon": "Multisig အကောင့်တစ်ခုဖန်တီးပါ။",
+        "mstKeys": "Multisig ပိုက်ဆံအိတ်များတွင် လက်မှတ်များနှင့် သော့များစွာ လိုအပ်သည်။",
+        "mstSave": "အပြောင်းအလဲများကို သိမ်းဆည်းပါ။",
+        "mstSign": "အရောင်းအ၀ယ်ပြီးမြောက်ရန် လိုအပ်သော လက်မှတ်အရေအတွက်ကို သတ်မှတ်ပါ။",
+        "mstSwitchWarning": "လှုပ်ရှားမှုများနှင့် ငွေပေးငွေယူများအားလုံးကို Multisig အကောင့်မှတစ်ဆင့် ဆောင်ရွက်မည်ဖြစ်ပါသည်။",
+        "mstWallet": "လက်မှတ်များစွာသည် သော့အပေးအယူလုပ်ခြင်း၏အန္တရာယ်ကို လျှော့ချပေးသည်။ သော့တစ်ခုပျောက်ဆုံးခြင်း သို့မဟုတ် ခိုးယူခံရသော်လည်း ရန်ပုံငွေများသည် လုံခြုံစွာရှိနေပါသည်။",
+        "multisigAccount": "Multisig အကောင့်",
+        "seeActivity": "Multisig လုပ်ဆောင်ချက်ကို ကြည့်ပါ။",
+        "settingsMst": "Multisig အကောင့်ဆက်တင်များ",
+        "setupDetails": "အသေးစိတ်အချက်အလက်များကို သတ်မှတ်ပါ။",
+        "sign": "ဆိုင်းဘုတ်",
+        "successMstSetUp": "Multisig ပိုက်ဆံအိတ်ကို အောင်မြင်စွာ စနစ်ထည့်သွင်းပြီးပါပြီ။",
+        "suggestSwitchFromMst": "MST မှ ပြောင်းနိုင်သည် သို့မဟုတ် MST သို့ လွှဲပြောင်းနိုင်သည်။",
+        "sureForgetMst": "Multisig အကောင့်ကို မေ့လိုသည်မှာ သေချာပါသလား။",
+        "switchFromMst": "MST မှပြောင်းပါ။",
+        "switchMst": "Multisig အကောင့်သို့ပြောင်းပါ။",
+        "threshold": "တံခါးခုံ",
+        "thresholdNumber": "ငွေပေးငွေယူခွင့်ပြုချက်အဆင့်သတ်မှတ်ပါ။",
+        "warningSwitch": "ငွေလွှဲခြင်းကို အတည်ပြုရန် ဆိုင်းဘုတ်တစ်ခု လိုအပ်ပါသည်။ ကျေးဇူးပြု၍ multisig အကောင့်သို့ပြောင်းပါ။",
+        "yourAddress": "မင်းရဲ့လိပ်စာ"
+    },
+    "multipleRecipients": "လက်ခံသူအများအပြား",
+    "nameText": "နာမည်",
+    "networkFeeText": "ကွန်ရက်ကြေး",
+    "networkFeeTooltipText": "{Sora} စနစ်၏တိုးတက်မှုနှင့် တည်ငြိမ်သောစွမ်းဆောင်ရည်သေချာစေရန် ကွန်ရက်အခကြေးငွေကို အသုံးပြုပါသည်။",
+    "networkStatisticsText": "ကွန်ရက်စာရင်းဇယား",
+    "newAccountsText": "အကောင့်အသစ်များ",
+    "nextText": "နောက်တစ်ခု",
+    "noDataText": "ဒေတာမရှိပါ။",
+    "node": {
+        "errors": {
+            "connection": "node သို့ ချိတ်ဆက်ရာတွင် အမှားအယွင်းတစ်ခု ဖြစ်ပေါ်ခဲ့သည်။\n{address}\n",
+            "existing": "ဤ node ကို ထည့်သွင်းပြီးဖြစ်သည်- {title}\n",
+            "network": "node\n{address}\n အခြားကွန်ရက်မှဖြစ်သည်။\n"
+        },
+        "messages": {
+            "connected": "node ဖြင့် ချိတ်ဆက်ထားသည်။\n{address}\n",
+            "selectNode": "Node စာရင်းမှ ချိတ်ဆက်ရန် node ကို ရွေးချယ်ပါ"
+        },
+        "warnings": {
+            "disconnect": "node သို့ ချိတ်ဆက်မှု ပြတ်တောက်သွားခဲ့သည်။ ပြန်လည်ချိတ်ဆက်နေသည်..."
+        }
+    },
+    "noir": "နူးရ်",
+    "ofText": "{first} ၏ {second}",
+    "operations": {
+        "AddLiquidity": "Liquidity ထည့်ပါ။",
+        "andText": "နှင့်",
+        "BindRegulatedAsset": "စည်းမျဥ်းစည်းကမ်းပိုင်ဆိုင်မှု",
+        "BorrowVaultDebt": "အကြွေးချေး",
+        "Burn": "မီးရှို့",
+        "ClaimRewards": "ဆုလာဘ်များကို တောင်းဆိုပါ။",
+        "CloseVault": "ရာထူးပိတ်",
+        "CreatePair": "တွဲဖန်တီးပါ။",
+        "CreateVault": "ရာထူးဖန်တီးပါ။",
+        "DemeterFarmingDepositLiquidity": "Stake Liquidity",
+        "DemeterFarmingGetRewards": "ဆုလာဘ်များကို တောင်းဆိုပါ။",
+        "DemeterFarmingStakeToken": "လောင်းကြေး တိုကင်",
+        "DemeterFarmingUnstakeToken": "တိုကင်ဖြုတ်ပါ။",
+        "DemeterFarmingWithdrawLiquidity": "Liquidity ကို ဖြုတ်ပါ။",
+        "DepositCollateral": "Deposit ရာထူး",
+        "error": {
+            "AddLiquidity": "{amount} {symbol} နှင့် {amount2} {symbol2} ပံ့ပိုးပေးရန် မအောင်မြင်ပါ",
+            "BindRegulatedAsset": "ပိုင်ဆိုင်မှု {symbol} ကို SBT {symbol2} သို့ ပေါင်းစည်းရန် မအောင်မြင်ပါ",
+            "BorrowVaultDebt": "{amount} {symbol} ငှားရန် မအောင်မြင်ပါ",
+            "Burn": "{amount} {symbol} မီးရှို့ရန် မအောင်မြင်ပါ",
+            "ClaimRewards": "ဆုလာဘ်များ {rewards} ကို တောင်းဆိုရန် မအောင်မြင်ပါ",
+            "CloseVault": "{symbol}/{symbol2} ရာထူးကို ပိတ်ရန် မအောင်မြင်ပါ။",
+            "CreatePair": "{amount} {symbol} နှင့် {amount2} {symbol2} ပံ့ပိုးပေးရန် မအောင်မြင်ပါ",
+            "CreateVault": "{symbol}/{symbol2} ရာထူးကို ဖန်တီး၍မရပါ။",
+            "DemeterFarmingDepositLiquidity": "{amount} {symbol} နှင့် {symbol2} LP တိုကင်များကို ထောက်ပံ့ပေးရန် မအောင်မြင်ပါ",
+            "DemeterFarmingGetRewards": "{symbol} တောင်းဆိုရန် မအောင်မြင်ပါ",
+            "DemeterFarmingStakeToken": "{amount} {symbol} ထည့်ရန် မအောင်မြင်ပါ",
+            "DemeterFarmingUnstakeToken": "{amount} {symbol} ကို ဖယ်ရှားရန် မအောင်မြင်ပါ",
+            "DemeterFarmingWithdrawLiquidity": "{amount} {symbol} နှင့် {symbol2} LP တိုကင်များကို ဖယ်ရှားရန် မအောင်မြင်ပါ",
+            "DepositCollateral": "{amount} {symbol} ငွေသွင်းရန် မအောင်မြင်ပါ",
+            "EthBridgeIncoming": "{amount} {symbol} {Ethereum} မှ {Sora} သို့ လွှဲပြောင်းရန် မအောင်မြင်ပါ",
+            "EthBridgeOutgoing": "{amount} {symbol} {Sora} မှ {Ethereum} သို့ လွှဲပြောင်းရန် မအောင်မြင်ပါ",
+            "IssueSoulBoundToken": "Soulbound တိုကင် {symbol} ကို ထုတ်ပေးရန် မအောင်မြင်ပါ",
+            "Mint": "{amount} {symbol} သို့ {address} သို့ ရေးသွင်းရန် မအောင်မြင်ပါ",
+            "OrderBookCancelLimitOrder": "ကန့်သတ်မှာယူမှုကို ပယ်ဖျက်၍မရပါ။",
+            "OrderBookCancelLimitOrders": "ကန့်သတ်မှာယူမှုများကို ပယ်ဖျက်၍မရပါ။",
+            "OrderBookPlaceLimitOrder": "{amount} {symbol} {price} {symbol2} တွင် {amount} {symbol} ၏ ကန့်သတ်အမိန့်ကို မအောင်မြင်ပါ",
+            "ReferralReserveXor": "{amount} XOR ချည်နှောင်ရန် မအောင်မြင်ပါ။",
+            "ReferralSetInvitedUser": "{role} {address} သတ်မှတ်ရန် မအောင်မြင်ပါ",
+            "ReferralUnreserveXor": "{amount} XOR ကို ခွဲထုတ်ရန် မအောင်မြင်ပါ။",
+            "RegisterAndRegulateAsset": "မှတ်ပုံတင်ရန်နှင့် ထိန်းညှိရန် ပျက်ကွက်ခဲ့သည် {symbol}",
+            "RegisterAsset": "{symbol} ပိုင်ဆိုင်မှုကို စာရင်းသွင်းရန် မအောင်မြင်ပါ။",
+            "RegulateAsset": "ပိုင်ဆိုင်မှု {symbol} ကို ထိန်းညှိရန် မအောင်မြင်ပါ",
+            "RemoveLiquidity": "{amount} {symbol} နှင့် {amount2} {symbol2} ကို ဖယ်ရှားရန် မအောင်မြင်ပါ",
+            "RepayVaultDebt": "{amount} {symbol} ပြန်ဆပ်ရန် မအောင်မြင်ပါ",
+            "SetAccessExpiration": "{symbol} အတွက် {to} ၏ သက်တမ်းကုန်ဆုံးမှုကို အပ်ဒိတ်လုပ်ရန် မအောင်မြင်ပါ",
+            "StakingBond": "ငွေချေးစာချုပ် {amount} {symbol} မအောင်မြင်ပါ",
+            "StakingBondAndNominate": "ငွေချေးစာချုပ် {amount} {symbol} မအောင်မြင်ပါ",
+            "StakingBondExtra": "အပိုဆောင်း {amount} {symbol} ချိတ်ရန် မအောင်မြင်ပါ",
+            "StakingChill": "အေးအေးဆေးဆေး မအောင်မြင်ဘူး။",
+            "StakingNominate": "အတည်ပြုသူများကို အမည်စာရင်းတင်သွင်းရန် မအောင်မြင်ပါ။",
+            "StakingPayout": "ဆုလာဘ်များ ပေးချေရန် မအောင်မြင်ပါ။",
+            "StakingRebond": "{amount} {symbol} ကို ပြန်လည်ပေါင်းစည်းရန် မအောင်မြင်ပါ",
+            "StakingSetController": "ထိန်းချုပ်ကိရိယာ {address} ကို သတ်မှတ်ရန် မအောင်မြင်ပါ",
+            "StakingSetPayee": "ငွေလက်ခံသူ {address} ကို သတ်မှတ်၍ မရပါ",
+            "StakingUnbond": "{amount} {symbol} {symbol} ဖျက်သိမ်းရန် မအောင်မြင်ပါ",
+            "StakingWithdrawUnbonded": "{amount} {symbol} ကို ရုပ်သိမ်းရန် မအောင်မြင်ပါ",
+            "Swap": "{amount} {symbol} {amount2} {symbol2} အတွက် {amount} {symbol} ကို လဲလှယ်ရန် မအောင်မြင်ပါ",
+            "SwapAndSend": "{amount} {symbol} {amount2} {symbol2} နှင့် {action} {direction} {address} အတွက် {direction} {address} ကို လဲလှယ်ရန် မအောင်မြင်ပါ",
+            "SwapTransferBatch": "{action} {amount} {symbol} မအောင်မြင်ပါ",
+            "Transfer": "{action} {amount} {symbol} {direction} {address} သို့ မအောင်မြင်ပါ",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address} သို့ မအောင်မြင်ပါ",
+            "XorlessTransfer": "{amount} {symbol} {address} သို့ ပို့၍မရပါ"
+        },
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "finalized": {
+            "AddLiquidity": "ထောက်ပံ့ခဲ့သည် {amount} {symbol} နှင့် {amount2} {symbol2}",
+            "BindRegulatedAsset": "ပိုင်ဆိုင်မှု {symbol2} ကို SBT သို့ ချည်နှောင်ပါ။",
+            "BorrowVaultDebt": "{amount} {symbol} ငှားထားသည်",
+            "Burn": "မီးလောင်ပြီး {amount} {symbol}",
+            "ClaimRewards": "ဆုလာဘ် {rewards} အောင်မြင်စွာ တောင်းဆိုခဲ့သည်",
+            "CloseVault": "{symbol}/{symbol2} ရာထူး ပိတ်ထားသည်။",
+            "CreatePair": "ထောက်ပံ့ခဲ့သည် {amount} {symbol} နှင့် {amount2} {symbol2}",
+            "CreateVault": "{symbol}/{symbol2} ရာထူးကို ဖန်တီးထားသည်။",
+            "DemeterFarmingDepositLiquidity": "{symbol} နှင့် {symbol2} {amount} LP တိုကင်များကို ပံ့ပိုးပေးသည်",
+            "DemeterFarmingGetRewards": "{amount} {symbol} အောင်မြင်စွာ အရေးဆိုထားသည်။",
+            "DemeterFarmingStakeToken": "ထည့်ခဲ့သည် {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "{amount} {symbol} ကို ဖယ်ရှားခဲ့သည်",
+            "DemeterFarmingWithdrawLiquidity": "{symbol} နှင့် {symbol2} {amount} LP တိုကင်များကို ဖယ်ရှားထားသည်",
+            "DepositCollateral": "အပ်နှံထားသော {amount} {symbol}",
+            "EthBridgeIncoming": "{amount} {symbol} {Ethereum} မှ {Sora} သို့ လွှဲပြောင်းခဲ့သည်",
+            "EthBridgeOutgoing": "{amount} {symbol} {Sora} မှ {Ethereum} သို့ လွှဲပြောင်းခဲ့သည်",
+            "IssueSoulBoundToken": "Soulbound Token {symbol} ထုတ်ဝေမှု",
+            "Mint": "{amount} {symbol} {address} သို့ ရေးထားသည်",
+            "OrderBookCancelLimitOrder": "ကန့်သတ်မှာယူမှုကို ပယ်ဖျက်လိုက်ပါပြီ။",
+            "OrderBookCancelLimitOrders": "ကန့်သတ်အော်ဒါများကို ပယ်ဖျက်လိုက်ပါပြီ။",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} {price} {symbol2} တွင် နေရာချထားသည်",
+            "ReferralReserveXor": "Bonded {amount} XOR",
+            "ReferralSetInvitedUser": "{role} {address} ကို အောင်မြင်စွာသတ်မှတ်ထားသည်။",
+            "ReferralUnreserveXor": "စည်းမထားသော {amount} XOR",
+            "RegisterAndRegulateAsset": "မှတ်ပုံတင်ပြီး {symbol} ပိုင်ဆိုင်မှုကို ထိန်းညှိပါ။",
+            "RegisterAsset": "{symbol} ပိုင်ဆိုင်မှု မှတ်ပုံတင်ထားသည်။",
+            "RegulateAsset": "ပိုင်ဆိုင်မှု {symbol} ကို ထိန်းညှိပါ",
+            "RemoveLiquidity": "{amount} {symbol} နှင့် {amount2} {symbol2} ကို ဖယ်ရှားခဲ့သည်",
+            "RepayVaultDebt": "ပြန်လည်ပေးဆပ်ခဲ့သည် {amount} {symbol}",
+            "SetAccessExpiration": "SB တိုကင် {symbol} သက်တမ်းကုန်ဆုံးခြင်းကို {endTime} သို့ အပ်ဒိတ်လုပ်ထားသည်",
+            "StakingBond": "ချည်နှောင်ထားသော {amount} {symbol}",
+            "StakingBondAndNominate": "ချည်နှောင်ထားသော {amount} {symbol}",
+            "StakingBondExtra": "Bonded အပို {amount} {symbol}",
+            "StakingChill": "အေးဆေး",
+            "StakingNominate": "အမည်စာရင်းတင်သွင်းခံရသူများ",
+            "StakingPayout": "ပေးချေသောဆုများ",
+            "StakingRebond": "ပြန်ချည်နှောင်ခဲ့သည် {amount} {symbol}",
+            "StakingSetController": "ထိန်းချုပ်ကိရိယာကို သတ်မှတ်ရန် {address}",
+            "StakingSetPayee": "ငွေပေးသူအဖြစ် သတ်မှတ်ရန် {address}",
+            "StakingUnbond": "အနှောင်အဖွဲ့ကင်းသော {amount} {symbol}",
+            "StakingWithdrawUnbonded": "နုတ်ထွက် {amount} {symbol}",
+            "Swap": "{amount} {symbol} {amount2} {symbol2} အတွက် {symbol2} ကို လဲလှယ်ခဲ့သည်",
+            "SwapAndSend": "{amount} {symbol} {amount2} {symbol2} နှင့် {action} {direction} {address} အတွက် {direction} {address} သို့ လဲလှယ်ခဲ့သည်",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
+        },
+        "IssueSoulBoundToken": "SBT စာစောင်",
+        "Mint": "Mint",
+        "OrderBookCancelLimitOrder": "Cancel Order",
+        "OrderBookCancelLimitOrders": "မှာယူမှုများကို ပယ်ဖျက်ပါ။",
+        "OrderBookPlaceLimitOrder": "Order တင်ပါ။",
+        "ReferralReserveXor": "ဘွန်း XOR",
+        "ReferralSetInvitedUser": "{role} သတ်မှတ်ရန်",
+        "ReferralUnreserveXor": "XOR ကို အဆက်ဖြတ်ပါ။",
+        "RegisterAndRegulateAsset": "ပိုင်ဆိုင်မှုစာရင်းသွင်းပါ။",
+        "RegisterAsset": "ပိုင်ဆိုင်မှုစာရင်းသွင်းပါ။",
+        "RegulateAsset": "ပိုင်ဆိုင်မှုကို ထိန်းညှိပါ။",
+        "RemoveLiquidity": "Liquidity ကို ဖယ်ရှားပါ။",
+        "RepayVaultDebt": "အကြွေးပြန်ဆပ်",
+        "SetAccessExpiration": "SBT သက်တမ်းကုန်ဆုံးချိန် သတ်မှတ်ပါ။",
+        "StakingBond": "ဘွန်း",
+        "StakingBondAndNominate": "Bond နှင့် Nominate",
+        "StakingBondExtra": "ဘွန်းအပို",
+        "StakingChill": "အေးဆေး",
+        "StakingNominate": "အမည်စာရင်းတင်သွင်းပါ။",
+        "StakingPayout": "ပေးချေမှုဆုများ",
+        "StakingRebond": "Rebond",
+        "StakingSetController": "Controller ကို သတ်မှတ်ပါ။",
+        "StakingSetPayee": "ငွေလက်ခံသူ သတ်မှတ်ပါ။",
+        "StakingUnbond": "အနှောင်အဖွဲ့ကင်းသည်။",
+        "StakingWithdrawUnbonded": "Unbonded ထုတ်ယူပါ။",
+        "Swap": "လဲလှယ်ပါ။",
+        "SwapAndSend": "လဲလှယ်ပြီး ပေးပို့ပါ။",
+        "SwapTransferBatch": "{ADAR} လွှဲပြောင်းခြင်း။",
+        "Transfer": "အပြောင်းအရွှေ့",
+        "VestedTransfer": "အပြောင်းအရွှေ့",
+        "XorlessTransfer": "အပြောင်းအရွှေ့"
+    },
+    "orderBook": {
+        "amount": "ပမာဏ",
+        "book": {
+            "noAsks": "မဖွင့်ခိုင်းဘူး။",
+            "noBids": "ဖွင့်လှစ်ထားသော လေလံများမရှိပါ။"
+        },
+        "bookStatus": {
+            "active": "လှုပ်လှုပ်ရှားရှား",
+            "cancelable": "ပယ်ဖျက်နိုင်သည်။",
+            "inactive": "မလှုပ်မရှား",
+            "placeable": "နေရာယူနိုင်သည်။"
+        },
+        "Buy": "{asset} ဝယ်ပါ",
+        "cantPlaceOrder": "အော်ဒါတင်လို့မရဘူး",
+        "change": "ပြောင်းလဲမှု",
+        "dayVolume": "1D အတွဲ",
+        "dialog": {
+            "askCancel": "သင်ဖွင့်ထားသော အမှာစာများအားလုံးကို ပယ်ဖျက်လိုသည်မှာ သေချာပါသလား။",
+            "at": "{price} {symbol} တွင်",
+            "buy": "{amount} {symbol} ဝယ်ပါ",
+            "cancelAll": "ဟုတ်ကဲ့၊ အားလုံးကို ပယ်ဖျက်ပါ။",
+            "placeLimit": "ကန့်သတ်အမိန့်စာတင်ပါ။",
+            "placeMarket": "စျေးကွက်အော်ဒါတင်ပါ။",
+            "sell": "{amount} {symbol} ရောင်းမည်"
+        },
+        "enterAmount": "ပမာဏကို ထည့်ပါ။",
+        "error": {
+            "accountLimit": {
+                "reading": "ကန့်သတ်ချက်သို့ရောက်ရှိသည်- အကောင့်တစ်ခုစီကို ကန့်သတ်မှာယူမှု 1024 ခုတွင် ကန့်သတ်ထားသည်။ သင်၏ မှာယူမှုအချို့ ပြည့်စုံသည်အထိ စောင့်ပါ။",
+                "reason": "အမှာစာများ အလွန်များနေပါသည်။"
+            },
+            "beyondPrecision": {
+                "reading": "တိကျမှုကျော်လွန်နေသည်- ထည့်သွင်းထားသော ပမာဏ/စျေးနှုန်းတွင် ဒဿမနေရာများ များလွန်းသည်။ ကျေးဇူးပြု၍ ဒဿမနေရာများနည်းနည်းဖြင့် တန်ဖိုးတစ်ခုထည့်ပါ။",
+                "reason": "ထည့်သွင်းထားသောစျေးနှုန်းသည် တွက်ချက်ရန် အလွန်တိကျပါသည်။"
+            },
+            "exceedsSpread": {
+                "reading": "စျေးနှုန်းကျော်လွန်သွားသည်- စျေးကွက်၏လေလံ သို့မဟုတ် တောင်းဆိုသည့်စျေးနှုန်းသည် ၎င်း၏တောင်းဆိုမှု/လေလံစျေးနှုန်းထက် ကျော်လွန်နေပါသည်။",
+                "reason": "စျေးဖြန့်ကြက်မှု ကျော်လွန်သွားပါပြီ။"
+            },
+            "marketNotAvailable": {
+                "reading": "စျေးကွက်မှာယူမှု ကန့်သတ်ချက်- ဤစျေးကွက်မှာယူမှုကို ဖြည့်ဆည်းရန် လုံလောက်သော အမှာစာများ မရရှိနိုင်ပါ။ ကျေးဇူးပြု၍ သင့်မှာယူမှုအရွယ်အစားကို ချိန်ညှိပါ သို့မဟုတ် နောက်ထပ်အမှာစာများတင်ရန် စောင့်ပါ။",
+                "reason": "ဤမှာယူမှုကို ပြည့်စုံစေရန်အတွက် လုံလောက်သော မှာယူမှုများ မရရှိနိုင်ပါ။"
+            },
+            "multipleOf": {
+                "reading": "သင့်မှာယူမှုကို လုပ်ဆောင်ရန်၊ ကျေးဇူးပြု၍ {value} ၏ များပြားသောစျေးနှုန်းကို ထည့်သွင်းပါ",
+                "reason": "ထည့်သွင်းထားသောစျေးနှုန်းသည် အလွန်တိကျပါသည်။"
+            },
+            "outOfBounds": {
+                "reading": "Blockchain အပိုင်းအခြားကို ကျော်လွန်သွားသည်- သင်၏ထည့်သွင်းထားသော ပမာဏသည် blockchain ၏ ခွင့်ပြုထားသော အပိုင်းအခြားပြင်ပတွင် ရှိနေသည်။ အနည်းဆုံး- {min}; အများဆုံး- {max}",
+                "reason": "ပမာဏသည် blockchain အတိုင်းအတာနှင့် မကိုက်ညီပါ"
+            },
+            "singlePriceLimit": {
+                "reading": "ကန့်သတ်ချက်သို့ရောက်ရှိသည်- ရာထူးတစ်ခုစီကို ကန့်သတ်အမိန့်စာ 1024 တွင် ကန့်သတ်ထားသည်။ ကျေးဇူးပြု၍ အချို့သောအမိန့်များ ပြည့်စုံသည်အထိ စောင့်ပါ။",
+                "reason": "ဤစျေးနှုန်းအတွက် မှာယူမှုများ များလွန်းနေပါသည်။"
+            },
+            "spotLimit": {
+                "reading": "စျေးနှုန်းအကွာအဝေးထုပ်- မှာယူမှုစာအုပ်တစ်ခြမ်းစီကို 1024 ထူးခြားသောစျေးနှုန်းအချက်များအထိ ကန့်သတ်ထားသည်။ ရှိပြီးသားအကွာအဝေးအတွင်း စျေးနှုန်းတစ်ခုကို ရွေးပါ သို့မဟုတ် နေရာလွတ်ရရှိရန် စောင့်ပါ။",
+                "reason": "ကုန်သွယ်မှုဘက်မှာ ပြည့်သွားပါပြီ။"
+            }
+        },
+        "history": {
+            "cancel": "မှာယူမှုကို ပယ်ဖျက်ရန် {value}",
+            "cancelAll": "အားလုံးကို ပယ်ဖျက်ပါ။",
+            "connect": "အရောင်းအဝယ်စတင်ရန် အကောင့်တစ်ခုကို ချိတ်ဆက်ပါ။",
+            "openOrders": "အော်ဒါများဖွင့်ပါ {value}",
+            "orderHistory": "အော်ဒါမှတ်တမ်း",
+            "tradeHistory": "ကုန်သွယ်မှုသမိုင်း"
+        },
+        "limit": "ကန့်သတ်ချက်",
+        "market": "စျေးကွက်",
+        "marketTrades": "စျေးကွက်အရောင်းအ၀ယ်",
+        "month": "လ",
+        "orderBook": "အော်ဒါစာအုပ်",
+        "orderStatus": {
+            "active": "လှုပ်လှုပ်ရှားရှား",
+            "canceled": "ဖျက်သိမ်းလိုက်သည်။",
+            "expired": "သက်တမ်းကုန်သွားပြီ",
+            "filled": "ပြည့်စုံတယ်။"
+        },
+        "orderTable": {
+            "filled": "အပြည့်",
+            "lifetime": "တစ်သက်တာ",
+            "noOrders": "အမိန့်မရှိပါ။ သင်၏ပထမဆုံးတစ်ခုကိုဖန်တီးပါ။",
+            "pair": "တွဲ",
+            "side": "ဖွတ်",
+            "time": "အချိန်"
+        },
+        "Sell": "{asset} ရောင်းမည်",
+        "setPrice": "သတ်မှတ်စျေးနှုန်း",
+        "stop": "စာအုပ်ရပ်သွားတယ်။",
+        "time": "အချိန်",
+        "tokenPair": "တိုကင်အတွဲ",
+        "tooltip": {
+            "bookStatus": {
+                "active": "ကုန်သွယ်မှု လုပ်ဆောင်ချက် အပြည့်အစုံကို ဖွင့်ထားသည်။ အမှာစာအသစ်များတင်နိုင်သည် သို့မဟုတ် ရှိပြီးသားအရာများကို ပယ်ဖျက်နိုင်သည်။",
+                "cancelable": "ရှိပြီးသား မှာယူမှုများကိုသာ ပယ်ဖျက်နိုင်ပါသည်။ အမှာစာအသစ်နေရာချထားမှုကို လောလောဆယ် ပိတ်ထားသည်။",
+                "inactive": "ကုန်သွယ်မှုလုပ်ငန်းများအားလုံးကို လက်ရှိတွင် ရပ်ဆိုင်းထားသည်။ ယခုအချိန်တွင် အမှာစာများ ထားရှိခြင်း သို့မဟုတ် ပယ်ဖျက်ခြင်း မပြုနိုင်ပါ။",
+                "placeable": "အကန့်အသတ်ရှိသော လုပ်ဆောင်နိုင်စွမ်း။ အမှာစာအသစ်များတင်နိုင်ပြီး ရှိပြီးသားအရာများကို ပယ်ဖျက်နိုင်သော်လည်း အချို့သောဝန်ဆောင်မှုများကို မရနိုင်ပါ။"
+            },
+            "bookWidget": "တိကျသော ပစ္စည်းတစ်ခုအတွက် ဝယ်ကမ်းလှမ်းချက် (bid) နှင့် ရောင်းကမ်းလှမ်းချက် (ask) များကို စျေးနှုန်း အဆင့်အတန်းအလိုက် စီစဉ်တင်ပြထားသော အချိန်နှင့်တပြေးညီ အပ်ဒိတ်ဖြစ်နေသော မှတ်တမ်း။ ဤ order book သည် စျေးကွက်၏ အနက်အလျားကို ပြသပြီး စျေးနှုန်းအမျိုးမျိုးတွင် ကမ်းလှမ်းထားသော ပစ္စည်းပမာဏများကို ထည့်သွင်းထားသည်။ ကုန်သွယ်သူများသည် ဤအသေးစိတ်အမြင်ကို အသုံးပြုကာ စျေးကွက်အမြင်ကန့်သတ်၊ ထိန်းချုပ်မှုနှင့် အထောက်အကူအဆင်အဆို့အကဆို့များကို ခန့်မှန်းနိုင်ပြီး တောင်းဆိုမှု/ထောက်ပံ့မှု အခြေအနေအပေါ်မူတည်၍ စျေးနှုန်း လှုပ်ရှားမှုကို ခန့်မှန်းနိုင်သည်",
+            "limitOrder": "'ကန့်သတ်' မှာကြားမှုတစ်ခုသည် သင်ပိုင်ဆိုင်မှုတစ်ခုဝယ်ရန် သို့မဟုတ် ရောင်းလိုသည့်စျေးနှုန်းအတိအကျကို သတ်မှတ်ပေးနိုင်သည်။ 'Limit Buy' အမှာစာသည် သတ်မှတ်ထားသောစျေးနှုန်း သို့မဟုတ် နိမ့်သည့်နေရာတွင်သာ လုပ်ဆောင်မည်ဖြစ်ပြီး 'Limit Sell' အမိန့်သည် သတ်မှတ်ထားသောစျေးနှုန်း သို့မဟုတ် ထို့ထက်မြင့်မှသာ လုပ်ဆောင်မည်ဖြစ်သည်။ ဤထိန်းချုပ်မှုသည် သင်ပိုမိုပေးချေခြင်း သို့မဟုတ် သင်အဆင်ပြေသည်ထက်နည်းသောစျေးဖြင့် ရောင်းချခြင်းမပြုရန် သေချာစေသည်။",
+            "marketOrder": "'စျေးကွက်အမိန့်' သည် လက်ရှိ ရရှိနိုင်သည့် အကောင်းဆုံး စျေးနှုန်းဖြင့် ချက်ချင်း ဝယ်ယူ/ရောင်းချရန် အမိန့်တစ်ခု ဖြစ်သည်။ စျေးနှုန်း သတ်မှတ်ရန် မလိုအပ်သဖြင့် လုပ်ဆောင်မှု မြန်ဆန်သော်လည်း ရရှိ/ပေးဆောင်သည့် စျေးနှုန်းကို ထိန်းချုပ်မှု ပိုအနည်းငယ် ဖြစ်တတ်သည်။ ဤအမိန့်အမျိုးအစားကို လုပ်ဆောင်မှုပြီးစီးခြင်း၏ သေချာမှုကို စျေးနှုန်းထိန်းချုပ်မှုထက် ဦးစားပေးသော အချိန်များတွင် အသုံးပြုပါသည်",
+            "marketWidget": "ဤဝစ်ဂျက်သည် စျေးကွက်အတွင်းရှိ အရောင်းအ၀ယ်ပမာဏများ၊ မကြာသေးမီက လုပ်ဆောင်မှုနှင့် လက်ရှိစျေးကွက်လမ်းကြောင်းများဆိုင်ရာ အချက်အလက်များကို ပံ့ပိုးပေးသည့် စျေးကွက်အတွင်း အချိန်နှင့်တပြေးညီ ကုန်သွယ်မှုများကို ပြသသည်။ အမှန်တကယ်အရောင်းအ၀ယ်များ၏အချိန်၊ စျေးနှုန်းနှင့် အရွယ်အစားတို့ကို လေ့လာခြင်းဖြင့် ကုန်သည်များသည် စျေးကွက်လှုပ်ရှားမှုများနှင့် စိတ်ဓာတ်များကို ထိုးထွင်းသိမြင်နိုင်ကာ ကုန်သွယ်မှုအခွင့်အလမ်းများကို ထောက်လှမ်းသိရှိနိုင်စေရန်နှင့် ဆုံးဖြတ်ချက်များချနိုင်စေရန် ကူညီပေးပါသည်။",
+            "pairsList": "cryptocurrency အတွက် လက်ရှိဝယ်ရောင်း အမှာစာများကို ပြသသည့် အချိန်နှင့်တစ်ပြေးညီ စာရင်း။ ၎င်းသည် သင့်အား {Sora} ကွန်ရက်နှင့် {AppName} DEX ပေါ်ရှိ ၀ယ်လိုအား၊ အလားအလာရှိသောစျေးနှုန်းဦးတည်ချက်နှင့် ကုန်သွယ်မှုပမာဏကို နားလည်ရန် ကူညီပေးသည်။",
+            "txDetails": {
+                "amount": "'ပမာဏ' သည် သင်၏ အမိန့်တွင် ဝယ်ယူ/ရောင်းချလိုသော ပစ္စည်းအရေအတွက် စုစုပေါင်းကို ဆိုလိုသည်။ ၎င်းကို သတ်မှတ်ပေးရခြင်းအရေးကြီးပါသည် — သင့်လုပ်ငန်းရယူနည်း၏ အရွယ်အစားကို ဆုံးဖြတ်ပေးပြီး ဝယ်ယူမှု ကုန်ကျစရိတ် သို့မဟုတ် ရောင်းချမှု ဝင်ငွေကို သက်ရောက်စေသောကြောင့်",
+                "expiryDate": "'သက်တမ်းကုန်ဆုံးရက်' သည် သင်၏အမိန့်ကို အကောင်အထည်ဖော်ရန် နောက်ဆုံးရက်ဖြစ်သည်။ စျေးကွက်သည် ဤရက်စွဲမတိုင်မီ သင်၏သတ်မှတ်ထားသောစျေးနှုန်းသို့ မရောက်ပါက၊ မှာယူမှုကို အလိုအလျောက် ပယ်ဖျက်ပါသည်။ စျေးကွက်အခြေအနေများသည် သင်၏ကုန်သွယ်ဦးစားပေးမှုများနှင့် မကိုက်ညီပါက ထာဝရစောင့်ဆိုင်းနေမည်မဟုတ်ပါ။",
+                "limit": "'ကန့်သတ်စျေးနှုန်း' သည် ကန့်သတ်မှာယူမှုအတွက် သင်သတ်မှတ်ထားသော တိကျသောစျေးနှုန်းဖြစ်သည်။ ပိုင်ဆိုင်မှု၏စျေးကွက်ပေါက်စျေးသည် သင့်ကန့်သတ်စျေးနှုန်းနှင့် အထက်ဝယ်ယူခြင်း သို့မဟုတ် ဤသတ်မှတ်ထားသောတန်ဖိုးအောက်တွင် ရောင်းချခြင်းမပြုရန် သေချာစေသောအခါမှသာ အရောင်းအ၀ယ်ပြုလုပ်မည်ဖြစ်ပါသည်။",
+                "locked": "'လော့ခ်ချထားသည်' သည် အမှာစာများကို ဆက်လက်လုပ်ဆောင်နေချိန်တွင် ထိန်းသိမ်းထားရမည့် ပိုင်ဆိုင်မှုပမာဏကို ပြသသည်။",
+                "orderType": "'ဝယ်သည်' အမှာစာသည် သတ်မှတ်ထားသောစျေးနှုန်း သို့မဟုတ် လျှော့စျေးဖြင့်သာ လုပ်ဆောင်မည်ဖြစ်ပြီး 'ရောင်းရန်' အမှာစာသည် သတ်မှတ်ထားသောစျေးနှုန်း သို့မဟုတ် ထို့ထက်မြင့်မှသာ လုပ်ဆောင်မည်ဖြစ်သည်။ ဤထိန်းချုပ်မှုသည် သင်ပိုမိုပေးချေခြင်း သို့မဟုတ် သင်အဆင်ပြေသည်ထက်နည်းသောစျေးဖြင့် ရောင်းချခြင်းမပြုရန် သေချာစေသည်။"
+            }
+        },
+        "total": "စုစုပေါင်း",
+        "tradingPair": {
+            "choosePair": "ကုန်သွယ်မှုအတွဲကို ရွေးချယ်ပါ။",
+            "status": "အဆင့်အတန်း",
+            "total": "{amount} {symbol} {amount2} {symbol2} တွင်",
+            "volume": "အတွဲ"
+        },
+        "txDetails": {
+            "expiryDate": "သက်တမ်းကုန်ဆုံးရက်",
+            "limitPrice": "ကန့်သတ်စျေးနှုန်း",
+            "orderType": "အော်ဒါအမျိုးအစား"
+        }
+    },
+    "pageTitle": {
+        "AddLiquidity": "Liquidity ထည့်ပါ။",
+        "AssetOwner": "ပစ္စည်းပိုင်ရှင်",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Bridge": "@:bridgeText",
+        "Burn": "မီးရှို့",
+        "Explore/Books": "@:pageTitle.OrderBook",
+        "Explore/Farming": "လယ်ယာလုပ်ငန်း",
+        "Explore/Pools": "ကန်",
+        "Explore/Staking": "စတိတ်",
+        "Explore/Tokens": "တိုကင်များ",
+        "OrderBook": "ရောင်းဝယ်မှု",
+        "Pool": "ကန်",
+        "Rewards": "ဆုများ",
+        "Sccp": "SCCP",
+        "Staking": "စတိတ်",
+        "Stats": "စာရင်းအင်း",
+        "Swap": "ဖလားလဲ",
+        "VaultDetails": "ရာထူးအသေးစိတ်",
+        "Vaults": "{Kensetsu}",
+        "Wallet": "ပိုက်ဆံအိတ်"
+    },
+    "pairIsNotCreated": "တိုကင်အတွဲကို ဖန်တီးမထားပါ။",
+    "points": {
+        "accountsText": "{amount} အကောင့်များ",
+        "airdrop": "$3m AIRDROP အတွက် အရည်အချင်းပြည့်မီရန် SORA ဂေဟစနစ်ဆိုင်ရာ အလုပ်များကို ပြီးအောင်လုပ်ပါ။",
+        "bridgeVolume": "ဘရစ်ဂ် ပမာဏ",
+        "complete": "ပြီးပါပြီ | ပြီးအောင်",
+        "currently": "လောလောဆယ်",
+        "dated": "ရက်စွဲပါ",
+        "depositVolumeBridges": {
+            "descriptionTask": "Bridges၊ bitget၊ 1x၊ gateio မှတစ်ဆင့် ငွေသွင်းခြင်းနှင့် ထုတ်ယူခြင်း။",
+            "titleProgress": "အပ်ငွေပမာဏ",
+            "titleTask": "အပ်ငွေနှင့်ငွေထုတ်"
+        },
+        "feesSpent": "အခကြေးငွေ သုံးစွဲခဲ့သည်။",
+        "firstSoraNetworkTransaction": "သင်၏ ပထမဆုံး SORA ကွန်ရက် လွှဲပြောင်းမှု",
+        "firstTxAccount": {
+            "descriptionTask": "သင်၏ပထမဆုံး XOR အရောင်းအ ၀ ယ်ကိုအပြီးသတ်ပြီးဆုလာဘ်ကိုရယူပါ။",
+            "titleProgress": "ပထမ Trx",
+            "titleTask": "သင်၏ပထမဆုံးငွေပေးငွေယူလုပ်ပါ။"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "အုပ်ချုပ်မှုမဲပေးပွဲများတွင်ပါဝင်ခြင်းဖြင့် XOR ကိုလော့ခ်ချပါ။",
+            "titleProgress": "အုပ်ချုပ်မှု",
+            "titleTask": "အုပ်ချုပ်ရေး မဲပေးခြင်းတွင် XOR ကို လော့ခ်ချပါ။"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "ဖျက်သိမ်းမှုများ သို့မဟုတ် ပိတ်သည့်ရာထူးများအတွင်း KUSD အကြွေးကို ပြန်ဆပ်ပါ။",
+            "titleProgress": "Kensetsu အသံအတိုးအကျယ်",
+            "titleTask": "KUSD အကြွေးဆပ်"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "သင်၏ လက်ရှိ KUSD ပိုင်ဆိုင်မှုများကို ကိုင်ထားပါ။",
+            "titleProgress": "KUSD ကိုင်ထားပါ။",
+            "titleTask": "Kusd ကို ကိုင်ထားပါ။"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "ရေကန်များတစ်လျှောက် ငွေဖြစ်လွယ်မှုကို ပံ့ပိုးပါ။",
+            "titleProgress": "Liquidity ပံ့ပိုးမှု",
+            "titleTask": "Liquidity ပေးပါ။"
+        },
+        "loginText": "သင်၏ အကောင့်ကို ချိတ်ဆက်ပြီး သင်၏ အချက်အလက်ချက်ပြချက်များ (points) ကိုကြည့်ရှုပါ",
+        "lvl": "Lvl",
+        "maxLvl": "သင်သည် အမြင့်ဆုံး lvl သို့ ရောက်ရှိခဲ့သည်။",
+        "nativeXorStaking": {
+            "descriptionTask": "XOR လောင်းပြီး VAL ဆုလာဘ်များရယူပါ။",
+            "titleProgress": "XOR စာရင်းသွင်းခြင်း။",
+            "titleTask": "လောင်းကြေး XOR"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "ကွင်းဆက်အတွင်း ငွေပေးငွေယူများစွာဖြင့် ကွန်ရက်အခကြေးငွေတွင် XOR ကို သုံးစွဲပါ။",
+            "titleProgress": "ကွန်ရက်ကြေး",
+            "titleTask": "ကွန်ရက်အခကြေးငွေများပေါ်တွင် XOR ကိုသုံးပါ။"
+        },
+        "nextLvl": "နောက်တစ်ခု lvl",
+        "openTelegram": "ဖွင့်ရန် {Telegram}",
+        "orderbookVolume": {
+            "descriptionTask": "မှာယူမှုစာအုပ်တွင် ကန့်သတ်အမှာစာများ ဖန်တီးပါ။",
+            "titleProgress": "အော်ဒါစာအုပ်",
+            "titleTask": "ကန့်သတ်အမိန့်များဖန်တီးပါ။"
+        },
+        "progress": "တိုးတက်မှု",
+        "referralRewards": {
+            "descriptionTask": "လွှဲပြောင်းမှုစနစ်မှတစ်ဆင့် အကောင့်များကို ကိုးကားပါ။",
+            "titleProgress": "ရည်ညွှန်းခြင်းစနစ်",
+            "titleTask": "အကောင့်များကိုရည်ညွှန်းပါ။"
+        },
+        "relatedTasks": "သင်၏ကျွမ်းကျင်မှုကို အဆင့်မြှင့်တင်ရန်အတွက် {title} နှင့်ပတ်သက်သည့် အလုပ်များကို ပြီးအောင်လုပ်ပါ။",
+        "rewardNextLvl": "နောက်အဆင့်ဆု",
+        "soraCard": "ယခုလျှောက်ထားပါ။",
+        "title": "သင်၏အမှတ်များ",
+        "toEarnPoints": "အမှတ်များ ရယူရန်",
+        "tokenHold": {
+            "descriptionTask": "သင်၏ လက်ရှိ {token} ပိုင်ဆိုင်မှုများကို ထိန်းထားပါ။",
+            "titleProgress": "{token} ပိုင်ဆိုင်မှုများ",
+            "titleTask": "{token} ကိုင်ထားပါ"
+        },
+        "VXORHoldings": {
+            "descriptionTask": "သင်၏လက်ရှိ VXOR ပိုင်ဆိုင်မှုများကို ကိုင်ထားပါ။",
+            "titleProgress": "VXOR ပိုင်ဆိုင်မှု",
+            "titleTask": "VXOR ကို ကိုင်ထားပါ။"
+        },
+        "xorBurned": "{XOR} မီးလောင်သွားတယ်။",
+        "XORBurned": {
+            "descriptionTask": "XOR ကို မီးရှို့ပြီး $ value သို့ ပြောင်းပါ။",
+            "titleProgress": "XOR မီးလောင်သွားပြီ",
+            "titleTask": "XOR ကိုမီးရှို့ပါ။"
+        },
+        "XORHoldings": {
+            "descriptionTask": "သင်၏လက်ရှိ XOR ပိုင်ဆိုင်မှုများကို ထိန်းထားပါ။",
+            "titleProgress": "XOR ကိုင်ထားပါ။",
+            "titleTask": "XOR ကို ကိုင်ထားပါ။"
+        },
+        "yourLevel": "သင်၏အဆင့်",
+        "yourReferrals": "သင်၏ ညွှန်းသူများ",
+        "yourRewards": "သင်၏ဆုလာဘ်များ",
+        "yourTasks": "သင်၏တာဝန်များ"
+    },
+    "polkadotjs": {
+        "connectionError": "ပိုက်ဆံအိတ်ကို ချိတ်ဆက်ရာတွင် အမှားအယွင်းတစ်ခု ဖြစ်ပေါ်ခဲ့သည်။ {extension} မှတစ်ဆင့် ပိုက်ဆံအိတ်ကို ထပ်မံချိတ်ဆက်ရန် သင်ကြိုးစားနိုင်ပါသည်။",
+        "noAccount": "{extension} အကောင့် အမှား။ ကျေးဇူးပြု၍ သင့်အကောင့်ကို {extension} တိုးချဲ့မှုတွင် စစ်ဆေးပါ။",
+        "noExtension": "{extension} နောက်ဆက်တွဲကို ရှာမတွေ့ပါ။ ၎င်းကို ထည့်သွင်းပြီး ဤစာမျက်နှာကို ပြန်လည်စတင်ပါ။",
+        "noExtensions": "{PolkadotJs} နောက်ဆက်တွဲကို ရှာမတွေ့ပါ။ ၎င်းကို ထည့်သွင်းပြီး ဤစာမျက်နှာကို ပြန်လည်စတင်ပါ။\nhttps://polkadot.js.org/extension/",
+        "noSigner": "ဝင်ရောက်ချိတ်ဆက်ရန်ငြင်းဆိုခြင်း။ {extension} တိုးချဲ့ဆက်တင်များသို့ သွား၍ ခွင့်ပြုရန် \"ဝဘ်ဆိုက်ဝင်ရောက်ခွင့်ကို စီမံပါ\" ကိုဖွင့်ပါ။"
+    },
+    "pool": {
+        "addLiquidity": "ရေကြွယ်ဝမှု ထည့်ရန်",
+        "connectToWallet": "သင်၏ငွေဖြစ်လွယ်မှုကိုကြည့်ရန် အကောင့်တစ်ခုချိတ်ဆက်ပါ။",
+        "createPair": "အတွဲတစ်ခု ဖန်တီးပါ။",
+        "description": "ငွေဖြစ်လွယ်မှုကို ပေါင်းထည့်သောအခါ၊ သင့်ရာထူးကို ကိုယ်စားပြုသည့် pool တိုကင်များ ပေးထားသည်။ ဤတိုကင်များသည် သင်၏ရေကူးကန်၏ဝေစုနှင့် အချိုးကျအခကြေးငွေများကို အလိုအလျောက်ရရှိပြီး အချိန်မရွေး ပြန်လည်ရွေးယူနိုင်ပါသည်။",
+        "liquidityNotFound": "ငွေဖြစ်လွယ်မှု မတွေ့ပါ။",
+        "pairTokens": "{pair} ရေကူးကန် တိုကင်များ",
+        "pooledToken": "{tokenSymbol} ပေါင်းစပ်ထားသည်။",
+        "poolShare": "သင်၏ရေကူးကန်မျှဝေပါ။",
+        "removeLiquidity": "ငွေဖြစ်လွယ်မှုကို ဖယ်ရှားပါ။",
+        "strategicBonusApy": "မဟာဗျူဟာ အပိုဆု APY"
+    },
+    "poweredBy": "မာမီ",
+    "prevText": "ယခင်တစ်ခု",
+    "priceChartText": "စျေးနှုန်းဇယား",
+    "priceText": "စျေးနှုန်း",
+    "provider": {
+        "messages": {
+            "checkExtension": "{name} တိုးချဲ့မှု အလုပ်များနေသဖြင့် ၎င်းကို စစ်ဆေးပါ။",
+            "extensionLogin": "ကျေးဇူးပြု၍ သင်၏ {name} တိုးချဲ့မှုသို့ ဝင်ရောက်ပါ။",
+            "installExtension": "{name} နောက်ဆက်တွဲကို ရှာမတွေ့ပါ။ ကျေးဇူးပြု၍ ထည့်သွင်းပါ။\n\nတိုးချဲ့မှုကို ထည့်သွင်းပြီးပြီလား။ ကျေးဇူးပြု၍ စာမျက်နှာကို ပြန်လည်စတင်ပါ။",
+            "notAvailable": "{name} မရနိုင်ပါ။",
+            "reloadPage": "စာမျက်နှာကို ပြန်လည်စတင်ပါ။"
+        }
+    },
+    "receivedText": "ရရှိခဲ့သည်။",
+    "referralProgram": {
+        "action": {
+            "bond": "ဘွန်း",
+            "bondMore": "Bond More",
+            "copyLink": "လင့်ခ်ကို ကူးယူပါ။",
+            "shareLink": "မျှဝေပါ။",
+            "unbond": "အနှောင်အဖွဲ့ကင်းသည်။"
+        },
+        "bondedXOR": "XOR Bonded",
+        "bondTitle": "ဘွန်း XOR",
+        "confirm": {
+            "bond": "စာချုပ်ကိုအတည်ပြုပါ။",
+            "freeOfCharge": "ဤလုပ်ဆောင်ချက်သည် အခမဲ့ဖြစ်သည်။",
+            "hasReferrerDescription": "ကံမကောင်းစွာဖြင့်၊ သင်သည် တစ်ခုသာ သတ်မှတ်နိုင်သည်။",
+            "hasReferrerTitle": "သင်၏ ရည်ညွှန်းသူကို သတ်မှတ်ပြီးဖြစ်သည်။",
+            "inviteDescription": "ငွေပေးငွေယူတိုင်းအတွက်၊ အခကြေးငွေ၏ 10% ကို သင့်ထံ အပိုကုန်ကျစရိတ်မရှိဘဲ သင့်လွှဲပြောင်းပေးသူထံ ရောက်သွားပါမည်။",
+            "inviteTitle": "သင့်အား {AppName} သို့ ဖိတ်ကြားထားသည်",
+            "ok": "အိုကေ",
+            "signInvitation": "လက်မခံပါ။",
+            "unbond": "အနှောင်အဖွဲ့ကင်းကြောင်း အတည်ပြုပါ။"
+        },
+        "connectAccount": "အသုံးပြုသူများကို ဖိတ်ကြားရန် သင့် {Sora} အကောင့်ကို ချိတ်ဆက်ရန် လိုအပ်ပါသည်။",
+        "insufficientBondedAmount": "နောက်ထပ် ညွှန်းသူများကို ဖိတ်ခေါ်ရန် အနည်းဆုံး {inviteUserFee} XOR ကို bond လုပ်ပါ",
+        "insufficientBondedBalance": "ချည်နှောင်ထားသော လက်ကျန် မလုံလောက်ပါ။",
+        "invitationLink": "ဖိတ်ကြားချက်လင့်ခ်",
+        "inviteViaTelegram": "{Telegram} မှတဆင့် ဖိတ်ကြားပါ",
+        "receivedRewards": "ဆုများရရှိခဲ့သည်။",
+        "referralsNumber": "{number} ညွှန်းသူ",
+        "referrer": {
+            "approve": "လက်မခံပါ။",
+            "approved": "အတည်",
+            "description": "သင်သည် {AppName} သို့ ရည်ညွှန်းနိုင်သည်၊<br/>ရည်ညွှန်းသူ၏ လင့်ခ် သို့မဟုတ် ကုဒ်ကို ရိုက်ထည့်ပါ",
+            "info": "ငွေပေးငွေယူအတွက် အခကြေးငွေ ပေးဆောင်သည့်အခါ၊<br/>10% သည် သင်၏ လွှဲပြောင်းပေးသူထံ ရောက်သွားပါမည်။",
+            "label": "ဖိတ်ကြားချက်လင့်ခ် သို့မဟုတ် ကုဒ်",
+            "placeholder": "ဖိတ်ကြားချက်လင့်ခ် သို့မဟုတ် ကုဒ်ကို ထည့်ပါ။",
+            "referredBy": "သင့်အား {referrer} မှ ရည်ညွှန်းထားသည်",
+            "referredLablel": "ရည်ညွှန်းလိပ်စာ",
+            "title": "သင်၏ရည်ညွှန်းသူကို ထည့်ပါ။",
+            "titleReferrer": "သင်၏ရည်ညွှန်းသူ"
+        },
+        "startInviting": "အခြားသူများကိုရည်ညွှန်းရန် Bond XOR",
+        "title": "ရည်ညွှန်းခြင်းအစီအစဉ်",
+        "unbondTitle": "XOR ကို အဆက်ဖြတ်ပါ။",
+        "welcomeMessage": "\n{AppName} တွင် ကျွန်တော်/ကျွန်မနှင့် ရှေ့ဆက်ပါ!\n\ncross-chain swaps၊ order book နှင့် ဆုများ များစွာ ပံ့ပိုးပေးသည့် {DEX} တွင် တိုကင်များစွာကို လွယ်ကူစွာ ပြောင်းလဲနိုင်ပါသည်!\n\n🎁 မိတ်ဆွေများကို ဖိတ်ခေါ်ပြီး ၎င်းတို့၏ စျေးကွက်ခ အခွန်၏ 10% ကို ရယူပါ\n\nအောင်မြင်အောင် အတူတကွ!"
+    },
+    "releaseNotesText": "ထုတ်ဝေမှုမှတ်စုများ",
+    "removeLiquidity": {
+        "amount": "ပမာဏ",
+        "confirmTitle": "မင်းလက်ခံလိမ့်မယ်။",
+        "description": "ရေကူးကန် တိုကင်များကို ဖယ်ရှားခြင်းက သင့်တည်နေရာကို လက်ရှိနှုန်းဖြင့် အရင်းခံ တိုကင်များအဖြစ်သို့ ပြန်ပြောင်းပေးကာ သင့်ဝေစုနှင့် အချိုးကျပါသည်။ သင်ရရှိသည့်ပမာဏတွင် ကောက်ခံရရှိသောအခကြေးငွေများ ပါဝင်သည်။",
+        "input": "ထည့်သွင်းခြင်း။",
+        "liquidity": "ငွေဖြစ်လွယ်ခြင်း။",
+        "locked": "သင့်ရေကူးကန်၏ {percent} သည် {lock} တွင်ဖြစ်သည်",
+        "output": "အထွက်",
+        "outputMessage": "ထွက်ရလဒ်မှာ ခန့်မှန်းချက်သာ ဖြစ်သည်။ စျေးနှုန်းသည် {slippageTolerance}% ထက်ပို၍ ပြောင်းလဲပါက သင်၏လုပ်ငန်းရယူနည်းကို ပြန်လည် ပယ်ဖျက်မည်",
+        "remove": "ဖယ်ရှားပါ။",
+        "shareOfPool": "ငွေလွှဲပြီးနောက် အစုရှယ်ယာ",
+        "title": "ငွေဖြစ်လွယ်မှုကို ဖယ်ရှားပါ။"
+    },
+    "resetText": "ပြန်လည်သတ်မှတ်ပါ။",
+    "retryText": "ပြန်ကြိုးစားပါ။",
+    "rewards": {
+        "action": {
+            "checkRewards": "စစ်ဆေးပါ။",
+            "connectExternalWallet": "{Ethereum} အကောင့်ကို ချိတ်ဆက်ပါ။",
+            "pendingExternal": "{Ethereum} ငွေပေးငွေယူ ဆိုင်းငံ့နေသည်...",
+            "pendingInternal": "{Sora} ငွေပေးငွေယူ ဆိုင်းငံ့နေသည်...",
+            "signAndClaim": "လက်မှတ်ထိုးပြီး တောင်းဆိုပါ။"
+        },
+        "andText": "နှင့်",
+        "claimableAmountDoneVesting": "တောင်းဆိုနိုင်သောဆုများ",
+        "claiming": {
+            "pending": "တောင်းဆိုနေသည်...",
+            "success": "အောင်မြင်စွာ တိုင်ကြားခဲ့သည်။"
+        },
+        "events": {
+            "BuyOnBondingCurve": "TBC မှဝယ်သည်။",
+            "LiquidityProvision": "ငွေဖြစ်လွယ်မှုပေးဆောင်မှုမှရရှိသောအခကြေးငွေ",
+            "LiquidityProvisionFarming": "လယ်ယာလုပ်ငန်း",
+            "MarketMakerVolume": "စျေးကွက်ဖော်ဆောင်ခြင်း။",
+            "NftAirdrop": "NFT Airdrop",
+            "SoraFarmHarvest": "{Sora}.လယ်ယာ ရိတ်သိမ်းခြင်း။",
+            "XorErc20": "XOR ERC-20"
+        },
+        "forText": "အတွက်",
+        "groups": {
+            "crowdloan": "Crowdloan ဆုလာဘ်များ",
+            "external": "ချိတ်ဆက်ထားသော {Ethereum} အကောင့်အတွက် ဆုလာဘ်များ",
+            "strategic": "မဟာဗျူဟာဆုများ"
+        },
+        "hint": {
+            "connectAccounts": "သင်၏ PSWAP နှင့် VAL ဆုလာဘ်များကို တောင်းဆိုရန်အတွက် သင်၏ {Sora} နှင့် {Ethereum} အကောင့်နှစ်ခုလုံးကို ချိတ်ဆက်ရန် လိုအပ်ပါသည်။",
+            "connectAnotherAccount": "ရရှိနိုင်သော PSWAP နှင့် VAL ဆုလာဘ်များကို စစ်ဆေးရန် အခြား {Ethereum} အကောင့်ကို ချိတ်ဆက်ပါ။",
+            "connectExternalAccount": "ရနိုင်သော PSWAP နှင့် VAL ဆုလာဘ်များကို စစ်ဆေးရန် {Ethereum} အကောင့်ကို ချိတ်ဆက်ပါ။",
+            "howToClaimRewards": "သင်၏ {symbols} ဆုလာဘ်များကို တောင်းဆိုရန် သင်သည် {count} {transactions} {destination} တွင် လက်မှတ်ထိုးရန် လိုအပ်ပါသည်။ ဆုများကို သင်၏ {Sora} အကောင့်သို့ အပ်နှံပါမည်။"
+        },
+        "notification": {
+            "empty": "ဤအကောင့်အတွက် တောင်းဆိုမှုများ မရရှိနိုင်ပါ။"
+        },
+        "PointSystemWrapper": "အမှတ်များ",
+        "ReferralProgram": "ရည်ညွှန်းချက်များ",
+        "Rewards": "ဆုလာဘ်",
+        "signing": {
+            "accounts": "သင်၏ {Sora} နှင့် {Ethereum} အကောင့်များ အသီးသီး",
+            "extension": "{PolkadotJs} ဘရောက်ဆာ တိုးချဲ့မှု"
+        },
+        "totalVested": "စုစုပေါင်းဆုများ",
+        "transactions": {
+            "confimation": "{total} လွှဲပြောင်းမှုများ၏ {order} ကို အတည်ပြုပါ...",
+            "failed": "ငွေပေးငွေယူ {order} ၏ {order} သည် မအောင်မြင်ပါ။ @:retryText",
+            "success": "သင်၏ဆုလာဘ်များကို မကြာမီရရှိမည်ဖြစ်သည်။"
+        }
+    },
+    "rotatePhoneNotification": {
+        "enableAcceleration": "သင့်ဆက်တင်များတွင် အရှိန်မြှင့်ဝင်ရောက်မှုကို ဖွင့်ပါ။",
+        "gyroscropePhone": " ကျွန်ုပ်တို့၏နည်းပညာသည် သင့်စက်ကိုစောင်းသည့်အခါ သင့်လက်ကျန်ငွေကိုချက်ချင်းဖျောက်ရန် သင့်ဖုန်း၏ built-in gyroscope ကိုအသုံးပြုသည်။",
+        "info": "အပိုကိုယ်ရေးကိုယ်တာအတွက်၊ သင်၏ပိုင်ဆိုင်မှုလက်ကျန်များကို ချက်ချင်းဖျောက်ရန် သင့်စက်ကို မျက်နှာအောက်သို့ စောင်းထားပါ။ ဤအင်္ဂါရပ်သည် သင့်ဖုန်း၏ built-in အာရုံခံကိရိယာများကို အသုံးပြုသည်။",
+        "title": "လက်ကျန်များကို ဝှက်ထားရန် သင့်စက်ပစ္စည်းကို ဇောက်ထိုးလှန်ပါ။"
+    },
+    "saveText": "သိမ်းဆည်းပါ။",
+    "sbtDetails": {
+        "accessPermitted": "ဝင်ရောက်ခွင့်ပြုထားသည်။",
+        "description": "ဤ SBT သည် တိုကင်များနှင့် ရေကူးကန်အများအပြားကို ဝင်ရောက်ခွင့် ပေးထားပြီး သင့်အကောင့်သို့ ချိတ်ဆက်ထားသည်။",
+        "expiresIn": "သက်တမ်းကုန်သည်။",
+        "expiresInTooltip": "'သက်တမ်းကုန်ဆုံးသည်' သည် ဝင်ရောက်ခွင့် ရရှိသည့် ကာလ သို့မဟုတ် အချိန်ကို ပြသသည်။",
+        "expiryDate": "သက်တမ်းကုန်ဆုံးရက်",
+        "expiryDateTooltip": "'သက်တမ်းကုန်ဆုံးရက်စွဲ' သည် SBT ၏ ထိန်းညှိပိုင်ဆိုင်မှုများကို သင်ဝင်ရောက်ခွင့်အတွက် နောက်ဆုံးရက်ဖြစ်သည်။",
+        "indefiniteExp": "အဖွင့်အစွန်း",
+        "issuedBy": "{SBT} က ထုတ်ပြန်သည်။",
+        "kycProvider": "{KYC} ပံ့ပိုးသူ",
+        "kycVerification": "{KYC} အတည်ပြုခြင်း။",
+        "listOperable": "စည်းမျဥ်းပိုင်ဆိုင်မှုများ လည်ပတ်နိုင်သည်။",
+        "noPermissions": "အပိုခွင့်ပြုချက်များမရှိပါ။",
+        "noReceiverAccess": "သင်သည် SBT အသုံးပြုခွင့်မရှိသော အသုံးပြုသူထံ ကန့်သတ်ထားသော တိုကင်ကို ပေးပို့ရန် ကြိုးစားနေပါသည်။",
+        "permission": "ခွင့်ပြုချက်",
+        "permissions": "ခွင့်ပြုချက်",
+        "regulatedInsitution": "စည်းကမ်းထိန်းသိမ်းရေးအဖွဲ့အစည်း"
+    },
+    "sccp": {
+        "amountLabel": "ပမာဏ",
+        "assetLabel": "ပိုင်ဆိုင်မှုသင်္ကေတ",
+        "clearPayload": "ရှင်းသောပုံစံ",
+        "copyPayload": "payload ကို ကူးယူပါ။",
+        "destinationAddressLabel": "လက်ခံသူလိပ်စာ",
+        "destinationNetworkLabel": "ကွန်ရက်သို့",
+        "emptyPayloadHelp": "SCCP payload ကို ပေးပို့ရန် အဆင်သင့်ဖြစ်စေရန် ဖောင်ကွက်များကို သတ်မှတ်ပါ။",
+        "generatePayload": "SCCP payload ကိုထုတ်လုပ်ပါ။",
+        "noteLabel": "ရွေးချယ်နိုင်သော မှတ်စုတို",
+        "payloadCopied": "Payload ကူးယူထားပါသည်။",
+        "payloadCopyFailed": "ကူးယူမှု မအောင်မြင်ပါ၊ ကျေးဇူးပြု၍ ထပ်စမ်းကြည့်ပါ။",
+        "payloadLabel": "ဝန်ထုပ်ဝန်ပိုး ပြင်ဆင်ထားသည်။",
+        "sourceNetworkLabel": "ကွန်ရက်မှ",
+        "subtitle": "BSC၊ Ethereum နှင့် TRON အတွက် Secure Cross-Chain Protocol (SCCP) လွှဲပြောင်းကူညီသူ။",
+        "supportedNetworks": "ပံ့ပိုးထားသော ကွင်းဆက်များ- {chains}။",
+        "title": "SCCP"
+    },
+    "searchText": "ရှာရန်",
+    "selectLanguageDialog": {
+        "title": "ဘာသာ"
+    },
+    "selectNodeConnected": "{chain} သို့ ချိတ်ဆက်ပြီး",
+    "selectNodeDialog": {
+        "addNode": "စိတ်ကြိုက် node ကိုထည့်ပါ။",
+        "connected": "ချိတ်ဆက်ထားသည်။",
+        "customNode": "စိတ်ကြိုက် node",
+        "howToSetupOwnNode": "သင့် node ကို စနစ်ထည့်သွင်းပါ။",
+        "messages": {
+            "emptyAddress": "ကျေးဇူးပြု၍ node ၏လိပ်စာကိုထည့်ပါ။",
+            "emptyName": "ကျေးဇူးပြု၍ node ၏အမည်ကိုထည့်ပါ။",
+            "incorrectAddress": "လိပ်စာ မမှန်ပါ။",
+            "incorrectProtocol": "လိပ်စာသည် ws:// သို့မဟုတ် wss:// ဖြင့် စတင်ရမည်"
+        },
+        "nodeTitle": "{chain} {name} မှ လက်ခံကျင်းပသည်",
+        "select": "ရွေးချယ်ပါ။",
+        "title": "ကွန်ရက် node ရွေးချယ်မှု",
+        "updateNode": "node ကို အပ်ဒိတ်လုပ်ပါ။"
+    },
+    "selectNodeText": "ကွန်ယက် Node ကို ရွေးချယ်ရန်",
+    "selectRegisteredAsset": {
+        "search": {
+            "networkLabelEthereum": "{network} ကွန်ရက်မှန် တိုကင်များ",
+            "networkLabelSora": "{Sora} ကွန်ရက် တိုကင်များ",
+            "placeholder": "ပိုင်ဆိုင်မှု ID၊ အမည် သို့မဟုတ် Ticker သင်္ကေတဖြင့် စစ်ထုတ်ပါ။"
+        },
+        "title": "တိုကင်တစ်ခုကို ရွေးပါ။"
+    },
+    "selectToken": {
+        "assets": {
+            "title": "ပိုင်ဆိုင်မှု"
+        },
+        "custom": {
+            "alreadyAttached": "ဤတိုကင်ကို ပူးတွဲပြီးဖြစ်သည်။",
+            "notFound": "တိုကင်မတွေ့ပါ။",
+            "search": "Input Asset ID",
+            "text": "စိတ်ကြိုက်တိုကင်များ",
+            "title": "စိတ်ကြိုက်"
+        },
+        "emptyListMessage": "ရလဒ်မရှိပါ။",
+        "searchPlaceholder": "ပိုင်ဆိုင်မှု ID၊ အမည် သို့မဟုတ် Ticker သင်္ကေတဖြင့် စစ်ထုတ်ပါ။",
+        "title": "တိုကင်တစ်ခုကို ရွေးပါ။"
+    },
+    "sendText": "ပို့ပါ။",
+    "sentText": "ပို့လိုက်ပါတယ်။",
+    "settingsText": "ဆက်တင်များ",
+    "signAndClaimText": "လက်မှတ်ထိုးပြီး တောင်းဆိုပါ။",
+    "social": {
+        "github": "GitHub",
+        "medium": "လတ်",
+        "reddit": "Reddit",
+        "telegram": "ကြေးနန်းစာ",
+        "twitter": "တွစ်တာ",
+        "wiki": "{Sora} ဝီကီ"
+    },
+    "soraStaking": {
+        "actions": {
+            "claim": "ဆုလာဘ်များကို တောင်းဆိုပါ။",
+            "confirm": "Staking အတည်ပြုပါ။",
+            "more": "လောင်းကြေးပို",
+            "remove": "လောင်းကြေးကို ဖယ်ရှားပါ။",
+            "withdraw": "ငွေထုတ်ပါ။"
+        },
+        "allWithdrawsDialog": {
+            "information": "သင် စတိတ် ထုတ်ယူသောအခါ မဖြစ်မနေ ၇ ရက် စောင့်ဆိုင်းရမည့် ကာလတစ်ခု ရှိသည်။ ယင်းကာလပြီးဆုံးပြီးပါက သင့် token များသည် သင့် wallet သို့ အလိုအလျောက် ပြန်မလာပါ။ သင်သည် ကိုယ်တိုင် တိုကင်များကို ဖြတ်တောက်ထုတ်ယူပြီး လုပ်ငန်းစဉ်ကို ပြီးစီးရမည်",
+            "title": "မတုန်မလှုပ်လှုပ်ရှားမှု"
+        },
+        "claimRewardsDialog": {
+            "checkRewards": "ခေတ်အလိုက် ဆုလာဘ်များကို စစ်ဆေးပြီး မှန်ကန်ကြောင်း စစ်ဆေးပါ။",
+            "rewardsDestination": "ဆုပေးမည့်နေရာလိပ်စာ",
+            "title": "ဆုလာဘ်များကို တောင်းဆိုပါ။"
+        },
+        "dropdownMenu": {
+            "controllerAccount": "ထိန်းချုပ်သူအကောင့်"
+        },
+        "info": {
+            "minimumStake": "အနည်းဆုံးလောင်းကြေး",
+            "nominators": "အမည်စာရင်းတင်သွင်းသူများ",
+            "rewarded": "ဆုချသည်။",
+            "rewardToken": "ဆုတံဆိပ်",
+            "selectedValidators": "ရွေးချယ်ထားသော အတည်ပြုသူများ",
+            "stakingBalance": "ဟန်ချက်ညီအောင် ထိန်းပါ။",
+            "totalLiquidityStaked": "စုစုပေါင်းငွေဖြစ်လွယ်မှုအစုရှယ်ယာ",
+            "unstaking": "နှမြောစရာ",
+            "unstakingPeriod": "လက်လွတ်စပယ်ကာလ",
+            "validators": "အတည်ပြုသူများ"
+        },
+        "newStake": {
+            "title": "စတင်လောင်းကြေး"
+        },
+        "overview": {
+            "description": "အရောင်းအ၀ယ်များကိုအတည်ပြုရန်နှင့် {VAL} တိုကင်ဆုလာဘ်များရယူရန် အမည်စာရင်းတင်သွင်းသူအဖြစ် {Sora} ကွန်ရက်ပေါ်တွင် လောင်းကြေး {XOR} တိုကင်များ။",
+            "title": "{Sora} Staking"
+        },
+        "pendingRewardsDialog": {
+            "information": "စိစစ်သူများသည် 2-5 ရက်တိုင်း ဆုလာဘ်များကို ပေးသည်။ သို့သော်၊ အထူးသဖြင့် ဆုလက်ဆောင်များ သက်တမ်းကုန်ခါနီးလျှင် ၎င်းတို့ကို သင်ကိုယ်တိုင် ပေးချေနိုင်သော်လည်း အခကြေးငွေကို ပေးဆောင်ရမည်ဖြစ်သည်။",
+            "noPendingRewards": "ဆိုင်းငံ့ထားသော ဆုလာဘ်များ မရှိပါ။",
+            "noSelectedRewards": "ဆုလာဘ်များကို ရွေးချယ်ပါ။",
+            "payout": "ပေးချေခြင်း။",
+            "title": "စောင့်ဆိုင်းနေသော ဆုလာဘ်များ"
+        },
+        "selectedValidators": "{count} ({Max} {max})",
+        "selectValidatorsMode": {
+            "confirm": {
+                "manual": "ငါကိုယ်တိုင် စိစစ်ရေးမှူးကို ရွေးမယ်။",
+                "suggested": "လောင်းကြေးဖြင့် အကြံပြုထားသည်။"
+            },
+            "criteria": {
+                "0": "အမြတ်အများဆုံး",
+                "1": "စာရင်းသွင်းမှု အလွန်အကျွံ မလုပ်ပါ။",
+                "2": "onchain အထောက်အထားရှိခြင်း။",
+                "3": "ခုတ်ထစ်ခြင်းမဟုတ်ပါ။",
+                "4": "အထောက်အထားတစ်ခုလျှင် အတည်ပြုသူ 2 ဦး ကန့်သတ်ချက်"
+            },
+            "description": "{Sora} ကွန်ရက် အယ်လဂိုရီသမ်သည် သတ်မှတ်ချက်များအပေါ် အခြေခံ၍ အကြံပြုထားသော အတည်ပြုသူများစာရင်းကို ရွေးချယ်ထားသည်-",
+            "title": "အယ်လဂိုရီသမ်မှ အကြံပြုထားသော တရားဝင်သူများနှင့် လောင်းကြေး"
+        },
+        "stakeDialog": {
+            "toRemove": "ဖယ်ရှားရန်",
+            "toStake": "လောင်းကြေး"
+        },
+        "validators": {
+            "alreadyNominated": "ရွေးချယ်ထားသော တရားဝင်အရာရှိများ အမည်စာရင်းတင်သွင်းထားပြီးဖြစ်သည်။",
+            "change": "အတည်ပြုသူများ ပြောင်းလဲပါ။",
+            "next": "နောက်တစ်ခု",
+            "recommended": "အတည်ပြုပေးသူများကို အကြံပြုထားသည်။",
+            "save": "အပြောင်းအလဲများကို သိမ်းဆည်းပါ။",
+            "select": "အတည်ပြုသူများကို ရွေးချယ်ပါ။",
+            "selected": "{selected}/{total} ရွေးထားသည်။",
+            "tooManyValidators": "ရွေးချယ်ထားသော အတည်ပြုသူ များလွန်းသည် ({Max} {max})"
+        },
+        "validatorsAttentionDialog": {
+            "confirm": "ဟုတ်တယ်၊ အန္တရာယ်ကို နားလည်တယ်။",
+            "description": {
+                "0": "အယ်လ်ဂိုရစ်သမ်အခြေပြု ဝယ်လီဒေးတာ အကြံပြုချက်များသည် ငွေကြေး ဆိုင်ရာ အကြံပေးမှု မဟုတ်ပါ။ စတိတ် လုပ်ငန်းစဉ်မှာ အန္တရာယ် မြင့်မားပြီး အယ်လ်ဂိုရစ်သမ် အကြံပြုချက်များကလည်း ယင်းအန္တရာယ်ကို မသက်သာစေချင်",
+                "1": "အယ်လဂိုရီသမ်မှ အကြံပြုထားသော အတည်ပြုသူအား ဖြတ်တောက်နိုင်သေးသည်။ အယ်လဂိုရီသမ်မှ အကြံပြုထားသော တရားဝင်သူသည် အကြံပြုပြီး/သို့မဟုတ် ရွေးချယ်ပြီးနောက် အချိန်မရွေး ၎င်းတို့၏ ကန့်သတ်ချက်များ (ဥပမာ၊ ကော်မရှင်နှုန်းထားများ၊ စသည်) ကိုလည်း ပြောင်းလဲနိုင်သည်။",
+                "2": "ဤ သို့မဟုတ် အခြားအကြောင်းများကြောင့် သင်သည် တိုကင် သို့မဟုတ် ဆုလာဘ်များ ဆုံးရှုံးနိုင်သည်။ လုံ့လစိုက်ထုတ်ပြီး ပါဝင်သည့်အန္တရာယ်များကို ဂရုတစိုက်ထည့်သွင်းစဉ်းစားပြီးနောက် လောင်းကြေးတိုကင်များကိုသာ စိစစ်ကာ အကြံပြုချက်များကို သင့်ကိုယ်ပိုင်ဆုံးဖြတ်ချက်ဖြင့် အသုံးပြုပါ။"
+            },
+            "title": "အာရုံ"
+        },
+        "validatorsDialog": {
+            "tabs": {
+                "all": "အားလုံး",
+                "user": "မင်းအတွက်"
+            },
+            "title": {
+                "edit": "ကျွန်ုပ်၏အတည်ပြုပေးသူများကို တည်းဖြတ်ပါ။"
+            }
+        },
+        "validatorsFilterDialog": {
+            "filters": {
+                "hasIdentity": {
+                    "description": "အကောင့်သို့ ချိတ်ဆက်ထားသော အထောက်အထားအဆက်အသွယ် အနည်းဆုံးတစ်ခု",
+                    "name": "ကွင်းဆက်အထောက်အထား"
+                },
+                "notOversubscribed": {
+                    "description": "ခွဲဝေကန့်သတ်မှုအတွင်း အကောင့်၊ {Polkadot} လောင်းကြေးတွင် စာရင်းသွင်းမှု ပြစ်ဒဏ်များကို ရှောင်ပါ။",
+                    "name": "စာရင်းသွင်းမှု အလွန်အကျွံ မလုပ်ပါ။"
+                },
+                "notSlashed": {
+                    "description": "အကျင့်ပျက်ခြစားမှု သို့မဟုတ် ပရိုတိုကောလ်ချိုးဖောက်မှုများကြောင့် ၎င်းတို့၏လောင်းကြေးငွေများကို ပြစ်ဒဏ် သို့မဟုတ် လျှော့ချမှုတစ်စုံတစ်ရာ မကြုံဖူးပါ။",
+                    "name": "ခုတ်ထစ်ခြင်းမဟုတ်ပါ။"
+                },
+                "twoValidatorsPerIdentity": {
+                    "description": "ဗဟိုချုပ်ကိုင်မှုလျှော့ချရေးနှင့် အာဏာစုစည်းမှုကို ဟန့်တားရန်အတွက် အထောက်အထားတစ်ခုလျှင် အများဆုံး တရားဝင်အတည်ပြုသူ နှစ်ဦးရှိသည်။",
+                    "name": "အထောက်အထားတစ်ခုလျှင် အတည်ပြုသူ 2 ဦး ကန့်သတ်ချက်"
+                }
+            },
+            "reset": "အားလုံးကို ပြန်လည်သတ်မှတ်ပါ။",
+            "save": "စစ်ထုတ်မှုကို သိမ်းဆည်းပါ။",
+            "title": "စစ်ထုတ်မှုများ"
+        },
+        "validatorsList": {
+            "commission": "ကော်မရှင်",
+            "commissionTooltip": "ကော်မရှင်သည် စတိတ် လုပ်ငန်းစဉ်တွင် ဝယ်လီဒေးတာများက ပေးဆောင်ရမည့် ကုန်ကျစရိတ် ဖြစ်သည်။ ဤကုန်ကျစရိတ်ကို ရာခိုင်နှုန်း အနေဖြင့် ဖော်ပြပြီး ထုတ်ဝေရန်မတိုင်မီ စတိတ် ဆုများမှ ပြတ်တောက် ပေးလိုက်သည်။ ဝယ်လီဒေးတာများသည် မည်သည့်အချိန်တွင်မဆို ကော်မရှင် အတိုးအအောက် ပြုလုပ်နိုင်ကြောင်း သတိပြုရန် လိုအပ်သည်",
+            "name": "နာမည်",
+            "noNominatedValidators": "သင့်တွင် အမည်စာရင်းတင်သွင်းခံရသူများ မရှိပါ။",
+            "noValidators": "သတ်မှတ်ထားသော စစ်ထုတ်မှုကို ကျေနပ်စေသော တရားဝင်သူ မရှိပါ။",
+            "return": "ပြန်လာ",
+            "search": "ရှာဖွေပါ..."
+        },
+        "withdraw": {
+            "beingWithdrawn": "ရုပ်သိမ်းခံရခြင်း။",
+            "countdownLeft": "ဝဲ",
+            "nextWithdrawal": "နောက်တစ်ခု ငွေထုတ်",
+            "seeAll": "အားလုံးကြည့်",
+            "withdrawable": "ထုတ်ယူနိုင်သည်။"
+        },
+        "withdrawDialog": {
+            "showAllWithdraws": "နုတ်ထွက်မှုအားလုံးကို ပြပါ။",
+            "title": "မလောင်းမထားသောငွေများကို ထုတ်ယူပါ။"
+        }
+    },
+    "stepText": "အဆင့်",
+    "successText": "အောင်မြင်မှု",
+    "swap": {
+        "confirmSwap": "ပြောင်းလဲမှုကို အတည်ပြုပါ",
+        "errorFetching": "ဒေတာထုတ်ယူရာတွင် အမှားအယွင်း ဖြစ်ပွားခဲ့သည်",
+        "insufficientAmount": "{tokenSymbol} ပမာဏ မလုံလောက်ပါ",
+        "insufficientLiquidity": "လည်ပတ်ငွေ မလုံလောက်ပါ",
+        "liquidityProviderFee": "လည်ပတ်ငွေ ပံ့ပိုးသူ ကောက်ခံခ",
+        "liquidityProviderFeeTooltip": "လုပ်ရောင်းချင်းတိုင်း ({liquidityProviderFee}%) ကို ပရိုတိုကော အကျိုးအမြတ်အဖြစ် လည်ပတ်ငွေပံ့ပိုးသူများထံ ပေးအပ်ပါသည်။",
+        "maxSold": "အများဆုံး ရောင်းချ",
+        "minReceived": "အနည်းဆုံး လက်ခံမည်",
+        "minReceivedTooltip": "အတည်ပြုမီ စျေးနှုန်းတွင် မထိရောက်သော အပြောင်းအလဲ ကြီးမားမှု ဖြစ်ပါက လုပ်ငန်းစဉ်ကို ပယ်ဖျက်မည်။",
+        "priceImpact": "စျေးနှုန်း သက်ရောက်မှု",
+        "priceImpactTooltip": "ရောင်းဝယ်ပမာဏကြောင့် စျေးကွက်နှုန်းနှင့် ခန့်မှန်းနှုန်းအကြား ကွာခြားချက်။",
+        "rewardsForSwap": "PSWAP မဟာဗျူဟာဆိုင်ရာ အကျိုးကျေးဇူး",
+        "route": "လမ်းကြောင်း",
+        "slippageTolerance": "စျေးနှုန်းလိမ္မာမှု ခွင့်လျှောက်",
+        "swapOutputMessage": "အထွက်တန်ဖိုးသည် ခန့်မှန်းတန်ဖိုးဖြစ်သည်။ အနည်းဆုံး {transactionValue} ကို လက်ခံရရှိမည် မဟုတ်လိမ့်မည်ဆိုရင် လုပ်ငန်းစဉ်ကို ပယ်ဖျက်မည်။"
+    },
+    "swapText": "ပြောင်းလဲ",
+    "tokens": {
+        "assetId": "ပိုင်ဆိုင်မှု ID"
     },
     "tooltips": {
-      "transfer": "Tokens successfully purchased!\nClick to start the bridge transaction"
-    }
-  },
-  "moonpayText": "MoonPay",
-  "mst": {
-    "about": "About",
-    "accountNameMst": "Multisig account name",
-    "addAddr": "Add address",
-    "addAddress": "Add another address",
-    "addMST": "Add multisig addresses",
-    "addrCreation": "Multisig address creation",
-    "addressEntered": "This address has already been entered",
-    "amountOfSignatures": "Signatures submitted",
-    "cardMessageFirst": "For your multisig to function properly, all listed addresses must create the multisig in the exact same way as you did.",
-    "cardMessageSecond": "Multisig wallet cannot possibly be changed in the future, only the name.",
-    "connectFearless": "Connect via fearless",
-    "continue": "Continue",
-    "createMst": "Create multisig wallet",
-    "enterAddress": "Enter the multisig address",
-    "enterName": "Multisig ပိုက်ဆံအိတ် အမည် ထည့်ပါ",
-    "forget": "forget",
-    "forgetMst": "Your login details will be deleted. You will permanently lose access to your account",
-    "how": "How To?",
-    "incorrectFormatAddress": "The address is not in correct format",
-    "loading": "Loading...",
-    "minFee": "Min amount of fee SIGNER need",
-    "mstBridgeWarning": "Transfer from MST is not supported for now",
-    "mstFearless": "Fearless Wallet တင်သွင်းပါ သို့မဟုတ် သင့်အကောင့်ကို ချိတ်ဆက်ပါ",
-    "mstForgetBtn": "Forget Multisig account",
-    "mstIcon": "Create a Multisig account",
-    "mstKeys": "Multisig wallets require multiple signatures and keys",
-    "mstSave": "Save changes",
-    "mstSign": "Set the number of required signatures to complete transactions",
-    "mstSwitchWarning": "All activities and transactions will be carried out through the Multisig account",
-    "mstWallet": "Multiple signatures reduce the risk of key compromise. Funds remain safe even if one key is lost or stolen",
-    "multisigAccount": "Multisig Account",
-    "seeActivity": "See Multisig activity",
-    "settingsMst": "Multisig account settings",
-    "setupDetails": "Set up the details",
-    "sign": "Sign",
-    "successMstSetUp": "Multisig wallet has been successfully set up!",
-    "suggestSwitchFromMst": "You could switch from MST or transfer to MST",
-    "sureForgetMst": "Are you sure you want to forget Multisig account?",
-    "switchFromMst": "Switch from MST",
-    "switchMst": "Switch to Multisig account",
-    "threshold": "Threshold",
-    "thresholdNumber": "Set a transaction approval threshold",
-    "warningSwitch": "A sign is needed to confirm the transaction. Please switch to a multisig account.",
-    "yourAddress": "Your address"
-  },
-  "multipleRecipients": "Multiple Recipients",
-  "nameText": "Name",
-  "networkFeeText": "Network Fee",
-  "networkFeeTooltipText": "Network fee is used to ensure {Sora} system's growth and stable performance.",
-  "networkStatisticsText": "Network statistics",
-  "newAccountsText": "New accounts",
-  "nextText": "နောက်တစ်ခု",
-  "noDataText": "No data",
-  "node": {
-    "errors": {
-      "connection": "An error occurred while connecting to the node\n{address}\n",
-      "existing": "This node is already added: {title}\n",
-      "network": "The node\n{address}\n is from the another network\n"
+        "accounts": "အကောင့်များသည် ကွန်ရက်ပေါ်တွင် အသုံးပြုသူ၏ပိုင်ဆိုင်မှုများကို ကိုင်ဆောင်ထားသည့် ဒစ်ဂျစ်တယ်လိပ်စာများဖြစ်သည်။ အကောင့်တစ်ခုစီသည် အသုံးပြုသူ၏ပိုင်ဆိုင်မှုများကို ဝင်ရောက်စီမံခန့်ခွဲနိုင်စေမည့် သီးခြားအများပြည်သူလိပ်စာနှင့် သီးသန့်သော့တစ်ခုနှင့် ဆက်စပ်နေသည်။",
+        "bridgeTransactions": "{from} to {to} bridge refers to the process of transferring assets between the {from} and {to} networks using a bridge. တံတားသည် ကွန်ရက်နှစ်ခု၏ အပြန်အလှန်လုပ်ဆောင်နိုင်မှုကို ခွင့်ပြုပေးပြီး သုံးစွဲသူများအကြား ပိုင်ဆိုင်မှုများကို ချောမွေ့စွာ ရွှေ့ပြောင်းနိုင်စေပါသည်။",
+        "fees": "{Sora} blockchain ပေါ်ရှိ အခကြေးငွေများသည် ကွန်ရက်ပေါ်ရှိ ငွေပေးငွေယူများကို လုပ်ဆောင်ခြင်းအတွက် ဖြစ်ပေါ်လာသည့် အခကြေးငွေများကို ရည်ညွှန်းပါသည်။ ဤအခကြေးငွေများကို {Sora} ကွန်ရက်၏ မူရင်း cryptocurrency ဖြစ်သော XOR ဖြင့် ပေးဆောင်ပါသည်။ အခကြေးငွေပမာဏကို ငွေသွင်းငွေထုတ်၏ ရှုပ်ထွေးမှုနှင့် အရွယ်အစားဖြင့် ဆုံးဖြတ်သည်။",
+        "roi": "{ROI} သည် Return on Investment ကို ကိုယ်စားပြုသည်။ ရင်းနှီးမြုပ်နှံမှုတစ်ခုတွင် ရရှိသည့်အမြတ်ကို ထိုရင်းနှီးမြှုပ်နှံမှု၏ ကုန်ကျစရိတ်နှင့် ညီမျှသော ရာခိုင်နှုန်းတစ်ခုဖြင့် တွက်ချက်သည်။",
+        "supply": "တိုကင်ပေးဝေမှုသည် ဖန်တီးပြီး ကွန်ရက်ပေါ်တွင် လည်ပတ်နေသော စုစုပေါင်းတိုကင်အရေအတွက်ကို ရည်ညွှန်းသည်။ တိုကင်ပေးဝေမှုသည် ကွန်ရက်ပေါ်တွင် လောင်းကြေး၊ မီးရှို့ခံရ သို့မဟုတ် လွှဲပြောင်းပေးသည့် တိုကင်ပမာဏပေါ်မူတည်၍ အတက်အကျရှိနိုင်သည်။",
+        "transactions": "ငွေပေးချေမှုများသည် ငွေဖြစ်လွယ်မှုလုပ်ငန်းများနှင့် လဲလှယ်မှုများအပါအဝင် ကွန်ရက်ပေါ်ရှိ ဒစ်ဂျစ်တယ်ပိုင်ဆိုင်မှုများကို ပေးပို့ခြင်း သို့မဟုတ် လက်ခံခြင်းလုပ်ငန်းစဉ်ကို ရည်ညွှန်းသည်။",
+        "tvl": "{TVL} သည် Total Value Locked ကို ကိုယ်စားပြုသည်။ ၎င်းသည် ဒေါ်လာနှင့်ညီမျှသော ရေကန်များတွင် သော့ခတ်ထားသော တိုကင်များကို ကိုယ်စားပြုသည်။",
+        "velocity": "Token velocity သည် ပျမ်းမျှအားဖြင့် ကာလ (လ) အတွင်း တိုကင်အပြောင်းအလဲ အကြိမ်အရေအတွက်ဖြစ်သည်။ ၎င်းသည် ကုန်သွယ်မှုလုပ်ဆောင်မှုနှင့် ငွေဖြစ်လွယ်မှုအဆင့်ကို ညွှန်ပြသည်။",
+        "volume": "Volume သည် သတ်မှတ်ထားသော အချိန်ကာလအတွင်း ကွန်ရက်ပေါ်တွင် ရောင်းဝယ်ဖောက်ကားခြင်း သို့မဟုတ် လဲလှယ်ထားသော ပိုင်ဆိုင်မှု စုစုပေါင်းပမာဏကို ရည်ညွှန်းသည်။ ထုထည်သည် ကွန်ရက်၏ ငွေဖြစ်လွယ်မှုနှင့် အလုံးစုံလုပ်ဆောင်ချက်ကို တိုင်းတာရန်အတွက် အရေးကြီးသော မက်ထရစ်တစ်ခုဖြစ်သည်။"
     },
-    "messages": {
-      "connected": "Connection established with node\n{address}\n",
-      "selectNode": "Node စာရင်းမှ ချိတ်ဆက်ရန် node ကို ရွေးချယ်ပါ"
-    },
-    "warnings": {
-      "disconnect": "Connection to the node has been lost. Reconnecting..."
-    }
-  },
-  "noir": "Noir",
-  "ofText": "{first} of {second}",
-  "operations": {
-    "AddLiquidity": "Add Liquidity",
-    "andText": "and",
-    "BindRegulatedAsset": "Bind Regulated Asset",
-    "BorrowVaultDebt": "Borrow Debt",
-    "Burn": "Burn",
-    "ClaimRewards": "Claim Rewards",
-    "CloseVault": "Close Position",
-    "CreatePair": "Create Pair",
-    "CreateVault": "Create Position",
-    "DemeterFarmingDepositLiquidity": "Stake Liquidity",
-    "DemeterFarmingGetRewards": "Claim Rewards",
-    "DemeterFarmingStakeToken": "Stake Token",
-    "DemeterFarmingUnstakeToken": "Unstake Token",
-    "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
-    "DepositCollateral": "Deposit Position",
-    "error": {
-      "AddLiquidity": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
-      "BindRegulatedAsset": "Failed To Bind Asset {symbol} to SBT {symbol2}",
-      "BorrowVaultDebt": "Failed to borrow {amount} {symbol}",
-      "Burn": "Failed to burn {amount} {symbol}",
-      "ClaimRewards": "Failed to claim rewards {rewards}",
-      "CloseVault": "Failed to close {symbol}/{symbol2} position",
-      "CreatePair": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
-      "CreateVault": "Failed to create {symbol}/{symbol2} position",
-      "DemeterFarmingDepositLiquidity": "Failed to supply {amount} {symbol} and {symbol2} LP tokens",
-      "DemeterFarmingGetRewards": "Failed to claim {symbol}",
-      "DemeterFarmingStakeToken": "Failed to add {amount} {symbol}",
-      "DemeterFarmingUnstakeToken": "Failed to remove {amount} {symbol}",
-      "DemeterFarmingWithdrawLiquidity": "Failed to remove {amount} {symbol} and {symbol2} LP tokens",
-      "DepositCollateral": "Failed to deposit {amount} {symbol}",
-      "EthBridgeIncoming": "Failed to transfer {amount} {symbol} from {Ethereum} to {Sora}",
-      "EthBridgeOutgoing": "Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}",
-      "IssueSoulBoundToken": "Failed to issue Soulbound token {symbol}",
-      "Mint": "Failed to mint {amount} {symbol} to {address}",
-      "OrderBookCancelLimitOrder": "Failed to cancel limit order",
-      "OrderBookCancelLimitOrders": "Failed to cancel limit orders",
-      "OrderBookPlaceLimitOrder": "Failed to place limit order of {amount} {symbol} at {price} {symbol2}",
-      "ReferralReserveXor": "Failed to bond {amount} XOR",
-      "ReferralSetInvitedUser": "Failed to set {role} {address}",
-      "ReferralUnreserveXor": "Failed to unbond {amount} XOR",
-      "RegisterAndRegulateAsset": "Failed To Register And Regulate {symbol}",
-      "RegisterAsset": "Failed to register {symbol} asset",
-      "RegulateAsset": "Failed To Regulate Asset {symbol}",
-      "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
-      "RepayVaultDebt": "Failed to repaid {amount} {symbol}",
-      "SetAccessExpiration": "Failed to update expiration to {to} for {symbol}",
-      "StakingBond": "Failed to bond {amount} {symbol}",
-      "StakingBondAndNominate": "Failed to bond {amount} {symbol}",
-      "StakingBondExtra": "Failed to bond extra {amount} {symbol}",
-      "StakingChill": "Failed to chill",
-      "StakingNominate": "Failed to nominate validators",
-      "StakingPayout": "Failed to payout rewards",
-      "StakingRebond": "Failed to rebond {amount} {symbol}",
-      "StakingSetController": "Failed to set controller {address}",
-      "StakingSetPayee": "Failed to set payee {address}",
-      "StakingUnbond": "Failed to unbond {amount} {symbol}",
-      "StakingWithdrawUnbonded": "Failed to withdraw {amount} {symbol}",
-      "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
-      "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
-      "SwapTransferBatch": "Failed to {action} {amount} {symbol}",
-      "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
-      "VestedTransfer": "Failed to {action} {amount} {symbol} {direction} {address}",
-      "XorlessTransfer": "Failed to send {amount} {symbol} to {address}"
-    },
-    "EthBridgeIncoming": "@:hashiBridgeText",
-    "EthBridgeOutgoing": "@:hashiBridgeText",
-    "finalized": {
-      "AddLiquidity": "Supplied {amount} {symbol} and {amount2} {symbol2}",
-      "BindRegulatedAsset": "Bind Asset {symbol2} to SBT",
-      "BorrowVaultDebt": "Borrowed {amount} {symbol}",
-      "Burn": "Burned {amount} {symbol}",
-      "ClaimRewards": "Reward claimed successfully {rewards}",
-      "CloseVault": "{symbol}/{symbol2} Position closed",
-      "CreatePair": "Supplied {amount} {symbol} and {amount2} {symbol2}",
-      "CreateVault": "{symbol}/{symbol2} Position created",
-      "DemeterFarmingDepositLiquidity": "Supplied {symbol} and {symbol2} {amount} LP tokens",
-      "DemeterFarmingGetRewards": "{amount} {symbol} claimed successfully",
-      "DemeterFarmingStakeToken": "Added {amount} {symbol}",
-      "DemeterFarmingUnstakeToken": "Removed {amount} {symbol}",
-      "DemeterFarmingWithdrawLiquidity": "Removed {symbol} and {symbol2} {amount} LP tokens",
-      "DepositCollateral": "Deposited {amount} {symbol}",
-      "EthBridgeIncoming": "Transfered {amount} {symbol} from {Ethereum} to {Sora}",
-      "EthBridgeOutgoing": "Transfered {amount} {symbol} from {Sora} to {Ethereum}",
-      "IssueSoulBoundToken": "Issue Soulbound Token {symbol}",
-      "Mint": "Minted {amount} {symbol} to {address}",
-      "OrderBookCancelLimitOrder": "Limit order cancelled",
-      "OrderBookCancelLimitOrders": "Limit orders cancelled",
-      "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} at {price} {symbol2} placed",
-      "ReferralReserveXor": "Bonded {amount} XOR",
-      "ReferralSetInvitedUser": "{role} {address} is set successfully",
-      "ReferralUnreserveXor": "Unbonded {amount} XOR",
-      "RegisterAndRegulateAsset": "Register And Regulate {symbol} asset",
-      "RegisterAsset": "Registered {symbol} asset",
-      "RegulateAsset": "Regulate Asset {symbol}",
-      "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
-      "RepayVaultDebt": "Repaid {amount} {symbol}",
-      "SetAccessExpiration": "SB token {symbol} Updated expiration to {endTime}",
-      "StakingBond": "Bonded {amount} {symbol}",
-      "StakingBondAndNominate": "Bonded {amount} {symbol}",
-      "StakingBondExtra": "Bonded extra {amount} {symbol}",
-      "StakingChill": "Chill",
-      "StakingNominate": "Nominated validators",
-      "StakingPayout": "Payout rewards",
-      "StakingRebond": "Rebonded {amount} {symbol}",
-      "StakingSetController": "Set controller {address}",
-      "StakingSetPayee": "Set payee {address}",
-      "StakingUnbond": "Unbonded {amount} {symbol}",
-      "StakingWithdrawUnbonded": "Withdrew {amount} {symbol}",
-      "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
-      "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
-      "SwapTransferBatch": "{action} {amount} {symbol}",
-      "Transfer": "{action} {amount} {symbol} {direction} {address}",
-      "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
-      "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
-    },
-    "IssueSoulBoundToken": "Issue SBT",
-    "Mint": "Mint",
-    "OrderBookCancelLimitOrder": "Cancel Order",
-    "OrderBookCancelLimitOrders": "Cancel Orders",
-    "OrderBookPlaceLimitOrder": "Place Order",
-    "ReferralReserveXor": "Bond XOR",
-    "ReferralSetInvitedUser": "Set {role}",
-    "ReferralUnreserveXor": "Unbond XOR",
-    "RegisterAndRegulateAsset": "Register Asset",
-    "RegisterAsset": "Register Asset",
-    "RegulateAsset": "Regulate Asset",
-    "RemoveLiquidity": "Remove Liquidity",
-    "RepayVaultDebt": "Repay Debt",
-    "SetAccessExpiration": "Set SBT Expiration",
-    "StakingBond": "Bond",
-    "StakingBondAndNominate": "Bond and Nominate",
-    "StakingBondExtra": "Bond Extra",
-    "StakingChill": "Chill",
-    "StakingNominate": "Nominate",
-    "StakingPayout": "Payout Rewards",
-    "StakingRebond": "Rebond",
-    "StakingSetController": "Set Controller",
-    "StakingSetPayee": "Set Payee",
-    "StakingUnbond": "Unbond",
-    "StakingWithdrawUnbonded": "Withdraw Unbonded",
-    "Swap": "Swap",
-    "SwapAndSend": "Swap and Send",
-    "SwapTransferBatch": "{ADAR} transfer",
-    "Transfer": "Transfer",
-    "VestedTransfer": "Transfer",
-    "XorlessTransfer": "Transfer"
-  },
-  "orderBook": {
-    "amount": "amount",
-    "book": {
-      "noAsks": "No opened asks",
-      "noBids": "No opened bids"
-    },
-    "bookStatus": {
-      "active": "Active",
-      "cancelable": "Cancelable",
-      "inactive": "Inactive",
-      "placeable": "Placeable"
-    },
-    "Buy": "Buy {asset}",
-    "cantPlaceOrder": "Can't place order",
-    "change": "change",
-    "dayVolume": "1D Volume",
-    "dialog": {
-      "askCancel": "Are you sure you want to cancel all of your open orders?",
-      "at": "at {price} {symbol}",
-      "buy": "Buy {amount} {symbol}",
-      "cancelAll": "Yes, cancel all",
-      "placeLimit": "Place limit order",
-      "placeMarket": "Place market order",
-      "sell": "Sell {amount} {symbol}"
-    },
-    "enterAmount": "Enter amount",
-    "error": {
-      "accountLimit": {
-        "reading": "Limit reached: Each account is confined to 1024 limit orders. Please wait until some of your orders fulfill",
-        "reason": "Too many orders is ongoing"
-      },
-      "beyondPrecision": {
-        "reading": "Precision exceeded: The amount/price entered has too many decimal places. Please input a value with fewer decimal places",
-        "reason": "Entered price is too precise to calculate"
-      },
-      "exceedsSpread": {
-        "reading": "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
-        "reason": "Price exceeded spread"
-      },
-      "marketNotAvailable": {
-        "reading": "Market order limitation: There are not enough orders available to fulfill this market order. Please adjust your order size or wait for more orders to be placed",
-        "reason": "Not enough orders available to fullfill this order"
-      },
-      "multipleOf": {
-        "reading": "To process your order, please input a price that is a multiple of {value}",
-        "reason": "Entered price is too specific"
-      },
-      "outOfBounds": {
-        "reading": "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range. Min: {min}; Max: {max}",
-        "reason": "ပမာဏသည် blockchain အတိုင်းအတာနှင့် မကိုက်ညီပါ"
-      },
-      "singlePriceLimit": {
-        "reading": "Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill",
-        "reason": "Too many orders is ongoing for this price"
-      },
-      "spotLimit": {
-        "reading": "Price range cap: Each order book side is limited to 1024 unique price points. Please select a price within the existing range or wait for space to become available",
-        "reason": "Trading side has been filled"
-      }
-    },
-    "history": {
-      "cancel": "Cancel order {value}",
-      "cancelAll": "Cancel all",
-      "connect": "Connect an account to start trading",
-      "openOrders": "Open orders {value}",
-      "orderHistory": "Order history",
-      "tradeHistory": "Trade history"
-    },
-    "limit": "Limit",
-    "market": "Market",
-    "marketTrades": "Market trades",
-    "month": "month",
-    "orderBook": "Orderbook",
-    "orderStatus": {
-      "active": "Active",
-      "canceled": "Canceled",
-      "expired": "Expired",
-      "filled": "Filled"
-    },
-    "orderTable": {
-      "filled": "filled",
-      "lifetime": "lifetime",
-      "noOrders": "No orders. Create your first one!",
-      "pair": "pair",
-      "side": "side",
-      "time": "time"
-    },
-    "Sell": "Sell {asset}",
-    "setPrice": "Set price",
-    "stop": "Book stopped",
-    "time": "time",
-    "tokenPair": "Token pair",
-    "tooltip": {
-      "bookStatus": {
-        "active": "Full trading functionality enabled. You can place new orders or cancel existing ones.",
-        "cancelable": "You can only cancel existing orders. New order placement is currently disabled.",
-        "inactive": "All trading activities are currently halted. No orders can be placed or canceled at this time.",
-        "placeable": "Limited functionality. You can place new orders and cancel existing ones, but some features may be unavailable."
-      },
-      "bookWidget": "တိကျသော ပစ္စည်းတစ်ခုအတွက် ဝယ်ကမ်းလှမ်းချက် (bid) နှင့် ရောင်းကမ်းလှမ်းချက် (ask) များကို စျေးနှုန်း အဆင့်အတန်းအလိုက် စီစဉ်တင်ပြထားသော အချိန်နှင့်တပြေးညီ အပ်ဒိတ်ဖြစ်နေသော မှတ်တမ်း။ ဤ order book သည် စျေးကွက်၏ အနက်အလျားကို ပြသပြီး စျေးနှုန်းအမျိုးမျိုးတွင် ကမ်းလှမ်းထားသော ပစ္စည်းပမာဏများကို ထည့်သွင်းထားသည်။ ကုန်သွယ်သူများသည် ဤအသေးစိတ်အမြင်ကို အသုံးပြုကာ စျေးကွက်အမြင်ကန့်သတ်၊ ထိန်းချုပ်မှုနှင့် အထောက်အကူအဆင်အဆို့အကဆို့များကို ခန့်မှန်းနိုင်ပြီး တောင်းဆိုမှု/ထောက်ပံ့မှု အခြေအနေအပေါ်မူတည်၍ စျေးနှုန်း လှုပ်ရှားမှုကို ခန့်မှန်းနိုင်သည်",
-      "limitOrder": "A 'Limit' order lets you specify the exact price at which you want to buy or sell an asset. A 'Limit Buy' order will only be executed at the specified price or lower, while a 'Limit Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.",
-      "marketOrder": "'စျေးကွက်အမိန့်' သည် လက်ရှိ ရရှိနိုင်သည့် အကောင်းဆုံး စျေးနှုန်းဖြင့် ချက်ချင်း ဝယ်ယူ/ရောင်းချရန် အမိန့်တစ်ခု ဖြစ်သည်။ စျေးနှုန်း သတ်မှတ်ရန် မလိုအပ်သဖြင့် လုပ်ဆောင်မှု မြန်ဆန်သော်လည်း ရရှိ/ပေးဆောင်သည့် စျေးနှုန်းကို ထိန်းချုပ်မှု ပိုအနည်းငယ် ဖြစ်တတ်သည်။ ဤအမိန့်အမျိုးအစားကို လုပ်ဆောင်မှုပြီးစီးခြင်း၏ သေချာမှုကို စျေးနှုန်းထိန်းချုပ်မှုထက် ဦးစားပေးသော အချိန်များတွင် အသုံးပြုပါသည်",
-      "marketWidget": "This widget shows a real-time stream of executed trades in the market, providing information on transaction volumes, recent activity, and current market trends. By observing the timing, price, and size of actual trades, traders can gain insights into market dynamics and sentiment, helping them to spot trading opportunities and make informed decisions",
-      "pairsList": "A real-time list showing current buy and sell orders for a cryptocurrency. It helps you understand the demand, potential price direction, and trade volume on the {Sora} Network and {AppName} DEX",
-      "txDetails": {
-        "amount": "'ပမာဏ' သည် သင်၏ အမိန့်တွင် ဝယ်ယူ/ရောင်းချလိုသော ပစ္စည်းအရေအတွက် စုစုပေါင်းကို ဆိုလိုသည်။ ၎င်းကို သတ်မှတ်ပေးရခြင်းအရေးကြီးပါသည် — သင့်လုပ်ငန်းရယူနည်း၏ အရွယ်အစားကို ဆုံးဖြတ်ပေးပြီး ဝယ်ယူမှု ကုန်ကျစရိတ် သို့မဟုတ် ရောင်းချမှု ဝင်ငွေကို သက်ရောက်စေသောကြောင့်",
-        "expiryDate": "The 'Expiry Date' is the deadline for your order to be executed. If the market doesn't reach your specified price before this date, the order is automatically cancelled. You're not bound to a perpetual wait if market conditions don't align with your trading preferences.",
-        "limit": "The 'Limit Price' is the precise price you set for a limit order. The trade will only execute when the asset's market price meets your limit price, ensuring you don't purchase above or sell below this specified value.",
-        "locked": "The 'Locked' shows the amount of asset to be held while order is ongoing.",
-        "orderType": "'Buy' order will only be executed at the specified price or lower, while a 'Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with."
-      }
-    },
-    "total": "Total",
-    "tradingPair": {
-      "choosePair": "Choose trading pair",
-      "status": "Status",
-      "total": "{amount} {symbol} at {amount2} {symbol2}",
-      "volume": "Volume"
-    },
-    "txDetails": {
-      "expiryDate": "expiry date",
-      "limitPrice": "limit price",
-      "orderType": "order type"
-    }
-  },
-  "pageTitle": {
-    "AddLiquidity": "Add Liquidity",
-    "AssetOwner": "Asset owner",
-    "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-    "Bridge": "@:bridgeText",
-    "Explore/Books": "@:pageTitle.OrderBook",
-    "Explore/Farming": "Farming",
-    "Explore/Pools": "ကန်",
-    "Explore/Staking": "စတိတ်",
-    "Explore/Tokens": "တိုကင်များ",
-    "OrderBook": "ရောင်းဝယ်မှု",
-    "Pool": "ကန်",
-    "Rewards": "ဆုများ",
-    "Staking": "စတိတ်",
-    "Stats": "စာရင်းအင်း",
-    "Swap": "ဖလားလဲ",
-    "VaultDetails": "Position Details",
-    "Vaults": "{Kensetsu}",
-    "Wallet": "Wallet",
-    "Sccp": "SCCP",
-    "Burn": "Burn"
-  },
-  "pairIsNotCreated": "Token pair isn't created",
-  "points": {
-    "accountsText": "{amount} accounts",
-    "airdrop": "Complete SORA Ecosystem-related tasks in order to qualify for a $3m AIRDROP",
-    "bridgeVolume": "ဘရစ်ဂ် ပမာဏ",
-    "complete": "Completed | Complete",
-    "currently": "Currently",
-    "dated": "Dated",
-    "depositVolumeBridges": {
-      "descriptionTask": "Deposit & withdraw via Bridges, bitget, 1x, gateio",
-      "titleProgress": "Deposit volume",
-      "titleTask": "Deposit & Withdraw"
-    },
-    "feesSpent": "Fees spent",
-    "firstSoraNetworkTransaction": "Your first SORA Network Transaction",
-    "firstTxAccount": {
-      "descriptionTask": "Complete your first XOR transaction ever and receive the reward",
-      "titleProgress": "First Trx",
-      "titleTask": "Do your first transaction"
-    },
-    "governanceLockedXOR": {
-      "descriptionTask": "Lock XOR by participating in governance voting events",
-      "titleProgress": "Governance",
-      "titleTask": "Lock XOR in Governance Voting"
-    },
-    "kensetsuVolumeRepaid": {
-      "descriptionTask": "Repay KUSD debt during liquidations or closing positions",
-      "titleProgress": "Kensetsu volume",
-      "titleTask": "Repay KUSD Debt"
-    },
-    "KUSDHoldings": {
-      "descriptionTask": "Hold your current KUSD holdings",
-      "titleProgress": "KUSD Hold",
-      "titleTask": "Hold Kusd"
-    },
-    "liquidityProvision": {
-      "descriptionTask": "Provide liquidity across pools",
-      "titleProgress": "Liquidity provision",
-      "titleTask": "Provide Liquidity"
-    },
-    "loginText": "သင်၏ အကောင့်ကို ချိတ်ဆက်ပြီး သင်၏ အချက်အလက်ချက်ပြချက်များ (points) ကိုကြည့်ရှုပါ",
-    "lvl": "Lvl",
-    "maxLvl": "You reached max lvl",
-    "nativeXorStaking": {
-      "descriptionTask": "Stake XOR and earn VAL rewards",
-      "titleProgress": "XOR Staking",
-      "titleTask": "Stake XOR"
-    },
-    "networkFeeSpent": {
-      "descriptionTask": "Spend XOR in network fees across multiple on-chain transactions",
-      "titleProgress": "Network fees",
-      "titleTask": "Spend XOR on Network Fees"
-    },
-    "nextLvl": "Next lvl",
-    "openTelegram": "Open {Telegram}",
-    "orderbookVolume": {
-      "descriptionTask": "Create limit orders in the orderbook",
-      "titleProgress": "Orderbook",
-      "titleTask": "Create Limit Orders"
-    },
-    "progress": "Progress",
-    "referralRewards": {
-      "descriptionTask": "Refer accounts through the referral system",
-      "titleProgress": "Referral Sytem",
-      "titleTask": "Refer accounts"
-    },
-    "relatedTasks": "Complete {title}-related tasks in order to level up your skill",
-    "rewardNextLvl": "Next level reward",
-    "soraCard": "Apply now",
-    "title": "Your Points",
-    "toEarnPoints": "အမှတ်များ ရယူရန်",
-    "tokenHold": {
-      "descriptionTask": "Hold your current {token} holdings",
-      "titleProgress": "{token} holdings",
-      "titleTask": "Hold {token}"
-    },
-    "VXORHoldings": {
-      "descriptionTask": "Hold your current VXOR holdings",
-      "titleProgress": "VXOR holdings",
-      "titleTask": "Hold VXOR"
-    },
-    "xorBurned": "{XOR} burned",
-    "XORBurned": {
-      "descriptionTask": "Burn XOR and convert to $ value",
-      "titleProgress": "XOR Burned",
-      "titleTask": "Burn XOR"
-    },
-    "XORHoldings": {
-      "descriptionTask": "Hold your current XOR holdings",
-      "titleProgress": "XOR Hold",
-      "titleTask": "Hold XOR"
-    },
-    "yourLevel": "Your level",
-    "yourReferrals": "သင်၏ ညွှန်းသူများ",
-    "yourRewards": "Your rewards",
-    "yourTasks": "Your Tasks"
-  },
-  "polkadotjs": {
-    "connectionError": "An error occured while connecting the wallet. You can try to connect the wallet via {extension} again",
-    "noAccount": "{extension} account error. Please check your account in the {extension} extension",
-    "noExtension": "No {extension} extension was found. Please install it and reload this page",
-    "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps://polkadot.js.org/extension/",
-    "noSigner": "Access denied. Go to {extension} extension settings and open \"Manage Website Access\" to allow."
-  },
-  "pool": {
-    "addLiquidity": "ရေကြွယ်ဝမှု ထည့်ရန်",
-    "connectToWallet": "Connect an account to view your liquidity.",
-    "createPair": "Create a pair",
-    "description": "When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
-    "liquidityNotFound": "No liquidity found.",
-    "pairTokens": "{pair} Pool Tokens",
-    "pooledToken": "{tokenSymbol} Pooled",
-    "poolShare": "Your pool share",
-    "removeLiquidity": "Remove liquidity",
-    "strategicBonusApy": "Strategic Bonus APY"
-  },
-  "poweredBy": "Powered by",
-  "prevText": "ယခင်တစ်ခု",
-  "priceChartText": "Price chart",
-  "priceText": "Price",
-  "provider": {
-    "messages": {
-      "checkExtension": "{name} extension is busy, please check it",
-      "extensionLogin": "Please login to your {name} extension",
-      "installExtension": "{name} extension is not found. Please install it!\n\nAlready installed extension? Please reload the page",
-      "notAvailable": "{name} is not available.",
-      "reloadPage": "Reload page"
-    }
-  },
-  "receivedText": "Received",
-  "referralProgram": {
-    "action": {
-      "bond": "Bond",
-      "bondMore": "Bond More",
-      "copyLink": "Copy link",
-      "shareLink": "Share",
-      "unbond": "Unbond"
-    },
-    "bondedXOR": "XOR Bonded",
-    "bondTitle": "Bond XOR",
-    "confirm": {
-      "bond": "Confirm bond",
-      "freeOfCharge": "This action is free of charge",
-      "hasReferrerDescription": "Unfortunately, you can only set one",
-      "hasReferrerTitle": "You’ve already set your referrer",
-      "inviteDescription": "For every transaction, 10% of the fee will go to your referrer, without any extra cost to you.",
-      "inviteTitle": "You have been invited to {AppName}",
-      "ok": "OK",
-      "signInvitation": "Approve",
-      "unbond": "Confirm unbond"
-    },
-    "connectAccount": "To invite users you need to connect your {Sora} account.",
-    "insufficientBondedAmount": "နောက်ထပ် ညွှန်းသူများကို ဖိတ်ခေါ်ရန် အနည်းဆုံး {inviteUserFee} XOR ကို bond လုပ်ပါ",
-    "insufficientBondedBalance": "Insufficient bonded balance",
-    "invitationLink": "Invitation link",
-    "inviteViaTelegram": "Invite via {Telegram}",
-    "receivedRewards": "Received rewards",
-    "referralsNumber": "{number} ညွှန်းသူ",
-    "referrer": {
-      "approve": "Approve",
-      "approved": "Approved",
-      "description": "You can get referred to {AppName},<br/>type in the link or code of the referrer",
-      "info": "When you’ll pay a fee for transaction,<br/>10% will go to your referrer",
-      "label": "Invitation link or code",
-      "placeholder": "Enter invitation link or code",
-      "referredBy": "You’ve been referred by {referrer}",
-      "referredLablel": "Referred address",
-      "title": "Add your referrer",
-      "titleReferrer": "Your referrer"
-    },
-    "startInviting": "Bond XOR to refer others",
-    "title": "Referral Program",
-    "unbondTitle": "Unbond XOR",
-    "welcomeMessage": "\n{AppName} တွင် ကျွန်တော်/ကျွန်မနှင့် ရှေ့ဆက်ပါ!\n\ncross-chain swaps၊ order book နှင့် ဆုများ များစွာ ပံ့ပိုးပေးသည့် {DEX} တွင် တိုကင်များစွာကို လွယ်ကူစွာ ပြောင်းလဲနိုင်ပါသည်!\n\n🎁 မိတ်ဆွေများကို ဖိတ်ခေါ်ပြီး ၎င်းတို့၏ စျေးကွက်ခ အခွန်၏ 10% ကို ရယူပါ\n\nအောင်မြင်အောင် အတူတကွ!"
-  },
-  "releaseNotesText": "Release notes",
-  "removeLiquidity": {
-    "amount": "ပမာဏ",
-    "confirmTitle": "You will receive",
-    "description": "Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.",
-    "input": "Input",
-    "liquidity": "liquidity",
-    "locked": "{percent} of your pool is in {lock}",
-    "output": "Output",
-    "outputMessage": "ထွက်ရလဒ်မှာ ခန့်မှန်းချက်သာ ဖြစ်သည်။ စျေးနှုန်းသည် {slippageTolerance}% ထက်ပို၍ ပြောင်းလဲပါက သင်၏လုပ်ငန်းရယူနည်းကို ပြန်လည် ပယ်ဖျက်မည်",
-    "remove": "Remove",
-    "shareOfPool": "Share of pool after transaction",
-    "title": "Remove liquidity"
-  },
-  "resetText": "Reset",
-  "retryText": "Retry",
-  "rewards": {
-    "action": {
-      "checkRewards": "Check",
-      "connectExternalWallet": "Connect {Ethereum} account",
-      "pendingExternal": "{Ethereum} transaction pending...",
-      "pendingInternal": "{Sora} transaction pending...",
-      "signAndClaim": "Sign and claim"
-    },
-    "andText": "and",
-    "claimableAmountDoneVesting": "Claimable rewards",
-    "claiming": {
-      "pending": "Claiming...",
-      "success": "Claimed successfully"
-    },
-    "events": {
-      "BuyOnBondingCurve": "buying from the TBC",
-      "LiquidityProvision": "Fees gained from liquidity provision",
-      "LiquidityProvisionFarming": "Farming",
-      "MarketMakerVolume": "Market Making",
-      "NftAirdrop": "NFT Airdrop",
-      "SoraFarmHarvest": "{Sora}.farm harvest",
-      "XorErc20": "XOR ERC-20"
-    },
-    "forText": "for",
-    "groups": {
-      "crowdloan": "Crowdloan rewards",
-      "external": "Rewards for the connected {Ethereum} account",
-      "strategic": "Strategic Rewards"
-    },
-    "hint": {
-      "connectAccounts": "To claim your PSWAP and VAL rewards you need to connect both your {Sora} and {Ethereum} accounts.",
-      "connectAnotherAccount": "Connect another {Ethereum} account to check for available PSWAP and VAL rewards.",
-      "connectExternalAccount": "Connect an {Ethereum} account to check for available PSWAP and VAL rewards.",
-      "howToClaimRewards": "To claim your {symbols} rewards you need to sign {count} {transactions} in {destination}. Rewards will be deposited to your {Sora} account."
-    },
-    "notification": {
-      "empty": "No available claims for this account"
-    },
-    "PointSystemWrapper": "Points",
-    "ReferralProgram": "Referrals",
-    "Rewards": "Rewards",
-    "signing": {
-      "accounts": "your {Sora} and {Ethereum} accounts respectively",
-      "extension": "{PolkadotJs} browser extension"
-    },
-    "totalVested": "Total rewards",
-    "transactions": {
-      "confimation": "Confirm {order} of {total} transactions...",
-      "failed": "{order} of {total} transactions failed. @:retryText",
-      "success": "You will receive your rewards shortly"
-    }
-  },
-  "rotatePhoneNotification": {
-    "enableAcceleration": "Enable acceleration access in your settings.",
-    "gyroscropePhone": " Our technology uses your phone's built-in gyroscope to instantly hide your balance when you tilt your device.",
-    "info": "For extra privacy, tilt your device face down to instantly hide your asset balances. This feature uses your phone’s built-in sensors.",
-    "title": "Turn your device upside down to hide balances"
-  },
-  "saveText": "Save",
-  "sbtDetails": {
-    "accessPermitted": "Access permitted",
-    "description": "This SBT provides access to multiple tokens & pools and is attached to your account",
-    "expiresIn": "Expires in",
-    "expiresInTooltip": "The 'Expires in' shows period or point of time the access is acquired",
-    "expiryDate": "Expiry date",
-    "expiryDateTooltip": "The 'Expiry Date' is the deadline for your access to regulated assets of SBT",
-    "indefiniteExp": "open-ended",
-    "issuedBy": "{SBT} issued by",
-    "kycProvider": "{KYC} Provider",
-    "kycVerification": "{KYC} Verification",
-    "listOperable": "Regulated assets operable",
-    "noPermissions": "No additional permissions",
-    "noReceiverAccess": "You're trying to send regulated token to the user with no SBT access",
-    "permission": "permission",
-    "permissions": "permissions",
-    "regulatedInsitution": "Regulated Institution"
-  },
-  "searchText": "Search",
-  "selectLanguageDialog": {
-    "title": "ဘာသာ"
-  },
-  "selectNodeConnected": "{chain} သို့ ချိတ်ဆက်ပြီး",
-  "selectNodeDialog": {
-    "addNode": "Add custom node",
-    "connected": "Connected",
-    "customNode": "Custom node",
-    "howToSetupOwnNode": "Setup your node",
-    "messages": {
-      "emptyAddress": "Please input the address of the node",
-      "emptyName": "Please input the name of the node",
-      "incorrectAddress": "Incorrect address",
-      "incorrectProtocol": "လိပ်စာသည် ws:// သို့မဟုတ် wss:// ဖြင့် စတင်ရမည်"
-    },
-    "nodeTitle": "{chain} hosted by {name}",
-    "select": "Select",
-    "title": "Network node selection",
-    "updateNode": "Update node"
-  },
-  "selectNodeText": "ကွန်ယက် Node ကို ရွေးချယ်ရန်",
-  "selectRegisteredAsset": {
-    "search": {
-      "networkLabelEthereum": "{network} network mirror tokens",
-      "networkLabelSora": "{Sora} network tokens",
-      "placeholder": "Filter by Asset ID, Name or Ticker Symbol"
-    },
-    "title": "Select a token"
-  },
-  "selectToken": {
-    "assets": {
-      "title": "Assets"
-    },
-    "custom": {
-      "alreadyAttached": "This token was already attached",
-      "notFound": "Token not found",
-      "search": "Input Asset ID",
-      "text": "CUSTOM TOKENS",
-      "title": "Custom"
-    },
-    "emptyListMessage": "No results",
-    "searchPlaceholder": "Filter by Asset ID, Name or Ticker Symbol",
-    "title": "Select a token"
-  },
-  "sendText": "Send",
-  "sentText": "Sent",
-  "settingsText": "Settings",
-  "signAndClaimText": "Sign and claim",
-  "social": {
-    "github": "GitHub",
-    "medium": "Medium",
-    "reddit": "Reddit",
-    "telegram": "Telegram",
-    "twitter": "Twitter",
-    "wiki": "{Sora} Wiki"
-  },
-  "soraStaking": {
-    "actions": {
-      "claim": "Claim rewards",
-      "confirm": "Confirm Staking",
-      "more": "Stake more",
-      "remove": "Remove stake",
-      "withdraw": "Withdraw"
-    },
-    "allWithdrawsDialog": {
-      "information": "သင် စတိတ် ထုတ်ယူသောအခါ မဖြစ်မနေ ၇ ရက် စောင့်ဆိုင်းရမည့် ကာလတစ်ခု ရှိသည်။ ယင်းကာလပြီးဆုံးပြီးပါက သင့် token များသည် သင့် wallet သို့ အလိုအလျောက် ပြန်မလာပါ။ သင်သည် ကိုယ်တိုင် တိုကင်များကို ဖြတ်တောက်ထုတ်ယူပြီး လုပ်ငန်းစဉ်ကို ပြီးစီးရမည်",
-      "title": "Unstaking activity"
-    },
-    "claimRewardsDialog": {
-      "checkRewards": "Check rewards per era and validator",
-      "rewardsDestination": "Rewards destination address",
-      "title": "Claim rewards"
-    },
-    "dropdownMenu": {
-      "controllerAccount": "Controller account"
-    },
-    "info": {
-      "minimumStake": "Minimum stake",
-      "nominators": "Nominators",
-      "rewarded": "Rewarded",
-      "rewardToken": "Reward token",
-      "selectedValidators": "Selected validators",
-      "stakingBalance": "Staking balance",
-      "totalLiquidityStaked": "Total liquidity staked",
-      "unstaking": "Unstaking",
-      "unstakingPeriod": "Unstaking period",
-      "validators": "Validators"
-    },
-    "newStake": {
-      "title": "Start staking"
-    },
-    "overview": {
-      "description": "Stake {XOR} tokens on {Sora} Network as a nominator to validate transactions and earn {VAL} token rewards.",
-      "title": "{Sora} Staking"
-    },
-    "pendingRewardsDialog": {
-      "information": "Validators payout the rewards every 2-5 days. However, you can payout them by yourself, especially if rewards are close to expiring, but you will pay the fee.",
-      "noPendingRewards": "There are no pending rewards",
-      "noSelectedRewards": "Select rewards",
-      "payout": "Payout",
-      "title": "Pending rewards"
-    },
-    "selectedValidators": "{count} ({Max} {max})",
-    "selectValidatorsMode": {
-      "confirm": {
-        "manual": "I`ll pick the validators myself",
-        "suggested": "Stake with suggested"
-      },
-      "criteria": {
-        "0": "Most profitable",
-        "1": "Not oversubscribed",
-        "2": "Having onchain identity",
-        "3": "Not slashed",
-        "4": "Limit of 2 validators per identity"
-      },
-      "description": "{Sora} network algorithm has selected a list of recommended validators based on the criteria:",
-      "title": "Stake with validators suggested by the algorithm"
-    },
-    "stakeDialog": {
-      "toRemove": "To remove",
-      "toStake": "To stake"
-    },
-    "validators": {
-      "alreadyNominated": "Selected validators already nominated",
-      "change": "Change validators",
-      "next": "Next",
-      "recommended": "Recommended validators",
-      "save": "Save changes",
-      "select": "Select validators",
-      "selected": "{selected}/{total} selected",
-      "tooManyValidators": "Too many validators selected ({Max} {max})"
-    },
-    "validatorsAttentionDialog": {
-      "confirm": "Yes, I understand the risk",
-      "description": {
-        "0": "အယ်လ်ဂိုရစ်သမ်အခြေပြု ဝယ်လီဒေးတာ အကြံပြုချက်များသည် ငွေကြေး ဆိုင်ရာ အကြံပေးမှု မဟုတ်ပါ။ စတိတ် လုပ်ငန်းစဉ်မှာ အန္တရာယ် မြင့်မားပြီး အယ်လ်ဂိုရစ်သမ် အကြံပြုချက်များကလည်း ယင်းအန္တရာယ်ကို မသက်သာစေချင်",
-        "1": "A validator suggested by the algorithm could still be slashed. A validator suggested by the algorithm could also change their parameters (e.g.,commission rates, etc.) at any time after having been suggested and/or selected.",
-        "2": "You could lose tokens or rewards for these or other reasons. Only stake tokens and use validator suggestions at your own discretion, after conducting due diligence and carefully considering the risks involved."
-      },
-      "title": "Attention"
-    },
-    "validatorsDialog": {
-      "tabs": {
-        "all": "All",
-        "user": "Yours"
-      },
-      "title": {
-        "edit": "Edit My Validators"
-      }
-    },
-    "validatorsFilterDialog": {
-      "filters": {
-        "hasIdentity": {
-          "description": "At least one identity contact connected to the account",
-          "name": "On-chain identity"
+    "transaction": {
+        "amount": "@:amountText",
+        "amount2": "@:amountText ၂",
+        "blockId": "Block Id",
+        "comment": "မှတ်ချက်",
+        "copy": "{value} မိတ္တူ",
+        "fee": "ငွေလွှဲခ",
+        "from": "ထံမှ",
+        "history": {
+            "confirmed": "ငွေလွှဲခြင်းကို အတည်ပြုခဲ့သည်။",
+            "created": "{amount} {symbol} အတွက် ငွေပေးငွေယူကို ဖန်တီးပြီးပါပြီ။",
+            "submitted": "အခကြေးငွေ {fee} {symbol} ဖြင့် တင်သွင်းထားသော ငွေလွှဲ"
         },
-        "notOversubscribed": {
-          "description": "Account within allocation limit, avoids oversubscription penalties on {Polkadot} staking.",
-          "name": "Not oversubscribed"
+        "price": "စျေးနှုန်း",
+        "referral": "ရည်ညွှန်းသည်။",
+        "referrer": "ရည်ညွှန်းသည်။",
+        "side": "ဖွတ်",
+        "startTime": "ရက်စွဲ",
+        "status": "အဆင့်အတန်း",
+        "statuses": {
+            "complete": "ပြီးအောင်",
+            "failed": "ငွေပေးငွေယူ မအောင်မြင်ပါ။",
+            "pending": "စောင့်ဆိုင်းနေသည်..."
         },
-        "notSlashed": {
-          "description": "Not experienced any penalties or reductions in their staked funds due to misconduct or protocol violations.",
-          "name": "Not slashed"
-        },
-        "twoValidatorsPerIdentity": {
-          "description": "A maximum of two validators per identity to promote decentralization and prevent concentration of power.",
-          "name": "Limit of 2 validators per identity"
-        }
-      },
-      "reset": "Reset all",
-      "save": "Save filter",
-      "title": "Filters"
+        "title": "ငွေပေးငွေယူအသေးစိတ်",
+        "to": "ရန်",
+        "total": "စုစုပေါင်း",
+        "txId": "ငွေပေးငွေယူ ID",
+        "viewIn": "{explorer} တွင် ကြည့်ရန်"
     },
-    "validatorsList": {
-      "commission": "Commission",
-      "commissionTooltip": "ကော်မရှင်သည် စတိတ် လုပ်ငန်းစဉ်တွင် ဝယ်လီဒေးတာများက ပေးဆောင်ရမည့် ကုန်ကျစရိတ် ဖြစ်သည်။ ဤကုန်ကျစရိတ်ကို ရာခိုင်နှုန်း အနေဖြင့် ဖော်ပြပြီး ထုတ်ဝေရန်မတိုင်မီ စတိတ် ဆုများမှ ပြတ်တောက် ပေးလိုက်သည်။ ဝယ်လီဒေးတာများသည် မည်သည့်အချိန်တွင်မဆို ကော်မရှင် အတိုးအအောက် ပြုလုပ်နိုင်ကြောင်း သတိပြုရန် လိုအပ်သည်",
-      "name": "Name",
-      "noNominatedValidators": "You don't have any nominated validators",
-      "noValidators": "There are no validators satisfying the specified filter",
-      "return": "Return",
-      "search": "Search..."
+    "transactionDetailsText": "ငွေပေးငွေယူအသေးစိတ်",
+    "transactionSubmittedText": "ငွေလွှဲပို့ခဲ့သည်။",
+    "transactionText": "အရောင်းအဝယ် | အရောင်းအဝယ်များ",
+    "transfers": {
+        "from": "ထံမှ",
+        "to": "သို့"
     },
-    "withdraw": {
-      "beingWithdrawn": "Being withdrawn",
-      "countdownLeft": "left",
-      "nextWithdrawal": "Next withdrawal",
-      "seeAll": "See all",
-      "withdrawable": "Withdrawable"
+    "unknownAssetText": "အမည်မသိ ပိုင်ဆိုင်မှု",
+    "unknownErrorText": "အမှားအယွင်း တစ်ခုခု မှားသွားသည်...",
+    "wallet": {
+        "WalletAssets": "ပိုင်ဆိုင်မှု",
+        "WalletHistory": "လှုပ်ရှားမှု"
     },
-    "withdrawDialog": {
-      "showAllWithdraws": "Show all withdraws",
-      "title": "Withdraw unstaked funds"
-    }
-  },
-  "stepText": "Step",
-  "successText": "Success",
-  "swap": {
-    "confirmSwap": "ပြောင်းလဲမှုကို အတည်ပြုပါ",
-    "errorFetching": "ဒေတာထုတ်ယူရာတွင် အမှားအယွင်း ဖြစ်ပွားခဲ့သည်",
-    "insufficientAmount": "{tokenSymbol} ပမာဏ မလုံလောက်ပါ",
-    "insufficientLiquidity": "လည်ပတ်ငွေ မလုံလောက်ပါ",
-    "liquidityProviderFee": "လည်ပတ်ငွေ ပံ့ပိုးသူ ကောက်ခံခ",
-    "liquidityProviderFeeTooltip": "လုပ်ရောင်းချင်းတိုင်း ({liquidityProviderFee}%) ကို ပရိုတိုကော အကျိုးအမြတ်အဖြစ် လည်ပတ်ငွေပံ့ပိုးသူများထံ ပေးအပ်ပါသည်။",
-    "maxSold": "အများဆုံး ရောင်းချ",
-    "minReceived": "အနည်းဆုံး လက်ခံမည်",
-    "minReceivedTooltip": "အတည်ပြုမီ စျေးနှုန်းတွင် မထိရောက်သော အပြောင်းအလဲ ကြီးမားမှု ဖြစ်ပါက လုပ်ငန်းစဉ်ကို ပယ်ဖျက်မည်။",
-    "priceImpact": "စျေးနှုန်း သက်ရောက်မှု",
-    "priceImpactTooltip": "ရောင်းဝယ်ပမာဏကြောင့် စျေးကွက်နှုန်းနှင့် ခန့်မှန်းနှုန်းအကြား ကွာခြားချက်။",
-    "rewardsForSwap": "PSWAP မဟာဗျူဟာဆိုင်ရာ အကျိုးကျေးဇူး",
-    "route": "လမ်းကြောင်း",
-    "slippageTolerance": "စျေးနှုန်းလိမ္မာမှု ခွင့်လျှောက်",
-    "swapOutputMessage": "အထွက်တန်ဖိုးသည် ခန့်မှန်းတန်ဖိုးဖြစ်သည်။ အနည်းဆုံး {transactionValue} ကို လက်ခံရရှိမည် မဟုတ်လိမ့်မည်ဆိုရင် လုပ်ငန်းစဉ်ကို ပယ်ဖျက်မည်။"
-  },
-  "swapText": "ပြောင်းလဲ",
-  "tokens": {
-    "assetId": "Asset ID"
-  },
-  "tooltips": {
-    "accounts": "Accounts are digital addresses that hold user's assets on the network. Each account is associated with a unique public address and a private key that allows the user to access and manage their assets.",
-    "bridgeTransactions": "{from} to {to} bridge refers to the process of transferring assets between the {from} and {to} networks using a bridge. The bridge allows for the interoperability of the two networks, enabling users to seamlessly move assets between them.",
-    "fees": "Fees on the {Sora} blockchain refer to the charges that are incurred for executing transactions on the network. These fees are paid in XOR, the native cryptocurrency of the {Sora} Network. The fee amount is determined by the complexity and size of the transaction being executed",
-    "roi": "{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.",
-    "supply": "Token supply refers to the total number of tokens that have been created and are in circulation on the network. The token supply can fluctuate based on the amount of tokens being staked, burned, or transferred on the network.",
-    "transactions": "Transactions refer to the process of sending or receiving digital assets on the network, including liquidity operations, as well as swaps.",
-    "tvl": "{TVL} stands for Total Value Locked. It represents tokens locked in the pools in the dollar equivalent.",
-    "velocity": "Token velocity is the number of times token changes accounts during period (month) on average. It indicates the level of trading activity and liquidity.",
-    "volume": "Volume refers to the total amount of assets that have been traded or exchanged on the network over a specific period of time. The volume is an important metric for measuring the liquidity and overall activity of the network."
-  },
-  "transaction": {
-    "amount": "@:amountText",
-    "amount2": "@:amountText 2",
-    "blockId": "Block Id",
-    "comment": "Comment",
-    "copy": "Copy {value}",
-    "fee": "Transaction Fee",
-    "from": "From",
-    "history": {
-      "confirmed": "Transaction confirmed",
-      "created": "Transaction for {amount} {symbol} has been created.",
-      "submitted": "Transaction submitted with fee of {fee} {symbol}"
+    "walletSend": {
+        "addressError": "သင်လက်ရှိချိတ်ဆက်ထားသည့် တစ်ခုတည်းသောအကောင့်သို့ တိုကင်များပေးပို့၍မရပါ။",
+        "addressWarning": "တိုကင်များကို အောက်ပါ {Sora} လိပ်စာသို့ ပေးပို့ပါမည်။ တိုကင်များကို အသုံးပြုရန် လက်ခံသူသည် {Sora} ကွင်းဆက်သို့ ဝင်ရောက်နိုင်ကြောင်း သေချာပါစေ။",
+        "badAddress": "လိပ်စာ မမှန်ပါ။",
+        "balance": "လက်ကျန်",
+        "confirmTitle": "ငွေလွှဲခြင်းကို အတည်ပြုပါ။",
+        "enableVesting": "တိုကင်ချထားခြင်းကို ဖွင့်ပါ။",
+        "enterAddress": "လိပ်စာထည့်ပါ။",
+        "enterAmount": "ပမာဏကို ထည့်ပါ။",
+        "enterVestingPercentage": "အကျုံးဝင်သည့် ရာခိုင်နှုန်းကို ထည့်သွင်းပါ။",
+        "errorAddress": "လိပ်စာ မမှန်ကန်ပါ။ ၎င်းကိုစစ်ဆေးပြီး ထပ်စမ်းကြည့်ပါ။",
+        "max": "MAX",
+        "startUnlockingDate": "လော့ခ်ဖွင့်မည့်ရက်ကို စတင်ပါ။",
+        "title": "ပို့ပါ။",
+        "tooltip": "{Sora} ကွန်ရက်အကောင့်များအကြား တိုကင်များ ပို့ပါ။",
+        "unlockFrequency": "အကြိမ်ရေကို ဖွင့်ပါ။",
+        "vestingPercentage": "အပ်နှံမှုရာခိုင်နှုန်း"
     },
-    "price": "Price",
-    "referral": "Referral",
-    "referrer": "Referrer",
-    "side": "Side",
-    "startTime": "Date",
-    "status": "Status",
-    "statuses": {
-      "complete": "Complete",
-      "failed": "Transaction failed",
-      "pending": "Pending..."
-    },
-    "title": "Transaction details",
-    "to": "To",
-    "total": "Total",
-    "txId": "Transaction Id",
-    "viewIn": "View in {explorer}"
-  },
-  "transactionDetailsText": "Transaction Details",
-  "transactionSubmittedText": "Transaction was submitted",
-  "transactionText": "transaction | transactions",
-  "transfers": {
-    "from": "ထံမှ",
-    "to": "သို့"
-  },
-  "unknownAssetText": "Unknown asset",
-  "unknownErrorText": "ERROR Something went wrong...",
-  "wallet": {
-    "WalletAssets": "Assets",
-    "WalletHistory": "Activity"
-  },
-  "walletSend": {
-    "addressError": "You cannot send tokens to the same account that you are currently connected to.",
-    "addressWarning": "Tokens will be sent to the {Sora} address below. Make sure the recipient can access the {Sora} chain to use the tokens:",
-    "badAddress": "Incorrect address",
-    "balance": "Balance",
-    "confirmTitle": "Confirm transaction",
-    "enableVesting": "Enable token vesting",
-    "enterAddress": "Enter address",
-    "enterAmount": "Enter amount",
-    "enterVestingPercentage": "Enter vesting percentage",
-    "errorAddress": "Invalid address. Please check it and try again.",
-    "max": "MAX",
-    "startUnlockingDate": "Start unlocking date",
-    "title": "Send",
-    "tooltip": "Send tokens between {Sora} network accounts",
-    "unlockFrequency": "Unlock frequency",
-    "vestingPercentage": "Vesting percentage"
-  },
-  "warningText": "Warning",
-  "sccp": {
-    "amountLabel": "Amount",
-    "assetLabel": "Asset symbol",
-    "clearPayload": "Clear form",
-    "copyPayload": "Copy payload",
-    "destinationAddressLabel": "Recipient address",
-    "destinationNetworkLabel": "To network",
-    "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-    "generatePayload": "Generate SCCP payload",
-    "noteLabel": "Optional memo",
-    "payloadCopied": "Payload copied",
-    "payloadCopyFailed": "Copy failed, please try again",
-    "payloadLabel": "Prepared payload",
-    "sourceNetworkLabel": "From network",
-    "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-    "supportedNetworks": "Supported chains: {chains}.",
-    "title": "SCCP"
-  }
+    "warningText": "သတိပေးချက်"
 }

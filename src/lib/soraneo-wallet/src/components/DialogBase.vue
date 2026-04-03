@@ -1,6 +1,7 @@
 <template>
   <s-modal
     v-model:show="isVisible"
+    :root-class="'dialog-wrapper__root'"
     :modal-class="modalClass"
     :overlay-class="'dialog-wrapper__overlay'"
     :lock-scroll="true"
@@ -144,6 +145,10 @@ const handleBackClick = () => {
 </script>
 
 <style lang="scss">
+.dialog-wrapper__root {
+  z-index: #{$app-above-loader-layer} + 1;
+}
+
 .dialog-wrapper__modal {
   display: flex;
   align-items: center;

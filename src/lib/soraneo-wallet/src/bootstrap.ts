@@ -21,7 +21,7 @@ const resolveWalletStore = () => {
  * runtime environment (desktop vs web). The initialization is intentionally
  * side-effectful because the wallet modules depend on these registrations.
  */
-const initAppWallets = (apiInstance: WithKeyring, isDesktop = false, appName?: string) => {
+const initLocalWallets = (apiInstance: WithKeyring, isDesktop = false, appName?: string) => {
   const dAppName = appName ?? WALLET_CONSTS.TranslationConsts.Polkaswap;
 
   if (isDesktop) {
@@ -29,7 +29,16 @@ const initAppWallets = (apiInstance: WithKeyring, isDesktop = false, appName?: s
   } else {
     addGDriveWalletLocally(dAppName);
   }
+  initializeWallets(dAppName);
 
+  const walletStore = resolveWalletStore();
+
+  if (walletStore) {
+    void walletStore.updateAvailableWallets();
+  }
+};
+
+const initWalletConnectWallet = (apiInstance: WithKeyring): void => {
   addWcSubWalletLocally(apiInstance, (source) => {
     const walletStore = resolveWalletStore();
 
@@ -38,14 +47,6 @@ const initAppWallets = (apiInstance: WithKeyring, isDesktop = false, appName?: s
     void walletStore.checkConnectedAccountSource(source);
     void walletStore.updateAvailableWallets();
   });
-
-  initializeWallets(dAppName);
-
-  const walletStore = resolveWalletStore();
-
-  if (walletStore) {
-    void walletStore.updateAvailableWallets();
-  }
 };
 
 /**
@@ -63,6 +64,7 @@ const waitForStore = async (): Promise<void> => {
 };
 
 let walletCoreLoaded = false;
+let walletInitPromise: Promise<void> | null = null;
 
 /**
  * Lazily bootstraps the wallet core by waiting for the store and keyring to
@@ -131,20 +133,43 @@ const checkActiveAccount = async (): Promise<void> => {
  * this function before interacting with any wallet services.
  */
 async function initWallet(options: WALLET_CONSTS.WalletInitOptions = {}): Promise<void> {
-  await Promise.all([waitForCore(options), waitForConnection()]);
+  if (walletInitPromise) {
+    return walletInitPromise;
+  }
 
-  const walletStore = resolveWalletStore();
+  walletInitPromise = (async () => {
+    await waitForCore(options);
 
-  if (!walletStore) return;
+    const walletStore = resolveWalletStore();
 
-  try {
-    initAppWallets(api, Boolean(walletStore?.isDesktop), options.appName);
-    await checkActiveAccount();
+    if (!walletStore) return;
 
-    // don't wait for finalization of internal & external services subscriptions
-    void walletStore.activateInternalSubscriptions();
-    void walletStore.selectIndexer('');
-    walletStore.setIsMstAvailable(walletStore.accountSource === WALLET_CONSTS.AppWallet.FearlessWallet);
+    try {
+      // Keep the wallet shell responsive even if websocket connection is still
+      // settling. The network-dependent pieces continue below on a best-effort
+      // basis.
+      initLocalWallets(api, Boolean(walletStore?.isDesktop), options.appName);
+      void walletStore.activateInternalSubscriptions();
+      void walletStore.selectIndexer('');
+    } catch (error) {
+      console.warn('[wallet] initWallet shell skipped', error);
+    } finally {
+      walletStore.setWalletLoaded(true);
+    }
+
+    try {
+      await waitForConnection();
+    } catch (error) {
+      console.warn('[wallet] initWallet connection wait skipped', error);
+    }
+
+    try {
+      initWalletConnectWallet(api);
+      await checkActiveAccount();
+      walletStore.setIsMstAvailable(walletStore.accountSource === WALLET_CONSTS.AppWallet.FearlessWallet);
+    } catch (error) {
+      console.warn('[wallet] initWallet provider setup skipped', error);
+    }
 
     // wait for finalization of network subscriptions (best effort).
     // In some static/IPFS contexts the chain connection may be intentionally skipped,
@@ -165,11 +190,9 @@ async function initWallet(options: WALLET_CONSTS.WalletInitOptions = {}): Promis
     } catch (error) {
       console.warn('[wallet] initMultisigAddress skipped', error);
     }
-  } catch (error) {
-    console.warn('[wallet] initWallet skipped', error);
-  } finally {
-    walletStore.setWalletLoaded(true);
-  }
+  })();
+
+  return walletInitPromise;
 }
 
 export { initWallet, waitForCore };

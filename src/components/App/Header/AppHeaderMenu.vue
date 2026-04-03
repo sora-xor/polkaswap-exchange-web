@@ -24,13 +24,18 @@
             <div class="el-divider el-divider--horizontal s-divider-secondary"></div>
             <div v-for="section in dropdownHeaderMenuItems" :key="section.title">
               <p class="dropdown-section-title">{{ section.title.toUpperCase() }}</p>
-              <div v-for="(item, index) in section.items" :key="item.value" @click="handleSelectHeaderMenu(item.value)">
+              <div v-for="(item, index) in section.items" :key="item.value">
                 <s-dropdown-item
                   class="header-menu__item"
                   :data-test-name="item.value"
                   :icon="item.isTextInsteadIcon ? null : item.icon"
                   :value="item.value"
                   :disabled="item.disabled"
+                  :tabindex="item.disabled ? -1 : 0"
+                  role="button"
+                  @click.stop="handleSelectHeaderMenu(item.value)"
+                  @keydown.enter.prevent.stop="handleSelectHeaderMenu(item.value)"
+                  @keydown.space.prevent.stop="handleSelectHeaderMenu(item.value)"
                 >
                   <span v-if="item.isTextInsteadIcon" class="current-currency">
                     {{ getCurrencyOrLanguage(item.value).toUpperCase() }}

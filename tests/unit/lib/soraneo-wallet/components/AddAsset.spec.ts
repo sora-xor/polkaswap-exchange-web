@@ -24,7 +24,7 @@ vi.mock('@/lib/soraneo-wallet/src/components/AddAsset/AddAssetNftTab.vue', () =>
 }));
 
 import AddAsset from '@/lib/soraneo-wallet/src/components/AddAsset/AddAsset.vue';
-import { RouteNames } from '@/lib/soraneo-wallet/src/consts';
+import { AddAssetTabs, RouteNames } from '@/lib/soraneo-wallet/src/consts';
 
 const createState = () =>
   (AddAsset as any).setup(
@@ -38,6 +38,16 @@ const createState = () =>
   );
 
 describe('Wallet AddAsset', () => {
+  it('resolves the active add-asset tab to an explicit component', () => {
+    const state = createState();
+
+    expect(state.currentTabComponent.value).toMatchObject({ name: 'AddAssetTokenTabStub' });
+
+    state.currentTab.value = AddAssetTabs.NFT;
+
+    expect(state.currentTabComponent.value).toMatchObject({ name: 'AddAssetNftTabStub' });
+  });
+
   it('reopens the tabs instead of leaving the flow when details are shown', () => {
     const state = createState();
 

@@ -40,9 +40,11 @@ import { isAppStorageSource, loginApi, logoutApi, updateApiSigner } from '@/shim
 import { sanitizeNftBlacklistPayload, sanitizeWhitelistPayload } from '@/shims/wallet-security';
 import type { ExternalHistoryParams } from '@/shims/wallet-history-types';
 import { useRouterStore } from '@/stores/router';
+import { resolveFallbackIndexer, resolvePreferredIndexer } from '@/stores/wallet/utils/indexers';
 import type { Nullable } from '@/types/common';
 import type { AppWallet } from '@/shims/wallet-consts';
 import type { TransactionSignVisibilityController } from '@/shims/wallet-util';
+import { waitForAccountPair } from '@/utils';
 
 import type {
   Alert,
@@ -398,6 +400,12 @@ export const useWalletStore = defineStore('wallet', () => {
     }
   };
 
+  const syncAccountAssetsFromApi = (): void => {
+    setAccountAssets(
+      walletApi.assets.accountAssets.filter((asset) => !walletApi.assets.isNftBlacklisted(asset, blacklist.value))
+    );
+  };
+
   const subscribeOnAccountAssets = async (): Promise<void> => {
     resetAccountAssetsSubscription();
 
@@ -406,14 +414,15 @@ export const useWalletStore = defineStore('wallet', () => {
     }
 
     try {
-      const subscription = walletApi.assets.balanceUpdated.subscribe(() => {
-        setAccountAssets(
-          walletApi.assets.accountAssets.filter((asset) => !walletApi.assets.isNftBlacklisted(asset, blacklist.value))
-        );
-      });
+      await waitForAccountPair(async () => {
+        const subscription = walletApi.assets.balanceUpdated.subscribe(() => {
+          syncAccountAssetsFromApi();
+        });
 
-      accountState.value.accountAssetsSubscription = subscription;
-      await walletApi.assets.updateAccountAssets();
+        accountState.value.accountAssetsSubscription = subscription;
+        await walletApi.assets.updateAccountAssets();
+        syncAccountAssetsFromApi();
+      });
     } catch {
       setAccountAssets([]);
     }
@@ -1107,16 +1116,7 @@ export const useWalletStore = defineStore('wallet', () => {
       return;
     }
 
-    const nextIndexer = Object.entries(settingsState.value.indexers).reduce<string | null>(
-      (buffer, [indexer, data]) => {
-        if (buffer || data.status === 'unavailable') {
-          return buffer;
-        }
-
-        return indexer;
-      },
-      null
-    );
+    const nextIndexer = resolveFallbackIndexer(settingsState.value.indexerType, settingsState.value.indexers);
 
     if (nextIndexer) {
       await selectIndexer(nextIndexer);
@@ -1133,7 +1133,11 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const selectIndexer = async (type: string): Promise<void> => {
-    const nextIndexer = type || settingsState.value.indexerType;
+    const nextIndexer = resolvePreferredIndexer(type || settingsState.value.indexerType, settingsState.value.indexers);
+
+    if (!nextIndexer) {
+      return;
+    }
 
     try {
       await resetIndexerSubscriptions();

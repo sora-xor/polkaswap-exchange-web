@@ -33,6 +33,10 @@ const SModalStub = defineComponent({
       type: [String, Array, Object],
       default: '',
     },
+    rootClass: {
+      type: [String, Array, Object],
+      default: '',
+    },
     overlayClass: {
       type: [String, Array, Object],
       default: '',
@@ -54,6 +58,7 @@ const SModalStub = defineComponent({
     <div
       class="s-modal-stub"
       :data-show="String(show)"
+      :data-root-class="serializeClass(rootClass)"
       :data-modal-class="serializeClass(modalClass)"
       :data-overlay-class="serializeClass(overlayClass)"
       :data-lock-scroll="String(lockScroll)"
@@ -98,8 +103,10 @@ describe('DialogBase', () => {
     });
 
     const modal = wrapper.get('.s-modal-stub');
+    const rootClasses = modal.attributes('data-root-class');
     const modalClasses = modal.attributes('data-modal-class');
 
+    expect(rootClasses).toContain('dialog-wrapper__root');
     expect(modalClasses).toContain('dialog-wrapper');
     expect(modalClasses).toContain('dialog-wrapper__modal');
     expect(modalClasses).toContain('el-dialog__wrapper');

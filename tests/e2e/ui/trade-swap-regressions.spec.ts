@@ -327,7 +327,7 @@ test('keeps burn account-connect modal content clipped on the right edge', async
       '.s-modal__modal.account-select-dialog .dialog-card__content > .el-card.base'
     ) as HTMLElement | null;
     const scrollWrap = document.querySelector(
-      '.s-modal__modal.account-select-dialog .connection-items.s-scrollbar.el-scrollbar > .el-scrollbar__wrap'
+      '.s-modal__modal.account-select-dialog .connection-items.el-scrollbar > .el-scrollbar__wrap'
     ) as HTMLElement | null;
 
     if (!dialogCard || !dialogContent) {
@@ -474,6 +474,16 @@ test('uses the production polkaswap loader styling for loading indicators', asyn
 
     const overlayStyles = getComputedStyle(overlaySpinner);
 
+    const directiveOverlay = document.createElement('div');
+    directiveOverlay.className = 'app-loading-overlay el-loading-mask';
+
+    const directiveSpinner = document.createElement('div');
+    directiveSpinner.className = 'app-loading-overlay__spinner el-loading-spinner';
+    directiveOverlay.appendChild(directiveSpinner);
+    document.body.appendChild(directiveOverlay);
+
+    const directiveStyles = getComputedStyle(directiveSpinner);
+
     const result = {
       spinnerBackgroundImage: spinnerStyles.backgroundImage,
       spinnerAnimationName: spinnerStyles.animationName,
@@ -481,10 +491,13 @@ test('uses the production polkaswap loader styling for loading indicators', asyn
       overlayBackgroundImage: overlayStyles.backgroundImage,
       overlayAnimationName: overlayStyles.animationName,
       overlayAnimationDuration: overlayStyles.animationDuration,
+      directiveMarginLeft: directiveStyles.marginLeft,
+      directiveMarginTop: directiveStyles.marginTop,
     };
 
     mask.remove();
     overlaySpinner.remove();
+    directiveOverlay.remove();
 
     return result;
   });
@@ -495,6 +508,8 @@ test('uses the production polkaswap loader styling for loading indicators', asyn
   expect(styles.overlayBackgroundImage).toMatch(/pswap-loader(?:-[^)"']+)?\.svg/);
   expect(styles.overlayAnimationName).toContain('pswap-loader-spin');
   expect(styles.overlayAnimationDuration).toBe('1s');
+  expect(styles.directiveMarginLeft).toBe('0px');
+  expect(styles.directiveMarginTop).toBe('0px');
   expect(consoleErrors).toEqual([]);
 });
 
@@ -987,6 +1002,35 @@ test('keeps swap token icon sizing aligned with production contract', async ({ p
   expect(selectedTokenIcon?.fontSize).toBe('18px');
 });
 
+test('keeps the choose-token trigger on the production button contract', async ({ page }) => {
+  await openSwap(page);
+
+  const chooseToken = page.locator('.swap-form .token-select-button:not(.token-select-button--token)').first();
+  await expect(chooseToken).toBeVisible({ timeout: 15_000 });
+
+  const contract = await chooseToken.evaluate((button) => ({
+    className: button.className,
+    hasLegacyTextWrapper: Boolean(button.querySelector('.s-button__text')),
+    textClassName: button.querySelector('.token-select-button__text')?.className ?? null,
+    textFontSize: button.querySelector('.token-select-button__text')
+      ? getComputedStyle(button.querySelector('.token-select-button__text') as Element).fontSize
+      : null,
+    textLineHeight: button.querySelector('.token-select-button__text')
+      ? getComputedStyle(button.querySelector('.token-select-button__text') as Element).lineHeight
+      : null,
+  }));
+
+  expect(contract.className).toContain('el-button');
+  expect(contract.className).toContain('el-button--plain');
+  expect(contract.className).toContain('s-secondary');
+  expect(contract.className).not.toContain('s-button');
+  expect(contract.className).not.toContain('sora-tpg-h7');
+  expect(contract.hasLegacyTextWrapper).toBe(false);
+  expect(contract.textClassName).toBe('token-select-button__text');
+  expect(contract.textFontSize).toBe('12px');
+  expect(contract.textLineHeight).toBe('12px');
+});
+
 test('keeps swap network fee details accessible before token selection', async ({ page }) => {
   await openSwap(page);
   await expect(page.locator('.transaction-details').first()).toBeVisible({ timeout: 15_000 });
@@ -1022,6 +1066,7 @@ test('keeps selected swap token colors aligned with production in light and noir
       return {
         buttonColor: buttonStyles.color,
         buttonBackgroundColor: buttonStyles.backgroundColor,
+        buttonBorderRadius: buttonStyles.borderRadius,
         textColor: textStyles.color,
       };
     });
@@ -1032,6 +1077,7 @@ test('keeps selected swap token colors aligned with production in light and noir
   expect(light).not.toBeNull();
   expect(light?.buttonColor).toBe('rgb(213, 205, 208)');
   expect(light?.buttonBackgroundColor).toBe('rgb(247, 243, 244)');
+  expect(light?.buttonBorderRadius).toBe('16px');
   expect(light?.textColor).toBe('rgb(42, 23, 31)');
 
   await enableNoirTheme(page);
@@ -1040,6 +1086,7 @@ test('keeps selected swap token colors aligned with production in light and noir
   expect(dark).not.toBeNull();
   expect(dark?.buttonColor).toBe('rgb(155, 111, 165)');
   expect(dark?.buttonBackgroundColor).toBe('rgb(93, 47, 115)');
+  expect(dark?.buttonBorderRadius).toBe('16px');
   expect(dark?.textColor).toBe('rgb(240, 215, 220)');
 });
 

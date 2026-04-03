@@ -8,6 +8,7 @@ const loginState = ref(false);
 const connectSpy = vi.fn();
 const setDataFromLiquidity = vi.fn().mockResolvedValue(undefined);
 const setAddressesToRemove = vi.fn();
+const assetLookup: Record<string, any> = {};
 const poolStoreMock = {
   accountLiquidity: [] as Array<any>,
   setAddLiquidityDataFromLiquidity: setDataFromLiquidity,
@@ -17,11 +18,7 @@ const poolStoreMock = {
 vi.mock('@/stores/assets', () => ({
   __esModule: true,
   useAssetsStore: () => ({
-    assetDataByAddress: (address?: string) => ({
-      address,
-      symbol: address?.toUpperCase() ?? '',
-      decimals: 18,
-    }),
+    assetDataByAddress: (address?: string) => (address ? (assetLookup[address] ?? null) : null),
   }),
 }));
 
@@ -201,6 +198,25 @@ describe('Pool.vue', () => {
     setDataFromLiquidity.mockClear();
     setAddressesToRemove.mockClear();
     poolStoreMock.accountLiquidity = [];
+    Object.keys(assetLookup).forEach((key) => delete assetLookup[key]);
+    assetLookup[XOR.address] = {
+      address: XOR.address,
+      symbol: 'XOR',
+      name: 'XOR',
+      decimals: 18,
+    };
+    assetLookup['addr-1'] = {
+      address: 'addr-1',
+      symbol: 'ADDR-1',
+      name: 'Asset 1',
+      decimals: 18,
+    };
+    assetLookup['addr-2'] = {
+      address: 'addr-2',
+      symbol: 'ADDR-2',
+      name: 'Asset 2',
+      decimals: 18,
+    };
   });
 
   it('prompts the user to connect when logged out', async () => {
@@ -247,5 +263,35 @@ describe('Pool.vue', () => {
 
     vm.handleAddLiquidity();
     expect(setDataFromLiquidity).toHaveBeenCalledWith({ firstAddress: XOR.address, secondAddress: '' });
+  });
+
+  it('renders liquidity rows even when a pool asset is missing from the asset registry', async () => {
+    loginState.value = true;
+    delete assetLookup['addr-unknown'];
+    poolStoreMock.accountLiquidity = [
+      {
+        address: 'pool-1',
+        firstAddress: XOR.address,
+        secondAddress: 'addr-unknown',
+        firstBalance: '100',
+        secondBalance: '200',
+        symbol: 'POOLXYK',
+        decimals: 18,
+        decimals2: 18,
+        balance: '10',
+        name: 'Pool XYK Token',
+        poolShare: '25',
+        reserveA: '1000',
+        reserveB: '2000',
+        totalSupply: '5000',
+      },
+    ];
+
+    const wrapper = mountPoolView();
+    await flushPromises();
+
+    expect(wrapper.find('.pool-info-container--empty').exists()).toBe(false);
+    expect(wrapper.find('.collapse-item-stub').exists()).toBe(true);
+    expect(wrapper.text()).toContain('XOR-unknownAssetText');
   });
 });

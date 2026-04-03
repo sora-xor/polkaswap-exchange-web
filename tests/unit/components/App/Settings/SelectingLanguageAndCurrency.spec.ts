@@ -158,6 +158,10 @@ describe('settings dialogs (BVT)', () => {
             name: 'DialogBase',
             template: '<div><slot /><slot name="title" /></div>',
           }),
+          SearchInput: defineComponent({
+            name: 'SearchInputStub',
+            template: '<input class="search-input-stub" />',
+          }),
           SScrollbar: defineComponent({
             name: 'SScrollbar',
             template: '<div><slot /></div>',
@@ -181,13 +185,25 @@ describe('settings dialogs (BVT)', () => {
     expect(store.selectLanguageDialogVisibility).toBe(true);
 
     const vm = wrapper.vm as {
+      query: string;
       selectedLang: string;
       entries: Array<{ key: string; value: string; name: string }>;
+      filteredEntries: Array<{ key: string; value: string; name: string }>;
     };
     expect(vm.entries[0]).toMatchObject({
       key: 'en',
       value: 'English',
       name: 'English (UK)',
+    });
+
+    vm.query = 'fr';
+    await flushPromises();
+
+    expect(vm.filteredEntries).toHaveLength(1);
+    expect(vm.filteredEntries[0]).toMatchObject({
+      key: 'fr',
+      value: 'French',
+      name: 'Français',
     });
 
     await store.setLanguage('ru' as any);
@@ -197,8 +213,13 @@ describe('settings dialogs (BVT)', () => {
     expect(store.selectLanguageDialogVisibility).toBe(true);
   });
 
-  it('uses the production dialog class hook and vertical list styling for language selection', () => {
+  it('uses the production dialog class hook and search/filter workflow for language selection', () => {
     expect(selectLanguageDialogSource).toContain('custom-class="select-language-dialog"');
+    expect(selectLanguageDialogSource).toContain(
+      'const { search, query, searchQuery, handleClearSearch, focusSearchInput } = useSearchInput();'
+    );
+    expect(selectLanguageDialogSource).toContain(':placeholder="t(\'searchText\')"');
+    expect(selectLanguageDialogSource).toContain('const filteredEntries = computed(() => {');
     expect(selectLanguageDialogSource).toContain('.select-language-list {');
     expect(selectLanguageDialogSource).toContain('flex-direction: column;');
     expect(selectLanguageDialogSource).toContain('overflow-x: hidden;');

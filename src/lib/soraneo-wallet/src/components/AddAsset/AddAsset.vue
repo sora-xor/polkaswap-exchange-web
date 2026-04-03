@@ -6,7 +6,7 @@
       </s-tabs>
       <keep-alive>
         <component
-          :is="currentTab"
+          :is="currentTabComponent"
           :token-details-page-opened="tokenDetailsPageOpened"
           @change-visibility="changeVisibility"
         ></component>
@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, type Component } from 'vue';
 
 import { useWalletTranslation } from '../../composables/useWalletTranslation';
 import { useRouterStore } from '@/stores/router';
@@ -34,8 +34,13 @@ const routerStore = useRouterStore();
 const currentTab = ref<AddAssetTabs>(AddAssetTabs.Token);
 const showTabs = ref(true);
 const tokenDetailsPageOpened = ref(false);
+const addAssetTabComponents = {
+  [AddAssetTabs.Token]: AddAssetToken,
+  [AddAssetTabs.NFT]: AddAssetNFT,
+} as const satisfies Record<AddAssetTabs, Component>;
 
 const currentScreen = computed(() => `${currentTab.value}${tokenDetailsPageOpened.value}`);
+const currentTabComponent = computed<Component>(() => addAssetTabComponents[currentTab.value]);
 
 function getTabName(tab: AddAssetTabs): string {
   if (tab === AddAssetTabs.NFT) {

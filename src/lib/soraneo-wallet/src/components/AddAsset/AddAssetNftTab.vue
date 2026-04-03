@@ -1,5 +1,5 @@
 <template>
-  <div class="add-asset-nft">
+  <div v-loading="parentLoading || loading" class="add-asset-nft">
     <div v-if="!tokenDetailsPageOpened" class="add-asset-nft__page">
       <search-input
         v-model="search"
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 import { useAddAsset } from '../../composables/useAddAsset';
 import { api } from '../../api';
@@ -71,6 +71,7 @@ const {
   accountAssetsAddressTable,
   accountAssets,
   getSoughtAssets,
+  ensureAssetCatalogLoaded,
   handleSelectAsset,
 } = useAddAsset();
 
@@ -104,6 +105,10 @@ const showAddButton = computed(() => selectedAssets.value.length > 0);
 function handleAdd(): void {
   emit('change-visibility');
 }
+
+onMounted(() => {
+  void ensureAssetCatalogLoaded();
+});
 </script>
 
 <style scoped lang="scss">

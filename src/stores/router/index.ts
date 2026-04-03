@@ -66,7 +66,9 @@ export const useRouterStore = defineStore('router', {
       const accountRoute = RouteNames.Wallet;
       const connectionRoute = RouteNames.WalletConnection;
       if (isLoggedIn && this.current === connectionRoute) {
-        this.navigate({ name: accountRoute });
+        const nextRoute = this.prev && this.prev !== connectionRoute ? this.prev : accountRoute;
+        const nextParams = nextRoute === this.prev ? this.prevParams : {};
+        this.navigate({ name: nextRoute, params: nextParams });
       } else if (!isLoggedIn && this.current !== connectionRoute) {
         this.navigate({ name: connectionRoute });
       }

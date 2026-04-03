@@ -101,4 +101,8 @@ describe('Wallet Wallet', () => {
     expect(walletSource).not.toContain('.wallet-account-panel');
     expect(walletSource).not.toContain('opacity: 0.7');
   });
+
+  it('renders the active wallet tab panel outside the tab header container', () => {
+    expect(walletSource).toMatch(/<\/s-tabs>\s*<component :is="currentTabComponent" @swap="handleSwap"><\/component>/);
+  });
 });

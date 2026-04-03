@@ -2,6 +2,7 @@ const PROD_ENV_CONFIG_FILENAME = 'env.json';
 const DEV_ENV_CONFIG_FILENAME = 'env.dev.json';
 const INDEX_DOCUMENT_PATTERN = /index\.html?$/i;
 const IPFS_SCOPE_PATTERN = /^\/(?:ipfs|ipns)\/[^/]+/i;
+const SORAFS_SCOPE_PATTERN = /^\/sorafs\/cid\/[^/]+/i;
 
 /**
  * Picks which static environment configuration file should be requested
@@ -71,7 +72,12 @@ const normalizeDirectoryHref = (href: string): string => {
 
 const resolveRuntimeBasePath = (pathname: string): string => {
   const normalized = pathname || '/';
+  const sorafsScope = normalized.match(SORAFS_SCOPE_PATTERN)?.[0];
   const ipfsScope = normalized.match(IPFS_SCOPE_PATTERN)?.[0];
+
+  if (sorafsScope) {
+    return normalizeDirectoryHref(sorafsScope);
+  }
 
   if (ipfsScope) {
     return normalizeDirectoryHref(ipfsScope);

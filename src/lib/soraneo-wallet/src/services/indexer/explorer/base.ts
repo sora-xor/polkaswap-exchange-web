@@ -11,6 +11,9 @@ export type GetStatusFn = () => ConnectionStatus;
 export type SetStatusFn = (status: ConnectionStatus) => Promise<void>;
 export type GetEndpointFn = () => Nullable<string>;
 
+const REQUEST_RETRY_LIMIT = 2;
+const REQUEST_RETRY_DELAY_MS = 400;
+
 export default class BaseExplorer {
   public client!: ExplorerClient;
   public type!: IndexerType;
@@ -46,6 +49,10 @@ export default class BaseExplorer {
     this.setStatus(status);
   }
 
+  private resetClient() {
+    this.client = undefined as unknown as ExplorerClient;
+  }
+
   public initClient() {
     if (this.client) return true;
     const url = this.getEndpoint();
@@ -59,13 +66,23 @@ export default class BaseExplorer {
   }
 
   public async request<T>(query: TypedDocumentNode<T>, variables: AnyVariables = {}) {
-    if (!this.initClient()) return null;
+    for (let attempt = 0; attempt <= REQUEST_RETRY_LIMIT; attempt += 1) {
+      if (!this.initClient()) return null;
 
-    const payload = await this.client.query(query, variables).toPromise();
+      const payload = await this.client.query(query, variables).toPromise();
+      const isNetworkError = !!payload.error?.networkError;
+      const isLastAttempt = attempt === REQUEST_RETRY_LIMIT;
 
-    this.handlePayloadStatus(payload);
+      if (!isNetworkError || isLastAttempt) {
+        this.handlePayloadStatus(payload);
+        return payload.data;
+      }
 
-    return payload.data;
+      this.resetClient();
+      await new Promise((resolve) => setTimeout(resolve, REQUEST_RETRY_DELAY_MS * (attempt + 1)));
+    }
+
+    return null;
   }
 
   // https://formidable.com/open-source/urql/docs/advanced/subscriptions/#one-off-subscriptions

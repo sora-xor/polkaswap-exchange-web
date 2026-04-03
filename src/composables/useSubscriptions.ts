@@ -29,9 +29,11 @@ type UseSubscriptionsOptions = {
   startSubscriptions?: Array<AsyncFnWithoutArgs | undefined>;
   resetSubscriptions?: Array<FnWithoutArgs | undefined>;
   trackLogin?: boolean;
+  trackAccount?: boolean;
   trackConnection?: boolean;
   loginSource?: BooleanSource;
   connectionSource?: BooleanSource;
+  accountSource?: Readonly<Ref<string>> | ComputedRef<string>;
   autoStart?: boolean;
 };
 
@@ -77,6 +79,7 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
   if (isTestEnvironment) {
     const loading = ref(false);
     const trackLogin = ref(options.trackLogin ?? true);
+    const trackAccount = ref(options.trackAccount ?? true);
     const trackConnection = ref(options.trackConnection ?? true);
     const startHandlers = ref<Array<AsyncFnWithoutArgs | undefined>>([...(options.startSubscriptions ?? [])]);
     const resetHandlers = ref<Array<FnWithoutArgs | undefined>>([...(options.resetSubscriptions ?? [])]);
@@ -119,6 +122,9 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
     };
 
     const isLoggedIn = resolveBooleanSource(options.loginSource, () => walletStore.isLoggedIn);
+    const accountIdentity = computed(
+      () => options.accountSource?.value ?? `${walletStore.accountSource ?? ''}:${walletStore.address ?? ''}`
+    );
     const nodeIsConnected = resolveBooleanSource(
       options.connectionSource,
       () => settingsStore.nodeIsConnected ?? false
@@ -129,6 +135,12 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
       void restartSubscriptions(value);
     });
 
+    const stopAccountWatcher = watch(accountIdentity, (value, previous) => {
+      if (!trackLogin.value || !trackAccount.value) return;
+      if (!(value && previous) || value === previous) return;
+      void runResetHandlers().then(runStartHandlers);
+    });
+
     const stopConnectionWatcher = watch(nodeIsConnected, (value) => {
       if (!trackConnection.value) return;
       void restartSubscriptions(value);
@@ -136,6 +148,7 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
 
     onBeforeUnmount(() => {
       stopLoginWatcher();
+      stopAccountWatcher();
       stopConnectionWatcher();
     });
 
@@ -157,6 +170,7 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
       resetSubscriptions: runResetHandlers,
       restartSubscriptions,
       trackLogin,
+      trackAccount,
       trackConnection,
       startHandlers,
       resetHandlers,
@@ -168,6 +182,7 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
   const settingsStore = useSettingsStore();
   const walletStore = useWalletStore();
   const trackLogin = ref(options.trackLogin ?? true);
+  const trackAccount = ref(options.trackAccount ?? true);
   const trackConnection = ref(options.trackConnection ?? true);
   const autoStart = options.autoStart ?? true;
 
@@ -179,6 +194,9 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
   const { loading, withApi, withParentLoading } = loadingApi;
 
   const isLoggedIn = resolveBooleanSource(options.loginSource, () => walletStore.isLoggedIn);
+  const accountIdentity = computed(
+    () => options.accountSource?.value ?? `${walletStore.accountSource ?? ''}:${walletStore.address ?? ''}`
+  );
   const nodeIsConnected = resolveBooleanSource(options.connectionSource, () => settingsStore.nodeIsConnected ?? false);
 
   const subscriptionsDataLoading = computed(() => loading.value || parentLoadingResolver());
@@ -206,6 +224,7 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
   };
 
   let stopLoginWatcher: WatchStopHandle | null = null;
+  let stopAccountWatcher: WatchStopHandle | null = null;
   let stopConnectionWatcher: WatchStopHandle | null = null;
 
   const registerWatchers = () => {
@@ -213,6 +232,14 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
       stopLoginWatcher = watch(isLoggedIn, (value) => {
         if (!trackLogin.value) return;
         restartSubscriptions(value);
+      });
+    }
+
+    if (!stopAccountWatcher) {
+      stopAccountWatcher = watch(accountIdentity, (value, previous) => {
+        if (!trackLogin.value || !trackAccount.value) return;
+        if (!(value && previous) || value === previous) return;
+        void resetSubscriptions().then(updateSubscriptions);
       });
     }
 
@@ -226,8 +253,10 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
 
   const unregisterWatchers = () => {
     stopLoginWatcher?.();
+    stopAccountWatcher?.();
     stopConnectionWatcher?.();
     stopLoginWatcher = null;
+    stopAccountWatcher = null;
     stopConnectionWatcher = null;
   };
 
@@ -265,6 +294,7 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
     resetSubscriptions,
     restartSubscriptions,
     trackLogin,
+    trackAccount,
     trackConnection,
     startHandlers,
     resetHandlers,

@@ -136,8 +136,6 @@ export default {
     const routerStore = useRouterStore();
     const { loading } = useLoading();
     const {
-      t,
-      fiatPriceObject,
       getAssetFiatPrice,
       getFPNumberFromCodec,
       formatCodecNumber,
@@ -146,7 +144,8 @@ export default {
       FontSizeRate,
       FontWeightRate,
     } = useFormattedAmount();
-    const { shouldBalanceBeHidden, TranslationConsts } = useWalletTranslation();
+    const fiatPriceObject = computed(() => walletStore.fiatPriceObject);
+    const { t, shouldBalanceBeHidden } = useWalletTranslation();
 
     const accountAssets = computed(() => walletStore.accountAssets);
     const permissions = computed(() => walletStore.permissions);
@@ -323,7 +322,6 @@ export default {
       t,
       FontSizeRate,
       FontWeightRate,
-      TranslationConsts,
       shouldBalanceBeHidden,
       permissions,
       filters,
@@ -457,25 +455,6 @@ $padding: 5px;
       line-height: var(--s-line-height-reset);
     }
   }
-
-  &__button.el-button.neumorphic.s-action:not(.s-primary).s-alternative {
-    &:disabled {
-      &,
-      & > span > i {
-        color: var(--s-color-base-background);
-      }
-    }
-    &:not(:disabled) {
-      &:hover,
-      &:focus {
-        color: var(--s-color-theme-accent-hover);
-      }
-      &:active,
-      &.s-pressed {
-        color: var(--s-color-theme-accent-pressed);
-      }
-    }
-  }
 }
 </style>
 
@@ -506,16 +485,6 @@ $padding: 5px;
 
   &-add {
     margin-top: 16px;
-    background-color: var(--s-color-base-content-tertiary);
-    color: var(--s-color-base-on-accent);
-    box-shadow:
-      -5px -5px 10px 0px rgb(255, 255, 255),
-      1px 1px 10px 0px rgba(0, 0, 0, 0.1),
-      1px 1px 2px 0px rgba(255, 255, 255, 0.8) inset;
-
-    :deep(.s-button__text) {
-      color: inherit;
-    }
   }
 
   &__button {

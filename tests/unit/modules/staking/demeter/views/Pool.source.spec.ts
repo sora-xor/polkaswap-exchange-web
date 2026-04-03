@@ -3,6 +3,11 @@ import { describe, expect, it } from 'vitest';
 import demeterPoolSource from '@/modules/staking/demeter/views/Pool.vue?raw';
 
 describe('Demeter Pool.vue source', () => {
+  it('uses the page collapse helper for the farming badge visibility guard', () => {
+    expect(demeterPoolSource).toContain('v-show="!page.isActiveCollapseItem(liquidity.address, activeCollapseItems)"');
+    expect(demeterPoolSource).not.toContain('v-show="!isActiveCollapseItem(liquidity.address, activeCollapseItems)"');
+  });
+
   it('routes calculator clicks through the calculator action instead of the dialog visibility ref', () => {
     expect(demeterPoolSource).toContain('@calculator="base.showPoolCalculator"');
     expect(demeterPoolSource).not.toContain('@calculator="base.showCalculatorDialog($event)"');

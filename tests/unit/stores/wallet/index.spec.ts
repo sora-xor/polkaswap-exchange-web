@@ -102,6 +102,9 @@ const getAppWalletsMock = vi.hoisted(() => vi.fn(() => []));
 const updateApiSignerMock = vi.hoisted(() => vi.fn(async () => undefined));
 const getUcanTokensMock = vi.hoisted(() => vi.fn(async () => ({ marketplaceDid: 'did:market', ucan: 'ucan-token' })));
 const fetchMock = vi.hoisted(() => vi.fn());
+const waitForAccountPairMock = vi.hoisted(() =>
+  vi.fn(async (handler?: () => unknown | Promise<unknown>) => await handler?.())
+);
 
 const walletRuntimeBridge = vi.hoisted(() => {
   const subscribers = new Set<(mutation: { type?: unknown }, state?: unknown) => void>();
@@ -288,6 +291,15 @@ vi.mock('@/lib/soraneo-wallet/src/util/ipfsStorage', () => ({
     getUcanTokens: getUcanTokensMock,
   },
 }));
+
+vi.mock('@/utils', async () => {
+  const actual = await vi.importActual<typeof import('@/utils')>('@/utils');
+
+  return {
+    ...actual,
+    waitForAccountPair: waitForAccountPairMock,
+  };
+});
 
 vi.mock('nft.storage', async () => {
   return await import('@tests/stubs/nft-storage');
@@ -774,6 +786,7 @@ describe('wallet store actions', () => {
     balanceUpdatedSubscribeMock.mockClear();
     updateAccountAssetsMock.mockReset();
     updateAccountAssetsMock.mockImplementation(async () => undefined);
+    waitForAccountPairMock.mockClear();
     clearAccountAssetsMock.mockClear();
     isNftBlacklistedMock.mockClear();
     getAssetsMock.mockReset();
@@ -852,6 +865,10 @@ describe('wallet store actions', () => {
     getUcanTokensMock.mockReset();
     getUcanTokensMock.mockResolvedValue({ marketplaceDid: 'did:market', ucan: 'ucan-token' });
     (walletApi as Record<string, unknown>).history = {};
+    Object.assign(((walletApi as Record<string, unknown>).assets ??= {}) as Record<string, unknown>, {
+      accountAssets: [],
+      accountAssetsAddresses: [],
+    });
   });
 
   it('builds wallet getters from local Pinia state', () => {
@@ -1064,6 +1081,31 @@ describe('wallet store actions', () => {
     expect(accountAssetsUnsubscribeMock.mock.calls.length).toBe(accountAssetsUnsubscribeCount + 1);
     expect(externalHistoryUnsubscribeMock.mock.calls.length).toBe(externalHistoryUnsubscribeCount + 1);
     expect(walletStore.isLoggedIn).toBe(false);
+  });
+
+  it('hydrates account assets immediately after login', async () => {
+    const walletStore = useWalletStore();
+    const account = { address: 'addr', name: 'User', source: 'polkadot-js' } as WALLET_TYPES.PolkadotJsAccount;
+    const assets = [
+      {
+        address: 'xor-address',
+        symbol: 'XOR',
+        decimals: 18,
+        balance: {
+          transferable: '1000000000000000000',
+        },
+      },
+    ];
+
+    Object.assign(((walletApi as Record<string, unknown>).assets ??= {}) as Record<string, unknown>, {
+      accountAssets: assets,
+    });
+
+    await walletStore.loginAccount(account);
+
+    expect(waitForAccountPairMock).toHaveBeenCalledTimes(1);
+    expect(updateAccountAssetsMock).toHaveBeenCalledTimes(1);
+    expect(walletStore.accountAssets).toEqual(assets);
   });
 
   it('forwards wallet settings actions', async () => {
@@ -1328,12 +1370,12 @@ describe('wallet store actions', () => {
     expect(walletStore.soraNetwork).toBe('prod');
     expect(walletStore.indexers.subquery).toEqual({
       endpoint: 'https://indexer.example',
-      status: 'available',
+      status: 'loading',
     });
     expect(walletStore.isDesktop).toBe(true);
     expect(getFiatPriceObjectMock).toHaveBeenCalledTimes(1);
     expect(createFiatPriceSubscriptionMock).toHaveBeenCalledTimes(1);
-    expect(walletStore.indexerType).toBe('subsquid');
+    expect(walletStore.indexerType).toBe('subquery');
     expect(unlockPair).toHaveBeenCalledWith('secret');
   });
 

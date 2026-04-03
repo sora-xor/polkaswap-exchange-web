@@ -105,6 +105,15 @@ describe('resolveStaticAssetUrl', () => {
     expect(resolveStaticAssetUrl('env.json')).toBe('https://example.org/ipfs/QmHash/env.json');
   });
 
+  it('keeps static assets rooted at the SoraFS CID scope for deep links', () => {
+    (global as any).window = {
+      location: { href: 'https://example.org/sorafs/cid/bafytestcid/#/swap' },
+    } as Window;
+
+    expect(resolveStaticAssetUrl('env.json')).toBe('https://example.org/sorafs/cid/bafytestcid/env.json');
+    expect(resolveStaticAssetUrl('marketing.json')).toBe('https://example.org/sorafs/cid/bafytestcid/marketing.json');
+  });
+
   it('does not scope static assets to non-IPFS route paths', () => {
     (global as any).window = {
       location: { href: 'https://example.org/swap' },

@@ -53,3 +53,29 @@ describe('WithKeyring.initKeyring', () => {
     warnSpy.mockRestore();
   });
 });
+
+describe('WithKeyring signer lifecycle', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('defers signer attachment until a connection api exists', () => {
+    const account = new WithKeyring();
+    const signer = { signRaw: vi.fn() } as any;
+
+    expect(() => account.setSigner(signer)).not.toThrow();
+    expect(account.signer).toBe(signer);
+  });
+
+  it('replays a cached signer when the connection becomes available later', () => {
+    const account = new WithKeyring();
+    const signer = { signRaw: vi.fn() } as any;
+    const setSignerSpy = vi.fn();
+
+    account.setSigner(signer);
+    account.setConnection({ api: { setSigner: setSignerSpy } } as any);
+
+    expect(setSignerSpy).toHaveBeenCalledTimes(1);
+    expect(setSignerSpy).toHaveBeenCalledWith(signer);
+  });
+});

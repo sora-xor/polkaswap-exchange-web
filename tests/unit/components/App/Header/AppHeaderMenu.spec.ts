@@ -170,7 +170,14 @@ const SDropdownItemStub = defineComponent({
       default: false,
     },
   },
-  setup(props, { attrs, slots }) {
+  emits: ['click', 'keydown'],
+  setup(props, { attrs, slots, emit }) {
+    const forwardEvent = (listener: unknown, event: Event): void => {
+      if (typeof listener === 'function') {
+        listener(event);
+      }
+    };
+
     return () =>
       h(
         'div',
@@ -179,6 +186,16 @@ const SDropdownItemStub = defineComponent({
           'data-test-name': attrs['data-test-name'] as string | undefined,
           'data-value': props.value || undefined,
           'data-disabled': props.disabled ? 'true' : 'false',
+          tabindex: attrs.tabindex as string | number | undefined,
+          role: attrs.role as string | undefined,
+          onClick: (event: Event) => {
+            forwardEvent(attrs.onClick, event);
+            emit('click', event);
+          },
+          onKeydown: (event: KeyboardEvent) => {
+            forwardEvent(attrs.onKeydown, event);
+            emit('keydown', event);
+          },
         },
         [props.icon ? h('i', { class: 's-dropdown-item-icon-stub', 'data-icon': props.icon }) : null, slots.default?.()]
       );
@@ -462,6 +479,24 @@ describe('AppHeaderMenu', () => {
     expect(settingsStoreMock.setAlertSettingsPopup).toHaveBeenCalledWith(true);
     expect(settingsStoreMock.toggleDisclaimerDialogVisibility).toHaveBeenCalledTimes(1);
     expect(hideDropdownMock).toHaveBeenCalledTimes(4);
+  });
+
+  it('keeps the Akkadian language row keyboard-selectable without opening alerts', async () => {
+    settingsStoreMock.language = 'akk';
+    settingsStoreMock.disclaimerVisibility = false;
+
+    const wrapper = mountComponent();
+    const languageItem = wrapper.find('[data-test-name="language"]');
+
+    expect(languageItem.attributes('tabindex')).toBe('0');
+    expect(languageItem.find('.current-currency').text()).toBe('AKK');
+    expect(languageItem.find('p').text()).toBe('Akkadian');
+
+    await languageItem.trigger('keydown', { key: 'Enter' });
+
+    expect(settingsStoreMock.setSelectLanguageDialogVisibility).toHaveBeenCalledWith(true);
+    expect(settingsStoreMock.setAlertSettingsPopup).not.toHaveBeenCalled();
+    expect(hideDropdownMock).toHaveBeenCalledTimes(1);
   });
 
   it('enables turn-phone-hide rotation listener when access is available', async () => {

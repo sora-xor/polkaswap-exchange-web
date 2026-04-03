@@ -7,14 +7,14 @@ import appDisclaimerSource from '@/components/App/Header/AppDisclaimer.vue?raw';
 const {
   settingsStoreMock,
   setUserDisclaimerApproveMock,
-  toggleDisclaimerDialogVisibilityMock,
+  setDisclaimerDialogVisibilityMock,
   disconnectMock,
   observeMock,
   modalPropsSnapshots,
   routeNameRef,
 } = vi.hoisted(() => {
   const setUserDisclaimerApproveMock = vi.fn();
-  const toggleDisclaimerDialogVisibilityMock = vi.fn();
+  const setDisclaimerDialogVisibilityMock = vi.fn();
   const observeMock = vi.fn();
   const disconnectMock = vi.fn();
   const modalPropsSnapshots: Array<Record<string, unknown>> = [];
@@ -24,13 +24,13 @@ const {
     disclaimerVisibility: true,
     userDisclaimerApprove: false,
     setUserDisclaimerApprove: setUserDisclaimerApproveMock,
-    toggleDisclaimerDialogVisibility: toggleDisclaimerDialogVisibilityMock,
+    setDisclaimerDialogVisibility: setDisclaimerDialogVisibilityMock,
   };
 
   return {
     settingsStoreMock,
     setUserDisclaimerApproveMock,
-    toggleDisclaimerDialogVisibilityMock,
+    setDisclaimerDialogVisibilityMock,
     disconnectMock,
     observeMock,
     modalPropsSnapshots,
@@ -158,7 +158,7 @@ describe('AppDisclaimer', () => {
     settingsStoreMock.disclaimerVisibility = true;
     settingsStoreMock.userDisclaimerApprove = false;
     setUserDisclaimerApproveMock.mockReset();
-    toggleDisclaimerDialogVisibilityMock.mockReset();
+    setDisclaimerDialogVisibilityMock.mockReset();
     observeMock.mockReset();
     disconnectMock.mockReset();
 
@@ -213,7 +213,7 @@ describe('AppDisclaimer', () => {
     routeNameRef.value = 'VaultsContainer';
 
     const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
-    mount(component, {
+    const wrapper = mount(component, {
       global: {
         stubs: {
           's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
@@ -227,6 +227,7 @@ describe('AppDisclaimer', () => {
 
     const modalProps = modalPropsSnapshots.at(-1);
 
+    expect(wrapper.find('.s-modal-stub').attributes('data-show')).toBe('false');
     expect(modalProps?.showOverlay).toBe(false);
     expect(modalProps?.focusTrap).toBe(false);
     expect(modalProps?.rootClass).toEqual(['disclaimer-modal', { 'disclaimer-modal--nonblocking': true }]);
@@ -270,7 +271,8 @@ describe('AppDisclaimer', () => {
     expect(wrapper.find('.s-button-stub').attributes('data-loading')).toBe('false');
 
     expect(setUserDisclaimerApproveMock).toHaveBeenCalledTimes(1);
-    expect(toggleDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);
+    expect(setDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);
+    expect(setDisclaimerDialogVisibilityMock).toHaveBeenCalledWith(false);
   });
 
   it('falls back to timed activation when IntersectionObserver is unavailable', async () => {
@@ -308,7 +310,8 @@ describe('AppDisclaimer', () => {
     await wrapper.find('.s-icon-stub').trigger('click');
 
     expect(wrapper.find('.s-button-stub').exists()).toBe(false);
-    expect(toggleDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);
+    expect(setDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);
+    expect(setDisclaimerDialogVisibilityMock).toHaveBeenCalledWith(false);
   });
 
   it('allows overlay dismissal only after the disclaimer was already approved', async () => {
@@ -334,6 +337,7 @@ describe('AppDisclaimer', () => {
     expect(modalProps?.closeOnEsc).toBe(true);
 
     await wrapper.get('[data-testid="overlay"]').trigger('click');
-    expect(toggleDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);
+    expect(setDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);
+    expect(setDisclaimerDialogVisibilityMock).toHaveBeenCalledWith(false);
   });
 });

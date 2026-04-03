@@ -29,7 +29,9 @@ describe('Wallet AddAsset tabs', () => {
       assets: { value: [] },
       accountAssetsAddressTable: { value: {} },
       accountAssets: { value: [] },
+      whitelist: { value: {} },
       getSoughtAssets: vi.fn(),
+      ensureAssetCatalogLoaded: vi.fn(),
       handleSelectAsset: vi.fn(),
     });
     const state = (AddAssetToken as any).setup(
@@ -58,7 +60,9 @@ describe('Wallet AddAsset tabs', () => {
       assets: { value: [] },
       accountAssetsAddressTable: { value: {} },
       accountAssets: { value: [] },
+      whitelist: { value: {} },
       getSoughtAssets: vi.fn(),
+      ensureAssetCatalogLoaded: vi.fn(),
       handleSelectAsset: vi.fn(),
     });
     const state = (AddAssetNFT as any).setup(
@@ -74,5 +78,39 @@ describe('Wallet AddAsset tabs', () => {
     state.handleAdd();
 
     expect(emit).toHaveBeenCalledWith('change-visibility');
+  });
+
+  it('keeps token results visible when the verified filter is enabled but the whitelist is not loaded yet', () => {
+    useAddAssetMock.mockReturnValue({
+      t: (key: string) => key,
+      search: { value: '' },
+      searchValue: { value: '' },
+      resetSearch: vi.fn(),
+      selectedAssets: { value: [] },
+      parentLoading: { value: false },
+      loading: { value: false },
+      assets: {
+        value: [{ address: 'asset-1', symbol: 'XOR', name: 'SORA', decimals: 18 }],
+      },
+      accountAssetsAddressTable: { value: {} },
+      accountAssets: { value: [] },
+      whitelist: { value: {} },
+      getSoughtAssets: vi.fn(),
+      ensureAssetCatalogLoaded: vi.fn(),
+      handleSelectAsset: vi.fn(),
+    });
+
+    const state = (AddAssetToken as any).setup(
+      {},
+      {
+        attrs: {},
+        emit: vi.fn(),
+        expose: vi.fn(),
+        slots: {},
+      }
+    );
+
+    expect(state.prefilteredAssets.value).toHaveLength(1);
+    expect(state.foundAssets.value).toHaveLength(1);
   });
 });

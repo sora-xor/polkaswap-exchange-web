@@ -8,6 +8,8 @@ import { useSubscriptions } from '@/composables/useSubscriptions';
 
 const login = ref(true);
 const connection = ref(true);
+const address = ref('addr-1');
+const accountSource = ref('polkadot-js');
 
 const { localStorageMock } = vi.hoisted(() => {
   const storage = {
@@ -35,6 +37,12 @@ vi.mock('@/stores/wallet', () => ({
     get isLoggedIn() {
       return login.value;
     },
+    get address() {
+      return address.value;
+    },
+    get accountSource() {
+      return accountSource.value;
+    },
   }),
 }));
 
@@ -43,6 +51,8 @@ describe('useSubscriptions', () => {
     setActivePinia(createPinia());
     login.value = true;
     connection.value = true;
+    address.value = 'addr-1';
+    accountSource.value = 'polkadot-js';
     localStorageMock.getItem.mockClear();
     localStorageMock.setItem.mockClear();
     localStorageMock.removeItem.mockClear();
@@ -138,6 +148,56 @@ describe('useSubscriptions', () => {
     await Promise.resolve();
 
     expect(resetSpy).toHaveBeenCalledTimes(1);
+
+    wrapper.unmount();
+  });
+
+  it('refreshes subscriptions when the connected account changes', async () => {
+    const startSpy = vi.fn().mockResolvedValue(undefined);
+    const resetSpy = vi.fn().mockResolvedValue(undefined);
+
+    const { wrapper } = await createHarness({
+      startSubscriptions: [startSpy],
+      resetSubscriptions: [resetSpy],
+    });
+
+    await nextTick();
+    await Promise.resolve();
+
+    expect(startSpy).toHaveBeenCalledTimes(1);
+    expect(resetSpy).toHaveBeenCalledTimes(0);
+
+    address.value = 'addr-2';
+    await nextTick();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(resetSpy).toHaveBeenCalledTimes(1);
+    expect(startSpy).toHaveBeenCalledTimes(2);
+
+    wrapper.unmount();
+  });
+
+  it('skips account refresh watcher when account tracking is disabled', async () => {
+    const startSpy = vi.fn().mockResolvedValue(undefined);
+    const resetSpy = vi.fn().mockResolvedValue(undefined);
+
+    const { wrapper } = await createHarness({
+      startSubscriptions: [startSpy],
+      resetSubscriptions: [resetSpy],
+      trackAccount: false,
+    });
+
+    await nextTick();
+    await Promise.resolve();
+
+    address.value = 'addr-2';
+    await nextTick();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(resetSpy).toHaveBeenCalledTimes(0);
+    expect(startSpy).toHaveBeenCalledTimes(1);
 
     wrapper.unmount();
   });

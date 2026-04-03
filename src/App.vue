@@ -18,7 +18,7 @@
       <div class="app-body">
         <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div class="app-content">
-            <app-disclaimer v-if="disclaimerVisibility"></app-disclaimer>
+            <app-disclaimer v-if="effectiveDisclaimerVisibility"></app-disclaimer>
             <router-view :parent-loading="routeParentLoading"></router-view>
           </div>
         </s-scrollbar>
@@ -116,6 +116,7 @@ import { useSettingsStore } from '@/stores/settings';
 import { useWeb3Store } from '@/stores/web3';
 import { useWalletStore } from '@/stores/wallet';
 import { getMobileCssClasses } from '@/utils';
+import { bootstrapRuntimeServices } from '@/utils/bootstrapRuntimeServices';
 import { NodesConnection } from '@/utils/connection';
 import { toDwebLink } from '@/utils/ipfs';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
@@ -123,6 +124,7 @@ import { getEnvConfigCandidates, resolveStaticAssetUrl } from '@/utils/staticAss
 import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
 import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 import { tmaSdkService } from '@/utils/telegram';
+import { resolveDisclaimerVisibilityOnRouteChange } from '@/views/utils/resolveDisclaimerVisibilityOnRouteChange';
 import { resolveMenuVisibilityOnBreakpointChange } from '@/views/utils/resolveMenuVisibilityOnBreakpointChange';
 import { resolveParentLoadingByConnection } from '@/views/utils/resolveParentLoadingByConnection';
 import { resolveDialogVisibilityOnRouteChange } from '@/views/utils/resolveDialogVisibilityOnRouteChange';
@@ -198,6 +200,13 @@ const pendingMstTransactions = computed(() => {
 const storageReferrer = computed(() => referralsStore.storageReferrer as string);
 const referrer = computed(() => referralsStore.referrer as string);
 const disclaimerVisibility = computed(() => Boolean(settingsStore.disclaimerVisibility));
+const effectiveDisclaimerVisibility = computed(() =>
+  resolveDisclaimerVisibilityOnRouteChange(
+    disclaimerVisibility.value,
+    Boolean(settingsStore.userDisclaimerApprove),
+    route.name
+  )
+);
 const pageLoading = computed(() => Boolean(routerStore.isLoading));
 const nodeIsConnected = computed(() => Boolean(settingsStore.nodeIsConnected));
 const firstReadyTransaction = computed(() => walletStore.firstReadyTransaction as Nullable<HistoryItem>);
@@ -609,6 +618,7 @@ async function runAppConnectionToNode(): Promise<void> {
   };
 
   startNodeConnectionGate();
+  void initWallet(walletOptions);
 
   try {
     const connectionInstance = appConnection.value;
@@ -629,9 +639,6 @@ async function runAppConnectionToNode(): Promise<void> {
     // handled via callbacks
   } finally {
     releaseNodeConnectionGate();
-    if (!isWalletLoaded.value) {
-      await initWallet(walletOptions);
-    }
   }
 }
 
@@ -800,6 +807,22 @@ watch(
   }
 );
 
+watch(
+  [() => route.name, () => settingsStore.userDisclaimerApprove],
+  ([routeName, userDisclaimerApproved]) => {
+    const nextVisibility = resolveDisclaimerVisibilityOnRouteChange(
+      disclaimerVisibility.value,
+      Boolean(userDisclaimerApproved),
+      routeName
+    );
+
+    if (nextVisibility !== disclaimerVisibility.value) {
+      settingsStore.setDisclaimerDialogVisibility(nextVisibility);
+    }
+  },
+  { immediate: true }
+);
+
 watch(responsiveClass, (nextClass, prevClass) => {
   menuVisibility.value = resolveMenuVisibilityOnBreakpointChange(menuVisibility.value, prevClass, nextClass);
 
@@ -949,12 +972,14 @@ onBeforeMount(async () => {
     hasIndexerEndpoint = hasSubqueryEndpoint || hasSubsquidEndpoint;
 
     if (typeof setIndexerEndpoint === 'function') {
-      if (hasSubqueryEndpoint) {
-        setIndexerEndpoint({ indexer: IndexerType.SUBQUERY, endpoint: data.SUBQUERY_ENDPOINT });
-      }
-      if (hasSubsquidEndpoint) {
-        setIndexerEndpoint({ indexer: IndexerType.SUBSQUID, endpoint: data.SUBSQUID_ENDPOINT });
-      }
+      setIndexerEndpoint({
+        indexer: IndexerType.SUBQUERY,
+        endpoint: hasSubqueryEndpoint ? data.SUBQUERY_ENDPOINT : '',
+      });
+      setIndexerEndpoint({
+        indexer: IndexerType.SUBSQUID,
+        endpoint: hasSubsquidEndpoint ? data.SUBSQUID_ENDPOINT : '',
+      });
     }
 
     if (data.FAUCET_URL && typeof setFaucetUrl === 'function') {
@@ -970,18 +995,18 @@ onBeforeMount(async () => {
       connectionInstance.setNetworkChainGenesisHash(data?.CHAIN_GENESIS_HASH);
     }
 
-    if (typeof runAppConnectionToNode === 'function') {
-      await runAppConnectionToNode();
-    }
+    await bootstrapRuntimeServices({
+      connectToNode: typeof runAppConnectionToNode === 'function' ? runAppConnectionToNode : undefined,
+      initializeIndexer:
+        hasIndexerEndpoint && typeof settingsStore.selectIndexer === 'function'
+          ? () => settingsStore.selectIndexer((settingsStore.indexerType ?? IndexerType.SUBQUERY) as IndexerType)
+          : undefined,
+      subscribeToIndexer: typeof subscribeOnExchangeRatesApi === 'function' ? subscribeOnExchangeRatesApi : undefined,
+      hasIndexerEndpoint,
+    });
   });
 
-  if (typeof subscribeOnExchangeRatesApi === 'function' && hasIndexerEndpoint) {
-    try {
-      await subscribeOnExchangeRatesApi();
-    } catch (error) {
-      console.warn('[bootstrap] subscribeOnExchangeRatesApi skipped', error);
-    }
-  } else if (!hasIndexerEndpoint) {
+  if (!hasIndexerEndpoint) {
     console.warn('[bootstrap] Indexer endpoints are not configured. Exchange-rate subscription skipped.');
   }
   void fetchAdsArray();

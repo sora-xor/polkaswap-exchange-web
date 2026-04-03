@@ -572,7 +572,7 @@ test('opens swap connect-account dialog while settings overlay is open', async (
   expect(consoleErrors).toEqual([]);
 });
 
-test('opens Kensetsu connect-account dialog while the app disclaimer is visible', async ({ page }) => {
+test('opens Kensetsu connect-account dialog without blocking the route content', async ({ page }) => {
   const consoleErrors = trackConsole(page);
 
   await page.addInitScript(() => {
@@ -583,18 +583,36 @@ test('opens Kensetsu connect-account dialog while the app disclaimer is visible'
   await ensureAppLoaded(page);
   await expectHash(page, '#/kensetsu');
 
-  const appDisclaimer = page.locator('.disclaimer').first();
   const connectAccountButton = page.locator('.vaults-header__action', { hasText: /connect account/i }).first();
   const accountDialog = page
     .getByRole('dialog')
     .filter({ hasText: /Learn more about wallet connection/i })
     .first();
 
-  await expect(appDisclaimer).toBeVisible();
   await expect(connectAccountButton).toBeVisible();
 
   await connectAccountButton.click();
   await expect(accountDialog).toBeVisible();
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('does not auto-show the app disclaimer on wallet before acceptance', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await page.addInitScript(() => {
+    localStorage.removeItem('dexSettings.disclaimerApprove');
+  });
+
+  await page.goto(`${ipfsEntryUrl}#/wallet`);
+  await ensureAppLoaded(page);
+  await expectHash(page, '#/wallet');
+
+  const appDisclaimer = page.locator('.disclaimer-modal .disclaimer').first();
+  const walletConnectionHeading = page.getByRole('heading', { name: /account/i }).first();
+
+  await expect(appDisclaimer).toHaveCount(0);
+  await expect(walletConnectionHeading).toBeVisible();
 
   expect(consoleErrors).toEqual([]);
 });
@@ -904,6 +922,87 @@ test('opens language and currency dialogs from header settings without overlay s
   await expect(currencyDialog).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(currencyDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('opens the language dialog from header settings in Akkadian mode via keyboard without opening alerts', async ({
+  page,
+}) => {
+  const consoleErrors = trackConsole(page);
+
+  await page.addInitScript(() => {
+    localStorage.setItem('dexSettings.language', 'akk');
+  });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const languageAction = page.locator('.header-menu [data-test-name="language"]').first();
+  const languageDialog = page.locator('.dialog-card.select-language-dialog').first();
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await expect(languageAction).toHaveAttribute('tabindex', '0');
+
+  await languageAction.focus();
+  await expect(languageAction).toBeFocused();
+  await languageAction.press('Enter');
+
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(languageDialog).toBeVisible();
+  await expect(page.locator('.alerts-list-scrollbar, .alerts-list')).toHaveCount(0);
+  await expect(page.locator('.browser-notification')).toHaveCount(0);
+
+  await page.keyboard.press('Escape');
+  await expect(languageDialog).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('covers the desktop sidebar when a dialog overlay is open', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSwap(page);
+
+  const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
+  const settingsOverlay = page.locator('.header-menu');
+  const languageDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /language/i })
+    .first();
+
+  await settingsTrigger.click();
+  await expect(settingsOverlay).toHaveCount(1);
+  await page.locator('.header-menu [data-test-name="language"]').click();
+  await expect(settingsOverlay).toHaveCount(0);
+  await expect(languageDialog).toBeVisible();
+
+  const overlayCoverage = await page.evaluate(() => {
+    const overlay = document.querySelector('.dialog-wrapper__overlay, .s-modal__overlay') as HTMLElement | null;
+    const sidebar = document.querySelector('.app-sidebar') as HTMLElement | null;
+    if (!overlay || !sidebar) return null;
+
+    const rect = sidebar.getBoundingClientRect();
+    const sampleX = Math.min(Math.max(rect.left + rect.width / 2, 8), window.innerWidth - 8);
+    const sampleY = Math.min(Math.max(rect.top + 160, 8), window.innerHeight - 8);
+    const topElement = document.elementFromPoint(sampleX, sampleY) as HTMLElement | null;
+
+    return {
+      intercepted: Boolean(topElement?.closest('.dialog-wrapper__overlay, .s-modal__overlay')),
+      overlayRect: overlay.getBoundingClientRect().toJSON(),
+    };
+  });
+
+  expect(overlayCoverage).not.toBeNull();
+  expect(overlayCoverage?.intercepted).toBe(true);
+  expect(overlayCoverage?.overlayRect.left ?? 1).toBeLessThanOrEqual(0);
+  expect(overlayCoverage?.overlayRect.top ?? 1).toBeLessThanOrEqual(0);
+  expect(overlayCoverage?.overlayRect.right ?? 0).toBeGreaterThanOrEqual(1439);
+  expect(overlayCoverage?.overlayRect.bottom ?? 0).toBeGreaterThanOrEqual(899);
+
+  await page.keyboard.press('Escape');
+  await expect(languageDialog).toHaveCount(0);
 
   expect(consoleErrors).toEqual([]);
 });

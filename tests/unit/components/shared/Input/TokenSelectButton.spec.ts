@@ -33,11 +33,6 @@ vi.mock('@/composables/useTranslation', () => ({
 // Needs to be imported after mocks are declared.
 import TokenSelectButton from '@/components/shared/Input/TokenSelectButton.vue';
 
-const SButtonStub = {
-  name: 'SButtonStub',
-  template: '<button class="s-button-stub"><slot /></button>',
-};
-
 const SIconStub = {
   name: 'SIconStub',
   props: ['name', 'size'],
@@ -49,7 +44,6 @@ const mountComponent = (props?: Record<string, unknown>) =>
     props,
     global: {
       stubs: {
-        's-button': SButtonStub,
         's-icon': SIconStub,
       },
     },
@@ -60,17 +54,26 @@ describe('TokenSelectButton', () => {
     const wrapper = mountComponent();
     const exposed = wrapper.vm as unknown as {
       buttonText: string;
-      buttonType: string;
       buttonTabindex: number | string;
-      computedClasses: string[];
+      computedClasses: Array<string | Record<string, boolean>>;
       hasToken: boolean;
     };
 
     expect(exposed.buttonText).toBe('i18n:buttons.chooseToken');
-    expect(exposed.buttonType).toBe('secondary');
     expect(exposed.buttonTabindex).toBe(0);
     expect(exposed.hasToken).toBe(false);
-    expect(exposed.computedClasses).toEqual(['token-select-button']);
+    expect(exposed.computedClasses).toEqual([
+      'el-button',
+      'el-tooltip',
+      'el-button--plain',
+      'el-button--small',
+      'neumorphic',
+      's-small',
+      's-border-radius-mini',
+      's-secondary',
+      'token-select-button',
+      { 'is-disabled': false },
+    ]);
   });
 
   it('renders token pair information when multiple assets are provided', () => {
@@ -79,14 +82,14 @@ describe('TokenSelectButton', () => {
     });
     const exposed = wrapper.vm as unknown as {
       buttonText: string;
-      buttonType: string;
-      computedClasses: string[];
+      computedClasses: Array<string | Record<string, boolean>>;
       hasToken: boolean;
     };
 
     expect(exposed.hasToken).toBe(true);
     expect(exposed.buttonText).toBe('XOR-VAL');
-    expect(exposed.buttonType).toBe('tertiary');
+    expect(exposed.computedClasses).toContain('s-border-radius-mini');
+    expect(exposed.computedClasses).toContain('s-tertiary');
     expect(exposed.computedClasses).toContain('token-select-button--token');
   });
 
@@ -116,6 +119,16 @@ describe('TokenSelectButton', () => {
 
     expect(wrapper.find('.s-icon-stub').exists()).toBe(false);
     expect(exposed.buttonTabindex).toBe(-1);
+  });
+
+  it('renders the production button contract without the soramitsu shared text wrapper', () => {
+    const wrapper = mountComponent();
+    const button = wrapper.get('button.token-select-button');
+
+    expect(button.classes()).toContain('el-button');
+    expect(button.classes()).toContain('el-button--plain');
+    expect(button.find('.s-button__text').exists()).toBe(false);
+    expect(button.find('.token-select-button__content').exists()).toBe(true);
   });
 
   it('keeps logo, text and chevron inside a shared content wrapper', () => {

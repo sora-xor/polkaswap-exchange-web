@@ -1,12 +1,5 @@
 <template>
-  <s-button
-    :type="buttonType"
-    :class="computedClasses"
-    :tabindex="buttonTabindex"
-    :disabled="disabled"
-    size="small"
-    border-radius="mini"
-  >
+  <button type="button" :class="computedClasses" :tabindex="buttonTabindex" :disabled="disabled">
     <span class="token-select-button__content">
       <component
         v-if="hasToken"
@@ -20,7 +13,7 @@
       <span class="token-select-button__text">{{ buttonText }}</span>
       <s-icon v-if="icon && !disabled" class="token-select-button__icon" :name="icon" size="18"></s-icon>
     </span>
-  </s-button>
+  </button>
 </template>
 
 <script lang="ts" setup>
@@ -64,13 +57,16 @@ const { t } = useTranslation();
 
 const hasToken = computed(() => props.tokens.length !== 0 || !!props.token);
 const computedClasses = computed(() => {
-  const baseClass = 'token-select-button';
-  return hasToken.value ? [baseClass, `${baseClass}--token`] : [baseClass];
+  const baseClasses = ['el-button', 'el-tooltip', 'el-button--plain', 'el-button--small', 'neumorphic', 's-small'];
+  const appearanceClasses = hasToken.value
+    ? ['s-border-radius-mini', 's-tertiary', 'token-select-button', 'token-select-button--token']
+    : ['s-border-radius-mini', 's-secondary', 'token-select-button'];
+
+  return [...baseClasses, ...appearanceClasses, { 'is-disabled': props.disabled }];
 });
 const buttonTabindex = computed(() => (props.disabled ? -1 : props.tabindex));
 const tokenLogoComponent = computed(() => (props.tokens.length !== 0 ? PairTokenLogo : TokenLogo));
 const tokenComponentSize = computed(() => (props.tokens.length !== 0 ? 'mini' : 'small'));
-const buttonType = computed(() => (hasToken.value ? 'tertiary' : 'secondary'));
 const normalizeTokenSymbol = (value?: string): string => (value ?? '').replace(/\s+/g, '').trim();
 const buttonText = computed(() => {
   if (!hasToken.value) return t('buttons.chooseToken');
@@ -86,7 +82,6 @@ defineExpose({
   buttonTabindex,
   tokenLogoComponent,
   tokenComponentSize,
-  buttonType,
   buttonText,
 });
 </script>
@@ -95,6 +90,7 @@ defineExpose({
 $baseClass: '.token-select-button';
 
 button.el-button.neumorphic#{$baseClass} {
+  border-radius: var(--s-border-radius-mini);
   padding-top: 4px !important;
   padding-bottom: 4px !important;
   padding-left: 6px !important;
@@ -125,6 +121,7 @@ button.el-button.neumorphic#{$baseClass} {
   }
 
   &--token {
+    border-radius: var(--s-border-radius-mini);
     background-color: var(--s-color-utility-body);
     color: var(--s-color-base-content-tertiary);
 
@@ -155,10 +152,6 @@ $baseClass: '.token-select-button';
 #{$baseClass} {
   display: block;
 
-  :deep(.s-button__text) {
-    white-space: nowrap;
-  }
-
   &__content {
     display: inline-flex;
     align-items: center;
@@ -177,10 +170,11 @@ $baseClass: '.token-select-button';
   &__text {
     margin: 0 $inner-spacing-tiny;
     font-weight: 800 !important;
+    font-size: 12px;
     white-space: nowrap;
     word-break: keep-all;
     overflow-wrap: normal;
-    line-height: 1;
+    line-height: 12px;
   }
 
   &__icon {

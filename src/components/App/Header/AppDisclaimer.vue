@@ -52,6 +52,7 @@ import { SModal } from '@/lib/soramitsu-ui/components/Modal';
 import { useSettingsStore } from '@/stores/settings';
 import { delay } from '@/utils';
 import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
+import { resolveDisclaimerVisibilityOnRouteChange } from '@/views/utils/resolveDisclaimerVisibilityOnRouteChange';
 
 defineOptions({ name: 'AppDisclaimer' });
 
@@ -69,11 +70,18 @@ let handleScroll: Nullable<() => void> = null;
 const userDisclaimerApprove = computed(() => settingsStore.userDisclaimerApprove);
 const isSwapPage = computed(() => route.name === PageNames.Swap);
 const modalRootClass = computed(() => ['disclaimer-modal', { 'disclaimer-modal--nonblocking': !isSwapPage.value }]);
+const effectiveDisclaimerVisibility = computed(() =>
+  resolveDisclaimerVisibilityOnRouteChange(
+    Boolean(settingsStore.disclaimerVisibility),
+    Boolean(userDisclaimerApprove.value),
+    route.name
+  )
+);
 const disclaimerVisibility = computed({
-  get: () => settingsStore.disclaimerVisibility,
+  get: () => effectiveDisclaimerVisibility.value,
   set: (visible: boolean) => {
     if (visible === settingsStore.disclaimerVisibility) return;
-    settingsStore.toggleDisclaimerDialogVisibility();
+    settingsStore.setDisclaimerDialogVisibility(visible);
   },
 });
 
@@ -196,11 +204,11 @@ function setupScrollObserver(): void {
 
 function handleAccept(): void {
   settingsStore.setUserDisclaimerApprove();
-  settingsStore.toggleDisclaimerDialogVisibility();
+  settingsStore.setDisclaimerDialogVisibility(false);
 }
 
 function handleClose(): void {
-  settingsStore.toggleDisclaimerDialogVisibility();
+  settingsStore.setDisclaimerDialogVisibility(false);
 }
 
 onMounted(async () => {

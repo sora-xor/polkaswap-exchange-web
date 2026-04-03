@@ -20,7 +20,7 @@ import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
-import { waitForAccountPair } from '@/utils';
+import { waitForAccountPair, waitUntil } from '@/utils';
 
 import type { PoolApyObject } from '@/shims/wallet-indexer-types';
 import type { AccountBalance, Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -117,6 +117,18 @@ const normalizePoolApy = (value: Nullable<PoolApyObject>): PoolApyObject =>
   value ? Object.freeze({ ...value }) : EMPTY_POOL_APY_OBJECT;
 
 const toSdkFPNumber = (value: MathFPNumber | SDKFPNumber): SDKFPNumber => new SDKFPNumber(value.toString());
+
+/**
+ * Pool discovery depends on DEX metadata because the SDK builds account-pool queries
+ * from the known base-asset ids. On cold loads the account can restore before that
+ * metadata arrives, so wait for it before opening LP subscriptions.
+ */
+const ensurePoolDiscoveryReady = async (): Promise<void> => {
+  if (api.dex.baseAssetsIds.length) return;
+
+  await api.dex.update?.().catch(() => undefined);
+  await waitUntil(() => api.dex.baseAssetsIds.length > 0);
+};
 
 /**
  * Native Pinia store for pool, add-liquidity, and remove-liquidity state.
@@ -435,6 +447,7 @@ export const usePoolStore = defineStore('pool-legacy', {
       if (!walletStore.isLoggedIn) return;
 
       await waitForAccountPair(async () => {
+        await ensurePoolDiscoveryReady();
         this.accountLiquidityList = api.poolXyk.getUserPoolsSubscription();
 
         if (api.poolXyk.accountLiquidityLoaded) {
@@ -450,7 +463,8 @@ export const usePoolStore = defineStore('pool-legacy', {
       const walletStore = useWalletStore();
       if (!walletStore.isLoggedIn) return;
 
-      await waitForAccountPair(() => {
+      await waitForAccountPair(async () => {
+        await ensurePoolDiscoveryReady();
         this.accountLiquidityUpdates = api.poolXyk.updated.subscribe(() => {
           this.accountLiquidity = freezeArray(api.poolXyk.accountLiquidity ?? []) as readonly AccountLiquidity[];
         });

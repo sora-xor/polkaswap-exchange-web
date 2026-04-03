@@ -32,11 +32,11 @@ export function initialState(): SettingsState {
     indexers: {
       [IndexerType.SUBQUERY]: {
         endpoint: '',
-        status: ConnectionStatus.Available,
+        status: ConnectionStatus.Loading,
       },
       [IndexerType.SUBSQUID]: {
         endpoint: '',
-        status: ConnectionStatus.Available,
+        status: ConnectionStatus.Loading,
       },
     },
     isWalletLoaded: false,

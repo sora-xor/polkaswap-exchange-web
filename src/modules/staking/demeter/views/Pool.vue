@@ -2,7 +2,10 @@
   <div>
     <pool-base v-bind="attrs" :parent-loading="parentLoading">
       <template #title-append="{ liquidity, activeCollapseItems }">
-        <div v-show="!isActiveCollapseItem(liquidity.address, activeCollapseItems)" class="s-flex farming-pool-badges">
+        <div
+          v-show="!page.isActiveCollapseItem(liquidity.address, activeCollapseItems)"
+          class="s-flex farming-pool-badges"
+        >
           <status-badge
             v-for="(item, index) in page.getLiquidityFarmingPools(liquidity)"
             :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}-${index}`"

@@ -101,7 +101,7 @@ function closeView(): void {
     font-family: inherit;
   }
 
-  .dialog-card__content .connection-items.s-scrollbar.el-scrollbar > .el-scrollbar__wrap {
+  .dialog-card__content .connection-items.el-scrollbar > .el-scrollbar__wrap {
     overflow-y: auto !important;
   }
 

@@ -10,6 +10,7 @@
 @mixin asset-logo-styles {
   display: flex;
   justify-content: center;
+  align-items: center;
   background-color: var(--s-color-base-on-accent);
   color: var(--s-color-base-content-tertiary);
   background-size: 60%;

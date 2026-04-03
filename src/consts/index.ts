@@ -48,7 +48,12 @@ export const app = {
 };
 
 export const WalletPermissions = {
+  addAssets: true,
+  addLiquidity: true,
+  bridgeAssets: true,
+  createAssets: true,
   sendAssets: true, // enable 'send' button in assets list
+  showAssetDetails: true,
   swapAssets: true, // enable 'swap' button in assets list
 };
 
@@ -85,6 +90,8 @@ export enum Language {
   MY = 'my',
   // Experimental/for-fun locale with cuneiform renderings
   AKK = 'akk',
+  // Experimental/for-fun locale with semantic hieroglyphic renderings
+  EGY = 'egy',
   UK = 'uk',
   BA = 'ba',
   DZ = 'dz',
@@ -118,6 +125,7 @@ export const Languages = [
   { key: Language.PIS, value: 'Solomon Islands Pidgin', name: 'Solomon Pijin' },
   { key: Language.MY, value: 'Burmese', name: 'ဗမာစာ' },
   { key: Language.AKK, value: 'Akkadian (Cuneiform)', name: 'Akkadian' },
+  { key: Language.EGY, value: 'Egyptian (Hieroglyphs)', name: '𓂋𓏤𓈖𓎼𓊪𓏏𓊖' },
   { key: Language.UK, value: 'Ukrainian', name: 'Українська' },
   { key: Language.BA, value: 'Bashkir', name: 'Башҡортса' },
   { key: Language.DZ, value: 'Dzongkha', name: 'རྫོང་ཁ' },

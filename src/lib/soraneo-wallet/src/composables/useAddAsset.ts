@@ -27,6 +27,7 @@ export function useAddAsset() {
   const accountAssets = computed(() => walletStore.accountAssets);
   const accountAssetsAddressTable = computed(() => walletStore.accountAssetsAddressTable);
   const searchValue = computed(() => (search.value ? search.value.trim().toLowerCase() : ''));
+  const whitelist = computed(() => walletStore.whitelist);
 
   const addAsset = (address: string) => walletStore.addAsset(address);
 
@@ -45,6 +46,22 @@ export function useAddAsset() {
 
   const resetSearch = (): void => {
     search.value = '';
+  };
+
+  const ensureAssetCatalogLoaded = async (): Promise<void> => {
+    if (assets.value.length && Object.keys(whitelist.value ?? {}).length) {
+      return;
+    }
+
+    await withLoading(async () => {
+      if (!Object.keys(whitelist.value ?? {}).length) {
+        await walletStore.getWhitelist();
+      }
+
+      if (!assets.value.length) {
+        await walletStore.subscribeOnAssets();
+      }
+    });
   };
 
   const addAccountAsset = async (addedAsset: Nullable<Asset>): Promise<void> => {
@@ -76,11 +93,13 @@ export function useAddAsset() {
     assets,
     accountAssets,
     accountAssetsAddressTable,
+    whitelist,
     searchValue,
     addAsset,
     navigate,
     getSoughtAssets,
     resetSearch,
+    ensureAssetCatalogLoaded,
     addAccountAsset,
     handleSelectAsset,
   };

@@ -13,8 +13,6 @@ vi.mock('@/lib/soraneo-wallet/src/composables/useLoading', () => ({
 
 vi.mock('@/lib/soraneo-wallet/src/composables/useFormattedAmount', () => ({
   useFormattedAmount: () => ({
-    t: (key: string) => key,
-    fiatPriceObject: ref({}),
     getAssetFiatPrice: vi.fn(),
     getFPNumberFromCodec: vi.fn((value: string) => ({ mul: () => ({ toLocaleString: () => value }) })),
     formatCodecNumber: vi.fn((value: string) => value),
@@ -27,6 +25,7 @@ vi.mock('@/lib/soraneo-wallet/src/composables/useFormattedAmount', () => ({
 
 vi.mock('@/lib/soraneo-wallet/src/composables/useWalletTranslation', () => ({
   useWalletTranslation: () => ({
+    t: (key: string) => key,
     shouldBalanceBeHidden: ref(false),
     TranslationConsts: {},
   }),
@@ -41,7 +40,8 @@ vi.mock('@/stores/router', () => ({
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
     accountAssets: [],
-    permissions: {},
+    fiatPriceObject: {},
+    permissions: { addAssets: true },
     filters: { option: 'all', verifiedOnly: false, zeroBalance: false },
     whitelist: {},
     isAssetPinned: (asset: { address: string }) => asset.address === 'pinned',
@@ -55,6 +55,13 @@ vi.mock('@/stores/wallet', () => ({
 import WalletAssets from '@/lib/soraneo-wallet/src/components/WalletAssets.vue';
 
 describe('Wallet WalletAssets', () => {
+  it('does not depend on translation or fiat refs coming from useFormattedAmount', () => {
+    const state = (WalletAssets as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+
+    expect(state.assetsFiatAmount.value).toBe(null);
+    expect(state.permissions.value.addAssets).toBe(true);
+  });
+
   it('keeps pinned and unpinned assets in separate draggable groups', () => {
     const state = (WalletAssets as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
     const canMove = state.onMove({

@@ -195,13 +195,24 @@ export class WithAccountPair extends WithConnectionApi {
     return this.formatAddress(this.accountPair?.address);
   }
 
+  public override setConnection(connection: Connection): void {
+    super.setConnection(connection);
+
+    if (this.signer && (this.connection as Connection | undefined)?.api) {
+      this.api.setSigner(this.signer);
+    }
+  }
+
   /**
    * Set signer if the pair is locked (For polkadot js extension usage)
    * @param signer
    */
   public setSigner(signer: Signer): void {
-    this.api.setSigner(signer);
     this.signer = signer;
+
+    if ((this.connection as Connection | undefined)?.api) {
+      this.api.setSigner(signer);
+    }
   }
 
   /**

@@ -161,10 +161,29 @@ const activeCollapseItems = ref<string[]>([]);
 
 const hasAccountLiquidities = computed(() => accountLiquidity.value.length > 0);
 
+const getLiquidityAsset = (address: string, decimals: number): AccountAsset => {
+  const asset = getAsset(address);
+
+  if (asset) {
+    return asset;
+  }
+
+  const unknownAssetText = t('unknownAssetText');
+
+  return {
+    address,
+    symbol: unknownAssetText,
+    name: unknownAssetText,
+    decimals,
+    balance: '0',
+    isMintable: false,
+  } as AccountAsset;
+};
+
 const accountLiquidityData = computed<LiquidityItem[]>(() => {
   const items = accountLiquidity.value.map((liquidity) => {
-    const firstAsset = getAsset(liquidity.firstAddress) as AccountAsset;
-    const secondAsset = getAsset(liquidity.secondAddress) as AccountAsset;
+    const firstAsset = getLiquidityAsset(liquidity.firstAddress, liquidity.decimals);
+    const secondAsset = getLiquidityAsset(liquidity.secondAddress, liquidity.decimals2 || liquidity.decimals);
     const firstAssetSymbol = getAssetSymbol(firstAsset);
     const secondAssetSymbol = getAssetSymbol(secondAsset);
 

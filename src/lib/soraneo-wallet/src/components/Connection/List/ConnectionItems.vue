@@ -39,15 +39,29 @@ const style = computed<Partial<CSSStyleDeclaration>>(() => {
 <style lang="scss">
 $item-height: 60px;
 
-.connection-items.s-scrollbar.el-scrollbar {
+.connection-items.el-scrollbar {
   @include scrollbar($basic-spacing-big);
   display: block;
   flex: 0 1 auto;
   overflow: hidden;
 
   > .el-scrollbar__wrap {
+    margin-bottom: 0 !important;
     overflow-x: hidden !important;
-    overflow-y: scroll !important;
+    overflow-y: auto !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+  }
+
+  > .el-scrollbar__bar.is-vertical,
+  > .el-scrollbar__bar.is-horizontal {
+    display: none !important;
   }
 
   &-list {

@@ -75,6 +75,11 @@ body {
   }
 }
 
+.app-loading-overlay > .app-loading-overlay__spinner.el-loading-spinner {
+  margin-left: 0;
+  margin-top: 0;
+}
+
 @keyframes pswap-loader-spin {
   to {
     transform: rotate(360deg);
@@ -261,10 +266,8 @@ div.el-tabs__item {
 
 /* Preserve legacy CTA typography/metrics used by production large action buttons. */
 button.el-button.s-typography-button--large {
-  min-height: 42px !important;
   height: 42px !important;
   padding: 5px 13px !important;
-  border: 2px solid var(--s-color-base-border-secondary) !important;
   font-size: 24px !important;
   line-height: 24px !important;
   white-space: nowrap !important;
@@ -302,6 +305,27 @@ button.el-button.s-typography-button--medium .s-button__text {
   color: var(--s-color-base-content-primary);
 }
 
+.el-button.s-action:not(.s-primary).focusing,
+.el-button.s-action:not(.s-primary).s-pressed,
+.el-button.s-action:not(.s-primary):hover {
+  background-color: var(--s-color-base-background-hover);
+  border-color: var(--s-color-base-background-hover);
+  color: var(--s-color-base-content-primary);
+}
+
+.el-button.s-action:not(.s-primary).s-alternative {
+  background-color: var(--s-color-base-on-accent);
+  border-color: var(--s-color-base-border-primary);
+}
+
+.el-button.s-action:not(.s-primary).s-alternative.focusing,
+.el-button.s-action:not(.s-primary).s-alternative.s-pressed,
+.el-button.s-action:not(.s-primary).s-alternative:hover {
+  background-color: var(--s-color-base-background);
+  border-color: var(--s-color-base-background);
+  color: var(--s-color-base-content-primary);
+}
+
 .el-button.s-action:not(.s-primary):disabled,
 .el-button.s-action:not(.s-primary):disabled:hover {
   background-color: var(--s-color-base-disabled);
@@ -309,12 +333,87 @@ button.el-button.s-typography-button--medium .s-button__text {
   color: var(--s-color-base-on-disabled);
 }
 
-button.el-button.neumorphic.s-action:not(.s-primary) {
+/* Restore production secondary neumorphic button styling used by wallet actions like Add asset. */
+button.el-button.neumorphic.s-secondary {
+  background: var(--s-color-base-content-tertiary);
+  border: 0 solid transparent;
+  box-shadow: var(--s-shadow-element-pressed);
+  color: var(--s-color-base-on-accent);
+}
+
+button.el-button.neumorphic.s-secondary.focusing,
+button.el-button.neumorphic.s-secondary.s-pressed,
+button.el-button.neumorphic.s-secondary:active,
+button.el-button.neumorphic.s-secondary:focus,
+button.el-button.neumorphic.s-secondary:hover {
+  background: var(--s-color-base-content-secondary);
+  border-color: transparent;
+  color: var(--s-color-base-on-accent);
+}
+
+button.el-button.neumorphic.s-secondary.s-pressed,
+button.el-button.neumorphic.s-secondary:active {
+  box-shadow: var(--s-shadow-element);
+}
+
+button.el-button.neumorphic.s-secondary:disabled,
+button.el-button.neumorphic.s-secondary:disabled:hover {
+  background: var(--s-color-utility-surface);
+  border-color: var(--s-color-utility-body);
+  border-width: 0;
+  box-shadow: var(--s-shadow-element);
+  color: var(--s-color-base-content-tertiary);
+}
+
+button.el-button.neumorphic.s-secondary.s-alternative {
   background: var(--s-color-utility-body);
   box-shadow: var(--s-shadow-element-pressed);
-  border: 0 solid transparent;
+  color: var(--s-color-base-content-secondary);
+}
+
+button.el-button.neumorphic.s-secondary.s-alternative.focusing,
+button.el-button.neumorphic.s-secondary.s-alternative.s-pressed,
+button.el-button.neumorphic.s-secondary.s-alternative:active,
+button.el-button.neumorphic.s-secondary.s-alternative:focus,
+button.el-button.neumorphic.s-secondary.s-alternative:hover {
+  background: var(--s-color-base-content-tertiary);
+  color: var(--s-color-base-on-accent);
+}
+
+button.el-button.neumorphic.s-secondary.s-alternative:disabled,
+button.el-button.neumorphic.s-secondary.s-alternative:disabled:hover {
+  background: var(--s-color-utility-surface);
   border-color: var(--s-color-utility-body);
+  border-width: 0;
+  box-shadow: var(--s-shadow-element);
   color: var(--s-color-base-content-tertiary);
+}
+
+button.el-button.neumorphic.s-action:not(.s-primary) {
+  background: var(--s-color-utility-body);
+  border: 0 solid transparent;
+  box-shadow: var(--s-shadow-element-pressed);
+  color: var(--s-color-base-content-tertiary);
+}
+
+button.el-button.neumorphic.s-action:not(.s-primary).focusing,
+button.el-button.neumorphic.s-action:not(.s-primary):focus,
+button.el-button.neumorphic.s-action:not(.s-primary):hover {
+  background: var(--s-color-utility-body);
+  border-color: transparent;
+  box-shadow: var(--s-shadow-element-pressed);
+  color: var(--s-color-base-content-secondary);
+}
+
+button.el-button.neumorphic.s-action:not(.s-primary).s-pressed,
+button.el-button.neumorphic.s-action:not(.s-primary):active {
+  background: var(--s-color-utility-body);
+  border-color: transparent;
+  box-shadow: var(--s-shadow-element);
+}
+
+button.el-button.neumorphic.s-action:not(.s-primary):active {
+  color: var(--s-color-theme-accent);
 }
 
 button.el-button.neumorphic.s-action:not(.s-primary):disabled,
@@ -322,6 +421,38 @@ button.el-button.neumorphic.s-action:not(.s-primary):disabled:hover {
   background: var(--s-color-utility-body);
   box-shadow: var(--s-shadow-element);
   border-color: var(--s-color-utility-body);
+  color: var(--s-color-base-content-tertiary);
+}
+
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative {
+  color: var(--s-color-base-content-tertiary);
+}
+
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative,
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative.focusing,
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative.s-pressed,
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative:active,
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative:focus,
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative:hover {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative.focusing,
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative.s-pressed,
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative:active,
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative:focus,
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative:hover {
+  color: var(--s-color-base-content-secondary);
+}
+
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative:disabled,
+button.el-button.neumorphic.s-action:not(.s-primary).s-alternative:disabled:hover {
+  background: transparent;
+  border-color: var(--s-color-utility-body);
+  border-width: 0;
+  box-shadow: none;
   color: var(--s-color-base-content-tertiary);
 }
 

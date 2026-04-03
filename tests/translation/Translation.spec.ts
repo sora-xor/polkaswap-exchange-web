@@ -138,6 +138,14 @@ const generateErrorLog = (
 // });
 
 const getDefault = (module: Record<string, any>) => module.default ?? module;
+const localeCatalogModules = import.meta.glob('../../src/lang/*.json', { eager: true });
+const localeCatalogEntries = Object.entries(localeCatalogModules)
+  .map(([file, module]) => ({
+    file: file.split('/').at(-1) as string,
+    data: getDefault(module as Record<string, any>),
+  }))
+  .filter(({ file }) => file !== 'en.json')
+  .sort((a, b) => a.file.localeCompare(b.file));
 
 const flattenTranslationKeys = (source: Record<string, any>, prefix: Array<string> = []): Array<string> => {
   const keys: Array<string> = [];
@@ -156,36 +164,43 @@ const flattenTranslationKeys = (source: Record<string, any>, prefix: Array<strin
   return keys;
 };
 
+const flattenTranslationValues = (
+  source: Record<string, any>,
+  prefix: Array<string> = []
+): Array<{ key: string; value: string }> => {
+  const values: Array<{ key: string; value: string }> = [];
+
+  Object.keys(source).forEach((key) => {
+    const value = source[key];
+    const path = [...prefix, key];
+
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      values.push(...flattenTranslationValues(value, path));
+    } else if (typeof value === 'string') {
+      values.push({ key: path.join('.'), value });
+    }
+  });
+
+  return values;
+};
+
 test('Translation catalogs mirror English keys', () => {
-  const mainLocales = [
-    { lang: 'ba', data: getDefault(baJson) },
-    { lang: 'uk', data: getDefault(ukJson) },
-    { lang: 'cs', data: getDefault(csJson) },
-    { lang: 'de', data: getDefault(deJson) },
-    { lang: 'es', data: getDefault(esJson) },
-    { lang: 'fr', data: getDefault(frJson) },
-    { lang: 'id', data: getDefault(idJson) },
-    { lang: 'it', data: getDefault(itJson) },
-    { lang: 'nl', data: getDefault(nlJson) },
-    { lang: 'pl', data: getDefault(plJson) },
-    { lang: 'ru', data: getDefault(ruJson) },
-    { lang: 'sr', data: getDefault(srJson) },
-    { lang: 'vi', data: getDefault(viJson) },
-    { lang: 'zh-CN', data: getDefault(zhCnJson) },
-    { lang: 'zh-TW', data: getDefault(zhTwJson) },
-    { lang: 'he', data: getDefault(heJson) },
-    { lang: 'ar', data: getDefault(arJson) },
-    { lang: 'ur', data: getDefault(urJson) },
-    { lang: 'km', data: getDefault(kmJson) },
-    { lang: 'th', data: getDefault(thJson) },
-    { lang: 'pis', data: getDefault(pisJson) },
-    { lang: 'my', data: getDefault(myJson) },
-  ];
-
   const expectedKeys = flattenTranslationKeys(getDefault(enJson)).sort();
+  localeCatalogEntries.forEach(({ file, data }) => {
+    expect(flattenTranslationKeys(data).sort(), file).toEqual(expectedKeys);
+  });
+});
 
-  mainLocales.forEach(({ data }) => {
-    expect(flattenTranslationKeys(data).sort()).toEqual(expectedKeys);
+test('Translation catalogs avoid excessive English fallback drift', () => {
+  const english = getDefault(enJson);
+  const englishValues = new Map(flattenTranslationValues(english).map(({ key, value }) => [key, value]));
+
+  localeCatalogEntries.forEach(({ file, data }) => {
+    const flattened = flattenTranslationValues(data);
+    const exactEnglishMatches = flattened.filter(({ key, value }) => englishValues.get(key) === value);
+    const ratio = flattened.length ? exactEnglishMatches.length / flattened.length : 0;
+
+    expect(ratio, `${file} has too much untranslated English drift`).toBeLessThanOrEqual(0.08);
   });
 });
 

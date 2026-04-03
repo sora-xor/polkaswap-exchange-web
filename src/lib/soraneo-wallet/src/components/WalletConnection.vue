@@ -34,6 +34,18 @@ const renameAccount = (data: { address: string; name: string }) => walletStore.r
 const checkConnectedAccountSource = (source: string) => walletStore.checkConnectedAccountSource(source);
 
 const navigateToAccount = () => {
+  const currentRoute = routerStore.current as string | null;
+  const previousRoute = routerStore.prev as string | null;
+
+  if (currentRoute && currentRoute !== RouteNames.WalletConnection) {
+    return;
+  }
+
+  if (previousRoute && previousRoute !== RouteNames.WalletConnection) {
+    routerStore.navigate({ name: previousRoute, params: routerStore.prevParams });
+    return;
+  }
+
   routerStore.navigate({ name: RouteNames.Wallet });
 };
 

@@ -30,7 +30,7 @@ The IPFS bundle reads runtime configuration from `public/env.json`. Two keys are
 }
 ```
 
-For IPFS publish guidance (pre-flight checklist, `yarn ipfs:publish`, verification scripts) see `docs/ipfs.md`.
+For IPFS publish guidance (pre-flight checklist, `yarn ipfs:publish`, verification scripts) see `docs/ipfs.md`. For SoraFS/Torii packaging and publish commands see `docs/sorafs.md`.
 
 ## Installation
 
@@ -71,6 +71,12 @@ yarn install
 | `yarn lang:mt` | Machine-translate missing locales; see `scripts/lang/mt.ts` flags. |
 | `yarn kpi:report` | Generate the nightly KPI snapshot (`tmp/kpi-report.json` + `docs/status/kpi-history.md`). |
 | `yarn ipfs:publish` | Publish the static bundle to IPFS. Use together with `yarn ipfs:check` or `yarn ipfs:check:electron` for verification. |
+| `yarn sorafs:package` | Build the static bundle, swap in `public/env.taira.json`, and emit SoraFS artefacts under `artifacts/sorafs/<host>/<timestamp>/`. Defaults to `https://taira.sora.org`. |
+| `yarn sorafs:publish` | Run the SoraFS package flow and submit the manifest to the configured Torii endpoint. |
+| `yarn sorafs:probe` | Verify the live host serves `/`, `/.well-known/sorafs/manifest`, `/status`, and `/v1/sumeragi/status`. |
+| `yarn taira:package` | Shortcut for `yarn sorafs:package` pinned to `https://taira.sora.org`. |
+| `yarn taira:publish` | Shortcut for `yarn sorafs:publish` pinned to `https://taira.sora.org`. |
+| `yarn taira:probe` | Shortcut for `yarn sorafs:probe` pinned to `https://taira.sora.org`. |
 
 ## Testing
 

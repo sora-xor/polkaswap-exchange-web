@@ -1,1772 +1,1792 @@
 {
-  "acceptOnScrollText": "Accept to scroll",
-  "acceptText": "Accept & Hide",
-  "account": {
-    "accountTitle": "Account",
-    "copy": "Copy address",
-    "delete": "Delete account",
-    "export": "Export .json",
-    "rename": "Rename account",
-    "switch": "Switch account",
-    "walletAddress": "Wallet address"
-  },
-  "accountAddressText": "Account address",
-  "accountSettings": {
-    "confirmation": {
-      "description": "A popup screen which displays details about the transactions before the signing.",
-      "title": "Disable transaction confirmation"
+    "acceptOnScrollText": "Accept to scroll",
+    "acceptText": "ངོས་ལེན་དང་སྦ།",
+    "account": {
+        "accountTitle": "རྩིས་ཁྲ།",
+        "copy": "ཁ་བྱང་འདྲ་བཤུས།",
+        "delete": "རྩིས་ཐོ་བཏོན་གཏང་།",
+        "export": ".json ཕྱིར་འདྲེན་འབད།",
+        "rename": "རྩིས་ཐོའི་མིང་བསྐྱར་མིང་བསྒྱུར།",
+        "switch": "རྩིས་ཐོ་སོར་བསྒྱུར་འབད།",
+        "walletAddress": "དངུལ་ཁུག་ཁ་བྱང་།"
     },
-    "disable": "Disable on",
-    "disabled": "Disabled for",
-    "enterPassword": "Enter password",
-    "googleOnly": "{Google} accounts only",
-    "hint": "You can enable this back in account settings",
-    "signature": {
-      "description": "Enable or disable the need to enter your password during the signature popup in transactions.",
-      "title": "Disable password confirmation"
+    "accountAddressText": "རྩིས་ཐོའི་ཁ་བྱང་།",
+    "accountSettings": {
+        "confirmation": {
+            "description": "མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ ཚོང་འབྲེལ་ཚུ་གི་སྐོར་ལས་ ཁ་གསལ་ཚུ་བཀྲམ་སྟོན་འབད་མི་ པོཔ་ཨཔ་གསལ་གཞི་ཅིག།",
+            "title": "ཚོང་འབྲེལ་ངེས་དཔྱད་ལྕོགས་མིན་བཟོ།"
+        },
+        "disable": "ལྕོགས་མིན་བཟོ།",
+        "disabled": "གི་དོན་ལུ་ལྕོགས་མིན་བཟོ་ཡོདཔ།",
+        "enterPassword": "ཆོག་ཡིག་བཙུགས།",
+        "googleOnly": "{Google} རྩིས་ཐོ་རྐྱངམ་གཅིག།",
+        "hint": "ཁྱོད་ཀྱིས་ རྩིས་ཐོའི་སྒྲིག་སྟངས་ཚུ་ནང་ ལོག་འདི་ལྕོགས་ཅན་བཟོ་ཚུགས།",
+        "signature": {
+            "description": "ཚོང་འབྲེལ་ཚུ་ནང་ མིང་རྟགས་པོཔ་ཨཔ་གི་སྐབས་ལུ་ ཁྱོད་རའི་ཆོག་ཡིག་བཙུགས་དགོཔ་འདི་ ལྕོགས་ཅན་བཟོ་ནི་ཡང་ན་ ལྕོགས་མིན་བཟོ།",
+            "title": "ཆོག་ཡིག་ངེས་དཔྱད་ལྕོགས་མིན་བཟོ།"
+        },
+        "title": "རྩིས་ཐོའི་སྒྲིག་སྟངས་ཚུ།"
     },
-    "title": "Account settings"
-  },
-  "accountText": "account | accounts",
-  "addAsset": {
-    "add": "ཁ་སྐོང་",
-    "AddAssetToken": {
-      "switchBtn": "བདེན་བཤད་ཅན་གྱི་ཐོན་སྒོར་རྐྱངམ་",
-      "title": "དངུལ་མཚོན་"
+    "accountText": "| རྩིས་ཁྲ།",
+    "addAsset": {
+        "add": "ཁ་སྐོང་",
+        "AddAssetToken": {
+            "switchBtn": "བདེན་བཤད་ཅན་གྱི་ཐོན་སྒོར་རྐྱངམ་",
+            "title": "དངུལ་མཚོན་"
+        },
+        "alreadyAttached": "ཐོན་སྒོར་ཧེ་མ་ལས་ཁ་སྐོང་",
+        "approved": "མི་སྡེས་ངོས་ལེན་འབད་ཡོད་",
+        "assetType": {
+            "nft": "NFT | NFTs",
+            "token": "ཐོན་སྒོར་ | ཐོན་སྒོར་ཚུ་"
+        },
+        "empty": "ཐོན་སྒོར་མ་ཐོབ་",
+        "pinAsset": "ཐོན་སྒོར་བཀར་",
+        "scam": "SCAM",
+        "searchInputText": "ཐོན་སྒོར ID / མིང་ / ཏི་ཀར་གྱིས་འཚོལ་",
+        "success": "ཐོན་སྒོར་ {symbol} མཐར་ཕྱིན་!",
+        "understand": "ང་གིས་ཧ་གོས་",
+        "unknown": "མཁོ་འདོད་མ་ཤེས་",
+        "unpinAsset": "བཀར་འདོར་",
+        "warningMessage": "འདི་ __པི་ཨེཆ་__༠__ | འདི་དག་{assetTypePlural}",
+        "warningMessageText": "གང་རུང་གིས་ {assetType} བཟོ་བཏུབ་ — ཁྱོད་ཀྱིས་ཆ་ཤས་གནས་ཚུལ་སྦྱར་མི་ {assetTypePlural} རྫུས་མ་དང་།\n{purchaseAssetType} ཐོན་སྒོར་ཉོས་ན་ ལོག་བྱས་ནས་བཙོང་མི་བཏུབ་འོང་།",
+        "warningTitle": "ཉེན་ཁ་རང་གིས་འཛོམས་!"
     },
-    "alreadyAttached": "ཐོན་སྒོར་ཧེ་མ་ལས་ཁ་སྐོང་",
-    "approved": "མི་སྡེས་ངོས་ལེན་འབད་ཡོད་",
-    "assetType": {
-      "nft": "NFT | NFTs",
-      "token": "ཐོན་སྒོར་ | ཐོན་སྒོར་ཚུ་"
+    "addAssetsText": "རྒྱུ་དངོས་ཁ་སྐོང་ | རྒྱུ་དངོས་ཚུ་ཁ་སྐོང་བརྐྱབ།",
+    "addAssetText": "རྒྱུ་དངོས་ཁ་སྐོང་རྐྱབས།",
+    "addLiquidity": {
+        "title": "ལྟོས་སྤྱོད་ཁ་སྣོན་"
     },
-    "empty": "ཐོན་སྒོར་མ་ཐོབ་",
-    "pinAsset": "ཐོན་སྒོར་བཀར་",
-    "scam": "SCAM",
-    "searchInputText": "ཐོན་སྒོར ID / མིང་ / ཏི་ཀར་གྱིས་འཚོལ་",
-    "success": "ཐོན་སྒོར་ {symbol} མཐར་ཕྱིན་!",
-    "understand": "ང་གིས་ཧ་གོས་",
-    "unknown": "མཁོ་འདོད་མ་ཤེས་",
-    "unpinAsset": "བཀར་འདོར་",
-    "warningMessage": "this {assetType} | these {assetTypePlural}",
-    "warningMessageText": "གང་རུང་གིས་ {assetType} བཟོ་བཏུབ་ — ཁྱོད་ཀྱིས་ཆ་ཤས་གནས་ཚུལ་སྦྱར་མི་ {assetTypePlural} རྫུས་མ་དང་།\n{purchaseAssetType} ཐོན་སྒོར་ཉོས་ན་ ལོག་བྱས་ནས་བཙོང་མི་བཏུབ་འོང་།",
-    "warningTitle": "ཉེན་ཁ་རང་གིས་འཛོམས་!"
-  },
-  "addAssetsText": "Add asset | Add assets",
-  "addAssetText": "Add asset",
-  "addLiquidity": {
-    "title": "ལྟོས་སྤྱོད་ཁ་སྣོན་"
-  },
-  "addressBook": {
-    "addContact": "འབྲེལ་གཏུགས་ཁ་སྐོང་",
-    "btn": {
-      "enterName": "མིང་བྲིས་",
-      "present": "ཧེ་མ་ལས་ཡོད་",
-      "saveChanges": "བསྒྱུར་བཅོས་ཉར་"
+    "addressBook": {
+        "addContact": "འབྲེལ་གཏུགས་ཁ་སྐོང་",
+        "btn": {
+            "enterName": "མིང་བྲིས་",
+            "present": "ཧེ་མ་ལས་ཡོད་",
+            "saveChanges": "བསྒྱུར་བཅོས་ཉར་"
+        },
+        "detected": "ཁ་བྱང་གསརཔ་ཐོབ་",
+        "dialogTitle": "འབྲེལ་མཐུད་ཚུ་",
+        "identity": "On-chain ངོས་འཛིན་",
+        "input": "ཁ་བྱང་བྲིས་ ཡང་ན་ འབྲེལ་མཐུད་འདེམས་",
+        "myAccounts": "རྩིས་ཐོ་ངོ་མ་",
+        "myBook": "ཁ་བྱང་དེབ་",
+        "noContacts": "འབྲེལ་མཐུད་མ་ཁ་སྐོང་པར་ཡོད་",
+        "noFoundRecords": "ཐོ་ཡིག་མ་ཐོབ་",
+        "none": "མེད་",
+        "notSoraAddress": "ཁ་བྱང་འདི་འོག་གི་ཁ་བྱང་ {Sora} སྦེ་སྲུང་བཞག་འབད་འོང་། ཐོབ་མི་གིས་ {Sora} རིམ་སྒྲིག་འཛུལ་སྤྱོད་འབད་ཚུགསཔ་ངེས་གཏན་བཟོ:",
+        "options": {
+            "delete": "སུབ་",
+            "edit": "འབྲེལ་མཐུད་ཞུན་དག་",
+            "send": "ཐོན་སྒོར་གཏང་"
+        },
+        "save": "འབྲེལ་མཐུད་བཟུམ་ཉར་",
+        "searchPlaceholder": "ཁ་བྱང་/མིང་/ངོས་འཛིན་གྱིས་འཚོལ་",
+        "selectContact": "འབྲེལ་མཐུད་འདེམས་",
+        "tooltip": "མིང་དང་ཁ་བྱང་བྲིས་ནས་ཁ་བྱང་དེབ་བསྡུ་གསོག་བྱེད་ — ཚོགས་ཆེན་སྒྲིགས་ལེགས་དང་གསར་བསྒྱུར་"
     },
-    "detected": "ཁ་བྱང་གསརཔ་ཐོབ་",
-    "dialogTitle": "འབྲེལ་མཐུད་ཚུ་",
-    "identity": "On-chain ངོས་འཛིན་",
-    "input": "ཁ་བྱང་བྲིས་ ཡང་ན་ འབྲེལ་མཐུད་འདེམས་",
-    "myAccounts": "རྩིས་ཐོ་ངོ་མ་",
-    "myBook": "ཁ་བྱང་དེབ་",
-    "noContacts": "འབྲེལ་མཐུད་མ་ཁ་སྐོང་པར་ཡོད་",
-    "noFoundRecords": "ཐོ་ཡིག་མ་ཐོབ་",
-    "none": "མེད་",
-    "notSoraAddress": "This address will be saved as {Sora} address below. Make sure the recipient can access the {Sora} chain:",
-    "options": {
-      "delete": "སུབ་",
-      "edit": "འབྲེལ་མཐུད་ཞུན་དག་",
-      "send": "ཐོན་སྒོར་གཏང་"
+    "addressText": "ཁ་བྱང་།",
+    "alerts": {
+        "alertFrequencyTitle": "ཉེན་བརྡའི་བསྐྱར་འབྱུང་།",
+        "alertsCreateTitle": "གོང་ཚད་ཉེན་བརྡ་གཞི་སྒྲིག་འབད།",
+        "alertsTitle": "ཉེན་བརྡ།",
+        "alertsTooltip": "གོང་ཚད་དྲན་སྐུལ་ཚུ་ ཁྱོད་ཀྱིས་གཞི་སྒྲིག་འབད་མི་ དམིགས་བསལ་གྱི་ཊོ་ཀེན་གྱི་གོང་ཚད་འདི་ ཁྱོད་ཀྱིས་གཞི་སྒྲིག་འབད་ཡོད་པའི་ ས་སྒོ་ངེས་ཏིག་ཅིག་ལུ་ལྷོདཔ་ད་ དུས་མཐུན་བཟོ་ནི་ལུ་ ཁྱོད་ཀྱིས་གཞི་སྒྲིག་འབད་ཚུགས་པའི་ བརྡ་དོན་ཚུ་ཨིན།",
+        "alertTypeTitle": "ཉེན་བརྡའི་དབྱེ་བ།",
+        "always": "རྟག་ཏུ་",
+        "createBtn": "གོང་ཚད་ཉེན་བརྡ་གསརཔ་བཟོ།",
+        "currentPrice": "ད་ལྟོའི་གོང་ཚད།",
+        "delete": "དྲན་སྐུལ་བཏོན་གཏང་།",
+        "drop": "འོག་ལུ་འབབ་ཚུལ།",
+        "edit": "ཞུན་དག་ཉེན་བརྡ།",
+        "enableSwitch": "རྒྱུ་དངོས་གཏའ་འཇོག་བརྡ་བསྐུལ་ཚུ་ལྕོགས་ཅན་བཟོ།",
+        "finishBtn": "དྲན་སྐུལ་གཞི་སྒྲིག་མཇུག་བསྡུ།",
+        "frequencyTooltip": "སེལ་འཐུ་འབད་ཡོད་པའི་ཉེན་བརྡའི་དབྱེ་བ་གི་དོན་ལུ་ ཁྱོད་ཀྱིས་བརྡ་བསྐུལ་ཚུ་ འཕྲལ་འཕྲལ་ག་དེམ་ཅིག་ཐོབ་ཨིན་ན་ གཏན་འབེབས་བཟོ་ནི་ལུ་ 'ཚར་གཅིག་' དང་ 'ཨ་རྟག་རང་' གི་བར་ན་སེལ་འཐུ་འབད། 'ཚར་གཅིག་' གིས་ གནས་སྟངས་འདི་གྲུབ་པའི་སྐབས་ བརྡ་དོན་གཅིག་གཏང་འོང་ དེ་འབདཝ་ད་ 'ཨ་རྟག་རང་' གིས་ གོང་ཚད་ཀྱི་ཚད་གཞི་འདི་བརྒལ་ཚརཝ་ད་ ཁྱོད་ལུ་བརྡ་དོན་འཕྲོ་མཐུད་དེ་རང་གཏང་འོང་།",
+        "noSupportMsg": "ཁྱོད་ཀྱི་བརའུ་ཟར་གྱིས་ བརྡ་བསྐུལ་ཚུ་ལུ་ རྒྱབ་སྐྱོར་མི་འབད་བས།",
+        "once": "ཚར་གཅིག།",
+        "onDropDesc": "{token} {price} འོག་ལུ་ལྷུང་བ།",
+        "onRaiseDesc": "{token} {price} ལས་མཐོ་རུ་འཕར།",
+        "raise": "ལྟག་ལས་ཡར་འཛེགས།",
+        "typeTooltip": "ཁག་ཆེ་བའི་གོང་ཚད་འགུལ་སྐྱོད་ཚུ་ བརྟག་ཞིབ་འབད་ནིའི་དོན་ལུ་ ཉེན་བརྡའི་གནས་སྟངས་གསལ་བཀོད་འབད་ནི་ལུ་ 'འོག་ལུ་བཀོག་བཞག' ཡང་ན་ 'གོང་ལུ་ཡར་སེང་' གདམ་ཁ་གདམ་ཁ་རྐྱབས། གདམ་ཁ་འདི་ཚུ་གིས་ ཁྱོད་རའི་རྒྱུ་དངོས་ཀྱི་གནས་གོང་འདི་ ཁྱོད་རའི་ངོས་འཛིན་འབད་ཡོད་པའི་ཚད་གཞི་ལས་ འོག་ལུ་ལྷོདཔ་ད་ ཡང་ན་ ཡར་འཕར་འགྱོཝ་ད་ དུས་ཚོད་ཁར་ བརྡ་དོན་ཚུ་ཐོབ་བཅུགཔ་ཨིན།"
     },
-    "save": "འབྲེལ་མཐུད་བཟུམ་ཉར་",
-    "searchPlaceholder": "ཁ་བྱང་/མིང་/ངོས་འཛིན་གྱིས་འཚོལ་",
-    "selectContact": "འབྲེལ་མཐུད་འདེམས་",
-    "tooltip": "མིང་དང་ཁ་བྱང་བྲིས་ནས་ཁ་བྱང་དེབ་བསྡུ་གསོག་བྱེད་ — ཚོགས་ཆེན་སྒྲིགས་ལེགས་དང་གསར་བསྒྱུར་"
-  },
-  "addressText": "Address",
-  "alerts": {
-    "alertFrequencyTitle": "Alert frequency",
-    "alertsCreateTitle": "Set up price alert",
-    "alertsTitle": "Alerts",
-    "alertsTooltip": "Price alerts are notifications that can be set by you to receive updates when the price of a particular token reaches certain point you set",
-    "alertTypeTitle": "Alert type",
-    "always": "Always",
-    "createBtn": "Create new price alert",
-    "currentPrice": "current price",
-    "delete": "Delete alert",
-    "drop": "Drops below",
-    "edit": "Edit alert",
-    "enableSwitch": "Enable asset deposit notifications",
-    "finishBtn": "Finish alert setup",
-    "frequencyTooltip": "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed",
-    "noSupportMsg": "Notifications aren't supported by your browser",
-    "once": "Once",
-    "onDropDesc": "{token} drops below {price}",
-    "onRaiseDesc": "{token} rises above {price}",
-    "raise": "Rises above",
-    "typeTooltip": "Choose either 'drops below' or 'rises above' option to specify alert condition for tracking important price movements. These options allow you receive timely notifications when the value of your asset either falls below or rises above your designated threshold"
-  },
-  "amountText": "Amount",
-  "appName": "{AppName}",
-  "asset": {
-    "receive": "{symbol} ཐོབ་",
-    "remove": "ཐོན་སྒོར་བསུབ་",
-    "select": "ཐོན་སྒོར་འདེམས་"
-  },
-  "assetDeposit": "Asset balance has been deposited",
-  "assetOwner": {
-    "accountWithAccess": "Account with SBT access",
-    "addRegulatedAsset": "Add another regulated asset",
-    "addRegulatedAssets": "Add regulated assets",
-    "attachedRegulatedAssets": "Attached regulated assets",
-    "createRegulatedAsset": "Create new regulated asset",
-    "createSbt": "Create {type}",
-    "dialog": {
-      "addExisting": "Add an existing asset",
-      "addExistingDesc": "Add an already created asset for the SBT",
-      "createAsset": "Create a new asset",
-      "createAssetDesc": "Set up a new permissioned asset for the {type}",
-      "enterAddress": "Enter address for issuance",
-      "issueAccess": "Issue access",
-      "pickDate": "Pick a day",
-      "selectAccessEnd": "Select when access will end",
-      "selectDate": "Select date"
+    "amountText": "དངུལ་འབོར།",
+    "appName": "{AppName}",
+    "asset": {
+        "receive": "{symbol} ཐོབ་",
+        "remove": "ཐོན་སྒོར་བསུབ་",
+        "select": "ཐོན་སྒོར་འདེམས་"
     },
-    "guide": {
-      "createToken": "Create your token",
-      "createTokenDesc": "Easily launch your unique token—available in multiple formats like NFTs and SBTs—using the robust, secure infrastructure of the SORA Network",
-      "disclaimerSbt": "Keep this page open during the entire process. Closing or navigating away will require you to restart from the beginning. Complete steps quickly to avoid timeout.",
-      "stepOneDesc": "Choose or create assets that you have personally created and regulate. These are assets under your control and management.",
-      "stepOneTitle": "Select or Create Regulated Assets",
-      "stepThreeDesc": "Review and sign the final creation transaction to complete the SBT setup.",
-      "stepThreeTitle": "Review and sign the transaction",
-      "stepTwoDesc": "Provide essential information such as the SBT's name and ticker symbol, as well as the icon.",
-      "stepTwoTitle": "Enter SBT Details",
-      "title": "How to create an {type}:"
+    "assetDeposit": "རྒྱུ་ནོར་ལྷག་ལུས་ གཏའ་འཇོག་འབད་ཡོདཔ།",
+    "assetOwner": {
+        "accountWithAccess": "ཨེསི་བི་ཊི་འཛུལ་སྤྱོད་ཡོད་པའི་རྩིས་ཐོ།",
+        "addRegulatedAsset": "ཁྲིམས་འཛིན་ཅན་གྱི་རྒྱུ་དངོས་གཞན་ཅིག་ཁ་སྐོང་བརྐྱབ།",
+        "addRegulatedAssets": "ཚད་འཛིན་ཅན་གྱི་རྒྱུ་དངོས་ཚུ་ཁ་སྐོང་བརྐྱབ།",
+        "attachedRegulatedAssets": "མཉམ་སྦྲགས་འབད་ཡོད་པའི་ཁྲིམས་འཛིན་རྒྱུ་དངོས།",
+        "createRegulatedAsset": "ཚད་ལྡན་རྒྱུ་དངོས་གསརཔ་བཟོ།",
+        "createSbt": "{type} གསར་བསྐྲུན་འབད།",
+        "dialog": {
+            "addExisting": "ད་ལྟོ་ཡོད་པའི་རྒྱུ་དངོས་ཅིག་ཁ་སྐོང་བརྐྱབ།",
+            "addExistingDesc": "ཨེསི་བི་ཊི་གི་དོན་ལུ་ ཧེ་མ་ལས་གསར་བསྐྲུན་འབད་ཡོད་པའི་རྒྱུ་དངོས་ཅིག་ཁ་སྐོང་བརྐྱབ།",
+            "createAsset": "རྒྱུ་དངོས་གསརཔ་ཅིག་གསར་བསྐྲུན་འབད།",
+            "createAssetDesc": "{type} གི་དོན་ལུ་ གནང་བ་ཡོད་པའི་རྒྱུ་དངོས་གསརཔ་ཅིག་གཞི་སྒྲིག་འབད།",
+            "enterAddress": "སྤྲོད་ལེན་གྱི་དོན་ལུ་ཁ་བྱང་བཙུགས།",
+            "issueAccess": "འཛུལ་སྤྱོད་ཀྱི་གནད་དོན།",
+            "pickDate": "ཉིནམ་གཅིག་འདེམས།",
+            "selectAccessEnd": "འཛུལ་སྤྱོད་འདི་ནམ་མཇུག་བསྡུ་ནི་ཨིན་ན་སེལ་འཐུ་འབད།",
+            "selectDate": "ཚེས་གྲངས་སེལ་འཐུ་འབད།"
+        },
+        "guide": {
+            "createToken": "ཁྱོད་རའི་ཊོ་ཀེན་གསར་བསྐྲུན་འབད།",
+            "createTokenDesc": "ཁྱོད་རའི་གཞན་དང་མ་འདྲ་བའི་རྟགས་མཚན་འདི་ འཇམ་ཏོང་ཏོ་སྦེ་ འགོ་བཙུགས།—NFTs དང་ SBTs བཟུམ་གྱི་རྩ་སྒྲིག་སྣ་ཚོགས་ནང་འཐོབ་ཚུགས།—SORA ཡོངས་འབྲེལ་གྱི་ བརྟན་ཏོག་ཏོ་དང་ ཉེན་སྲུང་ཅན་གྱི་གཞི་རྟེན་ཚུ་ལག་ལེན་འཐབ་སྟེ་",
+            "disclaimerSbt": "ལས་རིམ་ཆ་མཉམ་གྱི་སྐབས་ལུ་ ཤོག་ལེབ་འདི་ཁ་ཕྱེ་བཞག། ཁ་བསྡམ་ནི་དང་ ཡང་ན་ ཐག་རིང་སར་འགྲུལ་བསྐྱོད་འབད་ནི་ལུ་ ཁྱོད་ཀྱིས་འགོ་བཙུགས་ལས་ ལོག་འགོ་བཙུགས་དགོཔ་ཨིན། དུས་ཚོད་རྫོགས་ནི་ལས་ བཀག་ཐབས་ལུ་ གོམ་པ་མགྱོགས་དྲགས་སྦེ་མཇུག་བསྡུ།",
+            "stepOneDesc": "ཁྱོད་རའི་ངོ་རྐྱང་གིས་ གསར་བསྐྲུན་འབད་དེ་ ཚད་འཛིན་འབད་ཡོད་པའི་རྒྱུ་དངོས་ཚུ་ གདམ་ཁ་རྐྱབ་ནི་ཡང་ན་ གསར་བསྐྲུན་འབད། འདི་ཚུ་ཁྱོད་ཀྱི་ཚད་འཛིན་དང་འཛིན་སྐྱོང་འོག་ལུ་ཡོད་པའི་རྒྱུ་དངོས་ཚུ་ཨིན།",
+            "stepOneTitle": "ཚད་འཛིན་ཅན་གྱི་རྒྱུ་དངོས་ཚུ་སེལ་འཐུ་འབད་ནི་ཡང་ན་གསར་བསྐྲུན་འབད།",
+            "stepThreeDesc": "ཨེསི་བི་ཊི་གཞི་སྒྲིག་མཇུག་བསྡུ་ནིའི་དོན་ལུ་ མཐའ་མཇུག་གསར་བསྐྲུན་གྱི་ཚོང་འབྲེལ་འདི་བསྐྱར་ཞིབ་འབད་དེ་མིང་རྟགས་བཀོད།",
+            "stepThreeTitle": "ཚོང་འབྲེལ་བསྐྱར་ཞིབ་དང་མིང་རྟགས་བཀོད།",
+            "stepTwoDesc": "ཨེསི་བི་ཊི་གི་མིང་དང་ ཊི་ཀར་རྟགས་ དེ་ལས་ ངོས་དཔར་བཟུམ་གྱི་ ཁག་ཆེ་བའི་བརྡ་དོན་ཚུ་བྱིན།",
+            "stepTwoTitle": "ཨེསི་བི་ཊི་ཁ་གསལ་ཚུ་བཙུགས།",
+            "title": "{type} བཟོ་ཐབས།:"
+        },
+        "issueSbtAccess": "གནད་དོན {type} འཛུལ་སྤྱོད།",
+        "letsStartBtn": "འགོ་བཙུགས་གེ།",
+        "orSelectExisting": "ཡང་ན་ཡོད་བཞིན་པ་སེལ་འཐུ་འབད།",
+        "ownerSbtTitle": "ཁྱོད་ཀྱི་{type}",
+        "permissionedAssets": "གནང་བ་ཡོད་པའི་རྒྱུ་དངོས།",
+        "regulatedAssetsConnected": "ཚད་འཛིན་ཅན་གྱི་རྒྱུ་དངོས་འབྲེལ་མཐུད་འབད་ཡོདཔ།",
+        "regulatedPools": "ཚད་འཛིན་ཆུ་རྫིང་ཚུ།",
+        "sbtCreation": {
+            "addAssets": "རྒྱུ་དངོས་ཚུ་ ཨེསི་བི་ཊི་ལུ་ཁ་སྐོང་བརྐྱབ།",
+            "addDescription": "ཨེསི་བི་ཊི་ཁ་གསལ་ཚུ་བཙུགས།",
+            "addMeta": "ཨེསི་བི་ཊི་ཁ་གསལ་ཚུ་བཙུགས།",
+            "preview": "SBT སྔོན་ལྟ།"
+        },
+        "sbtManagers": "{type} འཛིན་སྐྱོང་པ།",
+        "selectExisting": "ཡོད་བཞིན་པ་སེལ་འཐུ་འབད།",
+        "startIssue": "རྩིས་ཁྲ་ཚུ་ལུ་ ཨེསི་བི་ཊི་གི་དོན་ལུ་ འཛུལ་སྤྱོད་སྤྲོད་ནི་འགོ་བཙུགས།",
+        "you": "ཁྱོད།"
     },
-    "issueSbtAccess": "Issue {type} access",
-    "letsStartBtn": "LET’S START",
-    "orSelectExisting": "Or select existing",
-    "ownerSbtTitle": "Your {type}",
-    "permissionedAssets": "Permissioned assets",
-    "regulatedAssetsConnected": "Regulated assets connected",
-    "regulatedPools": "Regulated pools",
-    "sbtCreation": {
-      "addAssets": "Add Assets to SBT",
-      "addDescription": "Enter SBT Details",
-      "addMeta": "Enter SBT Details",
-      "preview": "SBT Preview"
+    "assets": {
+        "assetId": "རྒྱུ་དངོས་ཨའི་ཌི།",
+        "balance": {
+            "bonded": "བོནཌ་འབད་ཡོདཔ།",
+            "frozen": "འཁྱགས་པ།",
+            "locked": "ལྡེ་མིག་བརྐྱབ།",
+            "reserved": "བཀག་བཞག་ཡོདཔ།",
+            "total": "བསྡོམས།",
+            "transferable": "སྤོ་བཤུད་འབད་བཏུབ།"
+        },
+        "bridge": "ཟམ་པ།",
+        "copied": "འདྲ་བཤུས་འབད་ཡོདཔ།",
+        "copy": "རྒྱུ་དངོས་ཨའི་ཌི་འདྲ་བཤུས།",
+        "details": "ཁ་གསལ།",
+        "empty": "རྒྱུ་ནོར་མེད།",
+        "liquidity": "དངུལ་འབབ་ཁ་སྐོང་རྐྱབས།",
+        "receive": "@:account.copy",
+        "send": "@:sendText",
+        "swap": "@:swapText",
+        "totalAssetsValue": "ཡོངས་བསྡོམས་རྒྱུ་དངོས་གནས་གོང་།"
     },
-    "sbtManagers": "{type} Managers",
-    "selectExisting": "Select existing",
-    "startIssue": "Start issuing access for the SBT to accounts",
-    "you": "You"
-  },
-  "assets": {
-    "assetId": "Asset ID",
-    "balance": {
-      "bonded": "Bonded",
-      "frozen": "Frozen",
-      "locked": "Locked",
-      "reserved": "Reserved",
-      "total": "Total",
-      "transferable": "Transferable"
+    "backText": "ལོག",
+    "balanceText": "ཐོན་སྒོར་",
+    "blockNumberText": "བྱིན་རིམ་ཨང་",
+    "bridge": {
+        "connectWallets": "རང་སོའི་ཚོང་འབྲེལ་གྱི་བྱུང་རབས་བལྟ་ནི་ལུ་ དངུལ་ཁུག་ཚུ་མཐུད།",
+        "externalMinDeposit": "__པི་ཨེཆ་__༠__ སྐར་མ། དངུལ་བཅོལ།",
+        "externalMinDepositTooltip": "ཟམ་སྤོ་བཤུད་འབད་བའི་ཤུལ་ལས་ ཁྱོད་རའི་ {network} རྩིས་ཁྲ་གུ་འོང་དགོ་པའི་ ལྷག་ལུས་ཉུང་མཐའ་ {symbol}",
+        "externalTransferFee": "__པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__ འཐུས།",
+        "externalTransferFeeTooltip": "ཁྱོད་ཀྱིས་ {network} ཡོངས་འབྲེལ་ལུ་ཟམ་གྱི་ཚོང་འབྲེལ་གཏང་པའི་སྐབས་ ཁྱོད་ཀྱིས་སྤོ་བཤུད་འབད་བའི་བསྒང་ཡོད་མི་དངུལ་བསྡོམས་ལས་ འཐུས་ཆུང་བ་ཅིག་ལེནམ་ཨིན།",
+        "info": "{Sora} དང་ {Ethereum} ཡོངས་འབྲེལ་ཚུ་གི་བར་ན་ ཊོ་ཀེན་ཚུ་གཞི་བསྒྱུར་འབད།",
+        "limitMessage": "ད་ལྟོ་ {type} {amount} {symbol} ཟེར་མི་འདི་ {Sora} ཡོངས་འབྲེལ་གྱི་བརྟན་ཏོག་ཏོ་དང་ཉེན་སྲུང་ལུ་ ངེས་གཏན་བཟོ་ནིའི་དོན་ལུ་ ཟམ་རྐྱབ་ནིའི་དོན་ལུ་ཡོདཔ་ཨིན། ཁྱོད་ཀྱིས་ཧ་གོ་མི་ལུ་ ང་བཅས་ཀྱིས་བཀའ་དྲིན་ཆེ།",
+        "networkInfo": "ཟམ་པ་ {Sora} ཡོངས་འབྲེལ་དང་གཅིག་ཁར།",
+        "next": "མུ་མཐུད་",
+        "notRegisteredAsset": "རྒྱུ་དངོས་ {assetSymbol} ཐོ་བཀོད་མ་འབད་བས།",
+        "selectNetwork": "ཡོངས་འབྲེལ་འབེབས་",
+        "soraNetworkFee": "{Sora} ཡོངས་འབྲེལ་དོན་ལུ་དམིགས་གསལ་",
+        "title": "ཟམ་པོ་"
     },
-    "bridge": "Bridge",
-    "copied": "Copied!",
-    "copy": "Copy Asset ID",
-    "details": "Details",
-    "empty": "There are no assets",
-    "liquidity": "Add liquidity",
-    "receive": "@:account.copy",
-    "send": "@:sendText",
-    "swap": "@:swapText",
-    "totalAssetsValue": "Total assets value:"
-  },
-  "backText": "ལོག",
-  "balanceText": "ཐོན་སྒོར་",
-  "blockNumberText": "བྱིན་རིམ་ཨང་",
-  "bridge": {
-    "connectWallets": "Connect wallets to view respective transaction history.",
-    "externalMinDeposit": "{network} min. deposit",
-    "externalMinDepositTooltip": "Minimum balance {symbol} that must be on your {network} account after the bridge transfer",
-    "externalTransferFee": "{network} {XCM} fee",
-    "externalTransferFeeTooltip": "When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are transferring",
-    "info": "Convert tokens between the {Sora} and {Ethereum} networks.",
-    "limitMessage": "Currently, there's a {type} {amount} {symbol} for bridging to ensure the stability and security of the {Sora} Network. We appreciate your understanding.",
-    "networkInfo": "Bridge {Sora} Network with:",
-    "next": "མུ་མཐུད་",
-    "notRegisteredAsset": "Asset {assetSymbol} is not registered",
-    "selectNetwork": "ཡོངས་འབྲེལ་འབེབས་",
-    "soraNetworkFee": "{Sora} ཡོངས་འབྲེལ་དོན་ལུ་དམིགས་གསལ་",
-    "title": "ཟམ་པོ་"
-  },
-  "bridgeHistory": {
-    "clearHistory": "ལོ་རྒྱུས་བསལ་",
-    "empty": "ཁྱེད་ཀྱི་འབུལ་འགྲོ་ཚུ་ནཱ་ལུ་འབྱུང་།",
-    "filterPlaceholder": "Asset ID ཡང་ན་ཏི་ཀར་འབོད་མིང་གྱིས་འཚོལ་",
-    "restoreHistory": "ལོ་རྒྱུས་སླར་གསོ་",
-    "showHistory": "ལོ་རྒྱུས་སྟོན་",
-    "statusAction": "བྱ་བ་དགོས་",
-    "title": "ལོ་རྒྱུས་"
-  },
-  "bridgeText": "Bridge",
-  "bridgeTransaction": {
-    "allowToken": "{AppName} ལུ་ ཁྱེད་ཀྱི་ {tokenSymbol} ལག་ལེན་བྱེད་ཆོག",
-    "approveToken": "དྲན་དགོས་: ཐོན་སྒོར་གཅིག་རྐྱང་ངོས་ལེན་དགོས། རྒྱས་སྐྱེད་ནང་ ངོས་ལེན་ཞུ་བ་མང་ཚུགས་ཡོད་པ་ཅིན་ མཇུག་གི་དེ་རྐྱང་ངེས་གཏན་བཟོ་དགོས་ དེ་གཞན་ཚུ་དོར་དགོས།",
-    "blocksLeft": "ལོག་ལུ་ {count} བྱིན་རིམ་...",
-    "for": " དོན་ལུ་ ",
-    "networkInfo": {
-      "amount": "བསྡོམས་",
-      "date": "ཚེས་གྲངས་",
-      "status": "གནད་དོན་",
-      "transactionFee": "འབུལ་འགྲོའི་གླ་"
+    "bridgeHistory": {
+        "clearHistory": "ལོ་རྒྱུས་བསལ་",
+        "empty": "ཁྱེད་ཀྱི་འབུལ་འགྲོ་ཚུ་ནཱ་ལུ་འབྱུང་།",
+        "filterPlaceholder": "Asset ID ཡང་ན་ཏི་ཀར་འབོད་མིང་གྱིས་འཚོལ་",
+        "restoreHistory": "ལོ་རྒྱུས་སླར་གསོ་",
+        "showHistory": "ལོ་རྒྱུས་སྟོན་",
+        "statusAction": "བྱ་བ་དགོས་",
+        "title": "ལོ་རྒྱུས་"
     },
-    "newTransaction": "འབུལ་འགྲོ་གསར་པ་བཟོ་",
-    "pending": "{network} འབུལ་འགྲོ་གྲལ་ལས...",
-    "statuses": {
-      "done": "མཇུག་བསྡུས་",
-      "failed": "འབུལ་འགྲོ་མ་ཐུབ་",
-      "pending": "གྲལ་ལས་",
-      "waitingForConfirmation": "ངེས་གཏན་བཟོ་སྒུག་..."
+    "bridgeText": "ཟམ་པ།",
+    "bridgeTransaction": {
+        "allowToken": "{AppName} ལུ་ ཁྱེད་ཀྱི་ {tokenSymbol} ལག་ལེན་བྱེད་ཆོག",
+        "approveToken": "དྲན་དགོས་: ཐོན་སྒོར་གཅིག་རྐྱང་ངོས་ལེན་དགོས། རྒྱས་སྐྱེད་ནང་ ངོས་ལེན་ཞུ་བ་མང་ཚུགས་ཡོད་པ་ཅིན་ མཇུག་གི་དེ་རྐྱང་ངེས་གཏན་བཟོ་དགོས་ དེ་གཞན་ཚུ་དོར་དགོས།",
+        "blocksLeft": "ལོག་ལུ་ {count} བྱིན་རིམ་...",
+        "for": " དོན་ལུ་ ",
+        "networkInfo": {
+            "amount": "བསྡོམས་",
+            "date": "ཚེས་གྲངས་",
+            "status": "གནད་དོན་",
+            "transactionFee": "འབུལ་འགྲོའི་གླ་"
+        },
+        "newTransaction": "འབུལ་འགྲོ་གསར་པ་བཟོ་",
+        "pending": "{network} འབུལ་འགྲོ་གྲལ་ལས...",
+        "statuses": {
+            "done": "མཇུག་བསྡུས་",
+            "failed": "འབུལ་འགྲོ་མ་ཐུབ་",
+            "pending": "གྲལ་ལས་",
+            "waitingForConfirmation": "ངེས་གཏན་བཟོ་སྒུག་..."
+        },
+        "title": "ཟམ་པོའི་འབུལ་འགྲོ་",
+        "transactionHash": "འབུལ་འགྲོ་ hash"
     },
-    "title": "ཟམ་པོའི་འབུལ་འགྲོ་",
-    "transactionHash": "འབུལ་འགྲོ་ hash"
-  },
-  "bridgeTransferNotification": {
-    "addToken": "Add {symbol} to wallet",
-    "title": "Bridge transaction successful"
-  },
-  "browserNotificationDialog": {
-    "agree": "Yes, I understand",
-    "button": "Enable notifications",
-    "info": "We will send you only relevant updates about your wallet, for example: asset balance changes",
-    "notificationBlocked": "To receive the notifications about {AppName}, please, allow the notifications in your browser's native settings",
-    "pointer": "Press “Allow” to turn notifications on",
-    "rotateMessage": "The experience is only available in portrait mode",
-    "rotatetitle": "Please, rotate your device",
-    "title": "Set Notifications"
-  },
-  "browserNotificationLocalStorageOverride": {
-    "agree": "Yes, I understand",
-    "info": "Your local storage is overloaded, to continue work with {AppName} need to clean it",
-    "title": "Clear local {AppName} storage"
-  },
-  "browserPermission": {
-    "btnAllow": "Allow access",
-    "btnGoToSettings": "Go to settings",
-    "desc": "To ensure the authenticity of documents and validate user identity for KYC verification, access to your device's camera is required.",
-    "disclaimer": "Camera access is required for real-time document capture to prevent fraud.",
-    "title": "Allow camera access in browser settings"
-  },
-  "buttons": {
-    "chooseAToken": "ཐོན་སྒོར་འདེམས་",
-    "chooseToken": "ཐོན་སྒོར་འདེམས་",
-    "chooseTokens": "ཐོན་སྒོར་ཚུ་འདེམས་",
-    "enterAmount": "བསྡོམས་བྲིས་",
-    "max": "སྦོམ་"
-  },
-  "calculatingText": "རྩིས་བཏང་",
-  "cancelText": "ཆ་མེད་བཟོ་",
-  "changeAccountText": "Change account",
-  "changeNetworkText": "Change network in wallet",
-  "closeText": "ཁ་བསྡམས་",
-  "code": {
-    "allowanceError": "པར་ཆས་དང་བརའུསར་གྱི་ཆོག་མཆན་ཞིབ་བཤེར་བྱོས་",
-    "allowanceRequest": "“ཆོག་པ” འདི་གནང་ནས་པར་ཆས་ལུ་འཛུལ་",
-    "camera": "པར་ཆས་",
-    "download": "QR ཕབ་ལེན་",
-    "import": "པར་འདྲ་བཙུགས་",
-    "invalid": "QR ནུས་མེད་",
-    "receive": "ཐོབ་",
-    "scan": "པར་ཆས་ཀྱིས་ཞིབ་ལྟ་",
-    "upload": "QR ཞིབ་ལྟ་"
-  },
-  "collapseText": "Collapse",
-  "comingSoonText": "Coming Soon",
-  "confirmNextTxFailure": {
-    "button": "Yes, I understand the risk",
-    "header": "Attention",
-    "info": "Your XOR balance will be less than {fee} XOR after this transaction. You won’t be able to pay for the network fee for another transaction.",
-    "payoff": "You would have to use the Bridge to get XOR from other networks, get sent XOR from another {Sora} account, or swap any other token already in your account into XOR."
-  },
-  "confirmSupply": {
-    "outputDescription": "ཕྱི་འབྱུང་གྲངས་ཚད་འཇམ་སམ་དཔྱད་བྱས་པ་ཨིན། གོང་ཚད་ {slippageTolerance}% ལས་མང་སྒྱུར་བ་ཡོད་ཚེ་ ཁྱེད་ཀྱི་འབུལ་འགྲོ་ལོག་པར་འགྱུར་",
-    "title": "ཁྱེད་རང་གི་པུལ་ཆ་ཤས་"
-  },
-  "confirmText": "ངེས་གཏན་བཟོ་",
-  "confirmTransactionText": "Confirm transaction",
-  "connectedAccount": "Connected account",
-  "connectedText": "Connected",
-  "connectEthereumWalletText": "Connect {Ethereum} wallet",
-  "connection": {
-    "action": {
-      "learnMore": "Learn more about wallet connection",
-      "refresh": "Refresh"
+    "bridgeTransferNotification": {
+        "addToken": "{symbol} དངུལ་ཁུག་ལུ་ཁ་སྐོང་འབད།",
+        "title": "ཟམ་གྱི་ཚོང་འབྲེལ་མཐར་འཁྱོལ་བྱུང་ཡོདཔ།"
     },
-    "disclaimer": "Please note that certain wallets may not be fully supported.",
-    "internalText": "You can create or import an existing {Sora} account to connect with your {wallet} account. All data that is stored by {wallet} is encrypted using built-in advanced encryption.",
-    "internalTitle": "Connect with {wallet}",
-    "list": {
-      "extensions": "Extensions",
-      "integrated": "Integrated"
+    "browserNotificationDialog": {
+        "agree": "ཨིན་ ང་གིས་ཧ་གོ་ཡི།",
+        "button": "བརྡ་བསྐུལ་ཚུ་ལྕོགས་ཅན་བཟོ།",
+        "info": "ང་བཅས་ཀྱིས་ ཁྱོད་ཀྱི་དངུལ་ཁུག་སྐོར་ལས་ འབྲེལ་ཡོད་དུས་མཐུན་ཚུ་རྐྱངམ་ཅིག་གཏང་འོང་། དཔེར་ན་: རྒྱུ་དངོས་ལྷག་ལུས་བསྒྱུར་བཅོས་ཚུ།",
+        "notificationBlocked": "{AppName} གི་སྐོར་ལས་ བརྡ་དོན་ཚུ་ཐོབ་ནིའི་དོན་ལུ་ ཁྱོད་རའི་བརྡ་འཚོལ་གྱི་ ས་གནས་ཀྱི་སྒྲིག་སྟངས་ཚུ་ནང་ བརྡ་དོན་ཚུ་ གནང་བ་བྱིན་གནང་།",
+        "pointer": "བརྡ་དོན་ཚུ་ཁ་ཕྱེ་ནི་ལུ་ “Allow” ལུ་ཨེབ།",
+        "rotateMessage": "ཉམས་མྱོང་འདི་ པར་རིས་ཐབས་ལམ་ནང་རྐྱངམ་ཅིག་འཐོབ་ཚུགས།",
+        "rotatetitle": "ཁྱོད་ཀྱི་ཐབས་འཕྲུལ་འདི་བསྒྱིར་གནང་།",
+        "title": "བརྡ་བསྐུལ་ཚུ་གཞི་སྒྲིག་འབད།"
     },
-    "selectAccount": "Select account to work with",
-    "wallet": {
-      "connected": "Connected",
-      "install": "Install",
-      "recommended": "Recommended"
-    }
-  },
-  "connectWalletText": "རྩིས་ཐོ་མཐུད་",
-  "connectWalletTextTooltip": "Connect to {Sora} Network with {PolkadotJs}",
-  "continueText": "མུ་མཐུད་",
-  "copiedText": "Copied!",
-  "copiedWithValue": "{value} is copied!",
-  "copyPhraseText": "Copy Passphrase",
-  "copyWithValue": "Copy {value}",
-  "createPair": {
-    "deposit": "Deposit",
-    "firstLiquidityProvider": "You are the first liquidity provider",
-    "firstLiquidityProviderInfo": "The ratio of tokens you add will set the price of this pool.<br/>Once you are happy with the rate click supply to review.",
-    "firstSecondPoolTokens": "{first}-{second} Pool",
-    "pricePool": "Prices and fees",
-    "shareOfPool": "Share of pool",
-    "supply": "Supply",
-    "yourPosition": "Your position"
-  },
-  "createToken": {
-    "confirmTokenTitleCommon": "Create Token",
-    "confirmTokenTitleNFT": "Create NFT",
-    "CreateSimpleToken": "Token",
-    "divisible": {
-      "desc": "Ability of NFT to divide into fractional parts. Liquidity provisioning only works with divisible assets",
-      "placeholder": "Divisible"
+    "browserNotificationLocalStorageOverride": {
+        "agree": "ཨིན་ ང་གིས་ཧ་གོ་ཡི།",
+        "info": "ཁྱོད་ཀྱི་ཉེ་གནས་གསོག་འཇོག་འདི་མངོན་གསལ་འབད་ཡོདཔ་ལས་ {AppName} དང་ཅིག་ཁར་ལཱ་འཕྲོ་མཐུད་འབད་ནི་ལུ་ གཙང་སྦྲ་འབད་དགོཔ་ཨིན།",
+        "title": "ཉེ་གནས་ {AppName} གསོག་འཇོག་བསལ།"
     },
-    "enterName": "Enter token name",
-    "enterSupply": "Enter token supply",
-    "enterSymbol": "Enter token symbol",
-    "enterTokenDescription": "Enter description",
-    "error": "Failed to create {symbol} token",
-    "extensibleSupply": {
-      "desc": "Ability to mint more tokens.",
-      "placeholder": "Extensible supply"
+    "browserPermission": {
+        "btnAllow": "འཛུལ་སྤྱོད་འབད་བཅུག།",
+        "btnGoToSettings": "སྒྲིག་སྟངས་ཚུ་ནང་འགྱོ།",
+        "desc": "ཡིག་ཆ་ཚུ་གི་བདེན་ཁུངས་ངེས་གཏན་བཟོ་ནི་དང་ ཀེ་ཝའི་སི་བདེན་དཔྱད་ཀྱི་དོན་ལུ་ ལག་ལེན་པའི་ངོ་རྟགས་བདེན་དཔྱད་འབད་ནི་ལུ་ ཁྱོད་རའི་ཐབས་འཕྲུལ་གྱི་པར་ཆས་ལུ་འཛུལ་སྤྱོད་འབད་དགོཔ་ཨིན།",
+        "disclaimer": "གཡོ་སྒྱུ་བཀག་ཐབས་ལུ་ དུས་ཐོག་ཡིག་ཆ་བཟུང་ནིའི་དོན་ལུ་ པར་ཆས་འཛུལ་སྤྱོད་དགོཔ་ཨིན།",
+        "title": "བརའུ་ཟར་སྒྲིག་སྟངས་ཚུ་ནང་པར་ཆས་འཛུལ་སྤྱོད་འབད་བཅུག།"
     },
-    "nft": {
-      "description": {
-        "placeholder": "Description"
-      },
-      "image": {
-        "placeholderBadSource": "The file failed to be processed",
-        "placeholderBadSourceAddition": "or it’s not uploaded to IPFS yet",
-        "placeholderFileLimit": "The file size exceeds the limit of {value}mb",
-        "placeholderNoImage": "Upload the file by either entering a link or choosing from local storage"
-      },
-      "link": {
-        "copyLink": "Copy link",
-        "placeholder": "IPFS link",
-        "tooltip": "IPFS is a distributed system for storing and accessing files, making it possible to access files from many locations that aren't managed by one organization."
-      },
-      "source": {
-        "label": "Source",
-        "limit": "Choose another file",
-        "value": "Local files"
-      },
-      "supply": {
-        "desc": "Amount of NFTs you’re going to get.",
-        "placeholder": "Token supply",
-        "quantity": "Quantity"
-      }
-    },
-    "provideContent": "Provide content",
-    "success": {
-      "desc": "Create {symbol} token",
-      "title": "Transaction submitted"
-    },
-    "titleCommon": "Create",
-    "tokenName": {
-      "desc": "This is a name for the token. You can use from 1 to 33 characters for the selection.",
-      "placeholder": "Token name"
-    },
-    "tokenSupply": {
-      "desc": "You will receive these tokens upon creation.",
-      "placeholder": "Token supply"
-    },
-    "tokenSymbol": {
-      "desc": "This is an identifier for the token. You can use from 1 to 7 characters for the selection.",
-      "placeholder": "Token symbol"
-    }
-  },
-  "createTokenText": "Create",
-  "createTokenTextNFT": "Create NFT",
-  "currencyDialog": {
-    "currency": "Currency",
-    "searchPlaceholder": "Search by currency name or symbol"
-  },
-  "customisePageText": "Customize page",
-  "dark": "Dark",
-  "demeterFarming": {
-    "actions": {
-      "add": "ཧེང་བཀལ་སྡེབ་འབུལ་",
-      "claim": "རྙོག་འདུག་འཐོབ་",
-      "remove": "སྡེབ་འབུལ་འབུད་",
-      "start": "སྡེབ་འབུལ་འགོ་བཙུགས་"
-    },
-    "amountAdd": "སྡེབ་འབུལ་གྲངས་",
-    "amountRemove": "སྡེབ་འབུལ་འབུད་གྲངས་",
-    "calculator": "རྩིས་འཕྲུལ་",
-    "info": {
-      "earned": "{symbol} ཐོབ་ཡོད་",
-      "fee": "གླ་སྒྲིག་",
-      "feeTooltip": "འཇོག་གླ་སྒྲིག་དེ་ ཁྱེད་རང་གི་སྡེབ་འབུལ་གྲངས་ལུ་སྤྲོད་ཡོད་",
-      "owned": "{symbol} @:balanceText",
-      "poolShare": "ཁྱེད་རང་གི་པུལ་ཐོག་སྡེབ་འབུལ་བསྡོམས་",
-      "poolShareWillBe": "ཁྱེད་རང་གི་པུལ་ཐོག་སྡེབ་འབུལ་བསྡོམས་དེ་",
-      "rewardToken": "རྙོག་འདུག་ཐོན་སྒོར་",
-      "stake": "ཁྱེད་རང་གི {symbol} སྡེབ་འབུལ་བྱས་པ་",
-      "stakeWillBe": "ཁྱེད་རང་གི {symbol} སྡེབ་འབུལ་དེ་",
-      "totalLiquidityLocked": "ལྟོས་སྤྱོད་བསྡོམས་སྡམས་པ་"
-    },
-    "poweredBy": "Demeter Farming གིས་སྐྱེལ་བཀོལ་",
-    "results": "གྲུབ་འབྲས་",
-    "rewards": "{symbol} རྙོག་འདུག་",
-    "staking": {
-      "active": "སྡེབ་འབུལ་ཤུགས་ལྡན་",
-      "inactive": "ཧེང་བཀལ་རྙོག་འདུག་ཐོབ་ནི་ལུ་སྡེབ་འབུལ་",
-      "stopped": "སྡེབ་འབུལ་མཚམས་བཞག་"
-    }
-  },
-  "desktop": {
-    "accountMnemonic": {
-      "placeholder": "Mnemonic phrase"
-    },
-    "accountName": {
-      "desc": "This is the name of your account. It will be visible only to you in {AppName}.",
-      "placeholder": "Account name"
-    },
-    "addAccount": "Add an account",
-    "assetsAtRiskText": "Assets at risk!",
-    "button": {
-      "createAccount": "Create Account",
-      "importAccount": "Import account",
-      "next": "Next step",
-      "skip": "Skip"
-    },
-    "confirmPassword": {
-      "placeholder": "Confirm password"
-    },
-    "confirmSeedText": "Confirm the passphrase by clicking the words in the correct order",
-    "deleteAccountText": "Account can’t be recovered without a seed phrase, .json file or if it’s stored in some extension. You will be logged out.",
-    "dialog": {
-      "confirmButton": "Sign Transaction",
-      "confirmTitle": "Confirm with password"
-    },
-    "errorMessages": {
-      "alreadyImported": "Account already imported {address}",
-      "jsonFields": "JSON file does not have required fields",
-      "mnemonic": "Invalid bip39 mnemonic specified",
-      "mnemonicLength": "Mnemonic should contain {number} words",
-      "password": "Password did not match",
-      "passwords": "Passwords did not match"
-    },
-    "errorMnemonicText": "Incorrect passphrase order",
-    "exportJsonText": "You will always be able to restore your account by importing this {JSON} file. Do not share it with anyone! Store it safely, preferably encrypted.",
-    "exportOptionText": "Export {JSON} file for account restoration",
-    "exportTutorialsText": "Export tutorials",
-    "heading": {
-      "accountDetailsTitle": "Account Details",
-      "confirmSeedTitle": "Confirm passphrase",
-      "importTitle": "Import account",
-      "seedPhraseTitle": "Passphrase"
-    },
-    "importSteps": {
-      "exportAccount": "Export the {JSON} file",
-      "selectAccount": "Select the account you want to export",
-      "selectWallet": "Open the wallet with your existing account(s)"
-    },
-    "password": {
-      "desc": "Ensure you are using a strong unique password for proper protection (8 characters minimum)",
-      "placeholder": "Password"
-    },
-    "seedAdviceAdditionText": "If someone asks you for your passphrase they are most likely trying to scam you and steal your assets!",
-    "seedAdviceAdditionTitle": "Never share your passphrase with anyone!",
-    "seedAdviceText": "The 12-word passphrase is a private key to regain access to your {Sora} account in case you lose access to your {wallet} account. Store it safely in the exact order it appears above.",
-    "welcome": {
-      "createAccount": "Create an account",
-      "header": "Welcome to {AppName}!",
-      "headline": "Let’s set up your account",
-      "importAccount": "Import Account",
-      "text": "Create your {Sora} Network account or log into the old ones using mnemonic phrase or .json import. This allows you to securely sign transactions and manage assets in {Sora} Network."
-    }
-  },
-  "dexSettings": {
-    "marketAlgorithm": "@.upper:marketAlgorithmText",
-    "marketAlgorithms": {
-      "SMART": "{smartAlgorithm} liquidity routing ensures the best price for any transaction by combining only the best price options from all available markets. When available, Token Bonding Curve ({tbcAlgorithm}) will be used for liquidity as long as the asset price is more affordable than from other sources, upon which the {xycAlgorithm} pool is utilized.",
-      "TBC": "{tbcAlgorithm} — buying only from the Token Bonding Curve (Primary Market). There is a possibility that the price can become unfavorable compared to the {xycAlgorithm} pool (Secondary Market), but the value received from the vested rewards might turn out to be much more favorable over time.",
-      "XYK": "{xycAlgorithm} — buying only from the XYK Pool (Secondary Market). Traditional XYK pool swap."
-    },
-    "marketAlgorithmTooltip": {
-      "main": " - option to choose between Primary Market (TBC), Secondary Market (XYK) or a combined smart algorithm for guaranteed best price for any given transaction."
-    },
-    "slippageTolerance": "SLIPPAGE TOLERANCE",
-    "slippageToleranceHint": "Your transaction will revert if the price changes unfavorably by more than this percentage.",
-    "slippageToleranceValidation": {
-      "error": "Enter a valid slippage percentage",
-      "frontrun": "Your transaction may be frontrun",
-      "warning": "Your transaction may fail"
-    },
-    "title": "Settings"
-  },
-  "disclaimer": "{disclaimerPrefix} This website is maintained by the {Sora} community. Before continuing to use this website, please review the {polkaswapFaqLink} and documentation, which includes a detailed explanation on how {AppName} works, as well as the {memorandumLink}, and {privacyLink}. These documents are crucial to a secure and positive user experience. By using {AppName}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {AppName} in your legal jurisdiction; 2) your understanding that the current version of {AppName} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {AppName}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
-  "disclaimerTitle": "Disclaimer",
-  "disconnectWalletText": "མཐུད་མེད་བཟོ་",
-  "doNotShowText": "Don’t show me this again",
-  "dragAndDropText": "Drag & drop or choose {extension} file",
-  "editText": "Edit",
-  "errorText": "Error",
-  "ethNetworkFeeTooltipText": "Please note that the {network} network fees displayed on {AppName} are only rough estimations, you can see the correct fee amount in your connected {network} wallet prior to confirming the transaction.",
-  "exceededAmountText": "{amount} exceeded",
-  "exchange": {
-    "lossWarning": "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair.",
-    "Pool": "Pool",
-    "Swap": "Swap"
-  },
-  "expandText": "Expand",
-  "explore": {
-    "myPositions": "my positions",
-    "showOnly": "Show only {entities}",
-    "synthetics": "synthetic tokens"
-  },
-  "FAQ": "{AppName} FAQ",
-  "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API)  are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
-  "fiatPayment": {
-    "cedeStoreBtn": "Transfer from {value1} via {value2}",
-    "cedeStoreDesc": "Transfer any tokens from {value1} to {value2} via {value3}",
-    "cedeStoreTitle": "Transfer from {value}",
-    "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later.",
-    "historyBtn": "My purchases",
-    "historyTitle": "Transaction History",
-    "moonpayDesc": "Purchase ETH tokens on {Ethereum} and transfer them to {Sora} network via the bridge",
-    "moonpayTitle": "Buy ETH via MoonPay"
-  },
-  "filter": {
-    "all": "All",
-    "native": "Native",
-    "reset": "Reset",
-    "show": "Show",
-    "showAssets": "Show assets",
-    "synthetics": "Synthetics",
-    "token": "Currencies",
-    "verifiedOnly": "Show verified assets only",
-    "zeroBalance": "Hide 0 balance assets"
-  },
-  "firstPerSecond": "{first} per {second}",
-  "firstText": "First",
-  "footer": {
-    "internet": {
-      "action": "Refresh {AppName}",
-      "desc": {
-        "disabled": "Disconnected",
-        "stable": "Optimal speed",
-        "unstable": "Slow connection"
-      },
-      "dialogDesc": "{AppName} requires internet connection for stable experience",
-      "dialogTitle": "Connect to internet source",
-      "label": "Your internet speed",
-      "title": {
-        "disabled": "Internet disabled",
-        "stable": "Internet stable",
-        "unstable": "Internet unstable"
-      }
-    },
-    "node": {
-      "title": {
-        "connected": "Node connected",
-        "disconnected": "Node disconnected",
-        "loading": "Node re-connecting"
-      }
-    },
-    "statistics": {
-      "action": "Select services",
-      "desc": {
-        "available": "All services are stable",
-        "loading": "All services are loading",
-        "unavailable": "All services are disconnected"
-      },
-      "dialog": {
-        "indexer": "Indexer",
-        "title": "{Sora} Network service selection",
-        "useCeres": "Use {Ceres} for fiat values"
-      },
-      "label": "Statistics services",
-      "title": {
-        "available": "Statistics available",
-        "loading": "Statistics loading",
-        "unavailable": "Statistics unavailable"
-      }
-    }
-  },
-  "footerMenu": {
-    "faucet": "Faucet",
-    "github": "GitHub",
-    "info": "བརྡ་དོན་དང་མི་སྡེ་",
-    "privacy": "གསང་བའི་སྲིད་གཞུང་",
-    "sorawiki": "{Sora} ཝི་ཀི་"
-  },
-  "forText": "for",
-  "hashiBridgeText": "{Hashi} bridge",
-  "headerMenu": {
-    "hideBalances": "ཐོན་སྒོར་སྦེད་",
-    "hideDisclaimer": "གསལ་འགྲེལ་སྦེད་",
-    "selectCurrency": "དངུལ་མཚོན་འདེམས་",
-    "settings": "སྒྲིག་སྟངས་",
-    "showBalances": "ཐོན་སྒོར་སྟོན་",
-    "showDisclaimer": "གསལ་འགྲེལ་སྟོན་",
-    "switchTheme": "དཔེ་བཟོ་: {theme}",
-    "systemPreferencesTheme": "རྒྱུད་ཁོངས་སྒྲིག་སྟངས་",
-    "titleBalance": "ཐོན་སྒོར་",
-    "titleCurrency": "ཕི་ཡཊི་དངུལ་",
-    "titleMisc": "སྣ་ཚོགས་",
-    "titleTheme": "དཔེ་བཟོ་",
-    "turnPhoneHideBalances": "ཁ་པར་འཁོར་ལོག་ནས་སྦེད་"
-  },
-  "helpDialog": {
-    "appVersion": "{AppName} ཐོན་རིམ་",
-    "contactUs": "འབྲེལ་གཏང་",
-    "privacyPolicy": "གསང་བའི་སྲིད་གཞུང་",
-    "termsOfService": "ཞབས་ཞུ་གི་གྲོས་མཐུན་",
-    "title": "རོགས་རམ་"
-  },
-  "history": {
-    "clearHistory": "ལོ་རྒྱུས་བསལ་",
-    "empty": "ཁྱེད་ཀྱི་འབུལ་འགྲོ་ཚུ་ནཱ་ལུ་འབྱུང་།",
-    "emptySearch": "འབུལ་འགྲོ་མ་ཐོབ་",
-    "filterPlaceholder": "ཁ་བྱང་/མཚོན་རྟགས/དབྱེ་བ/བྱིན་རིམ ID གིས་འཚོལ་"
-  },
-  "historyErrorMessages": {
-    "balances": {
-      "liquidityrestrictions": "Account liquidity restrictions prevent withdrawal"
-    },
-    "demeterfarmingplatform": {
-      "insufficientfunds": "Insufficient funds",
-      "insufficientlptokens": "Insufficient liquidity provision tokens",
-      "pooldoesnothaverewards": "Pool does not have rewards"
-    },
-    "generalError": "Something went wrong",
-    "liquidityproxy": {
-      "forbiddenfilter": "Selected liquidity source is not allowed",
-      "slippagenottolerated": "The price impact has exceeded the selected value"
-    },
-    "multicollateralbondingcurvepool": {
-      "pricecalculationfailed": "An error occurred while calculating the price"
-    },
-    "poolxyk": {
-      "calculatedvalueisnotmeetsrequiredboundaries": "Amounts are out of required bounds",
-      "impossibletodecidevalidpairvaluesfromrangeforthispool": "Provided amounts are too diverse",
-      "sourcebalanceisnotlargeenough": "Source balance is not large enough",
-      "targetbalanceisnotlargeenough": "Destination balance is not large enough",
-      "unabletodepositxorlessthanminimum": "XOR lower than the minimum value (0.007)",
-      "zerovalueinamountparameter": "Amount parameter has zero value"
-    },
-    "referrals": {
-      "alreadyhasreferrer": "Account already has a referrer",
-      "referrerinsufficientbalance": "Referrer does not have enough of reserved balance"
-    },
-    "vestedrewards": {
-      "cantcalculatereward": "Failed to perform reward calculation",
-      "norewardsforasset": "There are no rewards for this asset",
-      "rewardssupplyshortage": "Rewards program has already finished"
-    },
-    "xstpool": {
-      "poolalreadyinitializedforpair": "Pool pair already exists",
-      "slippagelimitexceeded": "Slippage tolerance has not met proper limits"
-    }
-  },
-  "importText": "Import",
-  "insufficientBalanceText": "Insufficient {tokenSymbol} balance",
-  "kensetsu": {
-    "addCollateral": "འཇོག་འཐུས་ཁ་སྣོན་",
-    "addCollateralDescription": "གནས་གོང་ལུ་འཇོག་འཐུས་ཧེང་བཀལ་འཇོག་ནས་འབྲིང་ལེན་ཚད་ཡར་འཐོན་བཟོ་ ཡང་ན LTV (loan-to-value) ལེགས་བཟོ་བྱེད། འདིས་རྩིས་སྤྲོད་ཉེན་ཁ་མར་ཕབ་བཏང་",
-    "available": "ཐོབ་ཚུགས་",
-    "availableToBorrow": "འབྲིང་ལེན་ཐོབ་ཚུགས་",
-    "availableToBorrowDescription": "འཇོག་འཐུས་བཞག་པ་དང་བརྒྱུད་ལས་ཡོད་པའི་ལོངས་སྤྱོད་ལུ་གཞིགས་ཏེ་ ད་ལྟོ་གནས་གོང་གི་གནས་སྟངས་ལུ་ཁྱེད་རང་གནས་གོང་ནས་ད་དུང་འཐོབ་ཚུགས་པའི་གྲངས་",
-    "borrowDebt": "འབྲིང་ལེན་",
-    "borrowMore": "ཧེང་བཀལ་འབྲིང་ལེན་",
-    "borrowMoreDescription": "གནས་གོང་ནས་ཐོབ་ཚུགས་པའི་མང་མཐར་ཚུན་ལུ་དངུལ་ཧེང་བཀལ་འབྲིང་ འཇོག་འཐུས་གནས་གོང་གྱིས་ལོངས་སྤྱོད་ཡར་འཐོན་བསྐྱེད་པ་དང་མཉམ་དུ་རྩིས་སྤྲོད་ཉེན་ཁ་ལས་བཀག་",
-    "borrowTax": "འབྲིང་ལེན་དངུལ་ཁང་",
-    "borrowTaxDescription": "འབྲིང་ལེན་གྲངས་ལུ་ {value} དངུལ་ཐོག་གི་དབྱེ་རྩིས་",
-    "closeVault": "གནས་གོང་ ཁ་བསྡམས་",
-    "closeVaultDescription": "ལོངས་སྤྱོད་ལྷག་ལུས་ཚང་མ་ལོག་སྤྲོད་བྱས་ཏེ་འཇོག་འཐུས་ཚང་མ་འབུད་རྗེས་གནས་གོང་འདི་ཁ་བསྡམས་",
-    "collateralDetails": "འཇོག་འཐུས་རྒྱས་བཤད་",
-    "createVault": "འབྲིང་ལེན་གནས་གོང་ཁ་ཕྱེ་",
-    "createVaultAction": "འབྲིང་ལེན་",
-    "createVaultDescription": "གནས་གོང་ནང་འཇོག་འཐུས་འཇོག་ནས་དངུལ་འཐོབ་ དེས་ལོངས་སྤྱོད་སྤྱད་དགོས་པའི་ལས་འགུལ་ཅིག་བཟོཝ་ཨིན་ དེ་ཁྱེད་རང་གིས་དོ་དམ་བྱ་དགོས་",
-    "debtAvailable": "འབྲིང་ལེན་ཐོབ་ཚུགས་",
-    "debtAvailableDescription": "ད་ལྟོའི་འཇོག་འཐུས་གནས་གོང་ལུ་གཞིགས་ཏེ་ འབྲིང་ལེན་ཚད་ལས་མེད་པར་ཁྱེད་རང་གནས་གོང་ནས་ད་དུང་འཐོབ་ཚུགས་པའི་གྲངས་",
-    "debtDetails": "ལོངས་སྤྱོད་རྒྱས་བཤད་",
-    "depositCollateral": "འཇོག་འཐུས་འཇོག་",
-    "disclaimerDescription": "{AppName} བརྒྱུད་དེ་དངུལ་ཐོན་སྒོར་འབྲིང་ལེན་ནི་ཉེན་ཁ་ཆེན་པོ་ཅིག་ཡོད་ ཁྱེད་རང་ཉིད་ཀྱི་བྱེད་མཁན་སྒྲུབ་དགོས་ ཐོན་སྒོར་གནས་གོང་ཚུ་སྤོ་བ་མང་ འབྲིང་ལེན་ཡང་ན་འཇོག་འཐུས་བཀོལ་མི་ཐོན་སྒོར་གྱི་གནས་གོང་བསྒྱུར་བསྐྱོད་ལས་ཕན་གནོད་ཆེ་བ་འབྱུང་སྲིད་",
-    "error": {
-      "borrowMoreThanAvailable": "ཐོབ་ཚུགས་པའི་ཚད་ལས་ལྷག་",
-      "enterBorrow": "འབྲིང་ལེན་གྲངས་བཙུགས་",
-      "enterCollateral": "འཇོག་འཐུས་བཙུགས་",
-      "enterRepayDebt": "དངུལ་ལོག་སྤྲོད་གྲངས་བཙུགས་",
-      "incorrectCollateral": "ཐོན་སྒོར་ཟུང་འབྲེལ་མི་འགྲིག་",
-      "insufficientCollateral": "འཇོག་འཐུས་མི་འདང་",
-      "repayMoreThanDebt": "ལོངས་སྤྱོད་ལས་ལྷག་འབུལ་"
-    },
-    "highLiquidationRisk": "རྩིས་སྤྲོད་ཉེན་ཁ་མཐོ་",
-    "interest": "དངུལ་ཁང་",
-    "interestDescription": "གནས་གོང་ནས་འཐོབ་པའི་དངུལ་གྲངས་ལུ་བརྒྱ་ཆ་ཐོག་གི་ལོ་རིམ་གླ་སྒྲིག། གླ་འདིས་ཉེན་ཁ་དང་ཚོང་རྒྱུས་སྒྱུར་བ་ལུ་དོ་སྣང་བྱེད་",
-    "introDescription": "མཐའ་བཙན་དང་འཇམ་སམ་གྱི་འབྲིང་ལེན/གཡོག་གཏོང་ མཐོང་སྣང་ ཐོབ་། {Kensetsu} འབྲེལ་ལམ་ལུ་གནས་གོང་ཁ་ཕྱེ་",
-    "introTitle": "{Kensetsu} དང་ལེན་གནས་གོང་ཁ་ཕྱེ་",
-    "liquidated": "རྩིས་སྤྲོད་བྱས་",
-    "liquidatedMessage": "རྩིས་སྤྲོད་ {amount} {symbol}",
-    "liquidationClose": "རྩིས་སྤྲོད་ཁ་བསྡམས་",
-    "liquidationPenalty": "རྩིས་སྤྲོད་གླ་སྒྲིག་",
-    "liquidationPenaltyDescription": "འཇོག་འཐུས་གནས་གོང་གདོད་ལས་འོག་སོང་བ་དང་ ལོངས་སྤྱོད་ལོག་སྤྲོད་དགོས་སྐབས་འབྱུང་མི་གླ་སྒྲིག་ཅིག། གླ་འདིས་ཁྱེད་རང་གི་ལོངས་སྤྱོད་བསྡུས་བུ་ཡར་འཐོན་བཟོཝ་ཨིན་",
-    "ltv": "དངུལ་འབྲིང་ལེན་དང་གནས་གོང་ ({LTV})",
-    "ltvDescription": "གནས་གོང་ནས་འཐོབ་པའི་དངུལ་གྲངས་དང་འཇོག་འཐུས་གནས་གོང་གཉིས་ཀྱི་དབྱེ་མཚམས་བརྒྱ་ཆ་ཐོག་སྟོན་པ། {LTV} མཐོ་བ་ཡོད་པས་ཕན་ཐོགས་ཡར་འཐོན་མང་བ་དང་ རྩིས་སྤྲོད་ཉེན་ཁ་ཡར་འཐོན་སྲིད་",
-    "ltvMaxTooltip": "འཇོག་འཐུས་གནས་གོང་སྤྱོད་པའི་ཐོན་སྒོར་གྱི་སྤྱི་ཚད་ལུ་གཞིགས་ཏེ་འབྲིང་ལེན་གནས་གོང་གིས་ཐོབ་ཚུགས་པའི་མང་མཐར་གྲངས་",
-    "maxAvailableToBorrow": "འབྲིང་ལེན་ཐོབ་ཚུགས་པའི་མང་མཐར་",
-    "maxAvailableToBorrowDescription": "འཇོག་འཐུས་གནས་གོང་ལྟར་ཁྱེད་རང་གནས་གོང་ནས་འཐོབ་ཚུགས་པའི་མང་མཐར་གྲངས། འཇོག་འཐུས་གནས་གོང་སྒྱུར་བ་དང་མཉམ་དུ་ཚད་དེ་སྒྱུར་བ་ཡོད་",
-    "minDepositCollateral": "ཉུང་མཐའི་འཇོག་འཐུས་འཇོག་",
-    "minDepositCollateralDescription": "གནས་གོང་ཁ་ཕྱེ་ནི་ལུ་དགོས་པའི་ཐོན་སྒོར་ཉུང་མཐའ་གྲངས། འགོ་རུང་འཇོག་འཐུས་འདིས་འབྲིང་ལེན་དོན་ལུ་ཐོན་སྒོར་བདེ་འཇགས་བཟོཝ་ཨིན་",
-    "openSwap": "བརྗེ་སྤོར་ཁ་ཕྱེ་",
-    "outstandingDebt": "ལོངས་སྤྱོད་ལྷག་ལུས་དངུལ་",
-    "outstandingDebtDescription": "གནས་གོང་ནས་འཐོབ་པའི་དངུལ་གྲངས་དང་དངུལ་ཁང་བསྡུས་མཐུན་བཅས་དེ་ལས་ད་ལྟོ་ལུས་མི་ལོངས་སྤྱོད་བསྡུས་བུ། གནས་གོང་ཁ་བསྡམས་ནིའམ་ LTV ལེགས་བཟོ་བྱེད་ནིའི་དོན་ལུ་དེ་ལོག་སྤྲོད་དགོས།",
-    "overallAvailable": "སྤྱི་བསྡོམས་ཐོབ་ཚུགས་",
-    "overallAvailableDescription": "{Kensetsu} ལས་སྤྱོད་ནང་འབྲིང་ལེན་ལུ་ཐོབ་ཚུགས་པའི་དངུལ་གྲངས་བསྡོམས་",
-    "overallBadDebt": "འཐུས་མེད་ལོངས་སྤྱོད་",
-    "overallBadDebtDescription": "འབྲིང་ལེན་པའི་སྲོལ་མིན་སྐྱོན་དང་འཇོག་འཐུས་མི་འདང་བ་ལས་ལོངས་སྤྱོད་ལོག་སྤྲོད་མ་བཏུབ་པའི་ཆ་ཤས་",
-    "overallTotalCollateral": "སྤྱི་བསྡོམས་འཇོག་འཐུས་",
-    "overallTotalCollateralDescription": "{Kensetsu} ལས་སྤྱོད་ནང་འབྲིང་ལེན་པ་ཚུ་གིས་གནས་གོང་ལུ་འཇོག་པའི་ཐོན་སྒོར་གྲངས་བསྡོམས་",
-    "overallTotalDebt": "སྤྱི་བསྡོམས་ལོངས་སྤྱོད་",
-    "overallTotalDebtDescription": "{Kensetsu} ལས་སྤྱོད་ནང་ཡོད་མི་གནས་གོང་ཚུ་གི་ལོངས་སྤྱོད་ལྷག་ལུས་བསྡོམས་",
-    "positionHistory": "གནས་གོང་ལོ་རྒྱུས་",
-    "positionInfo": "གནས་གོང་བརྡ་དོན་",
-    "positionSafe": "གནས་གོང་བདེ་འཇགས་",
-    "readMore": "མང་བ་ལྟ་",
-    "reopen": "ལོག་ཁ་ཕྱེ་",
-    "repayDebt": "ལོངས་སྤྱོད་ལོག་སྤྲོད་",
-    "repayDebtDescription": "འབྲིང་ལེན་དངུལ་ལས་ལོངས་སྤྱོད་ལྷག་ལུས་མར་ཕབ་བཟོ་ དེས་དངུལ་ཁང་གླ་སྒྲིག་མར་མིག་བཟོ་དང་ རྩིས་སྤྲོད་ཉེན་ཁ་མར་ཕབ་བཏང་",
-    "requiredAmountWithSlippage": "སྦྱོར་ལྡན་དང་བཅས་དགོས་མཁོ་གྲངས་",
-    "requiredAmountWithSlippageDescription": "གནས་གོང་ཁ་བསྡམས་དོན་ལུ་ལེགས་ཤོམ་བྱེད་ནི་ལས་ སྦྱོར་ལྡན་གྱིས་གྲངས་སྐྱོན་མངོན་སྲིད་མི་རིགས་ དེ་ལས་ {amount} ལས་དེ་ཙམ་མང་བའི་ {tokenSymbol} ཐོབ་དགོས། ཟུར་གྲངས་གཅིག་དགོས་པས་ ཐོན་སྒོར་ཚུ་ {tokenSymbol} ལུ་བརྗེ་སྤོར་འབད་",
-    "status": {
-      "Closed": "ཁ་བསྡམས་",
-      "Liquidated": "རྩིས་སྤྲོད་བྱས་",
-      "Opened": "ཤུགས་ལྡན་"
-    },
-    "totalCollateral": "འཇོག་འཐུས་བསྡོམས་",
-    "totalCollateralDescription": "ཁྱེད་རང་གནས་གོང་ནང་ད་ལྟོ་འཇོག་བཞག་ཡོད་པའི་ཐོན་སྒོར་བསྡོམས་གྲངས། འདིས་འབྲིང་ལེན་ཚད་དང་རྩིས་སྤྲོད་ཉེན་ཁ་ལུ་ཕན་གནོད་ཡོད་",
-    "totalCollateralReturned": "ལོག་ཐོབ་འཇོག་འཐུས་བསྡོམས་",
-    "totalCollateralReturnedDescription": "གནས་གོང་ཁ་བསྡམས་རྗེས་ཁྱེད་རང་ལུ་ལོག་སྤྲོད་བྱས་པའི་ཐོན་སྒོར་བསྡོམས་གྲངས། ལྷག་ལུས་འཇོག་འཐུས་དང་བསྡོམས་",
-    "yourCollateral": "ཁྱེད་རང་གི་འཇོག་འཐུས་",
-    "yourCollateralDescription": "གནས་གོང་ལུ་འཇོག་པའི་ཐོན་ཁུངས་ཚུ་དངུལ་འཐོབ་དོན་ལུ་བདེ་འཇགས་བཟོ་མི། LTV བསྲུངས་མ་ཚུགས་པ་ཚུལ་ལུ་ལྡུམ་མི་གིས་རྩིས་སྤྲོད་བྱ་སྲིད་",
-    "yourDebt": "ཁྱེད་རང་གི་ལོངས་སྤྱོད་",
-    "yourDebtDescription": "ཁྱེད་རང་གནས་གོང་ནང་ད་ལྟོ་ཡོད་པའི་ལོངས་སྤྱོད་བསྡུས་བུ་བསྡོམས་ འཐོབ་པའི་དངུལ་གྲངས་དང་དངུལ་ཁང་བསྡུས་མཐུན་བཅས། དུས་ཚོད་འགྱོ་བའི་ཐོག་ལས་གྲངས་དེ་ཡར་འཐོན་སྲིད་",
-    "yourDebtTokenBalance": "ཁྱེད་རང་གི་ {tokenSymbol} གནས་ལུགས་"
-  },
-  "lastText": "Last",
-  "learnMoreText": "Learn more",
-  "light": "Light",
-  "locationText": "Location",
-  "logoutText": "Log out",
-  "mainMenu": {
-    "About": "About",
-    "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-    "Bridge": "@:bridgeText",
-    "Burn": "@:pageTitle.Burn",
-    "Explore/Container": "Explore",
-    "Farming": "Farming",
-    "OrderBook": "Trade",
-    "Pool": "Pool",
-    "Rewards": "Rewards",
-    "SoraCard": "{Sora} Card",
-    "StakingContainer": "Staking",
-    "Stats": "Statistics",
-    "Swap": "Swap",
-    "VaultsContainer": "@:pageTitle.Vaults",
-    "Wallet": "Account"
-  },
-  "marketAlgorithmText": "Market algorithm",
-  "marketText": "ཚོང་ཁྲོམ་",
-  "maxAmountText": "max. amount",
-  "memorandum": "{AppName} Memorandum and Terms of Services",
-  "minAmountText": "min. amount",
-  "mobilePopup": {
-    "header": "Download {Sora} Wallet with {polkaswapHighlight} features",
-    "info": "Swap tokens from different networks - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Provide liquidity pool and earn % from exchange fees.",
-    "sideMenu": "Get {Sora} Wallet"
-  },
-  "moonpay": {
     "buttons": {
-      "buy": "ཐོན་སྒོར་ཉོ་",
-      "history": "ཉོ་སྒྲིག་ལོ་རྒྱུས་",
-      "transfer": "ཟམ་པོ་འགོ་བཙུགས་",
-      "view": "ཟམ་པོའི་འབུལ་འགྲོ་ལྟ་"
+        "chooseAToken": "ཐོན་སྒོར་འདེམས་",
+        "chooseToken": "ཐོན་སྒོར་འདེམས་",
+        "chooseTokens": "ཐོན་སྒོར་ཚུ་འདེམས་",
+        "enterAmount": "བསྡོམས་བྲིས་",
+        "max": "སྦོམ་"
     },
-    "confirmations": {
-      "txReady": "ཟམ་པོའི་འབུལ་འགྲོ་གྲ་སྒྲིག་"
+    "calculatingText": "རྩིས་བཏང་",
+    "cancelText": "ཆ་མེད་བཟོ་",
+    "changeAccountText": "རྩིས་ཐོ་བསྒྱུར་བཅོས་འབད།",
+    "changeNetworkText": "དངུལ་ཁུག་ནང་ཡོངས་འབྲེལ་བསྒྱུར་བཅོས་འབད།",
+    "closeText": "ཁ་བསྡམས་",
+    "code": {
+        "allowanceError": "པར་ཆས་དང་བརའུསར་གྱི་ཆོག་མཆན་ཞིབ་བཤེར་བྱོས་",
+        "allowanceRequest": "“ཆོག་པ” འདི་གནང་ནས་པར་ཆས་ལུ་འཛུལ་",
+        "camera": "པར་ཆས་",
+        "download": "QR ཕབ་ལེན་",
+        "import": "པར་འདྲ་བཙུགས་",
+        "invalid": "QR ནུས་མེད་",
+        "receive": "ཐོབ་",
+        "scan": "པར་ཆས་ཀྱིས་ཞིབ་ལྟ་",
+        "upload": "QR ཞིབ་ལྟ་"
+    },
+    "collapseText": "བརྡིབ།",
+    "comingSoonText": "འཕྲལ་མགྱོགས་རང་འོང་ནི།",
+    "confirmNextTxFailure": {
+        "button": "ཨིན་ ཉེན་ཁ་འདི་ཧ་གོ་ཡི།",
+        "header": "དོ་སྣང་།",
+        "info": "ཁྱོད་ཀྱི་ཨེགསི་ཨོ་ཨར་ལྷག་ལུས་འདི་ ཚོང་འབྲེལ་འདི་གི་ཤུལ་ལས་ {fee} ཨེགསི་ཨོ་ཨར་ལས་ཉུངམ་འོང་། ཁྱོད་ཀྱིས་ གཞན་མི་ཚོང་འབྲེལ་གྱི་དོན་ལུ་ ཡོངས་འབྲེལ་གྱི་འཐུས་སྤྲོད་མི་ཚུགས།",
+        "payoff": "ཁྱོད་ཀྱིས་ ཡོངས་འབྲེལ་གཞན་མི་ཚུ་ལས་ ཨེགསི་ཨོ་ཨར་ཐོབ་ནིའི་དོན་ལུ་ ཟམ་འདི་ལག་ལེན་འཐབ་དགོཔ་ཨིན་ གཞན་མི་ {Sora} རྩིས་ཐོ་ལས་ ཨེགསི་ཨོ་ཨར་གཏང་དགོཔ་ཨིན་ ཡང་ན་ ཁྱོད་རའི་རྩིས་ཐོ་ནང་ལུ་ ཧེ་མ་ལས་རང་ ཨེགསི་ཨོ་ཨར་ལུ་ཡོད་པའི་ རྟགས་མཚན་གཞན་མི་ཅིག་ བརྗེ་སོར་འབད་དགོཔ་ཨིན།"
+    },
+    "confirmSupply": {
+        "outputDescription": "ཕྱི་འབྱུང་གྲངས་ཚད་འཇམ་སམ་དཔྱད་བྱས་པ་ཨིན། གོང་ཚད་ {slippageTolerance}% ལས་མང་སྒྱུར་བ་ཡོད་ཚེ་ ཁྱེད་ཀྱི་འབུལ་འགྲོ་ལོག་པར་འགྱུར་",
+        "title": "ཁྱེད་རང་གི་པུལ་ཆ་ཤས་"
+    },
+    "confirmText": "ངེས་གཏན་བཟོ་",
+    "confirmTransactionText": "ཚོང་འབྲེལ་ངེས་དཔྱད་འབད།",
+    "connectedAccount": "རྩིས་ཐོ་མཐུད་ཡོདཔ།",
+    "connectedText": "མཐུད་ཡོད།",
+    "connectEthereumWalletText": "{Ethereum} དངུལ་ཁུག་མཐུད།",
+    "connection": {
+        "action": {
+            "learnMore": "དངུལ་ཁུག་མཐུད་ལམ་གྱི་སྐོར་ལས་ཁ་གསལ་ཤེས་དགོ།",
+            "refresh": "གསརཔ་བཟོ།"
+        },
+        "disclaimer": "དྲན་འཛིན་འབད་གནང་ དངུལ་ཁུག་ལ་ལོ་ཅིག་ལུ་ རྒྱབ་སྐྱོར་ཆ་ཚང་འབད་མི་ཚུགས།",
+        "internalText": "ཁྱོད་ཀྱིས་ ཁྱོད་རའི་ {wallet} རྩིས་ཐོ་དང་གཅིག་ཁར་མཐུད་ནིའི་དོན་ལུ་ ད་ལྟོ་ཡོད་པའི་ {Sora} རྩིས་ཐོ་ཅིག་གསར་བསྐྲུན་ཡང་ན་ནང་འདྲེན་འབད་ཚུགས། {wallet} གིས་གསོག་འཇོག་འབད་ཡོད་པའི་གནད་སྡུད་ཆ་མཉམ་ ནང་འཁོད་གོང་འཕེལ་ཅན་གྱི་གསང་བཟོ་ལག་ལེན་འཐབ་ཐོག་ལས་ གསང་བཟོ་འབད་ཡོདཔ་ཨིན།",
+        "internalTitle": "{wallet} དང་མཐུད།",
+        "list": {
+            "extensions": "རྒྱ་བསྐྱེད་ཚུ།",
+            "integrated": "གཅིག་བསྡུས།"
+        },
+        "selectAccount": "ལཱ་འབད་ནིའི་དོན་ལུ་ རྩིས་ཐོ་སེལ་འཐུ་འབད།",
+        "wallet": {
+            "connected": "མཐུད་ཡོད།",
+            "install": "གཞི་བཙུགས།",
+            "recommended": "འོས་སྦྱོར་འབད་ཡོདཔ།"
+        }
+    },
+    "connectWalletText": "རྩིས་ཐོ་མཐུད་",
+    "connectWalletTextTooltip": "{PolkadotJs} དང་གཅིག་ཁར་ {Sora} ཡོངས་འབྲེལ་ལུ་མཐུད།",
+    "continueText": "མུ་མཐུད་",
+    "copiedText": "འདྲ་བཤུས་འབད་ཡོདཔ།",
+    "copiedWithValue": "{value} འདི་འདྲ་བཤུས་བརྐྱབས་ཡོདཔ་ཨིན་ན!",
+    "copyPhraseText": "ཆོག་ཡིག་འདྲ་བཤུས།",
+    "copyWithValue": "འདྲ་བཤུས།{value}",
+    "createPair": {
+        "deposit": "བཙུགས༌བཞག",
+        "firstLiquidityProvider": "ཁྱོད་ དངུལ་འབབ་བྱིན་མི་འགོ་དང་པ་ཅིག་ཨིན།",
+        "firstLiquidityProviderInfo": "ཁྱོད་ཀྱིས་ཁ་སྐོང་བརྐྱབ་མི་ ཊོ་ཀེན་ཚུ་གི་ཆ་ཚད་འདི་གིས་ ཆུ་རྫིང་འདི་གི་གོང་ཚད་གཞི་སྒྲིག་འབད་འོང་།<br/>ཁྱོད་ཀྱིས་ གོང་ཚད་ལུ་དགའ་ཚརཝ་ཅིག་ བསྐྱར་ཞིབ་འབད་ནི་ལུ་ བཀྲམ་སྤེལ་ལུ་ཨེབ་གཏང་འབད།",
+        "firstSecondPoolTokens": "__པི་ཨེཆ་__༠__-__པི་ཨེཆ་__༡__ ཆུ་རྫིང་།",
+        "pricePool": "གོང་ཚད་དང་འཐུས།",
+        "shareOfPool": "ཆུ་རྫིང་གི་བགོ་བཤའ།",
+        "supply": "མཁོ་སྤྲོད།",
+        "yourPosition": "ཁྱོད་ཀྱི་གནས་ལུགས།"
+    },
+    "createToken": {
+        "confirmTokenTitleCommon": "ཊོ་ཀེན་གསར་བསྐྲུན་འབད།",
+        "confirmTokenTitleNFT": "ཨེན་ཨེཕ་ཊི་གསར་བསྐྲུན་འབད།",
+        "CreateSimpleToken": "ཊོ་ཀེན།",
+        "divisible": {
+            "desc": "དཔྱ་རྩིས་ཆ་ཤས་ལུ་བགོ་བཤའ་རྐྱབ་ཚུགས་པའི་ ཨེན་ཨེཕ་ཊི་གི་ལྕོགས་གྲུབ། བགོ་བཤའ་རྐྱབ་བཏུབ་པའི་རྒྱུ་དངོས་ཚུ་དང་གཅིག་ཁར་རྐྱངམ་ཅིག་ལཱ་འབདཝ་ཨིན།",
+            "placeholder": "བགོ་བཤའ་རྐྱབ་བཏུབ།"
+        },
+        "enterName": "ཊོ་ཀེན་མིང་བཙུགས།",
+        "enterSupply": "ཊོ་ཀེན་བཀྲམ་སྤེལ་བཙུགས།",
+        "enterSymbol": "ཊོ་ཀེན་བརྡ་མཚོན་བཙུགས།",
+        "enterTokenDescription": "འགྲེལ་བཤད་བཙུགས།",
+        "error": "{symbol} ཊོ་ཀེན་གསར་བསྐྲུན་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+        "extensibleSupply": {
+            "desc": "ཊོ་ཀེན་མངམ་བཟོ་ཚུགས་པའི་ལྕོགས་གྲུབ།",
+            "placeholder": "རྒྱ་སྐྱེད་འབད་བཏུབ་པའི་མཁོ་སྤྲོད།"
+        },
+        "nft": {
+            "description": {
+                "placeholder": "འགྲེལ་བཤད།"
+            },
+            "image": {
+                "placeholderBadSource": "ཡིག་སྣོད་འདི་ ལས་སྦྱོར་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+                "placeholderBadSourceAddition": "ཡང་ན་ ད་ལྟོ་ཡང་ IPFS ལུ་སྐྱེལ་བཙུགས་མ་འབད་བས།",
+                "placeholderFileLimit": "ཡིག་སྣོད་ཀྱི་ཚད་འདི་ {value}mb གི་ཚད་ལས་བརྒལ་ཡོདཔ་ཨིན།",
+                "placeholderNoImage": "ཡིག་སྣོད་འདི་ འབྲེལ་ལམ་ཅིག་ཐོ་བཀོད་འབད་ཐོག་ལས་ ཡང་ན་ ཉེ་གནས་གསོག་འཇོག་ནང་ལས་ གདམ་ཁ་རྐྱབས་ཐོག་ལས་ སྐྱེལ་བཙུགས་འབད།"
+            },
+            "link": {
+                "copyLink": "འབྲེལ་མཐུད་འདྲ་བཤུས།",
+                "placeholder": "IPFS འབྲེལ་མཐུད།",
+                "tooltip": "IPFS འདི་ ཡིག་སྣོད་ཚུ་གསོག་འཇོག་དང་འཛུལ་སྤྱོད་འབད་ནིའི་དོན་ལུ་ བཀྲམ་སྤེལ་འབད་ཡོད་པའི་རིམ་ལུགས་ཅིག་ཨིནམ་ལས་ ལས་སྡེ་གཅིག་གིས་ འཛིན་སྐྱོང་མ་འཐབ་མི་ ས་གནས་ལེ་ཤ་ཅིག་ལས་ ཡིག་སྣོད་ཚུ་འཛུལ་སྤྱོད་འབད་ཚུགས།"
+            },
+            "source": {
+                "label": "ཡོང་ཁུངས།",
+                "limit": "ཡིག་སྣོད་གཞན་གདམ་ཁ་རྐྱབས།",
+                "value": "ཉེ་གནས་ཡིག་སྣོད་ཚུ།"
+            },
+            "supply": {
+                "desc": "ཁྱོད་ཀྱིས་ NFTs ག་དེམ་ཅིག་ཐོབ་ནི་ཨིན་ན།",
+                "placeholder": "ཊོ་ཀེན་བཀྲམ་སྤེལ།",
+                "quantity": "གྲངས་ཚད།"
+            }
+        },
+        "provideContent": "ནང་དོན་བྱིན།",
+        "success": {
+            "desc": "{symbol} ཊོ་ཀེན་གསར་བསྐྲུན་འབད།",
+            "title": "ཚོང་འབྲེལ་ཕུལ་ཡོདཔ།"
+        },
+        "titleCommon": "གསར་བསྐྲུན་འབད།",
+        "tokenName": {
+            "desc": "འདི་ ཊོ་ཀེན་གྱི་མིང་ཅིག་ཨིན། ཁྱོད་ཀྱིས་ སེལ་འཐུའི་དོན་ལུ་ ཡིག་འབྲུ་༡ ལས་༣༣ ཚུན་ལག་ལེན་འཐབ་བཏུབ།",
+            "placeholder": "ཊོ་ཀེན་མིང་།"
+        },
+        "tokenSupply": {
+            "desc": "ཁྱོད་ཀྱིས་ བཟོ་བའི་སྐབས་ རྟགས་མཚན་འདི་ཚུ་ཐོབ་འོང་།",
+            "placeholder": "ཊོ་ཀེན་བཀྲམ་སྤེལ།"
+        },
+        "tokenSymbol": {
+            "desc": "འདི་ཊོ་ཀེན་གྱི་དོན་ལུ་ངོས་འཛིན་འབད་མི་ཅིག་ཨིན། ཁྱོད་ཀྱིས་ སེལ་འཐུའི་དོན་ལུ་ ཡིག་འབྲུ་༡ ལས་༧ ཚུན་ལག་ལེན་འཐབ་བཏུབ།",
+            "placeholder": "ཊོ་ཀེན་མཚོན་རྟགས།"
+        }
+    },
+    "createTokenText": "གསར་བསྐྲུན་འབད།",
+    "createTokenTextNFT": "ཨེན་ཨེཕ་ཊི་གསར་བསྐྲུན་འབད།",
+    "currencyDialog": {
+        "currency": "དངུལ་ལོར།",
+        "searchPlaceholder": "དངུལ་གྱི་མིང་ ཡང་ན་ བརྡ་མཚོན་ཐོག་ལས་ འཚོལ་ཞིབ་འབད།"
+    },
+    "customisePageText": "ཤོག་ལེབ་སྲོལ་སྒྲིག་འབད།",
+    "dark": "གནགཔོ།",
+    "demeterFarming": {
+        "actions": {
+            "add": "ཧེང་བཀལ་སྡེབ་འབུལ་",
+            "claim": "རྙོག་འདུག་འཐོབ་",
+            "remove": "སྡེབ་འབུལ་འབུད་",
+            "start": "སྡེབ་འབུལ་འགོ་བཙུགས་"
+        },
+        "amountAdd": "སྡེབ་འབུལ་གྲངས་",
+        "amountRemove": "སྡེབ་འབུལ་འབུད་གྲངས་",
+        "calculator": "རྩིས་འཕྲུལ་",
+        "info": {
+            "earned": "{symbol} ཐོབ་ཡོད་",
+            "fee": "གླ་སྒྲིག་",
+            "feeTooltip": "འཇོག་གླ་སྒྲིག་དེ་ ཁྱེད་རང་གི་སྡེབ་འབུལ་གྲངས་ལུ་སྤྲོད་ཡོད་",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "ཁྱེད་རང་གི་པུལ་ཐོག་སྡེབ་འབུལ་བསྡོམས་",
+            "poolShareWillBe": "ཁྱེད་རང་གི་པུལ་ཐོག་སྡེབ་འབུལ་བསྡོམས་དེ་",
+            "rewardToken": "རྙོག་འདུག་ཐོན་སྒོར་",
+            "stake": "ཁྱེད་རང་གི {symbol} སྡེབ་འབུལ་བྱས་པ་",
+            "stakeWillBe": "ཁྱེད་རང་གི {symbol} སྡེབ་འབུལ་དེ་",
+            "totalLiquidityLocked": "ལྟོས་སྤྱོད་བསྡོམས་སྡམས་པ་"
+        },
+        "poweredBy": "Demeter Farming གིས་སྐྱེལ་བཀོལ་",
+        "results": "གྲུབ་འབྲས་",
+        "rewards": "{symbol} རྙོག་འདུག་",
+        "staking": {
+            "active": "སྡེབ་འབུལ་ཤུགས་ལྡན་",
+            "inactive": "ཧེང་བཀལ་རྙོག་འདུག་ཐོབ་ནི་ལུ་སྡེབ་འབུལ་",
+            "stopped": "སྡེབ་འབུལ་མཚམས་བཞག་"
+        }
+    },
+    "desktop": {
+        "accountMnemonic": {
+            "placeholder": "Mnemonic ཚིག་གྲུབ།"
+        },
+        "accountName": {
+            "desc": "འདི་ཁྱོད་ཀྱི་རྩིས་ཐོའི་མིང་ཨིན། {AppName} ནང་ཁྱོད་ལུ་རྐྱངམ་ཅིག་མཐོང་ཚུགས།",
+            "placeholder": "རྩིས་ཐོའི་མིང་།"
+        },
+        "addAccount": "རྩིས་ཐོ་ཁ་སྐོང་འབད།",
+        "assetsAtRiskText": "ཉེན་ཁ་ཡོད་པའི་རྒྱུ་དངོས་ཚུ!",
+        "button": {
+            "createAccount": "རྩིས་ཐོ་གསར་བསྐྲུན་འབད།",
+            "importAccount": "ནང་འདྲེན་རྩིས་ཐོ།",
+            "next": "གོམ་པ་ཤུལ་མམ།",
+            "skip": "གོམ་འགྱོ།"
+        },
+        "confirmPassword": {
+            "placeholder": "ཆོག་ཡིག་ངེས་དཔྱད་འབད།"
+        },
+        "confirmSeedText": "གོ་རིམ་ངེས་བདེན་ནང་ཡོད་མི་མིང་ཚིག་ཚུ་ཨེབ་གཏང་འབད་ཐོག་ལས་ ཆོག་ཡིག་ངེས་དཔྱད་འབད།",
+        "deleteAccountText": "རྩིས་ཐོ་འདི་ སོན་ཚིག་ཕྲད་མེད་པར་ .json ཡིག་སྣོད་ ཡང་ན་ རྒྱ་བསྐྱེད་གཅིག་ནང་ གསོག་འཇོག་འབད་དེ་ཡོད་པ་ཅིན་ ལོག་ཐོབ་མི་ཚུགས། ཁྱོད་ཕྱིར་བསྐྱོད་འབད་འོང་།",
+        "dialog": {
+            "confirmButton": "ཚོང་འབྲེལ།",
+            "confirmTitle": "ཆོག་ཡིག་དང་གཅིག་ཁར་ངེས་དཔྱད་འབད།"
+        },
+        "errorMessages": {
+            "alreadyImported": "རྩིས་ཐོ་ཧེ་མ་ལས་ནང་འདྲེན་འབད་ཡོདཔ།{address}",
+            "jsonFields": "JSON ཡིག་སྣོད་ལུ་དགོས་མཁོ་ཡོད་པའི་ས་སྒོ་ཚུ་མེད།",
+            "mnemonic": "ནུས་མེད་ bip39 དྲན་འཛིན་གསལ་བཀོད་འབད་ཡོདཔ།",
+            "mnemonicLength": "དྲན་འཛིན་ནང་ {number} མིང་ཚིག་ཚུ་འོང་དགོ།",
+            "password": "ཆོག་ཡིག་མི་མཐུན་པས།",
+            "passwords": "ཆོག་ཡིག་ཚུ་མཐུན་སྒྲིག་མ་འབད་བས།"
+        },
+        "errorMnemonicText": "ཆོག་ཡིག་གོ་རིམ་འཛོལ་བ།",
+        "exportJsonText": "ཁྱོད་ཀྱིས་ཨ་རྟག་རང་ {JSON} ཡིག་སྣོད་འདི་ནང་འདྲེན་འབད་ཐོག་ལས་ ཁྱོད་རའི་རྩིས་ཐོ་འདི་སླར་གསོ་འབད་ཚུགས། ག་ལུ་ཡང་བརྗེ་སོར་མ་འབད། གསང་བཟོ་འབད་དེ་ ཉེན་སྲུང་དང་ལྡནམ་སྦེ་ གསོག་འཇོག་འབད།",
+        "exportOptionText": "རྩིས་ཐོ་སོར་ཆུད་ཀྱི་དོན་ལུ་ {JSON} ཡིག་སྣོད་ཕྱིར་འདྲེན་འབད།",
+        "exportTutorialsText": "སློབ་སྟོན་ཚུ་ཕྱིར་འདྲེན་འབད་ནི།",
+        "heading": {
+            "accountDetailsTitle": "རྩིས་ཁྲའི་ཁ་གསལ།",
+            "confirmSeedTitle": "ཆོག་ཡིག་ངེས་དཔྱད་འབད།",
+            "importTitle": "ནང་འདྲེན་རྩིས་ཐོ།",
+            "seedPhraseTitle": "གསང་ཚིག་།"
+        },
+        "importSteps": {
+            "exportAccount": "{JSON} ཡིག་སྣོད་ཕྱིར་འདྲེན་འབད།",
+            "selectAccount": "ཁྱོད་ཀྱིས་ཕྱིར་འདྲེན་འབད་ནི་ཨིན་མི་རྩིས་ཐོ་འདི་སེལ་འཐུ་འབད།",
+            "selectWallet": "ཁྱོད་རའི་ ད་ལྟོ་ཡོད་པའི་རྩིས་ཐོ་(ཚུ་)དང་གཅིག་ཁར་ དངུལ་ཁུག་ཁ་ཕྱེ།"
+        },
+        "password": {
+            "desc": "ཁྱོད་ཀྱིས་ ཉེན་སྲུང་ལེགས་ཤོམ་གྱི་དོན་ལུ་ གཞན་དང་མ་འདྲ་བའི་ཆོག་ཡིག་སྒྲིང་སྒྲིང་ཅིག་ལག་ལེན་འཐབ་དོ་ཡོདཔ་ངེས་གཏན་བཟོ (ཉུང་མཐའ་ཡིག་འབྲུ་༨)",
+            "placeholder": "གསང་ཚིག།"
+        },
+        "seedAdviceAdditionText": "ཁྱོད་ཀྱི་ཆོག་ཡིག་འདི་ མི་གཅིག་གིས་ ཁྱོད་ལུ་དྲིས་པ་ཅིན་ ཁྱོད་ལུ་ མགོ་སྐོར་རྐྱབ་སྟེ་ ཁྱོད་ཀྱི་རྒྱུ་དངོས་ཚུ་ ཨརཝ་བརྐུ་ནི་གི་ དཔའ་བཅམ་འོང་།",
+        "seedAdviceAdditionTitle": "ཁྱོད་ཀྱི་ཆོག་ཡིག་འདི་ ག་ལུ་ཡང་ ནམ་ཡང་ བརྗེ་སོར་མ་འབད།",
+        "seedAdviceText": "མིང་ཚིག་༡༢ ཡོད་པའི་ཆོག་ཡིག་འདི་ ཁྱོད་རའི་ {Sora} རྩིས་ཐོ་ལུ་འཛུལ་སྤྱོད་འབད་མ་ཚུགས་པའི་གནས་སྟངས་ནང་ ཁྱོད་རའི་ {Sora} རྩིས་ཐོ་ལུ་འཛུལ་སྤྱོད་ལོག་ཐོབ་ནིའི་དོན་ལུ་ སྒེར་གྱི་ལྡེ་མིག་ཨིན། གོང་ལུ་མཐོང་མི་གོ་རིམ་ངེས་བདེན་ནང་ ཉེན་སྲུང་དང་ལྡནམ་སྦེ་ གསོག་འཇོག་འབད།",
+        "welcome": {
+            "createAccount": "རྩིས་ཐོ་གསར་བསྐྲུན་འབད།",
+            "header": "{AppName} ལུ་ཕེབས་བསུ་ཞུ།",
+            "headline": "ཁྱོད་ཀྱི་རྩིས་ཐོ་གཞི་སྒྲིག་འབད་གེ།",
+            "importAccount": "ནང་འདྲེན་རྩིས་ཐོ།",
+            "text": "ཁྱོད་རའི་ {Sora} ཡོངས་འབྲེལ་རྩིས་ཐོ་གསར་བསྐྲུན་འབད་ ཡང་ན་ མནི་མོ་ནིག་ཚིག་ཕྲད་ ཡང་ན་ .json ནང་འདྲེན་ལག་ལེན་འཐབ་སྟེ་ རྙིངམ་ཚུ་ནང་ ནང་བསྐྱོད་འབད། འདི་གིས་ ཁྱོད་ལུ་ {Sora} ཡོངས་འབྲེལ་ནང་ ཚོང་འབྲེལ་ཚུ་ ཉེན་སྲུང་དང་ལྡནམ་སྦེ་ མིང་རྟགས་བཀོད་ནི་དང་ རྒྱུ་དངོས་ཚུ་ འཛིན་སྐྱོང་འཐབ་བཅུགཔ་ཨིན།"
+        }
+    },
+    "dexSettings": {
+        "marketAlgorithm": "@.upper:marketཨཱལ་གོ་རི་དམ་ཚིག་ཡིག།",
+        "marketAlgorithms": {
+            "SMART": "{smartAlgorithm} དངུལ་གྱི་ལམ་ལུགས་འདི་གིས་ འཐོབ་ཚུགས་པའི་ཚོང་ཁང་ཆ་མཉམ་ལས་ གོང་ཚད་གདམ་ཁ་དྲག་ཤོས་རྐྱངམ་ཅིག་མཉམ་སྡེབ་འབད་དེ་ ཚོང་འབྲེལ་གང་རུང་ཅིག་གི་དོན་ལུ་ གོང་ཚད་དྲག་ཤོས་འདི་ངེས་གཏན་བཟོཝ་ཨིན། ཐོབ་ཚུགས་པའི་སྐབས་ ཊོ་ཀེན་བོནཌིང་གུག་ཀྱོག་ ({tbcAlgorithm}) འདི་ རྒྱུ་དངོས་གོང་ཚད་འདི་ འབྱུང་ཁུངས་གཞན་ཚུ་ལས་ གོང་ཚད་མཐོ་དྲགས་སྦེ་ཡོདཔ་ལས་ {xycAlgorithm} ཆུ་རྫིང་འདི་ལག་ལེན་འཐབ་ཨིན།",
+            "TBC": "{tbcAlgorithm} — ཊོ་ཀེན་བོནཌིང་གུག་ཀྱོག་ལས་རྐྱངམ་ཅིག་ཉོཝ་ (གཞི་རིམ་ཁྲོམ་ར)། གོང་ཚད་འདི་ {xycAlgorithm} ཆུ་རྫིང་ (secondary Market) དང་ཕྱདཔ་ད་ ལེགས་ཤོམ་མེདཔ་འགྱོ་ནི་གི་ འོས་འབབ་ཡོད་རུང་ བཀྲམ་སྤེལ་འབད་མི་ ཁེ་ཕན་ཚུ་ལས་ ཐོབ་མི་ གནས་གོང་འདི་ དུས་ཚོད་དང་འཁྲིལ་ཏེ་ ལེགས་ཤོམ་འགྱོ་འོང་།",
+            "XYK": "{xycAlgorithm} — ཨེགསི་ཝའི་ཀེ་ ཆུ་རྫིང་ (གཉིས་པ་ཁྲོམ་ར) ལས་རྐྱངམ་ཅིག་ཉོཝ་ཨིན། སྔར་སྲོལ་གྱི་ཨེགསི་ཝའི་ཀེ་ཆུ་རྫིང་བརྗེ་སོར་།"
+        },
+        "marketAlgorithmTooltip": {
+            "main": " - གཞི་རིམ་ཚོང་ཁང་ (ཊི་བི་སི་) དང་ གཞི་རིམ་ཚོང་ཁང་ (ཨེགསི་ཝའི་ཀེ་) ཡང་ན་ བྱིན་ཡོད་པའི་ཚོང་འབྲེལ་གང་རུང་ཅིག་གི་དོན་ལུ་ གོང་ཚད་དྲག་ཤོས་ངེས་གཏན་བཟོ་ནིའི་དོན་ལུ་ མཉམ་སྡེབ་འབད་ཡོད་པའི་ རིག་རྩལ་ཅན་གྱི་ཨཱལ་གོ་རི་དམ་གྱི་བར་ན་ གདམ་ཁ་རྐྱབ་ནིའི་གདམ་ཁ་ཨིན།"
+        },
+        "slippageTolerance": "བཤུད་བཟོད་བཟོད་སྒོམ།",
+        "slippageToleranceHint": "གོང་ཚད་འདི་བརྒྱ་ཆ་འདི་ལས་ལྷག་སྟེ་ མ་བཏུབ་སྦེ་བསྒྱུར་བཅོས་འགྱོ་བ་ཅིན་ ཁྱོད་ཀྱི་ཚོང་འབྲེལ་འདི་ལོག་འོང་།",
+        "slippageToleranceValidation": {
+            "error": "ནུས་ཅན་བཤུད་བརླག་བརྒྱ་ཆ་ཅིག་བཙུགས།",
+            "frontrun": "ཁྱོད་ཀྱི་ཚོང་འབྲེལ་འདི་གདོང་ཕྱོགས་འགྱོ་འོང་།",
+            "warning": "ཁྱོད་ཀྱི་ཚོང་འབྲེལ་འཐུས་ཤོར་འབྱུང་སྲིད།"
+        },
+        "title": "སྒྲིག་སྟངས་ཚུ།"
+    },
+    "disclaimer": "{disclaimerPrefix} དྲ་ཚིགས་འདི་ {Sora} མི་སྡེ་གིས་རྒྱུན་སྐྱོང་འབདཝ་ཨིན། དྲ་ཚིགས་འདི་འཕྲོ་མཐུད་ལག་ལེན་མ་འཐབ་པའི་ཧེ་མ་ {polkaswapFaqLink} དང་ཡིག་ཆ་ཚུ་བསྐྱར་ཞིབ་འབད་གནང་། ཡིག་ཆ་འདི་ཚུ་ ཉེན་སྲུང་དང་ལྡན་པའི་ ལག་ལེན་པའི་ཉམས་མྱོང་ལུ་ གལ་ཆེ་ཤོས་ཅིག་ཨིན། {AppName} ལག་ལེན་འཐབ་ཐོག་ལས་ ཁྱོད་ཀྱིས་ཡིག་ཆ་འདི་ཚུ་ལྷག་སྟེ་ཧ་གོ་ཡི་ཟེར་ངོས་ལེན་འབདཝ་ཨིན། ཁྱོད་ཀྱིས་ གཤམ་གསལ་ཚུ་ཡང་ངོས་ལེན་འབདཝ་ཨིན། ༡༽ ཁྱོད་རའི་ཁྲིམས་དོན་དབང་ཚད་ནང་ ཁྱོད་རའི་དམིགས་བསལ་གྱི་ལག་ལེན་ {AppName} ལུ་འཇུག་སྤྱོད་འབད་ཚུགས་པའི་ ཁྲིམས་ལུགས་ཆ་མཉམ་ལུ་ བསྟར་སྤྱོད་འབད་ནིའི་འགན་ཁུར་འདི་ ཁྱོད་རའི་རྐྱངམ་ཅིག་ཨིན། ༢༽ ཁྱོད་ཀྱིས་ཧ་གོ་མི་ {AppName} གི་ད་ལྟོའི་ཐོན་རིམ་འདི་ ཨཱལ་ཕ་ཐོན་རིམ་ཨིན་: དེ་ཆ་ཚང་བརྟག་དཔྱད་མ་འབད་བར་ཡོདཔ་ལས་ ལས་འགན་ལ་ལུ་ཅིག་གིས་ བཟོ་བཀོད་འབད་ཡོདཔ་བཟུམ་སྦེ་ ལཱ་འབད་མི་བཏུབ། དང་ ༣༽ ཁྱོད་ཀྱིས་ {AppName} ལག་ལེན་འཐབ་པའི་སྐབས་ འབྲེལ་གཏོགས་ཡོད་པའི་ཉེན་ཁ་ཚུ་ ཧ་གོ་ནི་དང་ ཁས་བླངས་ངོས་ལེན་འབད་ནི། {polkaswapFaqLink}, {memorandumLink}, {privacyLink} ཚུ་མ་ལྷག་པར་འཕྲོ་མཐུད་མ་འབད་གནང་།",
+    "disclaimerTitle": "བཀག་འགོག།",
+    "disconnectWalletText": "མཐུད་མེད་བཟོ་",
+    "doNotShowText": "འདི་ང་ལུ་ཡང་བསྐྱར་མ་སྟོན།",
+    "dragAndDropText": "འདྲུད་ & བཀོག་བཞག་ ཡང་ན་ {extension} ཡིག་སྣོད་གདམ་ཁ་རྐྱབས།",
+    "editText": "ཞུན་དག་འབད།",
+    "errorText": "འཛོལ་བ།",
+    "ethNetworkFeeTooltipText": "དྲན་འཛིན་འབད་གནང་ {network} ཡོངས་འབྲེལ་གྱི་འཐུས་ཚུ་ {AppName} གུ་བཀྲམ་སྟོན་འབད་ཡོད་མི་ཚུ་ ཚོད་དཔག་རྩུབ་དྲགས་རྐྱངམ་ཅིག་ཨིནམ་ལས་ ཁྱོད་ཀྱིས་ ཚོང་འབྲེལ་འདི་ངེས་གཏན་མ་བཟོ་བའི་ཧེ་མ་ ཁྱོད་རའི་མཐུད་ཡོད་པའི་ {network} དངུལ་ཁུག་ནང་ འཐུས་ཀྱི་ དངུལ་ཚད་ངེས་བདེན་ མཐོང་ཚུགས།",
+    "exceededAmountText": "{amount} ལས་བརྒལ་ཡོད།",
+    "exchange": {
+        "lossWarning": "ཁྱོད་ཀྱི་ཚོང་འབྲེལ་ནང་ལུ་ {value}% གྱོང་རྒུད་ཕོག་ནི་ཨིན། ང་བཅས་ཀྱིས་ དངུལ་བཏོན་ནིའི་གནད་དོན་ཅིག་ བརྟག་དཔྱད་འབད་ཡི། འདི་གིས་ ཊོ་ཀེན་བརྗེ་སོར་གྱི་སྐབས་ལུ་ གྱོང་རྒུད་སྦོམ་སྦེ་ར་བྱུང་འོང་། ཁྱོད་རའི་རེ་འདོད་བརྗེ་སོར་ཆ་གཅིག་གི་དོན་ལུ་ མ་དངུལ་ལངམ་སྦེ་ཡོདཔ་ངེས་གཏན་བཟོ་གནང་།",
+        "Pool": "Pool",
+        "Swap": "བརྗེ་རེས།"
+    },
+    "expandText": "རྒྱ་བསྐྱེད།",
+    "explore": {
+        "myPositions": "ངའི་གནས་ཚུལ།",
+        "showOnly": "{entities} རྐྱངམ་ཅིག་སྟོན།",
+        "synthetics": "བཅོས་མའི་རྟགས་མཚན།"
+    },
+    "FAQ": "{AppName} དྲི་བ།",
+    "fiatDisclaimer": "ང་བཅས་རའི་ཡོངས་འབྲེལ་འཆར་སྒོ་ནང་ ཀིརིཔ་ཊོ་ཀཱརན་སི་དང་འབྲེལ་བའི་ ཕིཊ་གནས་གོང་ཚུ་ ཕྱིའི་ཞབས་ཏོག་ཚུ་གིས་ བྱིན་ཡོདཔ་ཨིན་ (Subquery, Subsquid, Ceres API) ཚུ་ ཚོད་རྩིས་ཨིནམ་དྲན་འཛིན་འབད་གནང་། འ་ནི་རྩིས་སྟོན་ཚུ་གི་ རང་བཞིན་གྱི་མགུ་རྙོག་དྲགས་ལུ་བལྟ་སྟེ་ དུས་རྒྱུན་དུ་ ཆ་ཚང་གཏན་གཏན་འདི་ ངེས་གཏན་བཟོ་མི་ཚུགས།",
+    "fiatPayment": {
+        "cedeStoreBtn": "{value1} ལས་ {value2} བརྒྱུད་དེ་སྤོ་བཤུད་འབད།",
+        "cedeStoreDesc": "ཊོ་ཀེན་གང་རུང་ཅིག་ {value1} ལས་ {value2} ལུ་ {value3} བརྒྱུད་དེ་སྤོ་བཤུད་འབད།",
+        "cedeStoreTitle": "{value} ལས་སྤོ་བཤུད།",
+        "errorMessage": "སྟབས་མ་བདེཝ་བྱུང་མི་ལུ་དགོངས་སེལ་ཞུ། ང་བཅས་ཀྱིས་ འདི་སེལ་ཐབས་ལུ་ བརྩོན་ཤུགས་བསྐྱེད་དོ་ཡོདཔ་ཨིན། ཤུལ་ལས་ལོག་སྟེ་འབད་རྩོལ་བསྐྱེད་གནང་།",
+        "historyBtn": "ངའི་ཉོ་སྒྲུབ་ཚུ།",
+        "historyTitle": "ཚོང་འབྲེལ་གྱི་ལོ་རྒྱུས།",
+        "moonpayDesc": "{Ethereum} གུ་ ETH ཊོ་ཀེན་ཚུ་ཉོ་ཞིནམ་ལས་ ཟམ་བརྒྱུད་དེ་ {Sora} ཡོངས་འབྲེལ་ལུ་སྤོ་བཤུད་འབད།",
+        "moonpayTitle": "MoonPay བརྒྱུད་དེ་ ETH ཉོ།"
+    },
+    "filter": {
+        "all": "ཆ་མཉམ།",
+        "native": "མི་རིགས།",
+        "reset": "སླར་སྒྲིག་འབད།",
+        "show": "སྟོན།",
+        "showAssets": "རྒྱུ་དངོས་ཚུ་སྟོན།",
+        "synthetics": "མཉམ་སྦྱོར།",
+        "token": "དངུལ་ལོར།",
+        "verifiedOnly": "བདེན་དཔྱད་འབད་ཡོད་པའི་རྒྱུ་དངོས་ཚུ་རྐྱངམ་ཅིག་སྟོན།",
+        "zeroBalance": "ལྷག་ལུས་རྒྱུ་དངོས་ ༠ སྦ་བཞག།"
+    },
+    "firstPerSecond": "__པི་ཨེཆ་__༠__ རེ་ལུ་ __པི་ཨེཆ་__༡__",
+    "firstText": "དང་པོ།",
+    "footer": {
+        "internet": {
+            "action": "གསར་བསྐྲུན་འབད་ {AppName}",
+            "desc": {
+                "disabled": "མཐུད་ལམ་བཏོག་ཡོདཔ།",
+                "stable": "མགྱོགས་ཚད་དྲག་ཤོས།",
+                "unstable": "མཐུད་ལམ་དལ་བ།"
+            },
+            "dialogDesc": "{AppName} ཉམས་མྱོང་བརྟན་ཏོག་ཏོ་གི་དོན་ལུ་ ཡོངས་འབྲེལ་མཐུད་ལམ་དགོཔ་ཨིན།",
+            "dialogTitle": "ཡོངས་འབྲེལ་འབྱུང་ཁུངས་ལུ་མཐུད།",
+            "label": "ཁྱོད་ཀྱི་དྲ་རྒྱའི་མགྱོགས་ཚད།",
+            "title": {
+                "disabled": "ཡོངས་འབྲེལ་ལྕོགས་མིན་བཟོ་ཡོདཔ།",
+                "stable": "ཡོངས་འབྲེལ་བརྟན་པོ།",
+                "unstable": "ཡོངས་འབྲེལ་བརྟན་ཏོག་ཏོ་མེདཔ།"
+            }
+        },
+        "node": {
+            "title": {
+                "connected": "མཐུད་མཚམས་མཐུད་ཡོདཔ།",
+                "disconnected": "མཐུད་ལམ་བཏོག་ཡོདཔ།",
+                "loading": "མཐུད་མཚམས་ལོག་མཐུད་དོ།"
+            }
+        },
+        "statistics": {
+            "action": "ཞབས་ཏོག་ཚུ་སེལ་འཐུ་འབད།",
+            "desc": {
+                "available": "ཞབས་ཏོག་ཚུ་ག་ར་བརྟན་ཏོག་ཏོ་ཡོདཔ།",
+                "loading": "ཞབས་ཏོག་ཚུ་ཆ་མཉམ་མངོན་གསལ་འབད་དོ།",
+                "unavailable": "ཞབས་ཏོག་ཚུ་ག་ར་ མཐུད་ལམ་བཏོག་ཡོདཔ།"
+            },
+            "dialog": {
+                "indexer": "ཟུར་ཐོ་བཟོ་མི།",
+                "title": "{Sora} ཡོངས་འབྲེལ་ཞབས་ཏོག་སེལ་འཐུ།",
+                "useCeres": "ཕིཊི་གནས་གོང་ཚུ་གི་དོན་ལུ་ {Ceres} ལག་ལེན་འཐབ།"
+            },
+            "label": "རྩིས་དཔྱད་ཞབས་ཏོག།",
+            "title": {
+                "available": "གྲངས་གཞི་ཐོབ་ཡོད།",
+                "loading": "གནས་སྡུད་མངོན་གསལ་འབད་དོ།",
+                "unavailable": "གནས་སྡུད་འཐོབ་མི་ཚུགས།"
+            }
+        }
+    },
+    "footerMenu": {
+        "faucet": "ཆུ་རགས།",
+        "github": "གིཊ་ཧབ།",
+        "info": "བརྡ་དོན་དང་མི་སྡེ་",
+        "privacy": "གསང་བའི་སྲིད་གཞུང་",
+        "sorawiki": "{Sora} ཝི་ཀི་"
+    },
+    "forText": "དོན་ལུ།",
+    "hashiBridgeText": "{Hashi} ཟམ་པ།",
+    "headerMenu": {
+        "hideBalances": "ཐོན་སྒོར་སྦེད་",
+        "hideDisclaimer": "གསལ་འགྲེལ་སྦེད་",
+        "selectCurrency": "དངུལ་མཚོན་འདེམས་",
+        "settings": "སྒྲིག་སྟངས་",
+        "showBalances": "ཐོན་སྒོར་སྟོན་",
+        "showDisclaimer": "གསལ་འགྲེལ་སྟོན་",
+        "switchTheme": "དཔེ་བཟོ་: {theme}",
+        "systemPreferencesTheme": "རྒྱུད་ཁོངས་སྒྲིག་སྟངས་",
+        "titleBalance": "ཐོན་སྒོར་",
+        "titleCurrency": "ཕི་ཡཊི་དངུལ་",
+        "titleMisc": "སྣ་ཚོགས་",
+        "titleTheme": "དཔེ་བཟོ་",
+        "turnPhoneHideBalances": "ཁ་པར་འཁོར་ལོག་ནས་སྦེད་"
+    },
+    "helpDialog": {
+        "appVersion": "{AppName} ཐོན་རིམ་",
+        "contactUs": "འབྲེལ་གཏང་",
+        "privacyPolicy": "གསང་བའི་སྲིད་གཞུང་",
+        "termsOfService": "ཞབས་ཞུ་གི་གྲོས་མཐུན་",
+        "title": "རོགས་རམ་"
     },
     "history": {
-      "empty": "@:noDataText",
-      "title": "ཉོ་སྒྲིག་ལོ་རྒྱུས་"
+        "clearHistory": "ལོ་རྒྱུས་བསལ་",
+        "empty": "ཁྱེད་ཀྱི་འབུལ་འགྲོ་ཚུ་ནཱ་ལུ་འབྱུང་།",
+        "emptySearch": "འབུལ་འགྲོ་མ་ཐོབ་",
+        "filterPlaceholder": "ཁ་བྱང་/མཚོན་རྟགས/དབྱེ་བ/བྱིན་རིམ ID གིས་འཚོལ་"
     },
-    "notifications": {
-      "accountAddressError": {
-        "text": "སྐྱོན་: @:moonpayText ནང་ཐོན་སྒོར་འཐེན་འབྲེལ་མཁོ་མཁན་གྱི་ཁ་བྱང་ ད་ལྟོའི་ {Ethereum} རྩིས་ཐོ་དང་མི་མཐུན་ — {Hashi} ཟམ་པོའི་འབུལ་འགྲོ་མ་ཐུབ་ རྒྱས་སྐྱེད་ནང་ {Ethereum} རྩིས་ཐོ་བསྒྱུར་ནས་ཡང་བསྐྱར་བཀོལ་",
-        "title": "{Ethereum} རྩིས་ཐོ་ཕྱི་འགྱུར་"
-      },
-      "amountError": {
-        "text": "སྐྱོན་: {Hashi} ཟམ་པོའི་འབུལ་འགྲོ་ — འབུལ་འགྲོའི་དོན་ལུ་ཐོན་སྒོར་མི་འདང་ རྩིས་ཐོ་ {Ethereum} ཐོན་སྒོར་ཞིབ་བཤེར་བྱས་ནས་ཡང་",
-        "title": "ཐོན་སྒོར་མི་འདང་"
-      },
-      "feeError": {
-        "text": "སྐྱོན་: {Hashi} ཟམ་པོའི་འབུལ་འགྲོ་ — {Ethereum} ཡོངས་འབྲེལ་གྱི་འབུལ་འགྲོའི་གླ་བརྒྱབ་ནི་ལུ་ ETH མི་འདང་ དེ་བསྒྱུར་ནས་ཡང་",
-        "title": "ETH མི་འདང་"
-      },
-      "success": {
-        "text": "ཐོན་སྒོར་ཉོ་སྒྲིག་མཇུག་བསྡུས་ མཐུད་ཡོད་ {Ethereum} རྩིས་ཐོ་ལུ་ ཐོན་སྒོར་ཐོབ་ཚར་བའི་སྐབས་ {Hashi} ཟམ་པོའི་འབུལ་འགྲོ་རང་བཞིན་དུ་འགོ་བཙུགས་ ཐོག་ཁྲམ་འདི་ཁ་བསྡམས་ནས་ {AppName} ལག་ལེན་འབད་སྲིད་",
-        "title": "ཐོན་སྒོར་ཐོབ་"
-      },
-      "supportError": {
-        "text": "@:moonpayText བརྒྱུད་དེ་ཉོ་བའི་ཐོན་སྒོར་ {AppName} ནང་ {Hashi} ཟམ་པོས་དཔོན་མ་བྱུང་ — སྤྱིར་ {AppName} ནང་ MoonPay བརྒྱུད་དེ་ཉོ་ཚུགས་པ་ཚུ་ དཔོན་ཅན་དེ་རྐྱང་ དེ་གིས་དུས་ཐོག་ལས་འགྱུར་ མི་སྡེ་ལུ་ <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">{AppName} Telegram</a> ནང་མཁོ་བསྐྲུན་འབད་",
-        "title": "ཐོན་སྒོར་དཔོན་མེད་"
-      },
-      "transactionError": {
-        "text": "@:moonpayText འབུལ་འགྲོ་མ་ཐུབ་ ཡང་བསྐྱར་གནང་ — རོགས་རམ་ལུ་ <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https://support.moonpay.com</a>",
-        "title": "འབུལ་འགྲོ་མ་ཐུབ་"
-      }
+    "historyErrorMessages": {
+        "balances": {
+            "liquidityrestrictions": "རྩིས་ཁྲའི་དངུལ་འཇལ་ཚད་བཀག་གིས་ དངུལ་བཏོན་ནི་བཀག་འགོག་འབདཝ་ཨིན།"
+        },
+        "demeterfarmingplatform": {
+            "insufficientfunds": "མ་དངུལ་མི་འདང་བ།",
+            "insufficientlptokens": "ལངམ་སྦེ་མེད་པའི་ དངུལ་འབབ་མཁོ་སྤྲོད་ཀྱི་རྟགས་མཚན་ཚུ།",
+            "pooldoesnothaverewards": "ཆུ་རྫིང་ལུ་ བྱ་དགའ་མེད།"
+        },
+        "generalError": "ག་ཅི་ཅིག་འཛོལ་སོང་ནུག།",
+        "liquidityproxy": {
+            "forbiddenfilter": "སེལ་འཐུ་འབད་ཡོད་པའི་ ཁུ་བ་འབྱུང་ཁུངས་འདི་མི་ཆོག།",
+            "slippagenottolerated": "གོང་ཚད་ཀྱི་ཕན་གནོད་དེ་གིས་ སེལ་འཐུ་འབད་ཡོད་པའི་གནས་གོང་ལས་ལྷག་སྟེ་ཡོདཔ་ཨིན།"
+        },
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "གོང་ཚད་རྩིས་སྟོན་པའི་སྐབས་འཛོལ་བ་བྱུང་ཡོདཔ།"
+        },
+        "poolxyk": {
+            "calculatedvalueisnotmeetsrequiredboundaries": "དངུལ་བསྡོམས་ཚུ་ དགོས་མཁོའི་ཚད་ལས་ཕྱི་ཁར་ཨིན།",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "བྱིན་ཡོད་པའི་དངུལ་འབོར་ཚུ་ མ་འདྲཝ་སྦེ་ཡོདཔ་ཨིན།",
+            "sourcebalanceisnotlargeenough": "འབྱུང་ཁུངས་ལྷག་ལུས་ལངམ་སྦེ་མེད།",
+            "targetbalanceisnotlargeenough": "འགྲོ་ཡུལ་ལྷག་ལུས་ལངམ་སྦེ་མེདཔ།",
+            "unabletodepositxorlessthanminimum": "ཨེགསི་ཨོ་ཨར་ དམའ་ཤོས་གནས་གོང་ལས་དམའ་བ་ (༠.༠༠༧)",
+            "zerovalueinamountparameter": "བསྡོམས་ཚད་བཟུང་འདི་གནས་གོང་ཀླད་ཀོར་ཡོདཔ་ཨིན།"
+        },
+        "referrals": {
+            "alreadyhasreferrer": "རྩིས་ཐོ་འདི་ལུ་ ཧེ་མ་ལས་རང་ གཞི་བསྟུན་འབད་མི་ཅིག་ཡོདཔ་ཨིན།",
+            "referrerinsufficientbalance": "གཞི་བསྟུན་པ་ལུ་ གསོག་འཇོག་ལྷག་ལུས་ལངམ་སྦེ་མེད།"
+        },
+        "vestedrewards": {
+            "cantcalculatereward": "གསོལ་རས་རྩིས་སྟོན་འབད་ནི་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "norewardsforasset": "རྒྱུ་དངོས་འདི་ལུ་བྱ་དགའ་མེད།",
+            "rewardssupplyshortage": "གསོལ་རས་ལས་རིམ་འདི་ ཧེ་མ་ལས་རང་ མཇུག་བསྡུ་ཡོདཔ་ཨིན།"
+        },
+        "xstpool": {
+            "poolalreadyinitializedforpair": "ཆུ་རྫིང་ཆ་འདི་ཧེ་མ་ལས་རང་ཡོདཔ་ཨིན།",
+            "slippagelimitexceeded": "བཤུད་བརྡར་བཟོད་སྒོམ་གྱིས་ཚད་གཞི་འོས་འབབ་ཅན་མ་ལུས།"
+        }
+    },
+    "importText": "ནང་འདྲེན།",
+    "insufficientBalanceText": "{tokenSymbol} ལྷག་ལུས་མི་འདང་བ།",
+    "kensetsu": {
+        "addCollateral": "འཇོག་འཐུས་ཁ་སྣོན་",
+        "addCollateralDescription": "གནས་གོང་ལུ་འཇོག་འཐུས་ཧེང་བཀལ་འཇོག་ནས་འབྲིང་ལེན་ཚད་ཡར་འཐོན་བཟོ་ ཡང་ན LTV (loan-to-value) ལེགས་བཟོ་བྱེད། འདིས་རྩིས་སྤྲོད་ཉེན་ཁ་མར་ཕབ་བཏང་",
+        "available": "ཐོབ་ཚུགས་",
+        "availableToBorrow": "འབྲིང་ལེན་ཐོབ་ཚུགས་",
+        "availableToBorrowDescription": "འཇོག་འཐུས་བཞག་པ་དང་བརྒྱུད་ལས་ཡོད་པའི་ལོངས་སྤྱོད་ལུ་གཞིགས་ཏེ་ ད་ལྟོ་གནས་གོང་གི་གནས་སྟངས་ལུ་ཁྱེད་རང་གནས་གོང་ནས་ད་དུང་འཐོབ་ཚུགས་པའི་གྲངས་",
+        "borrowDebt": "འབྲིང་ལེན་",
+        "borrowMore": "ཧེང་བཀལ་འབྲིང་ལེན་",
+        "borrowMoreDescription": "གནས་གོང་ནས་ཐོབ་ཚུགས་པའི་མང་མཐར་ཚུན་ལུ་དངུལ་ཧེང་བཀལ་འབྲིང་ འཇོག་འཐུས་གནས་གོང་གྱིས་ལོངས་སྤྱོད་ཡར་འཐོན་བསྐྱེད་པ་དང་མཉམ་དུ་རྩིས་སྤྲོད་ཉེན་ཁ་ལས་བཀག་",
+        "borrowTax": "འབྲིང་ལེན་དངུལ་ཁང་",
+        "borrowTaxDescription": "འབྲིང་ལེན་གྲངས་ལུ་ {value} དངུལ་ཐོག་གི་དབྱེ་རྩིས་",
+        "closeVault": "གནས་གོང་ ཁ་བསྡམས་",
+        "closeVaultDescription": "ལོངས་སྤྱོད་ལྷག་ལུས་ཚང་མ་ལོག་སྤྲོད་བྱས་ཏེ་འཇོག་འཐུས་ཚང་མ་འབུད་རྗེས་གནས་གོང་འདི་ཁ་བསྡམས་",
+        "collateralDetails": "འཇོག་འཐུས་རྒྱས་བཤད་",
+        "createVault": "འབྲིང་ལེན་གནས་གོང་ཁ་ཕྱེ་",
+        "createVaultAction": "འབྲིང་ལེན་",
+        "createVaultDescription": "གནས་གོང་ནང་འཇོག་འཐུས་འཇོག་ནས་དངུལ་འཐོབ་ དེས་ལོངས་སྤྱོད་སྤྱད་དགོས་པའི་ལས་འགུལ་ཅིག་བཟོཝ་ཨིན་ དེ་ཁྱེད་རང་གིས་དོ་དམ་བྱ་དགོས་",
+        "debtAvailable": "འབྲིང་ལེན་ཐོབ་ཚུགས་",
+        "debtAvailableDescription": "ད་ལྟོའི་འཇོག་འཐུས་གནས་གོང་ལུ་གཞིགས་ཏེ་ འབྲིང་ལེན་ཚད་ལས་མེད་པར་ཁྱེད་རང་གནས་གོང་ནས་ད་དུང་འཐོབ་ཚུགས་པའི་གྲངས་",
+        "debtDetails": "ལོངས་སྤྱོད་རྒྱས་བཤད་",
+        "depositCollateral": "འཇོག་འཐུས་འཇོག་",
+        "disclaimerDescription": "{AppName} བརྒྱུད་དེ་དངུལ་ཐོན་སྒོར་འབྲིང་ལེན་ནི་ཉེན་ཁ་ཆེན་པོ་ཅིག་ཡོད་ ཁྱེད་རང་ཉིད་ཀྱི་བྱེད་མཁན་སྒྲུབ་དགོས་ ཐོན་སྒོར་གནས་གོང་ཚུ་སྤོ་བ་མང་ འབྲིང་ལེན་ཡང་ན་འཇོག་འཐུས་བཀོལ་མི་ཐོན་སྒོར་གྱི་གནས་གོང་བསྒྱུར་བསྐྱོད་ལས་ཕན་གནོད་ཆེ་བ་འབྱུང་སྲིད་",
+        "error": {
+            "borrowMoreThanAvailable": "ཐོབ་ཚུགས་པའི་ཚད་ལས་ལྷག་",
+            "enterBorrow": "འབྲིང་ལེན་གྲངས་བཙུགས་",
+            "enterCollateral": "འཇོག་འཐུས་བཙུགས་",
+            "enterRepayDebt": "དངུལ་ལོག་སྤྲོད་གྲངས་བཙུགས་",
+            "incorrectCollateral": "ཐོན་སྒོར་ཟུང་འབྲེལ་མི་འགྲིག་",
+            "insufficientCollateral": "འཇོག་འཐུས་མི་འདང་",
+            "repayMoreThanDebt": "ལོངས་སྤྱོད་ལས་ལྷག་འབུལ་"
+        },
+        "highLiquidationRisk": "རྩིས་སྤྲོད་ཉེན་ཁ་མཐོ་",
+        "interest": "དངུལ་ཁང་",
+        "interestDescription": "གནས་གོང་ནས་འཐོབ་པའི་དངུལ་གྲངས་ལུ་བརྒྱ་ཆ་ཐོག་གི་ལོ་རིམ་གླ་སྒྲིག། གླ་འདིས་ཉེན་ཁ་དང་ཚོང་རྒྱུས་སྒྱུར་བ་ལུ་དོ་སྣང་བྱེད་",
+        "introDescription": "མཐའ་བཙན་དང་འཇམ་སམ་གྱི་འབྲིང་ལེན/གཡོག་གཏོང་ མཐོང་སྣང་ ཐོབ་། {Kensetsu} འབྲེལ་ལམ་ལུ་གནས་གོང་ཁ་ཕྱེ་",
+        "introTitle": "{Kensetsu} དང་ལེན་གནས་གོང་ཁ་ཕྱེ་",
+        "liquidated": "རྩིས་སྤྲོད་བྱས་",
+        "liquidatedMessage": "རྩིས་སྤྲོད་ {amount} {symbol}",
+        "liquidationClose": "རྩིས་སྤྲོད་ཁ་བསྡམས་",
+        "liquidationPenalty": "རྩིས་སྤྲོད་གླ་སྒྲིག་",
+        "liquidationPenaltyDescription": "འཇོག་འཐུས་གནས་གོང་གདོད་ལས་འོག་སོང་བ་དང་ ལོངས་སྤྱོད་ལོག་སྤྲོད་དགོས་སྐབས་འབྱུང་མི་གླ་སྒྲིག་ཅིག། གླ་འདིས་ཁྱེད་རང་གི་ལོངས་སྤྱོད་བསྡུས་བུ་ཡར་འཐོན་བཟོཝ་ཨིན་",
+        "ltv": "དངུལ་འབྲིང་ལེན་དང་གནས་གོང་ ({LTV})",
+        "ltvDescription": "གནས་གོང་ནས་འཐོབ་པའི་དངུལ་གྲངས་དང་འཇོག་འཐུས་གནས་གོང་གཉིས་ཀྱི་དབྱེ་མཚམས་བརྒྱ་ཆ་ཐོག་སྟོན་པ། {LTV} མཐོ་བ་ཡོད་པས་ཕན་ཐོགས་ཡར་འཐོན་མང་བ་དང་ རྩིས་སྤྲོད་ཉེན་ཁ་ཡར་འཐོན་སྲིད་",
+        "ltvMaxTooltip": "འཇོག་འཐུས་གནས་གོང་སྤྱོད་པའི་ཐོན་སྒོར་གྱི་སྤྱི་ཚད་ལུ་གཞིགས་ཏེ་འབྲིང་ལེན་གནས་གོང་གིས་ཐོབ་ཚུགས་པའི་མང་མཐར་གྲངས་",
+        "maxAvailableToBorrow": "འབྲིང་ལེན་ཐོབ་ཚུགས་པའི་མང་མཐར་",
+        "maxAvailableToBorrowDescription": "འཇོག་འཐུས་གནས་གོང་ལྟར་ཁྱེད་རང་གནས་གོང་ནས་འཐོབ་ཚུགས་པའི་མང་མཐར་གྲངས། འཇོག་འཐུས་གནས་གོང་སྒྱུར་བ་དང་མཉམ་དུ་ཚད་དེ་སྒྱུར་བ་ཡོད་",
+        "minDepositCollateral": "ཉུང་མཐའི་འཇོག་འཐུས་འཇོག་",
+        "minDepositCollateralDescription": "གནས་གོང་ཁ་ཕྱེ་ནི་ལུ་དགོས་པའི་ཐོན་སྒོར་ཉུང་མཐའ་གྲངས། འགོ་རུང་འཇོག་འཐུས་འདིས་འབྲིང་ལེན་དོན་ལུ་ཐོན་སྒོར་བདེ་འཇགས་བཟོཝ་ཨིན་",
+        "openSwap": "བརྗེ་སྤོར་ཁ་ཕྱེ་",
+        "outstandingDebt": "ལོངས་སྤྱོད་ལྷག་ལུས་དངུལ་",
+        "outstandingDebtDescription": "གནས་གོང་ནས་འཐོབ་པའི་དངུལ་གྲངས་དང་དངུལ་ཁང་བསྡུས་མཐུན་བཅས་དེ་ལས་ད་ལྟོ་ལུས་མི་ལོངས་སྤྱོད་བསྡུས་བུ། གནས་གོང་ཁ་བསྡམས་ནིའམ་ LTV ལེགས་བཟོ་བྱེད་ནིའི་དོན་ལུ་དེ་ལོག་སྤྲོད་དགོས།",
+        "overallAvailable": "སྤྱི་བསྡོམས་ཐོབ་ཚུགས་",
+        "overallAvailableDescription": "{Kensetsu} ལས་སྤྱོད་ནང་འབྲིང་ལེན་ལུ་ཐོབ་ཚུགས་པའི་དངུལ་གྲངས་བསྡོམས་",
+        "overallBadDebt": "འཐུས་མེད་ལོངས་སྤྱོད་",
+        "overallBadDebtDescription": "འབྲིང་ལེན་པའི་སྲོལ་མིན་སྐྱོན་དང་འཇོག་འཐུས་མི་འདང་བ་ལས་ལོངས་སྤྱོད་ལོག་སྤྲོད་མ་བཏུབ་པའི་ཆ་ཤས་",
+        "overallTotalCollateral": "སྤྱི་བསྡོམས་འཇོག་འཐུས་",
+        "overallTotalCollateralDescription": "{Kensetsu} ལས་སྤྱོད་ནང་འབྲིང་ལེན་པ་ཚུ་གིས་གནས་གོང་ལུ་འཇོག་པའི་ཐོན་སྒོར་གྲངས་བསྡོམས་",
+        "overallTotalDebt": "སྤྱི་བསྡོམས་ལོངས་སྤྱོད་",
+        "overallTotalDebtDescription": "{Kensetsu} ལས་སྤྱོད་ནང་ཡོད་མི་གནས་གོང་ཚུ་གི་ལོངས་སྤྱོད་ལྷག་ལུས་བསྡོམས་",
+        "positionHistory": "གནས་གོང་ལོ་རྒྱུས་",
+        "positionInfo": "གནས་གོང་བརྡ་དོན་",
+        "positionSafe": "གནས་གོང་བདེ་འཇགས་",
+        "readMore": "མང་བ་ལྟ་",
+        "reopen": "ལོག་ཁ་ཕྱེ་",
+        "repayDebt": "ལོངས་སྤྱོད་ལོག་སྤྲོད་",
+        "repayDebtDescription": "འབྲིང་ལེན་དངུལ་ལས་ལོངས་སྤྱོད་ལྷག་ལུས་མར་ཕབ་བཟོ་ དེས་དངུལ་ཁང་གླ་སྒྲིག་མར་མིག་བཟོ་དང་ རྩིས་སྤྲོད་ཉེན་ཁ་མར་ཕབ་བཏང་",
+        "requiredAmountWithSlippage": "སྦྱོར་ལྡན་དང་བཅས་དགོས་མཁོ་གྲངས་",
+        "requiredAmountWithSlippageDescription": "གནས་གོང་ཁ་བསྡམས་དོན་ལུ་ལེགས་ཤོམ་བྱེད་ནི་ལས་ སྦྱོར་ལྡན་གྱིས་གྲངས་སྐྱོན་མངོན་སྲིད་མི་རིགས་ དེ་ལས་ {amount} ལས་དེ་ཙམ་མང་བའི་ {tokenSymbol} ཐོབ་དགོས། ཟུར་གྲངས་གཅིག་དགོས་པས་ ཐོན་སྒོར་ཚུ་ {tokenSymbol} ལུ་བརྗེ་སྤོར་འབད་",
+        "status": {
+            "Closed": "ཁ་བསྡམས་",
+            "Liquidated": "རྩིས་སྤྲོད་བྱས་",
+            "Opened": "ཤུགས་ལྡན་"
+        },
+        "totalCollateral": "འཇོག་འཐུས་བསྡོམས་",
+        "totalCollateralDescription": "ཁྱེད་རང་གནས་གོང་ནང་ད་ལྟོ་འཇོག་བཞག་ཡོད་པའི་ཐོན་སྒོར་བསྡོམས་གྲངས། འདིས་འབྲིང་ལེན་ཚད་དང་རྩིས་སྤྲོད་ཉེན་ཁ་ལུ་ཕན་གནོད་ཡོད་",
+        "totalCollateralReturned": "ལོག་ཐོབ་འཇོག་འཐུས་བསྡོམས་",
+        "totalCollateralReturnedDescription": "གནས་གོང་ཁ་བསྡམས་རྗེས་ཁྱེད་རང་ལུ་ལོག་སྤྲོད་བྱས་པའི་ཐོན་སྒོར་བསྡོམས་གྲངས། ལྷག་ལུས་འཇོག་འཐུས་དང་བསྡོམས་",
+        "yourCollateral": "ཁྱེད་རང་གི་འཇོག་འཐུས་",
+        "yourCollateralDescription": "གནས་གོང་ལུ་འཇོག་པའི་ཐོན་ཁུངས་ཚུ་དངུལ་འཐོབ་དོན་ལུ་བདེ་འཇགས་བཟོ་མི། LTV བསྲུངས་མ་ཚུགས་པ་ཚུལ་ལུ་ལྡུམ་མི་གིས་རྩིས་སྤྲོད་བྱ་སྲིད་",
+        "yourDebt": "ཁྱེད་རང་གི་ལོངས་སྤྱོད་",
+        "yourDebtDescription": "ཁྱེད་རང་གནས་གོང་ནང་ད་ལྟོ་ཡོད་པའི་ལོངས་སྤྱོད་བསྡུས་བུ་བསྡོམས་ འཐོབ་པའི་དངུལ་གྲངས་དང་དངུལ་ཁང་བསྡུས་མཐུན་བཅས། དུས་ཚོད་འགྱོ་བའི་ཐོག་ལས་གྲངས་དེ་ཡར་འཐོན་སྲིད་",
+        "yourDebtTokenBalance": "ཁྱེད་རང་གི་ {tokenSymbol} གནས་ལུགས་"
+    },
+    "lastText": "མཐའ་མ།",
+    "learnMoreText": "ཁ་གསལ་ཤེས།",
+    "light": "འོད།",
+    "locationText": "ས་གནས།",
+    "logoutText": "ཕྱིར་བསྐྱོད་འབད།",
+    "mainMenu": {
+        "About": "སྐོར།",
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "Bridge": "@:bridgeText",
+        "Burn": "@:pageTitle.Burn",
+        "Explore/Container": "འཚོལ་ཞིབ་འབད།",
+        "Farming": "ཞིང་ལཱ་འབད་ནི།",
+        "OrderBook": "ཚོང་ལས།",
+        "Pool": "Pool",
+        "Rewards": "བྱ་དགའ།",
+        "Sccp": "@:pageTitle.Sccp",
+        "SoraCard": "{Sora} ཤོག་བྱང་།",
+        "StakingContainer": "བཙུགས་ནི།",
+        "Stats": "རྩིས་དཔྱད།",
+        "Swap": "བརྗེ་རེས།",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Wallet": "རྩིས་ཁྲ།"
+    },
+    "marketAlgorithmText": "ཁྲོམ་རའི་ཨཱལ་གོ་རི་ཐམ།",
+    "marketText": "ཚོང་ཁྲོམ་",
+    "maxAmountText": "མཐོ་ཤོས། དངུལ་འབོར།",
+    "memorandum": "{AppName} བརྗེད་ཐོ་དང་ཞབས་ཞུའི་ཆ་རྐྱེན།",
+    "minAmountText": "སྐར་མ། དངུལ་འབོར།",
+    "mobilePopup": {
+        "header": "{Sora} {polkaswapHighlight} ཁྱད་ཆོས་ལྡན་པའི་དངུལ་ཁུག་ཕབ་ལེན་འབད།",
+        "info": "ཡོངས་འབྲེལ་སོ་སོ་ཚུ་ལས་ ཊོ་ཀེན་ཚུ་བརྗེ་སོར་འབད་ - __པི་ཨེཆ་__༠__, __པི་ཨེཆ་__༡__, __པི་ཨེཆ་__༢__, __པི་ཨེཆ་__༣__. དངུལ་གྱི་ཆུ་རྫིང་བྱིན་ཞིནམ་ལས་ བརྗེ་སོར་གྱི་འཐུས་ལས་ % ཐོབ་ཚུགས།",
+        "sideMenu": "{Sora} དངུལ་ཁུག་ཐོབ།"
+    },
+    "moonpay": {
+        "buttons": {
+            "buy": "ཐོན་སྒོར་ཉོ་",
+            "history": "ཉོ་སྒྲིག་ལོ་རྒྱུས་",
+            "transfer": "ཟམ་པོ་འགོ་བཙུགས་",
+            "view": "ཟམ་པོའི་འབུལ་འགྲོ་ལྟ་"
+        },
+        "confirmations": {
+            "txReady": "ཟམ་པོའི་འབུལ་འགྲོ་གྲ་སྒྲིག་"
+        },
+        "history": {
+            "empty": "@:noDataText",
+            "title": "ཉོ་སྒྲིག་ལོ་རྒྱུས་"
+        },
+        "notifications": {
+            "accountAddressError": {
+                "text": "སྐྱོན་: @:moonpayText ནང་ཐོན་སྒོར་འཐེན་འབྲེལ་མཁོ་མཁན་གྱི་ཁ་བྱང་ ད་ལྟོའི་ {Ethereum} རྩིས་ཐོ་དང་མི་མཐུན་ — {Hashi} ཟམ་པོའི་འབུལ་འགྲོ་མ་ཐུབ་ རྒྱས་སྐྱེད་ནང་ {Ethereum} རྩིས་ཐོ་བསྒྱུར་ནས་ཡང་བསྐྱར་བཀོལ་",
+                "title": "{Ethereum} རྩིས་ཐོ་ཕྱི་འགྱུར་"
+            },
+            "amountError": {
+                "text": "སྐྱོན་: {Hashi} ཟམ་པོའི་འབུལ་འགྲོ་ — འབུལ་འགྲོའི་དོན་ལུ་ཐོན་སྒོར་མི་འདང་ རྩིས་ཐོ་ {Ethereum} ཐོན་སྒོར་ཞིབ་བཤེར་བྱས་ནས་ཡང་",
+                "title": "ཐོན་སྒོར་མི་འདང་"
+            },
+            "feeError": {
+                "text": "སྐྱོན་: {Hashi} ཟམ་པོའི་འབུལ་འགྲོ་ — {Ethereum} ཡོངས་འབྲེལ་གྱི་འབུལ་འགྲོའི་གླ་བརྒྱབ་ནི་ལུ་ ETH མི་འདང་ དེ་བསྒྱུར་ནས་ཡང་",
+                "title": "ETH མི་འདང་"
+            },
+            "success": {
+                "text": "ཐོན་སྒོར་ཉོ་སྒྲིག་མཇུག་བསྡུས་ མཐུད་ཡོད་ {Ethereum} རྩིས་ཐོ་ལུ་ ཐོན་སྒོར་ཐོབ་ཚར་བའི་སྐབས་ {Hashi} ཟམ་པོའི་འབུལ་འགྲོ་རང་བཞིན་དུ་འགོ་བཙུགས་ ཐོག་ཁྲམ་འདི་ཁ་བསྡམས་ནས་ {AppName} ལག་ལེན་འབད་སྲིད་",
+                "title": "ཐོན་སྒོར་ཐོབ་"
+            },
+            "supportError": {
+                "text": "@:moonpayText བརྒྱུད་དེ་ཉོ་བའི་ཐོན་སྒོར་ {AppName} ནང་ {Hashi} ཟམ་པོས་དཔོན་མ་བྱུང་ — སྤྱིར་ {AppName} ནང་ MoonPay བརྒྱུད་དེ་ཉོ་ཚུགས་པ་ཚུ་ དཔོན་ཅན་དེ་རྐྱང་ དེ་གིས་དུས་ཐོག་ལས་འགྱུར་ མི་སྡེ་ལུ་ <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">{AppName} Telegram</a> ནང་མཁོ་བསྐྲུན་འབད་",
+                "title": "ཐོན་སྒོར་དཔོན་མེད་"
+            },
+            "transactionError": {
+                "text": "@:moonpayText འབུལ་འགྲོ་མ་ཐུབ་ ཡང་བསྐྱར་གནང་ — རོགས་རམ་ལུ་ <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https://support.moonpay.com</a>",
+                "title": "འབུལ་འགྲོ་མ་ཐུབ་"
+            }
+        },
+        "tooltips": {
+            "transfer": "ཐོན་སྒོར་ཐོབ་ཚར་!\nཟམ་པོའི་འབུལ་འགྲོ་འགོ་བཙུགས་"
+        }
+    },
+    "moonpayText": "མུན་པེ།",
+    "mst": {
+        "about": "སྐོར།",
+        "accountNameMst": "མལ་ཊི་སིག་རྩིས་ཐོའི་མིང་།",
+        "addAddr": "ཁ་བྱང་ཁ་སྐོང་འབད།",
+        "addAddress": "ཁ་བྱང་གཞན་ཁ་སྐོང་འབད།",
+        "addMST": "མལ་ཊི་སིག་ཁ་བྱང་ཚུ་ཁ་སྐོང་བརྐྱབ།",
+        "addrCreation": "མལ་ཊི་སིག་ཁ་བྱང་གསར་བསྐྲུན་འབད་ནི།",
+        "addressEntered": "ཁ་བྱང་འདི་ཧེ་མ་ལས་བཙུགས་ཟིན།",
+        "amountOfSignatures": "མིང་རྟགས་བཀོད་ཡོད།",
+        "cardMessageFirst": "ཁྱོད་ཀྱི་མལ་ཊི་སིག་འདི་ ལེགས་ཤོམ་སྦེ་ལཱ་འབད་ནིའི་དོན་ལུ་ ཐོ་བཀོད་འབད་ཡོད་པའི་ཁ་བྱང་ཆ་མཉམ་གྱིས་ ཁྱོད་ཀྱིས་འབད་མི་བཟུམ་སྦེ་ མལ་ཊི་སིག་འདི་ ཏན་ཏན་སྦེ་གསར་བསྐྲུན་འབད་དགོ།",
+        "cardMessageSecond": "མལ་ཊི་སིག་དངུལ་ཁུག་འདི་ མ་འོངས་པ་ལུ་ མིང་རྐྱངམ་ཅིག་ བསྒྱུར་བཅོས་འབད་མི་ཚུགས།",
+        "connectFearless": "འཇིགས་མེད་བརྒྱུད་དེ་མཐུད།",
+        "continue": "འཕྲོ་མཐུད།",
+        "createMst": "མལ་ཊི་སིག་དངུལ་ཁུག་གསར་བསྐྲུན་འབད།",
+        "enterAddress": "མལ་ཊི་སིག་ཁ་བྱང་བཙུགས།",
+        "enterName": "མལ་ཊི་སིག་དངུལ་ཁུག་མིང་བཙུགས།",
+        "forget": "བརྗེད།",
+        "forgetMst": "ཁྱོད་ཀྱི་ནང་བསྐྱོད་ཁ་གསལ་ཚུ་ བཏོན་གཏང་འོང་། ཁྱོད་ཀྱི་རྩིས་ཐོ་འདི་ རྟག་བརྟན་སྦེ་ བརླག་སྟོར་ཞུགས་འོང་།",
+        "how": "ག་དེ་སྦེ་སྨོ?",
+        "incorrectFormatAddress": "ཁ་བྱང་དེ་ རྩ་སྒྲིག་ངེས་བདེན་ནང་མེདཔ།",
+        "loading": "མངོན་གསལ་འབད་དོ།",
+        "minFee": "མཚན་རྟགས་བཀོད་མི་ལུ་དགོ་པའི་འཐུས་ཉུང་ཤོས།",
+        "mstBridgeWarning": "ཨེམ་ཨེསི་ཊི་ལས་གནས་སོར་འདི་ད་ལྟོའི་དོན་ལུ་རྒྱབ་སྐྱོར་མ་འབད་བས།",
+        "mstFearless": "ཕིར་ལེསི་དངུལ་ཁུག་གཞི་བཙུགས་འབད་ ཡང་ན་ ཁྱོད་རའི་རྩིས་ཐོ་མཐུད།",
+        "mstForgetBtn": "མལ་ཊི་སིག་རྩིས་ཐོ་བརྗེད།",
+        "mstIcon": "མལ་ཊི་སིག་རྩིས་ཐོ་ཅིག་གསར་བསྐྲུན་འབད།",
+        "mstKeys": "མལ་ཊི་སིག་དངུལ་ཁུག་ཚུ་ལུ་ མིང་རྟགས་དང་ལྡེ་མིག་སྣ་མང་དགོཔ་ཨིན།",
+        "mstSave": "བསྒྱུར་བཅོས་ཚུ་སྲུངས།",
+        "mstSign": "བརྗེ་སོར་ཚུ་མཇུག་བསྡུ་ནི་ལུ་དགོ་པའི་མིང་རྟགས་ཚུ་གི་གྱངས་ཁ་གཞི་སྒྲིག་འབད།",
+        "mstSwitchWarning": "ལས་སྣ་དང་ ཚོང་འབྲེལ་ཚུ་ག་ར་ མལ་ཊི་སིག་རྩིས་ཁྲ་ ༡༧ གྱི་ཐོག་ལས་ འབད་ནི་ཨིན།",
+        "mstWallet": "མིང་རྟགས་སྣ་ཚོགས་ཀྱིས་ ལྡེ་མིག་བདེ་སྒྲིག་བཟོ་ནི་གི་ཉེན་ཁ་མར་ཕབ་འབདཝ་ཨིན། ལྡེ་མིག་གཅིག་བརླག་སོང་རུང་ ཡང་ན་ ཨརཝ་ཤོར་རུང་ མ་དངུལ་ཚུ་ ཉེན་སྲུང་དང་ལྡནམ་སྦེ་སྡོདཔ་ཨིན།",
+        "multisigAccount": "མལ་ཊི་སིག་རྩིས་ཐོ།",
+        "seeActivity": "མལ་ཊི་སིག་ལས་རིམ་བལྟ།",
+        "settingsMst": "མལ་ཊི་སིག་རྩིས་ཐོའི་སྒྲིག་སྟངས་ཚུ།",
+        "setupDetails": "རྒྱས་བཤད་ཚུ་གཞི་སྒྲིག་འབད།",
+        "sign": "རྟགས།",
+        "successMstSetUp": "མལ་ཊི་སིག་དངུལ་ཁུག་འདི་ མཐར་འཁྱོལ་ཅན་སྦེ་ གཞི་བཙུགས་འབད་ཡོདཔ་ཨིན།",
+        "suggestSwitchFromMst": "ཁྱོད་ཀྱིས་ཨེམ་ཨེསི་ཊི་ལས་སོར་བསྒྱུར་ཡང་ན་ཨེམ་ཨེསི་ཊི་ལུ་སྤོ་བཤུད་འབད་ཚུགས།",
+        "sureForgetMst": "ཁྱོད་ཀྱིས་ མལ་ཊི་སིག་རྩིས་ཐོ་འདི་ བརྗེད་ནི་ཨིན་ན?",
+        "switchFromMst": "ཨེམ་ཨེསི་ཊི་ལས་སོར་བསྒྱུར་འབད།",
+        "switchMst": "མལ་ཊི་སིག་རྩིས་ཐོ་ལུ་སོར་བསྒྱུར་འབད།",
+        "threshold": "ཐེམ།",
+        "thresholdNumber": "བརྗེ་སོར་གནང་བ་ཚད་གཞི་ཅིག་གཞི་སྒྲིག་འབད།",
+        "warningSwitch": "ཚོང་འབྲེལ་འདི་ངེས་གཏན་བཟོ་ནི་ལུ་ རྟགས་ཅིག་དགོཔ་ཨིན། མལ་ཊི་སིག་རྩིས་ཐོ་ལུ་སོར་བསྒྱུར་འབད་གནང་།",
+        "yourAddress": "ཁྱོད་ཀྱི་ཁ་བྱང་།"
+    },
+    "multipleRecipients": "སྣ་མང་འཐོབ་མི།",
+    "nameText": "མིང༌།",
+    "networkFeeText": "ཡོངས་འབྲེལ་འཐུས།",
+    "networkFeeTooltipText": "ཡོངས་འབྲེལ་གྱི་འཐུས་འདི་ {Sora} རིམ་ལུགས་ཀྱི་ཡར་རྒྱས་དང་ ལཱ་འགན་བརྟན་ཏོག་ཏོ་བཟོ་ནི་ལུ་ ལག་ལེན་འཐབ་ཨིན།",
+    "networkStatisticsText": "ཡོངས་འབྲེལ་གྱི་གནས་སྡུད།",
+    "newAccountsText": "རྩིས་ཁྲ་གསརཔ།",
+    "nextText": "ཤུལ་མ།",
+    "noDataText": "གནད་སྡུད་མེད།",
+    "node": {
+        "errors": {
+            "connection": "མཐུད་མཚམས་ལུ་མཐུད་པའི་སྐབས་འཛོལ་བ་ཅིག་བྱུང་ཡོདཔ།\n__པི་ཨེཆ་__༠__\n",
+            "existing": "མཐུད་མཚམས་འདི་ཧེ་མ་ལས་ཁ་སྐོང་བརྐྱབ་ཡོདཔ་ཨིན་: {title}\n",
+            "network": "མཐུད་མཚམས་འདི།\n__པི་ཨེཆ་__༠__\n འདི་ ཡོངས་འབྲེལ་གཞན་ཅིག་ལས་ཨིན།\n"
+        },
+        "messages": {
+            "connected": "མཐུད་ལམ་གཞི་བཙུགས་འབད་ཡོདཔ།\n__པི་ཨེཆ་__༠__\n",
+            "selectNode": "མཐུད་མཚམས་ཐོ་ཡིག་ལས་མཐུད་ནིའི་དོན་ལུ་མཐུད་མཚམས་སེལ་འཐུ་འབད་གནང་།"
+        },
+        "warnings": {
+            "disconnect": "མཐུད་མཚམས་ལུ་མཐུད་ལམ་བརླག་སྟོར་ཞུགས་ཡོདཔ། ལོག་མཐུད་དོ།"
+        }
+    },
+    "noir": "ནོ་ཡར།",
+    "ofText": "__པི་ཨེཆ་__༠__ གི་ __པི་ཨེཆ་__༡__",
+    "operations": {
+        "AddLiquidity": "དངུལ་འབབ་ཁ་སྐོང་འབད།",
+        "andText": "དང་ །",
+        "BindRegulatedAsset": "བིནཌི་ཁྲིམས་འཛིན་རྒྱུ་ནོར།",
+        "BorrowVaultDebt": "བུ་ལོན་བསྐྱིན།",
+        "Burn": "མེ་འབར་བ།",
+        "ClaimRewards": "ཐོབ་བརྗོད་ཀྱི་གསོལ་རས་ཚུ།",
+        "CloseVault": "ཁ་བསྡམས།",
+        "CreatePair": "ཆ་གཅིག་གསར་བསྐྲུན་འབད།",
+        "CreateVault": "གནས་རིམ་གསར་བསྐྲུན་འབད།",
+        "DemeterFarmingDepositLiquidity": "བགོ་བཤའ་དངུལ་འབབ།",
+        "DemeterFarmingGetRewards": "ཐོབ་བརྗོད་ཀྱི་གསོལ་རས་ཚུ།",
+        "DemeterFarmingStakeToken": "བགོ་བཤའ་བརྡ་རྟགས།",
+        "DemeterFarmingUnstakeToken": "བརྡ་མཚོན་བཤོལ།",
+        "DemeterFarmingWithdrawLiquidity": "བགོ་བཤའ་མེད་པའི་དངུལ་འབབ།",
+        "DepositCollateral": "གཏའ་འཇོག་གནས་ཡུལ།",
+        "error": {
+            "AddLiquidity": "{amount} {symbol} དང་ {amount2} {symbol2} བཀྲམ་སྤེལ་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "BindRegulatedAsset": "རྒྱུ་དངོས་ {symbol} འདི་ SBT {symbol2} ལུ་བསྡམ་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "BorrowVaultDebt": "བསྐྱིན་འགྲུལ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།{amount} {symbol}",
+            "Burn": "{amount} {symbol} འཚིག་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "ClaimRewards": "གསོལ་རས་ཚུ་ཐོབ་བརྗོད་བཀོད་མ་ཚུགས་ {rewards}",
+            "CloseVault": "{symbol}/{symbol2} གནས་ས་ཁ་བསྡམ་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "CreatePair": "{amount} {symbol} དང་ {amount2} {symbol2} བཀྲམ་སྤེལ་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "CreateVault": "{symbol}/{symbol2} གནས་ས་གསར་བསྐྲུན་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "DemeterFarmingDepositLiquidity": "{amount} {symbol} དང་ {symbol2} ཨེལ་པི་ཊོ་ཀེན་ཚུ་བཀྲམ་སྤེལ་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "DemeterFarmingGetRewards": "{symbol} ཐོབ་བརྗོད་བཀོད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "DemeterFarmingStakeToken": "{amount} {symbol} ཁ་སྐོང་བརྐྱབ་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "DemeterFarmingUnstakeToken": "{amount} {symbol} རྩ་བསྐྲད་གཏང་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "DemeterFarmingWithdrawLiquidity": "{amount} {symbol} དང་ {symbol2} ཨེལ་པི་ཊོ་ཀེན་ཚུ་རྩ་བསྐྲད་གཏང་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "DepositCollateral": "དངུལ་བཙུགས་འཐུས་ཤོར་འབྱུང་ཡོདཔ། {amount} {symbol}",
+            "EthBridgeIncoming": "{amount} {symbol} འདི་ {Ethereum} ལས་ {Sora} ལུ་སྤོ་བཤུད་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "EthBridgeOutgoing": "{amount} {symbol} འདི་ {Sora} ལས་ {Ethereum} ལུ་སྤོ་བཤུད་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "IssueSoulBoundToken": "སོའུལ་བཱའུནཌི་ཊོ་ཀེན་ {symbol} བྱིན་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "Mint": "{amount} {symbol} ལུ་ {address} མིན་ཊི་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "OrderBookCancelLimitOrder": "ཚད་འཛིན་གོ་རིམ་ཆ་མེད་གཏང་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "OrderBookCancelLimitOrders": "ཚད་འཛིན་བཀའ་རྒྱ་ཆ་མེད་གཏང་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "OrderBookPlaceLimitOrder": "{amount} {symbol} ལུ་ {price} {symbol2} ལུ་ ཚད་འཛིན་གོ་རིམ་བཙུགས་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "ReferralReserveXor": "བོནཌི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ། {amount} XOR",
+            "ReferralSetInvitedUser": "{role} {address} གཞི་སྒྲིག་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "ReferralUnreserveXor": "{amount} XOR མཐུད་མཚམས་བཤོལ་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "RegisterAndRegulateAsset": "ཐོ་བཀོད་དང་ ཚད་འཛིན་འབད་མ་ཚུགས། {symbol}",
+            "RegisterAsset": "{symbol} རྒྱུ་དངོས་ཐོ་འགོད་འབད་མ་ཚུགས།",
+            "RegulateAsset": "རྒྱུ་དངོས་ཚད་འཛིན་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ། {symbol}",
+            "RemoveLiquidity": "{amount} {symbol} དང་ {amount2} {symbol2} རྩ་བསྐྲད་གཏང་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "RepayVaultDebt": "ལོག་སྤྲོད་འཐུས་ཤོར་ཡོདཔ། {amount} {symbol}",
+            "SetAccessExpiration": "{symbol} གི་དོན་ལུ་ {to} ལུ་ དུས་ཡོལ་དུས་མཐུན་བཟོ་ནི་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "StakingBond": "བོནཌི་འཐུས་ཤོར་འབྱུང་ཡོདཔ།{amount} {symbol}",
+            "StakingBondAndNominate": "བོནཌི་འཐུས་ཤོར་འབྱུང་ཡོདཔ།{amount} {symbol}",
+            "StakingBondExtra": "བོནཌི་ཁ་སྐོང་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།{amount} {symbol}",
+            "StakingChill": "བསིལ་ནི་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "StakingNominate": "བདེན་དཔྱད་འབད་མི་ཚུ་གདམ་ཁ་རྐྱབ་མ་ཚུགས།",
+            "StakingPayout": "གསོལ་རས་སྤྲོད་ནི་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "StakingRebond": "{amount} {symbol} ལོག་མཐུད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "StakingSetController": "ཚད་འཛིན་ {address} གཞི་སྒྲིག་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "StakingSetPayee": "དངུལ་སྤྲོད་མི་ {address} གཞི་སྒྲིག་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "StakingUnbond": "{amount} {symbol} མཐུད་བཤོལ་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "StakingWithdrawUnbonded": "{amount} {symbol} ཕྱིར་འཐེན་འཐུས་ཤོར་བྱུང་ཡོད།",
+            "Swap": "{amount} {symbol} གི་དོན་ལུ་ {amount2} {symbol2} བརྗེ་སོར་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "SwapAndSend": "{amount} {symbol} འདི་ {amount2} {symbol2} དང་ {action} {direction} {address} གི་དོན་ལུ་ བརྗེ་སོར་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "SwapTransferBatch": "__པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__ __པི་ཨེཆ་__༢__ ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "Transfer": "{action} {amount} {symbol} ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "VestedTransfer": "{action} {amount} {symbol} ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "XorlessTransfer": "{amount} {symbol} ལུ་ {address} གཏང་ནི་འཐུས་ཤོར་འབྱུང་ཡོདཔ།"
+        },
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "finalized": {
+            "AddLiquidity": "མཁོ་སྤྲོད་འབད་ཡོདཔ།{amount} {symbol} དང་{amount2} {symbol2}",
+            "BindRegulatedAsset": "རྒྱུ་དངོས་ {symbol2} ཨེསི་བི་ཊི་ལུ་བསྡམས།",
+            "BorrowVaultDebt": "བསྐྱིན་འགྲུལ་ལེན་ཡོདཔ།__པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "Burn": "མེ་བཏང་ཡོདཔ་ __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "ClaimRewards": "བྱ་དགའ་ཐོབ་བརྗོད་མཐར་འཁྱོལ་ཅན་བཟོ་ཡོདཔ།{rewards}",
+            "CloseVault": "{symbol}/{symbol2} གནས་ས་ཁ་བསྡམས་ཡོད།",
+            "CreatePair": "མཁོ་སྤྲོད་འབད་ཡོདཔ།{amount} {symbol} དང་{amount2} {symbol2}",
+            "CreateVault": "{symbol}/{symbol2} གནས་རིམ་གསར་བསྐྲུན་འབད་ཡོདཔ།",
+            "DemeterFarmingDepositLiquidity": "{symbol} དང་ {symbol2} {amount} ཨེལ་པི་ཊོ་ཀེན་ཚུ་བཀྲམ་སྤེལ་འབད་ཡོདཔ།",
+            "DemeterFarmingGetRewards": "{amount} {symbol} ཐོབ་བརྗོད་མཐར་འཁྱོལ་ཡོདཔ།",
+            "DemeterFarmingStakeToken": "ཁ་སྣོན་འབད་ཡོདཔ་ __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "DemeterFarmingUnstakeToken": "བཏོན་གཏང་ཡོདཔ་ __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "DemeterFarmingWithdrawLiquidity": "__པི་ཨེཆ་__༠__ དང་ __པི་ཨེཆ་__༡__ __པི་ཨེཆ་__༢__ ཨེལ་པི་ཊོ་ཀེན་ཚུ་རྩ་བསྐྲད་གཏང་ཡོདཔ།",
+            "DepositCollateral": "དངུལ་བཙུགས་ཡོདཔ།__པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "EthBridgeIncoming": "{amount} {symbol} {Ethereum} ལས་ {Sora} ལུ་སྤོ་བཤུད་འབད་ཡོདཔ།",
+            "EthBridgeOutgoing": "{amount} {symbol} {Sora} ལས་ {Ethereum} ལུ་སྤོ་བཤུད་འབད་ཡོདཔ།",
+            "IssueSoulBoundToken": "སོའུལ་བའོན་ཊོ་ཀེན་ {symbol} བཏོན་པ།",
+            "Mint": "མིན་ཊིཌ་ __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__ ལས་ __པི་ཨེཆ་__༢__",
+            "OrderBookCancelLimitOrder": "ཚད་འཛིན་བཀའ་རྒྱ་ཆ་མེད་བཏང་ཡོདཔ།",
+            "OrderBookCancelLimitOrders": "ཚད་འཛིན་བཀའ་རྒྱ་ཆ་མེད་བཏང་ཡོདཔ།",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} at {price} {symbol2} བཞག་ཡོད།",
+            "ReferralReserveXor": "བོནཌི་ __པི་ཨེཆ་__༠__ ཨེགསི་ཨོ་ཨར།",
+            "ReferralSetInvitedUser": "{role} {address} མཐར་འཁྱོལ་ཅན་སྦེ་གཞི་སྒྲིག་འབད་ཡོདཔ།",
+            "ReferralUnreserveXor": "མཐུད་མེད་ {amount} XOR",
+            "RegisterAndRegulateAsset": "ཐོ་བཀོད་འབད་དེ་ {symbol} རྒྱུ་དངོས་ཚད་འཛིན་འབད།",
+            "RegisterAsset": "ཐོ་བཀོད་འབད་ཡོད་པའི་ {symbol} རྒྱུ་ནོར།",
+            "RegulateAsset": "རྒྱུ་དངོས་ཚད་འཛིན་འབད།{symbol}",
+            "RemoveLiquidity": "བཏོན་གཏང་ཡོདཔ་ __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__ དང་ __པི་ཨེཆ་__༢__ __པི་ཨེཆ་__༣__",
+            "RepayVaultDebt": "ལོག་སྤྲོད་ཡོདཔ།__པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "SetAccessExpiration": "ཨེསི་བི་ཊོ་ཀེན་ {symbol} {endTime} ལུ་དུས་མཐུན་བཟོ་ཡོདཔ།",
+            "StakingBond": "བོནཌ་ __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "StakingBondAndNominate": "བོནཌ་ __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "StakingBondExtra": "བོནཌ་ཁ་སྐོང་ __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "StakingChill": "ཆིལ་",
+            "StakingNominate": "གདམ་འཐུ་འབད་ཡོད་པའི་བདེན་དཔྱད་པ་ཚུ།",
+            "StakingPayout": "དངུལ་སྤྲོད་པའི་བྱ་དགའ།",
+            "StakingRebond": "བསྐྱར་སྒྲིག་འབད་ཡོདཔ།__པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "StakingSetController": "ཚད་འཛིན་གཞི་སྒྲིག་ {address}",
+            "StakingSetPayee": "གླ་ཆ་ལེན་མི་གཞི་སྒྲིག་འབད།{address}",
+            "StakingUnbond": "མཐུད་མེད་ __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "StakingWithdrawUnbonded": "ཕྱིར་འཐེན་འབད་ཡོདཔ་ __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "Swap": "བརྗེ་སོར་འབད་ཡོདཔ་ __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__ གི་དོན་ལུ་ __པི་ཨེཆ་__༢__ __པི་ཨེཆ་__༣__",
+            "SwapAndSend": "བརྗེ་སོར་འབད་ཡོདཔ།",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
+        },
+        "IssueSoulBoundToken": "གནད་དོན་ཨེསི་བི་ཊི།",
+        "Mint": "མིནཊ།",
+        "OrderBookCancelLimitOrder": "བཀའ་རྒྱ་ཆ་མེད་གཏང་།",
+        "OrderBookCancelLimitOrders": "བཀའ་རྒྱ་ཆ་མེད་གཏང་།",
+        "OrderBookPlaceLimitOrder": "བཀོད་སྒྲིག་འབད་ནི།",
+        "ReferralReserveXor": "བོནཌི་ཨེགསི་ཨོ་ཨར།",
+        "ReferralSetInvitedUser": "__པི་ཨེཆ་__༠__ གཞི་སྒྲིག་འབད།",
+        "ReferralUnreserveXor": "ཨེགསི་ཨོ་ཨར་ བཤུད།",
+        "RegisterAndRegulateAsset": "རྒྱུ་དངོས་ཐོ་འགོད།",
+        "RegisterAsset": "རྒྱུ་དངོས་ཐོ་འགོད།",
+        "RegulateAsset": "རྒྱུ་དངོས་ཚད་འཛིན་འབད་ནི།",
+        "RemoveLiquidity": "དངུལ་འབབ་བཏོན་གཏང་།",
+        "RepayVaultDebt": "བུ་ལོན་སྤྲོད་ནི།",
+        "SetAccessExpiration": "ཨེསི་བི་ཊི་དུས་ཡོལ་གཞི་སྒྲིག་འབད།",
+        "StakingBond": "བོནཌ།",
+        "StakingBondAndNominate": "བོན་དང་ གདམ་འཐུས།",
+        "StakingBondExtra": "བོནཌ་ཨེག་སི་ཊར།",
+        "StakingChill": "ཆིལ་",
+        "StakingNominate": "གདམ་འཐུ་འབད་ནི།",
+        "StakingPayout": "དངུལ་སྤྲོད་བྱ་དགའ།",
+        "StakingRebond": "རི་བོནཌ།",
+        "StakingSetController": "ཚད་འཛིན་གཞི་སྒྲིག་འབད།",
+        "StakingSetPayee": "དངུལ་སྤྲོད་མི་གཞི་སྒྲིག་འབད།",
+        "StakingUnbond": "བསྡམ་བཅོལ།",
+        "StakingWithdrawUnbonded": "བུན་མེད་ཕྱིར་འཐེན།",
+        "Swap": "བརྗེ་རེས།",
+        "SwapAndSend": "བརྗེ་སོར་དང་གཏང་།",
+        "SwapTransferBatch": "{ADAR} སྤོ་སྒྱུར།",
+        "Transfer": "གནས་སྤོ།",
+        "VestedTransfer": "གནས་སྤོ།",
+        "XorlessTransfer": "གནས་སྤོ།"
+    },
+    "orderBook": {
+        "amount": "དངུལ་འབོར།",
+        "book": {
+            "noAsks": "ཁ་ཕྱེ་མ་བཏུབ།",
+            "noBids": "རིན་བསྡུར་ཁ་ཕྱེ་མེད།"
+        },
+        "bookStatus": {
+            "active": "ཤུགས་ལྡན་ཅན།",
+            "cancelable": "ཆ་མེད་གཏང་བཏུབ།",
+            "inactive": "ཤུགས་མེད་མི།",
+            "placeable": "བཞག་བཏུབ།"
+        },
+        "Buy": "{asset} ཉོ།",
+        "cantPlaceOrder": "མཁོ་མངགས་འབད་མི་ཚུགས།",
+        "change": "བསྒྱུར་བཅོས།",
+        "dayVolume": "1D སྐད་ཤུགས།",
+        "dialog": {
+            "askCancel": "ཁྱོད་ཀྱིས་ ཁྱོད་རའི་ཁ་ཕྱེ་ཡོད་པའི་བཀའ་རྒྱ་ཚུ་ཆ་མཉམ་ཆ་མེད་གཏང་དགོཔ་ངེས་བདེན་ཨིན་ན?",
+            "at": "at __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__",
+            "buy": "__པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__ ཉོ།",
+            "cancelAll": "ཨིན་ ཆ་མཉམ་ཆ་མེད་གཏང་།",
+            "placeLimit": "ཚད་འཛིན་གོ་རིམ་བཙུགས།",
+            "placeMarket": "ཁྲོམ་རའི་བཀའ་རྒྱ་བཙུགས།",
+            "sell": "བཙོང་ __པི་ཨེཆ་__༠__ __པི་ཨེཆ་__༡__"
+        },
+        "enterAmount": "དངུལ་བསྡོམས་བཙུགས།",
+        "error": {
+            "accountLimit": {
+                "reading": "ཚད་གཞི་ལྷོད་ཡོདཔ་: རྩིས་ཐོ་རེ་རེ་བཞིན་དུ་ ཚད་གཞི་བཀའ་རྒྱ་༡༠༢༤ ལུ་ཚད་འཛིན་འབད་ཡོདཔ་ཨིན། ཁྱོད་ཀྱི་བཀའ་རྒྱ་ལ་ལུ་ཅིག་མ་འགྲུབ་ཚུན་ཚོད་སྒུག་གནང་།",
+                "reason": "བཀའ་རྒྱ་མང་དྲགས། འཕྲོ་མཐུད་དེ་ཡོད།"
+            },
+            "beyondPrecision": {
+                "reading": "གཏན་གཏན་ལས་བརྒལ་ཡོདཔ་ཨིན་: ཐོ་བཀོད་འབད་ཡོད་པའི་དངུལ་བསྡོམས་/གོང་ཚད་འདི་ལུ་ བཅུ་ཚག་ས་གནས་ལེ་ཤ་ཡོདཔ་ཨིན། བཅུ་ཚག་ས་གནས་ཉུང་སུ་ཡོད་པའི་གནས་གོང་ཅིག་ཨིན་པུཊི་འབད་གནང་།",
+                "reason": "ཐོ་བཀོད་འབད་ཡོད་པའི་གོང་ཚད་འདི་ རྩིས་སྟོན་ནི་ལུ་ གནམ་མེད་ས་མེད་གཏན་གཏན་ཨིན།"
+            },
+            "exceedsSpread": {
+                "reading": "གོང་ཚད་ལས་བརྒལ་ཡོདཔ་: ཁྲོམ་གྱི་རིན་བསྡུར་ཡང་ན་ དྲི་བའི་གོང་ཚད་འདི་ དྲི་བའི་/རིན་བསྡུར་གྱི་གོང་ཚད་ལས་བརྒལ་ཡོདཔ་ཨིན།",
+                "reason": "གོང་ཚད་ལས་བརྒལ་བའི་ཁྱབ་ཚད།"
+            },
+            "marketNotAvailable": {
+                "reading": "ཁྲོམ་གྱི་བཀའ་རྒྱ་ཚད་གཞི་: ཁྲོམ་གྱི་བཀའ་རྒྱ་འདི་ བསྒྲུབ་ནིའི་དོན་ལུ་ བཀའ་རྒྱ་ལངམ་སྦེ་མེདཔ་ཨིན། ཁྱོད་རའི་བཀའ་རྒྱ་གི་ཚད་བདེ་སྒྲིག་འབད་ ཡང་ན་ བཀའ་རྒྱ་མངམ་བཙུགས་ནི་ལུ་སྒུག་གནང་།",
+                "reason": "བཀའ་རྒྱ་འདི་བཀང་ནིའི་དོན་ལུ་ བཀའ་རྒྱ་ལངམ་སྦེ་མེད།"
+            },
+            "multipleOf": {
+                "reading": "ཁྱོད་ཀྱི་བཀའ་རྒྱ་ལས་སྦྱོར་འབད་ནི་ལུ་ {value} གི་སྣ་མང་ཨིན་པའི་གོང་ཚད་ཅིག་ཨིན་པུཊི་འབད་གནང་།",
+                "reason": "བཙུགས་ཡོད་པའི་གོང་ཚད་འདི་ གནམ་མེད་ས་མེད་དམིགས་བསལ་ཨིན།"
+            },
+            "outOfBounds": {
+                "reading": "བཀག་ཆའི་ཁྱབ་ཚད་ལས་བརྒལ་ཡོདཔ་ཨིན་: ཁྱོད་ཀྱིས་བཙུགས་ཡོད་པའི་དངུལ་བསྡོམས་འདི་ བཀག་ཆ་གི་ཆོག་ཐམ་ཁྱབ་ཚད་ཀྱི་ཕྱི་ཁར་འཛུལཝ་ཨིན། མིན་: __པི་ཨེཆ་__༠__; མཐོ་ཤོས་: __པི་ཨེཆ་__༡__",
+                "reason": "དངུལ་བསྡོམས་འདི་ བཀག་ཆ་ཁྱབ་ཚད་ལུ་ མཐུན་སྒྲིག་འབད་མ་ཚུགས།"
+            },
+            "singlePriceLimit": {
+                "reading": "ཚད་གཞི་ལྷོད་ཡོདཔ་: གནས་རིམ་རེ་རེ་བཞིན་དུ་ ཚད་གཞི་བཀའ་རྒྱ་༡༠༢༤ ལུ་ཚད་འཛིན་འབད་ཡོདཔ་ཨིན། བཀའ་རྒྱ་ལ་ལུ་ཅིག་མ་འགྲུབ་ཚུན་ཚོད་སྒུག་གནང་།",
+                "reason": "གོང་ཚད་འདི་གི་དོན་ལུ་ བཀའ་རྒྱ་ལེ་ཤ་ཅིག་རང་ འཕྲོ་མཐུད་དེ་རང་ཡོདཔ་ཨིན།"
+            },
+            "spotLimit": {
+                "reading": "གོང་ཚད་ཁྱབ་ཚད་ཀྱི་མཐའ་མཚམས་: བཀའ་རྒྱ་ཀི་དེབ་ཕྱོགས་རེ་རེ་ལུ་ གོང་ཚད་ཁྱད་པར་ཅན་གྱི་ས་སྒོ་༡༠༢༤ ལུ་ཚད་འཛིན་འབད་ཡོདཔ་ཨིན། ད་ལྟོ་ཡོད་པའི་ཁྱབ་ཚད་ནང་འཁོད་ལུ་ གོང་ཚད་ཅིག་སེལ་འཐུ་འབད་གནང་ ཡང་ན་ ས་སྟོང་འཐོབ་ཚུགསཔ་བཟོ་ནི་ལུ་བསྒུག་གནང་།",
+                "reason": "ཚོང་འབྲེལ་ཕྱོགས་བཀང་ཡོདཔ།"
+            }
+        },
+        "history": {
+            "cancel": "གོ་རིམ་ཆ་མེད་གཏང་ {value}",
+            "cancelAll": "ཆ་མཉམ་ཆ་མེད་གཏང་།",
+            "connect": "ཚོང་འབྲེལ་འགོ་བཙུགས་ནིའི་དོན་ལུ་ རྩིས་ཐོ་མཐུད།",
+            "openOrders": "ཁ་ཕྱེ་བཀའ་རྒྱ་ཚུ་ {value}",
+            "orderHistory": "གོ་རིམ་བྱུང་རབས།",
+            "tradeHistory": "ཚོང་གི་ལོ་རྒྱུས།"
+        },
+        "limit": "ཚད་གཞི།",
+        "market": "ཁྲོམ་ར།",
+        "marketTrades": "ཁྲོམ་རའི་ཚོང་དོན།",
+        "month": "ཟླ་བ།",
+        "orderBook": "མངགས་ཉོའི་དེབ།",
+        "orderStatus": {
+            "active": "ཤུགས་ལས་",
+            "canceled": "ཆ་མེད་བཟོས་",
+            "expired": "དུས་ཡོལ་",
+            "filled": "ཆ་ཚང་"
+        },
+        "orderTable": {
+            "filled": "ཆ་ཚང་",
+            "lifetime": "དུས་ཡུན་",
+            "noOrders": "གདམ་འཇུག་མེད་ — དང་པ་ བཟོ་!",
+            "pair": "ཟུང་",
+            "side": "ཕྱོགས་",
+            "time": "ཆུ་ཚོད་"
+        },
+        "Sell": "{asset} བཙོང་",
+        "setPrice": "གོང་ཚད་འཇོག་",
+        "stop": "དེབ་བཀག་",
+        "time": "ཆུ་ཚོད་",
+        "tokenPair": "ཐོན་སྒོར་ཟུང་",
+        "tooltip": {
+            "bookStatus": {
+                "active": "ཚོང་འབྲེལ་གཞི་རྩ་ཚུ་གིས་ལག་ལེན་བྱེད་ཚུགས། གདམ་འཇུག་གསར་པ་བཞག་ ཡང་ན་ ཡོད་པ་ཚུ་ཆ་མེད་བཟོ་བཏུབ་",
+                "cancelable": "ཡོད་པའི་གདམ་འཇུག་ཚུ་ཆ་མེད་བཟོ་བཏུབ་རྐྱངམ་ — གསར་པ་བཞག་མི་ཆོག་",
+                "inactive": "ཚོང་འབྲེལ་གྱི་ལས་འགུལ་ཚུ་བཀག་ཡོད་ — གདམ་འཇུག་བཞག/ཆ་མེད་བཟོ་མི་ཆོག་",
+                "placeable": "ལས་འགུལ་ཚད་བཀག — གསར་པ་བཞག་དང་ཡོད་པ་ཚུ་ཆ་མེད་བཟོ་བཏུབ་ དེ་འབདཝ་ད་ ཁོ་ན་ལས་ཁུངས་མི་འཐོབ་འོང་"
+            },
+            "bookWidget": "ཐོན་སྒོར་གཅིག་ལུ་ གྱུར་བཏུབ་དང་བཙོང་བ་གཉིས་ཀྱི་གདམ་འཇུག་ཚུ་ གོང་ཚད་རིམ་པ་ལས་སྟོན་པའི་དངོས་མཐར་དུ་གསར་བསྐྱོད་ཡོད་པའི་ དེབ་འདི་གིས་ ཚོང་ཁྲོམ་གྱི་མཐོ་ཚད་སྟོན་",
+            "limitOrder": "'ཚད་གཅིག' གདམ་འཇུག་གིས་ ཐོན་སྒོར་ཉོ་བ/བཙོང་བའི་གོང་ཚད་ངེས་པར་འཇོག་བཏུབ་",
+            "marketOrder": "'ཚོང་ཁྲོམ་' གདམ་འཇུག་ — ད་ལྟོའི་གོང་ཚད་ལུ་དེ་མཐུན་བསྐྱེད་ ཐོན་སྒོར་ཉོ/བཙོང་",
+            "marketWidget": "ཚོང་ཁྲོམ་ནང་ ཚད་འཛིན་བྱས་པའི་ཚོང་འབྲེལ་གྱི་དུས་ཐོག་རྒྱུན་ཁྱབ་འབད་ བསྡོམས/ལས་སྐུལ/དུས་ལོགས་ཚུ་སྟོན་",
+            "pairsList": "དུས་ཐོག་ཏུ་ ཐོན་སྒོར་ཉོ་བ/བཙོང་བའི་གདམ་འཇུག་ཚུ་སྟོན་ — {Sora} དང་ {AppName} DEX ནང་ དགོས་མཁོ་དང་གོང་ཚད་ཕར་འགྱུར་ ཚོང་བསྟར་སྟོན་",
+            "txDetails": {
+                "amount": "'བསྡོམས་' — གདམ་འཇུག་ནང་ ཉོ/བཙོང་བའི་ཐོན་སྒོར་དོན་ལུ་ བསྡོམས་ཨིན་",
+                "expiryDate": "'དུས་ཡོལ་ཚེས་གྲངས་' — གོང་ཚད་དང་མཐུན་པའི་དུས་ཚོད་མ་འབྱུང་ཚུན་ གདམ་འཇུག་ཆ་མེད་བཟོས་",
+                "limit": "'ཚད་གཅིག་གོང་ཚད་' — ཚད་གཅིག་གདམ་འཇུག་གི་གོང་ཚད་ངེས་པར་འཇོག་",
+                "locked": "'བཀག་ཡོད་' — གདམ་འཇུག་འགྲོ་བའི་བསྒང་ ཐོན་སྒོར་བཀག་ཡོད་བསྡོམས་",
+                "orderType": "'ཉོ་བ་' — ངེས་པར་གསལ་བའི་གོང་ཚད་ཡང་ན་དེ་ལས་དམའ་ དེ་བཞིན་ 'བཙོང་བ་' — ངེས་པར་གསལ་བའི་གོང་ཚད་ཡང་ན་དེ་ལས་མཐོ་ དུས་ཐོག་ལེགས་ཤོམ་"
+            }
+        },
+        "total": "བསྡོམས་",
+        "tradingPair": {
+            "choosePair": "ཚོང་ཟུང་གདམ་",
+            "status": "གནད་དོན་",
+            "total": "{amount} {symbol} at {amount2} {symbol2}",
+            "volume": "བསྡོམས་ཚད་"
+        },
+        "txDetails": {
+            "expiryDate": "དུས་ཡོལ་",
+            "limitPrice": "ཚད་གཅིག་གོང་ཚད་",
+            "orderType": "གདམ་འཇུག་དབྱེ་བ་"
+        }
+    },
+    "pageTitle": {
+        "AddLiquidity": "དངུལ་འབབ་ཁ་སྐོང་འབད།",
+        "AssetOwner": "རྒྱུ་དངོས་བདག་པོ།",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Bridge": "@:bridgeText",
+        "Burn": "མེ་འབར་བ།",
+        "Explore/Books": "@:pageTitle.OrderBook",
+        "Explore/Farming": "ཞིང་ལཱ་འབད་ནི།",
+        "Explore/Pools": "ཆུ་རྫིང་།",
+        "Explore/Staking": "བཙུགས་ནི།",
+        "Explore/Tokens": "ཊོ་ཀེན་ཚུ།",
+        "OrderBook": "ཚོང་ལས།",
+        "Pool": "Pool",
+        "Rewards": "བྱ་དགའ།",
+        "Sccp": "SCCP",
+        "Staking": "བཙུགས་ནི།",
+        "Stats": "རྩིས་དཔྱད།",
+        "Swap": "བརྗེ་རེས།",
+        "VaultDetails": "ལས་གནས་ཁ་གསལ།",
+        "Vaults": "{Kensetsu}",
+        "Wallet": "དངུལ་ཁུག་།"
+    },
+    "pairIsNotCreated": "ཊོ་ཀེན་ཆ་གཅིག་གསར་བསྐྲུན་མ་འབད་བས།",
+    "points": {
+        "accountsText": "{amount} རྩིས་ཐོ་",
+        "airdrop": "SORA མཐུན་འབྲེལ་དང་འབྲེལ་བའི་ལས་ཀ་ཚུ་མཇུག་བསྡུས་ དངུལ་$3m AIRDROP ལུ་ཊུམ་ཁུངས་འཐོབ་",
+        "bridgeVolume": "ཟམ་པོའི་བསྡོམས་",
+        "complete": "མཇུག་བསྡུས་ | མཇུག་བསྡུས་",
+        "currently": "ད་ལྟོ་",
+        "dated": "ཚེས་གྲངས་",
+        "depositVolumeBridges": {
+            "descriptionTask": "Bridges, bitget, 1x, gateio བརྒྱུད་དེ་འཇོག་ དང་ འབུད་",
+            "titleProgress": "འཇོག་བསྡོམས་",
+            "titleTask": "འཇོག་ དང་ འབུད་"
+        },
+        "feesSpent": "གླ་སྒྲིག་སྤྲོད་པ་",
+        "firstSoraNetworkTransaction": "ཁྱེད་རང་གི་ {Sora} ཡོངས་འབྲེལ་འབུལ་འགྲོ་དང་པོ་",
+        "firstTxAccount": {
+            "descriptionTask": "XOR འབུལ་འགྲོ་དང་པོ་མཇུག་བསྡུས་སྒྲིག་ རྙོག་འདུག་ཐོབ་",
+            "titleProgress": "འབུལ་འགྲོ་དང་པོ་",
+            "titleTask": "འབུལ་འགྲོ་དང་པོ་བྱེད་"
+        },
+        "governanceLockedXOR": {
+            "descriptionTask": "དོ་དམ་འདེམས་གདམ་ལྟོས་འདུ་ཚོགས་ནང་གནམ་འོས་ཅན་སྦེ་གནང་ XOR བསྡམས་",
+            "titleProgress": "དོ་དམ་",
+            "titleTask": "དོ་དམ་འདེམས་གདམ་ནང་ XOR བསྡམས་"
+        },
+        "kensetsuVolumeRepaid": {
+            "descriptionTask": "རྩིས་སྤྲོད་དང་གནས་གོང་ཁ་བསྡམས་བསྒང་ KUSD ལོངས་སྤྱོད་ལོག་སྤྲོད་",
+            "titleProgress": "Kensetsu བསྡོམས་",
+            "titleTask": "KUSD ལོངས་སྤྱོད་ལོག་སྤྲོད་"
+        },
+        "KUSDHoldings": {
+            "descriptionTask": "ད་ལྟོའི་ KUSD འཛིན་ལྟུས་བསྲུངས་",
+            "titleProgress": "KUSD འཛིན་ལྟུས་",
+            "titleTask": "KUSD འཛིན་ལྟུས་བསྲུངས་"
+        },
+        "liquidityProvision": {
+            "descriptionTask": "པུལ་ཚུ་ནང་ལྟོས་སྤྱོད་བྱེད་",
+            "titleProgress": "ལྟོས་སྤྱོད་བྱེད་པ་",
+            "titleTask": "ལྟོས་སྤྱོད་ཁ་སྣོན་"
+        },
+        "loginText": "ཁྱེད་རང་གི་རྩིས་ཐོ་མཐུད་ནས་སྐུགས་ཚད་ལྟ་",
+        "lvl": "རིམ་པ་",
+        "maxLvl": "ཁྱེད་ཀྱིས་རིམ་པ་མང་མཐར་ལུ་སླེབས་",
+        "nativeXorStaking": {
+            "descriptionTask": "XOR སྡེབ་འབུལ་བྱས་ཏེ་ VAL རྙོག་འདུག་ཐོབ་",
+            "titleProgress": "XOR སྡེབ་འབུལ་",
+            "titleTask": "XOR སྡེབ་འབུལ་"
+        },
+        "networkFeeSpent": {
+            "descriptionTask": "དྲ་ལམ་གླ་སྒྲིག་ལུ་ XOR སྤྲོད་ འབུལ་འགྲོ་མང་པོ་ནང་",
+            "titleProgress": "དྲ་ལམ་གླ་སྒྲིག་",
+            "titleTask": "དྲ་ལམ་གླ་སྒྲིག་ལུ་ XOR སྤྲོད་"
+        },
+        "nextLvl": "རིམ་པ་ཤུལ་མ་",
+        "openTelegram": "{Telegram} ཁ་ཕྱེ་",
+        "orderbookVolume": {
+            "descriptionTask": "དོ་རྒྱུ་ཐོ་ནང་ཚད་བཀག་བཀོལ་དགོས་པའི་བཀོད་རྒྱུ་བཟོ་",
+            "titleProgress": "དོ་རྒྱུ་ཐོ་",
+            "titleTask": "ཚད་བཀག་བཀོད་རྒྱུ་བཟོ་"
+        },
+        "progress": "ཡར་འཕེལ་",
+        "referralRewards": {
+            "descriptionTask": "འབུལ་སྤྲོད་ལས་རིམ་བརྒྱུད་ནས་རྩིས་ཐོ་གཞན་ཚུ་འབུལ་སྤྲོད་",
+            "titleProgress": "འབུལ་སྤྲོད་ལས་རིམ་",
+            "titleTask": "རྩིས་ཐོ་འབུལ་སྤྲོད་"
+        },
+        "relatedTasks": "ཁྱེད་ཀྱི་ལས་ལམ་ཡར་འཐོན་བཟོ་ནི་ལུ་ {title} འབྲེལ་ལས་ཚུ་མཇུག་བསྡུས་",
+        "rewardNextLvl": "རིམ་པ་ཤུལ་མའི་རྙོག་འདུག་",
+        "soraCard": "ད་ལྟོ་ཞུ་འབོད་",
+        "title": "ཁྱེད་ཀྱི་སྐུགས་ཚད་",
+        "toEarnPoints": "སྐུགས་ཚད་ཐོབ་ནིའི་དོན་ལུ་",
+        "tokenHold": {
+            "descriptionTask": "ད་ལྟོའི་ {token} འཛིན་ལྟུས་བསྲུངས་",
+            "titleProgress": "{token} འཛིན་ལྟུས་",
+            "titleTask": "{token} འཛིན་ལྟུས་བསྲུངས་"
+        },
+        "VXORHoldings": {
+            "descriptionTask": "ད་ལྟོའི་ VXOR འཛིན་ལྟུས་བསྲུངས་",
+            "titleProgress": "VXOR འཛིན་ལྟུས་",
+            "titleTask": "VXOR འཛིན་ལྟུས་བསྲུངས་"
+        },
+        "xorBurned": "{XOR} བསྲེགས་",
+        "XORBurned": {
+            "descriptionTask": "XOR བསྲེགས་ནས་ $ གོང་ཚད་ལུ་བསྒྱུར་",
+            "titleProgress": "XOR བསྲེགས་",
+            "titleTask": "XOR བསྲེགས་"
+        },
+        "XORHoldings": {
+            "descriptionTask": "ད་ལྟོའི་ XOR འཛིན་ལྟུས་བསྲུངས་",
+            "titleProgress": "XOR འཛིན་ལྟུས་",
+            "titleTask": "XOR འཛིན་ལྟུས་བསྲུངས་"
+        },
+        "yourLevel": "ཁྱེད་རང་གི་རིམ་པ་",
+        "yourReferrals": "ཁྱེད་ཀྱི་འབུལ་སྤྲོད་ཚུ་",
+        "yourRewards": "ཁྱེད་རང་གི་རྙོག་འདུག་",
+        "yourTasks": "ཁྱེད་རང་གི་ལས་ཀ་ཚུ་"
+    },
+    "polkadotjs": {
+        "connectionError": "དངུལ་ཁུག་མཐུད་པའི་སྐབས་ འཛོལ་བ་ཅིག་བྱུང་ཡོདཔ། ཁྱོད་ཀྱིས་ {extension} བརྒྱུད་དེ་ དངུལ་ཁུག་འདི་ ལོག་སྟེ་མཐུད་ནི་ལུ་ དཔའ་བཅམ་ཚུགས།",
+        "noAccount": "{extension} རྩིས་ཐོའི་འཛོལ་བ། ཁྱོད་རའི་རྩིས་ཐོ་འདི་ {extension} རྒྱ་བསྐྱེད་ནང་ཞིབ་དཔྱད་འབད་གནང་།",
+        "noExtension": "{extension} རྒྱ་བསྐྱེད་འཚོལ་མ་ཐོབ། གཞི་བཙུགས་འབད་ཞིནམ་ལས་ ཤོག་ལེབ་འདི་ལོག་མངོན་གསལ་འབད་གནང་།",
+        "noExtensions": "{PolkadotJs} རྒྱ་བསྐྱེད་འཚོལ་མ་ཐོབ། གཞི་བཙུགས་འབད་ཞིནམ་ལས་ ཤོག་ལེབ་འདི་ལོག་མངོན་གསལ་འབད་གནང་།\nhttps://polkadot.js.org/རྒྱ་བསྐྱེད།/",
+        "noSigner": "འཛུལ་སྤྱོད་བཀག་ཆ་འབད་ཡོདཔ། {extension} རྒྱ་བསྐྱེད་སྒྲིག་སྟངས་ཚུ་ནང་འགྱོ་ཞིནམ་ལས་ གནང་བ་བྱིན་ནིའི་དོན་ལུ་ \"Manage Website Access\" ཁ་ཕྱེ།"
+    },
+    "pool": {
+        "addLiquidity": "ལྟོས་སྤྱོད་ཁ་སྣོན་",
+        "connectToWallet": "ཁྱེད་ཀྱི་ལྟོས་སྤྱོད་ལྟ་ནི་ལུ་རྩིས་ཐོ་མཐུད་",
+        "createPair": "ཟུང་གཉིས་གསར་བསྐྲུན་",
+        "description": "ལྟོས་སྤྱོད་ཁ་སྣོན་བྱས་ཚེ་ ཁྱེད་ལུ་པུལ་ཐོག་ཐོན་སྒོར་འབྱུང་ དེ་ཚུ་གནས་གོང་ལྟར་ཁྱེད་རང་གི་པུལ་ཆ་ཤས་ལུ་བསྟུན་ཏེ་རང་བཞིན་གྱིས་གླ་སྒྲིག་ཐོབ་ དུས་གང་རུང་ལས་སླར་ལེན་ཚུགས་",
+        "liquidityNotFound": "ལྟོས་སྤྱོད་མ་ཐོབ་",
+        "pairTokens": "{pair} པུལ་ཐོན་སྒོར་",
+        "pooledToken": "{tokenSymbol} བསྡོམས་",
+        "poolShare": "ཁྱེད་རང་གི་པུལ་ཆ་ཤས་",
+        "removeLiquidity": "ལྟོས་སྤྱོད་འབུད་",
+        "strategicBonusApy": "ཐབས་བྱུས་བྱ་དགའ་ཨེ་པི་ཝའི་།"
+    },
+    "poweredBy": "ནུས་ཤུགས་སྤྲོད་ཡོདཔ།",
+    "prevText": "ཧེ་མ",
+    "priceChartText": "གོང་ཚད་ཚོད་རིས་",
+    "priceText": "གོང་ཚད་",
+    "provider": {
+        "messages": {
+            "checkExtension": "{name} རྒྱ་བསྐྱེད་བྲེལ་འཚུབ་འདུག ཞིབ་དཔྱད་འབད་གནང་།",
+            "extensionLogin": "ཁྱོད་རའི་ {name} རྒྱ་བསྐྱེད་ནང་ ནང་བསྐྱོད་འབད་གནང་།",
+            "installExtension": "{name} རྒྱ་བསྐྱེད་འཚོལ་མ་ཐོབ། གཞི་བཙུགས་འབད་གནང་!\n\nཧེ་མ་ལས་རང་རྒྱ་བསྐྱེད་གཞི་བཙུགས་འབད་ཡོདཔ་ཨིན་ན? ཤོག་ལེབ་འདི་ཡང་བསྐྱར་མངོན་གསལ་འབད་གནང་།",
+            "notAvailable": "{name} འདི་ཐོབ་མི་ཚུགས།",
+            "reloadPage": "ཤོག་ལེབ་ཡང་བསྐྱར་མངོན་གསལ་འབད།"
+        }
+    },
+    "receivedText": "ཐོབ་ཡོདཔ།",
+    "referralProgram": {
+        "action": {
+            "bond": "བོནཌ།",
+            "bondMore": "བོནཌ་མང་བ།",
+            "copyLink": "འབྲེལ་མཐུད་འདྲ་བཤུས།",
+            "shareLink": "བགོ་བཤའ་བརྐྱབ།",
+            "unbond": "བསྡམ་བཅོལ།"
+        },
+        "bondedXOR": "XOR བོནཌིཌི།",
+        "bondTitle": "བོནཌི་ཨེགསི་ཨོ་ཨར།",
+        "confirm": {
+            "bond": "བུན་གཡར་ངེས་གཏན་བཟོ།",
+            "freeOfCharge": "བྱ་བ་འདི་རིན་མེད་ཡིན།",
+            "hasReferrerDescription": "མ་གཞི་ ཁྱོད་ཀྱིས་གཅིག་རྐྱངམ་ཅིག་གཞི་སྒྲིག་འབད་ཚུགས།",
+            "hasReferrerTitle": "ཁྱོད་ཀྱིས་ ཁྱོད་རའི་གཞི་བསྟུན་འདི་ ཧེ་མ་ལས་རང་ གཞི་སྒྲིག་འབད་ཡི།",
+            "inviteDescription": "ཚོང་འབྲེལ་རེ་རེ་གི་དོན་ལུ་ འཐུས་བརྒྱ་ཆ་༡༠ དེ་ཅིག་ ཁྱོད་ལུ་ ཟད་འགྲོ་ཁ་སྐོང་མེད་པར་ ཁྱོད་ཀྱི་ བརྡ་སྤྲོད་འབད་མི་ལུ་ འགྱོ་འོང་།",
+            "inviteTitle": "ཁྱོད་ {AppName} ལུ་གདན་འདྲེན་ཞུ་ཡི།",
+            "ok": "བཏུབ།",
+            "signInvitation": "ཆ་འཇོག་འབད་ནི།",
+            "unbond": "མ་བསྡམ་བཤོལ་ངེས་གཏན་བཟོ།"
+        },
+        "connectAccount": "ལག་ལེན་པ་ཚུ་མགྲོན་བརྡ་འབད་ནི་ལུ་ ཁྱོད་ཀྱིས་ ཁྱོད་རའི་ {Sora} རྩིས་ཐོ་འདི་མཐུད་དགོ།",
+        "insufficientBondedAmount": "གཞི་བསྟུན་མངམ་འབོ་ནིའི་དོན་ལུ་ ཉུང་མཐའ་ལུ་ {inviteUserFee} XOR བོནཌ།",
+        "insufficientBondedBalance": "བོནཌ་ལྷག་ལུས་ལངམ་མེདཔ།",
+        "invitationLink": "གདན་ཞུའི་འབྲེལ་མཐུད།",
+        "inviteViaTelegram": "{Telegram} བརྒྱུད་ནས་གདན་འདྲེན་ཞུ།",
+        "receivedRewards": "གསོལ་རས་ཐོབ་ཡོདཔ།",
+        "referralsNumber": "{number} བརྡ་སྤྲོད་ཚུ།",
+        "referrer": {
+            "approve": "ཆ་འཇོག་འབད་ནི།",
+            "approved": "ཆ་འཇོག་གྲུབ་ཡོདཔ།",
+            "description": "ཁྱོད་ཀྱིས་ {AppName} ལུ་གཞི་བསྟུན་འབད་ཚུགས།<br/>གཞི་བསྟུན་འབད་མི་གི་འབྲེལ་ལམ་ཡང་ན་ཨང་རྟགས་ནང་ཡིག་དཔར་རྐྱབས།",
+            "info": "ཁྱོད་ཀྱིས་ ཚོང་འབྲེལ་གྱི་འཐུས་སྤྲོད་པའི་སྐབས་<br/>བརྒྱ་ཆ་༡༠ ཁྱོད་ཀྱི་བརྡ་སྤྲོད་འབད་མི་ལུ་འགྱོ་འོང་།",
+            "label": "གདན་ཞུའི་འབྲེལ་མཐུད་སམ་ཨང་རྟགས།",
+            "placeholder": "མགྲོན་བརྡ་འབྲེལ་ལམ་ཡང་ན་ཨང་རྟགས་བཙུགས།",
+            "referredBy": "ཁྱོད་ཀྱིས་ {referrer} གིས་ གཞི་བསྟུན་འབད་ཡོདཔ་ཨིན།",
+            "referredLablel": "གཞི་བསྟུན་ཁ་བྱང་།",
+            "title": "ཁྱོད་རའི་གཞི་བསྟུན་པ་ཁ་སྐོང་བརྐྱབ།",
+            "titleReferrer": "ཁྱོད་ཀྱི་གཞི་བསྟུན་པ།"
+        },
+        "startInviting": "གཞན་ལུ་གཞི་བསྟུན་འབད་ནིའི་དོན་ལུ་ བོནཌི་ཨེགསི་ཨོ་ཨར།",
+        "title": "ཁ་གཏད་ལས་རིམ།",
+        "unbondTitle": "ཨེགསི་ཨོ་ཨར་ བཤུད།",
+        "welcomeMessage": "\nང་ལུ་ {AppName} ལུ་མཉམ་ཞུགས་འབད།\n\nའདོན་སྤེལ།: ༢༠༡༠/༠༣/༠༣ རིག་པ།(༡) འདི་ཡང་ གཟའ་ཉི་མའི་ཉིན།\n\n🎁 ཆ་རོགས་ཚུ་གདན་འདྲེན་ཞུ་སྟེ་ ཁོང་གི་ཚོང་འབྲེལ་འཐུས་བརྒྱ་ཆ་༡༠ ཐོབ།\n\nདེ་ཁར་མཇལ་འོང་།"
+    },
+    "releaseNotesText": "འགྲེམ་སྤེལ་དྲན་ཐོ།",
+    "removeLiquidity": {
+        "amount": "གྲངས་",
+        "confirmTitle": "ཁྱེད་ཀྱིས་ཐོབ་ནི་",
+        "description": "པུལ་ཐོག་ཐོན་སྒོར་འབུད་པས་ ད་ལྟོའི་གོང་ཚད་ལུ་གཞིགས་ཏེ་ཁྱེད་རང་གི་གནས་གོང་ལོག་སྤྲོད་བྱེད་ དེ་དང་པུལ་ཆ་ཤས་ལུ་བསྟུན་ཏེ་གླ་སྒྲིག་འབྱུང་མི་ཚུ་གྲངས་ནང་བཙུགས་ཡོད་",
+        "input": "ནང་འཇུག་",
+        "liquidity": "ལྟོས་སྤྱོད་",
+        "locked": "ཁྱེད་ཀྱི་པུལ་གྱི་ {percent} དེ་ {lock} ནང་བསྡམས་ཡོད་",
+        "output": "ཕྱི་འབྱུང་",
+        "outputMessage": "ཕྱི་འབྱུང་གྲངས་ཚད་འཇམ་སམ་དཔྱད་བྱས་པ་ཨིན། གོང་ཚད་ {slippageTolerance}% ལས་མང་སྒྱུར་བ་ཡོད་ཚེ་ འབུལ་འགྲོ་ལོག་པར་འགྱུར་",
+        "remove": "འབུད་",
+        "shareOfPool": "འབུལ་འགྲོ་ཤུལ་མའི་པུལ་ཆ་ཤས་",
+        "title": "ལྟོས་སྤྱོད་འབུད་"
+    },
+    "resetText": "བསྐྱར་སྒྲིག་",
+    "retryText": "ཡང་བསྐྱར་",
+    "rewards": {
+        "action": {
+            "checkRewards": "ཞིབ་བཤེར་",
+            "connectExternalWallet": "{Ethereum} རྩིས་ཐོ་མཐུད་",
+            "pendingExternal": "{Ethereum} འབུལ་འགྲོ་གྲལ་ལས...",
+            "pendingInternal": "{Sora} འབུལ་འགྲོ་གྲལ་ལས...",
+            "signAndClaim": "མཛུབ་རྟགས་བཀལ་ནས་བསྡུ་"
+        },
+        "andText": "དང་",
+        "claimableAmountDoneVesting": "བསྡུ་ཚུགས་པའི་རྙོག་འདུག་",
+        "claiming": {
+            "pending": "བསྡུ་བའི་སྒང་...",
+            "success": "མཐར་ཕྱིན་"
+        },
+        "events": {
+            "BuyOnBondingCurve": "TBC ལས་ཉོ་",
+            "LiquidityProvision": "ལྟོས་སྤྱོད་ཡོངས་འབྲེལ་གྱི་གླ་",
+            "LiquidityProvisionFarming": "ཁྲོམ་མཛོད་",
+            "MarketMakerVolume": "ཚོང་ཁྲོམ་བཟོ་མི་",
+            "NftAirdrop": "NFT ཨེར་གྲོབ་",
+            "SoraFarmHarvest": "{Sora}.farm འབྲུ་འབྱུང་",
+            "XorErc20": "ཨེགསི་ཨོ་ཨར་ཨི་ཨར་སི་-༢༠"
+        },
+        "forText": "དོན་ལུ་",
+        "groups": {
+            "crowdloan": "མི་སྡེའི་འབྲིང་ལེན་རྙོག་འདུག་",
+            "external": "{Ethereum} མཐུད་ཡོད་རྩིས་ཐོའི་རྙོག་འདུག་",
+            "strategic": "ཐབས་བསྟུན་རྙོག་འདུག་"
+        },
+        "hint": {
+            "connectAccounts": "PSWAP དང་ VAL རྙོག་འདུག་བསྡུ་ནི་ལུ་ {Sora} དང་ {Ethereum} རྩིས་ཐོ་གཉིས་མཐུད་དགོས་",
+            "connectAnotherAccount": "གཞན་ {Ethereum} རྩིས་ཐོ་མཐུད་ནས་ PSWAP དང་ VAL རྙོག་འདུག་ཞིབ་བཤེར་བྱེད་",
+            "connectExternalAccount": "{Ethereum} རྩིས་ཐོ་མཐུད་ནས་ PSWAP དང་ VAL རྙོག་འདུག་ཞིབ་བཤེར་བྱེད་",
+            "howToClaimRewards": "{symbols} རྙོག་འདུག་བསྡུ་ནི་ལུ་ {destination} ནང་ {count} {transactions} མཛུབ་རྟགས་བཀལ་དགོས་ རྙོག་འདུག་ཚུ་ {Sora} རྩིས་ཐོ་ལུ་ཐོབ་"
+        },
+        "notification": {
+            "empty": "རྩིས་ཐོ་འདི་ལུ་བསྡུ་ཚུགས་པའི་རྙོག་འདུག་མེད་"
+        },
+        "PointSystemWrapper": "སྐྱེད་མཐོང་",
+        "ReferralProgram": "བསྐྱེར་འགྱུར་",
+        "Rewards": "རྙོག་འདུག་",
+        "signing": {
+            "accounts": "{Sora} དང་ {Ethereum} རྩིས་ཐོ་གཉིས་",
+            "extension": "{PolkadotJs} བརའུསར་ཡིག་སྣོད་"
+        },
+        "totalVested": "རྙོག་འདུག་བསྡོམས་",
+        "transactions": {
+            "confimation": "{total} འབུལ་འགྲོ་གྱི་ {order} ངེས་གཏན་བཟོ་...",
+            "failed": "{total} ནང་ {order} མ་ཐུབ་ @:retryText",
+            "success": "རྙོག་འདུག་ཚུ་ལམ་མཆོངས་ཐོབ་འོང་"
+        }
+    },
+    "rotatePhoneNotification": {
+        "enableAcceleration": "ཁྱོད་རའི་སྒྲིག་སྟངས་ཚུ་ནང་ མགྱོགས་ཚད་འཛུལ་སྤྱོད་ལྕོགས་ཅན་བཟོ།",
+        "gyroscropePhone": " ང་བཅས་ཀྱི་འཕྲུལ་རིག་འདི་གིས་ ཁྱོད་རའི་ཁ་པར་ནང་ལུ་ཡོད་པའི་ གཱའི་རོ་སི་ཀོབ་འདི་ ཁྱོད་རའི་ཐབས་འཕྲུལ་གཡོ་བའི་སྐབས་ ཁྱོད་རའི་ལྷག་ལུས་འདི་ དེ་འཕྲོ་ལས་ སྦ་བཞག་ཚུགས།",
+        "info": "སྒེར་གསང་ཁ་སྐོང་དོན་ལུ་ ཁྱོད་རའི་རྒྱུ་དངོས་ལྷག་ལུས་ཚུ་ དེ་འཕྲོ་ལས་ སྦ་བཞག་ནི་ལུ་ ཁྱོད་རའི་ཐབས་འཕྲུལ་འདི་ གདོང་མར་ཕབ་འབད། ཁྱད་རྣམ་འདི་གིས་ ཁྱོད་རའི་ཁ་པར་ནང་ལུ་ཡོད་པའི་ཚོར་འཕྲུལ་ཚུ་ལག་ལེན་འཐབ་ཨིན།",
+        "title": "ལྷག་ལུས་ཚུ་སྦ་བཞག་ནིའི་དོན་ལུ་ ཁྱོད་རའི་ཐབས་འཕྲུལ་འདི་ ཡར་མར་བསྒྱིར།"
+    },
+    "saveText": "ཉར་",
+    "sbtDetails": {
+        "accessPermitted": "འཛུལ་སྤྱོད་འབད་ཆོགཔ།",
+        "description": "འ་ནི་ཨེསི་བི་ཊི་འདི་གིས་ ཊོ་ཀེན་དང་ ཆུ་རྫིང་ལེ་ཤ་ཅིག་ལུ་འཛུལ་སྤྱོད་བྱིནམ་ཨིནམ་དང་ ཁྱོད་རའི་རྩིས་ཐོ་ལུ་མཉམ་སྦྲགས་འབད་ཡོདཔ་ཨིན།",
+        "expiresIn": "སྤྱི་ལོ ༢༠༡༢ ལོར་དུས་ཡང༌།",
+        "expiresInTooltip": "'Expires in' གིས་ འཛུལ་སྤྱོད་འདི་ཐོབ་ཡོད་པའི་དུས་ཡུན་ཡང་ན་དུས་ཚོད་ཀྱི་ས་ཚིགས་སྟོནམ་ཨིན།",
+        "expiryDate": "དུས་ཡོལ་ཚེས་གྲངས།",
+        "expiryDateTooltip": "'དུས་ཡུན་ཚང་བའི་ཚེས་གྲངས་' འདི་ ཁྱོད་ཀྱིས་ ཨེསི་བི་ཊི་གི་ ཁྲིམས་མཐུན་རྒྱུ་དངོས་ཚུ་ འཛུལ་སྤྱོད་འབད་ནིའི་ དུས་ཚོད་མཇུག་ཨིན།",
+        "indefiniteExp": "ཁ་ཕྱེ།",
+        "issuedBy": "{SBT} གྱིས་བཏོན་ཡོད།",
+        "kycProvider": "{KYC} བྱིན་མཁན།",
+        "kycVerification": "{KYC} བདེན་དཔང་།",
+        "listOperable": "བཀོལ་སྤྱོད་འབད་བཏུབ་པའི་ ཁྲིམས་འཛིན་རྒྱུ་དངོས་ཚུ།",
+        "noPermissions": "ཁ་སྐོང་གནང་བ་མེད།",
+        "noReceiverAccess": "ཁྱོད་ཀྱིས་ ཨེསི་བི་ཊི་འཛུལ་སྤྱོད་མེད་པའི་ ལག་ལེན་པ་ལུ་ ཚད་འཛིན་འབད་ཡོད་པའི་ཊོ་ཀེན་གཏང་ནི་ལུ་ དཔའ་བཅམ་དོ།",
+        "permission": "གནང་བ།",
+        "permissions": "གནང་བ་ཚུ།",
+        "regulatedInsitution": "ཚད་འཛིན་གཙུག་སྡེ།"
+    },
+    "sccp": {
+        "amountLabel": "དངུལ་འབོར།",
+        "assetLabel": "རྒྱུ་དངོས་མཚོན་རྟགས།",
+        "clearPayload": "རྣམ་པ་གསལ་བ།",
+        "copyPayload": "འདྲ་བཤུས་པེ་ལོཌ།",
+        "destinationAddressLabel": "ལེན་མིའི་ཁ་བྱང་།",
+        "destinationNetworkLabel": "ཡོངས་འབྲེལ་ལུ།",
+        "emptyPayloadHelp": "གཏང་ནི་ལུ་གྲ་སྒྲིག་ཡོད་པའི་ཨེསི་སི་སི་པི་པེ་ལོཌི་ཅིག་བཟོ་བཏོན་འབད་ནི་ལུ་ འབྲི་ཤོག་ས་སྒོ་ཚུ་གཞི་སྒྲིག་འབད།",
+        "generatePayload": "ཨེསི་སི་སི་པི་པེ་ལོཌི་བཟོ་བཏོན་འབད།",
+        "noteLabel": "གདམ་ཁ་ཅན་གྱི་དྲན་ཐོ།",
+        "payloadCopied": "Payload འདྲ་བཤུས་རྐྱབ་ཡོདཔ།",
+        "payloadCopyFailed": "འདྲ་བཤུས་འཐུས་ཤོར་བྱུང་ཡོདཔ་ལས་ ལོག་སྟེ་འབད་རྩོལ་བསྐྱེད་གནང་།",
+        "payloadLabel": "གྲ་སྒྲིག་འབད་ཡོད་པའི་ འབབ་ཁུངས།",
+        "sourceNetworkLabel": "ཡོངས་འབྲེལ་ལས།",
+        "subtitle": "བི་ཨེསི་སི་དང་ ཨི་ཐི་རི་ཡམ་ དེ་ལས་ ཊི་ཨར་ཨོན་ཚུ་གི་དོན་ལུ་ ཉེན་སྲུང་ཅན་གྱི་ ཀོརསི་ཅེན་མཐུན་འབྲེལ་ (ཨེསི་སི་སི་པི་) སྤོ་བཤུད་གྲོགས་རམ་པ།",
+        "supportedNetworks": "རྒྱབ་སྐྱོར་འབད་ཡོད་པའི་རྒྱུན་རིམ་ཚུ་: {chains}.",
+        "title": "SCCP"
+    },
+    "searchText": "འཚོལ།",
+    "selectLanguageDialog": {
+        "title": "སྐད་ཡིག།"
+    },
+    "selectNodeConnected": "མཐུད་ཡོད་: {chain}",
+    "selectNodeDialog": {
+        "addNode": "སྲོལ་སྒྲིག་མཛུབ་གནོན་ཁ་སྐོང་འབད།",
+        "connected": "མཐུད་ཡོད།",
+        "customNode": "སྲོལ་སྒྲིག་མཛུབ་གནོན།",
+        "howToSetupOwnNode": "ཁྱོད་རའི་མཐུད་མཚམས་གཞི་སྒྲིག་འབད།",
+        "messages": {
+            "emptyAddress": "མཐུད་མཚམས་ཀྱི་ཁ་བྱང་འདི་ཨིན་པུཊི་འབད་གནང་།",
+            "emptyName": "མཐུད་མཚམས་ཀྱི་མིང་འདི་ཨིན་པུཊི་འབད་གནང་།",
+            "incorrectAddress": "ཁ་བྱང་ནོར་བ།",
+            "incorrectProtocol": "ཁ་བྱང་འདི་ ws:// ཡང་ན་ wss:// ལས་འགོ་བཙུགས་དགོ།"
+        },
+        "nodeTitle": "{chain} གཙོ་བོར་བཏོན་ཡོདཔ།",
+        "select": "སེལ་འཐུ་འབད།",
+        "title": "ཡོངས་འབྲེལ་མཐུད་མཚམས་སེལ་འཐུ།",
+        "updateNode": "མཐུད་མཚམས་དུས་མཐུན་བཟོ།"
+    },
+    "selectNodeText": "ཡོངས་འབྲེལ་མཐུད་མཚམས་སེལ་འཐུ་འབད།",
+    "selectRegisteredAsset": {
+        "search": {
+            "networkLabelEthereum": "{network} ཡོངས་འབྲེལ་མེ་ལོང་ཊོ་ཀེན་ཚུ།",
+            "networkLabelSora": "{Sora} ཡོངས་འབྲེལ་ཊོ་ཀེན་ཚུ།",
+            "placeholder": "རྒྱུ་དངོས་ཨའི་ཌི་ མིང་ ཡང་ན་ ཊི་ཀར་བརྡ་མཚོན་གྱིས་ཚགས་མ་བཙུགས།"
+        },
+        "title": "ཊོ་ཀེན་ཅིག་སེལ་འཐུ་འབད།"
+    },
+    "selectToken": {
+        "assets": {
+            "title": "རྒྱུ་ནོར།"
+        },
+        "custom": {
+            "alreadyAttached": "ཊོ་ཀེན་འདི་ཧེ་མ་ལས་མཉམ་སྦྲགས་འབད་ནུག།",
+            "notFound": "ཊོ་ཀེན་འཚོལ་མ་ཐོབ།",
+            "search": "ཨིན་པུཊི་རྒྱུ་དངོས་ཨའི་ཌི།",
+            "text": "སྲོལ་སྒྲིག་རྟགས་མཚན།",
+            "title": "རང་སྲོལ།"
+        },
+        "emptyListMessage": "གྲུབ་འབྲས་མེད།",
+        "searchPlaceholder": "རྒྱུ་དངོས་ཨའི་ཌི་ མིང་ ཡང་ན་ ཊི་ཀར་བརྡ་མཚོན་གྱིས་ཚགས་མ་བཙུགས།",
+        "title": "ཊོ་ཀེན་ཅིག་སེལ་འཐུ་འབད།"
+    },
+    "sendText": "གཏང་",
+    "sentText": "བཏང་ཡོདཔ།",
+    "settingsText": "སྒྲིག་སྟངས་ཚུ།",
+    "signAndClaimText": "མིང་རྟགས་བཀོད་དེ་ཐོབ་བརྙན།",
+    "social": {
+        "github": "གིཊ་ཧབ།",
+        "medium": "བར་མ།",
+        "reddit": "རེ་ཌིཊ།",
+        "telegram": "ཊེ་ལི་གཱརམ།",
+        "twitter": "ཊུ་ཊར།",
+        "wiki": "{Sora} ཝི་ཀི།"
+    },
+    "soraStaking": {
+        "actions": {
+            "claim": "རྙོག་འདུག་བསྡུ་",
+            "confirm": "སྡེབ་འབུལ་ངེས་གཏན་བཟོ་",
+            "more": "ཧེང་བཀལ་སྡེབ་འབུལ་",
+            "remove": "སྡེབ་འབུལ་འབུད་",
+            "withdraw": "འབུད་"
+        },
+        "allWithdrawsDialog": {
+            "information": "སྡེབ་འབུལ་ཕྱིར་འབུད་བྱས་རྗེས་ 7 ཉིན་གྱི་བར་མཚམས་ཡོད། དེ་རྗེས་ ཐོན་སྒོར་རང་བཞིན་དུ་མི་འབྱུང་ — ལག་ཐོག་གིས་འབུད་དགོས་",
+            "title": "སྡེབ་འབུལ་ཕྱིར་འབུད་"
+        },
+        "claimRewardsDialog": {
+            "checkRewards": "དུས་རབས་དང་བདེན་བཤེར་རེ་རེའི་རྙོག་འདུག་བཤེར་ཞིབ་འབད་",
+            "rewardsDestination": "རྙོག་འདུག་འབྱོར་གནས་ཁ་བྱང་",
+            "title": "རྙོག་འདུག་འཐོབ་"
+        },
+        "dropdownMenu": {
+            "controllerAccount": "ཚད་འཛིན་རྩིས་ཐོ་"
+        },
+        "info": {
+            "minimumStake": "ཉུང་མཐའ་སྡེབ་འབུལ་",
+            "nominators": "འོས་འགན་པ་",
+            "rewarded": "རྙོག་འདུག་བསྡུས་",
+            "rewardToken": "རྙོག་འདུག་ཐོན་སྒོར་",
+            "selectedValidators": "འདེམས་ཟིན་བདེན་བཤེར་",
+            "stakingBalance": "སྡེབ་འབུལ་ཐོན་སྒོར་",
+            "totalLiquidityStaked": "སྡེབ་འབུལ་ལྟོས་སྤྱོད་བསྡོམས་",
+            "unstaking": "སྡེབ་འབུལ་ཕྱིར་འབུད་",
+            "unstakingPeriod": "སྡེབ་འབུལ་ཕྱིར་འབུད་དུས་ཚོད་",
+            "validators": "བདེན་བཤེར་"
+        },
+        "newStake": {
+            "title": "སྡེབ་འབུལ་འགོ་བཙུགས་"
+        },
+        "overview": {
+            "description": "{Sora} ཡོངས་འབྲེལ་ནང་ {XOR} སྡེབ་འབུལ་བྱས་ཏེ་ འབུལ་འགྲོ་ལྟོས་ཞིབ་བྱེད་ དེ་ལས་ {VAL} ཐོན་སྒོར་བསྡུ་",
+            "title": "{Sora} སྡེབ་འབུལ་"
+        },
+        "pendingRewardsDialog": {
+            "information": "བདེན་བཤེར་ཚུ་གིས་ 2–5 ཉིན་རེ་རེ་རྙོག་འདུག་བསྤྲད་ཡོད། དེ་འབདཝ་ད་ རྙོག་འདུག་དུས་ཐོག་མཇུག་མཐའ་ཉེ་བ་ཡོད་ཚེ་ཁྱེད་རང་གིས་བསྤྲད་ཚུགས་ཀྱང་ གླ་དངུལ་སྤྲོད་དགོས་",
+            "noPendingRewards": "བསྣར་བཞག་ཡོད་པའི་རྙོག་འདུག་མེད་",
+            "noSelectedRewards": "རྙོག་འདུག་འདེམས་",
+            "payout": "བསྤྲད་",
+            "title": "བསྣར་བཞག་རྙོག་འདུག་"
+        },
+        "selectedValidators": "{count} ({Max} {max})",
+        "selectValidatorsMode": {
+            "confirm": {
+                "manual": "ང་རང་བདེན་བཤེར་འདེམས་",
+                "suggested": "བསམ་འཆར་བྱས་པའི་བདེན་བཤེར་དང་མཉམ་སྡེབ་འབུལ་"
+            },
+            "criteria": {
+                "0": "ཕན་ཐོགས་མང་ཤོས་",
+                "1": "ལུས་ཆོད་མེད་",
+                "2": "On-chain ངོས་འཛིན་ཡོད་",
+                "3": "བཀག་སྡུད་མེད་",
+                "4": "ངོས་འཛིན་རེ་ལས་བདེན་བཤེར་ 2 ཚད་"
+            },
+            "description": "{Sora} ཡོངས་འབྲེལ་གྱི་རྩིས་ལས་ཀྱིས་ཁྱད་ཚད་འདི་ཚུ་གཞིགས་ཏེ་བསམ་འཆར་བྱས་པའི་བདེན་བཤེར་ཐོ་ཡིག་ཞིབ་འཚོལ་བྱས་ཡོད།",
+            "title": "རྩིས་ལས་ནས་བསམ་འཆར་བྱས་པའི་བདེན་བཤེར་དང་མཉམ་སྡེབ་འབུལ་"
+        },
+        "stakeDialog": {
+            "toRemove": "འབུད་ནི་",
+            "toStake": "སྡེབ་འབུལ་"
+        },
+        "validators": {
+            "alreadyNominated": "འདེམས་ཟིན་བདེན་བཤེར་ཚུ་ཧེ་མ་ལས་འོས་འགན་བྱས་",
+            "change": "བདེན་བཤེར་སོར་",
+            "next": "མུ་མཐུད་",
+            "recommended": "བསམ་འཆར་བྱས་པའི་བདེན་བཤེར་",
+            "save": "བསྒྱུར་བཅོས་ཉར་",
+            "select": "བདེན་བཤེར་འདེམས་",
+            "selected": "{selected}/{total} འདེམས་ཟིན་",
+            "tooManyValidators": "བདེན་བཤེར་མང་དྲགས་འདེམས་ ({Max} {max})"
+        },
+        "validatorsAttentionDialog": {
+            "confirm": "ཉེན་ཁ་ཧ་གོ་",
+            "description": {
+                "0": "རྩིས་ལས་བཟོས་པའི་བསམ་འཆར་ཚུ་ དངུལ་སློབ་གྲོས་མཐུན་མ་ཡིན་ སྡེབ་འབུལ་ནི་ཉེན་ཁ་མཐོ་བའི་ལས་འགུལ་",
+                "1": "བསམ་འཆར་བྱས་པའི་བདེན་བཤེར་ཡང་ གྲོལ་བརྩིས་འབད་ནུག དེ་གིས་གྲངས་ཚད་སོར་བཏུབ་",
+                "2": "ཐོན་སྒོར་དང་རྙོག་འདུག་བསྡུས་བས་ཤོར་སྲིད་ ཁྱེད་རང་གི་བདེན་སྤྱོད་ནང་ལུ་ ངལ་རྩོལ་འབད་ཞིབ་འཇུག་བྱས་ཏེ་གཏོགས་"
+            },
+            "title": "དྲན་གསོ་"
+        },
+        "validatorsDialog": {
+            "tabs": {
+                "all": "ཆ་མཉམ་",
+                "user": "ངོ་མ་"
+            },
+            "title": {
+                "edit": "ངོ་མའི་བདེན་བཤེར་ཞུན་དག་"
+            }
+        },
+        "validatorsFilterDialog": {
+            "filters": {
+                "hasIdentity": {
+                    "description": "རྩིས་ཐོ་དང་ མིང་སྟོན་འབྲེལ་མཐུད་མི་ཉུང་མཐའ་གཅིག་",
+                    "name": "On-chain ངོས་འཛིན་"
+                },
+                "notOversubscribed": {
+                    "description": "ཁས་བླངས་ཚད་ནང་ཡོད་ — {Polkadot} སྡེབ་འབུལ་གི་ལུས་ཆོད་འཐེན་མེད་",
+                    "name": "ལུས་ཆོད་མེད་"
+                },
+                "notSlashed": {
+                    "description": "སྡེབ་འབུལ་ཐོན་སྒོར་གི་གླ་སྒྲིག་གིས་ སྐྱོན་མེད་",
+                    "name": "བཀག་སྡུད་མེད་"
+                },
+                "twoValidatorsPerIdentity": {
+                    "description": "དབུས་མེད་སྒྲིག་ལམ་ལུ་ ངོས་འཛིན་རེ་ལས་བདེན་བཤེར་གཉིས་ཚད་",
+                    "name": "ངོས་འཛིན་རེ་ལས་ 2 ཚད་"
+                }
+            },
+            "reset": "ཚང་མ་བསྐྱར་སྒྲིག་",
+            "save": "ཚགས་མ་ཉར་",
+            "title": "ཚགས་མ་"
+        },
+        "validatorsList": {
+            "commission": "འབག་ཤོག་",
+            "commissionTooltip": "འབག་ཤོག་ཟེར་མི་ སྡེབ་འབུལ་ནང་ བདེན་བཤེར་གྱིས་ལཱ་གཡོག་དང་འབྲེལ་བའི་གླ་སྒྲིག་ཨིན་ བརྒྱ་ཆ་གཞིར་བཟོས་ མི་དགོས་པའི་བསྡུས་ལས་མ་བཟུང་་ དེ་འབདཝ་ད་ བདེན་བཤེར་ཚུ་གིས་འབག་ཤོག་གོང་འདོར་བཏུབ་",
+            "name": "མིང་",
+            "noNominatedValidators": "འོས་འགན་བྱས་པའི་བདེན་བཤེར་མེད་",
+            "noValidators": "ཚགས་མའི་ཁྱད་ཚད་ལྟུང་མི་བདེན་བཤེར་མེད་",
+            "return": "ལོག་",
+            "search": "འཚོལ་..."
+        },
+        "withdraw": {
+            "beingWithdrawn": "འབུད་བཞིན་",
+            "countdownLeft": "ལྷག་ལུས་",
+            "nextWithdrawal": "ལྷག་འབུད་ཤུལ་མ་",
+            "seeAll": "ཚང་མ་སྟོན་",
+            "withdrawable": "འབུད་ཚུགས་"
+        },
+        "withdrawDialog": {
+            "showAllWithdraws": "ཚང་མའི་འབུད་སྟོན་",
+            "title": "སྡེབ་འབུལ་ཕྱིར་འབུད་"
+        }
+    },
+    "stepText": "གོམ་པ།",
+    "successText": "མཐར་འཁྱོལ",
+    "swap": {
+        "confirmSwap": "བརྗེ་སོར་ངེས་དཔྱད་འབད།",
+        "errorFetching": "གནད་སྡུད་ལེན་ནི་ལུ་འཛོལ་བ།",
+        "insufficientAmount": "{tokenSymbol} དངུལ་འབོར་མི་འདང་བ།",
+        "insufficientLiquidity": "མ་དངུལ་མི་འདང་བ།",
+        "liquidityProviderFee": "ལྟོས་སྤྱོད་པ་གི་གླ་སྒྲིག་",
+        "liquidityProviderFeeTooltip": "ཚོང་རྒྱུ་རེ་རེའི་ཆ་ཤས་ ({liquidityProviderFee}%) དེ་ ལྟོས་སྤྱོད་བྱེད་པ་ཚུ་ལུ་བསྐྱེད་བསྐྱུད་ཀྱི་དོན་ལུ་གླ་སྒྲིག་སྦེ་སྤྲོད་",
+        "maxSold": "མཐོ་ཤོས་བཙོངས་ཡོདཔ།",
+        "minReceived": "ཉུང་མཐའ་ཐོབ་ཡོདཔ།",
+        "minReceivedTooltip": "ཁྱོད་ཀྱི་ཚོང་འབྲེལ་འདི་ ངེས་གཏན་མ་བཟོ་བའི་ཧེ་མ་ གོང་ཚད་སྦོམ་དང་ མ་བཏུབ་པའི་འགུལ་སྐྱོད་ཅིག་ འབྱུང་པ་ཅིན་ ལོག་འོང་།",
+        "priceImpact": "གོང་ཚད་ཀྱི་ཤུགས་རྐྱེན།",
+        "priceImpactTooltip": "ཚོང་འབྲེལ་གྱི་ཚད་གཞི་ལུ་བརྟེན་ ཁྲོམ་གྱི་གོང་ཚད་དང་ ཚོད་དཔག་གོང་ཚད་ཀྱི་བར་ནའི་ཁྱད་པར།",
+        "rewardsForSwap": "PSWAP ཐབས་བྱུས་བྱ་དགའ།",
+        "route": "ལམ།",
+        "slippageTolerance": "ཤུད་འགྲོས་བཟོད་སྒོམ།",
+        "swapOutputMessage": "ཕྱི་འབྱུང་གྲངས་ཚད་འཇམ་སམ་དཔྱད་བྱས་པ་ཨིན། ཉུང་མཐའ་ {transactionValue} ལས་མང་ཐོབ་ དེ་མེད་པ་ཅིན་འབུལ་འགྲོ་ལོག་པར་འགྱུར་"
+    },
+    "swapText": "བརྗེ་སྤོར་",
+    "tokens": {
+        "assetId": "རྒྱུ་དངོས་ཨའི་ཌི།"
     },
     "tooltips": {
-      "transfer": "ཐོན་སྒོར་ཐོབ་ཚར་!\nཟམ་པོའི་འབུལ་འགྲོ་འགོ་བཙུགས་"
-    }
-  },
-  "moonpayText": "MoonPay",
-  "mst": {
-    "about": "About",
-    "accountNameMst": "Multisig account name",
-    "addAddr": "Add address",
-    "addAddress": "Add another address",
-    "addMST": "Add multisig addresses",
-    "addrCreation": "Multisig address creation",
-    "addressEntered": "This address has already been entered",
-    "amountOfSignatures": "Signatures submitted",
-    "cardMessageFirst": "For your multisig to function properly, all listed addresses must create the multisig in the exact same way as you did.",
-    "cardMessageSecond": "Multisig wallet cannot possibly be changed in the future, only the name.",
-    "connectFearless": "Connect via fearless",
-    "continue": "Continue",
-    "createMst": "Create multisig wallet",
-    "enterAddress": "Enter the multisig address",
-    "enterName": "Enter Multisig Wallet Name",
-    "forget": "forget",
-    "forgetMst": "Your login details will be deleted. You will permanently lose access to your account",
-    "how": "How To?",
-    "incorrectFormatAddress": "The address is not in correct format",
-    "loading": "Loading...",
-    "minFee": "Min amount of fee SIGNER need",
-    "mstBridgeWarning": "Transfer from MST is not supported for now",
-    "mstFearless": "Install Fearless Wallet or connect your account",
-    "mstForgetBtn": "Forget Multisig account",
-    "mstIcon": "Create a Multisig account",
-    "mstKeys": "Multisig wallets require multiple signatures and keys",
-    "mstSave": "Save changes",
-    "mstSign": "Set the number of required signatures to complete transactions",
-    "mstSwitchWarning": "All activities and transactions will be carried out through the Multisig account",
-    "mstWallet": "Multiple signatures reduce the risk of key compromise. Funds remain safe even if one key is lost or stolen",
-    "multisigAccount": "Multisig Account",
-    "seeActivity": "See Multisig activity",
-    "settingsMst": "Multisig account settings",
-    "setupDetails": "Set up the details",
-    "sign": "Sign",
-    "successMstSetUp": "Multisig wallet has been successfully set up!",
-    "suggestSwitchFromMst": "You could switch from MST or transfer to MST",
-    "sureForgetMst": "Are you sure you want to forget Multisig account?",
-    "switchFromMst": "Switch from MST",
-    "switchMst": "Switch to Multisig account",
-    "threshold": "Threshold",
-    "thresholdNumber": "Set a transaction approval threshold",
-    "warningSwitch": "A sign is needed to confirm the transaction. Please switch to a multisig account.",
-    "yourAddress": "Your address"
-  },
-  "multipleRecipients": "Multiple Recipients",
-  "nameText": "Name",
-  "networkFeeText": "Network Fee",
-  "networkFeeTooltipText": "Network fee is used to ensure {Sora} system's growth and stable performance.",
-  "networkStatisticsText": "Network statistics",
-  "newAccountsText": "New accounts",
-  "nextText": "Next",
-  "noDataText": "No data",
-  "node": {
-    "errors": {
-      "connection": "An error occurred while connecting to the node\n{address}\n",
-      "existing": "This node is already added: {title}\n",
-      "network": "The node\n{address}\n is from the another network\n"
+        "accounts": "རྩིས་ཐོ་ཚུ་ ཡོངས་འབྲེལ་གུ་ལག་ལེན་པའི་རྒྱུ་དངོས་ཚུ་བཞག་མི་ ཌི་ཇི་ཊཱལ་ཁ་བྱང་ཚུ་ཨིན། རྩིས་ཐོ་རེ་རེ་བཞིན་དུ་ གཞན་དང་མ་འདྲ་བའི་ མི་མང་ཁ་བྱང་དང་ སྒེར་གྱི་ལྡེ་མིག་ཅིག་དང་ འབྲེལ་བ་ཡོདཔ་ལས་ ལག་ལེན་པ་གིས་ ཁོང་རའི་རྒྱུ་དངོས་ཚུ་ འཛུལ་སྤྱོད་དང་ འཛིན་སྐྱོང་འཐབ་བཅུགཔ་ཨིན།",
+        "bridgeTransactions": "{from} ལས་ {to} ཟམ་འདི་ ཟམ་ལག་ལེན་འཐབ་སྟེ་ {from} དང་ {to} ཡོངས་འབྲེལ་གྱི་བར་ན་ རྒྱུ་དངོས་སྤོ་བཤུད་འབད་ནིའི་བྱ་རིམ་ལུ་གོཝ་ཨིན། ཟམ་འདི་གིས་ ཡོངས་འབྲེལ་གཉིས་ཀྱི་བར་ན་ ཕན་ཚུན་འབྲེལ་བ་འཐབ་ཚུགས་པའི་ གོ་སྐབས་བྱིན་དོ་ཡོདཔ་ལས་ ལག་ལེན་པ་ཚུ་གིས་ རྒྱུ་དངོས་ཚུ་ མཐུན་སྒྲིག་མེད་པར་ སྤོ་བཤུད་འབད་ཚུགསཔ་ཨིན།",
+        "fees": "{Sora} བཀག་ཆའི་ཐོག་ལུ་འཐུས་ཚུ་ ཡོངས་འབྲེལ་གུ་ཚོང་འབྲེལ་ཚུ་ལག་ལེན་འཐབ་ནིའི་དོན་ལུ་ འཐུས་སྤྲོད་མི་ཚུ་ལུ་གཞི་བསྟུན་འབདཝ་ཨིན། འཐུས་འདི་ཚུ་ {Sora} ཡོངས་འབྲེལ་གྱི་ ས་གནས་ཀྱི་ཀིརིཔ་ཊོ་ཀརན་སི་ ཨེགསི་ཨོ་ཨར་ནང་ སྤྲོདཔ་ཨིན། འཐུས་དངུལ་འབོར་འདི་ ལག་ལེན་འཐབ་པའི་བསྒང་ཡོད་མི་ ཚོང་འབྲེལ་གྱི་ མགུ་རྙོག་དྲགས་དང་ ཚད་གཞི་གིས་ གཏན་འབེབས་བཟོཝ་ཨིན།",
+        "roi": "{ROI} ཟེར་མི་འདི་ མ་རྩ་བཙུགས་པའི་ཁེབ་སང་ལུ་གོཝ་ཨིན། དེ་ཡང་ མ་རྩ་བཙུགས་མི་ལས་ཐོབ་མི་ཁེ་སང་འདི་ མ་རྩ་བཙུགས་མི་དེ་གི་འགྲོ་སོང་གིས་ བརྒྱ་ཆ་འདྲ་མཉམ་ནང་ བགོ་བཤའ་རྐྱབ་སྟེ་ རྩིས་རྐྱབ་ཨིན།",
+        "supply": "ཊོ་ཀེན་བཀྲམ་སྤེལ་ཟེར་མི་འདི་ གསར་བསྐྲུན་འབད་དེ་ཡོད་མི་ ཊོ་ཀེན་ཚུ་གི་གྱངས་ཁ་ཡོངས་བསྡོམས་ལུ་གོཝ་ཨིནམ་དང་ ཡོངས་འབྲེལ་ནང་ལུ་ བསྐོར་འགྲུལ་འབད་དོ་ཡོདཔ་ཨིན། ཊོ་ཀེན་བཀྲམ་སྤེལ་འདི་ ཊོ་ཀེན་ཚུ་ བཙུགས་བཞག་མི་དང་ མེ་བཏང་མི་ ཡང་ན་ ཡོངས་འབྲེལ་ནང་ སྤོ་བཤུད་འབད་མི་ལུ་གཞི་བཞག་སྟེ་ འགྱུར་བ་འགྱོ་འོང་།",
+        "transactions": "ཚོང་འབྲེལ་འདི་ ཡོངས་འབྲེལ་ནང་ལུ་ ཌི་ཇི་ཊཱལ་རྒྱུ་དངོས་ཚུ་གཏང་ནི་དང་ ཡང་ན་ ལེན་ནིའི་བྱ་རིམ་ལུ་ གོཝ་ཨིནམ་ད་ དེ་ནང་ དངུལ་གྱི་བཀོལ་སྤྱོད་དང་ བརྗེ་སོར་ཚུ་ཡང་ ཚུདཔ་ཨིན།",
+        "tvl": "{TVL} འདི་ བསྡོམས་གནས་གོང་ལྡེ་མིག་བརྐྱབ་ཡོད་པའི་དོན་ལུ་ཨིན། འདི་གིས་ དྲོ་ལར་འདྲ་མཉམ་ནང་ ཆུ་རྫིང་ཚུ་ནང་ བསྡམ་བཞག་ཡོད་པའི་ ཊོ་ཀེན་ཚུ་ ངོ་བཏོནམ་ཨིན།",
+        "velocity": "ཊོ་ཀེན་མགྱོགས་ཚད་འདི་ སྤྱིར་སྙོམས་ལུ་ དུས་ཡུན་(ཟླཝ་) གི་རིང་ལུ་ ཊོ་ཀན་གྱིས་རྩིས་ཁྲ་བསྒྱུར་བཅོས་འབད་བའི་ཚར་གྱངས་ཁ་ཨིན། ཚོང་འབྲེལ་གྱི་ལས་སྣ་དང་ དངུལ་འབབ་ཀྱི་གནས་ཚད་སྟོནམ་ཨིན།",
+        "volume": "འབོར་ཚད་འདི་གིས་ དུས་ཡུན་ངེས་ཏིག་ཅིག་གི་ནང་འཁོད་ལུ་ ཡོངས་འབྲེལ་གུ་ཚོང་འབྲེལ་འཐབ་ཡོད་པའི་རྒྱུ་དངོས་ཚུ་གི་བསྡོམས་རྩིས་ལུ་གོཝ་ཨིན། སྐད་ཤུགས་འདི་ ཡོངས་འབྲེལ་གྱི་ མ་དངུལ་དང་ སྤྱིར་བཏང་ལས་སྣ་ཚུ་ འཇལ་ནིའི་དོན་ལུ་ ཁག་ཆེ་བའི་ མེ་ཊིག་ཅིག་ཨིན།"
     },
-    "messages": {
-      "connected": "Connection established with node\n{address}\n",
-      "selectNode": "Please select node to connect from the node list"
-    },
-    "warnings": {
-      "disconnect": "Connection to the node has been lost. Reconnecting..."
-    }
-  },
-  "noir": "Noir",
-  "ofText": "{first} of {second}",
-  "operations": {
-    "AddLiquidity": "Add Liquidity",
-    "andText": "and",
-    "BindRegulatedAsset": "Bind Regulated Asset",
-    "BorrowVaultDebt": "Borrow Debt",
-    "Burn": "Burn",
-    "ClaimRewards": "Claim Rewards",
-    "CloseVault": "Close Position",
-    "CreatePair": "Create Pair",
-    "CreateVault": "Create Position",
-    "DemeterFarmingDepositLiquidity": "Stake Liquidity",
-    "DemeterFarmingGetRewards": "Claim Rewards",
-    "DemeterFarmingStakeToken": "Stake Token",
-    "DemeterFarmingUnstakeToken": "Unstake Token",
-    "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
-    "DepositCollateral": "Deposit Position",
-    "error": {
-      "AddLiquidity": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
-      "BindRegulatedAsset": "Failed To Bind Asset {symbol} to SBT {symbol2}",
-      "BorrowVaultDebt": "Failed to borrow {amount} {symbol}",
-      "Burn": "Failed to burn {amount} {symbol}",
-      "ClaimRewards": "Failed to claim rewards {rewards}",
-      "CloseVault": "Failed to close {symbol}/{symbol2} position",
-      "CreatePair": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
-      "CreateVault": "Failed to create {symbol}/{symbol2} position",
-      "DemeterFarmingDepositLiquidity": "Failed to supply {amount} {symbol} and {symbol2} LP tokens",
-      "DemeterFarmingGetRewards": "Failed to claim {symbol}",
-      "DemeterFarmingStakeToken": "Failed to add {amount} {symbol}",
-      "DemeterFarmingUnstakeToken": "Failed to remove {amount} {symbol}",
-      "DemeterFarmingWithdrawLiquidity": "Failed to remove {amount} {symbol} and {symbol2} LP tokens",
-      "DepositCollateral": "Failed to deposit {amount} {symbol}",
-      "EthBridgeIncoming": "Failed to transfer {amount} {symbol} from {Ethereum} to {Sora}",
-      "EthBridgeOutgoing": "Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}",
-      "IssueSoulBoundToken": "Failed to issue Soulbound token {symbol}",
-      "Mint": "Failed to mint {amount} {symbol} to {address}",
-      "OrderBookCancelLimitOrder": "Failed to cancel limit order",
-      "OrderBookCancelLimitOrders": "Failed to cancel limit orders",
-      "OrderBookPlaceLimitOrder": "Failed to place limit order of {amount} {symbol} at {price} {symbol2}",
-      "ReferralReserveXor": "Failed to bond {amount} XOR",
-      "ReferralSetInvitedUser": "Failed to set {role} {address}",
-      "ReferralUnreserveXor": "Failed to unbond {amount} XOR",
-      "RegisterAndRegulateAsset": "Failed To Register And Regulate {symbol}",
-      "RegisterAsset": "Failed to register {symbol} asset",
-      "RegulateAsset": "Failed To Regulate Asset {symbol}",
-      "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
-      "RepayVaultDebt": "Failed to repaid {amount} {symbol}",
-      "SetAccessExpiration": "Failed to update expiration to {to} for {symbol}",
-      "StakingBond": "Failed to bond {amount} {symbol}",
-      "StakingBondAndNominate": "Failed to bond {amount} {symbol}",
-      "StakingBondExtra": "Failed to bond extra {amount} {symbol}",
-      "StakingChill": "Failed to chill",
-      "StakingNominate": "Failed to nominate validators",
-      "StakingPayout": "Failed to payout rewards",
-      "StakingRebond": "Failed to rebond {amount} {symbol}",
-      "StakingSetController": "Failed to set controller {address}",
-      "StakingSetPayee": "Failed to set payee {address}",
-      "StakingUnbond": "Failed to unbond {amount} {symbol}",
-      "StakingWithdrawUnbonded": "Failed to withdraw {amount} {symbol}",
-      "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
-      "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
-      "SwapTransferBatch": "Failed to {action} {amount} {symbol}",
-      "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
-      "VestedTransfer": "Failed to {action} {amount} {symbol} {direction} {address}",
-      "XorlessTransfer": "Failed to send {amount} {symbol} to {address}"
-    },
-    "EthBridgeIncoming": "@:hashiBridgeText",
-    "EthBridgeOutgoing": "@:hashiBridgeText",
-    "finalized": {
-      "AddLiquidity": "Supplied {amount} {symbol} and {amount2} {symbol2}",
-      "BindRegulatedAsset": "Bind Asset {symbol2} to SBT",
-      "BorrowVaultDebt": "Borrowed {amount} {symbol}",
-      "Burn": "Burned {amount} {symbol}",
-      "ClaimRewards": "Reward claimed successfully {rewards}",
-      "CloseVault": "{symbol}/{symbol2} Position closed",
-      "CreatePair": "Supplied {amount} {symbol} and {amount2} {symbol2}",
-      "CreateVault": "{symbol}/{symbol2} Position created",
-      "DemeterFarmingDepositLiquidity": "Supplied {symbol} and {symbol2} {amount} LP tokens",
-      "DemeterFarmingGetRewards": "{amount} {symbol} claimed successfully",
-      "DemeterFarmingStakeToken": "Added {amount} {symbol}",
-      "DemeterFarmingUnstakeToken": "Removed {amount} {symbol}",
-      "DemeterFarmingWithdrawLiquidity": "Removed {symbol} and {symbol2} {amount} LP tokens",
-      "DepositCollateral": "Deposited {amount} {symbol}",
-      "EthBridgeIncoming": "Transfered {amount} {symbol} from {Ethereum} to {Sora}",
-      "EthBridgeOutgoing": "Transfered {amount} {symbol} from {Sora} to {Ethereum}",
-      "IssueSoulBoundToken": "Issue Soulbound Token {symbol}",
-      "Mint": "Minted {amount} {symbol} to {address}",
-      "OrderBookCancelLimitOrder": "Limit order cancelled",
-      "OrderBookCancelLimitOrders": "Limit orders cancelled",
-      "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} at {price} {symbol2} placed",
-      "ReferralReserveXor": "Bonded {amount} XOR",
-      "ReferralSetInvitedUser": "{role} {address} is set successfully",
-      "ReferralUnreserveXor": "Unbonded {amount} XOR",
-      "RegisterAndRegulateAsset": "Register And Regulate {symbol} asset",
-      "RegisterAsset": "Registered {symbol} asset",
-      "RegulateAsset": "Regulate Asset {symbol}",
-      "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
-      "RepayVaultDebt": "Repaid {amount} {symbol}",
-      "SetAccessExpiration": "SB token {symbol} Updated expiration to {endTime}",
-      "StakingBond": "Bonded {amount} {symbol}",
-      "StakingBondAndNominate": "Bonded {amount} {symbol}",
-      "StakingBondExtra": "Bonded extra {amount} {symbol}",
-      "StakingChill": "Chill",
-      "StakingNominate": "Nominated validators",
-      "StakingPayout": "Payout rewards",
-      "StakingRebond": "Rebonded {amount} {symbol}",
-      "StakingSetController": "Set controller {address}",
-      "StakingSetPayee": "Set payee {address}",
-      "StakingUnbond": "Unbonded {amount} {symbol}",
-      "StakingWithdrawUnbonded": "Withdrew {amount} {symbol}",
-      "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
-      "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
-      "SwapTransferBatch": "{action} {amount} {symbol}",
-      "Transfer": "{action} {amount} {symbol} {direction} {address}",
-      "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
-      "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
-    },
-    "IssueSoulBoundToken": "Issue SBT",
-    "Mint": "Mint",
-    "OrderBookCancelLimitOrder": "Cancel Order",
-    "OrderBookCancelLimitOrders": "Cancel Orders",
-    "OrderBookPlaceLimitOrder": "Place Order",
-    "ReferralReserveXor": "Bond XOR",
-    "ReferralSetInvitedUser": "Set {role}",
-    "ReferralUnreserveXor": "Unbond XOR",
-    "RegisterAndRegulateAsset": "Register Asset",
-    "RegisterAsset": "Register Asset",
-    "RegulateAsset": "Regulate Asset",
-    "RemoveLiquidity": "Remove Liquidity",
-    "RepayVaultDebt": "Repay Debt",
-    "SetAccessExpiration": "Set SBT Expiration",
-    "StakingBond": "Bond",
-    "StakingBondAndNominate": "Bond and Nominate",
-    "StakingBondExtra": "Bond Extra",
-    "StakingChill": "Chill",
-    "StakingNominate": "Nominate",
-    "StakingPayout": "Payout Rewards",
-    "StakingRebond": "Rebond",
-    "StakingSetController": "Set Controller",
-    "StakingSetPayee": "Set Payee",
-    "StakingUnbond": "Unbond",
-    "StakingWithdrawUnbonded": "Withdraw Unbonded",
-    "Swap": "Swap",
-    "SwapAndSend": "Swap and Send",
-    "SwapTransferBatch": "{ADAR} transfer",
-    "Transfer": "Transfer",
-    "VestedTransfer": "Transfer",
-    "XorlessTransfer": "Transfer"
-  },
-  "orderBook": {
-    "amount": "amount",
-    "book": {
-      "noAsks": "No opened asks",
-      "noBids": "No opened bids"
-    },
-    "bookStatus": {
-      "active": "Active",
-      "cancelable": "Cancelable",
-      "inactive": "Inactive",
-      "placeable": "Placeable"
-    },
-    "Buy": "Buy {asset}",
-    "cantPlaceOrder": "Can't place order",
-    "change": "change",
-    "dayVolume": "1D Volume",
-    "dialog": {
-      "askCancel": "Are you sure you want to cancel all of your open orders?",
-      "at": "at {price} {symbol}",
-      "buy": "Buy {amount} {symbol}",
-      "cancelAll": "Yes, cancel all",
-      "placeLimit": "Place limit order",
-      "placeMarket": "Place market order",
-      "sell": "Sell {amount} {symbol}"
-    },
-    "enterAmount": "Enter amount",
-    "error": {
-      "accountLimit": {
-        "reading": "Limit reached: Each account is confined to 1024 limit orders. Please wait until some of your orders fulfill",
-        "reason": "Too many orders is ongoing"
-      },
-      "beyondPrecision": {
-        "reading": "Precision exceeded: The amount/price entered has too many decimal places. Please input a value with fewer decimal places",
-        "reason": "Entered price is too precise to calculate"
-      },
-      "exceedsSpread": {
-        "reading": "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
-        "reason": "Price exceeded spread"
-      },
-      "marketNotAvailable": {
-        "reading": "Market order limitation: There are not enough orders available to fulfill this market order. Please adjust your order size or wait for more orders to be placed",
-        "reason": "Not enough orders available to fullfill this order"
-      },
-      "multipleOf": {
-        "reading": "To process your order, please input a price that is a multiple of {value}",
-        "reason": "Entered price is too specific"
-      },
-      "outOfBounds": {
-        "reading": "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range. Min: {min}; Max: {max}",
-        "reason": "Amount fails to comply with blockchain range"
-      },
-      "singlePriceLimit": {
-        "reading": "Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill",
-        "reason": "Too many orders is ongoing for this price"
-      },
-      "spotLimit": {
-        "reading": "Price range cap: Each order book side is limited to 1024 unique price points. Please select a price within the existing range or wait for space to become available",
-        "reason": "Trading side has been filled"
-      }
-    },
-    "history": {
-      "cancel": "Cancel order {value}",
-      "cancelAll": "Cancel all",
-      "connect": "Connect an account to start trading",
-      "openOrders": "Open orders {value}",
-      "orderHistory": "Order history",
-      "tradeHistory": "Trade history"
-    },
-    "limit": "Limit",
-    "market": "Market",
-    "marketTrades": "Market trades",
-    "month": "month",
-    "orderBook": "Orderbook",
-    "orderStatus": {
-      "active": "ཤུགས་ལས་",
-      "canceled": "ཆ་མེད་བཟོས་",
-      "expired": "དུས་ཡོལ་",
-      "filled": "ཆ་ཚང་"
-    },
-    "orderTable": {
-      "filled": "ཆ་ཚང་",
-      "lifetime": "དུས་ཡུན་",
-      "noOrders": "གདམ་འཇུག་མེད་ — དང་པ་ བཟོ་!",
-      "pair": "ཟུང་",
-      "side": "ཕྱོགས་",
-      "time": "ཆུ་ཚོད་"
-    },
-    "Sell": "{asset} བཙོང་",
-    "setPrice": "གོང་ཚད་འཇོག་",
-    "stop": "དེབ་བཀག་",
-    "time": "ཆུ་ཚོད་",
-    "tokenPair": "ཐོན་སྒོར་ཟུང་",
-    "tooltip": {
-      "bookStatus": {
-        "active": "ཚོང་འབྲེལ་གཞི་རྩ་ཚུ་གིས་ལག་ལེན་བྱེད་ཚུགས། གདམ་འཇུག་གསར་པ་བཞག་ ཡང་ན་ ཡོད་པ་ཚུ་ཆ་མེད་བཟོ་བཏུབ་",
-        "cancelable": "ཡོད་པའི་གདམ་འཇུག་ཚུ་ཆ་མེད་བཟོ་བཏུབ་རྐྱངམ་ — གསར་པ་བཞག་མི་ཆོག་",
-        "inactive": "ཚོང་འབྲེལ་གྱི་ལས་འགུལ་ཚུ་བཀག་ཡོད་ — གདམ་འཇུག་བཞག/ཆ་མེད་བཟོ་མི་ཆོག་",
-        "placeable": "ལས་འགུལ་ཚད་བཀག — གསར་པ་བཞག་དང་ཡོད་པ་ཚུ་ཆ་མེད་བཟོ་བཏུབ་ དེ་འབདཝ་ད་ ཁོ་ན་ལས་ཁུངས་མི་འཐོབ་འོང་"
-      },
-      "bookWidget": "ཐོན་སྒོར་གཅིག་ལུ་ གྱུར་བཏུབ་དང་བཙོང་བ་གཉིས་ཀྱི་གདམ་འཇུག་ཚུ་ གོང་ཚད་རིམ་པ་ལས་སྟོན་པའི་དངོས་མཐར་དུ་གསར་བསྐྱོད་ཡོད་པའི་ དེབ་འདི་གིས་ ཚོང་ཁྲོམ་གྱི་མཐོ་ཚད་སྟོན་",
-      "limitOrder": "'ཚད་གཅིག' གདམ་འཇུག་གིས་ ཐོན་སྒོར་ཉོ་བ/བཙོང་བའི་གོང་ཚད་ངེས་པར་འཇོག་བཏུབ་",
-      "marketOrder": "'ཚོང་ཁྲོམ་' གདམ་འཇུག་ — ད་ལྟོའི་གོང་ཚད་ལུ་དེ་མཐུན་བསྐྱེད་ ཐོན་སྒོར་ཉོ/བཙོང་",
-      "marketWidget": "ཚོང་ཁྲོམ་ནང་ ཚད་འཛིན་བྱས་པའི་ཚོང་འབྲེལ་གྱི་དུས་ཐོག་རྒྱུན་ཁྱབ་འབད་ བསྡོམས/ལས་སྐུལ/དུས་ལོགས་ཚུ་སྟོན་",
-      "pairsList": "དུས་ཐོག་ཏུ་ ཐོན་སྒོར་ཉོ་བ/བཙོང་བའི་གདམ་འཇུག་ཚུ་སྟོན་ — {Sora} དང་ {AppName} DEX ནང་ དགོས་མཁོ་དང་གོང་ཚད་ཕར་འགྱུར་ ཚོང་བསྟར་སྟོན་",
-      "txDetails": {
-        "amount": "'བསྡོམས་' — གདམ་འཇུག་ནང་ ཉོ/བཙོང་བའི་ཐོན་སྒོར་དོན་ལུ་ བསྡོམས་ཨིན་",
-        "expiryDate": "'དུས་ཡོལ་ཚེས་གྲངས་' — གོང་ཚད་དང་མཐུན་པའི་དུས་ཚོད་མ་འབྱུང་ཚུན་ གདམ་འཇུག་ཆ་མེད་བཟོས་",
-        "limit": "'ཚད་གཅིག་གོང་ཚད་' — ཚད་གཅིག་གདམ་འཇུག་གི་གོང་ཚད་ངེས་པར་འཇོག་",
-        "locked": "'བཀག་ཡོད་' — གདམ་འཇུག་འགྲོ་བའི་བསྒང་ ཐོན་སྒོར་བཀག་ཡོད་བསྡོམས་",
-        "orderType": "'ཉོ་བ་' — ངེས་པར་གསལ་བའི་གོང་ཚད་ཡང་ན་དེ་ལས་དམའ་ དེ་བཞིན་ 'བཙོང་བ་' — ངེས་པར་གསལ་བའི་གོང་ཚད་ཡང་ན་དེ་ལས་མཐོ་ དུས་ཐོག་ལེགས་ཤོམ་"
-      }
-    },
-    "total": "བསྡོམས་",
-    "tradingPair": {
-      "choosePair": "ཚོང་ཟུང་གདམ་",
-      "status": "གནད་དོན་",
-      "total": "{amount} {symbol} at {amount2} {symbol2}",
-      "volume": "བསྡོམས་ཚད་"
-    },
-    "txDetails": {
-      "expiryDate": "དུས་ཡོལ་",
-      "limitPrice": "ཚད་གཅིག་གོང་ཚད་",
-      "orderType": "གདམ་འཇུག་དབྱེ་བ་"
-    }
-  },
-  "pageTitle": {
-    "AddLiquidity": "Add Liquidity",
-    "AssetOwner": "Asset owner",
-    "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-    "Bridge": "@:bridgeText",
-    "Explore/Books": "@:pageTitle.OrderBook",
-    "Explore/Farming": "Farming",
-    "Explore/Pools": "Pools",
-    "Explore/Staking": "Staking",
-    "Explore/Tokens": "Tokens",
-    "OrderBook": "Trade",
-    "Pool": "Pool",
-    "Rewards": "Rewards",
-    "Staking": "Staking",
-    "Stats": "Statistics",
-    "Swap": "Swap",
-    "VaultDetails": "Position Details",
-    "Vaults": "{Kensetsu}",
-    "Wallet": "Wallet",
-    "Burn": "Burn"
-  },
-  "pairIsNotCreated": "Token pair isn't created",
-  "points": {
-    "accountsText": "{amount} རྩིས་ཐོ་",
-    "airdrop": "SORA མཐུན་འབྲེལ་དང་འབྲེལ་བའི་ལས་ཀ་ཚུ་མཇུག་བསྡུས་ དངུལ་$3m AIRDROP ལུ་ཊུམ་ཁུངས་འཐོབ་",
-    "bridgeVolume": "ཟམ་པོའི་བསྡོམས་",
-    "complete": "མཇུག་བསྡུས་ | མཇུག་བསྡུས་",
-    "currently": "ད་ལྟོ་",
-    "dated": "ཚེས་གྲངས་",
-    "depositVolumeBridges": {
-      "descriptionTask": "Bridges, bitget, 1x, gateio བརྒྱུད་དེ་འཇོག་ དང་ འབུད་",
-      "titleProgress": "འཇོག་བསྡོམས་",
-      "titleTask": "འཇོག་ དང་ འབུད་"
-    },
-    "feesSpent": "གླ་སྒྲིག་སྤྲོད་པ་",
-    "firstSoraNetworkTransaction": "ཁྱེད་རང་གི་ {Sora} ཡོངས་འབྲེལ་འབུལ་འགྲོ་དང་པོ་",
-    "firstTxAccount": {
-      "descriptionTask": "XOR འབུལ་འགྲོ་དང་པོ་མཇུག་བསྡུས་སྒྲིག་ རྙོག་འདུག་ཐོབ་",
-      "titleProgress": "འབུལ་འགྲོ་དང་པོ་",
-      "titleTask": "འབུལ་འགྲོ་དང་པོ་བྱེད་"
-    },
-    "governanceLockedXOR": {
-      "descriptionTask": "དོ་དམ་འདེམས་གདམ་ལྟོས་འདུ་ཚོགས་ནང་གནམ་འོས་ཅན་སྦེ་གནང་ XOR བསྡམས་",
-      "titleProgress": "དོ་དམ་",
-      "titleTask": "དོ་དམ་འདེམས་གདམ་ནང་ XOR བསྡམས་"
-    },
-    "kensetsuVolumeRepaid": {
-      "descriptionTask": "རྩིས་སྤྲོད་དང་གནས་གོང་ཁ་བསྡམས་བསྒང་ KUSD ལོངས་སྤྱོད་ལོག་སྤྲོད་",
-      "titleProgress": "Kensetsu བསྡོམས་",
-      "titleTask": "KUSD ལོངས་སྤྱོད་ལོག་སྤྲོད་"
-    },
-    "KUSDHoldings": {
-      "descriptionTask": "ད་ལྟོའི་ KUSD འཛིན་ལྟུས་བསྲུངས་",
-      "titleProgress": "KUSD འཛིན་ལྟུས་",
-      "titleTask": "KUSD འཛིན་ལྟུས་བསྲུངས་"
-    },
-    "liquidityProvision": {
-      "descriptionTask": "པུལ་ཚུ་ནང་ལྟོས་སྤྱོད་བྱེད་",
-      "titleProgress": "ལྟོས་སྤྱོད་བྱེད་པ་",
-      "titleTask": "ལྟོས་སྤྱོད་ཁ་སྣོན་"
-    },
-    "loginText": "ཁྱེད་རང་གི་རྩིས་ཐོ་མཐུད་ནས་སྐུགས་ཚད་ལྟ་",
-    "lvl": "རིམ་པ་",
-    "maxLvl": "ཁྱེད་ཀྱིས་རིམ་པ་མང་མཐར་ལུ་སླེབས་",
-    "nativeXorStaking": {
-      "descriptionTask": "XOR སྡེབ་འབུལ་བྱས་ཏེ་ VAL རྙོག་འདུག་ཐོབ་",
-      "titleProgress": "XOR སྡེབ་འབུལ་",
-      "titleTask": "XOR སྡེབ་འབུལ་"
-    },
-    "networkFeeSpent": {
-      "descriptionTask": "དྲ་ལམ་གླ་སྒྲིག་ལུ་ XOR སྤྲོད་ འབུལ་འགྲོ་མང་པོ་ནང་",
-      "titleProgress": "དྲ་ལམ་གླ་སྒྲིག་",
-      "titleTask": "དྲ་ལམ་གླ་སྒྲིག་ལུ་ XOR སྤྲོད་"
-    },
-    "nextLvl": "རིམ་པ་ཤུལ་མ་",
-    "openTelegram": "{Telegram} ཁ་ཕྱེ་",
-    "orderbookVolume": {
-      "descriptionTask": "དོ་རྒྱུ་ཐོ་ནང་ཚད་བཀག་བཀོལ་དགོས་པའི་བཀོད་རྒྱུ་བཟོ་",
-      "titleProgress": "དོ་རྒྱུ་ཐོ་",
-      "titleTask": "ཚད་བཀག་བཀོད་རྒྱུ་བཟོ་"
-    },
-    "progress": "ཡར་འཕེལ་",
-    "referralRewards": {
-      "descriptionTask": "འབུལ་སྤྲོད་ལས་རིམ་བརྒྱུད་ནས་རྩིས་ཐོ་གཞན་ཚུ་འབུལ་སྤྲོད་",
-      "titleProgress": "འབུལ་སྤྲོད་ལས་རིམ་",
-      "titleTask": "རྩིས་ཐོ་འབུལ་སྤྲོད་"
-    },
-    "relatedTasks": "ཁྱེད་ཀྱི་ལས་ལམ་ཡར་འཐོན་བཟོ་ནི་ལུ་ {title} འབྲེལ་ལས་ཚུ་མཇུག་བསྡུས་",
-    "rewardNextLvl": "རིམ་པ་ཤུལ་མའི་རྙོག་འདུག་",
-    "soraCard": "ད་ལྟོ་ཞུ་འབོད་",
-    "title": "ཁྱེད་ཀྱི་སྐུགས་ཚད་",
-    "toEarnPoints": "སྐུགས་ཚད་ཐོབ་ནིའི་དོན་ལུ་",
-    "tokenHold": {
-      "descriptionTask": "ད་ལྟོའི་ {token} འཛིན་ལྟུས་བསྲུངས་",
-      "titleProgress": "{token} འཛིན་ལྟུས་",
-      "titleTask": "{token} འཛིན་ལྟུས་བསྲུངས་"
-    },
-    "VXORHoldings": {
-      "descriptionTask": "ད་ལྟོའི་ VXOR འཛིན་ལྟུས་བསྲུངས་",
-      "titleProgress": "VXOR འཛིན་ལྟུས་",
-      "titleTask": "VXOR འཛིན་ལྟུས་བསྲུངས་"
-    },
-    "xorBurned": "{XOR} བསྲེགས་",
-    "XORBurned": {
-      "descriptionTask": "XOR བསྲེགས་ནས་ $ གོང་ཚད་ལུ་བསྒྱུར་",
-      "titleProgress": "XOR བསྲེགས་",
-      "titleTask": "XOR བསྲེགས་"
-    },
-    "XORHoldings": {
-      "descriptionTask": "ད་ལྟོའི་ XOR འཛིན་ལྟུས་བསྲུངས་",
-      "titleProgress": "XOR འཛིན་ལྟུས་",
-      "titleTask": "XOR འཛིན་ལྟུས་བསྲུངས་"
-    },
-    "yourLevel": "ཁྱེད་རང་གི་རིམ་པ་",
-    "yourReferrals": "ཁྱེད་ཀྱི་འབུལ་སྤྲོད་ཚུ་",
-    "yourRewards": "ཁྱེད་རང་གི་རྙོག་འདུག་",
-    "yourTasks": "ཁྱེད་རང་གི་ལས་ཀ་ཚུ་"
-  },
-  "polkadotjs": {
-    "connectionError": "An error occured while connecting the wallet. You can try to connect the wallet via {extension} again",
-    "noAccount": "{extension} account error. Please check your account in the {extension} extension",
-    "noExtension": "No {extension} extension was found. Please install it and reload this page",
-    "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps://polkadot.js.org/extension/",
-    "noSigner": "Access denied. Go to {extension} extension settings and open \"Manage Website Access\" to allow."
-  },
-  "pool": {
-    "addLiquidity": "ལྟོས་སྤྱོད་ཁ་སྣོན་",
-    "connectToWallet": "ཁྱེད་ཀྱི་ལྟོས་སྤྱོད་ལྟ་ནི་ལུ་རྩིས་ཐོ་མཐུད་",
-    "createPair": "ཟུང་གཉིས་གསར་བསྐྲུན་",
-    "description": "ལྟོས་སྤྱོད་ཁ་སྣོན་བྱས་ཚེ་ ཁྱེད་ལུ་པུལ་ཐོག་ཐོན་སྒོར་འབྱུང་ དེ་ཚུ་གནས་གོང་ལྟར་ཁྱེད་རང་གི་པུལ་ཆ་ཤས་ལུ་བསྟུན་ཏེ་རང་བཞིན་གྱིས་གླ་སྒྲིག་ཐོབ་ དུས་གང་རུང་ལས་སླར་ལེན་ཚུགས་",
-    "liquidityNotFound": "ལྟོས་སྤྱོད་མ་ཐོབ་",
-    "pairTokens": "{pair} པུལ་ཐོན་སྒོར་",
-    "pooledToken": "{tokenSymbol} བསྡོམས་",
-    "poolShare": "ཁྱེད་རང་གི་པུལ་ཆ་ཤས་",
-    "removeLiquidity": "ལྟོས་སྤྱོད་འབུད་",
-    "strategicBonusApy": "Strategic Bonus APY"
-  },
-  "poweredBy": "Powered by",
-  "prevText": "Previous",
-  "priceChartText": "གོང་ཚད་ཚོད་རིས་",
-  "priceText": "གོང་ཚད་",
-  "provider": {
-    "messages": {
-      "checkExtension": "{name} extension is busy, please check it",
-      "extensionLogin": "Please login to your {name} extension",
-      "installExtension": "{name} extension is not found. Please install it!\n\nAlready installed extension? Please reload the page",
-      "notAvailable": "{name} is not available.",
-      "reloadPage": "Reload page"
-    }
-  },
-  "receivedText": "Received",
-  "referralProgram": {
-    "action": {
-      "bond": "Bond",
-      "bondMore": "Bond More",
-      "copyLink": "Copy link",
-      "shareLink": "Share",
-      "unbond": "Unbond"
-    },
-    "bondedXOR": "XOR Bonded",
-    "bondTitle": "Bond XOR",
-    "confirm": {
-      "bond": "Confirm bond",
-      "freeOfCharge": "This action is free of charge",
-      "hasReferrerDescription": "Unfortunately, you can only set one",
-      "hasReferrerTitle": "You’ve already set your referrer",
-      "inviteDescription": "For every transaction, 10% of the fee will go to your referrer, without any extra cost to you.",
-      "inviteTitle": "You have been invited to {AppName}",
-      "ok": "OK",
-      "signInvitation": "Approve",
-      "unbond": "Confirm unbond"
-    },
-    "connectAccount": "To invite users you need to connect your {Sora} account.",
-    "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR",
-    "insufficientBondedBalance": "Insufficient bonded balance",
-    "invitationLink": "Invitation link",
-    "inviteViaTelegram": "Invite via {Telegram}",
-    "receivedRewards": "Received rewards",
-    "referralsNumber": "{number} referrals",
-    "referrer": {
-      "approve": "Approve",
-      "approved": "Approved",
-      "description": "You can get referred to {AppName},<br/>type in the link or code of the referrer",
-      "info": "When you’ll pay a fee for transaction,<br/>10% will go to your referrer",
-      "label": "Invitation link or code",
-      "placeholder": "Enter invitation link or code",
-      "referredBy": "You’ve been referred by {referrer}",
-      "referredLablel": "Referred address",
-      "title": "Add your referrer",
-      "titleReferrer": "Your referrer"
-    },
-    "startInviting": "Bond XOR to refer others",
-    "title": "Referral Program",
-    "unbondTitle": "Unbond XOR",
-    "welcomeMessage": "\nJoin me on {AppName}!\n\nDiscover the stylish {DEX} that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!\n\n🎁 Invite friends and earn 10% of their trading fees\n\nSee you there!"
-  },
-  "releaseNotesText": "Release notes",
-  "removeLiquidity": {
-    "amount": "གྲངས་",
-    "confirmTitle": "ཁྱེད་ཀྱིས་ཐོབ་ནི་",
-    "description": "པུལ་ཐོག་ཐོན་སྒོར་འབུད་པས་ ད་ལྟོའི་གོང་ཚད་ལུ་གཞིགས་ཏེ་ཁྱེད་རང་གི་གནས་གོང་ལོག་སྤྲོད་བྱེད་ དེ་དང་པུལ་ཆ་ཤས་ལུ་བསྟུན་ཏེ་གླ་སྒྲིག་འབྱུང་མི་ཚུ་གྲངས་ནང་བཙུགས་ཡོད་",
-    "input": "ནང་འཇུག་",
-    "liquidity": "ལྟོས་སྤྱོད་",
-    "locked": "ཁྱེད་ཀྱི་པུལ་གྱི་ {percent} དེ་ {lock} ནང་བསྡམས་ཡོད་",
-    "output": "ཕྱི་འབྱུང་",
-    "outputMessage": "ཕྱི་འབྱུང་གྲངས་ཚད་འཇམ་སམ་དཔྱད་བྱས་པ་ཨིན། གོང་ཚད་ {slippageTolerance}% ལས་མང་སྒྱུར་བ་ཡོད་ཚེ་ འབུལ་འགྲོ་ལོག་པར་འགྱུར་",
-    "remove": "འབུད་",
-    "shareOfPool": "འབུལ་འགྲོ་ཤུལ་མའི་པུལ་ཆ་ཤས་",
-    "title": "ལྟོས་སྤྱོད་འབུད་"
-  },
-  "resetText": "བསྐྱར་སྒྲིག་",
-  "retryText": "ཡང་བསྐྱར་",
-  "rewards": {
-    "action": {
-      "checkRewards": "ཞིབ་བཤེར་",
-      "connectExternalWallet": "{Ethereum} རྩིས་ཐོ་མཐུད་",
-      "pendingExternal": "{Ethereum} འབུལ་འགྲོ་གྲལ་ལས...",
-      "pendingInternal": "{Sora} འབུལ་འགྲོ་གྲལ་ལས...",
-      "signAndClaim": "མཛུབ་རྟགས་བཀལ་ནས་བསྡུ་"
-    },
-    "andText": "དང་",
-    "claimableAmountDoneVesting": "བསྡུ་ཚུགས་པའི་རྙོག་འདུག་",
-    "claiming": {
-      "pending": "བསྡུ་བའི་སྒང་...",
-      "success": "མཐར་ཕྱིན་"
-    },
-    "events": {
-      "BuyOnBondingCurve": "TBC ལས་ཉོ་",
-      "LiquidityProvision": "ལྟོས་སྤྱོད་ཡོངས་འབྲེལ་གྱི་གླ་",
-      "LiquidityProvisionFarming": "ཁྲོམ་མཛོད་",
-      "MarketMakerVolume": "ཚོང་ཁྲོམ་བཟོ་མི་",
-      "NftAirdrop": "NFT ཨེར་གྲོབ་",
-      "SoraFarmHarvest": "{Sora}.farm འབྲུ་འབྱུང་",
-      "XorErc20": "XOR ERC-20"
-    },
-    "forText": "དོན་ལུ་",
-    "groups": {
-      "crowdloan": "མི་སྡེའི་འབྲིང་ལེན་རྙོག་འདུག་",
-      "external": "{Ethereum} མཐུད་ཡོད་རྩིས་ཐོའི་རྙོག་འདུག་",
-      "strategic": "ཐབས་བསྟུན་རྙོག་འདུག་"
-    },
-    "hint": {
-      "connectAccounts": "PSWAP དང་ VAL རྙོག་འདུག་བསྡུ་ནི་ལུ་ {Sora} དང་ {Ethereum} རྩིས་ཐོ་གཉིས་མཐུད་དགོས་",
-      "connectAnotherAccount": "གཞན་ {Ethereum} རྩིས་ཐོ་མཐུད་ནས་ PSWAP དང་ VAL རྙོག་འདུག་ཞིབ་བཤེར་བྱེད་",
-      "connectExternalAccount": "{Ethereum} རྩིས་ཐོ་མཐུད་ནས་ PSWAP དང་ VAL རྙོག་འདུག་ཞིབ་བཤེར་བྱེད་",
-      "howToClaimRewards": "{symbols} རྙོག་འདུག་བསྡུ་ནི་ལུ་ {destination} ནང་ {count} {transactions} མཛུབ་རྟགས་བཀལ་དགོས་ རྙོག་འདུག་ཚུ་ {Sora} རྩིས་ཐོ་ལུ་ཐོབ་"
-    },
-    "notification": {
-      "empty": "རྩིས་ཐོ་འདི་ལུ་བསྡུ་ཚུགས་པའི་རྙོག་འདུག་མེད་"
-    },
-    "PointSystemWrapper": "སྐྱེད་མཐོང་",
-    "ReferralProgram": "བསྐྱེར་འགྱུར་",
-    "Rewards": "རྙོག་འདུག་",
-    "signing": {
-      "accounts": "{Sora} དང་ {Ethereum} རྩིས་ཐོ་གཉིས་",
-      "extension": "{PolkadotJs} བརའུསར་ཡིག་སྣོད་"
-    },
-    "totalVested": "རྙོག་འདུག་བསྡོམས་",
-    "transactions": {
-      "confimation": "{total} འབུལ་འགྲོ་གྱི་ {order} ངེས་གཏན་བཟོ་...",
-      "failed": "{total} ནང་ {order} མ་ཐུབ་ @:retryText",
-      "success": "རྙོག་འདུག་ཚུ་ལམ་མཆོངས་ཐོབ་འོང་"
-    }
-  },
-  "rotatePhoneNotification": {
-    "enableAcceleration": "Enable acceleration access in your settings.",
-    "gyroscropePhone": " Our technology uses your phone's built-in gyroscope to instantly hide your balance when you tilt your device.",
-    "info": "For extra privacy, tilt your device face down to instantly hide your asset balances. This feature uses your phone’s built-in sensors.",
-    "title": "Turn your device upside down to hide balances"
-  },
-  "saveText": "ཉར་",
-  "sbtDetails": {
-    "accessPermitted": "Access permitted",
-    "description": "This SBT provides access to multiple tokens & pools and is attached to your account",
-    "expiresIn": "Expires in",
-    "expiresInTooltip": "The 'Expires in' shows period or point of time the access is acquired",
-    "expiryDate": "Expiry date",
-    "expiryDateTooltip": "The 'Expiry Date' is the deadline for your access to regulated assets of SBT",
-    "indefiniteExp": "open-ended",
-    "issuedBy": "{SBT} issued by",
-    "kycProvider": "{KYC} Provider",
-    "kycVerification": "{KYC} Verification",
-    "listOperable": "Regulated assets operable",
-    "noPermissions": "No additional permissions",
-    "noReceiverAccess": "You're trying to send regulated token to the user with no SBT access",
-    "permission": "permission",
-    "permissions": "permissions",
-    "regulatedInsitution": "Regulated Institution"
-  },
-  "searchText": "Search",
-  "selectLanguageDialog": {
-    "title": "Language"
-  },
-  "selectNodeConnected": "མཐུད་ཡོད་: {chain}",
-  "selectNodeDialog": {
-    "addNode": "Add custom node",
-    "connected": "Connected",
-    "customNode": "Custom node",
-    "howToSetupOwnNode": "Setup your node",
-    "messages": {
-      "emptyAddress": "Please input the address of the node",
-      "emptyName": "Please input the name of the node",
-      "incorrectAddress": "Incorrect address",
-      "incorrectProtocol": "Address should starts from ws:// or wss://"
-    },
-    "nodeTitle": "{chain} hosted by {name}",
-    "select": "Select",
-    "title": "Network node selection",
-    "updateNode": "Update node"
-  },
-  "selectNodeText": "Select Network Node",
-  "selectRegisteredAsset": {
-    "search": {
-      "networkLabelEthereum": "{network} network mirror tokens",
-      "networkLabelSora": "{Sora} network tokens",
-      "placeholder": "Filter by Asset ID, Name or Ticker Symbol"
-    },
-    "title": "Select a token"
-  },
-  "selectToken": {
-    "assets": {
-      "title": "Assets"
-    },
-    "custom": {
-      "alreadyAttached": "This token was already attached",
-      "notFound": "Token not found",
-      "search": "Input Asset ID",
-      "text": "CUSTOM TOKENS",
-      "title": "Custom"
-    },
-    "emptyListMessage": "No results",
-    "searchPlaceholder": "Filter by Asset ID, Name or Ticker Symbol",
-    "title": "Select a token"
-  },
-  "sendText": "གཏང་",
-  "sentText": "Sent",
-  "settingsText": "Settings",
-  "signAndClaimText": "Sign and claim",
-  "social": {
-    "github": "GitHub",
-    "medium": "Medium",
-    "reddit": "Reddit",
-    "telegram": "Telegram",
-    "twitter": "Twitter",
-    "wiki": "{Sora} Wiki"
-  },
-  "soraStaking": {
-    "actions": {
-      "claim": "རྙོག་འདུག་བསྡུ་",
-      "confirm": "སྡེབ་འབུལ་ངེས་གཏན་བཟོ་",
-      "more": "ཧེང་བཀལ་སྡེབ་འབུལ་",
-      "remove": "སྡེབ་འབུལ་འབུད་",
-      "withdraw": "འབུད་"
-    },
-    "allWithdrawsDialog": {
-      "information": "སྡེབ་འབུལ་ཕྱིར་འབུད་བྱས་རྗེས་ 7 ཉིན་གྱི་བར་མཚམས་ཡོད། དེ་རྗེས་ ཐོན་སྒོར་རང་བཞིན་དུ་མི་འབྱུང་ — ལག་ཐོག་གིས་འབུད་དགོས་",
-      "title": "སྡེབ་འབུལ་ཕྱིར་འབུད་"
-    },
-    "claimRewardsDialog": {
-      "checkRewards": "དུས་རབས་དང་བདེན་བཤེར་རེ་རེའི་རྙོག་འདུག་བཤེར་ཞིབ་འབད་",
-      "rewardsDestination": "རྙོག་འདུག་འབྱོར་གནས་ཁ་བྱང་",
-      "title": "རྙོག་འདུག་འཐོབ་"
-    },
-    "dropdownMenu": {
-      "controllerAccount": "ཚད་འཛིན་རྩིས་ཐོ་"
-    },
-    "info": {
-      "minimumStake": "ཉུང་མཐའ་སྡེབ་འབུལ་",
-      "nominators": "འོས་འགན་པ་",
-      "rewarded": "རྙོག་འདུག་བསྡུས་",
-      "rewardToken": "རྙོག་འདུག་ཐོན་སྒོར་",
-      "selectedValidators": "འདེམས་ཟིན་བདེན་བཤེར་",
-      "stakingBalance": "སྡེབ་འབུལ་ཐོན་སྒོར་",
-      "totalLiquidityStaked": "སྡེབ་འབུལ་ལྟོས་སྤྱོད་བསྡོམས་",
-      "unstaking": "སྡེབ་འབུལ་ཕྱིར་འབུད་",
-      "unstakingPeriod": "སྡེབ་འབུལ་ཕྱིར་འབུད་དུས་ཚོད་",
-      "validators": "བདེན་བཤེར་"
-    },
-    "newStake": {
-      "title": "སྡེབ་འབུལ་འགོ་བཙུགས་"
-    },
-    "overview": {
-      "description": "{Sora} ཡོངས་འབྲེལ་ནང་ {XOR} སྡེབ་འབུལ་བྱས་ཏེ་ འབུལ་འགྲོ་ལྟོས་ཞིབ་བྱེད་ དེ་ལས་ {VAL} ཐོན་སྒོར་བསྡུ་",
-      "title": "{Sora} སྡེབ་འབུལ་"
-    },
-    "pendingRewardsDialog": {
-      "information": "བདེན་བཤེར་ཚུ་གིས་ 2–5 ཉིན་རེ་རེ་རྙོག་འདུག་བསྤྲད་ཡོད། དེ་འབདཝ་ད་ རྙོག་འདུག་དུས་ཐོག་མཇུག་མཐའ་ཉེ་བ་ཡོད་ཚེ་ཁྱེད་རང་གིས་བསྤྲད་ཚུགས་ཀྱང་ གླ་དངུལ་སྤྲོད་དགོས་",
-      "noPendingRewards": "བསྣར་བཞག་ཡོད་པའི་རྙོག་འདུག་མེད་",
-      "noSelectedRewards": "རྙོག་འདུག་འདེམས་",
-      "payout": "བསྤྲད་",
-      "title": "བསྣར་བཞག་རྙོག་འདུག་"
-    },
-    "selectedValidators": "{count} ({Max} {max})",
-    "selectValidatorsMode": {
-      "confirm": {
-        "manual": "ང་རང་བདེན་བཤེར་འདེམས་",
-        "suggested": "བསམ་འཆར་བྱས་པའི་བདེན་བཤེར་དང་མཉམ་སྡེབ་འབུལ་"
-      },
-      "criteria": {
-        "0": "ཕན་ཐོགས་མང་ཤོས་",
-        "1": "ལུས་ཆོད་མེད་",
-        "2": "On-chain ངོས་འཛིན་ཡོད་",
-        "3": "བཀག་སྡུད་མེད་",
-        "4": "ངོས་འཛིན་རེ་ལས་བདེན་བཤེར་ 2 ཚད་"
-      },
-      "description": "{Sora} ཡོངས་འབྲེལ་གྱི་རྩིས་ལས་ཀྱིས་ཁྱད་ཚད་འདི་ཚུ་གཞིགས་ཏེ་བསམ་འཆར་བྱས་པའི་བདེན་བཤེར་ཐོ་ཡིག་ཞིབ་འཚོལ་བྱས་ཡོད།",
-      "title": "རྩིས་ལས་ནས་བསམ་འཆར་བྱས་པའི་བདེན་བཤེར་དང་མཉམ་སྡེབ་འབུལ་"
-    },
-    "stakeDialog": {
-      "toRemove": "འབུད་ནི་",
-      "toStake": "སྡེབ་འབུལ་"
-    },
-    "validators": {
-      "alreadyNominated": "འདེམས་ཟིན་བདེན་བཤེར་ཚུ་ཧེ་མ་ལས་འོས་འགན་བྱས་",
-      "change": "བདེན་བཤེར་སོར་",
-      "next": "མུ་མཐུད་",
-      "recommended": "བསམ་འཆར་བྱས་པའི་བདེན་བཤེར་",
-      "save": "བསྒྱུར་བཅོས་ཉར་",
-      "select": "བདེན་བཤེར་འདེམས་",
-      "selected": "{selected}/{total} འདེམས་ཟིན་",
-      "tooManyValidators": "བདེན་བཤེར་མང་དྲགས་འདེམས་ ({Max} {max})"
-    },
-    "validatorsAttentionDialog": {
-      "confirm": "ཉེན་ཁ་ཧ་གོ་",
-      "description": {
-        "0": "རྩིས་ལས་བཟོས་པའི་བསམ་འཆར་ཚུ་ དངུལ་སློབ་གྲོས་མཐུན་མ་ཡིན་ སྡེབ་འབུལ་ནི་ཉེན་ཁ་མཐོ་བའི་ལས་འགུལ་",
-        "1": "བསམ་འཆར་བྱས་པའི་བདེན་བཤེར་ཡང་ གྲོལ་བརྩིས་འབད་ནུག དེ་གིས་གྲངས་ཚད་སོར་བཏུབ་",
-        "2": "ཐོན་སྒོར་དང་རྙོག་འདུག་བསྡུས་བས་ཤོར་སྲིད་ ཁྱེད་རང་གི་བདེན་སྤྱོད་ནང་ལུ་ ངལ་རྩོལ་འབད་ཞིབ་འཇུག་བྱས་ཏེ་གཏོགས་"
-      },
-      "title": "དྲན་གསོ་"
-    },
-    "validatorsDialog": {
-      "tabs": {
-        "all": "ཆ་མཉམ་",
-        "user": "ངོ་མ་"
-      },
-      "title": {
-        "edit": "ངོ་མའི་བདེན་བཤེར་ཞུན་དག་"
-      }
-    },
-    "validatorsFilterDialog": {
-      "filters": {
-        "hasIdentity": {
-          "description": "རྩིས་ཐོ་དང་ མིང་སྟོན་འབྲེལ་མཐུད་མི་ཉུང་མཐའ་གཅིག་",
-          "name": "On-chain ངོས་འཛིན་"
+    "transaction": {
+        "amount": "@:amountText",
+        "amount2": "__པི་ཨེཆ་__༠__ ༢",
+        "blockId": "སྡེབ་ཚན་ཨའི་ཌི།",
+        "comment": "བསམ་འཆར།",
+        "copy": "འདྲ་བཤུས།{value}",
+        "fee": "ཚོང་འབྲེལ་འཐུས།",
+        "from": "ལས།",
+        "history": {
+            "confirmed": "ཚོང་འབྲེལ་ངེས་དཔྱད་འབད་ཡོདཔ།",
+            "created": "{amount} {symbol} གི་དོན་ལུ་ བརྗེ་སོར་འདི་གསར་བསྐྲུན་འབད་ཡོདཔ་ཨིན།",
+            "submitted": "{fee} {symbol} གི་འཐུས་དང་གཅིག་ཁར་ ཚོང་འབྲེལ་ཕུལ་ཡོདཔ།"
         },
-        "notOversubscribed": {
-          "description": "ཁས་བླངས་ཚད་ནང་ཡོད་ — {Polkadot} སྡེབ་འབུལ་གི་ལུས་ཆོད་འཐེན་མེད་",
-          "name": "ལུས་ཆོད་མེད་"
+        "price": "གོང་ཚད།",
+        "referral": "༡ བསྐྱར་གཏོང༌།",
+        "referrer": "གཞི་བསྟུན་པ།",
+        "side": "ཕྱོགས།",
+        "startTime": "ཚེས་གྲངས།",
+        "status": "གནས་ཚད།",
+        "statuses": {
+            "complete": "མཇུག་བསྡུ།",
+            "failed": "ཚོང་འབྲེལ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "pending": "བསྣར་བཞག་ཡོདཔ..."
         },
-        "notSlashed": {
-          "description": "སྡེབ་འབུལ་ཐོན་སྒོར་གི་གླ་སྒྲིག་གིས་ སྐྱོན་མེད་",
-          "name": "བཀག་སྡུད་མེད་"
-        },
-        "twoValidatorsPerIdentity": {
-          "description": "དབུས་མེད་སྒྲིག་ལམ་ལུ་ ངོས་འཛིན་རེ་ལས་བདེན་བཤེར་གཉིས་ཚད་",
-          "name": "ངོས་འཛིན་རེ་ལས་ 2 ཚད་"
-        }
-      },
-      "reset": "ཚང་མ་བསྐྱར་སྒྲིག་",
-      "save": "ཚགས་མ་ཉར་",
-      "title": "ཚགས་མ་"
+        "title": "ཚོང་འབྲེལ་གྱི་ཁ་གསལ།",
+        "to": "ལུ།",
+        "total": "བསྡོམས།",
+        "txId": "ཚོང་འབྲེལ་ཨའི་ཌི།",
+        "viewIn": "{explorer} ནང་བལྟ།"
     },
-    "validatorsList": {
-      "commission": "འབག་ཤོག་",
-      "commissionTooltip": "འབག་ཤོག་ཟེར་མི་ སྡེབ་འབུལ་ནང་ བདེན་བཤེར་གྱིས་ལཱ་གཡོག་དང་འབྲེལ་བའི་གླ་སྒྲིག་ཨིན་ བརྒྱ་ཆ་གཞིར་བཟོས་ མི་དགོས་པའི་བསྡུས་ལས་མ་བཟུང་་ དེ་འབདཝ་ད་ བདེན་བཤེར་ཚུ་གིས་འབག་ཤོག་གོང་འདོར་བཏུབ་",
-      "name": "མིང་",
-      "noNominatedValidators": "འོས་འགན་བྱས་པའི་བདེན་བཤེར་མེད་",
-      "noValidators": "ཚགས་མའི་ཁྱད་ཚད་ལྟུང་མི་བདེན་བཤེར་མེད་",
-      "return": "ལོག་",
-      "search": "འཚོལ་..."
+    "transactionDetailsText": "ཚོང་འབྲེལ་གྱི་ཁ་གསལ།",
+    "transactionSubmittedText": "ཚོང་འབྲེལ་ཕུལ་ཡོདཔ།",
+    "transactionText": "ཚོང་འབྲེལ་ | ཚོང་དོན།",
+    "transfers": {
+        "from": "ལས།",
+        "to": "ལུ།"
     },
-    "withdraw": {
-      "beingWithdrawn": "འབུད་བཞིན་",
-      "countdownLeft": "ལྷག་ལུས་",
-      "nextWithdrawal": "ལྷག་འབུད་ཤུལ་མ་",
-      "seeAll": "ཚང་མ་སྟོན་",
-      "withdrawable": "འབུད་ཚུགས་"
+    "unknownAssetText": "མི་ཤེས་པའི་རྒྱུ་ནོར།",
+    "unknownErrorText": "ERROR ག་ཅི་ཅིག་འཛོལ་བ་འགྱོ་ཡི།",
+    "wallet": {
+        "WalletAssets": "རྒྱུ་ནོར།",
+        "WalletHistory": "ལས་རིམ།"
     },
-    "withdrawDialog": {
-      "showAllWithdraws": "ཚང་མའི་འབུད་སྟོན་",
-      "title": "སྡེབ་འབུལ་ཕྱིར་འབུད་"
-    }
-  },
-  "stepText": "Step",
-  "successText": "Success",
-  "swap": {
-    "confirmSwap": "Confirm swap",
-    "errorFetching": "Error fetching the data",
-    "insufficientAmount": "Insufficient {tokenSymbol} amount",
-    "insufficientLiquidity": "Insufficient liquidity",
-    "liquidityProviderFee": "ལྟོས་སྤྱོད་པ་གི་གླ་སྒྲིག་",
-    "liquidityProviderFeeTooltip": "ཚོང་རྒྱུ་རེ་རེའི་ཆ་ཤས་ ({liquidityProviderFee}%) དེ་ ལྟོས་སྤྱོད་བྱེད་པ་ཚུ་ལུ་བསྐྱེད་བསྐྱུད་ཀྱི་དོན་ལུ་གླ་སྒྲིག་སྦེ་སྤྲོད་",
-    "maxSold": "Maximum Sold",
-    "minReceived": "Minimum Received",
-    "minReceivedTooltip": "Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.",
-    "priceImpact": "Price Impact",
-    "priceImpactTooltip": "The difference between the market price and estimated price due to trade size.",
-    "rewardsForSwap": "PSWAP Strategic Rewards",
-    "route": "Route",
-    "slippageTolerance": "Slippage Tolerance",
-    "swapOutputMessage": "ཕྱི་འབྱུང་གྲངས་ཚད་འཇམ་སམ་དཔྱད་བྱས་པ་ཨིན། ཉུང་མཐའ་ {transactionValue} ལས་མང་ཐོབ་ དེ་མེད་པ་ཅིན་འབུལ་འགྲོ་ལོག་པར་འགྱུར་"
-  },
-  "swapText": "བརྗེ་སྤོར་",
-  "tokens": {
-    "assetId": "Asset ID"
-  },
-  "tooltips": {
-    "accounts": "Accounts are digital addresses that hold user's assets on the network. Each account is associated with a unique public address and a private key that allows the user to access and manage their assets.",
-    "bridgeTransactions": "{from} to {to} bridge refers to the process of transferring assets between the {from} and {to} networks using a bridge. The bridge allows for the interoperability of the two networks, enabling users to seamlessly move assets between them.",
-    "fees": "Fees on the {Sora} blockchain refer to the charges that are incurred for executing transactions on the network. These fees are paid in XOR, the native cryptocurrency of the {Sora} Network. The fee amount is determined by the complexity and size of the transaction being executed",
-    "roi": "{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.",
-    "supply": "Token supply refers to the total number of tokens that have been created and are in circulation on the network. The token supply can fluctuate based on the amount of tokens being staked, burned, or transferred on the network.",
-    "transactions": "Transactions refer to the process of sending or receiving digital assets on the network, including liquidity operations, as well as swaps.",
-    "tvl": "{TVL} stands for Total Value Locked. It represents tokens locked in the pools in the dollar equivalent.",
-    "velocity": "Token velocity is the number of times token changes accounts during period (month) on average. It indicates the level of trading activity and liquidity.",
-    "volume": "Volume refers to the total amount of assets that have been traded or exchanged on the network over a specific period of time. The volume is an important metric for measuring the liquidity and overall activity of the network."
-  },
-  "transaction": {
-    "amount": "@:amountText",
-    "amount2": "@:amountText 2",
-    "blockId": "Block Id",
-    "comment": "Comment",
-    "copy": "Copy {value}",
-    "fee": "Transaction Fee",
-    "from": "From",
-    "history": {
-      "confirmed": "Transaction confirmed",
-      "created": "Transaction for {amount} {symbol} has been created.",
-      "submitted": "Transaction submitted with fee of {fee} {symbol}"
+    "walletSend": {
+        "addressError": "ཁྱོད་ཀྱིས་ད་ལྟོ་མཐུད་ཡོད་པའི་རྩིས་ཐོ་གཅིག་ལུ་ཊོ་ཀེན་ཚུ་གཏང་མི་ཚུགས།",
+        "addressWarning": "ཊོ་ཀེན་ཚུ་ འོག་གི་ {Sora} ཁ་བྱང་ལུ་གཏང་འོང་། ཐོབ་མི་གིས་ ཊོ་ཀེན་ཚུ་ལག་ལེན་འཐབ་ནི་ལུ་ {Sora} རིམ་སྒྲིག་འཛུལ་སྤྱོད་འབད་ཚུགསཔ་ངེས་གཏན་བཟོ:",
+        "badAddress": "ཁ་བྱང་ནོར་བ།",
+        "balance": "ལྷག་མ།",
+        "confirmTitle": "ཚོང་འབྲེལ་ངེས་དཔྱད་འབད།",
+        "enableVesting": "ཊོ་ཀེན་སྤྲོད་ལེན་ལྕོགས་ཅན་བཟོ།",
+        "enterAddress": "ཁ་བྱང་བཙུགས།",
+        "enterAmount": "དངུལ་བསྡོམས་བཙུགས།",
+        "enterVestingPercentage": "བདག་དབང་བརྒྱ་ཆ་བཙུགས།",
+        "errorAddress": "ནུས་མེད་ཁ་བྱང་། ཞིབ་དཔྱད་འབད་དེ་ ལོག་སྟེ་འབད་རྩོལ་བསྐྱེད་གནང་།",
+        "max": "MAX",
+        "startUnlockingDate": "ལྡེ་མིག་ཕྱེ་ནིའི་ཚེས་གྲངས་འགོ་བཙུགས།",
+        "title": "གཏང་།",
+        "tooltip": "{Sora} ཡོངས་འབྲེལ་རྩིས་ཐོའི་བར་ན་ཊོ་ཀེན་གཏང་།",
+        "unlockFrequency": "ལྡེ་མིག་ཕྱེ་བའི་བསྐྱར་འབྱུང་།",
+        "vestingPercentage": "བརྒྱ་ཆ།"
     },
-    "price": "Price",
-    "referral": "Referral",
-    "referrer": "Referrer",
-    "side": "Side",
-    "startTime": "Date",
-    "status": "Status",
-    "statuses": {
-      "complete": "Complete",
-      "failed": "Transaction failed",
-      "pending": "Pending..."
-    },
-    "title": "Transaction details",
-    "to": "To",
-    "total": "Total",
-    "txId": "Transaction Id",
-    "viewIn": "View in {explorer}"
-  },
-  "transactionDetailsText": "Transaction Details",
-  "transactionSubmittedText": "Transaction was submitted",
-  "transactionText": "transaction | transactions",
-  "transfers": {
-    "from": "From",
-    "to": "To"
-  },
-  "unknownAssetText": "Unknown asset",
-  "unknownErrorText": "ERROR Something went wrong...",
-  "wallet": {
-    "WalletAssets": "Assets",
-    "WalletHistory": "Activity"
-  },
-  "walletSend": {
-    "addressError": "You cannot send tokens to the same account that you are currently connected to.",
-    "addressWarning": "Tokens will be sent to the {Sora} address below. Make sure the recipient can access the {Sora} chain to use the tokens:",
-    "badAddress": "Incorrect address",
-    "balance": "Balance",
-    "confirmTitle": "Confirm transaction",
-    "enableVesting": "Enable token vesting",
-    "enterAddress": "Enter address",
-    "enterAmount": "Enter amount",
-    "enterVestingPercentage": "Enter vesting percentage",
-    "errorAddress": "Invalid address. Please check it and try again.",
-    "max": "MAX",
-    "startUnlockingDate": "Start unlocking date",
-    "title": "Send",
-    "tooltip": "Send tokens between {Sora} network accounts",
-    "unlockFrequency": "Unlock frequency",
-    "vestingPercentage": "Vesting percentage"
-  },
-  "warningText": "Warning"
+    "warningText": "ཉེན༌བརྡ"
 }

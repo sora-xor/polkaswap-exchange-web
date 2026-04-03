@@ -382,6 +382,7 @@ export default {
             await props.loginAccount(account);
             initMultisigAddress();
             resetStep();
+            props.closeView();
           });
         });
       }
@@ -469,6 +470,7 @@ export default {
             name: (meta.name as string) || '',
             source: selectedWallet.value as AppWallet,
           });
+          initMultisigAddress();
           resetStep();
 
           if (isSignTxDialogDisabled.value) {
@@ -477,6 +479,7 @@ export default {
 
           accountLoginVisibility.value = false;
           accountLoginData.value = null;
+          props.closeView();
         });
       });
     };

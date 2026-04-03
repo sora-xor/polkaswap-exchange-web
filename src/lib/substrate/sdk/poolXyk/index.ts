@@ -1,5 +1,5 @@
 import { assert } from '@polkadot/util';
-import { Subject, combineLatest, map } from 'rxjs';
+import { ReplaySubject, Subject, combineLatest, map } from 'rxjs';
 import { FPNumber, NumberLike, CodecString } from '@sora-substrate/math';
 import { getChameleonPools } from '@sora-substrate/liquidity-proxy';
 import type { Observable } from '@polkadot/types/types';
@@ -62,7 +62,7 @@ export class PoolXykModule<T> {
   private subject = new Subject<void>();
   public updated = this.subject.asObservable();
   public accountLiquidity: Array<AccountLiquidity> = [];
-  public accountLiquidityLoaded: Subject<void> | null = null;
+  public accountLiquidityLoaded: ReplaySubject<void> | null = null;
 
   private addToLiquidityList(asset: AccountLiquidity): void {
     const liquidityCopy = [...this.accountLiquidity];
@@ -493,7 +493,7 @@ export class PoolXykModule<T> {
   public getUserPoolsSubscription(): Subscription {
     assert(this.root.accountPair, Messages.connectWallet);
 
-    this.accountLiquidityLoaded = new Subject<void>();
+    this.accountLiquidityLoaded = new ReplaySubject<void>(1);
 
     const account = this.root.accountPair.address;
     const baseAssetIds = this.root.dex.baseAssetsIds;

@@ -1,6 +1,7 @@
 import { FPNumber as MathFPNumber } from '@sora-substrate/math';
 import { FPNumber as SDKFPNumber } from '@sora-substrate/sdk';
 import { createPinia, setActivePinia } from 'pinia';
+import { ReplaySubject } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { usePoolStore } from '@/stores/pool';
@@ -61,7 +62,11 @@ const shared = vi.hoisted(() => {
       return { unsubscribe: totalSupplyUnsubscribe };
     },
   }));
-  const accountLiquidityLoaded = {
+  let accountLiquidityLoaded: {
+    subscribe: (observer: ((value: boolean) => void) | { next?: (value: boolean) => void; complete?: () => void }) => {
+      unsubscribe: ReturnType<typeof vi.fn>;
+    };
+  } = {
     subscribe: (observer: ((value: boolean) => void) | { next?: (value: boolean) => void; complete?: () => void }) => {
       if (typeof observer === 'function') {
         observer(true);
@@ -105,6 +110,13 @@ const shared = vi.hoisted(() => {
     handler({ '0xpool': '0.25' });
     return poolApyUnsubscribe;
   });
+  const dexUpdate = vi.fn(async () => undefined);
+  const waitUntil = vi.fn(async (condition: () => boolean) => {
+    if (!condition()) {
+      throw new Error('waitUntil predicate was not satisfied in the pool store test');
+    }
+  });
+  let baseAssetsIds = ['base'];
 
   return {
     walletStore,
@@ -130,12 +142,25 @@ const shared = vi.hoisted(() => {
     getPoolPropertiesObservable,
     getReservesObservable,
     getTotalSupplyObservable,
-    accountLiquidityLoaded,
+    get accountLiquidityLoaded() {
+      return accountLiquidityLoaded;
+    },
+    set accountLiquidityLoaded(value) {
+      accountLiquidityLoaded = value;
+    },
     updated,
     getLockerDataObservable,
     getAssetInfo,
     getPoolsApyObject,
     createPoolsApySubscription,
+    dexUpdate,
+    waitUntil,
+    get baseAssetsIds() {
+      return baseAssetsIds;
+    },
+    set baseAssetsIds(value: string[]) {
+      baseAssetsIds = value;
+    },
     get accountLiquidity() {
       return accountLiquidity;
     },
@@ -167,6 +192,7 @@ vi.mock('@/utils', async () => {
   return {
     ...actual,
     waitForAccountPair: async (fn?: () => Promise<void> | void) => await fn?.(),
+    waitUntil: shared.waitUntil,
   };
 });
 
@@ -182,12 +208,52 @@ vi.mock('@/indexer/queries/pool/apy', () => ({
   createPoolsApySubscription: shared.createPoolsApySubscription,
 }));
 
+vi.mock('@/shims/wallet-api', () => ({
+  api: {
+    divideAssets: shared.divideAssets,
+    dex: {
+      update: shared.dexUpdate,
+      get baseAssetsIds() {
+        return shared.baseAssetsIds;
+      },
+    },
+    poolXyk: {
+      estimatePoolTokensMinted: shared.estimatePoolTokensMinted,
+      add: shared.add,
+      create: shared.create,
+      remove: shared.remove,
+      getUserPoolsSubscription: shared.getUserPoolsSubscription,
+      unsubscribeFromAllUpdates: shared.unsubscribeFromAllUpdates,
+      getPoolPropertiesObservable: shared.getPoolPropertiesObservable,
+      getReservesObservable: shared.getReservesObservable,
+      getTotalSupplyObservable: shared.getTotalSupplyObservable,
+      accountLiquidityLoaded: shared.accountLiquidityLoaded,
+      updated: shared.updated,
+      get accountLiquidity() {
+        return shared.accountLiquidity;
+      },
+    },
+    ceresLiquidityLocker: {
+      getLockerDataObservable: shared.getLockerDataObservable,
+    },
+    assets: {
+      getAssetInfo: shared.getAssetInfo,
+    },
+  },
+}));
+
 vi.mock('@wallet', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
 
   return createWalletMock({
     api: {
       divideAssets: shared.divideAssets,
+      dex: {
+        update: shared.dexUpdate,
+        get baseAssetsIds() {
+          return shared.baseAssetsIds;
+        },
+      },
       poolXyk: {
         estimatePoolTokensMinted: shared.estimatePoolTokensMinted,
         add: shared.add,
@@ -256,6 +322,14 @@ describe('pool store', () => {
     shared.getAssetInfo.mockClear();
     shared.getPoolsApyObject.mockClear();
     shared.createPoolsApySubscription.mockClear();
+    shared.dexUpdate.mockClear();
+    shared.waitUntil.mockReset();
+    shared.waitUntil.mockImplementation(async (condition: () => boolean) => {
+      if (!condition()) {
+        throw new Error('waitUntil predicate was not satisfied in the pool store test');
+      }
+    });
+    shared.baseAssetsIds = ['base'];
     const codec = (value: number) => SDKFPNumber.fromNatural(value).toCodecString();
 
     shared.accountLiquidity = [
@@ -353,6 +427,52 @@ describe('pool store', () => {
     expect(store.accountLiquidity).toEqual([]);
     expect(store.accountLockedLiquidity).toEqual([]);
     expect(store.poolApyObject).toEqual({});
+  });
+
+  it('waits for dex base assets before subscribing to account liquidity data', async () => {
+    const store = usePoolStore();
+
+    shared.baseAssetsIds = [];
+    shared.waitUntil.mockImplementationOnce(async (condition: () => boolean) => {
+      expect(condition()).toBe(false);
+      shared.baseAssetsIds = ['base'];
+      expect(condition()).toBe(true);
+    });
+
+    await store.subscribeOnAccountLiquidityList();
+
+    expect(shared.waitUntil).toHaveBeenCalledTimes(1);
+    expect(shared.getUserPoolsSubscription).toHaveBeenCalledTimes(1);
+    expect(store.accountLiquidity).toEqual(shared.accountLiquidity);
+
+    shared.baseAssetsIds = [];
+    shared.waitUntil.mockImplementationOnce(async (condition: () => boolean) => {
+      expect(condition()).toBe(false);
+      shared.baseAssetsIds = ['base'];
+      expect(condition()).toBe(true);
+    });
+
+    await store.subscribeOnAccountLiquidityUpdates();
+
+    expect(shared.waitUntil).toHaveBeenCalledTimes(2);
+    expect(store.accountLiquidity).toEqual(shared.accountLiquidity);
+  });
+
+  it('hydrates account liquidity when the initial loaded signal completes before the store awaits it', async () => {
+    const store = usePoolStore();
+
+    shared.getUserPoolsSubscription.mockImplementationOnce(() => {
+      const loaded = new ReplaySubject<void>(1);
+      shared.accountLiquidityLoaded = loaded as unknown as typeof shared.accountLiquidityLoaded;
+      loaded.next();
+      loaded.complete();
+      return { unsubscribe: shared.userPoolsUnsubscribe };
+    });
+
+    await store.subscribeOnAccountLiquidityList();
+
+    expect(shared.getUserPoolsSubscription).toHaveBeenCalledTimes(1);
+    expect(store.accountLiquidity).toEqual(shared.accountLiquidity);
   });
 
   it('updates add-liquidity values and dispatches pool add/create calls natively', async () => {

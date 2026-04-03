@@ -183,6 +183,54 @@ describe('wallet entry bootstrap', () => {
     expect(walletStore.setWalletLoaded).toHaveBeenCalledWith(true);
   });
 
+  it('marks the wallet shell as loaded before websocket readiness settles', async () => {
+    let releaseDelay: (() => void) | null = null;
+    const walletStore = {
+      getWhitelist: vi.fn(),
+      getNftBlacklist: vi.fn(),
+      checkWalletAvailability: vi.fn(),
+      updateAvailableWallets: vi.fn(),
+      activateInternalSubscriptions: vi.fn(),
+      selectIndexer: vi.fn(),
+      setIsMstAvailable: vi.fn(),
+      activateNetworkSubscriptions: vi.fn(),
+      initMultisigAddress: vi.fn(),
+      setWalletLoaded: vi.fn(),
+      isDesktop: false,
+      accountSource: '',
+    };
+    getWalletPiniaStoreMock.mockReturnValue(walletStore as any);
+    connectionMock.loading = true;
+    connectionMock.api = null;
+    delayMock.mockImplementation(
+      () =>
+        new Promise<void>((resolve) => {
+          releaseDelay = () => {
+            connectionMock.loading = false;
+            connectionMock.api = {};
+            resolve();
+          };
+        })
+    );
+
+    const { initWallet } = await loadWalletBootstrap();
+    const pending = initWallet();
+
+    for (let attempt = 0; attempt < 20; attempt++) {
+      if (walletStore.setWalletLoaded.mock.calls.length) break;
+      await Promise.resolve();
+    }
+
+    expect(walletStore.setWalletLoaded).toHaveBeenCalledWith(true);
+    expect(addWcSubWalletLocallyMock).not.toHaveBeenCalled();
+
+    releaseDelay?.();
+    await pending;
+
+    expect(addGDriveWalletLocallyMock).toHaveBeenCalledTimes(1);
+    expect(addWcSubWalletLocallyMock).toHaveBeenCalledTimes(1);
+  });
+
   it('registers the wallet root component during plugin install', async () => {
     const app = {
       use: vi.fn(),
