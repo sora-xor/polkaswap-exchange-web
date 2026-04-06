@@ -7,15 +7,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, useAttrs } from 'vue';
+import { computed, useAttrs } from 'vue';
 
+import { createAsyncComponent } from '@/router/lazy';
 import { SvgIcons } from './icons';
 
-const createIconLoader = (loader: () => Promise<unknown>) =>
-  defineAsyncComponent({
-    loader,
-    suspensible: false,
-  });
+const createIconLoader = (loader: () => Promise<unknown>) => createAsyncComponent(loader);
 
 const iconComponents = {
   [SvgIcons.LineIcon]: createIconLoader(() => import('@/components/shared/Button/SvgIconButton/Icons/Line.vue')),

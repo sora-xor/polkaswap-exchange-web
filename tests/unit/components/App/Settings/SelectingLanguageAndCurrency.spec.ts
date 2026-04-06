@@ -278,4 +278,50 @@ describe('settings dialogs (BVT)', () => {
     expect(walletStore.currency).toBe('eur');
     expect(settingsStorageStub.set).toHaveBeenCalledWith('currency', 'eur');
   });
+
+  it('ignores malformed currency entries when filtering on extra narrow mobile flows', async () => {
+    const { store, walletStore } = makeSettingsStore();
+    store.setSelectCurrencyDialogVisibility(true);
+    walletStore.currencies = [
+      { key: 'usd', symbol: '$', name: 'US Dollar' },
+      { key: 'broken', symbol: undefined as unknown as string, name: undefined as unknown as string },
+    ];
+
+    const wrapper = shallowMount(SelectCurrencyDialog, {
+      global: {
+        stubs: {
+          DialogBase: defineComponent({
+            name: 'DialogBase',
+            template: '<div><slot /><slot name="title" /></div>',
+          }),
+          SScrollbar: defineComponent({
+            name: 'SScrollbar',
+            template: '<div><slot /></div>',
+          }),
+          SRadioGroup: defineComponent({
+            name: 'SRadioGroup',
+            props: ['modelValue'],
+            emits: ['update:modelValue'],
+            template: '<div><slot /></div>',
+          }),
+          SRadio: defineComponent({
+            name: 'SRadio',
+            props: ['label'],
+            emits: ['update:modelValue'],
+            template: '<div class="radio" @click="$emit(\'update:modelValue\', label)"><slot /></div>',
+          }),
+          SearchInput: defineComponent({
+            name: 'SearchInputStub',
+            template: '<input class="search-input-stub" />',
+          }),
+        },
+      },
+    });
+
+    const vm = wrapper.vm as { query: string; filteredCurrencies: Array<{ key: string }> };
+    vm.query = 'us';
+    await flushPromises();
+
+    expect(vm.filteredCurrencies).toEqual([{ key: 'usd', symbol: '$', name: 'US Dollar' }]);
+  });
 });

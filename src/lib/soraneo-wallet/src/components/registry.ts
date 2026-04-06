@@ -1,10 +1,8 @@
-import { defineAsyncComponent, type AsyncComponentLoader } from 'vue';
+import type { AsyncComponentLoader } from 'vue';
 
-const lazyComponent = <T>(loader: AsyncComponentLoader<T>) =>
-  defineAsyncComponent({
-    loader,
-    suspensible: false,
-  });
+import { createAsyncComponent } from '@/router/lazy';
+
+const lazyComponent = <T>(loader: AsyncComponentLoader<T>) => createAsyncComponent(loader);
 
 export const SoraWallet = lazyComponent(() => import('../SoraWallet.vue'));
 export const WalletAccount = lazyComponent(() => import('./Account/WalletAccount.vue'));

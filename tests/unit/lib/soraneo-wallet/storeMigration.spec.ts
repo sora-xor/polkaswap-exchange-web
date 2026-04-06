@@ -457,7 +457,7 @@ const files = {
 
 const walletAppFile = path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'App.vue');
 const walletComponentsDir = path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'components');
-const walletStoreDir = path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'store');
+const walletStoreDir = path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'stores');
 const removedWalletVuexFile = path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'vuex.ts');
 const removedWalletMixinsDir = path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'components', 'mixins');
 

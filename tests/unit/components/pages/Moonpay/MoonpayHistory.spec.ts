@@ -282,6 +282,27 @@ describe('MoonpayHistory.vue', () => {
     expect(formatted[0].formatted.icon).toBe('basic-check-mark-24');
   });
 
+  it('falls back to an empty history when store data is malformed', async () => {
+    const ctx = await getContext();
+    ctx.state.moonpay.transactions = { broken: true } as unknown as MoonpayTransaction[];
+    ctx.state.moonpay.currencies = null as unknown as { id: string; code: string }[];
+
+    const wrapper = mountComponent();
+    const { nextTick } = await import('vue');
+    await nextTick();
+
+    const viewModel = wrapper.vm as unknown as {
+      formattedItems: Array<unknown>;
+      emptyHistory: boolean;
+      total: number;
+    };
+
+    expect(viewModel.formattedItems).toEqual([]);
+    expect(viewModel.emptyHistory).toBe(true);
+    expect(viewModel.total).toBe(0);
+    expect(wrapper.text()).toContain('moonpay.history.empty');
+  });
+
   it('requests network change when transaction cannot proceed on current network', async () => {
     const ctx = await getContext();
     ctx.web3Store.isValidNetwork = false;

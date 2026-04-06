@@ -455,7 +455,7 @@ $line: var(--s-color-base-border-secondary);
 
   &.widgets-grid--auto-resize:not(.widgets-grid--editing) {
     .vue-grid-item {
-      transition-property: opacity, scale, left, top, right, height;
+      transition-property: opacity, scale, height;
       will-change: height;
     }
   }

@@ -654,6 +654,11 @@ describe('useBridgeStore', () => {
             account: expect.objectContaining({
               address: 'sora-address',
             }),
+            settings: expect.objectContaining({
+              apiKeys: expect.objectContaining({
+                etherscan: 'etherscan-key',
+              }),
+            }),
           }),
           bridge: expect.objectContaining({
             subBridgeConnector: seededConnector,

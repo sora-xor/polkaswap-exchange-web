@@ -81,12 +81,16 @@
       </s-collapse>
     </div>
     <s-button
+      v-if="isLoggedIn"
       class="el-button--add-liquidity s-typography-button--large"
       data-test-name="addLiquidity"
       type="primary"
-      @click="!isLoggedIn ? connectSoraWallet() : handleAddLiquidity()"
+      @click="handleAddLiquidity()"
     >
-      {{ !isLoggedIn ? t('connectWalletText') : t('pool.addLiquidity') }}
+      {{ t('pool.addLiquidity') }}
+    </s-button>
+    <s-button v-else class="s-typography-button--large" type="primary" @click="connectSoraWallet()">
+      {{ t('connectWalletText') }}
     </s-button>
 
     <add-liquidity-dialog v-model:visible="addLiquidityVisibility"></add-liquidity-dialog>
@@ -271,25 +275,22 @@ $title-height: 42px;
   display: flex;
   flex-direction: column;
   align-items: center;
+
   .page-header--pool {
     .el-button--settings {
       margin-left: auto;
     }
   }
-  .el-button {
-    &--create-pair {
-      margin-left: 0;
-    }
-  }
-  @include full-width-button;
-  @include full-width-button('el-button--create-pair', $inner-spacing-mini);
 
-  :deep(.el-button--primary.neumorphic) {
-    letter-spacing: -0.48px;
-    display: block;
-    box-shadow:
-      1px 1px 5px 0px var(--s-shadow-color-light),
-      -1px -1px 5px 0px var(--s-shadow-color-light);
+  .el-button--create-pair {
+    margin-left: 0;
+    margin-top: $inner-spacing-mini;
+    width: 100%;
+  }
+
+  .s-primary {
+    margin-top: $inner-spacing-medium;
+    width: 100%;
   }
 }
 
@@ -305,19 +306,16 @@ $title-height: 42px;
   &-info {
     &-container {
       &--empty {
-        width: min(100%, 560px);
-        margin: 0;
-        color: var(--s-color-base-content-secondary);
-        letter-spacing: -0.28px;
-        padding: 20px 24px;
         background: var(--s-color-utility-surface);
         border-radius: var(--s-border-radius-small);
-        border-color: var(--s-color-base-content-secondary);
         box-shadow: var(--s-shadow-dialog);
+        color: var(--s-color-base-content-secondary);
         font-size: var(--s-font-size-small);
-        line-height: 21px;
-        font-weight: 400;
+        font-weight: 600;
+        line-height: var(--s-line-height-medium);
+        padding: 20px 24px;
         text-align: center;
+        text-transform: uppercase;
       }
 
       &-block {

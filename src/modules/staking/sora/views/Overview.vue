@@ -115,7 +115,7 @@
           </div>
         </div>
       </s-card>
-      <div class="info">
+      <div class="overview-info">
         <info-line
           v-if="stakingInitialized"
           :label="t('soraStaking.info.stakingBalance')"
@@ -161,6 +161,7 @@
           :label="t('soraStaking.info.minimumStake')"
           :value="minNominatorBondFormatted"
           :asset-symbol="stakingAsset?.symbol"
+          :integer-only="minNominatorBondFormatted === '0'"
           is-formatted
         ></info-line>
         <info-line
@@ -528,7 +529,11 @@ p {
   margin-top: 12px;
 }
 
-.info {
+.overview-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
   margin-top: 25px;
 }
 

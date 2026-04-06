@@ -753,6 +753,7 @@ const createExternalHistoryContext = (store: BridgeCompatStoreLike) => {
           address: walletStore.address,
         },
         settings: {
+          apiKeys: walletStore.apiKeys,
           networkFees: walletStore.networkFees,
         },
       },

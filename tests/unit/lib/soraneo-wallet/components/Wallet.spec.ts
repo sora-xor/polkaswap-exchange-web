@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 const resetTxDetailsId = vi.hoisted(() => vi.fn());
+const handleAccountAction = vi.hoisted(() => vi.fn());
 const walletStore = vi.hoisted(() => ({
   permissions: {},
   isMSTAvailable: false,
@@ -27,11 +28,10 @@ vi.mock('@/stores/router', () => ({
 vi.mock('@/lib/soraneo-wallet/src/composables/useAccountActions', () => ({
   useAccountActions: () => ({
     loading: ref(false),
-    account: ref({ address: 'sender' }),
     accountRenameVisibility: ref(false),
     accountExportVisibility: ref(false),
     accountDeleteVisibility: ref(false),
-    handleAccountAction: vi.fn(),
+    handleAccountAction,
     handleAccountRename: vi.fn(),
     handleAccountExport: vi.fn(),
     handleAccountDelete: vi.fn(),
@@ -61,7 +61,7 @@ vi.mock('@/lib/soraneo-wallet/src/components/WalletHistory.vue', () => ({
 }));
 
 import Wallet from '@/lib/soraneo-wallet/src/components/Wallet.vue';
-import { WalletTabs } from '@/lib/soraneo-wallet/src/consts';
+import { AccountActionTypes, WalletTabs } from '@/lib/soraneo-wallet/src/consts';
 import walletSource from '@/lib/soraneo-wallet/src/components/Wallet.vue?raw';
 
 describe('Wallet Wallet', () => {
@@ -95,6 +95,16 @@ describe('Wallet Wallet', () => {
     state.handleBack();
 
     expect(resetTxDetailsId).toHaveBeenCalledTimes(1);
+  });
+
+  it('routes wallet account actions through the connected wallet account', () => {
+    handleAccountAction.mockClear();
+    walletStore.account = { address: 'sender' };
+    const state = (Wallet as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+
+    state.handleAccountActionType(AccountActionTypes.Rename);
+
+    expect(handleAccountAction).toHaveBeenCalledWith(AccountActionTypes.Rename, walletStore.account);
   });
 
   it('does not add local-only icon dimming overrides to the wallet account panel', () => {

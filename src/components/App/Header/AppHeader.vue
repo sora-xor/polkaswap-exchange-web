@@ -26,7 +26,7 @@
       </s-button>
     </div>
     <div class="app-controls s-flex">
-      <app-account-button :disabled="loading" @click="navigateToWallet"></app-account-button>
+      <app-account-button @click="navigateToWallet"></app-account-button>
       <app-header-menu></app-header-menu>
     </div>
     <rotate-phone-dialog></rotate-phone-dialog>
@@ -66,8 +66,7 @@ defineOptions({
   },
 });
 
-const props = defineProps<{ loading?: boolean }>();
-const loading = computed(() => props.loading ?? false);
+defineProps<{ loading?: boolean }>();
 
 const emit = defineEmits<{
   (e: 'toggle-menu'): void;

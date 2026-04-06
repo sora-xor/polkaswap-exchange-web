@@ -79,12 +79,13 @@ const filteredCurrencies = computed(() => {
   const rawQuery = query.value.toLowerCase().trim();
   if (!rawQuery) return currencies.value;
 
-  return currencies.value.filter(
-    (item) =>
-      item.name.toLowerCase().includes(rawQuery) ||
-      item.symbol.toLowerCase().includes(rawQuery) ||
-      item.key.toLowerCase().includes(rawQuery)
-  );
+  return currencies.value.filter((item) => {
+    const name = String(item?.name ?? '').toLowerCase();
+    const symbol = String(item?.symbol ?? '').toLowerCase();
+    const key = String(item?.key ?? '').toLowerCase();
+
+    return name.includes(rawQuery) || symbol.includes(rawQuery) || key.includes(rawQuery);
+  });
 });
 
 function setSelectedEl(element: HTMLDivElement | null, isSelected: boolean): void {

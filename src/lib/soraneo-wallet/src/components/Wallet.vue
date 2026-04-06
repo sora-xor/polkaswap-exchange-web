@@ -125,7 +125,6 @@ const walletStore = useWalletStore();
 const routerStore = useRouterStore();
 const {
   loading,
-  account,
   accountRenameVisibility,
   accountExportVisibility,
   accountDeleteVisibility,
@@ -237,7 +236,9 @@ function handleMST(): void {
 }
 
 function handleAccountActionType(actionType: string): void {
-  handleAccountAction(actionType, account.value);
+  if (!accountOwn.value) return;
+
+  handleAccountAction(actionType, accountOwn.value);
 }
 
 function handleAccountSettings(): void {

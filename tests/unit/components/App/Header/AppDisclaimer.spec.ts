@@ -181,7 +181,7 @@ describe('AppDisclaimer', () => {
     vi.stubGlobal('IntersectionObserver', IntersectionObserverMock);
   });
 
-  it('renders as an in-place modal overlay instead of inline page content', async () => {
+  it('renders a viewport-level modal while first-launch acceptance is pending', async () => {
     const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
     const wrapper = mount(component, {
       global: {
@@ -198,8 +198,8 @@ describe('AppDisclaimer', () => {
     const modalProps = modalPropsSnapshots.at(-1);
 
     expect(wrapper.find('.s-modal-stub').exists()).toBe(true);
-    expect(modalProps?.teleportTo).toBe(null);
-    expect(modalProps?.absolute).toBe(true);
+    expect(modalProps?.teleportTo).toBe('body');
+    expect(modalProps?.absolute).toBe(false);
     expect(modalProps?.lockScroll).toBe(false);
     expect(modalProps?.focusTrap).toBe(true);
     expect(modalProps?.showOverlay).toBe(true);
@@ -333,6 +333,8 @@ describe('AppDisclaimer', () => {
     const modalProps = modalPropsSnapshots.at(-1);
 
     expect(modalProps?.showOverlay).toBe(true);
+    expect(modalProps?.teleportTo).toBe(null);
+    expect(modalProps?.absolute).toBe(true);
     expect(modalProps?.closeOnOverlayClick).toBe(true);
     expect(modalProps?.closeOnEsc).toBe(true);
 

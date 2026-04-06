@@ -21,6 +21,7 @@
           class="info-line-value"
           :value="value"
           :asset-symbol="assetSymbol"
+          :integer-only="integerOnly"
           :font-size-rate="formattedFontSize"
           :font-weight-rate="formattedFontWeight"
           :value-can-be-hidden="valueCanBeHidden"
@@ -65,6 +66,7 @@ const props = withDefaults(
     value?: string | number | null;
     assetSymbol?: string;
     isFormatted?: boolean;
+    integerOnly?: boolean;
     fiatValue?: string;
     valueTooltip?: string;
     valueCanBeHidden?: boolean;
@@ -75,6 +77,7 @@ const props = withDefaults(
     value: '',
     assetSymbol: '',
     isFormatted: false,
+    integerOnly: false,
     fiatValue: '',
     valueTooltip: '',
     valueCanBeHidden: false,

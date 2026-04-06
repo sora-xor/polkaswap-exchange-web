@@ -58,6 +58,32 @@ const unsubscribe = (subscription: Nullable<Subscription>): null => {
   return null;
 };
 
+const StakingApiNotReadyError = 'Staking API is not ready';
+
+const getConnectedChainApi = (): { isReady?: unknown } | null => {
+  const connectionApi = (api as { connection?: { api?: { isReady?: unknown } | null } }).connection?.api;
+
+  if (connectionApi?.isReady) return connectionApi;
+
+  const directApi = (api as { api?: { isReady?: unknown } | null }).api;
+
+  if (directApi?.isReady) return directApi;
+
+  return null;
+};
+
+const waitForStakingApiReady = async (): Promise<boolean> => {
+  const chainApi = getConnectedChainApi();
+
+  if (!chainApi?.isReady) return false;
+
+  if (typeof (chainApi.isReady as PromiseLike<unknown>).then === 'function') {
+    await chainApi.isReady;
+  }
+
+  return true;
+};
+
 const subscribeWithInitialValue = async <T>(
   observable: Nullable<{ subscribe: (handler: (value: T) => void) => Subscription }>
 ): Promise<{ subscription: Subscription; firstValue: T } | null> => {
@@ -171,6 +197,9 @@ export const useStakingStore = defineStore('staking-legacy', {
       this.accountLedgerUpdates = unsubscribe(this.accountLedgerUpdates);
     },
     async nominate(): Promise<void> {
+      if (!(await waitForStakingApiReady())) {
+        throw new Error(StakingApiNotReadyError);
+      }
       await api.staking.nominate({
         validators: this.selectedValidators.map((validator) => validator.address),
       });
@@ -178,11 +207,17 @@ export const useStakingStore = defineStore('staking-legacy', {
       await this.getStakingInfo();
     },
     async getNominateNetworkFee(): Promise<CodecString> {
+      if (!(await waitForStakingApiReady())) return ZeroStringValue as CodecString;
+
       return await api.staking.getNominateNetworkFee({
         validators: this.selectedValidators.map((validator) => validator.address),
       });
     },
     async bondAndNominate(): Promise<void> {
+      if (!(await waitForStakingApiReady())) {
+        throw new Error(StakingApiNotReadyError);
+      }
+
       const controller = this.controller || this.stash;
 
       if (!this.payee) throw new Error('Payee is not set');
@@ -210,6 +245,8 @@ export const useStakingStore = defineStore('staking-legacy', {
       } as MyStakingInfo);
     },
     async getBondAndNominateNetworkFee(): Promise<CodecString> {
+      if (!(await waitForStakingApiReady())) return ZeroStringValue as CodecString;
+
       const controller = this.controller || this.stash;
 
       return await api.staking.getBondAndNominateNetworkFee({
@@ -220,43 +257,73 @@ export const useStakingStore = defineStore('staking-legacy', {
       });
     },
     async bondExtra(): Promise<void> {
+      if (!(await waitForStakingApiReady())) {
+        throw new Error(StakingApiNotReadyError);
+      }
       await api.staking.bondExtra({ value: this.stakeAmount });
     },
     async unbond(): Promise<void> {
+      if (!(await waitForStakingApiReady())) {
+        throw new Error(StakingApiNotReadyError);
+      }
       await api.staking.unbond({ value: this.stakeAmount });
     },
     async withdraw(value: number): Promise<void> {
+      if (!(await waitForStakingApiReady())) {
+        throw new Error(StakingApiNotReadyError);
+      }
       await api.staking.withdrawUnbonded({ value });
     },
     async payout(args: { payouts: Payouts; payee?: string }): Promise<void> {
+      if (!(await waitForStakingApiReady())) {
+        throw new Error(StakingApiNotReadyError);
+      }
       await api.staking.payout(args);
     },
     async getPayoutNetworkFee(args: { payouts: Payouts; payee?: string }): Promise<CodecString> {
+      if (!(await waitForStakingApiReady())) return ZeroStringValue as CodecString;
+
       return await api.staking.getPayoutNetworkFee(args);
     },
     async getStakingInfo(): Promise<void> {
+      if (!(await waitForStakingApiReady())) return;
+
       this.setStakingInfo(await api.staking.getMyStakingInfo(this.stash));
     },
     async getValidatorsInfo(): Promise<void> {
+      if (!(await waitForStakingApiReady())) return;
+
       this.setValidatorsInfo(await api.staking.getValidatorsInfo());
     },
     async getPendingRewards(): Promise<void> {
+      if (!(await waitForStakingApiReady())) return;
+
       this.setPendingRewards(await api.staking.getNominatorsReward(this.stash));
     },
     async getMinNominatorBond(): Promise<void> {
+      if (!(await waitForStakingApiReady())) return;
+
       this.setMinNominatorBond(await api.staking.getMinNominatorBond());
     },
     async getUnbondPeriod(): Promise<void> {
+      if (!(await waitForStakingApiReady())) return;
+
       this.setUnbondPeriod(api.staking.getUnbondPeriod());
     },
     async getMaxNominations(): Promise<void> {
+      if (!(await waitForStakingApiReady())) return;
+
       this.setMaxNominations(api.staking.getMaxNominations());
     },
     async getHistoryDepth(): Promise<void> {
+      if (!(await waitForStakingApiReady())) return;
+
       this.setHistoryDepth(api.staking.getHistoryDepth());
     },
     async subscribeOnActiveEra(): Promise<void> {
       this.resetActiveEraUpdates();
+
+      if (!(await waitForStakingApiReady())) return;
 
       const payload = await subscribeWithInitialValue(api.staking.getActiveEraObservable());
       if (!payload) return;
@@ -270,6 +337,8 @@ export const useStakingStore = defineStore('staking-legacy', {
     async subscribeOnCurrentEra(): Promise<void> {
       this.resetCurrentEraUpdates();
 
+      if (!(await waitForStakingApiReady())) return;
+
       const payload = await subscribeWithInitialValue(api.staking.getCurrentEraObservable());
       if (!payload) return;
 
@@ -278,6 +347,8 @@ export const useStakingStore = defineStore('staking-legacy', {
     },
     async subscribeOnCurrentEraTotalStake(): Promise<void> {
       this.resetCurrentEraTotalStakeUpdates();
+
+      if (!(await waitForStakingApiReady())) return;
 
       if (this.currentEra === undefined || this.currentEra === null) {
         throw new Error('Current era is not set');
@@ -292,6 +363,8 @@ export const useStakingStore = defineStore('staking-legacy', {
     async subscribeOnController(): Promise<void> {
       this.resetControllerUpdates();
 
+      if (!(await waitForStakingApiReady())) return;
+
       const payload = await subscribeWithInitialValue(api.staking.getControllerObservable(this.stash));
       if (!payload) return;
 
@@ -300,6 +373,8 @@ export const useStakingStore = defineStore('staking-legacy', {
     },
     async subscribeOnPayee(): Promise<void> {
       this.resetPayeeUpdates();
+
+      if (!(await waitForStakingApiReady())) return;
 
       const payload = await subscribeWithInitialValue(api.staking.getPayeeObservable(this.stash));
       if (!payload) return;
@@ -310,6 +385,8 @@ export const useStakingStore = defineStore('staking-legacy', {
     async subscribeOnNominations(): Promise<void> {
       this.resetNominationsUpdates();
 
+      if (!(await waitForStakingApiReady())) return;
+
       const payload = await subscribeWithInitialValue(api.staking.getNominationsObservable(this.stash));
       if (!payload) return;
 
@@ -318,6 +395,8 @@ export const useStakingStore = defineStore('staking-legacy', {
     },
     async subscribeOnAccountLedger(): Promise<void> {
       this.resetAccountLedgerUpdates();
+
+      if (!(await waitForStakingApiReady())) return;
 
       const payload = await subscribeWithInitialValue(api.staking.getAccountLedgerObservable(this.stash));
       if (!payload) return;

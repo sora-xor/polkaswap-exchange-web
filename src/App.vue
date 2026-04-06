@@ -70,7 +70,6 @@
 
 <script setup lang="ts">
 import { components } from '@/shims/wallet-components';
-import debounce from 'lodash/debounce';
 import { computed, onBeforeMount, onMounted, onBeforeUnmount, ref, watch, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -443,14 +442,12 @@ function setResponsiveClass(): void {
   }
 }
 
-const setResponsiveClassDebounced = debounce(setResponsiveClass, 250);
-
 function subscribeOnScreenSize(): void {
-  window.addEventListener('resize', setResponsiveClassDebounced);
+  window.addEventListener('resize', setResponsiveClass);
 }
 
 function unsubscribeFromScreenSize(): void {
-  window.removeEventListener('resize', setResponsiveClassDebounced);
+  window.removeEventListener('resize', setResponsiveClass);
 }
 
 function handleOrientationChange(): void {

@@ -91,6 +91,7 @@ import type { Nullable } from '@/types/common';
 const HistoryView = 'history';
 const DetailsView = 'details';
 const pageAmount = 5;
+const isRecord = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object';
 
 defineOptions({
   components: {
@@ -117,8 +118,16 @@ const {
   walletConnect,
 } = useMoonpayBridge();
 
-const transactions = computed(() => moonpayStore.transactions as MoonpayTransaction[]);
-const currencies = computed(() => moonpayStore.currencies as MoonpayCurrency[]);
+const transactions = computed<MoonpayTransaction[]>(() =>
+  Array.isArray(moonpayStore.transactions)
+    ? moonpayStore.transactions.filter((item): item is MoonpayTransaction => isRecord(item))
+    : []
+);
+const currencies = computed<MoonpayCurrency[]>(() =>
+  Array.isArray(moonpayStore.currencies)
+    ? moonpayStore.currencies.filter((item): item is MoonpayCurrency => isRecord(item))
+    : []
+);
 const isValidNetwork = computed(() => web3Store.isValidNetwork);
 const libraryTheme = computed(() => settingsStore.libraryTheme);
 

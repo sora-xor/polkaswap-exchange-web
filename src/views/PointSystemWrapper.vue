@@ -3,12 +3,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent } from 'vue';
+import { computed } from 'vue';
 
+import { createAsyncComponent } from '@/router/lazy';
 import { useSettingsStore } from '@/stores/settings';
 
-const PointSystemComponent = defineAsyncComponent(() => import('@/views/PointSystem.vue'));
-const PointSystemV2Component = defineAsyncComponent(() => import('@/views/PointSystemV2.vue'));
+const PointSystemComponent = createAsyncComponent(() => import('@/views/PointSystem.vue'));
+const PointSystemV2Component = createAsyncComponent(() => import('@/views/PointSystemV2.vue'));
 
 const settingsStore = useSettingsStore();
 

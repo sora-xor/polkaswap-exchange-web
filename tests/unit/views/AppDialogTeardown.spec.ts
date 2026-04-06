@@ -17,6 +17,8 @@ const createStoreMocks = () => {
         setDefaultNodes: vi.fn(),
         setNetworkChainGenesisHash: vi.fn(),
       },
+      userDisclaimerApprove: false,
+      disclaimerVisibility: true,
       browserNotifPopupVisibility: false,
       browserNotifPopupBlockedVisibility: false,
       isThemePreference: false,
@@ -68,6 +70,9 @@ const createStoreMocks = () => {
       setFaucetUrl: vi.fn(),
       setFeatureFlags: vi.fn(),
       setScreenBreakpointClass: vi.fn(),
+      setDisclaimerDialogVisibility: vi.fn((flag: boolean) => {
+        state.settings.disclaimerVisibility = flag;
+      }),
       setSelectNodeDialogVisibility: vi.fn((flag: boolean) => {
         state.settings.selectNodeDialogVisibility = flag;
       }),
@@ -250,7 +255,10 @@ vi.mock('@/stores/settings', () => ({
 
     return {
       get disclaimerVisibility() {
-        return false;
+        return root.state.settings.disclaimerVisibility;
+      },
+      get userDisclaimerApprove() {
+        return root.state.settings.userDisclaimerApprove;
       },
       get screenBreakpointClass() {
         return root.state.settings.screenBreakpointClass;
@@ -297,6 +305,7 @@ vi.mock('@/stores/settings', () => ({
       setFaucetUrl: root.commit.settings.setFaucetUrl,
       setFeatureFlags: root.commit.settings.setFeatureFlags,
       setScreenBreakpointClass: root.commit.settings.setScreenBreakpointClass,
+      setDisclaimerDialogVisibility: root.commit.settings.setDisclaimerDialogVisibility,
       showOrientationWarning: root.commit.settings.showOrientationWarning,
       hideOrientationWarning: root.commit.settings.hideOrientationWarning,
       setSelectNodeDialogVisibility: root.commit.settings.setSelectNodeDialogVisibility,
@@ -539,6 +548,8 @@ type StoreMocks = {
       isOrientationWarningVisible: boolean;
       browserNotifPopupVisibility: boolean;
       browserNotifPopupBlockedVisibility: boolean;
+      disclaimerVisibility: boolean;
+      userDisclaimerApprove: boolean;
     };
     web3: {
       soraAccountDialogVisibility: boolean;
@@ -550,6 +561,7 @@ type StoreMocks = {
   };
   commit: {
     settings: {
+      setDisclaimerDialogVisibility: ReturnType<typeof vi.fn> | undefined;
       setSelectNodeDialogVisibility: ReturnType<typeof vi.fn> | undefined;
       setSelectIndexerDialogVisibility: ReturnType<typeof vi.fn> | undefined;
     };
@@ -618,6 +630,8 @@ beforeEach(async () => {
   storeMocks.state.settings.isOrientationWarningVisible = false;
   storeMocks.state.settings.browserNotifPopupVisibility = false;
   storeMocks.state.settings.browserNotifPopupBlockedVisibility = false;
+  storeMocks.state.settings.disclaimerVisibility = true;
+  storeMocks.state.settings.userDisclaimerApprove = false;
   storeMocks.state.web3.soraAccountDialogVisibility = false;
   storeMocks.state.web3.selectProviderDialogVisibility = false;
   storeMocks.state.web3.selectNetworkDialogVisibility = false;
@@ -630,6 +644,7 @@ beforeEach(async () => {
   storeMocks.commit.web3.setSelectNetworkDialogVisibility?.mockReset();
   storeMocks.commit.web3.setSelectSubNodeDialogVisibility?.mockReset();
   storeMocks.commit.web3.setSubAccountDialogVisibility?.mockReset();
+  storeMocks.commit.settings.setDisclaimerDialogVisibility?.mockReset();
   (storeMocks.commit.settings.setSelectNodeDialogVisibility as ReturnType<typeof vi.fn>).mockReset();
   (storeMocks.commit.settings.setSelectIndexerDialogVisibility as ReturnType<typeof vi.fn>).mockReset();
 

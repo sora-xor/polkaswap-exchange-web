@@ -226,9 +226,11 @@ describe('Pool.vue', () => {
     expect(wrapper.find('.pool-empty-state').exists()).toBe(false);
     expect(wrapper.find('.pool-info-container--empty').exists()).toBe(true);
     expect(wrapper.text()).toContain('pool.connectToWallet');
-    const actionButton = wrapper.find('[data-test-name="addLiquidity"]');
-    expect(actionButton.text()).toContain('connectWalletText');
-    await actionButton.trigger('click');
+    const actionButton = wrapper.findAll('button').find((button) => button.text().includes('connectWalletText'));
+    expect(actionButton).toBeDefined();
+    expect(actionButton?.classes()).not.toContain('el-button--add-liquidity');
+    expect(actionButton?.classes()).toContain('s-typography-button--large');
+    await actionButton?.trigger('click');
 
     expect(connectSpy).toHaveBeenCalledTimes(1);
   });

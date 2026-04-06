@@ -19,7 +19,12 @@
           <template #menu>
             <div class="header-menu__settings">
               <p>{{ t('settingsText') }}</p>
-              <s-button class="s-pressed" type="action" icon="x-16" @click="handleClickHeaderMenu"></s-button>
+              <s-button
+                class="header-menu__settings-close s-pressed"
+                type="action"
+                icon="x-16"
+                @click="handleClickHeaderMenu"
+              ></s-button>
             </div>
             <div class="el-divider el-divider--horizontal s-divider-secondary"></div>
             <div v-for="section in dropdownHeaderMenuItems" :key="section.title">
@@ -402,6 +407,30 @@ $item-padding: 17px;
       font-size: 15px;
       color: var(--s-color-base-content-primary);
     }
+  }
+
+  &__settings-close.el-button.s-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    min-height: 42px;
+    padding: 0;
+  }
+
+  &__settings-close .s-button__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__settings-close .s-button__icon > i {
+    font-size: 24px !important;
+    line-height: 24px !important;
   }
 
   & &__item.el-dropdown-menu__item {

@@ -16,6 +16,9 @@ const shared = vi.hoisted(() => {
   const payeeUnsubscribe = vi.fn();
   const nominationsUnsubscribe = vi.fn();
   const accountLedgerUnsubscribe = vi.fn();
+  const apiRef = {
+    isReady: Promise.resolve(),
+  };
 
   const nominate = vi.fn(async () => undefined);
   const bondAndNominate = vi.fn(async () => undefined);
@@ -90,6 +93,7 @@ const shared = vi.hoisted(() => {
     payeeUnsubscribe,
     nominationsUnsubscribe,
     accountLedgerUnsubscribe,
+    apiRef,
     nominate,
     bondAndNominate,
     getBondAndNominateNetworkFee,
@@ -125,6 +129,7 @@ vi.mock('@wallet', async () => {
 
   return createWalletMock({
     api: {
+      api: shared.apiRef,
       staking: {
         nominate: shared.nominate,
         bondAndNominate: shared.bondAndNominate,
@@ -155,6 +160,7 @@ vi.mock('@wallet', async () => {
 });
 
 import { useStakingStore } from '@/stores/staking';
+import { api } from '@/shims/wallet-api';
 
 describe('staking store', () => {
   beforeEach(() => {
@@ -168,6 +174,9 @@ describe('staking store', () => {
     shared.payeeUnsubscribe.mockClear();
     shared.nominationsUnsubscribe.mockClear();
     shared.accountLedgerUnsubscribe.mockClear();
+    shared.apiRef.isReady = Promise.resolve();
+    (api as { api?: unknown; connection?: { api?: unknown } }).api = shared.apiRef;
+    (api as { api?: unknown; connection?: { api?: unknown } }).connection = { api: shared.apiRef };
     shared.nominate.mockClear();
     shared.bondAndNominate.mockClear();
     shared.getBondAndNominateNetworkFee.mockClear();
@@ -348,5 +357,68 @@ describe('staking store', () => {
     expect(shared.payeeUnsubscribe).toHaveBeenCalledTimes(1);
     expect(shared.nominationsUnsubscribe).toHaveBeenCalledTimes(1);
     expect(shared.accountLedgerUnsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it('waits for the staking api readiness before loading staking info', async () => {
+    const store = useStakingStore();
+    let resolveReady!: () => void;
+
+    shared.apiRef.isReady = new Promise<void>((resolve) => {
+      resolveReady = resolve;
+    });
+
+    const pending = store.getStakingInfo();
+
+    expect(shared.getMyStakingInfo).not.toHaveBeenCalled();
+
+    resolveReady();
+    await pending;
+
+    expect(shared.getMyStakingInfo).toHaveBeenCalledWith('stash-1');
+  });
+
+  it('waits for staking readiness before reading fees and era metadata', async () => {
+    const store = useStakingStore();
+    let resolveReady!: () => void;
+
+    shared.apiRef.isReady = new Promise<void>((resolve) => {
+      resolveReady = resolve;
+    });
+
+    const pendingNominateFee = store.getNominateNetworkFee();
+    const pendingUnbondPeriod = store.getUnbondPeriod();
+
+    expect(shared.getNominateNetworkFee).not.toHaveBeenCalled();
+    expect(shared.getUnbondPeriod).not.toHaveBeenCalled();
+
+    resolveReady();
+
+    await expect(pendingNominateFee).resolves.toBe('2');
+    await pendingUnbondPeriod;
+
+    expect(shared.getNominateNetworkFee).toHaveBeenCalledTimes(1);
+    expect(shared.getUnbondPeriod).toHaveBeenCalledTimes(1);
+    expect(store.unbondPeriod).toBe(7);
+  });
+
+  it('uses safe defaults when the chain api is unavailable', async () => {
+    const store = useStakingStore();
+
+    (api as { api?: unknown; connection?: { api?: unknown } }).api = null;
+    (api as { api?: unknown; connection?: { api?: unknown } }).connection = { api: null };
+
+    await expect(store.getNominateNetworkFee()).resolves.toBe('0');
+    await store.getStakingInfo();
+    await store.getUnbondPeriod();
+    await store.subscribeOnActiveEra();
+    await store.subscribeOnCurrentEra();
+
+    expect(shared.getNominateNetworkFee).not.toHaveBeenCalled();
+    expect(shared.getMyStakingInfo).not.toHaveBeenCalled();
+    expect(shared.getUnbondPeriod).not.toHaveBeenCalled();
+    expect(shared.getActiveEraObservable).not.toHaveBeenCalled();
+    expect(shared.getCurrentEraObservable).not.toHaveBeenCalled();
+    expect(store.activeEra).toBeNull();
+    expect(store.currentEra).toBeNull();
   });
 });

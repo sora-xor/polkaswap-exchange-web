@@ -105,6 +105,18 @@ describe('moonpay store', () => {
     expect(store.transactionsFetching).toBe(false);
   });
 
+  it('normalizes malformed transaction responses to an empty array', async () => {
+    const store = useMoonpayStore();
+    store.api = shared.moonpayApi as any;
+    store.api.publicKey = 'moonpay-key';
+    shared.moonpayApi.getTransactionsByExtId.mockResolvedValue({ id: 'tx-1' });
+
+    await store.getTransactions(true);
+
+    expect(store.transactions).toEqual([]);
+    expect(store.transactionsFetching).toBe(false);
+  });
+
   it('skips transaction loading when moonpay is not initialised', async () => {
     const store = useMoonpayStore();
     store.api = shared.moonpayApi as any;
@@ -124,6 +136,16 @@ describe('moonpay store', () => {
 
     expect(shared.moonpayApi.getCurrencies).toHaveBeenCalledTimes(1);
     expect(store.currencies).toEqual([{ id: 'usd', code: 'usd' }]);
+  });
+
+  it('normalizes malformed currency responses to an empty array', async () => {
+    const store = useMoonpayStore();
+    store.api = shared.moonpayApi as any;
+    shared.moonpayApi.getCurrencies.mockResolvedValue({ id: 'usd', code: 'usd' });
+
+    await store.getCurrencies();
+
+    expect(store.currencies).toEqual([]);
   });
 
   it('creates polling that refreshes transactions and clears the timestamp on stop', async () => {

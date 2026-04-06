@@ -4,7 +4,10 @@
       <s-icon class="icon" name="notifications-alert-triangle-24" size="64px"></s-icon>
       <h1 class="title">{{ t('soraStaking.validatorsAttentionDialog.title') }}</h1>
       <div class="description">
-        <p v-for="item in description" :key="item">{{ item }}</p>
+        <template v-for="item in description" :key="item">
+          <p>{{ item }}</p>
+          <br />
+        </template>
       </div>
       <s-button type="primary" class="action-button" :loading="parentLoading" @click="handleConfirm">
         {{ t('soraStaking.validatorsAttentionDialog.confirm') }}
@@ -18,6 +21,7 @@ import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
+import i18n from '@/lang';
 import router from '@/router';
 
 import { SoraStakingPageNames } from '../consts';
@@ -43,8 +47,27 @@ const closeDialog = (): void => {
 };
 
 const description = computed(() => {
-  const value = t('soraStaking.validatorsAttentionDialog.description');
-  return Array.isArray(value) ? value : [];
+  const locale = i18n.global.locale.value;
+  const messages = i18n.global.getLocaleMessage(locale) as {
+    soraStaking?: {
+      validatorsAttentionDialog?: {
+        description?: unknown;
+      };
+    };
+  };
+  const value = messages?.soraStaking?.validatorsAttentionDialog?.description;
+
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.entries(value as Record<string, unknown>)
+      .sort(([left], [right]) => Number(left) - Number(right))
+      .map(([, item]) => String(item));
+  }
+
+  return [];
 });
 
 const handleConfirm = (): void => {
@@ -97,15 +120,6 @@ defineExpose({
   font-weight: 300;
   line-height: 150%;
   letter-spacing: -0.28px;
-
-  p {
-    width: 100%;
-    margin: 0 0 $inner-spacing-mini;
-  }
-
-  p:last-child {
-    margin-bottom: 0;
-  }
 }
 
 .action-button {

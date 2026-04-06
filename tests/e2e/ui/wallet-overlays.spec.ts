@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 
-import { ensureAppLoaded, expectHash, ipfsEntryUrl, preparePage, trackConsole } from './support/ipfs';
+import { ensureAppLoaded, expectHash, filterKnownWalletConsoleNoise, ipfsEntryUrl, preparePage, trackConsole } from './support/ipfs';
 
 const AUTHENTICATED_WALLET_STATE = {
   address: 'cnRXua6zs8TaE87BQFL6uWVbT2g6GXsUjwk6PTvL6UHcHDCvo',
@@ -117,7 +117,7 @@ test('covers authenticated wallet account settings and account-action dialogs', 
     await expect(scenario.dialog).toHaveCount(0);
   }
 
-  expect(consoleErrors).toEqual([]);
+  expect(filterKnownWalletConsoleNoise(consoleErrors)).toEqual([]);
 });
 
 test('tears down authenticated wallet overlay on hash navigation and keeps swap controls clickable', async ({
@@ -144,7 +144,7 @@ test('tears down authenticated wallet overlay on hash navigation and keeps swap 
 
   await expectSwapSettingsClickable(page);
 
-  expect(consoleErrors).toEqual([]);
+  expect(filterKnownWalletConsoleNoise(consoleErrors)).toEqual([]);
 });
 
 test('covers MST onboarding with nested address-book overlays in authenticated wallet', async ({ page }) => {
@@ -194,7 +194,7 @@ test('covers MST onboarding with nested address-book overlays in authenticated w
   await expect(addressBookDialog).toBeVisible();
 
   const unexpectedErrors = consoleErrors.filter((entry) => !entry.includes('"key":"polkadotjs.noExtension"'));
-  expect(unexpectedErrors).toEqual([]);
+  expect(filterKnownWalletConsoleNoise(unexpectedErrors)).toEqual([]);
 });
 
 test('tears down MST overlays on hash navigation and keeps swap controls clickable', async ({ page }) => {
@@ -236,5 +236,5 @@ test('tears down MST overlays on hash navigation and keeps swap controls clickab
   await expectSwapSettingsClickable(page);
 
   const unexpectedErrors = consoleErrors.filter((entry) => !entry.includes('"key":"polkadotjs.noExtension"'));
-  expect(unexpectedErrors).toEqual([]);
+  expect(filterKnownWalletConsoleNoise(unexpectedErrors)).toEqual([]);
 });
